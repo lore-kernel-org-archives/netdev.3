@@ -1,300 +1,421 @@
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5B8361944
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257668; cv=none; b=bw2dI80t7S+N//O/pEViBo2r8yxlau+/GKLAHuunPaDCN4paDh7P7nnsFSKiBGp712JHxDG9nWUd7T7qekJ4SDE3qu7vw3Emh14YBu0JVAWD1ylldTYmW4UJVxLlU2nQSpSwSaQO4V9ZcukkHnJRUEqRgmViameL6wonV1+TNTk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257668; c=relaxed/simple;
-	bh=3VXORutPXVLOs5Z9/9nnDuwqkjc+IuVpw64VienBNvg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j5VY3ujg61DlEf6fS8i+ZlepuUVgM5dC7iyfGJZSM0/IMHB/8JQ3SfLfsR2+VdWCUZLaMD0bN+g4wkTZKL/w8SqO0aUDoGGOpash8GJeWM2VWTILmnUpy4y7srpuWG/WLkPAiqQTFYgRC2a/Gn3ubXOprOw2fMwK4jlhLjmINh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d9dT2QZP; arc=none smtp.client-ip=209.85.160.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE6932F75B
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790257776; cv=pass; b=G90oNHMTN7UUWl70wecMwuqZF+LENObjBpfCpBxxDGzEQ0Xt1S14m9v7f/GNWDCCc0laZl+mtfnqDxTOVrGxFJx/GnKIesgO85LSwd2KRBP0XoEiJ+H2l9dOHWxy1sSsksBmG0ShLzqrlU7HTOymcnORwhuMgZJlBw2Pr7IqMAI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790257776; c=relaxed/simple;
+	bh=gWB06G6E/OA5NVJBWpGJh+LAXYyXqipKLeFn7ANva1c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AwX24boVTsJ4uK0JFIgznRjP4sO0ZDHB7Jau5uTDWfObrEHgNZSY0PHkYmqqsf6G8KAMUOOvFixSTKQEQek8E1bF8+W93MqFVtkq6oMOOWURfw/c8t2YvERiya9UR+40tlzAc/XEmPh0C7A9UlllwhSKa/dXg3hzM/3dzVsTQQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAHsMjbK; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d9dT2QZP"
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-530d028f779so25251921cf.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:47:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAHsMjbK"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1e023so756240e87.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:49:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790257772; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Wom7Ua0v4VarUp8/2jGh/CVuF2L4LHyFR471KTrWG53W4uULvmkd/YxDH04QiNBvk/
+         NpwWjxifQDuImqJD618BV+T2O+athZN2m7Q4S99MtJyN1PK2bOEFw4usQxpRvuiYPDKs
+         BtzUIKMxJMOxF6LYneS7FIRB6Yk2knr1365SH8Dn+SscjnxVcHcGhLWwQ8qEY+yfuMzV
+         kjAArOcyLCDwkx/X6MmRN+Z6FY56ZwjzpCnsumYrnaiqrCbB7KiGis/a0gpYORRvnhi6
+         5m2iqafuq1Stfbt3UPpnkIoUAKcq5pHe5pbOfH4jFQV3JsNwms4R7AkCdBr3nO1iGjNU
+         Rm/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gJYVfSEDQsVnkbBJ1tGYnH9ndL0fb4u2tq4xBMYB8CQ=;
+        fh=MmEqdBuz/4TVDYnzvZcc/hS16qCyLs/205/8d5CwpWM=;
+        b=m4Zxq5Vop/b9yP3I10LUbyNjP1g1UYh4QujY5GBx7FGVoL24LDfaO7uAClOIAlEOWZ
+         f9gm7TisHhhcsvDPsaBUe+3ymknQ06rIiTTMhim2ClESg0oYDsUX7gn05IPBZUIf+j85
+         D5Qrvg4jw0i8gGNAbTc4lRhfPqAsbaU1O3ztd6vqFbpWS/NhEPv6LDTNDabm9HILrcyy
+         mbwFD04Fsa6BR+una7pmJWhwMVyq3lhWSXLcEv7t62R8N4VkNbNzbcjGXt/MNCRjw+X5
+         s2krPOOi/JvgqFghFCTmwZgxm7L5emklBIXjetDcObfzXoqzJthMjxexWjdhHDbhJgmo
+         ZgVQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790257665; x=1790862465; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2XKj3Wo4/WK218D2HBvZYifaivoje3k/Dp+GjSJxv6g=;
-        b=d9dT2QZPMFK2rmZPJPrM8hI/mgXiZSU83oVtWKriSOQfjXHgEOO9ljTxMR0zlXmQqL
-         Jrk57yC3xiKBfDN66/vTGvnjxPzVMJVmbBsa/TClHb0c0BrkwdCDyQxCzXK6xyvhKP1N
-         oyqIk74gLQFyYuvXFGRc5DIvuFbDYcoMPZRQvN8+MFQU9OqMZZ75IkopncpWWBgGeSwM
-         s6DGBVYHAnCl299WqOJF5AgvTAw01Z6d4Wd5aSE6/WKqjRrgjPpYKo222GB/2YzX2uYW
-         1lI6bWHhVixN3kJffUBgfuFXIKVx8eeO/yRnmW3rzojxhtZtjTRl6BS/DAm4xjvqZZBD
-         7Ypg==
+        d=gmail.com; s=20251104; t=1790257772; x=1790862572; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gJYVfSEDQsVnkbBJ1tGYnH9ndL0fb4u2tq4xBMYB8CQ=;
+        b=ZAHsMjbKcD+e7+aG9AlfzQOcUSDcK/zdmbe3TTyUUcgI+c7ZaVQibkSyRpfpy80RRM
+         hI3uKknB89fVvbrpMHm4eazy4qVqnTorDpIHTFX63dzXO+hyWz/fXaK/01dH3ZpiJqeS
+         2HO7E8zBm1n2cmis0RzIeboNYKgHjmRhgJVD9W5wRnTMDK8IJaNZbxu6FmKMFkg+Hxpy
+         UswWas+jg8Hn4vko+F8FHrsqf0iKrfPjatchSk7G6wOepCee26YrI1L8gDoD/6crQMyB
+         KDKhdvy6UCPqEd7W4Lz7+7SubdwAuLFE9xtlIk9EEZH4ivi15qLLappblOz4ZDzB11/3
+         YBvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790257665; x=1790862465;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2XKj3Wo4/WK218D2HBvZYifaivoje3k/Dp+GjSJxv6g=;
-        b=zvYpIlrQ6Z/KKatyORC916hw+KqPAvo2bIWkh8PGEsMVUIiprcAueQuRxHM7m6n/gY
-         IVVIFHhpzusuw9F7MJORvCwl/uIW1mYJ0Hl6ZlmZubmgZFKteaM/7e+Xm1VV0pDsNZem
-         yTd11oPXPl6NKrncDcCvBSplnjZqtchVXR5quurPoButDxoujKh6UULj8vP4tidF4qDi
-         bbi+r9Dj4+OX7GgAUf/yFOhZcSeLhtGOJuylB2RfboKRzstY6uP1XDfoBB+B9Ej3kVFv
-         lghmAh2Pmp+4/giqcqZ2/enmh7iIjJh0wPVf3368i7LNjirAlKWgXqIeRlaN6sZ75ZQC
-         Nd/Q==
-X-Forwarded-Encrypted: i=1; AKwUvByAsHo4VziwTyAgcPKSaZIy+r+w8cns6ppWigptkavDWe5FO4XFEwg/+0+j1TIsafDMAZgCNTw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlcN3xYFgmCmE4FKluySfvTmkHse+uLl5eZ1rHJeOE6fjpgTh1
-	XJQbvJ7PJ1NqtOJbo4/u+aoMUGOAWGxnhpwnJmLyWh5//0QUjjTsTaYLnCnmBfP6UiY4WxUi2ZI
-	7wOmVuhCbM3lRIA==
-X-Received: from qtbiy6.prod.google.com ([2002:a05:622a:7006:b0:532:7eb1:8250])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1e0b:b0:51c:555:7dea with SMTP id d75a77b69052e-532feacc0a7mr16243331cf.30.1790257664900;
- Thu, 24 Sep 2026 06:47:44 -0700 (PDT)
-Date: Thu, 24 Sep 2026 13:47:29 +0000
-In-Reply-To: <20260924134729.2047213-1-edumazet@google.com>
+        d=1e100.net; s=20260707; t=1790257772; x=1790862572;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gJYVfSEDQsVnkbBJ1tGYnH9ndL0fb4u2tq4xBMYB8CQ=;
+        b=ZeOfIHDWqUOnERBal/po+NyTlXn1uyrpdjsU1jNuQwDWg6CMXQkYI/6dZIQK/2nEW/
+         M59f0jQeM1PolX/XCLJ42FCqD+xpR4FYzJs331oFg3b1HIsogDJ1alupx0iR3ANyMabJ
+         YDkziQSxnKx2Dg/aLB8i76TUFquwEUUhL1fZ8P0MYwbDrOPHqMVUmoYuZvXlSto2C57F
+         uOcHx7kCIctSVz8erdmvmhhNLUYAVbbBkCXJwytIHUARFHUQ/hGeYThxDB3NmDMlFdnb
+         Ili4dU44Uuun+/zTVovtRPm41IqvwbDvEPSEc4lUa3ql00SJEkQ/Jj62X9c7OZ3/E6iz
+         4rJQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwv9xYnBmOcuSJN52yOK5d9bMqvsV+k69wtDGFBA+CW6EmJBcIFpojilG4OspDPz/QjyQFVgus=@vger.kernel.org
+X-Gm-Message-State: AFuF++mW3Bmo88EwsvoGO/wfERZsh+CxyS6uGw+TZldqgZrniVyeuMpU
+	LCF6vM6zW9ZDx7mhGegDjhvROMUhOXFzXKgjx0n3O+bl5FxENT4OLqbXdPQkdQ8i7U9Zkhg9aSp
+	39/F6DyWdYCz+mlkj8axt6KLEiipcKJk=
+X-Gm-Gg: AYBFou20RiODaEyT6w4aoV3vr7LheohjU/NFQReTzRcjVfWXm+s30UIeWxYfMGfK2fc
+	4/rrFmfZS3KnC8fq5Z4Aj9adcXTETEYLGWzAQWGaUVNdo4NoPcEhMSz4Md1TeMsvFKNMOCh3eUB
+	dC7aSi1Cv04lgwFLasLwI+vnMo1ChzxfY3T5dw8Egqvg/35Fqf8nHcw20ImBnkP2IvyelVzbOOG
+	j+m4f9JCqm4GwKZhDtnPQi2jZq2I674AD2hATSa3VRGzwhvtD/aBCgYkdbGQWv5ceobvxuKjeuk
+	+rYRy2pIPZMt4ZQw7hI4I30M0fCy2+3FYuAxgGyAlI05P0VR8LdOYQ==
+X-Received: by 2002:a05:6512:150d:10b0:5b8:b419:b89 with SMTP id
+ 2adb3069b0e04-5b8df0d75e8mr579645e87.16.1790257772059; Thu, 24 Sep 2026
+ 06:49:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260924134729.2047213-1-edumazet@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924134729.2047213-10-edumazet@google.com>
-Subject: [PATCH v2 net-next 9/9] tcp: add tp->tcp_nospace
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+MIME-Version: 1.0
+References: <20260917121306.23499-1-maimon.sagi@gmail.com> <178999282007.2160803.6952878199943822549@kernel.org>
+In-Reply-To: <178999282007.2160803.6952878199943822549@kernel.org>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Thu, 24 Sep 2026 16:49:05 +0300
+X-Gm-Features: AclHuK85KsXovvOUr2OPfXpsHg-ZsrDaqPDh7LgpYDySab54LfHYs-T8fpEBRXI
+Message-ID: <CAMuE1bE40RYoB0q0Wxq15PPRzGigX=T3EPJV2C5WRwcO7cbPow@mail.gmail.com>
+Subject: Re: [PATCH net] net: axienet: restart the TX queue after a DMA error reset
+To: netdev-bot+sashiko@kernel.org
+Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	michal.simek@amd.com, daniel@iogearbox.net, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tcp_check_space() runs for every incoming ACK and for every packet we
-send, and reads SOCK_NOSPACE from sk->sk_socket->flags.
+On Mon, Sep 21, 2026 at 3:13=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 (2) =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] The netif_wake_queue() added at the end of
+>   axienet_dma_err_handler() is not serialized against=E2=80=A6
+> - [High] The unconditional netif_wake_queue() added at the end of
+>   axienet_dma_err_handler() can undo the TX stop that axienet_suspend()=
+=E2=80=A6
+> - [Medium] The added in-code comment in axienet_dma_err_handler() and the
+>   commit message assert a TX-watchdog failure that cannot happen in this=
+=E2=80=A6
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but
+>   axienet_dma_err_handler() unmaps, frees and clears every TX descriptor=
+=E2=80=A6
+> - [High] This problem wasn't introduced by this patch, but
+>   axienet_dma_err_handler() performs a full AXI Ethernet core reset=E2=80=
+=A6
+> - [Low] Concern that the newly added unconditional netif_wake_queue() in
+>   axienet_dma_err_handler() re-enables transmission even when the=E2=80=
+=A6
+>
+> --
+>
+> net: axienet: restart the TX queue after a DMA error reset
+>
+> The patch adds netif_trans_update() and netif_wake_queue() at the end of
+> axienet_dma_err_handler(), so that a queue stopped by axienet_start_xmit(=
+)
+> is restarted after the DMA error reset has reinitialised the descriptor
+> ring.  No Link: tags are present in the commit header.
+>
+> A few questions below about the new wake and about the surrounding recove=
+ry
+> sequence.
+>
+> > diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/driver=
+s/net/ethernet/xilinx/xilinx_axienet_main.c
+> > index 1722b7038f340..814d92fcb4fda 100644
+> > --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> > +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> > @@ -2778,6 +2778,15 @@ static void axienet_dma_err_handler(struct work_=
+struct *work)
+> >       napi_enable(&lp->napi_rx);
+> >       napi_enable(&lp->napi_tx);
+> >       axienet_setoptions(ndev, lp->options);
+> > +
+> > +     /* The ring is empty again, so let the stack transmit.  The queue=
+ may
+> > +      * have been stopped by axienet_start_xmit(); netdev_reset_queue(=
+)
+> > +      * above clears only __QUEUE_STATE_STACK_XOFF, and nothing at all
+> > +      * without CONFIG_BQL.  Refresh the transmit timestamp first, or =
+the
+> > +      * watchdog fires again on the next tick.
+> > +      */
+>
+> [Severity: Medium]
+> Can the watchdog actually fire for this device?  The comment says:
 
-struct socket lives in its own cache line, which the TCP fast paths do
-not otherwise touch, so testing sk->sk_socket->flags pulls in an extra
-cache line that is cold when the working set is large.
+No.  Neither ops table installs .ndo_tx_timeout in the tree this applies
+to, so netif_trans_update() has no consumer and the commit message
+describes behaviour that cannot happen here.  The TX timeout handler I
+had in mind is a separate net-next patch that is not merged.  The rework
+drops both the call and the claim.
 
-Add tp->tcp_nospace, a mirror of SOCK_NOSPACE placed right after
-tp->chrono_type in the tcp_sock_write_tx group, in a cache line both
-the transmit and the ACK paths already touch (bytes_sent, data_segs_out,
-delivered, bytes_acked, chrono_type).  It fits in an existing 3-byte
-hole before chrono_start, so no other field moves and sizeof(struct
-tcp_sock) is unchanged.
+>
+>          * without CONFIG_BQL.  Refresh the transmit timestamp first, or =
+the
+>          * watchdog fires again on the next tick.
+>
+> and the commit message states it as a fact:
+>
+>     The transmit timestamp is not refreshed either, so on a kernel with a
+>     TX timeout handler the watchdog condition stays true and the reset ca=
+n
+>     be retried indefinitely.
+>
+> Neither axienet_netdev_ops nor axienet_netdev_dmaengine_ops installs
+> .ndo_tx_timeout, and the driver never assigns ndev->watchdog_timeo
+> (a grep for both symbols in drivers/net/ethernet/xilinx/ matches only
+> xilinx_emaclite.c).  The core refuses to arm the timer in that case:
+>
+> net/sched/sch_generic.c:netdev_watchdog_up() {
+>         if (!dev->netdev_ops->ndo_tx_timeout)
+>                 return;
+>         ...
+> }
+>
+> So dev_watchdog() never runs for axienet and netif_trans_update() is a
+> timestamp store with no in-tree consumer.  The note below the --- line
+> mentions this depends on a separate TX timeout patch, but that note does
+> not reach git history, and the Fixes: tag invites a stable backport of a
+> watchdog retry loop no in-tree axienet can produce.  Could the comment an=
+d
+> the commit message be reworded to say the timestamp refresh is preparatio=
+n
+> for a TX timeout handler rather than a fix for observed behaviour?
+>
+> > +     netif_trans_update(ndev);
+> > +     netif_wake_queue(ndev);
+>
+> [Severity: High]
+> Can this wake be lost, leaving the queue stopped for good?
 
-The two flags are now only changed from sk_set_nospace() and
-sk_clear_nospace(), which maintain this invariant:
+Yes.  The handler takes no part in the start_xmit/tx_poll handshake.
+The rework quiesces the transmit path with netif_tx_disable() at the top
+of the handler and wakes the queue at the end, so no transmit can race
+the teardown or stop the queue again in between.  That also covers the
+pre-existing teardown race you point out further down.
 
-	SOCK_NOSPACE set  =>  tp->tcp_nospace set
+>
+> axienet_dma_err_handler() runs in process context and never calls
+> netif_tx_disable() or netif_tx_lock_bh(), and it sleeps for tens of
+> milliseconds inside axienet_dma_stop().  An axienet_start_xmit() that
+> entered before the teardown can therefore finish after the worker has
+> reset the indices:
+>
+> axienet_dma_err_handler()
+>         lp->tx_bd_ci =3D 0;
+>         lp->tx_bd_tail =3D 0;
+>         ...
+>         netif_wake_queue(ndev);
+>
+> axienet_start_xmit() then runs its own stop protocol:
+>
+>         if (axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1)) {
+>                 netif_stop_queue(ndev);
+>
+>                 /* Matches barrier in axienet_tx_poll */
+>                 smp_mb();
+>
+> If that netif_stop_queue() lands after the worker's netif_wake_queue(),
+> __QUEUE_STATE_DRV_XOFF is set again with nothing left to clear it.  The
+> only other wake is inside the 'if (packets)' branch of axienet_tx_poll():
+>
+>                 if (!axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1))
+>                         netif_wake_queue(ndev);
+>
+> and the commit message already explains axienet_free_tx_chain() cannot
+> return a non-zero packet count once the handler has zeroed every status
+> word.
+>
+> The existing queue-state protocol is a two-party smp_mb() handshake
+> between axienet_start_xmit() and axienet_tx_poll(); this adds a third
+> writer from a different context that does not take part in it.  Would
+> quiescing the transmit path at the top of the handler (netif_tx_disable()=
+)
+> and waking at the end make the wake unloseable?
+>
+> Related: lp->tx_bd_ci and lp->tx_bd_tail are written with plain stores by
+> the worker while axienet_start_xmit() reads them unlocked
+> (orig_tail_ptr =3D lp->tx_bd_tail) and WRITE_ONCEs them, so is the commen=
+t's
+> premise that "the ring is empty again" guaranteed to hold at the instant
+> of the wake?
+>
+> [Severity: High]
+> Can this wake undo the transmit stop that suspend installed?
 
-sk_set_nospace() sets SOCK_NOSPACE before tp->tcp_nospace (using
-smp_mb__after_atomic() and smp_store_mb()), while sk_clear_nospace()
-clears tp->tcp_nospace before SOCK_NOSPACE (using
-smp_mb__before_atomic()).  If a lockless sk_set_nospace() from
-tcp_poll() races with sk_clear_nospace() and SOCK_NOSPACE ends up set,
-set_bit(SOCK_NOSPACE) happened after clear_bit(SOCK_NOSPACE), so
-tp->tcp_nospace = 1 happens after tp->tcp_nospace = 0 as well.
+Yes, and that one is a regression introduced by this patch.  The rework
+skips the wake when lp->stopping is set or the device is not present,
+and axienet_stop() quiesces the queue itself before tearing anything
+down, which also covers a detach that races the check.  That in turn
+needs axienet_open() to start the queue, which it currently never does.
 
-tcp_check_space() can thus test tp->tcp_nospace alone and leave the
-authoritative SOCK_NOSPACE test to __tcp_check_space().  The
-invariant is one directional on purpose: a stale tp->tcp_nospace only
-costs an extra call to __tcp_check_space(), which is what we do
-unconditionally today, while a stale SOCK_NOSPACE would cost a
-missed EPOLLOUT.
+>
+> The worker checks lp->stopping only at its entry.  If a suspend starts
+> after that check:
+>
+> axienet_suspend()
+>         netif_device_detach(ndev);
+>
+>         rtnl_lock();
+>         axienet_stop(ndev);
+>         rtnl_unlock();
+>
+> net/core/dev.c:netif_device_detach() {
+>         if (test_and_clear_bit(__LINK_STATE_PRESENT, &dev->state) &&
+>             netif_running(dev)) {
+>                 netif_tx_stop_all_queues(dev);
+>         }
+> }
+>
+> axienet_stop() then sets lp->stopping and blocks:
+>
+>                 WRITE_ONCE(lp->stopping, true);
+>                 flush_work(&lp->dma_err_task);
+>                 ...
+>                 axienet_dma_bd_release(ndev);
+>
+> The already-running worker reaches the new netif_wake_queue(), clearing
+> the DRV_XOFF that detach set and scheduling the qdisc.  Suspend calls
+> axienet_stop() directly without dev_deactivate(), so the qdisc is still
+> active, and the transmit path does not consult netif_device_present().
+> Can backlogged traffic then enter axienet_start_xmit() after flush_work()
+> returns, while axienet_stop() proceeds through napi_disable(),
+> axienet_dma_stop(), free_irq() and axienet_dma_bd_release(), so that the
+> in-flight transmit writes into lp->tx_bd_v as it is being dma_free'd and
+> kicks XAXIDMA_TX_TDESC on a torn-down engine?
+>
+> Before this patch the detach-installed DRV_XOFF stayed set, so no xmit
+> could run.  Would re-checking lp->stopping (or netif_device_present())
+> before the wake close this?
+>
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but the hardware reset result
+> is discarded on this path.  __axienet_device_reset() returns -ETIMEDOUT
+> when the DMA reset bit never clears or PhyRstCmplt never arrives:
+>
+>         if (ret) {
+>                 dev_err(lp->dev, "%s: timeout waiting for PhyRstCmplt\n",=
+ __func__);
+>                 goto out;
+>         }
+>
+> but axienet_dma_stop() drops it:
+>
+>         /* Do a reset to ensure DMA is really stopped */
+>         axienet_lock_mii(lp);
+>         __axienet_device_reset(lp);
+>         axienet_unlock_mii(lp);
+>
+> so the handler cannot tell a recovered device from one still in reset, an=
+d
+> it unconditionally re-enables XAE_OPTION_TXEN via
+> axienet_setoptions(ndev, lp->options) just above the new wake.  The added
+> netif_wake_queue() does not make this worse - transmits already reached t=
+he
+> possibly-unreset engine in the common case where the queue was not stoppe=
+d
+> when the error hit - but should axienet_dma_stop() propagate the reset
+> failure instead of returning void?
 
-Note the smp_mb() is kept.  tcp_poll() sets the flag without the
-socket lock, and the store-buffer pattern it forms with
-tcp_check_space() needs a full barrier on both sides.
+I agree, but what the handler should do when the reset fails is a
+separate decision, so I would rather leave it for a follow-up than make
+it here.
+This becomes a short series: start the queue in axienet_open(), quiesce
+it in axienet_stop(), quiesce it across the error reset, and reprogram
+the link afterwards.  v2 follows.  On hardware it passes traffic and
+survives repeated down/up cycles and module reloads with traffic
+running; the error path itself was not exercised.
 
-MPTCP subflows share the struct socket of their parent, hence its
-SOCK_NOSPACE bit, which can not be mirrored in the subflow tcp_sock.
-Pin their tp->tcp_nospace in subflow_ulp_init(), so that they always
-reach __tcp_check_space() and keep the current behavior.
+>
+> [Severity: High]
+> This is a pre-existing issue, but the ring teardown earlier in this same
+> handler has no exclusion against axienet_start_xmit(), which the commit
+> message acknowledges below the --- line.  The handler does, for every TX
+> descriptor:
+>
+>                 if (cur_p->skb)
+>                         dev_kfree_skb_irq(cur_p->skb);
+>                 cur_p->phys =3D 0;
+>                 ...
+>                 cur_p->skb =3D NULL;
+>
+> while the transmitter publishes the skb and then dereferences it:
+>
+>         cur_p->skb =3D skb;
+>         ...
+>         WRITE_ONCE(lp->tx_bd_tail, new_tail_ptr);
+>         netdev_sent_queue(ndev, skb->len);
+>
+> Disabling TX NAPI excludes completion processing, not ndo_start_xmit.  If
+> the worker frees that skb between the two, is the skb->len read a
+> use-after-free, and does the following tail publication plus
+> XAXIDMA_TX_TDESC kick submit descriptors whose mappings the worker alread=
+y
+> released?
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but is the MAC fully
+> reprogrammed at the point where the queue is now woken?
 
-Microbenchmark on an AMD EPYC 7B13, 64 threads, each thread calling
-tcp_check_space() in a loop over a private set of sockets.  Numbers
-are cycles per call above a baseline loop that performs the work the
-callers already did (the cache lines tcp_write_xmit() and
-tcp_clean_rtx_queue() touched) but not tcp_check_space() itself, so
-they are the marginal cost of the function.  Median of 11 runs.
-The set size controls whether struct socket is still cached:
+No, the link speed and pause settings are lost.  The rework has the
+handler call phylink_mac_change() so that axienet_mac_link_up() runs
+again.
 
-    sockets/thread	before	 after
-    1			  +0.6	  +0.7
-    256    (64 KB)	  +8.3	  +3.9
-    4096   (1 MB)	 +22.4	  +1.1
-    262144 (64 MB)	 +48.4	  -0.8
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- .../networking/net_cachelines/tcp_sock.rst    |  1 +
- include/linux/tcp.h                           |  3 ++
- include/net/tcp.h                             | 30 ++++++++++++++++++-
- net/core/sock.c                               | 17 ++++++++---
- net/ipv4/tcp.c                                |  1 +
- net/ipv4/tcp_input.c                          |  8 ++++-
- net/mptcp/subflow.c                           |  5 ++++
- 7 files changed, 59 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/networking/net_cachelines/tcp_sock.rst b/Documentation/networking/net_cachelines/tcp_sock.rst
-index 0f6088c4ab8bb872e7fc86f02479592e84c0247a..103328dc409e4485a3f989c95348c1bc74ab20c6 100644
---- a/Documentation/networking/net_cachelines/tcp_sock.rst
-+++ b/Documentation/networking/net_cachelines/tcp_sock.rst
-@@ -50,6 +50,7 @@ u8:1                          tcp_usec_ts             read_mostly         read_m
- u32                           chrono_start            read_write                              tcp_chrono_start/stop(tcp_write_xmit,tcp_cwnd_validate,tcp_send_syn_data)
- u32[3]                        chrono_stat             read_write                              tcp_chrono_start/stop(tcp_write_xmit,tcp_cwnd_validate,tcp_send_syn_data)
- u8:2                          chrono_type             read_write                              tcp_chrono_start/stop(tcp_write_xmit,tcp_cwnd_validate,tcp_send_syn_data)
-+u8                            tcp_nospace             read_mostly         read_mostly         tcp_check_space(tx);tcp_check_space(rx)
- u8:1                          rate_app_limited                            read_write          tcp_rate_gen
- u8:1                          fastopen_connect
- u8:1                          fastopen_no_cookie
-diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-index 6a8c77719322f9caee305d954a107892c76d4ef7..e4d1720f49f08f3c12f5ba66fe8fe3379d71b1e0 100644
---- a/include/linux/tcp.h
-+++ b/include/linux/tcp.h
-@@ -269,6 +269,9 @@ struct tcp_sock {
- 				 */
- 	u32	snd_sml;	/* Last byte of the most recently transmitted small packet */
- 	u8	chrono_type;	/* current chronograph type */
-+	u8	tcp_nospace;	/* mirrors SOCK_NOSPACE, must be set whenever
-+				 * SOCK_NOSPACE is set.
-+				 */
- 	u32	chrono_start;	/* Start time in jiffies of a TCP chrono */
- 	u32	chrono_stat[3];	/* Time in jiffies for chrono_stat stats */
- 	u32	write_seq;	/* Tail(+1) of data held in tcp send buffer */
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 5e5f5f9b89a386568fc5efebfa3d3c7e1ff62683..3389c51790e6b03714eda8fd89c05cf5c2999809 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -783,14 +783,42 @@ void tcp_done_with_error(struct sock *sk, int err);
- void tcp_reset(struct sock *sk, struct sk_buff *skb);
- void tcp_fin(struct sock *sk);
- void __tcp_check_space(struct sock *sk);
-+
-+/* Mirror of SOCK_NOSPACE in tcp_sock, maintained by sk_set_nospace()
-+ * and sk_clear_nospace().
-+ *
-+ * MPTCP subflows share the parent socket, and thus its SOCK_NOSPACE bit.
-+ * Keep their mirror always set (see subflow_ulp_init()) so that they
-+ * always reach __tcp_check_space() and behave as before.
-+ */
-+static inline void tcp_set_nospace(struct sock *sk)
-+{
-+	if (sk_is_tcp(sk)) {
-+		/* pairs with smp_mb__before_atomic() in tcp_clear_nospace() */
-+		smp_mb__after_atomic();
-+		/* pairs with smp_mb() in tcp_check_space() */
-+		smp_store_mb(tcp_sk(sk)->tcp_nospace, 1);
-+	}
-+}
-+
-+static inline void tcp_clear_nospace(struct sock *sk)
-+{
-+	if (sk_is_tcp(sk) && !sk_is_mptcp(sk)) {
-+		WRITE_ONCE(tcp_sk(sk)->tcp_nospace, 0);
-+		/* pairs with smp_mb__after_atomic() in tcp_set_nospace() */
-+		smp_mb__before_atomic();
-+	}
-+}
-+
- static inline void tcp_check_space(struct sock *sk)
- {
- 	/* pairs with tcp_poll() */
- 	smp_mb();
- 
--	if (sk->sk_socket && test_bit(SOCK_NOSPACE, &sk->sk_socket->flags))
-+	if (unlikely(READ_ONCE(tcp_sk(sk)->tcp_nospace)))
- 		__tcp_check_space(sk);
- }
-+
- void tcp_sack_compress_send_ack(struct sock *sk);
- 
- static inline void tcp_cleanup_skb(struct sk_buff *skb)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 11a22aec7e414152aab115e8d11e30067ab3775f..946f614f665b3608d1f310da908d82de622ec5c0 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2969,8 +2969,15 @@ void sk_set_nospace(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
- 
--	if (sock)
--		set_bit(SOCK_NOSPACE, &sock->flags);
-+	if (!sock)
-+		return;
-+	/* Set SOCK_NOSPACE before tp->tcp_nospace (paired with
-+	 * sk_clear_nospace() clearing tp->tcp_nospace before SOCK_NOSPACE)
-+	 * so a concurrent clear cannot leave SOCK_NOSPACE set with
-+	 * tp->tcp_nospace cleared.
-+	 */
-+	set_bit(SOCK_NOSPACE, &sock->flags);
-+	tcp_set_nospace(sk);
- }
- EXPORT_SYMBOL(sk_set_nospace);
- 
-@@ -2985,8 +2992,10 @@ void sk_clear_nospace(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
- 
--	if (sock)
--		clear_bit(SOCK_NOSPACE, &sock->flags);
-+	if (!sock)
-+		return;
-+	tcp_clear_nospace(sk);
-+	clear_bit(SOCK_NOSPACE, &sock->flags);
- }
- EXPORT_SYMBOL(sk_clear_nospace);
- 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 1cde000cfab4704e6756872f6ddec16851ccc55d..f44cbd3e76178a5ec5b40e420b32836477c29266 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -5242,6 +5242,7 @@ static void __init tcp_struct_check(void)
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, first_tx_mstamp);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, delivered_mstamp);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, snd_sml);
-+	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, tcp_nospace);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, chrono_start);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, chrono_stat);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_tx, write_seq);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 892ff256e235272a8483a11949cc98b319dd7cc9..cdea30d07fe2c2a38c3d38da27ad3274221d5958 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6098,8 +6098,14 @@ static void tcp_new_space(struct sock *sk)
-  */
- void __tcp_check_space(struct sock *sk)
- {
-+	struct socket *sock = sk->sk_socket;
-+
-+	/* tp->tcp_nospace is only a hint, SOCK_NOSPACE is authoritative. */
-+	if (!sock || !test_bit(SOCK_NOSPACE, &sock->flags))
-+		return;
-+
- 	tcp_new_space(sk);
--	if (!test_bit(SOCK_NOSPACE, &sk->sk_socket->flags))
-+	if (!test_bit(SOCK_NOSPACE, &sock->flags))
- 		tcp_chrono_stop(sk, TCP_CHRONO_SNDBUF_LIMITED);
- }
- 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index f0a6725d2c3762def75c879e769e9da37f92215a..e297c88be503b42979886baaf43acfb6b7e78055 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -2001,6 +2001,11 @@ static int subflow_ulp_init(struct sock *sk)
- 	pr_debug("subflow=%p, family=%d\n", ctx, sk->sk_family);
- 
- 	tp->is_mptcp = 1;
-+	/* Subflows share the MPTCP socket, and thus its SOCK_NOSPACE bit,
-+	 * which tcp_check_space() can not mirror. Pin the mirror so that
-+	 * __tcp_check_space() always tests the shared bit.
-+	 */
-+	tp->tcp_nospace = 1;
- 	ctx->icsk_af_ops = icsk->icsk_af_ops;
- 	icsk->icsk_af_ops = subflow_default_af_ops(sk);
- 	ctx->tcp_state_change = sk->sk_state_change;
--- 
-2.56.0.rc1.310.g51773c2048-goog
-
+>
+> axienet_dma_stop() runs __axienet_device_reset(), which resets the
+> Ethernet core, and the recovery sequence restores RCW1, IS/IE, FCC (FCRX
+> only), the MAC address, the multicast filter and lp->options.  It never
+> rewrites XAE_EMMC_OFFSET.  The only writer of the LINKSPEED field and of
+> the negotiated pause bits is axienet_mac_link_up():
+>
+>         emmc_reg &=3D ~XAE_EMMC_LINKSPEED_MASK;
+>         ...
+>         axienet_iow(lp, XAE_EMMC_OFFSET, emmc_reg);
+>
+> and phylink will not call it again because the link state has not changed
+> (axienet_mac_link_down() is a no-op and the handler does not re-trigger
+> phylink).  axienet_options[] has no XAE_EMMC_OFFSET entry either, so
+> axienet_setoptions() cannot repair it.
+>
+> On a 10/100 link, does the MAC keep its reset-default link speed after
+> this recovery while software still believes the negotiated rate is in
+> effect, so that the frames the new netif_wake_queue() lets through are
+> clocked at the wrong rate until an unrelated link flap re-runs
+> axienet_mac_link_up()?  The open path escapes this only because
+> axienet_open() runs phylink_start() after axienet_device_reset().
+>
+> >  }
+> >
+> >  /**
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260917121306.23499-1-maimon.sagi%40gmail.com
