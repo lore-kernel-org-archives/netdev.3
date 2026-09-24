@@ -1,154 +1,139 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF52D4A3F0B
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C547A88C;
+	Thu, 24 Sep 2026 15:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264676; cv=none; b=CEBoKS7l4apd2/fxtH/4lF/WKIRZ91SnaG2qsgbijdc5ikKYNYIWrMGoD2dPKIBlZy4FRMB7LtJk7gPv/IFIfY1UM6EDxF9Pc6hlWQTcbVMeHD7gVfsU8TD5KzXa0uPIW7EftZKxwz/YaaHen1yYcpJgO9IF3j+j10H34yhPjbs=
+	t=1790264715; cv=none; b=Ogi/7l2LpMkEPM9ThM4VMustPDCJCbQOMsUckCsVPwIbI3x9TA08ikYm8Srs5SfBMHH4OPNTBBLfem47wWVVRKynfoKgrYV1XOoXTGPymiRTruHTx9sIfye9NhKoDFujkIIZ7zau4pqRJpWG9anV1hirLSp+uG2NPlV7ZJAfq8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264676; c=relaxed/simple;
-	bh=F722r79Bmh7PI6YVKi85BrdG6Xr35DU1IZmnFgeTke4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DTqv99QH/clDO23Ie2CQbVRZJBG1Ml3DUvlvrBjM1f+7gtNSNXxtw4J/CQG0qnHgwcmgjMfZv8x3JG1/vhYhtLSDxfmV4183Z8wutwbwFxzmVJo+/lbRLkT9cCUCVF5J343VNT3Oxs3Zjd5aSvLkUPXMKQefv4GpEuXz8BMrDv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H82M+4IP; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790264715; c=relaxed/simple;
+	bh=ORzadUe3/b75M1irFdR1aD+USyKSP/OkZ7rL3VEl6UQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I4kXo0C80GfFOMyEGfG/7J9tzQDxiT27/4LFxZrKpPVBL+V+DXNtwWrTuCiCHpTqPVx2Y8agmsDhJ3Y6x7FdOmD23EVe7nFalnoZpVbd6NmG8uoUL6lHKmZJJB8Ag70Oex1UXE9Nnx78Qck2kYrvs+a/447u5T1R/UGiFGL3+R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+4CPVvG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H82M+4IP"
-Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6730c3bdb35so13700d50.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:44:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790264674; x=1790869474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CU0D2cxA3xiiAsXwNtIVwxMqp3c9ZGhfeXIr6+SStxE=;
-        b=H82M+4IPvy+kYqBXwP4Umf2uK+bmolKK5KLVrqkxClIdAU7Wucr5CLWSWc+NC99t3O
-         yNtiTeJWfgmIsZBq53hyQES5oiCXmuxfadEqfMkxtcJFQPLWu7OlEzjyj8Hjcvz3V6Fy
-         WM9k71eILllPAiE3GkVxbZaO226HUg6EafFJjE7d+RJf7GDA3hRrzHN9zZpg52n31p27
-         6K0QNB67VtZoqNZC7ar1x1lRW2RlkVnaFiNsBUokQ0FLODC0SJx6cQwu9QbSz4jURVyK
-         BouQ66mm8ehnKrQWJgLXRxFaMIuR1pd+yZfFhFYVBPNGpheK13yZIUMhABbEAl2mvYhU
-         t6ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790264674; x=1790869474;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CU0D2cxA3xiiAsXwNtIVwxMqp3c9ZGhfeXIr6+SStxE=;
-        b=BXC834ETZIufpu2xFKHy6cppR6evd7lZ17VqqWGEb4y2ketJgTK0ocbk3tGLKAiHOd
-         MXXnAPbVCFoiWlLYjcxjwCezH/qVdUal3eDiFgm8bFCwFxjtZZhdA+sRIGAwl4Rj6eP2
-         6e4I5RD1pnmxKJjM9Zy5cVkv8m9QSJ4UmDm8dols0yy8KmsyeLkmdPHGMv6SSD9eP3wt
-         1iMZ8iwjVUAk4BmO/xrSUf2Dsv65zH/YYmAtimzd/8Dop8yJ+H5DJVBn+Tld5HwrtBQl
-         CoNKoEg16JD+5u/sCAOohZeTZgTZSTEaitA0HCuiKqMhHQFOxtlzVQGNUagZ9VVdlQ/X
-         YN8w==
-X-Gm-Message-State: AFuF++k4n6+mag0XyZidhdc9t32w9hfuwZVCJuHGK8hXDY08ocNauSeH
-	Pso5uf//DAdtgRyPdOgYbgnCJmCdcQ+BVh7QfTFCrm1z2cNIARrugUDPJEZKaQ==
-X-Gm-Gg: AYBFou2mKIx3WlH9OoB9K1BVfsLV327952DYdDkdENPx5ygiGiNLDMLu7a9NCczd1Zo
-	cBbfqgHhrQYay74fvqTR8D/HCirs4otoetCQ+ftqV3dK9hCHY3uW7+kdeGwIjSUCdXF1iva6cWA
-	XQnkMvGpi/nvRTrDfH4mIOq7oke50VcLHFrPt8Yh/KLnPGSF/TF3/vxEmqYUln86B9c/+eWutO7
-	4l5yJ7NvqatU+tMTtOJh3owwkgSmGa6E7d4Dht1PdQAIY0wR0imgvxusiiijfYJUJHWz60jqxoO
-	QE0RR0Y6B9FTKxjUA76ltcGT9COgOz0OiWvlUuu0hAzFdAzdKt7aDu15n5fi9zJ5nWYkPKcqXwR
-	N/rJ0drNpittTmbjrZjedvEulS9aZ0mdRkHb4oR+0dtr0CpSpReofmf6j0L57yltqjP2PFr603e
-	sbaYjXtV/SI7Nt+e2P8n+aTuhBXb3337xxqEGI8ip4CqYrNknQegbNF8lg9LDYClMfgIVaJTr7v
-	I9UyJsqaC7UHp6mLBE+dW9PNz5XOLFcVBOf3MZn5vq4upIhFDDM1bFtnnFragB+STfd9wgKIm2I
-	8nVDtIqzvw==
-X-Received: by 2002:a05:690e:4081:b0:66f:bfd2:6b80 with SMTP id 956f58d0204a3-672ed243db0mr1795049d50.4.1790264673706;
-        Thu, 24 Sep 2026 08:44:33 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672d8052bc5sm2172549d50.4.2026.09.24.08.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 08:44:32 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	dzahka@meta.com,
-	john.fastabend@gmail.com,
-	sd@queasysnail.net,
-	Willem de Bruijn <willemb@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] tcp: prevent collapsing skbs across boundary in rtx queue
-Date: Thu, 24 Sep 2026 11:44:12 -0400
-Message-ID: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+4CPVvG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA981F000FF;
+	Thu, 24 Sep 2026 15:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790264713;
+	bh=sG/6Fv2bcz1mAueTl+qPLK+unA1gaooKi0HCYFLNsdg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=F+4CPVvGqRU7cWG77qGDCQaRPb8xepVCbRHAvZdCvk4o3dSF91r1bTtAW0I17qb4n
+	 9om2NQ6/sdwiTQTj6MyZJEueL3EhxpOozpYEJJxZUSUqdp9g2KqralDt4l5SbkEt7Y
+	 uKLdfdoqB+GrhrOSwfY2GiXSTZqtrPb7+tf7P1lPu3iHlyC5v+A27E4pL+jRvWKShT
+	 1B2BJJohREERibFQ+Pe1wqD8isyDjeLbODb4+nvzgwhOC/S2T20nwzNMxN9TNjlB9s
+	 6mztoDYsyBJXxFLbcCbFLGQOacEy4zD+90rDZ3qJYl5OPaR8LFKVndBGyzABZLzlK/
+	 8Gi9eTh0br5xg==
+Date: Thu, 24 Sep 2026 10:45:11 -0500
+From: Rob Herring <robh@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: cjd@cjdns.fr, netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	chester.a.unal@arinc9.com, daniel@makrotopia.org,
+	linux@armlinux.org.uk, arinc.unal@arinc9.com,
+	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
+	b.larsson@gmx.com
+Subject: Re: [PATCH v2 net-next 2/7] dt-bindings: net: dsa: mediatek,mt7530:
+ add passthrough mode
+Message-ID: <20260924154511.GA231859-robh@kernel.org>
+References: <20260915174643.253660-3-cjd@cjdns.fr>
+ <178967819278.22033.11186084049097912254@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <178967819278.22033.11186084049097912254@kernel.org>
 
-From: Willem de Bruijn <willemb@google.com>
+On Thu, Sep 17, 2026 at 08:49:52PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 0 · Low: 2
+> 
+> - [Low] The added `description` paragraph in
+>   Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml (lines…
+> - [Low] Concern (retained for policy combination, assessed as a false
+>   positive): the binding advertises a passthrough mode that…
+> 
+> --
+> 
+> dt-bindings: net: dsa: mediatek,mt7530: add passthrough mode
+> 
+> This adds a paragraph to the mediatek,mt7530 binding description explaining
+> that MT7530/MT7531 switches can be operated in a "passthrough" mode where
+> traffic moves unconditionally between the CPU port and a DSA link port to a
+> second switch. The paragraph also states that in this mode the upstream
+> switch may have no other ports or switch configuration.
+> 
+> > diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > index 90b3582b76190..e29fb86934981 100644
+> > --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> > @@ -73,6 +73,13 @@ description: |
+> >  
+> >        Check out example 7.
+> >  
+> > +  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
+> > +  mode. In this mode, traffic is unconditionally passed between the CPU port
+> > +  and the DSA port which links to a second switch. To use passthrough mode, the
+> > +  upstream switch is configured with a DSA link to the downstream switch. In
+> > +  passthrough mode the upstream switch is restricted, with no other ports or
+> > +  switch configuration allowed.
+> > +
+> 
+> [Severity: Low]
+> The last sentence states a hard device tree constraint, but it only exists
+> as prose.  Should this restriction also be expressed in the
+> machine-checkable part of the schema?
 
-tcp_write_collapse_fence() sets TCP_SKB_CB(skb)->eor = 1 on
-tcp_write_queue_tail(sk) to prevent skbs queued after a switch to
-device encryption from being collapsed into earlier skbs.
+I don't know if that is possible.
 
-The fence is a no-op if all earlier data has already been transmitted
-when the switch happens: sk->sk_write_queue is empty. The not yet
-acknowledged earlier skbs wait in sk->tcp_rtx_queue with eor 0.
+> As it stands there is no new property, no if/then under allOf, and no $defs
+> entry that limits the port set when a port carries a link phandle.  The port
+> container in this same file is permissive:
+> 
+>   patternProperties:
+>     "^(ethernet-)?ports$":
+>       type: object
+>       additionalProperties: true
+> 
+>       patternProperties:
+>         "^(ethernet-)?port@[0-6]$":
+>           type: object
+>           additionalProperties: true
+> 
+> so a device tree describing an upstream MT7530/MT7531 with a CPU port, a DSA
+> link port and extra user ports, plus gpio-controller/interrupt-controller,
+> still passes dt_binding_check.  The layout is instead rejected at probe time
+> by mt753x_check_passthrough() in drivers/net/dsa/mt7530.c, added by the
+> following patch in the series:
+> 
+> 	if (passthrough_ports > 2 ||
+> 	    (passthrough_ports == 2 && enabled_ports != 2)
+> 	) {
+> 		dev_err(dev, "Only two ports allowed in passthrough mode\n");
+> 		return -EINVAL;
+> 
+> Two smaller points on the same paragraph:
+> 
+> Every other topology description in this description block ends with a
+> pointer to a validated example ("Check out example 7." just above).  Could
+> this one gain an example too, so the passthrough layout is actually exercised
+> by dt_binding_check?
 
-On a subsequent retransmit or SACK shift, tcp_retrans_try_collapse() or
-tcp_shift_skb_data() can then merge an skb queued after the switch into
-one queued before it.
+We don't really want more examples if there are actual .dts files 
+upstream.
 
-Both users of the fence are affected:
-
-- psp: devices only encrypt skbs with skb->decrypted set. The merged skb
-  keeps decrypted = 0 from the earlier skb, so merged data sent after
-  psp_sock_assoc_set_tx() is retransmitted in cleartext.
-
-- tls device offload: the merged skb straddles the start marker set in
-  tls_set_device_offload(). The software fallback (fill_sg_in() returns
-  -EINVAL) and the mlx5, nfp and funeth drivers cannot handle such an
-  skb and drop it. Every retransmit rebuilds the same skb, so the
-  connection stalls.
-
-Fix this in two places, for defense in depth:
-
-1. Fall back to tcp_rtx_queue_tail(sk) in tcp_write_collapse_fence()
-   when tcp_write_queue_tail(sk) is NULL.
-
-2. Check !skb_cmp_decrypted(to, from) in tcp_skb_can_collapse(), as
-   tcp_skb_can_collapse_rx() does on receive. skb_shift(), which both
-   collapse paths call, already has a DEBUG_NET_WARN_ON_ONCE() for this
-   condition.
-
-Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- include/net/tcp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 436495ff2271..4416cdf9bf30 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1232,9 +1232,9 @@ static inline bool tcp_skb_can_collapse_to(const struct sk_buff *skb)
- static inline bool tcp_skb_can_collapse(const struct sk_buff *to,
- 					const struct sk_buff *from)
- {
--	/* skb_cmp_decrypted() not needed, use tcp_write_collapse_fence() */
- 	return likely(tcp_skb_can_collapse_to(to) &&
- 		      mptcp_skb_can_collapse(to, from) &&
-+		      !skb_cmp_decrypted(to, from) &&
- 		      skb_pure_zcopy_same(to, from) &&
- 		      skb_frags_readable(to) == skb_frags_readable(from));
- }
-@@ -2327,7 +2327,7 @@ static inline void tcp_rtx_queue_unlink_and_free(struct sk_buff *skb, struct soc
- 
- static inline void tcp_write_collapse_fence(struct sock *sk)
- {
--	struct sk_buff *skb = tcp_write_queue_tail(sk);
-+	struct sk_buff *skb = tcp_write_queue_tail(sk) ?: tcp_rtx_queue_tail(sk);
- 
- 	if (skb)
- 		TCP_SKB_CB(skb)->eor = 1;
--- 
-2.56.0.rc1.310.g51773c2048-goog
-
+Rob
