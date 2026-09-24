@@ -1,129 +1,104 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.prosyst.ru (m2.prosoftsystems.ru [46.48.77.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C9347D440;
-	Thu, 24 Sep 2026 10:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1039C472079;
+	Thu, 24 Sep 2026 10:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.48.77.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790246537; cv=none; b=vCrsA2MsnqYzCanf+okaaOqzJBdl7cay2IoqGH3m9QUG2VE44oNJjeRPRCSf6rw3oWrwI0Q4/TGiiKvpGSouF11Nk8F0L0Cv9wJUM8aU2Lpap/3Tcgy2/Y5ag00dJ4LwnoL55A5UelKzjVo84eOeYzcDf/PX/veyfunxljERSlg=
+	t=1790246675; cv=none; b=s7oJh8jxtKxlEfNzyi+Mn9yXlUmrI2puaC9qKqs86DChBpNUpuNPfzPOlv37Yc3wTBWJtuk5BNb5r9Izhq6ENI+t7umCIh+WcWhbjjdkgs4yuNKLl2rIa5nbc10LKyU8YnK3ylN9/61C/CU1NabbeUdGQXgJ4f6KCF/YXePoYyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790246537; c=relaxed/simple;
-	bh=LxAruGH+iszuVMTJGGW1IamPO+xINDb85hejdnN2LH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mrHYWNX8fnlbc5YG1gOtVpO6gW9gDRrYSIKe1JSQNlpAytQTp6edyGX++iHsm21wnapDprizY6/yVjPa+3VTP2tBrE9cIOg1Ez4qtrFBxvKZIenfP17qfDxC/FY3bbo+BOBP+GyOEWRFj+Rp8LvtJcHSwtWc1N/ErF2VhNoPRsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VHDbTqvO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xJcpVEC9; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790246675; c=relaxed/simple;
+	bh=BQlb7rtZ1vFV1wT41RWEMd03KvMz0llx1nSE7npSHwU=;
+	h=Content-Type:From:To:CC:Subject:Date:Message-ID:MIME-Version; b=CCkbFaaKItBWzcnzpuxkomgGLJqdWyuIeT7RhKIRvGc0EsHbcyMGGBhxY1VROwbF8n7UqgF/3wvH60D1KYHCENhA7BTedafMPk6yjPTsjH9iXYemUEbfEZEG3eRo2PU8TZlTDnhQm1EAO/Aioi2hGdewYYXk+boXARAdtiU0IyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru; spf=pass smtp.mailfrom=prosoftsystems.ru; dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b=Dfcs9p1W; arc=none smtp.client-ip=46.48.77.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prosoftsystems.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VHDbTqvO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xJcpVEC9"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 28CE71D000A9;
-	Thu, 24 Sep 2026 06:42:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 24 Sep 2026 06:42:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790246532; x=
-	1790332932; bh=kHtFvdPQOCvh4h36vOrsDsVbrZP/EDR37eZ+POo6P9E=; b=V
-	HDbTqvOOsLZHOafCBn2brFmYM9PNDxn9ho46kgwBjxdSDDU/bZWaZDQJtv2aJB9g
-	1rjWgUaC/p9Xm25GSSDF9kl5FVStRsAcpCgF+vYIs1dn6wnYWt8Wn5DY2Wzv5Mib
-	q6RgdAQC64xSO6+WRPUV9KtvkzMJDJ39AXqMp2LzeDUx9PrdkjXr6inFJAR3MHr9
-	toWbLHmP00r90eyX9eo7Llk1wRERv+sxSxQaFFTgoCuxXum6BzPMnMCJjwUgiEwo
-	wy4UHhtI1G5g7I2cr9rIw9NhRGX4FncceSmzOPAvKz0gWC2YJsozaR3L7a/4eH6S
-	KQa1dkU2py+shF3eMfY4A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790246532; x=1790332932; bh=kHtFvdPQOCvh4h36vOrsDsVbrZP/EDR37eZ
-	+POo6P9E=; b=xJcpVEC9zNern9qs4WPTTHatH7kyi968Q8oZmhc2VqMkeAJ0TzX
-	/AH97vzwwuE7BDAevk/k6Gy4DDDzLlx0SPxSLtNIDJ27O/x/NkDbwcWwGKCTWuwT
-	E5iUAXo7lNJRSDO8I5T2AgLQXLywUG7QZ5X7HofbWhIHj3S6q4CJHOeQTy9iZi62
-	M8IfdqjFHfMHExhvcbXogvabjoHFo17jdT+FFxehjFMbQcWKXbATQWMsg932zc9m
-	Nv4T6Ol6QCzxCs2N43Z8oKPMaiTx1y6cV4b4mnaQza3jzr4VA1QDJyT0QSr+7aUB
-	obTWfTIfRO6zUGZqyvowFN4kGKnmicYh+lg==
-X-ME-Sender: <xms:g_60amYHp7XCBtgYUY4B6a133pGEX9Zlsn69_-IvetJdTjs19hRQgg>
-    <xme:g_60ao8J6kxsFoaNzAbLVHXtV6BssLbemVQMaIFblOkwy7s8uc52BlsFobsAE5xam
-    BZpIN96re9ZsB0DSxraKeS-vLA7bHK7Z__pCCbG2wGznss-c_Lbcs-G>
-X-ME-Received: <xmr:g_60alQfjLgtN8ZSOCVq6Ds_sCJQKYwxLwBc49wFTS43CrunKAVXbbJ4ypLN>
-X-ME-Proxy-Cause: dmFkZTF0GMKLYo3mCT8N07MbHfuL6bhf5mjAU+CIekP090s2EHcJvy4WGszgEfetzJaDOg
-    v6W+eNwKI2pnHZERNkJzADAo0BNyUAJ3CzQpqutrwSssTEBTMSGmu9vtFateckeANyYFwj
-    oKv4NAARpHhW/CWuFD0POm5xpq1Vau3Ho5YWtJ3Ga6nebBK2eGW/MSsvhWQT1/0gEgqfrE
-    Asr+uI1iMcbxikDd8qatoF7tul7uQ7hTfxSCZwH8rjqudpSQxVcX6J4p5yKzyT2Zi5g3D5
-    sha6cgoMe8EL5fwJrtUMiAHAPxfdbScI1OEFUJsry07agtWX1mC5UzeheMIEEIYOVx9bNp
-    TPwx0YXRHbtOBqHLFDxWskV1hNLzrh+44rA51xLkF3pWSoxKIDgIoBTUdg+yOf88iTzKTb
-    mSUF6kW+JBA4AoZTwz/X2nqSYMurcsgOKiKg1xwbfnyyhHw/PTCWawlxlz2uFlAYmWGyPD
-    58yFTmklZy5STWE6eJgVh+MdrknHwbf/vkauI4IEFcrQDWB2ptuhIbF9eb42HjSYrtMeAY
-    rlfuQrJe3Plrt3K14BSgNgtqjfEV/4SphS87/OKzxAuJIiN+s9iU6g9IKGcJ4EJkEPLODe
-    6ed/zTus3aI+uzpaQ0wPDLMX+NvhJ3JuVI6qPpxhrP8Ax8uZBTJ4CnNoyz6g
-X-ME-Proxy: <xmx:g_60arJOH3LZMlsWI6f8ZlAyLfL0ciV5nnLAuAiiRR45HWWWqxYJqw>
-    <xmx:g_60avT-2-L_yKGZW-PNcmO4SWeHmUvD6LkM5epxmlE4K-Q8Bj0SpQ>
-    <xmx:g_60arLa32Y6_mprNaa5OgYZOXJ338sJY5rF2DAAiGQTEAxjrbkdaQ>
-    <xmx:g_60aq-pqpA70RYswbsdyiFcobFjXCu0OvoS5xktkbFxueEvqQ8_2Q>
-    <xmx:hP60akUwVRZkPsHTgrq2F0g4Xngs2_Mv0Tspmaq2D6f5yJpsaJYZaHDL>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 06:42:10 -0400 (EDT)
-Date: Thu, 24 Sep 2026 12:42:08 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, edumazet@google.com, horms@kernel.org,
-	kuba@kernel.org, andrew+netdev@lunn.ch, hangbin.liu@linux.dev,
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
-	felix.walter@cloudandheat.com,
-	syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com,
-	Haseeb Malik <haseebulhaq55@gmail.com>
-Subject: Re: [PATCH net v3] macsec: initialize SecY before registering the
- netdevice
-Message-ID: <arT-gJcnJww-6cjV@krikkit>
-References: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
+	dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b="Dfcs9p1W"
+Content-Language: ru-RU
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+DKIM-Signature: v=1; a=rsa-sha256; d=prosoftsystems.ru; s=ps;
+	c=relaxed/relaxed; t=1790246663; h=from:to:date:message-id:subject;
+	bh=BQlb7rtZ1vFV1wT41RWEMd03KvMz0llx1nSE7npSHwU=;
+	b=Dfcs9p1WhZRSowCMPKrCwbWUs4Mil6bJIR0kWh0l/Z5v4q0Guq8XyFtWx6SE/i3y2sG/kJ2SRGq
+	jxHZzqvVANL5A0QSg6jGdr9FezcRMyVnuw259MIsjTRYUxs6dDfwOpR1YyE3cKSibeIMXNaPg8d4n
+	qv07izkmDoBzCCHN6C081o5JjhzXpJKFSPuZsyUJkQ0MO9HCEi7wmZPhcRs8EPNHuxpikJse3HPrB
+	Ldrqi+pKVzZXO+qOgBeo+RApenlQdoS1FsE4N8MUzdg/pt11Lg7nAyu7l1+FelnodFZmXhpI3gl9Q
+	S65aFM5V34+IM2bGl70AZxCrIOVdVbXq5xQw==
+Received: from ECHO-3.prosoft.ural.ru (172.25.100.229) by mx.prosoftsystems.ru
+ (172.21.240.33) with Microsoft SMTP Server (TLS) id 15.1.396.30; Thu, 24 Sep
+ 2026 15:44:23 +0500
+Received: from echo-2.prosoft.ural.ru (172.21.245.22) by
+ ECHO-3.prosoft.ural.ru (172.25.100.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Thu, 24 Sep 2026 15:44:21 +0500
+Received: from echo-2.prosoft.ural.ru ([::1]) by echo-2.prosoft.ural.ru
+ ([fe80::c1a2:90f7:8820:c669%17]) with mapi id 15.02.1748.039; Thu, 24 Sep
+ 2026 15:44:21 +0500
+From: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+ =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+CC: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+ =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Denis Benato
+	<benato.denis96@gmail.com>, Jacob Keller <jacob.e.keller@intel.com>, "Petr
+ Machata" <petrm@nvidia.com>,
+	=?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+	<u.kleine-koenig@baylibre.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: [PATCH net 1/3] net: fealnx: fix teardown order in remove
+Thread-Topic: [PATCH net 1/3] net: fealnx: fix teardown order in remove
+Thread-Index: AQHdTBGoaPRFHxtaVUSWHKvuDP/4nw==
+Date: Thu, 24 Sep 2026 10:44:21 +0000
+Message-ID: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
+Accept-Language: ru-RU, en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
 
-2026-09-21, 16:40:30 -0400, Haseeb Malik via B4 Relay wrote:
-> From: Haseeb Malik <haseebulhaq55@gmail.com>
-> 
-> Creating a MACsec device with MAC offload over an LRO-capable lower
-> device triggers a warning in rtmsg_ifinfo_build_skb() when IPv4
-> forwarding is enabled by default.
-> 
-> register_netdevice() invokes inetdev_init(), which disables LRO and emits
-> a NETDEV_FEAT_CHANGE notification. This reaches macsec_fill_info() before
-> macsec_add_dev() initializes the SecY. key_len is still zero, so
-> macsec_fill_info() returns -EMSGSIZE and trips the WARN_ON in
-> rtmsg_ifinfo_build_skb(), even though the skb has enough space.
-> 
-> Even without the warning, notifications during registration can report
-> uninitialized SecY attributes, including the SCI. This ordering has existed
-> since the driver was introduced.
-> 
-> Initialize the SecY and apply the new-link attributes before registration.
-> Move MAC address inheritance into macsec_newlink() so the SCI can also be
-> initialized before registration-time notifications report it. Move the
-> per-CPU statistics and metadata destination allocation into ndo_init(),
-> and release partial allocations on failure.
-> 
-> Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-> Reported-by: syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f2f6312ad1b5a0bfe316
-> Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-> Link: https://lists.openwall.net/linux-kernel/2026/08/19/552
-> Signed-off-by: Haseeb Malik <haseebulhaq55@gmail.com>
-
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-
-Thanks for taking care of this.
-
--- 
-Sabrina
+RnJvbTogUmFkaXkgWmhhbWJha2lldiA8ci56aGFtYmFraWV2QHByb3NvZnRzeXN0ZW1zLnJ1Pg0K
+DQpmZWFsbnhfcmVtb3ZlX29uZSgpIGZyZWVzIHRoZSBETUEgcmluZ3MgYmVmb3JlIHVucmVnaXN0
+ZXJpbmcgdGhlDQpuZXRkZXYsIHdoaWxlIHRoZSBpbnRlcmZhY2UgbWF5IHN0aWxsIGJlIHVwLCB3
+aGljaCBsZWF2ZXMgYQ0Kd2luZG93IHdoZXJlIGZyZWVkIG1lbW9yeSBjYW4gYmUgYWNjZXNzZWQu
+DQoNCkNhbGwgdW5yZWdpc3Rlcl9uZXRkZXYoKSBmaXJzdCBzbyBkZXZfY2xvc2UoKSBzdG9wcyB0
+aGUgVHgvUngNCmVuZ2luZXMsIGRlbGV0ZXMgdGhlIHRpbWVycywgYW5kIGZyZWVzIHRoZSBJUlEg
+YmVmb3JlIHRoZSByaW5ncyBhcmUNCmZyZWVkLiBXaGlsZSBhdCBpdCB1c2UgZGV2X2VycigpIGlu
+c3RlYWQgb2YgcHJpbnRrKCkgZm9yIHRoZSANCnVua25vd24tZGV2aWNlIGNhc2UuDQoNCkZvdW5k
+IGJ5IExpbnV4IFZlcmlmaWNhdGlvbiBDZW50ZXIgKGxpbnV4dGVzdGluZy5vcmcpDQoNCkZpeGVz
+OiAxZGExNzdlNGMzZjQgKCJMaW51eC0yLjYuMTItcmMyIikNCkNjOiBzdGFibGVAdmdlci5rZXJu
+ZWwub3JnDQpTaWduZWQtb2ZmLWJ5OiBSYWRpeSBaaGFtYmFraWV2IDxyLnpoYW1iYWtpZXZAcHJv
+c29mdHN5c3RlbXMucnU+DQotLS0NCiBkcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYyB8IDI5
+ICsrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDE2IGluc2Vy
+dGlvbnMoKyksIDEzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRo
+ZXJuZXQvZmVhbG54LmMgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KaW5kZXggYmRj
+MzhhYWM1ODUwLi5kN2NkMTY0NGEzNzUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5l
+dC9mZWFsbnguYw0KKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVhbG54LmMNCkBAIC02Nzgs
+MjAgKzY3OCwyMyBAQCBzdGF0aWMgaW50IGZlYWxueF9pbml0X29uZShzdHJ1Y3QgcGNpX2RldiAq
+cGRldiwNCiBzdGF0aWMgdm9pZCBmZWFsbnhfcmVtb3ZlX29uZShzdHJ1Y3QgcGNpX2RldiAqcGRl
+dikNCiB7DQogCXN0cnVjdCBuZXRfZGV2aWNlICpkZXYgPSBwY2lfZ2V0X2RydmRhdGEocGRldik7
+DQorCXN0cnVjdCBuZXRkZXZfcHJpdmF0ZSAqbnA7DQorDQorCWlmICghZGV2KSB7DQorCQlkZXZf
+ZXJyKCZwZGV2LT5kZXYsICJyZW1vdmUgZm9yIHVua25vd24gZGV2aWNlXG4iKTsNCisJCXJldHVy
+bjsNCisJfQ0KKw0KKwlucCA9IG5ldGRldl9wcml2KGRldik7DQogDQotCWlmIChkZXYpIHsNCi0J
+CXN0cnVjdCBuZXRkZXZfcHJpdmF0ZSAqbnAgPSBuZXRkZXZfcHJpdihkZXYpOw0KLQ0KLQkJZG1h
+X2ZyZWVfY29oZXJlbnQoJnBkZXYtPmRldiwgVFhfVE9UQUxfU0laRSwgbnAtPnR4X3JpbmcsDQot
+CQkJCSAgbnAtPnR4X3JpbmdfZG1hKTsNCi0JCWRtYV9mcmVlX2NvaGVyZW50KCZwZGV2LT5kZXYs
+IFJYX1RPVEFMX1NJWkUsIG5wLT5yeF9yaW5nLA0KLQkJCQkgIG5wLT5yeF9yaW5nX2RtYSk7DQot
+CQl1bnJlZ2lzdGVyX25ldGRldihkZXYpOw0KLQkJcGNpX2lvdW5tYXAocGRldiwgbnAtPm1lbSk7
+DQotCQlmcmVlX25ldGRldihkZXYpOw0KLQkJcGNpX3JlbGVhc2VfcmVnaW9ucyhwZGV2KTsNCi0J
+fSBlbHNlDQotCQlwcmludGsoS0VSTl9FUlIgImZlYWxueDogcmVtb3ZlIGZvciB1bmtub3duIGRl
+dmljZVxuIik7DQorCXVucmVnaXN0ZXJfbmV0ZGV2KGRldik7DQorCWRtYV9mcmVlX2NvaGVyZW50
+KCZwZGV2LT5kZXYsIFRYX1RPVEFMX1NJWkUsIG5wLT50eF9yaW5nLA0KKwkJCSAgbnAtPnR4X3Jp
+bmdfZG1hKTsNCisJZG1hX2ZyZWVfY29oZXJlbnQoJnBkZXYtPmRldiwgUlhfVE9UQUxfU0laRSwg
+bnAtPnJ4X3JpbmcsDQorCQkJICBucC0+cnhfcmluZ19kbWEpOw0KKwlwY2lfaW91bm1hcChwZGV2
+LCBucC0+bWVtKTsNCisJcGNpX3JlbGVhc2VfcmVnaW9ucyhwZGV2KTsNCisJZnJlZV9uZXRkZXYo
+ZGV2KTsNCiB9DQogDQogDQotLSANCjIuNTMuMA0K
