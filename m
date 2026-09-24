@@ -1,86 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDAE3D5642
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 02:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F6F3D3D12;
+	Thu, 24 Sep 2026 02:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790216484; cv=none; b=IIJr2lPO0aw/TwyZ5EgpyWjPhRg3Ed8OaeK4u6zSZfXqeK2UIQ0aUgOAntsNRoi/45hNiuu0Zmd5tqQRWEegL41C7cpXl3HEmR3g4GlHUzVIuCnGnpRCa5Z6AwdQXdU+9Jb2flv8nQc7Gr1FML0G/WhBmQ0rGELq6lrI8d0jpiI=
+	t=1790216488; cv=none; b=ezylKA2HaBKfgjnAb+A8lrytdv2jr8Kp+SLmr/HAOGmY6Xew/E1cAmH2sTuGqxnwAbs8eAGO2/gtSxvlCz2ivrR1sLJH8TwwhKX38v7wa2DuibRuuniW0sb5+k52CL+9GmSlsvVQGXGY9LCX7Qzli6442bENOWZ7VrmZeOa3wdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790216484; c=relaxed/simple;
-	bh=RRn78XxCQvzJRdRM7SaJJGk60ltDQqZY5cRBu2lirlE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=G8TXJC6MgQCYNn3uf9Eww9I1bYVsZplN7MNY/KeltEvU/8IEoCaesieCALzTwGHgD+U558nLYksRDVcqN4Gz/z+R7/H3TPDhSZzGKJ2lCs0tlGs98FoHfihgCf9yyoht2L8ABUdAZOYhzYGKocL/wQwHbXwB1bwWxIwHkOllCUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1O+mTZQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790216488; c=relaxed/simple;
+	bh=z7NCQoyygUx47aIw9vRxnYaF8djmuSYz9xcNhZrXWhw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a4JB13Zxyj0S+/W1DRADKnBv8qqJXTMqXckWuY5HWBHJ/1iwENGQLLJyFyrrAKyqZWUKqJGOMVEot3W6lyYPRmAsr15OkaIzlHH9z0KRjVDPs397gA0QPFptlegXEw8jO7HCcc+2zT2w9u3MD+Z+w+rgIa2ZbryDMPZ4qbGvfis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHvmSOX9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1O+mTZQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69CC1F000FF;
-	Thu, 24 Sep 2026 02:21:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHvmSOX9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1841F00899;
+	Thu, 24 Sep 2026 02:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790216482;
-	bh=U6gvHdYEmRjPiP5dUVlot/Tgw7DMA5AXZlbqPvZfhns=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=F1O+mTZQ4GWxL7yvN44LO4K2bOvlyPpVrx0GJ0ZSooXRdl/w41qyIWKSZlaMeWuL4
-	 xdpHU2N+OlmP2MoTgyLxD/LLvObyIBTxuOgEKueManOaVA6q/+dRInP5kYFdFp+fjQ
-	 xQzBL+xYaZTVQYo0yFLrPw51hx6KfqfXPoRgy8wAzTsCrUWdkr37h/pPNvex+9TdY1
-	 uBcGs7w1x5R52RRZMNNYs7gK6i/Hv0TL8Hlkn1+hMqi5BNWcyyf2afxYuGLIrxdspu
-	 bIOE2j9eVur8NQgBnFp2BL3OlVAWlu7mDfuJtdfJ7PTk6A5zYbs23D1d7BXRcWGiYg
-	 W44P/P3EMUhpA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9396139E9611;
-	Thu, 24 Sep 2026 02:20:13 +0000 (UTC)
+	s=k20260515; t=1790216485;
+	bh=WG+bOE6VyJ5CrloRYDowYtl/G/DKIFrpOMS2cE1jdNw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kHvmSOX9IwIyrh/xZixUDG9IIlv7o7wjWzG4PiRRaskZzE7ixQyDkQ/ZdVVPFVQmr
+	 LeqdcOgrz9DmdEkRL8Mrh7sMZmLP8u1Wq5nV6jQ2qNNRliMW2YkBwTWI46HKHin72i
+	 /rqcZEF8Ho0npUFZQuT5ZHQ7dH5eXZpQodd6ENyuPUG8GV8j1OgLSJqQMJ8YK9Y5nX
+	 Kmp0x8WaFoiHVvbaOZwdYE7UpBwYXMYvsjsAmh2oFxriZ0meQZ1ADCaot76FpE+da2
+	 eYGbg1iHyeMrkhRsXKtqKivGpTVe9uND57InDrM+1CoSDWNNoYCSK+OoXWXe5vPoSq
+	 UPXFUIMFh4pOg==
+Subject: Re: [PATCH net v2 05/10] net: systemport: Fix RUNT MIB counter
+ register offset calculation
+From: netdev-bot+sashiko@kernel.org
+To: florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, nb@tipi-net.de, opendmb@gmail.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
+ linux-kernel@vger.kernel.org
+Date: Thu, 24 Sep 2026 02:21:24 +0000
+Message-ID: <179021648477.2160803.4907842757640250855@kernel.org>
+In-Reply-To: <20260922232440.598918-6-florian.fainelli@broadcom.com>
+References: <20260922232440.598918-6-florian.fainelli@broadcom.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: stmmac: clear stale buf->page after recycling on
- skb build failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179021641214.1281065.12234220924406890442.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 02:20:12 +0000
-References: 
- <20260921-stmmac-fix-napi-build-skb-error-v1-1-3d54bf6d9bb6@oss.qualcomm.com>
-In-Reply-To: 
- <20260921-stmmac-fix-napi-build-skb-error-v1-1-3d54bf6d9bb6@oss.qualcomm.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- si.yanteng@linux.dev, aleksander.lobakin@intel.com, 0x1207@gmail.com,
- larysa.zaremba@intel.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
 
-Hello:
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Low priority / nit picks for your consideration:
 
-On Mon, 21 Sep 2026 16:46:18 +0200 you wrote:
-> In stmmac_rx(), when napi_build_skb() fails the descriptor page is
-> recycled back to the page pool with page_pool_recycle_direct(), but
-> buf->page is left pointing at the recycled page, unlike every other
-> consumption site in the function which clears the pointer after handing
-> the page away.
-> 
-> With the stale pointer stmmac_rx_refill() skips the replacement
-> allocation and programs the already-recycled page back into the RX
-> descriptor.
-> 
-> [...]
+- [Low] The commit message for "net: systemport: Fix RUNT MIB counter
+  register offset calculation" says the old code read all 4 RUNT MIB…
 
-Here is the summary with links:
-  - [net] net: stmmac: clear stale buf->page after recycling on skb build failure
-    https://git.kernel.org/netdev/net/c/0a7822e34a0b
+--
 
-You are awesome, thank you!
+net: systemport: Fix RUNT MIB counter register offset calculation
+
+This commit changes bcm_sysport_update_mib_counters() so that RUNT MIB
+counters are read with an offset of 2 * UMAC_MIB_STAT_OFFSET. This covers
+both the RX-to-TX gap and the TX-to-RUNT gap in the UniMAC MIB block.
+
+> In bcm_sysport_update_mib_counters(), 'offset' was only set to
+> UMAC_MIB_STAT_OFFSET (0xC) for all non-RX counters, omitting the second
+> 0xC gap for BCM_SYSPORT_STAT_RUNT counters. As a result, all 4 RUNT MIB
+> counters were read from unmapped gap register space.
+
+[Severity: Low]
+Is "all 4 RUNT MIB counters were read from unmapped gap register space"
+accurate?
+
+The loop reaches the RUNT entries in bcm_sysport_gstrings_stats after 29
+STAT_MIB_RX and 29 STAT_MIB_TX u32 entries, so j is 0xE8 at that point.
+With the old offset of 0xC, the four RUNT reads went to:
+
+    UMAC_MIB_START + 0xE8 + 0xC = 0x4F4  rx_runt_pkts
+    UMAC_MIB_START + 0xEC + 0xC = 0x4F8  rx_runt_valid_fcs
+    UMAC_MIB_START + 0xF0 + 0xC = 0x4FC  rx_runt_inval_fcs_align
+    UMAC_MIB_START + 0xF4 + 0xC = 0x500  rx_runt_bytes
+
+The TX-to-RUNT gap covers only 0x4F4-0x4FF, so only the first three reads
+fell in the gap.
+
+The fourth read, for rx_runt_bytes, went to 0x500. That is the real
+rx_runt_pkts register. So before this fix, ethtool -S reported the runt
+packet count as rx_runt_bytes, not a gap value.
+
+Could the commit message say that three counters read gap space and
+rx_runt_bytes showed the rx_runt_pkts value? The code change itself looks
+correct and matches the 2 * BCMGENET_STAT_OFFSET handling in bcmgenet.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922232440.598918-1-florian.fainelli%40broadcom.com
