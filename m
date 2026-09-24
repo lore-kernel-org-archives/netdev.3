@@ -1,63 +1,67 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD86E54B
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0ED2DC32E
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790210577; cv=none; b=r2kcA5ugUVDujzjaAc/Jmt7l/M8a996qQmtGUx/DwsybedfHnvWKHuphhsZN2CNy+UAnUkLzIYapW64W2kfnM6e8kHyfiQ3EJwvItKoz0OoEB3sjir4z3naKDirW7y0sstij5s71CpJ0V3fg00z4EWb9KogEtqrITaIV84X/bXI=
+	t=1790210578; cv=none; b=GnS9Tqm6PiSV6r0Whz2OZgLEQ2iRYZt7bA2Cu8Tyy97V0ft6yAR4ZGJNPG5EriNCNQdzqNtmebKoMOJFG1zOSHa7KM8IFXybjghg3AKHkJGYAj2ue7arrTuM/CcFkmvw6jSG31MFQoSROtTRm7pl6IaTmZEDL/erz+nKkFandB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790210577; c=relaxed/simple;
-	bh=oipWMhD3lYrGKztP8ae6UKOMS66rh+UTv3TPc0H29mM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rbgP6GOOfkom5NaaVINLmGvARAjcbxOX9z/oMLNTN4bt+XkbBPpZHQTZZSMOViiqmiDQ8eXD1gQdFW9IDxWzq7WfC7T6jn4Gxau09/Uyde+1v53B77XYJjINsDIBcMwZ2UVbIhsJntvmRFuWqsITnBym1tIOih45blziUupQhdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oF7QjynT; arc=none smtp.client-ip=209.85.222.198
+	s=arc-20240116; t=1790210578; c=relaxed/simple;
+	bh=hxqGovgMsPF90CJM4cVbKGbw4jHHI2tasm5K6tbH9uA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HhROwMxHWK+MJjxaBoOwJWeqFnRCW6rzQl9/+A7S8XRKcrdWst/DIM1NY6bm/Wi8kbeqC7aW6tWyHUzrraFQKVc5hipE+jTEY6egU28sUCufNfHe7B1jJnc7cA5yLZGWfKTiHly6EhxaJURi1qvVt8LfN+JiRtoFK1GHL6JNHwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SZeujSOQ; arc=none smtp.client-ip=209.85.219.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oF7QjynT"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a1e564fd5so265390085a.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:42:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SZeujSOQ"
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-90e87478402so32210566d6.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790210574; x=1790815374; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+Tq4M+V9Pll65dWV8svp6whCx7yX1BSx1HAOtCFMnC0=;
-        b=oF7QjynTjxVZZCzlcQULMicU8qLt83EBJFnD+zLE+HGejO2teeHeZtlZezIQDYm4fZ
-         DyXwyg3VpreKxwa5GB0JY8VZqailqcLpQo5wIfkSkwZqiVKcMyN6ZwhDZltbq6YOzjJ1
-         cByrbl7zpAQr0xdGP3/vRp4hYz00Ww7JkiHD2hL8cdn2JEldWfbwhSKPtvKVYufFxzS6
-         C0j/ZRkiGLDN2pyT/KbgXmnO2oSvINAxbHte6J/CW8hPSi1XLJFa9VtUukBESdylH95E
-         cDlS7ecBVFNsNBYxMEW9PpqbaV22jafqA+ehV5K88oXlREovEdDeypaIT+qHFG2jptCB
-         Sguw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790210574; x=1790815374;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790210576; x=1790815376; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+Tq4M+V9Pll65dWV8svp6whCx7yX1BSx1HAOtCFMnC0=;
-        b=z9ufrFx7Fu7+mKMkZyuHmnZmPJDCPjz+ErraB9zDAJN4UcY3RLd9es8tKBOWtlfR1s
-         Rp7DxGnh6KlyqTppcTiIkl4jGo88NYcAkHonvD9BgB12OyjSginH+LnzRH1VI04P2QQ6
-         /6k6BAPthKwgzFWuo061K4xnw0R4KSQJSMBtzmrzayGoUfyyG/swUZ2ijS0Q0yW69xu0
-         tDr5ugUurJ058nXjE22Afv1ZhK7ApOAWU2gUEznMXtBKyMJHMDIqC5hLmy+S7O0Lzqn6
-         1KKvX1wcS8vxCvr+GGA+35yigrAARnD6jQqSk7WgNvNBm5CzsGUPgMGIBL0GGz/1kNmW
-         Atsw==
-X-Forwarded-Encrypted: i=1; AKwUvBypdUeJrNd82WE0vUJnrzBThk/U9E8bNfY2g7GAym9MLmmsVJ2G6a4Z9vMF9tnwJekj+/YeFas=@vger.kernel.org
-X-Gm-Message-State: AFuF++lWrgXzOnA5NTNiWg/WnnkcE+E/4+U9P/SGLyLZjSl/c/9sZk5+
-	7KRGjULurikdGDsf82fzXnupQjAJkpCYo+KLEyeytUODy0TAIBZBhKJmLfJOB2r4JFnSWCB72u1
-	4tMqyUYASluecmQ==
-X-Received: from qvuk3.prod.google.com ([2002:ad4:4503:0:b0:914:a0e:b069])
+        bh=cbISbW/zBtA8XTD+0xioAGh9npA0nU5vQoaiw6RwAWk=;
+        b=SZeujSOQEMpNZpFxuawW+q3wigUHuCwztlFXz39BumSLoqoYhA05SVFu5u14v2MTgv
+         38YkkhPjeWbkqWhe6wg2a9oAQJVJbJpQfMRf7yKE8xsnmKBOlNrSVjzOxRVQs+qHO8oX
+         SiOn9lDnVpc04NyExg2OskqGLt1ppVuCJJrvOtbiPemzGNEpfp8yQUW56G754uBYYOaV
+         6uuxEib1g0JcpEBopNRkZWZ+lkxX1ftzaXxTX+CBXSr3LM/4nalQnjvkqzr5+w26ir7F
+         XTLQwqhi5/6rG2mhF076GLKrn9TpVP8oF7AYTtoxfNiA+noTKs/3MMoSnS8k99bNPNHl
+         nv7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790210576; x=1790815376;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cbISbW/zBtA8XTD+0xioAGh9npA0nU5vQoaiw6RwAWk=;
+        b=kD7qKkBWfWFqieYUlDiylmymV+qnQX+l68eOB7qdEjfpxKogpdIYVJGr0JppgrNarm
+         pvU9xpvto3mKY4wwBdYldnKdhPe4z4NauDDgqO0vR8jDOt1vT+5IrnVL8fTsN4xaHYPG
+         7td4iyD3/ZfhMkqA8nCVCdCUiMFPuJb/Wrrd83ZSOPWN/FSnPBcJ8qUFPvyyvwOL0DjJ
+         4aqFccf5h1Be1z/d3jRK4jLXY7HH0XFIBO3Tb74syLx6mjWW1rIqBseEUjcmjdICrLUc
+         /6aAAUGKV96aoeD7CWTeP6n3gp0iAXhR6b31jAsulw526+er+8r35NnbotwVZvYjBhHJ
+         KxHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxXwLN3OIkABEPnS1EGj202/U8rOegn5mxQAb6qxEpiAkXltdkrwTNasKtl/fr7arg5apryDlE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nNs3GtNbABg5ZcWBp04HV9Djb/Y71TvAnLsAPhyzlzjcLGs15J
+	656VQjD3Cco1kpgKSeobT1SJvVNGURl0TyPvgGlK+TWBjOF8t5U24nwvMCrpNHzX/4hDRAtFBfQ
+	x8BgNkNXo17SFbw==
+X-Received: from qvqu15.prod.google.com ([2002:a0c:ed2f:0:b0:914:63b:5103])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:d8e:b0:93b:fbf0:8791 with SMTP id af79cd13be357-93c362d4e3amr64333285a.29.1790210574170;
- Wed, 23 Sep 2026 17:42:54 -0700 (PDT)
-Date: Thu, 24 Sep 2026 00:42:50 +0000
+ 2002:a05:6214:5a0b:b0:8c9:c38a:20e1 with SMTP id 6a1803df08f44-91421cb65dcmr1518376d6.10.1790210575647;
+ Wed, 23 Sep 2026 17:42:55 -0700 (PDT)
+Date: Thu, 24 Sep 2026 00:42:51 +0000
+In-Reply-To: <20260924004252.1196328-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260924004252.1196328-1-edumazet@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924004252.1196328-1-edumazet@google.com>
-Subject: [PATCH net 0/2] gve: DQO: fix handling of out of range TSO MSS
+Message-ID: <20260924004252.1196328-2-edumazet@google.com>
+Subject: [PATCH net 1/2] gve: fix TX drop when GSO MSS is too small for hw
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -68,42 +72,61 @@ Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The DQO TX path assumes that the MSS of a TSO packet is within the
-range supported by the device, [88, 9728].
+From: Eddie Phillips <eddiephillips@google.com>
 
-This holds for locally generated traffic, but not for packets coming
-from a tap or from a packet socket: virtio_net_hdr_to_skb() takes
-gso_size from user space and only enforces a minimum, layer 2
-forwarding does not check the MTU of GSO packets, and
-gso_features_check() bounds skb->len and gso_segs but never gso_size.
+The device has a strict requirement that the minimum MSS
+(gso_size) for TSO/GSO packets must be at least 88 bytes. If a packet
+below this threshold is pushed to the hardware, it can cause
+hardware to silently drop the packet, leading to increased latency
+and retransmissions.
 
-Patch 1, from Eddie Phillips, deals with the lower bound. It moves the
-existing test out of gve_prep_tso() into gve_features_check_dqo(), so
-that these packets are segmented in software instead of being dropped.
+Currently, this is validated too late in the transmit pipeline
+(gve_prep_tso), leading to silent drops.
 
-Patch 2 deals with the upper bound, which is currently not checked at
-all. gve_tx_fill_tso_ctx_desc() stores gso_size into a 14 bits wide
-field, so that an MSS of 16384 silently becomes zero. Falling back to
-software segmentation is not an option here, because skb_segment()
-splits at gso_size regardless of the MTU, and would only replace an
-invalid TSO packet by non TSO packets larger than the 9728 bytes the
-device supports. These packets are dropped instead.
+Fix this by moving the validation into the .ndo_features_check
+callback (gve_features_check_dqo). If we detect a GSO packet with
+a gso_size smaller than GVE_TX_MIN_TSO_MSS_DQO, we clear the GSO
+feature flags for this packet.
 
-As noted in patch 2, oversized non TSO packets can still reach the
-device whenever the stack segments in software. This is not specific
-to gve and is better fixed in the core, so a patch for
-__is_skb_forwardable() will be sent separately for net-next.
+Fixes: a57e5de476be ("gve: DQO: Add TX path")
+Signed-off-by: Eddie Phillips <eddiephillips@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-Eddie Phillips (1):
-  gve: fix TX drop when GSO MSS is too small for hw
-
-Eric Dumazet (1):
-  gve: DQO: reject TSO packets with an out of range MSS
-
- .../net/ethernet/google/gve/gve_desc_dqo.h    |  5 +++
- drivers/net/ethernet/google/gve/gve_tx_dqo.c  | 32 ++++++++++++++-----
- 2 files changed, 29 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 80ab0a449ff54e3d19e9c69226949465d48dfe3f..19829b8e13de28df81bdec0c86e8356b25fe9537 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -577,17 +577,6 @@ static int gve_prep_tso(struct sk_buff *skb)
+ 	int header_len;
+ 	int err;
+ 
+-	/* Note: HW requires MSS (gso_size) to be <= 9728 and the total length
+-	 * of the TSO to be <= 262143.
+-	 *
+-	 * However, we don't validate these because:
+-	 * - Hypervisor enforces a limit of 9K MTU
+-	 * - Kernel will not produce a TSO larger than 64k
+-	 */
+-
+-	if (unlikely(shinfo->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
+-		return -1;
+-
+ 	/* Needed because we will modify header. */
+ 	err = skb_cow_head(skb, 0);
+ 	if (err < 0)
+@@ -925,6 +914,9 @@ static bool gve_can_send_tso(const struct sk_buff *skb)
+ 	int cur_seg_size;
+ 	int i;
+ 
++	if (unlikely(gso_size < GVE_TX_MIN_TSO_MSS_DQO))
++		return false;
++
+ 	cur_seg_size = skb_headlen(skb) - header_len;
+ 	prev_frag_size = skb_headlen(skb);
+ 	cur_seg_num_bufs = cur_seg_size > 0;
 -- 
 2.56.0.rc1.310.g51773c2048-goog
 
