@@ -1,51 +1,46 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782AF48822A;
-	Fri, 25 Sep 2026 10:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C930636A35C;
+	Fri, 25 Sep 2026 10:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790331110; cv=none; b=JcubudcmrZ6WZJeSJipMt3goGZvzkyfQs2Syj97U4WGHmgzVeYik/cj/cIl4SAt4moCBr1Of3OBJBxTz5d4T95j9LBQl/vXQgGFZXnP3+wMV8RTJkV4BVjF1qx495Iki5UbXhUGHYPxHaCAJZW7+n2ruZtzP29E2cvP9oY+ikZc=
+	t=1790331118; cv=none; b=NMPiOBhY+lEXjHWCczA/VhstWTBf2v9wIVYKk7pdf1tC1D9VOZ1Iqno7RF+hx1CZG5cccXIe8AikdJvo45fvZXcmWuDBogmEaXsuPYZvlORIiCkvoXKpLFFwsCnqjGRQyt6CwbR4jDxeZDdJ0R2CqVxSWW7lJrOvA7Vd1k5yh/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790331110; c=relaxed/simple;
-	bh=ZkUPvH353CDg6KGoCAXXyP9aDy1/Z8gD6ZP7KCreRFg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WdiyI8DyZ46K+3CL5KO9K37DQSomrZRYRUvef+AZCUH1y2phJSbUS6jay5A5KE4hu913PLdEyA0KfG9evDDty+fBhXycUGYyfwU+RC5lHy0oEYnQXxQNp4Wyr+vcaqfkNJQ/+X3rmnYNJIpL1ofDj2RETM0iGj9ACfFYddc5/nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=RQzmYIGU; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1790331118; c=relaxed/simple;
+	bh=b0pVQGjkDP6QRAThAmTrovqLN1GF+K6mfxucrXag3Fc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jQFk7RSew0ngiq3UFQlDWG/pjhwxOxb0KJD7iHdBknmWR0mRy0bWTEwtYTqS0g5Ym3k3LLbxeVUHhLL9JLr6PMFax3uW4FzKiBdsfusmQHjcy0tQIKCJz0NkiTFytBHfQ401IdhwLhc8iV6Z7o4mmU6OXcJpijPO6/3dyqHg/c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8xvbp+g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="RQzmYIGU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1790331099;
-	bh=ZkUPvH353CDg6KGoCAXXyP9aDy1/Z8gD6ZP7KCreRFg=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8xvbp+g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0A81F000FF;
+	Fri, 25 Sep 2026 10:11:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790331116;
+	bh=HIkRTOvYBxD/OT3EQFCTGmdAtiDmI8CN2ftCPA8FYaY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RQzmYIGUH7knqHB0yIBSwnF8gA1IgZg/lVfmxS0T7jBUAa4iGTUD4PN5JY7Z2AqDI
-	 Ycrkq/z7b9amSYdEdwg/w88Cl8omGR5Vt/72MP20L8+DrDp8EHcBNSAUzhHwUctwnI
-	 GqA6fjUhBIS4M9/jwRNXuB/lne/qYp7Gd8EMmo9P2re5pKKe0Zhzv6u57BCnPvpO4d
-	 Nd8/vsml7K2bnRJw7nQk8fDLd+G7VrsYnXUJp3aaEPLEjJCBiZtlzXl4X7XtCkXW5r
-	 842Kq1RV5rTuQPYWnu7NWKdkb9GVPo3dD64cwvoG0590A5XGGINcKXqDLJAtaOp5Ao
-	 X/aV/yKk05Mvw==
-Received: from squeak.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 2CA9B6B8A3;
-	Fri, 25 Sep 2026 18:11:38 +0800 (AWST)
-Message-ID: <347e33249f14ca893a618868a61b4e8837bfba0d.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next] net: mctp: add MCTP_OPT_ROUTE_SRCADDR
- getsockopt
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Faizan Ali <faizana@nvidia.com>
-Cc: Matt Johnston <matt@codeconstruct.com.au>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	 <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "David S .
- Miller"	 <davem@davemloft.net>, Simon Horman <horms@kernel.org>
-Date: Fri, 25 Sep 2026 18:11:38 +0800
-In-Reply-To: <20260923082726.2918670-1-faizana@nvidia.com>
-References: 
-	<e272f7d7556a59671db7e4c5503eb69efc27759c.camel@codeconstruct.com.au>
-	 <20260923082726.2918670-1-faizana@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	b=J8xvbp+gJdxRc5L1+kJs3adnvyoDaffSKjNL8lw+YMPaTyKbo3hpkWufClRvh/5O+
+	 7ftjPPvObzlEHRw20BzSRR0F4/UW1lCImh1W3/N2Fepcq5qD2wNs+jyO8kxm3VaD9q
+	 t2v/q1DxgNGnQNpX4XAzK71CFUJ6KKWPMdh/B1X297sVdiJpOu4OEV/AXtzKFt7Tc2
+	 MvV9DpX4LO08Ytnw33VQz9cuQuOkSfY/jWJZU3fJAeocfHZCabQwYv7SOG3wvvbvLj
+	 0JGReD2m7hBkb4M7k11AvgT6zMVpesGjv5bMyRh627QZIeu7Dp8McNmu5RIzV5JHe4
+	 pHa9rcCK+mULw==
+Subject: Re: [PATCH] rxrpc: add missing unbundle old conn
+From: netdev-bot+sashiko@kernel.org
+To: eadavis@sina.com
+Cc: syzbot+e2f5927fc701355ef101@syzkaller.appspotmail.com, davem@davemloft.net,
+ dhowells@redhat.com, edumazet@google.com, horms@kernel.org, kuba@kernel.org,
+ linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
+ marc.dionne@auristor.com, netdev@vger.kernel.org, pabeni@redhat.com,
+ syzkaller-bugs@googlegroups.com
+Date: Fri, 25 Sep 2026 10:11:55 +0000
+Message-ID: <179033111533.2160803.6082294415431468966@kernel.org>
+In-Reply-To: <20260923041022.25845-1-eadavis@sina.com>
+References: <20260923041022.25845-1-eadavis@sina.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,101 +48,181 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi Faizan,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-> > I'm not against the idea, we just need a fairly solidy justification
-> > for adding user ABI that cannot be changed in future.
->=20
-> In theory, yes - any incoming message destined to an active local EID
-> should reach an application bound to that message type. That said, I
-> still find these problems with simply picking any local EID:
->=20
-> 1. It requires a snapshot of all available local EIDs first -
-> =C2=A0=C2=A0 information the kernel already has internally via the routin=
-g
-> =C2=A0=C2=A0 table, but which applications can today only get via ad-hoc =
-mctp
-> =C2=A0=C2=A0 route/addr correlation.
+Critical: 1 · High: 1 · Medium: 0 · Low: 2
 
-That's mostly equivalent what you're adding here - a facility to extract
-a local address from the kernel. The mctp addr command just uses a
-netlink interface to do so, rather than a sockopt.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The important difference here is the addition of the routing calculation
-to filter that set of addresses to a single one.
+- [Critical] In net/rxrpc/conn_client.c, rxrpc_add_conn_to_bundle() now
+  calls rxrpc_unbundle_conn(old), but it keeps the old cleanup that…
+- [High] Calling rxrpc_unbundle_conn() from rxrpc_add_conn_to_bundle()
+  also idr_remove()s the old connection's CID from local->conn_ids at…
+- [Low] The patch presents itself as a fix for a syzbot-reported kernel
+  BUG() in rxrpc_purge_client_connections() that userspace can trigger…
+- [Low] The new forward declaration `static void
+  rxrpc_unbundle_conn(struct rxrpc_connection *conn);` sits between the…
 
-> 2. Not every local EID is reachable from every peer, even on the same
-> =C2=A0=C2=A0 network. Example from our hardware:
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0 BMC --USB(EID 8)--> SMA(EID 20) --I3C--> GPU(EID=
- 30)
-> =C2=A0=C2=A0=C2=A0=C2=A0 BMC also has a separate mctpi2c0 (EID 9), unrela=
-ted to the SMA.
->=20
-> =C2=A0=C2=A0 Reaching the GPU is a gateway route (30 -> via 20 -> via 8),=
- which
-> =C2=A0=C2=A0 mctp_route_lookup() already resolves correctly today for
-> =C2=A0=C2=A0 sendmsg(). If PLDM instead picks "any" EID and gets 9, the G=
-PU's
-> =C2=A0=C2=A0 event notifications go out via I3C to the SMA - which has no
-> =C2=A0=C2=A0 knowledge of EID 9 at all (it's on an unrelated bus). The pa=
-cket is
-> =C2=A0=C2=A0 undeliverable at the SMA itself, one hop before it would eve=
-n reach
-> =C2=A0=C2=A0 the BMC.
+--
 
-Is there any reason why the SMA can route to EID 8 but not 9?
+rxrpc: add missing unbundle old conn
 
-> =C2=A0=C2=A0 I acknowledge this is implementation-specific, and additiona=
-l
-> =C2=A0=C2=A0 route provisioning on the bridge could help - but that still
-> =C2=A0=C2=A0 requires out-of-band configuration to stay in sync with ever=
-y
-> =C2=A0=C2=A0 local EID. Separately, how device firmware handles Set Event
-> =C2=A0=C2=A0 Receiver packets carrying an EID different from the one it s=
-aw
-> =C2=A0=C2=A0 during Set Endpoint ID discovery is also implementation-defi=
-ned.
+This patch makes rxrpc_add_conn_to_bundle() call rxrpc_unbundle_conn() on
+the old connection before a new connection replaces it in a bundle slot.
+It is meant to fix a syzbot-reported BUG in
+rxrpc_destroy_client_conn_ids(), which fires when the local endpoint is
+destroyed.
 
-If there was any expected correlation between the Set Event Receiver and
-the sender of Set Endpoint ID messages, we wouldn't need the concept of
-Set Event Receiver at all.
+Closes: https://syzkaller.appspot.com/bug?extid=e2f5927fc701355ef101
 
-I wouldn't think that there would be any requirement for the
-current-level bus-owner to be the event receiver; it's valid for the
-events to be going to any other MCTP endpoint.
+> Reported-by: syzbot+e2f5927fc701355ef101@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=e2f5927fc701355ef101
+> Tested-by: syzbot+e2f5927fc701355ef101@syzkaller.appspotmail.com
+> Signed-off-by: Edward Adam Davis <eadavis@sina.com>
 
-> 3. A picked EID doesn't stay valid - interface teardown (hot unplug)
-> =C2=A0=C2=A0 removes its local EID from the available routes, and Set Eve=
-nt
-> =C2=A0=C2=A0 Receiver is a one-shot registration with no way to detect th=
-at
-> =C2=A0=C2=A0 drift later. Further events would then be silently dropped b=
-y the
-> =C2=A0=C2=A0 kernel, since it has no route for the removed EID, and would=
- never
-> =C2=A0=C2=A0 reach the application.
+[Severity: Low]
+This isn't a bug, but should this carry a Fixes: tag, and possibly a Cc:
+stable?
 
-You have the same issues with this - the source EID returned by your
-sockopt may become stale too. In fact, if we're interested in solving
-that issue, the way to detect that would be to listen for local address
-add/remove events, which would require netlink, so we may as well use
-the existing netlink interface for the original query too.
+The slot replacement path in rxrpc_add_conn_to_bundle() came in with
+commit 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O
+thread"). Without a Fixes: tag, stable maintainers can't easily tell which
+kernels need this change.
 
-The most compelling point here is (2) - if there are particular routing
-requirements that would require a specific EID for Set Event Receiver.
-But the only datapoint we have for that is that there is a device that -
-for some reason - is making one specific assumption about the routing
-topology. Can you expand on that maybe?
+> diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
+> index 48519f0de1853..9f13520be249b 100644
+> --- a/net/rxrpc/conn_client.c
+> +++ b/net/rxrpc/conn_client.c
+> @@ -335,6 +335,7 @@ int rxrpc_look_up_bundle(struct rxrpc_call *call, gfp_t gfp)
+>  /*
+>   * Allocate a new connection and add it into a bundle.
+>   */
+> +static void rxrpc_unbundle_conn(struct rxrpc_connection *conn);
 
-The other approach may be to implement something like IP_PKTINFO, where
-we would have visibility on the local EID for a *received* message.
-There is a bit more precedence for that design, but it may introduce an
-unnecessary send/receive operation before the EID can be determined (but
-it's likely we're doing initial PLDM messaging to the event source
-anyway...).
+[Severity: Low]
+This isn't a bug, but the forward declaration now sits between the comment
+for rxrpc_add_conn_to_bundle() and the function. As a result, "Allocate a
+new connection and add it into a bundle" reads as if it describes
+rxrpc_unbundle_conn().
 
-Cheers,
+Could the declaration go above the comment? Another option is to reorder
+the functions so that no forward declaration is needed.
 
+>  static bool rxrpc_add_conn_to_bundle(struct rxrpc_bundle *bundle,
+>  				     unsigned int slot)
+>  {
+> @@ -344,6 +345,7 @@ static bool rxrpc_add_conn_to_bundle(struct rxrpc_bundle *bundle,
+>  
+>  	old = bundle->conns[slot];
+>  	if (old) {
+> +		rxrpc_unbundle_conn(old);
+>  		bundle->conns[slot] = NULL;
+>  		bundle->conn_ids[slot] = 0;
+>  		trace_rxrpc_client(old, -1, rxrpc_client_replace);
 
-Jeremy
+[Severity: Critical]
+Does this drop the bundle's reference on old twice?
+
+On this path, old->bundle_shift is slot * RXRPC_MAXCALLS. That means the
+bundle->conns[bindex] == conn check in rxrpc_unbundle_conn() is always
+true, and that branch already puts the reference:
+
+net/rxrpc/conn_client.c:rxrpc_unbundle_conn() {
+    ...
+	if (bundle->conns[bindex] == conn) {
+		...
+		rxrpc_put_client_connection_id(bundle->local, conn);
+		rxrpc_deactivate_bundle(bundle);
+		rxrpc_put_connection(conn, rxrpc_conn_put_unbundle);
+	}
+}
+
+After it returns, the existing code in rxrpc_add_conn_to_bundle() carries
+on with:
+
+		bundle->conns[slot] = NULL;
+		bundle->conn_ids[slot] = 0;
+		trace_rxrpc_client(old, -1, rxrpc_client_replace);
+		rxrpc_put_connection(old, rxrpc_conn_put_noreuse);
+
+rxrpc_alloc_client_connection() does refcount_set(&conn->ref, 1), and that
+one reference is the one held for bundle->conns[slot]. Before this patch
+it was put exactly once.
+
+If old has gone idle, rxrpc_disconnect_client_call() has already taken an
+rxrpc_conn_get_idle reference and moved cache_link onto
+local->idle_client_conns, so ref is 2. The two puts take ref to 0 while
+cache_link is still linked. The I/O thread then runs
+rxrpc_clean_up_connection() synchronously and hits:
+
+	ASSERT(list_empty(&conn->cache_link));
+
+That ASSERT calls BUG().
+
+The other refcount states go wrong in different ways:
+
+- With exactly one active call on old, the ASSERT on
+  conn->channels[x].call fires instead.
+- With two or more active calls, the count ends up one short. old is later
+  freed through call_rcu() while call->conn still points to it.
+- If ref is 1, the first put frees old, and then trace_rxrpc_client() and
+  the second put both touch freed memory.
+
+A remote peer can reach this. A connection-level ABORT goes through
+rxrpc_input_conn_abort()->rxrpc_set_conn_aborted() and sets
+RXRPC_CONN_DONT_REUSE. The next call to the same peer then goes through
+rxrpc_connect_client_calls()->rxrpc_bundle_has_space()->
+rxrpc_add_conn_to_bundle().
+
+[Severity: High]
+Apart from the refcount, is it safe to remove old's CID from
+local->conn_ids here?
+
+rxrpc_unbundle_conn() calls rxrpc_put_client_connection_id(), which does
+an idr_remove(). Until now that only ran for idle or expired connections.
+
+rxrpc_bundle_has_space() chooses the slot to replace based only on whether
+the connection can be reused:
+
+		if (rxrpc_may_reuse_conn(bundle->conns[i]))
+			usable++;
+		else if (slot == -1)
+			slot = i;
+
+A connection can fail rxrpc_may_reuse_conn() while it still has active
+calls. One case is rxrpc_expose_client_call():
+
+		if (chan->call_counter >= INT_MAX)
+			set_bit(RXRPC_CONN_DONT_REUSE, &conn->flags);
+
+Others are the idr distance check and an rxgk rekey limit.
+
+Incoming client-side packets are matched to a connection only through the
+IDR:
+
+net/rxrpc/conn_object.c:rxrpc_find_client_connection_rcu() {
+    ...
+	conn = idr_find(&local->conn_ids, sp->hdr.cid >> RXRPC_CIDSHIFT);
+    ...
+}
+
+Once the CID has been removed, would DATA, ACK and ABORT packets for the
+calls still running on old go down the rxrpc_eproto_no_client_conn
+protocol error path in rxrpc_input_packet()? Those calls would then stall
+until they time out.
+
+The same ID is also removed a second time when old is destroyed, because
+rxrpc_kill_client_conn() calls rxrpc_put_client_connection_id(local, conn)
+again. If idr_alloc_cyclic() has given that ID to a new connection in the
+meantime, could this remove the new connection's entry?
+
+Dropping the extra rxrpc_put_connection() would not fix this part. It
+looks like old's CID needs to stay published until old is destroyed.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923041022.25845-1-eadavis%40sina.com
