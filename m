@@ -1,156 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C564E50D8;
-	Fri, 25 Sep 2026 18:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8382139E6FD;
+	Fri, 25 Sep 2026 19:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790362567; cv=none; b=Ihg7fEAsclCfEyxUt/yrV4o7c1Sar7FF99v6iy8icgCJcPFBeDGgXAzL+6bIvEZM5xTIpsW5ohPPIsNBCTYfCWX+mD1RCmGP5vzjgkOSnITPySdOojAgzqJ9dxA2pZ7HJYCmPnJA+7H5Pk3eG0QvBJi3XjU8otLZ0cKoOqFwhZM=
+	t=1790362899; cv=none; b=AvTpxVCHwErnKpFX91DGikGXcBgE52JmOJtS1svDquZ2z360m8P6QHUT11zP45zGaOQrPUi06nbAKwQ2l4Aizepmhd3zAU6UpyXeuRTT2S4tDVJFMJZIRavfez73LJ0Gp8a5BqjtaK74qSkwgHyX1QMW0pjouOyBm0ykc7ROos0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790362567; c=relaxed/simple;
-	bh=Vi9/ctP9bxnXd7uZ/D39ocy+oA824qEedJPwGSY5+uI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qJz5gOHoBDdlK23fa3w3b+66mpG6s2QKFdO9ZDvb3X9f+YGl15f6+lu3tGn8EQTTp60tvKKowJYdUCbSupAHgBYZZft8fZWH0WgrmARTYgFzNh3Sn244JBoO+Rj5h9fFTfVVdEYoZ/4VlLWi4/cQNrtm2SCXjv5/v+rF12T3LAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPuNt6mM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790362899; c=relaxed/simple;
+	bh=sqU0iif12XiM62ixih9RBc/XbwgVQ/Zdec13s0MDkaY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=t8Ix6T80WZEdCfNnj+1/hkVE3v8prbHAdRI8kyA37TbFl2YCiBwkRp5YdocQscBm5t8pUhef8ekO49mOIMvelQqm7ghBcrBto+96BG4wEUjnSv4wcvUdxoKF4Z/qmo5+ZmeTRGMxAD/mx+W2zAXUsxq7Dr4F2ahB2eWwsk/Fn6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DYa2SgL/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPuNt6mM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801C11F00893;
-	Fri, 25 Sep 2026 18:56:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790362565;
-	bh=l6BG7YG9ySIhGeHDhYD3h7r5nx5Jqr2P+Co8MSeNEjI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cPuNt6mMWggLqp5M43C2foPR4WqvZp2L++ZSxF46RvrzSopTTFO/+W5Lv9DO9u5qB
-	 5FgbN9E6jCJdT7GaZE5ofduhG0AsRr4wmYhZM3Oul0Fy+CTE3i2fIdxAl5NmNZWwL7
-	 zEEc8YuOw17yAR7qU9Z9boJ3ncbPFyokBov+/IsixiMbnaOrsRkhZulVDVb2r2oFH1
-	 AiH5n2UWbVjOuZIaIKE0bSR411pQAi3pZ+hLq9k+CsVuHaq0Pt+E9LCBSNnZfIrz6L
-	 nX3N7gT1h1TEwx9owhbQaASCBnr9AW98vA77D2hjZnsG/42K7arzoTfOT0LImJ8r+X
-	 rIwGXeFjDK9ng==
-Subject: Re: [PATCH net-next v8 07/12] gve: add gve_ctrl_ops for gve
- initialization/teardown sequences
-From: netdev-bot+sashiko@kernel.org
-To: hramamurthy@google.com
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
- willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com,
- jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- przemyslaw.kitszel@intel.com
-Date: Fri, 25 Sep 2026 18:56:04 +0000
-Message-ID: <179036256409.2160803.7834032519830054759@kernel.org>
-In-Reply-To: <20260924185316.2831077-8-hramamurthy@google.com>
-References: <20260924185316.2831077-8-hramamurthy@google.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DYa2SgL/"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG6EWv1530717;
+	Fri, 25 Sep 2026 19:01:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=hTaIxdftBS9s0aKtIe/SSscDfRnX/q
+	76Myl7Mmq25ss=; b=DYa2SgL/eOXaft9FS8tWNxhcCZhx/ykZHGjqcRJxmDipfF
+	308MfT3b5Q4m3lCmDYWC97SAPRZT9mrR0tiUmGMT2VyaiM1GTigy3vB6EryyH7Cg
+	2of4Ec0q1RP7pCfxBRLhPe9WKsEajk8Q+WZQZClEE2DdB3cVOZLcbgM6ArDjkxU8
+	CtusPfPoTDYRxSe30LsA1QraGg+XAoOhzwsD/zqDVamZ3CJA+c+344lV0n7vWxhB
+	JaJuccviAUPMJOC2E8bQ59x1P2PeSp2QJ6cIwp2jeBrQw1BXCR3spjA/xvTXt/Ge
+	VlNvfDgw/90IPRI8VoGa5TwcYcWwO4Cmb51d9G0g==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskg30v3t-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 19:01:09 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68PIm0ee3043817;
+	Fri, 25 Sep 2026 19:01:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvu7efva0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 19:01:08 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68PJ153g14811792
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 19:01:06 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE0DA5805D;
+	Fri, 25 Sep 2026 19:01:05 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00F445805F;
+	Fri, 25 Sep 2026 19:01:05 +0000 (GMT)
+Received: from d (unknown [9.16.59.154])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 25 Sep 2026 19:01:04 +0000 (GMT)
+From: Dave Marquardt <davemarq@linux.ibm.com>
+To: Mingming Cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/2] ibmveth: h_free logical LAN on open-fail after
+ register
+In-Reply-To: <7a56fbfb9e0674f011f4e310fbd7dfd8e67c30aa.1790357373.git.mmc@linux.ibm.com>
+	(Mingming Cao's message of "Fri, 25 Sep 2026 11:05:29 -0700")
+References: <cover.1790357373.git.mmc@linux.ibm.com>
+	<7a56fbfb9e0674f011f4e310fbd7dfd8e67c30aa.1790357373.git.mmc@linux.ibm.com>
+Date: Fri, 25 Sep 2026 14:01:04 -0500
+Message-ID: <87jyo917gv.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: IoX1rp9zmChx61FOk3tzdZ8-hN9d_gfH
+X-Authority-Analysis: v=2.4 cv=I43w19gg c=1 sm=1 tr=0 ts=6ab6c4f5 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=Upk1lBxnHq3MJdZ7FDEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA3NCBTYWx0ZWRfXywonysU5zfCl
+ 0sykjRxg7qtMqIiYwklJKwSB/MpbN3jYfpMgms8Y9O46lfmVAzd9AvQOX7Qi5hvzb8rtobPB3ES
+ W2x+Oa0XoeaXspujRvYlAEgGiCOXlgFLCQS3uAMEB/WDHfupxkUToiO9Wbz4N05OBEaLV3svru5
+ uzwSzgcG5oyNw3JlwS7mSUv/0WYmSJYjkuxNYfbCls5YDOflHacMnqbxi9n6/3fKfVwX6AQSZ/H
+ sYUorrPZdgyQgkV3brzpXQxLyOwxKClgr9t2HYERLtlEnq7a408PEeortIQAcCLCpDICp08USMD
+ 17UzD5QhcVxViMTlP8dq7x5hMmG47TkZKYTyatOSRcIuCnSJYbYBeEFbBufiOj9dQeB63tfjfbT
+ 01yzuMOKKRvIS5mXhNVELm+/dt7yGccsXLsgv5XZ105XDxGNHR+kb+ckYfvmrkrS3L56LxHs10j
+ bPP9yJ03ph/lCG+1YBA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA3NCBTYWx0ZWRfX7mB07K0ioE+s
+ sLP3T0Mg8xAn+oCArh1x3YiyFYzUSgBXQY8DFL8Px0KCsn7IEFY/RCCKpVbWQdlbvxMXXA8vxFu
+ yA3BbCvE/GL/yAbEu80yD/nuDTgqCy4=
+X-Proofpoint-GUID: qHkBE4jgKkgIzDOukAyAkToDtDL2AHj0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1011 adultscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250074
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Mingming Cao <mmc@linux.ibm.com> writes:
 
-Low priority / nit picks for your consideration:
+> ibmveth_open() registers the logical LAN, then allocates the RX
+> buffer pools. A pool failure jumps to out_free_buffer_pools without
+> h_free_logical_lan(), so PHYP still owns the buffer-list page when
+> it is unmapped. request_irq() failure already issued the hypercall
+> before taking the same label.
+>
+> Move that h_free to the shared post-register unwind so both paths
+> deregister before the buffer list is unmapped.
+>
+> Fixes: d43732ce021f ("ibmveth: properly unwind on init errors")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmveth.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 73e051d26b9d..3e44f6b714d4 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> @@ -718,10 +718,6 @@ static int ibmveth_open(struct net_device *netdev)
+>  	if (rc != 0) {
+>  		netdev_err(netdev, "unable to request irq 0x%x, rc %d\n",
+>  			   netdev->irq, rc);
+> -		do {
+> -			lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> -		} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+> -
+>  		goto out_free_buffer_pools;
+>  	}
 
-- [Low] The kernel-doc for `struct gve_ctrl_ops` in
-  drivers/net/ethernet/google/gve/gve.h says `@setup_stats_report` is…
-- [Low] This patch changes the prototype to `int
-  gve_adminq_get_ptype_map_dqo(struct gve_priv *priv);`, but…
+This code change is good. But I noticed another thing that's a pretty
+minor bug of useless code just after this:
 
---
+	rc = -ENOMEM;
 
-gve: add gve_ctrl_ops for gve initialization/teardown sequences
+rc isn't used in that code path after it is set. Is there some reason I
+do not understand to have this here?
 
-This commit adds get_ptype_map, configure_rss, setup_stats_report and
-reset_flow_rules callbacks to struct gve_ctrl_ops. The control plane
-setup and teardown paths in gve_main.c now call them through
-priv->ctrl_ops. gve_adminq_get_ptype_map_dqo() also changes: it now
-writes into priv->ptype_lut_dqo directly and no longer takes a ptype_lut
-argument.
-
-> diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-> index 026d685ecaee3..e0583e8cd2cdb 100644
-> --- a/drivers/net/ethernet/google/gve/gve.h
-> +++ b/drivers/net/ethernet/google/gve/gve.h
-> @@ -833,12 +833,24 @@ struct gve_device_info {
->   *                  structures stored in @priv to be used during initialization.
->   * @set_num_ntfy_blks: Sets no. of vectors into @priv to be used during
->   *                     initialization.
-> + * @get_ptype_map: Learn packet type map from device and store it in @priv
-> + * @configure_rss: Set up default RSS configuration
-> + * @setup_stats_report: Set up DMA region for stats report (AdminQ only)
-> + * @reset_flow_rules: Flush all flow rules from device
->   */
->  struct gve_ctrl_ops {
->  	int (*map_db_bar)(struct gve_priv *priv);
->  	void (*unmap_db_bar)(struct gve_priv *priv);
->  	void (*set_num_queues)(struct gve_priv *priv);
->  	int (*set_num_ntfy_blks)(struct gve_priv *priv);
-> +	int (*get_ptype_map)(struct gve_priv *priv);
-> +	int (*configure_rss)(struct gve_priv *priv,
-> +			     struct ethtool_rxfh_param *param);
-> +	int (*setup_stats_report)(struct gve_priv *priv,
-> +				  u64 stats_report_len,
-> +				  dma_addr_t stats_report_addr,
-> +				  u64 interval_ms); /* AQ-specific */
-
-[Severity: Low]
-This isn't a bug, but is setup_stats_report meant to be optional for
-back-ends other than AdminQ?
-
-The kernel-doc says "(AdminQ only)" and the member has an "AQ-specific"
-comment. Someone writing a future mailbox ops table could read that as
-permission to leave the op NULL.
-
-Both call sites use it without a NULL check, though. In
-gve_setup_control_plane_resources():
-
-	err = ops->setup_stats_report(priv, priv->stats_report_len,
-				      priv->stats_report_bus,
-				      GVE_STATS_REPORT_TIMER_PERIOD);
-
-and in gve_teardown_control_plane_resources():
-
-	err = ops->setup_stats_report(priv, 0, 0x0,
-				      GVE_STATS_REPORT_TIMER_PERIOD);
-
-A NULL call can't happen today. The only table, gve_adminq_ops, sets the
-op to gve_adminq_report_stats(). Later in the series, release_db_resources
-gets the same "(AdminQ only)" label and is also called without a NULL
-check.
-
-Could the kernel-doc say whether the op must always be provided, with
-non-AdminQ back-ends supplying a stub? Or should the call sites check for
-NULL?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-> index fe1e8868cdfe2..5e51c060e2372 100644
-> --- a/drivers/net/ethernet/google/gve/gve_adminq.h
-> +++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-> @@ -652,8 +652,7 @@ int gve_adminq_report_nic_ts(struct gve_priv *priv,
->  			     dma_addr_t nic_ts_report_addr);
+> @@ -737,6 +733,9 @@ static int ibmveth_open(struct net_device *netdev)
+>  	return 0;
 >  
->  struct gve_ptype_lut;
-> -int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
-> -				 struct gve_ptype_lut *ptype_lut);
-> +int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv);
+>  out_free_buffer_pools:
+> +	do {
+> +		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> +	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+>  	while (--i >= 0) {
+>  		if (adapter->rx_buff_pool[i].active)
+>  			ibmveth_free_buffer_pool(adapter,
 
-[Severity: Low]
-This isn't a bug, but now that the ptype_lut argument is gone, is the
-"struct gve_ptype_lut;" forward declaration above still needed?
-
-Nothing else in gve_adminq.h refers to that type. The declaration is also
-still there at the end of the series.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924185316.2831077-1-hramamurthy%40google.com
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
