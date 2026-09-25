@@ -1,48 +1,48 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF0543BDC0;
-	Fri, 25 Sep 2026 13:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D654A440D;
+	Fri, 25 Sep 2026 13:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344393; cv=none; b=RctEiYwBjX0c0ejZHhrwhhucUkBN2R5FNejaX24ZH5pEiq7AN/gOGFqjV3fttnjvnNOOFIZGmPGqir2PK3p/R7Qj0A4TuipSURyQ3/R287CMG4MD9bdlquO94guv3K2rETQHwLuvv1FC8/iRM5xP1kIK14ykcp2NCXqR3uJJofE=
+	t=1790344394; cv=none; b=Pd07fymS9Y0GT0fmyd7C23cAZ3IT3HJOEb6Ygk0zuZOGgFqNVfOOjXFHtl7DKZq3ecqakDGgWXrvU4XpmypZQstn2Hg0Ic+3/QDRqTJoNxRufBKfNopT+c5Xi3QJ3Avk1hNZ6965vJ0rYhM+waAGKs2NFlsYyHSOlfoaVNaSoik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344393; c=relaxed/simple;
-	bh=Y58bPz2z4AP1Sg8SS87CnMm0rK2+L7evrleySoooekg=;
+	s=arc-20240116; t=1790344394; c=relaxed/simple;
+	bh=tjpI0mxH1A7DXSavprRg6nCrhH41OF4GhZZemOfO4j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MurfACxZ1Y/kr73Ul5N42OG9gmo/oihuR11j8soSBtVeo+J8+ZmqXK4JFnPpSxmJKXgJ/65ASxVLC/BT8VjWD+hsaT0l4ztn4wfG4m3rx2CTcImFbhbmSo7pRwlSPDj773FSTO+kP+IEIhYj6QAhGSQQl4lF3N0Do692k3rDBpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=BWkFKHcj; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version; b=r0ujhPpW0v3bw+7VszLV4qzfeyzDxkVLJZXGbP5NKbU2cTewqjKUghRXPrRMgWggdrcMZ8yST3chZHMCPyL1alzEaoDAa3Ql+crlXyRyBlxVkrqLSbTVDJ59NI2a5F7bwy0JulW2AA5TjFiJnzj+n/XUc+fmKYGDMu40XKjCTzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=qVHfOK30; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="BWkFKHcj"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 280DCA02D8;
-	Fri, 25 Sep 2026 15:53:08 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="qVHfOK30"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BE61CA4ABB;
+	Fri, 25 Sep 2026 15:53:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790344389; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1790344390; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=G3jYPwXqqQKzyrTkuEGWPfBU+1NwmFN2RF8hcaQa2o4=;
-	b=BWkFKHcjB98uUTfig+d1dYpiSHUalbhy0K9Q1A34hFCCkjn8V+H24tikWf4QrY8ygr/Rms
-	aO6ol+sasSWzCNs/TIRGCesiN2ehcA/NB6W2UHuSQQvjWS8JR6tMQ+v3uY4re0LZS4DRme
-	2CC49L/AQLqn30zSRM9YtcxDxweUSQz0GmTLU8ah38e9o5PMaIZHw19CL7B1NoXrYNP4GF
-	b+KQyd0b58ywIb1jk55T6wddVc47C1fm9FyEX4aI3yOxg+6sJtc7UVXpNnr1ge6c3R0Cuq
-	EwlS/u1/Y1tqiOtlOjzwxhKus92AnRYhnEoEk6wbMfGFrbanoq0zPQOrCH0mtA==
+	bh=Kzsals/lWEL0QFsarvpTiSLncXUNdrEQnFPKlj+bABk=;
+	b=qVHfOK30Urb+3KqcTx84TG9gOecXJj2tcWAKIMlLYDFWMbnFYmgR9Z0xSYFuHOCUaeqasL
+	1BBteh6KpNErqBg/N83IMTfjJR4p+0bXvEin2ONSqhSIM795bZix+brFueV5ChUR7sa/er
+	VxxxGastm3eYSJscoDjdQ3dzjX6Zcp5CDnt582KvmkA7eqIxDCJ163RYpEWWo5RXxRlcpp
+	+HxMDkl4+LPREJai++c7ryq+1DlCQrV+6U4NCVRx3PYmHKkjKEQHY4RhNBZ+AYoXJ6IY8U
+	KE6sgQ5OLz5WIzR7NPksWFwemKjnmYg8TGPm9Su6HMvQSSmXF2FLH8SvcEzf+w==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Kory Maincent <kory.maincent@bootlin.com>
 Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Nicolai Buchwitz <nb@tipi-net.de>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 1/2] net: ethtool: reject an out of range hwtstamp provider index
-Date: Fri, 25 Sep 2026 15:52:35 +0200
-Message-ID: <20260925135237.3432266-2-nb@tipi-net.de>
+Subject: [PATCH net v3 2/2] net: ethtool: let tsconfig reach a PHY-only timestamp provider
+Date: Fri, 25 Sep 2026 15:52:36 +0200
+Message-ID: <20260925135237.3432266-3-nb@tipi-net.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260925135237.3432266-1-nb@tipi-net.de>
 References: <20260925135237.3432266-1-nb@tipi-net.de>
@@ -55,47 +55,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-A provider index of 0xFFFFFFFF picks a provider on hardware that has
-none. phc_index is an int where -1 means no PHC, and the u32 from user
-space ends up as -1, so the two match.
+TSCONFIG_GET and TSCONFIG_SET reject a device that implements neither
+hwtstamp NDO, even when its PHY can serve the request. The ioctls they
+meant to replace handle it, so the two interfaces disagree on the same
+hardware and user space has to pick one.
 
-TSINFO_GET uses -1 for "no provider requested" and answers with the
-default provider instead of an error.
+Accept the default timestamping PHY and an already installed provider on
+both sides. On the set side the test moves into ethnl_set_tsconfig() as
+the validate callback runs without rtnl. On the get side it stays ahead
+of ethnl_ops_begin(), so a device that can serve nothing keeps failing
+with EOPNOTSUPP and a dump still skips it rather than stopping there.
 
-Reject the value in the netlink policy, which covers every comparison
-site.
+A netdev provider needs ndo_hwtstamp_set to be programmed at all, so
+don't pick that source without it, and test for ndo_hwtstamp_get before
+calling it.
 
-Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
+Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
-NLA_POLICY_MAX does not fit here, .max in struct nla_policy is s16.
+ net/core/dev_ioctl.c   |  3 ++-
+ net/ethtool/tsconfig.c | 24 ++++++++++--------------
+ 2 files changed, 12 insertions(+), 15 deletions(-)
 
- net/ethtool/ts.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/ethtool/ts.h b/net/ethtool/ts.h
-index d901a879a671..ab9805308353 100644
---- a/net/ethtool/ts.h
-+++ b/net/ethtool/ts.h
-@@ -5,9 +5,15 @@
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 164643140a52..f6029f60c1dc 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
+ 		    hwprov->phydev)
+ 			return phy_hwtstamp_get(hwprov->phydev, cfg);
  
- #include "netlink.h"
+-		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
++		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
++		    dev->netdev_ops->ndo_hwtstamp_get)
+ 			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
  
-+/* phc_index is an int and -1 means no PHC, so keep the request non-negative */
-+static const struct netlink_range_validation ethnl_ts_prov_index_range = {
-+	.max = INT_MAX,
-+};
+ 		return -EOPNOTSUPP;
+diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+index 6be3aa5d4bc1..2db0e7ba8b9f 100644
+--- a/net/ethtool/tsconfig.c
++++ b/net/ethtool/tsconfig.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ #include <linux/net_tstamp.h>
++#include <linux/phy.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include <net/netdev_lock.h>
+ 
+@@ -42,7 +43,9 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
+ 	struct kernel_hwtstamp_config cfg = {};
+ 	int ret;
+ 
+-	if (!dev->netdev_ops->ndo_hwtstamp_get)
++	if (!dev->netdev_ops->ndo_hwtstamp_get &&
++	    !phy_is_default_hwtstamp(dev->phydev) &&
++	    !netdev_ops_lock_dereference(dev->hwprov, dev))
+ 		return -EOPNOTSUPP;
+ 
+ 	ret = ethnl_ops_begin(dev);
+@@ -248,17 +251,6 @@ static int tsconfig_send_reply(struct net_device *dev, struct genl_info *info)
+ 	return ret;
+ }
+ 
+-static int ethnl_set_tsconfig_validate(struct ethnl_req_info *req_base,
+-				       struct genl_info *info)
+-{
+-	const struct net_device_ops *ops = req_base->dev->netdev_ops;
+-
+-	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
+-		return -EOPNOTSUPP;
+-
+-	return 1;
+-}
+-
+ static struct hwtstamp_provider *
+ tsconfig_set_hwprov_from_desc(struct net_device *dev,
+ 			      struct genl_info *info,
+@@ -272,7 +264,7 @@ tsconfig_set_hwprov_from_desc(struct net_device *dev,
+ 	int ret;
+ 
+ 	ret = ethtool_net_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
+-	if (!ret) {
++	if (!ret && dev->netdev_ops->ndo_hwtstamp_set) {
+ 		/* Found */
+ 		source = HWTSTAMP_SOURCE_NETDEV;
+ 	} else {
+@@ -313,6 +305,11 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+ 
++	if (!dev->netdev_ops->ndo_hwtstamp_set &&
++	    !phy_is_default_hwtstamp(dev->phydev) &&
++	    !netdev_ops_lock_dereference(dev->hwprov, dev))
++		return -EOPNOTSUPP;
 +
- static const struct nla_policy
- ethnl_ts_hwtst_prov_policy[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_MAX + 1] = {
--	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
-+	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
-+		NLA_POLICY_FULL_RANGE(NLA_U32, &ethnl_ts_prov_index_range),
- 	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER] =
- 		NLA_POLICY_MAX(NLA_U32, HWTSTAMP_PROVIDER_QUALIFIER_CNT - 1)
+ 	if (tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER]) {
+ 		struct hwtstamp_provider_desc __hwprov_desc = {.index = -1};
+ 		struct hwtstamp_provider *__hwprov;
+@@ -459,6 +456,5 @@ const struct ethnl_request_ops ethnl_tsconfig_request_ops = {
+ 	.reply_size		= tsconfig_reply_size,
+ 	.fill_reply		= tsconfig_fill_reply,
+ 
+-	.set_validate		= ethnl_set_tsconfig_validate,
+ 	.set			= ethnl_set_tsconfig,
  };
-
-base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
 -- 
 2.53.0
 
