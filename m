@@ -1,78 +1,65 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F133E00B4;
-	Fri, 25 Sep 2026 23:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE7B4F4738;
+	Fri, 25 Sep 2026 23:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790377865; cv=none; b=nfGDW6RNo97IdJfJhInKuTz9s85eA/w2I//gAUBSvX01DWgvILC5rBbSIyDp3oulcEYZCIbKUlzIUPPauFDSLCT/kVcTQw1fD22PRkxk1VheUOkCq/GCkEZ5PozBvCXstFX5sZG6flYOQ/pjX5QnwpoUDzDGTgQHNR3RMHnvJdU=
+	t=1790377896; cv=none; b=gnBRcBLffGlMrirzHXa/u6bLczIo39qvpQEfv0WUYdJAskt9RYcNTRA5/5/n1+G8kjhDcqNDadQb+VVXWnvOhZRiCYKupdzx5InsTS5u0FMJ+esHHkbl+rpDeiKxmtm+79gT8ZGmA/+ZWRIp2WEhjKLZR1sHU1TofqhLrurSeCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790377865; c=relaxed/simple;
-	bh=WDuhiKoto+GckTuEBZVglaXPfxxrI3TMeVmIEz4ttGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=niRGNSHGNf2qZb1KnsEEx8InGLPCy5kKx4TwRfW2Yw85Go9G+3/mb02IvyF8CbA9owb8rVWuNKvmLkob5Yn4K6e3x+5KH37rt5dPQJz5hKuqvewa2S2zRZTB4SHdQh1XS0y1lc/ocLM3VvkGrjtZ4UZnN2F3fu/IhTKsqirDKOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4JtgAefU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790377896; c=relaxed/simple;
+	bh=3L5YxB1KNMl6l+E8XSFgntfd4Cnewve3498oUNHM27w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FIAwFhVzEh5AS7sI3juU3pt2tQpk6lrp+hfbbyrxtnas7Lq5RGemN7IFa4JyOJND+KfLfZop6mLFy8ukHY2uznwah01RK9LtbSgzzu4UcxwiwFqaz/I7/oLKXJn6RV6hJg+SG86iWfWWN2+uD+0oLaoY4QpeeDNa4hNXiJQWOwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2v8WnTr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4JtgAefU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IGuHgtxJPba8b9kLu8sf/C1GQa9JsFH4QyigTFqdx9o=; b=4JtgAefU6c/DWinFRd1OJq8pLp
-	ds1uVQMYpNQshwUYpOvGh02ngxT5IxYmZwT1N8WeW7JoSMX+mi0pvEsbqotIdRkdlutD9ePOwWbMI
-	H1IAGUOcvi0Wh6Y7VyuDXNCvpswx5/jDbGYCPVyNrfz7MLU7aXSWpS/SsD1CEJFdJe2U=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xAF4B-007KAX-Fh; Sat, 26 Sep 2026 01:10:55 +0200
-Date: Sat, 26 Sep 2026 01:10:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v3 5/8] net: mdio: Add SoC-e SWIP MDIO
- controller driver
-Message-ID: <e4440c27-5551-482c-95ae-9b75481bcf7b@lunn.ch>
-References: <20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-5-ddebafcb9ba7@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2v8WnTr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA151F000FF;
+	Fri, 25 Sep 2026 23:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790377895;
+	bh=3L5YxB1KNMl6l+E8XSFgntfd4Cnewve3498oUNHM27w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=e2v8WnTrsYm++f/SvzS95tYXUFoUAZVS780dok9X6WLHa4AvmLmmQ8wFDDIeyk6A1
+	 j1BfpqfizipjJSdypEj1SsGMxb/eBvrnb/05tFzXM+RJDXNC/x1VTo29bkyQk98Vs/
+	 sROwGBRxpvEGYJdsKoVlTZG89taontXHZlosxdWuZ5X3+v/y3wtS/7K1bBXLA8oG4B
+	 UqtwTsQ9AkDYQE/g2Qk5bsz9nd6SfKBOkAYEv2l0f+SOM8QUqkljNicEDH10mRPwfr
+	 LZxPShle7rxlA4ZIKGCihV2Gp0YiPxHVm6ZOCItgCyLx2vdb7LMwGO+8wwwVp+9SRM
+	 5773io3l+VQYA==
+Date: Fri, 25 Sep 2026 16:11:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bochao Cao via B4 Relay <devnull+bochaolucky.gmail.com@kernel.org>
+Cc: bochaolucky@gmail.com, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Andrii
+ Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Ihor
+ Solodrai <ihor.solodrai@linux.dev>, Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan
+ <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Alexis
+ =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Tiezhu Yang <tiozhang@didiglobal.com>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 0/2] selftests: Fix and migrate XDP feature
+ test
+Message-ID: <20260925161133.3545f2be@kernel.org>
+In-Reply-To: <20260921-xdp-features-v4-send-v4-0-a0d4ec392cb7@gmail.com>
+References: <20260921-xdp-features-v4-send-v4-0-a0d4ec392cb7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923-devel-vstrassheim-soce-dsa-ml-v3-5-ddebafcb9ba7@linutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> diff --git a/drivers/net/mdio/Makefile b/drivers/net/mdio/Makefile
-> index 048586746026..079b46dea25f 100644
-> --- a/drivers/net/mdio/Makefile
-> +++ b/drivers/net/mdio/Makefile
-> @@ -23,6 +23,7 @@ obj-$(CONFIG_MDIO_OCTEON)		+= mdio-octeon.o
->  obj-$(CONFIG_MDIO_PIC64HPSC)		+= mdio-pic64hpsc.o
->  obj-$(CONFIG_MDIO_REALTEK_RTL9300)	+= mdio-realtek-rtl9300.o
->  obj-$(CONFIG_MDIO_REGMAP)		+= mdio-regmap.o
-> +obj-$(CONFIG_MDIO_SOCE)			+= mdio-soce.o
->  obj-$(CONFIG_MDIO_SUN4I)		+= mdio-sun4i.o
+On Mon, 21 Sep 2026 14:00:03 +0800 Bochao Cao via B4 Relay wrote:
+> Subject: [PATCH net-next v4 0/2] selftests: Fix and migrate XDP feature test
 
-Maybe the indentation is wrong here?
-
-Otherwise:
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+There seems to be a conflict with recent changes to net-next
+please respin
