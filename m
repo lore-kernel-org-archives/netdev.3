@@ -1,291 +1,378 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017524E06F1
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 15:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6D24D7D3E;
+	Fri, 25 Sep 2026 16:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790351967; cv=none; b=NvLpmQ3zw1tUwMj4UwZU/fChahbv5Yg1sYO+YJ6okQF2Od6dQgC3onEhrxLwxwTEhuSj2Hm8U35OlfxId0JHPRM7CSFzLjd1CZ3V/+0NrmZ1Fdz7JfkL7za4N657Ju/r+dj408z7ek/z/Ie4CfJc+BYjjWrhlPGIxjbLFT7YAlw=
+	t=1790352433; cv=none; b=ReXhwUUr1tnpyHKjy1mZoioyuE05D7AYtkL0c30ORIKoFiXkW4hfpOlO+6aBQWQ+WTnEDlh4ohQFnnnBW3VXix1B7R3nps1ZTmfDXhzwsePFefSUdzDqagsm35j+oAPmR21SB2E0JJGQjJkQmH7BkTRkfkuiikRLL2qwoL8rOM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790351967; c=relaxed/simple;
-	bh=zDuJCdpny4nvDijWnjUood5Ogh4JDdDd4/+inxDkgqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ga84bUOs+1GGYb8ynWfgPjhrc2s3Irjcst/oOozjTgKVMHUe/79zw8gKQiRZPIKI1VakZ12ng4X3u0VnA+smE2E4E7ri6Eh7ARI3TJFfQkyFipq7mzsepAxwyde3EVR4vwWUtTEXrbXObnnQbPdA48M4Rr+vONhQ3nW11kQ8wWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QI86Rg99; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YKzPcWLD; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790352433; c=relaxed/simple;
+	bh=g4ngd6C6RtHyur4LIUvkWNEU5lurEuvyP6L9WTF3REo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E58zQtni2b0u9rz7CuE5aUmxssyEHb7Zr3ig68zuOezrUiPz4dtfYD3mWHbknrPTQBZTCONDFbQB5ovb6TLuaC6aMHW7dKnNjiZNC5ORyu6eDP3ZpOL5cAtCaPrtA0FAwb85bOgvxSPnG3DU1TdxZ7f+r6PBTIIpyv69W1eZNRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3eiDW0Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QI86Rg99";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YKzPcWLD"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68PBLdYQ900279
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 15:59:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=9+1rwJEQXq1
-	lO/cD3GiWTUUYzCO5JaKWtBAY2RhYZaI=; b=QI86Rg99O/cQBiooeAMdGH6d2qr
-	/2ApE7DEiMzD3YrXNmwz+AFIQiuSiyeU538+94tBUEGoj2itMo2gej/TfPXlqIaF
-	zZ72GNYlwbjhiqHnwtDgSSGltE9iecu43LiWKRH0DKQEAzXnXEZewprdY2FRNWfm
-	3wweR+e6s0j74nJNxeHevQQbBp3T3hxokyJL8PRt6yueJf2AFuxy/RkmsnSgBBNn
-	TXc9twwC6JYh28lCZk+wcQNgeeVN+eTQiS0oTdNHyZe+4VJlNRsnfvPoTUwC1OCN
-	6/DfLq+X7JrgAdJpeU7WAmXzD0xZrYB28w+K3rYTyvBwyJiFwLIJro0IqDg==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gwr100xb5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 15:59:24 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-86a74698972so948946b3a.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 08:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790351964; x=1790956764; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9+1rwJEQXq1lO/cD3GiWTUUYzCO5JaKWtBAY2RhYZaI=;
-        b=YKzPcWLDNXe3MtN5nPHe7AMahJJfC5aAzY9RgQ0E4OiQIqAJ5vJdPBdBcC929Gnu+s
-         KTwauVDtIPN/1zQCsSLhh/EcGWoY0UMe/DOpIEJd4X36TvF/bWxj0cnRsgEYZR+yT9FH
-         qGej+XZmWs7RJYd7pcolOjn1AkYeuTrgBcKOWaP11r8f8vmHPFD6Rmhm5cggK84OD5P9
-         8sU5h6PpV6xrHzL4q03gFW6tdhsDrKsH8BD0m7P/ONKNbBfkMCYjd/IFo63NkAEvxLEi
-         xmOXBS7lGJRzaLk0949U2R7jkxnOA1wz8SinQxt9cuN0481cxNnVjSmW+ATTlluhBGJV
-         T5Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790351964; x=1790956764;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9+1rwJEQXq1lO/cD3GiWTUUYzCO5JaKWtBAY2RhYZaI=;
-        b=BwUzkzpa6j8H1JWFq1gFXqplPbhbFrHnaO5hj8l7LyNDRJLXI2JbBYArPp9FTm/icY
-         ynI9Q1eBxm8hsflZiGEHoja/9SRXbTq9Cr9d6Bfrc1f0OfN9pbk4H077NVpYqy5SxDA/
-         v6ufWaS4Ib9HIvL16V39m37l5c/6bCE9g8eMhSsOP3FfHQLs7AIKxRogOhVXlIgE+7FV
-         4Z1k8TbW2MpdYtNFiWGpzpup5ls3IEdAHhaPX03k7C2HAz64Ct8DoByWZzE9WIKAUFHU
-         BTpQ50F9vUKqvdyIeDKMwiUapgdrm1Qk2MPNdi8ZU2RdIPJMjuiKwK8JTt76TbS9KqBB
-         GWXw==
-X-Forwarded-Encrypted: i=1; AKwUvBwqU6esq4FYirtSH1P8+jrPHalobsboDLXYps7NVuOc28YzRgAqVAECCN3H3TJ+R9VJMsLores=@vger.kernel.org
-X-Gm-Message-State: AFuF++ksTXzTfekpbbGTyAnF81abW7gDMOxTZQ1DRx/WLcmMCM0Hktls
-	K+hx2i/SygdjykBvxx+Gpw6YGdiW57QDbnEXuTyy1lr7ZG0b1cDFF2lqsRk/WLBmrlYIr7uOAMQ
-	KglX2XuVUbQWzHVm5cI5s9vzIMK7k5dxpjp2b9tY/Wsk1mFVCiogq4wnafkE=
-X-Gm-Gg: AYBFou3ZqnXXpKnhcbuBv6K0Dvr1jcbh5On4sht1j2RM7f9mF1Z5RjbDu6pCuFC5cLU
-	9z7y6/owW8WtKzcJQtISXP8dQo6+kB4JMq3BfyWpeTkL8xkwTCC85rC2eO0CJ3Gy4gGnwzcZpFi
-	yqilQwp6sHwYyafY8X9M5m5mRjV84m2l3WTOx/0O1UwO2ZuSVsVAUCQgrH249CtZD7dEGEG9DUM
-	Dpz66y/3bwABNuerNmFcAXgy6GHU862AxUKqDOMW2wpZlRQ84QA0Z1aik0SbDYZWZxlrINyz6fQ
-	QpssTsGMZIqMnMcIpQ+6kY1YgCV8Ca6moF5BPUV87YsthUZx4g3CrwAORKVposXHz6ocuFJfLll
-	3jbAXpWslaINgW4bd38e3MZlCxDY=
-X-Received: by 2002:a05:6a00:6f12:b0:880:a842:bb06 with SMTP id d2e1a72fcca58-880a842c13cmr905883b3a.45.1790351963302;
-        Fri, 25 Sep 2026 08:59:23 -0700 (PDT)
-X-Received: by 2002:a05:6a00:6f12:b0:880:a842:bb06 with SMTP id d2e1a72fcca58-880a842c13cmr905860b3a.45.1790351962748;
-        Fri, 25 Sep 2026 08:59:22 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87ff354d854sm1361299b3a.2.2026.09.25.08.59.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 08:59:21 -0700 (PDT)
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Sumit Garg <sumit.garg@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>, David Airlie <airlied@gmail.com>,
-        Simona Vetter <simona@ffwll.ch>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-        "Bryan O'Donoghue" <bod@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jeff Johnson <jjohnson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Abel Vesa <abelvesa@kernel.org>, Sean Paul <sean@poorly.run>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-media@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org,
-        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Subject: [PATCH 8/8] firmware: qcom: pas: remove qcom_pas_auth_and_reset()
-Date: Fri, 25 Sep 2026 21:27:37 +0530
-Message-ID: <20260925155737.4161358-9-mukesh.ojha@oss.qualcomm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260925155737.4161358-1-mukesh.ojha@oss.qualcomm.com>
-References: <20260925155737.4161358-1-mukesh.ojha@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3eiDW0Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DCF1F000FF;
+	Fri, 25 Sep 2026 16:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790352429;
+	bh=efZvcB3jZhEX2otBxZiQBTWXnyQXQfwadz7bVw2Pw3M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=W3eiDW0QY0cX0F1B8fIAXmLfmyqPJ9WXknsJmcdbqLnFwkbMm/pVkz+NzTZYXUBw1
+	 lWVUrU6qynjiaF/oOKuAtDMAEQexdPWGWC0GlDGic9/M/pd5UM3P8VDL+0EuLe/20Z
+	 T6u/+r9sMaopoVvyrABCjykVRKVS5u5XUG+MR+9UhfUNForEPLfwf6IA23ZrHQtkLp
+	 pqcjRoXrIOaefScmAznbuMSwALdlz8dqYYtUId17E7yKBZehTIZIBjNfEEeyaYGL7Z
+	 aYuGH1GGQbJn3PWAK27cFmyDhsyInJTEZvxfsAxNJaz085qldRf0XwzW1LrQPfAMZr
+	 2m6KXt8CfzMxA==
+Date: Fri, 25 Sep 2026 17:07:05 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: dong100@mucse.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	vadim.fedorenko@linux.dev, u.kleine-koenig@baylibre.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	yaojun@mucse.com
+Subject: Re: [PATCH net-next v13 2/5] net: rnpgbe: Add basic TX packet
+ transmission support
+Message-ID: <20260925160705.GQ13925@horms.kernel.org>
+References: <5CF5340DA3D4CE3C+20260920092622.345496-1-dong100@mucse.com>
+ <178998604523.2160803.309404195274642417@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA2MyBTYWx0ZWRfXxutIyB8HbWi4
- nhKDWYzZ3byn9TBU4K4GhYUARfSkwOQ98UbIm4OlF1dWgtCylE/A8u+u+NX4zNRX8SubKeApTG/
- LBRPBNcvBKNRN3n9TWRbOL3PFd6jn2glLzO1K2me+RJ/QDDhp1T490EfmaI5Te8xkava/gLhlLu
- KejAvGBjgeG3B3PUvciMnohmIlgC2iXAJm7wqFjUpkC6Im8K+T0ZIyWl/+yG0sCeocAeHzMGSak
- cspLwdVfaHKG0RHfVzwicnGxYgjkQiB52MNO5GxOBOUXqzflHqRg6F/uV+Ep48KacEbzVIxxC1V
- XUmEyxA6qo4bLl+LiO4NsdNCCyBBfOV0gmZVcjs5Rj529J+d5r+AHpnYQ/IZMQ2niSpqRdfnZEn
- etTiL1RMTVOtaSgDdJqM+paZ55pigYfur/1UvfaFytgRzreMV48ksvAAEOXB09QsUsXfwNIetCg
- DW5u3AAE8mKgPYu1OAg==
-X-Authority-Analysis: v=2.4 cv=ZfKIpcVA c=1 sm=1 tr=0 ts=6ab69a5c cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=sV0Ut8U-cAKt8JUqj3YA:9 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: 9xll7xnBBKuiqTxnV1klx-7UMhMZqz-E
-X-Proofpoint-GUID: 9xll7xnBBKuiqTxnV1klx-7UMhMZqz-E
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA2MyBTYWx0ZWRfX0B8HJhJzKVp4
- DqGCCMCl82wXvgpWbuAKAIZTjQK4R+jcUS7tdv+Hu1HQrVy6dP0RyYLsQ8bQAa3f03mn64jrbJJ
- ekknNbEf2Rem21yIUbyiIcvcsnY9K+U=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 adultscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250063
+In-Reply-To: <178998604523.2160803.309404195274642417@kernel.org>
 
-All callers have been migrated to qcom_pas_prepare_and_auth_reset(),
-which additionally sets up a shmbridge over firmware memory before
-TrustZone authentication.  Remove the bare pas_id-only wrapper, its
-EXPORT_SYMBOL_GPL, the header declaration, the auth_and_reset ops slot
-from struct qcom_pas_ops and both backend implementations.
+On Mon, Sep 21, 2026 at 10:20:45AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 2 · Low: 3
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 
-The internal helper functions (__qcom_scm_pas_auth_and_reset,
-__qcom_pas_tee_auth_and_reset) remain as they are called directly by
-their respective prepare_and_auth_reset implementations.
+Hi Dong,
 
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
----
- drivers/firmware/qcom/qcom_pas.c       | 16 ----------------
- drivers/firmware/qcom/qcom_pas.h       |  3 ---
- drivers/firmware/qcom/qcom_pas_tee.c   |  6 ------
- drivers/firmware/qcom/qcom_scm.c       |  7 +++----
- include/linux/firmware/qcom/qcom_pas.h |  1 -
- 5 files changed, 3 insertions(+), 30 deletions(-)
+There is an expectation that the patch author responds to these
+AI-generated reviews as described above.
 
-diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
-index 93d78a5c1201..6de6d62adfde 100644
---- a/drivers/firmware/qcom/qcom_pas.c
-+++ b/drivers/firmware/qcom/qcom_pas.c
-@@ -166,22 +166,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
- }
- EXPORT_SYMBOL_GPL(qcom_pas_get_rsc_table);
- 
--/**
-- * qcom_pas_auth_and_reset() - Authenticate the given peripheral firmware
-- *			       and reset the remote processor
-- * @pas_id:	peripheral authentication service id
-- *
-- * Return: 0 on success.
-- */
--int qcom_pas_auth_and_reset(u32 pas_id)
--{
--	if (!ops_ptr)
--		return -ENODEV;
--
--	return ops_ptr->auth_and_reset(ops_ptr->dev, pas_id);
--}
--EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
--
- /**
-  * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
-  *				       remote processor
-diff --git a/drivers/firmware/qcom/qcom_pas.h b/drivers/firmware/qcom/qcom_pas.h
-index 8643e2760602..a296be2be8c0 100644
---- a/drivers/firmware/qcom/qcom_pas.h
-+++ b/drivers/firmware/qcom/qcom_pas.h
-@@ -18,8 +18,6 @@ struct device;
-  * @get_rsc_table:		Peripheral get resource table callback.
-  * @prepare_and_auth_reset:	Peripheral prepare firmware authentication and
-  *				reset callback.
-- * @auth_and_reset:		Peripheral firmware authentication and reset
-- *				callback.
-  * @set_remote_state:		Peripheral set remote state callback.
-  * @shutdown:			Peripheral shutdown callback.
-  * @metadata_release:		Image metadata release callback.
-@@ -37,7 +35,6 @@ struct qcom_pas_ops {
- 			       size_t *output_rt_size);
- 	int (*prepare_and_auth_reset)(struct device *dev,
- 				      struct qcom_pas_context *ctx);
--	int (*auth_and_reset)(struct device *dev, u32 pas_id);
- 	int (*set_remote_state)(struct device *dev, u32 state, u32 pas_id);
- 	int (*shutdown)(struct device *dev, u32 pas_id);
- 	void (*metadata_release)(struct device *dev,
-diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
-index ac33a00687aa..dbab9a43e6ca 100644
---- a/drivers/firmware/qcom/qcom_pas_tee.c
-+++ b/drivers/firmware/qcom/qcom_pas_tee.c
-@@ -320,11 +320,6 @@ static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
- 	return ret;
- }
- 
--static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
--{
--	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
--}
--
- static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
- 					       struct qcom_pas_context *ctx)
- {
-@@ -401,7 +396,6 @@ static struct qcom_pas_ops qcom_pas_ops_tee = {
- 	.init_image		= qcom_pas_tee_init_image,
- 	.mem_setup		= qcom_pas_tee_mem_setup,
- 	.get_rsc_table		= qcom_pas_tee_get_rsc_table,
--	.auth_and_reset		= qcom_pas_tee_auth_and_reset,
- 	.prepare_and_auth_reset	= qcom_pas_tee_prepare_and_auth_reset,
- 	.set_remote_state	= qcom_pas_tee_set_remote_state,
- 	.shutdown		= qcom_pas_tee_shutdown,
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index dc57c87870cf..08b9c5049dd9 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -845,7 +845,7 @@ static void *qcom_scm_pas_get_rsc_table(struct device *dev,
- 	return ret ? ERR_PTR(ret) : tbl_ptr;
- }
- 
--static int qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
-+static int __qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
- {
- 	int ret;
- 	struct qcom_scm_desc desc = {
-@@ -886,7 +886,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
- 	 * memory region and then invokes a call to TrustZone to authenticate.
- 	 */
- 	if (!ctx->use_tzmem)
--		return qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
-+		return __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 
- 	/*
- 	 * When Linux runs @ EL2 Linux must create the shmbridge itself and then
-@@ -896,7 +896,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	ret = qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
-+	ret = __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
- 	qcom_tzmem_shm_bridge_delete(handle);
- 
- 	return ret;
-@@ -977,7 +977,6 @@ static struct qcom_pas_ops qcom_pas_ops_scm = {
- 	.init_image		= qcom_scm_pas_init_image,
- 	.mem_setup		= qcom_scm_pas_mem_setup,
- 	.get_rsc_table		= qcom_scm_pas_get_rsc_table,
--	.auth_and_reset		= qcom_scm_pas_auth_and_reset,
- 	.prepare_and_auth_reset	= qcom_scm_pas_prepare_and_auth_reset,
- 	.set_remote_state	= qcom_scm_pas_set_remote_state,
- 	.shutdown		= qcom_scm_pas_shutdown,
-diff --git a/include/linux/firmware/qcom/qcom_pas.h b/include/linux/firmware/qcom/qcom_pas.h
-index 1d132e89536e..07d0f1fad85f 100644
---- a/include/linux/firmware/qcom/qcom_pas.h
-+++ b/include/linux/firmware/qcom/qcom_pas.h
-@@ -46,7 +46,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
- 					      void *input_rt, size_t input_rt_size,
- 					      size_t *output_rt_size);
- int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size);
--int qcom_pas_auth_and_reset(u32 pas_id);
- int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx);
- int qcom_pas_set_remote_state(u32 state, u32 pas_id);
- int qcom_pas_shutdown(u32 pas_id);
+In order to move things along I'll provide some feedback on this one
+(but not the other's for this patchset).
+
+> - [Medium] rnpgbe_probe() replaces the previously error-checked
+>   `dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(56))` (which aborted…
+> - [Medium] In this patch ndo_start_xmit becomes reachable before the TX
+>   ring software resources exist: rnpgbe_add_adapter() calls…
+> - [Low] In drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h,
+>   RESV_DESC_NEEDED is documented as "2 desc gap to keep tail from…
+> - [Low] Two headers touched by the patch are not self-contained.
+> - [Low] The patch builds an RCU protocol for the
+>   mucse->tx_ring[]/rx_ring[] slots (adds `struct rcu_head rcu` to struct…
+> 
+> --
+> 
+> net: rnpgbe: Add basic TX packet transmission support
+> 
+> This adds the TX path for rnpgbe: the TX descriptor layout and buffer
+> management, rnpgbe_xmit_frame_ring(), TX ring setup/teardown, TX completion
+> handling in rnpgbe_clean_tx_irq(), and per-ring TX stats reported through
+> ndo_get_stats64(). It also switches the DMA mask setup to
+> dma_set_mask_and_coherent() and enables NETIF_F_SG/NETIF_F_HIGHDMA.
+> 
+> A few questions below.
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> > index 40e41521a279..864cbf0caf44 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> 
+> [ ... ]
+> 
+> > @@ -69,31 +135,37 @@ struct mucse_q_vector {
+> >  	int hw_vector;
+> >  	struct mucse_ring_container rx, tx;
+> >  	struct napi_struct napi;
+> > +	struct rcu_head rcu;
+> >  	char name[IFNAMSIZ + 18];
+> >  	/* for dynamic allocation of rings associated with this q_vector */
+> >  	struct mucse_ring ring[] ____cacheline_internodealigned_in_smp;
+> >  };
+> >
+> > -struct mucse_stats {
+> > -	u64 tx_dropped;
+> > -};
+> > -
+> >  #define MAX_Q_VECTORS 8
+> >
+> > +#define M_DEFAULT_TXD     512
+> > +#define M_DEFAULT_TX_WORK 256
+> > +
+> > +enum mucse_state_t {
+> > +	__MUCSE_AXI_FAULT,
+> > +};
+> > +
+> >  struct mucse {
+> >  	struct net_device *netdev;
+> >  	struct pci_dev *pdev;
+> >  	struct mucse_hw hw;
+> > -	struct mucse_stats stats;
+> >  	struct mucse_ring *tx_ring[RNPGBE_MAX_QUEUES]
+> >  		____cacheline_aligned_in_smp;
+> >  	struct mucse_ring *rx_ring[RNPGBE_MAX_QUEUES]
+> >  		____cacheline_aligned_in_smp;
+> 
+> [Severity: Low]
+> The patch introduces an RCU protocol for these slots: struct mucse_q_vector
+> gains an rcu_head, rnpgbe_free_q_vector() switches from kfree() to
+> kfree_rcu(), and rnpgbe_get_stats64() reads the slots under
+> rcu_read_lock(). Should the arrays carry __rcu and should the publish and
+> consume sides use rcu_assign_pointer()/rcu_dereference() rather than
+> WRITE_ONCE()/READ_ONCE()?
+> 
+> In rnpgbe_alloc_q_vector() the store is:
+> 
+> 	ring->pfvfnum = hw->pfvfnum;
+> 	u64_stats_init(&ring->syncp);
+> 	WRITE_ONCE(mucse->tx_ring[ring->queue_index], ring);
+> 
+> WRITE_ONCE() carries no release semantics, so the pointer store is not
+> ordered against the preceding ring->dev/ring->count/ring->netdev stores or
+> u64_stats_init(&ring->syncp), and rnpgbe_get_stats64() reads the slot with a
+> plain READ_ONCE().
+> 
+> Today this looks unreachable: rnpgbe_alloc_q_vector() runs from
+> rnpgbe_init_interrupt_scheme() before register_netdev(), and
+> rnpgbe_free_q_vector() runs either on the probe error path or after
+> unregister_netdev(), so no ndo_get_stats64 caller can race. Would it be
+> worth completing the idiom now, before any runtime queue reconfiguration or
+> reset path is added, and so sparse/RCU checkers can validate it?
+
+I did not dig deeply, but it I think it would be best if this was addressed
+as part of this patch-set.
+
+> [ ... ]
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> > index 0dce78e4a91b..6dc29ebe6fa7 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> > @@ -7,13 +7,20 @@
+> > +#define RNPGBE_DMA_STATUS              0x0008
+> > +#define TX_AXI_RW_EN                   0xc
+> > +/* DMA_STATUS_REG[23:20]: tx_wr, tx_rd, rx_wr, rx_rd done status. */
+> > +#define RNPGBE_DMA_TX_STATUS           GENMASK_U32(23, 22)
+> 
+> [Severity: Low]
+> This isn't a bug, but rnpgbe_hw.h has no #include lines at all while now
+> using GENMASK_U32() (and BIT() already). It builds only because the .c files
+> happen to pull in the right headers first. Would adding
+> #include <linux/bits.h> here make sense? The driver's other GENMASK_U32
+> users, rnpgbe_mbx.c and rnpgbe_mbx_fw.c, do include <linux/bitfield.h>.
+
+This also looks like it should be addressed.
+
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> > index 9196fa130ca9..af5cef987051 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> 
+> [ ... ]
+> 
+> > +static int rnpgbe_tx_map(struct mucse_ring *tx_ring,
+> > +			 struct mucse_tx_buffer *first, u32 mac_ip_len,
+> > +			 u32 tx_flags)
+> > +{
+> 
+> [ ... ]
+> 
+> > +	if (size) {
+> > +		dma = dma_map_single(tx_ring->dev, skb->data, size,
+> > +				     DMA_TO_DEVICE);
+> > +		first->mapped_as_page = false;
+> 
+> [ ... ]
+> 
+> > +	/* write last descriptor with RS and EOP bits */
+> > +	tx_desc->vlan_cmd_bsz = build_ctob(tx_flags | M_TXD_CMD_EOP |
+> > +					   M_TXD_CMD_RS,
+> > +					   mac_ip_len, size);
+> 
+> [Severity: Low]
+> This isn't a bug, but rnpgbe_tx_map() only ever writes data descriptors
+> (pkt_addr plus build_ctob()), with tx_flags hardcoded to 0 and mac_ip_len
+> fixed at M_DEFAULT_MAC_IP_LEN, so the "1 desc for context descriptor"
+> comment on RESV_DESC_NEEDED in rnpgbe_lib.h describes a descriptor class the
+> code never emits. Should the comment be trimmed to the two-descriptor gap
+> until the offload code that needs the context descriptor lands?
+
+I think that as long as the descriptors are used in this patch-set the
+current code seems fine. But I'd lean towards trimming things if that
+is not the case.
+
+> 
+> [ ... ]
+> 
+> > +netdev_tx_t rnpgbe_xmit_frame_ring(struct sk_buff *skb,
+> > +				   struct mucse_ring *tx_ring)
+> > +{
+> 
+> [ ... ]
+> 
+> > +	/* record the location of the first descriptor for this packet */
+> > +	first = &tx_ring->tx_buffer_info[tx_ring->next_to_use];
+> > +	first->skb = skb;
+> 
+> [Severity: Medium]
+> Can this dereference a NULL tx_buffer_info during the first ifup?
+> 
+> At this patch rnpgbe_add_adapter() calls register_netdev() without
+> netif_carrier_off() or netif_tx_stop_all_queues(), and __dev_open() sets
+> __LINK_STATE_START before calling ndo_open, so all three conditions checked
+> by __dev_direct_xmit() are satisfied while rnpgbe_open() is still running:
+> 
+> 	netif_running() && netif_carrier_ok() &&
+> 	!netif_xmit_frozen_or_drv_stopped()
+> 
+> An AF_PACKET socket with PACKET_QDISC_BYPASS can then enter
+> rnpgbe_xmit_frame() -> rnpgbe_xmit_frame_ring() in the window inside
+> rnpgbe_open():
+> 
+> 	err = netif_set_real_num_queues(netdev, mucse->num_tx_queues,
+> 					mucse->num_rx_queues);
+> 	if (err)
+> 		goto err_free_irqs;
+> 
+> 	err = rnpgbe_setup_all_tx_resources(mucse);
+> 
+> where tx_buffer_info is still NULL, and a slightly later landing reaches
+> writel(i, tx_ring->tail) in rnpgbe_tx_map() with tail still NULL.
+> 
+> The window is closed later in the series by "net: rnpgbe: Add link status
+> handling support", which adds netif_carrier_off() before register_netdev()
+> and at the top of rnpgbe_open(). Would it make sense to fold that
+> netif_carrier_off() into this patch so it stands on its own?
+
+I think it would be best to address this problem in this patch.
+
+> 
+> [ ... ]
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+> > index d38c08df6b7c..1fe290ed224d 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+> 
+> [ ... ]
+> 
+> > +#define M_MAX_TXD_PWR             12
+> > +#define M_MAX_DATA_PER_TXD        (0x1 << M_MAX_TXD_PWR)
+> > +#define TXD_USE_COUNT(S)          DIV_ROUND_UP((S), M_MAX_DATA_PER_TXD)
+> > +#define DESC_NEEDED               (MAX_SKB_FRAGS + 4)
+> > +/* 2 desc gap to keep tail from touching head */
+> > +/* 1 desc for context descriptor */
+> > +#define RESV_DESC_NEEDED          3
+> 
+> [Severity: Low]
+> Same self-containment question as for rnpgbe_hw.h: rnpgbe_lib.h has no
+> #include lines, yet now uses MAX_SKB_FRAGS and DIV_ROUND_UP here, and
+> netdev_tx_t, struct sk_buff, struct net_device and struct rtnl_link_stats64
+> in the prototypes below. Should it include <linux/skbuff.h> and
+> <linux/netdevice.h> so it does not depend on include order in the .c files?
+> 
+> > @@ -31,4 +53,12 @@ void rnpgbe_free_irq(struct mucse *mucse);
+> > +netdev_tx_t rnpgbe_xmit_frame_ring(struct sk_buff *skb,
+> > +				   struct mucse_ring *tx_ring);
+> > +void rnpgbe_get_stats64(struct net_device *netdev,
+> > +			struct rtnl_link_stats64 *stats);
+> >  #endif
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> > index debed2f3fe64..cdda5f3d09b2 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> 
+> [ ... ]
+> 
+> > @@ -206,6 +247,13 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
+> >  		goto err_clear_interrupt;
+> >  	}
+> >
+> > +	netdev->features |= NETIF_F_SG;
+> > +	netdev->hw_features |= NETIF_F_SG;
+> > +	if (dma_get_mask(&pdev->dev) > DMA_BIT_MASK(32)) {
+> > +		netdev->features |= NETIF_F_HIGHDMA;
+> > +		netdev->hw_features |= NETIF_F_HIGHDMA;
+> > +	}
+> > +
+> >  	err = register_netdev(netdev);
+> >  	if (err)
+> >  		goto err_remove_mbx;
+> 
+> > @@ -248,12 +296,7 @@ static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> >  	if (err)
+> >  		return err;
+> >
+> > -	err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(56));
+> > -	if (err) {
+> > -		dev_err(&pdev->dev,
+> > -			"No usable DMA configuration, aborting %d\n", err);
+> > -		goto err_disable_dev;
+> > -	}
+> > +	dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(56));
+> 
+> [Severity: Medium]
+> Should the return value of dma_set_mask_and_coherent() still be checked
+> here? The previous code aborted probe and printed "No usable DMA
+> configuration, aborting", and dma_set_mask_and_coherent() is a plain static
+> inline int with no __must_check, so a failure is now completely silent.
+> 
+> If dma_supported() rejects a 56-bit mask, neither the streaming nor the
+> coherent mask is changed, the device keeps the PCI core's 32-bit default,
+> and probe continues through pci_request_mem_regions() to register_netdev().
+> 
+> The dma_get_mask() test above keeps highmem frags away by not setting
+> NETIF_F_HIGHDMA, but it does not cover the linear-data mapping in
+> rnpgbe_tx_map():
+> 
+> 	dma = dma_map_single(tx_ring->dev, skb->data, size,
+> 			     DMA_TO_DEVICE);
+> 	...
+> 	if (dma_mapping_error(tx_ring->dev, dma))
+> 		goto err_unmap;
+> 
+> nor the descriptor allocation in rnpgbe_setup_tx_resources():
+> 
+> 	tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size, &tx_ring->dma,
+> 					   GFP_KERNEL);
+> 
+> So every frame whose linear data sits above 4GB would be dropped with only
+> the private per-ring dropped counter moving and no kernel message.
+> 
+> The commit message says only:
+> 
+>   "Configure streaming and coherent DMA masks for the hardware's 56-bit
+>   DMA addressing capability."
+> 
+> Could it also state that a DMA configuration failure is now non-fatal and
+> unreported, or could the check and the error path be restored?
+> 
+> The call is still unchecked at the end of the series, so no later patch
+> covers this.
+
+I wonder if this is a side-effect of the development of this patch-set.
+It does look like a regression that should be addressed in this patch.
+
 -- 
-2.55.0
-
+pw-bot: changes-requested
