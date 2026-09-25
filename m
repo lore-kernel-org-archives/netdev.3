@@ -1,135 +1,97 @@
-Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643904349BD
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797CC1DDC38
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790320462; cv=none; b=hf7zRxy9iDKcL+JyEvLIrE1kQPSGKVaq2qkawYKc69dIViULpaO7pEKC2uX5l8dFn84Kvx1QHZM/jAzoIWpkm0zXD5kTyrbGOYCcLd1uGceE5GrKPI/RRzTb1xZ0h2a1Xtdx7xknR0XMvR/C9q50ghpBUi0S5s2wywDRKxbD+94=
+	t=1790320744; cv=none; b=SNZXKsMHctxmNZgh4u8Q2OZe0nPdQR4hHUVKEpB9czeuwZcnU9SrRclmzvr/IAclcKDmwvlnelnYrLJ4tWSaFgDvXXMqWknu6VUU0Ap1KRR7gIGaptmeN49rPagsdJtUSCQEl2Mj+fBbZBfYn3HYb6AhQtxuZ5ZiTNjzwO+0+4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790320462; c=relaxed/simple;
-	bh=SwpuzL1Jkzeuc6xr64HQNzwYeDQfGY7uc9Y+9bwkrLE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZxlPsh/fCKFbFtcTT+IC8I/dn8o/lJmXe8FiYtx4ImHjaktT2ZXTWz2gsVqZCkoVhVDmRBmecElMN3xKYNUkNnPaxSBs7EaYY21bjVls+gBVV/jdjGPiRWG9FRl5zZ6kUCo8Zg8jZMh2C7nT6eUluF4kO3NmVuvTbX//Lr+gJe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=YcZwG+ID; arc=none smtp.client-ip=141.95.128.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
+	s=arc-20240116; t=1790320744; c=relaxed/simple;
+	bh=wunzVgverBhRiUsz9U+PX33jIBCRD9wkVi1KnyqrITk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eshAOEMUUGhQjsrKcecURw5OYczlSY64wif6WOIJqgPvf7xC5HFAlyAtQmIGIqJ0NzlxeFVsgDKbByn1iBBocfVAXpQ38BlWR6KRKMXQV/SdtZGuNTQZcQ8DbkaWNdwCQKYpzPiHNrIcQyOgcs3/MNQL6qTKVe8JT0f6Ag6i1iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hJUwTU/Y; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="YcZwG+ID"
-Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
- S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Fri, 25 Sep 2026 09:14:06 +0200
-Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
- S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
- 15.02.2562.049; Fri, 25 Sep 2026 09:14:06 +0200
-From: Julien Blanc <julien.blanc@sprinte.eu>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "hkallweit1@gmail.com"
-	<hkallweit1@gmail.com>, "andrew@lunn.ch" <andrew@lunn.ch>, "kuba@kernel.org"
-	<kuba@kernel.org>
-Subject: Re: [PATCH net-next v5] Add config phase for dp83td510e phy
-Thread-Topic: [PATCH net-next v5] Add config phase for dp83td510e phy
-Thread-Index: AQHdSygYN6nNiWAG80qFHEx/wNe0ebbeWKoAgABqd4A=
-Date: Fri, 25 Sep 2026 07:14:06 +0000
-Message-ID: <78a05fa2fe478f2b6f8dde2c2395a694d977986d.camel@sprinte.eu>
-References: <30be27333dbf1a83efbe20e7b07acc6290805d65.camel@sprinte.eu>
-	 <179029759826.2160803.13747337609737038966@kernel.org>
-In-Reply-To: <179029759826.2160803.13747337609737038966@kernel.org>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <13D6E2656AEE164EA43FC918F6A9F638@EX793143.lan>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hJUwTU/Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790320742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wunzVgverBhRiUsz9U+PX33jIBCRD9wkVi1KnyqrITk=;
+	b=hJUwTU/YG9S3fBIhVA+sttMoUukHQjHI48Ej4H3v0DHuZz80kktXBxa+DO6P6tnGDqbzdq
+	ytjb1m/D3wZ18lmKE+XUicCJHd18zX7bMVGwfxhZAb7FaviBE9SkCymI/m/sIIa2eIK5Ie
+	KoKPY5ecGfXX9QQ4ffOJqq/79ECpbUU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-pHI5C_PAPKa_FE_kBufkgQ-1; Fri,
+ 25 Sep 2026 03:18:58 -0400
+X-MC-Unique: pHI5C_PAPKa_FE_kBufkgQ-1
+X-Mimecast-MFC-AGG-ID: pHI5C_PAPKa_FE_kBufkgQ_1790320737
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F17B180B5FA;
+	Fri, 25 Sep 2026 07:18:56 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5A14D1800351;
+	Fri, 25 Sep 2026 07:18:52 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kuba@kernel.org
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/4] iavf: return EBUSY if reset in progress or not ready during MAC change
+Date: Fri, 25 Sep 2026 09:18:43 +0200
+Message-ID: <20260925071850.53292-1-jtornosm@redhat.com>
+In-Reply-To: <20260915092418.0aafd079@kernel.org>
+References: <20260915092418.0aafd079@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
- c=relaxed/relaxed; t=1790320446; h=from:to:subject:date;
- bh=SwpuzL1Jkzeuc6xr64HQNzwYeDQfGY7uc9Y+9bwkrLE=;
- b=YcZwG+ID1XP7XYKbZ+E6JU1gMBkeFkFFOcJh5Yu2e8PXlZTtSD1UpFUJt5zn4z9NtuJWPrc6osdTh8yw9PwviS9d84mzB+zQ+9ce+XJa9BoGsNOY/V83blQa/JC3sxVgLh9jKHG4GtdLuZ/5omkvP9ug4v9Vudt82olyav4tYhK1QwldtbsXuTMR9BgiQ/uFvykSmByQXkttd/CkJHP9wkEbcgCiUaAdivcNTn6MSaE/hfQzqBBCVQxZFtm5itQWJVRmY4xEsgA+U2YTWiKMaODcQwLjXYoNH8fzPrs+xNErGWUZU81Qf53+ePWmZrCh0MiyKIVkED3byqo4gYYhjA==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-TGUgdmVuZHJlZGkgMjUgc2VwdGVtYnJlIDIwMjYgw6AgMDA6NTMgKzAwMDAsIG5ldGRldi1ib3Qr
-c2FzaGlrb0BrZXJuZWwub3JnIGENCsOpY3JpdMKgOg0KPiBUaGFuayB5b3UgZm9yIHlvdXIgY29u
-dHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3VuZCAzIHBvdGVudGlhbA0KPiBpc3N1ZShz
-KSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAwIMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAy
-IMK3IExvdzogMQ0KPiANCj4gW1NldmVyaXR5OiBMb3ddDQo+IFRoaXMgaXNuJ3QgYSBidWcsIGJ1
-dCB0aGUgc3ViamVjdCBoYXMgbm8gc3Vic3lzdGVtIHByZWZpeC4gbmV0ZGV2IHVzdWFsbHkNCj4g
-ZXhwZWN0cyBzb21ldGhpbmcgbGlrZToNCj4gDQo+IMKgIG5ldDogcGh5OiBkcDgzdGQ1MTA6IGFk
-ZCBjb25maWdfaW5pdCB0byBzZXQgTUlJIG1vZGUgYW5kIFJHTUlJIGRlbGF5cw0KDQpXaWxsIGZp
-eCwgdjYgY29taW5nIHNvb24uDQoNCj4gPiBBZGQgYSBjb25maWcgcGhhc2UgZm9yIHRoZSBUZXhh
-cyBJbnN0cnVtZW50cyBEUDgzVEQ1MTBFIGV0aGVuZXQgUEhZDQo+IA0KPiBUaGVyZSdzIGEgdHlw
-byBoZXJlOiAiZXRoZW5ldCIgc2hvdWxkIGJlICJldGhlcm5ldCIuDQoNClNhbWUNCg0KPiANCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBKdWxpZW4gQmxhbmMgPGp1bGllbi5ibGFuY0BzcHJpbnRlLmV1Pg0K
-PiA+IA0KPiA+IFJldmlld2VkLWJ5OiBBbmRyZXcgTHVubiA8YW5kcmV3QGx1bm4uY2g+DQo+IA0K
-PiBBIGJsYW5rIGxpbmUgc2l0cyBiZXR3ZWVuIFNpZ25lZC1vZmYtYnkgYW5kIFJldmlld2VkLWJ5
-LCB3aGljaCBzcGxpdHMgdGhlDQo+IHRyYWlsZXIgYmxvY2suIEJlY2F1c2Ugb2YgdGhhdCwgZ2l0
-IGludGVycHJldC10cmFpbGVycyBhbmQgYjQgd29uJ3QgdHJlYXQNCj4gU2lnbmVkLW9mZi1ieSBh
-cyBhIHRyYWlsZXIuIENvdWxkIHRoZSBibGFuayBsaW5lIGJlIHJlbW92ZWQ/DQoNCk5vdGVkIGFz
-IHdlbGwgZm9yIHY2Lg0KPiANCj4gVGhpcyBSQ1NSIGxheW91dCBpcyBpZGVudGljYWwgdG8gdGhl
-IERQODM4MjIgb25lOiByZWdpc3RlciAweDE3LA0KPiBSTUlJX01PREVfRU4gYXQgQklUKDUpLCBS
-R01JSV9NT0RFX0VOIGF0IEJJVCg5KSwgVFhfQ0xLX1NISUZUIGF0IEJJVCgxMSkNCj4gYW5kIFJY
-X0NMS19TSElGVCBhdCBCSVQoMTIpLiBPbiB0aGUgRFA4MzgyMiwgc2V0dGluZyB0aGUgVFggc2hp
-ZnQgYml0DQo+IHR1cm5zIHRoZSBUWCBpbnRlcm5hbCBkZWxheSBvZmY6DQo+IA0KPiBkcml2ZXJz
-L25ldC9waHkvZHA4MzgyMi5jOmRwODM4MjJfY29uZmlnX2luaXQoKSB7DQo+IMKgwqDCoCAuLi4N
-Cj4gCQkvKiBTZXQgRFA4MzgyMl9UWF9DTEtfU0hJRlQgdG8gZGlzYWJsZSB0eCBjbGsgaW50ZXJu
-YWwgZGVsYXkNCj4gKi8NCj4gCQlpZiAodHhfaW50X2RlbGF5IDw9IDApDQo+IAkJCXJnbWlpX2Rl
-bGF5IHw9IERQODM4MjJfVFhfQ0xLX1NISUZUOw0KPiDCoMKgwqAgLi4uDQo+IH0NCj4gDQo+IFRo
-ZSBEUDgzODIyIGRyaXZlciB1c2VkIHRvIGdldCB0aGlzIGJhY2t3YXJkcywgYW5kIGl0IHdhcyBm
-aXhlZCBpbiBjb21taXQNCj4gYzhhNWM3MzFmZDEyICgibmV0OiBwaHk6IGRwODM4MjI6IEZpeCBS
-R01JSSBUWCBkZWxheSBjb25maWd1cmF0aW9uIikuIFRoYXQNCj4gY29tbWl0IGNpdGVzIHRoZSBE
-UDgzODIyIGRhdGFzaGVldCBhbmQgc2F5cyB0aGUgVFggY2xvY2sgc2hpZnQgaXMgZGlzYWJsZWQN
-Cj4gd2hlbiB0aGUgYml0IGlzIHNldC4NCj4gDQo+IElmIGJpdCAxMSBvZiB0aGUgRFA4M1RENTEw
-RSByZWdpc3RlciB3b3JrcyB0aGUgc2FtZSB3YXksIGV2ZXJ5IFJHTUlJIG1vZGUNCj4gd291bGQg
-Z2V0IHRoZSB3cm9uZyBUWCBkZWxheToNCg0KTm8sIGZvciBEUDgzVEQ1MTBFLCB0aGUgZGF0YXNo
-ZWV0IHN0YXRlcyB0aGF0IDoNCg0KMTIgY2ZnX3JnbWlpX3J4X2Nsa19zaGlmdF9zZWwgUi9XIDB4
-MCAxYiA9IFJHTUlJIFJYIGNsb2NrIGFuZCBkYXRhIGFyZSBzaGlmdGVkDQogICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIDBiID0gUkdNSUkgUlggY2xvY2sgYW5kIGRhdGEgYXJl
-IGFsaWduZWQNCjExIGNmZ19yZ21paV90eF9jbGtfc2hpZnRfc2VsIFIvVyAweDAgMWIgPSBSR01J
-SSBUWCBjbG9jayBhbmQgZGF0YSBhcmUgc2hpZnRlZA0KICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAwYiA9IFJHTUlJIFRYIGNsb2NrIGFuZCBkYXRhIGFyZSBhbGlnbmVkDQoN
-CldoaWxlIHRoZSB0ZXh0IGlzIHVuY2xlYXIsIHRoaXMgYWN0dWFsbHkgbWVhbnMgdGhhdCB3cml0
-aW5nIGEgMSBlbmFibGVzIHRoZQ0KaW50ZXJuYWwgZGVsYXkuIFNvIHdoYXQgdGhlIHBhdGNoIGRv
-ZXMgaXMgY29ycmVjdCBhcyB0aGUgRFA4M1RENTEwZSBkb2VzIG5vdA0Kd29yayBsaWtlIHRoZSBE
-UDgzODIyLiBJJ2xsIGFkZCBhIG5vdGUgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLg0KDQo+ID4gKw0K
-PiA+ICsJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVORDIsDQo+ID4g
-RFA4M1RENTEwRV9SQ1NSLA0KPiA+ICsJCQkJwqDCoMKgwqAgRFA4M1RENTEwRV9SWF9DTEtfU0hJ
-RlQgfA0KPiA+ICsJCQkJwqDCoMKgwqAgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQsDQo+ID4gKwkJ
-CQnCoMKgwqDCoCByZ21paV9kZWxheSk7DQo+ID4gKwkJaWYgKHJldCkNCj4gPiArCQkJcmV0dXJu
-IHJldDsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBJbiB0aGUgUkdNSUkgYnJhbmNoLCBk
-cDgzdGQ1MTBfY29uZmlnX2luaXQoKSB1c2VzIHBoeV9zZXRfYml0c19tbWQoKQ0KPiB0byBzZXQg
-RFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLiBUaGF0IGxlYXZlcyBEUDgzVEQ1MTBFX1JNSUlfTU9E
-RV9FTg0KPiBhcyBpdCB3YXMuDQo+IA0KPiBUaGUgUk1JSSBicmFuY2gganVzdCBiZWxvdyB0cmVh
-dHMgdGhlIHR3byBiaXRzIGFzIG11dHVhbGx5IGV4Y2x1c2l2ZS4NCj4gSXRzIGNvbW1lbnQgc2F5
-cyBzbywgYW5kIGl0IGNsZWFycyBSR01JSV9NT0RFX0VOIHdoZW4gaXQgc2V0cw0KPiBSTUlJX01P
-REVfRU4uIFRoZSBSR01JSSBicmFuY2ggZG9lc24ndCBkbyB0aGUgcmV2ZXJzZS4NCg0KUGVyIHRo
-ZSBkYXRhc2hlZXQgOg0KDQo5IGNmZ19yZ21paV9lbiAgICBSL1cgMHgwIDFiID0gUkdNSUkgZW5h
-YmxlDQogICAgICAgICAgICAgICAgICAgICAgICAgIDBiID0gUkdNSUkgZGlzYWJsZQ0KNSBjZmdf
-cm1paV9tb2RlICAgUi9XIDB4MCAxYiA9IFJNSUkgTUFDDQogICAgICAgICAgICAgICAgICAgICAg
-ICAgIDBiID0gTUlJIE1BQw0KICAgICAgICAgICAgICAgICAgICAgICAgICAoMHgxN1s5XSBzaG91
-bGQgYmUgZGlzYWJsZWQpDQoNClNvIHRoZXJlJ3Mgbm8gbmVlZCB0byBjbGVhciB0aGUgYml0IDUg
-d2hlbiBlbmFibGluZyBSR01JSSwgYnV0IGl0IGlzIG5lZWRlZCB3aGVuDQplbmFibGluZyBSTUlJ
-LCBiZWNhdXNlIG90aGVyd2lzZSBSR01JSSBtb2RlIHdvdWxkIGJlIHNlbGVjdGVkLCB3aGF0ZXZl
-ciBpcyBoZWxkDQppbiBiaXQgNS4gSXQncyBub3QgIm11dHVhbGx5IGV4Y2x1c2l2ZSIsIGJ1dCBy
-YXRoZXIgIlJHTUlJIGJpdCBoYXMgcHJpb3JpdHkiLg0KDQpTaG91bGQgaSBjaGFuZ2UgdGhlIGNv
-bW1lbnQgYWNjb3JkaW5nbHk/ICh0aGUgY29tbWVudCBpcyBpbmRlZWQgbWlzbGVhZGluZykuDQoN
-Cj4gDQo+IFN1cHBvc2UgdGhlIHN0cmFwcyBvciB0aGUgYm9vdGxvYWRlciBsZWZ0IFJNSUlfTU9E
-RV9FTiBzZXQgaW4gUkNTUiwNCj4gYW5kIHRoZSBkZXZpY2UgdHJlZSBzYXlzIHBoeS1tb2RlID0g
-InJnbWlpKiIuIFRoZW4gdGhlIFBIWSBlbmRzIHVwDQo+IHdpdGggYm90aCBtb2RlIGJpdHMgc2V0
-LiBCeSB0aGUgcGF0Y2gncyBvd24gcmVhc29uaW5nIHRoYXQgaXMgbm90IGENCj4gdmFsaWQgc3Rh
-dGUsIGFuZCB0aGUgTUFDIGludGVyZmFjZSBtYXkgbmV2ZXIgY29tZSB1cC4NCj4gDQo+IENvdWxk
-IHRoaXMgdXNlIHBoeV9tb2RpZnlfbW1kKCkgaW5zdGVhZD8gVGhlIG1hc2sgd291bGQgYmUNCj4g
-RFA4M1RENTEwRV9STUlJX01PREVfRU4gfCBEUDgzVEQ1MTBFX1JHTUlJX01PREVfRU4gYW5kIHRo
-ZSB2YWx1ZQ0KPiBEUDgzVEQ1MTBFX1JHTUlJX01PREVfRU4sIG1pcnJvcmluZyB0aGUgUk1JSSBi
-cmFuY2guIFRoZSBSWC9UWCBjbG9jaw0KPiBzaGlmdCBiaXRzIGNvdWxkIGJlIGZvbGRlZCBpbnRv
-IHRoZSBzYW1lIHJlYWQtbW9kaWZ5LXdyaXRlLCBzbyBSQ1NSIGlzDQo+IG9ubHkgd3JpdHRlbiBv
-bmNlLg0KDQpUaGF0IHdvdWxkIHdvcmssIGJ1dCBpdCBpcyBhY3R1YWxseSBhIGJpdCBvZGQgdG8g
-Zm9yY2UgTUlJIG1vZGUgb3ZlciBSTUlJLCB3aGVuDQp0aGF0IGJpdCBpcyBub3QgcmVsZXZhbnQg
-YXQgYWxsIHdoZW4gUkdNSUkgaXMgZW5hYmxlZC4gT3RoZXIgb3BpbmlvbnM/DQoNClJlZ2FyZHMs
-DQoNCkp1bGllbg0K
+Hi Jakub,
+
+Would you be ok with dropping patch 1/4 and resubmitting only
+patches 2-4?
+
+Patch 1/4 was originally needed to avoid the 2.5s wait during
+reset with netdev_lock held. With patch 3/4 replacing the
+wait_event with a synchronous send + poll, the original concern
+is already addressed. During reset (if necessary), if it times
+out it will return, same behavior as the pre-patch code. Patch
+1/4 becomes just an extra precaution, not strictly required, so
+it can be removed.
+
+The core fix is in patch 3/4 which carries the Fixes: tag.
+Patches 2/4 and 4/4 avoid unnecessary VF resets when changing
+trust, reducing disruption and wait times.
+
+Thanks
+
+Best regards
+José Ignacio
+
