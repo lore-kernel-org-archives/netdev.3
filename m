@@ -1,151 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D07C4A7CA5;
-	Fri, 25 Sep 2026 13:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B724A1DE4
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344350; cv=none; b=eBB6OzPDKnRMPUW7Zz0Dt8zZ4htBs5mz3s9rDj65sB4HWdTihaaEFwKc0+/l71tpKdqQLEZzCVdCXAuDXtyYLE2ZjfTB1TZ+D6vEJTcFp3irwjT2hfETySUI1W0m5O3MCrBYZ/XgjLiFYjjYJ2ifPXZIU2eTF6HFn5tnylT4w2Q=
+	t=1790344369; cv=none; b=fBg1fFrT2XLOHXKEvB/hJsOlYT8z+FoEQ8T0zOEzmKvPb93Je5DqSMSejemhkRBtc28hggrI6c1mjlH968RiyRar4zuxsERNx6I3oDkgvvkrDycJ0ATvbjoiSleYrJPXtS7nQyfywPtvIbTU4GlDyua8nX1sYfS3tJzxGKhsNVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344350; c=relaxed/simple;
-	bh=3ZwrtGEgzfnJfpp/JNMb+qskrl4M7nAiLP15haxC12g=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h/lvwK4S4BULDDIvuMNpbFp7NXFXZ65pHNtgKGLIEoxN8WyjPr/EcgjDcZStR5yc+cGgJSxKqDeME67KaXcUfcXMScEVD3fhYlIPdfTBZH5D0HqShoEKcyy01R7jVWODNfuw4wTCIDeyownHwUst5aVTEcRP9D/VLaaG3ncO/Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSNkHMwN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790344369; c=relaxed/simple;
+	bh=4+fSNyWUx4JFT3jWS0EsLgyWNB5lPPi4Dd/8QIFXo0o=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FtlxfEHSCxzKOb/wWzqwKZByWdNTNHcx2baIiNe5ZvrJGKNsfW8EGblspPZDOGGnbHU7wlklFnSbIphRa7HugC4i8WQxQGtFvDqAwPvdBC5OXGOy/5jrjfqQCfaD/7/cWZxs0fb9mxdnglCrg4GzhhIsI4V4HEWaktQQQRdgNt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DFLwwcUB; arc=none smtp.client-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSNkHMwN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9661F00893;
-	Fri, 25 Sep 2026 13:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790344348;
-	bh=Kw7fCq2tAP6shzD4hEnIRaBnhicH7vAPWucV0s/ym6M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NSNkHMwNACBGBo3GRBR6ungCcNwdsrdoR0QZxybVOVrGN/g/zJ6qIkIMaoIsF7/IY
-	 abSbjNxXSrpOjNH/7aZq6yoL5edgwjbF20/MVxYEw8fRb3wdy9sOXdNy08mky7PH1C
-	 H329G79bsi4Naj1hqZOR0iOU0ceJFUcVMjiFjuxUpsM1EdNcKtlYdETfkaoiVjDdgI
-	 7rtiI0+aAEAPH3Qv0L5nQN/F/rypPHUw+U7Hkd+L1iDskM4psLcuI1CIx/Q8aexcEI
-	 bnAqdO3ZzXVH2r3XiBb8whvg+Kzo2+VsCLT86zUNQ5cF7PXcA0kqWtY6feT2MN86GO
-	 l+TGjZ3k3mhpQ==
-Subject: Re: [PATCH net v2 4/4] net: axienet: reprogram the link settings
- after a DMA error reset
-From: netdev-bot+sashiko@kernel.org
-To: maimon.sagi@gmail.com
-Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
- daniel@iogearbox.net, andybnac@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 13:52:27 +0000
-Message-ID: <179034434763.2160803.1935314662107834629@kernel.org>
-In-Reply-To: <20260924135116.185161-5-maimon.sagi@gmail.com>
-References: <20260924135116.185161-5-maimon.sagi@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DFLwwcUB"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939d6c515deso181278185a.3
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790344366; x=1790949166; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+g35WKgAij+rCTTh5HoMaOHnlqNuCBt7ZfS0tJ+Ug34=;
+        b=DFLwwcUBUEAqOPyrxJNiFqQukKhDxGewAFqK1l4m38GT8cTRW8qr98P6+R4SSbIoCo
+         McWZlb4RiPGwgYLMdtdliHLAYh7V+raZ2H/iRJEAzQYdVAB70v/j3XG2wSYpEhs+YcAi
+         CVCNFNyNxP3GwfRuIVDEdvJyQwxgI3jges18Kdi4tqPjPqQdqaVl6QXG/+9nKEA7Xsy9
+         2HCx0+9BjFn/T+NsL5zWlz6injrnupsgiCx7DDOLyoPrM/ezc9WfbqxL2z91FNyQRcCr
+         ywyp83sqcmQjEEIdOZXg75itvGY/ukKJ70zfs01NRE/QLDBL3iNTQRSBr9ggiO7waeOI
+         r/Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790344366; x=1790949166;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+g35WKgAij+rCTTh5HoMaOHnlqNuCBt7ZfS0tJ+Ug34=;
+        b=xHxDWg5wdjlJXu+duoNhd8kE5aIvn5DTFm43YtL38poMFjIWwEOOPg7FP89DAuA3aY
+         +51axSslgzggUb05ijYVYdo7QvgfXNwqvlcml0cildid89Ei3phU8tNMW17KzsuxrfN7
+         5RLP+6vgGAYSXq+KGXeN+mt3sJEeLFufEAMDli8WyEi2IQMCW/7kZpaCPtn9wn8nRuQM
+         FjUS3FDXxpx8NI7pcZlMKEyQ1NT53pJnDTJ4k6NlgN5bMAVcb7LBxtUsGHLE8j7wbfES
+         6BdWoTPwoDKTT5kzABXqxmTiSnXGv4xuVaDHderiNqeji3iX3Lza7GjTsqsjLgkzbHfI
+         JqRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwtIkcPvAgBv4ceRWepxYiOtaL4FPjdWHaMMa5Ro11EYKd4TX7sKXA3f/9IeXxAh9dr7TbKv5w=@vger.kernel.org
+X-Gm-Message-State: AFuF++nZfgWttFOwLqX4FcuOV8V/nWC2jMI+0Z1GfuYBKyJfqS+rOae5
+	SWq7c9YG9em4q1yveI1QNDMXjl34UZZbKhaCsSJXU9dbB2t1gF4xUCk5av6JJjRJ42ujGPwO/ln
+	sw3KDt7zckCLhYw==
+X-Received: from qkkf22.prod.google.com ([2002:a05:620a:15b6:b0:93c:3513:eb1e])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:3722:b0:93b:d8bc:a864 with SMTP id af79cd13be357-93c43d4b54fmr458532985a.65.1790344366309;
+ Fri, 25 Sep 2026 06:52:46 -0700 (PDT)
+Date: Fri, 25 Sep 2026 13:52:42 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260925135244.3715196-1-edumazet@google.com>
+Subject: [PATCH v2 net 0/2] net: fix SO_RESERVE_MEM socket type restriction
+ and value bounds
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Wei Wang <weiwan@google.com>, Simon Horman <horms@kernel.org>, 
+	Cai Xinchen <caixinchen1@huawei.com>, netdev@vger.kernel.org, edumazet@kernel.org, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+This series fixes two issues with SO_RESERVE_MEM and adds a kselftest suite:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+- Patch 1 restricts sock_reserve_memory() to TCP sockets (sk_is_tcp(sk))
+  instead of sk_has_account(sk), and caps the requested reservation to
+  SZ_1G in sk_setsockopt(SO_RESERVE_MEM).
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  Currently, sk_has_account(sk) allows SO_RESERVE_MEM on UDP sockets,
+  where sk->sk_forward_alloc is protected by sk->sk_receive_queue.lock
+  rather than the socket lock, and udp_rmem_release() does not account
+  for sk_unused_reserved_mem(sk). Concurrent UDP packet processing and
+  setsockopt(SO_RESERVE_MEM) corrupt sk_forward_alloc and memcg
+  accounting. In addition, values near INT_MAX overflow 32-bit signed
+  int in sk_mem_pages(delta) and (pages << PAGE_SHIFT).
 
-- [Medium] In axienet_dma_err_handler()
-  (drivers/net/ethernet/xilinx/xilinx_axienet_main.c:2804-2811), the new…
+- Patch 2 adds a kselftest (tools/testing/selftests/net/so_reserve_mem.c)
+  covering non-TCP rejection (UDP, AF_UNIX, SOCK_RAW, MPTCP), bounds
+  validation, reserve grow/shrink/rounding and SK_MEMINFO_FWD_ALLOC
+  reporting, cgroup v2 memory.max enforcement, accept() child zero-reserve
+  inheritance, and reserve retention across TCP traffic.
 
---
+v2:
+ - Patch 1: use page-aligned SZ_1G instead of INT_MAX >> 1 so values
+   returned by getsockopt(SO_RESERVE_MEM) always round-trip through
+   setsockopt(SO_RESERVE_MEM) (Sashiko).
+ - Patch 2: enable CONFIG_CGROUPS=y and CONFIG_MEMCG=y in
+   tools/testing/selftests/net/config, skip when memcg socket accounting
+   is unavailable, restore cgroup.subtree_control on teardown, accept
+   ENOPROTOOPT when MPTCP is disabled via sysctl, move the test process
+   out of cg_child before lowering memory.max, wait for
+   SK_MEMINFO_WMEM_QUEUED to drain before checking cfd forward alloc,
+   and drop the arch-specific SO_RESERVE_MEM fallback define (Sashiko).
+ - Link to v1: https://lore.kernel.org/netdev/20260924123602.1979090-1-edumazet@google.com/
 
-net: axienet: reprogram the link settings after a DMA error reset
+Eric Dumazet (2):
+  net: restrict SO_RESERVE_MEM to TCP sockets and cap max value
+  selftests/net: add SO_RESERVE_MEM test
 
-axienet_dma_err_handler() resets the AXI Ethernet core but never restores
-the link speed in XAE_EMMC, and it leaves XAE_FCC with only FCRX set. This
-patch calls phylink_mac_change(lp->phylink, false) at the end of the
-handler, so phylink takes the link down and back up and reruns
-axienet_mac_link_up(). The call uses the same condition as the queue wake.
-
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index f16dbfc7dc933..d53f7dc7bd223 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -2801,8 +2801,15 @@ static void axienet_dma_err_handler(struct work_struct *work)
->  	 * device was detached for suspend: axienet_stop() and axienet_open()
->  	 * own the queue state then.
->  	 */
-> -	if (!READ_ONCE(lp->stopping) && netif_device_present(ndev))
-> +	if (!READ_ONCE(lp->stopping) && netif_device_present(ndev)) {
-> +		/* The reset also cleared the link speed and pause settings,
-> +		 * which only axienet_mac_link_up() programs.  Have phylink take
-> +		 * the link down and up again so that it is called.  This must
-> +		 * follow the axienet_setoptions() above, which writes XAE_FCC.
-> +		 */
-> +		phylink_mac_change(lp->phylink, false);
-
-[Severity: Medium]
-Can the netif_device_present() check skip the relink during resume, even
-though phylink is already running at that point?
-
-The commit message says:
-
-    Skip it under the same conditions as the queue wake:
-    axienet_stop() stops phylink, and a resume restarts it.
-
-In axienet_resume(), though, phylink is restarted before the device is
-attached:
-
-axienet_resume()
-    rtnl_lock();
-    axienet_open(ndev);
-        axienet_device_reset(ndev);
-        phylink_start(lp->phylink);
-        axienet_init_legacy_dma(ndev);
-            lp->stopping = false;
-            request_irq(lp->tx_irq, ...);
-            request_irq(lp->rx_irq, ...);
-    rtnl_unlock();
-
-    netif_device_attach(ndev);
-
-Consider this sequence inside that window:
-
-1. phylink resolves the link and calls axienet_mac_link_up(). With a
-   fixed-link or in-band PCS this can happen quickly.
-2. A TX or RX DMA error interrupt schedules dma_err_task.
-3. axienet_dma_err_handler() resets the core through axienet_dma_stop(),
-   which clears the XAE_EMMC speed. It also rewrites XAE_FCC to FCRX only.
-4. The handler reaches the final check before netif_device_attach() has
-   run. It sees lp->stopping == false but netif_device_present() == false,
-   so it skips phylink_mac_change().
-
-netif_device_attach() then wakes the TX queue, so the queue wake gets a
-second chance. Nothing reruns axienet_mac_link_up(), so the MAC stays at
-its reset-default speed and pause settings. That is the state this patch
-is meant to fix.
-
-phylink already ignores the notification while it is stopped:
-
-phylink_run_resolve()
-    if (!pl->phylink_disable_state)
-        queue_work(system_power_efficient_wq, &pl->resolve);
-
-axienet_stop() also sets lp->stopping and calls
-flush_work(&lp->dma_err_task) before it calls phylink_stop().
-
-Would it be enough to gate phylink_mac_change() on !lp->stopping alone,
-and keep the netif_device_present() check only for netif_wake_queue()?
-
->  		netif_wake_queue(ndev);
-> +	}
->  }
+ net/core/sock.c                              |   4 +-
+ tools/testing/selftests/net/.gitignore       |   1 +
+ tools/testing/selftests/net/Makefile         |   1 +
+ tools/testing/selftests/net/config           |   2 +
+ tools/testing/selftests/net/so_reserve_mem.c | 404 +++++++++++++++++++
+ 5 files changed, 410 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/net/so_reserve_mem.c
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924135116.185161-1-maimon.sagi%40gmail.com
+2.56.0.rc1.315.gc6ed9934b7-goog
+
