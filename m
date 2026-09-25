@@ -1,108 +1,106 @@
-Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5A4825C4
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 09:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FE4470444;
+	Fri, 25 Sep 2026 09:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790327609; cv=none; b=oNzq50QPTrzvbQtWG00qTIFOws4FaVDvhOP+s2/30hS7zT2dM2TNWTusJz479aLV3mKhIghkzPvLgZwtqLvuKuJoNymiXGf3MC7FzhDWaGvDPOcUTfPc10Rvsn8qcP7QZonzg/Ri0bzc5qcbhKcWVc6zIA1Vocj1zHnZ8uSRKZs=
+	t=1790327709; cv=none; b=JjXGFwN6B++YO+QXEYgUDXead3Ksz3bO0V6c0+0npNxjPW+zhkvY6DuHwsWxqI1PanWpdWBo50seNbOtnDCLR43bMzHRKaWgtqkJADj5jk2STGl7BuU9r32u7jOoCsPtHKXFJpUZRmRpYD1SwdWxf2V4hhyC9JEJhVQAVv2jGzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790327609; c=relaxed/simple;
-	bh=zL6QUn1TpvWtmYgwxcSIkriDKPEG/scU+3oxMlrKFZE=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ZvRr8ArqiEvI9SiNSTUXhjtzivaiMs9mL3JsyUBs7RxqQckdqkph4rjtdpTcjbE7SjWFk8x0LD0z+zNrCu9qgGFmK6ZdZ0mlBJhZHTWoIyr9idVkcDERzFc+ydotYbaSswBo/rT2A3zPaP9SR27uG5fpq6cUMgaKnchvrTPeSeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SF9qMH9I; arc=none smtp.client-ip=185.70.43.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1790327709; c=relaxed/simple;
+	bh=PXmxT8gBICH7ApuifgwKbhK28APFenDckUtjkHBBWXE=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=nkhTqk1wS6c0iV+H4RX8xxndwTPYhSiZfQmx/zGO4Q85f/Gn5rdNwaJxkOGCqpNxGHqkea/gD7IyGXn4lSXNCDH9ZCzsfFBwx9dal5wd7ooCtvWE6ccmQVXQNy615ijsoAf9//Bju4g/Lj3+rjQQNFI0VQdRMniBK4BIAzpIj1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Ah5CkMYl; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SF9qMH9I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1790326509; x=1790585709;
-	bh=zkohvUbYW8D1KYV9baP5FqoHLALhVh3cVlMGQa+d5Hw=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=SF9qMH9I82BQQ4bubbNt4y7V1oCvLulO2dx1qcoWcLRhVxeSNtW2CPxT4y/VZVbhg
-	 CmyEgABO5bYHHB38MpGVKDXLoK++o19for5m3lKUgx8enCqp6LwipmbTVz4m44N/D9
-	 LAdog5N38pa0qCHIf129o7rrsdONFqPjXzEFUSkaEP1Sm36HWq4rXtRcODwcDYgdLm
-	 Qao+nJrBQx4jjCgVnCxQw2kv3lqAZgnF/IAYyHyv1Z6R7C47wPw9DbBzsgrhDnBYlS
-	 pcO/f46yrU83MUvfX3vZXxX9l5AnuOdV+J8dqdWc2P4aF0wzF/tlmRVByn1vtdiYB/
-	 XqOqJkWqrKeXw==
-Date: Fri, 25 Sep 2026 08:55:04 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Carlos Llamas <cmllamas@google.com>, Matthew Maurer <mmaurer@google.com>, Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net v6] rust: net: netlink: validate attribute length before casting to `c_int`
-Message-ID: <20260925085449.22553-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: c5cf01b9f15066f4acb72ad7d1d2fa3474d02485
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Ah5CkMYl"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7345CA4A3E;
+	Fri, 25 Sep 2026 11:15:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790327703; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wehUHYkU1+VnkFgCnyBducIt0IFFdf8LGiUDz0l/zvg=;
+	b=Ah5CkMYl5gXkoHslo7S+NRu5EmIdbLUyxP+V591ie1WfV4CUsoLNBOwLNK1nYbWYpXej5q
+	aDFsw7+UgPuvkCOv0yVRqq4te6upJ5ODaTyMEw7lRi2WZi+c684CLw6yIoVhIq1N/tKOWQ
+	q9i9lpdyO+j6D8eaNH1LoFKmXgW86n1k97xu+0XE+YuOMtyI8Q7ICU0B5JSFp051xS6eWn
+	yMxIKu/w+6jja1klgF+cdmCrf8noWn0rNk49iI0SzzmbCbSxSgnZLMrsGpq13QRRSZ8/Wy
+	OcjlbPFaUAJ9s8ovSzMixnpujuUu/xAb+oCSuUkH4LJcIQpJ3jrSCj1v3k6H2A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Date: Fri, 25 Sep 2026 11:15:02 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ kory.maincent@bootlin.com, vadim.fedorenko@linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: ethtool: let tsconfig reach a PHY-only
+ timestamp provider
+In-Reply-To: <179025240309.2160803.13124415103175394580@kernel.org>
+References: <20260923121644.2194183-3-nb@tipi-net.de>
+ <179025240309.2160803.13124415103175394580@kernel.org>
+Message-ID: <802cc23e2050dfbe56b7564b921e06ad@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-`put()` trusted an unchecked `as` cast from `usize` to `c_int`.
-When the length exceeds `i32::MAX` that cast wraps around to a
-negative value.
+On 24.9.2026 14:20, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let 
+> patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your 
+> reply
+> (one such reply per series is enough).
+> 
+> - [Medium] ethnl_set_tsconfig() can now install an 
+> HWTSTAMP_SOURCE_NETDEV
+>   provider on a device that has no hwtstamp NDOs, and that provider 
+> can…
+> - [Low] The new TSCONFIG_SET gate in ethnl_set_tsconfig()
+>   (tsconfig.c:303-305) looks only at whether dev->phydev is the 
+> default…
+> 
+> --
 
-This ultimately resulted in a kernel panic when the reinterpreted
-value via `__nla_reserve()` and `skb_put()` became enormous.
+> [...]
 
-Validate payload and header both fit together in a `u16`, rejecting
-any payload that wouldn't leave room for `NLA_HDRLEN`.
+> [Severity: Medium]
+> 
+> The commit message says "this makes a netdev provider reachable without
+> ndo_hwtstamp_get". Should a netdev provider be reachable at all on a 
+> device
+> without the NDOs?
 
-Fixes: 5eaa5fbb6e6c ("rust: netlink: add raw netlink abstraction")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
-changes since v5:=20
-Rebased on net/main
+No. v3 will pick the netdev source only when ndo_hwtstamp_set is 
+available.
 
- rust/kernel/net/netlink.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> [...]
 
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index 22ef3dde36fa..2f8733a694a9 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -11,6 +11,7 @@
- use kernel::{
-     alloc::{self, AllocError},
-     error::to_result,
-+    num::casts::u16_as_usize,
-     prelude::*,
-     transmute::AsBytes,
-     types::Opaque,
-@@ -86,9 +87,17 @@ fn put<T>(&mut self, attrtype: c_int, value: &T) -> Resu=
-lt
-     where
-         T: ?Sized + AsBytes,
-     {
-+        // `nla_len` is a 16-bit field that encodes the total attribute le=
-ngth
-+        // (header + payload). Subtracting the header size from `u16::MAX`=
- gives
-+        // the largest payload that still fits within that field.
-+        const MAX_PAYLOAD_LEN: usize =3D u16_as_usize(u16::MAX) - size_of:=
-:<bindings::nlattr>();
-+
-         let skb =3D self.skb.skb.as_ptr();
-         let len =3D size_of_val(value);
-         let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
-+        if len > MAX_PAYLOAD_LEN {
-+            return Err(EMSGSIZE);
-+        }
-         // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
-the provided value is
-         // readable and initialized for its `size_of` bytes.
-         to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
-ptr) })
---=20
-2.55.0
+> [Severity: Low]
+> 
+> This check runs before dev->hwprov or the requested provider is looked 
+> at,
+> and it only considers dev->phydev. Could it reject requests that an 
+> already
+> installed PHYLIB provider can serve?
 
+Right, it ignores an installed provider. v3 will also pass when 
+dev->hwprov is set.
 
+> [...]
+
+pw-bot: cr
