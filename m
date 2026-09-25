@@ -1,162 +1,257 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64A5353EC0
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 02:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790301823; cv=pass; b=MJkYzayM2EsxA3NHLy7MO7QoDmJVnc0NC/8CFrUCVstiABgN0/NLSDzZa39Dz0wdtwvJmdeeIs2akjsN+pxDzMhb0KT02c8Cwcvn/nxVTWrJJPEBKXkpEnVoDGPriiiEj22+OdyYWeA5Iht8P3mrtWe/0o7sX0U8Hp94Mr7VCBQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790301823; c=relaxed/simple;
-	bh=I74p1TPOpyMN5eN8javYXxz6OzoRysS3odlBNtVBa6U=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Sh0xkFryzKwxfRzoNwwadIsTl1iMbNkA6tercth0ajntJQD/npOyCwe9u62aNo0gbzZs2YUT4/A8uSFxYCWY7I4+1ONmNFISirD15CiUm+ab/Nloxl2wLbGSwGXGrZwshgWN3TKg2DgLkDxRGrw4xIiLMZhVANqlatWDJNDdkY0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oPgegzDz; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E997B378D7B;
+	Fri, 25 Sep 2026 02:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790301824; cv=none; b=elf5gcc1Bn4Stb1Lam1FbnpnQmm1NwJb3xD2H8t2ylhcbsQyQH1NHbY9XOE7cG1y6YrvuTXtxq6FFcN95Lmwbjf4xIG4ODQ3InVfzuNDQvgMBzmVrQ5p4isiW3g8Ve/Qr3vg13LghnaxCIaR6uLGcRKr6Z/JYQER1gVy8AI1bwE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790301824; c=relaxed/simple;
+	bh=jbPlUfHarXKW7IgHmgHchup5uMQKI8caFK9hM7eovfw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DzSG8EEWx1Qun+NEasum3+g0ZggIxuWqTubp+DCCGeR1TT1Gf8SBE0kV/Mb5uLtOb/1FFKqldykDzWOqeSaXYdyFj0kkWNRDd/gQTcMG+Scm2kve2bAWBhYem0OaEJpcnJXcTXit+FIyK+rZ2D2S6gCfd8OS6daEMyXkn+FiRRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNvmYH+j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oPgegzDz"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29d50b7cf9so62522566b.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 19:03:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790301820; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UIwZDZxCyrzSuor3hYwp+fANv+yMAarkQB6joHBqHk+sbhh70qP+uxvs/oHvOcqzfM
-         ZzhTn5PVBtOZPaohCV01wPBQOZnd8te19c+eucvwgr/48XXrcRs9dqWs5eNLrXRHSLuZ
-         1Gmdx4F4/P2BCSRhtRlFIEaUrywi/fgtSgkfskaViPYBoDmMl9GXqgEFGj1bUg26/eRK
-         a4fkU2nUwA3jNqhtuYfurrzxcmiAHIHkhgAa6mSGDWmIS78InOKwfepz8o2f+KKEWLJz
-         kCAMsKm+xcNOBiT/o7iuCHx5W+o59AlXstGdr7snDkL21Qf4kW+aj4XuyPCbwUvzCSGO
-         KpTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        fh=48VFFVQFeEq0qbWMji+97kgAcFQxsAu3iDTmYQ9oFwg=;
-        b=mbCaOxXTp72wJGPV44Ri1FCD4/NnHG0lRCQFIZtMld4PH+3aRKva+dJeN3drdZBSxU
-         J2mcd8xTzH/9v0ksy/mUTYPdssm90USrvnSb5BKzda655SWQdm2DZbqGpM9RAMxu2eNo
-         hbeZGie24cRn+XRSwCTaeyUVYzO9OZJZo5lPASREOMhHptZapAsJYCw6Zba4SjM4Jwh0
-         iRxjl6y+E+2JChB9WzUVRkQs7YRKaAqJul5UCFEFM46ZbFc0DD4npk7oHTvLFwVVHzuN
-         DqXFHvAxkQJ8ZSl6nQuMmWm6/m6zxJZ1YmKIwlsHDYMkWPIds+uXYxQ2I0B+Amji/BSh
-         /Akg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790301820; x=1790906620; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        b=oPgegzDzSUCZSzj6Nfgv03BNdvjmDVDcpmKMhczT6jJZXwpL+bLPMOjxW1rHGe/I4e
-         GF7k4gFHk5TOzi9WIliW5y+PhssT+e18XW/7DDZOpZvniaGTi3Cpliw2ua2rSUUuJfnc
-         Hl3+DB2hpsg9/xRBdCQLBZEO7Btvhktdvd1s9z+W490A3eX9vvJenJH/CXx4Q5mHgURh
-         puv4Hg1XI3U6yak+aIZL10Q3ijwZbnvMQ5F9bPjGgE9rTEvF6KitvgtD4J+u/rKHxNZr
-         QQJuVz3Xk1k5tWVGkxT8aTwBvbs4u6iGUIlcppxnkVUW6ZWB2+m1zNO3WGRNt5vpE2Tz
-         trug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790301820; x=1790906620;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JXqpBsOJVxozVwjvJVgqPsuZqPEgDFWhK/I0MbzqS08=;
-        b=hu8knAwVlDnfyO9DyscRQeG7XYbPB5cK7d8lFR3uV/wTGDLyRp2DE8r2X+VVcEfnX5
-         Y1GXLvGscSY3srKewETgbuS1glW0Lwuee9hMF42nr8y2MZYxWSroSOw/48d/sonVN85a
-         i22I0Qka92QPTA72dWai2Zav4a32lxPOS8T1lSJagwFx5N6Iiw3t8b6CgJOCERnOl021
-         vt2XQ8MyZMDviLv2dNCzNUkr1Y8JQPVI/LbD0SucY/ucOcFOMssmmVspLVbF6YXS13sw
-         IUEOnqJGeP14Z5uE3MXeG805ve77bUFRhpnf+UJzpRH9mmlQJL+0lWA3WEphY9T0H+iu
-         U7lQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw6AxdHv5HVn+mJ6A1SlseZssFaSwVjwGoY+6z6AWHfuxobU9BnVTeKB1tpOYJJaGNV0x4R8DI=@vger.kernel.org
-X-Gm-Message-State: AFuF++naVz4pkZbgg6cqxDVRkMVb10orNk7YebU814ToDni1J8vxoQxq
-	MzS6OPcvuoByrbuw4TRM/o8CeQiJt3k2wyBI+QnTQLMb4AHHYbqx1s8ahePkeLKaLNz4wcB0qZ+
-	K31tuMIF/le0r0cG+VZhFPD6osnC4Lg==
-X-Gm-Gg: AYBFou2MTmdgMxx2UcG6e0rk657RzI+eIqeIrFL97x0EQ+SG3+l9KT/Tn/87YWEIb8S
-	MSgVptuqpq/oEBVU4u0YREPVCR2LQwnSOWXnrFmr7jnyXymsjyzTma+NykqF3u5TeOETc9IEh7Z
-	nqexobjFmE0ztTGeo35rI4UcqIQOdxH+29bgmuISUGaZUKyTA/F5YAkNK+2AA6w915Cinb26qKi
-	8xcaD8Wb+XZWPJIMZE+kDqWk63gatmmXuLQfNTDtQNgH+rzBRyPNUTqCVK1m2tA2J0S8zygh7Eq
-	Pekr1yOE3Ha/BXFth0xrMVyyP4eLJCYrw0X6r37m5GeExqElnTtKizHNPAu0SaNugCLIb0939zn
-	XFtcOzolvBeyQ0w41O8qiQ+TgifzumEwg6yHFvprH6aXnR9/gtfEvp3oMPyxzeTfyAw==
-X-Received: by 2002:a17:907:e918:b0:c26:19de:913a with SMTP id
- a640c23a62f3a-c2ac2674c23mr365071766b.45.1790301819967; Thu, 24 Sep 2026
- 19:03:39 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 24 Sep 2026 21:03:39 -0500
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 24 Sep 2026 21:03:39 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNvmYH+j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37E51F000FF;
+	Fri, 25 Sep 2026 02:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790301821;
+	bh=+3x17hI2eG4aqh5yipVDUNrlIY4rDva+XyGlofdKPB4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UNvmYH+jY5xeVCRN6cxxBNA58LNYdyQIh2GDLAzQubvq1h12MD/JDxJQ8oe6jAlNe
+	 DQYpjbhQKa/ga2xVlW8h80QLDwKhzK5d+FFytAPu0JywsYUXMK0xphS7CyjAjXrwNM
+	 tKCAJuLskPZb3WpNLq6117HRO4NcBKF95IUG8olvxbBrwKcjl0aABoyKR9M++hOGXc
+	 hYW+L5HEVtsBz3taFmqIXrdi3GNMiMlZb3KhUCmMviFdXLyZnTM8h+/bLOLKaW+1oI
+	 fHF9WAN7mceqRqFDSZzoHEr6peER7LrmQEmX9HCRy3c7ZqNv/ak9RlM95Juc9xOR1h
+	 TSTU/m6mv9p5A==
+Subject: Re: [PATCH net-next v10 05/11] arm64: dts: rockchip: rk3568: add XPCS
+ and fixed-clock nodes
+From: netdev-bot+sashiko@kernel.org
+To: coiaprant@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, heiko@sntech.de, vkoul@kernel.org,
+ maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ romain.gantois@bootlin.com, hkallweit1@gmail.com, neil.armstrong@linaro.org,
+ linux@armlinux.org.uk, shawn.lin@rock-chips.com, david@ixit.cz,
+ netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org
+Date: Fri, 25 Sep 2026 02:03:39 +0000
+Message-ID: <179030181943.2160803.8250149004228493490@kernel.org>
+In-Reply-To: <20260922200336.2201212-6-coiaprant@gmail.com>
+References: <20260922200336.2201212-6-coiaprant@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: mhun512@gmail.com
-Date: Thu, 24 Sep 2026 21:03:39 -0500
-X-Gm-Features: AclHuK-CLL4CN-iwpmzU09ZJTyaHPdgpyfiVO316kD74pCcGmQ449hidnQgH-fE
-Message-ID: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
-Subject: [PATCH net] net: fec: drain PEROUT requests before canceling the timer
-To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org
-Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
-A PEROUT ioctl can set perout_enable, release the driver's locks and
-then be preempted before hrtimer_start(). The unregister path waits for
-that ioctl, which can rearm the timer after it was canceled. Removal
-then frees the netdev containing the still-armed timer.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Unregister the PTP clock first so all in-flight ioctls have returned
-before canceling the timer. Clear the PEROUT state and compare channel
-afterward, then disable PPS. Serialize the channel write with PTP clock
-shutdown and skip it when that clock is off.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-This issue was identified during our ongoing static-analysis research
-while reviewing kernel code.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+- [Medium] DT/binding mismatch: the new `xpcs: ethernet-pcs@fda00000`
+  node in arch/arm64/boot/dts/rockchip/rk3568.dtsi omits `phys` and…
+- [Medium] The two new nodes `clk_gmac0_xpcs_mii: clock-xpcs-gmac0` and
+  `clk_gmac1_xpcs_mii: clock-xpcs-gmac1`…
+- [Low] Concern (retained per experiment protocol, judged INVALID): the
+  claim that nothing in the tree consumes the DT description added here…
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-b/drivers/net/ethernet/freescale/fec_ptp.c
-index 56801c2009d5..67901e036ac3 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
-fec_enet_private *fep, uint channel)
+--
 
- 	hrtimer_cancel(&fep->perout_timer);
+arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
 
-+	mutex_lock(&fep->ptp_clk_mutex);
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 	fep->perout_enable = false;
--	writel(0, fep->hwp + FEC_TCSR(channel));
-+	if (fep->ptp_clk_on)
-+		writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+	mutex_unlock(&fep->ptp_clk_mutex);
+This adds an ethernet-pcs node at 0xfda00000 for the RK3568 XPCS, with four
+ethernet-pcs-mii child nodes, all disabled by default.  It also adds two
+125 MHz fixed-clock nodes whose clock-output-names are chosen to match the
+CRU gmac RX/TX mux parent name strings so boards can reparent
+SCLK_GMAC{0,1}_RX_TX.
 
- 	return 0;
- }
-@@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> index 3bc653f027f1f..2cea108b31a4e 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> @@ -8,6 +8,20 @@
+>  / {
+>  	compatible = "rockchip,rk3568";
+>  
+> +	clk_gmac0_xpcs_mii: clock-xpcs-gmac0 {
+> +		compatible = "fixed-clock";
+> +		clock-frequency = <125000000>;
+> +		clock-output-names = "clk_gmac0_xpcs_mii";
+> +		#clock-cells = <0>;
+> +	};
+> +
+> +	clk_gmac1_xpcs_mii: clock-xpcs-gmac1 {
+> +		compatible = "fixed-clock";
+> +		clock-frequency = <125000000>;
+> +		clock-output-names = "clk_gmac1_xpcs_mii";
+> +		#clock-cells = <0>;
+> +	};
 
--	if (fep->pps_enable)
--		fec_ptp_enable_pps(fep, 0);
--
- 	cancel_delayed_work_sync(&fep->time_keep);
--	hrtimer_cancel(&fep->perout_timer);
- 	if (fep->ptp_clock)
- 		ptp_clock_unregister(fep->ptp_clock);
-+
-+	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
-+	fec_ptp_pps_disable(fep, fep->pps_channel);
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
- }
+[Severity: Medium]
+
+Is a root-level fixed-clock the right description for this clock?  As the
+commit message says, the 125 MHz MII clock is generated inside the XPCS
+from the Naneng combo SerDes, so it only exists once PD_PIPE is powered,
+PCLK_XPCS is ungated and the SerDes has locked.  The CRU has
+SRST_XPCS_TX_DIV10 / SRST_XPCS_RX_DIV10 / SRST_XPCS_XGXS_RX for that
+divide-by-10 path, and pcs-xpcs-rk.c later in the series notes:
+
+    /*
+     * Accessing the XPCS registers also requires a TX clock from the
+     * SerDes, which is needed for the soft reset.
+     */
+
+These two nodes carry no status, no gate, no power-domains and no relation
+to the xpcs node that produces the clock.
+
+Does that hide the dependency from the clock framework?  A board doing
+
+    assigned-clocks = <&cru SCLK_GMAC0_RX_TX>;
+    assigned-clock-parents = <&clk_gmac0_xpcs_mii>;
+
+is reparented by of_clk_set_defaults() before the MAC driver's probe body
+runs, and the reparent plus clk_get_rate() always succeed with 125 MHz even
+when the xpcs node is disabled, PD_PIPE is off, or the SerDes PLL is not
+locked.  Instead of -EPROBE_DEFER or an error, wouldn't the MAC just run
+against a dead MII clock?  The phantom clock also stays "enabled" across
+PD_PIPE power-down.
+
+The other half of this is the coupling mechanism.  The only thing tying
+these nodes to the CRU is the global clock name, matched by strcmp in
+clk_fetch_parent_index() against the hard-coded strings in
+drivers/clk/rockchip/clk-rk3568.c:
+
+    PNAME(mux_gmac0_rx_tx_p)	= { "clk_gmac0_rgmii_speed", "clk_gmac0_rmii_speed", "clk_gmac0_xpcs_mii" };
+    PNAME(mux_gmac1_rx_tx_p)	= { "clk_gmac1_rgmii_speed", "clk_gmac1_rmii_speed", "clk_gmac1_xpcs_mii" };
+
+If the RK3568 CRU is later converted to parent_data/fw_name, or those
+strings are renamed, board reparenting breaks silently with no build or
+schema error.  Would it be preferable to have the real provider export this
+clock, either the CRU leg or the xpcs node itself as a clock provider, so
+the PD_PIPE / PCLK_XPCS / SerDes dependency is expressible?
+
+[ ... ]
+
+> @@ -110,6 +124,37 @@ sata0: sata@fc000000 {
+>  		status = "disabled";
+>  	};
+>  
+> +	xpcs: ethernet-pcs@fda00000 {
+> +		compatible = "rockchip,rk3568-xpcs";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		reg = <0x0 0xfda00000 0x0 0x200000>;
+> +		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+> +		clock-names = "csr", "eee";
+> +		power-domains = <&power RK3568_PD_PIPE>;
+> +		status = "disabled";
+
+[Severity: Medium]
+
+Does this node match the binding added earlier in the same series?
+Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml lists
+phys and phy-names unconditionally:
+
+    required:
+      - compatible
+      - reg
+      - "#address-cells"
+      - "#size-cells"
+      - clocks
+      - clock-names
+      - phys
+      - phy-names
+      - power-domains
+
+and its example supplies:
+
+    phys = <&combphy2 PHY_TYPE_SGMII>;
+    phy-names = "serdes";
+
+There is no if/then in that schema exempting disabled nodes, so wouldn't
+make dtbs_check report "'phys' is a required property" and "'phy-names' is
+a required property" for every rk3566/rk3568 DTB that includes
+rk3568.dtsi?  At the end of the series only rk3568-photonicat.dts adds them
+via a &xpcs override.
+
+The commit message justification is:
+
+    dtbs_check only validates required properties for enabled nodes, so the
+    SoC dtsi does not provide phys/phy-names
+
+Is that accurate?  dt-validate selects schemas by compatible and validates
+the nodes present in the DTB; status = "disabled" controls whether the OS
+binds a driver, not schema conformance.  The same file appears to
+contradict the assumption, since the disabled sata0 node right above this
+hunk does carry its combphy reference:
+
+    sata0: sata@fc000000 {
+        ...
+        phys = <&combphy0 PHY_TYPE_SATA>;
+        phy-names = "sata-phy";
+        ...
+        status = "disabled";
+    };
+
+The disabled pcie3x1/pcie3x2 nodes and the disabled USB/SATA nodes in
+rk356x-base.dtsi do the same.
+
+Separately from tooling, is the node a complete hardware description
+without the SerDes phandle?  xpcs_rk_serdes_phy_init() in
+drivers/net/pcs/pcs-xpcs-rk.c does:
+
+    pxpcs->serdes_phy = devm_phy_get(dev, "serdes");
+    if (IS_ERR(pxpcs->serdes_phy))
+            return dev_err_probe(dev, PTR_ERR(pxpcs->serdes_phy), "Failed to get SerDes PHY\n");
+
+so a board that only flips status to "okay" gets a probe failure.  Would it
+make sense to settle this on one side, either dropping phys/phy-names from
+the binding's required list, or giving the dtsi node a default SerDes
+phandle that boards override?
+
+[Severity: Low]
+
+One note that turned out to be a non-issue, recorded for completeness: at
+this commit alone nothing in the tree matches rockchip,rk3568-xpcs, consumes
+the "eee" clock-name, or parses the ethernet-pcs-mii@N children.  That is
+resolved by later patches in the same series, so there is nothing to change
+here.  At the series tip, drivers/net/pcs/pcs-xpcs-rk.c has:
+
+    static const struct of_device_id xpcs_rk_of_ids[] = {
+            { .compatible = "rockchip,rk3568-xpcs" },
+            { /* sentinel */ },
+    };
+
+xpcs_rk_init_clk() fetches both "csr" and "eee" and derives the EEE
+multiplier from clk_get_rate() on the eee clock, xpcs_rk_create() reads the
+ethernet-pcs-mii@N child's reg as the port number, and
+rk3568-photonicat.dts wires pcs-handle = <&xpcs_mii0> into gmac0.
+
+> +
+> +		xpcs_mii0: ethernet-pcs-mii@0 {
+> +			reg = <0>;
+> +			status = "disabled";
+> +		};
+
+[ ... ]
+
 -- 
-2.53.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922200336.2201212-1-coiaprant%40gmail.com
