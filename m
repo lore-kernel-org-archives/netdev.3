@@ -1,163 +1,108 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537B547F2E0
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 09:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790327588; cv=pass; b=U5+PXwCqJI9uaer6lXfCGy9VaCtlX5bu5PpJ0BdUmRNSpX79ToopAhGh9cIBg/hmctwUmqhtoR4l0s20D9AXgQ+XK42rPv27qASkFKmarV1Z0m6T3gC+ocpRFU7l8ddX7n2KyVuJmkax/o9wz06WHYU0o3CSyX+9yjYNp32SOL8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790327588; c=relaxed/simple;
-	bh=rTqLLUWRtbA/RwBQluKV+S7yx2zqLIkP0uuMUp6VrBQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i3IOBIgdw/2tcosSoHkZwBxJDW6wRz+iVq/WxBWm8+hzkMjJEdHczbwiCWBikP7J9xam4vifFgxl8d3epZaev2PhsNBMgCLHGC1+OXlPqaKKjMpsvUvDmkz7OZvjuE1Mcc8MyK6W9Zr/LbteAAByGW6nqdaES7i5nU5BD2zFyF8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SC5tEHrp; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5A4825C4
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 09:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.27
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790327609; cv=none; b=oNzq50QPTrzvbQtWG00qTIFOws4FaVDvhOP+s2/30hS7zT2dM2TNWTusJz479aLV3mKhIghkzPvLgZwtqLvuKuJoNymiXGf3MC7FzhDWaGvDPOcUTfPc10Rvsn8qcP7QZonzg/Ri0bzc5qcbhKcWVc6zIA1Vocj1zHnZ8uSRKZs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790327609; c=relaxed/simple;
+	bh=zL6QUn1TpvWtmYgwxcSIkriDKPEG/scU+3oxMlrKFZE=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ZvRr8ArqiEvI9SiNSTUXhjtzivaiMs9mL3JsyUBs7RxqQckdqkph4rjtdpTcjbE7SjWFk8x0LD0z+zNrCu9qgGFmK6ZdZ0mlBJhZHTWoIyr9idVkcDERzFc+ydotYbaSswBo/rT2A3zPaP9SR27uG5fpq6cUMgaKnchvrTPeSeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SF9qMH9I; arc=none smtp.client-ip=185.70.43.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SC5tEHrp"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb766bfd3so5916361cf.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 02:13:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790327585; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eXe4W3mFCWLJYXF1oXSIDAZ+LlObhY+KJrBr7lFADNqja7hmMQPdHfHDOXcPF7nU4h
-         SNFcesbGhTlZDWgSEjP+Ok6L59ZN0T/yAekAtDuD4Tq+Sd/20wdQvw3I8F+yba5PubPJ
-         SSjE7WTClPeFarB+ulRwybIc08L2Px5fN1QmDgDzinZVwol8DNSCVo4Z3FrMRD8LXlAk
-         LN0KPnADlLsWpsC5ptqXPW6XhKrrm5fSW+O62fGZwrvf4W5bTyIA0yHXdq0zFde/7X+A
-         ZsR8o9RSl5ZPPe1xkqH047n3z5C3OMxfBgZbZszzEsOHAHYf+OFgcuoEPRnMoEI4RV5C
-         V4xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bz9SxP4paTpewO3BSBe/LM1NQKvc6CcYHS65zRhQj14=;
-        fh=Wj0YEqSJg7Dhhip2gJnvksj1lCh3dEEgy1VoHdYgBNk=;
-        b=lq4wZYxrmxOdcZ2lJ1SO3kzG/Iz7qO1joUBfQ6y8fdGGLYKB2d27Y18DidHb5o7JAA
-         5ctVcwN5jZ8D12VooqXjr+wsa0NFZPzdxjj/o8vKiK3KV6+5CWngJs/P5VXR7SdqqCwA
-         zDET18sdcPFMyPB7WHrHroO7WBodG+tHkUTE6jn8W9/sY0fwZYJ90JO9v6KDXHZDFWeA
-         w0dwvzC9z8bc0M5FVIPYd4QYwy0jZOOeDN4veg+CYqe22Z0D1LoAO3IUpp5u/R3nVZwR
-         T/B09Ahusu7tWKa9/ziDpLmpeapU7mvvKcup3pyGNwWAZELu1zhcO/knu6hRQsa8w8X9
-         Fv4Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790327585; x=1790932385; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bz9SxP4paTpewO3BSBe/LM1NQKvc6CcYHS65zRhQj14=;
-        b=SC5tEHrpUax3L25yJbOza42AQb73mv+Ik1zXgVNr++hDFIYb/FTuegnEdcOVRv6Onm
-         Et4VtNMAiRLdFzfOrVBZOmVZFV/74bRRSBfWTTt1nFbtejKHkMmm8g+u4aYtTQPLZa23
-         LqRQVWPOBfhCqsPkt1gRlY/FXqZiH83uk7St8FNAzGDwAQFup2z8i/kV7XC8cutzjjMJ
-         5g4Rx5Cn4Nc/WUpTGlMH3tFMp2vA70nJRPDnoYvdqbXDtsP5ophnY7CgMJfvluDNCseY
-         bHCv7/f6G2Jkt7S6Juq1gXmwdy0OJkeQAI5gwQ6I/RcxYBNgpNMH4NRkwV3g1qLEAZgp
-         ByGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790327585; x=1790932385;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bz9SxP4paTpewO3BSBe/LM1NQKvc6CcYHS65zRhQj14=;
-        b=anK/qGd6hi4cNcHCkOSkPngUB+YYQ1cPd1Eg+cnXSeEjZW80+V7hSA3iIM13BnsOFR
-         SPdc1QA7uBreJFvEck8CR4PvAoXFXb2xV0fzAIAAaUYs2JYP3p1PyZxKayy+L71ZRNhz
-         xEDbFll1xiEYRa09Sso0+X6Eqt+KtFuQpVVIPx8yPH9BvfJzluNuPag73AIHnuhWHJGN
-         QsKXObUM1OvZUUnxXHv8JMl57O58cHn3SxNLA8RTRPVhr3ubuVNBiFwzq6IHMNLKLOZd
-         eov257R32Z5SmYQhw3nx+01m87wJpzJNXTDDfcnQubMQGlJjLqLJBfvHXEvxUYvT8FXj
-         2IDw==
-X-Gm-Message-State: AFuF++nazCLba8EaQtFMhZMMFAxqjjZGJ9+R+ZAc+RotQSlW5O7+iXsU
-	pz7pC/itHsVNMd13DiFdSTWKOcoM0YwfLidHyAOtyD13zxDrsFretJO6Qsfe8z2ontpMVIpwfcg
-	isaY32BH2yw9if7dO24mhSEXG1VK/jyrVGMG6BQLE1pA2pQbGZBrhknb8
-X-Gm-Gg: AYBFou1F24QjiR1pMxmGlVfqRpXZa82cTMFXaQVQ3fkrnjZnOJ+9Ib0X6ZTE1JSUgfY
-	5XM4fd0XhlGvjZX+RoAjcsumtdIACoMotwa9+eaGMJpGckp73a71YFQerGuCLxGF+NYiREZy6wq
-	eGHCXLmf9anqbxWZX2pRCHX4Qp+K1PEuUrL6eafEbPAS6Ob9nenAlrXC9IfxjAF0zYNtP1fJpkJ
-	OoKhQnmG1FN9ZaKM0W6peIblXlPhEoQAG+qPyxWfU2mR0R3rkMluMtkQ6/Ad5gYBECyxaVPJSkv
-	ZeY8pAJu2YTdT61G7n4NgQPA8Jet7DCTbXfMFa6iS6CeUGa27CZGJyRYZK4p/H3tl29EXmOcnu8
-	5PP2ZDwVtNuSdS5JCPHD+tvcY/tT0YYBbdMUGicKG2uCkbNWpLxnYdJTeKfFPSS+wSgg/
-X-Received: by 2002:a05:622a:156:b0:530:d429:c70a with SMTP id
- d75a77b69052e-5330b5f31bdmr29787901cf.26.1790327584464; Fri, 25 Sep 2026
- 02:13:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SF9qMH9I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1790326509; x=1790585709;
+	bh=zkohvUbYW8D1KYV9baP5FqoHLALhVh3cVlMGQa+d5Hw=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=SF9qMH9I82BQQ4bubbNt4y7V1oCvLulO2dx1qcoWcLRhVxeSNtW2CPxT4y/VZVbhg
+	 CmyEgABO5bYHHB38MpGVKDXLoK++o19for5m3lKUgx8enCqp6LwipmbTVz4m44N/D9
+	 LAdog5N38pa0qCHIf129o7rrsdONFqPjXzEFUSkaEP1Sm36HWq4rXtRcODwcDYgdLm
+	 Qao+nJrBQx4jjCgVnCxQw2kv3lqAZgnF/IAYyHyv1Z6R7C47wPw9DbBzsgrhDnBYlS
+	 pcO/f46yrU83MUvfX3vZXxX9l5AnuOdV+J8dqdWc2P4aF0wzF/tlmRVByn1vtdiYB/
+	 XqOqJkWqrKeXw==
+Date: Fri, 25 Sep 2026 08:55:04 +0000
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Carlos Llamas <cmllamas@google.com>, Matthew Maurer <mmaurer@google.com>, Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Sagar Taunk <sagartaunk@proton.me>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net v6] rust: net: netlink: validate attribute length before casting to `c_int`
+Message-ID: <20260925085449.22553-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: c5cf01b9f15066f4acb72ad7d1d2fa3474d02485
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v1.20260922092618@mojatatu.com>
-In-Reply-To: <QDISC-BA27.v1.20260922092618@mojatatu.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 25 Sep 2026 11:12:53 +0200
-X-Gm-Features: AclHuK8GCiEqq2_4rQ3AwZboOt1ZnIczmCQY-4PqwzAjbQfTPZ2smYUW_vtZ6Bk
-Message-ID: <CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com>
-Subject: Re: [PATCH net-next] net/sched: fq_codel, cake: widen backlogs to u64
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	cake@lists.bufferbloat.net, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 25, 2026 at 10:54=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com=
-> wrote:
->
-> This is a follow-up to commit 8f735d64382d ("net/sched: bound
-> qdisc_pkt_len to prevent qdisc soft lockup"), which capped
-> qdisc_pkt_len() at QDISC_PKT_LEN_MAX (1 MiB). That cap bounds the stab
-> amplifier but leaves the per-flow backlog counter u32:
-> fq_codel_enqueue() accumulates qdisc_pkt_len(skb) into q->backlogs[idx],
-> so a flow can still accumulate 4096 packets of 1 MiB each and wrap the
-> counter mod 2^32. After a wrap, fq_codel_drop() sees a tiny maxbacklog
-> and drops from an almost-empty flow, and the dequeue-side subtractions
-> corrupt the counter further.
->
-> Widen the fq_codel backlogs table, the fat-flow scan (maxbacklog/len) and
-> the drop threshold to u64. fq_codel is not lockless: every writer runs
-> under the root qdisc lock, so plain u64 arithmetic keeps the WRITE_ONCE
-> publish / READ_ONCE-consume pattern. The dump path
-> (fq_codel_dump_class_stats) stays a lockless stat-only read.
->
-> CAKE accumulates the same generic qdisc_pkt_len(skb) into its per-flow
-> b->backlogs[] and per-tin b->tin_backlog and consumes the values for
-> longest-flow pruning (cake_heapify/cake_heapify_up) and for the shaper
-> staleness check, so it shares the bug. Widen those counters and the heap
-> comparison locals to u64; the class/tin stats keep exporting the low 32
-> bits through the unchanged uAPI fields.
->
-> Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
-> CONFIG_NET_SCH_FQ_CODEL=3Dy.
->
->   ip tuntap add tun0 mode tun
->   ip link set tun0 txqueuelen 32 up
->   ip addr add 10.99.0.1/24 dev tun0
->   tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
->       fq_codel flows 1 limit 4200 ecn drop_batch 4096
->   # hold the tun fd open without reading (IFF_BACKPRESSURE) so the qdisc
->   # backlog persists, then send at least 4300 packets (the wrap starts
->   # at 4096 resident; the over-limit drop that reads the wrapped
->   # threshold fires past the 4200 limit): backlogs[0] wraps at 4096 x
->   # 1 MiB and the fat-flow threshold reads the wrapped value.
->
-> With a 1 MiB qdisc_pkt_len cap the counter wraps at 4096 resident
-> packets. At limit 4200 the first over-limit enqueue (the 4201st) sees a
-> wrapped 105 MiB (half-backlog threshold 52 MiB, a ~52 packet drop burst),
-> where the u64 counter sees 4201 MiB (threshold 2100 MiB, a ~2100 packet
-> drop burst).
->
-> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026081810113=
-0.16203-1-jhs@mojatatu.com
-> Link: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.=
-com/
-> Tested-by: hybris <hybris@mojatatu.ai>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
+`put()` trusted an unchecked `as` cast from `usize` to `c_int`.
+When the length exceeds `i32::MAX` that cast wraps around to a
+negative value.
 
-This makes no sense.
+This ultimately resulted in a kernel panic when the reinterpreted
+value via `__nla_reserve()` and `skb_put()` became enormous.
 
-These qdisc have been developped to address bufferbloat issues.
+Validate payload and header both fit together in a `u16`, rejecting
+any payload that wouldn't leave room for `NLA_HDRLEN`.
 
-Storing 4GB in a qdisc is absolutely insane.
+Fixes: 5eaa5fbb6e6c ("rust: netlink: add raw netlink abstraction")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+---
+changes since v5:=20
+Rebased on net/main
 
-Let's drop at enqueue if the current backlog is approaching 4GB (this
-can later be a new config/attribute in net-next)
+ rust/kernel/net/netlink.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
+index 22ef3dde36fa..2f8733a694a9 100644
+--- a/rust/kernel/net/netlink.rs
++++ b/rust/kernel/net/netlink.rs
+@@ -11,6 +11,7 @@
+ use kernel::{
+     alloc::{self, AllocError},
+     error::to_result,
++    num::casts::u16_as_usize,
+     prelude::*,
+     transmute::AsBytes,
+     types::Opaque,
+@@ -86,9 +87,17 @@ fn put<T>(&mut self, attrtype: c_int, value: &T) -> Resu=
+lt
+     where
+         T: ?Sized + AsBytes,
+     {
++        // `nla_len` is a 16-bit field that encodes the total attribute le=
+ngth
++        // (header + payload). Subtracting the header size from `u16::MAX`=
+ gives
++        // the largest payload that still fits within that field.
++        const MAX_PAYLOAD_LEN: usize =3D u16_as_usize(u16::MAX) - size_of:=
+:<bindings::nlattr>();
++
+         let skb =3D self.skb.skb.as_ptr();
+         let len =3D size_of_val(value);
+         let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
++        if len > MAX_PAYLOAD_LEN {
++            return Err(EMSGSIZE);
++        }
+         // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
+the provided value is
+         // readable and initialized for its `size_of` bytes.
+         to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
+ptr) })
+--=20
+2.55.0
+
+
