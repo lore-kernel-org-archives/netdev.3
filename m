@@ -1,444 +1,161 @@
-Received: from mail-oo2-f37.google.com (mail-oo2-f37.google.com [74.125.231.165])
+Received: from mail-dl2-f33.google.com (mail-dl2-f33.google.com [74.125.229.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B360339396
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.165
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790296554; cv=none; b=LhcqU5k+kjZwYNm/RsX4+mYmwbYy5hoO6BNSXe/YP02W52TyUti1GdkmzBpWaCk6m807tMIyDYh+ji3X7BiigbeKTLSjU/0ke/A8kf8ORKknx63GuBNfoZGEy1xMFRhgicBqRH9xT9KsbiSW37kRAQPf1gnc5VhTZ4NQovSnHw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790296554; c=relaxed/simple;
-	bh=eYWXqK8XMgWc/vWc1QGjafJO0lis6NlMNB7CWP48bGk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=unw5T52YYuaA0Ov+8tgouP8inh2VLw7olSOOfdvJqpDNBajOEpRfIFM54ZuuaUU+sNKuSPci9zxLPg3SiJ5rf3nryTAtEsGJLyQLs2miPjtepQ1sS+5KuuzxbTeknzJAne+xE0xiPt/QfYf5xnTEvtcoA3Av2IKzBjhEd9/Vd6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=syas1HJR; arc=none smtp.client-ip=74.125.231.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941122D7398
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.161
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790296803; cv=pass; b=lblfM840nnGw4E17mXqu7SL+DNJ/Fg+Nfw0uouf3tKS6uyEMiOnz0+Om5i711qrIfxKB6+KhMRX5vH+BK3Z0d2Y0O9ZOwBhwkHXlt6GV5O3LjevtRRi1bnA9y/GsTwq9DHpOmOaStz7ecOy3edh2gr3CiywuU2ueNQggPLOZiAo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790296803; c=relaxed/simple;
+	bh=ftxDqU9XlFwz6e2iit+lB9vVqjsOV4WsGNNi9lM6TeU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cEvWbGBzw6OyZKqSxQYe8oXZIi0YP19y/UgGTH7g7t+fRJaXWCFMQOIoPaPC1rnWFNC5DYuoDb/8hPBz2IYbEmdwT46Lbxj1WEKZcFBWgFdlSzKEjzCWZFKkvh9VoGw55BxpKPJSedJBG9JmA3OnzK0KPbfv4n9HCPSRuzh2GKU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UnKxa/ST; arc=pass smtp.client-ip=74.125.229.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="syas1HJR"
-Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-7f4f1354076so78082a34.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:35:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UnKxa/ST"
+Received: by mail-dl2-f33.google.com with SMTP id a92af1059eb24-1438e88300cso349805c88.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:40:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790296800; cv=none;
+        d=google.com; s=arc-20260327;
+        b=f4ROE0uOQPgBQ3Kg+k/RWwbmHY5QI6VOYYotIyGKrEywHlDjtid0E7fsfU4TbXXU8G
+         1bVWeu2lZJ3T+nAx7Hk6YFtjUWnHl9au+MZFv5bvCsIH4Zwmc/+SfYEpBSUfMINjJfRJ
+         VDHWiNdYCelIqxZX3duARN1wGt4NKLLvKBZUeyLpFLCCXhCV+ZmtUD7VUlLbl6Q9onlE
+         vPTK7Y0W68LaUg+IsZTlCQCPowSvnPCVT1DTaQNqaoM+w2VPHX9M8LeuNFv3FoLNsDB2
+         u+u4MHSL7S+GxLj8YZvgx/pUvIzoa1ypw2vzA1OBlZHWEO9Jt1IeZXZ5Jz1oqS1Udzyh
+         7MFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6ifhmGNF90wvvVdVpuw9Aasse7UJ+lz8YulJtQDHPaE=;
+        fh=JenOG4CPpvYinBTrcHHMSJob1oKDLhOagtoMGUoV9u4=;
+        b=Bnu9+5fheDb34W3Dzg/dczAVGHiOHc+Ip4Mn08BFRcA5ZnHpq0g5GpMGlWfWNDDf5S
+         k+abeZB0iFBSB2Cz5YckqFWKx8UfoMO5KE44kd6MkE+iirYTHNpPw4JWrpSZ+fjl/rpJ
+         CoptSZ9DI86Ey/r67IZUwqS5I48JiF/rvZ5G9hVfh33rNATURBmiF3Rka6TfJAJ7JIKv
+         nxegCkHuzvBCCgLyJIwQvkyO+QLKaDvn/RCVwVR/+59dZw279GkyCfucVf/u9TqoM9Al
+         5cH55o1FejJjZUjh1OalitKighXynOgGU9LxPYxHndD+316h3bkGwTAdiOKUiGOrNuEa
+         K4lA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790296550; x=1790901350; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zu9USgrbA7+ji5Tmz6jfo0DudpWjRw2yjJIgDcGUkdQ=;
-        b=syas1HJRBoxi1+aGruLkX5lCqvQCg2sYP/q6Rim14eGBrsKY4Ul+oMGOzFg/6dmuP6
-         3EqhE/IgwtYYX9BCIITsjpckbe+udyv9nYW2t4sVqHvWMxeSg6frmeC9GCi4wynCEgIi
-         tPexzOR/zVOIpH7XVkdnJiFPm0yZzQJEJHBsPp4UJwQzUA07irWx+eN9zymtMPf93ACw
-         3xSzk1Q9Kkkr8vZaP0bTPDafZhKRBl97AgjQZ9ptvpa5hj5isyjM8zFTdEi1Lo0BlnCo
-         W4oachWDxtLxr3Zl2x+bz6xriFWKMMbStb8p6KNbB819MlefOUYIVFOePqkd7e20IY96
-         2fWA==
+        d=google.com; s=20251104; t=1790296800; x=1790901600; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6ifhmGNF90wvvVdVpuw9Aasse7UJ+lz8YulJtQDHPaE=;
+        b=UnKxa/STE13A+YnqlFpJW09IqU/HeF+aw9jLggVsG1wkHhh8VqSDwi1ncGPj846VFl
+         DImfFWzrmL8XYUtyUpnVacqEckNMjd1tXNNnaO1IeRLNPBds7y17X419nhzBsOJwE5aq
+         2T2WxMdn2nL7DC6wbZIqKfvr9pK4WnADPiecdokz/ejmmBu7pOirykQSAi9cGnS8DgpT
+         hYyLxgziCWQ/rsycBf1o9W9smG73/e1SM5oeJ7oxksJUSYG/qq/kqnjO7+3LQfQGIcJr
+         aZRqvGxBbUOpmm7LPWKxGLya3mhQz43BMpBfzAQ9WLpEUy6sDedk0zxKYWuNYFsqAlXy
+         yLCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790296550; x=1790901350;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790296800; x=1790901600;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zu9USgrbA7+ji5Tmz6jfo0DudpWjRw2yjJIgDcGUkdQ=;
-        b=S0Vz9ChEN5QWan9vca7rTtt+XgM/wXg1iRIHCtbtWMF9MECWwj29uApI6iCsBOPWNw
-         OFDm7XB1RddsT+y/siGhYiKkASQ/tvgqb/dRQ5vJAdKKUXOfGikVABxC2whE7MLiuRYQ
-         Vf1bHq3Shh25GEGryiahxzEI8eJQ1v6CDmUykgLEcqxqy9Ghz2cFkd3NECQwrw4VMuBw
-         NieTorCgYos4gukO27gpGT7zXDV4MJKJPNN6PGLApNmrne6eSt9pTFicIKnP64lIraRv
-         W5OB40HdJb/fkdwoDC1mQbdOhyNlD+DlxUPYMpad50rGUln3GJJWdz8zYNQq4fs0426L
-         I1WA==
-X-Forwarded-Encrypted: i=1; AKwUvBwPh1XQbhgwQl9kAdo8RQaymbqfmMRY6C5Ncc+E6y8XJYkixVnbzR/EC3495fIfdUm7pQ/iH4Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++ndnrjIsTRkoL+Pn7/oI/0odxZhVHJCMhT7F3yh4eIl11eup/4u
-	/lUzkT2bgodZEaUmcAVeM0oowkjhnM5/JLgGtNN5WWueU5SA9oygVvrU
-X-Gm-Gg: AYBFou3VUkrQHyrTAejG7JCZnCiz30gucAO0cKkKB8NpbiCKZsfcXUeVatb7uqAN/Q6
-	ky2wQQKlayV+imvA0MskkroI0HteTE3dP3ZW4G7fXOhM0pJkQ2+VmB8rPJGLU6EcihaN1kuTojG
-	n6wrAH70geBR2J7g6xZX+1QCvqoNQ8EIIg0CIudXfO6PNLN6m6bBLUT2VKYLx16RFzN21rilij4
-	QAtbdKgQpIv7GrH8l0FNumKTW8Q4cAfwvAs8/58eUS0m90hxiE5qtFwjgAK6/pWjitH1ansl6Yq
-	2pgR5LRPYpwugySFRtHOa0Dx4GrnO1/avFLqB4NX5gT0ubtPLZnIITT7+kh6dTwRhfbWbXZ/aXr
-	ckACbhWDkyWOBqm5jDt6DFGAdsKDnW/stJa3F9rnhic/IPbLXNfyEKTjqd/nSkSVcJsV2UyrxjI
-	g0HBKUJ/kALU3kZthxk25GweGR44OfyFyELY//xKP8auZ5+BBkEAAulkwBibwCqHiKCZab
-X-Received: by 2002:a05:6820:f016:b0:6ca:36f9:178e with SMTP id 006d021491bc7-6d440df0ceemr3518302eaf.28.1790296549906;
-        Thu, 24 Sep 2026 17:35:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:43::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d5e68338a6sm298361eaf.10.2026.09.24.17.35.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 17:35:49 -0700 (PDT)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Thu, 24 Sep 2026 17:35:21 -0700
-Subject: [PATCH net-next v2 8/8] eth: mpnic: add basic Rx handling
+        bh=6ifhmGNF90wvvVdVpuw9Aasse7UJ+lz8YulJtQDHPaE=;
+        b=2q80G9GjmNhQe5vj8+71EGZH0NsMcGpVoaaCVpx2m9qnRTliT+vXsI0iemt0uePJrs
+         y2H+E/OcFxbwf0XbTX+fAYUyCwE+CVIqRRXdMAREd5xbB/UxhlffHZ0fewF8cKcZEesE
+         FsQYXm2and+oWw7sC29XFe/7dUVatAMx+XvYHY0aPPH8zZ/0dwLXHN/TMq/EJeza2lWr
+         BaF0eO4aiCqjk8jw9GknUi7Hwl8HBCEKyU/vgWv3EQAel2QGGMrZFNuG6HOwRH1EfAkq
+         w0RMxVFO+0X/lMF8F/axI0zOnpmjB21NZ2EGyvYcYxduVzGmMHMv514rhCBO6cyK/3h5
+         y/hw==
+X-Forwarded-Encrypted: i=1; AKwUvBwkh0OXHAOc7g/TBFrbvLiwbUtQb0PickdoTJppjs9h8is1ARjc0HO/AvRl/ida4LBiOARXHP4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n8yZg8u3urfO2xOXgFgSN4Lr/q02uijLOHcffLb1f36z/xzZ+/
+	zhsMhN88rX2gBea+S+nZy+AZmBQpez9V5Etofq3gDi1UfwjS+a9Fc6UseZnfse0XLeoXBSqBAqD
+	d9aLg2DE8sOsbA59Zz1hjB8KvlbonbYrRZz4cpKdV
+X-Gm-Gg: AYBFou2L9qBCE1fjUO+G94cMDAblSXpo57N7fsmSW508mNub7xby3WHouvW4G+tNbIL
+	+SJ7E5xAR9/wI1iB3bri4DfOAVj2LiYQ2y3x4u9fp+NvD87wzNcBI8IcPU9RBUIiMM9JDqq3DEu
+	LwDJ2W5WwubE27P+htsW5yt6RKKGODYTTJnxQpjjRroOQLNb7kGA3q7bas45MZVbtoIgzqoMmU/
+	Z0xlCOymTNsdbo/YpFh5skYRmnOWK8XLr6mK27BZ7fyBZpYJ8vdhzYfrJH+YvQonQnD5Y0jZ+nR
+	bZK4rGTvGog3DqC/xthqCWqTfHo244E9twVS/9cVudY9PkecbEuS2rqWZVDlwmJ+0luNJgShaOE
+	a4a6NRlRJBmemcYwW2vxoDhpIryw3P3Vz35oW/fAONEbG3X+jmE229gijMGBowe1P7fMgYIcmoU
+	x6p3aWQSen6eCWUSnTi6YE4g==
+X-Received: by 2002:a05:7022:1e03:b0:144:f85a:a188 with SMTP id
+ a92af1059eb24-14503f2d6ecmr5121732c88.2.1790296799688; Thu, 24 Sep 2026
+ 17:39:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-linux-mpnic-v2-8-4badc9b58b9e@gmail.com>
-References: <20260924-linux-mpnic-v2-0-4badc9b58b9e@gmail.com>
-In-Reply-To: <20260924-linux-mpnic-v2-0-4badc9b58b9e@gmail.com>
-To: Alexander Duyck <alexanderduyck@fb.com>, 
- Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, 
- Mohsin Bashir <mohsin.bashr@gmail.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- bpf@vger.kernel.org
-X-Mailer: b4 0.13.0
+References: <20260923213719.224838-1-kuniyu@google.com> <20260923213719.224838-4-kuniyu@google.com>
+ <DLNYI40PF2Q3.1KYC8MHZU2VJ@gmail.com>
+In-Reply-To: <DLNYI40PF2Q3.1KYC8MHZU2VJ@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 24 Sep 2026 17:39:47 -0700
+X-Gm-Features: AclHuK_Qwt2GMVGY4hmLeMVx26fLamZTuVjIH8k3C8fGyjWtdVLuVOM-Awl3giY
+Message-ID: <CAAVpQUBGSahLGEqGQCD2_0Ro2e-=59W7mhVyxOnoFU==LAK9tw@mail.gmail.com>
+Subject: Re: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Yonghong Song <yonghong.song@linux.dev>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Tenzin Ukyab <ukyab@berkeley.edu>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A frame arrives as a run of completion descriptors: one header
-address/length descriptor, one address/length descriptor per payload
-page, and a metadata descriptor that closes the frame. The frame is
-assembled in an xdp_buff as the descriptors come in and handed to the
-stack when the metadata descriptor arrives.
+On Thu, Sep 24, 2026 at 5:04=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> On Wed, Sep 23, 2026 at 09:35 PM Kuniyuki Iwashima <kuniyu@google.com> wr=
+ote:
+> > +     /* Call bpf when the TCP stack enqueues/dequeues payload
+> > +      * to/from sk->sk_receive_queue.
+> > +      *
+> > +      * Only bpf_tcp_ops is supported.
+> > +      *
+> > +      * It can be used to adjust sk->sk_rcvlowat and suppress
+> > +      * unnecessary wakeups before sufficient data is available.
+> > +      */
+> > +     BPF_SOCK_OPS_RCVQ_CB_FLAG =3D (1<<7),
+> >  /* Mask of all currently supported cb flags */
+> > -     BPF_SOCK_OPS_ALL_CB_FLAGS       =3D 0x7F,
+> > +     BPF_SOCK_OPS_ALL_CB_FLAGS       =3D 0xFF,
+>
+> can we drop the flag ?
+> hdr_opt_len() is called for every tx skb without per-socket opt-in.
 
-A page holds several frames, so rather than taking a reference per
-frame the driver takes a batch of references when it starts handing the
-page out and returns whatever is left over once the device moves on to
-the next one. Payload fragments that turn out to be contiguous within
-one page are merged so that a frame spread over a page does not eat one
-skb fragment slot per descriptor.
+Oh, I assumed bpf_tcp_ops keeps the same behaviour.
 
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
-v2:
-- skip Rx cleaning and BDQ refill when polled with a budget of 0
-  (netpoll), page pool must not be used in that context
-- keep struct mpnic_pkt_ctxt instead of replacing it with a bare
-  xdp_buff, and move add_frag_failed into it
-- give each Rx queue only the NAPI budget left over by the previous
-  ones instead of the full budget
-- sync Rx buffers for the CPU with page_pool_dma_sync_for_cpu() instead
-  of dma_sync_single_range_for_cpu()
----
- drivers/net/ethernet/meta/mpnic/mpnic_csr.h  |   7 +
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.c | 203 ++++++++++++++++++++++++++-
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.h |   7 +
- 3 files changed, 212 insertions(+), 5 deletions(-)
+We have a bpf prog to turn the hook on (from cgroup_skb/ingress),
+only when ingress rate exceeds the allocated capacity, to signal that
+via a custom TCP option and turn the hook off from the hook itself.
+(and I planned to post another patch for that)
 
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_csr.h b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
-index 6455ec23b6c7..d6ab9df58168 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
-@@ -130,6 +130,10 @@ enum {
- #define MPNIC_RCQ_SIZE(i)		(0x294 + 1024 * (i))	/* 0xa50 */
- #define MPNIC_RCQ_SIZE_SIZE			CSR_GENMASK(4, 0)
- 
-+/* NIC_CORE_RIM */
-+#define MPNIC_RIM_INTR_MASK(i)		(0x2c8 + 1024 * (i))	/* 0xb20 */
-+#define MPNIC_RIM_INTR_MASK_MASK		CSR_BIT(0)
-+
- /* NIC_CORE_TIM_PRV */
- #define MPNIC_TIM_CTL(i)		(0x100100 + 1024 * (i))	/* 0x400400 */
- 
-@@ -139,6 +143,9 @@ enum {
- #define MPNIC_RDE_CFG_MIN_HEAD_ROOM		CSR_GENMASK(18, 10)
- #define MPNIC_RDE_CFG_MAX_HEADER_BYTES		CSR_GENMASK(45, 32)
- 
-+/* NIC_CORE_RIM_PRV */
-+#define MPNIC_RIM_CTL(i)		(0x100280 + 1024 * (i))	/* 0x400a00 */
-+
- /* NIC_CORE_RBP_HP_GLBL */
- #define MPNIC_HPQ_IDLE(i)		(0x420000 + 2 * (i))	/* 0x1080000 */
- #define MPNIC_HPQ_IDLE_CNT		16
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-index 389a9e5476c6..edb07b7f334b 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-@@ -405,6 +405,34 @@ static void mpnic_fill_qt_bdqs(struct mpnic_q_triad *qt)
- 	__mpnic_bdq_commit_tail(&qt->sub1, ppq_i);
- }
- 
-+/* Take one of the references batched on the page at @idx. If the device
-+ * has moved on to a new page, first drop the unused references left on
-+ * the previous one.
-+ */
-+static struct page *
-+mpnic_page_pool_get(struct mpnic_pg_ctxt *pg_ctxt, struct mpnic_ring *ring,
-+		    u32 idx)
-+{
-+	struct page *page = pg_ctxt->page;
-+
-+	if (unlikely(pg_ctxt->idx != idx)) {
-+		if (pg_ctxt->pagecnt_bias &&
-+		    !page_pool_unref_page(page, pg_ctxt->pagecnt_bias))
-+			page_pool_put_unrefed_page(page->pp, page, -1, true);
-+
-+		page = ring->rx_buf[idx];
-+		page_pool_fragment_page(page, MPNIC_PAGECNT_BIAS_MAX);
-+
-+		pg_ctxt->page = page;
-+		pg_ctxt->pagecnt_bias = MPNIC_PAGECNT_BIAS_MAX;
-+		pg_ctxt->idx = idx;
-+	}
-+
-+	pg_ctxt->pagecnt_bias--;
-+
-+	return page;
-+}
-+
- static void mpnic_flush_pg_ctxt(struct mpnic_pg_ctxt *ctxt, bool napi)
- {
- 	long pagecnt_bias = ctxt->pagecnt_bias;
-@@ -417,6 +445,87 @@ static void mpnic_flush_pg_ctxt(struct mpnic_pg_ctxt *ctxt, bool napi)
- 	}
- }
- 
-+static unsigned int mpnic_hdr_pg_start(unsigned int pg_off)
-+{
-+	/* The headroom of the first header may be larger than
-+	 * MPNIC_RX_HROOM due to alignment. So account for that by just
-+	 * making the page offset 0 if we are starting at the first header.
-+	 */
-+	if (ALIGN(MPNIC_RX_HROOM, 128) > MPNIC_RX_HROOM &&
-+	    pg_off == ALIGN(MPNIC_RX_HROOM, 128))
-+		return 0;
-+
-+	return pg_off - MPNIC_RX_HROOM;
-+}
-+
-+static unsigned int mpnic_hdr_pg_end(unsigned int pg_off, unsigned int len)
-+{
-+	/* Determine the end of the buffer by finding the start of the next
-+	 * and then subtracting the headroom from that frame.
-+	 */
-+	pg_off += len + MPNIC_RX_TROOM + MPNIC_RX_HROOM;
-+
-+	return ALIGN(pg_off, 128) - MPNIC_RX_HROOM;
-+}
-+
-+static void
-+mpnic_pkt_prepare(u64 rcd, struct mpnic_rcq_state *state,
-+		  struct mpnic_q_triad *qt)
-+{
-+	unsigned int pg_off = FIELD_GET(MPNIC_RCD_AL_BUFF_OFF, rcd);
-+	unsigned int pg_idx = FIELD_GET(MPNIC_RCD_AL_BUFF_ID, rcd);
-+	unsigned int len = FIELD_GET(MPNIC_RCD_AL_BUFF_LEN, rcd);
-+	bool fin = FIELD_GET(MPNIC_RCD_AL_PAGE_FIN, rcd);
-+	unsigned int frame_sz, pg_start, pg_end;
-+	struct xdp_buff *buff = &state->pkt.buff;
-+	struct page *page;
-+
-+	pg_start = mpnic_hdr_pg_start(pg_off);
-+
-+	page = mpnic_page_pool_get(&state->hdr, &qt->sub0, pg_idx);
-+	qt->sub0.head = (pg_idx + 1) & qt->sub0.size_mask;
-+
-+	/* Short-cut the end calculation if the page is fully consumed */
-+	pg_end = fin ? page_size(page) : mpnic_hdr_pg_end(pg_off, len);
-+	frame_sz = pg_end - pg_start;
-+
-+	page_pool_dma_sync_for_cpu(qt->sub0.page_pool, page, pg_start,
-+				   frame_sz);
-+
-+	xdp_init_buff(buff, frame_sz, &qt->xdp_rxq);
-+	xdp_prepare_buff(buff, page_address(page) + pg_start,
-+			 pg_off - pg_start, len, true);
-+	net_prefetch(buff->data);
-+
-+	state->pkt.add_frag_failed = false;
-+}
-+
-+static void
-+mpnic_add_rx_frag(u64 rcd, struct mpnic_rcq_state *state,
-+		  struct mpnic_q_triad *qt)
-+{
-+	unsigned int pg_off = FIELD_GET(MPNIC_RCD_AL_BUFF_OFF, rcd);
-+	unsigned int pg_idx = FIELD_GET(MPNIC_RCD_AL_BUFF_ID, rcd);
-+	unsigned int len = FIELD_GET(MPNIC_RCD_AL_BUFF_LEN, rcd);
-+	bool fin = FIELD_GET(MPNIC_RCD_AL_PAGE_FIN, rcd);
-+	struct xdp_buff *buff = &state->pkt.buff;
-+	unsigned int truesz;
-+	struct page *page;
-+
-+	page = mpnic_page_pool_get(&state->payld, &qt->sub1, pg_idx);
-+	qt->sub1.head = (pg_idx + 1) & qt->sub1.size_mask;
-+
-+	truesz = (fin ? page_size(page) : ALIGN(pg_off + len, 128)) - pg_off;
-+
-+	page_pool_dma_sync_for_cpu(qt->sub1.page_pool, page, pg_off, truesz);
-+
-+	if (!xdp_buff_add_frag(buff, page_to_netmem(page), pg_off, len,
-+			       truesz)) {
-+		state->payld.pagecnt_bias++;
-+		state->pkt.add_frag_failed = true;
-+	}
-+}
-+
- static void mpnic_put_pkt_buff(struct mpnic_pkt_ctxt *ctxt, bool napi)
- {
- 	struct xdp_buff *buff = &ctxt->buff;
-@@ -442,23 +551,99 @@ static void mpnic_put_pkt_buff(struct mpnic_pkt_ctxt *ctxt, bool napi)
- 	page_pool_put_full_page(page->pp, page, napi);
- }
- 
-+static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
-+			   struct mpnic_q_triad *qt, int budget)
-+{
-+	struct mpnic_ring *rcq = &qt->cmpl;
-+	struct mpnic_rcq_state *state;
-+	unsigned int packets = 0;
-+	__le64 *raw_rcd, done;
-+	u32 head = rcq->head;
-+
-+	done = (head & (rcq->size_mask + 1)) ? 0 : cpu_to_le64(MPNIC_RCD_DONE);
-+	raw_rcd = &rcq->desc[head & rcq->size_mask];
-+	state = rcq->state;
-+
-+	while (packets < budget) {
-+		u64 rcd;
-+
-+		if ((*raw_rcd & cpu_to_le64(MPNIC_RCD_DONE)) != done)
-+			break;
-+
-+		dma_rmb();
-+
-+		rcd = le64_to_cpu(*raw_rcd);
-+
-+		switch (FIELD_GET(MPNIC_RCD_TYPE, rcd)) {
-+		case MPNIC_RCD_TYPE_HDR_AL:
-+			if (FIELD_GET(MPNIC_RCD_HDR_SUBTYPE, rcd) ==
-+			    MPNIC_RCD_HDR_SUBTYPE_HDR)
-+				mpnic_pkt_prepare(rcd, state, qt);
-+			break;
-+		case MPNIC_RCD_TYPE_PAY_AL:
-+			mpnic_add_rx_frag(rcd, state, qt);
-+			break;
-+		case MPNIC_RCD_TYPE_META: {
-+			struct sk_buff *skb = NULL;
-+
-+			if (likely(!(rcd &
-+				     MPNIC_RCD_META_UNCORRECTABLE_ERR_MASK) &&
-+				   !state->pkt.add_frag_failed))
-+				skb = xdp_build_skb_from_buff(&state->pkt.buff);
-+
-+			if (likely(skb))
-+				napi_gro_receive(&nv->napi, skb);
-+			else
-+				mpnic_put_pkt_buff(&state->pkt, true);
-+
-+			state->pkt.buff.data_hard_start = NULL;
-+			packets++;
-+			break;
-+		}
-+		}
-+
-+		raw_rcd++;
-+		head++;
-+
-+		if (unlikely(!(head & rcq->size_mask))) {
-+			done ^= cpu_to_le64(MPNIC_RCD_DONE);
-+			raw_rcd = &rcq->desc[0];
-+		}
-+	}
-+
-+	rcq->head = head;
-+
-+	/* Allocate buffers, force dma_wmb(), and then start writing tails */
-+	mpnic_fill_qt_bdqs(qt);
-+
-+	return packets;
-+}
-+
- static int mpnic_poll(struct napi_struct *napi, int budget)
- {
- 	struct mpnic_napi_vector *nv = container_of(napi,
- 						    struct mpnic_napi_vector,
- 						    napi);
--	int i;
-+	int i, j, work_done = 0;
- 
- 	for (i = 0; i < nv->txt_count; i++)
- 		mpnic_clean_tcq(nv, &nv->qt[i], budget);
- 
-+	if (likely(budget))
-+		for (j = 0; j < nv->rxt_count; j++, i++)
-+			work_done += mpnic_clean_rcq(nv, &nv->qt[i],
-+						     budget - work_done);
-+
- 	for (i = 0; i < nv->txt_count; i++)
- 		mpnic_commit_cq_head(&nv->qt[i].cmpl);
- 
--	if (likely(napi_complete_done(napi, 0)))
-+	if (work_done >= budget)
-+		return budget;
-+
-+	if (likely(napi_complete_done(napi, work_done)))
- 		mpnic_nv_irq_rearm(nv);
- 
--	return 0;
-+	return work_done;
- }
- 
- static irqreturn_t mpnic_msix_clean_rings(int __always_unused irq, void *data)
-@@ -941,7 +1126,9 @@ static void mpnic_set_rde_cfg(struct mpnic_dev *mpd, struct mpnic_ring *rcq)
- 			      MPNIC_RX_MAX_HDR));
- }
- 
--static void mpnic_enable_rcq(struct mpnic_dev *mpd, struct mpnic_ring *rcq)
-+static void mpnic_enable_rcq(struct mpnic_dev *mpd,
-+			     struct mpnic_napi_vector *nv,
-+			     struct mpnic_ring *rcq)
- {
- 	u32 log_size = fls(rcq->size_mask);
- 	u32 i = rcq->q_idx;
-@@ -957,6 +1144,10 @@ static void mpnic_enable_rcq(struct mpnic_dev *mpd, struct mpnic_ring *rcq)
- 	mpnic_wr64(mpd, MPNIC_RCQ_BASE_ADDR(i), rcq->dma);
- 	mpnic_wr64(mpd, MPNIC_RCQ_SIZE(i), log_size & MPNIC_RCQ_SIZE_SIZE);
- 
-+	/* Store interrupt information for the completion queue */
-+	mpnic_wr64(mpd, MPNIC_RIM_CTL(i), nv->v_idx);
-+	mpnic_wr64(mpd, MPNIC_RIM_INTR_MASK(i), 0);
-+
- 	mpnic_wr64(mpd, MPNIC_RCQ_CTL(i), MPNIC_RCQ_CTL_ENABLE);
- }
- 
-@@ -975,7 +1166,7 @@ void mpnic_enable(struct mpnic_net *mpn)
- 
- 		for (j = 0; j < nv->rxt_count; j++, t++) {
- 			mpnic_enable_bdq(mpd, &nv->qt[t].sub0, &nv->qt[t].sub1);
--			mpnic_enable_rcq(mpd, &nv->qt[t].cmpl);
-+			mpnic_enable_rcq(mpd, nv, &nv->qt[t].cmpl);
- 		}
- 	}
- 
-@@ -1008,6 +1199,8 @@ static void mpnic_disable_bdq(struct mpnic_dev *mpd, struct mpnic_ring *hpq)
- static void mpnic_disable_rcq(struct mpnic_dev *mpd, struct mpnic_ring *rcq)
- {
- 	mpnic_wr64(mpd, MPNIC_RCQ_CTL(rcq->q_idx), 0);
-+	mpnic_wr64(mpd, MPNIC_RIM_INTR_MASK(rcq->q_idx),
-+		   MPNIC_RIM_INTR_MASK_MASK);
- }
- 
- void mpnic_disable(struct mpnic_net *mpn)
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-index 5e592dfd9f81..834eb9bfffd1 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-@@ -50,6 +50,12 @@ struct mpnic_net;
- /* Headers longer than this are split off into the payload queue */
- #define MPNIC_RX_MAX_HDR		1536
- 
-+/* A page is handed out to many packets, each of which takes one reference.
-+ * Rather than a locked increment per packet the driver takes a batch of
-+ * references up front and returns whatever is left when the page is done.
-+ */
-+#define MPNIC_PAGECNT_BIAS_MAX		(PAGE_SIZE + 1)
-+
- #define MPNIC_MAX_JUMBO_FRAME_SIZE	9742
- 
- /* The page a buffer descriptor queue is currently handing out. Records
-@@ -63,6 +69,7 @@ struct mpnic_pg_ctxt {
- 
- struct mpnic_pkt_ctxt {
- 	struct xdp_buff buff;
-+	bool add_frag_failed;
- };
- 
- struct mpnic_rcq_state {
+Anyway, is it because calling bpf prog is not very expensive
+or per-prog switch is preferable to per-socket flag ?
 
--- 
-2.52.0
 
+> The prog in patch 8 already returns when the socket has no
+> sk_storage.
+
+Yes, but this is only for bpf verifier.
+
+>
+> The flag is one bit per socket shared by all bpf_tcp_ops in the
+> cgroup hierarchy. When one prog clears it the others stop getting
+> enqueue_rcvq().
+
+Just an idea, would it make sense to add a kfunc to move bpf_tcp_ops
+callback to a shadow pointer by allocating sizeof(bpf_tcp_ops) * 2 ?
+
+
+>
+> Then sk_is_mptcp() check in the kfunc is enough and there is no need
+> to touch bpf_sock_ops_cb_flags_set() and TCP_BPF_SOCK_OPS_CB_FLAGS.
+
+It also works, but I wanted to move the dead check to the
+control path instead of checking for every rx skb / recvmsg().
+
+and now I think we should move bpf_sock_ops_cb_flags to
+a better place (maybe tcp_sock_read_txrx) in tcp_sock.
