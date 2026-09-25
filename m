@@ -1,165 +1,135 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAD6384258;
-	Fri, 25 Sep 2026 07:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790320433; cv=pass; b=HvcKfZmhqLGtyeazuH0JLO2CpwJ00+e/GcFdyVEn7vebdetydkcK0+1pKXg8pR+FzLtvtfVzSSSAYFF3X7nDwXIyRd0Igz39oVRPmx1iKcPIRu3OxLRff+y0b9JSV6x2inNBazzqJBgvjLPuAEBZlvjHBeFgR7EONPcYrkYEZbQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790320433; c=relaxed/simple;
-	bh=204sKMI5do38KKJp7Jqj1fEbF7DyWfLHVaIFvH58Y1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GzAlbXmVDhUiCttGoiO+8WuCkDZ61VLYEMYkW2yhfqhFfBGy5KuKbJrz5MzwcORgmD61kX1HpTnldFVIianBy2FINVknaYVGLZ40j5OivFctsHdx0hltnFn5OFLti8gLAf0eBVJLgfmYEoAn/b7VRsZ4HA3YvtTQzNcUU64pCp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=LmI0yBIq; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643904349BD
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790320462; cv=none; b=hf7zRxy9iDKcL+JyEvLIrE1kQPSGKVaq2qkawYKc69dIViULpaO7pEKC2uX5l8dFn84Kvx1QHZM/jAzoIWpkm0zXD5kTyrbGOYCcLd1uGceE5GrKPI/RRzTb1xZ0h2a1Xtdx7xknR0XMvR/C9q50ghpBUi0S5s2wywDRKxbD+94=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790320462; c=relaxed/simple;
+	bh=SwpuzL1Jkzeuc6xr64HQNzwYeDQfGY7uc9Y+9bwkrLE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZxlPsh/fCKFbFtcTT+IC8I/dn8o/lJmXe8FiYtx4ImHjaktT2ZXTWz2gsVqZCkoVhVDmRBmecElMN3xKYNUkNnPaxSBs7EaYY21bjVls+gBVV/jdjGPiRWG9FRl5zZ6kUCo8Zg8jZMh2C7nT6eUluF4kO3NmVuvTbX//Lr+gJe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=YcZwG+ID; arc=none smtp.client-ip=141.95.128.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="LmI0yBIq"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3D21C2010E2;
-	Fri, 25 Sep 2026 09:13:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790320430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WLceNeGlZl/gS3dxnKEM095tZNl9hbWJqJ8xL8l+Ngk=;
-	b=LmI0yBIqgdLYlZkBCpjZXNKQNbWFfWYbjkQGdgI8oJTKi4oGntWIoji0TdDTHQJ3EEPyUM
-	lUWPkBqVsnlERCCmLxdFcgnWBGblRcHNwoTEY/qihG5/7/bkzheB+luC+QfHmQf91ehAEC
-	k107ogFRxkRe9xelZoDmMOsDsp0azvpkOqIrPCOJ03AdM+h1e5xR6r37+JpN/WbHKiVW14
-	CEV+Lex9xsFyd1fSyQcodP/oO4KTWOrSow8GmzEZtCTcXbFioBuupqJFOvCj9v4xbj7BPk
-	aPVNQXjFE12d2YntZd5szOvIYc4bgVsUk/cY0LHbHE6J35BH2O4Oeii1fBTQ1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790320430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WLceNeGlZl/gS3dxnKEM095tZNl9hbWJqJ8xL8l+Ngk=;
-	b=FjSBUpNBgiTP2RKJG00Xn9iQ/JJqcctKp9O/ky08jS+C51zWkAhFYyH8sVwdFPCHYKa9us
-	+U5V0v0A74FHrHCtCGWJLPN/5re7JATWiLsAr0APVCoWMcyDMoeTcwUtm0xhDtdwvdJwrR
-	qpi5M7aaqkU+vJ5l/TkHEB9gd5UMOY2mt6Y7flzTlKenM+rv6aCd3nAHA3KjbBIYKPe/z8
-	nFh82pKaYtTwgA94J0AVCxKt66K2KQCJoAWsriaPCCGuV175PmxJBctTIyXLhXsN+uFR5W
-	Z6m+s1AxL62HnXrs1mfJeVwlSTOGwmcpDJ6nIgvEX8+MtM3l9UeQONk5e+d5yg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790320430; a=rsa-sha256;
-	cv=none;
-	b=PRWtc/sudJkmT2stVbINd3FjWG7+/X+w1GiaPS6ulSjIXeuumkxkXw8KYppU9Dq7TW1d8g
-	MPKIL2swAhb+tSAM5JPbgYPfa7de+dcAwBiIhpOhANYfWQRfwDvab2NWso3j7PB/h0h2wt
-	gNbrPM07qISuPs4803t9tGq5RJ/Z0lKhZUaao4zC4qUKdarYttF+sZ+N8puvdjU2Sf0bIk
-	mD2skZUlLlABJgpn7LAu010byQgRRbvc3WJ0m3hpNKOlJExaNWagJfHNer0I/DAovVjRO9
-	sx98NJeMnjoTHMpIMJuMofN3PqNC3jO/5tjkuEbe2R1OESp7s77GQi7Et2F/nw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xA07y-002h3b-0W;
-	Fri, 25 Sep 2026 09:13:50 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xA07x-00000005Ptt-481R;
-	Fri, 25 Sep 2026 09:13:49 +0200
-Date: Fri, 25 Sep 2026 09:13:49 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Dennis Piecha <d.piecha@ymail.com>
-Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"nic_swsd@realtek.com" <nic_swsd@realtek.com>,
-	"andrew@lunn.ch" <andrew@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"nb@tipi-net.de" <nb@tipi-net.de>
-Subject: Re: [REGRESSION] r8169: RTL8168h silent RX stall with EEE after
- "net: phy: realtek: fix EEE advertisement write on the internal PHY MMD
- path" (6.18.y)
-Message-ID: <arYfLe7JpeO5tw6G@pengutronix.de>
-References: <353419280.954808.1790290283530.ref@mail.yahoo.com>
- <353419280.954808.1790290283530@mail.yahoo.com>
+	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="YcZwG+ID"
+Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
+ S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 25 Sep 2026 09:14:06 +0200
+Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
+ S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
+ 15.02.2562.049; Fri, 25 Sep 2026 09:14:06 +0200
+From: Julien Blanc <julien.blanc@sprinte.eu>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "hkallweit1@gmail.com"
+	<hkallweit1@gmail.com>, "andrew@lunn.ch" <andrew@lunn.ch>, "kuba@kernel.org"
+	<kuba@kernel.org>
+Subject: Re: [PATCH net-next v5] Add config phase for dp83td510e phy
+Thread-Topic: [PATCH net-next v5] Add config phase for dp83td510e phy
+Thread-Index: AQHdSygYN6nNiWAG80qFHEx/wNe0ebbeWKoAgABqd4A=
+Date: Fri, 25 Sep 2026 07:14:06 +0000
+Message-ID: <78a05fa2fe478f2b6f8dde2c2395a694d977986d.camel@sprinte.eu>
+References: <30be27333dbf1a83efbe20e7b07acc6290805d65.camel@sprinte.eu>
+	 <179029759826.2160803.13747337609737038966@kernel.org>
+In-Reply-To: <179029759826.2160803.13747337609737038966@kernel.org>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <13D6E2656AEE164EA43FC918F6A9F638@EX793143.lan>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <353419280.954808.1790290283530@mail.yahoo.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
+ c=relaxed/relaxed; t=1790320446; h=from:to:subject:date;
+ bh=SwpuzL1Jkzeuc6xr64HQNzwYeDQfGY7uc9Y+9bwkrLE=;
+ b=YcZwG+ID1XP7XYKbZ+E6JU1gMBkeFkFFOcJh5Yu2e8PXlZTtSD1UpFUJt5zn4z9NtuJWPrc6osdTh8yw9PwviS9d84mzB+zQ+9ce+XJa9BoGsNOY/V83blQa/JC3sxVgLh9jKHG4GtdLuZ/5omkvP9ug4v9Vudt82olyav4tYhK1QwldtbsXuTMR9BgiQ/uFvykSmByQXkttd/CkJHP9wkEbcgCiUaAdivcNTn6MSaE/hfQzqBBCVQxZFtm5itQWJVRmY4xEsgA+U2YTWiKMaODcQwLjXYoNH8fzPrs+xNErGWUZU81Qf53+ePWmZrCh0MiyKIVkED3byqo4gYYhjA==
 
-H Dennis,
-
-On Thu, Sep 24, 2026 at 10:51:23PM +0000, Dennis Piecha wrote:
-> Hi,
-> 
-> after updating from 6.18.39 to 6.18.52 (Home Assistant OS 18.2 -> 18.3,
-> close to vanilla stable), the onboard RTL8168h of my NUC silently stops
-> receiving every ~7-20 minutes. Disabling EEE at runtime makes it stable
-> again, so I suspect the stable backport of
-> 
-> 202fef9bbbf5 ("net: phy: realtek: fix EEE advertisement write on the
-> internal PHY MMD path")
-> 
-> (0af3afd054e7 in 6.18.y). There are no changes to r8169_main.c between
-> 6.18.39 and 6.18.52, but this PHY fix touches rtlgen_write_mmd(), which
-> is used by the "Generic FE-GE Realtek PHY" bound to this NIC. My
-> guess: with the advertisement write now landing, EEE actually gets
-> negotiated with the link partner, and RTL8168h doesn't handle LPI
-> correctly on the RX side. The fix itself looks correct to me; it seems
-> to expose an existing r8169/RTL8168h problem.
-> 
-> Hardware:
-> Intel NUC11ATKPE, BIOS ATJSLCPX.0039.2023.0221.1502
-> RTL8168h/8111h, 10ec:8168 (subsys 8086:3027), XID 541
-> PHY: Generic FE-GE Realtek PHY
-> link partner: AVM FRITZ!Box 6690 Cable, 1000/Full, flow control off
-> no VLANs, ASPM already disabled on the device (LnkCtl ASPM bits 0)
-> 
-> EEE state on 6.18.52 (read via ETHTOOL_GEEE):
-> supported=0x28 advertised=0x28 lp_advertised=0x28
-> eee_active=1 eee_enabled=1 tx_lpi_enabled=1 tx_lpi_timer=12
-> 
-> Symptom: carrier stays up, nothing at all is logged by r8169 or phylib,
-> no NETDEV WATCHDOG. rx_packets freezes while TX and the MSI-X interrupt
-> count keep going; no RX error/missed/dropped counters move:
-> 
-> time rx_packets tx_packets irq bql_inflight tx_timeout
-> 23:08:29 626373 188818 201071 0 0
-> 23:08:31 626458 188908 201236 0 0
-> 23:08:34 626513 189037 201394 0 0 <- stall
-> 23:08:37 626513 189126 201473 0 0
-> 23:08:44 626513 189284 201606 0 0
-> 23:08:51 626513 189517 201788 0 0
-> 
-> It never recovers by itself. "ip link set eno1 down; ip link set eno1 up"
-> restores traffic within 3 s; flushing the neighbour table does not help.
-> Disabling TX checksum offload and pinning MTU 1500 (workaround for the
-> VLAN-related TX timeouts reported by others on the same update) has no
-> effect here.
-> 
-> EEE test: on a 6.18.52 boot that had stalled at ~7 min and again ~7 min
-> later, I disabled EEE via ETHTOOL_SEEE (eee_active=0 afterwards). Since
-> then it has run for 60+ minutes without a stall, nothing else changed.
-> 
-> What I have NOT done yet: verified the EEE state on 6.18.39 for
-> comparison, and tested 6.18.52 with the commit reverted. I can do the
-> former easily; building a kernel is harder on this appliance-style OS
-> but possible if needed. I can also capture a MAC register dump
-> (ETHTOOL_GREGS) during a stall if that helps.
-
-Can you please test following patch:
-https://lore.kernel.org/all/20260925071040.2137178-1-o.rempel@pengutronix.de/
-
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+TGUgdmVuZHJlZGkgMjUgc2VwdGVtYnJlIDIwMjYgw6AgMDA6NTMgKzAwMDAsIG5ldGRldi1ib3Qr
+c2FzaGlrb0BrZXJuZWwub3JnIGENCsOpY3JpdMKgOg0KPiBUaGFuayB5b3UgZm9yIHlvdXIgY29u
+dHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3VuZCAzIHBvdGVudGlhbA0KPiBpc3N1ZShz
+KSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAwIMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAy
+IMK3IExvdzogMQ0KPiANCj4gW1NldmVyaXR5OiBMb3ddDQo+IFRoaXMgaXNuJ3QgYSBidWcsIGJ1
+dCB0aGUgc3ViamVjdCBoYXMgbm8gc3Vic3lzdGVtIHByZWZpeC4gbmV0ZGV2IHVzdWFsbHkNCj4g
+ZXhwZWN0cyBzb21ldGhpbmcgbGlrZToNCj4gDQo+IMKgIG5ldDogcGh5OiBkcDgzdGQ1MTA6IGFk
+ZCBjb25maWdfaW5pdCB0byBzZXQgTUlJIG1vZGUgYW5kIFJHTUlJIGRlbGF5cw0KDQpXaWxsIGZp
+eCwgdjYgY29taW5nIHNvb24uDQoNCj4gPiBBZGQgYSBjb25maWcgcGhhc2UgZm9yIHRoZSBUZXhh
+cyBJbnN0cnVtZW50cyBEUDgzVEQ1MTBFIGV0aGVuZXQgUEhZDQo+IA0KPiBUaGVyZSdzIGEgdHlw
+byBoZXJlOiAiZXRoZW5ldCIgc2hvdWxkIGJlICJldGhlcm5ldCIuDQoNClNhbWUNCg0KPiANCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBKdWxpZW4gQmxhbmMgPGp1bGllbi5ibGFuY0BzcHJpbnRlLmV1Pg0K
+PiA+IA0KPiA+IFJldmlld2VkLWJ5OiBBbmRyZXcgTHVubiA8YW5kcmV3QGx1bm4uY2g+DQo+IA0K
+PiBBIGJsYW5rIGxpbmUgc2l0cyBiZXR3ZWVuIFNpZ25lZC1vZmYtYnkgYW5kIFJldmlld2VkLWJ5
+LCB3aGljaCBzcGxpdHMgdGhlDQo+IHRyYWlsZXIgYmxvY2suIEJlY2F1c2Ugb2YgdGhhdCwgZ2l0
+IGludGVycHJldC10cmFpbGVycyBhbmQgYjQgd29uJ3QgdHJlYXQNCj4gU2lnbmVkLW9mZi1ieSBh
+cyBhIHRyYWlsZXIuIENvdWxkIHRoZSBibGFuayBsaW5lIGJlIHJlbW92ZWQ/DQoNCk5vdGVkIGFz
+IHdlbGwgZm9yIHY2Lg0KPiANCj4gVGhpcyBSQ1NSIGxheW91dCBpcyBpZGVudGljYWwgdG8gdGhl
+IERQODM4MjIgb25lOiByZWdpc3RlciAweDE3LA0KPiBSTUlJX01PREVfRU4gYXQgQklUKDUpLCBS
+R01JSV9NT0RFX0VOIGF0IEJJVCg5KSwgVFhfQ0xLX1NISUZUIGF0IEJJVCgxMSkNCj4gYW5kIFJY
+X0NMS19TSElGVCBhdCBCSVQoMTIpLiBPbiB0aGUgRFA4MzgyMiwgc2V0dGluZyB0aGUgVFggc2hp
+ZnQgYml0DQo+IHR1cm5zIHRoZSBUWCBpbnRlcm5hbCBkZWxheSBvZmY6DQo+IA0KPiBkcml2ZXJz
+L25ldC9waHkvZHA4MzgyMi5jOmRwODM4MjJfY29uZmlnX2luaXQoKSB7DQo+IMKgwqDCoCAuLi4N
+Cj4gCQkvKiBTZXQgRFA4MzgyMl9UWF9DTEtfU0hJRlQgdG8gZGlzYWJsZSB0eCBjbGsgaW50ZXJu
+YWwgZGVsYXkNCj4gKi8NCj4gCQlpZiAodHhfaW50X2RlbGF5IDw9IDApDQo+IAkJCXJnbWlpX2Rl
+bGF5IHw9IERQODM4MjJfVFhfQ0xLX1NISUZUOw0KPiDCoMKgwqAgLi4uDQo+IH0NCj4gDQo+IFRo
+ZSBEUDgzODIyIGRyaXZlciB1c2VkIHRvIGdldCB0aGlzIGJhY2t3YXJkcywgYW5kIGl0IHdhcyBm
+aXhlZCBpbiBjb21taXQNCj4gYzhhNWM3MzFmZDEyICgibmV0OiBwaHk6IGRwODM4MjI6IEZpeCBS
+R01JSSBUWCBkZWxheSBjb25maWd1cmF0aW9uIikuIFRoYXQNCj4gY29tbWl0IGNpdGVzIHRoZSBE
+UDgzODIyIGRhdGFzaGVldCBhbmQgc2F5cyB0aGUgVFggY2xvY2sgc2hpZnQgaXMgZGlzYWJsZWQN
+Cj4gd2hlbiB0aGUgYml0IGlzIHNldC4NCj4gDQo+IElmIGJpdCAxMSBvZiB0aGUgRFA4M1RENTEw
+RSByZWdpc3RlciB3b3JrcyB0aGUgc2FtZSB3YXksIGV2ZXJ5IFJHTUlJIG1vZGUNCj4gd291bGQg
+Z2V0IHRoZSB3cm9uZyBUWCBkZWxheToNCg0KTm8sIGZvciBEUDgzVEQ1MTBFLCB0aGUgZGF0YXNo
+ZWV0IHN0YXRlcyB0aGF0IDoNCg0KMTIgY2ZnX3JnbWlpX3J4X2Nsa19zaGlmdF9zZWwgUi9XIDB4
+MCAxYiA9IFJHTUlJIFJYIGNsb2NrIGFuZCBkYXRhIGFyZSBzaGlmdGVkDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIDBiID0gUkdNSUkgUlggY2xvY2sgYW5kIGRhdGEgYXJl
+IGFsaWduZWQNCjExIGNmZ19yZ21paV90eF9jbGtfc2hpZnRfc2VsIFIvVyAweDAgMWIgPSBSR01J
+SSBUWCBjbG9jayBhbmQgZGF0YSBhcmUgc2hpZnRlZA0KICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAwYiA9IFJHTUlJIFRYIGNsb2NrIGFuZCBkYXRhIGFyZSBhbGlnbmVkDQoN
+CldoaWxlIHRoZSB0ZXh0IGlzIHVuY2xlYXIsIHRoaXMgYWN0dWFsbHkgbWVhbnMgdGhhdCB3cml0
+aW5nIGEgMSBlbmFibGVzIHRoZQ0KaW50ZXJuYWwgZGVsYXkuIFNvIHdoYXQgdGhlIHBhdGNoIGRv
+ZXMgaXMgY29ycmVjdCBhcyB0aGUgRFA4M1RENTEwZSBkb2VzIG5vdA0Kd29yayBsaWtlIHRoZSBE
+UDgzODIyLiBJJ2xsIGFkZCBhIG5vdGUgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLg0KDQo+ID4gKw0K
+PiA+ICsJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVORDIsDQo+ID4g
+RFA4M1RENTEwRV9SQ1NSLA0KPiA+ICsJCQkJwqDCoMKgwqAgRFA4M1RENTEwRV9SWF9DTEtfU0hJ
+RlQgfA0KPiA+ICsJCQkJwqDCoMKgwqAgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQsDQo+ID4gKwkJ
+CQnCoMKgwqDCoCByZ21paV9kZWxheSk7DQo+ID4gKwkJaWYgKHJldCkNCj4gPiArCQkJcmV0dXJu
+IHJldDsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBJbiB0aGUgUkdNSUkgYnJhbmNoLCBk
+cDgzdGQ1MTBfY29uZmlnX2luaXQoKSB1c2VzIHBoeV9zZXRfYml0c19tbWQoKQ0KPiB0byBzZXQg
+RFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLiBUaGF0IGxlYXZlcyBEUDgzVEQ1MTBFX1JNSUlfTU9E
+RV9FTg0KPiBhcyBpdCB3YXMuDQo+IA0KPiBUaGUgUk1JSSBicmFuY2gganVzdCBiZWxvdyB0cmVh
+dHMgdGhlIHR3byBiaXRzIGFzIG11dHVhbGx5IGV4Y2x1c2l2ZS4NCj4gSXRzIGNvbW1lbnQgc2F5
+cyBzbywgYW5kIGl0IGNsZWFycyBSR01JSV9NT0RFX0VOIHdoZW4gaXQgc2V0cw0KPiBSTUlJX01P
+REVfRU4uIFRoZSBSR01JSSBicmFuY2ggZG9lc24ndCBkbyB0aGUgcmV2ZXJzZS4NCg0KUGVyIHRo
+ZSBkYXRhc2hlZXQgOg0KDQo5IGNmZ19yZ21paV9lbiAgICBSL1cgMHgwIDFiID0gUkdNSUkgZW5h
+YmxlDQogICAgICAgICAgICAgICAgICAgICAgICAgIDBiID0gUkdNSUkgZGlzYWJsZQ0KNSBjZmdf
+cm1paV9tb2RlICAgUi9XIDB4MCAxYiA9IFJNSUkgTUFDDQogICAgICAgICAgICAgICAgICAgICAg
+ICAgIDBiID0gTUlJIE1BQw0KICAgICAgICAgICAgICAgICAgICAgICAgICAoMHgxN1s5XSBzaG91
+bGQgYmUgZGlzYWJsZWQpDQoNClNvIHRoZXJlJ3Mgbm8gbmVlZCB0byBjbGVhciB0aGUgYml0IDUg
+d2hlbiBlbmFibGluZyBSR01JSSwgYnV0IGl0IGlzIG5lZWRlZCB3aGVuDQplbmFibGluZyBSTUlJ
+LCBiZWNhdXNlIG90aGVyd2lzZSBSR01JSSBtb2RlIHdvdWxkIGJlIHNlbGVjdGVkLCB3aGF0ZXZl
+ciBpcyBoZWxkDQppbiBiaXQgNS4gSXQncyBub3QgIm11dHVhbGx5IGV4Y2x1c2l2ZSIsIGJ1dCBy
+YXRoZXIgIlJHTUlJIGJpdCBoYXMgcHJpb3JpdHkiLg0KDQpTaG91bGQgaSBjaGFuZ2UgdGhlIGNv
+bW1lbnQgYWNjb3JkaW5nbHk/ICh0aGUgY29tbWVudCBpcyBpbmRlZWQgbWlzbGVhZGluZykuDQoN
+Cj4gDQo+IFN1cHBvc2UgdGhlIHN0cmFwcyBvciB0aGUgYm9vdGxvYWRlciBsZWZ0IFJNSUlfTU9E
+RV9FTiBzZXQgaW4gUkNTUiwNCj4gYW5kIHRoZSBkZXZpY2UgdHJlZSBzYXlzIHBoeS1tb2RlID0g
+InJnbWlpKiIuIFRoZW4gdGhlIFBIWSBlbmRzIHVwDQo+IHdpdGggYm90aCBtb2RlIGJpdHMgc2V0
+LiBCeSB0aGUgcGF0Y2gncyBvd24gcmVhc29uaW5nIHRoYXQgaXMgbm90IGENCj4gdmFsaWQgc3Rh
+dGUsIGFuZCB0aGUgTUFDIGludGVyZmFjZSBtYXkgbmV2ZXIgY29tZSB1cC4NCj4gDQo+IENvdWxk
+IHRoaXMgdXNlIHBoeV9tb2RpZnlfbW1kKCkgaW5zdGVhZD8gVGhlIG1hc2sgd291bGQgYmUNCj4g
+RFA4M1RENTEwRV9STUlJX01PREVfRU4gfCBEUDgzVEQ1MTBFX1JHTUlJX01PREVfRU4gYW5kIHRo
+ZSB2YWx1ZQ0KPiBEUDgzVEQ1MTBFX1JHTUlJX01PREVfRU4sIG1pcnJvcmluZyB0aGUgUk1JSSBi
+cmFuY2guIFRoZSBSWC9UWCBjbG9jaw0KPiBzaGlmdCBiaXRzIGNvdWxkIGJlIGZvbGRlZCBpbnRv
+IHRoZSBzYW1lIHJlYWQtbW9kaWZ5LXdyaXRlLCBzbyBSQ1NSIGlzDQo+IG9ubHkgd3JpdHRlbiBv
+bmNlLg0KDQpUaGF0IHdvdWxkIHdvcmssIGJ1dCBpdCBpcyBhY3R1YWxseSBhIGJpdCBvZGQgdG8g
+Zm9yY2UgTUlJIG1vZGUgb3ZlciBSTUlJLCB3aGVuDQp0aGF0IGJpdCBpcyBub3QgcmVsZXZhbnQg
+YXQgYWxsIHdoZW4gUkdNSUkgaXMgZW5hYmxlZC4gT3RoZXIgb3BpbmlvbnM/DQoNClJlZ2FyZHMs
+DQoNCkp1bGllbg0K
