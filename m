@@ -1,83 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD0C50AC33
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 23:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DCB501F45;
+	Fri, 25 Sep 2026 23:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790379683; cv=none; b=EwGTWkxwVJu9gfzNBujKxn3Xp2dKZyboITZQaM2pi+Y16TMVRRTJCv4RQsZbROrmfLXriy/8IbBjcySzb6gg1+2PXV6d9QnaZZe7e2nKSV3TnuMZnxh8SB/Zt9AnC6p7rBl6xOEfRzAsIFakRXlDya8nOtigtgTmgUfh8NNbDVI=
+	t=1790379929; cv=none; b=VXhyGhArYb98DU07FYQCqpgDIC5vGYhAykkaicJfQkrNjYaL7bttvCKH3LukIV3VlvhJlXoJBGT9RdNquPo0bz4IYZbE00MXJQizJQRHtbzIejgQJb6cJG88J1shQGb+ecjpWT3ou85k039foumyJZ5A20Vl6Kt2xrQ4pCNA9xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790379683; c=relaxed/simple;
-	bh=mN1EAKb/PZNtC0aY47dc/snDVvFQAoPl8h+N3ofRTKY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XMo8gNDG3WMazHWPKfzPc8juOcF5QG/vByHF5Tz4IeJOeRtAqnWJ6Ipe7v4/ZxWihzBy8wNAQiuP/Sb71hILKJJYazTiQ6LQGjbcdgloeCZDbrWcUhtgCeGJSQ2D9xf772KTIOyQN7ikUVPsR8Ppkln5vYzaPVfedcWlqMgK4bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETKsZFQW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790379929; c=relaxed/simple;
+	bh=rFON0srpWh8DbJ9gQZvj/AH5LWMJNfmnscE3UbpJLWY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rqbrA5iFLT1WZgQg+fmt1Yp165773ZgMPzmr8x3VMaE6Qli88CvmUuFXul4OvlxyUe1ozqlyoemLFHpk3b7xrzhozTUFE34K3bdnXRZS59y6N9oYwM5DEODE8ekoyALz4GxUnPPSvi7yAALtxBt0Ebck0P/Py8vaoIEUxnrNoEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ai2s4VRw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETKsZFQW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893371F000FF;
-	Fri, 25 Sep 2026 23:41:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ai2s4VRw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC6B1F000FF;
+	Fri, 25 Sep 2026 23:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790379681;
-	bh=OdZDA6bI8RzFZiuri6KDMsWr3jO3og7lHmodXhGkB9I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ETKsZFQWMOanztF62Xnv4gnnPuxplXilDxko+J0wKNnmXeo8ktfsaL1wGwjRQ2Yax
-	 9UekIqywAvf46ZLlkBnPw1mZj6ZijTE4T41hTx4Bds8+qjWjzjgIBcMnrR9P42hQmk
-	 3O2U/q1yVEz7PXr1oWNwBker3orhKTEcwCD5BBxAGvS3e5582SuKBL3jTZIlbJBr9f
-	 uwa9PDqSEOBffLxXe9IRbaHfOKTlTQHCAsGS6aJnK6ZVCAn+/we6JjKf83oWewoydU
-	 LH6YHgmauYifnalhD3xIww+vJOSJ0j4YHKNshX0jQ8QXFzGDOway5e2DjwUbl4d+kB
-	 nctaWwNCmDLtg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568C33809A04;
-	Fri, 25 Sep 2026 23:40:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790379925;
+	bh=rFON0srpWh8DbJ9gQZvj/AH5LWMJNfmnscE3UbpJLWY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Ai2s4VRwpPAc6VZxob/tDwjqjHFgM2GOTUY0teTMipJO6QIw0qz09t6m+3kDvHK6t
+	 vR0TL4U7WyytQO3ZEybFsBbAjKCCD/HiqzLDRwgUQKwUWE8OSrxGty+pE5RKcITpT9
+	 LLlW6csH/ha3el6rQjGOoDzrd0oNn/r1qJfVXzpSb3zVSLmfpGRmZdLIQrEDRL0Wr1
+	 36ZH2oBE98Glj2f81loXx6SDZDIhTWVXMYdxqdp9DLMRKLLiM+2TrtKyzheL1w95H+
+	 BBjqen09iSEUSUnZbzp0SwA4pQadzgZgcZJ/z4UQV+hIeop7ne++3nMqaMpfoxNfva
+	 Rxn+ktb/gpu8g==
+Date: Fri, 25 Sep 2026 16:45:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Niklas =?UTF-8?B?U8O2ZGVybHVuZA==?=
+ <niklas.soderlund+renesas@ragnatech.se>
+Cc: paul@pbarker.dev, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Richard Cochran <richardcochran@gmail.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "DavidS. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, Sergey Shtylyov
+ <sergei.shtylyov@gmail.com>, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v5 00/10] ravb: Add gPTP support for Gen4
+Message-ID: <20260925164524.3f3a5cd6@kernel.org>
+In-Reply-To: <20260921175037.4084310-1-niklas.soderlund+renesas@ragnatech.se>
+References: <20260921175037.4084310-1-niklas.soderlund+renesas@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next 0/4] net: ethtool: make netdev_rss_key_fill()
- spread flows over all queues
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179037960888.3207107.14995347691230461960.git-patchwork-notify@kernel.org>
-Date: Fri, 25 Sep 2026 23:40:08 +0000
-References: <20260922163458.3900996-1-edumazet@google.com>
-In-Reply-To: <20260922163458.3900996-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Mon, 21 Sep 2026 19:50:27 +0200 Niklas S=C3=B6derlund wrote:
+> This series is the second part cleaning up how PTP timer support is
+> implemented on R-Car Gen4. Currently there is partial support for it in
+> some of the Ethernet devices that can use it, but not all.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 22 Sep 2026 16:34:54 +0000 you wrote:
-> netdev_rss_key_fill() hands drivers a uniformly random key. Because the
-> Toeplitz hash is linear over GF(2), a random key is singular for a given
-> header field and queue count with probability 1/2: flows differing only
-> in the low order bits of that field (such as a burst of consecutive
-> ephemeral ports) then cannot reach all RX queues. On one affected 16-queue
-> host, only 4 queues received traffic until the key was replaced.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2,net-next,1/4] net: synchronize proc_do_rss_key() with netdev_rss_key_fill()
-    https://git.kernel.org/netdev/net-next/c/9396e37c4860
-  - [v2,net-next,2/4] net: ethtool: generate RSS keys that spread flows over all queues
-    https://git.kernel.org/netdev/net-next/c/898d431abd25
-  - [v2,net-next,3/4] netdevsim: support reporting RSS key, indirection table, and flow hash fields
-    https://git.kernel.org/netdev/net-next/c/5fd4208098be
-  - [v2,net-next,4/4] selftests: drivers: net: check the host and device RSS keys
-    https://git.kernel.org/netdev/net-next/c/c8103dd8b9b4
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Please respond to the AI feedback, even if it's just a short message
+replying to the thread as a whole saying that all of it is invalid.
