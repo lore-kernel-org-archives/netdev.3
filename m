@@ -1,102 +1,200 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC8423E9F
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552DB3AB262;
+	Fri, 25 Sep 2026 11:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790337129; cv=none; b=lx9coD45B+ioZFX1Ixe/Zs40Dwzti2+jlJfPpN0zeAxUZy4VXnwO8AHegFdBdBnKgOnSoMHTmSE9aeAkgFWY+A9oZoacrLMJHQLiyM4HeHKOF6Ulqi2lUTOgNLTYp8zxBfeQPyn3REpItcu2MpzFPj90Z+YMOii8UfABDNFOE1o=
+	t=1790337142; cv=none; b=laBSPKKp11l5AX4FX8hmk3WWcNbGiBDXRRai82HQC0LLhamTUtv2avEbA06bH9YBJ4SadIRLfCTAvUy1zBqaAmuHT2hu7nKOs2tJvFiukzuTB+R1GOdI5nIkZ4t2EL0Uhl1c3hJiB3bzsf+1aZ7sXhgOyTTCbIDB6FnGG7A2qfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790337129; c=relaxed/simple;
-	bh=NLMBqzMC1vbNSpj07NZ5D9sEF7hljwuw1qge4ogUXI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZazXrHab+7vRaFbktFmkQmkJPsWJ/Cn1SCy1P5cG2rIvS707X/TkQesweuhEyuw4sRi76hXMyf5ykHEMmVQXpSSkvybmNSYQYu+90cGAFQbYQ5ChdF+fKEEX5y66DpzpRtCulvJpYL32HaGWiRBxzbZhoudjnJq7mRvT7YgxgVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com; spf=pass smtp.mailfrom=varjosoft.com; dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b=DT0G69Wl; arc=none smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=varjosoft.com
+	s=arc-20240116; t=1790337142; c=relaxed/simple;
+	bh=6bmfY8HJceGr7akz5gYMBXr7Yprkq22IwFV3/qVd5FU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QDLCGD51wxeLG6geP0ndH60hTKOYwb0mXcW1JhuzralAJBJcbhcjzzt9D7x1DVaOQ+FPumIqNlkD7zJovLGK69pnVh6nN2Vi50HHbv/KCNnpFNLJrlokx0AS7t0dVvUq9UbVQ99pQqYbSEj5LHnyA6q5KGOuNT6MNvMj9wnBLGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdgJ59lt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b="DT0G69Wl"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b8ea203e5bso300640e87.1
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 04:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=varjosoft.com; s=google; t=1790337125; x=1790941925; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zSsqFN4w1HlV2DlahWQXBcRPSYvpwcfnASilh2E/Vww=;
-        b=DT0G69WlCxE+9MMX7uTCqSG9jatDWdzbvn9FXBBR1UREAOB6qKYHIRx2UAqHKQPGRn
-         kgOyasQitvVgOVFJGFZLBuMm6lakaBdcJ3A8zdUKVlmH0q+E+Uc2Cz3fULxWhRMWcRp4
-         HZjz43GlUN6RB2S5TqrmYaMr2S+W8qUU6Swq4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790337125; x=1790941925;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zSsqFN4w1HlV2DlahWQXBcRPSYvpwcfnASilh2E/Vww=;
-        b=j2tOk2V7M1iRcD1HMCdqa326Kof+KFxidii6Zm5qAhh0cl43ZVYRH0j80K3hFP3EWz
-         EyFuidJSoeaqaoblXRR8DvNZIIYh/PonC3SpsX+JLuMpkAnuYVaSJQZ14VXGjtn2XNG9
-         rMnnXxKhJcMirxEey+OAvsFhW/BEI+q43TqlJpgwUGU+qKE9phA68uuqSOZKjyOeDfET
-         CRp0gAPie8mWaqc5rGREEvR3zKzLCQK0LFtznl/weYXleToVx3FYlcWuV12/mdN9n/kf
-         rxkWKJLv364lYx4dhTTUimBJhJLoYQmBPLft98jQ1NHIJlzbfkrsRR/RQzCepRVFGDnJ
-         ddHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzDZuzuxmCZW4Ro0HeeBRE4+UQJZL+pKVgdpGahr1dYlMZigNcquNZb7728AoPgNtA4yYSS94I=@vger.kernel.org
-X-Gm-Message-State: AFuF++m72jhIG+Xt9nopzyA+C1e0rBjHYIQ+GSJf4EJv+92S+rbcTMTe
-	lBuU2kWj9GgWFAV3nGcrW4nGWEab8fBjXFnNPvvcb+IDzrnLUKrZRCDQwsG9PQPf0es=
-X-Gm-Gg: AYBFou3WZYpkDDU6rnCV0hku3KoyAErhcUWO2GnUvQILn7uw8/tzetT6MIDWvz3cTvY
-	K8qbpUmAp3Fd9+3J3rT8NDICr5fq1uiP7aa/24k/6zqmixOnmAxIGlAPeb1OlUjmLw6bNQZaKJb
-	mhgkXuM4p0kkgGH0XEQUpHzkcetEgNs9zAaRyRiBvTPLVIfhPdpWY1ec4iNTRf1MQSKNPpWy6rW
-	CbQ7sSl83siv4W9vysD7WNPGgZrbnljwvtnTBhuTNEzj6lG5P3M/NT+9qBR+pP5ZK6hefQIIazj
-	0RTi6tZaZZHbISEsTp6QdxiHN09n3HmvIYCfVmo42Ptk0Pv4AvGOPhhofdPIPPikH+oCGX1Xxev
-	u4s8EWpgYwsnoOGYixdUNuAC1aIgrLEGT6bL2ylo/L1s/8nWMd59TrwBeM2yHsl/7+6jRUA8pkg
-	0ySSPbLxvX1B7zdWle74ZW8BX+gf5wVyYYJNeJ8MaQ2zUZWssHr6AmZf/xnlmVuf0wvQAuanR1L
-	8BsCx9CArSYzbPWbhtvmiAxKlDP2HElvYq9k3Kl693jnT5+rdXLmvriMsugxiuJ
-X-Received: by 2002:ac2:4354:0:b0:5b6:1a7c:fd91 with SMTP id 2adb3069b0e04-5b8df0e2abamr1584966e87.55.1790337124893;
-        Fri, 25 Sep 2026 04:52:04 -0700 (PDT)
-Received: from localhost.localdomain (91-157-138-212.elisa-laajakaista.fi. [91.157.138.212])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6afd398sm502024e87.49.2026.09.25.04.52.04
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 25 Sep 2026 04:52:04 -0700 (PDT)
-From: Hannu Varjoranta <hannu@varjosoft.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev-bot+sashiko@kernel.org,
-	netdev@vger.kernel.org,
-	joshwash@google.com,
-	hramamurthy@google.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	nktgrg@google.com,
-	willemb@google.com,
-	pkaligineedi@google.com
-Subject: Re: [PATCH net] gve: DQO: accept TSO packets with non-protocol gso_type bits
-Date: Fri, 25 Sep 2026 14:51:22 +0300
-Message-ID: <20260925115122.56321-1-hannu@varjosoft.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CANn89iLpkPN=qHkyse=Bdz9WvOgtgm1erL1fn=sYPRE7GSibjg@mail.gmail.com>
-References: <20260923141047.14047-1-hannu@varjosoft.com> <179030240275.2160803.7121151150196393029@kernel.org> <CANn89iK7kacaAnx3nTCL8=OrCQF5kyojeoXkWU1Kq92n5gMyUA@mail.gmail.com> <CANn89iLpkPN=qHkyse=Bdz9WvOgtgm1erL1fn=sYPRE7GSibjg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdgJ59lt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6F51F000FF;
+	Fri, 25 Sep 2026 11:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790337141;
+	bh=gnR2egljKH+qXax1IeJY/N+dRlaUQHrIKREFzgFctzQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TdgJ59lt5u82qCHvUY5M+Xl1icq+UpnyHNkCfod8ZF3C4Lufl52abMBDJD1jgcceL
+	 mEff+FLXr4WXwDLT4w4+FDOxuIC6lJU6v0kBPX1M3GA99m7TNQ++5zRyuY6TNmtWGz
+	 CcYHVqGQ7T1OfsaPn1c78z0FloOC73CWfZGAamC+y6XY1Pqw/Ml+hS+jsi4kN1PCQg
+	 NKYG1r3T5/aJvaJpg7/RlxFHK558AY9iYkIeM4DYH2yfQBR5W/aHf1YsDJHiogc9G7
+	 LrkvbnF26GSey62lwzUOu29L/WVEgAO4P39cc+FgblK9+z3BCQ5plcx9S3VVdn5Qpn
+	 Qkg0MO6QbzTxA==
+Subject:
+ Re: [PATCH net v2] net: cap skb->queue_mapping when the tx queue is picked
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
+ vinicius.gomes@intel.com, horms@kernel.org, xiangxia.m.yue@gmail.com,
+ victor@mojatatu.com, zdi-disclosures@trendmicro.com, hybris@mojatatu.ai,
+ stable@vger.kernel.org
+Date: Fri, 25 Sep 2026 11:52:19 +0000
+Message-ID: <179033713973.2160803.4914570693994398206@kernel.org>
+In-Reply-To: <QDISC-9R8V.v2.20260924072708@mojatatu.com>
+References: <QDISC-9R8V.v2.20260924072708@mojatatu.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 25, 2026 at 4:30 AM Eric Dumazet <edumazet@google.com> wrote:
-> Typo,  this should have been:
->
->           shinfo = skb_shinfo(skb);
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Thanks Eric, v2 with the reload squashed follows.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-The other two Sashiko items are already handled in net, and v2 is
-rebased on top of them:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-- gso_size above the hardware limit: 296c83b5ccc8 ("gve: DQO: reject TSO
-  packets with an out of range MSS").
-- gve_can_send_tso() using the TCP header length for UDP GSO:
-  83769c23fb18 ("gve: DQO: fix header length used by gve_can_send_tso()
-  for UDP GSO").
+- [High] The patch does not close the whole tc-BPF queue_mapping case its
+  commit message claims to cover.
+- [Low] The comment this patch adds in __dev_queue_xmit()
+  (net/core/dev.c) says "The flag is per-CPU and a nested xmit can set…
 
-pw-bot: cr
+--
+
+net: cap skb->queue_mapping when the tx queue is picked
+
+This patch changes __dev_queue_xmit() to save and clear the skip_txqueue
+flag when a transmit frame starts and to restore it when the frame exits.
+A nested xmit can then no longer hand the flag to an outer xmit. The patch
+also stores the value picked by netdev_cap_txqueue() back into
+skb->queue_mapping in netdev_tx_queue_mapping().
+
+Link: https://lore.kernel.org/netdev/CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQT9WkQVeeNzNQHqQ@mail.gmail.com/
+Link: https://lore.kernel.org/netdev/179008581937.2160803.7117814290574262942@kernel.org/
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 0292a16e16c2c..e72a5c6dc63af 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4404,9 +4404,14 @@ EXPORT_SYMBOL(dev_loopback_xmit);
+>  static struct netdev_queue *
+>  netdev_tx_queue_mapping(struct net_device *dev, struct sk_buff *skb)
+>  {
+> -	int qm = skb_get_queue_mapping(skb);
+> +	int queue = skb_get_queue_mapping(skb);
+> +	int capped;
+>  
+> -	return netdev_get_tx_queue(dev, netdev_cap_txqueue(dev, qm));
+> +	capped = netdev_cap_txqueue(dev, queue);
+> +	if (unlikely(capped != queue))
+> +		skb_set_queue_mapping(skb, capped);
+> +
+> +	return netdev_get_tx_queue(dev, capped);
+>  }
+
+[Severity: High]
+
+The commit message says this write-back means "a mapping rewritten later
+in the same egress run (for example a tc BPF store) cannot leave an
+out-of-range index for the later readers on the xmit path". Is that true
+for a BPF store made by a transmit-qdisc classifier?
+
+In __dev_queue_xmit(), this write-back runs after sch_handle_egress() and
+before q->enqueue(). The commit message itself notes that transmit-qdisc
+classifiers run inside q->enqueue(), which is later in the same frame.
+
+tc_cls_act_is_valid_access() lets any SCHED_CLS/SCHED_ACT program write
+__sk_buff->queue_mapping. That includes a cls_bpf filter or act_bpf on a
+transmit qdisc such as prio, multiq, htb, or a child of mq or taprio. The
+ctx rewrite in net/core/filter.c only rejects values at or above
+NO_QUEUE_MAPPING:
+
+    if (BPF_CLASS(si->code) == BPF_ST && si->imm >= NO_QUEUE_MAPPING) {
+        *insn++ = BPF_JMP_A(0); /* noop */
+        break;
+    }
+
+Take a 1-queue device with a prio root and a cls_bpf filter that sets
+skb->queue_mapping = 100 and returns TC_ACT_OK:
+
+__dev_queue_xmit()
+  netdev_core_pick_tx()            <- mapping capped here
+  __dev_xmit_skb()
+    dev_qdisc_enqueue()
+      prio_enqueue()
+        prio_classify()
+          tcf_classify_qdisc()     <- BPF sets queue_mapping = 100
+    qdisc_run()
+      __qdisc_run()
+        qdisc_restart()
+          skb_get_tx_queue(dev, skb)
+            netdev_get_tx_queue()  <- &dev->_tx[100]
+
+The only check in netdev_get_tx_queue() is a debug warning:
+
+    DEBUG_NET_WARN_ON_ONCE(index >= dev->num_tx_queues);
+    return &dev->_tx[index];
+
+sch_direct_xmit() then calls HARD_TX_LOCK(), netif_xmit_frozen_or_stopped()
+and dev_hard_start_xmit() on that out-of-bounds netdev_queue. Drivers then
+index their rings with the same value.
+
+multiq behaves the same way. After classification it checks the band
+against q->bands, but skb->queue_mapping stays out of range when
+qdisc_restart() reads it.
+
+This path does not use the skip_txqueue flag, so saving, clearing and
+restoring the flag does not help here either.
+
+The unchecked read in qdisc_restart() already existed before this patch.
+However, the commit message and the v1->v2 notes ("covering the residual
+in-frame rewrite nipa identified (e.g. a tc BPF store)") say this case is
+fixed.
+
+Would a cap on the consumer side be needed to close it, in qdisc_restart(),
+skb_get_tx_queue() or sch_direct_xmit()? A bound on the BPF store could
+also work.
+
+If not, could the commit message make a narrower claim, so backporters do
+not assume every queue_mapping out-of-bounds case is fixed?
+
+[ ... ]
+
+> @@ -4847,6 +4855,14 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+>  
+>  	tcx_set_ingress(skb, false);
+>  #ifdef CONFIG_NET_EGRESS
+> +	/* The flag is per-CPU and a nested xmit can set it from its own
+> +	 * clsact hook or transmit qdisc. Own it for the whole frame: this
+> +	 * frame cannot consume a nested xmit's flag and a nested xmit
+> +	 * cannot inherit this frame's.
+> +	 */
+
+[Severity: Low]
+
+This isn't a bug, but is "per-CPU" accurate on every config? With
+CONFIG_PREEMPT_RT, the helpers in the same file store the flag per task:
+
+    static bool netdev_xmit_txqueue_skipped(void)
+    {
+        return current->net_xmit.skip_txqueue;
+    }
+
+Saving and restoring the flag still works on RT, because nested xmits run
+in the same task. Could the comment say "per-CPU (per-task on
+PREEMPT_RT)"?
+
+> +	skip_txq = netdev_xmit_txqueue_skipped();
+> +	netdev_xmit_skip_txqueue(false);
+> +
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-9R8V.v2.20260924072708%40mojatatu.com
