@@ -1,44 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07BF2D063E;
-	Fri, 25 Sep 2026 01:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D8B27FD5B
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 01:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790300112; cv=none; b=PeZyHB6ShEFqi/FhQMY796XdggfxnamqlTjb45ai8vqM4YseUE80u0OFyaiioO3Gbw2pj0vv9z6uxb0xjMus57uCUlrJApeQwrEZvyt5X+HFyrSAzirjOyxeQK3hP0ixKh8Y5Y16gwvZDrYtrXYXTQ5ClwtVjTXWnQ/2mIx7QJA=
+	t=1790300512; cv=none; b=FQneCL13kdey5/fV3YdAqsFXc3O3hC17werZRANcE0o/Eg4/XKnWvxsiMokgsUNz1WdfTEgnkSNQgDT+Wd1SI9DiWtYJFgAJbMdVm9V1SFJK411UKEaSAAXoadiCvrrVwHdjivz33ZVgJF8eykH2Yw1D4WPby3yppKSaJIjPoLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790300112; c=relaxed/simple;
-	bh=ZjNZ+vg6+gv9VPIHQk3ULZmrdtQYFAczZyveeVgwXMI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=W67PKFzkvEDlFFcTxELtK7tEUfH9aJEjDPSoopUSZmSzJNCnvtWngEplJxKdgTrI/rwskssrw2Frk3UIHcsE+pbn4b1L17lyMk80BkaCede79elLcXJ5G0Fu4vaP0q/30B799N1o9Blm7A5OoKNR4JVEyQjJ8EVl84iJx/1PUAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyxRkFTe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790300512; c=relaxed/simple;
+	bh=HthLM1PNuMxWBTXS0+87vYoHdZV1BdbX8Mxz0swEQZM=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:In-Reply-To:
+	 References:MIME-Version; b=faDiqwvsA9oAZn6lA8Zc2kdHoBkc+blpOGazmEvoKQCkzbvS+tDArh0d7tAEEWlVtVJkjtTprvDHOMB+x/dTMHK9kA9GWLKNCAK7e1oXfSkt/+KGMQIsZY/p3Yj/kdRhUvTd58J5QihizNztrWkWqxjMurPTG/9/8Ns/PlNjYr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xi5uHPAP; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyxRkFTe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB161F000FF;
-	Fri, 25 Sep 2026 01:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790300110;
-	bh=my7Bg+boIvu5CMYmwsn4caDDvDHYZ9X/ZTnCuDGdFqM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HyxRkFTeyDFrXxz5vOqR9bwuBLJX25nNIWJN1+D41iG02NlWJXdWqpm9YDMDTi0Wl
-	 2XIb4LwqcMPLK6HDY/cCQbTPEo7n9uLICH+YQfU1R6E8W+TAg5diYISB1xhWYUESVn
-	 ProWZFg9M2yn0p8UKT+9011YyjCK372zFxRwOxRRw7Kbn7wNc5GASNsgHBI6joP5U8
-	 RnOTgnhVudChRNB2AsInIATD39KZgsG9DamzU+2faf9yxDVs1CdoPvKVdYeD1QjP7n
-	 jQETIJy002OmManXDPuQ8fqznBEq2vABPSElgV+3anJvw493bez4vkFZwOd5TfZn7R
-	 wBSt4lv24MYpg==
-Subject: Re: [PATCH net RESEND] nfc: llcp: Fix list corruption / refcount
- desync in nfc_llcp_recv_dm()
-From: netdev-bot+sashiko@kernel.org
-To: qwe.aldo@gmail.com
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 01:35:09 +0000
-Message-ID: <179030010938.2160803.11770090089846992037@kernel.org>
-In-Reply-To: <20260923133339.2518641-1-qwe.aldo@gmail.com>
-References: <20260923133339.2518641-1-qwe.aldo@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xi5uHPAP"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2caced6038eso3422475ad.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790300510; x=1790905310; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Puu4CDfvezT3ht6t8GsmQo1t/a87HCIDmLSfwmKbMYM=;
+        b=Xi5uHPAP+nnuCFNFZsW870C369kbysRQcixIRh1hW4RsNqpF6chI/hJM7uSBfmYo/x
+         bK9S+uB4JRnXgrNy3D6Wk2gfh2nv4vnq3mQSrdL4YNkIxXdjn8HySX/tt3IbyoWtxuRI
+         bswVkFCXkcIqbnCqTGNd+WgvbxV0r6kX+IpHbAV2m/Vw1aH+5v6vxZMx3V9fMGZWLx6j
+         oPE00kYJCtvEQgbbG5Yz3OXsMmaCFJA1OHrjk2JgNO8i6xMJOVEzTzgJxvmLutmgiFJS
+         YTIWzwihROFf211McJ5dtO/yHBp+8W/i79kS2+CgtItOxztxPJpqBO6S66XBW1QKxLrX
+         6H2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790300510; x=1790905310;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Puu4CDfvezT3ht6t8GsmQo1t/a87HCIDmLSfwmKbMYM=;
+        b=QnceJkjC5oxTpPF6OSL/LzXbKi8/NS7PFy1JU5nLMkTUMatdyCE5ym7Lq8IgY0qWAc
+         +4ROSoVwfWToskxdjAJ6tDPdcq2Rw5toAQS7AVKddWvDKTAU2yOSf3aYCCs7SrcXDlDe
+         Pf3+PMx3BEltMySvii1ljA/ZGzrURdQsOusdrWYIdh8U+8+Ds7epw/nquoR2e5vHnHD2
+         XTYPj+8Q/6ENG0MFIS1Qxb3YrkJHrC3x5AUj05vg8aPWdCw8lbPg4Q4QkDpFqeyY6wW1
+         c9dpgh9ciExAVTaRuXcsCNBZmqWeUThM9CcGrdjNoefYKI+pk6Y1Vh5ooun6C6py9nnl
+         PE9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBywfz8toUl+I3Ts7VcQrerJZjgdeCYDvnFfa9GfpQXKqj2FmtfE0OJQAFhB4foRRAm4NexBjNM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kzDLvEs3wTy1O1Si9XZoujCur00Qamcf9RrhoGN0QtyElDeq2H
+	a0etGZzi9P+XZczprjonU/dvdwcgFtj1VQDTIWXI+gWfs+HWf2ECjEMP
+X-Gm-Gg: AYBFou08ZVVKFeHYfBYvCINCkhLa95vjpp+PXH3xgpBQ1+MSjmKELuOHf5vzkb3HUPy
+	jP8aQ9yiLeK0MWwNjB11WY9s00htbu6+hk4rcEsN1w5J3TN/lU9PET12uBx08XAeHwoQiC5vAeH
+	dxxsz+5Up6EtX4vCHRhvQvSkAAtXQqYPRcnpnIUHslMBBa5x3cqhoJkg9ldsaWnbYLXRzVcPoJ0
+	nJC6QV79XMZ48pfdj3O6xUoY68vn2UBvi5oQJgHUadxh4L0HGntUZIrtK9/vGQaPhJ8inlmLE50
+	7BEWVdl1BbfWNcYmqK9NHKWQCF54wA7ml2RulWdHqPvPIMuD93Flcz7i/d0LDflJsvdCBnx6pHF
+	YBfa/htCKxyIhhjjyXVtpQAgHkLdC/yYL8g5YlKFHr7B2ohjCz89AitQlC4Yk9ChGYK5ybhhFye
+	xnThyv2KIbI4z+faZ3CVpG2RcAdl7IQ5XtbWVb531ntU9dKMdvITYsIu7ig88AlSwYp50+DIQGW
+	D3fHGRBTQmNNLlpXUKS2gxOcbC3bUeudR2rOvtBw4RdU/jOPdWzy+vwxNvR096KK58vOMg+DtiM
+	RNE=
+X-Received: by 2002:a17:903:19cd:b0:2d7:5da6:2af4 with SMTP id d9443c01a7336-2df7dea6233mr27180655ad.4.1790300509668;
+        Thu, 24 Sep 2026 18:41:49 -0700 (PDT)
+Received: from localhost ([153.61.198.248])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913ff226sm2784535ad.34.2026.09.24.18.41.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 18:41:49 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 01:41:48 +0000
+Message-Id: <DLO0KBIOE5JY.3DY4JTZOWT5IU@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>
+Cc: "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Yonghong Song" <yonghong.song@linux.dev>, "John
+ Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, "Eric Dumazet" <edumazet@google.com>, "Neal Cardwell"
+ <ncardwell@google.com>, "Willem de Bruijn" <willemb@google.com>, "Tenzin
+ Ukyab" <ukyab@berkeley.edu>, =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?=
+ <cleger@meta.com>, "Kuniyuki Iwashima" <kuni1840@gmail.com>,
+ <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <ameryhung@gmail.com>
+Subject: Re: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce
+ bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+In-Reply-To: <CAAVpQUBGSahLGEqGQCD2_0Ro2e-=59W7mhVyxOnoFU==LAK9tw@mail.gmail.com>
+References: <20260923213719.224838-1-kuniyu@google.com> <20260923213719.224838-4-kuniyu@google.com> <DLNYI40PF2Q3.1KYC8MHZU2VJ@gmail.com> <CAAVpQUBGSahLGEqGQCD2_0Ro2e-=59W7mhVyxOnoFU==LAK9tw@mail.gmail.com>
+X-Mailer: mkdraft (claude review draft; edit before sending)
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,216 +89,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Thu, Sep 24, 2026 at 05:39 PM Kuniyuki Iwashima <kuniyu@google.com> wrote:
+>> can we drop the flag ?
+>> hdr_opt_len() is called for every tx skb without per-socket opt-in.
+>
+> Oh, I assumed bpf_tcp_ops keeps the same behaviour.
 
-Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
+bpf_tcp_ops were moved out of BPF_SOCK_OPS_TEST_FLAG() guards on
+purpose. None of the existing members has per-socket opt-in.
+hdr_opt_len() runs for every tx skb, rtt() for every rtt sample.
+See the log of commit 3bb54768fe3e
+("bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_ops"):
+"A per-member/per-cgroup gate could be added later if the extra
+fast-path work proves measurable."
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> We have a bpf prog to turn the hook on (from cgroup_skb/ingress),
+> only when ingress rate exceeds the allocated capacity, to signal that
+> via a custom TCP option and turn the hook off from the hook itself.
+> (and I planned to post another patch for that)
 
-- [High] After lock_sock(), the patched nfc_llcp_recv_dm() only checks
-  sk_hashed(sk).
+That should work today without another patch and without the flag.
+cgroup_skb/ingress prog does
+  bpf_sk_storage_get(&map, sk, 0, BPF_SK_STORAGE_GET_F_CREATE);
+when the rate is exceeded. hdr_opt_len() and write_hdr_opt() do
+  bpf_sk_storage_get(&map, sk, 0, 0);
+and return when it's NULL. write_hdr_opt() calls
+bpf_sk_storage_delete() after the option went out.
+cg_skb_func_proto() has both helpers and get_func_proto() in
+bpf_tcp_ops.c allows them in every member.
+egress_read_sock_fields() in test_sock_fields.c does the cgroup_skb
+part.
 
-Pre-existing issues:
-- [High] After nfc_llcp_recv_dm() moves a CONNECTING socket to
-  LLCP_CLOSED, the socket still holds everything connect() gave it:…
-- [Medium] nfc_llcp_recv_dm() reads the DM reason from skb->data[2]
-  (llcp_core.c:1258) without checking skb->len >= 3.
+> Anyway, is it because calling bpf prog is not very expensive
+> or per-prog switch is preferable to per-socket flag ?
 
---
+The switch is still per socket. It's sk_storage instead of a bit in
+tcp_sock, so every prog has its own.
 
-nfc: llcp: Fix list corruption / refcount desync in nfc_llcp_recv_dm()
+While such new flag is per socket, but it's one for all progs.
 
-With this patch, nfc_llcp_recv_dm() takes the socket lock and re-checks
-that the socket is still hashed. For DM(NOBOUND) and DM(REJ) it also
-unlinks the socket from local->connecting_sockets before moving it to
-LLCP_CLOSED. This follows the earlier nfc_llcp_recv_cc() fix, so
-llcp_sock_release() no longer unlinks a connecting socket from the wrong
-list.
+And you want to take the last bit of u8 bpf_sock_ops_cb_flags...
 
-> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index cac1b5487064d..bd6361e2efa4f 100644
-> --- a/net/nfc/llcp_core.c
-> +++ b/net/nfc/llcp_core.c
+As far as the cost. A socket that didn't opt in pays for an indirect
+call into the prog and for bpf_sk_storage_get() that finds nothing,
+but only in cgroups where bpf_tcp_ops with enqueue_rcvq is attached.
+The members that are not set are NULL and bpf_tcp_ops_call() skips
+them. That's what hdr_opt_len() costs on tx.
 
-[ ... ]
+I don't remember what Amery measured, but worth benchmarking
+for your case.
 
-> @@ -1262,6 +1263,7 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
->  	case LLCP_DM_NOBOUND:
->  	case LLCP_DM_REJ:
->  		llcp_sock = nfc_llcp_connecting_sock_get(local, dsap);
-> +		connecting = true;
->  		break;
+>> The prog in patch 8 already returns when the socket has no
+>> sk_storage.
+>
+> Yes, but this is only for bpf verifier.
 
-[Severity: Medium]
-This is a pre-existing issue, but the reason byte that picks this branch
-is read without a length check:
+tcp_init_autolowat_cb() can be the only place that passes
+BPF_SK_STORAGE_GET_F_CREATE.
+So for a socket that didn't do setsockopt(BPF_TCP_AUTOLOWAT)
+other cbs will return NULL on lookup.
 
-net/nfc/llcp_core.c:nfc_llcp_recv_dm() {
-    ...
-	reason = skb->data[2];
-    ...
-}
+tcp_disable_autolowat() will do:
+  bpf_sk_storage_delete(&tcp_autolowat_map, sk);
+  bpf_tcp_ops_set_rcvlowat(sk, 1);
 
-The only length check on the way in is in __nfc_llcp_recv():
+> Just an idea, would it make sense to add a kfunc to move bpf_tcp_ops
+> callback to a shadow pointer by allocating sizeof(bpf_tcp_ops) * 2 ?
 
-	if (!pskb_may_pull(skb, LLCP_HEADER_SIZE)) {
+Doesn't look right to me.
 
-LLCP_HEADER_SIZE is 2.
+Amery,
+please share your thoughts here.
 
-nfc_llcp_recv_agf() also accepts 2-byte inner PDUs:
-
-	if (pdu_len < LLCP_HEADER_SIZE || pdu_len > skb->len) {
-
-It then copies them into an nfc_alloc_recv_skb(pdu_len) buffer. For a
-2-byte inner DM, data[2] is uninitialized tailroom. On the direct path it
-is one byte past skb->len.
-
-After this patch, that byte also decides whether the new
-connecting_sockets unlink runs. Should there be a check such as
-"if (skb->len < LLCP_HEADER_SIZE + 1) return;" before the reason is read?
-
-[ ... ]
-
-> @@ -1276,10 +1278,33 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
->  
->  	sk = &llcp_sock->sk;
->  
-> +	lock_sock(sk);
-> +
-> +	/* Check if socket was destroyed whilst waiting for the lock */
-> +	if (!sk_hashed(sk)) {
-> +		release_sock(sk);
-> +		nfc_llcp_sock_put(llcp_sock);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * For DM(NOBOUND)/DM(REJ) the socket is still linked on the
-> +	 * connecting_sockets list.  Unlink it here, under the socket lock,
-> +	 * before moving it to LLCP_CLOSED: llcp_sock_release() selects the
-> +	 * list to unlink from by sk_state, so leaving a connecting socket
-> +	 * in the CLOSED state would make it unlink from the wrong list and
-> +	 * corrupt the connecting_sockets list / desync the socket refcount.
-> +	 * This mirrors nfc_llcp_recv_cc().
-> +	 */
-> +	if (connecting)
-> +		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-
-[Severity: High]
-Is sk_hashed() enough to show the socket is still on
-local->connecting_sockets at this point? The connecting flag is set
-before lock_sock(). While this handler waits for the lock, the socket
-could move to local->sockets.
-
-Consider this sequence:
-
-llcp_sock_connect()
-    nfc_llcp_sock_link(&local->connecting_sockets, sk);
-    /* sk_state is still LLCP_CLOSED */
-                                  rx_work: nfc_llcp_recv_dm()
-                                    nfc_llcp_connecting_sock_get()
-                                      /* matches on ssap only */
-                                      sock_hold(&llcp_sock->sk);
-                                    lock_sock(sk);  /* waits */
-    nfc_llcp_send_connect() fails
-    sock_unlink:
-      nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-    release_sock(sk);
-
-llcp_sock_bind() in another thread sharing the fd wins the lock
-    sk->sk_state == LLCP_CLOSED, check passes
-    nfc_llcp_sock_link(&local->sockets, sk);
-    sk->sk_state = LLCP_BOUND;
-                                    /* now gets the lock */
-                                    sk_hashed(sk) is true
-                                    nfc_llcp_sock_unlink(
-                                      &local->connecting_sockets, sk);
-
-A user can force the nfc_llcp_send_connect() failure. If sk_err is still
-pending from an earlier DM, this call chain returns that error:
-
-llcp_allocate_pdu()->nfc_alloc_send_skb()->sock_alloc_send_pskb()
-
-At the end of this sequence, the socket is removed from the
-local->sockets hlist while connecting_sockets.lock is held, not
-sockets.lock. If bind used a different dev_idx, that lock may belong to a
-different local. The newly bound socket is also closed with ENXIO.
-
-Can this race with other writers of local->sockets, such as bind or close
-of another socket, and corrupt that list? That is the same kind of
-wrong-lock corruption the commit message describes.
-
-Before this patch, nfc_llcp_recv_dm() never unlinked, so this path is
-new. nfc_llcp_recv_cc() has the same hashed-only check.
-
-For the connecting case, would it work to also require
-sk->sk_state == LLCP_CONNECTING and llcp_sock->local == local after
-lock_sock(), and bail out otherwise?
-
-> +
->  	sk->sk_err = ENXIO;
->  	sk->sk_state = LLCP_CLOSED;
->  	sk->sk_state_change(sk);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but after the socket is moved
-to LLCP_CLOSED here, it still holds everything llcp_sock_connect() gave
-it:
-
-  - llcp_sock->local, with its kref and nfc_dev ref
-  - the nfc_get_device() ref taken by connect
-  - the SSAP bit from nfc_llcp_get_local_ssap()
-  - the kmemdup'd service_name
-
-llcp_sock_connect() rejects only two states:
-
-	if (sk->sk_state == LLCP_CONNECTED) {
-		ret = -EISCONN;
-		goto error;
-	}
-	if (sk->sk_state == LLCP_CONNECTING) {
-
-So an unprivileged user can call connect() again on the rejected socket.
-The old values are then overwritten without being released:
-
-	llcp_sock->dev = dev;
-	llcp_sock->local = local;
-	llcp_sock->ssap = nfc_llcp_get_local_ssap(local);
-	...
-	llcp_sock->service_name = kmemdup(addr->service_name,
-
-Does each retry leak the old nfc_llcp_local kref, both nfc_dev refs, the
-local SAP bit and the old service_name?
-
-llcp_sock_destruct() drops the connect-time nfc_dev ref only for
-connected sockets:
-
-	if (sk->sk_state == LLCP_CONNECTED)
-		nfc_put_device(llcp_sock->dev);
-
-Each device has only LLCP_LOCAL_NUM_SAP (32) local SAPs. The leaked bits
-are never cleared: nfc_llcp_mac_is_down() does not reset
-local->local_sap, and the leaked local kref keeps local_release() from
-running.
-
-The trigger is a repeated non-blocking connect() to a peer that answers
-DM(NOBOUND) or DM(REJ). That is the normal reply for an unknown service,
-so no malicious peer is needed. After enough retries, every LLCP client
-connect() on that device would fail with -ENOMEM until the device is
-re-registered.
-
-Before this patch, the same reconnect also added a node that was already
-hashed. The patch removes that part, but the leaks remain.
-
-There are two possible fixes. nfc_llcp_recv_dm() could do the same
-teardown as the connect() error path (sock_unlink, sock_llcp_release,
-sock_llcp_nullify). Or connect() could reject sockets whose
-llcp_sock->local is already set.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923133339.2518641-1-qwe.aldo%40gmail.com
