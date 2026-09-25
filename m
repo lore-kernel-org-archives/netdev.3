@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19B649BD8D
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71CB499F1F
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790336350; cv=none; b=LnpZcBC+C9osbkdxJWDrSZPNoH39h3l+5SKdsBg0i0wVZhkhJXw9dHWTE9ZTPenzny3wVd9QKFwT190fKT+7eOqaowzt3R8K7glIR9omW13NmzNRIypKA0b1OZ4hHLYTajiFBV7xAW7+EnvFfsxsrVXoHH7+sEY3tZ/pQO/5pkY=
+	t=1790336350; cv=none; b=hOgfeCH89RSjAyJt17wRZ8IGIlDO4nLk4tCfFDrevwbymaAIJBNFNiZmhsdCuCSN3cj2icCG2KJ3cxcOYE8BhM7Jog7d8+E7nzo7f+lEdUtw+G9OQLhgYq6e+C966jMdlMV3L07Y/sRCpZbeqZbPe3eQQjZ8GG3hfZLLqT80zHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790336350; c=relaxed/simple;
-	bh=1Np3IuCVpVqOJRzPZ8gWYaqPWYBNcVe3bkFVnYYTqwI=;
+	bh=BsgZWdO5bLd4DVeG8425aUEVscrrAndNjBHFpTf6PXQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JggXKzg1s4VgaEGNo2LbuIP4xK51woYAVBPCsfII790amRtRguEgCMbMLp8qqmxu0pmvA4k3kxCbupqkCOyedOP/DKZMBsKYgIFeDSUPno2eUAdDXaNSQIgi0eZVXRbKLErB2vo4Rt1hBlHyWgG6pnw53r2zuPZoHWeUdA5YX8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xDoA/J85; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=H7CKoFJgaqILv9u3rwnO55wqiF1z4RdVkX8S5mLjPH08nl1IR3XTQOxllrJw6J06JeuJAE0GiCu/FBi++XxWin96Z9tS+1qNtW1zROuMozL+ps5aKHgl+zWedd56FQE+4m9VnDNFca2ShLfxvsZyWS+QYqHZ1XtLhsYRcBHFwvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DbaOVFry; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xDoA/J85"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DbaOVFry"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 1565EC13994;
-	Fri, 25 Sep 2026 11:39:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7C4AC4E41073;
+	Fri, 25 Sep 2026 11:39:05 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FBA86073B;
-	Fri, 25 Sep 2026 11:39:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D9D010329514;
-	Fri, 25 Sep 2026 13:39:01 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 515016073B;
+	Fri, 25 Sep 2026 11:39:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B5A6F103295CB;
+	Fri, 25 Sep 2026 13:39:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790336342; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790336344; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=nRETuw8JsXEchs489Ud2eN1dEe38gGQ0nW0Z6hsxDl8=;
-	b=xDoA/J85KSmiaAzghIGTC1VmRUK8eoGiullhVstUnkSvSP6mdjSAg39+UhCHzPFuof2CuE
-	2txUrgfjTvZCtahuA2Hdfe6Hf/PSqYHV6z2MfiF8gZn3gLbF9LeOJLcqweVw7ppmNWP9q5
-	p0uuT6jo8SNWEIUpBE66c1YV7syli33+Y6T7TGHkzvmUfT5yycdaPcUaT71dHPotfzSFDK
-	1v6nn/t5W7FbsbLIy40RnGJDQKp60gMIS9cQL4Ejh5N3f+gy8PADSw8TLgNJVDcKLz1AEn
-	pNW2XvZrVKW5wlTCdR0uclDs3Oj2BiTgEK1MzMbVYUZ1I2ebfWYkVldYjlYxbg==
+	bh=ozkQcZ2Q0dthWB4fUbaMbJU38C/FrxFUvT0/wrofu5w=;
+	b=DbaOVFryCWzKrOGvEJ+1SMrAEuPDeols0FEMQ6VX+xdL+7kX9rURFHWCTiMs2KaeMIAKB3
+	h1SpMKOy3g3b/zYZgp8BKJjq1bLDQBIUe6hEndWRt99dW+qnN2y9yrrzZZ9T3cZ4phZ6kL
+	ZNEU4rlFgw1glF4FYDZ//tlDru3o3iR3CEWEledaAPMjT0i2zqa74Ivr6wWhLut72spFHM
+	qPxJlS7L6Brqrsj11IDgjZrxBk7nY31G23saJtombrSSajdRBN4wxFLSxq4JGMYIsaXXHO
+	wwwmoB4Gik1WLfTOMaOD+FqOJcvyv8+x3i1wv6TvkYcLnhPBlb59nWxT2sPxbQ==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Fri, 25 Sep 2026 13:38:50 +0200
-Subject: [PATCH net-next v4 04/11] net: dsa: microchip: use dynamic mask to
- check pulse width validity
+Date: Fri, 25 Sep 2026 13:38:51 +0200
+Subject: [PATCH net-next v4 05/11] net: dsa: microchip: extract PTP
+ callbacks configuration from PTP registration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-ksz-perout-v4-4-d675bd21ce49@bootlin.com>
+Message-Id: <20260925-ksz-perout-v4-5-d675bd21ce49@bootlin.com>
 References: <20260925-ksz-perout-v4-0-d675bd21ce49@bootlin.com>
 In-Reply-To: <20260925-ksz-perout-v4-0-d675bd21ce49@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,49 +61,130 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The pulse width validity is checked against an hardcoded mask. KSZ8463
-uses a smaller register than other switches so this check won't work for
-it.
+KSZ8463 also has periodic output capabilities but the way its outputs
+are driven differs from the other switches. It will need its own set of
+PTP callbacks to implements this behaviour.
 
-Move the mask as a ksz_ptp_tou_pulse_verify()'s input to allow changing
-it for KSZ8463 case.
+Extract the PTP callbacks configuration in a dedicated function to be
+called before the PTP registration to ease the use of others callbacks
+when needed.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c         |  2 ++
+ drivers/net/dsa/microchip/ksz9477.c      |  1 +
+ drivers/net/dsa/microchip/ksz_ptp.c      | 20 ++++++++++++++------
+ drivers/net/dsa/microchip/ksz_ptp.h      |  2 ++
+ drivers/net/dsa/microchip/lan937x_main.c |  1 +
+ 5 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 84c799959aaa..1889698691e9 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -86,7 +86,7 @@ static int ksz_ptp_tou_reset(struct ksz_device *dev, u8 unit)
- 			 0);
- }
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index d7498132064e..37b681d9e20f 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -2589,6 +2589,7 @@ static int ksz8463_setup(struct dsa_switch *ds)
+ 		if (ret)
+ 			goto free_girq;
  
--static int ksz_ptp_tou_pulse_verify(u64 pulse_ns)
-+static int ksz_ptp_tou_pulse_verify(u64 pulse_ns, u32 mask)
- {
- 	u32 data;
- 
-@@ -94,7 +94,7 @@ static int ksz_ptp_tou_pulse_verify(u64 pulse_ns)
- 		return -EINVAL;
- 
- 	data = (pulse_ns / 8);
--	if (!FIELD_FIT(TRIG_PULSE_WIDTH_M, data))
-+	if ((mask & data) != data)
- 		return -ERANGE;
- 
- 	return 0;
-@@ -242,7 +242,7 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
- 				       KSZ_MAX_PULSE_WIDTH);
++		ksz_ptp_set_caps(ds);
+ 		ret = ksz_ptp_clock_register(ds);
+ 		if (ret) {
+ 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+@@ -2898,6 +2899,7 @@ static int ksz8_setup(struct dsa_switch *ds)
  	}
  
--	ret = ksz_ptp_tou_pulse_verify(pulse_width_ns);
-+	ret = ksz_ptp_tou_pulse_verify(pulse_width_ns, TRIG_PULSE_WIDTH_M);
- 	if (ret)
- 		return ret;
+ 	if (dev->info->ptp_capable) {
++		ksz_ptp_set_caps(ds);
+ 		ret = ksz_ptp_clock_register(ds);
+ 		if (ret) {
+ 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index 3ee995545c57..72528a53b67d 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -1781,6 +1781,7 @@ static int ksz9477_setup(struct dsa_switch *ds)
+ 	}
  
+ 	if (dev->info->ptp_capable) {
++		ksz_ptp_set_caps(ds);
+ 		ret = ksz_ptp_clock_register(ds);
+ 		if (ret) {
+ 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 1889698691e9..fd27e5851003 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1031,17 +1031,12 @@ static int ksz_ptp_start_clock(struct ksz_device *dev)
+ 	return 0;
+ }
+ 
+-int ksz_ptp_clock_register(struct dsa_switch *ds)
++void ksz_ptp_set_caps(struct dsa_switch *ds)
+ {
+ 	struct ksz_device *dev = ds->priv;
+-	const u16 *regs = dev->info->regs;
+ 	struct ksz_ptp_data *ptp_data;
+-	int ret;
+-	u8 i;
+ 
+ 	ptp_data = &dev->ptp_data;
+-	mutex_init(&ptp_data->lock);
+-	spin_lock_init(&ptp_data->clock_lock);
+ 
+ 	ptp_data->caps.owner		= THIS_MODULE;
+ 	snprintf(ptp_data->caps.name, 16, "Microchip Clock");
+@@ -1055,6 +1050,19 @@ int ksz_ptp_clock_register(struct dsa_switch *ds)
+ 	ptp_data->caps.verify		= ksz_ptp_verify_pin;
+ 	ptp_data->caps.n_pins		= dev->info->n_pins;
+ 	ptp_data->caps.n_per_out	= dev->info->n_per_out;
++}
++
++int ksz_ptp_clock_register(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++	const u16 *regs = dev->info->regs;
++	struct ksz_ptp_data *ptp_data;
++	int ret;
++	u8 i;
++
++	ptp_data = &dev->ptp_data;
++	mutex_init(&ptp_data->lock);
++	spin_lock_init(&ptp_data->clock_lock);
+ 
+ 	ret = ksz_ptp_start_clock(dev);
+ 	if (ret)
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
+index eb3827203b96..b23040f47b9c 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.h
++++ b/drivers/net/dsa/microchip/ksz_ptp.h
+@@ -32,6 +32,7 @@ struct ksz_ptp_data {
+ 	struct ptp_perout_request perout_request;
+ };
+ 
++void ksz_ptp_set_caps(struct dsa_switch *ds);
+ int ksz_ptp_clock_register(struct dsa_switch *ds);
+ 
+ void ksz_ptp_clock_unregister(struct dsa_switch *ds);
+@@ -64,6 +65,7 @@ struct ksz_ptp_data {
+ 	struct mutex lock;
+ };
+ 
++static inline void ksz_ptp_set_caps(struct dsa_switch *ds) { }
+ static inline int ksz_ptp_clock_register(struct dsa_switch *ds)
+ {
+ 	return 0;
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index 86ce3a86705f..3a209122fc7d 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -867,6 +867,7 @@ static int lan937x_setup(struct dsa_switch *ds)
+ 		}
+ 	}
+ 
++	ksz_ptp_set_caps(ds);
+ 	ret = ksz_ptp_clock_register(ds);
+ 	if (ret) {
+ 		dev_err(dev->dev, "Failed to register PTP clock: %d\n",
 
 -- 
 2.55.0
