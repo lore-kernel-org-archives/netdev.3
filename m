@@ -1,174 +1,173 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B4D423E9F
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889F2282F21
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 12:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790337178; cv=none; b=LcSw9n+cuKFjlAUfABLwBJ8tGoR1wOyVUMrRJWBXMjxHAn+l6OUBwyKdrfZ8fiUSNz2oSOz5R6ujHwSUVoiuZQZZREa8t+kyt9po+8GxRSq+59SIYUzxq/jmuPeXyJeS6XAWPkvstyYUhiWNbGOkJpAP2Kxl7q000E5i/58Br8I=
+	t=1790337838; cv=none; b=bZr2STi33dj28FIpjzi4h/4WyHg46XFt7AQsH0DWtNg/ywReGVh6PbUe+dbKeG1nQhZVPYcjCo4yxhpRskOHygwmGAoqJeJW5wXnxqNp6LE6A+idN6ZjTWH2YUMV/CbCRqmvVaJFi149gxlb0OQj6CqYOlG3KvNKOgh1Wv5+itc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790337178; c=relaxed/simple;
-	bh=xwTvwyg3Pz92z+JaaSVjM8oPd/6RTxQDfs4QTPudtWU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m+km2WBU6O9G6NFEjKZ8LIuBxCsD+N3xahI/lI2AhZifCoo06/J/QszR9Un6+mJFTKeLmUvAi5/FfK4v+/Jlo3DjoO/PBz+o80ObxOnmfBL7KVf5AHSK1rnB869EWuC+Us6be53CQIg1Ck29ucvynqvNohTkad9ImZ+icscENM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com; spf=pass smtp.mailfrom=varjosoft.com; dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b=ir94oEIr; arc=none smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=varjosoft.com
+	s=arc-20240116; t=1790337838; c=relaxed/simple;
+	bh=ixwmkNZ3SWDZVz8mQfPlOlJTV0BDbUAdCzjM6VcNE+M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Q3dMcYiLQmWmZvwioQxHlrgIwHoAKLt6CfO93OwFV8YyNdLcpoI3nyfd4MoXxR317vXOx/3YEwqRT49jfHXZ+DptxzpeD2m89hgJ753hA2LL7j8UwhLOKMngQve6/VmeWQvxA7BcfyRwg6vcT50HG4Y34Kog8fR6B0BT3oimncM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqwsL1MD; arc=none smtp.client-ip=74.125.230.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b="ir94oEIr"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b74e0c2e4dso883038e87.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 04:52:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqwsL1MD"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91415b09bf9so7178746d6.3
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 05:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=varjosoft.com; s=google; t=1790337175; x=1790941975; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XC14MEiSoCJarpcJk0TmGICtxWCtxqLpOUSXIexu2So=;
-        b=ir94oEIrwSKAQk9d3/vgTC8d3O0VkpUQQ+6+MBuYuvGN8GsvgQ2v06Ah9YJH4qEGGO
-         5V3um8IM/fEW1OSD47NVnBWCFLXJImj2kVXNGENViHlbr5O2yjmU/WinOtKWHD0bYoLJ
-         ACzM6mcDD5LvzfuXaf53wruH2SCxvDWA0YTHU=
+        d=gmail.com; s=20251104; t=1790337832; x=1790942632; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YdWP4IV1+oqFik4nzEL8bohta4om7bbzxqnMeqGI3WY=;
+        b=gqwsL1MDoFSow8VaQWh/J/FH40JCAmn2g94E01++CaTbjhc0kJlAlwgZiGwaVMwRf7
+         HahbO+VCohFpHvjGSiuNzTNhueHhCf0ejva6V7D1wb5dJaJSkbvt05VbNcETbCp3BrVo
+         shLpOa2hmyBYrw+3TSHZicM2qod062VzUcexke5bOw22QNmQ9VXkY0yl+JyXTrZhTubK
+         1eaG8EyW42z176QwOHVTLl/Ul29Nc2t/n7GBffe2vc3Lpl/1u+b0cmGPc+oTU+I8QXds
+         KWD7HWB0jE8XGAdH/XDE8uJMp6pq7Ms0pRlrBRgZpE02BIim73QVjamEacudWsesUfZj
+         i7tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790337175; x=1790941975;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XC14MEiSoCJarpcJk0TmGICtxWCtxqLpOUSXIexu2So=;
-        b=N8zRbNAmfwO/iPK/gB7uXDojiJbme+Jcu1K+rw6nInOLV58EXhN+2297LDak3YMFc3
-         28DVGHVPDYgzUdD3LNF9URBM2Ne4x3jkHnEZT4/cgf5RMXhQ94A7NSzRYxBO4Aj3cPps
-         CO5TJ/dAuBpO320Lulnl4Jitiz4Jpojb1x7JT1J/ay2n9P9GpJ2cTRh6ymCjXtbBdnum
-         FenSjvVkGAKDXnUCVKUcwZI4m3eNmjfv2nbsBdkuUQtmy23IK3xHHrIaNOhj4K2UyAzd
-         anCydMnP9NLrq8buLwxZj16bhp9rvUjS+5LeOQVZ6K1dTV68CXA3+0La9Fhu7f8a66n2
-         PeXQ==
-X-Gm-Message-State: AFuF++mNrmORAP58BJE5FW6K9tMFT7jozTVgkO+yShoka3q9GfWkxSAY
-	pR/xwDT+lYpiw7EU2wuOpxZqCxcXkl+X8rDRGWl74VJSlWCwGZ+A+crOg7a2+ShWswsrhBqc+Mx
-	WeV/k+7HW0w==
-X-Gm-Gg: AYBFou2OESI+ZQpPuftJfNjr4NvcaS+GLHzn+syfJN6ndTvQUIyXkR3e7ORbOe0IcmF
-	iYcTjRpkv614MiWz866Ph4U0XupOgHuND+wg5bbxBXtPEZfK8Xj40hINbB5LQ0Xui7eBcbvpneW
-	sB1IMwH0Qr6Dhm9+V6j+IdDjVRXJ7TaaDzN+etvMUSI6dPN/yuAfEkPUYQHv0+ptwUbteZv4nMX
-	fvdSPFifoBVFqO9TounQtKR49pIcbAbW9wxS8JMIrkKyH4AUFtDv4bMnrky3FO2fKvN7d5w0IgO
-	hK5JvKpD1DEo0zA3H3BHSw2oZA3WWizbNqnW8fm8tbJdB63WzP0Vw9/+qJxSPVEzEX0Gf487zs9
-	havV4qx0gJQWSt9BK2QebNL0iuIOMJyQ/ldpNZPIywwzrMZzDzxR99ooFSE+kMRaLXr/IuPf/zm
-	hX34i+lIumaVeQmbEECIV2uY+jnI+c68aUSlukFMTnap5qXoHhOecGHxA5LXWxDUaPKlOYk7gRm
-	DXNoxf6mB2Fx7iNjN5DpvfoyAQ0HX6Y7prvPuAqMc5fI9juOSnc+qgfAsLlgUdF
-X-Received: by 2002:a05:6512:1394:b0:5b8:bc5e:b56e with SMTP id 2adb3069b0e04-5b8df1f3c41mr1675024e87.38.1790337174668;
-        Fri, 25 Sep 2026 04:52:54 -0700 (PDT)
-Received: from localhost.localdomain (91-157-138-212.elisa-laajakaista.fi. [91.157.138.212])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6a8c93bsm501228e87.7.2026.09.25.04.52.53
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 25 Sep 2026 04:52:54 -0700 (PDT)
-From: Hannu Varjoranta <hannu@varjosoft.com>
-To: Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ankit Garg <nktgrg@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net v2] gve: DQO: accept TSO packets with non-protocol gso_type bits
-Date: Fri, 25 Sep 2026 14:52:37 +0300
-Message-ID: <20260925115237.56465-1-hannu@varjosoft.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20260707; t=1790337832; x=1790942632;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YdWP4IV1+oqFik4nzEL8bohta4om7bbzxqnMeqGI3WY=;
+        b=aq7L9bbOqd2b/Ug2uSXnJAZaYqOujb0xepVVLbkoVmiVN33oBwyH2/XeT4kJnbO78d
+         lR/YF0d/Eydaq3JezFbg+CW2plxLaORk4XiPv6qzi6o7tZs1GZEw/UajbFl1m92WDQW+
+         /E1/Od2MYilMs52xCLHTzbUoC1JHaleaITMHapk7xCVfzaiFDcpTJhgjOSfLolGEsD9D
+         0EwQUZ5Qp+LnZc2UR1iMgt6NIE6wKGWkrPE3LOYl5CA7vbTwUVIU74e4e8affPCp+oJ9
+         gQ9+mAaglxgLjMTKnT8G4UhhP8CY8E1JoJaxtbN0E4Af8ffutfk+urVX16VCzRjP8TXO
+         OEJg==
+X-Gm-Message-State: AFuF++lgiRveIPkRVQqTuwy7ekRSYtbnAgZ9msZguVEeVvW+GYJ74pXh
+	3rGmM8YB/zmjBVZhEnxVUQcYuvxcDUHIi/hpPD+ONZUfQ+qzWTKue0JB
+X-Gm-Gg: AYBFou3EE+nZCC3wKspCUxzAvTf6+O7YdQn4zLuKN3dd4vu27946TJ9ZkAXCU2qHXRh
+	085kx/VEwaZoUW+QFOA1zSDE+A6b+op8qCmekVPduKOOJJRq6HldQGhBkCfbGKkwCkcJlkH3ghX
+	7f6huLrx9ekEJ0pqI2IfqoYLXLDfadgTXrZnzzqnMnGetNNdIgVVrMK9xweJ8m/qkYgijCpGs/I
+	GFtrLif76r0BN9zHSU6NGCL0rIc2Z9qUtTk5jEeycR6XOGfhmEWw/DgzOGoCJVWnNJdYQqu94Pm
+	UgPzWheckwNMsgr8sf9jojiAMKQZFAfE/AXJmdV3/llRkJSq/MJe1o+Nj4MS9qypfia2ThNi100
+	3mAfLW0BNtX50HIJsJr0XI+U+o1228cDXsfQLKnZ+/2p4R8C1K8kDTAhr3GgpFevLmxXd9KxcbZ
+	WTudgBUlCuO5r2BYRPSFDQ0EU+HtzWGbdC0i7+cHgh5gQ5pAIzzC1wkQwDzEFLm54xO87Sdjjad
+	3U=
+X-Received: by 2002:a05:6214:c82:b0:914:15ce:ed88 with SMTP id 6a1803df08f44-9142f664440mr38476586d6.3.1790337831716;
+        Fri, 25 Sep 2026 05:03:51 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430dacc51sm15231996d6.11.2026.09.25.05.03.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Sep 2026 05:03:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 08:03:49 -0400
+Message-Id: <DLODSKPY6ON6.1G6SP3CFFLCPJ@gmail.com>
+Cc: <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Stanislav Fomichev" <sdf@fomichev.me>,
+ <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
+ <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
+ Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
+ <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Jakub Sitnicki" <jakub@cloudflare.com>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com>
+In-Reply-To: <87fqyypp67.fsf@cloudflare.com>
 
-Since commit 014c607f86ab ("gve: add support for UDP GSO for DQO
-format"), gve_prep_tso() matches shinfo->gso_type exactly. gso_type is
-a bitmask, though: SKB_GSO_DODGY is set on every GSO packet that comes
-from tun/tap, packet sockets or other untrusted sources, and
-SKB_GSO_TCP_ECN and SKB_GSO_TCP_FIXEDID can be set as well. Such packets
-hit the default case, gve_tx_add_skb_dqo() fails and gve_try_tx_skb()
-drops them, counting them in tx_dropped.
+On Thu Sep 24, 2026 at 12:52 PM EDT, Jakub Sitnicki wrote:
+> Hi Daniel,
+>
+> On Wed, Sep 23, 2026 at 01:46 PM -04, Daniel Zahka wrote:
+>> On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
+>>> skb_scrub_packet() drops all skb extensions unconditionally via
+>>> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rc=
+v,
+>>> etc.) and cross-netns forwarding (dev_forward_skb).
+>>>
+>>> This makes it impossible for a BPF program to pass metadata via bpf_skb=
+_ext
+>>> through a tunnel or across a netns boundary. The extension is always lo=
+st
+>>> at the scrub point.
+>>>
+>>> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
+>>> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
+>>> extension slab is shared with clones: deleting an extension only clears=
+ the
+>>> per-skb active_extensions bit, and the shared slab payload is released
+>>> lazily by __skb_ext_put() once the last reference goes away.
+>>>
+>>> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scr=
+ub()
+>>> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so=
+ the
+>>> BPF metadata survives queueing onto a UDP socket receive queue and stay=
+s
+>>> readable there (e.g. for a sockmap verdict program). Only mark the skb
+>>> stateless when no extension survives the scrub. Otherwise skb_consume_u=
+dp()
+>>> would take the __consume_stateless_skb() fast path, which skips
+>>> skb_release_head_state(), and leak the extension slab.
+>>>
+>>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+>>> ---
+>>
+>> Hello Jakub,
+>> What are your current plans for this series? This commit solves the same
+>> problem I have with wanting to preserve the PSP skb extension across
+>> netns forwarding.
+>
+> I've implemented Alexei's idea of skb-lifecycle tracepoints that run
+> only when an skb is marked/traced. Currently putting final touches on it
+> before sending it out for the first round of feedback. You can take
+> sneak peek at it on GH [1] to see if it meets your needs.
+>
+> The CPU overhead is lower compared to the skb extension, at least in my
+> local runs, and the kernel changes are simpler, so it seems like a win
+> overall:
+>
+> |                  | gated skb tps    | bpf skb ext      |
+> |------------------|------------------|------------------|
+> | **busy**         | **+5.44 =C2=B1 3.16** | **+8.01 =C2=B1 4.75** |
+> | sys              | +2.62 =C2=B1 2.06     | +3.67 =C2=B1 2.76     |
+> | soft             | +2.89 =C2=B1 1.43     | +3.83 =C2=B1 2.10     |
+> | ns/pkt @146k pps | **+=E2=89=88 373**       | **+=E2=89=88 549**       =
+|
+>
+> I'll be giving an update on it at LPC [1], if you're attending, and of
+> course will keep you posted here on the ML.
+>
+> -jkbs
+>
+> [1] https://github.com/jsitnicki/linux/commits/gated-skb-tracepoints-2026=
+-09-24/
+> [2] https://lpc.events/event/20/contributions/2549/
 
-These packets do reach the driver: tcp_gso_segment() passes DODGY skbs
-through unsegmented to devices that support TSO, after recomputing
-gso_segs, so drivers must tolerate the bit.
+Very cool. Thanks for sharing. So it seems your new approach will not
+use skb extensions, and this commit will go away :(
 
-This breaks virtual machines behind a tap on GCE instances using the DQO
-queue formats. Every TSO packet forwarded from a guest (gso_type
-SKB_GSO_TCPV4 | SKB_GSO_DODGY) is dropped, and guest uploads slow to a
-crawl of retransmissions or stall entirely, while the host's own TSO
-traffic (gso_type SKB_GSO_TCPV4) is unaffected. On an n4 instance
-(DQO-QPL) with a Cloud Hypervisor guest, a 64 MB upload from the guest
-went from a 60 s timeout at ~0.9 MB/s to 0.19 s with this change, with
-tx_dropped no longer increasing.
-
-Host TCP with ECN is hit as well: gve advertises NETIF_F_TSO_ECN, so a
-TSO packet carrying CWR has SKB_GSO_TCP_ECN set and is dropped too.
-
-Restore the bitmask test that commit 1b9f75634441 ("gve: ignore
-nonrelevant GSO type bits when processing TSO headers") introduced for
-the same problem, keeping the UDP GSO support.
-
-While here, reload shinfo after skb_cow_head(). If the head was cloned,
-pskb_expand_head() moves skb_shared_info to the new head, and the
-pointer cached at function entry can then refer to memory that another
-clone frees.
-
-Fixes: 014c607f86ab ("gve: add support for UDP GSO for DQO format")
-Signed-off-by: Hannu Varjoranta <hannu@varjosoft.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-v2:
-- Reload shinfo after skb_cow_head() (Eric Dumazet, Sashiko review)
-- Mention host TCP with ECN in the changelog (Eric Dumazet)
-- Rebase on net, on top of commits 83769c23fb18, 3b430ea62340 and
-  296c83b5ccc8 (gve_can_send_tso() header length, MSS range checks)
-- Carry Reviewed-by tags from v1
-
-v1: https://lore.kernel.org/netdev/20260923141047.14047-1-hannu@varjosoft.com/
-
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 616c1921a..ad99cbb77 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -595,25 +595,25 @@ static int gve_prep_tso(struct sk_buff *skb)
- 	err = skb_cow_head(skb, 0);
- 	if (err < 0)
- 		return err;
-+	shinfo = skb_shinfo(skb);
- 
- 	l4_start = skb_transport_offset(skb);
- 	paylen = skb->len - l4_start;
- 
--	switch (shinfo->gso_type) {
--	case SKB_GSO_TCPV4:
--	case SKB_GSO_TCPV6:
-+	/* gso_type is a bitmask: SKB_GSO_DODGY, SKB_GSO_TCP_ECN and
-+	 * SKB_GSO_TCP_FIXEDID may be set alongside the protocol bit.
-+	 */
-+	if (shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) {
- 		tcp = tcp_hdr(skb);
- 		csum_replace_by_diff(&tcp->check,
- 				     (__force __wsum)htonl(paylen));
- 		header_len = skb_tcp_all_headers(skb);
--		break;
--	case SKB_GSO_UDP_L4:
-+	} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
- 		udp = udp_hdr(skb);
- 		csum_replace_by_diff(&udp->check,
- 				     (__force __wsum)htonl(paylen));
- 		header_len = sizeof(struct udphdr) + l4_start;
--		break;
--	default:
-+	} else {
- 		return -EINVAL;
- 	}
- 
-
-base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
--- 
-2.54.0 (Apple Git-157)
-
+I still have a need for this behavior of persisting certain skb
+extensions through scrubbing. I haven't considered all of my options
+yet, but I suspect the approach in this commit will work basically as
+is. If you are going to abandon this commit, would you be ok if I
+included it in a series of my own for PSP? I would, of course, leave you
+as the commit author, or give you whatever other form attribution you
+prefer.
