@@ -1,78 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470643A5E87;
-	Fri, 25 Sep 2026 13:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790341569; cv=none; b=QnVtPkgMJGcCYFoGk+wsTiiJZdIDPbmy3zIqWnc1QdEcFnlod0AQjiTrxbnPmptLiaqSaHyPCcDwA/h3ME3kqCxIElA7cG56TyXLXuC37kU05LEzc6mSlU52hFd1xwkbdmB6aw7Srm9+R9TRlZmJEEkv7VHU8aKtu/LmZksTJRE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790341569; c=relaxed/simple;
-	bh=bbBEp9l2/h0CiKr5nTgIBBkf58NjpF7/UWnmzzF9Q/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pxd/QH9pAbh+51SXAXnw5smf6YvD8QyTTR6rew1mu46uCAk1txuOuMXnj5lEe7C1Lq3vd5yBX5PtPGSdHfdohOcn21xra+oPbJ4lE1k3L/r2ofiqUm9dv0LZU41f/nJ5D9+cfb75tHkPYb6/8htPVZSMiWO6LmBqrKUr/lO4X/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+eWRexb; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3143A5E87
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790341577; cv=pass; b=bIxTR4PFrCMkiL3BEjlutwn6d+XN1l2Z7xYzyOj2BFhHZwGNXXhaVCXnCqja4BhM4Lme19PLZrMKpqIAbDIkrAiqcFI4mHH0b3H0ToG52PRbpgaB8m+OMQqOpyv60zlCDefS2lX7Dv3DRfPhAhE25kfMlomwUKD8zfMMWgsNOz0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790341577; c=relaxed/simple;
+	bh=9nrEMoJUJX7VmsXRZnVyqtxvTjWeXkBe2HP6/AIK/Pc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uqmgrbAWZBnteEjRdz4mmmEUO9InQMpIRLDVMiEq4C4pLtktOiHOGj4pRSy2wCqs+SlX40ORq1riFwuwYKnvHWRcGcXZxTH/aOSXIVgUDoDZo7m04wHdmeTco/+xsrroIiporkZeetPtggqYsv3XixsrdijNUbujXl3ThBniL00=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D2R8RzpX; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+eWRexb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500F31F000FF;
-	Fri, 25 Sep 2026 13:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790341568;
-	bh=/ri6WaoaABgTpzLOK6vXDTBXig3OVUaq8diLr0aWNV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G+eWRexbsFjg1bvLGXdG2RiH1RClYlZ8p7oDcK0BUWK53LykVNaMpEfTV+1fAgIlk
-	 19epr7ZCXB+BvepeN/8XztbXYNKhycHFyVQRz1NkhQnSy0XnKmcJgR9Zr7ANlNdGcv
-	 uiUSDgqBHklJA/D2Kc3Sik3lji0tBMLxzsxyJzDR472DQ12DgG7dJPbcm5R7LAR2O/
-	 NeqS2dB6RHpv0y5GPA9NThMp9tuj3gULSRsm1J60zPBvDEs2qcjs5uGj9dleCIwLL/
-	 tOmMkkp93l5gDaij+xJLaCJJ/oPKyuY176PdRTQ+rOWNEEfMNYylbR1EzL3VoALlsb
-	 3XnBmkudOz6tw==
-Date: Fri, 25 Sep 2026 14:06:02 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
-Cc: =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
- unprotect sequence
-Message-ID: <20260925130602.GJ13925@horms.kernel.org>
-References: <TYCPR01MB7481CE8351FDB2CDCA229955A4872@TYCPR01MB7481.jpnprd01.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D2R8RzpX"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-52fa9c055b5so19804761cf.1
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:06:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790341575; cv=none;
+        d=google.com; s=arc-20260327;
+        b=anwfPvGRTmbWaUPW6x/CCDhNnOunesC5IJ6DaAydoTvgWqPoSM4EEnlVzGPISGaqJQ
+         NIgrLcqih+1IERdOQHcy+wkZuFymfj7YW5q0/9UmGzZKF5Y5QsCXI7+BzkoOTzTgR83q
+         VkaL7nqEpTk+dEo7UCrSMG7GypsK8II4BjPiCmgr3LJFuyn5+e4lEbAeWlpyE8VkdzIJ
+         8a+3SzcVYIAqLKH03ZbPToGD3l81Emu0jMh7xHk7lWQef3us7iD7KM3zRwfw/tI/ZltU
+         NNvt5EF6XphTL0M6xYgacUPJHfc2+qDrXnW1TQYjRMBrqcQlphLKaLxXE5FQClO5iYWR
+         V/NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8D1YO6sd0c54kD6iJBZK2OCmGo9pDdAYg4PTg+FFCBw=;
+        fh=b67Mk5kBV8bo/Qvcvzn0qdE+9m8oxrc1NCuSWbopfE8=;
+        b=BXtwm5LEve7dW/ceOgWw6GWoH6rt4TsxEObLYAJ8w1zQzRIeJGnDb6Gc5u6urwPDrc
+         Z+GJOl0N57IAjjBKU/wUbkelpT5nDSz0NiZzZ5OOltkAEMgaKnzHV8/eGh066/lwutPe
+         xD7XfkzhWnmYtwPPzkcewa1DDve5eIaXuFlcT6XK+z/at6Nmmb7GIUlFjhIumgvYirya
+         zM6veP85YtxGfS7oJicveIai8Wcjx+BBCTRbvVZCywqwqlt6dave3EN+taAHDp52shuB
+         6q0zOQaRUEFohaQ+ijZo5qUrL5ETYWpoMfdLV+FsgACpO+zkzZpKX7hepD91gvj23Ozj
+         qzhQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790341575; x=1790946375; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8D1YO6sd0c54kD6iJBZK2OCmGo9pDdAYg4PTg+FFCBw=;
+        b=D2R8RzpXLblTvzVkG2HP0ao397SOqm2W8gBizobae6AJtnUzyGjl/qf4q/cRHBGGKN
+         FO1Wi09RaxRYPgSb6gtvKdJT7vOkgi27Ow+f2KIRHwHPJ/nWje9lZf1bCkiit4UIA6zW
+         LhTEo8K+mriBLLVlPpCg9pPTJEKjRbxg6X+qkASZjfgrCydkITa9+unMobkMHxuqAnUR
+         WKpnm1v2UG1X2GztbDxXFUJ5pT8yW7yFIT+MLkE0bSSFw00pzhA8DS3q2pESQyCNOu1D
+         mO+duoVJI13IFflxTZzMCU5awF74xWBBjo0HOb+GN5iFUIOlkmqW3wlYVVrYLQ2TCjU+
+         v4fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790341575; x=1790946375;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8D1YO6sd0c54kD6iJBZK2OCmGo9pDdAYg4PTg+FFCBw=;
+        b=ZK4GrPtK28NGFIbWritmZoLdXcUmINe+1lyRfXFaIt2k9PC7yq5uTU0DMcrfySSEtp
+         lwWyVCT1M90nrH1YaNOqI916lsswycsy9SLbZw11vLtVYMDsPMx0H++4Isfm+1Z78DVi
+         amsdk3sPiOTTLwMXykozizDpd3GNaWcinH8zvtTkeh3Fx8BQ8+URV843OknTSXlozP7X
+         PIiGrj+A1dqyyt0osQTxz/j1nqB2q8WYzUt1U61KpDiAJ0e8U5Hbazrb4OsHx6YU03EM
+         rNY39WUciQLTUuJs2wNRCZpuy7WHpeaF8pvAIZJeaZJzwggWr1tVKMzdYjYG30Tejrff
+         0kbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy4O0mYuruua7mY2GPg6B4UsAFyEu2a5XmUp22Tt7QuB27l+PhiemjOWDUd6CTIi8OFKUhC3ZU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nkDJqbqqZ6jyRTJt2fxZlCEC1QHximk1JyCkeDf40MkOe+VPVt
+	p/wTw1Kuv308R3mQ533ecRcZ1YIJXHUnsq91gouwqmbJn2eqO9CI7UiUTZRlsd/IJXd9s53ReRb
+	y+7Tu2f54FBSb+B8J/greBV+vo6MfcB26hGJLr+F4
+X-Gm-Gg: AYBFou1V5zEA567/U5Q9NaDIROURJbMw9j5hLsiqbgqmTo6Pa8PNTE3UxozRsF4Tveo
+	XdRqISfz6Pggv7NFiBglMXKvYnNqqZ+sH06ZiHyzPeaE55ySfLwabu70guasNmgymlJrOchOVTu
+	jcs3bL+dYN2AA7w7lF8hgdJnbR9Jtc8CDWl3Byv2ozOh3VWZZjSnGhi3IDqyFUE8urPjeAOyTxD
+	7fPuhT4KUkJXxBq1NvLVNdfhl2ehA4M5JoxGPapqG69I+c2m9hsi10lfuFwdBHwyRNNQJlFeGU4
+	6voiju4IHSG8xF2DVag0q0Qxtte7qh96iNEezaDdFGAEj63WGHcYHwzVw7Mg5dpgPXLvGFi1Puj
+	fSzxXSoEC+hLA+QjkRrcDE6rzwONNLhzkiCSBa55qc/t50ssJAyJuya6ynhnKxn4E2j3W
+X-Received: by 2002:ac8:598e:0:b0:516:82e2:7788 with SMTP id
+ d75a77b69052e-5330b5884b1mr41318051cf.1.1790341574370; Fri, 25 Sep 2026
+ 06:06:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCPR01MB7481CE8351FDB2CDCA229955A4872@TYCPR01MB7481.jpnprd01.prod.outlook.com>
+References: <20260924123602.1979090-3-edumazet@google.com> <179034054266.2160803.16187930067723490774@kernel.org>
+In-Reply-To: <179034054266.2160803.16187930067723490774@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 25 Sep 2026 15:06:03 +0200
+X-Gm-Features: AclHuK_kYhiz0b4a3xexB36evdvdw25H6H7d9pOfTuBdTVxHRscKsusa68tO7UU
+Message-ID: <CANn89iKOKtJVOm-24cyEUTta8VUsiw47VF9_h-73XX_YiqmBaA@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] selftests/net: add SO_RESERVE_MEM test
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, weiwan@google.com, 
+	horms@kernel.org, caixinchen1@huawei.com, netdev@vger.kernel.org, 
+	edumazet@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 18, 2026 at 04:30:16AM +0000, Yoshihisa Yamamoto wrote:
-> On RZ/T2H MIIC, writing 0x0000 to PRCMD resets the command state
-> machine to the IDLE state.
-> 
-> Reset PRCMD before issuing the unprotect sequence so that it always
-> starts from a known state, regardless of any previous PRCMD activity.
-> 
-> Fixes: 419747319e3a ("net: pcs: rzn1-miic: Add per-SoC control for MIIC register unlock/lock")
-> Signed-off-by: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
-> ---
-> v3:
-> - Add Fixes tag
-> 
-> v2: https://lore.kernel.org/all/TYCPR01MB748157ECB6B92D8E3FFD433BA4B82@TYCPR01MB7481.jpnprd01.prod.outlook.com
-> - Fix indentation
-> 
-> v1: https://lore.kernel.org/all/TYCPR01MB748139F059DF2459B9813416A4B92@TYCPR01MB7481.jpnprd01.prod.outlook.com
+On Fri, Sep 25, 2026 at 2:49=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 6 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 4 =C2=B7 Low: 2
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The new SO_RESERVE_MEM selftest needs memcg socket accounting
+>   but never checks for it, so on systems without it the tests fail=E2=80=
+=A6
+> - [Medium] When socket() fails, check_non_tcp_rejected() only accepts
+>   EAFNOSUPPORT or EPROTONOSUPPORT.
+> - [Medium] cgroup_memory_max opens memory.max with plain O_WRONLY (line
+>   217) and writes an 8-page limit (line 225) to the cgroup that holds=E2=
+=80=A6
+> - [Medium] preserved_after_traffic checks `get_fwd_alloc(cfd) >=3D 16*ps`
+>   (line 325) right after recv(sfd, MSG_WAITALL) returns (line 323).
+> - [Low] The fallback `#define SO_RESERVE_MEM 73` in so_reserve_mem.c
+>   (line 21) is right only for the asm-generic, alpha and mips ABIs.
+> - [Low] FIXTURE_SETUP writes "+memory" to <cgroup2
+>   mount>/cgroup.subtree_control (line 80), and FIXTURE_TEARDOWN (lines=E2=
+=80=A6
 
+I have no intention to work more  on this test, which was really a first st=
+ep.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+This is going to be 10 versions of AI agents trying to talk to each other.
