@@ -1,39 +1,60 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC3B4C224E;
-	Fri, 25 Sep 2026 15:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3670837C0F5;
+	Fri, 25 Sep 2026 15:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790349422; cv=none; b=rbB+/lDW7jfitlbo163WBdenfa1NPf2dBDYemLcw9lFE4Hk6D1ePNHxQ+SddzdUp9cJ6mAozrv7nNTEt8b64Ht8rX9KUk/BjMOVCNEWjevPO0l2/MXidPG/oh5yKrPQ33HqzA8/Q1Zy0gKAceubcjFl95tOMMPE6uGJWQX55azI=
+	t=1790349430; cv=none; b=tdnBhwoGTK6NfcKlMkNs+mNrIOlCuFNUSvHJefVbGFrlZkOvRJvE7ZkhRPATWUVENDojGm0n1BdZHeGpT7m4GilQahMDLXxVW1tnq3Wc43NTZs+e0NiuILbqU8fNyMiAilo5oJWy9YirhyFENBcelP+8b5sLTO64JYgEPZBUrcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790349422; c=relaxed/simple;
-	bh=hsmDrcqcGoLBbnD4/iajFZ0f2RVfLNsSqZHH9SodEGg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ne9Qooczt/IOVvZiizPsCl8YSKxbQmHwL5S45kdT8mhJI+loKW3nhph5XSqN+2vpGAvfutqoP0ys3FD4ye6/Y0a2dDI7V7u6BlBt0iHeq7g9cmVFGdpTLMZvGu/Dlg02lpe7Tj5U0xRHCH2RYlFjyZpmWV+LbL+XG3LubIgugP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=FYdShQnk; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1790349430; c=relaxed/simple;
+	bh=Dth1pW+X/qoBasl4Sm/FBeTxR8R9lpHCCljFzhOUKho=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=I16ENQ+04xE00RIrvdRnFsCb1ufhDzt+LZDxng0/iWt/Cwai+HWNQmskz8f0KlySY47PUSIXvUIxDOVDuVWQnlJ7gKtO+MWlTCEDPg34bJM6cuWHHdnayuuyypomLxvdo509Ur8zU3LP+db4KiCcknFYyNT5cbM/9tqSfoYTgDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PQlizrml; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="FYdShQnk"
-Received: from [IPV6:2001:1aef:17c:c89a:bc5a:ffa6:6d36:3fe4] (2001-1aef-17c-c89a-bc5a-ffa6-6d36-3fe4.ip6.tmcz.cz [IPv6:2001:1aef:17c:c89a:bc5a:ffa6:6d36:3fe4])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 3606A53401DE;
-	Fri, 25 Sep 2026 17:16:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1790349409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kGuuv0z/tHb25VQiTnRfTY6Toy9a9VIcqsfNc1WxIGw=;
-	b=FYdShQnkQ7IPYxOfb8kU8rG5p88uPQWNyrhYGSXSzk7B6PdHQsdrvLIypijOgjgu+Jpvx2
-	ASpDSILJ5deK61IWQiWL4xYufRtIX9CeK9MXaKs8nVBTQou8FwvX3P9WVQE40Oamrc8It6
-	JM1LvJNaQVUcnM7/goGJznNgq32+7fc=
-Message-ID: <aaf33c3c-7a52-4afe-82bb-930b553a4b39@ixit.cz>
-Date: Fri, 25 Sep 2026 17:16:48 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PQlizrml"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4b16l2394514;
+	Fri, 25 Sep 2026 15:16:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=rV1r1S
+	aMs8R2GMCMT2tW/2PbUnXsz2c243bENxyFY1c=; b=PQlizrmlh+uMWrGjQa6iQ2
+	1PGICFID545vSH4YUZZNMV7NlRwSzCXsH24BlBaLWZ2ksP1tJmR6zQ29T2S9Gp9q
+	Cu2a7ybZq6UffrWCE4NAHCv09tX1ZfLZ+f8Sl+PDnEz8S0hejjrvzPhs6YPRsOgy
+	DRXOOcT3EJXz1qjvDlnPF6Zw/TTRd+wsjb7l/36lMcyg2NxJnpvrYff1gNG6jxwq
+	8leNxNH9y9an/+nFpu5g3MEKL4CxHUB/pyV/RWfbg57lrUum07MmaWS5anOzKagQ
+	1TsNg8j7NB78juepEGWbjPJIvQ0n8biqr9APAkJAP687hDamTPI6PBi6TSGN9cIw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske27rxb-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 15:16:55 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68PF1aO33297092;
+	Fri, 25 Sep 2026 15:16:54 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb6qtx34-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 15:16:54 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68PFGpBc51184064
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 15:16:51 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 03AB72004E;
+	Fri, 25 Sep 2026 15:16:51 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 922612004B;
+	Fri, 25 Sep 2026 15:16:50 +0000 (GMT)
+Received: from [9.111.133.14] (unknown [9.111.133.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Sep 2026 15:16:50 +0000 (GMT)
+Message-ID: <717d9c0e-83e9-4ad7-82b6-7970a0ba6729@linux.ibm.com>
+Date: Fri, 25 Sep 2026 17:16:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,82 +62,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] nfc: llcp: check socket state after locking in
- nfc_llcp_recv_dm()
-To: Aldo Ariel Panzardo <qwe.aldo@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-References: <20260923133339.2518641-1-qwe.aldo@gmail.com>
- <20260925023509.3060096-1-qwe.aldo@gmail.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260925023509.3060096-1-qwe.aldo@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net v3] net/iucv: require IUCV for AF_IUCV sockets
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: netdev-bot+sashiko@kernel.org, hppiscas@163.com
+Cc: twinkler@linux.ibm.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com
+References: <20260920034503.17322-1-hppiscas@163.com>
+ <178996250579.2160803.3689804935882322466@kernel.org>
+ <d0c5ed89-f782-4acf-8c4c-4626f4be650a@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <d0c5ed89-f782-4acf-8c4c-4626f4be650a@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 8l3E_mPJ93pvdEZdXYDMkRy1dVCP-3cz
+X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab69067 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=iMySd7Nm5nv2uyiilLIA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA2MCBTYWx0ZWRfX51Gjsu18j+VV
+ EH6ZslkAU8an3qoK2glBS6kfJS7j5o1aynZ4DR3dCW6Xi0+4PzLkXuTBUiCUZmNYWUIXitlLUaR
+ rJJnezqZjvG1hfIKVvWoJz3cULiM4pE=
+X-Proofpoint-GUID: G-mNGDf8f4Q6p2hndv9kE6m8I3ukcCxz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA2MCBTYWx0ZWRfX3z769/oFiUAZ
+ ahpBEjpvg6cGSmnvqzgcJjxfp78o539onsXMIwBLQ8qLh6F/dlskbyGI5Nh8XCeEGIJ3kmBGs7k
+ gx+Juy4yd9EJmYRYJnamGoVFBYW/feHUBdnSXaD78MgFmKPE0VP4d6i+QgBNL9yLmfZGhuoEBgB
+ H4Yp6a6LNxMAMO5tFCgJTGIGn+I5Tt+HeT1ix0aKToL8pzb0gcpHnVvLyhsZrEoIJEVIeJ1mg/d
+ KRkFZI70izqMhsuj/DefgEJfjltg+NTtQHNfda1G9X7uerljgAKalaRd44kHBf6m+xvBmpVLG/N
+ np7TGD62x4wjG7RkEz7qo28d2WbD/7F5Fa6NpUhe68m4ymXaDGn2hqgltVN9AHBwCw7HlytU4SI
+ DUISRyF9CDwEMYU3i1t0Gl6XA3fUasyXOzayftfqSmwzpj25VWolhSlrvY3s5tDZV0lHIWCdJ0L
+ UA9DOOS4Vw9M+ZEKe6w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250060
 
-On 25/09/2026 04:35, Aldo Ariel Panzardo wrote:
-> Between nfc_llcp_connecting_sock_get() and lock_sock(), another
-> thread can move the socket from connecting_sockets to sockets via
-> a failed connect + re-bind. After lock_sock(), the socket may no
-> longer be in LLCP_CONNECTING state, so unconditionally unlinking
-> from connecting_sockets corrupts the wrong list.
+
+
+On 24.09.26 20:52, Alexandra Winter wrote:
+> Actually even with your v2 IUCV=M, AF_IUCV=M builds fine in an LPAR,
+> but modprobe returns with
+> modprobe: ERROR: could not insert 'af_iucv': Protocol not supported	(not expected)
+> modprobe: ERROR: could not insert 'iucv': Protocol not supported   	(expected)
 > 
-> Add a state check after acquiring the socket lock: only unlink
-> from connecting_sockets if the socket is still LLCP_CONNECTING.
+> Is this a result of
+>> 	if (machine_is_vm() && ...
+>> 		err = -EPROTONOSUPPORT;
+> I don't fully understand it yet.
 > 
-> Fixes: bf1460acdf8c ("nfc: llcp: Fix list corruption / refcount desync in nfc_llcp_recv_dm()")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-> ---
-Thank you for your patch, but please never send new version OR another patches 
-as follow up to existing thread.
+> But that combination can be defined, even with your v3, so we have another open issue here.
+> 
+> I definitively need to test all possible combinations! (Should have done that earlier, I admit)
 
-Please read: https://docs.kernel.org/process/submitting-patches.html
+That is the same root cause as IUCV=M, AF_IUCV=Y linker error with v2:
+the reference to `iucv_if'.
+So this probably would work with v3.
 
-Thank you
-David
+Nevertheless, I'm working on a clean solution on top of your v2. Let me see if I can come up with that.
+
+Kind regards
+Alexandra
