@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA85F37EFF1;
-	Fri, 25 Sep 2026 02:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A034F3822A1;
+	Fri, 25 Sep 2026 02:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790301827; cv=none; b=ZXiZON1yeuO7pkwx2mWEWDv7atdqOB1iGSE/211DYfTYCZbhiqbL1WOaBnO4Uj+zjMaopL31CBlzjqvwbDehZrDX38cAcmaULYzUopQFsFJAnHaqq1HPKPr9pfh63rrm3qUX2m0ShRYlfJDvMrSH8QaBt+LtJi9JzwR49BA1BME=
+	t=1790301830; cv=none; b=gwQZjputP/FIp24a5u0R0+YFHqy3osqGk6viFqiI/8BVhXh+vqz/NLVofHkG/Au+WcYp5fdSL0RyFqCn+zjeVaW2Gm2VtJseMaZLPENhMSj0PjuOsRC2tnH/+CorxEZ8p2Ep5o2+y1cRGHkmG8K6zZrORKSS4bHz/e5txiuqpfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790301827; c=relaxed/simple;
-	bh=5TdzdPd1ZudjF1IfQwVmzOo1WnxbsV31gIYvfeYWOoE=;
+	s=arc-20240116; t=1790301830; c=relaxed/simple;
+	bh=zhL7hF0bSF87fzhSKsFCpqWkLQyTR1/4ldpfM6gwJC4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FomFnojks01CFrxTYSxmDpwxCXJ33bfixJENu7EkTII8U+WtJ49Sma8mNYxr5RmoPaUpic/8xZNeHYKW5YwyluOZgyNpzIHOMo0bc0vyItKNBIN4uwNX4to97jquJAa2AtSuofpyrvv6fEAsPF5PH01cwwp6kbgVbxZZnO91kP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNwRdyxi; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=m44OYHDffzmSf4R5zLdxmA7sHz/fTDLu3Ybgp01jZdNO2To8vf0AcovZnMpvZC4LnP/n17uTf1Mft3jgzaH0PYWFRvTIl/4Kz9RN1mK0bsPJrVzG3Cyg8gYyqprH9ue8rgnZ1RgCwCv5nR/TKhqm3b3kEjnJVZ15SJmVHnHmyUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrZycPLl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNwRdyxi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525B41F000FF;
-	Fri, 25 Sep 2026 02:03:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrZycPLl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E861F00893;
+	Fri, 25 Sep 2026 02:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790301825;
-	bh=1tnkY2s2DVVGP0iyZfDIANfzMWWEVKjrYMrG/4nzmSI=;
+	s=k20260515; t=1790301828;
+	bh=AKeAUPt7DWxVIU4HGrAE1P8lK23xmc1gipQ4Q8H4QxM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iNwRdyxillxQFirsyCtD7IeNn3aKwEyrLa/8xQkOE1FR53L3zpRhrjb3YU84g71Kk
-	 O+BlUBStNYsiPw4YVVAqX5K8+TPQ5Vd7c7rag+GKjlCY8nXrhIBlkq0MiyeQROUshv
-	 YwNcIsGBMKsfMEOqgvN/h/C5d/9BJ9Ximm2efgOU2J3nd7SCumKjV0WthKszIRJljv
-	 vSvFBOZ/gLgeLYFYpvoaRILt6Z3iqoi9iNG8U8rZbOXCVpg3WqmNxM1tUCz8Hw9WbW
-	 cEW/oJNZ07w9ZZwo2WYUZC27bqJdpeiO33IlUNF/olv9DN0jjEKxi57UVOXTYx1bF/
-	 ZjFWpE6EI1dEg==
-Subject: Re: [PATCH net-next v10 07/11] net: pcs: xpcs: add Rockchip RK3568
- platform glue driver
+	b=PrZycPLlVqg2IuP7WqFFOgVm4B1Aq5VrFSkGPKr3we7KKYbpEGauYc5cw+RJvFWyH
+	 zDP3urrTZxFKbfBbbZ8dHoyXfpSLUjhx/v5JigI264dNCR043Hiwdn+vn81UksRASK
+	 SZdWionNcQif3LfaJ1J/jPmnhB0xJgwEa7MUTtbaCiE1k03/MuI8MHtS4a/U952IYZ
+	 VBcy5/Rzfik2YRkmwGcCkxX/Q31yaElvDGLBTj2WG6zKRoOIfBxmJmSWHoBZ+rFD6o
+	 wt1uqfMbVHN7EBOuRFoN3kkiPbCveNQWGyPoQ2W2jG3bgojui2fBVM1Z72N/4KvaTZ
+	 L4yNu9vmrmj2w==
+Subject: Re: [PATCH net-next v10 09/11] net: stmmac: dwmac-rk: add SGMII
+ support for RK3568
 From: netdev-bot+sashiko@kernel.org
 To: coiaprant@gmail.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -41,11 +41,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
  linux-renesas-soc@vger.kernel.org
-Date: Fri, 25 Sep 2026 02:03:43 +0000
-Message-ID: <179030182389.2160803.3666914180615619528@kernel.org>
-In-Reply-To: <20260922200336.2201212-8-coiaprant@gmail.com>
-References: <20260922200336.2201212-8-coiaprant@gmail.com>
-X-sashiko-severity: High
+Date: Fri, 25 Sep 2026 02:03:46 +0000
+Message-ID: <179030182602.2160803.7636364487893366164@kernel.org>
+In-Reply-To: <20260922200336.2201212-10-coiaprant@gmail.com>
+References: <20260922200336.2201212-10-coiaprant@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -55,10 +55,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 3 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 (3) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -66,334 +66,287 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In drivers/net/pcs/pcs-xpcs-rk.c, xpcs_rk_system_suspend()
-  relies solely on device_set_wakeup_path() to keep the PD_PIPE power…
-- [Medium] xpcs_rk_mdio_write_remapping() (drivers/net/pcs/pcs-xpcs-
-  rk.c:137-150) forces writes of DW_VR_MII_AN_CTRL,…
-- [Medium] xpcs_rk_create() (drivers/net/pcs/pcs-xpcs-rk.c:537-546)
-  dereferences the struct device_link * returned by device_link_add()…
-- [Medium] Concern: xpcs_rk_create() validates the supplier with an
-  unlocked read of the driver-core-internal field…
-- [Low] Concern: xpcs_rk_create() is EXPORT_SYMBOL_GPL'ed and published
-  in a new header include/linux/pcs/pcs-xpcs-rk.h with no in-tree caller…
-- [Low] In xpcs_rk_create() (drivers/net/pcs/pcs-xpcs-rk.c:518-558) the
-  comment justifying the device_link handling misstates the API…
+- [Medium] In SGMII mode, the RK3568 glue tells phylink it supports
+  interface modes that the hardware cannot run and that the glue never…
+- [Medium] The commit's explanation of the SGMII in-band vs out-of-band
+  problem does not match the code, and the driver does nothing to reject…
+
+Pre-existing issues:
+- [Medium] rk_gmac_resume() (dwmac-rk.c:1618-1627) calls
+  rk_gmac_powerup() and throws away its return value, then always…
+- [Medium] gmac_clk_enable(bsp_priv, true) (dwmac-rk.c:1181-1200) first
+  enables the bulk clocks with clk_bulk_prepare_enable() (line 1187).
+- [Medium] __stmmac_dvr_probe() calls pm_runtime_get_noresume(device) and
+  enables runtime PM (stmmac_main.c:8112-8115) before calling…
 
 --
 
-net: pcs: xpcs: add Rockchip RK3568 platform glue driver
+net: stmmac: dwmac-rk: add SGMII support for RK3568
 
-This adds a Rockchip RK3568 glue driver for the DesignWare XPCS that
-exposes the APB3-mapped CSRs through a virtual MDIO bus, splits the
-generic platform glue into its own PCS_XPCS_PLATFORM module, and adds
-power-management handling for the shared PD_PIPE power domain.
+This adds SGMII support for the RK3568 GMACs. It sets GRF bit 7 and
+hooks up the Rockchip XPCS through the pcs_init, pcs_exit and select_pcs
+callbacks. It also moves the clock enable in rk_gmac_powerup() earlier,
+unifies its error unwinding, and for SGMII clears set_clk_tx_rate and
+sets default_an_inband.
 
-Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 59, CRU_CLKSEL_CON29)
-Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part2%20V1.1-20210301.pdf (Page 2078)
+Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 386)
 
-> diff --git a/drivers/net/pcs/pcs-xpcs-rk.c b/drivers/net/pcs/pcs-xpcs-rk.c
-> new file mode 100644
-> index 0000000000000..35ee980a759e5
-> --- /dev/null
-> +++ b/drivers/net/pcs/pcs-xpcs-rk.c
-> @@ -0,0 +1,619 @@
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> index 8d7042e689261..88f09014e3a69 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
 
 [ ... ]
 
-> +static int xpcs_rk_mdio_read_remapping(int addr, int dev, int reg)
+> @@ -1208,6 +1236,43 @@ static void rk_phy_powerdown(struct rk_priv_data *bsp_priv)
+>  		dev_err(bsp_priv->dev, "fail to disable phy-supply\n");
+>  }
+>  
+> +static int rk_pcs_init(struct stmmac_priv *priv)
 > +{
-> +	switch (dev) {
-> +	case MDIO_MMD_PMAPMD:
-> +		return ROCKCHIP_MMD_PMAPMD;
-> +	case MDIO_MMD_VEND2:
-> +		break;
-> +	default:
-> +		return -ENXIO;
-> +	}
+> +	struct device_node *np = priv->device->of_node;
+> +	struct device_node *pcs_node;
+> +	struct dw_xpcs *xpcs;
 > +
-> +	/*
-> +	 * Reads are redirected by hardware to the port's read-only mirror;
-> +	 * only writes have to be targeted at MII (see the write path).
-> +	 */
-> +	switch (addr) {
-> +	case 0:
-> +		return ROCKCHIP_MMD_MII;
-> +	case 1:
-> +		return ROCKCHIP_MMD_MII1;
-> +	case 2:
-> +		return ROCKCHIP_MMD_MII2;
-> +	case 3:
-> +		return ROCKCHIP_MMD_MII3;
-> +	default:
+> +	pcs_node = of_parse_phandle(np, "pcs-handle", 0);
+> +	if (!pcs_node)
 > +		return -ENODEV;
-> +	}
-> +}
 > +
-> +static int xpcs_rk_mdio_write_remapping(int addr, int dev, int reg)
-> +{
-> +	switch (dev) {
-> +	case MDIO_MMD_PMAPMD:
-> +		return ROCKCHIP_MMD_PMAPMD;
-> +	case MDIO_MMD_VEND2:
-> +		break;
-> +	default:
-> +		return -ENXIO;
-> +	}
-> +
-> +	/*
-> +	 * These registers physically live only in MII (the management port).
-> +	 * Ports 1-3 expose read-only mirrors of these bits, so writes must
-> +	 * always target MII; the read path remaps per address and the
-> +	 * hardware redirects to the port's mirror.
-> +	 */
-> +	switch (reg) {
-> +	case DW_VR_MII_AN_CTRL:
-> +	case DW_VR_MII_AN_INTR_STS:
-> +	case DW_VR_MII_EEE_MCTRL0:
-> +	case DW_VR_MII_EEE_MCTRL1:
-> +	case DW_VR_MII_DIG_CTRL2:
-> +		return ROCKCHIP_MMD_MII;
-> +	default:
-> +		break;
-> +	}
+> +	xpcs = xpcs_rk_create(priv->device, pcs_node);
+> +	of_node_put(pcs_node);
+> +	if (IS_ERR(xpcs))
+> +		return PTR_ERR(xpcs);
 
 [Severity: Medium]
-Reads and writes of the same (addr, reg) pair resolve to different MMDs for
-addresses 1..3.  xpcs_rk_mdio_write_remapping() sends AN_CTRL, AN_INTR_STS,
-EEE_MCTRL0/1 and DIG_CTRL2 to ROCKCHIP_MMD_MII before the per-address switch
-is reached, while xpcs_rk_mdio_read_remapping() returns ROCKCHIP_MMD_MII1/2/3
-for those same registers.  Since xpcs_rk_addr_format() folds the MMD into the
-APB CSR index, the two accesses land on different physical offsets.
+This is a pre-existing issue in the stmmac core, but this patch makes it
+much easier to hit. rk_pcs_init() returns -EPROBE_DEFER from
+xpcs_rk_create() whenever the XPCS device isn't bound yet. Does each of
+those deferrals leak a runtime PM usage count?
 
-The unmodified core does read-modify-write on exactly these registers, e.g.
-in xpcs_config_aneg_c37_sgmii():
+__stmmac_dvr_probe() takes the reference before PCS setup:
 
-	ret = xpcs_modify(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_CTRL, mask, val);
-	...
-	ret = xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
+    pm_runtime_get_noresume(device);
+    pm_runtime_set_active(device);
+    if (!pm_runtime_enabled(device))
+        pm_runtime_enable(device);
+    ...
+error_pcs_setup:
+    stmmac_mdio_unregister(ndev);
+error_mdio_register:
+    stmmac_napi_del(ndev);
 
-and in xpcs_get_state_c37_sgmii():
+None of the error labels drop that count or disable runtime PM.
+pm_runtime_reinit() returns early while runtime PM is enabled, so
+usage_count is never reset.
 
-	an_intr = xpcs_read(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS);
-	if (an_intr & DW_VR_MII_AN_STS_C37_ANCMPLT_INTR) {
-		an_intr &= ~DW_VR_MII_AN_STS_C37_ANCMPLT_INTR;
-		xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, an_intr);
+fw_devlink doesn't parse pcs-handle, so the GMAC can probe before the
+XPCS. After the probe finally succeeds, the count can't reach zero, so
+the MAC would never runtime suspend.
 
-For port 1..3, is the value read from the port mirror then written back into
-port 0's register, and is the autoneg-complete latch that was observed a
-different one from the latch that gets acknowledged?
+Deferral from stmmac_mdio_register() already hit this path before the
+patch, but deferral is now likely on RK3568 SGMII boards.
 
-Two related questions on the same mapping:
-
-AN_CTRL (PCS mode / TX_CONFIG) and the EEE registers become one shared
-instance for all four ports with no serialization, yet the commit message
-says ports 0..3 can be routed to GMAC0 or GMAC1 independently.  How is
-cross-port clobbering avoided when two MACs configure their PCS?
-
-DW_VR_MII_DIG_CTRL1, which holds VR_RST plus 2G5_EN/MAC_AUTO_SW and is
-modified by the core in xpcs_config_aneg_c37_sgmii() and
-xpcs_config_2500basex(), is not in the list and therefore goes to the
-per-port MMD.  Does that contradict the comment's claim that such vendor
-registers "physically live only in MII"?
-
-[ ... ]
-
-> +	/*
-> +	 * Establish the device link before reading the supplier's drvdata.
-> +	 * device_link_add() does not fail on a supplier that is unbinding:
-> +	 * it creates the link in DL_STATE_SUPPLIER_UNBIND. Whether the link
-> +	 * actually protects the drvdata depends on the supplier's state at
-> +	 * creation time.
-> +	 *
-> +	 * Check link->supplier->links.status right after creation. If the
-> +	 * supplier was DL_DEV_DRIVER_BOUND, the link is in
-> +	 * DL_STATE_CONSUMER_PROBE and device_links_unbind_consumers() will
-> +	 * wait for this probe to finish before unbinding the supplier, so
-> +	 * the drvdata stays valid for the rest of the function. Any other
-> +	 * state means the supplier is not usable yet; defer and retry.
-> +	 *
-> +	 * The link is released automatically when the consumer device is
-> +	 * destroyed (DL_FLAG_AUTOREMOVE_CONSUMER), so no explicit
-> +	 * device_link_remove() is needed on the failure paths.
-> +	 */
-
-[Severity: Low]
-Two details in this comment in xpcs_rk_create() look inaccurate.
-
-include/linux/device.h describes the flag as:
-
-	/* Remove the link automatically on consumer driver unbind. */
-
-so is "released automatically when the consumer device is destroyed" the
-right wording?  The core drops such links from __device_links_no_driver() on
-consumer probe failure or driver unbind, not at device destruction.
-
-The claim that a DL_DEV_DRIVER_BOUND supplier implies DL_STATE_CONSUMER_PROBE
-only holds while the consumer is DL_DEV_PROBING:
-
-drivers/base/core.c:device_link_init_status() {
-	case DL_DEV_DRIVER_BOUND:
-		switch (consumer->links.status) {
-		case DL_DEV_PROBING:
-			link->status = DL_STATE_CONSUMER_PROBE;
-	...
-}
-
-An already-bound consumer gets DL_STATE_ACTIVE and anything else gets
-DL_STATE_AVAILABLE.  Could the comment (or the kernel-doc of the exported
-helper) state that xpcs_rk_create() must be called from the consumer's probe?
-
-> +	link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
-> +	if (!link) {
-> +		put_device(&pdev->dev);
-> +		return ERR_PTR(-EPROBE_DEFER);
-> +	}
 > +
-> +	if (READ_ONCE(link->supplier->links.status) != DL_DEV_DRIVER_BOUND) {
-> +		put_device(&pdev->dev);
-> +		return ERR_PTR(-EPROBE_DEFER);
-> +	}
-
-[Severity: Medium]
-Is it valid to dereference the pointer returned by device_link_add() here?
-DL_FLAG_STATELESS is not passed, so this is a managed link, and the
-kernel-doc above device_link_add() says:
-
- * If that flag is not set, however, the caller of this function is handing the
- * management of the link over to the driver core entirely and its return value
- * can only be used to check whether or not the link is present.
-
-No kref is taken for managed links (kref_get() only happens on the stateless
-path), so the caller owns no reference on the link object, which the core can
-free from device_link_drop_managed() -> kref_put(&link->kref,
-__device_link_del) or from device_del() -> device_links_purge().
-
-Since link->supplier is just &pdev->dev, and this function already holds a
-reference on pdev from of_find_device_by_node(), would reading
-pdev->dev.links.status instead give the same result without touching the
-link object?
-
-> +	pxpcs = platform_get_drvdata(pdev);
-> +	if (!pxpcs || !pxpcs->bus) {
-> +		put_device(&pdev->dev);
-> +		return ERR_PTR(-EPROBE_DEFER);
-> +	}
-> +
-> +	xpcs = xpcs_create_mdiodev(pxpcs->bus, (int)port);
-
-[Severity: Medium]
-This is a check on a driver-core-internal field (links.status) followed by
-use of the supplier's devm-owned data (pxpcs->bus, pxpcs->eee_mult_fact) and
-registration of an MDIO device on that bus.
-
-For the in-tree caller the window does look closed: rk_pcs_init() runs from
-stmmac_pcs_setup() in __stmmac_dvr_probe(), so the consumer is DL_DEV_PROBING
-and the new link is DL_STATE_CONSUMER_PROBE, which makes the supplier wait:
-
-drivers/base/core.c:device_links_unbind_consumers() {
-	if (status == DL_STATE_CONSUMER_PROBE) {
-		device_links_write_unlock();
-
-		wait_for_device_probe();
-		goto start;
-	}
-}
-
-But xpcs_rk_create() is exported and does not document that precondition.
-For a caller outside the consumer's probe the link would be
-DL_STATE_AVAILABLE or DL_STATE_ACTIVE, nothing would wait for it, and the
-supplier's devres could be released while pxpcs->bus is in use.  Also note
-that xpcs_rk_create_data() publishes drvdata before bus and eee_mult_fact
-exist:
-
-	pxpcs->pdev = pdev;
-
-	dev_set_drvdata(&pdev->dev, pxpcs);
-
-so the read here relies entirely on the supplier being fully bound.  Would
-it be preferable to document the probe-context requirement, or to avoid
-inspecting links.status from a driver altogether?
-
-> +EXPORT_SYMBOL_GPL(xpcs_rk_create);
-
-[Severity: Low]
-At this commit xpcs_rk_create() has no in-tree caller, and the new header
-include/linux/pcs/pcs-xpcs-rk.h declares it without a
-!CONFIG_PCS_XPCS_ROCKCHIP stub.  The caller does arrive later in the same
-series (rk_pcs_init() in drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-calls it and is installed as plat_dat->pcs_init for
-PHY_INTERFACE_MODE_SGMII), and DWMAC_ROCKCHIP does "select
-PCS_XPCS_ROCKCHIP", which forces the tristate to at least the selector's
-value, so there is no y/m link mismatch either.  Noting it only because the
-symbol is unused at this point in the series.
-
-[ ... ]
-
-> +static int xpcs_rk_system_suspend(struct device *dev)
-> +{
-> +	/*
-> +	 * Keep the PD_PIPE power domain on during system suspend.
-> +	 *
-> +	 * PD_PIPE is shared with SATA/PCIe and would be powered down by
-> +	 * genpd once all its consumers are suspended, killing the SerDes
-> +	 * and breaking MAC WoL.  Mark the XPCS as part of the wakeup path
-> +	 * so genpd keeps the domain on.  Unconditional because the XPCS
-> +	 * core has no callback to convey the MAC WoL state.
-> +	 */
-> +	device_set_wakeup_path(dev);
+> +	priv->hw->xpcs = xpcs;
 > +	return 0;
 > +}
 > +
-> +static int xpcs_rk_system_resume(struct device *dev)
+
+[ ... ]
+
+> +static struct phylink_pcs *rk_select_pcs(struct stmmac_priv *priv,
+> +					 phy_interface_t interface)
 > +{
-> +	return 0;
+> +	if (!priv->hw->xpcs)
+> +		return NULL;
+> +
+> +	return xpcs_to_phylink_pcs(priv->hw->xpcs);
 > +}
 
-[Severity: High]
-Does device_set_wakeup_path() actually keep PD_PIPE powered on RK3568?  The
-commit message states:
+[Severity: Medium]
+Does this give phylink interface modes that the RK3568 hardware can't
+run?
 
-	genpd then leaves the domain powered, because the Rockchip power
-	domain driver sets GENPD_FLAG_ACTIVE_WAKEUP on PD_PIPE, which makes
-	genpd check the wakeup path of its consumers during system suspend.
+rk_get_interfaces() still sets RGMII and RMII, because rk3568_ops now
+has both set_to_rgmii and set_to_rmii. SGMII comes from the XPCS through
+stmmac_phylink_setup():
 
-PD_PIPE is registered without active wakeup in
-drivers/pmdomain/rockchip/pm-domains.c:
+    if (pcs)
+        phy_interface_or(config->supported_interfaces,
+                         config->supported_interfaces,
+                         pcs->supported_interfaces);
 
-	[RK3568_PD_PIPE]	= DOMAIN_RK3568("pipe", BIT(8), BIT(11), false, false),
+xpcs_rk_create() uses the plain xpcs_create_mdiodev() and never narrows
+pcs.supported_interfaces. The set is therefore filled from the generic
+synopsys_xpcs_compat[] table: USXGMII, 10GKR, 25GBASER, XLGMII,
+50GBASER, LAUI, 100GBASEP, 10GBASER, SGMII, 1000BASEX and 2500BASEX.
 
-The last argument is the wakeup flag, so pd_info->active_wakeup stays false
-and GENPD_FLAG_ACTIVE_WAKEUP is never set for this domain.  genpd only
-honours the consumer wakeup path when that flag is present:
+The rockchip,rk3568-xpcs.yaml binding in this series says the hardware
+supports only 1000BASE-X, SGMII and QSGMII. The dwmac4 MAC caps include
+MAC_2500FD, so phylink keeps 2500BASE-X and USXGMII as valid choices.
 
-drivers/pmdomain/core.c:genpd_finish_suspend() {
-	if (device_awake_path(dev) && genpd_is_active_wakeup(genpd) &&
-	    !device_out_band_wakeup(dev))
-		return 0;
+rk_select_pcs() also ignores its interface argument and returns the XPCS
+for every mode. Neither the GRF nor the combphy is reprogrammed when the
+interface changes: set_to_sgmii() runs once from the DT phy-mode, and
+the combphy is fixed to PHY_TYPE_SGMII.
+
+Now take an SFP cage, or a PHY that switches host interface, such as a
+2.5G PHY moving between SGMII and 2500BASE-X. Could phylink pick
+2500BASE-X or USXGMII, and xpcs_config() then program a mode the SerDes
+and MAC clocking can't carry?
+
+The same set is also copied into lpi_interfaces for EEE.
+
+The in-tree Photonicat board uses a 1G PHY with a fixed SGMII interface,
+so it isn't affected.
+
+Could the RK3568 XPCS supported_interfaces be restricted, and
+rk_select_pcs() return the PCS only for SGMII?
+
+[ ... ]
+
+> @@ -1379,16 +1449,19 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = gmac_clk_enable(bsp_priv, true);
+> +	if (ret)
+> +		return ret;
+> +
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the direct return here
+only works if gmac_clk_enable() cleans up after itself. Does it?
+
+gmac_clk_enable() {
+    ...
+        ret = clk_bulk_prepare_enable(bsp_priv->num_clks,
+                                      bsp_priv->clks);
+        if (ret)
+            return ret;
+
+        ret = clk_prepare_enable(bsp_priv->clk_phy);
+        if (ret)
+            return ret;
+    ...
 }
 
-Without the flag, does genpd fall through to genpd_sync_power_off() and power
-PD_PIPE down, which is exactly the situation the probe comment warns about
-("The domain must be powered on before any register access, otherwise the SoC
-will trigger a synchronous external abort")?
+If clk_prepare_enable(bsp_priv->clk_phy) fails, the bulk clocks stay
+enabled and clk_enabled stays false.
 
-dev_pm_genpd_rpm_always_on() does not appear to cover the system-suspend path
-either; genpd_sync_power_off() only consults GENPD_FLAG_ALWAYS_ON:
+Every later gmac_clk_enable(bsp_priv, false) then returns early on the
+clk_enabled check. That includes the new clk_disable label and
+rk_gmac_powerdown(). Does this leak the enable counts of the bulk
+clocks?
 
-drivers/pmdomain/core.c:genpd_sync_power_off() {
-	if (!genpd_status_on(genpd) || genpd_is_always_on(genpd))
-		return;
-}
+This only applies with an integrated PHY, because clk_phy is NULL
+otherwise.
 
-If the domain is power-cycled, what restores the hardware on the way back up?
-phy_init() and phy_power_on() are called once from xpcs_rk_probe() via
-xpcs_rk_serdes_phy_poweron(), xpcs_rk_system_resume() returns 0 without
-re-initialising the SerDes or the PCS, and
-drivers/phy/rockchip/phy-rockchip-naneng-combphy.c has no dev_pm_ops at all.
-Does that leave the combphy and XPCS at power-on-reset defaults (no SerDes
-configuration, no SerDes TX clock) after resume while the driver, the xpcs
-core and phylink still assume the programmed configuration is live, and MAC
-WoL, the stated reason for the mechanism, non-functional?
+[ ... ]
+
+> @@ -1447,15 +1517,20 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+
+[ ... ]
+
+>  	ret = rk_phy_powerup(bsp_priv);
+> -	if (ret) {
+> -		gmac_clk_enable(bsp_priv, false);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto clk_disable;
+>  
+>  	pm_runtime_get_sync(dev);
+>  
+> @@ -1463,6 +1538,10 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  		bsp_priv->ops->integrated_phy_powerup(bsp_priv);
+>  
+>  	return 0;
+> +
+> +clk_disable:
+> +	gmac_clk_enable(bsp_priv, false);
+> +	return ret;
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue, but rk_gmac_resume() throws away the error
+that this path returns:
+
+    if (!device_may_wakeup(dev))
+        rk_gmac_powerup(bsp_priv);
+
+    return 0;
+
+On the non-WoL resume path, a failure in rk_phy_powerup() takes the
+clk_disable label, gates the GMAC clocks and returns an error. Nothing
+sees that error.
+
+stmmac_resume() checks the plat->resume return value, but gets 0 here.
+Can it then go on to MDIO and MAC/DMA setup with pclk_mac and aclk_mac
+disabled?
+
+[ ... ]
+
+> @@ -1602,6 +1681,17 @@ static int rk_gmac_probe(struct platform_device *pdev)
+>  	plat_dat->suspend = rk_gmac_suspend;
+>  	plat_dat->resume = rk_gmac_resume;
+>  
+> +	if (plat_dat->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+> +		/* SGMII clock always runs at 125 MHz */
+> +		plat_dat->set_clk_tx_rate = NULL;
+> +
+> +		/* SGMII requires a PCS */
+> +		plat_dat->default_an_inband = true;
+
+[Severity: Medium]
+Does the commit message's explanation of the in-band vs out-of-band
+problem match the code? It says:
+
+    Out-of-band mode does not work because the MAC would need to change
+    the clock rate to 125/12.5/1.25 MHz for 1000/100/10 Mbps
+    respectively, and the clock is fixed.
+
+The clk_tx_i comment in include/linux/stmmac.h and
+stmmac_set_clk_tx_rate() both give 125/25/2.5 MHz for 1000/100/10.
+
+In stmmac_mac_link_up(), the negotiation mode is passed only to
+plat->fix_mac_speed, which dwmac-rk doesn't set. The MAC speed
+programming and the now-NULL set_clk_tx_rate call are the same in both
+modes. The MAC therefore sees the same fixed 125 MHz clock whether
+in-band or out-of-band is used.
+
+The difference between the modes seems to be on the XPCS side: AN in
+xpcs_config_aneg_c37_sgmii(), versus the fixed BMCR write in
+xpcs_link_up_sgmii_1000basex():
+
+    if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
+        return;
+    ...
+    ret = xpcs_write(xpcs, MDIO_MMD_VEND2, MII_BMCR,
+                     mii_bmcr_encode_fixed(speed, duplex));
+
+The commit message also says that fixed-link nodes, and PHYs without
+in-band support, can still end up in out-of-band SGMII. TX then works
+but RX fails at 10/100.
+
+xpcs_inband_caps() returns this for SGMII:
+
+    case DW_AN_C37_SGMII:
+    case DW_AN_C37_1000BASEX:
+        return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
+
+So phylink will accept out-of-band mode, and the glue neither rejects
+nor reports it. Should rk_gmac_probe() refuse, or at least warn about, a
+fixed-link or out-of-band SGMII setup, rather than bring the link up
+with RX not working?
+
+> +		plat_dat->pcs_init = rk_pcs_init;
+> +		plat_dat->pcs_exit = rk_pcs_exit;
+> +		plat_dat->select_pcs = rk_select_pcs;
+> +	}
+> +
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922200336.2201212-1-coiaprant%40gmail.com
