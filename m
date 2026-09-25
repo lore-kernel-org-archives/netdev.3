@@ -1,86 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B764CC600;
-	Fri, 25 Sep 2026 15:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB16C4BF946;
+	Fri, 25 Sep 2026 15:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790349475; cv=none; b=T8xTUeDIjr6Zhme2XwHCqApeZcblDys/C8CNlyN+fM8xb12jNEKHi9s2R0gBTB3GrLEmZjGpwPeNDNFVYBkOOCJ+mxHtA8FyVVIrp+3um7Ui9Oh/nXZ966RAPz9c/4GQqDPRPFMvpCdyT21jCqwP8Aya4PDnVET+8of3ngYxoCQ=
+	t=1790349516; cv=none; b=kjJg5vZk8ee9UArzuiZ7LIy4l0wSQheN4SsabGkj9+1TlN8XKzkilTvXXgRCdNqxBom+zbNLOTiUcBavWePEDBoLonlfIkjcVXBNtqq7joX44BurlPEKubICjuIoF04V6ULxCJgDtlp4uWc61hsNmf3Iqaf63E/EtRo70S+G7qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790349475; c=relaxed/simple;
-	bh=r4jHvC8R1qGwo2iO+ASqWnDSlAhMX54J1FPDrWj5w1U=;
+	s=arc-20240116; t=1790349516; c=relaxed/simple;
+	bh=IH8ov+Ny4Yl3CxsDzA5zFMquww5cDFHY9xZ0fLM7iog=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U0e2siTCQ1Kt2ksybdjWAPZVGJl6IzRlF/9ngTiUCNw7RKlHuBedMoIzmyBNEwUtsPa2vCqVBh7kb6rBV57ugmFWh2u3IAZyEEdh4VME/5SX4tTRRXrM3OtGpNOH+6l1P+IWWNN5PaG5dybGSCjoKs6982u26jlJhbM1XjdivUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ycp3L/Y3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=j81BpkICWTE6v6EdQttjlT0FkvwB+G9d7Zp1+D/4Eyo8GEluQL0PtesGzwZ9OtkA+qPMRXwiER21KlkTBTcD+AeUyXu/mHldwCOwY/PobJbVMWOdNASfGrsIqBZzlB7T3x8ZfLJTjUojULswTn/qQK1TtV582HE7teHNFBiNAPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTSdc2s1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ycp3L/Y3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TPq2jWBG+cE1Qwr/PmJfAp3LKpTg+6qSkEgMYh+YGc0=; b=ycp3L/Y3vWB3aD5bsRmZ5a0boe
-	KKL26JRrRMZ9gXVAdzCPSHWQMzW8ZOOGWruL+clZkU2YLNEi86sIILtCe+j+Yl+jfMJAhVkNAWklb
-	Dfk7Vbb6dRyulZzgfTfDBVAzIQt69VSnhe9IkBuhlNmYomlmZM3Z5djjC1hLcpHamxZ8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xA7g5-007ExF-MU; Fri, 25 Sep 2026 17:17:33 +0200
-Date: Fri, 25 Sep 2026 17:17:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
- internal CPU PHYs for SmartSpeed
-Message-ID: <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
- <20260923215858.1653-5-yongzhao.derek@gmail.com>
- <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
- <20260924234814.1734-1-yongzhao.derek@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTSdc2s1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFD11F000FF;
+	Fri, 25 Sep 2026 15:18:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790349496;
+	bh=/Oqj7B1TcaON877H4SXvrAAE63yKPFQybY15jqtw0w0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DTSdc2s1DCtiTNLgefTpjk1yzNz422Yg5tTaQTrljnQGIQr7tHw+IE2y2IXiOvzGc
+	 pnJ+ziSlkScuozdyKCRnNfEumWNuppLZYJxVY89fM96yAcF9W32nLhmwRbWMO3h+1g
+	 cgTNP9A2JlNrpiVxlW2cUWitmwBRXjaLZpuJW4KX5ctIfbrLWnYSPt/nZzZtrQjgir
+	 icic68KAWBT3fh+iYn66MexUD2hkjC1EqsYaod0sDZ1zozJDUkT29ksAUYOwx/Toxb
+	 hq1A8yNbcTQK1UWLlIQRhA083X0ZRJHoSkwY0BALIL2H+vkY0rFEJdZBY7DEPekwC1
+	 eMWD3ciNo2g9w==
+Date: Fri, 25 Sep 2026 17:18:00 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+Cc: Juha-Matti Tilli <juha-matti.tilli@iki.fi>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, Bjorn Andersson <andersson@kernel.org>, 
+	Chris Lew <christopher.lew@oss.qualcomm.com>, Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, 
+	Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Subject: Re: [PATCH v2 2/4] net: qrtr: Assign unique node id for MHI endpoints
+Message-ID: <pnt3alevvps5rx2av3r72j6xlky4wlrvzedfs4apnsnpq7cu7x@5begxgw5vsju>
+References: <20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com>
+ <20260921-qrtr-multi-ep-v2-2-27dd80d841a0@oss.qualcomm.com>
+ <a16d507e-17f7-4074-8817-4b8da3a71c3b@oss.qualcomm.com>
+ <8ed398ba-2ebe-488a-a213-8ca7ecbe861d@app.fastmail.com>
+ <CANyhwx0hZJC6xXaSC2g4GFgUOp5n_KN4tdXksW+s8Mk_+7xEAA@mail.gmail.com>
+ <ayyrvpxnxonroz6kafehepplhltnzgopgt6pn5fnpdmft6rbxm@a5sps2dnso47>
+ <CANyhwx1EG=2FyBm150wrKpj=kQ1066iwZWndx=ZL3BKNoZUhVA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260924234814.1734-1-yongzhao.derek@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANyhwx1EG=2FyBm150wrKpj=kQ1066iwZWndx=ZL3BKNoZUhVA@mail.gmail.com>
 
-> I don't know whether downshift is broken in general or only in
-> switch-integrated PHYs. My only data point is the RA74 CPU link
-> failure, and I have no downshift results from user ports or discrete
-> at803x PHYs.
+On Fri, Sep 25, 2026 at 01:46:34PM +0100, Youssef Samir wrote:
+> On Thu, Sep 24, 2026 at 4:58 PM Manivannan Sadhasivam <mani@kernel.org> wrote:
+> >
+> > On Wed, Sep 23, 2026 at 04:03:38PM +0100, Youssef Samir wrote:
+> > > On Tue, Sep 22, 2026 at 6:24 PM Juha-Matti Tilli
+> > > <juha-matti.tilli@iki.fi> wrote:
+> > > >
+> > > > On Tue, Sep 22, 2026, at 20:14, Youssef Samir wrote:
+> > > > > On 9/21/2026 12:23 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> > > > > > +
+> > > The chance of collision is slim, but still not impossible.
+> >
+> > When you mean collision, do you mean node id collision due to bridged nodes?
+> > Because, even if the directly connected QAIC devices use 32bit node ids, the
+> > collision won't affect the functionality.
+> As in ep_nid of one device matching the nid of another device. In MHI,
+> that shouldn't
+> really matter since this patch moves away from using QRTR_EP_NID_AUTO in node
+> assignment, but as you mentioned below, it could clash with TUN and SMD EPs that
+> are already registered with their ep_nid.
 
-It is pretty easy to test, if you have a spare Ethernet cable you can
-sacrifice.
+Ok, this clarifies. But as I mentioned before, there is no current
+usecase/requirement to support attaching identical SMD/TUN devices. When the
+requirement arises, we can extend this node id assignment scheme to global or
+some other method.
 
-https://en.wikipedia.org/wiki/Ethernet_over_twisted_pair
+- Mani
 
-100Mbps needs pins 1-4, 5-8 are not used. So you can either cover some
-of those pins with something, maybe nail varnish, or take some of the
-outer cover off the cable to expose the wires, and if it follows the
-colour scheme describe cut say the brown cable.
-
-But this is testing the wrong thing. This is testing downshift
-works. What you are actually interested in is downshift happening when
-it should not....
-
-So take a closer look at the user ports. phylib should report when a
-downshift occurs:
-
-https://elixir.bootlin.com/linux/v7.2.7/source/drivers/net/phy/phy-core.c#L359
-
-phydev->advertising should contain what the user configured, even if
-the hardware has cleared the 1G advertisement. So it should trigger.
-
-	Andrew
+-- 
+மணிவண்ணன் சதாசிவம்
