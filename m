@@ -1,96 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f26.google.com (mail-pj2-f26.google.com [74.125.227.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE8626FA60;
-	Fri, 25 Sep 2026 01:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C33345731
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 01:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790298042; cv=none; b=cwaphaWSYLaXeYWRETtqc3v7LyIpo7BhuMJcWLOsu2LwhLwWxS/wmbVB3JjXOFsUBBp2sYudgEP2lYCyrH5j0NtTEfqEtahqWEohmynJ4/dTLaUm0rsfyQIkOhree0Ra0RcGgDHFCewW+1IEFTgpI8aSq68dyzNlCP0xtY9ZfHg=
+	t=1790298475; cv=none; b=APaYAUKah/CgTgIKo96KmjnBlDMIgwbxCx0N5w+T8VWnisMKYCuSH+Esvejqhqfhk0axgP1jm7G/B25Sxmx/+zm+X3oabF/Wufrpz8WoBouOP79BBY7NZOEkrLAyV8RSM5M79KNLg03oQtxde0SPnt6+l3kfXhUCFIW52tdqaLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790298042; c=relaxed/simple;
-	bh=n2M63cCDwEgRsvfj0eKZ5Gek1qU2HHR0yQ5PqQ9u3mg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7aFfOw8W4krg6/vimSdWfwzMO8hV89GF8hrc0pReawJXNJlRO+O5QmOzZeK7u9LjoEgHInkI1O+E75CxpGV8R+JrKKO6PoTfxjKKQ43eMDGowwO7EpDapqk7N1aktTo5ztBZ5hXCvC7qqplXIr1DigUZNKaoF76Mj9BtBLIksk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAnXNKC6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790298475; c=relaxed/simple;
+	bh=8UABYydPGylXofY0HIINAqZSkfiYDcvxV/Qu5GNl+RA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=sfMwf8Y89W7R4KBob6dC4kMBUViCniX4pht7RCXHG9hnooJxAadbGDj0S3p20oDnJ/ZmKB9yPC1haQIrjdfo4Eaf5ppVyOO2FIe5TeTjYVZ7k4EZmf3+aMCKuuslLa3p0z5UMbxaKpda2X5oEvO6IVFohJ8UDkhfHAzH6wiTwdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHguzDn4; arc=none smtp.client-ip=74.125.227.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAnXNKC6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4461F00893;
-	Fri, 25 Sep 2026 01:00:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790298040;
-	bh=zGt/QJuXYmz1FRSRmOhHZebQauxVGaioH05IWjWbi8s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XAnXNKC6Zq14Zt9SIfzI3L/LSHhEAIyJeHjMuS1eXzEsLIzj8XfD7kokWyb1Lmcb6
-	 3AWiUliSPoDFnB0+Ua835jlZLlOKe25jr/hdD6kjvn0KrmvRmbTFjndr7vCr25B9ru
-	 n0QUHaMAYbygcI0Gzk8d36sT0tQtZSLIWfQbYKW2LNjMRV24rR5m+FtW4DeHqxH9ur
-	 b1KXStABsK2Jd94K2FSpZGdf+6JtIYjxEll9DE369uKn70zH9xmF0VmuWdE65t/6Va
-	 BDqwwU9TwG8JflV1zb+zOe5ef9gORRPElIM38D+9zZo84DKypA5Q7eD8pgdPujiTuH
-	 KXKExAE2P2f0A==
-Date: Thu, 24 Sep 2026 18:00:40 -0700
-From: Kees Cook <kees@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 2/7] mm/slab: Give bucket caches the alignment of the
- caches they mirror
-Message-ID: <202609241759.28EC6970@keescook>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-2-kees@kernel.org>
- <arEdcaJz4i5HP26a@thinkstation>
- <202609211620.342AAA61@keescook>
- <arViR2Miz61-3fV4@thinkstation>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHguzDn4"
+Received: by mail-pj2-f26.google.com with SMTP id d9443c01a7336-2d8fb334e72so1181575ad.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:07:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790298469; x=1790903269; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gJ9TQ6nmLCn6X5u9an9cYs7PHJYbmVzNFZPSWypRc2Y=;
+        b=mHguzDn4DKkpqZ4zCsoVStNpKDtmB2hvEt5UHeY5bQWcNfPQnVVHjofm8pHD6LIo2D
+         gbA11tRzPaFPBrVteNBZe1lcQRYBWkpSRg6Gw2kaQ8HKgdsj+QJhgt14ofsbhsU+f42Z
+         wlTU0qhdqxQrzPn9q4BpNFZJv0erlGzmfNyrNguU5NdOPUNtFmMoynTi4TvI3UOiYBgF
+         +NXpuU09EX/VRl6qNpCLBgvcN7/Ayc8XWYWZskXx+MvQwU2USLzbOeRvyTe1IlC8giZV
+         NVml4sNDmRcu0qveEVbIcKTxVRe6Z0OdSSoULE8TIAaF0nqyMNViHBk2FVK/w7Z3fyl7
+         YpQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790298469; x=1790903269;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gJ9TQ6nmLCn6X5u9an9cYs7PHJYbmVzNFZPSWypRc2Y=;
+        b=FQF/hF8F4AsSSX8mYHuTOg/wF9LpUbqJQyVhZ7M70QAGywTVYAjA9I0srYAh0Hf/tu
+         D/4HiZ1IXQFDIJot1vsfCUozOT7a92N/x2vgDfxhBc1pMwisa4rnuLQ3QZR2m0WfZxB4
+         8gkdJYr8tB3C1Nj1tPzBUTit1VeaRxSXZEPNZpDUJH5573DwCKQSzKfE/FdlImnZxMOg
+         N9LvW4ewlFQmcnrYwrfLvjLvSzNyw9ySKa1wAXbiBY8i1fqnRez9IV9TOXjaG4G+An7l
+         wINKALKpqWf3kW4QWAuvwbniMe1qFh1Xxdl1jAUJ6K01fme/84ZNZVoMZVOCrSo+6Ouh
+         k88w==
+X-Gm-Message-State: AFuF++kNLST+Y5AVZHdNfWq5GeFHrwIPmE6wx9jpuUDkIA8j75KKPFoT
+	3LYBcsrPSMFmMJkaeBI3NYWhyMxT2nIIDGOY9mpq18D2ZM6gbHttahue
+X-Gm-Gg: AYBFou3kG6E0kDAY1eHNKIw5VEjdYqeyAvPGKV0avePKTu6qXJzj+vJk47dAcufnt3L
+	MWOON+G3/+p4Wlxgp1vDbfPOFW2i2TJlcoCvkt41of35j/OumCxrUJoW1lMgFLzoMbUbkS+Bp2W
+	TTW3woRhpPF+Rqb3UC1JOYkO/FhfByuySjYotVHuvD19ALIznyOWxqEgg7AangyGIKuhnkUYOUV
+	9RwCnmiC3N8YnQupLOJv2zTfOG2XtqDtJKRWHmT3Mp7Nh4gg/pdoLzRdYx8XxvOQGWakeCKacq3
+	2aLVjxtG8pl0/UjaRphCJ81Kd0BdzHeGF9Q/EYsNucxcG0NKeLjAS2IZZfckASgt49LV3M4l6Jf
+	SJ25NeeMRH2mC/2KizP2HvCyzG9wP+qj+HnTShvCQsEWGS4PVo3BWQjYES0Y7IqBdsSquN5J5et
+	+bmaAFjwKi1rzO92JsxH9PUpBY63t6EYh/+ONoaLU8+uWWoNf4U23oJ3OkGizPY1QimLn6sS0A0
+	uLYzbEFqgXp8857kuzLqNgOxM49WaJm4+vTdPI/rS0HyX8hkzo6weRXqYnXxljlwVqKGbX/bWn4
+	Mx6CWALNf3EDyFw=
+X-Received: by 2002:a17:903:19c8:b0:2db:539c:b7c7 with SMTP id d9443c01a7336-2df7da7efd5mr36387595ad.20.1790298468891;
+        Thu, 24 Sep 2026 18:07:48 -0700 (PDT)
+Received: from localhost ([153.61.198.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913e030dsm2589525ad.16.2026.09.24.18.07.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 18:07:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arViR2Miz61-3fV4@thinkstation>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 01:07:47 +0000
+Message-Id: <DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com>
+Cc: <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Stanislav Fomichev" <sdf@fomichev.me>,
+ <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
+ <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
+ Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
+ <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Sitnicki" <jakub@cloudflare.com>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com>
+In-Reply-To: <87fqyypp67.fsf@cloudflare.com>
 
-On Thu, Sep 24, 2026 at 07:22:58PM +0100, Harry Yoo wrote:
-> On Mon, Sep 21, 2026 at 04:25:25PM -0700, Kees Cook wrote:
-> > On Mon, Sep 21, 2026 at 02:17:21PM +0100, Harry Yoo wrote:
-> > > On Mon, Sep 21, 2026 at 12:58:13AM -0700, Kees Cook wrote:
-> > > >  			if (WARN_ON(!cache_name))
-> > > >  				goto fail;
-> > > >  			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
-> > > > -					0, flags, cache_useroffset,
-> > > > +					kmalloc_caches[KMALLOC_NORMAL][idx]->align,
-> > > > +					flags, cache_useroffset,
-> > > >  					cache_usersize, ctor);
-> > > >  			kfree(cache_name);
-> > > >  			if (WARN_ON(!(*b)[aligned_idx]))
-> > 
-> > It looks "obviously correct", but I probably failed to correctly
-> > describe it. I'm happy to do whatever here.
-> 
-> That is correct, but is there any reason why kmem_buckets users should
-> not specify their own alignment requirement and inherit the alignment
-> from kmalloc?
-> 
-> For DMA yeah it might be confusing for every user to figure out that
-> the alignment should be __kmalloc_minalign(), but otherwise there isn't
-> really a good enough reason to inherit the alignment from kmalloc, no?
+On Thu Sep 24, 2026 at 4:52 PM UTC, Jakub Sitnicki wrote:
+> Hi Daniel,
+>
+> On Wed, Sep 23, 2026 at 01:46 PM -04, Daniel Zahka wrote:
+>> On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
+>>> skb_scrub_packet() drops all skb extensions unconditionally via
+>>> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rc=
+v,
+>>> etc.) and cross-netns forwarding (dev_forward_skb).
+>>>
+>>> This makes it impossible for a BPF program to pass metadata via bpf_skb=
+_ext
+>>> through a tunnel or across a netns boundary. The extension is always lo=
+st
+>>> at the scrub point.
+>>>
+>>> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
+>>> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
+>>> extension slab is shared with clones: deleting an extension only clears=
+ the
+>>> per-skb active_extensions bit, and the shared slab payload is released
+>>> lazily by __skb_ext_put() once the last reference goes away.
+>>>
+>>> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scr=
+ub()
+>>> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so=
+ the
+>>> BPF metadata survives queueing onto a UDP socket receive queue and stay=
+s
+>>> readable there (e.g. for a sockmap verdict program). Only mark the skb
+>>> stateless when no extension survives the scrub. Otherwise skb_consume_u=
+dp()
+>>> would take the __consume_stateless_skb() fast path, which skips
+>>> skb_release_head_state(), and leak the extension slab.
+>>>
+>>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+>>> ---
+>>
+>> Hello Jakub,
+>> What are your current plans for this series? This commit solves the same
+>> problem I have with wanting to preserve the PSP skb extension across
+>> netns forwarding.
+>
+> I've implemented Alexei's idea of skb-lifecycle tracepoints that run
+> only when an skb is marked/traced. Currently putting final touches on it
+> before sending it out for the first round of feedback. You can take
+> sneak peek at it on GH [1] to see if it meets your needs.
+>
+> The CPU overhead is lower compared to the skb extension, at least in my
+> local runs, and the kernel changes are simpler, so it seems like a win
+> overall:
+>
+> |                  | gated skb tps    | bpf skb ext      |
+> |------------------|------------------|------------------|
+> | **busy**         | **+5.44 =C2=B1 3.16** | **+8.01 =C2=B1 4.75** |
+> | sys              | +2.62 =C2=B1 2.06     | +3.67 =C2=B1 2.76     |
+> | soft             | +2.89 =C2=B1 1.43     | +3.83 =C2=B1 2.10     |
+> | ns/pkt @146k pps | **+=E2=89=88 373**       | **+=E2=89=88 549**       =
+|
+>
+> I'll be giving an update on it at LPC [1], if you're attending, and of
+> course will keep you posted here on the ML.
 
-Oh, so you mean explicitly add an alignment arg to kmem_buckets_create()?
-And perhaps if _that_ one is "0" we can fallback to whatever
-kmalloc_caches uses?
+Well, the numbers speak for themselves. I think :)
 
--- 
-Kees Cook
