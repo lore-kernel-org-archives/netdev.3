@@ -1,63 +1,63 @@
 Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FACE5013B6
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 23:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BB2501F49
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 23:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790377933; cv=none; b=KTv3k7EfoVeevm0aiqPTbYwFbYYKY7g58HVHqND4MOMrrILAm3s+0WwY4AMyt2Zw+1vd2J9IddHP2mZNRrV5EFSlPkz47DDLtYKa7FmJKanYnBxG8TDwP0MgBhUtNPYlcqlpTW8SBx4oWRxmTsLhS20OwwESeGFPDcjrFzoVjsQ=
+	t=1790377944; cv=none; b=Ij7LhOZBx0/U1gqAu1i2DLh4bGnzSKIR75ek4TuvWiERaUu5GMXd5ie0A8Stp3uR4gaVVymj+7WivkXBME7yejIMx7hTv8LdgJA9Xc1zTMdvL/ZDTp8Lemi1flscs6Mrj4oBPHMdL4TMu3hufvg2yilQ5ZkWmWXBLVijDZpQFuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790377933; c=relaxed/simple;
-	bh=ybLOr3FDsnQoXtU2ro+MWcF8GTD8LhmOFxqQajcdAWU=;
+	s=arc-20240116; t=1790377944; c=relaxed/simple;
+	bh=RQRQoR0pSyLYnvN7I6DP5/4/EnCOa5B6Ns3TUwsV2hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvZA05bHMdcV9AtQMEf5sdkm/9U6RFD+bfEYIkag2bAP6eeyJwWxsqsd+7C+ZXWXf+/XB9rpt1jOL0FbLvl9NsGfnlhs3F+Gw2jIVNMAvyry6oN5iaJaPMXATPRrXeTrCoityhOqGl/HzLrWHCRRtEGCFHOTIn6ktmNAgeAWBXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=szy08CW6; arc=none smtp.client-ip=74.125.229.205
+	 MIME-Version; b=Rd7oko5oNepvXEmlKvXwUSHHyA7FaEutvuV4rzWZEBoyeS71isPp07E8syyMMfu4CTX+ISvQGIDl0XTnq0cMsJgzBbw/jEfC9wRXiEe88cyVLpet9X9NvrSPQFN3LFDMaACJ9HOLTXa8Z7RcSnDharqQeWjTOhvnzRKc8ZB6g2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UX1xiAq+; arc=none smtp.client-ip=74.125.229.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="szy08CW6"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8ecca9f3fso706773e87.2
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 16:12:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UX1xiAq+"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8ef951112so153448e87.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 16:12:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790377930; x=1790982730; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790377941; x=1790982741; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=idOZhCq94Yr7EO3Y+X4S5dviexgS4OYmWui9ECgBH9A=;
-        b=szy08CW6yKeB21967SGp/T+RSjHck1bPczC+mzEM/MwikhpcW8cKgEzMTpAO0h6Z9e
-         qVFzwWTq2Awyn/WxKXTuCZY15QtfC4BuuiL84yXoHWokAf26UUFDBzMWKh+HB3+rohO9
-         nbjkefucyc0XqfJdEUCqG9Q/xT+xA2wrzSdJ7A9C5iSeyKHrVn8Ly/xn3GE798hbOXX9
-         a1LLmGFHszjk5mRUg9hZdWaves7fkjJob2darHEpirhh+kFlSONWg6CiNgZPnUiDiBSh
-         oV33KCOPRLo+LJFy6tSPpoSDIJfTgQ0N06ZdtBYibBJHFJq+qhebcpb4hjp0J/pfdMW+
-         GO9g==
+        bh=z7paBK+MgfgpKNh9WkCQ2hkQ07FwTdlvuAPDciphvtw=;
+        b=UX1xiAq+z2hZ3LMTD1sg0IU8AX+bHTJF9M9WS9UbbktQfeCkRx3210Rr1/t+BgUl4m
+         WxnPDYyaXe6eSBKESdTOHmweuPsL4U9W/SqdRDyBwTZEDAWsWyv1YNEkhN4PB7ZosUiI
+         wPVAMDioRpqrZ2ja/B5am+rBNWIBF8MgBJOa2sH55mWi4dd7i9Dv/MHruDWguubC6LzS
+         2FIz1NXGPvv5RfSbymw/bs+soGUDGN0+3a9z9SP0kIbTFcJeo/QQvBSdDb+COyiSP4nc
+         2VOlEViBBYFTgCwDDfaXSgkW1wVCPsYQ3iD6KhajSLfsObAUaBYabgTEVUgJF+CDec27
+         xEvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790377930; x=1790982730;
+        d=1e100.net; s=20260707; t=1790377941; x=1790982741;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=idOZhCq94Yr7EO3Y+X4S5dviexgS4OYmWui9ECgBH9A=;
-        b=bvJtPqGOXUzcu4roh6clcts13csEfEwlnt0N1RN2XCKofsPsi4lcUgj9sy3yZkPioC
-         0ErEcJUe4+EWgE/Q3jPzcEpwobnxpRDxdImWMP3Cc/bvF+IecYkKSBFp4YqEDGf/MjC3
-         yMkhroNlJtFSiJHOzc7JEiffMeItltYWSfgy0L7R6ioj4PUW/dzyMNCAFiIYzvWuRKPj
-         XqF6Q+kqVKTJsUJyz2HaRGObdGuIQaB/MdAla2J04w3CUyibsuecJwLJkLw99NrjIo2L
-         QZ2UcEtfhx4jjYLj0VmrPJyvAFCU7rXX1TtP0mkyVLbRwVCQh9B9qYHsyQhr1o9FV7UM
-         5eWQ==
-X-Gm-Message-State: AFuF++lpkr/+KrtrUjojRZGIRj0QJS8ha22cqeAp310K5dju7LxcLK/5
-	D58pONHmUKB1I/ko8plvxkb125ORrGTVr/druYvnsMH62xTXI2jhkO7R
-X-Gm-Gg: AYBFou0I+cF14AY2EediGEE8CHhiHbLBZlzc4HsmvAqTJkWavIRoL7lxeqZRXK9CJKD
-	3idM771F5ZaH/4lf3lvXi4a0y5MXaL5AgerSgs4VgNbSzY7vsnkRFP/b9hbz3gQfaWB+BYbYOr3
-	uWSZD4KCd4SBb9qBc+zSLwFV1ZFnBHIWBwNVCCpc8Sr+tP+neQtHuV2kl5iJQn/BZBolByIPF7q
-	3tTLe3Xe6qLM3VKhh4F4FXsAxY0Nr14Qz2bTpCbRlQjhHPOe3Y/NKq/JbmXCGlDU9VZu5c1us9o
-	yf9Wmz2M2EAFeGUngRSFjYPnJs9zWmDnxQyyUWNFIUcy40pHxFUmlJdRYOxr/brILTvrZd+92jK
-	dsvi2wx6ZPa+i9QXWgk2z9l9bpbazo88IRCkvF3ljPuRfzcgQJxdannIw0ABhRPsdDAz0GRYz26
-	KCsfMvzzmq7GP5Bvx3U7bAzM5R6lXztzPVOdNJXsNJA3NO8SnAlWb0VPadqBunPpMnoh7CR/tzY
-	RnajCdHeRZYjoVMaNTtrX9u+7GeCoc3pKuLiORlEw==
-X-Received: by 2002:a05:6512:12cc:b0:5b8:e716:64e3 with SMTP id 2adb3069b0e04-5b8e716662cmr1435725e87.31.1790377930246;
-        Fri, 25 Sep 2026 16:12:10 -0700 (PDT)
+        bh=z7paBK+MgfgpKNh9WkCQ2hkQ07FwTdlvuAPDciphvtw=;
+        b=uwuiJu2X6z9O959TLcuAz8El6VN5wGA7M4RLTHOvnugxMMsgAk5KySF80FCUr9NF1B
+         o5XpzuSKLcToE8P5SqS7S0SVZ/Dr9m50lFrsV+mzYsH0rz0uO5g1+5WnBwWYKltZZJ0k
+         mGGOCUz9nbpJO8czDDbm9nF383f2+tr7Hkk3/AlLekR7cB2UqkVdLklb8mqw61ucgmeJ
+         FY5LBZOBHm4LnaLjL7DZ+qoSr5qYTRYoBrWC6E4wGlWFP4T6w4AtdTQoMk8bBxcCAktB
+         +4Pj2/wopR2vcQ/RUBoNFPTUuriSBnqYVEXvin6CaI968t0kwVA1O0AAUjF3fh++0eLc
+         l/3g==
+X-Gm-Message-State: AFuF++kDP85b1bt8XoCXh2y4DLvKKn/01nvcvw+IsUI6iq1i5dxrcVsC
+	j9fXYfLstqgZn4Xo79UAtfZeBBEepubNc/NPF7Tp8KjHv/TFY/i76wBc+gG+wuWeqIk=
+X-Gm-Gg: AYBFou3UZcSCDrxBjg84r1s5dqBcJJu9O6BIHG1G/t8NjbLJh4h0rGphaI/Y3VkwpZH
+	R1GC5RV9pzPDSqCEBaoOvUNvWE3oeuy6XvNJawQs4DmGmeQ6G9Xpi/XpV9yD+ri9t2p32UIMA9N
+	MM60e0whUFjSgvKG5BudsibrukbZzh1B6AdC7vVAbDOUhZ7Ord/vI23HJSCFUJyz1ob4NJ0VixM
+	ui9I0VqB9qybjvF0pIdo94TRTeULWs32Gw8I9YPPtpL6/rS8d/GIg/EcHGXtgl4oUwtKtlVLcrb
+	RXQHaVgF4qQjHtEUJVrQUEiO6kMDHpdXmrGZQlOvdfnljOUDSYSdeS7EXTjHvQP/uIoGjwnmFwp
+	SussexyFxGaGfY6JDdo3jbVfLPGC4weJdG2bwqjK+/4iQ2taMF0DgMqw5Bqp4Z2QGt9fJNf6D+E
+	InE+8FHjw5cAJVj+bbmOiWD6zEeVzkY5pGX3X5FN+o98nyssXzJKLvBSGDCmrX4PIII6BGTakeo
+	mUkNMTK24vE9QT9Xct7IwLbETV0ChjFLcJwSp/JTg==
+X-Received: by 2002:a05:6512:3c89:b0:5b5:e0dd:1c6c with SMTP id 2adb3069b0e04-5b8df06a153mr2754665e87.4.1790377940946;
+        Fri, 25 Sep 2026 16:12:20 -0700 (PDT)
 Received: from dau-home-pc.. ([94.28.220.48])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6af1375sm872665e87.33.2026.09.25.16.12.09
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6afb29bsm894605e87.44.2026.09.25.16.12.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 16:12:09 -0700 (PDT)
+        Fri, 25 Sep 2026 16:12:20 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: Ido Schimmel <idosch@nvidia.com>
 Cc: netdev@vger.kernel.org,
@@ -68,12 +68,12 @@ Cc: netdev@vger.kernel.org,
 	David Ahern <dsahern@kernel.org>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 03/10] gre: make gre_parse_header() report a drop reason
-Date: Sat, 26 Sep 2026 02:12:05 +0300
-Message-ID: <20260925231207.542162-1-littlesmilingcloud@gmail.com>
+Subject: Re: [PATCH net-next v4 04/10] ip_tunnel: add __iptunnel_pull_header_reason()
+Date: Sat, 26 Sep 2026 02:12:15 +0300
+Message-ID: <20260925231216.542209-1-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260923145931.GA2859441@shredder>
-References: <20260922221507.3268127-1-littlesmilingcloud@gmail.com> <20260922221507.3268127-4-littlesmilingcloud@gmail.com> <20260923145931.GA2859441@shredder>
+In-Reply-To: <20260923154114.GA2880695@shredder>
+References: <20260922221507.3268127-1-littlesmilingcloud@gmail.com> <20260922221507.3268127-5-littlesmilingcloud@gmail.com> <20260923154114.GA2880695@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,27 +82,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 23, 2026 at 05:59:31PM +0300, Ido Schimmel wrote:
-> On Wed, Sep 23, 2026 at 01:15:00AM +0300, Anton Danilov wrote:
-> >  	if (unlikely(!pskb_may_pull(skb, nhs + sizeof(struct gre_base_hdr))))
-> > -		return -EINVAL;
-> > +		return SKB_DROP_REASON_HDR_TRUNC;
->
-> Please use pskb_may_pull_reason() as is done throughout the kernel.
-> AFAICT, there's only one user of HDR_TRUNC (in tun) and it should also
-> be converted to pskb_may_pull_reason() so that we could remove
-> HDR_TRUNC. Can you send a patch?
-
-Sure, I will send it separately. It does not depend on this series, as
-v5 will no longer use HDR_TRUNC.
+On Wed, Sep 23, 2026 at 06:41:14PM +0300, Ido Schimmel wrote:
+> Either append patches to this series or as a follow-up, after this
+> series the only caller of __iptunnel_pull_header() other than
+> iptunnel_pull_header() is the VXLAN driver and it should be converted to
+> report the actual drop reason instead of NOMEM:
 
 ...
 
-> > -	if (ver >= GREPROTO_MAX)
-> > +	if (ver >= GREPROTO_MAX) {
-> > +		reason = SKB_DROP_REASON_UNHANDLED_PROTO;
->
-> This should be TUNNEL_INVALID_HDR to be consistent with the hunk above.
+> Then remove __iptunnel_pull_header():
 
-Agreed, will change in v5.
+...
+
+> +static inline bool iptunnel_pull_header(struct sk_buff *skb, int hdr_len,
+> +					__be16 inner_proto, bool xnet)
+
+...
+
+Thanks, I will add both changes to v5.
+
+One question before I send it: is there a reason to prefer bool here?
+All the callers only test the result for failure, so bool works for
+them, but coding-style.rst (section 16) says that a function whose name
+is an action should return an error-code integer. I can keep the int
+return, as it is in net-next now, or go with bool as in your diff,
+whichever you prefer.
 
