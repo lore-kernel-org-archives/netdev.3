@@ -1,136 +1,122 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B312B4F648F
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 21:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC24F7976
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 21:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790370130; cv=none; b=UDHK4yGEI7S3tf0OZe+uhd3cR8/1y17Ry7xbErfB9CS5W2rjZ9xh5yqZazvjaj+5xbTZKL7NbP1YEjUxAj6EiPZv3s1v7BYeJyf7p0qYidFcm4a3PMiIme9TRiqwlNm7SDk713lpDzPAJLRERwRMx6Kk5Ls2s5KELhED5ALVuZs=
+	t=1790370817; cv=none; b=UJmb1yyb/Fqw+XrcGmLwty7D4nw0nW2VDN6XSvwVCq4eaA+0edJfx+T/SJ4BfwppW/YuLKr5o5q9hxmoQMCDGmfYiImks391gKJS2EHiH5NMMmZLwMEhjTEC81hIRiqtEmfjRwCHntoLuR+L7f/giyBT5tal/lcrPMdMEyDlxeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790370130; c=relaxed/simple;
-	bh=Qbyuka3GiyzI8GcOPcPBKISMBjQR5N/Oom1sUT6XUUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5clM5UGHinoJ2eBq/mRlwu2E1Y0u5gunTMQ6EsNCU4VExNZ3mnVy58daWxvOCniQR9H6P1EOM6KV5QF9kb2PyILNYeVQtTy8pcG/rsi+TQhz7pTTH35W1MgOkw+yfOxRQqdslZ/UStWoB+N/jwvOKhdkZQlSYgNJr4a+4TA3qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oYkBDx6R; arc=none smtp.client-ip=74.125.228.140
+	s=arc-20240116; t=1790370817; c=relaxed/simple;
+	bh=l2U8nzCNNQ/nwq4FEs6iLspFROyaC5q68fQmREhjkjI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Hij1bmhyyTMOJl94bqSqZyI3gJd2QERMM4CjGXahfM469F9RgJwo/O0CkDMmUVDNBFjFtNuWORs/1UDJKz59u7OFIhhoXhzexetMTEJVkPbCtATHE+BHeOiQZbY/hYTbxHpy3yeaRCfYTn9pBFu3xNykRF/TjbYbH+dBQ0KTWug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cisRoBq6; arc=none smtp.client-ip=74.125.224.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oYkBDx6R"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f7dbfso153390966b.2
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:02:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cisRoBq6"
+Received: by mail-yx2-f41.google.com with SMTP id 00721157ae682-8a8496fd8c3so14266317b3.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:13:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790370127; x=1790974927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qbyuka3GiyzI8GcOPcPBKISMBjQR5N/Oom1sUT6XUUw=;
-        b=oYkBDx6RSrPyUWLQ8cGXg+XE7agKlIF+K8YIUSDhpCpY/TGFUOmzk5tRm3FUK6e3O6
-         cHrFC9YcXB//NLzk+JHQdnu4B/eDv/ahK2j8Jvu2Wab5y5PouDk34CXg13Y1iutu+vnD
-         hlGVV+eCfxHxMxRsFjyS2FNGs30GqK+T6i3C0CCXMmF8NtywFK39DVRixtRbKpJnIexY
-         fzDpsvaX7UEXNi6NRMbYnWIcHMRHNWdZbMMhn+qtnmLG/7+Oa1mBwYRt++NYi6MzwGIw
-         uIiXzaLRihY6jJxkmWwjc6eQXsni5fUB2iY3//m5giItzsMbcg/N9xHZUjeqSDZVgb2I
-         47GA==
+        d=gmail.com; s=20251104; t=1790370814; x=1790975614; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kE6Ci4ey9edySdwisM07uhodEQlZii4EnlJAnWzc9lU=;
+        b=cisRoBq6/2Mq0XJdC1G9mBuK3ldnHNb9jKiaWs+33Rc9Ql4AWqtx8FuaMW4DlLSGKn
+         aNzRW3Xr4Nb8tqUVTXnM29fbRf8rJhalyTQFeKez/3pF7KcvrqDZZ81KO07NatMbCHkm
+         EeFPv3cZhomWMAftMZKLlhqGRuFKwPJdCTFWycrSnHHoPbyb0y6ug1YqTFWpEDKaaxji
+         OIV/gPPS62wKm5YMYAdAEifz54ulE0iXwi7cfD1OzGQ8GhC0NWZT7U5wyHWs3CFc3SVw
+         xu+EClqcAwz4x2xM247cg35WNjGDaj+q9D1CnllGILL//ReivfxRRk1EZjoPzyDRyYU9
+         tWWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790370127; x=1790974927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qbyuka3GiyzI8GcOPcPBKISMBjQR5N/Oom1sUT6XUUw=;
-        b=sodtBiRG1f2kGlGwzbwKR8jIfw105oEFWHlmiZm+N2eVab2bdm5lRul8GLhIxgmp3r
-         LlzQqdhRvC2c46omp30SblWSUt7F2UH6A6VC27k/XNHPcLYT0xmM6CIG6+c50/aIT7gy
-         dVY57JQZY9/qfVRZbYb3YrPuK4lE85qW/MernYB6At7Mq1rvAm38f0upKKgbVJnPNv/g
-         qMr1YExPtjl1DdrN2XNHjoSisiwzzmo87qNLM46xKy8jTM4Sf8x+dQ1uA1oVis3G3IiM
-         frAG/5KR1/XnTn+X874pdJ0St8iGXVHgr0oE4muJM8Vf8v1vmP6pH4om2pU9OfWrEdiP
-         H3FQ==
-X-Gm-Message-State: AFuF++kGd8UWzK1cl9Njmg4K5oQ7YvSB9skYf8AGXQQ2pFfDKh6Bl0pT
-	yhk7zwJIPKFXZp3vJcoco1BNALnU4YhGEVVVKAWFNNQ6twg+fBF/tcSx
-X-Gm-Gg: AYBFou3f8adfTWWlhfSdnPs+1P5V6IeX5rnjDRHDLSBZxNyGKZgDAWiXe5XV22kUDoB
-	2D3nHPhnb3b4W9XiJyWytv1tr3x5tstTWvty4ttbEeh1nAly40NT9Xaup1Uco4RGB+OC6TF2sia
-	yMucuMFd/ZPVgF0AFSYY98wWSfQ39DNKIDDkYALPdaJw/F1k+xe9M8CgOIkkhiOY/Ku4/3oHdYZ
-	xkQsXLUkw/bNcdf8198nVi7e/vvfWavQDbxxYVaseTQhcaQKKZfKDbQNgvxNvj5w1bmf2CRhfAt
-	wAqtqR+AYM3OsJT34/WDILOA94FhDyeW+vlFfpYuulhJadsyH48Hxk133TnITyCmuL6kK53Z2ge
-	a0pRt45u6CjSE1ixfxuykEEITcYcPbk65Dk7r2A+OQ7MuAw3BLBVLhmYNQAETnwEXIvZ/UdXar4
-	XxLWxfyjbnzG9ZejnuPPXbnesCQ54s3+hKDlnp4tLufEB/s3iBgxmd8i11+1xdVzahiZ/aoz2Ke
-	q2WA1SAMQTb1VNMLP6pppo9y6rTVmG1WY/GT7O0GoCBwHazoEAL2rXG
-X-Received: by 2002:a17:907:7b9e:b0:c29:4970:abec with SMTP id a640c23a62f3a-c2ac24cb86cmr657977766b.19.1790370126717;
-        Fri, 25 Sep 2026 14:02:06 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:aa1:1647:5faf:ac50:9dfb:d1bf:ddf6])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aae5df167esm1421523a12.25.2026.09.25.14.02.05
+        d=1e100.net; s=20260707; t=1790370814; x=1790975614;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kE6Ci4ey9edySdwisM07uhodEQlZii4EnlJAnWzc9lU=;
+        b=X/RzDJBZ3AhuUcYytwrh/tFJBHyOA69OWI/dIP+DVbbSFDH6bDSqqLDc6ZNVXR1opp
+         Li8ZiA9RZcAj82Weim4lCSRTHVTbgCmKm6w6ed9F9HgseLTKRUMhUDPWNQTXR5j3+/PT
+         XD34M49Jtj1ZJzUEOgBHRrQ6FOX5YOtZiutblNLQk9LWAtt/+wm1atlyIgC+BiCngR3x
+         SliwegT7msirrPIUXHsxTuei0Jr0uHI14YXda2nO6MVAGBah4GtdAHGYuMgV40LrHOPB
+         aW3cJDysCUlDvO+2WKytafLGY8J5TTgEzHel9jDC9q2BhyQtMhKOYFCZoTiCD1yZHux7
+         l7ag==
+X-Forwarded-Encrypted: i=1; AKwUvBzZKema3mt7dPY+VBaISwr25+A1PTgrRX0bYvBh0qyByo/5zv0M8Tgz2PxffFPKLN5GgtWzJ6k=@vger.kernel.org
+X-Gm-Message-State: AFuF++l86qrvHgW2+eyALTnxLwGHuQeh8oF4CestWRBfiI3MkWrMPvNF
+	tx72EUubS7K4kkYwUA1tkxYr5Sg4nBshVhuTZr0wNRqocpqJZ4NVIAWu
+X-Gm-Gg: AYBFou2GipuyYlWG+uOcX0LCCe1C0L8PWESRAvtDgccFhh9Ncmf34o00CUADK6NXuuN
+	7VrKbH82Ifg86KOJimejEVRUqmI62KdUQ2QjXhwVy7haTUviqRSA9p7tvdZzbJqD88aQGXEshwI
+	L3nfQgcz3kPMZjG5kwgnLa4g+dMhNKqkZeiLJBmSxZWn2akVybllvpuBQtJB6XVLH8+lM2qKPIZ
+	6wqgTQESsgRvETrUTNnP7Yeel/yoEUIzAXuB+hNQb3VfmcrQpGRabDYc8+O6nO8u22SnWow3wYd
+	tJymBDHeFWKlXQrFn/2N3L2FXrQ2aNRhij1Rj3v2cPDe7mA+IGav3Xet0ZpEj81enhR7HHjaF71
+	ft/RLCqNABuEt6TDgsMTGgm/muYfOemB8HHb1zuya1jlVGbxe5fA9SX6TpPpLDzGMya665im2Qc
+	6kUPpcmrBeyTtjiKfgX6v9iO2HtTG6fV7PDom84nGUyL1BmOyhP8HV5lR0khlBwymHhTlZq0s2U
+	kaIu0+ls4rwuboXguAkWk5O9JmANZFD2O6yhxeXRlIFEw0gEQiIIVy62bE+kiMU
+X-Received: by 2002:a05:690c:19:b0:8a5:1570:a298 with SMTP id 00721157ae682-8a64ded27c7mr30052657b3.50.1790370814571;
+        Fri, 25 Sep 2026 14:13:34 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860fe88d6sm13938657b3.31.2026.09.25.14.13.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 14:02:06 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337 internal CPU PHYs for SmartSpeed
-Date: Fri, 25 Sep 2026 23:01:53 +0200
-Message-ID: <20260925210153.8717-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
-In-Reply-To: <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com> <20260923215858.1653-5-yongzhao.derek@gmail.com> <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch> <20260924234814.1734-1-yongzhao.derek@gmail.com> <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
+        Fri, 25 Sep 2026 14:13:33 -0700 (PDT)
+Date: Fri, 25 Sep 2026 17:13:33 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Zihan Xi <zihanx@nebusec.ai>, 
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ dsahern@kernel.org, 
+ idosch@nvidia.com, 
+ kuniyu@google.com, 
+ willemb@google.com, 
+ kees@kernel.org, 
+ richardbgobert@gmail.com, 
+ zihanx@nebusec.ai, 
+ stable@vger.kernel.org, 
+ Vega <vega@nebusec.ai>, 
+ Luxing Yin <root@tr0jan.top>
+Message-ID: <willemdebruijn.kernel.21eac4268187e@gmail.com>
+In-Reply-To: <20260924051521.32568-2-zihanx@nebusec.ai>
+References: <20260924051521.32568-1-zihanx@nebusec.ai>
+ <20260924051521.32568-2-zihanx@nebusec.ai>
+Subject: Re: [PATCH net v6 1/1] net: gso: limit recursive IP-in-IP
+ segmentation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andrew,
+Zihan Xi wrote:
+> IP-in-IP GSO can re-enter inet_gso_segment() or ipv6_gso_segment()
+> for each nested IP header. encap_level tracks header bytes, not callback
+> depth, so a deep chain can exhaust the kernel stack. Making
+> inet_gso_segment() stackable introduced unbounded IPv4 nesting; IPIP
+> GSO/TSO later made the path reachable. The IPv6 stackable path was
+> introduced separately and uses the same guard.
+> 
+> Count IPv4 and IPv6 GSO handler entries in skb_gso_cb, initialized once
+> per top-level GSO operation and preserved across GRE/UDP context changes.
+> Use the existing IP_TUNNEL_RECURSION_LIMIT for both handlers. The first
+> five entries pass, and the sixth returns -EINVAL before dispatching
+> another GSO callback.
+> 
+> Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Closes: https://lore.kernel.org/all/cover.1790157745.git.zihanx@nebusec.ai/
+> Assisted-by: LLM
+> Co-developed-by: Luxing Yin <root@tr0jan.top>
+> Signed-off-by: Luxing Yin <root@tr0jan.top>
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 
-> But this is testing the wrong thing. This is testing downshift
-> works. What you are actually interested in is downshift happening when
-> it should not....
->
-> So take a closer look at the user ports. phylib should report when a
-> downshift occurs:
-
-Thanks, that is a better test. I ran it on RA74 with the OpenWrt 6.18.52
-backport that includes the read_status change, so phy_check_downshift()
-sees the speed from 0x11. The user ports keep SmartSpeed at its hardware
-default (enabled). The CPU PHY keeps the existing workaround, so
-SmartSpeed stays disabled there.
-
-Across 8 boots (1 after flashing, 4 warm reboots, 3 power cycles) and 10
-"ethtool -r" on each of wan, lan1, lan2 and lan3, there was no
-"Downshift occurred" message. CTRL1000 stayed at 0x0600 on all four user
-PHYs, and each port came up at the speed its link partner supports. The
-only unexpected event was one link drop on lan3 about 7 seconds after
-its last renegotiation; it came back at 1 Gb/s after 3 seconds.
-
-I also tried to recreate what the CPU link sees at boot, where the
-IPQ5018 PHY does not advertise 1000BASE-T at first and adds it a few
-seconds later. On lan1 I switched the PC NIC 30 times between
-advertising only up to 100 Mb/s, with autonegotiation still enabled,
-and full autonegotiation, then restarted it another 10 times. lan1
-returned to 1 Gb/s every time. In 741 once-per-second samples CTRL1000
-stayed at 0x0600 and 0x11 bit 5 was never set, and there was no
-downshift warning.
-
-So on this board I have not seen downshift misbehave on the user ports,
-including when the link partner changes its advertisement in a similar
-way. This is one board and a limited number of attempts, and the link
-partner was a PC NIC rather than the IPQ5018 PHY. It also does not show
-that downshift works on a bad cable, and the CPU link failure itself was
-not exercised because SmartSpeed stays disabled on that PHY.
-
-Disabling downshift for all qca83xx PHYs would also remove it from the
-user ports, where I have not seen it misbehave. The CPU link has no
-cable, only a fixed on-board connection, so disabling it there should
-cost little. Given this, would you accept keeping the workaround limited
-to the CPU link, or would you still prefer disabling it in the PHY
-driver without a flag?
-
-Thanks,
-Yongzhao Chen
+Reviewed-by: Willem de Bruijn <willemb@google.com>
