@@ -1,139 +1,252 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011056.outbound.protection.outlook.com [52.101.57.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511734A5EBD;
-	Fri, 25 Sep 2026 13:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790343849; cv=fail; b=B/EkikjhiC5BkgQ0IvhHIHz+SCiniQ/jUpDC6+tAzuNA6T5s2n7+JB33kyT1pQ8TBdievTf4GK7/a3TQGKUjqFNyoJPtCpl6NNeN78ctMddAKExGXqpPoWstgQM/3htCe6rcpx0Pv23/Br+cc3sB1EJRzMJziV+dY/OLnKTIi/g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790343849; c=relaxed/simple;
-	bh=weYTmn0oOdE9E8EP0F59cWKbWF2lxpL5pik3cngPH+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EemOTeI0lVUSWfyIeWYehE85Yb6MnD7A9geWT8Xzjww9v792tuVVDiMtjPON27sHy0sV9+bmvz+ymOy20MDAhLBmLCzqr8GYg3oZFFSC0e2zrmUNmDRMGcTwvcHOXEOt7P3c68S9fsIu0MwOlQIVAAeY+rE61NKkARAw5IjwDuU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dE4wmkzb; arc=fail smtp.client-ip=52.101.57.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3C64A3D3C
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790343941; cv=none; b=S9Itlhyoyg1SHRBWgmtVNWtB/o3XrgJ91RdLI0eXqlmheCnWHoV34CPG+KRvY7dgZ9sms2/K4vq4EPHE6xXcTDBtihuUmN8wxcjrobAacbXrhHc5pqKnHKN9Uq/YILy61iQQara7t18RmUMNchhRrsCz1N2Nyhq3/VNTeqzhfPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790343941; c=relaxed/simple;
+	bh=+bHbt8SK7E24aPNItB5CMZDFsNJpeB4IQt7eWvoUkAI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PJx4i7eoODHZkIAgbAWnds92DusIotUaHfkv5tIHSVbsQ5H4pIPaFgkg361coV53/399SGvgqQGUXJyctQ5jnNuE2bV02WkEWTEd/z82aDWNYFQoy/nTDoXU0MBm+vS8Loh2nMHISPcK6C4fD7xgFdb4nJ1wKXsdl4Tw6bwda+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+yGQ5GG; arc=none smtp.client-ip=74.125.227.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dE4wmkzb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bKwjDuOcLqbf4u4pK+Y/zRkUeHAhGiiOikSF4MceFkN6lNIHuHtmTEuhJ9yLeUtnTylHt7PI6dcogLJqdu0XTAJX08AtsWrixEv8xkAGYOIGG5IOiqVrLCXsQV27PFbP8rufoWBrdBHPIJI3d1HsNkExz4CqCgjVDq7I3l9Bq2Vu1DR1aAE8+hA1emJK4cwxdebS+ofyHtHAGd0lgbBfJ/id0rt/v5ozOCexAaO9RnhjpMO2Lc6YFpgTlcHlq9w/ePhNbhKWbR1FvTWlRTiaaJu5gasNdOhOlL/WGFPrUkm2IEb3lxq+yOgwePIUM+DpIgAOUKwjIn7lfJqc6ro0wQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zAEK+hkXrXsS/nSKgHz6w3WJXZ8rnTMRFBBOlEHsjQg=;
- b=mc23O25n0x+YIaW1G1XX8GGM0IS1S37SBJXtYK/P81/MHem/JBzPOEONX7xxU5ZcDL8zbmK25lvDNs0s0m2lCeOVjyOX5oeHTNdNhveiaQrK22hh9iKRfYE9i4sRiQ2XLeptrqgDkwLAIs4XL3/UwYTvAhnhHp4iqoCf95lkbeJHFAmUyPPCTQzAr3gHe+0Vvg0ki+OYa96XzCjWl/4j1bPBiShbWNGgY9lrOkoGDY9Qnva70SZiUGI2KLlfkX8uWC3HE/m4DBuReuLbKgJM138eGFTQ7aPaYlaw/bGelJIl3TiwUgqC+aSsKoSaK65vSHjmQYjq46zpgDnM3ka8jA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zAEK+hkXrXsS/nSKgHz6w3WJXZ8rnTMRFBBOlEHsjQg=;
- b=dE4wmkzbQdsyM3uFdW2Azv2l6en58x28LO12NMi7KhLZBffeAjbMKAJMwHXL54wapoZRLGypPN1hpk29Ea1gQkRRCcOyTZ+lANr35uFamBOEHJpUgx4ipbWQi/TJc80+eYNvR00RLeQKTd5L3V8ty2MWLnj8HM8nbDHJ/U7rAgNdyIHAGe6gx87hOAVDWwv+VLSuRtFjQSYT73tiv0GCaI2oVtCoiHvaApA3SH3bJ/qApMGW5ePZRAv//spAZTbGz8u0m21/NR6UrZrPE37S4bIk9nrYVF+gOxdoZ+Y/jgJJvUrwE9KNpPOe+pJGIVUZWEMIrgF0mfIm/+smUqJuRA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by SJ2PR12MB7943.namprd12.prod.outlook.com (2603:10b6:a03:4c8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 13:44:04 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 13:44:03 +0000
-Date: Fri, 25 Sep 2026 16:43:52 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Qishuai Liu <lqs@lqs.me>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipv6: fix prefix route expiry in
- modify_prefix_route()
-Message-ID: <20260925134352.GA153660@shredder>
-References: <20260923132048.3272878-1-lqs@lqs.me>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923132048.3272878-1-lqs@lqs.me>
-X-ClientProxiedBy: FR3P281CA0017.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1d::20) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+yGQ5GG"
+Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2d561173f9fso5503095ad.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:45:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790343936; x=1790948736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8HYnEX5a9U5CNmxLV9uO4x7KkybD9D/59hOB7uKTMWg=;
+        b=W+yGQ5GGlvyQ2lDy1yDA1oEN9Db4EGPOx4Vczy99XzYVU1hiau8VMtVJslh8ADwdbo
+         IIRZnxLqa0397nc+EJE8ROONfMmfIEDihcZ0y/MjdUMVlQArygfXVUXf+uPaqQv+yyb2
+         29SXZyXLzpg3OtQCNIim6CxIznhEWgZffF7ulYYYiNdD6xJebowYa9tW7SwGNrWosT5N
+         w/p0+ifXY448B0oN2VME9TzodGONEgBgYbRFFO424KIPKEbYUxZgS/UjvS6ulQ7CXfbD
+         Y1NRtuA1D3gLimVdmsvnQEFBLndr4Dc77y4rWLGFYxDSTqV3saQOUbFUajNfUCHD7xqc
+         Ks4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790343936; x=1790948736;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8HYnEX5a9U5CNmxLV9uO4x7KkybD9D/59hOB7uKTMWg=;
+        b=xREAwWQEa7oS6kMZakBETIrVkM4mfklsA9R9YIf0S9qNlJREL6Z4nhGdgZL6iOpKcU
+         QSXDLSy43tmniAEX9B0mc+EcK37zvCDvH3wjyMNyGzUl14aLnCFieVkgx06tPA2tUhmf
+         Q8vgd+8LJlSOasEIK8IUNqgAnyhYZZvsgcS6VVhiEruGFdhed8E8KH9iCR2wNltxzxTu
+         TMZNVt3wyImFO9+xbrHNWF5vPYoZczQGG+hRdus9eHrUBrsjSoXyq/T2yTECeMCHZlef
+         ZwXr0FV+oca9/XPzzB+FXQyovhBmLtaDVaP8MQ3pzbMZ6RbpY8G2Skg3geR6x7iPE5nH
+         1Ctw==
+X-Forwarded-Encrypted: i=1; AKwUvBxetXQhZOIZ0uHJMHB3OaBBwxgK7HFMUoX8L3X5i1whVhGx29V7XL0ck2dWE6tBL1M10ZQabW8=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHfWFV0sDCk7GKLheglkoeysDoNhgMSniBgHwCO6m6MHe5mHLv
+	veF3orQUrM1aswCWLZK0zEC0NE51LFYCH4MfXiIrwM3SnnPez59NC5/y
+X-Gm-Gg: AYBFou0P2E0We1HcOCDN8fhDlnQgKV6Ix89ifzxOmb2ZfuGVoG+Y5NgS466MkEXRRv3
+	vRy2PmcGPjvf82f/FllhAeIdGcpNNZNlNfalXpRT01q/FQ9RFMuOyCPK2KUPKwp0TMVXDSWWxRM
+	Kuc0pIu0jB4NkMSC05qq/vCZ2CMfzjWwwDOu4TmO9tYBTcNro3QIWmpSqNU1pQb3MjqbE2fXKPr
+	sFVTmHcdV2mkYbXfWrCpJRmOMp+BvA3g4pWQ9hVDeBgL+S8BAcT1nNOm3nXRXMrspiVm/i5DczS
+	pQ1Z1GmkwmGpQ9boiLGFslm+NoVyVOP9r+cwl8/XMw1oAq18vtswcTz0LKYVOvbMa2Z5GMmdi90
+	Ysl8OoG3wfQPSjDTn1CAdScZ4dLOziuGyBwvyrUcwD94Ttmt3s6oM5FvcLr6cOeYnHTGFMiw5+M
+	7RHMU6nEVTWeN+eJMjOmbRgU/2B5dsgQ5v6ktKJm2WWivXCkJr3vmuN4BWR9LCFFBIEcvViRVuw
+	1ul9SVgEpw/hA==
+X-Received: by 2002:a05:6a00:f0f:b0:846:bc60:5bf7 with SMTP id d2e1a72fcca58-87e989907acmr5030603b3a.6.1790343936100;
+        Fri, 25 Sep 2026 06:45:36 -0700 (PDT)
+Received: from localhost.localdomain ([112.49.112.188])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8804595820esm905394b3a.57.2026.09.25.06.45.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 06:45:35 -0700 (PDT)
+From: xiaoshoukui@gmail.com
+To: tung.quang.nguyen@est.tech
+Cc: edumazet@google.com,
+	jmaloy@redhat.com,
+	netdev@vger.kernel.org,
+	w@1wt.eu,
+	tung.quang.nguyen@dektech.com.au,
+	xiaoshoukui@ruijie.com.cn
+Subject: Re: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
+Date: Fri, 25 Sep 2026 13:43:41 +0000
+Message-Id: <20260925134341.11418-1-xiaoshoukui@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <DU4P189MB37506A937448D1ED977C7BFCC6842@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <DU4P189MB37506A937448D1ED977C7BFCC6842@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SJ2PR12MB7943:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68c4923f-d0d6-46b9-a5d6-08df1b0b0fd5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|22082099003|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	zM3a5eycTzcopm+ZkvzC8TKskSosqjJ2Nipgz0BXv65Q17yqPKFuZGK/IUGdt0q7IvUCAqAF4avttVZQ8HL0Sxace+fI9WKrQIPr2AfhbZMH3lZYdoKMucfhXbxsB+fdTar13P8mhqXm+1DBjfrqYMcn0oK39DlZx3wGHd9FAZ1WJexQgvitoadRe4jxER7aRn2RpBzsCDg4HQT2jqMIWksQpQUuBuW7Odlrh7IKtDKNgEtjA+qtGcR8SqcILW1e6BJaqqH0rIsRfN9THW5Ha/XJtoGEGQ/zpqJU4xpJ1UjpKz59Jvau8/wpeyEykAA5fyeTw+NRoJ4FzHIjS3JwdTFGZNLE3NbomRcNAP0TyJJaSda54U3SHxKI/q8J27al4MHoHoxSpgA7di+P0rWZr8jqT2QPRzBXome/38ccq0YtN38uL98RiJlbua0RCfYZouLcntX6PcQqhLFjqGLGQojYyGOrweRjMCTVYNdvzkFcjJgX7yYnoTLklkU9rt3IdHVSECd96VvetcbOKHvvGQ99xOXQ2aVGcOiSp4krtONHcSRYuTtNSL4wx0ZbKdfClyAwdDejKRlSpvwDjs8NxoZFkOiFCG+giDDudQgYm30PGR1Bgat3wNmKq9fBJBiW7H4K0Me5yq9YnJ2sZlkahJxE+vLZVU2j0puX32z4stg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(22082099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PL3TouRWAZ33HbHXIqu0Axgd4MT3XPNzAocgGamh1D/fl++akoCDaeCCKWRn?=
- =?us-ascii?Q?TR6dVBh6BGgADX1z0/MxeOyGn0fvfPO2pgE7r6PlvBOOhm6uo5KycucAJVI6?=
- =?us-ascii?Q?rUz7fV+PvfsL3j/y1Js01FW8Oy9kLO3wz2+7OtdxP5qxTln28oNshhbS0e3+?=
- =?us-ascii?Q?9Zub/WW8GlMAPtoRlyoZik2JfoQqwKCbwYWBpzzh5fTMp/XUCSjtqporFzaP?=
- =?us-ascii?Q?42s8X7518WY0LWDHiv2/aGOCMB4xHymfTzcWKa19nbR2RXlE6VRkN6u1Wpv0?=
- =?us-ascii?Q?5z8SQjgwSMo9/n6d5yiKv/adeirP44gO6IbaPitd71F4iP1Z65HqJ2zNUIcs?=
- =?us-ascii?Q?B+Q5q/P4d344L6R8dSx+R4dLhFfE63D2SZ+vARk6jP8VUdsNAHwbk+EJOf33?=
- =?us-ascii?Q?5IgLMuRD7ciwG+K1624LVC90pzBAIyvUD47zwUiMMDWzXnivFWLbqNNQxAnV?=
- =?us-ascii?Q?8V9XFtBfZ0+eMyZDx7Yja957+AwnvxKMHtWuYuhDLsXBNwxL4aHigYyKpVHv?=
- =?us-ascii?Q?x1vG3lN5xUqlA8KHIU5T0LCN5FqHzK737BaArVFM6+b21oZwQUZyPkILBK7z?=
- =?us-ascii?Q?b7c8rSCkv5RAy9ANMgd482Rfx5D81PVZbD5wOtD0rB3Smp0fq6IOs+k1SEqz?=
- =?us-ascii?Q?rnbiT5J+bhyapk4cuwX2fIsvAr1S0vXnrtJCgd5q9GFgMdmB6JJg2w34rbOA?=
- =?us-ascii?Q?ZVDM7zqKFHdX5ojohHvILaO0vDEEJUbDhZznwCOHJuAWOufmNWMiB42JofZQ?=
- =?us-ascii?Q?v5imY9hW8QovwRB4tfSIygHJWLp23ZOW4POjaWraOe2Poj8ZEPUVrtKMOFYW?=
- =?us-ascii?Q?GAAb0iaOMAHcSb+lGLhvHhWJKoRTmuaf/jJJnDmNCTvgqfi1DKxB/jhWsdAk?=
- =?us-ascii?Q?C8eNCNc+vA1kHRn1D2xEaBNpj3lZU7ER2mcBJfsyv03XBKYFpUUzczhH8fGy?=
- =?us-ascii?Q?fyyIg8wHWAX4BPILyF4YJHAIVtARVrmKz7iw8ztTIqm8oJsps3t4nxdCofqV?=
- =?us-ascii?Q?eqsbrgsfufExKJavrmF1dWy3SOb1BK2XIv8Xk1xyFNHQb+CnXjiUNJIr/uLG?=
- =?us-ascii?Q?iJQA9aK1PiCzLDSnFR4Z6OFs2kIjKHrU50gJPJwq0yaVq4k4Abjcz9gRXGJ0?=
- =?us-ascii?Q?025JzfPazULk56u/Ada3tGOqwAitz9AVCyflQt1dZJsLDWT8Az/uNv1Xuakh?=
- =?us-ascii?Q?7LQQHCBTSFkiv1xKN9Sx1ehfLCn53eMrojmVBvbP9z+NffwUFGO8J7g6jIKV?=
- =?us-ascii?Q?Gn5JV3qIktGB/fAaa6BkqRit3T1ycqxHb+Z7BVun8Rf7uw8uPtNMP9TKTw1u?=
- =?us-ascii?Q?uUYYaJF4uEaIVCPcD5I2U4syFri2Sihl1GibOUz+NQdOTyRu3LybKg+p+VY7?=
- =?us-ascii?Q?HyAEzcvUW4cYI8YstMIBkS+VU0Jh+aSa+vftTlvYmnghVk9jJwRBxXw7Acg6?=
- =?us-ascii?Q?JJWaBRsseM1FljHNRqGN1xuyQpDl8Cdd4DW92RYMbmxEXeHh9jDYVnfJFOQv?=
- =?us-ascii?Q?hT4B58uVkUqOgj2lYdZxYkT1w075zubPo6wN2nHPIpfX2Y15PBbKaZQj+V7K?=
- =?us-ascii?Q?J07gNeBZxOkjnHq4mDCLiCo3Mz5P4gCY5al9MFF01apSa+JpgFIUXwyN4sJo?=
- =?us-ascii?Q?IPK/GrWg5uu0OXHbZ/KmGS1zwIw36Y7frAVKeghrUgv1xFnHDUvjb5fkvqYY?=
- =?us-ascii?Q?wzy/dW8JKS0Qnw2vYzEW+zXKw2Am5yCrmtCg423Viy7qgf6dxFoq/TNZ+Fzz?=
- =?us-ascii?Q?CWE46y2b6w=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68c4923f-d0d6-46b9-a5d6-08df1b0b0fd5
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 13:44:03.7268
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2trAVKXGtfB6PxbVU4r3JkwzRWOLbfToFgZyeudnz2tATsidqCHHMtHCQfpBgUTJhWjVozDEMSbYy2hyMoIDkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7943
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 23, 2026 at 01:20:48PM +0000, Qishuai Liu wrote:
-> modify_prefix_route() is given the lifetime in clock_t relative to now,
-> but fib6_set_expires() wants an absolute jiffies value. So when a
-> permanent address is changed to a finite valid_lft, the prefix route
-> ends up already expired and GC removes it.
-> 
-> Steps to reproduce:
-> 
->   ip link add dummy9 type dummy
->   ip link set dummy9 up
->   ip -6 addr add 2001:db8:9::1/64 dev dummy9
->   ip -6 addr change 2001:db8:9::1/64 dev dummy9 valid_lft 3600 preferred_lft 3600
->   ip -6 route show dev dummy9    # expires is negative
-> 
-> Fixes: 8308f3ff1753 ("net/ipv6: Add support for specifying metric of connected routes")
-> Signed-off-by: Qishuai Liu <lqs@lqs.me>
+Hi Tung,
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Thanks for bringing this performance concern to our attention and
+sharing your benchmark results.
+
+> This patch tries to address an unreal use case. I am waiting for
+> your real reproducer and explanation on how data part of bundling
+> and fragmented messages can contain invalid types/users.
+> Of course, tipc_data_input() drops invalid types/users as designed.
+> The check is redundant because tipc_data_input() never returns false
+> after calling tipc_msg_extract() or tipc_buf_append().
+> This is not correct. If tipc_data_input() returns false, the skb
+> will be dropped.
+> tipc_data_input() releases invalid skbs as expected.
+
+Your observation regarding truly illegal message users is correct. In
+the default case, tipc_data_input() drops the skb with kfree_skb() and
+returns true. However, this issue concerns the recognized internal
+control users. For these users, tipc_data_input() returns false without
+freeing the skb:
+
+static bool tipc_data_input(struct tipc_link *l, struct sk_buff *skb,
+			    struct sk_buff_head *inputq)
+{
+	...
+	switch (msg_user(hdr)) {
+	case TIPC_LOW_IMPORTANCE:
+	...
+	case NAME_DISTRIBUTOR:
+		...
+		return true;
+	case MSG_BUNDLER:
+	case TUNNEL_PROTOCOL:
+	case MSG_FRAGMENTER:
+	case BCAST_PROTOCOL:
+		return false; /* <--- Returns false WITHOUT kfree_skb() */
+	...
+	default:
+		pr_warn("Dropping received illegal msg type\n");
+		kfree_skb(skb);
+		return true;
+	}
+}
+
+The two receive paths where this occurs are:
+
+1. Nested Bundle Path
+   crafted packet
+     -> outer msg_user = MSG_BUNDLER
+     -> payload contains a structurally valid inner MSG_BUNDLER
+     -> tipc_msg_extract() allocates and extracts the inner skb
+     -> tipc_data_input() sees MSG_BUNDLER and returns false
+        without consuming the skb
+     -> the bundle extraction loop ignores the return value
+     -> the extracted inner skb is leaked
+
+2. Fragment Reassembly Path
+   crafted fragment sequence
+     -> reassembly completes in tipc_buf_append()
+     -> the complete reassembled skb has msg_user = MSG_FRAGMENTER
+     -> tipc_data_input() sees MSG_FRAGMENTER and returns false
+        without consuming the skb
+     -> the fragment completion path ignores the return value
+     -> the reassembled skb is leaked
+
+The reproducer source code and instructions have been sent to you
+separately.
+
+
+> Note that we do not want to add check for unreal cases because it
+> causes performance regression.
+> I tested your patch and it showed regression as below:
+...
+
+Regarding the reported performance regression, We conducted two
+investigations: an assembly-level analysis of the hot path,
+and a clean-environment performance benchmark with strict
+CPU affinity.
+
+1. Assembly & Hot-Path Analysis
+--------------------------------
+We compared the generated disassembly of baseline, patched, and
+unlikely()-annotated builds using identical compiler toolchains and
+optimization flags.
+
+For the bundled-message receive path:
+
+Baseline:
+	call	tipc_data_input
+	...
+	call	tipc_msg_extract
+	test	%al, %al
+	jne	<next_extracted_message>
+
+Patched:
+	call	tipc_data_input
+	test	%al, %al
+	je	<drop_reason_path>
+	...
+	call	tipc_msg_extract
+	test	%al, %al
+	jne	<next_extracted_message>
+
+The disassembly confirms that adding a single `test` + conditional
+branch on a register cannot account for a 10%--15% throughput drop.
+
+Adding unlikely() shifts the basic-block layout and branch direction
+as expected:
+
+	call	tipc_data_input
+	test	%al, %al
+	jne	<next_extracted_message>
+
+Nevertheless, using unlikely() makes the exceptional path explicit,
+improves readability, and is consistent with kernel coding
+conventions. The fragment-reassembly path is similar.
+
+2. Benchmark Methodology & Results
+----------------------------------
+We re-evaluated the patch series in a high-throughput, CPU-isolated
+network namespace environment (`netns` + `veth`) to eliminate
+external hardware I/O bottlenecks and measure pure kernel hot-path
+overhead.
+
+To eliminate thread contention and CPU migration jitter---which
+previously caused bimodal performance drops (fluctuating between
+~32 Gbps and ~48 Gbps when threads floated across cores)---we strictly
+isolated CPU cores via taskset:
+  - Client side (netperf): Pinned to CPU 0 and CPU 1
+  - Server side (netserver): Pinned to CPU 2 and CPU 3
+    (taskset -c 2,3)
+
+Under identical hardware and isolation conditions, we ran 10-iteration
+benchmarks comparing unpatched vs. patched kernels with NAGLE disabled.
+
+The average throughput was:
++----------------+----------------+---------------+------------------+
+| Message Size   | Unpatched      | Patched       | Delta (%)        |
++----------------+----------------+---------------+------------------+
+| 64B (Small)    | 69.80 Mbps     | 68.58 Mbps    | -1.22M (-1.75%)  |
+| 65,536B (Large)| 46,992.62 Mbps | 45,834.77 Mbps| -1.16G (-2.46%)  |
++----------------+----------------+---------------+------------------+
+
+The results show NO statistically significant performance regression
+(< 2.5% variation, falling entirely within standard measurement noise
+and thermal throttling).
+
+
+3. Explanation for the Previously Reported Degradation
+------------------------------------------------------
+During troubleshooting, we observed that if `netserver` (or softirq
+handling) is not pinned to dedicated cores separate from `netperf`,
+the Linux CFS scheduler frequently migrates `netserver` worker threads
+onto the core running `netperf`.
+
+When client and server threads contend for the same core, cache
+bouncing and time-slice preemption can reduce throughput by 25%--30%
+in 40Gbps+ testing.
+
+To help align our benchmark methodologies, could you share a few
+details about your test setup?
+- The exact netperf repository version/commit used;
+- Whether `netserver` and softirq handling were CPU-pinned;
+- Whether node1 and node2 were physical hosts or virtual machines;
+- NIC / link speed and CPU model;
+- The exact method used to disable TIPC Nagle.
+
+Thanks,
+Xiaoshoukui
