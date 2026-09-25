@@ -1,140 +1,190 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB4B4D0CE1
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 18:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790359595; cv=none; b=eco377n5HRo0M85CQrW9Os7UdVQd8Hh4XR2QkEaJWcNMvxaKIfmaZTLheKpIBj35wGcAJ1uei4pqP78gvM6539b5R+57wa1jSeGACxqnfpOU2rbRZOxaJPnrTW6vTKCOYnhdwMBdsI5DobXNOnXxw7Ig/L6HbaDgaNtIyxEN+WY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790359595; c=relaxed/simple;
-	bh=IAOHM/rZ5yguor+mMtA+v5Dv3NA7Ahr3PvXfowAPYqc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pOvQG1/tc+k6NaMPagtpirvlp3XTBJonbkQvsrm9M0V2JR4D+tKoGBIw4IlcJFTSVt6bqzyT3MBBcx6qJnCSF+JJ9QQc+okBePlIQDxkTKT0Vis2HZkRoLEv7VtSPJK9SuiqLqVqlLEmhwM99+hpc3jsM3UamWgKhJ4/QZ2kl3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MHJbvi4z; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4352B3F0A8C;
+	Fri, 25 Sep 2026 18:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790359980; cv=fail; b=c2jXFVeJzWnxQYUof8EkJOoiyB25AY/kjYuAav7hsLI3644aGbcswkuT2QRKbe0ekBXiPF/UGChdLfOWxHHiZSCweE7I7cjBgoR1tq/8n+kjwd+TUPVvMjGqpUSKeanRDHLwbBarSJiyViCyFWUKnnt01y3ScjDeUACd6vcRZ1k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790359980; c=relaxed/simple;
+	bh=YgENZVczTTjU8KGSK6meaCEsOqTPTEc76QlyRFSeywM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ENKPVf5lxwvFCk0vxNXG1OK/S/og4Z/xi+dmYx/TWsD9W10YoSXoJ0nIlei+/B50GtJwFc5pRYbUVurbrBzwXHCPL5uA9g6fvHxdVfLoWe+iqbu9JyEoPJurB/HmQcsKKBHGHOA/R2xC2MSKJoHU3F8RHoFDbfT8B/k43PnUHqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IE3k7n0t; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MHJbvi4z"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG5Q7S1513469;
-	Fri, 25 Sep 2026 18:06:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=kR/ZDaU40oTtJhuV93KqFzsxwFWwLrihKepCE7GyM
-	nE=; b=MHJbvi4zgb4KhLAaHeZKP2G21K1CdiKaLU55qvggAJd90qwBO+FyoqR7n
-	HMIosL852zgRX78wYVDFj7UBS8qE4tG5VKLD/jXfrj7U9Af73TQW3lQNFbXFAgyB
-	Nh177+ypu8qbo9m8iQS53fD0UB3E7EYEErrtrS5Xe/uGc3TMedsT+i1BzYL/hDd7
-	+q3jTT9hEtLpz134NGmCxlRc07kZ+F6u0L381UpYiLOVM2kTXbxPhNO4BS9RY9Hl
-	3uJWaQzLImCAIf3qksfmO353wbnnvKyiLEcpmAPnj4byglg/xmlHcVgBqgJ46jhK
-	kD0gDf5LV6s991hvU0Af9/qMFRAYg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgsreta-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 18:05:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG36Or2859334;
-	Fri, 25 Sep 2026 18:05:58 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvu7efpbw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 18:05:58 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68PI5vFA30474826
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Sep 2026 18:05:57 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 39A5958065;
-	Fri, 25 Sep 2026 18:05:57 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD99658059;
-	Fri, 25 Sep 2026 18:05:54 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.67.6.174])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Sep 2026 18:05:54 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, Mingming Cao <mmc@linux.ibm.com>,
-        shaik.abdulla1@ibm.com
-Subject: [PATCH net 0/2] ibmveth: fix open-fail unwind after LAN registration
-Date: Fri, 25 Sep 2026 11:05:28 -0700
-Message-Id: <cover.1790357373.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IE3k7n0t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790359979; x=1821895979;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=YgENZVczTTjU8KGSK6meaCEsOqTPTEc76QlyRFSeywM=;
+  b=IE3k7n0tyCZffGQPzsr95PjmslL+4BmAbaKNWc6wtLqv7P5pWbLqbfsI
+   io2hlxh+G4qIV24EfANE1PLUl/AGHlFyoi2VMyVtOFPM9tk736XsUXpnJ
+   jQUWGdJnEROdCZU4iehu5RNntDyZr+1nYWaPpYK5hjf6hA+05GFy1vy6u
+   keQz0EBr2fK+lyWWNTPSjHw4oaZXy0pIM5A5jgeSS7ZZEinFsO5RmMDRQ
+   tZJXVyrB/j6L6z59OEQHSHDbfO4xIYdhCV8KDiLm/3i1NYbwYW6dcqB64
+   WocyS11v8aSR2B69Fl+LXh2TPc3Ca7QQf/+UISRI4CAjOaE5f5nMuBs0O
+   w==;
+X-CSE-ConnectionGUID: Lh5O5JyoQJKVdzuEa983gA==
+X-CSE-MsgGUID: OZjpAyDCQ4eUrKT+hPSmyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11916"; a="78711981"
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="78711981"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 11:12:58 -0700
+X-CSE-ConnectionGUID: tJm0tG9HRu+F2rUVxfrtnA==
+X-CSE-MsgGUID: c6qoZjrSSt+JOu8CeUSYVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="279113399"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 11:12:50 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 25 Sep 2026 11:12:50 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 25 Sep 2026 11:12:50 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.9) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 25 Sep 2026 11:12:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h6+53/i6IburKnO5rS6NTsVZnyTfQXc0yWtFehOwHqQP97a8OiltKwyH/FfNAdRRpECyCMdYFqZsCWw2+CKjVEiclEwCuxfpxC/KENEcleckzC8+ANNm0IoIkNawc9GM5jYgvfKeyi8p/xyL9KJB5FoB7mXhfAptklVEBA2dVvXL9lu6vr7bV5NdnQKMie2xrCcqbiemSzvDGCXkQ9yUNzwQ5Do/AmiiJzqEtfUOFqZwrHJbxPIgIDUQwNoV1I0+RBqJv9HUIZmlpYEPeZ7NsWia2oRoOdCFij/A8eRwWjhOlOhI1F8I7EB9HVGcYh4ptaoR7A0ZEzsK3tJhYfIBrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HAlmy3gTuT44JoCsIjeGJfPD6oqCvQPLdLPJfTFtOso=;
+ b=waMOjDu7DEmQ64/U+EBbD4t1f9bIOejfodkWAMBP4OyFGevdKkpdSxeKnYQ9u+HMGum09kQiERwaAOdpa17hC799GQ/ZaiC2Rd+ADPWrK0lV2AlZ1TCUPoZHISMX70RwDO1+9VdFnKHCo4J8pIAq05mjWNPcN0R7c83ZsB+ZMNYWoGgxUx6GvJJbMS8Lcya4ABU8umcfh49aEsRqWYBidIBLpqmyL1R+3+Oavmxj9HgNUSKjtP3JJiYUZFxVzQeNWFUK7QYaPqwq0v1w6x7H2GN4xSVFgr1Otr9HupuTJQXC9+DWGy/1sK6Lqhp39u8xe5+cCR7OisXp1m+PPQk6sA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB7187.namprd11.prod.outlook.com (2603:10b6:208:441::12)
+ by SN7PR11MB7067.namprd11.prod.outlook.com (2603:10b6:806:29a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
+ 2026 18:12:48 +0000
+Received: from IA0PR11MB7187.namprd11.prod.outlook.com
+ ([fe80::be96:3f58:953d:6565]) by IA0PR11MB7187.namprd11.prod.outlook.com
+ ([fe80::be96:3f58:953d:6565%4]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 18:12:48 +0000
+Date: Fri, 25 Sep 2026 14:12:25 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Konstantin Sinyuk <ksinyuk@kernel.org>, <dri-devel@lists.freedesktop.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Francois Dugast
+	<francois.dugast@intel.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+	<tzimmermann@suse.de>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Donald Hunter <donald.hunter@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ilia Levi
+	<ilia.levi@intel.com>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
+ infrastructure for scale-up accelerator interconnects
+Message-ID: <ara5iTl7bmgWbPW9@intel.com>
+References: <cover.1787552412.git.ksinyuk@kernel.org>
+ <20260921131911.532d81f4@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260921131911.532d81f4@kernel.org>
+X-ClientProxiedBy: SI1PR02CA0046.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::14) To IA0PR11MB7187.namprd11.prod.outlook.com
+ (2603:10b6:208:441::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab6b808 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=PgtYs7_rqURmL8y0IDUA:9
-X-Proofpoint-ORIG-GUID: ukVnJa5RHUDZqyC5DvT3_ZUm7VqQRJiw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA3MiBTYWx0ZWRfX3oxF/1Gjebjp
- Ae/IuKI6Z7Lh0TO0MLxxRU7bSdoLiRd8eq1vQLrpdK7tsKNmt4F9PoqOw+0gyF69G515+zX/BUq
- im92GyfbFLWJbnYOdbrl0pBv/cLTmzApxrbqw72tGkCs9ns5ecelpFbMNQmmdmOewXq8xYGV+oN
- ui4vzvmAUAUj+RiASNlWHTr6+Jdm23S0Y6Syzg97kLAiCr5vne6vH9eLA8MN/Oirg4+sfi3xm/G
- UuiHsUmoWmos1ddnn1NyBKH9TLUNT2dS55J8NbXeV2KYbZf86CDZx4poAda/lktQBeiFOQO2+MT
- BDRhmQ/EdxoD3+pZNUX4R21SX8ltNX74MMGk3Z4RNpDeFZC/7Rxwiftr88LLjUfnjq+sD3nag6c
- YcaxXJpberjg7fMEFv5poRV281GAzJJl1StiOqkroFCKEHLzc4K4NWThXb4vTjH3eixCzE12iFH
- jxabp4LF1qKuQFJ4+lg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA3MiBTYWx0ZWRfX8sdZE0Y93IuB
- 6tNpCwO7l2xTVfQz0snKLxmSOCbhKVevBjrFEB3r3pTSKK49QVGWm6AgEnFJbY/D2V0vaee0WS0
- isV+KVEwcmndNx68rR6ItNYz7ZAptLM=
-X-Proofpoint-GUID: N8JFQqDRIO1lH3hR3uLnERDaVWnBYBtu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250072
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB7187:EE_|SN7PR11MB7067:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80446e72-dc39-4857-0364-08df1b309a6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|6133799003|18002099003|22082099003|56012099006|11063799006|10067099003|4143699003;
+X-Microsoft-Antispam-Message-Info: gw6lyc0G4SXfiSY7yhQgHlO/eSqw4p4TMgHF4rgspx07eKSQGhdL7YBBpyhtMO0Qns/QCkHdcBwPAHJTnWduEhz7mm9NIC4jhlB5tlKY7V6vQhAFHcJ/0D7B/KF/ueaRf+zfgVqjpDlfl89iqxB1hduV+ScQHb+y2Ve87KT7wdZThZFv2shbQM0FIzwAt66saOsxy5RScYnqrsI9QJbuLw0L5S3iqrDxu0NQHru7e9PeBUlgI1ZWHvTjHWRProTQDpxFFd0nVIatP4GsJLbbztu85CXd4O5xPPUjBkzisKUqZxDihITNnbuTpxP3RbtMxgwXwipk3RcHp0z8uKpqlEE8bh7f2YLNPVvYH/SQAOtZx1qJUxz5ghi6BgNTEO5lQdpi1GAVKQNqcD/9yC9S86yqUZYw7zGhcrVIzFomBdRpTNHHH9W0G64g4IlvVsCyCyLTEdxXfJIhgspAyltoPjkyB0q35d7m3ZZCkINHqxAsZaqwXsJnADl7ajz7mz18ixorplgUyeatYC1TmdRBMdbLI78pMiY7TWZDymXT8Pnzy2Qa54noZfdBGEbfURMxKhqxleq/Gtxn//pFHxLqP8WELY4JXoczcOV70LRyhSr+rt7Pd2O5R5Q6yUo8NL5XwxWF4sTkwsOp/yIxqDXLFi+nJtRmkxRh5kkNsssUVzw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7187.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8NWMT6u/rH5jLioUs1h0Syk742qVeFUmC6HWM69fX1ZFxKj9ITF3qcY1mJOv?=
+ =?us-ascii?Q?rUinlB/6jWUn2SpS8idmnvX8iI9yowSwTP81VLSqlYb2fmvx+9bbZSzU64kU?=
+ =?us-ascii?Q?GQgdyudEBO2HpH8ioXdPmm1JFV+lTdO89ReNjeixoCpztP1mCvQEVI6Yuren?=
+ =?us-ascii?Q?pUxKFf7vAexjuD6Cf/M+QwgSJvQkC2xLeuP3tTbrqgcexQSpGxxMStSZK6l3?=
+ =?us-ascii?Q?tDpQ+P9LoskWuOag5iOWG8wFQTIHFiQ7TIMtSU43D4ZagthRkVxe7QLt2/4w?=
+ =?us-ascii?Q?sRHBWvEaH8hVjKB7UhcR0AFUABm9X2O70N02nvthoUoRxI4UGunChUdRGBYA?=
+ =?us-ascii?Q?/gCZgPCqTeUimF21YJwSt/QR6IoWCTwO1MheE+xflMT3ResMp+Vz+LNtoxkE?=
+ =?us-ascii?Q?WVwRWbYNrQtbMSneYWiRiNaeSyKEBF4gSAo9LpCDOH2VRJ5fpJQ/4KZDurjN?=
+ =?us-ascii?Q?zAc5e3ctfprUtJX5G6PoCydOgASeL5bwKwJj3/pIi81Se9NYWjkeg2Zm9VKp?=
+ =?us-ascii?Q?04p1fQ+ddgx+PZiBKvnSxY9MUSaHMbAfizj8jbWoyKltCYOmk2YkaDcyW5LZ?=
+ =?us-ascii?Q?+NmMR9ftUT2eMYUxAtvk/wNNPkpLO1ex9RC1tvhqX4477vFrD4uMN/dgCKjY?=
+ =?us-ascii?Q?PP+//FRJZ7n/6rlL5TuxSh4UxIDUtB/P0EitQpFgward6RYSNU4AEgUUyL5Z?=
+ =?us-ascii?Q?/Ia+93R/CeZmhHR0r/iOtbblLCvn6K35McJb1ruYQkMczVvTYALJD4Zv0KMm?=
+ =?us-ascii?Q?iOBc38cEPLn2+v1JcfDxbWGqDPKghic/FOGRBtRR1lNQLAJmRUD7WAcbuEFy?=
+ =?us-ascii?Q?srqsz3IMy9CbhDS0QkcgIOmwrZkxiCwvkF7rE6nJZnBfRQRw1bryXxNeGFTR?=
+ =?us-ascii?Q?OO/chhkWwzXWaQddN4wle2EYmL2O7JNPTGvfAcNNI40ZRwnFvw+k4f4QZkPx?=
+ =?us-ascii?Q?MFE5NwE7JMWlGMgG9LpKp4FpNZjt/y2h5mQ8mKoqZXQpoUf6NT14EWAeWIIj?=
+ =?us-ascii?Q?3CurP6Y07w4ICp19E6PTAaQDkotFsysbLYayxaORGB4+RzRTMm1KmEtdCnno?=
+ =?us-ascii?Q?OV5JcRyfW52YsuvyMbP/x0kI+W1A5ODvkMQzBRquVrusJ5o+JRHeEmjDVvwT?=
+ =?us-ascii?Q?Nah25FX0gFka7Uod9N1l4g9aFUAfj/SmuejSPQBxDCwvfJMSB0b9UP45NREc?=
+ =?us-ascii?Q?0pv3zpvLN7I+UyiFPB49Gc9mVpL4ffh+8zqHtga2uI67v/fQ7KK+fmfbmfHV?=
+ =?us-ascii?Q?vA6Q+y1UpGBcp5Zdej4igZMWQiNnDDc7f4MdvjEV86L8uvRxTFkskCysRQXZ?=
+ =?us-ascii?Q?+r5WYA70TlLZeLyLehENo1fKsNLLwXjy2kyTS6UlZZJ32v2bQIHvfFq3n3yE?=
+ =?us-ascii?Q?gcEDqYwggY5Il34AUGokpYWfMHTQtBB1RAeInnuf8P3Fk6XO9PZwdS4ecIuJ?=
+ =?us-ascii?Q?RZsIYWqPKx9diWN40utBxdrpTySEfnmkv3PolMZgHjs98n9g6VdET9aOdE3I?=
+ =?us-ascii?Q?DCvGwga3vxIaWRaTzGs7SX2bT+8pfUIP5UwQQWKMaTvAFup/YYWM+BBjRgZP?=
+ =?us-ascii?Q?aUKD2Ev35PjKkNa2WN/KeenqIJ9FZrPtPRQQx9WwPw6Ua/R8hlQwdOJ7oJ/B?=
+ =?us-ascii?Q?mnDrACY+L/dQRUrqMAkzXXquR8XDgwZ1LDKqpP9lsePlq5O/aGvcoeKiPuHT?=
+ =?us-ascii?Q?iwqx7MGT5lyqp0R8/+IZlYzz3+4W/WMqPtXZechWATB/yZgC/FqYvnEDZ3GH?=
+ =?us-ascii?Q?yjJMmc1G/A=3D=3D?=
+X-Exchange-RoutingPolicyChecked: 1SkpQC73U6h94CNz8WXHnpR67cyWY1xol/6ViZGx52u/8UR+mIKs0DfGu1ORNprv/bZJNha5/jPBFSWIadVBF0LT8QJKgPuNjnBAC7qla+0//J7tIvjFbJfBQVrAeVOoOS6nZhAO+T0wB7Afu+6Fvy3v8VAX9I/71a21wOUhJOvsIeZlGpCDMppQVnK3EDMW/InoQeq5Ir3WgnxWgUq0UrG3dOXBFf4Or1PCaf329Vt/qvoGuDTnpy4S7fXi3+I0Em864LW7qmmSvh6cehvHc1qaWVSIAg82VZU6Hp2IkVLkRU+9k+PdO+NFLl5QHKv9F5FhR4K3P4N4v1PqrOlWvg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80446e72-dc39-4857-0364-08df1b309a6a
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7187.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 18:12:47.9846
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /TPKXxYV3/uyeL/g5qnJ0uSNEFNWICxofyQ3aXDyQWHg9aXeSmuOuOfR2mxP1O7M+28ViX4gfcsbd2ykcndnEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7067
+X-OriginatorOrg: intel.com
 
-Hi,
+On Mon, Sep 21, 2026 at 01:19:11PM -0700, Jakub Kicinski wrote:
+> On Mon, 24 Aug 2026 11:09:28 +0300 Konstantin Sinyuk wrote:
+> >   2. Are the Generic Netlink semantics, including dump consistency,
+> >      notifications and optional port statistics, aligned with YNL
+> >      expectations?
+> 
+> > 39 files changed, 13189 insertions(+)
+> 
+> Networking is absolutely flooded with AI generated patches.
+> Including long term contributors excreting huge unreviewed
+> code dumps :/ We have absolutely no time to help other subsystems.
+> Please do not use Netlink going forward, sorry.
 
-ibmveth_open() has two independent unwind holes after the logical LAN
-is set up. Neither needs the MQ RX series. This posting is against
-current net.git.
+Hi Jakub,
 
-Patch 1 issues h_free_logical_lan() on every post-register failure.
-A pool allocation failure jumped to out_free_buffer_pools without
-the hypercall, so PHYP still owned the buffer-list page when it was
-unmapped. request_irq() failure already issued H_FREE before taking
-the same label.
+I do understand the feeling here :(
 
-  Fixes: d43732ce021f ("ibmveth: properly unwind on init errors")
+But I do hope that you reconsider your position here. We had such a great
+experience with the drm-ras using the netlink and I was really hoping that
+we could just reproduce the same experience here.
 
-Patch 2 gives TX LTBs their own walk. out_free_buffer_pools reuses
-open()'s loop index, so after the pool unwind i is -1 and the TX
-buffers leak. request_irq() failure has the same leak. The TX-fail
-goto on that walk also skips dma_unmap of the filter list
-(pre-existing since the LTB was added).
+Netlink is such an incredible API.
 
-  Fixes: d926793c1de9 ("ibmveth: Implement multi queue on xmit")
+Would it help if I take the maintainership of this drm-fabric netlink
+along with the drm-ras one, ensuring the same consistent and clean usage?
 
-The MQ RX series on net-next keeps the helper versions of these
-guards and does not depend on this pair. If both land, keep the
-helpers in that series; these two patches are the current
-single-queue open-fail path only.
-
-Mingming
-
-Mingming Cao (2):
-  ibmveth: h_free logical LAN on open-fail after register
-  ibmveth: fix TX LTB and filter unwind on open-fail
-
- drivers/net/ethernet/ibm/ibmveth.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
--- 
-2.50.1 (Apple Git-155)
+Thanks,
+Rodrigo.
 
