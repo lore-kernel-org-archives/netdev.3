@@ -1,426 +1,137 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f41.google.com (mail-wr2-f41.google.com [74.125.225.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0EF4E2F02;
-	Fri, 25 Sep 2026 15:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B844D9F9F
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 15:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790351792; cv=none; b=YuYaJt5pV2d/GdNxS6a90s5kHLKIKeGXvBkUGaojeOiWYqdDcKoU3JWhh2wUKqtD5mXR5df2TgY8ym1Xi7hF9H1GoX4EtQ6k1lujTwHTbIf0XBarVKrRADyVHCnPWs8KiWaHrHIg+nr+dV1uXypDtoQSR+FkcLs9OlZnHoyUaTQ=
+	t=1790351866; cv=none; b=u2fi/yBx+f0pZk3it4oHaPiOAfHydf+UJ4cXAJp9LQEddfHng5FrkVDkh9YjC5h0IMA6dvWG0QHbzNKmv7vuMgx55sEXVdrvTxWGk2SmH+5w5vq4TrQbSyRkjReTk8Gy0cNpEVM0m6SlbI2P7NlJDEhSnNdDgjkGestHZx1ufDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790351792; c=relaxed/simple;
-	bh=WSlP9Beit+HhNmpFZRkX51X2r42T+utGkwLpdOhYUP0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eZcXEzRlUWbMzDXCtj1nxT+Y0qR35lCnLkSjX9NJ6r6sv5VwiuxcfC7PzpJ63hC8N1JnqLZSrig4US38F2beNsrep4aQPo39T4BPtQsuZwb8YXniImPfoVjQ558G2p5S0R9WoO7xNUUetJbhFbjHqFj3lfd4u3MO7RismC7UXxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=HcsKZQ79; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1790351866; c=relaxed/simple;
+	bh=EDelbTNsLGwr16sy1/ve2CrvpZJX80YUMKX0NU3F20E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BTOMZzi7maC6++bnklZzSmt2YlmDdeRhw+FompfYApuoNHh52mi+AmOry+37fvpi8UMpVAi9P0b1iF6b75w2d4Q50hh08i87FSRVn0Bx5dU78+l6HsaBSV4GzsNBb/t9xUa7HgyUJNOcWtzNrcK7hFaPQg7Ie1+PUY28azlWdw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4L2y4Tc; arc=none smtp.client-ip=74.125.225.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="HcsKZQ79"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=7/u3O+5CofNhzwgV8gLJqqSThYVao22PZEKp33FChtQ=; b=HcsKZQ79Ysp+OlMLBibdiyzQXd
-	MBVLiS8cgkfLA6kLRZX5vegT2M3ejnYOYPFtetMfOID5cY2FdjNvqV/2MCVSkgEZ9q+Ye/aNCrONv
-	COF3I8VT33oPQZZpGgqw3y2H0Uht5PuIf7A2PiUf2Al1OBot5YjBSJeasVWVoYiwMwQRvRKNgwK8l
-	di+q0crmdYATGKUDhJQZjBPsKjqjtdoM75qSh1wcurW1KGEBYtHNUOk4hnS0sPwSt7DHVNcmrEab2
-	OzYgQiMbZK4vBtc6zxqwc5SqCpn68FjuJ/J3jSMVKezU3pGPVXM09g/WHgWxI5g5jw6PSTol311cI
-	Vwg6+dwA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xA8Hh-005Pma-05;
-	Fri, 25 Sep 2026 15:56:25 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 25 Sep 2026 08:55:21 -0700
-Subject: [PATCH net-next 6/6] selftests: net: getsockopt_iter: cover ip and
- ipv6
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4L2y4Tc"
+Received: by mail-wr2-f41.google.com with SMTP id ffacd0b85a97d-4834977ae75so635008f8f.3
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 08:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790351861; x=1790956661; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JDj9ZLoDuXLeZ+ESPsWzwz0ze3YEaXzdQ65mT9PQEa0=;
+        b=N4L2y4Tc+Rv4L5beR6/DjOIpQjyNUB42kUhmYgxT7UjCasPYhBBZ9TTq4WyWvQeew3
+         /Cb+2TG8pD5H86aD5x9AlYeBTCtuZWEUO88A2qPBtTj0S5NDdHUEIaKt5Xj5oohJ4fQR
+         r1Fu7QypSFS5H+gdP24Qf81wLA4rDLce6AdenH9cp3ouEFFbgbmFoxdwE2zLjJHTdQD4
+         9wfgR8f9iIhbUU3LRESyu94+B9XTKhvp8u6UgGPLThtYWtHqsyAL85Ht2HxJsLUXupdZ
+         SURUz46RxmfAROl3PXcPRtE/4PFdmQwbqsCC2aiGj9x6C245yHcWzZFMIDddaDhMxb0b
+         h8zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790351861; x=1790956661;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JDj9ZLoDuXLeZ+ESPsWzwz0ze3YEaXzdQ65mT9PQEa0=;
+        b=UJWh2R6rHkVlGGXl9cc7ZXULt5U9UNixg9dGVKESWA5mdDbHPUdaLtr9I49dGbgGkQ
+         axPwoQ7ByN5BOksiIyNjC8mbF6YpO57Q/b/kL6xJ9vnY5DfOWrg7LtNeg8oh9fzATjZA
+         19HDQd2oSPKZqmyWgbFvIQM+kc3htRz+2km64G4+1yel6kxAK92lrqeZ+yUcrSrjJais
+         L0elG7auHuy5DEtwX7qu9ZBcCpmgNJnG3MP/F5gnmHV3Od0HlVQbC1Lvk/Zw/0kPCylr
+         dx55Y+tiAliv5/Gdy8jMab9TD8tp0MUMJTo+D6XYSuhsGcwW0melCzYaqwm3+X+cBpoN
+         /jPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw40N+SVizSj7cGf0gi2GKLNbBqCTI9u1wJn0FVdUYcxMT17R+pc7tY/F5Zlmvb8yTbaP82OZk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDKUjoMv8Rb5kI0Gum15MAz4dDDtANVx0E2h/y5wZMVntdQ4Yc
+	qUxaX329fLpFf6fmTzZmuC08gjGsZuG4dBi9ZuHRTpr1hRVnvWHt1ZSB
+X-Gm-Gg: AYBFou1FX+9bqIgGCTN7qgBw+CqtqXEaXJBfUSN1eLzH3XO4I13gSIiR1KZD08HEN7r
+	4bJIGJaFQBCepARCuUvtZQ/S+T0yQDdOR09aS5/dj1lajd/lxG48y7NqVd3m/VX9WEFZeLZYxR8
+	4lazqYGr/HTxE+7PDD4jwjpkLq8b8VWmu5Fml8mADCwMblvoOYNBZjd5mQoakGwx9nt47omj6Qr
+	uam1Y0SAjLfDnPZ+YtYRbw7SUjpBdpLhSRxBsbGndVfqL+sqHsAyA0Id9QIvptAhtmC7Iw6TmXC
+	z09brZ4IWJVz7A12LcUydPVLrbbhUlmRhfdl0BicaA+dc68soQhY5XGQO05I6Q/rhxVul5XR/Cq
+	Mb6CAUegokUOEl6y3w4+c2Q0mbfF/ZJdQXcBIBtUUknj4xc+2P72YVUeA9Ll7nH8UDSsI3DO4MQ
+	fYgo/0F9Lu8A+PkBm/CuYZy+G87SuFhzBQLk/QQPeM4bK4lwLTLyp/TCpTH0KDXqxPT7VHROVJP
+	jwfPR5ddhWWm2QydkIQmrgdl83cYlT7xx1NrNQDf8kx5/gcWSUwm/1I1QKrSo6DbTf+RoWW3++J
+	PRwjUBa5kZ2/Fk/3TDCpqOHKBeFG
+X-Received: by 2002:a05:6000:2509:b0:487:27f6:a4d7 with SMTP id ffacd0b85a97d-488716b0361mr12527019f8f.39.1790351861320;
+        Fri, 25 Sep 2026 08:57:41 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a3627a8sm8964225f8f.23.2026.09.25.08.57.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 08:57:40 -0700 (PDT)
+Date: Fri, 25 Sep 2026 17:57:38 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 04/11] ARM: dts: imx6ul: Add Variscite audio codec
+ files
+Message-ID: <araZ8pJGmDVXMjvE@Lord-Beerus.station>
+References: <cover.1790344389.git.stefano.r@variscite.com>
+ <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
+ <araMJFirhP86Dcb6@SMW015318>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-sockopt_expand_out_v2-v1-6-c3ef2e3bb5c0@debian.org>
-References: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
-In-Reply-To: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- david.laight.linux@gmail.com, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8647; i=leitao@debian.org;
- h=from:subject:message-id; bh=WSlP9Beit+HhNmpFZRkX51X2r42T+utGkwLpdOhYUP0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqtpl6haoSGsEOfWCxMqiAmtXUzCjPNbtA1NXzj
- 5F50/mBuAuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaraZegAKCRA1o5Of/Hh3
- beV/D/9OnYxNiPCM8ZjZBYGJngwWeJblZOos4+Y/dY+k0ZCGgXuRjdvZ6RBTUvFQhcByLFQnr0s
- yLA9nTkvXjkK9/f8HDNP64Npq7jQ5ig0SLiW1moluIAMNfEF2oADkVMpKKic7UcLNGZcbIEn5RC
- tsCMBIh6xuRRDpgnChGj5POeUjZFDr6r+HDjxT/FMts90sp9QpsVlh0ahqjOTUoNFcPT7cSiZvO
- lOoPI7ep1XBgaRAlvePdbTwm1qmHeJyYfLVyia0Qxbm8GjuJlqdVrctdeC/ClIiNhQFEBj9FbcX
- XLazAnwakqoElMzp2digPSjLyVFf/O3kw/ABU9fzPPikZdDcifQb5Rx+jjgjAXRdjvCxXti2UaR
- j2JlgW2hX1jJJYMPeWeJSTgd0ZwC31UdEziWFk6S0I29zPQNE+X/cAqQ8Fq9GIwM5hoys5p1dlL
- 4o0VNC4zo9PAHIFdySIUvJEV1YBm/jvLELWn0BTm1V2J+uiyfFQ4WeCFsHPI8wQaiWQ0Lhm1YT7
- ZpzK8ZauihzyEfytHDEyOyQore7yRX7EC55JH6vNosqUepW2rvfi9aBNxm765PiJUvNNSghy3tW
- R9hh9xTo4ZRacTbHn7SrAnV1LFzkeBa3tosH9RlWA5sxA3FPMgiefbsxyx6UqiC6BRxos0MMWIS
- CTCy8QCoXH8IoeQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <araMJFirhP86Dcb6@SMW015318>
 
-Add an ip and an ipv6 fixture, pinning the returned length and errno
-across buffer sizes, the branches that answer empty, an unknown
-optname and the options dispatched before the switch.
+On Fri, Sep 25, 2026 at 09:58:44AM -0500, Frank Li wrote:
+> On Fri, Sep 25, 2026 at 04:02:21PM +0200, Stefano Radaelli wrote:
+> > From: Stefano Radaelli <stefano.r@variscite.com>
+> >
+> > Add separate DTSI files for the WM8904 and WM8731 audio options on
+> > VAR-SOM-6UL and DART-6UL modules.
+> >
+> > Put each codec node, the SAI2 setup and its pinctrl in the selected
+> > audio DTSI. This makes the WM8904 option explicit instead of placing
+> > it in the shared module base.
+> >
+> > Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> > ---
+> >  .../imx/imx6ul-imx6ull-var-dart-wm8731.dtsi   | 71 +++++++++++++++
+> >  .../imx/imx6ul-imx6ull-var-dart-wm8904.dtsi   | 88 +++++++++++++++++++
+> >  .../imx/imx6ul-imx6ull-var-som-wm8731.dtsi    | 71 +++++++++++++++
+> >  .../imx/imx6ul-imx6ull-var-som-wm8904.dtsi    | 85 ++++++++++++++++++
+> 
+> what's difference between imx6ul-imx6ull-var-som-wm8904.dtsi and
+> imx6ul-imx6ull-var-dart-wm8904.dtsi?
+> 
+> Frank
+> 
+Hi Frank!
+Thank you for taking the time to review this huge patch.
 
-SOL_IP answers a sub-int buffer with one byte where SOL_IPV6 clamps the
-int. IP_PKTOPTIONS and IPV6_2292PKTOPTIONS want a stream socket;
-MRT_*/MRT6_* want a raw one, and skip without CONFIG_IP_MROUTE or
-CONFIG_IPV6_MROUTE, where the switch answers ENOPROTOOPT instead.
+The difference is in simple-audio-card,routing:
+on DART-6UL, the microphone jack is routed to IN2L, IN2R and MICBIAS;
+those routes are absent on VAR-SOM-6UL.
 
-MRT_VERSION and MRT6_VERSION are spelled out; linux/mroute.h does not
-coexist with netinet/in.h here.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/net/getsockopt_iter.c | 302 ++++++++++++++++++++++++++
- 1 file changed, 302 insertions(+)
-
-diff --git a/tools/testing/selftests/net/getsockopt_iter.c b/tools/testing/selftests/net/getsockopt_iter.c
-index 6c2408df461232..32b6e0a50f1f9c 100644
---- a/tools/testing/selftests/net/getsockopt_iter.c
-+++ b/tools/testing/selftests/net/getsockopt_iter.c
-@@ -55,6 +55,13 @@
- #ifndef TCP_ULP
- #define TCP_ULP 31
- #endif
-+/* linux/mroute.h does not coexist with netinet/in.h here. */
-+#ifndef MRT_VERSION
-+#define MRT_VERSION 206
-+#endif
-+#ifndef MRT6_VERSION
-+#define MRT6_VERSION 206
-+#endif
- 
- /* ---------- netlink ---------- */
- 
-@@ -492,6 +499,301 @@ TEST_F(rawv6, bad_optname)
- 	ASSERT_EQ(sizeof(val), optlen);
- }
- 
-+/* ---------- ip (SOL_IP) ---------- */
-+
-+FIXTURE(ip)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(ip)
-+{
-+	/* a router alert option, so IP_OPTIONS has something to answer with */
-+	static const unsigned char ipopts[4] = { 0x94, 0x04, 0x00, 0x00 };
-+	int ttl = 42;
-+
-+	self->fd = socket(AF_INET, SOCK_DGRAM, 0);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_INET dgram socket: %s", strerror(errno));
-+
-+	if (setsockopt(self->fd, SOL_IP, IP_TTL, &ttl, sizeof(ttl)) < 0)
-+		SKIP(return, "set IP_TTL: %s", strerror(errno));
-+
-+	if (setsockopt(self->fd, SOL_IP, IP_OPTIONS, ipopts,
-+		       sizeof(ipopts)) < 0)
-+		SKIP(return, "set IP_OPTIONS: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(ip)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(ip, ttl_exact)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_TTL, &val, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_EQ(42, val);
-+}
-+
-+TEST_F(ip, ttl_oversize_clamped)
-+{
-+	socklen_t optlen = 64;
-+	char buf[64] = {};
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_TTL, buf, &optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* SOL_IP answers a sub-int buffer with a single byte when the value fits
-+ * in one, rather than clamping the int down.
-+ */
-+TEST_F(ip, ttl_single_byte)
-+{
-+	unsigned char buf[3] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_TTL, buf, &optlen));
-+	ASSERT_EQ(1, optlen);
-+	ASSERT_EQ(42, buf[0]);
-+}
-+
-+TEST_F(ip, ttl_zero_len)
-+{
-+	socklen_t optlen = 0;
-+	int val;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_TTL, &val, &optlen));
-+	ASSERT_EQ(0, optlen);
-+}
-+
-+TEST_F(ip, negative_optlen)
-+{
-+	socklen_t optlen = (socklen_t)-1;
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IP, IP_TTL, &val, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+TEST_F(ip, options_roundtrip)
-+{
-+	unsigned char buf[40] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_OPTIONS, buf, &optlen));
-+	ASSERT_EQ(4, optlen);
-+	ASSERT_EQ(0x94, buf[0]);
-+}
-+
-+TEST_F(ip, options_undersize_clamped)
-+{
-+	unsigned char buf[2] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_OPTIONS, buf, &optlen));
-+	ASSERT_EQ(sizeof(buf), optlen);
-+}
-+
-+/* With no option set the reply is empty and the call still succeeds. */
-+TEST_F(ip, options_absent)
-+{
-+	unsigned char buf[40] = {};
-+	socklen_t optlen = sizeof(buf);
-+	int fd;
-+
-+	fd = socket(AF_INET, SOCK_DGRAM, 0);
-+	if (fd < 0)
-+		SKIP(return, "AF_INET dgram socket: %s", strerror(errno));
-+
-+	ASSERT_EQ(0, getsockopt(fd, SOL_IP, IP_OPTIONS, buf, &optlen));
-+	ASSERT_EQ(0, optlen);
-+	close(fd);
-+}
-+
-+TEST_F(ip, multicast_if_oversize_clamped)
-+{
-+	socklen_t optlen = 64;
-+	char buf[64] = {};
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IP, IP_MULTICAST_IF, buf,
-+				&optlen));
-+	ASSERT_EQ(sizeof(struct in_addr), optlen);
-+}
-+
-+/* IP_PKTOPTIONS only answers on a stream socket. */
-+TEST_F(ip, pktoptions_wrong_type)
-+{
-+	socklen_t optlen = 64;
-+	char buf[64];
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IP, IP_PKTOPTIONS, buf,
-+				 &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+}
-+
-+/* The MRT_* options are dispatched ahead of the rest of the switch and
-+ * want a raw IGMP socket. Without CONFIG_IP_MROUTE they are not
-+ * dispatched at all and the switch answers ENOPROTOOPT instead.
-+ */
-+TEST_F(ip, mroute_wrong_type)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IP, MRT_VERSION, &val,
-+				 &optlen));
-+	if (errno == ENOPROTOOPT)
-+		SKIP(return, "CONFIG_IP_MROUTE disabled");
-+	ASSERT_EQ(EOPNOTSUPP, errno);
-+}
-+
-+TEST_F(ip, bad_optname)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IP, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+/* ---------- ipv6 (SOL_IPV6) ---------- */
-+
-+FIXTURE(ipv6)
-+{
-+	int fd;
-+};
-+
-+FIXTURE_SETUP(ipv6)
-+{
-+	/* an 8 byte hop-by-hop header, so the sticky options answer */
-+	static const unsigned char hopopt[8] = { 0, 0, 1, 4, 0, 0, 0, 0 };
-+	int hops = 42;
-+
-+	self->fd = socket(AF_INET6, SOCK_DGRAM, 0);
-+	if (self->fd < 0)
-+		SKIP(return, "AF_INET6 dgram socket: %s", strerror(errno));
-+
-+	if (setsockopt(self->fd, SOL_IPV6, IPV6_UNICAST_HOPS, &hops,
-+		       sizeof(hops)) < 0)
-+		SKIP(return, "set IPV6_UNICAST_HOPS: %s", strerror(errno));
-+
-+	if (setsockopt(self->fd, SOL_IPV6, IPV6_HOPOPTS, hopopt,
-+		       sizeof(hopopt)) < 0)
-+		SKIP(return, "set IPV6_HOPOPTS: %s", strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(ipv6)
-+{
-+	if (self->fd >= 0)
-+		close(self->fd);
-+}
-+
-+TEST_F(ipv6, hops_exact)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val = 0;
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IPV6, IPV6_UNICAST_HOPS, &val,
-+				&optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+	ASSERT_EQ(42, val);
-+}
-+
-+TEST_F(ipv6, hops_oversize_clamped)
-+{
-+	socklen_t optlen = 64;
-+	char buf[64] = {};
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IPV6, IPV6_UNICAST_HOPS, buf,
-+				&optlen));
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
-+TEST_F(ipv6, hopopts_roundtrip)
-+{
-+	unsigned char buf[64] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IPV6, IPV6_HOPOPTS, buf,
-+				&optlen));
-+	ASSERT_EQ(8, optlen);
-+}
-+
-+TEST_F(ipv6, hopopts_undersize_clamped)
-+{
-+	unsigned char buf[4] = {};
-+	socklen_t optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, SOL_IPV6, IPV6_HOPOPTS, buf,
-+				&optlen));
-+	ASSERT_EQ(sizeof(buf), optlen);
-+}
-+
-+/* With no header set the reply is empty and the call still succeeds. */
-+TEST_F(ipv6, hopopts_absent)
-+{
-+	unsigned char buf[64] = {};
-+	socklen_t optlen = sizeof(buf);
-+	int fd;
-+
-+	fd = socket(AF_INET6, SOCK_DGRAM, 0);
-+	if (fd < 0)
-+		SKIP(return, "AF_INET6 dgram socket: %s", strerror(errno));
-+
-+	ASSERT_EQ(0, getsockopt(fd, SOL_IPV6, IPV6_HOPOPTS, buf, &optlen));
-+	ASSERT_EQ(0, optlen);
-+	close(fd);
-+}
-+
-+/* IPV6_PATHMTU wants room for the whole struct ip6_mtuinfo. */
-+TEST_F(ipv6, pathmtu_undersize)
-+{
-+	socklen_t optlen = 8;
-+	char buf[8];
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IPV6, IPV6_PATHMTU, buf,
-+				 &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+}
-+
-+TEST_F(ipv6, pktoptions_wrong_type)
-+{
-+	socklen_t optlen = 64;
-+	char buf[64];
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IPV6, IPV6_2292PKTOPTIONS, buf,
-+				 &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+}
-+
-+TEST_F(ipv6, mroute_wrong_type)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IPV6, MRT6_VERSION, &val,
-+				 &optlen));
-+	if (errno == ENOPROTOOPT)
-+		SKIP(return, "CONFIG_IPV6_MROUTE disabled");
-+	ASSERT_EQ(EOPNOTSUPP, errno);
-+}
-+
-+TEST_F(ipv6, bad_optname)
-+{
-+	socklen_t optlen = sizeof(int);
-+	int val;
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IPV6, 0x7fff, &val, &optlen));
-+	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(int), optlen);
-+}
-+
- /* ---------- tls ---------- */
- 
- FIXTURE(tls)
-
--- 
-2.53.0-Meta
-
+Best Regards,
+Stefano
