@@ -1,46 +1,46 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012037.outbound.protection.outlook.com [52.101.53.37])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011056.outbound.protection.outlook.com [52.101.52.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868144718F9;
-	Fri, 25 Sep 2026 08:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AB147799D;
+	Fri, 25 Sep 2026 08:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790324930; cv=fail; b=asEQSEiDzfEiau9GVq7GNYRTV9wThCSS1+UyYyooDE38dqKDgxg1bXyfWK10LOa9J5Y8hM4cyqn9lPbNxo5I2r7A9VBYV9G3avzEA3CGwc1FM50LaxPNOHb7ZsREKSYS9iYlxBsh1BbIQJDuPZRanjVRh5ssEzQSIdwI3/oklAY=
+	t=1790324933; cv=fail; b=iH2/hD2BWFoD57vMj+x8+irFbjRLtDfE7gh3BKOyzZO9Cdgkvl6M2gBU5WftN5lITaR1RfYfXG0OZDkQFaGBLX9779mpdwh1iUeIh16SkswwsrHf3KTP4LZdmLOXu2u3L2K05lw/2FdQm8a5SrKsE9is1Dm1vn0wUBsjd29gSoM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790324930; c=relaxed/simple;
-	bh=UGTO7keiFo6rUiYI13XJnILV/qTRkBhN7ePFWKrrwzQ=;
+	s=arc-20240116; t=1790324933; c=relaxed/simple;
+	bh=60Ub4Zm31WiyeM5sLHdWROJwb6Se0IlZaw2zyaijLEQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EPjIiXQm21sqPzwbaoPUS3srqVVftPLMWkeCQt9Gon35dSmrtcTt626zv4daWocz1zSfXWZUbaH2UOkWAUVG6v8Caya99zFY6/eMpQWFZSHLbiICNO67TvTUmfMYkDr6U3iXIEze365WLzDkZvw5llkqm10vifY+cAq+V0CfU7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DCoPXhAQ; arc=fail smtp.client-ip=52.101.53.37
+	 MIME-Version:Content-Type; b=tLDZEuI08xUC++3hvwGmwxZ7qKONLoEGtC+jcawZfxQmWv1yMuchJSp1CBeiPIMAkoRca3ZK3MKWMMYsRmWa35Eh8Se24K6kp12TaJtJKlMMFKJAJh+O6KSBHr/PUJagTVroxSkxsb/GUpICVs+Oz0MIAYWpCtPACRYq5BuQg0I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lOMJNV+7; arc=fail smtp.client-ip=52.101.52.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DCoPXhAQ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lOMJNV+7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DIbj9apWfHlKAe3g32uVTfgVgGA3lYMqnku+drrlwT2Io9/aE7H70Jm7/CDB2IMRIRjkFftQdrZxfuX5LYkJHYqi270Ugab9U+5OrhmCXCbLge1mzg8njo3IX0EmYKP+wdbxpB9+hGWUjbgUFs4M6+w/OteUC8E+DIDkn6Zff2GeBWQx7707JNgbsesPMIcgrsgDBFnIrWM+Tmn2ljn+PJqFEL/9peMdObEnnwWCGEfSw/2uOZiP4x85Oay8f8SlYE79kmWr7126MxI4DWG208KkyKnpJjR/31AxbjqSdYQfSGG6CQJbCsvjqf3T7e9eI7XPoRaRwtodVBbRRLcjcA==
+ b=j4lVeNi93H1E7k6S91zRcr1DJJcWJwlzQFnPoIQJNu8FS0cMg+pr2uDtHs93Mfm/sQnJErAQAoKhOEAOBZtWYy5pvgIBfa1PjE8yvkIDhtPByGOGWn4X+2bpzsIPL5fPg+BuZ8ZnN/Oulp6dQrNEWwhlEAjUXAKIEcFFi2K0R9IZCqe5RjVHO4MDwvhpE1Mtsfe/gcOf3CRR5sMCHI+EQQhNJbz0I0fUu/d4NkQFiyO7rAQTpMm4pIggihN790evkdIOG4LXT9yB+i/8+v8WFlaSnmYIqSFSqBNlSKBHqPPftZYDYCEMu1Zn0q20QCmKBMkplJejRtkba/3fGmexJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oGNmUJg+dd7jg5OhAOMtTef5QswqYFDHlBP6ojKcPTE=;
- b=UZO4QncQd8FDEMhzAit8H4d7wsOrWusxwuISjavwhfkvV08Ed/f+bDJT/fVU0pZi1sW1AgVissTM/POBag9UI+l3RSbW5usXD6scTtN37+aocmSgbeFTsSniRDdZcKV4zQIavk+Px2nqxffZCwrBIYKBTbACtigtJ4IqruxL/aWU3dq7KJj11mQmYePX1FcUR8lqtUjNvPZsxdZYWeSsqAoSb8ljBiJL6opzmNciXxgXcYfc8X3CIqPbCJ0+VEluUv9GEppLpUEsCtzpMn5impX6Kp3ewuGKPT0KpVzfRewjFJHeDFVyB4LyhKDxtHv2AG+qWKbD7Do4A3t3hAHRIw==
+ bh=ahDaY9AmUGtIY2Ut+xEqttwSPGHfSjFCpxDfkPRVdlg=;
+ b=jg3cJDRJj6Sgnx4znkKPQWcV9atfHpsoo1Tk5XcGnUayny80+Pn3PMOKwyKVmb+rvVoGT4cWRznob6scqb8gpUOO7Hx5VwnA+CBNVAuH6E+RLjdxCUHwhDnEXmWvRhJVAJkdPI+MOP/JTAD3UaOt1e5Eh5p5+XyWpDcHxbOuNv4wMo8GokXPFG0sTAaV5tNLQVvN82KLAEmdo9yh2rsAyhutq3AX2McdJfZ+9qAms3WL0miFJxgAp8vIGE476ZxswqPDtYVyO3KE2pXH2WnqFoS7EcxM+IA6ejEPenCrewj8mw8n3LnIA89TYrClGyF9RAcBqHz0vgbQNG2Ns9m0/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oGNmUJg+dd7jg5OhAOMtTef5QswqYFDHlBP6ojKcPTE=;
- b=DCoPXhAQvOduzGTeavM1CimOoc0DXHWlO4aBf5yb2QBq4FNCWYD8WDLY2Ze82Cse+7aFVZ5PaymtSrE6ThfMs16eR2jswBPfbky1QnI1TWwiQ3Ru61vbSREn/lwVHFGpn0EnzqAZPyxLrTPWqywoxTzqKufSriM/XVsF+b1ANHk=
-Received: from BN9PR03CA0631.namprd03.prod.outlook.com (2603:10b6:408:13b::6)
- by DS0PR12MB6463.namprd12.prod.outlook.com (2603:10b6:8:c5::10) with
+ bh=ahDaY9AmUGtIY2Ut+xEqttwSPGHfSjFCpxDfkPRVdlg=;
+ b=lOMJNV+7B6FSvk8V0j7HgIMhLrwMUUW8Bf28Iv/inG2D+DLWguKFUzheg2aua2YrFCLytlqsaDrJRaGGwaQfySrx5SN/R0N7v4ZegKSub/ZnetF/yZTnQjGQh+UiJnFoaUn+yL4hH2wpAe0cBQZicY5GFf/Y+iwIAFo6UIZmKrs=
+Received: from BN9PR03CA0706.namprd03.prod.outlook.com (2603:10b6:408:ef::21)
+ by DS7PR12MB9525.namprd12.prod.outlook.com (2603:10b6:8:251::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 08:28:35 +0000
-Received: from BN3PEPF00022BCB.namprd03.prod.outlook.com
- (2603:10b6:408:13b:cafe::a2) by BN9PR03CA0631.outlook.office365.com
- (2603:10b6:408:13b::6) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 08:28:44 +0000
+Received: from BN3PEPF00022BD0.namprd03.prod.outlook.com
+ (2603:10b6:408:ef:cafe::6d) by BN9PR03CA0706.outlook.office365.com
+ (2603:10b6:408:ef::21) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.18 via Frontend Transport; Fri,
- 25 Sep 2026 08:28:35 +0000
+ 25 Sep 2026 08:28:44 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,16 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BCB.mail.protection.outlook.com (10.167.248.168) with Microsoft
+ BN3PEPF00022BD0.mail.protection.outlook.com (10.167.248.166) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Fri, 25 Sep 2026 08:28:35 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ 15.21.451.8 via Frontend Transport; Fri, 25 Sep 2026 08:28:44 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 25 Sep
- 2026 03:28:34 -0500
+ 2026 03:28:43 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 25 Sep
+ 2026 03:28:43 -0500
 Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Fri, 25 Sep 2026 03:28:31 -0500
+ Transport; Fri, 25 Sep 2026 03:28:39 -0500
 From: Abhijit Gangurde <abhijit.gangurde@amd.com>
 To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
@@ -65,9 +69,9 @@ To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
 CC: <allen.hubbe@amd.com>, <a.k@amd.com>, <nikhil.agarwal@amd.com>,
 	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
-Subject: [for-next v3 2/5] RDMA/ionic: support firmware-assigned CQ IDs
-Date: Fri, 25 Sep 2026 13:57:59 +0530
-Message-ID: <20260925082802.2675902-3-abhijit.gangurde@amd.com>
+Subject: [for-next v3 4/5] RDMA/ionic: add Shared receive queue (SRQ) support
+Date: Fri, 25 Sep 2026 13:58:01 +0530
+Message-ID: <20260925082802.2675902-5-abhijit.gangurde@amd.com>
 X-Mailer: git-send-email 2.44.4
 In-Reply-To: <20260925082802.2675902-1-abhijit.gangurde@amd.com>
 References: <20260925082802.2675902-1-abhijit.gangurde@amd.com>
@@ -81,316 +85,353 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCB:EE_|DS0PR12MB6463:EE_
-X-MS-Office365-Filtering-Correlation-Id: b165a69f-e173-4ed4-255e-08df1adefe08
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BD0:EE_|DS7PR12MB9525:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6842c7db-c826-4e8e-8cbc-08df1adf0344
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|82310400026|36860700016|11063799006|10067099003|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|82310400026|23010399003|36860700016|1800799024|10067099003|56012099006|6133799003|3023799007|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	ZTpw+roclsgPYPIBDV9U9+JPu6gbDvWi9mTvDY8e5Vmn2T4Q2PhdLRs7CWeD1O+BmKrToOot5HHBbX1XoNcWC/XGnhjnpCYfR71Ewvd9JwE2j0fU6I5y7+tOnTaIG5PvErCYo2P8oB6Q/EODXQJsIVDLqPkqiSl6sZCE+evA/c3L/0d7dNdfTF9bSpShRCyEBbs7sdFSuCB6JW6vZ4Cf3tQtw/iaXqPoICq1Yw0d78dal7B1zT4mvG3VfQhNYc1XWPbbsybYnQMh7hrOeWpPlkIZO85l1y3n+1xHHl8YIdDEXDQW998dFvqFA2FTZIBMDv/t/6bvv8RULSAcdC7SU2kdBZ4F4MVcOXwl8W+idCV2is3C9jaQPkrY3SlFL+iNWCfUJT7oxRunLbiI5r/2r1nl+rYP0sMbxb1d2Np1qx4JLN/iqZsA4/KVcF4k5vbItE2YLKDxi+6WEJ/FNhzzll13W8J7RWpA0KBBMG237W5ThNnWhkGjUUbbm1LStOetRH962AYgYC7CAF0OE0Csbvwj2wVHcsmbRt2/ZB0eh6NpFzFLm3D+57Dv+JtC6DVVn2Hmh/shSYWocIw4aMdu1lk545/OUqrPLrcPKttmaW9n0pPqSXShQKi363tfCgA7JuvsFdZfYGJ/nRwX3ddEtAKyVvZ8slf+6m0mKzRyjRhrxEUktneJtC4MExMuIRi+tSMpo13jPgMS8kb1za2ucw==
+	yE1NepE55pmTslvj1pTKO3ROzjlO4CQyEzkZl3v5TijUQclUsbhORxJ2SqlwPM3fL14Q76IYBvLRhjr7PPwUa/jcohmHSkTKodsHLgrThlX+KkQHxYBo+O6rHpQavI8oI26li+rDRZvu/rdXYIVsTmaDwYnNpJn9mUnuyUbNouavTas9j8Xes9pDppB4vCjC7jsnzcBYOvHoqrxrncVLAtDpmQ8jOnMj8DfJK8nbUhxgsbWnVCrcyfOYSX9Zx5NcnrQ5zRyw0S67sjdEq4grxnpNUQ2b357oxJQR2hhxiGbXkJX3eQdxBLCTeIOwltATtt7XAu+gqJUhTHVWHsDF205xPO0SaZ14CDB6SpvSDWVwu0j6pVsjKxa4HFWBMEu0t5EQ6Z0LcipvOJQd40e91ViW3B4LXfOZSicbUYzcScya7/XiIEZjX1OJKbdgAi0z35+az4aPYwoKA3NsLwgyktNFssqQ1TTIsuQZWfbRp1niciyYy61KewC33YHQCligxNiy5doSUDk4BbnyZlaCga8zWWxvJBHsUF1WS9JSGueQxqXGWX7kLe3zauzXP50CjieuzZ4orD7j6ngevezX6aR/rtEd4KZ/G2BhTIWlDB+X/tFdHe9jZ5YU++XZeG6MiBm7r9NigdPPIoH/5XAQ53NOKoaqMF4ex0r6VhGx+0+imWZMaPlQVaIXJY7aF0Q4g+NseXSTCYvJre/yt578Hw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(82310400026)(36860700016)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(23010399003)(36860700016)(1800799024)(10067099003)(56012099006)(6133799003)(3023799007)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	G/PopSwyYK3NfXMP42D8qulPV7zvYW+Pmv/K8mBt0C3kZY3P7DkEHJ3vd+N81g1QcWQwJjXnOuZjEzR4zUdfpKVL+gV46LJ/uttcPDrvRKnaqWHSNX5H9Dw4hVySBPBgHlhvSPvar4UKV1rhC/Yy+Vgi4UknNl2Rrz0837zLnVs+v5ktO1d5Fziz9wD1PFc9mMT7xmcqYDxkRVSF/GepXHyb6AJuOgPfPL4w7UHG2Dnx+jZrRUNTV3h7eqwXf5d5GoBq8AlHgk5D22tW/0VXH0Ns+66E7Y9t4GB5vzh02wto0pYQ9X+gWriPQWT4Uz9Wk+VgIDEDZefnpdvIxjVTezC7hYfAN7kfM7n/qoeQWs8G0LVZ4yE8tjvTheqUYPwY+0efNIA3KQT+BCYyn67Fa6U5/7I/mBJMMND18cMMaPlL3b6kF824BQ4USdCHur3F
+	Rv1SfX6GpFzQ1SS2mQKARdWQvmo8vlAV2fu8Qb7U1Rp5gNVm+1d0pdlEwSyxoSf/16jZzjekrQsT4QJaAr0NRLeS7xTzFcpGOfMCbg/tnnHe2xh+EgvzdI2sUJtoAzUNqVbTg0ZTahHOTQQPKifpL1asgOaEVI31VF9c1a7fXXeyaQERdQ6mj7tEz1FrN+x4VMFMiaOKpB4QPAgwcBby1FOBArED0XCOKhG47d8cbVveMBPIxjNeU7YJo6UoJaiHwhiMqQUVVCoGKZVOuGb/ZY0fu3mS6fyyKDXRMv/Obp8r23aKncLn44Jz6WaH5QOt4yXfWlTJTzKEUx8tFMeF1RvfVkBTLuvdMvmDz8xsethBRlMSBrzQaAf6bZf+goMV/p338R54wnNoDmktYiTl9nMltxcto4LEPH8rlKZ27RgLKGDaXNP4zWosSUQVoStZ
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 08:28:35.6493
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 08:28:44.4336
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b165a69f-e173-4ed4-255e-08df1adefe08
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6842c7db-c826-4e8e-8cbc-08df1adf0344
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BCB.namprd03.prod.outlook.com
+	BN3PEPF00022BD0.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6463
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9525
 
-When the LIF advertises qid allocation for CQ, let firmware return
-the completion queue ID instead of allocating it in the driver bitmap.
+From: Amit Kumar <a.k@amd.com>
 
-Split CQ create/destroy into distinct phases so cq_tbl is updated only
-after the ID is known and removed before the destroy admin command
-returns the ID to firmware, avoiding a race where a concurrent create
-reusing the same cqid could have its xarray entry erased by a stale
-destroy.
+Implement device supported verb APIs for shared receive queue.
 
+SRQ is supported for userspace only. ionic_create_srq() returns
+-EOPNOTSUPP when there is no ucontext, so kernel ULPs cannot create an
+SRQ.
+
+Signed-off-by: Amit Kumar <a.k@amd.com>
 Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
 ---
- drivers/infiniband/hw/ionic/ionic_admin.c     |  70 ++++++++--
- .../infiniband/hw/ionic/ionic_controlpath.c   | 125 ++++++++++++++----
- drivers/infiniband/hw/ionic/ionic_fw.h        |  15 ++-
- drivers/infiniband/hw/ionic/ionic_ibdev.h     |  11 +-
+ .../infiniband/hw/ionic/ionic_controlpath.c   | 397 +++++++++++++++---
+ drivers/infiniband/hw/ionic/ionic_datapath.c  |   8 +-
+ drivers/infiniband/hw/ionic/ionic_fw.h        |  53 +++
+ drivers/infiniband/hw/ionic/ionic_ibdev.c     |  16 +
+ drivers/infiniband/hw/ionic/ionic_ibdev.h     |  24 +-
  drivers/infiniband/hw/ionic/ionic_lif_cfg.c   |   1 +
  drivers/infiniband/hw/ionic/ionic_lif_cfg.h   |   1 +
- 6 files changed, 183 insertions(+), 40 deletions(-)
+ include/uapi/rdma/ionic-abi.h                 |   2 +-
+ 8 files changed, 442 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_admin.c b/drivers/infiniband/hw/ionic/ionic_admin.c
-index 37e24450d129..93c01bd40d78 100644
---- a/drivers/infiniband/hw/ionic/ionic_admin.c
-+++ b/drivers/infiniband/hw/ionic/ionic_admin.c
-@@ -489,6 +489,49 @@ static int ionic_rdma_queue_devcmd(struct ionic_ibdev *dev,
- 	return ionic_rdma_devcmd(dev, &admin);
- }
- 
-+static int ionic_rdma_cq_devcmd(struct ionic_vcq *vcq,
-+				struct ionic_queue *q,
-+				u32 *qid, u32 cid, u16 opcode,
-+				u8 udma_idx)
-+{
-+	struct ionic_ibdev *dev = to_ionic_ibdev(vcq->ibcq.device);
-+	struct ionic_admin_ctx admin = {
-+		.work = COMPLETION_INITIALIZER_ONSTACK(admin.work),
-+		.cmd.rdma_queue = {
-+			.opcode = opcode,
-+			.lif_index = cpu_to_le16(dev->lif_cfg.lif_index),
-+			.qid_ver = cpu_to_le32(*qid),
-+			.cid = cpu_to_le32(cid),
-+			.dbid = cpu_to_le16(dev->lif_cfg.dbid),
-+			.depth_log2 = q->depth_log2,
-+			.stride_log2 = q->stride_log2,
-+			.dma_addr = cpu_to_le64(q->dma),
-+		},
-+	};
-+	int rc;
-+
-+	if (ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_CQ)) {
-+		struct ionic_admin_create_cq_resp resp_buf;
-+
-+		/* Indicates use of CQ create V2 response format. */
-+		admin.cmd.rdma_queue.qid_ver = cpu_to_le32(IONIC_CREATE_CQ_CMD_V2_MAGIC);
-+		admin.cmd.rdma_queue.udma_idx = udma_idx;
-+
-+		rc = ionic_rdma_devcmd(dev, &admin);
-+		if (rc)
-+			return rc;
-+
-+		memcpy(&resp_buf, admin.comp.comp.cmd_data, sizeof(resp_buf));
-+		*qid = le32_to_cpu(resp_buf.id);
-+	} else {
-+		rc = ionic_rdma_devcmd(dev, &admin);
-+		if (rc)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
- static void ionic_rdma_admincq_comp(struct ib_cq *ibcq, void *cq_context)
- {
- 	struct ionic_aq *aq = cq_context;
-@@ -533,12 +576,16 @@ static struct ionic_vcq *ionic_create_rdma_admincq(struct ionic_ibdev *dev,
- 	cq = &vcq->cq[0];
- 
- 	rc = ionic_create_cq_common(vcq, &buf, &attr, NULL, NULL,
--				    NULL, NULL, 0);
-+				    NULL, 0);
- 	if (rc)
- 		goto err_init;
- 
--	rc = ionic_rdma_queue_devcmd(dev, &cq->q, cq->cqid, cq->eqid,
--				     IONIC_CMD_RDMA_CREATE_CQ);
-+	rc = ionic_rdma_cq_devcmd(vcq, &cq->q, &cq->cqid, cq->eqid,
-+				  IONIC_CMD_RDMA_CREATE_CQ, 0);
-+	if (rc)
-+		goto err_cmd;
-+
-+	rc = ionic_post_create_cq_cmd(cq, NULL, NULL);
- 	if (rc)
- 		goto err_cmd;
- 
-@@ -552,6 +599,14 @@ static struct ionic_vcq *ionic_create_rdma_admincq(struct ionic_ibdev *dev,
- 	return ERR_PTR(rc);
- }
- 
-+static void ionic_destroy_rdma_admincq(struct ionic_ibdev *dev,
-+				       struct ionic_vcq *vcq)
-+{
-+	ionic_pre_destroy_cq_cmd(dev, &vcq->cq[0]);
-+	ionic_destroy_cq_common(dev, &vcq->cq[0]);
-+	kfree(vcq);
-+}
-+
- static struct ionic_aq *__ionic_create_rdma_adminq(struct ionic_ibdev *dev,
- 						   u32 aqid, u32 cqid)
- {
-@@ -1153,8 +1208,7 @@ int ionic_create_rdma_admin(struct ionic_ibdev *dev)
- 					      vcq->cq[0].cqid);
- 		if (IS_ERR(aq)) {
- 			/* Clean up the dangling CQ */
--			ionic_destroy_cq_common(dev, &vcq->cq[0]);
--			kfree(vcq);
-+			ionic_destroy_rdma_admincq(dev, vcq);
- 
- 			rc = PTR_ERR(aq);
- 
-@@ -1207,10 +1261,8 @@ void ionic_destroy_rdma_admin(struct ionic_ibdev *dev)
- 			cancel_work_sync(&aq->work);
- 
- 			__ionic_destroy_rdma_adminq(dev, aq);
--			if (vcq) {
--				ionic_destroy_cq_common(dev, &vcq->cq[0]);
--				kfree(vcq);
--			}
-+			if (vcq)
-+				ionic_destroy_rdma_admincq(dev, vcq);
- 		}
- 
- 		kfree(dev->aq_vec);
 diff --git a/drivers/infiniband/hw/ionic/ionic_controlpath.c b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-index 37f71fb43811..a1a7dad96607 100644
+index 3739c1855a4b..fd15d9549ac0 100644
 --- a/drivers/infiniband/hw/ionic/ionic_controlpath.c
 +++ b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-@@ -79,12 +79,10 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 			   struct ionic_ctx *ctx,
- 			   struct ib_udata *udata,
- 			   struct ionic_qdesc *req_cq,
--			   __u32 *resp_cqid,
- 			   int udma_idx)
- {
- 	struct ionic_ibdev *dev = to_ionic_ibdev(vcq->ibcq.device);
- 	struct ionic_cq *cq = &vcq->cq[udma_idx];
--	void *entry;
- 	int rc;
- 
- 	cq->vcq = vcq;
-@@ -94,9 +92,11 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 		goto err_args;
+@@ -1503,7 +1503,7 @@ static int ionic_create_qp_cmd(struct ionic_ibdev *dev,
+ 		wr.wqe.cmd.create_qp.sq_dma_addr = ionic_pgtbl_dma(sq_buf, 0);
  	}
  
--	rc = ionic_get_cqid(dev, &cq->cqid, udma_idx);
--	if (rc)
--		goto err_args;
-+	if (!ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_CQ)) {
-+		rc = ionic_get_cqid(dev, &cq->cqid, udma_idx);
-+		if (rc)
-+			goto err_args;
+-	if (qp->has_rq) {
++	if (!qp->srq) {
+ 		wr.wqe.cmd.create_qp.rq_cq_id = cpu_to_le32(recv_cq->cqid);
+ 		wr.wqe.cmd.create_qp.rq_depth_log2 = qp->rq.q.depth_log2;
+ 		wr.wqe.cmd.create_qp.rq_stride_log2 = qp->rq.q.stride_log2;
+@@ -1512,6 +1512,9 @@ static int ionic_create_qp_cmd(struct ionic_ibdev *dev,
+ 		wr.wqe.cmd.create_qp.rq_map_count =
+ 			cpu_to_le32(rq_buf->tbl_pages);
+ 		wr.wqe.cmd.create_qp.rq_dma_addr = ionic_pgtbl_dma(rq_buf, 0);
++	} else {
++		wr.wqe.cmd.create_qp.rq_tbl_index_srq_id = cpu_to_le32(qp->srq->rq.qid);
++		wr.wqe.cmd.create_qp.rq_cq_id = cpu_to_le32(recv_cq->cqid);
+ 	}
+ 
+ 	ionic_admin_post(dev, &wr);
+@@ -1697,7 +1700,7 @@ static int ionic_query_qp_cmd(struct ionic_ibdev *dev,
+ 			ionic_v1_send_wqe_max_data(qp->sq.stride_log2, expdb);
+ 	}
+ 
+-	if (qp->has_rq) {
++	if (!qp->srq) {
+ 		attr->cap.max_recv_sge =
+ 			ionic_v1_recv_wqe_max_sge(qp->rq.q.stride_log2,
+ 						  qp->rq.spec,
+@@ -2071,6 +2074,42 @@ static void ionic_qp_sq_destroy(struct ionic_ibdev *dev,
+ 		ionic_queue_destroy(&qp->sq, dev->lif_cfg.hwdev);
+ }
+ 
++static void ionic_rq_mmap_cmb(struct ionic_ibdev *dev,
++			      struct ionic_ctx *ctx,
++			      struct ionic_rq *rq,
++			      u64 *cmb_offset)
++{
++	bool wc;
++
++	/* set mapping by default to uncached for
++	 * expdb (to guarantee writes order) otherwise
++	 * writecombine, unless this default is
++	 * overridden by userspace
++	 */
++	if ((rq->cmb & (IONIC_CMB_WC | IONIC_CMB_UC)) ==
++		(IONIC_CMB_WC | IONIC_CMB_UC)) {
++		ibdev_dbg(&dev->ibdev,
++			  "Both rq_cmb flags IONIC_CMB_WC and IONIC_CMB_UC set, using default driver mapping\n");
++		rq->cmb &= ~(IONIC_CMB_WC | IONIC_CMB_UC);
 +	}
++
++	if (rq->cmb & IONIC_CMB_EXPDB)
++		wc  = (rq->cmb & (IONIC_CMB_WC | IONIC_CMB_UC)) == IONIC_CMB_WC;
++	else
++		wc = (rq->cmb & (IONIC_CMB_WC | IONIC_CMB_UC)) != IONIC_CMB_UC;
++
++	/* let userspace know the mapping */
++	if (wc)
++		rq->cmb |= IONIC_CMB_WC;
++	else
++		rq->cmb |= IONIC_CMB_UC;
++
++	rq->mmap_cmb = ionic_mmap_entry_insert(ctx, rq->q.size,
++					       PHYS_PFN(rq->cmb_addr),
++					       wc ? IONIC_MMAP_WC : 0,
++					       cmb_offset);
++}
++
+ static void ionic_rq_init_cmb(struct ionic_ibdev *dev,
+ 			      struct ionic_rq *rq,
+ 			      struct ib_udata *udata)
+@@ -2307,19 +2346,26 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ 	spin_lock_init(&qp->rq.lock);
  
- 	cq->eqid = ionic_get_eqid(dev, attr->comp_vector, udma_idx);
+ 	qp->has_sq = 1;
+-	qp->has_rq = 1;
++
++	if (attr->srq)
++		qp->srq = to_ionic_srq(attr->srq);
++	else
++		qp->srq = NULL;
  
-@@ -122,8 +122,6 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 		cq->q.mask = req_cq->mask;
- 		cq->q.depth_log2 = req_cq->depth_log2;
- 		cq->q.stride_log2 = req_cq->stride_log2;
--
--		*resp_cqid = cq->cqid;
+ 	if (attr->qp_type == IB_QPT_GSI) {
+ 		rc = ionic_get_gsi_qpid(dev, &qp->qpid);
  	} else {
- 		rc = ionic_queue_init(&cq->q, dev->lif_cfg.hwdev,
- 				      attr->cqe + IONIC_CQ_GRACE,
-@@ -131,7 +129,6 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 		if (rc)
- 			goto err_q_init;
+ 		udma_mask = BIT(dev->lif_cfg.udma_count) - 1;
  
--		ionic_queue_dbell_init(&cq->q, cq->cqid);
- 		cq->color = true;
- 		cq->credit = cq->q.mask;
+-		if (qp->has_sq)
++		if (attr->send_cq)
+ 			udma_mask &= to_ionic_vcq(attr->send_cq)->udma_mask;
+ 
+-		if (qp->has_rq)
++		if (attr->recv_cq)
+ 			udma_mask &= to_ionic_vcq(attr->recv_cq)->udma_mask;
+ 
++		if (attr->srq)
++			udma_mask &= BIT(to_ionic_srq(attr->srq)->udma_idx);
++
+ 		if (udata && req.udma_mask)
+ 			udma_mask &= req.udma_mask;
+ 
+@@ -2346,13 +2392,8 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ 			goto err_ahid;
  	}
-@@ -143,20 +140,8 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 	init_completion(&cq->cq_rel_comp);
- 	kref_init(&cq->cq_kref);
  
--	entry = xa_store_irq(&dev->cq_tbl, cq->cqid, cq, GFP_KERNEL);
--	if (entry) {
--		if (!xa_is_err(entry))
--			rc = -EINVAL;
--		else
--			rc = xa_err(entry);
+-	if (udata) {
+-		if (req.rq_cmb & IONIC_CMB_ENABLE)
+-			qp->rq.cmb = req.rq_cmb;
 -
--		goto err_xa;
+-		if (req.sq_cmb & IONIC_CMB_ENABLE)
+-			qp->sq_cmb = req.sq_cmb;
 -	}
++	if (udata && (req.sq_cmb & IONIC_CMB_ENABLE))
++		qp->sq_cmb = req.sq_cmb;
+ 
+ 	rc = ionic_qp_sq_init(dev, ctx, qp, &req.sq, &sq_buf,
+ 			      attr->cap.max_send_wr, attr->cap.max_send_sge,
+@@ -2360,22 +2401,25 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ 	if (rc)
+ 		goto err_sq;
+ 
+-	if (qp->has_rq) {
+-		/* for non-srq qps, rq qid is same as qpid */
+-		qp->rq.qid = qp->qpid;
+-		rc = ionic_rq_init(dev, ctx, &qp->rq, &req.rq, &rq_buf,
+-				   attr->cap.max_recv_wr, attr->cap.max_recv_sge,
+-				   req.rq_spec, udata);
+-		if (rc)
+-			goto err_rq;
+-	} else {
++	if (qp->srq) {
+ 		rq_buf.tbl_buf = NULL;
+ 		rq_buf.tbl_limit = 0;
+ 		rq_buf.tbl_pages = 0;
+ 
+ 		if (udata)
+ 			rc = ionic_validate_qdesc_zero(&req.rq);
++	} else {
++		if (udata && (req.rq_cmb & IONIC_CMB_ENABLE))
++			qp->rq.cmb = req.rq_cmb;
++
++		/* for non-srq qps, rq qid is same as qpid */
++		qp->rq.qid = qp->qpid;
++		rc = ionic_rq_init(dev, ctx, &qp->rq, &req.rq, &rq_buf,
++				   attr->cap.max_recv_wr, attr->cap.max_recv_sge,
++				   req.rq_spec, udata);
+ 	}
++	if (rc)
++		goto err_rq;
+ 
+ 	rc = ionic_create_qp_cmd(dev, pd,
+ 				 to_ionic_vcq_cq(attr->send_cq, qp->udma_idx),
+@@ -2421,35 +2465,9 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ 			resp.sq_cmb = qp->sq_cmb;
+ 		}
+ 
+-		if (qp->rq.cmb & IONIC_CMB_ENABLE) {
+-			bool wc;
 -
+-			if ((qp->rq.cmb & (IONIC_CMB_WC | IONIC_CMB_UC)) ==
+-				(IONIC_CMB_WC | IONIC_CMB_UC)) {
+-				ibdev_dbg(&dev->ibdev,
+-					  "Both rq.cmb flags IONIC_CMB_WC and IONIC_CMB_UC are set, using default driver mapping\n");
+-				qp->rq.cmb &= ~(IONIC_CMB_WC | IONIC_CMB_UC);
+-			}
+-
+-			if (qp->rq.cmb & IONIC_CMB_EXPDB)
+-				wc = (qp->rq.cmb & (IONIC_CMB_WC | IONIC_CMB_UC))
+-					== IONIC_CMB_WC;
+-			else
+-				wc = (qp->rq.cmb & (IONIC_CMB_WC | IONIC_CMB_UC))
+-					!= IONIC_CMB_UC;
+-
+-			/* let userspace know the mapping */
+-			if (wc)
+-				qp->rq.cmb |= IONIC_CMB_WC;
+-			else
+-				qp->rq.cmb |= IONIC_CMB_UC;
++		if (!qp->srq && (qp->rq.cmb & IONIC_CMB_ENABLE)) {
++			ionic_rq_mmap_cmb(dev, ctx, &qp->rq, &resp.rq_cmb_offset);
+ 
+-			qp->rq.mmap_cmb =
+-			    ionic_mmap_entry_insert(ctx,
+-						    qp->rq.q.size,
+-						    PHYS_PFN(qp->rq.cmb_addr),
+-						    wc ? IONIC_MMAP_WC : 0,
+-						    &resp.rq_cmb_offset);
+ 			if (!qp->rq.mmap_cmb) {
+ 				rc = -ENOMEM;
+ 				goto err_mmap_rq;
+@@ -2496,7 +2514,7 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ 		qp->sq_cqid = cq->cqid;
+ 	}
+ 
+-	if (qp->has_rq) {
++	if (!qp->srq) {
+ 		cq = to_ionic_vcq_cq(attr->recv_cq, qp->udma_idx);
+ 
+ 		attr->cap.max_recv_wr = qp->rq.q.mask;
+@@ -2510,7 +2528,7 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
  	return 0;
  
--err_xa:
--	ionic_pgtbl_unbuf(dev, buf);
- err_pgtbl_init:
- 	if (!udata)
- 		ionic_queue_destroy(&cq->q, dev->lif_cfg.hwdev);
-@@ -164,29 +149,52 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 	if (cq->umem)
- 		ib_umem_release(cq->umem);
- err_qdesc:
--	ionic_put_cqid(dev, cq->cqid);
-+	if (!ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_CQ))
-+		ionic_put_cqid(dev, cq->cqid);
- err_args:
- 	cq->vcq = NULL;
+ err_resp:
+-	if (udata && (qp->rq.cmb & IONIC_CMB_ENABLE))
++	if (udata && !qp->srq && (qp->rq.cmb & IONIC_CMB_ENABLE))
+ 		rdma_user_mmap_entry_remove(qp->rq.mmap_cmb);
+ err_mmap_rq:
+ 	if (udata && (qp->sq_cmb & IONIC_CMB_ENABLE))
+@@ -2518,9 +2536,10 @@ int ionic_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr,
+ err_mmap_sq:
+ 	ionic_destroy_qp_cmd(dev, qp->qpid);
+ err_cmd:
+-	ionic_pgtbl_unbuf(dev, &rq_buf);
+-	if (qp->has_rq)
++	if (!qp->srq) {
++		ionic_pgtbl_unbuf(dev, &rq_buf);
+ 		ionic_rq_destroy(dev, ctx, &qp->rq);
++	}
+ err_rq:
+ 	ionic_pgtbl_unbuf(dev, &sq_buf);
+ 	ionic_qp_sq_destroy(dev, ctx, qp);
+@@ -2571,7 +2590,7 @@ void ionic_flush_qp(struct ionic_ibdev *dev, struct ionic_qp *qp)
+ 		spin_unlock_irqrestore(&cq->lock, irqflags);
+ 	}
  
- 	return rc;
+-	if (qp->ibqp.recv_cq) {
++	if (qp->ibqp.recv_cq && !qp->srq) {
+ 		cq = to_ionic_vcq_cq(qp->ibqp.recv_cq, qp->udma_idx);
+ 
+ 		/* Hold the CQ lock and QP rq.lock to set up flush */
+@@ -2647,7 +2666,7 @@ static void ionic_reset_qp(struct ionic_ibdev *dev, struct ionic_qp *qp)
+ 		spin_unlock(&qp->sq_lock);
+ 	}
+ 
+-	if (qp->has_rq) {
++	if (!qp->srq) {
+ 		spin_lock(&qp->rq.lock);
+ 		qp->rq.flush = false;
+ 		qp->rq.q.prod = 0;
+@@ -2775,7 +2794,7 @@ int ionic_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 	if (qp->has_sq)
+ 		attr->cap.max_send_wr = qp->sq.mask;
+ 
+-	if (qp->has_rq)
++	if (!qp->srq)
+ 		attr->cap.max_recv_wr = qp->rq.q.mask;
+ 
+ 	init_attr->event_handler = ibqp->event_handler;
+@@ -2836,7 +2855,7 @@ int ionic_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+ 		spin_unlock_irqrestore(&cq->lock, irqflags);
+ 	}
+ 
+-	if (qp->has_rq)
++	if (!qp->srq)
+ 		ionic_rq_destroy(dev, ctx, &qp->rq);
+ 
+ 	ionic_qp_sq_destroy(dev, ctx, qp);
+@@ -2848,3 +2867,267 @@ int ionic_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+ 
+ 	return 0;
  }
- 
--void ionic_destroy_cq_common(struct ionic_ibdev *dev, struct ionic_cq *cq)
-+int ionic_post_create_cq_cmd(struct ionic_cq *cq,
-+			     struct ib_udata *udata,
-+			     __u32 *resp_cqid)
++
++static int ionic_create_srq_cmd(struct ionic_ibdev *dev,
++				struct ionic_ctx *ctx,
++				struct ionic_srq *srq,
++				struct ionic_pd *pd,
++				struct ionic_tbl_buf *buf,
++				u8 udma_mask)
 +{
-+	struct ionic_ibdev *dev = to_ionic_ibdev(cq->vcq->ibcq.device);
-+
-+	if (udata && resp_cqid)
-+		*resp_cqid = cq->cqid;
-+	else
-+		ionic_queue_dbell_init(&cq->q, cq->cqid);
-+
-+	return xa_insert_irq(&dev->cq_tbl, cq->cqid, cq, GFP_KERNEL);
-+}
-+
-+void ionic_pre_destroy_cq_cmd(struct ionic_ibdev *dev, struct ionic_cq *cq)
- {
- 	if (!cq->vcq)
- 		return;
- 
--	xa_erase_irq(&dev->cq_tbl, cq->cqid);
-+	if (!xa_erase_irq(&dev->cq_tbl, cq->cqid))
-+		return;
- 
- 	kref_put(&cq->cq_kref, ionic_cq_complete);
- 	wait_for_completion(&cq->cq_rel_comp);
-+}
-+
-+void ionic_destroy_cq_common(struct ionic_ibdev *dev, struct ionic_cq *cq)
-+{
-+	if (!cq->vcq)
-+		return;
- 
- 	if (cq->umem)
- 		ib_umem_release(cq->umem);
- 	else
- 		ionic_queue_destroy(&cq->q, dev->lif_cfg.hwdev);
- 
--	ionic_put_cqid(dev, cq->cqid);
-+	if (!ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_CQ))
-+		ionic_put_cqid(dev, cq->cqid);
- 
- 	cq->vcq = NULL;
- }
-@@ -1222,8 +1230,11 @@ int ionic_dealloc_mw(struct ib_mw *ibmw)
- static int ionic_create_cq_cmd(struct ionic_ibdev *dev,
- 			       struct ionic_ctx *ctx,
- 			       struct ionic_cq *cq,
--			       struct ionic_tbl_buf *buf)
-+			       struct ionic_tbl_buf *buf,
-+			       int udma_idx,
-+			       int *out_udma_idx)
- {
-+	struct ionic_admin_create_cq_resp *resp_buf;
- 	const u16 dbid = ionic_ctx_dbid(dev, ctx);
- 	struct ionic_admin_wr wr = {
- 		.work = COMPLETION_INITIALIZER_ONSTACK(wr.work),
-@@ -1243,13 +1254,57 @@ static int ionic_create_cq_cmd(struct ionic_ibdev *dev,
- 			}
- 		}
- 	};
++	const u16 flags = (srq->rq.cmb & IONIC_CMB_ENABLE) ? IONIC_SRQF_CMB : 0;
++	struct ionic_admin_create_srq_resp *resp_buf;
++	const u16 dbid = ionic_ctx_dbid(dev, ctx);
++	struct ionic_admin_wr wr = {
++		.work = COMPLETION_INITIALIZER_ONSTACK(wr.work),
++		.wqe = {
++			.op = IONIC_V1_ADMIN_CREATE_SRQ,
++			.len = cpu_to_le16(IONIC_ADMIN_CREATE_SRQ_IN_V1_LEN),
++			.cmd.create_srq = {
++				.pd_id = cpu_to_le32(pd->pdid),
++				.depth_log2 = srq->rq.q.depth_log2,
++				.stride_log2 = srq->rq.q.stride_log2,
++				.page_size_log2 = buf->page_size_log2,
++				.map_count = cpu_to_le32(buf->tbl_pages),
++				.dma_addr = ionic_pgtbl_dma(buf, 0),
++				.dbid = cpu_to_le16(dbid),
++				.qid = cpu_to_le32(srq->rq.qid),
++				.low_wqes_limit = cpu_to_le16(srq->srq_limit),
++				.udma_mask = udma_mask,
++				.flags = cpu_to_le16(flags),
++			}
++		}
++	};
 +	dma_addr_t resp_buf_dma;
 +	int rc;
- 
- 	if (dev->lif_cfg.admin_opcodes <= IONIC_V1_ADMIN_CREATE_CQ)
- 		return -EBADRQC;
- 
-+	if (!ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_CQ)) {
-+		ionic_admin_post(dev, &wr);
-+		return ionic_admin_wait(dev, &wr, 0);
-+	}
++
++	if (dev->lif_cfg.admin_opcodes <= IONIC_V1_ADMIN_CREATE_SRQ)
++		return -EOPNOTSUPP;
 +
 +	resp_buf = kzalloc_obj(*resp_buf);
 +	if (!resp_buf)
@@ -401,171 +442,483 @@ index 37f71fb43811..a1a7dad96607 100644
 +				      DMA_FROM_DEVICE);
 +
 +	rc = dma_mapping_error(dev->lif_cfg.hwdev, resp_buf_dma);
-+	if (rc) {
-+		rc = -ENOMEM;
++	if (rc)
 +		goto err_dma;
-+	}
 +
-+	wr.wqe.len = cpu_to_le16(IONIC_ADMIN_CREATE_CQ_IN_V2_LEN);
-+	wr.wqe.cmd.create_cq.udma_idx = udma_idx;
-+	wr.wqe.cmd.create_cq.resp_dma_addr = cpu_to_le64(resp_buf_dma);
-+	wr.wqe.cmd.create_cq.resp_buf_len = cpu_to_le32(IONIC_ADMIN_CREATE_CQ_OUT_V1_LEN);
++	wr.wqe.cmd.create_srq.resp_dma_addr = cpu_to_le64(resp_buf_dma);
++	wr.wqe.cmd.create_srq.resp_buf_len = cpu_to_le32(IONIC_ADMIN_CREATE_SRQ_OUT_V1_LEN);
 +
- 	ionic_admin_post(dev, &wr);
++	ionic_admin_post(dev, &wr);
++
 +	rc = ionic_admin_wait(dev, &wr, 0);
- 
--	return ionic_admin_wait(dev, &wr, 0);
++
 +	dma_unmap_single(dev->lif_cfg.hwdev, resp_buf_dma, sizeof(*resp_buf),
 +			 DMA_FROM_DEVICE);
 +	if (rc)
 +		goto err_dma;
 +
-+	if (be32_to_cpu(wr.cqe.status_length) < IONIC_ADMIN_CREATE_CQ_OUT_V1_LEN) {
++	if (be32_to_cpu(wr.cqe.status_length) < IONIC_ADMIN_CREATE_SRQ_OUT_V1_LEN) {
 +		rc = -EOPNOTSUPP;
 +		goto err_dma;
 +	}
 +
-+	cq->cqid = le32_to_cpu(resp_buf->id);
-+	if (out_udma_idx)
-+		*out_udma_idx = resp_buf->udma_idx;
++	srq->rq.qid = le32_to_cpu(resp_buf->id);
++	srq->udma_idx = resp_buf->udma_idx;
 +
 +err_dma:
 +	kfree(resp_buf);
 +
 +	return rc;
- }
- 
- static int ionic_destroy_cq_cmd(struct ionic_ibdev *dev, u32 cqid)
-@@ -1308,16 +1363,21 @@ int ionic_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 
- 		rc = ionic_create_cq_common(vcq, &buf, attr, ctx, udata,
- 					    &req.cq[udma_idx],
--					    &resp.cqid[udma_idx],
- 					    udma_idx);
- 		if (rc)
- 			goto err_init;
- 
--		rc = ionic_create_cq_cmd(dev, ctx, &vcq->cq[udma_idx], &buf);
-+		rc = ionic_create_cq_cmd(dev, ctx, &vcq->cq[udma_idx], &buf,
-+					 udma_idx, NULL);
- 		if (rc)
- 			goto err_cmd;
- 
- 		ionic_pgtbl_unbuf(dev, &buf);
-+
-+		rc = ionic_post_create_cq_cmd(&vcq->cq[udma_idx], udata,
-+					      &resp.cqid[udma_idx]);
-+		if (rc)
-+			goto err_post;
- 	}
- 
- 	vcq->ibcq.cqe = attr->cqe;
-@@ -1337,6 +1397,8 @@ int ionic_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 		--udma_idx;
- 		if (!(vcq->udma_mask & BIT(udma_idx)))
- 			continue;
-+		ionic_pre_destroy_cq_cmd(dev, &vcq->cq[udma_idx]);
-+err_post:
- 		ionic_destroy_cq_cmd(dev, vcq->cq[udma_idx].cqid);
- err_cmd:
- 		ionic_pgtbl_unbuf(dev, &buf);
-@@ -1364,6 +1426,13 @@ int ionic_destroy_cq(struct ib_cq *ibcq, struct ib_udata *udata)
- 		if (!(vcq->udma_mask & BIT(udma_idx)))
- 			continue;
- 
-+		/*
-+		 * Untrack the CQ before releasing its hardware ID below, so a
-+		 * concurrent create that gets the same ID reused by firmware
-+		 * cannot have its fresh XArray entry erased by this destroy.
-+		 */
-+		ionic_pre_destroy_cq_cmd(dev, &vcq->cq[udma_idx]);
-+
- 		rc_tmp = ionic_destroy_cq_cmd(dev, vcq->cq[udma_idx].cqid);
- 		if (rc_tmp) {
- 			if (!rc)
-diff --git a/drivers/infiniband/hw/ionic/ionic_fw.h b/drivers/infiniband/hw/ionic/ionic_fw.h
-index d0a5bce85ed8..b299a1fe5acb 100644
---- a/drivers/infiniband/hw/ionic/ionic_fw.h
-+++ b/drivers/infiniband/hw/ionic/ionic_fw.h
-@@ -746,11 +746,22 @@ struct ionic_admin_create_cq {
- 	__le32		map_count;
- 	__le64		dma_addr;
- 	__le16		dbid_flags;
-+	__u8		udma_idx;
-+	__le32		resp_buf_len;
-+	__le64		resp_dma_addr;
- } __packed;
- 
- #define IONIC_ADMIN_CREATE_CQ_IN_V1_LEN 34
--static_assert(sizeof(struct ionic_admin_create_cq) ==
--	       IONIC_ADMIN_CREATE_CQ_IN_V1_LEN);
-+#define IONIC_ADMIN_CREATE_CQ_IN_V2_LEN 47
-+static_assert(sizeof(struct ionic_admin_create_cq) == IONIC_ADMIN_CREATE_CQ_IN_V2_LEN);
-+
-+struct ionic_admin_create_cq_resp {
-+	__le32		id;
-+	__u8		udma_idx;
-+} __packed;
-+
-+#define IONIC_ADMIN_CREATE_CQ_OUT_V1_LEN 5
-+static_assert(sizeof(struct ionic_admin_create_cq_resp) == IONIC_ADMIN_CREATE_CQ_OUT_V1_LEN);
- 
- struct ionic_admin_destroy_cq {
- 	__le32		cq_id;
-diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.h b/drivers/infiniband/hw/ionic/ionic_ibdev.h
-index 32b6a8a45fa2..11374dd5a309 100644
---- a/drivers/infiniband/hw/ionic/ionic_ibdev.h
-+++ b/drivers/infiniband/hw/ionic/ionic_ibdev.h
-@@ -438,6 +438,12 @@ static inline void ionic_cq_complete(struct kref *kref)
- 	complete(&cq->cq_rel_comp);
- }
- 
-+static inline bool ionic_fw_has_qid_alloc(struct ionic_ibdev *dev,
-+					  enum ionic_lif_rdma_alloc_qid qtype)
-+{
-+	return dev->lif_cfg.alloc_qid_cap & qtype;
 +}
 +
- /* ionic_admin.c */
- extern struct workqueue_struct *ionic_evt_workq;
- void ionic_admin_post(struct ionic_ibdev *dev, struct ionic_admin_wr *wr);
-@@ -457,8 +463,11 @@ int ionic_create_cq_common(struct ionic_vcq *vcq,
- 			   struct ionic_ctx *ctx,
- 			   struct ib_udata *udata,
- 			   struct ionic_qdesc *req_cq,
--			   __u32 *resp_cqid,
- 			   int udma_idx);
-+int ionic_post_create_cq_cmd(struct ionic_cq *cq,
-+			     struct ib_udata *udata,
-+			     __u32 *resp_cqid);
-+void ionic_pre_destroy_cq_cmd(struct ionic_ibdev *dev, struct ionic_cq *cq);
- void ionic_destroy_cq_common(struct ionic_ibdev *dev, struct ionic_cq *cq);
- void ionic_flush_qp(struct ionic_ibdev *dev, struct ionic_qp *qp);
- void ionic_notify_flush_cq(struct ionic_cq *cq);
-diff --git a/drivers/infiniband/hw/ionic/ionic_lif_cfg.c b/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
-index 1e37bd09490f..c381bda4360d 100644
---- a/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
-+++ b/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
-@@ -93,6 +93,7 @@ void ionic_fill_lif_cfg(struct ionic_lif *lif, struct ionic_lif_cfg *cfg)
- 	    !!(lif->qtype_info[IONIC_QTYPE_TXQ].features & IONIC_QIDENT_F_EXPDB);
- 	cfg->rq_expdb =
- 	    !!(lif->qtype_info[IONIC_QTYPE_RXQ].features & IONIC_QIDENT_F_EXPDB);
-+	cfg->alloc_qid_cap = ident->rdma.alloc_qid_cap;
++static int ionic_destroy_srq_cmd(struct ionic_ibdev *dev, u32 srqid)
++{
++	struct ionic_admin_wr wr = {
++		.work = COMPLETION_INITIALIZER_ONSTACK(wr.work),
++		.wqe = {
++			.op = IONIC_V1_ADMIN_DESTROY_SRQ,
++			.len = cpu_to_le16(IONIC_ADMIN_DESTROY_SRQ_IN_V1_LEN),
++			.cmd.destroy_srq = {
++				.qid = cpu_to_le32(srqid),
++			},
++		}
++	};
++
++	if (dev->lif_cfg.admin_opcodes <= IONIC_V1_ADMIN_DESTROY_SRQ)
++		return -EOPNOTSUPP;
++
++	ionic_admin_post(dev, &wr);
++
++	return ionic_admin_wait(dev, &wr, IONIC_ADMIN_F_TEARDOWN);
++}
++
++static int ionic_modify_srq_cmd(struct ionic_ibdev *dev, u32 srqid,
++				u16 srq_limit)
++{
++	struct ionic_admin_wr wr = {
++		.work = COMPLETION_INITIALIZER_ONSTACK(wr.work),
++		.wqe = {
++			.op = IONIC_V1_ADMIN_MODIFY_SRQ,
++			.len = cpu_to_le16(IONIC_ADMIN_MODIFY_SRQ_IN_V1_LEN),
++			.cmd.modify_srq = {
++				.qid = cpu_to_le32(srqid),
++				.low_wqes_limit = cpu_to_le16(srq_limit),
++			},
++		}
++	};
++
++	if (dev->lif_cfg.admin_opcodes <= IONIC_V1_ADMIN_MODIFY_SRQ)
++		return -EOPNOTSUPP;
++
++	ionic_admin_post(dev, &wr);
++
++	return ionic_admin_wait(dev, &wr, 0);
++}
++
++int ionic_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *attr,
++		     struct ib_udata *udata)
++{
++	struct ionic_ibdev *dev = to_ionic_ibdev(ibsrq->device);
++	struct ionic_pd *pd = to_ionic_pd(ibsrq->pd);
++	struct ionic_srq *srq = to_ionic_srq(ibsrq);
++	struct ionic_ctx *ctx =
++		rdma_udata_to_drv_context(udata, struct ionic_ctx, ibctx);
++	struct ionic_srq_resp resp = {};
++	struct ionic_srq_req req = {};
++	struct ionic_tbl_buf buf = {};
++	u8 udma_mask;
++	int rc;
++
++	if (!ctx)
++		return -EOPNOTSUPP;
++
++	if (attr->srq_type != IB_SRQT_BASIC)
++		return -EOPNOTSUPP;
++
++	if (attr->attr.max_sge > IONIC_MAX_SRQ_SGES)
++		return -EINVAL;
++
++	if (attr->attr.srq_limit >= IONIC_MAX_SRQ_LIMIT)
++		return -EINVAL;
++
++	udma_mask = BIT(dev->lif_cfg.udma_count) - 1;
++	if (udata) {
++		rc = ib_copy_validate_udata_in(udata, req, rsvd);
++		if (rc)
++			return rc;
++
++		if (memchr_inv(req.rsvd, 0, sizeof(req.rsvd)))
++			return -EINVAL;
++
++		udma_mask &= req.udma_mask;
++	}
++
++	if (!udma_mask)
++		return -EINVAL;
++
++	if (udata && (req.rq_cmb & IONIC_CMB_ENABLE))
++		srq->rq.cmb = req.rq_cmb;
++
++	rc = ionic_rq_init(dev, ctx, &srq->rq, &req.rq, &buf,
++			   attr->attr.max_wr, attr->attr.max_sge,
++			   req.rq_spec, udata);
++	if (rc)
++		return rc;
++
++	srq->srq_limit = attr->attr.srq_limit;
++
++	rc = ionic_create_srq_cmd(dev, ctx, srq, pd, &buf, udma_mask);
++	if (rc)
++		goto err_cmd;
++
++	ionic_queue_dbell_init(&srq->rq.q, srq->rq.qid);
++
++	if (udata) {
++		resp.srqid = srq->rq.qid;
++		resp.udma_idx = srq->udma_idx;
++
++		if (srq->rq.cmb & IONIC_CMB_ENABLE) {
++			ionic_rq_mmap_cmb(dev, ctx, &srq->rq, &resp.rq_cmb_offset);
++			if (!srq->rq.mmap_cmb) {
++				rc = -ENOMEM;
++				goto err_srq_cmd;
++			}
++
++			resp.rq_cmb = srq->rq.cmb;
++		}
++
++		rc = ib_respond_udata(udata, resp);
++		if (rc)
++			goto err_srq_cmd;
++	}
++
++	ionic_pgtbl_unbuf(dev, &buf);
++
++	attr->attr.max_wr = srq->rq.q.mask;
++
++	return 0;
++
++err_srq_cmd:
++	ionic_destroy_srq_cmd(dev, srq->rq.qid);
++err_cmd:
++	ionic_pgtbl_unbuf(dev, &buf);
++	ionic_rq_destroy(dev, ctx, &srq->rq);
++
++	return rc;
++}
++
++int ionic_destroy_srq(struct ib_srq *ibsrq, struct ib_udata *udata)
++{
++	struct ionic_ctx *ctx =
++		rdma_udata_to_drv_context(udata, struct ionic_ctx, ibctx);
++	struct ionic_ibdev *dev = to_ionic_ibdev(ibsrq->device);
++	struct ionic_srq *srq = to_ionic_srq(ibsrq);
++	int rc;
++
++	rc = ionic_destroy_srq_cmd(dev, srq->rq.qid);
++	if (rc)
++		return rc;
++
++	ionic_rq_destroy(dev, ctx, &srq->rq);
++
++	return 0;
++}
++
++int ionic_query_srq(struct ib_srq *ibsrq, struct ib_srq_attr *srq_attr)
++{
++	struct ionic_srq *srq = to_ionic_srq(ibsrq);
++
++	srq_attr->max_wr = srq->rq.q.mask;
++	srq_attr->max_sge =
++		ionic_v1_recv_wqe_max_sge(srq->rq.q.stride_log2, srq->rq.spec,
++					  srq->rq.cmb & IONIC_CMB_EXPDB);
++	srq_attr->srq_limit = srq->srq_limit;
++
++	return 0;
++}
++
++int ionic_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
++		     enum ib_srq_attr_mask attr_mask, struct ib_udata *udata)
++{
++	struct ionic_ibdev *dev = to_ionic_ibdev(ibsrq->device);
++	struct ionic_srq *srq = to_ionic_srq(ibsrq);
++	int rc;
++
++	if (attr_mask & IB_SRQ_MAX_WR)
++		return -EINVAL;
++
++	if (attr_mask & IB_SRQ_LIMIT) {
++		if (attr->srq_limit >= IONIC_MAX_SRQ_LIMIT)
++			return -EINVAL;
++
++		rc = ionic_modify_srq_cmd(dev, srq->rq.qid, attr->srq_limit);
++		if (rc)
++			return rc;
++
++		srq->srq_limit = attr->srq_limit;
++	}
++
++	return 0;
++}
+diff --git a/drivers/infiniband/hw/ionic/ionic_datapath.c b/drivers/infiniband/hw/ionic/ionic_datapath.c
+index 522c6f08c9fd..c5726c6bd5cb 100644
+--- a/drivers/infiniband/hw/ionic/ionic_datapath.c
++++ b/drivers/infiniband/hw/ionic/ionic_datapath.c
+@@ -526,6 +526,12 @@ static int ionic_poll_vcq_cq(struct ionic_ibdev *dev,
+ 
+ 		switch (type) {
+ 		case IONIC_V1_CQE_TYPE_RECV:
++			if (qp->srq) {
++				ibdev_dbg(&dev->ibdev,
++					  "srq recv cqe for qp %u\n", qid);
++				goto cq_next;
++			}
++
+ 			spin_lock(&qp->rq.lock);
+ 			rc = ionic_poll_recv(dev, cq, qp, cqe, wc + npolled);
+ 			spin_unlock(&qp->rq.lock);
+@@ -1311,7 +1317,7 @@ static int ionic_post_recv_common(struct ionic_ibdev *dev,
+ 	if (!bad)
+ 		return -EINVAL;
+ 
+-	if (!qp->has_rq) {
++	if (qp->srq) {
+ 		*bad = wr;
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/infiniband/hw/ionic/ionic_fw.h b/drivers/infiniband/hw/ionic/ionic_fw.h
+index b299a1fe5acb..a3991c34aece 100644
+--- a/drivers/infiniband/hw/ionic/ionic_fw.h
++++ b/drivers/infiniband/hw/ionic/ionic_fw.h
+@@ -88,6 +88,10 @@ static inline int to_ionic_mr_flags(int access)
+ 	return flags;
  }
  
- struct net_device *ionic_lif_netdev(struct ionic_lif *lif)
-diff --git a/drivers/infiniband/hw/ionic/ionic_lif_cfg.h b/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
-index d7835ac27896..68aec06908ca 100644
---- a/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
-+++ b/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
-@@ -58,6 +58,7 @@ struct ionic_lif_cfg {
- 	bool rq_expdb;
- 	u8 expdb_mask;
- 	u8 rcq_sign_bit;
-+	u8 alloc_qid_cap;
++enum ionic_srq_flags {
++	IONIC_SRQF_CMB			= BIT(0),
++};
++
+ enum ionic_qp_flags {
+ 	/* bits that determine qp access */
+ 	IONIC_QPF_REMOTE_WRITE		= BIT(0),
+@@ -857,6 +861,48 @@ struct ionic_admin_query_qp {
+ static_assert(sizeof(struct ionic_admin_query_qp) ==
+ 	       IONIC_ADMIN_QUERY_QP_IN_V1_LEN);
+ 
++struct ionic_admin_create_srq {
++	__le64		dma_addr;
++	__le32		map_count;
++	__le32		pd_id;
++	__le32		qid;
++	__le16		dbid;
++	__le16		low_wqes_limit;
++	__le16		flags;
++	__u8		depth_log2;
++	__u8		stride_log2;
++	__u8		page_size_log2;
++	__u8		udma_mask;
++	__le32		resp_buf_len;
++	__le64		resp_dma_addr;
++} __packed;
++
++#define IONIC_ADMIN_CREATE_SRQ_IN_V1_LEN 42
++static_assert(sizeof(struct ionic_admin_create_srq) == IONIC_ADMIN_CREATE_SRQ_IN_V1_LEN);
++
++struct ionic_admin_create_srq_resp {
++	__le32          id;
++	__u8            udma_idx;
++} __packed;
++
++#define IONIC_ADMIN_CREATE_SRQ_OUT_V1_LEN 5
++static_assert(sizeof(struct ionic_admin_create_srq_resp) == IONIC_ADMIN_CREATE_SRQ_OUT_V1_LEN);
++
++struct ionic_admin_modify_srq {
++	__le32		qid;
++	__le16		low_wqes_limit;
++} __packed;
++
++#define IONIC_ADMIN_MODIFY_SRQ_IN_V1_LEN 6
++static_assert(sizeof(struct ionic_admin_modify_srq) == IONIC_ADMIN_MODIFY_SRQ_IN_V1_LEN);
++
++struct ionic_admin_destroy_srq {
++	__le32		qid;
++} __packed;
++
++#define IONIC_ADMIN_DESTROY_SRQ_IN_V1_LEN 4
++static_assert(sizeof(struct ionic_admin_destroy_srq) == IONIC_ADMIN_DESTROY_SRQ_IN_V1_LEN);
++
+ #define ADMIN_WQE_STRIDE	64
+ #define ADMIN_WQE_HDR_LEN	4
+ 
+@@ -879,6 +925,9 @@ struct ionic_v1_admin_wqe {
+ 		struct ionic_admin_destroy_qp destroy_qp;
+ 		struct ionic_admin_mod_qp mod_qp;
+ 		struct ionic_admin_query_qp query_qp;
++		struct ionic_admin_create_srq create_srq;
++		struct ionic_admin_modify_srq modify_srq;
++		struct ionic_admin_destroy_srq destroy_srq;
+ 	} cmd;
  };
  
- void ionic_fill_lif_cfg(struct ionic_lif *lif, struct ionic_lif_cfg *cfg);
+@@ -925,6 +974,10 @@ enum ionic_v1_admin_op {
+ 	IONIC_V1_ADMIN_DESTROY_AH,
+ 	IONIC_V1_ADMIN_QP_STATS_HDRS,
+ 	IONIC_V1_ADMIN_QP_STATS_VALS,
++	IONIC_V1_ADMIN_CREATE_SRQ = 26,
++	IONIC_V1_ADMIN_MODIFY_SRQ,
++	IONIC_V1_ADMIN_QUERY_SRQ,
++	IONIC_V1_ADMIN_DESTROY_SRQ,
+ 	IONIC_V1_ADMIN_OPCODES_MAX,
+ };
+ 
+diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.c b/drivers/infiniband/hw/ionic/ionic_ibdev.c
+index cba7809ec3d9..3187f6297946 100644
+--- a/drivers/infiniband/hw/ionic/ionic_ibdev.c
++++ b/drivers/infiniband/hw/ionic/ionic_ibdev.c
+@@ -73,6 +73,11 @@ static int ionic_query_device(struct ib_device *ibdev,
+ 	attr->max_ah = dev->lif_cfg.nahs_per_lif;
+ 	attr->max_fast_reg_page_list_len = dev->lif_cfg.npts_per_lif / 2;
+ 	attr->max_pkeys = IONIC_PKEY_TBL_LEN;
++	if (dev->lif_cfg.srq_count && ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_SRQ)) {
++		attr->max_srq = dev->lif_cfg.srq_count;
++		attr->max_srq_wr = IONIC_MAX_SRQ_DEPTH;
++		attr->max_srq_sge = IONIC_MAX_SRQ_SGES;
++	}
+ 
+ 	return 0;
+ }
+@@ -266,6 +271,15 @@ static const struct ib_device_ops ionic_dev_ops = {
+ 	INIT_RDMA_OBJ_SIZE(ib_mw, ionic_mr, ibmw),
+ };
+ 
++static const struct ib_device_ops ionic_srq_ops = {
++	.create_srq = ionic_create_srq,
++	.modify_srq = ionic_modify_srq,
++	.query_srq = ionic_query_srq,
++	.destroy_srq = ionic_destroy_srq,
++
++	INIT_RDMA_OBJ_SIZE(ib_srq, ionic_srq, ibsrq),
++};
++
+ static void ionic_init_resids(struct ionic_ibdev *dev)
+ {
+ 	ionic_resid_init(&dev->inuse_cqid, dev->lif_cfg.cq_count);
+@@ -354,6 +368,8 @@ static struct ionic_ibdev *ionic_create_ibdev(struct ionic_aux_dev *ionic_adev)
+ 		goto err_admin;
+ 
+ 	ib_set_device_ops(&dev->ibdev, &ionic_dev_ops);
++	if (dev->lif_cfg.srq_count && ionic_fw_has_qid_alloc(dev, IONIC_LIF_RDMA_ALLOC_QID_SRQ))
++		ib_set_device_ops(&dev->ibdev, &ionic_srq_ops);
+ 
+ 	ionic_stats_init(dev);
+ 
+diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.h b/drivers/infiniband/hw/ionic/ionic_ibdev.h
+index aa3b4122c5ec..3ee7416427fd 100644
+--- a/drivers/infiniband/hw/ionic/ionic_ibdev.h
++++ b/drivers/infiniband/hw/ionic/ionic_ibdev.h
+@@ -36,6 +36,10 @@
+ #define IONIC_SQCMB_ORDER 5
+ #define IONIC_RQCMB_ORDER 0
+ 
++#define IONIC_MAX_SRQ_SGES	2
++#define IONIC_MAX_SRQ_LIMIT	0xffff
++#define IONIC_MAX_SRQ_DEPTH	0xffff
++
+ #define IONIC_META_LAST		((void *)1ul)
+ #define IONIC_META_POSTED	((void *)2ul)
+ 
+@@ -263,6 +267,13 @@ struct ionic_rq {
+ 	bool				flush;
+ };
+ 
++struct ionic_srq {
++	struct ib_srq		ibsrq;
++	struct ionic_rq		rq;
++	u16			srq_limit;
++	u8			udma_idx;
++};
++
+ struct ionic_qp {
+ 	struct ib_qp		ibqp;
+ 	enum ib_qp_state	state;
+@@ -273,7 +284,6 @@ struct ionic_qp {
+ 	u8			udma_idx;
+ 	u8			has_ah:1;
+ 	u8			has_sq:1;
+-	u8			has_rq:1;
+ 	u8			sig_all:1;
+ 
+ 	struct list_head	qp_list_counter;
+@@ -311,6 +321,7 @@ struct ionic_qp {
+ 	int			dcqcn_profile;
+ 
+ 	struct ib_ud_header	*hdr;
++	struct ionic_srq	*srq;
+ };
+ 
+ struct ionic_ah {
+@@ -405,6 +416,11 @@ static inline struct ionic_qp *to_ionic_qp(struct ib_qp *ibqp)
+ 	return container_of(ibqp, struct ionic_qp, ibqp);
+ }
+ 
++static inline struct ionic_srq *to_ionic_srq(struct ib_srq *ibsrq)
++{
++	return container_of(ibsrq, struct ionic_srq, ibsrq);
++}
++
+ static inline struct ionic_ah *to_ionic_ah(struct ib_ah *ibah)
+ {
+ 	return container_of(ibah, struct ionic_ah, ibah);
+@@ -513,6 +529,12 @@ int ionic_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int mask,
+ int ionic_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int mask,
+ 		   struct ib_qp_init_attr *init_attr);
+ int ionic_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata);
++int ionic_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *attr,
++		     struct ib_udata *udata);
++int ionic_destroy_srq(struct ib_srq *ibsrq, struct ib_udata *udata);
++int ionic_query_srq(struct ib_srq *ibsrq, struct ib_srq_attr *srq_attr);
++int ionic_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
++		     enum ib_srq_attr_mask attr_mask, struct ib_udata *udata);
+ 
+ /* ionic_datapath.c */
+ int ionic_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
+diff --git a/drivers/infiniband/hw/ionic/ionic_lif_cfg.c b/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
+index c381bda4360d..66cee57442e7 100644
+--- a/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
++++ b/drivers/infiniband/hw/ionic/ionic_lif_cfg.c
+@@ -75,6 +75,7 @@ void ionic_fill_lif_cfg(struct ionic_lif *lif, struct ionic_lif_cfg *cfg)
+ 	cfg->eq_count = lif->ionic->neqs_per_lif;
+ 	cfg->cq_count = le32_to_cpu(ident->rdma.cq_qtype.qid_count);
+ 	cfg->qp_count = le32_to_cpu(ident->rdma.sq_qtype.qid_count);
++	cfg->srq_count = le32_to_cpu(ident->rdma.srq_qtype.qid_count);
+ 	cfg->dbid_count = le32_to_cpu(lif->ionic->ident.dev.ndbpgs_per_lif);
+ 
+ 	cfg->aq_qtype = ident->rdma.aq_qtype.qtype;
+diff --git a/drivers/infiniband/hw/ionic/ionic_lif_cfg.h b/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
+index 68aec06908ca..bc14fc0921da 100644
+--- a/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
++++ b/drivers/infiniband/hw/ionic/ionic_lif_cfg.h
+@@ -38,6 +38,7 @@ struct ionic_lif_cfg {
+ 	int eq_count;
+ 	int cq_count;
+ 	int qp_count;
++	int srq_count;
+ 
+ 	u16 stats_type;
+ 	u8 aq_qtype;
+diff --git a/include/uapi/rdma/ionic-abi.h b/include/uapi/rdma/ionic-abi.h
+index 3d8d56922a93..ac48fcd19a4f 100644
+--- a/include/uapi/rdma/ionic-abi.h
++++ b/include/uapi/rdma/ionic-abi.h
+@@ -113,7 +113,7 @@ struct ionic_srq_req {
+ };
+ 
+ struct ionic_srq_resp {
+-	__u32 qpid;
++	__u32 srqid;
+ 	__u8 rq_cmb;
+ 	__u8 udma_idx;
+ 	__u8 rsvd[2];
 -- 
 2.43.0
 
