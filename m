@@ -1,116 +1,222 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9664A499F;
-	Fri, 25 Sep 2026 14:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C064A7CB5
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344808; cv=none; b=mdQ58yfHP1y7S2t6vt0oMLdoRlP/n/BZMc9udobqk1jbtCKLNZ+qjjEEJQGNNM9E1Sl4XRiV6mziQ4rffeKMIJD7OaPRotMczOALhKYfOLDO3RNEMG9N8c0iKd+RwnUD8AnI10nHHmMYkpct4rIN7Xm+MZR55sKj+hw0cj0K46o=
+	t=1790344813; cv=none; b=so2tC8OATDuasz8bH4E2cUYmwRbHgVeH3rHLBXawZllm19DWFN6+lQsPeY10W5qNb5IxUf6ijbXYEAMjp8q4cOmEJwxPEFoagx2Dqg7sQJyXoWMi1nyV7SQa/Kupt2Fv6TozOY3ZkMWSpBKlas7J5RhuBT8lOmsQ4oaxXORqn20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344808; c=relaxed/simple;
-	bh=DSsN29zsR9j+WvGBTcHDFWJGzb4OLJvGW5VKqI8X3DA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=D+0sfddV6PW1hUmYIQSvLK5D7ThOvp7akVxOiO4bdHXgSaXnNTEBqufDtbOJYR8wvRnTYZ/f7rvy2wpLEZfIVoJmLRkvdYTU7X+K9Zs6XHBxdvDVKX5OEOehZSTmwSp5IsSRnrIM3GaW9Iklv6vHlgV1BIrih7V4d/anOUrTX0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=I7Bd/HXt; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790344813; c=relaxed/simple;
+	bh=o6cJivv/VfQF33KG/q30DTCzJt3jsglm2Oj8tzgi5/U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TNN9uxKh9SQeYPtX1PyaAQhsxP4VDYzTjqiKsp66OuRHaZIhqS986TRgcINSYkwCkkdDFIle//OH12VOLeUqHAfEUoXBT72IMSWELM6hlrWaioUKBZMt0XqdrzQS0pUPbpk8ske7+qpY4BXPxv6WBRHAaqhVYo61zOOtuAp7LZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Pp8szPut; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="I7Bd/HXt"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27297A4AA6;
-	Fri, 25 Sep 2026 15:59:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790344799; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Pp8szPut"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 859201A101E;
+	Fri, 25 Sep 2026 14:00:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4C4906073B;
+	Fri, 25 Sep 2026 14:00:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3D30103294F6;
+	Fri, 25 Sep 2026 15:59:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790344795; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=MTd0EMu7doAmdq2HppZdrUCkOm/ba6fvHRPuYn3MCJo=;
-	b=I7Bd/HXtFzYU78wNTTbWozPADgcLkY0cIW4cbpOipMGwkk7W/grP6FTidrblJUt5+xobHU
-	1JlWBkuzdNMc+DUrp//7RXKWTJV/Ugf0ZtcFqHdygyHE8l6CHQw5xR0Jbr/wiIzydc+Hjk
-	w/l4Thui96nGT6JrvYdLf03SzAzOq0DPZoFmrUiKlusQ0cOcCZwCN6dZeauPan9Kx3eMHP
-	B/Gy1Q9Z4F3/+IPU2geQzSb+fVRvDobMK2i08QMRDH42WYVwKNehngjyrtuR/oPVamSXxY
-	Svvk4ZKZ8tGKQHaacye6nAsGTRu9oePb/fZ0O++UsJIQQs/cNlaubBeVVmeGwg==
+	bh=kVReI9ke85UyIir8w2GPSE/VSeURL4Y7GpIiX34KEE0=;
+	b=Pp8szPuta8jc1GXT2fQ450uuWBeThA8/GunqqEMrXpUA6nTb40MukUDGYuJ/VT1LItNw5d
+	Sx9kr8+++fDh81DyU2AaRYS5W1Ck9eZdKaGQSbe1LgIRvwi0fObvgw3lzDaFbtpkMK7y2f
+	R48+hpK5MBy1uaOQTkrlq/XmF4m0d7o6AyDUdh5T35rfk1vwMgE6KFd5E3Y20soDk63S4b
+	DuKEVwzKEMxvS37N+FZ+kJvZC+A8+lMDAd308iO9OnnJIz62udjC889F+u6hZuZbSrvtu4
+	gBZN+CLvJRfj60UmZK0kinY8mfuSYLD1mQgFWiV0S8SxPLh4tvy8OKTJJ8So6w==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Fri, 25 Sep 2026 15:59:35 +0200
+Subject: [PATCH net v2 2/3] net: macb: propagate RX ring refill errors
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 25 Sep 2026 15:59:57 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Simon Horman <horms@kernel.org>
-Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli
- <florian.fainelli@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Justin Chen <justin.chen@broadcom.com>,
- kmehltretter@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: bcmgenet: allocate RX buffers as page fragments
-In-Reply-To: <20260925134714.GM13925@horms.kernel.org>
-References: <20260924101922.2675127-1-nb@tipi-net.de>
- <20260925134714.GM13925@horms.kernel.org>
-Message-ID: <890feb51a8204e6e9f486bcee8e4f819@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260925-macb-close-v2-2-360efa565914@bootlin.com>
+References: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
+In-Reply-To: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
+To: Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Sean Anderson <sean.anderson@linux.dev>, 
+ Antoine Tenart <atenart@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Simon
+gem_rx_refill() is responsible for Rx SKB allocation, including at open,
+but its prototype indicates a void return value.
 
-On 25.9.2026 15:47, Simon Horman wrote:
-> On Thu, Sep 24, 2026 at 12:19:21PM +0200, Nicolai Buchwitz wrote:
->> Since the page_pool conversion every RX buffer is a whole page and the
->> skb truesize is the page, although the hardware writes at most 2 KiB 
->> of
->> it. On 64 KiB pages a packet therefore counts 65792 bytes against the
->> socket buffer where it used to count 2752. As a result a UDP socket
->> with the default buffer starts to drop after three packets, and the RX
->> rings pin 16 MiB for 512 KiB of buffers.
->> 
->> Fix this and allocate the buffers as page fragments, so the truesize 
->> is
->> what a packet occupies. 4 KiB pages stay one buffer per page.
->> 
->> Sync each buffer in the refill path, as page_pool can only sync a 
->> whole
->> page on recycle. On 4 KiB pages that is twice what the hardware wrote.
->> 
->> Fixes: 7bc054c2d4ed ("net: bcmgenet: convert RX path to page_pool")
->> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
->> Closes: 
->> https://lore.kernel.org/all/20260924065839.56793-1-kmehltretter@gmail.com/
->> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> 
-> ...
-> 
->> @@ -2254,11 +2257,12 @@ static int bcmgenet_rx_refill(struct 
->> bcmgenet_rx_ring *ring,
->>  			      struct enet_cb *cb)
->>  {
->>  	struct bcmgenet_priv *priv = ring->priv;
->> +	unsigned int size = GENET_RX_BUF_SIZE;
->> +	unsigned int offset;
->>  	dma_addr_t mapping;
->>  	struct page *page;
->> 
->> -	page = page_pool_alloc_pages(ring->page_pool,
->> -				     GFP_ATOMIC);
->> +	page = page_pool_dev_alloc(ring->page_pool, &offset, &size);
-> 
-> I think it is not so important either way, but I'm wondering
-> if you considered using page_pool_alloc_frag() here.
+Therefore we change the code to propagate allocation and DMA mapping
+errors back up the stack, making sure the open fails if no descriptors
+were allocated. Change all those to return errno-style ints:
+ - gem_rx_refill()
+ - its parent gem_init_rx_ring()
+ - its grand-parent gem_init_rings()
+ - the macbgem_ops.mog_init_rings function pointer
+ - its grand-uncle macb_init_rings()
 
-Yes, I did, but page_pool_alloc() seemed a better fit as it hands back 
-the usable
-size in *size. Also it falls back to a whole page above half a page and 
-avoids an
-underestimate at the end of a page.
+We tolerate some allocation failures: we accept running with the rx ring
+only partially filled with successful descriptors. It is important we
+refuse the zero-valid-descriptor case: nothing would ever trigger a
+refill, which only happens once a frame has been received.
 
-> 
->>  	if (!page) {
->>  		priv->mib.alloc_rx_buff_failed++;
->>  		netif_err(priv, rx_err, priv->dev,
-> 
-> ...
+Theoretical bugfix, never encountered in practice. To reproduce,
+introduce memory pressure (less than 512 SKBs of free memory) and open
+the interface. I expect the last queue to be unusable because it has
+zero usable rx buffers.
 
-Thanks,
-Nicolai
+Note that other callers of refill (resume, HRESP error task, NAPI)
+cannot do anything useful with that error and keep their best-effort
+refill, hoping it will improve.
+
+Fixes: 4df95131ea80 ("net/macb: change RX path for GEM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ drivers/net/ethernet/cadence/macb.h      |  2 +-
+ drivers/net/ethernet/cadence/macb_main.c | 33 +++++++++++++++++++++++++-------
+ 2 files changed, 27 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index d6931c41f39d..cfaa0ca49f1a 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -1197,7 +1197,7 @@ struct macb_queue;
+ struct macb_or_gem_ops {
+ 	int	(*mog_alloc_rx_buffers)(struct macb *bp);
+ 	void	(*mog_free_rx_buffers)(struct macb *bp);
+-	void	(*mog_init_rings)(struct macb *bp);
++	int	(*mog_init_rings)(struct macb *bp);
+ 	int	(*mog_rx)(struct macb_queue *queue, struct napi_struct *napi,
+ 			  int budget);
+ };
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 7f25574928d7..18a1b5f7ad91 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1486,7 +1486,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	return packets;
+ }
+ 
+-static void gem_rx_refill(struct macb_queue *queue)
++static int gem_rx_refill(struct macb_queue *queue)
+ {
+ 	struct macb *bp = queue->bp;
+ 	struct macb_dma_desc *desc;
+@@ -1558,6 +1558,14 @@ static void gem_rx_refill(struct macb_queue *queue)
+ 
+ 	netdev_vdbg(bp->netdev, "rx ring: queue: %p, prepared head %d, tail %d\n",
+ 		    queue, queue->rx_prepared_head, queue->rx_tail);
++
++	/* Fail if queue has zero prepared descriptors. This is critical because
++	 * nothing will ever trigger a refill again.
++	 */
++	if (queue->rx_prepared_head == queue->rx_tail)
++		return -ENOMEM;
++
++	return 0;
+ }
+ 
+ /* Mark DMA descriptors from begin up to and not including end as unused */
+@@ -2804,7 +2812,7 @@ static int macb_alloc(struct macb *bp)
+ 	return -ENOMEM;
+ }
+ 
+-static void gem_init_rx_ring(struct macb_queue *queue)
++static int gem_init_rx_ring(struct macb_queue *queue)
+ {
+ 	unsigned int i;
+ 
+@@ -2814,14 +2822,16 @@ static void gem_init_rx_ring(struct macb_queue *queue)
+ 	for (i = 0; i < queue->bp->rx_ring_size; i++)
+ 		macb_rx_desc(queue, i)->addr |= MACB_BIT(RX_USED);
+ 
+-	gem_rx_refill(queue);
++	return gem_rx_refill(queue);
+ }
+ 
+-static void gem_init_rings(struct macb *bp)
++static int gem_init_rings(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+ 	struct macb_dma_desc *desc = NULL;
++	int last_err = 0;
+ 	unsigned int q;
++	int err;
+ 	int i;
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -2834,11 +2844,15 @@ static void gem_init_rings(struct macb *bp)
+ 		queue->tx_head = 0;
+ 		queue->tx_tail = 0;
+ 
+-		gem_init_rx_ring(queue);
++		err = gem_init_rx_ring(queue);
++		if (err)
++			last_err = err;
+ 	}
++
++	return last_err;
+ }
+ 
+-static void macb_init_rings(struct macb *bp)
++static int macb_init_rings(struct macb *bp)
+ {
+ 	int i;
+ 	struct macb_dma_desc *desc = NULL;
+@@ -2853,6 +2867,8 @@ static void macb_init_rings(struct macb *bp)
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
++
++	return 0;
+ }
+ 
+ static void macb_reset_hw(struct macb *bp)
+@@ -3183,7 +3199,9 @@ static int macb_open(struct net_device *netdev)
+ 		goto pm_exit;
+ 	}
+ 
+-	bp->macbgem_ops.mog_init_rings(bp);
++	err = bp->macbgem_ops.mog_init_rings(bp);
++	if (err)
++		goto free_rings;
+ 	macb_init_buffers(bp);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -3221,6 +3239,7 @@ static int macb_open(struct net_device *netdev)
+ 		napi_disable(&queue->napi_rx);
+ 		napi_disable(&queue->napi_tx);
+ 	}
++free_rings:
+ 	macb_free(bp);
+ pm_exit:
+ 	pm_runtime_put_sync(&bp->pdev->dev);
+
+-- 
+2.55.0
+
