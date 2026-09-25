@@ -1,270 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3728D4E2F18
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F1336655C;
+	Fri, 25 Sep 2026 19:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790363757; cv=none; b=e1bVZk4NKy/3A7+indLoU6Z12LKIC2btOCgzq+UV8pXPENTJkmOqaX+nOAYdRvJzJObKus0PuxX3gouWfWtWRBILr8Q3/tkNsXn5ik+TgmpmVBOxYLFTo2tROKFFo1oLJG9lHWp66COkGgA/9B8G6zk23MMc3wh3l+xbIlgXluk=
+	t=1790363799; cv=none; b=pcSrscTK34iGD8cUJ+7N1N9VHmmFFyQVHF0w5sH0krbAQXnNiQd/4xIwAhbRGPpdGkv6i2MSwj3XD/cDofhdRqIXlosuTjQhhkLm21WtLcVLuqMXaGxgKZiRLLRg034OMOBASWdUm1dZixsgjm3XIKR6rquBDHUSVP1UvBFC4z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790363757; c=relaxed/simple;
-	bh=1iQYlNeb3MrVFHVuyqAHdMXtCaOZscTNUbEqzCORxQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kayrydpgurF7Z4bjVINhhwM7XCnTGUfp0MFnmPGOJyGj4p/9/Fci005X8iCTvSsouexycclig6hHPWXmpyHRFpV6cqgcegW4PfvD5lJubnQYigfLHPb03OQ0mdwT2Yby90jt0VLzEVWCvIdRTt/HyeUWRioSr8oizdVMJ/3wz1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XsspPzuB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790363799; c=relaxed/simple;
+	bh=nyMpWEPFZh1yvWrMy+o3UY9J/iCI0gPVCFVoM29ZVXc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dqgpaz1HWbFfiwWJrOXSCsRAO+o3Dbyu1QwUJUzx0NZABTptb9yX3I1DYp87/034jSogt5rN4dSHrUMTKS0PR7PaAsTXMCLRRDrGuj5RLpSe4bhQd20YFuAz9JMrmLAI/tDfexRB6K+iQyO3DkMqZaw77aIYR9CGW0PfvF5RzFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsAtbxWV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XsspPzuB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790363752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w2QYCor8/EHodqVrXWLpxAEHB8hZMJ7N24MS/yoFyvY=;
-	b=XsspPzuBxQA3WtOxwaPEpNmcEkxnXFKzDgO5mHAnCmE9beu2lyE9uK5Sp2WrwlJgORMHEf
-	rSk/DJ0QBAih3qaIzX/WWlghm6TN3sQgd2Do9e7pgUIQ/YCGURTc/TWbcOjFpyjVYu10rC
-	jE5wLFvTHXIfCppNFNXYdJx61HhKzMU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-ZzFAzJ6IMKinhC4234EWzQ-1; Fri,
- 25 Sep 2026 15:15:49 -0400
-X-MC-Unique: ZzFAzJ6IMKinhC4234EWzQ-1
-X-Mimecast-MFC-AGG-ID: ZzFAzJ6IMKinhC4234EWzQ_1790363747
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EF64195419F;
-	Fri, 25 Sep 2026 19:15:47 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 420B11800473;
-	Fri, 25 Sep 2026 19:15:43 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] rxrpc: Fix RACK-TLP implementation
-Date: Fri, 25 Sep 2026 20:15:19 +0100
-Message-ID: <20260925191520.2206700-3-dhowells@redhat.com>
-In-Reply-To: <20260925191520.2206700-1-dhowells@redhat.com>
-References: <20260925191520.2206700-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsAtbxWV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280B61F000FF;
+	Fri, 25 Sep 2026 19:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790363797;
+	bh=HpN2OhOrodHkPWUvKj/Ar1FiMoNTYNdUdcV94TXSHHY=;
+	h=From:Subject:Date:To:Cc;
+	b=OsAtbxWVL0pnv1KZ0nMLwxyqW0xXWZLZwMoS70uV38d3OYc2tvZGCD/7lFQ2t+YCA
+	 dYZ3eVOk9UlsBI5rzB2i73RO/aAhr9yWK/HMps/fE8RgYNNz2RJJztsJ6S6TmtxqGW
+	 zUT2QvCVjtMpvEeqfpe/PwHPxGjFDqcaOtcLXiGLFvIzqLv1W+f9Vnwo59q/oVtGMK
+	 PoMNzzF1fgnLLdvP+jSIJN0Ejz4GIuNC4/yiY1nO2sFTXvq4jdCNcqnTlKQUakMG9T
+	 dj2OIQp8MgYvlJd1KRYJcSRdMZHCwxC3FjoPkYrXouFpHCA7H1Zz5oa5K+c4YhZAGg
+	 DY45LJJYWQVHg==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH RFC v2 0/5] NFS: isolate mTLS client credentials by network
+ namespace
+Date: Fri, 25 Sep 2026 15:16:22 -0400
+Message-Id: <20260925-nfs-mtls-identity-v2-0-aa3ad17dd6c8@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Oyw6CQAxFf8V07SiDyMOViYkf4Na4GKBAFQbTj
+ kRj+HcZdOnynt7enDcIMqHAbvEGxoGEejuFcLmAojG2RkXllCEMwjjIdKJsJapzrUwcrSP3UkF
+ U6KiKq02UljD93Rkres6bZzgdD3D5QnnkVyycX/O13AiqnI0tGo96pprsujPikP29IXE9v2azQ
+ c9jP4n0j8SgVaB0luA2TsskNcn+hmyxXfVcw2Ucxw+MDUeV6gAAAA==
+X-Change-ID: 20260917-nfs-mtls-identity-04c14f6f348d
+To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
+ Sagi Grimberg <sagi@grimberg.me>
+Cc: linux-nfs@vger.kernel.org, keyrings@vger.kernel.org, 
+ kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.16-dev-da966
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3712; i=cel@kernel.org;
+ h=from:subject:message-id; bh=nyMpWEPFZh1yvWrMy+o3UY9J/iCI0gPVCFVoM29ZVXc=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqtsiJHKR24/pVxYQFtUWB/KXIfJEpSAsKRm5MS
+ rEHQtw1eHCJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCarbIiQAKCRAzarMzb2Z/
+ lwZgD/9QE9Jc4twnUjXcRAmZDaJEigYQSfTpENIGpn2rSDxaO14MIECid4BV2gTZfehuOoyaNO4
+ 5TQdmIUvjy3c9SlGGr3mxEJpr4iq2u3ucCpI1vKkGbN5KrSiyWIq/3klR3ABkMm5R9rBiFUuuZK
+ vpjQYGBcIa6hb+cYJCvBJtZT6LsJWUB70wBhQvVsh4r08W9KaJ1uMh2ct7zXn9jdNIaADyA9kWp
+ P0xZHMN392aECY01EV6HfR5P7Ie/vHSpkNKv+HaH39HY2/Za/zLKDdp5KRRZHoV/JnVU486JnD+
+ AHX09Wgi0edCrTo5NQaCOkafT6tEmoiJ0n2SrTQJYWKzIw97RBndfscloJb7TFfCyNwiEVhb9rv
+ 9Mhn67z01zQa2/AzYzYYL2XPwOOqsFvkFaLL96ts1z863ChHqCnVeqkVC4d6ZwQdp3Xs5CjQ8ZF
+ BUMFc027TQ3FPJg1QfhaQeBbc3j1rLrCXDDw6QeqQdil5TBD0Y6GKuy6bfx23vmiDNLsZyBi7Pl
+ 03Ew3mdsXnPql9R22f5tUquCtoSuSOKnBxOksu0rGpJiIYq9r07w4z3PoHYm4MWzxS1X4BPJmRi
+ Qyp+bWk8/5N0Ukx0DWeVQoG8L2AeW9SFjgz4f2JezTLw/U2qymBxAA2RcM4Jy8YZMSyD9QI1oiR
+ k0X+1fQolQEfT1A==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-Fix the RACK-TLP implementation in the following ways:
+An xprtsec=mtls mount names its client certificate and private key
+by keyring serial number, and tlshd reads those keys with its own
+credentials. Each key therefore has to grant user read permission,
+and any tlshd on the host that learns a serial number can read it.
+Nothing separates one network namespace's credentials from
+another's.
 
- (1) Move the "in/exiting Fast or RTO recovery" flags to the rxrpc_call
-     struct rather than rxrpc_ack_summary so that they persist beyond ACK
-     parsing to the next time rxrpc_congestion_management() happens (when
-     the next ACK is parsed).  This allows those values to be accessed by
-     RACK-TLP when invoked by the Reorder timer expiring.
+This series makes the network namespace the isolation domain. The
+RFC thread asked whether the user or mount namespace is the better
+binding. tlshd services the handshake socket of one network
+namespace, so that is the namespace it already lives in.
 
- (2) In rxrpc_input_call_event(), rearm the RTO timer before the function
-     returns if no other timer is running and if DATA packets have been
-     sent but not yet ACK'd.  This prevents us not having a timer set to
-     drive retransmission.
+  https://lore.kernel.org/linux-nfs/20260602154740.49861-1-cel@kernel.org/
 
- (3) In rxrpc_congestion_management(), initialise the TLP state when
-     entering the FAST_RETRANSMIT congestion control state, not every time
-     we process that state - otherwise TLP doesn't happen in that state.
+The keyring is held in struct nfs_net rather than found by name,
+because /proc/keys is not namespace scoped. Its serial number
+travels with each handshake instead (patches 3-4), and tlshd's
+possession of that keyring is what lets a provisioned key grant no
+user read permission at all. Both ends of the link exist today, in
+tls_handshake_accept() and in tlshd. The handshake genetlink ABI and
+the cert_serial= and privkey_serial= mount options do not change.
 
- (4) Don't reset segment_xmit_ts in rxrpc_rack_mark_lost() as that's called
-     from two places, one of which shouldn't do that.  Instead, do it in
-     rxrpc_rack_detect_loss().
+The keyring is owned by the owner of the network namespace's user
+namespace, and grants no permission to anyone else. In a container
+with its own user namespace, the container's root can provision the
+keyring and its tlshd can link it, while global root on the host
+cannot write to it without entering that user namespace. For a
+namespace in the initial user namespace the owner is global root,
+as before.
 
- (5) In rxrpc_tlp_calc_pto(), check flight_size is at most one jumbo
-     packet's worth of subpackets in size, not just any non-zero value
-     (RFC8985 7.2 has a comparison against 1, so this is approximated
-     because we'll be sending jumbo packets if possible).
+Still open is how userspace names the kernel-held keyring. Patch 5
+prototypes a request_key type handled in the kernel and tagged
+KEY_TYPE_NET_DOMAIN. A keyctl modeled on KEYCTL_GET_PERSISTENT, or a
+read-only attribute on the netns-tagged nfs_client sysfs kobject,
+would do the same job if the keyrings maintainers prefer one. Keys
+that userspace adds are quota-charged by user namespace while the
+keyring lives in nfs_net. Confirmation that this is sane when the
+two boundaries differ would be welcome.
 
- (6) In rxrpc_prepare_data_packet(), only increment call->tx_nr_resent if
-     the DATA packet being retransmitted was not previously transmitted
-     otherwise tx_nr_resent will keep getting bigger and cause RACK-TLP to
-     malfunction (the value is used in the in-flight calculation).
-     tx_nr_resent is decremented when a packet that has been retransmitted
-     is discarded - but only by 1 per packet.
+nfstlskey, the provisioning tool that consumes the key type, is
+merged in https://github.com/linux-nfs/ktls-utils/ .
 
-Fixes: 7c482665931b ("rxrpc: Implement RACK/TLP to deal with transmission stalls [RFC8985]")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-Tested-by: Marc Dionne <marc.dionne@auristor.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
+Tested on a v7.3-rc4 kernel carrying this series, on one Fedora VM
+acting as both NFS client and NFSD, with tlshd from ktls-utils
+1.4.0.
+
 ---
- net/rxrpc/ar-internal.h |  4 ++--
- net/rxrpc/call_event.c  | 13 +++++++++++++
- net/rxrpc/input.c       | 10 ++++++----
- net/rxrpc/input_rack.c  |  8 ++++----
- net/rxrpc/output.c      |  4 ++--
- 5 files changed, 27 insertions(+), 12 deletions(-)
+Changes in v2:
+- Write "serial number" rather than "serial" throughout (Randy)
+- Give the .nfs keyring to the netns's user_ns owner (sashiko)
+- Link to v1: https://patch.msgid.link/20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index f0c8cbcc5dd5..9c7b2e0817e7 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -818,6 +818,8 @@ struct rxrpc_call {
- 	u16			cong_dup_acks;	/* Count of ACKs showing missing packets */
- 	u16			cong_cumul_acks; /* Cumulative ACK count */
- 	ktime_t			cong_tstamp;	/* Last time cwnd was changed */
-+	bool			cong_in_recovery:1;		/* If we're in Fast/RTO recovery */
-+	bool			cong_exiting_recovery:1;	/* If we're leaving Fast/RTO recovery */
- 
- 	/* RACK-TLP [RFC8985] state. */
- 	ktime_t			rack_xmit_ts;	/* Latest transmission timestamp */
-@@ -896,8 +898,6 @@ struct rxrpc_ack_summary {
- 	bool		retrans_timeo:1;	/* T if reTx due to timeout happened */
- 	bool		need_retransmit:1;	/* T if we need transmission */
- 	bool		rtt_sample_avail:1;	/* T if RTT sample available */
--	bool		in_fast_or_rto_recovery:1;
--	bool		exiting_fast_or_rto_recovery:1;
- 	bool		tlp_probe_acked:1;	/* T if the TLP probe seq was acked */
- 	u8 /*enum rxrpc_congest_change*/ change;
- };
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 21be9c86d7a7..07e9aac42163 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -440,6 +440,19 @@ bool rxrpc_input_call_event(struct rxrpc_call *call)
- 				       rxrpc_propose_ack_input_data);
- 	}
- 
-+	/* Need to rearm the RTO timer if we don't start the TLP-PTO
-+	 * timer [RFC8985 7.3].
-+	 */
-+	if (call->rack_timer_mode == RXRPC_CALL_RACKTIMER_OFF &&
-+	    rxrpc_tx_in_flight(call) > 0) {
-+		ktime_t rto = rxrpc_get_rto_backoff(call, true);
-+
-+		call->rack_timer_mode = RXRPC_CALL_RACKTIMER_RTO;
-+		call->rack_timo_at = ktime_add(ktime_get_real(), rto);
-+		trace_rxrpc_rack_timer(call, rto, false);
-+		trace_rxrpc_timer_set(call, rto, rxrpc_timer_trace_rack_rto);
-+	}
-+
- 	/* Make sure the timer is restarted */
- 	if (!__rxrpc_call_is_complete(call)) {
- 		ktime_t next = READ_ONCE(call->expect_term_by), delay;
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 73cafe6bfa9f..0e9f6a1e9f00 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -34,6 +34,8 @@ static void rxrpc_congestion_management(struct rxrpc_call *call,
- {
- 	summary->change = rxrpc_cong_no_change;
- 	summary->in_flight = rxrpc_tx_in_flight(call);
-+	call->cong_in_recovery = false;
-+	call->cong_exiting_recovery = false;
- 
- 	if (test_and_clear_bit(RXRPC_CALL_RETRANS_TIMEOUT, &call->flags)) {
- 		summary->retrans_timeo = true;
-@@ -106,12 +108,12 @@ static void rxrpc_congestion_management(struct rxrpc_call *call,
- 		call->cong_extra = 0;
- 		call->cong_dup_acks = 0;
- 		summary->need_retransmit = true;
--		summary->in_fast_or_rto_recovery = true;
-+		call->cong_in_recovery = true;
-+		rxrpc_tlp_init(call);
- 		goto out;
- 
- 	case RXRPC_CA_FAST_RETRANSMIT:
--		rxrpc_tlp_init(call);
--		summary->in_fast_or_rto_recovery = true;
-+		call->cong_in_recovery = true;
- 		if (!summary->new_low_snack) {
- 			if (summary->nr_new_sacks == 0)
- 				call->cong_cwnd += 1;
-@@ -125,7 +127,7 @@ static void rxrpc_congestion_management(struct rxrpc_call *call,
- 			summary->change = rxrpc_cong_progress;
- 			call->cong_cwnd = call->cong_ssthresh;
- 			if (call->acks_nr_snacks == 0) {
--				summary->exiting_fast_or_rto_recovery = true;
-+				call->cong_exiting_recovery = true;
- 				goto resume_normality;
- 			}
- 		}
-diff --git a/net/rxrpc/input_rack.c b/net/rxrpc/input_rack.c
-index 072e1d9ecb2e..66ef2fc6d3d9 100644
---- a/net/rxrpc/input_rack.c
-+++ b/net/rxrpc/input_rack.c
-@@ -29,7 +29,6 @@ static void rxrpc_rack_mark_lost(struct rxrpc_call *call,
- 	} else {
- 		call->tx_nr_lost++;
- 	}
--	tq->segment_xmit_ts[ix] = UINT_MAX;
- }
- 
- /*
-@@ -174,14 +173,14 @@ static ktime_t rxrpc_rack_update_reo_wnd(struct rxrpc_call *call,
- 		call->rack_dsack_round = snd_nxt;
- 		call->rack_reo_wnd_mult++;
- 		call->rack_reo_wnd_persist = 16;
--	} else if (summary->exiting_fast_or_rto_recovery) {
-+	} else if (call->cong_exiting_recovery) {
- 		call->rack_reo_wnd_persist--;
- 		if (call->rack_reo_wnd_persist <= 0)
- 			call->rack_reo_wnd_mult = 1;
- 	}
- 
- 	if (!call->rack_reordering_seen) {
--		if (summary->in_fast_or_rto_recovery)
-+		if (call->cong_in_recovery)
- 			return 0;
- 		if (call->acks_nr_sacks >= dup_thresh)
- 			return 0;
-@@ -227,6 +226,7 @@ static ktime_t rxrpc_rack_detect_loss(struct rxrpc_call *call,
- 				remaining = ktime_sub(ktime_add(xmit_ts, lost_after), now);
- 				if (remaining <= 0) {
- 					rxrpc_rack_mark_lost(call, tq, ix);
-+					tq->segment_xmit_ts[ix] = UINT_MAX;
- 					trace_rxrpc_rack_detect_loss(call, summary, seq);
- 				} else {
- 					timeout = max(remaining, timeout);
-@@ -297,7 +297,7 @@ ktime_t rxrpc_tlp_calc_pto(struct rxrpc_call *call, ktime_t now)
- 	if (call->rtt_count > 0) {
- 		/* Use 2*SRTT as the timeout. */
- 		pto = ns_to_ktime(call->srtt_us * NSEC_PER_USEC / 4);
--		if (flight_size)
-+		if (flight_size <= call->peer->pmtud_jumbo)
- 			pto = ktime_add(pto, call->tlp_max_ack_delay);
- 	} else {
- 		pto = NSEC_PER_SEC;
-diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
-index 88cad087f13b..9e082f740331 100644
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -576,8 +576,8 @@ static size_t rxrpc_prepare_data_packet(struct rxrpc_call *call,
- 			call->tx_nr_lost--;
- 		if (req->retrans) {
- 			__set_bit(ix, &tq->ever_retransmitted);
--			__set_bit(ix, &tq->segment_retransmitted);
--			call->tx_nr_resent++;
-+			if (!__test_and_set_bit(ix, &tq->segment_retransmitted))
-+				call->tx_nr_resent++;
- 		} else {
- 			call->tx_nr_sent++;
- 			start_tlp = true;
+---
+Chuck Lever (5):
+      NFS: name the init_nfs_fs() error labels
+      NFS: allocate the .nfs keyring per network namespace
+      SUNRPC: pass a keyring serial number to the TLS handshake
+      NFS: name the namespace .nfs keyring in the x509 handshake
+      NFS: add a key type that reveals the namespace .nfs keyring serial number
+
+ Documentation/filesystems/nfs/index.rst   |   1 +
+ Documentation/filesystems/nfs/keyring.rst |  69 ++++++++++
+ fs/nfs/client.c                           |   9 +-
+ fs/nfs/fs_context.c                       |   1 +
+ fs/nfs/inode.c                            | 211 ++++++++++++++++++++++--------
+ fs/nfs/netns.h                            |   9 ++
+ fs/nfs/nfs3client.c                       |   1 +
+ fs/nfs/nfs4client.c                       |   1 +
+ include/linux/sunrpc/xprt.h               |   1 +
+ net/sunrpc/xprtsock.c                     |   1 +
+ 10 files changed, 248 insertions(+), 56 deletions(-)
+---
+base-commit: aa98230e410f0ed212b6788c46b1e4d49e0ff7ca
+change-id: 20260917-nfs-mtls-identity-04c14f6f348d
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
 
