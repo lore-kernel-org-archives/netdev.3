@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B35B4A4EE1;
-	Fri, 25 Sep 2026 13:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F004A4854;
+	Fri, 25 Sep 2026 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344346; cv=none; b=Mk/J35Z7RBqXJK5J7J1IpY78IjisSvm3Nisx99Tnpii6J7qwhLfwkhAOK+pm+HW8731vyNzqkoKOGyk/mh8rHbXHFY7hAV73a9fak2LEPYqUV1QuootFZN28vyGbLofaOp+hfK8e6sVgPlphUMz91H9iDAubOxM2Yir7Ozw3rEE=
+	t=1790344347; cv=none; b=BfNp7+feRJAr6YdiZqEaBatYnarzpj5vBTLU4A/5JSQY+ErmsluZh9igmvIss7MutMwW8LWXaKWnlG7FkP76Aeu1OayugCVVuYo/OCwR7j0LQjlPYXSRFj1RYdYuXkCmYkPGxGlPH9rQ3vVgQZfDvNbmQhK6WopCPpCNQiNjl8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344346; c=relaxed/simple;
-	bh=fGFzYX71+rr6A/SV1pDWmXiKMNZGcCthiPK9IK+Qe3A=;
+	s=arc-20240116; t=1790344347; c=relaxed/simple;
+	bh=OzpxWfmO5h3tUzA6VslemPd3DeVxg6xxhnPHoApPLMw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fSm73TOEKV18uh4BbcorVVJWFawXrkL+uIrG/BLiB5BAXWkwHs7yPPPZ9n5xbQ8N94+OgbtpqGw+zDrq2o+OcyUOd+OhfcVR2InA2P8NP8NoXOiQkb9Hzcydom50VqHZ0BvEHF9JeIMt6e/bx55aXcZ6ST0Lc9Wq7QR6BS9Mllk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAlBJxtt; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=QlDRIh3+K35W8kROkrTyAijUpzvpQzZf17jLS+RHdK5FMQXrHxSnydzDg3ODrce62/dKo7Zkjg4b/0G4rX3H+wgbU1o7oxFIsxHi5CZNKplorf/o+c6+cHnoDUys+ethMJW2CsrCsKKiC2+Bcy6oy/PIJ0ieQuCigmDhIgLmue4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwcBmS8s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAlBJxtt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0C61F000FF;
-	Fri, 25 Sep 2026 13:52:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwcBmS8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D711F00893;
+	Fri, 25 Sep 2026 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790344344;
-	bh=f3BiFWB0AB1cE/gRSYPxMNSCMVVdBSZol4rDfzd56ec=;
+	s=k20260515; t=1790344346;
+	bh=OPYdGvaeqKfsakbhab7FT3Z4eB6jIblMd/9b4ZAI5Y4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WAlBJxtt9owiIsTJMuk6kY3ALx5QNCSSQ6sjw6lvpDsmkGAtamsgAtSSdyrPAcPFQ
-	 jWdK8uyLpBuzfi3NMgetqjzb96tc7RqNy1X8PCDhez025kAbIOVp3c8MHU0vO8uXvV
-	 nKR4lGLPnZfbOS8FaEEQf3wN5C20O6vZJ82Xy66N4OLmEfAaX5FBfHiQqhQJt9r3ad
-	 Lgm/txJG95TjmASIFnnVbJtVbXFoOdyZwhDfH59gZLCzSPDLUnEMQCNtVSV55PTWAI
-	 4a7UWkcUaKkGhMtKrGkVMWYSryW+c/4mBwuJfEq99TdvZe6f71TOA0D5kNIgFKidfR
-	 /jNqM5BNqK1/Q==
-Subject:
- Re: [PATCH net v2 1/4] net: axienet: start the TX queue in axienet_open()
+	b=VwcBmS8sHlMG3/7lChWi5p+y2gyB89Cx+uQE20O1NGf3Q+3OJStlLP9ZCdQiCL/Vm
+	 m75b9xtZ0fxvF7vpl4ZJbswK8Z2Xznt04s6oKhyUUyO0kawakRvZbaoZBTz78PtkY8
+	 7qLtbm8QpHW7oLPN0bloqzXIkDFkr5xZ4HHlKv2Pi9R7JZ9H/q/gzamYKqxcxrYnhT
+	 bxQyTqPwDRAVJv/vnrG2fc+z+OoGtoFxnnP+3XACA1/IkUqY8fubOgQIxWvQYuh49/
+	 97aPgihCGkaoe+OuRR6Py7UQaFhcHkSvvl7NjTKhdMXQF3Xe/XDhl5dqXsODd4N3gQ
+	 wl5o/wxXa0+9Q==
+Subject: Re: [PATCH net v2 2/4] net: axienet: quiesce the TX path before
+ axienet_stop() tears it down
 From: netdev-bot+sashiko@kernel.org
 To: maimon.sagi@gmail.com
 Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
@@ -35,10 +35,10 @@ Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
  kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
  daniel@iogearbox.net, andybnac@gmail.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 13:52:23 +0000
-Message-ID: <179034434365.2160803.14320302243857899975@kernel.org>
-In-Reply-To: <20260924135116.185161-2-maimon.sagi@gmail.com>
-References: <20260924135116.185161-2-maimon.sagi@gmail.com>
+Date: Fri, 25 Sep 2026 13:52:25 +0000
+Message-ID: <179034434500.2160803.13601294298532568960@kernel.org>
+In-Reply-To: <20260924135116.185161-3-maimon.sagi@gmail.com>
+References: <20260924135116.185161-3-maimon.sagi@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,169 +55,199 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] On resume, the new netif_start_queue() at the end of
-  axienet_open() makes the later netif_device_attach() skip its qdisc…
+- [Low] This patch only works when the previous commit in the series,
+  "net: axienet: start the TX queue in axienet_open()", is also applied.
 
 Pre-existing issues:
-- [High] axienet_open() throws away the return value of
-  axienet_device_reset().
-- [High] axienet_resume() ignores the return value of axienet_open().
+- [High] This problem wasn't introduced by this patch, but it is still
+  reachable after the whole series: on the dmaengine backend,…
+- [High] This problem wasn't introduced by this patch, but it can undo
+  the new TX quiesce and cause use-after-free, oops or hang after an…
+- [Medium] This problem wasn't introduced by this patch, but the legacy-
+  DMA axienet_stop() leaks outstanding TX skbs and their streaming DMA…
 
 --
 
-net: axienet: start the TX queue in axienet_open()
+net: axienet: quiesce the TX path before axienet_stop() tears it down
 
-This adds a netif_start_queue() call at the end of a successful
-axienet_open(). The goal is to clear a __QUEUE_STATE_DRV_XOFF left over
-from a close while the queue was stopped. Without that, the interface
-could stay unable to transmit after a down/up cycle.
+This commit adds netif_tx_disable() to the legacy DMA branch of
+axienet_stop(). The call comes after TX NAPI is disabled and the error
+work is flushed, so a transmit still in progress when axienet_suspend()
+runs finishes before the TX ring is freed. The dmaengine path is left
+unchanged on purpose.
 
 > diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 782f903d318f3..fb26d2e39faca 100644
+> index fb26d2e39faca..6d448d0b523d3 100644
 > --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
 > +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1700,6 +1700,11 @@ static int axienet_open(struct net_device *ndev)
->  			goto err_phy;
->  	}
+> @@ -1739,6 +1739,14 @@ static int axienet_stop(struct net_device *ndev)
 >  
-> +	/* Nothing else clears a stop left over from before the last close:
-> +	 * the ring is empty, so no TX completion will wake the queue.
-> +	 */
+>  		napi_disable(&lp->napi_tx);
+>  		napi_disable(&lp->napi_rx);
+> +
+> +		/* Nothing can wake the queue now: the error work returns early
+> +		 * once lp->stopping is set, and TX NAPI is disabled.  Stop it and
+> +		 * wait out any transmit in progress before the ring goes away.
+> +		 * dev_close() has already done this, but axienet_suspend() calls
+> +		 * us directly.
+> +		 */
+> +		netif_tx_disable(ndev);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but this comment and the commit
-message ("The ring is reinitialised empty") assume that the reset at the
-top of axienet_open() succeeded. Is that guaranteed?
+[Severity: Low]
+This netif_tx_disable() runs on every legacy DMA stop, not only from
+axienet_suspend(). That includes the normal dev_close() -> ndo_stop path.
+So after each ifdown, __QUEUE_STATE_DRV_XOFF stays set on every TX queue.
+
+In this tree the next open clears it again. That happens through the
+netif_start_queue() added by the previous commit, 718829c2b094 ("net:
+axienet: start the TX queue in axienet_open()"):
 
 axienet_open() {
+    ...
+	netif_start_queue(ndev);
+
+	return 0;
+    ...
+}
+
+Without that commit, nothing in the driver clears DRV_XOFF on reopen, and
+__dev_open()/dev_activate() don't clear it either. The ring is empty after
+reopen, so axienet_tx_poll() never reaches netif_wake_queue().
+
+This patch has a Fixes: tag, and its hunk context doesn't overlap with the
+prerequisite. If it is backported on its own, would TX stay stopped for
+good after the first down/up cycle? Could the commit message mention the
+dependency on the previous patch, so that stable picks up both?
+
+Related to this, the commit message says:
+
+    On the dev_close() path this is covered by the core:
+    dev_deactivate_many() has already quiesced the qdisc and waited for
+    in-flight transmits with synchronize_net().
+
+The new comment also says "dev_close() has already done this".
+dev_deactivate_many() waits for in-flight transmits but doesn't set
+DRV_XOFF. So on the close path the new call does change the queue state.
+Could the commit message and the comment say so?
+
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the dmaengine branch of
+axienet_stop() looks open to the same race from axienet_suspend(). It is
+still unchanged at the end of the series.
+
+axienet_suspend() calls netif_device_detach() and then calls
+axienet_stop() directly. The dmaengine branch then does this without
+netif_tx_disable() or any TX lock barrier:
+
+	dmaengine_terminate_sync(lp->tx_chan);
 	...
-	axienet_lock_mii(lp);
+	for (i = 0; i < TX_BD_NUM_MAX; i++)
+		kfree(lp->tx_skb_ring[i]);
+	kfree(lp->tx_skb_ring);
+	...
+	dma_release_channel(lp->tx_chan);
+
+Until the TX channel is terminated, axienet_dma_tx_cb() can still run:
+
+	netif_txq_completed_wake(txq, 1, len,
+				 CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
+				 2);
+
+That wakes the stopped queue, clears the DRV_XOFF set by
+netif_device_detach(), and reschedules the qdisc. On this path the qdisc
+is never deactivated, and netif_running() stays true.
+
+Can axienet_start_xmit_dmaengine() then run during or after the teardown?
+It does:
+
+	dma_dev = lp->tx_chan->device;
+	...
+	skbuf_dma = axienet_get_tx_desc(lp, lp->tx_ring_head);
+	...
+	sg_init_table(skbuf_dma->sgl, sg_len);
+
+That would write into the freed skbuf_dma and tx_skb_ring. It would also
+submit descriptors to a terminated or released channel.
+
+Nothing waits for an xmit that was already past the stopped check when
+netif_device_detach() ran, either.
+
+>  
+>  	cancel_work_sync(&lp->rx_dim.work);
+
+[Severity: High]
+This is a pre-existing issue, but can the resume path undo the TX quiesce
+added here? axienet_resume() ignores the return value of axienet_open()
+and always attaches:
+
+	rtnl_lock();
+	axienet_open(ndev);
+	rtnl_unlock();
+
+	netif_device_attach(ndev);
+
+netif_running() is still true, so netif_device_attach() calls
+netif_tx_wake_all_queues() even when open failed.
+
+axienet_open() also overwrites the result of the reset:
+
 	ret = axienet_device_reset(ndev);
 	axienet_unlock_mii(lp);
 
 	ret = phylink_of_phy_connect(lp->phylink, lp->dev->of_node, 0);
-	...
-}
 
-The axienet_device_reset() result is overwritten before anything checks it.
-On the legacy DMA path, axienet_device_reset() returns early in two cases:
-__axienet_device_reset() times out, or axienet_dma_bd_init() fails:
+axienet_device_reset() fails if __axienet_device_reset() times out. It
+also fails if axienet_dma_bd_init() can't allocate and takes its error
+path:
 
-axienet_dma_bd_init() {
-	...
-	lp->tx_bd_v = dma_alloc_coherent(lp->dev, ...);
-	if (!lp->tx_bd_v)
-		return -ENOMEM;
-	...
 out:
 	axienet_dma_bd_release(ndev);
 	return -ENOMEM;
-}
 
-In both cases axienet_dma_start() never runs. tx_bd_v is then either NULL
-or a stale pointer, because axienet_dma_bd_release() does not clear it.
-The memory it points to was already freed, either by the error path above
-or by the previous axienet_stop() when the reset times out on reopen.
+In either case open keeps going. lp->tx_bd_v is then freed, or still stale
+from the suspend-time axienet_dma_bd_release(). Open reaches
+netif_start_queue() and returns 0.
 
-axienet_open() still returns 0, and with this patch it also starts the
-queue. The next axienet_start_xmit() then reaches
-axienet_check_tx_bd_space():
+Would axienet_start_xmit() then write BDs into a freed or NULL tx_bd_v,
+and program a stale tx_bd_p into XAXIDMA_TX_TDESC?
 
-	cur_p = &lp->tx_bd_v[(READ_ONCE(lp->tx_bd_tail) + num_frag) %
-			     lp->tx_bd_num];
-	if (cur_p->cntrl)
+On the dmaengine path, axienet_init_dmaengine() can fail during resume.
+Its error path releases the channels and frees tx_skb_ring, or tx_chan is
+left holding an ERR_PTR. netif_device_attach() still wakes the queue.
+axienet_start_xmit_dmaengine() would then dereference lp->tx_chan->device
+and the freed ring.
 
-Can this dereference a NULL tx_bd_v? Could it instead write descriptors
-into freed coherent memory and kick XAXIDMA_TX_TDESC on a channel that was
-never started?
+A later dev_close() -> axienet_stop() would then call
+dmaengine_terminate_sync() on the bad channel and kfree() tx_skb_ring a
+second time.
 
-A later ifdown also goes through axienet_stop()->axienet_dma_bd_release(),
-which would call dma_free_coherent() on tx_bd_v a second time.
+On the legacy path, phylink_of_phy_connect() or request_irq() can fail on
+resume. In that case napi_tx and napi_rx stay disabled from the suspend.
+Would a later dev_close() -> axienet_stop() -> napi_disable() then spin
+forever in napi_disable_locked() while holding RTNL?
 
-The new netif_start_queue() also clears a stop left over from the previous
-close, even though the hardware was never initialised. Should
-axienet_open() check the axienet_device_reset() return value before going
-on?
+[Severity: Medium]
+This isn't a bug introduced by this patch, but does the legacy DMA stop
+path leak outstanding TX skbs and their DMA mappings?
 
-> +	netif_start_queue(ndev);
+With this change an in-flight axienet_start_xmit() can finish publishing
+its BDs. Then axienet_dma_stop() resets the engine, and
+axienet_dma_bd_release() only frees the descriptor array:
 
-[Severity: Low]
-On the resume path, does this stop netif_device_attach() from rescheduling
-the qdisc?
+	dma_free_coherent(lp->dev,
+			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+			  lp->tx_bd_v,
+			  lp->tx_bd_p);
 
-axienet_suspend() calls netif_device_detach(), which sets
-__QUEUE_STATE_DRV_XOFF. Packets sent while the device is suspended can stay
-queued in the qdisc. axienet_resume() then does:
+Any BD that axienet_tx_poll() had not reclaimed keeps its
+dma_map_single() mapping and cur_p->skb. The next axienet_dma_bd_init()
+allocates a fresh ring, so nothing can reach those mappings any more.
 
-	rtnl_lock();
-	axienet_open(ndev);
-	rtnl_unlock();
-
-	netif_device_attach(ndev);
-
-axienet_open() now ends with netif_start_queue(), which clears DRV_XOFF
-without calling __netif_schedule(). Then
-netif_device_attach()->netif_tx_wake_all_queues()->netif_tx_wake_queue()
-reschedules only when it clears the bit itself:
-
-netif_tx_wake_queue() {
-	...
-	if (test_and_clear_bit(__QUEUE_STATE_DRV_XOFF, &dev_queue->state)) {
-		...
-		__netif_schedule(q);
-	...
-}
-
-The bit is already clear at that point, so the backlog is not rescheduled.
-The commit message says the resume path works "because
-netif_device_attach() wakes the queues", but with this change that wake
-does nothing.
-
-If the carrier is already up when linkwatch runs (fixed-link, for example),
-the queued packets would wait for the next unrelated enqueue. Would using
-netif_wake_queue() in axienet_open() avoid this? Another option would be
-to leave the resume case to netif_device_attach().
-
-> +
->  	return 0;
-
-[Severity: High]
-This is a pre-existing issue, but axienet_open() is also called from
-axienet_resume(). What happens if it fails there?
-
-axienet_resume() {
-	...
-	rtnl_lock();
-	axienet_open(ndev);
-	rtnl_unlock();
-
-	netif_device_attach(ndev);
-
-	return 0;
-}
-
-The return value is ignored. So if phylink_of_phy_connect(), request_irq(),
-axienet_init_dmaengine() or axienet_init_legacy_dma() fails, the device is
-still attached, its TX queues are woken, and the PM core is told that
-resume succeeded.
-
-On legacy DMA, axienet_stop() disabled NAPI during suspend, and the failed
-open either never re-enabled it or disabled it again in its error path. A
-later ifdown then runs axienet_stop() again:
-
-	napi_disable(&lp->napi_tx);
-	napi_disable(&lp->napi_rx);
-
-Can this spin forever in napi_disable_locked() while holding RTNL? The same
-path would also call free_irq() on tx_irq and rx_irq, which may not be
-requested at that point.
-
-On dmaengine, tx_skb_ring and rx_skb_ring have already been freed and the
-channels released. That happened either in axienet_stop() during suspend
-or in the axienet_init_dmaengine() error path. Can
-axienet_start_xmit_dmaengine() then use the freed tx_skb_ring and the
-released tx_chan? Can a later ifdown kfree() the ring entries a second
-time?
+axienet_dma_err_handler() does walk the TX BDs, calling dma_unmap_single()
+and dev_kfree_skb_irq() for each one. Should axienet_stop() do the same
+before it releases the ring?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924135116.185161-1-maimon.sagi%40gmail.com
