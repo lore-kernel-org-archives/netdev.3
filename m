@@ -1,270 +1,193 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3C7237707
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 05:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE3317144
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790315601; cv=none; b=aQYG+Tm2MCbE89IiTLcmA+v8+jVKXtZ0bCRUABq88MN/DS9xK/UJ6P1u6mMWywEzkwovVc5HZhaBAyfSDbFuLa1hbFjL5bJ+Mf3OctNho7gqkkcWeaWoq3HIzzWe0ZZNRWPjxA9EtitSVYfz6HIXO7vfZDtALpnoBAOtEwLTIsk=
+	t=1790316190; cv=none; b=WfYlWMO2vmXYAIT46aaK6R+jqIE/D7beYpPmAm6eDwJLRBBKwX0xVHbGoIfAj952fL9tsOyO2sHW2Ha6TjXlE5VDR8kUd8b5GeEqjRMo5hNZ96UC/v9Eze368HUnytNfxGwZGjiezrkJzCiW8RH7DojlMnmB8Ul1TaJs6QjZ/+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790315601; c=relaxed/simple;
-	bh=tmpwG2lgRP+Tvi6WS29YkXjJuIcewFZL8Rb7fANQfb8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mD84YdZs5SS45hlzCqsahvkY0RVdT3w2ihBxtGBL61+tsBl0dxRw7jJ8TM4iSMgb12iqGCtOGcloL0IsIem8TmfCGel6rQ+3nUhC1MmgQ3oQZ4MknvTf86fHMpmlUOMiD5bem2EoPCihmhRhb+ckZe10z2PkibIG+xl9ZSmPL4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ga6++iCx; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790316190; c=relaxed/simple;
+	bh=GXKRIU6WPkKRh85bXbrL4aIw3c7Y/uqFaE8oBwmH9tY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XWJ1tPK36v9OncHIpiLNpi2bXaDiVS0MUrYLgiEvTqumWXKjW2WwVMyd0u9CraN17Fk8ytVAseoBwvvep+a2DZxGbgieYSdfXmQClPq3GQ0aJNtakQYWlcCwAWid8O5lXbu16p79XMAB95ilF6TaDULlBxoiCFvw8dbbXv0orAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NAC2incW; arc=none smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ga6++iCx"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4aOMq2393772;
-	Fri, 25 Sep 2026 05:52:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ns+mJ8
-	4QBWL8Ce4vet0vsgI7PEsIY4o/H4I4VN6kiao=; b=Ga6++iCxXfeZpuf6krvyTF
-	d1CcXUxYRyHy5cz261gaMzsiPI4y/Ta5C4bD7TaKP3C+7Z7JGhR8NHsPr2855hpv
-	cEVrG0ZpVoVlwAOjEituRwrV9zRN7SdvxSBqgnCFtXu59VEW55Gmm7cv/zGQEqiD
-	4vxQT2m5V/E9XnHAol7n6njy5eCTS6SXicW7qXcu+0G+bXfG77XRpbH98U0irbjc
-	naMyqMi03YrLCvetYWwSqFUkxbtft8VHtDuKDs+o60cqLISZPv33RCjhvbnTTt78
-	w8rA5urmomNDopJL1VJ8nz5+J8RRWtMulehiRu8OuC3jPPGU1b6EVRlpcEpEDdPA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske25dbd-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 05:52:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4lXIr3248862;
-	Fri, 25 Sep 2026 05:52:54 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt314ms-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 05:52:54 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P5q8na918042
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Sep 2026 05:52:08 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 426B858066;
-	Fri, 25 Sep 2026 05:52:52 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D3E858055;
-	Fri, 25 Sep 2026 05:52:49 +0000 (GMT)
-Received: from [9.67.88.81] (unknown [9.67.88.81])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Sep 2026 05:52:49 +0000 (GMT)
-Message-ID: <aa62b945-f5b4-48c1-8a57-967ef54bc375@linux.ibm.com>
-Date: Thu, 24 Sep 2026 22:52:45 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NAC2incW"
+Received: by mail-pz2-f43.google.com with SMTP id 41be03b00d2f7-cc433d52421so172024a12.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:03:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790316188; x=1790920988; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=d7u/9Wg6QjiXWXoGzRoqWQFJ1JJiOuQr0Cr3e+6hv+w=;
+        b=NAC2incWJF71M+Gy3CFFPZpmPfPYEh9tP2SqYApERrfwpGra254Z6T4Sqx1bLXbtNc
+         zfvRD94bHPxXVn2HNjfXeRYeFj1DeI09tK6XjcQGRiJRKkBwDpitxW9BKt3HScCGHgB4
+         UIyRmXtMXDBfVDKZW/9irsHKbgKa3pu/F7iOeconFlnJsyLy6Yn2CwbTVpUryoYzCM+5
+         p9Y+LBwOHgeHm9+M1cmyfqCc+yQl6hDV/eoYhUcrrL5msxr0eeG+AZl3vnxbmK3IT18c
+         8cf0gTp6KI6QCVmtrzxaqP0Nx+OkEel0gRDYuLULOeJNANrt8o5Y0YmuvBKqmo+2MUTU
+         rF8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790316188; x=1790920988;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=d7u/9Wg6QjiXWXoGzRoqWQFJ1JJiOuQr0Cr3e+6hv+w=;
+        b=E9aW6bzyLUuglnmt5NLuW39BlfBP2ZQR0SO7bLyPUfhN7/aF9h/JvxGpz0U5M5+Y6X
+         oDDPZ1Y3dAzqcxOI5HFEs38F1tYKzJivlXVbRcPVwR+G0gg1mNEvNYCHmeEIExOAOT52
+         wLfo7PdRxJCzWUHqCo3EJYeenJtoJTHFvTxnuatkpde2AIVgii7qcLtZ4nIQZ6Z2Ntz8
+         A/fzIyaOKANEjg+q9psb5/Q7ihOQydpjMk2bd9uQC7HWXXnNLYmmpKqipniTh/N7zAfr
+         JGwcbvzmNw+eoUMB4pRo9uoZ4VHbvlUidsOSfqADxf25YEvzqoRV3yb5MHdfuh/LIIiA
+         2qyg==
+X-Forwarded-Encrypted: i=1; AKwUvByoIdhGBBQRItQRf1xjlNVOWMXc23TUR7rhCzjhsPAXRh6LZKm4PPzWtChsp8o82Mrt6t/pgUA=@vger.kernel.org
+X-Gm-Message-State: AFuF++l19+9AuTFlD4XbMb2OCr4zMJMgxRSJxJZv/Vl7lWj4yIXZanXE
+	QMbjS+3LvDpSgPF91tmLcf9s7bAjW5gIV+ix42vK3a7sNXMxU3OYZjCq
+X-Gm-Gg: AYBFou2iX/G+/sj97MjzJLh5BXQd2IesAoZCT3SUiM6v/P95KHDPU6WFSfs8zWlh1KV
+	KMd5f7+4A/7QEHn7Oqy/dh2KLZyM6UzuwAKhDD4ZNTZLsOoDCVUozUQ0xmwuA1j0bYzYrcP77RR
+	1Amhp+0R2z1MpeKVJqFBUtLKKgr4T1UO7If+jkg+okiQ81FoauyeQe8TwRoEKWvRHcaJEls4OXQ
+	eHLVrnFJQMI4SLq7Qi/tvp81uCpogYAORCLlMBa16kqwV/GeMqKApdz54uBTp4Bkfnks7lC4BL/
+	p3wfZNN8DZr+XVH78U4oFdxlJG7Hku+vVZWkW/HirIKIkKriungLsm+InfmhsJhrJgxlKXRizXh
+	VWfa19/p+SezaQ5b9h9ISXqOyQWbswDxuZfwUwSkYa0ihPGbvumwXbp7vn/5PlCuiGCelHv86ej
+	de7I65RaRU+oBDwJNVmstSTw3X3K471PrSmHgcopG6t/HaQu3rScXEoKTVt1cPRn8+oenffhY1R
+	GAUYm1U
+X-Received: by 2002:a17:90b:1644:b0:39e:6c69:f47a with SMTP id 98e67ed59e1d1-3a098cf7650mr4544964a91.57.1790316188019;
+        Thu, 24 Sep 2026 23:03:08 -0700 (PDT)
+Received: from [163.43.103.131] ([163.43.103.131])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78795dd54sm645963a12.30.2026.09.24.23.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 23:03:07 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Subject: [PATCH RFC net-next v4 0/2] seg6: add support for the SRv6 End.MAP
+ behavior
+Date: Fri, 25 Sep 2026 15:03:02 +0900
+Message-Id: <20260925-seg6-mobile-end-map-v4-0-457733c08586@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v6,01/15] ibmveth: Add MQ RX hypercall wrappers and
- call definitions
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
-        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com
-References: <b87d16ce8e52934877234af6085e47a89571c9ae.1788102125.git.mmc@linux.ibm.com>
- <178845902960.3394541.10707165174722907578@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <178845902960.3394541.10707165174722907578@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 3b-AsbafqAUo9MA4NJmRTcNQB3UQ6KnQ
-X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab60c37 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=HEzLWsaOVrHECI4ESaEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=O8hF6Hzn-FEA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAyMiBTYWx0ZWRfX/PHhHT6fGfb9
- cFLXUA2ESacaUVp5rCuOzCw4q7FWD4ECylJrtwM1GdW5mRJeniUDHeJDRfKAon8FN074Rvamoe8
- S4ZG0551RCygGGOYGJE4RvrXiJU0VyY=
-X-Proofpoint-GUID: Xb15iSG1DtOU57ekkDQMyfKBbt_TVW1x
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAyMiBTYWx0ZWRfXzBR4SRy47uSQ
- 74vnB44nAxFyw2Cvo1VgZ78taAEHKiHsm09UlchDBtbwfeQ+7WrTNaoFQi8OmMfX0h83dtUkxso
- 3ujxU+j3okr1kvMRWy7tGVzU4aMiLmpyLkF+WB7ZovIaTKj5kXBP3QogKfKa0fNgf0mTJoJhCd6
- 36iwNdbswQiRwLfktPopS8rgq4iT4To3wD6fvoBXMIlKxaR+5gbKGJKT1ZoEmCBi8ud4Swgylwm
- buPU/k6esrFRsy9AsZ4Yhk1cmThQ00UDwGp3woFrDr/holyrooYaGO5PFJHbJS5Uhj+gEuFax/G
- tFG7EkuDhvOFMFrd4P3E0lzm3NegARzbWfg2jp3ILpA9CsPLvtaCguBDCMLBXgBqjaRoSZicAV3
- px6chYNcHn7MdwjyA8tAqm3gF3DYSysYR91y/x5wno+4rbSxz9LB0dm8F1gH9MlzZ76Hd3nboyv
- 2FPWVqc/MWhkEuCh5hA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1011 spamscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250022
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJYOtmoC/23OSw6CMBAG4KuYrh3TKVioKxMTD+DWuGjLiDVQD
+ EWiMdxdqAuNYTmv758XC9Q6CmyzeLGWehdc48ciXS6YvWhfErhirJngQvK1SCBQKaFujKsIyBd
+ Q6xsoS1akqDDHjI2Xt5bO7hHVIzvsd1PPUweeHh07fRbC3VzJdpM9jS8udE37jH/0GA9jZIZ8N
+ rJH4KCUIS4KmWOabMtau2plmzom9OJrKI7zhhgNlEKZs0UpyfwbyY+B2byRTH/kimvJtZU6+zW
+ GYXgDVygddmEBAAA=
+X-Change-ID: 20260523-seg6-mobile-end-map-9cec24191817
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ Andrea Mayer <andrea@common-net.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>
+Cc: Justin Iurman <justin.iurman@gmail.com>, 
+ Florian Westphal <fw@strlen.de>, 
+ Fernando Fernandez Mancera <fmancera@suse.de>, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Yuya Kusakabe <yuya.kusakabe@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3850;
+ i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
+ bh=GXKRIU6WPkKRh85bXbrL4aIw3c7Y/uqFaE8oBwmH9tY=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqtg6XUt1rHbMQKZwC8vwvoFR6Ne42ZJfXWxZty
+ vjdi/3Zs0SJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCarYOlwAKCRAq19F1Kl0b
+ TYFeEACWTwpPg4AkDzEQsjoLv4BVhLOVR17mjbJbwCWno8n4L6Uu/6GOZeLvrw2iwThFPMs08l0
+ 3OdsDTpzeE8XuWJbXJyQFpS4I1oA0dprCMlaMAUgOcH+2lrANvxC5CSci+D/aVx0v9Yt5uA/Ibh
+ EdJJepnPPrC/OjrWXiQzO3ZEc3fZUSA1Q9zildRXeKsfT6wYDzHSwKajj7hJTOPaDIkRW9hVUam
+ Zt4eQPQJ9V2IRv3j5LOWL0twMo+hOQzLjP1ypsKDBHfw3Z2ytsbmQomnN5zzoTkIWfmUKQA/U+I
+ i45l/1wETgj4CvzvLNfYbSKW+wB4hSx1wNJjrOy0+aVG8ymuewlPP7undo1lyDjUkAm7NVk/Km7
+ uL6JebwwxyLxZi3XiJxK70fl1eki+fIQEZCHembEDspD/+geBAuni3GgCkzfPu64RHSTjZEDTQL
+ jA2UO8GJ6LLaqF15b1pR9llnlpx5wDmvgcj6E5Ayarx6SyGNQdwLkefizSsoBFrPYwp63V05Bvu
+ UCbPBzSdkB5KPAUp8fUu5L5IKu3jFlFcumq1tM1BLaz9HiGqeBBBRimnAkdOF7A1kEh9sM25FQV
+ PrTxzua2ka4u/r+QQuLy8mU8C/xeBZQTBln1Sc0zBKodpSVLPJ32lUjZyMPGtJDrCByEjWiK2ej
+ YWq7EkRWJ0QUW7A==
+X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
+ fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-Thanks for the review... I will response one by one. And addressing them 
-in v7
+End.MAP is the simplest of the SRv6 Mobile User Plane (RFC 9433)
+behaviors: it replaces the IPv6 destination address with the
+configured mapped SID and forwards via the IPv6 FIB without consuming
+the SRH.  This series is the first per-behavior rebuild of the SRv6
+Mobile User Plane v2 submission [1], split one series per behavior
+following upstream review.
 
-On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider:
-> Critical: 0 · High: 0 · Medium: 0 · Low: 3
->
-> - [Low] The commit message body contains a verbatim duplicated sentence.
-> - [Low] kernel-doc for the three new MQ hcall wrappers added by this
->    patch is inconsistent about the H_FUNCTION (unsupported-hcall) return.
-> - [Low] The in-tree perf hypercall decoder is not updated for the three
->    opcodes added by this patch.
->
-> --
->
-> ibmveth: Add MQ RX hypercall wrappers and call definitions
->
-> This adds the PAPR 11.20.00 hcall IDs H_REG_LOGICAL_LAN_QUEUE (0x49C),
-> H_ADD_LOGICAL_LAN_BUFFERS_QUEUE (0x4A0) and H_FREE_LOGICAL_LAN_QUEUE
-> (0x4A8), raising MAX_HCALL_OPCODE, and adds matching static inline
-> wrappers in ibmveth.h plus h_register_logical_lan_with_handle() so
-> queue 0 can capture the PHYP queue handle.
->
-> A few questions below, all on the changelog text and the kernel-doc.
->
->>      Add ibmveth.h wrapper helpers (h_register_logical_lan_queue(),
->>      h_add_logical_lan_buffers_queue(), h_free_logical_lan_queue()) with
->>      argument ordering and return semantics matching the existing ibmveth
->>      hcall wrappers. h_free_logical_lan_queue() uses plpar_hcall_norets()
->>      like h_free_logical_lan(). Also add h_register_logical_lan_with_handle()
->>      so queue 0 can capture the PHYP queue handle in MQ mode. Both new
->>      registration wrappers use plpar_hcall() rather than plpar_hcall9(), so
->>      they do not read unwritten stack slots. Both new
->>      registration wrappers use plpar_hcall() rather than plpar_hcall9(), so
->>      they do not read unwritten stack slots.
-> [Severity: Low]
-> This isn't a bug, but the sentence "Both new registration wrappers use
-> plpar_hcall() rather than plpar_hcall9(), so they do not read unwritten
-> stack slots." appears twice in a row here.  Was the second copy meant to
-> be dropped when the v6 rationale was folded into the changelog body?
-Yes. Paste glitch when that sentence was folded in. v7 drops the second 
-copy.
->> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
->> index dff90a7d7f70b..cb0ea53491e6c 100644
->> --- a/arch/powerpc/include/asm/hvcall.h
->> +++ b/arch/powerpc/include/asm/hvcall.h
->> @@ -362,7 +362,11 @@
->>   #define H_GUEST_DELETE		0x488
->>   #define H_PKS_WRAP_OBJECT	0x490
->>   #define H_PKS_UNWRAP_OBJECT	0x494
->> -#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
->> +/* 0x498 reserved; 0x4A4 = H_FREE_LOGICAL_LAN_BUFFER_QUEUE (unused here) */
->> +#define H_REG_LOGICAL_LAN_QUEUE 0x49C
->> +#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
->> +#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
->> +#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
-> [Severity: Low]
-> Should tools/perf/scripts/python/powerpc-hcalls.py get entries for these
-> three opcodes too?
->
-> Its hcall_table currently tracks hvcall.h up to the previous
-> MAX_HCALL_OPCODE:
->
-> 	1168: 'H_PKS_WRAP_OBJECT',
-> 	1172: 'H_PKS_UNWRAP_OBJECT',
-> 	# Platform-specific hcalls used by the Ultravisor
-> 	61184: 'H_SVM_PAGE_IN',
->
-> There is nothing for 1180 (0x49C), 1184 (0x4A0) or 1192 (0x4A8), so
-> tracing the new MQ RX path with that script prints the raw numbers rather
-> than the names.
-Yes. v7 adds those three names. 0x498 and 0x4A4 stay unnamed; they
-are the reserved holes already called out in hvcall.h.
+Because End.MAP is the first behavior to land, this series also
+introduces the SRv6 Mobile User Plane lwtunnel framework that the
+subsequent per-behavior series plug into:
 
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
->> index d87713668ed30..08504d1cafd55 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.h
->> +++ b/drivers/net/ethernet/ibm/ibmveth.h
->> @@ -66,6 +66,145 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
->>   			    desc5, desc6, desc7, desc8);
->>   }
->>   
->> +/**
->> + * h_register_logical_lan_queue - Register a subordinate receive queue
->> + * @unit_address: Device unit address
->> + * @buffer_list: DMA address of 4KB page for tracking registered buffers
->> + * @rec_queue: Buffer descriptor of receive queue
->> + * @queue_handle: Output queue handle on success (may be NULL)
->> + * @irq: Output hypervisor IRQ number on success (may be NULL)
->> + *
->> + * Registers a subordinate receive queue with the hypervisor.
->> + *
->> + * Return:
->> + *   H_SUCCESS (0) on success
->> + *   H_PARAMETER if parameters are invalid
-> [Severity: Low]
-> Should H_FUNCTION be listed here as well?
->
-> H_REG_LOGICAL_LAN_QUEUE (0x49C) is new in PAPR 11.20.00, so firmware
-> predating it returns H_FUNCTION, and h_register_logical_lan_queue()
-> passes the hypervisor status straight back.  The later commit in this
-> series ("ibmveth: Add RX queue register helpers for MQ") does distinguish
-> that case:
->
-> 	if (lpar_rc == H_FUNCTION)
-> 		netdev_err(adapter->netdev,
-> 			   "h_register_logical_lan_queue H_FUNCTION for queue %d (firmware MQ unsupported)\n",
->
-> so a caller reading only this Return: section has no documented way to
-> tell "firmware has no MQ support, fall back to single queue" from a hard
-> error.
-Agreed. v7 lists H_FUNCTION on h_register_logical_lan_queue() and
-h_free_logical_lan_queue() as well. h_add_logical_lan_buffers_queue()
-already had it. All three opcodes are new; the wrappers return the
-hypervisor status unchanged. Later patches map H_FUNCTION on register
-to -EOPNOTSUPP / mq_fallback.
->> +static inline long
->> +h_register_logical_lan_queue(unsigned long unit_address,
->> +			     unsigned long buffer_list,
->> +			     unsigned long rec_queue,
->> +			     unsigned long *queue_handle,
->> +			     unsigned long *irq)
->> +{
-> [ ... ]
->
->> + * Return:
->> + *   H_SUCCESS - All buffers added successfully
->> + *   H_PARAMETER - Invalid parameters
->> + *   H_HARDWARE - Hardware error
->> + *   H_FUNCTION - Firmware does not support this hcall
->> + */
->> +static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
-> [ ... ]
->
->> + * Deregisters and frees all structures associated with the subordinate queue.
->> + *
->> + * Return:
->> + *   H_SUCCESS - Queue freed successfully
->> + *   H_PARAMETER - Invalid parameters
->> + *   H_HARDWARE - Hardware error
->> + *   H_STATE - VIOA not in valid state
->> + *   H_BUSY / H_LONG_BUSY_* - Resource busy, retry
->> + */
->> +static inline long h_free_logical_lan_queue(unsigned long unit_address,
->> +					    unsigned long queue_handle)
->> +{
->> +	return plpar_hcall_norets(H_FREE_LOGICAL_LAN_QUEUE,
->> +				  unit_address, queue_handle);
->> +}
-> Same question for h_free_logical_lan_queue(): 0x4A8 is equally new, and
-> plpar_hcall_norets() returns H_FUNCTION unchanged on firmware that lacks
-> it, but only h_add_logical_lan_buffers_queue() documents that status.  Was
-> the difference between the three Return: sections intentional?
-No, not intentional. Same H_FUNCTION line on free-queue in v7.
+  * a new LWTUNNEL_ENCAP_SEG6_MOBILE encap type with a
+    CONFIG_IPV6_SEG6_MOBILE build option,
+  * net/ipv6/seg6_mobile.c, which hosts the action dispatch table,
+  * include/uapi/linux/seg6_mobile.h, a dedicated SEG6_MOBILE_*
+    attribute namespace, so that attributes whose semantics differ
+    between the mobility behaviors and the RFC 8986 behaviors do
+    not overload the SEG6_LOCAL_* table.
 
+This layout follows the discussion on the v2 thread; feedback on it
+from the lwtunnel maintainers is particularly welcome.  Per the same
+discussion, netfilter hook integration, VRF support and SRv6-specific
+drop reasons are left out of this initial series and will be
+revisited separately.
 
-Thanks,
-Mingming
+A matching iproute2 series adding the "seg6mobile" encap keyword
+follows shortly after this posting, since the selftest needs it to
+run.
+
+[1] https://lore.kernel.org/netdev/20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com/
+
+Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+---
+Changes in v4:
+- Fix the checkpatch line-length reports
+- Link to v3: https://lore.kernel.org/r/20260917-seg6-mobile-end-map-v3-0-9890a60ac6a7@gmail.com
+
+Changes in v3:
+- Silence the shellcheck SC2154 reports for the namespace variables
+  setup_ns assigns
+- Fix the checkpatch alignment and __func__ reports in the selftest
+  helper
+- Link to v2: https://lore.kernel.org/r/20260901-seg6-mobile-end-map-v2-0-1629bfc166eb@gmail.com
+
+Changes in v2:
+- End.MAP: patch the L4 checksum also for an SRH with no segments
+  left and for first fragments; selftest cases added for both.
+- Use nla_parse_nested() for the nested attributes.
+- Rework the selftest helper and cases; wait for counters instead of
+  sampling them; add CONFIG_IPV6_SEG6_MOBILE to the selftests config.
+- Rename the SEG6_MOBILE_NH6 attribute and the nh6 keyword to
+  SEG6_MOBILE_MAPPED_SID/mapped_sid to match the RFC 9433 "mapped
+  SID" wording and avoid clashing with the SEG6_LOCAL_NH6 nexthop
+  semantics.
+- Trim the Kconfig help; add Assisted-by tags.
+- Link to v1: https://lore.kernel.org/r/20260710-seg6-mobile-end-map-v1-0-99be02d68143@gmail.com
+
+---
+Yuya Kusakabe (2):
+      seg6: add support for the SRv6 End.MAP behavior
+      selftests: seg6: add selftest for End.MAP behavior
+
+ include/net/seg6.h                               |   8 +
+ include/uapi/linux/lwtunnel.h                    |   1 +
+ include/uapi/linux/seg6_mobile.h                 |  61 ++
+ net/core/lwtunnel.c                              |   2 +
+ net/ipv6/Kconfig                                 |  10 +
+ net/ipv6/Makefile                                |   1 +
+ net/ipv6/seg6.c                                  |   7 +
+ net/ipv6/seg6_mobile.c                           | 703 +++++++++++++++++++++++
+ tools/testing/selftests/net/.gitignore           |   1 +
+ tools/testing/selftests/net/Makefile             |   2 +
+ tools/testing/selftests/net/config               |   1 +
+ tools/testing/selftests/net/srv6_end_map_test.sh | 400 +++++++++++++
+ tools/testing/selftests/net/srv6_mobile_send.c   | 262 +++++++++
+ 13 files changed, 1459 insertions(+)
+---
+base-commit: 42a9fb3382fc2573e92f41d203b095d9a372cfc9
+change-id: 20260523-seg6-mobile-end-map-9cec24191817
+
+Best regards,
+--  
+Yuya Kusakabe <yuya.kusakabe@gmail.com>
 
