@@ -1,294 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475A442E435;
-	Fri, 25 Sep 2026 11:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F9B392C21;
+	Fri, 25 Sep 2026 11:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790334498; cv=none; b=srvZD+z/P0l4jS7hjW5y676wajW0hCgtiLa7/0pPaE+P+6ITvHDzf6C4bgb5urMzGx/id1eraKQnzBrpBo80/mNlK3jY2yuGAz4TVggIEwQojsa44bQqrx/GWEdB1rIyLSq7StnbUyVib1OkjgUCT77UuimIT/11rWIfsfTe5uM=
+	t=1790334672; cv=none; b=Y7S0XToYT4sNQAYeM3mwZHbnpJ19LjmO8QMMUVorXaQ0rravsA9/3lo8d22Mgh/lv3twntSVVKocIwmrB6r+1rv5R7/KdlW0hiPnxYxGjbzVGEQOpzBwQiZhx6YFbjTFdrLCCacw9yPjikfZt6t/i7kpWpwb7N4YfYwsEIeBlpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790334498; c=relaxed/simple;
-	bh=zynoYMlMYbFj0swo4NPJyyb0szArdEdnmqbN18uz53c=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WhgKQHmlLB/1tnm5yk332xd03p9X5g6fUUL37dVetwEPf9GefGrGoFc07hqMW0ZbN9LVr+Dk1c15cIqDMHAFRKuuM4zGR9BBVSvxA+Nw8k8OFtsvsXnXWx3yS7K0Sm1fY52Gj7pcBA8sKGrW+JNat6zP3FGeJ+x8Hd0l/BG2ayo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0jCR2Eo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790334672; c=relaxed/simple;
+	bh=w93rGZ1go/25rDuElHfHJ2CT6g2Nm4GU5rJ9wYbXusU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=hf9vJnjAFARnx8WIlxvPZy7Xwu8cj9+DdKN/s0ljZfwIU1SxQuTstvjDxQ0amPWrM4Ncrb2i0x61QjlkdXBEKQTZQXg49Mp7cU3vmBAQBfZqp7DNbfeBcAM9JGiyQXy43pBUen1TeMJHKOT+jbgcLN1y/3cGq95DAHE5hlit/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=d1DH2GRT; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0jCR2Eo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EC61F000FF;
-	Fri, 25 Sep 2026 11:08:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790334496;
-	bh=cD/4uhCoOFRj306klw+DrQVG0J2FFkNdJW/iXoErdyw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J0jCR2EoFYOBhzAbE1fH1M1oR6qqBXewk4J6u1BsCTkUOmH8EOChKAB+gEcRu1wy1
-	 rwecTRNgX6OK7lIlC9wewqw88Vwhz5LtY9jXgyTVpsDmDe5qdl73jzYyDfj8q9SdDm
-	 g3zXbdKXkrb5AZ/hCLvOPzn2sbNu3tB62La5ljV5KclkwADucCCLu7GWP41btvi+rU
-	 kaiiQVnl7otnYtZecQlus1qzdwvdtRE5P17h85TEdww5kb5UqD+1TVbeVBvzmBIAcV
-	 nagCJAHh3Xi9aLI2Tx9snf9Ag+3OYNl/hKVZMAIvLmHPiIq3MIUI7P694VOFi2rC4u
-	 RDNfsLCejd7+g==
-Subject:
- Re: [PATCH v2] nfc: nci: ignore unexpected CORE_RESET_NTF and CORE_RESET_RSP
-From: netdev-bot+sashiko@kernel.org
-To: ndaugoing@gmail.com
-Cc: horms@kernel.org, david@ixit.cz, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Fri, 25 Sep 2026 11:08:15 +0000
-Message-ID: <179033449559.2160803.13021740404311036994@kernel.org>
-In-Reply-To: <20260922080750.35929-1-ndaugoing@gmail.com>
-References: <20260922080750.35929-1-ndaugoing@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="d1DH2GRT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D783FA02D8;
+	Fri, 25 Sep 2026 13:10:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790334658; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=so+Hf2voybDCl/egSzR3Yqh3kdtwlpU35/Jz4+SWF1o=;
+	b=d1DH2GRTY+fQ0xDeAZxJ2Wjy2gPySmWtQbz3geYoIDDAeuUAdtIjQa7q84L9LcZWV7QrNS
+	fQbwuFQGMvOa8Lu3QN8WpLZ5RT+lrt7wSkc0BXb9PX0iQ0Ufw63l5QNn3+5A5KmR/Y4C4j
+	slnT7CFggNCimbf+rFAKGlphdxPMeLXc5BJpcQmBTKGNATNeZEgaWwUIb7v+0e7vpE7gY+
+	N4OyYqd+NKlg58qTzGG4POJP98KSCWskqHPSLakHB/CRfYZJLVXuL2jRTNkbUxmgoUlUEj
+	QZgOqrGAvi09a4N3+/1ocXuidUqTMkFeLj2CFmT3gRIJ2GVJx8dZ+9//VmfCkQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Fri, 25 Sep 2026 13:10:55 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 2/6] net: bcmasp: unmap previous DMA mappings on TX
+ map failure
+In-Reply-To: <20260922221630.3864427-3-florian.fainelli@broadcom.com>
+References: <20260922221630.3864427-1-florian.fainelli@broadcom.com>
+ <20260922221630.3864427-3-florian.fainelli@broadcom.com>
+Message-ID: <dd3f211964a80584ad9ea764e5f6f2e7@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On 23.9.2026 00:16, Florian Fainelli wrote:
+> When mapping an skb with fragments for transmission in bcmasp_xmit(),
+> if mapping fails on fragment i > 0, the error handler calls
+> bcmasp_clean_txcb() for previous iterations j < i. However,
+> bcmasp_clean_txcb() only zeroes the control block fields without
+> unmapping the DMA buffers, leaking the DMA mappings allocated for the
+> head and earlier fragments.
+> 
+> Call dma_unmap_single() before calling bcmasp_clean_txcb() in the error
+> cleanup loop.
+> 
+> Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet 
+> controller")
+> Assisted-by: LLM
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c 
+> b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> index f2176ef3a127..9ad5a982542f 100644
+> --- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> @@ -285,6 +285,11 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff 
+> *skb, struct net_device *dev)
+>  			intf->mib.tx_dma_failed++;
+>  			spb_index = intf->tx_spb_index;
+>  			for (j = 0; j < i; j++) {
+> +				txcb = &intf->tx_cbs[spb_index];
+> +				dma_unmap_single(kdev,
+> +						 dma_unmap_addr(txcb, dma_addr),
+> +						 dma_unmap_len(txcb, dma_len),
+> +						 DMA_TO_DEVICE);
+>  				bcmasp_clean_txcb(intf, spb_index);
+>  				spb_index = incr_ring(spb_index,
+>  						      DESC_RING_COUNT);
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] nci_core_reset_ntf_packet() still rejects any CORE_RESET_NTF
-  shorter than sizeof(struct nci_core_reset_ntf) (9 bytes) with -EINVAL…
-- [Medium] Contradictory trigger semantics introduced by the same patch,
-  plus dead constants.
-- [Medium] The new NCI_RESET_PENDING gate is a single boolean token, and
-  in nci_core_reset_rsp_packet() it is consumed non-atomically (plain…
-
---
-
-nfc: nci: ignore unexpected CORE_RESET_NTF and CORE_RESET_RSP
-
-This adds a new NCI_RESET_PENDING flag that is set when CORE_RESET_CMD is
-sent and checked in the CORE_RESET_RSP and CORE_RESET_NTF handlers, so
-that unsolicited or delayed reset packets no longer complete an unrelated
-in-flight request or overwrite ndev->nci_ver and the manufacturer info.
-A few questions on the new gating logic below.
-
-> diff --git a/include/net/nfc/nci.h b/include/net/nfc/nci.h
-> index 09efcaed7c3f6..2ac45adba0886 100644
-> --- a/include/net/nfc/nci.h
-> +++ b/include/net/nfc/nci.h
-> @@ -140,6 +140,11 @@
->  #define NCI_RESET_TYPE_KEEP_CONFIG				0x00
->  #define NCI_RESET_TYPE_RESET_CONFIG				0x01
->  
-> +/* NCI Reset Triggers */
-> +#define NCI_RESET_TRIGGER_ERROR					0x00
-> +#define NCI_RESET_TRIGGER_POWER_ON				0x01
-> +#define NCI_RESET_TRIGGER_RESET_CMD				0x02
-> +
-
-[Severity: Medium]
-Are these two descriptions of trigger 0x00 consistent?  Here 0x00 is named
-NCI_RESET_TRIGGER_ERROR, while the comment added to
-nci_core_reset_ntf_packet() in the same patch says 0x00 is the
-CORE_RESET_CMD trigger for NCI 1.0:
-
-	 * revision-dependent (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both
-
-Only one of those can hold.
-
-Also, NCI_RESET_TRIGGER_ERROR and NCI_RESET_TRIGGER_RESET_CMD are not
-referenced anywhere; only NCI_RESET_TRIGGER_POWER_ON has a single use in
-nci_core_reset_ntf_packet().  Would it be clearer to either use the
-constants in the trigger check or drop the unused ones?
-
->  /* NCI Static RF connection ID */
->  #define NCI_STATIC_RF_CONN_ID					0x00
->  
-
-[ ... ]
-
-> diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-> index 5f46c4b5720f6..5a90591cd9af7 100644
-> --- a/net/nfc/nci/core.c
-> +++ b/net/nfc/nci/core.c
-> @@ -134,6 +134,7 @@ static int __nci_request(struct nci_dev *ndev,
->  	}
->  
->  	ndev->req_status = ndev->req_result = 0;
-> +	clear_bit(NCI_RESET_PENDING, &ndev->flags);
->  
->  	return rc;
->  }
-> @@ -163,6 +164,8 @@ static void nci_reset_req(struct nci_dev *ndev, const void *opt)
->  {
->  	struct nci_core_reset_cmd cmd;
->  
-> +	set_bit(NCI_RESET_PENDING, &ndev->flags);
-> +
->  	cmd.reset_type = NCI_RESET_TYPE_RESET_CONFIG;
->  	nci_send_cmd(ndev, NCI_OP_CORE_RESET_CMD, 1, &cmd);
->  }
-> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-> index f5c9a8ab7ec10..57f99bf46a221 100644
-> --- a/net/nfc/nci/ntf.c
-> +++ b/net/nfc/nci/ntf.c
-> @@ -36,7 +36,22 @@ static int nci_core_reset_ntf_packet(struct nci_dev *ndev,
->  	if (skb->len < sizeof(struct nci_core_reset_ntf))
->  		return -EINVAL;
-       ^^^^^^^^^^^^^^^^^^^^
-
-[Severity: High]
-This isn't a length check introduced by this patch (it came in with
-9c328f54741bd5), but does it undermine the commit message's stated
-premise?
-
-The changelog says:
-
-    If unexpected, log a warning and return 0 so driver-specific handlers
-    (such as fdp firmware patch handling) still receive the notification.
-
-struct nci_core_reset_ntf is 9 bytes, so any shorter notification returns
--EINVAL here, and nci_ntf_packet() then takes:
-
-	case NCI_OP_CORE_RESET_NTF:
-		if (nci_core_reset_ntf_packet(ndev, skb))
-			goto end;
-
-which skips nci_core_ntf_packet() entirely, the only dispatcher for the
-per-driver .ntf callbacks.  Shorter notifications look common: an NCI 1.x
-CORE_RESET_NTF carries 2 payload octets, and drivers/nfc/nfcmrvl/fw_dnld.c
-documents such a frame:
-
-drivers/nfc/nfcmrvl/fw_dnld.c:
-static const u8 nci_pattern_core_reset_ntf[] = {
-	0x60, 0x00, 0x02, 0xA0, 0x01
-};
-
-A conformant NCI 2.0 notification with manufacturer_specific_len == 0 is
-5 octets and is rejected as well.
-
-For fdp, the skipped hook is the only thing that wakes the firmware setup
-path:
-
-drivers/nfc/fdp/fdp.c:fdp_nci_core_reset_ntf_packet() {
-	info->setup_reset_ntf = 1;
-	wake_up(&info->setup_wq);
-}
-
-and fdp_nci_patch_ram()/fdp_nci_patch_otp() block with no timeout:
-
-drivers/nfc/fdp/fdp.c:fdp_nci_patch_ram() {
-	...
-	wait_event_interruptible(info->setup_wq, info->setup_reset_ntf);
-}
-
-So if such a controller emits a short CORE_RESET_NTF after applying the
-patch, does the setup path sleep indefinitely (only a signal breaks it)?
-Would capping the field reads at the received length be preferable to
-rejecting short notifications outright?
-
-> -	ntf = (struct nci_core_reset_ntf *)skb->data;
-> +	ntf = (const struct nci_core_reset_ntf *)skb->data;
-> +
-> +	/*
-> +	 * A power-on notification must not update core protocol state nor
-> +	 * complete a pending request.  The CORE_RESET_CMD trigger value is
-> +	 * revision-dependent (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both
-> +	 * are let through to the reset-pending gate below instead.
-> +	 * Return 0 so driver-specific notification hooks can still run.
-> +	 */
-> +	if (ntf->reset_trigger == NCI_RESET_TRIGGER_POWER_ON)
-> +		return 0;
-> +
-> +	if (!test_and_clear_bit(NCI_RESET_PENDING, &ndev->flags)) {
-> +		pr_warn_ratelimited("unexpected CORE_RESET_NTF\n");
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-Only trigger 0x01 is filtered here.  Every other value reaches the pending
-gate, including 0x00 (which the new header names
-NCI_RESET_TRIGGER_ERROR), the RFU range 0x03-0x9F and the proprietary
-range 0xA0-0xFF, and real hardware does use the proprietary range
-(drivers/nfc/nfcmrvl/fw_dnld.c uses trigger 0xA0).
-
-When a reset is pending, is it intended that an error or proprietary
-trigger notification stamps ndev->nci_ver, ndev->manufact_id and
-ndev->manufact_specific_info and completes the request with
-NCI_STATUS_OK?  The notification content comes from the controller, and
-/dev/virtual_nci (virtual_ncidev_write() -> nci_recv_frame()) lets
-userspace supply any trigger value.
-
->  
->  	ndev->nci_ver = ntf->nci_ver;
->  	pr_debug("nci_ver 0x%x, config_status 0x%x\n",
-> diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
-> index b0ab4f5acbce8..3a2491497e4b3 100644
-> --- a/net/nfc/nci/rsp.c
-> +++ b/net/nfc/nci/rsp.c
-> @@ -32,14 +32,26 @@ static void nci_core_reset_rsp_packet(struct nci_dev *ndev,
->  
->  	pr_debug("status 0x%x\n", rsp->status);
->  
-> +	/*
-> +	 * If no reset request is pending, ignore unexpected responses to avoid
-> +	 * prematurely completing an unrelated request.
-> +	 */
-> +	if (!test_bit(NCI_RESET_PENDING, &ndev->flags))
-> +		return;
-> +
-
-[Severity: Medium]
-Should this be test_and_clear_bit() for consistency with the notification
-handler?  As written the flag is tested here and only cleared further down,
-so the window in between is open to the request thread:
-
-nci_rx_work() -> nci_rsp_packet() -> nci_core_reset_rsp_packet()
-	test_bit(NCI_RESET_PENDING) -> true   /* stale response */
-
-request thread, timing out in __nci_request():
-	ndev->req_status = ndev->req_result = 0;
-	clear_bit(NCI_RESET_PENDING, &ndev->flags);
-
-next reset, nci_reset_req():
-	set_bit(NCI_RESET_PENDING, &ndev->flags);
-
-back in nci_core_reset_rsp_packet():
-	clear_bit(NCI_RESET_PENDING, &ndev->flags);
-	nci_req_complete(ndev, rsp->status);
-
-Can the stale response then complete the new request?
-
-More generally, a single boolean carries no information about which reset
-a packet belongs to.  A delayed or duplicated CORE_RESET_RSP/CORE_RESET_NTF
-from an earlier reset passes the gate of a later one, for example the
-nci_core_reset() issued from fdp_nci_post_setup() after the reset done in
-nci_open_device().  That completes the later request with stale status and
-nci_ver while the NFCC is still resetting, and the genuine response is
-then dropped as unexpected.
-
-Would a per-request generation or sequence number be a better match for
-what the gate needs to express?
-
->  	/* Handle NCI 1.x ver */
-> -	if (skb->len != 1) {
-> -		if (rsp->status == NCI_STATUS_OK) {
-> -			ndev->nci_ver = rsp->nci_ver;
-> -			pr_debug("nci_ver 0x%x, config_status 0x%x\n",
-> -				 rsp->nci_ver, rsp->config_status);
-> -		}
-> +	if (skb->len >= sizeof(*rsp)) {
-> +		ndev->nci_ver = rsp->nci_ver;
-> +		pr_debug("nci_ver 0x%x, config_status 0x%x\n",
-> +			 rsp->nci_ver, rsp->config_status);
->  
-> +		clear_bit(NCI_RESET_PENDING, &ndev->flags);
->  		nci_req_complete(ndev, rsp->status);
->  	}
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922080750.35929-1-ndaugoing%40gmail.com
+Thanks,
+Nicolai
