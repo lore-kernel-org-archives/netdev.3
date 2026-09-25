@@ -1,138 +1,236 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3209341F7D4
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 18:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778353B8BC7;
+	Fri, 25 Sep 2026 18:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790362158; cv=none; b=LKlYRO5TjNtqj/D2cPWgkdmd1Qiven+4bT0lAPdzuVS53ndTCcRsH7Wcb2HTxxtxl0dCCUUkXyqlMV2RDUvrLTnxwR8DmxKdI+vUswNcKKEm9yGkmDP6aLpg1dEBBQ+abOlqeXPGFLsG0YRHNOHLN6QUVe+2xFYNYUBlxKIAfAA=
+	t=1790362561; cv=none; b=GvuE3hsfy9kHcNKbWiko47gvC7hFePp6VjFTyjN4FA9LLgqUv1MYyiGOW8KC2/odjT6Xy3dhpn3o9iH7cO+ip4DyS8+9pmAHpYFaMXNtOS0/A2XNu9hFtLnaVfgFBCWju36sHcBY9WEXfV4P4yyDVSzWHoLN0bIBS2zi/33F0hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790362158; c=relaxed/simple;
-	bh=F8eGUcbXM9YJxxiTRFj1694VCKapoa42uE3eAkq3zP4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ubj/iZpAUjTP2vnvJbK0kRdnLLHbBGaSwTg3rXUL9VfJOJcyhcGk96ppDrlN6mkjIV5xveEIjrX/RdpAkibEBlyKm40ibNgUVKKiAwZbQCzAorJTZpc6gFYzXx8yLf56QPKGCdlI5F0Wazz2jwF+IrKmUUUBtKVzrslNmPuhHc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jd6JilxB; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790362561; c=relaxed/simple;
+	bh=iKrd0+yFZiZlM33+Ed6nMS/sF+DBUAb53J99/61lCuQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T12W/GMFUkhtDLRvx/nE+hwxNULK8zDwcKfejsWib95fTKnH6+Kusou0rUpnTFTJN5ZOZoSo1FNfg9VSJv20ITp1rNhhbY1jnnl3L4MWOLHAets5TNGW+GDJShIqUYC9m9sFcdV+j/AhrsDyMzBLxZarENEHtjHOV4gcQEi3sj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=libqQbVl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jd6JilxB"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e7c8c8602so649711241.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:49:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790362153; x=1790966953; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kiKLmngPsfetWszmPVz9vnjkZ6oUGJcFeK7p9i5ASKU=;
-        b=Jd6JilxBOET2kfXR5w38tJI4gEPIPR8nreSgtMQMGeLUOswN/XabL9//j8UvBgV50+
-         1JchEB8skL8jiXnYFaU6XneVu/dGQK2PDu2EpfuLKHefcCNlHmUutYZKRH3gX3kaby7L
-         Y4+gDiTFBPc3FdjpV9BMoA8KqFXE5uZsOg2TFMw2qur1p2Gc+RbaeLCDOo+cPdXg8m5e
-         9Tsn/T8XOy8JthkW3hXw8EraNnWAh+hxCHe8erdijZWR+uLlXqJfulUABGtN59uHR+T7
-         Q5nOU92OWRTnmfST/5dPR7xRgp7ILlSOOkuq3J48Q990xRp+UH2387yLdDtURCAcDOlF
-         obkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790362153; x=1790966953;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kiKLmngPsfetWszmPVz9vnjkZ6oUGJcFeK7p9i5ASKU=;
-        b=QZUby2nWfvI75hGPsmuaM8ZCCJ82uPcBTWEWH0jhdyTpmSCD3oloSOWYyjpAknMSUQ
-         icvaSubtPcv/pFGOYQ1cNviktQLQFy0//H/x6SV/dFJwL+2w3DfIV0Y5y4eqJZ8i+NG0
-         Cpnd3JrELLUhP7wHdYwF23PagP4oOC+1qyJygBGH/WZPnhCv13ZlSyFFnn4MukWI3LVD
-         MY/sTUVvnjJjMXj0Ixeh+ReORwRor7DI6VDdho8nbaGiB/h8AaVrEbf0jCf45SRCXC3M
-         n7/GVrVG1AvqYm6Mt2f+Bup0KW4lmcE9RmP7t8WAfe21Kx/XYWrbH0XDKkyUFEHC7poS
-         aUgg==
-X-Forwarded-Encrypted: i=1; AKwUvBywUS0ot5/fyfSixv0kcvJWmj+kuUUMC/OpOXgDoCkdPM6dpdIKNomPS5vJQSjMOp/WKCDn34g=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+EpUl52fMX4Sr7TVXjbxpSa1vbACqAop9wxzf1PKG4vctUZxI
-	v7SLkr5q8NCvQWbbfEmu1kyuQeGi0jGfgQKLsiT0Q0EPylNz388kMfY8
-X-Gm-Gg: AYBFou3zM6jFcaej8uEQDl5+oMO+aW2TK5FNhRozEpnb62W9oNZmx7Ij7o1JOdbBGrc
-	qStB5HbYtd5Bajj6NdvT5P93ECC+l+lm3nCSkZepXeRpyHhxHPjmnpSuUjKrIBdxP4n5L5b4azS
-	0ID/QhQ5FSnSrrzSL70ItyRLSW6A85ZzYZwKhV+l0FIb5TfOI1ihULS+33Nl/orzk6K6RzKmmxO
-	RBT69k4WRIMqN/HKpqFU4B5KsjktRU/vVbGSXAsUyKBwwNhXI50cXFC3JADqBQMKVcwAgTWYcwK
-	HU7Ds8Fi6f69o7aSJ0jSIzmU8WbLY4dHirKP3kND9TD3JrmzG0NlmVfikk3RR8WdHGHXW/QN+SU
-	mJFB96XOoaTLGrcpZr/mHQzr26XGK7ySRMCwXC0Sq0RGsPCovsb38RJNwSwkX0RFjyvk48GGrqE
-	RkoAKM2IJgelKWdh0x/aMKGWjRB/kfD+wPbLsK4COqXZNVsIwOMFiTng0fYExti4OyDSZXiH3aP
-	g==
-X-Received: by 2002:a05:6102:10c8:b0:7b2:f790:c020 with SMTP id ada2fe7eead31-7b2f790cd9emr639017137.30.1790362152641;
-        Fri, 25 Sep 2026 11:49:12 -0700 (PDT)
-Received: from beelink.. ([187.13.30.172])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9861b029b1dsm3585744241.9.2026.09.25.11.49.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 11:49:12 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net v2] nfc: llcp: prevent resource leak on repeated connect after DM
-Date: Fri, 25 Sep 2026 15:48:57 -0300
-Message-ID: <20260925184857.357926-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="libqQbVl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99D21F000FF;
+	Fri, 25 Sep 2026 18:55:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790362560;
+	bh=VZHfcniCQanKr3rg3FuXnJEl8s+jjzU702WD7HYr1Gw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=libqQbVl5Jb8uMZnW2XTCXteaDRha5HrrqWoxsJ/fYQPpM0G8dF8K/RLU5HFoRJRl
+	 r6Erqy/u4GbXQwKO71+F+k6RXaNzXcS94p++LCdu9sUqESLp+rTyyF8ztegs2Q4siF
+	 vAN32FbDnwOnfd4Olx1uc0ghJqDgj7VmWUUbfkIrif6GHqw8D92dFe10Ei/vmY//26
+	 48L2xt0qwtk+rhX2xn+dIhflw4Z1YyJu39pydXta99nMO6O1dpr4CUS3g4e5Sp3CQv
+	 rPl2uLSa7XSrzRZnGUW/4Ag8qI1JGFk9qIUyQ6SMevpOBJ1hyPY8gmHVkpYA+2BZ4f
+	 GXF6cW5tEWAGQ==
+Subject: Re: [PATCH net-next v8 01/12] gve: add struct gve_device_info to hold
+ device properties
+From: netdev-bot+sashiko@kernel.org
+To: hramamurthy@google.com
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
+ willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com,
+ jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ przemyslaw.kitszel@intel.com
+Date: Fri, 25 Sep 2026 18:55:58 +0000
+Message-ID: <179036255814.2160803.6358571892223666195@kernel.org>
+In-Reply-To: <20260924185316.2831077-2-hramamurthy@google.com>
+References: <20260924185316.2831077-2-hramamurthy@google.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-A nonblocking connect can return while the socket is still connecting.
-If the peer rejects the connection with a DM PDU, nfc_llcp_recv_dm()
-changes the socket state to LLCP_CLOSED.  A subsequent connect() on that
-socket currently overwrites the previous local, SAP and service name
-without releasing them.  Repeated retries therefore leak local references
-and SAP allocations until no SAPs remain.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Release any resources left on the socket before obtaining resources for a
-new connection.  A closed socket can also retain the device reference held
-by an asynchronous connect, so drop that reference as well.  Bound sockets
-do not hold the device reference, so release it only when reconnecting from
-LLCP_CLOSED.
+Low priority / nit picks for your consideration:
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/20260923133339.2518641-1-qwe.aldo@gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
----
-v2: fix author name (v1 was sent with an incorrect From: field)
+- [Low] The commit message says the only functional change is that
+  gve_set_mtu() "now also validates" the jumbo-frames MTU.
+- [Low] The refactor leaves unused state and a stale comment behind.
 
-  net/nfc/llcp_sock.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+--
 
-diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-index 5558d8a..e76361e 100644
---- a/net/nfc/llcp_sock.c
-+++ b/net/nfc/llcp_sock.c
-@@ -690,6 +690,23 @@ static int llcp_sock_connect(struct socket *sock, struct sockaddr_unsized *_addr
- 		goto error;
- 	}
- 
-+	if (sk->sk_state == LLCP_CLOSED) {
-+		/* Release resources retained by a previous failed connection. */
-+		if (llcp_sock->local) {
-+			if (llcp_sock->reserved_ssap < LLCP_SAP_MAX)
-+				nfc_llcp_put_ssap(llcp_sock->local, llcp_sock->ssap);
-+			nfc_llcp_local_put(llcp_sock->local);
-+		}
-+		if (llcp_sock->dev)
-+			nfc_put_device(llcp_sock->dev);
-+		kfree(llcp_sock->service_name);
-+		llcp_sock->local = NULL;
-+		llcp_sock->dev = NULL;
-+		llcp_sock->service_name = NULL;
-+		llcp_sock->service_name_len = 0;
-+		llcp_sock->reserved_ssap = LLCP_SAP_MAX;
-+	}
-+
- 	dev = nfc_get_device(addr->dev_idx);
- 	if (dev == NULL) {
- 		ret = -ENODEV;
+gve: add struct gve_device_info to hold device properties
+
+This commit adds struct gve_device_info to hold the properties negotiated
+with the device, in preparation for an upcoming MailboxQ mode.
+gve_adminq_describe_device() now fills this structure. gve_init_priv() then
+copies the values into gve_priv through gve_set_mtu(), gve_set_mac(),
+gve_set_queue_properties() and gve_set_buf_sizes().
+
+> diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
+> index c280ff35ee771..021adb9108dff 100644
+> --- a/drivers/net/ethernet/google/gve/gve.h
+> +++ b/drivers/net/ethernet/google/gve/gve.h
+> @@ -797,6 +797,34 @@ struct gve_ptp {
+>  	struct gve_priv *priv;
+>  };
+>  
+> +struct gve_device_info {
+> +	enum gve_queue_format queue_format;
+> +	u16 default_tx_queues;
+> +	u16 default_rx_queues;
+> +	u16 max_tx_queues;
+> +	u16 max_rx_queues;
+
+[Severity: Low]
+This isn't a bug, but gve_fill_device_info() never fills in max_tx_queues
+or max_rx_queues, and nothing reads them.
+
+gve_set_num_queues() still takes its maximums from priv->tx_cfg.max_queues
+and priv->rx_cfg.max_queues, which gve_probe() reads from the register BAR.
+
+Should these fields be dropped until MailboxQ needs them, or should
+gve_set_num_queues() use them?
+
+Along the same lines, struct gve_priv still declares:
+
+	bool default_min_ring_size;
+	...
+	u16 default_num_queues; /* default num queues to set up */
+
+All readers and writers now go through priv->device_info, so these two
+fields are always zero. Can they be removed?
+
+The comment in gve_probe() also still names gve_adminq_describe_device()
+as a place where features may be set:
+
+	/* Set default and supported features.
+	 *
+	 * Features might be set in other locations as well (such as
+	...
+
+This patch moved the last such write (NETIF_F_NTUPLE) into gve_init_priv().
+
+All three of these still seem to be present at the end of the series.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+> index f05f4895f4c74..512349c5517f4 100644
+> --- a/drivers/net/ethernet/google/gve/gve_adminq.c
+> +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+
+[ ... ]
+
+> @@ -1097,18 +1129,9 @@ int gve_adminq_describe_device(struct gve_priv *priv)
+>  			 "Driver is running with GQI QPL queue format.\n");
+>  	}
+>  
+> +	gve_fill_device_info(priv, descriptor);
+>  	gve_set_default_rss_sizes(priv);
+>  
+> -	err = gve_set_mtu(priv, descriptor);
+> -	if (err)
+> -		goto free_device_descriptor;
+> -
+> -	priv->num_event_counters = be16_to_cpu(descriptor->counters);
+> -
+> -	gve_set_mac(priv, descriptor);
+> -
+> -	gve_set_queue_properties(priv, descriptor);
+> -
+>  	gve_enable_supported_features(priv, supported_features_mask,
+>  				      dev_op_jumbo_frames, dev_op_dqo_qpl,
+>  				      dev_op_buffer_sizes, dev_op_flow_steering,
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+> index 9cc343a162712..d3882de584e36 100644
+> --- a/drivers/net/ethernet/google/gve/gve_main.c
+> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+
+[ ... ]
+
+> -int gve_set_mtu(struct gve_priv *priv,
+> -		struct gve_device_descriptor *descriptor)
+> +static int gve_set_mtu(struct gve_priv *priv)
+>  {
+> +	struct gve_device_info *device_info = &priv->device_info;
+>  	u16 mtu;
+>  
+> -	mtu = be16_to_cpu(descriptor->mtu);
+> +	mtu = device_info->max_mtu;
+>  	if (mtu < ETH_MIN_MTU) {
+>  		dev_err(&priv->pdev->dev, "MTU %d below minimum MTU\n", mtu);
+>  		return -EINVAL;
+>  	}
+>  	priv->dev->max_mtu = mtu;
+> +	priv->dev->mtu = mtu;
+>  
+>  	return 0;
+>  }
+
+[ ... ]
+
+> +static void gve_set_buf_sizes(struct gve_priv *priv)
+> +{
+> +	struct gve_device_info *device_info = &priv->device_info;
+> +
+> +	if (device_info->max_rx_buffer_size)
+> +		priv->max_rx_buffer_size = device_info->max_rx_buffer_size;
+> +
+> +	if (gve_is_dqo(priv) &&
+> +	    priv->max_rx_buffer_size > GVE_DEFAULT_RX_BUFFER_SIZE)
+> +		priv->rx_cfg.packet_buffer_size = priv->max_rx_buffer_size;
+> +
+> +	if (device_info->header_buf_size)
+> +		priv->header_buf_size = device_info->header_buf_size;
+> +}
+
+[Severity: Low]
+The commit message says:
+
+  Most of these changes are refactors only, except for one:
+  with the introduction of the central struct gve_device_info,
+  in AdminQ mode, gve_set_mtu() now also validates the device
+  provided mtu value from jumbo frames device option.
+
+Does this cover all the behaviour changes in the patch?
+
+Before this patch, gve_adminq_describe_device() called
+gve_set_mtu(priv, descriptor) before gve_enable_supported_features(). That
+checked descriptor->mtu against ETH_MIN_MTU. The jumbo frames max_mtu then
+overwrote dev->max_mtu without a check.
+
+After this patch, gve_fill_device_info() stores descriptor->mtu in
+device_info->max_mtu, and gve_enable_supported_features() overwrites it
+with the jumbo value. gve_set_mtu() then checks only that final value.
+
+So when the jumbo frames option is present, descriptor->mtu is not checked
+at all. A device that reports descriptor->mtu below 68 together with a
+valid jumbo max_mtu used to fail probe, and now it probes. Isn't the check
+moved to a different value, rather than added?
+
+There is a second change in gve_set_buf_sizes(). It now copies
+max_rx_buffer_size and header_buf_size only when they are non-zero.
+
+Before, a BUFFER_SIZES option that reported packet_buffer_size == 0 set
+priv->max_rx_buffer_size to 0. Now the field keeps the
+GVE_DEFAULT_RX_BUFFER_SIZE value set in gve_probe(). That changes the
+result of checks like this one in gve_set_rx_buf_len_config():
+
+	if (!gve_is_dqo(priv) || priv->max_rx_buffer_size < SZ_4K) {
+
+The v5 changelog note "honor device provided rx buffer size correctly" is
+below the --- line, so it won't end up in the git history.
+
+Could the commit message describe both of these changes?
+
 -- 
-2.43.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924185316.2831077-1-hramamurthy%40google.com
