@@ -1,48 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2B84119F7;
-	Fri, 25 Sep 2026 18:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EB1440653;
+	Fri, 25 Sep 2026 18:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790362117; cv=none; b=MDdjsop38rzGpapxHvPEJhIDJX7ruNXIVceLCfvh5ds2lm1i6EqoXXKFJq1XQWyAg7ldsVkCbqSuiLwHhHSBfCX3MKE4xdS0HAvUlxP++hVZ7txlkx0VT4/fGx15GMZ0NeHdw0xIS+g/cQGd2ZEiz/I4tzNq9WvQD2jKhAVlBYs=
+	t=1790362127; cv=none; b=kdSTN9qPzQ/5VEiWbFPaL8pmPm7QZoBTmLiBXHz0re8q2MJL8UqBx7NyN1y9OUMGPNTOuYXNDWwy23tkcDCs96HZPUNIh1MwgxFmMy2+0atu0/tS+tus5vIJs6CP60puYI81Q5ulRB54pO3o/lwbzALzN1FoW1w3PRCMqREkjwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790362117; c=relaxed/simple;
-	bh=bbQnKtZSgohLbV3oo/2lnk4Ge0QxgQoF26s9qg/Gg7E=;
+	s=arc-20240116; t=1790362127; c=relaxed/simple;
+	bh=H51giSJCAt5iKVItQalE9H76qkaFVERRy6Hzt5q09sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4SX7JNGAqwSdqpZMkNtKdy57dA7oOubsx3LfIUEtFpv4aRDtPDG/+HuuNc0yA8L+N/7cnSOgid0VBD+gsIFlZ11pN2dz0t96r1sdfZZNNMEFdDPegn6QoS5SK2O0upriYVtx++D97448LyjIqmhc+XM3tip9+hWr5Ow/MKYk7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjmetqRz; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=HfqvcfFhymNrx2e+PLaO8Z0Qt42Cs72yRCnVH3qwQ2AcS6ga0lRjzM2zx9lsqcRGzR7hY/8udqXREONdyMGx9+k8F81Vnog1S0qpZluHpMrKNdnsCB+XoUD3DOwkBEH4WhbOGsXn3EM3LtNheOeSe5V6d80KTElrw7XxuIb6/Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XD0S6BrP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjmetqRz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16ACF1F00893;
-	Fri, 25 Sep 2026 18:48:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XD0S6BrP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E55D1F0089B;
+	Fri, 25 Sep 2026 18:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790362113;
-	bh=UO7B8QQTVOGlwdjh3i1aXBauNWTrHWnDzflMyP0L03s=;
+	s=k20260515; t=1790362111;
+	bh=4dTvN9eu58SVrWngLpoHGRAn4LoxzEKFTncDXvCSQ78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FjmetqRzJsKzRehLlCcyd2My/1oT3wLuG4jvxEhXOrDF2s1zeL09efOF110vAi4L4
-	 kvF9A4Bx6BDUIBlN9pht/bwNRKO40FxLboX/zHAZfw21EuwNO/RoA1/o6vc7a6xD24
-	 Yn+brWjNSEUy60Jo1R3x4B1XlHJmxmEN4oJk5NJhaRpg55OHx4lZROh8FTKHbb9Ddo
-	 8Qxw2IiCCUv6wt6Y2XVUSPzBTqym4KqDguSgeuhppoH8JLUQcdgvfaHaLZibXpHXmk
-	 bW/PBSfmyZtFXFYdQDMdF2WzKpzSHEA77NJDzU95dLG2JLRMq/ZcjxYowKxIjI212c
-	 nDHMcSzL4dvYQ==
+	b=XD0S6BrP3cCfs7n77XMafWo+a6lKfmqGhd3a2DA05WFHz/j3mu7wYHO1KyvGsn7rc
+	 G8ueYShXRSCpROMSUFS8TteqEOkFog0v0AcGym0tJHc/AwtQpdxcplgi0djlU/OetE
+	 I7R7qvb4DpbZayLcQJpzL7ZZKfDxZbImR3NXyBvRVvSpfyxWl2XBKMUUV5Kpz9cHd/
+	 3Z5J2nVCI3pY6Cs1sVTpCWiputh2/V3mgcKTxJAWub5Q5pVtV5J4m/NAq7tpRIMhge
+	 9iNjgrsSmZq0XGe7jvEg1L0+8UFSK6xFoT/umTZ1bwGAUmeXck1KbIbfvE/NcwD1rq
+	 I+y9Fk3iIHC9A==
 From: Sasha Levin <sashal@kernel.org>
-To: Kusuma DS <kusuma.ds@alkira.net>
+To: stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Chakradhar Kar <chakradhar.kar@alkira.net>,
-	Ramakanth Gunuganti <ramakanth@alkira.net>,
-	Sripathy Ramaswamy <sripathy@alkira.net>,
-	steffen.klassert@secunet.com,
-	dongchenchen2@huawei.com,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [6.12.y] Please backport 8045c0df98d4 ("xfrm: Fix dev use-after-free in xfrm async resumption")
-Date: Fri, 25 Sep 2026 14:48:04 -0400
-Message-ID: <2026-09-25-daily-reply-0012-re-xfrm-async-resumption-6-12@kernel.org>
+	Benjamin Robin <benjamin.robin@bootlin.com>,
+	"Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	syzbot <syzkaller@googlegroups.com>
+Subject: Re: [PATCH 5.10.y 0/3] net: preserve skb_end_offset() in skb_unclone_keeptruesize()
+Date: Fri, 25 Sep 2026 14:48:03 -0400
+Message-ID: <2026-09-25-daily-reply-0011-re-skb-unclone-keeptruesize-5-10-bounce@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026092338-almighty-cherisher-74e8@gregkh>
-References: <CAMcJb7NLooAw=6Vyzbq-7JnE9L=gfTbLL0Y=L1pTFMTg3Vf76A@mail.gmail.com> <2026092316-mouse-scallion-6eb2@gregkh> <CAMcJb7OPfN3jSmaqW14CqBESDv=m7Lc+CQ9hms6kVKMWoeHfCw@mail.gmail.com> <2026092338-almighty-cherisher-74e8@gregkh>
+In-Reply-To: <20260924-cve-2022-49142-v1-0-0bfea684c11b@bootlin.com>
+References: <20260924-cve-2022-49142-v1-0-0bfea684c11b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,17 +59,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> > Is anything planned for bringing this into 6.12.y, or does it need a tested
-> > backport first?
+> I backported two other patches to make the series apply cleanly.
 >
-> As I stated (which is the problem with top-posting):
->
-> > > Please send a working and tested version if
-> > > you wish to have this applied.
+> Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
-I've queued my 6.12.y backport series for this, so 6.12 is covered now:
-
-  https://lore.kernel.org/stable/20260922164842.3125154-1-sashal@kernel.org/
+Your Signed-off-by is only on the cover letter, none of the three patches
+carries it. Could you resend with it added to each patch? The patches
+themselves look fine.
 
 -- 
 Thanks,
