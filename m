@@ -1,102 +1,81 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC7446C837;
-	Fri, 25 Sep 2026 08:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E29411FA1;
+	Fri, 25 Sep 2026 08:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790324625; cv=none; b=FSzWxwDjdUtohR+mNmyaiOStGsUTP5IFqD3xExPdkQ231s/274/gtTKwK+7K1+th/MCYmVFrWrzmOer0aqheBMEgopPluDkkfQxG1zCEZDWkSsz8TmUBVrJcSXSLHsvOQNRNtX8fMqnyhzPhGnqm3CaTcqGtKAYZTuzv1an04W8=
+	t=1790324649; cv=none; b=Rbwc097ILGYJgNwUZyeUwmwXfF7ZNw9++EgjwzXVx20Z6utIgoRMr4YmXkRJklKoJfOhWSznS4pwp2ab40+h0XAArJoMd9tqsRfPkEpf8irs+bXqMe7X37RbLSTJJSZKT60Uo5rcL+3AR5SfOABntz+nfppuAQQSfkKQ4xzP1nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790324625; c=relaxed/simple;
-	bh=d8gttQ0GtmQGGwVP2ciaFpjb9WXqhknmFSKQN+Fp4Mk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cNxc/IG2Yp9Y5sjVbQP1VdIlxkPTbvyqBa4b2eUUCycj42OkFB1FYNafnfc7Fjb6ZxTBlRpxXyi/D/Eh5RMDJeKKdGd28SRJHibNxJcWd8XZUXHD0gHmf2LSrCUJ7NbPVD8ublpNzdwkziRpcC/sZ0AoEXe0DNaZqe+F0GJExjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wJmyXoLk; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790324649; c=relaxed/simple;
+	bh=xZ3AkP0mg/KShHyLhTn4b93mg5mqhGCdg908eQZmUYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtmF8n6/YiHFKEuL+Vjlb+q48smcz3HUb4dj5MHRokHSZX737DdJgY3eEiI1YtdgjLF/4NXqYLLSOxU2TygpJ4zcfrEjANYAvbH+KXBmNAmDvn/7PpwHQtgO5HhSzPaTCGfs1xZpk1KgTABOOvwtw+zKSALIgrTxAgvRUwGU0ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=oQXVxAlF; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wJmyXoLk"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E5127C13989;
-	Fri, 25 Sep 2026 08:24:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 285216073B;
-	Fri, 25 Sep 2026 08:23:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E66610329545;
-	Fri, 25 Sep 2026 10:23:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790324613; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=I6bEulLh7zAM0W47TqvOKsph6UiMIbIjYc+RQMMlt0A=;
-	b=wJmyXoLk8gwi1g4wpdBBgI5nCK1sfzQlqavYNp2/Qv9agvf1lupCd7HuleHi/dg/kZ059n
-	2C4rrzP2EnqjJ2CDzS0d4BucfS7wLS17kbDeyGI7G5zQxZAv3HhBokSpJmFiKNqfv1uEPQ
-	Cc7G4UIusnTRcEokik2YTbUCeWG/cgJqEQyHHCRRDZ/nVD3AmfHofAb/U1Qtg5/4bsG5Z3
-	MAsp/CDuLeCLvBcT3C3Gna0yzGVulgjm/Q7vMPM7lfWOg4KgJxLpBU/fEj84NFnpduSsPs
-	R3gMe7n/3nem7QbikPVO3iXoNqh0o1iwSPWzDhxLB5xzph+ABJK+Cd86SQF1qA==
-From: "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>
-Date: Fri, 25 Sep 2026 10:23:26 +0200
-Subject: [PATCH 5.10.y 2/2] netfilter: nf_tables: join hook list via
- splice_list_rcu() in commit phase
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="oQXVxAlF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=xZ3AkP0mg/KShHyLhTn4b93mg5mqhGCdg908eQZmUYI=; b=oQXVxAlFxWdf/+k0clEXYxnrwT
+	q58SoaiuweMoXSPRktlQ2Gg7VeWpWUhYqH16kQDKN3I+9a9RS8UMTyR7mFxIpt86dqIwhOUeG/1Pc
+	BUFgvSgmqWmasncnC2VTeRns9mb9KiiJ+WUT3o09pCgh84zHghYoC62TNnM+QLxso7Z8pr3i2wH1F
+	Y/+lItaNfUfRBHhXDtEMnoUpWIT94yWk/FFA3vD61aQxRVpT2QZXdhY8Xun8499MShrOUgIwCkMiR
+	Ae6LUoNG7YgL+8UxER8gxYblzdjLrzPvVnU+fl41KYu9G9QBWH4eVNn85qJcwCsg8G0H0InzBkaP0
+	PleLFX0g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xA1Dk-005Abb-1a;
+	Fri, 25 Sep 2026 08:23:52 +0000
+Date: Fri, 25 Sep 2026 01:23:45 -0700
+From: Breno Leitao <leitao@debian.org>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Alexander Duyck <alexanderduyck@fb.com>, 
+	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
+	Mohsin Bashir <mohsin.bashr@gmail.com>, "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Mina Almasry <almasrymina@google.com>, 
+	linux-kernel@vger.kernel.org, Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: Re: [PATCH net v2] eth: fbnic: Keep real queue counts synchronized
+Message-ID: <arYutH9Mvn3OzR8-@gmail.com>
+References: <20260924191817.1843726-1-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-cve-2026-52988-5-10-v1-2-19be752e722b@bootlin.com>
-References: <20260925-cve-2026-52988-5-10-v1-0-19be752e722b@bootlin.com>
-In-Reply-To: <20260925-cve-2026-52988-5-10-v1-0-19be752e722b@bootlin.com>
-To: stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
- Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, 
- Joel Fernandes <joel@joelfernandes.org>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, 
- Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Cc: thomas.petazzoni@bootlin.com, rcu@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
- coreteam@netfilter.org, netdev@vger.kernel.org, 
- "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>, 
- Sasha Levin <sashal@kernel.org>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260924191817.1843726-1-bjorn@kernel.org>
+X-Debian-User: leitao
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+Hello Björn,
 
-[ Upstream commit a6134e62dba2ea4f760b29d5226907f447c92400 ]
+On Thu, Sep 24, 2026 at 09:18:15PM +0200, Björn Töpel wrote:
+> If resume gets fewer vectors than the configured
+> layout needs, fail with -ENOSPC rather than silently change the queue
+> configuration and its bindings. The netdev then stays detached until a
+> later recovery or a device reprobe.
 
-Publish new hooks in the list into the basechain/flowtable using
-splice_list_rcu() to ensure netlink dump list traversal via rcu is safe
-while concurrent ruleset update is going on.
+I am a bit surprised that I is better to get the device permanetly
+disconnected other than just getting it running with fewer queues on
+resume.
 
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Benjamin Robin (Schneider Electric) <benjamin.robin@bootlin.com>
----
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+What is reprobing it later?
+> Fixes: da43127a8edc ("eth: fbnic: support queue ops / zero-copy Rx")
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org> Link:
+> https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
+> Signed-off-by: Björn Töpel <bjorn@kernel.org>
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 5e3f863c487f..63592c73a7a1 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8797,8 +8797,8 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 							   nft_trans_flowtable(trans),
- 							   &nft_trans_flowtable_hooks(trans),
- 							   NFT_MSG_NEWFLOWTABLE);
--				list_splice(&nft_trans_flowtable_hooks(trans),
--					    &nft_trans_flowtable(trans)->hook_list);
-+				list_splice_rcu(&nft_trans_flowtable_hooks(trans),
-+						&nft_trans_flowtable(trans)->hook_list);
- 			} else {
- 				nft_clear(net, nft_trans_flowtable(trans));
- 				nf_tables_flowtable_notify(&trans->ctx,
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
--- 
-2.55.0
-
+PS: The question above shouldn't block the merge of the patch, it is
+just for my own curiosity.
