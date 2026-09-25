@@ -1,105 +1,117 @@
-Received: from mr6.vodafonemail.de (mr6.vodafonemail.de [145.253.228.166])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C84149CF21
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.253.228.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF804A1DFD;
+	Fri, 25 Sep 2026 13:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790342111; cv=none; b=B9D8n+MO2QCk3vqoHl9Zkh6aD2G4pQFCezpP3D5lBKKGDvQPWYiBaS0kz4mV3e+eDJWNx2AeNRpO0taS/TdLGOd9oAB92eNVXpY5NoubdkAXm8Te4/c0sd+do9UTJoV5oxiXF0euwUjjN/NvgB+YdICALIz+ye1aXOCP9JcOj9g=
+	t=1790342134; cv=none; b=iha4qUnPlhFhQBAmGcumh7H29EZth57v9jp7ZKg4zrTnYrZEdifn8/SggLhvXXOzo5vcHRIlhgaSdF8BKnpJK2griAla2ITRjiR7dbe1pHIEOJJrdhPG1uhtKnCFMnTSRxBub2w84WzhfHvwFOYrihwf74CXRQwdikGzPem+E8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790342111; c=relaxed/simple;
-	bh=ynu9tlkmX6+koFl+QN1myO6jZFCV4lPFmhslwQkneqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oWYkkGv/DAhY6N41ksMWjUh5fAIBg9tN9As9TvygFnABqnYT+hcDmWnUXCW/ag5znl5vfpr85pb2s3YNC3l3RcEcgWvkE+IOC1su+1IQbDjOI/MaLS1ovXH2KTSwJGkjzeUAjoxTSjeCHImbr9nrnl5ZM5HuP02Td0ywaDRO7V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arcor.de; spf=pass smtp.mailfrom=arcor.de; dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b=LBIwXvOR; arc=none smtp.client-ip=145.253.228.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arcor.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arcor.de
+	s=arc-20240116; t=1790342134; c=relaxed/simple;
+	bh=KTQ/C/AGHF9RbysM3AnAFePH/hkPn6orzxkp3dkZudU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jA6iJiaBDtYQ6xxgercFkMvZu+OC+Aei/O+Um690BARA2zG70Cx1vzWxC8WmBmzpW0TNSYUMcNGG76f7EctZrTbyPi0WX5gQFCwoYvs4CfTqSoYbbn3t6fTND6gY4tC93v3+E3dnN8e4/nwBEB9xxQgkZ3WKEBjeDngmZovnSp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fvtzHCEg; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b="LBIwXvOR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcor.de;
-	s=vfde-mb-mr2-23sep; t=1790342096;
-	bh=XXk8BUKGmmAYZCiVAGhKqgFCbzl5t8bvdzpz2UrzU/s=;
-	h=Date:From:To:Subject:Message-ID:Content-Type:From;
-	b=LBIwXvORkwSP3gAD3vmQSY5fvBxxOJAsakHj8rqU6o3eirmvcfAqhcWV01xp4NJaM
-	 RmXklfJRd50VEKVDPo9Evok/Sw5ui3pOmCWTnBS+vl0qVckvrtivAv3R/wHt5WHFDr
-	 YH92HJVG75pPwE+M2q+JBTId1XDw7kZTqNK0ykZg=
-Received: from smtp.vodafone.de (unknown [10.5.0.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by mr6.vodafonemail.de (Postfix) with ESMTPS id 4hrrlh2b6Dz3sHpx;
-	Fri, 25 Sep 2026 13:14:56 +0000 (UTC)
-Received: from arcor.de (p5b281a72.dip0.t-ipconnect.de [91.40.26.114])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.vodafone.de (Postfix) with ESMTPSA id 4hrrlX6BtnzB2sP;
-	Fri, 25 Sep 2026 13:14:45 +0000 (UTC)
-Date: Fri, 25 Sep 2026 15:14:32 +0200
-From: Reinhard Speyerer <rspmn@arcor.de>
-To: bjorn@mork.no
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net: usb: qmi_wwan: add Rolling Wireless RN947R
-Message-ID: <arZzuOOvLUZtdOlv@arcor.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fvtzHCEg"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 211FAC653EC;
+	Fri, 25 Sep 2026 13:16:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 411E16073B;
+	Fri, 25 Sep 2026 13:15:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 158B9103294F3;
+	Fri, 25 Sep 2026 15:15:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790342116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=aA/jH+abiUuanyuKQ/jErOx9VrxS5Sybyk7KxjQG/Zg=;
+	b=fvtzHCEg+5XGvBIiIIbDm/qRBcKezZoWZkz0a8OqTjBzK4C8Sm6pUVgUXqfeg3LglpLoA1
+	J16LXk9TzJtGw8b+tQSgAsaMr4988sHQcGo7XRZYqro3kuUGnjrP6SKJeYlKt+HvUZ8Vvo
+	6L6IqR3cV4OuiC2wm9KyvOcn264FmIzriSk2XWYDeCWCbcylLMRKz/mFTXVRITUC+iz2+Q
+	Of6mGvPl/dJzSjq8DuCu3YjCR3bNlh4FACoeQxhGJ9t3rZF4OYxUKJxagsx0t1ltOJSDO3
+	Bxa4sK7Vv2Jc6eXWF/6Gbv8CbMWKIToeL6BpJ9HL7nZZxKnoKnpQpovKuuG/0A==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Fri, 25 Sep 2026 15:15:08 +0200
+Subject: [PATCH net] net: macb: init workqueues before register_netdev()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-purgate-server: smtpa01
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-size: 2359
-X-purgate-ID: 155817::1790342092-4E857030-30A84AB8/0/0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260925-macb-netdev-register-race-v1-1-752f90ce1c39@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMzQrCMBAGX6Xs2YU2NAV9FfGQn8+6glF20yKUv
+ rtRjzMws5FBBUanbiPFKibP0mA4dJRuocxgyY3J9W7qj87zI6TIBTVjZcUsVqGsIYFdHAfnc/b
+ T6Kn1L8VV3r/3mVpBl7+0Jd6R6vdK+/4BlG0FqYIAAAA=
+X-Change-ID: 20260925-macb-netdev-register-race-2b4125dd5645
+To: Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, 
+ sashiko <sashiko@sashiko.dev>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add Rolling Wireless RN947R 0x9300 composition:
+register_netdev() exposes the interface to userspace which might trigger
+operations like close on it. Those access the HRESP/LPI tasks and
+might therefore use them uninitialised.
 
-DIAG + ADB + NMEA + MODEM + RMNET + QDSS + ADPL
+Fix this race by initialising both `struct work_struct` before
+register_netdev().
 
-T:  Bus=01 Lev=01 Prnt=01 Port=02 Cnt=02 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=9300 Rev= 0.00
-S:  Manufacturer=Rolling Wireless
-S:  Product=RN947R
-S:  SerialNumber=xxxxxxxxxxx
-C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#=21 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#=22 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Theoretical bugfix. The main reason for fix is to avoid future Sashiko
+reports which triggers if we grow the race condition (by touching those
+workqueues at open for example). The likeliness of this bug sounds
+tiny, but I've not spent any time trying to reproduce it.
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Fixes: c5092ba3155e ("net: macb: Convert tasklet API to new bottom half workqueue mechanism")
+Cc: stable@vger.kernel.org
+Reported-by: sashiko <sashiko@sashiko.dev>
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-macb-close-v1-0-05e32ce98813%40bootlin.com
+Link: https://lore.kernel.org/netdev/179010942347.2160803.5970158668197373074@kernel.org/
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index f51cf9cb9421..b36a2258d8ac 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1454,6 +1454,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
- 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
-+	{QMI_QUIRK_SET_DTR(0x33f8, 0x9300, 8)}, /* Rolling RN947R RMNET */
- 	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
- 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d63, 0)}, /* MeiG SRM813Q w/ Modem(PPP) */
- 	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d64, 0)}, /* MeiG SRM813Q w/ NMEA */
+ drivers/net/ethernet/cadence/macb_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 8e5c034dc3a4..76260b97a07b 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5968,15 +5968,15 @@ static int macb_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto err_out_unregister_mdio;
+ 
++	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
++	INIT_DELAYED_WORK(&bp->tx_lpi_work, macb_tx_lpi_work_fn);
++
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Cannot register net device, aborting.\n");
+ 		goto err_out_free_tieoff;
+ 	}
+ 
+-	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
+-	INIT_DELAYED_WORK(&bp->tx_lpi_work, macb_tx_lpi_work_fn);
+-
+ 	netdev_info(netdev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
+ 		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
+ 		    netdev->base_addr, netdev->irq, netdev->dev_addr);
+
+---
+base-commit: c15c41239b491c7fa380e7ffd115ba037f2d4b11
+change-id: 20260925-macb-netdev-register-race-2b4125dd5645
+
+Best regards,
+--  
+Théo Lebrun <theo.lebrun@bootlin.com>
+
