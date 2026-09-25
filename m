@@ -1,139 +1,119 @@
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C0C417BD2
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 09:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790328554; cv=pass; b=boPGXVvY9dpQBFH1EmlurIAFfLAUW2NLIFePRtZv7qiaYtJgojbu8DsknTeumoPHAUuhwcVXB4uXUYG7HMH16BjNVvo4EjUD602m6GdjAq4XrPhNCPF3JqXKJwFAaxU9D3yIL7H7w0WWv4NZwzxJJiknJ7tlCpsg8ZMaZd5xnBM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790328554; c=relaxed/simple;
-	bh=P13/I1JpiMJObKwvzR85BZx0pPqgNlRep3BwWp/ddK4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EN701esz2eKDB3WehDrG0lOMS9t/a/2LainfzRlrDoVC1DLAIUPBvjSGYK4AwPSfceBPO9E81cEoqotPJVPVbNn39r2PSCBEB0zv/WMecuCIbpaBiNZ7log62jKPW01skNYDxhfrgMOPuSp8tkwJ/FaKz6WjqAInxfupoBe1s8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=muO3fJR4; arc=pass smtp.client-ip=74.125.230.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07739417BD2;
+	Fri, 25 Sep 2026 09:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790328567; cv=none; b=TiHFzEna7VGMYSRPZhOrjyIRWo9F3f/kJgH/jCV0XS/JfF8/aAM4KktwDbtep0Fsg+teI0wbD8m9Qk0RG/vafDmt11IE3RV8+NREMcmEZpmSF4G3CwnG8kgUhG9hmDbtPljkdKtpivYJmvMGgxMs0cv5g8kkNnl1VF7yKGDmdk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790328567; c=relaxed/simple;
+	bh=GiE/IFtkH/fTurl9Cbwum67nELKTfM58GrzMPpCu3HQ=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=LQ7twO9SKkPea59vuz1/Gonn1X19ebAllctQMCkGUUl0HPGOunlVGHWl93S2KQGEtB5rgmfrqJDvoRGBD7Y7W4QLDZ0tE2LVPo+wbeBurnxFIps6DXVPfZtq0MTvAEeysO0NTqfA5v6Ze0/8NlrCwboonVseRoKEjcw/BiR7hnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtPSZBjo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="muO3fJR4"
-Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb769ca02so8280221cf.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 02:29:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790328552; cv=none;
-        d=google.com; s=arc-20260327;
-        b=daPoSnsHwvgY15LoxMV1QKOLAasWFRKyxJAPeff7ZYBabMcgSBfyPP0P9DW6WXSQYR
-         3W/0WIgjGs/uOqGu8YaZm0Sueykv46U+YKZCM2qqnhnVi3qYgmFy24Ynr/jCNirMEBY6
-         zyBeXQCU0yWt2+bHUMKmZ1Xct0s+OnxFCv7EU/adm9QtXNjg+Yaipd2RvQqfm1knNCHx
-         kfIkuxw7oOgraUQ365qkVqXPFWU36Ir26thc11zQ82NYbTt0f4rXEcFMR0yOJWDKku0D
-         9loT623DbCWFXlvHfnFMmlm/DY16VE+0ba5nVZtYQFJJBaSFkiRDblcVlMV/8C1tIWLe
-         x7qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eHsY3Xqdz/2Bt7R/n8dp++evyHtiGaZ4pzrOna//7ZY=;
-        fh=sveDxraWS5Q7rNW4VmKx5GINQI+lLtuO+0Mhu3GgeNQ=;
-        b=TNPeUUwP2tj1MjFNQBGouE1V87si+TbrxFI0hEMyL4QkBA87ADGcqJdYZDAYsiSiOd
-         U7YM4ZJXydXadw56kQkO20BXTMXvAdNLwrpaipQlHLapL+jvFo18/XHK8pmKpHYbufpg
-         1X+xCUqKwHVsfhnEfRil9kAm3s4y4LCJ/QidMBxuZl9cIhpSFe8/qpr4I2kmVzd/9jkQ
-         /XJLkS5mQN1x+fsvZIMkdLW1OVKx3E5Ttf6X0YH7zJSwhocX80Ms62lblxktqUj9zufR
-         FQXsqBMhXrDZYhysHfolm0Gc8TuIEJs3aAKKxJ0vWpxgogisXyHoyfZMXgasRzU/cu/E
-         l2mw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790328552; x=1790933352; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eHsY3Xqdz/2Bt7R/n8dp++evyHtiGaZ4pzrOna//7ZY=;
-        b=muO3fJR4CPBEM/yErlZlqYi8jFWd5INwQiK7uC6mcGR1xEopp0aYKSWFawkGMWTbcy
-         iupfOZmNjHxCLz/u5Q00ryK5t5leq2YXIyUwGAJzKZD0Ib8r6Eulk/6sTF11mIr8sku1
-         QylrkJuJl82p3BLIC5A7x4z89wYOPHko0mVNMec/ECW50ENRW7TiBNYqyIaV9MbjuBfP
-         2bZKDb+DiFDXN7WSPC86jOtkSfRZlzQ6r5YDaYlxvLyc3+Ut2+v3QhSyKzH/UEvjO5Hk
-         boKQvtv9YGoIRaGqygbVNSK95A4ZpHS6JnZ2urVhKQh2nTKPktOqjbyX8rIm1sZOMMGF
-         KyDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790328552; x=1790933352;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eHsY3Xqdz/2Bt7R/n8dp++evyHtiGaZ4pzrOna//7ZY=;
-        b=b1F2SiLpFluw89XdjUJr9G74NjJyp9Dlg/xLx21JSsNezcQsOqyuH0PTGbw7KfM3yo
-         2IQdlJKFErXY59c/o2t1pxEdNhkYU2poc9P/8eSiPFK+xaTMIdPkCqR5TDau+VcZoLb3
-         ruIxzfNoJY7N4Nts0Y/AXj53nUU2E04valR5V/IPv0lbRseGSRDzlO4VH/E1K77HveTG
-         EuQ5FSrwvlcDuDGlxJsajczHy+D1kELS59UyQAUB6XxRZnpqcYqEzkwB0Lwuwi7oNhgi
-         Vj9WXq5eK9pzR8E1VR+MtP+/MHwM18DMqkDki8xfCcQtrdUvY1Az+989zkpSZf4DIBG3
-         0q/Q==
-X-Forwarded-Encrypted: i=1; AKwUvByWE0WgpSnTSm8m5crsyJ8k4+9BlSnM4+c5FjIewgZd1c4QcGDiL9Roga4AXp7Mqg5KwNgYUZ4=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5yU1WVlciDDHPa8PhW+DH0FEZxlcBlkLGqAp9zDP5Fz4+XHGu
-	rvvV562ib8sebr5w7YWlGSuf5IVgcU7i45pOHHeIGpUldVmc1IHFz/VwK7+WBHLYEQJ5ziRkS3K
-	Cckphpk3nccKOE6GjMGi46+Mz9obh85cNsNKutJx8
-X-Gm-Gg: AYBFou26IThWbZbktaxjJmSoEobszVWAWiT2cmuZKzm7Ve4qNGPDNuOSQtN+6or/ZxJ
-	eBV7NsPgFjXKEnsdFW4O2zGMMjDk9YmrVyRq9D4t9vNt8ClXRK5VAVCTg63ROGvIlUra9EAkUiy
-	hAOxBefHjhfBzJxK3gWWKbl4wVHKFQSbxrk1pCO7JHuTG4ueTZkYAHxlOPt6XiHsBQdZHXWaI/2
-	eljvAICLmuIJSSBpOIa6J/nh54dSU3Eyu6AhSTWGbHf2OK5C77R95vacMgXlFILnMzrN5hd50Q8
-	nrMP+/sUfZZJtE/e1cgNYfXKfdfum3Buihl8SKtjSvIUXMgQbEnZYhvbZUnTdzhsEvMSiWayLIl
-	O6nEEOxLY+c/9+ZgBtNdszemDN7rtj1WXI2G2wsw27lE82CnBOYc3jYrywuXWb6/bBX+j
-X-Received: by 2002:a05:622a:1906:b0:532:d1db:3ef7 with SMTP id
- d75a77b69052e-5330b5efd59mr32294071cf.21.1790328551395; Fri, 25 Sep 2026
- 02:29:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtPSZBjo"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E9DC91F000FF;
+	Fri, 25 Sep 2026 09:29:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790328565;
+	bh=GREGS4oZNqxqpzIpoelW3295UnRYOFsuTaHdiBzNhE0=;
+	h=From:To:Cc:Subject:Date;
+	b=TtPSZBjo6X61/lVvEqN1twdqk8LALUkB051G5qu5UOgJbUETakRnNUMEtlrKzAF5S
+	 D6cZIxVTEMU0PhJHxAvzs98ibuADOlOoLweMocR3MLjbZ/IKoyyirnte4tlkmDnfSZ
+	 MO1PiboP5FEhK8XymN6915aLz3LJlu0d5VMxj/rrqSl61E6b3H5okYQFoGVcW+4l1D
+	 rmmgFG3F0Bb91NixdduP5ptXvXYcc6vJHL7Fa6q7uJwDZPDU8C2NKMIt8JeqhBPKcu
+	 V9HvfcOC7+u9KS2V1tV1BCnX+whRuvLnhPm2Qls3c4KOkUFdQGpckDHunq7OC2sE0b
+	 HmjUIlM7Rh47Q==
+From: "syzbot" <syzbot@kernel.org>
+To: syzkaller-bugs@googlegroups.com, Marco Elver <elver@google.com>, "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jeff Layton" <jlayton@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Trond Myklebust" <trondmy@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
+Cc: Dai.Ngo@oracle.com, horms@kernel.org, linux-kernel@vger.kernel.org, neil@brown.name, okorniev@redhat.com, syzbot@lists.linux.dev, tom@talpey.com
+Subject: [PATCH] SUNRPC: Use TASK_FREEZABLE_UNSAFE in __rpc_execute()
+Message-ID: <21891299-3a5d-4cfe-b3c4-8d711c7e8565@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923035217.179102-4-edumazet@google.com> <179031918107.2160803.12336993632886364252@kernel.org>
-In-Reply-To: <179031918107.2160803.12336993632886364252@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 25 Sep 2026 11:28:59 +0200
-X-Gm-Features: AclHuK9IGAC4oHL37cIUGx2H61DdhXpccW35tf1OoLmck98goTF0bm8oU7j4KKI
-Message-ID: <CANn89iKk9N2j0wLBzT-uDx4fgh6ziS2rLPRcXBhyt=m=+pyJcw@mail.gmail.com>
-Subject: Re: [PATCH net v3 3/5] ip_gre: compute tunnel lengths absolutely
- instead of by delta
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	u9012063@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Fri, 25 Sep 2026 09:29:24 +0000 (UTC)
 
-On Fri, Sep 25, 2026 at 8:53=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 (1) =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] When the GRE header length changes, ipgre_link_update() now
->   replaces the user-configured dev->mtu with the default computed by=E2=
-=80=A6
+From: Marco Elver <elver@google.com>
 
-Agreed. v4 shifts dev->mtu by the header length difference again,
-now computed against the tunnel->hlen sampled on entry, and drops
-ip_tunnel_refresh_lengths().
+When a task executes a synchronous RPC call via __rpc_execute(), it waits
+for the queued RPC task to wake up using out_of_line_wait_on_bit(). Callers
+in subsystems such as NFS or NFSD (for example, write_ports() acquiring
+nfsd_mutex during NFS server initialization and issuing an rpc_ping())
+frequently hold locks across these synchronous RPC waits.
+
+Historically, rpc_wait_bit_killable() invoked freezable_schedule_unsafe(),
+which explicitly bypassed lockdep checks for held locks during freeze.
+However, during the core freezer refactoring in commit f5d39b020809
+("freezer,sched: Rewrite core freezer logic"), freezable_schedule_unsafe()
+was removed, and callers were updated to pass freezer flags directly into
+out_of_line_wait_on_bit(). While rpc_wait_for_completion_task() was
+correctly updated to use TASK_KILLABLE | TASK_FREEZABLE_UNSAFE,
+__rpc_execute() was mistakenly updated to use TASK_KILLABLE |
+TASK_FREEZABLE without the unsafe flag.
+
+As a result, if a system suspend occurs concurrently while a task is
+waiting in __rpc_execute() with a lock held, __set_task_frozen() observes
+p->lockdep_depth > 0 without __TASK_FREEZABLE_UNSAFE and triggers a lockdep
+warning:
+
+WARNING: kernel/freezer.c:139 at __set_task_frozen+0x260/0x340
+Call Trace:
+ <TASK>
+ task_call_func+0x1aa/0x260 kernel/sched/core.c:4518
+ __freeze_task kernel/freezer.c:150 [inline]
+ freeze_task+0x216/0x390 kernel/freezer.c:169
+ try_to_freeze_tasks+0x190/0x620 kernel/power/process.c:54
+ freeze_processes+0xd0/0x1f0 kernel/power/process.c:137
+ suspend_prepare kernel/power/suspend.c:387 [inline]
+ enter_state kernel/power/suspend.c:609 [inline]
+ pm_suspend+0x2f1/0x760 kernel/power/suspend.c:644
+ state_store+0x206/0x290 kernel/power/main.c:819
+ kernfs_fop_write_iter+0x3a5/0x540 fs/kernfs/file.c:345
+ vfs_write+0x61e/0xbb0 fs/read_write.c:687
+ ksys_write+0x156/0x270 fs/read_write.c:739
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+Update __rpc_execute() to pass TASK_KILLABLE | TASK_FREEZABLE_UNSAFE to
+out_of_line_wait_on_bit(). This restores the pre-regression behavior and
+aligns __rpc_execute() with rpc_wait_for_completion_task(), avoiding the
+false-positive lockdep warning when tasks holding locks are frozen during
+synchronous RPC execution.
+
+Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+Assisted-by: Gemini:gemini-3.8-flash Gemini:gemini-3.1-pro-preview syzbot
+Reported-by: syzbot+209eccd8f507de9f7f1b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=209eccd8f507de9f7f1b
+Link: https://syzkaller.appspot.com/ai_job?id=cb10c20b-f568-4900-8b09-dc937852ee3f
+Signed-off-by: Marco Elver <elver@google.com>
+
+---
+diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
+index 016f16ca5..494947d50 100644
+--- a/net/sunrpc/sched.c
++++ b/net/sunrpc/sched.c
+@@ -984,7 +984,7 @@ static void __rpc_execute(struct rpc_task *task)
+ 		trace_rpc_task_sync_sleep(task, task->tk_action);
+ 		status = out_of_line_wait_on_bit(&task->tk_runstate,
+ 				RPC_TASK_QUEUED, rpc_wait_bit_killable,
+-				TASK_KILLABLE|TASK_FREEZABLE);
++				TASK_KILLABLE | TASK_FREEZABLE_UNSAFE);
+ 		if (status < 0) {
+ 			/*
+ 			 * When a sync task receives a signal, it exits with
 
 
-> - [Medium] A changelink that publishes a new header length but carries an
->   IFLA_MTU that do_setlink() later rejects leaves the tunnel with the=E2=
-=80=A6
-
-v4 shifts the MTU even when IFLA_MTU is present.
-
->
-> Pre-existing issues:
-> - [Medium] Sibling changelink handlers publish a new encap_hlen through
->   ip_tunnel_encap_setup() but never recompute dev->mtu or=E2=80=A6
->
-
-erspan is fixed by patch 4. ipip and sit are not touched by this
-series, see my reply to patch 1: this can be handled separately.
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+The person who has signed off on the patch is responsible for
+addressing comments.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
