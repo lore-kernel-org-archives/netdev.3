@@ -1,347 +1,294 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3A3148C9;
-	Fri, 25 Sep 2026 11:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790334466; cv=fail; b=SrUxhMMRE7E71C7d0vnfNmonxh/DKs+5EsUZ4KJLgT4XJC7ftgQhKonRdZAvNCm2y0U3inNCsuapm0iSk2Ut188a3fKqj+Ny4qBRiLsf0TuQm2KgD7pqX92HS1qjMiAuT+JAgSp9+d3D1jpKekrmjxPuRT3oc4xm8Lhg59F14r4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790334466; c=relaxed/simple;
-	bh=JUdGF8COyjZmE9rXEMvgocwue9bXU2vKoM1P8H7SBhA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=umz9hn/8QUHfP7yPe47GhZL+iNqtEo1cURW6MLpT2Z0OmPjta/LM8ZsJo3heCRif1J2VDy+jB20pwQDFvdR04bgsDyYH06dk+jju8Sv7LJw/GugK7b3wa/rvVgZs8z/A43WMal9ZxfiDo+NdB7xaKT7R7eYOA/DcFHSOKeoWei4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=ODkpQfhB; arc=fail smtp.client-ip=40.107.162.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475A442E435;
+	Fri, 25 Sep 2026 11:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790334498; cv=none; b=srvZD+z/P0l4jS7hjW5y676wajW0hCgtiLa7/0pPaE+P+6ITvHDzf6C4bgb5urMzGx/id1eraKQnzBrpBo80/mNlK3jY2yuGAz4TVggIEwQojsa44bQqrx/GWEdB1rIyLSq7StnbUyVib1OkjgUCT77UuimIT/11rWIfsfTe5uM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790334498; c=relaxed/simple;
+	bh=zynoYMlMYbFj0swo4NPJyyb0szArdEdnmqbN18uz53c=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WhgKQHmlLB/1tnm5yk332xd03p9X5g6fUUL37dVetwEPf9GefGrGoFc07hqMW0ZbN9LVr+Dk1c15cIqDMHAFRKuuM4zGR9BBVSvxA+Nw8k8OFtsvsXnXWx3yS7K0Sm1fY52Gj7pcBA8sKGrW+JNat6zP3FGeJ+x8Hd0l/BG2ayo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0jCR2Eo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="ODkpQfhB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g+OawXthuI9PCm8gkXbgcD5G+2DnBxzTw5aBSwFvO/zI/AMMvbhfeEG7o9K67gGAT45Sc4ACejDAKvZBX3Wi+Y+OmVDVw2a+UFZPL1QTyC2/6uGfbVHM0nHQActSBRiT4lwPSBXUqYnxLxJC6au/Rn9g0GLlalvei7iOEIpNRDsAM1DrknG/J8x76yPUf+gknltftLri9F6hpQxjEjJ+WPYau0ES0kywq703D5A4xMX0DyGlDkqYWOqvQloowqzhfmDe/1tnufZS3cG1SHMzIuGROocKRrV9Rajhh8BRTlxOEamcChs8GoOF5xGh/vydhd1eCNP5fbHKDqKB79KbEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JUdGF8COyjZmE9rXEMvgocwue9bXU2vKoM1P8H7SBhA=;
- b=ON4PtlbRe6gJlQ2sLMWsM7cN6Se6DMRRKioobv8ItPvacQPSOeE0zsKtIQ/25lD126Rzcn1vUcGQPrkJKsYjhCyRTCAJkEwczLwiYmIvGDaa+APxbOzxLAx7ayyh312YbjCu1fug8uJ0xKvm5JWBg5VdbCNHCJP19Uacn68bHWlPczRcV+3a+ayvUYuWQhNxT+uPv5mBKaXzkU9JUrdZGqJ5ycfmNkYBr6LhrxKffoahDL9ZQghSK0hUZiAtXXSq/du5obp6ivjjHZ814WfylT0JOkiu4LmOBUEPxuiVItFbE4FwsidkdNd8M86+EKW3tUD2Rdlc2+D1sdg8znZWBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JUdGF8COyjZmE9rXEMvgocwue9bXU2vKoM1P8H7SBhA=;
- b=ODkpQfhBcukkdwWfJBlN3aNcBxHR11i6P0sz6HBFcg8G+H790AkOzxhPfdPFfnmQ7xcnPVB9zgJl/l4+Kq3aCZC6Qq8VkQ9ZN0hEgvs5VDrm1tfGM3bb/rZRoHTr3C4fZMFZph6iqslzD6O7vG4MENaAkLW/A8FOTB+S8gbminUe46HcG9u6UtAHZI6uVC/0zTVXOZy/VxgLGyF9KC/0HdLb59YRCnBda9QCyHoZrJm4qL8Kkwv3uCImgIRukhQ5akWF4Y5FrFF7mCz2Jq/KJoya09ma6u/+aB4nLR+e6P0yt1WT4hD3KWcg3EtY3HyDcj53nfljemA8vy6RLOTdgg==
-Received: from AS8PR10MB6867.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5b6::22)
- by ZR6PR10MB992231.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:910:d4::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 11:07:40 +0000
-Received: from AS8PR10MB6867.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9126:d21d:31c4:1b9f]) by AS8PR10MB6867.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9126:d21d:31c4:1b9f%3]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 11:07:40 +0000
-From: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "hauke@hauke-m.de" <hauke@hauke-m.de>, "olteanv@gmail.com"
-	<olteanv@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"andrew@lunn.ch" <andrew@lunn.ch>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "daniel@makrotopia.org"
-	<daniel@makrotopia.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"kuba@kernel.org" <kuba@kernel.org>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v4] net: dsa: mxl-gsw1xx: force internal PHYs
- into a known reset state
-Thread-Topic: [PATCH net-next v4] net: dsa: mxl-gsw1xx: force internal PHYs
- into a known reset state
-Thread-Index: AQHdSn7sP7v5zLzZ+kyP8VsuQZILgrbdwKwAgAFmfAA=
-Date: Fri, 25 Sep 2026 11:07:40 +0000
-Message-ID: <1a838efbe26fae23f6b1107f4bb473b2469c65b9.camel@siemens.com>
-References: <20260922104124.311334-1-alexander.sverdlin@siemens.com>
-	 <179025747410.2160803.16708374006312831463@kernel.org>
-In-Reply-To: <179025747410.2160803.16708374006312831463@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR10MB6867:EE_|ZR6PR10MB992231:EE_
-x-ms-office365-filtering-correlation-id: 07ad5d2a-5e1c-4171-8d52-08df1af53765
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|10070799003|7416014|376014|1800799024|38070700021|4143699003|56012099006|10067099003|11063799006|5023799004|22082099003|55112099003|18002099003|6133799003|3023799007;
-x-microsoft-antispam-message-info:
- 7r/ER+iIVJDG+QORXrXQSlpxpaynlU5PtkAmLkpZmspjm4SRgF7sULB2IYMpr1EauteBGALzDwDvE5D8Tjy/4sDyuB6P+GPIWvyjIXInyUgMaQjqcacbP0IKZKCeisJ1OEiBptT8JFL9D5EDpOgl+Kho6gy68e4V9fY0YEZmkJGLFD4hwws+ZLX/k72LNgyiKN7EvwWBlaRhvsqaF+0HEmgt9loHFW9JMuZKLTEnaVlEQbPo35EDJK0C08QPop5y8M49gcQaMSBQHoBAH85s8qFnKOmiUFPtgY6q3mMxb5ecw9bph9QjgMHcouL/Vp/Ul8zFkwhNZFCqBJu7MEKQ9G0mQTJrI3h1Oqv4Aj4jZJ0KucVwybBxva+pFnCb7KKMCzbPWdtQktMUDxIv0qE02499/kh5HVQ+McooN1DX9xSlwmCH157JHBH3k49H5Osln1mgcfALUO0fnfGPpQkdiNcgIPoRUufe7Ia9aO1xJ8roqHoAVSBWhUHpmLgH5KevW0cHZT2ZmIe6G3SzzEy+/B7H/DbGOmzOQn+kLuEaBnUkrQGm3xMjm8oVOboNa/nyUfYOvq1jXIRzPBxu0kr148RAX6xqbBAkZ3v87/cfUaOBVXRQ2xh4dF/aKTQyCZXBCL/xBbQW598Z1drBfB64G/ui010QIMFpwihjDsZSl0Q=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR10MB6867.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(10070799003)(7416014)(376014)(1800799024)(38070700021)(4143699003)(56012099006)(10067099003)(11063799006)(5023799004)(22082099003)(55112099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?SlhEZHE2UnpPaXN2ZkV5a3RUM2ZHTzVpbVBKOVc1aVZXWGRQVGI5U2hVUG1Y?=
- =?utf-8?B?QVl5OURPcGViVzNWU0tmNVYyRExDVUVMUkowZThoTnpEUDM3d1N3VGsxS1h4?=
- =?utf-8?B?ckFYWW1zOHZlSkRjb3NRMGF0blFUblNyVTlwYmNYMUc0UUVtejR1clE3bHEv?=
- =?utf-8?B?MFpiUDFNUk1adEpVMWVvWTRTWUFQQUU5RFlZa3gyc2t4TjlDUERsTWllZCtG?=
- =?utf-8?B?Y3Q4UEdqVmFHcW56NHlaMnlUY0podU9UZUg2ZG5JL2w0bXhXdXVWZlRrZjFm?=
- =?utf-8?B?WUlucUV3TjN3eGFiZ3NTOVl1TFA4ajZjMHVuU2NVRllyQ2dmYU1jcWVHa3pB?=
- =?utf-8?B?RWg3SDZ3amZMdkQ3Zmt0SkN0VEZuQS9qL1FOa0FXN0hidFJLUzdqQ1dTV0Iw?=
- =?utf-8?B?MjhnQThVRHFqWDBsd0ppckZydDU0MDdlYkIwVVZKQXJ5dFpMbWgxUTQ3QmJC?=
- =?utf-8?B?L0FCZkh6MmRvUVh6WmxhY2t3WGg3SDZ0bVU0TGV0OFk1b1RqRmVhWHJCck5U?=
- =?utf-8?B?dUMwWmpKNGZ1N1dvUUpEWVRCVUNrc1JmVFc1SGRhNHFhZVdUYjN6YTZ1Umwz?=
- =?utf-8?B?YVRDeFhiam9WVXMxc3FwMVRic0ZqZysyTThnTUhqbzJuZEJVbWFjMjFhb21T?=
- =?utf-8?B?Um5QM0lOaVJvSWVLdjBEeVJIS1RLUUJ4L2RWeTZINy9TMk5qbU9VMmV3bXZH?=
- =?utf-8?B?eGhrRjJoTm9OM0JOdWlFNjlaRGllc2Vnd2Z4bzV6aXBIR0xUVVpjdUJ5Q1kv?=
- =?utf-8?B?b2kzbkhYcmViWFhydS80eEE0dnNETzVHcmRKMHBJdDEwVFZSR0YxNmtxdlRB?=
- =?utf-8?B?aWxJbmRoUFpTSjN4S0xwNzdtclpzcmxCTll6N1NhbTR6TmVHa2VoV2tFNDBi?=
- =?utf-8?B?cFljZzY4bWM0QlZ1a0p3bGl4amN6Z0ZGM0U4dUZzU0ZKbXRWbm9FYzkvR1lU?=
- =?utf-8?B?aXdKdUpHNmU0Z1FXdG12RlJuZEplK2xFSm1VUlBYZGxUQnBpYUNnSFZSNnVi?=
- =?utf-8?B?NytmS2FjcHJyQUZUY0xVaXFOVGYzZHZYeVd3dlJ0MTd2cGVRY2drWEx1QTJt?=
- =?utf-8?B?WHRsM0NQa3ZiSU1qdVQ2Tm0yejlIY2hoVUFZODlZYzJqZmMvVWxuYWJiYTFT?=
- =?utf-8?B?ODd0SzlubFJaNWpjTm1ITnVaOWMvcUdRVzNyMUdmKzNpVmZGUUdjUkxQSmZy?=
- =?utf-8?B?OS92cHJHcVVjTHBONEFhS08rNXhIWDRyUG5pK1hvQzF2U1FtQndsKzlZYUgz?=
- =?utf-8?B?c2tNL09tb1JhVTVuRWgxTjJXUHNHdFF2Q1NkWUJvbmlLZFg3RlBuRkJBdWdD?=
- =?utf-8?B?UnliMGZwOURTeURMbFh1ZTNhaWJCeGp6c2U0SUJWVTNZMHFwRWNzdmtac0V1?=
- =?utf-8?B?enZtZXAwaXdEMEhaVVVwZE4rQmxwRjlEbXZwSTNqSjZTa043OFBRWTZUSm1u?=
- =?utf-8?B?Mi9BUUs4aS9IYkJzUy80SWxLb2xwZlUyWStJcEpvWlRUTHFZV3lJbFM1aTVr?=
- =?utf-8?B?VTlOOUFmZGZIUnFCbWx4cS85Vzl0R0hGUWtMbFFlQVRqTWJKMnhwRUt6VzVa?=
- =?utf-8?B?K2xiL2pKdzZpODZxZFJNVGJieStVS1dPYzROUDR2UmRjZ29wUW4vaFZXZ2w3?=
- =?utf-8?B?YVhsdzBPZVRUSEFwOTZ0bnZBVUZNWnJiUElaQ0RqQUVrdGdLRGxHQXpvbkY2?=
- =?utf-8?B?b0lRZ1QvUmVPOEw2dEgyWENOblBWSDFXZE4wa21yOWpacVJSMHZKeVVyZ25p?=
- =?utf-8?B?dzhvWWFQdHlRQkpPdjZPclovWUl3c0NBV0VQQWpxSERwbUJqYUw5RjB3bytY?=
- =?utf-8?B?ODU2Nm9ZY0tsY0IxRDFrNGF0TkM2bDBUZWxYdFhweXR4R3J0RUZCaEJPLzNI?=
- =?utf-8?B?b2VsQ1FicFF5czVGcmpZYmNDL2pXVEtsQVJTY05LcFRVNEpWOS9HYXRDWGFP?=
- =?utf-8?B?a1VEZEg5WktCRzRnelV2Qy9XTnJ4Zk9CMUxJcDNBZXJuSmd4WlR0RVRwSW1n?=
- =?utf-8?B?bExlZU5QeWpLelF1ai9acm9rTTRWSWcwYVFCRlVldmRtd3dkcmR5d1hQNC9h?=
- =?utf-8?B?aTk4anAwTHE1dVloa1VOcnRxdzNCbEtGMlcxUzIyaGNPZFBpY0J6K3hHZHJk?=
- =?utf-8?B?MGRPS1YvcXZDWWgreEFRb2tkY3NBVVFhcnh6NVJIN1YwNDM3L0hrVGN1eUFZ?=
- =?utf-8?B?UzFiU0lTclBmc0NKeUkyZ0NGYmRkYTdPdTZHNkYvMmltNDdtOFFmU0FVYmlC?=
- =?utf-8?B?SmRyNjFZY3U4NEl4QlFLYXJta3lmYjJQNXpZK2d0NlpxVHdmR3RFN3JxNW5U?=
- =?utf-8?B?TVI1SEg2UWxleVQ0WVFZZXI2c1RjYVc2R2ZqdVFlSlYvVlM3S0Mwdk5kaGha?=
- =?utf-8?Q?z8YG10y89FTp7nnGA8rSguDiuC860HrQOgBItK86aGhdZ?=
-x-ms-exchange-antispam-messagedata-1:
- R8WPssZdxlIsCzuxJkhsReitJFlX4CGXYlVJlGAdCfIBJfKxo66U0X8L
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0jCR2Eo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EC61F000FF;
+	Fri, 25 Sep 2026 11:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790334496;
+	bh=cD/4uhCoOFRj306klw+DrQVG0J2FFkNdJW/iXoErdyw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=J0jCR2EoFYOBhzAbE1fH1M1oR6qqBXewk4J6u1BsCTkUOmH8EOChKAB+gEcRu1wy1
+	 rwecTRNgX6OK7lIlC9wewqw88Vwhz5LtY9jXgyTVpsDmDe5qdl73jzYyDfj8q9SdDm
+	 g3zXbdKXkrb5AZ/hCLvOPzn2sbNu3tB62La5ljV5KclkwADucCCLu7GWP41btvi+rU
+	 kaiiQVnl7otnYtZecQlus1qzdwvdtRE5P17h85TEdww5kb5UqD+1TVbeVBvzmBIAcV
+	 nagCJAHh3Xi9aLI2Tx9snf9Ag+3OYNl/hKVZMAIvLmHPiIq3MIUI7P694VOFi2rC4u
+	 RDNfsLCejd7+g==
+Subject:
+ Re: [PATCH v2] nfc: nci: ignore unexpected CORE_RESET_NTF and CORE_RESET_RSP
+From: netdev-bot+sashiko@kernel.org
+To: ndaugoing@gmail.com
+Cc: horms@kernel.org, david@ixit.cz, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Fri, 25 Sep 2026 11:08:15 +0000
+Message-ID: <179033449559.2160803.13021740404311036994@kernel.org>
+In-Reply-To: <20260922080750.35929-1-ndaugoing@gmail.com>
+References: <20260922080750.35929-1-ndaugoing@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <75317EF8F9358045B23ADE4359B8FF19@EURPRD10.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR10MB6867.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07ad5d2a-5e1c-4171-8d52-08df1af53765
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2026 11:07:40.7450
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ym6eh46gfjFhfTntvGh1t0fShzNe2HX3aX3RWPMkokVa5mfxSm/10g7yI2cxNv+rmd0Gj9jtCovlP8iVI9J0iQH4pgoFhxf9LfLh+2fBbOA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR6PR10MB992231
 
-SGkgYWxsLA0KDQpPbiBUaHUsIDIwMjYtMDktMjQgYXQgMTM6NDQgKzAwMDAsIG5ldGRldi1ib3Qr
-c2FzaGlrb0BrZXJuZWwub3JnIHdyb3RlOg0KPiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0
-aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3VuZCAzIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBj
-b25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAwIMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAyIMK3IExv
-dzogMQ0KPiANCj4gSWYgeW91IGJlbGlldmUgbm9uZSBvZiB0aGUgaXNzdWVzIGFyZSBsZWdpdGlt
-YXRlLCBwbGVhc2UgcmVwbHkgdG8gZWFjaA0KPiBpc3N1ZSBvZiBNZWRpdW0gc2V2ZXJpdHkgb3Ig
-aGlnaGVyIGFuZCBleHBsYWluIHdoeSB0aGUgQUkgaXMgd3JvbmcuDQo+IElmIGFueSBvZiB0aGVt
-IGFyZSBsZWdpdGltYXRlIGFuZCB5b3UgcGxhbiB0byByZXNwaW4sIHBsZWFzZSBsZXQgcGF0Y2h3
-b3JrDQo+IGtub3cgYnkgaW5jbHVkaW5nICJwdy1ib3Q6IGNyIiBhcyBhIHNlcGFyYXRlIGxpbmUg
-YXQgdGhlIGVuZCBvZiB5b3VyIHJlcGx5DQo+IChvbmUgc3VjaCByZXBseSBwZXIgc2VyaWVzIGlz
-IGVub3VnaCkuDQo+IA0KPiAtIFtNZWRpdW1dIGdzdzF4eF9zZXR1cCgpIChkcml2ZXJzL25ldC9k
-c2EvbGFudGlxL214bC1nc3cxeHguYzo1OTItNjE5KQ0KPiAgIGRlcml2ZXMgdGhlIHNldCBvZiAi
-aW50ZXJuYWwtUEhZIiBSU1RfUkVRIGJpdHMgZnJvbSB0aGUgbWlpX2NmZ1td4oCmDQo+IC0gW01l
-ZGl1bV0gbmV0OiBkc2E6IG14bC1nc3cxeHg6IGNhc2NhZGUgcG9ydHMgb3ZlciBpbnRlcm5hbCBQ
-SFlzIGFyZQ0KPiAgIGluY29ycmVjdGx5IGhlbGQgaW4gcmVzZXQNCj4gLSBbTG93XSBUaGUgY29t
-bWl0IGZpeGVzIGEgdXNlci12aXNpYmxlIGZ1bmN0aW9uYWwgZGVmZWN0IGluIGEgZHJpdmVyDQo+
-ICAgdGhhdCBpcyBhbHJlYWR5IGluIHJlbGVhc2VkIGtlcm5lbHMgYnV0IGNhcnJpZXMgbm8gYEZp
-eGVzOmAgdGFnLg0KPiANCj4gLS0NCj4gDQo+IG5ldDogZHNhOiBteGwtZ3N3MXh4OiBmb3JjZSBp
-bnRlcm5hbCBQSFlzIGludG8gYSBrbm93biByZXNldCBzdGF0ZQ0KPiANCj4gVGhpcyBhZGRzIGEg
-cGVyLXZhcmlhbnQgLT5zZXR1cCgpIGhvb2sgdG8gc3RydWN0IGdzd2lwX2h3X2luZm8sIGNhbGxl
-ZCBmcm9tDQo+IGdzd2lwX3NldHVwKCkgYWZ0ZXIgTURJTyBhdXRvLXBvbGxpbmcgaXMgZGlzYWJs
-ZWQgYnV0IGJlZm9yZSB0aGUgTURJTyBidXMgaXMNCj4gcmVnaXN0ZXJlZC4gIEZvciB0aGUgR1NX
-MXh4IHZhcmlhbnRzIHRoZSBob29rIHByb2dyYW1zIHRoZSBzaGVsbCBSU1RfUkVRIFBIWQ0KPiBy
-ZXNldCBiaXRzLCByZWxlYXNpbmcgdGhlIFBIWXMgb2YgRFNBIHVzZXIgcG9ydHMgYW5kIGhvbGRp
-bmcgdGhlIHJlbWFpbmluZw0KPiBpbnRlcm5hbCBQSFlzIGluIHJlc2V0LCB3aXRoIGEgc2luZ2xl
-IDMwMG1zIHNldHRsZSBkZWxheSBpZiBhbnkgUEhZIHdhcw0KPiByZWxlYXNlZC4NCj4gDQo+ID4g
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2RzYS9sYW50aXEvbGFudGlxX2dzd2lwLmggYi9kcml2
-ZXJzL25ldC9kc2EvbGFudGlxL2xhbnRpcV9nc3dpcC5oDQo+ID4gaW5kZXggMGI3NWJlMTRkYzEw
-OS4uNGY5NTg3N2M1OWQxZCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9kc2EvbGFudGlx
-L2xhbnRpcV9nc3dpcC5oDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvZHNhL2xhbnRpcS9sYW50aXFf
-Z3N3aXAuaA0KPiA+IEBAIC0yNjEsNiArMjYxLDggQEAgc3RydWN0IGdzd2lwX2h3X2luZm8gew0K
-PiA+ICAJY29uc3Qgc3RydWN0IGdzd2lwX3BjZV9taWNyb2NvZGUgKCpwY2VfbWljcm9jb2RlKVtd
-Ow0KPiA+ICAJc2l6ZV90IHBjZV9taWNyb2NvZGVfc2l6ZTsNCj4gPiAgCWVudW0gZHNhX3RhZ19w
-cm90b2NvbCB0YWdfcHJvdG9jb2w7DQo+ID4gKw0KPiA+ICsJaW50ICgqc2V0dXApKHN0cnVjdCBk
-c2Ffc3dpdGNoICpkcyk7DQo+ID4gIAl2b2lkICgqcGh5bGlua19nZXRfY2Fwcykoc3RydWN0IGRz
-YV9zd2l0Y2ggKmRzLCBpbnQgcG9ydCwNCj4gPiAgCQkJCSBzdHJ1Y3QgcGh5bGlua19jb25maWcg
-KmNvbmZpZyk7DQo+ID4gIAlzdHJ1Y3QgcGh5bGlua19wY3MgKigqbWFjX3NlbGVjdF9wY3MpKHN0
-cnVjdCBwaHlsaW5rX2NvbmZpZyAqY29uZmlnLA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC9kc2EvbGFudGlxL2xhbnRpcV9nc3dpcF9jb21tb24uYyBiL2RyaXZlcnMvbmV0L2RzYS9sYW50
-aXEvbGFudGlxX2dzd2lwX2NvbW1vbi5jDQo+ID4gaW5kZXggNjE1MGRjM2ZmYjY0MS4uN2M1M2Rl
-ZDE3ODM2NyAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9kc2EvbGFudGlxL2xhbnRpcV9n
-c3dpcF9jb21tb24uYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2RzYS9sYW50aXEvbGFudGlxX2dz
-d2lwX2NvbW1vbi5jDQo+ID4gQEAgLTY4OSw2ICs2ODksMTYgQEAgc3RhdGljIGludCBnc3dpcF9z
-ZXR1cChzdHJ1Y3QgZHNhX3N3aXRjaCAqZHMpDQo+ID4gIAkgKi8NCj4gPiAgCXJlZ21hcF93cml0
-ZShwcml2LT5tZGlvLCBHU1dJUF9NRElPX01EQ19DRkcwLCAweDApOw0KPiA+ICANCj4gPiArCS8q
-IEdTVzF4eCB3aWxsIHdha2UgdXAgdGhlIFBIWXMgaGVyZSwgc28gaXQgbWFrZXMgc2Vuc2UgdGhh
-dCBpdCBoYXBwZW5zDQo+ID4gKwkgKiBhZnRlciB0aGUgYXV0by1wb2xsaW5nIGRlYWN0aXZhdGlv
-biBhYm92ZSwgYnV0IGJlZm9yZSB0aGUgTURJTyBidXMNCj4gPiArCSAqIHJlZ2lzdHJhdGlvbiBi
-ZWxvdw0KPiA+ICsJICovDQo+ID4gKwlpZiAocHJpdi0+aHdfaW5mby0+c2V0dXApIHsNCj4gPiAr
-CQllcnIgPSBwcml2LT5od19pbmZvLT5zZXR1cChkcyk7DQo+ID4gKwkJaWYgKGVycikNCj4gPiAr
-CQkJcmV0dXJuIGVycjsNCj4gPiArCX0NCj4gPiArDQo+IA0KPiBbU2V2ZXJpdHk6IExvd10NCj4g
-VGhpcyBob29rIHJlcGFpcnMgYSBib290LXRpbWUgZmFpbHVyZSB0aGF0IGV4aXN0cyBpbiB0aGUg
-YWxyZWFkeSByZWxlYXNlZA0KPiBkcml2ZXIsIGJ1dCB0aGUgY29tbWl0IGNhcnJpZXMgbm8gRml4
-ZXM6IHRhZy4NCj4gDQo+IFRoZSBjb21taXQgbWVzc2FnZSBzYXlzOg0KPiANCj4gICAgIFdoZW4g
-Ym9vdHN0cmFwcGVkIHdpdGggUFNfTk9XQUlUID0gMCB0aGUgaW50ZXJuYWwgUEhZcyBzdGF5IGhl
-bGQgaW4NCj4gICAgIHJlc2V0LCBzbyB0aGUgZHJpdmVyIG9ubHkgd29ya2VkIHdpdGggUFNfTk9X
-QUlUID0gMSB3aGVyZSB0aGV5IGFyZQ0KPiAgICAgcmVsZWFzZWQgYXV0b21hdGljYWxseS4NCj4g
-DQo+IEF0IHRoZSBiYXNlbGluZSwgdGhlIG9ubHkgd3JpdGVycyBvZiBHU1cxWFhfU0hFTExfUlNU
-X1JFUSBhcmUNCj4gZ3N3MXh4X3Bjc19lbmFibGUoKSBhbmQgZ3N3MXh4X3Bjc19kaXNhYmxlKCks
-IGFuZCB0aGV5IG9ubHkgdG91Y2gNCj4gR1NXMVhYX1JTVF9SRVFfU0dNSUlfU0hFTEwsIHNvIG5v
-dGhpbmcgcmVsZWFzZXMgdGhlIGludGVybmFsLVBIWSByZXNldA0KPiBsaW5lcyBiZWZvcmUgdGhp
-cyBwYXRjaC4gIE9uIFBTX05PV0FJVCA9IDAgYm9hcmRzIG5vIFBIWSBJRCBpcyByZWFkYWJsZQ0K
-PiBkdXJpbmcgdGhlIE1ESU8gc2Nhbiwgd2hpY2ggbWVhbnMgbm8gdXNlciBwb3J0IGNvbWVzIHVw
-Lg0KPiANCj4gV291bGQgYSB0cmFpbGVyIHN1Y2ggYXM6DQo+IA0KPiAgICAgRml4ZXM6IDIyMzM1
-OTM5ZWM5MDdjICgibmV0OiBkc2E6IGxhbnRpcTogYWRkIERTQSBkcml2ZXIgZm9yIE1heExpbmVh
-ciBHU1cxeHggc3dpdGNoIGRldmljZXMiKQ0KPiANCj4gYmUgYXBwcm9wcmlhdGUgaGVyZSwgb3Ig
-aXMgdGhlIG9taXNzaW9uIGRlbGliZXJhdGUgYmVjYXVzZSB0aGlzIGlzIHRhcmdldGVkDQo+IGF0
-IG5ldC1uZXh0IG9ubHk/ICBJZiBpdCBpcyBkZWxpYmVyYXRlLCBjb3VsZCB0aGUgY29tbWl0IG1l
-c3NhZ2Ugc2F5IHNvPw0KDQpJdCB3YXMgZGVsaWJlcmF0ZWx5IG5vdCB0YXJnZXRpbmcgLXN0YWJs
-ZSBiZWNhdXNlIGl0IGRvZXNuJ3QgZnVsZmlsbCB0aGUNCnN0YWJsZSBrZXJuZWwgcnVsZXMgSU1P
-LCBwYXJ0aWN1bGFyICJJdCBtdXN0IGVpdGhlciBmaXggYSByZWFsIGJ1ZyB0aGF0DQpib3RoZXJz
-IHBlb3BsZSBvciBqdXN0IGFkZCBhIGRldmljZSBJRCIgcGFydC4gDQoNClRoZSBkcml2ZXIgYXMg
-cmVsZWFzZWQgd2FzIHRlc3RlZCB3aXRoIFBTX05PV0FJVD0xIGJvb3RzdHJhcHBlZCBIVyBhbmQN
-CndvcmtzIGZsYXdsZXNzbHkgb24gc3VjaCBIVy4gTXkgcGF0Y2ggZXh0ZW5kcyB0aGUgZHJpdmVy
-IHN1cHBvcnQgdG8gdGhlDQpIVyB2YXJpYW50cyB3aXRoIFBTX05PV0FJVD0wIGJvb3RzdHJhcHBp
-bmcuIEkgZXhwZWN0IHRoYXQgSSB3YXMgdGhlIG9ubHkNCiJib3RoZXJlZCIgaW4gdGhpcyBzdG9y
-eSwgYW5kIG5vIG90aGVyICJwZW9wbGUiIGV2ZXIgZXhwZXJpZW5jZWQgdGhlIGlzc3VlLg0KDQo+
-ID4gIAkvKiBDb25maWd1cmUgdGhlIE1ESU8gQ2xvY2sgMi41IE1IeiAqLw0KPiA+ICAJcmVnbWFw
-X3dyaXRlX2JpdHMocHJpdi0+bWRpbywgR1NXSVBfTURJT19NRENfQ0ZHMSwgMHhmZiwgMHgwOSk7
-DQo+ID4gIA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9kc2EvbGFudGlxL214bC1nc3cx
-eHguYyBiL2RyaXZlcnMvbmV0L2RzYS9sYW50aXEvbXhsLWdzdzF4eC5jDQo+ID4gaW5kZXggNjZi
-ZjdlMzMxOTA1Ny4uNTcyMmE5ZmFkYzBhNyAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9k
-c2EvbGFudGlxL214bC1nc3cxeHguYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2RzYS9sYW50aXEv
-bXhsLWdzdzF4eC5jDQo+ID4gQEAgLTU4OSw2ICs1ODksMzcgQEAgc3RhdGljIHZvaWQgZ3N3MTUw
-X3BoeWxpbmtfZ2V0X2NhcHMoc3RydWN0IGRzYV9zd2l0Y2ggKmRzLCBpbnQgcG9ydCwNCj4gPiAg
-CWdzdzF4eF9waHlsaW5rX2dldF9scGlfY2Fwcyhjb25maWcpOw0KPiA+ICB9DQo+ID4gIA0KPiA+
-ICtzdGF0aWMgaW50IGdzdzF4eF9zZXR1cChzdHJ1Y3QgZHNhX3N3aXRjaCAqZHMpDQo+ID4gK3sN
-Cj4gPiArCXN0cnVjdCBnc3cxeHhfcHJpdiAqcHJpdiA9IGNvbnRhaW5lcl9vZihkcy0+cHJpdiwg
-c3RydWN0IGdzdzF4eF9wcml2LCBnc3dpcCk7DQo+ID4gKwlzdHJ1Y3QgZ3N3aXBfcHJpdiAqZ3N3
-aXBfcHJpdiA9IGRzLT5wcml2Ow0KPiA+ICsJdTMyIHBoeV9tYXNrID0gMCwgYWN0aXZlX21hc2sg
-PSAwOw0KPiA+ICsJaW50IHBvcnQsIHJldDsNCj4gPiArDQo+ID4gKwkvKiBSZXNldCBiaXRzIGV4
-aXN0IG9ubHkgZm9yIHRoZSBpbnRlcm5hbC1QSFkgcG9ydHMgcHJlY2VkaW5nIHRoZSBmaXJzdA0K
-PiA+ICsJICogTUlJIHBvcnQuDQo+ID4gKwkgKi8NCj4gPiArCWZvciAocG9ydCA9IDA7IHBvcnQg
-PCBnc3dpcF9wcml2LT5od19pbmZvLT5tYXhfcG9ydHM7IHBvcnQrKykgew0KPiA+ICsJCWlmIChn
-c3dpcF9wcml2LT5od19pbmZvLT5taWlfY2ZnW3BvcnRdICE9IC0xKQ0KPiA+ICsJCQlicmVhazsN
-Cj4gPiArDQo+ID4gKwkJcGh5X21hc2sgfD0gR1NXMVhYX1JTVF9SRVFfUEhZKHBvcnQpOw0KPiA+
-ICsNCj4gPiArCQlpZiAoZHNhX3BvcnRfaXNfdXNlcihkc2FfdG9fcG9ydChkcywgcG9ydCkpKQ0K
-PiA+ICsJCQlhY3RpdmVfbWFzayB8PSBHU1cxWFhfUlNUX1JFUV9QSFkocG9ydCk7DQo+ID4gKwl9
-DQo+ID4gKw0KPiA+ICsJcmV0ID0gcmVnbWFwX3VwZGF0ZV9iaXRzKHByaXYtPnNoZWxsLCBHU1cx
-WFhfU0hFTExfUlNUX1JFUSwgcGh5X21hc2ssDQo+ID4gKwkJCQkgcGh5X21hc2sgJiB+YWN0aXZl
-X21hc2spOw0KPiA+ICsJaWYgKHJldCkNCj4gPiArCQlyZXR1cm4gcmV0Ow0KPiA+ICsNCj4gPiAr
-CWlmIChhY3RpdmVfbWFzaykNCj4gPiArCQltc2xlZXAoMzAwKTsNCj4gPiArDQo+ID4gKwlyZXR1
-cm4gMDsNCj4gPiArfQ0KPiANCj4gW1NldmVyaXR5OiBNZWRpdW1dDQo+IERvZXMgdGhpcyBob2xk
-IHRoZSBpbnRlcm5hbCBQSFkgb2YgYSBEU0EgY2FzY2FkZSBwb3J0IGluIHJlc2V0Pw0KPiANCj4g
-ZHNhX3BvcnRfaXNfdXNlcigpIGlzIHRydWUgb25seSBmb3IgRFNBX1BPUlRfVFlQRV9VU0VSLiAg
-U3VwcG9zZSBvbmUNCj4gb2YgdGhlIGludGVybmFsLVBIWSBwb3J0cyBpcyBkZXNjcmliZWQgaW4g
-dGhlIGRldmljZSB0cmVlIHdpdGggYSBsaW5rDQo+IHByb3BlcnR5LCBzbyB0aGF0IGl0IGNvbm5l
-Y3RzIHRoaXMgc3dpdGNoIHRvIGFub3RoZXIgc3dpdGNoIGluIHRoZQ0KPiB0cmVlLiAgVGhhdCBw
-b3J0IGlzIERTQV9QT1JUX1RZUEVfRFNBIGFuZCBuZXZlciBnZXRzIGludG8NCj4gYWN0aXZlX21h
-c2suICBUaGUgcmVnbWFwX3VwZGF0ZV9iaXRzKCkgY2FsbCBiZWxvdyB0aGVuIGFzc2VydHMgaXRz
-IGJpdA0KPiBpbiBHU1cxWFhfU0hFTExfUlNUX1JFUSwgYW5kIHRoZSBQSFkgc3RheXMgaW4gcmVz
-ZXQuICBUaGUgaW50ZXItc3dpdGNoDQo+IGxpbmsgY2Fubm90IGNvbWUgdXAsIHNvIGFueSB0cmFm
-ZmljIHRoYXQgaGFzIHRvIGNyb3NzIGl0IGlzIGxvc3QuDQo+IA0KPiBhbGxvd2VkX2NwdV9wb3J0
-cyBrZWVwcyBDUFUgcG9ydHMgb2ZmIHBvcnRzIDAuLjQuICBEU0EgbGluayBwb3J0cyBoYXZlDQo+
-IG5vIHN1Y2ggcmVzdHJpY3Rpb24sIHNvIHRoaXMgaXMgdGhlIGNhc2UgdGhhdCBtYXR0ZXJzLg0K
-PiANCj4gQmVmb3JlIHRoaXMgcGF0Y2ggdGhhdCBzZXR1cCB3b3JrZWQgb24gUFNfTk9XQUlUID0g
-MSBib2FyZHMsIGJlY2F1c2UNCj4gdGhlIGJvb3RzdHJhcCByZWxlYXNlcyB0aGUgUEhZcyBhbmQg
-bm90aGluZyBpbiB0aGUgZHJpdmVyIHRvdWNoZWQNCj4gdGhlc2UgYml0cy4gIEZvciB0aGF0IGNv
-bmZpZ3VyYXRpb24gdGhpcyBsb29rcyBsaWtlIGEgcmVncmVzc2lvbiwgbm90DQo+IGp1c3QgYSBt
-aXNzaW5nIGZlYXR1cmUuDQo+IA0KPiBUaGUgY29tbWl0IG1lc3NhZ2Ugc2F5cyAicmVsZWFzZSB0
-aGUgUEhZcyBvZiB1c2VkIChEU0EgdXNlcikgcG9ydHMiLA0KPiBidXQgYSBsaW5rIHBvcnQgaXMg
-YWxzbyBhIHVzZWQgcG9ydC4gIE90aGVyIERTQSBkcml2ZXJzIHVzZQ0KPiAhZHNhX2lzX3VudXNl
-ZF9wb3J0KGRzLCBwb3J0KSB3aGVuIGRlY2lkaW5nIHdoaWNoIHBvcnRzIHRvIHBvd2VyIHVwLg0K
-PiBUaGF0IHRlc3QgY292ZXJzIHVzZXIsIENQVSBhbmQgRFNBIGxpbmsgcG9ydHMgYWxpa2UuICBX
-b3VsZCBpdCBiZSB0aGUNCj4gcmlnaHQgdGVzdCBoZXJlIHRvbz8gIE9yIGlzIGNhc2NhZGluZyBv
-dmVyIGFuIGludGVybmFsLVBIWSBwb3J0DQo+IHNvbWV0aGluZyB0aGlzIGRyaXZlciBpbnRlbnRp
-b25hbGx5IGRvZXMgbm90IHN1cHBvcnQ/ICBJZiBzbywgaXQgbWF5DQo+IGJlIGJldHRlciB0byBy
-ZWplY3QgdGhhdCBjb25maWd1cmF0aW9uIHdpdGggYW4gZXJyb3IgdGhhbiB0byBrZWVwIHRoZQ0K
-PiBQSFkgaW4gcmVzZXQgd2l0aG91dCBzYXlpbmcgYW55dGhpbmcuDQoNCk1ha2VzIHNlbnNlISBM
-ZXQncyBjaGFuZ2UgdG8gIWRzYV9pc191bnVzZWRfcG9ydCgpIQ0KDQo+IFtTZXZlcml0eTogTWVk
-aXVtXQ0KPiBEb2VzIHRoaXMgbG9vcCBpbmNsdWRlIHRoZSBTR01JSSBwb3J0IGluIHBoeV9tYXNr
-IG9uIGdzdzEyeC9nc3cxNDAvZ3N3MTQxPw0KPiANCj4gRm9yIHRob3NlIHRocmVlIHZhcmlhbnRz
-IG1paV9jZmdbXSBpcyBkZWNsYXJlZCBhczoNCj4gDQo+IAkubWlpX2NmZyA9IHsNCj4gCQlbMCAu
-Li4gR1NXMVhYX01JSV9QT1JUIC0gMV0gPSAtMSwNCj4gCQlbR1NXMVhYX01JSV9QT1JUXSA9IEdT
-V0lQX01JSV9DRkdwKDApLA0KPiAJCVtHU1cxWFhfTUlJX1BPUlQgKyAxIC4uLiBHU1dJUF9NQVhf
-UE9SVFMgLSAxXSA9IC0xLA0KPiAJfSwNCj4gDQo+IHdpdGggR1NXMVhYX01JSV9QT1JUID09IDUs
-IHNvIG1paV9jZmdbMC4uNF0gYXJlIGFsbCAtMSBhbmQgdGhlIGxvb3AgYnJlYWtzDQo+IG9ubHkg
-YXQgcG9ydCA1LCBjb3ZlcmluZyBwb3J0cyAwIHRocm91Z2ggNC4NCj4gDQo+IEJ1dCBwb3J0IDQg
-aXMgbm90IGFuIGludGVybmFsIFBIWSBvbiB0aG9zZSBwYXJ0cy4gIG14bC1nc3cxeHguaCBoYXM6
-DQo+IA0KPiAJLyogUG9ydCB1c2VkIGZvciBTR01JSSAqLw0KPiAJI2RlZmluZSBHU1cxWFhfU0dN
-SUlfUE9SVAkJCTQNCj4gDQo+IGFuZCB0aGUgZHJpdmVyJ3Mgb3duIHBvcnQgbWFwIGluIGdzdzF4
-eF9waHlsaW5rX2dldF9jYXBzKCkgYWdyZWVzOg0KPiANCj4gCXN3aXRjaCAocG9ydCkgew0KPiAJ
-Y2FzZSAwIC4uLiAzOiAvKiBidWlsdC1pbiBQSFlzICovDQo+IAkuLi4NCj4gCWNhc2UgNDogLyog
-U0dNSUkgKi8NCj4gDQo+IFNvIHBoeV9tYXNrIHBpY2tzIHVwIEdTVzFYWF9SU1RfUkVRX1BIWSg0
-KSA9PSBCSVQoNCkuICBUaGUgb25seSBiaXQNCj4gZG9jdW1lbnRlZCBpbiB0aGlzIHJlZ2lzdGVy
-IGZvciB0aGUgU0dNSUkgYmxvY2sgaXMgQklUKDUpLA0KPiBHU1cxWFhfUlNUX1JFUV9TR01JSV9T
-SEVMTCwgYW5kIGl0IGlzIG1hbmFnZWQgc2VwYXJhdGVseSBieQ0KPiBnc3cxeHhfcGNzX2VuYWJs
-ZSgpL2dzdzF4eF9wY3NfZGlzYWJsZSgpLiAgSXMgQklUKDQpIGRlZmluZWQgYXMgYW4NCj4gaW50
-ZXJuYWwtUEhZIHJlc2V0IG9uIHRoZSA0LVBIWSBTS1VzPw0KPiANCj4gVHdvIGNvbnNlcXVlbmNl
-cyBmb2xsb3cgZnJvbSBpbmNsdWRpbmcgcG9ydCA0Og0KPiANCj4gV2hlbiBwb3J0IDQgaXMgdGhl
-IFNHTUlJIENQVSBwb3J0IG9yIGlzIHVudXNlZCwgZHNhX3BvcnRfaXNfdXNlcigpIGlzIGZhbHNl
-LA0KPiBzbyByZXNldCByZXF1ZXN0IGJpdCA0IGdldHMgYXNzZXJ0ZWQgYnkgdGhlIHJlZ21hcF91
-cGRhdGVfYml0cygpIGFib3ZlLA0KPiBlYXJseSBpbiBnc3dpcF9zZXR1cCgpIGFuZCBiZWZvcmUg
-dGhlIFBDUyBpcyBicm91Z2h0IHVwLiAgU2luY2UNCj4gYWxsb3dlZF9jcHVfcG9ydHMgaXMgQklU
-KEdTVzFYWF9NSUlfUE9SVCkgfCBCSVQoR1NXMVhYX1NHTUlJX1BPUlQpLCBjYW4gdGhpcw0KPiBs
-ZWF2ZSB0aGUgU0dNSUkgQ1BVIHBvcnQgZGVhZCBvbiB0aG9zZSBib2FyZHM/DQo+IA0KPiBXaGVu
-IHBvcnQgNCBpcyBhIERTQSB1c2VyIHBvcnQgKFNHTUlJIHRvIGFuIFNGUCBvciBleHRlcm5hbCBQ
-SFkpLA0KPiBhY3RpdmVfbWFzayBiZWNvbWVzIG5vbi16ZXJvIHB1cmVseSBiZWNhdXNlIG9mIHRo
-ZSBTR01JSSBwb3J0LCBzbyB0aGUgMzAwbXMNCj4gbXNsZWVwKCkgcnVucyBldmVuIHRob3VnaCBu
-byBpbnRlcm5hbCBQSFkgd2FzIHJlbGVhc2VkLCBhbmQgYml0IDQgaXMgY2xlYXJlZA0KPiB3aXRo
-b3V0IHRoZSBQQ1MgY29kZSdzIGtub3dsZWRnZS4NCj4gDQo+IE9ubHkgZ3N3MTUwIG1hdGNoZXMg
-dGhlIGRlcml2ZWQgcmFuZ2UsIHNpbmNlIGdzdzE1MF9waHlsaW5rX2dldF9jYXBzKCkNCj4gY2xh
-c3NpZmllcyBwb3J0cyAwLi40IGFzIGJ1aWx0LWluIFBIWXMuICBXb3VsZCBhIHBlci12YXJpYW50
-IGludGVybmFsLVBIWQ0KPiBjb3VudCBpbiBzdHJ1Y3QgZ3N3aXBfaHdfaW5mbywgb3IgYW4gZXhw
-bGljaXQgc2tpcCBvZiBHU1cxWFhfU0dNSUlfUE9SVCwgYmUNCj4gbW9yZSBhY2N1cmF0ZSB0aGFu
-IGRlcml2aW5nIHRoZSByYW5nZSBmcm9tIG1paV9jZmdbXT8gIFRoZSBjb21tZW50ICJSZXNldA0K
-PiBiaXRzIGV4aXN0IG9ubHkgZm9yIHRoZSBpbnRlcm5hbC1QSFkgcG9ydHMgcHJlY2VkaW5nIHRo
-ZSBmaXJzdCBNSUkgcG9ydCINCj4gYWxzbyByZWFkcyBhcyBkZXNjcmliaW5nIHRoZSA2LXBvcnQg
-dmFyaWFudHMsIHdoZXJlIHBvcnQgNCBwcmVjZWRlcyB0aGUgTUlJDQo+IHBvcnQgYnV0IGlzIG5v
-dCBhbiBpbnRlcm5hbCBQSFkuDQoNCllvdXIgYW5hbHlzaXMgaXMgY29ycmVjdCwgd2hpY2ggbWVh
-bnMsIEkndmUgbWVzc2VkIHVwIHRoZSBudW1iZXJzIG9mIFBIWXMNCmluIHRoaXMgdmVyc2lvbi4g
-djMgc2hvdWxkIGhhdmUgYmVlbiBjb3JyZWN0LCBzbyBJJ2xsIHJldmVydCB0byB0aGUgcHJldmlv
-dXMNCmFwcHJvYWNoIGludm9sdmluZyBwaHlsaW5rX2dldF9jYXBzKCkgY2FsbCBbMV0uDQoNCj4g
-PiArDQo+ID4gIHN0YXRpYyBzdHJ1Y3QgcGh5bGlua19wY3MgKmdzdzF4eF9waHlsaW5rX21hY19z
-ZWxlY3RfcGNzKHN0cnVjdCBwaHlsaW5rX2NvbmZpZyAqY29uZmlnLA0KPiA+ICAJCQkJCQkJIHBo
-eV9pbnRlcmZhY2VfdCBpbnRlcmZhY2UpDQo+ID4gIHsNCj4gPiBAQCAtODMwLDYgKzg2MSw3IEBA
-IHN0YXRpYyBjb25zdCBzdHJ1Y3QgZ3N3aXBfaHdfaW5mbyBnc3cxMnhfZGF0YSA9IHsNCj4gPiAg
-CQlbR1NXMVhYX01JSV9QT1JUXSA9IEdTV0lQX01JSV9QQ0RVMCwNCj4gPiAgCQlbR1NXMVhYX01J
-SV9QT1JUICsgMSAuLi4gR1NXSVBfTUFYX1BPUlRTIC0gMV0gPSAtMSwNCj4gPiAgCX0sDQo+ID4g
-Kwkuc2V0dXAJCQk9IGdzdzF4eF9zZXR1cCwNCj4gPiAgCS5tYWNfc2VsZWN0X3BjcwkJPSBnc3cx
-eHhfcGh5bGlua19tYWNfc2VsZWN0X3BjcywNCj4gPiAgCS5waHlsaW5rX2dldF9jYXBzCT0gJmdz
-dzF4eF9waHlsaW5rX2dldF9jYXBzLA0KPiA+ICAJLnN1cHBvcnRzXzI1MDBtCQk9IHRydWUsDQo+
-IA0KPiBbIC4uLiBdDQo+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9kc2EvbGFudGlx
-L214bC1nc3cxeHguaCBiL2RyaXZlcnMvbmV0L2RzYS9sYW50aXEvbXhsLWdzdzF4eC5oDQo+ID4g
-aW5kZXggY2FhOGYxMDA4NTg3YS4uYTc5NzZhNTk4OGJkOCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2
-ZXJzL25ldC9kc2EvbGFudGlxL214bC1nc3cxeHguaA0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2Rz
-YS9sYW50aXEvbXhsLWdzdzF4eC5oDQo+ID4gQEAgLTExMCw2ICsxMTAsNyBAQA0KPiA+ICAjZGVm
-aW5lIEdTVzFYWF9TSEVMTF9CQVNFCQkJMHhmYTAwDQo+ID4gICNkZWZpbmUgIEdTVzFYWF9TSEVM
-TF9SU1RfUkVRCQkJMHgwMQ0KPiA+ICAjZGVmaW5lICAgR1NXMVhYX1JTVF9SRVFfU0dNSUlfU0hF
-TEwJCUJJVCg1KQ0KPiA+ICsjZGVmaW5lICAgR1NXMVhYX1JTVF9SRVFfUEhZKHApCQkJQklUKHAp
-DQo+IA0KPiBbU2V2ZXJpdHk6IE1lZGl1bV0NCj4gR1NXMVhYX1JTVF9SRVFfUEhZKHApIGlzIGFu
-IHVuY29uc3RyYWluZWQgQklUKHApIHBsYWNlZCBuZXh0IHRvDQo+IEdTVzFYWF9SU1RfUkVRX1NH
-TUlJX1NIRUxMLCB3aGljaCBpcyBCSVQoNSkuICBJcyB0aGUgdmFsaWQgcmFuZ2Ugb2YgcCB3b3J0
-aA0KPiBkb2N1bWVudGluZyBoZXJlLCBnaXZlbiB0aGF0IGl0IGRpZmZlcnMgYmV0d2VlbiB0aGUg
-NC1QSFkgdmFyaWFudHMgYW5kDQo+IGdzdzE1MD8NCg0KV2lsbCBhZGQgYSBjb21tZW50IQ0KDQo+
-IA0KPiA+ICAjZGVmaW5lICBHU1cxWFhfU0hFTExfTUFOVV9JRAkJCTB4MTANCj4gPiAgI2RlZmlu
-ZSAgIEdTVzFYWF9TSEVMTF9NQU5VX0lEX1BOVU1MCQlHRU5NQVNLKDE1LCAxMikNCj4gPiAgI2Rl
-ZmluZSAgIEdTVzFYWF9TSEVMTF9NQU5VX0lEX01BTklECQlHRU5NQVNLKDExLCAxKQ0KDQpbMV0g
-aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjYwOTE1MDkxODU2LjEzNzU5MTQtMS1hbGV4
-YW5kZXIuc3ZlcmRsaW5Ac2llbWVucy5jb20vDQoNCnB3LWJvdDogY3INCg0KLS0gDQpBbGV4YW5k
-ZXIgU3ZlcmRsaW4NClNpZW1lbnMgQUcNCnd3dy5zaWVtZW5zLmNvbQ0K
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] nci_core_reset_ntf_packet() still rejects any CORE_RESET_NTF
+  shorter than sizeof(struct nci_core_reset_ntf) (9 bytes) with -EINVAL…
+- [Medium] Contradictory trigger semantics introduced by the same patch,
+  plus dead constants.
+- [Medium] The new NCI_RESET_PENDING gate is a single boolean token, and
+  in nci_core_reset_rsp_packet() it is consumed non-atomically (plain…
+
+--
+
+nfc: nci: ignore unexpected CORE_RESET_NTF and CORE_RESET_RSP
+
+This adds a new NCI_RESET_PENDING flag that is set when CORE_RESET_CMD is
+sent and checked in the CORE_RESET_RSP and CORE_RESET_NTF handlers, so
+that unsolicited or delayed reset packets no longer complete an unrelated
+in-flight request or overwrite ndev->nci_ver and the manufacturer info.
+A few questions on the new gating logic below.
+
+> diff --git a/include/net/nfc/nci.h b/include/net/nfc/nci.h
+> index 09efcaed7c3f6..2ac45adba0886 100644
+> --- a/include/net/nfc/nci.h
+> +++ b/include/net/nfc/nci.h
+> @@ -140,6 +140,11 @@
+>  #define NCI_RESET_TYPE_KEEP_CONFIG				0x00
+>  #define NCI_RESET_TYPE_RESET_CONFIG				0x01
+>  
+> +/* NCI Reset Triggers */
+> +#define NCI_RESET_TRIGGER_ERROR					0x00
+> +#define NCI_RESET_TRIGGER_POWER_ON				0x01
+> +#define NCI_RESET_TRIGGER_RESET_CMD				0x02
+> +
+
+[Severity: Medium]
+Are these two descriptions of trigger 0x00 consistent?  Here 0x00 is named
+NCI_RESET_TRIGGER_ERROR, while the comment added to
+nci_core_reset_ntf_packet() in the same patch says 0x00 is the
+CORE_RESET_CMD trigger for NCI 1.0:
+
+	 * revision-dependent (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both
+
+Only one of those can hold.
+
+Also, NCI_RESET_TRIGGER_ERROR and NCI_RESET_TRIGGER_RESET_CMD are not
+referenced anywhere; only NCI_RESET_TRIGGER_POWER_ON has a single use in
+nci_core_reset_ntf_packet().  Would it be clearer to either use the
+constants in the trigger check or drop the unused ones?
+
+>  /* NCI Static RF connection ID */
+>  #define NCI_STATIC_RF_CONN_ID					0x00
+>  
+
+[ ... ]
+
+> diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+> index 5f46c4b5720f6..5a90591cd9af7 100644
+> --- a/net/nfc/nci/core.c
+> +++ b/net/nfc/nci/core.c
+> @@ -134,6 +134,7 @@ static int __nci_request(struct nci_dev *ndev,
+>  	}
+>  
+>  	ndev->req_status = ndev->req_result = 0;
+> +	clear_bit(NCI_RESET_PENDING, &ndev->flags);
+>  
+>  	return rc;
+>  }
+> @@ -163,6 +164,8 @@ static void nci_reset_req(struct nci_dev *ndev, const void *opt)
+>  {
+>  	struct nci_core_reset_cmd cmd;
+>  
+> +	set_bit(NCI_RESET_PENDING, &ndev->flags);
+> +
+>  	cmd.reset_type = NCI_RESET_TYPE_RESET_CONFIG;
+>  	nci_send_cmd(ndev, NCI_OP_CORE_RESET_CMD, 1, &cmd);
+>  }
+> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+> index f5c9a8ab7ec10..57f99bf46a221 100644
+> --- a/net/nfc/nci/ntf.c
+> +++ b/net/nfc/nci/ntf.c
+> @@ -36,7 +36,22 @@ static int nci_core_reset_ntf_packet(struct nci_dev *ndev,
+>  	if (skb->len < sizeof(struct nci_core_reset_ntf))
+>  		return -EINVAL;
+       ^^^^^^^^^^^^^^^^^^^^
+
+[Severity: High]
+This isn't a length check introduced by this patch (it came in with
+9c328f54741bd5), but does it undermine the commit message's stated
+premise?
+
+The changelog says:
+
+    If unexpected, log a warning and return 0 so driver-specific handlers
+    (such as fdp firmware patch handling) still receive the notification.
+
+struct nci_core_reset_ntf is 9 bytes, so any shorter notification returns
+-EINVAL here, and nci_ntf_packet() then takes:
+
+	case NCI_OP_CORE_RESET_NTF:
+		if (nci_core_reset_ntf_packet(ndev, skb))
+			goto end;
+
+which skips nci_core_ntf_packet() entirely, the only dispatcher for the
+per-driver .ntf callbacks.  Shorter notifications look common: an NCI 1.x
+CORE_RESET_NTF carries 2 payload octets, and drivers/nfc/nfcmrvl/fw_dnld.c
+documents such a frame:
+
+drivers/nfc/nfcmrvl/fw_dnld.c:
+static const u8 nci_pattern_core_reset_ntf[] = {
+	0x60, 0x00, 0x02, 0xA0, 0x01
+};
+
+A conformant NCI 2.0 notification with manufacturer_specific_len == 0 is
+5 octets and is rejected as well.
+
+For fdp, the skipped hook is the only thing that wakes the firmware setup
+path:
+
+drivers/nfc/fdp/fdp.c:fdp_nci_core_reset_ntf_packet() {
+	info->setup_reset_ntf = 1;
+	wake_up(&info->setup_wq);
+}
+
+and fdp_nci_patch_ram()/fdp_nci_patch_otp() block with no timeout:
+
+drivers/nfc/fdp/fdp.c:fdp_nci_patch_ram() {
+	...
+	wait_event_interruptible(info->setup_wq, info->setup_reset_ntf);
+}
+
+So if such a controller emits a short CORE_RESET_NTF after applying the
+patch, does the setup path sleep indefinitely (only a signal breaks it)?
+Would capping the field reads at the received length be preferable to
+rejecting short notifications outright?
+
+> -	ntf = (struct nci_core_reset_ntf *)skb->data;
+> +	ntf = (const struct nci_core_reset_ntf *)skb->data;
+> +
+> +	/*
+> +	 * A power-on notification must not update core protocol state nor
+> +	 * complete a pending request.  The CORE_RESET_CMD trigger value is
+> +	 * revision-dependent (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both
+> +	 * are let through to the reset-pending gate below instead.
+> +	 * Return 0 so driver-specific notification hooks can still run.
+> +	 */
+> +	if (ntf->reset_trigger == NCI_RESET_TRIGGER_POWER_ON)
+> +		return 0;
+> +
+> +	if (!test_and_clear_bit(NCI_RESET_PENDING, &ndev->flags)) {
+> +		pr_warn_ratelimited("unexpected CORE_RESET_NTF\n");
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Only trigger 0x01 is filtered here.  Every other value reaches the pending
+gate, including 0x00 (which the new header names
+NCI_RESET_TRIGGER_ERROR), the RFU range 0x03-0x9F and the proprietary
+range 0xA0-0xFF, and real hardware does use the proprietary range
+(drivers/nfc/nfcmrvl/fw_dnld.c uses trigger 0xA0).
+
+When a reset is pending, is it intended that an error or proprietary
+trigger notification stamps ndev->nci_ver, ndev->manufact_id and
+ndev->manufact_specific_info and completes the request with
+NCI_STATUS_OK?  The notification content comes from the controller, and
+/dev/virtual_nci (virtual_ncidev_write() -> nci_recv_frame()) lets
+userspace supply any trigger value.
+
+>  
+>  	ndev->nci_ver = ntf->nci_ver;
+>  	pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+> diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+> index b0ab4f5acbce8..3a2491497e4b3 100644
+> --- a/net/nfc/nci/rsp.c
+> +++ b/net/nfc/nci/rsp.c
+> @@ -32,14 +32,26 @@ static void nci_core_reset_rsp_packet(struct nci_dev *ndev,
+>  
+>  	pr_debug("status 0x%x\n", rsp->status);
+>  
+> +	/*
+> +	 * If no reset request is pending, ignore unexpected responses to avoid
+> +	 * prematurely completing an unrelated request.
+> +	 */
+> +	if (!test_bit(NCI_RESET_PENDING, &ndev->flags))
+> +		return;
+> +
+
+[Severity: Medium]
+Should this be test_and_clear_bit() for consistency with the notification
+handler?  As written the flag is tested here and only cleared further down,
+so the window in between is open to the request thread:
+
+nci_rx_work() -> nci_rsp_packet() -> nci_core_reset_rsp_packet()
+	test_bit(NCI_RESET_PENDING) -> true   /* stale response */
+
+request thread, timing out in __nci_request():
+	ndev->req_status = ndev->req_result = 0;
+	clear_bit(NCI_RESET_PENDING, &ndev->flags);
+
+next reset, nci_reset_req():
+	set_bit(NCI_RESET_PENDING, &ndev->flags);
+
+back in nci_core_reset_rsp_packet():
+	clear_bit(NCI_RESET_PENDING, &ndev->flags);
+	nci_req_complete(ndev, rsp->status);
+
+Can the stale response then complete the new request?
+
+More generally, a single boolean carries no information about which reset
+a packet belongs to.  A delayed or duplicated CORE_RESET_RSP/CORE_RESET_NTF
+from an earlier reset passes the gate of a later one, for example the
+nci_core_reset() issued from fdp_nci_post_setup() after the reset done in
+nci_open_device().  That completes the later request with stale status and
+nci_ver while the NFCC is still resetting, and the genuine response is
+then dropped as unexpected.
+
+Would a per-request generation or sequence number be a better match for
+what the gate needs to express?
+
+>  	/* Handle NCI 1.x ver */
+> -	if (skb->len != 1) {
+> -		if (rsp->status == NCI_STATUS_OK) {
+> -			ndev->nci_ver = rsp->nci_ver;
+> -			pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+> -				 rsp->nci_ver, rsp->config_status);
+> -		}
+> +	if (skb->len >= sizeof(*rsp)) {
+> +		ndev->nci_ver = rsp->nci_ver;
+> +		pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+> +			 rsp->nci_ver, rsp->config_status);
+>  
+> +		clear_bit(NCI_RESET_PENDING, &ndev->flags);
+>  		nci_req_complete(ndev, rsp->status);
+>  	}
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922080750.35929-1-ndaugoing%40gmail.com
