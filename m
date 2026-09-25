@@ -1,373 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1E94AB3CC
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6A64078F4
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790346771; cv=fail; b=sXWXYd1ebmGZloif0JncSiPS8/hUFoN6rgt+pO/T5sZkK3guDLjFuUJzc3teDwhaVBYEC7D8tYwz5oxNSlWlpA5o1vVBuHfOCsoUiSpcnAfXFCXbjPDEsLOGZeGzSHeZAFgIx/wvLEXOYr0T9r4nWNCpgb4INH1yzIUsZ5LqqG4=
+	t=1790347215; cv=pass; b=Db3rqDpY3tSWB20Z0ORXW8ZzjhtD5e7cfNs3YmuSpKah8ck6O6avhgUUJe5+X7XadhR8/oSQQR41qhABZ85Agtp16IqmaRGzQ5jBEFEE2tZTGekumLYISm6Gz+szqEe1CKaYqs+YQDBM+PDfcJBu5W83V09qMIleycec/PvsGls=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790346771; c=relaxed/simple;
-	bh=veUajdcOYmrfebk1TkLFN4Tj7TPKQCphPzDgGPy9OHw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LLCaTfWbNSvZssPi5gmS3aaGZBbVYbWcBM0TFtF3U580BjFlUhSl+iPxteqNk6Sb1v1pQHoEVbB7MRfXn064H7tK06YLk8ZQZtYysi6TKQZYscMLRlI0hu2iIgFoUhyOsNKC35UGeeHS1XhpH4dfaR5JoAQuy8QueCSV/lgc/Uo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ud8R7Jc+; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790347215; c=relaxed/simple;
+	bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m00A0zlLS4vLs9lu4i159sTRuetiHMuU1pWv2nC8NcVq6ZybLJVYXVZh6eBuPGXtbjdz4Qvzh9wWM/9QPE8jApLa/Te6/zS3pkOn0kIO7XNvL6476Z3UaMBzihPVee14gm0Z6J7ESPueW1efCidZ+j47RfdNcTLKjK/zU3TrSfI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/7YXNyI; arc=pass smtp.client-ip=74.125.228.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ud8R7Jc+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790346763; x=1821882763;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=veUajdcOYmrfebk1TkLFN4Tj7TPKQCphPzDgGPy9OHw=;
-  b=Ud8R7Jc+uPyqVUp1/qSAPsWPMZqIESPHL578+woUfC5dCnyBL7xDLSZ+
-   6R2AYx2BrtAj9Awy5U40twaMqKeQcgmUVV1NQ68CytDOt8Ynve1/bsnfO
-   yS2s3ZZwiN6LaaXY6nv9hVjtQWYMJIoqLxQl4yyz5oZyzcuTrpIzjhfHh
-   0EBen6YTLFHgiaRug8OkY28g0Ww+9O8bLcCMue1HKYqkLJptgpxD5oYXP
-   6wVOtrHoe6A6kbhghIWQwA8638WSeOuqF+rlxJj75AlFQK+IU4AQeiC5c
-   t08TcKh5/Siy8fJMpC9BCSEkxZoM7pGqmbPqOwUd74QgNdmcZ2EQPl2d/
-   Q==;
-X-CSE-ConnectionGUID: JxNjkarGQlKkHwsaRR8g3g==
-X-CSE-MsgGUID: 3SrxPUFzTOa0GDJLB2Yfkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="93850699"
-X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
-   d="scan'208";a="93850699"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 07:32:39 -0700
-X-CSE-ConnectionGUID: VqxwHyaVQue+34MghSzKlg==
-X-CSE-MsgGUID: +4KBTqBzQZS4Kw6m8eFJaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
-   d="scan'208";a="300624269"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 07:32:39 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 25 Sep 2026 07:32:38 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Fri, 25 Sep 2026 07:32:38 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.11) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 25 Sep 2026 07:32:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qf3Yuv088BeSBk4TqlXp+aiYQ5HMTB6TONYaKlZMPpHc5peBeShHU9Ja9hA5uWV9BwxBT8bOPqRSo8w/17pxRLuFnMqTjALSaYye/RbG4hciB/cVyy9gF9oxzQeu2zPSP+Txhq+97PUAT3uupeSC1XeQ/Jk/+LpWWAklRNwwlqeUCsqwI7bnshoDFkhhsR/Zw+Nrck/+k+5gJ2TBoL4gKRhTfbv43vBL7Q/N9TXPCfw7ka83rN0ZGseoXNqrL6ZHz/0ZK8KhWS0D7IjE40vbqT7Nr75Okl4WxiujQQebZE+ISRGsYRCak6YH3RfoHUpMq8T4aKGNjWEfByQN9UWtNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5+h/GUUXxyYca3gpFGA6UAifLOHz9yl1tOKfNeTLGPk=;
- b=pAaSqeko8lXEfWSu2uW4+Kpdl587dvvOtUb//8Qea+i5T/bVXmYVSdVIt2jor5pGyaAJS8TbpBDmE+SWudhGf++6ZtXSDMJUj/etp3pMt4fwrOR8AudKUXWZxypqL1QkvgTWE/1vBbmxoTQOUNaXuI6pVmdW6xycpzJBwe8C83uNZuMzXz1KyalxULuVDzZG1UNXbXmzhxX2kv8hN7PmAtAn4Ymgcb/x2xCGu+WEUWhBf7kdEY4HbqCS56JPZON0gh6MOGUlgVFI9f0m1rxgdCIs9icg4m/+uLceIwKyfvgpC8yUL6JwSxzuwBaQAMeI/R7JpWPbcvCX1gPjtLqOeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by DM4PR11MB6238.namprd11.prod.outlook.com (2603:10b6:8:a8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Fri, 25 Sep
- 2026 14:32:29 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 14:32:28 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Schmidt, Michal"
-	<mschmidt@redhat.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "edumazet@google.com"
-	<edumazet@google.com>, "horms@kernel.org" <horms@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "davem@davemloft.net"
-	<davem@davemloft.net>
-Subject: RE: [PATCH net v5 6/6] ice: size ring stats arrays from the final
- queue count
-Thread-Topic: [PATCH net v5 6/6] ice: size ring stats arrays from the final
- queue count
-Thread-Index: AQHdTPGVacWaR7a9tk+JOZCR67kqcrbfW3QA
-Date: Fri, 25 Sep 2026 14:32:28 +0000
-Message-ID: <IA3PR11MB8986EC41B2C45242C83098BCE5802@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
- <20260925132636.123300-7-przemyslaw.kitszel@intel.com>
-In-Reply-To: <20260925132636.123300-7-przemyslaw.kitszel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|DM4PR11MB6238:EE_
-x-ms-office365-filtering-correlation-id: 3f6294cc-2749-4159-dc62-08df1b11d38d
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|38070700021|56012099006|11063799006|10067099003|5023799004|4143699003|18002099003|22082099003;
-x-microsoft-antispam-message-info: y9VHydXf5GZ3dPGddbiJmWg1rNeP31eQf+QJsi2rHTF3iyW5Z9u/qf+p4kp7yyvkcOl2Ipi5xxZSpjeT8RHR3/CwqakpdX6QYObWAPpp33R3W1mPYHYSXiVMBbvUljHpufJKI5+tIFp1cCo+NTO+kaMBe/9whk8vzU3D5RvSM3BKOZV62pgYvDizBf5vXJub++Udh7AVa32bcin14Xslu1pBfNnLUqrLV2bxw1Ovj3H5LWzyuY8pDmJUMtao7Jnl1/nDg2beHcoGaFUn2Mudf5xzHS+HoP536OkKZtXEtX0DFJXpBmLwZr8YT077pVDwFrfcoInSLPtlirvx/P39BR3uERnUSp0XPiTTIfmEltvtoitN5BGEOy5yZAV5ds6NQl0IRXQOw7AHqoBtP5X71gw/vUe6ul5Ogw6cqAXVFz97lHA22r7jSl/rLeeWK0fob+Ozs6P3H3JnZuWO6//zk2YdKNaEBfDgntSmAQyMBfLCl1IFjJXEGEK6SGgC3ASIVXS30/tFQFazRBhixpAK4Po9CG7faFMBEbE5pWNdwoFnbkVP/w5D/VE9rSGilN293ZW+I8UssuMx17fmoi67iKTKPqdVHw4qFqVxUzl7Y93ULw9O9MtbLjZtq11vSD6wK6hIrLsY5K5mYxCKeR444l6YdubM2m4Ym4xqyJBT0Joa+WDB8//TWobeKjViC8kcP2Dy1Njn1C5JNjfqL0TxlwU6jT1ZkBjPF1bkh/7tF+w=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(38070700021)(56012099006)(11063799006)(10067099003)(5023799004)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ia2S4tuWSlyUbW0BkVTeWYEppvtWshPgZcm4lB7ukHq4urASoBYp8nedM2EM?=
- =?us-ascii?Q?Nc8feASboC0cVUEQ592OLdiyeLOBUsaQeIpLSnHdaadi06iwPRJQwpkbPk1/?=
- =?us-ascii?Q?AomA6uccJW7dbgic3f51HcSfBa1NNci26pDIUyP90cKssdzDwjHnxk9bJUyw?=
- =?us-ascii?Q?wpWq6N0eD8RoOAfPKgJWWGBSA/pBc+KX1M2Jpsv1u+f3GovJUD9yrjD8vARf?=
- =?us-ascii?Q?hL2X9/I3TJhFs2Q6/swIWuGKwV4axRAvBBWQbEHxdM4a9WnweZpxe+am4dTA?=
- =?us-ascii?Q?yieHKEfcRUadrZpLqMyqhrYEkaTfXPrK5VE8VXekkwqVHjAciL3obfC+c7gV?=
- =?us-ascii?Q?JKC92KHoyqrYumkFjlkcQ+grXPpJw8MQNsHwzZ2dWyU1qqDS8hcyZ4L1oHyC?=
- =?us-ascii?Q?MG2x8hkgBVgNS98HkkAgw/ZLEHMnn4WAduW1Xsj+YfaoXGnZu3TlVHOJILyb?=
- =?us-ascii?Q?SWyUMm1jgmwvyGZLtAMUsbzQQcet5rg6Y7DRqntbUqoaA31c0TSpIt9oRNuM?=
- =?us-ascii?Q?RiuP+bNj1ZoYXSM0/k/h3zeoicLuRBwjT3hPL+lMfnO6GAJ1i8/RM46Ca9ui?=
- =?us-ascii?Q?treKZmR3ks/1T2XhOxq8w3AVK2eSyqVpadYgjEoPBwTgtpyoyrvyrL6ka1We?=
- =?us-ascii?Q?tupiFglmy6zvFljChEX3YyuOHgvQd955nFZs/VXeQec1pdGWCeDhS2np1Z0H?=
- =?us-ascii?Q?a6iGnrv+o05bBPsGMVXju9NnYhWkMYOUoDqJghkPUSEzVLAe8Dz2PdfZJb5X?=
- =?us-ascii?Q?pnpk7zJA2B5vUbVkoGEwDaxWYZwHuSIx9WWQVevzRbQTmiz8SbiwpiPQqcNH?=
- =?us-ascii?Q?LIEWCxd2r8A6m2vFCEjT8bciuSbbhffFmebTyO1yeKGHCSrwhdbDrL3+CZFg?=
- =?us-ascii?Q?PEPF09DNJDJcE2LTw03ulh5adYJOUXERUEttjTZ0d5BdK5hQZCUzhpCenv56?=
- =?us-ascii?Q?dLtzVLk28foTvFmiaUxDw0jvQ2eOHIXlwPc84UKokGapVuEDrVRCMZc42N1f?=
- =?us-ascii?Q?Oque5jlYVg8lt+Pf0xsRlG5UqNXSPRbqtplMIF8Rtdn6IYwvxYUb2DdNFySD?=
- =?us-ascii?Q?UoXIitvqLDe/kfwv2y6xDB2pVJay6cUWPSTeG5kEt75S6fQtMniSYaXC0rBl?=
- =?us-ascii?Q?R+GsIkIJngd11otPBJZ04zpexp02DxyqhEfJeg7YLRS4OXUGq4MNk/Tnx8b4?=
- =?us-ascii?Q?IOOprzC88+YX8r/CNttCt2TiznCQ5zSj63KCVRo4/BSgkb2+OA+99/3fBTC6?=
- =?us-ascii?Q?O5iUOzH4JwJvujXxU1JfIQppSpwjYBgJpqdAsSuyhFvhDnKEqoQ3yppMjj0+?=
- =?us-ascii?Q?WMLlhKj27KA4nU7kyoOsyDAfSm5f94pLrmNvCu1bcJWPjdlqlisvzXf8vIH2?=
- =?us-ascii?Q?UbIEbnR4iFzz3cmZqxAslKF1maSVEDx/LKYt9pzAnhEnZ4Z7UJPTzw4eYAPi?=
- =?us-ascii?Q?GMjeF36TcnUk3mpg7Nj2ePRFlqsj8Pq4kVg1KrWgcQfmn2pk1pdoUVuLGSlO?=
- =?us-ascii?Q?ZNGe+Lc/bB9l4LcE/rhK4g56JyMbCJP2t8IfD/ry2hYAGVQmZZlVcw2t4XZX?=
- =?us-ascii?Q?mHzD7eqL4zQQK6S63jGT0hMpxgbjM3FHOMZzKEd5XezTqL00Q2r1xcWr9qFx?=
- =?us-ascii?Q?OtgiXWlWwVpIAtXuHnqbAx2q0tjkxZ3rzlnf9mRqFP4tGdOGa11qI54/Zuvi?=
- =?us-ascii?Q?0e0fow4kCp/hFW1t0Pn1UvVuFXtRz8GHvO8ZQNP1t8HtZaDA+OEBOgR5bV/j?=
- =?us-ascii?Q?7BkdZHkX+Q=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/7YXNyI"
+Received: by mail-pz2-f40.google.com with SMTP id d2e1a72fcca58-8748f34b1f2so508604b3a.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:40:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790347205; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HkWlKU4QSrUGttK8KgSMoaDsShBgSm+ZPH3itJyplbo9Ze29x3Ax0JJEsiGLmOzArL
+         3UwniU58Eig47GnE/g0Vca9G4JZCbWqtbkBd0IhXrUsY8NAiFUdHx6j7tyN6dXewHk5/
+         KkdESidfIbD9cTaHrR7mdbslkCnIjI9M2jhj6wU6sZnbcwhMTZEH9R3Q4XdVh2VbLGZS
+         VJLAZjlkESo/t3a38UKMSC5x1AkYwVt+j7abSdK/PtjF1uackfR3Pz3WpGJCWZ1Tvkng
+         4sdHk4BmHongLtefWCb+S8+tsay5RGOmWA4YLQopZ2NjIBIOj627jfh/OAwGrGuMgogk
+         eK2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
+        fh=iIWKGo4qGnD3vy5gh4FhXfO1+9MNMlSzf7iMNtJDq4Q=;
+        b=aZrJh7YxIoen8llWNRfWUJlAE0bwBdM3ujYPWhSqZsLr7g60OXFXbRolnNtAP0BNnP
+         wgbK3T4k3QWeEdw+rGV24iMNNcIrW+zPXv832cGfjVhl+y+cW65irOiMfqB3SU/DIYbs
+         ojFiHFyagKb8sJIcZT1S5QLendQ+sAItgSAkC+jXj5UCQ7XMYmV4mTFhuQ/1+IgftxkL
+         nI8BY91ut5nbywj6OOgmRJR+6dw5TbyJLxdJ9pWwFEPw1Lajuy2NPaF46XV6ASnF5CQw
+         nMHTM3JEuzWuvDExZSlUzyrPZ1PrSj8f2T8V+91ceW7OCsdUNrFbg9wjbq3/sybv6Cnp
+         Fspg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790347205; x=1790952005; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
+        b=e/7YXNyItBmjCQpXcQxE4wgZGpzoLFg6T4q4XuO/cgfNNXMos8gYZyGrf0Q2Y8yhMs
+         4tcN2nY4p5WsZbI2vR1/kSAiktxoT4wmplK4RIH9hAOR3QejI0a5vt4h5cODxQTJr4Zo
+         eLMv7xYQ6F15XWI0RRSae0M/CkrR7i2jFN+wqCGQv1I2iAdzieYLgPxW+iEDneCB7n2G
+         Bg/fqesT61VC3jPres5oCymCS7wChjK3YvZyxgBualFZeGtBPr0QNSfQ5brhH8ct4ESS
+         PVCcnHeE/ALX+96qaELNDTWOX7/KKYckZNQyT3qGD5FuGBW8QwhbTN5wGMII90ZZV1Z9
+         z5Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790347205; x=1790952005;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
+        b=ZsJ+/WlOnP1W+Q/FPz5eWm7scPIsLQRnS7ZCONLDrF/NNTDsWwAk1nS3TC0KIDMaWY
+         yHaJUwF1HLn8GLMuyUWBsDaJ05ghO9ETgYNF5x5HNnY/6x+79F6h3foe2aH/g2nejAN2
+         XFc6swN2uSdmdC8XUAxh7ToVVcA0mMAgkkY3yGC5XLyxR4nLF8jzN4ib7RLjV7g1Wq5Y
+         d2Nnu4LxpcSJExC9riHg8vpOLJzSY8XjstOJgNUJihXqdnAUe/GeHPhRdOw1N8CvcpKC
+         s5LJ1zVsA9EM6mA3/zTth7dnqRl/ieNyzJf2cip82hh0LHG+OOubuteasXWtQMajG7oV
+         JHNA==
+X-Gm-Message-State: AFuF++nh3VKKghseUHdFpwQApy1I+Z9nm8hTwYDk8S1KuytEW5BETxOB
+	UbVVI8jb7eqNXZLaSzyL6njL+bT2cGNWhic4YgGh6pmdfFtoHbN4XgX7spVxAy2G0bXB6fCvCAv
+	NKeECPqGkCu0zIZwebWU69tKpnnJj+sU=
+X-Gm-Gg: AYBFou2jhNXLeX1K91NF0qYNXmjGGksCtz+OirmBaYmjdAE355fkX69PsIa6j+J+29G
+	hiQc4lKYKKBbzD68ADo+3qpQ4/u1GN1Wkqr8btYql9EcMJU8N011iq49yQ3Et8AYVtLXeCcq9uJ
+	csapmQdihRUIDeAf1lEDcQpQW8Ikz7Ndx6eu4x7MdZ9htqXoTicZ3IEUaZxmR8WI0bKAw9wTGjh
+	8J/RO5JgWTHan663rfta9fAduxhhhyNC+UvklXDnqgoN0S4/XpEBKxsbxflDMa1Qijbk01ZDUIe
+	oTPzICAPdV0/yRJsnwE54QxFH3KcvcMBjEgPrvfK9zCFU2pKDxUnFG5iZvEj3P4opmVs6w44Pko
+	0u+kQ7EWCw3m/M88JDQ+GXg0cejaHZ16VSzu93ObPsH+C4N35yec8dw==
+X-Received: by 2002:a05:6a20:6a08:b0:3dd:a197:cf20 with SMTP id
+ adf61e73a8af0-3de0e8e72a2mr5267114637.68.1790347204371; Fri, 25 Sep 2026
+ 07:40:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: qSqL9lP9A3QmEFVdv2KsDS6acDzhwEPx5uDqb5HWr+DBb4sGq5uroC23pb2XWusESeNPrAFd/gut+DbbJWSdhc/m3gmEyShJbumm6mleFh/SbGqs3hEcrZNpWLQJVPmO/EeWtyaH/ti2u1p2K77IBwQQvO3c0WDheMPGNG+z+l2rErRlD+g0eNv3qqczm05qnGi03uaKiDH2T5E1PRHBT38LdEN3XDSr70tOu4DNi/nJrwW9TZqFBPHT7YjjujhveUlNwf9Efe5GicBDIyrQvdHXRSaCYjZ0VowycEJbEzrr/m1kSyr8KBQ6yXMwbWVqeb/NE1qlcxn7aolXsVk0eg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f6294cc-2749-4159-dc62-08df1b11d38d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2026 14:32:28.7184
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FVkVzcXz0Gy859sx4feBuqRltS8JkCzr47nZh/JJq49a2QUcqaCgUN1godjGszmUStE0njpkZFCcrwUj7tLxQ5wqjHVOy22s5HF6HD5cAT8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6238
-X-OriginatorOrg: intel.com
+References: <QDISC-4CSL.v2.20260924114800@mojatatu.com>
+In-Reply-To: <QDISC-4CSL.v2.20260924114800@mojatatu.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 25 Sep 2026 10:39:51 -0400
+X-Gm-Features: AclHuK8gVZp62vkthgFM_M7aNDmllGSluoXwPOdoWj0sX3mgmB8hyAR2Qnd4sf0
+Message-ID: <CADvbK_dV9M3RhnXvoBzd5rfNPcYGy4F=DHUo_dBZzrBw0MGrbw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/sched: cls_flower: exact-match ERSPAN key when
+ no mask supplied
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Victor Nogueira <victor@mojatatu.com>, stable@vger.kernel.org, sashiko-bot@kernel.org, 
+	hybris <hybris@mojatatu.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Sep 24, 2026 at 8:18=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> Commit 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
+> removed the unconditional memset of the erspan_metadata mask in
+> fl_set_erspan_opt(). On the mask-parse pass, when userspace supplies the
+> encap option key but no mask (TCA_FLOWER_KEY_ENC_OPTS without
+> TCA_FLOWER_KEY_ENC_OPTS_MASK), the !depth early return leaves the mask
+> zeroed -- a wildcard. A filter keyed on an ERSPAN index (v1), or dir/hwid
+> (v2), then matches every ERSPAN packet's values instead of exact-matching=
+.
+>
+> Default the match fields on the no-mask path the same way the with-mask
+> branches default them: v1 index to 0xff, v2 dir and hwid to their
+> exact-match masks. The union cannot just be memset to 0xff -- that would
+> re-mask the overlapping timestamp/sgt bytes of the v2 header that the
+> commit deliberately left to 0.
+>
+> A mask and a key that declare different ERSPAN versions describe differen=
+t
+> union layouts, so the mask would silently wildcard the key's matched
+> fields. Reject that combination. Have fl_set_erspan_opt() report the
+> parsed key's version back through a u8 pointer so the mask pass uses it
+> without re-reading the union.
+>
+> This is a follow-up to commit fee10655709c ("net/sched: cls_flower:
+> validate mask pointer after nla_next()").
+>
+> Conditions to recreate the bug: add an ERSPAN encap-opts flower filter
+> with a key but no mask (raw netlink, TCA_FLOWER_KEY_ENC_OPTS present,
+> TCA_FLOWER_KEY_ENC_OPTS_MASK absent); dump the filter and observe the
+> match mask is zero (wildcard) instead of exact for the supplied fields.
+> For the mismatch case, pair a v1 key with a v2 mask (or vice versa) and
+> observe the request is accepted with a mask of the other version.
+>
+> Fixes: 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
+> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026082602512=
+3.62758-1-ljp1205831794@gmail.com
+> Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794=
+@gmail.com/
+> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/netdev/179003833955.2160803.107768171639185=
+8800@kernel.org/
+> Suggested-by: Xin Long <lucien.xin@gmail.com>
+> Tested-by: hybris <hybris@mojatatu.ai>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-
-> -----Original Message-----
-> From: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>
-> Sent: Friday, September 25, 2026 3:16 PM
-> To: netdev@vger.kernel.org; Jakub Kicinski <kuba@kernel.org>
-> Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Loktionov,
-> Aleksandr <aleksandr.loktionov@intel.com>; Schmidt, Michal
-> <mschmidt@redhat.com>; intel-wired-lan@lists.osuosl.org;
-> edumazet@google.com; horms@kernel.org; pabeni@redhat.com;
-> davem@davemloft.net; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>
-> Subject: [PATCH net v5 6/6] ice: size ring stats arrays from the final
-> queue count
->=20
-> The ring stats arrays were sized in one place and indexed in another,
-> with nothing reconciling the two. ice_vsi_alloc_stat_arrays() gave up
-> as soon as a container existed:
->=20
-> 	if (pf->vsi_stats[vsi->idx])
-> 	/* realloc will happen in rebuild path */
-> 		return 0;
->=20
-> while ice_vsi_alloc_ring_stats() walks the arrays with
-> ice_for_each_alloc_txq() / ice_for_each_alloc_rxq(), that is, up to
-> vsi->alloc_txq / vsi->alloc_rxq. Whenever the arrays are shorter than
-> the count ice_vsi_set_num_qs() ends up computing, that loop reads and
-> stores past the end of the kmalloc'ed pointer arrays.
->=20
-> Deferring to "the rebuild path" does not hold. It cannot get the size
-> right, and some paths never call it at all.
->=20
-> ice_devlink_reinit_down() is one of the latter. It calls
-> ice_vsi_decfg() directly, which does not free pf->vsi_stats[], and
-> nothing on the way down releases the main VSI's entry either:
-> ice_dealloc_vsis() runs only from ice_init()/ice_deinit(), and the
-> single entry that ice_unload() does drop is the control VSI's, via
-> ice_deinit_fdir(). The main VSI's arrays therefore survive the reload,
-> while ice_devlink_reinit_up() runs
-> ice_vsi_cfg() and recomputes the count from
-> netif_get_num_default_rss_queues(), which follows cpu_online_mask.
-> Sizing the arrays with most CPUs offline and then onlining them is
-> enough, no VF involved:
->=20
->   for c in /sys/devices/system/cpu/cpu[0-9]*/online; do echo 0 > $c;
-> done
->   echo 0000:18:00.0 > /sys/bus/pci/drivers/ice/unbind
->   echo 0000:18:00.0 > /sys/bus/pci/drivers/ice/bind
->   for c in /sys/devices/system/cpu/cpu[0-9]*/online; do echo 1 > $c;
-> done
->   devlink dev reload pci/0000:18:00.0 action driver_reinit
->=20
-> The unbind/bind is what makes the arrays actually be allocated at the
-> small size; a reload alone only reuses them.
->=20
-> The read then runs off the end of tx_ring_stats[] and picks up
-> whatever follows it in kmalloc-32. Here that was a string,
-> 0x74756f5f6c697475 spelling "util_out" in memory order. It is stored
-> into ring->ring_stats and faults on the first dereference, in
-> ice_setup_tx_ring(), call trace:
->=20
->  RIP: 0010:ice_setup_tx_ring+0x8d/0xe0 [ice]
->   ice_vsi_setup_tx_rings+0x2a/0x80 [ice]
->   ice_vsi_open+0x28/0x170 [ice]
->   ice_open_internal+0xc9/0x160 [ice]
->   __dev_open+0x138/0x2b0
->   __dev_change_flags+0x1d5/0x250
->   netif_change_flags+0x21/0x60
->   do_setlink.constprop.0+0x336/0xcf0
->   rtnl_newlink+0x4a4/0x9b0
->=20
-> Even where the rebuild path does run, it sizes the arrays before
-> ice_vsi_decfg() returns the queues to the PF pool, and for an
-> ICE_VSI_PF VSI with no explicit request it derives the count from that
-> shared pool. Nothing serializes it against the recount in
-> ice_vsi_set_num_qs(), so a concurrent release, say "echo 0 >
-> sriov_numvfs", leaves the final count larger than the arrays that were
-> already installed.
->=20
-> ice_vsi_alloc_stat_arrays() runs from ice_vsi_cfg_def(), right after
-> ice_vsi_alloc_def() called ice_vsi_set_num_qs(), so it is the first
-> place where the queue count is final. Make it the only authority: keep
-> the existing arrays when they are already long enough, and otherwise
-> grow them with ice_vsi_install_stat_arrays(), which carries the
-> surviving entries over. The check only forces a grow: while both
-> arrays are long enough they are kept, an oversized one being merely
-> wasteful.
-> Once either is too short the whole container is replaced, and then the
-> other one follows the final count too, shrinking if that is what it
-> takes.
->=20
-> Michal Schmidt hit the same corruption through the VF path, where a
-> guest raises its queue count with VIRTCHNL_OP_REQUEST_QUEUES and the
-> following VF reset reconfigures the VSI with the larger count while
-> the old, shorter arrays are still installed:
->=20
->  BUG: KASAN: slab-out-of-bounds in
-> ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
->  Workqueue: ice ice_service_task [ice]
->  Call Trace:
->   kasan_report+0xd7/0x120
->   ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
->   ice_vsi_cfg_def+0x12e2/0x2060 [ice]
->   ice_vsi_cfg+0xb5/0x3c0 [ice]
->   ice_reset_vf+0x858/0xf80 [ice]
->   ice_vc_request_qs_msg+0x1da/0x290 [ice]
->   ice_vc_process_vf_msg+0xb15/0x1430 [ice]
->   __ice_clean_ctrlq+0x70d/0x9d0 [ice]
->   ice_service_task+0x840/0xf20 [ice]
->   process_one_work+0x690/0xff0
->   worker_thread+0x4d9/0xd20
->   kthread+0x322/0x410
->   ret_from_fork+0x332/0x660
->   ret_from_fork_asm+0x1a/0x30
->=20
->  Allocated by task 2439:
->   kasan_save_stack+0x1c/0x40
->   kasan_save_track+0x10/0x30
->   __kasan_kmalloc+0x96/0xb0
->   __kmalloc_noprof+0x1d8/0x580
->   ice_vsi_cfg_def+0x115c/0x2060 [ice]
->   ice_vsi_cfg+0xb5/0x3c0 [ice]
->   ice_vsi_setup+0x180/0x320 [ice]
->   ice_start_vfs+0x1f3/0x590 [ice]
->   ice_ena_vfs+0x66d/0x798 [ice]
->   ice_sriov_configure.cold+0xe4/0x121 [ice]
->   sriov_numvfs_store+0x279/0x480
->   kernfs_fop_write_iter+0x331/0x4f0
->   vfs_write+0x4c4/0xe40
->   ksys_write+0x10c/0x240
->   do_syscall_64+0xd9/0x650
->   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->=20
->  The buggy address belongs to the object at ffff88810affea40
->                 which belongs to the cache kmalloc-32 of size 32  The
-> buggy address is located 0 bytes to the right of
->                 allocated 32-byte region [ffff88810affea40,
-> ffff88810affea60)
->=20
-> Fixes: 288ecf491b16 ("ice: Accumulate ring statistics over reset")
-> Reported-by: Michal Schmidt <mschmidt@redhat.com>
-> Closes: https://redhat.atlassian.net/browse/RHEL-164321
-> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> ---
-> v5:
->  - new patch, replaces the VF-only fix with one that covers every path
->    reaching ice_vsi_alloc_ring_stats() (Clashiko)
->  - the reproducers both postdate the cited tag: devlink reinit arrived
->    with 31c8db2c4fa7 ("ice: implement devlink reinit action"), the VF
->    path with 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with
->    ice_vf_reconfig_vsi()"). The sizing itself went wrong in the cited
->    commit, hence the older tag (Clashiko)
->  - drop the follow-up VF resize patch, it could abort a VFLR after the
->    hardware had already reset the VF (Clashiko)
-> ---
->  drivers/net/ethernet/intel/ice/ice_lib.c | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c
-> b/drivers/net/ethernet/intel/ice/ice_lib.c
-> index 448d3c7780ad..c393d913d037 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-> @@ -634,27 +634,29 @@ static int ice_vsi_install_stat_arrays(struct
-> ice_vsi *vsi, u16 txq, u16 rxq)
->  /**
->   * ice_vsi_alloc_stat_arrays - Allocate statistics arrays
->   * @vsi: VSI pointer
-> + *
-> + * Runs after ice_vsi_set_num_qs(), so this is the first point where
-> + the queue
-> + * count is final. Grow the arrays if an earlier sizing guessed too
-> low.
-> + *
-> + * Return: 0 on success, negative error code otherwise.
->   */
->  static int ice_vsi_alloc_stat_arrays(struct ice_vsi *vsi)  {
-> -	struct ice_vsi_stats *vsi_stat;
-> +	struct ice_vsi_stats *old_stat;
->  	struct ice_pf *pf =3D vsi->back;
->=20
->  	if (vsi->type =3D=3D ICE_VSI_CHNL)
->  		return 0;
->  	if (!pf->vsi_stats)
->  		return -ENOENT;
->=20
-> -	if (pf->vsi_stats[vsi->idx])
-> -	/* realloc will happen in rebuild path */
-> +	old_stat =3D pf->vsi_stats[vsi->idx];
-> +	if (old_stat && old_stat->tx_ring_stats_len >=3D vsi->alloc_txq
-> &&
-> +	    old_stat->rx_ring_stats_len >=3D vsi->alloc_rxq)
->  		return 0;
->=20
-> -	vsi_stat =3D ice_vsi_new_stat_arrays(vsi->alloc_txq, vsi-
-> >alloc_rxq);
-> -	if (!vsi_stat)
-> -		return -ENOMEM;
-> -
-> -	pf->vsi_stats[vsi->idx] =3D vsi_stat;
-> -	return 0;
-> +	return ice_vsi_install_stat_arrays(vsi, vsi->alloc_txq,
-> +					   vsi->alloc_rxq);
->  }
->=20
->  /**
-> --
-> 2.51.1
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
