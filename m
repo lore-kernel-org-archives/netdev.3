@@ -1,105 +1,109 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f36.google.com (mail-dl2-f36.google.com [74.125.229.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC53C988D;
-	Fri, 25 Sep 2026 17:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7FD4279FE
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 17:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790359055; cv=none; b=V+p8MIiRQztRjHZewCIAdnHi30WwDcI/YmzJkhDtbkQFQt0o4sJcYZWKSpdmHFN0MSjdImdkKMDVONaHzLCW8ozbJF38BaQPwhd088121cpUKVQUznS6rdbhNERqagC9eCurRkOmE+DOd8pRrugeO94W8VEV/PitqzRt11rlyms=
+	t=1790359106; cv=none; b=Xooa1PDbJjydP/CPpcv+T28d8YF4M/+TA/vIAoZczKsG99usCr/vjG2Dm6c0B7submLFioWutYYU24JTLY5eoUeLOkV6nL0TgEZdo8MHThporX3ne46qk7DDDer3lWdnrNyuk7YVTHEZSjwingCVPCOJn/eWeqnwtBvWdBQCbHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790359055; c=relaxed/simple;
-	bh=PHxCuEeF4HHaxhjxw6i/PZUo0/JK1gx/Z7MoOSiiyQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CY2x4bUdGFjcQ2o/mboYJq4thC45CWKp76VswY4/+5kEh7WgnAfqUMFMmkyFcSS7D1n4PvTpq7V+xr/w+T71Z8xacr87zN1P3ZvjFbOpMGlsb8JdSzA/vRLd0cupBr1Zq1mL2GBSpFBi4mrTIdiviOkPqOYH4xoXsZZlgcshVjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RN8h2xi9; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790359106; c=relaxed/simple;
+	bh=iOZHQT4IOAIyVGF4UgMZZiMxiLFANObxfB3HkuQmwoQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P9gQm68XXuaYFAJKU9/Nix1HVW+rPb8vZHUxLVc4NbgpTEjpCW0fBG3AT9SNVC+BjOWONDoxoB/WQaLDX4xXw1rVljXoJE/ddHqBX+t+7kIAVFexHb6wsrVDI4lgX5E3M2Lp3p2RGFHPPWE+B0mLKSDva7CTTQSUmpbTyF1cSKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZWgfEoT; arc=none smtp.client-ip=74.125.229.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RN8h2xi9"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DA2AF1A1022;
-	Fri, 25 Sep 2026 17:57:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A3A266073B;
-	Fri, 25 Sep 2026 17:57:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24CFC102F1E35;
-	Fri, 25 Sep 2026 19:57:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790359045; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=T8jXapbk2liRqW3NjH6Ovlrn1tf36ydrI5huGY01104=;
-	b=RN8h2xi99PBulxUYPNzsT1yIuwSGdn6TaVPiO6KGaPsOAwiC5q1KAtMMPMnOQRl3fcfTbO
-	5FOAB+L9bYqRP2zaf1A2YFh0133NEfj6sMe7ahHIhRRssZ+JYDPHtM59rSNPjOma313R6V
-	j4CGgopYeh290VzmPUuOq/rWiabOtiNbZPeXofhkbwYlSE6fvQCcPZghvXhyab7lFhhz1i
-	kIVjG3hlzrtax3Ba3StcuiiuQ2cSoLW58Z3GOFZ3r/ok/tcK0YRvFu59X6tX4LHNRsUqx9
-	C0oN8duUFz3YqkqvhOMFMPFgIy4WwsNGcbkrx1/sd+WfTzljdZgiWQNScwZN2Q==
-Message-ID: <7782c263-503d-485b-9029-de611536abd6@bootlin.com>
-Date: Fri, 25 Sep 2026 19:57:20 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZWgfEoT"
+Received: by mail-dl2-f36.google.com with SMTP id a92af1059eb24-14373bcc010so1033633c88.1
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 10:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790359100; x=1790963900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sJ/NQTl1WNpwK1sUwU0K8HlG1PwVQbHpKjHbUF6bYOc=;
+        b=QZWgfEoT09Bisc5Fojz1pSZtBoSM4htRvJTQG8kGERI2MyI6EYlL6g0f7PunI+C4Fg
+         MvyGgKYHzFegfvBCZxqXLoD12trHzahGYgylpfbHoiWeqwj78G8Uh2ZuISlkIuPUZzvD
+         OUcH3X1feRGhGEwZQZ10uU+c2TBfGG77zPN/WS9iR7hCiRsvVkyrXbLB/tkgUSlSzXyS
+         faVyYXZpgsVlK5bADQsOb3ezq6fs76Z6XhKiAGVNpSFY3xmNJw44kgXqDtp9scHQFN5p
+         cPFTyyNQ120AJrbFf1Rv9aTqXwoUjW822i6kWcHVXzn3wQ3/P3xwqOzb5DGMKxhGv7H7
+         E6fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790359100; x=1790963900;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sJ/NQTl1WNpwK1sUwU0K8HlG1PwVQbHpKjHbUF6bYOc=;
+        b=Zgpj/2LZvKMc9PKOHKFYi0bFwTs5s45Htbx0/kKi/ulhCZ9Rh6cMFS2FOSc0XiqajK
+         IL6OePQCzBqNZPEpaTS0BIsazGpuGr9A/FlGhz10wOtwWgahTgRgjE3apwmIMNtfiHEn
+         kdI0y+LJB2Yl1FqAYSDYR3y8SnRZxHhvsHwbxNIgLmw8UJwuDMigPdMmklxInLyj3DCx
+         3/bRoEPx5aLxI3rDfRoOgtCH5OOsAD25h/nXnwNOo1ZjNqyji9cPwGv8qkLIs31v4toc
+         /lv7janTg6y57b/cKRVodf1/v3BScIQTcztEdyqric62Cbyq7rWhlrsyByjUt39ZwRXc
+         rpAQ==
+X-Forwarded-Encrypted: i=1; AKwUvByf7hmXI+jALk2YBHx9X591LHTxEKYflOH2kp4xEHa+nZm9/zBd5GZgLYT/31p9+vutSs4z+7A=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/cwCQygdavqrCVaLus5BrORF1ih5wsWQyKh7REgrxMrTLDQRV
+	oYrnabNfiR5sbQ/EGbSPcrVogRq1U+gP5oE4wUF8jiU2Ot2l1I5q6li/
+X-Gm-Gg: AYBFou1F8CqiefcLMQD3BpR5lu/A7B2sppX91/AbFmgeIQnOmyH9QEHaaEW/Zf8v8ev
+	SzNe0Y1Pk5+K+2CAL6rpKcVKXofAiQTmEWu9HMXyyCurzVg38IfcG7g/aojd13XpjiMUMBvzs3r
+	JXoTzurn8+m4swE9gEUbiye+q485MiZ5sDXcIHLyops9F/8W92pv/SQlBbY0ASL3WlX+mFvb4yB
+	MKvgZWufiNRAwnyCJsBMQtlub/UWLXygot0KHKgq9rY3iHd3TRxC0gCavQKBmmjgyoOQcBvspX2
+	j4QsXqUC/OVtF8TIuNt60Jd2Ftt6zCfGAQVZFNFtskqf1IWf9PI9H54YLqX+rWAigq4wRVk2SFj
+	penptW99PhmqwSlGDdHPql6gQr0RFJxze4rHqAaW7xGVw67RI+UWg+KlHILREAF3ccKq0e2htBz
+	mFmGYXXZ3AORcLRloIgCU+tWOa1D3NOgBsxqEg254AOV/xGlmDLN5vfBKTKZ0ICgBYL+a5qmbXM
+	A==
+X-Received: by 2002:a05:7022:2525:b0:144:f096:4dda with SMTP id a92af1059eb24-146d096d302mr1238633c88.43.1790359098946;
+        Fri, 25 Sep 2026 10:58:18 -0700 (PDT)
+Received: from beelink.. ([187.13.30.172])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34145727589sm7005744eec.23.2026.09.25.10.58.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 10:58:18 -0700 (PDT)
+From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+To: david@ixit.cz
+Cc: oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Subject: [PATCH] nfc: nxp-nci: fix IRQ use-after-free in i2c remove
+Date: Fri, 25 Sep 2026 14:58:00 -0300
+Message-ID: <20260925175800.3694044-1-qwe.aldo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net v3 1/2] net: ethtool: reject an out of range hwtstamp
- provider index
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260925135237.3432266-1-nb@tipi-net.de>
- <20260925135237.3432266-2-nb@tipi-net.de>
- <0ddf8280-0a66-4dbf-9195-1b90e97015c5@bootlin.com>
- <5ff0fa6eee1605e546d433c7944fa769@tipi-net.de>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <5ff0fa6eee1605e546d433c7944fa769@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
+nxp_nci_i2c_remove() calls nxp_nci_remove() before free_irq().
+nxp_nci_remove() unregisters the NCI device and frees ndev via
+nci_free_device().  The IRQ handler nxp_nci_i2c_irq_thread_fn()
+dereferences phy->ndev and calls nci_get_drvdata() on it; if the
+interrupt fires between the nxp_nci_remove() and free_irq() calls the
+handler operates on freed memory.
 
+Swap the order: disable the interrupt first with free_irq(), then tear
+down the device.
 
-On 9/25/26 16:07, Nicolai Buchwitz wrote:
-> Hi Kory
-> 
-> On 25.9.2026 15:55, Kory Maincent wrote:
-> 
->> [...]
-> 
->>>   static const struct nla_policy
->>>   ethnl_ts_hwtst_prov_policy[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_MAX + 1] = {
->>> -    [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
->>> +    [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
->>> +        NLA_POLICY_FULL_RANGE(NLA_U32, &ethnl_ts_prov_index_range),
->>>       [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER] =
->>>           NLA_POLICY_MAX(NLA_U32, HWTSTAMP_PROVIDER_QUALIFIER_CNT - 1)
->>>   };
->>
->> I think you can simply do this:
->> [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
->>     NLA_POLICY_MAX(NLA_U32, INT_MAX),
-> 
-> That was my initial thought, but unfortunately it doesn't work. struct 
-> nla_policy's
-> .max is s16 and INT_MAX is truncated to -1. It ends up as U64_MAX in the 
-> range check
-> and in the end nothing gets rejected.
-> 
->      include/vdso/limits.h:8:25: warning: overflow in conversion from 'int'
->      to 'short int' changes value from '2147483647' to '-1' [-Woverflow]
+Fixes: 6be88670fc59 ("NFC: nxp-nci_i2c: Add I2C support to NXP NCI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+---
+ drivers/nfc/nxp-nci/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Indeed.
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index XXXXXXX..YYYYYYY 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -346,8 +346,8 @@ static void nxp_nci_i2c_remove(struct i2c_client *client)
+ {
+ 	struct nxp_nci_i2c_phy *phy = i2c_get_clientdata(client);
 
-Thank you!
+-	nxp_nci_remove(phy->ndev);
+ 	free_irq(client->irq, phy);
++	nxp_nci_remove(phy->ndev);
+ }
 
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+ static const struct i2c_device_id nxp_nci_i2c_id_table[] = {
