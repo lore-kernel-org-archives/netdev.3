@@ -1,67 +1,68 @@
-Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
+Received: from mail-oo2-f37.google.com (mail-oo2-f37.google.com [74.125.231.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912A727FD43
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052C330DD10
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790296528; cv=none; b=oiEllq2VrD+19G9Pfuxd/6aUKvD6YziLVWxOWk0nEfHCsiZx5S0Mim7dLRpRGbBetu9RB+3GDCGAIXj5AXboieFH5k7Yp1hRksueGYkPjtfSd6Ej39b2WBBnoL1OIUaLJapD3ZRh5xeFEcQZQ4iCxa+QCyy+hxx/tF4rkVIefdA=
+	t=1790296531; cv=none; b=bq924EDyBgHXlo+WgLUzmMVumXEds4Cfzj1vbvDX0oXHfe760vWfkuhNvJoaKMaIl94rxG94HutN6C1/PG3kMC54UWEElZdSjWOe+3v62x65bEX/b9BeB6+bK+tWqXicg9yr8qfPjQzHSw8uhN9+P5cg2Zm1t0TyBvgDneqE/24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790296528; c=relaxed/simple;
-	bh=4lANU3BofogRNYfE4vWKObbLjcbrSe6tKSZmwj46Atg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lhg417roYNfLM0inHeVmpPN2cI96u/tUqI6Irz/VMSO9uFE1anVKF634vAaRWn4dM22yID8weeQfyXBN1Apz2QtdPBOsm9bb1vb+mLEftMcs+CiQSuiuiGDjj5P3q5/BoSgtyITcnulwH0n1QIJ6MJcmJaSh3UqwfzQxrjQqGUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9VvcQYA; arc=none smtp.client-ip=74.125.231.168
+	s=arc-20240116; t=1790296531; c=relaxed/simple;
+	bh=rX7r1Gv+Zqy2XDYDnOJyXdXHXL+ZIMwfriPPPV5kVeg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rqh3ytFzY7KH1gd2dp1zmEPJ479he6P0wzhMYKlb8tWoc3HSieVO65RIm5Jvvg78/IR8yihNqhbT90i8fb+Z+2o3AUg4hKTHT3ZSMjkYc3OEWBfPmLm46iUTlQQ0ycbMWT+oZBJn2rvX8Ai3Msc5tWOv4/Dl4p9KLdaUVY8oUlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QuFNl8NF; arc=none smtp.client-ip=74.125.231.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9VvcQYA"
-Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6c72bd8a017so233936eaf.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:35:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QuFNl8NF"
+Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-7f4f0c89e35so214089a34.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790296525; x=1790901325; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yGf2S7+iIEjxwnQ5sDYTKes+bw7Xvh6I4ay+/HABYvs=;
-        b=K9VvcQYAunMFye/m5VZPH6bSBvvUfhlHXaBzqrjQiITIeXR95WltXIDJN7q3PsaVlu
-         UH0lkJmO3fSkcVXFDt+ZHBidS3diwRuL+qbl1rRgG/ia0ihQrPYy+U873/m6OoT0I4NF
-         q1Cf85fienqso7bfpQIHhPa1xH7w4CDUAbXw6Q9aOOSKgPyxexP2o6TDjy5HMtZmM6cx
-         VRFJJhAlXNhU4gb1lkYVfnpv05Bx4lrSDACkELFErRxIN4tR14Hd2NmFapczVHTcn7pk
-         AV7IFGldpyHswCgtY8a+5Bd2Rj7I2aN/+R4A0DwjQSiWuWwdWFGQ0E82yvfOXrxckDM4
-         nFJA==
+        d=gmail.com; s=20251104; t=1790296529; x=1790901329; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FEVXgXSiMb0G3V8IOr/2pxYlQu8bVHCYpeXjjxcarkY=;
+        b=QuFNl8NFbug8EqMz2ctuRxXgBjK8CljVYUl4iygbavh/ecLNUZMjbcWLiIg2DM5Sr8
+         yWMC6XzMEEG1A4mv/PGnvmGXEdGGNk0Y/b8fL7Nl24tNxJFBl5QWKNt1s/etLSgi2Hbc
+         sO+REmFO519LFYqpM8Q6VMa7j3qZSh1QiGEsQweLGFUubJL6VEp8drECGu3QpOVnrQqV
+         rkQtnmnsEtA8ZWMzQSSDdtO0lbDBbGrofHCcoa+4LxToI/whZX1x+bCxNhncb8qAxAU4
+         PX1fZiu7KMowQwEOMkVPQRfPdyjXh7vj+RaQqI2stibr/KBsRJeqFaQfUsEph91az87x
+         t4vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790296525; x=1790901325;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yGf2S7+iIEjxwnQ5sDYTKes+bw7Xvh6I4ay+/HABYvs=;
-        b=tZv9Wjfm3pSTyQh/MEnm+jj2SvEJMYHnmMR4vMRjkXWZox+Y5uJFdG/3i/E5L1kSTe
-         Y/D49vv5NI7YP1fhDjkwxq9CZzyxjubMG8q237AiO0pNORQ8/n+sZvmPTrRSN5K05hFm
-         32ntMFAZjOd+JAQPI01nSDdHSCypo/ze7/8BsbexBndRhnW93meyfno0uJY5a1vZiD84
-         canqlnImpIUJndVHGmWuOllu1nA5QsX3QdPSCaUv18GuDPc+1hlY7KD7uphclF78oXOQ
-         Srhe9cpialNN48lAFTCuTOr1L5Pq1wIiIO/FlwzjP6LRyZgyQ+bWbd9CY1msap1FUp/w
-         cvYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzOMS95mS65tdpKfGVFw2ejw9n4YONpxaKEf320XANz1Kg3QqOHEiS245QnSYoSkWm/jRQso80=@vger.kernel.org
-X-Gm-Message-State: AFuF++kBuyOEVzlOj+jHUB9wwJIoeIJjGJ2vTeohZnlx55msaR0MLnYf
-	BMa6vH/fjdrFJxtU0GqX0LLBbP0ErZTM/guiV3n0QXc4fnfc1gEC25sEtDuQ43MX
-X-Gm-Gg: AYBFou2LJiQtYoU9zDJ7/zgH9xluBV+dZwldxisEmK4F/nUWAA7HwAm19MHyODtNicE
-	vZslCgPbtfqiX4y1YAFqQxL2qAF1B/gdkdAZhCig1UMKPiuxkTHqAd0QhPFfFiffIKmQYe15wd8
-	Yo8lTCWaU4exkt64O2nHictqlmSTfSeRnAEO1DfmPk+d1rvl7dEMb80tBcWv/UqJXEie5X4LSqb
-	MpiDKKdk2E/NQlKemwkRD4wHn+YpDqRXP6cFXsC9K4oo94KZoa5FKoNZX6w89j29VqD0XVzsyMG
-	BZnivXk0Ljjq5dnNAFCyXKGQ8MxEJeRXeUnFa+QVxX6WWbAiHa+AYSGmKu8tHdhwFKfVjmfs03a
-	wTnO84qrxwPKfbiskyUlw5ZQD7AKq/0gzPfRJUjnzqc1LOL3lfDv3uYGBTxHyDeMO0e7aOgSW5k
-	ZDtxMPReNvae1hNZ5nJu3Av8ohm5BW0WJ3SYgkBSbryEpXrXOfqLGrlc+ncCv2oFQc
-X-Received: by 2002:a4a:ee10:0:b0:6c3:616d:efb with SMTP id 006d021491bc7-6d43ebf032emr4594513eaf.17.1790296525381;
-        Thu, 24 Sep 2026 17:35:25 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49335c8040dsm894146fac.11.2026.09.24.17.35.23
+        d=1e100.net; s=20260707; t=1790296529; x=1790901329;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FEVXgXSiMb0G3V8IOr/2pxYlQu8bVHCYpeXjjxcarkY=;
+        b=Wt6un2op+FNmGLI90oZDnivphEuXipaDAcz2plinHDKaBxrr6Qav0ZLxKP5lgIGPOL
+         RLazD7oFRR68BZeVfSPV+jiJoBWZf50eCWYl0SR7u5x4uS+Aky6mzAw48jDqNgIIL86Y
+         CqIPdKqplINRE0fJkWNpNhcAACjuPqimVQkjnEwuTQVmYjwv+CViGitdJ0Evy9YfLsoH
+         aQQ4bkrZpKYwmliKyN76Rd3xoHzhxv5IHRAotjEUyMcH8YsQYoY15wIMPzqaNeBypveP
+         f2gu7aIVIr1kNibkZ5JXzfQzRW1soVa3dOI+tXzR/SxC333znIXSql3SKXOViax7fVD5
+         m45g==
+X-Forwarded-Encrypted: i=1; AKwUvBxrbbB05U0FrXdIGlp9mEpFNgySywWql1hI6vcediFE9cVDM150FwxraRKHp7ZUBo1flY0kCjI=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2AGVzoN/9g/TfJK0Wy+uciXxGufAFBB2Yueff/LRxBpgeMTN1
+	H6CJB9XDz0tQ+gIMm8XC+Zw64tWvgNQmlgXdcBYwHWxycKonUgQe8+hu
+X-Gm-Gg: AYBFou03Ht9uIddNE0lHsS8+VJbZoErFDOTn90sw4FqsJ/nm2Zv9OCgV7pLx0Gyli8c
+	APCDwXmnO3Jc1Q6bWwu6usQgH6nMKrga7Fe3prkzAPQ6EU5xjokfPv6Eqlh0r0okEqKkR95B6+k
+	adQtQ0HkIfuBwSstcfC8bZRTkjlwVm8vWdSVYxMnBDjLcb7Rj7aNp0orhdanVSyvj/ye/xdsFwG
+	VE5tYj/wfFxYkhXO66Bqm8lTzQsU9EXZMnf9QW4vdGdnNotIrbsSUD1InBU/NKwsUrW+PtwP/8b
+	Q3s1A2XLZ+wSIslhW6o4pZtffyFbkChfG2COLaX/3NO7nndbItiBf1UVcAp8+xw+FDF4fqx+nKz
+	JQlhilgOktoRl080hJXDjQNWdE5jjtplkfWgbJATKN8v/YY6i55hAelyWhYJEgTcDT8p50dq7Oh
+	W76ANDNwRnwg3Y2zo/JTNULBEwcw4Krv7pOohrvm9xho+L1uCi/TZdgq6a2AXs5t8X0+8=
+X-Received: by 2002:a05:6820:16a5:b0:6bd:af9e:a7f8 with SMTP id 006d021491bc7-6d43e31f96fmr4050443eaf.10.1790296528569;
+        Thu, 24 Sep 2026 17:35:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:9::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-493356565b6sm901416fac.9.2026.09.24.17.35.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 17:35:24 -0700 (PDT)
+        Thu, 24 Sep 2026 17:35:27 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
-Subject: [PATCH net-next v2 0/8] eth: mpnic: initial support for Meta
+Date: Thu, 24 Sep 2026 17:35:14 -0700
+Subject: [PATCH net-next v2 1/8] eth: mpnic: add scaffolding for Meta
  Platforms NIC
-Date: Thu, 24 Sep 2026 17:35:13 -0700
-Message-Id: <20260924-linux-mpnic-v2-0-4badc9b58b9e@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,10 +71,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMHBtWoC/1WNQQqDMBBFryKz7pRktDZ11XsUF0EnOqBREisW8
- e4NdtXl4/Hf3yFyEI5QZTsEXiXK5BPQJYOmt75jlDYxkKJSPbTBQfx7w3H20qBxNtemveXKWUi
- LObCT7ay9wPOCnrcF6mR6icsUPufNqk//KxL9FVeNCikvTVG4lL3TsxutDNdmGqE+juMLPQtjs
- bAAAAA=
+Message-Id: <20260924-linux-mpnic-v2-1-4badc9b58b9e@gmail.com>
+References: <20260924-linux-mpnic-v2-0-4badc9b58b9e@gmail.com>
+In-Reply-To: <20260924-linux-mpnic-v2-0-4badc9b58b9e@gmail.com>
 To: Alexander Duyck <alexanderduyck@fb.com>, 
  Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -89,88 +89,319 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  bpf@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-Meta Platforms NIC is the second-generation NIC from Meta. There are
-quite a few high-level similarities to fbnic, but all of the CSRs and
-descriptors have been reshuffled, and new features have been added.
-Since the device is sufficiently different from fbnic, and the design of
-our FW is minimal, we have decided a separate driver is appropriate.
+MPNIC is the next network interface controller designed by Meta. Create
+a bare PCI driver for it. Subsequent changes will flesh it out.
 
-Major new features compared to fbnic will take a while to land. This
-series includes only the bare-bones Tx/Rx datapath.
+Registers live in BAR0 and are addressed as an array of 32 bit words,
+which is why the CSR indices are a quarter of the byte offset. Most of
+the register file is only accessible as 64 bit, so that is the only
+accessor added here.
 
-Our high-level patch sequence and plan for the upcoming series is:
- 1. Core datapath (this series)
- 2. Basic offloads, RSS, and counters
- 3. Firmware mailbox support
- 4. Base ethtool operations
+If a read returns all ones, a second read to an unused register with
+reset value 0 is performed to determine if the device is gone. If the
+device is gone, the mapped BAR0 pointer is cleared, so no further
+accesses reach the bus.
 
-This patch series was prepared in part with these LLM prompts:
-https://github.com/kuba-moo/ai-prompts/blob/main/driver-upstreaming-prompts.md
+For now, if mpnic_mmio_err() clears mpd->uc_addr0, nothing will
+reassign it. The user will have to unbind and rebind the driver. Future
+series will reset uc_addr0 from pci error handlers.
 
-The prompts were used to distill our fully-featured OOT driver into this
-minimal Tx/Rx capable upstream driver. We then performed human review on
-the output to create this posting. Jakub has made the prompts public in
-case people would like to take a look. 
+In addition to being used as a 0 value reference CSR, MPNIC_BDQ_SPARE is
+also used to perform write flushes, because it can be read without
+producing side effects.
 
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
-Changes in v2:
-- eth: mpnic: add register init for the device
-  - derive the TQS TXB credit limits from the TXB private credit config
-  - program the BMC to MAC XOFF threshold (TXB_THRESHOLDS_P0[16])
-    instead of the host to BMC one, and drop the now unused
-    MPNIC_TXB_BMC_THRESH
-  - drop L2_HLEN from the default TWD, it only matters for csum/LSO
-- eth: mpnic: implement Tx queue allocation and cleanup
-  - add mpnic_nv_irq_trigger()
-- eth: mpnic: add a netdevice and basic Tx handling
-  - trim the real Tx queue count before register_netdev()
-- eth: mpnic: implement Rx queue allocation and cleanup
-  - drop an inaccurate comment on mpnic_bdq_desc_unused()
-  - drop the unused data_truesize field from struct mpnic_pkt_ctxt
-  - trim the real Rx queue count before register_netdev() too
-- eth: mpnic: add basic Rx handling
-  - skip Rx cleaning and BDQ refill when polled with a budget of 0
-    (netpoll), page pool must not be used in that context
-  - keep struct mpnic_pkt_ctxt instead of replacing it with a bare
-    xdp_buff, and move add_frag_failed into it
-  - give each Rx queue only the NAPI budget left over by the previous
-    ones instead of the full budget
-  - sync Rx buffers for the CPU with page_pool_dma_sync_for_cpu() instead
-    of dma_sync_single_range_for_cpu()
-- Link to v1: https://lore.kernel.org/r/20260922-linux-mpnic-v1-0-236844f53072@gmail.com
-
+Note: not including an mpnic.rst at this point by design. That will be
+introduced when the driver actually exposes user-visible statistics or
+configuration options.
 ---
-Daniel Zahka (7):
-      eth: mpnic: add scaffolding for Meta Platforms NIC
-      eth: mpnic: allocate MSI-X vectors
-      eth: mpnic: implement Tx queue allocation and cleanup
-      eth: mpnic: start and stop the Tx HW queues
-      eth: mpnic: add a netdevice and basic Tx handling
-      eth: mpnic: implement Rx queue allocation and cleanup
-      eth: mpnic: add basic Rx handling
+ drivers/net/ethernet/meta/Kconfig           |  12 +++
+ drivers/net/ethernet/meta/Makefile          |   1 +
+ drivers/net/ethernet/meta/mpnic/Makefile    |  12 +++
+ drivers/net/ethernet/meta/mpnic/mpnic.h     |  40 ++++++++
+ drivers/net/ethernet/meta/mpnic/mpnic_csr.h |  24 +++++
+ drivers/net/ethernet/meta/mpnic/mpnic_pci.c | 147 ++++++++++++++++++++++++++++
+ 6 files changed, 236 insertions(+)
 
-Mohsin Bashir (1):
-      eth: mpnic: add register init for the device
+diff --git a/drivers/net/ethernet/meta/Kconfig b/drivers/net/ethernet/meta/Kconfig
+index ca5c7ac2a5bc..f940048a5e37 100644
+--- a/drivers/net/ethernet/meta/Kconfig
++++ b/drivers/net/ethernet/meta/Kconfig
+@@ -35,4 +35,16 @@ config FBNIC
+ 	  To compile this driver as a module, choose M here. The module
+ 	  will be called fbnic.  MSI-X interrupt support is required.
+ 
++config MPNIC
++	tristate "Meta Platforms Network Interface Controller"
++	depends on 64BIT || COMPILE_TEST
++	depends on !S390
++	depends on PCI_MSI
++	help
++	  This driver supports the Meta Platforms Network Interface
++	  Controller.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called mpnic.
++
+ endif # NET_VENDOR_META
+diff --git a/drivers/net/ethernet/meta/Makefile b/drivers/net/ethernet/meta/Makefile
+index 88804f3de963..633973419c21 100644
+--- a/drivers/net/ethernet/meta/Makefile
++++ b/drivers/net/ethernet/meta/Makefile
+@@ -4,3 +4,4 @@
+ #
+ 
+ obj-$(CONFIG_FBNIC) += fbnic/
++obj-$(CONFIG_MPNIC) += mpnic/
+diff --git a/drivers/net/ethernet/meta/mpnic/Makefile b/drivers/net/ethernet/meta/mpnic/Makefile
+new file mode 100644
+index 000000000000..2588f1f1f1d5
+--- /dev/null
++++ b/drivers/net/ethernet/meta/mpnic/Makefile
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) Meta Platforms, Inc. and affiliates.
++
++#
++# Makefile for the Meta(R) Platforms Network Interface Controller
++#
++
++obj-$(CONFIG_MPNIC) += mpnic.o
++
++mpnic-y := \
++	mpnic_pci.o \
++# End of mpnic-y
+diff --git a/drivers/net/ethernet/meta/mpnic/mpnic.h b/drivers/net/ethernet/meta/mpnic/mpnic.h
+new file mode 100644
+index 000000000000..6b8bee93033a
+--- /dev/null
++++ b/drivers/net/ethernet/meta/mpnic/mpnic.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) Meta Platforms, Inc. and affiliates. */
++
++#ifndef _MPNIC_H_
++#define _MPNIC_H_
++
++#include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/types.h>
++
++#include "mpnic_csr.h"
++
++#define MPNIC_DRV_NAME		"mpnic"
++
++struct mpnic_dev {
++	struct device *dev;
++
++	u32 __iomem *uc_addr0;
++};
++
++u64 mpnic_rd64(struct mpnic_dev *mpd, u32 reg);
++
++static inline void mpnic_wr64(struct mpnic_dev *mpd, u32 reg, u64 val)
++{
++	u32 __iomem *csr = READ_ONCE(mpd->uc_addr0);
++
++	if (csr)
++		writeq(val, csr + reg);
++}
++
++static inline void mpnic_wrfl(struct mpnic_dev *mpd)
++{
++	mpnic_rd64(mpd, MPNIC_BDQ_SPARE);
++}
++
++static inline bool mpnic_present(struct mpnic_dev *mpd)
++{
++	return !!READ_ONCE(mpd->uc_addr0);
++}
++
++#endif /* _MPNIC_H_ */
+diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_csr.h b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
+new file mode 100644
+index 000000000000..473a2e9f5a09
+--- /dev/null
++++ b/drivers/net/ethernet/meta/mpnic/mpnic_csr.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) Meta Platforms, Inc. and affiliates. */
++
++#ifndef _MPNIC_CSR_H_
++#define _MPNIC_CSR_H_
++
++#include <linux/bits.h>
++
++#define CSR_BIT(nr)		BIT_ULL(nr)
++#define CSR_GENMASK(h, l)	GENMASK_ULL(h, l)
++
++/* Register Definitions
++ *
++ * The register file is addressed as an array of le32, so the byte address of
++ * a register is 4 times the index below. Each register is listed with its
++ * name, index and byte address.
++ *
++ *	Name				Index			Address
++ *****************************************************************************/
++
++/* NIC_CORE_RBP_HP_GLBL */
++#define MPNIC_BDQ_SPARE			0x42013e		/* 0x10804f8 */
++
++#endif /* _MPNIC_CSR_H_ */
+diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+new file mode 100644
+index 000000000000..96393e781241
+--- /dev/null
++++ b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+@@ -0,0 +1,147 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) Meta Platforms, Inc. and affiliates. */
++
++#include <linux/dma-mapping.h>
++#include <linux/err.h>
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/slab.h>
++#include <linux/types.h>
++
++#include "mpnic.h"
++
++#define PCI_DEVICE_ID_META_MPNIC	0x0014
++
++static void mpnic_mmio_err(struct mpnic_dev *mpd, u32 reg)
++{
++	/* Hardware is giving us all 1's reads, assume it is gone */
++	WRITE_ONCE(mpd->uc_addr0, NULL);
++
++	dev_err(mpd->dev,
++		"Failed read (idx 0x%x AKA addr 0x%x), disabled CSR access, awaiting reset\n",
++		reg, reg << 2);
++}
++
++u64 mpnic_rd64(struct mpnic_dev *mpd, u32 reg)
++{
++	u32 __iomem *csr = READ_ONCE(mpd->uc_addr0);
++	u64 value;
++
++	if (!csr)
++		return ~0ULL;
++
++	value = readq(csr + reg);
++
++	/* If any bits are 0 value should be valid */
++	if (~value)
++		return value;
++
++	/* All ones can be a valid value, so confirm against a register
++	 * which never reads that way on a live device.
++	 */
++	if (reg != MPNIC_BDQ_SPARE && ~readq(csr + MPNIC_BDQ_SPARE))
++		return value;
++
++	mpnic_mmio_err(mpd, reg);
++
++	return ~0ULL;
++}
++
++static struct mpnic_dev *mpnic_alloc(struct pci_dev *pdev)
++{
++	struct mpnic_dev *mpd;
++
++	mpd = kzalloc_obj(*mpd);
++	if (!mpd)
++		return NULL;
++
++	pci_set_drvdata(pdev, mpd);
++	mpd->dev = &pdev->dev;
++
++	return mpd;
++}
++
++/**
++ * mpnic_probe - Device initialization routine
++ * @pdev: PCI device information struct
++ * @ent: entry in mpnic_pci_tbl
++ *
++ * Return: 0 on success, negative on failure
++ **/
++static int mpnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
++{
++	void __iomem *uc_addr0;
++	struct mpnic_dev *mpd;
++	int err;
++
++	if (pdev->error_state != pci_channel_io_normal) {
++		dev_err(&pdev->dev,
++			"PCI device still in an error state. Unable to load...\n");
++		return -EIO;
++	}
++
++	err = pcim_enable_device(pdev);
++	if (err) {
++		dev_err(&pdev->dev, "PCI enable device failed: %d\n", err);
++		return err;
++	}
++
++	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(46));
++	if (err) {
++		dev_err(&pdev->dev, "DMA configuration failed: %d\n", err);
++		return err;
++	}
++
++	mpd = mpnic_alloc(pdev);
++	if (!mpd)
++		return -ENOMEM;
++
++	uc_addr0 = pcim_iomap_region(pdev, 0, MPNIC_DRV_NAME);
++	if (IS_ERR(uc_addr0)) {
++		err = PTR_ERR(uc_addr0);
++		dev_err(&pdev->dev, "Mapping the register file failed: %d\n",
++			err);
++		goto err_free_mpd;
++	}
++	mpd->uc_addr0 = uc_addr0;
++
++	pci_set_master(pdev);
++	pci_save_state(pdev);
++
++	return 0;
++
++err_free_mpd:
++	kfree(mpd);
++
++	return err;
++}
++
++/**
++ * mpnic_remove - Device removal routine
++ * @pdev: PCI device information struct
++ **/
++static void mpnic_remove(struct pci_dev *pdev)
++{
++	struct mpnic_dev *mpd = pci_get_drvdata(pdev);
++
++	kfree(mpd);
++}
++
++static const struct pci_device_id mpnic_pci_tbl[] = {
++	{ PCI_VDEVICE(META, PCI_DEVICE_ID_META_MPNIC) },
++	/* required last entry */
++	{}
++};
++MODULE_DEVICE_TABLE(pci, mpnic_pci_tbl);
++
++static struct pci_driver mpnic_driver = {
++	.name		= MPNIC_DRV_NAME,
++	.id_table	= mpnic_pci_tbl,
++	.probe		= mpnic_probe,
++	.remove		= mpnic_remove,
++};
++
++module_pci_driver(mpnic_driver);
++
++MODULE_DESCRIPTION("Meta Platforms Network Interface Controller");
++MODULE_LICENSE("GPL");
 
- drivers/net/ethernet/meta/Kconfig              |   13 +
- drivers/net/ethernet/meta/Makefile             |    1 +
- drivers/net/ethernet/meta/mpnic/Makefile       |   16 +
- drivers/net/ethernet/meta/mpnic/mpnic.h        |   66 ++
- drivers/net/ethernet/meta/mpnic/mpnic_csr.h    |  319 ++++++
- drivers/net/ethernet/meta/mpnic/mpnic_init.c   |  556 ++++++++++
- drivers/net/ethernet/meta/mpnic/mpnic_irq.c    |   64 ++
- drivers/net/ethernet/meta/mpnic/mpnic_netdev.c |  186 ++++
- drivers/net/ethernet/meta/mpnic/mpnic_netdev.h |   35 +
- drivers/net/ethernet/meta/mpnic/mpnic_pci.c    |  187 ++++
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.c   | 1395 ++++++++++++++++++++++++
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.h   |  151 +++
- 12 files changed, 2989 insertions(+)
----
-base-commit: 42a9fb3382fc2573e92f41d203b095d9a372cfc9
-change-id: 20260918-linux-mpnic-8fa318d530fa
-
-Best regards,
 -- 
-Daniel Zahka <daniel.zahka@gmail.com>
+2.52.0
 
