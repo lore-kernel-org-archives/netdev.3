@@ -1,77 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25268322C73;
-	Fri, 25 Sep 2026 16:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB124E06FA;
+	Fri, 25 Sep 2026 16:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790354242; cv=none; b=LNpKK6yc8jmEq7UR6p2UBEb2MHfQRO5pUCnBKKOjCOP6ccorWsXTEfQfBdraPqx4rfct568XFynLFR926JqbJPT0l0XEnY81aXGrDBhn720bAdyBO3dRZMOHAS8m/YLjQq9mu6+JQZyZgIHnMWtIl8VlhWrg806E4idIFC18Lnk=
+	t=1790354393; cv=none; b=atQ0MRHrFtnMYSFv+SaFXrPEhApl+nre01gIwWfOTEAovnFMiHQjW/6sMFqTsyG4aFhEJ9W3T3m/n0SE6+PHl0LivuZ1z1chy5zNfQjM1lH5bgD8EXbh99Z7UzVCOTvNTEz40fRSI/s6nOMzIbj23kcK8/Y1jY4qtmtCchakJP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790354242; c=relaxed/simple;
-	bh=Jg50N8Q9Cm7OCREL7u7EAp/IFB6oDWc0U8Wsu77nV58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfWy3kdbl3EqculFbVaBgc8DqpoPPd+Ha6IQ4teB4urn1ku3On5Smbn6m0DsRrncNSZ8EO7bho4YCOrjYjJ3F7aA2gCMkRadyrlV8NiMWBfqE9c68VavJuYP50a3bFZ+Wj9ghdjPAa+y+DWkoFT+/Da4yaVFEY1XBgdDZ5k0fiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/yPlYrt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790354393; c=relaxed/simple;
+	bh=9KgwWoen8eQwgRgAmsggf9RKts821AvQGpwwRSVZbWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I+I183PrJWl7fZXUc+OfBIT8IlDkkyJm3/ZXyInL812HUAWzUV+kke8gwYH2FZFrtlnosGvqIeAAvVcZ03Uczd9ebbigtAWd11oqUvyXgyqh99IDop6D2Up8rswEVGeGp/k53CqCE2B6fV1nqVc+ioqnVZ7PYm3p1Ny4fdoo4cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tb3YSOMp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/yPlYrt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0651F000FF;
-	Fri, 25 Sep 2026 16:37:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tb3YSOMp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6471F000FF;
+	Fri, 25 Sep 2026 16:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790354240;
-	bh=Jg50N8Q9Cm7OCREL7u7EAp/IFB6oDWc0U8Wsu77nV58=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G/yPlYrtGx2x103ezpTDBH8WS/RYQB5howfAxsr5p8OZBq3XRgPYKABPGH3sk4I9e
-	 sIUHcuKf0hgMvUY8Q1UrVbrpu+rTuClFlVI1qONB84Mye4d5urs8ZDiMKEkeCLk7Na
-	 qgOiZpk7hUcAPI6PjDsJBFm7tpdWB/mpCDmpmjCo+AkimRmZMJdxMTfZsTBarRDTxq
-	 u6cGP9/9/pIqdvnqxVCn0vYGlgOjsCLGsufoqFtBbfBckhE5LRzGh9DhRbBCzbOGM6
-	 yzL0oOlVrNx1TTeUjPf/FK79nebl13WrjL3cnwDgU9VlFRPzyI4WAhQ63iDaAIHu5Y
-	 7Bvbxz7kLXoEg==
-Date: Fri, 25 Sep 2026 17:37:15 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/2] dt-bindings: net: ethernet-phy: add
- needs-host-firmware
-Message-ID: <20260925-dipping-moody-d20fa0d1152e@spud>
-References: <20260925001209.2334139-1-f@lex.la>
- <20260925001209.2334139-2-f@lex.la>
+	s=k20260515; t=1790354372;
+	bh=d+zQp+1omJq6CVjx/eZB1Bfc+CtQiGvnhxcCaK3LH4U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Tb3YSOMplqpOF3cxjCQg/bciM6BGVSONhj2VD61sVGA9NAOdhbB1hIci9rGi1KUfz
+	 kNLSDtzMgnBMtca+AJlMw11c6H31IsQ0oRQLLWqglTF0RSnrYN0PdYpnnnhK7WhlcF
+	 09xLNl5muH1W/Fmj/8lRsv6KW+02fb4/t7X7UPPjw99u8dCiOBumKdrPIyC843XW21
+	 X4Xl6LDfabblPXcQvORce202TGMT4mTgpc5GcoVMKgrAeLf2RiED+ZXUYPVwOuq4KA
+	 0B+9LE8zlgEnfWuEXH0NbAVWVR0f32jFVJnKwumRDcAVH9YkaWqxTjgaOHXZl0yu3h
+	 zxbcbGxaNKiKg==
+From: Simon Horman <horms@kernel.org>
+To: parvathi@couthit.com
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	pmohan@couthit.com,
+	afd@ti.com,
+	vadim.fedorenko@linux.dev,
+	haokexin@gmail.com,
+	basharath@couthit.com,
+	arnd@arndb.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	m-malladi@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com
+Subject: Re: [PATCH net-next v4 1/3] net: ti: icssm-prueth: Add HSR and PRP HW offload mode support for AM57xx, AM437x and AM335x
+Date: Fri, 25 Sep 2026 17:39:14 +0100
+Message-ID: <20260925163914.721071-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260921134343.200426-2-parvathi@couthit.com>
+References: <20260921134343.200426-2-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2jR+fEFaZ1freKib"
-Content-Disposition: inline
-In-Reply-To: <20260925001209.2334139-2-f@lex.la>
+Content-Transfer-Encoding: 8bit
 
---2jR+fEFaZ1freKib
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/20260921134343.200426-4-parvathi@couthit.com?part=1
+---
+net: ti: icssm-prueth: Add HSR and PRP HW offload mode support for AM57xx, AM437x and AM335x
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+This commit extends the ICSSM PRUETH driver to support HSR and PRP redundancy
+protocols on compatible TI SoCs. It enables dynamically switching PRU ethernet
+ports from dual-EMAC mode into HSR/PRP slave modes via firmware reconfiguration.
 
+> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+[ ... ]
+> +static int icssm_prueth_hsr_port_link(struct net_device *ndev,
+> +				      struct net_device *hsr_ndev)
+> +{
+[ ... ]
+> +free_hsr:
+> +	prueth->eth_type = prev_mode;
+> +
+> +	spin_lock_irqsave(&prueth->addr_lock, flags);
+> +
+> +	prueth->hsr_dev = NULL;
+> +	prueth->hsr_members &= ~all_slaves;
 
---2jR+fEFaZ1freKib
-Content-Type: application/pgp-signature; name=signature.asc
+[Severity: High]
+Can this rollback improperly destroy the state for the already-linked first
+port alongside the failing second port?
 
------BEGIN PGP SIGNATURE-----
+If the second port fails to transition to HSR/PRP mode, the free_hsr error
+path clears the hsr_members mask for all ports by applying ~all_slaves.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarajOwAKCRB4tDGHoIJi
-0lhzAQDRHpWRTrTuf9mAme7kt4gLYZE4TVZALqtRHRO1WeIrZwEAprk4hPH3WzPG
-pqN8P8GzlfGhpE5iTRnBLNd46hMkXwo=
-=sXmu
------END PGP SIGNATURE-----
+Because the first port was successfully enrolled into the HSR bridge in a
+previous invocation, it remains an active slave in the networking stack's
+view. By wiping its membership state here, the driver drastically
+desynchronizes its internal state from the kernel.
 
---2jR+fEFaZ1freKib--
+Would it be safer to only clear the bit for the specific port that is
+failing to link?
+
+> +
+> +	spin_unlock_irqrestore(&prueth->addr_lock, flags);
+> +	return ret;
+> +}
