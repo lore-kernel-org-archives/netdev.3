@@ -1,95 +1,95 @@
 Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E199C43B3F5
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE4D49DBBA
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790341258; cv=pass; b=P4UXIPcI0HU7ci6lXqe4gib9hTDf/KeKA0vnI7gTm1BMfG16eLSkdjy6RXdx67TS1nuHzoxczq887lnYsRJgC2gBs4p405O2xC1YYGDNf4tQoE+04xZo0DxnPXJDRUmzWzb9rGI9JuBA/ijn4lnw8U4gcNcpfTHOrzp5eslWWdI=
+	t=1790341342; cv=pass; b=qGI0UFKzTXnfCSCna3APh0fBEq8c1GQDOYzb6b6q/jLsNMtcCxefEE9nQbnYco2wtksgsKy0c/RQW2Q4zCKoC1E0cgdndtMWSs142N5wNdsvG+tmGxl3Jv4Lx6iZpgl19TqCO7OZAOLSs967BiypJgIeZS2xhQnfM/E0MxfNlQc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790341258; c=relaxed/simple;
-	bh=88zp11RG4j8iYFg2++fN10FbqRpm8U939v69/2jFPCA=;
+	s=arc-20240116; t=1790341342; c=relaxed/simple;
+	bh=lW/t0ljBqFMlE+2JM9CDRp5S00XDRA6MppSwwR8dKC8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HoGarSM77N16MHkirqznL+bUU+xgvp79O7OJf7EpusEtwh5i0ThsU31Hn7m97wwKuc4lOdHT9VwcQjDkO5g3t20x6GelKD+dpFU3wTQAkCRl0N3NRHnzlWgz0FKsByqJfXHTzMdHTINcYWILE4mDN56YJius/7YwRIPOZvnsKWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPaHV5sH; arc=pass smtp.client-ip=74.125.231.205
+	 To:Cc:Content-Type; b=JZlpEVIyKVoFgTRSmtG1LKdF3xtZNCUMR/62wqfxgQ5M4yBUAhwIhbOfn0kW1GRoludunkqaKtaAa7gFjdZiSuHUhbWtH5cwJ41TKpYyKALHa+hHzVlL6hc+uahWoAPNshU/0ys+SojKZ/VcMLDkF0445Sy5z8L0QkZTtrc1+uY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrJieSNa; arc=pass smtp.client-ip=74.125.231.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPaHV5sH"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a2ffee6so313806b6e.2
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:00:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790341256; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrJieSNa"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c4bf3defecso672410b6e.3
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:02:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790341340; cv=none;
         d=google.com; s=arc-20260327;
-        b=qZ9nprcY+lO9Z/b741/a9uUK5J/8EbTFqup3ecBl9xm2IL6ITx+PZVtgzUIjMKKYuE
-         9yhFqm+fDieHSvbD7HgriZj6hkpCmVAPzqg75pB5fe2UoXqyDyV5SAMNVOdGqltJdLUy
-         1++u0L2Kmc1/JyllDCmFz72xKSWJXZI6Pe9UE7bJc94mfflSD+Hpz/7AGUZ16xNw0wgD
-         nBTADZ+Y5LSIcGw7vx2KDUmTALaw1ez/mZieQkrhl+6AhVXZgDoYF0pDlCgw4CaGsN4s
-         iEqxajoaHyzkv87I6ht3gXtggmdBCJO3z54dnYNQ1UvqsQTOBDvXonE6hfQ7E96YSIEV
-         qM4A==
+        b=FIlzvysE0z6t1V37jNv5x2HTMu/IBSFCshNhOm/1Y/sorrjUiwKzyeZpFJ0orMtK3h
+         QM9PNGTeNLvD5qhFfBfD91dk8zSk8Ruo5yYnsAq/19azusZr7qkdHaxpIuBq2LTg+JKe
+         83MzMQJHWYa/JyuV2stzh5Hx1XJdZ866JFf7T0fHCUzP47kQe/Hgp1QquJ3mQ0Efm1lA
+         D/41c5Qy16pliyb5ZcO3KrNGYn2xxSpXMpLoYwW7y0jys6jGUd76Yj09+Pha29jpAUuY
+         ZvqHprcigLNFjNL5eN7mfnlGlTxTXvxNhFaYecgLxfnyumwDKbEuTWPb2EFDWxznFn4U
+         93TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=MBaQ9LVOrjLaMIJyB1YHVFLBYO1gU4YEmH2n9HVOEPs=;
+        bh=66DuN/r1j06HGfAgzFt/xw2W868bH/m+NSU/xQtEkJk=;
         fh=OsYXKoY2sSKBhNTThW9kucESC7dyZwg253Kp+7pxyN4=;
-        b=HqIi9cNwbfyYPdt1FjHdramRkxvYLyPB28pKGn+Y5LecUwq8GIKT+qMMffKbARDBMu
-         FsXUjubaX2mIeaR0RjZbQfIF3iXM33FvGDER21zwLAQzmbxfizCokrQGZUXLsePqlN1o
-         YqrOk3fI6dfClxaOeV2wOlhJZOh1bgHruFes8QCFsIwG3HGINO7zoSRzhC6GHiy6w2v5
-         sakrt5lvoWKykvjxCL7wQ7wr+Zc/bG/zfIyI44ZrNUeo9jcMG6li4/u6BEKtJGlpadO/
-         ZUEurlHRxlLXn3Z1t3MHhYwN19nUXkhj3CGnX/SqdIQsPRK7HTJRCrZ+sWdcXWzM4+R8
-         bHUQ==;
+        b=hiPXQmEEPhk6MCpa/tjjTD7c2BVtNvycEfIkUxdiRzVsa/gD0LQxwDVbJ6cKTEp/Aw
+         DeeqnRyYuWeXGNkglN4an4vTOrU3LZi2gCoKk/TGe4buZ8wJG6wJe8WG//N3aQ7ycmt5
+         Rmr/aA8OFRAgHaCMEf3qXIBqIkXoa77amf2D1/4esgU4yeNg1X7+m8KMruk+cPOpGmLl
+         J6HwS4Yy4vy6QThYStUTsI1J6FcsvASHrKQhEeNwNGdffe1A4hmsUiA0D418/VCoevZz
+         YW1QmdChv8BZ8YgUuPR3FrszXTvm3IA/t0BhE2YWwgICS1M3URsVkQzlvCkQJHDmlDQL
+         4eNg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790341256; x=1790946056; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790341340; x=1790946140; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MBaQ9LVOrjLaMIJyB1YHVFLBYO1gU4YEmH2n9HVOEPs=;
-        b=NPaHV5sHKhSNySUlj93BDfUFY+mBMlrO7zMyiBAJ4LbqoDxs+0UkTfA43NhqsV5crU
-         aDDxwYO/pXaogHmoRjEujZHYq50Zxx1aUp0Y1oD1RzHLJwih823pTtzpRivo1EVsY9q/
-         Bvf/wViB42P1fQrwis43kuxsgH6vxhsggzzyI8DPMh04chLZg+9/JLEnmS7vMNoxDCXV
-         QysVZkZcyqAaKq4z3tJZ9cJe3YzVfrVLVab6OQ8RM7OUFAPlMJUuW/GXjUu796lyFsPb
-         CcQ9XO9ao7O+litldsTYKJ4v47zNuzApQuhmVDMy7OsG0BQx55kqbl7vTmORueuTDB4a
-         aYgg==
+        bh=66DuN/r1j06HGfAgzFt/xw2W868bH/m+NSU/xQtEkJk=;
+        b=IrJieSNaiXLIBo+8TwoMfBMARxFFC11HI3dr5jEeUNrzImsXG+6lJEBPUW610fzdwv
+         yt4Qo4MmEv0AMF8Xavw52acMQlmhMFDyzUzC3TP69nVybivr61WgBxwhjTUaPDIleJK2
+         UAjcyzXd7Nyq8ZHpfqOwIZjhhkM4QgLtcv0FMPtmcdbGKlnApIdIwSeXgtirsLOXdlHm
+         wRkZE4blZqYsUnOPqexn185cIwa9FOBLJNjTd/3FBqkYwNQjYZBM8eH/i5ITK+C1S2fn
+         7yhr1OFvqUR1IhmNyzDdCuBT5BTFfDhUU2qcKwsL23mcSc/UMZlIkuUA7pD+UvX0f+V2
+         qQGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790341256; x=1790946056;
+        d=1e100.net; s=20260707; t=1790341340; x=1790946140;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MBaQ9LVOrjLaMIJyB1YHVFLBYO1gU4YEmH2n9HVOEPs=;
-        b=xbGD4a8AbLvbTGXRHgIU+oPbHyuRw7QhJRXBfr1H6KTT0fq0vDc62y4RKsCz5g9v76
-         nbCxQ3duQdFteScGc93adGI+IcZrSLvPl1jHoweTgum+4lNHBgkuY9/dy5bBj3XVkamL
-         riV2jS6sRqaXPofK4qXbuF2y1j60pGyL3OqeT9XA25UshgikXO+wwUUkC7zcydDDU0YV
-         4th8uZ+k0tz2dvtUBlfftBG7//qC3zqXzJ4HUfhsrpprYqz32aQI3ESGVGsL0oNlOTDe
-         zCOnCjxl1//b4ZZ7L5Ec3y9lwU83ielwx3OqCE6liFTy9rqyykeK10SrhDDvECFJn3Kg
-         ls6Q==
-X-Gm-Message-State: AFuF++nMmY8EK6cx+/kz0JUItijNDAVpLvSK2bXobpoqhl8FEgfy1xJ5
-	82QtCMr1yHsLxQKDhuz++wP3YGQ4VdX5r5oXNATbxL5fzYhzT8TOP7igV1jbaVe1CNOcFzTU5xE
-	UbW489mtyvhSnesaGuz4z7YipRggDe4U=
-X-Gm-Gg: AYBFou3U7PxBbFvCGINfiPFdFTsdCM3ffyFIFw4zZjC6YGUtnV1NOdHDZEAlEq32yUT
-	fMvSOCMkeyXagB88fXi6Kt2xtM1UCKxdiW9lF7LiW7Zyt0c/gPFaP2pegP4D8zPfJgKrudIMBtP
-	I+gExG9NxZ5caNBtDEEuJ3zD75q0/E70Oebz9oj/FPtCSoPpY2UlhyuBYs8XGZlzNkRISHfe623
-	wsovYUTQT1uE8YOSr3g+SgG6gZ5xPlazNXapy8o6I0UUgrSkM46GdBDI1iB3L7d/RZp5NSK17Af
-	n8L+20+3L/6EdaSyCRzsUIzRQgC09DrHxif40TEqo1ZFMuzuaboEd2Lm+89/+yzJAJPC7n0yYdW
-	INm8WmYqiJIthKsld12CgsjIugh1jCQ==
-X-Received: by 2002:a05:6808:1a1a:b0:4c9:6b4d:f2f2 with SMTP id
- 5614622812f47-4dc640ac175mr2018463b6e.39.1790341255580; Fri, 25 Sep 2026
- 06:00:55 -0700 (PDT)
+        bh=66DuN/r1j06HGfAgzFt/xw2W868bH/m+NSU/xQtEkJk=;
+        b=L3ZQVMI9AlHNPmvN0GkkwdIfSMwi60H/bNP00g9s/a741aDd2hzTNXSZZx6Qhu4Cop
+         ldl7FoLLlLoRkzhzWDtX4yRklfKIeFB/EzPqRzs4icPHO4V2A1tgZtXcHbI8/VcsilR5
+         OQBnwtehqVZj9itBQpoCNigTWVGbBY+Qc8zWUHyOSBa1pW/zAKY6m2BV1RVt0znuGT88
+         XJsDaoslW9I8MtCWge3jjkaGREw2OrgHNfLMCFRabCcLMKv6Y4TJ+3lWagIuuGGKy8Ei
+         mcqsPErYQPY6dK9tYMYIo7E/o8krR8Xk2BYGj3ZVEQ45TksWXzIdD5Yfd6iNOqvDw2/5
+         1m9g==
+X-Gm-Message-State: AFuF++mlKXiABB5r2tp+VrRYItAheSl0wCMV8bG3cr8x7z+jXsoJeJ0B
+	G+I4bQMelVGl6q1FLzcmcMBvipD8h+OrsTS8wgniQwdz+vdlPwrtwv6PN39mnkMnRO+QaduB8/J
+	IKdWOWPcwodrrpicJ9rIlKsAcuwe5ZBw=
+X-Gm-Gg: AYBFou0qMRqZbIdvgPirXUwxzIrOtorOQoLBEa5wISRLOPLctf+vDipRRHWOMKGrtQB
+	oiqt9IO3P9kjIHm9FUG182i0hBL/v8BziGAQbZa3ZSu8Ls8syyy3pyCN4WyGJf8FoxuYbuLNehj
+	XVtNLiveR/9YST/O1+pYtbbZ3g2xj1pwcQRCb8fAeD5AnqL5yJdphNUMjzmb2/yhv8DcFvyvTeS
+	GTQG0WSZRj+5XSHztTT3GqqdZ62RgO0fWWDgM1nPAXiTOH8Gy5eVva7vHvZble9RvVEWahSS5Gn
+	AgOYiN6Jm7x4NkS1CbNGsn033I4H22mSBb4oCGqFGLC8VIUYJvDPgcAg8UMTjIK3cDdrAmpu89o
+	UaFCsZf1mIuhgaq1mapURZXJUZdT152NY9Bwxudw=
+X-Received: by 2002:a05:6808:238e:b0:4d6:9153:2965 with SMTP id
+ 5614622812f47-4d72b63ec49mr5682940b6e.54.1790341339731; Fri, 25 Sep 2026
+ 06:02:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923021945.2203368-3-mmyangfl@gmail.com> <179030278415.2160803.7209731671356572587@kernel.org>
-In-Reply-To: <179030278415.2160803.7209731671356572587@kernel.org>
+References: <20260923021945.2203368-4-mmyangfl@gmail.com> <179030278530.2160803.5892691162510957034@kernel.org>
+In-Reply-To: <179030278530.2160803.5892691162510957034@kernel.org>
 From: David Yang <mmyangfl@gmail.com>
-Date: Fri, 25 Sep 2026 21:00:18 +0800
-X-Gm-Features: AclHuK_s1xZW3aEfZCQ2YBSdIuy4mHtVdZ2xtFjyf74fEZZ89cQUVcbRlNpAk5w
-Message-ID: <CAAXyoMPAHrfi9BpMxs6PRttmUx7E0tP4Xwp_+kwvH-SSSZ7P5A@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/8] net: dsa: motorcomm: Split xMII and
- SERDES port masks
+Date: Fri, 25 Sep 2026 21:01:42 +0800
+X-Gm-Features: AclHuK_gINeSpMhsubRK169bx18RLVhA7P7kiUVoIOpcpYjxFcYk38Fd353bgFU
+Message-ID: <CAAXyoMPvvmi4YV4BF=nWEchbd4SWtb2pmS2JVcsv=ro9SuuLUQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 3/8] net: dsa: motorcomm: Identify port type
+ at runtime
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
 	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
@@ -103,7 +103,7 @@ ote:
 > Thank you for your contribution! Sashiko AI review found 2 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1 (1)
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -113,16 +113,10 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [Medium] After this patch, a GMAC port that is in xmii_mask but not in
->   serdes_mask gets an empty supported_interfaces bitmap.
-> - [Low] Two comments in yt921x_dsa_phylink_get_caps()
->   (drivers/net/dsa/motorcomm/chip.c) no longer match the code after this=
+> - [Medium] The commit message says "no behavior changes intended", but
+>   the patch changes which registers are programmed on SerDes link-up and=
 =E2=80=A6
->
-> Pre-existing issues:
-> - [Low] The concern: the in-tree binding example
->   (Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml,=E2=80=
-=A6
+> - [Low] yt921x_port_up() chooses the XMII register block using only
+>   pp->serdes and never checks info->xmii_mask.
 
-No real configuration is affected - xmii is not supported before and
-now (as in TODO comment).
+Slop - you cannot get xmii on serdes ports.
