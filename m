@@ -1,306 +1,270 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077593ABD99;
-	Fri, 25 Sep 2026 05:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3C7237707
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 05:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790314662; cv=none; b=X9RVPSbvOOGAN0pWv+uzGquMqpqkr0sqCpgjfmLZazi2rujJ+PUxq2HFnaToiLRxamfeKWSkn6InpSkAjR0RxVvcLa0eEcpfkyXf7+VyB4tU2VQfL9MNvF2FvQjIU3oEYOGc9zjb8aV91W2Db3j/wmVyKyshJBlARmQKMXN8RPE=
+	t=1790315601; cv=none; b=aQYG+Tm2MCbE89IiTLcmA+v8+jVKXtZ0bCRUABq88MN/DS9xK/UJ6P1u6mMWywEzkwovVc5HZhaBAyfSDbFuLa1hbFjL5bJ+Mf3OctNho7gqkkcWeaWoq3HIzzWe0ZZNRWPjxA9EtitSVYfz6HIXO7vfZDtALpnoBAOtEwLTIsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790314662; c=relaxed/simple;
-	bh=TiptZsxf29OlOe5WXy9sZcFl7rzB5X4lMEs5dta2ZEw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SzFxvX+077gW8fP8kujV3vpBW+pL8NJXAFefRGTSjgFrC2dE7i/HwcPODmvFWc/j0SvsUGrKg84e0cDowWufTg0voo0JC3JXPlkj2M6qX8tTOJry0/1K534kpVvMg+UDAD6V7rfVdLkNLQo/4vV1NoTDwzppVT5d2V1QTJle7+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrG/hNu4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790315601; c=relaxed/simple;
+	bh=tmpwG2lgRP+Tvi6WS29YkXjJuIcewFZL8Rb7fANQfb8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mD84YdZs5SS45hlzCqsahvkY0RVdT3w2ihBxtGBL61+tsBl0dxRw7jJ8TM4iSMgb12iqGCtOGcloL0IsIem8TmfCGel6rQ+3nUhC1MmgQ3oQZ4MknvTf86fHMpmlUOMiD5bem2EoPCihmhRhb+ckZe10z2PkibIG+xl9ZSmPL4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ga6++iCx; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrG/hNu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25E11F000FF;
-	Fri, 25 Sep 2026 05:37:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790314659;
-	bh=EL5nCry69SwHPUTQMjJHl7impNhyS6Pktx8aZN5u7lY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GrG/hNu4nPXNyo0wDtdIm5hVDIvNEP7LPxEQMlEdPWVrPERU4+SqOEeYvgwuCOaYX
-	 j0ARcQhufb3k6d8d3PWGOKmBeuINU/ARJ/zwKc4mMo6drVS4wz3mgUkzVXXCcwI3+J
-	 rbtyBucJyp/JGf6Lzw/SlXEsi3SLmvLt8j0Z6ZmagMuWOJYY+KTBW6zW0TJs2QyD8l
-	 TjfNwcfoh9rS1/3yOKrAgiqEkyU90ozMvygS8gFJYn9Cp63HsUhdhjrRbNTPDATnR/
-	 pVVIU1ybuEy1nOtlg+BFI33+08YIZa8u0d/hjzFwkjxjLIMdsj91fgQrOg0nb2g+J7
-	 Nae0d/eETWZJg==
-Subject: Re: [PATCH v1] ptp: idt82p33: Stop PTP work producers before teardown
-From: netdev-bot+sashiko@kernel.org
-To: lhfff@tju.edu.cn
-Cc: richardcochran@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Fri, 25 Sep 2026 05:37:38 +0000
-Message-ID: <179031465830.2160803.9108448970348190131@kernel.org>
-In-Reply-To: <20260922113601.855416-1-lhfff@tju.edu.cn>
-References: <20260922113601.855416-1-lhfff@tju.edu.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ga6++iCx"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4aOMq2393772;
+	Fri, 25 Sep 2026 05:52:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ns+mJ8
+	4QBWL8Ce4vet0vsgI7PEsIY4o/H4I4VN6kiao=; b=Ga6++iCxXfeZpuf6krvyTF
+	d1CcXUxYRyHy5cz261gaMzsiPI4y/Ta5C4bD7TaKP3C+7Z7JGhR8NHsPr2855hpv
+	cEVrG0ZpVoVlwAOjEituRwrV9zRN7SdvxSBqgnCFtXu59VEW55Gmm7cv/zGQEqiD
+	4vxQT2m5V/E9XnHAol7n6njy5eCTS6SXicW7qXcu+0G+bXfG77XRpbH98U0irbjc
+	naMyqMi03YrLCvetYWwSqFUkxbtft8VHtDuKDs+o60cqLISZPv33RCjhvbnTTt78
+	w8rA5urmomNDopJL1VJ8nz5+J8RRWtMulehiRu8OuC3jPPGU1b6EVRlpcEpEDdPA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske25dbd-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 05:52:55 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4lXIr3248862;
+	Fri, 25 Sep 2026 05:52:54 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt314ms-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 05:52:54 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P5q8na918042
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 05:52:08 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 426B858066;
+	Fri, 25 Sep 2026 05:52:52 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D3E858055;
+	Fri, 25 Sep 2026 05:52:49 +0000 (GMT)
+Received: from [9.67.88.81] (unknown [9.67.88.81])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Sep 2026 05:52:49 +0000 (GMT)
+Message-ID: <aa62b945-f5b4-48c1-8a57-967ef54bc375@linux.ibm.com>
+Date: Thu, 24 Sep 2026 22:52:45 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,v6,01/15] ibmveth: Add MQ RX hypercall wrappers and
+ call definitions
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
+        shaik.abdulla1@ibm.com
+References: <b87d16ce8e52934877234af6085e47a89571c9ae.1788102125.git.mmc@linux.ibm.com>
+ <178845902960.3394541.10707165174722907578@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <178845902960.3394541.10707165174722907578@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 3b-AsbafqAUo9MA4NJmRTcNQB3UQ6KnQ
+X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab60c37 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=HEzLWsaOVrHECI4ESaEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAyMiBTYWx0ZWRfX/PHhHT6fGfb9
+ cFLXUA2ESacaUVp5rCuOzCw4q7FWD4ECylJrtwM1GdW5mRJeniUDHeJDRfKAon8FN074Rvamoe8
+ S4ZG0551RCygGGOYGJE4RvrXiJU0VyY=
+X-Proofpoint-GUID: Xb15iSG1DtOU57ekkDQMyfKBbt_TVW1x
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAyMiBTYWx0ZWRfXzBR4SRy47uSQ
+ 74vnB44nAxFyw2Cvo1VgZ78taAEHKiHsm09UlchDBtbwfeQ+7WrTNaoFQi8OmMfX0h83dtUkxso
+ 3ujxU+j3okr1kvMRWy7tGVzU4aMiLmpyLkF+WB7ZovIaTKj5kXBP3QogKfKa0fNgf0mTJoJhCd6
+ 36iwNdbswQiRwLfktPopS8rgq4iT4To3wD6fvoBXMIlKxaR+5gbKGJKT1ZoEmCBi8ud4Swgylwm
+ buPU/k6esrFRsy9AsZ4Yhk1cmThQ00UDwGp3woFrDr/holyrooYaGO5PFJHbJS5Uhj+gEuFax/G
+ tFG7EkuDhvOFMFrd4P3E0lzm3NegARzbWfg2jp3ILpA9CsPLvtaCguBDCMLBXgBqjaRoSZicAV3
+ px6chYNcHn7MdwjyA8tAqm3gF3DYSysYR91y/x5wno+4rbSxz9LB0dm8F1gH9MlzZ76Hd3nboyv
+ 2FPWVqc/MWhkEuCh5hA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1011 spamscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250022
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thanks for the review... I will response one by one. And addressing them 
+in v7
 
-Critical: 0 · High: 0 (1) · Medium: 1 (2) · Low: 1
+On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider:
+> Critical: 0 · High: 0 · Medium: 0 · Low: 3
+>
+> - [Low] The commit message body contains a verbatim duplicated sentence.
+> - [Low] kernel-doc for the three new MQ hcall wrappers added by this
+>    patch is inconsistent about the H_FUNCTION (unsupported-hcall) return.
+> - [Low] The in-tree perf hypercall decoder is not updated for the three
+>    opcodes added by this patch.
+>
+> --
+>
+> ibmveth: Add MQ RX hypercall wrappers and call definitions
+>
+> This adds the PAPR 11.20.00 hcall IDs H_REG_LOGICAL_LAN_QUEUE (0x49C),
+> H_ADD_LOGICAL_LAN_BUFFERS_QUEUE (0x4A0) and H_FREE_LOGICAL_LAN_QUEUE
+> (0x4A8), raising MAX_HCALL_OPCODE, and adds matching static inline
+> wrappers in ibmveth.h plus h_register_logical_lan_with_handle() so
+> queue 0 can capture the PHYP queue handle.
+>
+> A few questions below, all on the changelog text and the kernel-doc.
+>
+>>      Add ibmveth.h wrapper helpers (h_register_logical_lan_queue(),
+>>      h_add_logical_lan_buffers_queue(), h_free_logical_lan_queue()) with
+>>      argument ordering and return semantics matching the existing ibmveth
+>>      hcall wrappers. h_free_logical_lan_queue() uses plpar_hcall_norets()
+>>      like h_free_logical_lan(). Also add h_register_logical_lan_with_handle()
+>>      so queue 0 can capture the PHYP queue handle in MQ mode. Both new
+>>      registration wrappers use plpar_hcall() rather than plpar_hcall9(), so
+>>      they do not read unwritten stack slots. Both new
+>>      registration wrappers use plpar_hcall() rather than plpar_hcall9(), so
+>>      they do not read unwritten stack slots.
+> [Severity: Low]
+> This isn't a bug, but the sentence "Both new registration wrappers use
+> plpar_hcall() rather than plpar_hcall9(), so they do not read unwritten
+> stack slots." appears twice in a row here.  Was the second copy meant to
+> be dropped when the v6 rationale was folded into the changelog body?
+Yes. Paste glitch when that sentence was folded in. v7 drops the second 
+copy.
+>> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+>> index dff90a7d7f70b..cb0ea53491e6c 100644
+>> --- a/arch/powerpc/include/asm/hvcall.h
+>> +++ b/arch/powerpc/include/asm/hvcall.h
+>> @@ -362,7 +362,11 @@
+>>   #define H_GUEST_DELETE		0x488
+>>   #define H_PKS_WRAP_OBJECT	0x490
+>>   #define H_PKS_UNWRAP_OBJECT	0x494
+>> -#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
+>> +/* 0x498 reserved; 0x4A4 = H_FREE_LOGICAL_LAN_BUFFER_QUEUE (unused here) */
+>> +#define H_REG_LOGICAL_LAN_QUEUE 0x49C
+>> +#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
+>> +#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
+>> +#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
+> [Severity: Low]
+> Should tools/perf/scripts/python/powerpc-hcalls.py get entries for these
+> three opcodes too?
+>
+> Its hcall_table currently tracks hvcall.h up to the previous
+> MAX_HCALL_OPCODE:
+>
+> 	1168: 'H_PKS_WRAP_OBJECT',
+> 	1172: 'H_PKS_UNWRAP_OBJECT',
+> 	# Platform-specific hcalls used by the Ultravisor
+> 	61184: 'H_SVM_PAGE_IN',
+>
+> There is nothing for 1180 (0x49C), 1184 (0x4A0) or 1192 (0x4A8), so
+> tracing the new MQ RX path with that script prints the raw numbers rather
+> than the names.
+Yes. v7 adds those three names. 0x498 and 0x4A4 stay unnamed; they
+are the reserved holes already called out in hvcall.h.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index d87713668ed30..08504d1cafd55 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+>> @@ -66,6 +66,145 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+>>   			    desc5, desc6, desc7, desc8);
+>>   }
+>>   
+>> +/**
+>> + * h_register_logical_lan_queue - Register a subordinate receive queue
+>> + * @unit_address: Device unit address
+>> + * @buffer_list: DMA address of 4KB page for tracking registered buffers
+>> + * @rec_queue: Buffer descriptor of receive queue
+>> + * @queue_handle: Output queue handle on success (may be NULL)
+>> + * @irq: Output hypervisor IRQ number on success (may be NULL)
+>> + *
+>> + * Registers a subordinate receive queue with the hypervisor.
+>> + *
+>> + * Return:
+>> + *   H_SUCCESS (0) on success
+>> + *   H_PARAMETER if parameters are invalid
+> [Severity: Low]
+> Should H_FUNCTION be listed here as well?
+>
+> H_REG_LOGICAL_LAN_QUEUE (0x49C) is new in PAPR 11.20.00, so firmware
+> predating it returns H_FUNCTION, and h_register_logical_lan_queue()
+> passes the hypervisor status straight back.  The later commit in this
+> series ("ibmveth: Add RX queue register helpers for MQ") does distinguish
+> that case:
+>
+> 	if (lpar_rc == H_FUNCTION)
+> 		netdev_err(adapter->netdev,
+> 			   "h_register_logical_lan_queue H_FUNCTION for queue %d (firmware MQ unsupported)\n",
+>
+> so a caller reading only this Return: section has no documented way to
+> tell "firmware has no MQ support, fall back to single queue" from a hard
+> error.
+Agreed. v7 lists H_FUNCTION on h_register_logical_lan_queue() and
+h_free_logical_lan_queue() as well. h_add_logical_lan_buffers_queue()
+already had it. All three opcodes are new; the wrappers return the
+hypervisor status unchanged. Later patches map H_FUNCTION on register
+to -EOPNOTSUPP / mq_fallback.
+>> +static inline long
+>> +h_register_logical_lan_queue(unsigned long unit_address,
+>> +			     unsigned long buffer_list,
+>> +			     unsigned long rec_queue,
+>> +			     unsigned long *queue_handle,
+>> +			     unsigned long *irq)
+>> +{
+> [ ... ]
+>
+>> + * Return:
+>> + *   H_SUCCESS - All buffers added successfully
+>> + *   H_PARAMETER - Invalid parameters
+>> + *   H_HARDWARE - Hardware error
+>> + *   H_FUNCTION - Firmware does not support this hcall
+>> + */
+>> +static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
+> [ ... ]
+>
+>> + * Deregisters and frees all structures associated with the subordinate queue.
+>> + *
+>> + * Return:
+>> + *   H_SUCCESS - Queue freed successfully
+>> + *   H_PARAMETER - Invalid parameters
+>> + *   H_HARDWARE - Hardware error
+>> + *   H_STATE - VIOA not in valid state
+>> + *   H_BUSY / H_LONG_BUSY_* - Resource busy, retry
+>> + */
+>> +static inline long h_free_logical_lan_queue(unsigned long unit_address,
+>> +					    unsigned long queue_handle)
+>> +{
+>> +	return plpar_hcall_norets(H_FREE_LOGICAL_LAN_QUEUE,
+>> +				  unit_address, queue_handle);
+>> +}
+> Same question for h_free_logical_lan_queue(): 0x4A8 is equally new, and
+> plpar_hcall_norets() returns H_FUNCTION unchanged on firmware that lacks
+> it, but only h_add_logical_lan_buffers_queue() documents that status.  Was
+> the difference between the three Return: sections intentional?
+No, not intentional. Same H_FUNCTION line on free-queue in v7.
 
-- [Medium] The new `stopping` gate in `idt82p33_enable()`
-  (drivers/ptp/ptp_idt82p33.c:947-949) is placed before `switch…
-- [Low] Missing `Fixes:` tag and `Cc: stable@vger.kernel.org` on a
-  genuine use-after-free fix.
 
-Pre-existing issues:
-- [High] User-triggerable AB-BA deadlock in the very work-cancellation
-  path this patch reworks, left unfixed.
-- [Medium] `idt82p33_ptp_clock_unregister_all()` unconditionally calls
-  `cancel_delayed_work_sync(&channel->adjtime_work)` for all MAX_PHC_PLL…
-- [Medium] The teardown path drains `extts_work` and each channel's
-  `adjtime_work` but does nothing about an in-flight double-DCO (ddco)…
+Thanks,
+Mingming
 
---
-
-ptp: idt82p33: Stop PTP work producers before teardown
-
-This adds a stopping flag to struct idt82p33, set under the device mutex at
-the head of idt82p33_ptp_clock_unregister_all(), and uses it to reject new
-adjtime and enable requests while the EXTTS and per-channel adjtime work is
-drained.  The extts_work cancellation is moved out of idt82p33_remove() into
-the unregister helper.
-
-A few questions below.
-
-[Severity: Low]
-The changelog describes a real use-after-free:
-
-    "Device removal then frees the channel while its delayed work remains
-    queued, causing a use-after-free."
-
-The producer being closed is in _idt82p33_adjtime_internal_triggered():
-
-	/* Schedule to implement the workaround in one second */
-	(void)div_s64_rem(delta_ns, NSEC_PER_SEC, &remainder);
-	if (remainder != 0)
-		schedule_delayed_work(&channel->adjtime_work, HZ);
-
-and struct idt82p33 is devm_kzalloc()ed in idt82p33_probe(), so the embedded
-delayed_work is freed once idt82p33_remove() returns.  git blame attributes
-the schedule_delayed_work() above to ad3cc7760dc45f.  Should this carry
-
-	Fixes: ad3cc7760dc45f ("ptp: idt82p33: Add adjphase support")
-	Cc: stable@vger.kernel.org
-
-so the fix is picked up for the affected stable trees?
-
-> diff --git a/drivers/ptp/ptp_idt82p33.c b/drivers/ptp/ptp_idt82p33.c
-> index f01c50dfa44e8..ffc2ec1fc4bed 100644
-> --- a/drivers/ptp/ptp_idt82p33.c
-> +++ b/drivers/ptp/ptp_idt82p33.c
-> @@ -918,6 +918,13 @@ static void idt82p33_ptp_clock_unregister_all(struct idt82p33 *idt82p33)
->  	struct idt82p33_channel *channel;
->  	u8 i;
->  
-> +	mutex_lock(idt82p33->lock);
-> +	idt82p33->stopping = true;
-> +	idt82p33->extts_mask = 0;
-> +	mutex_unlock(idt82p33->lock);
-> +
-> +	cancel_delayed_work_sync(&idt82p33->extts_work);
-> +
->  	for (i = 0; i < MAX_PHC_PLL; i++) {
->  		channel = &idt82p33->channel[i];
->  		cancel_delayed_work_sync(&channel->adjtime_work);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but since this is the teardown
-function being hardened: can this cancel_delayed_work_sync() run on a
-channel whose adjtime_work was never initialized?
-
-INIT_DELAYED_WORK(&channel->adjtime_work, ...) is the last statement of
-idt82p33_channel_init(), and the per-PLL loop in idt82p33_probe() breaks on
-the first failure before calling this helper:
-
-			if (idt82p33->pll_mask & (1 << i))
-				err = idt82p33_enable_channel(idt82p33, i);
-			else
-				err = idt82p33_channel_init(idt82p33, i);
-			if (err) {
-				...
-				break;
-			}
-
-With DEFAULT_PLL_MASK == 0x01 and MAX_PHC_PLL == 2, a failure inside
-idt82p33_enable_channel(idt82p33, 0) (an i2c/regmap error, or
-ptp_clock_register() failing) leaves channel[1].adjtime_work as the zeroed
-devm_kzalloc() memory.  cancel_delayed_work_sync() then reaches
-
-kernel/workqueue.c:__flush_work() {
-	if (WARN_ON(!work->func))
-		return false;
-}
-
-and work_grab_pending() -> try_to_grab_pending() calls timer_delete() on a
-timer that never went through debug object init, which reports assert_init
-with CONFIG_DEBUG_OBJECTS_TIMERS.  Would guarding the cancel, or moving the
-INIT_DELAYED_WORK() so it runs for every channel before any failure is
-possible, be preferable here?
-
-[Severity: Medium]
-This is a pre-existing issue, but the drain added here does not cover an
-in-flight double-DCO adjustment.  idt82p33_start_ddco() programs a
-transient frequency offset and relies only on the PTP aux worker to undo it:
-
-	err = _idt82p33_adjfine(channel,
-				idt82p33_ddco_scaled_ppm(current_ppm, ppb));
-	if (err)
-		return err;
-
-	/* schedule the worker to cancel ddco */
-	ptp_schedule_worker(channel->ptp_clock,
-			    msecs_to_jiffies(duration_ms) - 1);
-	channel->ddco = true;
-
-ptp_clock_unregister() cancels rather than runs that work:
-
-drivers/ptp/ptp_clock.c:ptp_clock_unregister() {
-	if (ptp->kworker) {
-		kthread_cancel_delayed_work_sync(&ptp->aux_work);
-		kthread_destroy_worker(ptp->kworker);
-	}
-}
-
-So if a small-delta clock_adjtime() (|delta| below phase_snap_threshold and
-at least DDCO_THRESHOLD_NS) happens within the ddco duration before unbind,
-idt82p33_stop_ddco() never restores channel->current_freq and the DPLL keeps
-the slew offset after the driver is gone.  Should the teardown path stop an
-active ddco before unregistering the clock?
-
-> @@ -937,6 +944,10 @@ static int idt82p33_enable(struct ptp_clock_info *ptp,
->  	int err = -EOPNOTSUPP;
->  
->  	mutex_lock(idt82p33->lock);
-> +	if (idt82p33->stopping) {
-> +		err = -ENODEV;
-> +		goto out;
-> +	}
->  
->  	switch (rq->type) {
->  	case PTP_CLK_REQ_PEROUT:
-
-[Severity: Medium]
-This gate sits before the switch, so it also refuses requests with on == 0.
-Since stopping is set before the ptp_clock_unregister() loop, doesn't that
-mean the PTP core's own teardown disable call is now rejected?
-
-idt82p33_ptp_clock_unregister_all()
-  ptp_clock_unregister()
-    ptp_disable_all_events()
-      ptp_disable_pinfunc()
-        ops->enable(ops, &rq{PTP_CLK_REQ_EXTTS}, 0)   -> -ENODEV
-
-drivers/ptp/ptp_chardev.c:ptp_disable_all_events() {
-	for (i = 0; i < info->n_pins; i++)
-		if (info->pin_config[i].func == PTP_PF_EXTTS)
-			ptp_disable_pinfunc(info, info->pin_config[i].func,
-					    info->pin_config[i].chan);
-}
-
-The return value is discarded there, but idt82p33_enable() still ends with
-the unconditional
-
-	if (err)
-		dev_err(idt82p33->dev,
-			"Failed in %s with err %d!\n", __func__, err);
-
-so every unbind of a device whose userspace assigned a pin to PTP_PF_EXTTS
-prints "Failed in idt82p33_enable with err -19!" for a routine core call.
-
-The second effect is on PEROUT.  A userspace perout-off landing between
-stopping = true and that channel's unregistration is also refused, so
-idt82p33_perout_enable() -> idt82p33_output_enable() never runs:
-
-	if (enable)
-		val &= ~SQUELCH_ENABLE;
-	else
-		val |= SQUELCH_ENABLE;
-
-	return idt82p33_write(idt82p33, OUT_MUX_CNFG(outn), &val, sizeof(val));
-
-and the chip keeps driving the output.  Would testing the arming direction
-only (on && idt82p33->stopping), or setting stopping after the
-ptp_clock_unregister() loop, avoid both?
-
-[ ... ]
-
-> @@ -1342,6 +1358,8 @@ static void idt82p33_extts_check(struct work_struct *work)
->  		return;
->  
->  	mutex_lock(idt82p33->lock);
-> +	if (idt82p33->stopping)
-> +		goto out;
->  
->  	for (i = 0; i < MAX_PHC_PLL; i++) {
->  		mask = 1 << i;
-
-[Severity: High]
-This is a pre-existing issue, but the new stopping check is placed after
-mutex_lock(), so it cannot break an existing AB-BA cycle around
-extts_work that this patch's drain now also depends on.
-
-idt82p33_gettime() takes the mutex and calls _idt82p33_gettime(), which does:
-
-	u8 old_mask = idt82p33->extts_mask;
-	...
-	/* Disable extts */
-	if (old_mask)
-		new_mask = idt82p33_extts_enable_mask(channel, old_mask, false);
-
-and with enable == false that helper drains the poller while the caller
-still holds the lock:
-
-drivers/ptp/ptp_idt82p33.c:idt82p33_extts_enable_mask() {
-	if (extts_mask == 0)
-		return 0;
-
-	if (enable == false)
-		cancel_delayed_work_sync(&idt82p33->extts_work);
-}
-
-The work being drained is idt82p33_extts_check(), whose only pre-lock guard
-is the lockless extts_mask test, and extts_mask is non-zero on this path:
-
-	if (idt82p33->extts_mask == 0)
-		return;
-
-	mutex_lock(idt82p33->lock);
-	if (idt82p33->stopping)
-		goto out;
-
-If the 95 ms poller is already blocked on that mutex_lock(), does
-cancel_delayed_work_sync() wait for a callback that is waiting for the lock
-the canceller holds?  The same window exists through idt82p33_adjtime() ->
-_idt82p33_adjtime_internal_triggered() -> _idt82p33_gettime().
-
-Also, because idt82p33_ptp_clock_unregister_all() now takes
-mutex_lock(idt82p33->lock) first, an unbind racing a wedged gettime blocks
-there as well, so the drain this patch adds would not complete.  The mutex is
-the shared rsmu MFD lock (idt82p33->lock = &ddata->lock), so the other MFD
-users are held off too.  Should idt82p33_extts_check() check stopping before
-taking the lock, or should the cancel in idt82p33_extts_enable_mask() be
-moved outside the lock?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922113601.855416-1-lhfff%40tju.edu.cn
