@@ -1,107 +1,92 @@
-Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A363AE6FB
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8F344A401;
+	Fri, 25 Sep 2026 07:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790322374; cv=none; b=pGwSCuMghuqM14RK+w4kAIn/+eUBCIMicvFweKNzIEZKzLuw8Rx7PrF1Ly+sqKHz5FMMhX2+tMHtEL16kS2U5w1kQNryZqdnb0RjpkYSsb/6Z6gmWxOsM7qVmjeuxqpPV5UtVmmIJ58PhKNyzrsljZwG0mV35vp3VG54L84uhCU=
+	t=1790322769; cv=none; b=Hv9wRMT/w0juSG+Op0bG/qHJW/YFCvKxvHz9nPcZdoImelV8JTDruKqmAMt2Ox7Tl08EhcVVTB8XuvKFJZvozIBg+kFPLP9zG01OMK3Su9LADQ/ZRjqxMbdfRa6a8athjIQwmWRk8XbvpXlW3nF3NCuJzvCP5OxnSWgjoXgPKHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790322374; c=relaxed/simple;
-	bh=yw1JqgVMYUSNxBiAgnL2DguWZpDJxy8Iqoi6nytM+Us=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOYQYEkLLzgDBhoC/1H5wXYCGBvFmtNkUL2+WhcI6o7Z4XWA3T0N/Kmd/JjGle3bq7PyFOJ+2FLu/ooMuvj1LxHXkXNHELufHlcKwIpDFH7Ngq/PZG1IbkY9Y6ocy/6B1lPvCFVk/gHsGEMCzdbaWidhpZtIzPpXftlLPEacpbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=FhK+8a9K; arc=none smtp.client-ip=74.125.229.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1790322769; c=relaxed/simple;
+	bh=CgRcXQie+T69ETEa8rUNcovgYaW8VSUwbPpeXhnPCS4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JT42Ny3klqxVUujHCxTcZU7KFGuYJIlVK7PssBl5Sz4LZHdmc2jn1HlDhhG6Uxo33JLIRhyOUphLRKvQuUYWNB+f8glEHqcPEUpuIsQX8t4RdeZYmyqG2mQAinbcB1LGUf4rprXewP9GR5ECe3GcN6WEmsyFIDddek6bFTnMb+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jZUho3+V; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="FhK+8a9K"
-Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-33c1024dbf9so207346eec.1
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790322370; x=1790927170; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e+mPFK3a0EV4gRWxwlNF0dBaFvCh9e2wcOZSVnfSL3Q=;
-        b=FhK+8a9KIsaffqLjIHRJzoESfrs3/kHZTVdMKh2Oikqbu70L2q45LMihQmmXSwLRP/
-         tiU9dBBwJ5Vd+RZYa3BJuFV6crs5XGW1efZ5KB3ex55jjjtpu4BrtJqgAnuS2Sr/pXhT
-         BdrbzFZUZ/PoLnNMiAKhsZvmaBw7WEHviAQaXM0H04x5jfHSXXDp6XdHseVQebU8n+Ue
-         rXQQJahJqfDEgOyoQSiQfUYlgAzET4UE46dwqhMJYRgl3Hvl1EVhhbpRLlN5eL/41X7n
-         vng1u+6WRJ2V1dnaVRPG97zkpQAcoBg2zWJ3cE59SnjBsvbA8Pm0Q2rEfc7fPm6QTeuO
-         oKrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790322370; x=1790927170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e+mPFK3a0EV4gRWxwlNF0dBaFvCh9e2wcOZSVnfSL3Q=;
-        b=kTZtnBc6UI59kPQcUXRfdzz9bnnFZjbgfOTLokxDfZdYGdWT5GJGg2DIt5X8dMznA5
-         JZl2Atqj9F8UKQU+ywUYM3JBsAgOH69+56Cf3TU1+0tNY11Xl8pLKWaYh+X+NBOFLOUR
-         0awlxfJa0g3TX7J+QTXCFN14g33c8oPPXExn4twDOQJ8bjT3W/v+7gYjrS7hhCxtmXsc
-         VxAQ0vlVkzgRvcYVxGMjnf2x6KnJsP8zazEzw0OOGD0Qn+pJLV2bl4LzqtjAdprUGMvU
-         O5Jqqy+Nq7GTB699W0PLRDK/UPoPGEDmTWdclAf09tldwn3gwwkHk+/N2DgsIUyakgbY
-         qZuQ==
-X-Gm-Message-State: AFuF++kGeFxOkn/WY+UnF7+FrYgDlW75zGU9MEzTs45oOocZ8HU3jAOu
-	Cr4zTzDOKIh6yK9yTMoVbF1LMI7Hvl9zLxBagKBMuDxSXskJKyYwSq+AcRobSwVL7jFy6rWo62D
-	jn0o/ZTIGXytLo1zrPoDHSuvvj7ZE3IyMXqDm4Bioqh4Dd6pmlKmQ+HN7pzqsq3a2aFpHqWM8//
-	D4LA==
-X-Gm-Gg: AYBFou231khib63xeYyjRVEfPdYxMfFeM5QxgchmnK11RszcB3twLghWdtX7mbCx+ZX
-	/mbGVbYHwdO/rc24qOmL6cA6FkgEscU6cl8beHh+LZJwdc1Ov5D7PTeL7SaGuF+YGya+YlQG9/7
-	/mWKjMT1Sa2LXbreEbb6JZPI08/xyTT3j3iETWWhOLDBF/EwP+/lvp9TiJNz01DA4VM7bMwJ/fE
-	s6Ewy9WYL6yTYWRCjm+QjahYGi10dCIQTCT7SSb9aVMjbBKZpFWGIUNEFav/+xIsR7o3JblBYYa
-	OymoYU3IZdYhTKspZNoXQgCXr7M/QfiogkdrmCThNgyDoxlsQgWFwRjaR7dsf8gVZd84f3lgSBu
-	AU1lqhKlrEEklNVRAn9W4fXi3ZUk95KykkM8hhDa7j/9mc5/3lAVVdwSAZdpejrtViuXPcseakG
-	5qgXSzLiIHqhO6qooh0b+srJjpP1b2A0eZmDP3HE+kVxJjI3Kq2tWeUQ3pRjATJUcZIbOUEC8VO
-	fNyT4Zp43A=
-X-Received: by 2002:a05:7301:b0a:b0:33e:bd05:81ff with SMTP id 5a478bee46e88-34003ca6d83mr3225802eec.8.1790322369268;
-        Fri, 25 Sep 2026 00:46:09 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341451457d0sm5017845eec.21.2026.09.25.00.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 00:46:08 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Wang Zhan <wang.zhan@smartx.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	dev@openvswitch.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Wang <jasowangio@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP segmentation
-Date: Fri, 25 Sep 2026 15:45:25 +0800
-Message-ID: <20260925074525.91040-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <611ec0af-8e4c-495d-9300-6dc9b5d616a1@redhat.com>
-References: <20260918084651.3022878-1-wang.zhan@smartx.com> <20260918084651.3022878-3-wang.zhan@smartx.com> <611ec0af-8e4c-495d-9300-6dc9b5d616a1@redhat.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jZUho3+V"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EDA4EC13986;
+	Fri, 25 Sep 2026 07:53:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BEEA6073B;
+	Fri, 25 Sep 2026 07:52:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5DB0C1032947E;
+	Fri, 25 Sep 2026 09:52:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790322756; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=FsDCnj6jRyJlNhpK+Zm7bz+TGLpERitPmKFYbPhCRNQ=;
+	b=jZUho3+V2sXORWO/87Gy1JG8gAzwqQq5Yo3cIVVeCsAmi6ouBCI8dyt+CJGY3wK58aV+4u
+	KRFCXdEh4v54G19XseA7JQOHzrdWI6wFm1pFcfqXATFKey63PgCog/iMKV1D7F/aAQQRU1
+	GWCao+AK0NMLQ/XB080Kf/7nr+yoIJl1k0j6ikKMjpF4wH7uqV4gxxsRlLnwhi2N/uUs4N
+	ZxMU6lk0yJt7ZnWLYw24BxNEallJir7tyQ5CDhYLOSaj2Hq/WVNEAD2+OmuYlZqpCZ769J
+	ciQpDnq9fRhk4bfYHlSQFykA5llS5TNFpZMLJ4JnGtMvJCPyHjlhGycyC+aEjw==
+From: "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>
+Subject: [PATCH 6.18.y 0/2] netfilter: nf_tables: join hook list via
+ splice_list_rcu() in commit phase
+Date: Fri, 25 Sep 2026 09:52:22 +0200
+Message-Id: <20260925-cve-2026-52988-6-18-v1-0-680b24895415@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3ZJW6G2vgrhIHXR5QCmFYIhv
+ LtFj98k829IHIUTrsWGyIskmcYMfSoQnrfxwST3bBhlrPKmprAwHaDaeOfIknbkA6vzxfquqnr
+ k5ytyL+uv2sCW2pUftP89zd3A4X0kse9f5UWAnH8AAAA=
+X-Change-ID: 20260925-cve-2026-52988-6-18-9ce03769b44f
+To: stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: miguel.gazquez@bootlin.com, thomas.petazzoni@bootlin.com, 
+ rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, 
+ "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>, 
+ Sasha Levin <sashal@kernel.org>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 24 Sep 2026 16:09:39 +0200 Paolo Abeni wrote:
-> I'm wondering if this patch is needed at all. Can't the special gso caller
-> set skb_shinfo(skb)->gso_size to ~64K and adjust the gso bits in the shared
-> info afterwards?
+I backported an additional patch, which adds list_splice_rcu(), which is
+required.
 
-That would work, and it keeps the logic in one place without a new cb field,
-but I don't think it's better than the current approach.
+Signed-off-by: Benjamin Robin (Schneider Electric) <benjamin.robin@bootlin.com>
+---
+Pablo Neira Ayuso (2):
+      rculist: add list_splice_rcu() for private lists
+      netfilter: nf_tables: join hook list via splice_list_rcu() in commit phase
 
-It would need skb_unclone() before writing skb_shinfo(), and a repeat of the
-if (partial_segs) logic from skb_segment().  For DF=0 we would also have to
-recompute ip.id in validate_xmit_skb(), or keep that case on the existing
-full-segmentation path.
+ include/linux/rculist.h       | 29 +++++++++++++++++++++++++++++
+ net/netfilter/nf_tables_api.c |  8 ++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+---
+base-commit: e8694cdbd7db99fa26f6e8c80a2a337e0de29a2f
+change-id: 20260925-cve-2026-52988-6-18-9ce03769b44f
+
+Best regards,
+--  
+Benjamin Robin (Schneider Electric) <benjamin.robin@bootlin.com>
+
