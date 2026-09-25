@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1739747884D;
-	Fri, 25 Sep 2026 11:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8992549B1F6
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790336342; cv=none; b=I06STLJxbhVf3L4YTrL/Zo2HS9DIGfIbbkJWRKFePTG61Zsjdj36/FsLC0P/unn3hg6Sm9pPVnDPHvf3ydRQQj4avogM8KvmCjeZQ+yoPAKDw8zkE4HlzK12dHk1mMwr/zLNJwrqbFC5taOe1o9pYEo57ofQf4eGS0LQJQHpdNI=
+	t=1790336343; cv=none; b=NEvxc84hDUUR3xiaqiqdn84kl71bYYoWOcIAau1jWr5um+vbqCI7BMnt0tffo/tTq5GNcix1lmwMOri6eO/3nx+NGjC6GB7u4050dPofrqNy/susqw1qkZOStKIeAwfrLTGKYRHbMUe4gU/NRR/eOytxJ+/pfzaK92YUQEhizrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790336342; c=relaxed/simple;
-	bh=TRcjOVHscf7xvfG4sSHkIYPsycXdjpAkuuK5YxGhq5s=;
+	s=arc-20240116; t=1790336343; c=relaxed/simple;
+	bh=JzjfA9Eb7py/ey7RpiWHN2hF14RXEbPHd66kp7u+HWs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O02ndsEam7zTn6hNrSXQKSqyrv04hpW4ddivkgpe3s5y2IVrrvku4aNQlMc3XeXwa+KuX1LkUFUaO9QbAz87QH62hPVvMs9ggHoQCJgqawEOBMfsRekB8tPMMYq50aHN27/JzAWZmfAyIKJcBIurMd9Gs0qAJgnJPLe2AqOJWDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vFHoJNmD; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=Vs9Eku/G39g065SHjesHkFTB7kkAXyQ19LFa3o8yBrK+oc5NQCOPuwTBUyD5Qv4nr6lHV9ExAofxGGnr0k96yVq15sln9h3QfqK7bJpphl42Ci3k2re7jtgInEvJQQfiLuSN7Tm0X716hbKBL5A67Q2YUae7t0Ar/r3uywRTOi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r2UzJwKN; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vFHoJNmD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r2UzJwKN"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7880F1A101D;
-	Fri, 25 Sep 2026 11:38:58 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2F6FE1A101C
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:39:00 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4CA4D6073B;
-	Fri, 25 Sep 2026 11:38:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F4FD10329514;
-	Fri, 25 Sep 2026 13:38:55 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 043266073B;
+	Fri, 25 Sep 2026 11:39:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3DE33103295BD;
+	Fri, 25 Sep 2026 13:38:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790336336; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790336339; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=pIkmxVq8uDg12AO1nulSarilG8XMK+I4DUXbKRGn0nM=;
-	b=vFHoJNmD33FmH0AxT/5zh0Yl+KtmSUItfl/eIh10AmyNv+cmi8GuUF4C4Ob/vGgvLbBzBk
-	rsRkgoDfTnRrDzQxiZsVQt02ugLQkexjv2qkj13smR9Nql1yjpfhHO7gqujYNai7ct8da1
-	Pvy4YN9pshYP2fMnzleKJC4o0Gi5DCzOMeCUCkRYEG+vAjGHDp60iDsnOAUhVmS5U+NZ1i
-	IWJSxnnJ7rAuQRtYxlJRzhl1CmTENVcTM0o5henaZovAxHn3nta9ikc0CG7n390hP64zTW
-	rMu4vOgaCsHyd6DT1MiGbqONgoK6HIlvm/lECn9Mu8Vy7wcOuBXOhRtCBkm5HA==
+	bh=y7Pag5diP3dKywVjmr56QgZ4XxqjFLvdFfdgGvGh5mU=;
+	b=r2UzJwKNNebfSAJhwIuaFaeI8J22WjzgNjjsWeAn7LDTSTljRWh1/R76BKdWjVeVBs8MIF
+	ktOTqPf5NLIh/Fa+XWSkaIy8PCVH2CwmZ9jbj/zDZDwF6oHywPxtfjaBFc1c7SXj+TAg0Y
+	XL/x28otVShKsS2Mv7oc5zqP6N7lmPhDhuFAZhhpQlfKTo1gykUpE+/9/vOK4iYqzQF7aK
+	t3wezZV6M2qkXYHV3dpel9JlxSlyb3EL5y2rZs0VA+HRQ+ISFh5fuovyBU0eJr661pFvtz
+	RmOrOGeQrgVhLFqXwo+EELaywWcndkvkBRBzTFvdXUWJkj07S2+yJjzdeFMdAg==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Fri, 25 Sep 2026 13:38:47 +0200
-Subject: [PATCH net-next v4 01/11] net: dsa: microchip: fully save the
- periodic output request
+Date: Fri, 25 Sep 2026 13:38:48 +0200
+Subject: [PATCH net-next v4 02/11] net: dsa: microchip: add the number of
+ pins to chip infos
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-ksz-perout-v4-1-d675bd21ce49@bootlin.com>
+Message-Id: <20260925-ksz-perout-v4-2-d675bd21ce49@bootlin.com>
 References: <20260925-ksz-perout-v4-0-d675bd21ce49@bootlin.com>
 In-Reply-To: <20260925-ksz-perout-v4-0-d675bd21ce49@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,132 +61,137 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-When a periodic output is initialized, its period and start time are
-stored to initialize it back in case of restart. These information
-aren't enough if the request contains flags or targets a pin that isn't
-the first output of the switch. At restarts, these two arguments are
-always set to 0.
+The number of periodic output pins available is hardcoded to 2 while
+KSZ8463 has 12 pins that can be used as periodic outputs.
 
-The 'flag issue' isn't concrete so far because the driver doesn't
-advertise any .supported_perout_flags so any flag request gets rejected
-by the upper layer.
-I don't know if other switches use non-zero indexes but the KSZ8463 has
-twelve periodic outputs, so this index has to also be saved from now on.
-
-Save the full request when a periodic output is successfully started.
-Use the saved request when the periodic output is restarted.
+Add an n_pin attribute to the struct ksz_chip_data to make this setting
+configurable.
+Set it to 2 for all the PTP-capable switches.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c | 33 ++++++++++++++++++---------------
- drivers/net/dsa/microchip/ksz_ptp.h |  3 +--
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c | 10 ++++++++++
+ drivers/net/dsa/microchip/ksz_common.h |  1 +
+ drivers/net/dsa/microchip/ksz_ptp.c    |  4 ++--
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 39cc70d65900..47cf397481d5 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -189,6 +189,7 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
- {
- 	struct ksz_ptp_data *ptp_data = &dev->ptp_data;
- 	u64 req_pulse_width_ns;
-+	struct timespec64 tmp;
- 	u64 cycle_width_ns;
- 	u64 pulse_width_ns;
- 	int pin = 0;
-@@ -222,13 +223,9 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
- 		return 0;
- 	}
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index f1b53439ff58..ac9a10a91d79 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -1208,6 +1208,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.ptp_capable = true,
+ 		.wr_table = &ksz8563_register_set,
+ 		.rd_table = &ksz8563_register_set,
++		.n_pins = 2,
+ 	},
  
--	ptp_data->perout_target_time_first.tv_sec  = request->start.sec;
--	ptp_data->perout_target_time_first.tv_nsec = request->start.nsec;
--
--	ptp_data->perout_period.tv_sec = request->period.sec;
--	ptp_data->perout_period.tv_nsec = request->period.nsec;
--
--	cycle_width_ns = timespec64_to_ns(&ptp_data->perout_period);
-+	tmp.tv_sec = request->period.sec;
-+	tmp.tv_nsec = request->period.nsec;
-+	cycle_width_ns = timespec64_to_ns(&tmp);
- 	if ((cycle_width_ns & TRIG_CYCLE_WIDTH_M) != cycle_width_ns)
- 		return -EINVAL;
+ 	[KSZ8795] = {
+@@ -1443,6 +1444,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.sgmii_port = 7,
+ 		.wr_table = &ksz9477_register_set,
+ 		.rd_table = &ksz9477_register_set,
++		.n_pins = 2,
+ 	},
  
-@@ -249,9 +246,10 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
- 	if (ret)
- 		return ret;
+ 	[KSZ9896] = {
+@@ -1608,6 +1610,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.internal_phy = {true, true, false},
+ 		.gbit_capable = {true, true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
-+	tmp.tv_sec = request->start.sec;
-+	tmp.tv_nsec = request->start.nsec;
- 	ret = ksz_ptp_configure_perout(dev, cycle_width_ns, pulse_width_ns,
--				       &ptp_data->perout_target_time_first,
--				       pin);
-+				       &tmp, pin);
- 	if (ret)
- 		return ret;
+ 	[KSZ8567] = {
+@@ -1645,6 +1648,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.gbit_capable	= {false, false, false, false, false,
+ 				   true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
-@@ -263,6 +261,8 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
- 	if (ret)
- 		return ret;
+ 	[KSZ9567] = {
+@@ -1679,6 +1683,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 				   true, false, false},
+ 		.gbit_capable	= {true, true, true, true, true, true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
-+	memcpy(&ptp_data->perout_request, request,
-+	       sizeof(struct ptp_perout_request));
- 	ptp_data->tou_mode = KSZ_PTP_TOU_PEROUT;
+ 	[LAN9370] = {
+@@ -1710,6 +1715,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.supports_rgmii = {false, false, false, false, true},
+ 		.internal_phy = {true, true, true, true, false},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
- 	return 0;
-@@ -763,6 +763,7 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
- 	struct ptp_perout_request request;
- 	struct timespec64 next;
- 	struct timespec64 now;
-+	struct timespec64 tmp;
- 	unsigned int count;
- 	int ret;
+ 	[LAN9371] = {
+@@ -1741,6 +1747,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.supports_rgmii = {false, false, false, false, true, true},
+ 		.internal_phy = {true, true, true, true, false, false},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
-@@ -773,10 +774,14 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
- 		return ret;
+ 	[LAN9372] = {
+@@ -1776,6 +1783,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.internal_phy	= {true, true, true, true,
+ 				   false, false, true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
- 	now_ns = timespec64_to_ns(&now);
--	first_ns = timespec64_to_ns(&ptp_data->perout_target_time_first);
-+	tmp.tv_sec = ptp_data->perout_request.start.sec;
-+	tmp.tv_nsec = ptp_data->perout_request.start.nsec;
-+	first_ns = timespec64_to_ns(&tmp);
+ 	[LAN9373] = {
+@@ -1811,6 +1819,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.internal_phy	= {true, true, true, false,
+ 				   false, false, true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
- 	/* Calculate next perout event based on start time and period */
--	period_ns = timespec64_to_ns(&ptp_data->perout_period);
-+	tmp.tv_sec = ptp_data->perout_request.period.sec;
-+	tmp.tv_nsec = ptp_data->perout_request.period.nsec;
-+	period_ns = timespec64_to_ns(&tmp);
+ 	[LAN9374] = {
+@@ -1846,6 +1855,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.internal_phy	= {true, true, true, true,
+ 				   false, false, true, true},
+ 		.ptp_capable = true,
++		.n_pins = 2,
+ 	},
  
- 	if (first_ns < now_ns) {
- 		count = div_u64(now_ns - first_ns, period_ns);
-@@ -791,12 +796,10 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
- 
- 	/* Restart periodic output signal */
- 	next = ns_to_timespec64(next_ns);
-+	memcpy(&request, &ptp_data->perout_request,
-+	       sizeof(struct ptp_perout_request));
- 	request.start.sec  = next.tv_sec;
- 	request.start.nsec = next.tv_nsec;
--	request.period.sec  = ptp_data->perout_period.tv_sec;
--	request.period.nsec = ptp_data->perout_period.tv_nsec;
--	request.index = 0;
--	request.flags = 0;
- 
- 	return ksz_ptp_enable_perout(dev, &request, 1);
- }
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
-index 7067ec9bd1e6..eb3827203b96 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.h
-+++ b/drivers/net/dsa/microchip/ksz_ptp.h
-@@ -29,8 +29,7 @@ struct ksz_ptp_data {
- 	spinlock_t clock_lock;
- 	struct timespec64 clock_time;
- 	enum ksz_ptp_tou_mode tou_mode;
--	struct timespec64 perout_target_time_first;  /* start of first pulse */
--	struct timespec64 perout_period;
-+	struct ptp_perout_request perout_request;
+ 	[LAN9646] = {
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index 091cfbdc486f..9b911f9aafd9 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -139,6 +139,7 @@ struct ksz_chip_data {
+ 	u8 sgmii_port;
+ 	const struct regmap_access_table *wr_table;
+ 	const struct regmap_access_table *rd_table;
++	const u8 n_pins;
  };
  
- int ksz_ptp_clock_register(struct dsa_switch *ds);
+ struct ksz_irq {
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 47cf397481d5..33416e59edc7 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1053,14 +1053,14 @@ int ksz_ptp_clock_register(struct dsa_switch *ds)
+ 	ptp_data->caps.do_aux_work	= ksz_ptp_do_aux_work;
+ 	ptp_data->caps.enable		= ksz_ptp_enable;
+ 	ptp_data->caps.verify		= ksz_ptp_verify_pin;
+-	ptp_data->caps.n_pins		= KSZ_PTP_N_GPIO;
++	ptp_data->caps.n_pins		= dev->info->n_pins;
+ 	ptp_data->caps.n_per_out	= 3;
+ 
+ 	ret = ksz_ptp_start_clock(dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	for (i = 0; i < KSZ_PTP_N_GPIO; i++) {
++	for (i = 0; i < dev->info->n_pins; i++) {
+ 		struct ptp_pin_desc *ptp_pin = &ptp_data->pin_config[i];
+ 
+ 		snprintf(ptp_pin->name,
 
 -- 
 2.55.0
