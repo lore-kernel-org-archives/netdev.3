@@ -1,180 +1,109 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1CF414438
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 17:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4924A3B95E3;
+	Fri, 25 Sep 2026 17:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790358263; cv=none; b=huY3Dq83UX2NKXnDtvPumjmQbLqc3WiB8gi0Lg51Z5mnGktYfGzH4ts7mQjkSpyU8oiRn2UmcA2sipZgYs549k8eXRX7qU6yNyNDtTvGJIJdbSlk3JxDJynl1Rl3snzmv5vEQ6hZA3heRYmhg6mcO73vnN+d0rFquAIPrii4B2w=
+	t=1790358666; cv=none; b=jcObWZ6imBNecdYXhvgLMIIox07ye5H8ZaAtIfbMD4n6JEacD5Ep0ZJ6Tbl7QU+3LNf4c2TGuP1lzfRBJ9QlMy1PhGiuSTtptAPwUX1s9Kyyr8fxrdu+vJ83FyE7+FCtrA8XKoGQM0Mg47ucsSoXjaUi5e5K9BKb4hvUVrWhoUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790358263; c=relaxed/simple;
-	bh=nEGQtNsOqRgVj1stkN28aBwKl650Crgr+AGHAzUbLlE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsRBLvPjhbQzkl/PjsY9crL6NT2NVa1LXwnxrB0WbezmisQYa25QcZP7/PiwmGlgwe+X6vSxm0KZEUIFVHk9YzXpj82s6wqZxNOgZiVuS391nCWz1Y03xPPfTbzcsodRZUvu0dlnpWgSTDfGAgSlXVq+LVHsGJrm9QOB7G3Q2qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=r7PFHR1X; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1790358666; c=relaxed/simple;
+	bh=nz1SBO1R+0x0jCLLINT/y4xflScWkZQLeM98WXZqVlc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=M3XVK//04HTAWFKlBwbxJM0SqV+3XYkMWJ4luoVY8fqWBpVIjx3YcnUgs9alzj0kXVvFVbJvTTdY9fAXIWlOc5bOdoKd3rOJydaDgqV3KFcBEGSTkO+fdJ/WIOyLvSBbOH8sxCDIC7OCs+NILEnIh1jBW61mWv3TSu4/exKOdsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=kpo8Awdr; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="r7PFHR1X"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d8fbef5018so7911265ad.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 10:44:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790358259; x=1790963059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=od1b2NiNF/g5sU9VqKXFtus5k8nOhhjRHoBVgLXdW6g=;
-        b=r7PFHR1Xo1Bd9dHniplSLk8dS/WCUpNoZ6pSGee4WifduU3R/a62yhePFE2Jw4ytMl
-         hAQ+sQQl6zabjxLdgnLwb0WYuGZ2oQ0RffnIIp9YSkhFeG4vZoaGhqy9FCUzgpYSiQ83
-         Z1DFuUJyDAzXFbv9gkWdrAUZyKRkh36zlhYSdvnPGwt7Pz+VeaSEqV5kJN7J4dI9dcHo
-         jnPpDKl2zfZq2Q0WzaDm13/rNqBlu3JlCA6djuc7ZAajPLobNoaKVGUTupuTFCsqAJMj
-         pxqu6DVJsz2YFZaPuQOKq+kHazDIwgHufqgeJcwyrjTzeKZydfR6qWxzndMdOkiveITz
-         ZJsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790358259; x=1790963059;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=od1b2NiNF/g5sU9VqKXFtus5k8nOhhjRHoBVgLXdW6g=;
-        b=KpYpwEez6bRQWRkltF8AzWDSU8MrhT0+xqvzVyJQh0uzA1E36HkMMay5VKZhNZ1Fge
-         RtSchkUfj956xrTdFIp4krE0Dsy1F9G8bB1T+uYt/5rmnvyDZ+zcyCi1RvW9vI+3+k44
-         pIufbHOtHIXqq/ixFAkglUU0ktZf+mq29OFKqzVlcJpFOyu5+fE/T8dpa6H6RGptKNTN
-         WO8EJpR+Tk1gGf5TZZVIfnzK3wtFuPn0ZKIv2ItslVqwr60QS9+TMLrgWZIBniKKIUHp
-         y6y8J/HSRTio4rTe+rO/lXPn704bU+AkIbQjfE9dvdoE+s9crYUP3UcQCxO3jv1vffry
-         P7hw==
-X-Gm-Message-State: AFuF++mXPZ9pBB5R+Q+y4/kg6GxC6a7CoLuPrHHNJ2jc7BlxrSWY+Sgl
-	ZyMKlYnmp9OoQjxpwb+3Q/HV8rbyPflOaFW+zKR3mFayrhGbAMzGzIs8NWyKfN3+9/5GiV8fy4s
-	JsADw
-X-Gm-Gg: AYBFou1/A2Pfp823amLPZw8ZnyutkDxtfZJNh5sNIeW3DDoAG1gy/s58PqwbsCpTiAB
-	a81jgXPgw8ifQioU8Of/ZnwwnjY8lU7z5NYZu3aJujIg0n5RXumpeMTLIW5a2rAC/E6nSfeDFlA
-	d9WYhABLWWxM7+bTRIYJh/EQVoS0JZb9U4xOcEOYIgXlHKTeS+okm2B1pq+bw20wZ3W/N+9tpSU
-	GMxfwxWCHWIAbcSEiimYX1IIsw0gXs5RMQy+s9F0RG4foZp+xLGJXTqtnbS7uhCDTvYav16118U
-	uRyjr+T+gG9IhOneSfVdaASuRbqk1mgKyfL+1lOMMQmZAx0FJqHLxQhwbVij3qKj+PgoKKJrLng
-	x/sEbSr6axFs76GQR/Giytrp/5uUI9Sjmc28EjzfTCImxTTQF5u8OiIq/4H3kpigHOvsKFL95I8
-	RrHBB6OxgizYE3CisKGT2MEqeNaIEy+Ljd09HeZ53/PctoQrHr2M19fRuJDqoRWU4u3DsTCS48l
-	IhVE9Jf55Vm
-X-Received: by 2002:a17:902:ce82:b0:2df:9a7e:d41f with SMTP id d9443c01a7336-2df9a7edeafmr15014465ad.41.1790358258843;
-        Fri, 25 Sep 2026 10:44:18 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:40::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df9142bafesm14329895ad.51.2026.09.25.10.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 10:44:18 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Prashant Sreedharan <prashant@broadcom.com>
-Cc: edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [RFC net v4 4/4] bnxt_en: refuse to open a device with stopped DMA
-Date: Fri, 25 Sep 2026 10:44:01 -0700
-Message-ID: <20260925174404.2789072-5-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260925174404.2789072-1-joe@dama.to>
-References: <20260925174404.2789072-1-joe@dama.to>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="kpo8Awdr"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id EBE50213B6;
+	Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=6U2jVolTPyjf0hZOUqxneWpoK28h5julF/NQ/IsfJoo=; b=kpo8Awdr5dg1
+	ba4VhMmeSuISIvuTJupwVqw+jEa8gw3OnxwEBhP2vnFB+45eXJosyXqucl1r8ZJ+
+	BSz6qNVM3JQRWVlQecmZCwbY9KkrAAViRXOpp9cNzT23CFE83VJRMe5jvqYyWwFS
+	MBr0r2WnBqNIQVTscUnCk67ZAx3mt3aCoykW1mHmP9cppK0iJEDb9HzQbz/7FIGc
+	IJLy/0kkEtY6pFQSMTasb006UKEnWL2A8qyj8zOHHYW4whSuEEED6JQWsL8FPWDA
+	7aoyYRh/65IXBP+i1Lpx+JL27NAgsWqknSH9OAZcvHv7cvkFQA2her3csLkZT8Nr
+	eZ9E3pXkVAkqRfq4seb7vr1IW26RXGg/BFID8y0hK0PZfEH7N0WKk/BBmX8OCBPB
+	jrX9etrjDUEwQwjO07oU0WEdQb+oMcz1rHV/LzajGClQElNa5T92tpMEshKIP2Gt
+	+0/MLNjvzyDtOU8HCL6iAkjT3kGActsrn3fQVHrywubNHvyhVn+SVDll6bJvsXlu
+	RiQlLyJYNqvqQmytKuQBuAEwINMjLfwNr9H7b4CIsgtdSvMYlgTVjz+Y80DDOzHv
+	+/oZosT4E/fU/ss/ktmrKl8BIMJXkr8SGTRMiUbTRpiAi2Wv3p//rrDJkJ+bxAii
+	ztT1JVn/bGZ33B98C9eMYpH+/Qe4tfA=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id D58746090A;
+	Fri, 25 Sep 2026 20:51:00 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68PHowPB063225;
+	Fri, 25 Sep 2026 20:50:58 +0300
+Date: Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Axel Mierczuk <axel.mierczuk@1password.com>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>, netfilter-devel@vger.kernel.org,
+        lvs-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, Willy Tarreau <w@1wt.eu>,
+        Keith Hoodlet <keith.hoodlet@1password.com>
+Subject: Re: [PATCH nf 0/2] ipvs: fix OOB write when NATing ICMPv6 errors
+ quoting non-first fragments
+In-Reply-To: <20260925141155.17603-1-axel.mierczuk@1password.com>
+Message-ID: <0458880e-5e0f-1f11-7ce2-e0490796c832@ssi.bg>
+References: <20260925141155.17603-1-axel.mierczuk@1password.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-Add BNXT_STATE_DMA_STOPPED and set it in bnxt_stop_dma() to signal that
-the device had DMA disabled. When opening the device later, check this
-bit and exit with an error.
 
-This is a very rare case, but when it happens the device needs manual
-intervention by the user to become usable again.
+	Hello,
 
-Fixes: 74608fc98d28 ("bnxt_en: Ring free response from close path should use completion ring")
-Signed-off-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 26 ++++++++++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  1 +
- 2 files changed, 24 insertions(+), 3 deletions(-)
+On Fri, 25 Sep 2026, Axel Mierczuk wrote:
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 33e9ce8eb449..21da989e136e 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7814,9 +7814,20 @@ static void bnxt_stop_dma(struct bnxt *bp)
- {
- 	netdev_err(bp->dev,
- 		   "Disabling DMA before releasing ring memory, the driver must be rebound to recover\n");
-+	set_bit(BNXT_STATE_DMA_STOPPED, &bp->state);
- 	pci_clear_master(bp->pdev);
- }
- 
-+static int bnxt_check_dma_stopped(struct bnxt *bp)
-+{
-+	if (!test_bit(BNXT_STATE_DMA_STOPPED, &bp->state))
-+		return 0;
-+
-+	netdev_err(bp->dev,
-+		   "DMA was disabled after the firmware failed to free rings, rebind the driver to recover\n");
-+	return -ENODEV;
-+}
-+
- static int __bnxt_trim_rings(struct bnxt *bp, int *rx, int *tx, int max,
- 			     bool shared);
- static int bnxt_trim_rings(struct bnxt *bp, int *rx, int *tx, int max,
-@@ -13387,9 +13398,10 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- 
- int bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- {
--	int rc = 0;
-+	int rc;
- 
--	if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state))
-+	rc = bnxt_check_dma_stopped(bp);
-+	if (!rc && test_bit(BNXT_STATE_ABORT_ERR, &bp->state))
- 		rc = -EIO;
- 	if (!rc)
- 		rc = __bnxt_open_nic(bp, irq_re_init, link_re_init);
-@@ -13406,7 +13418,11 @@ int bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
-  */
- int bnxt_half_open_nic(struct bnxt *bp)
- {
--	int rc = 0;
-+	int rc;
-+
-+	rc = bnxt_check_dma_stopped(bp);
-+	if (rc)
-+		goto half_open_err;
- 
- 	if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
- 		netdev_err(bp->dev, "A previous firmware reset has not completed, aborting half open\n");
-@@ -13466,6 +13482,10 @@ static int bnxt_open(struct net_device *dev)
- 	struct bnxt *bp = netdev_priv(dev);
- 	int rc;
- 
-+	rc = bnxt_check_dma_stopped(bp);
-+	if (rc)
-+		return rc;
-+
- 	if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
- 		rc = bnxt_reinit_after_abort(bp);
- 		if (rc) {
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index c673b2ce4a0d..061f57824c7a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2470,6 +2470,7 @@ struct bnxt {
- #define BNXT_STATE_DRV_REGISTERED	7
- #define BNXT_STATE_PCI_CHANNEL_IO_FROZEN	8
- #define BNXT_STATE_NAPI_DISABLED	9
-+#define BNXT_STATE_DMA_STOPPED		10
- #define BNXT_STATE_FW_ACTIVATE		11
- #define BNXT_STATE_RECOVER		12
- #define BNXT_STATE_FW_NON_FATAL_COND	13
--- 
-2.53.0-Meta
+> This series fixes a 16-byte OOB write past the verified skb area,
+> reachable through ICMPv6 errors that quote non-first fragments.
+> Following Julian's suggestion, it preserves ESP ICMPv6 handling.
+> 
+> Patch 1 includes the embedded IP header in ciph.len at both ICMPv6
+> call sites when parsing stops at a non-first fragment. The change
+> follows the ip_vs_fill_iph_skb_icmp() calls and does not depend on
+> patch 2.
+> 
+> Patch 2 makes ipv6_find_hdr() set *offset to the fragment payload
+> for non-first fragments when target < 0, so every successful return
+> updates it. It carries no Fixes tag because it defines an offset
+> that was previously unspecified.
+> 
+> Axel Mierczuk (2):
+>   ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
+>   ipv6: update *offset for non-first fragments in ipv6_find_hdr()
+> 
+>  net/ipv6/exthdrs_core.c         |  6 +++++-
+>  net/netfilter/ipvs/ip_vs_core.c | 14 ++++++++++++++
+>  2 files changed, 19 insertions(+), 1 deletion(-)
+
+	Both patches look good to me, thanks!
+
+Acked-by: Julian Anastasov <ja@ssi.bg>
+
+	The ipv6 patch needs review from the net team and
+may need some Fixes line:
+
+Fixes: b777e0ce7437 ("[NETFILTER]: make ipv6_find_hdr() find transport protocol header")
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
