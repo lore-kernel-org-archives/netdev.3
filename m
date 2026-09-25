@@ -1,149 +1,108 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20A44E66B9
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7764E8DEF
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790365865; cv=none; b=eUmotBOKa2aG9XH3VeSv25CTRg6UHfCHF/PIw56SjmxWpr1qeKsf/5avKR8JZUFg2Yz3JJ8f+UTb0oL4OOAbwq81Pt8oaV4nx4tIGDMHEjM7P0wuQ71EEOSrbsazSbWSCQ/VBHNQSy1AFe28zeYk9uGCCavUfw/sSFNOPDBLp0M=
+	t=1790365900; cv=none; b=pABhMG/fbPhqMqm3ULNlqodf+WqLmCpvSMNNxsjO9Uii9Tg+gsJCmaTQitGR8jCXIBj2DSt2umYJZ5DoYFzrGhsa4+x4YlX28OxjWUpseny9Umqor5EYBog6jLfC7JpfQiKLQ8jYgXLbWngKqpEnl4S38Djf98+MTVQi2d/2uNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790365865; c=relaxed/simple;
-	bh=2TQZFwirqOWes4En7HI9aoy8gROqVgMcdHaWnUUX8Kc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fbp3/ZWGerfv9ko1JT3nNu6jmBU3+iMmMJHDktX98/6lU4bY2zlNX8v7DzRCtom902N5e/aDetXKGuu0YMI20ySqKOwWKS87fLnvRwY7NYzJBkQkU7IAysC9nE8ZGH+Sme30rcK/vt8cHbODQiNQX17vcipo5+WV2BOS4hNB3tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tM1J7WUC; arc=none smtp.client-ip=74.125.82.180
+	s=arc-20240116; t=1790365900; c=relaxed/simple;
+	bh=Y6XLez4bx8jf7oVVRkIynG6FSaoMuruJLTjDxk8GpOQ=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:In-Reply-To:
+	 References:MIME-Version; b=EFHxBiASb6R1Q37B5MzQZK5wdRpi5MfO9z/mUQfG00j53QzvkPjlgIdhwzK7WN0ZSRYKwDGTWr7jLDlOipEldKknPRtTVHZ/oYNxUuNtt+w83XsoGmqHGIoFGthoMqCuCFQXTcU2DFJp776imUfnZGouIlbPpqM5/dqGBXEl3tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qiiwvOi6; arc=none smtp.client-ip=74.125.228.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tM1J7WUC"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3410209aa6aso636583eec.1
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 12:51:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qiiwvOi6"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469f20513so710369b3a.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 12:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790365863; x=1790970663; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HyiruoU89fBmLALvorzSciHBi6mzhh5Mz13gcRYwmgo=;
-        b=tM1J7WUCH4/D9J45ykBfF/Mk2GnVwPa1U2PN/gSHFK+jziuI27lIy3y3voI6A/wiai
-         4vbr6P2TEu+MrWqmy+Xu/gGIvEdDY0NSOTmTCcoRE2EyqTMuhwUNOQMDPQ8RsUD8s8m1
-         L9qq00/mmR67VHprGBeXS0EJAytCfyfkXVQhpqgN76lMSQonVvF/vGM7fRS4nj0gy7pV
-         Z9ymNOkA2ElRU/Z9Za65OFU+mK4+FbRUFLH56XsAXa1H7Ym/bWFcD/HNYhVzJ3/vlQ8K
-         bmuSaF0AEs1NCA2S5Z/mUrv/7WkoJM/UhaxvXV/1g4z0H8nzmAKe2mgrZLhkeAVBi027
-         o1PQ==
+        d=gmail.com; s=20251104; t=1790365898; x=1790970698; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Y6XLez4bx8jf7oVVRkIynG6FSaoMuruJLTjDxk8GpOQ=;
+        b=qiiwvOi6jzS0NI+LPVGohZWQ6BcYCCmp+UkqYgUZJ2b46W5j1uJJAyQQp79O7q+qlN
+         MqaTAcgUVWRAAxINyW/uEXFgMg/Taw8z+C4kdaMiboI1AhBwotmJV0PaelCCLUaySJs+
+         c7ya/xUtbI6W+jf3jSpDGdI6rfyGupCelQ4XD4nmlOCQFXcFilKDPBRDbJzF6M8EwYK1
+         8zPaR8JDmlxQb3o3UYOUpWYGOED8kZhpFKDm3s96ihTrCKo5wcg0pEoCPJDmoBs0q40F
+         p+oQda2rq8HL3FDxXCjQSrmT/A8Kac+qOFF2F9AM+g0WAilWm24myagMQFhnHSo6AgV8
+         Snlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790365863; x=1790970663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HyiruoU89fBmLALvorzSciHBi6mzhh5Mz13gcRYwmgo=;
-        b=XWgf/Hcp7tpIM6Eq5s7hA0LhuDX2HXBMdvJNjfFcQZ/iSmNjUjlTPsR0cOa3vNye1J
-         u4xHGg3K1tcOd6/ObMLI/0OyJr8P71J6qDVgwSUPVaWdhUjh9+YVtYmxEeydfiOpJaQ5
-         EeuE4saeZrU/6fqcuS67Q+e7yo0nt2GQJGvEXGDEgovahiikG4zvuNnzEQz1UKqwgsIe
-         gWEBjbQr/2uQSNBy8zuJZgTtRA47I0daE2MjsERqRr4hV6bUzrdYMjg7jVczrX5rG1P/
-         wiBWWKGI6QaP8k17mF7ZCPDLgS9Eawt2/Yto+GjPyvL3rS+vApxnBUrnKox6XykeO5xE
-         jT9w==
-X-Forwarded-Encrypted: i=1; AKwUvBwJNRmHweE7lvdak49hE1C82T9JpnNgLgaJOzQ5HNGWo1KyYxCc1us2gk8O3q+eXJQJrsnkzq4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lNCOj7u8HY0W97sJo+tY5+VnNNp50r+iKYPtNfRSzneqXiKdcW
-	2SZrp68tzBv80LSwvhRSY/gLAoMCQ4IzfSm4lDo3K5Uy8hCZZNiCWa6x
-X-Gm-Gg: AYBFou2ZFBfDKJoSnEayiHcpnVJshow0W940AxfQBqWex8Zu71eaBRsAIlYO4scCnpb
-	Fwu8Zdvsxao9Q8plH3ZKiD4Y1aCWqtvF6qzpTUP1lgiDFtRSq4BAoea6SC9I0EmjcTcMM7TxyLc
-	nwDRwkE2YQ3lAZPYvYcZQm7Fbi9RtL9oQUBbe2XcNJtUmqAJZhWyEJKfGCCOubmPhoolllqFbqN
-	jHwMDwiC+38s4x2TEAcuO8x/ih2GuJqund6y1HbzBG2ng3YtIcI6SfHAK7MvucHNRnShZ18GBUX
-	ir+HG3z271m6KxLh3IbkQp1VRHrZu4SPH+U4KJ6XJ0/TgZoOcveCbAsScp9VZ/tCp1znHwJrjPr
-	bQ27LKm5ochbXfLriWqNfGlFh8CRW7odf7XaYiOmC+ZdMkwAXNkPeOVUh9ulCl5hmG88eXX8oXa
-	cwmCFfHzB6XXFTBybg19Uc9/xg8nOdegr4DJinFcqRxzHyGLhUgRQXg7nf2bk1YLbNisKTV1Zk0
-	B/IM5TTZO6Auj8MUW7ARw2HedZswhdTuixAX3hRADbCvIgbTfb3zbyp6/6shJIQvhQ0D1F/jy0=
-X-Received: by 2002:a05:7301:dd96:b0:32e:3b62:6951 with SMTP id 5a478bee46e88-3426cde4ef0mr1005752eec.0.1790365862642;
-        Fri, 25 Sep 2026 12:51:02 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:afc1:567c:4083:c0c4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341447576b9sm9020399eec.15.2026.09.25.12.50.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 12:51:02 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hemendranaik@gmail.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	tahiliani@nitk.edu.in,
-	vishy0777@gmail.com
-Subject: Re: [PATCH net-next v8 2/3] selftests: tc-testing: add fq_pie per-flow class stats test
-Date: Sat, 26 Sep 2026 01:20:54 +0530
-Message-Id: <20260925195054.9009-1-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <179028364138.2160803.8521628163584007831@kernel.org>
-References: <179028364138.2160803.8521628163584007831@kernel.org>
+        d=1e100.net; s=20260707; t=1790365898; x=1790970698;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y6XLez4bx8jf7oVVRkIynG6FSaoMuruJLTjDxk8GpOQ=;
+        b=WioWAOkvmrcm7dTQpDftGMnufAzfQlq77nbQJlmdO5xcIf6CJz4yf6Ex4aRercygpa
+         RkriJCQFUgVNqDtkfzZAWnR5dgzfVxZvh/l0/G6KYqjv7l7KQdG5Sz/mbHMnAPFeaIgr
+         qDFyvADw3mWZFp5x+Q7hRcKzzNHxquUKfzMkwHDog5znqJIrSJF4O+UKi0xVjlGVc7yV
+         9GGX0hbFjUU63Hgrh3epKmtQ4b2/lLXHwWIYh7c8eoT6k+gz47SBsxEQfy6rUd7cp0lD
+         lV+JbW20SIbmpxz10W87WcIWLuNNUqrpEOnILO4msbW4DwQ9YO9BoRkrd404R83sB8li
+         Q0Jw==
+X-Forwarded-Encrypted: i=1; AKwUvBxLkYzsYMpeyil7zystYCfsnJz3li90w+PML67RQo9O+J6X4drjrbBS4N9PwSZKsF1yi0nl5A0=@vger.kernel.org
+X-Gm-Message-State: AFuF++may2niEc3x0kcQzcQErxx4T2DpcZvJ1GVOzGEJwwDad+amdinU
+	9NVmPDaZDana7ABC/buzvNQPk0eVU3Ixt8hMgiJxW5anDlgNEBPat3cv
+X-Gm-Gg: AYBFou2qg7aMJorvqgdcFG/K0mFgHRcMqmPpe/WXQnypswkccgM01BLILHYG1jWbai6
+	dNx18rM+RizmGZEG+wYJTD+zAr6Cg0gRGO3L/5zyIZHkczH0O7MkerPzJpM2p6wkBiSdoL5ghCC
+	M+UtGmbiXz9oWZQyWPIBhQ/rAU57Plamy/7WAZ7hnTxHl2AOMtDenhRgJTsKj8H8lz4pySsJU2B
+	w3joz2qyB2wRQN3aWY8BDzSkJQT4yLbpIxsWGTzBIlPfU53Snz9IoXxBpaLvigw/UnmP6dvMd3A
+	+UUhyXXJdh+mQae52+Pq73QZcskZBEloHq5bCc+Q/Z3CsKjMsFuchcJGwr2NpuUQriiC7kWttIc
+	AB4CVtRKJbweCDmHEOe5ncXVr/LAonzyzcc88eiE0YQisxfkri4NU0JhKqEaMEJ/3+xzNAX1nUs
+	h8s96zhrdSM501kD0mo0VO0ZCNkZ9r1FBlpcqsijYccW+a5wHXV6rR7v0HPvBmg24pBqz4i2AI3
+	Wqbu1Yn/uq/Cn+CGrRnWyXkBQ9wDo4c9HBSWybFtYw/C9Ajdd99UnbDldloGN9+Je916WLFgEV9
+	9rc=
+X-Received: by 2002:a05:6a00:7599:b0:880:47cb:ef05 with SMTP id d2e1a72fcca58-88047cbf251mr1668896b3a.46.1790365898275;
+        Fri, 25 Sep 2026 12:51:38 -0700 (PDT)
+Received: from localhost ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87fea19030bsm1668470b3a.11.2026.09.25.12.51.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Sep 2026 12:51:37 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 19:51:37 +0000
+Message-Id: <DLONQQN0RB03.1NVWVFHGRRWV4@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "Jakub Sitnicki" <jakub@cloudflare.com>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>, <netdev@vger.kernel.org>, "Kuniyuki Iwashima"
+ <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, <bpf@vger.kernel.org>,
+ <kernel-team@cloudflare.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
+ <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
+ Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
+ <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+In-Reply-To: <20260925121849.2ac5150b@kernel.org>
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com> <DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com> <20260925121849.2ac5150b@kernel.org>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Thank you for the review. Replies are inline below. No code changes are
-planned for this test; we'd like to keep it as posted.
+On Fri, Sep 25, 2026 at 12:18 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> Instead of improving the existing infra we're adding more BPF-specific
+> glue and another bit to the skb. Matter of perspective I suppose :/
 
-> [Severity: Medium]
-> Will this test fail with any iproute2 release available today?
->
-> The kernel side, fq_pie_dump_class_stats(), only sends a binary struct
-> tc_fq_pie_xstats with type TCA_FQ_PIE_XSTATS_CLASS:
->
->     xstats.type = TCA_FQ_PIE_XSTATS_CLASS;
->     ...
->     return gnet_stats_copy_app(d, &xstats, sizeof(xstats));
->
-> The words "prob", "delay" and "deficit" only appear if tc formats that
-> struct. According to the commit message, only the pending iproute2 patch
-> does that.
->
-> With a stock tc, re.findall() in run_one_test() in tdc.py finds 0
-> matches against a matchCount of 1. tdc then marks the test as failed,
-> even on a kernel where the fq_pie class stats work correctly.
->
-> tdc already has a way to skip in this case: the dependsOn key handled in
-> run_one_test(). Other tests use it to gate on newer iproute2 features.
-> For example, in actions/mirred.json:
->
->     "dependsOn": "$TC actions add action mirred help 2>&1 | grep -q blockid",
->
-> Could 83c0 get a similar dependsOn probe, so that it skips instead of
-> failing when the tc in use can't print the per-flow stats?
->
-> The commit message also describes the test more narrowly than it
-> behaves:
->
->     verify that 'tc -s class show' reports an fq_pie class.
->
-> The pattern needs the per-flow counters too, not just an fq_pie class.
-> Could the description say that the test depends on the iproute2 change?
+skb_ext version needs a bit too. SKB_EXT_BPF is the 8th id, so it takes
+the last bit of u8 active_extensions.
+skbuff_ext_cache object is sized for all ids, so it also grows by
+BPF_SKB_EXT_SIZE for xfrm, mptcp, psp whether bpf is used or not.
 
-We'd like to keep the check as it is, without a dependsOn probe. There
-are several cases already in this suite that were written against, and
-still assume, newer tc wording with no dependsOn guard at all, e.g.:
-  - tc-tests/qdiscs/fq.json (commit 3007d8712c9b, "adjust fq test to
-    latest iproute2")
-  - tc-tests/infra/qdiscs.json (commit 56acc7f51974, "Adapt test's
-    output to HFSC's iproute2 printing changes")
-  - tc-tests/actions/police.json (commit b7df2e7eaef7, "Adapt tc
-    police action tests for Gb rounding changes")
-  - tc-tests/actions/bpf.json (commit ac2944abe4d7, "Be compatible
-    with newer tc output")
-
-We're doing the same thing here: this test is paired with the
-companion iproute2 patch, the same as those cases were paired with the
-tc versions they were written for.
-
-The commit message already says the per-flow counters are printed by
-the companion iproute2 change; we don't think it needs to be repeated
-in the test's own one-line description as well.
-
+As I said earlier skb_ext is fine from bpf pov. If it can be made as
+cheap as bit + tracepoint I don't mind it at all.
+Which part of skb_ext would you improve?
