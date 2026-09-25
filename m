@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF650C28C;
-	Fri, 25 Sep 2026 23:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD0C50AC33
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 23:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790379678; cv=none; b=ZHz5FEdUSxzX8KkEttK2PgJXJqqItysdzvD+EHQ4kkfwR+tYWELPM7ICvcb3SXpFAuV083CE1F+FjMc00kB4qjG1wTpiRgkoh5AnJ2U5n7p5DZWY+S4Ue5kseT+kphfR+uFWPoGzVXaVvz8zhuhP98tKDGCf/ZiCID7f1ZTbVqM=
+	t=1790379683; cv=none; b=EwGTWkxwVJu9gfzNBujKxn3Xp2dKZyboITZQaM2pi+Y16TMVRRTJCv4RQsZbROrmfLXriy/8IbBjcySzb6gg1+2PXV6d9QnaZZe7e2nKSV3TnuMZnxh8SB/Zt9AnC6p7rBl6xOEfRzAsIFakRXlDya8nOtigtgTmgUfh8NNbDVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790379678; c=relaxed/simple;
-	bh=6CdhQVFmF/dZ4Ucu1U6vxKEJWpmsCASOOZKzUt4Ye/o=;
+	s=arc-20240116; t=1790379683; c=relaxed/simple;
+	bh=mN1EAKb/PZNtC0aY47dc/snDVvFQAoPl8h+N3ofRTKY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FDZUFUEiaGoG8U1WHPFP3O3++MlJ4XmZh7/H0XJlFyUNUMuooyo9AhG2yD5hUwdWRHz/5mvuyLy9ez3xOc6k9hSV8p5UQy/IPe0UpAi00VbQPEqB06toGxMY5KkzjNkAsKBv4Z3lBdKGA2eoT2SXcVDib69P2SGrQ/XFTaaZnJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxhb9QCS; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=XMo8gNDG3WMazHWPKfzPc8juOcF5QG/vByHF5Tz4IeJOeRtAqnWJ6Ipe7v4/ZxWihzBy8wNAQiuP/Sb71hILKJJYazTiQ6LQGjbcdgloeCZDbrWcUhtgCeGJSQ2D9xf772KTIOyQN7ikUVPsR8Ppkln5vYzaPVfedcWlqMgK4bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETKsZFQW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxhb9QCS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62071F000FF;
-	Fri, 25 Sep 2026 23:41:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETKsZFQW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893371F000FF;
+	Fri, 25 Sep 2026 23:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790379676;
-	bh=7fSKzAttTvMTl4wo0UZcF+j/vO3XY9jR+4L6IHE53m0=;
+	s=k20260515; t=1790379681;
+	bh=OdZDA6bI8RzFZiuri6KDMsWr3jO3og7lHmodXhGkB9I=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nxhb9QCShq8RFATeNl5t+wfq0fgDaegHpUjrgtZntZ/O/OMEgn1cixfV+xDgjbqBw
-	 rXbDhEssZpYn0D8iN8Lyn+2TDOCBG035ySyZvLdR9v80l5+naQw8rR/ZWDg+JkbjUa
-	 rG8Rx5SheAUSzdkEnqGhIZUYKdP3nml68U7Ln3iDjRuGrD3FcdocJjE7oX1yx5vnz3
-	 1M/MW/PKUsaD0X38YeyCIfTXKkihdZGUHOr4CyZKvKjMQSffOA6r0c+7LIx2+/0H7Y
-	 syig3PqPPcnNBdp5F8Lfq7nmZF+rTy8iSOGHJA2cvRfJtWAKoevCsO4vmw0JsBq5pn
-	 xpbFKqSMvN5cA==
+	b=ETKsZFQWMOanztF62Xnv4gnnPuxplXilDxko+J0wKNnmXeo8ktfsaL1wGwjRQ2Yax
+	 9UekIqywAvf46ZLlkBnPw1mZj6ZijTE4T41hTx4Bds8+qjWjzjgIBcMnrR9P42hQmk
+	 3O2U/q1yVEz7PXr1oWNwBker3orhKTEcwCD5BBxAGvS3e5582SuKBL3jTZIlbJBr9f
+	 uwa9PDqSEOBffLxXe9IRbaHfOKTlTQHCAsGS6aJnK6ZVCAn+/we6JjKf83oWewoydU
+	 LH6YHgmauYifnalhD3xIww+vJOSJ0j4YHKNshX0jQ8QXFzGDOway5e2DjwUbl4d+kB
+	 nctaWwNCmDLtg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938F23809A04;
-	Fri, 25 Sep 2026 23:40:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568C33809A04;
+	Fri, 25 Sep 2026 23:40:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,60 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/mctp: publish the mctp_dev only after it is
- initialised
+Subject: Re: [PATCH v2 net-next 0/4] net: ethtool: make netdev_rss_key_fill()
+ spread flows over all queues
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179037960440.3207107.1869825882080445252.git-patchwork-notify@kernel.org>
-Date: Fri, 25 Sep 2026 23:40:04 +0000
-References: <729830b8.130.1a0c945579d.Coremail.18983559317@163.com>
-In-Reply-To: <729830b8.130.1a0c945579d.Coremail.18983559317@163.com>
-To: Binbin Deng <18983559317@163.com>
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dengbinbin21@nudt.edu.cn
+ <179037960888.3207107.14995347691230461960.git-patchwork-notify@kernel.org>
+Date: Fri, 25 Sep 2026 23:40:08 +0000
+References: <20260922163458.3900996-1-edumazet@google.com>
+In-Reply-To: <20260922163458.3900996-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 22 Sep 2026 21:19:19 +0800 (CST) you wrote:
-> From: Binbin Deng <18983559317@163.com>
-> 
-> mctp_add_dev() links the new mctp_dev into dev->mctp_ptr before mdev->dev
-> is assigned, so a reader that picks the device up in that window
-> dereferences a net_device pointer that is still NULL:
-> 
-> KASAN: null-ptr-deref in range [0x00000000000000b0-0x00000000000000b7]
-> Call Trace:
->  <TASK>
->  ? __pfx_mctp_sendmsg (./include/linux/sockptr.h:49)
->  ? __pfx_mctp_dst_output (net/mctp/route.c:41)
->  ? selinux_socket_sendmsg (security/selinux/hooks.c:5278)
->  ____sys_sendmsg (net/socket.c:775 (discriminator 1) net/socket.c:790
->  (discriminator 1) net/socket.c:2684 (discriminator 1))
->  ? __pfx_____sys_sendmsg (net/socket.c:1131)
->  ? __pfx_copy_msghdr_from_user (net/socket.c:2590)
->  ? update_cfs_rq_load_avg (kernel/sched/fair.c:5478)
->  ___sys_sendmsg (net/socket.c:2738)
->  ? __pfx____sys_sendmsg (net/socket.c:2625)
->  ? perf_event_task_tick (./include/linux/rcupdate.h:838)
->  ? sched_tick (kernel/sched/core.c:5818)
->  ? clockevents_program_event (kernel/time/clockevents.c:372)
->  ? fdget (./include/linux/rcupdate.h:873 fs/file.c:1100)
->  __sys_sendmsg (net/socket.c:2770)
->  ? __pfx___sys_sendmsg (net/socket.c:2751)
->  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
->  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
->  </TASK>
+On Tue, 22 Sep 2026 16:34:54 +0000 you wrote:
+> netdev_rss_key_fill() hands drivers a uniformly random key. Because the
+> Toeplitz hash is linear over GF(2), a random key is singular for a given
+> header field and queue count with probability 1/2: flows differing only
+> in the low order bits of that field (such as a burst of consecutive
+> ephemeral ports) then cannot reach all RX queues. On one affected 16-queue
+> host, only 4 queues received traffic until the key was replaced.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net/mctp: publish the mctp_dev only after it is initialised
-    https://git.kernel.org/netdev/net/c/aadf655e8ea9
+  - [v2,net-next,1/4] net: synchronize proc_do_rss_key() with netdev_rss_key_fill()
+    https://git.kernel.org/netdev/net-next/c/9396e37c4860
+  - [v2,net-next,2/4] net: ethtool: generate RSS keys that spread flows over all queues
+    https://git.kernel.org/netdev/net-next/c/898d431abd25
+  - [v2,net-next,3/4] netdevsim: support reporting RSS key, indirection table, and flow hash fields
+    https://git.kernel.org/netdev/net-next/c/5fd4208098be
+  - [v2,net-next,4/4] selftests: drivers: net: check the host and device RSS keys
+    https://git.kernel.org/netdev/net-next/c/c8103dd8b9b4
 
 You are awesome, thank you!
 -- 
