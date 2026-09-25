@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E83509F17;
-	Fri, 25 Sep 2026 23:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9C94746A5;
+	Fri, 25 Sep 2026 23:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790377782; cv=none; b=ckgVZszvp1rWF1QtMtnIDSyd3lFDRUl5aAbz/hke9kExlSwzQZ7GIbpLprDeriQMtmVDdKzPpi07Pj5q6yoD28d/2LFeYoXkkZBhY5n3UDIc4uIAmEKVqkuMHH5mC3oz27s7ySTpQRzYXgP7jwopFGQS7OnltRCJfR3CoA54juU=
+	t=1790377783; cv=none; b=Zp1knBvyjABEJmoZ1qrWtdt0l05Ps9lUiztpcaehYGKaVGRh8KxySmnD7v42fCFjL6by7LrnnR6Xynw8VbpGhjqe97fHYDqQ/NpzmdUZucibcl6acjjetz1WC85G93pbkoLL7Qi7gzsVr5tcYvy99WPVjNH3NcPyYOdh9BNmN2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790377782; c=relaxed/simple;
-	bh=5p6BiXe7HWjkaON+GGeU8V6laoWvOJkcA7ywRDANmhc=;
+	s=arc-20240116; t=1790377783; c=relaxed/simple;
+	bh=s1ZM1uqZ03nEW1Q1bfUvFjYe94kCYE4894JFbUlF4Ic=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OPLtNeqhshYxyh2qQBOhAo6qJyq+Ty7+qhTJaOrsWytZ6NzWtzEOuAhEdXpOBZXQSdUs8AogYE6hL9LFDuZZEWw1dy8+tHZDGuwB86bY8W+rk5zLB1yVooPdkf8ejhx3f1i7kh00IbfG85mLAEO0Gsnv53TmIte090KNgJX2eYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTwns0Yd; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=WNl2BQtEPfAvZ+Pz/myxG2Svq+44A4toKzGAse5YxBTcgp+T02INeVIHFDlpjrQmCLckPtbmmQ0qtkRafwvTKMm0Gv51xPvW95ptdmRl53BtRxTtgHJGQ7/SLxrwb1Qd7usOnPky0pW7zKdnj38ghKDdMhF4u2+YGszLedw+w+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckRyjtLJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTwns0Yd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CAD1F000FF;
-	Fri, 25 Sep 2026 23:09:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckRyjtLJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDC81F00893;
+	Fri, 25 Sep 2026 23:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790377780;
-	bh=l1hag7IhP/HH+Aj9sjNYtjynV3gjwA3LqV5K3Ae+M6A=;
+	s=k20260515; t=1790377781;
+	bh=GcWfYkzOOhtvkvYpWSGfJpCOE6dPzj6GDPKW9yEk4A4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XTwns0YdDK27DZwasvna1xHomRuMMCz4m1UZRw43NBZbwub5TRVoF2wGYuXv5HeVT
-	 3exRi/V436ORhvj8repnmEf7tI39d+tYJWlpn9WcfH0IP1vUTuurUGZmuVcMNMgqSY
-	 /nlzkU//Iyv5PQK6zgu0lrJNJd1OZaG4JcqAs7mwHp7uG55cLygIEjGEkYbznLWkH3
-	 ML6a5E4JO2IJZamaLqvcqtffgAoTi9meZo2LWZ/h8llf0fWvQdRQ0/m6g7ss71dKzI
-	 ecMFThWYhwitVSOe2qdi/umkr65UaZNlF9/vuoxPBJgf8hrbf+QWcSRsCWWeEDtzwd
-	 mW77jzyBB6/MQ==
-Subject:
- Re: [PATCH net v2 3/5] net: bcmgenet: do not skip WoL power up on GENET V1
+	b=ckRyjtLJbscKqYniuxavK+5BOGH3UzNrib8yBVlHvnYgoAQTq6kEP08wKrT60v0oj
+	 LDCAvNGRo7g+ApRMFkQNB1sNwAUsKei5GLIAx7uSecOREb9LIJK1EAubZ84HBXSVRl
+	 r81DkhbfNgUOElRaCyxq6Gh+/BTNuupebc+3LUmGive6QquqrglFGhmAlvfuz+OY+K
+	 NLKuX2Vb6zswpCZ3/hCe/pE3ATd5nwiNZXGNtvjLNJwNHf/gDx1AgiyjgKSCNW3r2e
+	 4fXhzLps/obB1jImLagIQfQT0jOq+LSo+cHarf9DRZs4U9qBpOm+Q6uPytHMhtVRKD
+	 3HHUdlLKvBBNg==
+Subject: Re: [PATCH net v2 4/5] net: bcmgenet: validate Ethernet address in
+ bcmgenet_set_mac_addr
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, nb@tipi-net.de, opendmb@gmail.com,
@@ -35,11 +35,11 @@ Cc: netdev@vger.kernel.org, nb@tipi-net.de, opendmb@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
  linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 23:09:39 +0000
-Message-ID: <179037777940.2160803.18391129495730255764@kernel.org>
-In-Reply-To: <20260921220021.281418-4-florian.fainelli@broadcom.com>
-References: <20260921220021.281418-4-florian.fainelli@broadcom.com>
-X-sashiko-severity: Medium
+Date: Fri, 25 Sep 2026 23:09:40 +0000
+Message-ID: <179037778070.2160803.14102576528369806489@kernel.org>
+In-Reply-To: <20260921220021.281418-5-florian.fainelli@broadcom.com>
+References: <20260921220021.281418-5-florian.fainelli@broadcom.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,49 +49,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message of "net: bcmgenet: do not skip WoL power up
-  on GENET V1" (387c3a954a3a) ends with the malformed trailer `Siged-…
+- [Low] bcmgenet_set_mac_addr()
+  (drivers/net/ethernet/broadcom/genet/bcmgenet.c:3628-3644) now hand-…
 
 --
 
-net: bcmgenet: do not skip WoL power up on GENET V1
+net: bcmgenet: validate Ethernet address in bcmgenet_set_mac_addr
 
-This moves the bcmgenet_has_ext(priv) test out of the top of
-bcmgenet_power_up() and into the GENET_POWER_PASSIVE and
-GENET_POWER_CABLE_SENSE cases, where the EXT registers are actually
-touched. That lets the GENET_POWER_WOL_MAGIC case reach
-bcmgenet_wol_power_up_cfg() on GENET V1, which has no EXT block.
+This adds an is_valid_ether_addr() check to bcmgenet_set_mac_addr() so
+that an invalid MAC address (all zeroes, or a multicast address) is
+rejected with -EADDRNOTAVAIL instead of being programmed while the
+interface is down.
 
-The only comment below is about the commit message trailers, so the diff
-hunks are omitted.
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index bfb74dca55d6f..e9d9d3d7b6369 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -3634,6 +3634,9 @@ static int bcmgenet_set_mac_addr(struct net_device *dev, void *p)
+>  	if (netif_running(dev))
+>  		return -EBUSY;
+>  
+> +	if (!is_valid_ether_addr(addr->sa_data))
+> +		return -EADDRNOTAVAIL;
+> +
+>  	eth_hw_addr_set(dev, addr->sa_data);
+>  
+>  	return 0;
 
-> Fixes: c3ae64ae0c08 ("net: bcmgenet: handle GENET_POWER_WOL_MAGIC")
-> Assisted-by: LLM
-> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-> Siged-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-  ^^^^^^^^^^^^
+[Severity: Low]
+This isn't a bug, but with this hunk bcmgenet_set_mac_addr() now open-codes
+exactly what the core helpers already do.
 
-[Severity: Medium]
-This isn't a code bug, but should this read Signed-off-by: instead of
-Siged-off-by:?
+net/ethernet/eth.c:
 
-As spelled, the trailer is not matched by checkpatch.pl or the patchwork
-netdev checks, so the patch appears to have no author sign-off.
+	int eth_prepare_mac_addr_change(struct net_device *dev, void *p)
+	{
+		struct sockaddr *addr = p;
 
-The other four patches in the same series use the correct spelling, so
-this looks like an isolated typo in this patch only. Since a trailer can
-only be corrected by amending this commit, would a resend be needed here?
+		if (!(dev->priv_flags & IFF_LIVE_ADDR_CHANGE) && netif_running(dev))
+			return -EBUSY;
+		if (!is_valid_ether_addr(addr->sa_data))
+			return -EADDRNOTAVAIL;
+		return 0;
+	}
+
+	void eth_commit_mac_addr_change(struct net_device *dev, void *p)
+	{
+		struct sockaddr *addr = p;
+
+		eth_hw_addr_set(dev, addr->sa_data);
+	}
+
+The resulting body of bcmgenet_set_mac_addr() is then equivalent to
+eth_mac_addr(). Would calling eth_prepare_mac_addr_change() followed by
+eth_commit_mac_addr_change() (keeping the driver-specific comment about the
+UniMAC RX/TX enable bits) be preferable to duplicating the validation here?
+
+One small difference: the driver copy tests netif_running() unconditionally
+and so does not honour the IFF_LIVE_ADDR_CHANGE exemption that the core
+helper checks. bcmgenet does not set that private flag today, so there is no
+behavioural change now, but the duplicated checks will not track future
+changes to the core validation rules.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921220021.281418-1-florian.fainelli%40broadcom.com
