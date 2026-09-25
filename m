@@ -1,45 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880B4B049D;
-	Fri, 25 Sep 2026 14:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D7E370D41;
+	Fri, 25 Sep 2026 14:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790347969; cv=none; b=aw4jHYNzpZxkeBr4iWalRHijpv+NkEYPXFZTn7Q47NCmg9VaQvqmAGn+/PiN9Il91H3ncKs1Vlw56DpTbizULnL8GUXNkvJumaPg8pJBP1NTIMdOAWmR1VJMVc3PBXo6kH5Bl134T2afDhN9gIrUiwzrl7rK6CnFQqth2VaItg0=
+	t=1790348259; cv=none; b=ZFaXQue3h53emQ2rL43ws7uGr8SacLCF3aZW/+owR8psaauwEwDya1HeCTHxGGM6zXosY5LU2hBJh99ban/cCo14GN65UkRzYWWVjU/YueY8yS77Fx7iQBFX//wKwgHYw4t8DXGuIpNqIBKLkxb/3N5Mcv8Sk7WnhZouyHQzq34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790347969; c=relaxed/simple;
-	bh=Hl+8wz8tp1wu8qAL6hnJ8ublCc3/qSu9zox/vnjT1Pw=;
+	s=arc-20240116; t=1790348259; c=relaxed/simple;
+	bh=vokxpPPeJFF9m4UiOT54OmKjxI7Lroxu8kn2nd0T4+Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ew1u3ucgil652hj2bWM6p19Ddg2OMflUk0msgk7IsM2Nav5N+h1Vvz8tnDlBFZ2bPpo0v80xwTn6MkFtrVdF0Pg0RxARvTAAgWgl6tZuLHCU4Pd8DWTgewIuaTFl7Z/TH15KUe2HDzHzZCDIiG4x0UXCR4emWt+CAWUkJqb5Q7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKKK8XKP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0Qcg8yFK2f7DZrNhfGrajspUVZw/OVsg6qUPuEg29+YoyBASG45P9laEWbz4HjNfbMgq9Gk7ImVltBfgy9GLl3f2fpJYypxKwvEeXDzDPyDOeFNifq2mKbXk88WDbd6FlDP8SJIzaYmsC5CeWYZs4opz6f4mw0RMWSWnfGL/VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VkvErMx+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKKK8XKP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9D21F000FF;
-	Fri, 25 Sep 2026 14:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790347961;
-	bh=eqwba8uIyIBHU0D+mbWaPP6/65+16kFFe7c0vWebTx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WKKK8XKP/if2xktccrO3rxMkmW6KauTsNF/lj7apJemrvIkZh0tl++Rd6QTb/r0kB
-	 7aiSZdBVt4ia9O5hAGENSxqkZ6y2rmcbfkuKUCjPZzgPw2pwDyiOl+fIe5iyPYZ8H/
-	 Ax8/uJesAMhZVGETEX/Idvmy/JXR20JcAIQ/6lnzcMqNkB+Zj5dIMi78/ThMizoyQa
-	 RuS8y4xzId+2brqX6xy9hkRWnXdYwcBc8RPHksQMo6YqBf6F/wgkB6axS4oSzJmBOG
-	 SJ+tevz7BD4d/3Z1HyECvqS51nX6U5rChQ3MB+b0dlPtJiXM64w+BkSrns4wj5gvKM
-	 RgVt6SXFkZNVg==
-Date: Fri, 25 Sep 2026 15:52:36 +0100
-From: Simon Horman <horms@kernel.org>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: anthony.l.nguyen@intel.com, alessio.bogani@elettra.eu,
-	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, richardcochran@gmail.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	jianhao.xu@seu.edu.cn
-Subject: Re: [PATCH net v2] igb: initialize PTP state before registering PHC
-Message-ID: <20260925145236.GO13925@horms.kernel.org>
-References: <cd12af33-ed01-4eca-88e3-703b59c05453@intel.com>
- <20260917150247.2562991-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VkvErMx+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=B3X/8T/KxsERTXdE9gjbpSLjxra0gRxccQouuWityYo=; b=VkvErMx+c1zApjiTSzU7Fo76q2
+	nfQj+trbiy2fxHZ9RN+3bxZPEged/aevjI1KqnM/VCkckVG+sI6ihFvgPCiRYXl1BxSUleI5PPAJ8
+	d5KTlyz0tKRm4+f752Ybv8TxJuv91amhWs2WKdjwL26eVf7En6HQUCekqN/EUoVqY6IE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xA7MU-007EVC-5n; Fri, 25 Sep 2026 16:57:18 +0200
+Date: Fri, 25 Sep 2026 16:57:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 3/8] net: dsa: motorcomm: Identify port type
+ at runtime
+Message-ID: <bdc8063e-0141-4cf0-9070-8424e3ac7812@lunn.ch>
+References: <20260923021945.2203368-1-mmyangfl@gmail.com>
+ <20260923021945.2203368-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,36 +48,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917150247.2562991-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260923021945.2203368-4-mmyangfl@gmail.com>
 
-On Thu, Sep 17, 2026 at 11:02:47PM +0800, Runyu Xiao wrote:
-> igb_ptp_init() currently initializes the PTP lock, work items,
-> timestamp configuration, and timecounter after ptp_clock_register().
-> The PHC is published by that call, so PTP callbacks and timestamp
-> interrupts can run before those objects are ready.
+On Wed, Sep 23, 2026 at 10:19:35AM +0800, David Yang wrote:
+> The yt921x_port_is_internal/external() macros hardcoded the port layout:
+> they treat ports 8 and 9 as external on every chip and count the dummy
+> ports as internal.
 > 
-> Initialize the complete PTP state before registering the PHC. Skip the
-> setup when CONFIG_PTP_1588_CLOCK is disabled, since the PTP registration
-> helper is then a no-op. If PHC registration fails, cancel the work items
-> queued by igb_ptp_reset() or a timestamp interrupt before returning.
+> Identify the actual port capabilities using chip info and track
+> configuration of external ports (although only SerDes is supported now).
+> This is a hardening and cleanup step ahead of the SerDes PCS support, no
+> behavior changes intended.
 > 
-> Fixes: b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/netdev/20260830154912.2712900-1-runyu.xiao@seu.edu.cn/
-> Assisted-by: LLM
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-> 
-> ---
-> v2:
-> - Restore all PTP state initialization before PHC registration.
-> - Skip PTP setup when CONFIG_PTP_1588_CLOCK is disabled.
-> - Cancel both PTP work items when PHC registration fails.
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-For future reference: please post new patch revisions as new
-email threads, rather than as a response to an earlier revision.
-
-Link: https://docs.kernel.org/process/maintainer-netdev.html#resending-after-review
-
-Thanks!
+    Andrew
