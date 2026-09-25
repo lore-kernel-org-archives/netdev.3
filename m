@@ -1,409 +1,386 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043354D90DE
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 18:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020003B5F50
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 18:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790360827; cv=none; b=lUGvoG1Wu3Ehqmk/ydFofzkXDeIAK1Hnv7Yrcd4bgHmHyWS2DSLfN+U+L+ONIBRxB8zjO2+tEp7J5l8a/Dzj9qasesuZRalg58G8bcj7yU7hiVjAfeBwODtFzP6GdU+W+FAZJXV2AgiJ4WHrjn+2yIb784Dgg+lYZjDbNRLrrkI=
+	t=1790361565; cv=none; b=s3bNDr/3wfy4o2cQpG18DqkZU15Ss8CbJ+nLvKeQH5pCXB3fRr4etB8kUN0PhQFUfLLzOALYt+LabJjImru+bKGeKblUKoowG19UlSKl1hPM3rORE5mOwZIQ5es3CvtNHAIypG6O8oqXJZ/YiOacJTF+1YPl3W/1jAXRq1co1xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790360827; c=relaxed/simple;
-	bh=Js7HSdaQ+OZtG5cnS2C3PJPfn6VjJzQU7IlsZPrZaag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sE6IT+h8fg+mZSz0YyoW1ikgXWmBOzIzZwB/jI+7KBwe/ZjjNI5D5xu/UmoQalou2rKPc3ZJvHtn4iertCVXkrLlENXtl4yvVXwo2FAs2I/LBEeG3LWPjqVSNMGRF00XLc2S2jZB+UeYWIXOtlIzxmqUiAFg7pjAzqpTJFLo59g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ViZiBCgv; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790361565; c=relaxed/simple;
+	bh=tgnH6c3L5kPv+jLe8/jq0DdEltLykeUo6yEU3xn8bC8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fj9iFtVoz9Tz5MmJpbQ0W+m+f3gz7DVUhx2hHVZ8PJhxBuZ7BRv1htYRaEegzaaznjl1vLrvb0LKq0R2asDbRrFXeL6g/LnfoDWJJg4in2VR4I22sJ2+3aF8ewVgQJFYrYzF4QCoDPoPu7Gi8xICW5lLKGP7uwHrYXgobzjejfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=paVFWXzf; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ViZiBCgv"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3A06AC63440;
-	Fri, 25 Sep 2026 18:27:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 41B3E6073B;
-	Fri, 25 Sep 2026 18:27:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C8D3D102F1E38;
-	Fri, 25 Sep 2026 20:26:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790360818; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=lFxqxKhM+l8Qc7HsDNKPF1hTySJ2G04UNq+JWH2Vg0A=;
-	b=ViZiBCgveus1XPM4AC9b35lpElA8yeJ96QsXtRHi/wUoqr6K+Dkinq1FQnKSCevjCXvkUT
-	A4oIGgw4bx6RrGctdaPJZrjhPayzn3HjeehhFEaSR3kg8qXL2spfLJBuFOswbLubg2Ves4
-	K73Q49Zj8EBNk7yY6Sf6OQXJUROQyjGfdYo9wj923xHZzUNUnIuVmRy4i4FzFjxl7AW9or
-	PlziP31TqqF8rqEDBblfiuOglcusZ1/PMiuZaGihYwfKtSGyu7nu6bHUFpE2iBavTeuHfY
-	hy7fz7aPO/ygNDXobUs13veExfp7xLMV00Es9DrcLwwfjSxLABkN9D6X/euH/Q==
-From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	thomas.petazzoni@bootlin.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] selftests: drv-net: pause: Validate pause autoneg interactions with link autoneg
-Date: Fri, 25 Sep 2026 20:26:27 +0200
-Message-ID: <20260925182628.214667-4-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260925182628.214667-1-maxime.chevallier@bootlin.com>
-References: <20260925182628.214667-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="paVFWXzf"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG5OjC1529488;
+	Fri, 25 Sep 2026 18:39:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hqMC9M
+	OiHO36wjAR48JonUH9Hk/AZEBGAN/NjtYi4W0=; b=paVFWXzfRJL9+Hrec/VRtW
+	5Q2h1O0KgUBxG6hqLZs/6G0E6LWhO3aNuA82aVSoYy4V9xH+DIJS2SKV8wdYFLAF
+	4ApMKGmE6AOyYciLzcCME/nP/auk9LKKywpfToFsdMERByeRCXZJtF2cn5W01te6
+	6vbzazwMaYQplIQSkyzZDcaSUQalMaPkuwff2YPC1Ec7PPzB5d+N3pV4+7bxmfE0
+	/y2PxlmkpFcsIL4tgMxDuFQkS5wWlb607vO+aQ6dxsFUyfiRPCb3oyx2z5vGZrc/
+	wac8IND0pNwNmY0u1LyKRRm9zr5AazUJMwG/k5DXlz8unoPWVKfyQBpA6W+ke1rA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskg30rtu-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 18:39:08 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG34jM4191783;
+	Fri, 25 Sep 2026 18:39:07 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb8k3kp4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 18:39:07 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68PId3tp12321410
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 18:39:03 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F332D58063;
+	Fri, 25 Sep 2026 18:39:02 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 566615804B;
+	Fri, 25 Sep 2026 18:39:00 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.6.174])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Sep 2026 18:39:00 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
+        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
+        shaik.abdulla1@ibm.com, Mingming Cao <mmc@linux.ibm.com>
+Subject: [PATCH net-next v7 01/15] ibmveth: Add MQ RX hypercall wrappers and call definitions
+Date: Fri, 25 Sep 2026 11:38:36 -0700
+Message-Id: <0dc92cdb439b680ad3c1f77d38ad6255859866be.1790319558.git.mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <cover.1790319558.git.mmc@linux.ibm.com>
+References: <cover.1790319558.git.mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=true
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: xXlXvegPTmWNAl3fRXvVbxLGNqU_kHsR
+X-Authority-Analysis: v=2.4 cv=I43w19gg c=1 sm=1 tr=0 ts=6ab6bfcc cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=9GrW9DZCARAA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=VcrCuZX2KMs9Y6AvvMMA:9 a=3ZKOabzyN94A:10 a=47kamO7So9gA:10
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA3NCBTYWx0ZWRfX3VSl8h/kPUzi
+ R02P/p5OZQCJKH0WtFmzzMCxmZmgFC+M1CQyiDjmIoGjJZGgvL/UWtAld3+SFK4vM5WWjMUkdvr
+ LkaHjBFF2RjlU57rcYWRPhyBeoS8wXfWQAHmRPtYzEj2998Ietr5LkK/OgeqFW57x+jStP6Y/jF
+ H/deMH00uou+o3qkgzmL/W5/Wi+fgcIed3xMIMjgDzjz11LFJt+RVxAG0ZZ7lHH3RT5Cwo7lT0W
+ xG1kFq4tOo2OZb06KfIe1Nl4WjtsiEDB0vItR/blBjUgM8VQbFOpobSS0ruCeJ03ekE4VcjJgAJ
+ 2a+zg4boz/WXyDMaQ2KBZXT7w8YLtWVVW/sLurcUq8FmqBqPoMNkdwo4+P1K37Z8M8iQQcLHWXC
+ YcCtI9Bg9LQJdqVTJO7W2BYELw/BysoK8/z0mdQHiL/7uHWfoo6AghBTkZjX0CmrUY4vDNtN29w
+ U30HKJFmMhtUh/sfatg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA3NCBTYWx0ZWRfX1RlyxSmG/35v
+ Bfb2/MBSpzvHoNhrfPOohny+qGKlLTixMSj1lthtaZ0UIKlUCj8RxSlood7DCyOnQEHbj5HPxhY
+ QcewNRd55PAGiK/OivD6Tca1rbJvOdE=
+X-Proofpoint-GUID: 39h5ZqlLsbMoo2w92h6ZjVvjc3Y0mE8j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 adultscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250074
 
-Pause autonegotiation happens with the link partner using the same words
-as the link negotiation, used for speed and duplex exchanges. However,
-pause and link autonegotiation can be separately toggled :
+Single-queue ibmveth only needs h_register_logical_lan() plus legacy
+buffer add/free calls. MQ RX uses per-queue handles, so the driver must
+also be able to register/deregister subordinate queues and post
+buffers against a specific queue handle.
 
-ethtool -s eth0 autoneg on # Enable link negotiation
-ethtool -A eth0 autoneg on # Enable Pause negotiation
+Add the PHYP call IDs for:
 
-Pause can't be negotiated if the link autoneg isn't enabled.
+  H_REG_LOGICAL_LAN_QUEUE (0x49C)
+  H_ADD_LOGICAL_LAN_BUFFERS_QUEUE (0x4A0)
+  H_FREE_LOGICAL_LAN_QUEUE (0x4A8)
 
-Pause autoneg and link autoneg settings must not interfere with one
-another when user is configuring them :
- - If Pause autoneg is on, it must stay on when link autoneg is disabled
-   (even though Pause won't actually be negotiated)
- - If Pause autoneg is off, it must stay off when link autoneg is
-   enabled
+as defined in PAPR 11.20.00. The gaps at 0x498 (reserved) and 0x4A4
+(reserved for H_FREE_LOGICAL_LAN_BUFFER_QUEUE) are intentional; this
+series tears queues down with H_FREE_LOGICAL_LAN_QUEUE and does not add
+the buffer-queue free hcall.
 
-Introduce a set of tests to verify that pause and link autoneg are
-behaving correctly, in particular that the user intent is correctly
-cached when toggling link autoneg.
+Raising MAX_HCALL_OPCODE for these IDs also widens KVM's
+kvm_arch.enabled_hcalls bitmap and the range KVM_CAP_PPC_ENABLE_HCALL
+accepts. Neither is user-visible: KVM implements none of the three, so
+the ioctl still rejects them, and the bitmap rounds to the same five
+unsigned longs, so struct kvm_arch does not change size.
 
-Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
+Add ibmveth.h wrapper helpers (h_register_logical_lan_queue(),
+h_add_logical_lan_buffers_queue(), h_free_logical_lan_queue()) with
+argument ordering and return semantics matching the existing ibmveth
+hcall wrappers. h_free_logical_lan_queue() uses plpar_hcall_norets()
+like h_free_logical_lan(). Also add h_register_logical_lan_with_handle()
+so queue 0 can capture the PHYP queue handle in MQ mode. Both new
+registration wrappers use plpar_hcall() rather than plpar_hcall9(), so
+they do not read unwritten stack slots.
+
+This patch is intentionally plumbing only: no runtime behavior change
+yet. Legacy firmware keeps H_REGISTER_LOGICAL_LAN and the existing
+buffer hcalls. The new wrappers are used only when a later commit sets
+multi_queue from H_ILLAN_ATTRIBUTES.
+
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
 ---
- .../testing/selftests/drivers/net/hw/pause.py | 274 ++++++++++++++++++
- 1 file changed, 274 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
-index 96ee730074f8..74bc21c60695 100755
---- a/tools/testing/selftests/drivers/net/hw/pause.py
-+++ b/tools/testing/selftests/drivers/net/hw/pause.py
-@@ -180,6 +180,17 @@ def require_controllable_lp(cfg):
-     if not controllable_lp(cfg):
-         raise KsftSkipEx(f"{cfg.remote_ifname} is not directly connected to {cfg.ifname}")
+Changes in v7:
+- Drop the duplicated "Both new registration wrappers use
+  plpar_hcall()…" sentence
+- Register and free-queue Return: also H_FUNCTION. Add-buffers
+  already had it in v6; all three PAPR 11.20.00 opcodes return that
+  status on older firmware
+- h_register_logical_lan_queue Return: also
+  H_BUSY / H_LONG_BUSY_*; the caller retries those,
+  and free-queue already documented them
+- tools/perf powerpc-hcalls.py: name 0x49C / 0x4A0 / 0x4A8.
+  0x498 and 0x4A4 stay unnamed (reserved holes)
+
+Changes in v6:
+- both new registration wrappers use plpar_hcall() instead of
+  plpar_hcall9(). They do not need nine args, and plpar_hcall9() was
+  reading three unwritten stack slots
+- Widen add-buffers-queue and free-queue @queue_handle kdoc: handle may
+  come from h_register_logical_lan_queue() or
+  h_register_logical_lan_with_handle() (queue 0)
+- add-buffers-queue Return: also H_FUNCTION (MQ firmware missing that
+  hcall)
+
+Changes in v5:
+- Cite PAPR 11.20.00 for MQ hcall IDs 0x49C / 0x4A0 / 0x4A8 (v4 named
+  the opcodes only)
+- Call out reserved gaps at 0x498 and 0x4A4 (0x4A4 =
+  H_FREE_LOGICAL_LAN_BUFFER_QUEUE); decision: do not add that hcall -
+  queue teardown uses H_FREE_LOGICAL_LAN_QUEUE
+- Note MAX_HCALL_OPCODE raise also widens KVM enabled_hcalls /
+  KVM_CAP_PPC_ENABLE_HCALL accepted range (cross-subsystem)
+- Rename h_reg_logical_lan_queue() -> h_register_logical_lan_queue() to
+  match h_register_logical_lan() / h_free_logical_lan()
+- Unify queue_handle out-params as unsigned long * on both
+  h_register_logical_lan_queue() and h_register_logical_lan_with_handle()
+  (v4 used u64 * on with_handle)
+- h_free_logical_lan_queue() uses plpar_hcall_norets() like
+  h_free_logical_lan() (v4 used plpar_hcall9 with unused retbuf)
+
+Changes in v4:
+- Document @queue_handle and @irq in h_reg_logical_lan_queue() kdoc.
+- Wrap h_register_logical_lan_with_handle() prototype for readability /
+  checkpatch.
+- Drop unused H_FREE_LOGICAL_LAN_BUFFER_QUEUE wrapper/opcode (no caller;
+  buffer return is local harvest + queue free).
+
+ arch/powerpc/include/asm/hvcall.h           |   6 +-
+ drivers/net/ethernet/ibm/ibmveth.h          | 142 ++++++++++++++++++++
+ tools/perf/scripts/python/powerpc-hcalls.py |   4 +
+ 3 files changed, 151 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index dff90a7d7f70..cb0ea53491e6 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -362,7 +362,11 @@
+ #define H_GUEST_DELETE		0x488
+ #define H_PKS_WRAP_OBJECT	0x490
+ #define H_PKS_UNWRAP_OBJECT	0x494
+-#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
++/* 0x498 reserved; 0x4A4 = H_FREE_LOGICAL_LAN_BUFFER_QUEUE (unused here) */
++#define H_REG_LOGICAL_LAN_QUEUE 0x49C
++#define H_ADD_LOGICAL_LAN_BUFFERS_QUEUE 0x4A0
++#define H_FREE_LOGICAL_LAN_QUEUE 0x4A8
++#define MAX_HCALL_OPCODE	H_FREE_LOGICAL_LAN_QUEUE
  
-+def require_link_autoneg(cfg):
-+    """ Skip if local or remote device don't support link aneg """
-+    # Does local device support link aneg
-+    if not ethtool(f"{cfg.ifname}", json=True)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"{cfg.ifname} doesn't support link autoneg")
-+
-+    # Does remote device support link aneg
-+    if not ethtool(f"{cfg.remote_ifname}",
-+                   json=True, host=cfg.remote)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"Remote {cfg.remote_ifname} doesn't support link autoneg")
-+
- def forced_link_settings(cfg):
-     """ Returns a string to pass to ethtool -s with speed/duplex corresponding
-         to the current settings.
-@@ -324,6 +335,20 @@ def get_peer_pause_lp_advertising(cfg):
-         ksft_pr(f"Warning: {cfg.remote_ifname} does not report the LP's advertising")
-         return errno.EOPNOTSUPP, None
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index d87713668ed3..5c0b9f61eec9 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -66,6 +66,148 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+ 			    desc5, desc6, desc7, desc8);
+ }
  
-+def require_pause_supported_anyof(cfg, linkmodes):
-+    """ Skip if local device doesn't support any of the passed modes """
++/**
++ * h_register_logical_lan_queue - Register a subordinate receive queue
++ * @unit_address: Device unit address
++ * @buffer_list: DMA address of 4KB page for tracking registered buffers
++ * @rec_queue: Buffer descriptor of receive queue
++ * @queue_handle: Output queue handle on success (may be NULL)
++ * @irq: Output hypervisor IRQ number on success (may be NULL)
++ *
++ * Registers a subordinate receive queue with the hypervisor.
++ *
++ * Return:
++ *   H_SUCCESS (0) on success
++ *   H_PARAMETER if parameters are invalid
++ *   H_BUSY / H_LONG_BUSY_* if the resource is busy; retry
++ *   H_FUNCTION if firmware does not support this hcall
++ *
++ * On success, hypervisor returns:
++ *   R3: H_SUCCESS
++ *   R4: Queue handle
++ *   R5: IRQ number for this queue
++ */
++static inline long
++h_register_logical_lan_queue(unsigned long unit_address,
++			     unsigned long buffer_list,
++			     unsigned long rec_queue,
++			     unsigned long *queue_handle,
++			     unsigned long *irq)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
 +
-+    ret, _ = get_local_pauseparams(cfg)
-+    if ret != 0:
-+        raise KsftSkipEx("device doesn't allow getting pauseparams")
++	rc = plpar_hcall(H_REG_LOGICAL_LAN_QUEUE,
++			 retbuf, unit_address,
++			 buffer_list, rec_queue);
 +
-+    _, pause_support = get_local_pause_supported(cfg)
-+    for lm in linkmodes:
-+        if lm in pause_support:
-+            return
++	if (rc == H_SUCCESS) {
++		if (queue_handle)
++			*queue_handle = retbuf[0];
++		if (irq)
++			*irq = retbuf[1];
++	}
 +
-+    raise KsftSkipEx(f"Local device doesn't support any of {linkmodes}")
++	return rc;
++}
 +
- def require_pause_supported_allof(cfg, linkmodes):
-     """ Skip if local device doesn't support all of the passed modes """
- 
-@@ -362,6 +387,49 @@ def require_peer_pause_supported_allof(cfg, linkmodes):
-         if lm not in pause_support:
-             raise KsftSkipEx(f"Remote device doesn't support {lm}")
- 
-+def supported_pauseparams(cfg):
-+    """ The rx/tx params covering every mode the local device supports """
++/**
++ * h_add_logical_lan_buffers_queue - Add buffers to subordinate queue
++ * @unit_address: Device unit address
++ * @queue_handle: Queue handle from h_register_logical_lan_queue() or
++ *		  h_register_logical_lan_with_handle() (queue 0)
++ * @buffersznum: Buffer size (upper 32 bits) | count (lower 32 bits)
++ * @ioba12: Buffer addresses 1 and 2 packed ((addr1 << 32) | addr2)
++ * @ioba34: Buffer addresses 3 and 4 packed
++ * @ioba56: Buffer addresses 5 and 6 packed
++ * @ioba78: Buffer addresses 7 and 8 packed
++ * @ioba910: Buffer addresses 9 and 10 packed
++ * @ioba1112: Buffer addresses 11 and 12 packed
++ *
++ * Return:
++ *   H_SUCCESS - All buffers added successfully
++ *   H_PARAMETER - Invalid parameters
++ *   H_HARDWARE - Hardware error
++ *   H_FUNCTION - Firmware does not support this hcall
++ */
++static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
++						   unsigned long queue_handle,
++						   unsigned long buffersznum,
++						   unsigned long ioba12,
++						   unsigned long ioba34,
++						   unsigned long ioba56,
++						   unsigned long ioba78,
++						   unsigned long ioba910,
++						   unsigned long ioba1112)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
 +
-+    _, pause_support = get_local_pause_supported(cfg)
-+    if "Pause" in pause_support:
-+        return 1, 1
-+    if "Asym_Pause" in pause_support:
-+        return 0, 1
++	return plpar_hcall9(H_ADD_LOGICAL_LAN_BUFFERS_QUEUE,
++			    retbuf, unit_address,
++			    queue_handle, buffersznum,
++			    ioba12, ioba34, ioba56,
++			    ioba78, ioba910, ioba1112);
++}
 +
-+    raise KsftSkipEx("Local device doesn't support pause")
++/**
++ * h_free_logical_lan_queue - Deregister subordinate receive queue
++ * @unit_address: Device unit address
++ * @queue_handle: Queue handle from h_register_logical_lan_queue() or
++ *		  h_register_logical_lan_with_handle() (queue 0)
++ *
++ * Deregisters and frees all structures associated with the subordinate queue.
++ *
++ * Return:
++ *   H_SUCCESS - Queue freed successfully
++ *   H_PARAMETER - Invalid parameters
++ *   H_HARDWARE - Hardware error
++ *   H_STATE - VIOA not in valid state
++ *   H_BUSY / H_LONG_BUSY_* - Resource busy, retry
++ *   H_FUNCTION - Firmware does not support this hcall
++ */
++static inline long h_free_logical_lan_queue(unsigned long unit_address,
++					    unsigned long queue_handle)
++{
++	return plpar_hcall_norets(H_FREE_LOGICAL_LAN_QUEUE,
++				  unit_address, queue_handle);
++}
 +
-+def set_local_pause_autoneg(cfg, aneg):
-+    """ Enable/Disable local pause autoneg """
++/**
++ * h_register_logical_lan_with_handle - Register primary queue and get handle
++ * @unit_address: Device unit address
++ * @buffer_list: DMA address of buffer list
++ * @rec_queue: Buffer descriptor of receive queue
++ * @filter_list: DMA address of filter list
++ * @mac_address: MAC address
++ * @queue_handle: Output parameter for queue handle (may be NULL)
++ *
++ * Registers the primary receive queue (queue 0) with the hypervisor and
++ * returns the queue handle. This is needed in multi-queue mode to use
++ * h_add_logical_lan_buffers_queue() for all queues including queue 0.
++ *
++ * Return: H_SUCCESS (0) on success, error code otherwise
++ */
++static inline long
++h_register_logical_lan_with_handle(unsigned long unit_address,
++				   unsigned long buffer_list,
++				   unsigned long rec_queue,
++				   unsigned long filter_list,
++				   unsigned long mac_address,
++				   unsigned long *queue_handle)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
 +
-+    ret, _ = ethtool_ret(f"-A {cfg.ifname} autoneg {onoff(aneg)}",
-+                         is_get=False)
-+    return ret
++	rc = plpar_hcall(H_REGISTER_LOGICAL_LAN, retbuf,
++			 unit_address, buffer_list, rec_queue,
++			 filter_list, mac_address);
 +
-+def check_local_pauseparams(cfg, aneg, rx, tx):
-+    """ Check that the local pauseparams are the passed parameters """
++	if (rc == H_SUCCESS && queue_handle)
++		*queue_handle = retbuf[0];
 +
-+    ret, params = get_local_pauseparams(cfg)
-+    ksft_eq(ret, 0)
-+    if ret != 0:
-+        return
++	return rc;
++}
 +
-+    ksft_eq(params["autonegotiate"], bool(aneg), "pause autoneg")
-+    ksft_eq(params["rx"], bool(rx), "rx pause")
-+    ksft_eq(params["tx"], bool(tx), "tx pause")
-+
-+def check_local_advertising(cfg, linkmodes):
-+    """ Check that the local advertised modes are the passed parameters """
-+
-+    _, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(adv, linkmodes, "advertised pause modes")
-+
-+def check_local_lp_advertising(cfg, linkmodes):
-+    """ Check that the local lp_advertised modes are the passed parameters """
-+
-+    ret, adv = get_local_pause_lp_advertising(cfg)
-+    if ret == 0:
-+        ksft_eq(adv, linkmodes, "link partner advertised pause modes")
-+
- def expect_pauseparams_set(ret, linkmodes, supported, note):
-     """ Whether ethtool -A had to work or to be refused, given what the local
-         device supports
-@@ -747,12 +815,218 @@ def pause_aneg_resolution(cfg, settings):
-         ksft_eq(remote_pauseparams["negotiated"]["rx"], expected_lp_rx)
-         ksft_eq(remote_pauseparams["negotiated"]["tx"], expected_lp_tx)
- 
-+@ksft_disruptive
-+def pause_autoneg_state_adv(cfg):
-+    """Validate that toggling pause advertising changes the advertised linkmodes
-+
-+    When disabling pause autoneg, we enforce the pause params based on what user
-+    asks, instead of relying on the negociation process (which may not be what
-+    the user asked for). In forced pause settings, we don't advertise pause and
-+    asym_pause bits.
-+
-+    Failing this test means that .set_pauseparam in the MAC driver doesn't
-+    forward to the PHY (in charge of advertising these bits) that we are in
-+    fixed pause mode.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    pause_setup(cfg)
-+
-+    set_peer_pauseparams(cfg, True, True, True)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable all possible pauseparams with pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, True)
-+    ksft_eq(ret, 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Make sure we advertise them
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, pause_to_linkmodes(rx, tx))
-+
-+    # Disable pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, False)
-+    ksft_eq(ret, 0)
-+
-+    # This may trigger a link renegociation
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # We shouldn't be advertising anything anymore
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, [])
-+
-+    # Validate on the LP that we aren't advertising anything
-+    ret, adv = get_peer_pause_lp_advertising(cfg)
-+    if ret == errno.EOPNOTSUPP:
-+        return
-+
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, [])
-+
-+@ksft_disruptive
-+def pause_autoneg_state_params(cfg):
-+    """Validate the pause params when transitioning between fixed pause
-+       params and negotiated ones. The goal is to make sure that user
-+       intent on the RX and TX pause params are stored when user decides
-+       to use negotiated parameters instead. The main gotcha lies on the
-+       fact that when pause autoneg is used, the autoneg result may differ
-+       from the user intent.
-+
-+    Failing this test means the MAC driver is overwriting the user intent
-+    when switching to forced pause.
-+    """
-+
-+    require_pause_supported_allof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    # Set peer user intent to RX on TX on, with Pause autoneg on
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Set the local intent to RX on TX off with pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, 1, 0, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    # Peer advertisiong Pause + Asym and us advertising Pause means we are
-+    # actually using RX on TX on here, which is different than the intent.
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+    # Disable pause autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, False), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # The pauseparams must still be what we configured before, and not the
-+    # previously negotiated ones
-+    check_local_pauseparams(cfg, False, 1, 0)
-+
-+    # Re-enable autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    # We must be advertising our intent again, and not RX on TX on, which would
-+    # be "Pause" only.
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+@ksft_disruptive
-+def pause_autoneg_off_while_link_autoneg_on(cfg):
-+    """ Validate that when link autoneg is on but pause autoneg is off, we do
-+        not use negotiated pause parameters.
-+
-+        Failing this test means the MAC driver incorrectly accounts for the
-+        negotiated pause parameters even with pause aneg off, likely due to
-+        confusion between link autoneg and pause autoneg.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable pause autoneg with all the locally supported modes enabled
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Disable Pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, False), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+    # Pause autoneg must read "disabled"
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+    set_peer_pauseparams(cfg, 0, 0, True)
-+    ksft_eq(wait_for_aneg(cfg, link_drop=True), True)
-+
-+    ip(f"link set {cfg.remote_ifname} down", host=cfg.remote)
-+    ip(f"link set {cfg.remote_ifname} up", host=cfg.remote)
-+    ksft_eq(wait_for_aneg(cfg, link_drop=True), True)
-+
-+    # Pause autoneg must still be off even after a link renegotiation
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+@ksft_disruptive
-+def pause_autoneg_link_autoneg(cfg):
-+    """Validate pause autoneg and link autoneg interactions. The link autoneg's
-+       admin status (i.e. do we autoneg link parameters or force them) must not
-+       impact the pause autoneg status. While link autoneg is disabled, we don't
-+       negotiate the pause params, however we must keep pause autoneg on as this
-+       is the user intent. When link autoneg is re-enabled, pause params must be
-+       derived from the negotiation.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+    adv = pause_to_linkmodes(rx, tx)
-+
-+    # Enable all possible pause modes and autoneg
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, rx, tx)
-+    check_local_advertising(cfg, adv)
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+    # Disable link autoneg, at the speed and duplex the link runs at
-+    forced = forced_link_settings(cfg)
-+    if not forced:
-+        raise KsftSkipEx("Can't tell what to force the link at")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.remote_ifname} autoneg off {forced}",
-+                         is_get=False, host=cfg.remote)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the peer's link at {forced}")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg off {forced}",
-+                         is_get=False)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the link at {forced}")
-+
-+    if not wait_for_aneg(cfg):
-+        raise KsftSkipEx(f"No link when forced at {forced}")
-+
-+    # We must have pause autoneg still enabled, even if we don't negotiate pause
-+    check_local_pauseparams(cfg, True, rx, tx)
-+
-+    # Re-enable autoneg
-+    ethtool(f"-s {cfg.remote_ifname} autoneg on", host=cfg.remote)
-+    ethtool(f"-s {cfg.ifname} autoneg on")
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Pause autoneg must still be on
-+    check_local_pauseparams(cfg, True, rx, tx)
-+    check_local_advertising(cfg, adv)
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
- def main():
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-         cfg.ethnl = EthtoolFamily()
-         ksft_run([pause_test_support,
-                   pause_advertising_test,
-                   pause_aneg_resolution,
-+                  pause_autoneg_state_adv,
-+                  pause_autoneg_state_params,
-+                  pause_autoneg_off_while_link_autoneg_on,
-+                  pause_autoneg_link_autoneg,
-                   ],
-                  args=(cfg, ))
-     ksft_exit()
+ /* FW allows us to send 6 descriptors but we only use one so mark
+  * the other 5 as unused (0)
+  */
+diff --git a/tools/perf/scripts/python/powerpc-hcalls.py b/tools/perf/scripts/python/powerpc-hcalls.py
+index fedce1b68cad..afc354583b7b 100644
+--- a/tools/perf/scripts/python/powerpc-hcalls.py
++++ b/tools/perf/scripts/python/powerpc-hcalls.py
+@@ -217,6 +217,10 @@ hcall_table = {
+ 	# Key wrapping hcalls
+ 	1168: 'H_PKS_WRAP_OBJECT',
+ 	1172: 'H_PKS_UNWRAP_OBJECT',
++	# Logical LAN multi-queue RX (PAPR 11.20.00)
++	1180: 'H_REG_LOGICAL_LAN_QUEUE',
++	1184: 'H_ADD_LOGICAL_LAN_BUFFERS_QUEUE',
++	1192: 'H_FREE_LOGICAL_LAN_QUEUE',
+ 	# Platform-specific hcalls used by the Ultravisor
+ 	61184: 'H_SVM_PAGE_IN',
+ 	61188: 'H_SVM_PAGE_OUT',
 -- 
-2.55.0
+2.50.1 (Apple Git-155)
 
