@@ -1,109 +1,105 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4924A3B95E3;
-	Fri, 25 Sep 2026 17:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC53C988D;
+	Fri, 25 Sep 2026 17:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790358666; cv=none; b=jcObWZ6imBNecdYXhvgLMIIox07ye5H8ZaAtIfbMD4n6JEacD5Ep0ZJ6Tbl7QU+3LNf4c2TGuP1lzfRBJ9QlMy1PhGiuSTtptAPwUX1s9Kyyr8fxrdu+vJ83FyE7+FCtrA8XKoGQM0Mg47ucsSoXjaUi5e5K9BKb4hvUVrWhoUQ=
+	t=1790359055; cv=none; b=V+p8MIiRQztRjHZewCIAdnHi30WwDcI/YmzJkhDtbkQFQt0o4sJcYZWKSpdmHFN0MSjdImdkKMDVONaHzLCW8ozbJF38BaQPwhd088121cpUKVQUznS6rdbhNERqagC9eCurRkOmE+DOd8pRrugeO94W8VEV/PitqzRt11rlyms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790358666; c=relaxed/simple;
-	bh=nz1SBO1R+0x0jCLLINT/y4xflScWkZQLeM98WXZqVlc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=M3XVK//04HTAWFKlBwbxJM0SqV+3XYkMWJ4luoVY8fqWBpVIjx3YcnUgs9alzj0kXVvFVbJvTTdY9fAXIWlOc5bOdoKd3rOJydaDgqV3KFcBEGSTkO+fdJ/WIOyLvSBbOH8sxCDIC7OCs+NILEnIh1jBW61mWv3TSu4/exKOdsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=kpo8Awdr; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1790359055; c=relaxed/simple;
+	bh=PHxCuEeF4HHaxhjxw6i/PZUo0/JK1gx/Z7MoOSiiyQQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CY2x4bUdGFjcQ2o/mboYJq4thC45CWKp76VswY4/+5kEh7WgnAfqUMFMmkyFcSS7D1n4PvTpq7V+xr/w+T71Z8xacr87zN1P3ZvjFbOpMGlsb8JdSzA/vRLd0cupBr1Zq1mL2GBSpFBi4mrTIdiviOkPqOYH4xoXsZZlgcshVjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RN8h2xi9; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="kpo8Awdr"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id EBE50213B6;
-	Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=6U2jVolTPyjf0hZOUqxneWpoK28h5julF/NQ/IsfJoo=; b=kpo8Awdr5dg1
-	ba4VhMmeSuISIvuTJupwVqw+jEa8gw3OnxwEBhP2vnFB+45eXJosyXqucl1r8ZJ+
-	BSz6qNVM3JQRWVlQecmZCwbY9KkrAAViRXOpp9cNzT23CFE83VJRMe5jvqYyWwFS
-	MBr0r2WnBqNIQVTscUnCk67ZAx3mt3aCoykW1mHmP9cppK0iJEDb9HzQbz/7FIGc
-	IJLy/0kkEtY6pFQSMTasb006UKEnWL2A8qyj8zOHHYW4whSuEEED6JQWsL8FPWDA
-	7aoyYRh/65IXBP+i1Lpx+JL27NAgsWqknSH9OAZcvHv7cvkFQA2her3csLkZT8Nr
-	eZ9E3pXkVAkqRfq4seb7vr1IW26RXGg/BFID8y0hK0PZfEH7N0WKk/BBmX8OCBPB
-	jrX9etrjDUEwQwjO07oU0WEdQb+oMcz1rHV/LzajGClQElNa5T92tpMEshKIP2Gt
-	+0/MLNjvzyDtOU8HCL6iAkjT3kGActsrn3fQVHrywubNHvyhVn+SVDll6bJvsXlu
-	RiQlLyJYNqvqQmytKuQBuAEwINMjLfwNr9H7b4CIsgtdSvMYlgTVjz+Y80DDOzHv
-	+/oZosT4E/fU/ss/ktmrKl8BIMJXkr8SGTRMiUbTRpiAi2Wv3p//rrDJkJ+bxAii
-	ztT1JVn/bGZ33B98C9eMYpH+/Qe4tfA=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id D58746090A;
-	Fri, 25 Sep 2026 20:51:00 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68PHowPB063225;
-	Fri, 25 Sep 2026 20:50:58 +0300
-Date: Fri, 25 Sep 2026 20:50:58 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Axel Mierczuk <axel.mierczuk@1password.com>
-cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-        David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>, netfilter-devel@vger.kernel.org,
-        lvs-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, Willy Tarreau <w@1wt.eu>,
-        Keith Hoodlet <keith.hoodlet@1password.com>
-Subject: Re: [PATCH nf 0/2] ipvs: fix OOB write when NATing ICMPv6 errors
- quoting non-first fragments
-In-Reply-To: <20260925141155.17603-1-axel.mierczuk@1password.com>
-Message-ID: <0458880e-5e0f-1f11-7ce2-e0490796c832@ssi.bg>
-References: <20260925141155.17603-1-axel.mierczuk@1password.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RN8h2xi9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DA2AF1A1022;
+	Fri, 25 Sep 2026 17:57:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A3A266073B;
+	Fri, 25 Sep 2026 17:57:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24CFC102F1E35;
+	Fri, 25 Sep 2026 19:57:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790359045; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=T8jXapbk2liRqW3NjH6Ovlrn1tf36ydrI5huGY01104=;
+	b=RN8h2xi99PBulxUYPNzsT1yIuwSGdn6TaVPiO6KGaPsOAwiC5q1KAtMMPMnOQRl3fcfTbO
+	5FOAB+L9bYqRP2zaf1A2YFh0133NEfj6sMe7ahHIhRRssZ+JYDPHtM59rSNPjOma313R6V
+	j4CGgopYeh290VzmPUuOq/rWiabOtiNbZPeXofhkbwYlSE6fvQCcPZghvXhyab7lFhhz1i
+	kIVjG3hlzrtax3Ba3StcuiiuQ2cSoLW58Z3GOFZ3r/ok/tcK0YRvFu59X6tX4LHNRsUqx9
+	C0oN8duUFz3YqkqvhOMFMPFgIy4WwsNGcbkrx1/sd+WfTzljdZgiWQNScwZN2Q==
+Message-ID: <7782c263-503d-485b-9029-de611536abd6@bootlin.com>
+Date: Fri, 25 Sep 2026 19:57:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net v3 1/2] net: ethtool: reject an out of range hwtstamp
+ provider index
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260925135237.3432266-1-nb@tipi-net.de>
+ <20260925135237.3432266-2-nb@tipi-net.de>
+ <0ddf8280-0a66-4dbf-9195-1b90e97015c5@bootlin.com>
+ <5ff0fa6eee1605e546d433c7944fa769@tipi-net.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <5ff0fa6eee1605e546d433c7944fa769@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 
-	Hello,
 
-On Fri, 25 Sep 2026, Axel Mierczuk wrote:
-
-> This series fixes a 16-byte OOB write past the verified skb area,
-> reachable through ICMPv6 errors that quote non-first fragments.
-> Following Julian's suggestion, it preserves ESP ICMPv6 handling.
+On 9/25/26 16:07, Nicolai Buchwitz wrote:
+> Hi Kory
 > 
-> Patch 1 includes the embedded IP header in ciph.len at both ICMPv6
-> call sites when parsing stops at a non-first fragment. The change
-> follows the ip_vs_fill_iph_skb_icmp() calls and does not depend on
-> patch 2.
+> On 25.9.2026 15:55, Kory Maincent wrote:
 > 
-> Patch 2 makes ipv6_find_hdr() set *offset to the fragment payload
-> for non-first fragments when target < 0, so every successful return
-> updates it. It carries no Fixes tag because it defines an offset
-> that was previously unspecified.
+>> [...]
 > 
-> Axel Mierczuk (2):
->   ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
->   ipv6: update *offset for non-first fragments in ipv6_find_hdr()
+>>>   static const struct nla_policy
+>>>   ethnl_ts_hwtst_prov_policy[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_MAX + 1] = {
+>>> -    [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
+>>> +    [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
+>>> +        NLA_POLICY_FULL_RANGE(NLA_U32, &ethnl_ts_prov_index_range),
+>>>       [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER] =
+>>>           NLA_POLICY_MAX(NLA_U32, HWTSTAMP_PROVIDER_QUALIFIER_CNT - 1)
+>>>   };
+>>
+>> I think you can simply do this:
+>> [ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
+>>     NLA_POLICY_MAX(NLA_U32, INT_MAX),
 > 
->  net/ipv6/exthdrs_core.c         |  6 +++++-
->  net/netfilter/ipvs/ip_vs_core.c | 14 ++++++++++++++
->  2 files changed, 19 insertions(+), 1 deletion(-)
+> That was my initial thought, but unfortunately it doesn't work. struct 
+> nla_policy's
+> .max is s16 and INT_MAX is truncated to -1. It ends up as U64_MAX in the 
+> range check
+> and in the end nothing gets rejected.
+> 
+>      include/vdso/limits.h:8:25: warning: overflow in conversion from 'int'
+>      to 'short int' changes value from '2147483647' to '-1' [-Woverflow]
 
-	Both patches look good to me, thanks!
+Indeed.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Acked-by: Julian Anastasov <ja@ssi.bg>
+Thank you!
 
-	The ipv6 patch needs review from the net team and
-may need some Fixes line:
-
-Fixes: b777e0ce7437 ("[NETFILTER]: make ipv6_find_hdr() find transport protocol header")
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
