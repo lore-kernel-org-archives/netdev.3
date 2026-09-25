@@ -1,396 +1,807 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A02368941
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790318769; cv=pass; b=ptQ4G9xe1ru3Twb/4SjUlXBe5y7I0nROnFDjel7hQHG1W/m1k93ev9YRUxV5dmxC+GYGb8K6jKsgqYdTs2aatWFJilSIbKUGBtHbxxslRrBvTA7zr0JO9OEe93J+q9N7v6dQBquHuswec/iJyZ+d0PwcsF8/9G+1Kpb+j+iS9Yc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790318769; c=relaxed/simple;
-	bh=FEst1Fihh4zLZdsP7t7AJnUhd+Lgtr3Hn8aaYvJzXAY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZoFDGXHVLYaaxazPpcCuGmf18oMOAezKs9NuYSwyhEQXLj+jHLVqsUvR2dZdDvpWI/fUccEFtBFnk9VXqVz0rtMafHoGnMOGgQXpNTKV2he4n7EK++WO5SqV5Nmn5eAIKUTpbDf3SclqfvxrWKl6WZPZNQZnzoFU2tws3afXWkM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a3h98gOT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AFk9gD3s; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED3341D23A
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790318965; cv=none; b=R8/oc0FnRWqJqmKgMBZMqC1dCFXEhFPhVThDam9DQY92qaFxGgsYGZA7iWNmFIfTVy93y4C+mJGsmgzzMJ1UKUtHDUMrq5L4ZPpBQ7iEqej6rj4/j09OxZ4qJ7FqxFvDza5hqhvvPd8r/q5GJxQrmQl6A/O4xa4s5Wcwr40+Hn0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790318965; c=relaxed/simple;
+	bh=+y+EG/yEaURQruigjr3uyL1zNGFnUr3ZO0meeG+czow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDgLztY/SUYiBJD38OkDh22YxKx9Kjyy/gZgXd3CtNoWtY3KyoX9iRdmxOk+1axbbZdn5ySitwvjJLMnb65lDvJGXB0O3N+d3zRW9rvCu7jSSC2az0IFhjZt/7JMkvnoU/HBsEo/PVoTeAhTp6Jj12ROMrrn7JqCgFqJAJ4tF80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HFiboCVZ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a3h98gOT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AFk9gD3s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790318766;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+LmCbqDZvjwS/KxFRtn0hfL/FdPZYfZBnFRt+2hBYWE=;
-	b=a3h98gOT2nkpuPuBaysqqEOsLbaIb2L80oidndbtgjcjEl2QaL4s3F/GREG9q/GkPKJOI1
-	/6w4J0XRH+AyXW1fm7GuzXzFx3DpfLl+lox1KmKtKACMuC/ItHHnisdKSMZiRrBwHcG5Ew
-	cQHNtC4+Ty7Xc5wSu2feUl+L0akQH0c=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-K8xw73dAPUCS3Ws9Q_7dKg-1; Fri, 25 Sep 2026 02:46:02 -0400
-X-MC-Unique: K8xw73dAPUCS3Ws9Q_7dKg-1
-X-Mimecast-MFC-AGG-ID: K8xw73dAPUCS3Ws9Q_7dKg_1790318762
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc4922b7c31so417704a12.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:46:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790318762; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pdeJCnQjDtXMLiUAY4bFxdFTz5u55bIH3RFH0DT62dP7QVB9MdSWNSwIxLree88PHh
-         hAZnkwYuTPvjHrmBSWxN2omzgCaFSqUjAZQVm+QPQ5/vgKSl+Zi0Q7fU5M2R+vYxYajB
-         69K72rM5r844wWRhjjIlDFzvGS89mRVF8A+HGXRqm9tb/qA+OwofQBNy0/ZAPWg//azC
-         yIhdhl9rdk3cilItOA9va/4iiVhziu6B6dJxEu0e+/7qjwIkS07wWKeCnCqoaKR2aMWa
-         9gdFNtZEPH1s1SO9EqZyLyBReSDNFVr7TPhYkmT0W5aXXsmlzEe7YOh6O64V+acYP+JT
-         vwMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+LmCbqDZvjwS/KxFRtn0hfL/FdPZYfZBnFRt+2hBYWE=;
-        fh=aSb1CwwSjq4BxyHgrEV32qRWbEIRnIIL1Htkab7XZpY=;
-        b=eVY5+s/6L6C3Gzc/R0XYHWYA4aotPkFgdfHnovc7b/8tddWb+TPlz20VbtNi7QfBzv
-         GcHq4MStFSYhthINH1EeQwUiG87ujqHH6kHFvDIkfgZcx3HneJxfGSYoabYe6XM7Zlbe
-         OlSmGSBs5fLhi5q2CnpWPyUVvlvgDQPJprFXWgiiFlcNJHnxHOMpCACSSjI3w+2Pp0hw
-         oTA7Hnkg88XcOIpc/UGbM8ALVDEyfSKPz2U0ImqY2nrh6dQRFqef0VnP+1PKedKuR6Le
-         wPbPK9mHQjfv123X8xMUTLTMgOU+3RJokW0F5jT0hjAoWykGpjQQtQOH/cHhnOwVYqVe
-         juIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790318762; x=1790923562; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+LmCbqDZvjwS/KxFRtn0hfL/FdPZYfZBnFRt+2hBYWE=;
-        b=AFk9gD3s8CqGlk4LP6ZzeNKOgNLUqyOxwpfDT7Z2XFHJv+TsvuLuMKSvjef0CNe1YX
-         1AdXuggKgaZHjXrkC+bVB1/NLtjUHZR5PuENoDXWa79B0BezWX61b435zom3Ty10uhK8
-         v+Bdriyvoq6i4T/nkst1P9EVPpx9Af4MQjXOiswZptisLmnZTVYDTcCFrXXrCz9HRWOZ
-         mxGXqwOfP/GuO1P33lrwgy83TTVrX9wlplhzWcK9R2h+MutlZxJO/xpytaH0JpPkodsF
-         mEklXwcK5xOzIuBGKlGKP76faXahVEoW/B9RSmWTm7NevfzoGKe5YH4fftjz0ea0uXgN
-         4tRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790318762; x=1790923562;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+LmCbqDZvjwS/KxFRtn0hfL/FdPZYfZBnFRt+2hBYWE=;
-        b=RMYYYfoGwExMmSxNyOwr+tKTZ6SepOVk86yPZbZxDLaYfbH4XMnTA37B/A5rP5XTyk
-         9toomudvZQH/72UZcDzThZeZXYfykwqy+TXsLs4q9eF24uFii3bbVfz36TSQt7esXg/o
-         HjNRnSeDvnrS+2IKoqRwYyUHTO4oFE0tyYlwhhkapSITjPyxf6TKUr3C7n9BZbId37QL
-         Mi+RR5f/hKKKm9JtLp6wNnj0CygDfUS0J6ysftg0ArNNH+LN55FajA0gdS1XFpdbT0b6
-         bU+AVLjSKlp/7s8LRuv5d0WAZTfAB1+Y8O7ED89GZpqKMbA6dr961oNna1Zdatt9ODX2
-         aCMA==
-X-Gm-Message-State: AFuF++kelsqyKAyhqd7nvJ6/vfV6gilxcQ9Df4iSjQqyHYvxNC82Utn/
-	X8Eoant1Jh8LF6U4xjbEoOQVGPlk2y9goKfg6z3M8iYn3c00u5eh256xyqhrUzut/0eDNHNfjCI
-	ZzaMrNFk0Yshgxl9kS0nVpBn9UcclNMIPnmG+d3FQCfv1E4f1MJVrImQoaZMHDMlR7tc63jgW2q
-	0komGt+8Z6GGFrVhpKWam843zkabMluOM/
-X-Gm-Gg: AYBFou0hoLodrl3inNRBANrWnJj3NmShdKoI2mU81aFLyXy/EBh1UlGpJ67NOwviLJ6
-	rxEyNtE5wcTR1r5uO9MSBsgDqPcow9BEHlwASf9XX58tjxLX6/Nm819J7np0YYXzOoCLxha9/1G
-	+3stVia0AgbISz3aBxIvSscPwKlJmTdqMdCKthdvGuzbd85H0xI+Fqa6izPn3lCi5tClnPghK9I
-	HKLBfHJE9oIxpHr
-X-Received: by 2002:a05:6a20:2d21:b0:3dd:a196:30a6 with SMTP id adf61e73a8af0-3de0e9b22f2mr4534991637.86.1790318761682;
-        Thu, 24 Sep 2026 23:46:01 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2d21:b0:3dd:a196:30a6 with SMTP id
- adf61e73a8af0-3de0e9b22f2mr4534959637.86.1790318760818; Thu, 24 Sep 2026
- 23:46:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HFiboCVZ"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4ahnh4105127;
+	Fri, 25 Sep 2026 06:49:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=k/xe+U
+	LOLZjYDf8Cpv5Sa1oCJ54GSHNH9o5UNzMhgQI=; b=HFiboCVZx8/sRzBOb0/aPw
+	LmT5Blwf5ek0lwm97QVo8i0Glra4KUe4yEywi/wCIrIQPnGzUFxLlqm1GkcObRRV
+	LBV6fDixLNnzTdqFO8lykCNG5o9oeB0IEe6tzNdmE4DSMExgdgLc+TG+NEKPhb4B
+	26InQ9y6cjFX68NGnp4OchX0A7x/yaicQE4vXaP339+Ze8Oa8AoypO+Az4p1/T0A
+	bnQFlYlpEQrqQ1SU6iv2VJ8LQhRMF2HsNRevK6/ILY79Wn/h4nWP1l2MadnpN4YB
+	qB1yb580aZ2N/H/QjTfQMDPTXGea7aihnz2fcX9qPR7dOUGGkuo0wrlsReZhXgqQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1vtej-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 06:49:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4lhMo3245047;
+	Fri, 25 Sep 2026 06:49:02 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbu91a2b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 06:49:02 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P6n0xV56492470
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 06:49:00 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36C9358063;
+	Fri, 25 Sep 2026 06:49:00 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75F925804B;
+	Fri, 25 Sep 2026 06:48:57 +0000 (GMT)
+Received: from [9.67.88.81] (unknown [9.67.88.81])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Sep 2026 06:48:57 +0000 (GMT)
+Message-ID: <e7242d1f-6cad-4a81-8a29-839e11fafa72@linux.ibm.com>
+Date: Thu, 24 Sep 2026 23:48:56 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922135123.46205-1-avirdi@redhat.com> <179025806955.2160803.14946061126391357248@kernel.org>
- <CAJHXLyHH-RG_y04yT-SV+r3+_scac15iKrMtVfNG9Ti3wQFmrw@mail.gmail.com>
-In-Reply-To: <CAJHXLyHH-RG_y04yT-SV+r3+_scac15iKrMtVfNG9Ti3wQFmrw@mail.gmail.com>
-From: Anirudh Virdi <avirdi@redhat.com>
-Date: Fri, 25 Sep 2026 12:15:48 +0530
-X-Gm-Features: AclHuK8sXxjzZGnFiyrwFUNGm5czlW8cbMfwRi3V4i4mMNUe7qHDXLQs9PnHxA8
-Message-ID: <CAJHXLyGhZFtaX_AzfqNJW3f4_EVM=W6834uB5srYycvfgGHgnQ@mail.gmail.com>
-Subject: Re: [PATCH net] net/mlx5: Fix slab-out-of-bounds when handling team
- device events
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,v6,10/15] ibmveth: Enable multi-queue RX receive path
 To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org, 
-	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	shayd@nvidia.com, ohartoov@nvidia.com, maorg@nvidia.com, 
-	linux-rdma@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
+        shaik.abdulla1@ibm.com
+References: <7b633af89ff450338246520b40737c5819319234.1788102125.git.mmc@linux.ibm.com>
+ <178845904035.3394541.12032685320275695105@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <178845904035.3394541.12032685320275695105@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: tYRIndHetbjBgeSxZf5mctiavlEikvrT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAyNiBTYWx0ZWRfX3wYtvWo239lF
+ yc7fMKpZ8ODc0E1bOyFGQsTYH9HqIctpGqicuiJPQ4HvvY0jjNFZ5vb6APVHcohdjnbRlHhBbuE
+ DXnx2TK5JJaaWLIH/fmf8uYthGgfBbVFKxWfLWNegxM0EojZXN1o8bPTpwPIRFacMmh64op69Zu
+ lLefuTqlncPJxj2a9lzVM1XJ4GMDQVHoWrZEx4BHF6MSEt0uWk8fVq3PnVs8qyQ3LnzOD23O2tE
+ ZM3RnYFG+DjiPrGkhwq/LsC6Z2zc8dv8fiz4AtMNUK09u0WfyMXZu9dPWo9MuK8iXDlB9Vh/GL0
+ GTL8VNcKC2l7dxrP4UxXcDeOwVqaSqzdaC26lHZtBeAHiTALSqTjH9IDdc7jaMYTSL+vB+44WcO
+ wx3Hb8F5uiarzc6GcvJNu/9TzxBxmrXxvCCvg3nwL8EotvW+ec7AlM3UqN21UM9V42UKXSZ1xTo
+ 4kf1Q02oC3B9785CnSA==
+X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab6195f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=RqQaUHGD_TMBZryktfQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAyNiBTYWx0ZWRfXxtR5u6cr2csG
+ CBKLNcPzC4cp4hd/LmiVMie0iUD9Ve5cg7mCJJQIEpgiC5DMy/Ua9y6/tjXBrwk24AU+khwn3dE
+ Muq7LjoIobSsT1OedZI7VT2TfutyhZc=
+X-Proofpoint-GUID: dAXyYYzuqCi0Jdljb7faGiIu7bwAUb42
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250026
 
-Thank you for the detailed analysis, Sashiko!
+Thanks for the review feedback.
 
-The concerns you've raised have been addressed in v2 of this patch:
-
-1. Over-broad guard: v2 now keeps netif_is_lag_master() at the top of
-   mlx5_handle_changeupper_event() and only wraps the bond-specific API cal=
-ls
-   (bond_slave_get_rcu/bond_is_slave_inactive) with netif_is_bond_master().
-   This allows team LAG tracking to continue working while preventing the
-   out-of-bounds read.
-
-2. Commit message inaccuracy: v2 correctly narrows the scope to only
-   mlx5_handle_changeupper_event(), acknowledging that
-   mlx5_handle_changeinfodata_event() is only reached from bonding code pat=
-hs.
-
-3. TC mirred issue: Noted as pre-existing. This can be addressed in a
-   separate patch series after this fix merges.
-
-v2 is available at:
-https://lore.kernel.org/netdev/20260924064244.94045-1-avirdi@redhat.com/
-
-Feedback appreciated!
-
-
-On Fri, Sep 25, 2026 at 12:12=E2=80=AFPM Anirudh Virdi <avirdi@redhat.com> =
-wrote:
+On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 11 potential
+> issue(s) to consider:
 >
-> Thank you for the detailed analysis, Sashiko!
+> Critical: 0 · High: 1 (2) · Medium: 4 · Low: 6
 >
-> The concerns you've raised have been addressed in v2 of this patch:
+> - [High] In multi-queue mode ibmveth_setup_rx_interrupts() already
+>    unmasks the PHYP interrupt for every live RX queue, and ibmveth_open()…
+> - [Medium] Adapter-wide RX counters are not converted to per-queue
+>    storage while this commit enables up to min(nr_cpus,8) live RX queues:…
+> - [Medium] ibmveth_apply_mq_fallback() publishes adapter->num_rx_queues =
+>    1 at the top of ibmveth_open() but deliberately leaves…
+> - [Medium] ibmveth_open() now runs ibmveth_replenish_task() for every
+>    queue, and that function can queue reset work…
+> - [Medium] The new probe error paths call kobject_put() on the pool
+>    kobjects, which are embedded in struct ibmveth_adapter inside…
+> - [Low] ibmveth_get_channels() begins advertising max_rx/rx_count > 1 (up
+>    to min(num_online_cpus(), IBMVETH_DEFAULT_QUEUES)) while its peer…
+> - [Low] Probe enables min(num_online_cpus(), IBMVETH_DEFAULT_QUEUES) RX
+>    queues whenever the firmware MQ bit is present; each queue clones…
+> - [Low] The commit message itself states that this commit ships known-
+>    wrong statistics and new schedule_work() producers whose remove-path…
+> - [Low] The pool sysfs kobject creation loop in ibmveth_probe() changes
+>    from 'ignore kobject_init_and_add() failure and continue probing' to…
+> - [Low] The ibmveth_setup_rx_interrupts() kernel-doc still describes the
+>    pre-MQ open sequence: "Single-queue open leaves PHYP masked here and…
+> - [Low] ibmveth_register_single_rx_queue() logs a signed `long lpar_rc`
+>    with the unsigned conversion "rc=0x%lx".
 >
-> 1. Over-broad guard: v2 now keeps netif_is_lag_master() at the top of
->    mlx5_handle_changeupper_event() and only wraps the bond-specific API c=
-alls
->    (bond_slave_get_rcu/bond_is_slave_inactive) with netif_is_bond_master(=
-).
->    This allows team LAG tracking to continue working while preventing the
->    out-of-bounds read.
->
-> 2. Commit message inaccuracy: v2 correctly narrows the scope to only
->    mlx5_handle_changeupper_event(), acknowledging that
->    mlx5_handle_changeinfodata_event() is only reached from bonding code p=
-aths.
->
-> 3. TC mirred issue: Noted as pre-existing. This can be addressed in a
->    separate patch series after this fix merges.
->
-> v2 is available at:
-> https://lore.kernel.org/netdev/20260924064244.94045-1-avirdi@redhat.com/
->
-> Feedback appreciated!
->
->
-> On Thu, Sep 24, 2026 at 7:30=E2=80=AFPM <netdev-bot+sashiko@kernel.org> w=
-rote:
->>
->> Thank you for your contribution! Sashiko AI review found 2 potential
->> issue(s) to consider.
->>
->> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 1
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwo=
-rk
->> know by including "pw-bot: cr" as a separate line at the end of your rep=
-ly
->> (one such reply per series is enough).
->>
->> - [High] Over-broad guard: replacing netif_is_lag_master() with
->>   netif_is_bond_master() at the very top of=E2=80=A6
->> - [Low] Commit message inaccuracy: the message states that
->>   mlx5_handle_changeinfodata_event() suffers the same team_port-=E2=80=
-=A6
->>
->> Pre-existing issues:
->> - [High] The identical bug class the patch claims to eliminate remains
->>   reachable in the mlx5e TC mirred offload path: get_fdb_out_dev()=E2=80=
-=A6
->>
->> --
->>
->> net/mlx5: Fix slab-out-of-bounds when handling team device events
->>
->> This changes the two LAG notifier helpers in mlx5's lag.c to gate on
->> netif_is_bond_master() instead of netif_is_lag_master(), so that a team
->> master no longer reaches bond_slave_get_rcu()/bond_is_slave_inactive().
->> The reported symptom is a KASAN out-of-bounds read when a team_port is
->> interpreted as a struct slave.
->>
->> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drive=
-rs/net/ethernet/mellanox/mlx5/core/lag/lag.c
->> > index dd14cdc378de0..2714d39ae7c24 100644
->> > --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
->> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
->> > @@ -1922,7 +1922,7 @@ static int mlx5_handle_changeupper_event(struct =
-mlx5_lag *ldev,
->> >       int changed =3D 0;
->> >       int i, idx =3D -1;
->> >
->> > -     if (!netif_is_lag_master(upper))
->> > +     if (!netif_is_bond_master(upper))
->> >               return 0;
->>
->> [Severity: High]
->> Does this early return do more than avoid the bonding-only calls?  The
->> only team-unsafe statements in mlx5_handle_changeupper_event() are furth=
-er
->> down in the for_each_netdev_in_bond_rcu() loop:
->>
->>         slave =3D bond_slave_get_rcu(ndev_tmp);
->>         if (slave)
->>                 has_inactive |=3D bond_is_slave_inactive(slave);
->>
->> Returning 0 at the top of the function also skips the computation of
->> tracker->tx_type, tracker->hash_type and tracker->is_bonded for any team
->> master.
->>
->> Since mlx5_lag_netdev_event() only writes the tracker back and queues th=
-e
->> work when a handler returns non-zero:
->>
->>         if (changed)
->>                 mlx5_lag_update_tracker_speed(&tracker, ndev);
->>
->>         ldev->tracker =3D tracker;
->>
->>         if (changed)
->>                 mlx5_queue_bond_work(ldev, 0);
->>
->> and mlx5_do_bond() gates activation on the tracker:
->>
->>         do_bond =3D tracker.is_bonded && mlx5_lag_check_prereq(ldev);
->>
->> can is_bonded ever become true again for mlx5 ports aggregated by a team
->> master?  Team does advertise the TX types mlx5 accepts =E2=80=94
->> team_upper_dev_link() sets lag_upper_info.tx_type =3D team->mode->lag_tx=
-_type,
->> with NETDEV_LAG_TX_TYPE_ACTIVEBACKUP in team_mode_activebackup and
->> NETDEV_LAG_TX_TYPE_HASH in team_mode_loadbalance =E2=80=94 which are exa=
-ctly the
->> two values the mode_supported test in this function allows.
->>
->> Would gating only the bond_slave_get_rcu()/bond_is_slave_inactive() bloc=
-k
->> on netif_is_bond_master() remove the out-of-bounds read while keeping
->> team-based LAG tracking?
->>
->> Related to this, does the driver's notifier state machine become
->> asymmetric?  mlx5_handle_changelowerstate_event() still admits team port=
-s:
->>
->>         if (!netif_is_lag_port(ndev))
->>                 return 0;
->>
->> and returns 1, so team NETDEV_CHANGELOWERSTATE events keep updating
->> tracker->netdev_state[] and queueing bond work while is_bonded can never=
- be
->> set.  mlx5_lag_update_tracker_speed() also still resolves a team master =
-as
->> the bond device:
->>
->>         if (netif_is_lag_master(ndev))
->>                 bond_dev =3D ndev;
->>
->> and publishes its speed through mlx5_lag_query_bond_speed().
->>
->> One more question on the changelog: with a Fixes: tag aimed at stable,
->> should the loss of hardware LAG offload for team-aggregated ports be
->> mentioned, since there is no extack or dmesg indication when the handler
->> bails out early?
->>
->> >
->> >       if (info->linking)
->> > @@ -2029,7 +2029,7 @@ static int mlx5_handle_changeinfodata_event(stru=
-ct mlx5_lag *ldev,
->> >       bool has_inactive =3D 0;
->> >       int idx;
->> >
->> > -     if (!netif_is_lag_master(ndev))
->> > +     if (!netif_is_bond_master(ndev))
->> >               return 0;
->>
->> [Severity: Low]
->> The commit message says:
->>
->>     The mlx5_handle_changeupper_event() and mlx5_handle_changeinfodata_e=
-vent()
->>     functions assume the upper device is a bonding device and call bondi=
-ng-
->>     specific
->>     APIs like bond_slave_get_rcu() and bond_is_slave_inactive().
->>
->> Can mlx5_handle_changeinfodata_event() actually be entered with a team
->> master?  NETDEV_CHANGEINFODATA has a single emitter in the tree, in
->> bond_option_active_slave_set():
->>
->>         call_netdevice_notifiers(NETDEV_CHANGEINFODATA, bond->dev);
->>
->> drivers/net/team/ never emits it, so this hunk looks like hardening of a=
-n
->> unreachable path rather than a second fix.  Could the changelog be narro=
-wed
->> to the mlx5_handle_changeupper_event() path, so stable backporters see t=
-he
->> real scope?
->>
->> Also, the sentence above is wrapped mid-word ("bonding-\nspecific") in t=
-he
->> changelog.
->>
->> >
->> >       rcu_read_lock();
->>
->> [Severity: High]
->> This isn't a bug introduced by this patch, but the same pattern is still
->> present in the mlx5e TC mirred offload path, and it may be worth fixing =
-in
->> the same series.  get_fdb_out_dev() in
->> drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c still uses th=
-e
->> generic check before a bonding-only accessor:
->>
->>         } else if (netif_is_lag_master(out_dev)) {
->>                 fdb_out_dev =3D bond_option_active_slave_get_rcu(netdev_=
-priv(out_dev));
->>
->> For a team master, netdev_priv() is a struct team, and
->> bond_option_active_slave_get_rcu() reads it as struct bonding:
->>
->> include/net/bonding.h:bond_option_active_slave_get_rcu() {
->>         const struct slave *slave =3D rcu_dereference_rtnl(bond->curr_ac=
-tive_slave);
->>
->>         return bond_uses_primary(bond) && slave ? slave->dev : NULL;
->> }
->>
->> bond_uses_primary() reads BOND_MODE(bond) out of unrelated bytes of the =
-team
->> private area, and bond->curr_active_slave aliases team->header_ops_cache
->> (struct team starts with pcpu_stats, it has no leading dev member).  If =
-the
->> garbage mode value happens to be one of the primary modes, does this
->> dereference header_ops_cache as struct slave * and return slave->dev as =
-a
->> bogus struct net_device *, which mlx5e_eswitch_rep() then dereferences?
->>
->> The reachable caller is parse_mirred():
->>
->>         out_dev =3D get_fdb_out_dev(uplink_dev, out_dev);
->>         if (!out_dev)
->>                 return -ENODEV;
->>
->> reached from tc_act_parse_mirred() when
->> netdev_port_same_parent_id(priv->netdev, out_dev) holds, which a team ma=
-ster
->> over mlx5 representors satisfies.  Should this site use
->> netif_is_bond_master() too, the way mpesw.c already does?
->>
->> --
->> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patc=
-hset/20260922135123.46205-1-avirdi%40redhat.com
->>
->
+> Pre-existing issues:
+> - [High] This commit makes the MQ reset producer live
+>    (adapter->multi_queue was hardcoded 0 before) and adds a new…
+> - [High] ibmveth_poll_controller() now replenishes and schedules every
+>    published RX queue instead of only queue 0, multiplying the exposure…
 >
 > --
 >
-> Anirudh Virdi
+> ibmveth: Enable multi-queue RX receive path
+>
+> This turns on the multi-queue RX path when firmware advertises
+> IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT, raises IBMVETH_MAX_RX_QUEUES from 1
+> to 16, and wires subordinate queue registration, IRQ setup and per-queue
+> replenish into open()/close().  Probe now selects min(num_online_cpus(),
+> IBMVETH_DEFAULT_QUEUES) RX queues and refreshes the VIO CMO entitlement.
+>
+> A few questions on the commit message first.
+>
+> [Severity: Low]
+> The changelog says:
+>
+>      Two things are knowingly left for patch 11. RX counters are racy:
+>      adapter->rx_no_buffer is assigned rather than summed from one queue's
+>      buffer-list page, so it reports whichever queue replenished last and
+>      can go backwards, while rx_packets, rx_bytes, rx_invalid_buffer and
+>      rx_large_packets are plain read-modify-writes now reached from several
+>      NAPI instances at once, so they can lose counts
+>
+> and:
+>
+>      This commit also adds schedule_work() producers, and the remove-path
+>      unregister / cancel_work_sync reorder and reset reg_state gate that
+>      make them safe land there too.
+>
+> Would it be preferable to reorder so the counter conversion and the
+> remove-path fix precede the commit that makes the MQ path live, rather
+> than shipping an intermediate commit that is documented as incorrect in
+> those two respects?
+>
+> The same paragraph documents a third, unrelated change:
+>
+>      On probe failure after pool kobjects were created, put them before
+>      free_netdev(). The leak is pre-existing and unrelated to multi-queue,
+>      so a standalone version also goes to net; the probe_cleanup helper
+>      lands in patch 11.
+>
+> Since this is described as unrelated and is being posted separately, could
+> it be dropped from this patch instead of open-coded on four error paths
+> here and then replaced by a helper later in the series?
+The remove-path fix (unregister_netdev then cancel_work_sync)
+and the NETREG_REGISTERED gate are folded into this patch,
+alongside the buffer-add H_FUNCTION reset producer.
 
+The counter conversion stays in Patch 11: we keep activation in
+this patch so all MQ bring-up logic is exercised together at
+this commit, and explicitly document the transient counter race
+resolved in Patch 11. If you prefer a Prepare/Enable split to
+keep intermediate counters strictly race-free, we can separate
+activation if requested.
 
+The pool kobject puts stay here: dropping them
+leaks on probe fail until Patch 11 extracts
+probe_cleanup. That is not the unwind
+standalone (Fixes: d43732ce021f). v7 waits
+for release before free_netdev().
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index f726d1e3f0b11..2e8896ea5af2e 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -992,11 +1014,21 @@ static int ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>>    * because there was not a buffer in the buffer list capable of holding
+>>    * the frame.
+>>    */
+>> -static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
+>> +static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter,
+>> +					int queue_index)
+>>   {
+>> -	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
+>> +	__be64 *p;
+>> +	u64 drops;
+>>   
+>> -	adapter->rx_no_buffer = be64_to_cpup(p);
+>> +	if (queue_index < 0 ||
+>> +	    queue_index >= ibmveth_get_num_rx_queues(adapter) ||
+>> +	    !adapter->buffer_list_addr[queue_index])
+>> +		return;
+>> +
+>> +	p = adapter->buffer_list_addr[queue_index] + 4096 - 8;
+>> +	drops = be64_to_cpup(p);
+>> +
+>> +	adapter->rx_no_buffer = drops;
+>>   }
+> [Severity: Medium]
+> ibmveth_update_rx_no_buffer() now takes a queue index but still ends in a
+> plain assignment to the single adapter-wide field:
+>
+> 	adapter->rx_no_buffer = drops;
+>
+> With more than one live queue, does each call simply overwrite the value
+> harvested for the previous queue?  In ibmveth_close() the new loop calls it
+> for every live queue back to back:
+>
+> 	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++)
+> 		ibmveth_update_rx_no_buffer(adapter, i);
+>
+> so the reported counter ends up being whichever queue was visited last, and
+> can move backwards between reads.
+>
+> Similarly, ibmveth_poll_deliver_frame() does unlocked read-modify-writes:
+>
+> 	netdev->stats.rx_packets++;
+> 	netdev->stats.rx_bytes += length;
+>
+> and the replenish counters (replenish_task_cycles, replenish_add_buff_success
+> / _failure, replenish_no_mem) are serialized only by the per-queue
+> rx_queue[i].replenish_lock, which does not serialize different queues against
+> each other.  Can these lose counts once several NAPI instances run
+> concurrently?
+Yes, at this commit. Patch 11 already moves replenish_* and
+the packet/byte counters to per-queue u64, summed on read.
+rx_no_buffer gets a per-queue carry there too.
 
---=20
+> The changelog notes that the following patch moves these counters to
+> per-queue storage summed on read, which does resolve it; the question is
+> whether this intermediate state is worth carrying.
+>
+>> @@ -1062,6 +1094,7 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>>   		dev_err_ratelimited(&adapter->netdev->dev,
+>>   				    "MQ buffer add H_FUNCTION (q=%d, batch=%u), reset\n",
+>>   				    queue_index, fail.batch);
+>> +		adapter->mq_fallback = true;
+>>   		schedule_work(&adapter->work);
+>>   	}
+> [Severity: High]
+> This isn't a bug introduced by this patch, but this commit makes the reset
+> producer reachable for the first time (adapter->multi_queue was hardcoded to
+> 0 before) and adds a second schedule_work() site here.
+>
+> At this commit ibmveth_reset() has no registration-state check:
+>
+> 	rtnl_lock();
+> 	dev_close(adapter->netdev);
+> 	dev_open(adapter->netdev, NULL);
+> 	rtnl_unlock();
+>
+> and ibmveth_remove() still runs cancel_work_sync(&adapter->work) before
+> unregister_netdev().  If a live queue hits MQ buffer-add H_FUNCTION after
+> the cancel, can the requeued work then run dev_close()/dev_open() against a
+> netdev that unregister_netdev()/free_netdev() is tearing down?
+Folded into this patch: unregister_netdev() moves
+ahead of cancel_work_sync(), and ibmveth_reset()
+is gated on NETREG_REGISTERED here alongside the
+buffer-add H_FUNCTION reset producer. Patch 11
+then frees the per-queue statistics arrays between
+cancel_work_sync() and free_netdev().
+> Both halves are fixed later in this series (ibmveth_remove() is reordered to
+> unregister_netdev() before cancel_work_sync(), and ibmveth_reset() gains the
+> netdev->reg_state != NETREG_REGISTERED gate), so the exposure is limited to
+> this intermediate commit.
+>
+>> @@ -1081,6 +1114,27 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>>   				     fail.filled, fail.lpar_rc, fail.batch);
+>>   }
+>>   
+>> +/**
+>> + * ibmveth_restart_rx_queue - Post buffers and ensure Q can take RX
+>> + * @adapter: ibmveth adapter
+>> + * @qindex: RX queue index
+>> + *
+>> + * SQ open leaves PHYP masked until the first poll. If schedule_prep fails,
+>> + * NAPI never runs and the queue stays masked (TX OK, RX/ARP dead) until
+>> + * reload. Replenish first so an enable_irq fallback can actually deliver.
+>> + * Also used after every open (SQ and MQ) and after scale-down so a
+>> + * queue is not left idle+masked.
+>> + */
+>> +static void ibmveth_restart_rx_queue(struct ibmveth_adapter *adapter,
+>> +				     int qindex)
+>> +{
+>> +	ibmveth_replenish_task(adapter, qindex);
+>> +	if (ibmveth_schedule_rx_queue(adapter, qindex))
+>> +		return;
+>> +
+>> +	ibmveth_enable_irq(adapter, qindex);
+>> +}
+> [Severity: High]
+> Is the unconditional ibmveth_enable_irq() here safe in multi-queue mode?
+>
+> ibmveth_schedule_rx_queue() returns false in two different situations:
+>
+> 	if (napi_schedule_prep(napi)) {
+> 		ibmveth_disable_irq(adapter, qindex);
+> 		__napi_schedule(napi);
+> 		return true;
+> 	}
+> 	return false;
+>
+> The second case is "NAPI already claimed", which is exactly what the IRQ
+> handler does after it has masked PHYP.  In MQ mode
+> ibmveth_setup_rx_interrupts() has already unmasked every queue:
+>
+> 	if (adapter->multi_queue && num > 1) {
+> 		for (i = 0; i < num; i++) {
+> 			rc = ibmveth_enable_irq(adapter, i);
+>
+> so by the time open() runs its restart loop an interrupt may already have
+> claimed NAPI and masked the queue.  restart then re-unmasks it under the
+> in-flight poll, and when that poll finishes ibmveth_poll() calls
+> ibmveth_enable_irq() again on an already-enabled subordinate interrupt.
+>
+> ibmveth_toggle_irq() folds H_PARAMETER only on the disable side:
+>
+> 		if (h_rc == H_PARAMETER && !enable) {
+> 			dev_warn_ratelimited(...);
+> 			return 0;
+> 		}
+>
+> so the redundant enable returns -EIO, and ibmveth_poll() escalates that to
+> schedule_work(&adapter->work), i.e. a full dev_close()/dev_open() of an
+> otherwise healthy adapter.
+>
+> Since the PHYP mask/unmask hcalls are not reference counted, should restart
+> skip the enable when schedule_rx_queue() failed because NAPI was already
+> scheduled, rather than when prep failed for lack of a pending descriptor?
+> The same enable-then-restart sequence appears later in the ethtool -L
+> scale-up path of ibmveth_resize_rx_queues_incremental():
+>
+> 	rc = ibmveth_enable_irq(adapter, i);
+> 	...
+> 	ibmveth_restart_rx_queue(adapter, i);
+>
+> [ ... ]
+It should not skip the enable. When prep fails,
+NAPI is already scheduled, so enabling there is
+deliberate; masking on that path left the queue
+idle and masked.
+>> +static int
+>> +ibmveth_register_single_rx_queue(struct ibmveth_adapter *adapter,
+>> +				 int queue_idx)
+>> +{
+>> +	struct net_device *netdev = adapter->netdev;
+>> +	union ibmveth_buf_desc rxq_desc;
+>> +	long lpar_rc;
+>> +
+>> +	if (WARN_ON(queue_idx < 1 || queue_idx >= IBMVETH_MAX_RX_QUEUES))
+>> +		return -EINVAL;
+>> +
+>> +	rxq_desc.fields.flags_len = IBMVETH_BUF_VALID |
+>> +				    adapter->rx_queue[queue_idx].queue_len;
+>> +	rxq_desc.fields.address = adapter->rx_queue[queue_idx].queue_dma;
+>> +
+>> +	lpar_rc = ibmveth_register_logical_lan_queue(adapter, rxq_desc,
+>> +						     queue_idx);
+>> +	if (lpar_rc != H_SUCCESS) {
+>> +		netdev_err(netdev, "Failed to register queue %d: rc=0x%lx\n",
+>> +			   queue_idx, lpar_rc);
+> [Severity: Low]
+> lpar_rc is a signed long here, and ibmveth_register_logical_lan_queue()
+> returns -EINVAL when irq_create_mapping() fails, so that case prints as
+> rc=0xffffffffffffffea.  Would %ld (or splitting the errno and hypervisor
+> cases) read better?  Note this will not produce a build warning, since the
+> signed/unsigned format mismatch is only diagnosed under
+> -Wformat-signedness, which the kernel does not enable.
+>
+> [ ... ]
+v7 uses %ld. The hypervisor fail one function
+up already prints that way.
+>> +static void ibmveth_apply_mq_fallback(struct ibmveth_adapter *adapter)
+>> +{
+>> +	struct net_device *netdev = adapter->netdev;
+>> +
+>> +	if (!adapter->mq_fallback)
+>> +		return;
+>> +
+>> +	adapter->mq_fallback = false;
+>> +
+>> +	if (!adapter->multi_queue && ibmveth_get_num_rx_queues(adapter) == 1)
+>> +		return;
+>> +
+>> +	netdev_warn(netdev,
+>> +		    "Falling back to single RX queue (firmware MQ unavailable)\n");
+>> +	adapter->multi_queue = false;
+>> +	ibmveth_publish_num_rx_queues(adapter, 1);
+>> +	/* real_num_rx_queues is set later in open after resources exist. */
+> [Severity: Medium]
+> Can the two counts be left permanently out of sync here?
+>
+> ibmveth_apply_mq_fallback() runs at the very top of ibmveth_open() and
+> publishes adapter->num_rx_queues = 1, but netdev->real_num_rx_queues is only
+> updated further down.  Four failure exits sit in between:
+>
+> 	ibmveth_alloc_filter_list()
+> 	ibmveth_alloc_rx_queues()
+> 	ibmveth_alloc_buffer_pools()
+> 	ibmveth_register_rx_queues()
+> 	...
+> 	netif_set_real_num_rx_queues(netdev, ibmveth_get_num_rx_queues(adapter))
+>
+> If the fallback open fails at any of those (for example -ENOMEM from pool
+> allocation, or -ENONET from queue-0 registration), the device stays down with
+> adapter->num_rx_queues == 1 while netdev->real_num_rx_queues is still the old
+> multi-queue value, so /sys/class/net/ethX/queues/rx-1..7 remain present for
+> queues the driver will never drive.
+>
+> That contradicts the invariant the probe path documents for exactly this
+> case:
+>
+> 	 * alloc_etherdev_mqs() sized real_num_rx_queues to MAX. Match the
+> 	 * advertised default (or SQ 1) before register_netdev so down-state
+> 	 * readers agree with adapter->num_rx_queues / ethtool -l.
+>
+> Would it be better to lower real_num_rx_queues in the fallback path itself,
+> or to restore the published count on the open failure paths?
+real_num is set after the resources exist. If this
+open fails first, the old real_num can sit while
+num_rx_queues is already 1. The next successful
+open calls set_real. The fallback helper only
+publishes the count.
+>> @@ -1651,6 +1900,8 @@ static int ibmveth_open(struct net_device *netdev)
+>>   
+>>   	netdev_dbg(netdev, "open starting\n");
+>>   
+>> +	ibmveth_apply_mq_fallback(adapter);
+>> +
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+>>   		rxq_entries += adapter->rx_buff_pool[0][i].size;
+>>   
+>> @@ -1670,18 +1921,34 @@ static int ibmveth_open(struct net_device *netdev)
+>>   	if (rc)
+>>   		goto out_free_buffer_pools;
+>>   
+>> -	rc = netif_set_real_num_rx_queues(netdev, adapter->num_rx_queues);
+>> +	rc = netif_set_real_num_rx_queues(netdev,
+>> +					  ibmveth_get_num_rx_queues(adapter));
+>> +
+>>   	if (rc) {
+>>   		netdev_err(netdev, "failed to set number of rx queues\n");
+>>   		goto out_unregister_queues;
+>>   	}
+>>   
+>> +	/*
+>> +	 * Post buffers before setup_rx_interrupts(). MQ setup then unmasks
+>> +	 * PHYP; SQ setup leaves PHYP masked. Scheduling NAPI only when a
+>> +	 * descriptor is already pending is not enough: after ifdown/up
+>> +	 * (RX=8, no -L) NAPI can be idle with nothing pending and the
+>> +	 * queue stays dead (TX OK, ARP/RX fail).
+>> +	 * restart_rx_queue() replenishes, schedules NAPI, and unmasks if
+>> +	 * prep fails.
+>> +	 */
+>> +	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++) {
+>> +		netdev_dbg(netdev, "initial replenish cycle for queue %d\n", i);
+>> +		ibmveth_replenish_task(adapter, i);
+>> +	}
+>> +
+>>   	rc = ibmveth_setup_rx_interrupts(adapter);
+>>   	if (rc)
+>>   		goto out_free_all_queues; /* setup already disposed IRQs */
+>>   
+>> -	netdev_dbg(netdev, "initial replenish cycle\n");
+>> -	ibmveth_schedule_rx_queue(adapter, 0);
+>> +	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++)
+>> +		ibmveth_restart_rx_queue(adapter, i);
+> [Severity: Medium]
+> This replenish loop can queue reset work, and ibmveth_replenish_task()
+> returns void, so open() cannot see it:
+>
+> 	} else if (need_reset == IBMVETH_REPLENISH_RESET_MQ) {
+> 		...
+> 		adapter->mq_fallback = true;
+> 		schedule_work(&adapter->work);
+> 	}
+>
+> If a buffer-add hcall returns H_FUNCTION here and the open then fails at
+> ibmveth_setup_rx_interrupts() or ibmveth_alloc_tx_resources(), userspace gets
+> an error back from ndo_open and the device is left down, but the pending
+> ibmveth_reset() only checks registration state:
+>
+> 	rtnl_lock();
+> 	if (netdev->reg_state != NETREG_REGISTERED) {
+> 		rtnl_unlock();
+> 		return;
+> 	}
+>
+> 	dev_close(adapter->netdev);
+> 	dev_open(adapter->netdev, NULL);
+>
+> so it brings the interface up anyway a moment later.  Should the reset worker
+> also check that the device was successfully opened before reopening it?
+No. After a failed open the worker can still
+dev_open(); the netdev is registered. mq_fallback
+is already latched, so that open comes up
+single-queue. That is the H_FUNCTION recovery.
+> [Severity: Low]
+> This isn't a bug, but the kernel-doc on ibmveth_setup_rx_interrupts() still
+> describes the pre-MQ ordering:
+>
+>   * Single-queue open leaves PHYP masked
+>   * here and kicks NAPI afterward (classic path: first poll posts then
+>   * enables).
+>
+> After this change open() posts buffers for every live queue (queue 0
+> included, in single-queue mode) before calling setup_rx_interrupts(), and
+> ibmveth_restart_rx_queue() posts again, so the "first poll posts" behaviour no
+> longer applies to either mode.  Could that comment be refreshed?
+v7 refreshes it. Open posts first in both
+modes; restart_rx_queue still kicks NAPI
+after setup.
+>> @@ -1714,6 +1981,7 @@ static int ibmveth_open(struct net_device *netdev)
+>>   static int ibmveth_close(struct net_device *netdev)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>> +	int i;
+>>   
+>>   	/* Gate on opened, not IFF_UP: pool_store/change_mtu close+open can
+>>   	 * leave IFF_UP set after a failed reopen.
+>> @@ -1734,7 +2002,8 @@ static int ibmveth_close(struct net_device *netdev)
+>>   	/* Wait for softirq/poll that already passed shutdown checks. */
+>>   	synchronize_net();
+>>   
+>> -	ibmveth_update_rx_no_buffer(adapter);
+>> +	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++)
+>> +		ibmveth_update_rx_no_buffer(adapter, i);
+>>   	ibmveth_free_all_queues(adapter);
+> [ ... ]
+>
+>> @@ -2527,6 +2796,7 @@ static int ibmveth_poll_deliver_frame(struct napi_struct *napi,
+>>   		ibmveth_rx_csum_helper(skb, adapter);
+>>   	}
+>>   
+>> +	skb_record_rx_queue(skb, queue_index);
+>>   	napi_gro_receive(napi, skb);
+>>   
+>>   	netdev->stats.rx_packets++;
+> [ ... ]
+>
+>> @@ -2750,9 +3021,14 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
+>>   static void ibmveth_poll_controller(struct net_device *dev)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(dev);
+>> +	unsigned int num = ibmveth_get_num_rx_queues(adapter);
+>> +	int i;
+>>   
+>> -	ibmveth_replenish_task(adapter, 0);
+>> -	ibmveth_schedule_rx_queue(adapter, 0);
+>> +	for (i = 0; i < num; i++)
+>> +		ibmveth_replenish_task(adapter, i);
+>> +
+>> +	for (i = 0; i < num; i++)
+>> +		ibmveth_schedule_rx_queue(adapter, i);
+>>   }
+>>   #endif
+> [Severity: High]
+> This is a pre-existing race, not one introduced here, but walking every
+> published queue widens it considerably.
+>
+> The in-driver callers of ibmveth_close() (veth_pool_store(),
+> ibmveth_set_csum_offload(), ibmveth_set_tso(), ibmveth_change_mtu()) call
+> ndo_stop directly rather than through dev_close(), so
+> netpoll_poll_disable() is never called and netif_running() stays true.
+> netpoll_poll_dev() can therefore call ndo_poll_controller() while close is
+> freeing the pools.
+>
+> The replenish side samples the pool and then dereferences it:
+>
+> 		if (pool->active && pool->free_map &&
+> 		    (atomic_read(&pool->available) < pool->threshold)) {
+> 			rc = ibmveth_replenish_buffer_pool(adapter, pool,
+> 							   queue_index, &fail);
+>
+> while the freeing side takes no replenish_lock at all:
+>
+> 	kfree(pool->free_map);
+> 	pool->free_map = NULL;
+>
+> Can this access freed free_map[]/skbuff[]/dma_addr[] arrays, and the freed
+> buffer-list page in ibmveth_update_rx_no_buffer()?
+>
+> A later patch in the series adds an "if (!adapter->opened) return;" check to
+> ibmveth_poll_controller(), but ibmveth_close() clears opened before it frees
+> anything and does not wait for an in-flight poll_controller, so the window
+> appears to remain.
+Yes, at this commit. Patch 15 already returns if !opened.
+That does not wait for an in-flight poll_controller.
+close still skips netpoll_poll_disable, and
+free_buffer_pool still skips the lock. Those two
+stay with shortening irqsave after this series.
+>> @@ -2781,23 +3056,35 @@ static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
+>>   
+>>   	adapter = netdev_priv(netdev);
+>>   
+>> -	ret = IBMVETH_BUFF_LIST_SIZE + IBMVETH_FILT_LIST_SIZE;
+>> +	/* One buffer list page per RX queue; filter list is shared. */
+>> +	ret = IBMVETH_BUFF_LIST_SIZE * ibmveth_get_num_rx_queues(adapter) +
+>> +	      IBMVETH_FILT_LIST_SIZE;
+>>   	ret += IOMMU_PAGE_ALIGN(netdev->mtu, tbl);
+>>   	/* add size of mapped tx buffers */
+>>   	ret += IOMMU_PAGE_ALIGN(IBMVETH_MAX_TX_BUF_SIZE, tbl);
+>>   
+>> +	for (q = 0; q < ibmveth_get_num_rx_queues(adapter); q++) {
+>> +		int rxqentries = 1;
+>> +
+>> +		for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> +			struct ibmveth_buff_pool *bpool =
+>> +				&adapter->rx_buff_pool[0][i];
+>> +
+>> +			if (bpool->active)
+>> +				ret += bpool->size *
+>> +					IOMMU_PAGE_ALIGN(bpool->buff_size, tbl);
+>> +			rxqentries += bpool->size;
+>> +		}
+> [ ... ]
+>
+>> @@ -2954,16 +3253,30 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   		netdev->features |= NETIF_F_FRAGLIST;
+>>   	}
+>>   
+>> -	/* Initialize queue count - always 1 for now */
+>> -	adapter->multi_queue = 0;
+>> -	adapter->num_rx_queues = IBMVETH_DEFAULT_RX_QUEUES;
+>> +	if (ret == H_SUCCESS &&
+>> +	    (ret_attr & IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT)) {
+>> +		adapter->multi_queue = true;
+>> +		ibmveth_publish_num_rx_queues(adapter,
+>> +					      min(num_online_cpus(),
+>> +						  IBMVETH_DEFAULT_QUEUES));
+> [ ... ]
+>
+>> @@ -2981,25 +3294,62 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>>   		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+>> -		int error;
+>>   
+>>   		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+>>   					 pool_count[i], pool_size[i],
+>>   					 pool_active[i]);
+>> -		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+>> -					     &dev->dev.kobj, "pool%d", i);
+>> -		if (!error)
+>> -			kobject_uevent(kobj, KOBJ_ADD);
+>> +		rc = kobject_init_and_add(kobj, &ktype_veth_pool,
+>> +					  &dev->dev.kobj, "pool%d", i);
+>> +		if (rc) {
+>> +			dev_err(&dev->dev,
+>> +				"failed to create pool%d kobject: %d\n", i, rc);
+>> +			/* init_and_add takes a ref even on failure */
+>> +			kobject_put(kobj);
+>> +			ibmveth_put_pool_kobjs(adapter, pools_ready);
+>> +			dev_set_drvdata(&dev->dev, NULL);
+>> +			free_netdev(netdev);
+>> +			return rc;
+>> +		}
+> [Severity: Medium]
+> Can this free the memory the kobjects live in before their cleanup runs?
+>
+> The pool kobjects are embedded in struct ibmveth_adapter, which is
+> netdev_priv(netdev), and ktype_veth_pool has .release = NULL.  With
+> CONFIG_DEBUG_KOBJECT_RELEASE=y the last kobject_put() goes to
+> kobject_release(), which defers the cleanup:
+>
+> lib/kobject.c:kobject_release() {
+> 	...
+> #ifdef CONFIG_DEBUG_KOBJECT_RELEASE
+> 	INIT_DELAYED_WORK(&kobj->release, kobject_delayed_cleanup);
+> 	schedule_delayed_work(&kobj->release, delay);
+> 	...
+> }
+>
+> The delayed_work lives inside the kobject, i.e. inside the storage that
+> free_netdev() releases immediately on this path (reg_state is
+> NETREG_UNINITIALIZED), and the pool%d directories stay published against it
+> until the work fires a few seconds later.
+>
+> The same put-then-free sequence is repeated on the
+> netif_set_real_num_tx_queues(), netif_set_real_num_rx_queues() and
+> register_netdev() failure paths below, and survives into the later
+> ibmveth_probe_cleanup() helper.  The changelog lists "pool kobj vs
+> DEBUG_KOBJECT_RELEASE" as a leftover - would adding a real release() with a
+> container that outlives the kobjects, or creating them only after the last
+> failure point, be the fix?
+v7 waits. A real release completes, and last
+put waits before free_netdev(). Patch 11
+probe_cleanup and remove use that helper.
+> [Severity: Low]
+> This isn't a bug, but the policy here changes from "ignore
+> kobject_init_and_add() failure and keep probing" to "fail the probe", so a
+> kernfs name collision or -ENOMEM now leaves the interface unavailable
+> instead of merely missing the pool%d tuning knobs.  Checking the return
+> value is the right thing to do; could the changelog mention the behaviour
+> change, since it currently only describes adding cleanup?
+Failing the probe on kobject_init_and_add() is intended.
+The commit message already names the puts.
+>> +	/*
+>> +	 * VIO CMO entitlement was set before probe (netdev NULL, so default).
+>> +	 * Recompute now that num_rx_queues and pool 0 metadata are known.
+>> +	 */
+>> +	if (firmware_has_feature(FW_FEATURE_CMO))
+>> +		vio_cmo_set_dev_desired(dev, ibmveth_get_desired_dma(dev));
+>> +
+> [Severity: Low]
+> This isn't a bug, but probe unconditionally selects min(num_online_cpus(),
+> IBMVETH_DEFAULT_QUEUES) RX queues whenever the firmware bit is set, and each
+> queue clones queue 0's full pool geometry plus its own buffer-list page and
+> RX ring.  ibmveth_get_desired_dma() therefore multiplies the desired DMA
+> entitlement by num_rx_queues, and vio_cmo_set_dev_desired() returns void, so
+> an entitlement request that cannot be granted is not visible here.
+>
+> On a CMO partition with many CPUs, is defaulting to eight RX queues the
+> behaviour you want out of the box, or would defaulting to one and letting
+> ethtool -L opt in be safer?  The series does add the runtime opt-out in a
+> later patch.
+Yes. The default is min(num_online_cpus(), 8), same cap as
+TX. ethtool -L can raise or lower it later in the series.
 
-Anirudh Virdi
+CMO is Power9 and earlier; the MQ firmware bit is
+Power11+. Those partitions do not coexist, so this is not a CMO
+tradeoff. get_desired_dma() still adds one TX LTB,
+but that is only the CMO desired hint. The real
+TX LTBs already scale with real_num_tx_queues
+(kzalloc + dma_map_single). Those two CMO leftovers
+come off the v7 cover. For the same reason v7
+drops the probe-time CMO desired refresh; a CMO
+partition keeps its single-queue default.
+>>   	rc = netif_set_real_num_tx_queues(netdev, min(num_online_cpus(),
+>>   						      IBMVETH_DEFAULT_QUEUES));
+>>   	if (rc) {
+>>   		netdev_dbg(netdev, "failed to set number of tx queues rc=%d\n",
+>>   			   rc);
+>> +		ibmveth_put_pool_kobjs(adapter, pools_ready);
+>> +		dev_set_drvdata(&dev->dev, NULL);
+>> +		free_netdev(netdev);
+>> +		return rc;
+>> +	}
+>> +
+>> +	/*
+>> +	 * alloc_etherdev_mqs() sized real_num_rx_queues to MAX. Match the
+>> +	 * advertised default (or SQ 1) before register_netdev so down-state
+>> +	 * readers agree with adapter->num_rx_queues / ethtool -l.
+>> +	 */
+>> +	rc = netif_set_real_num_rx_queues(netdev,
+>> +					  ibmveth_get_num_rx_queues(adapter));
+> [Severity: Low]
+> With real_num_rx_queues now published as up to eight before
+> register_netdev(), ibmveth_get_channels() starts reporting max_rx and
+> rx_count greater than one:
+>
+> 	channels->max_rx = netdev->real_num_rx_queues;
+> 	channels->rx_count = netdev->real_num_rx_queues;
+>
+> but ibmveth_set_channels() at this commit only reads channels->tx_count.
+> Does "ethtool -L ethX rx 4" then pass the core's max_rx check, get silently
+> discarded by the driver and report success?
+Yes, at this commit. set_channels only reads
+tx_count, so rx 4 is discarded and the call
+succeeds. Patch 12 rejects an RX count change
+with -EOPNOTSUPP; Patch 14 implements live
+resize.
 
+Thanks,
+Mingming
+> The changelog acknowledges this ("This commit does not implement
+> set_channels / rx_count") and patch 14 wires rx_count up, so the question is
+> whether the advertisement should wait for the implementation.
+>
+> [ ... ]
+>
