@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC9E44AB97
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3D4A1DF6
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790342832; cv=none; b=DDp06Zzv9NTCmUyXyFCr61r+YU7l/AB+sUtQnAq+lizZWjRpSXEN1oq6wqSN66SR/RhcnKrMxzy/GhHKq7M53lHcb3j6p5HcI2KoptVc93tQbPLDbORCuyYzEYmEOCsgumz8P/xlHs51pGHbE1k7Tk3Pkj7v2hbaLhLntotJT/E=
+	t=1790342839; cv=none; b=BDTL2BoIa0jXuwOWxWmDGfjfvnHNN4Ie+zHG7g0rP4oz4RFidysBaFsfEF9lZTH1QoYrPp7SZqEuQ2e3Ij+ROHNcKBfuL6yGrZobsmb259sVkWsIzUzgUV5ef+hWzfkd8cGa7qf41bIvTcleNU0LnTt4cJkzcMyx3xsbPSKxcZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790342832; c=relaxed/simple;
-	bh=LEzCYFgeUadabV2t5Leusuxox4hmHs2CPHTpzz+dv30=;
+	s=arc-20240116; t=1790342839; c=relaxed/simple;
+	bh=6+u0PFe1nHuFQQKp9ilG1eh4GFW/bVKj9LEehtHjK9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGIr+vRVk5hCXHO8lkcB9xWdeQgftm+3Gcs7q4iF7MyLz5YtjblvQO580mms2U3KnQReKdiVvTXMjREMRl89D9a9HZay0JPC4lkYUgz46F/HtR9esTj7PaNiHrEr8yeD6V7FRE3PEunXG9ybahJQVbTRJBaETayItK7+GcE0UJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TEeD6C5G; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=V/fhiBwFlByTMaDTY0wa4/hUJZ3zEX3rl9TcTq1tC+uLk9/L7w1e/EZGZLUeJL89k4lfVs4NpCb4Xyy0nIvbhIKDTA5/PNSl3tRDO9+JZuYQsXspO7pRkUMx8yMRFnH3ud1MWGp/ca/DyIXi/3JIocsT9fcbcGsV1vwWj1mVLPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=moNcJErk; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TEeD6C5G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="moNcJErk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790342829; x=1821878829;
+  t=1790342834; x=1821878834;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LEzCYFgeUadabV2t5Leusuxox4hmHs2CPHTpzz+dv30=;
-  b=TEeD6C5GENeXzsaHrtENfz/hWXsxCR/wCJXm8wrnGEE9yh+KvYDoVu+U
-   P+5eOEsEtFJoFJnAvdzOeaUnkOvbwTGMLO1wwPOH1VTDLc+uXWkPHSZoJ
-   bYsGYplRND+JWskjSEoWWlXqd+JKxXYeR2RbwLj12IaGMuSEGKop83nTT
-   eovUDxFBYdwug//IB+uucLG7i/w8A8EEDE7U3jZzgkun9/NqBHbZ880fB
-   dWkhcnIzfq55OqoRz4JHvh7TQ6BoBXOK47qUVcmZzxkeJ+3rrl3Yj7xNl
-   Ebk7cNKe9qLPJvlBYMj6K9ezyp+sRgOEkHB5exoWOjvOGJTtOzQaq9Q3J
-   g==;
-X-CSE-ConnectionGUID: YdMbGPzJSEWeFRVQ0O/UCg==
-X-CSE-MsgGUID: oZpHX7mJSIWUgKQe140sAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="107508268"
+  bh=6+u0PFe1nHuFQQKp9ilG1eh4GFW/bVKj9LEehtHjK9k=;
+  b=moNcJErk+eT7zwh11Fvb7XoO0lObtBJKp+B3i8dTDXx+5sF8N0FACTIx
+   9uFe12dSR7sC5FWpd6tMf/y22Qk1cIAY5inEUFNqKo5rgVp+cercQKGix
+   vClo4gxYvsoTVXtPSiGqfm+dDWHmxvzyyccV9JKUI5MpAIRse2g7x5kmH
+   W9ippcoj4ZUZpnP72HjIO9u4XqSoLL2T+Vd6+dzQHRVFPBmFPNj63vJF9
+   f5ZP5NpSsnr8ssEgkVwzPLImmxBdj630+ig6pOrVWJHTTHLXMP3jnqMnF
+   4yVuef99K3CX34WZy4GTmw8kGRN4sANUbRO+7IHVzFRIC6DMbCdkcBENX
+   A==;
+X-CSE-ConnectionGUID: SaJXztqzRfCPsQnls4TQVA==
+X-CSE-MsgGUID: B5diE14jRBKWH5lPMuHU4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="107508274"
 X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
-   d="scan'208";a="107508268"
+   d="scan'208";a="107508274"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 06:27:00 -0700
-X-CSE-ConnectionGUID: oE33mZCQSbabuJp1YmSrsA==
-X-CSE-MsgGUID: zXKMwclCTKWdfc/3rOTslw==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 06:27:01 -0700
+X-CSE-ConnectionGUID: Vs+P74epRTKeM1iq0DyKrw==
+X-CSE-MsgGUID: LDqo3DzyQqGo7OvB5JCoqg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
-   d="scan'208";a="282414743"
+   d="scan'208";a="282414750"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa005.fm.intel.com with ESMTP; 25 Sep 2026 06:26:56 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 25 Sep 2026 06:26:57 -0700
 Received: from pkitszel-desk.intel.com (unknown [10.245.245.32])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 1916E2FC57;
-	Fri, 25 Sep 2026 14:26:55 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 188662FC53;
+	Fri, 25 Sep 2026 14:26:56 +0100 (IST)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
@@ -58,9 +58,9 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	pabeni@redhat.com,
 	davem@davemloft.net,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net v5 4/6] ice: extract ice_vsi_get_num_qs()
-Date: Fri, 25 Sep 2026 15:15:46 +0200
-Message-ID: <20260925132636.123300-5-przemyslaw.kitszel@intel.com>
+Subject: [PATCH net v5 5/6] ice: rebuild ring stats arrays instead of reallocating them in place
+Date: Fri, 25 Sep 2026 15:15:47 +0200
+Message-ID: <20260925132636.123300-6-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
 References: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
@@ -72,203 +72,238 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ice_vsi_set_num_qs() mixed two things: deciding how many queues a VSI
-gets, and applying all the side effects of that decision. Split the
-decision out into ice_vsi_get_num_qs(), returning both counts at once.
+ice_vsi_realloc_stat_arrays() resized the ring stats arrays in place
+with krealloc_array(), sizing them from vsi->req_txq/req_rxq. That is
+not what ice_vsi_set_num_qs() computes later in ice_vsi_cfg_def(), so
+after a rebuild the arrays could end up shorter than vsi->alloc_txq /
+vsi->alloc_rxq, and ice_vsi_alloc_ring_stats() then walked past their
+end.
 
-To make that possible, group alloc_txq and alloc_rxq in struct ice_vsi
-with struct_group_tagged(), which gives the return type without adding
-any new storage. Field order changes slightly, num_txq now follows
-alloc_rxq, but nothing depends on it.
+The VF case shows the divergence. ice_sriov_set_msix_vec_count() writes
+vsi->req_txq and then calls ice_vsi_rebuild(), so the old resizer sized
+from req_txq, while ice_vsi_get_num_qs() reads vf->num_req_qs ?:
+vf->num_vf_qs and ignores req_txq entirely. Once a guest has raised
+vf->num_req_qs through VIRTCHNL_OP_REQUEST_QUEUES the two disagree and
+the arrays come out shorter than the alloc_txq/alloc_rxq the rebuild
+installs. The reset that such a request triggers is a different path,
+ice_vf_reconfig_vsi(), which does not use this resizer at all; that one
+is handled by the next patch.
 
-ice_vsi_get_num_qs() takes @held_txq and @held_rxq from the start, even
-though the only caller so far passes zero for both. They let a caller
-ask what the counts would be once the queues the VSI currently owns are
-back in the PF pool. A later commit adds the caller that needs this: the
-rebuild path has to size its ring stats arrays before ice_vsi_decfg()
-releases the queues, yet the arrays must match what ice_vsi_set_num_qs()
-computes afterwards.
+Replace it with ice_vsi_resize_stat_arrays(), which allocates a fresh
+struct ice_vsi_stats instead, sized with ice_vsi_get_num_qs() and the
+queues ice_vsi_decfg() is about to return to the PF pool, which is
+exactly what ice_vsi_set_num_qs() will compute once they are back
+there, barring a concurrent change of the PF pool; the next patch stops
+relying on that. Copy the surviving entry pointers over and install
+the new structure, all before ice_vsi_decfg() runs. The entries that
+did not fit are freed by ice_vsi_free_unused_stat_arrays(); the old
+container itself then goes through __ice_vsi_free_stats() with
+@free_entries set to false, since the entries it still points at now
+belong to the new structure.
 
-While reshaping the whole body, drop the kernel-doc line promising a
-return value; ice_vsi_set_num_qs() returns void.
+Allocating up front also means a failure no longer leaves a half-updated
+ice_vsi_stats behind, with the Tx array already swapped and its surplus
+Tx entries already freed, but the Rx allocation failed.
 
-No functional change intended.
+Put the allocate-install-free-surplus sequence in
+ice_vsi_install_stat_arrays(), next to ice_vsi_new_stat_arrays(), so
+that only the sizing decision is left in the resizer.
 
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
-v5:
- - drop the stale "Return 0 on success and a negative value on error"
-   from the kernel-doc of the void ice_vsi_set_num_qs() (Clashiko)
----
- drivers/net/ethernet/intel/ice/ice.h     |  6 +-
- drivers/net/ethernet/intel/ice/ice_lib.c | 88 ++++++++++++++----------
- 2 files changed, 55 insertions(+), 39 deletions(-)
+this removes some tech debt, but it is not independently backportable,
+as it sits on three preceding refactors; the NULL dereference and the
+sizing mismatch are fixed by their own patches, which carry Fixes: tags
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index fadfe94bf1c8..f1ba86d066be 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -403,9 +403,11 @@ struct ice_vsi {
- 	u8 rx_mapping_mode;		 /* ICE_MAP_MODE_[CONTIG|SCATTER] */
- 	u16 *txq_map;			 /* index in pf->avail_txqs */
- 	u16 *rxq_map;			 /* index in pf->avail_rxqs */
--	u16 alloc_txq;			 /* Allocated Tx queues */
-+	struct_group_tagged(ice_vsi_alloc_queues_params, alloc_txq_rxq,
-+		u16 alloc_txq;		 /* Allocated Tx queues */
-+		u16 alloc_rxq;		 /* Allocated Rx queues */
-+	);
- 	u16 num_txq;			 /* Used Tx queues */
--	u16 alloc_rxq;			 /* Allocated Rx queues */
- 	u16 num_rxq;			 /* Used Rx queues */
- 	u16 req_txq;			 /* User requested Tx queues */
- 	u16 req_rxq;			 /* User requested Rx queues */
+v5:
+ - drop the false "requesting fewer queues than the PF pool can hand
+   out" reproducer, use the VF one that the code can exhibit (Clashiko)
+ - describe the real failure-path benefit, the old code already returned
+   before ice_vsi_decfg() with the VSI fully configured (Clashiko)
+ - split the ICE_VSI_CHNL guard into its own patch with a Fixes: tag
+   (Clashiko)
+ - factor out ice_vsi_install_stat_arrays(), reused by the new sizing
+   patch (Clashiko)
+---
+ drivers/net/ethernet/intel/ice/ice_lib.c | 144 ++++++++++++++---------
+ 1 file changed, 88 insertions(+), 56 deletions(-)
+
 diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index ed32ae2667c5..134984077d5d 100644
+index 134984077d5d..448d3c7780ad 100644
 --- a/drivers/net/ethernet/intel/ice/ice_lib.c
 +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -153,23 +153,61 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
- 	}
+@@ -557,6 +557,80 @@ static struct ice_vsi_stats *ice_vsi_new_stat_arrays(int txq, int rxq)
+ 	return vsi_stat;
  }
  
--static u16 ice_get_rxq_count(struct ice_pf *pf)
-+static u16 ice_get_rxq_count(struct ice_pf *pf, u16 held)
- {
--	return min(ice_get_avail_rxq_count(pf),
--		   netif_get_num_default_rss_queues());
-+	return min_t(u16, ice_get_avail_rxq_count(pf) + held,
-+		     netif_get_num_default_rss_queues());
- }
- 
--static u16 ice_get_txq_count(struct ice_pf *pf)
-+static u16 ice_get_txq_count(struct ice_pf *pf, u16 held)
- {
--	return min(ice_get_avail_txq_count(pf),
--		   netif_get_num_default_rss_queues());
-+	return min_t(u16, ice_get_avail_txq_count(pf) + held,
-+		     netif_get_num_default_rss_queues());
++static void ice_vsi_free_unused_stat_arrays(struct ice_vsi_stats *vsi_stat,
++					    struct ice_vsi_stats *new_vsi_stat)
++{
++	int new_txq = new_vsi_stat->tx_ring_stats_len;
++	int new_rxq = new_vsi_stat->rx_ring_stats_len;
++	int prev_txq = vsi_stat->tx_ring_stats_len;
++	int prev_rxq = vsi_stat->rx_ring_stats_len;
++
++	for (int i = new_txq; i < prev_txq; i++) {
++		if (vsi_stat->tx_ring_stats[i]) {
++			kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
++			WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
++		}
++	}
++	for (int i = new_rxq; i < prev_rxq; i++) {
++		if (vsi_stat->rx_ring_stats[i]) {
++			kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
++			WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
++		}
++	}
 +}
 +
-+/* @held_txq, @held_rxq: queues the VSI still owns but is about to return to the
-+ * PF pool, so that the result matches what it will be once they are back there.
-+ */
-+static struct ice_vsi_alloc_queues_params
-+ice_vsi_get_num_qs(struct ice_vsi *vsi, u16 held_txq, u16 held_rxq)
++static void ice_vsi_set_stat_arrays(struct ice_vsi *vsi,
++				    struct ice_vsi_stats *new_vsi_stat)
 +{
-+	struct ice_vsi_alloc_queues_params qs = {};
++	u16 new_txq, new_rxq, prev_txq, prev_rxq;
++	struct ice_vsi_stats *vsi_stat;
 +	struct ice_pf *pf = vsi->back;
 +
-+	switch (vsi->type) {
-+	case ICE_VSI_PF:
-+		qs.alloc_txq = vsi->req_txq ?: ice_get_txq_count(pf, held_txq);
++	new_txq = new_vsi_stat->tx_ring_stats_len;
++	new_rxq = new_vsi_stat->rx_ring_stats_len;
++	vsi_stat = pf->vsi_stats[vsi->idx];
++	pf->vsi_stats[vsi->idx] = new_vsi_stat;
++	if (!vsi_stat)
++		return; /* don't copy if there is no source */
 +
-+		/* only 1 Rx queue unless RSS is enabled */
-+		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags))
-+			qs.alloc_rxq = 1;
-+		else
-+			qs.alloc_rxq = vsi->req_rxq ?:
-+				       ice_get_rxq_count(pf, held_rxq);
-+		break;
-+	case ICE_VSI_SF:
-+	case ICE_VSI_CTRL:
-+	case ICE_VSI_LB:
-+		qs.alloc_txq = 1;
-+		qs.alloc_rxq = 1;
-+		break;
-+	case ICE_VSI_VF:
-+		qs.alloc_txq = vsi->vf->num_req_qs ?: vsi->vf->num_vf_qs;
-+		qs.alloc_rxq = qs.alloc_txq;
-+		break;
-+	case ICE_VSI_CHNL:
-+		break;
-+	default:
-+		dev_warn(ice_pf_to_dev(pf), "Unknown VSI type %d\n", vsi->type);
-+		return vsi->alloc_txq_rxq;
++	prev_txq = vsi_stat->tx_ring_stats_len;
++	prev_rxq = vsi_stat->rx_ring_stats_len;
++
++	memcpy(new_vsi_stat->tx_ring_stats, vsi_stat->tx_ring_stats,
++	       sizeof(*vsi_stat->tx_ring_stats) * min(prev_txq, new_txq));
++	memcpy(new_vsi_stat->rx_ring_stats, vsi_stat->rx_ring_stats,
++	       sizeof(*vsi_stat->rx_ring_stats) * min(prev_rxq, new_rxq));
++}
++
++/**
++ * ice_vsi_install_stat_arrays - swap in freshly sized ring stats arrays
++ * @vsi: VSI to install the ring stats arrays of
++ * @txq: number of Tx ring stats entries to make room for
++ * @rxq: number of Rx ring stats entries to make room for
++ *
++ * Surviving entries are carried over, the rest is freed together with the old
++ * container.
++ *
++ * Return: 0 on success and negative value on failure.
++ */
++static int ice_vsi_install_stat_arrays(struct ice_vsi *vsi, u16 txq, u16 rxq)
++{
++	struct ice_vsi_stats *old_stat, *new_stat;
++
++	new_stat = ice_vsi_new_stat_arrays(txq, rxq);
++	if (!new_stat)
++		return -ENOMEM;
++
++	old_stat = vsi->back->vsi_stats[vsi->idx];
++	ice_vsi_set_stat_arrays(vsi, new_stat);
++	if (old_stat) {
++		ice_vsi_free_unused_stat_arrays(old_stat, new_stat);
++		__ice_vsi_free_stats(old_stat, false);
 +	}
 +
-+	return qs;
++	return 0;
++}
++
+ /**
+  * ice_vsi_alloc_stat_arrays - Allocate statistics arrays
+  * @vsi: VSI pointer
+@@ -3040,69 +3114,27 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
  }
  
  /**
-  * ice_vsi_set_num_qs - Set number of queues, descriptors and vectors for a VSI
-  * @vsi: the VSI being configured
-- *
-- * Return 0 on success and a negative value on error
+- * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
+- * @vsi: VSI pointer
++ * ice_vsi_resize_stat_arrays - resize ring stats arrays for new queue count
++ * @vsi: VSI to swap the ring stats arrays of
++ *
++ * Call while @vsi still owns its queues and before ice_vsi_decfg() returns them
++ * to the PF pool, so that the new size is what ice_vsi_set_num_qs() will compute
++ * afterwards. Surviving entries are carried over, the rest is freed.
++ *
++ * Return: 0 on success and negative value on failure.
   */
- static void ice_vsi_set_num_qs(struct ice_vsi *vsi)
+-static int
+-ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
++static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
  {
-@@ -180,68 +218,44 @@ static void ice_vsi_set_num_qs(struct ice_vsi *vsi)
- 	if (WARN_ON(vsi_type == ICE_VSI_VF && !vf))
- 		return;
+-	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
+-	u16 req_rxq = vsi->req_rxq ? vsi->req_rxq : vsi->alloc_rxq;
+-	struct ice_ring_stats **tx_ring_stats;
+-	struct ice_ring_stats **rx_ring_stats;
+-	struct ice_vsi_stats *vsi_stat;
+-	struct ice_pf *pf = vsi->back;
+-	u16 prev_txq = vsi->alloc_txq;
+-	u16 prev_rxq = vsi->alloc_rxq;
+-	int i;
++	struct ice_vsi_alloc_queues_params qs;
  
-+	vsi->alloc_txq_rxq = ice_vsi_get_num_qs(vsi, 0, 0);
-+
- 	switch (vsi_type) {
- 	case ICE_VSI_PF:
--		if (vsi->req_txq) {
--			vsi->alloc_txq = vsi->req_txq;
-+		if (vsi->req_txq)
- 			vsi->num_txq = vsi->req_txq;
--		} else {
--			vsi->alloc_txq = ice_get_txq_count(pf);
--		}
-+		if (vsi->req_rxq && test_bit(ICE_FLAG_RSS_ENA, pf->flags))
-+			vsi->num_rxq = vsi->req_rxq;
+ 	/* channel VSIs have no entry in pf->vsi_stats[] */
+ 	if (vsi->type == ICE_VSI_CHNL)
+ 		return 0;
  
- 		pf->num_lan_tx = vsi->alloc_txq;
+-	vsi_stat = pf->vsi_stats[vsi->idx];
 -
--		/* only 1 Rx queue unless RSS is enabled */
--		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags)) {
--			vsi->alloc_rxq = 1;
--		} else {
--			if (vsi->req_rxq) {
--				vsi->alloc_rxq = vsi->req_rxq;
--				vsi->num_rxq = vsi->req_rxq;
--			} else {
--				vsi->alloc_rxq = ice_get_rxq_count(pf);
+-	if (req_txq < prev_txq) {
+-		for (i = req_txq; i < prev_txq; i++) {
+-			if (vsi_stat->tx_ring_stats[i]) {
+-				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
+-				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
 -			}
 -		}
+-	}
 -
- 		pf->num_lan_rx = vsi->alloc_rxq;
+-	tx_ring_stats = vsi_stat->tx_ring_stats;
+-	vsi_stat->tx_ring_stats =
+-		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
+-			       sizeof(*vsi_stat->tx_ring_stats),
+-			       GFP_KERNEL | __GFP_ZERO);
+-	if (!vsi_stat->tx_ring_stats) {
+-		vsi_stat->tx_ring_stats = tx_ring_stats;
+-		return -ENOMEM;
+-	}
+-	vsi_stat->tx_ring_stats_len = req_txq;
++	qs = ice_vsi_get_num_qs(vsi, vsi->alloc_txq + vsi->num_xdp_txq,
++				vsi->alloc_rxq);
  
- 		vsi->num_q_vectors = max(vsi->alloc_rxq, vsi->alloc_txq);
- 		break;
- 	case ICE_VSI_SF:
--		vsi->alloc_txq = 1;
--		vsi->alloc_rxq = 1;
- 		vsi->num_q_vectors = 1;
- 		vsi->irq_dyn_alloc = true;
- 		break;
- 	case ICE_VSI_VF:
- 		if (vf->num_req_qs)
- 			vf->num_vf_qs = vf->num_req_qs;
--		vsi->alloc_txq = vf->num_vf_qs;
--		vsi->alloc_rxq = vf->num_vf_qs;
- 		/* pf->vfs.num_msix_per includes (VF miscellaneous vector +
- 		 * data queue interrupts). Since vsi->num_q_vectors is number
- 		 * of queues vectors, subtract 1 (ICE_NONQ_VECS_VF) from the
- 		 * original vector count
- 		 */
- 		vsi->num_q_vectors = vf->num_msix - ICE_NONQ_VECS_VF;
- 		break;
- 	case ICE_VSI_CTRL:
--		vsi->alloc_txq = 1;
--		vsi->alloc_rxq = 1;
- 		vsi->num_q_vectors = 1;
- 		break;
- 	case ICE_VSI_CHNL:
--		vsi->alloc_txq = 0;
--		vsi->alloc_rxq = 0;
- 		break;
- 	case ICE_VSI_LB:
--		vsi->alloc_txq = 1;
--		vsi->alloc_rxq = 1;
- 		/* A dummy q_vector, no actual IRQ. */
- 		vsi->num_q_vectors = 1;
- 		break;
- 	default:
--		dev_warn(ice_pf_to_dev(pf), "Unknown VSI type %d\n", vsi_type);
- 		break;
- 	}
+-	if (req_rxq < prev_rxq) {
+-		for (i = req_rxq; i < prev_rxq; i++) {
+-			if (vsi_stat->rx_ring_stats[i]) {
+-				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
+-				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
+-			}
+-		}
+-	}
+-
+-	rx_ring_stats = vsi_stat->rx_ring_stats;
+-	vsi_stat->rx_ring_stats =
+-		krealloc_array(vsi_stat->rx_ring_stats, req_rxq,
+-			       sizeof(*vsi_stat->rx_ring_stats),
+-			       GFP_KERNEL | __GFP_ZERO);
+-	if (!vsi_stat->rx_ring_stats) {
+-		vsi_stat->rx_ring_stats = rx_ring_stats;
+-		return -ENOMEM;
+-	}
+-	vsi_stat->rx_ring_stats_len = req_rxq;
+-
+-	return 0;
++	return ice_vsi_install_stat_arrays(vsi, qs.alloc_txq, qs.alloc_rxq);
+ }
+ 
+ /**
+@@ -3132,7 +3164,7 @@ int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags)
+ 
+ 	mutex_lock(&vsi->xdp_state_lock);
+ 
+-	ret = ice_vsi_realloc_stat_arrays(vsi);
++	ret = ice_vsi_resize_stat_arrays(vsi);
+ 	if (ret)
+ 		goto unlock;
  
 -- 
 2.51.1
