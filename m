@@ -1,119 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07739417BD2;
-	Fri, 25 Sep 2026 09:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790328567; cv=none; b=TiHFzEna7VGMYSRPZhOrjyIRWo9F3f/kJgH/jCV0XS/JfF8/aAM4KktwDbtep0Fsg+teI0wbD8m9Qk0RG/vafDmt11IE3RV8+NREMcmEZpmSF4G3CwnG8kgUhG9hmDbtPljkdKtpivYJmvMGgxMs0cv5g8kkNnl1VF7yKGDmdk0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790328567; c=relaxed/simple;
-	bh=GiE/IFtkH/fTurl9Cbwum67nELKTfM58GrzMPpCu3HQ=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=LQ7twO9SKkPea59vuz1/Gonn1X19ebAllctQMCkGUUl0HPGOunlVGHWl93S2KQGEtB5rgmfrqJDvoRGBD7Y7W4QLDZ0tE2LVPo+wbeBurnxFIps6DXVPfZtq0MTvAEeysO0NTqfA5v6Ze0/8NlrCwboonVseRoKEjcw/BiR7hnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtPSZBjo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E65480DCF
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 09:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790328690; cv=pass; b=KAYv9qwgEbPdazXK2I+2tapS9pqZkBrTZt8F3Lt2Bt3+zqJ6YjWfbTNEzcwUfIfSs0fWREjgovIFQEkkZA9dipOD/MM7WeHoi0PjO69Sb3hxDcUlym4htP3oWO6PMX+d0bWXiA7aNCbMlScBfE/WqkyjnkHoACopi43n7z7wsbU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790328690; c=relaxed/simple;
+	bh=P2vkUeynyQ8bhkteIxfSfU8kk6dsNYQMwky9R7uQxfE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jdF4jisKWOXKNfv84mK7OYdFfrk3r9xQ6mf5QyRVcQgsgaC4EbhxKiJ+4U6nQY8CvKs1hgKiqw/HTZWjHkYAajqrhdGtLlPS/HkFaTdgYxG0tj2FbDo/1XmzpFH/ZJFANdytLAsiDAMOzQAirCjxZSANbXm3rdAQhW938h7FzS4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lF3LukoS; arc=pass smtp.client-ip=74.125.230.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtPSZBjo"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E9DC91F000FF;
-	Fri, 25 Sep 2026 09:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790328565;
-	bh=GREGS4oZNqxqpzIpoelW3295UnRYOFsuTaHdiBzNhE0=;
-	h=From:To:Cc:Subject:Date;
-	b=TtPSZBjo6X61/lVvEqN1twdqk8LALUkB051G5qu5UOgJbUETakRnNUMEtlrKzAF5S
-	 D6cZIxVTEMU0PhJHxAvzs98ibuADOlOoLweMocR3MLjbZ/IKoyyirnte4tlkmDnfSZ
-	 MO1PiboP5FEhK8XymN6915aLz3LJlu0d5VMxj/rrqSl61E6b3H5okYQFoGVcW+4l1D
-	 rmmgFG3F0Bb91NixdduP5ptXvXYcc6vJHL7Fa6q7uJwDZPDU8C2NKMIt8JeqhBPKcu
-	 V9HvfcOC7+u9KS2V1tV1BCnX+whRuvLnhPm2Qls3c4KOkUFdQGpckDHunq7OC2sE0b
-	 HmjUIlM7Rh47Q==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Marco Elver <elver@google.com>, "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jeff Layton" <jlayton@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Trond Myklebust" <trondmy@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
-Cc: Dai.Ngo@oracle.com, horms@kernel.org, linux-kernel@vger.kernel.org, neil@brown.name, okorniev@redhat.com, syzbot@lists.linux.dev, tom@talpey.com
-Subject: [PATCH] SUNRPC: Use TASK_FREEZABLE_UNSAFE in __rpc_execute()
-Message-ID: <21891299-3a5d-4cfe-b3c4-8d711c7e8565@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lF3LukoS"
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb76543e1so3765701cf.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 02:31:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790328685; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KUZkEkTJ0PvA3I6+JsIJcBSjkeNSm0wd0pA5Wy72B5HaYV58dG4mK/PtE9S1VVwhB1
+         lZSY+SBq7hKmcErGIiMtWxIVrMSoAg66xnz6ma0idN9oXwVp4QT6gLsSjyuTxuE/iTEc
+         WfBeYraFOou6a646HTvWDrgBSYTg3r1jp4ZX2OlgE/4mdPI2smi4XQ0LOfLFWub+oKb9
+         ZRAkb8qfE/w/gFAmJupEeOrPlmFHNlQkzNdR/Qqfn6s+wK9eEKWdavZQJysjyXafLX/2
+         MDcrZHYv/DYhTRM2543Q3yHLANAQQxrck8Gnt+YIPLzfttErGiklkxkQ97r8+58K7MJL
+         wqMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BoEGz32kOhSBAI1jaGQ8WLuGcooDte4aXDht8opxmTI=;
+        fh=dFoiIt+OyyxoZGiMFOn5PaLJh8deeAT5vWpH+iltR8Q=;
+        b=pY8T2dKWZVO8uvWxeXN1UTLYjjb2vHrCyRQq28O91dAcfOqTG36kMENnlLohrRdXOC
+         dRFyQIPopExiKaWW+b9jhKRGMM6GWRV1WmMAYuMLZRUmKbz2YH1K7Cas+drUUb3gELxF
+         zt1gAfc9y2/cmGJDxFoHD1X1UG54i5T8Sj4SGtRnejybUXkEUP42lgKUuwwKlKejcVPd
+         7YLY18mMQB7CorXIsRXRdNh8Lt7OrkswJcpyNBZMhNzf+XeYJtQw8p/dGHjSYxts+2O1
+         BltkkMd4AC1ez2YLc99e8+0XQCwyir2zaRl8uU7EugAaj5CJfBaCvwLBwj2FKhnjPuRg
+         D3ew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790328685; x=1790933485; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BoEGz32kOhSBAI1jaGQ8WLuGcooDte4aXDht8opxmTI=;
+        b=lF3LukoSxv/RWL3NE08owNg55ranb5BFsj3nkl6hMS7SLSGCRFkLK+fgBjBJZosJ/w
+         /GttFcN4+lWQ8ioQOsCpzh93h7YnokXwds/N3Zu/MdQ4PKml9cAQcwX93pytcXVWxuu2
+         6ZaCffvJ4p9P3b4LFHAutl22RBKfBQXlGeBLCzjfoZPp1cAKzKNpOUr2uUwjmsansZ1Y
+         XU5ntC3epqVbjNVzC6HLasrMo23+pPMAkt/qv6i43n4Cftz8fT5pLWjfCVnGETYwZyZd
+         7SY4u6f1c7ZFhSkQAd8SUk7nBWVD/FGSGOKzOab07Xit5RF12P0ULVz33/q0NeopKeBy
+         524g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790328685; x=1790933485;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BoEGz32kOhSBAI1jaGQ8WLuGcooDte4aXDht8opxmTI=;
+        b=UYsmxYXHRXlVRnfjepOiOuh7C6UQ3DuYAmcyNfEvxUER99elOuTJpeTaAYr6y+f3Ms
+         f2cAtke9V3SDGBegXWj77sSeFSWbpT7zI7KSLQ/Xmh0G/nhI4fT1kvoteT02RWWrIce8
+         6UC2QM9UVgVdKuPpZaum55P2C9JZJ9FZQbLq7Nl5jj1f1BkYrL0qCbsssesXY65qg0MA
+         Wk5fdoQGeZa1jEm5+Rz1vmS0t9/fNT7Tv3yJqgbSRHx6fD7mEDO0i4R8HrsKa/AXpjLV
+         obPH2i8vc+SuYxKP25fPfuAPEui8OqxNLnXHuqeS0VnFIf7BcnrKCSDUPQTRX2ZKsjL1
+         T7yg==
+X-Forwarded-Encrypted: i=1; AKwUvBzopsMhMRv37dkHNWqUITdJZY1ZYVFpr5ZidtZ7RXsZXFujcnhQCfyA5aTlB9I2vi6xqSuCGVw=@vger.kernel.org
+X-Gm-Message-State: AFuF++loU6AWEVczfkn4e+myfi62wLJxJGAgxitLZG6Xg6P0NjgEEy1c
+	Ut+eqdKGIFB7u0JWeXwRTPbk11y3vJKmlObjHv3a/YAhtzz9/Mkg4fBMTuXizNGc5d+tLoe4NK3
+	HIt75l6n7wKIRIUN50QIzO3KJQi/4LVnBhiGu4DtB
+X-Gm-Gg: AYBFou0T+t7PgfJGK75iQ5ypPq0eaNBPqGwPhfpSHFDPaWDEB4sRfkoALY5/2K+lbcr
+	3246izrY35l044a87EhxZ0j/6TFHGRiQMV++1mOq5ZlxvXkhOH7tAJLsR1vMPIrudfuojT+koL/
+	A178K9xAOYWrvpeJmEkwcqNo8LjweZLbwnjQ4oDrt0vRgu8lplqyWvOHlScP5yuDkFXkuT8SR+6
+	/pn4r8syk55eO4nZ2gZNWwG7TGv5hT9U7hwEzkiqX6nRGOlURK63WpNOgre3AlaQLkzBU8nGqCr
+	ganK+0cM/OgW8O1VS95VWSZ9qpCJt/LV3USYzr1vD/cIJk9Fo5yaSt/tuSvsm68n+Tw+wpM7YJD
+	JpnjRZsiLehpZ3LrX1ZdKTY9IozvWVqRxTRN2A6Azx3yhAs3b9OR043Fcxl0JThj34Ew9
+X-Received: by 2002:ac8:7f90:0:b0:531:1a2f:7eef with SMTP id
+ d75a77b69052e-5330b6cda86mr29901551cf.24.1790328684829; Fri, 25 Sep 2026
+ 02:31:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Fri, 25 Sep 2026 09:29:24 +0000 (UTC)
+References: <20260923035217.179102-5-edumazet@google.com> <179031918219.2160803.6960367885486755444@kernel.org>
+In-Reply-To: <179031918219.2160803.6960367885486755444@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 25 Sep 2026 11:31:12 +0200
+X-Gm-Features: AclHuK-wTGtFB7xxeHFdzo4ZSGkDq5PTwalJ6IvrEFs5zfSVV6J4DOaRlpmPogo
+Message-ID: <CANn89iJyx5AWqjWaSe8ncpEeLjQ4VpG6kmU2qkyZjckXwSVbAA@mail.gmail.com>
+Subject: Re: [PATCH net v3 4/5] ip_gre: recompute erspan header lengths after
+ a change
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	u9012063@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Marco Elver <elver@google.com>
+On Fri, Sep 25, 2026 at 8:53=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 4 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The commit message says "There is no memory safety issue", but
+>   the bug being fixed also sends 4 uninitialized bytes of skb headroom=E2=
+=80=A6
 
-When a task executes a synchronous RPC call via __rpc_execute(), it waits
-for the queued RPC task to wake up using out_of_line_wait_on_bit(). Callers
-in subsystems such as NFS or NFSD (for example, write_ports() acquiring
-nfsd_mutex during NFS server initialization and issuing an rpc_ping())
-frequently hold locks across these synchronous RPC waits.
+Right, the v4 changelog documents both ways of sending 4 bytes of
+uninitialized headroom, and the GRE_CSUM corruption on version 0.
 
-Historically, rpc_wait_bit_killable() invoked freezable_schedule_unsafe(),
-which explicitly bypassed lockdep checks for held locks during freeze.
-However, during the core freezer refactoring in commit f5d39b020809
-("freezer,sched: Rewrite core freezer logic"), freezable_schedule_unsafe()
-was removed, and callers were updated to pass freezer flags directly into
-out_of_line_wait_on_bit(). While rpc_wait_for_completion_task() was
-correctly updated to use TASK_KILLABLE | TASK_FREEZABLE_UNSAFE,
-__rpc_execute() was mistakenly updated to use TASK_KILLABLE |
-TASK_FREEZABLE without the unsafe flag.
+> - [Medium] On an existing erspan_ver 0 tunnel, every changelink that
+>   carries IFLA_INFO_DATA but omits IFLA_GRE_ERSPAN_VER (and=E2=80=A6
+> - [Medium] In a Cc: stable fix, the patch rejects non-zero
+>   IFLA_GRE_IFLAGS/IFLA_GRE_OFLAGS for erspan_ver 0 and for=E2=80=A6
 
-As a result, if a system suspend occurs concurrently while a task is
-waiting in __rpc_execute() with a lock held, __set_task_frozen() observes
-p->lockdep_depth > 0 without __TASK_FREEZABLE_UNSAFE and triggers a lockdep
-warning:
+Agreed, v4 drops the new validation. erspan_xmit() builds the GRE
+flags from the version alone instead, so existing configurations keep
+working.
 
-WARNING: kernel/freezer.c:139 at __set_task_frozen+0x260/0x340
-Call Trace:
- <TASK>
- task_call_func+0x1aa/0x260 kernel/sched/core.c:4518
- __freeze_task kernel/freezer.c:150 [inline]
- freeze_task+0x216/0x390 kernel/freezer.c:169
- try_to_freeze_tasks+0x190/0x620 kernel/power/process.c:54
- freeze_processes+0xd0/0x1f0 kernel/power/process.c:137
- suspend_prepare kernel/power/suspend.c:387 [inline]
- enter_state kernel/power/suspend.c:609 [inline]
- pm_suspend+0x2f1/0x760 kernel/power/suspend.c:644
- state_store+0x206/0x290 kernel/power/main.c:819
- kernfs_fop_write_iter+0x3a5/0x540 fs/kernfs/file.c:345
- vfs_write+0x61e/0xbb0 fs/read_write.c:687
- ksys_write+0x156/0x270 fs/read_write.c:739
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+> - [Medium] This patch makes tunnel->tun_hlen/hlen change at runtime on a
+>   live erspan device (erspan_changelink() -> erspan_link_update() ->=E2=
+=80=A6
 
-Update __rpc_execute() to pass TASK_KILLABLE | TASK_FREEZABLE_UNSAFE to
-out_of_line_wait_on_bit(). This restores the pre-regression behavior and
-aligns __rpc_execute() with rpc_wait_for_completion_task(), avoiding the
-false-positive lockdep warning when tasks holding locks are frozen during
-synchronous RPC execution.
+erspan_xmit() racing with a changelink is not new. Before this patch,
+such a changelink left tun_hlen and hlen out of sync with the version
+for good, and a new encapsulation was not accounted for in
+dev->needed_headroom and dev->mtu. Plain GRE has had the same o_flags
+vs tun_hlen window since dd9d598c6657 ("ip_gre: add the support for
+i/o_flags update via netlink"). v4 narrows the erspan case to the
+duration of the changelink.
 
-Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-Assisted-by: Gemini:gemini-3.8-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+209eccd8f507de9f7f1b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=209eccd8f507de9f7f1b
-Link: https://syzkaller.appspot.com/ai_job?id=cb10c20b-f568-4900-8b09-dc937852ee3f
-Signed-off-by: Marco Elver <elver@google.com>
+On the headroom side, the version change alone makes erspan_xmit()
+push at most 12 bytes more than tunnel->hlen accounts for, which the
+20 bytes reserved for the outer IP header in dev->needed_headroom
+absorb. Going further needs a concurrent encapsulation change, whose
+header ip_tunnel_encap() pushes before ip_tunnel_xmit() cows again:
+that is the pre-existing race discussed in patch 1, common to all
+ip_tunnel users.
 
----
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 016f16ca5..494947d50 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -984,7 +984,7 @@ static void __rpc_execute(struct rpc_task *task)
- 		trace_rpc_task_sync_sleep(task, task->tk_action);
- 		status = out_of_line_wait_on_bit(&task->tk_runstate,
- 				RPC_TASK_QUEUED, rpc_wait_bit_killable,
--				TASK_KILLABLE|TASK_FREEZABLE);
-+				TASK_KILLABLE | TASK_FREEZABLE_UNSAFE);
- 		if (status < 0) {
- 			/*
- 			 * When a sync task receives a signal, it exits with
+Closing these windows needs a snapshot of the tunnel configuration in
+the transmit paths of all GRE flavors, which is out of scope for this
+series.
 
-
-base-commit: 93f51579e7df248780214094418f205253383cc5
--- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-The person who has signed off on the patch is responsible for
-addressing comments.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+RCU conversion will be done in net-next.
