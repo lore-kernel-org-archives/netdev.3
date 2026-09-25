@@ -1,160 +1,178 @@
-Received: from mail-pj2-f26.google.com (mail-pj2-f26.google.com [74.125.227.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C33345731
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 01:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426C222126C;
+	Fri, 25 Sep 2026 01:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790298475; cv=none; b=APaYAUKah/CgTgIKo96KmjnBlDMIgwbxCx0N5w+T8VWnisMKYCuSH+Esvejqhqfhk0axgP1jm7G/B25Sxmx/+zm+X3oabF/Wufrpz8WoBouOP79BBY7NZOEkrLAyV8RSM5M79KNLg03oQtxde0SPnt6+l3kfXhUCFIW52tdqaLg=
+	t=1790299341; cv=none; b=ju9itEfzu6NC9mT428AebjlB4NTEDSvNrxCQXu4+KPBmHUMEW+J22z3sY8hLUNP+eX3OSGYfgDgnUvv40pLPIqpl3PD4by0QslMw8W0qpnjTSfSl47duczglgig8G7SqyfXZYqrlvhTahd8RBQ7U1gm3eWiDcUaMLzn4XPGuLow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790298475; c=relaxed/simple;
-	bh=8UABYydPGylXofY0HIINAqZSkfiYDcvxV/Qu5GNl+RA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=sfMwf8Y89W7R4KBob6dC4kMBUViCniX4pht7RCXHG9hnooJxAadbGDj0S3p20oDnJ/ZmKB9yPC1haQIrjdfo4Eaf5ppVyOO2FIe5TeTjYVZ7k4EZmf3+aMCKuuslLa3p0z5UMbxaKpda2X5oEvO6IVFohJ8UDkhfHAzH6wiTwdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHguzDn4; arc=none smtp.client-ip=74.125.227.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790299341; c=relaxed/simple;
+	bh=IHOG16fhnpeS2lbMtLrMD9Kcx6EOoKekV4HrKJuApSQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Xtb/frxobldgwRTMaCNYwCtdHqZwZOarKn2muIKpW9LjW7pQGHo+sj6YzO1WkdXrp5LJDT36zdWkdCUpuTYjOeoKRwBKY1X84NyjwVGIS2MLjXBWumPCtqY6cdLQYWMX4Wu0qk9l3zn4eDPqSVIub7m0FZGEwEAdeqSwpZPFziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9PY1Qfp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHguzDn4"
-Received: by mail-pj2-f26.google.com with SMTP id d9443c01a7336-2d8fb334e72so1181575ad.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790298469; x=1790903269; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gJ9TQ6nmLCn6X5u9an9cYs7PHJYbmVzNFZPSWypRc2Y=;
-        b=mHguzDn4DKkpqZ4zCsoVStNpKDtmB2hvEt5UHeY5bQWcNfPQnVVHjofm8pHD6LIo2D
-         gbA11tRzPaFPBrVteNBZe1lcQRYBWkpSRg6Gw2kaQ8HKgdsj+QJhgt14ofsbhsU+f42Z
-         wlTU0qhdqxQrzPn9q4BpNFZJv0erlGzmfNyrNguU5NdOPUNtFmMoynTi4TvI3UOiYBgF
-         +NXpuU09EX/VRl6qNpCLBgvcN7/Ayc8XWYWZskXx+MvQwU2USLzbOeRvyTe1IlC8giZV
-         NVml4sNDmRcu0qveEVbIcKTxVRe6Z0OdSSoULE8TIAaF0nqyMNViHBk2FVK/w7Z3fyl7
-         YpQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790298469; x=1790903269;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gJ9TQ6nmLCn6X5u9an9cYs7PHJYbmVzNFZPSWypRc2Y=;
-        b=FQF/hF8F4AsSSX8mYHuTOg/wF9LpUbqJQyVhZ7M70QAGywTVYAjA9I0srYAh0Hf/tu
-         D/4HiZ1IXQFDIJot1vsfCUozOT7a92N/x2vgDfxhBc1pMwisa4rnuLQ3QZR2m0WfZxB4
-         8gkdJYr8tB3C1Nj1tPzBUTit1VeaRxSXZEPNZpDUJH5573DwCKQSzKfE/FdlImnZxMOg
-         N9LvW4ewlFQmcnrYwrfLvjLvSzNyw9ySKa1wAXbiBY8i1fqnRez9IV9TOXjaG4G+An7l
-         wINKALKpqWf3kW4QWAuvwbniMe1qFh1Xxdl1jAUJ6K01fme/84ZNZVoMZVOCrSo+6Ouh
-         k88w==
-X-Gm-Message-State: AFuF++kNLST+Y5AVZHdNfWq5GeFHrwIPmE6wx9jpuUDkIA8j75KKPFoT
-	3LYBcsrPSMFmMJkaeBI3NYWhyMxT2nIIDGOY9mpq18D2ZM6gbHttahue
-X-Gm-Gg: AYBFou3kG6E0kDAY1eHNKIw5VEjdYqeyAvPGKV0avePKTu6qXJzj+vJk47dAcufnt3L
-	MWOON+G3/+p4Wlxgp1vDbfPOFW2i2TJlcoCvkt41of35j/OumCxrUJoW1lMgFLzoMbUbkS+Bp2W
-	TTW3woRhpPF+Rqb3UC1JOYkO/FhfByuySjYotVHuvD19ALIznyOWxqEgg7AangyGIKuhnkUYOUV
-	9RwCnmiC3N8YnQupLOJv2zTfOG2XtqDtJKRWHmT3Mp7Nh4gg/pdoLzRdYx8XxvOQGWakeCKacq3
-	2aLVjxtG8pl0/UjaRphCJ81Kd0BdzHeGF9Q/EYsNucxcG0NKeLjAS2IZZfckASgt49LV3M4l6Jf
-	SJ25NeeMRH2mC/2KizP2HvCyzG9wP+qj+HnTShvCQsEWGS4PVo3BWQjYES0Y7IqBdsSquN5J5et
-	+bmaAFjwKi1rzO92JsxH9PUpBY63t6EYh/+ONoaLU8+uWWoNf4U23oJ3OkGizPY1QimLn6sS0A0
-	uLYzbEFqgXp8857kuzLqNgOxM49WaJm4+vTdPI/rS0HyX8hkzo6weRXqYnXxljlwVqKGbX/bWn4
-	Mx6CWALNf3EDyFw=
-X-Received: by 2002:a17:903:19c8:b0:2db:539c:b7c7 with SMTP id d9443c01a7336-2df7da7efd5mr36387595ad.20.1790298468891;
-        Thu, 24 Sep 2026 18:07:48 -0700 (PDT)
-Received: from localhost ([153.61.198.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913e030dsm2589525ad.16.2026.09.24.18.07.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 18:07:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9PY1Qfp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1197C1F000FF;
+	Fri, 25 Sep 2026 01:22:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790299339;
+	bh=ZjNiNhTLnTtx74UjD4snFKIjvztkIw+w9+n/Iof6W6k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=P9PY1Qfp1Nos6m4zLJl1lF/xYaRR5gAPZ0LPl2cMoeU04tL0Gwte3z0EMSgrwvhGk
+	 2aHS2iPAKjSz0Nho5osceBpZ8VK1HsnxOP72b2hREiqkrTzWhs7fEIJAZPTAqSi2wi
+	 l+4W+aB7JkouI2/9mEzN5uP10H5n1/XegdKnl6BIXe5FsZj7GHIyKyaL7yHEv/QzdI
+	 Er+Qd0NMhQ1fycBxdRZGZIMbaxKiQn6TzCvX+ad4IlIP6JcxysdZzQqX+E2Y900bZO
+	 exF4/gQ0dox5rKa4vX32Gdxnu50PIoc+n/1n/oky2cxUEXlFCIJWlmd4+ob2F2tt04
+	 VTsz/9VaonV6g==
+Subject: Re: [PATCH net v10 3/4] net: phy: take the interrupt back from the
+ bus on detach
+From: netdev-bot+sashiko@kernel.org
+To: f@lex.la
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ olteanv@gmail.com, Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
+ steve.glendinning@shawell.net, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 25 Sep 2026 01:22:18 +0000
+Message-ID: <179029933858.2160803.12630945851451903090@kernel.org>
+In-Reply-To: <20260922131955.4175785-4-f@lex.la>
+References: <20260922131955.4175785-4-f@lex.la>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Sep 2026 01:07:47 +0000
-Message-Id: <DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com>
-Cc: <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Kuniyuki Iwashima" <kuniyu@google.com>,
- "Paolo Abeni" <pabeni@redhat.com>, "Stanislav Fomichev" <sdf@fomichev.me>,
- <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
- <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
- <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
- packet scrubbing
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jakub Sitnicki" <jakub@cloudflare.com>, "Daniel Zahka"
- <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com>
-In-Reply-To: <87fqyypp67.fsf@cloudflare.com>
+MIME-Version: 1.0
 
-On Thu Sep 24, 2026 at 4:52 PM UTC, Jakub Sitnicki wrote:
-> Hi Daniel,
->
-> On Wed, Sep 23, 2026 at 01:46 PM -04, Daniel Zahka wrote:
->> On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
->>> skb_scrub_packet() drops all skb extensions unconditionally via
->>> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rc=
-v,
->>> etc.) and cross-netns forwarding (dev_forward_skb).
->>>
->>> This makes it impossible for a BPF program to pass metadata via bpf_skb=
-_ext
->>> through a tunnel or across a netns boundary. The extension is always lo=
-st
->>> at the scrub point.
->>>
->>> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
->>> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
->>> extension slab is shared with clones: deleting an extension only clears=
- the
->>> per-skb active_extensions bit, and the shared slab payload is released
->>> lazily by __skb_ext_put() once the last reference goes away.
->>>
->>> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scr=
-ub()
->>> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so=
- the
->>> BPF metadata survives queueing onto a UDP socket receive queue and stay=
-s
->>> readable there (e.g. for a sockmap verdict program). Only mark the skb
->>> stateless when no extension survives the scrub. Otherwise skb_consume_u=
-dp()
->>> would take the __consume_stateless_skb() fast path, which skips
->>> skb_release_head_state(), and leak the extension slab.
->>>
->>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
->>> ---
->>
->> Hello Jakub,
->> What are your current plans for this series? This commit solves the same
->> problem I have with wanting to preserve the PSP skb extension across
->> netns forwarding.
->
-> I've implemented Alexei's idea of skb-lifecycle tracepoints that run
-> only when an skb is marked/traced. Currently putting final touches on it
-> before sending it out for the first round of feedback. You can take
-> sneak peek at it on GH [1] to see if it meets your needs.
->
-> The CPU overhead is lower compared to the skb extension, at least in my
-> local runs, and the kernel changes are simpler, so it seems like a win
-> overall:
->
-> |                  | gated skb tps    | bpf skb ext      |
-> |------------------|------------------|------------------|
-> | **busy**         | **+5.44 =C2=B1 3.16** | **+8.01 =C2=B1 4.75** |
-> | sys              | +2.62 =C2=B1 2.06     | +3.67 =C2=B1 2.76     |
-> | soft             | +2.89 =C2=B1 1.43     | +3.83 =C2=B1 2.10     |
-> | ns/pkt @146k pps | **+=E2=89=88 373**       | **+=E2=89=88 549**       =
-|
->
-> I'll be giving an update on it at LPC [1], if you're attending, and of
-> course will keep you posted here on the ML.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Well, the numbers speak for themselves. I think :)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The restore added to phy_detach()
+  (drivers/net/phy/phy_device.c:1967-1971) is keyed on…
+- [Low] Concern as filed: the new store in phy_detach()
+  (phy_device.c:1967-1971) is gated only by phydev->is_genphy_driven…
+
+--
+
+net: phy: take the interrupt back from the bus on detach
+
+phy_probe() overwrites phydev->irq with PHY_POLL when the bound driver has
+no interrupt support, and nothing restored it, so a PHY that first gets the
+generic driver keeps polling after its real driver binds. The patch restores
+phydev->irq from mdiobus->irq[] in phy_detach(), before
+device_release_driver(), gated on phydev->is_genphy_driven.
+
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 94b2e85e00a37..a9c71a2861186 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1965,6 +1965,8 @@ void phy_detach(struct phy_device *phydev)
+>  	 * real driver could be loaded
+>  	 */
+>  	if (phydev->is_genphy_driven) {
+> +		/* The release below lets phy_probe() write this field. */
+> +		phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
+
+[Severity: Medium]
+Is the restore complete if it is placed here rather than next to the write
+it undoes?
+
+The store being undone is in phy_probe() and does not look at
+is_genphy_driven at all:
+
+drivers/net/phy/phy_device.c:phy_probe() {
+	/* Disable the interrupt if the PHY doesn't support it
+	 * but the interrupt is still a valid one
+	 */
+	if (!phy_drv_supports_irq(phydrv) && phy_interrupt_is_valid(phydev))
+		phydev->irq = PHY_POLL;
+	...
+}
+
+So it runs for whatever driver the driver core binds, including a real PHY
+driver without interrupt support. The matching unbind goes
+device_release_driver() -> phy_remove(), and phy_remove() contains no
+phydev->irq write:
+
+drivers/net/phy/phy_device.c:phy_remove() {
+	...
+	if (phydev->drv && phydev->drv->remove)
+		phydev->drv->remove(phydev);
+
+	/* Assert the reset signal */
+	phy_device_reset(phydev, 1);
+
+	phydev->drv = NULL;
+
+	return 0;
+}
+
+Two paths then still end with PHY_POLL and no restore site:
+
+- genphy_driver is registered without suppress_bind_attrs, so a bind through
+  /sys/bus/mdio_bus/drivers/Generic PHY/bind leaves is_genphy_driven at 0,
+  and the unbind reaches phy_remove() only;
+- rmmod of an interrupt-less PHY driver, after which a later driver that does
+  support interrupts inherits PHY_POLL while mdiobus->irq[addr] still holds
+  the number.
+
+Would saving the pre-substitution value in phy_probe() and restoring it in
+phy_remove() cover those as well as the path this patch covers?
+
+For the record, the sibling gap on the error_module_put label in
+phy_attach_direct() is closed by the later patch in this series, "net: phy:
+restore the interrupt when the generic bind cycle fails", which adds the same
+store there. The phy_remove() and sysfs-unbind paths above are still
+uncovered at the end of the series.
+
+[Severity: Low]
+Can is_genphy_driven be stale at this point?
+
+There are only three writes of that flag, one set in phy_attach_direct() and
+two clears, one on the error_module_put label and the one added just below
+this store. phy_remove() does not clear it. After a sysfs unbind of "Generic
+PHY" on an attached phydev the flag stays 1 while phydev->mdio.dev.driver is
+NULL, so a subsequent bind of a real driver followed by phy_detach() takes
+this branch and writes mdiobus->irq[addr] over the PHY_POLL that phy_probe()
+wrote on purpose for a driver without interrupt support.
+
+The effect looks limited: both phy_request_interrupt() call sites,
+phy_connect_direct() and phylink_bringup_phy(), run right after
+phy_attach_direct(), which re-applies the same substitution against the
+driver bound at that moment:
+
+drivers/net/phy/phy_device.c:phy_attach_direct() {
+	...
+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
+		phydev->irq = PHY_POLL;
+	...
+}
+
+so the wrong value only lives in the detached window. Would it still be
+worth clearing is_genphy_driven from phy_remove() so the flag tracks the
+binding it names?
+
+The commit message says of the placement before device_release_driver():
+
+    That is ordering, not exclusion: nothing on this side holds the device
+    lock.
+
+With a stale flag, is phy_probe() on another CPU also a writer of this field
+before device_release_driver() is reached, rather than only after it?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922131955.4175785-1-f%40lex.la
