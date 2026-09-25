@@ -1,155 +1,116 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD874A4EFF;
-	Fri, 25 Sep 2026 13:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9664A499F;
+	Fri, 25 Sep 2026 14:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344800; cv=none; b=N4mdLtL+L/ICRKiMyMKsm27h0wUfsGQNX0iosHV/wxUw1ipehAn+Eec/GcunJToDRbwVSAnSGlSc9IMyr8PL1tTzj1LN3tWfUVcd1DWquZTsua4I8ZKEHgOgBRggjkPkeBCKyH8WYy2+DVn4cypgem1kwgUbxu8kjN9ofDOAZFs=
+	t=1790344808; cv=none; b=mdQ58yfHP1y7S2t6vt0oMLdoRlP/n/BZMc9udobqk1jbtCKLNZ+qjjEEJQGNNM9E1Sl4XRiV6mziQ4rffeKMIJD7OaPRotMczOALhKYfOLDO3RNEMG9N8c0iKd+RwnUD8AnI10nHHmMYkpct4rIN7Xm+MZR55sKj+hw0cj0K46o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344800; c=relaxed/simple;
-	bh=GXbd9O8F0Ga868206Jp3PJXH7V5mfwwh4/C7YNP71qw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kD9O3e0wHEzRB08T2ETZumvkG50HkTTLEQcnnyjjhQA7zDAkw9BVfS7LTDFm6bHrOYkzQeZGbtr55G9mn4jddjk1Dqde/LH6bjLLBSE1gw72oyCrcWIYjG2h4bnfRN7n3QqQAoIsRJ8zicbedXHeynZ8/NWZ18Exoi4JUesatrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VzMRiRta; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790344808; c=relaxed/simple;
+	bh=DSsN29zsR9j+WvGBTcHDFWJGzb4OLJvGW5VKqI8X3DA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=D+0sfddV6PW1hUmYIQSvLK5D7ThOvp7akVxOiO4bdHXgSaXnNTEBqufDtbOJYR8wvRnTYZ/f7rvy2wpLEZfIVoJmLRkvdYTU7X+K9Zs6XHBxdvDVKX5OEOehZSTmwSp5IsSRnrIM3GaW9Iklv6vHlgV1BIrih7V4d/anOUrTX0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=I7Bd/HXt; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VzMRiRta"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5FC144E41070;
-	Fri, 25 Sep 2026 13:59:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D4AF6073B;
-	Fri, 25 Sep 2026 13:59:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9905C10328856;
-	Fri, 25 Sep 2026 15:59:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790344789; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="I7Bd/HXt"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27297A4AA6;
+	Fri, 25 Sep 2026 15:59:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790344799; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=MT3XSGNQA4LE+B/Kq3xueLTY2svzc0JEP6wXJ7cJaUc=;
-	b=VzMRiRta30sYqbaLaweAUJ/ANph1gDspnL9W1+XpVNtPp2+NZIkFpAk/+sIMSkccLy3Bfs
-	yEqSy87K61ZlfIKMN2uE8iMdG4LqffW74vO8vRIWiAJ5uttiZPDy+E4H8MH00yCtHY75xW
-	eqIFbWlms1tPwhb8qHZOYsOR2GPnVQs0t6AGnWFlg7IQb2RtOVXeFX6IKGqbFUfzSt+kEl
-	NGKyyyV0+ZaIN3yhhFk0nU08SpLGxLarDD35BX9dyC0SYU33kYH9UnkZ4UTNCNn+gN64WT
-	EUjmg7SyC2PRNeHVzX4oMBTtH1/EFJZY9LulhF4nANDXXnRnSALYMpdtxT/ERQ==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 25 Sep 2026 15:59:34 +0200
-Subject: [PATCH net v2 1/3] net: macb: never give hardware a NULL RX buffer
+	bh=MTd0EMu7doAmdq2HppZdrUCkOm/ba6fvHRPuYn3MCJo=;
+	b=I7Bd/HXtFzYU78wNTTbWozPADgcLkY0cIW4cbpOipMGwkk7W/grP6FTidrblJUt5+xobHU
+	1JlWBkuzdNMc+DUrp//7RXKWTJV/Ugf0ZtcFqHdygyHE8l6CHQw5xR0Jbr/wiIzydc+Hjk
+	w/l4Thui96nGT6JrvYdLf03SzAzOq0DPZoFmrUiKlusQ0cOcCZwCN6dZeauPan9Kx3eMHP
+	B/Gy1Q9Z4F3/+IPU2geQzSb+fVRvDobMK2i08QMRDH42WYVwKNehngjyrtuR/oPVamSXxY
+	Svvk4ZKZ8tGKQHaacye6nAsGTRu9oePb/fZ0O++UsJIQQs/cNlaubBeVVmeGwg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260925-macb-close-v2-1-360efa565914@bootlin.com>
-References: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
-In-Reply-To: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
-To: Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Sean Anderson <sean.anderson@linux.dev>, 
- Antoine Tenart <atenart@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolai Buchwitz <nb@tipi-net.de>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
+Date: Fri, 25 Sep 2026 15:59:57 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Simon Horman <horms@kernel.org>
+Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Justin Chen <justin.chen@broadcom.com>,
+ kmehltretter@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: bcmgenet: allocate RX buffers as page fragments
+In-Reply-To: <20260925134714.GM13925@horms.kernel.org>
+References: <20260924101922.2675127-1-nb@tipi-net.de>
+ <20260925134714.GM13925@horms.kernel.org>
+Message-ID: <890feb51a8204e6e9f486bcee8e4f819@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The refill logic is simple: iterate over all pending rx slots, allocate
-SKB (& DMA map) if needed and hand it off to the hardware by clearing
-the RX_USED flag.
+Hi Simon
 
-If the refill operation fails mid-way, it early returns leaving the
-remaining slots untouched. In an initialised ring that is safe: a slot
-is either owned by the hardware holding a valid buffer, or
-software-owned (RX_USED set) waiting for refill to hand it a new one.
-When slots have never been initialised however, we are in trouble.
+On 25.9.2026 15:47, Simon Horman wrote:
+> On Thu, Sep 24, 2026 at 12:19:21PM +0200, Nicolai Buchwitz wrote:
+>> Since the page_pool conversion every RX buffer is a whole page and the
+>> skb truesize is the page, although the hardware writes at most 2 KiB 
+>> of
+>> it. On 64 KiB pages a packet therefore counts 65792 bytes against the
+>> socket buffer where it used to count 2752. As a result a UDP socket
+>> with the default buffer starts to drop after three packets, and the RX
+>> rings pin 16 MiB for 512 KiB of buffers.
+>> 
+>> Fix this and allocate the buffers as page fragments, so the truesize 
+>> is
+>> what a packet occupies. 4 KiB pages stay one buffer per page.
+>> 
+>> Sync each buffer in the refill path, as page_pool can only sync a 
+>> whole
+>> page on recycle. On 4 KiB pages that is twice what the hardware wrote.
+>> 
+>> Fixes: 7bc054c2d4ed ("net: bcmgenet: convert RX path to page_pool")
+>> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
+>> Closes: 
+>> https://lore.kernel.org/all/20260924065839.56793-1-kmehltretter@gmail.com/
+>> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> 
+> ...
+> 
+>> @@ -2254,11 +2257,12 @@ static int bcmgenet_rx_refill(struct 
+>> bcmgenet_rx_ring *ring,
+>>  			      struct enet_cb *cb)
+>>  {
+>>  	struct bcmgenet_priv *priv = ring->priv;
+>> +	unsigned int size = GENET_RX_BUF_SIZE;
+>> +	unsigned int offset;
+>>  	dma_addr_t mapping;
+>>  	struct page *page;
+>> 
+>> -	page = page_pool_alloc_pages(ring->page_pool,
+>> -				     GFP_ATOMIC);
+>> +	page = page_pool_dev_alloc(ring->page_pool, &offset, &size);
+> 
+> I think it is not so important either way, but I'm wondering
+> if you considered using page_pool_alloc_frag() here.
 
-After dma_alloc_coherent() of the rx ring buffer, all slots have NULL
-pointers and RX_USED cleared meaning HW will try using them. Ensure
-this does not happen by setting the RX_USED flag on all slots before
-calling refill at buffer alloc, in gem_init_rx_ring(). That way even if
-refill fails on an alloc/dma_map, the HW won't try using NULL pointers
-as buffers.
+Yes, I did, but page_pool_alloc() seemed a better fit as it hands back 
+the usable
+size in *size. Also it falls back to a whole page above half a page and 
+avoids an
+underestimate at the end of a page.
 
-Note we tweak gem_rx() and macb_rx_pending(): their previous stop
-condition was only if desc was RX_USED. Now it must be either RX_USED
-or we got out of the range of successfully allocated descriptors
-(detected using the rx_tail and rx_prepared_head cursors).
-Otherwise gem_rx() could consume unallocated buffers.
+> 
+>>  	if (!page) {
+>>  		priv->mib.alloc_rx_buff_failed++;
+>>  		netif_err(priv, rx_err, priv->dev,
+> 
+> ...
 
-Theoretical bugfix, never encountered in practice. To reproduce,
-introduce memory pressure (less than 512 SKBs of free memory) and open
-the interface.
-
-Note that this codepath also hits at resume, on HRESP errors and on
-set_ringparam (while interface is running).
-
-Fixes: 4df95131ea80 ("net/macb: change RX path for GEM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 8e5c034dc3a4..7f25574928d7 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1596,6 +1596,13 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		dma_addr_t addr;
- 		bool rxused;
- 
-+		/* Only descriptors in [rx_tail, rx_prepared_head) were armed
-+		 * for hardware. Outside, we might have RX_USED descriptors for
-+		 * alloc failures.
-+		 */
-+		if (queue->rx_tail == queue->rx_prepared_head)
-+			break;
-+
- 		entry = macb_rx_ring_wrap(bp, queue->rx_tail);
- 		desc = macb_rx_desc(queue, entry);
- 
-@@ -1859,6 +1866,10 @@ static bool macb_rx_pending(struct macb_queue *queue)
- 	struct macb_dma_desc *desc;
- 	unsigned int entry;
- 
-+	/* No armed descriptor left: nothing can be pending. */
-+	if (macb_is_gem(bp) && queue->rx_tail == queue->rx_prepared_head)
-+		return false;
-+
- 	entry = macb_rx_ring_wrap(bp, queue->rx_tail);
- 	desc = macb_rx_desc(queue, entry);
- 
-@@ -2795,9 +2806,14 @@ static int macb_alloc(struct macb *bp)
- 
- static void gem_init_rx_ring(struct macb_queue *queue)
- {
-+	unsigned int i;
-+
- 	queue->rx_tail = 0;
- 	queue->rx_prepared_head = 0;
- 
-+	for (i = 0; i < queue->bp->rx_ring_size; i++)
-+		macb_rx_desc(queue, i)->addr |= MACB_BIT(RX_USED);
-+
- 	gem_rx_refill(queue);
- }
- 
-
--- 
-2.55.0
-
+Thanks,
+Nicolai
