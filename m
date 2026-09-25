@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C9E54655;
-	Fri, 25 Sep 2026 21:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079E554655;
+	Fri, 25 Sep 2026 21:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790373549; cv=none; b=eWHH4R9RA0ewKHyljLFZ+Jx1wm+WzHwiEBP8pZHwyn3MVX79tIwWz/4FmIOOAFDNFxTc5RpF4NZHYnr5LAaEa7Fb6L37QCx19Aif7NuqPAH/Gw++kg1N7quhkdqNTMLMfekmz+TrLexBEEJszCT+m7YzJ+ZQ33aeECc1wexA60U=
+	t=1790373561; cv=none; b=K0kZtZWVlOYVFaPY2R5XCSwyCwPXMuKJ2GYmQAsACnLgizejVXEacm/4lc+M3uTPWW4RcKjMZsjllJ3rXju7QU8eF3sqbXQBBcuGz0tUO6SLHKQL2UtIzckrkoXAxNhINYHirJ7+uuv4AqI2zNWj9PrMaQ/8BnY8KGUxc3pGlcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790373549; c=relaxed/simple;
-	bh=O2PjDXtqiaTWYMzT996YbRkQjmlGFfte71y4gQ7jhi0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U+3VUN5WKin9ywn5uOYt41jVcl3Hs4KZd+xkZMcw3wOpxj2V3CwlzEJyoEGl2rTMg4ibw8jfsTD3YHpGFXDs1SbAoZ73K6xXPf1xmJIhceYjr5X4O5xKV8KqT0/F/uTO2/nwcEiihxDECCc8lqD2vBiKh64g2F4liCg7SAVWzOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwZbf6kT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790373561; c=relaxed/simple;
+	bh=bMVKKRI60tG6JPeU6IUVrsBtPVyQfzgqCicGA1Jh4qU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cj8j0cPOFOn4z0LSvrTUm9Jz6s73C20XGPHB5OzbIeSR533935K6QgbiWUVUT11N6HbEtDXkNjmWovHKuC/Dh6Tddx5kCNJ7CQHc8Ne8im753p0m1vRXuzZ6mZTjiFNWDbRAEZOjJYE7s8ndNAfFHdEZwSyDgquWEoNza2Nec6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wl+IDraE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwZbf6kT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6835D1F000FF;
-	Fri, 25 Sep 2026 21:59:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wl+IDraE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B4F1F000FF;
+	Fri, 25 Sep 2026 21:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790373547;
-	bh=6Wc1UgfqhVnODzAM+xm4tpzG/z1zMVgbpnNsAsUH1kc=;
+	s=k20260515; t=1790373559;
+	bh=bkJckBQv+VcaGj1fhmLnEcJZbux+lPgoDTwjPDTctwI=;
 	h=From:To:Cc:Subject:Date;
-	b=gwZbf6kTzZrLp71O/wRNQJlAzaYy9bWgd+weKz77/sgJKneDgti+LMY7rUF62rYIC
-	 4KQxbAQvG0r0CiY6kS/nkf3cKwHCzOOomIezTvdrO+7f5Hv1Ype3MegjnooRWFQYK6
-	 /nfQaQn44xoSYXIbr2DKRAqIzOp+vYdo6sQaI7fI68q/vqJi+p+MxhZWPf93XtaRlP
-	 pbCyhjqfLn2Fyb3HWaHWkXrBq75VuCglZvPhUWypjvSRf337wwE1z6ZKY2nqKPfesm
-	 qEvnzm7g0uk3PZKbxvcDpP/KMtTLdewJtSbZsZ8hpl9fxjV9rViRUKL5N6mwCaZ+PT
-	 uJ20bLoWuBqmQ==
+	b=Wl+IDraECgO51pBcLVA3hALZ9hzcvAb5gLaSBQjXxH5bVn1ZW/+hDy5N0n66a/5NZ
+	 1hLwhM3us2iDMyH60F+Ct5n3g69slGXTYM6BeSUj8EeAe9wvqqu7l/+ZQvpxMu/aiC
+	 LdFK92NYNkcCvwx/1MXgAQDgU/escT8k90vBxlEVX5DX6aS9DppDZyW1/64nmLr8BO
+	 nRhdd2ByIzp5mA1CU00ote1rkTLB3EUwLA0mFDsY69j4NhTyDyOkJe/1GXfM2FzCYr
+	 UbhHDTJkG979sPyWK1VGaVp3NHSzOykGhgwt3aZAFnPyrT3BwDrhtcJDtcqmlzlBcI
+	 /oYC3e+SA26cw==
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] dt-bindings: net: Convert HiSilicon hns-dsaf to DT schema
-Date: Fri, 25 Sep 2026 16:58:47 -0500
-Message-ID: <20260925215848.2949157-2-robh@kernel.org>
+Subject: [PATCH net-next] dt-bindings: net: Convert hisilicon,hns-mdio to DT schema
+Date: Fri, 25 Sep 2026 16:59:10 -0500
+Message-ID: <20260925215911.2950356-1-robh@kernel.org>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -50,290 +50,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert the HiSilicon hns-dsaf binding to DT schema format.
-
-Drop 'phy-handle' at top level as there are no users. Add undocumented
-'media-type' property.
+Convert the hisilicon,hns-mdio binding to DT schema format. Add the
+missing 'subctrl-vbase' property which is already in use.
 
 Assisted-by: LLM
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- .../bindings/net/hisilicon,hns-dsaf-v1.yaml   | 168 ++++++++++++++++++
- .../bindings/net/hisilicon-hns-dsaf.txt       |  90 ----------
- 2 files changed, 168 insertions(+), 90 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
+ .../bindings/net/hisilicon,hns-mdio.yaml      | 59 +++++++++++++++++++
+ .../bindings/net/hisilicon-hns-mdio.txt       | 27 ---------
+ 2 files changed, 59 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-hns-mdio.txt
 
-diff --git a/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
+diff --git a/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml b/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml
 new file mode 100644
-index 000000000000..4edc6cafcbed
+index 000000000000..b8350794650d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
-@@ -0,0 +1,168 @@
++++ b/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml
+@@ -0,0 +1,59 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright 2025 Hisilicon Ltd.
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/net/hisilicon,hns-dsaf-v1.yaml#
++$id: http://devicetree.org/schemas/net/hisilicon,hns-mdio.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Hisilicon DSA Fabric device controller
++title: Hisilicon HNS MDIO bus controller
 +
 +maintainers:
 +  - Jian Shen <shenjian15@huawei.com>
 +  - Jijie Shao <shaojijie@huawei.com>
 +
++allOf:
++  - $ref: mdio.yaml#
++
 +properties:
 +  compatible:
-+    items:
-+      - enum:
-+          - hisilicon,hns-dsaf-v1
-+          - hisilicon,hns-dsaf-v2
++    enum:
++      - hisilicon,hns-mdio
++      - hisilicon,mdio
 +
 +  reg:
-+    minItems: 1
++    maxItems: 1
++
++  subctrl-vbase:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
 +    items:
-+      - description:
-+          external interface control register base and size (optional, only
-+          used when subctrl-syscon does not exist)
-+      - description:
-+          SerDes base register and size (optional, only used when serdes-syscon
-+          in port node does not exist)
-+      - description:
-+          PPE register base and size
-+      - description:
-+          DSA Fabric base register and size (not required for single-port mode)
-+
-+  reg-names:
-+    minItems: 1
-+    items:
-+      - const: ppe-base
-+      - const: dsaf-base
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 409
-+
-+  dma-coherent: true
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  mode:
-+    description: DSA Fabric mode string
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - 2port-64vf
-+      - 6port-16rss
-+      - 6port-16vf
-+      - single-port
-+
-+  subctrl-syscon:
-+    description: syscon handle for external interface control register
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+
-+  reset-field-offset:
-+    description: offset of reset field in the control register
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  buf-size:
-+    description: RX buffer size (bytes)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  desc-num:
-+    description: number of descriptors in TX and RX queue
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+patternProperties:
-+  "^port@[0-5]$":
-+    description: DSA Fabric port node
-+    $ref: ethernet-switch-port.yaml#
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        maximum: 5
-+
-+      phy-handle: true
-+
-+      serdes-syscon:
-+        description: syscon handle for SerDes register
-+        $ref: /schemas/types.yaml#/definitions/phandle
-+
-+      cpld-syscon:
-+        description: syscon handle plus register offset for CPLD register
-+        $ref: /schemas/types.yaml#/definitions/phandle-array
-+        items:
-+          - items:
-+              - description: CPLD phandle
-+              - description: offset
-+
-+      port-rst-offset:
-+        description: reset field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      port-mode-offset:
-+        description: port mode field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      mc-mac-mask:
-+        description: multicast MAC address mask
-+        $ref: /schemas/types.yaml#/definitions/uint8-array
-+        maxItems: 6
-+
-+      media-type:
-+        $ref: /schemas/types.yaml#/definitions/string
-+        enum:
-+          - copper
-+          - fiber
-+
-+    required:
-+      - reg
++      - items:
++          - description: syscon phandle
++          - description: MDIO clock enable register offset
++          - description: MDIO reset request register offset
++          - description: MDIO reset done register offset
++          - description: MDIO reset deassert register offset
 +
 +required:
 +  - compatible
 +  - reg
-+  - reg-names
-+  - interrupts
-+  - mode
++  - '#address-cells'
++  - '#size-cells'
 +
-+additionalProperties: false
++unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    dsa@c7000000 {
-+        compatible = "hisilicon,hns-dsaf-v1";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        mode = "6port-16rss";
-+        reg = <0x0 0xc5000000 0x0 0x890000
-+               0x0 0xc7000000 0x0 0x60000>;
-+        reg-names = "ppe-base", "dsaf-base";
-+        subctrl-syscon = <&subctrl>;
-+        reset-field-offset = <0>;
-+        interrupts = <131 4>, <132 4>, <133 4>, <134 4>,
-+                     <135 4>, <136 4>, <137 4>, <138 4>,
-+                     <139 4>, <140 4>, <141 4>, <142 4>,
-+                     <143 4>, <144 4>, <145 4>, <146 4>,
-+                     <147 4>, <148 4>, <384 1>, <385 1>,
-+                     <386 1>, <387 1>, <388 1>, <389 1>,
-+                     <390 1>, <391 1>;
-+        buf-size = <4096>;
-+        desc-num = <1024>;
-+        dma-coherent;
++    bus {
++        #address-cells = <2>;
++        #size-cells = <2>;
 +
-+        port@0 {
-+            reg = <0>;
-+            phy-handle = <&phy0>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
-+        };
++        mdio@803c0000 {
++            #address-cells = <1>;
++            #size-cells = <0>;
++            compatible = "hisilicon,hns-mdio";
++            reg = <0x0 0x803c0000 0x0 0x10000>;
 +
-+        port@1 {
-+            reg = <1>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
++            ethernet-phy@0 {
++                reg = <0>;
++            };
 +        };
 +    };
-diff --git a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt b/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
+diff --git a/Documentation/devicetree/bindings/net/hisilicon-hns-mdio.txt b/Documentation/devicetree/bindings/net/hisilicon-hns-mdio.txt
 deleted file mode 100644
-index 8ee4b1cedae8..000000000000
---- a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
+index 4a7ede9657b0..000000000000
+--- a/Documentation/devicetree/bindings/net/hisilicon-hns-mdio.txt
 +++ /dev/null
-@@ -1,90 +0,0 @@
--Hisilicon DSA Fabric device controller
+@@ -1,27 +0,0 @@
+-Hisilicon MDIO bus controller
 -
--Required properties:
--- compatible: should be "hisilicon,hns-dsaf-v1" or "hisilicon,hns-dsaf-v2".
--  "hisilicon,hns-dsaf-v1" is for hip05.
--  "hisilicon,hns-dsaf-v2" is for Hi1610 and Hi1612.
--- mode: dsa fabric mode string. only support one of dsaf modes like these:
--		"2port-64vf",
--		"6port-16rss",
--		"6port-16vf",
--		"single-port".
--- interrupts: should contain the DSA Fabric and rcb interrupt.
--- reg: specifies base physical address(es) and size of the device registers.
--  The first region is external interface control register base and size(optional,
--  only used when subctrl-syscon does not exist). It is recommended using
--  subctrl-syscon rather than this address.
--  The second region is SerDes base register and size(optional, only used when
--  serdes-syscon in port node does not exist). It is recommended using
--  serdes-syscon rather than this address.
--  The third region is the PPE register base and size.
--  The fourth region is dsa fabric base register and size. It is not required for
--  single-port mode.
--- reg-names: may be ppe-base and(or) dsaf-base. It is used to find the
--  corresponding reg's index.
+-Properties:
+-- compatible: can be one of:
+-	"hisilicon,hns-mdio"
+-	"hisilicon,mdio"
+-  "hisilicon,hns-mdio" is recommended to be used for hip05 and later SOCs,
+-  while "hisilicon,mdio" is optional for backwards compatibility only on
+-  hip04 Soc.
+-- reg: The base address of the MDIO bus controller register bank.
+-- #address-cells: Must be <1>.
+-- #size-cells: Must be <0>.  MDIO addresses have no size component.
 -
--- phy-handle: phy handle of physical port, 0 if not any phy device. It is optional
--  attribute. If port node exists, phy-handle in each port node will be used.
--  see ethernet.txt [1].
--- subctrl-syscon: is syscon handle for external interface control register.
--- reset-field-offset: is offset of reset field. Its value depends on the hardware
--  user manual.
--- buf-size: rx buffer size, should be 16-1024.
--- desc-num: number of description in TX and RX queue, should be 512, 1024, 2048 or 4096.
--
--- port: subnodes of dsaf. A dsaf node may contain several port nodes(Depending
--  on mode of dsaf). Port node contain some attributes listed below:
--- reg: is physical port index in one dsaf.
--- phy-handle: phy handle of physical port. It is not required if there isn't
--  phy device. see ethernet.txt [1].
--- serdes-syscon: is syscon handle for SerDes register.
--- cpld-syscon: is syscon handle + register offset pair for cpld register. It is
--  not required if there isn't cpld device.
--- port-rst-offset: is offset of reset field for each port in dsaf. Its value
--  depends on the hardware user manual.
--- port-mode-offset: is offset of port mode field for each port in dsaf. Its
--  value depends on the hardware user manual.
--- mc-mac-mask: mask of multicast address, determines bit in multicast address
--  to set:
--  1 stands for this bit will be precisely matched, TCAM will check this bit of
--    MAC address.
--  0 stands for this bit will be fuzzy matched, TCAM won't care about this bit
--    of MAC address.
--
--[1] Documentation/devicetree/bindings/net/phy.txt
+-Typically an MDIO bus might have several children.
 -
 -Example:
+-         mdio@803c0000 {
+-                   #address-cells = <1>;
+-                   #size-cells = <0>;
+-                   compatible = "hisilicon,hns-mdio","hisilicon,mdio";
+-                   reg = <0x0 0x803c0000 0x0 0x10000>;
 -
--dsaf0: dsa@c7000000 {
--	compatible = "hisilicon,hns-dsaf-v1";
--	mode = "6port-16rss";
--	interrupt-parent = <&mbigen_dsa>;
--	reg = <0x0 0xc5000000 0x0 0x890000
--	       0x0 0xc7000000 0x0 0x60000>;
--	reg-names = "ppe-base", "dsaf-base";
--	subctrl-syscon = <&subctrl>;
--	reset-field-offset = 0;
--	interrupts = <131 4>,<132 4>, <133 4>,<134 4>,
--		     <135 4>,<136 4>, <137 4>,<138 4>,
--		     <139 4>,<140 4>, <141 4>,<142 4>,
--		     <143 4>,<144 4>, <145 4>,<146 4>,
--		     <147 4>,<148 4>, <384 1>,<385 1>,
--		     <386 1>,<387 1>, <388 1>,<389 1>,
--		     <390 1>,<391 1>,
--	buf-size = <4096>;
--	desc-num = <1024>;
--	dma-coherent;
--
--	port@0 {
--		reg = 0;
--		phy-handle = <&phy0>;
--		serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--	};
--
--	port@1 {
--                reg = 1;
--                serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--        };
--};
+-                   ethernet-phy@0 {
+-                            ...
+-                            reg = <0>;
+-                   };
+-         };
 -- 
 2.53.0
 
