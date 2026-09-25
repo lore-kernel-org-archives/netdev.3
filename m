@@ -1,59 +1,61 @@
-Received: from mail-qv2-f42.google.com (mail-qv2-f42.google.com [74.125.230.170])
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F48C45FFCF
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281264756B4
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790345493; cv=none; b=DWgOGCcpQdWMRSlq6Z+RW2uurDC8zNDVi4t40meoMdcy/sk4rQziUlJEuXcImqD1YxKGZc3WYErRMGEA6QhQUUOqcFIQ/x2AuR0YCG4zoARcvufgEYCVwZpoUrPDwc3j+AozfCjFzpg6h1vFq6/guWDI4t24nQAjQiYJp/ZlfJc=
+	t=1790345495; cv=none; b=XcKLiMRUoOTB3Hv4BxPAS75sm6vhMbZa+A2IkXtaWIPcFtcCcuoimuvqi7uCxgVNmIPBiRTBk2Yoa3yW3XVI02LXM1QaEwgCESq4uFOPVF/XorKE3Y5qx6snmYwyUS+uNUoNckElhoIJtaYVCeGm0tXPwidm8tvEj2huMMsFE5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790345493; c=relaxed/simple;
-	bh=dndpdC1BFf2YzxpLiKezMO4GTZISkuWDrKJcbkUpd/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=es8ArCPCXa0qV7x0AHs08LMVn1fKl3fcVOgGxm1TUzQZKwNWHRpqRVJKM/MII79l2454XNIbLuE1DBzj3nXHWxG1q5n6R/iVfOYfiexImjxKZRcu9dDi9qzIJ8fNx2K62BM1RwA5UBQMd8I7li9zzwCOK0hE9kiwWCuVFWbfsy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com; spf=pass smtp.mailfrom=agilebits.com; dkim=pass (1024-bit key) header.d=1password.com header.i=@1password.com header.b=uE2R0+c1; arc=none smtp.client-ip=74.125.230.170
+	s=arc-20240116; t=1790345495; c=relaxed/simple;
+	bh=BnuemxHse+a2/gGmYQjf5SbAdx7uvJn7RYhO3uV+Qmg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TH9mxyskRQjNbNxXSMDeUQEffYemV/iqtvWQXz+SWVzAo0vZNeaJ63Jat0Ds0AQvHVuhOeI9lsrQiGNsJ6Wv7jIxZkT9DJf6wbgHSW3Noj560vMHGI8s9MNDhqedY/5wG7QmlDVgDu17SwjOw/jCRAum0rjp9SdsFi/jrBIYxQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com; spf=pass smtp.mailfrom=agilebits.com; dkim=pass (1024-bit key) header.d=1password.com header.i=@1password.com header.b=B92yiX1u; arc=none smtp.client-ip=74.125.230.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agilebits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1password.com header.i=@1password.com header.b="uE2R0+c1"
-Received: by mail-qv2-f42.google.com with SMTP id 6a1803df08f44-9143d127a26so2945336d6.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:11:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=1password.com header.i=@1password.com header.b="B92yiX1u"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-914359b7555so4795336d6.2
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1password.com; s=google; t=1790345491; x=1790950291; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J3Lllhowz5xAm041vYg/0uhyYfJTfX7BTIf91ZP5MNU=;
-        b=uE2R0+c1d0HLIki2Xoh4xJsjMAYRdFM9de9SkPZDS/HH10hgHz17ckVXxqPEsT7WpO
-         TJENKPEVEBcJAilbP47sjLvNkL5TPZtyiKE+gjJF1hyE37bsx6EgFj80yGt0TifVUUmA
-         pfPD4PXZ0F8a/NfcNoGjpY75+Yj7O/B62Us1M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790345491; x=1790950291;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1password.com; s=google; t=1790345492; x=1790950292; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J3Lllhowz5xAm041vYg/0uhyYfJTfX7BTIf91ZP5MNU=;
-        b=qbld5JffP2rzv6tsaEwieGO1ZMdKlnlhHsAveuj1TsBWIbejl0/QXoTy6SJNenMb/y
-         VUJNqike0fOOw1EJWcJPwi+GUFqBBwFKbL/RMjakXzM13k71DJg+fiH1vD0voezUSC1A
-         w+Wb5J0+6qjrsWcnxrv8/plLyym0zxl9P9DWl9CP5e9girOj2rPIZBI+/RZp8u9zQH/m
-         D/F7tbYSvxVYDPWcLszeUzHS6DtYNXrScmDS0p/X3pv9zg1sXHM2JGUzGrO8u+84D6wl
-         HIMt0VzpZmGC9HjYhQ54cf/nxyqjH5iF+V9KzMleSI0A/xSM8mngp1gMcXLuMYkdvkXG
-         1l+A==
-X-Forwarded-Encrypted: i=1; AKwUvBzNF/pnSO3b7DcFq6ghulPtfuZLaUkXnI964/wXDB/IFpS+N/+SHkUoU8WH9j1rtgxPf1ofhWM=@vger.kernel.org
-X-Gm-Message-State: AFuF++laWAnU8HQ4ThhWXr/Vmc8HvM7UNM1mNNoRPSha53hlUVIIjrl1
-	vo8OVE+Y35p+IQzI/fn9A461kGZPWvpvhkmMyv0yrXvrGOfTDfOECTwvlK/tb74IOHY=
-X-Gm-Gg: AYBFou1NpumP+lFZxpkVB3iv0gEnR6ivzK61Omr5sp1z574bktl5TBKOwQwtEyqp/Qk
-	knWiq8w/7H3NZgWghLvKb9elJ+XNeOXXgis0SDvY8L9p/Ar3A5r+8NgODsrzr64DXSIpJZxJ0so
-	k643prs+UELYH2r07h6CGyBuqmPcyUlIagsHBF5h0EcqgyyhzUyNc9vnMvbLgll1fXZF2SFSTvB
-	Q11FQCq6H690LkYZC6P2CoNvBZMlsoNbdnzd6ewa2v6nGoeMVZ4EVKfLirZl1i41GsBgp4/wIg9
-	4IN5344Mx9GLpZqaA2RiRIjmDkZ2hbWSh8/PY35KCeCgB/fMipkv5KAH/tGyyrE2j9jRFS9aLnN
-	FsBDu6mZ6t7jaZjIw6vJoT1VBo0dbRqCQTIuaxxia5ndJzKRYdXeLOrunKWx3A019F/nSbX45HQ
-	uQNl9+el/nQdOytENYchkXW9hfWKfgCbgc0QXejWRoLIwOa2Fy/0yCZgNZP/M2Jt5Xylj5jWwDB
-	Crq7Slhch99nKNblkbIcLqtjEiOeQqAXBIxTqhl
-X-Received: by 2002:a05:620a:3706:b0:939:6de8:43de with SMTP id af79cd13be357-93c475124cbmr376847185a.50.1790345490729;
-        Fri, 25 Sep 2026 07:11:30 -0700 (PDT)
+        bh=h/EePFAN2I0oSDWPKvqO/KiMg/JE8Drv0QT/R0nbfqc=;
+        b=B92yiX1u+05EtCtx2AhCFuC8mP4bluVjTL5SEs+sQX308H47b5YOTJL1/9/jtMyAk7
+         //lBF1cstwiOOYRgfrZsov950rU8wMWjyf/nEPfKbUBsAejWAxynyeMQ3/bc7Duax25i
+         DyZis8JmqoQelvzaBWLPsNhGfyKlTUSzE2NWw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790345492; x=1790950292;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h/EePFAN2I0oSDWPKvqO/KiMg/JE8Drv0QT/R0nbfqc=;
+        b=CEmFUJyU/CS8u80yfImLZKel+JItOvm+svw5x/aH5IdtFdWCwbhJzoVq+udu9o3fr9
+         8klmfjGu6+V+0M1qXwcXTzZt8e+eNOSw0J82xAjVgBXtD870dyasPT0txmgXecpJZaif
+         HZtiIenciXIQZ9qcaCbU87NYanW4eboQa/1ybn0SEonZSENI5sbhE5d/SDW0q0tNvMK/
+         m62SBicPjxw68d0dD7hHpCvdSyCV8BS7t2fZxvdLbauQbZ4Yze63L4woUwrCUTrQRgeI
+         JN1oyzKtjb9zUbT2SYuJEAxk+Na6J2ezFxPcMBkkIMmpD0MpsId3yBNSnOmZkqk1sCIn
+         nEow==
+X-Forwarded-Encrypted: i=1; AKwUvBzqYZo9JRoL8/IA0RBl1ZkGAGv5/pSYNH/3BWAmDOnlBVEM8q+M053CEGLL7KcYlks25qErbP0=@vger.kernel.org
+X-Gm-Message-State: AFuF++kLJ7QTJbyAt/i7kRTBH0/nVssKACSqeJFhi+lfYX8W63lojkl7
+	U3g3Of2OvTgHEZ6QkRX5akD2vAvffnmFrJl5roNQ4VUhJuwuifxucMOCTm6ear7a528=
+X-Gm-Gg: AYBFou21LDP6P4pmMBkYp1pfgIL7BtBBefwxrsRJ/ZRq3BS7cZTZI3nBth+m7pvs7jt
+	9MXksdmuGlOjhjK6M5aQCJ4N+p0NU/vOV9F1XXMKre8kQQuyF5+tPVaLOoYiQAA03kODGlZmiEt
+	xyiJtEDCF/PJKUD2ntA1nfLK47piSQqMFfQmj04i+DCgf8BClFVnYNpXB92XLn6EPv8xWoq1rLc
+	UCIyv6l8bKLoriNX1ZOfoFzo8crTMWTuZBL0xCxxnEvNhyp0iGssMj2byXonqOQ8mizGthtGw7b
+	S8XNnoXkCG7LknA1PyCIFG/8HdbZVXB1/TDmcLWGUlV9ccmkk3wScM/XEYF0/efYQqJ+CWu70H3
+	sFnpCFqsAtYs7GB9GoEE4XJGD9VC+KvhGoQSGQ/W8T1toq/5a5W9HtZ8/DVGKDyouV/pV6eAyM5
+	IeoJIK6zhhCGb+qMvys6brrkjq+WoLZULOEmapyMXOhPPXdcvz7H+gYw/pnRb0wgPdFP0otto7B
+	gh0ehCo9VYFyngM7j0B1u9QQv7vlQ==
+X-Received: by 2002:a05:6214:3116:b0:90c:b843:d679 with SMTP id 6a1803df08f44-9142f8c7f44mr44499816d6.29.1790345491808;
+        Fri, 25 Sep 2026 07:11:31 -0700 (PDT)
 Received: from localhost ([2600:4041:59c3:300:7917:c7f6:28c6:182b])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c4493ec1csm187075685a.30.2026.09.25.07.11.30
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9143f0cc9d3sm3637356d6.19.2026.09.25.07.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 07:11:30 -0700 (PDT)
+        Fri, 25 Sep 2026 07:11:31 -0700 (PDT)
 From: Axel Mierczuk <axel.mierczuk@1password.com>
 To: Julian Anastasov <ja@ssi.bg>,
 	Simon Horman <horms@verge.net.au>
@@ -66,11 +68,14 @@ Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
 	netdev@vger.kernel.org,
 	Willy Tarreau <w@1wt.eu>,
 	Keith Hoodlet <keith.hoodlet@1password.com>,
-	Axel Mierczuk <axel.mierczuk@1password.com>
-Subject: [PATCH nf 0/2] ipvs: keep templates and cport 0 conns away from packet lookups
-Date: Fri, 25 Sep 2026 10:11:13 -0400
-Message-ID: <20260925141115.16126-1-axel.mierczuk@1password.com>
+	Axel Mierczuk <axel.mierczuk@1password.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf 1/2] ipvs: validate cport in received sync records
+Date: Fri, 25 Sep 2026 10:11:14 -0400
+Message-ID: <20260925141115.16126-2-axel.mierczuk@1password.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260925141115.16126-1-axel.mierczuk@1password.com>
+References: <20260925141115.16126-1-axel.mierczuk@1password.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,27 +84,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A template received over the unauthenticated sync protocol with a
-nonzero cport is matched by data packets in ip_vs_conn_in_get() and
-the protocol state machine runs on it. Patch 1 rejects sync records
-with inconsistent cport and IP_VS_CONN_F_NO_CPORT combinations on
-the backup.
+Local templates have cport 0 and IP_VS_CONN_F_NO_CPORT clear, so
+ip_vs_conn_in_get() cannot match them. A template received over the
+unauthenticated sync protocol with a nonzero cport can reach the
+protocol state machine. Before template state validation, this
+could cause out-of-bounds reads, crashes and kernel data leaks.
 
-Patch 2 requires a nonzero cp->cport in ip_vs_conn_out_get() so that
-templates and connections still waiting for their cport cannot be
-matched through the out hook.
+Ordinary records with cport 0 and IP_VS_CONN_F_NO_CPORT clear, or
+with a nonzero cport and IP_VS_CONN_F_NO_CPORT set, create connections
+that incoming lookups cannot match. The latter also keeps the
+cport-zero fallback in ip_vs_conn_in_get() enabled.
 
-The companion patch "ipvs: filter some flags received in the backup
-server" rejects template records carrying IP_VS_CONN_F_NO_CPORT.
+Reject all three cases. Continue accepting ordinary connections
+with cport 0 and IP_VS_CONN_F_NO_CPORT. The companion patch
+"ipvs: filter some flags received in the backup server" rejects
+template records carrying IP_VS_CONN_F_NO_CPORT.
 
-Axel Mierczuk (2):
-  ipvs: validate cport in received sync records
-  ipvs: skip cport 0 connections in ip_vs_conn_out_get()
-
- net/netfilter/ipvs/ip_vs_conn.c |  3 ++-
+Fixes: 87375ab47cd0 ("[IPVS]: ip_vs_ftp breaks connections using persistence")
+Cc: stable@vger.kernel.org
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Axel Mierczuk <axel.mierczuk@1password.com>
+---
  net/netfilter/ipvs/ip_vs_sync.c | 19 +++++++++++++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ 1 file changed, 19 insertions(+)
 
+diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
+index 5383aeafb0ae..3998e9a0a391 100644
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -848,6 +848,25 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
+ 	struct ip_vs_dest *dest;
+ 	struct ip_vs_conn *cp;
+ 
++	/* Templates require cport 0. Ordinary connections require
++	 * NO_CPORT exactly when cport is 0.
++	 */
++	if (flags & IP_VS_CONN_F_TEMPLATE) {
++		if (param->cport) {
++			IP_VS_DBG(2, "BACKUP, template with cport dropped\n");
++			kfree(param->pe_data);
++			return;
++		}
++	} else if (!param->cport && !(flags & IP_VS_CONN_F_NO_CPORT)) {
++		IP_VS_DBG(2, "BACKUP, conn without cport dropped\n");
++		kfree(param->pe_data);
++		return;
++	} else if (param->cport && (flags & IP_VS_CONN_F_NO_CPORT)) {
++		IP_VS_DBG(2, "BACKUP, conn with cport and NO_CPORT dropped\n");
++		kfree(param->pe_data);
++		return;
++	}
++
+ 	if (!(flags & IP_VS_CONN_F_TEMPLATE)) {
+ 		cp = ip_vs_conn_in_get(param);
+ 		if (cp && ((cp->dport != dport) ||
 -- 
 2.43.0
 
