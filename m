@@ -1,121 +1,90 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5683A2E12
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 08:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7561F36A375
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 08:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790323594; cv=none; b=Cv07drbhi0HrJbkuDzrnqH/BTbJqH/f8h5YXHqIKCiNMsI95jiEmv80a7s1n7R7O4+ybvbuW3EBXYpKhIGjKSQLfxX3uh2JpZYqEPDZjbLPyVoieVePsqE7idO4L6Sinm1H+f7lySPXRMnba4WHWV4Xy6B6itSF4vILI9zQ/2dE=
+	t=1790323819; cv=none; b=sbzA7Tcnf39hVGpxbeXzU2pnlCqQ7UAFYyJrHVhZN0S3mbcfr4juurLNY0739Iu9m3ZfQOLV4o4YrrXSts3y6wPA+FHl+w84eKDcWu8uymc8198dJ196+BhgsUZgciRZW2tQe82PnzrZDMcznm5QEWmHg3OYBSLuaVE/1gG9+/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790323594; c=relaxed/simple;
-	bh=XReAURkX3U0oUi5tdZi0L6LmDV6GZISC5HbZheosNnk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=qEpnEtWAfjuJWcKbLmTjhnmcHLJxUwOiB3n+eDXf3iUnE2wgEctsjvsmdV6laheL3lVXUPjBdynX7I+YLa3n/2f+PcxXkHkN6BKbjhx3bzeWGXjs0lg16bRlr4kV3xIjcB0conKpE781Ii+XmJTk8XQHw60rBtYK78Tc8r8LoYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=QAUP5eAr; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1790323819; c=relaxed/simple;
+	bh=8mcXLzWBflad5+Fp/2csykBACXv0umpKgZryz2CtUvw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Rn+AxUmaDY/fvxPAHZL6iksVGc6EvUKrG81boQ44HtXsOHnoQVMrWJiS2ispcMvYjtQxmUi/+2rxn3adbsGLtn+QGP5dC3x3uE/fA8Ju7gCaRd/ddg363MmE9g2PhvhPKmCZxE2X9nyU3IXb3LXkDGHHcily0aQJPS6E7s164qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XsagO6X6; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="QAUP5eAr"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48435ae9ca4so68661f8f.3
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 01:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1790323591; x=1790928391; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:from:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=81Fui1lfICkyCE0QjEboa6SMdzFp3BSSa/6lmz1HSnc=;
-        b=QAUP5eArcKm6QXbuEw8W/CtXMPwZ9ONN7uwE5z8wkHl8H6pMmTVanojfC4ce1uXbao
-         +jQNqx72KxLIhWsbZXlFRfs+0lLB0rJjFfXHvc13qx38ORDyOXO3m4agJA6ZJ7SND9Wz
-         jdRjA1vs9oKyEjtlFD8kBdlEbLv19qKcP0eZu+SZtxf0vxXBE916iEv/BQebPtRpgfBS
-         cuLNxza8hPeGAfjDWZSc1en9iRkOgVKydjVqrAS189lw+3BdWdzPMSlgbaJvgY4CpZ4Y
-         DsJtC+djYKaEw00CfT19LgTCdReMbhx5QJDj4SC+cwfWwxydgvB8SpIjHbQWrKiLRzO+
-         cJOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790323591; x=1790928391;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:from:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=81Fui1lfICkyCE0QjEboa6SMdzFp3BSSa/6lmz1HSnc=;
-        b=b41YaxL3Sd0Mbd8NftG0/BlY/DxGeXPdDHmUC9I1GlxKlR53t0o67M/TbEhcSmOIwG
-         ArT3djH1eCgPQEIXBlLWGuqmz5/PbiF8gseMetYV8NFLA3RzrBlzmFnxn5wDT6T95IeE
-         eHU1qzKiLubbWDn+ZXVJQZWSYRceaq9xiiY6FIIZ2SrbnEfCDl39xz5hE/LoOB8ruijq
-         ZX1ZSoMe4JE28jxT9n5clFyVMfBFQS5FdxTVlD+ze5rNxhLKtT6cdRj6tzKtDIRhFt+H
-         fSfBceaBummKo20QWRKm3CdbgYkB7VaHuYGK/uAeDdq5Dp6SNaZKi1C+2qXldc1bSXKL
-         cRTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwupp+GPhuH1D3eb1SDNhrIsd/7JaDzs24bqBKx2WgMJLQ0aGu8M+PzVKkk8NClDapWbGQoZLY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mGRA4Q+i6eNu7YyRK90yTwvHmZewh6fVC1erSsoyXnO7rt4VuQ
-	6MGACAAXR91lhodmVllkga8rU6Si5gteiNjDFJVcmIAJZIUSIny5UDLiaU/EmNPALNU=
-X-Gm-Gg: AYBFou2HyEkRIgrl+ieIV14NBc362uzpl7JGsTD/NssBXEWeoPl2TdTOBu2c2l0CjXP
-	+aKw9K/yir/KlH5E8XXqu9cXKd7bD2J5YybsThmQwfR1b2KYebn2SasmFBYsHbZ41FyVefkOz8G
-	WhB09NsE4T2jVvMmkWdQ2zCgGkku0IC+sj2rPkoSp07Ys+SGbPcUeTCE3THnZOhD84tN0KOkNqU
-	tLommbiiItGmte/0pEJjE9FNOs0mvVl7b9ixWdPL/u1iRolRToQTwRfxF+03c8MHgmuThOysAeN
-	nwoZmseLLlfzCaqEwLTJMQ/sSdZNyhmoFDSu5YM93D9PD+6eJ4TPEU2ltgqQvtB5V1TfjablRoI
-	o7ph0ceB5AAE29mRwk6zqKKumOupX5Ri/8fXpbHkceNCBX4iucBg55USbDx9DnKDvfp/1BE2uI+
-	ALFGPqAMxYnqv65OB4g39yS0xnphpohgHyRWmzcwSO1mV7JiFslgIlBtRDmORToh013O4Q/pftE
-	QGb6kzxHd9zJ5dbwbN1/n96PvSUSmObfDm2f7scMxrMMFwsWx8=
-X-Received: by 2002:a05:600c:c490:b0:49d:1da4:511b with SMTP id 5b1f17b1804b1-49fe67bcb85mr80612935e9.1.1790323590675;
-        Fri, 25 Sep 2026 01:06:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fee6ced69sm34064615e9.0.2026.09.25.01.06.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Sep 2026 01:06:30 -0700 (PDT)
-Message-ID: <7e0c33f4-eca0-4a68-b43a-543d9a233631@6wind.com>
-Date: Fri, 25 Sep 2026 10:06:29 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XsagO6X6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3E8044E4083B;
+	Fri, 25 Sep 2026 08:10:13 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EC0676073B;
+	Fri, 25 Sep 2026 08:10:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3D7501032958A;
+	Fri, 25 Sep 2026 10:10:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790323810; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Dh9HoUjgBiabQYfjyRhexWgx2GlBcYfkLukE/KgJkzg=;
+	b=XsagO6X6/c/u/HiKmojbj0gKFFmPG6znb5CKCzmG4g9Boo4+va+0GWDdrkJtn9cGqfEywf
+	lffG06picFdDnw8WKY9lyAewq6CGXD6+CT5cAazwWwhyiXQrAJQgar+tp9i1H7VaJ21WMv
+	tGw6Nu1BdiiidUYlSzyg4gQBzuaIE1zMvzxINAsNTJvwcti5RqB/i4J1mHb6A8Pndgf2NI
+	XaR+aW6HtfLWPuxosl3E/WIxoaTfu+woIHkNqsoX/6u/XC/l76SXkG/bMcd6nRN9iU6T1g
+	4kci7r46yRUIxchYjNouX+8BBx6hywjsPzbt8MBaZMIq+SvtCyIel0MhTiwkqA==
+From: "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>
+Subject: [PATCH 6.6.y 0/2] netfilter: nf_tables: join hook list via
+ splice_list_rcu() in commit phase
+Date: Fri, 25 Sep 2026 10:09:40 +0200
+Message-Id: <20260925-cve-2026-52988-6-6-v1-0-d5b30678ef66@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next v7 2/5] net: add a generation counter for dev->mc
- changes
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-References: <20260924011554.3494-1-sigefriedhyy@gmail.com>
- <20260924011554.3494-3-sigefriedhyy@gmail.com>
- <51d27e49-afea-4416-81ef-9ff132820066@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <51d27e49-afea-4416-81ef-9ff132820066@6wind.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDMBREryKz9otGkqpXKV1o8qO/C5WklRbx7
+ saWWb2B93ZEDsIRXbYj8CZRljlBlWewUz+PTOISQ5XKlK3SZDemC0irtmnIpA2V9+7WO826RhL
+ XwF4+v+gdpjDFF4//Hd/Dk+3rCuI4Thxk+xB9AAAA
+X-Change-ID: 20260925-cve-2026-52988-6-6-b1ffd7ad5e53
+To: "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Neeraj Upadhyay <quic_neeraju@quicinc.com>, 
+ Joel Fernandes <joel@joelfernandes.org>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: thomas.petazzoni@bootlin.com, rcu@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, netdev@vger.kernel.org, 
+ "Benjamin Robin (Schneider Electric)" <benjamin.robin@bootlin.com>, 
+ Sasha Levin <sashal@kernel.org>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Le 25/09/2026 à 09:58, Nicolas Dichtel a écrit :
-> Le 24/09/2026 à 03:15, Yuyang Huang a écrit :
->> A multi-part RTM_GETMULTICAST dump of dev->mc resumes by position, so
->> entries added or removed between two dump rounds can be skipped or
->> repeated. The IPv4 and IPv6 dumps report that with NLM_F_DUMP_INTR by
->> stamping cb->seq from a per netns generation counter combined with
->> dev_base_seq, see inet_base_seq().
->>
->> Add the equivalent for the device multicast lists: a per netns counter
->> bumped whenever an entry is added to or removed from any dev->mc. The
->> list helpers do not know which device a list belongs to, so give
->> netdev_hw_addr_list an owner set for dev->mc only and bump the counter
->> of dev_net(owner) where entries are created and freed. That covers the
->> dev_mc_* helpers, both lists of a sync, the hardware sync helpers
->> drivers call from their rx mode callbacks or their own workers and the
->> reconciliation after an asynchronous rx mode update, while snapshot
->> and other lists have no owner and are not tracked. It is atomic since
->> the writers only hold the address lock of their own device.
-> 
-> For IPv4 and IPv6, the generation counter was initially used to invalidate some
-> caches; that's why it is global. Here, the goal is only to check the consistency
-> of the netlink dump. I wonder if maintaining a counter per list would not be
-> more straightforward.
-Forget, it doesn't fit in the netlink consistency framework (:
+I backported an additional patch, which adds list_splice_rcu(), which is
+required.
+
+Signed-off-by: Benjamin Robin (Schneider Electric) <benjamin.robin@bootlin.com>
+---
+Pablo Neira Ayuso (2):
+      rculist: add list_splice_rcu() for private lists
+      netfilter: nf_tables: join hook list via splice_list_rcu() in commit phase
+
+ include/linux/rculist.h       | 29 +++++++++++++++++++++++++++++
+ net/netfilter/nf_tables_api.c |  8 ++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+---
+base-commit: 79643295eba17affbd16ca97f3ef04c90266b28c
+change-id: 20260925-cve-2026-52988-6-6-b1ffd7ad5e53
+
+Best regards,
+--  
+Benjamin Robin (Schneider Electric) <benjamin.robin@bootlin.com>
+
