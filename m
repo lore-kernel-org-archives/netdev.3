@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112823A7593;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137564FDE7D;
 	Fri, 25 Sep 2026 21:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790372406; cv=none; b=qITc5uftbo7d4LD4AtAf3xCnwcclgVao60ls9q57ZXhmzBM9Y4YRuYJvFO7+1uGfeQLvEdYAmL32ToekbWsFZVqXdO/ZaErN69XhRaLmpIAtBMrHUzKozRmMidaG98YOIh3SD6LxRNYTAVkgyAxVRhHN+3hpZyhyU+LTMhdEfis=
+	t=1790372408; cv=none; b=iYmaJgJi7fEDD6/uibrOM8eKKWQF0znMdnOnxOs64oBCXJqYaFH0gfFNWNMTov/OsjGxSQAqg3k+yoBpamDYb5ckiToJtXddKYcMCslzfaMfpC6a272inEETgX8lARRwvn1U8J3dGMIPdMUwkf0JTUE359da7DZIUG/WtHESOcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790372406; c=relaxed/simple;
-	bh=NiX6OLnRfjUoUlt1PhUW0YyDLITiDqIiUNVm9KX+CBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lsPu+ickTQUbJGM/hz9eveHcilwXJ5Qlb4UaHOiHDrHuyH7Ku/7Ta+yf6m9KlXW7/UTODrcJrNAhjkDinZNKgegiEM5pJDZcbCnTC29+4cv/GKWeqOwy4+cAblstRZA92SM+vXAULLAVj5+4duFlHMRHwQeTwNlllBhJNfXGIbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=R2ptl+YY; arc=none smtp.client-ip=193.104.135.124
+	s=arc-20240116; t=1790372408; c=relaxed/simple;
+	bh=ql/lNNVL4y6i2YRqXy6X5n2banIhc0M/BtwsKbJbxzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c8PEwW2KSbOcqJd2Wq8KtinGg+CroZWGlETfSqMjPUunW0eyJn0uPUTfVEJLGiyH+bkZbl7Ym2vfcjVKRBajkkkqgebXCBAe1FC4T4RQziRYwS+p2e2oNKIkeHXldLFyAk+pkDni0Hxk8lUZYs/h3+xCZXIUHhhYLyrnplZXkTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Tg1GM8IM; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="R2ptl+YY"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Tg1GM8IM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1790372395;
-	bh=NiX6OLnRfjUoUlt1PhUW0YyDLITiDqIiUNVm9KX+CBg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R2ptl+YY1a0+ffQNbXRITflJ9gowJJvX7+f1Jm9bxAxMGvk7KL0E6Z/jZ+ffuUteh
-	 fOzEXOKbCiSfQf/MUZIj4YUvxRghObqqSaIqfwNJ5l3dDiWWaRWi3v67QYZHlXOrs7
-	 xRdEt7YmsdjoLCFtqmAY4FO04tHWdvOkCBPbLBQMGPGUflpnE0fngTOXvgQ6Uyv31b
-	 q0TRNn050Bl2quO691xKKax3KMhH9ySXJqV4nSaaDzmvcu/dgNv6xIsJ/yWdgJEjCB
-	 UAxadm45UWdjPnQ/1n4ltq+uPR1TRHjzVDDAEWuZ8TfUorD+QfFlir3tdZHItMAL9O
-	 0WGOwqkpVaZoA==
+	s=202008; t=1790372389;
+	bh=ql/lNNVL4y6i2YRqXy6X5n2banIhc0M/BtwsKbJbxzU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Tg1GM8IMIqNggcqaGajCxktq9RG7//49SP1aVwFW4fuVLBtdkU78LI+vcRekA25Z+
+	 DpW0HKL+cvdjKMRiSnjIJTYDgVNwEQenw3AAoGD7xKy3xbAW9PxtNIUrLfA1pK2krw
+	 8d1xdeMWLNWMlOg56qaNjJldnuHDZ1O0J6EgFjcQpUQzwEDC5wktERRLmlFJ8nLJtp
+	 JgP4wHJG+XXQjhjmlOw3XOyhYVGOdvVKmMwuZrs8CpnSdHqOhF+iSHljXGHJKY9HPp
+	 ZhAuxjYQ3VUJ+cft/zLh4avM2di/2SB08XHNlVxkBKAmcnKiPQcKkDcXBf9ojUIX/p
+	 XRm+K8iW1JOAA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 59A8660112;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 504106010F;
 	Fri, 25 Sep 2026 21:39:49 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id ECFA4201085; Fri, 25 Sep 2026 21:39:20 +0000 (UTC)
+	id 2C09A201C12; Fri, 25 Sep 2026 21:39:21 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
@@ -40,15 +41,16 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 0/9] netlink: specs: enum alignment fixes
-Date: Fri, 25 Sep 2026 21:39:03 +0000
-Message-ID: <20260925213918.204767-1-ast@fiberby.net>
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH net-next v2 5/9] netlink: specs: ethtool: re-align c33-pse-ext-state
+Date: Fri, 25 Sep 2026 21:39:08 +0000
+Message-ID: <20260925213918.204767-6-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260925213918.204767-1-ast@fiberby.net>
+References: <20260925213918.204767-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,41 +60,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series fixes misalignment issues in YNL-defined enums or flags.
+enum ethtool_c33_pse_ext_state is misaligned with YNL:
 
-Changes:
-v2: (got delayed due to conference activities)
- - Add Reviewed-by's (thanks Jakub, Moshe, Kory and Toke)
- - Patch 1: Add "fixes" in prose, as Clashiko guessed wrong.
- - Patch 2: Mention renaming ect{0,1}-pkts in commit message (Clashiko).
- - Drop old patch 4.
- - Patch 4 (was patch 5): Remove redundant enum-as-flags (thanks Moshe).
-v1: https://lore.kernel.org/20260911214148.1184806-1-ast@fiberby.net
+- ETHTOOL_C33_PSE_EXT_STATE_OVLD_DETECTED is 6.
+- ETHTOOL_C33_PSE_EXT_STATE_PD_DLL_POWER_TYPE is 7 (not in YNL).
+- ETHTOOL_C33_PSE_EXT_STATE_POWER_NOT_AVAILABLE is 8, not 7.
+- ETHTOOL_C33_PSE_EXT_STATE_SHORT_DETECTED is 9, not 8.
 
-While this is not a direct continuation, the rt-link changes was
-previously posted as part of another RFC:
-https://lore.kernel.org/20260910221733.1021864-1-ast@fiberby.net
+In commit c8149739af86 ("netlink: specs: Expand the PSE netlink command
+with C33 new features") the PD_DLL_POWER_TYPE enum member was skipped,
+leading incorrect values for power-not-available and short-detected.
 
-Asbjørn Sloth Tønnesen (9):
-  netlink: specs: rt-link: re-align IPv4 devconf
-  netlink: specs: rt-link: re-align ifla-inet6-stats
-  netlink: specs: rt-link: fix ifinfo-flags names
-  netlink: specs: devlink: fix resource-scope type
-  netlink: specs: ethtool: re-align c33-pse-ext-state
-  netlink: specs: ethtool: re-align module-fw-flash-status
-  netlink: specs: nl80211: fix naming of enum members
-  netlink: specs: tc: fix typo in cls-flags
-  netlink: specs: fix incorrect name-prefixes
+As PD_DLL_POWER_TYPE is not used, then skip it, but set the value for
+power-not-available to 8.
 
- Documentation/netlink/specs/devlink.yaml |  3 +--
- Documentation/netlink/specs/ethtool.yaml |  4 ++-
- Documentation/netlink/specs/nl80211.yaml |  4 +--
- Documentation/netlink/specs/rt-link.yaml | 33 +++++++++++++-----------
- Documentation/netlink/specs/tc.yaml      |  2 +-
- 5 files changed, 25 insertions(+), 21 deletions(-)
+CC: Andrew Lunn <andrew@lunn.ch>
+CC: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+Note for Sashiko/Clashiko: Targeting net-next, so no "Fixes" tag.
 
+ Documentation/netlink/specs/ethtool.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-base-commit: 42a9fb3382fc2573e92f41d203b095d9a372cfc9
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 5dd4d1b5d94b..439bf24e7c33 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -89,6 +89,7 @@ definitions:
+       -
+         name: power-not-available
+         doc: Group of power_not_available states
++        value: 8
+       -
+         name: short-detected
+         doc: Group of short_detected states
 -- 
 2.55.0
 
