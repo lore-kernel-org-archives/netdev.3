@@ -1,95 +1,109 @@
-Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta.kiivia.com (mta.kiivia.com [95.217.65.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598A74C7532
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 20:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628EE4EE852
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 20:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.65.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790367587; cv=none; b=QAYip3lTk21dwRjnvqJYATYaGj9NfT+/VpnJ+n9cmQdwqQfEcwJ/lMkAiLlYjZpKB8YsK12XLDEL0YRq2Vq/BpvJ675iNBVkPlVJBduOcoFGl57M529bCCMxZSb77T01s8IbmT8XWumKMOJGNkno+s4KD6SWzswT6c2GKlARfA0=
+	t=1790367591; cv=none; b=IYSE3FvyZNOwxx6fSFFZ8lIECSHGyWyN1ng2g39KTjyD6VN+Qgs+mIwOS7JOo6QD7zcSuhy5GJnq+YNUBRMFGf/PzbX7E7nDqcU/7298Ewm8t9ypo5pRGARsTyFDsJnCDu+puqf+kEgtpjiD31pJO+WbnZiaFbAnC9u/fSWhJg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790367587; c=relaxed/simple;
-	bh=K88g/NRBGmhTSI9GMeLUT029uyZ4Jq4cmaHJJxQ8Vt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jgA5WiXLbMq8pBpCEha5aDsBA29EImwnpMQjxCmpmO+pnN6UsTVuvvP9nMZKxzz1+xEsDH6Fp/yf3RvBRRANoW7p3dvQFvlYPcJBkI7zj2w0tk7W2zmDVH8W9hgxOAEQhYJEXL+/2aY4AI1I5UXyYnjtJcJ4KfwXM9ggMEpWxmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrC+BULQ; arc=none smtp.client-ip=74.125.230.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrC+BULQ"
-Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91400f92ae8so10393846d6.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:19:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790367582; x=1790972382; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K88g/NRBGmhTSI9GMeLUT029uyZ4Jq4cmaHJJxQ8Vt0=;
-        b=FrC+BULQVYhb1/j9jrOUrqdt/ZYfxlJiVnfWyHH3KaXcUwIOvVixCVhQNozo31vmS7
-         nPPghoSW4SWNs0qmgGofdVV1ntYUaux66bibh2u/NXVajshJOJWNrzOlnoEcRt4XV+mE
-         +lXhHb0YT0YnYcLcLbx/JLMyVi6KrNwio9Bc8HSHrfH3doGhu2epr50C2mnWKM9lFk9N
-         gB7mS8Xkz0//8RKAq6QeeCNwiOlmSpvR1IoOAHzbUIHd45Yk7IThWiuBPTV1JCKmMRtu
-         qO/T7Rfb6T2hNiBzQEgN/S3cz3wDY4q+nFyAeLlzqNZMGI1Eqc3DgKuB6gJCWJy38P+B
-         Qzqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790367582; x=1790972382;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K88g/NRBGmhTSI9GMeLUT029uyZ4Jq4cmaHJJxQ8Vt0=;
-        b=iDn9FdeK7VWisxxlRi49Iyv5PT8Er5qrIJvep2ft+E/02kFOxF69FfVISKYxRv2pEp
-         nYRbFDlZX1N1joSCXnrakXjDJY/FRSVnSFT76FxgByHVPyv58ZTYK8v7KPrEsdnu+j1r
-         /3cuIZcshReCgPXENrE+cGSYvc76fZy7u2NsE/CNXmudvCo4MZfyIMnFqmKNpuPl2b/h
-         tjCuuxG4jZgIaK1nAOE9BzD8j0ZUjrQfyMJynTXz8FNSRkZerS2Z9PV5QZZlZDHeUZYY
-         +1mecmZ2z3q4eYMKrShMItQS0EavTMIgveF3uO7BksgJTxCzyVxGO7dFd3NWMijhacec
-         8ckQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxpr1+tPbT7shIdUiAisJijewVmED716gI8TiCIH0zo+D4grbwiqavo2a13OUfa8G9lrMfYxhg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kYP+2j1jurBEcDg3rxvLIuuhg6G1nlciB+4TF8Xp3dZGsveJ10
-	oH1AoiwjIDDAFLBWg/Z5Fd4bo0Gr65yy0YYmoqIDcfgBChcKwAWvQWGC
-X-Gm-Gg: AYBFou3g2iLSsgov98K2iyf0tyFIZPN2leruF3fDy9NC5aISA3tVN8/JRIt7gqHoDcY
-	f5jP5u1tJ5nj1/fsqNmJpU4Bnm9CP5klsV67rLUTazQVemPbd6yQacm+FM9uSRMQ1+xKWAGwU1/
-	UytEC+UC8WemAnthCUSF+Ut5cDgj6sp5Y4bmVv0S6Sv3jlDiov5TxoUqruea4eX7Wb9gP9Whxmj
-	BVCXlml90pPiNeRg8dk60OIwCVwuapo8aPcG1p3lXM79S7ncHzXIMk/IbKaO7GjThjpaR7PIpLL
-	VQg0ZDcZO/4k/iKIoX0fr6Gc9WNpFA/1URhg7F7aRqCHeE2sNh70mmYsMSmMQdFk3QgV1QP0h1c
-	OlkZjsACsizcGFJDsynlqNIbMy8Iy4LMzaW4nntx/W1vDIkBId9iLzCokrVpUqE9KjadsFL+JGc
-	8k+FDedV/tJdP96dg+j8Rv+Qr4KybPmA1vIWCnweUZM4ogJnb2bNSJZsxEbIw3KsBDUeQsV9noN
-	kEdYfW2xQvrU43e34Gg9KIFFZtthY4U1vtthvRcUM+aBDd3oCxN0RGEwfCOblw8pKhNdrupOFzo
-	JIQnxkMH6GDQPQbkK4c6P6HTNpnBlx8ZC70/qkH08d+p7Ck+Btpe/OyBLquiOz7dH1nV5eNRS5D
-	C9p35NT89FonR4GMWnL5ZPv4YLj2n0FoLOxXuadFfY6ktc8L8L8NlqjA=
-X-Received: by 2002:a05:6214:d45:b0:912:3c52:5e72 with SMTP id 6a1803df08f44-9142f08e731mr60599636d6.0.1790367582365;
-        Fri, 25 Sep 2026 13:19:42 -0700 (PDT)
-Received: from edhar.longhair-great.ts.net (pool-173-48-206-252.bstnma.fios.verizon.net. [173.48.206.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-914309a24c4sm25159636d6.6.2026.09.25.13.19.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 13:19:41 -0700 (PDT)
-From: Zack Gomez <zack.gomez@gmail.com>
-To: leitao@debian.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stephen@networkplumber.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] netpoll: bound the deferred transmit queue
-Date: Fri, 25 Sep 2026 16:19:40 -0400
-Message-ID: <20260925201940.1950809-1-zack.gomez@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <araTwjYJRMlfd2PX@gmail.com>
-References: <20260923181111.1182838-1-zack.gomez@gmail.com> <araTwjYJRMlfd2PX@gmail.com>
+	s=arc-20240116; t=1790367591; c=relaxed/simple;
+	bh=luiXIOC1T2eWq0OlPq9lqfU/bbQRbV7rPdZEy4pED+U=;
+	h=Content-Type:Message-ID:Date:Mime-Version:To:Cc:Subject:From; b=VK2CMGI7njIHjoIHEwrhCe4T1tEdVRypp/a2LI6r0/NXm7KDWxgVD/TK5zEHsKY9c6WEA5L3hiIoOd7HvP8KVK9/lqTOd8qj1AhrpLv3BymecDBBeuLbSBTYsTvwWWNZgPTMOYPM4WIcYw+Qa168uS3Mn3TDpQP/icqDzHCxQFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org; spf=pass smtp.mailfrom=nocloud.org; arc=none smtp.client-ip=95.217.65.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nocloud.org
+Received: by mta.kiivia.com (Postfix) with ESMTPSA id 32C21A80149;
+	Fri, 25 Sep 2026 23:10:21 +0300 (EEST)
+Content-Type: multipart/mixed; boundary="------------iMRlo67POggb8WRfMXMlOGf7"
+Message-ID: <361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org>
+Date: Fri, 25 Sep 2026 23:10:20 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+To: netdev@vger.kernel.org
+Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com,
+ linux-yocto@lists.yoctoproject.org
+Subject: [BUG] octeontx2-pf: RSS table size is set to 4 instead of 256 entries
+Content-Language: en-US
+From: Jase <jase@nocloud.org>
+
+This is a multi-part message in MIME format.
+--------------iMRlo67POggb8WRfMXMlOGf7
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 25, 2026 at 08:32:56AM -0700, Breno Leitao wrote:
-> I don't think this should be a fix, honestly. I would prefer to see this
-> on net-next without the Fixes tag.
+Hello,
 
-Agreed, I'll drop the tag and send v4 to net-next with your Reviewed-by.
-Thanks for the reviews and I'll be watching your patchset as well.
+On an Asterfusion ET2500 with an OCTEON CN102 A0, the Linux RVU PF
+driver reports eight RX queues but nearly all RSS indirection entries
+point to queue 0. RX queue and interrupt counters confirm that traffic
+is heavily concentrated on that queue, with drops under small-packet load.
+
+In otx2_rss_init(), otx2_common.c assigns:
+
+     rss->rss_size = sizeof(*rss->ind_tbl);
+
+ind_tbl is u32 ind_tbl[MAX_RSS_INDIR_TBL_SIZE], where the maximum is 256.
+The expression yields 4, not the entry count. RSS initialization and
+ethtool get/set loops use rss_size, while NIX LF allocation requests 256.
+
+Observed with Linux-owned physical ports and eight RX/TX queues:
+
+     ethtool -l <interface>
+     ethtool -x <interface>
+
+The indirection table begins 0,1,2,3 and all remaining entries are zero.
+Running ethtool -X <interface> equal 8 succeeds but leaves this unchanged,
+using either netlink or --disable-netlink.
+
+Changing the assignment to ARRAY_SIZE(rss->ind_tbl), rebuilding and
+rebooting produces the expected 0..7 repeating across all 256 entries.
+A bidirectional multistream UDP test then increments multiple hardware
+RX queues on both ports. Kernel configuration was unchanged. The corrected
+kernel completed a subsequent repeated TCP/UDP bridge benchmark.
+
+Runtime-tested source:
+   repository: https://git.yoctoproject.org/linux-yocto
+   branch: v6.18/standard/cn-sdkv6.12/octeon
+   commit: 9a05f15b453377f50632ebbb57c87b7ec3270492
+   source version: 6.18.52
+
+This BSP kernel has additional local board/build compatibility changes.
+The faulty assignment is also present in the unmodified BSP commit.
+
+Source-only checks on 2026-09-25 also find the same assignment and array
+declaration in torvalds/linux commit
+aa98230e410f0ed212b6788c46b1e4d49e0ff7ca. I have not boot-tested that
+upstream kernel, and have not established the first introducing commit.
+The current Yocto BSP branch tip, 27016c83488643e42007ca7a2cfc1ad632f5ab57,
+also still contains the faulty assignment (source check only).
+
+The attached one-line patch is proposed for review. The diagnosis and patch
+were prepared with AI assistance and validated on the physical device as
+summarized above.
+
+Thank you.
+
+Best regards,
+
+Jari Seppälä
+
+--------------iMRlo67POggb8WRfMXMlOGf7
+Content-Type: text/x-patch; charset=UTF-8; name="rss-table-size.patch"
+Content-Disposition: attachment; filename="rss-table-size.patch"
+Content-Transfer-Encoding: base64
+
+LS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9vY3Rlb250eDIvbmljL290eDJf
+Y29tbW9uLmMKKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9vY3Rlb250eDIv
+bmljL290eDJfY29tbW9uLmMKQEAgLTM5NCw3ICszOTQsNyBAQAogCXN0cnVjdCBvdHgyX3Jz
+c19pbmZvICpyc3MgPSAmcGZ2Zi0+aHcucnNzX2luZm87CiAJaW50IGlkeCwgcmV0ID0gMDsK
+IAotCXJzcy0+cnNzX3NpemUgPSBzaXplb2YoKnJzcy0+aW5kX3RibCk7CisJcnNzLT5yc3Nf
+c2l6ZSA9IEFSUkFZX1NJWkUocnNzLT5pbmRfdGJsKTsKIAogCS8qIEluaXQgUlNTIGtleSBp
+ZiBpdCBpcyBub3Qgc2V0dXAgYWxyZWFkeSAqLwogCWlmICghcnNzLT5lbmFibGUpCg==
+
+--------------iMRlo67POggb8WRfMXMlOGf7--
