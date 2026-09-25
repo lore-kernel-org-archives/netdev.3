@@ -1,236 +1,311 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013046.outbound.protection.outlook.com [40.93.201.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F08E4908A7;
-	Fri, 25 Sep 2026 11:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790334879; cv=none; b=knSoh89AfR1+WwafQi8t7QVefrQUVIGDIZexYZB/Y9lUhSyg8SKKmjTHc2Gh4QxKJeDXxmNiDhM+w0q8HPcKnRj340wuBvzLxG1ka4Ygr3IZ929XRwvjs96LUCzRqjJ90JkOzcG7iC3ORkHvzlQiocriWF7fhyqkaOy3wnL4TJY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790334879; c=relaxed/simple;
-	bh=XFRmRqD0S8HRwXe5K66T9yAq6vH5i3q5/YKKrKVP8xc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z+SFFiREhnOcrtxMzKldZgbPcxVTaUIXUhSQI7wf2Cjbz5Z/OH5g4qhkV3ctpOCVgGBK+7ReGwzbZk+N5Lqu6nsaaEc1AzU53Ypk1wbl/cSiSq1ijp3RQx/G3lhKEnxCNsfxQhhvwzUXLxzPvlB2lMq9UlOXs/2CWkac0ysDfoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPql0FwJ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AC241DE11;
+	Fri, 25 Sep 2026 11:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790335030; cv=fail; b=tGLF882h9EjTuOTlBK/LlAWtyaQSFZanIq9cd+7hh0DFwsSKgU1z6BXGS5R5FDrbCtY+WbGk7LemmwlPZ+LPJB+6z3vVsAgskA/1bHPzYwMxVhJwbsUlK/tROD4jGUyFMGPQ6zeIQCf8eJ4dKglHNAkrfybIG8W48puopl94cp0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790335030; c=relaxed/simple;
+	bh=h6AjxnixN7zryQawdHgJ0ELk9JQuctxNy9yakf7dl/Y=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=i2MgObtb9zHvuzmAGyyP2p9VwCn59fxLQQLoGvsMw6CJbYBalUNhc6alZ9ssq7OIFtigJo0tlF9zI2EZbwhBE1CC2P+iYRGPlWYcBpRMcbiHVq1tNRZbObblCIovP9Q+XTm6IVHfp+4l/KGFufIw9lr7QpZnOfq/SEUYa78AD3Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IuNSeI85; arc=fail smtp.client-ip=40.93.201.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPql0FwJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E11F00893;
-	Fri, 25 Sep 2026 11:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790334878;
-	bh=xqZvzrdwp5abRn7IYM0pqfB5k12MK5VAXrtZcoWY4gY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EPql0FwJVwIdAesbh+JfdXxGcitCAl+UAthKjEIx9NIdOUQ59b6Y1EkQ9Wy5UU7wQ
-	 57FDs2scOUIaxbqqaKtPkGRCUsrm1BhBzK0Irnb09slL8XXI2HAwjKxmSMS7dkb7FW
-	 mz2EU3054+gEPZ8JVqWBrHV2Lts7iOSy/ZskfPTrSMNpqCbYaD9OSn5nFGP6lW1k5m
-	 B2TL90dIkgX6RAYXXYjtFiTRD0QwwJr2oV83hz+EXx2OVKlT/e9b5QfwgopTCjhgjd
-	 +fCv0W0aYfrJ/BLhvanBmbzSSeV7v7w2cnXABJKcP5Rgu3e8NYsD6vzZO3fUeVSp5/
-	 zrHw/+R5syXiQ==
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: align real_num_tx_queues to
- mqprio configuration
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, daniel@riscstar.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 11:14:36 +0000
-Message-ID: <179033487678.2160803.10600059804699788917@kernel.org>
-In-Reply-To:
- <20260924-stmmac-mqprio-prio-offload-v2-2-fdd8b69efccf@oss.qualcomm.com>
-References:
- <20260924-stmmac-mqprio-prio-offload-v2-2-fdd8b69efccf@oss.qualcomm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IuNSeI85"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=raQseEb2PE1xby8v0Vrfb2VhPA/U4PcjEpz3HgnlExr1d0W/185A/x63Rnws2eqGGUuSn3FM6hLiJgSaH//S2DnJIkYgLFBFIJp/ORIbG4gywebKJgi7NP01E0c2a2PzNCOxansl56gFJVqZOpoQsPDu/jD+ZGnDACHMd49Kp9NAvcW6uKnuD2Ua2luGrdWWpfcsQvsRuz3LZiayAYmacyb7rs/PKCigxAPD6YUHDw5w/Y9BmSf1osXkNECqM7vm+e2Mq3VZco3qun/HSrRhwbAAOSeKgRrnXyjuwRnxwg4O+RA5WmH4UrbFX7lpD1ccmnlH9s1vGVieeeqSGnLK+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zzIqNBfCuk8sPAvBG46IApnefg7ZWRgLxwKatE74410=;
+ b=WDlFpt3zXSbiszLxAqWqv7WiAIRCSZDaOV4wH3atJVvRLIkOxx3MbZ27ixBIAzaa4yXxTZUJ4eFyrxH3U1+iSHPmmVGyLpQkjayhHsF38PTDNZbVCJZjuSdrHvpDku5oYxye6BtnOHkoCRZ76BzmxMyW1ZAKtwcEKidElMTIH7YzMLC/grgraa9hT0Kei+iVCdBGUtdM1EI3l2wTNY4OPLO7aCJJNOqGMUU2SWN8SNy4G/vYZbUATqmUE1uRJaRx9AJ5DhUYpQfQYXJ6WYL/xpkehYwKxKJcQGmivJ8kAOzlwSQiKGouUnG+vM24pBGrLm8eloTS29zffPL9MwhvKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zzIqNBfCuk8sPAvBG46IApnefg7ZWRgLxwKatE74410=;
+ b=IuNSeI85+cbn2PAHq5nyDoutdIU89fsLqqEtGL+9ysfD1IEvINWWq1MAlT94tarWX5alcMw9RJmv16vMFMZvtQkUMcN/uKuDvN8s4OC5g1Rdu6wnpHOWZPSLOhmjutXOW3I1ajRAY2ETK5+MgLY7qvmTCINM20sF5r7w8A0lsxA=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
+ PH0PR12MB5677.namprd12.prod.outlook.com (2603:10b6:510:14d::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.19; Fri, 25 Sep 2026 11:17:04 +0000
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1%6]) with mapi id 15.21.0428.018; Fri, 25 Sep 2026
+ 11:17:04 +0000
+Message-ID: <dc8fdf95-4cca-4dad-bed0-4f7b3c6eb64a@amd.com>
+Date: Fri, 25 Sep 2026 12:16:56 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/4] sfc: add multipf support
+To: Jonathan Cameron <jic23@kernel.org>, alucerop@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+ ecree.xilinx@gmail.com, icheng@nvidia.com, rafael@kernel.org
+References: <20260921191239.4249-1-alucerop@amd.com>
+ <20260921191239.4249-5-alucerop@amd.com>
+ <20260924021535.3e55e8cb@jic23-hlaptop>
+Content-Language: en-GB
+From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
+In-Reply-To: <20260924021535.3e55e8cb@jic23-hlaptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0145.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:98::17) To DM4PR12MB6254.namprd12.prod.outlook.com
+ (2603:10b6:8:a5::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|PH0PR12MB5677:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2139c07-849f-43b4-9294-08df1af68701
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|7416014|23010399003|18002099003|22082099003|10067099003|4143699003|56012099006|11063799006|5023799004|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	oMbcCYPoH6syAakGWaayPC4oATuHm12D5IANJ7KAdsq64HXCWG5sQVW0mNySAm57QNBquof0VU7LeH6ys8oczJAI+Xe8p/speVTUMW8HAMLz9zSC0qiYp7Rvs1jtJ5TKLKVMwlmlMzviQH6CVAs9ZvqDLAa72b4gQlHEeDncj8nTmErUtVVLBGkjr1btV79voG8FG9gTkgH5pXVTx3OJC0TTQirfufV0z1/BcPracLI8LjpmvZ4cXihr+pzKJp6fJYKPRZdP4gEq/T/ArkX0fgTc6nEfaGc1No3Z7J6C1So4s1zpe1kx8YDzURi9z1Zv4i85DUAN5vQVnuz3L5kVOCmsT/ph7Outk8HH1Fo9jGzT/Smj7hVzfvAFnXtCpDcc/qStlB7iMY1lwVtchzvV3rkCKZj6aP842E/oKso9Atb7lB8DJ55DK++S5dMPMxpL3siTTQ+upbtEZOLc7uGfWAwk1HybI0rJmEPMABHB0GungPZ9Qv3k9SvTZ9NbcIHSqkDZecvKG2BMHvt+owc3pSXsVh81MGekEmW/XEbRN1yjG1tNqCPs22y8p4Qo6cG/R6qR9eR/4ySbCYO/HvxxEZNzUL3jZw2kTdE6Ut5uuVDuIgIf010GfZPMKuimqHYP38qotovcYwEMofIyFpE6XQxj5/B6IdnBQ/PVO3mItMk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(23010399003)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006)(11063799006)(5023799004)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bTdQR21LWk42cHFkenk0Z1pWY3VrTGQybEdTOGJ6OTZiQXk4UjFycHh6Y3F4?=
+ =?utf-8?B?dHg1algvTEFvaTFvU2xCMmhNOVRsU0JiSkg4UVVNZVZZUDFQUnB3OCs2QTdj?=
+ =?utf-8?B?Mmo0RHlzOEo3bWo4am81eXMzckRkTjA5cHJTM2t3ZmltWXpFYS9tc0c2UWRW?=
+ =?utf-8?B?QWhxQXdCRXkrbzlVQmU2RWt3UG9IWnhBMzZOMFhjTWg3dnJYVXoxd1ZWZHV0?=
+ =?utf-8?B?NzJQSlhGTjRyTEE0ajYwazB3MmtaOVVmWGZZd0ZVeU80N0U1bTBvMFg5SFRm?=
+ =?utf-8?B?czIzZU9uQ090L3ZFVDR1cVNwZFpzWnU1S0xQd0RzM1RhcE92L2M2dFo2Nm5t?=
+ =?utf-8?B?bC9MOVJnN2grdnJkOHdTNGx1U09HZlZockZOWmZ0WkNQSlBza0F2SkYzQnFt?=
+ =?utf-8?B?azlocmRXdU5QcGxYeXQveVRxdU9LOUt4bk9QRTV1elFWemhwQmdkZWkrNUhN?=
+ =?utf-8?B?WDcyZjg0Q0FxU0t4aDRnSkpzM1VyRlhzZTRuM0s0MytUdm9yaUMzMldramdG?=
+ =?utf-8?B?VEd0cGI0SXU2MCtJclR4ZXJKYjBDV2Fxa2JDSkcweDRXTmgza01ta1RuYm4r?=
+ =?utf-8?B?T2NMZFZDUTZPVnlCRXIxakFINFhyZS83Q0ZWb1BtWGhLeXpPQkRJMzJidUFz?=
+ =?utf-8?B?UStjS2k3VHZuZzdFR1ZzTkJGYzRLempGaHlKU2I2UnoxUkZ1MTQzOXpqbWZ1?=
+ =?utf-8?B?bDNjalhBWCszenROTmRWWDh5bUsyREptNWxjUnA1bTIraHhqTGhRTXhmVlRP?=
+ =?utf-8?B?dEt0RGdnTW5xQ28vWldkZ3FyN1JMcmoyTk5PYUt3Yi9wOEpUd0VCRmdQV3RD?=
+ =?utf-8?B?V1lkNkVBdDNGZjF0c08wZkJ5U3dyUUtHNmQ4Y0VTVXNsRVhhQ0dxbDN2RGFX?=
+ =?utf-8?B?a25YeXB5WkdRTEZsWk92SFNMUU11aWMvY3BWTFdNcmQyZVc2ZDFOelI4NzFk?=
+ =?utf-8?B?alRoWTVHaFNlT0N4bjZEYStiVmlDekRMMDJ2aFNzMzFua0o2cHJyR0lxQVJk?=
+ =?utf-8?B?eXBTZzZnaHB5dTArZ2JHMld4Q0pBeVV4NXBRNnVPRXphR3JyR0V5YURTSHdl?=
+ =?utf-8?B?MWMyRE9xVnV3anhkV25BdVFTTVNLT2V2UU84YldHUGJNcE93N1Nrc1JHbU9H?=
+ =?utf-8?B?SmRXMHRXTHFFMlZtbllTTlVqMmVaaFArM3Yvd1luaW9JWFh2UWlzbEJaVm9N?=
+ =?utf-8?B?RCtyRFdwUzA5YWdhWHFJRXc0L0dxRWF0REN1T3RqUkJ0RndVbzlNV3QrN3lj?=
+ =?utf-8?B?aUpuQUpGbUF3MFBTa05qanhORkRaaU1wb2dKWnZUYUVMUk5zT29GbCtqdU9i?=
+ =?utf-8?B?OUlhL2h2S2VCbDQ4blNEUWRTTVVaR01FR1F1V3lMOXhVS2xTVGdnTTI2dUJT?=
+ =?utf-8?B?M25zYmJhNHBJWEQ2NGJJWnE1emJpdzRqUzVoT1ZHQUhaMmh3R2lrSE9FRmNT?=
+ =?utf-8?B?K2ZMc2FCMTNubjNTb3ZZYVhhSlN1RWZ2NzFzSXhnUFdTdHJVcmZZSm9MRGhP?=
+ =?utf-8?B?RGY3STh3UVhqTUhFN2dhaUMrNVRyejd4eStZN0s0UTQrVzRWdGxTRHM1dmpM?=
+ =?utf-8?B?Qjcrb0tyczZpMk1iVjFRcCs0UzltLy9jWStOMjl5R2MyZERhUmFOY3ZUdWVK?=
+ =?utf-8?B?eGpYSWpYR05IT1IvaVNEQzVSdUlEaFZrVW5zM0Q2aDlxeTJRaW1QMWZxaENN?=
+ =?utf-8?B?bjFVdzZieDRvYmJNRU11aEhJNEpIMzdKL2JydTdYR3RFQS9kbHBVeXVIcE5U?=
+ =?utf-8?B?QTM5WG5aNWhNNEE2UExacUJIN1ZhdjlRbzFmYVBlUk52RnpxZitKeTZYL2Zr?=
+ =?utf-8?B?V0dXWFkzWmQ2a1NvSlFhZndZM2Q3REx4Y1pSRnNESWJMSTBhamF2M3RDcUlU?=
+ =?utf-8?B?QmRUM3BYenZVWlZDeFV4UmREVVdJZHVlZlRXaFQ3S1NCWnJrcmo0dk4rbXRt?=
+ =?utf-8?B?eitMSG9talBSdWVRVkgzNS8wMEg1S1N3MlhRL203YlpabUlTb2JkZnU0eTdy?=
+ =?utf-8?B?RkU3ekVPdU16d3hsMk9HSHhITm1BWUZtUTlIcHhEdUVjT1VydlNQNTlXZzVh?=
+ =?utf-8?B?ZEJlTm5pbUYzZlVyNkNKYnF0cTJwQlBPeHl2ZEZjYjdyZmFIbHdUYitNVS9Y?=
+ =?utf-8?B?ajRTY04veDFmQTZlaGppN2g2akJ6NXhwa1dhL0tVSEpoU2ZZb1dXNlB0MDZM?=
+ =?utf-8?B?MTVqVndSc2JGa2JNbFNZSUx6dHArSlVFRlMzeC9Dd1A3aDdiT2pBN2Z2Wlh5?=
+ =?utf-8?B?ZUlSZStiajBYVDJlRm5MN3dRY0p3WVYvRGllR2JnOEJxQWhDMXJSUkhRZGJn?=
+ =?utf-8?Q?Uyx1yB0BdrfhMIBeMG?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2139c07-849f-43b4-9294-08df1af68701
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 11:17:04.1751
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OIumlVa7ECHXHZEMK324SCgXK6vVOq+hQNQQDLa1UJ9hMimbvVh0k6E9KzgsOVvB4FInH6hS9Td4w35yTZ5JxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5677
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 2
+On 24/09/2026 02:15, Jonathan Cameron wrote:
+> On Mon, 21 Sep 2026 20:12:39 +0100
+> <alucerop@amd.com> wrote:
+>
+>> From: Alejandro Lucero <alucerop@amd.com>
+>>
+>> Use CXL core accelerator API for registering non-PF0 PFs to the memdev
+>> linked to the PF0, along with its complementary unregister.
+>>
+>> Adapt the ioremap call per PF to be an offset based on the PF function
+>> index and a hardcoded per PF CXL.mem slot size.
+> I was wondering how you'd know what memory belonged to which one!
+> Simple solutions work best I suppose :)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [High] After this patch, stmmac_hw_setup() sets the real TX queue count
-  from the cached priv->xmit_qdisc.num_tx_queues instead of…
-- [High] __stmmac_dvr_probe() sets priv->xmit_qdisc.num_tx_queues =
-  priv->plat->tx_queues_to_use (line 7926) before calling…
-- [Low] The commit message says the new field 'is restored to
-  [plat->tx_queues_to_use] when the mqprio qdisc is destroyed or its…
-- [Low] The patch fixes a user-visible inconsistency: on reopen,
-  real_num_tx_queues is reset to plat->tx_queues_to_use while the netdev…
+Hi Jonathan,
 
---
 
-net: stmmac: align real_num_tx_queues to mqprio configuration
+Yes, I think nowadays it is simple. I'm afraid if CXL usage increases 
+this will require some request to the firmware ... which could depend on 
+previous setting requests to that same firmware through fwctl.
 
-This commit adds priv->xmit_qdisc.num_tx_queues to hold the number of TX
-queues enabled by the current mqprio offload. stmmac_hw_setup() now uses
-it instead of plat->tx_queues_to_use when setting real_num_tx_queues on
-open. The field is set at probe, and reset when the mqprio offload is
-removed.
 
-> The field defaults to plat->tx_queues_to_use at probe time and is restored
-> to it when the mqprio qdisc is destroyed or its setup fails, so a device
-> without an active mqprio offload keeps the devicetree configured queue
-> count across reopens.
+>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> ---
+>>   drivers/net/ethernet/sfc/efx_cxl.c | 75 ++++++++++++++++++++++++++----
+>>   1 file changed, 66 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+>> index 348d7404cd7a..bed8d9c59185 100644
+>> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+>> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+>> @@ -13,6 +13,31 @@
+>>   #include "efx_cxl.h"
+>>   
+>>   #define EFX_CTPIO_BUFFER_SIZE	SZ_256M
+>> +#define EFX_CTPIO_BUFFER_PER_PF_SIZE	SZ_8M
+>> +
+>> +static int cxl_map(struct efx_probe_data *probe_data, struct efx_cxl *cxl,
+>> +		   u64 devfn, struct range cxl_pio_range)
+>> +{
+>> +	struct efx_nic *efx = &probe_data->efx;
+>> +	struct pci_dev *pci_dev = efx->pci_dev;
+>> +	u64 cxl_pio_pf_start;
+>> +
+>> +	cxl_pio_pf_start = cxl_pio_range.start + devfn *
+>> +			   EFX_CTPIO_BUFFER_PER_PF_SIZE;
+> Wrap as per operator precedence as easier to read.
+>
+> 			   cxl_pio_range.start +
+> 			   devfn * EFX_CTPIO_BUFFER_PER_SIZE;
 
-[Severity: Low]
 
-Is the "or its setup fails" part accurate? In tc_setup_dwmac510_mqprio(),
-the new field is only assigned on the success path:
+OK
 
-	priv->xmit_qdisc.num_tx_queues = num_tx_queues;
 
-	return 0;
+>> +
+>> +	cxl->ctpio_cxl = ioremap_wc(cxl_pio_pf_start,
+>> +				    EFX_CTPIO_BUFFER_PER_PF_SIZE);
+>> +	if (!cxl->ctpio_cxl) {
+>> +		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
+>> +			&cxl_pio_range);
+>> +		return -ENOMEM;
+>> +	}
+>> +
+>> +	probe_data->cxl = cxl;
+>> +	probe_data->cxl_pio_initialised = true;
+> 'map' is carry quite a lot here that isn't really about mapping anything.
+> Maybe think a bit more on the naming?
 
-error_reset_num_tx_queues:
-	...
-error_reset_tc:
-	...
 
-The error labels roll back algo, the TC map and real_num_tx_queues. They
-leave num_tx_queues at the previous configuration's value.
+Not sure I understand your complain as ioremap is being invoked here. 
+Maybe cxl_iomap or sfc_cxl_iomap as this is a static/local function 
+would address your concern?
 
-stmmac_reset_tc_mqprio() does not run on a failed setup either. Because
-hw_offload was never set, mqprio_destroy() calls netdev_set_num_tc(dev, 0)
-instead of ndo_setup_tc.
 
-Keeping the previous value matches commit 02fffd1939f6 ("net: stmmac:
-preserve real_num_tx_queues on mqprio setup failure"). So the code looks
-right, and it is the description that differs.
+>> +
+>> +	return 0;
+>> +}
+>>   
+>>   int efx_cxl_init(struct efx_probe_data *probe_data)
+>>   {
+>> @@ -21,8 +46,48 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>>   	struct range cxl_pio_range;
+>>   	struct efx_cxl *cxl;
+>>   	u16 dvsec;
+>> +	u8 devfn;
+>>   	int rc;
+>>   
+>> +	if (efx->type->is_vf)
+>> +		return 0;
+>> +
+>> +	/* are we PF0? */
+> First things we ask seems to be Are we not PF0?
 
-The message also calls plat->tx_queues_to_use "the devicetree value".
-stmmac_hw_init() clamps that value, and ethtool -L can change it at
-runtime (see the comments below).
 
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Yeah. I will change that.
 
-[Severity: Low]
 
-Should this have a Fixes: tag? The mqprio offload has been lowering
-real_num_tx_queues since commit 195e4f409a40 ("net: stmmac: support fp
-parameter of tc-mqprio"). The related fix 02fffd1939f6 carries
-Fixes: 195e4f409a40.
+>> +	devfn = PCI_FUNC(pci_dev->devfn);
+>> +	if (devfn != 0) {
+> I'd factor this lot out as a helper to slightly improve readability.
+> Perhaps factor out both paths and then have an if else.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 0c9083f8846e0..ad6be5166b956 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3772,7 +3772,7 @@ static int stmmac_hw_setup(struct net_device *dev)
->  
->  	/* Configure real RX and TX queues */
->  	netif_set_real_num_rx_queues(dev, priv->plat->rx_queues_to_use);
-> -	netif_set_real_num_tx_queues(dev, priv->plat->tx_queues_to_use);
-> +	netif_set_real_num_tx_queues(dev, priv->xmit_qdisc.num_tx_queues);
 
-[Severity: High]
+Yes, I think this makes sense.
 
-What keeps priv->xmit_qdisc.num_tx_queues in sync with
-plat->tx_queues_to_use when the channel count is changed with ethtool?
 
-stmmac_set_channels()->stmmac_reinit_queues() only updates the plat
-fields before it reopens the device:
+>
+>> +		struct pci_dev *pf0_pci_dev;
+>> +		struct cxl_memdev *cxlmd;
+>> +
+>> +		pf0_pci_dev = pci_get_slot(pci_dev->bus,
+>> +					   PCI_DEVFN(PCI_SLOT(pci_dev->devfn),
+>> +						     0));
+>> +		/* This should not happen! */
+>> +		if (!pf0_pci_dev)
+>> +			return 0;
+>> +
+>> +		/* Is the PF0 device configured with and using CXL? */
+>> +		if (!pcie_is_cxl(pf0_pci_dev))
+>> +			return 0;
+>> +
+>> +		cxlmd = cxl_get_pf0_memdev(&pf0_pci_dev->dev, &pci_dev->dev,
+>> +					   &cxl_pio_range);
+>> +
+>> +		if (IS_ERR(cxlmd))
+>> +			return -EPROBE_DEFER;
+>> +
+>> +		cxl = kzalloc_obj(*cxl, GFP_KERNEL);
+>> +		if (!cxl)
+>> +			return -ENOMEM;
+>> +
+>> +		cxl->cxlmd = cxlmd;
+>> +
+>> +		if (!cxl_map(probe_data, cxl, (u64)devfn, cxl_pio_range)) {
+>> +			kfree(cxl);
+>> +			return -ENOMEM;
+> ENOMEM for a map failure? Seems a little odd but if there is precedence
+> fair enough.
 
-stmmac_reinit_queues() {
-    ...
-	priv->plat->rx_queues_to_use = rx_cnt;
-	priv->plat->tx_queues_to_use = tx_cnt;
-    ...
-}
 
-The new field is only written in three places: __stmmac_dvr_probe(),
-stmmac_reset_tc_mqprio() and the success path of
-tc_setup_dwmac510_mqprio().
+Confused here. I can see ENOMEM being a common error if ioremap fails 
+through the kernel. Maybe this related to your previous concern about 
+the function naming, but cxl_map can only fail in one way and that being 
+not different to an ioremap failure.
 
-Take "ethtool -L eth0 tx 2" on a 4-queue device with no mqprio offload.
-The reopen then does this:
 
-__stmmac_open()
-  alloc_dma_tx_desc_resources()   /* rings for queues 0..1 only */
-  stmmac_hw_setup()
-    netif_set_real_num_tx_queues(dev, 4)
-    stmmac_start_all_dma()        /* starts 2 TX channels */
+Thanks,
 
-The netif_set_real_num_tx_queues() call succeeds because its only upper
-bound is dev->num_tx_queues, which is MTL_MAX_TX_QUEUES. Since dma_conf
-is freshly kzalloc'd, tx_queue[2..3].tx_skbuff and dma_tx are NULL.
+Alejandro
 
-stmmac has no ndo_select_queue, so skb_tx_hash() can pick queue 2 or 3.
-stmmac_xmit() takes skb_get_queue_mapping() without a bounds check and
-then does:
 
-	WARN_ON(tx_q->tx_skbuff[first_entry]);
-
-Can this dereference a NULL tx_skbuff? stmmac_tso_xmit() seems to have
-the same problem. The same thing happens if the channel change is made
-while the interface is down and applied on the next open.
-
-In the other direction, when TX channels are increased, the extra queues
-are never exposed. ethtool -L then silently has no effect on TX, and
-ethtool -l reports a count the netdev does not use.
-
-Before this patch, stmmac_hw_setup() always used the current
-plat->tx_queues_to_use, so real_num_tx_queues matched the allocated rings.
-
-Would it make sense to update or clamp the cached value in
-stmmac_reinit_queues()? Using min(xmit_qdisc.num_tx_queues,
-plat->tx_queues_to_use) in stmmac_hw_setup() would also work.
-
-Either way, what should happen to an active mqprio offload whose ranges
-no longer fit the new count? It could be reset, or the channel change
-could be rejected.
-
-[ ... ]
-
-> @@ -7923,6 +7923,7 @@ static int __stmmac_dvr_probe(struct device *device,
->  		priv->xmit_qdisc.prio[i] = priv->plat->tx_queues_cfg[i].prio;
->  	}
->  	priv->xmit_qdisc.algo = priv->plat->tx_sched_algorithm;
-> +	priv->xmit_qdisc.num_tx_queues = priv->plat->tx_queues_to_use;
-
-[Severity: High]
-
-Is this set too early in probe? __stmmac_dvr_probe() calls
-stmmac_hw_init() later, and that can lower plat->tx_queues_to_use:
-
-stmmac_hw_init() {
-    ...
-	if (priv->dma_cap.number_tx_queues &&
-	    priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
-		dev_warn(priv->device,
-			 "Number of Tx queues (%u) exceeds dma capability\n",
-			 priv->plat->tx_queues_to_use);
-		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
-	}
-    ...
-}
-
-The cached value keeps the count from before the clamp. Take a platform
-where the devicetree or glue driver asks for more TX queues than the core
-has. Every open then calls netif_set_real_num_tx_queues() with the larger
-count.
-
-Ring allocation, DMA init, NAPI and stmmac_start_all_dma() all use the
-clamped plat->tx_queues_to_use.
-
-Could traffic hashed to the extra queues hit the same NULL
-tx_q->tx_skbuff dereference in stmmac_xmit()? That would need no
-reconfiguration, only opening the interface and sending traffic.
-
-The only thing that brings the cache back in sync is installing and then
-removing an mqprio qdisc, through stmmac_reset_tc_mqprio().
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-stmmac-mqprio-prio-offload-v2-0-fdd8b69efccf%40oss.qualcomm.com
+>> +		}
+>> +		return 0;
+>> +	}
+>> +
+>>   	/* Is the device configured with and using CXL? */
+>>   	if (!pcie_is_cxl(pci_dev))
+>>   		return 0;
+>> @@ -80,16 +145,8 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>>   		return PTR_ERR(cxl->cxlmd);
+>>   	}
+>>   
+>> -	cxl->ctpio_cxl = ioremap_wc(cxl_pio_range.start,
+>> -				    range_len(&cxl_pio_range));
+>> -	if (!cxl->ctpio_cxl) {
+>> -		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
+>> -			&cxl_pio_range);
+>> +	if (!cxl_map(probe_data, cxl, 0, cxl_pio_range))
+>>   		return -ENOMEM;
+>> -	}
+>> -
+>> -	probe_data->cxl_pio_initialised = true;
+>> -	probe_data->cxl = cxl;
+>>   
+>>   	return 0;
+>>   }
