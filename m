@@ -1,514 +1,326 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011009.outbound.protection.outlook.com [52.101.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8C44BB299;
-	Fri, 25 Sep 2026 14:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790348360; cv=fail; b=s2hAsRhfay5opJBFvKJK3vc0rH4a9Zuk+8gRPBBCQ6P4Br+PYnofViSr34XXfncNmGO8fPpq/VXWTZeVVq6DstEDFQ153+a9F+J2670Y7hh03GMi4uv1IHZh+UPlD4cqhO41G9HwnDI9j0hVN3CrgAVFB2/WiIWxLLHnrDRv0+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790348360; c=relaxed/simple;
-	bh=8/UAaanSxe+xF0AJUWxMA41uCeUJwCrnpTizb13AhEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bfSCPwEqGTxbzxEZZAsZxdFZKUJCB873pIN5ShvgKTApj3FiQm3lovvyMMCesoeCHVv/r6V0/t77A5Ro8JvbVZU9uNOAxM3IqnD4NrKr55Et+8VWQOWvLr2hHRldZrGfSBxQOkXlUbHakV9fUzPCf/q84+vpLKnpmc5fuUSiVg4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dtKQH6Y5; arc=fail smtp.client-ip=52.101.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D33B37E5E1;
+	Fri, 25 Sep 2026 15:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790348580; cv=none; b=Er0vFsJFFDkDfYXNRPNRNxrdF8Y+KWagOGwO4uLBihI53mjPw0/26UuUfOADPev1TcBZ4yQ+gvVaYX/T0bT6t5WZIGgeDw/M9CfIpmskNXDw2BvQ4q9hmAqWG4hbIy+KMBIYF+VUAwsgfeXCCDjE4Mk19bqzYKivcYWZUZTS8nE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790348580; c=relaxed/simple;
+	bh=D+IvWrh3Xp3sts7ylIo0zH0HDPJr8QQjeGW8J16Yn28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DBZhsbNM8jvv3lbLNC62OehEt8Y7zvU0+V3RBbu8vxm4s3LY7qlFsFGf2SSwll+gFKqRL5bdgEi5+ZXg3Lwe8ML9nxIupXBuOqnktj0ooNHl3H4CfIziCyeAxUcNU0TPLMC3jerg8O4FrCD95WLUGqqegbaQYb8qgJnZDOm0Gvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAssOL+a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dtKQH6Y5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hQFNy0+aY6aghlmTQDpST/99LZI5d0ju3KsHH0dRHJyyz51MS7I6XDREAEbzXj4I97JEbXrDoP9/qLTGBu6lKJsfzEGiGMc4N/ObY1LRxs3cd3QUSQEhPcKXTzqnxKD2akKiI9VjQREmZj8pACYpMALiGpjc0lrGhkEoLdQrIKf22T65mBSsB0lI26Jhap9O0FND0KejuS3hy0qcBhvDF1Qt1Bp9tHXddPy1upe/bG6xNXPLfpTjzXFZRO6WBPpG2T0rEDiYRCcTqRpAl3fqW2ncEbfYMeBB8yya7Z/N3XV2MxUQuLZSzoY7UJ8jl+n/hFEl5BpQuGC3C9C0ccBlQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c1N/qcMgnVn7IsG/YL8A09rGizz8bLVOS8maSiHpFXE=;
- b=Dey1qsnsYSg1U32GD/wGzffhSvS1ROeQuk1GldpyJJUy/diVFjiC3bRifH/rU3tMGW/DLRXTMpSFfO0CHeWJaRkR/jyTUJEplEAPvVdrKhF6uP378Yrqcpwn++jIceybTsbLE/lEYvTinXvk2NZRMFbrQIE++qGoo2fqUKZylovFS3aDzRGU2e2bTwj7ffTAqd7aue9PjwDitjb50MYHP1qnuLCt+a6WlAVuOkYoATpbupcIm5Xmx3JUBfWZsagvJeaAUGYvSPlC/FDRhgSaXPKMhOsF7s73BuMDZKKIVPTyKolAcsuP/iJz2TSPpB6xySiT1rVgE7y4TF+K9K+t3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c1N/qcMgnVn7IsG/YL8A09rGizz8bLVOS8maSiHpFXE=;
- b=dtKQH6Y5bQRyDwDv3nl66LFvfBVE4TsMY9SM7HpJYBHJQ9AduObF3KRyig+wyWoRa9sy6N6spZ1JfVfKDk/faVPbqML/pxRhDDRiZttosDdfOJaPz+A1HhCSXiZLGJdqsWpIsCk5NO+lP4VnbapIMKVR36elJpiik9sfxJDn/ouSExd5mItJUcX3i72l/tayXX4vpR7jy33qkZi28Ts/T75sBEyHp1MhRGjEya862PWKp2znOJboE33Ikitnda6ur4ap1Efi2vJvvuFgbTcOpBTdabnlPosyqeDea7oLpH9YAv1lwqlgAk4Qyv12CDtPNNtn/a67J/I+qM5N999puA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by GV1PR04MB9214.eurprd04.prod.outlook.com (2603:10a6:150:29::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
- 2026 14:58:57 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
- 14:58:57 +0000
-Date: Fri, 25 Sep 2026 09:58:44 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 04/11] ARM: dts: imx6ul: Add Variscite audio codec
- files
-Message-ID: <araMJFirhP86Dcb6@SMW015318>
-References: <cover.1790344389.git.stefano.r@variscite.com>
- <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
-X-ClientProxiedBy: PH7P220CA0144.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::6) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAssOL+a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45591F000FF;
+	Fri, 25 Sep 2026 15:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790348569;
+	bh=1Vz14WVxEZ+5HsZOE4US0Akac5iAXwZOcYLBCs8xszg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TAssOL+akFZjsCyWoQFw2I9XAnuQbmOzaSTy2rgSydBphyGNYQEpDoucXHHyzfsc8
+	 gWjptqyh/xCG1gu38M3pOkHofpVFUvUB+s2fPzRZTqrqc29R0Zv9wqY0D+gWaU0vjR
+	 JEDvmg5tlNKWUkmcxWDqaMI0IHrqMGvKphm6Wmx2OngD+JD17rO3FvgkcTapBlgS0o
+	 osrOCpJsrIOyvduqqXpgQWTP/ZtXlTT1kFzMl4gLDhA+wJrfYtrNAKA0/32YkHdzJh
+	 5QbgSpbEFQnAEilCvPGxkjtWL3dJEhQvQpAxTyecj01EliwP5xQlxO11YgFFb3utNg
+	 zkUstFF593+Gg==
+Date: Fri, 25 Sep 2026 17:02:43 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Andrew Halaney <andrew@amutable.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>
+Subject: Re: [PATCH v2 03/10] net: add SO_PASSPIDFD_THREAD to get a
+ thread-specific SCM_PIDFD
+Message-ID: <20260925-nutzen-fachbegriff-bauhof-2e7dd6d47390@brauner>
+References: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
+ <20260909-work-unix-passpidfd-v2-3-7bd342abb2d1@kernel.org>
+ <CAAVpQUAK8uhZtO+oza3=5qfZvxy+RHFQd2AQ2y9FpWKbK5jgyg@mail.gmail.com>
+ <arGuC7Kaml0N728m@toolbx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB9214:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5618963-de98-40d9-0692-08df1b15865a
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|23010399003|10067099003|56012099006|3023799007|22082099003|18002099003|11063799006|4143699003|13003099007;
-X-Microsoft-Antispam-Message-Info:
- WlOLTSuKhGABnJvFrKlo1yvHj936OMZMqSWskYuokMHsgrfWst8+mKdHV20cUDqn74F45nKg8/njcubS6zS03O9KXzV6l5ZWKr55baelgeWdKAkRpKtXzsZ3t7i9RjJnH6Ojk0a3h1nnp+Vfb2gM0EzpoQvZ6jjjQbBwTczxMG04BsOcGAse8aowDjblhYP6WXQBqBQJUuSRJ7ZJdQS8TssUksNTOAf8DwFjUsmcddvhg08QFBMKBTlS6tJex1lkIlauyub3aQYTQVwHHgNlsV7f7i07USvFQgjF0LzsegdYB2FVEHFolxH+mWPZl3YSMkEAQ3PwEtE5kctG7AJhv/aRrwCX09mxdu00Y0X1Iu2EKdnWfBnKVgxChu22fVDjxaO6kCegXrFGARPUYvy6hsiaHUijU5cYvy+Odv24U1k7+VXW4ZCIsZVOThtkveh214HpwIPVlMcivvuWKRKHSMCDPa6W9t2Za2vXJuBKz5b8Melcx+ebam8sGr4oyWT3DSPjkPLmq/+hDcq9UVbn79q0tIsYG0Qd4rco3umuT2kWMWWOrdJV7WSOkAYF0ij5p7bm9kS4shIoG0PrFBUP+QOOhxyzvX/TxZcoLWuKTZI=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(23010399003)(10067099003)(56012099006)(3023799007)(22082099003)(18002099003)(11063799006)(4143699003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?u8FjSSpAu69/bTZuBYtR5tfnyR4j2n1rBZRHLaFv5X/P8nwiOkYCkEU1xvPt?=
- =?us-ascii?Q?rOcxJ0JHM8KinysQrjuFa42CUlM4mFNHt4Z2zFAJpOtudsZS+kBpRbz8j4u6?=
- =?us-ascii?Q?YrO391wJHd+IXuS0dQ8FbvKVawFd5p8ivDZmTb7i3Ak0mBwmKEy9xzfkyKJV?=
- =?us-ascii?Q?Mcqd5vYOx+k9ls64WlNkOLw/H3z1y8IEGdDFcE0mf8wQRyTgWRnUQU+hSFiX?=
- =?us-ascii?Q?uz3y8hQI9SSYRyMU/npqf1LLuxON7UBVVs7Uagf66NK9f8GP+At4ExgtjEfq?=
- =?us-ascii?Q?sE+HKxqzvXpwf8M97OhvMSnYTf6hHZc7dyd0Wf0cZ38dO1U7oyRv5fOtrzYr?=
- =?us-ascii?Q?u5gJIOCZ6irbUleArxQ0BMDO934xFSe64MD8lF2ROFIpgRm09Hjkd8jwj2J3?=
- =?us-ascii?Q?Z2yL7H0AX1IIqPgkCIkf6zXDA0Zb96TT+5FY4w/FSFiRtuxh4vMf+U4Bq3M6?=
- =?us-ascii?Q?+xq05DWUSQWHlMdNLTQHeOyWp/m5x4kjmyIN8LpUAa0VOZzjIvRvBOciz4br?=
- =?us-ascii?Q?Z9uFIr1MQ602u5eSZW7rqqj/IzW8SvGHKWayuhYmWUC7K3KwiaUT0Aa6sP7m?=
- =?us-ascii?Q?GKBsU7ArQouNCRI9uMFMZLlbx5kWsAeZXCaXHqRpVjBFaCzzRSAfnYnatwux?=
- =?us-ascii?Q?IIYIZiomu2WPz5N645uOSg1tLGLcx0K8SF1Rj83+g8fMMnFhEFFy8BqvGiQW?=
- =?us-ascii?Q?SmEplvFYvD4aE3hBY6olzM/ULpfHdozy4PavxA7XFVDxvetIT/nfVGU2Zeff?=
- =?us-ascii?Q?UXSLblGnDvSSu6z6HWmspBBMx3sbDJYRrgTgMIJQcXPzXySjAGuxK7QjiuG/?=
- =?us-ascii?Q?h48MXsCFaXbk2JfHA/3H0QiNnZB9W0p1M889vGhF0cjzi7swLaucLHPA2vaa?=
- =?us-ascii?Q?EMccRBkHCHuSFOb0G6QqBQC56MSR55wV2HCfwUsrvKAAcbVY+wNkDCvYVr+r?=
- =?us-ascii?Q?JYQ63SjWgEa6XnF4z2lRUaoc+Bt8SVewpTv7AvJC8DOBYOGHa26X7PaItDhT?=
- =?us-ascii?Q?JCVnUk0e2JABxhjp/OyyCtFcC8kMZBD1j/oIyNCI3prpCNClbhsyUxAV7s8B?=
- =?us-ascii?Q?P6F/B9jvY9wHUNVY8Ne9J5W8/PPTVE0HQfN1F5Z9k/fiPcX38jpO5W3GprvN?=
- =?us-ascii?Q?hrxrA7auFFeZT818JCnZkwE2KT7SouwU+wYldRoUNNFQSTo2uyLVi0kakTIj?=
- =?us-ascii?Q?0hcQS2npscjD/PnBzCJqf/pxHt1dRz4ML8i/oIILiB2bDVFFtG9IlUNDE3ib?=
- =?us-ascii?Q?L8idDpBYiGeBXUpTDOhvFlUAt6EsMF2MoJAVDzhIoodexR/nSZdjwoPrNaNC?=
- =?us-ascii?Q?0JWv+VPUZhV/cS8rybyDAMEKvAvIx/66IwUURwLoU0PY3mQiPAPP4Tk/r0h+?=
- =?us-ascii?Q?yWrjOaQrOL6fSIybKJ3dg/OHzqcS4oo+DQoreYyB28lB5QBmlpDRjvDs3/kl?=
- =?us-ascii?Q?Rv3J1rgx2ldg0WgN43XI5tD39qFdob6Siq0kDStOIqytIzmGATtE/eg/cGR+?=
- =?us-ascii?Q?SdTcLVEc+ACGvKMV0kAQo/6AUHvUSfZqHbOIWTd6iKsoU/a6vO5gxSt8uZYV?=
- =?us-ascii?Q?Ci9M6JOUii3sVitLLKbMyUoqFdqURHkz8eF2GTxzwFl9Y9wD5s3aOURUBAvD?=
- =?us-ascii?Q?d3qjX5rfrDd//aBpMzf5NJB9UVT8V10p3cXEsOpawipBZGr//nHJMBsNby9T?=
- =?us-ascii?Q?ntq4nPDv+MkGZyG9o2BefUQfKG3ypC02Bd7VPK1uZ95SY/qEBReuZz72aqib?=
- =?us-ascii?Q?KIcuSiZulLIR/WHPqVa1srMLyuw8fKqAkU8XO7rHHtZzfEVGM2kf?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5618963-de98-40d9-0692-08df1b15865a
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 14:58:57.4594
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lb7wFIba18dINvg7Zegnpr636YVSTxtjY+tmV82GSMrjmbSAmiYOrgQXr8IvbCBOuOKDKepy2vOI/QaFNOrKq1ZsEk+GxLDswz9MynTVMsBRsONRRJK02eICrWwcK1mu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9214
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arGuC7Kaml0N728m@toolbx>
 
-On Fri, Sep 25, 2026 at 04:02:21PM +0200, Stefano Radaelli wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
->
-> Add separate DTSI files for the WM8904 and WM8731 audio options on
-> VAR-SOM-6UL and DART-6UL modules.
->
-> Put each codec node, the SAI2 setup and its pinctrl in the selected
-> audio DTSI. This makes the WM8904 option explicit instead of placing
-> it in the shared module base.
->
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-> ---
->  .../imx/imx6ul-imx6ull-var-dart-wm8731.dtsi   | 71 +++++++++++++++
->  .../imx/imx6ul-imx6ull-var-dart-wm8904.dtsi   | 88 +++++++++++++++++++
->  .../imx/imx6ul-imx6ull-var-som-wm8731.dtsi    | 71 +++++++++++++++
->  .../imx/imx6ul-imx6ull-var-som-wm8904.dtsi    | 85 ++++++++++++++++++
+On Mon, Sep 21, 2026 at 05:25:34PM -0500, Andrew Halaney wrote:
+> On Wed, Sep 09, 2026 at 10:24:47PM -0700, Kuniyuki Iwashima wrote:
+> > On Wed, Sep 9, 2026 at 3:43 AM Christian Brauner <brauner@kernel.org> wrote:
+> > >
+> > > Currently, SCM_PIDFD carries a pidfd for the thread-group leader. A
+> > > broker or the coredump server cannot learn the identity of the specific
+> > > thread that sent a given message. Now that both struct pids are recorded
+> > > a receiver can ask for the specific identity it needs.
+> > >
+> > > So add SO_PASSPIDFD_THREAD as a sibling of SO_PASSPIDFD. Either option
+> > > makes recvmsg() deliver an SCM_PIDFD. SO_PASSPIDFD sends a pidfd for the
+> > > thread-group leader and SO_PASSPIDFD_THREAD sends a pidfd for the
+> > > specific thread.
+> > >
+> > > The two options are mutually exclusive. Enabling one switches the other
+> > > off, so getsockopt() always reports which of the two is active.
+> > >
+> > > On SOCK_STREAM sockets recvmsg() only stops merging data at a thread
+> > > boundary when the receiver asked for a thread pidfd. For SO_PASSCRED and
+> > > SO_PASSPIDFD receivers all threads of one process remain a single
+> > > writer.
+> > >
+> > > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > > ---
+> > >  arch/alpha/include/uapi/asm/socket.h  |  2 ++
+> > >  arch/mips/include/uapi/asm/socket.h   |  2 ++
+> > >  arch/parisc/include/uapi/asm/socket.h |  2 ++
+> > >  arch/sparc/include/uapi/asm/socket.h  |  2 ++
+> > >  include/net/sock.h                    | 10 +++++++++-
+> > >  include/uapi/asm-generic/socket.h     |  2 ++
+> > >  net/core/scm.c                        | 19 +++++++++++++------
+> > >  net/core/sock.c                       | 26 ++++++++++++++++++++++++--
+> > >  net/unix/af_unix.c                    | 11 ++++++++---
+> > >  9 files changed, 64 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
+> > > index 946a5fad2691..bb3d534826bb 100644
+> > > --- a/arch/alpha/include/uapi/asm/socket.h
+> > > +++ b/arch/alpha/include/uapi/asm/socket.h
+> > > @@ -157,6 +157,8 @@
+> > >
+> > >  #define SO_RIGHTS_NOTRUNC      85
+> > >
+> > > +#define SO_PASSPIDFD_THREAD    86
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG == 64
+> > > diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
+> > > index f1641dde135f..269badcaa086 100644
+> > > --- a/arch/mips/include/uapi/asm/socket.h
+> > > +++ b/arch/mips/include/uapi/asm/socket.h
+> > > @@ -168,6 +168,8 @@
+> > >
+> > >  #define SO_RIGHTS_NOTRUNC      85
+> > >
+> > > +#define SO_PASSPIDFD_THREAD    86
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG == 64
+> > > diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+> > > index f3a3815c7dc2..313aee10a52c 100644
+> > > --- a/arch/parisc/include/uapi/asm/socket.h
+> > > +++ b/arch/parisc/include/uapi/asm/socket.h
+> > > @@ -149,6 +149,8 @@
+> > >
+> > >  #define SO_RIGHTS_NOTRUNC      0x4053
+> > >
+> > > +#define SO_PASSPIDFD_THREAD    0x4054
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG == 64
+> > > diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
+> > > index 7907f3b1f0ee..bd3e69bcce7a 100644
+> > > --- a/arch/sparc/include/uapi/asm/socket.h
+> > > +++ b/arch/sparc/include/uapi/asm/socket.h
+> > > @@ -150,6 +150,8 @@
+> > >
+> > >  #define SO_RIGHTS_NOTRUNC        0x005e
+> > >
+> > > +#define SO_PASSPIDFD_THREAD      0x005f
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >
+> > > diff --git a/include/net/sock.h b/include/net/sock.h
+> > > index 51185222aac2..fc09c92e8a83 100644
+> > > --- a/include/net/sock.h
+> > > +++ b/include/net/sock.h
+> > > @@ -356,6 +356,7 @@ struct sk_filter;
+> > >    *    @sk_scm_security: flagged by SO_PASSSEC to recv SCM_SECURITY
+> > >    *    @sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
+> > >    *    @sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
+> > > +  *    @sk_scm_pidfd_thread: flagged by SO_PASSPIDFD_THREAD to recv a thread SCM_PIDFD
+> > >    *    @sk_scm_unused: unused flags for scm_recv()
+> > >    *    @ns_tracker: tracker for netns reference
+> > >    *    @sk_user_frags: xarray of pages the user is holding a reference on.
+> > > @@ -562,7 +563,8 @@ struct sock {
+> > >                                 sk_scm_security : 1,
+> > >                                 sk_scm_pidfd : 1,
+> > >                                 sk_scm_rights : 1,
+> > > -                               sk_scm_unused : 4;
+> > > +                               sk_scm_pidfd_thread : 1,
+> > > +                               sk_scm_unused : 3;
+> > >                 };
+> > >         };
+> > >         u8                      sk_clockid;
+> > > @@ -2986,6 +2988,12 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
+> > >         return sk_is_unix(sk) && sk->sk_type == SOCK_STREAM;
+> > >  }
+> > >
+> > > +/* SO_PASSPIDFD or SO_PASSPIDFD_THREAD asked for an SCM_PIDFD. */
+> > > +static inline bool sk_scm_pidfd_wanted(const struct sock *sk)
+> > > +{
+> > > +       return sk->sk_scm_pidfd || sk->sk_scm_pidfd_thread;
+> > > +}
+> > > +
+> > >  static inline bool sk_is_vsock(const struct sock *sk)
+> > >  {
+> > >         return sk->sk_family == AF_VSOCK;
+> > > diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+> > > index 84ea7b92936e..d1e5c6de146d 100644
+> > > --- a/include/uapi/asm-generic/socket.h
+> > > +++ b/include/uapi/asm-generic/socket.h
+> > > @@ -152,6 +152,8 @@
+> > >
+> > >  #define SO_RIGHTS_NOTRUNC      85
+> > >
+> > > +#define SO_PASSPIDFD_THREAD    86
+> > > +
+> > >  #if !defined(__KERNEL__)
+> > >
+> > >  #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+> > > diff --git a/net/core/scm.c b/net/core/scm.c
+> > > index 9b9e119c353a..d69768414af4 100644
+> > > --- a/net/core/scm.c
+> > > +++ b/net/core/scm.c
+> > > @@ -499,9 +499,13 @@ static bool scm_has_secdata(struct sock *sk)
+> > >  }
+> > >  #endif
+> > >
+> > > -static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+> > > +static void scm_pidfd_recv(struct sock *sk, struct msghdr *msg,
+> > > +                          struct scm_cookie *scm)
+> > >  {
+> > > +       enum pid_type type = sk->sk_scm_pidfd_thread ? PIDTYPE_PID : PIDTYPE_TGID;
+> > > +       struct pid *pid = scm->pid[type];
+> > >         struct file *pidfd_file = NULL;
+> > > +       unsigned int flags = PIDFD_STALE;
+> > 
+> > nit: Please keep the reverse xmas tree order.
+> > 
+> > 
+> > >         int len, pidfd;
+> > >
+> > >         /* put_cmsg() doesn't return an error if CMSG is truncated,
+> > > @@ -517,10 +521,13 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+> > >                 return;
+> > >         }
+> > >
+> > > -       if (!scm->pid[PIDTYPE_TGID])
+> > > +       if (!pid)
+> > >                 return;
+> > >
+> > > -       pidfd = pidfd_prepare(scm->pid[PIDTYPE_TGID], PIDFD_STALE, &pidfd_file);
+> > > +       if (type == PIDTYPE_PID)
+> > > +               flags |= PIDFD_THREAD;
+> > 
+> > I'm wondering how this flag can be useful.
+> > 
+> > I thought this should be
+> > 
+> >   if (pid_has_task(pid, PIDTYPE_TGID))
+> >     flags |= PIDFD_THREAD;
+> > 
+> > because when the sender sends TGID, this flag is set even though
+> > it is a thread leader.
+> > 
+> > It seems PIDFD_THREAD is just feedback of whether the
+> > receiver has set SO_PASSPIDFD or _THREAD, which the
+> > application should already know.
+> > 
+> 
+> Isn't this flag necessary to indicate how to handle signals? i.e. its acting like
+> PIDFD_THREAD acquired pidfds defaulting to pidfd_send_signal() with
+> PIDFD_SIGNAL_THREAD. userspace can even read that back with fcntl() so
+> if you were to pass the pidfd around with SCM_RIGHTS, etc the other end knows
+> what type of pidfd they've gotten.
+> 
+> > 
+> > > +
+> > > +       pidfd = pidfd_prepare(pid, flags, &pidfd_file);
+> > >
+> > >         if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
+> > >                 if (pidfd_file) {
+> > > @@ -539,7 +546,7 @@ static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
+> > >                               struct scm_cookie *scm, int flags)
+> > >  {
+> > >         if (!msg->msg_control) {
+> > > -               if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
+> > > +               if (sk->sk_scm_credentials || sk_scm_pidfd_wanted(sk) ||
+> > >                     scm->fp || scm_has_secdata(sk))
+> > >                         msg->msg_flags |= MSG_CTRUNC;
+> > >
+> > > @@ -586,8 +593,8 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+> > >                 scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notrunc));
+> > >         }
+> > >
+> > > -       if (sock->sk->sk_scm_pidfd)
+> > > -               scm_pidfd_recv(msg, scm);
+> > > +       if (sk_scm_pidfd_wanted(sock->sk))
+> > > +               scm_pidfd_recv(sock->sk, msg, scm);
+> > >
+> > >         scm_destroy_cred(scm);
+> > >  }
+> > > diff --git a/net/core/sock.c b/net/core/sock.c
+> > > index 1ad41904db25..f9615b0de10e 100644
+> > > --- a/net/core/sock.c
+> > > +++ b/net/core/sock.c
+> > > @@ -1571,10 +1571,25 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+> > >                 break;
+> > >
+> > >         case SO_PASSPIDFD:
+> > > -               if (sk_is_unix(sk))
+> > > +               if (sk_is_unix(sk)) {
+> > > +                       /* Mutually exclusive with SO_PASSPIDFD_THREAD. */
+> > >                         sk->sk_scm_pidfd = valbool;
+> > > -               else
+> > > +                       if (valbool)
+> > > +                               sk->sk_scm_pidfd_thread = 0;
+> > > +               } else {
+> > > +                       ret = -EOPNOTSUPP;
+> > > +               }
+> > > +               break;
+> > > +
+> > > +       case SO_PASSPIDFD_THREAD:
+> > 
+> > If SO_PASSPIDFD had boolean check, it would have been possible
+> > to reuse SO_PASSPIDFD==2 as SO_PASSPIDFD_THREAD.
+> > 
+> > Given two options are mutually exclusive here, I think it's cleaner
+> > to have u32 SO_PASSPIDFD_OPTIONS or something, which can
+> > store 32 flags for future extension.
+> > 
+> > #define SO_PASSPIDFD_OPTION 86
+> > #define SO_PASSPIDFD_THREAD 1
+> > 
+> > Then, sk_scm_pidfd_thread will be used in unix_skb_scm_eq()
+> > and scm_pidfd_recv() only.
+> 
+> 
+> Are they really mutually exclusive? I could see a world where
+> maybe you want both set. If we do treat it as exclusive is it
+> a last option wins sort of thing?
+> 
+> i.e.:
+> 
+>     1. set SO_PASSPIDFD
+>     2. set SO_PASSPIDFD_OPTION with SO_PASSPIDFD_THREAD
+> 
+> does that just result in a SCM_PIDFD related to the thread?
+> and then if we do a SO_PASSPIDFD_OPTION with 0, does that
+> just stop sending the cmsg at all (or does it go back to SO_PASSPIDFD)?
+> 
+> To me it would be kind of nice if they were unique / independent,
+> i.e. if you did the above you'd get SCM_PIDFD and SCM_PIDFD_THREAD type as well
 
-what's difference between imx6ul-imx6ull-var-som-wm8904.dtsi and
-imx6ul-imx6ull-var-dart-wm8904.dtsi?
-
-Frank
-
->  4 files changed, 315 insertions(+)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
->
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
-> new file mode 100644
-> index 000000000000..7d74fc3b7014
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8731.dtsi
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	sound {
-> +		compatible = "simple-audio-card";
-> +		simple-audio-card,bitclock-master = <&sound_master>;
-> +		simple-audio-card,format = "i2s";
-> +		simple-audio-card,frame-master = <&sound_master>;
-> +		simple-audio-card,name = "wm8731audio";
-> +		simple-audio-card,routing =
-> +			"Headphone Jack", "RHPOUT",
-> +			"Headphone Jack", "LHPOUT",
-> +			"LLINEIN", "Line Jack",
-> +			"RLINEIN", "Line Jack",
-> +			"MICIN", "Mic Bias",
-> +			"Mic Bias", "Mic Jack";
-> +		simple-audio-card,widgets =
-> +			"Headphone", "Headphone Jack",
-> +			"Line", "Line Jack",
-> +			"Microphone", "Mic Jack";
-> +
-> +		sound_master: simple-audio-card,cpu {
-> +			sound-dai = <&sai2>;
-> +		};
-> +
-> +		simple-audio-card,codec {
-> +			sound-dai = <&codec>;
-> +			system-clock-frequency = <12288000>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	codec: audio-codec@1a {
-> +		compatible = "wlf,wm8731";
-> +		reg = <0x1a>;
-> +		#sound-dai-cells = <0>;
-> +		clocks = <&clks IMX6UL_CLK_SAI2>;
-> +		clock-names = "mclk";
-> +		AVDD-supply = <&reg_3p3v>;
-> +		DBVDD-supply = <&reg_3p3v>;
-> +		DCVDD-supply = <&reg_3p3v>;
-> +		HPVDD-supply = <&reg_3p3v>;
-> +	};
-> +};
-> +
-> +&sai2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai2>;
-> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
-> +			  <&clks IMX6UL_CLK_SAI2>;
-> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <0>, <12288000>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_sai2: sai2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
-> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
-> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
-> new file mode 100644
-> index 000000000000..1e1ff8c6d7b5
-> --- /dev/null
-/809> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	sound {
-> +		compatible = "simple-audio-card";
-> +		simple-audio-card,bitclock-master = <&sound_master>;
-> +		simple-audio-card,format = "i2s";
-> +		simple-audio-card,frame-master = <&sound_master>;
-> +		simple-audio-card,name = "wm8904audio";
-> +		simple-audio-card,routing =
-> +			"Headphone Jack", "HPOUTL",
-> +			"Headphone Jack", "HPOUTR",
-> +			"IN1L", "Line In Jack",
-> +			"IN1R", "Line In Jack",
-> +			"IN2L", "Microphone Jack",
-> +			"IN2R", "Microphone Jack",
-> +			"Microphone Jack", "MICBIAS";
-> +		simple-audio-card,widgets =
-> +			"Microphone", "Microphone Jack",
-> +			"Headphone", "Headphone Jack",
-> +			"Line", "Line In Jack";
-> +		simple-audio-card,mclk-fs = <256>;
-> +
-> +		simple-audio-card,cpu {
-> +			sound-dai = <&sai2>;
-> +		};
-> +
-> +		sound_master: simple-audio-card,codec {
-> +			sound-dai = <&codec>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	codec: audio-codec@1a {
-> +		compatible = "wlf,wm8904";
-> +		reg = <0x1a>;
-> +		#sound-dai-cells = <0>;
-> +		clocks = <&clks IMX6UL_CLK_SAI2>;
-> +		clock-names = "mclk";
-> +		AVDD-supply = <&reg_3p3v>;
-> +		CPVDD-supply = <&reg_3p3v>;
-> +		DBVDD-supply = <&reg_3p3v>;
-> +		DCVDD-supply = <&reg_3p3v>;
-> +		MICVDD-supply = <&reg_3p3v>;
-> +		wlf,drc-cfg-names = "default", "peaklimiter", "tradition",
-> +				    "soft", "music";
-> +		/*
-> +		 * Config registers per name, respectively:
-> +		 * KNEE_IP = 0,   KNEE_OP = 0,     HI_COMP = 1,   LO_COMP = 1
-> +		 * KNEE_IP = -24, KNEE_OP = -6,    HI_COMP = 1/4, LO_COMP = 1
-> +		 * KNEE_IP = -42, KNEE_OP = -3,    HI_COMP = 0,   LO_COMP = 1
-> +		 * KNEE_IP = -45, KNEE_OP = -9,    HI_COMP = 1/8, LO_COMP = 1
-> +		 * KNEE_IP = -30, KNEE_OP = -10.5, HI_COMP = 1/4, LO_COMP = 1
-> +		 */
-> +		wlf,drc-cfg-regs = /bits/ 16 <0x01af 0x3248 0x0000 0x0000>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x0408>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0028 0x0704>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0018 0x078c>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x050e>;
-> +	};
-> +};
-> +
-> +&sai2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai2>;
-> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
-> +			  <&clks IMX6UL_CLK_SAI2>;
-> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <0>, <11565177>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_sai2: sai2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
-> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
-> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
-> new file mode 100644
-> index 000000000000..7d74fc3b7014
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8731.dtsi
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	sound {
-> +		compatible = "simple-audio-card";
-> +		simple-audio-card,bitclock-master = <&sound_master>;
-> +		simple-audio-card,format = "i2s";
-> +		simple-audio-card,frame-master = <&sound_master>;
-> +		simple-audio-card,name = "wm8731audio";
-> +		simple-audio-card,routing =
-> +			"Headphone Jack", "RHPOUT",
-> +			"Headphone Jack", "LHPOUT",
-> +			"LLINEIN", "Line Jack",
-> +			"RLINEIN", "Line Jack",
-> +			"MICIN", "Mic Bias",
-> +			"Mic Bias", "Mic Jack";
-> +		simple-audio-card,widgets =
-> +			"Headphone", "Headphone Jack",
-> +			"Line", "Line Jack",
-> +			"Microphone", "Mic Jack";
-> +
-> +		sound_master: simple-audio-card,cpu {
-> +			sound-dai = <&sai2>;
-> +		};
-> +
-> +		simple-audio-card,codec {
-> +			sound-dai = <&codec>;
-> +			system-clock-frequency = <12288000>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	codec: audio-codec@1a {
-> +		compatible = "wlf,wm8731";
-> +		reg = <0x1a>;
-> +		#sound-dai-cells = <0>;
-> +		clocks = <&clks IMX6UL_CLK_SAI2>;
-> +		clock-names = "mclk";
-> +		AVDD-supply = <&reg_3p3v>;
-> +		DBVDD-supply = <&reg_3p3v>;
-> +		DCVDD-supply = <&reg_3p3v>;
-> +		HPVDD-supply = <&reg_3p3v>;
-> +	};
-> +};
-> +
-> +&sai2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai2>;
-> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
-> +			  <&clks IMX6UL_CLK_SAI2>;
-> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <0>, <12288000>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_sai2: sai2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
-> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
-> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
-> new file mode 100644
-> index 000000000000..72a73011af6f
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-wm8904.dtsi
-> @@ -0,0 +1,85 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	sound {
-> +		compatible = "simple-audio-card";
-> +		simple-audio-card,bitclock-master = <&sound_master>;
-> +		simple-audio-card,format = "i2s";
-> +		simple-audio-card,frame-master = <&sound_master>;
-> +		simple-audio-card,name = "wm8904audio";
-> +		simple-audio-card,routing =
-> +			"Headphone Jack", "HPOUTL",
-> +			"Headphone Jack", "HPOUTR",
-> +			"IN1L", "Line In Jack",
-> +			"IN1R", "Line In Jack";
-> +		simple-audio-card,widgets =
-> +			"Microphone", "Microphone Jack",
-> +			"Headphone", "Headphone Jack",
-> +			"Line", "Line In Jack";
-> +		simple-audio-card,mclk-fs = <256>;
-> +
-> +		simple-audio-card,cpu {
-> +			sound-dai = <&sai2>;
-> +		};
-> +
-> +		sound_master: simple-audio-card,codec {
-> +			sound-dai = <&codec>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	codec: audio-codec@1a {
-> +		compatible = "wlf,wm8904";
-> +		reg = <0x1a>;
-> +		#sound-dai-cells = <0>;
-> +		clocks = <&clks IMX6UL_CLK_SAI2>;
-> +		clock-names = "mclk";
-> +		AVDD-supply = <&reg_3p3v>;
-> +		CPVDD-supply = <&reg_3p3v>;
-> +		DBVDD-supply = <&reg_3p3v>;
-> +		DCVDD-supply = <&reg_3p3v>;
-> +		MICVDD-supply = <&reg_3p3v>;
-> +		wlf,drc-cfg-names = "default", "peaklimiter", "tradition",
-> +				    "soft", "music";
-> +		/*
-> +		 * Config registers per name, respectively:
-> +		 * KNEE_IP = 0,   KNEE_OP = 0,     HI_COMP = 1,   LO_COMP = 1
-> +		 * KNEE_IP = -24, KNEE_OP = -6,    HI_COMP = 1/4, LO_COMP = 1
-> +		 * KNEE_IP = -42, KNEE_OP = -3,    HI_COMP = 0,   LO_COMP = 1
-> +		 * KNEE_IP = -45, KNEE_OP = -9,    HI_COMP = 1/8, LO_COMP = 1
-> +		 * KNEE_IP = -30, KNEE_OP = -10.5, HI_COMP = 1/4, LO_COMP = 1
-> +		 */
-> +		wlf,drc-cfg-regs = /bits/ 16 <0x01af 0x3248 0x0000 0x0000>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x0408>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0028 0x0704>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0018 0x078c>,
-> +				   /bits/ 16 <0x04af 0x324b 0x0010 0x050e>;
-> +	};
-> +};
-> +
-> +&sai2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai2>;
-> +	assigned-clocks = <&clks IMX6UL_CLK_SAI2_SEL>,
-> +			  <&clks IMX6UL_CLK_SAI2>;
-> +	assigned-clock-parents = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <0>, <11565177>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_sai2: sai2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
-> +			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
-> +			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x11088
-> +			MX6UL_PAD_JTAG_TMS__SAI2_MCLK		0x17088
-> +		>;
-> +	};
-> +};
-> --
-> 2.47.3
->
->
+I agree that's the nicer model!
