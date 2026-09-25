@@ -1,123 +1,116 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDA71F427C;
-	Fri, 25 Sep 2026 13:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39D137268C;
+	Fri, 25 Sep 2026 13:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344529; cv=none; b=jzMDtLG7SHLHjwpWjpwGczFXFevS2Yn97HP0zXkqcJUsomFZAxJJh3bdxq34lxTNeeqF7BfLgmwUXpswzlQry/iUOF122JqAdI+BGKUci+1si8qBNVI/zxlHc6tBp/D/Oz6uuqV6v5CdcekTo9QhG4Qb6mxh99XCZW1PqmWCbvc=
+	t=1790344571; cv=none; b=ArTmtIdLz8bbCfFFhnrF0CLx492MdxU3S7raWexwOwULoSL8H5O/p68XCqNXlkid9wSMy9NKr8JcNVMC1KJNuaY5c+ytqM4rOxgo6Mrc5B8M4l1M8FbjB38qjFDdeJB05tfgrrpKDOdqF4HLW3/KzJ7Wid5yXLw8eW9lXJ7waxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344529; c=relaxed/simple;
-	bh=yuzmuhcmB59EFA5J1e1i/MwAa37CU8+wBkxTu4Bf0kg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BwDgRHVbD2N3xKN/L08/r/xd5aP+xRLstFHtC2x4D1SKqw0n9XbI+ZgECaMK9p2p0pFtUTsZ1mq0BK/U80SAdS3h8vAq/lAjkjhkHd0J0rAjzQcrqCkuqPhK1oZEaBI271MyGobBT2Z0fL8jkjws1tWrUUciNDZHy+RaPiVh9XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=NPxzNXEW; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1790344571; c=relaxed/simple;
+	bh=ayNHMPle4jmqcQu6r4rVG6AymghxFUOo6O6xrmXMZkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MnrGj6hPB+CL1HRJsJoQvGN4kH/sT7gj14V1zJKb8EG308Jd+jn5ZTimfQg04J00JpNlAfcnrjC9A39WdI2Ga/w8UaRJg9MXmfbPD6I4TpDESeo8K7Cxp6zHudEE6zCQhCaLm4IZlKCVZ5he7uQ4ar3n3XgvuQEWSKaqtHUCp0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i4HLVt89; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="NPxzNXEW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=8qSCqfOlWz0Nr/sTQ88XP03QdzOIpyDNK0I5ummP6ys=; b=NPxzNXEWUzXO
-	OYJfy7q2pUH/stKeKnyd+L+yDnrROisf7oW30NlfxJz9v9cH2T/iLunQOa8w6PDTV70lYJyc2R+2m
-	gpBWScgHnEb7w+lrHpQsQ8rpWmvEoJd3fIndUjOngEqsf+5n8ru3KCTzVR2f5pivS/LeRFVx8NoIl
-	jmjMvxkldD+BViGIo5NsGIWpWj7JYpTynNFajLidGIk5+Gx6cPdvLu+J0yLWh32HwJSKQXpk15rEe
-	VYF+YgEgfgCMq9inygczBAzkFyK8vkfcfoxEAC2P6EXZ1SoSWeTa0AGX52JSq5Q8qewukNx4Bz+KM
-	jyabhJeiJcpOO0fXqrqtIA==;
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <eva.kurchatova@virtuozzo.com>)
-	id 1xA6LY-008rPD-05;
-	Fri, 25 Sep 2026 15:55:16 +0200
-From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH] selftests: netdevsim: skip the rate tc-bw check without tool support
-Date: Fri, 25 Sep 2026 16:55:01 +0300
-Message-ID: <20260925135512.3644101-1-eva.kurchatova@virtuozzo.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i4HLVt89"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AFE6A1A101D;
+	Fri, 25 Sep 2026 13:56:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 836B56073B;
+	Fri, 25 Sep 2026 13:56:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7533C103282D5;
+	Fri, 25 Sep 2026 15:55:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790344561; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=hEBpoBlVwydzP4lHw8pOPXDZ4NiqRqj1RR7inYsLQ9o=;
+	b=i4HLVt89ESvlWyKbMPI7qq21ZWtFV57bngwEqzWaWLkR5vKf9AwyJ8p4y06sbtDKJA4uHF
+	3wEsPeeAzL8JovsJ8mbRMzCsZbnbglHTPUPyLvGILELDje6m2+P+PxLSJle+ByMIG6YMG/
+	g0cngD5CSyegR9v0NmuUzrOJb0u9L47t34D4o7NVGhDeHmMgSBrXY2QVuRW8iptmpZvc1K
+	HN+OFixiGadFo3wzCKyvZaAVBFZK85B4OQp93QxSpkvvbcU3EUxL2hgEEjI9c0F1VGG8kw
+	4DtSdpRTa22TWxK0jz9L41grpDJtIJtK3L7oUELpAhDT0hiGBM69sekSxm+veg==
+Message-ID: <0ddf8280-0a66-4dbf-9195-1b90e97015c5@bootlin.com>
+Date: Fri, 25 Sep 2026 15:55:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net v3 1/2] net: ethtool: reject an out of range hwtstamp
+ provider index
+To: Nicolai Buchwitz <nb@tipi-net.de>, Andrew Lunn <andrew@lunn.ch>,
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260925135237.3432266-1-nb@tipi-net.de>
+ <20260925135237.3432266-2-nb@tipi-net.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260925135237.3432266-2-nb@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The tc-bw attribute was added to devlink in iproute2 6.17, together
-with the kernel side in v6.17. An older devlink has no such option and
-the rate test fails on "Unknown option" instead of skipping.
 
-Probe once in rate_test() and skip the tc-bw checks as a whole, so that
-a missing option costs a single skip line rather than one per rate
-object.
 
-Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
----
- .../drivers/net/netdevsim/devlink.sh          | 29 +++++++++++++------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+On 9/25/26 15:52, Nicolai Buchwitz wrote:
+> A provider index of 0xFFFFFFFF picks a provider on hardware that has
+> none. phc_index is an int where -1 means no PHC, and the u32 from user
+> space ends up as -1, so the two match.
+> 
+> TSINFO_GET uses -1 for "no provider requested" and answers with the
+> default provider instead of an error.
+> 
+> Reject the value in the netlink policy, which covers every comparison
+> site.
+> 
+> Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> ---
+> NLA_POLICY_MAX does not fit here, .max in struct nla_policy is s16.
+> 
+>   net/ethtool/ts.h | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ethtool/ts.h b/net/ethtool/ts.h
+> index d901a879a671..ab9805308353 100644
+> --- a/net/ethtool/ts.h
+> +++ b/net/ethtool/ts.h
+> @@ -5,9 +5,15 @@
+>   
+>   #include "netlink.h"
+>   
+> +/* phc_index is an int and -1 means no PHC, so keep the request non-negative */
+> +static const struct netlink_range_validation ethnl_ts_prov_index_range = {
+> +	.max = INT_MAX,
+> +};
+> +
+>   static const struct nla_policy
+>   ethnl_ts_hwtst_prov_policy[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_MAX + 1] = {
+> -	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
+> +	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
+> +		NLA_POLICY_FULL_RANGE(NLA_U32, &ethnl_ts_prov_index_range),
+>   	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_QUALIFIER] =
+>   		NLA_POLICY_MAX(NLA_U32, HWTSTAMP_PROVIDER_QUALIFIER_CNT - 1)
+>   };
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/devlink.sh b/tools/testing/selftests/drivers/net/netdevsim/devlink.sh
-index 22a626c6cde3..1ba925459aff 100755
---- a/tools/testing/selftests/drivers/net/netdevsim/devlink.sh
-+++ b/tools/testing/selftests/drivers/net/netdevsim/devlink.sh
-@@ -849,6 +849,13 @@ rate_test()
- {
- 	RET=0
- 
-+	local tc_bw_supported=false
-+	if devlink port function rate help 2>&1 | grep -q tc-bw; then
-+		tc_bw_supported=true
-+	else
-+		log_test_skip "rate tc-bw" "Current iproute doesn't support rate option 'tc-bw'."
-+	fi
-+
- 	echo $VF_COUNT > /sys/bus/netdevsim/devices/$DEV_NAME/sriov_numvfs
- 	devlink dev eswitch set $DL_HANDLE mode switchdev
- 	local leafs=`rate_leafs_get $DL_HANDLE`
-@@ -872,12 +879,14 @@ rate_test()
- 		rate=$(($rate+100))
- 	done
- 
--	local tc_bw="0:0 1:40 2:0 3:0 4:0 5:0 6:60 7:0"
--	for r_obj in $leafs
--	do
--		rate_attr_tc_bw_check "$r_obj" "$tc_bw" \
--			"$DEBUGFS_DIR"/ports/"${r_obj##*/}"
--	done
-+	if $tc_bw_supported; then
-+		local tc_bw="0:0 1:40 2:0 3:0 4:0 5:0 6:60 7:0"
-+		for r_obj in $leafs
-+		do
-+			rate_attr_tc_bw_check "$r_obj" "$tc_bw" \
-+				"$DEBUGFS_DIR"/ports/"${r_obj##*/}"
-+		done
-+	fi
- 
- 	local node1_name='group1'
- 	local node1="$DL_HANDLE/$node1_name"
-@@ -897,9 +906,11 @@ rate_test()
- 		$DEBUGFS_DIR/rate_nodes/${node1##*/}/tx_max
- 
- 
--	local tc_bw="0:20 1:0 2:0 3:0 4:0 5:20 6:60 7:0"
--	rate_attr_tc_bw_check $node1 "$tc_bw" \
--		"$DEBUGFS_DIR"/rate_nodes/"${node1##*/}"
-+	if $tc_bw_supported; then
-+		local tc_bw="0:20 1:0 2:0 3:0 4:0 5:20 6:60 7:0"
-+		rate_attr_tc_bw_check $node1 "$tc_bw" \
-+			"$DEBUGFS_DIR"/rate_nodes/"${node1##*/}"
-+	fi
- 
- 
- 	rate_node_del "$node1"
+I think you can simply do this:
+[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] =
+	NLA_POLICY_MAX(NLA_U32, INT_MAX),
+
+> base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
+
 -- 
-2.55.0
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
