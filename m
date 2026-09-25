@@ -1,110 +1,90 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BB2501F49
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 23:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D72E7162;
+	Fri, 25 Sep 2026 23:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790377944; cv=none; b=Ij7LhOZBx0/U1gqAu1i2DLh4bGnzSKIR75ek4TuvWiERaUu5GMXd5ie0A8Stp3uR4gaVVymj+7WivkXBME7yejIMx7hTv8LdgJA9Xc1zTMdvL/ZDTp8Lemi1flscs6Mrj4oBPHMdL4TMu3hufvg2yilQ5ZkWmWXBLVijDZpQFuU=
+	t=1790378150; cv=none; b=m1HcEtSn8qOfXfPE59d7cgr475mp/CNKWmwAPvCIDPUK2u7GAUYuPl43/A3H+EZ2OFfL29S7qPYdJ7nzVWOuxFyZaBk1QBPtevEFufze6WUil/vWB7uSeW/2LDAL7IDeTzZWdHinmp0QNuUXVPLMIycqfcaj1tF6EE67ItULOaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790377944; c=relaxed/simple;
-	bh=RQRQoR0pSyLYnvN7I6DP5/4/EnCOa5B6Ns3TUwsV2hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rd7oko5oNepvXEmlKvXwUSHHyA7FaEutvuV4rzWZEBoyeS71isPp07E8syyMMfu4CTX+ISvQGIDl0XTnq0cMsJgzBbw/jEfC9wRXiEe88cyVLpet9X9NvrSPQFN3LFDMaACJ9HOLTXa8Z7RcSnDharqQeWjTOhvnzRKc8ZB6g2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UX1xiAq+; arc=none smtp.client-ip=74.125.229.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790378150; c=relaxed/simple;
+	bh=KquwAGHO+zSLWLr3HTM1BmIeVLvPkiwh9EIZhNiQ3i4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=APGOrsGx6oviSZXPfOh48V/+7JWGQ/yqsqTaXtkLI0ozKURVP5iWch4GLpQMhKAvUzsXzDsr21q2HCK4B8Fc/hqBo7JmOIrwC2Yps8upSOfwBcQ4HhjQwlRQNEfC3sMITC1cQMb4R47R+PxYCxctRlunZgv0YMJZJVThuMma7WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlFqGGq7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UX1xiAq+"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8ef951112so153448e87.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 16:12:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790377941; x=1790982741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z7paBK+MgfgpKNh9WkCQ2hkQ07FwTdlvuAPDciphvtw=;
-        b=UX1xiAq+z2hZ3LMTD1sg0IU8AX+bHTJF9M9WS9UbbktQfeCkRx3210Rr1/t+BgUl4m
-         WxnPDYyaXe6eSBKESdTOHmweuPsL4U9W/SqdRDyBwTZEDAWsWyv1YNEkhN4PB7ZosUiI
-         wPVAMDioRpqrZ2ja/B5am+rBNWIBF8MgBJOa2sH55mWi4dd7i9Dv/MHruDWguubC6LzS
-         2FIz1NXGPvv5RfSbymw/bs+soGUDGN0+3a9z9SP0kIbTFcJeo/QQvBSdDb+COyiSP4nc
-         2VOlEViBBYFTgCwDDfaXSgkW1wVCPsYQ3iD6KhajSLfsObAUaBYabgTEVUgJF+CDec27
-         xEvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790377941; x=1790982741;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z7paBK+MgfgpKNh9WkCQ2hkQ07FwTdlvuAPDciphvtw=;
-        b=uwuiJu2X6z9O959TLcuAz8El6VN5wGA7M4RLTHOvnugxMMsgAk5KySF80FCUr9NF1B
-         o5XpzuSKLcToE8P5SqS7S0SVZ/Dr9m50lFrsV+mzYsH0rz0uO5g1+5WnBwWYKltZZJ0k
-         mGGOCUz9nbpJO8czDDbm9nF383f2+tr7Hkk3/AlLekR7cB2UqkVdLklb8mqw61ucgmeJ
-         FY5LBZOBHm4LnaLjL7DZ+qoSr5qYTRYoBrWC6E4wGlWFP4T6w4AtdTQoMk8bBxcCAktB
-         +4Pj2/wopR2vcQ/RUBoNFPTUuriSBnqYVEXvin6CaI968t0kwVA1O0AAUjF3fh++0eLc
-         l/3g==
-X-Gm-Message-State: AFuF++kDP85b1bt8XoCXh2y4DLvKKn/01nvcvw+IsUI6iq1i5dxrcVsC
-	j9fXYfLstqgZn4Xo79UAtfZeBBEepubNc/NPF7Tp8KjHv/TFY/i76wBc+gG+wuWeqIk=
-X-Gm-Gg: AYBFou3UZcSCDrxBjg84r1s5dqBcJJu9O6BIHG1G/t8NjbLJh4h0rGphaI/Y3VkwpZH
-	R1GC5RV9pzPDSqCEBaoOvUNvWE3oeuy6XvNJawQs4DmGmeQ6G9Xpi/XpV9yD+ri9t2p32UIMA9N
-	MM60e0whUFjSgvKG5BudsibrukbZzh1B6AdC7vVAbDOUhZ7Ord/vI23HJSCFUJyz1ob4NJ0VixM
-	ui9I0VqB9qybjvF0pIdo94TRTeULWs32Gw8I9YPPtpL6/rS8d/GIg/EcHGXtgl4oUwtKtlVLcrb
-	RXQHaVgF4qQjHtEUJVrQUEiO6kMDHpdXmrGZQlOvdfnljOUDSYSdeS7EXTjHvQP/uIoGjwnmFwp
-	SussexyFxGaGfY6JDdo3jbVfLPGC4weJdG2bwqjK+/4iQ2taMF0DgMqw5Bqp4Z2QGt9fJNf6D+E
-	InE+8FHjw5cAJVj+bbmOiWD6zEeVzkY5pGX3X5FN+o98nyssXzJKLvBSGDCmrX4PIII6BGTakeo
-	mUkNMTK24vE9QT9Xct7IwLbETV0ChjFLcJwSp/JTg==
-X-Received: by 2002:a05:6512:3c89:b0:5b5:e0dd:1c6c with SMTP id 2adb3069b0e04-5b8df06a153mr2754665e87.4.1790377940946;
-        Fri, 25 Sep 2026 16:12:20 -0700 (PDT)
-Received: from dau-home-pc.. ([94.28.220.48])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6afb29bsm894605e87.44.2026.09.25.16.12.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 16:12:20 -0700 (PDT)
-From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 04/10] ip_tunnel: add __iptunnel_pull_header_reason()
-Date: Sat, 26 Sep 2026 02:12:15 +0300
-Message-ID: <20260925231216.542209-1-littlesmilingcloud@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260923154114.GA2880695@shredder>
-References: <20260922221507.3268127-1-littlesmilingcloud@gmail.com> <20260922221507.3268127-5-littlesmilingcloud@gmail.com> <20260923154114.GA2880695@shredder>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlFqGGq7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A3E1F000FF;
+	Fri, 25 Sep 2026 23:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790378149;
+	bh=6DAv7sPPu4pqCf1l4gAuUa9B/VGDpmBTcCUgCNkqiLk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GlFqGGq7Bc2Tty8PAnVeo31MsFc49GyOYxXw7P8a2fiUO69ywX/XCUE1BpZTgpQUa
+	 ZIhrOk7KJtKhWW2ICJguWvL/EP3bzld1RQGeJPub6Ew3mHcaglipr6mKJfDcXMvLlx
+	 WVbUeMF+wIXOvp0N+WGBdkahc+csgjBWV7t1SWttBpr29bVQGxsiwsvvhLnt4fK+OO
+	 pbdLLGzaeMY49lHwHJPvg9n3AFjLMA3B3ndRQpzZpvsCcgB2vpyJXn9vzZ6NDkz0sw
+	 8FEsNGzlzZAUofZS5LUCCBEn54Y6GjKt0Cgawfj9mir8UC0kRB8RsRequ7jc9h3u4i
+	 lE1OrrUlIhATg==
+Date: Fri, 25 Sep 2026 16:15:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bochao Cao via B4 Relay <devnull+bochaolucky.gmail.com@kernel.org>
+Cc: bochaolucky@gmail.com, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Andrii
+ Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Ihor
+ Solodrai <ihor.solodrai@linux.dev>, Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan
+ <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Alexis
+ =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Tiezhu Yang <tiozhang@didiglobal.com>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 2/2] selftests/net: Move XDP feature test to
+ driver framework
+Message-ID: <20260925161547.1b57b653@kernel.org>
+In-Reply-To: <20260921-xdp-features-v4-send-v4-2-a0d4ec392cb7@gmail.com>
+References: <20260921-xdp-features-v4-send-v4-0-a0d4ec392cb7@gmail.com>
+	<20260921-xdp-features-v4-send-v4-2-a0d4ec392cb7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 23, 2026 at 06:41:14PM +0300, Ido Schimmel wrote:
-> Either append patches to this series or as a follow-up, after this
-> series the only caller of __iptunnel_pull_header() other than
-> iptunnel_pull_header() is the VXLAN driver and it should be converted to
-> report the actual drop reason instead of NOMEM:
+On Mon, 21 Sep 2026 14:00:05 +0800 Bochao Cao via B4 Relay wrote:
+> +BPFTOOL ?= bpftool
+> +
+> +CFLAGS += -I$(OUTPUT) -I$(SCRATCH_DIR)/include
+> +CFLAGS += -I$(top_srcdir)/tools/include
+> +CFLAGS += -I$(top_srcdir)/tools/arch/$(SRCARCH)/include
+> +CFLAGS += -I$(top_srcdir)/tools/include/uapi
+> +CFLAGS += -I../../../net/lib
 
-...
+Can we stick the generic BPF stuff into ../../../net/bpf.mk
+instead of directly in here? I think the includes should already be
+fine? (please note that net/ selftests assume `make headers_install`
+was run before building the tests! IIRC bpf selftests were trying
+to avoid that but we have weaker rules, so some of the includes
+may not really be necessary)
 
-> Then remove __iptunnel_pull_header():
+> +$(OUTPUT)/xdp_features.skel.h: $(OUTPUT)/xdp_features.bpf.o
+> +	$(call msg,GEN-SKEL,,$@)
+> +	$(Q)$(BPFTOOL) gen skeleton $< name xdp_features > $@
 
-...
+It should be possible to create a generic rule to build all %.skel.h ?
 
-> +static inline bool iptunnel_pull_header(struct sk_buff *skb, int hdr_len,
-> +					__be16 inner_proto, bool xnet)
-
-...
-
-Thanks, I will add both changes to v5.
-
-One question before I send it: is there a reason to prefer bool here?
-All the callers only test the result for failure, so bool works for
-them, but coding-style.rst (section 16) says that a function whose name
-is an action should return an error-code integer. I can keep the int
-return, as it is in net-next now, or go with bool as in your diff,
-whichever you prefer.
-
+> +$(OUTPUT)/xdp_features: xdp_features.c xdp_features.h \
+> +			   $(OUTPUT)/xdp_features.skel.h $(BPFOBJ)
+> +	$(call msg,BINARY,,$@)
+> +	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) \
+> +		$(LDLIBS) -lelf -lz -lpthread -o $@
+> +
+> +EXTRA_CLEAN += $(OUTPUT)/xdp_features.skel.h
