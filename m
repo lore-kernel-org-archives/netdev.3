@@ -1,445 +1,580 @@
-Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684203B27D1
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4651DDF0
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790316247; cv=none; b=Z/c8OF3mDdYpBFl6BhHGAHrwRC8F35+EupvG/b9vN4VPS3On1U9xS1KvHM3okTan7385f6i/PyNGG4M8F7yG6JrSmELDnNzPMkFU9AAXssR2PAGHnG2HkygyCbslGxylb+gzwNxub6FVLADyl0vk24oq2+OzXTIsmeSDQ/Mn7EA=
+	t=1790316532; cv=none; b=PoRLHGHgo9fm19lFVel/SdVkXx/GZpVqMH+nzRfyAIcnc/ghEAMFZ2vjpnNiT8DHJHxYFgPtoUnrkqqYyfvdJMc1im+Q78sF2djCOlH+WTRR1BAu1Ir/A7rlWFfUXTBwW/u/ziP8YEnqF/9wGu41YhRi7NrNvleHJZ+LyC1vPnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790316247; c=relaxed/simple;
-	bh=YyQOSsXRXIYUmAs6yTJgxjxjN3JHc2ZYOP21lOxR84I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MmPMvCUhayXCGxj67q7/9LdnhCSmN6fP42o5kqyU0i+ddr3OtFuv1ub5crZMMs20+FzRtPthRJJ9CdFlRnzfGJgAYLeC20hOCFqjRaD4ylfl9Pq1wTtDt+HQvO13Bzh7uZfvr2m6yG9JPcj9MxncVsGe0I64QiAwZ1twxdxZRh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2OHKesk; arc=none smtp.client-ip=74.125.227.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790316532; c=relaxed/simple;
+	bh=q6lR5RxR6RA1NHliNO6IujceHAWkKdJMj31vxXiTchE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QvhA8jc9s4nBd/qYEHd0jOFLVA1y59GI+RCdNsWlOMOlV3J9aPUQ1ORZ2LY0nYGE4PD+UVq9PpBgHBomolUrC37RJ4SES+JHbg+10g4ynN/28IusCM8g03XD1+Evf5qzwnldn7ayB4VJlKs9ng6VANpKnc+61sIUD+1S2Tmn4Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Csa+nEEq; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2OHKesk"
-Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0af40d240so310893a91.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:04:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790316245; x=1790921045; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Fi8LCfhOEjWTjTI9cmO2Knqm1v5fbATScScQCdyRYuE=;
-        b=J2OHKeskGR/G7qh/7XXAmVYbrl6Vi4zW3ZdnbazZHeHtC7m5bhZoWsapM6+y6Zz85G
-         xVyY3Sa79S3qtcm7DNWIquXuiKJXLSeT1efylgYTpj8FHHvcZ19zqoijCDt2bLJmAmHR
-         uaL2sfCu66dWG8awzcljfdbvufqhzxaFHTkhgn9rLhacwJNsH/DZIiJxQl5tZV9CUAQE
-         lDhM+wS7MmQ0FYZ3RprR9CIL303G0UPz/sJe7V4elSnaVhoUXBlDUbDboe4xy9Ii7QuY
-         3+89ASVV2CaJZboFyl8x+xD+C11Bpet07mvm76Uoj3U5Tlg4jyhvgjW6ZDlc51IdC2Im
-         3T1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790316245; x=1790921045;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fi8LCfhOEjWTjTI9cmO2Knqm1v5fbATScScQCdyRYuE=;
-        b=ofgw21ZJk76vjwHffYHSXErQFhIrKn3ZSt2eTXAUKcLwm+f4+aUEuVcF+D09+lq3hF
-         r4oQKUDCVdJoWKdaQq2Jo6oWAvPxQMJY7Mo1UgKtsvcf9n1vA8FeHPvDyDryxfuGMLXn
-         FkTlckX63aim9u5zJrbeLJyp3YvMOgU58r4x4ZysHHnHdcnf/dXTzKmFVFDNweCY1U6y
-         7PLDg5L+hBfgY4zio7X3d8Hh8EfLTpHDts0UlDJwZ+z1JNnowgug6nwXAob0wfZMPS7o
-         /nVbkOkxjXpv2QcZ3gdv+HYAsZWhyTf2Y/vrsYnKyqTHUnUjCoxRJhjydsm8G7AXGvot
-         m0Vw==
-X-Forwarded-Encrypted: i=1; AKwUvBwf5M/Ha+9IBAU6wF1SVwrX7dXwIvW0k43E10QpdQhFVIgjqF4gjlrtiPeGZDlWDHoAIE5rvl4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kO0y/I8bh3aSHNewK6YXdKFzmWdEaiJtdYQo93QKE/2rsxxkRZ
-	fxR0NzG6JkEHdWrfNnShJTyr3cMH8wGdUwEXbh0mpOxTPO43QguJzRIM
-X-Gm-Gg: AYBFou3ZETrZp/PSFcBwN2kBHwfruGaOcdqN2jU95obY1N5OyNdoaibvUjfpSL15CbS
-	p/4onipi7LSAkhbp3J9ehFFHns9m6d6HcF1AhlH82GImBrp0/NekgIb5giUAkl/b7bnyI4veOgC
-	THChBeU8zjCsRB05i/eXEGIGxtM6lPrl96M80eAg5rTD5H9zPWu8updYHY5LARx7Pd4aN39kHGy
-	vpWiOtM52pQk1UPySYjlNDftUTfAZiuvaODzLUUn4zwvG5MjvTbZvbIOykacuZeQLqAkWOrJJdT
-	j0YGChJW+/V8ej1GxF+Trm1m5a2SKXdVickCzkUP15QCfhfVBmlnOGr3B9lfhw7uO3ZAl64b59o
-	lLvxdPv6lUF9d2UQ1q1VrWxe/BUx40VQHTf4dSbL3nHW46B74K7QulIaAY7yRPKUOS0cqWr2iSq
-	iml26cUJlItZWO8u4r3IJJwGh8PWIsKZvT6Q2BmeE6TPakrY8/YE9VPNaPk2NoqX/FifY7FvrNh
-	7nYllY0
-X-Received: by 2002:a17:90b:4fc9:b0:3a0:c5d7:cec with SMTP id 98e67ed59e1d1-3a0c5d713camr150967a91.24.1790316244514;
-        Thu, 24 Sep 2026 23:04:04 -0700 (PDT)
-Received: from [163.43.103.131] ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b898cabesm2467490a91.0.2026.09.24.23.04.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 23:04:03 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Date: Fri, 25 Sep 2026 15:03:59 +0900
-Subject: [PATCH RFC iproute2-next v4 2/2] seg6: add support for the End.MAP
- behavior under seg6mobile encap
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Csa+nEEq"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4aWOw102815;
+	Fri, 25 Sep 2026 06:08:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=D6+634
+	BFR04zd4UMnQfV8ZMiMgAoVEXWaW3dh133Css=; b=Csa+nEEqHGSj4sT2/s65BO
+	YOvWIKVgEo3e5fpblfUwB7ZOuvAuLs64/zWz/Bs2+fXVa7433DNiZAKn0/dxBh6m
+	+3wtXkuJpEkZDXBm2ZnAJSpRB3JKIOZuyZ5I8eXKS9ncDpMUHBvS33CZKMETdcVh
+	u5pzmPKRcIGhJPSsMrVLFpVq33lTAeDUylNiBn2dxmqpl5GXmU5gXtnk2vm/H0DK
+	wLZtJ3ZQr7xdRwhUqRuu/s1q6SgSd7uEpPbXe8K6C9+Jc59PMlNulB4E0v2J4Rww
+	yVatZiHwrSwAt/FrYoDB+itxdMoXnb0+4OM/80hQ9YsHjs32XJ7wH4hrXHtwC6iA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdvmjww-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 06:08:22 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4lnha3245081;
+	Fri, 25 Sep 2026 06:08:22 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbu916bv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Sep 2026 06:08:22 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P68Kvo57934272
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2026 06:08:20 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1308F5804B;
+	Fri, 25 Sep 2026 06:08:20 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A43958055;
+	Fri, 25 Sep 2026 06:08:17 +0000 (GMT)
+Received: from [9.67.88.81] (unknown [9.67.88.81])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Sep 2026 06:08:17 +0000 (GMT)
+Message-ID: <728a5d27-0ef1-4687-b8bd-9e1b97f14125@linux.ibm.com>
+Date: Thu, 24 Sep 2026 23:08:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-seg6-mobile-end-map-v4-2-ba4951d28871@gmail.com>
-References: <20260925-seg6-mobile-end-map-v4-0-ba4951d28871@gmail.com>
-In-Reply-To: <20260925-seg6-mobile-end-map-v4-0-ba4951d28871@gmail.com>
-To: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- Andrea Mayer <andrea@common-net.org>, 
- Yuya Kusakabe <yuya.kusakabe@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10712;
- i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=YyQOSsXRXIYUmAs6yTJgxjxjN3JHc2ZYOP21lOxR84I=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqtg7O5yB1W6iaUm9c1Pt8KdK2dAzaD5+FKLrEM
- QJxrXOcyDKJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCarYOzgAKCRAq19F1Kl0b
- TdH1EACgesOW3aaQoiuWcNvZzVx+YU4z6YyASFTm9Mz77uwqmqtp4DKNia1y9OBglEvvnscFyBB
- ymfN7Sb7eyj/RcPqguX7GWkBTywm9sT5YWFTgGampJ9fTCfV8/ScLwNqJZu4rYS6o9jZYmC8XFh
- Yn3C/9KlrIdgoqSgXtqtyMG7mJOGYlfpOchCL7d9TyKaOVUmY+VOZhG0LKQWT9xjxXlLd6d/6qV
- djsxagDfmDW2mF58scn8btdsHkQ4mZFvF9rp9K6nJ3ipcGBPLinV2R+Mzq9fVJ5ZFWNrdDBzFde
- 25XrlNsLB9j50wsKtLyEQ1ssxJgmYIF8TAODuS/+0TOovSKMgysZv1sVAXaZ1FpVwJIx1/1DDrW
- rR/LRPGTSDqf0EAjWL6h//JI7jH4x4GFuHJzzS30rUGqsZo0N56uzdmJ4kcl4fj3I46Z2h0uspb
- 042TUbmhNU7y3m8Jv/WNnSlUFOPboBrkwIkQtuClEBkm53d5pKXWYWf/AobKsi7ILRFq45jS/nY
- DUwlZU8FHKGzUX1iqQDYPRp8pIfBikE+vypbADHfaykj3SqVEcytYq3KhSS2SdJSRqUSu8WaIRq
- AYTf3crGgY+0YOPBUhiFksfEw3Y09e1We1USZbDH5o9czK0JaY+IQOrKBHUDmSTelhWL69d+uTX
- HfhcSOT7UPJLp+g==
-X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
- fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,v6,03/15] ibmveth: Refactor RX resource allocation for
+ MQ RX bring-up
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
+        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
+        shaik.abdulla1@ibm.com
+References: <35d4e6e84a68bb44d6f0968926b77e555abd126e.1788102125.git.mmc@linux.ibm.com>
+ <178845903117.3394541.14494197434801526302@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <178845903117.3394541.14494197434801526302@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: UhZDoOcBRnrU79d3KewVhfgG5ir6Ycg4
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAyNCBTYWx0ZWRfXzyeeqBA79zGJ
+ IA9OEVHcebZMOg2eLk/Mq36iPEgM4VfRB9WQgB3hsQEytoDPfqinNGfhT+U014O2BmRYqDexrbu
+ 73BE6QvAHzanLYc4qBJBzEr2w73yyrw=
+X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab60fd7 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=8GHEaj9Lk3615Prqp5sA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: nEqOBYSiRoFewfMKNfsf0i-cZDNqdUsH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAyNCBTYWx0ZWRfX9wUf87erln1z
+ b6GMG81xbcoQLyD6oYgGxcWuNw9OEMxzm2gmoxHga2Gb7byBiKoLid3IA6ctT2whBDHmLUzgaI2
+ 0NPGMHz4RaXP+PIXBcdXiGWDrw92Yq2VlLd6NlG5cifiM42FIfrNq1ep4Ho00phquqJPXBaCGI6
+ qcwddKOFtRqxcb0BgHkUlX4kRXQO2RgaSwIh5n9PrsjEzjeBcIGN6qT2sQHG/bHzrAD3jsoMNab
+ e6vkeZCZG4SV7psfMysWuUOirLKbZ60WQkoltXEUYRRHGX7diMw1lbD5kuhWlkSvw8W2gAkxkJR
+ JMVOFI5FdK/ZvUd4Cd+1721DtfmUWuyEIi1AH2dzwcWUc0Am0g9OJPqn5yZmpU3yk+eViQ69U6E
+ LDy+ZAyhIXbyL9Stod3E28f6+wZ/V5o1rMO5cHYBzAcl5vTfCV5M31cMvFGt7YYDO6Ig7kXKhQ7
+ entDTD1PDPVD7pqhpyA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609250024
 
-Wire up a new "seg6mobile" lightweight tunnel encap type that mirrors
-the kernel's LWTUNNEL_ENCAP_SEG6_MOBILE namespace, and add parse and
-print support for the first RFC 9433 behavior it carries: End.MAP.
 
-End.MAP swaps the IPv6 destination address with the configured mapped SID
-and forwards the packet via the IPv6 FIB without consuming the SRH:
+On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider:
+>
+> Critical: 0 · High: 1 (2) · Medium: 0 (3) · Low: 2
+>
+> - [High] ibmveth_cleanup_rx_resources() and ibmveth_alloc_rx_queues()'s
+>    rollback newly store NULL into adapter->buffer_list_addr[i] (and…
+> - [Low] The patch is presented as a mechanical refactor ("Runtime
+>    behavior stays single-queue") but bundles a claimed memory-corruption…
+> - [Low] The comment added above the err_cleanup: rollback loop in
+>    ibmveth_alloc_rx_queues() states an invariant that the function's own…
+>
+> Pre-existing issues:
+> - [High] ibmveth_open() calls napi_enable(&adapter->napi[0]) at entry and
+>    napi_disable() on every failure at the out: label (ibmveth.c:907),…
+> - [High] On the ibmveth_open() error path taken after
+>    h_register_logical_lan() has already succeeded (buffer-pool allocation…
+> - [Medium] TX long-term buffers are leaked when ibmveth_open() fails in
+>    the buffer-pool allocation loop or in request_irq(): the loop counter…
+> - [Medium] The TX long-term buffers keep the stale-DMA-handle pattern
+>    that this patch fixes for the RX/filter lists: ibmveth_free_tx_ltb()…
+> - [Medium] ibmveth_poll_controller() (ibmveth.c:1815-1819) calls
+>    ibmveth_replenish_task() directly from netpoll context, bypassing…
+>
+> --
+>
+> ibmveth: Refactor RX resource allocation for MQ RX bring-up
+>
+> This moves the multicast filter list and the per-queue RX buffer lists and
+> RX rings out of ibmveth_open() into ibmveth_alloc_filter_list(),
+> ibmveth_alloc_rx_queues() and ibmveth_cleanup_rx_resources(), and wires
+> those helpers into open()/close().  Runtime behaviour stays single-queue,
+> and the helpers now NULL each pointer slot and zero each DMA handle as
+> they free.
+>
+> (no Link: tags present in the commit header)
+>
+> Before the diff, a question about the changelog itself.
+>
+> [Severity: Low]
+> The commit message says:
+>
+>    "The pointer and DMA-handle guards also close a baseline double
+>     free_page() and stale dma_unmap after a failed reopen followed by
+>     ndo_stop"
+>
+> Is that baseline sequence actually reachable?  ibmveth_open() calls
+> napi_enable(&adapter->napi[0]) on entry and napi_disable() at its out:
+> label, so after a failed reopen NAPI is already disabled while
+> netif_running() is still true.  The following ndo_stop enters
+> ibmveth_close(), whose first action is another napi_disable():
+>
+> drivers/net/ethernet/ibm/ibmveth.c:ibmveth_close() {
+> 	napi_disable(&adapter->napi[0]);
+>
+> 	netif_tx_stop_all_queues(netdev);
+> 	...
+> }
+>
+> napi_disable_locked() leaves NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC set on
+> exit, and only napi_enable()/napi_complete() clear SCHED, so the second
+> call sits in:
+>
+> net/core/dev.c:napi_disable_locked() {
+> 	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+> 		usleep_range(20, 200);
+> 		val = READ_ONCE(n->state);
+> 	}
+> 	...
+> }
+>
+> That is ahead of every free path in close(), so the double free_page()
+> described in the changelog does not appear to be reachable as written.
+>
+> Separately, if these guards do fix memory corruption on stable kernels,
+> would it be better to split them into their own patch with a Fixes: tag
+> ahead of the refactor, rather than bundling them into a 200 line
+> restructuring?
+You are right. v7 drops that sentence. Failed reopen then
+ndo_stop never reaches the second free_page() here: close()
+hits napi_disable() first.
 
-    ip -6 route add 2001:db8:f::/64 \
-        encap seg6mobile action End.MAP mapped_sid 2001:db8:2::e \
-        dev <dev>
+The pointer and DMA-handle checks stay in this helper extract
+rather than being peeled into a Fixes: patch in this 15. On
+current kernels that ndo_stop path never reaches the frees, so
+the checks alone are not a stable hotfix. After this series a
+standalone unwind for net can take
+Fixes: d43732ce021f ("ibmveth: properly unwind on init errors").
 
-Help text and the ip-route(8) man page get the corresponding ENCAPTYPE
-and SEG6MOBILE entries.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 7cb828b476c1b..d2dad9e6068e0 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+>> @@ -151,6 +151,193 @@ static unsigned int ibmveth_real_max_tx_queues(void)
+>>   	return min(n_cpu, IBMVETH_MAX_QUEUES);
+>>   }
+>>   
+> [ ... ]
+>
+>> +		adapter->buffer_list_dma[i] =
+>> +			dma_map_single(dev, adapter->buffer_list_addr[i],
+>> +				       4096, DMA_BIDIRECTIONAL);
+>> +		if (dma_mapping_error(dev, adapter->buffer_list_dma[i])) {
+>> +			netdev_err(netdev,
+>> +				   "unable to map buffer list for queue %d\n",
+>> +				   i);
+>> +			free_page((unsigned long)adapter->buffer_list_addr[i]);
+>> +			adapter->buffer_list_addr[i] = NULL;
+>> +			adapter->buffer_list_dma[i] = 0;
+>> +			goto err_cleanup;
+>> +		}
+> [ ... ]
+>
+>> +err_cleanup:
+>> +	/*
+>> +	 * Every failure path above releases what it had already allocated
+>> +	 * for queue i, so each index here is either fully constructed or
+>> +	 * fully empty. Do not unmap buffer_list_dma[] without the matching
+>> +	 * buffer_list_addr[] check: the two are only ever set together.
+>> +	 */
+> [Severity: Low]
+> Does this comment match what the dma_mapping_error() branch just above
+> leaves behind?  On that path buffer_list_addr[i] is freed and NULLed and
+> buffer_list_dma[i] is zeroed, but rx_queue[i].queue_addr from
+> dma_alloc_coherent() is still live, so index i arrives here partially
+> constructed rather than "fully constructed or fully empty".
+>
+> The loop below is written with independent checks so it still frees the
+> ring, but a later reader who trusts "the two are only ever set together"
+> could collapse the two tests into one buffer_list_addr[] guard and leak
+> the coherent RX ring on exactly that failure path.  Could the comment be
+> reworded to describe the mixed state?
+Yes — thanks. v7 rewords the err_cleanup comment: cleanup
+frees by pointer presence. A dma_mapping_error on queue i
+can leave queue_addr live after buffer_list_addr is already
+NULL. The two checks stay independent.
 
-Assisted-by: LLM
-Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
----
- ip/iproute.c           |   6 +-
- ip/iproute_lwtunnel.c  | 178 +++++++++++++++++++++++++++++++++++++++++++++++++
- man/man8/ip-route.8.in |  32 ++++++++-
- 3 files changed, 213 insertions(+), 3 deletions(-)
+>> +	for (; i >= 0; i--) {
+>> +		if (adapter->buffer_list_addr[i]) {
+>> +			dma_unmap_single(dev, adapter->buffer_list_dma[i],
+>> +					 4096, DMA_BIDIRECTIONAL);
+>> +			adapter->buffer_list_dma[i] = 0;
+>> +		}
+>> +		if (adapter->rx_queue[i].queue_addr) {
+>> +			dma_free_coherent(dev, adapter->rx_queue[i].queue_len,
+>> +					  adapter->rx_queue[i].queue_addr,
+>> +					  adapter->rx_queue[i].queue_dma);
+>> +			adapter->rx_queue[i].queue_addr = NULL;
+>> +		}
+>> +		if (adapter->buffer_list_addr[i]) {
+>> +			free_page((unsigned long)adapter->buffer_list_addr[i]);
+>> +			adapter->buffer_list_addr[i] = NULL;
+>> +		}
+>> +	}
+>> +
+>> +	return -ENOMEM;
+>> +}
+> [ ... ]
+>
+>> +static void
+>> +ibmveth_cleanup_rx_resources(struct ibmveth_adapter *adapter)
+>> +{
+>> +	struct device *dev = &adapter->vdev->dev;
+>> +	int i;
+>> +
+>> +	netdev_dbg(adapter->netdev, "cleaning up %u RX queue(s)\n",
+>> +		   adapter->num_rx_queues);
+>> +
+>> +	for (i = 0; i < adapter->num_rx_queues; i++) {
+>> +		if (adapter->buffer_list_addr[i]) {
+>> +			dma_unmap_single(dev, adapter->buffer_list_dma[i],
+>> +					 4096, DMA_BIDIRECTIONAL);
+>> +			adapter->buffer_list_dma[i] = 0;
+>> +		}
+>> +
+>> +		if (adapter->rx_queue[i].queue_addr) {
+>> +			dma_free_coherent(dev, adapter->rx_queue[i].queue_len,
+>> +					  adapter->rx_queue[i].queue_addr,
+>> +					  adapter->rx_queue[i].queue_dma);
+>> +			adapter->rx_queue[i].queue_addr = NULL;
+>> +		}
+>> +
+>> +		if (adapter->buffer_list_addr[i]) {
+>> +			free_page((unsigned long)adapter->buffer_list_addr[i]);
+>> +			adapter->buffer_list_addr[i] = NULL;
+>> +		}
+>> +	}
+>> +}
+> [Severity: High]
+> This helper now stores NULL into buffer_list_addr[i], but
+> ibmveth_update_rx_no_buffer() still dereferences that slot with no check:
+>
+> drivers/net/ethernet/ibm/ibmveth.c:ibmveth_update_rx_no_buffer() {
+> 	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
+>
+> 	adapter->rx_no_buffer = be64_to_cpup(p);
+> }
+>
+> Can that read fault after a failed reopen?  ibmveth_set_csum_offload(),
+> ibmveth_set_tso(), __ibmveth_change_mtu() and veth_pool_store() all do
+> ibmveth_close() followed by ibmveth_open() and only return the error if
+> the reopen fails, so netif_running() stays true while
+> ibmveth_open()'s unwind has already run ibmveth_cleanup_rx_resources()
+> and left buffer_list_addr[0] NULL.
+>
+> The next netpoll poll then reaches the reader without going through NAPI:
+>
+> ibmveth_poll_controller()
+>    ibmveth_replenish_task()
+>      ibmveth_update_rx_no_buffer()   /* NULL + 4088 */
+>
+> ibmveth_free_buffer_pool() does not reset pool->available, so after a
+> close the "available < threshold" test in ibmveth_replenish_task() is
+> false for the fully posted pools and the loop falls through to
+> ibmveth_update_rx_no_buffer().
+>
+> ibmveth_close() has the same ordering problem: it calls
+> ibmveth_update_rx_no_buffer() before the new cleanup helpers, so the
+> "failed reopen followed by ndo_stop" sequence in the changelog reaches
+> the unguarded reader.
+>
+> In the baseline the same pointer was stale but still mapped, so this
+> turns a silent read into a NULL dereference.  A matching
+> "if (!adapter->buffer_list_addr[queue_index]) return;" guard, together
+> with an "if (!adapter->opened) return;" gate in
+> ibmveth_poll_controller(), only shows up in a later patch of this series
+> - could that guard come in this patch instead, so the NULL state is never
+> introduced without it?
+Good catch — yes, at this commit. After a failed reopen,
+netpoll can still reach the reader (IFF_UP is set, the
+pointer is already NULL). The later ndo_stop hits
+napi_disable() in close() first.
 
-diff --git a/ip/iproute.c b/ip/iproute.c
-index 1ce71f78e064..27def3b7e346 100644
---- a/ip/iproute.c
-+++ b/ip/iproute.c
-@@ -98,8 +98,8 @@ static void usage(void)
- 		"TIME := NUMBER[s|ms]\n"
- 		"BOOL := [1|0]\n"
- 		"FEATURES := ecn\n"
--		"ENCAPTYPE := [ mpls | ip | ip6 | seg6 | seg6local | rpl | ioam6 | xfrm ]\n"
--		"ENCAPHDR := [ MPLSLABEL | SEG6HDR | SEG6LOCAL | IOAM6HDR | XFRMINFO ]\n"
-+		"ENCAPTYPE := [ mpls | ip | ip6 | seg6 | seg6local | seg6mobile | rpl | ioam6 | xfrm ]\n"
-+		"ENCAPHDR := [ MPLSLABEL | SEG6HDR | SEG6LOCAL | SEG6MOBILE | IOAM6HDR | XFRMINFO ]\n"
- 		"SEG6HDR := [ mode SEGMODE ] segs ADDR1,ADDRi,ADDRn [hmac HMACKEYID] [cleanup]\n"
- 		"           [ lookup TABLEID ]\n"
- 		"SEGMODE := [ encap | encap.red | inline | l2encap | l2encap.red ]\n"
-@@ -112,6 +112,8 @@ static void usage(void)
- 		"            table TABLEID | vrftable TABLEID | endpoint PROGNAME }\n"
- 		"FLAVORS := { FLAVOR[,FLAVOR] }\n"
- 		"FLAVOR := { psp | usp | usd | next-csid }\n"
-+		"SEG6MOBILE := action MOBILE_ACTION mapped_sid ADDR [ count ]\n"
-+		"MOBILE_ACTION := { End.MAP }\n"
- 		"IOAM6HDR := trace prealloc type IOAM6_TRACE_TYPE ns IOAM6_NAMESPACE size IOAM6_TRACE_SIZE\n"
- 		"XFRMINFO := if_id IF_ID [ link_dev LINK ]\n"
- 		"ROUTE_GET_FLAGS := ROUTE_GET_FLAG [ ROUTE_GET_FLAGS ]\n"
-diff --git a/ip/iproute_lwtunnel.c b/ip/iproute_lwtunnel.c
-index 9a1e747c6951..51c051fbe5cb 100644
---- a/ip/iproute_lwtunnel.c
-+++ b/ip/iproute_lwtunnel.c
-@@ -28,6 +28,7 @@
- #include <linux/rpl_iptunnel.h>
- #include <linux/seg6_hmac.h>
- #include <linux/seg6_local.h>
-+#include <linux/seg6_mobile.h>
- #include <linux/if_tunnel.h>
- #include <linux/ioam6.h>
- #include <linux/ioam6_iptunnel.h>
-@@ -55,6 +56,8 @@ static const char *format_encap_type(uint16_t type)
- 		return "ioam6";
- 	case LWTUNNEL_ENCAP_XFRM:
- 		return "xfrm";
-+	case LWTUNNEL_ENCAP_SEG6_MOBILE:
-+		return "seg6mobile";
- 	default:
- 		return "unknown";
- 	}
-@@ -95,6 +98,8 @@ static uint16_t read_encap_type(const char *name)
- 		return LWTUNNEL_ENCAP_IOAM6;
- 	else if (strcmp(name, "xfrm") == 0)
- 		return LWTUNNEL_ENCAP_XFRM;
-+	else if (strcmp(name, "seg6mobile") == 0)
-+		return LWTUNNEL_ENCAP_SEG6_MOBILE;
- 	else if (strcmp(name, "help") == 0)
- 		encap_type_usage();
- 
-@@ -585,6 +590,91 @@ static void print_encap_seg6local(FILE *fp, struct rtattr *encap)
- 		print_seg6_local_flavors(fp, tb[SEG6_LOCAL_FLAVORS]);
- }
- 
-+static const char *seg6_mobile_action_names[SEG6_MOBILE_ACTION_MAX + 1] = {
-+	[SEG6_MOBILE_ACTION_END_MAP]	= "End.MAP",
-+};
-+
-+static const char *format_seg6_mobile_action(int action)
-+{
-+	if (action < 0 || action > SEG6_MOBILE_ACTION_MAX)
-+		return "<invalid>";
-+
-+	return seg6_mobile_action_names[action] ?: "<unknown>";
-+}
-+
-+static int read_seg6_mobile_action(const char *name)
-+{
-+	int i;
-+
-+	for (i = 0; i < SEG6_MOBILE_ACTION_MAX + 1; i++) {
-+		if (!seg6_mobile_action_names[i])
-+			continue;
-+
-+		if (strcmp(seg6_mobile_action_names[i], name) == 0)
-+			return i;
-+	}
-+
-+	return SEG6_MOBILE_ACTION_UNSPEC;
-+}
-+
-+static void print_seg6_mobile_counters(FILE *fp, struct rtattr *encap)
-+{
-+	struct rtattr *tb[SEG6_MOBILE_CNT_MAX + 1];
-+	__u64 packets = 0, bytes = 0, errors = 0;
-+
-+	parse_rtattr_nested(tb, SEG6_MOBILE_CNT_MAX, encap);
-+
-+	if (tb[SEG6_MOBILE_CNT_PACKETS])
-+		packets = rta_getattr_u64(tb[SEG6_MOBILE_CNT_PACKETS]);
-+
-+	if (tb[SEG6_MOBILE_CNT_BYTES])
-+		bytes = rta_getattr_u64(tb[SEG6_MOBILE_CNT_BYTES]);
-+
-+	if (tb[SEG6_MOBILE_CNT_ERRORS])
-+		errors = rta_getattr_u64(tb[SEG6_MOBILE_CNT_ERRORS]);
-+
-+	if (is_json_context()) {
-+		open_json_object("stats64");
-+
-+		print_u64(PRINT_JSON, "packets", NULL, packets);
-+		print_u64(PRINT_JSON, "bytes", NULL, bytes);
-+		print_u64(PRINT_JSON, "errors", NULL, errors);
-+
-+		close_json_object();
-+	} else {
-+		print_string(PRINT_FP, NULL, "%s ", "packets");
-+		print_num(fp, 1, packets);
-+
-+		print_string(PRINT_FP, NULL, "%s ", "bytes");
-+		print_num(fp, 1, bytes);
-+
-+		print_string(PRINT_FP, NULL, "%s ", "errors");
-+		print_num(fp, 1, errors);
-+	}
-+}
-+
-+static void print_encap_seg6mobile(FILE *fp, struct rtattr *encap)
-+{
-+	struct rtattr *tb[SEG6_MOBILE_MAX + 1];
-+	int action;
-+
-+	parse_rtattr_nested(tb, SEG6_MOBILE_MAX, encap);
-+
-+	if (!tb[SEG6_MOBILE_ACTION])
-+		return;
-+
-+	action = rta_getattr_u32(tb[SEG6_MOBILE_ACTION]);
-+	print_string(PRINT_ANY, "action",
-+		     "action %s ", format_seg6_mobile_action(action));
-+
-+	if (tb[SEG6_MOBILE_MAPPED_SID])
-+		print_string(PRINT_ANY, "mapped_sid", "mapped_sid %s ",
-+			     rt_addr_n2a_rta(AF_INET6, tb[SEG6_MOBILE_MAPPED_SID]));
-+
-+	if (tb[SEG6_MOBILE_COUNTERS] && show_stats)
-+		print_seg6_mobile_counters(fp, tb[SEG6_MOBILE_COUNTERS]);
-+}
-+
- static void print_encap_mpls(FILE *fp, struct rtattr *encap)
- {
- 	struct rtattr *tb[MPLS_IPTUNNEL_MAX+1];
-@@ -900,6 +990,9 @@ void lwt_print_encap(FILE *fp, struct rtattr *encap_type,
- 	case LWTUNNEL_ENCAP_XFRM:
- 		print_encap_xfrm(fp, encap);
- 		break;
-+	case LWTUNNEL_ENCAP_SEG6_MOBILE:
-+		print_encap_seg6mobile(fp, encap);
-+		break;
- 	}
- 	close_json_object();
- }
-@@ -1607,6 +1700,88 @@ static int parse_encap_seg6local(struct rtattr *rta, size_t len, int *argcp,
- 	return ret;
- }
- 
-+/* for the moment, counters are always initialized to zero by the kernel; so we
-+ * do not expect to parse any argument here.
-+ */
-+static int seg6mobile_fill_counters(struct rtattr *rta, size_t len, int attr)
-+{
-+	struct rtattr *nest;
-+	int ret;
-+
-+	nest = rta_nest(rta, len, attr);
-+
-+	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_PACKETS, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_BYTES, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_ERRORS, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	rta_nest_end(rta, nest);
-+	return 0;
-+}
-+
-+static int parse_encap_seg6mobile(struct rtattr *rta, size_t len, int *argcp,
-+				  char ***argvp)
-+{
-+	int action_ok = 0, mapped_sid_ok = 0, counters_ok = 0;
-+	char **argv = *argvp;
-+	int argc = *argcp;
-+	inet_prefix addr;
-+	__u32 action = 0;
-+	int ret = 0;
-+
-+	while (argc > 0) {
-+		if (strcmp(*argv, "action") == 0) {
-+			NEXT_ARG();
-+			if (action_ok++)
-+				duparg2("action", *argv);
-+			action = read_seg6_mobile_action(*argv);
-+			if (!action)
-+				invarg("\"action\" value is invalid\n", *argv);
-+			ret = rta_addattr32(rta, len, SEG6_MOBILE_ACTION,
-+					    action);
-+		} else if (strcmp(*argv, "mapped_sid") == 0) {
-+			NEXT_ARG();
-+			if (mapped_sid_ok++)
-+				duparg2("mapped_sid", *argv);
-+			get_addr(&addr, *argv, AF_INET6);
-+			ret = rta_addattr_l(rta, len, SEG6_MOBILE_MAPPED_SID,
-+					    &addr.data, addr.bytelen);
-+		} else if (strcmp(*argv, "count") == 0) {
-+			if (counters_ok++)
-+				duparg2("count", *argv);
-+			ret = seg6mobile_fill_counters(rta, len,
-+						       SEG6_MOBILE_COUNTERS);
-+		} else {
-+			break;
-+		}
-+		if (ret)
-+			return ret;
-+		argc--; argv++;
-+	}
-+
-+	if (!action) {
-+		fprintf(stderr, "Missing action type\n");
-+		exit(-1);
-+	}
-+
-+	if (action == SEG6_MOBILE_ACTION_END_MAP && !mapped_sid_ok) {
-+		fprintf(stderr, "Missing mapped_sid for End.MAP\n");
-+		exit(-1);
-+	}
-+
-+	*argcp = argc + 1;
-+	*argvp = argv - 1;
-+
-+	return ret;
-+}
-+
- static int parse_encap_mpls(struct rtattr *rta, size_t len,
- 			    int *argcp, char ***argvp)
- {
-@@ -2346,6 +2521,9 @@ int lwt_parse_encap(struct rtattr *rta, size_t len, int *argcp, char ***argvp,
- 	case LWTUNNEL_ENCAP_XFRM:
- 		ret = parse_encap_xfrm(rta, len, &argc, &argv);
- 		break;
-+	case LWTUNNEL_ENCAP_SEG6_MOBILE:
-+		ret = parse_encap_seg6mobile(rta, len, &argc, &argv);
-+		break;
- 	default:
- 		fprintf(stderr, "Error: unsupported encap type\n");
- 		break;
-diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
-index 1e6042c427ff..97aa91ea2e85 100644
---- a/man/man8/ip-route.8.in
-+++ b/man/man8/ip-route.8.in
-@@ -197,7 +197,8 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
- .ti -8
- .IR ENCAP " := [ "
- .IR ENCAP_MPLS " | " ENCAP_IP " | " ENCAP_BPF " | "
--.IR ENCAP_SEG6 " | " ENCAP_SEG6LOCAL " | " ENCAP_IOAM6 " ] "
-+.IR ENCAP_SEG6 " | " ENCAP_SEG6LOCAL " | " ENCAP_SEG6MOBILE " | "
-+.IR ENCAP_IOAM6 " ] "
- 
- .ti -8
- .IR ENCAP_MPLS " := "
-@@ -260,6 +261,13 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
- .IR SEG6_ACTION_PARAM " ] [ "
- .BR count " ] "
- 
-+.ti -8
-+.IR ENCAP_SEG6MOBILE " := "
-+.B seg6mobile
-+.BR action
-+.IR SEG6_MOBILE_ACTION " [ "
-+.BR count " ] "
-+
- .ti -8
- .IR ENCAP_IOAM6 " := "
- .BR ioam6 " ["
-@@ -776,6 +784,9 @@ is a string specifying the supported encapsulation type. Namely:
- .BI seg6local
- - local SRv6 segment processing
- .sp
-+.BI seg6mobile
-+- SRv6 Mobile User Plane processing (RFC 9433)
-+.sp
- .BI ioam6
- - encapsulation type IPv6 IOAM
- .sp
-@@ -1109,6 +1120,25 @@ flavors. The Locator-Node Function length must be greater than 0 and evenly
- divisible by 8. This attribute can be used only with NEXT-C-SID flavor.
- .in -4
- 
-+.B seg6mobile
-+.in +2
-+.IR SEG6_MOBILE_ACTION " [ "
-+.BR count " ]"
-+- SRv6 Mobile User Plane operation (RFC 9433) to perform on matching
-+packets. The optional \fBcount\fR attribute enables per-CPU packet, byte
-+and error counters for this route; the aggregated values are printed by
-+the \fB-s\fR flag in the \fBshow\fR command. The following actions are
-+currently supported.
-+.in +2
-+
-+.B End.MAP mapped_sid
-+.I ADDRESS
-+- Replace the IPv6 destination address with the configured mapped SID
-+.RI ( ADDRESS )
-+and forward via the IPv6 FIB; an SRH, if present, is not modified
-+(neither the SID list nor the Segments Left value).
-+.in -4
-+
- .B ioam6
- .in +2
- .B freq K/N
+v7 adds the missing NULL return in
+ibmveth_update_rx_no_buffer() here, so this helper extract
+does not introduce the NULL state without a guard. The
+opened gate on close() and poll_controller still lands in
+the later patches — opened is not available yet.
 
--- 
-2.50.1
+>> +
+>>   /* setup the initial settings for a buffer pool */
+>>   static void ibmveth_init_buffer_pool(struct ibmveth_buff_pool *pool,
+>>   				     u32 pool_index, u32 pool_size,
+> [ ... ]
+>
+>> @@ -708,7 +855,7 @@ static int ibmveth_open(struct net_device *netdev)
+>>   				     rxq_desc.desc,
+>>   				     mac_address);
+>>   		rc = -ENONET;
+>> -		goto out_unmap_filter_list;
+>> +		goto out_free_tx_ltb;
+>>   	}
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the TX long term buffers
+> keep the stale DMA handle pattern that the RX and filter helpers here
+> now avoid:
+>
+> drivers/net/ethernet/ibm/ibmveth.c:ibmveth_free_tx_ltb() {
+> 	dma_unmap_single(&adapter->vdev->dev, adapter->tx_ltb_dma[idx],
+> 			 adapter->tx_ltb_size, DMA_TO_DEVICE);
+> 	kfree(adapter->tx_ltb_ptr[idx]);
+> 	adapter->tx_ltb_ptr[idx] = NULL;
+> }
+>
+> tx_ltb_dma[idx] is never zeroed and the unmap is not gated on
+> tx_ltb_ptr[idx].  When the h_register_logical_lan() failure above takes
+> out_free_tx_ltb with the TX LTBs already allocated, a later
+> ibmveth_close() loops over all real_num_tx_queues and calls
+> ibmveth_free_tx_ltb() again, repeating dma_unmap_single() on a handle the
+> driver no longer owns.  Can that tear down a recycled TCE?
+>
+> The changelog notes this is deferred, and the later "ibmveth: Refactor TX
+> resource allocation in open/close paths" patch adds the pointer check and
+> zeroes tx_ltb_dma[idx].
+Yes. This patch only does the RX and filter side. The TX
+long-term buffers get the same pointer check and a cleared
+dma handle in the later TX helper patch ("Refactor TX
+resource allocation in open/close paths"). That is already
+in this series — deferred from here, not dropped.
+
+>>   
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>> @@ -735,8 +882,6 @@ static int ibmveth_open(struct net_device *netdev)
+>>   		goto out_free_buffer_pools;
+>>   	}
+>>   
+>> -	rc = -ENOMEM;
+>> -
+>>   	netdev_dbg(netdev, "initial replenish cycle\n");
+>>   	ibmveth_interrupt(netdev->irq, netdev);
+>>   
+>> @@ -752,26 +897,12 @@ static int ibmveth_open(struct net_device *netdev)
+>>   			ibmveth_free_buffer_pool(adapter,
+>>   						 &adapter->rx_buff_pool[0][i]);
+>>   	}
+> [Severity: High]
+> This is a pre-existing ordering issue, but the fall-through from
+> out_free_buffer_pools now releases more state than before.  The buffer
+> pool loop runs after h_register_logical_lan() has succeeded, and on
+> ibmveth_alloc_buffer_pool() failure this label falls through to
+> out_free_tx_ltb and out_free_filter_list, which now call
+> ibmveth_cleanup_rx_resources() and ibmveth_free_filter_list() with no
+> h_free_logical_lan() anywhere on the path.
+>
+> The adjacent request_irq() failure path does perform the
+> deregistration first:
+>
+> 		do {
+> 			lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
+> 		} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
+>
+> Can PHYP keep DMA-writing the no-buffer counter in the last eight bytes
+> of the buffer list page after those pages have been unmapped and returned
+> to the page allocator?
+>
+> The changelog acknowledges this predates the patch, and at the end of the
+> series ibmveth_open() allocates the pools before registering and every
+> post-registration failure goes through ibmveth_free_all_queues(), which
+> issues h_free_logical_lan().
+Yes, pre-existing at this commit. The TX helper patch issues
+h_free on that pool-fail path. The register-helper patch then
+allocates the pools before register, and every later failure
+goes through ibmveth_free_all_queues().
+>> -out_unmap_filter_list:
+>> -	dma_unmap_single(dev, adapter->filter_list_dma, 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> -
+>>   out_free_tx_ltb:
+>> -	while (--i >= 0) {
+>> +	while (--i >= 0)
+>>   		ibmveth_free_tx_ltb(adapter, i);
+>> -	}
+> [Severity: Medium]
+> This is a pre-existing problem rather than something this patch adds, but
+> does this loop ever run when the failure came from the buffer pool loop
+> or from request_irq()?  Both out_free_buffer_pools and out_free_tx_ltb
+> consume the same counter i, and i has been reused as the buffer pool
+> index by then:
+>
+> out_free_buffer_pools:
+> 	while (--i >= 0) {		/* drains i to -1 */
+> 		...
+> 	}
+> out_free_tx_ltb:
+> 	while (--i >= 0)		/* starts at -2, never runs */
+> 		ibmveth_free_tx_ltb(adapter, i);
+> So every tx_ltb_ptr[]/tx_ltb_dma[] allocated in this open() stays
+> allocated and mapped.  The changelog mentions the shared i leak, and the
+> later TX refactor patch gives the rollback its own counter.
+No — not on those two paths. out_free_buffer_pools already
+walks i down to -1, so the fall-through while (--i >= 0)
+never frees a TX LTB. Pre-existing. The TX helper patch
+gives that rollback its own counter, and it allocates TX
+after the pools, so a pool failure has no LTBs to leak.
+
+>> -
+>> -out_unmap_buffer_list:
+>> -	dma_unmap_single(dev, adapter->buffer_list_dma[0], 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> -out_free_queue_mem:
+>> -	dma_free_coherent(dev, adapter->rx_queue[0].queue_len,
+>> -			  adapter->rx_queue[0].queue_addr,
+>> -			  adapter->rx_queue[0].queue_dma);
+>> +	ibmveth_cleanup_rx_resources(adapter);
+>>   out_free_filter_list:
+>> -	free_page((unsigned long)adapter->filter_list_addr);
+>> -out_free_buffer_list:
+>> -	free_page((unsigned long)adapter->buffer_list_addr[0]);
+>> +	ibmveth_free_filter_list(adapter);
+>>   out:
+>>   	napi_disable(&adapter->napi[0]);
+>>   	return rc;
+> [Severity: High]
+> This is a pre-existing imbalance and not introduced here, but it is the
+> path the changelog leans on, so it seems worth raising.
+>
+> Every open failure leaves NAPI disabled while the device is still
+> administratively up, because ibmveth_set_csum_offload(), ibmveth_set_tso(),
+> __ibmveth_change_mtu() and veth_pool_store() just return the reopen error.
+> ibmveth_close() then calls napi_disable() a second time with no
+> intervening napi_enable(), and napi_disable_locked() spins:
+>
+> net/core/dev.c:napi_disable_locked() {
+> 	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+> 		usleep_range(20, 200);
+> 		val = READ_ONCE(n->state);
+> 	}
+> 	...
+> }
+>
+> Nothing clears SCHED at that point, and the loop runs inside dev_close()
+> with rtnl_lock() and the netdev lock held.  Can an ifdown after a failed
+> reopen wedge every later RTNL operation?
+>
+> The series later drops this by returning early from close() when
+> adapter->opened is false and handling NAPI in
+> ibmveth_cleanup_rx_interrupts().
+Yes — at this commit that ifdown can wedge. open() enables
+NAPI on entry and disables it on every failure, then close()
+calls napi_disable() again. Pre-existing. Patch 5 ("Refactor
+RX interrupt control for MQ RX queues") fixes it: close()
+returns early when opened is false, and NAPI teardown moves
+into ibmveth_cleanup_rx_interrupts().
+>> @@ -780,7 +911,6 @@ static int ibmveth_open(struct net_device *netdev)
+>>   static int ibmveth_close(struct net_device *netdev)
+>>   {
+>>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>> -	struct device *dev = &adapter->vdev->dev;
+>>   	long lpar_rc;
+>>   	int i;
+>>   
+>> @@ -805,17 +935,8 @@ static int ibmveth_close(struct net_device *netdev)
+>>   
+>>   	ibmveth_update_rx_no_buffer(adapter);
+>>   
+>> -	dma_unmap_single(dev, adapter->buffer_list_dma[0], 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> -	free_page((unsigned long)adapter->buffer_list_addr[0]);
+>> -
+>> -	dma_unmap_single(dev, adapter->filter_list_dma, 4096,
+>> -			 DMA_BIDIRECTIONAL);
+>> -	free_page((unsigned long)adapter->filter_list_addr);
+>> -
+>> -	dma_free_coherent(dev, adapter->rx_queue[0].queue_len,
+>> -			  adapter->rx_queue[0].queue_addr,
+>> -			  adapter->rx_queue[0].queue_dma);
+>> +	ibmveth_cleanup_rx_resources(adapter);
+>> +	ibmveth_free_filter_list(adapter);
+> [Severity: Medium]
+> This isn't a bug introduced by the patch either, but the failure mode
+> changes here.  What serializes these frees against netpoll?
+>
+> ibmveth_poll_controller() calls ibmveth_replenish_task() directly, so it
+> never goes through napi_schedule()/poll and the napi_disable() at the top
+> of ibmveth_close() does not exclude it:
+>
+> static void ibmveth_poll_controller(struct net_device *dev)
+> {
+> 	ibmveth_replenish_task(netdev_priv(dev));
+> 	ibmveth_interrupt(dev->irq, dev);
+> }
+>
+> The teardown path holds only rtnl and the netdev lock, which netpoll does
+> not take, and the internal close()/open() callers (ethtool csum and tso,
+> change_mtu, veth_pool_store) never call netpoll_poll_disable(), which only
+> dev_close()/dev_open() do.  With the slots now NULLed, a racing netpoll
+> poll dereferences NULL rather than reading a stale but mapped page.
+>
+> The series later adds the adapter->opened gate in
+> ibmveth_poll_controller(), the per-queue replenish_lock, and the NULL
+> check in ibmveth_update_rx_no_buffer().
+>>   
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+>>   		if (adapter->rx_buff_pool[0][i].active)
+
+At this commit, nothing does — netpoll can still call
+replenish after cleanup has NULLed the buffer list. v7 adds
+the NULL return in update_rx_no_buffer() in this patch, so
+that read no longer faults. Later patches add replenish_lock
+(patch 8) and poll_controller returns if !opened (patch 15).
+What is still leftover is netpoll vs free_buffer_pool /
+irqsave, for a follow-up after this series.
+
+
+
+Thanks,
+Mingming
 
