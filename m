@@ -1,73 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E295731F985;
-	Fri, 25 Sep 2026 21:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112823A7593;
+	Fri, 25 Sep 2026 21:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790371598; cv=none; b=j+En0+2n903JeqjPqpg4EimfTnV2Q9QilBec2rBjl0db71OY5ZW+KQY5KNDGLSbpFfy5cfhVTJ5WAvKCk10fpoyKgZh4zrvNw2NnZ2t9GzZIl9q0bwimt2nkyCXdLS97Jh9eE6s8oJ1jA4Yt9q7jEImzQx1/huhXhBB7lZJMuPs=
+	t=1790372406; cv=none; b=qITc5uftbo7d4LD4AtAf3xCnwcclgVao60ls9q57ZXhmzBM9Y4YRuYJvFO7+1uGfeQLvEdYAmL32ToekbWsFZVqXdO/ZaErN69XhRaLmpIAtBMrHUzKozRmMidaG98YOIh3SD6LxRNYTAVkgyAxVRhHN+3hpZyhyU+LTMhdEfis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790371598; c=relaxed/simple;
-	bh=JX4wHbQ+gBdmVVj6OhbGKQaGDG0oKRixudHkG6CAGqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I9I1Pl4Rm/xy41STIX37BXNTgId52S185+0dX3xgR+WOAU7HNMMmXThYcb3tNXOhesiyk25Jx7UQAUDf8F1vfY1MlQREEnG/q6O3TJ14s1t7Nk7WLfOXW8mublCC3NnuuxRedJCjCaH5oLMtnapdSx7zXAtsFCvyERPSp9mcpuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GDW475Tn; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790372406; c=relaxed/simple;
+	bh=NiX6OLnRfjUoUlt1PhUW0YyDLITiDqIiUNVm9KX+CBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lsPu+ickTQUbJGM/hz9eveHcilwXJ5Qlb4UaHOiHDrHuyH7Ku/7Ta+yf6m9KlXW7/UTODrcJrNAhjkDinZNKgegiEM5pJDZcbCnTC29+4cv/GKWeqOwy4+cAblstRZA92SM+vXAULLAVj5+4duFlHMRHwQeTwNlllBhJNfXGIbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=R2ptl+YY; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GDW475Tn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=kUgRvzjH5Nng/0oeQsMG6q0pTnAxIznTLyHMuTPk6to=; b=GDW475TnEWdErC95CCYwHan5s8
-	S87cUJOT/welLbBUF0SJ8UUFjqrSI/0cPJIinM8PSodpahXOKbyJouN703WSfrW24IF2aVWPFJ7LQ
-	N6g2vaw4aXJZboV9sYgUGvKlJClYb8S5k+oSqh0GyUXPDJpJTI8ymOp//GBiYmBD9dSg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xADQw-007Ice-ME; Fri, 25 Sep 2026 23:26:18 +0200
-Date: Fri, 25 Sep 2026 23:26:18 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="R2ptl+YY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1790372395;
+	bh=NiX6OLnRfjUoUlt1PhUW0YyDLITiDqIiUNVm9KX+CBg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=R2ptl+YY1a0+ffQNbXRITflJ9gowJJvX7+f1Jm9bxAxMGvk7KL0E6Z/jZ+ffuUteh
+	 fOzEXOKbCiSfQf/MUZIj4YUvxRghObqqSaIqfwNJ5l3dDiWWaRWi3v67QYZHlXOrs7
+	 xRdEt7YmsdjoLCFtqmAY4FO04tHWdvOkCBPbLBQMGPGUflpnE0fngTOXvgQ6Uyv31b
+	 q0TRNn050Bl2quO691xKKax3KMhH9ySXJqV4nSaaDzmvcu/dgNv6xIsJ/yWdgJEjCB
+	 UAxadm45UWdjPnQ/1n4ltq+uPR1TRHjzVDDAEWuZ8TfUorD+QfFlir3tdZHItMAL9O
+	 0WGOwqkpVaZoA==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 59A8660112;
+	Fri, 25 Sep 2026 21:39:49 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id ECFA4201085; Fri, 25 Sep 2026 21:39:20 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
- internal CPU PHYs for SmartSpeed
-Message-ID: <69b36e16-eece-4739-9208-96bd8e60943f@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
- <20260923215858.1653-5-yongzhao.derek@gmail.com>
- <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
- <20260924234814.1734-1-yongzhao.derek@gmail.com>
- <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
- <20260925210153.8717-1-yongzhao.derek@gmail.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/9] netlink: specs: enum alignment fixes
+Date: Fri, 25 Sep 2026 21:39:03 +0000
+Message-ID: <20260925213918.204767-1-ast@fiberby.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925210153.8717-1-yongzhao.derek@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> Disabling downshift for all qca83xx PHYs would also remove it from the
-> user ports, where I have not seen it misbehave. The CPU link has no
-> cable, only a fixed on-board connection
+This series fixes misalignment issues in YNL-defined enums or flags.
 
-How are the two ports coupled?
+Changes:
+v2: (got delayed due to conference activities)
+ - Add Reviewed-by's (thanks Jakub, Moshe, Kory and Toke)
+ - Patch 1: Add "fixes" in prose, as Clashiko guessed wrong.
+ - Patch 2: Mention renaming ect{0,1}-pkts in commit message (Clashiko).
+ - Drop old patch 4.
+ - Patch 4 (was patch 5): Remove redundant enum-as-flags (thanks Moshe).
+v1: https://lore.kernel.org/20260911214148.1184806-1-ast@fiberby.net
 
-Are there magnetics? Capacitor coupling?
+While this is not a direct continuation, the rt-link changes was
+previously posted as part of another RFC:
+https://lore.kernel.org/20260910221733.1021864-1-ast@fiberby.net
 
-Anything like what Micrel suggests? 
+Asbjørn Sloth Tønnesen (9):
+  netlink: specs: rt-link: re-align IPv4 devconf
+  netlink: specs: rt-link: re-align ifla-inet6-stats
+  netlink: specs: rt-link: fix ifinfo-flags names
+  netlink: specs: devlink: fix resource-scope type
+  netlink: specs: ethtool: re-align c33-pse-ext-state
+  netlink: specs: ethtool: re-align module-fw-flash-status
+  netlink: specs: nl80211: fix naming of enum members
+  netlink: specs: tc: fix typo in cls-flags
+  netlink: specs: fix incorrect name-prefixes
 
-https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/ANLAN120-UNG.pdf
+ Documentation/netlink/specs/devlink.yaml |  3 +--
+ Documentation/netlink/specs/ethtool.yaml |  4 ++-
+ Documentation/netlink/specs/nl80211.yaml |  4 +--
+ Documentation/netlink/specs/rt-link.yaml | 33 +++++++++++++-----------
+ Documentation/netlink/specs/tc.yaml      |  2 +-
+ 5 files changed, 25 insertions(+), 21 deletions(-)
 
-    Andrew
+
+base-commit: 42a9fb3382fc2573e92f41d203b095d9a372cfc9
+-- 
+2.55.0
+
