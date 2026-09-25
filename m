@@ -1,77 +1,63 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC284E1C9B
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 22:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E41A226D05;
+	Fri, 25 Sep 2026 22:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790375211; cv=none; b=ItZwO/gYTs1IBXyOKoyocU0qO3mHEyz7bj6lDxugGrvSLzEGkt3HIH332FE77hqg6xtEzEH4XDMCiT1uVr/9k+txrdOU7+M/xY4pB0wTrAvo7iFOk6WNOCI+dU/55whKHHTsi5V4tiFd3t+dKDEqp/EuCDV7UxEohkogJ1JFnsA=
+	t=1790375641; cv=none; b=Jz+ZwDYk4YdKN+DHh+UvKzRxse5+13OxqE8dyQ0vlDShv9MaV8PDame0LW7boUfXPwVhZKllHyofY8g2G8kgU1wuVPFddFSoiMA2yyCS17z07mIPUQ3G7h8HDs0stG/jKkQewXWh8MPN/DuvcktxwuGFjLRL70TonKqa0nRrDY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790375211; c=relaxed/simple;
-	bh=pbG/AYM9kJMiCDDL1oq4EHAKeqkUEcL5mAGVpm4Ljf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FfP4k9FhP4EpGTb0O4I2fZF5L7Q39Sa4BAZFWUX4b2c06ITeLKpNbt4r5Lmqtp+M19VW3Lk3SUxaXcIgPffqQ9/4pVvCsNTE0lf53fLx0nI0nljqNcJpNOJiA/booNBcXld06dcN08elVYOcMhGJbSOrtO4MlQq4yGmkAE/WKuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech; spf=pass smtp.mailfrom=monogon.tech; dkim=pass (2048-bit key) header.d=monogon-tech.20251104.gappssmtp.com header.i=@monogon-tech.20251104.gappssmtp.com header.b=epU7J9D7; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monogon.tech
+	s=arc-20240116; t=1790375641; c=relaxed/simple;
+	bh=glUuKZKx5cqmlLMf4KB/vt8XRQXqy6FVeihuH84SKGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c2de9+/M3gVzCX5WODKBLWB8dBo3C5glU3/mypZvv98IIv4ClvOIJe7M6tSg8IF+XOfnP/+2Rq1+57cH61zS6mR5DZH4cOKj1Fnfy7O9Ou7z8m8SW9SE8neBKEAKv5rYKIQ0ifS07z0SNQ+vIFb7HR9avyNhmXg7mKqjbdMFenc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S2xd7uEU; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=monogon-tech.20251104.gappssmtp.com header.i=@monogon-tech.20251104.gappssmtp.com header.b="epU7J9D7"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49febbce9afso8786645e9.3
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 15:26:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=monogon-tech.20251104.gappssmtp.com; s=20251104; t=1790375208; x=1790980008; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xVJh1LUOI1qqCZmZziafmPKKwrteIiiL63WKB73QvIk=;
-        b=epU7J9D70dit7j1M5kkTIruzf4Isv1PkkPYxxgN4tDDXJLwnTGOKm1C/ID+kz1H7EF
-         J/iJPV6cb32QfHQe9hpAvBGzdeqz6GiVnvQ5pgn+DHbE2zX1Oo+CA3NeMMwpj7Dg1q10
-         Sg+6tNODoT3qLjRzP2YYFVuCJJJMlpSzx8yN5DS4jn3GrfnXHUW51EqrYBOLtTTsYAy5
-         3lBHEIfKAViGn5+85sMlB/ZA9kIPPrzcZslTPkW40dIMAWPCeQSi0yr9f7+V1YM8ujJn
-         mOJg8I0M0NXmHfh0yiGxpDPjOcrhPTFFOq+3CqeIGDZrIbGdpH8V1971YU672lVEGFtk
-         rHbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790375208; x=1790980008;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xVJh1LUOI1qqCZmZziafmPKKwrteIiiL63WKB73QvIk=;
-        b=doLOowEwg4vuwVPLkt7QV0A2a2bGFN7DoytxWX3jQ1MHzPOM1GSzuUV7spO/dL0XY4
-         EVmYbI0OJg+FOkklA3EMa+/7rXxOxp/4a8NVIUMg3k2VcvkM3atgJu1X0RD/K9sXLFmX
-         olCAu3MIGgR+Ml1NDPE/k7h3dPyOZIxrDAikSKzQXkHgbuLqHin1EdVgjSTWcnLCv8O4
-         rxwmjTUPHwsj33qS21ugCesVQTA3RfIg2wtJTsm91YmNLqOd9ccNw5qED9sNNvmWgYrL
-         M5Y8UJGDpg0kU6ELHrmAgPWMkhUYlSrwpqUIw7B3UG6ungyTinG24yFgi5WvNGMMbsI/
-         85bA==
-X-Forwarded-Encrypted: i=1; AKwUvBxbC4UHyKNJdJFLmxNlBnNqXx34DtmNhDpLqxuWez83/8Y422VmO5bOutnEfLMeekOMt8yS3tA=@vger.kernel.org
-X-Gm-Message-State: AFuF++n0PV2NKWUpUAdURlWQz4+9dWzhq+i6G3CX9h8YTy0rkR6Dwft9
-	Sgfmem5uqmBYxpEKrQNXlka82oIThSYGVftYGlflxXrB3BU+BMxgZtp3cXZIPeDQBYQ=
-X-Gm-Gg: AYBFou0YHACunnDhZyy4Pz8GkYWC+SrG//3s15vCQil4EnTZGIEFxVU73jLrq9+4jZy
-	kIdAfXHjQSXarIWkfJUYT5GznLe56qcXqT5axaXmi+yMR7RQh1qctro8XTwBbcqHR2U75VxJlGU
-	uu4DsOwjV3BuREVt4UdPTDq6h4lc1OVY06en9rg9wKpniOKj1nnfF8cydpBgGKEytw+na33OMPD
-	63Gkyts/5WwGd/Mh1qjomfaHIhFuOqQDQDwzBGUFyIFj3pb7erd5bylB9T6/BJr8lk6k4N+Tejq
-	sOt4cNOQcR3UJQ9yHd1omX4tNuCFBbgxNVJhUsqCGYtDXIXMzNEnIktphkLfIDxQuWPQXhpmY94
-	pOdU8Mlv9syogCSnHFdcLRj0fkVc40qSSksp5Ydk9m0Pfj2fVyT23DSXPZeFWPS4rm0bbrIEU2C
-	xqCapDOq0yZpUe+60TJYCEqfY6FmAF8FHzIWQEUOGS1849kV3PnIqyUW0RN34oNvPBlricc8CbB
-	/l0wYyHHQ==
-X-Received: by 2002:a05:600c:468d:b0:49f:f9d1:e618 with SMTP id 5b1f17b1804b1-49ff9d1e6b1mr6117185e9.17.1790375208314;
-        Fri, 25 Sep 2026 15:26:48 -0700 (PDT)
-Received: from localhost ([2a02:21b4:a206:6d0c:a5d9:765b:ca48:8993])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fe5cd4271sm260036395e9.5.2026.09.25.15.26.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Sep 2026 15:26:46 -0700 (PDT)
-From: Lorenz Brun <lorenz@monogon.tech>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ice: fix pktgen crash in eswitch mode
-Date: Sat, 26 Sep 2026 00:26:44 +0200
-Message-ID: <20260925222645.354053-1-lorenz@monogon.tech>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S2xd7uEU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790375639; x=1821911639;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=glUuKZKx5cqmlLMf4KB/vt8XRQXqy6FVeihuH84SKGQ=;
+  b=S2xd7uEUU6wop8zfoRzL1su8jv3ee5MW7VJUw9uEymNqFbh6xocmnWYB
+   RhngZGvcFRZZSwwaYOJ946mowTe/kinAC0Tb1kEm4JWgYZf64ALnxa3+D
+   psWO7zhQ3tKnCpoCSgojCEwFbrq7anhnYho4yITLKlG+Z3+WJvuedOpc/
+   xvk9MDmgtRuq1QVLnqIHButmVY5wT/R+DXscVYgWz/KqevhrAdmY0PD1W
+   xrhNAcPFCNd1F1Eah3LJEOY3Vyn0R0Fh2jViw47N3L45mFU/6UrgKD1mp
+   QS4uG2UN8FYKKobvnGfjOG6zCM3DT50y/QekbI7KkYAAlRmHisztswIp7
+   w==;
+X-CSE-ConnectionGUID: OsVGUB3eTNebHdlAzBOBfA==
+X-CSE-MsgGUID: nnkG7F4ISPSbYSQNxEiM0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11916"; a="90071979"
+X-IronPort-AV: E=Sophos;i="6.27,123,1787036400"; 
+   d="scan'208";a="90071979"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 15:33:58 -0700
+X-CSE-ConnectionGUID: sb/G1GFnRDaZ59yprzIAoQ==
+X-CSE-MsgGUID: ohN2STdoQ9+JR583vsyCXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,123,1787036400"; 
+   d="scan'208";a="273053379"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by fmviesa006.fm.intel.com with ESMTP; 25 Sep 2026 15:33:55 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH iwl-net 0/2] ice: fix E825 PTP timer race and drop redundant cross-timestamp access
+Date: Sat, 26 Sep 2026 00:28:22 +0200
+Message-Id: <20260925222824.270640-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,36 +66,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When pktgen reuses an skb on an ICE port representor, the representor
-forwards it to the uplink through dev_queue_xmit(). If the lower qdisc
-retains the skb, a subsequent transmission of the same skb overwrites
-its list pointers. Dequeuing it from qdisc->gso_skb then dereferences a
-NULL skb->next in __skb_unlink().
+This series fixes a race in the E825 PHY timer start path and removes a
+redundant cross-timestamp command programming sequence.
 
-Disable SKB reuse for this ice path to prevent this.
+The first patch serializes the E825 PHY timer start sequence with the PTP
+lock and keeps the shared GLTSYN_CMD register access and incval programming
+within the same critical section. This prevents concurrent PTP updates from
+clobbering the source timer command and leaving the E825 PHY clock offset
+from the PHC.
 
-Crash signature:
-   __dev_queue_xmit+0x5c9/0xf20
-   ice_eswitch_port_start_xmit+0x83/0xd0 [ice]
-   pktgen_thread_worker+0x82f/0x1c10 [pktgen]
+The second patch removes the redundant cross-timestamp programming of
+GLTSYN_CMD in the capture path. The register accesses were mistakenly
+assumed to be required for E823-class devices. In fact, it was the
+E824-family (not supported by this driver) not E823.
 
-Signed-off-by: Lorenz Brun <lorenz@monogon.tech>
----
- drivers/net/ethernet/intel/ice/ice_repr.c | 1 +
- 1 file changed, 1 insertion(+)
+Grzegorz Nitka (1):
+  ice: remove redundant cross-timestamp PTP command
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index 096566c697f4..2603cb0f6a54 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -305,6 +305,7 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
- 	eth_hw_addr_random(netdev);
- 	netdev->netdev_ops = ops;
- 	ice_set_ethtool_repr_ops(netdev);
-+	netdev->priv_flags &= ~IFF_TX_SKB_SHARING;
- 
- 	netdev->hw_features |= NETIF_F_HW_TC;
- 
+Maciek Machnikowski (1):
+  ice: ptp: serialize E825 PHY timer start with PTP lock and incval
+
+ drivers/net/ethernet/intel/ice/ice_ptp.c    |  6 ---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 48 +++++++++------------
+ 2 files changed, 21 insertions(+), 33 deletions(-)
+
+
+base-commit: 349099e5d8082ab01e60d91fba9d107591c17371
 -- 
-2.54.0
+2.39.3
 
