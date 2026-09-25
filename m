@@ -1,150 +1,110 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6A64078F4
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790347215; cv=pass; b=Db3rqDpY3tSWB20Z0ORXW8ZzjhtD5e7cfNs3YmuSpKah8ck6O6avhgUUJe5+X7XadhR8/oSQQR41qhABZ85Agtp16IqmaRGzQ5jBEFEE2tZTGekumLYISm6Gz+szqEe1CKaYqs+YQDBM+PDfcJBu5W83V09qMIleycec/PvsGls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790347215; c=relaxed/simple;
-	bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m00A0zlLS4vLs9lu4i159sTRuetiHMuU1pWv2nC8NcVq6ZybLJVYXVZh6eBuPGXtbjdz4Qvzh9wWM/9QPE8jApLa/Te6/zS3pkOn0kIO7XNvL6476Z3UaMBzihPVee14gm0Z6J7ESPueW1efCidZ+j47RfdNcTLKjK/zU3TrSfI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/7YXNyI; arc=pass smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7581B443E56
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790347311; cv=none; b=ioZWGJwdLogFdRGe/bRUQWM/xlY8TwlkFq8qdHxixtHHXXqNOUcZnI544HiQO+1tVti7PQkb1LJMW+kFrCZXH+gci4tS/zgbQyfV55SFPNSSIDgTm6PgISoce9O/3yvp53o3R7qJadGPi3Jb+rKyvTMark4T2hZ+11Ep/4GRi6E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790347311; c=relaxed/simple;
+	bh=VFSKskxgDHx5fT3EPPJmXZo/npg+dCPd4M+lblx5Mco=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ToD98UoQ0I6VdgNEJv1hur2M0CdtwSbGy0ow6+jtRgJaB16AwrqCi220snnlYgQul9GMlTOUzEdgWJwNlEQ24CNMpdi2mAiS6sYrUPZnFiE4DxYXjY5o092rQ02Do+YWsq3tBAhJqdI3vniq/48/RNksmgm00RCsaPlG41PFedU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XRcE7Y6/; arc=none smtp.client-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/7YXNyI"
-Received: by mail-pz2-f40.google.com with SMTP id d2e1a72fcca58-8748f34b1f2so508604b3a.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:40:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790347205; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HkWlKU4QSrUGttK8KgSMoaDsShBgSm+ZPH3itJyplbo9Ze29x3Ax0JJEsiGLmOzArL
-         3UwniU58Eig47GnE/g0Vca9G4JZCbWqtbkBd0IhXrUsY8NAiFUdHx6j7tyN6dXewHk5/
-         KkdESidfIbD9cTaHrR7mdbslkCnIjI9M2jhj6wU6sZnbcwhMTZEH9R3Q4XdVh2VbLGZS
-         VJLAZjlkESo/t3a38UKMSC5x1AkYwVt+j7abSdK/PtjF1uackfR3Pz3WpGJCWZ1Tvkng
-         4sdHk4BmHongLtefWCb+S8+tsay5RGOmWA4YLQopZ2NjIBIOj627jfh/OAwGrGuMgogk
-         eK2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
-        fh=iIWKGo4qGnD3vy5gh4FhXfO1+9MNMlSzf7iMNtJDq4Q=;
-        b=aZrJh7YxIoen8llWNRfWUJlAE0bwBdM3ujYPWhSqZsLr7g60OXFXbRolnNtAP0BNnP
-         wgbK3T4k3QWeEdw+rGV24iMNNcIrW+zPXv832cGfjVhl+y+cW65irOiMfqB3SU/DIYbs
-         ojFiHFyagKb8sJIcZT1S5QLendQ+sAItgSAkC+jXj5UCQ7XMYmV4mTFhuQ/1+IgftxkL
-         nI8BY91ut5nbywj6OOgmRJR+6dw5TbyJLxdJ9pWwFEPw1Lajuy2NPaF46XV6ASnF5CQw
-         nMHTM3JEuzWuvDExZSlUzyrPZ1PrSj8f2T8V+91ceW7OCsdUNrFbg9wjbq3/sybv6Cnp
-         Fspg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XRcE7Y6/"
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-3284bbaa89dso3698045eec.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:41:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790347205; x=1790952005; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
-        b=e/7YXNyItBmjCQpXcQxE4wgZGpzoLFg6T4q4XuO/cgfNNXMos8gYZyGrf0Q2Y8yhMs
-         4tcN2nY4p5WsZbI2vR1/kSAiktxoT4wmplK4RIH9hAOR3QejI0a5vt4h5cODxQTJr4Zo
-         eLMv7xYQ6F15XWI0RRSae0M/CkrR7i2jFN+wqCGQv1I2iAdzieYLgPxW+iEDneCB7n2G
-         Bg/fqesT61VC3jPres5oCymCS7wChjK3YvZyxgBualFZeGtBPr0QNSfQ5brhH8ct4ESS
-         PVCcnHeE/ALX+96qaELNDTWOX7/KKYckZNQyT3qGD5FuGBW8QwhbTN5wGMII90ZZV1Z9
-         z5Jg==
+        d=google.com; s=20251104; t=1790347303; x=1790952103; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iCD1F0rsHrDkiY4pRxJCOX415/PKxhu7KHy9EzhTZRA=;
+        b=XRcE7Y6/v+sefw8k35CjFKujA9P/r0Tas8uvGr4l2qJaMdBUtXTD5ZqGDXtMpyxbvn
+         SylMAM7x4ODaoTXdRNO/oPiUS17ZHv5L/BmHT8zw1t61SrIYpNQ+UCX5yTrcyeLs+2Cz
+         iIVsT55l836k2lB5a8X7scLiD3SlHxCs3JvSiWqkjr2szfWARb5pxVFgyti41nfPDi2M
+         f9e8YIDNkyEtvhybuS8YEZaSIF6dlkfgQoa7V0vtKJ/dCqeWqWbs94gUGmI2vkpPw8kp
+         GzlgJQMMWsnfJUuQMveyienM0cUhw9o3yL4YCXJ3lGCC2qEZI8owzY7mUNc/jTLvldtx
+         MuSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790347205; x=1790952005;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790347303; x=1790952103;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C83oTuXusDiNKwjJ18ywcN71httz/FtidZS4MpxNeAU=;
-        b=ZsJ+/WlOnP1W+Q/FPz5eWm7scPIsLQRnS7ZCONLDrF/NNTDsWwAk1nS3TC0KIDMaWY
-         yHaJUwF1HLn8GLMuyUWBsDaJ05ghO9ETgYNF5x5HNnY/6x+79F6h3foe2aH/g2nejAN2
-         XFc6swN2uSdmdC8XUAxh7ToVVcA0mMAgkkY3yGC5XLyxR4nLF8jzN4ib7RLjV7g1Wq5Y
-         d2Nnu4LxpcSJExC9riHg8vpOLJzSY8XjstOJgNUJihXqdnAUe/GeHPhRdOw1N8CvcpKC
-         s5LJ1zVsA9EM6mA3/zTth7dnqRl/ieNyzJf2cip82hh0LHG+OOubuteasXWtQMajG7oV
-         JHNA==
-X-Gm-Message-State: AFuF++nh3VKKghseUHdFpwQApy1I+Z9nm8hTwYDk8S1KuytEW5BETxOB
-	UbVVI8jb7eqNXZLaSzyL6njL+bT2cGNWhic4YgGh6pmdfFtoHbN4XgX7spVxAy2G0bXB6fCvCAv
-	NKeECPqGkCu0zIZwebWU69tKpnnJj+sU=
-X-Gm-Gg: AYBFou2jhNXLeX1K91NF0qYNXmjGGksCtz+OirmBaYmjdAE355fkX69PsIa6j+J+29G
-	hiQc4lKYKKBbzD68ADo+3qpQ4/u1GN1Wkqr8btYql9EcMJU8N011iq49yQ3Et8AYVtLXeCcq9uJ
-	csapmQdihRUIDeAf1lEDcQpQW8Ikz7Ndx6eu4x7MdZ9htqXoTicZ3IEUaZxmR8WI0bKAw9wTGjh
-	8J/RO5JgWTHan663rfta9fAduxhhhyNC+UvklXDnqgoN0S4/XpEBKxsbxflDMa1Qijbk01ZDUIe
-	oTPzICAPdV0/yRJsnwE54QxFH3KcvcMBjEgPrvfK9zCFU2pKDxUnFG5iZvEj3P4opmVs6w44Pko
-	0u+kQ7EWCw3m/M88JDQ+GXg0cejaHZ16VSzu93ObPsH+C4N35yec8dw==
-X-Received: by 2002:a05:6a20:6a08:b0:3dd:a197:cf20 with SMTP id
- adf61e73a8af0-3de0e8e72a2mr5267114637.68.1790347204371; Fri, 25 Sep 2026
- 07:40:04 -0700 (PDT)
+        bh=iCD1F0rsHrDkiY4pRxJCOX415/PKxhu7KHy9EzhTZRA=;
+        b=08n2tY/vvwFD3fxZj5DiR2H7GlRw/OAbXH4kfj/WcDqQ/rJ4e6ET5pycj3Bo3i71pl
+         rrl4BIO069VcWtYUaoVTMCnuymSMDud8taDxTyZXJ2PbupfGCdYLESrxBI4hZB5Wc64x
+         PU3hkUazzpja+33T6CRlUm/7wSPKCPT2bd1cEkAaBDzqlWqNJ1bi6GRogEjKERwP0vVL
+         qelzQ78ynbBSKQt1mwlGTZT2/sq/u5UIU5ipWqIpLc4HD2BnOSM7hett+8S+L2SLnOOJ
+         lvSR/kT63wIIUD9uoY3I+2XfitloOyGF0k8HFlD4BHT3qJbDK+21kRVoNRBybLX4pLcC
+         5v7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwK29aV5CxXREcUU9jdrsMgfFC6CB/5rtzBWqZZdZ794gTx4zxGZ5GwFGEXhYMkBIe/OXNSrJ8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lFofD2DZ0yHLi0QlsIzg5qIMFM07pwn2p2FOS9yia5eAq8Lcpq
+	OizjYCZnPSPZr74t6g5Y+nPwfnb+sYJ024HKPO4wUHsCfrZkhRq74L4QZs3ys835ghMGhtJY5P4
+	vSYDP+OZ4ElWL3NxX/6CShd6UwQ==
+X-Received: from dyclv17-n2.prod.google.com ([2002:a05:7301:6191:20b0:33e:c489:c4d2])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:1c19:b0:33c:130b:457 with SMTP id 5a478bee46e88-3427384926dmr372391eec.38.1790347302408;
+ Fri, 25 Sep 2026 07:41:42 -0700 (PDT)
+Date: Fri, 25 Sep 2026 14:41:11 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <QDISC-4CSL.v2.20260924114800@mojatatu.com>
-In-Reply-To: <QDISC-4CSL.v2.20260924114800@mojatatu.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Fri, 25 Sep 2026 10:39:51 -0400
-X-Gm-Features: AclHuK8gVZp62vkthgFM_M7aNDmllGSluoXwPOdoWj0sX3mgmB8hyAR2Qnd4sf0
-Message-ID: <CADvbK_dV9M3RhnXvoBzd5rfNPcYGy4F=DHUo_dBZzrBw0MGrbw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/sched: cls_flower: exact-match ERSPAN key when
- no mask supplied
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, stable@vger.kernel.org, sashiko-bot@kernel.org, 
-	hybris <hybris@mojatatu.ai>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260925144127.1445667-1-almasrymina@google.com>
+Subject: [PATCH net v1] net: page_pool: fix use-after-free in page_pool_recycle_ring_bulk()
+From: Mina Almasry <almasrymina@google.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kaifeng Wang <kaifengw@google.com>, Dong Chenchen <dongchenchen2@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 24, 2026 at 8:18=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> Commit 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-> removed the unconditional memset of the erspan_metadata mask in
-> fl_set_erspan_opt(). On the mask-parse pass, when userspace supplies the
-> encap option key but no mask (TCA_FLOWER_KEY_ENC_OPTS without
-> TCA_FLOWER_KEY_ENC_OPTS_MASK), the !depth early return leaves the mask
-> zeroed -- a wildcard. A filter keyed on an ERSPAN index (v1), or dir/hwid
-> (v2), then matches every ERSPAN packet's values instead of exact-matching=
-.
->
-> Default the match fields on the no-mask path the same way the with-mask
-> branches default them: v1 index to 0xff, v2 dir and hwid to their
-> exact-match masks. The union cannot just be memset to 0xff -- that would
-> re-mask the overlapping timestamp/sgt bytes of the v2 header that the
-> commit deliberately left to 0.
->
-> A mask and a key that declare different ERSPAN versions describe differen=
-t
-> union layouts, so the mask would silently wildcard the key's matched
-> fields. Reject that combination. Have fl_set_erspan_opt() report the
-> parsed key's version back through a u8 pointer so the mask pass uses it
-> without re-reading the union.
->
-> This is a follow-up to commit fee10655709c ("net/sched: cls_flower:
-> validate mask pointer after nla_next()").
->
-> Conditions to recreate the bug: add an ERSPAN encap-opts flower filter
-> with a key but no mask (raw netlink, TCA_FLOWER_KEY_ENC_OPTS present,
-> TCA_FLOWER_KEY_ENC_OPTS_MASK absent); dump the filter and observe the
-> match mask is zero (wildcard) instead of exact for the supplied fields.
-> For the mismatch case, pair a v1 key with a v2 mask (or vice versa) and
-> observe the request is accepted with a mask of the other version.
->
-> Fixes: 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026082602512=
-3.62758-1-ljp1205831794@gmail.com
-> Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794=
-@gmail.com/
-> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/netdev/179003833955.2160803.107768171639185=
-8800@kernel.org/
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Tested-by: hybris <hybris@mojatatu.ai>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+With CONFIG_PAGE_POOL_STATS=y, page_pool_recycle_ring_bulk() updates
+the recycle stats after dropping the producer lock. If it just recycled
+the last inflight netmems of a pool being destroyed, page_pool_release()
+can pass its producer-lock barrier and free the pool before
+recycle_stat_add() runs.
 
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Commit fcc680a647ba7 ("page_pool: allow mixing PPs within one bulk")
+moved this stat update after the unlock. Commit 271683bb2cf32
+("page_pool: Fix use-after-free in page_pool_recycle_in_ring") later
+added the barrier, but only fixed page_pool_recycle_in_ring(). Move
+the update back under the lock.
+
+Fixes: fcc680a647ba7 ("page_pool: allow mixing PPs within one bulk")
+Link: https://lore.kernel.org/r/179028939171.2160803.706522228583664641@kernel.org
+Cc: Kaifeng Wang <kaifengw@google.com>
+Cc: Dong Chenchen <dongchenchen2@huawei.com>
+Assisted-by: LLM
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ net/core/page_pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 08d7f35cf6089..d7c88c0b67e53 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -951,8 +951,8 @@ static void page_pool_recycle_ring_bulk(struct page_pool *pool,
+ 		}
+ 	}
+ 
+-	page_pool_producer_unlock(pool, in_softirq);
+ 	recycle_stat_add(pool, ring, i);
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+ 	/* Hopefully all pages were returned into ptr_ring */
+ 	if (likely(i == bulk_len))
+
+base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
+
