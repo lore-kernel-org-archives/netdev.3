@@ -1,117 +1,197 @@
-Received: from mail-ua2-f32.google.com (mail-ua2-f32.google.com [74.125.226.224])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B828212FAD
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 02:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.224
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790304506; cv=pass; b=BbKMnGjZVgKZIcfT9TM1Wb5s0cFdSBziy+scb2X3dMBOzAt8hlzS6GTmmDKd1JZwghdOIcg4Nh7AcXQDNM0X7ymPCSpb4y7bqIyU6lZVZtF6aHbvsDmf0tLI+07FuZ91DeQJgrM7baYKO/K1gVZQ8pByDUnr1NJUdB6u+HMBg6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790304506; c=relaxed/simple;
-	bh=A8hFAHnxyUJuEG7oRFhxbJa0/9QTewsyA1sPcU4Y83w=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Rre70LO8ail5GLrURvCzkEzN7enhIbDW7F5CvCYe8MVWIEGg9t+hcpida5uLQ2GonyiueMeEtcx3rNexjb87ps5Sfeaccv0kVceBrssv2ERNlIeoQ0u2Qsd6OgGMZwm7GbHME+KbG7yaExJMP9HhFN2NN+xcuWm3hFezQEOLhqA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LA4ErD6t; arc=pass smtp.client-ip=74.125.226.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C39D25B0A5;
+	Fri, 25 Sep 2026 03:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790307487; cv=none; b=na8sjDepEGwZR/z2YOeUnaJi5/POdnaNP2rYo4sJ7u94lPdut4xmXPNZ5UO8/luA/pbQBXBQU/aFwtb2VGljcV73pXMBfV6e7mimjMJgZyI0OfGdGU/hZskJfM3TrwgngCyLD6qGSncCq0aPO+MmwUtOY1NXKGXD+jncsejNcsU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790307487; c=relaxed/simple;
+	bh=cYD0dkhGY/S6V/zMpmaqgX4TAFhISlhwydmGYMJp+bU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=toBM9DlQULk5LLtclcyvHbsiJAbTEKICGmGYZCjJmmYg0FJwXukThVBhTldcg82gLt08UN8iaiPUYRqgNcF49UNCZC1MXRFneQpRk1ObqW6MQxiFjfTrWNOLbQr1yWDGPZKEa1fKlL9nuauFfq9EMhN6J4yygdDpEEFzspof35Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muA8BqR9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LA4ErD6t"
-Received: by mail-ua2-f32.google.com with SMTP id a1e0cc1a2514c-97e97e2c7d4so290531241.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 19:48:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790304504; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XbQdkO62ecGeSWcESabY9eSpyYNNoMopevx3COgUNpWJXiAONKlKI/CWZm0321lFO0
-         BkdcdsKPGzSoC12rUeSL2ZNu5FhhTO6kzVkBjhe9aVuxJvu+w5/es3OoBs2Jyl2+0Mgf
-         OGBVJPiTSoU76bx7qRRXs9a3OO/vIhfIi7EfqLefOAnNNLrNETk+jcu9F8z6kjG/j6G/
-         v1GtXKTa2IkpMx1bDzykAYygBFPkfwi2cjnFD/GEKcb8ZpzrKk5R2mEaS5vKby3JVziV
-         SDZqXVJ0eH00VLD1jk2+1w6xTnk8ICqJ/NsLEEfg3/A5aSGWUqrJ6SvEe4slVbQEgDod
-         geMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=086KJYBOEvQVApNcJ886DWoFmFsCYQjg0ptZyXxnLaY=;
-        fh=aDUZZ9N6NPmO6DMPx8G1ADwl9DVnQFUvUJ2oivftvxg=;
-        b=rHfJ6MgQ2fC7RKCbyrvpcbkijRSUHs/PebP+INt092iyvylDRfM+hzhGCTYDV4yyMC
-         ruj778k5sztBqR4rDCzb09CJZvl/f/xy3PVwCWTs6qjfpNHaWYdfkvjo915Er2qVFxoz
-         Y5nJHCXHOpD3VA6trw3O459yKPqhdoYjXcH26B2ZY1fhDKRVBxJKsJqhL1Wtc1OKLfb4
-         fo4Vm5L5opFqzQ/WDtiK+zUif9ywPgX0KrS7kZNDBShslB365taMW7addm09WRtNfFVZ
-         FUA6Ojcrd1ouWtQ6l0rP1snkwsTgrk5qJcGQ0UaB1pJFWpH15EkF2wFaoPccWd/AE8wb
-         rlxg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790304504; x=1790909304; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:mime-version:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=086KJYBOEvQVApNcJ886DWoFmFsCYQjg0ptZyXxnLaY=;
-        b=LA4ErD6tMFR5Za++SoUbroXYwJcD5l7D6zhMkO7aCy7SJ/9FrLEbBXB4ux2DXb40K6
-         MYIb8/0nlf5vKFAko77MFm+XUo6BKM0L8LTzqcngqmEWvbzb8UXZo6gx/PkDASKQLUT9
-         Wgy7OmzjYzygrMqeuO812alXLMu8xZ4U8HYlFrPqK49z78tlYKuVuSg+Nvn04NkQpSU4
-         5KjtJtrtkUOChleInNGxDVgmdzRYhmtfEjae1IKslOjW2k1CwTQvt4KhRN9yCVc2ZzrH
-         6z49fVWqxW3+3aApLd9eOMLKneFAyyMygJRMdXljaRvwNJ5ayEvqAARNzjLowRXH8Ez5
-         T/bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790304504; x=1790909304;
-        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=086KJYBOEvQVApNcJ886DWoFmFsCYQjg0ptZyXxnLaY=;
-        b=IMasIDAQDRusJA+qyQHNcDd2rnAZjv4WBpFyWD3sapz9h0EhhsHMgWMDMNbjtFA2gj
-         zCcni6KbU1U55bvstWkCXdeme6aQ+6BBd6u3O4hEJBqP1U7CIY0lthhBd+88nVWjN/ga
-         weizhfAfhq+5kiz4eZiUjRxITIPtwum0W1UL5bn/JXkmJN5DFN7IdVhC5wgSxaGMdENY
-         v4ezSj/EKtqiJFuiy+uIQDI0cH3DuHKUF21yp+EP6s1+bGhOb9ZCuIrAr8IXZcnrUjH8
-         R4KvC5c+Ah/EJEO4K2PR4mukj89kAa961D9fsbSb8qdxzKaM7y6zgpigO4pUQKTCoHdx
-         TV7g==
-X-Gm-Message-State: AFuF++ksL8SvCvatwuTfk76pD9ipuIRcLM1ra9Ek3WqQU6aSOMDFZS4w
-	J0PBT9K8k5mkd6Zcahc8zmDq5lW2T9pC1otbRCfZ2DTC6FJ1gFTxT/vfMNMHH/sKGuVYj3J5smw
-	abQyioXb7u/zppHY4mFYqeNWVUdQ76G5NyGbIuD7dcQ==
-X-Gm-Gg: AYBFou0fbQGWsxe5L7ZlrBxV5Q11NT9eMIKJyOhzhNGaY/QVj8mKW793kr3zUrP8wnd
-	oIlnr8ibqGe1q7iIIY9isMxd0R+YJ1og8tDZViMujChaCtotZEoV27epneeFCfIxn0Jd98izyEf
-	5bInY4vA027J8pFA5UnU5h8FPSG64Si7OJP+BmLojDjrlM23opkStGOTLZgkZV1LE+/qlFyvgpl
-	ESlts94m3wF/LCVycPlGrS4tporSC5rZhE0YUtEWt0gADJ0DstKkEHcq/i3fTk4tugKEyrko3BY
-	16E+Q0qAkyRbsmC86mz98EYPIQnXl0xktJSxjPTFigXSb6udJqDP53IlTcyJAnuxr5n0Xjj7wlO
-	P43yaN7GPdA==
-X-Received: by 2002:a05:6102:5346:b0:79b:f57e:ea17 with SMTP id
- ada2fe7eead31-7af1c6921f0mr2362971137.3.1790304504335; Thu, 24 Sep 2026
- 19:48:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muA8BqR9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7146C1F000FF;
+	Fri, 25 Sep 2026 03:38:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790307485;
+	bh=/MTkTfu9PEPASvRDnq+fDAQla1IX6E41ay0A3ltvGFs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=muA8BqR9PWn2Rzrh6AagBqISJQDTnvWwdKHJnSD9dE1/fpr/BSCgEDQgEoD0Sz+8n
+	 glXByVgf+8ATaJJ2t4ye8wY+mw2r5QSduTlzFjRX4737x+OGXpKa65h6xizNIqPDti
+	 sQYhrMnrOORAtrNf1M60BaeTNFbhr4D5BZoDG6uIVI9vujWwqSD0mKqAWmZ7BNVOWU
+	 qAHZd90F3g+Zp7tOTm32fPhEcq1/fMConVrK+fSMwo1nSXLf8up13EpwqS3py6NSmg
+	 Gq1m/k3XvCYFSovH+iqU1qvvonP+nwMaux030WArfjHiYG24dzZjri0NmizWIwmYaf
+	 UVsfy9LwzuiAw==
+Message-ID: <0a141f59b37b9055764c97dddfdf9506fc4d7fa0.camel@kernel.org>
+Subject: Re: [PATCH net-next v2] net/rds: replace tasklets with workqueue
+From: Allison Henderson <achender@kernel.org>
+To: Sunny Tiwari <sunnytiwari@google.com>, Santosh Shilimkar
+	 <santosh.shilimkar@oracle.com>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org
+Cc: rds-devel@oss.oracle.com, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>
+Date: Thu, 24 Sep 2026 20:38:04 -0700
+In-Reply-To: <20cbfc32678019daadd3c67fd75262b8264aa180.1790178801.git.sunnytiwari@google.com>
+References: 
+	<20cbfc32678019daadd3c67fd75262b8264aa180.1790178801.git.sunnytiwari@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Lane <software.research.development@gmail.com>
-Date: Thu, 24 Sep 2026 21:48:13 -0500
-X-Gm-Features: AclHuK_LY3Y2WpMYypQixFlGx4xKWeM_UYSrEdOR7yeE7aV9z_5stRqbOVrbxEc
-Message-ID: <CAGchGNseHg7k=Ubtmck=Tc0U3z=wJefEE5kKdH1wxOH5wXS4PA@mail.gmail.com>
-Subject: [net] Search for net subsystem rust abstractions in-progress
-To: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Thu, 2026-09-24 at 06:26 +0000, Sunny Tiwari wrote:
+> Convert the deprecated send and receive completion tasklets in
+> net/rds/ib to BH work items queued on system_bh_wq.
+>=20
+> In rds_ib_conn_path_shutdown(), replace tasklet_kill() with
+> disable_work_sync(), and call enable_work() after destroying the CQs so
+> the work items can be used again when the connection reconnects.
+>=20
+> Assisted-by: Gemini
+> Signed-off-by: Sunny Tiwari <sunnytiwari@google.com>
 
-I am following up on some advice given from the Rust forums where I am
-trying to move some of my LKM's from C to Rust. These LKM's,basically
-create new address family protocols using (for starters) structs and
-functions like the following:
+Hi Sunny,
 
-    struct net_proto_family;
-    struct proto_ops;
+Thanks for the patch.  This looks like a straight forward conversion to me.
+I've also run it through the rds selftests on my end, and everything came
+up clean.
 
-    // Add a socket protocol handler
-    err = sock_register(&proto_family);
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Tested-by: Allison Henderson <achender@kernel.org>
 
-These do not appear in the kernel crate. Per the
-submitting-new-abstractions-and-modules section for contributions in
-rust-for-linux, the second bullet point says to "check the mailing
-list archive" because "part of the work may be already done or in the
-process of being upstreamed", so I was hoping to see where things
-stand and get advice.
+Thanks!
+Allison
+=20
+> ---
+> Changes in v2:
+> - Use system_bh_wq instead of allocating a custom rds_ib_wq workqueue,
+>   dropping the net/rds/ib.c changes.
+> - Use from_work() and disable_work_sync() / enable_work() instead of
+>   cancel_work_sync().
+> - Link to v1: https://lore.kernel.org/linux-rdma/6b07af04b3ba66a09009e1a0=
+a7b98ec5ec85d3a0.1790109248.git.sunnytiwari@google.com/
+>=20
+>  net/rds/ib.h    |  4 ++--
+>  net/rds/ib_cm.c | 29 +++++++++++++++--------------
+>  2 files changed, 17 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/net/rds/ib.h b/net/rds/ib.h
+> index 5ff346a1e..190122636 100644
+> --- a/net/rds/ib.h
+> +++ b/net/rds/ib.h
+> @@ -159,8 +159,8 @@ struct rds_ib_connection {
+>  	atomic_t		i_fastreg_inuse_count;
+> =20
+>  	/* interrupt handling */
+> -	struct tasklet_struct	i_send_tasklet;
+> -	struct tasklet_struct	i_recv_tasklet;
+> +	struct work_struct	i_send_work;
+> +	struct work_struct	i_recv_work;
+> =20
+>  	/* tx */
+>  	struct rds_ib_work_ring	i_send_ring;
+> diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+> index 6e3110a04..3ebe13d00 100644
+> --- a/net/rds/ib_cm.c
+> +++ b/net/rds/ib_cm.c
+> @@ -253,7 +253,7 @@ static void rds_ib_cq_comp_handler_recv(struct ib_cq =
+*cq, void *context)
+> =20
+>  	rds_ib_stats_inc(s_ib_evt_handler_call);
+> =20
+> -	tasklet_schedule(&ic->i_recv_tasklet);
+> +	queue_work(system_bh_wq, &ic->i_recv_work);
+>  }
+> =20
+>  static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
+> @@ -279,9 +279,9 @@ static void poll_scq(struct rds_ib_connection *ic, st=
+ruct ib_cq *cq,
+>  	}
+>  }
+> =20
+> -static void rds_ib_tasklet_fn_send(unsigned long data)
+> +static void rds_ib_send_worker(struct work_struct *work)
+>  {
+> -	struct rds_ib_connection *ic =3D (struct rds_ib_connection *)data;
+> +	struct rds_ib_connection *ic =3D from_work(ic, work, i_send_work);
+>  	struct rds_connection *conn =3D ic->conn;
+> =20
+>  	rds_ib_stats_inc(s_ib_tasklet_call);
+> @@ -319,9 +319,9 @@ static void poll_rcq(struct rds_ib_connection *ic, st=
+ruct ib_cq *cq,
+>  	}
+>  }
+> =20
+> -static void rds_ib_tasklet_fn_recv(unsigned long data)
+> +static void rds_ib_recv_worker(struct work_struct *work)
+>  {
+> -	struct rds_ib_connection *ic =3D (struct rds_ib_connection *)data;
+> +	struct rds_ib_connection *ic =3D from_work(ic, work, i_recv_work);
+>  	struct rds_connection *conn =3D ic->conn;
+>  	struct rds_ib_device *rds_ibdev =3D ic->rds_ibdev;
+>  	struct rds_ib_ack_state state;
+> @@ -381,7 +381,7 @@ static void rds_ib_cq_comp_handler_send(struct ib_cq =
+*cq, void *context)
+> =20
+>  	rds_ib_stats_inc(s_ib_evt_handler_call);
+> =20
+> -	tasklet_schedule(&ic->i_send_tasklet);
+> +	queue_work(system_bh_wq, &ic->i_send_work);
+>  }
+> =20
+>  static inline int ibdev_get_unused_vector(struct rds_ib_device *rds_ibde=
+v)
+> @@ -1099,12 +1099,12 @@ void rds_ib_conn_path_shutdown(struct rds_conn_pa=
+th *cp)
+>  		while (!wait_event_timeout(rds_ib_ring_empty_wait,
+>  					   rds_ib_conn_path_shutdown_check_wait(cp) =3D=3D 0,
+>  					   msecs_to_jiffies(1000))) {
+> -			tasklet_schedule(&ic->i_send_tasklet);
+> -			tasklet_schedule(&ic->i_recv_tasklet);
+> +			queue_work(system_bh_wq, &ic->i_send_work);
+> +			queue_work(system_bh_wq, &ic->i_recv_work);
+>  		}
+> =20
+> -		tasklet_kill(&ic->i_send_tasklet);
+> -		tasklet_kill(&ic->i_recv_tasklet);
+> +		disable_work_sync(&ic->i_send_work);
+> +		disable_work_sync(&ic->i_recv_work);
+> =20
+>  		atomic_set(&ic->i_cq_quiesce, 1);
+> =20
+> @@ -1123,6 +1123,9 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path=
+ *cp)
+>  			ib_destroy_cq(ic->i_recv_cq);
+>  		}
+> =20
+> +		enable_work(&ic->i_send_work);
+> +		enable_work(&ic->i_recv_work);
+> +
+>  		if (ic->rds_ibdev) {
+>  			/* then free the resources that ib callbacks use */
+>  			if (ic->i_send_hdrs) {
+> @@ -1234,10 +1237,8 @@ int rds_ib_conn_alloc(struct rds_connection *conn,=
+ gfp_t gfp)
+>  	}
+> =20
+>  	INIT_LIST_HEAD(&ic->ib_node);
+> -	tasklet_init(&ic->i_send_tasklet, rds_ib_tasklet_fn_send,
+> -		     (unsigned long)ic);
+> -	tasklet_init(&ic->i_recv_tasklet, rds_ib_tasklet_fn_recv,
+> -		     (unsigned long)ic);
+> +	INIT_WORK(&ic->i_send_work, rds_ib_send_worker);
+> +	INIT_WORK(&ic->i_recv_work, rds_ib_recv_worker);
+>  	mutex_init(&ic->i_recv_mutex);
+>  #ifndef KERNEL_HAS_ATOMIC64
+>  	spin_lock_init(&ic->i_ack_lock);
 
-I know the goals are not to duplicate or rewrite existing drivers, but
-my modules have not been opened up yet and still going through heavy
-development. I guess I am looking to know if there are proper API's or
-abstractions for the net subsystem, otherwise, I may want to start
-looking into contributing. It is also my understanding that we would
-not want to be directly using any C bindings, rather, using a Rust
-abstractions layer.
-
-Thank you for any advice.
