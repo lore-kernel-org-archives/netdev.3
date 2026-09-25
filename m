@@ -1,158 +1,129 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE73448096F
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA5C486408
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790335749; cv=none; b=UaesZcd/Sw8kMDXtLERoJEYG9pWFpXdRliFkQFw+vpk5W8s03S6/hCTTQ8ZDDbIlO+Z6boNsHm4lLEmMT7hGbLk2+BuIDcupnvgX4/WD0xG7VhkeYbNm91SNFnVKuLRzKx1qby2LaGtX1V+226K6M5tX/2A4L7lMHzbt2mvQ/2I=
+	t=1790336340; cv=none; b=f/th24ci55xLoT5pQKRUZm9Gfn7SMgcALVSsrn1tULtBHq9H6mZ4tmxnSS2fQUAmJiz/DMJNrBmpD30z2yRfhQjEzKDF175QcF0OjHR9/N8p9RcUuEFSsrKqcizrlIK2cHccUqxMJnrOKn6jzRkyRiV0FAtL+PRv/jDkV936U40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790335749; c=relaxed/simple;
-	bh=vtFHEfwG8rqRvpTaGWmRjsAFTF1IORf7A7Dx8YJnPMs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RjrjVLAPiqjo1lmv84Nf07QjTwva6VIlpzFRgKH6TyIzqI3ovnW9RGHegUctUhwvxgL0OFqBvQpynCq2Bf6LM7vDVRjVMd9oq3RLH9Ophsy9ead/Vix9pWaWUrWseiy8lvN+zsjTVqDUM0ZOSLgqmFXDrW/2glzFwQP8zgFuB54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzTVOIUE; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790336340; c=relaxed/simple;
+	bh=KwBI/s/phK6XF5xOttZL38UwP6LQV4XU+uU3Nh61kiU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Fwi0xHihKu4zTokCJJjjeHtnngig1bm7C4Q8Bb5TPz9WEoHJdkhRt/9d1jLmy6an1pD6OIOHLdzLFPs/uMLu/+3Wt/gpZTqOZI04iqnK9wsJKOx4eQytQRrktTBe8wnb4QQhLj5H/oIHwiAxnsmfNJGGhYYsn34EeFLqiw+H+PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bSs/Z3nT; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzTVOIUE"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e2406so3994105e9.1
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 04:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790335745; x=1790940545; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+voox/U6tCkxGYTDLWhRDj4A0ThgP+32hpU9k9pFGLo=;
-        b=dzTVOIUER8bZogRROOXBtWh4hUQdfATpI7Lots9/9Ty01QLo96cAqaV7x3ii5QjGu1
-         v1Meg4gISNL5ZZeO9CnlJC69oGa4XxPgYseGeS24dtFqdFEaYANFa+yH06l8GL2F6upV
-         n3bHpPBVgjYk5y12UICuCxK3f1iktSjq7W6Dze5ILvxkWtmDKhDAKd6Wt9L1AlyS6SdU
-         To9tSCxf8LwT0rCdwCkWkNAM8Rl1asAAY5ymCUhiUg4V/jWJoyeT5w3TQpL6hc7zPGX2
-         3kxAoHdkm8DoUQK+2lYfyVYzyarAZzxjZelHfwGvASCmVvOvM3upF0lxBBq3+uTDzcAD
-         UNNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790335745; x=1790940545;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+voox/U6tCkxGYTDLWhRDj4A0ThgP+32hpU9k9pFGLo=;
-        b=B2mDqN7a7gde1Dm0y9B6ilsaPnffyVVX5Ah5MuKcqiLADyNARp62X9Ebz3YOUk+oVN
-         DMl2p8zmb8C6AaixsWE1x2LZiABAKbagqJWl14vsNHMDln5ktlcOwWxRQ6GucCy/q2LF
-         uleKPs2WgOwjH6TNwvb8LeNzERvWMg+3ebxcl78D5PRtqoMoeq3V2HcWlmAzJ1Ji6ilL
-         ZL5mGMhuIrm1HRUIrFul+617w78ZGpcjZeviIXOLy9HGsTxH8qyPchMx1ucJS3iO1m9f
-         8MNqcHGjBMz2SHamPbriyljzhZ96ge7Z/xF0/braMFrVzHNBPwGANzMLBnQI00TX5IND
-         oZxg==
-X-Forwarded-Encrypted: i=1; AKwUvByQvalcyftYS3RYmcOgtNQDQ4W+IMciymCuKGc8jn8Uwhk2lGuzpmC8R+0WIAtU9ySJrZ1Rkh8=@vger.kernel.org
-X-Gm-Message-State: AFuF++njSzEoF4+0kNIaYWi8DpXX79e0MZCI4Z+N0DlMc3oyY5zs+0J5
-	OwDNX4tv9JIP9QzBbEpFAVFA72w+KSD7yTxOuAUFWjNl+MPyi2sysv9v
-X-Gm-Gg: AYBFou1Ah8XH1vTb5Gb6LICBaEZQg9amo8jT/SyQKwsxqbXS7uM0DZJXxQxqMYHDyNG
-	8ALqHNHRbkkVpWPi1qpFYG1MtGX+BLJc7LEu/ylZPuNjlkMyiXuinSh/mynELkuEntFQXDJj/qG
-	gav0SBV2YM/Gb4PcwN5iLCbtQZTzjKWPMleOEn0o1PvGnX05ONj4L+yuWa+ZTKR2akZTpbotH7D
-	DFDPMeNjRAczJncQE6MdLhqxg+4s6zfKTz0zGqsAA1g8GVEqfjKmivairdH/qVdBIGrPAA98VtU
-	6TOiq/JZ2Subbo+/GSmuTqiIR1kYjWPdJ+lWDuoNln9stJtNUmBy6uK/MYh4DjIByyXWQIwm8Pd
-	1jIqq5jW5zZyC2ipzHylecCOhlSQ70Aexh77SSezwbTnugXSeiigypGO8RVJQ61SbYCmzzRFdh1
-	jKhlFlnDWjP2zg9JQj60Q+5pyBhDs/AkpVY/Z2tfwhthcJ9ABJGDKKwJN7ruVjwthtjgBxIV7Fl
-	L1TGTngC6hqszESZsKAiJjtdWZj36uF+dxQDxXVM44AvxogwtBkp+dMLP8l1gQNOrOiM4JWksxX
-	INeSTDC5kDtGx5srXB9Dr4FSVTm+bJfNWZqwpo9vGFToDgTPXHzVcSz+aLVoes9iDA==
-X-Received: by 2002:a05:600c:3b01:b0:49f:ce79:7a8d with SMTP id 5b1f17b1804b1-49fe670b3e3mr96282485e9.17.1790335744644;
-        Fri, 25 Sep 2026 04:29:04 -0700 (PDT)
-Received: from AHERLNXVDANI01.tail39a996.ts.net ([193.8.40.126])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff044406dsm61608925e9.1.2026.09.25.04.29.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 04:29:04 -0700 (PDT)
-From: =?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Daniel=20Via=C3=B1o?= <danividanivi@gmail.com>
-Subject: [PATCH net] igc: Disable PCIe L1.2 substate on I225-LMvP and I226-LMvP devices
-Date: Fri, 25 Sep 2026 13:28:50 +0200
-Message-ID: <20260925112850.189302-1-danividanivi@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bSs/Z3nT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 22A294E41070;
+	Fri, 25 Sep 2026 11:38:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D0ADC6073B;
+	Fri, 25 Sep 2026 11:38:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F7B3103290D4;
+	Fri, 25 Sep 2026 13:38:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790336334; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=udC1CTmScPSdoLJTLvioroqZ+xERUs9yKL94jLli1yk=;
+	b=bSs/Z3nT8iMFQmk4v/kVdx70dYY29rlS0rjpQsbp4FaXxMYKf3qruBNWBcvqlT3oQV7LPo
+	0pFssI5Ojy0wFTVem3q24jTadFDNC6OjwNIU1+Ynk9s9zx+Co5Xmosojqr3amxvGgH9gXE
+	G+I6iGxkMbp+q4HNxHKjEEOD+YsdcMokaxA342u1kBY6tgWa7Lqc16DhfsqMj01NVilZP6
+	vRkxpZjuE2HYcQ7LH2vNJCqcR5U7e6nGHWB1ryNmQJ2ArNPiO9KRQgZZNkwMcad8XYbp45
+	JH6hNdDDHPPNNRBsn5RVoDgVJ5hj1Ig2b2iOnwWQV28xYb9lTQQMduy8wb5o4Q==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net-next v4 00/11] net: dsa: microchip: add periodic output
+ support for the KSZ8463
+Date: Fri, 25 Sep 2026 13:38:46 +0200
+Message-Id: <20260925-ksz-perout-v4-0-d675bd21ce49@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNQQ6CMBCF4auYrq2hU6DFlfcwLqBMtVFb0laCE
+ u5uxYUQl5OX75+RBPQGA9lvRuKxN8E4m458uyHqUtszUtOmm0AGZSahoNfwoh1694i01pVkHBm
+ wQpIEOo/aDHPsSCxGanGI5JSWiwnR+ef8pWfz/g1ytgz2jGaU5WlqG1Hyhh8a5+LN2J1y9znUw
+ w9XGawwJFxqEEIrVWEp/zFfYrnC/IMFQM01U7Uo1niapjd6b/uiKgEAAA==
+X-Change-ID: 20260825-ksz-perout-af9813e12158
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Commit 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid
-performance issue") disabled the L1.2 substate on I226 controllers due
-to hardware exit latency limitations. However, IGC_DEV_ID_I226_LMVP
-(0x5503) was omitted from igc_is_device_id_i226(), and IGC_DEV_ID_I225_LMVP
-(0x5502) exhibits the same L1.2 exit latency constraints.
+This series aims to add periodic output support for the KSZ8463. The
+way the KSZ8463 handles periodic output differs from that of the other
+KSZ switches. It therefore needs its own set of perout callbacks
+(configure, start, reset, enable, restart).
 
-On systems where I225-LMvP is connected behind Thunderbolt/USB4 bridges
-(such as the HP Thunderbolt Dock G4), negotiating L1.2 triggers severe
-BadDLLP packet framing errors, link timeouts, and system hangs during
-shutdown. An earlier attempt ("igc: Mask replay rollover/timeout errors
-in I225_LMVP") proposed masking AER reporting. However, as Bjorn
-Helgaas noted in review of that patch, simply masking errors is
-undesirable and fixing the root cause is preferable; disabling L1.2
-prevents the link from entering the unstable substate entirely.
+Patch 1 saves the full request to be able to retrieve all its
+information in case of restart
 
-Include IGC_DEV_ID_I226_LMVP in igc_is_device_id_i226() and disable the
-L1.2 substate for I225-LMvP across probe, resume, and error recovery to
-ensure link stability without masking AER errors.
+Patches 2 to 4 prepare the driver to accept different kinds of periodic
+output settings.
 
-Fixes: 0325143b59c6 ("igc: disable L1.2 PCI-E link substate to avoid performance issue")
-Link: https://lore.kernel.org/lkml/eb5a9805-3e53-ec22-696e-21c6b8cf0bfc@molgen.mpg.de/T/
-Signed-off-by: Daniel Viaño <danividanivi@gmail.com>
+Patches 5 to 10 extract a set of functions from the existing periodic
+output support that can be reused by the KSZ8463, avoiding code
+duplication as much as possible.
+
+Patch 11 adds periodic output support for the KSZ8463.
+
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/ethernet/intel/igc/igc_base.c | 1 +
- drivers/net/ethernet/intel/igc/igc_main.c | 8 ++++----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+Changes in v4:
+- Add PATCH 1 to fix request configuration at restarts
+- PATCH 7: Add checks on the period to ensure divide by zero won't
+  happen later. It addresses a corner case spotted by Sashiko on v3
+- Link to v3: https://lore.kernel.org/r/20260908-ksz-perout-v3-0-6722a3f1ca75@bootlin.com
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-index ab9120a3127f..6865fef4049f 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.c
-+++ b/drivers/net/ethernet/intel/igc/igc_base.c
-@@ -447,6 +447,7 @@ bool igc_is_device_id_i226(struct igc_hw *hw)
- 	case IGC_DEV_ID_I226_V:
- 	case IGC_DEV_ID_I226_K:
- 	case IGC_DEV_ID_I226_IT:
-+	case IGC_DEV_ID_I226_LMVP:
- 		return true;
- 	default:
- 		return false;
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 1fb5f3cbe93c..6c4e04661068 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7172,8 +7172,8 @@ static int igc_probe(struct pci_dev *pdev,
- 	hw->subsystem_vendor_id = pdev->subsystem_vendor;
- 	hw->subsystem_device_id = pdev->subsystem_device;
- 
--	/* Disable ASPM L1.2 on I226 devices to avoid packet loss */
--	if (igc_is_device_id_i226(hw))
-+	/* Disable ASPM L1.2 on I226 and I225-LMvP devices to avoid packet loss */
-+	if (igc_is_device_id_i226(hw) || hw->device_id == IGC_DEV_ID_I225_LMVP)
- 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
- 
- 	err = pci_save_state(pdev);
-@@ -7559,7 +7559,7 @@ static int __igc_resume(struct device *dev, bool rpm)
- 	pci_enable_wake(pdev, PCI_D3hot, 0);
- 	pci_enable_wake(pdev, PCI_D3cold, 0);
- 
--	if (igc_is_device_id_i226(hw))
-+	if (igc_is_device_id_i226(hw) || hw->device_id == IGC_DEV_ID_I225_LMVP)
- 		pci_disable_link_state(pdev, PCIE_LINK_STATE_L1_2);
- 
- 	if (igc_init_interrupt_scheme(adapter, true)) {
-@@ -7688,7 +7688,7 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 		pci_enable_wake(pdev, PCI_D3cold, 0);
- 
--		if (igc_is_device_id_i226(hw))
-+		if (igc_is_device_id_i226(hw) || hw->device_id == IGC_DEV_ID_I225_LMVP)
- 			pci_disable_link_state_locked(pdev, PCIE_LINK_STATE_L1_2);
- 
- 		/* In case of PCI error, adapter loses its HW address
+Changes in v3:
+- PATCH 10: Fix build error when CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=n
+- Link to v2: https://lore.kernel.org/r/20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com
+
+Changes in v2:
+- PATCH 1: Init n_pins for all PTP capable switches
+- PATCH 2: Init n_per_out for all PTP capable switches
+- Link to v1: https://lore.kernel.org/r/20260831-ksz-perout-v1-0-14202db763b3@bootlin.com
+
+---
+Bastien Curutchet (Schneider Electric) (11):
+      net: dsa: microchip: fully save the periodic output request
+      net: dsa: microchip: add the number of pins to chip infos
+      net: dsa: microchip: add the number of periodic signals to chip infos
+      net: dsa: microchip: use dynamic mask to check pulse width validity
+      net: dsa: microchip: extract PTP callbacks configuration from PTP registration
+      net: dsa: microchip: extract ptp_get_pin
+      net: dsa: microchip: extract compute_width
+      net: dsa: microchip: extract prepare reset
+      net: dsa: microchip: extract time update
+      net: dsa: microchip: extract time adjustment
+      net: dsa: microchip: add periodic output support for the KSZ8463
+
+ drivers/net/dsa/microchip/ksz8.c         |   2 +
+ drivers/net/dsa/microchip/ksz9477.c      |   1 +
+ drivers/net/dsa/microchip/ksz_common.c   |  22 ++
+ drivers/net/dsa/microchip/ksz_common.h   |   2 +
+ drivers/net/dsa/microchip/ksz_ptp.c      | 490 ++++++++++++++++++++++++++-----
+ drivers/net/dsa/microchip/ksz_ptp.h      |   9 +-
+ drivers/net/dsa/microchip/ksz_ptp_reg.h  |  16 +
+ drivers/net/dsa/microchip/lan937x_main.c |   1 +
+ 8 files changed, 467 insertions(+), 76 deletions(-)
+---
+base-commit: 42a9fb3382fc2573e92f41d203b095d9a372cfc9
+change-id: 20260825-ksz-perout-af9813e12158
+
+Best regards,
 -- 
-2.53.0
+Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
