@@ -1,305 +1,268 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0DC49E5D5
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790343050; cv=none; b=XCyvk/Q3YEdBhkLMgis/FJxhZaRmKusxTVjGHDL9I2QfcYE154iUVzJzsIL0mlCjqZIk7JmCO2SJ9w0hZY5BGKGfAAkqi1bBNoKLrZg4q+ld/zteuGCQ1h5sp2sLJC7JsGYvyZ/C7Zq5F0bkXOHhdAGkKlGZlK+YOppY2bfEXK0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790343050; c=relaxed/simple;
-	bh=sewSjsOYKkJcL/QPjZ7SLyeaADa9y+AGTIkwad9PCsI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=e4EkYdnNIJf/d3x8uc6Gc70N0uYsTHT41WrwQOJzXOD1Lt5/eYLX3eQvprDdc40uFDCYHz/2a8Co2I8gUBaRxSM+JGPJyUJi4seqxH2YHji8flYyETCm/v5kGJ5F7s2Op9XdxJb5Y0M0GVNigX7VFmDOoZEEsz6w6vKVdRifVeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=moeller0@gmx.de header.b=q4q59Dos; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583C64A2638;
+	Fri, 25 Sep 2026 13:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790343055; cv=fail; b=DoypHCoONHuAv5MkB13nsvxDYjBtxtI+RyRBeS6ImqL4jHL6Fand2PzYu4dYDlBqUDQS9/hiMCYTvG6CUFvOTkbnpSAaAExdS2vPgbt2gQ2zac4G1JNiM0eO491kK9XTLXenaGBqSE3RLLqlvslaywQBOhjsQv3XesTTL7/0Zwg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790343055; c=relaxed/simple;
+	bh=+4a0hdrF6RbtFhK6Gdue/d8c3busPWExaaWgzO4UZDs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Nd53ZVKJV/jNchofCTW3UK+vdcbVOLNAjQL1Oa2NvtnQaGxyr6l+OAKTtC/W3uWzz5yW/T0vMFR1MHvPSiVsoW8VK8vQiMvcuiFuzUj9dAOgQ4r+3m2n5mJ/bvuuvZluJ8FdlwXgBfjrIiZxfv0JH7hvAdVnTWTIKP75eOf50Dg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dbpp0RwS; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=moeller0@gmx.de header.b="q4q59Dos"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1790343037; x=1790947837; i=moeller0@gmx.de;
-	bh=ro0Q6e3SywZ9QcLtuNN1OVhJlu6uLxo8O4dTo0G8Fws=;
-	h=X-UI-Sender-Class:Content-Type:Mime-Version:Subject:From:
-	 In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:cc:content-transfer-encoding:content-type:date:from:
-	 message-id:mime-version:reply-to:subject:to;
-	b=q4q59Dosuze+HpbmKuCHLYdsOIlPBcC1c2PL5pOY9oWVY56pWbou65Y45P1w6dJh
-	 qpqzM9kaFJVUAh8mM6s5EAhRglT84WgJEAYkmKWB2Ui9MB6oi4de9/yWb9Zlo1UvF
-	 ZhgzSARdf+PIR+oSb4+HaLhyAYBgNukKTXl8mcu0Rdb8n/3v/rfNQQnV+2fqCcoqC
-	 RpqcThxr9ldawWk6BP971Jn9SYCD/viM7K7PkriL1hztqNJFFjm/Ll9CMywpkTDLM
-	 WQjawFhnpBfE7LiD7B86McORQdL3ruXBd70yBxQSSYWbN5SU6g5Xz//Qr1J2xOqqQ
-	 5RMshGNG7XIXHuWpUg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MjjCF-1wU8H81svD-00nWez; Fri, 25
- Sep 2026 15:30:37 +0200
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dbpp0RwS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790343053; x=1821879053;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=+4a0hdrF6RbtFhK6Gdue/d8c3busPWExaaWgzO4UZDs=;
+  b=Dbpp0RwSmwqwq6j9tMwscZ/tQDSX7zBb7gRsbyfUQTMtsO5FXR9cTeXG
+   7tUXhknyn2hkebIeRv0pDDV/le5xLhk+SjAbM1jh8jnwR7jBrgT7mnDQe
+   Ad2cRFmKRU40vuE7s25zFMQg1RuFjGxewLSuRwH9QScHAXEpvT8xDcHua
+   fIJ8iSKqAR32pHeE5lDxY31Pb+G4myDkRwkLnjrZpBvxIjju0QWjKjxJX
+   rJeQP5eCs6bceiLG1ZlhpJV0/PmIQ8Cx/47/lchQItanCMn0uZBtu52Zp
+   vB5QLCCxY/A+nPJPXVm8HvlROg+QdTKnqYsuyhgcYdTe1FkRBLgPCDMJT
+   w==;
+X-CSE-ConnectionGUID: pOaDugVKSnWreSRtYR847w==
+X-CSE-MsgGUID: ujmaEBPXT16qJan6HQmpeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="90991440"
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="90991440"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 06:30:53 -0700
+X-CSE-ConnectionGUID: tA0rHkCUSO6juVt58ZA+iw==
+X-CSE-MsgGUID: kxkp+de6QLi0wZ2Tuv8KxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; 
+   d="scan'208";a="303843851"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2026 06:30:52 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 25 Sep 2026 06:30:51 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 25 Sep 2026 06:30:51 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.15) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 25 Sep 2026 06:30:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y5XEiJy0JPe8oGr20hnmIfa6OZX/wjNRjGv1DVdavyZka14BUhicnFVEMkz5XF43Vn3EnRV6VyuG3t8V0prBAqlv9O7ut0UH2m3J3TJWctzczn2s6o1Y0y4QFL8/tc1PEQGl6bvbFH2wTCg0FmSQU2aT8TKcVzgxtQ+BOlFa35FOrEneBg9zEoeoM2preU5Q1ZDethYKHbUZGodvJ25oZnLX4Z5bd/s/XMQ6ftMRBerDaRb5btq69wLVPJYbraFQfY5vFVWrJBPQyIaZCruwjWZ7q26zQJtBhIDJs/mu+mjs7LYxAY3l+4oatm8YVjBiKa8X+9iZ4eLXEns4v5popg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f0r82HT7pHjWnP22CfUsajAD1BN2rp/FqvQ17DvncK4=;
+ b=y6t4OczOjNDEjpaMD8r51U3jlyGht+Awwa5QsvLk7PS7bRHesd4YcHqHnn4tGQ01cegpEUEZsIic47hy+d02hZWgUqMG6v+lj9H0p3OlWsGA4IPJ5z9Pi1FW+9RHJhBu/5rN5SqPyAf84kG/LEmQN4UL0LOIV5nnCkZCNYqfjf3CmP0LyasQCxu80E2krt99CXGR0JhF+kna1LVLV9JyacsTCAHf9VL226mZ85Pcho+pCpoq58yaAScDLQnmjsdmCFR5sZm66iFNY5dgkhBibFVGkk/VWG9yXNi3LBeMfDs3U078O1dM/2bGxxThAq0BFkXuDI+0FUF1DeaHXXXIdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ IA3PR11MB8940.namprd11.prod.outlook.com (2603:10b6:208:57e::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.18; Fri, 25 Sep 2026 13:30:47 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 13:30:44 +0000
+Date: Fri, 25 Sep 2026 15:30:32 +0200
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <edumazet@google.com>, <andrew+netdev@lunn.ch>,
+	<netdev@vger.kernel.org>, <zhaochenguang@kylinos.cn>,
+	<magnus.karlsson@intel.com>, <jacob.e.keller@intel.com>,
+	<przemyslaw.kitszel@intel.com>, <jbrandeb@kernel.org>, <horms@kernel.org>,
+	<kerneljasonxing@gmail.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+	<hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+	<bpf@vger.kernel.org>, <sunithax.d.mekala@intel.com>
+Subject: Re: [PATCH net 2/8] i40e: avoid null ptr dereference in
+ i40e_ptp_stop()
+Message-ID: <arZ3eIpeEXM2qFKv@boxer>
+References: <20260918212458.550425-3-anthony.l.nguyen@intel.com>
+ <179004066689.2160803.12484884497586238643@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179004066689.2160803.12484884497586238643@kernel.org>
+X-ClientProxiedBy: DU2PR04CA0176.eurprd04.prod.outlook.com
+ (2603:10a6:10:2b0::31) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.3\))
-Subject: Re: [Cake] [PATCH net-next] net/sched: fq_codel, cake: widen backlogs
- to u64
-From: Sebastian Moeller <moeller0@gmx.de>
-In-Reply-To: <CANn89iL3jBMczB4txC4oDusfpDoem-wdTOFVrujTbC0ArNhGqQ@mail.gmail.com>
-Date: Fri, 25 Sep 2026 15:30:24 +0200
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
- netdev@vger.kernel.org,
- =?utf-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- cake@lists.bufferbloat.net,
- Jiri Pirko <jiri@resnulli.us>,
- "David S . Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Victor Nogueira <victor@mojatatu.com>,
- hybris <hybris@mojatatu.ai>,
- Sashiko <sashiko-bot@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <68BE1514-828D-4184-84E4-90F2EB3F035D@gmx.de>
-References: <QDISC-BA27.v1.20260922092618@mojatatu.com>
- <CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com>
- <CAM0EoMn8_MVUHa2Jym7wKvd6Oo-JvNJ7GPvRJi2DsJCnQFmW+w@mail.gmail.com>
- <CANn89iL3jBMczB4txC4oDusfpDoem-wdTOFVrujTbC0ArNhGqQ@mail.gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.3)
-X-Provags-ID: V03:K1:U4lxXNmA3+BOkGyVGQhGYaqCDRtwTGXkRU3F8vjjee1qSgeoB1X
- 1NoQluyYUjs0mHvr+Wh/vy+zDeTo7al5+H5E64bpDi+ONwfK18IdM+sZ6Ct46oQVfbyJOou
- m/qG7xACvbuUR5xiZcabtJOKK4Q1MKK+uSoVNuVPvMpBUv6VCODEKyYxnn/tkBAAW3RlrEV
- MY4WEXzyxgGVS4wn8ibdw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wk82LTCDWvQ=;+YejWUQOMz1wxMQNZHWcCS3K8IL
- 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
- 0LKuzreALUCrGm7DLpsJr8p9aknz+Dx2RAmEyM=
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|IA3PR11MB8940:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c1d38f0-e81e-4856-4008-08df1b0933b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|4143699003|10067099003|5023799004|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: A0e4EYrI4GzHtt+LQ7rOk+3v2BnRN+4Oa8ElVWlFLUzjWn2tJrVoM9Qqus8veewdIOGcSb4r7mQBXKHpbVeZP3CY6X4MVfh+rpHvGv7up+DcQ7HFQZ4DqriT7LJEbNRJpwmKeAlFiQ/P4ge/7WBqf6qN9V90hLkb5KyffGcR5nLEX4NnrDf5umwdRmW9GIp/iEX1RX2OmyiCp39a1qNcHqwWV0aXNR+W/V072nCKcK+wg9UaULTdbygpYID5adpG2Iead+WSR53s1oOG4qlfdD6MkBm86sJIXtalnox01J0/vWOglWMURcCzj4bOdEgNmDqiYRuGVM8hO7KEsFRC3AV59MPnq6elxN7Vk9O6i3SfIlk5s/ucIRqiQRSykqZc9sKlkQNOTRgAI1IBgNvaf/P5JnvDkKt/JFWkc8qs5Fup53Q4JoKIeINC/z3EELNxorDgNChAkCw+ec625EEC5wPZUNFYX5VPiF50EgMOKRd7JwhoAgfhqKv4QdcCGgx1l9scKLKIDvwAm9e4HCXCe594sRmHJmGGpU2+L/OM4svvWC/XarE4qZTJh5cg60S9AJLZjdZToUbR5r6W3qFojj2Wt+BVMyOyOzubDVnE3GF4rM+v1yma71Blh9MIPrHZ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(4143699003)(10067099003)(5023799004)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b2E3bzY2TC94SWpFa29DN2FaU0ZTT3Q4dW14QWYrTDRmMllHRXR4dXUyYjFt?=
+ =?utf-8?B?UkZqUUhaVDA0TExaSW51b09wVjVvV2lKeEpsZGxiNHU2eXdiVUFqeXBuSVRO?=
+ =?utf-8?B?ZXQ2SUoyQzJqeUFsOGhhSXhWTWY1ZTlOckJFUEhGQWhNbTNoNEhMVTRKYWpO?=
+ =?utf-8?B?cmY2ZlpHVExpSGprd2txV3RIUS9PTEZPNVUzMzJsdURtOXQ3SDEwcWs4Wlgz?=
+ =?utf-8?B?NTEzdU1rRXUwWUpIQzh0OVF6eGloeVBOT2F4aGxheUlDdG4zcXJqMkVMN01G?=
+ =?utf-8?B?ZFEva0VxUlV5MzQ5aFJiR0NFQWNjVHZnd0h6Wk10S1cwT2ZDODNjUUlJZW9i?=
+ =?utf-8?B?RnlhenRBQkhwc0d3NGd0T2IwT28rUS95bThDWlNTMU5mVUZpQnN6KzlkL3ZP?=
+ =?utf-8?B?UlMxbnZsMkNFY3dJUWZCRjI3cnZ0OEVSQ3hIUmJkVEdnakFXeFlwMjFIV1dj?=
+ =?utf-8?B?UUtWL2hXcTZnZ250YUJsMENXb24yZTcrUjJZRk1BbDFYN0FSSEc3a3dxaThp?=
+ =?utf-8?B?UUxydnFGYkgvcUQ5OVpUVmxXSzd6enNNeERXTjBVV3NPZGxGY2h0NTJWZFNP?=
+ =?utf-8?B?N3J0MWFTcjVVaCtWOWQ1dHV0YTUzT1p4WjM4Tzl3bU5sREdKdm55Z2cxUWdS?=
+ =?utf-8?B?YXZ1UWQ2cnM2eW1iV0xSaVBubjFyK1MxVUVwd1JhNjFFRjZubXJqRjI4TlpN?=
+ =?utf-8?B?ZG8ybm1VWDliSm8zeThabVFVNEdlNEdoVE5qaUNTWlFCM0xHbzh2R2FjbU1X?=
+ =?utf-8?B?eHhsOEJRTlVZWlpkaGl2NkxBYkZxcDRqa1Npc2ErWDEvdTZkNDBLOCtIQmNG?=
+ =?utf-8?B?SmNXSGlhaXl2bk1MYzZEdVV2RVNneTVQWWZhend2aDZnZVp5ellwa3kwZnVj?=
+ =?utf-8?B?VWpqTTRVZnBmaWp0bDVKZjFlVUFXamlYZXk0VWJ6QVBhN2xTOWN6OTBCWUts?=
+ =?utf-8?B?WWJIZU5iWVA0TWR5ZW54Mlg0UWt1cnVMMkdmK2xya3YvTWlKT09rQzhVUStL?=
+ =?utf-8?B?aTJNZWozdU42UWVuaXNxSklmZG43eTczcDBTczJ0ZnRWRmFFZkdUeG1iM1kw?=
+ =?utf-8?B?OS9qUC9kaUFJbXNLWUhqNS9ib1dWaWJ5a0l1aEN6S01ZSnBtTE8xdWNmelpt?=
+ =?utf-8?B?eEVsUDA0TGJ4QlM2elZzVDl4aFgyZUpWcWVxRUpzaWlTdTVBN2RwaHdBc3RS?=
+ =?utf-8?B?YUYwWWU3M3FaYjI0L3lVZ2J2Q3ZEUTJ0dlFqcFlmN3Z6TUNENklXLzlsakpI?=
+ =?utf-8?B?N1pLdVRwMXRQU1NuQWdhRXpYcTJ1N3UxbW02N2VVdVpodDFlREtPZDM5eGtm?=
+ =?utf-8?B?bWs3bkxuRXVYZXl3T1dtK0Z5R09WRmtvOGF1ZmxJWENFTHFtd29XeUU1SnB6?=
+ =?utf-8?B?UTF2Q25zbHlJeFhCT2FCSm1JMVdqWkM2ZE05aGY0TGN1RDR0K3FxRXpQT1ZW?=
+ =?utf-8?B?bkNTMzUzTmJVVGVlUTZHdlVjdXhBanlXRXhRNW9MRkRmYytDUStNTUx6eDRr?=
+ =?utf-8?B?c09oRm1wcWRncGNSY1B5ZXpxcHJzc3FGeDlHTjdaL254R0ExNmtYQWFHQnZq?=
+ =?utf-8?B?bS95eHNVdWtZK3pBVjhXMFoyd0ltL2dVc0w4Yjc2RGlGTkF6VytNY1d1cGI4?=
+ =?utf-8?B?YkhpajlROTdpTHhMS3A0TGp2dkJFNWE1MzgyYWpqSGpaZWFGVGsvc2ZHbWVi?=
+ =?utf-8?B?WElVQXVCQTZBRFhXSlBsekw1cFp3b1JKVDBMVEdZYTMzN0duZWJVR0VCUjFF?=
+ =?utf-8?B?eHhucXgvMzhqQnptYUR6bU5MeG9EVnVEaTJWTThmelZnWGp0MWN3NW5qRGw5?=
+ =?utf-8?B?SitCdlEranJLQWVRM1BQSWJjWWhSQ3lWcXd1RUJjMGQ4Y2RxdXpFMk9JVVBC?=
+ =?utf-8?B?V0xvQS9IcU85NkwxS3ZxQ3hRdHRhTjhya0RIbkZoNEZvZGRNYVNkL1BHWEs2?=
+ =?utf-8?B?MnQ0K3kreXdXQ1FxNlJxN1ZMU3lKUWVHR2tQVlhmNTl5ei9KVkxlS1VoSkhT?=
+ =?utf-8?B?SzFubEI2ZmZtREFNUGVyalloTkFKbnpteWNGRlVWRjJ3M0Qra3BzT211bHhH?=
+ =?utf-8?B?TVdwUWU3bjFBTXhiQWdzZldSby9wQWFkVDBNcHo1UUpYZjE0U0RWbHg2aS9C?=
+ =?utf-8?B?T0N1ZDlKbTVvQ04ra3Y3MDB1WE5HY0dENE5Ublhra3JPT2FFVlVpRjV0MnZu?=
+ =?utf-8?B?eXFLNnJCRzFpS0x0LzQ1MTF6ZXpyWnFyWHpxdEpCY1ZMQ2lwaXZzeGtVQk5k?=
+ =?utf-8?B?TjhtL3YwcmlqSEhScVR4RFlvaTVUd2hzMXRSb2tOMlZWTUFvcS80akVJMGFs?=
+ =?utf-8?B?WlZySEUxaDdFZ2pSc09LYWRkUGRkbWV2Z29tU1RMTGdKeU9nM0VwbE1GdEhR?=
+ =?utf-8?Q?EIZ/JNQUHHyrpgX0=3D?=
+X-Exchange-RoutingPolicyChecked: ESdrsM/F6cpHtgYU/BoyVcQEMTOX2pHJSNPILDeE2YMcZOjr0DcoBOqqrCZxweup12om58/8F7os2YyICTj52/KZW5F6R49/53TxoYn55huoUoSMKHRZ1KvpbC2Di7TJXxzqAkOqXibKXy/wOJZe3AUedxtvU8SLJ8lMJVGyqo8Z9zNWtvaZmwX6K/Fmtlm53E04zQ+FoqVytcO6zQ5eNX3nlNylD90KhcN9KGFSRqvUpr3wN04NBtZeQGpafEKzXBjwljpN36ARGBZ9f8hiGIlH5AFrY/peXauSwRnPFpZei+E6dsO40lUmzsyxJwvt4PO3em5r4ulvbWRi6b4qcw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c1d38f0-e81e-4856-4008-08df1b0933b6
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 13:30:44.7196
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TQthLpfW9IdUbdA9IWg7HpoITZZwZwSB8blJOSAIEaZfSKLAmN6LrMEfgAa5djd23pnjrnUov19ZpS9J9lVJDNvV84GEpmSTd64hNrQ5b0I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8940
+X-OriginatorOrg: intel.com
 
-Hi Eric,
+On Tue, Sep 22, 2026 at 01:31:06AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] Symptom-only fix: when `i40e_rebuild()` aborts because the
+>   main VSI could not be re-created, the PTP subsystem is left in an…
+> 
+> --
+> 
+> i40e: avoid null ptr dereference in i40e_ptp_stop()
+> 
+> If the main VSI cannot be re-created during a reset, i40e_rebuild() aborts
+> after i40e_vsi_clear() has freed the main VSI, so a later i40e_remove()
+> calls i40e_ptp_stop() with pf->vsi[pf->lan_vsi] == NULL.  The patch adds a
+> main_vsi NULL check around the dev_info() that dereferences
+> main_vsi->netdev->name.
+> 
+> > diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> > index ff62b5f2c815..ca93df4d6785 100644
+> > --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> > +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> > @@ -1556,8 +1556,9 @@ void i40e_ptp_stop(struct i40e_pf *pf)
+> >  	if (pf->ptp_clock) {
+> >  		ptp_clock_unregister(pf->ptp_clock);
+> >  		pf->ptp_clock = NULL;
+> > -		dev_info(&pf->pdev->dev, "%s: removed PHC on %s\n", __func__,
+> > -			 main_vsi->netdev->name);
+> > +		if (main_vsi)
+> > +			dev_info(&pf->pdev->dev, "%s: removed PHC on %s\n", __func__,
+> > +				 main_vsi->netdev->name);
+> >  	}
+> 
+> [Severity: Medium]
+> 
+> Is guarding the log message here enough, or does it just make the window
+> between the failed rebuild and the eventual remove survivable?
+> 
+> In that window nothing appears to touch PTP at all.  i40e_ptp_stop() has
+> only two callers, i40e_probe() (error path) and i40e_remove(), and none of
+> the abort paths in i40e_rebuild() (end_unlock / end_core_reset /
+> clear_recovery) call i40e_ptp_init() or i40e_ptp_stop():
+> 
+> drivers/net/ethernet/intel/i40e/i40e_main.c:i40e_setup_pf_switch() {
+> 	...
+> 		if (!main_vsi) {
+> 			dev_info(&pf->pdev->dev, "setup of MAIN VSI failed\n");
+> 			i40e_cloud_filter_exit(pf);
+> 			i40e_fdir_teardown(pf);
+> 			return -EAGAIN;
+> 		}
+> 	...
+> }
+> 
+> Across the reset, the only PTP action is i40e_prep_for_reset() calling
+> i40e_ptp_save_hw_time(), which is a pure read.
+> 
+> So after the abort, pf->ptp_clock stays registered and I40E_FLAG_PTP_ENA,
+> pf->ptp_tx, pf->ptp_rx and pf->tstamp_config stay set, even though the main
+> VSI and its netdev were freed, and the register programming that
+> i40e_ptp_init() normally redoes after a reset never runs:
+> 
+> drivers/net/ethernet/intel/i40e/i40e_ptp.c:i40e_ptp_init() {
+> 	...
+> 		regval = rd32(hw, I40E_PRTTSYN_CTL0);
+> 		regval |= I40E_PRTTSYN_CTL0_TSYNENA_MASK;
+> 		wr32(hw, I40E_PRTTSYN_CTL0, regval);
+> 	...
+> }
+> 
+> i40e_ptp_set_increment(), i40e_ptp_set_timestamp_mode(),
+> i40e_ptp_restore_hw_time() and i40e_ptp_set_1pps_signal_hw() are skipped in
+> the same way, and i40e_ptp_init()'s own kerneldoc describes it as
+> reconfiguring the device after a reset.
+> 
+> Does that leave userspace with an openable /dev/ptpN whose gettime/settime/
+> adjfine operate on a timesync block the reset left disabled, and PF flags
+> still advertising timestamping that hardware will not deliver?  A Tx
+> timestamp request in that state would set __I40E_PTP_TX_IN_PROGRESS for a
+> timestamp that never arrives, recovered only by the watchdog.
+> 
+> Would it be better to quiesce PTP on the rebuild-failure path, for example
+> unregistering the PHC or at least clearing I40E_FLAG_PTP_ENA, rather than
+> adding a NULL check per consumer?  As written, every future user of the main
+> VSI or of the PTP state in this window needs its own check.
 
+I didn't want to touch ptp initially and this commit was rather to satisfy
+sashiko (which was successful!) and here the broader concern is being
+raised and I suppose I won't escape from addressing this :<
 
-> On Sep 25, 2026, at 15:03, Eric Dumazet via Cake =
-<cake@lists.bufferbloat.net> wrote:
->=20
-> On Fri, Sep 25, 2026 at 1:28=E2=80=AFPM Jamal Hadi Salim =
-<jhs@mojatatu.com> wrote:
->>=20
->> On Fri, Sep 25, 2026 at 5:13=E2=80=AFAM Eric Dumazet =
-<edumazet@google.com> wrote:
->>>=20
->>> On Fri, Sep 25, 2026 at 10:54=E2=80=AFAM Jamal Hadi Salim =
-<jhs@mojatatu.com> wrote:
->>>>=20
->>>> This is a follow-up to commit 8f735d64382d ("net/sched: bound
->>>> qdisc_pkt_len to prevent qdisc soft lockup"), which capped
->>>> qdisc_pkt_len() at QDISC_PKT_LEN_MAX (1 MiB). That cap bounds the =
-stab
->>>> amplifier but leaves the per-flow backlog counter u32:
->>>> fq_codel_enqueue() accumulates qdisc_pkt_len(skb) into =
-q->backlogs[idx],
->>>> so a flow can still accumulate 4096 packets of 1 MiB each and wrap =
-the
->>>> counter mod 2^32. After a wrap, fq_codel_drop() sees a tiny =
-maxbacklog
->>>> and drops from an almost-empty flow, and the dequeue-side =
-subtractions
->>>> corrupt the counter further.
->>>>=20
->>>> Widen the fq_codel backlogs table, the fat-flow scan =
-(maxbacklog/len) and
->>>> the drop threshold to u64. fq_codel is not lockless: every writer =
-runs
->>>> under the root qdisc lock, so plain u64 arithmetic keeps the =
-WRITE_ONCE
->>>> publish / READ_ONCE-consume pattern. The dump path
->>>> (fq_codel_dump_class_stats) stays a lockless stat-only read.
->>>>=20
->>>> CAKE accumulates the same generic qdisc_pkt_len(skb) into its =
-per-flow
->>>> b->backlogs[] and per-tin b->tin_backlog and consumes the values =
-for
->>>> longest-flow pruning (cake_heapify/cake_heapify_up) and for the =
-shaper
->>>> staleness check, so it shares the bug. Widen those counters and the =
-heap
->>>> comparison locals to u64; the class/tin stats keep exporting the =
-low 32
->>>> bits through the unchanged uAPI fields.
->>>>=20
->>>> Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
->>>> CONFIG_NET_SCH_FQ_CODEL=3Dy.
->>>>=20
->>>>  ip tuntap add tun0 mode tun
->>>>  ip link set tun0 txqueuelen 32 up
->>>>  ip addr add 10.99.0.1/24 dev tun0
->>>>  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
->>>>      fq_codel flows 1 limit 4200 ecn drop_batch 4096
->>>>  # hold the tun fd open without reading (IFF_BACKPRESSURE) so the =
-qdisc
->>>>  # backlog persists, then send at least 4300 packets (the wrap =
-starts
->>>>  # at 4096 resident; the over-limit drop that reads the wrapped
->>>>  # threshold fires past the 4200 limit): backlogs[0] wraps at 4096 =
-x
->>>>  # 1 MiB and the fat-flow threshold reads the wrapped value.
->>>>=20
->>>> With a 1 MiB qdisc_pkt_len cap the counter wraps at 4096 resident
->>>> packets. At limit 4200 the first over-limit enqueue (the 4201st) =
-sees a
->>>> wrapped 105 MiB (half-backlog threshold 52 MiB, a ~52 packet drop =
-burst),
->>>> where the u64 counter sees 4201 MiB (threshold 2100 MiB, a ~2100 =
-packet
->>>> drop burst).
->>>>=20
->>>> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
->>>> Closes: =
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1=
--jhs@mojatatu.com
->>>> Link: =
-https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
->>>> Tested-by: hybris <hybris@mojatatu.ai>
->>>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
->>>> ---
->>>=20
->>> This makes no sense.
->>>=20
->>=20
->> As absurd as it looks that code is reachable ;->
->>=20
->>> These qdisc have been developped to address bufferbloat issues.
->>>=20
->>> Storing 4GB in a qdisc is absolutely insane.
->>>=20
->>=20
->> The counter wrap is not because we stored 4GB, rather it is because
->> "tc .. stab overhead ..." inflates qdisc_pkt_len() for a 64B pkt to
->> 1MB. So ~4K packets (put in other words a few "real" KB) makes that
->> backlog[0] cross 2^32.
->=20
-> Kill this stuff ? Who is still using this, for what reason ?
-
-tc-stab? Same as before, if you need want to model a remote bottleneck =
-with a local traffic shaper tc-stab is the generic solution (off the top =
-of my head I only can enumerate cake as having its own traffic shaper =
-that handles overheads).
-One could argue that the "virtual" length should be accounted against =
-cake's memlimit or fq-codel's memory_limit somehow...
-In sane?/typical configurations overhead is expected to stay relatively =
-small, so this would not limit the actual queue size too much, while =
-potentially silencing this issue.
-
-I might be off my rocker, in which has ignore (or preferably enlighten =
-me).
-
-Regards
-	Sebastian
-
->=20
-> Really, it is time we stop adding code only for fuzzers.
->=20
->> Result is pruning the wrong flow..
->>=20
->>> Let's drop at enqueue if the current backlog is approaching 4GB =
-(this
->>> can later be a new config/attribute in net-next)
->>=20
->> Note, this is net-next already. Enqueue is fast path - are you ok =
-with that?
->>=20
->> cheers,
->> jamal
-> _______________________________________________
-> Cake mailing list -- cake@lists.bufferbloat.net
-> To unsubscribe send an email to cake-leave@lists.bufferbloat.net
-
-
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918212458.550425-1-anthony.l.nguyen%40intel.com
