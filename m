@@ -1,111 +1,157 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87D01F427C
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 13:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67E64A5ED6;
+	Fri, 25 Sep 2026 13:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790344785; cv=none; b=CPrMcyE9CXm78+qRnjsMCVMXeHrEN1neYBVbjO1ojfUr7FcBCCmG+GXGmU9x3HIzCQ366gin882ybRspfcFlSPCHgxnCLbiKAoHTDwDcr+3YJGsRqiV2lhqEOTxVWdLlFOmMHXLCj7LNiSwAOHmVrRzq4YcMi059Z/bAL3qCAGQ=
+	t=1790344795; cv=none; b=e0NH0ibpzT3B5CR1t7Ng0hZpr0Zbdztj9IpADiIW1cGRVCqRmO1mjgGuWSVUutKa5VR59bST9rA10KduJFXtgVgz+YTYhu8APsIPX73DUVtSga+ncMKwPIuoM4iRhE76pF3uI54dw6GyF7IA50RDqSJEE9j597mPUQIBnpOVUpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790344785; c=relaxed/simple;
-	bh=AIxHoYBASwLQOXohCuC2aRCgahGgWljtbfksp8mHyfM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b301KoFlA5nvW1bapGSq4bIjm3WCoAT/TDyWgRu9v38kJnOU+o1QUcv8+FXLir+/XMw0D6f2XdQeGzYWM241qBWiy2IEjObATNhs9h5I9osdIDhvq/iT1k+jpcGgk4gdU+ZonHfb0ZQZ1Uz7A4d1ZY8SUAgGFBXGe98O6IwftMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=c9oIkeJo; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1790344795; c=relaxed/simple;
+	bh=rxgqcxMBzyiCaShIe6oKqSQwEXJpXEvJGCpXStURPY8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gG5A0h+FQ9MnP764oKMxvCMeGDhVnqDcztwExdH+Ob3KTsEdKhXao+AopCrhXDULGr6XIDkyTqdWlj4fuGmeHUbNuOGEHmj/0wNvesltSxMDIqtEJcRt1O8sy7h+FTL8zYMkMZESmv9m/tlAurzljZgq9jGrDM7CuEIfz24nCcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ayToTLTg; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="c9oIkeJo"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ayToTLTg"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 019331A101D;
-	Fri, 25 Sep 2026 13:59:39 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8D8C5C653F6;
+	Fri, 25 Sep 2026 14:00:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BFF706073B;
-	Fri, 25 Sep 2026 13:59:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 206FE10328856;
-	Fri, 25 Sep 2026 15:59:27 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AD9D46073B;
+	Fri, 25 Sep 2026 13:59:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00A77103293B6;
+	Fri, 25 Sep 2026 15:59:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790344773; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=aycBG7kmkLd0baAzRQ2OkIRVPs3/PNyoRtHVPTB/LeA=;
-	b=c9oIkeJoGC/yiwLUaSy5a9wXxa+86agp6C6WLnFNTQi2aBtiONLMSeMlf6J//rjV3rXiY2
-	B5mMBPiUIkQIjVvjgdMSj/eiVk1Trf7tfg+cJRmqcVsCYGHiYMkJgtvwOpQNgE/utY7RYc
-	bPHODZxdyGYueSohoZTS3cNEsVnF+DDYrHqn1sun6cWgbmhwAvgHhdp+PCz3C3rIsaQqSX
-	ZJRWCogVcks1bx4XjDIvovkSyRndk9il8FLShk2HohwXvoC2oBzyTFfzhanYgPafUX0+nn
-	hWiFLwyvTftb0SUipXKxEDYQ0JT5b33Vsaa+wuWO+/OgcqC/NW0qDWc/IqMyyQ==
-Message-ID: <d06c0f50-777b-4ffb-a3c9-affde5bb5030@bootlin.com>
-Date: Fri, 25 Sep 2026 15:59:27 +0200
+	t=1790344783; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=XS8Dc0EYvbktyBpK0cidB0SJsr+eMfdYCTUgJ32Ne9E=;
+	b=ayToTLTgy2T2GLhsJemTzmA4zW9w+BidfcpCFU68eFsTsQ5wkby7iOuBP6o+NPDzvHsvpm
+	KhZHeVkRTwkiA5wcXlVBQGmyiBWktzkb4FXH+dvUe0VWvyrdUeswvmZBtsxLVPCsw+/ESh
+	thbhBvhe0ztRpQtr1vGaPT0+iM7HoSXwlMAFupH6SBVkVhx4/DoEh37eamffvn+/Lhpz8l
+	8E5J1K+xrJnZHdOUZGgKyAV9nvE006doTyOGr5Ys1RjF7sy3jF/037kRGKI63Og9zjdils
+	ioMVV3sGgySJmlxx1nnOspCOWPs2uPOiDRDMjgVF9wIXvzm/djhMk9v5kNNEsw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: [PATCH net v2 0/3] net: macb: fix close races (and RX refill error
+ handling)
+Date: Fri, 25 Sep 2026 15:59:33 +0200
+Message-Id: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] selftests: drv-net: Introduce a selftest for
- ethtool flow control
-To: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- Florian Fainelli <f.fainelli@gmail.com>, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260920164732.349744-1-maxime.chevallier@bootlin.com>
- <20260920164732.349744-2-maxime.chevallier@bootlin.com>
- <20260922194251.06e00e2e@kernel.org>
- <72bdfa09-34ea-43ab-88ad-b3c64c7e1f70@bootlin.com>
- <20260923201051.66e9bf14@kernel.org>
- <fb18618d-6402-4f7d-b318-1872570ceb27@lunn.ch>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <fb18618d-6402-4f7d-b318-1872570ceb27@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBREr2L+2pq2KLauvIdhwW8/UgOtaSvRE
+ O4u4MpElzOZ92aERNFRgtNmhEiDSy74OcjtBkxb+ysxZ+cMksuSa6FYXxtkpguJmEW0ssA9qkb
+ CDNwjNe65yi7gKUP1KdMDb2TyollmrUs5xNd6OYh1/Ms+CMaZlMJqUeJRl+KMIeTO+Z0J/eL5C
+ /EDFdKQVkoUX1A1TdMbvigzrfIAAAA=
+X-Change-ID: 20260918-macb-close-dbbd23b4b8f2
+To: Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Sean Anderson <sean.anderson@linux.dev>, 
+ Antoine Tenart <atenart@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
+The context-swapping series [0] has been ongoing for a while. The most
+interesting part is a proper hardware shutdown sequence, which is truly
+lacking in other parts of the MACB driver: at close, at suspend and in
+the HRESP error task.
 
+Instead of introducing that sequence for a new feature, apply it now to
+fix the main offender, the close path. That fixes the races listed in
+patch 3 and will allow the sequence to be reused later.
 
-On 9/24/26 15:54, Andrew Lunn wrote:
-> On Wed, Sep 23, 2026 at 08:10:51PM -0700, Jakub Kicinski wrote:
->> On Wed, 23 Sep 2026 07:41:13 +0200 Maxime Chevallier wrote:
->>> On 9/23/26 04:42, Jakub Kicinski wrote:
->>>> On Sun, 20 Sep 2026 18:47:27 +0200 Maxime Chevallier (Netdev
->>>> Foundation) wrote:  
->>>>> Future ethtool selftests are expected to use the same, these helpers
->>>>> are put in the net selftest lib.  
->>>>
->>>> Please resist the urge to create libraries.
->>>>
->>>> If you're doing this I suspect you didn't even read the README and 
->>>> you expect people to search around for libraries?  
->>>
->>> I did read the README and fought the urge, that was something Andrew
->>> was asking for in the previous round :( I'm ok with either TBH.
->>
->> I guess it was Andrew that didn't read the docs then :)
-> 
-> Yes.
-> 
-> I apply software engineering principles to tests as i would to any
-> other code. It has to be maintained, bug fixed etc. For my $DAY_JOB, i
-> spend as much time maintaining test code as feature code. So i don't
-> really want lots of copy/paste version of the same code.
-> 
-> So, for flow control, lets follow the README. When EEE is implemented,
-> we can see how bad the copy/paste is, and then consider a library.
+The first two patches are also fixes, but not related to the shutdown
+sequence: they address allocation-failure codepaths. They are sent
+alongside patch 3 because they touch the same code and would cause
+merge conflicts if applied separately.
 
-Some side question, as the whole thing goes into the same file, do you
-prefer that the series stays split into 3 patches, or do you prefer
-the whole thing in one single patch ?
+Now, let me list issues I'm aware of that we do *not* fix here, to make
+the scope explicit:
+ - HRESP task should sync with all other contexts. It frees buffers
+   under the feet of the whole driver. The hardware shutdown sequence
+   will help.
+ - Suspend callback is also racy with BH primitives. We'll be able to
+   reuse the hardware shutdown sequence.
+ - Even if we assume tasks are frozen, the phylink ops aren't and might
+   trigger between suspend and resume callbacks. Here we need to
+   (1) early return in phylink ops and (2) at resume put the HW in its
+   proper state according to phylink ops that occured.
+ - Alloc failure codepaths aren't perfect outside open. Hardware and
+   ring buffers are left in a sad state. We can probably do better.
 
-The diffstat would be :
+[0]: https://lore.kernel.org/all/20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com/
 
-tools/testing/selftests/drivers/net/hw/Makefile |   1 +
-tools/testing/selftests/drivers/net/hw/pause.py | 998 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+Changes in v2:
+- P1: ensure gem_rx() and macb_rx_pending() don't consume the
+  descriptors where alloc failed.
+- P2: gem_rx_refill() now only propagates an error if zero descriptors
+  are ready. We tolerate partial refill hoping the next one will help.
+- P2: we do *NOT* fix the set_ringparam codepath reported by Sashiko.
+  Proper implementation will come with context swapping which will
+  reuse the infra put in place in P3.
+- P3: the hresp_err_bh_work/tx_lpi_work Sashiko-reported race has been
+  fixed in a standalone, *NOT* here.
+  https://lore.kernel.org/netdev/20260925-macb-netdev-register-race-v1-1-752f90ce1c39@bootlin.com/
+- Take 2x Reviewed-by: Nicolai.
+- Rebase onto latest net/main (11536ee3d3e0), nothing to report.
+- Link to v1: https://patch.msgid.link/20260918-macb-close-v1-0-05e32ce98813@bootlin.com
+- Nicolai's v1 reviews (duplicate thread):
+  https://patch.msgid.link/20260918-macb-close-v1-0-221d916b7961@bootlin.com
 
-Maxime
+To: Conor Dooley <conor.dooley@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+To: Antoine Tenart <atenart@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Nicolas Ferre <nicolas.ferre@microchip.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>
+Cc: Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+
+---
+Théo Lebrun (3):
+      net: macb: never give hardware a NULL RX buffer
+      net: macb: propagate RX ring refill errors
+      net: macb: quiesce IRQs and drain BH on interface close
+
+ drivers/net/ethernet/cadence/macb.h      |   7 +-
+ drivers/net/ethernet/cadence/macb_main.c | 133 ++++++++++++++++++++++++-------
+ 2 files changed, 112 insertions(+), 28 deletions(-)
+---
+base-commit: 7c416e8f8423e6fe9b48e0b9c174bd902789f8db
+change-id: 20260918-macb-close-dbbd23b4b8f2
+
+Best regards,
+--  
+Théo Lebrun <theo.lebrun@bootlin.com>
+
