@@ -1,474 +1,73 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1991043F4AA
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 06:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2E0375F83;
+	Fri, 25 Sep 2026 06:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790318472; cv=none; b=GhJApsJ3IoJk+8neC0UECuQssbEYFubfwnpYnzN7p3Yy01le1eLqASUVkbtrXalwcuXTKotpnbOz4vwkZuOC2K7ycAhuZt2cacftB70RbU4+A4Naq+dRB/qUpxOyWI0vAbSQOmFnl+wwGYpPFVO3px3gD9zHX/bdrTCJ/YS+nLE=
+	t=1790318682; cv=none; b=tk3hkTPHM2/1Cgg1IojbeQt7PZX7Su/6BzLF/cfOKzkTtrOdHpSW3WiSDkxvifEdHWdhx81nnYANUwLmu0MC1WlHlRBs6EHdv4S2DjohHiOwxSjPQVQsFdgl/vjQnZkfZQNKlJKs1wnOFJnDuCN2HxYH7+UnByqRFv4s5w4uksk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790318472; c=relaxed/simple;
-	bh=0xQ66YQw6v8eTZB5F+/gQ+ySpTxPnmITm9pKU08pyBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7fslJ3kCs0UgD2piUNL38+Xz319JtCiUkP3tmZHraznY0VCg80Y3gdB2Hpry5TEiuMNYe/LNcmyGlwPsaYX/TvZcfh7CWKpSKu6JU88U5QgsE0OBbrgYKVq097E/H6ZRgEN5Ye+vGO+Ze0jQnMtETbDuu9Zxq8cH7sje1kcQEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JVnV9VZy; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790318682; c=relaxed/simple;
+	bh=FfqpPNJtRO0EUXXIhB7MM4WDvAfN8CH25Udahn/qzmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FZwpm3VU3hUGhU15nzz1DIAZ1NjAXwuq6yW7KWKrzOxUWYmE7bG6I57ALhOni/9NQcnbNyFpwPoZ9cU3GEkOIYwuUDL85sjTfcpT80PoVi3fvRZmQ7SCEHDXVpzfsufHS4wqkJ2Vcx7vFvknHOHKOYypTMj777i1aK6xZrexNiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wR67LYNT; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JVnV9VZy"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4aU08061729;
-	Fri, 25 Sep 2026 06:40:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=wF9HpP
-	H3vjeXy06Suqf3VTiOYSomL18Ve9JawjErtS4=; b=JVnV9VZyf6ZoUQbeWvVacE
-	1xbmrSA2fQT6VHEH65VQ/Zi114cTT+BV/J59HqUjO+RY1crgdhxXB1TiJygD8pZY
-	Y49nMve6we9HO3mRrFtnWSXpbQGWOf6wa7FtcwvGBocgt293R3upKN84d02ZB6xo
-	pdaovm7DyjNmzqBDEoEJvMr8nAah5zSV6LxsHLDbv//VKU3NqU5vNobEzmqrQztA
-	CapKULO+s5RuJQh4wAj34AElSiCb5eokfi34K4gYpsD1tKWER7IrSUonwR7isvrJ
-	VAcNfLqM9ar9ZlUtMdx+znciVW75fRW8QgWmvky0YM0FS4neWVRXig6A9qVe8KWA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgsnhd4-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 06:40:54 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4m4C33249867;
-	Fri, 25 Sep 2026 06:40:53 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt319cb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 06:40:53 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P6epOR31064816
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Sep 2026 06:40:52 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 952D658066;
-	Fri, 25 Sep 2026 06:40:51 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D744B58055;
-	Fri, 25 Sep 2026 06:40:48 +0000 (GMT)
-Received: from [9.67.88.81] (unknown [9.67.88.81])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Sep 2026 06:40:48 +0000 (GMT)
-Message-ID: <f35e4030-24b7-452e-85d3-6e1e4205260a@linux.ibm.com>
-Date: Thu, 24 Sep 2026 23:40:48 -0700
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wR67LYNT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=KzvSr9R/mBch7S+QJxiPCb7JhJ6PYAVMLtJt+FvjF58=; b=wR67LYNTPRSf7G/CzgVP6pfASC
+	AOwzdpGcvG3083Y4RQU1pcU1TlfoWNCDY0K9I6kIVWAN0BBlhs2SKehnLucqIZHCNbqduBbE/0hj+
+	m8YSVpAJY/oQmS6hVCY7qzvLf0n4bXYi4tba8gYWVerb0EVbYgWvK3u93kVJMF4A5e02J0raDUUP9
+	QL69O1I/ahYMIHTFq/ZW9N880IcPCBNZVmWHQ4OLTM3GWq4A2R+AAGlpODxgphV1fh1Hn4mvDUZUq
+	oA1trrcpd1b323POHkKL1IaA+4ou8TD9uE70Dze5wPDgnDYz3GyHXwTiRc+9sdvza+Hjv5b/ssg3t
+	jhiD+/GQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x9zfb-0000000ClrF-42Yv;
+	Fri, 25 Sep 2026 06:44:31 +0000
+Date: Thu, 24 Sep 2026 23:44:31 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Ratheesh Kannoth <rkannoth@marvell.com>, netdev-bot+sashiko@kernel.org,
+	davem@davemloft.net, gakula@marvell.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	sgoutham@marvell.com, andrew+netdev@lunn.ch, edumazet@google.com,
+	pabeni@redhat.com, sbhatta@marvell.com
+Subject: Re: [PATCH net] octeontx2-af: nix: Export CN10K admin queue enqueue
+ mbox handler
+Message-ID: <arYYTw8l90VNnKal@infradead.org>
+References: <20260915072357.980485-1-rkannoth@marvell.com>
+ <178971638355.22033.14086854049232485813@kernel.org>
+ <aqzpNjAtWSoi7hX1@rkannoth-OptiPlex-7090>
+ <20260921150241.10a47c1f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v6,09/15] ibmveth: Harden RX poll path with helpers
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
-        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com
-References: <2c0302ff17e945a742d0f0b79265ee556e3bf66a.1788102125.git.mmc@linux.ibm.com>
- <178845903884.3394541.9429373266253586035@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <178845903884.3394541.9429373266253586035@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab61777 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=GR1NILx-XGr8eRPm090A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: vF9w4A1OOFoCvYNj2Jklbxm8MTuKij33
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAyNiBTYWx0ZWRfXz0gWWqEnC8H0
- 64v//3aNWX6IdHzvhvIH45d9M3XOokcdwyAMEaXMykGKQOCBkfcB3TAdObdRzyRKKUR/xq3rCpD
- LZV4iuwDzsNz77CpHNrPEnmwV5oJSljccsJ9a3+wpXSjF97OPzV0gH5cs8MvZmzl4KaJU+wNW69
- y2VO/Og0d+2Ng0ivrWQl/ufEKRxhAcFUoxGsW1DRdF+J8w7Ye6V1ttkapTrbm+TDy+Vd5bPVZ7V
- G2bJqKxdo84tq54KTo9iXDdXEfTwPrvZ9kAXW0XFbJUWQ+noyBc9Ey4uU0MO6I5BpGGwdZdO7De
- uBTrniAPI7cFkP2nT5+7g+qu8pHCSRcow4AhmIOHx9tB4C7EP6HKUjnpGI5GxFVbHEmFprSOO2x
- DaLEkD44EZvX3KwrI+38RimXG9pHE9TWMcn9y6N2YPjEZggauzXKaAU00Fb6weTUY1qQrwUgK9G
- zZals6tyZO3BsSfe2MQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAyNiBTYWx0ZWRfXzJYTmKyte/sH
- ioxUbAjr2mABrMJyQorpPvgYgS4PvX459pO7d8rntUZjGx4+rfTiw9AWSjORutjIIVtK60oKmjD
- fCESVWlbGs/C0Wrq6INZKB/0BhPFbJs=
-X-Proofpoint-GUID: -xsvysAJl4a9Yd0xwdKMCFDaZDW5AO5g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250026
+In-Reply-To: <20260921150241.10a47c1f@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
+On Mon, Sep 21, 2026 at 03:02:41PM -0700, Jakub Kicinski wrote:
+> On Fri, 18 Sep 2026 13:03:10 +0530 Ratheesh Kannoth wrote:
+> > > - [High] New EXPORT_SYMBOL() with no in-tree consumer:
+> > >   `EXPORT_SYMBOL(rvu_mbox_handler_nix_cn10k_aq_enq)` is added in…  
+> > Can i post this patch to net-next as consumer is out of tree ?
+> 
+> No, we don't carry exports for OOT code upstream.
 
-On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider:
->
-> Critical: 0 · High: 2 (1) · Medium: 2 · Low: 0
->
-> - [High] The new ibmveth_poll_stopping() check placed between
->    napi_complete_done() and ibmveth_enable_irq() cannot prevent a…
-> - [High] The new oversize guard in ibmveth_poll_deliver_frame() bounds
->    the PHYP-reported offset+length against skb_tailroom(skb) instead of…
-> - [Medium] A real, user-visible sk_buff leak fix is buried inside a
->    199-line helper-extraction patch with no Fixes: tag and no Cc: stable.
-> - [Medium] All 'skip the slot' outcomes (invalid descriptor, bad
->    correlator, oversize offset+length) neither increment frames_processed…
->
-> Pre-existing issues:
-> - [High] ibmveth_remove() calls cancel_work_sync(&adapter->work) while
->    the netdev is still registered and RX NAPI/IRQ paths are live, then…
->
-> --
->
-> ibmveth: Harden RX poll path with helpers
->
-> This splits the RX slot handling in ibmveth_poll() into a set of small
-> helpers (poll_stopping, harvest_slot, recycle_invalid, skip_bad_correlator,
-> drop_oversize, deliver_frame, bump_invalid) so the NAPI callback becomes a
-> thin budget loop.  Along with the motion it adds an offset+length bounds
-> check before skb_put(), frees the copybreak skb on a harvest error, and
-> adds stopping checks so close/napi_disable does not re-arm PHYP delivery.
->
-> A few questions below.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 46f68f5b52e70..f726d1e3f0b11 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -2382,125 +2380,236 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
->>   	}
->>   }
->>   
-> [ ... ]
->
->> +static bool ibmveth_poll_harvest_slot(struct ibmveth_adapter *adapter,
->> +				      int queue_index, bool reuse)
->> +{
->> +	int rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, reuse);
->> +
->> +	return !rc || rc == -EINVAL || rc == -EFAULT;
->> +}
-> [Severity: Medium]
-> Can this helper ever return false?  ibmveth_rxq_harvest_buffer() documents
-> and returns only 0, -EINVAL or -EFAULT:
->
-> 	rc = ibmveth_remove_buffer_from_pool(adapter, cor, queue_index, reuse);
-> 	if (unlikely(rc)) {
-> 		/* Skip a corrupt slot without claiming pool ownership. */
-> 		if (rc == -EINVAL || rc == -EFAULT)
-> 			ibmveth_rxq_advance(rxq);
-> 		return rc;
-> 	}
->
-> so every "break" in ibmveth_poll_recycle_invalid(),
-> ibmveth_poll_skip_bad_correlator() and ibmveth_poll_drop_oversize() looks
-> unreachable.
->
-> Combined with the budget accounting in the loop below, is there anything
-> left that bounds one ibmveth_poll() invocation?  A skipped slot returns 0
-> from ibmveth_poll_deliver_frame(), so neither the break nor
-> frames_processed++ runs:
->
-> 		rc = ibmveth_poll_deliver_frame(napi, adapter, netdev,
-> 						queue_index);
-> 		if (rc < 0)
-> 			break;
-> 		if (rc > 0)
-> 			frames_processed++;
->
-> and each skip recycles the slot with reuse=true, after which
-> ibmveth_replenish_task() re-posts it.  The tail of ibmveth_poll() then does:
->
-> 	if (ibmveth_rxq_pending_buffer(adapter, queue_index) &&
-> 	    napi_schedule(napi)) {
-> 		ibmveth_disable_irq(adapter, queue_index);
-> 		goto restart_poll;
-> 	}
->
-> which re-enters the loop in the same invocation with frames_processed
-> unchanged.  If PHYP keeps publishing skippable slots (stale ring contents,
-> malformed completions), does the frames_processed == budget exit ever
-> become reachable, and does this poll ever return?
->
-> The reset escalation in ibmveth_poll_skip_bad_correlator() uses
-> schedule_work(), which queues on the current CPU via system_percpu_wq, so
-> would the worker be able to run while that CPU is stuck in the poll?  The
-> ibmveth_poll_drop_oversize() path escalates nothing at all.
->
-> The commit message states:
->
->      Skipped and dropped slots do not count against the NAPI budget; only
->      a delivered frame does.
->
-> Is that intentional given it removes the only bound on the loop?
-Yes. harvest only returns 0/-EINVAL/-EFAULT, so
-harvest_slot is always true. That break is not a
-bound.
+Btw, someone really should do an audit of all the octeontx2
+exports.  There is a lot of them, they are non-GPL and non-namespaces
+which is a bit of a red flag.
 
-The loop caps delivered frames, not slots, so
-there is no strict per-invocation slot bound.
-Each skip advances the ring, so any finite
-backlog drains, but a stream of invalid
-completions would keep this poll running.
-restart_poll can re-enter if PHYP posts more.
-skip_bad queues a reset; that worker cannot run
-if this poll never returns. drop_oversize
-harvests only. I am not counting skips toward
-budget: that would starve real packets on a
-corrupt ring.
->> +
->> +static bool ibmveth_poll_recycle_invalid(struct net_device *netdev,
->> +					 struct ibmveth_adapter *adapter,
->> +					 int queue_index)
->> +{
->> +	netdev_dbg(netdev, "recycling invalid buffer\n");
->> +	ibmveth_poll_bump_invalid(adapter, queue_index);
->> +	return ibmveth_poll_harvest_slot(adapter, queue_index, true);
->> +}
->> +
->> +static bool ibmveth_poll_skip_bad_correlator(struct net_device *netdev,
->> +					     struct ibmveth_adapter *adapter,
->> +					     int queue_index)
->> +{
->> +	if (net_ratelimit())
->> +		netdev_err(netdev,
->> +			   "bad correlator on queue %d, skipping slot\n",
->> +			   queue_index);
->> +	/* Residual stale slot after resize: recover via reset rather
->> +	 * than spinning forever. Always escalate; only the log is
->> +	 * rate-limited.
->> +	 */
->> +	schedule_work(&adapter->work);
-> [Severity: High]
-> This isn't a bug introduced by this patch, but this adds another NAPI-side
-> producer of adapter->work while ibmveth_remove() still cancels that work
-> before the device is quiesced:
->
-> 	cancel_work_sync(&adapter->work);
->
-> 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-> 		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
->
-> 	unregister_netdev(netdev);
->
-> 	free_netdev(netdev);
->
-> Can a poll running on another CPU call schedule_work(&adapter->work) from
-> here (or from the ibmveth_enable_irq() failure path in ibmveth_poll())
-> after cancel_work_sync() has returned?  Nothing cancels or flushes it
-> again, and adapter is netdev_priv(netdev), so the queued work_struct and
-> everything ibmveth_reset() touches would be freed by free_netdev().
->
-> For the record, the ordering appears to be repaired later in this series:
-> at the series tip ibmveth_remove() moves the cancellation after
-> unregister_netdev(), with a comment that cancel_work_sync() before
-> unregister left a window where poll could schedule_work() and the worker
-> ran after free_netdev().
-Yes, at this commit. Patch 10 unregisters
-first, then cancel_work_sync, and the reset worker
-is gated on NETREG_REGISTERED. The order and the
-gate belong together with the reset producer;
-that pair is in Patch 10.
->> +	ibmveth_poll_bump_invalid(adapter, queue_index);
->> +	return ibmveth_poll_harvest_slot(adapter, queue_index, true);
->> +}
->> +
-> [ ... ]
->
->> +static int ibmveth_poll_deliver_frame(struct napi_struct *napi,
->> +				      struct ibmveth_adapter *adapter,
->> +				      struct net_device *netdev,
->> +				      int queue_index)
->> +{
-> [ ... ]
->
->> +	room = skb_tailroom(skb);
->> +	off = offset;
->> +	len = length;
->> +	if (unlikely(off >= room || len > room - off)) {
->> +		if (!ibmveth_poll_drop_oversize(netdev, adapter, queue_index,
->> +						off, len, room))
->> +			return -1;
->> +		return 0;
->> +	}
-> [Severity: High]
-> Should the bound here be pool->buff_size rather than skb_tailroom(skb)?
->
-> ibmveth_replenish_buffer_pool() allocates, maps and advertises exactly
-> pool->buff_size to the hypervisor:
->
-> 	skb = netdev_alloc_skb(adapter->netdev, pool->buff_size);
-> 	...
-> 	dma_addr = dma_map_single_attrs(dev, skb->data, pool->buff_size,
-> 					DMA_FROM_DEVICE, DMA_ATTR_NO_WARN);
-> 	...
-> 	descs[filled].fields.flags_len = IBMVETH_BUF_VALID | pool->buff_size;
->
-> netdev_alloc_skb() rounds up to an allocator bucket, so skb_tailroom() on
-> an untouched pool buffer is larger than buff_size (a 16 KiB pool buffer
-> lands in a 32 KiB allocation).  Does a PHYP-reported off+len in the
-> (buff_size, tailroom] gap pass this check and then get committed and
-> delivered?
->
-> 	skb_put(skb, length);
-> 	skb->protocol = eth_type_trans(skb, netdev);
-> 	...
-> 	napi_gro_receive(napi, skb);
-> That would hand uninitialised slab bytes outside the DMA mapping to the
-> stack, and on the copybreak path skb_copy_to_linear_data() plus
-> ibmveth_flush_buffer(skb->data, length + offset) would touch addresses
-> past the mapped window.  The commit message says deliver "rejects a PHYP
-> offset+length that would skb_put() past the buffer" - is the buffer here
-> meant to be the hardware-visible one?  The correlator has already been
-> validated by ibmveth_rxq_correlator_valid(), so
-> adapter->rx_buff_pool[queue_index][correlator >> 32].buff_size is
-> available as the bound.
-Yes — a length in (buff_size, tailroom] would pass
-on v6. skb_tailroom is the skb_put bound. The DMA
-map is pool->buff_size, and alloc can leave slack.
-v7 uses min(tailroom, buff_size). The pool index
-is the current slot's correlator; get_buffer
-already validated it.
->> +
->> +	if (lrg_pkt) {
->> +		__be64 *rxmss = (__be64 *)(skb->data + 8);
->> +
->> +		mss = (u16)be64_to_cpu(*rxmss);
->> +	}
->> +
->> +	new_skb = NULL;
->> +	if (length < rx_copybreak)
->> +		new_skb = netdev_alloc_skb(netdev, length);
->> +
->> +	if (new_skb) {
->> +		skb_copy_to_linear_data(new_skb, skb->data + offset, length);
->> +		if (rx_flush)
->> +			ibmveth_flush_buffer(skb->data, length + offset);
->> +		rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, true);
->> +		if (unlikely(rc)) {
->> +			kfree_skb(new_skb);
->> +			return -1;
->> +		}
-> [Severity: Medium]
-> This kfree_skb(new_skb) is a real fix for an sk_buff leak that exists at
-> the baseline in ibmveth_poll():
->
-> 	new_skb = netdev_alloc_skb(netdev, length);
-> 	...
-> 	skb_copy_to_linear_data(new_skb, skb->data + offset, length);
-> 	...
-> 	if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
-> 		break;   /* new_skb is neither freed nor handed to the stack */
->
-> Could this be split into its own patch with a Fixes: tag (and Cc: stable)
-> so it can be routed to net and picked up by older trees?  Buried in a
-> 199-insertion helper extraction it is not separable for backporting.  The
-> same applies to the new offset+length validation, which the commit message
-> describes as preventing an skb_put() past the buffer.
-The kfree_skb on the copybreak harvest-fail path
-stays here. Same for the offset+length check; I am
-not peeling a Fixes: patch out of this extract.
-The off/len test has no parent SHA.
-Neither is the unwind standalone
-(Fixes: d43732ce021f).
->> +		skb = new_skb;
->> +	} else {
->> +		rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, false);
->> +		if (unlikely(rc))
->> +			return -1;
->> +		skb_reserve(skb, offset);
->> +	}
-> [ ... ]
->
->> +	return 1;
->> +}
->> +
->>   static int ibmveth_poll(struct napi_struct *napi, int budget)
->>   {
-> [ ... ]
->
->>   	if (frames_processed == budget)
->>   		goto out;
->>   
->>   	if (!napi_complete_done(napi, frames_processed))
->>   		goto out;
->>   
->> -	/* We think we are done - reenable interrupts,
->> -	 * then check once more to make sure we are done.
->> +	/*
->> +	 * napi_disable() sets DISABLE then waits for this poll. Without a
->> +	 * second stopping check here, enable_irq() can re-arm PHYP after
->> +	 * resize already masked the queue; late IRQs then hit the handler
->> +	 * after num_rx_queues was published lower (lab WARN at interrupt).
->>   	 */
->> +	if (ibmveth_poll_stopping(netdev, napi))
->> +		goto out;
->> +
->>   	rc = ibmveth_enable_irq(adapter, queue_index);
-> [Severity: High]
-> Does this check actually close the window it describes?  It is a
-> check-then-act pair, and both predicates in ibmveth_poll_stopping() go
-> false exactly when teardown is finishing:
->
-> 	return !netif_running(netdev) || napi_disable_pending(napi);
->
-> napi_disable_locked() clears the DISABLE bit before returning:
->
-> 	clear_bit(NAPI_STATE_DISABLE, &n->state);
->
-> so napi_disable_pending() is false once close is past its wait.  And
-> netif_running() stays true for the driver's internal close callers -
-> ibmveth_change_mtu(), ibmveth_set_mac_addr(), the features paths and
-> veth_pool_store() all do "if (netif_running(dev)) ibmveth_close(dev);".
->
-> Sequence:
->
-> CPU0 ibmveth_poll()
-> 	napi_complete_done()		/* clears SCHED */
-> 					/* delayed: hard IRQ, or vCPU
-> 					   dispatch preemption on a
-> 					   shared-processor LPAR */
->
-> CPU1 ibmveth_change_mtu() -> ibmveth_close() -> ibmveth_cleanup_rx_interrupts()
-> 	napi_disable()			/* clears DISABLE on return */
-> 	ibmveth_disable_irq(adapter, i);
-> 	synchronize_irq(adapter->queue_irq[i]);
-> 	free_irq(...)
->
-> CPU0 resumes:
-> 	if (ibmveth_poll_stopping(netdev, napi))	/* false */
-> 		goto out;
-> 	rc = ibmveth_enable_irq(adapter, queue_index);	/* re-arms PHYP */
->
-> Can the queue end up unmasked after the final remask and after free_irq()
-> removed the handler?  That is the case the commit message claims to close:
->
->      ibmveth_poll_stopping() ensures close/napi_disable does not re-arm PHYP.
->
-> Would moving the unmask before napi_complete_done(), or moving close's
-> final remask after synchronize_net(), be a more reliable ordering than
-> adding another check here?  This looks unchanged at the series tip.
-The check is not a close barrier. After
-napi_disable() returns, DISABLE is clear, and an
-internal close+open can leave IFF_UP set. Teardown
-already masks PHYP before napi_disable. Inverting
-that left IFF_UP with PHYP unmasked. I am not
-moving unmask before napi_complete_done or
-moving the remask after synchronize_net().
+Similar the drivers/net/ethernet/marvell/prestera is really weirdly
+split into two drivers for no reason at all.
 
-Thanks,
-Mingming
->>   	if (rc) {
->>   		netdev_err(netdev,
-> Thanks for looking at these.
->
