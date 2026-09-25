@@ -1,42 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597FA3FFAD0;
-	Fri, 25 Sep 2026 12:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914F240F73A;
+	Fri, 25 Sep 2026 12:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790338124; cv=none; b=Zi01HFQJCjrX+rkcbG7K4CEPXtzQNSkijWTJk1uYBGqRlKtsMQC3SMeldGBkPWA8m7FcmwlyPANHwpXbcpvGp0GePxR1Zw4jgupE9iWI90cvR0hIk1o8060jOPvCoip6ulwYsOUCfJdw7bjswXMOgy+pxlRMFD9ysl8VgtrJjYE=
+	t=1790338233; cv=none; b=Clm+capBeqS59ldV+9GtF6n8S3MMHkMZctgxPAP5eoMhOw8ig87+8kGo8wLegC466ovhpl+LcLvcdt5DuCYYhHcWPJv7sI53iG8A/gyW0bIXKmQJr90P2YlPPHlUBYIjHFTeAKSKyxfdt98kczChhD5KosjElDz2x3Scgf4SAuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790338124; c=relaxed/simple;
-	bh=AwxyG5WjFSPOA4DXGl6nSCXX/DAk43iGaZN9VXxQsX0=;
+	s=arc-20240116; t=1790338233; c=relaxed/simple;
+	bh=VJYGCznRNQpQyYEM8PBmLnsTts8Lw1qFtOlIW6V5dss=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H34jEiHiJaU3rQi2fd9MmAdfoWeLfobm67Z4m45ig8KbT/us5FxxbK5sYKbaEafkXeRSbQ2ramaHFGxB860nLya6sVucM99pCPruMJhI4lmvVnMDm3ajKRkGm13TjxlqkinxbtO2yZFTOJOhmKeXk28E4WYhC0ac12DIB2jpy90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USfcKXXq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3kw+2znGJC5UaNQFFVWgJNrvgHJUcCULGyRYdsax77J4HjkK7CmR7cfSWRl8jmboVqiJ9B/75re1hp8fawWPwg2oRVbiw7KRA4kYHmzRq84UL+fO3EGSXfE1zu/rChaunU2xQTHkG5BgplQVV/e0dQJVfwpRvAncP2niEmHNsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NrbbzHQp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USfcKXXq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196461F000FF;
-	Fri, 25 Sep 2026 12:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790338123;
-	bh=JJcQcWXKM91Wp9usBJAs1HzIdDkXwwZD6eVWcZetdn4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=USfcKXXqZ8m1CP3pEiRO2fYhjFPCGY3yCbbk2bEPMav/bMcuq4WxBwu4p6VvGYGle
-	 HwM+OhYt1JVICL/LrRlzDvhm0Zu9Fyoey8l4uTuGmNA1c3U5XqVLZjhIRbaBDTRv1d
-	 pA1sq2Gr8v51lrb1D6uK87AOUxQFclDSfBn2UkSOsiwg/W+Mw5QQyySPSNfbekU4NP
-	 VWPr6Xe4PQxpXsRhK8RBCo6JU7ykdNbqgMnQXJ5fvYRF0c4+2VNkUcQdHb5t2X8tBI
-	 HzBJt+0BZw8XI2ST6KoNFbxYpOdvGoXJ1AEBiQ/lOHHBOoqjDHzC9+y45or7HvFvDD
-	 BrMiQeeEgEN7g==
-Date: Fri, 25 Sep 2026 13:08:38 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com,
-	Subbaraya Sundeep <sbhatta@marvell.com>
-Subject: Re: [PATCH v2 net-next] octeontx2-af: nix: Log TX scheduler queue
- validation failures
-Message-ID: <20260925120838.GI13925@horms.kernel.org>
-References: <20260923033500.1752732-1-rkannoth@marvell.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NrbbzHQp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=EMQEp9v0Qeqzk3nZ5KO8ufsPeb+LN16l8gwkJKnLh/4=; b=NrbbzHQpt/YaV492PDMoZZcbbY
+	rrrULVjLqx5uqF9qSbiuFym6IsHlIH04W9Z4+aPHmQ7cnBBD/gilGuV4oR8kP4PS0vsQr8VmisyCx
+	zZwZPdpthXWS458N9J/FQBuPwFr9rmiUdkwpZhciOkR0y8MeusGSFyyV1WGTLU9ok2rk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xA4ky-007BxK-25; Fri, 25 Sep 2026 14:10:24 +0200
+Date: Fri, 25 Sep 2026 14:10:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH net-next v2] net: pcs: airoha: add support for Airoha
+ AN7583 SoC
+Message-ID: <d1f5d3ce-65bf-4f87-908b-39d1022e934e@lunn.ch>
+References: <20260925072712.23419-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,25 +48,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260923033500.1752732-1-rkannoth@marvell.com>
+In-Reply-To: <20260925072712.23419-1-ansuelsmth@gmail.com>
 
-On Wed, Sep 23, 2026 at 09:05:00AM +0530, Ratheesh Kannoth wrote:
-> From: Subbaraya Sundeep <sbhatta@marvell.com>
-> 
-> Emit logs  when is_valid_txschq() rejects a scheduler queue
-> mapping so misconfigured TX scheduler allocations are easier to
-> diagnose.
-> 
-> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> 
-> ---
-> v1 -> v2:
-> 
->      - Switch dev_err() to dev_err_ratelimited() on PF/VF-driven paths
->      - Add schq and lvl to both rejection messages
->      - Clarify PF/link mismatch wording instead of "Invalid tx link"
->      - Stop logging another function's map_func pcifunc
+On Fri, Sep 25, 2026 at 09:27:10AM +0200, Christian Marangi wrote:
+> Add support for Airoha AN7583 PCS. This use a new analog PHY
+> implementation that doesn't require manual calibration but makes use of
+> internal algo to lock to the center of the band EYE.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Is this PHY capable of other things? PCIE? USB?
 
+I ask because a generic PHY driver is often used to represent the PHY,
+and that can support PCIE, USB as well as networking.
+
+    Andrew
