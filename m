@@ -1,89 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB2433936C;
-	Fri, 25 Sep 2026 20:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77783E3D86;
+	Fri, 25 Sep 2026 20:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790366445; cv=none; b=dbvVJciMOeXmj0x/m5uCL8RWinRnwlBZcaGkiaP/zPY/MGcuAV4ZbqvrbrQNsxsL+t5M7HY0Fp344mM5JJDOwfV14yUfHyJWizSnZqUaxwef3rj9wa5RzVjM7XvZ9QI4yJbSAMbI9O8aLGaks/bBC00kATwmMCvW9/stYTyp5rM=
+	t=1790366572; cv=none; b=FdsYCl+jjq9MQGuXCYZYOG6IK0nXgoPDtT1sZNeGyF4gNhbb31Ub1fIpXTc4a/2qbb3UWaYITE2Rp2CCQ3RIOFcMbdOtw9eRewEu9Pf2hb+DR88CWscCHE4OyqvodL5U/wNqIP/P9DkFwmw8f3lO8oVRPO4kT0HKJqZk6MoJ7Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790366445; c=relaxed/simple;
-	bh=258aN0iU60ZiOhSJPJ1uFlNvHQ4PD2fYmazZ2JzZB9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MFy+JwV9MzX+/cVl+L1SBnajmfPPy5z5hDDgaJbVBM9EugrSOHFvTd7Z34G0Pkt5+z83Fmo/jVzmsawngZ8aRZY/t13CKMGqEjP2D7cVsUEG1Zxdqu6HSiuRrW+/OU7A7zDsqOr7jUVWqjqtmiWALvokTBJYKVKqA4wrZq1JQ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnhefbCj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790366572; c=relaxed/simple;
+	bh=I87a+TgPwoFR/xesW1OS3yyO05m0/4fbwy3NLcAtNm8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qn1napaNM6agB2v+rEOj5P1VHbKLSG2QoV3Q6hCqbli8T62vRcFH03st/Gs+I/kMG5TM99fBIqBqZ6zxWL3W8S75LHI5b3kMZeUt/53uU/rjwyAiP5Re+G3fSqc6dE/Ba5sK/IZozCTg6W8Wpm7ixCo5LK40CJC29QJ75sSx5aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ftAqJu03; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnhefbCj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F601F000FF;
-	Fri, 25 Sep 2026 20:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790366444;
-	bh=0Jo4jkxXowdPcStA4ouXArt1nCt64P5BTWQg3qWOEb8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VnhefbCjt12d0GPCoJOZ/cVMHknpiKq3oB5FbVJljJ8+4yq6o7M6UbBtBNYkqGdiR
-	 j9uALJGK77p3MsRmBDG/70tbAIqMD+t8+OeY+AQCateJn6d9PVqHdfYbMdbajytEo9
-	 XpaUJ5l7ceo/511bzIsRUoEj4bdR7tgl4nkcVcnleznzLDz+p3YzbDpZJIcJDntxg2
-	 6vSrIAHXDL8ntDNdD3QoZCtGpDBK69LzLjy+YQ8kbhDK1PE/TPHepohzzHJuk3oCrA
-	 I5KQfByGO/GdEAcRnGXvYTRyonhJuYZZx+OFc0RSWj2B6eOwRUkFX7geACTtKLOUl3
-	 hrYPkChjQnr2w==
-Date: Fri, 25 Sep 2026 13:00:42 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <edumazet@google.com>,
- <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
- <zhaochenguang@kylinos.cn>, <magnus.karlsson@intel.com>,
- <jacob.e.keller@intel.com>, <przemyslaw.kitszel@intel.com>,
- <jbrandeb@kernel.org>, <horms@kernel.org>, <kerneljasonxing@gmail.com>,
- <ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
- <john.fastabend@gmail.com>, <sdf@fomichev.me>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH net 0/8][pull request] Intel Wired LAN Driver Updates
- 2026-09-18 (i40e)
-Message-ID: <20260925130042.7e20db0c@kernel.org>
-In-Reply-To: <arZtNCWXQMA5Pm+/@boxer>
-References: <20260918212458.550425-1-anthony.l.nguyen@intel.com>
-	<b67609c0-d640-47bc-b25d-d40bb59f237c@redhat.com>
-	<b5e4e86b-356b-4ec8-b6c9-e5ef6a3b2d50@redhat.com>
-	<arZtNCWXQMA5Pm+/@boxer>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ftAqJu03"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C98CB4E41076;
+	Fri, 25 Sep 2026 20:02:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 896446073B;
+	Fri, 25 Sep 2026 20:02:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24A9B102F1E35;
+	Fri, 25 Sep 2026 22:02:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790366560; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=I87a+TgPwoFR/xesW1OS3yyO05m0/4fbwy3NLcAtNm8=;
+	b=ftAqJu03PKELrq/9DVzKPyaxyLEbv8nks7KxPKkhG6WIpbSLyHDyRc2riMwEi6JVOBt8nm
+	YK8iwOQK31hgIIKb87uF2joMZID5OP2sQlwexE5QcoIEsSfnW7mwi3kj1ws4GlJ2URzOl6
+	aTPgFsf7fXn2eYqnCs1hB9UB0YxVBqZIXwLRVNRLEAs9/J6Y96L8q4x82pte9mYoOf+OhV
+	aQF/njcNUtOa2YnqeravxM1Udogx++NzjCT/64+PFKqwXp9UmjdNoA2PFd3VDGBryAELgz
+	0SfuEl5j4GPQcxfsd5JQ5Axy5LmKX4X1MtkbhlNn9V3pVzP5jG0wHMX/itdfIw==
+Message-ID: <d704ea9d-6cca-4f2f-b18b-0267a9082e18@bootlin.com>
+Date: Fri, 25 Sep 2026 22:02:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 0/7] net: stmmac: More selftest-related fixes
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jan Petrous <jan.petrous@oss.nxp.com>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
+ <20260921152202.64d4c67a@kernel.org>
+ <f8fc89b7-15ff-4915-8f1c-49c3b2357699@bootlin.com>
+ <20260925122202.611d655a@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260925122202.611d655a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 25 Sep 2026 14:46:44 +0200 Maciej Fijalkowski wrote:
-> On Thu, Sep 24, 2026 at 01:25:14PM +0200, Paolo Abeni wrote:
-> > On 9/24/26 13:23, Paolo Abeni wrote:  
-> > > It looks like clashiko has found a few serious regressions, worth a respin.  
-> > I almost forgot: please note that the current expectation is for you to
-> > address the clashiko comments on the ML.  
-> 
-> Okay, there is a bunch of stuff that are reported at early stage of change
-> set which are later addressed - I thought bots are taking this into
-> consideration and therefore would skip it ?
+On 9/25/26 21:22, Jakub Kicinski wrote:
 
-We changed that because people order their code poorly, break stuff 
-and then fix it back later in the series. But, indeed, it should not
-report pre-existing regressions if they are fixed later.
+> BTW - I see you have a thing called "netdev series report"
+> I've been meaning to ask someone if they want us to add to SUIE
+> subsystem tracking (https://netdev.bots.linux.dev/suie.html)
+> I could easily add a drop down to filter just stmmac patches there.
+> On the scale of 1 to 10 how useful would that be?
 
-> Has the gemini LLM fell behind the others given that it reported no issues
-> whereas gpt/claude produced way too much of output ;)
+I'd say, 10/10. To give you a very concrete example, I was on training
+for the past 4 days, with little time to look at my inbox.
 
-We probably have a better models but we fell behind Sashiko in terms
-of the pipeline itself. There was a major redesign upstream, needs some
-time to rebase across it.
+Today was a struggle to just browse through the stmmac pending
+patches, some being straightforward patches, some complex but from
+well-known contributors, some large glue series that are 10+ patches,
+and then some likely AI-generated series sent as-is without real clarity
+on whether the author actually fully grasps what's being sent.
 
-> From trying to fix one thing I'm about to be in a place where I have
-> refactored most of the rebuild path, which have been used without much of
-> a problem for (at least few) years.
-> 
-> It is what it is, but I have a mixed feelings for where we're at, not
-> mentioning where we're heading.
+So, I resorted to SUIE, ctrl-f stmmac, and going over that list in order...
 
-Well, maybe let's go the other way? Given Linus's recent complaint
-can you trim this series down to just patches which address real
-issues you are able to trigger? The bigger rework can target net-next
-as needed.
+I think you're asking this question at the best possible time, at least
+for me :)
+
+> Is there something beyond "active series" that you need to see?
+
+All the info I'm interested in is already there I think :)
+
+Maxime
