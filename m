@@ -1,110 +1,68 @@
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E484199EAD
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6A377ABE;
+	Fri, 25 Sep 2026 19:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790362949; cv=none; b=C3u94Ifc87vQ0E+y1gKcacLqBaEwyOaiWZqpxp9k8F6yUSaFYuyZYC7bb6KU0y7gReUsSS8VXKstqQjXmmCz7mwWMDmgGTR4w03PW+caGnbxGiNOagozc2KKAUUaESlXDdf1QLhHEU/v5XEV76VtD3Sn6nbrHMJOV/vgRJf9y1A=
+	t=1790363054; cv=none; b=ghoONHI7p2xsGmjnt9i91D+svAJp8vgjrnhU21FIUUow6gsZ4rHK3MA39bAK+BR96n0Z6bNDUSs3DelsRvh6+ZxgfrcylAurIq03vUV0KDqOzrj6bYlrCUlMY7pMQP4RyTndARMs+N5mLo45mRVOW4uw7t++G0eYZT4KaUYBiPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790362949; c=relaxed/simple;
-	bh=miYvRcEGFmsRj3R3StAtd5ze/ExutceELLrIDIigKYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ppXtjEaKcp5YqPSzT6HDstP990218bnvnzmj/9nEECb4XVV/nF05NiBiiGVHizIrrrTX++59oT+/xWViSJ5UHJWBr+4GPVxQHmKccBCJgw6MbtvFlvIeJd5cqAkw18qQUOOGMnoqtT0A+0YvWdLwrC1eO9agxrcgasiav3ub5Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4Z0c5iH; arc=none smtp.client-ip=74.125.227.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790363054; c=relaxed/simple;
+	bh=iCt5TZQAtj9d1C1l5TIWWIjbooQSUKzP2q5dUp5sn60=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OMnTGCgIxKld8nSaXGGWu84gRqkza6NFW31zbddyr/bBVsbN8ajUxJfawSUsVxJIhw1bodXRijuYrnA/xaQRP8tmwWkL7/Yu7nd4xP8I88JB40T3o65oOHdOvqjm5xMSVSi1ltSA44zfz9SWxt1B4AxN8PjAyk7+RzIsx5GySRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtyShUz5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4Z0c5iH"
-Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-39e501442e2so652922a91.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 12:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790362948; x=1790967748; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZbHzbG6KX4HjmnobdQp+43LfGiR+GIwDBr6SWkkO9VU=;
-        b=N4Z0c5iHeZIAOdlqnWJXQD9W9KmfOn82z65vrzTrFjRMYKFNe2K+RB7I1B2bRudVim
-         8J6V49/+ciBaFeJIQUBEP34DY8m7hTw/2tGjHH69ZtZB5CVEcBRh316lyqs4BCOv1u/7
-         QP0qFDo/+Vlz1nJQe5NrIrOMKMCZL4SWCXcSR3tbvbo8H21RD7A0X5TPUVm+VvIOe31w
-         emjqMwaRZFugSNIPyez1xgN3otfi9u7ZvdnOQ31Wl3gS0wPKtWFBzmJg3jIy+javRALB
-         wj6STZ0SJTZa3Pjpgcj40D7W0/NrWe5mrr4Yq3erZtERx8Z6oGVFIUy+cVwtM6dnyc9c
-         36Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790362948; x=1790967748;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZbHzbG6KX4HjmnobdQp+43LfGiR+GIwDBr6SWkkO9VU=;
-        b=riNVu2Lgw9FzojlUyBA6WOSvN25ArMZAN7p/GW++r8sOq2tcaVVnNUw0APDPz7HrNq
-         uFTO5QlVbVt3JOuAomioZRQH/uLVyDzXDExU3k0v5yyKjC4bmdtLHeIsnqNnKEcSvzZw
-         wGGwBgBI3xFXAGZfGkCMzk2uywjr1OGF6ma9vm0c1FRDMrAcLfLTy+0TM+OSpb7sSxo7
-         yGYF/d8jwpYj/JH8GdOYYDEuTq5tfW+buw8xV4qTOdObda2i1CgtpdVtm6FGqfnTg/3v
-         Yd7eH/7MB+bwGM4CnF4avczicirhcmlGF2mcBYt3rZmR6gu+SIN9dxQ9dsyZLkxZ6e9j
-         u+Tg==
-X-Forwarded-Encrypted: i=1; AKwUvBxBCpvxB+qInhqI3irqJksDDi26NMMTGxESjS8K/59dTCZX0b4sa1EPFdk3LsMNr+pB4ffbaq8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nJeHAFLWjw8al27PzpSCSgk375EtpzTfzDgQLX6fgzwHFtt5AZ
-	HNNEFO+LWe1Kxo5hOKGIaLOSUDCRQdOmQW1mwEgYbzP89PpfXpBoKuma
-X-Gm-Gg: AYBFou3H6RlUO8YtydLejBAFB22cQJ4Yjz1VaDIrVUUrpkWHBiBFFtHpkAZkzeLs58R
-	E3BluSKSsI6KH0ue1LaFGk8z9kwJGVO2c0oHoeGpPnM8SIYmciHnI13JhZ/5oFi5bcNTZZHlMtE
-	Wee0ki+brhCCuDWoDhR90sgmogszFrZ+QtsWi0FC3PDLcZXll1sqnQGnDSTcRme+ui5WXK89ZLl
-	HVzpVUEh5FgJJpHMdyZwzFtbm02xPcKznI6POdkQ6N4pury1pdL8EO/znqwlmRyeMzIaBXsOn1i
-	h8fhAgcM138iCRQR/cAUEQmHCyMX56AxNKueL6+sfkfb7DaoVt3hl+ufEfLPXXoks14i+g6Bm1q
-	EVfM4ocVNyQxj6j5oJnH9FqvGC1Sms2u5Ao0gjrML5PcKZ1gJcOAedbb36RCoMRVQjRt+3GtQOx
-	OcnroEO1YZmPVa16FCqY7OLDX8u5301fsP0r3L/MgqmXIZlag9Toz7nRi4WdLwQivD
-X-Received: by 2002:a17:90b:1dcd:b0:39e:d36c:ee54 with SMTP id 98e67ed59e1d1-3a0bb55308cmr2493435a91.5.1790362947509;
-        Fri, 25 Sep 2026 12:02:27 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5e::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976c8f8dsm12331068a91.12.2026.09.25.12.02.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 12:02:26 -0700 (PDT)
-Date: Fri, 25 Sep 2026 12:02:22 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	david.laight.linux@gmail.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next 1/6] ipv6: reject a negative optlen in
- do_ipv6_getsockopt()
-Message-ID: <arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
-References: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
- <20260925-sockopt_expand_out_v2-v1-1-c3ef2e3bb5c0@debian.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtyShUz5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DD31F000FF;
+	Fri, 25 Sep 2026 19:04:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790363044;
+	bh=livvdnqEd+WVxbiiwzLe4r186ZBlnv095MEGPZvR0MI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YtyShUz51L1+QKfkfJzyhnCrD+xr4Cdzxgl7IfUwFzAr5yYxd9J9feE2F41o/roWN
+	 46OGOQSTajr7y0ZrRBcHvJOR9KRY4Fw/mbZiRLFVxLshrM154Aoo0+PZEjy9CrOmE8
+	 krw25hZfY+ld2RIKqYJlJCvDS3ZHSlTUvkcZgQm/cIshUkcYX+N/YgMbShipbjJZeC
+	 9HG4Gih1XB9gb3BsqL8ZJuEjuaLuTiPZ7+XkaXKa996ovuoa4I/KZb1tXXCpDQxjDm
+	 NdVprzEQSgl6yiP1F+3zLy3qxdHTXuy8cxeBZ/IQCVUBxO2nDFhuwMueCZ2h/AoUo0
+	 s3UhGo7+qBH3g==
+Date: Fri, 25 Sep 2026 12:04:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch,
+ anthony.l.nguyen@intel.com, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, jacob.e.keller@intel.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, przemyslaw.kitszel@intel.com,
+ rafal.romanowski@intel.com, sdf@fomichev.me, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/4] iavf: return EBUSY if reset in progress or not
+ ready during MAC change
+Message-ID: <20260925120403.4104fcf7@kernel.org>
+In-Reply-To: <20260925071850.53292-1-jtornosm@redhat.com>
+References: <20260915092418.0aafd079@kernel.org>
+	<20260925071850.53292-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260925-sockopt_expand_out_v2-v1-1-c3ef2e3bb5c0@debian.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 09/25, Breno Leitao wrote:
-> IPv4's do_ip_getsockopt() rejects a negative optlen right after reading
-> it. do_ipv6_getsockopt() never has, and nothing downstream treats it as
-> an error either: len is an int, but every consumer compares it unsigned,
-> so -1 behaves as a huge value and each site clamps to its own reply
-> size.
+On Fri, 25 Sep 2026 09:18:43 +0200 Jose Ignacio Tornos Martinez wrote:
+> Would you be ok with dropping patch 1/4 and resubmitting only
+> patches 2-4?
 > 
-> 	len = min_t(unsigned int, sizeof(int), len);
+> Patch 1/4 was originally needed to avoid the 2.5s wait during
+> reset with netdev_lock held. With patch 3/4 replacing the
+> wait_event with a synchronous send + poll, the original concern
+> is already addressed. During reset (if necessary), if it times
+> out it will return, same behavior as the pre-patch code. Patch
+> 1/4 becomes just an extra precaution, not strictly required, so
+> it can be removed.
 > 
-> So getsockopt(fd, SOL_IPV6, IPV6_TCLASS, buf, &len) with len set to -1
-> answers 4 bytes and reports 4, rather than failing.
-> 
-> This is a bug ready to bite us in the near future, let's get this fixed.
-> 
-> I've found this because testing the rest of the patch was returning
-> inconsistency when optlen = -1.
+> The core fix is in patch 3/4 which carries the Fixes: tag.
+> Patches 2/4 and 4/4 avoid unnecessary VF resets when changing
+> trust, reducing disruption and wait times.
 
-If I can do getsockopt with len=-1 today and get 4 bytes back, isn't
-that a uapi and we are gonna break someone?
+Yes, at a glance 2-4 LGTM!
