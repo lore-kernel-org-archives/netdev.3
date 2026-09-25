@@ -1,85 +1,142 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E311DDF0;
-	Fri, 25 Sep 2026 12:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FA1443E56;
+	Fri, 25 Sep 2026 12:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790340246; cv=none; b=C24aZ0wQJ+mHke8KE0BpT9oCI5avT28LZlNJq2WTZApMIgAc97WN5PwBEs3gQISabY2uZYG9nivuC3R6MWaBmlEAN8PvTDc9w/KKa+kmazgBQcujlI2oFAW5Qe7VN33UVkRtYnpsOnKrKcLm4pgNgSIWWAmAZy/KWbYaCUFagtM=
+	t=1790340405; cv=none; b=XBeZrOc0p1uKpS4dkezkDgMyMPG3AcgN7w3UkW5TBiSzDDOHjGLi6nsDIKFVGAzscJGOP39NK6L8PcxkXfohors00l8hgaQgGuMgPTrb8cMdGaaUf15wYoWwW0Xp+srsJQFUTIWYEdJnUtqAVYJk6OmThHkFxbOJL0/tQ/HAIm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790340246; c=relaxed/simple;
-	bh=XN0Gf1zvOCykiChPwISzY8g//JmTBnwFnHJOq0q3Buc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NIeuqqhhDzYFm49gWFZ2vzNmXvAqV52nInw/OovRTgH+36eiTTlve/AnIOAeGu95NOSPooDKaOESkV9Qaq3PVY+KCGYn2kefgC+NHNNOT4TNv4p3j60SNH7rJvj0R1GQq5dNXjZAi0+bVagRZ/7HWhkqijybRj5XiL/AWHfF4Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=W6Ss2O0A; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790340405; c=relaxed/simple;
+	bh=xt9jpLiwPOdPKGTMCvuyRPEudCPvIhQx+fsOUK0ILB0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ayhWcyHgAJIGdlNnV105qidb3y2yqcP4DoJUsc0yYP6jsASu8PSecoKpKgQ4sOLgVqIIfzXu21BRmRMyjZsjeQRl0/iyyT2lTgoJ5U4KQYggF7tmlEAU3e3QTDZT++2UX02kQH2uC8u6udKSk0h8NPEy5KFJ3DXLa2/iQkH4hWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ydp7MEfN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mzsiUczE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="W6Ss2O0A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OHkkYwmGY8TatjNU9FZ7bLDOmRJ2GPTH7qfyHVSXguo=; b=W6Ss2O0AOsM0xBeviLYmE+NaLh
-	js2qCsglwdRISHyTivMkIqbEuP/d8INQ2qabbBRpdkSaqrww/PbdWp4DuJOVnd9LW616GAgn6tHcf
-	9Oe4qy4R60aYaWDzyQXxWAGAjGW5yt+y002csIw21oNg+Ffoq3uPTOUX7VBWT42fxzjY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xA5HG-007CIn-NS; Fri, 25 Sep 2026 14:43:46 +0200
-Date: Fri, 25 Sep 2026 14:43:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH net-next v2] net: pcs: airoha: add support for Airoha
- AN7583 SoC
-Message-ID: <8448d07f-a0eb-41d4-8d66-f6af8525c6fa@lunn.ch>
-References: <20260925072712.23419-1-ansuelsmth@gmail.com>
- <12d6e310-3aa9-45f1-925e-e3c8f2f0efad@lunn.ch>
- <6ab6669c.232cdbff.15fa39.f0d3@mx.google.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ydp7MEfN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mzsiUczE"
+Message-ID: <e7e56030f307e9837ef7375953fe06ca6c01b2ca.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1790340401;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tW4NRRfzn/Y38qXoWB2bb+XlWNEz6Lz8yXDZ44Xr0o4=;
+	b=Ydp7MEfNAcdty/RgMOhOKfdwBbOuQRf45mgNSHLxeOZsHuD+SDN/i9V2mbzJA1lliG3jfw
+	0JgWYEY7aka8Azfzh4PXvbcjQylWgMcmfvsp9FQkoBZVkpht3BE0FS8ZHalFBCcDFiVg1t
+	ErmW5ZghVrv/s/NuaUfnTW6IYx2qhl0EaOZarBV4+NL0wxKgOAJfFaqfapWAVddZQchwOW
+	gOn8I9qKWF9JJKDw0DYkJGWFsufWi1LbtdRo9d7x0lEAQkuIdO7htGB1DLw3WIebUBqgBl
+	EUtjgo5V/ybSZbS2oRTgpKqVKfNQnu2xn2W7HrW3QTTMHeXJiE0xkqu1ElN7uA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1790340401;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tW4NRRfzn/Y38qXoWB2bb+XlWNEz6Lz8yXDZ44Xr0o4=;
+	b=mzsiUczEIHqu4DGerIM/OtjmQ7Yfxs3TJ4xncb34mrLv5Zujx1tYJRbwJrNupsohAH8qeq
+	m+ar3E82f+CuP9Dw==
+Subject: Re: [PATCH net-next v3 4/8] net: dsa: Add tag handling for SoC-e
+ switches
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Fri, 25 Sep 2026 14:46:40 +0200
+In-Reply-To: <20260924104003.A49F31F000FF@smtp.kernel.org>
+References: 
+	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-4-ddebafcb9ba7@linutronix.de>
+	 <20260924104003.A49F31F000FF@smtp.kernel.org>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ab6669c.232cdbff.15fa39.f0d3@mx.google.com>
 
-On Fri, Sep 25, 2026 at 02:18:34PM +0200, Christian Marangi wrote:
-> On Fri, Sep 25, 2026 at 02:07:52PM +0200, Andrew Lunn wrote:
-> > > +static void an7583_pcs_setup_scu_pcie(struct airoha_pcs_priv *priv,
-> > > +				      int index, phy_interface_t interface)
-> > > +{
-> > > +	u32 xsi_sel;
-> > > +
-> > > +	if (priv->phy)
-> > > +		return;
-> > > +
-> > > +	switch (interface) {
-> > > +	case PHY_INTERFACE_MODE_USXGMII:
-> > > +	case PHY_INTERFACE_MODE_10GBASER:
-> > > +	default:
-> > > +		xsi_sel = AIROHA_SCU_PCIE_XSI1_USXGMII;
-> > > +	}
-> > > +
-> > > +	regmap_update_bits(priv->scu, AIROHA_SCU_SSTR,
-> > > +			   AIROHA_SCU_PCIE_XSI1_SEL,
-> > > +			   xsi_sel);
-> > 
-> > I suspect the AI will be here soon. xsi_sel is initially a random
-> > stack value. IF interface is something else, you use that random value
-> > with regmap_update_bits().
-> >
-> 
-> Doesn't default address that case?
+On Thu, 2026-09-24 at 10:40 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] net: dsa: tag_sdsa: unsupported VLAN tags left in hwaccel metada=
+ta
+> --
+>=20
+> commit c9312ab6752036eeab3076e94713c79223982016
+> Author: Vasilij Strassheim <v.strassheim@linutronix.de>
+>=20
+> net: dsa: Add tag handling for SoC-e switches
+>=20
+> This commit adds a DSA tag driver for SoC-e switches, which use an 8-byte
+> SDSA header carrying frame direction, port, and VLAN metadata. The header
+> is inserted between the source MAC address and the original EtherType on
+> transmit and receive.
+>=20
+> > diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
+> > new file mode 100644
+> > index 0000000000000..8cc3fa357be42
+> > --- /dev/null
+> > +++ b/net/dsa/tag_sdsa.c
+>=20
+> [ ... ]
+>=20
+> > +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_devic=
+e *dev)
+> > +{
+> > +	struct dsa_port *dp =3D dsa_user_to_port(dev);
+> > +	struct sdsa_tag *tag;
+> > +	u16 vlan_tci;
+>=20
+> [ ... ]
+>=20
+> > +	/* SDSA carries no TPID, so only encode 802.1Q C-tags. */
+> > +	if (skb_vlan_tag_present(skb) &&
+> > +	    skb->vlan_proto =3D=3D htons(ETH_P_8021Q)) {
+> > +		vlan_tci =3D skb_vlan_tag_get(skb);
+> > +		__vlan_hwaccel_clear_tag(skb);
+> > +		tag->frame_type_port_hi |=3D SDSA_TAG_VLAN_BIT;
+> > +		tag->vlan =3D cpu_to_be16(vlan_tci);
+> > +	} else {
+> > +		tag->vlan =3D 0;
+> > +	}
+>=20
+> [Severity: High]
+> Does this else branch leave unsupported VLAN tags (like 802.1ad) in the=
+=20
+> skb's hardware accelerated metadata?
+>=20
+> If a user configures an unsupported VLAN protocol on a DSA user port, the=
+=20
+> skb will still have skb_vlan_tag_present(skb) set when reaching sdsa_xmit=
+().
+> Because this branch does not clear the tag via __vlan_hwaccel_clear_tag(s=
+kb),
+> the conduit driver's MAC hardware might subsequently insert the remaining=
+=20
+> VLAN tag at the MAC boundary.
+>=20
+> Could this insertion displace the 8-byte SDSA header just pushed, causing=
+=20
+> the switch hardware to receive unrecognized frames and drop them?
+>=20
 
-Yes, maybe. But why have a switch statement at all?
+That's right, I missed it. I will fix it in a similar way to tag_ks8995.
 
-	Andrew
+> > +
+> > +	return skb;
+> > +}
+>=20
+
