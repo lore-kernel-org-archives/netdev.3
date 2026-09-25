@@ -1,122 +1,73 @@
-Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC24F7976
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 21:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E295731F985;
+	Fri, 25 Sep 2026 21:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790370817; cv=none; b=UJmb1yyb/Fqw+XrcGmLwty7D4nw0nW2VDN6XSvwVCq4eaA+0edJfx+T/SJ4BfwppW/YuLKr5o5q9hxmoQMCDGmfYiImks391gKJS2EHiH5NMMmZLwMEhjTEC81hIRiqtEmfjRwCHntoLuR+L7f/giyBT5tal/lcrPMdMEyDlxeo=
+	t=1790371598; cv=none; b=j+En0+2n903JeqjPqpg4EimfTnV2Q9QilBec2rBjl0db71OY5ZW+KQY5KNDGLSbpFfy5cfhVTJ5WAvKCk10fpoyKgZh4zrvNw2NnZ2t9GzZIl9q0bwimt2nkyCXdLS97Jh9eE6s8oJ1jA4Yt9q7jEImzQx1/huhXhBB7lZJMuPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790370817; c=relaxed/simple;
-	bh=l2U8nzCNNQ/nwq4FEs6iLspFROyaC5q68fQmREhjkjI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Hij1bmhyyTMOJl94bqSqZyI3gJd2QERMM4CjGXahfM469F9RgJwo/O0CkDMmUVDNBFjFtNuWORs/1UDJKz59u7OFIhhoXhzexetMTEJVkPbCtATHE+BHeOiQZbY/hYTbxHpy3yeaRCfYTn9pBFu3xNykRF/TjbYbH+dBQ0KTWug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cisRoBq6; arc=none smtp.client-ip=74.125.224.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790371598; c=relaxed/simple;
+	bh=JX4wHbQ+gBdmVVj6OhbGKQaGDG0oKRixudHkG6CAGqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9I1Pl4Rm/xy41STIX37BXNTgId52S185+0dX3xgR+WOAU7HNMMmXThYcb3tNXOhesiyk25Jx7UQAUDf8F1vfY1MlQREEnG/q6O3TJ14s1t7Nk7WLfOXW8mublCC3NnuuxRedJCjCaH5oLMtnapdSx7zXAtsFCvyERPSp9mcpuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GDW475Tn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cisRoBq6"
-Received: by mail-yx2-f41.google.com with SMTP id 00721157ae682-8a8496fd8c3so14266317b3.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 14:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790370814; x=1790975614; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kE6Ci4ey9edySdwisM07uhodEQlZii4EnlJAnWzc9lU=;
-        b=cisRoBq6/2Mq0XJdC1G9mBuK3ldnHNb9jKiaWs+33Rc9Ql4AWqtx8FuaMW4DlLSGKn
-         aNzRW3Xr4Nb8tqUVTXnM29fbRf8rJhalyTQFeKez/3pF7KcvrqDZZ81KO07NatMbCHkm
-         EeFPv3cZhomWMAftMZKLlhqGRuFKwPJdCTFWycrSnHHoPbyb0y6ug1YqTFWpEDKaaxji
-         OIV/gPPS62wKm5YMYAdAEifz54ulE0iXwi7cfD1OzGQ8GhC0NWZT7U5wyHWs3CFc3SVw
-         xu+EClqcAwz4x2xM247cg35WNjGDaj+q9D1CnllGILL//ReivfxRRk1EZjoPzyDRyYU9
-         tWWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790370814; x=1790975614;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kE6Ci4ey9edySdwisM07uhodEQlZii4EnlJAnWzc9lU=;
-        b=X/RzDJBZ3AhuUcYytwrh/tFJBHyOA69OWI/dIP+DVbbSFDH6bDSqqLDc6ZNVXR1opp
-         Li8ZiA9RZcAj82Weim4lCSRTHVTbgCmKm6w6ed9F9HgseLTKRUMhUDPWNQTXR5j3+/PT
-         XD34M49Jtj1ZJzUEOgBHRrQ6FOX5YOtZiutblNLQk9LWAtt/+wm1atlyIgC+BiCngR3x
-         SliwegT7msirrPIUXHsxTuei0Jr0uHI14YXda2nO6MVAGBah4GtdAHGYuMgV40LrHOPB
-         aW3cJDysCUlDvO+2WKytafLGY8J5TTgEzHel9jDC9q2BhyQtMhKOYFCZoTiCD1yZHux7
-         l7ag==
-X-Forwarded-Encrypted: i=1; AKwUvBzZKema3mt7dPY+VBaISwr25+A1PTgrRX0bYvBh0qyByo/5zv0M8Tgz2PxffFPKLN5GgtWzJ6k=@vger.kernel.org
-X-Gm-Message-State: AFuF++l86qrvHgW2+eyALTnxLwGHuQeh8oF4CestWRBfiI3MkWrMPvNF
-	tx72EUubS7K4kkYwUA1tkxYr5Sg4nBshVhuTZr0wNRqocpqJZ4NVIAWu
-X-Gm-Gg: AYBFou2GipuyYlWG+uOcX0LCCe1C0L8PWESRAvtDgccFhh9Ncmf34o00CUADK6NXuuN
-	7VrKbH82Ifg86KOJimejEVRUqmI62KdUQ2QjXhwVy7haTUviqRSA9p7tvdZzbJqD88aQGXEshwI
-	L3nfQgcz3kPMZjG5kwgnLa4g+dMhNKqkZeiLJBmSxZWn2akVybllvpuBQtJB6XVLH8+lM2qKPIZ
-	6wqgTQESsgRvETrUTNnP7Yeel/yoEUIzAXuB+hNQb3VfmcrQpGRabDYc8+O6nO8u22SnWow3wYd
-	tJymBDHeFWKlXQrFn/2N3L2FXrQ2aNRhij1Rj3v2cPDe7mA+IGav3Xet0ZpEj81enhR7HHjaF71
-	ft/RLCqNABuEt6TDgsMTGgm/muYfOemB8HHb1zuya1jlVGbxe5fA9SX6TpPpLDzGMya665im2Qc
-	6kUPpcmrBeyTtjiKfgX6v9iO2HtTG6fV7PDom84nGUyL1BmOyhP8HV5lR0khlBwymHhTlZq0s2U
-	kaIu0+ls4rwuboXguAkWk5O9JmANZFD2O6yhxeXRlIFEw0gEQiIIVy62bE+kiMU
-X-Received: by 2002:a05:690c:19:b0:8a5:1570:a298 with SMTP id 00721157ae682-8a64ded27c7mr30052657b3.50.1790370814571;
-        Fri, 25 Sep 2026 14:13:34 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860fe88d6sm13938657b3.31.2026.09.25.14.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 14:13:33 -0700 (PDT)
-Date: Fri, 25 Sep 2026 17:13:33 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Zihan Xi <zihanx@nebusec.ai>, 
- netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- dsahern@kernel.org, 
- idosch@nvidia.com, 
- kuniyu@google.com, 
- willemb@google.com, 
- kees@kernel.org, 
- richardbgobert@gmail.com, 
- zihanx@nebusec.ai, 
- stable@vger.kernel.org, 
- Vega <vega@nebusec.ai>, 
- Luxing Yin <root@tr0jan.top>
-Message-ID: <willemdebruijn.kernel.21eac4268187e@gmail.com>
-In-Reply-To: <20260924051521.32568-2-zihanx@nebusec.ai>
-References: <20260924051521.32568-1-zihanx@nebusec.ai>
- <20260924051521.32568-2-zihanx@nebusec.ai>
-Subject: Re: [PATCH net v6 1/1] net: gso: limit recursive IP-in-IP
- segmentation
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GDW475Tn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=kUgRvzjH5Nng/0oeQsMG6q0pTnAxIznTLyHMuTPk6to=; b=GDW475TnEWdErC95CCYwHan5s8
+	S87cUJOT/welLbBUF0SJ8UUFjqrSI/0cPJIinM8PSodpahXOKbyJouN703WSfrW24IF2aVWPFJ7LQ
+	N6g2vaw4aXJZboV9sYgUGvKlJClYb8S5k+oSqh0GyUXPDJpJTI8ymOp//GBiYmBD9dSg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xADQw-007Ice-ME; Fri, 25 Sep 2026 23:26:18 +0200
+Date: Fri, 25 Sep 2026 23:26:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yongzhao Chen <yongzhao.derek@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
+Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
+ internal CPU PHYs for SmartSpeed
+Message-ID: <69b36e16-eece-4739-9208-96bd8e60943f@lunn.ch>
+References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
+ <20260923215858.1653-5-yongzhao.derek@gmail.com>
+ <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
+ <20260924234814.1734-1-yongzhao.derek@gmail.com>
+ <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
+ <20260925210153.8717-1-yongzhao.derek@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260925210153.8717-1-yongzhao.derek@gmail.com>
 
-Zihan Xi wrote:
-> IP-in-IP GSO can re-enter inet_gso_segment() or ipv6_gso_segment()
-> for each nested IP header. encap_level tracks header bytes, not callback
-> depth, so a deep chain can exhaust the kernel stack. Making
-> inet_gso_segment() stackable introduced unbounded IPv4 nesting; IPIP
-> GSO/TSO later made the path reachable. The IPv6 stackable path was
-> introduced separately and uses the same guard.
-> 
-> Count IPv4 and IPv6 GSO handler entries in skb_gso_cb, initialized once
-> per top-level GSO operation and preserved across GRE/UDP context changes.
-> Use the existing IP_TUNNEL_RECURSION_LIMIT for both handlers. The first
-> five entries pass, and the sixth returns -EINVAL before dispatching
-> another GSO callback.
-> 
-> Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Closes: https://lore.kernel.org/all/cover.1790157745.git.zihanx@nebusec.ai/
-> Assisted-by: LLM
-> Co-developed-by: Luxing Yin <root@tr0jan.top>
-> Signed-off-by: Luxing Yin <root@tr0jan.top>
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> Disabling downshift for all qca83xx PHYs would also remove it from the
+> user ports, where I have not seen it misbehave. The CPU link has no
+> cable, only a fixed on-board connection
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+How are the two ports coupled?
+
+Are there magnetics? Capacitor coupling?
+
+Anything like what Micrel suggests? 
+
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/ANLAN120-UNG.pdf
+
+    Andrew
