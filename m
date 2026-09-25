@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6949BD9C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E3443E56;
 	Fri, 25 Sep 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790340529; cv=none; b=W/t45g4WxLd+u14DnniaJU4LHh59KiIwRz65Nv3tbCFbc8UF56lWkLXUdyR7ivN51s/crpcG6rVPJX9WM6iLlbGDz7xtnVIvrCBdf0DTnrE95975xNMr46L/aoVt/iOcVgVIY/ljT7E5C0XV9CXpdnxbOqCFd5MiCJ1KdJTLvU8=
+	t=1790340529; cv=none; b=LzIsWwSlYOHW6lNNc4yQA80JlSkw4FZqqEzsSGun6KinbrLbJlwPekOlKZojkoZ3nH06KMgvMHFGB4MCBF+CNeIClJ+m2iv1b//ONHzzo4wMx+FgIbQ9m7zTZIQITm8iZ+bxIKjo6JYqDmLnw+z3XDv7vmzSYnq8NdhGhtBBMgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790340529; c=relaxed/simple;
-	bh=l0a9nm7zRadFigfojIMROvbCPA/7dLyM8g88PgXKFCs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GETZDmvL4g4IC+m4N/lDiLE91QTVjnkuL8kYEc5UP4OE0ROSNWW4uhp48cvEywQl9ipIJg+VYHS8olptZB667xbXMPbp+HpTJAnXt/zDOBE7/iUnqWC/rhm79gwslh8W4vcuXgiaFU5x3+mB98QYkuC5dE/xKRdnWPEx1LlT4Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2VeIgM7; arc=none smtp.client-ip=10.30.226.201
+	bh=yzTFT5eQV1N0hhk6LRnlE8otFg7jvGAPkT6VYEZMNPs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZO1DeD3S3uF8fz81KfCuAifW3wK8N+9jmDZRus0ugFl9NO1vJIj7/DaknWsXSeZ5Onsc9AEd0WqAM7F33H63w6zEgX7++V/VK/jJFPqGvPPW5PIx0mtousAJIxii/eFFnG8gsZCYt8PHlcNQqxBiPCmSWP+mj6jzTSXdgqPKtO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GM1uq25H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2VeIgM7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AFE7C2BCFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GM1uq25H"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57483C2BCF6;
 	Fri, 25 Sep 2026 12:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790340529;
-	bh=l0a9nm7zRadFigfojIMROvbCPA/7dLyM8g88PgXKFCs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Y2VeIgM7iZGIgUsdiss+KvISFc2VkwuhUb4L/rAOJNo5CAZW61mBANWI3/DOoeS6p
-	 TIqgfDLq6uzG9ajA5MInG94GDg6cgZjPfNsPSYNHKNYmI2Ziw24cDhLaZ3HRjOtOS6
-	 egPBcgM+sKonVmErbTFaTFQy5OUxw3mYOrSQblagn44CIT7j1RcVVuDs2taXzgl90j
-	 RD4o5qFZcJJxIXUIky0XNacIcGiY3rPfxn4WgHXP02+UWYRKjBKiat5bB45K2cnbz3
-	 6odu4DnhZfJ66QdrIEmLRgZ50Ap4y/an88MG+T/J4HOuljqlFW1N1WWxwEh+RSswM4
-	 Dd2G91+G2xUIw==
+	bh=yzTFT5eQV1N0hhk6LRnlE8otFg7jvGAPkT6VYEZMNPs=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GM1uq25HLmcDk9iNSpWrDG+R8gp2338d+LYmAEmskVf5xSbn/g9uYG36Rfbgqbebs
+	 Wzdc7LHR/T72L1ZcfV6URpQxobfxnHwgtcHf7DfhOLmsRIqA2DQaWbu9cCW/CrFqzH
+	 cAoRC0I+xRXTWg1vUruBXVHy4R3v2wZxpl+WrdCH99ufv1tmHHnxOqiad4wnFgzpF3
+	 0gucCvStEedIT3CulOdP6ycU0jZ9RBntfe3IJMTRx93I5B0HLwCqcMRREWQ2iHctuc
+	 XNDNemopQgsIUMn44X6gTKLL474KsnQNXs6IjD0m29VSU1a00jS2nrFzQRW5hE/fTe
+	 m3YOQLoJKXZXw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A449C98328;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32B13C9830D;
 	Fri, 25 Sep 2026 12:48:49 +0000 (UTC)
 From: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
-Date: Fri, 25 Sep 2026 05:47:57 -0700
-Subject: [PATCH net-next v5 2/2] mptcp: annotate lockless access to
+Subject: [PATCH net-next v5 0/2] tcp: annotate lockless access to
  sk->sk_err
+Date: Fri, 25 Sep 2026 05:47:55 -0700
+Message-Id: <20260925-mptcp-sk-err-net-v5-0-0cac04d6ea48@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-mptcp-sk-err-net-v5-2-0cac04d6ea48@proton.me>
-References: <20260925-mptcp-sk-err-net-v5-0-0cac04d6ea48@proton.me>
-In-Reply-To: <20260925-mptcp-sk-err-net-v5-0-0cac04d6ea48@proton.me>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOQQ6CMBAF0KuQrh3TliLFlfcwLkqZajUU0laCM
+ dzdghticPkzM+/PmwT0FgM5Zm/icbDBdi6FYpcRfVPuimCblAmn/EArKqHto+4hPAC9B4cRSmO
+ kREMLKgRJZ71HY8eFPJN5weEYyeU7Cc/6jjrO4rx7syF2/rW0D2y5+F80MGDQqJIphbpSpjn1v
+ oud27e48ANfA9UGwBMwv6lq1EpX9BfIVwDjG0CeAC1YLnNZyrrBX0CsgXIDEECBGSpMwQ0vDmw
+ NTNP0ATbphJ+PAQAA
+X-Change-ID: 20260908-mptcp-sk-err-net-7ff88ef05044
 To: Eric Dumazet <edumazet@google.com>, 
  Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
  "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
@@ -53,11 +56,11 @@ To: Eric Dumazet <edumazet@google.com>,
  Jiayuan Chen <jiayuan.chen@linux.dev>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790340527; l=2847;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790340527; l=2016;
  i=quanyeyang@proton.me; s=20260801; h=from:subject:message-id;
- bh=MYYGmpLCYlWB4PjQJ+2gmFy11ZXQGpGk+UmDvXVc1xs=;
- b=PSelBSjLNL/6R29LWg3MMaIU1/FhF2hnG/6jI86RRD+MBgVheh88kPBgUIQPcKLsrRbQHKf3G
- xn1oEsmSpl3A0Ra36e13CQ5sjppwrWa2welXcd2acIGwV5im+Dp1qis
+ bh=yzTFT5eQV1N0hhk6LRnlE8otFg7jvGAPkT6VYEZMNPs=;
+ b=0ecpuS0VbDnnDSJOQFSDqe8rw7eLXRYGHFCxZPctJXRC8+Z0JlcHL+juPNO3Yf+a7SaNI7SFN
+ ZWerm32oUT5C9AeI8Q4qq+994bzSwJvJR6Iy4OjwY7Ub0KHJWyzXidY
 X-Developer-Key: i=quanyeyang@proton.me; a=ed25519;
  pk=9L9FrcvzMgxPaBRU6XV0EnqTgjDqVO596rQKSZ9qZoY=
 X-Endpoint-Received: by B4 Relay for quanyeyang@proton.me/20260801 with
@@ -65,92 +68,58 @@ X-Endpoint-Received: by B4 Relay for quanyeyang@proton.me/20260801 with
 X-Original-From: Quanye Yang <quanyeyang@proton.me>
 Reply-To: quanyeyang@proton.me
 
-From: Quanye Yang <quanyeyang@proton.me>
+do_recvmmsg() and getsockopt(SO_ERROR) call sock_error() without the
+socket lock and clear sk_err with xchg().
 
-sock_error() can clear sk_err with xchg() without the socket lock.
+Patch 1 covers TCP. Peek-only sites use READ_ONCE(). On the no-data
+recv and splice paths, call sock_error() once and only stop when it
+returns a non-zero error. tcp_bpf_sendmsg() folds two unmarked loads
+into one READ_ONCE() and uses that value as the returned errno.
 
-On the no-data msk recv and splice paths, call sock_error() once and
-only stop when it returns a non-zero error. Annotate the remaining
-msk send and subflow error-report peeks with READ_ONCE().
+Patch 2 does the same for MPTCP and annotates the remaining subflow
+error-report peeks.
 
-Signed-off-by: Quanye Yang <quanyeyang@proton.me>
 ---
+Changes in v5:
+- recv/splice: call sock_error() once instead of peek-then-consume
+- mention the tcp_bpf_sendmsg() READ_ONCE fold in the TCP commit
+- Link to v4: https://patch.msgid.link/20260917-mptcp-sk-err-net-v4-0-1f04f52f2561@proton.me
+
+Changes in v4:
+- split the annotation change, one points to tcp and another points to
+  mptcp.
+- annotate the remaining unmarked MPTCP sk_err peeks on the
+  subflow error-report path.
+- Link to v3: https://patch.msgid.link/20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me
+
+Changes in v3:
+- drop the Fixes tag and retarget to net-next
+- annotate the remaining unmarked sk_err peeks on the TCP/MPTCP
+  send, recv and splice paths
+- Link to v2: https://patch.msgid.link/20260909-mptcp-sk-err-net-v2-1-5044abecac90@proton.me
+
+Changes in v2:
+- add Reported-by and Closes for the MPTCP syzkaller report
+- Link to v1: https://patch.msgid.link/20260908-mptcp-sk-err-net-v1-1-da71aaec9afd@proton.me
+
+---
+Quanye Yang (2):
+      tcp: annotate lockless access to sk->sk_err
+      mptcp: annotate lockless access to sk->sk_err
+
+ include/net/tcp.h    |  2 +-
+ net/core/stream.c    |  2 +-
+ net/ipv4/tcp.c       | 12 +++++-------
+ net/ipv4/tcp_bpf.c   | 10 ++++------
  net/mptcp/protocol.c | 14 ++++++--------
  net/mptcp/subflow.c  |  4 ++--
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ 6 files changed, 19 insertions(+), 25 deletions(-)
+---
+base-commit: 211f2a875f6f447745d80d5762d6d614503ac84a
+change-id: 20260908-mptcp-sk-err-net-7ff88ef05044
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e1f08f71cdb1..e37a8642a4b0 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -969,7 +969,7 @@ static bool move_skbs_to_msk(struct mptcp_sock *msk, struct sock *ssk)
- 
- 	moved = __mptcp_move_skbs_from_subflow(msk, ssk, true);
- 	__mptcp_ofo_queue(msk);
--	if (unlikely(ssk->sk_err))
-+	if (unlikely(READ_ONCE(ssk->sk_err)))
- 		__mptcp_subflow_error_report(sk, ssk);
- 
- 	/* If the moves have caught up with the DATA_FIN sequence number
-@@ -2028,7 +2028,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 	}
- 
- 	ret = -EPIPE;
--	if (unlikely(sk->sk_err || (sk->sk_shutdown & SEND_SHUTDOWN)))
-+	if (unlikely(READ_ONCE(sk->sk_err) || (sk->sk_shutdown & SEND_SHUTDOWN)))
- 		goto do_error;
- 
- 	pfrag = sk_page_frag(sk);
-@@ -2429,10 +2429,9 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 			    !timeo)
- 				break;
- 		} else {
--			if (sk->sk_err) {
--				copied = sock_error(sk);
-+			copied = sock_error(sk);
-+			if (copied)
- 				break;
--			}
- 
- 			if (sk->sk_shutdown & RCV_SHUTDOWN)
- 				break;
-@@ -4655,10 +4654,9 @@ static ssize_t mptcp_splice_read(struct socket *sock, loff_t *ppos,
- 				break;
- 			if (sock_flag(sk, SOCK_DONE))
- 				break;
--			if (sk->sk_err) {
--				ret = sock_error(sk);
-+			ret = sock_error(sk);
-+			if (ret)
- 				break;
--			}
- 			if (sk->sk_shutdown & RCV_SHUTDOWN)
- 				break;
- 			if (sk->sk_state == TCP_CLOSE) {
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index af81ad5e699d..ec9668fe8d5b 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1541,7 +1541,7 @@ static void subflow_data_ready(struct sock *sk)
- 		if (mptcp_data_avail(msk) < parent->sk_rcvlowat &&
- 		    (tcp_sk(sk)->rcv_nxt - tcp_sk(sk)->rcv_wup) > inet_csk(sk)->icsk_ack.rcv_mss)
- 			inet_csk(sk)->icsk_ack.pending |= ICSK_ACK_NOW;
--	} else if (unlikely(sk->sk_err)) {
-+	} else if (unlikely(READ_ONCE(sk->sk_err))) {
- 		subflow_error_report(sk);
- 	}
- }
-@@ -1889,7 +1889,7 @@ static void subflow_state_change(struct sock *sk)
- 	 */
- 	if (mptcp_subflow_data_available(sk))
- 		mptcp_data_ready(parent, sk);
--	else if (unlikely(sk->sk_err))
-+	else if (unlikely(READ_ONCE(sk->sk_err)))
- 		subflow_error_report(sk);
- 
- 	subflow_sched_work_if_closed(mptcp_sk(parent), sk);
-
--- 
-2.55.0
+Best regards,
+--  
+Quanye Yang <quanyeyang@proton.me>
 
 
