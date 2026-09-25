@@ -1,167 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643E83911B5;
-	Fri, 25 Sep 2026 11:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC8423E9F
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 11:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790336947; cv=none; b=tg2bYE6ethoXWy1ags/37XsC09xh6ah5CYR2UM2v2pmaAvISsFji7EP6dgadf0YbMmin+Olbe4Dy685a/Y30IRdhdOcHzQnTL4IWvfNnUbtgN2qZYGp6mGhH52+RDW3RmoRXKQ49QiP0eoN8s2A6cn3vsQKFPre//2G1KvKmVHo=
+	t=1790337129; cv=none; b=lx9coD45B+ioZFX1Ixe/Zs40Dwzti2+jlJfPpN0zeAxUZy4VXnwO8AHegFdBdBnKgOnSoMHTmSE9aeAkgFWY+A9oZoacrLMJHQLiyM4HeHKOF6Ulqi2lUTOgNLTYp8zxBfeQPyn3REpItcu2MpzFPj90Z+YMOii8UfABDNFOE1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790336947; c=relaxed/simple;
-	bh=CVmVtlkKR7SNwFbYgnqNdCKDHUzae+UJ2CuMNtkM8Zw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dAddpI/phkrKM3KL8LdQtSsWSHGwLg9nscOHzjwCmx/WoRmJSpjE/AtrBhAmYbwy7gUfAcv9ls8E1bmMnpB50q/uRj1wMnKrvk/0blWi0J5K35OLDA0g5uBd1yrNHW+bHxoOM9KnfYXQwbzJhgrqBXxUR1Azu0R828IoNjY51Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSWjX/pz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790337129; c=relaxed/simple;
+	bh=NLMBqzMC1vbNSpj07NZ5D9sEF7hljwuw1qge4ogUXI0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZazXrHab+7vRaFbktFmkQmkJPsWJ/Cn1SCy1P5cG2rIvS707X/TkQesweuhEyuw4sRi76hXMyf5ykHEMmVQXpSSkvybmNSYQYu+90cGAFQbYQ5ChdF+fKEEX5y66DpzpRtCulvJpYL32HaGWiRBxzbZhoudjnJq7mRvT7YgxgVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com; spf=pass smtp.mailfrom=varjosoft.com; dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b=DT0G69Wl; arc=none smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=varjosoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=varjosoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSWjX/pz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859F01F000FF;
-	Fri, 25 Sep 2026 11:49:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790336945;
-	bh=WjQSiFQ5fdbwzb3Hntt6SDjtmfEpFahHE3hOQrqP8yQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MSWjX/pzk3hsi3/AtO5vM90P1MfbfmhH92OsQ6tVVwtInc6T5q6Kb8ehWAz9ubdJX
-	 Ingqnf3sIYEWLKvvS/stY6dciPbH1cozu5SSIyqMyd9FX8+2FSUVoIpXsERgSnWQNQ
-	 EeZYoHS4yi1QsewRONlTdsRw1otIOr1suYqIVwv9U9gm0vO0+kumpDkAAONsbTJ8xQ
-	 hISYE+iBjuoVWRiPwFD3itoAIfNLcNv4+EKXDm+l7Bo/yUx7pjUaBQW2BSPMQzfCO1
-	 KDj8fuiggQ8Ifkawv+xIh1sZh9KAhVkoM8hdt8FB8LMWu+J+pGYK53TxvOjCjUbRI1
-	 aYBRveVK40F4g==
-Subject:
- Re: [PATCH net-next v3] net/rds: restrict the rdma_cm ids to IB devices
-From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Date: Fri, 25 Sep 2026 11:49:05 +0000
-Message-ID: <179033694505.2160803.10055619633105856141@kernel.org>
-In-Reply-To: <20260922084837.390414-1-achender@kernel.org>
-References: <20260922084837.390414-1-achender@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=varjosoft.com header.i=@varjosoft.com header.b="DT0G69Wl"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b8ea203e5bso300640e87.1
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 04:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=varjosoft.com; s=google; t=1790337125; x=1790941925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zSsqFN4w1HlV2DlahWQXBcRPSYvpwcfnASilh2E/Vww=;
+        b=DT0G69WlCxE+9MMX7uTCqSG9jatDWdzbvn9FXBBR1UREAOB6qKYHIRx2UAqHKQPGRn
+         kgOyasQitvVgOVFJGFZLBuMm6lakaBdcJ3A8zdUKVlmH0q+E+Uc2Cz3fULxWhRMWcRp4
+         HZjz43GlUN6RB2S5TqrmYaMr2S+W8qUU6Swq4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790337125; x=1790941925;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zSsqFN4w1HlV2DlahWQXBcRPSYvpwcfnASilh2E/Vww=;
+        b=j2tOk2V7M1iRcD1HMCdqa326Kof+KFxidii6Zm5qAhh0cl43ZVYRH0j80K3hFP3EWz
+         EyFuidJSoeaqaoblXRR8DvNZIIYh/PonC3SpsX+JLuMpkAnuYVaSJQZ14VXGjtn2XNG9
+         rMnnXxKhJcMirxEey+OAvsFhW/BEI+q43TqlJpgwUGU+qKE9phA68uuqSOZKjyOeDfET
+         CRp0gAPie8mWaqc5rGREEvR3zKzLCQK0LFtznl/weYXleToVx3FYlcWuV12/mdN9n/kf
+         rxkWKJLv364lYx4dhTTUimBJhJLoYQmBPLft98jQ1NHIJlzbfkrsRR/RQzCepRVFGDnJ
+         ddHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzDZuzuxmCZW4Ro0HeeBRE4+UQJZL+pKVgdpGahr1dYlMZigNcquNZb7728AoPgNtA4yYSS94I=@vger.kernel.org
+X-Gm-Message-State: AFuF++m72jhIG+Xt9nopzyA+C1e0rBjHYIQ+GSJf4EJv+92S+rbcTMTe
+	lBuU2kWj9GgWFAV3nGcrW4nGWEab8fBjXFnNPvvcb+IDzrnLUKrZRCDQwsG9PQPf0es=
+X-Gm-Gg: AYBFou3WZYpkDDU6rnCV0hku3KoyAErhcUWO2GnUvQILn7uw8/tzetT6MIDWvz3cTvY
+	K8qbpUmAp3Fd9+3J3rT8NDICr5fq1uiP7aa/24k/6zqmixOnmAxIGlAPeb1OlUjmLw6bNQZaKJb
+	mhgkXuM4p0kkgGH0XEQUpHzkcetEgNs9zAaRyRiBvTPLVIfhPdpWY1ec4iNTRf1MQSKNPpWy6rW
+	CbQ7sSl83siv4W9vysD7WNPGgZrbnljwvtnTBhuTNEzj6lG5P3M/NT+9qBR+pP5ZK6hefQIIazj
+	0RTi6tZaZZHbISEsTp6QdxiHN09n3HmvIYCfVmo42Ptk0Pv4AvGOPhhofdPIPPikH+oCGX1Xxev
+	u4s8EWpgYwsnoOGYixdUNuAC1aIgrLEGT6bL2ylo/L1s/8nWMd59TrwBeM2yHsl/7+6jRUA8pkg
+	0ySSPbLxvX1B7zdWle74ZW8BX+gf5wVyYYJNeJ8MaQ2zUZWssHr6AmZf/xnlmVuf0wvQAuanR1L
+	8BsCx9CArSYzbPWbhtvmiAxKlDP2HElvYq9k3Kl693jnT5+rdXLmvriMsugxiuJ
+X-Received: by 2002:ac2:4354:0:b0:5b6:1a7c:fd91 with SMTP id 2adb3069b0e04-5b8df0e2abamr1584966e87.55.1790337124893;
+        Fri, 25 Sep 2026 04:52:04 -0700 (PDT)
+Received: from localhost.localdomain (91-157-138-212.elisa-laajakaista.fi. [91.157.138.212])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6afd398sm502024e87.49.2026.09.25.04.52.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 25 Sep 2026 04:52:04 -0700 (PDT)
+From: Hannu Varjoranta <hannu@varjosoft.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	joshwash@google.com,
+	hramamurthy@google.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	nktgrg@google.com,
+	willemb@google.com,
+	pkaligineedi@google.com
+Subject: Re: [PATCH net] gve: DQO: accept TSO packets with non-protocol gso_type bits
+Date: Fri, 25 Sep 2026 14:51:22 +0300
+Message-ID: <20260925115122.56321-1-hannu@varjosoft.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <CANn89iLpkPN=qHkyse=Bdz9WvOgtgm1erL1fn=sYPRE7GSibjg@mail.gmail.com>
+References: <20260923141047.14047-1-hannu@varjosoft.com> <179030240275.2160803.7121151150196393029@kernel.org> <CANn89iK7kacaAnx3nTCL8=OrCQF5kyojeoXkWU1Kq92n5gMyUA@mail.gmail.com> <CANn89iLpkPN=qHkyse=Bdz9WvOgtgm1erL1fn=sYPRE7GSibjg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Fri, Sep 25, 2026 at 4:30 AM Eric Dumazet <edumazet@google.com> wrote:
+> Typo,  this should have been:
+>
+>           shinfo = skb_shinfo(skb);
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Thanks Eric, v2 with the reload squashed follows.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The other two Sashiko items are already handled in net, and v2 is
+rebased on top of them:
 
-- [Medium] Commit-message misclassification: the changelog declares this
-  change "hardening on top of it, not a fix in its own right, hence no…
+- gso_size above the hardware limit: 296c83b5ccc8 ("gve: DQO: reject TSO
+  packets with an out of range MSS").
+- gve_can_send_tso() using the TCP header length for UDP GSO:
+  83769c23fb18 ("gve: DQO: fix header length used by gve_can_send_tso()
+  for UDP GSO").
 
-Pre-existing issues:
-- [Low] rds_rdma_listen_init_common() (net/rds/rdma_transport.c) logs the
-  listening port as the compile-time constant RDS_PORT (18634) at line…
-
---
-
-net/rds: restrict the rdma_cm ids to IB devices
-
-This restricts the three rdma_cm ids RDS creates - the listener, the
-per-connection id in rds_ib_conn_path_connect() and the probe id in
-rds_ib_laddr_check_cm() - to RDMA_NODE_IB_CA with
-rdma_restrict_node_type() before they are bound.  The explicit node_type
-test in rds_ib_laddr_check_cm() is dropped as redundant.
-
->From the changelog:
-
-> With that, no rdma_cm event reaches RDS's handler from a device it
-> has no transport for.  The handler itself still assumes IB: it assigns
-> its transport pointer only for RDMA_NODE_IB_CA and dereferences it
-> regardless, which is the crash that first surfaced this.  The fix for
-> that is a separate net patch, Aohan Mei's "net: rds: fix uninitialized
-> trans dereference in CM event handler", and is what stable kernels
-> without rdma_restrict_node_type() - which arrived in commit
-> a760e80e90f5 ("RDMA/core: introduce rdma_restrict_node_type()") - have
-> to take; this patch is hardening on top of it, not a fix in its own
-> right, hence no Fixes tag.
-
-[Severity: Medium]
-Is the "not a fix in its own right, hence no Fixes tag" classification
-accurate for the tree this applies to?
-
-The referenced companion patch ("net: rds: fix uninitialized trans
-dereference in CM event handler") is not present here.  In
-rds_rdma_cm_event_handler_cmn() the transport pointer is still
-uninitialized on entry:
-
-net/rds/rdma_transport.c:rds_rdma_cm_event_handler_cmn() {
-	struct rds_connection *conn = cm_id->context;
-	struct rds_transport *trans;
-	...
-	if (cm_id->device->node_type == RDMA_NODE_IB_CA)
-		trans = &rds_ib_transport;
-	...
-	case RDMA_CM_EVENT_CONNECT_REQUEST:
-		ret = trans->cm_handle_connect(cm_id, event, isv6);
-	...
-	case RDMA_CM_EVENT_ESTABLISHED:
-		if (conn)
-			trans->cm_connect_complete(conn, event);
-}
-
-So for any event arriving from a device whose node_type is not
-RDMA_NODE_IB_CA, trans is dereferenced as stack garbage, and the
-CONNECT_REQUEST case is reachable from an inbound connection on the RDS
-port.
-
-Before this patch cma_listen_on_dev() installed the RDS listener on every
-RDMA device, and cma_acquire_dev_by_src_ip() could pick a software iWARP
-device for the same netdev, which is what made that path reachable.  With
-the listener restriction added below, cma_listen_on_dev() honours
-restricted_node_type and no longer installs the listener on such a device.
-
-That makes this patch the change that removes the remotely reachable route
-to that indirect call in this tree.  Should it then carry a Fixes tag and
-state the ordering dependency on the companion handler patch, rather than
-being described as hardening only?
-
-> diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-> index b15cf316b23a2..91ff1dde26af0 100644
-> --- a/net/rds/rdma_transport.c
-> +++ b/net/rds/rdma_transport.c
-> @@ -210,6 +210,14 @@ static int rds_rdma_listen_init_common(rdma_cm_event_handler handler,
->  		return ret;
->  	}
->  
-> +	/* Only the IB transport is left, so only listen on IB devices */
-> +	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
-> +	if (ret) {
-> +		pr_err("RDS/RDMA: failed to setup listener, rdma_restrict_node_type() returned %d\n",
-> +		       ret);
-> +		goto out;
-> +	}
-> +
->  	/*
->  	 * XXX I bet this binds the cm_id to a device.  If we want to support
->  	 * fail-over we'll have to take this into consideration.
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but since the patch touches
-rds_rdma_listen_init_common() anyway: the debug line further down in the
-same function hard-codes the port,
-
-	rdsdebug("cm %p listening on port %u\n", cm_id, RDS_PORT);
-
-while the helper has two callers with different ports.
-rds_rdma_listen_init() binds the IPv4 listener with
-sin.sin_port = htons(RDS_PORT) and the IPv6 listener with
-sin6.sin6_port = htons(RDS_CM_PORT), as the comment above it describes.
-
-For the IPv6 listener the message therefore prints 18634 rather than the
-16385 that was bound.  Would it make sense to print the port from the sa
-argument that was just bound instead?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922084837.390414-1-achender%40kernel.org
+pw-bot: cr
