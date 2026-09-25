@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E997B378D7B;
-	Fri, 25 Sep 2026 02:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B435379EE0;
+	Fri, 25 Sep 2026 02:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790301824; cv=none; b=elf5gcc1Bn4Stb1Lam1FbnpnQmm1NwJb3xD2H8t2ylhcbsQyQH1NHbY9XOE7cG1y6YrvuTXtxq6FFcN95Lmwbjf4xIG4ODQ3InVfzuNDQvgMBzmVrQ5p4isiW3g8Ve/Qr3vg13LghnaxCIaR6uLGcRKr6Z/JYQER1gVy8AI1bwE=
+	t=1790301825; cv=none; b=Cy3m3o30KUe+TRCZp96/j/Tp+eje7KqV1p+rRCM5/yE5X+bfRy1eDEBBC5Tr76no5XvyYcOeVIKSWGddDxCOsOcAtvBDR8ZfznHSdmIRpBh3mJb4itR9fCkTJts9ewmt8VHFNL4xwiywCr3cYoyqx94ktstuduEMYCOZctiswto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790301824; c=relaxed/simple;
-	bh=jbPlUfHarXKW7IgHmgHchup5uMQKI8caFK9hM7eovfw=;
+	s=arc-20240116; t=1790301825; c=relaxed/simple;
+	bh=L2jxpd4KORfYSgHvdRV9xKv/h+duqG6ooiSRyMSynYY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DzSG8EEWx1Qun+NEasum3+g0ZggIxuWqTubp+DCCGeR1TT1Gf8SBE0kV/Mb5uLtOb/1FFKqldykDzWOqeSaXYdyFj0kkWNRDd/gQTcMG+Scm2kve2bAWBhYem0OaEJpcnJXcTXit+FIyK+rZ2D2S6gCfd8OS6daEMyXkn+FiRRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNvmYH+j; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=K8sSzzCrc7sDs3LlUZAqNUr4wEsQId45rx6lQLhuJYELfD56tT+f8Nkgbrf8IMJcOP0PUJEL+MgLfSHYIYoAZsKOM1STgHcqwxaPDJyz4OmUFtAGZpSeGFOaxc/mp5hSXX8ryrvUQNp6zg79PFAUJ26sy81+sxVa82OiPR8M2AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2eYEdLu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNvmYH+j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37E51F000FF;
-	Fri, 25 Sep 2026 02:03:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2eYEdLu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F111F00898;
+	Fri, 25 Sep 2026 02:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790301821;
-	bh=+3x17hI2eG4aqh5yipVDUNrlIY4rDva+XyGlofdKPB4=;
+	s=k20260515; t=1790301823;
+	bh=Onm061uyZBZ6jk/XlnSGK29UlUQPLuEGtTxsmYUpuT8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UNvmYH+jY5xeVCRN6cxxBNA58LNYdyQIh2GDLAzQubvq1h12MD/JDxJQ8oe6jAlNe
-	 DQYpjbhQKa/ga2xVlW8h80QLDwKhzK5d+FFytAPu0JywsYUXMK0xphS7CyjAjXrwNM
-	 tKCAJuLskPZb3WpNLq6117HRO4NcBKF95IUG8olvxbBrwKcjl0aABoyKR9M++hOGXc
-	 hYW+L5HEVtsBz3taFmqIXrdi3GNMiMlZb3KhUCmMviFdXLyZnTM8h+/bLOLKaW+1oI
-	 fHF9WAN7mceqRqFDSZzoHEr6peER7LrmQEmX9HCRy3c7ZqNv/ak9RlM95Juc9xOR1h
-	 TSTU/m6mv9p5A==
-Subject: Re: [PATCH net-next v10 05/11] arm64: dts: rockchip: rk3568: add XPCS
- and fixed-clock nodes
+	b=M2eYEdLuUcb+C96LVFVRHO6lU0WuUABDd/6eda+sMlv6S2mdAbIP8kJMRY7+v9veI
+	 sKQzI7EWmlp44LMD42zzzCf1bb08l6EedRWjeRtJaVRP2m8UMZcVn+hMQVv33TciGy
+	 9ajXZFWVbTBZTB/0MlXlcD2rhyU2ojVJHt8Y/Z0yf5IZRWl6yPxZIOklYDJkZuUHdJ
+	 UJCZT//s2z8uwqrMVS4sfC9BruK0m8CIhokBqPAy1TJueKBaAOf0nch+S0vHG8zq6B
+	 Vwgevm3DTWEzpE9EsnDwgF7GjnKkEkAcBaPSnp1twV2kAe+inoN1F4C97bVp34drRF
+	 C19YS3EzQpSFw==
+Subject: Re: [PATCH net-next v10 06/11] net: pcs: xpcs: add ANRESTART support
+ for SGMII link recovery
 From: netdev-bot+sashiko@kernel.org
 To: coiaprant@gmail.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -41,10 +41,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
  linux-renesas-soc@vger.kernel.org
-Date: Fri, 25 Sep 2026 02:03:39 +0000
-Message-ID: <179030181943.2160803.8250149004228493490@kernel.org>
-In-Reply-To: <20260922200336.2201212-6-coiaprant@gmail.com>
-References: <20260922200336.2201212-6-coiaprant@gmail.com>
+Date: Fri, 25 Sep 2026 02:03:41 +0000
+Message-ID: <179030182177.2160803.5520238845817839542@kernel.org>
+In-Reply-To: <20260922200336.2201212-7-coiaprant@gmail.com>
+References: <20260922200336.2201212-7-coiaprant@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,10 +55,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -66,192 +66,135 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] DT/binding mismatch: the new `xpcs: ethernet-pcs@fda00000`
-  node in arch/arm64/boot/dts/rockchip/rk3568.dtsi omits `phys` and…
-- [Medium] The two new nodes `clk_gmac0_xpcs_mii: clock-xpcs-gmac0` and
-  `clk_gmac1_xpcs_mii: clock-xpcs-gmac1`…
-- [Low] Concern (retained per experiment protocol, judged INVALID): the
-  claim that nothing in the tree consumes the DT description added here…
+- [Medium] In xpcs_get_state_c37_sgmii() (drivers/net/pcs/pcs-
+  xpcs.c:1110-1121) the ANCMPLT latch is cleared first…
+- [Medium] xpcs_get_state_c37_sgmii() now mutates PCS hardware state
+  (write-0-to-clear of DW_VR_MII_AN_INTR_STS and the BMCR_ANRESTART…
 
 --
 
-arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
+net: pcs: xpcs: add ANRESTART support for SGMII link recovery
 
-This adds an ethernet-pcs node at 0xfda00000 for the RK3568 XPCS, with four
-ethernet-pcs-mii child nodes, all disabled by default.  It also adds two
-125 MHz fixed-clock nodes whose clock-output-names are chosen to match the
-CRU gmac RX/TX mux parent name strings so boards can reparent
-SCLK_GMAC{0,1}_RX_TX.
+This adds BMCR_ANRESTART to the C37 SGMII paths: xpcs_config_aneg_c37_sgmii()
+now clears DW_VR_MII_AN_INTR_STS and sets ANRESTART together with ANENABLE,
+and xpcs_get_state_c37_sgmii() clears the AN latch and issues an AN restart
+when the link is down but AN completion was latched.
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> index 3bc653f027f1f..2cea108b31a4e 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> @@ -8,6 +8,20 @@
->  / {
->  	compatible = "rockchip,rk3568";
->  
-> +	clk_gmac0_xpcs_mii: clock-xpcs-gmac0 {
-> +		compatible = "fixed-clock";
-> +		clock-frequency = <125000000>;
-> +		clock-output-names = "clk_gmac0_xpcs_mii";
-> +		#clock-cells = <0>;
-> +	};
-> +
-> +	clk_gmac1_xpcs_mii: clock-xpcs-gmac1 {
-> +		compatible = "fixed-clock";
-> +		clock-frequency = <125000000>;
-> +		clock-output-names = "clk_gmac1_xpcs_mii";
-> +		#clock-cells = <0>;
-> +	};
-
-[Severity: Medium]
-
-Is a root-level fixed-clock the right description for this clock?  As the
-commit message says, the 125 MHz MII clock is generated inside the XPCS
-from the Naneng combo SerDes, so it only exists once PD_PIPE is powered,
-PCLK_XPCS is ungated and the SerDes has locked.  The CRU has
-SRST_XPCS_TX_DIV10 / SRST_XPCS_RX_DIV10 / SRST_XPCS_XGXS_RX for that
-divide-by-10 path, and pcs-xpcs-rk.c later in the series notes:
-
-    /*
-     * Accessing the XPCS registers also requires a TX clock from the
-     * SerDes, which is needed for the soft reset.
-     */
-
-These two nodes carry no status, no gate, no power-domains and no relation
-to the xpcs node that produces the clock.
-
-Does that hide the dependency from the clock framework?  A board doing
-
-    assigned-clocks = <&cru SCLK_GMAC0_RX_TX>;
-    assigned-clock-parents = <&clk_gmac0_xpcs_mii>;
-
-is reparented by of_clk_set_defaults() before the MAC driver's probe body
-runs, and the reparent plus clk_get_rate() always succeed with 125 MHz even
-when the xpcs node is disabled, PD_PIPE is off, or the SerDes PLL is not
-locked.  Instead of -EPROBE_DEFER or an error, wouldn't the MAC just run
-against a dead MII clock?  The phantom clock also stays "enabled" across
-PD_PIPE power-down.
-
-The other half of this is the coupling mechanism.  The only thing tying
-these nodes to the CRU is the global clock name, matched by strcmp in
-clk_fetch_parent_index() against the hard-coded strings in
-drivers/clk/rockchip/clk-rk3568.c:
-
-    PNAME(mux_gmac0_rx_tx_p)	= { "clk_gmac0_rgmii_speed", "clk_gmac0_rmii_speed", "clk_gmac0_xpcs_mii" };
-    PNAME(mux_gmac1_rx_tx_p)	= { "clk_gmac1_rgmii_speed", "clk_gmac1_rmii_speed", "clk_gmac1_xpcs_mii" };
-
-If the RK3568 CRU is later converted to parent_data/fw_name, or those
-strings are renamed, board reparenting breaks silently with no build or
-schema error.  Would it be preferable to have the real provider export this
-clock, either the CRU leg or the xpcs node itself as a clock provider, so
-the PD_PIPE / PCLK_XPCS / SerDes dependency is expressible?
+> diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+> index 0337e2bcc0125..8c3875b6985b9 100644
+> --- a/drivers/net/pcs/pcs-xpcs.c
+> +++ b/drivers/net/pcs/pcs-xpcs.c
 
 [ ... ]
 
-> @@ -110,6 +124,37 @@ sata0: sata@fc000000 {
->  		status = "disabled";
->  	};
+> @@ -1093,9 +1107,18 @@ static int xpcs_get_state_c37_sgmii(struct dw_xpcs *xpcs,
+>  		return 0;
+>  	}
 >  
-> +	xpcs: ethernet-pcs@fda00000 {
-> +		compatible = "rockchip,rk3568-xpcs";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		reg = <0x0 0xfda00000 0x0 0x200000>;
-> +		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
-> +		clock-names = "csr", "eee";
-> +		power-domains = <&power RK3568_PD_PIPE>;
-> +		status = "disabled";
+> -	/* Clear AN complete status or interrupt */
+> -	if (state->an_complete)
+> -		xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
+> +	if (state->an_complete) {
+> +		/* Clear AN complete status or interrupt */
+> +		ret = xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* Initiate the next round of AN */
+> +		ret = xpcs_modify(xpcs, MDIO_MMD_VEND2, MII_BMCR, BMCR_ANRESTART,
+> +				  BMCR_ANRESTART);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
 
 [Severity: Medium]
+Can this ordering leave the restart permanently disarmed if the xpcs_modify()
+fails?
 
-Does this node match the binding added earlier in the same series?
-Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml lists
-phys and phy-names unconditionally:
+The latched ANCMPLT bit is the only piece of hardware state this code uses to
+decide that a restart is needed, and it is destroyed before the restart is
+actually requested.  xpcs_modify() is a real read-modify-write:
 
-    required:
-      - compatible
-      - reg
-      - "#address-cells"
-      - "#size-cells"
-      - clocks
-      - clock-names
-      - phys
-      - phy-names
-      - power-domains
+xpcs_modify() -> mdiodev_c45_modify() -> mdiobus_c45_modify() ->
+__mdiobus_c45_modify_changed()
 
-and its example supplies:
+and that last function returns the read error before issuing any write:
 
-    phys = <&combphy2 PHY_TYPE_SGMII>;
-    phy-names = "serdes";
+drivers/net/phy/mdio_bus.c:__mdiobus_c45_modify_changed() {
+	...
+	ret = __mdiobus_c45_read(bus, addr, devad, regnum);
+	if (ret < 0)
+		return ret;
+	...
+}
 
-There is no if/then in that schema exempting disabled nodes, so wouldn't
-make dtbs_check report "'phys' is a required property" and "'phy-names' is
-a required property" for every rk3566/rk3568 DTB that includes
-rk3568.dtsi?  At the end of the series only rk3568-photonicat.dts adds them
-via a &xpcs override.
+So on a transient register read error the PCS stays AN-complete and link-down
+with no negotiation started, while the latch that would have re-triggered this
+branch has already been cleared.  Every later poll then sees an_complete == 0
+and never re-enters the branch, which is the "link stays down forever" case the
+commit message describes.
 
-The commit message justification is:
+The commit message says:
 
-    dtbs_check only validates required properties for enabled nodes, so the
-    SoC dtsi does not provide phys/phy-names
+	"If an MDIO access fails at this point, it indicates an
+	 unrecoverable hardware condition until reset."
 
-Is that accurate?  dt-validate selects schemas by compatible and validates
-the nodes present in the DTB; status = "disabled" controls whether the OS
-binds a driver, not schema conformance.  The same file appears to
-contradict the assumption, since the disabled sata0 node right above this
-hunk does carry its combphy reference:
+Where does that reset happen?  .pcs_get_state is void, and the caller only
+logs the value:
 
-    sata0: sata@fc000000 {
-        ...
-        phys = <&combphy0 PHY_TYPE_SATA>;
-        phy-names = "sata-phy";
-        ...
-        status = "disabled";
-    };
+drivers/net/pcs/pcs-xpcs.c:xpcs_get_state() {
+	...
+	case DW_AN_C37_SGMII:
+		ret = xpcs_get_state_c37_sgmii(xpcs, state);
+		if (ret)
+			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
+				"xpcs_get_state_c37_sgmii", ERR_PTR(ret));
+		break;
+	...
+}
 
-The disabled pcie3x1/pcie3x2 nodes and the disabled USB/SATA nodes in
-rk356x-base.dtsi do the same.
+Nothing sets xpcs->need_reset, resets the PCS or re-arms the restart, so
+recovery seems to require an administrative down/up to re-run
+xpcs_config_aneg_c37_sgmii().  Would it be safer to issue the ANRESTART first
+and only clear the latch once the restart write succeeded, or to set
+xpcs->need_reset on failure?
 
-Separately from tooling, is the node a complete hardware description
-without the SerDes phandle?  xpcs_rk_serdes_phy_init() in
-drivers/net/pcs/pcs-xpcs-rk.c does:
+[Severity: Medium]
+What serializes this new register write against a concurrent
+.pcs_get_state call?
 
-    pxpcs->serdes_phy = devm_phy_get(dev, "serdes");
-    if (IS_ERR(pxpcs->serdes_phy))
-            return dev_err_probe(dev, PTR_ERR(pxpcs->serdes_phy), "Failed to get SerDes PHY\n");
+phylink reaches this callback from two paths that share no lock:
 
-so a board that only flips status to "okay" gets a probe failure.  Would it
-make sense to settle this on one side, either dropping phys/phy-names from
-the binding's required list, or giving the dtsi node a default SerDes
-phandle that boards override?
+drivers/net/phy/phylink.c:phylink_resolve() {
+	mutex_lock(&pl->state_mutex);
+	...
+		phylink_mac_pcs_get_state(pl, &link_state);
+	...
+}
 
-[Severity: Low]
+drivers/net/phy/phylink.c:phylink_ethtool_ksettings_get() {
+	ASSERT_RTNL();
+	...
+		phylink_mac_pcs_get_state(pl, &link_state);
+	...
+}
 
-One note that turned out to be a non-issue, recorded for completeness: at
-this commit alone nothing in the tree matches rockchip,rk3568-xpcs, consumes
-the "eee" clock-name, or parses the ethernet-pcs-mii@N children.  That is
-resolved by later patches in the same series, so there is nothing to change
-here.  At the series tip, drivers/net/pcs/pcs-xpcs-rk.c has:
+phylink_mii_read() via phylink_mii_ioctl() is in the same ASSERT_RTNL()-only
+category.  struct dw_xpcs in drivers/net/pcs/pcs-xpcs.h has no lock of its own,
+and the MDIO bus mutex only makes each individual transaction atomic, not the
+read of DW_VR_MII_AN_INTR_STS followed by the clear and the ANRESTART.
 
-    static const struct of_device_id xpcs_rk_of_ids[] = {
-            { .compatible = "rockchip,rk3568-xpcs" },
-            { /* sentinel */ },
-    };
+So can an unprivileged ETHTOOL_GLINKSETTINGS query (or SIOCGMIIREG) racing with
+phylink_resolve() clear a latch belonging to a negotiation the other caller just
+started, and then issue a second BMCR_ANRESTART that aborts that in-flight
+negotiation?
 
-xpcs_rk_init_clk() fetches both "csr" and "eee" and derives the EEE
-multiplier from clk_get_rate() on the eee clock, xpcs_rk_create() reads the
-ethernet-pcs-mii@N child's reg as the port number, and
-rk3568-photonicat.dts wires pcs-handle = <&xpcs_mii0> into gmac0.
+Even without a race, the read of DW_VR_MII_AN_INTR_STS and the subsequent blind
+write of 0 are not atomic with respect to the hardware latch, so is an AN
+completion latched between those two accesses silently dropped?
 
-> +
-> +		xpcs_mii0: ethernet-pcs-mii@0 {
-> +			reg = <0>;
-> +			status = "disabled";
-> +		};
-
-[ ... ]
+Before this patch the callback only cleared the latch, so the state-changing
+write is new here.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922200336.2201212-1-coiaprant%40gmail.com
