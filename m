@@ -1,48 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA33B41DDEC;
-	Fri, 25 Sep 2026 20:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9A02F28EA;
+	Fri, 25 Sep 2026 20:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790367805; cv=none; b=Zyhs2vVHwDJCo7T6+c+eEc2OzZj83Nf+NTSSzSJJSeTTKrDvAwGuTrz0Tep+IrZuk3RHAdnqBEW5zFZGfobCuZUp11yERMFO2GgJHWcBXK5t2lG2w+8PzvVRbS1Iai5AMepppyI2RWixbNWzvD4H0yCq6zqreiok2Zaz/DLLa8I=
+	t=1790367862; cv=none; b=I9abYb6wGx9gWLEtR89ldnCzMc6uRODkYpAAEr1ZiUpOJlxzRUUWImgs2/QKdEcLCMRPH8kiFfg9hrZ1c1KJqzqvPk8TkGjcm07eUE7Twds1BEmmKtPZSXNuNVLti81q5QaweXxSTOV+ra1hmowjiCz+/DqmkIHbCOqPRB1UtrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790367805; c=relaxed/simple;
-	bh=yku3ipPh57nbU+UgKjHx2/722iALfb4YCYhKbE75SZ8=;
+	s=arc-20240116; t=1790367862; c=relaxed/simple;
+	bh=MHlQd2XbQytBoR/Ha15LXYbuOf0bTeI6LB/v3kZlZPg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u+QymQlub1yJModUWToyt4SPXQDqcyK74C+docqA3oGooWSl97tqvdg3dpk35RPzXXrmvIE4wlQqz/oZhIbIyVuIqSlEG0KZtTJOfcexCoVyoSMSqEGXkobwEVgZh7lUCkbmujEaUqNtqApRw8ddmqFgg6H0RnTGadeE9HGg6fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtXFoqh7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=if1PUgEA/3FT/YDL175w4sH4yXBMygKJtRYEWJjebBi3HhD1XBjgVzdyXKoRTEmpD0jw+YVVFKnqRbFKHauz+QKuPvW7KQsCBIheDsP0KJlqC/r9FvZgWxtyU/c3sbmTbtqBJmpOp8e0VNmXhB3wgGtR/vszu7H6GYwFF191H94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HElSgzBs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtXFoqh7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62E21F000FF;
-	Fri, 25 Sep 2026 20:23:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HElSgzBs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0021F000FF;
+	Fri, 25 Sep 2026 20:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790367803;
-	bh=be7aOpwVM70umZjqiE59C+n0H3rASjAY9dZun5+KBHQ=;
+	s=k20260515; t=1790367860;
+	bh=oxlPviVpyBt7kVpYbPTzuJIJu58P7y38V+6UNjHDCnE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EtXFoqh75BWAK5V012E9A+bi+Qa0NXe57pOz37rERkyCg0JqZIK/MvNnra6gpyHjg
-	 OILUO4/2Qysh8b96YxFvHPqvYh6JcFwkZnuXHW8E29ehpIh0IlJO4YPvgbIEKDRAUt
-	 grGBJOtJW3j8eh4DYVrxCJDoMn0qx1tsum9YUy/dOcrNKRSyjfPbzYSOiaQPxIsZ2r
-	 8ohqvQr9t74YPTf4HhG8AGossqe/aQa0ikcYTDrDEmtzwTbKitq70xuHBSN+HHv1Nu
-	 G1CkCgMYGkpHGSuOK1QyhbymQq2ulHcCZA/XQ8zWeCFjWO14w91CZ/+gPFV1ZfQuE9
-	 7g1LSZyxRMqZQ==
-Date: Fri, 25 Sep 2026 13:23:22 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Ming Wang <wangming01@loongson.cn>,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org, stable@vger.kernel.org,
- Oliver Neukum <oliver@neukum.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: usb: cdc_mbim: add MeiG Smart SRM821 to ZLP
- whitelist
-Message-ID: <20260925132322.1798356b@kernel.org>
-In-Reply-To: <2026092507-jurist-protector-c7e7@gregkh>
-References: <20260920074500.826121-1-wangming01@loongson.cn>
-	<4d5e2857-e6eb-43e2-b668-83e779aaa734@redhat.com>
-	<2026092409-status-rocker-0fef@gregkh>
-	<20260924092851.33737b1e@kernel.org>
-	<2026092507-jurist-protector-c7e7@gregkh>
+	b=HElSgzBsZMr/m1tDdBPoCxKivOicPmOhj98BCOqnm3VKsah4u2AN0fnzOAAQKa3cF
+	 +0lAnlG9IySujeCypSuUwQwiAXWPcEQ6w3ViyJZ+8te815UeDHFrZQmVh6laFOV7Iq
+	 vJ3A/V9TjBVnBFO4phgCS474Qjt2I9ngBtJql/vBnRa6QTVo5eJN+0fzQnZrzex8uV
+	 QVAhEwPaRtCs0W3Z27BtkE6LVz2f9IMlkMOzPkydo/mBCZBNNtJuqTPeOPqwJZq9eF
+	 D66dukyTwG4i4JHShQSCkXVuTzdGQ9hG8Ul6vBfUDXu12kh5Yv9+quKUnxzcXopfns
+	 BCYKVDiwbc2Qw==
+Date: Fri, 25 Sep 2026 21:24:15 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
+Cc: alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+Subject: Re: [PATCH v1 4/4] sfc: add multipf support
+Message-ID: <20260925212415.1672622b@jic23-hlaptop>
+In-Reply-To: <dc8fdf95-4cca-4dad-bed0-4f7b3c6eb64a@amd.com>
+References: <20260921191239.4249-1-alucerop@amd.com>
+	<20260921191239.4249-5-alucerop@amd.com>
+	<20260924021535.3e55e8cb@jic23-hlaptop>
+	<dc8fdf95-4cca-4dad-bed0-4f7b3c6eb64a@amd.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,28 +50,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Sep 2026 07:12:06 +0200 Greg KH wrote:
-> On Thu, Sep 24, 2026 at 09:28:51AM -0700, Jakub Kicinski wrote:
-> > On Thu, 24 Sep 2026 16:22:54 +0200 Greg KH wrote:  
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Ming Wang <wangming01@loongson.cn>    
-> > > > 
-> > > > Before any other step, please read:
-> > > > 
-> > > > https://elixir.bootlin.com/linux/v7.3-rc3/source/Documentation/process/maintainer-netdev.rst#L454
-> > > > 
-> > > > AFAICS this is actually support for additional H/W, just worded in
-> > > > very unusual way: please reword the commit message accordingly and
-> > > > drop stable from CC.    
-> > > 
-> > > Why drop stable from cc:?  Do you not want it in any stable kernel
-> > > release?  Seems like it should be to me, we gladly take quirk additions
-> > > and new device ids in stable kernels.  
-> > 
-> > the irony of telling someone to RTFM while not reading 
-> > someone else's FM :)  
-> 
-> I did, and it says to keep stable tags, not to remove them, unlike the
-> request here.
+On Fri, 25 Sep 2026 12:16:56 +0100
+"Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com> wrote:
 
-I meant Paolo did not read the stable one, sorry.
+> On 24/09/2026 02:15, Jonathan Cameron wrote:
+> > On Mon, 21 Sep 2026 20:12:39 +0100
+> > <alucerop@amd.com> wrote:
+> >  
+> >> From: Alejandro Lucero <alucerop@amd.com>
+> >>
+> >> Use CXL core accelerator API for registering non-PF0 PFs to the memdev
+> >> linked to the PF0, along with its complementary unregister.
+> >>
+> >> Adapt the ioremap call per PF to be an offset based on the PF function
+> >> index and a hardcoded per PF CXL.mem slot size.  
+> > I was wondering how you'd know what memory belonged to which one!
+> > Simple solutions work best I suppose :)  
+> 
+> 
+> Hi Jonathan,
+> 
+> 
+> Yes, I think nowadays it is simple. I'm afraid if CXL usage increases 
+> this will require some request to the firmware ... which could depend on 
+> previous setting requests to that same firmware through fwctl.
+
+Ultimately I'd kind of expect either an allocation mechanism where
+we tell the device which portion of memory it has (nice if that was
+shared architecture rather than a per device thing), or a way
+to discover if in practice it is fixed (like here).
+
+> 
+> 
+> >> +
+> >> +	cxl->ctpio_cxl = ioremap_wc(cxl_pio_pf_start,
+> >> +				    EFX_CTPIO_BUFFER_PER_PF_SIZE);
+> >> +	if (!cxl->ctpio_cxl) {
+> >> +		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
+> >> +			&cxl_pio_range);
+> >> +		return -ENOMEM;
+> >> +	}
+> >> +
+> >> +	probe_data->cxl = cxl;
+> >> +	probe_data->cxl_pio_initialised = true;  
+> > 'map' is carry quite a lot here that isn't really about mapping anything.
+> > Maybe think a bit more on the naming?  
+> 
+> 
+> Not sure I understand your complain as ioremap is being invoked here. 
+> Maybe cxl_iomap or sfc_cxl_iomap as this is a static/local function 
+> would address your concern?
+
+The cxl_pio_initialized doesn't have anything to do with mapping as such.
+
+> 
+> 
+> >> +
+> >> +	return 0;
+> >> +}
+>
+> >> +
+> >> +		if (!cxl_map(probe_data, cxl, (u64)devfn, cxl_pio_range)) {
+> >> +			kfree(cxl);
+> >> +			return -ENOMEM;  
+> > ENOMEM for a map failure? Seems a little odd but if there is precedence
+> > fair enough.  
+> 
+> 
+> Confused here. I can see ENOMEM being a common error if ioremap fails 
+> through the kernel. Maybe this related to your previous concern about 
+> the function naming, but cxl_map can only fail in one way and that being 
+> not different to an ioremap failure.
+
+Ok. If it's common choice than fine to stick with that.
+
+> 
+> 
+> Thanks,
+> 
+> Alejandro
+
+
