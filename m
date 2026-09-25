@@ -1,368 +1,107 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFC23E558C
-	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A363AE6FB
+	for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 07:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790322260; cv=none; b=Aiu3RdYMOMBTzMVfe5g93GDdHYFcrAFGox+v5dO1xfK8gWN0mPj09jgTOqAglTqLrsy7kqB0TOSS/Kqe9JUk8EBA5lQNvUvOhxAiz8ZFDIYVrXdEeJcdbulPzq9fcmeORzCRlf47Tah+PNhQyEI9IOc89GBLJ4tq81wjeozY5NI=
+	t=1790322374; cv=none; b=pGwSCuMghuqM14RK+w4kAIn/+eUBCIMicvFweKNzIEZKzLuw8Rx7PrF1Ly+sqKHz5FMMhX2+tMHtEL16kS2U5w1kQNryZqdnb0RjpkYSsb/6Z6gmWxOsM7qVmjeuxqpPV5UtVmmIJ58PhKNyzrsljZwG0mV35vp3VG54L84uhCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790322260; c=relaxed/simple;
-	bh=6BsB1G9DRWP9oue39jfGoVxRNDR1dML5bUZiWiWXFAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pC5QXhiHYoZLGEeUJJXFYVZ1QDciBv84LUK6OUMgGZLIvbLZ0leDDb9B3mbx+e9YsPQ6IPk/gEL3w5r4kWzmNb75xusxsVBjrOFMkR5iNe9LAZKiP8rSD0J18D05NRTcBHgqSRzjM3zpMSYxK/aglXhhezZ8I/bnC8ceIldQ/ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Lt/UurFX; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790322374; c=relaxed/simple;
+	bh=yw1JqgVMYUSNxBiAgnL2DguWZpDJxy8Iqoi6nytM+Us=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bOYQYEkLLzgDBhoC/1H5wXYCGBvFmtNkUL2+WhcI6o7Z4XWA3T0N/Kmd/JjGle3bq7PyFOJ+2FLu/ooMuvj1LxHXkXNHELufHlcKwIpDFH7Ngq/PZG1IbkY9Y6ocy/6B1lPvCFVk/gHsGEMCzdbaWidhpZtIzPpXftlLPEacpbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=FhK+8a9K; arc=none smtp.client-ip=74.125.229.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Lt/UurFX"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4a9sK2393217;
-	Fri, 25 Sep 2026 07:44:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/Y7EoS
-	9AFgWsUBFoQWmiiXG6auOXG91TnU/NVwNnJGI=; b=Lt/UurFXVpUUaUV6nqUV9K
-	VuK6l31nVFXxD0SA67V0f42ECTjzy58m5Ocm4q5tPRZDgZ1dY4hEW4UkQh0fQncH
-	d08VzjZwROmNuYhUAHC+v/l985B8NxpI41fBNJbNbET8yUKEwspusOihDMuIDrQ4
-	KSBFGszU/qugCIN3d7ZROi70dQGbLYQLsjYA3ypEXfbvLIXjibtLNyJm/pAdr/wZ
-	868nCOqU+h+hQJvPnGCm7hTGfEYTu3lLTVcV/jqdiB6tLdPUrjCJHwJgGTVmXVhP
-	8Tps9M3muzbGFhtCf59k8YabkzVZEM7DgF5tIoWyluS4zend+3V8nLkRGqg5+Vwg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske25uad-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 07:44:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68P4lbww3298395;
-	Fri, 25 Sep 2026 07:44:01 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb8k1jq6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Sep 2026 07:44:01 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68P7hxAS59244860
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Sep 2026 07:43:59 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7BD3458059;
-	Fri, 25 Sep 2026 07:43:59 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF67C58065;
-	Fri, 25 Sep 2026 07:43:56 +0000 (GMT)
-Received: from [9.67.88.81] (unknown [9.67.88.81])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Sep 2026 07:43:56 +0000 (GMT)
-Message-ID: <7fee78c3-b79e-48d7-932a-81a1f3083f64@linux.ibm.com>
-Date: Fri, 25 Sep 2026 00:43:56 -0700
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="FhK+8a9K"
+Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-33c1024dbf9so207346eec.1
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 00:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790322370; x=1790927170; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e+mPFK3a0EV4gRWxwlNF0dBaFvCh9e2wcOZSVnfSL3Q=;
+        b=FhK+8a9KIsaffqLjIHRJzoESfrs3/kHZTVdMKh2Oikqbu70L2q45LMihQmmXSwLRP/
+         tiU9dBBwJ5Vd+RZYa3BJuFV6crs5XGW1efZ5KB3ex55jjjtpu4BrtJqgAnuS2Sr/pXhT
+         BdrbzFZUZ/PoLnNMiAKhsZvmaBw7WEHviAQaXM0H04x5jfHSXXDp6XdHseVQebU8n+Ue
+         rXQQJahJqfDEgOyoQSiQfUYlgAzET4UE46dwqhMJYRgl3Hvl1EVhhbpRLlN5eL/41X7n
+         vng1u+6WRJ2V1dnaVRPG97zkpQAcoBg2zWJ3cE59SnjBsvbA8Pm0Q2rEfc7fPm6QTeuO
+         oKrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790322370; x=1790927170;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e+mPFK3a0EV4gRWxwlNF0dBaFvCh9e2wcOZSVnfSL3Q=;
+        b=kTZtnBc6UI59kPQcUXRfdzz9bnnFZjbgfOTLokxDfZdYGdWT5GJGg2DIt5X8dMznA5
+         JZl2Atqj9F8UKQU+ywUYM3JBsAgOH69+56Cf3TU1+0tNY11Xl8pLKWaYh+X+NBOFLOUR
+         0awlxfJa0g3TX7J+QTXCFN14g33c8oPPXExn4twDOQJ8bjT3W/v+7gYjrS7hhCxtmXsc
+         VxAQ0vlVkzgRvcYVxGMjnf2x6KnJsP8zazEzw0OOGD0Qn+pJLV2bl4LzqtjAdprUGMvU
+         O5Jqqy+Nq7GTB699W0PLRDK/UPoPGEDmTWdclAf09tldwn3gwwkHk+/N2DgsIUyakgbY
+         qZuQ==
+X-Gm-Message-State: AFuF++kGeFxOkn/WY+UnF7+FrYgDlW75zGU9MEzTs45oOocZ8HU3jAOu
+	Cr4zTzDOKIh6yK9yTMoVbF1LMI7Hvl9zLxBagKBMuDxSXskJKyYwSq+AcRobSwVL7jFy6rWo62D
+	jn0o/ZTIGXytLo1zrPoDHSuvvj7ZE3IyMXqDm4Bioqh4Dd6pmlKmQ+HN7pzqsq3a2aFpHqWM8//
+	D4LA==
+X-Gm-Gg: AYBFou231khib63xeYyjRVEfPdYxMfFeM5QxgchmnK11RszcB3twLghWdtX7mbCx+ZX
+	/mbGVbYHwdO/rc24qOmL6cA6FkgEscU6cl8beHh+LZJwdc1Ov5D7PTeL7SaGuF+YGya+YlQG9/7
+	/mWKjMT1Sa2LXbreEbb6JZPI08/xyTT3j3iETWWhOLDBF/EwP+/lvp9TiJNz01DA4VM7bMwJ/fE
+	s6Ewy9WYL6yTYWRCjm+QjahYGi10dCIQTCT7SSb9aVMjbBKZpFWGIUNEFav/+xIsR7o3JblBYYa
+	OymoYU3IZdYhTKspZNoXQgCXr7M/QfiogkdrmCThNgyDoxlsQgWFwRjaR7dsf8gVZd84f3lgSBu
+	AU1lqhKlrEEklNVRAn9W4fXi3ZUk95KykkM8hhDa7j/9mc5/3lAVVdwSAZdpejrtViuXPcseakG
+	5qgXSzLiIHqhO6qooh0b+srJjpP1b2A0eZmDP3HE+kVxJjI3Kq2tWeUQ3pRjATJUcZIbOUEC8VO
+	fNyT4Zp43A=
+X-Received: by 2002:a05:7301:b0a:b0:33e:bd05:81ff with SMTP id 5a478bee46e88-34003ca6d83mr3225802eec.8.1790322369268;
+        Fri, 25 Sep 2026 00:46:09 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341451457d0sm5017845eec.21.2026.09.25.00.46.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 00:46:08 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Wang Zhan <wang.zhan@smartx.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	dev@openvswitch.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Wang <jasowangio@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>
+Subject: Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP segmentation
+Date: Fri, 25 Sep 2026 15:45:25 +0800
+Message-ID: <20260925074525.91040-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <611ec0af-8e4c-495d-9300-6dc9b5d616a1@redhat.com>
+References: <20260918084651.3022878-1-wang.zhan@smartx.com> <20260918084651.3022878-3-wang.zhan@smartx.com> <611ec0af-8e4c-495d-9300-6dc9b5d616a1@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v6,15/15] ibmveth: Complete set_channels down-path and
- mq_fallback max_rx cap
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
-        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com
-References: <7096819367d53e08c1f4d317616c2624a2867b7a.1788102125.git.mmc@linux.ibm.com>
- <178845904669.3394541.24513769216494846@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <178845904669.3394541.24513769216494846@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: Beh9CQ_P7cFPrPo7VbFY_vBWGG69tFd4
-X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab62643 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=SjPlILDxLK7o8fCdeYwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDAzMCBTYWx0ZWRfX0/t2uKi+FrKQ
- pXG0yYiPu/lJUj6VY2trzSVDGkg2KFU3yTZSTSA8iYFEmx3UtMjvYCnD6wE9SAw2TdjthpjJo3c
- atnyWmQKzC3qEnzuQCaN5wXMRSv56JY=
-X-Proofpoint-GUID: RR7Q8duhBS04jNngrZRo7lxeHeJEaqBp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDAzMCBTYWx0ZWRfX/7vteRYmqbt9
- 4RKyoy5NPfXT2F0P4Zo4Kj7YVf8HIMsuQCv6OBVk8CI3f3i2N3Gnppkty+QB7wzYb0deR9G6QZo
- XYxTuE5M2hFDnzN3HFnpPtRe7Po2pTAQFMnC9S5w+ex0Bi+VOodWV2H81/Qw3ClRKECJ9iPobew
- Rq+JANUOE9Z7UG2uubQdKptGlE4bNoFiXf8z1AEjLTEYBGUzk5iZyQ7o1BdiL9p+gKyqwr/P+NO
- PuU7Hp+y12lyGyPsNkvuIaMIG2hIHEOa7D5JLWqnT9Ze0e1mtRjabXP0l4/ZFUPNmRGpV3u7KIH
- /QBBdm8h2/9pLKAj2hK6Vzc+h0Cdpea3cbJjKmDIkXEn7LTA+h3/jb0Wl6auKKJycYgNiV3Fo+Q
- BRqP6ofX98xjCnbYhkwTECTDRbiZJF774UfMcsuWiDLt9R9xngHtt3NKSRGu4qzqnct9hwf/IH4
- xscZ/gPhWYKBmYzDecw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609250030
 
-Thanks for the review!
+On Thu, 24 Sep 2026 16:09:39 +0200 Paolo Abeni wrote:
+> I'm wondering if this patch is needed at all. Can't the special gso caller
+> set skb_shinfo(skb)->gso_size to ~64K and adjust the gso bits in the shared
+> info afterwards?
 
-On 9/3/26 11:10 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider:
->
-> Critical: 0 · High: 0 · Medium: 1 · Low: 3
->
-> - [Medium] Advertised RX channel range does not match the enforced range
->    once `mq_fallback` latches.
-> - [Low] In `ibmveth_set_channels()` the comment above the RX rollback
->    describes code that no longer exists: it claims…
-> - [Low] The new up-path TX-failure rollback in `ibmveth_set_channels()`
->    calls `ibmveth_resize_rx_queues_incremental(adapter, old_rx,…
-> - [Low] `adapter->mq_fallback` is written with a plain store from
->    softirq/NAPI context — `ibmveth_replenish_task()` does…
->
-> --
->
-> ibmveth: Complete set_channels down-path and mq_fallback max_rx cap
->
-> This completes the ethtool -L path in ibmveth: the down-path publishes the
-> desired RX count without allocating, the up-path resizes RX then TX and
-> rolls RX back if TX cannot reach the requested count, and get_channels()
-> now caps max_rx at the live rx_count once mq_fallback is set.
-> ibmveth_poll_controller() also returns early when the adapter is closed.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 5aef8a1f2c23d..4cd00ff3d43e4 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
->> @@ -3156,15 +3156,24 @@ static void ibmveth_get_channels(struct net_device *netdev,
->>   				 struct ethtool_channels *channels)
->>   {
->>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
->> +	unsigned int rx_count = ibmveth_get_num_rx_queues(adapter);
->>   
->>   	channels->max_tx = ibmveth_real_max_tx_queues();
->>   	channels->tx_count = netdev->real_num_tx_queues;
->>   
->> -	if (adapter->multi_queue)
->> +	/*
->> +	 * Always report the live RX count. ethtool -L is read-modify-
->> +	 * write, so a TX-only request echoes rx_count back at us; an
->> +	 * understated value would be applied as a silent RX shrink.
->> +	 * mq_fallback instead caps max_rx at the live count, which
->> +	 * blocks growth in the core without misreporting what is
->> +	 * currently configured.
->> +	 */
->> +	channels->rx_count = rx_count;
->> +	if (adapter->multi_queue && !adapter->mq_fallback)
->>   		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
->>   	else
->> -		channels->max_rx = 1;
->> -	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
->> +		channels->max_rx = rx_count;
->>   }
-> [Severity: Medium]
-> Once mq_fallback is set, does the advertised max_rx still match what the
-> driver will accept?
->
-> Here max_rx becomes the live rx_count, which can be 8 or 16.  The core only
-> bounds the request by that value, in ethtool_set_channels():
->
->      if (channels.rx_count > curr.max_rx ||
->          channels.tx_count > curr.max_tx ||
->
-> So every value in 1..rx_count reaches the driver.  But
-> ibmveth_resize_rx_channels() refuses any changed count above 1 in that
-> state, after the no-op shortcut:
->
->      if (goal_rx == old_rx)
->              return 0;
->      ...
->      if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
->              netdev_err(netdev,
->                         "Cannot resize to %u RX queues: multi-queue mode not supported by firmware\n",
->                         goal_rx);
->              return -EOPNOTSUPP;
->      }
->
-> With mq_fallback set and a live count of 8, ethtool -l reports max_rx 8 while
-> ethtool -L ethX rx 2 through rx 7 all fail with -EOPNOTSUPP; only 1 and the
-> current count are accepted.
->
-> This state looks persistent rather than transient, since
-> ibmveth_register_rx_queues() latches the flag and then fails the open:
->
->      if (rc) {
->              /* Firmware MQ gone: fall back to SQ on next open. */
->              if (rc == -EOPNOTSUPP)
->                      adapter->mq_fallback = true;
->              goto err_unregister;
->      }
->
-> adapter->opened stays false and num_rx_queues keeps its old value above 1
-> until the next successful open.
->
-> Would it be clearer to advertise max_rx = 1 in the fallback state and keep
-> the no-op shortcut for the read-modify-write case?  The kernel-doc for
-> ibmveth_resize_rx_channels() ("Rejects rx > 1 without MQ firmware
-> (-EOPNOTSUPP)") also does not mention that the no-op shortcut precedes the
-> gate.
-get_channels reports the live count and
-caps max_rx at that count once mq_fallback.
-Advertising max_rx = 1 while rx_count is
-still live fails the core (rx_count >
-max_rx) and blocks a TX-only ethtool -L.
-Clamping rx_count would shrink RX. rx > 1
-is -EOPNOTSUPP except the current-count
-no-op.
-> [Severity: Low]
-> Is the read of adapter->mq_fallback here synchronized against its writer?
->
-> The flag is stored from softirq/NAPI context in ibmveth_replenish_task(),
-> after the replenish_lock has already been dropped:
->
->      spin_unlock_irqrestore(&rxq->replenish_lock, flags);
->      ...
->              adapter->mq_fallback = true;
->              schedule_work(&adapter->work);
->
-> The new reader added here, and the capability gate in
-> ibmveth_resize_rx_channels():
->
->      if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
->
-> run under RTNL / the netdev ops lock, which does not exclude the softirq
-> writer.  There is no lock, no READ_ONCE()/WRITE_ONCE() and no acquire/release
-> pairing on this field, while the sibling field num_rx_queues in the same
-> struct is deliberately published with:
->
->      smp_store_release(&adapter->num_rx_queues, num);
->
-> A stale false read here would advertise max_rx = IBMVETH_MAX_RX_QUEUES right
-> after firmware refused MQ buffer adds, and a stale read in the gate would let
-> the driver allocate and replenish RX queues on that firmware, re-latching
-> mq_fallback and queueing another reset.  Would WRITE_ONCE()/READ_ONCE() on
-> mq_fallback, or folding it into the existing publish/consume helpers, be
-> appropriate?
-No — RTNL does not exclude the NAPI store, so
-this is an unannotated race. v7 keeps it as a
-benign sticky latch: a stale false is one extra
-MQ attempt, then the flag latches again.
-WRITE_ONCE on the store without READ_ONCE on
-apply / get_channels / set_channels is only half
-a pass, so I left it plain. Happy to annotate
-the store and all three readers together if you
-would prefer that spelled out.
->> @@ -3233,28 +3242,83 @@ static int ibmveth_set_channels(struct net_device *netdev,
->>   				struct ethtool_channels *channels)
->>   {
->>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
->> -	unsigned int old = netdev->real_num_tx_queues,
->> -		     goal = channels->tx_count;
->> +	unsigned int old_rx = ibmveth_get_num_rx_queues(adapter);
->> +	unsigned int goal_rx = channels->rx_count;
->> +	unsigned int old_tx = netdev->real_num_tx_queues;
->> +	unsigned int goal_tx = channels->tx_count;
->> +	unsigned int want_tx = goal_tx;
->> +	bool rx_changed = false;
->>   	int rc, i;
->>   
->> -	/* Validate RX (and resize when opened) before the down-path
->> -	 * early return so MQ/range errors are reported here. Publishing
->> -	 * the desired RX count and CMO while down is the next patch.
->> -	 */
->> -	rc = ibmveth_resize_rx_channels(adapter, channels->rx_count);
->> +	if (goal_tx < 1 || goal_tx > ibmveth_real_max_tx_queues()) {
->> +		netdev_err(netdev,
->> +			   "Invalid TX queue count %u (must be 1-%u)\n",
->> +			   goal_tx, ibmveth_real_max_tx_queues());
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* RX range / MQ checks live in ibmveth_resize_rx_channels(). */
->> +	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
->>   	if (rc)
->>   		return rc;
-> [ ... down-path publish/rollback block snipped ... ]
->
->> -	return rc;
->> +	if (netdev->real_num_tx_queues != want_tx) {
->> +		if (rx_changed) {
->> +			/*
->> +			 * Only meaningful once RX is live. num_slots is
->> +			 * embedded in the adapter and outlives the DMA ring,
->> +			 * so reading it at function entry is safe but can
->> +			 * return a stale geometry from before the resize.
->> +			 */
->> +			int rxq_entries = adapter->rx_queue[0].num_slots;
-> [Severity: Low]
-> This isn't a bug, but does this comment still describe the code below it?
->
-> It says num_slots is read "at function entry" and "can return a stale
-> geometry from before the resize", yet the read it annotates happens right
-> here, inside the if (rx_changed) block, after ibmveth_resize_rx_channels()
-> has already changed the RX geometry.  Function entry only reads
-> num_rx_queues, real_num_tx_queues, channels->rx_count and channels->tx_count.
->
-> The comment looks like a leftover from the v5 layout mentioned in the
-> changelog, and now warns about a hazard that would only exist if the read
-> were moved back to function entry.
-The comment was leftover from the earlier
-layout. The read is after the RX resize.
-v7 replaces it to match that restore.
->> +			int rb;
->> +
->> +			rb = ibmveth_resize_rx_queues_incremental(adapter,
->> +								  old_rx,
->> +								  rxq_entries);
->> +			if (rb)
->> +				netdev_err(netdev,
->> +					   "Failed to roll back RX queues to %u after TX failure: %d\n",
->> +					   old_rx, rb);
->> +		}
->> +		return rc ? rc : -ENOMEM;
->> +	}
-> [Severity: Low]
-> Can this rollback re-attempt a queue geometry that the forward path would
-> have refused?
->
-> The rollback calls ibmveth_resize_rx_queues_incremental() directly, so the
-> multi_queue / mq_fallback gate in ibmveth_resize_rx_channels() is not
-> consulted.  That gate only rejects goal_rx > 1:
->
->      if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
->              ...
->              return -EOPNOTSUPP;
->      }
->
-> Consider adapter->opened true, mq_fallback already latched from softirq in
-> ibmveth_replenish_task():
->
->      adapter->mq_fallback = true;
->      schedule_work(&adapter->work);
->
-> and a live RX count of 8.  A request of rx 1 with a larger tx passes the gate
-> (goal_rx is 1), RX shrinks 8 -> 1 and rx_changed becomes true.  If the TX
-> step then fails in ibmveth_allocate_tx_ltb() or
-> netif_set_real_num_tx_queues(), the rollback runs the scale-up path back to
-> old_rx = 8 on firmware that has already refused MQ buffer adds, so
-> H_REG_LOGICAL_LAN_QUEUE / replenish hit the same H_FUNCTION, mq_fallback is
-> re-latched and another schedule_work(&adapter->work) reset is queued from an
-> ethtool error path.
->
-> Would it be better to route the rollback through
-> ibmveth_resize_rx_channels(), or to skip it when mq_fallback is set and leave
-> RX at 1?
->
-> [ ... ]
-The rollback restores the count we just
-left. If firmware already refused MQ, that
-scale-up can fail and latch again. !opened
-is the documented down path and does not
-allocate.
+That would work, and it keeps the logic in one place without a new cb field,
+but I don't think it's better than the current approach.
 
-Thanks,
-Mingming
+It would need skb_unclone() before writing skb_shinfo(), and a repeat of the
+if (partial_segs) logic from skb_segment().  For DF=0 we would also have to
+recompute ip.id in validate_xmit_skb(), or keep that case on the existing
+full-segmentation path.
