@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5567348C6F;
-	Fri, 25 Sep 2026 02:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C05260565;
+	Fri, 25 Sep 2026 02:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790302787; cv=none; b=AF9pHfJEBGu68vYyftd9Ow8P05GdWaR+pC1b9Wipalja7VjvQPY8geyiksWty1LMiKt04A8NTugDzshzwoCGiHib41yuySQYd2fDxr6h5YqnguqBvmRxVV4aOkewF/KL0fgd3fJd+lu3sZD56Mb20w2bBlebzsdOBwF+CYuQm4I=
+	t=1790302787; cv=none; b=eYHWHV2OzTIbTnGYemCIQG4w8NRUV8dJOt8vxjkNpYHm/Ty0O5xjj1JlCkmlL+wvYj//6DyCmJlLj/EJCRy5z7ZR/Lz3rvN/LtmyAg7BcsF66QyL5AW+RVJyJoZRDMZ17Xxs1CFEGXbzen8Xx3IfcJeLchjJCSseSU6k9qmOt+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790302787; c=relaxed/simple;
-	bh=5d1IMb44AVKj6v8CMu+pa4/V3lY1E8LHHMH4mbMTua4=;
+	bh=FZLW6Z301vg9tosLGCcFV5OVEm4BXSyaoExMBsdLOqc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=du2xVFGkkGo5H5NofYaQX3IFysD9lE7Djvy6YcsEMLe5vFGS4BDfwZJpjM0iBNzkF8Uo+s63y8mncW0ymlODdSeEdx5PQnt0/CZ29BG8WgTdhtOv6TtN3Ehop5RQ2DBanbZ3JutzqwHsdYASe5afjx+zXehOiYe2fZAg8FF0LQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRXvEZFN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oDmmIZe+arfef0vIRdiZ4+/Pm/oFk7Zc/1TOX64QILZZsLjpO10LouopEjoKBPEsQ4yAYP2iO1JFiEGyp0ha9b+a8r10y1L1FQS6hTrHJVxlufxDtHgDYQlP/wHSVNlwpQuHW0s+3h8wCjfvskPoWnDxsqDI8JXotO5ujiy6Nj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zv6073YO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRXvEZFN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A163D1F000FF;
-	Fri, 25 Sep 2026 02:19:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zv6073YO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64E01F00893;
+	Fri, 25 Sep 2026 02:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790302785;
-	bh=Lt6ZSl+CO/t8SKf5uO4mhsTaM/8pXBSu+eH4k2cDzGE=;
+	s=k20260515; t=1790302786;
+	bh=QCBXTItV/Ej+9VMQJX+ydvpVTjj/i9whV6yiT8aq+Ek=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=eRXvEZFNETXfZI52grJ91XZ/OAjtokeRxVFEy4i7FjjB+7FxcyQxfWRELNYcawq/Q
-	 IjXlzwN+xGtRb/Z7YzWvgPCQ6LzaFHgWcjU22XevzET/AQLq999DixDW5F48H5IZe/
-	 /z+/WU9MBwLXc5eB0GzSX5NFiEakgj7uZwubkZdRTtauHaYgv0+Di66+oZg41LgeHN
-	 KWALUWt0U6z2PZkRIhRRdt7JK28i0ytq8rPSW+NVDLYtfqc/woKm/7SgE7WaZQPjlm
-	 Z0yFAOyxdoPQ3YGSal13mowutt9AoWGY+jh4EorgrYkfBP1MWuCQz8/TMNspise63r
-	 iTgQy/PktTRSQ==
-Subject: Re: [PATCH net-next v4 2/8] net: dsa: motorcomm: Split xMII and
- SERDES port masks
+	b=Zv6073YOLbzsKKOhuUrI5vL9TBuC9WKJvkFxF+ATc37oqwcxHthlshAmK4WQTmyT4
+	 4fbX/PHu7PuBECz/vfjLDKOPcQd5GQvX7TQcnjFS6Zw6gOWIFr0vKh3U0L/glyqkJF
+	 BsODHrKUthMALEvLDKmKkuWAuBHwozu0zlVSC2SOdcFIObEZAr79Zgtq/3HzGHnkC+
+	 nN57Koy/Am15khWyUtefIinoiR9HBRteFPd3HDCeFRVg79AOG5a3kWmxC7AGIALYqJ
+	 o+uUTcfLZwgB/6JzeSa4/iarapJ5Bo/l5pfhal7rum4MdDFJfTCSaK3+onYq7BHdZJ
+	 ZVci/k5WfW9UA==
+Subject: Re: [PATCH net-next v4 3/8] net: dsa: motorcomm: Identify port type
+ at runtime
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 02:19:44 +0000
-Message-ID: <179030278415.2160803.7209731671356572587@kernel.org>
-In-Reply-To: <20260923021945.2203368-3-mmyangfl@gmail.com>
-References: <20260923021945.2203368-3-mmyangfl@gmail.com>
+Date: Fri, 25 Sep 2026 02:19:45 +0000
+Message-ID: <179030278530.2160803.5892691162510957034@kernel.org>
+In-Reply-To: <20260923021945.2203368-4-mmyangfl@gmail.com>
+References: <20260923021945.2203368-4-mmyangfl@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,191 +58,164 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] After this patch, a GMAC port that is in xmii_mask but not in
-  serdes_mask gets an empty supported_interfaces bitmap.
-- [Low] Two comments in yt921x_dsa_phylink_get_caps()
-  (drivers/net/dsa/motorcomm/chip.c) no longer match the code after this…
-
-Pre-existing issues:
-- [Low] The concern: the in-tree binding example
-  (Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml,…
+- [Medium] The commit message says "no behavior changes intended", but
+  the patch changes which registers are programmed on SerDes link-up and…
+- [Low] yt921x_port_up() chooses the XMII register block using only
+  pp->serdes and never checks info->xmii_mask.
 
 --
 
-net: dsa: motorcomm: Split xMII and SERDES port masks
+net: dsa: motorcomm: Identify port type at runtime
 
-This commit replaces external_mask in struct yt921x_info with two
-separate fields, xmii_mask and serdes_mask. It changes
-yt921x_dsa_phylink_get_caps() so that SERDES modes are only advertised
-for ports in serdes_mask. It also moves struct yt921x_info into chip.h.
+This commit removes the hardcoded yt921x_port_is_internal/external()
+macros and checks the per-chip internal_mask, serdes_mask and xmii_mask
+instead. It also adds a per-port serdes flag, set in yt921x_port_config(),
+which decides which register block yt921x_port_up() programs.
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 825e0bfcff86f..54881856b796a 100644
+> index 54881856b796a..ea4b29882b5cb 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -96,53 +96,48 @@ static const struct yt921x_mib_desc yt921x_mib_descs[] = {
 
 [ ... ]
 
->  	{
->  		"YT9215S", YT9215_MAJOR, 2, 0,
->  		GENMASK(4, 0),
-> -		BIT(8) | BIT(9),
-> +		BIT(9),
-> +		BIT(8),
->  	},
->  	{
->  		"YT9215RB", YT9215_MAJOR, 3, 0,
->  		GENMASK(4, 0),
->  		BIT(8) | BIT(9),
-> +		0,
->  	},
->  	{
->  		"YT9214NB", YT9215_MAJOR, 3, 2,
->  		BIT(1) | BIT(3),
-> -		BIT(8) | BIT(9),
-> +		BIT(9),
-> +		BIT(8),
->  	},
-
-[ ... ]
-
-> @@ -4021,15 +4016,10 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
->  		 */
->  		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
->  			  config->supported_interfaces);
-> -	} else if (info->external_mask & BIT(port)) {
-> -		/* TODO: external ports may support SERDES only, XMII only, or
-> -		 * SERDES + XMII depending on the chip. However, we can't get
-> -		 * the accurate config table due to lack of document, thus
-> -		 * we simply declare SERDES + XMII and rely on the correctness
-> -		 * of devicetree for now.
-> -		 */
-> +		return;
-> +	}
-
-[Severity: Low]
-This isn't a bug, but the comment at the top of the internal_mask branch
-still says:
-
-	/* Port 10 for MCU should probably go here too. But since that
-	 * is untested yet, turn it down for the moment by letting it
-	 * fall to the default branch.
-	 */
-
-The if/else-if chain is now an early return followed by two independent
-if blocks, so there is no default branch anymore. Could this comment be
-updated?
-
-The same applies to the trailing comment at the end of
-yt921x_dsa_phylink_get_caps():
-
-	/* no such port: empty supported_interfaces causes phylink to turn it
-	 * down
-	 */
-
-Real GMAC ports that are only in xmii_mask now reach this comment too
-(YT9215RB ports 8 and 9, and port 9 on YT9215S and YT9214NB). Should it
-be reworded so that it doesn't describe those ports as nonexistent?
-
+> @@ -3746,12 +3747,13 @@ static int yt921x_port_down(struct yt921x_priv *priv, int port)
+>  	if (res)
+>  		return res;
 >  
-> -		/* SERDES */
+> -	if (yt921x_port_is_external(port)) {
 > +	if (BIT(port) & info->serdes_mask) {
->  		__set_bit(PHY_INTERFACE_MODE_SGMII,
->  			  config->supported_interfaces);
->  		/* REVSGMII (SGMII in PHY role) should go here, once
-> @@ -4042,9 +4032,8 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
->  		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
->  			  config->supported_interfaces);
->  		config->mac_capabilities |= MAC_2500FD;
-> -
-> -		/* XMII */
+>  		mask = YT921X_SERDES_LINK;
+>  		res = yt921x_reg_clear_bits(priv, YT921X_SERDESn(port), mask);
+>  		if (res)
+>  			return res;
 > -
 > +	}
 > +	if (BIT(port) & info->xmii_mask) {
->  		/* Not tested. To add support for XMII:
->  		 *   - Add proper interface modes below
->  		 *   - Handle them in yt921x_port_config()
+>  		mask = YT921X_XMII_LINK;
+>  		res = yt921x_reg_clear_bits(priv, YT921X_XMIIn(port), mask);
+>  		if (res)
+
+[ ... ]
+
+> @@ -3800,7 +3804,10 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+>  	if (res)
+>  		return res;
+>  
+> -	if (yt921x_port_is_external(port)) {
+> +	if (!(BIT(port) & (info->serdes_mask | info->xmii_mask)))
+> +		return 0;
+> +
+> +	if (pp->serdes) {
+>  		mask = YT921X_SERDES_SPEED_M;
+>  		switch (speed) {
+>  		case SPEED_10:
+
+[ ... ]
+
+> @@ -3836,7 +3843,7 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+>  					     mask, ctrl);
+>  		if (res)
+>  			return res;
+> -
+> +	} else {
+>  		mask = YT921X_XMII_LINK;
+>  		res = yt921x_reg_set_bits(priv, YT921X_XMIIn(port), mask);
+>  		if (res)
 
 [Severity: Medium]
-If a port is in xmii_mask but not in serdes_mask, this block sets no
-interface modes, so supported_interfaces stays empty. With the new table,
-that covers ports 8 and 9 on YT9215RB (serdes_mask is 0) and port 9 on
-YT9215S and YT9214NB.
+The commit message says "no behavior changes intended". Doesn't this
+change which registers get programmed on SerDes link up and link down?
 
-Before this patch, these ports were in external_mask. They advertised
-SGMII, 100BASE-X, 1000BASE-X and 2500BASE-X, so phylink_create()
-succeeded. The xMII -EINVAL from yt921x_port_config() was only logged,
-and yt921x_port_up() still enabled the MAC on ports 8 and 9.
+Before this patch, yt921x_port_up() did all three of these on ports 8
+and 9:
 
-Now phylink_create() rejects the empty bitmap:
+    update YT921X_SERDESn(port)
+    set YT921X_XMII_LINK in YT921X_XMIIn(port)
+    write link/speed/duplex to YT921X_MDIO_POLLINGn(port)
 
-drivers/net/phy/phylink.c:phylink_create() {
-    ...
-	if (phy_interface_empty(config->supported_interfaces)) {
-		dev_err(config->dev,
-			"phylink: error: empty supported_interfaces\n");
-		return ERR_PTR(-EINVAL);
-	}
-    ...
-}
+With the new if/else, the XMII_LINK set and the MDIO_POLLINGn write are
+skipped once yt921x_port_config() has set pp->serdes.
 
-If one of these ports is the CPU port in the device tree, does the whole
-switch now fail DSA setup?
+The yt921x_port_down() hunk above changes in the same way:
 
-dsa_tree_setup_ports()
-  dsa_port_setup()
-    dsa_shared_port_link_register_of()
-      dsa_shared_port_phylink_register()
-        phylink_create()   <- returns -EINVAL
+    port 8 on YT9215SC, YT9215S and YT9214NB no longer gets XMII_LINK
+    cleared
 
-After that, dsa_tree_setup_ports() goes to teardown. CPU ports don't have
-the fallback to an unused port that user ports get. On YT9215RB this
-affects both GMACs, so a CPU conduit on port 8 or 9 would fail. A user
-port in the same situation is silently turned into an unused port.
+    ports 8 and 9 on YT9215RB no longer get SERDES_LINK cleared
 
-yt921x_port_config() still has no xMII handling, so nothing takes the
-place of the removed SERDES modes:
+Does a SerDes link really not need the XMIIn and MDIO_POLLINGn writes? If
+it does need them, this looks like a regression on every SerDes-capable
+chip. If those writes were wrong, could the commit message say so, so
+that readers and backporters don't treat this as a pure refactor?
 
-	/* add XMII support here */
-	default:
-		return -EINVAL;
+The split is still in place after the later "net: dsa: motorcomm: Add
+SerDes PCS" patch in this series.
 
-This is still the case at the end of the series. In "net: dsa: motorcomm:
-Add SerDes PCS", the xmii_mask branch is still empty and
-yt921x_port_config() still has no xMII case.
+>  
+> @@ -3876,17 +3883,16 @@ static int
+>  yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
+>  		   phy_interface_t interface)
 
-The commit message says the driver will "advertise the interface modes it
-actually supports". Could it mention that these ports change from
-"phylink created, mode not configured" to "phylink creation fails"?
+[ ... ]
 
-Also, the removed TODO said the SERDES/xMII table was not available due
-to lack of documentation. Where do the new per-chip xmii_mask and
-serdes_mask values come from?
+> @@ -3896,6 +3902,9 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
+>  	case PHY_INTERFACE_MODE_100BASEX:
+>  	case PHY_INTERFACE_MODE_1000BASEX:
+>  	case PHY_INTERFACE_MODE_2500BASEX:
+> +		if (!(BIT(port) & info->serdes_mask))
+> +			goto err;
+> +
+>  		mask = YT921X_SERDES_CTRL_PORTn(port);
+>  		res = yt921x_reg_set_bits(priv, YT921X_SERDES_CTRL, mask);
+>  		if (res)
+> @@ -3906,6 +3915,11 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
+>  		if (res)
+>  			return res;
+>  
+> +		/* The order is quite arbitrary - we can't return to a safe
+> +		 * state on IO errors.
+> +		 */
+> +		pp->serdes = true;
+> +
 
 [Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The
-binding example in
-Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml uses
-an RGMII mode on port 9:
+What does yt921x_port_up() do if yt921x_port_config() returns before it
+reaches this assignment?
 
-                ethernet-port@9 {
-                    reg = <9>;
-                    label = "wan";
-                    phy-mode = "rgmii-id";
-                    phy-handle = <&phy1>;
-                };
+Either of these writes can fail with an I/O error first:
 
-The driver never advertises any RGMII mode in
-yt921x_dsa_phylink_get_caps(), and it never configures one in
-yt921x_port_config(). With the current driver, port 9 from the example
-can't be used.
+	res = yt921x_reg_set_bits(priv, YT921X_SERDES_CTRL, mask);
+	...
+	res = yt921x_reg_clear_bits(priv, YT921X_XMII_CTRL, mask);
 
-Bindings describe hardware rather than driver support, and xMII is
-already marked as a TODO in both functions. This patch also moves port 9
-into xmii_mask on all YT9215 variants, which is closer to the example.
-Is it still worth noting that the example depends on the pending xMII
-support?
+If one fails, pp->serdes keeps its devm_kzalloc() value of false. Because
+yt921x_phylink_mac_config() only logs the error, phylink still calls
+mac_link_up.
+
+Port 8 on YT9215S, YT9214NB and YT9215SC is SerDes-only. On that port,
+yt921x_port_up() gets past this check:
+
+	if (!(BIT(port) & (info->serdes_mask | info->xmii_mask)))
+		return 0;
+
+It then goes into the bare else branch and writes YT921X_XMIIn(port) and
+YT921X_MDIO_POLLINGn(port). SERDES_LINK is never set, the SerDes
+speed/duplex is never programmed, and the function returns 0. If the
+SERDES_CTRL write worked but the XMII_CTRL write failed, the SerDes lane
+is already muxed in, yet link up programs the wrong block.
+
+yt921x_port_down() only touches the XMII registers when info->xmii_mask
+covers the port. Should the else branch in yt921x_port_up() check
+info->xmii_mask as well?
+
+The reverse can also happen. pp->serdes is set before the
+YT921X_SERDESn MODE update below. If that update fails, link up forces
+the SerDes link while the MODE field is still stale.
+
+Before this patch both blocks were written, so a transient error here
+could still end with a working link. The same logic is still there at
+the end of the series.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923021945.2203368-1-mmyangfl%40gmail.com
