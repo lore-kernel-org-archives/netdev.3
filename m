@@ -1,89 +1,127 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABAD43D4EA;
-	Sat, 26 Sep 2026 13:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2042AFAA;
+	Sat, 26 Sep 2026 13:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790428348; cv=none; b=YLMmLgxBiAHHzCMTQ9+xfCabksVPlUl9q+czglcoVzXsi33f5301LG8qemI70r3h9Hgy8l/QJd9AV1oMx7nGUh8F3Dmnf1TtxLXi3tycdq+O18rOiOfPGu9kAUWnM/i4ZMAJON6K7AfpX6G6GGnbwp6vfpAiv5DcEH152+zJdVE=
+	t=1790429273; cv=none; b=pwjwLl6sfMlmgF042TtcrNgKFTwz3BmjX9SzOj0Cl84tC79C/P2rgsScv6eSTQzMMKO9tfG6j6Fd5Ca8D+qTQu4p8BCUf9goTgp9tyK18vkRJQlnhJLLdyAbJdBXL7TNHRzgCSvA00gguuoBwW934n5r0gXLk/E5IJnC/hab+2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790428348; c=relaxed/simple;
-	bh=np868+PCQ0Dv1vEpNrfzv85QUBz6RJfM+QiP7Ncb4N8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awYErSLIeQIa3mPLJpATsr93fnmFgwBpcm2XZQTlGFUoZzBALfJ5TYwFSIjPnCiIV6DA/RoYTLvbN61CWIXnKoTDY4CkPgdyNG8+70Xavwz/ez/ewPWWEo7nUo0H5aH55SRwA0tz7cKM2wNvVfkF33baMevBNvvONQQSfd4LKnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hZr7VzwS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790429273; c=relaxed/simple;
+	bh=vmejTPXQt6DL4ZbDgCsyxXP5w6h8Lap4Omwhbt8m3lA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=McFm+Q9lqJ6+BsBpNGn1cHqkg7bTF2B52VKHWMgblir3tiyc56OTgGQo05X5Y5cyV5ZhlrNUn4iXbEkkQfDXSlIqWKHRHGC9624cM5orJ7j2XaevKqYN6E33/elXcd5Yola37WHdUBxb9FyKvrZe6AB0nt2I4V/y6oP8E+0DTcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=rKBwFQyb; arc=none smtp.client-ip=52.12.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hZr7VzwS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DWe7cZoB//kCgDjMe0HkstXi0WmxvSYDDMy4xoCwSvw=; b=hZr7VzwSko396VLxISUXuX3byo
-	cq6dKwLDxyY2FmJZORYuovwuuaJtBGMx+HIvhY+E+rtZ4MJ9n+REXNROLZAAe0fstAUtHrv3VehK0
-	LeV0+xAFG94QOUKlBvw1K2ZlQAayCTBHPhorqrLfddSTKmdZ3FzG1CB7tb6LM0kICLUk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xASC0-007NcS-Sj; Sat, 26 Sep 2026 15:11:52 +0200
-Date: Sat, 26 Sep 2026 15:11:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
- internal CPU PHYs for SmartSpeed
-Message-ID: <426f9dcb-7473-48d5-a473-4435cc81312c@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
- <20260923215858.1653-5-yongzhao.derek@gmail.com>
- <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
- <20260924234814.1734-1-yongzhao.derek@gmail.com>
- <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
- <20260925210153.8717-1-yongzhao.derek@gmail.com>
- <69b36e16-eece-4739-9208-96bd8e60943f@lunn.ch>
- <20260926082129.1632-1-yongzhao.derek@gmail.com>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="rKBwFQyb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1790429271; x=1821965271;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SvyQxUuoQfRvxhBnOj0Xsuc8gwJZCfMFGw0CG6ch8bo=;
+  b=rKBwFQybLFJWxdc015bAJiYzJDBIWStpiURyV8nQouQ6wFCRff0BmEQa
+   C5kgTXOdPaokwzTd4jQkxHOy1ypcxj0tXU8DBP3sShl2B76KCfJ1pB2rk
+   iZCG3uXpcDKeaKMG/HNpHt96UVEOFWyX9dCZECEUJv007HOW8+vhBau99
+   e+jUSwpgJmo7v1dhX1qOV6Zz6qbctr33oie4UO8smCY2nko7Xu3z00wUM
+   vQOFv+uszjk+lwLckjTCs+782oqLDHoAGVAG9jkxVOI/DscoVWl5oILPL
+   Svpwg4POWWVqppbwStPeRz9iDsZ7EZZTwgEQP1SyWkfaFMRuJM/pg9ZvA
+   g==;
+X-CSE-ConnectionGUID: i/P1bY0nRx+RXw8Mg/RmVA==
+X-CSE-MsgGUID: me5NK4IVSQGoCmyAqv5xmw==
+X-IronPort-AV: E=Sophos;i="6.27,124,1787011200"; 
+   d="scan'208";a="29576764"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2026 13:27:51 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:8094]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.33.144:2525] with esmtp (Farcaster)
+ id 9d715496-4bc2-4d89-bcee-5a783de8659d; Sat, 26 Sep 2026 13:27:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 9d715496-4bc2-4d89-bcee-5a783de8659d
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Sat, 26 Sep 2026 13:27:50 +0000
+Received: from dev-dsk-hagan-1f-c6b5e25f.us-east-1.amazon.com (172.19.159.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Sat, 26 Sep 2026 13:27:49 +0000
+From: "Craig I. Hagan" <hagan@amazon.com>
+To: <tactii@gmail.com>
+CC: <andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <hagan@amazon.com>,
+	<intel-wired-lan@lists.osuosl.org>, <kuba@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>
+Subject: Re: [PATCH iwl-net] e1000e: fix flow control stuck off after link partner reset
+Date: Sat, 26 Sep 2026 13:27:44 +0000
+Message-ID: <20260926132744.24777-1-hagan@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <42cccecf-ff14-41e1-811d-e5a44f3d1aab@gmail.com>
+References: <42cccecf-ff14-41e1-811d-e5a44f3d1aab@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260926082129.1632-1-yongzhao.derek@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-> The OpenWrt DTS for this board sets qcom,dac-preset-short-cable on the
-> IPQ5018 GE PHY. The qca,ar803x.yaml binding describes it as adjusting
-> amplitude, bias current and error correction for a PHY connected to
-> another PHY over a short distance. There is no equivalent setting on the
-> QCA8337 side.
+On 2026-09-24, Matt Vollrath wrote:
+> I didn't try your patch, but there's a four line fix. Where the watchdog
+> resets just the PHY when the MAC exits DMoff state, set FLAG_RESTART_NOW
+> instead of resetting the PHY, then goto link_up. This works for me at
+> both 1500 and 9000 MTU.
 
-I'm leaning towards the hardware design is broken, not enough
-attenuation etc, causing the PHY to wrongly detect a broken pair.
+Thanks Matt,
+I've tested this approach on two I219-LM boxes, each attached to a different switch:
+one a TP-Link TL-SG108PE V3, and the other a Cisco Catalyst 9200.
 
-The IPQ5018 PHY driver does have cable test support, have you tried it
-out?
+On the Cisco with jumbo frames, I'm seeing, via a diagnostic message, that
+the fix appears to fire and work. I have also noticed that I no longer see
+it on every boot, but this may be correct as I've not seen traffic stalls.
 
-Downshift itself, in the normal setting with a cable, probably does
-work, otherwise we would of had reports of issues.
+With 1500 mtu, I'm seeing it engage fairly regularly with the TP-Link but
+not the Cisco. I'm guessing it is related to how the Cisco negotiates. In both cases
+traffic doesn't seem to stall.
 
-Although the PHY on the CPU port is not associated to a Linux
-interface, it is still probed, and has a phydev. So you should be able
-to represent it in DT, and add a DT property to disable
-downshift. This would sometimes run into problems in that DT should
-describe hardware, not the configuration of the hardware. But in this
-case, if in the commit message and comments you say downshift needs to
-be disabled because of a bad hardware design, i expect it will be
-accepted.
+I think you are correct about flow control being a red herring since
+both switches advertise no pause (Flow Control: None) before and after
+recovery.
 
-	Andrew
+I'd like to drop my patch in favour of your fix.
+
+How should I proceed, should I propose a patch with suggested-by you, or with your authorship and
+tested by me?
+
+For completeness, here is the diff I tested (I added an e_info so I could see it fire on the
+test rig; happy to drop that line - it isn't needed for the fix):
 
 
+
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -5254,9 +5254,16 @@
+ 					usleep_range(10000, 20000);
+ 					pcim_state = er32(STATUS);
+ 
+-					/* Checking if MAC exited DMoff state */
+-					if (!(pcim_state & E1000_STATUS_PCIM_STATE))
+-						e1000_phy_hw_reset(&adapter->hw);
++					/* Checking if MAC exited DMoff state.  A bare
++					 * PHY reset here does not re-run the jumbo
++					 * workaround (e1000_lv_jumbo_workaround_ich8lan),
++					 * so request a full reset instead, which does.
++					 */
++					if (!(pcim_state & E1000_STATUS_PCIM_STATE)) {
++						e_info("full reset on DMoff exit to restore jumbo-frame configuration\n");
++						adapter->flags |= FLAG_RESTART_NOW;
++						goto link_up;
++					}
+ 				}
+ 			}
+ 
