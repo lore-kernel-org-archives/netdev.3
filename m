@@ -1,388 +1,352 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277FD3750CC
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DC82949E0
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790444773; cv=none; b=fZyYebtgy0k4iNPQSi3S9lfn+KtkZP1SMQyRAYw9WRoKTMqCQG0OGWMky5ztyST0uMOyDXlY3wirF79lkqXiDZ+hZRBh8MaBLqtrqtw6bDaNYDnlfaSNLpWCZAk4RjIEC+MzyYlc8JHN7Oyvwqzh9Np15R/Ih9YKti5YrtMHxIA=
+	t=1790444958; cv=none; b=GwBO43fAfpu5j+V1lTEG2/7J139suItfBBH8IhDvtaWkGQWCx5EvKCcMaib2zwn/DQ8YjOfmPx0xpI5Tv1l/0uEzWcZNQnEWIo8oJIc3UKwSfcPmGM8G53v9eQxkMtv7ob8PcTwjUhTHlqgbYjF0o+b5Ip+xwIZzVaHlNm5Xlx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790444773; c=relaxed/simple;
-	bh=oO1iHcTAH7ACNmM77giltxwnfU1nsSZpxxQDiZ/ueD0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WbNdAOjmOCc+/INKfgWSYcERF6AzViwQ4bI6STvmg4gYL8OYGd5OlOK/YNmhCSP5Ekx5MYUwfS0nUfxVOktMOpa6j6bbjXfQ7ih44DL2zku9xTVo2gb/KsPjEynj82E6YxB7hvbLFgMsajJPxtcIz0+XBrMxZbtVCDwNqryx0fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CEYWj9+O; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790444958; c=relaxed/simple;
+	bh=kvpnZxKUHGSglOEbQfV7dfDRH3Tc2uFxiJgQy8zXx3A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pqb8KcwfvBxOSr94uVbitmGgCQEUKnxWc3Xei5dp36vDW5vKvG4ElI0v9+Q9S/GqF3wct1nHJJ8evosv4T8/r+CUBfAEdXB4BfIXWXdwd6Nb1nyNHPFnoTmxKPdh4b39iXcZO6ESh+2/nHnvb7N9PccKP0gVrg3GcHALHDfeW24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=HI+EHjoz; arc=none smtp.client-ip=74.125.230.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CEYWj9+O"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccda24afso980432a91.3
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:46:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="HI+EHjoz"
+Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93bd580489dso171662085a.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:49:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790444770; x=1791049570; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X7j/Xs0yd7MI1p56J+Mr6f7Gqbz4/prJloJrxSXAAGg=;
-        b=CEYWj9+OcNYYl+9rm3WwO4XsufuiMWHqCoGqDoreyJkIFYU1TNLDVL+12cqeLsyDeh
-         3yKFdmuETmP6WCJvCWQbPpnsFCVsFnWqRqpYY1YTyPZ0BP14UAbtjVXHZtmK9VE80CIA
-         k0cPKBE9TELYqrIf/M5/3OZvUXCJyrNPlvibBuvvBHGPVaxrl0WLpIH2rYCScNBCth1Z
-         ZdlGhH6ZOFgsNOyQiSCLsO5T0w/3Q/ufQhLXeM/JzkVEJfQ1Wk9W3O97Q3idNhHlj8eU
-         XADumkYnuVfBl88AI7evexrZKCtprMz6BSSdyRRg45f6r5+H/ftgVzjX651YDzP5m/sw
-         3I9Q==
+        d=mojatatu.com; s=google; t=1790444956; x=1791049756; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/4LwfMZnrjmSOTF2KrlpJYTkq/+NuFc3IB5nSeQZR7A=;
+        b=HI+EHjozXWkGKVeWD0Jk3b5+2FsSpniKOLffqs2sOemPS3LOvBYkLW1ndHAVi49Opz
+         jwKwLg1QrdUyOqxLtiE5hbOxsuZxNF8u/6VGtFny94Xk6v/unjGEo3OL7wGrMagyWreQ
+         TU5hV/qTKRNSy6Kv8ffqVcbA9CdFOgvJXfpj0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790444770; x=1791049570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X7j/Xs0yd7MI1p56J+Mr6f7Gqbz4/prJloJrxSXAAGg=;
-        b=ToAqVHqGHZJe6eMxGWgTZSEmdj5T7wxvbfur4VugoHP8vZ1SeDda/XxN4f6AyomZyk
-         HBDRYOflLsUzbPEjvXHVx/G6KXqFx9gj/WRt+cwnWjjhJcKmLMDSjqwO9z10wQxwXRRO
-         BaytAIlMjSG3sBkC77g86wUvQbV8U77kc3gsBv8sGJJxAugJBN3K68StWCeAanu3GfKW
-         vjTXbpjBEScoGt6RdOkezIjDYoJP5CgU/POGaGibwkM3jmYCUxdnkosouylEr3ggv6PG
-         LufgeEzNLaU/RY8PYrrCQUbB7ZbzCIRdCX3fZ87bFah2SahQpq3bFtg10Yn8wHN0o+Gb
-         BD3g==
-X-Gm-Message-State: AFq9FYIV7xsJENBbtfYgYvRjlAEmylaftSuSMLKbz3S1OsROcUEmTMFI
-	fUCF+rjaR2BP8HVNaGm+lh11sWvCsY58ZjinjoAgSXbvSWYIR62WOKxf9pOnfwK/fKm4eA==
-X-Gm-Gg: AYBFou3ev6s32jXbkgrmbcHkIPhqU+y3Bipj4FcLgqD6pgnC9fbtMm8QHxaShyNyZJT
-	E902SUXm+wBVESyrevFKmw0jX3+MGGDPbCosWI7fsOVvmkT2EL3a16coWwC9ixE9vsL8bq7VRNA
-	kk2xEaQlscGS+G/rnklPmTYTaInPkdUzn4kL+Enc+Ttq9ls3wfDbO3Uau5ewzwduKbKezYLubOG
-	El4ZC6bJc54ho5ukdSb609P5svQa/XF2zkOuAO5nslUdAXDOsUtJ2BHEa6EWE4SxA/qOe0KyN3u
-	RihZVHK3IxeSy60tEGHLmL/RGaHJs9DRuXFjY7zTNvJaXUYs1N5rBre/wW/d91nWwsg0K+unom8
-	xMHGVbJYayJ5V2mM2gjTk9Tmg7r4DvvE63iNupj0q6PHlrMCOIP/RNB0cDaBW17U3wNjxbJJFj/
-	NlNBMbYUhc7FtbOgkg7EVcnm9lP5MN5+7oQzdMiP7O0JgH/NPt9+TE5/lQ2RQOxpVXxUhktQoMI
-	PmSK8Ds+zzSfwUqy5fDNYljYIHYQnAFi9TWrOpiCUaBqds98UGTcaeEEWE3K86E3uQ2/CWE1UDZ
-	nAgyUm8Ai6A1MEOrG94VacJPuCNvojgHjFi7Mw==
-X-Received: by 2002:a17:90b:390d:b0:3a0:c717:2db with SMTP id 98e67ed59e1d1-3a0c7170934mr3325060a91.27.1790444770171;
-        Sat, 26 Sep 2026 10:46:10 -0700 (PDT)
-Received: from DESKTOP-4R531G0 ([223.105.83.222])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0974ec711sm17261233a91.6.2026.09.26.10.46.07
+        d=1e100.net; s=20260707; t=1790444956; x=1791049756;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/4LwfMZnrjmSOTF2KrlpJYTkq/+NuFc3IB5nSeQZR7A=;
+        b=KfmdA/DZPH0w7WZu8OJb/Ja/jZWtxYaJ9QlCyaOcv3qVJ5qmRo9xuTlZCbLu6TadyL
+         BuaOG5m6Nq42ypMs9YbZAk9M51+u/wH7gio23ka4JuBDz6n9J9unzyD2+yebizwmNjQH
+         kCyKjb1TMT0JZKl2bDAfvhOxLsMW0i7rtb+LNnI/eoAo9FyITz49SYC67pSUQlBxQjUo
+         ntA1GcYALEb9f723s77XrzcCzPoXbB1IhwLGXWy/r806AVyZoIuFWGRcPU8o2F5rz/sK
+         AWoJo304cBtEfa/KHxW1dQLcFaHIas3q25XcDwvHZfq2tau6hgL2zHiAWaeu6+fD1mJ+
+         NbOQ==
+X-Gm-Message-State: AFuF++nMkqQaCJuswUIEpWEGg07b8BQYhr6L2up3fs+VIMd2qrCjX9Pi
+	ajTj7fMarOStifV/M/p9Yd3Ee5DXxtniU443GKmIZ/jUxqnRb9UwbQOAuEcsO4CKrVV+zzJVtIZ
+	+Zq1xVw==
+X-Gm-Gg: AYBFou39P4sWwt5x00BXgUPUUQzXmPbl//wzKLOimpJglOY9f9mJQVyW1hph87EL0xc
+	m9+mcyrZu/I1+KjUJi+OfYC3Hb2In9PqmERT1Zex2ygZ52hm01D3StryDf+bw6+6Hc/JqyrjCv7
+	sm8DpPIET0YT/bexznRFKsK6aDEDQHhaXkpxxDXtr/Ntotl9JZVqGDbJsXrc4rJqh57RCKs3gUN
+	YZuolydwytHge8EYOyLoM5xTpJT35uey6AgIBnQnJdnP018K2DeR9LIuuUCs63icXX4Z3Be7WwL
+	Vd4Fvbn7Dabk2h/rCJWx2U0hcuoY1i0USPUhd8PkjSO7/6u2L7e/NwdJZYko3yKUeYQlX/wjFkU
+	NFRGPiAL2CXzfNhTIdSmZA06D5l4Ewp4DYxOnmOA7echE7M9oYiT/f5TexhwKnZpzCtf+nI+Hxu
+	pb7tCkkrNifn+89PRFGXH7/ZLORx7+IScBqViG2GAZl94x0BMU+wnRm1QBi6l68qQbHJX0ZyhU7
+	fO1P+hgGlJWsZvjkJRKLFUnPqsXMHsDs+xPgn0lgOfv/+UBC+e40Ll8OGn/
+X-Received: by 2002:a05:620a:404d:b0:939:9f51:29a0 with SMTP id af79cd13be357-93c43ce6b41mr1137143885a.50.1790444955590;
+        Sat, 26 Sep 2026 10:49:15 -0700 (PDT)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9144d0bda89sm13676836d6.14.2026.09.26.10.49.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 10:46:09 -0700 (PDT)
-From: Gaoyang Wei <yhyxwgy@gmail.com>
+        Sat, 26 Sep 2026 10:49:15 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
-Cc: pbs05 <xuziyougm@gmail.com>,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
-	Benjamin Larsson <benjamin.larsson@genexis.eu>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>
-Subject: [RFC] net: towards a generic PON framework
-Date: Sun, 27 Sep 2026 01:46:01 +0800
-Message-ID: <20260926174601.1675-1-yhyxwgy@gmail.com>
-X-Mailer: git-send-email 2.52.0.windows.1
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	hybris <hybris@mojatatu.ai>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	moeller0@gmx.de,
+	cake@lists.bufferbloat.net,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net-next v2] net/sched: cap the accounted backlog before it can wrap
+Date: Sat, 26 Sep 2026 13:49:12 -0400
+Message-Id: <QDISC-BA27.v2.20260926123300@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+fq_codel, cake, codel, pie, fq_pie and dualpi2 account every enqueued
+packet's stab-adjusted length into a 32-bit sch->qstats.backlog.
+fq_codel/codel uses it do decide if they should drop a packet at deq;
+cake uses it to prune the longest-flow heap from per-flow backlogs;
+pie and fq_pie use it to make early drop decisions and, dualpi2 decides
+must_drop() on it. RED can can decide on a child's backlog based on it.
+A crafted tc size table (TC_STAB) inflates qdisc_pkt_len() up to
+QDISC_PKT_LEN_MAX (1 MiB), so a few thousand packets wrap the counter
+mod 2^32. The AQM algo then reads a small backlog and makes the wrong
+drop decision, and the dequeue-side subtractions keep the counter corrupt.
+
+Fix:
+Drop at enqueue once the accounted backlog would cross QDISC_MAX_BACKLOG
+(U32_MAX - QDISC_PKT_LEN_MAX), the largest backlog one more maximum-size
+packet cannot wrap.  This follows the existing bfifo/gred approach
+(safe because its limit is checked against the accounted packet length);
+the fixed qdiscs' limits are packet counts or otherwise do not bound
+the aggregate bytes, so they need the byte bound here.
+
+Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
+CONFIG_NET_SCH_FQ_CODEL=y.
+
+  ip tuntap add tun0 mode tun
+  ip link set tun0 txqueuelen 32 up
+  ip addr add 10.99.0.1/24 dev tun0
+  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
+      fq_codel flows 1 limit 20000 ecn
+  # hold the tun fd open without reading (IFF_BACKPRESSURE) so the qdisc
+  # backlog persists, then send 6000 packets. At 4096 resident 1 MiB
+  # packets the counter wraps; the unfixed kernel then reports a wrapped
+  # backlog for 5969 resident packets, the fixed one drops at the ceiling.
+
+  # RED with a grafted packet-limited child reads the child's backlog the
+  # same way; the default bfifo child is byte-limited and safe, pfifo is
+  # packet-limited:
+  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
+      red limit 1000000000 min 5000 max 10000 avpkt 1000 burst 32 ecn
+  tc qdisc add dev tun0 parent 1:1 handle 30: pfifo limit 100000
+
+Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
+Link: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
+Tested-by: hybris <hybris@mojatatu.ai>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v2 (2026-09-25) — approach rewrite per list discussion of v1:
+
+  v1 approached the wrap by widening the per-flow backlog counters to
+  u64. Eric Dumazet said "Storing 4GB in a qdisc is absolutely insane" ;-)
+  and asked for a drop at enqueue once the backlog approaches the wrap point.
+  Sebastian Moeller noted tc-stab is the generic overhead-accounting mechanism,
+  so the fix must not penalize normal stab use.
+
+  v2 replaces the u64 widening with an enqueue-side pre-check against
+  QDISC_MAX_BACKLOG (U32_MAX - QDISC_PKT_LEN_MAX) and drops with
+  QDISC_DROP_OVERLIMIT. No counter is widened, so the 32-bit
+  sch->qstats.backlog the AQM qdisc reads can no longer wrap. Same pattern
+  in other qdiscs fixed in one patch: fq_codel, cake, codel, pie, fq_pie,
+  dualpi2, RED.
+  Note: v1 touched fq_codel and cake only.
+
+ include/net/pkt_sched.h  |  5 +++++
+ net/sched/sch_cake.c     | 28 ++++++++++++++++++++++++++--
+ net/sched/sch_codel.c    | 17 ++++++++++-------
+ net/sched/sch_dualpi2.c  |  2 ++
+ net/sched/sch_fq_codel.c |  7 +++++++
+ net/sched/sch_fq_pie.c   |  4 +++-
+ net/sched/sch_pie.c      |  4 +++-
+ net/sched/sch_red.c      |  8 +++++++-
+ 8 files changed, 63 insertions(+), 12 deletions(-)
+
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 90d3e7943b19..351b92f956ef 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -13,6 +13,11 @@
+ #define DEFAULT_TX_QUEUE_LEN	1000
+ #define STAB_SIZE_LOG_MAX	30
+ #define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
++/*
++ * Largest accounted backlog for which enqueuing one more maximum-size
++ * packet cannot wrap the 32-bit sch->qstats.backlog.
++ */
++#define QDISC_MAX_BACKLOG	(U32_MAX - QDISC_PKT_LEN_MAX)
+ 
+ struct qdisc_walker {
+ 	int	stop;
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index dc93267029e7..6a16546aa5b0 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1776,6 +1776,14 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	idx--;
+ 	flow = &b->flows[idx];
+ 
++	if (unlikely((u64)sch->qstats.backlog + len > QDISC_MAX_BACKLOG)) {
++		WRITE_ONCE(flow->dropped, flow->dropped + 1);
++		WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
++		qdisc_qstats_overlimit(sch);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
+ 	/* ensure shaper state isn't stale */
+ 	if (!b->tin_backlog) {
+ 		if (ktime_before(b->time_next_packet, now))
+@@ -1801,7 +1809,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		WRITE_ONCE(b->max_skblen, len);
+ 
+ 	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
+-		struct sk_buff *segs, *nskb;
++		struct sk_buff *segs, *nskb, *seg;
+ 		netdev_features_t features = netif_skb_features(skb);
+ 		unsigned int slen = 0, numsegs = 0;
+ 
+@@ -1809,6 +1817,23 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (IS_ERR_OR_NULL(segs))
+ 			return qdisc_drop(skb, sch, to_free);
+ 
++		/* The segment list is accounted by the sum of its lengths,
++		 * which can exceed the original packet's accounted length, so
++		 * sum it before linking any segment and drop the whole list if
++		 * the post-split total would cross the ceiling.
++		 */
++		skb_list_walk_safe(segs, seg, nskb)
++			slen += seg->len;
++
++		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
++			kfree_skb_list_reason(segs, SKB_DROP_REASON_QDISC_DROP);
++			WRITE_ONCE(flow->dropped, flow->dropped + 1);
++			WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
++			qdisc_qstats_overlimit(sch);
++			return qdisc_drop_reason(skb, sch, to_free,
++						 QDISC_DROP_OVERLIMIT);
++		}
++
+ 		skb_list_walk_safe(segs, segs, nskb) {
+ 			skb_mark_not_on_list(segs);
+ 			qdisc_skb_cb(segs)->pkt_len = segs->len;
+@@ -1820,7 +1845,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 			qdisc_qlen_inc(sch);
+ 			numsegs++;
+-			slen += segs->len;
+ 			q->buffer_used += segs->truesize;
+ 			WRITE_ONCE(b->packets, b->packets + 1);
+ 		}
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index 6aa5829d6961..f2770a438070 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -116,15 +116,18 @@ static struct sk_buff *codel_peek(struct Qdisc *sch)
+ static int codel_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			       struct sk_buff **to_free)
+ {
+-	struct codel_sched_data *q;
++	struct codel_sched_data *q = qdisc_priv(sch);
+ 
+-	if (likely(qdisc_qlen(sch) < sch->limit)) {
+-		codel_set_enqueue_time(skb);
+-		return qdisc_enqueue_tail(skb, sch);
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
++		     QDISC_MAX_BACKLOG)) {
++		WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
+ 	}
+-	q = qdisc_priv(sch);
+-	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
+-	return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
++
++	codel_set_enqueue_time(skb);
++	return qdisc_enqueue_tail(skb, sch);
+ }
+ 
+ static const struct nla_policy codel_policy[TCA_CODEL_MAX + 1] = {
+diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+index 4947def7c49e..ff5d55d502f2 100644
+--- a/net/sched/sch_dualpi2.c
++++ b/net/sched/sch_dualpi2.c
+@@ -392,6 +392,8 @@ static int dualpi2_enqueue_skb(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct dualpi2_skb_cb *cb;
+ 
+ 	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
++		     QDISC_MAX_BACKLOG) ||
+ 	    unlikely((u64)q->memory_used + skb->truesize > q->memory_limit)) {
+ 		qdisc_qstats_overlimit(sch);
+ 		if (skb_in_l_queue(skb))
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 969b2510b0b8..e98bafa47da3 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -201,6 +201,13 @@ static int fq_codel_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	}
+ 	idx--;
+ 
++	if (unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
++		     QDISC_MAX_BACKLOG)) {
++		q->drop_overlimit++;
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
+ 	codel_set_enqueue_time(skb);
+ 	flow = &q->flows[idx];
+ 	flow_queue_add(flow, skb);
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 5982847df8f8..6e62ce991c1c 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -155,7 +155,9 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	memory_limited = q->memory_usage > q->memory_limit + skb->truesize;
+ 
+ 	/* Checks if the qdisc is full */
+-	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
++		     QDISC_MAX_BACKLOG)) {
+ 		q->stats.overlimit++;
+ 		goto out;
+ 	} else if (unlikely(memory_limited)) {
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 3b7863ffd284..64095d27decc 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -89,7 +89,9 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	bool enqueue = false;
+ 
+-	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
++		     QDISC_MAX_BACKLOG)) {
+ 		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
+ 		goto out;
+ 	}
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index d7598214270b..dff3d8b0556b 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -76,6 +76,13 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	unsigned int len;
+ 	int ret;
+ 
++	len = qdisc_pkt_len(skb);
++	if (unlikely((u64)sch->qstats.backlog + len > QDISC_MAX_BACKLOG)) {
++		qdisc_qstats_overlimit(sch);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
+ 	q->vars.qavg = red_calc_qavg(&q->parms,
+ 				     &q->vars,
+ 				     child->qstats.backlog);
+@@ -135,7 +142,6 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		break;
+ 	}
+ 
+-	len = qdisc_pkt_len(skb);
+ 	ret = qdisc_enqueue(skb, child, to_free);
+ 	if (likely(ret == NET_XMIT_SUCCESS)) {
+ 		qstats_backlog_add(sch, len);
+-- 
+2.43.0
 
-Several efforts now support, or are working towards supporting,
-Passive Optical Network (PON) hardware on Linux and OpenWrt.  I would
-like to ask for feedback on where the kernel/userspace and
-generic/vendor-specific boundaries should be before any implementation
-hardens its own userspace API.
-
-This RFC is about the ONU/ONT (subscriber) side only.  It is not an
-attempt to design an OLT subsystem.
-
-Background
-==========
-
-PON devices which provide Ethernet user services commonly expose an
-Ethernet datapath to Linux, but the hardware below that interface has
-concepts which do not map directly to ordinary Ethernet networking:
-
-  - ONU activation and line state;
-  - PLOAM or MPCP;
-  - ONU-ID and Alloc-ID;
-  - T-CONTs and GEM ports for ITU-T PON;
-  - LLIDs for EPON;
-  - encryption/key state;
-  - an OMCI or OAM management channel;
-  - a burst-mode optical frontend.
-
-Vendor BSPs commonly expose these through private ioctls, private
-procfs/sysfs attributes, vendor-specific libraries, and userspace
-daemons.
-
-There are now multiple open implementations or implementation efforts,
-so this seems like a useful point to discuss which concepts, if any,
-should become common Linux abstractions.
-
-Current implementations and related work
-========================================
-
-One implementation currently targets Airoha AN7581/AN7583:
-
-  https://github.com/pbs05/openwrt-pon-drivers
-  https://github.com/pbs05/openwrt-pon-userspace
-  https://github.com/pbs05/ponwrt
-
-It separates the Ethernet datapath from the management plane.  The
-kernel handles the PON MAC, line activation/PLOAM, hardware GEM/T-CONT
-state, and the hardware datapath, while the G.988 OMCI implementation
-and service provisioning are in userspace.
-
-Raw OMCI PDUs are exposed through a dedicated net_device without a
-synthetic Ethernet header and are received and transmitted by
-userspace with AF_PACKET.
-
-pbs05, the author of that implementation, has reviewed the description
-of its current architecture in this RFC.
-
-There is also ongoing EcoNet/Airoha work for older PON hardware,
-including an xPON MAC/PHY implementation and OMCI work in the OpenWrt
-Airoha target:
-
-  https://github.com/openwrt/openwrt/pull/20104
-
-Benjamin Larsson previously raised the closely related question of the
-API between an xPON MAC and a fixed laser driver/BOSA or an SFP module
-[1].
-
-These efforts do not necessarily make the same architectural choices.
-That is one reason I would like to discuss the common boundary before
-turning any one implementation into a generic kernel API.
-
-Goals and non-goals
-===================
-
-My current preference is for any generic PON layer to be deliberately
-small and to reuse existing Linux subsystems wherever possible.
-
-In particular, this RFC is not proposing to:
-
-  - implement the G.988 managed-entity model in the kernel;
-  - standardize timing-critical XGTC, FEC, burst timing, or DBA logic;
-  - replace bridge, VLAN, TC, ethtool, hwmon, thermal, PHY, or SFP
-    infrastructure with PON-specific equivalents;
-  - require different PON MACs to implement activation in the same way;
-  - define an OLT-side architecture.
-
-The question is instead whether Linux needs a small common model for
-PON-specific line state and bearer resources, and how that model should
-interact with existing networking and optical subsystems.
-
-Possible layering
-=================
-
-A possible split looks like this:
-
-                         userspace
-
-                 +----------------------+
-                 | OMCI / OAM software  |
-                 +----------+-----------+
-                            |
-                     management PDUs
-                            |
-  ================================================================
-                            |
-                          kernel
-                            |
-                 +----------+----------+
-                 |                     |
-           PON-specific            Ethernet
-           control plane           datapath
-                 |                     |
-          vendor PON driver        net_device
-                 |                     |
-           MAC / PCS / PMA     bridge / VLAN / TC
-                 |
-          optical frontend
-             /         \
-           SFP       fixed BOSA/laser driver
-
-Where the user-facing service is Ethernet, its datapath should remain
-an ordinary net_device.  Linux should not need to understand XGTC
-framing, burst timing, or FEC in order to forward Ethernet packets.
-
-Hardware which implements those functions should continue to do so,
-with the vendor driver programming the corresponding hardware state.
-
-A PON-specific kernel interface, if one is needed, would then expose
-only concepts which cannot reasonably be represented by an existing
-Linux subsystem.
-
-Potential generic concepts
-==========================
-
-For ITU-T PON, possible common concepts include:
-
-  - PON protocol/mode;
-  - line/activation state;
-  - ONU identity;
-  - Alloc-ID / T-CONT resources;
-  - GEM ports;
-  - management-channel association;
-  - security/key-slot state where software must program the MAC.
-
-For EPON, the equivalent model would include LLIDs and MPCP state.
-
-I do not think all protocol state necessarily needs to become generic
-kernel code.  For example, one PON MAC may require software to
-participate in PLOAM processing while another may implement most of
-the same state machine in hardware or firmware.
-
-A generic layer could therefore expose common state and resources
-without requiring every driver to implement activation in the same
-way.
-
-OMCI and management packet transport
-====================================
-
-For ITU-T PON, I would prefer to keep the G.988 managed-entity model,
-MIB handling, and service provisioning logic in userspace.
-
-OMCI is a packet-oriented management protocol.  The AN7581/AN7583
-implementation mentioned above exposes raw OMCI PDUs through a
-dedicated net_device, without an artificial Ethernet header, and uses
-AF_PACKET in userspace.
-
-This has some useful properties:
-
-  - the kernel does not need to understand G.988 managed entities;
-  - operator/vendor-specific MEs do not become part of a kernel ABI;
-  - packet capture and protocol analysis are straightforward;
-  - retransmission, MIB handling, and service graph resolution remain
-    outside the hardware driver.
-
-I am not claiming that a net_device is necessarily the correct
-upstream ABI.  I would particularly appreciate feedback on whether a
-packet-oriented network interface is appropriate, or whether another
-existing interface, Generic Netlink, or a character device would be a
-better fit.
-
-EPON OAM is a different protocol and need not share OMCI semantics or
-userspace code.  The question is only whether management protocols of
-this kind should use a common packet-oriented transport model where
-the hardware requires host processing.
-
-Reuse of existing subsystems
-============================
-
-I would like to avoid putting functionality into a PON layer when
-Linux already has an appropriate abstraction.
-
-For example:
-
-  Ethernet service traffic  -> net_device
-  VLAN/bridging             -> bridge / 8021q
-  packet classification     -> TC where possible
-  Ethernet statistics       -> ethtool
-  pluggable optics          -> SFP infrastructure
-  fixed-front-end telemetry -> hwmon
-  thermal policy            -> thermal subsystem, where applicable
-  factory calibration       -> NVMEM where appropriate
-
-In particular, temperature, supply voltage, laser bias, and RX/TX
-optical power from a fixed optical frontend should not require
-PON-specific ioctls merely because the sensor is part of an ONU.
-
-A fixed BOSA/laser driver still needs a way to communicate
-link-relevant events such as LOS, TX enable, and burst-enable state to
-the PON MAC.  How this should interact with the existing PHY, phylink,
-and SFP infrastructure is one of the questions I would like to
-discuss.
-
-Datapath provisioning
-=====================
-
-Another open question is where service classification ends and PON
-bearer configuration begins.
-
-An OMCI userspace implementation may resolve managed entities into a
-service relation similar to:
-
-        VLAN / priority
-               |
-               v
-            GEM port
-               |
-               v
-            T-CONT
-
-The GEM port and T-CONT are PON-specific bearer resources, and many
-implementations represent them in hardware.
-
-The VLAN and packet classification are not PON-specific.
-
-It therefore seems undesirable to create a new generic PON packet
-classifier if TC, bridge, and VLAN offload can express that part of
-the configuration.
-
-What remains unclear is the cleanest way for an existing Linux
-classification rule to select or reference a PON bearer, especially
-on hardware where that mapping is offloaded into the same DMA/QDMA
-engine as the Ethernet datapath.
-
-Questions
-=========
-
-I would particularly appreciate feedback on the following points:
-
-1. Does Linux need a struct pon_device or equivalent at all, or can
-   the required concepts be represented by existing networking
-   objects?
-
-2. If there is a generic PON object model, how much should it expose?
-   Are T-CONT, GEM, and LLID appropriate generic objects, or are they
-   too close to individual protocols or hardware implementations?
-
-3. Should OMCI management PDUs be represented by a packet-oriented
-   interface?  If so, is a dedicated net_device appropriate?
-
-4. Should PLOAM/MPCP activation remain driver-specific, with only
-   common line state exposed by a generic layer?
-
-5. What should the interface between a PON MAC and fixed optical
-   frontends look like, and how much should be shared with SFP,
-   phylink, PHY, hwmon, and thermal infrastructure?
-
-6. How should classification into GEM/LLID bearers interact with TC
-   and existing hardware-offload APIs?
-
-7. How much should the ITU-T PON family and IEEE EPON family share in
-   one object model?  It would be useful to avoid both
-   protocol-specific private APIs and an abstraction so generic that
-   it no longer represents the hardware usefully.
-
-8. Which configuration belongs in a networking control API
-   (rtnetlink, Generic Netlink, etc.), and which state should only be
-   observable through existing kernel subsystems?
-
-Next steps
-==========
-
-I am intentionally not proposing a UAPI or struct definitions in this
-mail.
-
-There is working code which can be used as a reference implementation,
-but I would prefer to get agreement on the subsystem boundary before
-turning one vendor implementation into an API which other PON drivers
-would later have to follow.
-
-If the overall direction makes sense, the next step could be a small
-RFC patch series containing only the minimum generic model together
-with one real hardware consumer, rather than attempting to upstream a
-complete PON stack at once.
-
-I would also be very interested in hearing from developers working on
-non-Airoha PON hardware.  A second independent hardware family would
-be particularly useful for determining whether any proposed
-abstraction is genuinely generic rather than an Airoha interface with
-generic names.
-
-References
-==========
-
-[1] Benjamin Larsson, "[RFC] Question regarding api between xpon mac
-    and laser driver/BOSA"
-
-    https://lore.kernel.org/r/1c774b8f-3e4d-447c-9a93-be554811cbf0@genexis.eu/
-
-Thanks,
-Gaoyang Wei
