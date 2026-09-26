@@ -1,128 +1,167 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D7435B657
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 18:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBB0384CD8
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 18:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790445818; cv=none; b=XjNc1IakWRY4fIViVE1V2dKYsrh0GP/a4CSxHEEscQ2dyZS4HLsgYDRL1m1b076hgW23sEiY84oer9h3e/X0vbSYJjPVBZger/huVOG0Vn8boYn/5MmAjwGcMUQJof3B3B5y7LDXllcdMCPd5LUAa+QTie0Gqn5eWZJqa5ioyEo=
+	t=1790445868; cv=none; b=AI5/zGyMK9rl9WJrD8YNxX53xRWvsXgV6AMvVI+R/4Ql9dkNHJQ+jXW2ToifKPyC5xLEM2FqCeNgDbtxQq9x6Zku4vhh23+tpdqZLAaiXuXLBqer38C0ychxiKGoAgLXVE9XZoYlNH6XI4JxEoIJeVHl13C2GVn3sch12ZGl68Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790445818; c=relaxed/simple;
-	bh=A6MKKcZ2lNiZvXNq5PkYTD7DsVUwX+uRataPSCZvpdY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b99QKb8XzhwSWum5czb8aE+TyX5754tk9pM+h4TCnwS3bofW6CRX8llpD/eEai+8K2LMN+7ydqBLkY8uoSy5Xin/I0tVeVHUQvyDxoSE1hbdc0EpF/t7HY5r4e2+QFUVLqkyhnjY20mTDdtiuxDNBUoMViVC9rywxVq/9ATRMQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=p1o0kGgX; arc=none smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790445868; c=relaxed/simple;
+	bh=2zVps6AYrWAiY9ULKun6/agXQ3ENzQcWHEgAv4h9mPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZftulZv8+LeQ8ZT/FQaSK0eyW2N7v3tedYDcoqXU+rfS2fJZR9rE8oi7qHmx2b6t/GWXT/ryUhXDGTI8Q/VetH1PYOMHXJVZFgSoPKq1VONIjLbTD1/6mm3zKT4zE8d+uGoX8kYOFsC8GDSDbRKgHQiqoXDutx4MNh/4MFbLlrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8Hh36KQ; arc=none smtp.client-ip=74.125.229.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="p1o0kGgX"
-Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfd70b08cso232841185a.2
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 11:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8Hh36KQ"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-32be7127c64so209974eec.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 11:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790445816; x=1791050616; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IBgdKLuzKgWAaoR8Y6PUwk1rrOWCUPoeZN2aw/TlYks=;
-        b=p1o0kGgXlAiGvERbJsyiPgZ93CAwmMgAHqo/ZoCc+NxPUz3IYNgHpsYTaEG2fYKJCb
-         0iIlt3/2ddnpAQq1eRlvMzYOHqrVr0AF7nRlyVS46wVyZN4kLvvNI+BAPAMYd2v/vZ6S
-         b4jvqQW2Aa7tcPyKTv/5UJJSvfBDgpLIagnEI=
+        d=gmail.com; s=20251104; t=1790445866; x=1791050666; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kHluweKfZpb/IlLJvDMNI0ICAGK++39Oi731e5BjCgQ=;
+        b=d8Hh36KQIM5dQiSiSt6ZWvxwv8bA82YxwChJoHWpHhk1MMcNidnumefY9Tt9FYIkiz
+         wv7hCOsCLVWTU8o+AOwXTDPREsqCnqYHtL7fbKesEK420mvTZyUxD9uQw5ZVBxuxPgg0
+         I/FJhFI/GOFbqXL8funJbX2ZYlzhSsfaBuPVc4tbDnaYdIsgN7qGnQg0wxKqPHiyXWln
+         MSjT3NMkYYZ8jXH64oULms2hm2ffeOoGk0fQZxCUvIPrEv5ZhZ71GkJQNuOxpMN4e2do
+         hTd5yeo/XUvU5LnR3NppccxuB/+OBIuS1BOvjM4oYJrmJWZGXCFs/WHs5WWsC+DAnZQy
+         Qlpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790445816; x=1791050616;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IBgdKLuzKgWAaoR8Y6PUwk1rrOWCUPoeZN2aw/TlYks=;
-        b=OrKEwEyufHcNCz2t0OlrlaJI/Mp7/yOFNeSeovWIKOAunMeU+1UF5R3w5+kTDl/4nR
-         muOABgkAi+VK84C5LiKGWEx0FfIRZzaxHuYaq5XcQ/Wox5xzqBee/qQw1nFRIUDpT+dC
-         6zvzdSX5NYNpxBI3vLVgsWizB1lu9yEyR4kOd0kFWgZX+11iZ6AMybFL7JchpEN8Mzsx
-         6pXz3l2Cn93l+uB3CH3Cd6XM2uUcTiSYgeEkDmkHCYUOmFuRB0mz7C+r8eNzKcVpYKAA
-         03BJpXUK4RTjvqfRnLSOoZeVWQLd3bZrsewqoh+TwUylMBwDGFR0isFesOHtu3yj9wiG
-         2jBQ==
-X-Gm-Message-State: AFuF++lHrZNueRFKNflOdwXGqF66ArGtd3YBP77FBmfXN4ba8wSMweUM
-	ap8qOiszeD06FUunsLw/85dYzGmiJRT5KwQtrAbNLtdXTntrvHAdDBg4zgqu0nW/FGAYQ0RbLEs
-	1pC2eKg==
-X-Gm-Gg: AYBFou33OGm5ptLkbaRA/g15h/KyQ7dw/ckBY1d5bcSI0SG22twPhx4MJhNjirEcDST
-	d493khHVszaIWuDnQ3EB7MXCxmk/M3nGzjjb4q0464R7pYSgx2jG3hxzXkb46T7rM1sp3T1QOQz
-	X+IcO6vaH2BdgIKMDpOa2dqW9pHYoqKg3HDltSMooFpgxy9RLlXU2hvqsr1mMFtljXNjLCAqMZn
-	j4PcpFGrZNAdtXosexi8IkCmP8spdbMfhOGuAr89N5wTvsrHEYQpLmtI4dhViUJOKTWuPjSFiaq
-	q5JE8XEBUAYNaOogboS8n9z/pMobW9z4ykTWIoiUMrWo1nOrGAFYE+ji9JlHigyOpl484SOc9vo
-	pey/gMoUJrTqzy10wblGF8zCtYbSfd5FHqdkxf3/DFPwc6d8SmlYoIz6tssGHM5nUbVuUSs5r5O
-	cVJXQ+p6jqFX7NYMopLCTYCXVVLKhHsBwK9ycoWkO9VjGxjirKzcdhsX+tUZB+38y64HTXjivP+
-	PdOFTWBBytIRpfCGo2TA0lhshOIXTqlvUgtaXlqjPuljDGu5lZhGuK+sc7r1Is3qID2yaA=
-X-Received: by 2002:a05:620a:4809:b0:93b:d7a1:ba12 with SMTP id af79cd13be357-93c47558b31mr1011764985a.61.1790445815734;
-        Sat, 26 Sep 2026 11:03:35 -0700 (PDT)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c4499c06csm459288885a.46.2026.09.26.11.03.34
+        d=1e100.net; s=20260707; t=1790445866; x=1791050666;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kHluweKfZpb/IlLJvDMNI0ICAGK++39Oi731e5BjCgQ=;
+        b=0I5ugXeScr7rF9HGopi/46zkOfOkUuB0xaHOKK/KkeI29SDoMp9rTfDq7Sj3lyQW4g
+         pY8JygyUNA96Rkmjxx1Wf050fBI2jrZYB4S5Dow4CczPO37IQ5iidQIXLYJZiQej0PZ/
+         h5E887koYa0J0SDiXtxSqEwJsFeWDs+PIQ8T+IP4gfzewnMhzNOYIoPxAE1kraCYd+hU
+         MU8I6vQZBry2vZgDGrYH1ncOT1pkzA/HHIq/gFXC/E4g7iWBQYkQTA8FDjAV4qvCLQe5
+         aRaO9l8zlZkvoY3IQ5YyYhd1ggxqeFcR6zQq2s+8zxDWJYwtLkZ8Lc2/r/djeKwy9Iay
+         OZbA==
+X-Forwarded-Encrypted: i=1; AKwUvBw4u5EHQ8Hs1x8w05jUswqV/pyVM9v0FLndcGC+eD2TVkPZBDydSgcXuyzTTjNjuFCZEE5EX0s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJt80A6ZMglX8CGD9nsXIqm83MNxRrd8d+4hZaAohtlOheJ6ryg
+	TmE9EVg1y+cmh69ugS/w50E4MFQzouzoNpevPmY0Zj8YeA593/FH0mIK
+X-Gm-Gg: AYBFou0vRdsAFB+fFwLhULJdZCbeB3Ot+bqmrrnIH9LZ0xrj9ib7Ss+qJGUY5cX8QZe
+	DqRC/CHscf7vNV7wbfXaWcyhUf6u8gfWq0vCM1TSVe/wbS2DtjrWN0PqiynZlFba0m0nupTJKDO
+	xmN1UXEupR9oa1kaNzVEiZbqKNpk2Hco+bNzwoegz0FWjOPHKhZdKWFk3Uv+2+p9rws86OxVMJi
+	wvRl4lRUyxmm4jygbDhcYFcIp476Y9G2ZmIrO8/pzaCtFwgMEvKh2udeXUrCYqrNdm6ScZpqfNk
+	2/SPNjoF93VNlxpecRcNxV0DsR08ZQwnxpbJR+im/XutvNuShuaZvJ6neDF9tOVW11bBlQmFbSx
+	KjsYJwPUQgokyZZoVnOL3L8AMEZK3RNaNR0vxPKmK+wsHCd09dh4AUgG1J0z1j1SUcMkHhN3ldl
+	mkFnABuxofG2Gu+USMlopgCIiQPn4zyKKddPoa8uBoMttAv11C7rhlj/cm76w4vHVDbbJ5Uwzns
+	7kPthpsiKT9lGkB2cS13OJMwKbPqA5hQSS9Fv0/yTCKjf11mOqf5fuJ+uTuGcd0Rk3PSg==
+X-Received: by 2002:a05:7301:b0e:b0:33f:3750:4e22 with SMTP id 5a478bee46e88-3426cce6521mr5523221eec.0.1790445865269;
+        Sat, 26 Sep 2026 11:04:25 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341463ec3ecsm16542044eec.31.2026.09.26.11.04.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 11:03:34 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+        Sat, 26 Sep 2026 11:04:24 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	hybris <hybris@mojatatu.ai>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net 2/2] net/sched: sch_codel: match the no-drop threshold to the packet size
-Date: Sat, 26 Sep 2026 14:03:28 -0400
-Message-Id: <QDISC-34MS.v1.20260925165535@mojatatu.com.2>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-34MS.v1.20260925165535@mojatatu.com>
-References: <QDISC-34MS.v1.20260925165535@mojatatu.com>
+	Ursula Braun <ubraun@linux.ibm.com>
+Cc: linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/smc: protect clcsock lifetime in smc_getname
+Date: Sun, 27 Sep 2026 02:04:04 +0800
+Message-ID: <20260926180404.2721010-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-commit 6439461f1618 ("net/sched: sch_codel: clamp default mtu to avoid
-disabling CoDel") clamped q->params.mtu to [256, 1 << 20]. The value is
-the CoDel no-drop threshold (codel_impl.h "*backlog <= params->mtu"), so
-on a link whose maximum transmitted packet size is below 256 the floor
-extends CoDel's minimum-backlog exemption beyond one packet and delays
-drop or mark eligibility by several small packets.
+smc_getname() dereferences smc->clcsock without holding
+clcsock_release_lock. Link-group termination can release the CLC socket
+through smc_close_active_abort() while the SMC socket is still open,
+for example after shutdown(SHUT_WR).
 
-Keep the upper bound that guards the original overflow (psched_mtu()
-wrapping to ~2 GiB on a huge-MTU device) but drop the 256 floor, so the
-threshold tracks the real device packet size.
+A getsockname() caller can load smc->clcsock, then the termination worker
+can clear the pointer and call sock_release() before the caller accesses
+clcsock->ops or invokes getname(). This causes a use-after-free; if the
+worker clears the pointer before the load, it causes a NULL dereference.
+The syscall's file reference keeps the SMC socket alive but does not
+prevent asynchronous release of its CLC socket.
 
-Conditions to recreate the bug: attach a codel qdisc on a link whose
-MTU plus hard_header_len is below 256 (e.g. a CAN interface). At that
-MTU the no-drop threshold must equal the device MTU plus its
-hard-header length; before this patch it was forced to 256.
-Requires CAP_NET_ADMIN in a user namespace.
+KASAN reported:
 
-Fixes: 6439461f1618 ("net/sched: sch_codel: clamp default mtu to avoid disabling CoDel")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260819143136.57350-1-jhs@mojatatu.com
-Tested-by: hybris <hybris@mojatatu.ai>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+  BUG: KASAN: slab-use-after-free in smc_getname+0x19e/0x1b0
+  Read of size 8 at addr ffff888109abb4e0 by task poc/103
+  Call Trace:
+   smc_getname+0x19e/0x1b0
+   do_getsockname+0xe5/0x170
+   __sys_getsockname+0x8c/0x100
+
+  Allocated by task 95:
+   sock_alloc_inode+0x1e/0x280
+   sock_alloc+0x3d/0x240
+   __sock_create+0x7e/0x430
+   smc_create+0x121/0x240
+
+  Freed by task 0:
+   kmem_cache_free+0xcc/0x340
+   rcu_core+0x50a/0x1850
+
+  Last potentially related work creation:
+   evict+0x446/0x6c0
+   smc_clcsock_release+0xa8/0xd0
+   smc_close_active_abort+0x26a/0x3a0
+   __smc_lgr_terminate.part.0+0x137/0x2e0
+
+Hold clcsock_release_lock across the pointer check and the getname()
+callback, as the socket option handlers already do. Return -EBADF if
+the CLC socket has already been released, preserving the existing peer
+state check and the callback's return value otherwise.
+
+Fixes: b03faa1fafc8 ("net/smc: postpone release of clcsock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- net/sched/sch_codel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/smc/af_smc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index 6aa5829d6961..a1ba2e355f2d 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -205,7 +205,7 @@ static int codel_init(struct Qdisc *sch, struct nlattr *opt,
- 	codel_params_init(&q->params);
- 	codel_vars_init(&q->vars);
- 	codel_stats_init(&q->stats);
--	q->params.mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 256, 1 << 20);
-+	q->params.mtu = min_t(u32, psched_mtu(qdisc_dev(sch)), 1 << 20);
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index e9f93b3ab435..8b3ee70f8433 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2784,6 +2784,7 @@ int smc_getname(struct socket *sock, struct sockaddr *addr,
+ 		int peer)
+ {
+ 	struct smc_sock *smc;
++	int rc = -EBADF;
  
- 	if (opt) {
- 		int err = codel_change(sch, opt, extack);
+ 	if (peer && (sock->sk->sk_state != SMC_ACTIVE) &&
+ 	    (sock->sk->sk_state != SMC_APPCLOSEWAIT1))
+@@ -2791,7 +2792,11 @@ int smc_getname(struct socket *sock, struct sockaddr *addr,
+ 
+ 	smc = smc_sk(sock->sk);
+ 
+-	return smc->clcsock->ops->getname(smc->clcsock, addr, peer);
++	mutex_lock(&smc->clcsock_release_lock);
++	if (smc->clcsock)
++		rc = smc->clcsock->ops->getname(smc->clcsock, addr, peer);
++	mutex_unlock(&smc->clcsock_release_lock);
++	return rc;
+ }
+ 
+ int smc_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
 -- 
 2.43.0
 
