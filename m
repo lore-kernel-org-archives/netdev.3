@@ -1,95 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF29E207E00;
-	Sat, 26 Sep 2026 16:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D028737F732;
+	Sat, 26 Sep 2026 16:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790439732; cv=none; b=i7CoL0U3eUlPpi4VZAYjKShfEr1oO1o3A17po5ragpoNp7wDekuRCYlWiQ6ka+foSWs6YAemGAKwkorjuYABVe7AepwO0lnx1FykNJTvxVL7hSfF/YGlI5xS3KQYGfP0vGG985Dzpz17oPltrY+6eozKaupk/vNo0TTCR60+pQs=
+	t=1790440013; cv=none; b=bx8VIkxyA8jLOAGu1TeMgrI+L9eqil1jyXfGHcfr9GMzzMAFLmdwObIab+INdZkImxqQ31rMa/f42VGwC7nmd8ovrpm0ro/ckrrAcEhgVBD7j6RJCulEI9gregJpCOsVYV/5tnDPYE8tXrvDhLi59XH9lTNiDqSVE/JYAsdPc/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790439732; c=relaxed/simple;
-	bh=9uFUYyle1YFb+YdZaC78mZ0aDMo/wx/Y+4R23X9phkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uf97qC4RPi4vlPNaKl1ETOh34scgvf7ETtLMLi5hoWbbbiqqiS478fK0iiW7tArsQb6CT8epLPPWak+H/IV9HBllcOohAhC4NyesSkZ6I5i8yeJhWU3QF4SY06Wtnav3gAKmIChAUsI1gs40poBoQg9yLC5GCAtZgkKUCvfNGJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iwqgmk1e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790440013; c=relaxed/simple;
+	bh=lfJOnW8dwrulCJ3fLtiALRb+yMxarM6N3w1MRgPkU30=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cLOdgOFvrDhaBVWTMfLjIneBszzZD0SBIj8GByQ8h2aKuvmAMl+fXUnSWvg9vKPAcG8FiYXO7fecDNXFomizxfhL405B0uVVNtrKVfrjSnARjCJhQfmfDkBQtB3PCnKJJc3jnUd3g3z93nZ1iWAU+ZPjh7HOL0o3EK/XzgefCEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JYIsb/VW; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iwqgmk1e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BC1F000FF;
-	Sat, 26 Sep 2026 16:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790439730;
-	bh=e+Qr2230Lu2sLj4UI5sDrSPVvb8HYtybN1/cvDBHd3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Iwqgmk1eeGsFzySD6F5rYQQm0GYO9bhJEDdTKXHL+KDOeEGVPhqLg6jpSECUfNFSy
-	 RcOKPRYvZpmct50+ddgzN1AxWj9Z72FyGrgvSSUMrlgIDSKJnxCyzMmF2UsXXYIAfm
-	 lsr9PYToJNmEVdq0pXZC/i5cAFYE6xCWacnYCdkjOSqBmsO2UEMP/VNKrpiWoY7dgP
-	 Rz35fK/GVLjQ8M4WDRknNgYl97xk1Roqh0UMU5/6OPDzEWgM7Flgzlk1m0LoTK4hIx
-	 obDD/DdCPWABEi+agrwAbRFoIlEiNFtz/RCRNcooqw9PJ+88VTpV6UcIVpOMKmhHPh
-	 cM/zPICs+2+Hw==
-Date: Sat, 26 Sep 2026 17:22:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: mhun512@gmail.com
-Cc: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
-	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Richard Cochran <richardcochran@gmail.com>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JYIsb/VW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ut
+	yYF+w0ZNzhSxef8YqnOEHcpNsRkHSyxTHCosQDB60=; b=JYIsb/VWjb/ulZJ3Yw
+	mkxCzCnM86wNNE+ugoaHxLs0BD1T2h5KuEZsV3r/Bkx58JA9aAgFa1XaJB7T2mwP
+	zkv5ZG4QN58mjf1MYdcFTUP3DDfk3zhGPTTfduNDAHfQyfyeBtPywqURI2PvdEwS
+	542a2tXdPkaZHGpDJj3Uq2o94=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3v6EU8rdq1Ce5Aw--.54526S4;
+	Sun, 27 Sep 2026 00:26:15 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: fec: drain PEROUT requests before canceling the
- timer
-Message-ID: <20260926162205.GX13925@horms.kernel.org>
-References: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>
+Subject: [PATCH 2/3] tun: Drain eBPF RCU callbacks on module exit
+Date: Sun, 27 Sep 2026 00:25:51 +0800
+Message-Id: <20260926162554.163197-3-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260926162554.163197-1-yaojiale02@163.com>
+References: <20260926162554.163197-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3v6EU8rdq1Ce5Aw--.54526S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JFWUKFy5trW5XFy8uFyUJrb_yoWkZFX_Kr
+	yIvr9rGr4DGan7KF1Ykr43Zr98ua4Y9FyFqrsaq3y3J3y8Zrn8uwn5Zrn3AryUGrWxAF9I
+	krnrGFyxu3929jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRHHqo5UUUUU==
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzQdOiGq38ieK5gAA3o
 
-On Thu, Sep 24, 2026 at 09:03:39PM -0500, mhun512@gmail.com wrote:
-> fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
-> A PEROUT ioctl can set perout_enable, release the driver's locks and
-> then be preempted before hrtimer_start(). The unregister path waits for
-> that ioctl, which can rearm the timer after it was canceled. Removal
-> then frees the netdev containing the still-armed timer.
-> 
-> Unregister the PTP clock first so all in-flight ioctls have returned
-> before canceling the timer. Clear the PEROUT state and compare channel
-> afterward, then disable PPS. Serialize the channel write with PTP clock
-> shutdown and skip it when that clock is off.
-> 
-> This issue was identified during our ongoing static-analysis research
-> while reviewing kernel code.
-> 
-> Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
->  drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
-> b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 56801c2009d5..67901e036ac3 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
-> fec_enet_private *fep, uint channel)
+Replacing or clearing a TUN eBPF program defers its destruction to
+tun_prog_free(). In the device teardown path, tun_free_netdev() can queue
+this callback as a private destructor. The rcu_barrier() in
+netdev_run_todo() runs before private destructors, so it cannot drain the
+new callback.
 
-Hi Myeonghun, all,
+After the last file or persistent-device reference is released, tun can
+therefore unload before the callback runs. Drain outstanding callbacks at
+the end of module cleanup so they cannot execute from freed module text.
 
-This patch does not apply because the two lines above should be a single line.
-Unfortunately this means that CI did not run on this patch.
+Fixes: 96f84061620c ("tun: add eBPF based queue selection method")
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/net/tun.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Please repost after figuring out what went wrong here.
-
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 5a302709a68a..bde5032bf4f4 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3855,6 +3855,7 @@ static void __exit tun_cleanup(void)
+ 	misc_deregister(&tun_miscdev);
+ 	rtnl_link_unregister(&tun_link_ops);
+ 	unregister_netdevice_notifier(&tun_notifier_block);
++	rcu_barrier();
+ }
+ 
+ /* Get an underlying socket object from tun file.  Returns error unless file is
 -- 
-pw-bot: changes-requested
+2.34.1
+
