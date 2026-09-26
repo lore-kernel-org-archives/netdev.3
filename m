@@ -1,303 +1,314 @@
-Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3C305683
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D57C2C8;
+	Sat, 26 Sep 2026 02:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790388396; cv=none; b=DQ1WyKTYo251Z8PUpC5/zSIne902MOQEqw+RHoxjKl54D2OnGYe+78kHyLSlYIJbl9B8Vd/AAh/Z2WWABGFXV16gLNFAZoyP6L3fFcdvwDATCVME+zfFDg99fAIGzIeFS+Dy1IL8uih+etjMu/39uRN2xbppMmwlfJrEGQqdXc0=
+	t=1790390082; cv=none; b=VElMDUiwsL4On4XcYggVEQmsu2eM0UP2G/K3UxFkT1L9CrFanmCLYitdrVBAiUajRpVeDQLP9gsOKSVCvIz+JY43Lo+Jwf6CEcO+ufst3KDbxK3umU327b/HV8HrnibneRK/Zgfe3NbU4frzBE9DUnAdZiMDN94fadQhK9+NZAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790388396; c=relaxed/simple;
-	bh=wuI2TebdT4731npF2uvIR5BLfhA5sfVfMRK6qldeiN0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=bAll3hX8UU+R53xgpwDBJKiWMw0dFJc7RDIx91lwgwKIWrbGesSoxOL5cQggbsPwz/yTUST4uAar+yDIjfqoDEmBq7K/+HA1tUVq4JG8OYtxwgEv3QstE6v5K63SBnlND/g9Z1ZM9LFvCwxEx+YmrFLkSlzur2BVZfUBE1SFKkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9Ikiee/; arc=none smtp.client-ip=74.125.224.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790390082; c=relaxed/simple;
+	bh=WJVoY+GTZOA5UXQJpOzZY4CvB90ZR8SkRkD/aHa8jJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IXB1H4HNy1Zd2H80Shb/9AK67CaGsti2WybLdcKo40dV8xNJDJ16V9h4L3C/+0F+/gQVxre2U/gj5fioIPGlKtg6fj3iLx0OTIfXex9TiI2xa41EHEItlI4y7RwUUc1uvJt5NqjQFf52sHcKSA91YCNcNOhLjuuW06KnKUCXUIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLs0/9nd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9Ikiee/"
-Received: by mail-yx2-f41.google.com with SMTP id 956f58d0204a3-6737f0593faso1366480d50.0
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790388391; x=1790993191; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XTiBH4pFhHFt7w7VVYwkFnH5D0BtF1ULS8CrJhbu7BY=;
-        b=J9Ikiee/vIAbqC5CK/FcugdMycE9cMqZSMAXrwEfXWqLaB+PGliV8kPSm9XOW76dNQ
-         ZDJ+w05AltOOqL0sVavfTMut+3+GECnkPj8PJPi6xBjBrEYR5pw8KUesBOos9Xscykw7
-         LcvP7Q011D/igA2yUzgLbOfN0QfPxvGCphvpC5/GvkIAqEpiCByQY6fFnHsqE85pTJth
-         5LGjGzxDgf9LamKaBdx5jl6ioY2Y0V1lnGSUfeuVmKeZmdSmvUSXKK2JFnONVviZcwzK
-         md7rXcw92XJ5Goo8lJiEItWmb84lZCWsF1DGnKO7R4Ct6qUIDvvh+H5+vUU7JpSJ6bBD
-         VZ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790388391; x=1790993191;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XTiBH4pFhHFt7w7VVYwkFnH5D0BtF1ULS8CrJhbu7BY=;
-        b=aGhvBqGZym7HGNs1uMkULnGoqPA/pzbEqCBG1NrdXGLL4Lg6J2FWM3PkpdnJ/27bTY
-         WJTUpV6uL/lcc8TrJjVYXBnsjZzc6qZaEEClFVeSjGBjuzrnZbwVlcWrOSkIryoYSBdM
-         ZR/B23IgegOJROp1otRxtPWrf3dzM5YkaHiEesVfZxIvX6w62zOzvmb0rrYT5/pRgLiE
-         ZPH5Bz+oXxusMvEqRbMd/886QbFtIDpKRdIbkFTgzcU5JXyVtWhGdTAsCUt+B9m3LBNs
-         7dReMagCDBx7hm62ZaD/1bUlPgbX7GWdQHWv/QdZpbBG+jVjexMZahLanN79Fhk5ZM7k
-         u5kg==
-X-Gm-Message-State: AFq9FYISnZEc3cKFrvGYzW9FA7pv3yTIUvBM8NyyqwnQ+YpJ4Uu8YCKy
-	IRnnk14B4gezU3JT53w6pLAtHpGtaKMmEG+8EcqzNdpd5kwYZshTerow
-X-Gm-Gg: AYBFou1wLx8gwpJ5BgqOhwH1i16zVUu1DLr8jd6StEGo37v4Jed8WaeT5KOnyZBKgBr
-	qZdvS64Gt1MjPY63fNwd+oi7WX4nPPROUcs2aSio59QFj2I9hfS5U3HKDSJSqllEkTvYjbamXYJ
-	RkaJIhXHvqoIa1bVoJ7TDbfUDfyXCbrL1oQ3GUTHaAmx/OVpd7Il3HWyLpEWCLwGYgZWQV00MlW
-	gPadsYmapsbyN3UClhG0fmTTwMAC35QrKG6MnMk9OymnoeowAMLDNTgKq8LWlCAhO/obBM4SV6P
-	oHh0tjnB1ha76ennd8ozRlr182ccM85+HgGRBvgXNPnVssqBOkksDpPbTxvn6wPUkDfGCkQM3mT
-	sv+OKJAH2E5IMpW1Ok2XSPingPKbaxDirOcRGmCD6NmGKgmxx04fp79cMXyPLjzde5Ceau8COxg
-	hHM0t8ru8Fl7U5JGcXfRszu7/H9no0JQZ/EeXOkMmNDOI79xkFvqBRcL4ylF35Lx9u1+QeD+J07
-	jQXZgWvdpgqRQr9UiUFBJfl5WWlTfqFCB5hi7QHUIsbzy38h//N
-X-Received: by 2002:a05:690e:43cc:10b0:672:d32d:8ee with SMTP id 956f58d0204a3-672ed42d6aemr2613664d50.50.1790388391061;
-        Fri, 25 Sep 2026 19:06:31 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6740eef1173sm1755545d50.8.2026.09.25.19.06.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 19:06:30 -0700 (PDT)
-Date: Fri, 25 Sep 2026 22:06:29 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev-bot+sashiko@kernel.org, 
- willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- xietangxin@yeah.net, 
- willemb@google.com, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.386226098beef@gmail.com>
-In-Reply-To: <179036410829.2160803.1955366625960078958@kernel.org>
-References: <20260924192128.1197118-1-willemdebruijn.kernel@gmail.com>
- <179036410829.2160803.1955366625960078958@kernel.org>
-Subject: Re: [PATCH net] net: extend IPv6 exthdr detection of tunneled packets
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLs0/9nd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93E71F000FF;
+	Sat, 26 Sep 2026 02:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790390081;
+	bh=yCY15/sIwH6iQ+lRCwST3dAmRtzGiWvGa+jsp9OFjhw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KLs0/9ndc1UNqO1ZN7E2eAQ8UnMcseqBK/vN2ulZ8OU5EIZFy2mP4MwAo3iozbw6N
+	 eg5FeHmz4Vv5oRl0c5Xz7EJXOmlR4dHhmZDWR+aVme5WVPv68iEksFznCSz8NRHscg
+	 yB5AWDbl9VHVWNs7JJFT/1XjP/GPULEKWJ5IxAISE8F4T+RTBD8I8xPKR8tAXBG2qz
+	 5dBFNjJ8lfyhxvgmOZI9zLFpQ+qh7pA59ez0ix44lI+9YGBL9qoPJwKyOcDT13LccH
+	 JC+4hPfrZvJdE0gcvOUfy0cficl9Vrr4wQJi6cpmCrCXYkecelZX48y0CqVD0XS8i1
+	 lWrDKiOEbjmwg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: arouhi@sitime.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	jiri@resnulli.us,
+	vadim.fedorenko@linux.dev,
+	arkadiusz.kubalewski@intel.com,
+	ivecera@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	cjubran@nvidia.com,
+	pabeni@redhat.com,
+	Oleg.Zadorozhnyi@devoxsoftware.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	dev@kael-k.io,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 02/14] dt-bindings: dpll: add SiTime SiT95316 clock generator
+Date: Fri, 25 Sep 2026 19:34:38 -0700
+Message-ID: <20260926023438.1567469-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260921201108.42676-3-arouhi@sitime.com>
+References: <20260921201108.42676-3-arouhi@sitime.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> =
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+dt-bindings: dpll: add SiTime SiT95316 clock generator
 
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
-> =
+This adds a devicetree binding for the SiTime SiT95316/SiT95317 DPLL clock
+generators. These are I2C devices with four PLLs, up to eight inputs and
+up to twelve outputs. The binding builds on the common dpll-device schema,
+adds vendor properties for per-PLL VCO overrides and output-to-PLL routing,
+and adds a MAINTAINERS entry.
 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> (one such reply per series is enough).
-> =
+> diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> new file mode 100644
+> index 0000000000000..6f4c60ba1cb92
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> @@ -0,0 +1,183 @@
 
-> - [High] Regression for non-encapsulated IPv6 CHECKSUM_PARTIAL skbs in
->   skb_csum_hwoffload_help(), plus a matching gap in=E2=80=A6
-> =
+[ ... ]
 
-> --
-> =
+> +  clock-frequency:
+> +    description:
+> +      XO rate in Hz feeding XIN/XO_CLK.  Alternative to the "clocks"
+> +      phandle for platforms where the firmware does not expose the
+> +      oscillator through the clock framework.
+> +
 
-> net: extend IPv6 exthdr detection of tunneled packets
-> =
+[ ... ]
 
-> This patch replaces skb_gso_has_extension_hdr() with
-> skb_has_ipv6_extension_hdr(). The new helper runs ipv6_ext_hdr() on the=
+> +  sitime,pll-fvco:
+> +    $ref: /schemas/types.yaml#/definitions/uint64-array
+> +    minItems: 4
+> +    maxItems: 4
+> +    description:
+> +      Per-PLL VCO frequency in Hz for PLLA, PLLB, PLLC, PLLD.  The
+> +      values exceed 32 bits, which requires an explicit uint64-array
+> +      type; the dtschema meta-schema does not permit a type $ref on a
+> +      "-hz" unit-suffix property (only opp-hz is defined as 64-bit),
+> +      hence no unit suffix.  Override where the standard
+> +      Fvco = Fref * DIVN derivation does not match the running VCO --
+> +      for example a PLL operating in INTSYNC mode.  A value of 0 keeps
+> +      the register-derived computation for that PLL.
+> +
+> +  sitime,output-pll-map:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    minItems: 8
+> +    maxItems: 12
+> +    items:
+> +      enum: [0, 1, 2, 3, 255]
+> +    description:
+> +      Source PLL index (0=PLLA .. 3=PLLD) for each output 0..11.  The
+> +      value 255 (0xff) marks an output as unmapped and prevents the
+> +      driver from registering it as a DPLL pin.  Override for
+> +      configurations where the chip's per-PLL OUTPUT_ENABLE bitmaps do
+> +      not unambiguously describe output-to-PLL routing.
 
-> outer IPv6 nexthdr. For encapsulated skbs that have an inner network
-> header, it also runs it on the inner IPv6 nexthdr. skb_csum_hwoffload_h=
-elp()
-> now uses the same helper instead of its open coded skb_network_header_l=
-en()
-> test.
-> =
+[Severity: Medium]
+Do clock-frequency, sitime,pll-fvco and sitime,output-pll-map describe
+the hardware, or what the Linux driver and clock framework do today?
 
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index f660fccfc0dbc..992b78308c13f 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -3818,20 +3818,29 @@ static netdev_features_t dflt_features_check(=
-struct sk_buff *skb,
-> >  	return vlan_features_check(skb, features);
-> >  }
-> >  =
+Documentation/devicetree/bindings/writing-bindings.rst says:
 
-> > -static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-> > -{
-> > -	if (!skb->encapsulation)
-> > -		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-> > -			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-> > -			  vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6))) &&
-> > -			skb_transport_header_was_set(skb) &&
-> > -			skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr));
-> =
+  DON'T refer to Linux or "device driver" in bindings. Bindings should be
+  based on what the hardware has, not what an OS and driver currently
+  support.
 
-> [ ... ]
-> =
+In sitime,output-pll-map, the value 255 "prevents the driver from
+registering it as a DPLL pin". The property exists to override the chip's
+own OUTPUT_ENABLE routing bitmaps.
 
-> > +static bool __skb_has_ipv6_ext_hdr(const struct sk_buff *skb, int nh=
-off)
-> > +{
-> > +	const struct ipv6hdr *ip6h;
-> > +	struct ipv6hdr _ip6h;
-> > +
-> > +	ip6h =3D skb_header_pointer(skb, nhoff, sizeof(_ip6h), &_ip6h);
-> > +	return ip6h && ip6h->version =3D=3D 6 && ipv6_ext_hdr(ip6h->nexthdr=
-);
-> > +}
-> > +
-> > +static bool skb_has_ipv6_extension_hdr(const struct sk_buff *skb)
-> > +{
-> > +	if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
-> > +	    __skb_has_ipv6_ext_hdr(skb, skb_network_offset(skb)))
-> > +		return true;
-> > +
-> > +	/* Tunnels without an inner network header, such as SCTP-in-UDP or
-> > +	 * PSP, have no inner IP header and thus no inner extension header.=
+In sitime,pll-fvco, a value of 0 "keeps the register-derived
+computation". The property overrides cases where the driver's
+Fvco = Fref * DIVN derivation is wrong.
 
-> > +	 */
-> > +	if (skb->encapsulation && skb_inner_network_header_was_set(skb) &&
-> > +	    __skb_has_ipv6_ext_hdr(skb, skb_inner_network_offset(skb)))
-> > +		return true;
-> > +
-> > +	return false;
-> >  }
-> =
+The reason given for clock-frequency is that the firmware does not expose
+the oscillator through the clock framework. A fixed-clock node can already
+describe the XO, so this adds a second, mutually exclusive ABI for the
+same thing.
 
-> [ ... ]
-> =
+Both vendor properties copy state that the chip already holds in its
+programmed configuration, and they would become permanent DT ABI.
 
-> > @@ -3988,8 +3997,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb=
-,
-> >  		return 0;
-> >  =
+Can a static sitime,pll-fvco value stay correct at runtime? Later in the
+series, "dpll: sit9531x: model the inter-PLL sync net as a pair of pins"
+lets userspace switch INTSYNC through netlink. The sync source pin
+state_set in drivers/dpll/sit9531x/dpll.c does:
 
-> >  	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-> > -		if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
-> > -		    skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr))
-> > +		if (skb_has_ipv6_extension_hdr(skb))
-> >  			goto sw_checksum;
-> =
+    sitdev->intsync_src = sitdpll->id;
 
-> [Severity: High]
-> Does this weaken the check for non-encapsulated IPv6 CHECKSUM_PARTIAL
-> skbs?
-> =
+(or -1). sit9531x_get_fvco() in drivers/dpll/sit9531x/core.c returns the
+override whatever the INTSYNC state is:
 
-> When !skb->encapsulation, validate_xmit_skb() sets the transport header=
- to
-> csum_start just before it calls skb_csum_hwoffload_help():
-> =
+    if (pll_idx < SIT9531X_NUM_PLLS && sitdev->pll_fvco[pll_idx]) {
+        *fvco = sitdev->pll_fvco[pll_idx];
+        return 0;
+    }
 
-> net/core/dev.c:validate_xmit_skb() {
->     ...
-> 		if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
-> 			if (skb->encapsulation)
-> 				skb_set_inner_transport_header(skb,
-> 							       skb_checksum_start_offset(skb));
-> 			else
-> 				skb_set_transport_header(skb,
-> 							 skb_checksum_start_offset(skb));
-> 			if (skb_csum_hwoffload_help(skb, features))
-> 				goto out_kfree_skb;
->     ...
-> }
-> =
+If the VCO rate really depends on INTSYNC, which is the reason this
+binding gives for the override, would the value be stale after a runtime
+switch? sit9531x_output_divo_calc() and the phase and TDC paths all divide
+by sit9531x_get_fvco(). A stale value would give wrong output frequencies,
+phase offsets and DIVO values. I couldn't confirm whether the VCO actually
+changes with INTSYNC on this hardware.
 
-> That means the removed skb_network_header_len() test checked that
-> csum_start sits right after the 40 byte IPv6 header.
-> =
+The reasons given also don't match. This binding cites INTSYNC mode. The
+later commit "dpll: sit9531x: allow the device tree to override two board
+facts" cites "free-run with a divider the configuration never programmed".
+Which case is the override meant for?
 
-> The new helper only checks whether the outer nexthdr is one of the six
-> values listed in ipv6_ext_hdr(). It skips the inner check because
-> encapsulation is 0.
-> =
+The commit message doesn't mention these vendor properties or the
+clock-frequency alternative. Could it explain why they are needed?
 
-> Take IPv6|UDP|VXLAN|Eth|IP|TCP, or IPv6|IPv6|TCP (nexthdr 41), with
-> csum_start at the inner TCP header and csum_offset 16. Would that packe=
-t
-> now reach the csum_offset switch and return 0?
-> =
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +oneOf:
+> +  - required:
+> +      - clocks
+> +      - clock-names
+> +  - required:
+> +      - clock-frequency
 
-> Such skbs can come from untrusted input. __virtio_net_hdr_to_skb() is
-> used by tap, vhost-net and AF_PACKET with PACKET_VNET_HDR. It accepts
-> VIRTIO_NET_HDR_F_NEEDS_CSUM with any csum_start via
-> skb_partial_csum_set(). It does not look at nexthdr and does not set
-> skb->encapsulation.
+[Severity: Low]
+Is a node that has both clocks and clock-frequency supposed to pass this
+oneOf?
 
-This is correct. virtio_net_hdr can insert packets with tunnels,
-without setting skb->encapsulation.
+Take a node with clocks = <&xo>; and clock-frequency = <...>; but no
+clock-names. The first branch fails only because clock-names is missing,
+and the second branch passes, so oneOf is satisfied. Nothing else in the
+binding requires clock-names when clocks is present.
 
-> One case: a guest sends IPv6 VXLAN traffic with a CHECKSUM_PARTIAL inne=
-r
-> TCP header (LCO). The host bridges it to a device that has
-> NETIF_F_IPV6_CSUM but not NETIF_F_HW_CSUM.
-> =
+For such a node, sit9531x_dev_probe() does:
 
-> On a device that parses headers itself, such as bnxt, bnxt_exthdr_check=
-()
-> accepts an outer nexthdr of UDP for non-encapsulated skbs. The hardware=
+    xtal_clk = devm_clk_get_optional_enabled(sitdev->dev, "xtal");
+    ...
+        if (!device_property_read_u32(sitdev->dev, "clock-frequency",
+                                      &freq))
 
-> would then fill in the outer UDP checksum and leave the inner TCP check=
-sum
-> holding only the pseudo-header seed. Before this patch, the kernel
-> computed these checksums in software.
-> =
+The "xtal" lookup finds no clock-names match, so the optional getter
+returns NULL. clk_get_rate(NULL) is 0, and the driver falls back to
+clock-frequency. The clock referenced by clocks is never prepared or
+enabled.
 
-> The skbuff.h description of NETIF_F_IPV6_CSUM covers only "unencapsulat=
-ed
-> packets of the form IPv6|TCP or IPv6|UDP where the Next Header field in=
+Would adding dependentRequired (clocks requires clock-names), or having
+each oneOf branch forbid the other property, fix this?
 
-> the IPv6 header is either TCP or UDP."
-> =
+> +
+> +allOf:
+> +  - $ref: /schemas/dpll/dpll-device.yaml#
 
-> gso_features_check() has the same gap. For non-encapsulated skbs, the o=
-ld
-> branch removed NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4 whenever the transpo=
-rt
-> header was not at nh + 40. The new code removes them only when the oute=
-r
-> nexthdr is an extension header.
-> =
+[Severity: Low]
+This isn't a bug introduced by this patch, but the new binding inherits a
+limitation from the shared schema. In dpll-device.yaml, input-pins
+children match:
 
-> The commit message talks about removing false positives, but it doesn't=
+    "^pin@[0-9a-f]+$":
 
-> mention this relaxation for non-encapsulated skbs.
-> =
+output-pins children match:
 
-> Could the offset test stay for the !skb->encapsulation case? For exampl=
-e:
-> =
+    "^pin@[0-9]+$":
 
-> 	skb_checksum_start_offset(skb) - skb_network_offset(skb) !=3D sizeof(s=
-truct ipv6hdr)
+output-pins also has unevaluatedProperties: false, so pin@a and pin@b are
+rejected.
 
-Will do in v2.
+The SiT95316 has outputs 0..11, and the driver matches output-pins
+children by physical slot. On the SiT95317 the slots are:
 
-Reintroducing this check is the safest way to detect this edge case.
+    static const u8 clkout_map_95317[] = {0, 3, 4, 5, 7, 8, 9, 11};
 
-> Or could the check require nexthdr to be IPPROTO_TCP or IPPROTO_UDP,
-> instead of testing ipv6_ext_hdr()?
+so OUT11 is reg 11 on both parts.
 
-Only checking two transport types is insufficient.
+Can outputs 10 and 11 be described with the usual hex unit-address names?
+The only way to pass validation seems to be pin@10 with reg = <10>, which
+breaks the hex convention. microchip,zl30731.yaml (20 single-ended outputs)
+has the same gap. Should the output-pins pattern in dpll-device.yaml be
+changed to match the input-pins one?
 
-> -- =
+> +  # SiT95317 exposes 8 outputs, SiT95316 exposes 12.  Bound the
+> +  # output-pll-map length to the variant so a SiT95317 node cannot
+> +  # describe more outputs than the part has.
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: sitime,sit95317
+> +    then:
+> +      properties:
+> +        sitime,output-pll-map:
+> +          maxItems: 8
+> +  # SiT95316 has 12 outputs.  When the map is supplied it must describe
+> +  # all of them, otherwise the trailing outputs are left ambiguous.
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: sitime,sit95316
+> +    then:
+> +      properties:
+> +        sitime,output-pll-map:
+> +          minItems: 12
 
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
-chset/20260924192128.1197118-1-willemdebruijn.kernel%40gmail.com
+[Severity: Medium]
+What do the reg values of input-pins and output-pins children mean on
+these parts, and which values are valid for each variant?
 
+These if/then blocks only limit sitime,output-pll-map. dpll-pin.yaml only
+has reg: maxItems: 1, so nothing here limits pin reg values.
 
+sit9531x_prop_pin_fwnode_get() in drivers/dpll/sit9531x/prop.c matches
+output-pins children by physical slot:
+
+    if (id < sitdev->info->num_outputs)
+        id = sitdev->info->clkout_map[id];
+
+On the SiT95317 this puts the eight outputs at reg 0, 3, 4, 5, 7, 8, 9 and
+11. sitime,output-pll-map uses the dense logical index 0..7 instead. The
+binding only says "SiT95317 drives 8 outputs" and "for each output
+0..11".
+
+Suppose a SiT95317 board, going by the binding text, numbers its output
+pins 0..7. Wouldn't reg 3 then apply to logical output 1, reg 4 to logical
+2, reg 5 to logical 3, and reg 7 to logical 4, with reg 1, 2 and 6
+ignored? Labels, connection types and supported-frequencies-hz would end
+up on the wrong outputs. Output reg 1, 2, 6 or 10, and input reg 8 or
+higher, also pass validation and are silently ignored.
+
+The binding doesn't describe the input lane layout either. In
+drivers/dpll/sit9531x/core.h:
+
+    static inline bool sit9531x_input_is_n(u8 index)
+    {
+        return index & 1;
+    }
+
+So reg 2k is CLKINkP and reg 2k+1 is CLKINkN. When the pair is
+differential, sit9531x_input_pin_is_registrable() doesn't register the N
+lane at all.
+
+In the example, input pin@0 (10 MHz, ext) and pin@1 (156.25 MHz, synce)
+are the two lanes of CLKIN0. That only works if the pair is set up as
+single-ended.
+
+Could the binding document the reg numbering and add reg limits for each
+variant? microchip,zl30731.yaml labels each example pin with its physical
+name (/* REF0P */), which could be a model to follow.
+
+> +
+> +unevaluatedProperties: false
+
+[ ... ]
+-- 
+pw-bot: cr
