@@ -1,129 +1,100 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC14436EAA4
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 16:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACCE36D9E0
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 16:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790438449; cv=none; b=GhjTH9ujlcQ04zth/zBhXcqd5SOqFWOPruRHp4XccfA5IDxmwH1FhYlelRs6zMSGYc0atL4MkbivL8G4rFVYXNBCOgcW1P90yqjtkr+b2GQ2lwywd5Tb+TmE4J1xmVCOV5aWRuzIF8bV41iK9TNaUUdcfivlhSFz7F0l8zUWJHY=
+	t=1790438538; cv=none; b=AYLEbu8SEMPhuhoGNQ2ouxr03xF/N8mKxR8N8zr6vFjS4U+8aSBrqkhgsEtAQfBAK6X9q+psn6R9GsxlOsSiq84CVfhFb3RBN+jZqxqnxYhXVt67MbQjyNlYGh4C2EpHQJt7mwKcg3yWAj5hiyzHruSBdCSXbWEeEqZnJGam7Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790438449; c=relaxed/simple;
-	bh=bVUzZjxHMO8CHtvlSqa0+RggUMRBNcvulOYT5UeurPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iqfrO31LWq/FdTCQXdUWL4WJneRGctpsuo5fR0p7pig+j9kpijud+Wp+jXSfe1IBE8kBtY/9kDYFplQ8FF/eMUZejT5k8DLZro/D8QnB64Q1jD8EvxA9w68Pqe3Rm7xjq5QWdx3C0leuy1jum/X2qBUsVUnqHm/CXgzFjkx1cFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1JjUSgZf; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790438538; c=relaxed/simple;
+	bh=39XEBq1MI6OnsD9yc+4TxU/OT9omjbn58qrqcxRX0Qg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mbaiN12a/dSmqbXyLsBmmBgvuqJ9FXoKE1y7uUQXFH9nR24D7CiQaT6Aj6h1wgeh7gESoBwPH/wJ7EVPS91mpEoxoQEm6NT3KZyrwLRDVSNUsEpVmPnoh/OEiwMB4fE57FE7o1AY6vHbwFwheIKYbQKHkKt7aoDnsVpM3TOg/Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=uTvmV2jA; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1JjUSgZf"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 090624E41080
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 16:00:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B824F6074B;
-	Sat, 26 Sep 2026 16:00:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3E4BD102F1E54;
-	Sat, 26 Sep 2026 18:00:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790438441; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=mF1te5gqabP+5Yeutw1bTB4Li95rX1u1z21hvfD/sjY=;
-	b=1JjUSgZf+1Qlrz9yaHy7YnGvulxuyne9Db1Z3hoIbBILjgLKvagOMrh6zXm+LtmeoyVAxt
-	rE2m1OPP15bj1XPYkOEbcoxbID+IuvnZ84GmGO5sTu+2BTNuOzrefdZT1a6zOKZD55mwf2
-	wdFfbgIYyvhqLsOmXhC6cKKHohYQ4QtfL8G9bjg4Zcf2j2AsxPLgx7xrUS6x8oOBUJ5AX4
-	AESgI0lGEsivAPNmPxiednYXeSn+xeykI5WfkPM7O6P8suAq59Ijm5QUHSXRSRR79gad81
-	SGTzRMyA2VZSktD6UMrxwbPibAFENNDjhx/wV/ZNquwjh7V8LZRcoJP+eRQf7Q==
-Message-ID: <8ed1298a-4c29-4db3-b76e-c8d34f91b4c9@bootlin.com>
-Date: Sat, 26 Sep 2026 18:00:17 +0200
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="uTvmV2jA"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c3304784so719655a12.3
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1790438537; x=1791043337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+37thVuHZ/gLtuhuUGe6FLXA7wHfSbWyBu28cwLiRZE=;
+        b=uTvmV2jA6qxYji/GJOLPDUoGBnNY6O8G55vynG4Y+LvaWeBE87kp//aOf7PfoTNPR9
+         VuwQpDWhMH4sKcE4iCmKfoPyHXHRR/U48ZxH9ExkwQpF+Qy7OKRxxOl51UHsmcno5BXG
+         QrjxbkWl9BfCHOsfm0qw0COlZ/Iq62AKjVIUVMR/mUgcO0wTZPZYAa1ftvYw+UauFVsx
+         WwjsP/FtlpV0aWz71/znpH2kLGGqXWanFE/77i464KHYR6/wYXXyJ7RXPy18Rq6ir5WJ
+         iNl5JaksLY3kUonCV7t106Xr6mH0eLhQCvVGjrBg75erP53SXPFlSYi82C7oDh7Q+MFI
+         xf0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790438537; x=1791043337;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+37thVuHZ/gLtuhuUGe6FLXA7wHfSbWyBu28cwLiRZE=;
+        b=hXywlRAtz+aQygZSQJ/Cma7e7sq19zv/O0N/9JJy21kYUhbBnQm4DWZ7MWX4IRVXFw
+         LoZ0Yz85F2S4Qvf8Df+dFZEy4F3mF06aMlfNErwrF6QkdUoLPKY2XXme0mhIfhSss5m7
+         6CKuOIFf1OgSrnqwi+vx0xNO5Qy52aZ8TAjNR4uDN4oQuBlCoeHU48XqEVQmKF5kyyR0
+         yNyFAp5xkNhGC4dMEoCyISrChnrPRWkv6KOyqCnfheDUy5vPJIzGwD71i4/EDxB6HCRB
+         LJqnVugA1d0LjYBKQA2w/nruhch4gdPdAjLRzXrp3ySyDSSLtyYWGWrn8KcgquHFsHyO
+         x33g==
+X-Forwarded-Encrypted: i=1; AKwUvBzeJ8W2XrgMdHMxw11GGwHDK9/b+Kcis2yOO/WkOrirWKvs3r0jkxrf+2F4UbffbhJt9g0LVfs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMbwxr2OlfvuZ0F9+hRpG2DVeUL3AxibvW/wRD4awalKTs4oG/
+	fYSYxfYVPUdZYzZ4GaSU7oo5mamNAWNPlGReFxWR2Lc3BMMHET3L27/ZUH5k8W6af6oG
+X-Gm-Gg: AYBFou0/XzfTaa17BfaR4J0oLzvQCLF5jB0FyyB/LR7PdpWSQ6fVADaburqaa3I7xsD
+	n1/Bg3H06Y80VNE+UYiDepo0sw3sm0VnCftVQS4/WqYorD8FHKI/K4yygI7azihtHJNg6lKSNAE
+	rVUw+ji39I6vx6/RaPGZ4llO1kBFIOtWSZS53PmqysT6xHweS5GRbCvH74wcq34az/26QGbfstp
+	3fHfj96WkPtglV/XvUwyfv87xgZDEXRCk3ZxScTAd1YhzTps8GrvIdwJPpcCUdZglEqxdnIFwsp
+	bKfBkgD015nd4bibgL8uBeLeFn7b17ae+F6QX6RogX1HJT2K3hGq7mMQj3AxFcaz+GuCMlRyhxH
+	DFlKvfJnvYoicn5oYiGtx2uNCCdv8kJcmiIGkA17sjRM5ckPltq0NJLW7Hf/tr05b0v6kZsWLt3
+	OHTPcBwOlMKiu6NHcbNdaXAdfX1sjyeDXmqKg4YKLOHRkxB+6sdF3j/VW0U1ZDgJGO7CVHFtCN8
+	tMdrQBWG9QP9vs0ISl2rQ4S74VSyQ==
+X-Received: by 2002:a17:90b:4ad2:b0:3a0:b312:1fb8 with SMTP id 98e67ed59e1d1-3a0b3122489mr4434989a91.6.1790438536817;
+        Sat, 26 Sep 2026 09:02:16 -0700 (PDT)
+Received: from 954df21a5119.. ([122.51.212.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9356f48sm10449199a91.6.2026.09.26.09.02.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 09:02:15 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Zihan Xi <zihanx@nebusec.ai>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v7 0/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Date: Sat, 26 Sep 2026 16:02:05 +0000
+Message-ID: <cover.1790427022.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 00/15] net: stmmac: preserve datapath state across
- MTU and resume failures
-To: James Hilliard <james.hilliard1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Joakim Zhang <qiangqing.zhang@nxp.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Christian Marangi <ansuelsmth@gmail.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>,
- Suraj Jaiswal <quic_jsuraj@quicinc.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Joao Pinto <Joao.Pinto@synopsys.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- Ong Boon Leong <boon.leong.ong@intel.com>,
- Voon Weifeng <weifeng.voon@intel.com>,
- "Song, Yoong Siang" <yoong.siang.song@intel.com>,
- Linus Walleij <linusw@kernel.org>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Eric Dumazet <edumazet@kernel.org>
-Cc: Richard Genoud <richard.genoud@bootlin.com>,
- Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
- ZhaoJinming <zhaojinming@uniontech.com>,
- Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Ding Hui <dinghui1111@163.com>, linux-tegra@vger.kernel.org,
- linux-sunxi@lists.linux.dev
-References: <20260926-submit-stmmac-reset-fixes-v1-v4-0-ec1c0250b3c9@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260926-submit-stmmac-reset-fixes-v1-v4-0-ec1c0250b3c9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hello James,
+The v6 fix is not yet present in net/main. This reroll rebases the
+UDP receive-buffer accounting change onto net/main at a7bfaba4823e.
 
-On 9/26/26 17:48, James Hilliard wrote:
-> Keep the stmmac datapath coherent after failed MTU changes or hardware
-> resume without changing the interface's administrative state. Retain the
-> working MTU configuration for rollback, and allow ordinary down/up recovery
-> when hardware cannot be restored.
-> 
-> The fifteen patches put independent fixes and lifetime prerequisites ahead
-> of the retained-ring MTU transaction:
-> 
->   1. Correct the WoL/safety IRQ unwind order.
->   2. Reuse the MDIO reset GPIO across repeated resets.
->   3. Allow phylink_stop() to finish a suspended instance.
->   4. Freeze deferred AF_XDP pool teardown before device system suspend.
->   5. Serialize PHC changes and cache reset-sensitive timestamp settings.
->   6. Keep normal-size MTU changes running, including supported AF_XDP MTUs.
->   7. Unwind partial DMA allocations and fix saved RX skb ownership.
->   8. Keep DMA configurations and IRQ contexts at stable addresses, and
->      drain timer producers before cancelling their timers.
->   9. Track datapath and power ownership across MTU, XDP and ethtool reopen
->      failures, including noirq clock handling and unpowered-access guards.
->  10. Use the tracked restart for XSK pool changes.
->  11. Restore TC filters, steering, preemption mapping and EST before DMA.
->  12. Allow independent references to AF_XDP DMA mappings and UMEM pages.
->  13. Retain DMA memory until hardware confirms shutdown or reset.
->  14. Prepare device-local interrupt masking and DMA-handler quiescence.
->  15. Retain rings and IRQ registrations across jumbo MTU replacement.
+v6 Link: https://lore.kernel.org/all/cover.1789608557.git.zihanx@nebusec.ai/
 
-Please look at the mailing list, several of these patches are already being
-worked on and have gone through multiple iterations and reviews.
+Zihan Xi (1):
+  rxrpc: fix encap_rcv skb accounting exhaustion
 
-Thanks :)
+ net/rxrpc/ar-internal.h  |  1 +
+ net/rxrpc/io_thread.c    | 77 ++++++++++++++++++++++++++++++++++++++--
+ net/rxrpc/local_object.c | 24 +++++++++++--
+ 3 files changed, 98 insertions(+), 4 deletions(-)
 
-Maxime
+-- 
+2.43.0
+
