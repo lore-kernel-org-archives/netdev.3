@@ -1,62 +1,64 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACCE36D9E0
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 16:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C029363090
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 16:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790438538; cv=none; b=AYLEbu8SEMPhuhoGNQ2ouxr03xF/N8mKxR8N8zr6vFjS4U+8aSBrqkhgsEtAQfBAK6X9q+psn6R9GsxlOsSiq84CVfhFb3RBN+jZqxqnxYhXVt67MbQjyNlYGh4C2EpHQJt7mwKcg3yWAj5hiyzHruSBdCSXbWEeEqZnJGam7Jk=
+	t=1790438548; cv=none; b=UT3Guz1Nry5Ss6i3yG8ouEU/f/4vgdzn7T7anARR9FS+6T4kl1Iv6t8oazFWh4LRLlkpNU5d/a2NK2YF4xXyCYiKo9oa/Fn/J/am2nC1T+pBx521JlY3anj9HcsaJgbnKsKkZME/zGse0CFtH6l/UBAP6HgRQghenCFssIgR/ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790438538; c=relaxed/simple;
-	bh=39XEBq1MI6OnsD9yc+4TxU/OT9omjbn58qrqcxRX0Qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mbaiN12a/dSmqbXyLsBmmBgvuqJ9FXoKE1y7uUQXFH9nR24D7CiQaT6Aj6h1wgeh7gESoBwPH/wJ7EVPS91mpEoxoQEm6NT3KZyrwLRDVSNUsEpVmPnoh/OEiwMB4fE57FE7o1AY6vHbwFwheIKYbQKHkKt7aoDnsVpM3TOg/Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=uTvmV2jA; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1790438548; c=relaxed/simple;
+	bh=Q8rrfl9uzxg5BsBKmhSIKYc4+X7CHhstnHUhApwz62c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fz/rnqtahmJ71Izvn7j4wuQqspct4sV3Hxb3zgv2/ekL/33bKePwOWam39hodOxby4GYGP6RDjHI4MModXCR+nrxbGWzcbcVz/aDTZ4gKO2fs7Ka7ImY868prHc9uwE2umi6NNnQELFm7IoB6P15pOVA7lNllzr9VL1wUfz41QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=GmpiQedz; arc=none smtp.client-ip=74.125.227.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="uTvmV2jA"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c3304784so719655a12.3
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="GmpiQedz"
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0df0bb2d6so331274a91.3
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:02:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790438537; x=1791043337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+37thVuHZ/gLtuhuUGe6FLXA7wHfSbWyBu28cwLiRZE=;
-        b=uTvmV2jA6qxYji/GJOLPDUoGBnNY6O8G55vynG4Y+LvaWeBE87kp//aOf7PfoTNPR9
-         VuwQpDWhMH4sKcE4iCmKfoPyHXHRR/U48ZxH9ExkwQpF+Qy7OKRxxOl51UHsmcno5BXG
-         QrjxbkWl9BfCHOsfm0qw0COlZ/Iq62AKjVIUVMR/mUgcO0wTZPZYAa1ftvYw+UauFVsx
-         WwjsP/FtlpV0aWz71/znpH2kLGGqXWanFE/77i464KHYR6/wYXXyJ7RXPy18Rq6ir5WJ
-         iNl5JaksLY3kUonCV7t106Xr6mH0eLhQCvVGjrBg75erP53SXPFlSYi82C7oDh7Q+MFI
-         xf0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790438537; x=1791043337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1790438546; x=1791043346; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+37thVuHZ/gLtuhuUGe6FLXA7wHfSbWyBu28cwLiRZE=;
-        b=hXywlRAtz+aQygZSQJ/Cma7e7sq19zv/O0N/9JJy21kYUhbBnQm4DWZ7MWX4IRVXFw
-         LoZ0Yz85F2S4Qvf8Df+dFZEy4F3mF06aMlfNErwrF6QkdUoLPKY2XXme0mhIfhSss5m7
-         6CKuOIFf1OgSrnqwi+vx0xNO5Qy52aZ8TAjNR4uDN4oQuBlCoeHU48XqEVQmKF5kyyR0
-         yNyFAp5xkNhGC4dMEoCyISrChnrPRWkv6KOyqCnfheDUy5vPJIzGwD71i4/EDxB6HCRB
-         LJqnVugA1d0LjYBKQA2w/nruhch4gdPdAjLRzXrp3ySyDSSLtyYWGWrn8KcgquHFsHyO
-         x33g==
-X-Forwarded-Encrypted: i=1; AKwUvBzeJ8W2XrgMdHMxw11GGwHDK9/b+Kcis2yOO/WkOrirWKvs3r0jkxrf+2F4UbffbhJt9g0LVfs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIMbwxr2OlfvuZ0F9+hRpG2DVeUL3AxibvW/wRD4awalKTs4oG/
-	fYSYxfYVPUdZYzZ4GaSU7oo5mamNAWNPlGReFxWR2Lc3BMMHET3L27/ZUH5k8W6af6oG
-X-Gm-Gg: AYBFou0/XzfTaa17BfaR4J0oLzvQCLF5jB0FyyB/LR7PdpWSQ6fVADaburqaa3I7xsD
-	n1/Bg3H06Y80VNE+UYiDepo0sw3sm0VnCftVQS4/WqYorD8FHKI/K4yygI7azihtHJNg6lKSNAE
-	rVUw+ji39I6vx6/RaPGZ4llO1kBFIOtWSZS53PmqysT6xHweS5GRbCvH74wcq34az/26QGbfstp
-	3fHfj96WkPtglV/XvUwyfv87xgZDEXRCk3ZxScTAd1YhzTps8GrvIdwJPpcCUdZglEqxdnIFwsp
-	bKfBkgD015nd4bibgL8uBeLeFn7b17ae+F6QX6RogX1HJT2K3hGq7mMQj3AxFcaz+GuCMlRyhxH
-	DFlKvfJnvYoicn5oYiGtx2uNCCdv8kJcmiIGkA17sjRM5ckPltq0NJLW7Hf/tr05b0v6kZsWLt3
-	OHTPcBwOlMKiu6NHcbNdaXAdfX1sjyeDXmqKg4YKLOHRkxB+6sdF3j/VW0U1ZDgJGO7CVHFtCN8
-	tMdrQBWG9QP9vs0ISl2rQ4S74VSyQ==
-X-Received: by 2002:a17:90b:4ad2:b0:3a0:b312:1fb8 with SMTP id 98e67ed59e1d1-3a0b3122489mr4434989a91.6.1790438536817;
-        Sat, 26 Sep 2026 09:02:16 -0700 (PDT)
+        bh=VP5FvClOS/wtmhLyj2bxBgJAwktRlmBKPUQLZDuieYo=;
+        b=GmpiQedzhrfq+xIaGxvHb080UDc7YauTZoVRefB+REXP/6qKx7KY8d+bwKoHWO08Nc
+         eaf/t3lOI/8VyrWdv9kwjF1rx0ewMNJ1r7Dp9yyLLjE9ZvwMkWF2kErBvuwz5cpyb0WD
+         zpsw5N9DWHonPJqjnl3wOHOQG7lwjNwHe7caJkLyeuaYA/eeQke7ex7xONdpAEx2pmCV
+         khWhBNxKeCebGMH4ZWkxbb28vSblt1I4aExsgjlbWuN2RxFfz9d+PxZ/y5oI/nkc+gIl
+         xbCLGYA+F7XbCzhhNLRtkYEoahahx0wqO530iWATw24fFWxGObWjw7ALaT8KwtG9KYy4
+         Rhgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790438546; x=1791043346;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VP5FvClOS/wtmhLyj2bxBgJAwktRlmBKPUQLZDuieYo=;
+        b=StUOWQlpH/EYUddmo0R7gwT07mSsAgPPF4U5rgVFd4TjnMze8ZONc1IsxKF1/pgE3b
+         ilw/HrJmcGsRCfJi7fSudBagi5NSoi1ZlugtxCFSyiD5ajATV7H4dUzMsGBxSJe1LgUe
+         zKKW3RjrmVQMbfqEjuT8uQADchbMhX7mpHpXei34vP2/iQWCD/kcCo6UYNEcYLbdTulZ
+         UNW3HCbKiC6tMKsrkPy6abuMR/N+YH45TPffjwvQeEAyk6AqRbACo89P1tL4mw8BDXSr
+         T1olDIxUIzB0C/ORWMU6XQF/TBY8KLAOBIV8K75NRgCKDec1AI3DXKOkxpH6W94qvVyY
+         lu7A==
+X-Forwarded-Encrypted: i=1; AKwUvBwB7fHDV89IX9XQgpEqqSOigHNF5GsYaTOjq6idh9KZMBYQrLd9xcV71uUuksxMV5dArcI9EsA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJuTq778Qt2J3VTWgqVnCK1lY5dTUmT8E026B6LnmmxWlwik+sq
+	1mDZEE+cvbZ1ZASKxY3y6zBV6QXptLzT5CqsFKVDD6dJXXbjVfDwvxtYvYWJz+x8QZX7
+X-Gm-Gg: AYBFou3N+2VRvKnxtbnes/U6jvQefOebW66SOFjj/9YPoGTBEgYn/RCn1cB2dWzl66K
+	lipe0ooCSXfT30d87ZTDuh/ZwfBbN2LpbPYxBTeUbe55a6Q0b/TjFmPSK1BFF+eU71ZmwwApJDN
+	3B+xvXl74+qg2qygSk2shCl6Be+hZQsWWdAbzzqP3FGV0aVZXJ9s6/UJnnUS/xNOlh6x58DFwri
+	PqlRB/mcyZhNAEKbL5RR7WzNp3McT/VAccFD7BX7+sxEauKZvKA/MSET/vPcfnqg/pmMSRbtvVP
+	uZw8sbl+hAC6l1z8zZzUyk4smLar3sLrZh6/GnncWtXLkG8BMdOYZ3scJdH9bZ61j7v4ri3ts2o
+	QBZgx7FURpj2l1c2GpnFERbWnjuZ9cfTP1f+l0ebkj4i5RghSeT1Cd/4yjPwm+zhXoW9gmoV3Zz
+	Q/Q+JJFnWxvkcZy76jVV2Q5yfNXmig+dbL7Fa5fGfeSo01LwVG/FW/IN8O1d2+b05C/lh+bK+/r
+	GKjRsWa3EYaiOmAFLhfYWbN8D4DFQ==
+X-Received: by 2002:a17:90b:380a:b0:3a0:be2d:3853 with SMTP id 98e67ed59e1d1-3a0be2d3c4emr4591237a91.8.1790438545632;
+        Sat, 26 Sep 2026 09:02:25 -0700 (PDT)
 Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9356f48sm10449199a91.6.2026.09.26.09.02.13
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9356f48sm10449199a91.6.2026.09.26.09.02.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 09:02:15 -0700 (PDT)
+        Sat, 26 Sep 2026 09:02:24 -0700 (PDT)
 From: Zihan Xi <zihanx@nebusec.ai>
 To: David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
@@ -69,11 +71,15 @@ Cc: Zihan Xi <zihanx@nebusec.ai>,
 	linux-afs@lists.infradead.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v7 0/1] rxrpc: fix encap_rcv skb accounting exhaustion
-Date: Sat, 26 Sep 2026 16:02:05 +0000
-Message-ID: <cover.1790427022.git.zihanx@nebusec.ai>
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Luxing Yin <root@tr0jan.top>
+Subject: [PATCH net v7 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Date: Sat, 26 Sep 2026 16:02:06 +0000
+Message-ID: <f2f46bb2d18375b2f02548cadb8d024d164bb020.1790427022.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1790427022.git.zihanx@nebusec.ai>
+References: <cover.1790427022.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,19 +88,297 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The v6 fix is not yet present in net/main. This reroll rebases the
-UDP receive-buffer accounting change onto net/main at a7bfaba4823e.
+rxrpc_encap_rcv() queues encapsulated UDP packets on the RxRPC local
+queue without charging them to the UDP socket. If the I/O thread cannot
+keep up, the queue can therefore grow without bound.
 
-v6 Link: https://lore.kernel.org/all/cover.1789608557.git.zihanx@nebusec.ai/
+Charge each packet against the tunnel socket before queueing it, while
+holding sk_receive_queue.lock, and drop it when socket rmem or protocol
+memory accounting fails. Size the socket from the advertised RxRPC
+receive window, retain headroom for control and error packets, and
+refresh the cap when the window grows without shrinking an existing
+buffer. The lock also serializes sk_forward_alloc updates with the
+destructor path.
 
-Zihan Xi (1):
-  rxrpc: fix encap_rcv skb accounting exhaustion
+Orphan charged PACKET skbs under the same lock when the I/O thread
+dequeues them. Keep the existing destructor for error skbs, clear
+skb->dev, drop the dst, and account drops with the corresponding UDP
+statistics and reasons.
 
+Since skb_set_owner_r() does not hold a socket reference, clear
+sk_user_data under RCU and release the socket only after purging the
+local queues.
+
+Fixes: 446b3e14525b ("rxrpc: Move packet reception processing into I/O thread")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+---
+changes in v7:
+  - Rebase the fix onto net/main at a7bfaba4823e.
+  - v6 Link: https://lore.kernel.org/all/cover.1789608557.git.zihanx@nebusec.ai/
+changes in v6:
+  - refresh the tunnel socket receive-buffer cap when
+    rxrpc_rx_window_size increases, without shrinking an existing
+    socket
+  - distinguish socket receive-buffer exhaustion from protocol memory
+    accounting failures in the drop reason and UDP statistics
+  - cap the window-derived value at sysctl_rmem_max and only grow an
+    existing sk_rcvbuf; avoid the unexported sysctl_rmem_default
+  - v5 Link: https://lore.kernel.org/all/cover.1789273347.git.zihanx@nebusec.ai/
+changes in v5:
+  - size the tunnel sk_rcvbuf to one advertised window of ordinary
+    DATA (RXRPC_JUMBO(1)), doubled for typical 2-4KiB skb truesize,
+    plus 25% for ACKs/ICMP, capped by sysctl_rmem_max
+  - leave ICMP/error-queue headroom in the DATA rmem check
+  - count UDP RCVBUFERRORS/INERRORS and drop with
+    SKB_DROP_REASON_SOCKET_RCVBUFF
+  - drop the dst instead of skb_dst_force(); keep skb->dev = NULL
+  - refresh the cover crash log from the latest unfixed net/main
+    run; record the panic as a sender-path OOM, not an I/O-thread
+    allocation
+  - note that sk_rcvbuf is sized at socket open and is not updated
+    if rxrpc_rx_window_size later changes
+  - v4 Link: https://lore.kernel.org/all/cover.1788878590.git.zihanx@nebusec.ai/
+changes in v4:
+  - serialise UDP rmem charge/uncharge with sk->sk_receive_queue.lock
+  - use spin_lock() in encap_rcv() (BH) and spin_lock_bh() around
+    skb_orphan() in the I/O thread
+  - do not enqueue encapsulated skbs on the UDP receive queue
+  - orphan only PACKET skbs charged in encap_rcv(); leave error-queue
+    skb ownership alone
+  - restore the unprivileged namespace reproducer and document the
+    AFS callback listener
+  - clarify in the cover that the recorded panic is a downstream OOM
+    after extra I/O-thread contention, not the unprivileged flood
+    alone
+  - include the full OOM Mem-Info in the cover crash log
+  - v3 Link: https://lore.kernel.org/all/cover.1788539302.git.zihanx@nebusec.ai/
+changes in v3:
+  - orphan the skb when the I/O thread dequeues it from the local
+    queue so UDP rmem ownership does not follow packets onto
+    call/conn queues
+  - mention both io_thread.c and local_object.c in the cover opening
+  - distinguish the unprivileged flood from extra steps used to
+    record the panic
+  - attribute the OOM to skbuff growth rather than incoming-call
+    setup
+  - describe the recorded panic as a downstream OOM after I/O-thread
+    contention, not as an allocation at the encap_rcv enqueue site
+  - v2 Link: https://lore.kernel.org/all/cover.1785339953.git.zihanx@nebusec.ai/
+changes in v2:
+  - switch the drop path from atomic_inc(&udp_sk->sk_drops) to
+    sk_drops_inc(udp_sk)
+  - retarget Fixes to 446b3e14525b, the first boundary where encap_rcv
+    queued the skb onto local->rx_queue for later I/O-thread consumption
+  - rebase onto current net/main
+  - refresh the cover crash log from an unfixed 7.3.0-rc1+ net/main run
+    and include the decoded stack
+  - explain in the cover why packetdrill was not used
+  - document the actual flood command in the cover
+  - v1 Link: https://lore.kernel.org/all/cover.1784742007.git.zihanx@nebusec.ai/
+---
  net/rxrpc/ar-internal.h  |  1 +
  net/rxrpc/io_thread.c    | 77 ++++++++++++++++++++++++++++++++++++++--
  net/rxrpc/local_object.c | 24 +++++++++++--
  3 files changed, 98 insertions(+), 4 deletions(-)
 
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab9..b079ec98aaa74 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1323,6 +1323,7 @@ void rxrpc_send_version_request(struct rxrpc_local *local,
+  * local_object.c
+  */
+ void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set);
++void rxrpc_adjust_rcvbuf(struct sock *sk);
+ struct rxrpc_local *rxrpc_lookup_local(struct net *, const struct sockaddr_rxrpc *);
+ struct rxrpc_local *rxrpc_get_local(struct rxrpc_local *, enum rxrpc_local_trace);
+ struct rxrpc_local *rxrpc_get_local_maybe(struct rxrpc_local *, enum rxrpc_local_trace);
+diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
+index dc5184a2fa9d1..fa6cfd603548b 100644
+--- a/net/rxrpc/io_thread.c
++++ b/net/rxrpc/io_thread.c
+@@ -7,12 +7,55 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <net/udp.h>
++
+ #include "ar-internal.h"
+ 
+ static int rxrpc_input_packet_on_conn(struct rxrpc_connection *conn,
+ 				      struct sockaddr_rxrpc *peer_srx,
+ 				      struct sk_buff *skb);
+ 
++/*
++ * Drop UDP rmem ownership for packets charged in encap_rcv().
++ * sk_forward_alloc is serialised by sk_receive_queue.lock.
++ */
++static void rxrpc_skb_orphan_udp(struct sk_buff *skb)
++{
++	struct sock *sk = skb->sk;
++
++	if (!sk)
++		return;
++
++	spin_lock_bh(&sk->sk_receive_queue.lock);
++	skb_orphan(skb);
++	spin_unlock_bh(&sk->sk_receive_queue.lock);
++}
++
++static void rxrpc_encap_rcv_drop(struct sock *udp_sk, struct sk_buff *skb,
++				 enum skb_drop_reason reason)
++{
++	struct net *net = sock_net(udp_sk);
++
++	sk_drops_inc(udp_sk);
++#if IS_ENABLED(CONFIG_IPV6)
++	if (skb->protocol == htons(ETH_P_IPV6)) {
++		if (reason == SKB_DROP_REASON_SOCKET_RCVBUFF)
++			__UDP6_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
++		else
++			__UDP6_INC_STATS(net, UDP_MIB_MEMERRORS);
++		__UDP6_INC_STATS(net, UDP_MIB_INERRORS);
++	} else
++#endif
++	{
++		if (reason == SKB_DROP_REASON_SOCKET_RCVBUFF)
++			__UDP_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
++		else
++			__UDP_INC_STATS(net, UDP_MIB_MEMERRORS);
++		__UDP_INC_STATS(net, UDP_MIB_INERRORS);
++	}
++	sk_skb_reason_drop(udp_sk, skb, reason);
++}
++
+ /*
+  * handle data received on the local endpoint
+  * - may be called in interrupt context
+@@ -28,6 +71,9 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	struct sk_buff_head *rx_queue;
+ 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
+ 	struct task_struct *io_thread;
++	enum skb_drop_reason reason;
++	unsigned int headroom;
++	unsigned int rcvbuf;
+ 
+ 	if (unlikely(!local)) {
+ 		kfree_skb(skb);
+@@ -41,8 +87,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	if (skb->tstamp == 0)
+ 		skb->tstamp = ktime_get_real();
+ 
+-	skb->mark = RXRPC_SKB_MARK_PACKET;
+-	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+ 	rx_queue = &local->rx_queue;
+ #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
+ 	if (rxrpc_inject_rx_delay ||
+@@ -52,9 +96,35 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	}
+ #endif
+ 
++	headroom = SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
++	spin_lock(&udp_sk->sk_receive_queue.lock);
++	rxrpc_adjust_rcvbuf(udp_sk);
++	rcvbuf = READ_ONCE(udp_sk->sk_rcvbuf);
++	if ((unsigned int)atomic_read(&udp_sk->sk_rmem_alloc) +
++	    skb->truesize + headroom >= rcvbuf) {
++		reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
++		goto drop;
++	}
++	if (!sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
++		reason = SKB_DROP_REASON_PROTO_MEM;
++		goto drop;
++	}
++
++	skb->dev = NULL;
++	skb_set_owner_r(skb, udp_sk);
++	spin_unlock(&udp_sk->sk_receive_queue.lock);
++	skb_dst_drop(skb);
++
++	skb->mark = RXRPC_SKB_MARK_PACKET;
++	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+ 	skb_queue_tail(rx_queue, skb);
+ 	wake_up_process(io_thread);
+ 	return 0;
++
++drop:
++	spin_unlock(&udp_sk->sk_receive_queue.lock);
++	rxrpc_encap_rcv_drop(udp_sk, skb, reason);
++	return 0;
+ }
+ 
+ /*
+@@ -471,6 +541,9 @@ int rxrpc_io_thread(void *data)
+ 		/* Distribute packets and errors. */
+ 		while ((skb = __skb_dequeue(&rx_queue))) {
+ 			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
++
++			if (skb->mark == RXRPC_SKB_MARK_PACKET)
++				rxrpc_skb_orphan_udp(skb);
+ 			switch (skb->mark) {
+ 			case RXRPC_SKB_MARK_PACKET:
+ 				skb->priority = 0;
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index 169f9dfdaa77f..f519a93059244 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -22,6 +22,19 @@
+ 
+ static void rxrpc_local_rcu(struct rcu_head *);
+ 
++void rxrpc_adjust_rcvbuf(struct sock *sk)
++{
++	u32 rcvbuf, old_rcvbuf;
++
++	rcvbuf = READ_ONCE(rxrpc_rx_window_size) *
++		SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
++	rcvbuf += rcvbuf / 4;
++	rcvbuf = min_t(u32, rcvbuf, READ_ONCE(sysctl_rmem_max));
++	old_rcvbuf = READ_ONCE(sk->sk_rcvbuf);
++	if (rcvbuf > old_rcvbuf)
++		WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
++}
++
+ /*
+  * Handle an ICMP/ICMP6 error turning up at the tunnel.  Push it through the
+  * usual mechanism so that it gets parsed and presented through the UDP
+@@ -198,6 +211,9 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
+ 
+ 	/* set the socket up */
+ 	usk = local->socket->sk;
++	spin_lock_bh(&usk->sk_receive_queue.lock);
++	rxrpc_adjust_rcvbuf(usk);
++	spin_unlock_bh(&usk->sk_receive_queue.lock);
+ 	usk->sk_error_report = rxrpc_error_report;
+ 
+ 	switch (srx->transport.family) {
+@@ -437,8 +453,8 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
+ 	if (socket) {
+ 		local->socket = NULL;
+ 		kernel_sock_shutdown(socket, SHUT_RDWR);
+-		socket->sk->sk_user_data = NULL;
+-		sock_release(socket);
++		rcu_assign_sk_user_data(socket->sk, NULL);
++		synchronize_rcu();
+ 	}
+ 
+ 	/* At this point, there should be no more packets coming in to the
+@@ -448,6 +464,10 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
+ 	rxrpc_purge_queue(&local->rx_delay_queue);
+ #endif
+ 	rxrpc_purge_queue(&local->rx_queue);
++
++	if (socket)
++		sock_release(socket);
++
+ 	rxrpc_purge_client_connections(local);
+ 	page_frag_cache_drain(&local->tx_alloc);
+ }
 -- 
 2.43.0
 
