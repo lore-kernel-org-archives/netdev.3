@@ -1,237 +1,183 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499CF35B636;
-	Sat, 26 Sep 2026 13:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6DD456DFD;
+	Sat, 26 Sep 2026 13:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790430626; cv=none; b=oOwqtCI5CuuIduSbhevToDkjQiAYuSoPc5u5AdR2kjLiIUmLN2WTMTNmBGustqVR2O2u+RI7rjWbP11kldcHL8FVJ6SeZtLMAZnSmwKxSjU9wmth29LGXEQ0+Ehqe0JK/3rUeOnzWeFgssh4sPxKtYkvClcrae9cfTC6ZAcZ75E=
+	t=1790430859; cv=none; b=qqQPVTInuk7dxRueMku3G+CdCjuuIlpMrsNMhHYXQo8pr2LOOXfkfOSMwSBQf6/esIt6MgcIvAHMnAGbRmKkY5T9DnMPkYL0yYoxJo9UQMKvNJT3Sdr4JTN9+/YvMc/7iP6PjrEgkNn4AXokNzNv4LOWPS73f+6Aw7lLdFgqL5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790430626; c=relaxed/simple;
-	bh=2WGsOmnxLclI+ygrJvzH6dUPGw5WZKi6FxVFImJV1kQ=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UVb8xVgevFlwF7L9cKdQ+Q0YbVStmpbhFk+FgSY2nlrMrac5gt/RhEQtuJwvjBBVDImQDov5DWh2Uw9CMQ1QDX3NZDxJbEsXp88k1NrpOIYeQKVF26VV+V8V2jvZ1ITBPapguRZ5YMgT0cnzb7hkxMKLmSZVB8ywAqLpdmpM+6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1xASnE-000000001eh-3lHX;
-	Sat, 26 Sep 2026 13:50:20 +0000
-Date: Sat, 26 Sep 2026 14:50:17 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: [PATCH net-next v18 6/6] net: dsa: mxl862xx: document devlink flash
- and info support
-Message-ID: <c555c5507ffce3827917d9fb629b19cf928894cc.1790426599.git.daniel@makrotopia.org>
-References: <cover.1790426599.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1790430859; c=relaxed/simple;
+	bh=V+7N3CEMlMcV2/cogsgxa37P79t+Z9n/URPasGHb+V8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mnK4o770L1H6LEYxk5BHCEwAvVYVdTf7J5YArJjPs28LAMS0RXMrVoay0Uw6/oZ8QNYG1qR7UQLSggiVa4q7XFGvdhRZtCvtpa5HJphgpmFF5eDxh4/vdhWSA4MKz6lk87oxCLXEzZ/Vz1RtJYxUYixMcUF2L0P7MoM6dRFKNQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=II3d8iPd; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="II3d8iPd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655631F000FF;
+	Sat, 26 Sep 2026 13:54:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790430852;
+	bh=iHcuMOQ5i7mli5/wKk6P3y5eiCCYwTcMR3JJCsc8cgE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=II3d8iPd4o35qYc/yO/BwQphWhgYwKAtya/ox9mjjehqrbqG2RFaXhErP8988xBM9
+	 DdJKM4FWk5iMM6LVNDrYXiF4ocVai/iofjUfVbdalzUvyTm9Wp0togf99/6jA5E8yq
+	 /deVV01C57Mm13xhuRDd/3ee6L4UaKJeAj+kw+EekH+ocZ5w6G1tcYkgNKNdcDL8WG
+	 QTFcdpTkYjaA+UH1UakuYUQ3JTqrQ2I83yA96CuoIG/QbSOsCyZapGSGWnqeB4nFn/
+	 GFsnFz8o6EvdgUbR1J+5SzVRG1P0eu3uiZb1PNInekPU5ef4hJKGfb/fpsWRLMiRzW
+	 KFTg4L1Q7rTnA==
+Subject: Re: [PATCH net v3 2/2] net: ethtool: let tsconfig reach a PHY-only
+ timestamp provider
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
+ kory.maincent@bootlin.com, vadim.fedorenko@linux.dev,
+ maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 26 Sep 2026 13:54:10 +0000
+Message-ID: <179043085090.2160803.7251184093173489740@kernel.org>
+In-Reply-To: <20260925135237.3432266-3-nb@tipi-net.de>
+References: <20260925135237.3432266-3-nb@tipi-net.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1790426599.git.daniel@makrotopia.org>
 
-Describe the devlink info versions and the flash update behaviour,
-including the MCUboot rescue mode recovery, in a dedicated file under
-Documentation/networking/devlink/ and link it from the index. Add the
-new file to the driver's MAINTAINERS entry.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Assisted-by: LLM
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
-v18:
- - the rescue-mode firmware version is reported as running only, and a
-   re-probe that cannot be scheduled is logged on every path and leaves
-   later flashes refused with -EBUSY until a rebind (found by Sashiko AI
-   review)
-v17: no changes
-v16:
- - document that a reboot waits for a running flash and that one
-   requested afterwards is refused, and that a bus error ends the
-   download recovery for good
- - title-case the "Flash Update" heading, as the other devlink driver
-   documents do
- - say that the ports come back down from a flash, that a reprobe which
-   cannot be scheduled needs a rebind, and which of the two recovery
-   failures needs a power cycle and which a rebind (found by Sashiko AI
-   review)
-v15:
- - asic.rev is read from the CHIP ID registers as well, not from one
-   register word shared with asic.id (found by Sashiko AI review)
- - -EIO says the driver gave up on the recovery, which may need a driver
-   rebind rather than a power cycle, and an interrupted opening
-   handshake is reported the same way (found by Sashiko AI review)
-v14: no changes
-v13: no changes
-v12: no changes
-v11: no changes
-v10: document that a switch power cycled on its own needs the driver
-     unbound and rebound before a failed recovery is re-examined
-v9: no changes, picked up Andrew's v5 Reviewed-by
-v8:
- - asic.id and asic.rev are omitted whenever the part number reads
-   zero, not only in MCUboot rescue mode (found by Sashiko AI review)
- - drop the claim that "0.0.0" marks a switch that never ran firmware;
-   rescue mode always reports it (found by Sashiko AI review)
- - document devlink dev flash as the signal that says whether a
-   recovery is still running, including the -EIO it returns once the
-   recovery has failed (found by Sashiko AI review)
-v7: no changes
-v6: no changes
-v5: new patch, splitting the devlink documentation out of the flash
-    update and rescue mode recovery patches so each keeps to code
-    (Jakub Kicinski asked for the documentation)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
- Documentation/networking/devlink/index.rst    |  1 +
- Documentation/networking/devlink/mxl862xx.rst | 95 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 3 files changed, 97 insertions(+)
- create mode 100644 Documentation/networking/devlink/mxl862xx.rst
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-index 1af780c811ee..53d3ef16d13f 100644
---- a/Documentation/networking/devlink/index.rst
-+++ b/Documentation/networking/devlink/index.rst
-@@ -95,6 +95,7 @@ parameters, info versions, and other features it supports.
-    mlx5
-    mlxsw
-    mv88e6xxx
-+   mxl862xx
-    netdevsim
-    nfp
-    octeontx2
-diff --git a/Documentation/networking/devlink/mxl862xx.rst b/Documentation/networking/devlink/mxl862xx.rst
-new file mode 100644
-index 000000000000..c2dfc72ef9a4
---- /dev/null
-+++ b/Documentation/networking/devlink/mxl862xx.rst
-@@ -0,0 +1,95 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================
-+mxl862xx devlink support
-+========================
-+
-+This document describes the devlink features implemented by the
-+``mxl862xx`` device driver.
-+
-+Info versions
-+=============
-+
-+The ``mxl862xx`` driver reports the following versions
-+
-+.. list-table:: devlink info versions implemented
-+   :widths: 5 5 5 85
-+
-+   * - Name
-+     - Type
-+     - Example
-+     - Description
-+   * - ``asic.id``
-+     - fixed
-+     - 8628
-+     - The chip part number read from the CHIP ID registers. Omitted
-+       when the part number reads as zero, which happens for a switch
-+       sitting in MCUboot rescue mode (the registers need a running
-+       firmware), for an unfused part, and after a failed flash.
-+   * - ``asic.rev``
-+     - fixed
-+     - 0
-+     - The chip version, read from the CHIP ID registers as well. Both
-+       values are published behind the same check, so it is omitted
-+       whenever ``asic.id`` is.
-+   * - ``fw``
-+     - running, stored
-+     - 1.0.70
-+     - Version of the firmware running on the switch, reported as both
-+       running and stored since the switch boots it from its own flash.
-+       It is omitted while no firmware version is known: after a failed
-+       flash, and in MCUboot rescue mode while an interrupted download
-+       is still being recovered in the background. Once the loader is
-+       ready to accept a new image the version appears as "0.0.0",
-+       which no released firmware reports, so version-comparing tools
-+       offer any available release as an upgrade; it is reported as
-+       running only, since the driver cannot tell what the flash holds
-+       while the loader runs. Use ``devlink dev
-+       flash`` to tell a recovering switch from a ready one, see below;
-+       a missing version on its own does not say why.
-+
-+Flash Update
-+============
-+
-+The ``mxl862xx`` driver implements support for ``devlink dev flash``.
-+The signed firmware image is transferred to the switch over the same
-+MDIO bus which is also used to manage the switch, then verified and
-+installed by the MCUboot bootloader running on the switch. All ports
-+of the switch are closed for the duration of the update and the driver
-+reprobes the switch after it has rebooted into the new firmware; they
-+come back registered but down, so userspace brings them up again. A
-+complete flash and reprobe cycle takes about one minute. In the rare
-+case that the reprobe cannot be scheduled at all, the kernel log says
-+so, ``devlink dev flash`` reports that error or the transfer's own if
-+the transfer failed as well, and the driver stays bound to a switch it
-+no longer tracks, refusing further updates with ``-EBUSY``, until it is
-+unbound and rebound. A reboot started
-+while an update is running waits for the transfer to finish, and an
-+update requested after the system has begun shutting down is refused
-+with ``-ENODEV``.
-+
-+A switch stuck in MCUboot rescue mode, e.g. after an interrupted
-+update, is registered without user ports. If the previous download was
-+interrupted mid-transfer the loader is wedged; the driver drains it
-+back to a clean ready state in the background, one byte at a time,
-+which takes tens of minutes for a large image and is reported through
-+the kernel log as it progresses. During that recovery ``devlink dev
-+flash`` returns ``-EBUSY`` with an extack message saying so, and
-+``devlink dev info`` reports no firmware version. Once the loader is
-+ready the firmware version appears and flashing a firmware image
-+through the regular update flow recovers the switch.
-+
-+If the driver gives up on the recovery, ``devlink dev flash`` returns
-+``-EIO`` and says so in its extack message. The drain runs once and is
-+never resumed, so a failed MDIO transaction ends it as well. A loader
-+that stops answering the drain needs a power cycle; a completed drain
-+whose reprobe could not be scheduled, and a drain a bus error cut
-+short, need only a driver rebind. The driver re-examines the switch
-+when it binds and at no other time, so a power cycle on a board where
-+the switch can be cycled on its own still has to be followed by an
-+unbind and rebind for the recovered switch to be recognised.
-+
-+A download interrupted during its opening handshake, before the image
-+header reached the loader, is reported the same way. The loader waits
-+for a header that no later session can supply, so that state needs a
-+power cycle.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6de1ff058db6..cb1dad080f63 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16250,6 +16250,7 @@ M:	Daniel Golle <daniel@makrotopia.org>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/maxlinear,mxl862xx.yaml
-+F:	Documentation/networking/devlink/mxl862xx.rst
- F:	drivers/net/dsa/mxl862xx/
- F:	net/dsa/tag_mxl862xx.c
- 
+- [Medium] The removed ethnl_set_tsconfig_validate() required both
+  ndo_hwtstamp_set and ndo_hwtstamp_get.
+
+--
+
+net: ethtool: let tsconfig reach a PHY-only timestamp provider
+
+This patch lets TSCONFIG_GET and TSCONFIG_SET accept a device whose
+timestamping is served by a default timestamping PHY or an already
+installed hwprov, even when the netdev has no hwtstamp NDOs. It removes
+the set_validate callback and moves the check into ethnl_set_tsconfig().
+It also stops selecting a netdev source without ndo_hwtstamp_set, and
+adds a NULL check for ndo_hwtstamp_get in dev_get_hwtstamp_phylib().
+
+> diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+> index 6be3aa5d4bc1e..2db0e7ba8b9f5 100644
+> --- a/net/ethtool/tsconfig.c
+> +++ b/net/ethtool/tsconfig.c
+
+[ ... ]
+
+> @@ -42,7 +43,9 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
+>  	struct kernel_hwtstamp_config cfg = {};
+>  	int ret;
+>  
+> -	if (!dev->netdev_ops->ndo_hwtstamp_get)
+> +	if (!dev->netdev_ops->ndo_hwtstamp_get &&
+> +	    !phy_is_default_hwtstamp(dev->phydev) &&
+> +	    !netdev_ops_lock_dereference(dev->hwprov, dev))
+>  		return -EOPNOTSUPP;
+>  
+>  	ret = ethnl_ops_begin(dev);
+> @@ -248,17 +251,6 @@ static int tsconfig_send_reply(struct net_device *dev, struct genl_info *info)
+>  	return ret;
+>  }
+>  
+> -static int ethnl_set_tsconfig_validate(struct ethnl_req_info *req_base,
+> -				       struct genl_info *info)
+> -{
+> -	const struct net_device_ops *ops = req_base->dev->netdev_ops;
+> -
+> -	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
+> -		return -EOPNOTSUPP;
+> -
+> -	return 1;
+> -}
+> -
+
+[ ... ]
+
+> @@ -313,6 +305,11 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
+>  	if (!netif_device_present(dev))
+>  		return -ENODEV;
+>  
+> +	if (!dev->netdev_ops->ndo_hwtstamp_set &&
+> +	    !phy_is_default_hwtstamp(dev->phydev) &&
+> +	    !netdev_ops_lock_dereference(dev->hwprov, dev))
+> +		return -EOPNOTSUPP;
+> +
+
+[Severity: Medium]
+
+The removed ethnl_set_tsconfig_validate() required both ndo_hwtstamp_set
+and ndo_hwtstamp_get. This new check in ethnl_set_tsconfig() only tests
+ndo_hwtstamp_set. The matching check in tsconfig_prepare_data() only
+tests ndo_hwtstamp_get.
+
+What happens on a netdev that has ndo_hwtstamp_set but no
+ndo_hwtstamp_get, and has neither a default timestamping PHY nor a
+hwprov?
+
+TSCONFIG_SET now accepts that device. However, reading the current
+config fails in dev_get_hwtstamp_phylib():
+
+	if (!dev->netdev_ops->ndo_hwtstamp_get)
+		return -EOPNOTSUPP;
+
+and ethnl_set_tsconfig() ignores that error:
+
+		ret = dev_get_hwtstamp_phylib(dev, &hwtst_config);
+		if (ret < 0 && ret != -EOPNOTSUPP)
+			goto err_free_hwprov;
+
+This means the read-modify-write starts from an all-zero hwtst_config.
+
+A request that carries only RX_FILTERS or only FLAGS would then reset
+tx_type to HWTSTAMP_TX_OFF and zero the other fields.
+
+A full disable request (TX_OFF, FILTER_NONE, no flags) matches the
+assumed zero state, so ethnl_bitmap32_update() never sets *mod. As a
+result, config_mod stays false and dev_set_hwtstamp_phylib() is
+skipped. Can hardware timestamping stay enabled while the command
+reports success?
+
+After that, tsconfig_send_reply()->tsconfig_prepare_data() fails its
+own check with -EOPNOTSUPP, and ethnl_set_tsconfig() swallows it:
+
+	ret = tsconfig_send_reply(dev, info);
+	if (ret && ret != -EOPNOTSUPP) {
+
+So the ETHTOOL_MSG_TSCONFIG_SET_REPLY documented in
+Documentation/netlink/specs/ethtool.yaml is never sent. TSCONFIG_GET on
+the same device still returns EOPNOTSUPP even though SET succeeds.
+
+Every in-tree driver seems to implement both NDOs today. Elsewhere,
+though, the patch treats set-without-get as a valid state: it selects
+the NETDEV source in tsconfig_set_hwprov_from_desc() based on
+ndo_hwtstamp_set alone, and it adds a NULL check for ndo_hwtstamp_get
+in dev_get_hwtstamp_phylib().
+
+For the netdev case, should the SET check also require
+ndo_hwtstamp_get, so that GET and SET accept the same devices?
+
+>  	if (tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER]) {
+>  		struct hwtstamp_provider_desc __hwprov_desc = {.index = -1};
+>  		struct hwtstamp_provider *__hwprov;
+
+[ ... ]
+
 -- 
-2.55.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925135237.3432266-2-nb%40tipi-net.de
