@@ -1,275 +1,183 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED7F3A4F26
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 20:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCC949D5AC
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 20:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790453560; cv=none; b=avFZiEr/Ic5HRqda0DGDVuqB0GQ5BxJDKqL1zfCO/2lB1gPYNjlju4rCl0EUAjHrrxg1TFkld3Q6mh1oCq4sOYVBRyy9LH6e4EJMdkex8GjpyHfe0eZhvgcZxB1+VsAybIEdpSgAeY48oge01+hrLUyXxpQXQRjiZs2tM+fHWU4=
+	t=1790454073; cv=none; b=TWzSr9Hvn5a13MZyyC7ta9O547VdjR2z2teklsJUIaG5Z5hl4Ike28Zor56300sbc/+/i6ieOkRTQB48MMrOM5Y2f5sTsBzquRQoTiMjoeWiMiX8wzEtev4HBzh6MfrjyZNzfTLjwRPHgeVTSd7qJe31SHoKDzJTqTuNzlHep2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790453560; c=relaxed/simple;
-	bh=KrqAEzECgiUFL/pJcmc7/mUSV9tGrf+20pUN7qnrF3A=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=eyechdbv3uxD+2GAhabwDta74j//KnoEIQAeu3kQU76tZh0Ot5lzTTfX6qtK/1NG5I23uP7U30O/OE8cxLULiboykJF61Fdva1Jcxvi8AhWCEuWdy9a9/oBtMLnyDBCLcmwN1Cmo2H84w1FCOnI4B+W/sDMzoM91HsZD0QekN+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4cc691d106fso2992511b6e.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 13:12:30 -0700 (PDT)
+	s=arc-20240116; t=1790454073; c=relaxed/simple;
+	bh=jANtCOMjbo2tQ4C6RLtj9YK2Urz6WnLYNZcgkUxLeUU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TzmiY811Dx+hj0PmexWUTFw0mlYa8c6CHIJRmBd6KxQDnV9zt4PvPhaoTOPFArG4vqYAlskebMl9BBq8s6rTY3n8Yphx+K1tyIrD39TIocO8NrDXpsxc5shvtfbbIYFGmfzG3yxxBaAnn1+xg2utFu+0nAMAn/rAJGg6BgRzO5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tA9hxeJc; arc=none smtp.client-ip=74.125.227.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tA9hxeJc"
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0eeda3e03so179533a91.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 13:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790454071; x=1791058871; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dDLYo+urifwolzlinANx7RHSGZ0aon1YRvu/ogO3DQc=;
+        b=tA9hxeJcou5P14zop4JjSU62TiNEUoEre2WiXQFvjOF0yLsSxjdpGo9tmp9kwOcUvb
+         +edn1ZKtqEQbmh6X8OZeiQk1lI6fyXxycK0KRO3VlsjhMjXJfGRwr5BYH1rWonVtUm9Q
+         EHbSBZiJSUIu6DZdSiGxv7zVvY00+YHmNIU4Hb89W3QfvHCZU92RhyHvzLFLriwnbE31
+         dLyCkLJNNa13wTRNnTq3/321/c+JS6TS7xmFxLqCREaeiXNuUkDn9x8Wl4BDB8nD49d/
+         sTtPOkDA1Bba7OTyqnisy+9Qk1HfxpJKCn4rJrokE2CfhaIMNLlQOc9/rMI6/dG5vZvl
+         UG0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790453548; x=1791058348;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3X22zhN6f9uRMNSR7GwIXXr+DjResBRWtpt3aWN0XfE=;
-        b=cptQ4cG8IIC9JPNGNHdZv4ugzXQQ7lu7APnMPKvksls4PZjc3HOmyn3FF92G/jEVWs
-         BK+XkbSQph8UGEebX3FgvUcGmnnchrQTo2MiMwlB5VYCsvCrDlod/w7eLXXodkEfT/cH
-         w8olhyMfqKjU64x6fR71BtkYmee7/LmthLQHoMiOlptsjy2Lit1ObgeMPtREfmPjZ59s
-         d40AixkJodENSW/jPI1Lb0HW/JqZaLhMuaayjtE5jLUWp/YPQdMWV5dilTS7cNv9SX/X
-         S2DhdcH2zH9L1oWG8U4G5yQT7CqLfTmgEX6gW6UjcZrLiVamS/t91kIgqdtAac3oq79O
-         1Mng==
-X-Forwarded-Encrypted: i=1; AKwUvBxfnAQg2dgRWICyeN2xYIs3Q+KSMPxHjti7ZG7nVqfXflit8kqERC26JdOt5hk2c1Zv8oXRQyg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mdrgRmGrVvGOneeVbyC19ZCn4ubC/qn5PiDFiqq6O8IARCWB/K
-	JZw9aRMZaKTwCFmljknkYx8Vv+Ryncx29su3WJb8voIIQLcA8Yr2L5q3ZjsEceDFXqAyEinEQvd
-	s112JzK+N7GFMCzxgSOgG25A+dhk+ascg1oUWv8zohE3w8SoMEUGSavG2tS0=
+        d=1e100.net; s=20260707; t=1790454071; x=1791058871;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dDLYo+urifwolzlinANx7RHSGZ0aon1YRvu/ogO3DQc=;
+        b=dGLrLXw+l8BBN8c7j8eTvW7kzEE7+vKEdn+x9vSW0oqQWiNRg3B8DhUeMxNe2sTq/X
+         XbvuLCeBM4JHHX5QCIL4/BzPq1ir23uoUuHLvLGPhv/EIUIcJ8zdG22BFPKovyYKE+me
+         ogcwy9GfWmd9m70NVnHoGXJ+niOuOGTBMa3kAn6Nu14kPwfW8+3hm6aS1WFHo4soTsCu
+         cOkqmBtw7kh32U8sPUWelfL1QLg0aorZatRc0GRqw90uWdbq4qtSp9Y6l29GmrnwhvdA
+         ZFmSS5d9osZAd+qJaxP4tzdg6cM3MWSrpSRgIc/XYeF7P3OAmKn4ZdP2o4eNo+UqDLuM
+         K/YA==
+X-Forwarded-Encrypted: i=1; AKwUvBy487CVL8tx8UNvXebwqTtiRcKKV2YTTso328K1KIrfEyZKN8ul8sjMX83Ytm/JrHsi+uXXjZo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJiJKeLEJnal/HkGptnbCX7NkJgKkruCg6NqsO6n3Hz5Gi6aCwK
+	OYDUbvT/RRz7Z0PZ2G/Mgv+TvjfoHPLCWB+Ymse6jhOetBuJ9MtVHISjC1fpsxN1mv9+Lw==
+X-Gm-Gg: AYBFou2M2fNWPhHC7EVuWWPDWZW9qD2BUdJOzJeqG2jUbgOS95xtNtByhD1u5YIam+6
+	snd/CfPsk7S0jYWvNtxAlFo6+ky5ElxNn1iDm5otNClZ4RRH0Cw+VLT7lBTu35G1Xh81FPnA39S
+	YOOFn577BMT6tzMntBJh0q2GmZJsEJqjfbnwW3NDHcL5gzUKbPZDxmESmOo7WF++5+/F4eU6tZ9
+	no5lUb8Zx+3m9HlIyx5XTgnHai0hhwOEmWS1LTk6wA2dQwLxW/QH/eUTugYqrbPzlsfvdP3DELR
+	Q/Aqzcnd8CvgBgifgQq0KUdaok0FZ1AoQbuawEoYDBHMqY100fAiTcfug7kWABIGfQbc+iprcG6
+	Aa5xC6Goi3t4eKZpwwa/dzp2TWtUyL6Uyn/0mWsBI373TteZ/k9bJMR7xgiZX4MCU3bzdzGu+sm
+	NPdcIBK0Ii0pkbHzsXOilaT5qY13JMdwQ4P8rPn2mnkEbC/+kfgpp5qcNbVzZMGCskyLQuLFhf+
+	BizeeMknM6FPjsRsFieK+AUqqe2ZFHgTjaFoHynFEiY9PzO8Mb1cHT+z5ccLsTq7XZOEPfYzaOD
+	2b3MHx7ko0iOGLIaDyKKfjY=
+X-Received: by 2002:a17:90b:2748:b0:3a0:8a9e:1212 with SMTP id 98e67ed59e1d1-3a0985700bdmr6441686a91.7.1790454070971;
+        Sat, 26 Sep 2026 13:21:10 -0700 (PDT)
+Received: from [10.10.2.99] ([223.105.83.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0cd1c4ec9sm7407602a91.16.2026.09.26.13.21.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Sep 2026 13:21:09 -0700 (PDT)
+Message-ID: <b3348bd6-a248-4df5-8ee4-610cf0a33bee@gmail.com>
+Date: Sun, 27 Sep 2026 04:21:05 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1993:b0:4d6:90d3:e185 with SMTP id
- 5614622812f47-4d72e670404mr13218907b6e.46.1790453548022; Sat, 26 Sep 2026
- 13:12:28 -0700 (PDT)
-Date: Sat, 26 Sep 2026 13:12:28 -0700
-In-Reply-To: <20260924063312.1194019-1-chenguang.zhao@linux.dev>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab8272c.dc2998a4.2261f5.0058.GAE@google.com>
-Subject: [syzbot ci] Re: ipvs: fix infinite loop with ipvlan L3 from
- unconditional ipvs_property clear
-From: syzbot ci <syzbot+cic4f1f7c33eb59a01@syzkaller.appspotmail.com>
-To: chenguang.zhao@linux.dev, davem@davemloft.net, dsahern@kernel.org, 
-	edumazet@google.com, horms@kernel.org, idosch@nvidia.com, 
-	kerneljasonxing@gmail.com, kuba@kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzbot@syzkaller.appspotmail.com, zhaochenguang@kylinos.cn
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] net: towards a generic PON framework
+To: Matheus Sampaio Queiroga <srherobrine20@gmail.com>, netdev@vger.kernel.org
+Cc: pbs05 <xuziyougm@gmail.com>,
+ Benjamin Larsson <benjamin.larsson@genexis.eu>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King <linux@armlinux.org.uk>
+References: <20260926174601.1675-1-yhyxwgy@gmail.com>
+ <WL64BmXtQq-YjPSMpmv81w@gmail.com>
+From: Gaoyang Wei <yhyxwgy@gmail.com>
+In-Reply-To: <WL64BmXtQq-YjPSMpmv81w@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-syzbot ci has tested the following series
+Hi Matheus,
 
-[v1] ipvs: fix infinite loop with ipvlan L3 from unconditional ipvs_property clear
-https://lore.kernel.org/all/20260924063312.1194019-1-chenguang.zhao@linux.dev
-* [PATCH net] ipvs: fix infinite loop with ipvlan L3 from unconditional ipvs_property clear
+Thanks, this is exactly the kind of second implementation I was hoping
+to compare against.
 
-and found the following issue:
-INFO: task hung in netdev_run_todo
+ > in my implementation part I have a system controlled by the kernel,
+ > without userspace for OMCI, everything being handled and controlled
+ > by the kernel
 
-Full report is available here:
-https://ci.syzbot.org/series/b6478e5d-791e-4d72-8b8d-0fa748c90168
+This is particularly interesting because it gives us two working
+design points with a very different kernel/userspace split.
 
-***
+The AN7581/AN7583 implementation keeps the G.988 MIB and service graph
+in userspace, while your implementation places the OMCI agent, MIB,
+ME handling and service graph in net/xpon/omci.
 
-INFO: task hung in netdev_run_todo
+I think this is probably one of the most important questions for this
+RFC.
 
-tree:      net
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
-base:      e7e0a54300a896e731dffd3e2e8dae5631d6243d
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/9865431b-add2-4883-97e2-de4ec60d969e/config
+Could you describe what led you to keep the G.988 model in the kernel?
 
-INFO: task syz-executor:31961 blocked for more than 144 seconds.
-      Not tainted syzkaller #0
-      Blocked by coredump.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor    state:D stack:26120 pid:31961 tgid:31961 ppid:1      task_flags:0x40054c flags:0x00080003
-Call Trace:
- <TASK>
- __schedule+0x17db/0x58f0
- schedule+0x164/0x2b0
- schedule_preempt_disabled+0x13/0x30
- __mutex_lock+0x7c1/0x1550
- rcu_barrier+0x4c/0x530
- netdev_run_todo+0x2fc/0x1060
- tun_chr_close+0x13c/0x1c0
- __fput+0x418/0xa50
- task_work_run+0x1d9/0x270
- do_exit+0x73a/0x2360
- do_group_exit+0x22d/0x2f0
- get_signal+0x121b/0x12c0
- arch_do_signal_or_restart+0xbb/0x860
- exit_to_user_mode_loop+0x10e/0x770
- do_syscall_64+0x328/0x520
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4b2cf9ddeb
-RSP: 002b:00007ffedfbd6b60 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: 0000000000000000 RBX: 00007ffedfbd6c10 RCX: 00007f4b2cf9ddeb
-RDX: 00007ffedfbd6be0 RSI: 00000000400454ca RDI: 00000000000000c8
-RBP: 00007f4b2d0359ad R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000008
-R13: 0000000000000003 R14: 00007ffedfbd6f08 R15: 0000000000000000
- </TASK>
+In particular, I would be interested in whether there are operations
+which require sufficiently tight coupling with the PLOAM/GEM state
+that a userspace OMCI agent becomes impractical, or whether the main
+reason is architectural simplicity and having one kernel-controlled
+state machine.
 
-Showing all locks held in the system:
-locks held by kworker/u8:1/13: 3, on CPU#1:
- #0: ffff88817721b940 ((wq_completion)ipv6_addrconf){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc90000127c40 ((work_completion)(&(&net->ipv6.addr_chk_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #2: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: addrconf_verify_work+0x19/0x30
-locks held by khungtaskd/35: 1, last CPU#1:
- #0: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180
-locks held by getty/5419: 2, on CPU#1:
- #0: ffff88817a7b30a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70
- #1: ffffc900027682e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x45a/0x1360
-locks held by kworker/u8:4/9945: 2, last CPU#1:
- #0: ffff888177d09940 ((wq_completion)bat_events){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc90006db7c40 ((work_completion)(&(&bat_priv->tt.work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
-locks held by kworker/u8:5/19085: 4, last CPU#1:
- #0: ffff88817741f940 ((wq_completion)krds_cp_wq#12/0){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc90003a0fc40 ((work_completion)(&(&cp->cp_conn_w)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #2: ffff888169e6a180 (&tc->t_conn_path_lock){+.+.}-{4:4}, at: rds_tcp_conn_path_connect+0x1cc/0x920
- #3: ffff888192303660 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: rds_tcp_tune+0x220/0x920
-locks held by kworker/u10:0/25329: 3, on CPU#1:
- #0: ffff8881000ac140 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc9000418fc40 ((linkwatch_work).work){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #2: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: linkwatch_event+0xe/0x60
-locks held by kworker/0:1/27790: 7, last CPU#0:
- #0: ffff88810006a940 ((wq_completion)events_long){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc9000141fc40 ((work_completion)(&(&br->gc_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #2: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: process_backlog+0x3de/0x18b0
- #3: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: NF_HOOK+0x9e/0x3c0
- #4: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: ip_route_output_key_hash+0xd8/0x2a0
- #5: ffff888121028298 (hrtimer_bases.lock){-.-.}-{2:2}, at: __hrtimer_rearm_deferred+0x99/0x4b0
- #6: ffffffff9aa29748 (&____s->seqcount#2){----}-{0:0}, at: __ip_vs_conn_in_get+0x2db/0x10f0
-locks held by syz.0.7664/31917: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
-locks held by syz.3.7666/31925: 1, on CPU#1:
- #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
-locks held by syz.2.7668/31938: 1, on CPU#1:
- #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
-locks held by syz-executor/31955: 1, on CPU#1:
- #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
-locks held by syz-executor/31961: 1, on CPU#1:
- #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
-locks held by kworker/u8:7/31997: 4, on CPU#1:
- #0: ffff8881012d5940 ((wq_completion)netns){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #1: ffffc900079cfc40 (net_cleanup_work){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
- #2: ffffffff90244da8 (pernet_ops_rwsem){++++}-{4:4}, at: cleanup_net+0xf5/0x810
- #3: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: ops_undo_list+0x28e/0x8d0
-locks held by syz-executor/31998: 1, on CPU#1:
- #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
-locks held by syz-executor/32005: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
-locks held by syz-executor/32009: 1, last CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
-locks held by syz-executor/32074: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30
-locks held by syz-executor/32077: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30
-locks held by syz-executor/32095: 2, last CPU#1:
- #0: ffff88816f5b1d38 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x1a4/0x9f0
- #1: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x29/0x240
-locks held by syz-executor/32096: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
-locks held by syz-executor/32103: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
-locks held by syz-executor/32108: 1, on CPU#1:
- #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
-locks held by syz-executor/32116: 2, last CPU#1:
- #0: ffff88817a26d038 (&mm->mmap_lock){++++}-{4:4}, at: vm_mmap_pgoff+0x1dd/0x4e0
- #1: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x29/0x240
+I am also wondering whether the transport and the OMCI implementation
+could be treated as two separate questions.
 
-=============================================
+For example, could a generic xPON layer provide the OMCC transport and
+GEM/T-CONT operations while allowing either:
 
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 35 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150
- nmi_cpu_backtrace+0x274/0x2d0
- nmi_trigger_cpumask_backtrace+0x17d/0x390
- sys_info+0x135/0x170
- watchdog+0xfd7/0x1030
- kthread+0x38b/0x480
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 27790 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: events_long br_fdb_cleanup
-RIP: 0010:lock_acquire+0x232/0x350
-Code: ff ff ff e8 50 28 42 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 a2 e3 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 bf 2c 45 0a cc 48 8d 3d 67 4e da
-RSP: 0018:ffffc90000006dc0 EFLAGS: 00000296
-RAX: 32f582729c8e9900 RBX: 0000000000000000 RCX: 8000000000000100
-RDX: 00000000071bee9f RSI: ffffffff8e69ca38 RDI: ffffffff8c6da580
-RBP: ffff888112a39e00 R08: ffffffff8177f1df R09: 0000000000000000
-R10: ffffc90000006ef8 R11: ffffffff81b28790 R12: ffffffff8ed5c8a0
-R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000246
-FS:  0000000000000000(0000) GS:ffff88818d6cf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000040 CR3: 000000000eb48000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
- unwind_next_frame+0xac/0x2550
- arch_stack_walk+0x11b/0x150
- stack_trace_save+0xa9/0x100
- kasan_save_track+0x3e/0x80
- __kasan_slab_alloc+0x6c/0x80
- kmem_cache_alloc_node_noprof+0x354/0x610
- __alloc_skb+0x1db/0x7a0
- synproxy_send_client_synack+0x175/0xde0
- nft_synproxy_eval_v4+0x362/0x4e0
- nft_synproxy_do_eval+0x335/0x550
- nft_do_chain+0x132b/0x1b10
- nft_do_chain_ipv4+0x195/0x290
- nf_hook_slow+0xc5/0x220
- NF_HOOK+0x21f/0x3c0
- NF_HOOK+0x336/0x3c0
- process_backlog+0xa6b/0x18b0
- __napi_poll+0xaa/0x330
- net_rx_action+0x61d/0xf50
- handle_softirqs+0x226/0x860
- __irq_exit_rcu+0xcb/0x220
- irq_exit_rcu+0x9/0x30
- sysvec_apic_timer_interrupt+0xa6/0xc0
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:lock_acquire+0x232/0x350
-Code: ff ff ff e8 50 28 42 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 a2 e3 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 bf 2c 45 0a cc 48 8d 3d 67 4e da
-RSP: 0018:ffffc9000141faa0 EFLAGS: 00000296
-RAX: 32f582729c8e9900 RBX: 0000000000000001 RCX: 0000000000000046
-RDX: 000000004abe915d RSI: ffffffff8e69ca38 RDI: ffffffff8c6da580
-RBP: ffff888112a39e00 R08: ffffffff818f9aba R09: 0000000000000000
-R10: dffffc0000000000 R11: fffffbfff20f4830 R12: ffffc9000141fc40
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000246
- process_scheduled_works+0xc03/0x1630
- worker_thread+0xa47/0xfb0
- kthread+0x38b/0x480
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+   1. an in-kernel OMCI implementation, or
+   2. a userspace OMCI implementation through a packet interface?
 
+That might let us avoid deciding too early that every driver must use
+the same OMCI architecture.
 
-***
+ > I'm creating two new subsystems to control LDDLA (optical) and xPON
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+The optical_frontend abstraction is also very relevant to Benjamin's
+earlier RFC.
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+I think it would be useful to compare exactly which operations your
+optical_frontend API needs against the existing PHY/SFP/hwmon
+interfaces.
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+For example, I would expect:
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+   - temperature / voltage / bias / optical power -> hwmon
+   - calibration storage -> NVMEM where applicable
+   - LOS / TX enable / burst control -> frontend <-> PON MAC API
+
+but I am less sure about protocol/wavelength configuration and where
+that should live.
+
+ > In total, I have tests on the Airoha en7523, en751221 and en7528
+
+This is especially useful.
+
+Having EN751221/EN7523/EN7528 in addition to AN7581/AN7583 gives us
+more than one hardware generation to test the abstraction against.
+I would very much like to identify which fields and operations are
+actually common between them before defining a generic API.
+
+Your DT example also raises another question.
+
+The hardware relationships such as:
+
+         phys = <&xpon_phy>;
+         ethernet = <&gdm2>;
+         optical-frontends = <&en7571>;
+
+seem like natural DT topology.
+
+On the other hand, properties such as:
+
+         omci-vendor-id = "TPLG";
+         airoha,gpon-serial-from-mac;
+
+look more like ONU identity/provisioning policy than hardware
+description to me.
+
+I suspect those may be better supplied through NVMEM or userspace
+configuration rather than becoming DT ABI, but this is another point
+where upstream feedback would be useful.
+
+Finally, your note that GEM/PVID/VLAN handling is performed by the
+PSE/FE/QDMA is useful confirmation that the Ethernet classification
+path and the PON bearer objects should probably not be conflated in
+the generic model.
+
+Thanks for posting the architecture and the DT examples.  This is
+exactly the comparison I hoped this RFC would trigger.
+
+Thanks,
+Gaoyang Wei
