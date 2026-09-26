@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57182EEE69;
-	Sat, 26 Sep 2026 02:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB9736A34F;
+	Sat, 26 Sep 2026 02:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790390084; cv=none; b=KLeUF0JP0USl7YelRGeqNxo/Jrp6ndnFcRa7cg+s+sXnEsynrL1ecazUOz5duFSAPLp9V0jVlmepVWERe28fo218dl4p9x7lIJxcDxYBwbjzsgq4hcFQSwzaaXoxNcG/cuTT9QwK0NO7+0SLGg1v/78BwNCaUKwe1BJFa6pOvKI=
+	t=1790390086; cv=none; b=bvukjFszeZqW1QMDuQUCBGzxW5+PI4Zcm5/dhXvlk+lI0GSplrCewmCIKgU7wf3zbLlSGL0VEDDL0vIZ5CRvHNsZTlQrvPqboSa/uZodckH6fWx0U1w8OPNZ7WtBkisF5QbD1W89pMDIhSvx6ySTiAYCSVyYwoKIlkyZYO9UHBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790390084; c=relaxed/simple;
-	bh=kPrslaKs7J76Ht6EgOaToO1kRT7dA4shyNwvXVA38Go=;
+	s=arc-20240116; t=1790390086; c=relaxed/simple;
+	bh=80wzf8N/KMa0xkAEbQQ6a7eqmK8OFgB5JqN2WG0bpLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rR9rONQLJXYBXNKaQNxcwtVd7iw8aPzfI6qD35pcxbJcqDAi3AQdylznb9VgaPogIiV+BtUiO29OEC3R1HAc3C1huObjafr91Fv5woW5W44/EwLmrI+mvZ8c5D6MY+OtBEdoPA7iuep06L6r4Qj4phgVpYF0L4//na+VME6IUvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mx2a/1Dp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=nl7qoIoquhAmmI8KRgXBilp4M8VftO2rWQ7vD6gWDpZ2kXRLx5dVMe0ro0fMuz/jTbyjoBCcWKkIF6uNC8EDxFhrub0thPs8q/9rW7PtJSKkPM/gLKqe+e8gSTjHqyeLKvRsEPM6QF17MQXUPtf/Pny+WiL1VQf+adeXRwrwfRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4ZckQ0M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mx2a/1Dp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F261F00893;
-	Sat, 26 Sep 2026 02:34:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4ZckQ0M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A091F000FF;
+	Sat, 26 Sep 2026 02:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790390082;
-	bh=TrmUNAIogKRuTOo/lPLenrabqEw90HJDpO+NJL1cgzI=;
+	s=k20260515; t=1790390084;
+	bh=vBgkYpA5BlgzSJAnhC3nNWOVKf2sspu+6zyj519CvRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mx2a/1DpQTKaFYno5ZlLccON7y/9vRXnvAnNzdkK4VK6mZUHQZjY1VZqCTG+h4QxA
-	 XhpKqys57I8MxSIoTjvwWTv+Y6eKO30I8puJQ7AH1GX55urFAqgz3UwxIK+bDgIR8Y
-	 86HsjfpF4ZEOAxPk6L0I5putX5HQ7/88/4qSUiPQo6jfKHDRN2sU6RDdsN4EyriDqp
-	 vGkwv2JlU9wqFTFQbm4Z601E6HO8ERRU7RjalRi7cQPyAxSB9rVprhegJ109O1hhjm
-	 Tl62gqn/p0Saq1j/RU+cFECfyl1rNzTBCin8nnyYfot3WHaXB7Ipq55vQpX9Qq8rLF
-	 MqpFNqRWyr9dw==
+	b=L4ZckQ0MosNlmhHcFH1TC3nomLYc52KN7ICs7sgljfsub3thRofuAxYZA2nSzbEPu
+	 uzKVw7t7MzetJhIZHBS3NEwHKurDb6DBeTwcimM8+n5zBZAuR2zhoks7rwlbeJILKS
+	 yQJGC9plTqSoeX9wBDwaBR9DDIzspLkNGqFI9narxixtFfOP88MDS8N8ABIISDMjbf
+	 5Zq9rYTqNpK5XH+/8dXfTmHTEwHPSD5TfIuQhGjOLw2LIgxsDHGV+vroIqMc2R2blq
+	 6bxqGYvVIDeAABoZmVuTx05vfahDvMYTj+FIaCngbxTWD2Pj/yA4vpDSe/sAAkeobF
+	 B0qVobF6YEuIg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: arouhi@sitime.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 03/14] dpll: add basic SiTime SiT9531x support
-Date: Fri, 25 Sep 2026 19:34:41 -0700
-Message-ID: <20260926023441.1567546-1-kuba@kernel.org>
+Subject: Re: [PATCH v10 04/14] dpll: sit9531x: read DPLL types and pin properties from system firmware
+Date: Fri, 25 Sep 2026 19:34:42 -0700
+Message-ID: <20260926023442.1567603-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921201108.42676-4-arouhi@sitime.com>
-References: <20260921201108.42676-4-arouhi@sitime.com>
+In-Reply-To: <20260921201108.42676-5-arouhi@sitime.com>
+References: <20260921201108.42676-5-arouhi@sitime.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,192 +61,239 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-dpll: add basic SiTime SiT9531x support
+dpll: sit9531x: read DPLL types and pin properties from system firmware
 
-This commit adds a basic I2C driver for the SiTime SiT9531x clock
-generators. It uses a paged regmap range configuration and adds register
-access helpers. Probe gets the xtal rate, takes the optional reset GPIO and
-identifies the variant from page 0 offset 0x02.
+This commit adds prop.c, which reads the DPLL type for each channel and
+the properties for each pin from the firmware node. The pin properties
+are the package label, board label, type, capabilities and supported
+frequencies, with defaults when the node does not describe them. It also
+adds the input and output state structures to core.h, plus helpers that
+map a logical input index to a pair and a lane.
 
-> diff --git a/drivers/dpll/sit9531x/Kconfig b/drivers/dpll/sit9531x/Kconfig
-> new file mode 100644
-> index 0000000000000..c306d1dd1c58a
-> --- /dev/null
-> +++ b/drivers/dpll/sit9531x/Kconfig
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +config SIT9531X_DPLL
-> +	tristate "SiTime SiT9531x DPLL driver"
-> +	depends on I2C && NET
-> +	select REGMAP_I2C
+> Two of the advertised properties are worth naming.  Outputs get a
+> phase-adjust window of one millisecond either way, which is wider than
+> the dynamic range but costs nothing and is what keeps the subsystem from
+> refusing every request; the granularity is one picosecond, because the
+> achievable delays are whole VCO cycles plus thirty-picosecond steps and
+> so form no uniform lattice for the core to check against.
 
 [Severity: Low]
-At this commit, can SIT9531X_DPLL build anything unless some other driver
-selects DPLL?
+Is this paragraph describing code that is in this patch? At this commit,
+nothing under drivers/dpll/sit9531x/ sets dpll_props.phase_range or
+dpll_props.phase_gran. The output branch of sit9531x_pin_props_get()
+sets only type, capabilities and curr_freq.
 
-The only way kbuild enters drivers/dpll/ is through drivers/Makefile:
+The phase window, and a comment giving the same reasons, arrive later in
+"dpll: sit9531x: add support to adjust output phase". The v10 notes say
+the window was moved to that patch, but this paragraph was left here.
+Could it move to that patch's commit message?
 
-    obj-$(CONFIG_DPLL)		+= dpll/
+A smaller mismatch of the same kind is the INTSYNC "re-prioritised"
+comment in sit9531x_pin_props_get(), noted further down.
 
-DPLL is a hidden bool that has no prompt. If SIT9531X_DPLL is the only DPLL
-user in a config, the line
-
-    obj-$(CONFIG_SIT9531X_DPLL)	+= sit9531x/
-
-is never evaluated, and no sit9531x object or module gets built.
-
-A later commit in the series, "dpll: sit9531x: register DPLL devices and
-pins", adds select DPLL, and the v10 notes say the move is deliberate. So
-this only affects build coverage and bisection at this intermediate commit.
-
-[ ... ]
-
-> diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> new file mode 100644
-> index 0000000000000..cf1cda87fa52c
-> --- /dev/null
-> +++ b/drivers/dpll/sit9531x/core.c
+> diff --git a/drivers/dpll/sit9531x/core.h b/drivers/dpll/sit9531x/core.h
+> index 76a2632f0ce4a..230b21b9e2381 100644
+> --- a/drivers/dpll/sit9531x/core.h
+> +++ b/drivers/dpll/sit9531x/core.h
 
 [ ... ]
 
+> @@ -41,6 +51,39 @@ struct sit9531x_chip_info {
+>  	const u8	*clkout_map;
+>  };
+>  
+[ ... ]
 > +/*
-> + * Everything the device holds can change without the driver writing it,
-> + * so nothing here is cacheable -- except the page selector, which only
-> + * this driver moves.  Caching that one spares a read of it before every
-> + * access: the range code selects the page through a read-modify-write,
-> + * and with no cache that read goes to the bus each time.
+> + * struct sit9531x_ref - input reference state
+> + * @freq:		configured frequency in Hz
+> + * @label:		board label from DT or default
+> + * @sig_mode:		signal mode of the pair this lane belongs to
+> + *			(detected from CLKINx_INPUT_MODE at probe)
 > + */
-> +static bool sit9531x_volatile_reg(struct device *dev __maybe_unused,
-> +				  unsigned int reg)
-> +{
-> +	return reg != SIT9531X_PAGE_SEL;
-> +}
+> +struct sit9531x_ref {
+> +	u32				freq;
 
-[ ... ]
+[Severity: Low]
+Can this u32 truncate the u64 curr_freq that sit9531x_pin_props_get()
+stores here and in sit9531x_out::freq? A rate of 2^32 Hz or more would
+be cached truncated, while the full value is advertised in
+freq_supported.
 
-> +const struct regmap_config sit9531x_regmap_config = {
-> +	.reg_bits	= 8,
-> +	.val_bits	= 8,
-> +	.max_register	= SIT9531X_RANGE_OFFSET +
-> +			  (SIT9531X_NUM_PAGES * SIT9531X_PAGE_SIZE) - 1,
-> +	.ranges		= &sit9531x_regmap_range,
-> +	.num_ranges	= 1,
-> +	.volatile_reg	= sit9531x_volatile_reg,
-> +	.cache_type	= REGCACHE_MAPLE,
+This can't be reached in any tree state. The next patch, "dpll:
+sit9531x: register DPLL devices and pins", adds the first caller and
+widens both fields to u64 in the same change. Could they simply be u64
+from this patch?
+
+> +	const char			*label;
+> +	enum sit9531x_signal_mode	sig_mode;
+> +};
+> +
+> +/*
+> + * struct sit9531x_out - output state
+> + * @freq:		configured frequency in Hz
+> + * @label:		board label from DT or default
+> + */
+> +struct sit9531x_out {
+> +	u32		freq;
+> +	const char	*label;
 > +};
 
-[Severity: Medium]
-Can the cached page selector get out of sync with the chip, and then stay
-that way?
+[Severity: Low]
+Is anything meant to write sit9531x_ref::label and sit9531x_out::label?
+Both are documented as "board label from DT or default", but nothing in
+the driver assigns them, either here or at the end of the series.
 
-_regmap_select_page() changes pages with _regmap_update_bits() on
-selector_reg. Since 0xFF is non-volatile, the old value comes from the
-cache, and the write is skipped when that cached value already matches:
+The DT label goes into props->dpll_props.board_label in
+sit9531x_pin_props_get(). The package label goes into
+props->package_label. Could these fields be dropped, or their
+documentation corrected?
 
-drivers/base/regmap/regmap.c:_regmap_update_bits() {
-    ...
-		ret = _regmap_read(map, reg, &orig);
-    ...
-		if (force_write || (tmp != orig) || map->force_write_field) {
-			ret = _regmap_write(map, reg, tmp);
-    ...
-}
+sig_mode is also never set at this commit, so the differential "IN%u"
+branch of sit9531x_input_pin_label() cannot be reached yet. That part is
+fixed by sit9531x_input_mode_fetch() in "dpll: sit9531x: register DPLL
+devices and pins", which runs before any pin reaches this code.
 
-On adapters that only support SMBus byte data, devm_regmap_init_i2c() uses
-the regmap_smbus_byte bus. On that bus, _regmap_write() updates the cache
-before it does the bus write:
+[ ... ]
 
-drivers/base/regmap/regmap.c:_regmap_write() {
-    ...
-		ret = regcache_write(map, reg, val);
-    ...
-	ret = map->reg_write(context, reg, val);
-    ...
-}
+> diff --git a/drivers/dpll/sit9531x/prop.c b/drivers/dpll/sit9531x/prop.c
+> new file mode 100644
+> index 0000000000000..1a09bd168163d
+> --- /dev/null
+> +++ b/drivers/dpll/sit9531x/prop.c
+> @@ -0,0 +1,430 @@
 
-Suppose i2c_smbus_write_byte_data() fails for the selector write. The error
-comes back, but the cached value is not dropped. The raw write path in
-_regmap_raw_write_impl() does drop it with map->cache_ops->drop(). The chip
-then stays on page A while the cache says page B.
+[ ... ]
 
-Would the next access to page B skip the selector write? It would then
-read or write the same offset on page A without returning an error. That
-could be another PLL's page (0x0A-0x0D/0x1A-0x1D) or one of the
-output/system pages.
-
-On error, sit9531x_read_u8() and sit9531x_write_u8() only log and return
-rc. Nothing in the series calls regcache_drop_region(),
-regcache_mark_dirty() or regcache_cache_bypass(). The sit9531x_resume()
-added later only re-queues the poll worker.
-
-Would a selector reset on the chip side also go uncorrected, for example
-power loss across suspend or an internal reload?
-
-Before v10 the selector was volatile, so a stale value was fixed on the
-next access. The missing drop on the SMBus path is in regmap core, but
-caching the selector here is what exposes it. The zl3073x driver uses a
-similar pattern.
-
-The comment says the selector is something "only this driver moves". Does
-that still hold once a transfer fails or the chip resets?
-
-> +/*
-> + * sit9531x_read_u8 - read an 8-bit register
-> + * @reg:	register in SIT9531X_REG(page, offset) form
-> + * @val:	output value
-> + */
-> +int sit9531x_read_u8(struct sit9531x_dev *sitdev, unsigned int reg,
-> +		     u8 *val)
+> +static int
+> +sit9531x_prop_pin_fwnode_get(struct sit9531x_dev *sitdev,
+> +			     struct sit9531x_pin_props *props,
+> +			     enum dpll_pin_direction dir, u8 id)
 > +{
-> +	unsigned int tmp;
-> +	int rc;
+> +	struct fwnode_handle *pins_node, *pin_node;
+> +	const char *node_name;
 > +
-> +	reg = (SIT9531X_REG_PAGE(reg) * SIT9531X_PAGE_SIZE) +
-> +	      SIT9531X_REG_OFFSET(reg) + SIT9531X_RANGE_OFFSET;
+> +	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+> +		node_name = "input-pins";
+> +	} else {
+> +		node_name = "output-pins";
+> +		if (id < sitdev->info->num_outputs)
+> +			id = sitdev->info->clkout_map[id];
+> +	}
+
+[ ... ]
+
+> +	/* Enumerate child pin nodes and find the requested one */
+> +	fwnode_for_each_child_node(pins_node, pin_node) {
+> +		u32 reg;
 > +
-> +	rc = regmap_read(sitdev->regmap, reg, &tmp);
-> +	if (rc)
-> +		dev_err(sitdev->dev, "Failed to read reg 0x%04x: %d\n",
-> +			reg, rc);
+> +		if (fwnode_property_read_u32(pin_node, "reg", &reg))
+> +			continue;
+> +
+> +		if (id == reg)
+> +			break;
+> +	}
+
+[Severity: Medium]
+How is a DT author expected to number reg in these nodes? Two different
+numberings are used here. Neither dpll-pin.yaml nor sitime,sit95316.yaml
+defines either one.
+
+For inputs, reg is compared directly with the interleaved lane index:
+2k is INkP and 2k+1 is INkN. The binding only says there are "4
+differential input pairs whose lanes can also be driven independently as
+single-ended references, so 8 inputs are individually selectable".
+
+A differential pair k is registered only as index 2k, because
+sit9531x_input_pin_is_registrable() skips the N lane. Say a board
+describes differential IN1 with reg = <1>. Would its label,
+connection-type and supported-frequencies-hz be applied to IN0N when
+pair 0 is single-ended? And would the node be silently ignored when
+pair 0 is differential?
+
+The input pin@1 in the binding example ("clkin1", synce) only works if
+pair 0 is strapped single-ended.
+
+For outputs, the logical index goes through clkout_map[] first. On
+SiT95317 that means reg has to be one of 0, 3, 4, 5, 7, 8, 9 or 11.
+
+In the same device node, sitime,output-pll-map is indexed by logical
+output number. The binding describes it as "for each output 0..11" and
+caps it at 8 items for SiT95317. sit9531x_parse_board_config() stores it
+by logical index:
+
+drivers/dpll/sit9531x/core.c:sit9531x_parse_board_config() {
+    ...
+	for (i = 0; i < n; i++)
+		sitdev->out_pll_map[i] = map[i];
+    ...
+}
+
+So on SiT95317, output-pll-map entry 1 refers to the pad labelled OUT3,
+but output-pins reg = <1> refers to a slot that is not bonded out. A
+node written like the output pin@1 in the binding example would match
+nothing. That output would then silently get the 1 Hz to 1 GHz fallback
+range instead of the board's list.
+
+Could the binding document both numberings? Could the driver also warn
+when a pin node's reg matches no registered pin?
+
+[ ... ]
+
+> +	if (dir == DPLL_PIN_DIRECTION_INPUT &&
+> +	    index == SIT9531X_INTSYNC_PIN_ID) {
+> +		/*
+> +		 * INTSYNC destination pin: a PLL locks to the INTSYNC net as a
+> +		 * reference, so it can be connected and re-prioritised.
+> +		 */
+> +		props->dpll_props.type = DPLL_PIN_TYPE_INT_OSCILLATOR;
+> +		props->dpll_props.capabilities =
+> +			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
 
 [Severity: Low]
-This isn't a bug, but is this message meant to print the regmap virtual
-address rather than the SIT9531X_REG(page, offset) value the caller passed
-in?
+The comment says this pin can be re-prioritised, but the mask only has
+DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE. The physical input branch below
+uses the same mask. With this mask, wouldn't the DPLL core reject every
+priority change on these pins?
 
-reg has already been rewritten at this point. Since SIT9531X_RANGE_OFFSET
-equals SIT9531X_PAGE_SIZE, the printed value is exactly one page above the
-regs.h encoding.
+Nothing is registered at this commit and there are no prio ops yet.
+"dpll: sit9531x: add support to get and set priority on input pins" adds
+DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE to both the INTSYNC
+destination pin and the physical inputs, so the series fixes this
+later. Could the comment and the capability land in the same patch?
 
-For example, a failed VARIANT_ID read, SIT9531X_REG(0x00, 0x02) = 0x0002,
-is logged as "reg 0x0102", which looks like page 1, offset 0x02.
+[ ... ]
 
-Would it make sense to keep the original value for the message? The same
-applies to "Failed to write reg" in sit9531x_write_u8() below.
+> +	/*
+> +	 * Seed the runtime ref->freq / out->freq with the first DT-listed
+> +	 * supported frequency so the netlink frequency_get callback reports
+> +	 * a sane initial value before any pin_set occurs.  DT lists the
+> +	 * physically-wired reference frequency for each input pin and the
+> +	 * default output frequency for each output pin.
+> +	 */
+> +	if (num_freqs > 0) {
+> +		if (dir != DPLL_PIN_DIRECTION_INPUT ||
+> +		    index != SIT9531X_MAX_INPUTS)
+> +			curr_freq = freqs[0];
+> +	}
 
-> +	else
-> +		*val = (u8)tmp;
-> +
-> +	return rc;
-> +}
-> +
-> +/*
-> + * sit9531x_write_u8 - write an 8-bit register
-> + * @reg:	register in SIT9531X_REG(page, offset) form
-> + * @val:	value to write
-> + */
-> +int sit9531x_write_u8(struct sit9531x_dev *sitdev, unsigned int reg,
-> +		      u8 val)
-> +{
-> +	int rc;
-> +
-> +	reg = (SIT9531X_REG_PAGE(reg) * SIT9531X_PAGE_SIZE) +
-> +	      SIT9531X_REG_OFFSET(reg) + SIT9531X_RANGE_OFFSET;
-> +
-> +	rc = regmap_write(sitdev->regmap, reg, val);
-> +	if (rc)
-> +		dev_err(sitdev->dev, "Failed to write reg 0x%04x: %d\n",
-> +			reg, rc);
+[Severity: Low]
+For output pins, this replaces curr_freq, taken from
+sitdev->out[index].freq, with the first supported-frequencies-hz entry.
+That value is then cached back into sitdev->out[index].freq further
+down. Doesn't that contradict the v10 note "Took an output's current
+rate from its divider instead of the first entry of the list of rates
+the board supports"?
+
+No output pin ever reaches this code while it behaves this way:
+
+- sit9531x_pin_props_get() has no caller at this commit.
+- The next patch registers only inputs and XO.
+- "dpll: sit9531x: add support to get and set frequency on pins" limits
+  the seeding to inputs and reads outputs back through
+  sit9531x_output_freq_get(), before any output pin is registered.
+
+For inputs, taking the first entry as the wired rate is intentional,
+according to that later patch. The convention is not written down in
+dpll-pin.yaml, though. Should the binding mention it?
 
 [ ... ]
