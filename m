@@ -1,113 +1,165 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A657286A4
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 08:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA533F5BE
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790412221; cv=none; b=gD19zY9deBA0DOy5nF6rA772hBll5YhQUhkVmrocMn5RFB0ya5ZQXIfkaaOa0HsZ5cjI8zG8BDPEq738XwgEoovr1346bgCY0qqkxVBjRY6NOzODVqoVRW7kpIrVKDf0+BgCKxMcavQnr22YCtcZRHgRGDx46hYiwVDVSrXro10=
+	t=1790413250; cv=none; b=G5Wa1Liq1VwKl39dtYxue9U4tsjlLY/IPCV+76E2pnXGaA3FyGFr0mBCFp/iLZWUPtxtIbiNNB7D8HPkoiDVpbhJtDtax04wGcOPHL7TFY+V9SRxUPrO1kLQscHOIIg51t+tetjL5tHK3YYb9KyCaSnIUHPrydJVUXjzQLEWn5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790412221; c=relaxed/simple;
-	bh=12EUdsbFiHBURzlJjrzAK8K4NZINHomEF0ijgoIRkOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxAyjUEmocoRk7y8mL+IwR9APKDpKT0/8hXJw7APK1NBfXjo2RYH2O4NS2PK5TDG+VYh20VjfFeGpLSXCbmJtr6G4Yf4Dvta16OhVULK76j6tPbWeDRH555oIpGIXP3wIGhnhig9voGGSt9JY53c+JWnoMgbuoYC4YkR6cJrffM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQ9waO3B; arc=none smtp.client-ip=74.125.225.99
+	s=arc-20240116; t=1790413250; c=relaxed/simple;
+	bh=4cRsFsDt6Up/vvP7T3bPTI/3VbP0v8lPFsiVG9KdPO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WrBkZwFMMygmVAdKmVnC932LPksdCJknHtixgOpDYefYZtpk60KQFcNLzj6kJF40hPCs6v8sLuzkwRUBC4X85dEGhOUwzjpe3LisfQxwr5syQOi6X7SO0AxCb2prakV2AOoudOeHpG8CKhU2OC8x+Dwpil1yoJXemtT4vF27laA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ao9tJSUY; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQ9waO3B"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48877902c99so1383437f8f.2
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 01:43:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ao9tJSUY"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3411e0ace58so2016336eec.0
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790412219; x=1791017019; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QCwVdOxjrFD+KrFGvyZLlA0okXbQCYf9gkSOoPwm8f0=;
-        b=sQ9waO3BnTOzJMYOCXCLbcxZZobeBoAgwyUF4n0Itanw/bT0XnLu0IOpdVYUqDMUuY
-         CnYvDX+CzGQAPCE9CBJl/4b9zolIuYpJdWuzZZP/X1bfrfu3VV856s+xf3mp+oW4W5zs
-         c1u39oZiHrZBS0alTPpBNkqJ6VlGFu8rTRCMFgsBuJKJrxw+XN+ZLHC3z5fa5R635lLB
-         0eSu9NAao1vCpTbLcwWb9F3I1ThGBdLeIf2TNcjEXTMRYY5UHGZatJHphdTfjGaa4xyi
-         PayrediRnZ/8NO7cBojsw9lOfUsUjNUq/k/XM6+hAvdfDehzQlgpo/9tOOIwoqExXVjt
-         VKEw==
+        d=gmail.com; s=20251104; t=1790413248; x=1791018048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=quXvg9Bk9ON8ryc8ejCwrUBsOB74NdxZSH8xzj0H2yc=;
+        b=Ao9tJSUY5UWrChQkjecfKzAHceCqAJqcHPHnVptM5/oPo7hZx/440Ym5dcchkSBIgd
+         uEadDVepBbWQqRbGlqnydQanPqmDLG/7U126orBGJVJ2wSz9waxfUUho31eoA0wmi/Ns
+         pXDb0L7hNzKh0GyhkbITJ68T+Zn7QnU7JvfmDJZztxoxjmFbhd2CkIhSK2xOmWXiYAm7
+         QL8MxdK7vP23DAeuTSRBf2jJEljVtWj3z0Yih6o/gb7MDQogrkQlBeQCOzUDAJQzZCYd
+         UpawKeDsMwYMkfQY73FXhPXsUweKZZbrngrFmvzlnLp2vju+gom7EArcQu8+Vl33ztpu
+         sj8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790412219; x=1791017019;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QCwVdOxjrFD+KrFGvyZLlA0okXbQCYf9gkSOoPwm8f0=;
-        b=r8B0v3AjW5qbCmMIHeJ0EOpzKcMOyxnqca8mDNEUqrS37x+VsnbBJlz576yCqJQVPF
-         Gv+stR6jA7H4GmPHTbHfZ/oX8X5ozZlc18Xi/ujtt4IG33vZFPiAB8aBTj+jPCoQEpXc
-         BVjiwgk1Sfud8X8yuTZiue6OgiSP60+0cSAPfgT1Fu0gnZaNz9HSI8ZiKXxFz/XExQ2a
-         m4fyrauHUkWc/HygKJKruICaBGLEYn0DR0TeDbba0TJen7dsPBde5ymBbbie3t+xn5V/
-         0OPbgezw7lJXmJkwKUbA4zEqB26MgarVTFkPG7MMK62lpol7Q++vrjkaRFWuPu77K1c0
-         pR8w==
-X-Forwarded-Encrypted: i=1; AKwUvBzdXCHr30SIGDTR4F166L97Hb7nXXxGO9CAmDMyWW8tMYHkCcf+Pa6jDt4Y6Eu39w+ioOR7rKU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLroYcz6A8qqJ5w/8vUouatKZ4FUuX+0mypllu/WetZCevGzuZF
-	BxOrgP5dNljuRRFWegyxV54SBhERyzXNw8ilDvnOuXDpOsK0iZaI+cu3
-X-Gm-Gg: AYBFou0qNaTl7vc4TrB/Hjk4nUky6C22BS/6ZEPMD9pW8lTye9S4FhBSw2CAEohAFiT
-	gMUq5Hv80TAeGe+PK2ka+u5qL5IcNHelJibVeUoW3EVh/5nX06coUIHzkyU7UGZHB7W713zwAh9
-	2KnLlHQzjTSPrqPSnPDXPdp4VorEPPre0+cHaq1txnYfEDHSnX+EpQ5FlFGBUzdaUBfEq4+wO3R
-	tSnGL5woNYV85Khl4q0o8FlywyqybKn2Cxj6ZNkHORlvt8fiOANKCf8w5t4uliGc/3Os31xwhm5
-	+J1iaitdGhQbDauUJ6g09IkYBe7n+Hph6Qhoc8kQwHp4wDbzO6aE2s1tWBgCcXYpRdzq931/e7P
-	EPVPXFjFBW9QVUlxGq+SgT4DXyMSsNwSaf2FisA3LmemosdnTGkdq/QFqwGIA3Mm/Z8gsOP+Nzx
-	NtJXfjQcB5s0d3eTR/RzVj2gz0enRFnvyqUjxkYC4pmU2H4xRupl1KbTqcupaj83xuXzbygtx+k
-	oRW5tVxqB3dUJDT7/RVOrava0hjnEEW/wL9qYZHI6QRgYKME36Firxu2teuFbmPOG1dqi8//Aut
-	Puz6sZP3YBFTqznvF9MiBd5fkVWMzKzFI03Lp0k5IcJZjeDv07U6OXyceEtjLffHtnnxbOnOcKJ
-	pDWvG62NFzSOi74K36f4kqA==
-X-Received: by 2002:a05:6000:1a85:b0:487:ee4:b5e4 with SMTP id ffacd0b85a97d-488716b6cd7mr15679810f8f.8.1790412218418;
-        Sat, 26 Sep 2026 01:43:38 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a30b1dfsm12979497f8f.4.2026.09.26.01.43.37
+        d=1e100.net; s=20260707; t=1790413248; x=1791018048;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=quXvg9Bk9ON8ryc8ejCwrUBsOB74NdxZSH8xzj0H2yc=;
+        b=WXYKVVL2KxStII1L+B0dR+lBQfmS+WhdY9wKtEqNGOrG9MavTGXA1spJ3tWZLrvxam
+         OOzaAbb8Dyhzzu/562Yuus4r4/v5ZhrYT6UoCwcoOxrNwVoO3gI30hqxz+g1xQaht6RO
+         N+qmi4JtzPfuSkMEZdE3SgoOKwumXQiVD/hpN8ben/zv/sQnmHRK2+nK3wXszNSs7WoI
+         z1wfK3uFDNX4aKqP4XX9klWMSrDN632M2tlHuCguNpp9hYlwG014z7Pm4QB7iBLyxswH
+         KGUx14+NP7xeQf9aa+jlIAnMno05ZmqGnbJowiL26oP0mBUb2qSp0R66dBXeG+yXJjVT
+         aa8Q==
+X-Gm-Message-State: AFq9FYKwgJ4n6Lemi+cdjZETPFDJqCva0e4N+JCaYtFJlVtJPI4idyrI
+	uFZIXf4WUpI3kvgjNsG5hEZWjy3xs07sWi6M5jnmTe44CzWqfUSnPPkw
+X-Gm-Gg: AYBFou2H+YZE+It1RwRSkKnuI0aO78dARpfeyWNmWWGQzLhG7xiwp2Sw+p6TB0vD1z7
+	mpOM66jOMnSlej8O0Xz6tcqLKkczCKEgDPoDkGs5E4khPtDorjLV00BbEJDIn+91mcPdE0niy4+
+	kgWoYDsXAhnMdV4xQ97mBSPBa7Ufr+HQBfiboItHiRh9heO8uAHXuQJcYl56BNLkqUHHiUNxUko
+	IPeasxdlWkr2sXlHhbPRewy8ZZHabsrMbTXsvoAh9y66iSbdj+hXwnrv4nAT+q5M13eIWnjiNcg
+	mM+eKBJh7xQzgWGugKzIPEFC05KKJgCaaU+dVznXo6VLZt1ew4t/yR9DJl5M+97q6Koceg3l8wV
+	UE7pop10rKUndrwXxgg6RP3WBQ81c67/sPGv+k+x+t2AH8GiCnI6VSZxFL2Cr8Xa7duYLta6eyb
+	bzKPWgPFTFqutHrcRvyM8BCpd0//jnNX/Cvp0q3Xy1pzbMSbYNl4uKDn5me9S0AnGXCqcWAaa4b
+	1ANswWfnIVUh2uj+6oBIBlHHhzQ0BL5
+X-Received: by 2002:a05:7301:152a:b0:339:7c91:21f4 with SMTP id 5a478bee46e88-34273252770mr2697961eec.34.1790413247517;
+        Sat, 26 Sep 2026 02:00:47 -0700 (PDT)
+Received: from 192.168.50.3 ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144173a2asm13336250eec.6.2026.09.26.02.00.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 01:43:37 -0700 (PDT)
-Date: Sat, 26 Sep 2026 10:43:35 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Matt Johnston <matt@codeconstruct.com.au>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: mctp: Stop selecting flow support for
- KUnit tests
-Message-ID: <areFT_yfInT01o2r@gmail.com>
-References: <20260925192510.93840-1-kmehltretter@gmail.com>
- <8edc4e71edceb124e2dca233cddb75e198b53a51.camel@codeconstruct.com.au>
+        Sat, 26 Sep 2026 02:00:45 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Jiri Pirko <jiri@resnulli.us>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	co+2cf741c3005abc20@bugs.sh,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: team: stop reusing skb after queue override
+Date: Sat, 26 Sep 2026 17:00:39 +0800
+Message-ID: <20260926090039.1714460-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8edc4e71edceb124e2dca233cddb75e198b53a51.camel@codeconstruct.com.au>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 26, 2026 at 03:53:28PM +0100, Jeremy Kerr wrote:
-> Hi Karl,
-> 
-> > MCTP_TEST selects MCTP_FLOWS, which also enables SKB_EXTENSIONS when no
-> > transport requires them.
-> 
-> But we want to test the flows support, why disable this (and
-> consequently skip the flow tests in the vast majority of test runs)?
-> 
-> > Remove the selection to follow the dependency
-> > rule in Documentation/dev-tools/kunit/style.rst.
-> 
-> That suggests "depending on", rather than removing the coverage.
-> 
+dev_queue_xmit() consumes the skb regardless of its return value, but
+team_queue_override_transmit() treats a non-zero result as if no handoff
+occurred.  An AF_PACKET sendto() can therefore make team_xmit() pass a
+freed skb to another override port or the mode fallback when the port qdisc
+drops the packet.
 
-Hi Jeremy,
+Report the handoff decision separately from transmit success and stop after
+the first override port.  This preserves the existing success and drop
+accounting.
 
-Thanks for the review!
+  BUG: KASAN: slab-use-after-free in sk_skb_reason_drop
+  Read of size 4 at addr ffff88800d5e979c by task poc/131
+  Call Trace:
+  ...
+  sk_skb_reason_drop (net/core/skbuff.c:1220 net/core/skbuff.c:1249)
+  team_dummy_transmit (drivers/net/team/team_core.c:502)
+  team_xmit (drivers/net/team/team_core.c:1869)
+  __dev_direct_xmit (net/core/dev.c:4990)
+  packet_xmit (net/packet/af_packet.c:286)
+  packet_sendmsg (net/packet/af_packet.c:3140,3172)
+  __sys_sendto (net/socket.c:800,815,2281)
+  __x64_sys_sendto (net/socket.c:2288,2284)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+  Freed by task 131:
+  ...
+  __tcf_kfree_skb_list (net/sched/sch_generic.c:59)
+  __dev_queue_xmit (net/core/dev.c:4353,4884)
+  team_xmit (drivers/net/team/team_core.c:832,1867)
+  __dev_direct_xmit (net/core/dev.c:4990)
+  packet_xmit (net/packet/af_packet.c:286)
+  packet_sendmsg (net/packet/af_packet.c:3140,3172)
+  __sys_sendto (net/socket.c:800,815,2281)
+  __x64_sys_sendto (net/socket.c:2288,2284)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+  Kernel panic - not syncing: KASAN: panic_on_warn set ...
 
-OK, I can change that.
+Fixes: 8ff5105a2b9d ("team: add support for queue override by setting queue_id for port")
+Reported-by: <co+2cf741c3005abc20@bugs.sh>
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ drivers/net/team/team_core.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-I was confused by the existing !MCTP_FLOWS fallbacks, but now understand
-that you want the suite to retain full flow-test coverage.
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index beffbe450612..59dd94271ff1 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -820,7 +820,8 @@ static struct list_head *__team_get_qom_list(struct team *team, u16 queue_id)
+ /*
+  * note: already called with rcu_read_lock
+  */
+-static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb)
++static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb,
++					 bool *tx_success)
+ {
+ 	struct list_head *qom_list;
+ 	struct team_port *port;
+@@ -829,8 +830,8 @@ static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb)
+ 		return false;
+ 	qom_list = __team_get_qom_list(team, skb->queue_mapping);
+ 	list_for_each_entry_rcu(port, qom_list, qom_list) {
+-		if (!team_dev_queue_xmit(team, port, skb))
+-			return true;
++		*tx_success = !team_dev_queue_xmit(team, port, skb);
++		return true;
+ 	}
+ 	return false;
+ }
+@@ -1864,8 +1865,7 @@ static netdev_tx_t team_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool tx_success;
+ 	unsigned int len = skb->len;
+ 
+-	tx_success = team_queue_override_transmit(team, skb);
+-	if (!tx_success)
++	if (!team_queue_override_transmit(team, skb, &tx_success))
+ 		tx_success = READ_ONCE(team->ops.transmit)(team, skb);
+ 	if (tx_success) {
+ 		struct team_pcpu_stats *pcpu_stats;
+-- 
+2.55.0
 
-Karl
