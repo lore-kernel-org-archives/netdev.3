@@ -1,275 +1,127 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC06031DDBF
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 03:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678BE12C534;
+	Sat, 26 Sep 2026 04:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790394216; cv=none; b=JLJ6Q5E+gDG2xt7yIN9XJQ5Z4b6Ef4UiF3vWkRp2y22qu1ilY6u8DoC5gldk2w1v4OzfRCFG9NKO1zfxme1jGNW91JrUfeHIEqWoV6Wm7j1qEKyXDTrFdttpvPYo/uAPGScg+moJHWDCUhlUGsgCT4tcMddCw7hsve+4LdPeOdI=
+	t=1790396307; cv=none; b=OI7EZQ7GfxfpzPJXbYujbw0RXEIBYtKnBnXLIZ+8X1OEWiwap5YKzMHHn9RH4tHBQpLyAl8X9xR8y6LsL8yUtPPP4fs7Ozg8WJ2w5NqMzyugWGGQzBVlcdo4f86SKmD1xBYV24fQ42xtZD9CQVEHr0GWI3oHOxNwCBB2pTFqamw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790394216; c=relaxed/simple;
-	bh=wWM7R5ZQsiSnbrgcOHKR9c/zY1X8rLuCD5XcSaVI3j8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=da22f2VYb+gM36m+4PP68Bz4BZ3pZhz5yHAx26S1WBWYmwcC8MLdAIogfVazEqA1M6szUR6kqGFz9FoyJjUs1F+yTm4+c1maVuPNl++AFfjT2KIcIcpjRLlZ03pmAhQ14q3qvuTHguB8Dwvp7dWrG39g1Kpb/fWI6JlVwd2yxwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4be498aca30so1891514b6e.3
-        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 20:43:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790394214; x=1790999014;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m2z6tUl0ZMVMS5NVheiYbVnlHfU4wooxdjmTT4h9Zss=;
-        b=nISj1VYKMaa21C80uW3IijSkdU6X7BVuicPTlszjv4umvJjJEdJUxfFmFrBUgWCpWj
-         qfRBHVv8il2qotkAyLY8p42UxfXkeCjC2m1tuqhcLMjo1glXFDCV2VLpQFsi5uRRjkWy
-         MH4CZAO+oVy/QzLE/1zye6/90HkKPEZ98T94X+nE3WJs62O17JpgQ0/wCKkPgO4oY+nI
-         WeS1ZDOerq1EFdQ/HC1TYnukugFK754d4uKCWPwCS1KgoEHvJ5PSsZfuUeJdCklAGlLj
-         iX6Gwbah+mEVYVPOpFJlIgD/PeXjZP7JmVQNb4ry85DVqp2B9douvZmj8XLz1YXQ6REJ
-         sU5A==
-X-Forwarded-Encrypted: i=1; AKwUvByQD666+3ibdCDRG8Gx4QeQAk2LuyTFDSyVApQP5vXhBGxjEMlJOj95YE69Ywr3pBO8EHjf4ig=@vger.kernel.org
-X-Gm-Message-State: AFuF++nY8OUhVT7+MAkLQ+DKdgJIWorb/56fMlnk41un+RBxRg7VfL+G
-	iiI8Aagw3PXdTbQ2S17d0b9YDamVjJgRy2b1cSOHwBT0+9n2T2yY1dP2dB81XhvZ9fMC25T7QGE
-	iLBplNBlDu4ALjsIRGC8AgxSvAsR2gPjAu2jOnVsK+UDkbWqtdCwFjJkpV4c=
+	s=arc-20240116; t=1790396307; c=relaxed/simple;
+	bh=PRfOzZrYIdg1BcLblrEwxtGq+g0dYvoRy7CknEd4ogo=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cYuLvM5JGB1bqL6uDcKZ+gRqe0HNzNT/F8piveo82zR7vKGoaKm1iF4ZmYihGXnvPbXhkXgE6UTgGjYi8OrBPln3VP4/1YKTMnFOgGfwNAMhG9p38pruQHlr+UxF1ZgnrIl9P2rZTvviK9EaqhMsWXSrPWTFKKAxvEU2RVUqPZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Wtink7/2; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=NFXffhzp; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Wtink7/2";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="NFXffhzp"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68Q4HhaG012552;
+	Sat, 26 Sep 2026 06:17:49 +0200
+Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id DC322120F5D;
+	Sat, 26 Sep 2026 06:17:38 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1790396259; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAXY2biKxunPrl11EaBx+857E89xXyTGFogWVcbu66E=;
+	b=Wtink7/2uySDOMS/1vz1DLI9hL12TgbfnHvXobGaIVwMe0Dtp5JgRXcKh5YXezHrykKvXa
+	QhIGB4ZK5TN0FuCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1790396259; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAXY2biKxunPrl11EaBx+857E89xXyTGFogWVcbu66E=;
+	b=NFXffhzpK20XNzzwl2Eq2ABpFeFF759Ri0YEUqTa7tIKRdeIEo/+q4MZ9U47wuSysI+pWX
+	qeWWBvL+ucxc1fNQJM9w94gU+t+GOkhTmOBsN4nEhInEptjpV2nUILJxeyVf/FfbFPL9Yh
+	h8omKSN8kJqTBK0tNdJZebntsXp9ntiWhXfnNTfyedqIB4p6I+kZHzy4bplpFse3bLS8wG
+	BX4wVDE2WXLWRmiFNQw6WxtyubZddo31Afzypfv7FaFoEhFwteMdZ4e/l//NCJt/Er4XXB
+	ZEzITB5VXmwh/tdELLbYeQj5Hpnhz0Jwb4OSM1GLqEHu9CXgXL9LP/E/wQY06Q==
+Date: Sat, 26 Sep 2026 06:17:38 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+        David Lebrun
+ <david.lebrun@uclouvain.be>,
+        Ahmed Abdelsalam <amsalam20@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] seg6: fix HMAC validation when an extension header
+ precedes the SRHA
+Message-Id: <20260926061738.25343ff4cf4ecd54e7f0750a@uniroma2.it>
+In-Reply-To: <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
+References: <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:244d:b0:4cb:f21c:a794 with SMTP id
- 5614622812f47-4d72982faf8mr8432441b6e.28.1790394213837; Fri, 25 Sep 2026
- 20:43:33 -0700 (PDT)
-Date: Fri, 25 Sep 2026 20:43:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab73f65.80e1c6cc.1e8e5f.0041.GAE@google.com>
-Subject: [syzbot] [block?] INFO: task hung in __bio_queue_enter (3)
-From: syzbot <syzbot+90895f5bfaa7243c2d20@syzkaller.appspotmail.com>
-To: axboe@kernel.dk, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Hello,
+On Wed, 23 Sep 2026 13:51:37 +0900
+Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
 
-syzbot found the following issue on:
+> seg6_hmac_validate_skb() derived the SRH from skb_transport_header().
+> That only holds while the two coincide, which is not true on the
+> seg6_local input path.
+> 
+> ip6_rcv_core() leaves the transport header just past the IPv6 header.
+> A Hop-by-Hop options header is consumed before the route lookup and
+> advances it, but a Destination Options header is not: the seg6_local
+> lwtunnel is entered through an input redirect from the route lookup,
+> which bypasses the extension header handlers. The transport header
+> then still points at the Destination Options header while
+> seg6_get_srh() has located the real SRH further down the chain.
+> 
+> The HMAC is therefore computed over the Destination Options header,
+> and a packet carrying a valid HMAC TLV is dropped when
+> seg6_require_hmac is set. Such a packet is legitimate: RFC 8200 allows
+> Destination Options before a routing header, and get_srh() has walked
+> the header chain since commit 5829d70b0b6c ("ipv6: sr: fix get_srh() to
+> comply with IPv6 standard "RFC 8200""). The misread header is covered
+> by the pskb_may_pull() in seg6_get_srh(), so the result is a wrong
+> verdict, not an out-of-bounds access.
 
-HEAD commit:    12fec40907fa Merge tag 'nf-26-09-18' of git://git.kernel.o..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=1112c515580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c3be6e434b07ebb6
-dashboard link: https://syzkaller.appspot.com/bug?extid=90895f5bfaa7243c2d20
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=178f7525580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12213805580000
+Thanks for the patch.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a49602a7524f/disk-12fec409.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/62c2686deb3b/vmlinux-12fec409.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/22e54abf9b3b/bzImage-12fec409.xz
+This patch also closes an out-of-bounds read that the commit message
+does not mention. The commit says the misread gives a wrong verdict,
+not an out-of-bounds access. That holds for Destination Options, which
+has the same length encoding as the SRH. A Fragment or an Authentication
+header is encoded differently, and a forged packet can put one before
+the SRH. The old code read that header at skb_transport_header() as an
+SRH, and seg6_get_tlv_hmac() computed the TLV pointer from its second
+byte. The pull in seg6_get_srh() covers only the bytes up to the end of
+the real SRH, and the TLV pointer can land past them. This runs before
+seg6_require_hmac is read, and the default configuration reaches it.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+90895f5bfaa7243c2d20@syzkaller.appspotmail.com
+Before this patch, a forged Fragment before the SRH toward an End SID
+faults in that read (KASAN, DEBUG_PAGEALLOC):
 
-INFO: task udevd:5676 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:udevd           state:D stack:25736 pid:5676  tgid:5676  ppid:4984   task_flags:0x400140 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5526 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7277
- __schedule_loop kernel/sched/core.c:7354 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7369
- __bio_queue_enter+0x369/0x7f0 block/blk-core.c:396
- bio_queue_enter block/blk.h:99 [inline]
- blk_mq_submit_bio+0x776/0x2a70 block/blk-mq.c:3127
- __submit_bio_noacct_mq block/blk-core.c:756 [inline]
- submit_bio_noacct_nocheck+0x2f4/0xa40 block/blk-core.c:790
- bh_submit fs/buffer.c:1146 [inline]
- block_read_full_folio+0x581/0x810 fs/buffer.c:2359
- filemap_read_folio+0x12c/0x3a0 mm/filemap.c:2520
- do_read_cache_folio+0x354/0x590 mm/filemap.c:4156
- read_mapping_folio include/linux/pagemap.h:1015 [inline]
- read_part_sector+0xb6/0x2b0 block/partitions/core.c:724
- adfspart_check_ICS+0xb1/0x960 block/partitions/acorn.c:357
- check_partition block/partitions/core.c:143 [inline]
- blk_add_partitions block/partitions/core.c:591 [inline]
- bdev_disk_changed+0x851/0x17a0 block/partitions/core.c:695
- blkdev_get_whole+0x372/0x510 block/bdev.c:793
- bdev_open+0x324/0xd70 block/bdev.c:1002
- blkdev_open+0x461/0x600 block/fops.c:674
- do_dentry_open+0x816/0x1380 fs/open.c:996
- vfs_open+0x3b/0x340 fs/open.c:1101
- do_open fs/namei.c:4837 [inline]
- path_openat+0x1443/0x1d60 fs/namei.c:5000
- do_file_open+0x23e/0x4a0 fs/namei.c:5029
- do_sys_openat2+0x115/0x200 fs/open.c:1417
- do_sys_open fs/open.c:1423 [inline]
- __do_sys_openat fs/open.c:1439 [inline]
- __se_sys_openat fs/open.c:1434 [inline]
- __x64_sys_openat+0x138/0x170 fs/open.c:1434
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f77b02a7407
-RSP: 002b:00007ffe9ad1c750 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f77b0965880 RCX: 00007f77b02a7407
-RDX: 00000000000a0800 RSI: 000055a197e52f80 RDI: ffffffffffffff9c
-RBP: 000055a197e39910 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 000055a197e4dba0
-R13: 000055a197e47190 R14: 0000000000000000 R15: 000055a197e4dba0
- </TASK>
-INFO: task syz.0.17:5845 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.0.17        state:D stack:24640 pid:5845  tgid:5844  ppid:5783   task_flags:0x480140 flags:0x00080002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5526 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7277
- __schedule_loop kernel/sched/core.c:7354 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7369
- blk_mq_freeze_queue_wait+0x101/0x180 block/blk-mq.c:191
- blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
- queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
- nbd_set_size+0x4c5/0x7d0 drivers/block/nbd.c:383
- nbd_genl_size_set drivers/block/nbd.c:2111 [inline]
- nbd_genl_reconfigure+0x7e1/0x1040 drivers/block/nbd.c:2444
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2575
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1338 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1364
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5d2239e159
-RSP: 002b:00007f5d232a7028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f5d22625fa0 RCX: 00007f5d2239e159
-RDX: 0000000000040080 RSI: 0000200000000280 RDI: 0000000000000004
-RBP: 00007f5d2243506b R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f5d22626038 R14: 00007f5d22625fa0 R15: 00007fff9d2e9788
- </TASK>
+  BUG: unable to handle page fault for address: ffff888106304078
+  RIP: seg6_hmac_validate_skb (net/ipv6/seg6_hmac.c:91 net/ipv6/seg6_hmac.c:192)
+   input_action_end_core.isra.0 (net/ipv6/seg6_local.c:225 net/ipv6/seg6_local.c:413)
+   seg6_local_input_core (net/ipv6/seg6_local.c:1640)
+   seg6_local_input (net/ipv6/seg6_local.c:1662)
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Showing all locks held in the system:
-locks held by khungtaskd/31: 1, last CPU#0:
- #0: ffffffff8ed5c8e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #0: ffffffff8ed5c8e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8ed5c8e0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6871
-locks held by getty/5374: 2, on CPU#1:
- #0: ffff88803565e0a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc9000322b2e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x45a/0x1360 drivers/tty/n_tty.c:2211
-locks held by udevd/5676: 1, on CPU#0:
- #0: ffff888025b18350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xde/0xd70 block/bdev.c:990
-locks held by syz.0.17/5845: 6, on CPU#0:
- #0: ffffffff902c4448 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
- #2: ffff888025a59260 (&nbd->config_lock){+.+.}-{4:4}, at: nbd_genl_reconfigure+0x4a6/0x1040 drivers/block/nbd.c:2435
- #3: ffff888025c90fe8 (&q->limits_lock){+.+.}-{4:4}, at: queue_limits_start_update include/linux/blkdev.h:1101 [inline]
- #3: ffff888025c90fe8 (&q->limits_lock){+.+.}-{4:4}, at: nbd_set_size+0x284/0x7d0 drivers/block/nbd.c:375
- #4: ffff888025c909b0 (&q->q_usage_counter(io)#49){++++}-{0:0}, at: blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
- #4: ffff888025c909b0 (&q->q_usage_counter(io)#49){++++}-{0:0}, at: queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
- #5: ffff888025c909e8 (&q->q_usage_counter(queue)#33){+.+.}-{0:0}, at: blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
- #5: ffff888025c909e8 (&q->q_usage_counter(queue)#33){+.+.}-{0:0}, at: queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
-locks held by syz-executor/5847: 2, on CPU#1:
- #0: ffffffff902c4448 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
-locks held by syz-executor/5871: 2, on CPU#1:
- #0: ffffffff902c4448 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
-locks held by syz-executor/5897: 2, on CPU#1:
- #0: ffffffff902c4448 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
- #1: ffffffff902c4280 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+Could the commit message also mention the out-of-bounds read?
 
-=============================================
-
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x274/0x2d0 lib/nmi_backtrace.c:123
- nmi_trigger_cpumask_backtrace+0x17d/0x390 lib/nmi_backtrace.c:66
- trigger_all_cpu_backtrace include/linux/nmi.h:164 [inline]
- __sys_info lib/sys_info.c:157 [inline]
- sys_info+0x135/0x170 lib/sys_info.c:165
- check_hung_uninterruptible_tasks kernel/hung_task.c:353 [inline]
- watchdog+0xfd7/0x1030 kernel/hung_task.c:561
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:64
-Code: ac 88 02 c3 cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d b3 c1 23 00 fb f4 <e9> 8c 08 03 00 cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
-RSP: 0018:ffffc900001a7e40 EFLAGS: 00000246
-RAX: 00000000000caff3 RBX: ffffffff819bb370 RCX: 8000000000000001
-RDX: 0000000000000001 RSI: ffffffff8e4140f9 RDI: ffffffff8c6da080
-RBP: ffffc900001a7f10 R08: ffff8880b8733a1b R09: 1ffff110170e6743
-R10: dffffc0000000000 R11: ffffed10170e6744 R12: 0000000000000000
-R13: 1ffff11003cd1bb8 R14: 1ffff92000034fd0 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff888124dce000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb7e3889e9c CR3: 000000000eb48000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- arch_safe_halt arch/x86/kernel/process.c:767 [inline]
- default_idle+0x9/0x20 arch/x86/kernel/process.c:768
- default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
- cpuidle_idle_call kernel/sched/idle.c:199 [inline]
- do_idle+0x2e0/0x540 kernel/sched/idle.c:355
- cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:454
- start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:312
- common_startup_64+0x13e/0x157
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Ciao,
+Andrea
