@@ -1,35 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF112750F2;
-	Sat, 26 Sep 2026 00:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0957E54707A
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 00:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790382082; cv=none; b=uEs/10Aj+0xJkzhy/y5t8V7ykql06wxne/fZkZJDRWz2Txe0/HICQ48RhSeKrwHevUtleoCuG/rYw6YgX3tKv+f+d66ZO8yc0SIj6CVZzOdMjg+bd5+c5Ozz9sZlmDTEk6+22sXrHFs2ypP9YIOSuNwkbkNah2bWR/M9vQrkG+M=
+	t=1790382349; cv=none; b=ZQU9xSuVVP2eIkVipLRn8TZXwxWTHtoFb3FULLeRjU7rs0Ka6rJ08dmLQZhBqCQBiPJmz/4xeW0hwHnuJIn2J9b9Lfi7Bw2no/DEwv/PEmHFg4oyE/+7fzZFkt1UwvAx+72ML11OK07VEwwWQPnt9I8yn+a3fTd/OTApuHmw1FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790382082; c=relaxed/simple;
-	bh=4Dia/lNWtkxXs+meuKwoNzwt2RlyA/ZtSTIRA9Pr+Ok=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oxGAXl/t9tX3AMbTyzPJ4tLuwnpdr07UVoZa+S8gLHAZLaNH9c9MTUL413T9shmF8AibBM5GgqkKwZroClOfZnDkSXE7aUX6sw3THsQo5qBXSn7v2aCph8aA5KOq075ND2LIpnRLH4FL1FCvSIqK8Mf+5oM798Ke6huf6ZCCe14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0XJUoqi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790382349; c=relaxed/simple;
+	bh=9h2B0Dd2usVfbfRDWZYuQIvzRgz9vkuDx864Hr9H0hU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=alfsR9lwlOa7XgNmlJPcE63UP57hbfUthJ45R/PFmDdg40QKrNhFOeAkbSzrixGwGIJtdFzSl+N0FQNGn/hSiuUOK5KV8q50FCvQCykfH3dfjuBy/n/Pejg8O21wAJazTcksrcC9jHJwTkT0ZhJmnaDTFZUc0gPt21n/zVVMGe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=Frao1ska; arc=none smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0XJUoqi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E641F000FF;
-	Sat, 26 Sep 2026 00:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790382080;
-	bh=13uNuSjv5f/qBg9Qh+xrVuVXkYX8fPzZDY//XM8e+4c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=m0XJUoqiIa2cWk5Sv9gfDWf5UMNJVR85JEDB4JkhFD1+ylvmC6tKN4bm5vWoCRYL/
-	 fPhpq9ZjfQ/M2G+S12wnBk/4pH5nIf3+j6Q/gJoILDYcn8XWqajuUuZZHpWInvFVTO
-	 vcdGR9NhpEdrunTvb4WoT24yvMuVPAuMkcaD+8Lv+jWP+hvY+Xe0xCXU/bs+NVb/P5
-	 2asEeW0rg07JOQr+P1ye9AjDLpvrdE/9ejeqtxtI8oIGPVSptYRrsZOMzheA50NAIJ
-	 n4qbd8ocfQi/F9uIvrgBwI+5P6tWFd2u+TLXIRMydV2opf6PdVG/SM8LkPr9JxekFb
-	 R8FIS0CZKIexw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B2C3809A04;
-	Sat, 26 Sep 2026 00:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="Frao1ska"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a39a42dso448250b6e.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 17:25:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790382347; x=1790987147; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=67f1Rgbr2rbEcl0AX4Xr06l+mGUzY4TIGIHJlMP430E=;
+        b=Frao1skaiye1v3gtc6qVdnHkwd3oZs+4zK6nq2z5B+9a/xbJTppRqBVjFSEfHGjMEt
+         GQOfUx8pbWHh5Ka9+C7BI9PapNffQPL/b++tVtsX0wwSWzz2IVILR5lN6URxqlmEJAQ8
+         b+9YbzjHpa0PvoCWmECUuly3VSUA/JjMrXPI0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790382347; x=1790987147;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=67f1Rgbr2rbEcl0AX4Xr06l+mGUzY4TIGIHJlMP430E=;
+        b=BrZsfG2easrZAX8VhcBau4YG/jo/LUP5sedoktaEaWBthTWSiEpOBBv7Ww8RETwzCP
+         pyIhtU7IWebAfhaTwpAQB/HzJcgyakcc4Y7P2papw2wti/LWbxM41v29FbGtyu6XbPPR
+         ijrTFVq/zna9/0sj2j7Xabjj1H6GDELyFtHF4FhKRQ8hUU/UHDv9mcRvUtwIs2F81u2H
+         PEVcKs6ufBwvo0apKvTEfEsc6iVTowTcNKCnLcsnQxDdvGPVb0nVw0BiFMwzJYA5LjCA
+         AVBt8lgtvg+TYlrf4kYWbqOjYISptbHSPaWjJKski2irUyEeCVTaXGl83V406HjHMw5K
+         91lQ==
+X-Gm-Message-State: AFuF++kcT9jVs9yevjnWUNksZ0wiixzu8HRX5uDMNl5dr7jI/7Zh7rjd
+	dURAv3O/Qf+EAo1T5NexZI8HPg6fzZHyoi4p2L/zpCPTGxJkYQo4K/WKBZSWC5lb9BaBCFwQm2H
+	03lNPGE4=
+X-Gm-Gg: AYBFou2Pb+NuxG6olvG4Cb9LYBCZ7ofWvA9fYzh96hgdgCPjxw/dcag9/TowSau2M1P
+	BP9xQXJ0/KOyBO59vubQQwwDG6HuswklQ8Q1tuxyZ5Do9dPqb+PI5j0UyMbzGdFH7qGTMeZ43y0
+	iW4O4kqhU2orLn76FQEhZQU+/OVcTZsK5S7WhbbN8oG9xIFAr0nJUo4qYA2oAQTN4+OLjaZPPNq
+	IChAfWaAOxwHyQ99L1bawfcsfYu4F8b7WGpNjT/rs80e0gsNnaAif/A2t9rXmxNJfobuDumyBQv
+	ZovSdC6arHQytEkWw4PXsMdS6EhKuDBj7oufsmU56lJrHbB8fYMzIy/fqiGoWUueJl17Fji0i0Y
+	GwNlyT/IEqHrP0HjsB1wv2DPLg3VK9ENEmyuhebbO6yElFPn6JEmIEmN7xR5/bHWPHrM2EhFLhw
+	eJv0CEU1RfvMNLhNKZB+tTOYX5ElQLobWguQFt9bRwpIzHOBMRbKNbkNnCgfIR8LioZQvNV/lxj
+	LAxXpevdWP+2EsfP0TuKhlKxgcuaks/FaYs0Svh4HCICiXeRIQLSfgh7XFlqRVJP5rg5KF/VBpW
+	KlU=
+X-Received: by 2002:a05:6808:2387:b0:4d6:9133:cff7 with SMTP id 5614622812f47-4d72d1655ebmr6181079b6e.30.1790382346849;
+        Fri, 25 Sep 2026 17:25:46 -0700 (PDT)
+Received: from com-68297.corp.openai.org ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4dbf6209b83sm3357499b6e.10.2026.09.25.17.25.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 25 Sep 2026 17:25:46 -0700 (PDT)
+From: nramaswamy@openai.com
+To: netdev@vger.kernel.org
+Cc: Neil Ramaswamy <nramaswamy@openai.com>
+Subject: [PATCH net 0/2] tcp: preserve RACK tracking across partial undo
+Date: Fri, 25 Sep 2026 17:25:21 -0700
+Message-ID: <20260926002520.42955-4-nramaswamy@openai.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,64 +69,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/8] net: dsa: motorcomm: Add SerDes PCS
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179038200814.3217464.2719386526229401334.git-patchwork-notify@kernel.org>
-Date: Sat, 26 Sep 2026 00:20:08 +0000
-References: <20260923021945.2203368-1-mmyangfl@gmail.com>
-In-Reply-To: <20260923021945.2203368-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@armlinux.org.uk, linux-kernel@vger.kernel.org
 
-Hello:
+From: Neil Ramaswamy <nramaswamy@openai.com>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I've been investigating a bug in TCP where RACK loses track of segments
+after partial undo happens. At a high-level, RACK can react to a SACK
+by scanning its sorted transmission queue for segments that exceed its
+RACK timeout, mark those segments as lost, and remove them from its
+sorted queue. However, receiving an ACK with a TSecr less than the
+first retansmission timestamp of the recovery episode can trigger
+partial undo, which removes the lost flag from segments not yet
+cumulatively ACK'd but does not ensure that they are in (or are added to)
+the RACK transmission queue.
 
-On Wed, 23 Sep 2026 10:19:32 +0800 you wrote:
-> Rework chip_info to tell SERDES ports from xMII ones, identify the port type
-> at runtime from the pad configuration, and add a phylink PCS driver for the
-> internal SerDes, so that the link of SERDES ports can be established through
-> in-band negotiation instead of a fixed configuration.
-> 
-> v4:
->   - fix 1000basex
->   - YT921X_SPEED_NUM -> YT921X_SPEED_INVALID
->   - reword commit message
-> v3: https://lore.kernel.org/r/20260917185010.3189199-1-mmyangfl@gmail.com
->   - fix build error
-> v2: https://lore.kernel.org/r/20260916164310.3168269-1-mmyangfl@gmail.com
->   - Remove YT921X_PORT_MASK_* macros
->   - code style nits
->   - unconditionally write BMCR_ANRESTART
-> v1: https://lore.kernel.org/r/20260909190541.466476-1-mmyangfl@gmail.com
-> 
-> [...]
+The symptom that I observe is that a long tail of hole segments can
+"escape" RACK and then only get sent out by the retransmission timer,
+which can take a long time and even be serial for many lost segments.
 
-Here is the summary with links:
-  - [net-next,v4,1/8] net: dsa: motorcomm: Remove YT921X_PORT_MASK_* macros
-    https://git.kernel.org/netdev/net-next/c/b6d2762919bc
-  - [net-next,v4,2/8] net: dsa: motorcomm: Split xMII and SERDES port masks
-    https://git.kernel.org/netdev/net-next/c/605597aff803
-  - [net-next,v4,3/8] net: dsa: motorcomm: Identify port type at runtime
-    https://git.kernel.org/netdev/net-next/c/07b60e1bf4a1
-  - [net-next,v4,4/8] net: dsa: motorcomm: Fix register bit field names
-    https://git.kernel.org/netdev/net-next/c/be5cdff08903
-  - [net-next,v4,5/8] net: dsa: motorcomm: Introduce yt921x_speed
-    https://git.kernel.org/netdev/net-next/c/5423f892f129
-  - [net-next,v4,6/8] net: dsa: motorcomm: Hoist port_to_priv helper into chip.h
-    https://git.kernel.org/netdev/net-next/c/c9996cf718ec
-  - [net-next,v4,7/8] net: dsa: motorcomm: Split MDIO bus module
-    https://git.kernel.org/netdev/net-next/c/b9eca1c2be7f
-  - [net-next,v4,8/8] net: dsa: motorcomm: Add SerDes PCS
-    https://git.kernel.org/netdev/net-next/c/4b8fbb875a54
+A conceptual example below illustrates this situation; I'm intentionally
+excluding TSecrs/byte ranges/etc. when not relevant.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   TCP A                            TCP B
+   
+                             Assume TS.Recent = 200 to start.
+
+    A, TSval = 210 --- <delayed>
+    B, TSval = 211 --- <delayed>
+    C, TSval = 212 ----------------> arrives
+    D, TSval = 213 --- <lost>
+    E, TSval = 214 ----------------> arrives
+    
+                   <---------------- SACK C + E, TSecr = 200
+    A', TSval = 216 --- <delayed>
+    B', TSval = 217 --------
+    D marked lost           |
+                            B' ----> arrives, ACK delayed
+                    
+                    original A ----> A fills leading gap,
+                                     TS.Recent = 210
+                                     
+                   <---------------- ACK through C, SACK E, TSecr = 210
+    retrans_out = 0
+    210 < 216 permits partial undo
+    D lost flag is cleared
+    D remains absent from RACK list
+    
+
+A bit of commentary on this diagram:
+
+1. The timestamps I'm using are for the purposes of showing the
+   partial undo comparison; these aren't an exact schedule with the
+   timeouts RACK would use. See the packetdrill for that.
+2. A and B are also marked as lost and removed from the RACK list.
+   However, PRR only allows A and B to be retransmitted. D
+   being marked missing consists of being marked as lost and,
+   critically, not being added to the RACK list.
+3. I delayed the B' ACK because if it is sent back, this may let the
+   sender retransmit D before partial undo happens.
+4. At the end of our diagram, D can only be rescued with the
+   retransmission timer.
+
+There is also another more catastrophic situation in which partial undo
+might happen when a stale TS.Recent is echo replied [1] when handling
+out-of-order ACKs, and I've seen this cause the RTO to jump to over 100
+seconds. But this combination should not happen if [1] is merged.
+
+I see two options for fixing this, and I provided the first as a patch:
+
+  1. When partial undo runs, we make sure that a segment whose lost flag
+     is cleared is added back to the RACK list.
+  2. RACK does not remove from the RACK transmission list until a segment
+     is acknowledged; I think this is a bad approach because you would
+     end up scanning already-marked-as-lost segments every time you do
+     loss detection.
+
+Without a fix as such, packet "D" in my included packetdrill takes around
+400ms to be retransmitted via RTO. With the attached patch, D is
+retransmitted within 50ms of the partial ACK, without an RTO.
 
 
+[1] https://lore.kernel.org/all/20260921222609.50824-4-jeffjo@openai.com/
+
+Neil Ramaswamy (2):
+  tcp: restore RACK list membership when undoing loss
+  selftests: net: packetdrill: test RACK after partial undo
+
+ net/ipv4/tcp_input.c                          | 33 ++++++++++++
+ ...tcp_partial_undo-restores-to-rack-list.pkt | 54 +++++++++++++++++++
+ 2 files changed, 87 insertions(+)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_partial_undo-restores-to-rack-list.pkt
+
+base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
