@@ -1,161 +1,153 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474E836B93F
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 19:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3E5308F03;
+	Sat, 26 Sep 2026 19:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790452046; cv=none; b=OjfxNOJGt3jZNrer0X0o5n752YFpyVU463kxvYoLSUOgqoaRDZmysf0CEEXSBz92N8Zz3jZzMmm+ijGLyViqtjB9GYU/knBkxcopE6tcVMXBIAttcvG9TTFsvZn+l5RmgRbUDr40YnB0tKXg6eWImA4t3kq6khxF30v3rFcWupY=
+	t=1790452143; cv=none; b=U3wVcbpKe4yCwCgN+d3RV1ck8MfDlwihufvOaw24E5EMVit8VHn2UmVnCrAseV0TFlSD1FUFImy9mL9C7L5rqr1EAaye1piyan5Vk6/x6zoAD4c06NXFRpmVG3wJpWOBy00bC+GUTLGBtV/vxlWmJjEoXGVP3eLgSy3O3Y1OAyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790452046; c=relaxed/simple;
-	bh=9Ei0p+nKx4vnn2o6W8x4l0G+Hc2kLsrm3GR4Jh+Lyvk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cOFu6Mt2XZ7Kl/LMFeqvvhTr7W/IwVTZQHz4EkV3WHGfSIfrvWpv89CIxdrij7UOJtUNzEGXu22fxIkxbdk+qUarvPK1/D8XiqAaS3jaYuewtN962wHuKM5+TLgyJteV3RqjMjXgpo7busUz3ix18mFty/Z9oN6HRIbxdE0K9Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bfaNHZDF; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790452143; c=relaxed/simple;
+	bh=Ibb/6XXCwXQp4NCYZvletoa717y4olArOp/reI1OTVc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HQ3S0ATMRT7FlXyqpoq1VwCbv8dcyQyj1K0BlFFyvsNCwtza7WEfkKK8Qfpig2Ez4w+ibzK5XaA5yqIcWDMMevMbCm1Z2l8wGGuTxSNXxNkUGNtBTjE1dMcAmt8HxMYs9aTAPRJpY6G/jH7ugSq1HCuwSSIWwhGHPjxmw3rnawM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=jJQ12Axa; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bfaNHZDF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0EB811A0FB2;
-	Sat, 26 Sep 2026 19:47:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C66FC60749;
-	Sat, 26 Sep 2026 19:47:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5594D102F1E4C;
-	Sat, 26 Sep 2026 21:47:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790452038; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=NRKEYWP3qLY2tzN5RMOtvo4PCJDQVM6G+I/NcSBHzTY=;
-	b=bfaNHZDFhxH/4D2eGOPs+iwf7U92cLl138cdTxljTCJ7v1HP6rnzxLv9UWxOPNuhg/dxkd
-	XwC0usMle3e+IEncdKECFwkz2Im5zLoqjmyfTslj7wWWTcqbLs7YZR4OtvleGOxl+ivqcR
-	YgLYScXZuz+/CgA6ESCxmBTLO7r/s1gEM+K6BpNXykfEvmgnK1IRqspPP6KdimISdApAvC
-	z2qpSrVcM/O1Jqt1AfGyTnWJhZAYFa71VSvtSAs5w2iLDZHiGplglIZYk2xBvh8rjGN3rd
-	qR47dNlcEnajfcRmyY5b0LuielRkns/FV7ku3fxKf0WwVt2AabUvTD6Pw++yZw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: keep the NAPI_DISABLE flag while napi is disabled
-Date: Sat, 26 Sep 2026 21:47:13 +0200
-Message-ID: <20260926194714.648819-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="jJQ12Axa"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 315D9213BC;
+	Sat, 26 Sep 2026 22:48:46 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=r65cERo9nN3Di2tCK7Ta1e4t4LWAALdjLsCb4qNUXHk=; b=jJQ12Axa2HCs
+	kfHXTLDavQxDxR/qvSBGW91RBDI0r2HBTMUiucDSuR1oXZzAiZTPZYrxaYISQ2lK
+	pdEWjpXx8afq8wDxHOYo33WpD8gbbrxNs+pk4Us6pQe8bkgcKhzJzsFMRTXs7sdz
+	rI4OwpOXzQOQWpPUn2o8JENhtBMVoULXeUhezYhuLuU1xj1h6b+nS0mO0mY7mdAW
+	XpOw9qAlflM3aGthodAb/uH4zpKo0DQxURziSqkDUgRyWNbNx6W3F+IPThQg8qU3
+	eZhFeAT0BdaZYPTDTx1KmwSqbSOARglq6E6tOF3aaFq0FATH6bJEs4ZiESr6DXsJ
+	nSQ0xTSr9c0e+89gdBA8yILMUCRN4IWF2ilKrB1S/IYk6TDln1zvOO9aZEl+J0S3
+	mbvgJcKWlVNy4dp47BA/WrEjzYsddagvKihTQWzSrfUpQ435bWtswdd2Dm3zD/DQ
+	FBl92HJcq9hWwN+Q4zgEJBCSj61RepqvUepMzZeKgHdioAJ6ogiQJnAgptq+GwqU
+	gbu+GuvW8TKz2jY54cIOTwTYgpi70VWjKTWNJrtmK3cwwWK6ATCQkapHjj2kE/Hv
+	ofJ86DKV2Uid/1A85+NWOqOplBMfJ+9JszdNlFgkeL1ukhPj7uUYxkz6Z24kyQW3
+	JS9A3hZLh1i7kOgvFfdSmyPy3qM+jVE=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Sat, 26 Sep 2026 22:48:46 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 4DCD4608A1;
+	Sat, 26 Sep 2026 22:48:48 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68QJmeRi056579;
+	Sat, 26 Sep 2026 22:48:40 +0300
+Date: Sat, 26 Sep 2026 22:48:40 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH net] ipvs: Defer application parent freeing until after
+ RCU readers
+In-Reply-To: <20260926175129.2612644-1-nicoyip.dev@gmail.com>
+Message-ID: <7ee83494-378a-ea25-6f31-e3164d533594@ssi.bg>
+References: <20260926175129.2612644-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
 
-While running the napi_threaded kselftest on a variety of embedded
-devices, it was found that the ksft hangs on stmmac boards. This seems
-to be because stmmac creates multiple napi instances, some of them are
-used exclusively for XDP (the rxtx napi).
 
-When setting napi threaded on and off again on a disabled napi
-instance, we enter an infinite loop in napi_stop_kthread() :
+	Hello,
 
-while(true) {
-	[...]
-	if (val & NAPIF_STATE_SCHED_THREADED) || ...) {
-		...
-	} else {
-		msleep(20);
-	}
-}
+On Sun, 27 Sep 2026, Chengfeng Ye wrote:
 
-The thing is the _STATE_SCHED_THREADED flag seems to only be set during
-____napi_schedule().
+> unregister_ip_vs_app() removes each incarnation from its protocol list and
+> uses call_rcu() to defer freeing it, but frees the parent application
+> immediately. An RCU reader that already found an incarnation can still
+> access the parent through inc->app in ip_vs_app_inc_get().
+> 
+> During FTP helper module unload, the following interleaving is possible:
+> 
+>   CPU 0 (RCU reader)                 CPU 1 (module unload)
+>   tcp_app_conn_bind()
+>     find inc in protocol list
+>                                      unregister_ip_vs_app()
+>                                        ip_vs_app_inc_release(inc)
+>                                          list_del_rcu(&inc->p_list)
+>                                          call_rcu(&inc->rcu_head, ...)
+>                                        kfree(a)
+>     ip_vs_app_inc_get(inc)
+>       try_module_get(inc->app->module)
+> 
+> The helper module is already going away, so try_module_get() would fail,
+> but evaluating its argument first reads the freed parent. The subsequent
+> rcu_barrier() in pernet unregistration cannot protect this earlier free.
+> KASAN reported:
+> 
+>   BUG: KASAN: slab-use-after-free in ip_vs_app_inc_get+0x7c/0x90
+>   Call Trace:
+>    ip_vs_app_inc_get+0x7c/0x90
+>    tcp_app_conn_bind+0x1bc/0x290
+>    ip_vs_conn_new+0x1915/0x20d0
+>    ip_vs_schedule+0x697/0xea0
+>    tcp_conn_schedule+0x489/0x820
+>    ip_vs_in_hook+0x7bf/0x1f40
+>   Allocated by task 88:
+>    kmemdup_noprof+0x20/0x50
+>    register_ip_vs_app+0x12d/0x2c0
+>    __ip_vs_ftp_init+0x56/0x160 [ip_vs_ftp]
+>   Freed by task 104:
+>    kfree+0x131/0x3c0
+>    unregister_ip_vs_app+0x2f4/0x5b0
+>    unregister_pernet_operations+0x232/0x490
+>    unregister_pernet_subsys+0x1c/0x30
+>    __do_sys_delete_module+0x346/0x510
+> 
+> Use kfree_rcu() with the existing rcu_head to keep the parent alive until
+> these readers finish. Successful helper references already prevent normal
+> module unload, and incarnation RCU callbacks do not access the parent.
+> 
+> Fixes: 363c97d7435e ("ipvs: convert app locks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 
-So, on an unused napi loop the flag is never set, we hang in that loop.
+	Looks good to me for the nf tree, thanks!
 
-This seems to be more general than stmmac though, there are lots of
-drivers that create the napi instances in .probe(), so they still live
-outside of .open()/.close(). It was verified by running the following on
-an mvneta board :
+Acked-by: Julian Anastasov <ja@ssi.bg>
 
-  ip link set eth0 down
-  echo 1 > /sys/class/net/eth0/threaded
-  echo 0 > /sys/class/net/eth0/threaded
-  -> hang
+> ---
+>  net/netfilter/ipvs/ip_vs_app.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_app.c b/net/netfilter/ipvs/ip_vs_app.c
+> index 11cbdbaf561d..2c1b47702da2 100644
+> --- a/net/netfilter/ipvs/ip_vs_app.c
+> +++ b/net/netfilter/ipvs/ip_vs_app.c
+> @@ -242,7 +242,7 @@ void unregister_ip_vs_app(struct netns_ipvs *ipvs, struct ip_vs_app *app)
+>  		}
+>  
+>  		list_del(&a->a_list);
+> -		kfree(a);
+> +		kfree_rcu(a, rcu_head);
+>  
+>  		/* decrease the module use count */
+>  		ip_vs_use_count_dec();
+> -- 
+> 2.43.0
 
-The proposed approach here is to extend the NAPI_DISABLE flag so that
-it stays set while the napi instance isn't enabled, and use that flag
-when stopping the napi kthread.
+Regards
 
-Fixes: 689883de94dd ("net: stop napi kthreads when THREADED napi is disabled")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- include/linux/netdevice.h | 2 +-
- net/core/dev.c            | 9 +++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 87cafc932e9e..5ec2ac54524f 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -423,7 +423,7 @@ struct napi_struct {
- enum {
- 	NAPI_STATE_SCHED,		/* Poll is scheduled */
- 	NAPI_STATE_MISSED,		/* reschedule a napi */
--	NAPI_STATE_DISABLE,		/* Disable pending */
-+	NAPI_STATE_DISABLE,		/* Disable pending or already disabled */
- 	NAPI_STATE_NPSVC,		/* Netpoll - don't dequeue from poll_list */
- 	NAPI_STATE_LISTED,		/* NAPI added to system lists */
- 	NAPI_STATE_NO_BUSY_POLL,	/* Do not add in napi_hash, no busy polling */
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f660fccfc0db..7f21d87a8c7a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -7229,7 +7229,8 @@ static void napi_stop_kthread(struct napi_struct *napi)
- 		 * STATE_THREADED can be unset here.
- 		 */
- 		if ((val & NAPIF_STATE_SCHED_THREADED) ||
--		    !(val & NAPIF_STATE_SCHED)) {
-+		    !(val & NAPIF_STATE_SCHED) ||
-+		    (val & NAPIF_STATE_DISABLE)) {
- 			new = val & (~(NAPIF_STATE_THREADED |
- 				       NAPIF_STATE_THREADED_BUSY_POLL));
- 		} else {
-@@ -7646,6 +7647,7 @@ void netif_napi_add_weight_locked(struct net_device *dev,
- 	napi->list_owner = -1;
- 	set_bit(NAPI_STATE_SCHED, &napi->state);
- 	set_bit(NAPI_STATE_NPSVC, &napi->state);
-+	set_bit(NAPI_STATE_DISABLE, &napi->state);
- 	netif_napi_dev_list_add(dev, napi);
- 
- 	/* default settings from sysfs are applied to all NAPIs. any per-NAPI
-@@ -7694,8 +7696,6 @@ void napi_disable_locked(struct napi_struct *n)
- 		napi_save_config(n);
- 	else
- 		napi_hash_del(n);
--
--	clear_bit(NAPI_STATE_DISABLE, &n->state);
- }
- EXPORT_SYMBOL(napi_disable_locked);
- 
-@@ -7727,7 +7727,8 @@ void napi_enable_locked(struct napi_struct *n)
- 	do {
- 		BUG_ON(!test_bit(NAPI_STATE_SCHED, &val));
- 
--		new = val & ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC);
-+		new = val & ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC |
-+			      NAPIF_STATE_DISABLE);
- 		if (n->dev->threaded && n->thread)
- 			new |= NAPIF_STATE_THREADED;
- 	} while (!try_cmpxchg(&n->state, &val, new));
--- 
-2.55.0
+--
+Julian Anastasov <ja@ssi.bg>
 
