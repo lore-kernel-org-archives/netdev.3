@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEB236DA1A;
-	Sat, 26 Sep 2026 02:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBCB363C46;
+	Sat, 26 Sep 2026 02:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790390087; cv=none; b=S6gsBkOIK4bokX8r1voTL5BlVqHgKX6iwoZxYPsbGOWq9yjsv5R+g+3S7SGJlRyolvET4XYF/38gcK7x+2/4E1C8FETqjxGFqFtWK7e6OU9QvDUYUikOdzdBGz8byK3RsCMxvi+1m3aPOLYmueS3Kljn2rh4ZwfINtWJqqQSy9g=
+	t=1790390089; cv=none; b=hoEcQ98oonqAPlCmORt4sqW1T61qCiG55sIL7RAUtJrOJgpAYorSLd66Iv6gzdVV/U6lYybRCpbTyrVKNcyP5zkYTTusBG9+LPYZpDxe1OG6bs/pyokqlOcp5sFP6hsJybX9e4JajR5bNVQydkpu4aflY3WrIKFG3mZCeD/cQWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790390087; c=relaxed/simple;
-	bh=AARqjVEDcavtnbknQomUJ67HKkoLkCdOmefuyAJL1XQ=;
+	s=arc-20240116; t=1790390089; c=relaxed/simple;
+	bh=RaYLRydu5lMgR0GkswAni68LAN46uAJEDW4pzOBE26c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rlt/ZB9RTD59asJ7+RPU+IrKNFY08h2abHNzMWvHRL89OC7SU+OakHmEKtO/vVfG2ajwZrAQMaoD5+PU8B0fim6KzRR6+0Bnlrodl/0hfFWNTG3ySnuXuCMcJYlK5D8vfqSAKHjrLaOmRPGJN7rEkoctkI4O4pBeKAg3hgK6090=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl/bsSlc; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=nmDjxULY972VxEOrl1QC3iz3NXPMbYjrmq001kYULe7eG4ZE6vG3hoiYfaS3GHpWbIjDHzedNRNaqS0WzG1m8aLizOyvTr3P7pgxBgYzfXMKDo2HWv23N8yE/PBI/vRg11LXLLa3wVWSEbfiKa4dxATHuZzjwiWhFm4o5nUMJ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGaql79n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl/bsSlc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DA61F00893;
-	Sat, 26 Sep 2026 02:34:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGaql79n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5961F000FF;
+	Sat, 26 Sep 2026 02:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790390085;
-	bh=BvLRVmoicuTWEFgqhLbMPuS9baXklf/czmT+bqzxR7s=;
+	s=k20260515; t=1790390086;
+	bh=Sp6WkFToFKi/fV8Bp8bQRI4216jIrc4eAGxBYS13rwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nl/bsSlc4injszo25HrbMcAwxeq+QjL5JaXaxPXu+zr5+auP3NkUdNhrcbPyqjgfM
-	 iul06kxgkLuHXc1zLOU72PT88OxNgmfUIvOBqmfw53rpbjcK5+CLUKzA9wLDIFgBcV
-	 V8t0QmizkTz5ZPDTVstnECs5mLPjATF17iLE1UiqWRLPzzm9TNYRaYtrpDNun6zBXJ
-	 xAXQ3lW+QjWskI2l6P4ub0Jhjancm8m+TS5lxlQKivSNyGLb+m2a4yRyAvbWrKkTnZ
-	 ywUQmjh8JD1DSk2iBj/YJl5y8wp/U9+40k3IyG1vgP45kOxxe2NC+/GlSypmcBoJ/L
-	 a8YHX4RiextcQ==
+	b=UGaql79nT3f6K1oAkminEVcRO3+W01Zr4H5QLntuRrbI4bhamhjJwYSQes99Iwcs1
+	 AupxSsF8NwsDvdN1YjyFt2F4V73TW5nhRp4VFKg/TP0nuxEyL48tWYcDRkIiCoEelM
+	 LhKWz2lpbN2IQ3iutWo4WkBzDzBuuwnMC6hym48LPXr2EQcDRgEPbvGm1X9ZsbF9JQ
+	 jCc9blh8ZnGW2VszGcJiB8LCepixmHFQnr9LcG98rzqFIumvX8oVGhmRjkAswYhDXD
+	 uDaUZ63z0b0nBeiTkzlOZIsBxkW5OsXaCdwVazKYrvy+ToYZ4K7jkw+22coFw4Fizl
+	 01t8XXqmnEbXA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: arouhi@sitime.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 05/14] dpll: sit9531x: register DPLL devices and pins
-Date: Fri, 25 Sep 2026 19:34:44 -0700
-Message-ID: <20260926023444.1567660-1-kuba@kernel.org>
+Subject: Re: [PATCH v10 06/14] dpll: sit9531x: implement input pin state on a DPLL
+Date: Fri, 25 Sep 2026 19:34:45 -0700
+Message-ID: <20260926023445.1567707-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921201108.42676-6-arouhi@sitime.com>
-References: <20260921201108.42676-6-arouhi@sitime.com>
+In-Reply-To: <20260921201108.42676-7-arouhi@sitime.com>
+References: <20260921201108.42676-7-arouhi@sitime.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,333 +61,679 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-dpll: sit9531x: register DPLL devices and pins
+dpll: sit9531x: implement input pin state on a DPLL
 
-This patch registers each of the four SiT9531x PLLs as a DPLL device.
-Each device gets lock status and mode callbacks, and the crystal is
-registered as a permanently connected input pin on each one.
-
-A kthread worker polls PLL and input state twice a second into a cache.
-It notifies the DPLL core when something changes, and the optional INTRB
-interrupt can kick it early.
-
-The clock_id is built from the chip variant, the I2C address and the low
-eight bits of the adapter number.
+This patch adds state_on_dpll_get/set for SiT9531x input pins. Whether a
+source is in a PLL's hardware priority table decides between DISCONNECTED
+and SELECTABLE, and the reference the PLL has selected is reported as
+CONNECTED. Setting the state rewrites the priority table under forced
+holdover, and a per-input DPLL claim mask decides when the shared input
+receiver is powered on or off.
 
 > diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index cf1cda87fa52c..6f19dab89beeb 100644
+> index 6f19dab89beeb..84c1f86e6d4cf 100644
 > --- a/drivers/dpll/sit9531x/core.c
 > +++ b/drivers/dpll/sit9531x/core.c
+> @@ -206,6 +206,94 @@ static void sit9531x_input_get_regs(const struct sit9531x_dev *sitdev,
+
+[ ... ]
+
+> +int sit9531x_input_disable(struct sit9531x_dev *sitdev, u8 index)
+> +{
+
+[ ... ]
+
+> +	rc = sit9531x_read_u8(sitdev, force_reg, &val);
+> +	if (!rc)
+> +		rc = sit9531x_write_u8(sitdev, force_reg, val | BIT(pair));
+> +
+> +	ret = sit9531x_read_u8(sitdev, state_reg, &val);
+> +	if (!ret)
+> +		ret = sit9531x_write_u8(sitdev, state_reg, val & ~BIT(pair));
+> +	if (ret && !rc)
+> +		rc = ret;
+> +
+> +	if (rc)
+> +		return rc;
+> +
+> +	ref->enabled = false;
+
+[Severity: Low]
+Suppose the force write succeeds but the state read or write fails. Can
+the receiver then be disabled while ref->enabled still reads true?
+
+After an earlier disable/enable cycle the state bit is already clear. So
+after this partial failure the device holds force=1/state=0.
+
+A SELECTABLE request that arrives before the next poll then runs this
+code in sit9531x_dpll_input_pin_state_on_dpll_set():
+
+    if (!ref->enabled) {
+        rc = sit9531x_input_enable(sitdev, dpin->id);
+        ...
+    }
+
+It skips the enable, adds the source to the table or finds it there, and
+returns success while the receiver stays off.
+
+The poll refreshes ref->enabled later, but nothing re-applies the enable.
+
+[ ... ]
+
+> @@ -390,6 +573,107 @@ static void sit9531x_prio_mask_build(struct sit9531x_dev *sitdev, u8 pll_idx,
+
+[ ... ]
+
+> +static int sit9531x_prio_table_commit(struct sit9531x_dev *sitdev, u8 pll_idx,
+> +				      const u8 *srcs)
+> +{
+> +	u8 val, slot, attempt, written = 0;
+> +	int rc = 0, prg_rc, ho_rc = 0;
+> +	u16 reg;
+> +
+> +	rc = sit9531x_update_pll_u8(sitdev, pll_idx, SIT9531X_PLL_REG_HO_CTRL,
+> +				    BIT(SIT9531X_PLL_HO_FORCE_BIT),
+> +				    BIT(SIT9531X_PLL_HO_FORCE_BIT));
+> +	if (rc)
+> +		return rc;
+> +
+> +	usleep_range(10000, 12000);
+
+[Severity: Medium]
+Does the holdover force bit take effect without a PLL-page small-change
+update?
+
+Elsewhere in the driver, PLL-page control writes are followed by
+SIT9531X_PLL_REG_SMALL_UPDATE. For example, sit9531x_dpll_mode_set()
+does:
+
+    rc = sit9531x_write_pll_u8(sitdev, sitdpll->id,
+                               SIT9531X_PLL_REG_SMALL_UPDATE,
+                               SIT9531X_SMALL_UPDATE_CMD);
+
+sit9531x_output_phase_flush() latches PHFL_CTRL the same way. regs.h also
+says that every page carries its own copy of the directive register.
+
+If HO_CTRL follows the same rule, the PLL would never enter forced
+holdover while the table is inconsistent.
+
+The release further down can also fail (the ho_rc path). In that case,
+could force=1 stay staged and then be latched by an unrelated PLL-page
+update, such as mode_set() or a phase flush?
+
+Nothing reads HO_FREEZE to confirm that holdover was entered, so the
+10-12 ms sleep is also an assumption. All of this depends on the HO_CTRL
+latch behaviour in the datasheet, which I couldn't confirm here.
+
+> +
+> +	/*
+> +	 * Two slots share a register, and this writes every slot, so both
+> +	 * nibbles are known for every register but the last -- build those
+> +	 * bytes outright.  Reading first would raise the question of what a
+> +	 * read returns between the write and the latch, and the answer does
+> +	 * not matter if nothing is read.
+> +	 */
+> +	for (slot = 0; slot + 1 < SIT9531X_PRIO_MAX_SLOTS; slot += 2) {
+> +		reg = sit9531x_prio_reg(pll_idx, slot);
+> +
+> +		val = sit9531x_prio_slot_set(0, slot, srcs[slot]);
+> +		val = sit9531x_prio_slot_set(val, slot + 1, srcs[slot + 1]);
+> +
+> +		rc = sit9531x_write_u8(sitdev, reg, val);
+> +		if (rc)
+> +			goto commit;
+
+[Severity: Medium]
+If one of these writes fails partway through, the goto commit path still
+latches through sit9531x_prio_prg_commit() and releases holdover. Does
+that leave the PLL selecting from a table that mixes new and old register
+pairs, with the original never restored?
+
+For example, once prio_set is wired up, moving source 3 to slot 0 of
+[0,1,2,3,...] builds [3,0,1,2,...]. If the second register write fails,
+the device keeps [3,0,2,3,...] and source 1 is no longer in the table.
+
+At this commit, sit9531x_prio_mask_build() also returns early when
+written < SIT9531X_PRIO_MAX_SLOTS. chan->prio_mask therefore still
+describes the table from before the request.
+
+The rollback checks in sit9531x_dpll_input_pin_state_on_dpll_set() go
+through sit9531x_input_prio_present(). With a stale mask, could they
+make the wrong decision?
+
+On SELECTABLE, the setter could turn off a receiver it has just enabled,
+for an input that the latched table now lists. On DISCONNECTED, it could
+keep the claim and leave a receiver powered with no owner.
+
+The next commit, "dpll: sit9531x: add support to get and set priority on
+input pins", refreshes the mask per slot, which fixes the stale-mask
+rollback. However, its restore block sits after
+written = SIT9531X_PRIO_MAX_SLOTS, where rc is always 0, and every failure
+path jumps past it with goto commit. The mixed table is still latched at
+the end of the series.
+
+There is also a separate case: every slot is written but the
+SMALL_UPDATE latch write fails. Then written == SIT9531X_PRIO_MAX_SLOTS,
+and the requested mask is published even though the device may still be
+selecting from the old table.
+
+[ ... ]
+
+> +commit:
+> +	/*
+> +	 * Latch unconditionally: slots written before a failed write are in
+> +	 * the table regardless, so the latch keeps hardware and the cache
+> +	 * refresh below consistent with what was actually written.
+> +	 */
+> +	prg_rc = sit9531x_prio_prg_commit(sitdev);
+> +	if (prg_rc && !rc)
+> +		rc = prg_rc;
+> +
+> +	/*
+> +	 * Refresh the cache from the table just written, so a get that
+> +	 * follows a set does not have to wait for the next poll -- but only
+> +	 * for the slots that reached the device.  Describing a table that
+> +	 * does not exist would make the membership test answer for writes
+> +	 * that failed, and that test is what decides whether a failed
+> +	 * request gets rolled back.
+> +	 */
+> +	sit9531x_prio_mask_build(sitdev, pll_idx, srcs, written);
+
+[Severity: Medium]
+The v10 notes say:
+
+    Priority table coherence: a table that was written only in part is put
+    back rather than latched; the mask describes what reached the device
+    rather than what was asked for;
+
+Does the code match that? Every failure above jumps here and latches
+unconditionally. Nothing saves the original table or writes it back.
+
+This comment promises a refresh "only for the slots that reached the
+device". At this commit, however, sit9531x_prio_mask_build() does:
+
+    if (written < SIT9531X_PRIO_MAX_SLOTS)
+        return;
+
+So after a partial write, the mask keeps describing the table from before
+the request, not the table that was latched.
+
+The next commit in the series refreshes the mask per slot and adds an
+if (rc && written) restore block. That block is placed after
+written = SIT9531X_PRIO_MAX_SLOTS, where rc is 0, and every failure path
+jumps past it.
+
+Could the notes and comments be changed to match the code, or the restore
+be made reachable?
+
+[ ... ]
+
+> @@ -414,6 +698,242 @@ static int sit9531x_prio_table_read(struct sit9531x_dev *sitdev, u8 pll_idx,
 
 [ ... ]
 
 > +/*
-> + * Report whether a slot is currently forced into Hi-Z, i.e. the driver
-> + * (or the blob) took control of the Hi-Z state (MASK bit set) and drives
-> + * it low (STATE bit clear).  Either register pair muting the slot counts,
-> + * mirroring what sit9531x_output_disable() programs.
+> + * sit9531x_input_prio_set - move an input to a priority slot
+
+[ ... ]
+
+> + * Caller must hold sitdev->multiop_lock.
+> + *
+> + * Return: 0 on success, -EINVAL if the source is not in the table,
+> + * <0 on error
 > + */
-> +static int sit9531x_output_forced_hiz(struct sit9531x_dev *sitdev,
-> +				      u8 out_idx, bool *muted)
-
-[ ... ]
-
-> +	 * Read the pair that belongs to the way this output is wired.
-> +	 * Testing both and taking either as proof of a mute answers
-> +	 * from a register nothing drives, and disagrees with itself
-> +	 * when a mute lands on one pair and fails on the other.
->  	 */
 
 [Severity: Low]
-This isn't a bug, but several comments added in this patch don't match
-the code.
+This isn't a bug, but the Return: line doesn't list -ERANGE. The function
+returns it here:
 
-The header comment says that either register pair muting the slot counts.
-The body reads only the pair chosen by out->cmos, and its own comment
-rejects the either-pair approach. Also, sit9531x_output_disable() does not
-exist yet in this commit.
+    if (prio > n)
+        return -ERANGE;
 
-Some others in the same patch:
+The prio_set callback added later in the series handles -ERANGE as its
+own case.
 
-sit9531x_ref_state_fetch() is documented as "Reads LOS and OOF status for
-the given input lane from the Page 0x06 clock monitor registers". It
-actually reads the Page 0x02 force/state registers through
-sit9531x_input_get_regs(), and it only sets ref->enabled.
-
-The kernel-doc blocks for sit9531x_chan_state_fetch and sit9531x_dev_start
-sit above sit9531x_pll_is_active() and sit9531x_eeprom_state_report(). They
-end up documenting the wrong functions.
-
-In struct sit9531x_chan, @locked is described as "PLL is locked (raw status
-register bit)". sit9531x_chan_state_fetch() computes it as
-active && !outer_lol. The new irq_ack_fails member of struct sit9531x_dev
-has no kernel-doc entry.
-
-The "Pin-state contract" comment in dpll.c describes five pin ops tables
-with get/set rules. This commit has three tables and no set callbacks.
-
-The commit message says:
-
-    Output state is not polled: it changes only through a request, and
-    the getter reads the device again when one could not be confirmed.
-
-This patch has no output state getter and no state_stale handling. Both
-arrive with the output-state patch later in the series.
-
-Several constants and fields are not used in this commit:
-SIT9531X_REG_XO2_GENERIC, the SIT9531X_FVCO_* bands, SIT9531X_DIVO_MAX,
-the INTSYNC, debug and GPIO_FUNC_CTRL1 registers,
-SIT9531X_OUT_PLL_UNMAPPED, and intsync_src. That doesn't match this note in
-the v10 changelog:
-
-    declared each helper in the patch that defines it.
-
-The mismatches in sit9531x_ref_state_fetch() and
-sit9531x_output_forced_hiz(), and the misplaced kernel-doc blocks, are
-still there at the end of the series.
+-EINVAL is also returned for a bad pll_idx or prio, not only when the
+source is missing from the table.
 
 [ ... ]
 
-> +struct sit9531x_dpll *sit9531x_dpll_alloc(struct sit9531x_dev *sitdev, u8 ch)
-> +{
-> +	struct sit9531x_dpll *sitdpll;
-> +
-> +	sitdpll = kzalloc_obj(*sitdpll, GFP_KERNEL);
-> +	if (!sitdpll)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	sitdpll->dev = sitdev;
-> +	sitdpll->id = ch;
-> +	sitdpll->lock_status = DPLL_LOCK_STATUS_UNLOCKED;
-> +	INIT_LIST_HEAD(&sitdpll->pins);
-
-[Severity: Low]
-Should lock_status_error be initialized here as well?
-
-It stays at 0 from kzalloc_obj(), which is not a valid enum
-dpll_lock_status_error value; DPLL_LOCK_STATUS_ERROR_NONE is 1.
-sit9531x_dpll_lock_status_get() always writes at least
-DPLL_LOCK_STATUS_ERROR_NONE, so this test in
-sit9531x_dpll_changes_check() is true on the first tick:
-
-	if (sitdpll->lock_status != lock_status ||
-	    sitdpll->lock_status_error != status_error) {
-
-As a result, every DPLL sends dpll_device_change_ntf() right after probe,
-even when nothing has changed.
-
-pin->pin_state has the same problem. It starts at 0, while
-DPLL_PIN_STATE_CONNECTED is 1. Once input pins are registered later in
-the series, each polled pin would send a spurious dpll_pin_change_ntf() on
-the first tick. Both fields are still uninitialized at the end of the
-series.
+> @@ -893,6 +1414,41 @@ static void sit9531x_dev_ref_states_update(struct sit9531x_dev *sitdev)
 
 [ ... ]
 
-> +static u64 sit9531x_derive_clock_id(struct sit9531x_dev *sitdev)
+> +static void sit9531x_ref_pll_mask_rebuild(struct sit9531x_dev *sitdev)
 > +{
-> +	u64 clkid;
+> +	u8 pll_idx, src, index;
 > +
-> +	clkid  = SIT9531X_OUI << 24;
-> +	clkid |= (u64)(i2c_adapter_id(sitdev->client->adapter) & 0xff) << 16;
+> +	for (index = 0; index < sitdev->info->num_inputs; index++)
+> +		sitdev->ref[index].pll_mask = 0;
+> +
+> +	for (pll_idx = 0; pll_idx < SIT9531X_NUM_PLLS; pll_idx++) {
+> +		u16 mask = sitdev->chan[pll_idx].prio_mask;
+> +
+> +		for (src = 0; src < SIT9531X_PRIO_NUM_SRC; src++) {
+> +			if (!(mask & BIT(src)))
+> +				continue;
+> +
+> +			index = sit9531x_hw_src_input(src);
+> +			if (index < sitdev->info->num_inputs)
+> +				sitdev->ref[index].pll_mask |= BIT(pll_idx);
 
 [Severity: Medium]
-The commit message says:
+What happens here for a differentially configured pair whose table entry
+uses the N-lane code (7-10)?
 
-    That needs a machine with more than 256 I2C adapters and the same
-    part twice at the same address on two of them
+sit9531x_prio_src_canon() and sit9531x_ref_pll_mask_fetch() both fold N
+onto P. At this commit, though, sit9531x_prio_mask_build() sets BIT(src)
+on the raw code, and this rebuild maps that code through
+sit9531x_hw_src_input() to the odd N-lane index.
 
-Is that accurate? Bus numbers are not limited by the number of adapters.
+The claim then lands on ref[N] instead of ref[P]. Could a disconnect on
+another DPLL then find ref[P].pll_mask at zero and power down a shared
+receiver that this PLL is still using?
 
-i2c_add_adapter() takes the bus number from the DT "i2c" alias through
-of_alias_get_id(). i2c_init() then sets __i2c_first_dynamic_bus_num to the
-highest alias + 1. That means a board with only a few adapters can still
-have both bus 0 and bus 256.
+The same raw mask makes the P pin report DISCONNECTED. A SELECTABLE
+request then does nothing, because sit9531x_input_prio_add() finds the
+canonicalised entry and returns 0.
 
-Two parts of the same variant at the same address on those buses would get
-the same clock_id. dpll_device_get() and dpll_pin_get() match on clock_id,
-index and module. The second chip would therefore be folded onto the first
-chip's DPLL and pin objects.
+The next commit, "dpll: sit9531x: add support to get and set priority on
+input pins", builds prio_mask from canonical codes. That fixes the mask,
+membership and refcount parts.
 
-Could the commit message be corrected, or could the identifier be built so
-that the adapter number is not truncated?
+The selected_ref part is still unfolded at the end of the series.
+sit9531x_chan_state_fetch() stores:
 
-[ ... ]
+    chan->selected_ref =
+        sit9531x_hw_src_input(input_sel & SIT9531X_PRIO_NIBBLE_MASK);
 
-> diff --git a/drivers/dpll/sit9531x/core.h b/drivers/dpll/sit9531x/core.h
-> index 230b21b9e2381..3a12e1c6b3309 100644
-> --- a/drivers/dpll/sit9531x/core.h
-> +++ b/drivers/dpll/sit9531x/core.h
-
-[ ... ]
-
-> @@ -105,13 +179,83 @@ struct sit9531x_dev {
-
-[ ... ]
-
-> +	/* Optional DT board-config overrides */
-> +	u64			pll_fvco[SIT9531X_NUM_PLLS];
-> +	u8			out_pll_map[SIT9531X_MAX_OUTPUTS];
-> +	bool			out_pll_map_valid;
-
-[Severity: Low]
-This isn't a bug, but nothing in this commit reads the "sitime,pll-fvco"
-or "sitime,output-pll-map" properties. In this commit
-sit9531x_out_state_fetch() takes routing only from the OUT_MAP registers.
-
-These fields and their kernel-doc describe behaviour that only arrives
-with the last patch in the series, "dpll: sit9531x: allow the device tree
-to override two board facts". Could they be moved into that patch?
+sit9531x_dpll_selection_state_get() compares that value with the P-lane
+pin id. A DE pair selected through its N code can therefore never report
+CONNECTED. I couldn't confirm from the datasheet whether ACTIVESEL reports
+N codes for a DE pair.
 
 [ ... ]
 
 > diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> new file mode 100644
-> index 0000000000000..63c72bba51bfe
-> --- /dev/null
+> index 63c72bba51bfe..4437c95f578f8 100644
+> --- a/drivers/dpll/sit9531x/dpll.c
 > +++ b/drivers/dpll/sit9531x/dpll.c
-> @@ -0,0 +1,450 @@
+> @@ -286,6 +286,45 @@ const struct dpll_device_ops sit9531x_dpll_device_ops = {
+>   * FIXED role -- XO pin.  Always CONNECTED; it cannot be routed.
+>   */
+>  
+> +/*
+> + * Report a selection-role pin's state on this DPLL.  @pin_id is a logical
+> + * input index, SIT9531X_INTSYNC_PIN_ID for the INTSYNC destination.
+> + *
+> + * CONNECTED means the device has selected this pin, not that the loop
+> + * has settled on it: how well it is tracking is what lock status answers,
+> + * and a PLL following a reference it has not locked to yet is still
+> + * following that reference and no other.
 
 [ ... ]
 
-> +static int
-> +sit9531x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
-
-[ ... ]
-
-> +	} else if (chan->locked) {
-> +		/*
-> +		 * HO_ACQ is locked *and* holdover memory acquired, so it needs
-> +		 * the holdover-valid bit rather than following from the lock.
-> +		 */
-> +		if (chan->ho_valid)
-> +			*status = DPLL_LOCK_STATUS_LOCKED_HO_ACQ;
-> +		else
-> +			*status = DPLL_LOCK_STATUS_LOCKED;
-> +	} else if (chan->ho_freeze) {
-> +		*status = DPLL_LOCK_STATUS_HOLDOVER;
-> +	} else {
-> +		*status = DPLL_LOCK_STATUS_UNLOCKED;
-> +	}
+> +static void
+> +sit9531x_dpll_selection_state_get(struct sit9531x_dev *sitdev,
+> +				  const struct sit9531x_dpll *sitdpll,
+> +				  u8 pin_id, enum dpll_pin_state *state)
+> +{
+> +	const struct sit9531x_chan *chan;
+> +	bool active_input;
 > +
-> +	/* Report inner LOL as an error condition */
-> +	if (status_error && chan->inner_lol)
-> +		*status_error = DPLL_LOCK_STATUS_ERROR_UNDEFINED;
+> +	lockdep_assert_held(&sitdev->multiop_lock);
+> +
+> +	chan = sit9531x_chan_state_get(sitdev, sitdpll->id);
+> +	active_input = !chan->mode && chan->selected_ref == pin_id;
 
 [Severity: Medium]
-Should an inner loss of lock affect the reported status here?
+The commit message says the contract "is written above the operations
+rather than left to be inferred". The contract block above, which this
+patch leaves unchanged, still says:
 
-chan->locked only reflects active && !outer_lol. With chan->inner_lol set
-and the outer LOL bit clear, this function reports
-DPLL_LOCK_STATUS_LOCKED or DPLL_LOCK_STATUS_LOCKED_HO_ACQ. The core then
-drops the error for those states:
-
-drivers/dpll/dpll_netlink.c:dpll_msg_add_lock_status() {
+    L  chan->locked && !chan->inner_lol     (only meaningful when A)
     ...
-	if (status_error &&
-	    (status == DPLL_LOCK_STATUS_UNLOCKED ||
-	     status == DPLL_LOCK_STATUS_HOLDOVER) &&
-	    nla_put_u32(msg, DPLL_A_LOCK_STATUS_ERROR, status_error))
-		return -EMSGSIZE;
-    ...
-}
+    CONNECTED     A && L && S && M
+    SELECTABLE    M && !(A && L && S)
 
-So userspace would see a locked DPLL while the inner loop is unlocked.
+This getter never reads chan->locked or chan->inner_lol. A reference
+that is selected but not locked therefore reports CONNECTED, where the
+contract says SELECTABLE. Which behaviour is intended?
 
-The pin-state contract comment later in this file defines L as
-chan->locked && !chan->inner_lol, which disagrees with this getter.
+Later in the series, the FFO getter says "selected_ref alone is not
+enough (free-run, LOL, holdover), so use the same CONNECTED criterion"
+and gates on this function. It would then publish FFO for a PLL that has
+lost lock.
 
-In the same case, sit9531x_dpll_changes_check() sends
-dpll_device_change_ntf() when only the error changes. With a locked status
-that notification carries no visible change.
+The same block also says pll_mask "drifts, because .prio_set writes the
+table without touching it". This patch, however, adds
+sit9531x_ref_pll_mask_rebuild(), which re-derives pll_mask on every poll,
+and no .prio_set exists at this commit. Both texts are unchanged at the
+end of the series.
 
-[ ... ]
+[Severity: Medium]
+Separately, should CONNECTED also take chan->active and chan->ho_freeze
+into account?
 
-> + * The device could implement real MANUAL: MISCINNER_PLL (PLL page reg
-> + * 0x18) bit 5 switches a PLL from priority-based to manual active select,
-> + * and GPIO_INPUT_FUNC_CTRL5..8 (page 0, regs 0xE8-0xEB) bit 4 makes the
-> + * choice come from the register's own low nibble instead of the GPIO
-> + * pins, which pins one reference while the loop keeps running.  Wiring
+sit9531x_chan_state_fetch() fetches both. It also notes that on a PLL
+the configuration leaves unused, the status bits stay at their defaults,
+and it gates locked on active for that reason.
 
-[ ... ]
+A default ACTIVESEL of 0 decodes to IN0P. Could IN0 then report
+CONNECTED on an inactive PLL?
 
-> + */
-> +static int
-> +sit9531x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
-> +		       enum dpll_mode *mode, struct netlink_ext_ack *extack)
-> +{
-> +	*mode = DPLL_MODE_AUTOMATIC;
+During holdover, the pin would also report CONNECTED while the loop is
+not tracking any input. That includes the forced holdover that
+sit9531x_prio_table_commit() applies on every table write.
+
+I couldn't confirm from the datasheet what ACTIVESEL reads on an inactive
+PLL.
+
 > +
-> +	return 0;
+> +	if (!(chan->prio_mask & BIT(sit9531x_input_hw_src(pin_id))))
+> +		*state = DPLL_PIN_STATE_DISCONNECTED;
+> +	else if (active_input)
+> +		*state = DPLL_PIN_STATE_CONNECTED;
+> +	else
+> +		*state = DPLL_PIN_STATE_SELECTABLE;
 > +}
 
 [Severity: Medium]
-What happens if the loaded profile already has a PLL in manual active
-select?
+Does reporting hardware selection through DPLL_A_PIN_STATE match the
+documented semantics? Documentation/driver-api/dpll.rst says:
 
-The comment above describes two such controls: MISCINNER_PLL bit 5, and
-bit 4 of GPIO_INPUT_FUNC_CTRL5..8, either of which can pin a reference.
-Probe never reads or resets either of them, and
-sit9531x_dpll_mode_get() always returns DPLL_MODE_AUTOMATIC.
+    Pin state (DPLL_A_PIN_STATE) reflects the administrative intent set
+    by the user.
 
-A profile that uses manual selection would therefore be reported as
-automatic. Requesting DPLL_MODE_AUTOMATIC would not fix that: the core
-skips same-mode requests, and sit9531x_dpll_mode_set() only clears
-SIT9531X_PLL_STATUS_OUTER_DIS.
+It also says that pin operational state (DPLL_A_PIN_OPERSTATE) reflects
+what the hardware is actually doing with the pin.
 
-Would it make sense to read reg 0x18 bit 5 here, or at least warn at probe
-when it is set?
+The setter refuses CONNECTED. Yet whenever selected_ref == pin_id, this
+getter reports a pin the user set to SELECTABLE as CONNECTED, without
+any user action.
 
+sit9531x_dpll_input_pin_ops also has no .operstate_on_dpll_get.
+include/linux/dpll.h provides that callback, and zl3073x implements it to
+report ACTIVE/STANDBY.
+
+Would it fit the uAPI better to keep state administrative and report the
+selection through operstate?
+
+[ ... ]
+
+> @@ -414,6 +698,242 @@ static int sit9531x_prio_table_read(struct sit9531x_dev *sitdev, u8 pll_idx,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * sit9531x_input_prio_set - move an input to a priority slot
+> + * @input_idx:	input source in hardware encoding (0-11, see
+> + *		sit9531x_input_hw_src())
+> + * @prio:	priority slot position (0 = highest)
+> + *
+> + * Reads the PLL's table, takes the source out of wherever it sits and
+> + * reinserts it at @prio, shifting the entries in between.  The rest keep
+> + * their relative order: a priority change asks about one input, so the
+> + * fallbacks configured behind it have to survive it.
+> + *
+> + * The table is what makes a source eligible for this PLL, so this only
+> + * ever reorders sources already in it.  A source that is absent is
+> + * disconnected on this PLL, and inserting it here would make it a
+> + * selection candidate again behind the caller's back; that is a connect,
+> + * and it belongs to the pin's state setter.
+> + *
+> + * Caller must hold sitdev->multiop_lock.
+> + *
+> + * Return: 0 on success, -EINVAL if the source is not in the table,
+> + * <0 on error
+> + */
+> +int sit9531x_input_prio_set(struct sit9531x_dev *sitdev, u8 pll_idx,
+> +			    u8 input_idx, u8 prio)
+> +{
+> +	u8 orig_srcs[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 rest[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 srcs[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 slot, n = 0;
+> +	int rc;
+> +
+> +	lockdep_assert_held(&sitdev->multiop_lock);
+> +
+> +	if (pll_idx >= SIT9531X_NUM_PLLS)
+> +		return -EINVAL;
+> +	input_idx = sit9531x_prio_src_canon(sitdev, input_idx);
+> +	if (input_idx >= SIT9531X_PRIO_NUM_SRC)
+> +		return -EINVAL;
+> +	if (prio >= SIT9531X_PRIO_MAX_SLOTS)
+> +		return -EINVAL;
+> +
+> +	rc = sit9531x_prio_table_read(sitdev, pll_idx, srcs);
+> +	if (rc)
+> +		return rc;
+> +
+> +	memcpy(orig_srcs, srcs, sizeof(srcs));
+> +
+> +	/*
+> +	 * Take every copy of the source out first.  A disconnect backfills
+> +	 * the slots it frees with the lowest-priority source still listed,
+> +	 * so the same source appearing more than once is an ordinary state
+> +	 * of the table, and shifting from its first copy alone can leave
+> +	 * another copy ahead of the slot the request named -- a priority
+> +	 * the request did not ask for and the getter would then report.
+> +	 */
+> +	for (slot = 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++)
+> +		if (sit9531x_prio_src_canon(sitdev, srcs[slot]) != input_idx)
+> +			rest[n++] = srcs[slot];
+> +
+> +	if (n == SIT9531X_PRIO_MAX_SLOTS)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Once the copies are collapsed the source can only sit behind the
+> +	 * other sources the table lists, because the slots past the last of
+> +	 * them repeat it.  A slot beyond that is a priority the table cannot
+> +	 * express, and placing the source at the nearest one it can would
+> +	 * report success for a priority nobody asked for.
+> +	 */
+> +	if (prio > n)
+> +		return -ERANGE;
+> +
+> +	for (slot = 0; slot < prio; slot++)
+> +		srcs[slot] = rest[slot];
+> +
+> +	srcs[prio] = input_idx;
+> +
+> +	for (slot = prio + 1; slot < SIT9531X_PRIO_MAX_SLOTS; slot++)
+> +		srcs[slot] = (slot - 1 < n) ? rest[slot - 1] : srcs[slot - 1];
+> +	if (!memcmp(srcs, orig_srcs, sizeof(srcs)))
+> +		return 0;
+> +
+> +	return sit9531x_prio_table_commit(sitdev, pll_idx, srcs);
+> +}
 > +
 > +/*
-> + * sit9531x_dpll_mode_set - put the PLL in automatic selection mode
-
-[ ... ]
-
-> +static int
-> +sit9531x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
-> +		       enum dpll_mode mode, struct netlink_ext_ack *extack)
+> + * sit9531x_input_prio_remove - drop an input from a PLL's priority table
+> + * @input_idx:	input source in hardware encoding
+> + *
+> + * Rewrites the priority table with the source removed: the remaining
+> + * sources are compacted toward the highest-priority slots and the freed
+> + * tail slots are backfilled with the lowest-priority remaining source.
+> + * This makes a disconnected input ineligible for automatic reference
+> + * selection, not just gated at the input buffer.
+> + *
+> + * Removing a source that is absent is what the caller asked for already,
+> + * so it succeeds without touching the table.  Removing the last one fills
+> + * every slot with the code for the pair this part does not have, which
+> + * leaves the device with nothing to select and no reference to fall back
+> + * on -- which is what a request to disconnect the last input means.
+> + *
+> + * Caller must hold sitdev->multiop_lock.
+> + *
+> + * Return: 0 on success, <0 on error
+> + */
+> +int sit9531x_input_prio_remove(struct sit9531x_dev *sitdev, u8 pll_idx,
+> +			       u8 input_idx)
 > +{
-
-[ ... ]
-
-> +	if (!(status & SIT9531X_PLL_STATUS_OUTER_DIS)) {
-> +		sitdev->chan[sitdpll->id].mode = 0;
-> +		goto unlock;
+> +	u8 srcs[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 kept[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 slot, count = 0;
+> +	bool found = false;
+> +	int rc;
+> +
+> +	lockdep_assert_held(&sitdev->multiop_lock);
+> +
+> +	if (pll_idx >= SIT9531X_NUM_PLLS)
+> +		return -EINVAL;
+> +	input_idx = sit9531x_prio_src_canon(sitdev, input_idx);
+> +
+> +	rc = sit9531x_prio_table_read(sitdev, pll_idx, srcs);
+> +	if (rc)
+> +		return rc;
+> +
+> +	for (slot = 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++) {
+> +		if (sit9531x_prio_src_canon(sitdev, srcs[slot]) == input_idx)
+> +			found = true;
+> +		else
+> +			kept[count++] = srcs[slot];
 > +	}
 > +
-> +	rc = sit9531x_update_pll_u8(sitdev, sitdpll->id,
-> +				    SIT9531X_PLL_REG_STATUS,
-> +				    SIT9531X_PLL_STATUS_OUTER_DIS, 0);
+> +	if (!found)
+> +		return 0;
+> +
+> +	if (count == 0) {
+> +		/*
+> +		 * Nothing is left to compact toward, so every slot gets the
+> +		 * code that names no reference.  The device is then left
+> +		 * with no source to select, which is what disconnecting the
+> +		 * last input asks for; lock status follows the loop on its
+> +		 * own from there.
+> +		 */
+> +		memset(kept, SIT9531X_PRIO_SRC_NONE, sizeof(kept));
+> +	} else {
+> +		/* Backfill freed tail slots with the lowest-priority src */
+> +		while (count < SIT9531X_PRIO_MAX_SLOTS) {
+> +			kept[count] = kept[count - 1];
+> +			count++;
+> +		}
+> +	}
+> +
+> +	return sit9531x_prio_table_commit(sitdev, pll_idx, kept);
+> +}
+> +
+> +/*
+> + * sit9531x_input_prio_add - make an input eligible in a PLL's table
+> + * @input_idx:	input source in hardware encoding
+> + *
+> + * Ensures the source appears in the priority table so it can be picked
+> + * by automatic reference selection again after a disconnect.  If the
+> + * source is already listed the table is left untouched; otherwise it
+> + * replaces a duplicate at the tail.  A table that contains only unique
+> + * sources cannot accept a new one without evicting another, so that
+> + * case fails with -ENOSPC.
+> + *
+> + * Caller must hold sitdev->multiop_lock.
+> + */
+> +int sit9531x_input_prio_add(struct sit9531x_dev *sitdev, u8 pll_idx,
+> +			    u8 input_idx)
+> +{
+> +	u8 srcs[SIT9531X_PRIO_MAX_SLOTS];
+> +	u8 seen[SIT9531X_PRIO_NUM_SRC] = { 0 };
+> +	u8 replace = SIT9531X_PRIO_MAX_SLOTS;
+> +	u8 slot, src, src_canon;
+> +	int rc;
+> +
+> +	lockdep_assert_held(&sitdev->multiop_lock);
+> +
+> +	if (pll_idx >= SIT9531X_NUM_PLLS)
+> +		return -EINVAL;
+> +	input_idx = sit9531x_prio_src_canon(sitdev, input_idx);
+> +	if (input_idx >= SIT9531X_PRIO_NUM_SRC)
+> +		return -EINVAL;
+> +
+> +	rc = sit9531x_prio_table_read(sitdev, pll_idx, srcs);
+> +	if (rc)
+> +		return rc;
+> +
+> +	for (slot = 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++)
+> +		if (sit9531x_prio_src_canon(sitdev, srcs[slot]) == input_idx)
+> +			return 0;
+> +
+> +	for (slot = 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++) {
+> +		src = srcs[slot] & SIT9531X_PRIO_NIBBLE_MASK;
+> +		src_canon = sit9531x_prio_src_canon(sitdev, src);
+> +		if (!sit9531x_prio_src_usable(src))
+> +			continue;
+> +
+> +		seen[src_canon]++;
+> +	}
+> +
+> +	/*
+> +	 * A slot whose code names no usable source -- a reserved value, or
+> +	 * one past the inputs this variant has -- is free space, and taking
+> +	 * it costs nothing.  Prefer it over displacing a real reference.
+> +	 */
+> +	for (slot = SIT9531X_PRIO_MAX_SLOTS; slot-- > 0;) {
+> +		src = srcs[slot] & SIT9531X_PRIO_NIBBLE_MASK;
+> +		if (!sit9531x_prio_src_usable(src)) {
+> +			replace = slot;
+> +			break;
+> +		}
+> +	}
+> +
+> +	/* Otherwise take the last slot holding a source listed twice. */
+> +	for (slot = SIT9531X_PRIO_MAX_SLOTS;
+> +	     replace == SIT9531X_PRIO_MAX_SLOTS && slot-- > 0;) {
+> +		src = srcs[slot] & SIT9531X_PRIO_NIBBLE_MASK;
+> +		src_canon = sit9531x_prio_src_canon(sitdev, src);
+> +		if (!sit9531x_prio_src_usable(src))
+> +			continue;
+> +
+> +		if (seen[src_canon] > 1) {
+> +			replace = slot;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (replace == SIT9531X_PRIO_MAX_SLOTS)
+> +		return -ENOSPC;
+> +
+> +	srcs[replace] = input_idx;
+> +
+> +	return sit9531x_prio_table_commit(sitdev, pll_idx, srcs);
+> +}
+> +
+>  /* XO doubler register */
+>  #define SIT9531X_REG_XO2_GENERIC		SIT9531X_REG(0x00, 0x2D)
+>  #define SIT9531X_XO_DOUBLER_ENB_BIT		7   /* inverted: 0 = enabled */
 
-[Severity: Medium]
-Can sit9531x_dpll_mode_set() ever be reached?
+[Severity: Low]
+When the table has more than one free slot, does this search place new
+inputs in the reverse of the order they were connected?
 
-sit9531x_dpll_mode_get() always returns DPLL_MODE_AUTOMATIC, and
-sit9531x_dpll_supported_modes_get() advertises only DPLL_MODE_AUTOMATIC.
-In the core:
+The loop walks down from the last slot, so it always takes the
+highest-index free slot. After sit9531x_input_prio_remove() has emptied
+the table, every slot holds SIT9531X_PRIO_SRC_NONE. Suppose IN0 and
+then IN2 are set to SELECTABLE on that DPLL:
 
-drivers/dpll/dpll_netlink.c:dpll_mode_set() {
-    ...
-	ret = ops->mode_get(dpll, dpll_priv(dpll), &old_mode, extack);
-    ...
-	if (mode == old_mode)
-		return 0;
-    ...
-	if (!test_bit(mode, modes)) {
-    ...
-}
+- IN0 lands in the last slot.
+- IN2 lands in the slot before it, so IN2 now outranks IN0.
 
-A DPLL_MODE_AUTOMATIC request returns before ops->mode_set is called. Any
-other mode is rejected by the test_bit() check.
+Each input connected afterwards goes ahead of every input connected
+before it, until the free slots run out. The same happens when the
+loaded configuration leaves several slots holding codes that
+sit9531x_prio_src_usable() rejects.
 
-That makes the OUTER_DIS read, the clear, the small-update latch, the
-restore and the cache update look unreachable. A PLL left free-running by
-the loaded profile would stay that way, while userspace gets success for
-its DPLL_MODE_AUTOMATIC request. This is still the case at the end of the
-series.
+The SELECTABLE path in sit9531x_dpll_input_pin_state_on_dpll_set()
+does not report where the input landed. The user only sees the order
+the PLL will select in by reading the priorities back. The priority
+setter added in the next patch can reorder them, but the default order
+is still the opposite of what one would expect.
 
-Should mode_get report something other than DPLL_MODE_AUTOMATIC when
-OUTER_DIS is set, or should this recovery happen some other way?
+Was this ordering intended? Two alternatives:
 
-[ ... ]
+- Scan upward from slot 0 for free space.
+- Place the new source directly behind the last usable entry.
+
+Either would keep the order in which inputs were connected. The
+kernel-doc above only says the source replaces a duplicate at the
+tail. It does not describe the free-slot case, or which free slot is
+preferred.
