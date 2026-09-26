@@ -1,79 +1,303 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8E1344D8B;
-	Sat, 26 Sep 2026 01:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3C305683
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790387480; cv=none; b=RxQwVhqhG2OmWfnkQL58ue/9qMYTskTQdp2ZHbrcnMrtQWmHiEUFOiyYwBCC5ygt05WJHLHxn1q3mkzQFYOcH/Wp1XZOIv8ubyBUdlLi5egpRA+gIWdQtvjGvXWoa3pddF2qFKOiFbUTgG3VRLPgnrfFUDpVKsi3VBG71VVXbNI=
+	t=1790388396; cv=none; b=DQ1WyKTYo251Z8PUpC5/zSIne902MOQEqw+RHoxjKl54D2OnGYe+78kHyLSlYIJbl9B8Vd/AAh/Z2WWABGFXV16gLNFAZoyP6L3fFcdvwDATCVME+zfFDg99fAIGzIeFS+Dy1IL8uih+etjMu/39uRN2xbppMmwlfJrEGQqdXc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790387480; c=relaxed/simple;
-	bh=3n29PCSBZoN+nsXmJd3S2MBOCKkZkKUhG0mUeIqrm9I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Kt/nFhWRrCrIZKGpB23pl8Iaa6wX3sT0Z8zdW6GBqYDkQHr4KZvh3l4Pv7HQG41aN4HzxALnKBr/oGv4uXswzyl+nV3tG0/k3oHsNxTysgZ3y13bXrLVGug3J7MrIESGs7R41u1Fmw2/8CV8lt7gs8cJsqH1H3DRRCsynEX9n5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZQYV8k9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790388396; c=relaxed/simple;
+	bh=wuI2TebdT4731npF2uvIR5BLfhA5sfVfMRK6qldeiN0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=bAll3hX8UU+R53xgpwDBJKiWMw0dFJc7RDIx91lwgwKIWrbGesSoxOL5cQggbsPwz/yTUST4uAar+yDIjfqoDEmBq7K/+HA1tUVq4JG8OYtxwgEv3QstE6v5K63SBnlND/g9Z1ZM9LFvCwxEx+YmrFLkSlzur2BVZfUBE1SFKkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9Ikiee/; arc=none smtp.client-ip=74.125.224.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZQYV8k9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644361F000FF;
-	Sat, 26 Sep 2026 01:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790387479;
-	bh=+VFT6xlGHxpC3kv25rw/bPdlgDq5bUdmZOCy6ObteTw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cZQYV8k9RIgZ70YxU298VqmdSLXwPUIOnfLTb5tz046zpmFAeJDf6KfWOJ+ugslO0
-	 8dtSipey73QdOPJ46PIfKEsQWR7FWIBRQyYvXi64sI615kQMoncUpkfRH3glRt7Yv8
-	 MgmDCzN+n7CWj0kZSS3O48pEG34SZPc3+Sc5vtYQ0lUZD0fX+b5qnwtFQL9xgAaTFO
-	 6UDQ9G/I3mKYPoBKd82O7X49IpEtakxkNB2eNpYQrgWkCJsvjGKK6US+2AcGamOImx
-	 aP0bB13IcN764QA9Y3zHKuz3d746ks2n0pec46xnPehMmwyGRkW4zKULz7GX3SzLb4
-	 inzXGQCc+s0Qw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 196D63809A08;
-	Sat, 26 Sep 2026 01:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9Ikiee/"
+Received: by mail-yx2-f41.google.com with SMTP id 956f58d0204a3-6737f0593faso1366480d50.0
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 19:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790388391; x=1790993191; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XTiBH4pFhHFt7w7VVYwkFnH5D0BtF1ULS8CrJhbu7BY=;
+        b=J9Ikiee/vIAbqC5CK/FcugdMycE9cMqZSMAXrwEfXWqLaB+PGliV8kPSm9XOW76dNQ
+         ZDJ+w05AltOOqL0sVavfTMut+3+GECnkPj8PJPi6xBjBrEYR5pw8KUesBOos9Xscykw7
+         LcvP7Q011D/igA2yUzgLbOfN0QfPxvGCphvpC5/GvkIAqEpiCByQY6fFnHsqE85pTJth
+         5LGjGzxDgf9LamKaBdx5jl6ioY2Y0V1lnGSUfeuVmKeZmdSmvUSXKK2JFnONVviZcwzK
+         md7rXcw92XJ5Goo8lJiEItWmb84lZCWsF1DGnKO7R4Ct6qUIDvvh+H5+vUU7JpSJ6bBD
+         VZ7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790388391; x=1790993191;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XTiBH4pFhHFt7w7VVYwkFnH5D0BtF1ULS8CrJhbu7BY=;
+        b=aGhvBqGZym7HGNs1uMkULnGoqPA/pzbEqCBG1NrdXGLL4Lg6J2FWM3PkpdnJ/27bTY
+         WJTUpV6uL/lcc8TrJjVYXBnsjZzc6qZaEEClFVeSjGBjuzrnZbwVlcWrOSkIryoYSBdM
+         ZR/B23IgegOJROp1otRxtPWrf3dzM5YkaHiEesVfZxIvX6w62zOzvmb0rrYT5/pRgLiE
+         ZPH5Bz+oXxusMvEqRbMd/886QbFtIDpKRdIbkFTgzcU5JXyVtWhGdTAsCUt+B9m3LBNs
+         7dReMagCDBx7hm62ZaD/1bUlPgbX7GWdQHWv/QdZpbBG+jVjexMZahLanN79Fhk5ZM7k
+         u5kg==
+X-Gm-Message-State: AFq9FYISnZEc3cKFrvGYzW9FA7pv3yTIUvBM8NyyqwnQ+YpJ4Uu8YCKy
+	IRnnk14B4gezU3JT53w6pLAtHpGtaKMmEG+8EcqzNdpd5kwYZshTerow
+X-Gm-Gg: AYBFou1wLx8gwpJ5BgqOhwH1i16zVUu1DLr8jd6StEGo37v4Jed8WaeT5KOnyZBKgBr
+	qZdvS64Gt1MjPY63fNwd+oi7WX4nPPROUcs2aSio59QFj2I9hfS5U3HKDSJSqllEkTvYjbamXYJ
+	RkaJIhXHvqoIa1bVoJ7TDbfUDfyXCbrL1oQ3GUTHaAmx/OVpd7Il3HWyLpEWCLwGYgZWQV00MlW
+	gPadsYmapsbyN3UClhG0fmTTwMAC35QrKG6MnMk9OymnoeowAMLDNTgKq8LWlCAhO/obBM4SV6P
+	oHh0tjnB1ha76ennd8ozRlr182ccM85+HgGRBvgXNPnVssqBOkksDpPbTxvn6wPUkDfGCkQM3mT
+	sv+OKJAH2E5IMpW1Ok2XSPingPKbaxDirOcRGmCD6NmGKgmxx04fp79cMXyPLjzde5Ceau8COxg
+	hHM0t8ru8Fl7U5JGcXfRszu7/H9no0JQZ/EeXOkMmNDOI79xkFvqBRcL4ylF35Lx9u1+QeD+J07
+	jQXZgWvdpgqRQr9UiUFBJfl5WWlTfqFCB5hi7QHUIsbzy38h//N
+X-Received: by 2002:a05:690e:43cc:10b0:672:d32d:8ee with SMTP id 956f58d0204a3-672ed42d6aemr2613664d50.50.1790388391061;
+        Fri, 25 Sep 2026 19:06:31 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6740eef1173sm1755545d50.8.2026.09.25.19.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 19:06:30 -0700 (PDT)
+Date: Fri, 25 Sep 2026 22:06:29 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org, 
+ willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ xietangxin@yeah.net, 
+ willemb@google.com, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.386226098beef@gmail.com>
+In-Reply-To: <179036410829.2160803.1955366625960078958@kernel.org>
+References: <20260924192128.1197118-1-willemdebruijn.kernel@gmail.com>
+ <179036410829.2160803.1955366625960078958@kernel.org>
+Subject: Re: [PATCH net] net: extend IPv6 exthdr detection of tunneled packets
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] idpf: fix kernel-doc parameter descriptions
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179038740665.3239957.9582197756741743570.git-patchwork-notify@kernel.org>
-Date: Sat, 26 Sep 2026 01:50:06 +0000
-References: <20260925000244.72480-1-ayush37735@gmail.com>
-In-Reply-To: <20260925000244.72480-1-ayush37735@gmail.com>
-To: Ayush Yaduvanshi <ayush37735@gmail.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- skhan@linuxfoundation.org, jkoolstra@xs4all.nl, me@brighamcampbell.com,
- linux-kernel-mentees@lists.linux.dev
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+netdev-bot+sashiko@ wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> =
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> =
 
-On Fri, 25 Sep 2026 05:32:44 +0530 you wrote:
-> Remove stale @vport parameter descriptions from
-> 
-> idpf_rx_desc_rel_all() and idpf_vport_queue_grp_rel_all().
-> 
-> Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
-> ---
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 --
->  1 file changed, 2 deletions(-)
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> (one such reply per series is enough).
+> =
 
-Here is the summary with links:
-  - [net-next] idpf: fix kernel-doc parameter descriptions
-    https://git.kernel.org/netdev/net-next/c/014d795c7383
+> - [High] Regression for non-encapsulated IPv6 CHECKSUM_PARTIAL skbs in
+>   skb_csum_hwoffload_help(), plus a matching gap in=E2=80=A6
+> =
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> --
+> =
+
+> net: extend IPv6 exthdr detection of tunneled packets
+> =
+
+> This patch replaces skb_gso_has_extension_hdr() with
+> skb_has_ipv6_extension_hdr(). The new helper runs ipv6_ext_hdr() on the=
+
+> outer IPv6 nexthdr. For encapsulated skbs that have an inner network
+> header, it also runs it on the inner IPv6 nexthdr. skb_csum_hwoffload_h=
+elp()
+> now uses the same helper instead of its open coded skb_network_header_l=
+en()
+> test.
+> =
+
+> > diff --git a/net/core/dev.c b/net/core/dev.c
+> > index f660fccfc0dbc..992b78308c13f 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -3818,20 +3818,29 @@ static netdev_features_t dflt_features_check(=
+struct sk_buff *skb,
+> >  	return vlan_features_check(skb, features);
+> >  }
+> >  =
+
+> > -static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
+> > -{
+> > -	if (!skb->encapsulation)
+> > -		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
+> > -			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
+> > -			  vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6))) &&
+> > -			skb_transport_header_was_set(skb) &&
+> > -			skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr));
+> =
+
+> [ ... ]
+> =
+
+> > +static bool __skb_has_ipv6_ext_hdr(const struct sk_buff *skb, int nh=
+off)
+> > +{
+> > +	const struct ipv6hdr *ip6h;
+> > +	struct ipv6hdr _ip6h;
+> > +
+> > +	ip6h =3D skb_header_pointer(skb, nhoff, sizeof(_ip6h), &_ip6h);
+> > +	return ip6h && ip6h->version =3D=3D 6 && ipv6_ext_hdr(ip6h->nexthdr=
+);
+> > +}
+> > +
+> > +static bool skb_has_ipv6_extension_hdr(const struct sk_buff *skb)
+> > +{
+> > +	if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
+> > +	    __skb_has_ipv6_ext_hdr(skb, skb_network_offset(skb)))
+> > +		return true;
+> > +
+> > +	/* Tunnels without an inner network header, such as SCTP-in-UDP or
+> > +	 * PSP, have no inner IP header and thus no inner extension header.=
+
+> > +	 */
+> > +	if (skb->encapsulation && skb_inner_network_header_was_set(skb) &&
+> > +	    __skb_has_ipv6_ext_hdr(skb, skb_inner_network_offset(skb)))
+> > +		return true;
+> > +
+> > +	return false;
+> >  }
+> =
+
+> [ ... ]
+> =
+
+> > @@ -3988,8 +3997,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb=
+,
+> >  		return 0;
+> >  =
+
+> >  	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
+> > -		if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
+> > -		    skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr))
+> > +		if (skb_has_ipv6_extension_hdr(skb))
+> >  			goto sw_checksum;
+> =
+
+> [Severity: High]
+> Does this weaken the check for non-encapsulated IPv6 CHECKSUM_PARTIAL
+> skbs?
+> =
+
+> When !skb->encapsulation, validate_xmit_skb() sets the transport header=
+ to
+> csum_start just before it calls skb_csum_hwoffload_help():
+> =
+
+> net/core/dev.c:validate_xmit_skb() {
+>     ...
+> 		if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
+> 			if (skb->encapsulation)
+> 				skb_set_inner_transport_header(skb,
+> 							       skb_checksum_start_offset(skb));
+> 			else
+> 				skb_set_transport_header(skb,
+> 							 skb_checksum_start_offset(skb));
+> 			if (skb_csum_hwoffload_help(skb, features))
+> 				goto out_kfree_skb;
+>     ...
+> }
+> =
+
+> That means the removed skb_network_header_len() test checked that
+> csum_start sits right after the 40 byte IPv6 header.
+> =
+
+> The new helper only checks whether the outer nexthdr is one of the six
+> values listed in ipv6_ext_hdr(). It skips the inner check because
+> encapsulation is 0.
+> =
+
+> Take IPv6|UDP|VXLAN|Eth|IP|TCP, or IPv6|IPv6|TCP (nexthdr 41), with
+> csum_start at the inner TCP header and csum_offset 16. Would that packe=
+t
+> now reach the csum_offset switch and return 0?
+> =
+
+> Such skbs can come from untrusted input. __virtio_net_hdr_to_skb() is
+> used by tap, vhost-net and AF_PACKET with PACKET_VNET_HDR. It accepts
+> VIRTIO_NET_HDR_F_NEEDS_CSUM with any csum_start via
+> skb_partial_csum_set(). It does not look at nexthdr and does not set
+> skb->encapsulation.
+
+This is correct. virtio_net_hdr can insert packets with tunnels,
+without setting skb->encapsulation.
+
+> One case: a guest sends IPv6 VXLAN traffic with a CHECKSUM_PARTIAL inne=
+r
+> TCP header (LCO). The host bridges it to a device that has
+> NETIF_F_IPV6_CSUM but not NETIF_F_HW_CSUM.
+> =
+
+> On a device that parses headers itself, such as bnxt, bnxt_exthdr_check=
+()
+> accepts an outer nexthdr of UDP for non-encapsulated skbs. The hardware=
+
+> would then fill in the outer UDP checksum and leave the inner TCP check=
+sum
+> holding only the pseudo-header seed. Before this patch, the kernel
+> computed these checksums in software.
+> =
+
+> The skbuff.h description of NETIF_F_IPV6_CSUM covers only "unencapsulat=
+ed
+> packets of the form IPv6|TCP or IPv6|UDP where the Next Header field in=
+
+> the IPv6 header is either TCP or UDP."
+> =
+
+> gso_features_check() has the same gap. For non-encapsulated skbs, the o=
+ld
+> branch removed NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4 whenever the transpo=
+rt
+> header was not at nh + 40. The new code removes them only when the oute=
+r
+> nexthdr is an extension header.
+> =
+
+> The commit message talks about removing false positives, but it doesn't=
+
+> mention this relaxation for non-encapsulated skbs.
+> =
+
+> Could the offset test stay for the !skb->encapsulation case? For exampl=
+e:
+> =
+
+> 	skb_checksum_start_offset(skb) - skb_network_offset(skb) !=3D sizeof(s=
+truct ipv6hdr)
+
+Will do in v2.
+
+Reintroducing this check is the safest way to detect this edge case.
+
+> Or could the check require nexthdr to be IPPROTO_TCP or IPPROTO_UDP,
+> instead of testing ipv6_ext_hdr()?
+
+Only checking two transport types is insufficient.
+
+> -- =
+
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
+chset/20260924192128.1197118-1-willemdebruijn.kernel%40gmail.com
 
 
