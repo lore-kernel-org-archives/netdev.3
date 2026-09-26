@@ -1,100 +1,81 @@
 Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318BB3A5440
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 08:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A657286A4
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 08:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790412057; cv=none; b=FQUuUMcsV7n0ZMH1ci6aQZjPU9pV/8fM2Q6uQ1CpixoY29a/223kZ6gfezESRBOhoT4I0uAsltSSCzy1roQxPgCZWJkBP/z7DcViIKumhAcT49tzoYX5ODd5XXmQFq51jfvCyBgvjLtP6bGecC5B2twAGrrrv8JAEjg43P29Tns=
+	t=1790412221; cv=none; b=gD19zY9deBA0DOy5nF6rA772hBll5YhQUhkVmrocMn5RFB0ya5ZQXIfkaaOa0HsZ5cjI8zG8BDPEq738XwgEoovr1346bgCY0qqkxVBjRY6NOzODVqoVRW7kpIrVKDf0+BgCKxMcavQnr22YCtcZRHgRGDx46hYiwVDVSrXro10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790412057; c=relaxed/simple;
-	bh=yfJjADf/hO1fRxYvy/AN/v3SrpzC/4Wi3xAd5XT6Vfw=;
+	s=arc-20240116; t=1790412221; c=relaxed/simple;
+	bh=12EUdsbFiHBURzlJjrzAK8K4NZINHomEF0ijgoIRkOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EHyubQEg+wFfQ6odGvN41YcU1AcVFxGRyeRL9n3Q8LauE2VLl3UfuNAs+TpIEtw092yt0LxEIuwziYPITk4PQ3IYiLcm7OEncB3ZQKlVd0mCceoHeKIRlQNV2pEz7wfP/akn4oAqx8GIYdR1U4E0c9OcAPwt663GQesZEbq/Ypk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jHJN71Te; arc=none smtp.client-ip=74.125.225.99
+	 Content-Type:Content-Disposition:In-Reply-To; b=nxAyjUEmocoRk7y8mL+IwR9APKDpKT0/8hXJw7APK1NBfXjo2RYH2O4NS2PK5TDG+VYh20VjfFeGpLSXCbmJtr6G4Yf4Dvta16OhVULK76j6tPbWeDRH555oIpGIXP3wIGhnhig9voGGSt9JY53c+JWnoMgbuoYC4YkR6cJrffM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQ9waO3B; arc=none smtp.client-ip=74.125.225.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jHJN71Te"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887f690df6so957531f8f.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 01:40:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQ9waO3B"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48877902c99so1383437f8f.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 01:43:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790412053; x=1791016853; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790412219; x=1791017019; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GKB7jX/87a5ucU2dpPAfqks2hCkBhkpECERSJJpQMwI=;
-        b=jHJN71Ted+4EJSzEDgRQsxjJyBl7oD1seqQKsyBKjWZ1BrGy3/KjSSl6l2Y6JKDP1t
-         MY8Vz4Li6Un0hyuJL0MvAk+GV9kbZ/Q7d8+cub8laDSZBjJ3Y03OrPdgUYWmk46dQ7Eg
-         9ENr9dJZvKfD9hyuHWWQLEbrJnSCwxrnHsaPU5oBFZFRUlRlmaEJ4/l0/wVMg4e4iufW
-         97b7wjN1oke5vEWpYVxAPbtKFojIYaMWg4Vf1vQpJiL8FfSz7tZoJGxmVibC/XuSdepC
-         X5HNmijDWhJx2HKzYIbw+7G2cXXZXsM4nNXe1sHKeLNbd/97rawjbcAcPsAJgkqpKCTk
-         rMzg==
+        bh=QCwVdOxjrFD+KrFGvyZLlA0okXbQCYf9gkSOoPwm8f0=;
+        b=sQ9waO3BnTOzJMYOCXCLbcxZZobeBoAgwyUF4n0Itanw/bT0XnLu0IOpdVYUqDMUuY
+         CnYvDX+CzGQAPCE9CBJl/4b9zolIuYpJdWuzZZP/X1bfrfu3VV856s+xf3mp+oW4W5zs
+         c1u39oZiHrZBS0alTPpBNkqJ6VlGFu8rTRCMFgsBuJKJrxw+XN+ZLHC3z5fa5R635lLB
+         0eSu9NAao1vCpTbLcwWb9F3I1ThGBdLeIf2TNcjEXTMRYY5UHGZatJHphdTfjGaa4xyi
+         PayrediRnZ/8NO7cBojsw9lOfUsUjNUq/k/XM6+hAvdfDehzQlgpo/9tOOIwoqExXVjt
+         VKEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790412053; x=1791016853;
+        d=1e100.net; s=20260707; t=1790412219; x=1791017019;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GKB7jX/87a5ucU2dpPAfqks2hCkBhkpECERSJJpQMwI=;
-        b=Qbhv1w1DXRt2N2pqZmHUTAt+WqFOqRFCpZmmHcvlDAsnjc6AG3pfJgYOmoXkIWVN8g
-         osuMessk27Dk4riGgN631sPFucoBwHskRy6jTnJOEyYIgEcN/X6V8vskPBqV45XvkmMl
-         NLi70rB4YtyXR2or5uCtCpUvKlylVYVhWj+TjKngkjJZwoOwnUX3uUgQTnHAbTMP7J/m
-         UK/ufTSnpJavaz0Ym8bcRWBFvbIzpk0/Mdb6AzZBHW8UJ3MCtyFI5rN5UwBoYaWpEYe1
-         HmE2M+7fceVH6onPrmw/Q1Ioc7cIgBSQY4blNIYqzkghYbB/GYQsFqbX9SYFdIzd6CUV
-         77EQ==
-X-Forwarded-Encrypted: i=1; AKwUvByREI8yBfRVtgqF9zF1v5CtXdpElJdfUj4Na3zyYQCPKVhFBaPxXDVGHf6p7bFhzuxEdFWDL8Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLlOJDQni9A7SD3CXkD88qrph/mJL1PAmuil4yr67r9ABkSBKE6
-	xHGPB9+QoUZBMYPfRW9to42ZXPNJDSeF6H+czH4qUIdlRedF3+RFc+LL
-X-Gm-Gg: AYBFou1jHs5pgZ0QToPaRqMx64qRwDZZi0nXBLFuHuoMdHE4xA/vcVvRkvapeKFITYP
-	Pp2rVZOBGYhmFSqiDyEfHatF6pTmIdeIOm/k/Shj/cmVSEY4a1SFpUDgVcwmPYdTh6ewHaWYTGm
-	6eu+Il/5XTG2ed2XvdEY/4drMCKgzmezBuozyXh0AXpMODgZ+4E8+ZU8nbyR0+2kvPZCbQJ/wVN
-	EIOwU1s0Ufclv73P74q06+1v9H2/ZSVVI4+u0f9wJgEE3zUGBj0bNxt2lSlsor4PGnjeqrybqD2
-	Sj89O69hUPtjL/Ty1chju4kT1VQPsO3UjLnDUDvYUbDDKTt/S/ck7dZ7eUfMKNozBmTvZKRneJ1
-	kEPUhJ34A2ms4IuX6ADf7o2pJSGmYZjQ+nzqLM26IEH/owi9ASutxrefyMuCnqnRpdTR97uxxZZ
-	Owf7pSYdlbb722xmyAu6Dm+aqlkisWX9azHvSo/TvkpohUC7RFEOPP2chmJUkrcyEpMYUsxFzf/
-	/gWz4NiXlX+lwp9xjQAX7xW061NtaNPZyFsiMqBXQrLaOOd9kcMVoau4I+v7Qz74D0gbE9439Vm
-	AtXNXH2SjEmYpQWUoKHm0VYCAPev
-X-Received: by 2002:a05:6000:40e1:b0:487:62d:37d9 with SMTP id ffacd0b85a97d-488716a5e3amr14226748f8f.27.1790412053273;
-        Sat, 26 Sep 2026 01:40:53 -0700 (PDT)
-Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349a0esm18313534f8f.10.2026.09.26.01.40.51
+        bh=QCwVdOxjrFD+KrFGvyZLlA0okXbQCYf9gkSOoPwm8f0=;
+        b=r8B0v3AjW5qbCmMIHeJ0EOpzKcMOyxnqca8mDNEUqrS37x+VsnbBJlz576yCqJQVPF
+         Gv+stR6jA7H4GmPHTbHfZ/oX8X5ozZlc18Xi/ujtt4IG33vZFPiAB8aBTj+jPCoQEpXc
+         BVjiwgk1Sfud8X8yuTZiue6OgiSP60+0cSAPfgT1Fu0gnZaNz9HSI8ZiKXxFz/XExQ2a
+         m4fyrauHUkWc/HygKJKruICaBGLEYn0DR0TeDbba0TJen7dsPBde5ymBbbie3t+xn5V/
+         0OPbgezw7lJXmJkwKUbA4zEqB26MgarVTFkPG7MMK62lpol7Q++vrjkaRFWuPu77K1c0
+         pR8w==
+X-Forwarded-Encrypted: i=1; AKwUvBzdXCHr30SIGDTR4F166L97Hb7nXXxGO9CAmDMyWW8tMYHkCcf+Pa6jDt4Y6Eu39w+ioOR7rKU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLroYcz6A8qqJ5w/8vUouatKZ4FUuX+0mypllu/WetZCevGzuZF
+	BxOrgP5dNljuRRFWegyxV54SBhERyzXNw8ilDvnOuXDpOsK0iZaI+cu3
+X-Gm-Gg: AYBFou0qNaTl7vc4TrB/Hjk4nUky6C22BS/6ZEPMD9pW8lTye9S4FhBSw2CAEohAFiT
+	gMUq5Hv80TAeGe+PK2ka+u5qL5IcNHelJibVeUoW3EVh/5nX06coUIHzkyU7UGZHB7W713zwAh9
+	2KnLlHQzjTSPrqPSnPDXPdp4VorEPPre0+cHaq1txnYfEDHSnX+EpQ5FlFGBUzdaUBfEq4+wO3R
+	tSnGL5woNYV85Khl4q0o8FlywyqybKn2Cxj6ZNkHORlvt8fiOANKCf8w5t4uliGc/3Os31xwhm5
+	+J1iaitdGhQbDauUJ6g09IkYBe7n+Hph6Qhoc8kQwHp4wDbzO6aE2s1tWBgCcXYpRdzq931/e7P
+	EPVPXFjFBW9QVUlxGq+SgT4DXyMSsNwSaf2FisA3LmemosdnTGkdq/QFqwGIA3Mm/Z8gsOP+Nzx
+	NtJXfjQcB5s0d3eTR/RzVj2gz0enRFnvyqUjxkYC4pmU2H4xRupl1KbTqcupaj83xuXzbygtx+k
+	oRW5tVxqB3dUJDT7/RVOrava0hjnEEW/wL9qYZHI6QRgYKME36Firxu2teuFbmPOG1dqi8//Aut
+	Puz6sZP3YBFTqznvF9MiBd5fkVWMzKzFI03Lp0k5IcJZjeDv07U6OXyceEtjLffHtnnxbOnOcKJ
+	pDWvG62NFzSOi74K36f4kqA==
+X-Received: by 2002:a05:6000:1a85:b0:487:ee4:b5e4 with SMTP id ffacd0b85a97d-488716b6cd7mr15679810f8f.8.1790412218418;
+        Sat, 26 Sep 2026 01:43:38 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a30b1dfsm12979497f8f.4.2026.09.26.01.43.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 01:40:52 -0700 (PDT)
-Date: Sat, 26 Sep 2026 10:40:50 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 04/11] ARM: dts: imx6ul: Add Variscite audio codec
- files
-Message-ID: <areFEuHcyziU2xXx@Lord-Beerus.station>
-References: <cover.1790344389.git.stefano.r@variscite.com>
- <ef56f98137eb9d1e0af3aa1b801186d829dba521.1790344389.git.stefano.r@variscite.com>
- <araMJFirhP86Dcb6@SMW015318>
- <araZ8pJGmDVXMjvE@Lord-Beerus.station>
- <arakXE94ZONxduMU@SMW015318>
+        Sat, 26 Sep 2026 01:43:37 -0700 (PDT)
+Date: Sat, 26 Sep 2026 10:43:35 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Matt Johnston <matt@codeconstruct.com.au>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mctp: Stop selecting flow support for
+ KUnit tests
+Message-ID: <areFT_yfInT01o2r@gmail.com>
+References: <20260925192510.93840-1-kmehltretter@gmail.com>
+ <8edc4e71edceb124e2dca233cddb75e198b53a51.camel@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -103,47 +84,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arakXE94ZONxduMU@SMW015318>
+In-Reply-To: <8edc4e71edceb124e2dca233cddb75e198b53a51.camel@codeconstruct.com.au>
 
-On Fri, Sep 25, 2026 at 11:42:04AM -0500, Frank Li wrote:
-> On Fri, Sep 25, 2026 at 05:57:38PM +0200, Stefano Radaelli wrote:
-> > On Fri, Sep 25, 2026 at 09:58:44AM -0500, Frank Li wrote:
-> > > On Fri, Sep 25, 2026 at 04:02:21PM +0200, Stefano Radaelli wrote:
-> > > > From: Stefano Radaelli <stefano.r@variscite.com>
-> > > >
-> > > > Add separate DTSI files for the WM8904 and WM8731 audio options on
-> > > > VAR-SOM-6UL and DART-6UL modules.
-> > > >
-> > > > Put each codec node, the SAI2 setup and its pinctrl in the selected
-> > > > audio DTSI. This makes the WM8904 option explicit instead of placing
-> > > > it in the shared module base.
-> > > >
-> > > > Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-> > > > ---
-> > > >  .../imx/imx6ul-imx6ull-var-dart-wm8731.dtsi   | 71 +++++++++++++++
-> > > >  .../imx/imx6ul-imx6ull-var-dart-wm8904.dtsi   | 88 +++++++++++++++++++
-> > > >  .../imx/imx6ul-imx6ull-var-som-wm8731.dtsi    | 71 +++++++++++++++
-> > > >  .../imx/imx6ul-imx6ull-var-som-wm8904.dtsi    | 85 ++++++++++++++++++
-> > >
-> > > what's difference between imx6ul-imx6ull-var-som-wm8904.dtsi and
-> > > imx6ul-imx6ull-var-dart-wm8904.dtsi?
-> > >
-> > > Frank
-> > >
-> > Hi Frank!
-> > Thank you for taking the time to review this huge patch.
-> >
-> > The difference is in simple-audio-card,routing:
-> > on DART-6UL, the microphone jack is routed to IN2L, IN2R and MICBIAS;
-> > those routes are absent on VAR-SOM-6UL.
+On Sat, Sep 26, 2026 at 03:53:28PM +0100, Jeremy Kerr wrote:
+> Hi Karl,
 > 
-> Is possible to share most part?
+> > MCTP_TEST selects MCTP_FLOWS, which also enables SKB_EXTENSIONS when no
+> > transport requires them.
 > 
-> Frank
+> But we want to test the flows support, why disable this (and
+> consequently skip the flow tests in the vast majority of test runs)?
+> 
+> > Remove the selection to follow the dependency
+> > rule in Documentation/dev-tools/kunit/style.rst.
+> 
+> That suggests "depending on", rather than removing the coverage.
 > 
 
-Absolutely! I'll do that in V2.
-Thanks!
+Hi Jeremy,
 
-Best Regards,
-Stefano
+Thanks for the review!
+
+OK, I can change that.
+
+I was confused by the existing !MCTP_FLOWS fallbacks, but now understand
+that you want the suite to retain full flow-test coverage.
+
+Karl
