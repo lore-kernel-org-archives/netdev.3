@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773354705B;
-	Sat, 26 Sep 2026 00:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7501A2C04
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 00:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790381516; cv=none; b=P8qurSiw9YD/ox+kRSBjB2hNjH25eQ0iQv45eXZAX0uOawi47nuj6jFLCm0VOHXZY9gtaAxzYE2utfoGv1JiuZGZfcMN+SwJxA8IlnrvfAxUSvYHRwk0i/p3kzFFOZ5CoLOg/q3nI3LLKyWxKpUavHX/TEYDPEdJD2MKpgfh10E=
+	t=1790381638; cv=none; b=cpm2lW8VXWRY9Ij3Wt0iPQhZKYBRcUv/Gr6exjdO7a6dLSehkymjjOfd4lgP2N7LTgMF6r+b3JAHChAZqOE4ev5vM3tw4ecz314VMi75A01cLZkXmw5afNaC5wQK2YBptgv1c/C2QASeeps+Ht80yUVUJjV/QClFPzIiUBRxuG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790381516; c=relaxed/simple;
-	bh=XdpWbtPg1LbZY2T6AFj0I/Lxq26jRDW62tmupVdd9y8=;
+	s=arc-20240116; t=1790381638; c=relaxed/simple;
+	bh=8+aOiEHP3R51BcgX0m0tUIx5CLLABS16CGIIuaythYo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uarRl620io93aLPa6b9R/bMDL7wXEJzhItkf3MYXRaRNUxrJvk4G5fwZPXr48PV7maUv2gza5yZh1XTeQcvLn+VkTDjTriKCGgZpP275u9KSsEkCm3+sP4SzHYmOj1iM145kUqhu/qLVy5uZvFvB3xSO9EWLPq/utaQvMJdZD+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOIgz05U; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=mqonuXK8tQaGDtBiw2rkjFkHpuUkC/bq6/ieHgzKNMvyjqcf5eBTEZNmxL7lHuhu0UivJ+klTG6G+i6J8nQkk4SRoJBiy+RmOI/0IjV03xaKBSnabcdheTyFgbmWRkv2oUG2LX9meoCHLA+1O5S88S9ATF0jdrgzUUHRJilLRl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQfLq5WS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOIgz05U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12921F00893;
-	Sat, 26 Sep 2026 00:11:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQfLq5WS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A663A1F000FF;
+	Sat, 26 Sep 2026 00:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790381515;
-	bh=nKzAF51FfS702o9KmJaCXqVAau4IjF0573r6WA2oydA=;
+	s=k20260515; t=1790381636;
+	bh=8+aOiEHP3R51BcgX0m0tUIx5CLLABS16CGIIuaythYo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dOIgz05UV27doHFeu6NP9jsQpkTi9ZfcG0ck3h/9G5Z3JGgPs+wiLG1q+X5f3iHgC
-	 bfrSuGh2cdUfc9QMEOokSuzrB+K6bzPKjZcPahvyTD8Z1zXSN7xZSEd3ZzQq5IuVdA
-	 Zkawn7zKbSDn4Up3N5V634kCzVYSfMExcNXFWwUDXM6ot2LUQxo83ZmdFlcbPaEHeJ
-	 hLJUjt0yHKh1IBdighOPFzRwCaqrdJZwNrMAtbPirZ/qSjWdN3UVyDg+4MjrE7t400
-	 oZImKdFgNRJQx/uC/pJjbUbfLVg5OJkTe8Ohbrg6jF0hov/9PuFtv8PME6EIHueCbt
-	 HNjUAiX9eA0pw==
-Date: Fri, 25 Sep 2026 17:11:54 -0700
+	b=XQfLq5WSzBXjYsyS+WuZiWWU2moVzIhXhHLPkCWyZc6OyVZAJKZffphW4rh6X+yWQ
+	 N7h9jv9cd4efUWFhFB8XBNkLEyNG1UGYIcdr3lZSh877kSt1C+VZQ1YH9DpOofmiPT
+	 Gw6vmpkH1HxUzHQtwOpzzIUNQ8+XLW6K0PEWO5K32Jc68HbxgAt/o0h6SN+Xp55HAd
+	 GKLoaa0ZrS2gFW5cknGruKam+ygSla6YJCcNAAmza7GxQ6muqm+wpCVTpeJZAy7F9X
+	 MDnsTfJq38dGDJWbw33NYATay2iZPiQ3IwALug2m4R5CqjXZk2oO/NKetfFgae4Rem
+	 QnmmsEX/Glfjg==
+Date: Fri, 25 Sep 2026 17:13:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests: netdevsim: skip the rate tc-bw check without
- tool support
-Message-ID: <20260925171154.79c372fc@kernel.org>
-In-Reply-To: <20260925135512.3644101-1-eva.kurchatova@virtuozzo.com>
-References: <20260925135512.3644101-1-eva.kurchatova@virtuozzo.com>
+To: Jase <jase@nocloud.org>
+Cc: netdev@vger.kernel.org, sgoutham@marvell.com, gakula@marvell.com,
+ rkannoth@marvell.com, sbhatta@marvell.com, bbhushan2@marvell.com,
+ linux-yocto@lists.yoctoproject.org
+Subject: Re: [BUG] octeontx2-pf: RSS table size is set to 4 instead of 256
+ entries
+Message-ID: <20260925171356.5b0a561f@kernel.org>
+In-Reply-To: <361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org>
+References: <361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,17 +46,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Sep 2026 16:55:01 +0300 Eva Kurchatova wrote:
-> The tc-bw attribute was added to devlink in iproute2 6.17, together
-> with the kernel side in v6.17. An older devlink has no such option and
-> the rate test fails on "Unknown option" instead of skipping.
-> 
-> Probe once in rate_test() and skip the tc-bw checks as a whole, so that
-> a missing option costs a single skip line rather than one per rate
-> object.
+On Fri, 25 Sep 2026 23:10:20 +0300 Jase wrote:
+> Source-only checks on 2026-09-25 also find the same assignment and array
+> declaration in torvalds/linux commit
+> aa98230e410f0ed212b6788c46b1e4d49e0ff7ca. I have not boot-tested that
+> upstream kernel, and have not established the first introducing commit.
+> The current Yocto BSP branch tip, 27016c83488643e42007ca7a2cfc1ad632f5ab57,
+> also still contains the faulty assignment (source check only).
 
-Maintaining backward compat for tests is not a goal for us.
-Teach your testing hardness to do this automatically, or carry your own
-fixes.
--- 
-pw-bot: reject
+Seems legit, please cook up a real patch submission?
+
+> The attached one-line patch is proposed for review. The diagnosis and patch
+> were prepared with AI assistance and validated on the physical device as
+> summarized above.
