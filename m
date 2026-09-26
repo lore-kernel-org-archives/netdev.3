@@ -1,78 +1,80 @@
-Received: from mail-ua2-f42.google.com (mail-ua2-f42.google.com [74.125.226.234])
+Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA77377ABF
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 21:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9560F296BB8
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 21:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790457660; cv=none; b=c2UPAxHG7ixa1by+W7oF8KBKwtj1Iws4bHqKzauOC2H39j/xckREb4evR3G0tt2voqjSUEuXf7uMsPz2WDZ8rUYxpuCmGsgYMnSEkAwT+DpAkP231D2vwj4C6u2MTqV83OcdjP6JtgbdzzdvG4VU51/oxSWbkZ4d1nn+ygtiXvY=
+	t=1790459330; cv=none; b=nhZzGRCdltruqH9wu7pZ4Ml8uZ1u8CDwcS0n5OrUkd6ywetcMXejQhF1esINwBcYHWN8fp0t2vLj3DQUaX3JF+U+2j7OaOzKbo3GFVGSkgl+Ddkd0kzFxSK4HFCxdsp/rFVWJc0u99xeMBBkHYQrGx11oXuJn/0iR70hpPFUOP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790457660; c=relaxed/simple;
-	bh=ehymt4lLAFUs4DIWG3dhPtmab2vi6Zhi6J9yEIZNRNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qw8z9NZa8NYFDVIezFBeN60ETY3FysC+eILI2hwlZ3LQjAsmrN9oh6eQfKfScE6jDqvOj0Y3GrNp+sCCXURHXf7Eojo2B+JW4K4Nx96UFYq10rnk8AAOLabZB2jaC6bOUE7CfUbZ0yJBZHSc/+zmWQpN5aiEB1mjzqEpoN0PyDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+MRx51u; arc=none smtp.client-ip=74.125.226.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790459330; c=relaxed/simple;
+	bh=ltMzi6WSp1v1sPEAB0YuafeMHE6TDKR0i2K0CbEvpjY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b3tRpmLznoIccSDCWiPoULNygg2d8gN2g5XdYc/78LrJwWLILu8rc5ZDJTmKejdfNhUeIjEsB+FgKMGdnXJ+La4cNmZec7uK2jziCKRJlg9DvcOtZ6vwhqJWSyil7Bx1NMNa9QXr366Y5BUhTdzJgp8hzT4Bgq7aIkqyfcIFCwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mmg5R3YS; arc=none smtp.client-ip=74.125.224.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+MRx51u"
-Received: by mail-ua2-f42.google.com with SMTP id a1e0cc1a2514c-986e0b83340so1139715241.2
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 14:20:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mmg5R3YS"
+Received: by mail-yx2-f41.google.com with SMTP id 00721157ae682-8a7af43a358so17125707b3.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 14:48:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790457658; x=1791062458; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1790459326; x=1791064126; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D3SALmSygZKgLrynJMWzH3B1y0jcmXpTFsBEcTzacV4=;
-        b=Z+MRx51uyUvTVii6pR341bKrYPsPvdfuI26qyCofZjsMWh05nFEETTLOp+rrCNTIK3
-         VpPCjW2Xhlyyc7Nx4Y1Vtzzy4utwz5/g0cpQws+vKF9rgl2R8ZwyijzZyToOgwWI2HCk
-         OLaD8coRLdV1/7xEMQONnGVmyLG4JkpChfAuZRhWybZqS6DTQzgayjlfPQP8SKc+7Yl8
-         bt7vQlQis88z1ThENRlsobeiylSp3MJWjumHqn4M3mrspLjUjgyJ65u7v8J9LOnLjD+s
-         fWYZW9cotNZpIX9asE9aKf5fU74LJ2QgrAr3hRxpKomhvs01QKarbeCnmflKiSPe5+7T
-         vMYw==
+        bh=XyQb/Kvi4xiTQoKBJXICuDhcx6oaxflcn/hQlo1w4JM=;
+        b=mmg5R3YS0zzZ7rMfMYJo5GS6h4C6bRckXWGVeZcTkfD0ytV461ovsLVZmHDGTTtQd+
+         I44kKQpV3Brs1JoPBKApc09dCtJOCTcjovRMGPUB4ErSdh9GG6MPktD9ZDp35c42ONPL
+         Ucl/NwLqIb28R54YnIq/dPWiaBQn6yb5Z2QsY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790457658; x=1791062458;
+        d=1e100.net; s=20260707; t=1790459326; x=1791064126;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D3SALmSygZKgLrynJMWzH3B1y0jcmXpTFsBEcTzacV4=;
-        b=et+CwQFMKbdhwuk3lpmlI/2NzOCnLI/1XLOepVJeHLyWeWZ1RoBhKkCrUlPGJhF1Su
-         bq5pEv7kyh5+1vS7aFN6WvvxYfTMtPhSnMhYySkWpQkagwVD26xmYsRxH6/MbBdgD76J
-         AY16iP5QOsR/OHKFAV0pTBGgKYJS8AB26Z7qHK5RSys9pgFcov8u0Ojhc0eY12WygA8c
-         Dhc2kRvfQSx9SyjfmFcxbS7bakRfY7MJSqZ1t2qIC7Ev2KM3aj8TOK2+JKpmoh2UWamN
-         3fNqqjpmbY932/fJvz9tKqGQ6iZuXUWPuGMavPUoYy1p/DtCeIEsqiKSs7YjcwKpRPgs
-         6IJw==
-X-Forwarded-Encrypted: i=1; AKwUvBwH3Xx1k3j5QiomcrwAEr9xkGdZpKH2x33xBljD1/ILX3pAMIsY1BpFj8Lmqjcmk0KAUfjWZBc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJTzgsWaeN0ZjFQnOilY9M7B+dT/vmsIv5hkBdf3sbhTwrCc5Yk
-	nQg3772N4t7cAQ/C9lUc8mNTjwxHHza6UF2fcRoOJLGTMyPtvmLYM8c9
-X-Gm-Gg: AYBFou3kQumPtiqCO70J23zhxXDaddkKsjnMxlvL4iiY3LXFG/H/9WGSt4c4UNE0kdl
-	wlKgG+W3JN2cValYgwV8iRWmDbzy2P8PaOrNb3jm7VlXy8VoQ8ttApqcD9pqwG6kPLAvjDwmxbN
-	lxbLxWYiTroC8SjCNaQcz/LysZMOxk/mNswaGLu57y0/kqLtQmSW1Qz20kzT+2BeA1WVPx2DSA/
-	38/NITG56mv+/PDZ4HyibrmO3XzSJxzq9+U4zaf21j77s7+5Cti5yzX0w/YcUfk4bnCYjvhrf9q
-	jmU4UwMz051M2pZ6dKNRbcLc/gkSD3QblkFU0x5LQdlmztwOrDzHlyRAuqNXaLIYAoYMHzVngpc
-	awGxp8jokjZfuBSwEx1Jl8IMFlmACoX5ccGwTxPEPlYorjny5KGXZPK3Y48ZLQgSlvd2szCIgh6
-	nh+x65Jaf2/tswtgsC34Xh64amlCALqRsNsV/WCqwFItilTI2Gv8WPNsTO7n5ZHzocsiexNVo7I
-	w==
-X-Received: by 2002:a05:6102:4b11:b0:7a7:198b:674c with SMTP id ada2fe7eead31-7af1f3f3a90mr3668073137.33.1790457657120;
-        Sat, 26 Sep 2026 14:20:57 -0700 (PDT)
-Received: from beelink.. ([187.13.30.172])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7b39b9ae253sm3267723137.8.2026.09.26.14.20.52
+        bh=XyQb/Kvi4xiTQoKBJXICuDhcx6oaxflcn/hQlo1w4JM=;
+        b=LqS2cDfJL8715frmbQ/VQpRm4tYEyLDnJgmzrH8Gh+ihIJWVg0v3/6QLAbpHIVt4JH
+         Q30FSi5a6b7G5E0Pd5euVYJH7zscoHHTrB4CRR+80t9vZrg5bAXrXoxCNeCE97XNSLEe
+         LiULZEYV5SF1rZi/5lhpe4glb9F+p3eSsGrsgxIRTVogG4/nl31Je6FuCA6x0FE+PBz3
+         phnyH8MRQN+p0J5MRNiHnO7/lXbLrJXV4F2vqLTAXpkbtFs+xkqBbQzormO/mrKzLyGY
+         V7Nh6tiQqS8BCPdEp5UPrX8kYcp4Bbt1yxjERLMe+DJjHzKQiyjuPlB8+K1mOWqz60g/
+         Or7w==
+X-Gm-Message-State: AFq9FYK9ukHzx1BdFowwBADVaIfZzH0tgyylw/vRBtA4fwkBNGjBsZ/H
+	Tum6tZfXd6IXKC/HHvKNnsz5or7GE4yIfDniw2c/GOv/zb5ImWUbc2oRGanyPgGcOUqyAtGfXQG
+	oUMTGRA==
+X-Gm-Gg: AYBFou2g3Y7WGRgyQzw+cAGwRVMsMuM4F9y/F76gwijjeLbwEzwrYSJl1zlCVTEzMnY
+	du7ytKmeOXQ8mQBN7r7ePOrn2NxxhtlaNi8Ir6RXA3QRnRozhA2BuazL81UrTSvRvLVisF8Qa5y
+	BDZh4AE/kfm2p2BduDXwCmwMy6IXWnuWDE1h5gcIWgto6K0UbqhKKTCLY9hyzcWFXEkBMeCCZos
+	qyvu4Y0JBqJXgTN5xEe3uMrvz/zG0gRnebWb+QCT/0JNyR9d2iQ2gXcG8SepYFuy1VAc/i6YN0Q
+	Q4yXyNmNx7GM91UHq+uJznjrzeaSdoii5jbP0G6jwF2JAVkn8QxbCZxS+jy/O/RX6LEzAHR7zm8
+	gDjXLuKTCwyU+Y5WRFJ/Ug4JTY+lih/JxBAifCgwDgAo/m9a9bu7owHXX5qtvcA7vwH5zUDtNLz
+	F/n5ilm4o8CVZpKlQu7t8o85D5FAOZRF7xZZdKz3FJ85nP4R86k+Nn/QQszWsZEBIBa6YRnZesl
+	iMUsd63u30hRw3DfYrElp33EBmGTxVN+UnFQpKa4uF8zVUO0btmDLtto6VO
+X-Received: by 2002:a05:690e:b43:b0:674:118e:d32f with SMTP id 956f58d0204a3-674118f3307mr2036778d50.44.1790459326400;
+        Sat, 26 Sep 2026 14:48:46 -0700 (PDT)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6740ef2932dsm2543838d50.12.2026.09.26.14.48.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 14:20:56 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+        Sat, 26 Sep 2026 14:48:45 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tonghao Zhang <xiangxia.m.yue@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Zero Day Initiative <zdi-disclosures@trendmicro.com>,
+	hybris <hybris@mojatatu.ai>,
 	stable@vger.kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Subject: [PATCH] nfc: llcp: clear device pointer on disconnect
-Date: Sat, 26 Sep 2026 18:20:41 -0300
-Message-ID: <20260926212041.1342558-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net v3] net: cap skb->queue_mapping when the tx queue is picked
+Date: Sat, 26 Sep 2026 17:48:40 -0400
+Message-Id: <QDISC-9R8V.v3.20260926072930@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,34 +83,232 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nfc_llcp_recv_disc() drops the device reference via nfc_put_device()
-when a connected socket receives a DISC PDU, but does not clear
-llcp_sock->dev.  If the socket is later reconnected, any cleanup code
-that checks llcp_sock->dev will find a non-NULL pointer and attempt a
-second nfc_put_device(), underflowing the device refcount.
+skbedit can set skb->queue_mapping and raise the per-CPU skip_txqueue
+flag so __dev_queue_xmit() honours the mapping. __dev_queue_xmit()
+cleared the flag before sch_handle_egress() and only read it afterwards,
+so the flag was not confined to the xmit that set it: a nested xmit
+(mirred redirect or mirror, or a drop after skbedit) could set the flag
+and the outer xmit would consume it for an skb that never went through
+skbedit.
 
-Clear the pointer immediately after the put so that a subsequent
-reconnect does not double-release the device.
+A forwarded packet still carries the ingress NIC's rx_queue + 1 in
+skb->queue_mapping, so the outer device then indexes its tx queue state
+with that stale value. Taprio's child array q->qdiscs[] is sized to the
+device's queue count, so taprio_enqueue() indexes past its allocation
+and dereferences the result as a struct Qdisc *.
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Own the flag for the whole xmit frame: save the incoming value and clear
+it before any of the frame's egress work can recurse, and restore it only
+when the frame exits. A transmit-qdisc classifier is a documented flag
+producer too (it runs in q->enqueue(), after sch_handle_egress()), so the
+flag must be owned for the whole frame, not just around the clsact hook.
+The flag then never crosses an xmit boundary in either direction. Also
+store the value netdev_cap_txqueue() selected back into skb->queue_mapping
+in netdev_tx_queue_mapping(), as netdev_core_pick_tx() already does, so
+the skip_txqueue path never hands a later reader on the xmit path a
+mapping the device cannot serve. A store made still later in the same
+frame, by a tc BPF program attached to a transmit qdisc, is outside this
+path and is not re-capped; a separate followup will resolve that path.
+
+netdev_xmit_skip_txqueue() now returns the previous flag value so the
+save-and-clear is one call, and a no-op stub is provided when
+CONFIG_NET_EGRESS is disabled. This removes the inline #ifdef around the
+save and the two restores.
+
+A local user in a network namespace can redirect a packet from a device
+with more TX queues to one with fewer after setting a mapping valid only
+on the larger device. That reaches these reads and, under KASAN, faults
+with "slab-out-of-bounds in taprio_enqueue".
+
+Conditions to recreate the bug: with CONFIG_NET_SCH_TAPRIO=y,
+CONFIG_NET_ACT_SKBEDIT=y, CONFIG_NET_ACT_MIRRED=y,
+CONFIG_NET_CLS_MATCHALL=y, CONFIG_NET_SCH_PRIO=y and KASAN enabled,
+create qa (3 queues), qb (2 queues) and qc (1 queue) as dummy devices;
+put a taprio root on qb and clsact on all three; then add an egress
+matchall filter on every device. On qa: "action skbedit queue_mapping 2
+pipe action mirred egress redirect dev qb". On qb: "action mirred egress
+mirror dev qc". On qc: "action skbedit queue_mapping 0 pipe". Send one
+packet out qa. qc's skbedit sets the flag while qb's outer xmit is in
+flight; without the fix qb consumes it and reads its two-entry taprio
+child array with the forwarded packet's stale mapping. A qc whose skbedit
+is instead installed in a transmit-qdisc classifier (a matchall filter on
+the qc root qdisc) reaches the same code path the same way.
+
+Testing: on a KASAN build with panic_on_warn=1 the unfixed kernel panics
+with "BUG: KASAN: slab-out-of-bounds in taprio_enqueue", a read 0 bytes
+past a 16-byte taprio_init() allocation; the fixed kernel runs the
+clsact-setter and the transmit-qdisc-classifier reproducers with no report
+and no clamp notice, and a clsact skbedit-then-tc-BPF store with no report
+but the expected "selects TX queue" clamp notice from the write-back;
+
+Fixes: 2f1e85b1aee4 ("net: sched: use queue_mapping to pick tx queue")
+Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Link: https://lore.kernel.org/netdev/CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQT9WkQVeeNzNQHqQ@mail.gmail.com/
+Link: https://lore.kernel.org/netdev/179008581937.2160803.7117814290574262942@kernel.org/
+Link: https://lore.kernel.org/netdev/179033713973.2160803.4914570693994398206@kernel.org/
+Link: https://lore.kernel.org/netdev/20260925180407.63647514@kernel.org/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: hybris <hybris@mojatatu.ai>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/nfc/llcp_core.c | 1 +
- 1 file changed, 1 insertion(+)
+v2 -> v3:
+- netdev_xmit_skip_txqueue() returns the previous flag value, so the entry
+  save-and-clear is one call; a no-op stub is provided when
+  !CONFIG_NET_EGRESS, removing the three inline #ifdefs (Jakub Kicinski).
+- Narrow the capability claim: the capped write-back covers the
+  skip_txqueue path only; a store made later in the frame by a tc BPF
+  program on a transmit qdisc is not re-capped and is a separate followup
+  (nipa Sashiko).
+- Comment: "per-CPU (per-task on PREEMPT_RT)" (nipa Sashiko).
+- Drop the now-redundant #ifdef in act_skbedit.c.
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 74bf81700..199543c47 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1220,6 +1220,7 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_local *local,
+v1 -> v2:
+- Rework the root cause to the per-CPU skip_txqueue flag lifetime: it was
+  cleared before sch_handle_egress() and read after, so a nested xmit could
+  set it and the outer xmit consume it for an skb that never went through
+  skbedit (Eric Dumazet, nipa Sashiko).
+- Own the flag for the whole xmit frame: save/clear it before any of the
+  frame's egress work can recurse, and restore it only when the frame exits.
+- Retain the v1 producer-side cap (netdev_tx_queue_mapping() writes the
+  clamped value back).
+- Correct the description of the reproducer to a three-device chain
+  (qa 3q -> qb 2q taprio -> qc 1q).
+
+ include/linux/rtnetlink.h |  7 ++++++-
+ net/core/dev.c            | 33 +++++++++++++++++++++++++++------
+ net/sched/act_skbedit.c   |  2 --
+ 3 files changed, 33 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/rtnetlink.h b/include/linux/rtnetlink.h
+index 95729339e7a5..a54ec40d095c 100644
+--- a/include/linux/rtnetlink.h
++++ b/include/linux/rtnetlink.h
+@@ -186,7 +186,12 @@ void net_dec_ingress_queue(void);
+ #ifdef CONFIG_NET_EGRESS
+ void net_inc_egress_queue(void);
+ void net_dec_egress_queue(void);
+-void netdev_xmit_skip_txqueue(bool skip);
++bool netdev_xmit_skip_txqueue(bool skip);
++#else
++static inline bool netdev_xmit_skip_txqueue(bool skip)
++{
++	return false;
++}
+ #endif
  
- 	if (sk->sk_state == LLCP_CONNECTED) {
- 		nfc_put_device(local->dev);
-+		llcp_sock->dev = NULL;
- 		sk->sk_state = LLCP_CLOSED;
- 		sk->sk_state_change(sk);
+ void rtnetlink_init(void);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index f660fccfc0db..3b114fbf7015 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4404,9 +4404,14 @@ EXPORT_SYMBOL(dev_loopback_xmit);
+ static struct netdev_queue *
+ netdev_tx_queue_mapping(struct net_device *dev, struct sk_buff *skb)
+ {
+-	int qm = skb_get_queue_mapping(skb);
++	int queue = skb_get_queue_mapping(skb);
++	int capped;
+ 
+-	return netdev_get_tx_queue(dev, netdev_cap_txqueue(dev, qm));
++	capped = netdev_cap_txqueue(dev, queue);
++	if (unlikely(capped != queue))
++		skb_set_queue_mapping(skb, capped);
++
++	return netdev_get_tx_queue(dev, capped);
+ }
+ 
+ #ifndef CONFIG_PREEMPT_RT
+@@ -4415,9 +4420,13 @@ static bool netdev_xmit_txqueue_skipped(void)
+ 	return __this_cpu_read(softnet_data.xmit.skip_txqueue);
+ }
+ 
+-void netdev_xmit_skip_txqueue(bool skip)
++bool netdev_xmit_skip_txqueue(bool skip)
+ {
++	bool prev = netdev_xmit_txqueue_skipped();
++
+ 	__this_cpu_write(softnet_data.xmit.skip_txqueue, skip);
++
++	return prev;
+ }
+ EXPORT_SYMBOL_GPL(netdev_xmit_skip_txqueue);
+ 
+@@ -4427,9 +4436,13 @@ static bool netdev_xmit_txqueue_skipped(void)
+ 	return current->net_xmit.skip_txqueue;
+ }
+ 
+-void netdev_xmit_skip_txqueue(bool skip)
++bool netdev_xmit_skip_txqueue(bool skip)
+ {
++	bool prev = netdev_xmit_txqueue_skipped();
++
+ 	current->net_xmit.skip_txqueue = skip;
++
++	return prev;
+ }
+ EXPORT_SYMBOL_GPL(netdev_xmit_skip_txqueue);
+ #endif
+@@ -4824,6 +4837,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 	int cpu, rc = -ENOMEM;
+ 	bool again = false;
+ 	struct Qdisc *q;
++	bool skip_txq;
+ 
+ 	skb_reset_mac_header(skb);
+ 	skb_assert_len(skb);
+@@ -4846,6 +4860,13 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 	skb_update_prio(skb);
+ 
+ 	tcx_set_ingress(skb, false);
++	/* The flag is per-CPU (per-task on PREEMPT_RT) and a nested xmit can
++	 * set it from its own clsact hook or transmit qdisc. Own it for the
++	 * whole frame: this frame cannot consume a nested xmit's flag and a
++	 * nested xmit cannot inherit this frame's.
++	 */
++	skip_txq = netdev_xmit_skip_txqueue(false);
++
+ #ifdef CONFIG_NET_EGRESS
+ 	if (static_branch_unlikely(&egress_needed_key)) {
+ 		if (nf_hook_egress_active()) {
+@@ -4854,8 +4875,6 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 				goto out;
+ 		}
+ 
+-		netdev_xmit_skip_txqueue(false);
+-
+ 		nf_skip_egress(skb, true);
+ 		skb = sch_handle_egress(skb, &rc, dev);
+ 		if (!skb)
+@@ -4952,12 +4971,14 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 
+ 	reason = SKB_DROP_REASON_RECURSION_LIMIT;
+ drop:
++	netdev_xmit_skip_txqueue(skip_txq);
+ 	rcu_read_unlock_bh();
+ 
+ 	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb_list_reason(skb, reason);
+ 	return rc;
+ out:
++	netdev_xmit_skip_txqueue(skip_txq);
+ 	rcu_read_unlock_bh();
+ 	return rc;
+ }
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index bfec6b668410..9c1ade20c004 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -72,9 +72,7 @@ TC_INDIRECT_SCOPE int tcf_skbedit_act(struct sk_buff *skb,
  	}
+ 	if (params->flags & SKBEDIT_F_QUEUE_MAPPING &&
+ 	    skb->dev->real_num_tx_queues > params->queue_mapping) {
+-#ifdef CONFIG_NET_EGRESS
+ 		netdev_xmit_skip_txqueue(true);
+-#endif
+ 		skb_set_queue_mapping(skb, tcf_skbedit_hash(params, skb));
+ 	}
+ 	if (params->flags & SKBEDIT_F_MARK) {
 -- 
 2.43.0
 
