@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850DA448D03;
-	Sat, 26 Sep 2026 13:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CA5442FB9;
+	Sat, 26 Sep 2026 13:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790430573; cv=none; b=aksayFDtRAq9wPOEjivIfKjt0A4Ad/bm0TuoCT2t5tIrIEKjMRUAqZqMfp0QfaaOia5z5Y5ahHQ6tzi4YVWcjW3KrojeQGJsl2SxhtQuZJpBvCuD6a71gaNQmOcgUz3x6ntdN+QwFF4LxMM3g/KuLNfgy9pgAYUI8nEC497GwR4=
+	t=1790430593; cv=none; b=PwVInxz/aAbb1y9gbGltswTjRviAh+JeKyD8cUTnOQ+bTLZ0M+SOaCwPx2nh4UxgLzUaRL2/mnDBFnMsbMqfsAEdOBHvvQoufHPGU7CoqxaRM7KX7ASmVqmQkHiU/hpx2M9X5nfCb4SES/aIq+v9dFzsoVz78ZWWiqoMa2Uugbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790430573; c=relaxed/simple;
-	bh=+UzI8JHFa3d8FJeL50WT9IM5cul9uArWSPTiwUfNNmM=;
+	s=arc-20240116; t=1790430593; c=relaxed/simple;
+	bh=mFAEschYCpCeHnXXTZgzdWOcQVeJRQX8/z2dbyzroMk=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkNvkNFdAyWL/UuoF4c0k0mnjwSo6yI3yZYYJqg+eTZfSNI+2W0DqINqA4RwGdEd7okdcGhaKaAmgvs7Zb5AyZDuGgjZoTvPxiBNufx+xxa6vP1JPpK1Kbnn0sxX2P7u19OwYZndaB3sdPiLoJnzsRmj5ouKvuKHV/BScjkTW3M=
+	 Content-Type:Content-Disposition:In-Reply-To; b=lq8hO5w2wyrd7J6n2XDOaK8wu3+GZiTJJnlwkT6AjzkB60uWDdLsDjeW583b1gZBEUNArMP5zFU+1A9ISlcaa4kLyug++B1IW9ocaom6PQtUZFwo3lDwOH2XlI6ZmM2oeJt76+GDLGhH2/A38PGAPSOIs2pLr5lVrb9FJVUdCAg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
 	 (Exim 4.100)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1xASmL-000000001cm-15bN;
-	Sat, 26 Sep 2026 13:49:25 +0000
-Date: Sat, 26 Sep 2026 14:49:22 +0100
+	id 1xASmc-000000001dP-1LdE;
+	Sat, 26 Sep 2026 13:49:42 +0000
+Date: Sat, 26 Sep 2026 14:49:39 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -36,8 +36,9 @@ To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	driver-core@lists.linux.dev
-Subject: [PATCH net-next v18 3/6] driver core: add device_schedule_reprobe()
-Message-ID: <e70f147857d21b792de81c7d39c2f74c6e0ec3f5.1790426599.git.daniel@makrotopia.org>
+Subject: [PATCH net-next v18 4/6] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
+Message-ID: <b65b7f33ed757e57ed99bdf4ebeac841f2abdeb7.1790426599.git.daniel@makrotopia.org>
 References: <cover.1790426599.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -49,305 +50,1357 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1790426599.git.daniel@makrotopia.org>
 
-Drivers that need a deferred re-probe of their own device open-code a
-work item in module text. iwlwifi (iwl_trans_schedule_reprobe(), for a
-firmware crash a lighter restart cannot fix) and hci_h5
-(h5_btrtl_resume(), RTL devices lose their firmware state over suspend)
-both end that work function with put_device(); kfree();
-module_put(THIS_MODULE);, where a concurrent rmmod can free the module
-text the epilogue is still executing. Neither gates the re-probe on the
-device still being bound to the driver that scheduled it, which a driver
-cannot do from outside because device_reprobe() takes the device lock
-internally. Their conversion is left to follow-up patches.
+Implement "devlink dev flash" for firmware upgrade and "devlink dev
+info" for version reporting. info reports the chip part number and
+revision as the asic.id and asic.rev fixed versions, and the firmware
+version as both the running and the stored version, since the switch
+boots its firmware from its own flash; a zero part number or an all-zero
+version is omitted rather than published as a bogus match for userspace.
 
-Add device_schedule_reprobe(), which detaches and re-probes a device
-after a caller-specified delay. The work function is built-in text, so a
-caller needs no module reference. The binding is recorded as the driver
-pointer plus a copy of its name: the stored pointer is only ever
-compared, never dereferenced, and the name copy rejects a freed struct
-device_driver address the allocator later hands to a different driver.
-The first user is the mxl862xx devlink flash path added later in this
-series.
+flash validates the image and its payload CRCs, reboots the switch into
+its MCUboot loader with SYS_MISC_FW_UPDATE, transfers the image over the
+SB PDI clause-22 SMDIO protocol, and reboots into the new firmware once
+the loader has verified it. For the duration the driver closes and
+detaches the user ports so userspace cannot reopen them, closes the
+conduit, and blocks firmware API access under the MDIO bus lock so
+nothing reaches the bus after the switch has left for MCUboot. A blocked
+write reports success, so a bridge tearing its ports down over a flash
+does not see port_vlan_del() fail and leak its VLAN group. A transfer
+that fails leaves the switch in the loader; the next patch recovers it
+from there.
 
-A failed re-probe leaves the device unbound, as a failed initial probe
-would. device_attach() reports that as 0, a failed probe being folded
-into "no driver matched", and 0 carries no errno for dev_err_probe(),
-so the message is a plain dev_err() that skips only -EPROBE_DEFER, which
-the deferred-probe machinery retries on its own.
-
-Nothing is locked in the caller's context, and its checks are unlocked
-snapshots the work repeats under the device lock, so the helper may be
-called with the device lock held, as the PM callbacks, ->remove() and
-->shutdown() hold it. The caller is the bound driver, in a context its
-->remove() waits for, which keeps the driver name readable for the
-copy. Buses that take the parent lock to bind are
-refused with -EINVAL: that lock has to be taken before @dev's own, so
-the parent would have to be recorded before either is held, where
-device_move() can replace it without taking any device lock.
-usb_bus_type is the only such bus and no caller needs it today.
-
-While probing is blocked, which device_shutdown() and dpm_prepare() both
-set before they touch any device, the work re-arms itself, so a request
-pending across a system suspend runs once the system has resumed and
-one that fires during a shutdown detaches nothing. Beyond that gate
-this is device_reprobe() deferred and __device_release_driver() is
-unchanged, so it carries device_reprobe()'s pre-existing limitations:
-the detach and the re-attach are not one locked operation, so an
-administrative unbind between them may be undone, and detaching a device
-that has managed consumers unbinds them as any release does, so a
-re-probe a concurrent device_shutdown() overtakes may run ->remove() in
-place of ->shutdown(). None of this is specific to the helper.
+MCUboot offers no in-place path back, so the driver reinitialises with a
+deferred re-probe scheduled through device_schedule_reprobe() from the
+previous patch, which runs in the driver core off the devlink caller's
+locks and without pinning the driver module. ->shutdown() and
+.remove() take the devlink instance lock up front, since neither goes
+through devlink and dsa_unregister_switch() frees the user netdevs
+before devlink_unregister() would: this waits out a transfer in flight
+rather than cutting it in half, and refuses a flash that starts once
+teardown has begun.
 
 Assisted-by: LLM
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
 v18:
- - re-arm the work while probing is blocked instead of dropping the
-   request: dpm_prepare() blocks probing as well, and a kexec jump or a
-   kernel without the suspend freezer reaches that window with the
-   workqueue running, which lost the request for good (found by Sashiko
-   AI review)
- - log an error for every unbound outcome of device_attach() except a
-   deferred probe: a failed probe comes back as 0, which the check for a
-   negative value missed (found by Sashiko AI review)
- - kernel-doc: the caller is the bound driver in a context its ->remove()
-   waits for, and a rebind of the same driver within the delay still
-   gets the re-probe (found by Sashiko AI review)
- - commit message: the caller's checks are unlocked snapshots, only the
-   stored driver pointer is never dereferenced, and the drivers named as
-   motivation are converted later (found by Sashiko AI review)
-v17:
- - drop the abort_if_blocked flag and the bool return of
-   __device_release_driver(), leaving that function unchanged: the flag
-   left the device-links state half torn down when it fired and did not
-   cover the consumers unbound in the same window, so the shutdown-vs-
-   release window it targeted is documented as pre-existing to every
-   unbind path instead (found by Sashiko AI review)
- - record the bound driver's name beside the pointer and compare both,
-   so a freed struct device_driver address reused by another driver is
-   not mistaken for the original binding (found by Sashiko AI review)
- - kernel-doc: add a Context line and state the pre-existing limitations
-   shared with device_reprobe() (found by Sashiko AI review)
-v16:
- - commit message: device_shutdown() blocks probing only once
-   wait_for_device_probe() has returned, so a re-probe already past the
-   test detaches the device instead of leaving it bound for its
-   ->shutdown()
- - take no lock in the caller's context and drop the parent snapshot,
-   refusing buses that need the parent lock instead: the caller-context
-   device lock inverted against the devlink instance lock on the flash
-   path and against a synchronous work cancel on the rescue path, and a
-   pinned parent can be freed by device_move() (found by Sashiko AI
-   review)
- - abandon the release when probing is blocked while the device links
-   loop has the locks dropped, rather than calling that window
-   pre-existing: a deferred re-probe is the one unbind that may be
-   abandoned, so it is the one that can close it (found by Sashiko AI
-   review)
- - commit message: describe what this patch changes rather than bugs in
-   drivers it does not convert, and name the first user (found by
-   Sashiko AI review)
- - kernel-doc: drop the promise that an administrative unbind always
-   wins, which unbind_store() does not guarantee (found by Sashiko AI
-   review)
-v15:
- - skip the detach while probing is blocked instead of adding a
-   per-device shutdown_done flag: device_shutdown() blocks probing
-   before its walk starts, so the flag left a window where the work
-   detached a device that then neither re-attached nor got its
-   ->shutdown() call (found by Sashiko AI review)
- - validate the device and snapshot the parent, its locking requirement
-   and the bound driver under the device lock, so an unregister racing
-   the allocation can neither leave a freed parent pinned nor pair a
-   NULL parent with a request to lock it (found by Sashiko AI review)
- - keep -EPROBE_DEFER out of the re-probe error path, where
-   dev_err_probe() would record the message as the device's deferred
-   probe reason (found by Sashiko AI review)
- - kernel-doc: a stale re-probe leaves an unbound device unbound, which
-   an unbind followed by a rebind within the delay does not (found by
-   Sashiko AI review)
-v14: no changes
-v13:
- - queue the work on system_freezable_wq, so a re-probe pending across
-   system suspend can neither detach a device the PM core has suspended
-   nor race its late suspend callbacks; it runs after resume instead
+ - accept a read refused by the flash gate (-EBUSY) or the teardown gate
+   (-ENODEV) alike in port_mdb_add() and port_mdb_del() while either
+   gate is set, since the flash moves from one gate to the other after
+   api_wrap() has dropped the MDIO bus lock (found by Sashiko AI review)
+ - log a re-probe that cannot be scheduled after a failed transfer too,
+   not only after a successful one (found by Sashiko AI review)
+ - wait for the header byte count to change rather than for its ACK
+   value, which the loader replaces with 0 as soon as the erase is done
    (found by Sashiko AI review)
- - record at scheduling time whether the parent needs locking, instead
-   of reading dev->bus in the work, which may be gone with its module
-   once the device has been unregistered (found by Sashiko AI review)
- - let __device_release_driver() report whether it released the driver,
-   so an administrative unbind that wins the race inside the device
-   links loop is not undone by the re-attach (found by Sashiko AI
+ - return without a message from get_ethtool_stats() while the flash
+   gates refuse the read, which unprivileged ethtool -S reaches (found by
+   Sashiko AI review)
+ - reword the -EBUSY extack of a flash requested while a previous one
+   still awaits its reprobe, or could not schedule it, to hold in both
+   cases
+ - kernel-doc: mxl862xx_wait_ready() caches the chip ID only when it can
+   be read, and @fw_version is refreshed after a flash and cleared after
+   a failed one (found by Sashiko AI review)
+ - commit message: the re-probe holds a device reference and only leaves
+   the module unpinned, and a failed transfer leaves the switch for the
+   next patch to recover (found by Sashiko AI review)
+v17:
+ - wait out a flash in flight in .remove() too, not only ->shutdown():
+   dsa_unregister_switch() frees the user netdevs before it reaches the
+   devlink instance lock, so an unbind racing a flash could touch a
+   freed netdev; .remove() now takes that lock up front like
+   ->shutdown(), and both announce the wait with dev_info() (found by
+   Sashiko AI review)
+ - report success for a firmware read blocked by a flash (-EBUSY) as
+   well as the teardown -ENODEV in port_mdb_add() and port_mdb_del(), so
+   an MDB change racing a flash does not fail and leave the entry linked
+   (found by Sashiko AI review)
+ - clear the SB PDI ADDR and DATA latches with 0 rather than the CTRL
+   reset mode value, which only happened to be 0 (found by Sashiko AI
    review)
- - use dev_err_probe() for the re-probe error path, so a re-probe
-   deferred at resume no longer logs a spurious error (Hans de Goede,
-   on the standalone posting of this helper)
- - describe the parent pinning and locking in the commit message, as in
-   the standalone posting
+ - log that an unbind and rebind is needed when the post-flash re-probe
+   cannot be scheduled although the new firmware is already running
+   (found by Sashiko AI review)
+ - kernel-doc: describe the block_host and skip_teardown policy as it
+   is, a host read failing while a write reports success (found by
+   Sashiko AI review)
+ - commit message: scheduling the re-probe can also fail with -EINVAL
+   when the device is being unbound, not only -ENOMEM (found by Sashiko
+   AI review)
+v16:
+ - report success for a firmware write blocked by a running flash,
+   instead of -EBUSY. Tearing a bridge down over a flash made
+   port_vlan_del() fail, which leaves the VLAN on the bridge's list:
+   __vlan_group_free() then warns and frees the group with the entries
+   still linked
+ - wait for a flash in flight in ->shutdown() and refuse one requested
+   after it, so a reboot no longer cuts the image in half
+ - state a fact in the -EBUSY extack of a pending reprobe, dropping the
+   retry advice
+ - the comment on mxl862xx_read_chip_id() no longer describes a
+   rescue-mode cache that only the next patch creates
+ - select CRC32, which nothing else selects for the crc32_le() calls
+   validating the image checksums (found by Sashiko AI review)
+ - Andrew's Reviewed-by is dropped for the ->shutdown() change
+v15:
+ - treat the closing END write as advisory: the loader has left the
+   receive loop and verified the image by then, so a failed write no
+   longer reports a completed flash as a transfer failure (found by
+   Sashiko AI review)
+ - admit only the flash task's own firmware reads past block_host,
+   instead of every read from any context, which let ethtool and FDB
+   queries reach the freshly booted firmware and left an mdb_add() half
+   executed (found by Sashiko AI review)
+v14: no changes, picked up Andrew's v13 Reviewed-by
+v13: stop the stats poll with disable_delayed_work_sync() in the flash
+     path, so a racing get_stats64() re-arm is a no-op, and drop the
+     early return in the work function with it; the v12 reordering of
+     remove() is gone as well, since the race it addressed predates
+     this series and needs a fix of its own (found by Sashiko AI review)
 
 v12:
- - pin the parent device across the deferred work; a reference on the
-   child alone left device_reprobe_work_fn() dereferencing a freed
-   dev->parent under __device_driver_lock() when the device was
-   unregistered before the work ran (found by Sashiko AI review)
- - take the parent lock across device_attach() on buses that require
-   it, matching bus_rescan_devices_helper() (found by Sashiko AI review)
+ - cancel the stats poll after dsa_unregister_switch() in .remove(): a
+   get_stats64() past its lockless WORK_STOPPED check could re-arm the
+   work after the cancel and then run against the devres-freed priv
+   (found by Sashiko AI review)
+ - keep block_host set across the post-flash readiness poll and let
+   only the flash path's own firmware reads through, so a concurrent
+   bridge or STP write cannot reach the freshly booted firmware with
+   stale pre-flash resource IDs while rtnl is dropped (found by Sashiko
+   AI review)
 
-v11: new patch: add device_schedule_reprobe() to the driver core (posted
-     earlier as an RFC) so mxl862xx can schedule its post-flash and
-     post-drain re-probe through the core instead of open-coding a work
-     item
+v11:
+ - schedule the post-flash re-probe with device_schedule_reprobe()
+   instead of a driver-owned work item; the module and device references
+   and the drvdata bound-check go away with it, and with them both
+   findings of the v10 AI review -- the work function no longer ends in
+   module text behind a module_put(), and the bound-check and detach now
+   run under one __device_driver_lock() hold in the core where
+   ->shutdown() cannot interleave between them
+ - the dsa_switch allocation returns to devres; keeping it out only
+   defused the check-vs-detach window that the core helper now closes
+   outright
+ - scheduling the re-probe is now the one step that can fail after the
+   switch was flashed, since the helper allocates its own work item; an
+   -ENOMEM there is returned as-is, since unbind and rebind reinitialises
+   the driver
 
- drivers/base/dd.c      | 126 +++++++++++++++++++++++++++++++++++++++++
- include/linux/device.h |   2 +
- 2 files changed, 128 insertions(+)
+v10:
+ - do not reprobe a device that has been shut down or unbound. The work
+   cannot be cancelled from teardown: .shutdown() runs under
+   device_lock(), which device_reprobe() takes as well, so a lock shared
+   between the two would deadlock, and cancel_delayed_work_sync() would
+   hang on the nested remove() the work triggers itself. It checks
+   drvdata under device_lock() instead, which both .shutdown() and the
+   driver core clear (found by Sashiko AI review of patch 4, but this is
+   where the reprobe comes from)
+ - allocate the dsa_switch outside devres and free it in .remove(), so
+   losing the remaining race with .shutdown() cannot let devres free it
+   while the DSA tree still holds dsa_ports pointing at it
+ - lower the per-slice write timeout from 120 s to 60 s, so this path
+   and the drain added in patch 4 agree on how long the same loader step
+   may take (found by Sashiko AI review)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index f6525a7ee8c5..823a25f9c089 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1436,3 +1436,129 @@ void driver_detach(const struct device_driver *drv)
- 		put_device(dev);
- 	}
- }
+v9: no changes
+
+v8:
+ - refuse a second devlink dev flash while the previous one's reprobe is
+   still pending: the firmware API is short-circuited by then, so the
+   FW_UPDATE command faked success and the raw SB PDI writes ran against
+   a switch the driver no longer tracks (found by Sashiko AI review)
+ - omit the firmware version from devlink dev info while the cached copy
+   is all-zero, so a failed transfer no longer publishes 0.0.0 as both
+   running and stored, and clear asic_rev along with asic_id (found by
+   Sashiko AI review)
+ - only translate -ENODEV into success in port_mdb_del() during the
+   post-flash teardown; outside it, a genuine bus error was reported to
+   switchdev as a successful deletion (found by Sashiko AI review)
+ - evaluate the image verification verdict the loader publishes after
+   the last slice, instead of polling for a value it had already
+   published, so a rejected image is no longer reported as a write
+   timeout
+ - rename the end_magic label to no_end, which is what it does, and
+   correct the protocol comment: END is optional as the loader finalises
+   on a 2 s timeout, the status register keeps the byte count while a
+   chunk is programmed, and the half-bank switch does not clear DATA
+   (found by Sashiko AI review)
+
+v7:
+ - reprobe from a single delayed work item instead of a kthread spawned
+   by a workqueue kickoff; the kthread existed only to drop the module
+   reference from core code, but its creation-failure path did the racy
+   module_put() from module text anyway and could strand the driver
+   bound with skip_teardown set. The collapsed form matches
+   iwl_trans_reprobe_wk(), and a failed reprobe now leaves the device
+   unbound like a failed probe
+ - only signal END on a successful transfer; a failure leaves the loader
+   mid-payload, where a STAT write is a byte count and END (0x3cc3) is
+   read as one, risking a receive-counter underflow, so return the error
+   and let the reprobe recover
+ - add cond_resched() to the payload loop so a long transfer over a
+   bit-banged MDIO bus under CONFIG_PREEMPT_NONE does not trip the
+   soft-lockup detector
+ - drop the cached firmware version and chip id on a failed flash so
+   devlink dev info stops reporting the pre-flash version until the
+   reprobe re-reads it
+ - report the firmware version under DEVLINK_INFO_VERSION_GENERIC_FW
+   instead of a bare "fw" string
+ - correct the SB PDI header comment's SMDIO register map (page in MII
+   reg 0x1f, register from the low nibble) and expand the note on why
+   closing the shared conduit is safe
+
+v6:
+ - confirm the new firmware is running with mxl862xx_wait_ready() and
+   lift the host block before reporting success, so devlink dev flash
+   completes only once the update has taken effect instead of relying
+   on the later reprobe to pick up the new version
+ - run the post-flash reprobe from a kthread that drops the module
+   reference with module_put_and_kthread_exit(), spawned from a
+   workqueue kickoff, closing a use-after-free where a work item's
+   trailing module_put() could return into module text a racing rmmod
+   had already freed
+ - jump to the end_magic teardown on every flash failure from the
+   ready handshake onward, so an aborted transfer sends END and lets
+   MCUboot reboot instead of leaving the loader waiting
+ - poll the SB PDI status register with read_poll_timeout(), which
+   evaluates the condition once more after the deadline, so a preempted
+   poll cannot report a spurious -ETIMEDOUT
+ - bail out of the periodic stats poll when the flash teardown has set
+   WORK_STOPPED, closing a get_stats64() re-arm race
+ - allocate the reprobe kickoff before disturbing the switch, so an
+   -ENOMEM cannot leave it flashed but never reprobed with block_host
+   and skip_teardown stuck set
+ - omit asic.id/asic.rev when the CHIP ID read returned 0, instead of
+   publishing a bogus "0000" for fwupd to match firmware against
+
+v5:
+ - report the numeric chip part number and version read from the
+   static CHIP ID registers as "asic.id" and "asic.rev" instead of a
+   model-name string, which does not belong in a devlink version
+   identifier (Jakub Kicinski)
+ - report the running firmware version as the "stored" version too,
+   since the switch boots it from its own flash, so userspace can
+   tell a flash-backed part from a flashless one by the presence of
+   "stored" without a future API change
+ - run the post-flash reprobe from a self-contained work item again
+   instead of the v4 kernel thread, which tripped the hung-task
+   watchdog while parked across the flash and returned -EINTR from
+   kthread_create() when the devlink command was interrupted
+ - re-read the new firmware version through the reprobe's fresh probe
+   and drop the SYS_MISC_FW_VERSION exemption from the host block
+ - raise the firmware command poll timeout so the FW_UPDATE command
+   that reboots into MCUboot is not cut short
+ - move the devlink documentation into its own patch
+
+v4:
+ - run the deferred reprobe from a kernel thread ending in
+   module_put_and_kthread_exit() instead of a work item whose final
+   module_put() raced against module unload
+ - fail API read commands with -ENODEV after the update instead of
+   faking success with an unfilled buffer, which sent
+   port_fdb_dump() into an endless loop
+ - keep block_host set across the post-update version query by
+   exempting SYS_MISC_FW_VERSION instead of briefly lifting the
+   block, and write the blocking flags under the MDIO bus lock
+ - check the return value of every SB PDI control write; a failed
+   address write during the half-bank switch could place the second
+   half of the payload at the wrong flash offset undetected
+ - report SMDIO write failures through one shared error path instead
+   of per-site messages
+ - initialise the progress notification deadline from jiffies so
+   notifications are not suppressed on 32-bit shortly after boot
+ - flush the switchdev deferred queue after closing the ports so the
+   bridge's deferred STP DISABLED transitions reach the firmware
+   while it is still running instead of failing with -EBUSY against
+   the host block
+ - treat -ENODEV as successful deletion in port_mdb_del() so the
+   post-update teardown does not leave leftover host MDB entries
+   behind for the DSA core to report
+
+v3:
+ - validate the image, including both CRCs, before closing any ports
+   so a malformed file no longer triggers a flash and reprobe cycle
+ - reject images whose declared payload sizes overflow when summed
+   (check_add_overflow) or sum up to zero; the latter used to erase
+   the flash without writing anything back
+ - allocate the reprobe work item and take the module and device
+   references before disturbing the switch instead of silently
+   skipping the reprobe when the allocation fails afterwards
+ - check block_host/skip_teardown under the MDIO bus lock to close
+   the window where a command already past the check could reach the
+   bus after the switch rebooted into MCUboot
+ - prevent the stats poll work from being re-armed and cancel the
+   CRC error work before the transfer
+ - check the return value of SB PDI data word writes; control writes
+   are verified by the subsequent status polls
+ - report a per-model chip name from the OF match data as "asic.id"
+   instead of the devicetree compatible string whose comma is
+   awkward for userspace consumers (Andrew Lunn)
+ - commit message: the conduit is only closed, not detached
+
+v2:
+ - factor out SB PDI slice flush and devlink status notification
+   helpers, resolving checkpatch issues
+ - use kzalloc_obj() (Manuel Ebner)
+ - add kernel-doc for the new mxl862xx_priv members
+ - trim comments and state the actual duration of a flash and reprobe
+   cycle, just under a minute (Manuel Ebner)
+ - reword commit message: split up run-on sentence, explain the
+   dynamically allocated reprobe work item (Manuel Ebner), mention
+   that closing the ports stops phylib polling (Andrew Lunn)
+
+ drivers/net/dsa/mxl862xx/Kconfig         |   1 +
+ drivers/net/dsa/mxl862xx/Makefile        |   2 +-
+ drivers/net/dsa/mxl862xx/mxl862xx-api.h  |  10 +
+ drivers/net/dsa/mxl862xx/mxl862xx-cmd.h  |   2 +
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.c   | 689 +++++++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-fw.h   |  18 +
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c |  20 +
+ drivers/net/dsa/mxl862xx/mxl862xx.c      |  86 ++-
+ drivers/net/dsa/mxl862xx/mxl862xx.h      |  31 +-
+ 9 files changed, 855 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-fw.h
+
+diff --git a/drivers/net/dsa/mxl862xx/Kconfig b/drivers/net/dsa/mxl862xx/Kconfig
+index e51a67a3cf9b..8bb524fe28d1 100644
+--- a/drivers/net/dsa/mxl862xx/Kconfig
++++ b/drivers/net/dsa/mxl862xx/Kconfig
+@@ -3,6 +3,7 @@ config NET_DSA_MXL862
+ 	tristate "MaxLinear MxL862xx"
+ 	depends on NET_DSA
+ 	select CRC16
++	select CRC32
+ 	select NET_DSA_TAG_MXL_862XX
+ 	help
+ 	  This enables support for the MaxLinear MxL862xx switch family.
+diff --git a/drivers/net/dsa/mxl862xx/Makefile b/drivers/net/dsa/mxl862xx/Makefile
+index a7be0e6669df..bccac0d0f703 100644
+--- a/drivers/net/dsa/mxl862xx/Makefile
++++ b/drivers/net/dsa/mxl862xx/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_NET_DSA_MXL862) += mxl862xx_dsa.o
+-mxl862xx_dsa-y := mxl862xx.o mxl862xx-host.o mxl862xx-phylink.o
++mxl862xx_dsa-y := mxl862xx.o mxl862xx-host.o mxl862xx-phylink.o mxl862xx-fw.o
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-api.h b/drivers/net/dsa/mxl862xx/mxl862xx-api.h
+index a180a5decffc..6f771895984c 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-api.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-api.h
+@@ -1224,6 +1224,16 @@ struct mxl862xx_sys_fw_image_version {
+ 	__le32 iv_build_num;
+ } __packed;
+ 
++/**
++ * struct mxl862xx_sys_reg_rw - System register read/write
++ * @addr: 32-bit register address
++ * @val: register value
++ */
++struct mxl862xx_sys_reg_rw {
++	__le32 addr;
++	__le32 val;
++} __packed;
 +
-+struct device_reprobe {
-+	struct delayed_work work;
-+	const struct device_driver *drv;
-+	const char *drv_name;
-+	struct device *dev;
-+	unsigned long delay;
-+};
+ /**
+  * enum mxl862xx_port_type - Port Type
+  * @MXL862XX_LOGICAL_PORT: Logical Port
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-cmd.h b/drivers/net/dsa/mxl862xx/mxl862xx-cmd.h
+index c87a955c13c4..a865425aa61e 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-cmd.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-cmd.h
+@@ -70,7 +70,9 @@
+ #define INT_GPHY_READ			(GPY_GPY2XX_MAGIC + 0x1)
+ #define INT_GPHY_WRITE			(GPY_GPY2XX_MAGIC + 0x2)
+ 
++#define SYS_MISC_FW_UPDATE		(SYS_MISC_MAGIC + 0x1)
+ #define SYS_MISC_FW_VERSION		(SYS_MISC_MAGIC + 0x2)
++#define SYS_MISC_REG_RD			(SYS_MISC_MAGIC + 0x8)
+ 
+ #define MXL862XX_XPCS_PCS_CONFIG	(MXL862XX_XPCS_MAGIC + 0x1)
+ #define MXL862XX_XPCS_PCS_GET_STATE	(MXL862XX_XPCS_MAGIC + 0x2)
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+new file mode 100644
+index 000000000000..9a3db7d43c73
+--- /dev/null
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+@@ -0,0 +1,689 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Firmware flash and devlink support for MaxLinear MxL862xx
++ *
++ * Copyright (C) 2025 Daniel Golle <daniel@makrotopia.org>
++ *
++ * SB PDI - firmware download interface over clause-22 SMDIO
++ * =========================================================
++ *
++ * The MxL862xx MCUboot loader accepts a firmware image through four "SB PDI"
++ * registers in the switch SMDIO register space. It runs whenever no WSP
++ * firmware is active: the normal firmware update enters it deliberately - the
++ * SYS_MISC_FW_UPDATE API command sets a sticky rescue bit and reboots into
++ * MCUboot - and the loader also stays here when the stored WSP firmware fails
++ * its boot-time integrity check. This driver drives the loader's 0xc55c
++ * "console" download path.
++ *
++ * SMDIO register access (mxl862xx_smdio_read/write):
++ *   MII reg 0x1f := (<sb_pdi_reg> & 0xfff0)   ; page latch
++ *   MII reg (<sb_pdi_reg> & 0x000f) := / => <u16 data>
++ * so CTRL/ADDR/DATA/STAT (0xe100..0xe103) are MII regs 0/1/2/3 of page
++ * 0xe100, not all reg 0x00.
++ *
++ * SB PDI registers (host name/addr  ->  MCU mailbox):
++ *   CTRL 0xe100 -> 0xc0938400   mode: RST=0x00  RD=0x01  WR=0x02
++ *   ADDR 0xe101 -> 0xc0938404   SB target word address (SB1 bank = 0x7800)
++ *   DATA 0xe102 -> 0xc0938408   16-bit data / reply word
++ *   STAT 0xe103 -> 0xc093840c   handshake: a magic (below) or a byte count
++ *
++ * STAT magics:
++ *   READY  0xc55c   loader idle in the console loop        (this driver)
++ *   START  0xf48f   host   -> begin download session
++ *   ACK    0xf490   loader -> START acknowledged (START + 1)
++ *   END    0x3cc3   host   -> finalise now (optional, see below)
++ *
++ * Console flash path (STAT=0xc55c) - mxl862xx_flash_firmware():
++ *
++ *   host                                   loader
++ *   ----                                   ------
++ *   reset (CTRL=ADDR=DATA=0)
++ *   read STAT ............................ 0xc55c   (READY, idle)
++ *   STAT := START(0xf48f)  -------------->
++ *                          <-------------- STAT = 0xf490 (ACK)
++ *   CTRL := WR
++ *   DATA := hdr[0..9]  (20-byte header: type,size1,crc1,size2,crc2)
++ *   reset; STAT := 20 (header len)  -----> parse hdr; r_remain=size1+size2;
++ *                                          ERASE target region(s)
++ *                          <-------------- STAT=21 (len+1), then STAT=0
++ *                                          (erased)
++ *   -- payload, streamed in slices: --
++ *   CTRL := WR
++ *   DATA := word x N ...
++ *     at word 16384: CTRL:=RST; ADDR:=0x7800; CTRL:=WR  (half-bank -> SB1)
++ *     at word 32760: flush slice:
++ *        reset; STAT := <bytes_this_slice> ---> r_remain -= bytes; program
++ *                          <------------------- STAT=0  (ready for next slice)
++ *   ... repeat until the whole payload is sent ...
++ *                          <------------------- STAT=0  image verified
++ *                                               (STAT=1: image rejected)
++ *   STAT := END(0x3cc3)  ---------------------> finalise and boot
++ *
++ * The r_remain == 0 rule (critical):
++ *   Every host STAT write in the payload phase is a byte count; the loader
++ *   does r_remain -= count and stays in the receive loop while r_remain != 0.
++ *   It leaves the loop ONLY when r_remain hits EXACTLY 0, and a count larger
++ *   than r_remain underflows the 32-bit counter and wedges the loader until a
++ *   power cycle. Having left it, the loader verifies the image, publishes the
++ *   verdict in STAT (0 good, 1 rejected) and waits 2 s for END before
++ *   finalising regardless -- clearing its rescue-enable bit so boot_go boots
++ *   the new image -- so END only saves that wait. Hence:
++ *     - never send a slice/chunk count larger than what is outstanding;
++ *     - a STAT write is a command only once the loader has left the loop;
++ *     - the loader leaves the count in STAT while it programs the chunk, so
++ *       a lingering count does not distinguish "busy" from "verdict".
++ */
 +
-+static void device_reprobe_work_fn(struct work_struct *work)
++#include <linux/crc32.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/iopoll.h>
++#include <linux/netdevice.h>
++#include <linux/overflow.h>
++#include <linux/rtnetlink.h>
++#include <linux/sched.h>
++#include <linux/workqueue.h>
++#include <net/dsa.h>
++#include <net/switchdev.h>
++
++#include "mxl862xx.h"
++#include "mxl862xx-api.h"
++#include "mxl862xx-cmd.h"
++#include "mxl862xx-fw.h"
++#include "mxl862xx-host.h"
++
++/* SB PDI registers (clause-22 SMDIO address space) */
++#define MXL862XX_SB_PDI_CTRL		0xe100
++#define MXL862XX_SB_PDI_ADDR		0xe101
++#define MXL862XX_SB_PDI_DATA		0xe102
++#define MXL862XX_SB_PDI_STAT		0xe103
++
++/* SB PDI CTRL modes */
++#define MXL862XX_SB_PDI_CTRL_RST	0x00
++#define MXL862XX_SB_PDI_CTRL_WR		0x02
++
++/* SB PDI handshake magic (published/consumed via STAT) */
++#define MXL862XX_SB_PDI_READY		0xc55c	/* loader idle, console loop */
++#define MXL862XX_SB_PDI_START		0xf48f
++#define MXL862XX_SB_PDI_END		0x3cc3
++
++/* Image verification verdict published in STAT once the receive loop ends */
++#define MXL862XX_SB_PDI_VERIFY_OK	0
++#define MXL862XX_SB_PDI_VERIFY_BAD	1
++
++/* Firmware transfer geometry */
++#define MXL862XX_FW_HDR_SIZE		20
++#define MXL862XX_FW_BANK_HALF		16384	/* words per half-bank */
++#define MXL862XX_FW_BANK_SLICE		32760	/* words per full slice */
++#define MXL862XX_FW_SB1_ADDR		0x7800	/* SB1 word address */
++
++/* Timeouts (generous upper bounds) */
++#define MXL862XX_FW_READY_TIMEOUT_MS	3000
++#define MXL862XX_FW_ACK_TIMEOUT_MS	5000
++#define MXL862XX_FW_ERASE_TIMEOUT_MS	300000
++#define MXL862XX_FW_WRITE_TIMEOUT_MS	60000
++#define MXL862XX_FW_REBOOT_DELAY_MS	5000
++#define MXL862XX_FW_REPROBE_DELAY_MS	500
++
++static int mxl862xx_sb_pdi_reset(struct mxl862xx_priv *priv)
 +{
-+	struct device_reprobe *rp = container_of(work, struct device_reprobe,
-+						 work.work);
-+	struct device *dev = rp->dev;
-+	bool detached = false;
 +	int ret;
 +
-+	device_lock(dev);
-+	/*
-+	 * rp->drv is only compared, never dereferenced: the driver it points
-+	 * to may have been unregistered and freed. The saved name rejects a
-+	 * freed address the allocator has since handed to another driver.
-+	 */
-+	if (!dev->p->dead && dev->driver == rp->drv &&
-+	    !strcmp(dev->driver->name, rp->drv_name)) {
-+		if (defer_all_probes) {
-+			device_unlock(dev);
-+			queue_delayed_work(system_freezable_wq, &rp->work,
-+					   rp->delay);
-+			return;
-+		}
-+		__device_release_driver(dev, NULL);
-+		detached = true;
-+	}
-+	device_unlock(dev);
++	/* CTRL selects RST mode; ADDR and DATA are cleared to 0. */
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++				   MXL862XX_SB_PDI_CTRL_RST);
++	if (ret < 0)
++		return ret;
 +
-+	if (detached) {
-+		ret = device_attach(dev);
-+		/* 0 is unbound too: a failed probe is folded into "no match" */
-+		if (ret <= 0 && ret != -EPROBE_DEFER)
-+			dev_err(dev, "re-probe left the device unbound\n");
-+	}
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_ADDR, 0x0000);
++	if (ret < 0)
++		return ret;
 +
-+	put_device(dev);
-+	kfree(rp->drv_name);
-+	kfree(rp);
++	return mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA, 0x0000);
 +}
 +
-+/**
-+ * device_schedule_reprobe - schedule a deferred detach and re-probe
-+ * @dev: device to detach and re-probe
-+ * @delay_ms: delay in milliseconds before the re-probe runs
-+ *
-+ * Schedule a detach and re-probe of @dev after @delay_ms milliseconds,
-+ * from built-in driver-core work rather than a driver-owned work item,
-+ * so the bound driver may call it without pinning its own module. The
-+ * binding is recorded as the driver pointer plus a copy of its name; the
-+ * pointer is only ever compared, never dereferenced, and the name copy
-+ * guards against a freed &struct device_driver address the allocator
-+ * later hands to a different driver.
-+ *
-+ * The re-probe is skipped when the work runs if @dev has since been
-+ * removed, is no longer bound or is bound to a different driver; an
-+ * unbind followed by a rebind of the same driver within the delay still
-+ * gets it. While probing is blocked, for a system suspend or shutdown,
-+ * the work re-arms itself after @delay_ms, so a request pending across
-+ * suspend runs once the system has resumed and one that fires during a
-+ * shutdown detaches nothing. A failed re-probe leaves @dev unbound, as a
-+ * failed initial probe would.
-+ *
-+ * This is device_reprobe() deferred, and shares its limitations;
-+ * __device_release_driver() is unchanged. The detach and the re-attach
-+ * are not one locked operation, so an administrative unbind arriving
-+ * between them may be undone, and the attach half runs the normal probe
-+ * path with no shutdown re-check of its own. If @dev has managed
-+ * consumers, detaching it unbinds them as any driver release does, so a
-+ * re-probe a concurrent device_shutdown() overtakes may run ->remove()
-+ * in place of ->shutdown(). None of this is specific to this helper.
-+ *
-+ * Buses that take the parent lock to bind (only usb_bus_type) are refused
-+ * with -EINVAL: the parent would have to be recorded before either lock
-+ * is held, where device_move() can replace it.
-+ *
-+ * Context: May sleep (allocates with %GFP_KERNEL). Must be called by the
-+ * driver bound to @dev, from a process context its ->remove() waits for,
-+ * so that the binding outlives the call; @dev's own device lock may be
-+ * held, but not from ->probe(), which the scheduled work would detach.
-+ *
-+ * Returns: 0 on success, -EINVAL if @dev is not a registered device
-+ * bound to a driver or sits on a bus which takes the parent lock to
-+ * bind, -ENOMEM on allocation failure.
-+ */
-+int device_schedule_reprobe(struct device *dev, unsigned int delay_ms)
++static int mxl862xx_sb_pdi_poll_stat(struct mxl862xx_priv *priv, u16 expected,
++				     unsigned long timeout_ms)
 +{
-+	const struct device_driver *drv;
-+	struct device_reprobe *rp;
++	int ret, val;
 +
-+	drv = READ_ONCE(dev->driver);
-+	/*
-+	 * A bus taking the parent lock would need @dev's parent pinned until
-+	 * the work runs, which device_move() can invalidate.
++	ret = read_poll_timeout(mxl862xx_smdio_read, val,
++				val < 0 || (u16)val == expected,
++				10000, timeout_ms * 1000, false,
++				priv, MXL862XX_SB_PDI_STAT);
++	if (val < 0)
++		return val;
++	return ret;
++}
++
++static int mxl862xx_sb_pdi_flush_slice(struct mxl862xx_priv *priv,
++				       u32 data_written)
++{
++	int ret;
++
++	ret = mxl862xx_sb_pdi_reset(priv);
++	if (ret < 0)
++		return ret;
++
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT, data_written);
++	if (ret < 0)
++		return ret;
++
++	return mxl862xx_sb_pdi_poll_stat(priv, 0,
++					 MXL862XX_FW_WRITE_TIMEOUT_MS);
++}
++
++/* Flush the last slice, which ends the receive loop: the loader verifies the
++ * image and replaces the count in STAT with its verdict, so wait for the count
++ * to go rather than for a fixed value.
++ */
++static int mxl862xx_sb_pdi_flush_last(struct mxl862xx_priv *priv,
++				      u32 data_written)
++{
++	int ret, val;
++
++	ret = mxl862xx_sb_pdi_reset(priv);
++	if (ret < 0)
++		return ret;
++
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT, data_written);
++	if (ret < 0)
++		return ret;
++
++	ret = read_poll_timeout(mxl862xx_smdio_read, val,
++				val < 0 || (u16)val != (u16)data_written,
++				10000, MXL862XX_FW_WRITE_TIMEOUT_MS * 1000,
++				false, priv, MXL862XX_SB_PDI_STAT);
++	if (val < 0)
++		return val;
++
++	if (!ret && (u16)val == MXL862XX_SB_PDI_VERIFY_OK)
++		return 0;
++
++	/* A final count of 1 is indistinguishable from the reject verdict, so
++	 * a timeout still holding it lands here too.
 +	 */
-+	if (!drv || !dev->bus || dev->bus->need_parent_lock || !dev->p ||
-+	    dev->p->dead || !device_is_registered(dev))
-+		return -EINVAL;
-+
-+	rp = kzalloc_obj(*rp);
-+	if (!rp)
-+		return -ENOMEM;
-+
-+	rp->drv_name = kstrdup(drv->name, GFP_KERNEL);
-+	if (!rp->drv_name) {
-+		kfree(rp);
-+		return -ENOMEM;
++	if ((u16)val == MXL862XX_SB_PDI_VERIFY_BAD) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: loader rejected the image\n");
++		return -EBADMSG;
 +	}
 +
-+	rp->dev = get_device(dev);
-+	rp->drv = drv;
-+	rp->delay = msecs_to_jiffies(delay_ms);
++	return ret ? ret : -EPROTO;
++}
 +
-+	INIT_DELAYED_WORK(&rp->work, device_reprobe_work_fn);
-+	queue_delayed_work(system_freezable_wq, &rp->work, rp->delay);
++static void mxl862xx_flash_notify(struct devlink *dl, const char *status,
++				  u32 done, u32 total)
++{
++	devlink_flash_update_status_notify(dl, status, NULL, done, total);
++}
++
++/* MCUboot firmware image header */
++struct mxl862xx_fw_hdr {
++	__le32 image_type;
++	__le32 image_size_1;
++	__le32 image_checksum_1;
++	__le32 image_size_2;
++	__le32 image_checksum_2;
++} __packed;
++
++static int mxl862xx_flash_validate(struct mxl862xx_priv *priv,
++				   const struct firmware *fw,
++				   u32 *payload_size)
++{
++	const struct mxl862xx_fw_hdr *hdr;
++	u32 size1, size2, total;
++	const u8 *payload;
++	u32 crc;
++
++	if (fw->size < MXL862XX_FW_HDR_SIZE)
++		return -EINVAL;
++
++	hdr = (const struct mxl862xx_fw_hdr *)fw->data;
++	payload = fw->data + MXL862XX_FW_HDR_SIZE;
++	size1 = le32_to_cpu(hdr->image_size_1);
++	size2 = le32_to_cpu(hdr->image_size_2);
++
++	if (check_add_overflow(size1, size2, &total) ||
++	    total > fw->size - MXL862XX_FW_HDR_SIZE) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: firmware file too small for declared size\n");
++		return -EINVAL;
++	}
++
++	if (!total) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: firmware file with empty payload\n");
++		return -EINVAL;
++	}
++
++	if (size1) {
++		crc = ~crc32_le(~0U, payload, size1);
++		if (crc != le32_to_cpu(hdr->image_checksum_1)) {
++			dev_err(&priv->mdiodev->dev,
++				"flash: image 1 CRC mismatch (got %08x, expected %08x)\n",
++				crc, le32_to_cpu(hdr->image_checksum_1));
++			return -EINVAL;
++		}
++	}
++
++	if (size2) {
++		crc = ~crc32_le(~0U, payload + size1, size2);
++		if (crc != le32_to_cpu(hdr->image_checksum_2)) {
++			dev_err(&priv->mdiodev->dev,
++				"flash: image 2 CRC mismatch (got %08x, expected %08x)\n",
++				crc, le32_to_cpu(hdr->image_checksum_2));
++			return -EINVAL;
++		}
++	}
++
++	*payload_size = total;
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(device_schedule_reprobe);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index aee79fd6b32b..7a9916950577 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1314,6 +1314,8 @@ int  __must_check device_attach(struct device *dev);
- int __must_check driver_attach(const struct device_driver *drv);
- void device_initial_probe(struct device *dev);
- int __must_check device_reprobe(struct device *dev);
-+int __must_check device_schedule_reprobe(struct device *dev,
-+					 unsigned int delay_ms);
++
++static int mxl862xx_flash_firmware(struct mxl862xx_priv *priv,
++				   const struct firmware *fw,
++				   u32 payload_size, struct devlink *dl)
++{
++	const u8 *payload = fw->data + MXL862XX_FW_HDR_SIZE;
++	u32 word_idx = 0, data_written = 0, idx = 0;
++	unsigned long next_notify = jiffies - 1;
++	u16 word, fdata;
++	int ret, val, i;
++
++	/* Step 1: reboot the firmware into MCUboot rescue mode */
++	ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
++				false, false);
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: FW_UPDATE command failed: %pe\n",
++			ERR_PTR(ret));
++		return ret;
++	}
++
++	/* Step 2: wait for bootloader ready */
++	mxl862xx_flash_notify(dl, "Waiting for bootloader", 0, 0);
++	ret = mxl862xx_sb_pdi_reset(priv);
++	if (ret < 0)
++		goto write_err;
++
++	/* Failures from here on end up at no_end, which returns the error
++	 * without signalling END -- see there.
++	 */
++	ret = mxl862xx_sb_pdi_poll_stat(priv, MXL862XX_SB_PDI_READY,
++					MXL862XX_FW_READY_TIMEOUT_MS);
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: bootloader not ready: %pe\n", ERR_PTR(ret));
++		goto no_end;
++	}
++
++	/* Step 3: start handshake */
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
++				   MXL862XX_SB_PDI_START);
++	if (ret < 0)
++		goto write_err;
++
++	ret = mxl862xx_sb_pdi_poll_stat(priv, MXL862XX_SB_PDI_START + 1,
++					MXL862XX_FW_ACK_TIMEOUT_MS);
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: start handshake failed: %pe\n", ERR_PTR(ret));
++		goto no_end;
++	}
++
++	/* Step 4: transfer image header */
++	mxl862xx_flash_notify(dl, "Erasing flash", 0, 0);
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++				   MXL862XX_SB_PDI_CTRL_WR);
++	if (ret < 0)
++		goto write_err;
++
++	for (i = 0; i < MXL862XX_FW_HDR_SIZE / 2; i++) {
++		word = fw->data[i * 2] |
++		       ((u16)fw->data[i * 2 + 1] << 8);
++		ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA, word);
++		if (ret < 0)
++			goto write_err;
++	}
++
++	ret = mxl862xx_sb_pdi_reset(priv);
++	if (ret < 0)
++		goto write_err;
++
++	/* the byte count in STAT triggers the erase */
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
++				   MXL862XX_FW_HDR_SIZE);
++	if (ret < 0)
++		goto write_err;
++
++	/* The ACK is the count + 1, replaced by 0 as soon as the erase is done,
++	 * so wait for the count to go: a short erase retires the ACK between
++	 * two polls.
++	 */
++	ret = read_poll_timeout(mxl862xx_smdio_read, val,
++				val < 0 || (u16)val != MXL862XX_FW_HDR_SIZE,
++				10000, MXL862XX_FW_ACK_TIMEOUT_MS * 1000, false,
++				priv, MXL862XX_SB_PDI_STAT);
++	if (val < 0)
++		ret = val;
++	if (!ret && (u16)val != MXL862XX_FW_HDR_SIZE + 1 && (u16)val != 0)
++		ret = -EPROTO;
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: header ACK failed: %pe\n", ERR_PTR(ret));
++		goto no_end;
++	}
++
++	/* Step 5: wait for erase to complete */
++	ret = mxl862xx_sb_pdi_poll_stat(priv, 0,
++					MXL862XX_FW_ERASE_TIMEOUT_MS);
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: erase timeout: %pe\n", ERR_PTR(ret));
++		goto no_end;
++	}
++
++	/* Step 6: transfer payload */
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++				   MXL862XX_SB_PDI_CTRL_WR);
++	if (ret < 0)
++		goto write_err;
++
++	while (idx < payload_size) {
++		cond_resched();
++		if (idx + 1 < payload_size) {
++			fdata = payload[idx] |
++				((u16)payload[idx + 1] << 8);
++			idx += 2;
++			data_written += 2;
++		} else {
++			fdata = payload[idx];
++			idx++;
++			data_written++;
++		}
++
++		ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA, fdata);
++		if (ret < 0)
++			goto write_err;
++		word_idx++;
++
++		if (idx >= payload_size) {
++			ret = mxl862xx_sb_pdi_flush_last(priv, data_written);
++			break;
++		}
++
++		/* Half-bank boundary: switch to SB1 address */
++		if (word_idx == MXL862XX_FW_BANK_HALF) {
++			ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++						   MXL862XX_SB_PDI_CTRL_RST);
++			if (ret < 0)
++				goto write_err;
++
++			ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_ADDR,
++						   MXL862XX_FW_SB1_ADDR);
++			if (ret < 0)
++				goto write_err;
++
++			ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++						   MXL862XX_SB_PDI_CTRL_WR);
++			if (ret < 0)
++				goto write_err;
++		} else if (word_idx >= MXL862XX_FW_BANK_SLICE) {
++			ret = mxl862xx_sb_pdi_flush_slice(priv, data_written);
++			if (ret) {
++				dev_err(&priv->mdiodev->dev,
++					"flash: write timeout at %u/%u: %pe\n",
++					idx, payload_size, ERR_PTR(ret));
++				goto no_end;
++			}
++			word_idx = 0;
++			data_written = 0;
++			ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
++						   MXL862XX_SB_PDI_CTRL_WR);
++			if (ret < 0)
++				goto write_err;
++
++			if (time_after(jiffies, next_notify)) {
++				mxl862xx_flash_notify(dl, "Flashing", idx,
++						      payload_size);
++				next_notify = jiffies + msecs_to_jiffies(500);
++			}
++		}
++	}
++
++	if (ret) {
++		dev_err(&priv->mdiodev->dev,
++			"flash: final slice failed: %pe\n", ERR_PTR(ret));
++		goto no_end;
++	}
++
++	mxl862xx_flash_notify(dl, "Flashing", payload_size, payload_size);
++
++	/* Success: the loader has left the receive loop at r_remain == 0 and
++	 * verified the image, so END(0x3cc3) is a finalise/boot request rather
++	 * than a byte count. Signal it here -- and only here -- to boot the new
++	 * image without waiting out the loader's 2 s END timeout.
++	 */
++	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
++				   MXL862XX_SB_PDI_END);
++	if (ret < 0)
++		dev_warn(&priv->mdiodev->dev,
++			 "flash: END signalling failed, waiting the loader out: %pe\n",
++			 ERR_PTR(ret));
++
++	msleep(MXL862XX_FW_REBOOT_DELAY_MS);
++	return 0;
++
++write_err:
++	dev_err(&priv->mdiodev->dev, "flash: SMDIO write failed: %pe\n",
++		ERR_PTR(ret));
++no_end:
++	/* A failure leaves the loader mid transfer; do not signal END (a STAT
++	 * write is a byte count then, and END would be misread as one, risking
++	 * a receive-counter underflow). Return the error; the caller reprobes.
++	 */
++	return ret;
++}
++
++int mxl862xx_devlink_info_get(struct dsa_switch *ds,
++			      struct devlink_info_req *req,
++			      struct netlink_ext_ack *extack)
++{
++	struct mxl862xx_priv *priv = ds->priv;
++	char buf[16];
++	int ret;
++
++	/* A 0 part number means the CHIP ID read failed or the part is
++	 * unfused; omit it rather than publish a bogus "0000" that fwupd
++	 * would match firmware against -- it then falls back to the driver
++	 * name.
++	 */
++	if (priv->asic_id) {
++		snprintf(buf, sizeof(buf), "%04X", priv->asic_id);
++		ret = devlink_info_version_fixed_put(req,
++						     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
++						     buf);
++		if (ret)
++			return ret;
++
++		snprintf(buf, sizeof(buf), "%u", priv->asic_rev);
++		ret = devlink_info_version_fixed_put(req,
++						     DEVLINK_INFO_VERSION_GENERIC_ASIC_REV,
++						     buf);
++		if (ret)
++			return ret;
++	}
++
++	/* An all-zero version is the cache a failed flash left behind, not a
++	 * released firmware; omit it like the part number above.
++	 */
++	if (!priv->fw_version.major && !priv->fw_version.minor &&
++	    !priv->fw_version.revision)
++		return 0;
++
++	snprintf(buf, sizeof(buf), "%u.%u.%u",
++		 priv->fw_version.major, priv->fw_version.minor,
++		 priv->fw_version.revision);
++
++	ret = devlink_info_version_running_put(req,
++			DEVLINK_INFO_VERSION_GENERIC_FW, buf);
++	if (ret)
++		return ret;
++
++	/* boots this image from its own flash: stored == running */
++	return devlink_info_version_stored_put(req,
++			DEVLINK_INFO_VERSION_GENERIC_FW, buf);
++}
++
++int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
++				  struct devlink_flash_update_params *params,
++				  struct netlink_ext_ack *extack)
++{
++	struct mxl862xx_priv *priv = ds->priv;
++	struct dsa_port *dp;
++	u32 payload_size;
++	int ret, err, i;
++
++	if (params->component) {
++		NL_SET_ERR_MSG_MOD(extack, "component is not supported");
++		return -EOPNOTSUPP;
++	}
++
++	/* Written under the instance lock this call is holding. */
++	if (priv->shutting_down) {
++		NL_SET_ERR_MSG_MOD(extack, "device is shutting down");
++		return -ENODEV;
++	}
++
++	/* A previous flash has short-circuited the firmware API until the
++	 * reprobe or a rebind, so the raw SB PDI writes below would run
++	 * against a switch this driver no longer tracks.
++	 */
++	if (priv->skip_teardown) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "a previous flash left the driver awaiting reinitialisation");
++		return -EBUSY;
++	}
++
++	ret = mxl862xx_flash_validate(priv, params->fw, &payload_size);
++	if (ret) {
++		NL_SET_ERR_MSG_MOD(extack, "firmware image validation failed");
++		return ret;
++	}
++
++	dev_info(ds->dev, "flash: running firmware %u.%u.%u\n",
++		 priv->fw_version.major, priv->fw_version.minor,
++		 priv->fw_version.revision);
++
++	/* Close ports while the firmware is still alive so the DSA core's
++	 * MDB/FDB tracking is drained, and detach user ports so userspace
++	 * cannot reopen them during the flash. The conduit is only closed,
++	 * not detached: it belongs to the MAC driver. This driver binds a
++	 * single switch with a direct host link and no cascade ports, so the
++	 * conduit serves only this switch, and flashing it reboots the switch,
++	 * which takes the tree down regardless.
++	 */
++	rtnl_lock();
++	dsa_switch_for_each_user_port(dp, ds) {
++		if (dp->user) {
++			dev_close(dp->user);
++			netif_device_detach(dp->user);
++		}
++	}
++	dsa_switch_for_each_cpu_port(dp, ds)
++		dev_close(dp->conduit);
++	/* The bridge defers the STP state changes triggered by closing
++	 * the ports; let them reach the firmware while it is still alive.
++	 */
++	switchdev_deferred_process();
++	rtnl_unlock();
++
++	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
++	priv->block_host = true;
++	mutex_unlock(&priv->mdiodev->bus->mdio_lock);
++
++	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
++	disable_delayed_work_sync(&priv->stats_work);
++	cancel_work_sync(&priv->crc_err_work);
++	for (i = 0; i < ds->num_ports; i++)
++		cancel_work_sync(&priv->ports[i].host_flood_work);
++
++	ret = mxl862xx_flash_firmware(priv, params->fw, payload_size,
++				      ds->devlink);
++	if (ret)
++		NL_SET_ERR_MSG_MOD(extack, "firmware transfer failed");
++
++	if (!ret) {
++		mutex_lock_nested(&priv->mdiodev->bus->mdio_lock,
++				  MDIO_MUTEX_NESTED);
++		/* Keep block_host set so host writes stay blocked, but let the
++		 * readiness poll below read the freshly booted firmware.
++		 */
++		priv->flash_owner = current;
++		mutex_unlock(&priv->mdiodev->bus->mdio_lock);
++
++		/* Refresh the cached versions so the flash update only
++		 * completes once the new firmware is confirmed running and
++		 * devlink dev info reports it. Must happen before setting
++		 * skip_teardown, which discards all firmware API reads.
++		 */
++		ret = mxl862xx_wait_ready(ds);
++		if (ret)
++			NL_SET_ERR_MSG_MOD(extack,
++					   "new firmware did not become ready");
++	}
++
++	if (ret) {
++		/* The switch is in MCUboot with erased or partly written flash;
++		 * drop the cached identity so devlink dev info stops reporting
++		 * the pre-flash version until the reprobe re-reads the truth.
++		 */
++		memset(&priv->fw_version, 0, sizeof(priv->fw_version));
++		priv->asic_id = 0;
++		priv->asic_rev = 0;
++	}
++
++	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
++	priv->flash_owner = NULL;
++	priv->block_host = false;
++	priv->skip_teardown = true;
++	mutex_unlock(&priv->mdiodev->bus->mdio_lock);
++
++	/* Reinitialise through a deferred re-probe: remove() runs with
++	 * skip_teardown set, then a fresh probe() starts against whatever
++	 * the switch now runs. The core skips the re-probe if the device
++	 * is unbound or shut down before it fires.
++	 */
++	err = device_schedule_reprobe(ds->dev, MXL862XX_FW_REPROBE_DELAY_MS);
++	if (err)
++		dev_err(ds->dev,
++			"flash: re-probe could not be scheduled (%pe); unbind and rebind to reinitialise\n",
++			ERR_PTR(err));
++
++	return ret ? ret : err;
++}
++
++/* The devlink core holds the instance lock across a flash, so taking it here
++ * waits for a transfer in flight instead of cutting the image in half, and
++ * bars one that has not started yet.
++ */
++void mxl862xx_flash_shutdown(struct dsa_switch *ds)
++{
++	struct mxl862xx_priv *priv = ds->priv;
++
++	if (!ds->devlink)
++		return;
++
++	/* A flash holds the instance lock for its whole run. Announce the
++	 * wait so the delay is not mistaken for a hang.
++	 */
++	if (!devl_trylock(ds->devlink)) {
++		dev_info(ds->dev,
++			 "firmware update in progress, waiting for it to finish\n");
++		devl_lock(ds->devlink);
++	}
++	priv->shutting_down = true;
++	devl_unlock(ds->devlink);
++}
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.h b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
+new file mode 100644
+index 000000000000..15ed3a46bcfe
+--- /dev/null
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef __MXL862XX_FW_H
++#define __MXL862XX_FW_H
++
++#include <net/dsa.h>
++
++struct mxl862xx_priv;
++
++int mxl862xx_devlink_info_get(struct dsa_switch *ds,
++			      struct devlink_info_req *req,
++			      struct netlink_ext_ack *extack);
++int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
++				  struct devlink_flash_update_params *params,
++				  struct netlink_ext_ack *extack);
++void mxl862xx_flash_shutdown(struct dsa_switch *ds);
++
++#endif /* __MXL862XX_FW_H */
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 11759fa6069b..4b3956a518cf 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -12,9 +12,11 @@
+ #include <linux/crc16.h>
+ #include <linux/iopoll.h>
+ #include <linux/limits.h>
++#include <linux/sched.h>
+ #include <linux/unaligned.h>
+ #include <net/dsa.h>
+ #include "mxl862xx.h"
++#include "mxl862xx-cmd.h"
+ #include "mxl862xx-host.h"
  
- bool device_is_bound(struct device *dev);
+ #define CTRL_BUSY_MASK			BIT(15)
+@@ -340,6 +342,24 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
  
+ 	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
+ 
++	if (priv->skip_teardown) {
++		ret = read ? -ENODEV : 0;
++		goto out;
++	}
++
++	/* During the post-flash readiness poll block_host stays set, but the
++	 * flash path's own firmware version reads must reach the new image;
++	 * host writes stay blocked so stale resource IDs cannot corrupt it.
++	 * A blocked write reports success: the reprobe discards the switch
++	 * configuration anyway, and a bridge tearing down over a flash must
++	 * not see port_vlan_del() fail, which leaks its VLAN group.
++	 */
++	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
++	    !(read && priv->flash_owner == current)) {
++		ret = read ? -EBUSY : 0;
++		goto out;
++	}
++
+ 	max = (size + 1) / 2;
+ 
+ 	ret = mxl862xx_busy_wait(priv);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+index e05ad52cd297..8f8bd519de98 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -21,6 +21,7 @@
+ #include "mxl862xx.h"
+ #include "mxl862xx-api.h"
+ #include "mxl862xx-cmd.h"
++#include "mxl862xx-fw.h"
+ #include "mxl862xx-host.h"
+ #include "mxl862xx-phylink.h"
+ 
+@@ -71,6 +72,13 @@ static const struct ethtool_rmon_hist_range mxl862xx_rmon_ranges[] = {
+ #define MXL862XX_READY_TIMEOUT_MS	10000
+ #define MXL862XX_READY_POLL_MS		100
+ 
++/* Chip ID registers, read via SYS_MISC_REG_RD */
++#define MXL862XX_CHIPID_L		0xc0d28884
++#define MXL862XX_CHIPID_M		0xc0d28888
++#define MXL862XX_CHIPID_L_PNUML		GENMASK(15, 12)
++#define MXL862XX_CHIPID_M_PNUMM		GENMASK(11, 0)
++#define MXL862XX_CHIPID_M_VERSION	GENMASK(14, 12)
++
+ #define MXL862XX_TCM_INST_SEL		0xe00
+ #define MXL862XX_TCM_CBS		0xe12
+ #define MXL862XX_TCM_EBS		0xe13
+@@ -222,7 +230,45 @@ static int mxl862xx_phy_write_c45_mii_bus(struct mii_bus *bus, int addr,
+ 	return mxl862xx_phy_write_mmd(bus->priv, addr, devadd, regnum, val);
+ }
+ 
+-static int mxl862xx_wait_ready(struct dsa_switch *ds)
++/* The CHIP ID registers are only readable through the firmware mailbox, so
++ * the values are cached here and stay zero while no firmware answers.
++ */
++static int mxl862xx_read_chip_id(struct mxl862xx_priv *priv)
++{
++	struct mxl862xx_sys_reg_rw reg = {};
++	u16 chipid_l, chipid_m;
++	int ret;
++
++	reg.addr = cpu_to_le32(MXL862XX_CHIPID_L);
++	ret = MXL862XX_API_READ(priv, SYS_MISC_REG_RD, reg);
++	if (ret)
++		return ret;
++	chipid_l = le32_to_cpu(reg.val);
++
++	reg.addr = cpu_to_le32(MXL862XX_CHIPID_M);
++	ret = MXL862XX_API_READ(priv, SYS_MISC_REG_RD, reg);
++	if (ret)
++		return ret;
++	chipid_m = le32_to_cpu(reg.val);
++
++	priv->asic_id = FIELD_GET(MXL862XX_CHIPID_L_PNUML, chipid_l) |
++			FIELD_GET(MXL862XX_CHIPID_M_PNUMM, chipid_m) << 4;
++	priv->asic_rev = FIELD_GET(MXL862XX_CHIPID_M_VERSION, chipid_m);
++
++	return 0;
++}
++
++/**
++ * mxl862xx_wait_ready - wait for the switch firmware to become operational
++ * @ds: DSA switch instance
++ *
++ * Poll the firmware until it reports its version and accepts
++ * configuration commands, then cache the firmware version, and the chip
++ * ID when it can be read. Takes at least two seconds.
++ *
++ * Return: 0 on success or a negative error code.
++ */
++int mxl862xx_wait_ready(struct dsa_switch *ds)
+ {
+ 	struct mxl862xx_sys_fw_image_version ver = {};
+ 	unsigned long start = jiffies, timeout;
+@@ -254,6 +300,11 @@ static int mxl862xx_wait_ready(struct dsa_switch *ds)
+ 		priv->fw_version.major = ver.iv_major;
+ 		priv->fw_version.minor = ver.iv_minor;
+ 		priv->fw_version.revision = le16_to_cpu(ver.iv_revision);
++
++		ret = mxl862xx_read_chip_id(priv);
++		if (ret)
++			dev_warn(ds->dev, "failed to read chip ID: %pe\n",
++				 ERR_PTR(ret));
+ 		return 0;
+ 
+ not_ready_yet:
+@@ -1547,6 +1598,15 @@ static int mxl862xx_port_mdb_add(struct dsa_switch *ds, int port,
+ 	qparam.tci = cpu_to_le16(FIELD_PREP(MXL862XX_TCI_VLAN_ID, mdb->vid));
+ 
+ 	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
++	/* A flash blocks the API (-EBUSY) and its teardown drops the MAC
++	 * table (-ENODEV); there is then nothing to program, and the reprobe
++	 * rebuilds the configuration. The flash moves from block_host to
++	 * skip_teardown outside this call, so either errno counts under
++	 * either flag. See mxl862xx_port_mdb_del().
++	 */
++	if ((ret == -EBUSY || ret == -ENODEV) &&
++	    (priv->block_host || priv->skip_teardown))
++		return 0;
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1584,6 +1644,15 @@ static int mxl862xx_port_mdb_del(struct dsa_switch *ds, int port,
+ 	ether_addr_copy(qparam.mac, mdb->addr);
+ 
+ 	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
++	/* A flash blocks the API (-EBUSY) and its teardown drops the MAC
++	 * table (-ENODEV); a delete then has nothing to do, and the flash
++	 * moves from block_host to skip_teardown outside this call, so either
++	 * errno counts under either flag. Outside these, both are bus errors
++	 * and must be reported.
++	 */
++	if ((ret == -EBUSY || ret == -ENODEV) &&
++	    (priv->block_host || priv->skip_teardown))
++		return 0;
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1818,6 +1887,11 @@ static void mxl862xx_get_ethtool_stats(struct dsa_switch *ds, int port,
+ 	void *field;
+ 
+ 	ret = mxl862xx_read_rmon(ds, port, &cnt);
++	/* The flash gates refuse with these, and ethtool -S needs no privilege
++	 * to reach them, so they must not log.
++	 */
++	if (ret == -EBUSY || ret == -ENODEV)
++		return;
+ 	if (ret) {
+ 		dev_err(ds->dev, "failed to read RMON stats on port %d\n", port);
+ 		return;
+@@ -2097,6 +2171,8 @@ static const struct dsa_switch_ops mxl862xx_switch_ops = {
+ 	.get_pause_stats = mxl862xx_get_pause_stats,
+ 	.get_rmon_stats = mxl862xx_get_rmon_stats,
+ 	.get_stats64 = mxl862xx_get_stats64,
++	.devlink_info_get = mxl862xx_devlink_info_get,
++	.devlink_flash_update = mxl862xx_devlink_flash_update,
+ };
+ 
+ static int mxl862xx_probe(struct mdio_device *mdiodev)
+@@ -2161,6 +2237,12 @@ static void mxl862xx_remove(struct mdio_device *mdiodev)
+ 
+ 	priv = ds->priv;
+ 
++	/* Wait out a flash in flight and bar a new one before the DSA core
++	 * frees the user netdevs; the devlink instance lock does not cover
++	 * that free, which dsa_unregister_switch() reaches first.
++	 */
++	mxl862xx_flash_shutdown(ds);
++
+ 	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+ 
+ 	dsa_unregister_switch(ds);
+@@ -2187,6 +2269,8 @@ static void mxl862xx_shutdown(struct mdio_device *mdiodev)
+ 
+ 	priv = ds->priv;
+ 
++	mxl862xx_flash_shutdown(ds);
++
+ 	dsa_switch_shutdown(ds);
+ 
+ 	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
+index 432a5f3f2e08..6f801cda3d36 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
+@@ -301,8 +301,14 @@ struct mxl862xx_fw_version {
+  * @drop_meter:         index of the single shared zero-rate firmware meter
+  *                      used to unconditionally drop traffic (used to block
+  *                      flooding)
+- * @fw_version:         cached firmware version, populated at probe and
+- *                      compared with MXL862XX_FW_VER_MIN()
++ * @fw_version:         cached firmware version, compared with
++ *                      MXL862XX_FW_VER_MIN(); refreshed by
++ *                      mxl862xx_wait_ready() after a flash and cleared by
++ *                      a failed one until the reprobe
++ * @asic_id:            chip part number read from the CHIP ID registers,
++ *                      reported as the devlink "asic.id" fixed version
++ * @asic_rev:           chip version read from the CHIP ID registers,
++ *                      reported as the devlink "asic.rev" fixed version
+  * @serdes_ports:       SerDes interfaces incl. sub-interfaces in case of
+  *                      10G_QXGMII or QSGMII
+  * @serdes_refcount:    per-XPCS count of sub-ports enabled by phylink;
+@@ -319,6 +325,19 @@ struct mxl862xx_fw_version {
+  * @evlan_ingress_size: per-port ingress Extended VLAN block size
+  * @evlan_egress_size:  per-port egress Extended VLAN block size
+  * @vf_block_size:      per-port VLAN Filter block size
++ * @block_host:         during a firmware flash, a host firmware read fails
++ *                      with -EBUSY and a write reports success without
++ *                      touching the bus, so a teardown racing the flash
++ *                      does not fail; FW_UPDATE and the flash owner's own
++ *                      reads still reach the bus
++ * @flash_owner:        task running the post-flash readiness poll; only its
++ *                      own firmware reads pass block_host
++ * @skip_teardown:      during the post-flash reprobe teardown, a host
++ *                      firmware read fails with -ENODEV and a write reports
++ *                      success without touching the bus
++ * @shutting_down:      set under the devlink instance lock once ->shutdown()
++ *                      or .remove() has begun, so no flash starts while the
++ *                      switch is going away
+  * @stats_work:         periodic work item that polls RMON hardware counters
+  *                      and accumulates them into 64-bit per-port stats
+  */
+@@ -329,6 +348,8 @@ struct mxl862xx_priv {
+ 	unsigned long flags;
+ 	u16 drop_meter;
+ 	struct mxl862xx_fw_version fw_version;
++	u16 asic_id;
++	u8 asic_rev;
+ 	struct mxl862xx_pcs serdes_ports[8];
+ 	int serdes_refcount[2];
+ 	struct mutex serdes_lock;
+@@ -337,7 +358,13 @@ struct mxl862xx_priv {
+ 	u16 evlan_ingress_size;
+ 	u16 evlan_egress_size;
+ 	u16 vf_block_size;
++	struct task_struct *flash_owner;
++	bool block_host;
++	bool skip_teardown;
++	bool shutting_down;
+ 	struct delayed_work stats_work;
+ };
+ 
++int mxl862xx_wait_ready(struct dsa_switch *ds);
++
+ #endif /* __MXL862XX_H */
 -- 
 2.55.0
