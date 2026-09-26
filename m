@@ -1,62 +1,64 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B073DBD5E
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5593DCD95
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790416574; cv=none; b=UEWNfong+QdYrPiLZ9msCmLNFW+eKXzmy0hptl0Ghv7n8AnLXvo3HcPkzZhE0oyoZaz+y+fQepTqj/WJsLbPYfN3nEnQcQ31l6ZCNw2sYLTXA+JvsRNOf/BLjOwcoaK0Bi6FA8Vl3zWuxH4sD3IY9p5DX27dnB70qUq07g9RDCg=
+	t=1790417050; cv=none; b=uIqvOuHZChdMOSdtL82UqD7mJLamrjIFDZTiyzKzeuagJiixBJcOdlRKgmiwTdVULelaZ12vmb0uv2KVCGSBec4MdNiPtg9Hk1lzl5yEBP9OIWht0ZKqn9WF7RKZyjAJ0bgE4eb0/fsNvJmw7PFoFhFSmevNhzHZlqVqRAzSns0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790416574; c=relaxed/simple;
-	bh=3CS+HQmjBl52m4CqYlnA7nOrv8anzA0BVQsCvgH+SAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ijtQ9Y0XcWDMNkdeQxAdq/Okcs420kvjrWWwajWcryZ+spZhdg/XlcyEXRChhFehikbFfTe3rRe4xwgDlT84Lh/T0FjsdL6LVyo5E3d7u6TeHazPZPDCw6iKZlPNPzBic2LsKM6vQrYR4Eq596ni+rIJT8de3+J/UrUzNorTP24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qc+FMbVL; arc=none smtp.client-ip=74.125.228.39
+	s=arc-20240116; t=1790417050; c=relaxed/simple;
+	bh=NOFvYIzMe59oRg00wo/vPLaX5v5lix8k0vP6rv1OWrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tkHHPD8VCOc4w4a0kbIg+ZGCwb47OMTkWJHn8b1MXXL3LEDRIpAodCDXI3w2OpPimw+IZCQANgkuVNvrXSa4XoArA4b8zlbKxS+PTKcuXof1qvKsMVzfepNtQKrhxyi5PBWRJ/vlo7aFsLPKOe5JmJHNZzULOBrNWtkN5E8E2hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iV4U93lB; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qc+FMbVL"
-Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc7901f7971so422669a12.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:56:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iV4U93lB"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-39dacf053eeso857482a91.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 03:04:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790416572; x=1791021372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v6OJthMlr/f101i8o7uKwd+owesuh/rzBHv4PGBQmQg=;
-        b=qc+FMbVLNU2+VFRFFghHpWZP7+0XXjMnKy3U3xkEI4qG07jfRlFMBaIDti+S4Wq/ZX
-         1qs6EX1W7vIc6og401xgPMhfRHgigWrP+Ir2695047bCQqmPquYELJw/kxN/B8+2kS41
-         b652GJRRaUHDdwzWVUezpj0U66Ed+3y2aQ1wuPXoowiqe0DN2pr6vkTO8ddf8GpyR37E
-         SOysyQi5l1znjFGbEq4ojixuXIvCi4DhEkCScPKfqgxkoNrWk0NwkMIiA2BMW6YDxNpK
-         O0usNFuEseda7tWdKWdt/SZ41ovvCEyv95Yc+qebmanzy2KwRCbs0B8pMboJYotRs4Tm
-         hNbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790416572; x=1791021372;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790417048; x=1791021848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=v6OJthMlr/f101i8o7uKwd+owesuh/rzBHv4PGBQmQg=;
-        b=GyHAkCrPWNlI9WB1em7u2OwKxxTEdA3mdXQzlYmOy6tPK4u9DGQACWjoPVLRlcb4DV
-         Q0qVEA++ErAaYxNRPkEU5QQytWnmFp/mpD6to+nPvfiBEGkY0R4U8hmqFxuzN2dHn62N
-         v/5aniVJ8ulj5xxnljmLg+lpUjZi2+yj3yHXkuuCNxk/AhpDurqUoDYjewIdH/a/Jlbr
-         iV0UFZYi18ermCs9mnpTc1TTCWt2AIJkPyFQDYd44jCX2IL3/0G1CDCPhS3qYt+APwBG
-         K1egrhsmf712qq0sGE6dbn15GZKs6+qOgEkB9WNcoyIZlSZ6mjbfwtZjaeBWLIPgUQAl
-         +RNg==
-X-Forwarded-Encrypted: i=1; AKwUvBzAss788bUSO5tbVuRrFaJT+AW/7Gj4BkpDLlT9KHLyXw+4o48X1824vrt9TTTbUlwf4scW2eM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJcJ/7OXiFv7SkhR+Aesii5B5cpb0OtHf/HKS49RLPMfxJ21u8U
-	bm20YOD7KtFZVrn0Il1aBEfCcmWog2Jg91eGUNCFU6OI8BiuZNr5ct/l
-X-Gm-Gg: AYBFou22025ChEYGDVl3tDf8kVehPiabRV9J7gR8jNJCyYtfNasC54MreLOI/WQRC4P
-	owFGgcg9kE8dP8iUFDEkAkVDo6/U7safyvjytQit8KwsgW3LrArCtIOIDi2HSC4FStbzN+JPXfp
-	2C0ayl1YkReLOb3/CaYLS9KmbzKFnr2dx4eJGJzAONUtSPFgDLO4NiI51BNA7C4mkMff/OP/aM8
-	rABmn9pEq679b7mjQpj0UT70vSXLfRVMUgutn8tmXFH3vjdVYNuvH1tQmQ/G4Vq9386sOI5+sfY
-	8S8rkeRm/iOGQvAlUU9urkWo08Nl+krmP/DVeOVAcRfEY75tf5f9N+pdOLoAUdrfI2O0+Dmb2jp
-	9mLHEHKNXFRrkfMbgajpBbVykRdkm0wwY0G8uLqIrG7+9egLN3VCLaVLdFqvq3AI++QJiz5TZ5S
-	VFRBM4osfca4Ap+hhstOk5Vqp8KAFBatYRON96byB7xB5suxf6zCJt7eBqX+1rWUNOUeA4qRNdP
-	VrOZtAOEowgUE8shbIgj8HkcMgFfCmevFKcBBtQdQR+jw==
-X-Received: by 2002:a17:90b:51c1:b0:39e:1692:34bc with SMTP id 98e67ed59e1d1-3a098ad4cd1mr6376096a91.1.1790416572070;
-        Sat, 26 Sep 2026 02:56:12 -0700 (PDT)
+        bh=AJU1rtsDPsuoX/UjSP5YhpwRW3gJBK/2ZRn5HWHEarw=;
+        b=iV4U93lBCT/jdrUDAGQAmalaFCeHlfUb8gBCUwyZuQwD5AA9Mp/1rK3Eo4LXj2Rftl
+         b5fdO4HGFOI102rGLsRzXVwuarb4Y1D29hiKtkBHGCZrFt7lMrk9S5ATMJXmSjf4og84
+         8qF5/psBtR9dBR38EuTG4cL7QL3v0LbH4n0zw3ZOts1aJYHx2k9hunB62dW2fdToIh3o
+         W5GI0Mv6uH2Lp0RnLGJp3LLxSkcvIkT/pLk+zJ735z2XOUvoVxNMdJC1toaQD8J7K6Tm
+         UMJXlycSNzjohzIRxdBVYVTHx4lP2+G9igoN6W1+k9GSyYzH6cAnL8QL8saIeF/twYnu
+         9rPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790417048; x=1791021848;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AJU1rtsDPsuoX/UjSP5YhpwRW3gJBK/2ZRn5HWHEarw=;
+        b=Ixriz6J+IwS1T5Zzke0AQA1trsZPysnyRugaPNhEz4RwfmKbu/Rr6sBa3gvVb5/3yV
+         2fcMJCMMRlVEQhyGSSBniI+ZV+6fbnrjSMuvqQ0x1b7ywsTgNPVhXowQ3Py4OEi3K72O
+         xcuhNrCzI1oT9BRkKi++LJKTwVWHyFzo+2QQxdfyl+jwlAVVoUUGUCFspm5OLofAmAL1
+         hsoOqBVxxsXBXrL1PeN5hgo5xI1R4SJlZhsuKtub6RyoZiG9jII+LKRwuhG1dshD7Ocl
+         8zu56UYAFr0KW8jORPFEoSl9K3U1yPP+u+Zp18HzLnv6UAtA0G4Axj0uKLnfSfc0KM7R
+         XXnQ==
+X-Forwarded-Encrypted: i=1; AKwUvByRqQrnOi/tSUG20vE7ifHKz7NpEM053O6Qg6YtcIXMRm6ZbTZEi16WPbhFIXIvsBnpEjTJoi8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLrYfRPL9rom4aJ9b9i4uqAAVAc1+JP5WJ09S1goszYCzyQD8dN
+	CWD0q3Vyptd2QByb/otskx8VW7lVmQbZvZ3e0Sj3celDuNC8nRpHGUJm
+X-Gm-Gg: AYBFou0RgpKGQ4UObqq9twGPZy6KQ4TXpCULXDfRCTFARw4RcIEjA3BawfA2CqxFtYK
+	8d+QtTsDlh4dMRZqxVf/Wn69X00ToZo3bzbeeZ6SsABqDpLkcYRbbXCeD00hkAK8ubilSVM9pBt
+	S0zBBv0dq6IWmdArOa/AYcScWR9F+PdEssopE5hTAurDdmue3nDNb4aTyJYY2A7dwHry6I91t/4
+	iU1z5Nj9SQnejuietXG5URyMwSWUM/r3gGVGOyuao+IbGcx+Oa+IBKDycSUbDoYarpG+S7GjzBD
+	lrnDn2XUSntMiUkzzXO0DFy1bO3423ijHkW4EdHWtp+NjyZaVQl/8y/vrwBEued8NanKih6BFHO
+	1F1DI7QiQucFSUgFVoUtHQztJfLISWnWXHhUNa6zs2SbeW8KHthQcKCSsL2IOffUpX62/wpqSIZ
+	lbM9NmKoLu70Ye9UVWO3yh8Ukclk+XgaFG8X/ovhzNBhfjoBrWIjzyHd48N9rmW457b1c6/MVsh
+	xk86pvAZdsVJeb6ABAjDVHcXss2HG8ZA7c1mySQHXuthxF+6FJVAvR3Xw==
+X-Received: by 2002:a17:90b:48d0:b0:3a0:e22b:1b16 with SMTP id 98e67ed59e1d1-3a0e22b1df8mr1010759a91.25.1790417048136;
+        Sat, 26 Sep 2026 03:04:08 -0700 (PDT)
 Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9481e17sm8774670a91.8.2026.09.26.02.56.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0c719f86fsm6730826a91.7.2026.09.26.03.04.05
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 26 Sep 2026 02:56:11 -0700 (PDT)
+        Sat, 26 Sep 2026 03:04:07 -0700 (PDT)
 From: Jun Yang <juny24602@gmail.com>
 To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
 	Xin Long <lucien.xin@gmail.com>
@@ -67,13 +69,14 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	linux-sctp@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@vger.kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net v3] sctp: check RCV_SHUTDOWN after the sendmsg connect wait
-Date: Sat, 26 Sep 2026 17:55:15 +0800
-Message-ID: <20260926095606.68601-1-juny24602@gmail.com>
+	David Lee <david.lee@trailofbits.com>,
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH net v3 1/2] sctp: hold shkey across socket migration
+Date: Sat, 26 Sep 2026 18:03:57 +0800
+Message-ID: <20260926100359.78731-2-juny24602@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260926100359.78731-1-juny24602@gmail.com>
+References: <20260926100359.78731-1-juny24602@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,58 +85,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+From: David Lee <david.lee@trailofbits.com>
 
-sctp_wait_for_connect() drops the socket lock while it sleeps. An
-out-of-the-blue ABORT can then be processed from the socket backlog and
-unlink the association. If a concurrent shutdown(fd, SHUT_RD) sets
-RCV_SHUTDOWN, the waiter breaks with err == 0 before checking
-asoc->base.dead. Its final sctp_association_put() can then free the
-association, leaving sctp_sendmsg_to_asoc() to continue with a dangling
-pointer.
+sctp_sock_migrate() transfers queued DATA skbs from the old socket to the
+new one. skb_orphan() invokes sctp_wfree() during that transfer and drops
+the skb-owned shared-key reference.
 
-Check RCV_SHUTDOWN along with the wait error in sctp_sendmsg_to_asoc()
-before using the association again. The check only accesses the socket,
-so it needs no additional association reference. Return the existing
--ESRCH so that sctp_sendmsg() skips freeing a new association that may
-already have been destroyed.
+If userspace has removed that key from the association, this can be the
+final reference. The following sctp_set_owner_w() then dereferences the
+freed chunk->shkey while trying to take the new owner reference.
 
-Keep sctp_wait_for_connect() unchanged to preserve its behavior for the
-connect() caller.
+Take a temporary shared-key reference before orphaning the skb and release
+it after the new owner has taken its reference. This preserves the selected
+authentication key throughout the ownership transfer.
 
-Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
-Cc: stable@vger.kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
+Bug found and triaged by OpenAI Security Research and
+validated by Trail of Bits.
+
+Fixes: 1b1e0bc99474 ("sctp: add refcnt support for sh_key")
+Assisted-by: Codex:gpt-5.6-sol gpt-5.5-cyber
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
 ---
-v3:
-- Check RCV_SHUTDOWN after the sendmsg connect wait, as suggested by
-  Xin Long, instead of taking an extra association reference and checking
-  asoc->base.dead.
-- Keep the shared wait helper unchanged and retain the -ESRCH error path.
-- Link to v2: https://lore.kernel.org/all/20260911090039.75646-1-juny24602@gmail.com/
-- Review: https://lore.kernel.org/all/CADvbK_f=S-2waid_92PbOCh-LWjU5oiZT+__xWfttVeTHEPQTg@mail.gmail.com/
+Original submission:
+https://lore.kernel.org/netdev/20260731120558.558957-1-david.lee@trailofbits.com/
 
-v2:
-- Leave sctp_wait_for_connect() unchanged to preserve connect() semantics.
-- Hold and validate the association in the sendmsg-only caller.
-
- net/sctp/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/socket.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..4652fd90d9a6 100644
+index c7b9e325ec1c..4a08023d52aa 100644
 --- a/net/sctp/socket.c
 +++ b/net/sctp/socket.c
-@@ -1844,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
- 		if (asoc->ep->intl_enable) {
- 			timeo = sock_sndtimeo(sk, 0);
- 			err = sctp_wait_for_connect(asoc, &timeo);
--			if (err) {
-+			if (err || sk->sk_shutdown & RCV_SHUTDOWN) {
- 				err = -ESRCH;
- 				goto err;
- 			}
--- 
-2.54.0 (Apple Git-157)
+@@ -147,9 +147,19 @@ static inline void sctp_set_owner_w(struct sctp_chunk *chunk)
+ 
+ static void sctp_clear_owner_w(struct sctp_chunk *chunk)
+ {
++	/* Keep the shkey alive until the new owner takes its reference. */
++	if (chunk->shkey)
++		sctp_auth_shkey_hold(chunk->shkey);
+ 	skb_orphan(chunk->skb);
+ }
+ 
++static void sctp_set_owner_w_migrate(struct sctp_chunk *chunk)
++{
++	sctp_set_owner_w(chunk);
++	if (chunk->shkey)
++		sctp_auth_shkey_release(chunk->shkey);
++}
++
+ #define traverse_and_process()	\
+ do {				\
+ 	msg = chunk->msg;	\
+@@ -9632,7 +9642,7 @@ static int sctp_sock_migrate(struct sock *oldsk, struct sock *newsk,
+ 	lock_sock_nested(newsk, SINGLE_DEPTH_NESTING);
+ 	sctp_for_each_tx_datachunk(assoc, true, sctp_clear_owner_w);
+ 	sctp_assoc_migrate(assoc, newsk);
+-	sctp_for_each_tx_datachunk(assoc, false, sctp_set_owner_w);
++	sctp_for_each_tx_datachunk(assoc, false, sctp_set_owner_w_migrate);
+ 
+ 	/* If the association on the newsk is already closed before accept()
+ 	 * is called, set RCV_SHUTDOWN flag.
