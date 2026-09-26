@@ -1,376 +1,388 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006435E1D1
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277FD3750CC
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790444504; cv=none; b=CrAazN6gZIQgaet9QeVv6NZjZN56DUAbpMuLdDjO5FEQ0C7RS2i+BIbKSSfGrsEzTLyjfZneBYCZE2gzO2UaqySou36YXjT0AveJKBb4qRfvWoZ1mlybNwfW6IS4HJpaLcJp08OILb501D7QyoIYydnUfnrnAI8m6n66XU7eJa4=
+	t=1790444773; cv=none; b=fZyYebtgy0k4iNPQSi3S9lfn+KtkZP1SMQyRAYw9WRoKTMqCQG0OGWMky5ztyST0uMOyDXlY3wirF79lkqXiDZ+hZRBh8MaBLqtrqtw6bDaNYDnlfaSNLpWCZAk4RjIEC+MzyYlc8JHN7Oyvwqzh9Np15R/Ih9YKti5YrtMHxIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790444504; c=relaxed/simple;
-	bh=qNB6iUn/kK5UshwXrY30fTCpvaVIFV4DdkGZsEGe1sQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tx4Kx9EzGotLo0fY/tUdeHP6UApreK0He8cx+XSPk6UdEkvIR90yPCfDwt2AEYQRP76lXpoM8WlWHjFJDYWc+jBhPpTtJ4mBXuwwKhhw48ZW0PAs0ZY2DRXrs+AuxPui87zvZa/5OsghD4XQ0+7aZjKA6F39fKdzqBk5oG7hLlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Jof5in3d; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790444773; c=relaxed/simple;
+	bh=oO1iHcTAH7ACNmM77giltxwnfU1nsSZpxxQDiZ/ueD0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WbNdAOjmOCc+/INKfgWSYcERF6AzViwQ4bI6STvmg4gYL8OYGd5OlOK/YNmhCSP5Ekx5MYUwfS0nUfxVOktMOpa6j6bbjXfQ7ih44DL2zku9xTVo2gb/KsPjEynj82E6YxB7hvbLFgMsajJPxtcIz0+XBrMxZbtVCDwNqryx0fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CEYWj9+O; arc=none smtp.client-ip=74.125.227.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Jof5in3d"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68QH5s74264615;
-	Sat, 26 Sep 2026 17:41:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=eAEfpw
-	SPHCWOHr6LFYD4RtEq1hYGrMzZFflN+Sl4WpQ=; b=Jof5in3dGVuOF0JHvkO773
-	AuLDKSYpTIcM7lKnOUltbbylsO+/1q0kaynSMuh5oo/b/otXZwWwq0BCB+3+jonX
-	pmOmMvV5aDzqOJeu6Mc4yTQQ4vni38DNUSlX8NAD5ejqDW05Q2/hu+4mbQ4lUJZ3
-	I/fT6clwwbLJDF/RnKrLDJ70dpUJc8ohFFczOe/wp3TkazbHKp7I0bmRVvX/xl2u
-	+5u5MjfwM6w3N0b1PVadWDqv9Y5qDMrti/vzSU/XNlOwohbUJoOWqDUtXSl+ZvAr
-	I22SUK3LV77Y4psRlXAcbRb647rYWp2wqhkV8y/cVopD2hgZlGafggvYPpcNoAvA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j4t7m4-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 26 Sep 2026 17:41:05 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68QH2VLn1595861;
-	Sat, 26 Sep 2026 17:41:04 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbe271j5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 26 Sep 2026 17:41:04 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68QHf2jO22807196
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 26 Sep 2026 17:41:03 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D516E5804B;
-	Sat, 26 Sep 2026 17:41:02 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44E5658055;
-	Sat, 26 Sep 2026 17:41:00 +0000 (GMT)
-Received: from [9.67.27.197] (unknown [9.67.27.197])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 26 Sep 2026 17:41:00 +0000 (GMT)
-Message-ID: <966a8145-421e-4be1-8d46-2cf8e4f9fa2a@linux.ibm.com>
-Date: Sat, 26 Sep 2026 10:40:56 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CEYWj9+O"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccda24afso980432a91.3
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790444770; x=1791049570; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=X7j/Xs0yd7MI1p56J+Mr6f7Gqbz4/prJloJrxSXAAGg=;
+        b=CEYWj9+OcNYYl+9rm3WwO4XsufuiMWHqCoGqDoreyJkIFYU1TNLDVL+12cqeLsyDeh
+         3yKFdmuETmP6WCJvCWQbPpnsFCVsFnWqRqpYY1YTyPZ0BP14UAbtjVXHZtmK9VE80CIA
+         k0cPKBE9TELYqrIf/M5/3OZvUXCJyrNPlvibBuvvBHGPVaxrl0WLpIH2rYCScNBCth1Z
+         ZdlGhH6ZOFgsNOyQiSCLsO5T0w/3Q/ufQhLXeM/JzkVEJfQ1Wk9W3O97Q3idNhHlj8eU
+         XADumkYnuVfBl88AI7evexrZKCtprMz6BSSdyRRg45f6r5+H/ftgVzjX651YDzP5m/sw
+         3I9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790444770; x=1791049570;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X7j/Xs0yd7MI1p56J+Mr6f7Gqbz4/prJloJrxSXAAGg=;
+        b=ToAqVHqGHZJe6eMxGWgTZSEmdj5T7wxvbfur4VugoHP8vZ1SeDda/XxN4f6AyomZyk
+         HBDRYOflLsUzbPEjvXHVx/G6KXqFx9gj/WRt+cwnWjjhJcKmLMDSjqwO9z10wQxwXRRO
+         BaytAIlMjSG3sBkC77g86wUvQbV8U77kc3gsBv8sGJJxAugJBN3K68StWCeAanu3GfKW
+         vjTXbpjBEScoGt6RdOkezIjDYoJP5CgU/POGaGibwkM3jmYCUxdnkosouylEr3ggv6PG
+         LufgeEzNLaU/RY8PYrrCQUbB7ZbzCIRdCX3fZ87bFah2SahQpq3bFtg10Yn8wHN0o+Gb
+         BD3g==
+X-Gm-Message-State: AFq9FYIV7xsJENBbtfYgYvRjlAEmylaftSuSMLKbz3S1OsROcUEmTMFI
+	fUCF+rjaR2BP8HVNaGm+lh11sWvCsY58ZjinjoAgSXbvSWYIR62WOKxf9pOnfwK/fKm4eA==
+X-Gm-Gg: AYBFou3ev6s32jXbkgrmbcHkIPhqU+y3Bipj4FcLgqD6pgnC9fbtMm8QHxaShyNyZJT
+	E902SUXm+wBVESyrevFKmw0jX3+MGGDPbCosWI7fsOVvmkT2EL3a16coWwC9ixE9vsL8bq7VRNA
+	kk2xEaQlscGS+G/rnklPmTYTaInPkdUzn4kL+Enc+Ttq9ls3wfDbO3Uau5ewzwduKbKezYLubOG
+	El4ZC6bJc54ho5ukdSb609P5svQa/XF2zkOuAO5nslUdAXDOsUtJ2BHEa6EWE4SxA/qOe0KyN3u
+	RihZVHK3IxeSy60tEGHLmL/RGaHJs9DRuXFjY7zTNvJaXUYs1N5rBre/wW/d91nWwsg0K+unom8
+	xMHGVbJYayJ5V2mM2gjTk9Tmg7r4DvvE63iNupj0q6PHlrMCOIP/RNB0cDaBW17U3wNjxbJJFj/
+	NlNBMbYUhc7FtbOgkg7EVcnm9lP5MN5+7oQzdMiP7O0JgH/NPt9+TE5/lQ2RQOxpVXxUhktQoMI
+	PmSK8Ds+zzSfwUqy5fDNYljYIHYQnAFi9TWrOpiCUaBqds98UGTcaeEEWE3K86E3uQ2/CWE1UDZ
+	nAgyUm8Ai6A1MEOrG94VacJPuCNvojgHjFi7Mw==
+X-Received: by 2002:a17:90b:390d:b0:3a0:c717:2db with SMTP id 98e67ed59e1d1-3a0c7170934mr3325060a91.27.1790444770171;
+        Sat, 26 Sep 2026 10:46:10 -0700 (PDT)
+Received: from DESKTOP-4R531G0 ([223.105.83.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0974ec711sm17261233a91.6.2026.09.26.10.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 10:46:09 -0700 (PDT)
+From: Gaoyang Wei <yhyxwgy@gmail.com>
+To: netdev@vger.kernel.org
+Cc: pbs05 <xuziyougm@gmail.com>,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Russell King <linux@armlinux.org.uk>
+Subject: [RFC] net: towards a generic PON framework
+Date: Sun, 27 Sep 2026 01:46:01 +0800
+Message-ID: <20260926174601.1675-1-yhyxwgy@gmail.com>
+X-Mailer: git-send-email 2.52.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 00/15] ibmveth: Add multi-queue RX support
-To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, horms@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-References: <cover.1790319558.git.mmc@linux.ibm.com>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <cover.1790319558.git.mmc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI2MDA3MCBTYWx0ZWRfX0x48cyHmxyl3
- kLSQyqxFFyUpYAhV2xdPyvdmfjxGJ49Ug2c9DZCxAN8c8ceTRT1qEYmFRKPgT8wMHGBxAdmjwqS
- nwLAFM4SZ7ttigUdWGaH0JNZeviWOHk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI2MDA3MCBTYWx0ZWRfXzaBSk6mehXH/
- NnUlVgi1LXHnqStM0MhmJBW15aEdQoO+F3MGKqrsseP8YfdLZW5mh7ryxXhK6mzxK7uw1xyetnn
- QLA6+KsQkw5+YcTgpz/yQavlTlgHzBQwZTfqNWxcFXaKOhm9KoeXnzwKErwag1p4uaWvgY9TxmB
- SYknRRe/eTWR9xdVQoAQR+nur6YnJA6io9hKGDJRXZZ2ZiDQJsbLm/7IL15azMf4UHyZ9OnUhWJ
- l7P/n1CSaNlB64AfdBkzFgeHfAWr6zWvuOnnOf2EHFogdKxee6VFjPexamF/js3aJyGwmVBp3Y7
- Tz7Ectz0EW5HcwQ/B7Zrua4DuR3Jewt+zo/PyLtsKpnwT8DtPFW9gfUnCj8vAvfSStZFVASJ4OV
- afABpUWsOtICEDDnasDKqcEBFxpcsTS+0/y5tagxEj9c3EvoyCX5J62Sn/PirfSGHfYW2klH5s4
- wAE5MIji7QaSJX47IEg==
-X-Proofpoint-GUID: h2AyK9GU_0gg-XGPeHiMMxvxYNqYTF87
-X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6ab803b2 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=9R54UkLUAAAA:8 a=c92rfblmAAAA:8 a=1kCAPu4YpCMHAujTWA4A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=YTcpBFlVQWkNscrzJ_Dz:22
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-ORIG-GUID: _WwUJDdaxEP02wIyHVolRCZ_RvRw72ub
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-26_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609260070
 
-Hi Jacub,
+Hi all,
 
-I noticed this v7 series is flagged red on patchwork. The apply failure 
-is due to a dependency on my own [PATCH net 0/2] (Message-ID: 
-cover.1790357373.git.mmc@linux.ibm.com) sent the same day — kept 
-separate per your earlier feedback to peel fixes out of feature series. 
-Both touch ibmveth_open() in the same region, and the net pair is not 
-yet in net-next.
+Several efforts now support, or are working towards supporting,
+Passive Optical Network (PON) hardware on Linux and OpenWrt.  I would
+like to ask for feedback on where the kernel/userspace and
+generic/vendor-specific boundaries should be before any implementation
+hardens its own userspace API.
 
-The v7 MQ series is based on net-next 161ea2d4f2a7 (2026-09-24). The 
-fixes are already subsumed by MQ patches 3 and 6.
+This RFC is about the ONU/ONT (subscriber) side only.  It is not an
+attempt to design an OLT subsystem.
 
-Shall I wait and rebase MQ once the net pair lands in net-next, or send 
-a v8 now with the net pair folded in? Happy to do either.
+Background
+==========
 
-Thanks, Mingming
+PON devices which provide Ethernet user services commonly expose an
+Ethernet datapath to Linux, but the hardware below that interface has
+concepts which do not map directly to ordinary Ethernet networking:
 
-On 9/25/26 11:38 AM, Mingming Cao wrote:
-> Hi,
->
-> Power11 PHYP adds Virtual Ethernet multi-queue (MQ) RX: multiple
-> logical-LAN RX queues, per-queue buffer posting, and completion
-> delivery. Guest Linux did not use that; ibmveth still registered one
-> RX queue even when PHYP was MQ-capable.
->
-> This series adds the ibmveth MQ client for net-next. When PHYP
-> advertises IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT via H_ILLAN_ATTRIBUTES,
-> probe enables MQ with a default RX count of min(num_online_cpus(), 8)
-> (same cap as TX today); ethtool -L can raise RX up to 16. Packets are
-> received on per-queue NAPI. Older firmware without the bit is unchanged.
-> Queue selection remains firmware-defined (PHYP hash). Ethtool RSS hash
-> get/set for that algorithm is deferred to a follow-up series so this
-> one stays MQ datapath only.
->
-> User-visible bits: ethtool -l/-L (channels); standard per-queue
-> packets/bytes/drops via netdev_stat_ops (ethtool -S keeps only
-> driver-specific counters; ndo_get_stats64 is the aggregate, including
-> retired-queue history); and a read-only debugfs buffer_pools dump
-> (v3's multi-line sysfs dump moved to debugfs; the historical queue-0
-> poolN/ sysfs ABI is unchanged).
->
-> Background:
->
-> ibmveth today uses one logical LAN, one set of buffer pools, and one
-> NAPI context. PHYP MQ mode gives each RX queue its own handle (post via
-> H_ADD_LOGICAL_LAN_BUFFERS_QUEUE, subordinate register via
-> H_REG_LOGICAL_LAN_QUEUE); traffic can land on any active queue. The
-> driver needs per-queue pools, IRQs, and NAPI to match. Legacy firmware
-> keeps the original hcall path.
->
-> Series layout (15 patches):
->
->    1-2   Hypercall wrappers; MQ adapter layout (MAX_RX_QUEUES stays 1)
->    3-9   Queue-aware helpers (still SQ runtime): RX, per-queue pools,
->          IRQ, TX, PHYP, buffer submit (open/close 3-8); poll harden (9)
->    10    Enable MQ datapath at probe/open (subordinate register helpers
->          land here with first use)
->    11-13 Per-queue RX/TX stats; get_channels MQ counts; debugfs buffer_pools
->    14    Incremental RX resize; live ethtool -L rx
->    15    Down-path rollback and mq_fallback max_rx cap
->
-> - Helper patches (3-8) reshape ibmveth_open()/close() into
->    queue-aware helpers. Patch 9 hardens the SQ poll path with the same
->    queue-index helpers; it does not change open/close. MQ stays off
->    through 3-9: num_rx_queues stays 1 and multi_queue is false until
->    patch 10. The live single-queue path still changes where the review
->    required it (open/close unwind, IRQ remask, replenish lock, poll
->    harden).
-> - Patch 10 is the switch: probe sets multi_queue from firmware, raises
->    num_rx_queues, registers subordinates, and replenishes every active
->    queue.
-> - Patch 11 moves counters per-queue and exports packets/bytes/drops
->    through netdev_stat_ops. The thirteen existing -S keys stay; no
->    hcall_* or pool%d_ keys.
->
-> Testing:
->
-> ppc64le PowerVM LPAR, MQ-capable firmware:
-> * ethtool -L cycling (16/1/8/11/1/3/16/8/1) with ping - no hangs
-> * ethtool -L under iperf3; link down/up during traffic
-> * ifdown/ifup under iperf3 RX+TX (MQ and ethtool -L rx 1)
-> * Legacy firmware (no MQ bit): open/close/stress on helper path
-> * Bisect-safe build and boot at every commit; W=1 clean at tip
->
-> Changes in v7:
->
-> Same 15 patches as v6. We followed up the v6 netdev-bot review
-> with replies; this v7 is the series after that, plus a few items
-> from our own re-review.
->
-> * Patch 3: update_rx_no_buffer() returns if buffer_list_addr[0] is
->    NULL (the per-queue form stays in patch 10).
-> * Patch 6: synchronize_net() on the late TX-alloc unwind before RX is
->    freed.
-> * Patch 8: replenish failure log names the wrapper from the filled
->    count; advance ring on NULL buffer so poll does not spin.
-> * Patch 9: oversize bound is min(skb_tailroom, pool->buff_size).
-> * Patch 10: unregister_netdev before cancel_work_sync and gate reset
->    on NETREG_REGISTERED (moved from patch 11); wait for pool kobject
->    release before free_netdev(). Drop the probe CMO refresh and the two
->    CMO follow-ups: CMO (Power9 and earlier) and MQ firmware (Power11+)
->    do not coexist.
-> * Patch 11: replenish_lock on the close harvest (remove-path
->    unregister/cancel reorder moved to patch 10 with the reset producer).
-> * Patch 12: set_channels() returns -EOPNOTSUPP on rx_count changes until
->    patch 14 implements live resize.
-> * Patch 14: key buffer-list unmap on allocation presence because
->    DMA address zero is valid; reject an RX count change while down
->    with -EOPNOTSUPP. Failed H_FREE skips unmap and restores the
->    surviving count; widen real_num before scale-up unmask. Scale-up
->    register -EOPNOTSUPP latches mq_fallback. The scale-up /
->    scale-down helper split is code motion only.
-> * Patch 15: publish the down-path RX count, which lifts patch 14's
->    temporary rejection. get_channels max_tx is at least the live
->    tx_count, and set_channels uses the same ceiling, so CPU offline
->    cannot block an RX-only ethtool -L.
-> * Commit message / kdoc / comment / debug-log updates on 1, 3, 4, 5,
->    7, 8, 9, 10, 11, 12, 14 and 15 (patch 1 also names the new hcalls in the perf
->    powerpc-hcalls script and documents H_BUSY on the register-queue
->    wrapper; patch 10 prints the register-queue failure with %ld).
-> * Kept: enable_irq on schedule_prep failure; mask PHYP before
->    napi_disable; get_channels reports the live rx_count (no clamp).
-> * Reopen unwind in patches 3 and 6 is pre-existing. No Fixes: tag
->    here. The SQ open-fail path is already on the list as
->    [PATCH net 0/2] (Message-ID:
->    <cover.1790357373.git.mmc@linux.ibm.com>). This series does
->    not depend on it. If both land, keep the helper versions in
->    patches 3/4/6; the net pair is the current single-queue path
->    only.
->
-> Known leftovers (not this series):
->
-> * Single-queue: replenish vs free_buffer_pool is not serialized,
->    irqsave still covers the whole fill, and close skips
->    netpoll_poll_disable. That is a lock-protocol rewrite, not this
->    series.
-> * RX IRQ teardown: teardown masks PHYP, disables NAPI, then masks
->    again, but a poll tail that already passed the shutdown checks can
->    still re-enable PHYP after that second mask and after free_irq, and
->    a mask hcall that failed is never acknowledged. Closing this needs a
->    poll/teardown handshake rather than another remask, so the ordering
->    is unchanged here.
->
-> Changes in v6:
->
-> Same 15 patches as v5. Jakub v5 review folded in; per-patch detail is
-> below --- on each commit.
->
-> * Both new registration wrappers use plpar_hcall(), not plpar_hcall9().
-> * Poll: IPv4 check through skb->data; budget 0 does not complete NAPI.
-> * Scale-down: publish the surviving count, then synchronize_net(),
->    then destroy. num_rx_queues uses smp_store_release / smp_load_acquire.
-> * packets/bytes/drops through netdev_stat_ops, not private -S strings.
->    Thirteen existing -S keys kept. No hcall_* or pool%d_ keys.
->    replenish_* are per-queue u64; no atomics. get_base_stats() is the
->    retired-queue remainder.
-> * Reset worker gated on NETREG_REGISTERED (cannot reopen after
->    unregister).
-> * get_channels() keeps the live rx_count; mq_fallback caps max_rx so
->    a TX-only ethtool -L is not a silent RX shrink.
->
-> Changes in v5:
->
-> * Restack mailed v4 (14 patches) to v5 (15):
->
->      v4 1-8  helpers                -> v5 1-8
->      (new)   SQ poll harden         -> v5 9   (before MQ enable)
->      v4 9    MQ enable              -> v5 10
->      v4 10   stats                  -> v5 11
->      (new)   get_channels           -> v5 12  (peeled from stats)
->      v4 11   debugfs                -> v5 13
->      v4 12   resize                 -> v5 14
->      v4 13   set_channels           -> v5 15
->      v4 14   trailing poll/shutdown -> folded into v5 5/9/10/14
->              (mailed "P14" was that trailer, not v5 14)
-> * Teardown-first resize after aggressive ethtool -L; thin defensive
->    poll skip remains; no correlator generation field this series
-> * opened / rx_irq_setup; set_channels keys on opened (not IFF_UP)
-> * filter_list_dma=0 on map error; restore default-active 64 KiB pool;
->    unwind pools by allocation presence; probe_cleanup clears vio
->    drvdata; remove: unregister then cancel_work
-> * TX quiesce before freeing bounce buffers; guard start_xmit if LTB gone
-> * MQ H_FUNCTION recovery (reset + SQ fallback); no printk under
->    replenish_lock; lock harvest with replenish; resume kicks all queues
-> * Per-queue update_rx_no_buffer; publish-before-free on resize;
->    CMO refresh; IRQ helpers return errno
-> * Harvest abort (no fake GRO / UAF); poll refuses PHYP re-arm on close;
->    wrap-safe skb_put; atomic set_channels; monotonic stats across shrink
-> * Keep mask -> sync -> napi_disable on teardown; open stays
->    request_irq -> napi_enable while PHYP masked; scale-up/recovery keep
->    napi_enable before enable_irq
-> * Pool geometry kept on free; restart_rx_queue after open/scale-down;
->    remask after napi_disable; schedule_rx_queue masks only when
->    napi_schedule_prep succeeds (STOP + poll no-rearm for storms)
->
-> Changes in v4:
->
-> Addresses Simon's v3 review and related fixes:
-> * First-use helpers/includes (irqdomain.h with first dispose); no
->    unused statics; dropped orphan open/close pipeline patch
-> * Open/close unwind (free LAN before RX pools); no double TX teardown
-> * MQ open: replenish all queues before PHYP unmask; H_FUNCTION on
->    subordinate register is a hard open failure
-> * Resize/set_channels hardenings; stats probe-lifetime + sum-on-read;
->    buffer_pools diagnostic on debugfs
-> * Patch 9: put already-created pool kobjects on probe failure paths
-> * Patch 14: correlator skip, skb tailroom check, napi_complete_done
->    shutdown return < budget
-> * Bisect-friendly restack (helpers with first use)
->
-> Changes in v3:
->
-> * Dropped RFC; addressed style / DMA feedback from earlier revisions
-> * Early MQ enablement iterations (see lore links below)
->
-> Comments welcome.
->
-> ---
-> v6 lore:
->    https://lore.kernel.org/r/cover.1788102125.git.mmc@linux.ibm.com
-> Sashiko NIPA (v6):
->    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788102125.git.mmc@linux.ibm.com
-> v5 lore:
->    https://lore.kernel.org/r/20260814073642.24630-1-mmc@linux.ibm.com
-> v5 review (Jakub Kicinski):
->    https://lore.kernel.org/r/20260818014710.3853684-1-kuba@kernel.org
-> Sashiko Gemini (sashiko.dev):
->    https://sashiko.dev/#/patchset/20260814073642.24630-1-mmc@linux.ibm.com
-> Sashiko NIPA (v5):
->    https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814073642.24630-1-mmc@linux.ibm.com
->
-> Previous versions
-> v6: https://lore.kernel.org/r/cover.1788102125.git.mmc@linux.ibm.com
-> v5: https://lore.kernel.org/r/20260814073642.24630-1-mmc@linux.ibm.com
-> v4: https://lore.kernel.org/r/cover.1785457143.git.mmc@linux.ibm.com
-> v3: https://lore.kernel.org/r/20260706193603.8039-1-mmc@linux.ibm.com
-> v2: https://lore.kernel.org/r/20260701222327.61325-1-mmc@linux.ibm.com
-> v1: https://lore.kernel.org/r/cover.1782758799.git.mmc@linux.ibm.com
-> v4 review (Jakub Kicinski):
->    https://lore.kernel.org/r/20260806183614.3171785-1-kuba@kernel.org
-> v3 review (Simon Horman):
->    https://lore.kernel.org/r/20260714124327.GJ1364329@horms.kernel.org
->
-> Mingming Cao (15):
->    ibmveth: Add MQ RX hypercall wrappers and call definitions
->    ibmveth: Prepare MQ RX adapter data structures
->    ibmveth: Refactor RX resource allocation for MQ RX bring-up
->    ibmveth: Refactor buffer pool management for per-queue MQ RX
->    ibmveth: Refactor RX interrupt control for MQ RX queues
->    ibmveth: Refactor TX resource allocation in open/close paths
->    ibmveth: Add RX queue register helpers for MQ
->    ibmveth: Add queue-aware RX buffer submit helper for MQ
->    ibmveth: Harden RX poll path with helpers
->    ibmveth: Enable multi-queue RX receive path
->    ibmveth: Add per-queue RX and TX statistics collection
->    ibmveth: Report MQ-aware RX counts in ethtool get_channels
->    ibmveth: Expose per-queue buffer pool details via debugfs
->    ibmveth: Implement incremental MQ RX queue resize
->    ibmveth: Complete set_channels down-path and mq_fallback max_rx cap
->
->   arch/powerpc/include/asm/hvcall.h           |    6 +-
->   drivers/net/ethernet/ibm/ibmveth.c          | 4441 +++++++++++++++----
->   drivers/net/ethernet/ibm/ibmveth.h          |  232 +-
->   tools/perf/scripts/python/powerpc-hcalls.py |    4 +
->   4 files changed, 3921 insertions(+), 762 deletions(-)
->
->
-> base-commit: 161ea2d4f2a7e784f14b5b0548fcef3e05fc34f8
+  - ONU activation and line state;
+  - PLOAM or MPCP;
+  - ONU-ID and Alloc-ID;
+  - T-CONTs and GEM ports for ITU-T PON;
+  - LLIDs for EPON;
+  - encryption/key state;
+  - an OMCI or OAM management channel;
+  - a burst-mode optical frontend.
+
+Vendor BSPs commonly expose these through private ioctls, private
+procfs/sysfs attributes, vendor-specific libraries, and userspace
+daemons.
+
+There are now multiple open implementations or implementation efforts,
+so this seems like a useful point to discuss which concepts, if any,
+should become common Linux abstractions.
+
+Current implementations and related work
+========================================
+
+One implementation currently targets Airoha AN7581/AN7583:
+
+  https://github.com/pbs05/openwrt-pon-drivers
+  https://github.com/pbs05/openwrt-pon-userspace
+  https://github.com/pbs05/ponwrt
+
+It separates the Ethernet datapath from the management plane.  The
+kernel handles the PON MAC, line activation/PLOAM, hardware GEM/T-CONT
+state, and the hardware datapath, while the G.988 OMCI implementation
+and service provisioning are in userspace.
+
+Raw OMCI PDUs are exposed through a dedicated net_device without a
+synthetic Ethernet header and are received and transmitted by
+userspace with AF_PACKET.
+
+pbs05, the author of that implementation, has reviewed the description
+of its current architecture in this RFC.
+
+There is also ongoing EcoNet/Airoha work for older PON hardware,
+including an xPON MAC/PHY implementation and OMCI work in the OpenWrt
+Airoha target:
+
+  https://github.com/openwrt/openwrt/pull/20104
+
+Benjamin Larsson previously raised the closely related question of the
+API between an xPON MAC and a fixed laser driver/BOSA or an SFP module
+[1].
+
+These efforts do not necessarily make the same architectural choices.
+That is one reason I would like to discuss the common boundary before
+turning any one implementation into a generic kernel API.
+
+Goals and non-goals
+===================
+
+My current preference is for any generic PON layer to be deliberately
+small and to reuse existing Linux subsystems wherever possible.
+
+In particular, this RFC is not proposing to:
+
+  - implement the G.988 managed-entity model in the kernel;
+  - standardize timing-critical XGTC, FEC, burst timing, or DBA logic;
+  - replace bridge, VLAN, TC, ethtool, hwmon, thermal, PHY, or SFP
+    infrastructure with PON-specific equivalents;
+  - require different PON MACs to implement activation in the same way;
+  - define an OLT-side architecture.
+
+The question is instead whether Linux needs a small common model for
+PON-specific line state and bearer resources, and how that model should
+interact with existing networking and optical subsystems.
+
+Possible layering
+=================
+
+A possible split looks like this:
+
+                         userspace
+
+                 +----------------------+
+                 | OMCI / OAM software  |
+                 +----------+-----------+
+                            |
+                     management PDUs
+                            |
+  ================================================================
+                            |
+                          kernel
+                            |
+                 +----------+----------+
+                 |                     |
+           PON-specific            Ethernet
+           control plane           datapath
+                 |                     |
+          vendor PON driver        net_device
+                 |                     |
+           MAC / PCS / PMA     bridge / VLAN / TC
+                 |
+          optical frontend
+             /         \
+           SFP       fixed BOSA/laser driver
+
+Where the user-facing service is Ethernet, its datapath should remain
+an ordinary net_device.  Linux should not need to understand XGTC
+framing, burst timing, or FEC in order to forward Ethernet packets.
+
+Hardware which implements those functions should continue to do so,
+with the vendor driver programming the corresponding hardware state.
+
+A PON-specific kernel interface, if one is needed, would then expose
+only concepts which cannot reasonably be represented by an existing
+Linux subsystem.
+
+Potential generic concepts
+==========================
+
+For ITU-T PON, possible common concepts include:
+
+  - PON protocol/mode;
+  - line/activation state;
+  - ONU identity;
+  - Alloc-ID / T-CONT resources;
+  - GEM ports;
+  - management-channel association;
+  - security/key-slot state where software must program the MAC.
+
+For EPON, the equivalent model would include LLIDs and MPCP state.
+
+I do not think all protocol state necessarily needs to become generic
+kernel code.  For example, one PON MAC may require software to
+participate in PLOAM processing while another may implement most of
+the same state machine in hardware or firmware.
+
+A generic layer could therefore expose common state and resources
+without requiring every driver to implement activation in the same
+way.
+
+OMCI and management packet transport
+====================================
+
+For ITU-T PON, I would prefer to keep the G.988 managed-entity model,
+MIB handling, and service provisioning logic in userspace.
+
+OMCI is a packet-oriented management protocol.  The AN7581/AN7583
+implementation mentioned above exposes raw OMCI PDUs through a
+dedicated net_device, without an artificial Ethernet header, and uses
+AF_PACKET in userspace.
+
+This has some useful properties:
+
+  - the kernel does not need to understand G.988 managed entities;
+  - operator/vendor-specific MEs do not become part of a kernel ABI;
+  - packet capture and protocol analysis are straightforward;
+  - retransmission, MIB handling, and service graph resolution remain
+    outside the hardware driver.
+
+I am not claiming that a net_device is necessarily the correct
+upstream ABI.  I would particularly appreciate feedback on whether a
+packet-oriented network interface is appropriate, or whether another
+existing interface, Generic Netlink, or a character device would be a
+better fit.
+
+EPON OAM is a different protocol and need not share OMCI semantics or
+userspace code.  The question is only whether management protocols of
+this kind should use a common packet-oriented transport model where
+the hardware requires host processing.
+
+Reuse of existing subsystems
+============================
+
+I would like to avoid putting functionality into a PON layer when
+Linux already has an appropriate abstraction.
+
+For example:
+
+  Ethernet service traffic  -> net_device
+  VLAN/bridging             -> bridge / 8021q
+  packet classification     -> TC where possible
+  Ethernet statistics       -> ethtool
+  pluggable optics          -> SFP infrastructure
+  fixed-front-end telemetry -> hwmon
+  thermal policy            -> thermal subsystem, where applicable
+  factory calibration       -> NVMEM where appropriate
+
+In particular, temperature, supply voltage, laser bias, and RX/TX
+optical power from a fixed optical frontend should not require
+PON-specific ioctls merely because the sensor is part of an ONU.
+
+A fixed BOSA/laser driver still needs a way to communicate
+link-relevant events such as LOS, TX enable, and burst-enable state to
+the PON MAC.  How this should interact with the existing PHY, phylink,
+and SFP infrastructure is one of the questions I would like to
+discuss.
+
+Datapath provisioning
+=====================
+
+Another open question is where service classification ends and PON
+bearer configuration begins.
+
+An OMCI userspace implementation may resolve managed entities into a
+service relation similar to:
+
+        VLAN / priority
+               |
+               v
+            GEM port
+               |
+               v
+            T-CONT
+
+The GEM port and T-CONT are PON-specific bearer resources, and many
+implementations represent them in hardware.
+
+The VLAN and packet classification are not PON-specific.
+
+It therefore seems undesirable to create a new generic PON packet
+classifier if TC, bridge, and VLAN offload can express that part of
+the configuration.
+
+What remains unclear is the cleanest way for an existing Linux
+classification rule to select or reference a PON bearer, especially
+on hardware where that mapping is offloaded into the same DMA/QDMA
+engine as the Ethernet datapath.
+
+Questions
+=========
+
+I would particularly appreciate feedback on the following points:
+
+1. Does Linux need a struct pon_device or equivalent at all, or can
+   the required concepts be represented by existing networking
+   objects?
+
+2. If there is a generic PON object model, how much should it expose?
+   Are T-CONT, GEM, and LLID appropriate generic objects, or are they
+   too close to individual protocols or hardware implementations?
+
+3. Should OMCI management PDUs be represented by a packet-oriented
+   interface?  If so, is a dedicated net_device appropriate?
+
+4. Should PLOAM/MPCP activation remain driver-specific, with only
+   common line state exposed by a generic layer?
+
+5. What should the interface between a PON MAC and fixed optical
+   frontends look like, and how much should be shared with SFP,
+   phylink, PHY, hwmon, and thermal infrastructure?
+
+6. How should classification into GEM/LLID bearers interact with TC
+   and existing hardware-offload APIs?
+
+7. How much should the ITU-T PON family and IEEE EPON family share in
+   one object model?  It would be useful to avoid both
+   protocol-specific private APIs and an abstraction so generic that
+   it no longer represents the hardware usefully.
+
+8. Which configuration belongs in a networking control API
+   (rtnetlink, Generic Netlink, etc.), and which state should only be
+   observable through existing kernel subsystems?
+
+Next steps
+==========
+
+I am intentionally not proposing a UAPI or struct definitions in this
+mail.
+
+There is working code which can be used as a reference implementation,
+but I would prefer to get agreement on the subsystem boundary before
+turning one vendor implementation into an API which other PON drivers
+would later have to follow.
+
+If the overall direction makes sense, the next step could be a small
+RFC patch series containing only the minimum generic model together
+with one real hardware consumer, rather than attempting to upstream a
+complete PON stack at once.
+
+I would also be very interested in hearing from developers working on
+non-Airoha PON hardware.  A second independent hardware family would
+be particularly useful for determining whether any proposed
+abstraction is genuinely generic rather than an Airoha interface with
+generic names.
+
+References
+==========
+
+[1] Benjamin Larsson, "[RFC] Question regarding api between xpon mac
+    and laser driver/BOSA"
+
+    https://lore.kernel.org/r/1c774b8f-3e4d-447c-9a93-be554811cbf0@genexis.eu/
+
+Thanks,
+Gaoyang Wei
