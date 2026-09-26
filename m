@@ -1,81 +1,81 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1664B38E5ED
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9F2381EBC
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790445101; cv=none; b=SZAj/2HtEYmPm65xX3sAlDvG+39sVhHkfxUw6ghQq8pAjIQcR/yga+QwWIZtstunnh7x6zspN33POcNLcpGLoTxoU8jOkh8DHymWpD5n0xRjEXNxNFgZcWdtBlJoaPHyJ1TzmrkJQW/lC6dT87CFZxBmWLZ9qxrd9tzIJd0fZSs=
+	t=1790445147; cv=none; b=qBIGMohWSXz1AQ2o4AIw+9Df4HOBSjXHLA5OjRJ4yOMOEinQqnWVWRnXZHDq9YrXyJawomecKYMZQQyPF1ljwIDKcsM1xQfIbib4NtB5FTVi9lbuNxx8Jg2mseCqjdYEyDb19FeB1ng2xO4X/MpIACBu07eTO9p9EcChNgYvBMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790445101; c=relaxed/simple;
-	bh=EmUMS+ZRzCUeb0rndVpz/BHk6ngRvxk7aEnRstACYI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NgTPOk27q8YtUr9v9ss/ZIW25KCEqR9Btbv5V1lIrciYX1cMogzww/XS+cxmw3kb79lOfX6tl++mnC3a73gWEkWBS6PeaY4yFW6i1CsXrZ+oiF6Mq3lXWFxlcrCcK8N4sHzJ/cTd9njS59eY6NRnRBBJwKl6odvK9DRFgKIOzc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ibjg0SkZ; arc=none smtp.client-ip=74.125.229.42
+	s=arc-20240116; t=1790445147; c=relaxed/simple;
+	bh=J+AhSgGwt6r0gJXNT77YyglaJAxP3u30DbwIyT1MBgM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pbmkcary6Otk0VtP+pbrEop6gvw1cXqX+n+DEEx9iSPkJQVZE1KXYTkVZqAatDxFptbf8BWdw00Ka2tcN+ajCuHrKnCYx9VdNIeB2/HIp+o9NmV/b30HizM4nJkvGTcHjCtv2VBwFM6nj5pGZcODHFMHNvPHMrrwPvQ0bfc7bRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RHAr7+C6; arc=none smtp.client-ip=74.125.229.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ibjg0SkZ"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3427977d677so125676eec.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:51:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RHAr7+C6"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-344213c95bdso3102eec.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 10:52:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790445097; x=1791049897; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790445142; x=1791049942; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kh+HhJ5EU4L73Wf3xyAcV+eWsVVzfBMuFzfcoxTkNvA=;
-        b=Ibjg0SkZLWdzPAHEzVIIlRd6aCMrNvPDNR+ALjtYaCw5nwVmXvx+awxsRA/Fo13rDn
-         6Jd4sCBzGuQTfuTpazTUd7X43jGcGL2KqJWFlE4AxDsJ1OLKbinJOkWvteCoJTGwas//
-         dlMnR8cq3fFpEOPCaBUSr59dKns6KROS8Ao8oP+Er/txKkSkiLANM5AfpzupXWKJXBDd
-         ZFBChXnIeW2gbeb9OPFi5uTbaqbWH/0ix0MAizVGkQ0GdBXZp3q2tYMXBWc+553APZFM
-         JXDlraeDWKLamSVUTYrJOpRBfUEgfE/wXvdNauczCMqcMsQufJ/NXc7UF7VKiABhlJNX
-         Sd1A==
+        bh=MwvxlwyQkpsMgM6uNMmOr1LUHz18HQva7SpWQBiJmMA=;
+        b=RHAr7+C6j2hxZQNac9iNTMedEzf+XAqZiz8UBrbw1VVKP/DO583IaUZAu0NjfdDZji
+         w6sm8LFaSIURUgniznrLanYijIBDonAE/woTLtpQW7vMIqGD+hJTgxZXl0tFyyEZcqN6
+         AG6S/rL6QkvsvCgMfQ8I3YRezczag7P1YvOmI91Q6ST6DmtXmZiHFmsBQlOf7/yZYqoR
+         +OXXzYOpKMPFaDdZUwABNCYvWfnu8gd29QAqmjwUYtrOOcpE5+ClaBdCwdNrocAviuvH
+         btnn9JhBVncu4IMfniVx4rJa8cgFOi2sJp97At8kgLoG9vIt0ad0d4PlaNhwdLkPzBga
+         cRlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790445097; x=1791049897;
+        d=1e100.net; s=20260707; t=1790445142; x=1791049942;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kh+HhJ5EU4L73Wf3xyAcV+eWsVVzfBMuFzfcoxTkNvA=;
-        b=lhhHlnh/CGgoz+FKqOOvrVaWUXcVDpQZs3uRM/rTtUOM8a4u/ouuaPCwUPhqf+mMIo
-         UJ8PQBXi5E7t+18qSdKGy2E1zD4dcPpjoE0ZWKPXumwTBdUiksChu98jJvP4UPsMnCZE
-         80yDR70Od+cxJxPl5Y2Ff8kctU+IJ2sy08OFZRf3dQtGqSwdtOry2VQLm+lxcx+BOsDP
-         JoEhj8p1cgYmVpfV1ceoF9RsbJ7xKRKutv+tMtYq8yzHPyFNHowhyZMFnj3wZN9gNMQg
-         Hfsmxb/AgD1KxqAiGHbgied8FJDDfR4GPNrClVacMP1mqlPxRB6f9CAro3mjKbMpNQQ8
-         OgXw==
-X-Gm-Message-State: AFq9FYInJUHEIRD2lB471Pfq8eJ9UVJxLW/AXYtoCtkGsiEq7JB8uTX+
-	x5/s7tgPr5CcVeqyePvvd9+k9JCgrWgRR6D0idfMwciguPxstZq2UNGY
-X-Gm-Gg: AYBFou2ylgn5yOqCGYzZQrFwu6c3Xjc+DzjE55S5MSjqopWBHQ2AZKtBtHx2ZkdjzdH
-	8xgACnx0Mg2wlozF62B8nTf5ngIS28FF7CHmxfSnjk9wbzBw57EyxG96VNhWz4ca8yHN+sldBLR
-	daafh7s9k2F7482MdP14LsvadpKqGomq2J8YV+lU261/qFq6YifiQqJVNNTLFisSgoBQRf9L7va
-	7AnAEN0WPC3+Zc/jnL2TIes2K4C64MCJzH5a8/TDvGIGpfbDf54aOOhF/gSy/tSh6ReEf2ldwwK
-	irf4SSHa5ANsphkwBAyPrrgMwsq/DIS3ODEOTpZVlWfCXA2dI19AwgZJp3GmRoGzFcPP7w9go4R
-	A8M3nbxRBJco5K/aRN65tePmt8qMPuUxVHadJjLT2o97UfH5SJg6t7gbolFQl6NzfN4VVgmYp+r
-	S5YJCumrqbBoqDA6Z3c265jajQPSJS0k0I4hT0AsfBZNcOTo5Is0HF6aiTaCeu+J8i2lx2CF3bf
-	SrjKWm1QKOVnUYlQWX9gtmUOiAg4+1qJNyrKCBkwZjmlQYRNniCssad7Rob5Ml0332eoA==
-X-Received: by 2002:a05:7301:540e:b0:33c:1bd2:1db6 with SMTP id 5a478bee46e88-3426d0df371mr5641086eec.0.1790445096797;
-        Sat, 26 Sep 2026 10:51:36 -0700 (PDT)
+        bh=MwvxlwyQkpsMgM6uNMmOr1LUHz18HQva7SpWQBiJmMA=;
+        b=oH35rhqXX1Y/Xh64RtM/tTTn76QC4Sg/PyMUGPD8JwtzmDRKzDFGV4UjfKWA0DBu3H
+         rA6e3HrX68PA9pbOjEdCsMjmkgYuE7YTsosmIxtDs7cxVv5qE6aNnSeWSm1s2TL16Gt3
+         059W9/OQD9QILn+Xx0OnPeF5RFyLjEu5vtuyp/+PcPNTLfTztuHvVsUW9sYzbpguKip2
+         E9KGGrp0loEreNLJ8CJkGuBdkeMcuxr/PvP/5TPaaWDxQ013Fxc+BnjwRPF4++wQe2jQ
+         5c06dJfK2EMHB1lbtunNUWP914R97W9JQVfefAehXuypNs/YYynvL40x5S9oIzAB6XOm
+         hoGg==
+X-Forwarded-Encrypted: i=1; AKwUvByUoNnvJauLeF0NComiVejG2gmiLxLsgjIEhgENmz7ZwEuyfSraF90UX9wOxPgp9YmKxRSZBPM=@vger.kernel.org
+X-Gm-Message-State: AFuF++ldX1oENFxoXg9fs3osbKAJzFNSlouDjklLnhwNB3W0FE9MA80W
+	8os+7r2X2FTfbWmfUk5gimNSDkZcxDVgYxNtuixE76wAbr0Jzp8rgtrj
+X-Gm-Gg: AYBFou2NmVIwZzjoPay8M1sS2RJi1flCvfs5SnauWQnnthuDMvnm2b9POjnnHWh+9ho
+	Z2Nf8OZ9K+nTkmBzgQnLQrpJVboi1HIl/ig6CmUo8vECCW2B3lTvv1u5ksqOJJkkdrx+f02ApTS
+	wzU8Bv09FW9/2MMY8Aa6hkylgW1Bgyz25/+LwZDmxja/DxgTYsMvWklSgATmiV8n7nfNMRNV++J
+	xChOutTYRuVw73K3gJObaxrTUYP1/iXchyBFrJoyN2Tf48PztEb05RQmLBUGOBT6RcTm03xKNSR
+	Rkmv4YXGKgg1q2lv54y8Ip/08996cIE3b9xN/W9Hu5RADSXNmBjf7nh6A3rdmUuFdlzp1uDxLLA
+	D9RlIAZGZjbq/E1iICKeOujq0imGTwPvWzKBARIcInIfM/s5y5HLsXpi3ahJq7HVuhFfxFPCMM1
+	ZiBrNlDIbwvOWs1rYXxdyD5Fky92Ip2BPGFvoGexDPGE+LWz/5Eiw+POZ3+t1nW7//mlzEecSbg
+	7fKDghhIciVZR5pwnsexlQpJf0oiXjO4UuLWeAKagegtTQgC0Zz2xRsuHZ/5aKabjaoZY8=
+X-Received: by 2002:a05:7301:dd97:b0:33e:6a79:5a81 with SMTP id 5a478bee46e88-3427179721dmr5365610eec.1.1790445142180;
+        Sat, 26 Sep 2026 10:52:22 -0700 (PDT)
 Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341459234a1sm15872673eec.24.2026.09.26.10.51.32
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341463ec3ecsm16482252eec.31.2026.09.26.10.52.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 10:51:36 -0700 (PDT)
+        Sat, 26 Sep 2026 10:52:21 -0700 (PDT)
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Florian Westphal <fw@strlen.de>,
 	Phil Sutter <phil@nwl.cc>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: netfilter-devel@vger.kernel.org,
 	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Chengfeng Ye <nicoyip.dev@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] ipvs: Defer application parent freeing until after RCU readers
-Date: Sun, 27 Sep 2026 01:51:29 +0800
-Message-ID: <20260926175129.2612644-1-nicoyip.dev@gmail.com>
+Subject: [PATCH] netfilter: conntrack: wait for RCU readers before freeing the hash
+Date: Sun, 27 Sep 2026 01:52:09 +0800
+Message-ID: <20260926175209.2618167-1-nicoyip.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -85,72 +85,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-unregister_ip_vs_app() removes each incarnation from its protocol list and
-uses call_rcu() to defer freeing it, but frees the parent application
-immediately. An RCU reader that already found an incarnation can still
-access the parent through inc->app in ip_vs_app_inc_get().
+nf_ct_get_tuple_skb() calls into conntrack under rcu_read_lock() without
+holding a module reference. CAKE can use this hook to look up a packet
+without an attached conntrack, even during nf_conntrack module teardown.
 
-During FTP helper module unload, the following interleaving is possible:
+nf_conntrack_cleanup_end() clears nf_ct_hook but frees nf_conntrack_hash
+without waiting for existing readers. The grace period in per-net cleanup
+runs while the hook is still published, so a later reader can race as
+follows:
 
-  CPU 0 (RCU reader)                 CPU 1 (module unload)
-  tcp_app_conn_bind()
-    find inc in protocol list
-                                     unregister_ip_vs_app()
-                                       ip_vs_app_inc_release(inc)
-                                         list_del_rcu(&inc->p_list)
-                                         call_rcu(&inc->rcu_head, ...)
-                                       kfree(a)
-    ip_vs_app_inc_get(inc)
-      try_module_get(inc->app->module)
+  CPU 0 (packet path)                 CPU 1 (module teardown)
+  rcu_read_lock()
+  ct_hook = rcu_dereference(nf_ct_hook)
+                                     RCU_INIT_POINTER(nf_ct_hook, NULL)
+                                     kvfree(nf_conntrack_hash)
+  ct_hook->get_tuple_skb()
+    nf_conntrack_find_get()
+      access freed hash bucket
+  rcu_read_unlock()
 
-The helper module is already going away, so try_module_get() would fail,
-but evaluating its argument first reads the freed parent. The subsequent
-rcu_barrier() in pernet unregistration cannot protect this earlier free.
+The same missing grace period affects initialization failure after
+nf_conntrack_init_end() publishes the hook. During module teardown,
 KASAN reported:
 
-  BUG: KASAN: slab-use-after-free in ip_vs_app_inc_get+0x7c/0x90
+  BUG: KASAN: vmalloc-out-of-bounds in __nf_conntrack_find_get.isra.0
+  Read of size 8 at addr ffffc900012e2ae0 by task poc/90
   Call Trace:
-   ip_vs_app_inc_get+0x7c/0x90
-   tcp_app_conn_bind+0x1bc/0x290
-   ip_vs_conn_new+0x1915/0x20d0
-   ip_vs_schedule+0x697/0xea0
-   tcp_conn_schedule+0x489/0x820
-   ip_vs_in_hook+0x7bf/0x1f40
-  Allocated by task 88:
-   kmemdup_noprof+0x20/0x50
-   register_ip_vs_app+0x12d/0x2c0
-   __ip_vs_ftp_init+0x56/0x160 [ip_vs_ftp]
-  Freed by task 104:
-   kfree+0x131/0x3c0
-   unregister_ip_vs_app+0x2f4/0x5b0
-   unregister_pernet_operations+0x232/0x490
-   unregister_pernet_subsys+0x1c/0x30
-   __do_sys_delete_module+0x346/0x510
+   __nf_conntrack_find_get.isra.0+0xf87/0x10c0 [nf_conntrack]
+   nf_conntrack_get_tuple_skb+0x255/0x400 [nf_conntrack]
+   nf_ct_get_tuple_skb+0x75/0xb0
+   cake_hash+0xfdb/0x1e10
+   cake_enqueue+0x5cd/0x36e0
+   dev_qdisc_enqueue+0x40/0x170
+   __dev_queue_xmit+0x1e90/0x3110
 
-Use kfree_rcu() with the existing rcu_head to keep the parent alive until
-these readers finish. Successful helper references already prevent normal
-module unload, and incarnation RCU callbacks do not access the parent.
+Wait for an RCU grace period after clearing nf_ct_hook, before releasing
+the hash table and the remaining conntrack resources.
 
-Fixes: 363c97d7435e ("ipvs: convert app locks")
+Fixes: b60a60405fb9 ("netfilter: Add nf_ct_get_tuple_skb global lookup function")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- net/netfilter/ipvs/ip_vs_app.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_app.c b/net/netfilter/ipvs/ip_vs_app.c
-index 11cbdbaf561d..2c1b47702da2 100644
---- a/net/netfilter/ipvs/ip_vs_app.c
-+++ b/net/netfilter/ipvs/ip_vs_app.c
-@@ -242,7 +242,7 @@ void unregister_ip_vs_app(struct netns_ipvs *ipvs, struct ip_vs_app *app)
- 		}
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index d0d9e5ea84a0..b07e94e75d4d 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -2455,6 +2455,7 @@ void nf_conntrack_cleanup_start(void)
+ void nf_conntrack_cleanup_end(void)
+ {
+ 	RCU_INIT_POINTER(nf_ct_hook, NULL);
++	synchronize_rcu();
+ 	cancel_delayed_work_sync(&conntrack_gc_work.dwork);
+ 	kvfree(nf_conntrack_hash);
  
- 		list_del(&a->a_list);
--		kfree(a);
-+		kfree_rcu(a, rcu_head);
- 
- 		/* decrease the module use count */
- 		ip_vs_use_count_dec();
 -- 
 2.43.0
 
