@@ -1,224 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DACA3DB655;
-	Sat, 26 Sep 2026 09:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790416130; cv=none; b=s6DBvuMB7YQ68E7WXRnNB2t7y05JpSkchHB4Gx0e17nwLJysj9LgtUQAm2QuIvN8e71V5W+kqK9ynk7fVxTT4i6gv61DG8CiCbD4Va3l3Zd1LURPKo+DLQs6+6rHwIRXO4zqAAEvAzmlLM6AMx6Px+Yky/2T1qKyI7pzb/2+TXI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790416130; c=relaxed/simple;
-	bh=oXPbJfKgTiRTzPxoW9SROHfjRU8dwsqT1ejV6qs8Oco=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ArqRX8Ce1me/NuIuFho19ilyRrPwaecSc9uNCUwzGLc3et4YPS8zxoraLdCsKMGLrxCAEXUB8dbO2HCOfHIQeIdCzmYpLkazRqgS/iTN/XpV/WYziB6ZEsNcC4+35r9EPOA/GyYhGfjewnBrZMZismfeNRXUEdODeoS2up6JnOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOIEh7Ul; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1323DDAE0
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790416144; cv=pass; b=GXkDe8V2/EVmg+46L/D+egfd8RRHKJ6cmexcTEgROHoeSAlu++EW1+7ck+BnAisyXWTR6ynEbe5RBJzYAzjdW+izdftCL/CS0gLvJ1L+l2G4lhu+3l59KFywHVKKopFBSZbCFzBXJYyO1zOabWE9SfilPN4BPyf3ptc3+843624=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790416144; c=relaxed/simple;
+	bh=3krlvESeTeqW1LbTGBHOjP5Xw2Leu/UdOwvAxLOMU1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dkoErItFwluaT78l7bCEj93+maqu1I1YXod807rWNXYvQL3ydaCTqYIYvmIDG4hgz5/X1GhxiwfnudWnNsAvEsxcvjyn2vMri/Y8Lt1JstRWgLF4B6I/7xgmXopfzAz/ey03rHWt5gxD7lFLp5TH+Egh1icUVWj5uE5X37Y3L2c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qYpOUq7C; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOIEh7Ul"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30A31F00898;
-	Sat, 26 Sep 2026 09:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790416123;
-	bh=MKN/ezJDrrRUVrjye7FMwmigd2DklCm3phdsK1glATE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YOIEh7Ul2+0965BYkcMzBsQPl6bKWdfIlIc8e06DB6/hoC/MXEFhbJ2n5unSC5UM0
-	 ABWbMYMVtJxXs7/EsMIpWEhLFou3LY1n/t/XcFfwBhWG7wKKurulrcqEawh2EPqbWv
-	 7fVDGIeEV0qND5co32BzFQwwyfykc1c0TaXi9Mqi9x81cOTvGCg49ZKeNVkofLBvyt
-	 DKlKu6e1qBqbCT6035/Czia57awrs66EGUBJIF64/JvoKKW0iMGaEszykv2ny2FvjU
-	 RnKDEZtiCPzf3ZvTGdROq64+3tzl93Eyq9ufsG4arRL4ICaDYmhfhsbHoSoPE3H87z
-	 i5pAxB0aZtZQA==
-Subject: Re: [PATCH net-next v6 09/12] net/rds: take cp_lock to purge
- cp_send_queue in the quiesce
-From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Date: Sat, 26 Sep 2026 09:48:42 +0000
-Message-ID: <179041612254.2160803.3409652005805851829@kernel.org>
-In-Reply-To: <20260922085410.391323-10-achender@kernel.org>
-References: <20260922085410.391323-10-achender@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qYpOUq7C"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530fa0716f6so19413751cf.3
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:49:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790416141; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XOZ63hLt/RbXLeaN/ez5wobh3JlUQV8JxMGsBSgwYE7TxTJWNO/sO54ZUlR/UDaf75
+         02veUiBIe8bIYvL4tqB80ohIZwpqPn9jR0iz/7Vawr87NFclAguP45ZM/WPSJpbdkr7B
+         k+L/WkCkd2w4xGh/FxeeGoHZkBfzajB98PEqZd6DsMJgcbIf6xPfocWP6icG1er13HDy
+         oTEydXFk76Xh6fqdttjNJsjvuQtlXS22LtxFcr3UsS+fSVz7jr50eVJ4xXnS4eB/rv/N
+         PMWgQ7WY1TbXpTQiGZ0Ip8rUO2ZlxB2T/8t/vtBFDohFpDY3NdcegsZQjknhC12VJszE
+         /GOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VJHCiEE6B7SORIu1DmvPEaacqHWzUP/kLOJfzWbkTTc=;
+        fh=Axf+vK9fvVdJ3cWk9wJbfsFotuhnqBG57tV3qUVWNC0=;
+        b=HUzWPGRdwXqDKFqINmzqk/0dAP1+EzAh1TxCKGOM4HI+Z6GIB9LBUuC1WE+KcQl3fp
+         HECug7X7+UuOQHGNDRYiJUc7yMKXQkErVHbZdph8beXr1STYlzFZ90malwTy0j/YVkKZ
+         MntSJCF1iVgLsiDKh3Le0wupmyplMqFod7+O3GJZhLsfk7X7uYeTwbHjiX9/iH2wi+/8
+         iCqvWuH7zcPXUiHZm1/a3WXfe4r5gJVNvqfay3n89LPKlakFttIfmw0RgjTJmYTuTHbq
+         ABp774hUaJuGOhYdCxyic8u7bDoGNCikgGPlDv4ctS9QEMMzwG7nMB1HasLs1p7mkKTl
+         kR7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790416141; x=1791020941; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VJHCiEE6B7SORIu1DmvPEaacqHWzUP/kLOJfzWbkTTc=;
+        b=qYpOUq7CKL5zhhKR6zYOzVLlYn5NSAM7ivtJ0CEqQO88Nw/ArDNqBvKqk3+CRgRbKb
+         yI3gKQ0mxdPEEJqnIDbb5ZNQCeL1cM3OfNp2tHmAsVuCa4Cw79A/UqwtLF1fRxZ32DHB
+         26ZFG23K1Q8Pre+1OzidzpnpFEMlIBNzYOSoNND9Aef22DlfPC74D+QlY+bA/Run5B3Y
+         Ngvpvkk7ZtE4NkXRv/K6V3JIgPoq2VEusHAP4kpjandc7jd8hOgEv0G31Q3/AihBQfAn
+         0tKTEFm+4zG22m0JfRyptoa5XIbzg1ExgTAw57MGK9+PQ4rFq2kD+ykGK85mghHMUPov
+         Z4Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790416141; x=1791020941;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VJHCiEE6B7SORIu1DmvPEaacqHWzUP/kLOJfzWbkTTc=;
+        b=A59YcO01goi606z5PJg6qDwaLsm5TTY49zFcBohmojF+Myw68zXYO2BnbWp7ahCfFj
+         2AOt5Vs8P0/uRj/jwd2Am3QjUfHK7Dg+YXr7wm/6OVY9vHY/Na5eyrhM7/nkdxdEPDSK
+         1XLyARKp3n+zyhqyr8RsKPxVGaeae9pM6kFMXkWSavA/64Uh94Z0JeIgixfBikUHiZut
+         0AxiNXy0qvALfy36W5w3moylQLflf0I9dZvP1oHnxPjqrpd1jgQtEMiOk+izU977yrCZ
+         HO75YYpuj5jeedtHoIBghzhyFUNG7mp5dXruIXDDIRyOeghImvVweyU8X5vtn5sbnEK7
+         /tpg==
+X-Forwarded-Encrypted: i=1; AKwUvByJAQ7+QG8uHREnb9yUv3oJmUoNKJNziB6qF5nx+9R2CWZg8gTAsFYGZhfF81+XnEdI6IM3iTQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQ5BFefahpcW+TXYH4b4/2WnhPaMF3m6bDdKWVvKNTNxBUTTGs
+	T4JfFNWSqCY8DwcMd7Rl8a5jRK38Xw8hqTUBN9y6UVz5/TClidnWqB4kA8qmg21qtCFhkl+LGpU
+	pcw2FwXzvU6AnzPPhnWUdluxUrpvjFd8r/UlX/zQd
+X-Gm-Gg: AYBFou3VAh7RBRS/ZEro+aJqkJWSLfDelbo5I59JACfZctzuvzeRrwSbpJBxaxxBX0h
+	A1FtmH7AEH7GrcNH3ZyWd6AKtPgWADPe8jgoRTok9z0wiayZMAUSQWTYfdxXXNo728ASX4DJeUN
+	Kp+HzThiTipsVPaZcSPLYfNYXmGZjntlfKOrPZu3KBGy5IEgeHCD+oV/A8IMS7yHpK824aOvQU7
+	7eELMKRm3awn1jojm0J8mNJVLwwGUE3xIvsh0dpB0VcVHZsZrstIucDeDZ33hIsA4UPKtbUr37w
+	PN+FAei9nM1xi0YGN404qjfxb5d2YeKFVnLN6++HwXtVrdRo7hqleUKS7pnGZi3UzolYZPUfQqy
+	lkrB6zjs72zjmUgcCXYUb5ii6VFQ5rOPYAk/wysOuWmE38+ZCFc/64epPRFbybc8Cr7Fp
+X-Received: by 2002:a05:622a:6817:10b0:533:2042:d2cf with SMTP id
+ d75a77b69052e-5332042d7bemr26218071cf.25.1790416140592; Sat, 26 Sep 2026
+ 02:49:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <QDISC-BA27.v1.20260922092618@mojatatu.com> <CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com>
+ <CAM0EoMn8_MVUHa2Jym7wKvd6Oo-JvNJ7GPvRJi2DsJCnQFmW+w@mail.gmail.com>
+ <CANn89iL3jBMczB4txC4oDusfpDoem-wdTOFVrujTbC0ArNhGqQ@mail.gmail.com>
+ <68BE1514-828D-4184-84E4-90F2EB3F035D@gmx.de> <CANn89iJtHuwybsSLy32GzH2c9cGmP1bL7ardxPjxPOj2xGLZPA@mail.gmail.com>
+ <67EA1744-69D7-4A64-9117-D6A79A3A93E4@gmx.de> <CAAFAkD_U8PGfdJAgSLsh3ku+tTBvQYB012k7jEUacfm6HothyQ@mail.gmail.com>
+In-Reply-To: <CAAFAkD_U8PGfdJAgSLsh3ku+tTBvQYB012k7jEUacfm6HothyQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sat, 26 Sep 2026 11:48:49 +0200
+X-Gm-Features: AclHuK_w1FQlChQEGY0IuXMjVYw96kNJy13bxK2p1kNzk_pT6EmrMxUFQIqXDeo
+Message-ID: <CANn89i+GOFH_8g+vSV0jUj0aBqLYVWuFOrHuDggZu9kPC_m6tQ@mail.gmail.com>
+Subject: Re: [Cake] [PATCH net-next] net/sched: fq_codel, cake: widen backlogs
+ to u64
+To: Jamal Hadi Salim <hadi@mojatatu.com>
+Cc: Sebastian Moeller <moeller0@gmx.de>, Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, 
+	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	cake@lists.bufferbloat.net, Jiri Pirko <jiri@resnulli.us>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>, 
+	Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, Sep 26, 2026 at 11:43=E2=80=AFAM Jamal Hadi Salim <hadi@mojatatu.co=
+m> wrote:
+> I am working on a v2 that drops at enqueue once the accounted backlog
+> crosses  (U32_MAX - QDISC_PKT_LEN_MAX), so no counter can wrap.
+> That is Eric's original suggestion which preserves the point you raised.
+>
+> While looking at this closely for this update i noticed more qdiscs
+> which for different reasons also suffer from ((u64)backlog + len <=3D
+> limit idiom.
+> So far it's clear from bfifo, gred and plug are the only ones safe
+> because their limit is in bytes (as opposed to others which are packet
+> counting)
+>
+> Eric: Unless i hear otherwise from you, the configurable byte ceiling
+> you mentioned (a good noun seems to be CONFIG_NET_SCH_BACKLOG_CEILING)
+> is a follow-up;
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The commit message asserts that splicing cp_send_queue under
-  cp_lock makes the purge "correct against a concurrent adder…
-- [Medium] Undisclosed, unrelated hunk: the patch reverts
-  `READ_ONCE(rs->rs_tos)` back to a plain `rs->rs_tos` load at the…
-
---
-
-net/rds: take cp_lock to purge cp_send_queue in the quiesce
-
-rds_conn_path_quiesce() used to walk cp_send_queue with no lock while every
-adder links onto that list under cp_lock.  This patch splices the queue away
-under cp_lock and drops the message references outside it.  A second hunk in
-net/rds/send.c changes the rs_tos argument passed to
-rds_conn_create_outgoing().
-
-> diff --git a/net/rds/connection.c b/net/rds/connection.c
-> index 9b86070814a72..adeaf35d0ed06 100644
-> --- a/net/rds/connection.c
-> +++ b/net/rds/connection.c
-> @@ -606,6 +606,8 @@ void rds_conn_shutdown(struct rds_conn_path *cp)
->  static void rds_conn_path_quiesce(struct rds_conn_path *cp)
->  {
->  	struct rds_message *rm, *rtmp;
-> +	unsigned long flags;
-> +	LIST_HEAD(purge);
->  
->  	if (!cp->cp_transport_data)
->  		return;
-> @@ -617,10 +619,15 @@ void rds_conn_shutdown(struct rds_conn_path *cp)
->  	rds_conn_path_drop(cp, true);
->  	flush_work(&cp->cp_down_w);
->  
-> -	/* tear down queued messages */
-> -	list_for_each_entry_safe(rm, rtmp,
-> -				 &cp->cp_send_queue,
-> -				 m_conn_item) {
-> +	/* Tear down queued messages.  Every path that adds to
-> +	 * cp_send_queue does so under cp_lock; take it here too rather
-> +	 * than rely on the argument that nothing can be adding at this
-> +	 * point.
-> +	 */
-> +	spin_lock_irqsave(&cp->cp_lock, flags);
-> +	list_splice_init(&cp->cp_send_queue, &purge);
-> +	spin_unlock_irqrestore(&cp->cp_lock, flags);
-> +	list_for_each_entry_safe(rm, rtmp, &purge, m_conn_item) {
->  		list_del_init(&rm->m_conn_item);
->  		BUG_ON(!list_empty(&rm->m_sock_item));
->  		rds_message_put(rm);
-
-[Severity: High]
-The commit message says the purge is now "correct against a concurrent adder
-regardless", and the new comment in rds_conn_path_quiesce() repeats that.
-Does taking cp_lock around list_splice_init() actually give that property?
-The splice makes the list manipulation atomic, but it does not establish any
-state that stops an adder, so there seem to be two cases left.
-
-First, if the adder wins the race just before the splice.  rds_send_queue_rm()
-links the socket item first, under rs_lock:
-
-net/rds/send.c:rds_send_queue_rm() {
-	...
-	list_add_tail(&rm->m_sock_item, &rs->rs_send_queue);
-	...
-	spin_lock(&cp->cp_lock);
-	rm->m_inc.i_hdr.h_sequence = cpu_to_be64(cp->cp_next_tx_seq++);
-	list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
-	...
-}
-
-So a message contributed by a live sender is spliced with m_sock_item still
-on rs->rs_send_queue, and the retained assertion in the purge loop
-
-	BUG_ON(!list_empty(&rm->m_sock_item));
-
-fires for exactly the message the locking was added to cope with.  Does this
-turn a racy walk into a deterministic BUG() in that case?
-
-Second, if the adder wins just after the splice.  list_splice_init() is a
-one-shot snapshot, and neither rds_send_queue_rm() nor rds_send_probe()
-re-tests rds_destroy_pending() under cp_lock.  The only destroy test before
-queueing is in rds_sendmsg(), taken outside cp_lock and with a potentially
-blocking rds_cong_wait() in between:
-
-net/rds/send.c:rds_sendmsg() {
-	...
-	if (rds_destroy_pending(conn)) {
-		ret = -EAGAIN;
-		goto out;
-	}
-	...
-	ret = rds_cong_wait(conn->c_fcong, dport, nonblock, rs);
-	...
-	while (!rds_send_queue_rm(rs, conn, cpath, rm, rs->rs_bound_port,
-				  dport, &queued)) {
-	...
-}
-
-Is anything revisiting a message linked after the unlock?  rds_conn_destroy()
-runs the quiesce once under c_destroy_in_prog, and rds_conn_path_free() /
-rds_conn_destroy_fini() neither drain nor warn about cp_send_queue, so the
-connection's reference on that rds_message looks leaked.  For a
-rds_send_probe() message that reference is the only owner.  For a sendmsg
-message, rm->m_conn_path keeps pointing into the c_path array that
-rds_conn_destroy_fini() kfree()s, which would be a use-after-free when the
-socket later closes and rds_send_drop_to() takes rm->m_conn_path->cp_lock.
-
-Would mutual exclusion rather than atomicity be needed here - adders testing
-the connection's destroy state under cp_lock, or the quiesce publishing a
-"queue closed" marker under cp_lock - plus handling rather than asserting on a
-message still owned by a socket?  At minimum, would a
-WARN_ON(!list_empty(&cp->cp_send_queue)) re-check after the splice make a
-missed message diagnosable?
-
-For what it is worth, with the destroy triggers that exist at this commit and
-at the end of the series (netns teardown and transport module unload, both of
-which exclude a live sending socket), I could not construct a sending socket
-that reaches this today, so the trigger appears unproven in the current tree.
-The code in rds_conn_path_quiesce() is unchanged at the end of the series.
-
-> diff --git a/net/rds/send.c b/net/rds/send.c
-> index a83d4eca0c77c..2d7839438abdc 100644
-> --- a/net/rds/send.c
-> +++ b/net/rds/send.c
-> @@ -1366,8 +1366,7 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
->  
->  		conn = rds_conn_create_outgoing(sock_net(sock->sk),
->  						&rs->rs_bound_addr, &daddr,
-> -						rs->rs_transport,
-> -						READ_ONCE(rs->rs_tos),
-> +						rs->rs_transport, rs->rs_tos,
-
-[Severity: Medium]
-Is this hunk intentional?  The subject and the changelog describe only the
-cp_lock and list_splice change in rds_conn_path_quiesce() and never mention
-net/rds/send.c or rs_tos, but this reverts the READ_ONCE() that the
-immediately preceding patch of the series, "net/rds: hold connection
-references in lookup, sockets and c_passive", added here.  That patch's
-message states that "the create in rds_sendmsg() samples rs_tos without the
-lock".
-
-The comment it added is still right below, and now documents a lockless read
-that the code no longer marks:
-
-net/rds/send.c:rds_sendmsg() {
-	...
-		/* rs_tos was sampled without rs_lock for the create above,
-		 * and SIOCRDSSETTOS only refuses a change once rs_conn is
-		 * set, so it can have changed underneath us.
-	...
-}
-
-The concurrent writer is the SIOCRDSSETTOS path in rds_ioctl(), a plain store
-under rs_lock reachable from unprivileged userspace, and every other rs_tos
-access in net/rds/ is taken under rs_lock, so after this change this is the
-only unmarked side of a plain/plain concurrent access.
-
-rs_tos is a u8 so it cannot tear, and the sampled value is re-validated under
-rs_lock a few lines further down before the connection is installed, so the
-observable effect looks limited to a KCSAN report plus a hunk the changelog
-does not describe.  The plain read is still there at the end of the series, so
-no later patch restores it.  Would restoring the READ_ONCE(), or splitting the
-removal into its own patch with a justification, be preferable?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922085410.391323-1-achender%40kernel.org
+SGTM, thanks Jamal.
