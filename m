@@ -1,79 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DF4A95E;
-	Sat, 26 Sep 2026 00:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773354705B;
+	Sat, 26 Sep 2026 00:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790380882; cv=none; b=YoB4E+xRIw+Nmc0qgojg5/ve2PmqxaR0Oabt9u8mKxc9QEBNXUjNCOc1lyfauplL9+QIvipvXm+MXAIqr3SWsfKgZ+1yZvytCMcOUtNTWNZ0BUNdMb32ZKKtWHXKa7zLzmW5HughfqJbHY7v26sFOrystEU1pW8XH6VPEaQCCYY=
+	t=1790381516; cv=none; b=P8qurSiw9YD/ox+kRSBjB2hNjH25eQ0iQv45eXZAX0uOawi47nuj6jFLCm0VOHXZY9gtaAxzYE2utfoGv1JiuZGZfcMN+SwJxA8IlnrvfAxUSvYHRwk0i/p3kzFFOZ5CoLOg/q3nI3LLKyWxKpUavHX/TEYDPEdJD2MKpgfh10E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790380882; c=relaxed/simple;
-	bh=WzRn5L8M2tTkvJFwcw1/BNdm59Z1MZcC63p8OsOOwOQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rzgBhIZWDlnpObTxOyj6HDUhZ9z1+MUmUNgRB1/fMABX+T6TGVk4u9E7OzqJsekxoY/fTHqeXxRCDdYNcqlrJI8x47bm6NuhwaQlrvgrEPAUO4M+gzzSZqjwU/WpqGHhjgaX1yuVJjM3AeiPXXTi2O25zST4FTi06oi3bg1M5M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9iAgW0i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790381516; c=relaxed/simple;
+	bh=XdpWbtPg1LbZY2T6AFj0I/Lxq26jRDW62tmupVdd9y8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uarRl620io93aLPa6b9R/bMDL7wXEJzhItkf3MYXRaRNUxrJvk4G5fwZPXr48PV7maUv2gza5yZh1XTeQcvLn+VkTDjTriKCGgZpP275u9KSsEkCm3+sP4SzHYmOj1iM145kUqhu/qLVy5uZvFvB3xSO9EWLPq/utaQvMJdZD+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOIgz05U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9iAgW0i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5311F000FF;
-	Sat, 26 Sep 2026 00:01:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOIgz05U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12921F00893;
+	Sat, 26 Sep 2026 00:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790380880;
-	bh=fdh2NH+Rdb8U6WLIUirE+fmL7OPmHpkOcF+Z6jXXj+Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=l9iAgW0iGF8rG9w3hXeQjZK/JPnvBAhAFw7oe3uR2s2jqim+NASui8CWDdtlW1q2k
-	 gblbrrA4yFvjUE9LtiW8QBh+epdedbr5Plu0ZJepHNMTWHn08Kbp66KVp0u0Oktm/R
-	 xPt/TYRWxoiTn2kKdtIJWA+BNk3uPXIJBNqifYmwSc/nor4CoG4QfIL+DlruUFOXkC
-	 ZPB6OV6IYeA/LCEgy3nYs09me5tAdfAOFALIbv1vA8puMGvBvAGeHUFJoOnytBri13
-	 aEDYRzbs4mA273rGQCOrImEnlWJ5WfgeiAOm87RcKplWT2AeLm8OsW/GBezwq9ar+j
-	 Kw1sKagec7A0w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938973809A04;
-	Sat, 26 Sep 2026 00:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790381515;
+	bh=nKzAF51FfS702o9KmJaCXqVAau4IjF0573r6WA2oydA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dOIgz05UV27doHFeu6NP9jsQpkTi9ZfcG0ck3h/9G5Z3JGgPs+wiLG1q+X5f3iHgC
+	 bfrSuGh2cdUfc9QMEOokSuzrB+K6bzPKjZcPahvyTD8Z1zXSN7xZSEd3ZzQq5IuVdA
+	 Zkawn7zKbSDn4Up3N5V634kCzVYSfMExcNXFWwUDXM6ot2LUQxo83ZmdFlcbPaEHeJ
+	 hLJUjt0yHKh1IBdighOPFzRwCaqrdJZwNrMAtbPirZ/qSjWdN3UVyDg+4MjrE7t400
+	 oZImKdFgNRJQx/uC/pJjbUbfLVg5OJkTe8Ohbrg6jF0hov/9PuFtv8PME6EIHueCbt
+	 HNjUAiX9eA0pw==
+Date: Fri, 25 Sep 2026 17:11:54 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests: netdevsim: skip the rate tc-bw check without
+ tool support
+Message-ID: <20260925171154.79c372fc@kernel.org>
+In-Reply-To: <20260925135512.3644101-1-eva.kurchatova@virtuozzo.com>
+References: <20260925135512.3644101-1-eva.kurchatova@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1] ptp: idt82p33: Stop PTP work producers before teardown
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179038080814.3212797.11225200642127710918.git-patchwork-notify@kernel.org>
-Date: Sat, 26 Sep 2026 00:00:08 +0000
-References: <20260922113601.855416-1-lhfff@tju.edu.cn>
-In-Reply-To: <20260922113601.855416-1-lhfff@tju.edu.cn>
-To: Yibo Tan <lhfff@tju.edu.cn>
-Cc: richardcochran@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 22 Sep 2026 19:36:01 +0800 you wrote:
-> idt82p33_ptp_clock_unregister_all() cancels each channel's adjtime work
-> before unregistering its PTP clock. An adjustment callback already in
-> progress can schedule that work after cancellation returns. Device
-> removal then frees the channel while its delayed work remains queued,
-> causing a use-after-free.
+On Fri, 25 Sep 2026 16:55:01 +0300 Eva Kurchatova wrote:
+> The tc-bw attribute was added to devlink in iproute2 6.17, together
+> with the kernel side in v6.17. An older devlink has no such option and
+> the rate test fails on "Unknown option" instead of skipping.
 > 
-> Mark the device as stopping under its lock before draining work. Reject
-> new adjustment and EXTS requests, clear the EXTS polling mask, and
-> synchronously drain the EXTS and channel adjustment work before the
-> device storage is released.
-> 
-> [...]
+> Probe once in rate_test() and skip the tc-bw checks as a whole, so that
+> a missing option costs a single skip line rather than one per rate
+> object.
 
-Here is the summary with links:
-  - [v1] ptp: idt82p33: Stop PTP work producers before teardown
-    https://git.kernel.org/netdev/net-next/c/a529f9258da5
-
-You are awesome, thank you!
+Maintaining backward compat for tests is not a goal for us.
+Teach your testing hardness to do this automatically, or carry your own
+fixes.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: reject
