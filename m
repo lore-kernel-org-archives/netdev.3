@@ -1,301 +1,287 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13203BD638
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 09:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790415825; cv=pass; b=rSEenfBtL4DF3pOxxPwh8Op7rFkQKoyR0VYVXLTwf4g8en5aQp0GoJ6oEcXjWLmIhwvygcL7htQQOrUVtQUoLskwqyd4VcZoV1k9raCX19N6EUQFr0RHo529VOShO2yidqOogRMu4i1EloRslUFKCI7mbNA/jlsrEDIp8AbssWY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790415825; c=relaxed/simple;
-	bh=sKxjYk+bOO9hXs2DbfRFHUfBMmMvQ697tDXJGD3Fi3U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m4k/MtsXknqrdfmMv/yQBAlTlVtpff4uDCE7h5V20tBmzDD+KJEuyUzMzd80/lfCbMtoCR1OFSpu76pjMVWI2rOSZypy0WiFaDIkRgcr36foIHex/9hOEb5aMsgp1Z0B0U8HGRj15o46FzVVvzMzmE4Fv1kro2dAUDZ+QCiWx3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=YQ6QLZrU; arc=pass smtp.client-ip=74.125.229.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4F43AAF42;
+	Sat, 26 Sep 2026 09:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790416120; cv=none; b=R55cLNNlRxwl6EoQlUgrcJAK2nlGxcMkDtO1LZMoHMDhUKooPBwPUBHxhFDre66QOmaPMbpo7qV0KEy5S1PpXmxJCDfNVXX9Kam2EHK2PXogaHpCXHG8o5Z2WLx9OtXR4RT9dFuFvMkkstyoYmA5lgSeM4YNQhWn+vzM1YXtkc8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790416120; c=relaxed/simple;
+	bh=NP71DmWz9VveVrqO5InBeMA6Uj8Y/TjcKEQCOHLKHKk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bv8eBVfDZP/7xvA3kHdRg0ucLGanMlfx9st8qzvIxxqm/dmWj9KMJEjULFKvbm8I6UMT+PIDIp5lbI8DUz9TRclkh5sUPsuFrb3wcUzhie88s3bUnXyX//6GnPLbmIcyn6GSiwplAv4J8Sf/xraGdHr5FuNAy9HWYRyg2aGdYUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRxjeMzF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="YQ6QLZrU"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-1450541ab18so1760411c88.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 02:43:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790415821; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q+jno2vlzROMvzlEjDVGwsu9scNxs7GwPMQqy6gSlU3GWp39CdKxOgqwsFrMywJsGB
-         9q2aQN0/YF8AnVKdb6Urtmw4N3Wg0ywPH9joOBLADO+NsYoPdho6yn/08VqtYmnwR2gC
-         wdTzl8hrw34BVZUGwtX0KrZlMx80ysRQb793R1aA3MZX7iOJGZ+0ifyZrP8SQE8e6DVQ
-         RIVF7XHaKhj8r5S7mcb8e2IDyFUDDdAdidOXQDZttKV40g36HHzLPG2DI/vPwkE6yOu6
-         g2eqk+VPHRsmtRlgB0iH6l3kuG44KuEZ0Jfn7qUnq/KG+kgNAwvH6syekFylHJqoXwaE
-         sj2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SzvWQLkWxwpiX7qLxPQTvx30y630CcfiVhKwC04gV5k=;
-        fh=C7xtPMEM8IIdAPncDyf4pzDTMRgokd4f6qTeg1KKljM=;
-        b=p7Y6BIidHLPB/pyS+cvdPJuYrFCEKo8tfgAmPmje3AqFMsiJzSDBouCcP+LNFUUGdv
-         7vFowONY5fR757LDH1R0fn/sBamwn/3eMe1tHJg7eate/T+3jwuBCsVoMSn8Mx8d8JOB
-         dhJ3gsIZEA+2/mfVnxRIyzB/z70ZiwClyj95oyEX9V9GeG+29w+uDHAZFInRAh/cuL5M
-         8j/47gtoR7FLwun1/0Vy5DrN0Fhvhs7ZuvIBNxIRxw3eFh2qpE9dl+kSxJt4Ni2V5vsB
-         Xu8d2D+E5lw/GWwwhRdBaLkCHuRnolsEsPGeeMZc6UBE7K5Zi3RBdUVgb6XQgEVn3ffh
-         7kZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790415821; x=1791020621; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SzvWQLkWxwpiX7qLxPQTvx30y630CcfiVhKwC04gV5k=;
-        b=YQ6QLZrUzoVahUATE+9Fe+CBtTlAWxsuhvqpDD8qgxPqJ6tx3drlBZuvwIp5V2y41e
-         OCNK9MiN1N1BFjmpzE8+GJK2pxZkrY69iCJgupmyTI4mgtUyyYlVYvTi2K1+TJpU1lAA
-         SfLVVJnPdfARM7pSW6F56a0g1JaMv6j0k2Joo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790415821; x=1791020621;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SzvWQLkWxwpiX7qLxPQTvx30y630CcfiVhKwC04gV5k=;
-        b=r4pL17il05bbCmOMohtbudb2pmgYZVB5ogLm/U3HFL/JVaYJleve7FmQ/P+whlSeXd
-         TuBwm5Cs3iIdUGyIHlOWlr2KcMQRL5yKBlXH1+bPjt4L2XjwmZE3QEpeDHISGIFvxUtm
-         XGhNlsw6YGw6Ev7EDb+bYMpfrt8xpt2AfTolqzOxnLR0U6PQYfPKAKdt7dzKAtQwmP9J
-         UZvaMINQBQ4CLHLM23rW2CL7eZhK0obFnQMwatn1Q9HAmNOW807g9/RpJTfWxcahfDno
-         mvjlubVRrIpxPT0gWnGzht3ErpN6x0Tc7Wlr7IUqheHPTPJ2BBFfQ4tso6bdbD4s3tib
-         1o9w==
-X-Forwarded-Encrypted: i=1; AKwUvBx3bGw5j4ZOUoQuTe7EpB4E/8EW7oYMm80qOg4gSpZHPTwQztSHMhYevST1/TxzZHnr8EZSBEw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIPg1HatYN/zutDuyvuJFJG3QKD1J1V7GQS/7vxA4E1LrGjX1y
-	Ycfbipdh9Vxo33WNobVoGAZCkpmmfRoQNuxT/nMZohl7RZ+5X8OhGPqo61zKhx9PXayMFy5T2O3
-	nZzeYbLhdZL5sWApvGhz9WWloMcqNodSY7qFwHpGs
-X-Gm-Gg: AYBFou1hJqx57bY4dCb63VDzFCJwU/Uia2kbB1uJGG3B3ctXEIOfNvc2mtfX0PnAzEe
-	K7njt6MqcQMru6puTgkN72R5oSshBAOD1efCv66vBYlQvkB6tZuh7+w0F6i9q3R8MShz3kamTzD
-	rNtDZLxvYm3TK/vhPkiDU4w9u0f2yyeQ5AOc0shaC/Sl1MAB5nvLZBypjstuQ/M4Xqy95dv9Z6D
-	RcKImtIk3dFiq1qBJqavq7+/3fxm5uxUGkRd8LLhlElhCEVo7GHAGXV9/SFIRZ4Z6EyKlR6Gij8
-	trSpwI76JcGWfWn0g5jWiTKWRSHIy1cwE643uasJdbeXoWf6OkL2PfZpyYNT0nAguTXfeUTa38J
-	sz8yy2KwkaB80CnYDl6XezJ9lL1V2c052Crsr0ZZeQcdCq6RN+6/fEz/ovGJBquALWauV9iLVSK
-	/RDapoEhmGmoOJzMZTwz4=
-X-Received: by 2002:a05:7022:ea8b:b0:146:5f73:d419 with SMTP id
- a92af1059eb24-146ce680e33mr2627989c88.14.1790415820581; Sat, 26 Sep 2026
- 02:43:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRxjeMzF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2609C1F000FF;
+	Sat, 26 Sep 2026 09:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790416118;
+	bh=swoC8YOpHlbFYKyzsGvM9nOKaCLOIOQQ/2YxogmbWss=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PRxjeMzFPVSDdFzzzKH1etwQEYxGK8oNEFFIQlyDAmqeQiymE0sY9S1lMB8pvyEkl
+	 eoFq0RlbBGyfmDZa8aB6hO1Dh1+i0M7DN+jtz/NMiJbaEyTi6L3mu0iw2MWvO57NzR
+	 b9ws/jwBlsVtYSgAMHcqzpgoM66kWkxIjOZFvyG64j2zXa4msJpYC1V/Zhvz1RuQrF
+	 P8u+0WiUtTlnSqa1mesEi3Eyn69kfFbCs8qS7tOWlkdE4gXzEe0rSxTKjm+7xGl7Qd
+	 52obfivJm3vACllRFnf1J29cDU2JDFUe1FW8MwmBrLjcjkC1qn5PmrRQ6g03s8LRcj
+	 TTMvqCO48IJFQ==
+Subject: Re: [PATCH net-next v6 04/12] net/rds: make rds_destroy_pending()
+ report a connection's own destroy
+From: netdev-bot+sashiko@kernel.org
+To: achender@kernel.org
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org
+Date: Sat, 26 Sep 2026 09:48:37 +0000
+Message-ID: <179041611766.2160803.9032711960072128883@kernel.org>
+In-Reply-To: <20260922085410.391323-5-achender@kernel.org>
+References: <20260922085410.391323-5-achender@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v1.20260922092618@mojatatu.com> <CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com>
- <CAM0EoMn8_MVUHa2Jym7wKvd6Oo-JvNJ7GPvRJi2DsJCnQFmW+w@mail.gmail.com>
- <CANn89iL3jBMczB4txC4oDusfpDoem-wdTOFVrujTbC0ArNhGqQ@mail.gmail.com>
- <68BE1514-828D-4184-84E4-90F2EB3F035D@gmx.de> <CANn89iJtHuwybsSLy32GzH2c9cGmP1bL7ardxPjxPOj2xGLZPA@mail.gmail.com>
- <67EA1744-69D7-4A64-9117-D6A79A3A93E4@gmx.de>
-In-Reply-To: <67EA1744-69D7-4A64-9117-D6A79A3A93E4@gmx.de>
-From: Jamal Hadi Salim <hadi@mojatatu.com>
-Date: Sat, 26 Sep 2026 05:43:28 -0400
-X-Gm-Features: AclHuK9nIZVvB4vxvUGaioGgnYIENDgkjJUY57GgKyB5XSUjBc0sRzpTlg5iQVs
-Message-ID: <CAAFAkD_U8PGfdJAgSLsh3ku+tTBvQYB012k7jEUacfm6HothyQ@mail.gmail.com>
-Subject: Re: [Cake] [PATCH net-next] net/sched: fq_codel, cake: widen backlogs
- to u64
-To: Sebastian Moeller <moeller0@gmx.de>
-Cc: Eric Dumazet <edumazet@google.com>, Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, 
-	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	cake@lists.bufferbloat.net, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 25, 2026 at 10:03=E2=80=AFAM 'Sebastian Moeller' via
-Hyper-Yielding Back-end Review & Insight System <hybris@mojatatu.com>
-wrote:
->
-> Hi Eric,
->
->
-> > On Sep 25, 2026, at 15:43, Eric Dumazet <edumazet@google.com> wrote:
-> >
-> > On Fri, Sep 25, 2026 at 3:30=E2=80=AFPM Sebastian Moeller <moeller0@gmx=
-.de> wrote:
-> >>
-> >> Hi Eric,
-> >>
-> >>
-> >>> On Sep 25, 2026, at 15:03, Eric Dumazet via Cake <cake@lists.bufferbl=
-oat.net> wrote:
-> >>>
-> >>> On Fri, Sep 25, 2026 at 1:28=E2=80=AFPM Jamal Hadi Salim <jhs@mojatat=
-u.com> wrote:
-> >>>>
-> >>>> On Fri, Sep 25, 2026 at 5:13=E2=80=AFAM Eric Dumazet <edumazet@googl=
-e.com> wrote:
-> >>>>>
-> >>>>> On Fri, Sep 25, 2026 at 10:54=E2=80=AFAM Jamal Hadi Salim <jhs@moja=
-tatu.com> wrote:
-> >>>>>>
-> >>>>>> This is a follow-up to commit 8f735d64382d ("net/sched: bound
-> >>>>>> qdisc_pkt_len to prevent qdisc soft lockup"), which capped
-> >>>>>> qdisc_pkt_len() at QDISC_PKT_LEN_MAX (1 MiB). That cap bounds the =
-stab
-> >>>>>> amplifier but leaves the per-flow backlog counter u32:
-> >>>>>> fq_codel_enqueue() accumulates qdisc_pkt_len(skb) into q->backlogs=
-[idx],
-> >>>>>> so a flow can still accumulate 4096 packets of 1 MiB each and wrap=
- the
-> >>>>>> counter mod 2^32. After a wrap, fq_codel_drop() sees a tiny maxbac=
-klog
-> >>>>>> and drops from an almost-empty flow, and the dequeue-side subtract=
-ions
-> >>>>>> corrupt the counter further.
-> >>>>>>
-> >>>>>> Widen the fq_codel backlogs table, the fat-flow scan (maxbacklog/l=
-en) and
-> >>>>>> the drop threshold to u64. fq_codel is not lockless: every writer =
-runs
-> >>>>>> under the root qdisc lock, so plain u64 arithmetic keeps the WRITE=
-_ONCE
-> >>>>>> publish / READ_ONCE-consume pattern. The dump path
-> >>>>>> (fq_codel_dump_class_stats) stays a lockless stat-only read.
-> >>>>>>
-> >>>>>> CAKE accumulates the same generic qdisc_pkt_len(skb) into its per-=
-flow
-> >>>>>> b->backlogs[] and per-tin b->tin_backlog and consumes the values f=
-or
-> >>>>>> longest-flow pruning (cake_heapify/cake_heapify_up) and for the sh=
-aper
-> >>>>>> staleness check, so it shares the bug. Widen those counters and th=
-e heap
-> >>>>>> comparison locals to u64; the class/tin stats keep exporting the l=
-ow 32
-> >>>>>> bits through the unchanged uAPI fields.
-> >>>>>>
-> >>>>>> Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
-> >>>>>> CONFIG_NET_SCH_FQ_CODEL=3Dy.
-> >>>>>>
-> >>>>>> ip tuntap add tun0 mode tun
-> >>>>>> ip link set tun0 txqueuelen 32 up
-> >>>>>> ip addr add 10.99.0.1/24 dev tun0
-> >>>>>> tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
-> >>>>>>     fq_codel flows 1 limit 4200 ecn drop_batch 4096
-> >>>>>> # hold the tun fd open without reading (IFF_BACKPRESSURE) so the q=
-disc
-> >>>>>> # backlog persists, then send at least 4300 packets (the wrap star=
-ts
-> >>>>>> # at 4096 resident; the over-limit drop that reads the wrapped
-> >>>>>> # threshold fires past the 4200 limit): backlogs[0] wraps at 4096 =
-x
-> >>>>>> # 1 MiB and the fat-flow threshold reads the wrapped value.
-> >>>>>>
-> >>>>>> With a 1 MiB qdisc_pkt_len cap the counter wraps at 4096 resident
-> >>>>>> packets. At limit 4200 the first over-limit enqueue (the 4201st) s=
-ees a
-> >>>>>> wrapped 105 MiB (half-backlog threshold 52 MiB, a ~52 packet drop =
-burst),
-> >>>>>> where the u64 counter sees 4201 MiB (threshold 2100 MiB, a ~2100 p=
-acket
-> >>>>>> drop burst).
-> >>>>>>
-> >>>>>> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-> >>>>>> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/202608=
-18101130.16203-1-jhs@mojatatu.com
-> >>>>>> Link: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mo=
-jatatu.com/
-> >>>>>> Tested-by: hybris <hybris@mojatatu.ai>
-> >>>>>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> >>>>>> ---
-> >>>>>
-> >>>>> This makes no sense.
-> >>>>>
-> >>>>
-> >>>> As absurd as it looks that code is reachable ;->
-> >>>>
-> >>>>> These qdisc have been developped to address bufferbloat issues.
-> >>>>>
-> >>>>> Storing 4GB in a qdisc is absolutely insane.
-> >>>>>
-> >>>>
-> >>>> The counter wrap is not because we stored 4GB, rather it is because
-> >>>> "tc .. stab overhead ..." inflates qdisc_pkt_len() for a 64B pkt to
-> >>>> 1MB. So ~4K packets (put in other words a few "real" KB) makes that
-> >>>> backlog[0] cross 2^32.
-> >>>
-> >>> Kill this stuff ? Who is still using this, for what reason ?
-> >>
-> >> tc-stab? Same as before, if you need want to model a remote bottleneck=
- with a local traffic shaper tc-stab is the generic solution (off the top o=
-f my head I only can enumerate cake as having its own traffic shaper that h=
-andles overheads).
-> >> One could argue that the "virtual" length should be accounted against =
-cake's memlimit or fq-codel's memory_limit somehow...
-> >> In sane?/typical configurations overhead is expected to stay relativel=
-y small, so this would not limit the actual queue size too much, while pote=
-ntially silencing this issue.
-> >
-> > linux qdisc are in the fast path, for nearly all packets sent over this=
- planet.
->
-> Tip of the head to the linux network experts that enabled that and that t=
-ake care of it being efficient!
->
-> > They aleady consume GW of energy.
-> >
-> > Modeling / network emulation should incur zero cost on these
-> > production grade qdisc.
->
-> It is not modeling in a scientific sense (sorry I used inappropriate term=
-inology here), but simply the fact that to shape traffic to avoid filling r=
-emote queues one needs to be able to take the properties of that remote que=
-ue/interface/link-layer into account.
-> And that can be surprisingly close by. Last time I looked the kernel on s=
-ay eth0 added the 14 bytes of ethernet related overhead it handled itself t=
-o the packet size on top of the payload (no complaints that makes sense) bu=
-t that is insufficient to properly traffic shape e.g. the same ethernet int=
-erface... (as the relevant ethernet L1-frame overhead contains more bytes, =
-like the FCS, preamble and SFD). And that gets worse with stuff like DSL, c=
-able or fibre modems that are connected via ethernet to a linux router.
->
-> >
-> > netem could be one answer, I do not know, or a special
-> > CONFIG_NET_SCHED_EXPENSIVE_EMULATION
->
-> Well, tc-stab (or cake's overhead accounting) is already optional, so onl=
-y those incur the cost that actually use it (and only those users are affec=
-ted by the reported issue, it took tc-stab to cause the problem and arguabl=
-y in a configuration that is "insane").
-> I might be trying to explain the internet here to people that make the in=
-ternet work, so apologies in advance but I want to make this as explicit as=
- I can.
-> TTraffic shaping without proper overhead accounting will not work as expe=
-cted (at least if the expectation is that the traffic shaper will honor the=
- set gross shaper rate). For a fixed packet size the lack over overhead acc=
-ounting can be papered over with reducing the shaper rate, but the amount o=
-f the required "over-shaping" depends on packet size (smaller packets requi=
-re more over-shaping), so generally that is sub optimal, because either the=
- shaper's guarantee is brittle or the over-shaping quite extreme (think the=
- header to payload ration of minimally- and MTU-sized packets).
->
-> All I am saying is, we do still have use cases for tc-stab and proper ove=
-rhead accounting, at least on the leafs of the network like home internet l=
-inks.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-I am working on a v2 that drops at enqueue once the accounted backlog
-crosses  (U32_MAX - QDISC_PKT_LEN_MAX), so no counter can wrap.
-That is Eric's original suggestion which preserves the point you raised.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
 
-While looking at this closely for this update i noticed more qdiscs
-which for different reasons also suffer from ((u64)backlog + len <=3D
-limit idiom.
-So far it's clear from bfifo, gred and plug are the only ones safe
-because their limit is in bytes (as opposed to others which are packet
-counting)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Eric: Unless i hear otherwise from you, the configurable byte ceiling
-you mentioned (a good noun seems to be CONFIG_NET_SCH_BACKLOG_CEILING)
-is a follow-up;
+- [Medium] The invariant this patch documents is contradicted by in-tree
+  arming sites, and the gap covers exactly the future case the commit…
+- [Low] Commit message factual error: the justification "Today every
+  rds_conn_destroy() does happen on one of those two global paths ... so…
 
-cheers,
-jamal
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is a
+  permanent, repeatable leak of 7 ordered workqueues per loopback…
 
-> >
-> >>
-> >> I might be off my rocker, in which has ignore (or preferably enlighten=
- me).
->
->
+--
+
+net/rds: make rds_destroy_pending() report a connection's own destroy
+
+This adds a per-connection c_destroy_in_prog flag, set by
+rds_conn_destroy() before the unhash plus synchronize_rcu() sequence, and
+tests it first in rds_destroy_pending() so the predicate reports a single
+connection's own destroy.  The now-unreferenced RDS_DESTROY_PENDING
+cp_flags bit and its dead test in rds_ib_is_unloading() are removed.
+
+A few questions below, first about the commit message, then about the
+new comments and the surrounding teardown code.
+
+>     Today every rds_conn_destroy() does happen on one of those two global
+>     paths - the last single-connection caller, the protocol-version
+>     mismatch in rds_ib_cm_connect_complete(), was turned into a drop by
+>     commit f97d8c7bab78 ("rds: ib: use rds_conn_drop() on protocol
+>     version mismatch") - so the predicate is currently never wrong.
+
+[Severity: Low]
+Is "the predicate is currently never wrong" true for the loopback
+transport at module unload?  rds_conn_exit() runs the pernet unregister
+before the loop transport marks itself unloading:
+
+net/rds/connection.c:rds_conn_exit() {
+	rds_loop_net_exit(); /* unregister pernet callback */
+	rds_loop_exit();
+	...
+}
+
+rds_loop_net_exit() -> unregister_pernet_device() runs the .exit hook for
+every net still on net_namespace_list, including init_net, so
+rds_loop_exit_net() -> rds_loop_kill_conns() -> rds_conn_destroy() runs
+with check_net() still true for those conns.
+
+rds_loop_set_unloading() is the only writer of the flag that
+t_unloading reports for the loop transport, and it is not called until
+rds_loop_exit(), which runs afterwards:
+
+net/rds/loop.c:rds_loop_exit() {
+	rds_loop_set_unloading();
+	synchronize_rcu();
+	...
+}
+
+So for those loop connections the pre-patch rds_destroy_pending() is
+false exactly while rds_conn_destroy() cancels the path works and calls
+destroy_workqueue() on cp_wq, which would make this patch also close a
+narrow real window rather than being purely preparatory.  Would it make
+sense either to qualify the claim by naming this loop ordering, or to set
+the loop unloading flag before unregister_pernet_device()?
+
+> diff --git a/net/rds/connection.c b/net/rds/connection.c
+> index a96569a3ee9ad..242ca0570a47e 100644
+> --- a/net/rds/connection.c
+> +++ b/net/rds/connection.c
+> @@ -579,6 +579,14 @@ void rds_conn_destroy(struct rds_connection *conn)
+>  		 "%pI4\n", conn, &conn->c_laddr,
+>  		 &conn->c_faddr);
+>  
+> +	/* Make rds_destroy_pending() true for this conn.  Together with
+> +	 * the synchronize_rcu() below this stops the work-requeueing
+> +	 * sites (which all test rds_destroy_pending() under
+> +	 * rcu_read_lock()) from queueing new work on the path
+> +	 * workqueues once we start cancelling and destroying them.
+> +	 */
+> +	WRITE_ONCE(conn->c_destroy_in_prog, true);
+> +
+
+[Severity: Medium]
+Is the parenthetical "which all test rds_destroy_pending() under
+rcu_read_lock()" accurate?  Two classes of arming sites do not.
+
+rds_conn_path_drop() short-circuits the predicate when destroy is true:
+
+net/rds/connection.c:rds_conn_path_drop() {
+	rcu_read_lock();
+	if (!destroy && rds_destroy_pending(cp->cp_conn)) {
+		rcu_read_unlock();
+		return;
+	}
+	queue_work(cp->cp_wq, &cp->cp_down_w);
+	rcu_read_unlock();
+}
+
+rds_ib_dev_shutdown() uses exactly that form for every connection on a
+device's conn_list:
+
+net/rds/ib.c:rds_ib_dev_shutdown() {
+	list_for_each_entry(ic, &rds_ibdev->conn_list, ib_node)
+		rds_conn_path_drop(&ic->conn->c_path[0], true);
+}
+
+That is the hot-unplugged IB device case the commit message names as a
+reason for the new flag, and the new flag does not cover it, while
+rds_conn_path_destroy() later does:
+
+net/rds/connection.c:rds_conn_path_destroy() {
+	if (cp->cp_wq != rds_wq) {
+		destroy_workqueue(cp->cp_wq);
+		cp->cp_wq = NULL;
+	}
+	...
+}
+
+The second class is the workers' own requeues, which use neither the
+predicate nor an RCU section:
+
+net/rds/threads.c:rds_send_worker() {
+		case -EAGAIN:
+			rds_stats_inc(s_send_immediate_retry);
+			queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 0);
+	...
+}
+
+The same shape appears for cp_recv_w in rds_recv_worker().  The commit
+message calls out the self-requeue exception, but the new comment here
+and the new comment on c_destroy_in_prog state the rule without it.
+
+Would it be better to weaken both comments so they name the destroy ==
+true and self-requeue exceptions, or to serialize
+rds_conn_path_drop(cp, true) against the workqueue teardown so the stated
+invariant actually holds?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but since rds_conn_destroy()
+is being touched here: does this path leak the per-path workqueues of a
+loopback-substituted connection?
+
+__rds_conn_create() computes npaths from the caller's transport, then
+substitutes the loop transport without recomputing it:
+
+net/rds/connection.c:__rds_conn_create() {
+	int npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+	...
+			trans = &rds_loop_transport;
+	...
+	conn->c_trans = trans;
+	...
+	for (i = 0; i < npaths; i++) {
+		...
+		conn->c_path[i].cp_wq =
+			alloc_ordered_workqueue("krds_cp_wq#%lu/%d", 0,
+						rds_conn_count, i);
+	...
+}
+
+rds_tcp_transport sets both t_prefer_loopback and t_mp_capable, so npaths
+is 8 and eight ordered workqueues are allocated.  rds_loop_transport sets
+neither, so the destroy side recomputes 1:
+
+net/rds/connection.c:rds_conn_destroy() {
+	int npaths = (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+	...
+	for (i = 0; i < npaths; i++) {
+		cp = &conn->c_path[i];
+		rds_conn_path_destroy(cp);
+	...
+	kfree(conn->c_path);
+	...
+}
+
+Paths 1 through 7 never reach destroy_workqueue(cp->cp_wq), and
+kfree(conn->c_path) then drops the only pointers to those seven
+workqueue_structs, which stay on the global workqueue list.
+
+Note that just fixing npaths does not appear to be enough, because
+rds_loop_conn_alloc() only fills c_path[0].cp_transport_data and
+rds_conn_path_destroy() returns early:
+
+net/rds/connection.c:rds_conn_path_destroy() {
+	if (!cp->cp_transport_data)
+		return;
+	...
+}
+
+so the cp_wq teardown would also have to move out of that guard.
+
+Trigger: in a netns, create an AF_RDS socket, bind a local address and
+sendmsg() to a local RDS address so the loop substitution applies, then
+destroy the netns (rds_loop_exit_net() -> rds_loop_kill_conns() ->
+rds_conn_destroy()) or unload rds.  Each such connection destroy leaks
+seven workqueues.
+
+This also survives to the end of the series: rds_conn_destroy_fini() uses
+the same npaths formula and rds_conn_path_free() keeps the
+!cp->cp_transport_data early return.
+
+>  	/* Ensure conn will not be scheduled for reconnect */
+>  	spin_lock_irq(&rds_conn_lock);
+>  	hlist_del_init_rcu(&conn->c_hash_node);
+
+[ ... ]
+
+> diff --git a/net/rds/rds.h b/net/rds/rds.h
+> index 2db49573dacd5..50b08c28ab865 100644
+> --- a/net/rds/rds.h
+> +++ b/net/rds/rds.h
+> @@ -148,6 +147,14 @@ struct rds_connection {
+>  				c_pad_to_32:29;
+>  	int			c_npaths;
+>  	bool			c_with_sport_idx;
+> +	/* Set once, by rds_conn_destroy(), before it cancels the path
+> +	 * works; read through rds_destroy_pending().  A site that arms
+> +	 * a path work must test the predicate and queue the work inside
+> +	 * one rcu_read_lock() section: the synchronize_rcu() that
+> +	 * follows the store is what keeps a queue issued after the
+> +	 * cancellation from landing on a destroyed workqueue.
+> +	 */
+> +	bool			c_destroy_in_prog;
+
+This is the second half of the comment question above: the rule stated
+here as unconditional is not followed by rds_conn_path_drop(cp, true) or
+by the rds_send_worker()/rds_recv_worker() retry requeues.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922085410.391323-1-achender%40kernel.org
