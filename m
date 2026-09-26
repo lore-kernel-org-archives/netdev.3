@@ -1,119 +1,275 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEE336604B
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 20:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED7F3A4F26
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 20:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790452951; cv=none; b=iJnHHJSvx5ymL0TCbNO58woQP0wKycnYeIe3/hwS6o8qNjfAegIM6TqbQoiiCyYczbYGy2aVr7KaFuVipHQhyiqFIkFT6lpEKX94mXpblQxRtnqW3XFnHO62iIH5uGjqDeY17jlQhhO0du0SpkRiTQyV49P+7n3gVdJMsCMef04=
+	t=1790453560; cv=none; b=avFZiEr/Ic5HRqda0DGDVuqB0GQ5BxJDKqL1zfCO/2lB1gPYNjlju4rCl0EUAjHrrxg1TFkld3Q6mh1oCq4sOYVBRyy9LH6e4EJMdkex8GjpyHfe0eZhvgcZxB1+VsAybIEdpSgAeY48oge01+hrLUyXxpQXQRjiZs2tM+fHWU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790452951; c=relaxed/simple;
-	bh=6jPgiSRUf5T6hQBG2tDr0gOSmgHP5/l9XHs7Uw9gxtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EUe3RZvYGRrJkLypHlbkpEFgXcFKBCc6wK1XZygTs07AIPcu6/Di7KGiwNN/Igq8a+8wKx96BCjFkedanZDcVxVcl6qmsyn1ZCnqdYoopWotCPPduvqD1bKD9+OA4YL/kgrMtUFo7DRvojzZgqgK00udcTbiXiKVZic3aXys1So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQooFrqp; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQooFrqp"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398beb616f5so970103a91.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 13:02:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790452949; x=1791057749; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o5nGqbOD5YuuDgh3hqWH/jfIt3JTY1EA1m2kdqTIaSU=;
-        b=AQooFrqpvPBEUKvYY9WUhhL9/tEv2mF0hrLERzSF0KlPwcHJQrroX/H+bolEOxdxYN
-         P0kQsApdMIURvdzNRYWVUPrxG4rDcTmo/blLuR0VvsuzRv+DY336x4TKVZeXE8k9cFOf
-         7al3XAo+7j3G0sHErA/8p+OhiFzNd5JvfCuBsrtkh9HNJjE3uVjk+Q9AlQLay1Zao6zp
-         6hfI7viQp7BtLqMKsz2NsH6epUZ/LkuYnnnVX51mbKE0Ks5FM9W1okU3zcLRECgRG367
-         GzE8OLpv/MG95VVKqq1BxNUN38MjnAY2jL0kubRg4PIv8zxuO0uZv6aLrdM5nTQpovhs
-         3FBw==
+	s=arc-20240116; t=1790453560; c=relaxed/simple;
+	bh=KrqAEzECgiUFL/pJcmc7/mUSV9tGrf+20pUN7qnrF3A=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=eyechdbv3uxD+2GAhabwDta74j//KnoEIQAeu3kQU76tZh0Ot5lzTTfX6qtK/1NG5I23uP7U30O/OE8cxLULiboykJF61Fdva1Jcxvi8AhWCEuWdy9a9/oBtMLnyDBCLcmwN1Cmo2H84w1FCOnI4B+W/sDMzoM91HsZD0QekN+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4cc691d106fso2992511b6e.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 13:12:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790452949; x=1791057749;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o5nGqbOD5YuuDgh3hqWH/jfIt3JTY1EA1m2kdqTIaSU=;
-        b=fnRiEIhbS14FqJ+Tr65Xbhf3yWEtO1PukQxaHSBN8Q2S/ljFkG6vDrQ/R7/8SoDr8d
-         uQYCQtBYzkcWMe44pUOAJdKdQQ8bdmoZaN4nP+OoZCLTXnz7AM/PijEMuDpqSrJ3FjXW
-         CFaLv8yaVPMWeTpTuYBYx4UqTWXiGns0i2/u7sLFMY4SZeKvQSbUvLnBqYqPBI77sqX6
-         XiAc3in8B+u9xM9EYdowksZyVTv3KLrqRNGDAPQpfY248Ln0thg6UWtCNs/GORlfQMDZ
-         YIbqbhuY1+VJz36S+ky3bm1t8cEd9l8uTVrD2Qx1Ck+pQP2MblxBJhwRuhaC/RR25rMK
-         Jccw==
-X-Gm-Message-State: AFq9FYJ+VwD9+WqaULM5kecAv990nlWKwcxGqPprUgkn9cHb8hl1Sg69
-	ja9lj/bnwOSdsLnrky4qfAbnSXF3KpUPahffxTboi0mb1gopBK3KGeYJ
-X-Gm-Gg: AYBFou1xdj2R/BX9WuBsDA/r3vCz7wotFTCQNgoJFtKt6OgWNKo5izHmMUT9y2qCTd/
-	ic8y4S4+dqxScC0Sob3Gvq5Ysuw00CBO/P3tmrAROih+MeSemuapgB7deIR/smpJWOHLNOGaTDF
-	7OP2KI4pSUhEoedACH+PdsyQV09H+fnhzkVoNWUzQ7fCT/SkFgBXIsbvpZL/8Yq7ksPsh+Jvu9X
-	WS35OQdtEg7psE3h8ZKcTPuSyoTZm51wpt6mNSnnXezNYITblp2K+WiYrMEeBVp6KyjLbIbYtwZ
-	eD4fz0IZQjWlqcAK/3DFYaMkq+s5VUhUg66GEEFuc3VSIPPxVPzMBMigtm/WLHkrJf8onhsFbe0
-	n7eSuIluVpsvlUQlWnX4wiuvZeSHYwaLYwqwyIyk1jbbwIJ76GyOuJyFDoDujdJhM9K1s2o4wEX
-	vdseqSma1tSinIfK3nj4wilZpA0ZuWVcf+ehkiN2ckoqOU//w57vfrYG70vJqhij2xaXChuyk=
-X-Received: by 2002:a17:90b:2704:b0:3a0:ce02:6dda with SMTP id 98e67ed59e1d1-3a0ce026f76mr1980554a91.19.1790452948987;
-        Sat, 26 Sep 2026 13:02:28 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:7ff:72::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0c2e986easm12124169a91.1.2026.09.26.13.02.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 13:02:28 -0700 (PDT)
-Date: Sat, 26 Sep 2026 13:02:14 -0700
-From: Narcisa Vasile <narcisav.kernel@gmail.com>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org, Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	dev@openvswitch.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/2] selftests/net/openvswitch: add SCTP flow
- key test across conntrack NAT
-Message-ID: <argkxqdmcxa605b/@gmail.com>
-References: <20260918144647.2024095-1-houminxi@gmail.com>
- <20260918144647.2024095-3-houminxi@gmail.com>
+        d=1e100.net; s=20260707; t=1790453548; x=1791058348;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3X22zhN6f9uRMNSR7GwIXXr+DjResBRWtpt3aWN0XfE=;
+        b=cptQ4cG8IIC9JPNGNHdZv4ugzXQQ7lu7APnMPKvksls4PZjc3HOmyn3FF92G/jEVWs
+         BK+XkbSQph8UGEebX3FgvUcGmnnchrQTo2MiMwlB5VYCsvCrDlod/w7eLXXodkEfT/cH
+         w8olhyMfqKjU64x6fR71BtkYmee7/LmthLQHoMiOlptsjy2Lit1ObgeMPtREfmPjZ59s
+         d40AixkJodENSW/jPI1Lb0HW/JqZaLhMuaayjtE5jLUWp/YPQdMWV5dilTS7cNv9SX/X
+         S2DhdcH2zH9L1oWG8U4G5yQT7CqLfTmgEX6gW6UjcZrLiVamS/t91kIgqdtAac3oq79O
+         1Mng==
+X-Forwarded-Encrypted: i=1; AKwUvBxfnAQg2dgRWICyeN2xYIs3Q+KSMPxHjti7ZG7nVqfXflit8kqERC26JdOt5hk2c1Zv8oXRQyg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdrgRmGrVvGOneeVbyC19ZCn4ubC/qn5PiDFiqq6O8IARCWB/K
+	JZw9aRMZaKTwCFmljknkYx8Vv+Ryncx29su3WJb8voIIQLcA8Yr2L5q3ZjsEceDFXqAyEinEQvd
+	s112JzK+N7GFMCzxgSOgG25A+dhk+ascg1oUWv8zohE3w8SoMEUGSavG2tS0=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918144647.2024095-3-houminxi@gmail.com>
+X-Received: by 2002:a05:6808:1993:b0:4d6:90d3:e185 with SMTP id
+ 5614622812f47-4d72e670404mr13218907b6e.46.1790453548022; Sat, 26 Sep 2026
+ 13:12:28 -0700 (PDT)
+Date: Sat, 26 Sep 2026 13:12:28 -0700
+In-Reply-To: <20260924063312.1194019-1-chenguang.zhao@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ab8272c.dc2998a4.2261f5.0058.GAE@google.com>
+Subject: [syzbot ci] Re: ipvs: fix infinite loop with ipvlan L3 from
+ unconditional ipvs_property clear
+From: syzbot ci <syzbot+cic4f1f7c33eb59a01@syzkaller.appspotmail.com>
+To: chenguang.zhao@linux.dev, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, horms@kernel.org, idosch@nvidia.com, 
+	kerneljasonxing@gmail.com, kuba@kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzbot@syzkaller.appspotmail.com, zhaochenguang@kylinos.cn
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 18, 2026 at 10:46:47AM -0400, Minxi Hou wrote:
-> After conntrack NAT rewrites a packet, OVS refreshes the cached flow
-> key in ovs_nat_update_key(), which has a per-protocol branch for the
-> L4 ports (UDP/TCP/SCTP, conntrack.c). Address-only NAT cannot tell a
-> working SCTP branch from a missing one: the ports survive unchanged
-> either way, so a post-recirc match on the original port stays green
-> even with the branch deleted. The suite's NAT coverage drives TCP
-> over nc, and the merged SCTP test has no conntrack in the path, so
-> the SCTP branch goes unexercised.
-> 
-> Add test_sctp_nat_connect_v4: untracked client traffic to
-> 192.168.0.20:4443 hits ct(commit,nat(dst=172.31.110.20:5555)),recirc,
-> and the post-recirc flows match the translated tuple,
-> ipv4(dst=172.31.110.20),sctp(dst=5555). Reply traffic is matched on
-> the restored original tuple, sctp(src=4443). With the SCTP branch
-> broken the translated port never reaches the key, no post-recirc
-> flow matches, and the association fails. The probe flow uses the
-> same ct+nat action as the real flows, so a kernel without
-> CONFIG_NF_NAT rejects it at flow-add time and the test skips instead
-> of failing. The config fragment sets CONFIG_NETFILTER_ADVANCED=y so
-> CONFIG_NF_CT_PROTO_SCTP is visible, CONFIG_NF_CT_PROTO_SCTP=y, and
-> CONFIG_NF_NAT=m so the reference build actually has those pieces.
-> After the association succeeds the test pushes a known payload
-> across and waits for the listener to log it.
-> 
-> Signed-off-by: Minxi Hou <houminxi@gmail.com>
-> ---
->  .../testing/selftests/net/openvswitch/config  |  3 +
->  .../selftests/net/openvswitch/openvswitch.sh  | 93 +++++++++++++++++++
->  2 files changed, 96 insertions(+)
-> 
-Reviewed-by: Narcisa Vasile <narcisav.kernel@gmail.com>
+syzbot ci has tested the following series
 
+[v1] ipvs: fix infinite loop with ipvlan L3 from unconditional ipvs_property clear
+https://lore.kernel.org/all/20260924063312.1194019-1-chenguang.zhao@linux.dev
+* [PATCH net] ipvs: fix infinite loop with ipvlan L3 from unconditional ipvs_property clear
+
+and found the following issue:
+INFO: task hung in netdev_run_todo
+
+Full report is available here:
+https://ci.syzbot.org/series/b6478e5d-791e-4d72-8b8d-0fa748c90168
+
+***
+
+INFO: task hung in netdev_run_todo
+
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      e7e0a54300a896e731dffd3e2e8dae5631d6243d
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/9865431b-add2-4883-97e2-de4ec60d969e/config
+
+INFO: task syz-executor:31961 blocked for more than 144 seconds.
+      Not tainted syzkaller #0
+      Blocked by coredump.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor    state:D stack:26120 pid:31961 tgid:31961 ppid:1      task_flags:0x40054c flags:0x00080003
+Call Trace:
+ <TASK>
+ __schedule+0x17db/0x58f0
+ schedule+0x164/0x2b0
+ schedule_preempt_disabled+0x13/0x30
+ __mutex_lock+0x7c1/0x1550
+ rcu_barrier+0x4c/0x530
+ netdev_run_todo+0x2fc/0x1060
+ tun_chr_close+0x13c/0x1c0
+ __fput+0x418/0xa50
+ task_work_run+0x1d9/0x270
+ do_exit+0x73a/0x2360
+ do_group_exit+0x22d/0x2f0
+ get_signal+0x121b/0x12c0
+ arch_do_signal_or_restart+0xbb/0x860
+ exit_to_user_mode_loop+0x10e/0x770
+ do_syscall_64+0x328/0x520
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4b2cf9ddeb
+RSP: 002b:00007ffedfbd6b60 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: 0000000000000000 RBX: 00007ffedfbd6c10 RCX: 00007f4b2cf9ddeb
+RDX: 00007ffedfbd6be0 RSI: 00000000400454ca RDI: 00000000000000c8
+RBP: 00007f4b2d0359ad R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000008
+R13: 0000000000000003 R14: 00007ffedfbd6f08 R15: 0000000000000000
+ </TASK>
+
+Showing all locks held in the system:
+locks held by kworker/u8:1/13: 3, on CPU#1:
+ #0: ffff88817721b940 ((wq_completion)ipv6_addrconf){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc90000127c40 ((work_completion)(&(&net->ipv6.addr_chk_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #2: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: addrconf_verify_work+0x19/0x30
+locks held by khungtaskd/35: 1, last CPU#1:
+ #0: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180
+locks held by getty/5419: 2, on CPU#1:
+ #0: ffff88817a7b30a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70
+ #1: ffffc900027682e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x45a/0x1360
+locks held by kworker/u8:4/9945: 2, last CPU#1:
+ #0: ffff888177d09940 ((wq_completion)bat_events){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc90006db7c40 ((work_completion)(&(&bat_priv->tt.work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+locks held by kworker/u8:5/19085: 4, last CPU#1:
+ #0: ffff88817741f940 ((wq_completion)krds_cp_wq#12/0){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc90003a0fc40 ((work_completion)(&(&cp->cp_conn_w)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #2: ffff888169e6a180 (&tc->t_conn_path_lock){+.+.}-{4:4}, at: rds_tcp_conn_path_connect+0x1cc/0x920
+ #3: ffff888192303660 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: rds_tcp_tune+0x220/0x920
+locks held by kworker/u10:0/25329: 3, on CPU#1:
+ #0: ffff8881000ac140 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc9000418fc40 ((linkwatch_work).work){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #2: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: linkwatch_event+0xe/0x60
+locks held by kworker/0:1/27790: 7, last CPU#0:
+ #0: ffff88810006a940 ((wq_completion)events_long){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc9000141fc40 ((work_completion)(&(&br->gc_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #2: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: process_backlog+0x3de/0x18b0
+ #3: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: NF_HOOK+0x9e/0x3c0
+ #4: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: ip_route_output_key_hash+0xd8/0x2a0
+ #5: ffff888121028298 (hrtimer_bases.lock){-.-.}-{2:2}, at: __hrtimer_rearm_deferred+0x99/0x4b0
+ #6: ffffffff9aa29748 (&____s->seqcount#2){----}-{0:0}, at: __ip_vs_conn_in_get+0x2db/0x10f0
+locks held by syz.0.7664/31917: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
+locks held by syz.3.7666/31925: 1, on CPU#1:
+ #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
+locks held by syz.2.7668/31938: 1, on CPU#1:
+ #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
+locks held by syz-executor/31955: 1, on CPU#1:
+ #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
+locks held by syz-executor/31961: 1, on CPU#1:
+ #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
+locks held by kworker/u8:7/31997: 4, on CPU#1:
+ #0: ffff8881012d5940 ((wq_completion)netns){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #1: ffffc900079cfc40 (net_cleanup_work){+.+.}-{0:0}, at: process_scheduled_works+0x97a/0x1630
+ #2: ffffffff90244da8 (pernet_ops_rwsem){++++}-{4:4}, at: cleanup_net+0xf5/0x810
+ #3: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: ops_undo_list+0x28e/0x8d0
+locks held by syz-executor/31998: 1, on CPU#1:
+ #0: ffffffff8ed62b38 (rcu_state.barrier_mutex){+.+.}-{4:4}, at: rcu_barrier+0x4c/0x530
+locks held by syz-executor/32005: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
+locks held by syz-executor/32009: 1, last CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: tun_chr_close+0x3e/0x1c0
+locks held by syz-executor/32074: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30
+locks held by syz-executor/32077: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30
+locks held by syz-executor/32095: 2, last CPU#1:
+ #0: ffff88816f5b1d38 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x1a4/0x9f0
+ #1: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x29/0x240
+locks held by syz-executor/32096: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
+locks held by syz-executor/32103: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
+locks held by syz-executor/32108: 1, on CPU#1:
+ #0: ffffffff90253600 (rtnl_mutex){+.+.}-{4:4}, at: inet_rtm_newaddr+0x470/0x19f0
+locks held by syz-executor/32116: 2, last CPU#1:
+ #0: ffff88817a26d038 (&mm->mmap_lock){++++}-{4:4}, at: vm_mmap_pgoff+0x1dd/0x4e0
+ #1: ffffffff8ed5c8a0 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x29/0x240
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 35 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150
+ nmi_cpu_backtrace+0x274/0x2d0
+ nmi_trigger_cpumask_backtrace+0x17d/0x390
+ sys_info+0x135/0x170
+ watchdog+0xfd7/0x1030
+ kthread+0x38b/0x480
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 27790 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: events_long br_fdb_cleanup
+RIP: 0010:lock_acquire+0x232/0x350
+Code: ff ff ff e8 50 28 42 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 a2 e3 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 bf 2c 45 0a cc 48 8d 3d 67 4e da
+RSP: 0018:ffffc90000006dc0 EFLAGS: 00000296
+RAX: 32f582729c8e9900 RBX: 0000000000000000 RCX: 8000000000000100
+RDX: 00000000071bee9f RSI: ffffffff8e69ca38 RDI: ffffffff8c6da580
+RBP: ffff888112a39e00 R08: ffffffff8177f1df R09: 0000000000000000
+R10: ffffc90000006ef8 R11: ffffffff81b28790 R12: ffffffff8ed5c8a0
+R13: 0000000000000002 R14: 0000000000000000 R15: 0000000000000246
+FS:  0000000000000000(0000) GS:ffff88818d6cf000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000040 CR3: 000000000eb48000 CR4: 00000000000006f0
+Call Trace:
+ <IRQ>
+ unwind_next_frame+0xac/0x2550
+ arch_stack_walk+0x11b/0x150
+ stack_trace_save+0xa9/0x100
+ kasan_save_track+0x3e/0x80
+ __kasan_slab_alloc+0x6c/0x80
+ kmem_cache_alloc_node_noprof+0x354/0x610
+ __alloc_skb+0x1db/0x7a0
+ synproxy_send_client_synack+0x175/0xde0
+ nft_synproxy_eval_v4+0x362/0x4e0
+ nft_synproxy_do_eval+0x335/0x550
+ nft_do_chain+0x132b/0x1b10
+ nft_do_chain_ipv4+0x195/0x290
+ nf_hook_slow+0xc5/0x220
+ NF_HOOK+0x21f/0x3c0
+ NF_HOOK+0x336/0x3c0
+ process_backlog+0xa6b/0x18b0
+ __napi_poll+0xaa/0x330
+ net_rx_action+0x61d/0xf50
+ handle_softirqs+0x226/0x860
+ __irq_exit_rcu+0xcb/0x220
+ irq_exit_rcu+0x9/0x30
+ sysvec_apic_timer_interrupt+0xa6/0xc0
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:lock_acquire+0x232/0x350
+Code: ff ff ff e8 50 28 42 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 a2 e3 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 bf 2c 45 0a cc 48 8d 3d 67 4e da
+RSP: 0018:ffffc9000141faa0 EFLAGS: 00000296
+RAX: 32f582729c8e9900 RBX: 0000000000000001 RCX: 0000000000000046
+RDX: 000000004abe915d RSI: ffffffff8e69ca38 RDI: ffffffff8c6da580
+RBP: ffff888112a39e00 R08: ffffffff818f9aba R09: 0000000000000000
+R10: dffffc0000000000 R11: fffffbfff20f4830 R12: ffffc9000141fc40
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000246
+ process_scheduled_works+0xc03/0x1630
+ worker_thread+0xa47/0xfb0
+ kthread+0x38b/0x480
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
+
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
