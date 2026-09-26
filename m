@@ -1,127 +1,130 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678BE12C534;
-	Sat, 26 Sep 2026 04:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931C331EBA
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 04:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790396307; cv=none; b=OI7EZQ7GfxfpzPJXbYujbw0RXEIBYtKnBnXLIZ+8X1OEWiwap5YKzMHHn9RH4tHBQpLyAl8X9xR8y6LsL8yUtPPP4fs7Ozg8WJ2w5NqMzyugWGGQzBVlcdo4f86SKmD1xBYV24fQ42xtZD9CQVEHr0GWI3oHOxNwCBB2pTFqamw=
+	t=1790396317; cv=none; b=WR1np1r8zOQXq39NPQU+hYEJpK5P68rH3P0mfHlgfr99wwje6AYwtmLyTAI1hDhxTGyjxIm91vT2+PpBSasr/btfV2bq+w3KEetFgKRS1XZ/nA2/Rzr8zDXal/AJSQW2pmhUGjGzfPEEW4qB9zzaniep1vkjtT0vwnTtH+OwDME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790396307; c=relaxed/simple;
-	bh=PRfOzZrYIdg1BcLblrEwxtGq+g0dYvoRy7CknEd4ogo=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=cYuLvM5JGB1bqL6uDcKZ+gRqe0HNzNT/F8piveo82zR7vKGoaKm1iF4ZmYihGXnvPbXhkXgE6UTgGjYi8OrBPln3VP4/1YKTMnFOgGfwNAMhG9p38pruQHlr+UxF1ZgnrIl9P2rZTvviK9EaqhMsWXSrPWTFKKAxvEU2RVUqPZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Wtink7/2; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=NFXffhzp; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1790396317; c=relaxed/simple;
+	bh=MZfs4nEXdeDqMxE38XXWHbicj5wwFmjoRarpVvF3pPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uG/0E+IJYs7M98aqKw8sPuwEgRcNaa/kNqkxXmgszmhmWObS7xu336o3XnGo0P6yKbieSt9RuWfPAYQZaHHlaHiUprHvOSRiFiCr+LFDzjrJv+JEEhbDYt12bNidHv0OfyIAeib7KrqwCE4Fw++aTdFX94BdcuK5qXIU5V6lD8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W4JqDvXf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Wtink7/2";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="NFXffhzp"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68Q4HhaG012552;
-	Sat, 26 Sep 2026 06:17:49 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id DC322120F5D;
-	Sat, 26 Sep 2026 06:17:38 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1790396259; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAXY2biKxunPrl11EaBx+857E89xXyTGFogWVcbu66E=;
-	b=Wtink7/2uySDOMS/1vz1DLI9hL12TgbfnHvXobGaIVwMe0Dtp5JgRXcKh5YXezHrykKvXa
-	QhIGB4ZK5TN0FuCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1790396259; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAXY2biKxunPrl11EaBx+857E89xXyTGFogWVcbu66E=;
-	b=NFXffhzpK20XNzzwl2Eq2ABpFeFF759Ri0YEUqTa7tIKRdeIEo/+q4MZ9U47wuSysI+pWX
-	qeWWBvL+ucxc1fNQJM9w94gU+t+GOkhTmOBsN4nEhInEptjpV2nUILJxeyVf/FfbFPL9Yh
-	h8omKSN8kJqTBK0tNdJZebntsXp9ntiWhXfnNTfyedqIB4p6I+kZHzy4bplpFse3bLS8wG
-	BX4wVDE2WXLWRmiFNQw6WxtyubZddo31Afzypfv7FaFoEhFwteMdZ4e/l//NCJt/Er4XXB
-	ZEzITB5VXmwh/tdELLbYeQj5Hpnhz0Jwb4OSM1GLqEHu9CXgXL9LP/E/wQY06Q==
-Date: Sat, 26 Sep 2026 06:17:38 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        David Ahern
- <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        David Lebrun
- <david.lebrun@uclouvain.be>,
-        Ahmed Abdelsalam <amsalam20@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stefano.salsano@uniroma2.it,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net] seg6: fix HMAC validation when an extension header
- precedes the SRHA
-Message-Id: <20260926061738.25343ff4cf4ecd54e7f0750a@uniroma2.it>
-In-Reply-To: <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
-References: <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W4JqDvXf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446661F00899;
+	Sat, 26 Sep 2026 04:18:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790396315;
+	bh=ZBxgb9dmNUbf8TNnDurS62ON8qhkXQCIs58csoVRdFQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W4JqDvXfNjSDL/TFkiR50++uYr71EXrBywbk0P0+auw/TJlgQ4TMqG0eF0MB/Dsp1
+	 TY3aiOGIC1uzc3Ww8Qr5nKaKDvvc/B0f0IJ6WIGxZcrIddtpQlKKwxwSupJa335B1s
+	 Cv3DlwDrqX+tMPvwLXaE9pHKXjY887+BFWNyqXoHHl0qbVF9/M57GIj0+EpSgUbwAS
+	 REsGzerp0R2pex+Td1Ck6pTrBlDz+XSS3/i5QzXYePnKaYGxRz1cEwxI8H6v3QauZ/
+	 kmaSxrDb5ayN/hytSaR3jSL5cvjrF94O0XeNI7aoR8CZh0trIn4h4i8FXENdQIQ4Dt
+	 v2CnsTdjP3pHg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	sdf.kernel@gmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: [PATCH net-next v2 2/2] selftests: net: add test for netdev instance lock ordering on unregister
+Date: Fri, 25 Sep 2026 21:18:32 -0700
+Message-ID: <20260926041832.1649675-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260926041832.1649675-1-kuba@kernel.org>
+References: <20260926041832.1649675-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 23 Sep 2026 13:51:37 +0900
-Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
+Dismantle two netns holding a dummy and a netkit pair registered in
+opposite order. unregister_netdevice_many_notify() takes the instance
+locks of all the devices at once, nesting the two kinds of devices one
+way for the first netns and the other way for the second. With lockdep
+enabled this used to trigger a circular locking report.
 
-> seg6_hmac_validate_skb() derived the SRH from skb_transport_header().
-> That only holds while the two coincide, which is not true on the
-> seg6_local input path.
-> 
-> ip6_rcv_core() leaves the transport header just past the IPv6 header.
-> A Hop-by-Hop options header is consumed before the route lookup and
-> advances it, but a Destination Options header is not: the seg6_local
-> lwtunnel is entered through an input redirect from the route lookup,
-> which bypasses the extension header handlers. The transport header
-> then still points at the Destination Options header while
-> seg6_get_srh() has located the real SRH further down the chain.
-> 
-> The HMAC is therefore computed over the Destination Options header,
-> and a packet carrying a valid HMAC TLV is dropped when
-> seg6_require_hmac is set. Such a packet is legitimate: RFC 8200 allows
-> Destination Options before a routing header, and get_srh() has walked
-> the header chain since commit 5829d70b0b6c ("ipv6: sr: fix get_srh() to
-> comply with IPv6 standard "RFC 8200""). The misread header is covered
-> by the pskb_may_pull() in seg6_get_srh(), so the result is a wrong
-> verdict, not an out-of-bounds access.
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/testing/selftests/net/Makefile       |  1 +
+ tools/testing/selftests/net/netdev_lock.py | 42 ++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+ create mode 100755 tools/testing/selftests/net/netdev_lock.py
 
-Thanks for the patch.
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 3ee3378f8b26..d4ca82fec0b4 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -67,6 +67,7 @@ TEST_PROGS := \
+ 	nat6to4.sh \
+ 	ndisc_unsolicited_na_test.sh \
+ 	netdev-l2addr.sh \
++	netdev_lock.py \
+ 	netdevice.sh \
+ 	netns-name.sh \
+ 	netns-sysctl.sh \
+diff --git a/tools/testing/selftests/net/netdev_lock.py b/tools/testing/selftests/net/netdev_lock.py
+new file mode 100755
+index 000000000000..0015b987eb9d
+--- /dev/null
++++ b/tools/testing/selftests/net/netdev_lock.py
+@@ -0,0 +1,42 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++
++"""Tests for the netdev instance lock."""
++
++from lib.py import ksft_run, ksft_exit
++from lib.py import ip
++from lib.py import NetNS
++
++
++def test_unreg_order() -> None:
++    """Dismantle two netns holding the same two kinds of ops locked device,
++    registered in opposite order.
++
++    unregister_netdevice_many_notify() takes the instance lock of every
++    device in the batch and holds them all at once, so the two kinds end up
++    nested one way round for the first netns and the other way round for
++    the second.
++    """
++    with NetNS() as ns1, NetNS() as ns2:
++        net1, net2 = str(ns1), str(ns2)
++
++        ip("link add du0 type dummy", ns=net1)
++        ip("link add nk0 type netkit peer name nk1", ns=net1)
++
++        ip("link add nk0 type netkit peer name nk1", ns=net2)
++        ip("link add du0 type dummy", ns=net2)
++
++        # only devices which are up get locked during unregister
++        for net in (net1, net2):
++            for dev in ("du0", "nk0", "nk1"):
++                ip(f"link set {dev} up", ns=net)
++
++
++def main() -> None:
++    """Ksft boilerplate main."""
++    ksft_run([test_unreg_order])
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
+-- 
+2.55.0
 
-This patch also closes an out-of-bounds read that the commit message
-does not mention. The commit says the misread gives a wrong verdict,
-not an out-of-bounds access. That holds for Destination Options, which
-has the same length encoding as the SRH. A Fragment or an Authentication
-header is encoded differently, and a forged packet can put one before
-the SRH. The old code read that header at skb_transport_header() as an
-SRH, and seg6_get_tlv_hmac() computed the TLV pointer from its second
-byte. The pull in seg6_get_srh() covers only the bytes up to the end of
-the real SRH, and the TLV pointer can land past them. This runs before
-seg6_require_hmac is read, and the default configuration reaches it.
-
-Before this patch, a forged Fragment before the SRH toward an End SID
-faults in that read (KASAN, DEBUG_PAGEALLOC):
-
-  BUG: unable to handle page fault for address: ffff888106304078
-  RIP: seg6_hmac_validate_skb (net/ipv6/seg6_hmac.c:91 net/ipv6/seg6_hmac.c:192)
-   input_action_end_core.isra.0 (net/ipv6/seg6_local.c:225 net/ipv6/seg6_local.c:413)
-   seg6_local_input_core (net/ipv6/seg6_local.c:1640)
-   seg6_local_input (net/ipv6/seg6_local.c:1662)
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-Could the commit message also mention the out-of-bounds read?
-
-Ciao,
-Andrea
