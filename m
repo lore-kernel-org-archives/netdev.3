@@ -1,170 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE71838759C;
-	Sat, 26 Sep 2026 14:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D1C4052C4
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 15:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790431623; cv=none; b=XSlAWT40Htx+3S+YjKQjqn41zyzhBrJ5f+qu0RYyV/3Fhog+27p5birssAbMumZ6oo3RQi4W838/r/ya7vNwsvBthWZGLRYglB/mALMTi9OM5GdMGAiusmax6DCnbWhyq3Tekq/C4z+H0LLLZvM+uOCeEeeNDszOGnsGIj4OHFg=
+	t=1790436105; cv=none; b=hmegxqWIw+m8of3ry7A66lV/LI6FH+QJwkxBJ/Sqmq7zrSdcVKxhH0eVA8r2TL99pVeZhAM2CWmh7kQ4Vg6F5vruiq4xFUeIKXTyFw3+cFWWzT1qA9PJLkJvO8AYW6Sm/QOGbp3PhgeKWctx/FX4Cf0OiU2NrUcEZ4GGvi8QqKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790431623; c=relaxed/simple;
-	bh=ZGU/rJ293u2ZMYyBBxQPLyt2bBEUGW4wXCjoTuRkNnc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BvK7/YuzYMKhxsMFfAbjyOX++XkLm/D3RXZ+KWPpjeex84m6+Lz5yew5BOQjB6oufw0/F4oHtq59rPnzsP/QC/3iYZNYqzqgx4ejQtBdbxBr24r5Pmc1iOzf/CHSspIVMwaNZprallj0kJM6Upbg9LejZoHu6qRg84+IwheKlbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpMGSoWP; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpMGSoWP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9E71F000FF;
-	Sat, 26 Sep 2026 14:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790431621;
-	bh=eVCGTQLN6HPS8MK6pZrD0g0NKPJ0VZomA/xRahikd58=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cpMGSoWPyCjQ6HvOhi6LHLVgpfEizzfMFCNgj2lT55Z3wsJxNs1fWiT2tNnU8Wubd
-	 TojgZ2Xj49NXAeclQwLmHdb0uecsDQWlXra1jl6QUjzs7INufbfTn5T8Yq9kMt2k8A
-	 E9Mv88yWvfMiL+2sWwMOM4CEPBSfdsf5gLEorFlEpRNFD7Quy3SBMwHFK1woil9Qzy
-	 Kqxo/YQgUFLVemzK8rlqEx1vjydq54NL7I4xpAaV8OpODljqey2EraX2wg3sUHzytS
-	 Ds5ce8+DiKfuE6T2+emS9ogK0SWgt+1X9IUOZbRHH4qMwK5Ig7cTR+HZyDZgf/ixmT
-	 88z3z+a7IbEQg==
-Subject: Re: [PATCH net-next] net: lan969x: correct RGMII port mapping index
-From: netdev-bot+sashiko@kernel.org
-To: robert.marko@sartura.hr
-Cc: daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, luka.perkov@sartura.hr
-Date: Sat, 26 Sep 2026 14:06:59 +0000
-Message-ID: <179043161980.2160803.10954047128891020505@kernel.org>
-In-Reply-To: <20260922125112.2111256-1-robert.marko@sartura.hr>
-References: <20260922125112.2111256-1-robert.marko@sartura.hr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1790436105; c=relaxed/simple;
+	bh=0umEdwiL8pHccpdqd2wUgGrHwmhXMyTGQxPB/23fc2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FH38iyGcjYgc0nAVyLH9wmfpboqKV6NB3SKWrS6QLTUEmJ+a37oU6f/dQ0xkAFqVawL5gGOvtyaSvWda/92QO1BOE/bqwmEDeBeDiyPygPoPjtaimxjqyzhu9DGiHV3Q6VJAQkA4RTl1b+mcdG7nMhq1fHF8sK6zLLIeWhLKLX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: zesmtpgz8t1790436087t11894747
+X-QQ-Originating-IP: lOj93Et+AslTzArJ8F/+z6u0i9S4wSuteJ+XAzVqYrc=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 26 Sep 2026 23:21:24 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14288034212453184480
+EX-QQ-RecipientCnt: 12
+Date: Sat, 26 Sep 2026 23:21:24 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yaojun@mucse.com
+Subject: Re: [PATCH net-next v13 2/5] net: rnpgbe: Add basic TX packet
+ transmission support
+Message-ID: <E0433BAD8940027F+20260926152124.GA880591@nic-Precision-5820-Tower>
+References: <5CF5340DA3D4CE3C+20260920092622.345496-1-dong100@mucse.com>
+ <178998604523.2160803.309404195274642417@kernel.org>
+ <20260925160705.GQ13925@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260925160705.GQ13925@horms.kernel.org>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: NMaN42BznLNVZKtCsvqOL87ALy0xN43izqeCuNW1Y2KhIxOmN32OUntH
+	mN7mNnZIKdotf9v/QEFmpOgftTM1vK9E1JpKGLUsuir5u8E7DXy4esBUVL/+PQavbLD5Nzb
+	9iCPTzFTJuEjbK+YiCLP+fxnonGbiQApbGk+aXbm5un31LdaPxk7CdtwtxcNSyLJqR1AgK5
+	k2/CzS/UK+GlxTyaj0TDd2/vy/q+zIH9nBRqrAQJuEosAmEcOXC+UXDiFnAmU//TfcvFed1
+	/kbR7SntG9tj0W5McTIwjLu8MTOQaFXWd408jhaUSAiAZiyFhcOoP2GU+8u7ez8dojONelR
+	4KRWxqrLJoj+mFyj0/FPZgLcbZC4bmd7sScJmC2U4UwwzfUVKi62Y0yQv9sVZEFmtbUggOK
+	7d+GMxEpZw23HCnSyyOib9clb6OtRomEAJQWErcnDq719u0MoUZh+07WKTmpCQYBshtCxoe
+	/RwYIWVk6WAiC3mF+PM9/zdFjqNcOKnDVbAx1lrnnJGQfpp8kA9jp/Ky0fvk2Afq9mm6OZc
+	fgslnwM1+yfMkeeOEkW/YuSWgOBcwKx+ixlvfkbetVcFqapQUSKr5q1v1VKm2S2U3fuOJFL
+	SbGj0TUw0UNmyBFF0YKil0lZD0OrckPlkhnDi4p9vz63djW5AnPH1fs4WvdVKakHXd0D5ty
+	Cglmz4IizHBBbxV0NeCCJ3hUlUjcRDl/7+8MubZd/U1fqF4nyGBurDucx84iaXeFyOwFigM
+	sOMfPpLH67a6UO9ff36auwXDnZ7TmvL2lAsLQnUxiTt40gw1v6PzMpqDAOlH4CpohRhapiF
+	Zw6jtx+w529ohc8aeziozEft5KYlO4aPfm/TSa8lK2Zhzjj7mLuR+eL+69X34SX8ixiNbPM
+	tPnu/Sj74Nb385sZvfDk3430OlCCOU/Foc7PupM7hbtX1JQDc9uTZXm73+NLKrV4CS66MG5
+	CsVhgTVVzCUI4jTet8Aaq72FzNNfW4BFT8Pf05x2u/AOlX95A5b3L1oZtPSRwTaBwOgy8Fi
+	T1gEOoORk5mIdMcFyFdb+9Jt5js2fjmcpDHGbE+wPmIblGJHam3sxzcg4TolP95V1w6SE3+
+	Q==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Fri, Sep 25, 2026 at 05:07:05PM +0100, Simon Horman wrote:
+> On Mon, Sep 21, 2026 at 10:20:45AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 5 potential
+> > issue(s) to consider.
+> > 
+> > Critical: 0 · High: 0 · Medium: 2 · Low: 3
+> > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
+> 
+> Hi Dong,
+> 
+> There is an expectation that the patch author responds to these
+> AI-generated reviews as described above.
+> 
+> In order to move things along I'll provide some feedback on this one
+> (but not the other's for this patchset).
+> 
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Thanks for the heads‑up and your feedback.
+I will fix the issues and send out a revised version for this patchset.
+Starting from the next submission, I will respond promptly to AI‑generated reviews.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net: lan969x: the patch does not achieve its stated purpose —
-  the new DEVRGMII instance index it returns is never paired with…
-
---
-
-net: lan969x: correct RGMII port mapping index
-
-This adds an RGMII case to lan969x_port_dev_mapping() so that ports 28 and
-29 return DEVRGMII instance indices 0 and 1 instead of the physical port
-number. The helper is installed as sparx5_ops::get_port_dev_index and is
-read through sparx5_port_dev_index().
-
-> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> index f3a9c71bea36a..bf5320c7a6ca8 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> @@ -142,6 +142,15 @@ static u32 lan969x_get_dev_mode_bit(struct sparx5 *sparx5, int port)
->  
->  static u32 lan969x_port_dev_mapping(struct sparx5 *sparx5, int port)
->  {
-> +	if (lan969x_port_is_rgmii(port)) {
-> +		switch (port) {
-> +		case 28:
-> +			return 0;
-> +		case 29:
-> +			return 1;
-> +		}
-> +	}
-> +
-
-[Severity: High]
-
-Can this new index ever reach DEVRGMII register space?  The value returned
-by lan969x_port_dev_mapping() is only read through sparx5_port_dev_index()
-and is always combined with a target coming from sparx5_to_high_dev() or
-sparx5_to_pcs_dev(), and neither of those has an RGMII case:
-
-drivers/net/ethernet/microchip/sparx5/sparx5_port.h:
-static inline u32 sparx5_to_high_dev(struct sparx5 *sparx5, int port)
-{
-	const struct sparx5_ops *ops = sparx5->data->ops;
-
-	if (ops->is_port_5g(port))
-		return TARGET_DEV5G;
-	if (ops->is_port_10g(port))
-		return TARGET_DEV10G;
-	return TARGET_DEV25G;
-}
-
-So for lan969x ports 28 and 29 the target stays TARGET_DEV25G (or
-TARGET_PCS25G_BR), never TARGET_DEVRGMII.
-
-The base then comes from an unchecked array index:
-
-drivers/net/ethernet/microchip/sparx5/sparx5_main.h:spx5_inst_get() {
-	return sparx5->regs[id + tinst];
-}
-
-With the new index that is regs[TARGET_DEV25G + 0] and
-regs[TARGET_DEV25G + 1].  The lan969x iomap in lan969x_main_iomap[] has no
-TARGET_DEV25G or TARGET_PCS25G_BR entries at all, so both slots are NULL.
-Before the patch, index 28 resolved to regs[TARGET_DEV25G + 28], which
-lands on a mapped (though unrelated) DEV2G5 base.
-
-Does that mean the commit message claim
-
-    So, check if requested port index is an RGMII port and return the correct
-    DEVRGMII index.
-
-is not reflected in any code path, since no consumer pairs this index with
-TARGET_DEVRGMII?
-
-The real DEVRGMII and HSIO_WRAP accesses compute the instance locally and do
-not use this helper:
-
-drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_rgmii.c:
-#define RGMII_PORT_IDX(port) ((port)->portno - LAN969X_RGMII_PORT_START_IDX)
-
-used by lan969x_rgmii_port_device_config(), lan969x_rgmii_tx_clk_config(),
-lan969x_rgmii_delay_config() and lan969x_rgmii_gpio_config().  Should the
-two sources of the same index be folded into one helper instead?
-
-There is also a latent NULL __iomem base introduced here.  In
-sparx5_port_init() the devinst and pcsinst pointers are computed for RGMII
-ports too:
-
-	devinst = spx5_inst_get(sparx5, devhigh, pix);
-	pcsinst = spx5_inst_get(sparx5, pcs, pix);
-	...
-	if (ops->is_port_rgmii(port->portno))
-		return 0; /* RGMII device - nothing more to configure */
-
-They are now NULL rather than a mapped base, and only the is_port_rgmii()
-early return keeps them from being dereferenced.  The other consumers of the
-pair are gated by unrelated conditions today: sparx5_port_max_tags_set()
-runs only after that early return, sparx5_port_disable() and
-sparx5_port_pcs_high_set() are reached via sparx5_pcs_config() where
-sparx5_phylink_mac_select_pcs() returns NULL for RGMII interface modes, and
-the ethtool device stat paths are gated by
-sparx5_is_baser(port->conf.portmode).  Would it be safer to also teach the
-target selection side about RGMII, for instance returning TARGET_DEVRGMII
-for is_port_rgmii() ports, so the index and the target stay consistent?
-
-If this is intended as preparatory work for a later change, could the commit
-message say so and name the dependent patch?  A Fixes: tag also seems to be
-missing for the addressing bug the changelog describes.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922125112.2111256-1-robert.marko%40sartura.hr
+> > 
+> > [Severity: Medium]
+> > Should the return value of dma_set_mask_and_coherent() still be checked
+> > here? The previous code aborted probe and printed "No usable DMA
+> > configuration, aborting", and dma_set_mask_and_coherent() is a plain static
+> > inline int with no __must_check, so a failure is now completely silent.
+> > 
+> > If dma_supported() rejects a 56-bit mask, neither the streaming nor the
+> > coherent mask is changed, the device keeps the PCI core's 32-bit default,
+> > and probe continues through pci_request_mem_regions() to register_netdev().
+> > 
+> > The dma_get_mask() test above keeps highmem frags away by not setting
+> > NETIF_F_HIGHDMA, but it does not cover the linear-data mapping in
+> > rnpgbe_tx_map():
+> > 
+> > 	dma = dma_map_single(tx_ring->dev, skb->data, size,
+> > 			     DMA_TO_DEVICE);
+> > 	...
+> > 	if (dma_mapping_error(tx_ring->dev, dma))
+> > 		goto err_unmap;
+> > 
+> > nor the descriptor allocation in rnpgbe_setup_tx_resources():
+> > 
+> > 	tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size, &tx_ring->dma,
+> > 					   GFP_KERNEL);
+> > 
+> > So every frame whose linear data sits above 4GB would be dropped with only
+> > the private per-ring dropped counter moving and no kernel message.
+> > 
+> > The commit message says only:
+> > 
+> >   "Configure streaming and coherent DMA masks for the hardware's 56-bit
+> >   DMA addressing capability."
+> > 
+> > Could it also state that a DMA configuration failure is now non-fatal and
+> > unreported, or could the check and the error path be restored?
+> > 
+> > The call is still unchecked at the end of the series, so no later patch
+> > covers this.
+> 
+> I wonder if this is a side-effect of the development of this patch-set.
+> It does look like a regression that should be addressed in this patch.
+> 
+I left the return value unchecked because Documentation/core-api/dma-api-howto.rst
+states that dma_set_mask_and_coherent() does not fail for masks wider than 32 bits.
+And feedback for other patches point this out:
+https://lore.kernel.org/netdev/20260814123330.4b8056f5@kernel.org/
+So maybe uncheck the return of dma_set_mask_and_coherent here is ok? Or
+I should check the return?
+> -- 
+> pw-bot: changes-requested
+> 
