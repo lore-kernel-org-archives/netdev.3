@@ -1,43 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825BA3009CB
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 04:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8867C348C4A
+	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 05:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790396317; cv=none; b=HO4U+SarLvvQhFdIcdYw/bBeRJaSW/Cp1UbfW0Z8Iy2U6eLD+o7ZujwNG20jMWvhba/Y1HH/wCg+SxPgPkv6wgV0KJROhQvbDFT4I7ornmoj4gTGB5py1OVcjbbKfzFOMh+USXNnsPo0lpKveJ2NiMKWRcdO09nANeybvxkYA64=
+	t=1790401210; cv=none; b=jVScLxaHYzR7faTOoJD7thuA4Tjdm3pTHPCxOD2vMnV1g03hOouCr+mGZkvjDMTwAVbfq5K0N6V9RSCCoY5VCGjyEMpbR3gOWxMH/LptTkZhGAl837IMxcBNwYOfMe1hfy4ZoTPv3piy1MOMDF//EQNeymietnCaEc/m6S5hL/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790396317; c=relaxed/simple;
-	bh=6163441ET3yyIzOWPWSgOmjN0Hkq1BbrG+OBGsE2hYs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXH2jMBblbnXPPJCzv0N1YjmATwOuWq8hkZbUVekU/kbXVdJihYwGE2XLIdBAM6fQV/DBJGBJBqjy+68X4YCjRzCeVv0r4Dd51JADIccS8j2UJRw6nPautlt/7K2wRfRESkZeDLSohTRDXys1WH8Eydz7yHhpfOpew+OqyMUedI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQURgEfG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790401210; c=relaxed/simple;
+	bh=HbE8bRzC3Goxq4kk8a/U3awPlEBLYj8peqtDmlNZCg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S9U9PKk4dvCVNh0lmWIR7VpRUxxSzAGPBptC0YuRvDhJYlsnMA1p77hFqda2m3wyZFrN0abBdnJH1mWVMLtSrd8frScBgZwkbqcyy/NRcz0Mjiuz+JOY/1CC/aMqDdRwG0XEjc3R/yGVK9XqfP8uDiSW8jbTAuap1N1NmgrARPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQbjL4fZ; arc=none smtp.client-ip=74.125.227.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQURgEfG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCFA1F000FF;
-	Sat, 26 Sep 2026 04:18:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790396315;
-	bh=nG74P4tQ+WrvmnkrqlBz4JJ0/5OSaeGohakSC5abLq4=;
-	h=From:To:Cc:Subject:Date;
-	b=FQURgEfGWk4MRVDgxDkwhEql1oXy9xcniws3UJ2Lcv70ebMFsvwY7SlJQ2oEkm9OW
-	 pMgWk/ecUUXYp7u1Ix3iJIS4K3G4EF41eb7SARRRKZHPWm9TH+SSXjVDzgT75prBmh
-	 y9VsnigdZTYD/RZuZNsgK0Pr47kr4LYtsMTwjudwNMh40uQyQRaW8Z02n8s0zOn/z5
-	 qPn4iRaQKCkcfxvZLotVr13SYJU45qcOG9W9jzxiLLf1kU6NNNrVoQytItpIftwuKn
-	 800y54tuMviY5IvNH1hYYEsP19ij0SyJ864kTj6FcS52nMckT17MqhHlMlWcoE+hq6
-	 tNpISY4OAa1vg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sdf.kernel@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 1/2] net: use two lockdep classes for the netdev instance lock
-Date: Fri, 25 Sep 2026 21:18:31 -0700
-Message-ID: <20260926041832.1649675-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQbjL4fZ"
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0c52f9a45so788796a91.1
+        for <netdev@vger.kernel.org>; Fri, 25 Sep 2026 22:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790401208; x=1791006008; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/LOtpyVE9/QTeVfm3A+dR0c7jnfkvZnCHDHej3iEpao=;
+        b=CQbjL4fZG0bQdK6PdSMYy4WllTuc5QowzGNl8qeixG/vS9Sg7bmO82W7+FHU2ubkcP
+         01Vv1vi5ueo4+ou0bod5rN2tezH1Si+E7z0QpQX1jdJf75tw9yZRsorfQaShCn4eq3hp
+         iZAHP856fgojfimLaakg+ubQWoR7TAxoLDgJE3PLDuFcEGjLGFWSXVKr2qXbTSNshh73
+         vmNQmRwTUbUTBCVkhuXYiikbiAReQSdUSuOTCpj4IaDXfMJUFJoVo6SzZlGfVYw32awE
+         YMQbZ5HcVJV2c6BJ8R0o5SeBwIIyiTXH0K5bdxgPnS8TqDMm6zRdphZDgNMYo0Kk4Nj6
+         GzvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790401208; x=1791006008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/LOtpyVE9/QTeVfm3A+dR0c7jnfkvZnCHDHej3iEpao=;
+        b=01O8JUphn2SCzClFOf5gYsf7AE9M7iQ8NKlZ7iNPuD4tI7CwUjVIVUcBHZ5ao+Zc6V
+         QdJBc371+lDQGw5zlwCVHMBY9OEwgF3pQnchNx4BjtHRjdcOgxRgMlc9LXiBH6C/ncJi
+         X87ylvOqVZdn8n0vpo3Fz8CPtI7gl/vvK7iM7+DZZRRSJrXAs1hPsvSHLgSW6sPYIzcL
+         DD0S61gvVAScefamhPTN6quEz/nKa9EkJfKs8ESZErzoOFYWUx2iAXs/q93HGeWwzhN0
+         soiYg+XCJdC5h2x03qP8vr9lgYvORTLLb9/xy4uA5fk3ajwIk0M8bozUqsVuDVpo0+Sk
+         ejIA==
+X-Forwarded-Encrypted: i=1; AKwUvBz5OYwF5z5CuFyXzedkicMFmzkWtXU3vHyvTvh2dG6fWn004oeenFMrNJLLpWnzQEaG3dH4Ud4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lsCEUnKTSXoS6gaM33fOmNZ67TU0mPOgxrp2lCKTRSQul90H/O
+	2I4Tsk5CwXl0wa4Ns8gzjrjrVyCuQTlKHDifwGndIe3yYG8x+VG8Dlho
+X-Gm-Gg: AYBFou0rJqzlP56mcPUqTUqkeie1+WTsRhRaBPAI/2g1kqlG1vLbXrPe3FBkMhafNCQ
+	vGruOyM9AbCJRfwcSTD5PgyHc8le9SXs8sJzn8SSEqtjZ6nivAlBMZWLEQd72J6N5uaflPa4Bys
+	VmzTJCljQ2Ycdmawysz0vbxIXWcfBGaCec7SgbccpwcYnf0ezdCOlZb5MztFJvsfErB3pbuVEM7
+	YpMfVMtSUB8CdpjAY1JGpwxJ4cr3o4upDiTGY8dygngNl36gaH0LToPwnl6ksiNcwgTdP05DgCZ
+	KLJEvDmBvFdJWIwPnr5i92LEk7A9F0r/QOWgWMmR1EpjY+CyAq9q2JGpqE3FSgWoiiiBhbmbmDo
+	OR2RhMexAWjkaJZZmHXFvhIDai9X61dwM1Xaco6hQWfvGYHyWBiKH2uV3kJIPM6uIk8/XhJSeqY
+	mLiE09NIzZckXRB+Rgx9/Qy3fIvtlYMKlSUCXnj4Z5W4Ff9oiJdZvKOGvrYRC5JcMaqKktTumKM
+	mnsk5tQSzVvdAI4dTAtzi5NRTb0GkDrD4vTr4p6Ev0/K0XTHUIfe0MybEPAslTxsm3B1lC7L48I
+	mLAr6rVaqYwhznyZtVa1GM25IMqCtT5DmUSrzA==
+X-Received: by 2002:a17:90b:2748:b0:3a0:8a9e:1212 with SMTP id 98e67ed59e1d1-3a0985700bdmr5517140a91.7.1790401207720;
+        Fri, 25 Sep 2026 22:40:07 -0700 (PDT)
+Received: from dell-pro-max-tower-t2.cse.unsw.EDU.AU (pag-t2-pc.cse.unsw.EDU.AU. [129.94.173.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976c7435sm14789739a91.11.2026.09.25.22.40.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 22:40:05 -0700 (PDT)
+From: Weigang He <geoffreyhe2@gmail.com>
+To: Madalin Bucur <madalin.bucur@nxp.com>
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Weigang He <geoffreyhe2@gmail.com>
+Subject: [PATCH net] fsl/fman: validate the port id in fman_set_port_params()
+Date: Sat, 26 Sep 2026 15:39:57 +1000
+Message-ID: <20260926053957.1628730-1-geoffreyhe2@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,232 +81,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-netdev_lockdep_set_classes() puts dev->lock in a separate lockdep class,
-by type (netkit vs dummy etc), with the intent of keeping the instance
-locks of individual devices as independent from each other as possible.
-In practice it does the opposite. lockdep only calls the cmp_fn for locks
-of the same class, so netdev_lock_cmp_fn() never gets a say when devices
-from different classes are nested. Instead lockdep records a dependency
-between the classes, and reports a circular locking problem as soon as
-the nesting happens the other way round, e.g. when devices are unregistered
-in a batch.
+fman_set_port_params() uses the port id, which comes from the device
+tree "cell-index" property, to index fixed-size tables without
+validating it:
 
-  ======================================================
-  WARNING: possible circular locking dependency detected
-  7.3.0-rc3+ #26 Not tainted
-  ------------------------------------------------------
-  kworker/u256:1/326 is trying to acquire lock:
-  ff110000104fce28 (&dev_instance_lock_key#6){+.+.}-{4:4}, at:
-  unregister_netdevice_many_notify+0x1141/0x1c30
+	set_port_liodn(fman, port_id, fman->liodn_base[port_id],
+		       fman->liodn_offset[port_id]);
+	...
+	mac_id = hw_port_id_to_sw_port_id(fman->state->rev_info.major, port_id);
+	if (port_params->max_frame_length >= fman->state->mac_mfl[mac_id]) {
+		fman->state->port_mfl[mac_id] = port_params->max_frame_length;
 
-  but task is already holding lock:
-  ff110000127f2e28 (&dev_instance_lock_key#7){+.+.}-{4:4}, at:
-  unregister_netdevice_many_notify+0x1141/0x1c30
+liodn_base[] and liodn_offset[] have FMAN_LIODN_TBL (64) entries, and
+set_port_liodn() also accesses fmbm_spliodn[port_id - 1]. mac_mfl[] and
+port_mfl[] have MAX_NUM_OF_MACS (10) entries, but
+hw_port_id_to_sw_port_id() maps, for example, RX port id 0x12 to 10 and
+TX port id 0x3f to 23. fman_port_probe() truncates the property to a u8
+and does not otherwise check it, so a device tree with a bad cell-index
+can cause out-of-bounds accesses.
 
-  -> #1 (&dev_instance_lock_key#7){+.+.}-{4:4}:
-         __lock_acquire+0x767/0xd60
-         lock_acquire.part.0+0xd0/0x260
-         __mutex_lock+0x17d/0x1f20
-         unregister_netdevice_many_notify+0x1141/0x1c30
-         default_device_exit_batch+0x3ee/0x520
-         ops_undo_list+0x2cc/0x8a0
-         cleanup_net+0x442/0x9c0
-         process_one_work+0x951/0x1ab0
-         worker_thread+0x5a6/0xd10
-         kthread+0x339/0x430
-         ret_from_fork+0x4a4/0x6f0
-         ret_from_fork_asm+0x1a/0x30
+Reject a port id of 0, a port id outside the LIODN table, and a port id
+that does not map to a MAC, before any state or register is changed. A
+cell-index above 0xff that aliases a valid id after the u8 truncation
+is not caught here.
 
-  -> #0 (&dev_instance_lock_key#6){+.+.}-{4:4}:
-         check_prev_add+0xeb/0xe60
-         validate_chain+0x598/0x900
-         __lock_acquire+0x767/0xd60
-         lock_acquire.part.0+0xd0/0x260
-         __mutex_lock+0x17d/0x1f20
-         unregister_netdevice_many_notify+0x1141/0x1c30
-         default_device_exit_batch+0x3ee/0x520
-         ops_undo_list+0x2cc/0x8a0
-         cleanup_net+0x442/0x9c0
-         process_one_work+0x951/0x1ab0
-         worker_thread+0x5a6/0xd10
-         kthread+0x339/0x430
-         ret_from_fork+0x4a4/0x6f0
-         ret_from_fork_asm+0x1a/0x30
+Found by static analysis tool CodeQL.
 
-   Possible unsafe locking scenario:
-
-         CPU0                    CPU1
-         ----                    ----
-    lock(&dev_instance_lock_key#7);
-                                 lock(&dev_instance_lock_key#6);
-                                 lock(&dev_instance_lock_key#7);
-    lock(&dev_instance_lock_key#6);
-
-   *** DEADLOCK ***
-
-  locks held by kworker/u256:1/326: 6, last CPU#6:
-   #0: ff11000001c2b540 ((wq_completion)netns){+.+.}-{0:0}, at:
-  process_one_work+0x117c/0x1ab0
-   #1: ffa0000001a3fd18 (net_cleanup_work){+.+.}-{0:0}, at:
-  process_one_work+0x8ce/0x1ab0
-   #2: ffffffff98f53288 (pernet_ops_rwsem){++++}-{4:4}, at:
-  cleanup_net+0xc1/0x9c0
-   #3: ffffffff98f6ede0 (rtnl_mutex){+.+.}-{4:4}, at:
-  default_device_exit_batch+0x92/0x520
-   #4: ff1100001321ae28 (&dev_instance_lock_key#7){+.+.}-{4:4}, at:
-  unregister_netdevice_many_notify+0x1141/0x1c30
-
-We can't put all devices in the same class, that'd be too permissive.
-netdev_nl_queue_create_doit() and netdev_nl_bind_tx_doit() lock
-a virtual device (netkit) before a physical device, without rtnl_lock.
-We can never allow locking in the opposite order even under rtnl_lock.
-cmp_fn cannot enforce this sort of rule: lockdep keys its chain cache on
-the sequence of lock classes, so with a single class both orders hash
-to the same chain and only whichever happens first is validated.
-
-netdev_lock_cmp_fn() itself has another source of false-negatives.
-lockdep calls it from within __lock_acquire(), with the recursion counter
-already raised, so lock_is_held_type() always returns LOCK_STATE_UNKNOWN,
-which means lockdep_rtnl_is_held() always returns true / held.
-Use rtnl_is_locked(), which looks at the mutex directly and does
-work from that context. We may still miss a bad case if some other
-process is holding the lock, not us, but that's better than the
-100% false negative rate of lockdep_rtnl_is_held().
-
-One last thing, lockdep compares the address of the cmp function,
-so it can't be a static inline - that would work similarly to having
-separate classes, again. Move it to a source file.
-
-Tested by nesting two instance locks from a module, one scenario per boot
-since the first splat turns debug_locks off:
-
-  first       second      rtnl      reported
-  -----------------------------------------------------------
-  virt->virt              no        recursive locking
-  virt->virt              yes       -
-  virt->phys              no        -
-  virt->phys              yes       -
-  phys->virt              no        - (records the edge)
-  phys->virt              yes       - (records the edge)
-  phys->phys              no        recursive locking
-  phys->phys              yes       -
-  virt->phys  phys->virt  no, no    circular dependency
-  virt->phys  phys->virt  no, yes   circular dependency
-  virt->phys  phys->virt  yes, no   circular dependency
-  virt->phys  phys->virt  yes, yes  circular dependency
-  phys->virt  virt->phys  no, no    circular dependency
-  phys->virt  virt->phys  yes, yes  circular dependency
-  virt->virt  virt->virt  yes, no   recursive locking
-  phys->phys  phys->phys  yes, no   recursive locking
-
-(netkit and dummy stood in for the virtual devices, virtio_net and
-netdevsim for the physical ones.)
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
+Assisted-by: LLM codeql
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 ---
-v1: https://lore.kernel.org/20260923223545.3815583-1-kuba@kernel.org
----
- include/net/netdev_lock.h | 20 +++-----------------
- net/core/dev.c            | 37 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/netdev_lock.h b/include/net/netdev_lock.h
-index 9fb3e93857c3..edd8cc2e2b36 100644
---- a/include/net/netdev_lock.h
-+++ b/include/net/netdev_lock.h
-@@ -110,34 +110,20 @@ static inline int netdev_is_locked_ops_compat(const struct net_device *dev)
- 	return lockdep_rtnl_is_held();
- }
+Notes:
+    Compile-tested only (ARCH=arm64 and ARCH=x86_64 allmodconfig, W=1). Not
+    tested on hardware, and there is no reproducer.
+    
+    The CodeQL query behind this report was synthesized with LLM assistance,
+    and the fix and changelog were drafted with LLM assistance; I have
+    reviewed them.
+
+ drivers/net/ethernet/freescale/fman/fman.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index 46cc28895e565..e25050189b1f3 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -2103,6 +2103,18 @@ int fman_set_port_params(struct fman *fman,
+ 	unsigned long flags;
+ 	u8 port_id = port_params->port_id, mac_id;
  
--static inline int netdev_lock_cmp_fn(const struct lockdep_map *a,
--				     const struct lockdep_map *b)
--{
--	if (a == b)
--		return 0;
--
--	/* Allow locking multiple devices only under rtnl_lock,
--	 * the exact order doesn't matter.
--	 * Note that upper devices don't lock their ops, so nesting
--	 * mostly happens in batched device removal for now.
--	 */
--	return lockdep_rtnl_is_held() ? -1 : 1;
--}
-+void netdev_set_instance_lock_class(struct net_device *dev);
- 
- #define netdev_lockdep_set_classes(dev)				\
- {								\
- 	static struct lock_class_key qdisc_tx_busylock_key;	\
- 	static struct lock_class_key qdisc_xmit_lock_key;	\
- 	static struct lock_class_key dev_addr_list_lock_key;	\
--	static struct lock_class_key dev_instance_lock_key;	\
- 	unsigned int i;						\
- 								\
- 	(dev)->qdisc_tx_busylock = &qdisc_tx_busylock_key;	\
- 	lockdep_set_class(&(dev)->addr_list_lock,		\
- 			  &dev_addr_list_lock_key);		\
--	lockdep_set_class(&(dev)->lock,				\
--			  &dev_instance_lock_key);		\
--	lock_set_cmp_fn(&dev->lock, netdev_lock_cmp_fn, NULL);	\
-+	if (IS_ENABLED(CONFIG_PROVE_LOCKING))			\
-+		netdev_set_instance_lock_class(dev);		\
- 	for (i = 0; i < (dev)->num_tx_queues; i++)		\
- 		lockdep_set_class(&(dev)->_tx[i]._xmit_lock,	\
- 				  &qdisc_xmit_lock_key);	\
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f660fccfc0db..a8eb382f40ca 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -568,6 +568,41 @@ static inline void netdev_set_addr_lockdep_class(struct net_device *dev)
- }
- #endif
- 
-+#ifdef CONFIG_PROVE_LOCKING
-+static int netdev_lock_cmp_fn(const struct lockdep_map *a,
-+			      const struct lockdep_map *b)
-+{
-+	if (a == b)
-+		return 0;
-+
-+	/* @a and @b must be of same class - both virtual or physical.
-+	 * cmp_fn won't be called for devices of different classes.
-+	 *
-+	 * For the same class only allow nesting under the protection
-+	 * of rtnl_lock. Note that we can't use lockdep_rtnl_is_held()
-+	 * here, it always answers UNKNOWN from within lockdep.
++	/*
++	 * port_id comes from the device tree: reject ids outside the LIODN
++	 * table and ids that do not map to a MAC.
 +	 */
-+	return rtnl_is_locked() ? -1 : 1;
-+}
++	mac_id = hw_port_id_to_sw_port_id(fman->state->rev_info.major, port_id);
++	if (port_id == 0 || port_id >= FMAN_LIODN_TBL ||
++	    mac_id >= MAX_NUM_OF_MACS) {
++		dev_err(fman->dev, "%s: invalid port id %u\n", __func__,
++			port_id);
++		return -EINVAL;
++	}
 +
-+/* A virtual device can be locked before the physical device it leases
-+ * queues from, see netdev_nl_queue_create_doit(). Keep the two kinds
-+ * in separate classes so the dependency graph enforces the order;
-+ * netdev_lock_cmp_fn() then only has to rule on same-class nesting.
-+ */
-+void netdev_set_instance_lock_class(struct net_device *dev)
-+{
-+	static struct lock_class_key netdev_virt_instance_lock_key;
-+
-+	if (dev->dev.parent)
-+		return;
-+
-+	lockdep_set_class(&dev->lock, &netdev_virt_instance_lock_key);
-+	lock_set_cmp_fn(&dev->lock, netdev_lock_cmp_fn, NULL);
-+}
-+EXPORT_SYMBOL_GPL(netdev_set_instance_lock_class);
-+#endif
-+
- /*******************************************************************************
-  *
-  *		Protocol management and registration routines
-@@ -12183,6 +12218,8 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
- #endif
+ 	spin_lock_irqsave(&fman->spinlock, flags);
  
- 	mutex_init(&dev->lock);
-+	/* see also netdev_set_instance_lock_class() */
-+	lock_set_cmp_fn(&dev->lock, netdev_lock_cmp_fn, NULL);
- 	netif_rx_mode_init(dev);
+ 	err = set_num_of_tasks(fman, port_params->port_id,
+@@ -2170,8 +2182,6 @@ int fman_set_port_params(struct fman *fman,
+ 	if (fman->state->rev_info.major < 6)
+ 		set_port_order_restoration(fman->fpm_regs, port_id);
  
- 	dev->priv_flags = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;
+-	mac_id = hw_port_id_to_sw_port_id(fman->state->rev_info.major, port_id);
+-
+ 	if (port_params->max_frame_length >= fman->state->mac_mfl[mac_id]) {
+ 		fman->state->port_mfl[mac_id] = port_params->max_frame_length;
+ 	} else {
+
+base-commit: 165768bb70265b5c38cf0b73fafd75be235f8b14
 -- 
-2.55.0
+2.43.0
 
