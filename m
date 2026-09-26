@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE388359A9B;
-	Sat, 26 Sep 2026 02:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC40E368D4C;
+	Sat, 26 Sep 2026 02:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790390097; cv=none; b=PsbaukrL26b5A1noIoDZa46FbYRScTfqFr9GlCApvnWShvN0yFWLwobmm1hQu3Ivjen7jaAz6V89mezlvtZwGcY6tAfbkcsmvZkIg50/Fa8eDE00NQFQpsmQ7sk9ZQvbXIVuy8Scf/KSy1WvMsM8I75vIGaRgauQicNhefZ6YSQ=
+	t=1790390098; cv=none; b=SwpyOX7yxeQHULORlHJxJaOfc/Mquk1l/3SF/mZ/c++DkABAk3pYGb/mOubs8ChLunhv0n7mwSYBBcq932mfsuE6Gvp2GxRFwYt+fPfEgLMC/TzynuE0dJyDcoZWB+YK3eUFUDfFIqaVqLzHgslVWYBT6qqwHUjHQUwcLM7qaFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790390097; c=relaxed/simple;
-	bh=rCyy7IYMnZaL5awKc1ilJM4E1oljEzh5ycw3dA206jw=;
+	s=arc-20240116; t=1790390098; c=relaxed/simple;
+	bh=iWGKzT5zQU3JGkmF9EA5JIa8bB0X7j5AglXQNP1d4OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CywnSq0uc8vJN2MOqn5ql7LaeBGl5OTbWxzATD0vZi1/wU8dWabh/GXUBvz6Dwe682YMujqaidlLLtpve2stl4+4ictQWheQImbbB21w2DSb+gncsoA7a3DQpmq9HrssztMFma2AcdIzMRrT+yHBn3P0YnltewuxcVQpJffR9Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Quicnqyp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Q7DMH/et81dlxsvOORqFZbhFAmGVvDgJr84MVDbSpVlsid69xPzjUH2JXoFfLhMCjJfKEV6s2v8XlQleOIzJIxY/UnI2NsqAE7xT4obrApruxhee/dHN9OKWRSFIZdvwzBXqK+zWtyZSIy7TBEZ9RdO/qC3DhL4I15wkGl8azmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kxIEADgz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Quicnqyp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A3B1F00898;
-	Sat, 26 Sep 2026 02:34:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kxIEADgz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD88A1F0089B;
+	Sat, 26 Sep 2026 02:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790390095;
-	bh=UCNawWQ9X/ITFcrHMgBgIf+lCUhFU5q8jyAxodrPYX0=;
+	s=k20260515; t=1790390094;
+	bh=HJNbG8pCxkTLHXUJlvxxl60JeysRyXvzYq40N4gtCes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QuicnqypfwVMSKQIOj+fSyWMdmZZpoQEBdFekz4PvSn3p+E7WV3EwY+K/Y31tU2UM
-	 GS+aHz8Wp9Ig+T1cmr0n76bJF9a3sARX98sQgGT07aD2qRiefErvaOKFFP4YsV5T5x
-	 WtFiN6pcpNEzRM7+lbm8gzRbKJikFBnSxHGB5JdiDLEioN2x0WPkROdg0qcCOSgmSw
-	 s2t8Qbvt05485iAH73X2KyweS78vWnG5hwKYGQAjbkDN8y6c5OUu4IR0olR86oDQJX
-	 nscyLjSTg0+QNwh9NsOChulaiIVKzhulx8BXcLmSegNth6IXWWdGGGQW7KP2yZh+zC
-	 55hHhtgx7gUxQ==
+	b=kxIEADgzlqv+dd7nVybQlENEPamKpJYbZ58kNetaodJStfAJP/JmXsUiSFg/USoXo
+	 4SFy9FbuMrsiE+BgPej1vy1YTUj1tove53m6yJpdqvNvh8i4Re/nH2vEWWjFieJ77U
+	 +dsvH6uWJdj2AA0+M1Tw4visn3kdAq+htXxRjadZJA5ZO8JcJqWunJ9XQKNG82Cmnw
+	 WzzlaJdcBuQoBlgSIQ3O8iQyRJJqxnDgiV6d71auQHw7SFJ2oVupm0Bjv5FNtGNnif
+	 esEFpslqTj78ukQbKm7DDxRsLLpRzV9LBMTa/86d+6wQgGslUawLlfMwK7pR5PZZeF
+	 8sCrsa0tdKjeg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: arouhi@sitime.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 13/14] dpll: sit9531x: model the inter-PLL sync net as a pair of pins
-Date: Fri, 25 Sep 2026 19:34:54 -0700
-Message-ID: <20260926023454.1568195-1-kuba@kernel.org>
+Subject: Re: [PATCH v10 12/14] dpll: sit9531x: add support to get fractional frequency offset
+Date: Fri, 25 Sep 2026 19:34:53 -0700
+Message-ID: <20260926023453.1568118-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921201108.42676-14-arouhi@sitime.com>
-References: <20260921201108.42676-14-arouhi@sitime.com>
+In-Reply-To: <20260921201108.42676-13-arouhi@sitime.com>
+References: <20260921201108.42676-13-arouhi@sitime.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,414 +61,239 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-dpll: sit9531x: model the inter-PLL sync net as a pair of pins
+dpll: sit9531x: add support to get fractional frequency offset
 
-This patch models the device's internal inter-PLL sync (INTSYNC) net as
-two DPLL pins: an output pin on the source PLL and an input pin on each
-destination PLL. It adds sit9531x_intsync_enable(),
-sit9531x_intsync_disable() and sit9531x_intsync_src_detect() in core.c,
-and dpll.c gets the pin ops that use them.
+This patch adds an ffo_get callback for sit9531x input pins. The offset
+is computed from the ratio between the running DIVN, which is sampled
+through the debug window, and the configured DIVN read from the
+registers. A new helper, sit9531x_dbg_sample(), does the unlock, tap
+select, triple latch and readout of the debug window.
 
 > diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index 1cb691f040194..e8d47999f1a97 100644
+> index 8f6f8ffc8dc13..1cb691f040194 100644
 > --- a/drivers/dpll/sit9531x/core.c
 > +++ b/drivers/dpll/sit9531x/core.c
-> @@ -2264,9 +2264,9 @@ int sit9531x_output_freq_get(struct sit9531x_dev *sitdev, u8 out_idx,
->   * block at base = 0x15 + 16 * (slot % 6); the slot is the physical
->   * output position from clkout_map[], not the logical output index.
->   *
-> - * The chip only supports unsigned positive delay.  A negative phase
-> - * adjustment (advance) is wrapped to (T_out - |phase|) modulo one
-> - * output period, which is identical for a periodic signal.
-> + * The chip only supports unsigned positive delay.  Requests are folded
-> + * modulo one output period: positive delays wrap naturally and a negative
-> + * phase adjustment (advance) is rendered as (T_out - |phase|).
->   */
+> @@ -1396,6 +1396,93 @@ static int sit9531x_is_xo_doubler_enabled(struct sit9531x_dev *sitdev)
+
+[ ... ]
+
+> +	rc = sit9531x_update_pll_u8(sitdev, pll_idx,
+> +				    SIT9531X_PLL_REG_DBG_WRITE_CODE,
+> +				    SIT9531X_DBG_LOW_FREQ_CLK_BIT,
+> +				    low_freq_clk ?
+> +				    SIT9531X_DBG_LOW_FREQ_CLK_BIT : 0);
+> +	if (rc)
+> +		goto relock;
+> +
+> +	rc = sit9531x_write_pll_u8(sitdev, pll_idx,
+> +				   SIT9531X_PLL_REG_DBG_READ_CODE, read_code);
+> +	if (rc)
+> +		goto relock;
 
 [Severity: Low]
-This isn't a bug, but this comment rewrite for
-sit9531x_output_phase_adjust_set() has nothing to do with INTSYNC, and
-neither the commit message nor the v10 notes mention it. Would it fit
-better in "dpll: sit9531x: add support to adjust output phase", or in its
-own patch?
+Should sit9531x_dbg_sample() restore DBG_WRITE_CODE and DBG_READ_CODE
+before it re-locks, the way sit9531x_phase_offset_read() does?
+
+sit9531x_phase_offset_read() saves both registers and puts them back:
+
+    if (have_old) {
+        sit9531x_write_pll_u8(sitdev, pll_idx,
+                              SIT9531X_PLL_REG_DBG_READ_CODE,
+                              old_read_code);
+
+Its comment says that "leaving it parked ... is a state change the caller
+did not ask for, and the next reader of a different tap would have to
+know to undo it".
+
+After each FFO read through sit9531x_divn_runtime(), DBG_READ_CODE stays
+at 0x56 (SIT9531X_DBG_READ_CODE_DIVN_DEN) and
+SIT9531X_DBG_LOW_FREQ_CLK_BIT stays cleared. Inside the driver this has
+no effect today, because sit9531x_phase_offset_read() sets both
+registers before it samples.
+
+The comment below also says the triple latch is done "as
+sit9531x_phase_offset_read() already did". However,
+sit9531x_phase_offset_read() still open-codes the same
+unlock/select/trigger/read/relock sequence instead of calling this
+helper. That gives the driver two implementations of one debug-window
+protocol, with opposite rules about leftover mux state.
+
+Could both paths share sit9531x_dbg_sample() with one policy?
 
 [ ... ]
 
-> @@ -2531,6 +2531,278 @@ int sit9531x_clear_notifications(struct sit9531x_dev *sitdev)
+> @@ -1477,6 +1564,136 @@ static int sit9531x_divn_static(struct sit9531x_dev *sitdev, u8 pll_idx,
 
 [ ... ]
 
-> +int sit9531x_intsync_src_detect(struct sit9531x_dev *sitdev)
-> +{
-
-[ ... ]
-
-> +	for (pll = 0; pll < SIT9531X_NUM_PLLS; pll++) {
-> +		ext_page = SIT9531X_PLL_EXT_PAGE(pll);
-> +
-> +		for (i = 0; i < ARRAY_SIZE(intsync_config); i++) {
-> +			u16 reg;
-> +			u8 val;
-> +
-> +			reg = SIT9531X_REG(ext_page, intsync_config[i].offset);
-> +
-> +			rc = sit9531x_read_u8(sitdev, reg, &val);
-> +			if (rc)
-> +				return rc;
-> +			if (val != intsync_config[i].en_val)
-> +				break;
-> +		}
+> +/**
+> + * sit9531x_pll_ffo_ppt - fractional frequency offset of a PLL's reference
+> + * @sitdev:	device pointer
+> + * @pll_idx:	PLL index (0-3)
+> + * @ffo:	result in parts per trillion
+> + *
+> + * A locked PLL commands whatever DIVN keeps its VCO tracking the
+> + * reference.  How far that sits from the configured DIVN is how far the
+> + * reference sits from the local oscillator, which is the fractional
+> + * frequency offset the DPLL ABI reports for the pin feeding the device.
 
 [Severity: Medium]
-Do these EXT page reads return the real register contents while the debug
-window is locked?
+Is this the quantity the uAPI defines for DPLL_FFO_PIN_DEVICE?
 
-sit9531x_intsync_enable() and sit9531x_intsync_disable() both write
-SIT9531X_PLL_DEBUG_UNLOCK before they touch these offsets.
-sit9531x_phase_offset_read() also unlocks before it reads:
+Since Fvco = Fxo * DIVN, (running - configured) / configured is how far
+the DPLL output sits from its nominal frequency, measured against the
+local XO.
 
-	/* Unlock the debug page so the TDC registers are accessible. */
+Documentation/netlink/specs/dpll.yaml describes
+fractional-frequency-offset-ppt like this:
 
-A locked read might return 0 or the lock value, or one of these bytes
-might carry status bits. In any of those cases the exact en_val match
-here never succeeds.
+    the pin-parent-device nest it represents the frequency
+    offset between the pin and its parent DPLL device.
+    For pins of type PIN_TYPE_INT_NCO this represents
+    the DPLL's current output frequency offset from its
+    nominal frequency.
 
-In sit9531x_dpll_intsync_src_state_on_dpll_set(), a successful enable
-first records sitdev->intsync_src = sitdpll->id. The detect call that
-follows would then overwrite it with -1.
+zl3073x follows this split. For input pins it reads dpll_df_offset with
+ZL_DPLL_DF_READ_REF_OFST set. Commit 54e65df8cf18a7 describes that
+value as "the actual frequency difference between the DPLL and its
+active input". The master-clock-relative value (ref_ofst=0) is used
+only for the NCO pin.
 
-The SYNCOUT pin would then read DISCONNECTED while the net is driven. The
-"INTSYNC is already sourced by another PLL" check would also stop
-blocking a second PLL.
+The value computed here looks like the master-clock-relative one. On a
+locked loop, zl3073x reports close to zero on the input pin, but
+sit9531x would report the offset of the reference from the XO, which
+can be many ppm.
 
-The same applies at probe in sit9531x_dev_state_fetch(). A source that
-the loaded configuration already set up would not be recognised.
+sit9531x_dpll_input_pin_ops publishes this value as
+BIT(DPLL_FFO_PIN_DEVICE). Would userspace reading the pin-parent-device
+FFO then get different physical quantities from the two drivers?
+
+The commit message makes the same claim:
+
+    the difference between the divider the loop is running and the
+    divider the configuration asked for is exactly the offset of the
+    reference.
 
 [ ... ]
 
-> +int sit9531x_intsync_enable(struct sit9531x_dev *sitdev, u8 src_pll_idx)
-> +{
-
-[ ... ]
-
-> +	/* Small update on source PLL */
-> +	rc = sit9531x_write_pll_u8(sitdev, src_pll_idx,
-> +				   SIT9531X_PLL_REG_SMALL_UPDATE,
-> +				   SIT9531X_SMALL_UPDATE_CMD);
+> +	rc = sit9531x_divn_static(sitdev, pll_idx, &configured);
 > +	if (rc)
-> +		goto relock_err;
-> +
-> +	rc = 0;
-> +	goto relock;
-> +
-> +relock_err:
-> +	sit9531x_intsync_debug_lock(sitdev, ext_page);
-> +	goto err_disable;
-> +
-> +relock:
+> +		return rc;
 > +	/*
-> +	 * Close the EXT page debug window the sequence opened.  Nothing
-> +	 * else writes the key back, so leaving it open would keep the block
-> +	 * unlocked for as long as the device runs.
+> +	 * Scaling by a divider far below one whole cycle overflows the
+> +	 * 64-bit product and comes back as ~0, which would be reported
+> +	 * as a plausible offset.  A DIVN that small is not a running
+> +	 * loop, so treat it as no measurement.
 > +	 */
-> +	lock_rc = sit9531x_intsync_debug_lock(sitdev, ext_page);
-> +	if (lock_rc && !rc)
-> +		rc = lock_rc;
+> +	if (configured < SIT9531X_DIVN_SCALE)
+> +		return -ENODATA;
 > +
-> +	return rc;
+> +	rc = sit9531x_divn_runtime(sitdev, pll_idx, &running);
+> +	if (rc)
+> +		return rc;
+> +
+> +	delta = running - configured;
+> +	magnitude = mul_u64_u64_div_u64(abs(delta), SIT9531X_PPT_PER_UNIT,
+> +					(u64)configured);
 
 [Severity: Medium]
-What happens if only this last sit9531x_intsync_debug_lock() fails?
+Can a negative configured DIVN get past this guard?
 
-By this point the global bit is set, the EXT page holds en_val and the
-source PLL small update has been applied, so the net is being driven.
-The function still returns lock_rc. Unlike the relock_err paths, it does
-no rollback.
+configured is s64 and SIT9531X_DIVN_SCALE is 1000000000000ULL, so the
+comparison is done as unsigned. A negative configured then compares as
+a value close to 2^64.
 
-The caller then skips recording the owner:
+sit9531x_divn_static() only rejects |fracn| >= fracd. If DIVN_INT reads
+0 and DIVN_NUM is negative, sit9531x_divn_fixed() returns a negative
+value. For example, INT=0, NUM=-5 and a raw DEN of 10 give a configured
+value of about -4.5e11.
 
-	if (!rc && state == DPLL_PIN_STATE_CONNECTED)
-		sitdev->intsync_src = sitdpll->id;
+That value passes the guard. (u64)configured is then about
+2^64 - 4.5e11, so mul_u64_u64_div_u64() returns a small ppt value that
+looks plausible. The kernel-doc instead promises -ENODATA for "a
+configured divider below one whole unit".
 
-dpll_pin_state_set() then returns the error to userspace and sends no
-change notification, even though the enable took effect.
-
-Only the following sit9531x_intsync_src_detect() can record the owner.
-If that read also fails, intsync_src stays -1 while the net is driven,
-and another PLL can get past the -EBUSY check.
-
-[ ... ]
-
-> +int sit9531x_intsync_disable(struct sit9531x_dev *sitdev, u8 src_pll_idx)
-> +{
-
-[ ... ]
-
-> +	rc = sit9531x_read_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL, &val);
-> +	if (rc)
-> +		return rc;
-> +	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL,
-> +			       val & ~BIT(SIT9531X_INTSYNC_EN_BIT));
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Small update on Page 0 */
-> +	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_GLOBAL_UPDATE,
-> +			       SIT9531X_SMALL_UPDATE_CMD);
-> +	usleep_range(1000, 2000);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Unlock debug on EXT page */
-> +	rc = sit9531x_write_u8(sitdev,
-> +			       SIT9531X_REG(ext_page,
-> +					    SIT9531X_PLL_REG_DEBUG),
-> +			       SIT9531X_PLL_DEBUG_UNLOCK);
-> +	if (rc)
-> +		goto relock;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(intsync_config); i++) {
-> +		rc = sit9531x_write_u8(sitdev,
-> +				       SIT9531X_REG(ext_page,
-> +						    intsync_config[i].offset),
-> +				       intsync_config[i].dis_val);
-> +		if (rc)
-> +			goto restore_global;
-> +	}
-> +
-> +	/* Small update on source PLL */
-> +	rc = sit9531x_write_pll_u8(sitdev, src_pll_idx,
-> +				   SIT9531X_PLL_REG_SMALL_UPDATE,
-> +				   SIT9531X_SMALL_UPDATE_CMD);
-> +	if (rc)
-> +		goto relock;
-> +
-> +	rc = 0;
-> +
-> +restore_global:
-> +	/*
-> +	 * The global enable was cleared first, so a failure here leaves the
-> +	 * EXT page still holding the enable pattern with nothing pointing
-> +	 * at it: the source detector keys on the global bit, would report
-> +	 * the net as unowned, and a retry of the disable would then
-> +	 * short-circuit.  Put the bit back so the state stays one the
-> +	 * driver can describe and the request can be repeated.
-> +	 */
-> +	if (!sit9531x_read_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL, &val))
-> +		sit9531x_write_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL,
-> +				  val | BIT(SIT9531X_INTSYNC_EN_BIT));
-
-[Severity: High]
-Is a goto relock missing after rc = 0 here?
-
-sit9531x_intsync_enable() has:
-
-	rc = 0;
-	goto relock;
-
-In sit9531x_intsync_disable(), though, the success path falls straight
-into restore_global. That code reads SIT9531X_REG_INTSYNC_GLOBAL and
-writes SIT9531X_INTSYNC_EN_BIT back. Every successful disable therefore
-ends with the global enable set again while the EXT page holds the
-disable pattern.
-
-No page-0 small update follows this write, so the next unrelated one
-latches it. One example is the SIT9531X_REG_GLOBAL_UPDATE write that
-sit9531x_prio_prg_commit() does on every priority table change.
-
-The rollback in sit9531x_intsync_enable() goes through the same path:
-
-	rollback_rc = sit9531x_intsync_disable(sitdev, src_pll_idx);
-
-A failed enable therefore also leaves the global bit asserted. The
-err_disable comment says the rollback is there to prevent exactly that.
-
-This also doesn't match the kernel-doc ("Clears INTSYNC global bit") or
-the commit message, which says setting the source pin "gives it up".
-
-After the disable, sit9531x_intsync_src_detect() finds the enable bit set
-but no matching PLL, and reports -1. Userspace sees DISCONNECTED while
-the hardware global enable stays on.
-
-> +
-> +relock:
-> +	/* Close the EXT page debug window the sequence opened. */
-> +	lock_rc = sit9531x_intsync_debug_lock(sitdev, ext_page);
-> +	if (lock_rc && !rc)
-> +		rc = lock_rc;
-> +
-> +	return rc;
-> +}
-
-[Severity: Medium]
-Does this error handling cover every partial failure that the v10 notes
-describe ("a disable that fails part way leaves the state describable so
-the request can be repeated")?
-
-If the page-0 small update fails, the function returns directly. If the
-EXT debug unlock fails, it jumps to relock. Both paths skip
-restore_global, which leaves the global bit clear while the EXT page
-still holds the full en_val pattern.
-
-If a dis_val write fails part way through intsync_config[], the earlier
-entries already hold dis_val. restore_global puts the global bit back,
-but no PLL fully matches in sit9531x_intsync_src_detect() any more, and
-no small update is issued.
-
-If the source PLL small update fails, the function jumps to relock. The
-global bit is clear and the disable pattern is staged but not applied.
-
-In each case sit9531x_dpll_intsync_src_state_on_dpll_set() skips the
-ownership update. It still calls sit9531x_intsync_src_detect(), though,
-and that sets intsync_src to -1, either here:
-
-	if (!(global & BIT(SIT9531X_INTSYNC_EN_BIT))) {
-		sitdev->intsync_src = -1;
-		return 0;
-	}
-
-or because no PLL fully matches.
-
-A retried DISCONNECTED then hits:
-
-	if (sitdev->intsync_src != sitdpll->id)
-		break;
-
-It returns 0 without touching the hardware, so the leftover EXT page
-configuration is never cleaned up.
-
-With the cache at -1, a CONNECTED on another PLL gets past the -EBUSY
-check. sit9531x_intsync_enable() on that PLL sets and applies the global
-bit, which also reactivates the first PLL's leftover configuration.
-
-Could that leave two PLLs configured to drive the net?
+This register state probably only shows up with misprogrammed registers
+or bad bus reads. Was a signed comparison, e.g. against
+(s64)SIT9531X_DIVN_SCALE, intended here?
 
 [ ... ]
 
 > diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> index fcdd19e0bd3b0..856c9bdf33d45 100644
+> index 5f7c2d01562c9..fcdd19e0bd3b0 100644
 > --- a/drivers/dpll/sit9531x/dpll.c
 > +++ b/drivers/dpll/sit9531x/dpll.c
+> @@ -638,6 +638,50 @@ sit9531x_dpll_input_pin_prio_set(const struct dpll_pin *pin, void *pin_priv,
 
 [ ... ]
 
-> @@ -843,8 +857,234 @@ sit9531x_dpll_output_pin_direction_get(const struct dpll_pin *pin,
-
-[ ... ]
-
-> +static int
-> +sit9531x_dpll_intsync_src_state_on_dpll_set(const struct dpll_pin *pin,
-
-[ ... ]
-
-> +	case DPLL_PIN_STATE_DISCONNECTED:
-> +		if (sitdev->intsync_src != sitdpll->id)
-> +			break;
-> +		rc = sit9531x_intsync_disable(sitdev, sitdpll->id);
-> +		break;
-
-[ ... ]
-
-> +	if (!rc && state == DPLL_PIN_STATE_CONNECTED)
-> +		sitdev->intsync_src = sitdpll->id;
-> +	else if (!rc && state == DPLL_PIN_STATE_DISCONNECTED)
-> +		sitdev->intsync_src = -1;
+> +	mutex_lock(&sitdev->multiop_lock);
 > +
-> +	if (state == DPLL_PIN_STATE_CONNECTED ||
-> +	    state == DPLL_PIN_STATE_DISCONNECTED)
-> +		detect_rc = sit9531x_intsync_src_detect(sitdev);
+> +	/*
+> +	 * Publish FFO only for the input the DPLL is actively tracking.
+> +	 * selected_ref alone is not enough (free-run, LOL, holdover), so use
+> +	 * the same CONNECTED criterion as the generic selection-state logic.
+> +	 */
 
 [Severity: Medium]
-Can a DISCONNECTED request on a PLL that doesn't own the net wipe the
-real owner from the cache?
+Does the CONNECTED test actually exclude LOL and holdover?
 
-dpll_pin_state_set() passes the request straight to the driver and does
-not filter out requests for the state the pin is already in. Say
-intsync_src is PLL B and the request is for PLL A. The DISCONNECTED case
-breaks out with rc == 0, and then this runs:
+sit9531x_dpll_selection_state_get() computes:
 
-	else if (!rc && state == DPLL_PIN_STATE_DISCONNECTED)
-		sitdev->intsync_src = -1;
+    active_input = !chan->mode && chan->selected_ref == pin_id;
 
-That happens even though A never owned the net.
+Apart from that it only checks prio_mask. It never reads chan->locked,
+chan->inner_lol or chan->ho_freeze, so free-run is the only case it
+filters out.
 
-Only the following sit9531x_intsync_src_detect() can put B back. If one
-of its reads fails, it returns before writing intsync_src, and the caller
-only warns. The cache then stays -1 while B drives the net.
+The pin-state contract comment in dpll.c defines CONNECTED as
+A && L && S && M, with L = chan->locked && !chan->inner_lol. The code
+does not implement L.
 
-A later CONNECTED on PLL C would then get past the -EBUSY check and
-enable C as a second source.
+The running DIVN is not settled in these cases:
 
-Should the cache only change when this PLL actually changed state?
+  - the loop is still acquiring lock (chan->mode == 0, !chan->locked)
+  - the loop has lost lock
+  - the PLL is in holdover, if ACTIVESEL still reports the last
+    reference
 
-[ ... ]
+The kernel-doc of sit9531x_pll_ffo_ppt() assumes "A locked PLL".
 
-> +static int
-> +sit9531x_dpll_intsync_dst_state_on_dpll_set(const struct dpll_pin *pin,
+Could this report an FFO for a reference the loop is not tracking, with
+nothing to show that the value is invalid?
 
-[ ... ]
+> +	sit9531x_dpll_selection_state_get(sitdev, sitdpll, dpin->id, &state);
+> +	if (state != DPLL_PIN_STATE_CONNECTED) {
+> +		mutex_unlock(&sitdev->multiop_lock);
+> +		return -ENODATA;
+> +	}
 
-> +	switch (state) {
-> +	case DPLL_PIN_STATE_DISCONNECTED:
-> +		rc = sit9531x_input_prio_remove(sitdev, sitdpll->id, hw_src);
-> +		break;
+[Severity: Medium]
+Can this report the measurement on the wrong pin after the device
+switches reference by itself?
 
-[Severity: Low]
-Should this path notify the sibling input pins whose priorities change?
+The CONNECTED state comes from the cached chan->selected_ref. The
+monitor refreshes that only every SIT9531X_STATUS_POLL_MS (500 ms).
 
-sit9531x_input_prio_remove() compacts the remaining entries toward the
-head of the table (kept[count++]), so every reference listed after
-INTSYNC moves up one slot. dpll_pin_state_set() only notifies the
-INTSYNC pin itself.
+The sibling sit9531x_dpll_input_pin_phase_offset_get() reads the live
+selection first for this reason:
 
-sit9531x_dpll_input_pin_prio_set() walks sitdpll->pins and calls
-__dpll_pin_change_ntf() for each sibling whose slot moved. Nothing here
-does that, so subscribers keep stale priorities for the siblings.
+    rc = sit9531x_chan_selected_ref_read(sitdev, sitdpll->id,
+                                         &selected);
+    ...
+    if (state != DPLL_PIN_STATE_CONNECTED || selected != dpin->id) {
 
-The existing DISCONNECTED path for physical inputs seems to have the
-same gap, and this new setter copies it.
+The kernel-doc of sit9531x_chan_selected_ref_read() says the cache is
+"close enough for reporting pin state but not for attributing a
+measurement".
 
-[ ... ]
+Take a failover where the higher-priority input hits LOS. Until the next
+poll, a pin-get on the old pin still sees CONNECTED. At that point
+sit9531x_pll_ffo_ppt() samples a running DIVN that already tracks the
+new reference.
 
-> +static const struct dpll_pin_ops sit9531x_dpll_intsync_dst_pin_ops = {
-> +	.direction_get		= sit9531x_dpll_input_pin_direction_get,
-> +	.state_on_dpll_get	= sit9531x_dpll_intsync_dst_state_on_dpll_get,
-> +	.state_on_dpll_set	= sit9531x_dpll_intsync_dst_state_on_dpll_set,
-> +	.prio_get		= sit9531x_dpll_input_pin_prio_get,
-> +	.prio_set		= sit9531x_dpll_input_pin_prio_set,
-> +};
-
-[Severity: High]
-This isn't a bug introduced by this patch, but reusing
-sit9531x_dpll_input_pin_prio_set() here extends a pre-existing race with
-teardown to the new pin.
-
-sit9531x_dpll_pins_unregister() does this without holding dpll_lock or
-multiop_lock around the list_del() and kfree():
-
-	list_for_each_entry_safe(pin, next, &sitdpll->pins, list) {
-		sit9531x_dpll_pin_unregister(pin);
-		list_del(&pin->list);
-		kfree(pin);
-	}
-
-Once dpll_pin_unregister() has returned for one pin, a netlink prio_set
-on a pin that is still registered can run
-sit9531x_dpll_input_pin_prio_set(). That function walks the same list:
-
-	list_for_each_entry(sibling, &sitdpll->pins, list) {
-
-It reads and writes sibling->dir, id and prio as it goes.
-
-The check below only avoids notifying through a NULL dpll_pin:
-
-	if (sibling == dpin || !sibling->dpll_pin)
-		continue;
-
-Could the walk reach a pin that the teardown thread has just freed, or
-follow LIST_POISON links?
-
-This patch adds both INTSYNC pins to each sitdpll->pins list and gives
-the destination pin this prio_set callback.
+The function's own comment says it avoids "reporting the active
+reference's figure against the wrong pin". Should ffo_get also call
+sit9531x_chan_selected_ref_read() and require selected == dpin->id?
 
 [ ... ]
