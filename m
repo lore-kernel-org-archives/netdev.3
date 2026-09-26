@@ -1,252 +1,170 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501B945C709
-	for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 14:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE71838759C;
+	Sat, 26 Sep 2026 14:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790431517; cv=none; b=PgnNYUyH1i2hfwxhQgLjRdLbrjtcSm6ZAfNJ0okeR986WXsMDcN4MhSevBYw/Q5ZTZr4CIx1+agWedKvCIfXEIu5fGnV8TcOxXrGu/vZqm9dt8RTaisoSmGeAMhYEPvt/des7MS1UO9XlYj9GSO0j8BIgkTsIebcQeHPq9pTMBI=
+	t=1790431623; cv=none; b=XSlAWT40Htx+3S+YjKQjqn41zyzhBrJ5f+qu0RYyV/3Fhog+27p5birssAbMumZ6oo3RQi4W838/r/ya7vNwsvBthWZGLRYglB/mALMTi9OM5GdMGAiusmax6DCnbWhyq3Tekq/C4z+H0LLLZvM+uOCeEeeNDszOGnsGIj4OHFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790431517; c=relaxed/simple;
-	bh=lQpuo4FGgPmLQs3mAV5SxZ/Lpy+3GOiBj50vxZ6OhZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=apVHHZda1sOjvs/gt3SQAfJh5wLvLdRJBAtIoUdQI1drMTJHxD/VIKlImP09jkPT8ZUhvYjdYmBmE2zXnlHizReYy6k98u31bMjou6mEpSTxONS7DHBHaTUKHw7Jxb6WLZyhNEBrKVW9D9HMAuS+f+6sXqBWhLkSGgMbuXRqSlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fw8Z6sSt; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790431623; c=relaxed/simple;
+	bh=ZGU/rJ293u2ZMYyBBxQPLyt2bBEUGW4wXCjoTuRkNnc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BvK7/YuzYMKhxsMFfAbjyOX++XkLm/D3RXZ+KWPpjeex84m6+Lz5yew5BOQjB6oufw0/F4oHtq59rPnzsP/QC/3iYZNYqzqgx4ejQtBdbxBr24r5Pmc1iOzf/CHSspIVMwaNZprallj0kJM6Upbg9LejZoHu6qRg84+IwheKlbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpMGSoWP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fw8Z6sSt"
-Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8a9d7f097c2so388517b3.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 07:05:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790431512; x=1791036312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tHj/j6Uv8TSALZRcpj1pkMBGD52mXy91EaUjyEl5MY8=;
-        b=fw8Z6sStaYk9BV7VVs+e8xByye5PqscNB6WaK3BJN9wjW0ETE+qA/+/Cjqu6WHv1us
-         eUJTRI0iTQQYzwAl+dooYiZdm4a15rAQvW5WIWpGInsXK0H1WwgECbRy9er1Tyg5t6zO
-         bSd0+1+1W4mmFsPnNfd5ey+1HTgsYNLSxCVUbz2kRhsFtMNoGtv/jVgUm9Yu9aB+PVJc
-         m2t4oBZQ7ntrFDnyVq5pHNuHuL0hVyVTHWJIHCIz2i9UNGwNYugsAbXzZaWYeW1KY9jw
-         dI6pqPMTHz9k4KoWZlwnFBTfdywSSetW/B8zDG6HLdjOcuOHhSrdIamNeKy6TXBHa0pO
-         Ynbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790431512; x=1791036312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tHj/j6Uv8TSALZRcpj1pkMBGD52mXy91EaUjyEl5MY8=;
-        b=HuRPDJDl70gXzPxQ+Fb33Rbci2f4ZTzOUb3x/srqh88gMsNVPCbCdMCVpSi0/ZSagQ
-         bfMq/W/LDrfWxIuOecy87qX1zMJL6EaHVY2I/Gbd/VPOZKSo2eP5Vsa7Jtt7Qva3RZdc
-         c1hVJrhXYvCJqQTG6C0sd8C+p0t16PZIQfbx01LeiWUYiM1idLeuIDqDyVL8qAzju0ED
-         vKrcGXnELp9SEH7BCt6HT7O1+ZFanlG2csmxC8zUuTwLsz8G4GQrjlVAfiAemYyl1Jvt
-         74Id9Six1yHS2ZcmnVp+ntzcQ4EN/o48ykycnTY/m6ZkZBQ7ZMxhOUh7EjZwB7AMx6Sq
-         8t1g==
-X-Gm-Message-State: AFq9FYIfQwsbh6Baqr8WcvHI2hipd1iDYpY9Mj0QCMGQm4F+4DcUm/6U
-	/u9OQtwfk9dJAP6A6ta0h252y7aSm0MI84Y2lCaYDYTK8bXFrk+YhkPKQYe4tQ==
-X-Gm-Gg: AYBFou0+Y+NO+3QQhIbYiX6rUBsIXhgd8Bp4mnk7zasMB0t//qEgkFd5EXXadsfBjwW
-	nOJoqHCIDOEIsxPyPVXkqfO+puZiu8ri5lCtxyCT9JEOSFMnhI7SnjDkCyy9V/7QwmwMswKlnTo
-	wJYUpqsDdj4oyXwe9rbMlLCVAGLhK3CGfN2YhToFS1Hgxbq6RpclZhpgc/P1p0LRjEDeTDUdumn
-	4cfUYamOdomgt6bDbSclkafHCzjr41jujf/XN3bTZf4W/i04EHwQbAgX/mRWchXUwFdAUXRbjv5
-	hadFficXv0U3x0Zcs/uR7j8ZAjziZ2oHBKILzE2Hh5O7nrrSmF1XFNDZxANDhSNzm8S8Jbe2+qB
-	OCqby+WmWCHikHIz0HzVV8ibHURpwtaTWW7QrbFR285+8UfUuFBgjRxDEb8E5Scmda63YdK7yKc
-	pR8I6zGr9QCXmMyKodFpXGIIrgWAqAvSR01zsTuQ4yduClLlZCROtd1GuiDWBpgWlnWF740ltpI
-	OPe9DenhWJhZ7pjyihdUFNUcC26+I4vYrnPktdinhznvp3TvKtNb8LWBkLiN3tXdhWRQkAC9SQ=
-X-Received: by 2002:a05:690c:ec7:b0:873:5c6b:a31f with SMTP id 00721157ae682-8a64e7eaa4dmr38576617b3.25.1790431512374;
-        Sat, 26 Sep 2026 07:05:12 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860322637sm20989587b3.4.2026.09.26.07.05.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 07:05:10 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	xietangxin@yeah.net,
-	Willem de Bruijn <willemb@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: extend IPv6 exthdr detection of tunneled packets
-Date: Sat, 26 Sep 2026 10:04:54 -0400
-Message-ID: <20260926140506.2335137-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpMGSoWP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9E71F000FF;
+	Sat, 26 Sep 2026 14:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790431621;
+	bh=eVCGTQLN6HPS8MK6pZrD0g0NKPJ0VZomA/xRahikd58=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cpMGSoWPyCjQ6HvOhi6LHLVgpfEizzfMFCNgj2lT55Z3wsJxNs1fWiT2tNnU8Wubd
+	 TojgZ2Xj49NXAeclQwLmHdb0uecsDQWlXra1jl6QUjzs7INufbfTn5T8Yq9kMt2k8A
+	 E9Mv88yWvfMiL+2sWwMOM4CEPBSfdsf5gLEorFlEpRNFD7Quy3SBMwHFK1woil9Qzy
+	 Kqxo/YQgUFLVemzK8rlqEx1vjydq54NL7I4xpAaV8OpODljqey2EraX2wg3sUHzytS
+	 Ds5ce8+DiKfuE6T2+emS9ogK0SWgt+1X9IUOZbRHH4qMwK5Ig7cTR+HZyDZgf/ixmT
+	 88z3z+a7IbEQg==
+Subject: Re: [PATCH net-next] net: lan969x: correct RGMII port mapping index
+From: netdev-bot+sashiko@kernel.org
+To: robert.marko@sartura.hr
+Cc: daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, luka.perkov@sartura.hr
+Date: Sat, 26 Sep 2026 14:06:59 +0000
+Message-ID: <179043161980.2160803.10954047128891020505@kernel.org>
+In-Reply-To: <20260922125112.2111256-1-robert.marko@sartura.hr>
+References: <20260922125112.2111256-1-robert.marko@sartura.hr>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Commit c4336a07eb6b ("net: correctly handle tunneled traffic on IPV6_CSUM
-GSO fallback") split skb_gso_has_extension_hdr() into mutually exclusive
-branches on skb->encapsulation. This did not yet address all paths:
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-1. With skb->encapsulation set, the outer header is not checked. IPv6
-   tunnels such as ip6_gre and ip6_tunnel add an outer Destination
-   Options header by default (encap_limit). Their GSO packets skip
-   software GSO, then skb_csum_hwoffload_help() sees the outer extension
-   header and calls skb_checksum_help() on the GSO skb, which warns and
-   drops it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-2. Tunnels over IPv6 without an outer transport header, such as
-   ip6_tunnel, leave skb->transport_header at the inner transport
-   header. skb_network_header_len() then spans the outer IPv6, tunnel
-   and inner IP headers, a false positive.
+- [High] net: lan969x: the patch does not achieve its stated purpose —
+  the new DEVRGMII instance index it returns is never paired with…
 
-3. UDP tunnels without an inner network header, such as SCTP-in-UDP or
-   PSP, have no inner IPv6 header to check. Decide on the outer header
-   alone.
+--
 
-4. Directly dereferencing inner_ip_hdr(skb)->version without
-   skb_header_pointer() is unsafe.
+net: lan969x: correct RGMII port mapping index
 
-Instead, check ipv6_ext_hdr(nexthdr) on the outer IPv6 header and, if
-set, on the inner IPv6 header. Read the headers with skb_header_pointer().
-Keep the skb_network_header_len() check when !skb->encapsulation to also
-catch encapsulated packets without skb->encapsulation (e.g., virtio).
+This adds an RGMII case to lan969x_port_dev_mapping() so that ports 28 and
+29 return DEVRGMII instance indices 0 and 1 instead of the physical port
+number. The helper is installed as sparx5_ops::get_port_dev_index and is
+read through sparx5_port_dev_index().
 
-Use the same helper in skb_csum_hwoffload_help(). Its open coded test
-has the false positive of (2) and ignores the inner header.
+> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> index f3a9c71bea36a..bf5320c7a6ca8 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> @@ -142,6 +142,15 @@ static u32 lan969x_get_dev_mode_bit(struct sparx5 *sparx5, int port)
+>  
+>  static u32 lan969x_port_dev_mapping(struct sparx5 *sparx5, int port)
+>  {
+> +	if (lan969x_port_is_rgmii(port)) {
+> +		switch (port) {
+> +		case 28:
+> +			return 0;
+> +		case 29:
+> +			return 1;
+> +		}
+> +	}
+> +
 
-Background: checksum offload of tunneled packets invariants:
+[Severity: High]
 
-Non-GSO skb:
-- If the inner packet is CHECKSUM_PARTIAL, Local Checksum Offload computes
-  the outer checksum in software and the device offloads only the inner L4
-  checksum.
-- If the inner packet is CHECKSUM_NONE (e.g., SCTP-in-UDP, ESP-in-UDP,
-  Remote Checksum Offload), the device offloads the outer UDP or GRE
-  checksum instead.
+Can this new index ever reach DEVRGMII register space?  The value returned
+by lan969x_port_dev_mapping() is only read through sparx5_port_dev_index()
+and is always combined with a target coming from sparx5_to_high_dev() or
+sparx5_to_pcs_dev(), and neither of those has an RGMII case:
 
-GSO skb:
-- A device with NETIF_F_GSO_UDP_TUNNEL_CSUM or NETIF_F_GSO_GRE_CSUM
-  computes both inner and outer checksums per segment.
-  The outer checksum is seeded with only the pseudo-header checksum.
+drivers/net/ethernet/microchip/sparx5/sparx5_port.h:
+static inline u32 sparx5_to_high_dev(struct sparx5 *sparx5, int port)
+{
+	const struct sparx5_ops *ops = sparx5->data->ops;
 
-A NETIF_F_IPV6_CSUM device must parse through the outer headers to
-reach the inner ones.
+	if (ops->is_port_5g(port))
+		return TARGET_DEV5G;
+	if (ops->is_port_10g(port))
+		return TARGET_DEV10G;
+	return TARGET_DEV25G;
+}
 
-Fixes: c4336a07eb6b ("net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+So for lan969x ports 28 and 29 the target stays TARGET_DEV25G (or
+TARGET_PCS25G_BR), never TARGET_DEVRGMII.
 
----
+The base then comes from an unchecked array index:
 
-  v1 -> v2
-  - Keep skb_network_header_len() check when !skb->encapsulation to
-    support tunnels without skb->encapsulation (e.g., virtio).
+drivers/net/ethernet/microchip/sparx5/sparx5_main.h:spx5_inst_get() {
+	return sparx5->regs[id + tinst];
+}
 
-  v1: https://lore.kernel.org/netdev/20260924192128.1197118-1-willemdebruijn.kernel@gmail.com/
+With the new index that is regs[TARGET_DEV25G + 0] and
+regs[TARGET_DEV25G + 1].  The lan969x iomap in lan969x_main_iomap[] has no
+TARGET_DEV25G or TARGET_PCS25G_BR entries at all, so both slots are NULL.
+Before the patch, index 28 resolved to regs[TARGET_DEV25G + 28], which
+lands on a mapped (though unrelated) DEV2G5 base.
 
-Stable: trees before commit 1676ebba391d ("net/ipv6: Remove jumbo_remove
-step from TX path") must keep the BIG TCP jumbo exemption on the outer
-check, or BIG TCP loses TSO (see 68e068cabd2c):
+Does that mean the commit message claim
 
-	if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-	    !ipv6_has_hopopt_jumbo(skb)) {
-		if (__skb_has_ipv6_ext_hdr(skb, skb_network_offset(skb)))
-			return true;
+    So, check if requested port index is an RGMII port and return the correct
+    DEVRGMII index.
 
-		/* Catch tunnels without skb->encapsulation (e.g., virtio). */
-		if (!skb->encapsulation &&
-		    skb_transport_header_was_set(skb) &&
-		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-			return true;
-	}
+is not reflected in any code path, since no consumer pairs this index with
+TARGET_DEVRGMII?
 
-Tested with gre_gso.sh over veth with NETIF_F_IPV6_CSUM:
-- GREv6 without extension headers
-- GREv6 with inner dstopts
-- GREv6 with outer encaplimit, and
-- SCTP-in-UDPv6.
+The real DEVRGMII and HSIO_WRAP accesses compute the instance locally and do
+not use this helper:
 
-That needs a test-only feature added to veth to advertise
-NETIF_F_IPV6_CSUM (mutually exclusive with NETIF_F_HW_CSUM).
+drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_rgmii.c:
+#define RGMII_PORT_IDX(port) ((port)->portno - LAN969X_RGMII_PORT_START_IDX)
 
-If no one objects, we can follow up with those veth and selftest patches to
-net-next later.
----
- net/core/dev.c | 49 ++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 17 deletions(-)
+used by lan969x_rgmii_port_device_config(), lan969x_rgmii_tx_clk_config(),
+lan969x_rgmii_delay_config() and lan969x_rgmii_gpio_config().  Should the
+two sources of the same index be folded into one helper instead?
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0292a16e16c2..91b8a57fad96 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3818,20 +3818,36 @@ static netdev_features_t dflt_features_check(struct sk_buff *skb,
- 	return vlan_features_check(skb, features);
- }
- 
--static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
--{
--	if (!skb->encapsulation)
--		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--			skb_transport_header_was_set(skb) &&
--			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
--	else
--		return (!skb_inner_network_header_was_set(skb) ||
--			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--			   inner_ip_hdr(skb)->version == 6)) &&
--			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+static bool __skb_has_ipv6_ext_hdr(const struct sk_buff *skb, int nhoff)
-+{
-+	const struct ipv6hdr *ip6h;
-+	struct ipv6hdr _ip6h;
-+
-+	ip6h = skb_header_pointer(skb, nhoff, sizeof(_ip6h), &_ip6h);
-+	return ip6h && ip6h->version == 6 && ipv6_ext_hdr(ip6h->nexthdr);
-+}
-+
-+static bool skb_has_ipv6_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (vlan_get_protocol(skb) == htons(ETH_P_IPV6)) {
-+		if (__skb_has_ipv6_ext_hdr(skb, skb_network_offset(skb)))
-+			return true;
-+
-+		/* Catch tunnels without skb->encapsulation (e.g., virtio). */
-+		if (!skb->encapsulation &&
-+		    skb_transport_header_was_set(skb) &&
-+		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+			return true;
-+	}
-+
-+	/* Tunnels without an inner network header, such as SCTP-in-UDP or
-+	 * PSP, have no inner IP header and thus no inner extension header.
-+	 */
-+	if (skb->encapsulation && skb_inner_network_header_was_set(skb) &&
-+	    __skb_has_ipv6_ext_hdr(skb, skb_inner_network_offset(skb)))
-+		return true;
-+
-+	return false;
- }
- 
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
-@@ -3886,7 +3902,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    skb_gso_has_extension_hdr(skb))
-+	    skb_has_ipv6_extension_hdr(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
- 
- 	return features;
-@@ -3988,8 +4004,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return 0;
- 
- 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
--		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
--		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+		if (skb_has_ipv6_extension_hdr(skb))
- 			goto sw_checksum;
- 
- 		switch (skb->csum_offset) {
+There is also a latent NULL __iomem base introduced here.  In
+sparx5_port_init() the devinst and pcsinst pointers are computed for RGMII
+ports too:
+
+	devinst = spx5_inst_get(sparx5, devhigh, pix);
+	pcsinst = spx5_inst_get(sparx5, pcs, pix);
+	...
+	if (ops->is_port_rgmii(port->portno))
+		return 0; /* RGMII device - nothing more to configure */
+
+They are now NULL rather than a mapped base, and only the is_port_rgmii()
+early return keeps them from being dereferenced.  The other consumers of the
+pair are gated by unrelated conditions today: sparx5_port_max_tags_set()
+runs only after that early return, sparx5_port_disable() and
+sparx5_port_pcs_high_set() are reached via sparx5_pcs_config() where
+sparx5_phylink_mac_select_pcs() returns NULL for RGMII interface modes, and
+the ethtool device stat paths are gated by
+sparx5_is_baser(port->conf.portmode).  Would it be safer to also teach the
+target selection side about RGMII, for instance returning TARGET_DEVRGMII
+for is_port_rgmii() ports, so the index and the target stay consistent?
+
+If this is intended as preparatory work for a later change, could the commit
+message say so and name the dependent patch?  A Fixes: tag also seems to be
+missing for the addressing bug the changelog describes.
+
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922125112.2111256-1-robert.marko%40sartura.hr
