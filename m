@@ -1,165 +1,209 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025573815D8;
-	Sat, 26 Sep 2026 18:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6613939B0;
+	Sat, 26 Sep 2026 18:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790448127; cv=none; b=hADq07YwMFZsyTqaf6kDzPaqT05kyYV1ARxV0Ce7su1PIr/ZA5f8CQo3/USZ3tmfBvHiWQ3DXSOcI8iyoGxXtn3LDzXqCjhfwiiy1DOgwBhgAIXq8ThDQ+ql/TbXg5IzimlEOb8d22alycWg21+G1AaMmNmi4lQ5TyFwCPXi0VY=
+	t=1790448573; cv=none; b=hLcRfwR21nnOlvC+9cFtR5ipC/aGxGR7soO50unwOG8qHmNcfKMDAQuyszl4HkMcKHLcPY7kFn0ZTH1CW4f7O9SybJjv0epsjvQYLyOoFq0hO4H1PQ4zHFBQvGfhHPTcP1XFZG0r3BMJOHHSes4e0pr4q2CUuseFpfxSKuu8EZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790448127; c=relaxed/simple;
-	bh=ZIn32NzRI1VK5eJrUKfPmD5egeEgzS7+iYpgvBHxN3g=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=nhwXrB6BxenWVdSZhhCPEJeDa+E1fvdxf3HtD2aQs8ALxWgWSctm5Q27ryharALMcqjJfr29LUqdBvEoE3p8s1ukNholnhVJ7czlsF1kJi7xn9VQmwfVA8rACIfXo1Im5+ebAho2heRSQjrJTkb/YZQG6iXQpYeTgCBUi0/aFyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=1dsdev+J; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790448573; c=relaxed/simple;
+	bh=rCVS1dbiTfDS0jhswukM+1RiwECpWcMv6BbMGC+gQvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BirIG59vBRruLQgapLlKywMG+QA08Qlw/iVGb8/cRbFM+P5an5ci6nwe7Z/qItvj/x3Pu0XFd8x2HgCuHEK0jBRhSgnMEpjmwEJjpUIjL7vC9LqNvrZqsWOX7pkzUvdnVaiWjskoIGPyMe7IjWbAjT5gpoUnWqLIsaStsY13ieQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dk8nG90X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="1dsdev+J"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 09A4AA4AA2;
-	Sat, 26 Sep 2026 20:41:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790448121; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=iL7bExJVs925q9yLa7sDRxI7vyv/YZQ4FfCbe5s6qaw=;
-	b=1dsdev+JmRZnw3115yp6qfis+T3iSQGzi3JYZ/7T6qiCS/Wsv/VVMsrvfWvE9xE5y19uLk
-	z9ze0EH3Kc4/u+mxFNkI8mfo8/D6bbAvdLqKZCDtw2XGmkk+5oiBjRXMCI5svDDjOJjBxr
-	+/PP5B87RQGztnx+m1pCJNAYyDzH29dHMRkAyraodZdGodWR2StIsLmwj+nYfvyEsH+NjU
-	xQCDQHYQySYJUm4uVbDeqJclmabSctGSqxeEs168ouEHRDtBFVZIpIIQso4liqOX+h9Fas
-	73m90TEPNJNvyCDwPyU3ag942wotJxybVa1N67ueMki1Nj5v3FZDXRf0boLmew==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dk8nG90X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EB91F000FF;
+	Sat, 26 Sep 2026 18:49:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790448571;
+	bh=FhCUAjMTRdSu2iwGOuY7sgjoyeuf9oIgvabf6YO920g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dk8nG90X527poEz1klXfdOz+Wnmw0tBcxK2RwoQHKC3xf0DyjuKwe46FuFlNksp0S
+	 DSJK+JI7Xdnx6WPszQg7Ifc+BansRWyQAyfrmLFPQblF/vLk81cvw4mduxnH1ZPXJY
+	 diUCheqe8HKPTsNpfvh9JCM+tDxzQ3XzBTM+lMWuVqqasH+XkxRGuteiWmdOlcuIlH
+	 MLAKxgKzMHI+1ECC67Why3cpwYYowqbywzt1n5b6pRR+Q++UDZs1IEdiAJnXzpJb1S
+	 OQ4+Vb3OnPTiDdPVZUEXnYfdHGMag+4wWCqlRZRqjix76Kiu9H6KoimKp4SGEdIy7K
+	 4w+KtoULo3Vxw==
+Date: Sat, 26 Sep 2026 19:49:26 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: bhargava.marreddy@broadcom.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com, dharmender.garg@broadcom.com
+Subject: Re: [PATCH net-next v2 1/6] bnge: Extract bnapi allocation and
+ cleanup into helpers
+Message-ID: <20260926184926.GC13925@horms.kernel.org>
+References: <20260922052904.59237-2-bhargava.marreddy@broadcom.com>
+ <179026966721.2160803.3672240762098051468@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 26 Sep 2026 20:41:55 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
- thomas.petazzoni@bootlin.com, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
- <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net] net: stmmac: Don't set or get RSS parameters when not
- supported
-In-Reply-To: <20260926093343.292181-1-maxime.chevallier@bootlin.com>
-References: <20260926093343.292181-1-maxime.chevallier@bootlin.com>
-Message-ID: <250ecb58e80b191865bcf03f7146f7c2@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179026966721.2160803.3672240762098051468@kernel.org>
 
-Hi Maxime
+On Thu, Sep 24, 2026 at 05:07:47PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 
-On 26.9.2026 11:33, Maxime Chevallier wrote:
-> The RSS kselftests fail on stmmac, and this is partly due to the driver
-> reporting bogus data for the RSS ops :
-> 
->  - ethtool -x reports an indirection table and a key while the hardware
->    doesn't have any of that
->  - ethtool -X fails with -EINVAL.
-> 
-> Let's return early in the rss ops if we know the hardware and platform
-> don't support RSS.
-> 
-> Note that RSS is currently not supported on any devices upstream, so
-> code that was already useless is now effectively dead. It has been the
-> case since 2019 when the code was added, as platforms need to set 
-> rss_en
-> in their plat data, and no glue ever did that.
-> 
-> Russell King ran a poll in february 2026 [1] asking if the code should
-> be dropped, without any reply going in either direction.
-> 
-> Jitendra Vegiraju from Broadcom sent 9 iterations of a Broadcom PCIe 
-> glue
-> driver [2] that actually sets rss_en = 1, so there's some hope that 
-> this
-> may be used in the future.
-> 
-> [1] : 
-> https://lore.kernel.org/netdev/aYd4BkAeNW6d0iIC@shell.armlinux.org.uk/
-> [2] : 
-> https://lore.kernel.org/netdev/20260402213629.1996133-1-jitendra.vegiraju@broadcom.com/
-> 
-> Fixes: 76067459c686 ("net: stmmac: Implement RSS and enable it in XGMAC 
-> core")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
-> Jitendra, do you have plans to continue iterating on the BCM8958x glue 
-> ?
-> 
-> Thanks,
-> 
-> Maxime
-> 
->  drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c 
-> b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> index 1be5310ca766..4e917a448271 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> @@ -927,6 +927,9 @@ static u32 stmmac_get_rxfh_key_size(struct 
-> net_device *dev)
->  {
->  	struct stmmac_priv *priv = netdev_priv(dev);
-> 
-> +	if (!priv->dma_cap.rssen || !priv->plat->rss_en)
+In the interest of moving things along I will respond to this.
 
-Should this pattern become a helper? Counting 6 instances so far.
+> 
+> - [Medium] The commit message describes the three new NULL guards as
+>   preparatory hardening ("add NULL guards for rx_ring and tx_ring in…
+> 
+> --
+> 
+> bnge: Extract bnapi allocation and cleanup into helpers
+> 
+> This moves the bn->bnapi allocation and free code out of
+> bnge_alloc_core()/bnge_free_core() into bnge_alloc_bnapi_mem() and
+> bnge_free_bnapi_mem(), and adds NULL checks for bn->rx_ring and
+> bn->tx_ring in the ring cleanup helpers.
+> 
+> > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> > index a4288f0258f87..c1810a3098883 100644
+> > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> > @@ -825,6 +825,9 @@ static void bnge_free_tpa_info(struct bnge_net *bn)
+> >  	struct bnge_dev *bd = bn->bd;
+> >  	int i, j;
+> >  
+> > +	if (!bn->rx_ring)
+> > +		return;
+> > +
 
-> +		return 0;
-> +
->  	return sizeof(priv->rss.key);
->  }
-> 
-> @@ -934,6 +937,9 @@ static u32 stmmac_get_rxfh_indir_size(struct 
-> net_device *dev)
->  {
->  	struct stmmac_priv *priv = netdev_priv(dev);
-> 
-> +	if (!priv->dma_cap.rssen || !priv->plat->rss_en)
-> +		return 0;
-> +
->  	return ARRAY_SIZE(priv->rss.table);
->  }
-> 
-> @@ -943,6 +949,9 @@ static int stmmac_get_rxfh(struct net_device *dev,
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	int i;
-> 
-> +	if (!priv->dma_cap.rssen || !priv->plat->rss_en)
-> +		return -EOPNOTSUPP;
+The check above appears to be purely defensive.
+I do not believe it can ever be true.
+If so, please remove it.
 
-Not a blocker, but a full netlink RSS dump (like the one in rss_ctx.py)
-now stops at this device. Naybe rss_dump_one_dev() should skip 
--EOPNOTSUPP
-like ethnl_default_dumpit() does?
-
-> +
->  	if (rxfh->indir) {
->  		for (i = 0; i < ARRAY_SIZE(priv->rss.table); i++)
->  			rxfh->indir[i] = priv->rss.table[i];
-> @@ -962,6 +971,9 @@ static int stmmac_set_rxfh(struct net_device *dev,
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	int i;
+> >  	for (i = 0; i < bd->rx_nr_rings; i++) {
+> >  		struct bnge_rx_ring_info *rxr = &bn->rx_ring[i];
+> >  
+> > @@ -881,6 +884,9 @@ static void bnge_free_rx_rings(struct bnge_net *bn)
+> >  	struct bnge_dev *bd = bn->bd;
+> >  	int i;
+> >  
+> > +	if (!bn->rx_ring)
+> > +		return;
+> > +
+> >  	bnge_free_tpa_info(bn);
+> >  	for (i = 0; i < bd->rx_nr_rings; i++) {
+> >  		struct bnge_rx_ring_info *rxr = &bn->rx_ring[i];
+> > @@ -1024,6 +1030,9 @@ static void bnge_free_tx_rings(struct bnge_net *bn)
+> >  	struct bnge_dev *bd = bn->bd;
+> >  	int i;
+> >  
+> > +	if (!bn->tx_ring)
+> > +		return;
+> > +
 > 
-> +	if (!priv->dma_cap.rssen || !priv->plat->rss_en)
-> +		return -EOPNOTSUPP;
-> +
->  	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
->  	    rxfh->hfunc != ETH_RSS_HASH_TOP)
->  		return -EOPNOTSUPP;
+> [Severity: Medium]
+> Are these three new NULL checks really just preparation, or do they fix a
+> reachable NULL pointer dereference that exists today?
 
-Thanks,
-Nicolai
+It seems to me that the two hunks above do fix a bug,
+can could manifest under memory pressure..
+And thus should be broken out as a separate patch for net.
+
+> 
+> The commit message says only:
+> 
+>     Prepare the driver to move bnapi allocation out of the open/close path,
+>     and add NULL guards for rx_ring and tx_ring in core driver cleanup paths.
+> 
+> Before this patch, bnge_alloc_core() allocates bn->bnapi, then bn->rx_ring,
+> then bn->tx_ring, and every failure goes to err_free_core: which calls
+> bnge_free_core(). bnge_free_core() unconditionally calls
+> bnge_free_tx_rings() and bnge_free_rx_rings(), so if the bn->rx_ring
+> allocation fails both pointers are still NULL:
+> 
+> drivers/net/ethernet/broadcom/bnge/bnge_netdev.c:bnge_free_tx_rings() {
+> 	for (i = 0; i < bd->tx_nr_rings; i++) {
+> 		struct bnge_tx_ring_info *txr = &bn->tx_ring[i];
+> 		...
+> 		bnge_free_ring(bd, &ring->ring_mem);
+> }
+> 
+> and bnge_free_ring() dereferences that near-NULL address right away:
+> 
+> drivers/net/ethernet/broadcom/bnge/bnge_rmem.c:bnge_free_ring() {
+> 	if (!rmem->pg_arr)
+> 		goto skip_pages;
+> 
+> The rx side looks the same: bnge_free_rx_rings() -> bnge_free_tpa_info()
+> reads rxr->rx_tpa_idx_map, and bnge_free_rx_rings() itself calls
+> page_pool_destroy(rxr->page_pool), both off a NULL bn->rx_ring.
+> 
+> Since bnge_alloc_core() runs from the ndo_open path, an allocation failure
+> during "ip link set dev ethX up" would oops instead of returning -ENOMEM.
+> git blame points the affected loops at commit 0259379037cab9 ("bng_en: Add
+> initial support for RX and TX rings"). Would it make sense to split these
+> guards into their own patch with a Fixes: 0259379037cab9 tag, so it can be
+> picked up for stable? No commit in this series (10cfa109c8..63494c308b19)
+> carries such a tag or mentions the crash.
+> 
+> Note that bnge_free_rx_ring_pair_bufs() already had the same
+> if (!bn->rx_ring) return; check, which suggests the guard is functional
+> rather than cosmetic.
+> 
+> >  	for (i = 0; i < bd->tx_nr_rings; i++) {
+> >  		struct bnge_tx_ring_info *txr = &bn->tx_ring[i];
+> >  		struct bnge_ring_struct *ring;
+> 
+> [ ... ]
+> 
+> > @@ -1241,6 +1254,19 @@ static int bnge_alloc_core(struct bnge_net *bn)
+> >  		nqr->ring_struct.ring_mem.flags = BNGE_RMEM_RING_PTE_FLAG;
+> >  	}
+> >  
+> > +	return 0;
+> > +}
+> > +
+> > +static int bnge_alloc_core(struct bnge_net *bn)
+> > +{
+> > +	struct bnge_dev *bd = bn->bd;
+> > +	int i, j, rc;
+> > +
+> > +	rc = bnge_alloc_bnapi_mem(bn);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	rc = -ENOMEM;
+> >  	bn->rx_ring = kzalloc_objs(struct bnge_rx_ring_info, bd->rx_nr_rings);
+> >  	if (!bn->rx_ring)
+> >  		goto err_free_core;
+> 
+> This is the branch that reaches bnge_free_core() with both bn->rx_ring and
+> bn->tx_ring still NULL.
+
+I will add that they way that this code relies on unwind functions,
+such as bnge_free_core(), that can unwind from both a fully and partially
+initialised state is not the preferred approach.
+
+E.g. while having bnge_free_core() fully clean up state the taredown
+patch is fine, the probe path should have a goto ladder that unwinds
+incrementally based on where initialization failed.
+
+For a bug fix, a minimal approach, that adds some conditions, is probably
+best. But perhaps there are more cases than are covered by this discussion.
+
+-- 
+pw-bot: changes-requested
