@@ -1,108 +1,95 @@
-Received: from out28-74.mail.aliyun.com (out28-74.mail.aliyun.com [115.124.28.74])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BEF357CE9;
-	Sat, 26 Sep 2026 16:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF29E207E00;
+	Sat, 26 Sep 2026 16:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790438891; cv=none; b=X5+hdFtrwrKo9xT5CfES2J+6QWvpGPwkAdCriPRbX2XChJtDDijqnDrlH5E5DUXcIkVbe6+/cAZANIOxHvMv7zU7B5IS3ZJ77MMharDXihZFWFb/pRMDufCwTISsgGcy8ptGYcJf75tZb739SNuPF9bEv01oTekusgn3kBrCHsw=
+	t=1790439732; cv=none; b=i7CoL0U3eUlPpi4VZAYjKShfEr1oO1o3A17po5ragpoNp7wDekuRCYlWiQ6ka+foSWs6YAemGAKwkorjuYABVe7AepwO0lnx1FykNJTvxVL7hSfF/YGlI5xS3KQYGfP0vGG985Dzpz17oPltrY+6eozKaupk/vNo0TTCR60+pQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790438891; c=relaxed/simple;
-	bh=tqLckBEZHvSegR6zv+qVZBZSgGXz+gwBiExasXQX3fI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWTv0XIoKfWPT/oNhztW9hTLq3Iy1/WBMS0vmBxZgC+ZvadQqw7s3vRv0f5h9av5y9nzg5g2Diobx/HM0uA5luei3JGugHP+gdY9ZjqJmj0NlEPizJhScNcLlBf5n7/e+o3+/DzLTYFFsoLX5fgumeyqAzelb4vjJyjaiXKz1wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=pyPyB0br; arc=none smtp.client-ip=115.124.28.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1790439732; c=relaxed/simple;
+	bh=9uFUYyle1YFb+YdZaC78mZ0aDMo/wx/Y+4R23X9phkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uf97qC4RPi4vlPNaKl1ETOh34scgvf7ETtLMLi5hoWbbbiqqiS478fK0iiW7tArsQb6CT8epLPPWak+H/IV9HBllcOohAhC4NyesSkZ6I5i8yeJhWU3QF4SY06Wtnav3gAKmIChAUsI1gs40poBoQg9yLC5GCAtZgkKUCvfNGJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iwqgmk1e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="pyPyB0br"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1790438878; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Vmew8F6cGoltC/zlxLQ/V2Ko/5hlJ0diq7QdLHv/b2g=;
-	b=pyPyB0brJjkU6YAnShJGXKM0IIkWQV6CkkyiQwgYBV+8zTaTE+UOXwb2Rq/RtqMJHBUOnv6gcHy+vQ688j0/rgtzlsfW+V/qMqfSZd+m+Nva4H5U7ztHA5F8jfMba/p1QVMpYl8OBXo5u+fW4UdqqayrpUU9lLqd/ZHhOwgp64o=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0451441|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0306825-0.00118257-0.968135;FP=3451580394671390456|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jOPHQ-s_1790438876;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jOPHQ-s_1790438876 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 27 Sep 2026 00:07:57 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Rusty Russell <rusty@rustcorp.com.au>,
-	stable@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vringh: reject empty / undersized indirect descriptor tables
-Date: Sun, 27 Sep 2026 00:07:55 +0800
-Message-ID: <20260926160755.21485-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260924030627.13287-1-fangxy@xiaopeng.com>
-References: <20260924030627.13287-1-fangxy@xiaopeng.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iwqgmk1e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BC1F000FF;
+	Sat, 26 Sep 2026 16:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790439730;
+	bh=e+Qr2230Lu2sLj4UI5sDrSPVvb8HYtybN1/cvDBHd3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Iwqgmk1eeGsFzySD6F5rYQQm0GYO9bhJEDdTKXHL+KDOeEGVPhqLg6jpSECUfNFSy
+	 RcOKPRYvZpmct50+ddgzN1AxWj9Z72FyGrgvSSUMrlgIDSKJnxCyzMmF2UsXXYIAfm
+	 lsr9PYToJNmEVdq0pXZC/i5cAFYE6xCWacnYCdkjOSqBmsO2UEMP/VNKrpiWoY7dgP
+	 Rz35fK/GVLjQ8M4WDRknNgYl97xk1Roqh0UMU5/6OPDzEWgM7Flgzlk1m0LoTK4hIx
+	 obDD/DdCPWABEi+agrwAbRFoIlEiNFtz/RCRNcooqw9PJ+88VTpV6UcIVpOMKmhHPh
+	 cM/zPICs+2+Hw==
+Date: Sat, 26 Sep 2026 17:22:05 +0100
+From: Simon Horman <horms@kernel.org>
+To: mhun512@gmail.com
+Cc: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
+	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: fec: drain PEROUT requests before canceling the
+ timer
+Message-ID: <20260926162205.GX13925@horms.kernel.org>
+References: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGEsz8EYe=gBFr_hEYFLUeiJMRtau=eV3cDUUmHJOQkC0qvfqw@mail.gmail.com>
 
-move_to_indirect() validates an indirect descriptor table only with
-"len % sizeof(struct vring_desc)".  A descriptor flagged
-VRING_DESC_F_INDIRECT with len == 0 passes that test, so *desc_max is
-set to 0 while *descs points at the empty table.  __vringh_iov() then
-copies one struct vring_desc from descs[0] -- 16 bytes past the end of
-the table -- before the "indirect_count > desc_max" loop detection
-aborts the walk.  The over-read value is discarded when the walk aborts
-and is never used to map anything, but the access itself is out of
-bounds.
+On Thu, Sep 24, 2026 at 09:03:39PM -0500, mhun512@gmail.com wrote:
+> fec_ptp_stop() cancels perout_timer before unregistering the PTP clock.
+> A PEROUT ioctl can set perout_enable, release the driver's locks and
+> then be preempted before hrtimer_start(). The unregister path waits for
+> that ioctl, which can rearm the timer after it was canceled. Removal
+> then frees the netdev containing the still-armed timer.
+> 
+> Unregister the PTP clock first so all in-flight ioctls have returned
+> before canceling the timer. Clear the PEROUT state and compare channel
+> afterward, then disable PPS. Serialize the channel write with PTP clock
+> shutdown and skip it when that clock is off.
+> 
+> This issue was identified during our ongoing static-analysis research
+> while reviewing kernel code.
+> 
+> Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+>  drivers/net/ethernet/freescale/fec_ptp.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c
+> b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 56801c2009d5..67901e036ac3 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct
+> fec_enet_private *fep, uint channel)
 
-Reject any len smaller than one descriptor, alongside the existing
-stride check, so an empty table is refused with -EINVAL and no
-descriptor is ever fetched from it.
+Hi Myeonghun, all,
 
-Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-Cc: stable@vger.kernel.org
-Assisted-by: Hawkeye:GLM-5.3-flash
-Assisted-by: Qoder:Qwen3.8-Max
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
----
- drivers/vhost/vringh.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+This patch does not apply because the two lines above should be a single line.
+Unfortunately this means that CI did not run on this patch.
 
-Changes in v2:
-  - Commit message rewritten per Michael's review: the over-read value
-    is copied into a local struct vring_desc and never reaches the
-    caller, so the security framing ("leak" etc.) is dropped and this
-    is presented as the plain out-of-bounds read fix it is.
-  - Code is unchanged; the diff is identical to v1.
+Please repost after figuring out what went wrong here.
 
-Testing:
-  Userspace reproducer carrying the move_to_indirect()/__vringh_iov()
-  logic with an instrumented copy() (len == 0 indirect table, 2048-byte
-  mapped region followed by 64 guard bytes):
-
-    without the fix:  reads 16 bytes past the table end, returns -ELOOP
-    with the fix:     returns -EINVAL, no read past the table end
-
-diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-index 9066f9f..0767748 100644
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -197,8 +197,9 @@ static int move_to_indirect(const struct vringh *vrh,
- 	}
- 
- 	len = vringh32_to_cpu(vrh, desc->len);
--	if (unlikely(len % sizeof(struct vring_desc))) {
--		vringh_bad("Strange indirect len %u", desc->len);
-+	if (unlikely(len < sizeof(struct vring_desc) ||
-+		     len % sizeof(struct vring_desc))) {
-+		vringh_bad("Invalid indirect len %u", desc->len);
- 		return -EINVAL;
- 	}
- 
 -- 
-2.50.1
-
+pw-bot: changes-requested
