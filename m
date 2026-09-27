@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE7F3B14D7;
-	Sun, 27 Sep 2026 16:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879F6415F2C;
+	Sun, 27 Sep 2026 16:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790526547; cv=none; b=eN+WjkxVpkz2v2JHPHYVshsPVH96hRhnWKnv2Nl4YTLJD7d1t+aZKW8QWBl4k9d86buKUiGp8eRrjaiTg2yp4EJ4UAIrVYZnVZZr48E6tBvdrq5z481I7+S2Nskow5NQU0dx98v3Qzu5/lk5QmB/8JjkGyfMGur1Pye3Th0h8cg=
+	t=1790526550; cv=none; b=NN9qUdp964fBaKr1WBd/uJ742x9KDP3HMUHIIKihTS6oUpHmXWDa7UMU88wRCJSyaHkOYoyWKJbK4eHnpnXVtUHpEcJ4UqcvLZViMwCLNPfPPq9wjFc2iJwhOhFiauiROv3u/1P70VmqhRQiEl2xbDhp5Zvk36Uaf85LTqCf6nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790526547; c=relaxed/simple;
-	bh=NFwGvC4VcTSAbSA8FSD8ChPzP4PPCj/LwW9t2T9a8zA=;
+	s=arc-20240116; t=1790526550; c=relaxed/simple;
+	bh=nlsSCJDSH3JNQmZR4k1g1eYsOTarj6PK2qUb+7jfj1Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D0UAO1QBZJ7l3BItuB2YR0IZSK79+zoNAT/03S1tC4jC+Hfc1MxXx+sZyLhOPoJRT9Ad8tw6NA/TbLI0qJSl+/xddwoprT1XTIjgv3gD5OvTY7F4kYtj3D1Hta2GjoJfJiuHc7zxn/+857iSdIfLKe6ICAKYXARWcxib8E995Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IggNfbCO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=P9J09s7AAiebnnX4qG2BXXgpoGHeGN/O2KXEGhKbk12hEHPSMUZhvPRTJGT/qqxST+14TSg967cIoWx00ho+ErzDOiyH3YuPGy9XMyk7ZfnJmEtp82fJmv3aMuowuq/4sPvWY0LmtCYerpW9G82m/P6v2aRzia91cCM//zcs+bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eeV6qE1h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IggNfbCO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002D31F000FF;
-	Sun, 27 Sep 2026 16:29:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eeV6qE1h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196661F00893;
+	Sun, 27 Sep 2026 16:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790526546;
-	bh=lMcI0XjYXxee6gQybGjy+nF52Zob3DzrgHJzmXEp8fc=;
+	s=k20260515; t=1790526549;
+	bh=gB2hKJgtjbVyDE2VSgLSgN/qQRPT4zl7qwrfLFCXv+s=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IggNfbCOWc3Qu2tHK8WHnDs24hP2X51WEjGQiUMCT3DAKwlWx+bJ2owge4SRyItne
-	 p/YpydwrSEs+xZKdAH785auXYfIjvrNKDIDBUAxAo/fiCqY00BehgZU5c54oX8hC6K
-	 K9jCzqmBItHAHdjk8iSth2KVRjfPInxo3/LlNMAG2uthWkQ0tLYPpdGi3TJsngGu/y
-	 w8Vx/fxAHLAzMU15096FUduU0PNkJDGiVCemZpXViZtmcBbX7bDWUs6r7rFjhsykYP
-	 RZxgnrIIqHOLoUnECh48i98eyWQRZi62VyGfLtyp9IkvBhsi4xxoVEGsUWWYjDTz2y
-	 xDD4ugM5ILP0w==
-Subject: Re: [PATCH net-next v15 2/9] dt-bindings: phy: document the serdes
- PHY on sa8255p
+	b=eeV6qE1hzM2d8E9hcolO5ZjxVRkrTviuTICOhmUr23hR62jbAyUoGMVN4qFe/Ihxz
+	 NjJs2nh2ZXURvMLNMsrSvyD6azjA2FEABq8+pyowJ1omhdsgPkc7gAWJ47aOTW6UoP
+	 g7qsUhPtlmv0Lnn8+klu2GBmz02LEIFCrCqThKWNGnjbtm03y3mHQNv7Sp+Yclg5ci
+	 NLpafzd0hFGQKmJ54ER7Q3lyevwEBTQqA48gSTRf7zk6UXI8CTs2v2W+55ylwAd2m0
+	 1OlnVz96oYa5qW/LO7trgmEPxEiRMA+C1kVV0AxmD1s1JNujTNdtE15no8SjtXpSid
+	 0Yq5Q6DCsjC0w==
+Subject: Re: [PATCH net-next v15 3/9] phy: qcom: add the SGMII SerDes PHY
+ driver for SCMI systems
 From: netdev-bot+sashiko@kernel.org
 To: bartosz.golaszewski@oss.qualcomm.com
 Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
@@ -49,11 +49,11 @@ Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
  linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
  sophgo@lists.linux.dev, linux-riscv@lists.infradead.org,
  bartosz.golaszewski@linaro.org
-Date: Sun, 27 Sep 2026 16:29:03 +0000
-Message-ID: <179052654351.2160803.11432185989352625433@kernel.org>
-In-Reply-To: <20260923-qcom-sa8255p-emac-v15-2-e82f33720737@oss.qualcomm.com>
-References: <20260923-qcom-sa8255p-emac-v15-2-e82f33720737@oss.qualcomm.com>
-X-sashiko-severity: Low
+Date: Sun, 27 Sep 2026 16:29:06 +0000
+Message-ID: <179052654668.2160803.9784389469045924659@kernel.org>
+In-Reply-To: <20260923-qcom-sa8255p-emac-v15-3-e82f33720737@oss.qualcomm.com>
+References: <20260923-qcom-sa8255p-emac-v15-3-e82f33720737@oss.qualcomm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -63,84 +63,146 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] In the new binding
-  Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Nothing in the new SCMI SerDes PHY driver ever tells firmware
+  to power the SerDes down or release its rate vote.
 
 --
 
-dt-bindings: phy: document the serdes PHY on sa8255p
+phy: qcom: add the SGMII SerDes PHY driver for SCMI systems
 
-This commit adds a new binding for the SGMII/SerDes PHY on Qualcomm sa8255p
-platforms. The hardware is the same as sa8775p rev3, but here firmware
-manages the PHY over SCMI.
+This adds a separate PHY driver for the firmware-managed SGMII/SerDes PHY
+on Qualcomm sa8255p platforms. The driver never touches registers or
+clocks. It turns the requested interface mode into a genpd performance
+state (SPEED_1000 or SPEED_2500) and uses runtime PM on the provider
+device for power votes.
 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
+> diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c b/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c
 > new file mode 100644
-> index 0000000000000..9e846e3815555
+> index 0000000000000..c726a414eb6a4
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
+> +++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth-scmi.c
 
 [ ... ]
 
-> +  power-domains:
-> +    maxItems: 1
+> +static int qcom_dwmac_sgmii_phy_scmi_set_mode(struct phy *phy, enum phy_mode mode,
+> +					      int submode)
+> +{
+> +	struct device *dev = phy->dev.parent;
+> +	unsigned int perf_state;
+> +	int ret;
 > +
-> +  power-domain-names:
-> +    maxItems: 1
-
-[Severity: Low]
-This isn't a bug, but should power-domain-names pin its value here?
-
-The property is listed under required, and the example uses "serdes".
-However, the only constraint is maxItems: 1. A node with
-power-domain-names = "foo" would still pass dt_binding_check, so the value
-of a required property is left undefined in the ABI.
-
-The other firmware-managed sa8255p bindings fix their names with const
-entries. For example, qcom,sa8255p-geni-i2c.yaml has:
-
-  power-domain-names:
-    items:
-      - const: power
-      - const: perf
-
-qcom,sa8255p-ethqos.yaml, added later in this series, does the same with
-core and mdio.
-
-power-domains also has no description, so the binding doesn't say what the
-single domain represents.
-
-Could this use items: - const: serdes for power-domain-names, and add an
-items: - description: entry for power-domains? Another option is to drop
-power-domain-names, since there is only one entry.
-
-The driver added later in the series (phy-qcom-sgmii-eth-scmi.c) doesn't
-look the domain up by name. The driver core attaches the single domain
-automatically, so an unexpected name causes no runtime failure. The concern
-is limited to the schema and the ABI definition.
-
+> +	ret = qcom_dwmac_sgmii_phy_scmi_validate(phy, mode, submode, NULL);
+> +	if (ret)
+> +		return ret;
 > +
-> +  "#phy-cells":
-> +    const: 0
+> +	perf_state = (submode == PHY_INTERFACE_MODE_2500BASEX) ?
+> +		     SPEED_2500 : SPEED_1000;
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#phy-cells"
-> +  - power-domains
-> +  - power-domain-names
+> +	return dev_pm_genpd_set_performance_state(dev, perf_state);
+> +}
+> +
+> +static const struct phy_ops qcom_dwmac_sgmii_phy_scmi_ops = {
+> +	.set_mode	= qcom_dwmac_sgmii_phy_scmi_set_mode,
+> +	.validate	= qcom_dwmac_sgmii_phy_scmi_validate,
+> +	.owner		= THIS_MODULE,
+> +};
+> +
+> +static void qcom_dwmac_sgmii_phy_scmi_reset_perf_state(void *data)
+> +{
+> +	struct device *dev = data;
+> +
+> +	dev_pm_genpd_set_performance_state(dev, 0);
+> +}
+> +
+> +static int qcom_dwmac_sgmii_phy_scmi_probe(struct platform_device *pdev)
+> +{
 
 [ ... ]
 
-> +        power-domains = <&scmi7_dvfs 0>;
-> +        power-domain-names = "serdes";
-> +    };
+> +	/*
+> +	 * Enable runtime PM on the provider before creating the PHY so that the
+> +	 * PHY core enables runtime PM on the PHY device too. The single SCMI
+> +	 * power domain has already been attached to this device by the driver
+> +	 * core, so runtime PM votes propagate to firmware through the genpd
+> +	 * device link. No register or clock access is done here - firmware owns
+> +	 * the SerDes.
+> +	 */
+
+[Severity: Medium]
+Is this comment accurate for the domain type the binding describes?
+
+The binding allows only one power-domains entry, and its example uses
+<&scmi7_dvfs 0>. That is an SCMI perf domain, handled by
+drivers/pmdomain/arm/scmi_perf_domain.c. When there is only one domain,
+the driver core attaches it directly as dev->pm_domain, so no device
+link is created.
+
+scmi_perf_domain_probe() registers that genpd with no power_on or
+power_off callbacks, and sets these flags:
+
+	scmi_pd->genpd.flags = GENPD_FLAG_ALWAYS_ON |
+			       GENPD_FLAG_OPP_TABLE_FW |
+			       GENPD_FLAG_DEV_NAME_FW;
+
+In addition, scmi_pd_set_perf_state() returns before it reaches
+perf_ops->level_set() when the level is 0:
+
+	if (!state)
+		return 0;
+
+The MAC calls phy_power_off()/phy_exit() in
+qcom_ethqos_serdes_powerdown(). When this provider then runtime
+suspends, the path is:
+
+genpd_runtime_suspend()
+    genpd_power_off()                    <- no-op, ALWAYS_ON
+    genpd_drop_performance_state()
+        scmi_pd_set_perf_state(genpd, 0) <- returns 0, no SCMI message
+
+Does anything ever ask firmware to power down the SerDes or release its
+rate vote?
+
+qcom_dwmac_sgmii_phy_scmi_reset_perf_state() has the same problem on
+unbind or probe failure. Its dev_pm_genpd_set_performance_state(dev, 0)
+call ends at the same early return.
+
+Say qcom_dwmac_sgmii_phy_scmi_set_mode() has requested SPEED_1000 or
+SPEED_2500. Firmware then seems to keep that level through interface
+down, phy_power_off() and driver unbind. Meanwhile genpd records
+performance_state = 0. Can the kernel's view and the firmware's view get
+out of sync here?
+
+Whether the SerDes stays physically powered may depend on firmware and on
+the MAC's own SCMI power domains. Even so, this driver never sends a
+power-off or release request.
+
+The opposite problem shows up if the DT points at an SCMI power-protocol
+domain (scmi_pm_domain.c) instead. On/off would then work, but that genpd
+has no set_performance_state callback. _genpd_set_performance_state()
+would record the state and return 0. set_mode() would then report
+success for 2500BASE-X even though nothing reaches firmware.
+
+Other sa8255p firmware-managed devices use separate domains for these
+two jobs. For example, qcom,sa8255p-geni-i2c.yaml has 'power' and 'perf'
+as <&scmi0_pd 0>, <&scmi0_dvfs 0>. Would this driver need the same power
+plus perf split, with the probe comment updated to match?
+
+> +	ret = devm_pm_runtime_enable(dev);
+> +	if (ret)
+> +		return ret;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-qcom-sa8255p-emac-v15-0-e82f33720737%40oss.qualcomm.com
