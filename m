@@ -1,115 +1,157 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B663BB669
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790494138; cv=pass; b=FcusFc+VxmMEaxMB/CeR8JgVJdo025Pafh0XQcp4hM+WYdyyrXKcYnnAIgWgmnrDpDyo0UNixSmeqixMGMGshUnXAUIqysID+RY0uY1ZINhRKSiYtXsPdxdphM4BPRA1TUjI55BQ/Syz0DEyDPkUI3/0wrL9C6I78dzujpxjx+A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790494138; c=relaxed/simple;
-	bh=ehijlCEC3hrjcJAznMfeQDeOfDoaMPKsYEk0yQczBFM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cj40qTaGDqRgUsuW5gFAXLqLyhcUYZ2W2iD9Nvrh8pi6bx8P/UcAP08lpEsUvlfn4+BJdwOsDyM9LMHREk2UAZgGFtr1AuWTuTBnh2qK8aDhE+/0UFyU8Zy0YEHIN5tSbx2q7m8e0IQ73/98CWnQZiGWeDMnjeY9dQrYAE4DTlA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUP7ST4H; arc=pass smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88043BBFBB
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790494336; cv=none; b=F3cdj5qqE4VSmimBLVeln/UtYAYjGs5sRs2x0chN782O305zsGZ6f52294Alr/zcV1ExEZsnAZb6Y1YHILeTx7l4GUUbwPU9alluExgO0I/M4RfYGwnAPYrZy+icC+1zaMASe7Gs8pcvc/lFL97BD9IrJf397EBrJQsh9bHaons=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790494336; c=relaxed/simple;
+	bh=nY8qGs46zgeEK17RWUhh5D/oORqRp0Zwjy2eAU1BJVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mUod5y+JmlkObKvf55D3yS7SL1QE+fRtIV36mt5bISxd1ALmMdl4PAcimtDLLq1x9ZM8tn0VC5MNkY6zbbb8LEMcTmFcyfMHhiICe3OtHCfOW47tJ1UVGtitE+QTb4tgrzeYEI2WuKXE02xvoUHRMxsjqE7tDmoeRtCuwn1xRks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHv66hE+; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUP7ST4H"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b76ff64d78so2063040e87.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:28:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790494135; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZnEzwN9ZZy/IO6pmirikht0g3EjW8giZvz5TBY1vD9GbCjc2EX8uLCk4rt7NhBXYXO
-         7e+hyNtXmenC5ozX0ENv4TFX/Bah7p/XkiSXm6fr6HzcffdMJE1fGBFeSDH4O4QLib3V
-         G/54k4wUpxt7vrw2B3erhFKpBmBBgZa1hZSrjingpwEbWgTp4feD6rNojjw0+aAi0A7h
-         3h9e1qg1d11ciORQQIDB1WkiuDCWsXPFOexguQdqvQ0IyCIyT61a5Uds8Z7gA2XZgCnn
-         NbmMiOHZiiKKaoQNdpqnrrHH/5NSEYYuViTubUobLdWVJuenDyTCMXIVTJZGrAocQWf/
-         YEVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
-        fh=vKFja0LSr0FxQhvuerK1UD7EXjSKsFax19DrbRxRzps=;
-        b=rqPgYXCx8x5N3zoPAf/24TzgxZXRg6bztfcR8pRHt7jb0vkn9qQdQw4dDDrzH4pTtV
-         O/3q+HxD6suejdTBA9hlKXKs41PZ2w4HdZwZs3OtW+wGvHRhKIe7LNdc2sKsOYNVs8yM
-         gkAGU9Lk4ADP/QAv6FtPIxQankqzZ0fteSCTE/S8m8iIGd5cNcADV31Bchh4owSeLEa4
-         7x9OHQi4ECTm7F1t6nTKGAsLJZIQ5leJhgnfiTHq9HS8NQ8VFol2CrgNYUHr1dhj+C5g
-         6bqYAd17XjUDbCmEvd0mxHJ1vlJIlQFnBarwK6ZiENlq/GaL3c1Pt75mriH4XQJnU4DD
-         fANQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHv66hE+"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e4e75342aso155524eec.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:32:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790494135; x=1791098935; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
-        b=QUP7ST4HD4hHwLCrhLalJyjqqJxSSLxvhkwndOV3EcxUNDfLEIj7jTjaccryR8DqTp
-         FksqFwirqQJrhUIFhNsu3UDaL+soJ7AfXvMm6jBF8lU6EBBgGRsvGZNiGcooaxmdO5+U
-         wXZNFJ9ngRXIfc+xdCOkkJRyCzp6mAuRIT01rCnKhvDxmI+COG2YOy8mOYUicZpYzMc5
-         c41cZ3Jk7cNODF3W8/eZhddzuhSRLTzInShZ3a0yVDunpC16nujtzoYVehcR+rkO/qeM
-         fJ8xGfDsQWCvIr8v9Ya324Uze6JO2YplDEPD/mCEAN+4jApZyWln7Y5iiQhuusfKoHG2
-         T/bg==
+        d=gmail.com; s=20251104; t=1790494332; x=1791099132; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gCHlGAQUPQqUwMiZODOWYGN6xif3TdPxiD76nVrz+oA=;
+        b=AHv66hE+453a1o7CCAhJdKZZzPPjIciAqAg0DNN9j5vvISW63i8NiBAdyleUetCeF0
+         EWN0bO5YGoTsQlT+cWBlPqy1J4qcxIL9ClgcpRRL6k/uowZ72xM/Q7MYg90ZYbX74A2t
+         pJWKQ6/+1ZKnbQMQNzRpnprnEfzGvN4F3hLNQHUJW0+l5/Ua/PbDDy1JqPdOx/A6t7V9
+         xYeb5wKsNzcrGjdTShWBNirv0AMsR8oqjKpKa6xyG7rvg+GyEB/VWKru4nIJK53QP4yG
+         fkRE1JUSqpcyUXgNNL0JMAKBlqm9qirduMLe/x5i7NszncNakSLS6ucuejuz474lZliu
+         As4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790494135; x=1791098935;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
-        b=LY08q+2S8yoWG7iZqeK/kp+qzSIdDZeZ2UhSqA3HbxeawOJmMiZ7x1/nGiAgzTF7lh
-         Vf9C9fZQRrB1tOVe/kP6PNEEULZJC6WHIzJlFIsTN/QkjVneac7K9+mtahIla+0YXKvR
-         Hq4bq5zsJXbt3H0PJ3g5I6HcvEEfeYxvQyH2gExI7RzLvqkV01qZcJ+KxANnKb5xsHLm
-         qy03EDFs0/WFa8eFe56YzX5KOI19/LStTr+gOVLZ+VtnFDEMAUJ7KRwOlhFF7cBp04y9
-         NttmU+/Hak7XnLG86d+K8R++lq2tmVWtk765rpbJpMNdZPlmTf6eS/o3PyoJEsd5xLd1
-         YcxQ==
-X-Gm-Message-State: AFq9FYK7C/uTfJxWOlLdItfl5bxrUnewuAgd4IrTTCN9+pKk6ZEwqfTu
-	djVQCEytkTdVaEltgZysQPCZ27kjx3W0CDVrE+WLXcmoKxbtZhAT9BT9QVsPaJyb1wtYc9zCPvs
-	XlgwphOGLZQ3bXsqmDMFeFrEpzAk7qJkllN/0omo=
-X-Gm-Gg: AYBFou0ONF5f2YSt2LrHhJ+Wex/4Oc0gFbY+1ph41HMkakWBg/Pwlbvw0CFTt2LsLcS
-	M4F5fmOMAZ2FHYu62nYG0c5u1MaIZRI1tEPnRlcRGeANeOMEZVnfwgVy/bkeJbhX4BGvxLD1/0e
-	t1qYDLHt41MMFWsCq1vN1xJTshTLRzFUsHFvssJZnyoOchJOGLOmGe67KpoWGyDBGCrOgA2T/sW
-	1etr+7Ahh/sIg22rfCKX88V1ql8ztBeLicPax9YbtQOjtHBG1pozqM9tm/dORRm/MXamKRZU2cw
-	IxObkPCe8cd8U/S3sMkywIy/ddtlJl6Wr5slytF08Cda+LL/ktUq1Q==
-X-Received: by 2002:a05:6512:39c3:b0:5b8:f42b:ee35 with SMTP id
- 2adb3069b0e04-5b8f42bf011mr467408e87.51.1790494135280; Sun, 27 Sep 2026
- 00:28:55 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790494332; x=1791099132;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gCHlGAQUPQqUwMiZODOWYGN6xif3TdPxiD76nVrz+oA=;
+        b=Gh1JRKnMUOw3Vv5ESAWoxJNnuVyyTtyvKhXEvhDTs0OiljmZbjGYrZFwuLZhMU3f2H
+         mRoHvu0jXsfB9p529qeMlafgjSIyXd73Rzcb1zN9oOGy/7GfmJzgRbgAiynH7ecBJW2S
+         cSnwsYLsYlnTiczzLRHZhwUb1CsgXd3fLJxWCLsdIfP3MXXaU4MWkiaZRga/NddPOXsz
+         0Dpp44dZva2RjknlzAqxocvfdMao1QUyqwieQ1gpOzHoto0Dqo4Rh7YMOJ1qpXwPMZKq
+         2HpfPwDm5HaSdMAe9W5X/1uc59P08nZo/COJG3F6bXioKpieBn2HzfwmtjjfUJpiHttY
+         6CUw==
+X-Forwarded-Encrypted: i=1; AKwUvBwIg8AwBB0bJJRGoVxFAZhwezMjfKp/SQoxB7l2zVSIaAu4qVzdWH3LHJv8AOPSyIIEJRCG2uw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJsUyqFDessU+ZdifxAVezyhjhSx8GSEtvQM0dHxu8XokQ6DgkH
+	22+yQMhIUGvT9wN7SwNmltPcUmBXlMElHtyqAf32bMenKdbwcZw8b9Ik
+X-Gm-Gg: AYBFou3e9/M3e3y3wiUU4zFAb5K0sIAVvVdqbdkJyJy2eU48+IAVmoqm4E1TbXu+REi
+	FmE6pWMUXuejwHIlMCWPF1aL1Ud33zbvEH5usq9+x5iNBKmeTX0JcZXqruS15AZSkgd0ycWxNB4
+	LR9zzHBq8rmkaqV1IRnYMDXsdZXjCohDVRLNEkPT6QVyVnEFDlJ5OyOziTTB/QUBGf8bZoJx6td
+	JsNZ/3kFdPPefMDxaqBjTk0S+bOJAJSELPD0l6UJdwew0DGOj8bGFsr1d7d5EEb4btUkpYfxYe8
+	aOYoNV3lOIoxAySUF/VotEL7e2lPnI4OhPChccVwdRUSjbk3wPgRMMvxXQOS2qxVHQFJYcLDflF
+	wDbNbxXxlqIqsXWMMWoUyImhvmnsepLPcpNj1ygAk9DBFNGwlclQBViU1PRxpqwprfRLPSS+5cK
+	liYzA092AnwkWUjcOxafJ+grjTNvp9sNxHT/xBRoYQwhN4/HGWJBuwkTsvLuk+YRXnOIm8TqdwK
+	H6v6f3SYPzknzk9i8QOcOKjqj2Mv8B+qbymuCVa5tjGWV1rdiyTZPMBTaTFSZVKiWyHlA==
+X-Received: by 2002:a05:7301:b0e:b0:33f:3750:4e22 with SMTP id 5a478bee46e88-3426cce6521mr7959749eec.0.1790494331059;
+        Sun, 27 Sep 2026 00:32:11 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3433628f5basm10705821eec.18.2026.09.27.00.32.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 00:32:10 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/smc: serialize sndbuf descriptor release with diagnostic dumps
+Date: Sun, 27 Sep 2026 15:32:03 +0800
+Message-ID: <20260927073203.3694279-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260924135116.185161-1-maimon.sagi@gmail.com>
-In-Reply-To: <20260924135116.185161-1-maimon.sagi@gmail.com>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Sun, 27 Sep 2026 10:28:29 +0300
-X-Gm-Features: AclHuK9jR81YtUx1RQCcrT9bGJMnvoX8CDMxKrKA2UGl4RFqsdHHmwLzPsS4b9g
-Message-ID: <CAMuE1bE9XGm31fKRf62kD_rP7xFvkjjePRTPfRSjwH815PPbBA@mail.gmail.com>
-Subject: Re: [PATCH net v2 0/4] net: axienet: fix TX queue handling around a
- DMA error reset
-To: netdev@vger.kernel.org
-Cc: radhey.shyam.pandey@amd.com, michal.simek@amd.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux@armlinux.org.uk, daniel@iogearbox.net, andybnac@gmail.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-I am withdrawing this series.
+An SMC-D connection can remain in the socket hash while smc_conn_kill()
+tears it down. For devices supporting DMB nocopy, smcd_buf_detach() frees
+the send buffer descriptor without taking the hash lock held by the
+diagnostic reader.
 
-The review of v2 found a real gap in 3/4: axienet_open() and
-axienet_resume() can still wake the queue while the error handler is
-running, so the claim that the handler owns the queue state for its
-whole duration does not hold.  4/4 has a smaller hole in the same resume
-window.  The other findings are older problems on the same paths:
-axienet_open() ignores the result of axienet_device_reset(),
-axienet_resume() ignores the result of axienet_open(), and the dmaengine
-stop path has the same suspend race as the legacy one.
+__smc_diag_dump() can load a non-NULL conn->sndbuf_desc, then a concurrent
+smc_conn_kill() can clear the pointer and free the descriptor before the
+dump reads its len field. The socket lock held by the teardown path does
+not exclude the dump, and clearing the pointer before freeing it does
+not protect a reader that has already loaded it.
 
-Fixing that properly means reworking open, suspend and resume together,
-and I cannot test suspend and resume on the hardware I have.  I would
-rather not keep posting partial fixes for paths I cannot test, so I am
-dropping the series.  The TX buffer leak in axienet_dma_bd_release() is
-posted as a separate patch.
+KASAN reported:
 
-pw-bot: cr
+  BUG: KASAN: slab-use-after-free in __smc_diag_dump.constprop.0+0x2477/0x2b10
+  Call Trace:
+   __smc_diag_dump.constprop.0+0x2477/0x2b10
+   smc_diag_dump_proto+0x266/0x390
+   smc_diag_dump+0x20/0x70
+   netlink_dump+0x489/0x1140
+  Allocated by task 70:
+   smcd_buf_attach+0x11b/0x310
+   smc_listen_work+0x2a62/0x4cf0
+  Freed by task 98:
+   kfree+0x131/0x3c0
+   smcd_buf_detach+0x120/0x280
+   smc_conn_kill+0x487/0x720
+   __smc_lgr_terminate.part.0+0x231/0x430
+   smc_smcd_terminate_all+0x2cf/0x610
+
+Take the hash write lock when removing the descriptor from the
+connection. This waits for dumps holding the old pointer and prevents
+new dumps from seeing it. Free the descriptor after dropping the lock.
+
+Fixes: ae2be35cbed2 ("net/smc: {at|de}tach sndbuf to peer DMB if supported")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/smc/smc_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 9974149659c2..f32fc1bd5bc8 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1207,6 +1207,8 @@ static void smcr_buf_unuse(struct smc_buf_desc *buf_desc, bool is_rmb,
+ 
+ static void smcd_buf_detach(struct smc_connection *conn)
+ {
++	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
++	struct smc_hashinfo *h = smc->sk.sk_prot->h.smc_hash;
+ 	struct smcd_dev *smcd = conn->lgr->smcd;
+ 	u64 peer_token = conn->peer_token;
+ 	struct smc_buf_desc *buf_desc;
+@@ -1216,8 +1218,10 @@ static void smcd_buf_detach(struct smc_connection *conn)
+ 
+ 	smc_ism_detach_dmb(smcd, peer_token);
+ 
++	write_lock_bh(&h->lock);
+ 	buf_desc = conn->sndbuf_desc;
+ 	conn->sndbuf_desc = NULL;
++	write_unlock_bh(&h->lock);
+ 	kfree(buf_desc);
+ }
+ 
+-- 
+2.43.0
+
