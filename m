@@ -1,62 +1,63 @@
 Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F5C3CAE93
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEB83CB565
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790546044; cv=none; b=G3txsBnDGaH4gV4yj0Dqm2fLwdF0pDAriQTxsVnEyztpasTazPjABaxeIFE8BBy1ysN9QYgBCs3YgtAseB4lSqfF+B65UmPHzjtCBxqRTPtiON9Do0sURLqkoKagS1+hj9tfpfr8dlOlse8PTUVp3AIV/ZWFVYJqnno93tWD18Y=
+	t=1790546048; cv=none; b=jgPN/8u/P2GmL0iH5ZHsN1No4nFM0sg2ngfTfnQwCvFGJcf/8dICHufOXw71jdbp/pcs6xhWX6Xp41aV3rhw7/oMGQQ4S1pQkCbep0htDoLYoQ0iZoVK2mgpPRBNDrqIVaZoTyq9qPxqaVFRTvvt9PNoyljkbq/PzttvS2ujO+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790546044; c=relaxed/simple;
-	bh=xrUo7eJDknue4jHQW8YLudmxiQL0GJSon9qQwPgr2M8=;
+	s=arc-20240116; t=1790546048; c=relaxed/simple;
+	bh=s1Qf6zVi8UhwTlovQ06Go/fkv9HRKtX4+5qnTRUsQ7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hn0Jee1eZG28eqEuoizoLCegVR+YkeAnR9iqM/WEqqAhvhTO9qrrCtt2t2EE9bfa2xu27PZECIZw9V1R/jruo1wdhmUy1CNnnktuZQMyJgqufpUYIpJ4zofEiyOUGKRB/QDTSjke00NYGeNfBUVLdtZCK96owEapNvrN9JfjKwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bBZbdkhT; arc=none smtp.client-ip=74.125.225.140
+	 MIME-Version; b=MJn+SllLEXwuCeEOJwox9XXetTtjSTWA8NoWS9anJQ21rtE5kIT9L+s5aND1jEL2qczJkGKB4E27xY1GhLkF9fyyRVGKAMWwndnzSmY8GwaH3DNj/CZn86jBwsVa/ZKPd0ib2yDb+ogN7tgIizYpHOB68LyWJzDobB6sZkvZBbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZB9v5GH6; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bBZbdkhT"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffde3cec6so5075985e9.3
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 14:53:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZB9v5GH6"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso26432385e9.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 14:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790546038; x=1791150838; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790546043; x=1791150843; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hG1F4NjMgvfqDxejRjw93Y89wPHj58dXwI/MFbotKmk=;
-        b=bBZbdkhTNTrMtFWtn3Wu0sQD3u7od50QHve26+E7r25U99mEzJXLcp20FnS4uEZFmg
-         kqNImmk3iUGQhZ9S+uknZYYxkdQwfK+p8JqQ1XHbQmKAf5uR+QbKTa+8OGfSubCRo1oS
-         TlXoYYjs9driGlSkMHVv5P1MQhE8NyW0vleAxArPPsBgMXfLLwZBDhmwPhb6Px4AqPL+
-         do5M/rV6+NZrFm1T2WKyxjH8FyDOwCvSjVGbK0vOql5JMBHxYtZvPo7PzLR939fya5SQ
-         XtCG+GzRSft+iG6RqBJtZ6dha2e7HpcQUqr1RzSzzM8vjSs75nxsR+B4YZcWBGU8N9A8
-         TkNw==
+        bh=p8iktBbgnmQg52LPBJr5bT0zIG6cybwQ3bD7gV4BQmY=;
+        b=ZB9v5GH6DwoWGP+y4sCieDvJkpLxpvB1sSxndPFJUu5rac2FHkgrEEpnGM5y5zZ8G/
+         7uuj2e6/pEFvN7Mj544BeEDTM1BrBbWWjtTFrrO3olhsPAx71V60bY2tDCU5Lhbrwxgj
+         +WAv01bZw8dL4/QxdY4Cpcyd3e+TwURekPRNuyeIo7NA8U7fYi+4xOUWVZV7O2aUJ36p
+         IOloQYtF/NZzsoFg5kJ+X+BePxMqd2DO3JAspN05CnZKZpsOH2N0pN+yOc9trF75xbzD
+         OooaDzv1L4UlozOC/4xqitfB8wUa2+15/J/duIAIcghBhMqWX05KBxTcMFnEzxymlMW0
+         h+QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790546038; x=1791150838;
+        d=1e100.net; s=20260707; t=1790546043; x=1791150843;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hG1F4NjMgvfqDxejRjw93Y89wPHj58dXwI/MFbotKmk=;
-        b=RppIPG4xfe3pdrdWCm1m6fPHQUH/SX+Qx39EEj5WfEenSkTE+DVYKnLcSbpYpKHD6n
-         +GIYdy3RS1NoaQarMHyRig1KPoJcgZZ50UcIrEsw7fwvZi2IJLhkybAP9YMnO+G+loLI
-         o5OtwwcdIrgg+T8QXYM1SMaU39HVia7HnBsDiea2YAhaJq29VmFoxn/hl8J6LyeUu1mR
-         7/oyu4mn3MvIqNHJ+KQGyhcY2xLVuaRpi69UPKiofgRFt6EvJbMSXoaE65IOvaPkO1AO
-         vhOTNXVg2DfkVMEfUc8mbhDWn/xvrNLZ/jwRPGbTAKSV0IcXYAdoKmTYNtNympweFjsd
-         kY+w==
-X-Gm-Message-State: AFuF++lDV14JtKFV8j+DrqWV21dWYKfXzOnkV9U3Cgd9b5ihfCrIwCc/
-	tivS7vtj+NJafye4LYSA/+OnovTvsV6nz/MtKUnXORv0xOU59TYLMFOY46ZOSicmrzM=
-X-Gm-Gg: AYBFou1gCKfDiyaFSe6gvPexnkTKpe2U6rjljxyknen7+YlIfunww+2xSOUPmkq6Ye5
-	10NMTisd8b8yDSXLdUk0HJaUjMkz8T3j3l93yfTneqS6eamaKmEQWvGxNPC1gHqmV6hmomSctZ2
-	+jk3GyC9KYykwAypYcJqWbV/wf9+oGutg8Q4mEkxyx/81+EZdDHLdwNt5OEBo9Y2SGedwFh/+ct
-	nm7ud9Cf0JxTscP26fMELWJLKBom3EOyUbICErsJ7eSQmQZtdO+9gmFXU6d8YCcaD6kt1hPwQom
-	v3TuaPGkn/0xgdNRT3irvb7CcpFg4Oo95jOEB3/VMqQhRBZsEz90J/vyj6INoBl9fWkpoW/YWyS
-	hsJF/bztkc5b3JOoOnv8sBeR1T6tYYRJ+j9uTHn/o3TnT1oPaytAhqFdVvQpouSnx9dD9e8EE6z
-	tMDyK6lxllQqAgpRyEKAhwlSFFqYeM1xeJdb9qrfrG/0atjhZrdfV5wB1kvkJ+8b4=
-X-Received: by 2002:a05:600c:4ecf:b0:4a0:108:3b54 with SMTP id 5b1f17b1804b1-4a001e8c316mr34108535e9.32.1790546037536;
-        Sun, 27 Sep 2026 14:53:57 -0700 (PDT)
+        bh=p8iktBbgnmQg52LPBJr5bT0zIG6cybwQ3bD7gV4BQmY=;
+        b=EmMpblty9xKCcdHcQK91AHvQ/BWmlQEhIoDwotrRZWFEFdf0zl5lkvqqWDslsBaKc9
+         EOcDUJoE18t5reO7WuARsUOGEOL3raJPq6EXZUxz+BIZQoz3wSrVXssf0Pcu0eMT3pyw
+         74GE5bBq+sPyhhK3BR8+PDjT8FhB9Bx2o6nYhFmRV8D7Op/dPLQIdMa0OZgl/pmyyJdp
+         qBqN23omcPdmFg1RG5q3Qd0vBOYH4NGDDphxhBB0Y9dJnVLetvkOjYJTOkzXkUaoBEkk
+         KTK2gbdMoQD8/gb3/rwRxtLZUa458wbv/2Knv9aAeStItKLvMFN/i+huTo57REtu/gLC
+         cMXg==
+X-Gm-Message-State: AFuF++kHgCNVLLNNAvlONmw7P/UZTyJYq4NEUtF7K6hRrfXhiDJTzo+r
+	OBeBqNGJY7zqASfrMDkndNqqzW9Kr7ZSCZKjl3o+WG9cxEn9IDMLhHJX4Ngyt6lgW9k=
+X-Gm-Gg: AYBFou3F65aHUK4026qMKvLXuK4V5raDOGvPLDrSfI9/85Ydzx7ozbRiUNVHuVC66mE
+	KLYmRFsRXDMhtvi4hz5YMNEMCfMEQaTh+pRq2pwEH3ZclKjl79mtT20CAq0LcmBsqSCbzOMnvMu
+	HE2It0F2rIAwsn6XfVT9ZATn8+aD7iKRHbXowkgi3LzqdEXZ0DITIoDAMScofv0BSguXnPpScL1
+	pT575D1n1IkPQZDEDzoeMhHEjGPEVHXwU8UPm7AlbnlfWFwZ1k09SdqVzLXlFdsxt4DQU63t9sY
+	xFIMjT0GJRGF0hJeFLXUHm3/9ndGO/q8lxVl3CSGRZDwTwM6ZRVTl23PLHeWn8S3AJqM1+ODdpi
+	2ips83wJQAwBE0aqlnvCmNz+V3xv+ybVwMT1kg4SmqGht+lNirmf5upapCVrM/yWTyIRmusNEKs
+	mDmF252bQ+uAwntmeRsrGMnYOjbrLqEZLXQgs38tdYz9RiMMWBgx4zF3zuZHdY8ZhOrpUEJ046F
+	g==
+X-Received: by 2002:a05:600c:8b2f:b0:49f:ff09:3b26 with SMTP id 5b1f17b1804b1-49fff093cfdmr58137705e9.6.1790546043380;
+        Sun, 27 Sep 2026 14:54:03 -0700 (PDT)
 Received: from kali ([169.224.126.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001922102sm89556865e9.15.2026.09.27.14.53.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001922102sm89556865e9.15.2026.09.27.14.54.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 14:53:57 -0700 (PDT)
+        Sun, 27 Sep 2026 14:54:02 -0700 (PDT)
 From: Ali Firas <alishmery18@gmail.com>
 To: netdev@vger.kernel.org,
 	idosch@nvidia.com
@@ -72,9 +73,9 @@ Cc: kuba@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Ali Firas <alishmery18@gmail.com>
-Subject: [PATCH net-next v3 2/6] vxlan: vnifilter: reject VNIs outside the 24-bit space
-Date: Mon, 28 Sep 2026 00:52:05 +0300
-Message-ID: <20260927215209.2581830-3-alishmery18@gmail.com>
+Subject: [PATCH net-next v3 4/6] vxlan: vnifilter: clamp the dumped VNI range to the request limit
+Date: Mon, 28 Sep 2026 00:52:07 +0300
+Message-ID: <20260927215209.2581830-5-alishmery18@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260927215209.2581830-1-alishmery18@gmail.com>
 References: <20260927215209.2581830-1-alishmery18@gmail.com>
@@ -86,82 +87,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-VXLAN_VNIFILTER_ENTRY_START and VXLAN_VNIFILTER_ENTRY_END are bare
-NLA_U32, so neither is bounded before vxlan_process_vni_filter() hands
-them to vxlan_vni_add_del():
+vxlan_vnifilter_dump_dev() coalesces a contiguous run of VNIs sharing a
+remote into one VXLAN_VNIFILTER_ENTRY with no upper bound on the span. A
+device may hold the whole 24-bit space, populated by several requests,
+and dump it as a single entry START..END. Now that a single request is
+bounded to VXLAN_VNI_FILTER_MSG_MAX VNIs, replaying such an entry in one
+RTM_NEWTUNNEL is rejected: the kernel emits an entry it will not read
+back, so a dump/replay of a device's VNI configuration fails.
 
-	int v, err = 0;
-	...
-	for (v = start_vni; v <= end_vni; v++)
+Clamp a merged run to VXLAN_VNI_FILTER_MSG_MAX VNIs so every entry the
+dump produces is one the input path accepts. The run is broken in the
+merge condition, by ending it once it reaches the limit even when the
+next VNI is contiguous and shares the remote; the two representations
+then agree on the same bound.
 
-v is int and end_vni is __u32, so the comparison is done unsigned. A
-request carrying only START=0xffffffff has vni_start == vni_end ==
-0xffffffff and looks like a single VNI; v is then -1, the comparison
-promotes it to 0xffffffff and passes, v++ makes v 0, and the loop walks
-the space upwards from there, creating a VNI node and a per-CPU stats
-block per iteration under rtnl_lock. Any range ending at 0xffffffff
-behaves the same way.
-
-Separately, a VNI at or above VXLAN_N_VID is accepted and stored even
-though the VXLAN header carries only 24 bits: vxlan_vni_field() shifts
-without masking, so such an entry keeps its own rhashtable slot while
-being truncated on the wire.
-
-Range-validate both attributes against the 24-bit space, as vxlan_mdb.c
-already does for its own VNI attributes. With the nest now linked to
-this policy, an out-of-range endpoint is rejected during netlink policy
-validation, before vxlan_process_vni_filter() runs and before anything
-is allocated. How many VNIs a single in-range request may span is a
-separate question, bounded by the next patch; that limit is not a policy
-check and does run in the handler.
-
-Make the loop counter u32 as well. With the range bounded it is no
-longer what keeps the loop finite, but it drops the undefined signed
-overflow past INT_MAX and matches the u32 vni that vxlan_vni_add() and
-vxlan_vni_del() already take.
+Resume across netlink message boundaries is unchanged. cb->args[1]
+counts the VNI nodes already dumped and is advanced only when a
+completed entry is written; a run is still a gapless block, so its node
+count equals vnirange() + 1 as before, and the clamp only moves where a
+run ends. A device with more contiguous VNIs than fit in one skb still
+resumes correctly, now split into limit-sized entries rather than one.
 
 Assisted-by: LLM
 Signed-off-by: Ali Firas <alishmery18@gmail.com>
 ---
 
 Notes:
-    v3: was 1/5. No code change; the changelog now says the out-of-range rejection lands at policy validation, which holds for a multi-entry message once patch 1 links the nest.
+    v3: new patch. Clamp the dumped run to the request limit so its output replays.
 
- drivers/net/vxlan/vxlan_vnifilter.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index d391ec579661..9cffaf4998a9 100644
+index 13f4e115701a..92ea1fc94f45 100644
 --- a/drivers/net/vxlan/vxlan_vnifilter.c
 +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -459,9 +459,15 @@ static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb
- 	return err;
- }
- 
-+static const struct netlink_range_validation vni_filter_vni_range = {
-+	.max = VXLAN_N_VID - 1,
-+};
-+
- static const struct nla_policy vni_filter_entry_policy[VXLAN_VNIFILTER_ENTRY_MAX + 1] = {
--	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
--	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
-+	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
-+							      &vni_filter_vni_range),
-+	[VXLAN_VNIFILTER_ENTRY_END] = NLA_POLICY_FULL_RANGE(NLA_U32,
-+							    &vni_filter_vni_range),
- 	[VXLAN_VNIFILTER_ENTRY_GROUP]	= NLA_POLICY_EXACT_LEN(sizeof_field(struct iphdr, daddr)),
- 	[VXLAN_VNIFILTER_ENTRY_GROUP6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- };
-@@ -814,7 +820,8 @@ static int vxlan_vni_add_del(struct vxlan_dev *vxlan, __u32 start_vni,
- 			     int cmd, struct netlink_ext_ack *extack)
- {
- 	struct vxlan_vni_group *vg;
--	int v, err = 0;
-+	int err = 0;
-+	u32 v;
- 
- 	vg = rtnl_dereference(vxlan->vnigrp);
- 
+@@ -382,6 +382,7 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+ 			continue;
+ 		}
+ 		if (!dump_stats && vnirange(vend, v) == 1 &&
++		    vnirange(vbegin, v) < VXLAN_VNI_FILTER_MSG_MAX &&
+ 		    vxlan_addr_equal(&v->remote_ip, &vend->remote_ip)) {
+ 			goto update_end;
+ 		} else {
 -- 
 2.53.0
 
