@@ -1,42 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A312E737B;
-	Sun, 27 Sep 2026 06:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7125FA29
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790490195; cv=none; b=QRcCGYO33u9rwAVAhgpIBcFcRf6sKaPRxNrCrCOaXSVR5QDp63IQOnQgEdQ0y9TflzaSLWVEppkmuVXROWuZVsq2eAvedAkzMotTrNNHw0tfLFMuKLNIWLy4qPtwNqJhh5wM1xhgAwgxO56qpD1GHtNl80H8FMJ/QOVcWh0tCek=
+	t=1790490293; cv=none; b=OYlC8tKY/wJnjwwTgRr4AQKf3iTs68I+yjk7zQpENr9Xd1LNa3xJiF99FwGclhnu9jf00jHR39Vk+RxcDqunP/iUzLqJsYACse9PaDhxYnxtKM+CdW3RIzBQDCH+/E4JcjLId1mHIbesj7gLFGMbVrND8YWiYILwEKk2q53nW2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790490195; c=relaxed/simple;
-	bh=k9yAOa6xb+L8NSUCwDvYCxygqfkz8HAvXRoshnEutco=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NrSXBriRrRDh1g6GPouh02xxLcNwhnl2+yQCBuUKT4/Dav1bq6955ojkPNjy8d+3dunAQGkWNQkTAxM969ZFJcUab+AX7OEsG3KpMsTonYOeB4cl2DpvFJ8+HPRbAEljDTbzT/2YlJ3eP3Gij05mZdlV1ZCx721yRc0CpLjdnb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ao3P01ot; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790490293; c=relaxed/simple;
+	bh=eT/fj5vZ0Sj0xWvtck5u0p9IG2kOT0o4JMJn6zf0/qU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m9hK88DVae2+sj0kye/LnAPC1PibT+GFnODdQ1OQwEati2KPMqTFmMCUm+9LYdJg2pxD3zMxIoMuruJDsS/opAU9a0s9WCBqofWZ0lV5g7qfD5m0BJb5eZ/yUAxvJzN9epOvrFVLPwERLSGrbX+rXFnNXg0BiRsuZKJSpOa21n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FBqWKevv; arc=none smtp.client-ip=74.125.229.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ao3P01ot"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FA91F000FF;
-	Sun, 27 Sep 2026 06:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790490193;
-	bh=getjAz67ligAbrpiUX7MiUy1Xq8e93Z5z/02Atu6OBI=;
-	h=From:To:Cc:Subject:Date;
-	b=ao3P01ot0qs2Tmj6+2g8Tu/45Ir3S2ipPuHTrjnu1Xw3kA2mNdzMiDtqa57AZ2y2H
-	 ylHJjqkFyauU3A9UiE96q1/cvbjoL1j1BrtRQl6hgfRp2mF2AHTFkQy/PqeC4+1ENB
-	 tCgpNnJWI0ZW0mISuiOK51LVLYpP3y6juwQbA9Q/8Zj70ULoISxwqdnXM1weTzWXqY
-	 1mnu8VWJeunoijIEm5P+4OhH6C/RnDW/YrkA82YYhd1q6wD4z+JsLJv7YB1oZThVaI
-	 QnkuDfCeskqhqOcHAoSjPuFlvtLF3LKe/o3fQM+3HiW3DkSGJ3EIDp43vZ+uXKHg8F
-	 mY+LvkScZA6mQ==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org
-Subject: [PATCH net v2] net/rds: include the scope id in the sendmsg connection cache check
-Date: Sat, 26 Sep 2026 23:23:12 -0700
-Message-Id: <20260927062312.169097-1-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FBqWKevv"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33bc6ff6cadso245941eec.0
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790490291; x=1791095091; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9lvIFmMP4hhC0qEm4iuvni2Axxi7Wmdx8mVA3p2P2mI=;
+        b=FBqWKevvtUd2QdrC97qdrqzsBIb61h0S1+7pNq9x7edXsNUKxvnvhoOusCjDhLUPmz
+         AAW8nV4hay+UuN/6Pcw0fABgsGacFzX44OoeXxvPHRnEbJRcVu8UyphbwqBjhhgJ9/R7
+         mqeQ2CfV4tB9DWQwuN1DSmwnNVx25CBDwhU39r4qUP4BzGC1jjT/bkfIK4qJ3pN0eCXL
+         CoLFnO2wxnuPtfiqPgEkcl0R4KFvEOKFcTxEnVUsHUwUdndlSVNTInYuWptdN+kwE/hN
+         ZjrAFr4vFrHywWVWVht1vs6M3Lj/xE9wZkVPq3g6xAIGMLZ9JM6m6FHpMn10X53Ba2SZ
+         C05Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790490291; x=1791095091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9lvIFmMP4hhC0qEm4iuvni2Axxi7Wmdx8mVA3p2P2mI=;
+        b=SGUilAJjcea85lE3+pyEySMcWwWYaNmtWh6lUxc76OCr9WGIHsBTulo/Tj4dbLyXaW
+         m/XVy0o/QUR5V1kW57VR70Xx/lie1Sy9l+JAYbl2qwZpdZg+0H1HLRIetMtgleaTbw5v
+         O/S4LprcqSEyAjN5uDa+1peGn+GNaADVlVTma5UPECIrDIP4u3fDJCYhOcqIltm/PPHy
+         E/VI8Z/Mgh/4Q1+u1tN7hl4nNOwSNHnzuGHU8j/XXNPQVyrlmbY2/cuqDkKoKZ8Vk/wo
+         EeETRyqStfVSoCdnZ4S7AAFnZSztPewutq8aIHK79VfYCZb3/dBkQLPa0i0dMOfGeKAk
+         yhpw==
+X-Gm-Message-State: AFq9FYJFls7YsaYFZ42X+p/u9os/zIV3o5okLzPKjiFGEKbjAN8RDuEx
+	p3h3e1qfifHfLty5YsYPDlOIMaz5aaV4AqG8GgzkdpaWF6PypylKBUZ6
+X-Gm-Gg: AYBFou3IcBAfKY8riTbzgLd2ZyjkJMkpNoQkstwz5CRRDSp5sNFni+RE0p20RFYtyYr
+	SVegNi3r7Tt7Ji3pMb9c6ulhPlcisDuqouWtWa9as/98qsnCMsETB0ViRsb8h8tZw12pzfDSKJS
+	cL/noE9XDBJMZehGIXWi2RqGyEVaA/Lwz4EAuOEnBQSoGk2mZcr2B7sLLEurPGY9Mt9hDrY5HMM
+	ecAwHUQVhOMCUZmsj/oEv2Wyvp8dCZ/W3vlEKncuYY62uzxPQu3WImQnLCJgRN53Bh+6knhSEmp
+	Xztlzf9BMVE/ZsEFwJNndm5l5RMhIGBNSEj9FNwQsrHkklMCwz6/X810XN7YN2DwX++AAEdnbxK
+	z/71v48dXDrD6g0lTJDfZIX2zTGcWaoQK7gf4Ew6SIut6zh7hZikYN7S7REApXlO3pPuH0uVvII
+	a0KKKVc6INdN/AB1EGYMPYLqB35YIcx+kpvz1kVb6lPn0Gkav6RCLRjXuNtscU18GkNB9RAJjby
+	6ncQt+Tz+pCK5sTsCer0tXGT6YNm3LmYvxtb+gj+cK5IUcrpzxL9rxl3RcoW39SyDFWtpewJInG
+	cNnm
+X-Received: by 2002:a05:7300:f64b:b0:33e:4e49:d08d with SMTP id 5a478bee46e88-34272b4bc81mr8484339eec.1.1790490291342;
+        Sat, 26 Sep 2026 23:24:51 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3413fc2413dsm19056291eec.0.2026.09.26.23.24.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 23:24:50 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Simon Horman <horms@verge.net.au>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hans Schillstrom <hans.schillstrom@ericsson.com>
+Cc: netdev@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] ipvs: fix protocol data lifetime during namespace teardown
+Date: Sun, 27 Sep 2026 14:24:35 +0800
+Message-ID: <20260927062435.3690129-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,54 +87,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rds_sendmsg() reuses the connection cached in rs->rs_conn when its
-peer address and ToS match the request.  The interface index is part
-of a connection's identity as well: rds_conn_create_outgoing() passes
-the request's scope_id down as dev_if, and rds_conn_lookup() compares
-c_dev_if, so sends to the same link-local address through two
-interfaces are two different connections.  The cache-hit test never
-looked at it.
+IPVS frees its per-net protocol data before control cleanup cancels
+defense work and unregisters the sysctl table. A defense worker can load
+a protocol data pointer, then namespace cleanup can unlink and free that
+object before the worker dereferences pd->pp or pd->next. The worker's
+securetcp_lock does not serialize with protocol cleanup. A concurrent
+defense-mode sysctl write can reach the same timeout update path.
 
-A socket bound to a non-link-local address has rs_bound_scope_id 0,
-and the scope check at the top of rds_sendmsg() accepts any non-zero
-destination scope for such a socket.  So after a send to fe80::x%ifA,
-a send to fe80::x%ifB hits the cached ifA connection and the datagram
-leaves through ifA, to whichever peer answers to that address there.
+KASAN reported:
 
-Compare c_dev_if with the request's scope_id in the cache test, so
-that such a send takes the lookup path and finds, or creates, the ifB
-connection.
+  BUG: KASAN: slab-use-after-free in ip_vs_protocol_timeout_change
+  Workqueue: events_long defense_work_handler
+  Call Trace:
+   ip_vs_protocol_timeout_change+0x1b4/0x1e0
+   update_defense_level+0x63e/0xd80
+   defense_work_handler+0x1e/0xc0
+  Allocated by task 125:
+   ip_vs_protocol_net_init+0xda/0x2f0
+   __ip_vs_init+0x16b/0x240
+   setup_net+0xfc/0x310
+  Freed by task 12:
+   ip_vs_protocol_net_cleanup+0x1d6/0x2e0
+   __ip_vs_cleanup_batch+0x7d/0x100
+   cleanup_net+0x38c/0x770
 
-A request without a scope keeps matching the cached connection.  A
-send with a destination always carries one for a link-local peer, but
-a send without a destination takes rs_bound_scope_id, and a bind() to
-a non-link-local address after connect() to a link-local peer resets
-that to 0.  Such a send never named an interface, so the connection
-the socket last used is the one it means; making it miss the cache
-would send it to look up a connection with no interface, which cannot
-be established.
+Run control cleanup before protocol cleanup so that defense work and
+active sysctl handlers have finished before their protocol data is freed.
+Initialize protocols before exposing the control interface, and unwind
+in reverse order, to enforce the same lifetime on initialization failure.
+Protocol initialization and exit do not depend on control state.
 
-Fixes: 1e2b44e78eea ("rds: Enable RDS IPv6 support")
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
+Fixes: 9330419d9aa4 ("IPVS: netns, use ip_vs_proto_data as param.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- net/rds/send.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 1afa981e5c06..393898a079c1 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -1342,7 +1342,8 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
- 	/* rds_conn_create has a spinlock that runs with IRQ off.
- 	 * Caching the conn in the socket helps a lot. */
- 	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
--	    rs->rs_tos == rs->rs_conn->c_tos) {
-+	    rs->rs_tos == rs->rs_conn->c_tos &&
-+	    (!scope_id || rs->rs_conn->c_dev_if == scope_id)) {
- 		conn = rs->rs_conn;
- 	} else {
- 		conn = rds_conn_create_outgoing(sock_net(sock->sk),
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index fd503f0efb57..8a3c880fdb26 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -2502,12 +2502,12 @@ static int __net_init __ip_vs_init(struct net *net)
+ 	if (ip_vs_estimator_net_init(ipvs) < 0)
+ 		goto estimator_fail;
+ 
+-	if (ip_vs_control_net_init(ipvs) < 0)
+-		goto control_fail;
+-
+ 	if (ip_vs_protocol_net_init(ipvs) < 0)
+ 		goto protocol_fail;
+ 
++	if (ip_vs_control_net_init(ipvs) < 0)
++		goto control_fail;
++
+ 	if (ip_vs_app_net_init(ipvs) < 0)
+ 		goto app_fail;
+ 
+@@ -2527,10 +2527,10 @@ static int __net_init __ip_vs_init(struct net *net)
+ conn_fail:
+ 	ip_vs_app_net_cleanup(ipvs);
+ app_fail:
+-	ip_vs_protocol_net_cleanup(ipvs);
+-protocol_fail:
+ 	ip_vs_control_net_cleanup(ipvs);
+ control_fail:
++	ip_vs_protocol_net_cleanup(ipvs);
++protocol_fail:
+ 	ip_vs_estimator_net_cleanup(ipvs);
+ estimator_fail:
+ 	net->ipvs = NULL;
+@@ -2547,8 +2547,8 @@ static void __net_exit __ip_vs_cleanup_batch(struct list_head *net_list)
+ 		ipvs = net_ipvs(net);
+ 		ip_vs_conn_net_cleanup(ipvs);
+ 		ip_vs_app_net_cleanup(ipvs);
+-		ip_vs_protocol_net_cleanup(ipvs);
+ 		ip_vs_control_net_cleanup(ipvs);
++		ip_vs_protocol_net_cleanup(ipvs);
+ 		ip_vs_estimator_net_cleanup(ipvs);
+ 		IP_VS_DBG(2, "ipvs netns %d released\n", ipvs->gen);
+ 		net->ipvs = NULL;
 -- 
-2.25.1
+2.43.0
 
