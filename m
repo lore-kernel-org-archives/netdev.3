@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115013DD874;
-	Sun, 27 Sep 2026 12:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3913E23393E;
+	Sun, 27 Sep 2026 12:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790512109; cv=none; b=sL7huZXZDZxSS1R0AAwLOe2vF7m37h5hnmsa74L//feisuqLSmLh6nnz68E9MLwjlgKm68+sprx/JsMp3ceAkjHkPjCdmgEVRWVhRxpBFZzRJJCQWOcpFOttmZ5aMDzEs9vH3kwRPqS7rFBjkP3pnf8gtA751/OLz5ztroEt3Vg=
+	t=1790512113; cv=none; b=bXPxeDoKabv3vtFOlzTjCY6CuS2J8mAJ4T0RbjDky4UkDf0f/4+e7+OB6N/dJAPwR425rAnPjZ0QJ831XFokoAOacza27kDpYtcDkIAWNHbZzV0gYUbcdJkInFzChkKDSNpkKtSK+ChvR8+n9DuUiVk9KTkqLu3tRtkTZOvQovU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790512109; c=relaxed/simple;
-	bh=PlYT9dJhGBOHr+Ul/zykF5eM5SKlnMnGrrbSfekuFUM=;
+	s=arc-20240116; t=1790512113; c=relaxed/simple;
+	bh=mFYye6jjimZ2DwZ5t7Du857e1VxY0+BbUH4CzU/N7Rs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MVl9rgJFP8BxTDl1CH0I7Ty/E1fgkImkysDWJxa5AL8OHxrCd+0P/xSq0KFsD0omfVRKmXTY3h8LzIxOTdlTa35uA8CJ+75QysQm5Gw+zcC1RbwAL74AGr+B0sVICLl4zZ84k4YUbkTErJEQsG/vX+rcq3kPQijPJm+FV/CfsFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyGpGsqL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=IEJCCrpIhiT9ISQFtDgwGdIK0tJdWpG7FbvvkHRNzbMqUCd4yotRWfBbofqQQywoWYy1ezfU4sdlFs6GRWc7jmstDOibU8882PsVIlm2Q9/frA9xLz4ICGgh/qcVZBcvqZqbtEAN6mI+B5zagpqF5eTy4JyC0PFIn77NoSKfuew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+8OIQP/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyGpGsqL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDF61F00893;
-	Sun, 27 Sep 2026 12:28:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+8OIQP/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BE11F000FF;
+	Sun, 27 Sep 2026 12:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790512107;
-	bh=QwwMttGUB6RY+D6bJBWwrCbr4/Gnd0Vx/xlXkzh7eFY=;
+	s=k20260515; t=1790512109;
+	bh=eLCzIoer01yXG+2fCSyfbNLUl6x4kDV4QWmMFCv92pM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fyGpGsqL7+mvqiHl48AhIbPY0jNS2F2PsBX2gHTfE8LfN/GiJHf6RzrU9WY7DI5y+
-	 7GqHUVos8ndP+SLvXFZq8c3IRU2PGF4gOaZSsOfEOQS9dHmhCnMIwfLrMdkqK4Yklc
-	 gqEW/fcYlf17/VjNy96WU4Ps9W23HrVNjpB/xbXTBNquzA93Qixb5tHJ5oJvbbZ+YY
-	 JIdFugaZZ7QWBtDcyA+RcM/gcnaXOzWZcvMSwhY2zrRdsGMgkc2+lv9Qy8NXLdGbXa
-	 SB1rd0vJfL3axkF5GED7Ncr2u5DOcOu9hbI61+mnpdy1znHHdfbLxriEuvEbWMeFk1
-	 Z//8fEG9/3Sfg==
+	b=D+8OIQP/2S0oJcaIteHObvZLAPGhn6zowe0UCySyjCB2CRSQvChyGaUIZOScRZofK
+	 kDVEFWa1qhIzl1KUjaTrtVrsRX6J0mlMAeFk8qCm9n1nR8qKfpkvBbrelyQotGNyea
+	 15KSPqryCG+kNyutAMkivm0hMA58+VVzLTRGrF1Mb6ijdvr5Z+ra0oWPi+Rt1oWsN9
+	 NYgwjG0/NHleJYtl9Zvd1TRpYpGW4O2D5qGt6WQRYYWWMy7V1p3twAFSVRggizTAbJ
+	 v97qF3sgrj7vdsuBsq1+pu3cyD+QEkFOVSdD8kWI/t58E5z9rqVQMseu6B0cTD36sW
+	 8MbpNRtVDZuyg==
 Subject:
- Re: [PATCH net-next v3 3/8] dt-bindings: net: dsa: Add SoC-e SWIP switch
+ Re: [PATCH net-next v3 4/8] net: dsa: Add tag handling for SoC-e switches
 From: netdev-bot+sashiko@kernel.org
 To: v.strassheim@linutronix.de
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
@@ -36,13 +36,13 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
  andrew+netdev@lunn.ch, hkallweit1@gmail.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  martin.kaistra@linutronix.de, b.spranger@linutronix.de
-Date: Sun, 27 Sep 2026 12:28:26 +0000
-Message-ID: <179051210605.2160803.17533323844368992889@kernel.org>
+Date: Sun, 27 Sep 2026 12:28:27 +0000
+Message-ID: <179051210768.2160803.1929188838067459585@kernel.org>
 In-Reply-To:
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-3-ddebafcb9ba7@linutronix.de>
+ <20260923-devel-vstrassheim-soce-dsa-ml-v3-4-ddebafcb9ba7@linutronix.de>
 References:
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-3-ddebafcb9ba7@linutronix.de>
-X-sashiko-severity: Low
+ <20260923-devel-vstrassheim-soce-dsa-ml-v3-4-ddebafcb9ba7@linutronix.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,120 +52,149 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] Documentation/devicetree/bindings/net/dsa/soce,swip.yaml accepts
-  the MMIO child nodes mdio@204 and mdio-mux@202 but does not require…
-- [Low] In Documentation/devicetree/bindings/net/dsa/soce,swip.yaml, the
-  per-port constraints (the dsa-port.yaml $ref, `reg` maximum 30,…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] sdsa_xmit() writes the SDSA header at offset 12 (skb_push +
+  dsa_alloc_etype_header).
+- [Low] Whether sdsa_xmit() puts the VLAN in the SDSA header on transmit
+  depends on the conduit, and in-band 802.1Q tags are never handled.
 
 --
 
-dt-bindings: net: dsa: Add SoC-e SWIP switch
+net: dsa: Add tag handling for SoC-e switches
 
-This commit adds a DT binding for SoC-e FPGA-based Ethernet switch IP
-cores. The compatible string encodes the layout of the identification
-registers. The binding describes the Ethernet ports and the optional
-integrated MDIO controller with its MMIO mux.
+This adds a DSA tagging driver for SoC-e switches. The driver uses an
+8-byte SDSA header with EtherType 0xdcdc, placed after the source MAC
+address. It builds FROM_CPU frames on transmit and parses TO_CPU frames
+on receive, and maps the optional 802.1Q TCI in the header to and from
+skb VLAN hwaccel metadata.
 
-> diff --git a/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml b/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml
+> diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
 > new file mode 100644
-> index 0000000000000..d614fb2a29d3d
+> index 0000000000000..8cc3fa357be42
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml
+> +++ b/net/dsa/tag_sdsa.c
+> @@ -0,0 +1,158 @@
 
 [ ... ]
 
-> +  '#address-cells':
-> +    const: 1
+> +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_device *dev)
+> +{
+> +	struct dsa_port *dp = dsa_user_to_port(dev);
+> +	struct sdsa_tag *tag;
+> +	u16 vlan_tci;
 > +
-> +  '#size-cells':
-> +    const: 1
+> +	BUILD_BUG_ON(sizeof(*tag) != SDSA_HLEN);
 > +
-> +  ranges: true
+> +	skb_push(skb, SDSA_HLEN);
+> +	dsa_alloc_etype_header(skb, SDSA_HLEN);
 > +
-> +  mdio@204:
-> +    $ref: /schemas/net/soce,swip-mdio.yaml#
-> +    unevaluatedProperties: false
-> +    description:
-> +      Integrated MDIO controller bus on the master side of the mux.
-> +
-> +  mdio-mux@202:
-> +    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
-> +    unevaluatedProperties: false
-> +
-> +  ethernet-ports:
-> +    type: object
-> +    patternProperties:
-> +      '^ethernet-port@[0-9a-f]+$':
-> +        type: object
-> +        $ref: dsa-port.yaml#
-> +        unevaluatedProperties: false
+> +	tag = dsa_etype_header_pos_tx(skb);
+> +	tag->ethertype = cpu_to_be16(ETH_P_SDSA);
+> +	tag->reserved = 0;
+> +	tag->frame_type_port_hi =
+> +		FIELD_PREP(SDSA_TAG_FRAME_TYPE_MASK, SDSA_FRAME_TYPE_FROM_CPU) |
+> +		FIELD_PREP(SDSA_TAG_PORT_HI_MASK,
+> +			   dp->index >> SDSA_TAG_PORT_HI_SHIFT);
+> +	tag->port_lo = FIELD_PREP(SDSA_TAG_PORT_LO_MASK, dp->index);
+> +	/* SDSA carries no TPID, so only encode 802.1Q C-tags. */
+> +	if (skb_vlan_tag_present(skb) &&
+> +	    skb->vlan_proto == htons(ETH_P_8021Q)) {
 
 [Severity: Low]
-Should this pattern be '^(ethernet-)?port@[0-9a-f]+$'?
+The commit message says "Encode accelerated VLAN metadata into the header
+on transmit". Is the wire format meant to depend on which conduit is
+used?
 
-This schema includes ethernet-switch.yaml through dsa.yaml. That file
-also accepts port@N nodes under ethernet-ports, with only a type check:
+This branch only runs if the skb still has a hwaccel C-tag when it reaches
+the tagger. The user port gets its features from the conduit:
 
-    '^(ethernet-)?port@[0-9a-f]+$':
-      type: object
-      description: Ethernet switch ports
-
-As a result, a node named port@3 counts as evaluated and passes
-validation. None of the checks here apply to it: the dsa-port.yaml
-reference, the reg maximum, the required reg and phy-mode, and the
-phy-mode enum.
-
-dsa_switch_parse_ports_of() in net/dsa/dsa.c still uses such a node. It
-walks every available child with for_each_available_child_of_node() and
-does not check node names. An unvalidated phy-mode can then reach
-soce_phylink_get_caps(), which only handles the listed modes.
-
-The other DSA bindings that constrain port nodes (lantiq,gswip, mt7530,
-ksz, sja1105, qca8k and others) all use '^(ethernet-)?port@[0-9a-f]+$'.
-
-[ ... ]
-
-> +required:
-> +  - compatible
-> +  - reg
-> +  - ethernet-ports
-
-[Severity: Low]
-When the mdio@204 or mdio-mux@202 children are present, should ranges,
-#address-cells and #size-cells be required?
-
-As written, a switch node that has those MMIO children but no ranges
-still passes dt_binding_check. The kernel then cannot translate the
-children's reg:
-
-drivers/of/address.c:__of_translate_address() {
+net/dsa/user.c:dsa_user_setup_tagger() {
     ...
-	ranges = of_get_property(parent, rprop, &rlen);
-	if (ranges == NULL && !of_empty_ranges_quirk(parent) &&
-	    strcmp(rprop, "dma-ranges")) {
-		pr_debug("no ranges; cannot translate\n");
-		return 1;
-	}
+	user->features = conduit->vlan_features | NETIF_F_HW_TC;
     ...
 }
 
-So mdio_mux_mmioreg_probe() fails in of_address_to_resource() with
-"could not obtain memory map". soce_mdio_iomap() in
-drivers/net/mdio/mdio-soce.c fails the same way. No PHY behind the mux
-can then be reached.
+If the conduit's vlan_features do not include NETIF_F_HW_VLAN_CTAG_TX,
+validate_xmit_vlan() on the user netdev moves the tag in-band before
+dsa_user_xmit() runs:
 
-dtc already warns about missing cell properties, but it does not warn
-about a missing ranges.
+net/core/dev.c:validate_xmit_vlan() {
+    ...
+	if (skb_vlan_tag_present(skb) &&
+	    !vlan_hw_offload_capable(features, skb->vlan_proto))
+		skb = __vlan_hwaccel_push_inside(skb);
+    ...
+}
 
-Would a dependentRequired (or dependencies) entry help here? It could
-make mdio-mux@202 and mdio@204 require ranges, #address-cells and
-#size-cells.
+In that case the frame goes out with the VLAN-info bit clear, followed by
+an in-band 0x8100 tag. This seems to apply to macb (Cadence GEM) on
+ZynqMP, which has no HW_VLAN features. It also applies to most other
+conduits, for example mlx4, nfp, bnxt, otx2, wangxun, and mtk_eth_soc,
+which masks out CTAG_TX explicitly.
+
+With stmmac (dma_cap.vlins) or bcmsysport, whose vlan_features do include
+CTAG_TX, the same frame goes out with the TCI in the SDSA header instead.
+
+Should sdsa_xmit() also handle in-band 802.1Q tags, so that the format is
+the same on every conduit? Or could the commit message describe this
+behaviour?
+
+> +		vlan_tci = skb_vlan_tag_get(skb);
+> +		__vlan_hwaccel_clear_tag(skb);
+> +		tag->frame_type_port_hi |= SDSA_TAG_VLAN_BIT;
+> +		tag->vlan = cpu_to_be16(vlan_tci);
+> +	} else {
+> +		tag->vlan = 0;
+> +	}
+
+[Severity: Medium]
+What happens to an accelerated tag whose vlan_proto is not ETH_P_8021Q?
+One example is an 802.1ad S-tag from an 802.1ad upper or from tc vlan
+push.
+
+Such a tag takes the else branch and stays in skb->vlan_all, but the SDSA
+header is already at offset 12. When the skb is then sent on the conduit,
+the S-tag can be inserted at ETH_HLEN, in front of the 0xDCDC EtherType.
+The insertion is done either by the conduit hardware
+(NETIF_F_HW_VLAN_STAG_TX) or by:
+
+validate_xmit_vlan()
+  __vlan_hwaccel_push_inside()
+    __vlan_insert_tag()
+
+The switch would then see 0x88a8 where it expects the SDSA header, and
+would not recognise the FROM_CPU destination port. Depending on the
+hardware, the frame could be dropped, or it could be forwarded like
+ordinary CPU-port ingress.
+
+For this to happen, the user netdev needs NETIF_F_HW_VLAN_STAG_TX, which
+it can only get through conduit->vlan_features. No in-tree conduit seems
+to set that today, but nothing in the tagger rules it out.
+
+Other taggers guard against this case. ks8995_xmit() in
+net/dsa/tag_ks8995.c does:
+
+	if (unlikely(skb_vlan_tag_present(skb))) {
+		skb = __vlan_hwaccel_push_inside(skb);
+
+so that the conduit cannot insert the tag outside the special tag.
+tag_sja1105.c does something similar.
+
+Could any leftover hwaccel tag be pushed in-band with
+__vlan_hwaccel_push_inside() before the SDSA header is inserted, with the
+NULL return handled?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7%40linutronix.de
