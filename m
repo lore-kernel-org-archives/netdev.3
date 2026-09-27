@@ -1,69 +1,67 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F87413796
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 18:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD84340283
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 18:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790533269; cv=none; b=jtOfGdcZTneH4hFvBRDYKM8Pg846wBkzVd42WpytT0i8qWTwPUS+vAHPT7FSpH+oKtxTsYLtlIXr8gzxcQ15QdqoqZWEf48BTo4Q/Gq0oxR6FiHC92giVPPI6pxH9RLUg/FRwMT6jnZKJKUaLU9p49zRb5t63L07WL9v/W5MqH0=
+	t=1790533691; cv=none; b=KzzsPqXcAOanBAp2+uxLrjZdbw9GUjS1g++FFgZcG3+Cyt7F3RVI7n7SX0vEv/85tmbqDXSXi1iKbbx3zr18OB309g4nRekU/26naGs5ZhlkGcpscRYQ29E6zziFYbakZoQupU5oUxxhzbgZ/ZTlmrpwwtvmebSotkAQrSQQTz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790533269; c=relaxed/simple;
-	bh=4YOrl/IUsekq59nwBYHthtg6XHJ8tNkyhaHdzuM8Rx4=;
+	s=arc-20240116; t=1790533691; c=relaxed/simple;
+	bh=P5oqMrC6nNdP5fM4mt6EQ/gEvbrHecgfqSzVQ347qfQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GdYK+YsIh9bdoSu3wlD14XjrSHtn6txbhgw5LswJ3gYeqSEVjL9SDTQC55CEUAZ1rScYDgsovEpsbwVRpk/lVO6UPsCUJVdPBtzZYdkTkiEQ5zKdmUxhr0ztiGbbll6dshZI6R1xw+Ixts2YCwhe69g15qkMjpmKS0pDCTT1GYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bRJV58aM; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:Content-Type; b=nmAHJHrRwN356X/14TFnU1xbDQ+RlE15zosNiWx9gXNzWrPp4l2xgDL0mpoqV3uyL/p5u/zLYvMxuveqp2nyhS/A1Bgj8dRWsuQQMDel02wP7nRB0g2ZZK5Q/youHF5yFKjI4Z6Juj5pST1Frh5oDOMwXOOpxfMozvUsSQGAlDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cplhSKFQ; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bRJV58aM"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso13631375e9.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 11:21:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cplhSKFQ"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b2ad83dc6so1569980a91.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 11:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790533266; x=1791138066; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F4pCtdS0O2A3/bCUoBgVtLu5+xYbTigEwA3u5CZgM14=;
-        b=bRJV58aMF3AGG7XcYJkLSsBAUMlOgvDRO9jmlokvzCWVcyPGr6apYzRKjIP4GCHfGW
-         yHsGWkq9oewS35dom9EYD46LOICO+RKNXTcx++pJaqpX3fCVhrhdjeJ+EnBuAljP2HRR
-         T9hg3Ll9Vfb07ma8iSht7yikqTYmaDyO/euAETPJ/go/QCORlvgfEVSQBFDzoejFf9yA
-         CXdZmxTOMEjOFipgPwcMrK5ka/XAd3VL0YuHNXrZyGKj2yZbCaiZxI+sCdd7zLfdNxZv
-         WEBvfNxRFSeXjV+SNjNKpdixAkq4aie5+1OtyuxXqUQhOwnRmDtLemeGkMSXLYH63ak6
-         CR6g==
+        d=gmail.com; s=20251104; t=1790533689; x=1791138489; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zCMrpMEMRaSM1k8ewmmU9TW0LZe34kGC/Qs3gXIkvW0=;
+        b=cplhSKFQ+qLKMd+P64GCqhKYaPIDi9EKFyQ+hCqycgoS//7Qs0ZQDHXsR+zTUAaf8e
+         XxYE95tVR3FPapyEgGS4o61BbShANeADcbl9S9QmeR+rTC5yKHeVLzXCmpvakXNTOaa0
+         l4aPTFE1E6pvxqtogWTipZnD1ovf7V+qbyA6CcDubKBT/W0IJg5aKYTHUhqQILodCq0A
+         saUbyDtPyepE+jYNfUglpHPF/6p/3CAm4Dwtry5Hip1K2jyWYZUQ4EhrGmhgUl1CMl0X
+         9V4/PZNTJMkeXW1JSGjCJ+y5LqPyWg7C0tawpZ8LbzsdKa5D+WiMlPCRXA7f9z/mM6Kq
+         s9EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790533266; x=1791138066;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=F4pCtdS0O2A3/bCUoBgVtLu5+xYbTigEwA3u5CZgM14=;
-        b=AfBHrlL2GJMGARo0Lx2mGXONWu6D/I+oKNd18H5HnBl1Bf9VGfyqOI09p0OkOchGly
-         NgzHTq3GYKNr0r6L12HB/02MwRgvwCc7Js4qa1oviZ+claoNQBPln/V+EKQShQ0dPXoI
-         3cxPgW1aISBsd8LnP6h7mIEqq9a0MwWRRN5HvbiYczzVNxoFl6xPDooy1FBV35Uu+Y2K
-         fV8Hc3XnRhcYps3F+wnlwwDyFKX3H3boLUxQY4rUXZWB88B5SHcgMs2sBkNo1eHjMsy0
-         8DcnKAW9tRocWWEel0+1mf8Kc6OVTaY4vFKhtMpG02xeaE+d6/tPkawFUOmm62AffRry
-         9gEA==
-X-Forwarded-Encrypted: i=1; AKwUvBxLQpwd2PHaNHP0iBFPV5jXIBhUvlUYZXlRBD3kFQqoiE7IYK9OzTowBX2lmdfQTKFyTHPLqGA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kdGpBHAVOThwDRUpsgvoCHxTOHVAI/qrMRVlD7L1mfy5PcJKqt
-	E+owiLVgYX2/BR1OytphG6XmwIQwV404+aDiG9JYTl+lbp531xWyU/YNS5FdaQ==
-X-Gm-Gg: AYBFou1esuUZn6CbRgACSFPAo/qtBAmjszCla0q/tqd8FAAiYJFi/zKUBDpPEaTLeFG
-	LFwY4IKRA4dGUVEXVHxpAMwudwE5IfATY7QvSCn3HHo3gxjFp0prJpG8rrinutR/MDu6aEZtswR
-	zmiyL2+ipKO+RCklKCVPTU5/DNvLaO9sLRRscEdqdOG29MHXNzKl5zk2Y1sQbYHIVfCZVPFKmc0
-	N5UrKOWMJe90kvjexmYon3GU2TRpB6CGB0ndzaWnhsF/LSziq/AG+3bXVuYn0zd8aMPO9Wi7xzu
-	uP0oKDcryFfRN4o00AD3hNC7sFXWX+VZE/jDmzUGQTFCs2haCIJbX3s3Ka6ftt0w8HYrkHnn4Aj
-	6dTPUAKMwXZCrxLBWsHHKGg2s9Ld2twuXtg2sjbz2bmnVfcgDQlTuoWeyhF8ynNDpjPoQ1QQNzO
-	5s5iansWrd5fuEGkRcQn/ajrLCQ3LVEhX4CzYZ36/7dQw7ORNQrqdy/Q0Aqk2JiyCB13+a/65T8
-	vKfzYxs/aYO5yt5L6DMB2JmaZsgHRG2JO2zHSkc2wdjOmHoLE+gTzAXWXvI1w36ZpHIQ50UqqAZ
-	7SVxqKFWuBDSTkoIECQYslzSSebFyU//b/Mm0MkZt5HYp2CM
-X-Received: by 2002:a05:600c:4ecf:b0:4a0:108:3b54 with SMTP id 5b1f17b1804b1-4a001e8c316mr30649455e9.32.1790533265719;
-        Sun, 27 Sep 2026 11:21:05 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm160803085e9.4.2026.09.27.11.21.03
+        d=1e100.net; s=20260707; t=1790533689; x=1791138489;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zCMrpMEMRaSM1k8ewmmU9TW0LZe34kGC/Qs3gXIkvW0=;
+        b=F/KvmbBDRbfzdj+heBDgi0Rv/UNsjtXsT2rY954Ffy5ZcZJxoJ+sTe/JIr+5dhgteX
+         hb9I8SY5CdaVgYhFNo9vCIoIRA5QS0Cq2B4iSFU76lZ2GZstV8MNeg4WYfRNTLFT8Yik
+         jKJWlR5o2paDFZTbA7L4R8IUiTv0jwVG5pThWq6vZheUfttEQlBN6VkdEW6h4h/3v4ED
+         VmwQCF9MRJi0Z7Ipe+0Xaspsa8aQgIfs4rN2ySBXlOabj5uZ3w1rV7lsQPr99Wto62hn
+         VrEw37ivZfB4RIYeqSf4Rr5AyN0LbDjLENq7kRHFTEUY8uHy7yUayjVUK7/JZ8NN0Cot
+         H1PQ==
+X-Gm-Message-State: AFq9FYKzLpdIjAVDocI/QQ1wntBUh6uC0HJ6vXg2gBE9o9zMljxrL4so
+	jki53m17UBGNZc6waMthQzFa+V7pTSVW6tY4Q2A0pOYb9gmOLn4ypZFn
+X-Gm-Gg: AYBFou1lHyDW9lFBSo8Kvy/V+/ZDputscSA+sLK6rafucc9zwH1RZbM9ZsYL8LjWkw4
+	hNvhxnN3x5RYnb3OzwEeURzlhClpFzThRIvFKd3J8INCUDCrmp4H5Nlc7c6MwcCgW2NOwqcbTBq
+	kxlDNbdTkzfg9rjvAljo3UTQRM0zZppTmVlAktRXffwd1pyvEtShRxLBzJweZk3S+e9O/saK7E0
+	EjhkYvfdeT9y3M8wzodPX14a6I+5ld7DdcuQ3eCH8OFArybz69suL+WJem+9G9NGU7psvc3RjU/
+	nJDtUJE5yJgMYA1oqIVsnfl997fXK1ptQS3GilC8VfQ3vIRC3XHnM7XsaGfFWAmUT94mincejqp
+	r9UB34kBYbHhJvPjzcjGq4moPBzhkhWgiIgLzN2u7ThKuQzak8evUzSy9H6pN2X+QLJjknjtvR9
+	6W5Bx4kQK1UPPEv0o7TRfoWDmys8t3F4tm9SX0dXB5l4h7q3isvKRbUwHRD2cnB5RFy68u2fqXY
+	YDkLewRBDMajt5eLXlT9qCNReLkZ3CdGuUr8B87PPEU3WljJjZWPo4tLhw2klQITVI4oB5APkzM
+	3lzNDVsiJvJwg+3kIdsA3m8dJH2YNf/o
+X-Received: by 2002:a17:90b:3c4f:b0:3a0:f5fe:74d9 with SMTP id 98e67ed59e1d1-3a0f5fec99amr2593772a91.4.1790533689177;
+        Sun, 27 Sep 2026 11:28:09 -0700 (PDT)
+Received: from ?IPV6:fd11:4514:2:0:b85f:853e:2051:3f90? ([2001:da8:100f:116::667])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9357f64sm16608751a91.3.2026.09.27.11.28.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2026 11:21:05 -0700 (PDT)
-Message-ID: <4bd67243-eccc-4c4d-896e-e88770b1967f@gmail.com>
-Date: Sun, 27 Sep 2026 19:21:02 +0100
+        Sun, 27 Sep 2026 11:28:07 -0700 (PDT)
+Message-ID: <6166ff99-7aa1-4456-aa38-a2d7820ede4a@gmail.com>
+Date: Mon, 28 Sep 2026 02:27:42 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,61 +69,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: devmem: decode DMA addresses for TX
-To: Stanislav Fomichev <sdf.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
- ilias.apalodimas@linaro.org, axboe@kernel.dk, sdf@fomichev.me,
- bobbyeshleman@meta.com, almasrymina@google.com, kaiyuanz@google.com,
- linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <20260922204348.717198-1-sdf@fomichev.me>
- <20260922204348.717198-4-sdf@fomichev.me>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20260922204348.717198-4-sdf@fomichev.me>
+Subject: Re: [RFC] net: towards a generic PON framework
+To: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Cc: netdev@vger.kernel.org, pbs05 <xuziyougm@gmail.com>,
+ Benjamin Larsson <benjamin.larsson@genexis.eu>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King <linux@armlinux.org.uk>
+References: <20260926174601.1675-1-yhyxwgy@gmail.com>
+ <tyVeMFhOR4aOm-Y3BnbglQ@gmail.com>
+ <f3f5b31e-e434-452b-a77d-72ea740a5753@gmail.com>
+ <rKgB0LBiQcWdd3f5aVEwfw@gmail.com>
+From: Gaoyang Wei <yhyxwgy@gmail.com>
+In-Reply-To: <rKgB0LBiQcWdd3f5aVEwfw@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/22/26 21:43, Stanislav Fomichev wrote:
-> On 32-bit architectures where dma_addr_t is wider than unsigned long,
-> page_pool_set_dma_addr_netmem() stores page-aligned DMA addresses shifted
-> by PAGE_SHIFT. The net_iov branch of __skb_frag_dma_map() adds byte offsets
-> to the encoded value, so the NIC is programmed with an invalid DMA address.
-> This can trigger an IOMMU fault or DMA from unintended memory.
-> 
-> Consolidate DMA address encoding, decoding, and representability checks in
-> netmem helpers. Use the common decoder from the page pool and net_iov TX
-> paths so both interpret stored addresses consistently.
-> 
-> Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> ---
->   include/linux/skbuff.h          |  7 +++++--
->   include/net/netmem.h            | 27 +++++++++++++++++++++++++++
->   include/net/page_pool/helpers.h | 10 +---------
->   net/core/page_pool_priv.h       | 14 ++------------
->   4 files changed, 35 insertions(+), 23 deletions(-)
-> 
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 421f6fc45451..3740d4b15b70 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -3833,9 +3833,12 @@ static inline dma_addr_t __skb_frag_dma_map(struct device *dev,
->   					    size_t offset, size_t size,
->   					    enum dma_data_direction dir)
->   {
-> +	dma_addr_t addr;
-> +
->   	if (skb_frag_is_net_iov(frag)) {
-> -		return netmem_to_net_iov(frag->netmem)->desc.dma_addr +
-> -		       offset + frag->offset;
-> +		addr = netmem_dma_addr_decode(
-> +			netmem_get_dma_addr(frag->netmem));
-> +		return addr + offset + frag->offset;
-Looks like just page_pool_get_dma_addr_netmem(). Just a note, but it'd
-be nice to rename netmem_get_dma_addr() into something less confusing
-as well.
+Hi Matheus,
 
--- 
-Pavel Begunkov
+Thanks, that clarifies the test setup.
 
+The numbers are useful as an implementation comparison, although I
+think they are not yet enough to attribute the difference specifically
+to the kernel/userspace boundary.
+
+In particular, the old SDK-style userspace path and the current
+in-kernel implementation differ in more than just where the G.988
+agent runs.  A useful follow-up experiment may be to compare the
+in-kernel agent against the AN7581/AN7583 userspace implementation
+using an ARPHRD_NONE packet interface and AF_PACKET, with the same MIB
+size and workload.
+
+That would help separate:
+
+   - cost of userspace/kernel crossings;
+   - cost of the transport mechanism;
+   - cost of the MIB representation and implementation itself.
+
+Regarding the old SDK netdev, your description also makes me suspect
+that the bridge behavior may have come from the way that interface was
+constructed as a normal Ethernet-like netdev, rather than from the
+net_device abstraction itself.
+
+Andrew has now raised the broader question of whether we need a
+separate management net_device at all, so I think that is probably the
+more useful interface question to pursue from here.
+
+Thanks,
+Gaoyang
