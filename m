@@ -1,218 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4892798EA;
-	Sun, 27 Sep 2026 06:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D318D62A
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790491963; cv=none; b=tu3xlGj3uRo2fOCHCV8tk40VR7ABC4EzRWZOd0Cms/anmvr8DpoK0TCd8KVwW2IyTRIRQeeUD/YzOdnENaj+yfWGfsJ91IwgREKxz4t4h4SnAS6KA19pfOx6Qj4F5wABsR5q6KKxELUKhpYn6r3v3mHCViCvAHPQuXHymgShtio=
+	t=1790492043; cv=none; b=PwV5YFXoOsYYmSLC31SgLl04+J0e5Jp5kgHVO5kZq5KBDtZRPkblBRc8GMrF9/n87OMgM4zwh3YNZ6OfUoMEPJT4diAyq7d0f6xq4w7ULNTL0FWhBir6FgGBn+97KKHlzdBdgodyTg3NZF3lLeSS0Ve/0bEs/7wGZ9rYo7hL+Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790491963; c=relaxed/simple;
-	bh=8b+ba7cP0mKb9nydYGMwbkm+rjWPgC1gVlUN/XKf7aE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RjIoC6319j/BIQ4iycsOuCF/uhlOzw+AlfPAdEE4URDmd8ofrXrlqMrHW/3uJUBmNXUKT0vcqRAwXYtS1IjeN4YzPcF/Ju6GeP3VC0+1GUZN6O8BXpB/GNy1kEHcc17zvfD3HlrctCdmeye+SxhjkmmWVboFDsWCZ7m9BfzoZRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oW2+6gSt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790492043; c=relaxed/simple;
+	bh=Rp2X+dx5hQ3lt91Pr5vYcPaasxyyoToGNSTmo5cX7rE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PW+XP5ObK7pC57keX4aecBD+6WyRofU+peVMZkgINQi9OJexAA65vm2w1FygQ2bak81sMuaLud4JZ1AZI/q09P6lg/FzCiJIZI6Ix629q8puu20Rs8aqh7E4InVf8QedowxTfqYwDKA6w/G7nE7vs0oyvZ4o34437TYaZSOQVxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GVmgCx8I; arc=none smtp.client-ip=74.125.225.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oW2+6gSt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8864A1F000FF;
-	Sun, 27 Sep 2026 06:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790491961;
-	bh=9BFjujG7UrM/VNu8U0Xhn89xpgrvzW5+cWnolvEyVHs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oW2+6gStzL8UT6doSDJA+NF8/a4LlpNE3b0vq3hWx+O9TfHkDbk11l6BLTzoGoIAn
-	 Vgh3quCFMyabe1WY7Oj7NF8OYRMaJhQ5vbp4tUTP0t50TR9gHz+8AUW+TcFD9jXwlK
-	 +wihCbXX5sJrhNXNWqDP3PNJlXErx4OQxtF3hOoISogYQl4tML96/TecQjh+WAZlex
-	 gltv9TNrGNEkMqKqN/aJfRcP2Me0RXx8EjzzhCW6Kb813XrUwJeGnIFxs6hAGCfQtd
-	 7Le5r8hABIdfFkVVzpHQ1x4rwDC8efY36qhaBa7z8Pgzd2KE64k6LxX6CUoxMKb8yi
-	 UPjIKBDv2kWJQ==
-Message-ID: <12c79c59ff1e55fd82ce2af0b8fd1c8feff66767.camel@kernel.org>
-Subject: Re: [PATCH net] net/rds: include the scope id in the sendmsg
- connection cache check
-From: Allison Henderson <achender@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Date: Sat, 26 Sep 2026 23:52:40 -0700
-In-Reply-To: <179029759642.2160803.15910900914007089694@kernel.org>
-References: <20260921215046.174745-1-achender@kernel.org>
-	 <179029759642.2160803.15910900914007089694@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GVmgCx8I"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4885d4825adso1189367f8f.0
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790492040; x=1791096840; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=blA64iov7PIlD+oGU3ZepcahACLOoCoJ8JGCVHSsjCo=;
+        b=GVmgCx8IWI7BJwAGDmQqubdboZkfj9rKj+kWI/YizjieVCyI5F5r/LcTUzaBK8LZuv
+         +Jkv0NEwqONlns2PLh9jel/dshFd7vQ3RpakjyBu3MoUQRlVB+nr+sC+uMspPrjWWKkW
+         uV5T6rwrrco27Ro2bnNZsHhwFawMMdF5Umg5uNAwvO3hGeLH4cex/Im5CqxwTXwYjgyc
+         uiJgyeZeqfUo0oJe5XNNpUBWoKwR/48ydQHVoUNCCoZmg5hJ9dI74lBlIa74TNmtAe4W
+         kkVzpoiX9s39fxRLBfFgor7wv7C7CNutbf3mEqzOWYX1GomXigv0TmSTPlCT64V4Q/DA
+         iTHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790492040; x=1791096840;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=blA64iov7PIlD+oGU3ZepcahACLOoCoJ8JGCVHSsjCo=;
+        b=IQkBRM9SQeOQI299pCCRCCJ5EsCDMSkOj9YLhXyD6KbRExi0gTy0KnKrb73OnOQ5Hf
+         Dy5JdoRgn2ymWJN6AC4k4VNlXadjMNllp53dBRhjEn1Qo/Y1olAzOCRl98A2BlotyR4r
+         pQZd1ReQPquIyyjqMvQcmimbbH2NAacA42F8+fNoFRxP873yiiLqmK7gfM7M38O7BV/o
+         J7/Oz7h5hHa++mJ8ophy/uzaDdqFMI3YZ8bREY6tE9EnQOLU0FQuRiIsW7hrHPiUHPM8
+         ty/Fqcv/7bQTabPDWm37D9jxGWsTJTcPb/1AlPXajeGPZpGpTsflORGoIaSk0oH3pa4l
+         6RZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxo56/EAWYfxM12IzGlIK5hIyf6+R1CqICCzg+LGrWI3DmHA7P9Rg43fYYuW2370xWXPBnmAcs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJf1W15c8hRQVDQssx7S/JmNRFvW3Z9ahT6FbImOmf9XFqKf/Tu
+	Vheg1SBFfD64jgz4+qp+6UNpx3QwXZY+kC7N9D5F6rtJ/gwfk1GZZiDM
+X-Gm-Gg: AYBFou1pH4HDh1dIZGwMZiBHx98Byhou8hsTCeaE1CimFpR6Zu61FPc1oWCBN3X1OP+
+	7QMAer0doOb8BV20UUsmVfBynvj9IU65L3ZwLdrXTpDP2vIC8ATM2bQtNsTGLTbvupo2Zk+rnjy
+	8TMfO/uHV2nU9fWpp6am7hIBl2Cw+F7zuRZXYLhMKy9FXalYGlIJ/Yoo2RAiJHF0mwfFt2mYMU2
+	NCwsXbJz2/5F0Th/9AJy3M2QY9C5L9SIutFjJ33bE/7bqf8BEpuinZlGMjR5pFzhQOHY3Ye3HS1
+	K/GUKYU8Eo04caqE7QkyMVIl5RH3ssJ2FOXqDSU3uepit+tPNqwBOzeRoQOrNwC5HI5gJnnqEGQ
+	rWc4nuTFRDqIaY8IHfwUrsLsvVc+wPeAWEd3VuvN5Vr6WMiK+V5CodK3OCdPK+/8t7gjcXkGfJa
+	Qpf+xEf9SYvrTFyy7ikaHwENCEGyp5i2TcMlbNT4DT4Dd+1JPzsSqXVxgWLR8d94tvyb/7jITZX
+	HMKi7cijzy5Obd/cUsAwCVrbH2IcP2T16ybFRGtXi+RTQ==
+X-Received: by 2002:a05:6000:2504:b0:487:1256:ab80 with SMTP id ffacd0b85a97d-48871878daemr18432269f8f.57.1790492040099;
+        Sat, 26 Sep 2026 23:54:00 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349a0esm26432209f8f.10.2026.09.26.23.53.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 23:53:59 -0700 (PDT)
+Date: Sun, 27 Sep 2026 07:53:58 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Breno Leitao <leitao@debian.org>, David Ahern <dsahern@kernel.org>, Ido
+ Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
+ <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, John
+ Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next 1/6] ipv6: reject a negative optlen in
+ do_ipv6_getsockopt()
+Message-ID: <20260927075358.129e5f65@pumpkin>
+In-Reply-To: <arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
+References: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
+	<20260925-sockopt_expand_out_v2-v1-1-c3ef2e3bb5c0@debian.org>
+	<arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2026-09-25 at 00:53 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
->=20
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->=20
-> - [Medium] New regression for connected (destination-less) sends: the
->   added `rs->rs_conn->c_dev_if =3D=3D scope_id` test in rds_sendmsg()=E2=
-=80=A6
->=20
-> Pre-existing issues:
-> - [Medium] rds_sendmsg() validates the cached connection with plain,
->   unsynchronized loads of rs->rs_conn (`rs->rs_conn &&`, `->c_faddr`,=E2=
-=80=A6
->=20
-> --
->=20
-> net/rds: include the scope id in the sendmsg connection cache check
->=20
-> The patch adds the interface index to the cached-connection test in
-> rds_sendmsg(), so that a send to a link-local peer through a different
-> interface no longer reuses the connection created for the first
-> interface.  Two questions below about the destination-less send case and
-> about the locking around the cache test.
->=20
-> > diff --git a/net/rds/send.c b/net/rds/send.c
-> > index 1afa981e5c06d..38b9cc9e0d20b 100644
-> > --- a/net/rds/send.c
-> > +++ b/net/rds/send.c
-> > @@ -1342,7 +1342,8 @@ int rds_sendmsg(struct socket *sock, struct msghd=
-r *msg, size_t payload_len)
-> >  	/* rds_conn_create has a spinlock that runs with IRQ off.
-> >  	 * Caching the conn in the socket helps a lot. */
-> >  	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
-> > -	    rs->rs_tos =3D=3D rs->rs_conn->c_tos) {
-> > +	    rs->rs_tos =3D=3D rs->rs_conn->c_tos &&
-> > +	    rs->rs_conn->c_dev_if =3D=3D scope_id) {
->=20
-> [Severity: Medium]
-> Should the new comparison treat scope_id =3D=3D 0 as "unspecified" rather
-> than as a mismatch?
-Yes, the analysis is right, I've sent a V2 that keeps the cached connection=
- when
-the request names no interface and only checks c_dev_if when it does.
->=20
-> For a send with msg_namelen =3D=3D 0, rds_sendmsg() takes the scope from =
-the
-> bound scope id:
->=20
-> net/rds/send.c:rds_sendmsg() {
-> 	} else {
-> 		/* We only care about consistency with ->connect() */
-> 		lock_sock(sk);
-> 		daddr =3D rs->rs_conn_addr;
-> 		dport =3D rs->rs_conn_port;
-> 		scope_id =3D rs->rs_bound_scope_id;
-> 		release_sock(sk);
-> 	}
->=20
-> and the namelen !=3D 0 repair branch that would fill in a zero scope from
-> rs_bound_scope_id is skipped in that case.
->=20
-> rs_bound_scope_id can be 0 while rs_conn_addr is a link-local peer.
-> rds_connect() records the peer scope there for an unbound socket:
->=20
-> net/rds/af_rds.c:rds_connect() {
-> 		if (addr_type & IPV6_ADDR_LINKLOCAL) {
-> 			...
-> 			rs->rs_bound_scope_id =3D sin6->sin6_scope_id;
-> 		}
-> 		rs->rs_conn_addr =3D sin6->sin6_addr;
->=20
-> and a later bind() to a non-link-local address overwrites it
-> unconditionally:
->=20
-> net/rds/bind.c:rds_add_bound() {
-> 			*port =3D rs->rs_bound_port;
-> 			rs->rs_bound_scope_id =3D scope_id;	/* 0 here */
->=20
-> With the sequence connect(fe80::x%ifA) -> bind(global address) ->
-> sendto(fe80::x%ifA) -> send() with no destination, the last send now
-> computes scope_id =3D=3D 0, misses the cached ifA connection, and goes do=
-wn
-> the else branch:
->=20
-> >  		conn =3D rs->rs_conn;
-> >  	} else {
-> >  		conn =3D rds_conn_create_outgoing(sock_net(sock->sk),
-> > 						&rs->rs_bound_addr, &daddr,
-> > 						rs->rs_transport, rs->rs_tos,
-> > 						sock->sk->sk_allocation,
-> > 						scope_id);
->=20
-> Since rds_conn_lookup() compares c_dev_if, this creates a new connection
-> with c_dev_if =3D=3D 0 for a link-local destination.  Can that connection
-> ever come up?  rds_tcp_conn_path_connect() passes it on as the scope:
->=20
-> net/rds/tcp_connect.c:rds_tcp_conn_path_connect() {
-> 		sin6.sin6_scope_id =3D conn->c_dev_if;
->=20
-> and tcp_v6_connect() rejects a link-local destination with no scope and
-> no sk_bound_dev_if:
->=20
-> net/ipv6/tcp_ipv6.c:tcp_v6_connect() {
-> 		/* Connect to link-local address requires an interface */
-> 		if (!sk->sk_bound_dev_if)
-> 			return -EINVAL;
->=20
-> So the message looks like it gets queued on a connection that can never
-> be established, where before the patch it went out over ifA, and
-> rs->rs_conn is left pointing at the new connection.  Would skipping the
-> comparison when scope_id =3D=3D 0, or keeping the connected peer's scope
-> separately from rs_bound_scope_id, avoid this?
->=20
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the cache test reads
-> rs->rs_conn several times without any synchronization, and the new
-> c_dev_if comparison is one more such read.
+On Fri, 25 Sep 2026 12:02:22 -0700
+Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
 
-Yes, but I'm handling that in the larger connection lifetime series=20
-("net/rds: make connection lifetime reference-counted").  It=C2=A0moves
-rs_conn cache under rs_lock and gives the cache a real reference.  If=20
-we did the READ_ONCE() here would still leave the pointer unreferenced
-across the test, so I'd rather not let this patch feature creep into
-something the ref counting series is already handling.
+> On 09/25, Breno Leitao wrote:
+> > IPv4's do_ip_getsockopt() rejects a negative optlen right after reading
+> > it. do_ipv6_getsockopt() never has, and nothing downstream treats it as
+> > an error either: len is an int, but every consumer compares it unsigned,
+> > so -1 behaves as a huge value and each site clamps to its own reply
+> > size.
+> > 
+> > 	len = min_t(unsigned int, sizeof(int), len);
+> > 
+> > So getsockopt(fd, SOL_IPV6, IPV6_TCLASS, buf, &len) with len set to -1
+> > answers 4 bytes and reports 4, rather than failing.
+> > 
+> > This is a bug ready to bite us in the near future, let's get this fixed.
+> > 
+> > I've found this because testing the rest of the patch was returning
+> > inconsistency when optlen = -1.  
+> 
+> If I can do getsockopt with len=-1 today and get 4 bytes back, isn't
+> that a uapi and we are gonna break someone?
+> 
 
-Thanks!
-Allison
+Treating negative values as 4 goes way back into the pre-historic annals,
+And I agree that there could be code out there that fails to set a value
+so passes 'dirty stack' and it always works because it never passed 0..3.
 
-pw-bot: cr
->=20
-> The validation loads and thpw-bot: crpw-bot: cr
-> e load used for the assignment are separate:
->=20
-> net/rds/send.c:rds_sendmsg() {
-> 	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
-> 	    rs->rs_tos =3D=3D rs->rs_conn->c_tos &&
-> 	    rs->rs_conn->c_dev_if =3D=3D scope_id) {
-> 		conn =3D rs->rs_conn;
->=20
-> The socket lock covering the earlier scope-id checks has already been
-> dropped by the release_sock(sk) before rds_rdma_bytes(), and
-> rds_sock_lock, which the RDS_TOS ioctl path takes when it inspects
-> rs->rs_conn, is not held here either.  The publishing store in the else
-> branch is equally unsynchronized:
->=20
-> 		rs->rs_conn =3D conn;
->=20
-> For two concurrent sendmsg() calls on the same AF_RDS socket (threads or
-> a shared fd), can one thread validate the connection for fe80::x%ifA and
-> then reload rs->rs_conn and pick up the fe80::x%ifB connection the other
-> thread just stored, so that rm->m_conn_path ends up on the unvalidated
-> connection?  That would be the same misrouting the changelog describes.
->=20
-> Would it be worth folding in a single snapshot of the pointer, for
-> example conn =3D READ_ONCE(rs->rs_conn); if (conn && ...), with a matchin=
-g
-> WRITE_ONCE() on the store, or holding the socket lock across the cache
-> test?
->=20
+I suspect all the per-protocol code ought to be passed an unsigned 'len'
+(and return back a possibly modified value for the wrapper code to give
+to the user).
+Then you have somewhere:
+	/* Historic bug compatibility */
+	ulen = len >= 0 ? len : 4;
 
+David
