@@ -1,170 +1,221 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8B63290C5
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790550952; cv=pass; b=tYnSCN4Tw+8t1FnWrGk+1+xkTaCr0gtnIeXIArAJqL+D7OAEjMmlRDVobPJmyTr3gl3wtPTjkGOTdlBqxaCTUAWi/zOMp2m8gphJK3AX+vb2tZ6FwEHdMH++Fb8s2F/dEctEp1Tvhbhx+5mXsrBBLeRQGAIxG2V05ElcoUk9KsU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790550952; c=relaxed/simple;
-	bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J8Tk4jMOfgOHbiRicSUQ5xdLbgQwUKBdqSSGlR+qnjgC1LTNf/1xxz/q6vOaSIzjIN6PxZzZyyLkakNACudmTTRCyGEE3z7I4PR5FmQ57+u6dpLna4S6mS27ijNCYJXWQV6bh0EGBXmCsRnmS+yLcDLB3ecnU+snmGnU7CM0D18=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T+PqK2M3; arc=pass smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806683C5DA1
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790551266; cv=none; b=NV/YDSBzXNTuC8+aCQgIapEc5uuNHmmNi9FFAJH7ATRrJRtc2+ILKM9Mkc+mzJX9F7j0xOcvr3YW1rhXPUjGq1bq7bK+mVhWELTY1eduZ5gcOgSmwWAsn0aSHVXblXvN/0Pq7R60vd9yc/rrblsITwL5GH2SEsnsDmbAGsLP66I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790551266; c=relaxed/simple;
+	bh=sYNHs1vU/SxlfiSk5EiAtXcembpZY5Y4CmqBv3/bwxY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QnAO5SYApLnSDytzcvNvt3ZsL6KVLlUhUeq4ezQCF11ZMGLEZzmDMCPjkc62ee/N5jn4IjhWHSP41kKry4YYvp7rg0Q63MBaOR5ymBqmel2mZmaHiOfgcdJ8rUUb0EV7YwvmHfqkDVWLYOSLXwi8El5NNAwk85/g7ptZ/O6sYYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlzlZ/br; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T+PqK2M3"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982e8fa91d3so571447241.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 16:15:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790550950; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hC+2VGfKQV2wUgaapvofFazKDG5SAUTQifK0dQLU/lNJTcMC5vxdF0T2CYpAuZbaNg
-         5RhA28ZqgmsF+ToQHkCWyj6a0jVAWG3Vhqnpt9umvGTd5SroIo5cRsZRO7jO96FdD0OW
-         czk2cHtDN3tNUq/fLNG+mVxcZVkOn5RFZ4w450rPJySQvF4RRDlrhvGRodFonJSQKGfb
-         bVmPnYv9+4PXhdRCbDO7GHbV7izVqrvaU0GdqDqU7OQcvoLdja4d59TE6aoRVEq/qabU
-         7oTi6Hva0dbFpWzPQ+yjdQz3uqAlFy8d4LMqiTZz8hhPkL9R5dN5PhqQ/E62cIWop80L
-         3iUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
-        fh=LtQ3DekUb8shnID1ZURqs+RCb7xsfcevHGQW1F6yy9k=;
-        b=C03kIdrAEneZ7S+1VLpcAerHF/W4BUYDt4otjCbX/9XMbQsB932meevn03aU4OBD+2
-         w8n7/63sQkpcnfUPvmSZ4O5uzK+ZbsxUh4kVGBrauqAy3rN6MeHY10k5tDFG/muauEmU
-         eXAgrmv+hoPVbp1GF/yqD2VuWcg09z8AWewQGhdyvLf7sTGEcKFQKH330Cy5h0Jo7Lon
-         YSxixEg+Uw7fv/XcNuM6MMO1as/DNa4QX2mEojd1tsOUhB5IkC9MbD0r6ecQbJFccOYC
-         hp5hdoh23JtGkWajau313j9+wg3W/kMcWTs6S7YzyRMhVKRzhXaIT2aznuSiEDVgLCEi
-         VLfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790550950; x=1791155750; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
-        b=T+PqK2M3lz6/GTLTbfZ+wf3aH0CDX+6TeFjym9+zJKGpyXZBxlmBOEa+bHdSrN+L6L
-         BncmTDBzL/9lC4Xq4JftFpOBn6xfR1/LHL6L5gYkF6VoEtTAYYVQpTghOM6I4tcbtKar
-         oIcmUwPU3BmUtsKWo+aCKFc2Y8jdJBNNr5iABZ6lFf9QVCKtC13Lk8vgNU9OsSQpygb0
-         uYMd9wcsSuEnwRkV6OB7JdMHqA3/Vd2Bm1OgR75maAc6Vv9X3KdObSIWTvc8RXmLgoOn
-         ehx1VXnA2MTpbY1aXfrL11rTOH8IGNB9cOz63EOKNIRzunvpE7Jj1JbiZqQcONtUpp6s
-         e1Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790550950; x=1791155750;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
-        b=jqx6h6CNDUFFoTjHCXYHsvs5ObXD7jN5NqKEf5nc0o6owh2NWYpdOHutXPtblnfhJR
-         VDMj/Of/05qS/ZQDjsEZDsuNo06xTTffgVbO4hiT42MGxzGU382YNyv8vfOrhLZyrMl6
-         /YToLccgSGlydLIwKYyIEBxVAFKbCSrq6xvJwcnwu7fuyLyTJOEYEyEQfApE0v+VA8tT
-         mTN+HZ8pY+ZTVhq+xvl9+/gE3Hxo3/k6FIhwu2U1aEetfzF9Ro8udQOySgIqeHmvuIfj
-         1hPaVNqVKUOEXXnP5V1LtD1iu8tT5NJTs/UnPNEqtOJE33S+ZG4SBsDriWIdTpyOcNKb
-         JKwA==
-X-Forwarded-Encrypted: i=1; AKwUvBy+4JqUFCtgYZzL8GConv6ky3aou85F7/AX9F5pWA4/oR/p7ocd32WIlmcMQb+a9VQGU9pbSPw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL5KyF7fKC6v/t50OTDCqZdQbGFa9KcbPGouJLkU5AeoMdqAE+s
-	3YCrRRV0Mq2wAllvQwLPPza2wtGNcCtV8gLoKRRzlzdVi6FCnlf/ZDwkksuwUxY+p5mnBwv+8Oa
-	hDiKxiFCtv2OX+r9AQqb+6qfeizKhltA=
-X-Gm-Gg: AYBFou0GTsENkGLsPQbftqxbiaenSPI09Ksrzj8ut5vbAx3JDRSopsQLhGrMTuF7iKi
-	9q5FZZ0Cmlqp/GGGPNgDfPUsjwWbvSUfUYfJ7EK98Qo9IUMAo28NTUqJrBy8cMTbzUFfc7D/Hal
-	UzqVsf8teR7PMMZiYDoeM7w5vzdb++mNLHu+heh3pf/GuORzMCMnT2EhkYB+boRx9pCYedD5113
-	Ib+6xe4I0P11D5fPtr3TsboVMQCVCSg52PuVZSasGymO/fDAzx28xd4Q3WEilUc3X+I3jMLdtug
-	D0yjsM+jqCMsVbCBnkGJ8fbp9mwS5YUJGCSh6F5cF4a2N3Gw0PsNWMiaqFB50zJlw1/+YQf8T8O
-	PacqouOqAVkPW4XqcRhNMWnYuDBdEypts73RgN0LZEEXpbrSdm9hliAFO4D7YKtIbeFEIEHxUy+
-	suJ4jZGO/yv8M35k+67guvbJqjtm7z5FuNSf8E5ri8bz2M
-X-Received: by 2002:a05:6102:1627:b0:7a5:673f:9a37 with SMTP id
- ada2fe7eead31-7af1eef5929mr3482037137.15.1790550949793; Sun, 27 Sep 2026
- 16:15:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlzlZ/br"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353281F000FF;
+	Sun, 27 Sep 2026 23:21:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790551265;
+	bh=hE+x/g/Zv2ZgM1gGUeq4K2eSI/AAPlxnreXn1OdjhYs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MlzlZ/brP1kgmeQtvNoF3KBVjtuMKSbuSYWjWj40zOYr0l+Piz6nkVAbh2QIEgYKl
+	 93xqXMOCyxvDC4jUS0wLEjdQZA+sGdDJm9jbqhXb2zO0QismU1Smz0GwzXDcCR+YkX
+	 KxHxoTKVPRzeQcbwsB6FqpQ3Bv2GfNMFuSNLjXRPhx5REikYz8MT+CPOIEOR1qbYNv
+	 U4zEDgwKdRyn4aBE3x1zp6Se5lRPX2gI8wGuA6w+ZQDoj+9hzT1rjdWvALGwVdKtLz
+	 G1jPLvv1GMzdMFfEXQNU/N5AOBO1bcA2q7BE5Ac+zHNIgm6WX140nHcehLrqQPbtjr
+	 kwHG7vfy5oCKg==
+Subject: Re: [PATCH net-next] net/mlx5e: advertise tcp-data-split support
+From: netdev-bot+sashiko@kernel.org
+To: dimitri.daskalakis1@gmail.com
+Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
+ netdev@vger.kernel.org
+Date: Sun, 27 Sep 2026 23:21:03 +0000
+Message-ID: <179055126371.3145.7187403042173989856@kernel.org>
+In-Reply-To: <20260923230521.1267511-1-dimitri.daskalakis1@gmail.com>
+References: <20260923230521.1267511-1-dimitri.daskalakis1@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
- <20260927151043.7c8dfb36@kernel.org>
-In-Reply-To: <20260927151043.7c8dfb36@kernel.org>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 27 Sep 2026 17:15:38 -0600
-X-Gm-Features: AclHuK_THxkPfcffLWRyKYWHUWs5mZ9sx2wsFti5QobsyH-hd7-eV_3I5VuXwpA
-Message-ID: <CADvTj4pZpJBAa99F322jBetg96axu_Dbv-iKAWwhOUqe==EE1A@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 00/19] net: stmmac: preserve datapath state
- across MTU and resume failures
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Christian Marangi <ansuelsmth@gmail.com>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Serge Semin <fancer.lancer@gmail.com>, Suraj Jaiswal <quic_jsuraj@quicinc.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Joao Pinto <Joao.Pinto@synopsys.com>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Ong Boon Leong <boon.leong.ong@intel.com>, 
-	Voon Weifeng <weifeng.voon@intel.com>, "Song, Yoong Siang" <yoong.siang.song@intel.com>, 
-	Linus Walleij <linusw@kernel.org>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Simon Horman <horms@kernel.org>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>, Yao Zi <me@ziyao.cc>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Richard Genoud <richard.genoud@bootlin.com>, 
-	"Alastair D'Silva" <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
-	ZhaoJinming <zhaojinming@uniontech.com>, 
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Ding Hui <dinghui1111@163.com>, 
-	Linkui Xiao <xiaolinkui@kylinos.cn>, Linkui Xiao <xiaolinkui@126.com>, linux-tegra@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, Rayagond Kokatanur <rayagond@vayavyalabs.com>, 
-	Ding Hui <dinghui@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 27, 2026 at 4:10=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Sun, 27 Sep 2026 15:59:35 -0600 James Hilliard wrote:
-> > Keep the stmmac datapath coherent after failed MTU changes or hardware
-> > resume without changing the interface's administrative state. Retain th=
-e
-> > working MTU configuration for rollback, and allow ordinary down/up
-> > recovery when hardware cannot be restored.
->
-> Please read:
-> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
->
-> The limit is 15 patches per tree, you have 22 outstanding to
-> net-next right now.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Oh, I had bundled some prerequisite patches to avoid breaking the review
-bot since my fix for prerequisite handling for the review bot doesn't appea=
-r
-to be live quite yet(it was merged but the live server looks to be on an ol=
-der
-tag still).
+Critical: 0 · High: 0 · Medium: 3 · Low: 1
 
-https://github.com/sashiko-dev/sashiko/pull/389
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-That just got merged so that shouldn't be an issue going forwards as I
-assume it should go live soon.
+- [Medium] mlx5e_ethtool_get_ringparam() now reports tcp-data-split from
+  the live SHAMPO state (priv->channels.params.packet_merge.type).
+- [Medium] With HW-GRO off (the default, en_main.c:5949 clears
+  NETIF_F_GRO_HW), GET now reports 'disabled', so hds.py _get_hds_mode()…
+- [Medium] net/mlx5e: ethtool tcp-data-split API contract violation on
+  unsupported hardware
+- [Low] The patch puts back exactly the tcp_data_split assignment in
+  mlx5e_ethtool_get_ringparam() that commit 46bcce5dfd33 ('net/mlx5e:…
 
-This was originally on the net tree but I had switched to net-next since
-some additional prerequisite commits were only in net-next and I was
-trying to avoid conflicts or having to bundle the patches to avoid breaking
-the review bot.
+--
 
-https://lore.kernel.org/all/8ed1298a-4c29-4db3-b76e-c8d34f91b4c9@bootlin.co=
-m/
+net/mlx5e: advertise tcp-data-split support
 
-I guess I could move this back to net and specify the prerequisites with b4
-metadata. It isn't entirely clear to me which branch is appropriate for thi=
-s
-however.
+This patch makes mlx5e_ethtool_get_ringparam() report tcp-data-split
+again. The value is ENABLED when the channel packet merge type is SHAMPO
+and DISABLED otherwise. Commit 46bcce5dfd33 dropped this reporting.
+After commit d347b28c492e started reporting hds_thresh, the hds.py
+selftests hit a KeyError on tcp-data-split.
+
+> The ability to set tcp-data-split was introduced in
+> commit 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
+> This commit dropped reporting from mlx5e_ethtool_get_ringparam()
+> without explaining why.
+
+[Severity: Low]
+The assignment added here is the same one that 46bcce5dfd33 removed from
+mlx5e_ethtool_get_ringparam(). The message also names both commits that
+led to the selftest failure.
+
+Should this have a Fixes: tag, for example:
+
+Fixes: 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
+
+so that stable and backport tooling picks it up?
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> index 261c466a4d362..62060a6fa185c 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> @@ -378,6 +378,11 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
+>  
+>  	kernel_param->hds_thresh = 0;
+>  	kernel_param->hds_thresh_max = 0;
+> +
+> +	kernel_param->tcp_data_split =
+> +		(priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO) ?
+> +		ETHTOOL_TCP_DATA_SPLIT_ENABLED :
+> +		ETHTOOL_TCP_DATA_SPLIT_DISABLED;
+
+[Severity: Medium]
+What does this report on a device that cannot do SHAMPO at all?
+
+If the SHAMPO capability bits, such as MLX5_CAP_GEN(mdev, shampo),
+are not set, HW-GRO can never be turned on. In that case
+packet_merge.type can never be MLX5E_PACKET_MERGE_SHAMPO, so this
+assignment always reports ETHTOOL_TCP_DATA_SPLIT_DISABLED.
+
+The ethtool netlink code leaves ETHTOOL_A_RINGS_TCP_DATA_SPLIT out of
+the RINGS_GET reply only when the value is
+ETHTOOL_TCP_DATA_SPLIT_UNKNOWN. Userspace therefore treats the presence
+of the attribute as "the device supports header-data split".
+
+With this change every mlx5e device advertises the feature as
+supported but off. That includes devices where
+mlx5e_ethtool_set_tcp_data_split() can only reject a later
+"tcp-data-split on", because GRO HW is not available.
+
+hds.py shows the effect. _get_hds_mode() skips only when
+'tcp-data-split' is missing from the reply. On such hardware, get_hds
+and the xdp tests would now run instead of skipping, and the enable
+paths would fail with EINVAL.
+
+Should the value stay ETHTOOL_TCP_DATA_SPLIT_UNKNOWN when the device
+lacks SHAMPO support? For example, the driver could check the SHAMPO
+capability, or whether NETIF_F_GRO_HW is in priv->netdev->hw_features,
+before reporting ENABLED or DISABLED.
+
+[Severity: Medium]
+Can this report "enabled" right after a "tcp-data-split off" request has
+succeeded?
+
+GET now reflects the live SHAMPO state. The set path does not always
+turn SHAMPO off when DISABLED is requested. In
+mlx5e_ethtool_set_tcp_data_split():
+
+	/* Might need to disable HW-GRO if it was kept on due to hds. */
+	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED &&
+	    dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED)
+		netdev_update_features(priv->netdev);
+
+	return true;
+
+Suppose the user has run "ethtool -K ethX rx-gro-hw on", so
+NETIF_F_GRO_HW is in wanted_features:
+
+- If hds_config is UNKNOWN, netdev_update_features() is never called.
+- If hds_config is ENABLED, mlx5e_fix_features() only stops forcing
+  GRO_HW on. GRO_HW stays on because it is still wanted.
+
+In both cases SHAMPO stays active.
+
+mlx5e_ethtool_set_ringparam() then returns early because the ring sizes
+did not change:
+
+	if (log_rq_size == priv->channels.params.log_rq_mtu_frames &&
+	    log_sq_size == priv->channels.params.log_sq_size)
+		return 0;
+
+and ethnl_set_rings() commits the request:
+
+	dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
+
+On the next RINGS_GET, rings_prepare_data() prefills tcp_data_split
+from dev->cfg->hds_config, which is DISABLED. This new assignment then
+overwrites it with ENABLED.
+
+With rx-gro-hw on, wouldn't set_hds_disable() in hds.py still fail?
+It would now fail on ksft_eq('disabled', rings['tcp-data-split'])
+instead of the KeyError.
+
+Should the driver actually turn SHAMPO off for DISABLED, or reject the
+request?
+
+[Severity: Medium]
+HW-GRO is off by default, so this now reports "disabled" and
+_get_hds_mode() in hds.py no longer skips. Is that why enabled_set_xdp
+and ioctl_enabled_set_xdp go from SKIP to FAIL in the "After" log in the
+commit message?
+
+Both tests always request:
+
+    netnl.rings_set({'header': {'dev-index': cfg.ifindex},
+                     'tcp-data-split': 'enabled'})
+
+but mlx5e_ethtool_set_tcp_data_split() rejects that unless HW-GRO is
+already on:
+
+	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+	    !(dev->features & NETIF_F_GRO_HW)) {
+		NL_SET_ERR_MSG_MOD(extack,
+				   "TCP-data-split is not supported when GRO HW is disabled");
+		return false;
+	}
+
+set_hds_enable() gets the same -EINVAL. The test maps it to a skip, and
+the existing skip message looks copy-pasted from set_hds_disable():
+
+        if e.error == errno.EINVAL:
+            raise KsftSkipEx("disabling of HDS not supported by the device")
+
+So the rejected enable shows up as a skip with the wrong reason, and the
+enable path is never tested.
+
+Should the driver turn on HW-GRO when tcp-data-split=enabled is
+requested? Or should the tests enable rx-gro-hw first, or skip on EINVAL?
+As things stand, the state the driver reports does not match what the
+selftests expect.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923230521.1267511-1-dimitri.daskalakis1%40gmail.com
