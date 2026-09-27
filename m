@@ -1,91 +1,165 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8813451A9;
-	Sun, 27 Sep 2026 14:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A65339363;
+	Sun, 27 Sep 2026 14:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790520546; cv=none; b=EHmnJRNDIZr4IrDMgWcRD+Qhw5V9d2/wW1oi06xCOi/J7AnN3z0KkPfA7O1RnhjB5YqBG1RdmYt2dVJ1JCy6C6GX3KDT9pLUc1SSwT6YYjAvFmnoKlG57WHP+K4oFAO0FOBJm6a8yjsCreUg4ieXZCHiJ7ThF/Q2K/zDiBIz+WQ=
+	t=1790520554; cv=none; b=JQ1w5cn2CJ0rQhhIDy4VtVAa7Z2wi3Z+6QFKqVNEA17IF8M8MupuYdWKu8m1zOHTrWdytGC9hDXRN8fV5Ib3trrMIa0xkaQ1Nd6KzrN4XAeC4OE19xnECM+VtjctMMCrIG+4XrhqJsupdgkXhsB2bQblv5dh8+AnWLEIt708fQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790520546; c=relaxed/simple;
-	bh=vunJl81K9qufJZ6kHV1zrsp+YOvm895E4u87ZsA9p5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uufCJ1V4MgRF6ihxqgCuwQQfdYfkk5Dzk5FGULUaJODQh+50bBEUxdu+b/ynH4+uqm9kwtYxk7Ip4hfpJgbqYiKXtmXdWnknVkIDR3lEtQto1S+bJ3OhaqQv2Uh7KI03YlQzlQcW4B4CALdv/VHYq3C9SnOnUjmFmYo25aLbxy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kwMWGViT; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790520554; c=relaxed/simple;
+	bh=M/1wRLH6//vjXHn8+eNoN9tyf4dwMw8dzjbw6uTgBRs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=upkidwXsPngux0gyhV2emOTU8R1B4+Y0LLJbl3F5D4I+zSP7A7WjDntpxqnX+WMtqpnQPn//Km9gGJb0WEdZ6pY7qiiQL2vA95YVNFOn8jQbtWrWHSwKL6c79T8MzglBfLufxxB4AnrHz2lwk8CdkTqieln2vDImIEpsfqVkVT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dloG9usw; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kwMWGViT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+0CClvo5rdZNkZTJ7f+8ULkbzjezc+61O9AhMbaXx5U=; b=kwMWGViTuFyAcmVjgWvQ9h9+Kd
-	tSizJDaJwDe8H4JPXBJ86zSJPcc07+A+ipKjtf6L45s0OHLL3nENDk05H3zFC9Vd4RaKn3ePFmoks
-	Y+oRAoCnrAMst3NwIwnOKTH6mEtQU1yaWZy5niYg4H6/ZG/Sb6fGe1g3PoKDg56HKsGs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xAqBP-007WSS-Se; Sun, 27 Sep 2026 16:48:51 +0200
-Date: Sun, 27 Sep 2026 16:48:51 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dloG9usw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=iW
+	G5bcWR8Gy/SGkYDcpum8ojyQYtZQend0Il1O1hRvE=; b=dloG9usw7zj8EtvXg5
+	8g0jXhfqFaxVnph2cnIjQFOHXGTUdx3JskJvq9uUcQY6EWcS6UG9jYcGCI6zcwB4
+	5YVj3H/Kzg5dUkjg5QIWYv5uwCSTUULg6wX9y+nRhkcqoCoE2iNs/q22qZ51FdbH
+	3KaYvlFRErE/j15px59BzE6zE=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD330OOLLlqjwJIBA--.47706S8;
+	Sun, 27 Sep 2026 22:47:52 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Paul Barker <paul@pbarker.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
- internal CPU PHYs for SmartSpeed
-Message-ID: <e18c66e9-7ba2-46c0-baf5-b4281a45755d@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
- <20260923215858.1653-5-yongzhao.derek@gmail.com>
- <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
- <20260924234814.1734-1-yongzhao.derek@gmail.com>
- <d2797713-9b92-43c8-a26e-bf3bc9817ad8@lunn.ch>
- <20260925210153.8717-1-yongzhao.derek@gmail.com>
- <69b36e16-eece-4739-9208-96bd8e60943f@lunn.ch>
- <20260926082129.1632-1-yongzhao.derek@gmail.com>
- <426f9dcb-7473-48d5-a473-4435cc81312c@lunn.ch>
- <20260926215152.376-1-yongzhao.derek@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
+Date: Sun, 27 Sep 2026 22:47:39 +0800
+Message-Id: <20260927144741.1320558-7-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260927144741.1320558-1-yaojiale02@163.com>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260926215152.376-1-yongzhao.derek@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD330OOLLlqjwJIBA--.47706S8
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF15Cw43XFykCFy3GrWDtwb_yoW5KF1Dp3
+	95Ja98Kr1ktr1ktws7tw4kZa4ru3W8Ka4UGFy7Kan3Awnayryqqr1FqFyjqF48JFZ5A3yY
+	ga1jyw4xu3WDurJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pidOz-UUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzhk6dGq5LJlNpAAA3W
 
-> I'm open to selecting the workaround through DT, so that it is enabled
-> only on boards known to need it. What I can document at this point is
-> the PHY-to-PHY connection, the reproducible boot failure and the effect
-> of disabling SmartSpeed. I have not established whether the cause is
-> the board's electrical design or something else.
+ravb_remove() frees the netdev before devres releases the managed IRQs.
+The handlers use the netdev as their data pointer, so an interrupt during
+that window can access freed memory. Probe error paths have the same
+ordering problem.
 
-This is tricky. I can understand not wanting to say the board design
-is broken without strong evidence. But a DT property is about
-hardware. Maybe word it something like ... when the hardware uses an
-on board PHY-to-PHY connection, without cable, SmartSpeed has been
-seen to incorrectly performed a downshift. There have not been any
-reports of a traditional hardware designs, using a cable, having this
-issue.
+The remove callback also returns when runtime resume fails. That leaves
+the netdev registered while the driver core still releases its managed
+resources. A running interface already holds a runtime PM reference, so
+the extra get cannot invoke a failing resume. A resume failure therefore
+occurs while the interface is down and ndo_stop() will not be called.
 
-> Would that be sufficient justification for a DT property, with the
-> underlying cause left open in the commit message? If so, would you
-> prefer a generic PHY property to disable downshift, or a
-> Qualcomm-specific property for this workaround?
+Place the IRQ resources in a dedicated devres group and release it before
+freeing the netdev. Continue unregistering and freeing software resources
+when runtime resume fails, but skip the unmatched runtime PM put.
 
-Also tricky. What we don't want is other developers trying to abuse
-this to turn it into a configuration option, rather than a hardware
-property. So i don't think it should be a generic property. Lets make
-it a qualcomm specific property. I would also put 'workaround' in the
-property name, again making it clear this is not intended to be used
-for configuration.
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Fixes: 48f894ab07c4 ("net: ravb: Add runtime PM support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/net/ethernet/renesas/ravb_main.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-    Andrew
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index ea1c7e536791..a25f5ac7062f 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2963,28 +2963,35 @@ static int ravb_probe(struct platform_device *pdev)
+ 		priv->num_rx_ring[RAVB_NC] = NC_RX_RING_SIZE;
+ 	}
+ 
++	if (!devres_open_group(&pdev->dev, priv, GFP_KERNEL)) {
++		error = -ENOMEM;
++		goto out_reset_assert;
++	}
++
+ 	error = ravb_setup_irqs(priv);
+ 	if (error)
+-		goto out_reset_assert;
++		goto out_release_irqs;
++
++	devres_close_group(&pdev->dev, priv);
+ 
+ 	priv->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		error = PTR_ERR(priv->clk);
+-		goto out_reset_assert;
++		goto out_release_irqs;
+ 	}
+ 
+ 	if (info->gptp_ref_clk) {
+ 		priv->gptp_clk = devm_clk_get(&pdev->dev, "gptp");
+ 		if (IS_ERR(priv->gptp_clk)) {
+ 			error = PTR_ERR(priv->gptp_clk);
+-			goto out_reset_assert;
++			goto out_release_irqs;
+ 		}
+ 	}
+ 
+ 	priv->refclk = devm_clk_get_optional(&pdev->dev, "refclk");
+ 	if (IS_ERR(priv->refclk)) {
+ 		error = PTR_ERR(priv->refclk);
+-		goto out_reset_assert;
++		goto out_release_irqs;
+ 	}
+ 	clk_prepare(priv->refclk);
+ 
+@@ -3124,6 +3131,8 @@ static int ravb_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	clk_unprepare(priv->refclk);
++out_release_irqs:
++	devres_release_group(&pdev->dev, priv);
+ out_reset_assert:
+ 	reset_control_assert(rstc);
+ out_free_netdev:
+@@ -3141,9 +3150,10 @@ static void ravb_remove(struct platform_device *pdev)
+ 
+ 	error = pm_runtime_resume_and_get(dev);
+ 	if (error < 0)
+-		return;
++		dev_warn(dev, "failed to resume device: %d\n", error);
+ 
+ 	unregister_netdev(ndev);
++	devres_release_group(dev, priv);
+ 	if (info->nc_queues)
+ 		netif_napi_del(&priv->napi[RAVB_NC]);
+ 	netif_napi_del(&priv->napi[RAVB_BE]);
+@@ -3153,7 +3163,8 @@ static void ravb_remove(struct platform_device *pdev)
+ 	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+ 			  priv->desc_bat_dma);
+ 
+-	pm_runtime_put_sync_suspend(&pdev->dev);
++	if (error >= 0)
++		pm_runtime_put_sync_suspend(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(dev);
+ 	clk_unprepare(priv->refclk);
+-- 
+2.34.1
+
