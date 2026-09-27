@@ -1,176 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855EF31AABC;
-	Sun, 27 Sep 2026 14:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790521203; cv=none; b=By1qq83+DqHHAtD2ECIm3QWYOLn5fLUPzrCr2BQHEcot0+eDi//GZD4PnYXIA3en21I+bGhN3yfsLNCYLlxbDBV3DwKqzA9Wfg8XTd55Ga8cb7m9nYpqWYOp4xgew2YYj+ue4b8z8Z6yzYH4VnUX1EOq853n/Kk0JYtmQ9of0tM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790521203; c=relaxed/simple;
-	bh=o8A2e4z2JQDecFuamyJ8gr5ncEuH2PfxZ5tCpUBdTh0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FKUB9UX63vWyUJYVYKRAmrtV+y3FElQH4muE3zyZkFNtL3GePblMVzvL2B4NQwKHduLOMNTDWro6IWqoalCcrXlFc3AGNtXXtZg6oZ6IyhpVt8o8F34nnFncgXfzezEUav5lFrRci1/sIAhLs+OLt9gFW/yFrpzehSpWb71hAiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=maHY6Cut; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3805C3B05A6
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 15:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790522650; cv=pass; b=b1H8PjfOdBtRizd7RwLcbN3hGs/kBbg5pRg2ClzRHGxmns7Yam56+a64jwk5OXrvayLPWw1pii3qcr619E0YdzpRsD4fmA9ldmwZLqtR4ExMSSdS2wGtk+lx9Mcbh0V2sICdaeRJNrJN6hHKzz2HIJ97aZerK4Bp08NPjKHePsI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790522650; c=relaxed/simple;
+	bh=IqYOXuenTrd/G7JC31ZlM5cYuEr0pOS90JESQYxp+5A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IWns8NDeS70Tg6l0eufLD9lBetubwq+24A7qRf2PraQ2BVy0R/ndu8QXALs1eZDf0OFaEBEo7g+dtpTFmzGG6I8JadUAZZl6SaFP5aHD3xvF2IcvaZ7kl9NFHi0A4BiAzAUFNf/kdndPoOhfdH9tXoHhII0JtQ9SOzoaHKzDjhI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=bvDNLnlw; arc=pass smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="maHY6Cut"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B381F0089A;
-	Sun, 27 Sep 2026 14:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790521199;
-	bh=/l1PNXKQwltkMjXXqOjr03Ff62+xQlvJKxCiD5MB1Ic=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=maHY6CutmmsswcWc2GaV1KSmXGEKWa5exIbX6227jP2gQ5s1zgGBVzNqv6AigLKfN
-	 8o9S/7g7RCGruQSX4hMptCXqqqZbJqby98vKppJCkCK2zV+EUgRKsX7lTKZ5e+A9QY
-	 pqDny4Q+CkusuMfXeGPOcmMcXyrs6bU++krMsMUJc2qM0Rqrhz1WYNNSUy2FVFeqp7
-	 V/ImMuXx9rmw8SGSh7TXAkawYfh7bp2VYo27X92HJfVSEWcXGtAdisEHysAQlyCc3q
-	 1YHcHqYsSMQbmrpCwYImChZxk7RzeYge+2t6nuSxGhVohNJNAf77ft5GF2MIxZa8RX
-	 x7poBPssgbpAA==
-Subject:
- Re: [PATCH net v11 17/17] rxrpc: fix use-after-free in rxrpc_poke_conn()
-From: netdev-bot+sashiko@kernel.org
-To: dhowells@redhat.com
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
- qotmddnjs@ajou.ac.kr, stable@vger.kernel.org
-Date: Sun, 27 Sep 2026 14:59:58 +0000
-Message-ID: <179052119820.2160803.10819328659483521735@kernel.org>
-In-Reply-To: <20260923133706.1496540-18-dhowells@redhat.com>
-References: <20260923133706.1496540-18-dhowells@redhat.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="bvDNLnlw"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a20f06cce6so25880501fa.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 08:24:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790522647; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sFXbF4psAtpeZ4jsTnZkZTMKBXtI6ekmmErBB4Mmg8HRVqNJ8iTY4aWd7o7e+p1nz4
+         XLeiTpwHLUoveCVEKfUY3cabGCtZPqRXbJtnx4ISX7OBslR1Mr4b89bVK3FB/njD54lv
+         JvnC4nyVbX8v/ioUHFeyYc83BXcjx43LvQ2F8p7gz0ywF7uSV39aq3FQwqtFqVxoyUet
+         jY/xU/GxcP76Y55W/oK4IGD8nLS2j1MTLmqMVcsu28Q2d3qGbISvSQRS7Bx2HeRi5sCb
+         Sitgm16l/Wup//1xhqYDOL1OVC3aYqWdCnjqtFXXDVJ3gFR7XAY3n9orVx50T0FA2phH
+         0boA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
+        fh=/FCEeOiMS8m+kRIO4gOCiw27YOf5yAaPjL4meAdn3gA=;
+        b=Zp+6gCN1V5FVWP7/NwySU/nSfwRutGG2clggRmQzcTqB1V3eBwPR/qG5+MGfWaFYwm
+         9OmNJDIvWh8arPvXCICvLHHfyyQRTtF4yDJZSJ0IjAYdnby1W6mnXjSDh/fdipBRKMR3
+         H/cJjGsOpZ6RKxDrtxh15+7wpIUdyN5WLggiw/AJaTBtG+MEiH8C92hMTU1lo1nTg9fL
+         LQgxmLbIykhbj779vFIi910rYhHeImoXGeyTWSYSydAe1RN1ujq9Nm1DTv96dKPsBvbj
+         tP42gJLg0cQ4qGQ48fYz5EJjLD6+BIjEe4ILtdiEqiWAklOnbXAn2nDovJXfmPQMm9Jn
+         87pg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1790522647; x=1791127447; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
+        b=bvDNLnlw3JWJDcmPd1MdT2k8B/AD8S1/hBjBPSJfveFXjXweDtRMb6xHaSLFcvHEjt
+         6hceiOSwN3ndIPKPTRB/32pmlI4+YDqNN+sDOcKC1rQGCzDtFsPOr9HQhltk2PXDoCuH
+         B/VJXKsTUvALDvnAI1c1VlIlUOZGY47Lteh4Qh5aLu1vvbkOWw6Godf5Fp65Hnq/16/6
+         0sZ34cy7So17e4pmIjOnFVt0YWZFID3UogeyuNN9qeWCLFNziTUhsrQDC8aE70EOf7sO
+         u9IoXKkjPfhv/GtIJO52vYBzc6W+gjv17Lc3Jx6EXZ52ymTPadq6FT6DqDkGKn9xuI7i
+         XnfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790522647; x=1791127447;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
+        b=wDly8mQSnI4DobYxDe8GgSKBGNAYMnCMhrutwZ7YQgFx5csVHnmvNFkUairGIq47lY
+         yJCzd2AY6dd6aMoFhwXlJIUWymAVQZ9doBYPWQV0GFSe+X2oLbT7i11N/c0eSW5Ip1NL
+         DJwed/XZfX2XtIoDn23U8FlYQZpC//LWtEVuj0qpPJnWjXcyuLJGlupI8UawpFMHP07W
+         RJd7UFK5Ht5BI39T5K+PJGajXXIfQOD+6+BeqNKc1YU0sM73RaTaY/gqSja4DBZwK4M3
+         ZU5tMHYLdSCpEaKCn/RlUn3jBVvd6jux+WaWp7gIZEhLeN5V773hNFpOX1w5LLZ62xti
+         P6ig==
+X-Gm-Message-State: AFq9FYJekTU4Nxb52HigIWs6mKnmMdCuXJyGxsya9VJHHwf4YhWNeOwz
+	Q8T/NnPEPPGHKK3/svaqovO3V+lQYkHcMEp3wuvtwzXmUw0tRp7pEAdeRGEwQykxnYNcTGbwh1/
+	kXkl7FetbJdKD0LVwqaspDJFhLBIu7teZMczZYK3AyKw=
+X-Gm-Gg: AYBFou3/DMk7XRXIWdSRQlQxZiL+CrQPwzkzbXFHlKvlOfw6NdQYBcpWuk1nm0s5qbL
+	P/SlWT+Sj1qwggh4dHKR84jj5FUDAzY+oxdSqi4zuUDFBney5EcvqJg+kxVlU+xvL9ZORV8n2sG
+	pOPsitb+RmZeoPYHQ7efsPoeuaCLsprEGcYT42Zm1vHR4wNRIST9ZF2kmIfKirIKGjwIE8Bcozm
+	tknCRPrWGD7JHradexTMBeoybT5ZEkXqUh0QRSXPrps9kU9B74tHFoXFk1O2S9pp7B4nSXRtNNA
+	UNEA1v+pniU9ygM9EV38MmsOI7yq6qMhYwooOFGIXOtv3kyXLG/E7Y87PRgnI+h47hpWs/XdNkz
+	4iEMBRx76zw==
+X-Received: by 2002:a05:651c:1585:b0:3a3:61ec:43c7 with SMTP id
+ 38308e7fff4ca-3a63c2fbf19mr25857111fa.24.1790522646186; Sun, 27 Sep 2026
+ 08:24:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <cover.1790266803.git.zihanx@nebusec.ai> <ce3d490f-4be4-7eaa-0993-c1e4d1fd863c@ssi.bg>
+In-Reply-To: <ce3d490f-4be4-7eaa-0993-c1e4d1fd863c@ssi.bg>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Sun, 27 Sep 2026 23:23:52 +0800
+X-Gm-Features: AclHuK_dLGbaKOOdt-gDveLynvCg56unCBYk_KeFbEJfV6pwu-pvHxZdAFl9y-U
+Message-ID: <CAANe3eTgtXLVzrXuXQykh67XaUzGj-kWKzB1Sp0fwT0kZ_74Pg@mail.gmail.com>
+Subject: Re: [PATCH nf v5 0/3] ipvs: avoid stack overflow from recursive
+ connection expiration
+To: Julian Anastasov <ja@ssi.bg>
+Cc: netdev@vger.kernel.org, lvs-devel@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, horms@verge.net.au, pablo@netfilter.org, 
+	fw@strlen.de, phil@nwl.cc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Sun, Sep 27, 2026 at 10:07=E2=80=AFPM Julian Anastasov <ja@ssi.bg> wrote=
+:
+>
+>
+>         Hello,
+>
+> On Fri, 25 Sep 2026, Zihan Xi wrote:
+>
+> > Hi Linux kernel maintainers,
+> >
+> > We found and validated an issue in
+> > net/netfilter/ipvs/ip_vs_ftp.c and net/netfilter/ipvs/ip_vs_conn.c. The
+> > bug is reachable by a non-root user via a user namespace and a network
+> > namespace.
+> > We've tested it, and it should not affect any other functionality.
+> >
+> > This series contains 3 patches:
+> >
+> >   1/3 Fix the timer callback race during IPVS connection deletion.
+> >   2/3 Replace recursive controller expiration with an iterative cleanup
+> >       path.
+> >   3/3 Reject zero and configured FTP control ports as data ports.
+> >
+> > We will provide detailed information about the bug
+> > in this email, along with PoCs to trigger it.
+>
+>         There are some valid concerns in the Sashiko review
+> that we should solve with v6, so we are dropping v5.
+>
+> pw-bot: changes-requested
+>
+> > Best regards,
+> > Zihan Xi
+> >
+> > Julian Anastasov (1):
+> >   ipvs: wait the running timer cb on conn deletion
+> >
+> > Zihan Xi (2):
+> >   ipvs: avoid stack overflow from recursive connection expiration
+> >   ipvs: reject FTP control ports as data ports
+> >
+> >  net/netfilter/ipvs/ip_vs_conn.c | 117 ++++++++++++++++++--------------
+> >  net/netfilter/ipvs/ip_vs_ftp.c  |  18 +++++
+> >  2 files changed, 85 insertions(+), 50 deletions(-)
+> >
+> > --
+> > 2.43.0
+>
+> Regards
+>
+> --
+> Julian Anastasov <ja@ssi.bg>
+>
 
-Low priority / nit picks for your consideration:
+Hi Julian,
 
-- [Low] The commit message misdescribes the fix.
+Thanks for the review and for preparing the timer-callback fix. Understood
+that v5 is dropped and the series will be resent as v6.
 
-Pre-existing issues:
-- [High] Nothing drains local->conn_attend_q after the I/O thread leaves
-  its main loop, so a poke that lands in that window leaks the…
+I=E2=80=99ll revise my iterative-expiration and FTP-port patches to address=
+ the
+relevant review points. Once your v6 patch is available, I=E2=80=99ll rebas=
+e the
+series on it and recheck the combined changes, particularly the controller
+lifetime handling. I=E2=80=99ll also clarify the active-mode condition and =
+how the
+FTP path can extend the controlled-connection chain.
 
---
-
-rxrpc: fix use-after-free in rxrpc_poke_conn()
-
-This patch makes rxrpc_poke_conn() take its poke reference with
-rxrpc_get_connection_maybe() in place of rxrpc_get_connection(). If the
-refcount is already zero, the connection is no longer added to
-local->conn_attend_q. This closes a use-after-free where the I/O thread
-touched a freed connection that was still queued.
-
-> Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
-> rxrpc_queue_conn() uses before taking the poke reference, so a connection
-> past its last-active point is not poked/requeued after teardown began.
-
-[Severity: Low]
-Is this paragraph accurate? rxrpc_queue_conn() checks only the active count
-and takes no reference:
-
-net/rxrpc/conn_object.c:rxrpc_queue_conn() {
-	if (atomic_read(&conn->active) >= 0 &&
-	    rxrpc_queue_work(&conn->processor))
-		rxrpc_see_connection(conn, why);
-}
-
-The patch never reads conn->active. rxrpc_get_connection_maybe() checks
-only the refcount:
-
-	if (__refcount_inc_not_zero(&conn->ref, &r))
-
-That matches what rxrpc_poke_call() does with rxrpc_try_get_call(), not
-what rxrpc_queue_conn() does.
-
-Could the message say that the poke reference is now taken with
-inc_not_zero, and drop the claim that this copies the conn->active check
-in rxrpc_queue_conn()?
-
-> diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-> index 0ece717db0f85..1be50e0c9cee5 100644
-> --- a/net/rxrpc/conn_object.c
-> +++ b/net/rxrpc/conn_object.c
-> @@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
->  	spin_lock_irq(&local->lock);
->  	busy = !list_empty(&conn->attend_link);
->  	if (!busy) {
-> -		rxrpc_get_connection(conn, why);
-> +		if (!rxrpc_get_connection_maybe(conn, why)) {
-> +			spin_unlock_irq(&local->lock);
-> +			return;
-> +		}
->  		list_add_tail(&conn->attend_link, &local->conn_attend_q);
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but what
-happens if a poke arrives after the I/O thread has left its main loop?
-
-rxrpc_io_thread() breaks out of the loop once kthread_should_stop() is set
-and conn_attend_q is empty. It then calls rxrpc_destroy_local():
-
-net/rxrpc/io_thread.c:rxrpc_io_thread() {
-    ...
-		if (should_stop)
-			break;
-    ...
-	rxrpc_destroy_local(local);
-    ...
-}
-
-rxrpc_destroy_local() sets local->dead and cleans up the client conns, the
-socket and rx_queue. It never touches local->conn_attend_q.
-
-A client connection can still have conn->timer armed at that point.
-rxrpc_disconnect_client_call() arms the timer for jiffies+2, then puts the
-connection on the idle list with a reference held:
-
-net/rxrpc/conn_client.c:rxrpc_disconnect_client_call() {
-    ...
-		set_bit(RXRPC_CONN_FINAL_ACK_0 + channel, &conn->flags);
-		rxrpc_reduce_conn_timer(conn, final_ack_at);
-    ...
-}
-
-rxrpc_clean_up_local_conns() cancels only local->client_conn_reap_timer
-synchronously. It doesn't cancel each connection's own timer before it
-drops the unbundle and idle references.
-
-If conn->timer fires in that window, the refcount is still above zero:
-
-rxrpc_connection_timer()
-  rxrpc_poke_conn()
-    rxrpc_get_connection_maybe()   <- succeeds
-    list_add_tail(&conn->attend_link, &local->conn_attend_q)
-
-The only thing that consumes conn_attend_q is the loop that has already
-exited. Does this leak the connection and its poke reference, along with
-its references on local, peer and bundle and its key?
-
-If so, rxnet->nr_conns never reaches zero. On netns exit,
-rxrpc_destroy_all_connections() would then wait forever here:
-
-	wait_var_event(&rxnet->nr_conns, !atomic_read(&rxnet->nr_conns));
-
-AF_RXRPC sockets can be created without privileges. An unprivileged user
-could reach this window by closing the socket right after a client call
-succeeds.
-
-The old unconditional rxrpc_get_connection() had the same behaviour. The
-new inc_not_zero guard doesn't help here because the refcount is nonzero.
-
-Would rxrpc_poke_conn() need a local->dead check under local->lock to close
-this? Alternatively, rxrpc_destroy_local() could drain conn_attend_q and
-drop the poke references.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923133706.1496540-1-dhowells%40redhat.com
+Regards,
+Zihan
