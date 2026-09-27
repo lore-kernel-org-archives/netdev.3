@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA6821B192;
-	Sun, 27 Sep 2026 01:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCC22F7EF2;
+	Sun, 27 Sep 2026 02:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790474359; cv=none; b=ZTClAK0cgEOYSahDMGjyLYIwt2I3piRCQPxHffeprSS91V94uK9ovga9SL2Z2HQCEBL+/ko54TIliqyGHzwxKVdoQl7li8jFc5DIRFFF4i+jyEbbRZP6SlFg4qSaITtO8ulxZ2eE6bAEBBwibCjDQORl+a0LfeF/P+FK1ofxV7A=
+	t=1790475282; cv=none; b=BksHVnuK63Hjx0kX+zoZ9dKhZdz/SJRw+d6ZE3g0cF2WYUCmvISJo98IUz9LYwn0I5WQwtzTogo+fyILTtmyzeaBeJEfGyQqGPn3Z7bm7xBmPIkXaJ2V4ys+qHfp682uEjeHK3HbVTkePiBJWaF9ZWNegXTfxLyFjYhI+HHAJFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790474359; c=relaxed/simple;
-	bh=Cj1yxOQ7NmiOhB54Fj2kvY8sqe96D//wtEYKIYBNRx8=;
+	s=arc-20240116; t=1790475282; c=relaxed/simple;
+	bh=q6/PMCNYDDscEJ5nw2CUclBXt9cRDAut+3mVMVGqNzk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=osiKOwAD/npOO9fV3J5p3m9EhsrCx6ncgmrcuGVPI2PDsDrubw+aYklIII8Yuv8P+Bfx+JazlXUg+WtVjqJDoXbzTcxMJQQUCcOw2X3Qz6VLiyz3GwJyAvvd7KTMU9j3yz4knSC9+SSzzJs3SM4iMuOSo15cP196sxLrTqPe8zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfeeVtO7; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=g1fGBug4u9hkK/2uoamACmvrsjDwGlFmkXjPqgVSIEgcb7IbVVn5wyHA2TvWn5DN5C9T127UNqRsNDchX9PrKWyphIwuxUAHEBCwNRJepVGzgA6K579FV1xUK5IwLGH1Q9KOKMuativVAfq1ZZ7PVm8VtpgEQVBRCtdgx9hs/DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+p4FyzT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfeeVtO7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755731F000FF;
-	Sun, 27 Sep 2026 01:59:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+p4FyzT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CD11F000FF;
+	Sun, 27 Sep 2026 02:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790474357;
-	bh=3mmxZtkXz6CMoG9+1fr08yaqLx0uIg8QGWPSaxHFEmQ=;
+	s=k20260515; t=1790475280;
+	bh=W9u8hnmZuGo1NuDzpttD6IeA6/nBfLNcDzRrJr4v/OU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mfeeVtO745hvKy5JDKZe0mq5Xp+dIMbWv6FY2A0tsEQd31GtzIjTpocTbRTlg2fHN
-	 uEu0FUH78rCbqLm5qsmHL5CtJgpECrjNHHrVzrRkhrIjHRdFNcUzaFQlAPcmuxJSVd
-	 SQGHNt5qK2LuU06CvmLaHbaVeeLZwb5DOV1furGgtmT5mJHlJMIe9zXwm1HhdSNJDq
-	 PsRyXGw34SMszmma88JhTfs5SDYSFpK0SthmaqCtuxHBTI/uFtmEftGvMUWJGZNGum
-	 U5WQ+83ZswSKqmhJRoPSC4OGwXi16+kNULIi0ppuzr5YJPlvHY2NYUlmLJ09cxvCyH
-	 cCvcBryhCpAnQ==
-Subject: Re: [PATCH net-next v4 2/2] selftests: net: test untracked NA
- recovery of FAILED neighbors
+	b=c+p4FyzTGBavXCR3JCnCpwmkVoq6mJ9yjxv5y7Yg8j8kuASzyB8UOr9y9L2kGWo1N
+	 wnFw+sUDXC4VPsZcTCHsoVKR7O1j7GkqyF/mLbx7lKC169sqYeBu4CyYj+h2QJbXxG
+	 FQA173QAHjP+8u/jirQSrawXDMI8B694Dk++FrAZ1kHmJcn8+tWlTG8bFGxbi5GpxN
+	 KubCfpfcOzGmMKpH/CHvfhHpRszm/dPHX/dCeChZMu427EdCRzLe6OlR098z9+03Od
+	 t8IouAZNH/dzBvtMQluD6qBhXtm9Uq3yakBVvK4JCfezBoY4KtSYct34cm96oe5efk
+	 iux9q/SmX8c8Q==
+Subject: Re: [PATCH] net: phy: aquantia: AQR113c fix up PMA capabilities
 From: netdev-bot+sashiko@kernel.org
-To: lfqlee314@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- rdunlap@infradead.org, netdev@vger.kernel.org, aajith@arista.com,
- roopa@nvidia.com, jhpark1013@gmail.com, corbet@lwn.net,
- skhan@linuxfoundation.org, shuah@kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 27 Sep 2026 01:59:16 +0000
-Message-ID: <179047435603.2160803.13373341999390974606@kernel.org>
-In-Reply-To:
- <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com>
-References:
- <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com>
+To: hongmei.xu@oss.qualcomm.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 27 Sep 2026 02:14:39 +0000
+Message-ID: <179047527921.2160803.15181990521063252187@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20260923-net-phy-aqr113c-fix-pma-capability-v1-1-4?=
+ =?utf-8?q?97359310f06=40oss=2Equalcomm=2Ecom=3E?=
+References: =?utf-8?q?=3C20260923-net-phy-aqr113c-fix-pma-capability-v1-1-49?=
+ =?utf-8?q?7359310f06=40oss=2Equalcomm=2Ecom=3E?=
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,179 +59,116 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The Fixes:-tagged bug fix is bundled with new tests that
-  depend on a new feature.
-- [Low] The commit message says the test verifies that "disabling each
-  gate keeps the entry in FAILED without a link-layer address".
-
-Pre-existing issues:
-- [Low] Some script exit paths skip cleanup().
+- [Medium] The patch stops using the EEE capability discovery that
+  AQR113C had before, so the kernel now treats EEE as unsupported on…
+- [Low] The patch presents itself as a fix for a user-visible defect
+  ("AQR113c fix up PMA capabilities": 10G/5G/2.5G not reported), but it…
 
 --
 
-selftests: net: test untracked NA recovery of FAILED neighbors
+net: phy: aquantia: AQR113c fix up PMA capabilities
 
-This adds cases to ndisc_unsolicited_na_test.sh that seed a NUD_FAILED
-neighbor. Each case checks whether an unsolicited NA moves the entry to
-STALE, based on drop_unsolicited_na, accept_untracked_na and forwarding.
+This commit adds an aqr113c_get_features() callback for the AQR113C PHY.
+The callback reuses aqr111_get_features() and also sets the 10000baseT
+Full link mode. For this PHY, it replaces the generic C45 PMA ability
+discovery.
 
-It also runs tcpdump in the background and waits for it to exit. It keeps
-the return code in test_unsolicited_na_combination() so existing cases stop
-reporting false success.
+> net: phy: aquantia: AQR113c fix up PMA capabilities
+>
+> AQR113c does not report few of the supported PMA
+> capabilities which includes speeds like 10G/5G/2.5G,
+> add get features support within aquantia driver to fix
+> the same.
+>
+> Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
 
-Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail.com
+[Severity: Low]
+This is described as a fix for missing 10G/5G/2.5G reporting, but there
+is no Fixes: tag or stable Cc.
 
-> diff --git a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
-> index 5db69dad0cfc0..ba9e670b51498 100755
-> --- a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
-> +++ b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+If the premise holds, the defect would date back to when AQR113C support
+was added without a .get_features callback. Should a tag like this be
+added so stable maintainers know whether to backport, and how far?
 
-[ ... ]
+Fixes: 12cf1b89a668 ("net: phy: Add support for AQR113C EPHY")
 
-> @@ -102,24 +115,39 @@ setup()
+> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+> index e95d391a6dc23..604f5492515dd 100644
+> --- a/drivers/net/phy/aquantia/aquantia_main.c
+> +++ b/drivers/net/phy/aquantia/aquantia_main.c
+> @@ -1094,6 +1094,18 @@ static int aqr111_get_features(struct phy_device *phydev)
+>  	return 0;
 >  }
 >  
->  start_tcpdump() {
-> -	set -e
-> -	tcpdump_stdout=`mktemp`
-> -	tcpdump_stderr=`mktemp`
-> +	tcpdump_stdout=$(mktemp) || return 1
-> +	tcpdump_stderr=$(mktemp) || return 1
->  	${IP_ROUTER_EXEC} timeout 15s \
->                  tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
->                  "icmp6 && icmp6[0] == 136 && src ${HOST_ADDR}" \
-> -                > ${tcpdump_stdout} 2> /dev/null
-> -	set +e
-> +                > "${tcpdump_stdout}" 2> "${tcpdump_stderr}" &
-> +	tcpdump_pid=$!
-
-[Severity: Low]
-This is a pre-existing issue, but some exit paths in this script never reach
-cleanup(). log_test() does this when the user quits under PAUSE_ON_FAIL or
-PAUSE:
-
-	[ "$a" = "q" ] && exit 1
-
-Also, setup() runs under set -e after setup_ns() has created the namespaces.
-
-Neither the script nor lib.sh installs an EXIT trap. On those paths the
-namespaces, the veth pair and the mktemp files are left behind.
-
-This patch adds one new case. tcpdump now runs in the background here. If
-start_tcpdump() or host_link_up() fails and the user answers 'q' in
-log_test(), is the tcpdump process orphaned? It still stops by itself
-because of timeout 15s.
-
-[ ... ]
-
-> @@ -129,58 +157,145 @@ cleanup()
-
-[ ... ]
-
-> +	if [ -n "${expected_state}" ]; then
-> +		neigh_show_output=$(${IP_ROUTER} neigh show \
-> +			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
-> +		if [[ " ${neigh_show_output} " != \
-> +				*" ${expected_state} "* ]]; then
-> +			return 1
-> +		fi
-> +		if [ -n "${expected_lladdr}" ] &&
-> +				[[ " ${neigh_show_output} " != \
-> +				*" lladdr ${expected_lladdr} "* ]]; then
-> +			return 1
-> +		fi
-> +		if [[ "${expected_state}" == "FAILED" &&
-> +		      "${neigh_show_output}" == *"lladdr"* ]]; then
-> +			return 1
-> +		fi
-
-[Severity: Low]
-The commit message says:
-
-    Verify that disabling each gate keeps the entry in FAILED without a
-    link-layer address.
-
-Can this lladdr check in verify_ndisc() ever trigger? __neigh_fill_info()
-only emits NDA_LLADDR for NUD_VALID states:
-
-net/core/neighbour.c:__neigh_fill_info() {
-    ...
-	ndm->ndm_state	 = neigh->nud_state;
-	if (neigh->nud_state & NUD_VALID) {
-		char haddr[MAX_ADDR_LEN];
-
-		neigh_ha_snapshot(haddr, neigh, neigh->dev);
-		if (nla_put(skb, NDA_LLADDR, neigh->dev->addr_len, haddr) < 0)
-			goto nla_put_failure;
-	}
-    ...
-}
-
-NUD_VALID does not include NUD_FAILED, so ip neigh show never prints lladdr
-for a FAILED entry. Once the FAILED state match above succeeds, this check
-is always false. That means the "without a link-layer address" part is not
-actually tested.
-
-[ ... ]
-
->  test_unsolicited_na_combination() {
-> -	test_unsolicited_na_common $1 $2 $3
-> +	local initial_state=${4:-absent}
-> +	local same_subnet=${5:-1}
-> +	local rc
+> +static int aqr113c_get_features(struct phy_device *phydev)
+> +{
+> +	/* Generic C45 PMA abilities do not fully describe the PHY's copper
+> +	 * autonegotiation modes, so add the 10G mode explicitly.
+> +	 */
+> +	aqr111_get_features(phydev);
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
+> +			 phydev->supported);
 > +
-> +	test_unsolicited_na_common "$1" "$2" "$3" "${initial_state}" \
-> +		"${same_subnet}"
-> +	rc=$?
->  	test_msg=("test_unsolicited_na: "
->  		"drop_unsolicited_na=$1 "
->  		"accept_untracked_na=$2 "
->  		"forwarding=$3")
-> -	log_test $? 0 "${test_msg[*]}"
-
-[ ... ]
-
-> @@ -193,6 +308,16 @@ test_unsolicited_na_combinations() {
->  	test_unsolicited_na_combination 1 0 1
->  	test_unsolicited_na_combination 1 1 0
->  	test_unsolicited_na_combination 1 1 1
-> +
-> +	# Expect FAILED entry to become STALE
-> +	test_unsolicited_na_combination 0 1 1 failed
-> +	test_unsolicited_na_combination 0 2 1 failed 1
+> +	return 0;
+> +}
 
 [Severity: Medium]
-This commit carries a Fixes: tag for f9a2fb73318e. The only change that
-fixes that commit seems to be the rc=$? move in
-test_unsolicited_na_combination(), which now runs before the test_msg=(...)
-assignment.
+Does this drop EEE capability discovery on AQR113C?
 
-These two new cases expect a seeded NUD_FAILED entry to become STALE with
-lladdr 02:00:00:00:00:02 and to keep extern_learn. That behaviour comes from
-the preceding series commit "ipv6: update NUD_FAILED neighbors from NA
-messages", which has no Fixes: or stable tag.
+Before this patch, the AQR113C entry had neither .features nor
+.get_features, so phy_probe() took the is_c45 branch:
 
-Without that commit, ndisc_recv_na() still skips FAILED entries:
-
-net/ipv6/ndisc.c:ndisc_recv_na() {
+drivers/net/phy/phy_device.c:phy_probe() {
     ...
-	if (neigh && !IS_ERR(neigh)) {
-		u8 old_flags = neigh->flags;
-
-		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
-			goto out;
+	if (phydrv->features) {
+		linkmode_copy(phydev->supported, phydrv->features);
+		genphy_c45_read_eee_abilities(phydev);
+	}
+	else if (phydrv->get_features)
+		err = phydrv->get_features(phydev);
+	else if (phydev->is_c45)
+		err = genphy_c45_pma_read_abilities(phydev);
     ...
 }
 
-Suppose a stable tree takes this patch because of the Fixes: tag, but not
-the feature commit. With rc now preserved, won't these two cases report
-FAIL?
+genphy_c45_pma_read_abilities() ends by calling
+genphy_c45_read_eee_abilities(), which fills phydev->supported_eee.
 
-Could the rc fix go in its own patch with the Fixes: tag, and the
-FAILED-recovery tests in a separate patch without it? If they stay
-together, could the commit message at least state the dependency?
+Now that .get_features is set, phy_probe() runs only this callback. The
+chain aqr113c_get_features()->aqr111_get_features()->aqr115c_get_features()
+only sets bits in phydev->supported. Nothing in the aquantia driver reads
+the EEE ability registers, so supported_eee stays empty.
+
+phy_probe() then clears advertising_eee, so this sets eee_enabled to
+false:
+
+	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
+
+After that, genphy_c45_ethtool_get_eee() reports no supported EEE modes.
+genphy_c45_ethtool_set_eee() also rejects explicit modes with -EINVAL:
+
+	if (linkmode_andnot(tmp, adv, phydev->supported_eee)) {
+		phydev_warn(phydev, "At least some EEE link modes are not supported.\n");
+		return -EINVAL;
+
+genphy_c45_write_eee_adv() is gated on supported_eee as well:
+
+	if (linkmode_intersects(phydev->supported_eee, PHY_EEE_CAP1_FEATURES)) {
+
+That means neither aqr_config_aneg() nor ethtool would ever write the EEE
+advertisement registers (7.60 and 7.62). The PHY would keep its firmware
+default advertisement, and eee-broken-* DT quirks would have no effect.
+
+Would either of these work instead?
+
+- Call genphy_c45_pma_read_abilities() first, then add the missing bits.
+
+- Call genphy_c45_read_eee_abilities() at the end of
+  aqr113c_get_features(). It would have to run after the supported bits
+  are set, because the EEE read only happens if supported intersects
+  PHY_EEE_CAP1_FEATURES or PHY_EEE_CAP2_FEATURES.
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790127207.git.lfqlee314%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-net-phy-aqr113c-fix-pma-capability-v1-1-497359310f06%40oss.qualcomm.com
