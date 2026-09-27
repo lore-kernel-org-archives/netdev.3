@@ -1,733 +1,128 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F0C384CEE;
-	Sun, 27 Sep 2026 10:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2165395AC0
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 11:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790506455; cv=none; b=aQshVmaIV6jfLtIY14pXJ0Wl1Xm2tHtSTfrfgjY4e/gZ6H1nVOogB/LnJJQ5WBqFOp3qy6Wcs5m+KPgI/RilcJL4YkvukEDtTRF1+I3gWkNxGbQ032F1+xHbuzD9HKYq8enOT+6Dn7k/f/TKMV2ANlYYq0kAVyxUUeNExtXGJcg=
+	t=1790507347; cv=none; b=IpKjbUcCPVeZt233Dq5v6nJstS2O0Z1t125l8a649QntMW80zs8hIY0mf785NPZ+639M1+NiPlzPpXEmNnf0egyrDEAGn8+fzabvE9hvrPQxbiE0ZAa6XEeBUHrPtKrWFJI/Z5okxbR56nNK/x9jJkTAOqkfgsAcr4kYyl/Eu/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790506455; c=relaxed/simple;
-	bh=IgHPMyotVqrWSrqR6TlReLmINk/JkSS9dMbx6QqFMiw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QesMGvTuM55jnV1Ce1Q8e53gwk6g43QXwsk+N55swJd4nBdY5OKX0lXWUgGMRIcaPy9VGcJC5Sj/Vu8WolHy8xq7n5q/t4VptRlRhgFPm+N35a/sdsMupY20NF9dCp80mU9qAgLBJM3BYHWzgn4YJsxlNXDrjI0hKlH/jY63Elg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wCnRwjD9bhqQic+AQ--.14770S3;
-	Sun, 27 Sep 2026 18:53:55 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app2 (Coremail) with UTF8SMTPA id zC_KCgCH3nzC9bhqpUoOAA--.12746S2;
-	Sun, 27 Sep 2026 18:53:55 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Song Li <songl@zju.edu.cn>
-Subject: [PATCH net v5] net: mana: fix reset work race with device removal
-Date: Sun, 27 Sep 2026 10:52:43 +0000
-Message-Id: <20260927105243.592348-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1790507347; c=relaxed/simple;
+	bh=Z81fYpBC83tyl2EahQ5uVBovVzoQMII9SPGovm+WyHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=mtg1NUCbvQAh/3TiSEZGl2HYt74rBiqYF5eGlYqbxrN+lwKUvmr48SAPEPQ4lV1QqlgyrjJuQEDYmHLqZgkrLFiU1zKQWHK8s5Vogmh6NBwhuDOapW6MSYunU08cMddZuAzbjdm9MsjD8lFjGVCMmmSiz9GgjxP/XaefJbbo9DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/FHyv1X; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/FHyv1X"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843f22dcb8so1677486f8f.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 04:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790507344; x=1791112144; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3Yd776XVUL5K2a1r38X9yNDWujw1AE8eowaD1NftLV0=;
+        b=k/FHyv1X6LMBLb0zXGYJ4mdH5FhmpLWDuSr0uym5KRDqs7LZQcYAPTo/miz84fj0TT
+         Fw3ZTrCKfYzOMXXyt9je2i+YNMVDWWL8ao25Q9wHaysqmJZD3C0o7bjxLxw9ePe8wUBo
+         PrvRO0pWsAm4pDGkl+ATr9yS9lLS5cIxnIwfECixuqFPkJUBST48vkilQcpvBzVcsnlQ
+         NV7eXW7xuYJoL8F3IDXnpvXZ/8QwEOGBteyIGZ/1wtuCtfUjxZ8q9lUYQt82bT9GBohW
+         MvIODoBjA1U231CahqQwTVCABEv0jkGlqqIiMTnOV5ReBT05Qn/KLZeEgK0eOJ4aw9O3
+         uADA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790507344; x=1791112144;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3Yd776XVUL5K2a1r38X9yNDWujw1AE8eowaD1NftLV0=;
+        b=diZDo+/mBBMY8g2RX/ZODZd3Z9ar6l09gHrMuOda7pniziMv//jZuXPRE0lWJE1Bho
+         OaX6xaibvhMTTIRRXMTcR6KWGHLw+g3LIMhZDHN+tLccy7dsAYLwACe2HOyQOued9qV+
+         UuAOa60Cck+SWRsNGh+1+G/Lu8PBh+OzpJLnWXpjGtWnJQ/OIjV/S+WQZDo7Pb1EQhS1
+         zapqIfhCBK0CUAjwQBqEIIy9z8+DYP7sGvkMY2iRxZtmWpkHlTeDr7JCV0bhY5ENr1WN
+         1Rju2aIOQsaEVd3bbEriucD2OC2nQ5i49OFEX9+4Kc6YYLqld+nIFAYdCzK9rNzxpcwb
+         PeZg==
+X-Forwarded-Encrypted: i=1; AKwUvBy9xIBTxo07/e7SM5ju9Gwr7DFTaSiKX24Q/vVwfsVDZoPFasFeqmpI11J1/o0x5ULyIIjKRFg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJLN76R2ezP4hYp1YlUiHq1P1HD4HEiVTV6+rV5zyj1cC6voSwY
+	imBzrUmBqLvhqFoyFXtWasRD5XI53jI6KNf1c4Bii7BJoQOfNCK9uCxd
+X-Gm-Gg: AYBFou0bdpvRkNDLELsqorh8+5Jnondr1KDOSiJsm+ZgYBlBb/y37+SxNi+l8CqPVVX
+	G/U7qNvIRDFKKjlcwIAS3sI1sPi42foUywDEcYJKG5JgID5hBfFcJiovC0nJAwYai2gd8ncWaF4
+	U7FaBbqP0BnjOcgMbfX9LamWz+8/P3vsMGyDpyaUDaVniMoXbNJdl0+yll5+PPmCvlIi56NvFTk
+	PPg7Cmxv4uCGFE0+e0bLwEk7cXl7SbGx2Bb/xHR8M5tfXms6vSegFwL0rOxch0k3zhmzGW90g1/
+	9LF6FrFdzHhcigsJaCHxaCqQCWxl0OLviNX8yAGKfa/a2ET/whIqDlOPgnjZW0HbGAK17WAX0NP
+	yxq3+Tgz+oWmTlPc63nMK2Rc2Lfo0t5O9Tc3qhpUojBdgJNY7azOoud7Sa1CxMMM0tMXiKiGwx1
+	vIFeBBZrKuaGmbClxDiIqEfRezasH46QnExqcla8JyZCuPpCtSGUkDOLGgPibLe2AfezWlEg==
+X-Received: by 2002:a05:6000:230e:b0:488:5d44:6680 with SMTP id ffacd0b85a97d-4887175f986mr18594216f8f.36.1790507343764;
+        Sun, 27 Sep 2026 04:09:03 -0700 (PDT)
+Received: from gmail.com ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64f795sm18090168f8f.31.2026.09.27.04.09.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 04:09:03 -0700 (PDT)
+Date: Sun, 27 Sep 2026 13:08:59 +0200
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] [afs?] kernel BUG in
+ rxrpc_destroy_all_connections (2)
+Message-ID: <arj4xgLi_4YZl929@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zC_KCgCH3nzC9bhqpUoOAA--.12746S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?mWs5HwXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnVvLbuoOKy0xUR2OEh/LyhkHyeq6WUH9u+RBxF7W+ZSN1AW1q1IJMuNmWdvONuSID5o6
-	B2zJK1QSVi2HFHeVI7Op9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj9fXoWfXFyrXrW8Kr1fWFyUuw1kCrX_yoW8uw1xWo
-	WfXrW3Xw48J345Ca97trykJrW3WrW0gas0gF109FsrAF18X3Wjk34UCw13Z34rWF1Fkw12
-	va43Xwn7uF95twnrl-sFpf9Il3svdjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8wcxFpf
-	9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
-	UjIYCTnIWjp_UUUOj7kC6x804xWl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI
-	8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
-	Y2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjx
-	CEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAF
-	wI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0x
-	vY0x0EwIxGrwACjcxG0xvY0x0EwIxGrVCF72vEw4AK0wACI402YVCY1x02628vn2kIc2xK
-	xwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r
-	1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij
-	64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr
-	0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
-	0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jUGYJUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ab29768.514bccd6.255447.001e.GAE@google.com>
 
-The reset service work is queued on the system workqueue and can
-outlive mana_gd_remove(), which frees the GDMA context. It may then
-dereference gc through the stale service work.
+lets see if this works.
 
-Embed the service work in gdma_context and guard its lifecycle with a
-new serv_lock (hard IRQ safe, never held across a sleep) plus a
-waitqueue. Removal, shutdown and the probe unwind close admission and
-wait for an in-flight cycle to retire before clearing drvdata and
-freeing gc. Service exits retire before taking the PCI rescan/remove
-lock, avoiding a lock-cycle with remove.
+#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a7bfaba4823e
 
-Do not admit service work while probe is still constructing or
-unwinding the device. Latch reset events seen during probe under the
-same lock and let the probe rollback/recovery path handle them; an
-event racing probe completion is admitted rather than lost. A service
-exit that bails out of a rescan without removing the device (no parent
-bus) retires without closing admission, so service is never
-permanently disabled on a bound device.
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 611c790bc6d0..111f0844b0d6 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -274,4 +274,15 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
 
-The service work stays on the system workqueue because a reset cycle
-destroys and re-creates gc->service_wq.
-
-This issue was found by an in-house static analysis tool.
-
-Fixes: fbe346ce9d62 ("net: mana: Handle Reset Request from MANA NIC")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6
-Co-developed-by: Song Li <songl@zju.edu.cn>
-Signed-off-by: Song Li <songl@zju.edu.cn>
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
-Changes since v4 (<20260922070728.309280-1-fanwu01@zju.edu.cn>,
-https://lore.kernel.org/netdev/20260922070728.309280-1-fanwu01@zju.edu.cn),
-in reply to the sashiko review relayed by Simon Horman:
-
-- [Medium] mana_gf_stats_work_handler(): the gate could drop the
-  reset request when mana_rdma_probe() outlives the 2 s stats
-  period. The gated branch now re-arms the delayed work instead, so
-  the request is retried once the probe completes; a failing probe
-  still cancels the work in its unwind.
-
-- [Low] mana_schedule_serv_work() uses schedule_work() again,
-  keeping the pre-patch system_percpu_wq placement instead of the
-  deprecated system_wq compatibility queue.
-
-- [Low] The service_quiesce label comment now matches the gate: only
-  the rollback path can have admitted a cycle, since it runs
-  mana_service_probe_complete() before jumping there.
-
-The pre-existing [High] on mana_gd_suspend()/mana_gd_resume() is
-left out: the PM path cannot reuse the one-way quiesce and needs its
-own reversible protocol.
-
-Changes since v3 (<20260909042529.652301-1-fanwu01@zju.edu.cn>,
-https://lore.kernel.org/netdev/20260909042529.652301-1-fanwu01@zju.edu.cn):
-
-- Replaced the flag protocol with a gc-embedded spinlock and waitqueue
-  (Jakub Kicinski): admission, retirement and the probe boundary
-  handshake now run under serv_lock instead of atomic bit pairings.
-
-- A rescan exit that bails out without removing the device (no parent
-  bus) now retires without closing admission, so service is not
-  permanently disabled on a bound device.
-
-- mana_gd_shutdown() also drains an in-flight cycle before tearing
-  down the same hardware paths as remove().
-
-Changes since v2 (<20260905023602.425827-1-fanwu01@zju.edu.cn>,
-https://lore.kernel.org/netdev/20260905023602.425827-1-fanwu01@zju.edu.cn):
-
-- Dropped the now-unused cleanup_mana_rdma and cleanup_mana labels in
-  the probe error path (Simon Horman).
-
-Changes since v1 (<20260805143812.220509-1-fanwu01@zju.edu.cn>,
-https://lore.kernel.org/netdev/20260805143812.220509-1-fanwu01@zju.edu.cn):
-
-- Dropped the device_lock() serialisation: holding the driver-core
-  device lock across mana_gd_suspend() + msleep() + mana_gd_resume()
-  blocks unbind, reboot, device PM and all PCI hotplug for up to a
-  full reset cycle, and can deadlock against the
-  flush_workqueue()/destroy_workqueue() of gc->service_wq.
-
-- The freeing paths close admission and wait for an admitted cycle to
-  retire before clearing drvdata and calling vfree(); the failed-resume
-  rescan no longer reopens admission, and mana_tx_timeout() also skips
-  queue-reset work during removal.
-
-- No service work is admitted before the probe completes; the FPGA
-  reconfig exit and the probe-failure recovery path are covered as
-  well. The stats-work gate during probe is deliberate: a failing
-  probe cannot drain a cycle, and the probe's own -ETIMEDOUT rollback
-  plus the recovery rescan service the skipped event.
-
-- Reference series for the HWC lifecycle model:
-  https://lore.kernel.org/netdev/20260813174243.3044348-1-longli@microsoft.com
-
- .../net/ethernet/microsoft/mana/gdma_main.c   | 273 ++++++++++++++----
- drivers/net/ethernet/microsoft/mana/mana_en.c |  20 +-
- include/net/mana/gdma.h                       |  29 +-
- 3 files changed, 245 insertions(+), 77 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 8e9bfc1..4ebe595 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -659,63 +659,149 @@ EXPORT_SYMBOL_NS(mana_gd_ring_dim, "NET_MANA");
- 
- #define MANA_SERVICE_PERIOD 10
- 
--static void mana_serv_rescan(struct pci_dev *pdev)
-+/* Retire one service cycle: serv_waitq is embedded in gc, so the wake
-+ * must happen before the lock is dropped - a drainer that observes
-+ * idle cannot free gc until the wake has stopped touching gc.
-+ */
-+static void mana_service_retire(struct gdma_context *gc)
- {
--	struct pci_bus *parent;
-+	unsigned long flags;
- 
--	pci_lock_rescan_remove();
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	gc->serv_in_flight = false;
-+	wake_up(&gc->serv_waitq);
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+}
-+
-+/* Close admission atomically with the retire itself. */
-+static void mana_service_retire_removing(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	gc->serv_removing = true;
-+	gc->serv_in_flight = false;
-+	wake_up(&gc->serv_waitq);
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+}
-+
-+static bool mana_service_idle(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+	bool idle;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	idle = !gc->serv_in_flight;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+	return idle;
-+}
-+
-+/* Close admission and wait until an in-flight cycle has stopped touching
-+ * gc.  The cycle retires before taking the PCI rescan/remove lock, so
-+ * this wait completes even when the caller holds that lock; serv_lock is
-+ * never held across a sleep.
-+ */
-+static void mana_service_quiesce(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	gc->serv_removing = true;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+
-+	wait_event(gc->serv_waitq, mana_service_idle(gc));
-+}
-+
-+/* May run in softirq context (tx timeout). */
-+bool mana_service_active(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+	bool active;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	active = gc->serv_in_flight || gc->serv_removing;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+	return active;
-+}
-+
-+bool mana_service_probe_done(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+	bool done;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	done = gc->serv_probe_done;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+	return done;
-+}
-+
-+static void mana_serv_rescan(struct pci_dev *pdev, struct gdma_context *gc)
-+{
-+	struct pci_bus *parent;
- 
- 	parent = pdev->bus;
- 	if (!parent) {
- 		dev_err(&pdev->dev, "MANA service: no parent bus\n");
--		goto out;
-+		/* Still bound: keep admission open for later events. */
-+		if (gc)
-+			mana_service_retire(gc);
-+		return;
- 	}
- 
-+	if (gc)
-+		mana_service_retire_removing(gc);
-+
-+	pci_lock_rescan_remove();
-+
- 	pci_stop_and_remove_bus_device(pdev);
- 	pci_rescan_bus(parent);
- 
--out:
- 	pci_unlock_rescan_remove();
- }
- 
--static void mana_serv_fpga(struct pci_dev *pdev)
-+static void mana_serv_fpga(struct pci_dev *pdev, struct gdma_context *gc)
- {
- 	struct pci_bus *bus, *parent;
- 
--	pci_lock_rescan_remove();
--
- 	bus = pdev->bus;
- 	if (!bus) {
- 		dev_err(&pdev->dev, "MANA service: no bus\n");
--		goto out;
-+		if (gc)
-+			mana_service_retire(gc);
-+		return;
- 	}
- 
- 	parent = bus->parent;
- 	if (!parent) {
- 		dev_err(&pdev->dev, "MANA service: no parent bus\n");
--		goto out;
-+		if (gc)
-+			mana_service_retire(gc);
-+		return;
- 	}
- 
-+	if (gc)
-+		mana_service_retire_removing(gc);
-+
-+	pci_lock_rescan_remove();
-+
- 	pci_stop_and_remove_bus_device(bus->self);
- 
- 	msleep(MANA_SERVICE_PERIOD * 1000);
- 
- 	pci_rescan_bus(parent);
- 
--out:
- 	pci_unlock_rescan_remove();
- }
- 
--static void mana_serv_reset(struct pci_dev *pdev)
-+static void mana_serv_reset(struct pci_dev *pdev, struct gdma_context *gc)
- {
--	struct gdma_context *gc = pci_get_drvdata(pdev);
- 	struct hw_channel_context *hwc;
- 	int ret;
- 
- 	if (!gc) {
- 		/* Perform PCI rescan on device if GC is not set up */
- 		dev_err(&pdev->dev, "MANA service: GC not setup, rescanning\n");
--		mana_serv_rescan(pdev);
-+		mana_serv_rescan(pdev, NULL);
- 		return;
- 	}
- 
-@@ -738,7 +824,7 @@ static void mana_serv_reset(struct pci_dev *pdev)
- 	if (ret == -ETIMEDOUT || ret == -EPROTO) {
- 		/* Perform PCI rescan on device if we failed on HWC */
- 		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
--		mana_serv_rescan(pdev);
-+		mana_serv_rescan(pdev, gc);
- 		return;
- 	}
- 
-@@ -748,22 +834,25 @@ static void mana_serv_reset(struct pci_dev *pdev)
- 		dev_info(&pdev->dev, "MANA reset cycle completed\n");
- 
- out:
--	clear_bit(GC_IN_SERVICE, &gc->flags);
-+	mana_service_retire(gc);
- }
- 
--static void mana_do_service(enum gdma_eqe_type type, struct pci_dev *pdev)
-+static void mana_do_service(enum gdma_eqe_type type, struct pci_dev *pdev,
-+			    struct gdma_context *gc)
- {
- 	switch (type) {
- 	case GDMA_EQE_HWC_FPGA_RECONFIG:
--		mana_serv_fpga(pdev);
-+		mana_serv_fpga(pdev, gc);
- 		break;
- 
- 	case GDMA_EQE_HWC_RESET_REQUEST:
--		mana_serv_reset(pdev);
-+		mana_serv_reset(pdev, gc);
- 		break;
- 
- 	default:
- 		dev_err(&pdev->dev, "MANA service: unknown type %d\n", type);
-+		if (gc)
-+			mana_service_retire(gc);
- 		break;
- 	}
- }
-@@ -779,12 +868,26 @@ static void mana_recovery_delayed_func(struct work_struct *w)
- 	spin_lock_irqsave(&work->lock, flags);
- 
- 	while (!list_empty(&work->dev_list)) {
-+		struct gdma_context *gc;
-+
- 		dev = list_first_entry(&work->dev_list,
- 				       struct mana_dev_recovery, list);
- 		list_del(&dev->list);
- 		spin_unlock_irqrestore(&work->lock, flags);
- 
--		mana_do_service(dev->type, dev->pdev);
-+		/* Serialize the drvdata lookup and admission against
-+		 * probe/remove.  Do not call sleeping functions while
-+		 * holding the device lock.
+-	if (conn->state == RXRPC_CONN_ABORTED)
++	if (conn->state == RXRPC_CONN_ABORTED) {
++		/* A CHALLENGE packet queued for processing carries a ref on the
++		 * connection (see rxrpc_post_challenge()).  That ref has to be
++		 * dropped here because the caller frees the skb as soon as we
++		 * return.
 +		 */
-+		device_lock(&dev->pdev->dev);
-+		gc = pci_get_drvdata(dev->pdev);
-+		if (gc)
-+			mana_schedule_serv_work(gc, dev->type);
-+		device_unlock(&dev->pdev->dev);
-+
-+		if (!gc)
-+			mana_do_service(dev->type, dev->pdev, NULL);
-+
- 		pci_dev_put(dev->pdev);
- 		kfree(dev);
- 
-@@ -796,51 +899,94 @@ static void mana_recovery_delayed_func(struct work_struct *w)
- 
- static void mana_serv_func(struct work_struct *w)
- {
--	struct mana_serv_work *mns_wk;
--	struct pci_dev *pdev;
--
--	mns_wk = container_of(w, struct mana_serv_work, serv_work);
--	pdev = mns_wk->pdev;
-+	struct gdma_context *gc = container_of(w, struct gdma_context, serv_work);
-+	struct pci_dev *pdev = to_pci_dev(gc->dev);
- 
--	if (pdev)
--		mana_do_service(mns_wk->type, pdev);
-+	mana_do_service(gc->serv_type, pdev, gc);
- 
-+	/* The rescan exits of mana_do_service() remove the device, which
-+	 * frees gc before returning.  Only touch the pdev and the module
-+	 * reference from here on; both are held until this point drops them.
-+	 */
- 	pci_dev_put(pdev);
--	kfree(mns_wk);
- 	module_put(THIS_MODULE);
- }
- 
-+/* Serialize admission with retirement.  Called in hard IRQ context, so
-+ * serv_lock is taken with interrupts disabled and nothing that may
-+ * sleep runs under it.
-+ */
- int mana_schedule_serv_work(struct gdma_context *gc, enum gdma_eqe_type type)
- {
--	struct mana_serv_work *mns_wk;
-+	unsigned long flags;
-+	bool busy;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	busy = gc->serv_removing || gc->serv_in_flight;
-+	if (!busy)
-+		gc->serv_in_flight = true;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
- 
--	if (test_and_set_bit(GC_IN_SERVICE, &gc->flags)) {
-+	if (busy) {
- 		dev_info(gc->dev, "Already in service\n");
- 		return -EBUSY;
- 	}
- 
- 	if (!try_module_get(THIS_MODULE)) {
- 		dev_info(gc->dev, "Module is unloading\n");
--		clear_bit(GC_IN_SERVICE, &gc->flags);
-+		mana_service_retire(gc);
- 		return -ENODEV;
- 	}
- 
--	mns_wk = kzalloc_obj(*mns_wk, GFP_ATOMIC);
--	if (!mns_wk) {
--		module_put(THIS_MODULE);
--		clear_bit(GC_IN_SERVICE, &gc->flags);
--		return -ENOMEM;
--	}
--
- 	dev_info(gc->dev, "Start MANA service type:%d\n", type);
--	mns_wk->pdev = to_pci_dev(gc->dev);
--	mns_wk->type = type;
--	pci_dev_get(mns_wk->pdev);
--	INIT_WORK(&mns_wk->serv_work, mana_serv_func);
--	schedule_work(&mns_wk->serv_work);
-+
-+	gc->serv_type = type;
-+	pci_dev_get(to_pci_dev(gc->dev));
-+	schedule_work(&gc->serv_work);
- 	return 0;
- }
- 
-+/* EQ-event side of the probe boundary: latch the event while the probe
-+ * is still running and let the probe roll back (the recovery path will
-+ * rescan), or admit the cycle once the probe has completed.  The probe
-+ * tail stores probe_done and reads the latch under the same lock, so an
-+ * event racing probe completion is admitted rather than lost.
-+ */
-+static void mana_service_event(struct gdma_context *gc,
-+			       enum gdma_eqe_type type)
-+{
-+	unsigned long flags;
-+	bool admit, first;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	admit = gc->serv_probe_done;
-+	first = !gc->serv_during_probe;
-+	if (!admit)
-+		gc->serv_during_probe = true;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+
-+	if (admit)
-+		mana_schedule_serv_work(gc, type);
-+	else if (first)
-+		dev_info(gc->dev, "Service is to be processed in probe\n");
-+}
-+
-+/* Probe-tail side of the probe boundary: record probe completion and
-+ * return whether an event was latched meanwhile; the same-lock pairing
-+ * with mana_service_event() keeps a racing event from being lost.
-+ */
-+static bool mana_service_probe_complete(struct gdma_context *gc)
-+{
-+	unsigned long flags;
-+	bool rollback;
-+
-+	spin_lock_irqsave(&gc->serv_lock, flags);
-+	gc->serv_probe_done = true;
-+	rollback = gc->serv_during_probe;
-+	spin_unlock_irqrestore(&gc->serv_lock, flags);
-+	return rollback;
-+}
-+
- /* Return the CPU address of byte @offset within a queue's ring buffer. */
- static void *mana_gd_ring_ptr(const struct gdma_queue *q, u32 offset)
- {
-@@ -956,18 +1102,7 @@ static void mana_gd_process_eqe(struct gdma_queue *eq)
- 	case GDMA_EQE_HWC_FPGA_RECONFIG:
- 	case GDMA_EQE_HWC_RESET_REQUEST:
- 		dev_info(gc->dev, "Recv MANA service type:%d\n", type);
--
--		if (!test_and_set_bit(GC_PROBE_SUCCEEDED, &gc->flags)) {
--			/*
--			 * Device is in probe and we received a hardware reset
--			 * event, the probe function will detect that the flag
--			 * has changed and perform service procedure.
--			 */
--			dev_info(gc->dev,
--				 "Service is to be processed in probe\n");
--			break;
--		}
--		mana_schedule_serv_work(gc, type);
-+		mana_service_event(gc, type);
- 		break;
- 
- 	default:
-@@ -2502,6 +2637,7 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	void __iomem *bar0_va;
- 	int bar = 0;
- 	int err;
-+	bool rollback;
- 
- 	/* Each port has 2 CQs, each CQ has at most 1 EQE at a time */
- 	BUILD_BUG_ON(2 * MAX_PORTS_IN_MANA_DEV * GDMA_EQE_SIZE > EQ_SIZE);
-@@ -2532,6 +2668,9 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	mutex_init(&gc->eq_test_event_mutex);
- 	mutex_init(&gc->gic_mutex);
-+	INIT_WORK(&gc->serv_work, mana_serv_func);
-+	spin_lock_init(&gc->serv_lock);
-+	init_waitqueue_head(&gc->serv_waitq);
- 	pci_set_drvdata(pdev, gc);
- 	gc->bar0_pa = pci_resource_start(pdev, 0);
- 	gc->bar0_size = pci_resource_len(pdev, 0);
-@@ -2558,22 +2697,26 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	err = mana_rdma_probe(&gc->mana_ib);
- 	if (err)
--		goto cleanup_mana;
-+		goto service_quiesce;
- 
- 	/*
- 	 * If a hardware reset event has occurred over HWC during probe,
- 	 * rollback and perform hardware reset procedure.
- 	 */
--	if (test_and_set_bit(GC_PROBE_SUCCEEDED, &gc->flags)) {
-+	rollback = mana_service_probe_complete(gc);
-+	if (rollback) {
- 		err = -EPROTO;
--		goto cleanup_mana_rdma;
-+		goto service_quiesce;
- 	}
- 
- 	return 0;
- 
--cleanup_mana_rdma:
-+service_quiesce:
-+	/* Only a rollback can have admitted a cycle: it ran
-+	 * mana_service_probe_complete() before jumping here.
-+	 */
-+	mana_service_quiesce(gc);
- 	mana_rdma_remove(&gc->mana_ib);
--cleanup_mana:
- 	mana_remove(&gc->mana, false);
- cleanup_gd:
- 	mana_gd_cleanup_device(pdev);
-@@ -2581,6 +2724,8 @@ unmap_bar:
- 	xa_destroy(&gc->irq_contexts);
- 	pci_iounmap(pdev, bar0_va);
- free_gc:
-+	/* Backstop: drain before every vfree(). */
-+	mana_service_quiesce(gc);
- 	pci_set_drvdata(pdev, NULL);
- 	vfree(gc);
- release_region:
-@@ -2624,6 +2769,9 @@ static void mana_gd_remove(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 
-+	/* Drain the only gc user remove() does not synchronise with. */
-+	mana_service_quiesce(gc);
-+
- 	pci_disable_sriov(pdev);
- 
- 	mana_rdma_remove(&gc->mana_ib);
-@@ -2635,6 +2783,8 @@ static void mana_gd_remove(struct pci_dev *pdev)
- 
- 	pci_iounmap(pdev, gc->bar0_va);
- 
-+	/* Prevent late recovery work from using freed gc. */
-+	pci_set_drvdata(pdev, NULL);
- 	vfree(gc);
- 
- 	pci_release_regions(pdev);
-@@ -2687,6 +2837,9 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
- 
- 	dev_info(&pdev->dev, "Shutdown was called\n");
- 
-+	/* Shutdown tears down the same HW paths as remove(). */
-+	mana_service_quiesce(gc);
-+
- 	mana_rdma_remove(&gc->mana_ib);
- 	mana_remove(&gc->mana, true);
- 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 591fb41..c9ac982 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -924,8 +924,8 @@ static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 		return;
- 	}
- 
--	/* Already in service, hence tx queue reset is not required.*/
--	if (test_bit(GC_IN_SERVICE, &gc->flags))
-+	/* Skip while a service cycle may still touch gc. */
-+	if (mana_service_active(gc))
- 		return;
- 
- 	/* Note: If there are pending queue reset work for this port(apc),
-@@ -4060,10 +4060,20 @@ static void mana_gf_stats_work_handler(struct work_struct *work)
- 		memset(&ac->hc_stats, 0, sizeof(ac->hc_stats));
- 		dev_warn(gc->dev,
- 			 "Gf stats wk handler: gf stats query timed out.\n");
--		/* As HWC timed out, indicating a faulty HW state and needs a
--		 * reset.
-+		/* As HWC timed out, indicating a faulty HW state and
-+		 * needs a reset.  Never admit service work before the probe
-+		 * has completed: a probe that is failing unwinds netdevs and
-+		 * the HWC channel itself and cannot drain a cycle.
- 		 */
--		mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
-+		if (mana_service_probe_done(gc)) {
-+			mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
-+		} else {
-+			/* Retry once the probe completes: dropping the
-+			 * request would leave the stats work disarmed.
-+			 */
-+			schedule_delayed_work(&ac->gf_stats_work,
-+					      MANA_GF_STATS_PERIOD);
++		if (sp->hdr.type == RXRPC_PACKET_TYPE_CHALLENGE &&
++		    sp->chall.conn) {
++			rxrpc_put_connection(conn, rxrpc_conn_put_challenge_input);
++			sp->chall.conn = NULL;
 +		}
- 		return;
- 	}
- 	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index 308950f..850de01 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -228,12 +228,6 @@ enum gdma_page_type {
- 
- #define GDMA_INVALID_DMA_REGION 0
- 
--struct mana_serv_work {
--	struct work_struct serv_work;
--	struct pci_dev *pdev;
--	enum gdma_eqe_type type;
--};
--
- struct gdma_mem_info {
- 	struct device *dev;
- 
-@@ -417,11 +411,6 @@ struct gdma_irq_context {
- 	bool dyn_msix;
- };
- 
--enum gdma_context_flags {
--	GC_PROBE_SUCCEEDED	= 0,
--	GC_IN_SERVICE		= 1,
--};
--
- struct gdma_context {
- 	struct device		*dev;
- 	struct dentry		*mana_pci_debugfs;
-@@ -479,7 +468,21 @@ struct gdma_context {
- 
- 	struct workqueue_struct *service_wq;
- 
--	unsigned long		flags;
-+	/* The in-flight MANA service cycle, queued on the system workqueue:
-+	 * a reset cycle destroys and re-creates @service_wq.
-+	 */
-+	struct work_struct	serv_work;
-+	enum gdma_eqe_type	serv_type;
-+
-+	/* Service-cycle admission/retirement; taken irqsave (the EQ
-+	 * event path is hard IRQ) and never held across a sleep.
-+	 */
-+	spinlock_t		serv_lock;
-+	wait_queue_head_t	serv_waitq;
-+	bool			serv_in_flight;
-+	bool			serv_removing;
-+	bool			serv_during_probe;
-+	bool			serv_probe_done;
- 
- 	/* Protect access to GIC context */
- 	struct mutex		gic_mutex;
-@@ -528,6 +531,8 @@ ssize_t mana_gd_read_ring(struct gdma_queue *q, char __user *buf,
- 			  size_t count, loff_t *pos);
- 
- int mana_schedule_serv_work(struct gdma_context *gc, enum gdma_eqe_type type);
-+bool mana_service_active(struct gdma_context *gc);
-+bool mana_service_probe_done(struct gdma_context *gc);
- 
- void mana_gd_ring_dim(struct gdma_queue *cq, u32 mod_usec, bool mod_usec_vld,
- 		      u32 mod_comps, bool mod_comps_vld);
+ 		return -ECONNABORTED;
++	}
 
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f8..1295f3de3725 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -487,2 +487,18 @@ void rxrpc_destroy_all_connections(struct rxrpc_net *rxnet)
+
++	if (!list_empty(&rxnet->conn_proc_list)) {
++		struct rxrpc_connection *c;
++
++		pr_err("AF_RXRPC: conn_proc_list not empty\n");
++		write_lock(&rxnet->conn_lock);
++		list_for_each_entry(c, &rxnet->conn_proc_list, proc_link)
++			pr_err("AF_RXRPC: proc conn %x cid %x state %d ref %d act %d flags %lx cache_empty %d calls %px %px %px %px bundle %px\n",
++			       c->debug_id, c->proto.cid, c->state,
++			       refcount_read(&c->ref), c->act_chans, c->flags,
++			       list_empty(&c->cache_link),
++			       c->channels[0].call, c->channels[1].call,
++			       c->channels[2].call, c->channels[3].call,
++			       c->bundle);
++		write_unlock(&rxnet->conn_lock);
++	}
++
+ 	ASSERT(list_empty(&rxnet->conn_proc_list));
