@@ -1,718 +1,403 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D405F43CED8;
-	Sun, 27 Sep 2026 19:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FA93624A6;
+	Sun, 27 Sep 2026 19:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790536776; cv=none; b=upN13yYUW4xyvzteryLJPv7EMVH/eAjUf7aFbWM1FuwCVp1AAfVjq3LmEYlMUpv56oU2Z1MvhnTgkU/l6+kRZjfygy3EeMfj9lGJYsAn6YG72538Matpvt2TlfQ+kMsUzkp7YZXrwpTC3JSKfhKOK8Ch5tHU/ufQgu33g3cFpbM=
+	t=1790536932; cv=none; b=jy59beYOTId+18QSN5vmMCXSGYdjWLoJ27dUCdHZvBnr5ZPGzam6mvmg1dpmFL9dcnGVgw9w1V85MypqdkET4zYHF5hDIO6gv4JEvVw6PshyKWExaQtG+Z5ou4Pp5qc6KMjOs/piOxSmU6u2QSLf9rnnaSYuETjYhU8zKiXzGpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790536776; c=relaxed/simple;
-	bh=Lgs65d8D5dtNohbxcr6nOHqmG0xqEnCTnFk/SN60xGg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVRt3ClwXX443Byn2Ym60eolid4VDxOX2jCzn2xdtm0HulJazl85nTGmU3YYB1neZ1TvwfN2CnJnXKwIfDpnswLnVtW2kBPQ6B6KaEq92ErTNJVnXqcdX7DMzI1vaWCOgIoe2wC9isUoyUVUGpHKPp4rboqDeZbjGV3vJTrGa+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=QHWvgeiS; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1790536932; c=relaxed/simple;
+	bh=4pRDmSimJdkST8a9v2Hoe6TtEZ8i3sGNxrt+hHCPuM4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ohIvJex4jQUAtgNV+NPNFa2YXgqRaTj0zvCNC7l81Rw0v0va/CqntWwhWidcXVDJnvsL7pEWe7kgFaWpuonDXlOrwv0vzVyDxwtZMVk0bgq2coMPZfnekwWsRA3QCc1ghVlAYn3P6hzQ3kIbvJKXaljeE1pIOZiKnUOvVHmDVoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2piKuyW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="QHWvgeiS"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 1883AE839CD;
-	Sun, 27 Sep 2026 21:19:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1790536765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4+jEy/HpdTp0rYsFaS+VmVo2iHGN2vPdwsF6Zznq2s8=;
-	b=QHWvgeiSB+IrRm8ZhqKoHryCTk1IEALMGW/BtmHydOupL5IL5rcLeOUEfw1E+SN4Viuqgk
-	TSFEoIil8P1vIqh9tvwgSN96aq/XOnNNlt3gpq+XcFYKSw2AKB5bfIRsaxD3Eewgy+sOTU
-	i29eRld9uwOrQSTM/6MDJpDRtqtxNs9L4O/lS33vvpzpPnOYDSlLJ0RAp1FY1BMCV4LNrp
-	ZYF5VfI/7byepv0M3LLm21GtTvrzp92cUGBrBENHMrX47rJmNukWvN3kYizxb1XOcOOdWI
-	TzWpEOEJnCYq33FJYE8eeYVjMwk8O7CQ2Xm8NuDzRSfSuVdpKtlBgVIWkF2v6g==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id E21WTyKqJybW; Sun, 27 Sep 2026 21:19:24 +0200 (CEST)
-Received: from p14sgen5.. (ip-077-020-250-175.vkd66.pools.vodafone-ip.de [77.20.250.175])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 27 Sep 2026 21:19:23 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	netdev-bot+sashiko@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v7 5/5] net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio hook
-Date: Sun, 27 Sep 2026 21:18:50 +0200
-Message-ID: <20260927191850.1370515-6-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260927191850.1370515-1-github@szelinsky.de>
-References: <20260927191850.1370515-1-github@szelinsky.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2piKuyW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75B61F000FF;
+	Sun, 27 Sep 2026 19:22:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790536930;
+	bh=8F9joFS01qCJideBiKfaAO8pAx41dj3zeQe2qLcDRW4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=D2piKuyWRA4EMNlpdsRmdjE4DMoxfBJQmYROJh+XGlIGDqufKgjyhZ7CBOLihp4WB
+	 S1Vzv4MyhaRo90r79enRU/zVtos09dcfO20XqYLPL0mNYaL0PYeJO8oZwTSrgikDWn
+	 M7JSBhnvTk2PumPar2IG/2hPPC3lJwGczBQhwq7GneUNhURT2zIjXO6mnT5ZGgXH70
+	 vJa1hglH7xLt/pkqxtlq+Y7AGKOxtP/xaMXRcETgnfU03m28XIhO1TMfWc8I/ooeNo
+	 GpP2LZOSPx+kYHVtwC1o4I+JUtW0xfpGLE9gNdm9O3985tH6yZZYLScoSKJHMEGjK6
+	 nEKUVT6U/K1fQ==
+Subject: Re: [PATCH net v2] net/mlx5: Don't return firmware-owned command
+ mailboxes to the DMA pool
+From: netdev-bot+sashiko@kernel.org
+To: dcostantino@meta.com
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, moshe@nvidia.com, eranbe@nvidia.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 27 Sep 2026 19:22:09 +0000
+Message-ID: <179053692935.3145.9499750768128839597@kernel.org>
+In-Reply-To: <20260923190542.848049-1-dcostantino@meta.com>
+References: <20260923190542.848049-1-dcostantino@meta.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Corey Leavitt <corey@leavitt.info>
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-fwnode_mdiobus_register_phy() resolved the `pses` phandle during PHY
-registration and stashed the result in phydev->psec. With a modular PSE
-controller driver that lookup returns -EPROBE_DEFER until the module is
-loaded, so the PHY - and any DSA switch behind it - keeps bouncing off
-deferred probe. On some boards that shows up as a boot-time probe-retry
-storm and PHYs that never register at all.
+Critical: 0 · High: 1 (2) · Medium: 3 · Low: 1
 
-Transfer ownership of phydev->psec to phylib and drive it from the PSE
-controller lifecycle notifier instead:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  - On PSE_REGISTERED: walk mdio_bus_type and attach phydev->psec for
-    every registered phy whose psec is still NULL. This is the "phy was
-    enumerated before the PSE controller loaded" case, the root cause of
-    the retry storm.
+- [High] Moving the mailbox free into cmd_ent_put() makes it run on
+  whichever context drops the last reference, with nothing synchronising…
+- [Medium] The commit message says an entry that firmware never completes
+  "keeps its mailboxes for the lifetime of the device" and calls the…
+- [Medium] Mailbox retention depends on which reference happens to be
+  dropped last, not on whether firmware still owns the descriptor.
+- [Medium] Retained mailboxes can outlive the dma_pool they came from,
+  but are freed through whatever dev->cmd.pool points to at put time.
+- [Low] The kernel-doc above mlx5_cmd_invoke() (cmd.c ~1252-1266) says
+  that for !callback, 'ret < 0 : Command execution couldn't be submitted…
 
-  - On PSE_UNREGISTERED: walk it again and release every phydev->psec
-    that targets the departing controller, before pse_release_pis()
-    frees pcdev->pi. Without this a phy still holding a reference would
-    cause a use-after-free in __pse_control_release()'s
-    pcdev->pi[psec->id] access.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but a command that
+  times out while the device is up holds its command slot, and the slot…
+- [High] This problem wasn't introduced by this patch, but on the
+  synchronous path a sync timeout can race with a real completion and…
 
-  - phy_device_register() attaches once for a controller that is already
-    registered. The phydev->psec check in phy_try_attach_pse() makes the
-    two paths idempotent.
+--
 
-fwnode_find_pse_control() and its call site go away, and fwnode_mdio
-drops the PSE header. No PSE-originated -EPROBE_DEFER leaves the MDIO
-layer any more, so the retry storm is gone.
+net/mlx5: Don't return firmware-owned command mailboxes to the DMA pool
 
-The attach happens after device_add() has made the phy visible on
-mdio_bus_type, and takes no rtnl. Two reasons it must not:
+This patch uses a new own_msgs flag to put off freeing a timed-out
+command's mailboxes until the final cmd_ent_put() of the command entry.
+It does this on both the synchronous and the callback paths. The aim is to
+stop late firmware writes from landing in blocks already returned to the
+mlx5_cmd dma_pool.
 
-  - Binding a phy that itself provides an SFP cage reaches
-    sfp_bus_add_upstream() via phy_probe() -> phy_setup_ports() ->
-    phy_sfp_probe(), and that takes rtnl_lock(). Reported on RTL8214FC.
+> An entry firmware never completes keeps its mailboxes for the lifetime of
+> the device. dma_pool_destroy() then reports the pool busy and declines to
+> free its pages, which is the memory safe outcome: the pages stay mapped,
+> so a late write lands there rather than in memory handed back to the
+> allocator.
 
-  - Some drivers register their MDIO bus from ndo_init - lantiq_etop via
-    ltq_etop_init(), sni_ave via ave_init() - which register_netdevice()
-    already calls under rtnl, and mdiobus_scan() reaches
-    phy_device_register() from there.
+[Severity: Medium]
+Is "for the lifetime of the device" accurate here? The mlx5_cmd dma_pool
+is created in mlx5_cmd_enable() and destroyed in mlx5_cmd_disable(). Those
+run from mlx5_function_enable()/mlx5_function_disable() on every
+load/unload cycle, not only at probe/remove:
 
-phydev->psec is therefore serialised by a dedicated mutex, taken through
-pse_phy_lock(). It lives in pse_core rather than phylib because
-net/ethtool is always built into vmlinux while PHYLIB is tristate, so a
-phylib export would be unresolved with CONFIG_PHYLIB=m or =n;
-PSE_CONTROLLER is bool, so pse_core is always reachable. The ethtool PSE
-paths take the same mutex, so the use-after-free that rtnl used to close
-stays closed. Lock order is rtnl -> pse_phy_mutex -> pse_list_mutex ->
-pcdev->lock.
+mlx5_cmd_enable()
+    cmd->pool = dma_pool_create("mlx5_cmd", mlx5_core_dma_dev(dev), size, align, 0);
+    ...
+    create_msg_cache(dev);
 
-phy_device_remove() releases phydev->psec synchronously, while the phy
-is still on the bus. A phy that has been device_del()'d but is still
-pinned - an attached netdev, or an SFP module phy waiting for
-phy_device_free() - is off the mdio_bus_type klist and so invisible to
-the PSE_UNREGISTERED walk, and a deferred release would then touch a
-pcdev->pi[] the controller has already freed. Releasing before
-device_del() means the walk and the release contend for the same mutex,
-so whichever runs second sees NULL.
+mlx5_cmd_disable()
+    destroy_msg_cache(dev);
+    free_cmd_page(dev, cmd);
+    dma_pool_destroy(cmd->pool);
 
-phydev->psec_detached closes two windows around that, by telling
-phy_try_attach_pse() to skip the phy. It is a plain bool rather than
-another bit in the flags word: it is written under pse_phy_lock(), while
-neighbours such as suspended and sysfs_links are written under
-phydev->lock and rtnl, and a shared storage unit would make those
-read-modify-write updates race. bus_for_each_dev() still reaches a
-phy until bus_remove_device() takes it off the klist, which is well into
-device_del(), so a PSE_REGISTERED walk could otherwise attach a fresh
-handle just after the release, with nothing left to free it. The same
-applies while the phy is being registered: device_add() puts it on the
-bus before its own later failure points, and its unwind takes it back
-off, so a handle attached in that window would be missed by the
-PSE_UNREGISTERED walk as well. The flag is therefore held until
-registration has actually succeeded, and set again from
-phy_device_remove().
+If a retained entry still holds blocks, dma_pool_destroy() skips
+dma_free_coherent() for every page in the pool. That includes the pages
+behind the message cache that destroy_msg_cache() has just returned:
+512x1 + 32x2 + 16x16 + 8x256 + 2x512 = 3904 blocks of 1024 bytes.
 
-One note on behaviour. of_pse_control_get() reaches the hardware -
-pse_pi_is_hw_enabled() calls pi_get_admin_state(), an i2c transaction on
-tps23881, si3474, pd692x0 and realtek-pse-mcu - and that error used to
-propagate out of fwnode_mdiobus_register_phy() and get retried by
-deferred probe. Now a transient failure leaves the port without PSE
-until the controller registers again; it is reported with phydev_warn()
-rather than dropped silently. -EPROBE_DEFER stays silent because the
-notifier retries it at PSE_REGISTERED time, and the preceding patch
-makes sure an already registered controller cannot keep returning it.
+So each command interface incarnation that ends with an unrecovered
+timed-out mailbox appears to leak about 4 MB of DMA-coherent memory. The
+entry and its msg structs are never freed either. Before this patch the
+pool was torn down cleanly, because cmd_exec() had already freed the
+mailboxes.
 
-The UNREGISTERED walk does not help rmmod either:
-pse_control_get_internal() takes try_module_get(pcdev->owner) per
-handle, so while a phy holds one the unload is refused before the module
-exit path runs. What the walk covers is driver unbind and device
-removal, where pse_controller_unregister() runs with the module loaded.
+Two ways this can be reached:
 
-What makes the UNREGISTERED walk safe is the teardown order the preceding
-patch establishes. By the time it runs the controller is already off
-pse_controller_list and the interrupt is off, so nothing new can reach
-the PI array; pcdev->pi and the power domains are still live, which the
-release path needs because dropping the last reference can disable a PI
-that is still energised; and the notification worker is drained after the
-walk rather than before it, both because that release path can queue work
-of its own and because the worker's own transient pse_control reference
-must not become the last one once the array has been freed.
+- A MANAGE_PAGES timeout in
+  mlx5_function_disable()->mlx5_reclaim_startup_pages(), followed by
+  mlx5_core_disable_hca() and mlx5_cmd_disable().
+- A timeout during mlx5_function_enable()/mlx5_function_open(), followed
+  by the error unwind.
 
-Now that the walk empties pcdev->pse_control_head on unregister, warn if
-anything is still on it afterwards. Nothing can add one at that point:
-the controller is off the list, the irq is off and the worker is
-drained. It is quiet because of_pse_control_get() has a single caller
-and the walk covers it, and it fires if a consumer that does not
-subscribe is ever added.
+Later pool incarnations start fresh, so this happens once per
+unrecovered timeout followed by a teardown, not on every later disable.
 
-The warning belongs here rather than with the reordering it sits in,
-because until this patch the fwnode_mdio hook gives every matching phy a
-handle for its lifetime and nothing releases it on controller unbind -
-so an unbind between the two would trip it on any board where a phy
-resolved a PI.
+Given the Cc: stable tag, could the commit message describe this cost
+more precisely?
 
-Reported-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Closes: https://lore.kernel.org/netdev/e00048dd-1ed3-40c3-9912-59bccf015ad5@gmail.com/
-Reported-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Closes: https://lore.kernel.org/netdev/bac5e6e9-7358-4ccb-87fc-9c40baa33682@wp.pl/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/netdev/20260703071025.100797-1-pabeni@redhat.com/
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
-Co-developed-by: Carlo Szelinsky <github@szelinsky.de>
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
-Tested-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Tested-by: Aleksander Jan Bajkowski <olek2@wp.pl>
----
- drivers/net/mdio/fwnode_mdio.c |  34 --------
- drivers/net/phy/phy_device.c   | 139 ++++++++++++++++++++++++++++++++-
- drivers/net/pse-pd/pse_core.c  |  68 ++++++++++++++++
- include/linux/phy.h            |   7 ++
- include/linux/pse-pd/pse.h     |  32 ++++++++
- net/ethtool/pse-pd.c           |  16 ++--
- 6 files changed, 256 insertions(+), 40 deletions(-)
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+> index 84583dc5eb1c0..4051f97b2ae12 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index ba7091518265..7bd979b59f49 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -11,33 +11,11 @@
- #include <linux/fwnode_mdio.h>
- #include <linux/of.h>
- #include <linux/phy.h>
--#include <linux/pse-pd/pse.h>
- 
- MODULE_AUTHOR("Calvin Johnson <calvin.johnson@oss.nxp.com>");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("FWNODE MDIO bus (Ethernet PHY) accessors");
- 
--static struct pse_control *
--fwnode_find_pse_control(struct fwnode_handle *fwnode,
--			struct phy_device *phydev)
--{
--	struct pse_control *psec;
--	struct device_node *np;
--
--	if (!IS_ENABLED(CONFIG_PSE_CONTROLLER))
--		return NULL;
--
--	np = to_of_node(fwnode);
--	if (!np)
--		return NULL;
--
--	psec = of_pse_control_get(np, phydev);
--	if (PTR_ERR(psec) == -ENOENT)
--		return NULL;
--
--	return psec;
--}
--
- static struct mii_timestamper *
- fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
- {
-@@ -118,7 +96,6 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 				struct fwnode_handle *child, u32 addr)
- {
- 	struct mii_timestamper *mii_ts = NULL;
--	struct pse_control *psec = NULL;
- 	struct phy_device *phy;
- 	bool is_c45;
- 	u32 phy_id;
-@@ -159,14 +136,6 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 			goto clean_phy;
- 	}
- 
--	psec = fwnode_find_pse_control(child, phy);
--	if (IS_ERR(psec)) {
--		rc = PTR_ERR(psec);
--		goto unregister_phy;
--	}
--
--	phy->psec = psec;
--
- 	/* phy->mii_ts may already be defined by the PHY driver. A
- 	 * mii_timestamper probed via the device tree will still have
- 	 * precedence.
-@@ -176,9 +145,6 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 
- 	return 0;
- 
--unregister_phy:
--	if (is_acpi_node(child) || is_of_node(child))
--		phy_device_remove(phy);
- clean_phy:
- 	phy_device_free(phy);
- clean_mii_ts:
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 5b13a74e2fa9..971d9326d226 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -26,6 +26,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/netdevice.h>
-+#include <linux/notifier.h>
- #include <linux/phy.h>
- #include <linux/phylib_stubs.h>
- #include <linux/phy_led_triggers.h>
-@@ -1012,9 +1013,111 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
- }
- EXPORT_SYMBOL(get_phy_device);
- 
-+/* Best-effort attach of phydev->psec from a DT `pses = <&...>` phandle.
-+ * Caller must hold pse_phy_lock(). A missing phandle (-ENOENT) or a
-+ * not-yet-registered controller (-EPROBE_DEFER) is silent; the notifier
-+ * retries the latter at PSE_REGISTERED time. Any other error means a broken
-+ * binding and is warned about, but left non-fatal so the phy still registers.
-+ *
-+ * A phy with psec_detached set is skipped: it is either not registered yet
-+ * or on its way out, and nothing would release a handle attached now.
-+ */
-+static void phy_try_attach_pse(struct phy_device *phydev)
-+{
-+	struct pse_control *psec;
-+	struct device_node *np;
-+
-+	pse_phy_lock_assert_held();
-+
-+	np = phydev->mdio.dev.of_node;
-+	if (!np)
-+		return;
-+
-+	if (phydev->psec || phydev->psec_detached)
-+		return;
-+
-+	psec = of_pse_control_get(np, phydev);
-+	if (IS_ERR(psec)) {
-+		if (PTR_ERR(psec) != -EPROBE_DEFER && PTR_ERR(psec) != -ENOENT)
-+			phydev_warn(phydev, "failed to get PSE control: %pe\n",
-+				    psec);
-+		return;
-+	}
-+
-+	phydev->psec = psec;
-+}
-+
-+static int phy_pse_attach_one(struct device *dev, void *data)
-+{
-+	pse_phy_lock_assert_held();
-+
-+	if (dev->type != &mdio_bus_phy_type)
-+		return 0;
-+
-+	phy_try_attach_pse(to_phy_device(dev));
-+	return 0;
-+}
-+
-+static int phy_pse_detach_one(struct device *dev, void *data)
-+{
-+	struct pse_controller_dev *pcdev = data;
-+	struct phy_device *phydev;
-+	struct pse_control *psec;
-+
-+	pse_phy_lock_assert_held();
-+
-+	if (dev->type != &mdio_bus_phy_type)
-+		return 0;
-+
-+	phydev = to_phy_device(dev);
-+	psec = phydev->psec;
-+	if (!psec || !pse_control_matches_pcdev(psec, pcdev))
-+		return 0;
-+
-+	phydev->psec = NULL;
-+	pse_control_put(psec);
-+	return 0;
-+}
-+
-+static int phy_pse_notifier_event(struct notifier_block *nb,
-+				  unsigned long event, void *data)
-+{
-+	switch (event) {
-+	case PSE_REGISTERED:
-+		pse_phy_lock();
-+		bus_for_each_dev(&mdio_bus_type, NULL, NULL,
-+				 phy_pse_attach_one);
-+		pse_phy_unlock();
-+		return NOTIFY_OK;
-+	case PSE_UNREGISTERED:
-+		pse_phy_lock();
-+		bus_for_each_dev(&mdio_bus_type, NULL, data,
-+				 phy_pse_detach_one);
-+		pse_phy_unlock();
-+		return NOTIFY_OK;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+
-+static struct notifier_block phy_pse_notifier __read_mostly = {
-+	.notifier_call = phy_pse_notifier_event,
-+};
-+
- /**
-  * phy_device_register - Register the phy device on the MDIO bus
-  * @phydev: phy_device structure to be added to the MDIO bus
-+ *
-+ * phydev->psec is attached after device_add() has made the phy visible on
-+ * mdio_bus_type, so that a concurrent PSE notifier walk and the attach can
-+ * never leave the phy unattached. Neither step takes rtnl: keeping
-+ * device_add() out of rtnl avoids deadlocking when binding a phy that itself
-+ * provides an SFP cage (phy_probe() -> phy_sfp_probe() ->
-+ * sfp_bus_add_upstream() takes rtnl), and pse_phy_lock() rather than rtnl
-+ * guards the attach so a bus registered from ndo_init (which already holds
-+ * rtnl) does not recurse on it.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-  */
- int phy_device_register(struct phy_device *phydev)
- {
-@@ -1034,12 +1137,25 @@ int phy_device_register(struct phy_device *phydev)
- 		goto out;
- 	}
- 
-+	/* Keep the PSE_REGISTERED walk off this phy until registration has
-+	 * actually succeeded. device_add() puts the phy on the bus before its
-+	 * own later failure points, and its unwind takes it back off, so a
-+	 * handle attached in that window would be missed by the
-+	 * PSE_UNREGISTERED walk as well and left with no owner.
-+	 */
-+	phydev->psec_detached = true;
-+
- 	err = device_add(&phydev->mdio.dev);
- 	if (err) {
- 		phydev_err(phydev, "failed to add\n");
- 		goto out;
- 	}
- 
-+	pse_phy_lock();
-+	phydev->psec_detached = false;
-+	phy_try_attach_pse(phydev);
-+	pse_phy_unlock();
-+
- 	return 0;
- 
-  out:
-@@ -1061,8 +1177,22 @@ EXPORT_SYMBOL(phy_device_register);
-  */
- void phy_device_remove(struct phy_device *phydev)
- {
-+	struct pse_control *psec;
-+
- 	unregister_mii_timestamper(phydev->mii_ts);
--	pse_control_put(phydev->psec);
-+
-+	/* Detach synchronously, before the phy leaves the bus, so the put cannot
-+	 * outlive the PSE controller: an off-bus but still-pinned phy is missed
-+	 * by the PSE_UNREGISTERED walk. pse_phy_lock() serialises against that
-+	 * walk, and psec_detached keeps the PSE_REGISTERED walk from attaching a
-+	 * new handle in the window before device_del() takes the phy off the bus.
-+	 */
-+	pse_phy_lock();
-+	psec = phydev->psec;
-+	phydev->psec = NULL;
-+	phydev->psec_detached = true;
-+	pse_control_put(psec);
-+	pse_phy_unlock();
- 
- 	device_del(&phydev->mdio.dev);
- 
-@@ -3976,8 +4106,14 @@ static int __init phy_init(void)
- 	if (rc)
- 		goto err_c45;
- 
-+	rc = pse_register_notifier(&phy_pse_notifier);
-+	if (rc)
-+		goto err_genphy;
-+
- 	return 0;
- 
-+err_genphy:
-+	phy_driver_unregister(&genphy_driver);
- err_c45:
- 	phy_driver_unregister(&genphy_c45_driver);
- err_ethtool_phy_ops:
-@@ -3994,6 +4130,7 @@ static int __init phy_init(void)
- 
- static void __exit phy_exit(void)
- {
-+	pse_unregister_notifier(&phy_pse_notifier);
- 	phy_driver_unregister(&genphy_c45_driver);
- 	phy_driver_unregister(&genphy_driver);
- 	rtnl_lock();
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 457eef5784f8..20d33f7af743 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -25,8 +25,55 @@ static LIST_HEAD(pse_controller_list);
- static DEFINE_XARRAY_ALLOC(pse_pw_d_map);
- static DEFINE_MUTEX(pse_pw_d_mutex);
- 
-+/* Serialises phydev->psec against the PSE controller lifecycle notifier and
-+ * the ethtool PSE paths, in place of rtnl. The attach must not take rtnl: an
-+ * MDIO bus registered from ndo_init (e.g. lantiq_etop) calls
-+ * phy_device_register() with rtnl already held, so taking rtnl for the attach
-+ * would deadlock. It lives here rather than in phylib because PSE_CONTROLLER
-+ * is bool, so pse_core is always built into vmlinux and net/ethtool can call
-+ * these directly; phylib is tristate and must not be linked against from
-+ * built-in code. Lock order: rtnl -> pse_phy_mutex -> pse_list_mutex ->
-+ * pcdev->lock.
-+ */
-+static DEFINE_MUTEX(pse_phy_mutex);
-+
- static BLOCKING_NOTIFIER_HEAD(pse_controller_notifier);
- 
-+/**
-+ * pse_phy_lock - serialise access to phydev->psec
-+ *
-+ * Held by the PSE controller lifecycle notifier, by the phy attach and detach
-+ * paths and by the ethtool PSE paths. The PSE_UNREGISTERED walk clears
-+ * phydev->psec and drops the phy's reference under this lock, so anything that
-+ * attaches, detaches or dereferences phydev->psec must hold it across the
-+ * whole access.
-+ */
-+void pse_phy_lock(void)
-+{
-+	mutex_lock(&pse_phy_mutex);
-+}
-+EXPORT_SYMBOL_GPL(pse_phy_lock);
-+
-+/**
-+ * pse_phy_unlock - release the lock taken by pse_phy_lock()
-+ */
-+void pse_phy_unlock(void)
-+{
-+	mutex_unlock(&pse_phy_mutex);
-+}
-+EXPORT_SYMBOL_GPL(pse_phy_unlock);
-+
-+#ifdef CONFIG_LOCKDEP
-+/**
-+ * pse_phy_lock_assert_held - assert that pse_phy_lock() is held
-+ */
-+void pse_phy_lock_assert_held(void)
-+{
-+	lockdep_assert_held(&pse_phy_mutex);
-+}
-+EXPORT_SYMBOL_GPL(pse_phy_lock_assert_held);
-+#endif
-+
- /**
-  * pse_register_notifier - register a callback for PSE controller events
-  * @nb: notifier block to register
-@@ -1271,6 +1318,13 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
- 	 */
- 	cancel_work_sync(&pcdev->ntf_work);
- 
-+	/* Every handle should be gone here: subscribers drop theirs in the
-+	 * event above, and the worker's transient one goes with the drain.
-+	 * The controller is off the list and the irq is off, so nothing can
-+	 * add one. Anything left is a holder nobody accounted for.
-+	 */
-+	WARN_ON(!list_empty(&pcdev->pse_control_head));
-+
- 	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
- 	kfifo_free(&pcdev->ntf_fifo);
-@@ -2132,3 +2186,17 @@ bool pse_has_c33(struct pse_control *psec)
- 	return psec->pcdev->types & ETHTOOL_PSE_C33;
- }
- EXPORT_SYMBOL_GPL(pse_has_c33);
-+
-+/**
-+ * pse_control_matches_pcdev - Test whether a pse_control targets a controller
-+ * @psec: pse_control obtained from of_pse_control_get()
-+ * @pcdev: PSE controller to compare against
-+ *
-+ * Return: %true if @psec was obtained from @pcdev, %false otherwise.
-+ */
-+bool pse_control_matches_pcdev(struct pse_control *psec,
-+			       struct pse_controller_dev *pcdev)
-+{
-+	return psec->pcdev == pcdev;
-+}
-+EXPORT_SYMBOL_GPL(pse_control_matches_pcdev);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 7c5098a0dd6c..ef5b5e6f4e0f 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -666,6 +666,12 @@ struct phy_oatc14_sqi_capability {
-  * @master_slave_state: Current master/slave configuration
-  * @mii_ts: Pointer to time stamper callbacks
-  * @psec: Pointer to Power Sourcing Equipment control struct
-+ * @psec_detached: Set while phylib will not accept a PSE handle for this
-+ *	phy, either because registration has not completed or because it has
-+ *	already released @psec, so the PSE_REGISTERED notifier walk skips it.
-+ *	Not a bitfield: once the phy is on the bus it is written under
-+ *	pse_phy_lock() while other flags are written under phydev->lock or
-+ *	rtnl, and they must not share a storage unit
-  * @ports: List of PHY ports structures
-  * @n_ports: Number of ports currently attached to the PHY
-  * @max_n_ports: Max number of ports this PHY can expose
-@@ -807,6 +813,7 @@ struct phy_device {
- 	struct net_device *attached_dev;
- 	struct mii_timestamper *mii_ts;
- 	struct pse_control *psec;
-+	bool psec_detached;
- 
- 	struct list_head ports;
- 	int n_ports;
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index bc5d36bcd993..16181f8a2c97 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -386,9 +386,23 @@ int pse_ethtool_set_prio(struct pse_control *psec,
- bool pse_has_podl(struct pse_control *psec);
- bool pse_has_c33(struct pse_control *psec);
- 
-+bool pse_control_matches_pcdev(struct pse_control *psec,
-+			       struct pse_controller_dev *pcdev);
-+
- int pse_register_notifier(struct notifier_block *nb);
- int pse_unregister_notifier(struct notifier_block *nb);
- 
-+void pse_phy_lock(void);
-+void pse_phy_unlock(void);
-+
-+#ifdef CONFIG_LOCKDEP
-+void pse_phy_lock_assert_held(void);
-+#else
-+static inline void pse_phy_lock_assert_held(void)
-+{
-+}
-+#endif
-+
- #else
- 
- static inline struct pse_control *of_pse_control_get(struct device_node *node,
-@@ -439,6 +453,12 @@ static inline bool pse_has_c33(struct pse_control *psec)
- 	return false;
- }
- 
-+static inline bool pse_control_matches_pcdev(struct pse_control *psec,
-+					     struct pse_controller_dev *pcdev)
-+{
-+	return false;
-+}
-+
- static inline int pse_register_notifier(struct notifier_block *nb)
- {
- 	return 0;
-@@ -449,6 +469,18 @@ static inline int pse_unregister_notifier(struct notifier_block *nb)
- 	return 0;
- }
- 
-+static inline void pse_phy_lock(void)
-+{
-+}
-+
-+static inline void pse_phy_unlock(void)
-+{
-+}
-+
-+static inline void pse_phy_lock_assert_held(void)
-+{
-+}
-+
- #endif
- 
- #endif
-diff --git a/net/ethtool/pse-pd.c b/net/ethtool/pse-pd.c
-index 757c9e0cc856..654325946aaa 100644
---- a/net/ethtool/pse-pd.c
-+++ b/net/ethtool/pse-pd.c
-@@ -71,7 +71,9 @@ static int pse_prepare_data(const struct ethnl_req_info *req_base,
- 	if (ret < 0)
- 		return ret;
- 
-+	pse_phy_lock();
- 	ret = pse_get_pse_attributes(phydev, info->extack, data);
-+	pse_phy_unlock();
- 
- 	ethnl_ops_complete(dev);
- 
-@@ -281,9 +283,12 @@ ethnl_set_pse(struct ethnl_req_info *req_info, struct genl_info *info)
- 
- 	phydev = ethnl_req_get_phydev(req_info, tb, ETHTOOL_A_PSE_HEADER,
- 				      info->extack);
-+
-+	pse_phy_lock();
-+
- 	ret = ethnl_set_pse_validate(phydev, info);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	if (tb[ETHTOOL_A_PSE_PRIO]) {
- 		unsigned int prio;
-@@ -291,7 +296,7 @@ ethnl_set_pse(struct ethnl_req_info *req_info, struct genl_info *info)
- 		prio = nla_get_u32(tb[ETHTOOL_A_PSE_PRIO]);
- 		ret = pse_ethtool_set_prio(phydev->psec, info->extack, prio);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
- 
- 	if (tb[ETHTOOL_A_C33_PSE_AVAIL_PW_LIMIT]) {
-@@ -301,7 +306,7 @@ ethnl_set_pse(struct ethnl_req_info *req_info, struct genl_info *info)
- 		ret = pse_ethtool_set_pw_limit(phydev->psec, info->extack,
- 					       pw_limit);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
- 
- 	/* These values are already validated by the ethnl_pse_set_policy */
-@@ -319,10 +324,11 @@ ethnl_set_pse(struct ethnl_req_info *req_info, struct genl_info *info)
- 		 */
- 		ret = pse_ethtool_set_config(phydev->psec, info->extack,
- 					     &config);
--		if (ret)
--			return ret;
- 	}
- 
-+out:
-+	pse_phy_unlock();
-+
- 	/* Return errno or zero - PSE has no notification */
- 	return ret;
- }
+[ ... ]
+
+> @@ -207,6 +214,11 @@ static void cmd_ent_put(struct mlx5_cmd_work_ent *ent)
+>  	}
+>  	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+>  
+> +	if (ent->own_msgs) {
+> +		mlx5_free_cmd_msg(dev, ent->out);
+> +		free_msg(dev, ent->in);
+> +	}
+> +
+
+[Severity: Medium]
+Can a retained mailbox end up freed into a different dma_pool than the
+one it was allocated from? These frees always go through whatever
+dev->cmd.pool and dev->cmd.cache[] are when the last put happens.
+
+One possible sequence:
+
+1. A timed-out entry keeps its FW reference, with own_msgs set.
+
+2. mlx5_cmd_disable() runs destroy_msg_cache() and dma_pool_destroy().
+   The pool is busy, so its pages are kept, but the struct dma_pool is
+   still kfree()d.
+
+3. mlx5_cmd_enable() does memset(&cmd->vars, 0, ...), sets
+   cmd->vars.bitmask = MLX5_CMD_MASK, and creates a new pool and cache.
+   cmd->ent_arr[] is outside vars and is not cleared, so ent_arr[i]
+   still points at the stale entry.
+
+4. A non-forced completion for bit i arrives before slot i is reused.
+   mlx5_cmd_comp_handler() finds PENDING_COMP clear, logs "Command
+   completion arrived after timeout" and calls cmd_ent_put().
+
+5. That is the final reference. mlx5_free_cmd_msg()->free_cmd_box() then
+   calls dma_pool_free(dev->cmd.pool, ...) on the new pool with a block
+   from the old one. Without DMAPOOL_DEBUG, pool_block_err() does not
+   catch this. The block goes onto the new pool's free list, and the new
+   pool's nr_active is decremented.
+
+6. free_msg(dev, ent->in) also adds an old-pool cached msg to the rebuilt
+   cache list.
+
+After that, the new pool's nr_active can read 0 while another timed-out
+entry still owns a real block. A later dma_pool_destroy() would then
+dma_free_coherent() pages that firmware may still write to.
+
+Before this patch, a stale final put only did cmd_free_index(), up() and
+kfree(ent). It never touched the pool or the cache.
+
+>  	cmd_free_ent(ent);
+>  }
+>  
+> @@ -958,10 +970,6 @@ static void cb_timeout_handler(struct work_struct *work)
+>  	cmd_ent_put(ent); /* for the cmd_ent_get() took on schedule delayed work */
+>  }
+
+[Severity: High]
+Now that cmd_ent_put() can free mailboxes, can this put race with
+command interface teardown?
+
+cmd_work_handler() takes a reference for the timeout work:
+
+    if (ent->callback && schedule_delayed_work(&ent->cb_timeout_work, timeout))
+        cmd_ent_get(ent);
+
+Take the "Async, recovered after timeout" case.
+mlx5_cmd_eq_recover() recovers the EQE, and mlx5_cmd_comp_handler()
+cannot cancel the running work, because cancel_delayed_work() returns
+false. The handler drops the FW and consumer references, sets own_msgs
+and calls the callback.
+
+That leaves the put above in cb_timeout_handler(), running on
+system_wq, as the final one. The same happens when a real completion
+races with the timeout work.
+
+In cmd_ent_put() the slot and semaphore are released under alloc_lock,
+and the mailboxes are only freed after the lock is dropped:
+
+    cmd_free_index(cmd, ent->idx);
+    up(ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem);
+    ...
+    spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+
+    if (ent->own_msgs) {
+        mlx5_free_cmd_msg(dev, ent->out);
+        free_msg(dev, ent->in);
+    }
+
+The teardown paths don't wait for that free:
+
+- mlx5_cmd_allowed_opcode() and mlx5_cmd_flush() only wait for the up().
+- mlx5_cmd_cleanup_async_ctx() only waits for the callback.
+- mlx5_cmd_disable() only flushes cmd->wq, not system_wq.
+
+Suppose this worker is delayed just after the up(). Could
+mlx5_cmd_disable() get through destroy_msg_cache() and dma_pool_destroy()
+first? The pool is busy, so its struct is kfree()d. The worker would then
+call dma_pool_free() on the freed pool, or on a newly created one, and
+list_add_tail() onto a destroyed or re-initialised cache list.
+
+[ ... ]
+
+> @@ -1313,7 +1321,12 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
+>  		return 0; /* mlx5_cmd_comp_handler() will put(ent) */
+>  
+>  	err = wait_func(dev, ent);
+> -	if (err == -ETIMEDOUT || err == -ECANCELED || err == -EBUSY)
+> +	if (err == -ETIMEDOUT) {
+> +		/* firmware may still DMA into the mailboxes; keep them */
+> +		ent->own_msgs = true;
+> +		goto out_free;
+> +	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can a sync timeout race
+with a real completion and free ent and its messages while the IRQ side
+is still using them?
+
+CPU A: wait_func_handle_exec_timeout()
+    ent->ret = -ETIMEDOUT;
+    mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, true);
+        loses test_and_clear_bit(MLX5_CMD_ENT_STATE_PENDING_COMP)
+        continue;
+
+CPU B: EQ IRQ, mlx5_cmd_comp_handler(dev, vec, false)
+    wins test_and_clear_bit(MLX5_CMD_ENT_STATE_PENDING_COMP)
+    cmd_ent_put(ent);        /* refcount 2 -> 1 */
+    ent->ts2 = ktime_get_ns();
+    memcpy(ent->out->first.data, ent->lay->out, sizeof(ent->lay->out));
+    dump_command(dev, ent, 0);
+    ...
+    complete(&ent->done);
+
+On CPU A, wait_func() returns -ETIMEDOUT without waiting on ent->done
+again. mlx5_cmd_invoke() sets own_msgs and makes the final
+cmd_ent_put() (1 -> 0), which frees ent->out, ent->in and ent. CPU B may
+still be writing ent->out and calling complete(&ent->done) at that point.
+
+The same window existed before, with cmd_exec() freeing the messages
+right after the put. This change moves the frees into that final put but
+doesn't close the window.
+
+[Severity: Low]
+This isn't a bug, but the kernel-doc above mlx5_cmd_invoke() still says:
+
+ * return value in case (!callback):
+ *	ret < 0 : Command execution couldn't be submitted by driver
+
+With this change, -ETIMEDOUT means the command was submitted and in/out
+now belong to the entry, so the caller must not free them. Only
+cmd_exec() knows this, through the new goto out_up. Could the comment
+document the ownership transfer, so a future caller that frees on a
+negative return doesn't double-free?
+
+> +	if (err == -ECANCELED || err == -EBUSY)
+>  		goto out_free;
+>  
+>  	ds = ent->ts2 - ent->ts1;
+> @@ -1816,8 +1829,10 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
+>  								 ent->out,
+>  								 ent->uout_size);
+>  
+> -				mlx5_free_cmd_msg(dev, ent->out);
+> -				free_msg(dev, ent->in);
+> +				/* firmware may still DMA into the mailboxes;
+> +				 * keep them
+> +				 */
+> +				ent->own_msgs = true;
+>  
+>  				/* final consumer is done, release ent */
+>  				cmd_ent_put(ent);
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch. It is
+raised here because the patch handles exactly these retained entries.
+Can a command that times out while the device is up hold its slot
+semaphore forever, and leave mlx5_cmd_flush() spinning?
+
+After the timeout, the forced mlx5_cmd_comp_handler() clears
+PENDING_COMP but keeps the FW reference, because mlx5_cmd_is_down() is
+false and the opcode is allowed. The final cmd_ent_put(), which does
+up(&cmd->vars.sem), therefore only runs on a real completion.
+
+enter_error_state() then sets MLX5_DEVICE_STATE_INTERNAL_ERROR and calls
+mlx5_cmd_flush():
+
+	for (i = 0; i < cmd->vars.max_reg_cmds; i++) {
+		while (down_trylock(&cmd->vars.sem)) {
+			mlx5_cmd_trigger_completions(dev);
+			cond_resched();
+		}
+	}
+
+For the timed-out entry, mlx5_cmd_trigger_completions() takes and drops
+a temporary reference. The forced handler finds PENDING_COMP already
+clear and hits continue without a put. cmd_comp_notifier() ignores real
+EQEs once dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR, so the permit
+never comes back.
+
+This loop is reached from the fatal health reporter, PCI err_detected,
+sync FW reset, and shutdown through
+mlx5_try_fast_unload()->mlx5_enter_error_state(). Those callers hold
+intf_state_mutex while it runs. On unload, the same held permit also
+blocks the down() loops in mlx5_cmd_allowed_opcode() and
+mlx5_cmd_change_mod().
+
+Wouldn't recovery, unload and reboot all hang here?
+
+[ ... ]
+
+> @@ -2012,6 +2027,9 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+>  	if (callback && !err)
+>  		return 0;
+>  
+> +	if (err == -ETIMEDOUT) /* the command entry owns the mailboxes now */
+> +		goto out_up;
+> +
+
+[Severity: Medium]
+Does this cover every case where firmware still owns the mailboxes?
+Whether they are kept seems to depend on which reference is dropped
+last, not on whether the descriptor is still owned by hardware.
+
+First, a forced completion in mlx5_cmd_comp_handler() still drops the
+FW reference when the device looks down:
+
+			if (!forced || /* Real FW completion */
+			     mlx5_cmd_is_down(dev) || /* No real FW completion is expected */
+			     !opcode_allowed(cmd, ent->op))
+				cmd_ent_put(ent);
+
+mlx5_cmd_is_down() becomes true as soon as poll_health() sets
+MLX5_DEVICE_STATE_INTERNAL_ERROR on a fatal sensor (for example
+MLX5_SENSOR_FW_SYND_RFR). That happens before any reset or DMA
+quiescence.
+
+If wait_func_handle_exec_timeout() fires in that state, the put in
+mlx5_cmd_invoke() is final. cmd_ent_put() then frees ent->in and ent->out
+straight away, even though own_msgs was just set. On the async path the
+put in cb_timeout_handler() is the final one.
+
+Second, mlx5_cmd_flush()->mlx5_cmd_trigger_completions() force-completes
+every allocated slot with MLX5_TRIGGERED_CMD_COMP, so ent->ret becomes
+-ENXIO.
+
+For sync commands, only -ETIMEDOUT is special-cased above. -ENXIO falls
+through to out_out, and mlx5_free_cmd_msg()/free_msg() release blocks
+for commands that have already been doorbelled. For callback commands,
+own_msgs is set, but the is_down check drops the FW reference and the
+trigger loop's cmd_ent_put() frees them.
+
+If firmware completes one of these commands before the reset, couldn't
+the late write land in a freed block, or in pool pages freed by a later
+clean dma_pool_destroy()? That is the same corruption the commit message
+describes.
+
+The new "firmware may still DMA into the mailboxes; keep them" comments
+promise a retention that these paths don't provide.
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923190542.848049-1-dcostantino%40meta.com
