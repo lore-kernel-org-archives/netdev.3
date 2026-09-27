@@ -1,143 +1,99 @@
-Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82DC1FECCD
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 04:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B15335C190
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 04:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790483963; cv=none; b=ZLoRp6AcQWFkHj+KmsggHpVtNC3Uhi/RkgLdGM8STEasJusuBVm3YD7qVz90U6E+ns2k45qEtxiGBTWKRl2pp3QuNYAatkCmhSOgboxwY1c6jPw2aim7a4iDSs+DQWmSMZ29Cs4lcMRfL2ssN/0DsF1w4Rcyivlc1Zy0cfqekq0=
+	t=1790484108; cv=none; b=IzmP/cSssnEmn+L2Lkqce5aOynDS0EhIXLrjbmNp1dMY7WVIbtAFXR5ua3WQwEYU+XYY1pSMhEWHwKE6HvSkCLpf8aeq3YRp9x8shdlJpYniE8dOeKtR+cgh5+hsycbuHocHxaopyTowruVBKLnKYM3M7UIJJv9vMzq0zocQktI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790483963; c=relaxed/simple;
-	bh=xlXqf9mFwau+XTipTZRs2bCnLkjGFbtLMLw2N1WOIDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B7m4cK1J4TKgZZpvCPnQjgwp8VoyR4HIA9WtsRrKpY1Ft7x+KcxkccNwFcS0dwwJpsQoSebHrOG2g3XMYqJRxSihXIqCcikjo9b3tL7AMNsHpl3h6RRVzeWbo98JykbHh653Q9qy/5MZmeReQmpUVdlwimHcKWaNQxsQVG5H5Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hm/omoky; arc=none smtp.client-ip=74.125.227.169
+	s=arc-20240116; t=1790484108; c=relaxed/simple;
+	bh=aSIQliU8fMQFvFPepj6X9dk5tV3aAChq7NCseb3A15w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ivvtpyFG9jxhsGUIrDs+oUpicExpz6fBeBh6lRl4i2I/rZIH79YnlKUHwLeXLU84wRBSLA7n9i4CQmE+2NEqGZ4+df+bleJhFW9l68PMxb4jMcbbpS+QOHse+tCv3z0i683BNRqDdf1M5C6DBJMCB9+Z0+zXXnWC1KWNuwr/Bvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAiu+wus; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hm/omoky"
-Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0bcdf41a3so975869a91.2
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 21:39:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAiu+wus"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd66bb4so905669a91.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 21:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790483962; x=1791088762; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+        d=gmail.com; s=20251104; t=1790484106; x=1791088906; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=8Hf0wTaBh2QEX0XfXSvE3ph//O6snTklhTATtDlCcoQ=;
-        b=hm/omokyDBkAq2bTcHZI3bKbaUK3qV0pR2+slwh7Es+2cTT8NKHebjj/u8mVwx0oOI
-         2VUHU24Y3L2pISc9ajSTdTBFEgsFjF4BWtXCmd4VrBA28WZL0u3TkejY2hkrOGblpNLH
-         NJczxnB0P3Pmx1U4fSU6khFQ7CEm4RjHkIUpzTMDWrqU9J7Jb4ZMyKnVFkUWBFzivL3n
-         jtTWGFZdpQpMySM2squDtcaw0gYKU38CxBo3+4t28pvSS/COyhoR5dh0uu/wxPT1Aptq
-         NELRprtYR85/OK+ZE3HakYX+Rx/UHG9vU0KKFw/nO8QALgdvVHeAE24UEfJmdgyUiodw
-         jO2w==
+        bh=aSIQliU8fMQFvFPepj6X9dk5tV3aAChq7NCseb3A15w=;
+        b=EAiu+wusG9A/Tb9WV07FSVs9/QOiRuBuLBGZ1VkGsKhGwZCHrYYOeYp3RteNwYJ+2x
+         OrW38fpkrNHQkPL3UUCzLi7aSLsJtcX5GtdU41+Ib8+oif30+CWB0r/ARqeWMU/O4usV
+         4eTnwWl42QsRVVrYVtnpU0bx6gZnquIKehQtf1Y6QPiQfsGx4zqju5rr3wNDBLZ5JUo3
+         ULiijcIWVCfAPMZWeFP9QA6LaF1skgua2++KoXNKf/L8K5l3RDTySZ7qwNuCE8lX2+c1
+         pvGF06LvqsqUjNF8tyi91kmAd3agOpdS1VoQhyVKdly79n984HlKtPpEX3tvqW5wRBU4
+         XMGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790483962; x=1791088762;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20260707; t=1790484106; x=1791088906;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8Hf0wTaBh2QEX0XfXSvE3ph//O6snTklhTATtDlCcoQ=;
-        b=RkyGWUUh33PeCxFt+XI0azIo2FMtpu/lM4CRLtJA/d6AixtYw+nWlcrITXFw9NvuFc
-         8PY3FiuDvRfttgztBbFWJYPoEC7PUSXdbSP/UYaoOhG8SM+jA+56X93JyAUqBf6Yg5EP
-         9b2k8g17VaMMHB6S7sSOoEQLbPnXKATWYW8q4/RG6n28p9gqIoxZ2InZfQ7/rpfkL6gF
-         1Gasy+X6sgRrpjIftUH2Qr30kmMwjDKvSqW2bZ8GPiqWAnQ5GAgAGkUDva1PIpi3w/Tx
-         45f950+3CfuQiOkTkaqpGSDtV224F8/zzYclAp+gqvBuXw1JJMYX3WVynnSgXgd0M13j
-         xGYA==
-X-Gm-Message-State: AFq9FYIwQnS0tQBniQbN/xyQT+f2Zc/HJoWw5un1Zk/kGd95KCidJref
-	FRhq1mhI3KATcLUU0jp9e3WPdGoALHlvfBplNgjcLIzXR5qxhi43D0gl
-X-Gm-Gg: AYBFou0BC7d5RDHACOtWxb9I1DY/TsNx03lDkJucLsWXbjlLRmKhdZDm3lPOr/hptU/
-	SlVq48y6E3dV1CqLegG0VZD93C4mAf0jy8LbvCx9NIUriToMGeY5WsC+WFDpQtDIUSZwgk5WxLy
-	hjAwciNz377M7/KB5R8yPBzJwY0pQRFN+/TPP+5/eSGZ1oWCcgRlnEmo7eOIGx5kfCLWxSdWEii
-	TrgyCsthBjA6lXtCa4Tcwjtyhevk2K4QJM5E/bB+UcZGxsURbyRfW0O1UbSaKkNdYx/zntSiNdj
-	H9gs9+dOCbeAuv4h6Hp1FuJQcPsD8283+wh0O7L1DXk7ysLj3kXz2OcPaow6blEoIQavZNlFiDJ
-	csXyrBTV5YpmgfgRcCo5wa6EN7qrrwj4IjcjWEUK5kPC4qgkgwi5XrEOljsPMNi2CjgCCEk3l8N
-	KlWQlppN9T2wPFUcI3CPaCLmfzRZPXMNeJattJNtgj0SwSHSZeEwloJGmSS5uKKRwmt8DiXjdRk
-	TYkPVV0YcmhPms5fZsLmdwxaGMTKq2iBesK35RdmCeSNQ/KYjaYutBV6OEaG2nuusgttNX7NfFv
-	1IMo0cmDlLgDBI5um0hO1929cxspzaoSprCgxznTmPM=
-X-Received: by 2002:a17:90b:1f90:b0:39e:6c69:f47b with SMTP id 98e67ed59e1d1-3a098d4085dmr8580008a91.58.1790483961913;
-        Sat, 26 Sep 2026 21:39:21 -0700 (PDT)
-Received: from ?IPV6:fd11:4514:2:0:2564:38af:d688:9415? ([2001:da8:100f:116::667])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976cacbesm19092194a91.13.2026.09.26.21.39.19
+        bh=aSIQliU8fMQFvFPepj6X9dk5tV3aAChq7NCseb3A15w=;
+        b=RupzoIe9rXu/u4d8HxxIFALy9BE31UAA9mX22fmpMtWIesn14Xx/4ojvyrCW5gc/fs
+         ia13lKof1nbK6MPt12bGry3u9+z3NNeWurAY6Mp/hv530q9cBOrJegzNve24WDwb+k74
+         dXZykr+spirnAyI2LWT4XsGv1QDoLu3zPDWOs4MgmquPLCD6c+L0wkDJIPFEjGJ73X7r
+         GW+KKNZL+rL242EOf1fHecJO0q83C2fBRWnQKDod9G8aCU6JEXfYfum7FaIrtXIgsaGK
+         DAKHbAiPNq+RIZkJWtAlg5cE5zvtPVKtbD9en+gikzFn1gy0vYmnpV8IBG5Omk4oIV+D
+         0ZtA==
+X-Forwarded-Encrypted: i=1; AKwUvBzCe03oMwNOdeh3pCVZN5Iq2vmC63mBEcur8lzyJoFHEy9ug7C64ioA2wJfaC46Fpdywl2q5uc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIuIbva1YRgTKLuk8VJnu5cgHmMHdHqu7h79SQRnt29+JCqd2hl
+	qeUuTA+21BbHMwyo39SCaL9BaIHv9vLHV4G4JMmmv1lRkc6UXLu5murw
+X-Gm-Gg: AYBFou2GaF5fMmSpueLccmreH3yAbSvUDcF8Vv50BrpnZiFdGmAzHlD0NmWEflZnXeP
+	TM7Xh/qsfQq3CWIlthMtpS28rO5kuYS/juWeDPatj0aStk9sfqKZEcvLx5I9IVIZ00KcDWbFY4Q
+	DY7BRM2spgaj7lySniyBubX/X7TMK40lXGNqguQJI+ihSWQvIhIluKCEXrqAiaTNP+ZyrA0evcG
+	e7p07EGCMKxFp4bZXlM3YCjav+r0O0ZiQRxBy1eQxrJAGPk+va0rhSovGtMbEmZjz/D2hr+DFq3
+	wlvwYwVgTqulwKcMz+IKWGAHCtBb0NlEhVC3O/GScY3udM57MncrRwoNRWeyb3u5RK7fHaQr4QL
+	/kb3ayYCEZdeLNnTwatS7ohllcuKKOUVvemS8NNeY9ezsyBI6nmtlWd5mDuchs59KKFitOW4kGJ
+	Mjh+IHoubw3k+8oybCMLUXW1rhBiOwnldldOH17sy9Eiyo1m9Vz5rXgoa5lM+EbYxybTdqsUOOF
+	gOHXapkekTzaGnUbV1hJzHF3zEs+vzCDoM3Vx/hVxRusNsOBmqJ7amENguWWYegB5J/L8BBM15i
+	o/M=
+X-Received: by 2002:a17:90b:3d92:b0:3a0:f0a1:b45a with SMTP id 98e67ed59e1d1-3a0f0a1b93amr1697408a91.65.1790484106186;
+        Sat, 26 Sep 2026 21:41:46 -0700 (PDT)
+Received: from localhost ([153.61.198.250])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9356f48sm13099339a91.6.2026.09.26.21.41.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Sep 2026 21:39:21 -0700 (PDT)
-Message-ID: <f3f5b31e-e434-452b-a77d-72ea740a5753@gmail.com>
-Date: Sun, 27 Sep 2026 12:38:56 +0800
+        Sat, 26 Sep 2026 21:41:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net: towards a generic PON framework
-To: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Cc: netdev@vger.kernel.org, pbs05 <xuziyougm@gmail.com>,
- Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <CADGChbMgws9wFCVzRPwMdYQ=E64_kAWtikK4v+1ca3hTeyrZUw@mail.gmail.com>
- <8675d110-2681-4065-96ee-e088696f59fb@gmail.com>
- <tyVeMFhOR4aOm-Y3BnbglQ@gmail.com>
-From: Gaoyang Wei <yhyxwgy@gmail.com>
-In-Reply-To: <tyVeMFhOR4aOm-Y3BnbglQ@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 27 Sep 2026 04:41:41 +0000
+Message-Id: <DLPTN52TGGMY.TPWL2GZA38RK@gmail.com>
+Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, <netdev@vger.kernel.org>, "Nick Hudson"
+ <nhudson@akamai.com>, "Felix Fietkau" <nbd@openwrt.org>, "Qingfang Deng"
+ <dqfext@gmail.com>
+Subject: Re: [RFC bpf-next 0/3] bpf: Add PPPoE encap/decap support to
+ bpf_skb_adjust_room
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "ThisSeanZhang" <thisseanzhang@gmail.com>, <bpf@vger.kernel.org>
+X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
+References: <20260926210757.2152159-1-thisseanzhang@gmail.com>
+In-Reply-To: <20260926210757.2152159-1-thisseanzhang@gmail.com>
 
-Hi Matheus,
+On Sat Sep 26, 2026 at 9:07 PM UTC, ThisSeanZhang wrote:
+> Hello,
+>
+> This series adds PPPoE session encapsulation and decapsulation support to
+> bpf_skb_adjust_room(), allowing TC BPF programs to update packet data and
+> skb metadata consistently.
 
-Thanks, the measurements are useful.
+Why?
+Is this a research project on what llm can implement?
+It certainly can, but it's not a reason to add new uapi.
 
-I think there are two details I would like to clarify before drawing
-conclusions from them.
+pw-bot: cr
 
- > I exposed it by poling in ioctl in the dirtiest way possible, by
- > generic netlink and for sysfs.
-
-This sounds different from the packet-oriented net_device design I was
-asking about.
-
-My earlier question was specifically about the OMCI interface which
-users were able to attach to a bridge: was that interface registered
-as ARPHRD_ETHER?
-
-If so, I think the bridge problem is probably orthogonal to whether
-OMCI is represented by a net_device.  An ARPHRD_NONE OMCI device with
-no Ethernet header should not be bridgeable in the first place.
-
- > with a similar port of the Airoha SDK I had CPU usage of around
- > 2~15% ...
- >
- > With OMCI in the kernel, the CPU overhead dropped to around
- > 0.8~2.0% ...
-
-Could you describe how these numbers were measured?
-
-In particular, it would be useful to know:
-
-   - which SoC and CPU frequency were used;
-   - whether the userspace version used polling, Generic Netlink, or a
-     packet socket in the measured configuration;
-   - what the MIB size / message rate was;
-   - whether the memory numbers are process RSS, total system memory,
-     or kernel allocations;
-   - whether both implementations used the same MIB representation.
-
-I ask because a polling ioctl/sysfs implementation would have very
-different overhead from an AF_PACKET-based OMCI transport, so I do not
-think we can yet attribute the measured difference to the
-kernel/userspace boundary itself.
-
-The Realtek case you described is also useful.  If the OMCI payload is
-the same and only the data source and hardware delivery path differ,
-that sounds like a good candidate for a small transport/backend
-abstraction rather than putting those vendor differences into the
-generic OMCI model.
-
-On the optical side, your explanation also helps.  Keeping telemetry
-in hwmon, calibration in NVMEM, and leaving wavelength/frequency
-selection to the PHY where the PHY already owns it sounds like a
-reasonable boundary to me.
-
-Thanks,
-Gaoyang
