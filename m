@@ -1,162 +1,115 @@
-Received: from mail-dl2-f21.google.com (mail-dl2-f21.google.com [74.125.229.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01923E5A2B
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE3A3E40EE
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790517259; cv=none; b=O/nt5BZTA1N+LrHeVeOeRtR7AYGrWdEEZMpPu+VGScHRyT6fbZsEj/tvWwSEl7sSg54ZGBjsKyPLpENDAV196XTdxSUKsav3AmDrcWB8gPRrOWFcU/7J7INjNHNniz8bjpwYmr7+62twKm4Q/CEbwJYYEL564pikxtkDYiZdd5k=
+	t=1790517569; cv=none; b=F+IZf1WhXWNU6242bqszUoJ6rkwKtfWz/G6E9b80kVRfKeoeuGaf7kyRub8dsnosbrA4m6bwOFmWzz0Nck0TxN5HiAXJmxwXx25fIa9z5+TgaOZG/+tngzTieWxTj+bVTzp8AV9Sl0/Kz1btg5CZcd8mJsdiemqvZ4ImnItn+Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790517259; c=relaxed/simple;
-	bh=PM8dkF+8etKed18lFD/2Y9REotHc2O/UVajZjOn2QyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T1t2tVR9zB2YSQy7sgTGKePNQv+4CILsG/2jybP757BDsSWh8tKM1tYAy44PpTHmHICCnvGvN9i9c2D8jzuDi+m+v7q4PrPN60Y+QK8v1jfdn3jervHokUjPIhGL2UvkTfDiOM33MbLWnzQOqpiIYZTPr3/H//7z/9mq2dqzAaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQP83zJb; arc=none smtp.client-ip=74.125.229.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790517569; c=relaxed/simple;
+	bh=Dc3hU+I5mrqBnL/3yLvlMcQUORjHrKOzk+cIIchC69M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cn/43Lgeu/oJEpE3dDWeWaOEeotcK6gBRJ2Uz2CxmbxUqe3raz2Jj0tMucIaA+famhD9Y5k1KfyMS+CA+nWGCbWNrJemYGFZ2qTyt6wCDcwgh6Rayr9cEK3wD6AXQ7P6cr2FrEyAkAg5U1Z9Wasrwq0qVOmIPaWT+bPHQhty+9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHRuTF1+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQP83zJb"
-Received: by mail-dl2-f21.google.com with SMTP id a92af1059eb24-1438421d1f8so72475c88.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790517257; x=1791122057; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ew/cE3p4ZACR2ABiKyvZI7K2codxGXMvh85xvLtScaU=;
-        b=bQP83zJbvaHRkpOsgalkPL0RtTKuzVo9zZ6I4TMt4XnLdggSZQ1Q9qCqgaVW3Pvzra
-         PzB8Zv++CIWn7gk4LZFDoaY1fcGgdMU8fpGVsQEBdUs4qGuiwzfoSanfNEhju/BG4LYu
-         ezEc2R9KMXdHzfRRsZujNO1VluNgeeU4R72jQjA93ojagmjnnVO3zliMcAz21N3QtHIx
-         7DyXmb1NQKxayxGXrQw+OzXIMRmNTgkTEAKGqXTkWCzYeeMb4KkmAeUvME6Jd0EBqAaX
-         BpXsMJi5aoZQo4kiWQKaYQqn4dsqJQlWym2sQy+w+q0hl8IEbAh3asvnAxJY3QaL8wqy
-         Yw/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790517257; x=1791122057;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ew/cE3p4ZACR2ABiKyvZI7K2codxGXMvh85xvLtScaU=;
-        b=oSFTfbHuk1oQkHQZimCdLY1s/jtmqsMfk1ySLoyVAMP1dhS/yW+owMh/oSPHEuw+6C
-         HpJ6pLbcfv1Db4Oe3DG2LFLkP3uvJEPVC/f7ltl9lPlWU1MQttaBn+y3TvYTLF/F/tFr
-         tbHMM/6SPTsEVpA4VyPC2HE4ixXcXewYQPxxTjSK47uD9Cw4lkENnJEv08afM0Ohf5pD
-         aT+OE44z+IkObWuKzeZ2/uwVFRAuaWgfeip5RC9hkxWCtucKUQywssuvMMcKn88f8gGi
-         oqcQi8uAQhFgk3p2XwN6vdgKF03IMh3i69Yy+nXEWcTIIsYdVzVz9DmTkqtBSDh5/exN
-         izFQ==
-X-Gm-Message-State: AFuF++lQa6t+OlKOxgwtl34n+TjicHODzccHlmDBz83TC8kMX7ChMQdo
-	9iD0Tlgt0XMNA6QX/l0CBz69L21bZ/uI0YyNMz5CARXyqfu/9NjvMttr
-X-Gm-Gg: AYBFou0Wip/DK+bfCYi3JvgveK7TWwXgLQPBVSBoI4rUaaDVKK5WIz80kdwlANMLcuz
-	CMEiR+4IUjE1DAkUQsiKidMQrIlOWX2OPc2/W58QjyM5XoSS8mL7VVSykS3ghYRVdKL/LGdwd2O
-	dpCkOY6OcOeO1zOxmCmlnOzZB4kgb56qmA2RpbboxAe4t+2HIs6PhdvDfQ/biJ43I/LUcNnTt3V
-	1jYe1mzRlGqQeVejESLQ1wuiYUVaAknLxqUz55hY4mIU8cYPDoK8qmbMtUuIgEmfLiRUQ0UHgw3
-	qbGS040k2l3iZlC0gswmRzq+ISq0I6rgJvSwmXOFdvjK2pGIePgYAFP8LSaBd8SKM4x+JaaXwuo
-	toPmC4EPE8fdPu1lE0nD7ABSAQRwVsSQVrlJ6iVLzyPh3Gwy/6JoNLYiGZS5ziAIedLkAAtCqtT
-	CE6bXX7Ws4nPo9dRXuKtI9yILyRl25mfdBxyOkZ4XRkjeaT85RxFP65mWobXezTt7Ucy0Y2YfeI
-	V9vOYF2g1yssw2x3qrLAJ+3YBO45jjb7TPAS0bQk8IVfF8qGNy3mjMdZlk1lPgAxBmbUDh30TpE
-	/ufQ
-X-Received: by 2002:a05:701b:4508:20b0:144:ff51:2d73 with SMTP id a92af1059eb24-146cfbd49d8mr9558498c88.2.1790517256737;
-        Sun, 27 Sep 2026 06:54:16 -0700 (PDT)
-Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145ad4028a9sm16386411c88.11.2026.09.27.06.54.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 06:54:16 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH net-next v2] net: pktgen: return bool from __pktgen_NN_threads()
-Date: Sun, 27 Sep 2026 21:54:05 +0800
-Message-ID: <20260927135406.3969970-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHRuTF1+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511C01F0089E
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790517567;
+	bh=9Y5aMWqoAq1uOVxpOyjGeC3g3XkCWAkdCuPxoE8cuBY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nHRuTF1+HUuyhJkKZe5l1P1W74M3GohQhRXuAYdfnAl7xY17Xdigx9DegKqOWRStS
+	 c0sZmLO1iPLzo6mD8E8tidsrfHiv9tr+pU/Pi16IzJnSar5NHZegmZM2ct9Tz3/kzH
+	 lBBvVkw5+YW23jFcfxk29RWNgDDHsERL9LuRbMMe/1cd/Ie6QJFZuS6XewX23JZJNL
+	 duoIM1bjsir4XU/VXtiaPLp2DnwWivuF69zOz5DE6iR/Ogt9I9TDRunti/sso+4ves
+	 jn8FBkbbE4EQOMNFS/ByktErl61Mzm9U7XMorvcoid4oosrH604IPDZ3T7aAE0pSW+
+	 qT/DOqp2uyQPQ==
+Received: by mail-oi2-f41.google.com with SMTP id 5614622812f47-4e9818966c6so232504b6e.3
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:59:27 -0700 (PDT)
+X-Gm-Message-State: AFuF++kwJW1hpDA3vSsysWhaf0YylG0A7IjyjXILeAbUsntiMwbYaXrm
+	KOrI/YDjSVIh2mV6phfeQweuEFEcr75X8LS+PRuTftGt5pn+LRQTe/aHz2TrUddw25LqKz0pDOO
+	aUaI2CBfFVY4v34aJ1H4Ppo0Guh6ZoNA=
+X-Received: by 2002:a05:6808:1817:b0:4e8:721f:283d with SMTP id
+ 5614622812f47-4e8721f3e12mr2278833b6e.38.1790517566507; Sun, 27 Sep 2026
+ 06:59:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1790082243.git.petalzu987@gmail.com> <79c2c81b7c61c61b242dbe1cc9b2db9860524a3f.1790082243.git.petalzu987@gmail.com>
+In-Reply-To: <79c2c81b7c61c61b242dbe1cc9b2db9860524a3f.1790082243.git.petalzu987@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sun, 27 Sep 2026 15:59:15 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiiq6ughX_9V5cDxnb8GT-LTEunhdTq4T_YbhV2mq3zFhBQ@mail.gmail.com>
+X-Gm-Features: AclHuK-tZ2AsBvnvtM7lmolBaWy7jW9oHQr9QF_kOj1-HeuNpD3TMPw_ARGI0OM
+Message-ID: <CAL4Wiiq6ughX_9V5cDxnb8GT-LTEunhdTq4T_YbhV2mq3zFhBQ@mail.gmail.com>
+Subject: Re: [PATCH net v1 2/2] i40e: validate TCP header before ATR access
+To: Ren Wei <weir@nebusec.ai>
+Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com, 
+	herbert@gondor.apana.org.au, lucien.xin@gmail.com, anthony.l.nguyen@intel.com, 
+	przemyslaw.kitszel@intel.com, jbrandeb@kernel.org, sln@onemain.com, 
+	fw@strlen.de, petalzu987@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Callers of __pktgen_NN_threads() only check whether a pktgen_dev was
-found. Returning the pointer exposes it outside the helper even though
-neither caller uses the object itself.
+On Sat, Sep 26, 2026 at 8:23=E2=80=AFPM Ren Wei <weir@nebusec.ai> wrote:
+>
+> From: Zixuan Chai <petalzu987@gmail.com>
+>
+> i40e_atr() uses ipv6_find_hdr() to locate the TCP header. A successful
+> protocol match does not verify that the complete TCP header is present in
+> the skb, so dereferencing the result can access data beyond the packet.
+>
+> Check that the complete TCP header is available before inspecting it.
+>
+> Fixes: fd0a05ce74ef ("i40e: transmit, receive, and NAPI")
+> Cc: stable@vger.kernel.org
+> Reported-by: Florian Westphal <fw@strlen.de>
+> Closes: https://lore.kernel.org/netfilter-devel/aq1HaYS96SNn7HJY@strlen.d=
+e/
+> Assisted-by: LLM
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/et=
+hernet/intel/i40e/i40e_txrx.c
+> index ef5e657816f0..cdac279b8aed 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> @@ -2911,6 +2911,9 @@ static void i40e_atr(struct i40e_ring *tx_ring, str=
+uct sk_buff *skb,
+>
+>         if (l4_proto !=3D IPPROTO_TCP)
+>                 return;
+> +       if (unlikely(skb_tail_pointer(skb) < hdr.network + hlen +
+> +                            sizeof(struct tcphdr)))
+> +               return;
+>
+>         th =3D (struct tcphdr *)(hdr.network + hlen);
+>
 
-Return bool instead and keep the pktgen_dev pointer internal to the
-helper.
+pw-bot: cr
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-Changes in v2:
-- Rebase directly onto the current net-next tree, independently of the
-  deferred RCU lifetime fix.
-- Update the commit message for the current helper implementation.
+1) Please do not add bogus Reported-by: / Closes: tags. Florian never
+reported an issue in i40e, unless this was not public?
 
-Link: https://lore.kernel.org/netdev/20260825185313.239861-1-nicoyip.dev@gmail.com/ [v1]
----
- net/core/pktgen.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+2) How can this code be reached with a truncated or non-linear TCP header?
+Unlike ixgbe_atr(), i40e_atr() returns immediately unless
+tx_flags & (I40E_TX_FLAGS_IPV4 | I40E_TX_FLAGS_IPV6) is set.
+Those flags are only set in i40e_tx_enable_csum(), which only acts on
+CHECKSUM_PARTIAL packets and runs right before i40e_atr().
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 7f81aed46672..a89cb0760821 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -2024,11 +2024,11 @@ static const struct proc_ops pktgen_thread_proc_ops = {
- };
- 
- /* Think find or remove for NN */
--static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
--					      const char *ifname, int remove)
-+static bool __pktgen_NN_threads(const struct pktgen_net *pn,
-+				const char *ifname, int remove)
- {
- 	struct pktgen_thread *t;
--	struct pktgen_dev *pkt_dev = NULL;
-+	struct pktgen_dev *pkt_dev;
- 	bool exact = (remove == FIND);
- 
- 	list_for_each_entry(t, &pn->pktgen_threads, th_list) {
-@@ -2038,10 +2038,10 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
- 				pkt_dev->removal_mark = 1;
- 				t->control |= T_REMDEV;
- 			}
--			break;
-+			return true;
- 		}
- 	}
--	return pkt_dev;
-+	return false;
- }
- 
- /*
-@@ -2049,7 +2049,6 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
-  */
- static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
- {
--	struct pktgen_dev *pkt_dev = NULL;
- 	const int max_tries = 10, msec_per_try = 125;
- 	int i = 0;
- 
-@@ -2058,8 +2057,7 @@ static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
- 
- 	while (1) {
- 
--		pkt_dev = __pktgen_NN_threads(pn, ifname, REMOVE);
--		if (pkt_dev == NULL)
-+		if (!__pktgen_NN_threads(pn, ifname, REMOVE))
- 			break;	/* success */
- 
- 		mutex_unlock(&pktgen_thread_lock);
-@@ -3835,8 +3833,7 @@ static int pktgen_add_device(struct pktgen_thread *t, const char *ifname)
- 
- 	/* We don't allow a device to be on several threads */
- 
--	pkt_dev = __pktgen_NN_threads(t->net, ifname, FIND);
--	if (pkt_dev) {
-+	if (__pktgen_NN_threads(t->net, ifname, FIND)) {
- 		pr_err("ERROR: interface already used\n");
- 		return -EBUSY;
- 	}
--- 
-2.43.0
+Furthermore, i40e_tx_enable_csum() (and i40e_tso()) already assumes the
+network and transport headers are present in the linear skb head and
+already dereferences ip.v4->version, ip.v6->nexthdr, and l4.tcp->doff
+before i40e_atr() is ever called. Even within i40e_atr(), hdr.network
+is already dereferenced prior to your check in the IPv4 branch.
