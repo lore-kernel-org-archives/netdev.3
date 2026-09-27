@@ -1,73 +1,146 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33982874E1;
-	Sun, 27 Sep 2026 17:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E283D3A1684;
+	Sun, 27 Sep 2026 17:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790530307; cv=none; b=a9H4DFzSe7w9nFsyBqp5Xncmcg1nhOlW+fU2yJElYiwzQTPW6Gmc8tEUwTVHE9tI4JBk5xNAUSvtp3ePE8lwsqvGeok4dFinIadRfLP4bQ7o7sosG6p4dboGQxM4oNAyOaon4s2aA2uV1Q76NgLmoBI5JF+OPlHyw/5GRqHM8tI=
+	t=1790530624; cv=none; b=d1s/qRL0QMB0dRvMXunhUz4fv1RG2c+xhewLF4KZj20qzE588koVp7VDSOwyPbzd7aInJc6cA2Y8+KPCj3Ze31nAy+KJ0bW2C+ylhI6kgAZLFccHKDk/YhE1ysQuLXyi53x5kNOdrbxo7+/fQOrMXG+S75BMTAaURGIiiOq8Qa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790530307; c=relaxed/simple;
-	bh=CZhuxDYZSLHRj7R/HhMSvvL6ZUf1wnDNgVE7vzNTSD8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WFQR6OJ+GKrnkOQRpnEPp5QZGA48CkrhMvMhtQiKAj2jSWHIAhvryBzhfNQCdi1MJd5ZaC4sTaAsdBGuLXfPEBe30K4xjs9dG+BXjXAi9p1aNy5GrqNxEQ10aQL8divm8JkW2WGu6oonQDuQYD3vTAtVzGO+Upp7Tr/lNOpsrXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5E3+zUw2; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790530624; c=relaxed/simple;
+	bh=FRV3kOC5ng4xx1VVIdyMZFIT1aGrZ1JEW7T/M4jaoeg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qlQfM0gIzt85iiaNlD1b/q20CrRZ93tvPMr1oT85AQ9pPhb7HoKA2NHaQWHlUw7W3vxMMdFRosRUkBqASVZtaVvPS5CFJBfLVMz/R6PrpVS3+XInGqQtnAj8TdiwylFuUPR28npPLa7jOeFhXyxdTd1w1VL6BfKjbhYlu44kNZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgQFAoPs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5E3+zUw2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TBNBXKgdbSNrtNKFB7Hzbz/CEbM1OBZxbHlqjekA/FM=; b=5E3+zUw24QCCO19JFosRAFr5cT
-	8hob8yECi8IApFPjr4gPGooPQxxRMbQ8AsPcKGiohmojN5BXCau451PKzp1zedfwZOXm/1dlz3spX
-	+6T3nCuGLRryumj3WEsPAJwWpzSdMxUoHsnWo1Hxt5/i6Fxl91NMKibYxK8ehnd797qE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xAsir-007XvB-PH; Sun, 27 Sep 2026 19:31:33 +0200
-Date: Sun, 27 Sep 2026 19:31:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Junhui Liu <junhui.liu@pigmoral.tech>,
-	Liu Changjie <liucj1228@outlook.com>,
-	Per Larsson <per@palvencia.se>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/5] net: phy: maxio: prepare for more DT
- properties
-Message-ID: <0618bc2e-76b7-4b82-8f5f-ad84409e80bb@lunn.ch>
-References: <20260926225625.25969-1-andre.przywara@arm.com>
- <20260926225625.25969-4-andre.przywara@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgQFAoPs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17D81F000FF;
+	Sun, 27 Sep 2026 17:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790530622;
+	bh=kXa5Wemf2rr6lVNbX1SR73AsnwkD06yw2lH7iF1TrnI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dgQFAoPsfcWTaRVcCva92YF0I49eODUHvt0AXQXoHCOKZU/rV5JXl46Uwe7UcWblq
+	 6TgFnP8cIVAu5v6/CbCqRME/fgWBllarLXK0sr5DKSNyO/4+LnNDqCSveUIAApeaBJ
+	 nX9LZEMAcibfu4/ElzDWUKqU47nqVneo7+GWnTxUOb6SwEa4NbkQL2ZCcqeBBt3uIS
+	 xx4AaTzlqDtMu2TQsljlz7/L3ImgYzPg2O0YBtNWN7OeBiXPPkPC7noIHc5PNzGzsk
+	 xgDHg10WlNx2avrJIBpKSi9IvfCjZ0VzRr2+RaVFD8AsrpYgm6mdojhwjT025R5j5G
+	 RBrO87U+pg+Hw==
+Subject: Re: [PATCH nf-next v4 1/4] netfilter: conntrack: add shared uint and
+ port parsers for helpers
+From: netdev-bot+sashiko@kernel.org
+To: rc@rexion.ai
+Cc: pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org
+Date: Sun, 27 Sep 2026 17:37:01 +0000
+Message-ID: <179053062118.2160803.7576370507948039473@kernel.org>
+In-Reply-To: <20260923120738.2844168-1-rc@rexion.ai>
+References: <20260923120738.2844168-1-rc@rexion.ai>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260926225625.25969-4-andre.przywara@arm.com>
 
-On Sun, Sep 27, 2026 at 12:56:23AM +0200, Andre Przywara wrote:
-> The probe routine for the Maxio PHY returns early if the optional
-> maxio,clk-out-frequency-hz property is not found. That prevents looking
-> for other properties.
-> 
-> Refactor the routine to handle the property in an if-clause, to allow
-> more actions in the probe routine later.
-> 
-> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Low priority / nit picks for your consideration:
 
-    Andrew
+- [Low] nf_ct_helper_parse_uint() rejects any run of 12 or more digits,
+  even when the value fits in UINT_MAX, and neither comment mentions…
+
+--
+
+netfilter: conntrack: add shared uint and port parsers for helpers
+
+This commit adds nf_ct_helper_parse_uint() and nf_ct_helper_parse_port()
+to the conntrack helper core. Both parse decimal numbers from a buffer of
+a given length. The uint parser body is taken from sip_strtouint(), and
+both functions are exported for the IRC, Amanda and SIP helpers.
+
+> diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+> index c30ae3f203bee..99b90a54d8a9f 100644
+> --- a/net/netfilter/nf_conntrack_helper.c
+> +++ b/net/netfilter/nf_conntrack_helper.c
+
+[ ... ]
+
+> @@ -569,6 +570,73 @@ void nf_nat_helper_unregister(struct nf_conntrack_nat_helper *nat)
+>  }
+>  EXPORT_SYMBOL_GPL(nf_nat_helper_unregister);
+>  
+> +/* Parse a decimal unsigned integer from a length-delimited buffer that is not
+> + * necessarily NUL-terminated.  At most @len bytes are examined.  On success
+> + * the parsed value is returned and, if @endp is non-NULL, *@endp points just
+> + * past the last digit consumed.  If no digit is found or the value would
+> + * exceed UINT_MAX, 0 is returned and *@endp is set to @cp.
+> + */
+> +unsigned int nf_ct_helper_parse_uint(const char *cp, unsigned int len,
+> +				     char **endp)
+> +{
+> +	const unsigned int max = sizeof("4294967295");
+> +	unsigned int olen = len;
+> +	const char *s = cp;
+> +	u64 result = 0;
+> +
+> +	if (len > max)
+> +		len = max;
+> +
+> +	while (olen > 0 && isdigit(*s)) {
+> +		unsigned int value;
+> +
+> +		if (len == 0)
+> +			goto err;
+
+[Severity: Low]
+Should a run of 12 or more digits be rejected here when the value still
+fits in UINT_MAX?
+
+max is sizeof("4294967295"), which is 11 because sizeof counts the NUL.
+For longer inputs, len is clamped to 11 while olen keeps the real length.
+
+The loop condition only checks olen and isdigit(). So a 12th digit enters
+the loop and finds len == 0. It then takes the err path, which returns 0
+and sets *endp to cp.
+
+With leading zeros, result stays small, so this failure comes only from
+the digit count. The count limit does not seem to add overflow
+protection. result is a u64 and is compared against UINT_MAX after every
+digit.
+
+The comment above lists only "no digit is found" and "exceed UINT_MAX" as
+failure cases. The nf_ct_helper_parse_port() comment lists only "no digit
+is found" and "out of range".
+
+nf_ct_helper_parse_port() treats e == cp as a failure:
+
+	val = nf_ct_helper_parse_uint(cp, len, &e);
+	if (e == cp || val == 0 || val > 65535)
+		return -1;
+
+So an input like "000000000080" returns -1 there.
+
+This logic came from sip_strtouint(), but it is now a general exported
+API. Later in the series, "netfilter: nf_conntrack_irc: use
+nf_ct_helper_parse_port()" replaces simple_strtoul() in parse_dcc().
+simple_strtoul() accepted any number of leading zeros.
+
+Would a DCC command such as "DCC SEND f <ip> 0000000000006667" then fail
+to parse, so that no expectation is created for it?
+
+Amanda does not look affected, because pbuf limits its input to 5
+characters.
+
+Could the digit-count limit be dropped, or else documented in both
+comments?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923091608.2617604-1-rc%40rexion.ai
