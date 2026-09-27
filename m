@@ -1,120 +1,195 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+Received: from mail-ed2-f33.google.com (mail-ed2-f33.google.com [74.125.228.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E78F3ABD8D
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790511544; cv=none; b=b8zhppWVv+Ko+dBfxdrCYTmbAxWggVMYs/X0+ahtapom8nU3tXc7VEXQ+Mvm/Pos+1u2jGh5rvpHXG/tEGOpO65aH/j63fBvUin+yevZYSYxaWN3C/zEb7KMSyCynunQyP+rXKxZNfCp+1uGzV9tPFNfwG9BzrOxeRLn3T8i5rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790511544; c=relaxed/simple;
-	bh=a8n1E2/lMVF1zqBZxT6CmOyrlFh/Zu9ZIDll06CmaEM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=JRkXirgl9i3TBV036oxgOXKbBTS7cde6no05kTA9UhTb3KmH0V0GSGAD6+s6Ls1T6mW162UzRukNjqQAA4qQZZ9aOm5UFYAh5Hdw5uwPjc7n9fARkzRxOQMOVnUhPeJ1RTnb+uj7AM3DJRkBn7XK59ngAwrtSCuZ1NCCQx5uKVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4b28dbf4197so4667950b6e.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:19:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671D13C09E8
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790512094; cv=pass; b=GynrlpSocOCcEM/E5VBeHjNfZjdeeG11nwxpFbnxt1nsj+aAo/7S3T2zINcTIlLiEoMSTs+jux2zrOuphRJn0ok9mCkoegl9RTIICnPm6/xHVS78S1tryqcANE/sfvCiyERaLNgcHVj31zrWBEJ8+NYjliHEPGhQVoVIctGZofQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790512094; c=relaxed/simple;
+	bh=aZ8d2LKjoUbC3Vb82drSDlRzbG1SJVf7W9U8iAuF1kw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m+IKhQgzueogKzjdxYa/9OH++vETuxHoRkdxGZit0t0fVTifvk/7403O0IQ6Z9mHNKPu9AaqSMSGmaK6cGXqIu5wDYFqfAHLXi2/fifaKJoB2j4okyQhRJVBm1q60gvxNyXsMxTNHyO45Hk9bImynXn/wj8cLP+2XHjvLmXtPyg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbYbyO4z; arc=pass smtp.client-ip=74.125.228.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbYbyO4z"
+Received: by mail-ed2-f33.google.com with SMTP id 4fb4d7f45d1cf-6ac6fb4b2a3so52920a12.3
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:28:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790512090; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZEYsjyXh3XihvWEtV6J/+LXBHvGc4kleDHcOhqVht3wBzVrcMYp0xJSts+qCNkMzh+
+         Pr4h3uFjwTFxenLdnfdw0rCirAlOuVnUDnSrP7sJ+1SldAxowJU0tw8fAePCvls/Q0ZH
+         N6dI+Gw2Ppz+6bL1lxmYk9+/psxqcsn+q4tiNQHwDbzkq9pGjrfEx3GH8Cwpq4mEDah3
+         8VjRii2tA5i5NAfW4XV2F3lFJmWL4r6DYDNfU4upS6xCFj9dqs6ce0v09h9KyA6YTpEp
+         i0MSk2bZa4Ofq7yWcv82+quDDLTMtpxyPFNwDUv49H9raoW+tuFACfy2MCte9yvKFuNU
+         5xlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DcickMSZi9tlx6KRNzjylAz8LM/Bp4ZoL8EqqOqvY5M=;
+        fh=v8DvyE6iZ2MoLOxizMube096wYgNPVfN37AIPLcibDE=;
+        b=KsUAVJ7iauTa2aXO86z4EV1g8+nc8Q5GxDxJ/fJjsSk4js4u1tdjXSn3NXaOQqa1In
+         jfzoVvzMHNjfdG10Da/b6MaH2+PRZ6PojkJi+CwzId4ZRoyeCvRrZtSDxyRSKIFiegsl
+         rei+Lx2t+F+F4ZexSO8R3LIXmug7rpmzmsY5tXn3gGUs+0UVZShUwAy6NuWykPEJ8bCf
+         T1QI2TjDPb00x04dG7qi1sNIk8BqIseEIgNCLRk6c/aum+89KOygyuGIKyNmu8V016V9
+         akpNWsEXlDDTcJ7pbrFG8F2zUhJoFXxIsaBVlNe36yYSBv7ob+TpNtJtXkc4reiWpN4B
+         a95w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790512090; x=1791116890; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DcickMSZi9tlx6KRNzjylAz8LM/Bp4ZoL8EqqOqvY5M=;
+        b=BbYbyO4zlw/+BTGHKQQEDaUnBXdhSKiFufGWhPQGalR09kCBhBbY3TriGkr0pmOPrK
+         jpGVWj64dFgd6IeyioCjgoYlt4oiyO/Ssndsll9WXCAlvbDhXMBI8vdgbFBqJovO7WCA
+         +KZODJN05DMQo10vbauLBRol7+r5GNHXNest5rdg2R0F4A2AwRJCcHryUJj+He8lO+IU
+         g8QdEeWWXP0hE0M3dChuXjzTD/A8KgqXgkWjwaISNGFF4vVrtnHi3/w2Tmr2bHAYdohw
+         teHxsEa0D9jkXnrOrApMXadeMUhIxJkyu+OIsIZybxFmKfnuPvkdIE5BjOWqggfLJdhu
+         a8Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790511542; x=1791116342;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gCTWLbJQ8Ce/a5WTqLJ7RH9q86LaM3ig7/K74TA/OjE=;
-        b=OGPKM+Okt6RnX8PLaBFST8FIAFVGTAK+xwHwfUreKPWewgnKOvlF5w1uz6q7Hkf3nY
-         T0Bnp/XT/aicahUV15ia11YExnzMwayt2pRBWsSQw8qYfmIniPIJ1SD289WVGHyej1WB
-         vyHKlaStw2OL1TLo/dyjOgb5BIvPJ0Gm9+XJ1bta0fkLXnoc1YwZqTrE7PJvOhQ+IqgE
-         ujBE7ivtWuWD2focKwOsKew005F6SHWVRBhb1k31JwdW+5WocI6VtQiwbw8fDnjahjPE
-         LsHQrD/dp8EMyxDnN6M2AbCTflNruxBv08GUE2D2npRQ08UNfKZgWjB1DQbk25Oyt/YI
-         WPHg==
-X-Forwarded-Encrypted: i=1; AKwUvBwLW4ef26CrqcIC5KmT3f9ehIY2f2pp4sjD4yKH3YkUsz1uwt6dhrDIyXQXphTKBIZvwI417Fs=@vger.kernel.org
-X-Gm-Message-State: AFuF++mhFT2CGrZO+4YWC5D/tlrBw9scXCTogFMg7f+FiPwn3s0jSySZ
-	Dup36v5091KMqYKq/JYFIUDuoVwgoTlKAyQCyaIp3qyKtn8UhWLzsXXQtgRdXIzYsU0N62fz+N6
-	thGgnKYAChMCzru2XOk9VoOhy/znTvr7Y/qJB7USWx18nigKwkVOqQYO0PPU=
+        d=1e100.net; s=20260707; t=1790512090; x=1791116890;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DcickMSZi9tlx6KRNzjylAz8LM/Bp4ZoL8EqqOqvY5M=;
+        b=tYqbKZVBFywTmmdkhRN6/Vbzh5QVEDZaI46XU2A+RHwjVKBoxxHuWqLd4zGx6F7ch1
+         kv49svNX2bbhcdRE69p/+Bc6Y8N34sgYEFxRk3H0acpvc+y+GtJMmq6mmLliUH3q3lUF
+         G+1HHH/LSXJF5kLOCGhZ2ZuklseL4uk1twUBYeMhG8gWrxqOrBFSmr4s6ecM8IT5ztYo
+         tsDBUymkN9zHNBd9rplgaBniDx/opA9RBbp3gO+qbLYY0JBElBTHkATfIVr5dKcMJAcX
+         0ed/SifUuudRt3H7p5WEW5yMIaMzdSlaBryufDZyW39+y27ymFJHl664Kle8G6+kW+1h
+         2+sg==
+X-Forwarded-Encrypted: i=1; AKwUvBzI34kKfzaRzUmB9QncC7wMkXbwrvanMHkWLaDP6vr8cwJvAdFWgG7hbfErdYq8S/sGrYA7/dM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLC2AesTZa4mp/iN0l5r/8O3hQTBbLEnAOu5Fhkn0a5TtZYFtmA
+	X/tg7ziFDJLE0280dx4xrB5DVqOwI489Yr7SSDFlL+gjpWT+QN7tE5DwDu9jK83q0pu5YroxzAq
+	yYYnO18X78Hc8PR+vt57bEd0GRQGdro4=
+X-Gm-Gg: AYBFou1gY+tsqXFpmHYouAO9xyU9jK1sPLIzSpCEImX2oqdcatsx1OnqlFs8WBh053X
+	xThG9I44hUhrYTnSQfof72uer5LB1H9/+8XbBQyt/G23fl/wv5vT3ElFwds2vRX1gg4cEVu3PXk
+	aXo+KPgoE22wqMVyrNvrp+mtmXDoW6BEhr1cPjRLebxwu8PiLYy1rwTMnad6eABeEI3FDeVOag6
+	GaBIeQnCeRSxFfik9nVvF4LuASx7P9qhumE7xgdu+iCKOIJHICVzQhmFKWWwB7QAwItvXtit77B
+	69p1GNdxtQjjByECiCS52KFK+C/qL5OqRm/H5m5DraEavfOI4tKFXrnijBXqn1NS/+Bx0HhyAuo
+	WvRnrtjw1q5M=
+X-Received: by 2002:a05:6402:84c:b0:6aa:a78a:6a05 with SMTP id
+ 4fb4d7f45d1cf-6aae1a75d8amr6810931a12.0.1790512090262; Sun, 27 Sep 2026
+ 05:28:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:eca:b0:4c3:bc6a:a328 with SMTP id
- 5614622812f47-4d72df6fcebmr10064801b6e.31.1790511542277; Sun, 27 Sep 2026
- 05:19:02 -0700 (PDT)
-Date: Sun, 27 Sep 2026 05:19:02 -0700
-In-Reply-To: <arkFzpbQnWICoJDt@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab909b6.e548f532.1ca396.003c.GAE@google.com>
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
- (2)
-From: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
-To: azpijr@gmail.com, davem@davemloft.net, dhowells@redhat.com, 
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
-	linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	marc.dionne@auristor.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
+References: <20260731151426.3194039-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260731151426.3194039-1-nicoyip.dev@gmail.com>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Sun, 27 Sep 2026 20:27:59 +0800
+X-Gm-Features: AclHuK_N5TNcjl4ycZyFw4hCS9apkoJ8loGQgOYKm-VCZRyzq2zwxDrXoe9gA5U
+Message-ID: <CAAo+4rWo3Ok=7Qu__Hfc9JsFHNNy7vCU8KL7QX8nMbkAt20Nng@mail.gmail.com>
+Subject: Re: [PATCH net] rxrpc: Prevent poking connections after final put
+To: David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Jul 31, 2026 at 11:14=E2=80=AFPM Chengfeng Ye <nicoyip.dev@gmail.co=
+m> wrote:
+>
+> rxrpc_poke_conn() unconditionally gets a reference before adding a
+> connection to conn_attend_q.  This is unsafe for the connection timer
+> because timer deletion cannot stop a callback that has already started.
+>
+> The following interleaving can occur:
+>
+>   I/O thread                         Timer softirq
+>   rxrpc_put_connection()
+>     refcount reaches zero
+>                                      rxrpc_connection_timer()
+>                                        rxrpc_poke_conn()
+>                                          rxrpc_get_connection()
+>                                            increment from zero
+>                                          list_add_tail()
+>     timer_delete()
+>     rxrpc_clean_up_connection()
+>       timer_delete_sync()
+>       call_rcu()
+>
+> The refcount increment saturates instead of resurrecting the connection,
+> so cleanup continues after the timer callback exits.  The RCU callback ca=
+n
+> then free the connection while attend_link remains queued, and the I/O
+> thread later accesses the stale queue entry.
+>
+> The kernel reported:
+>
+>   refcount_t: addition on 0; use-after-free.
+>   WARNING: lib/refcount.c:25 at refcount_warn_saturate+0xc0/0xe0
+>   Call Trace:
+>    <IRQ>
+>    rxrpc_get_connection+0x185/0x1d0
+>    rxrpc_poke_conn+0x12e/0x2b0
+>    call_timer_fn+0x2b/0x220
+>    __run_timers+0x561/0x8d0
+>    run_timer_softirq+0x144/0x250
+>    handle_softirqs+0x18d/0x5b0
+>    </IRQ>
+>    <TASK>
+>    rxrpc_put_connection+0x2fe/0x3f0
+>    rxrpc_discard_expired_client_conns+0x396/0x670
+>    rxrpc_io_thread+0xbfc/0x1640
+>    </TASK>
+>
+> Use rxrpc_get_connection_maybe() while holding the attend queue lock and
+> only enqueue the connection if a live reference was acquired.  The normal
+> path for a live connection is unchanged.
+>
+> Fixes: 4241a702e0d0 ("rxrpc: Fix the rxrpc_connection attend queue handli=
+ng")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+>  net/rxrpc/conn_object.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+> index 0ece717db0f8..3f4516115d37 100644
+> --- a/net/rxrpc/conn_object.c
+> +++ b/net/rxrpc/conn_object.c
+> @@ -33,10 +33,8 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, en=
+um rxrpc_conn_trace why)
+>
+>         spin_lock_irq(&local->lock);
+>         busy =3D !list_empty(&conn->attend_link);
+> -       if (!busy) {
+> -               rxrpc_get_connection(conn, why);
+> +       if (!busy && rxrpc_get_connection_maybe(conn, why))
+>                 list_add_tail(&conn->attend_link, &local->conn_attend_q);
+> -       }
+>         spin_unlock_irq(&local->lock);
+>         rxrpc_wake_up_io_thread(local);
+>  }
+> --
+> 2.43.0
+>
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-kernel BUG in rxrpc_destroy_all_connections
+Hi David,
 
-rxrpc: AF_RXRPC: proc conn 7f4 cid fba44d28 state 7 ref 1 act 0 flags 2 cache_empty 1 calls 0000000000000000 0000000000000000 0000000000000000 0000000000000000 bundle ffff88802d3d1000
-rxrpc: Assertion failed
-------------[ cut here ]------------
-kernel BUG at net/rxrpc/conn_object.c:506!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 3 UID: 0 PID: 5762 Comm: kworker/u32:2 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: netns cleanup_net
-RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x34f net/rxrpc/conn_object.c:506
-Code: ff 90 0f 0b e8 6e a7 99 00 48 c7 c7 20 73 5d 8d e8 72 be af ff 90 0f 0b e8 5a a7 99 00 48 c7 c7 20 73 5d 8d e8 5e be af ff 90 <0f> 0b e8 46 a7 99 00 48 c7 c7 60 78 5d 8d e8 4a be af ff 4c 89 e7
-RSP: 0018:ffffc9000443f928 EFLAGS: 00010286
-RAX: 0000000000000017 RBX: ffff888054ab4000 RCX: 0000000000000000
-RDX: 0000000000000017 RSI: ffffffff81ea2579 RDI: fffff52000887f16
-RBP: ffff888054ab4064 R08: 0000000000000007 R09: 0000000000000000
-R10: 8000000000000000 R11: 0000000000000001 R12: ffff888054ab4098
-R13: ffff888054ab3e70 R14: ffff888054ab4078 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880d5e52000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe0fcd74e9c CR3: 0000000035950000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- rxrpc_exit_net+0x7b/0xc0 net/rxrpc/net_ns.c:113
- ops_exit_list net/core/net_namespace.c:200 [inline]
- ops_undo_list+0x2ee/0xab0 net/core/net_namespace.c:253
- cleanup_net+0x499/0x920 net/core/net_namespace.c:706
- process_one_work+0xac7/0x1b10 kernel/workqueue.c:3396
- process_scheduled_works kernel/workqueue.c:3479 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3560
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x34f net/rxrpc/conn_object.c:506
-Code: ff 90 0f 0b e8 6e a7 99 00 48 c7 c7 20 73 5d 8d e8 72 be af ff 90 0f 0b e8 5a a7 99 00 48 c7 c7 20 73 5d 8d e8 5e be af ff 90 <0f> 0b e8 46 a7 99 00 48 c7 c7 60 78 5d 8d e8 4a be af ff 4c 89 e7
-RSP: 0018:ffffc9000443f928 EFLAGS: 00010286
-RAX: 0000000000000017 RBX: ffff888054ab4000 RCX: 0000000000000000
-RDX: 0000000000000017 RSI: ffffffff81ea2579 RDI: fffff52000887f16
-RBP: ffff888054ab4064 R08: 0000000000000007 R09: 0000000000000000
-R10: 8000000000000000 R11: 0000000000000001 R12: ffff888054ab4098
-R13: ffff888054ab3e70 R14: ffff888054ab4078 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880d5e52000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe0fcd74e9c CR3: 0000000035950000 CR4: 0000000000352ef0
+I noticed that an equivalent patch from Seungwon Bae, =E2=80=9Crxrpc: fix
+use-after-free in rxrpc_poke_conn()=E2=80=9D, was included in your fixes
+series:
 
+https://lore.kernel.org/r/20260923133706.1496540-18-dhowells@redhat.com/
 
-Tested on:
+It appears to address the same race using
+rxrpc_get_connection_maybe(). Since I reported this race and submitted
+an equivalent fix on July 31, I would appreciate it if there could be
+a Reported-by tag, or Co-developed-by tag for me.
 
-commit:         a7bfaba4 ipv6: fix prefix route expiry in modify_prefi..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=13e06605580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
-dashboard link: https://syzkaller.appspot.com/bug?extid=89001660f14fb7684c83
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=124d5315580000
-
+Thanks.
+Chengfeng
