@@ -1,470 +1,149 @@
-Received: from mail-oo2-f37.google.com (mail-oo2-f37.google.com [74.125.231.165])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5E2469838
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 22:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.165
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790546445; cv=none; b=iaMYGg3P+8EmX6fTS9xSdgruzGEdYmMwFRGTBVKmnE812B/MpkvWu9QKLNCGdQc9l1bo7abhsBJ8L1J+hKhsHkHK6ajO8Iwy77PNIGXu6G00sqMix8lthLAZiqTjItLux5ukMAuUvSCPIYCCYt2ghtjIxQKli7KrNp3Ke2YO7Nw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790546445; c=relaxed/simple;
-	bh=VIduLl42KnAOTfMWR9Pr8MdjqMBHpV/GRP6MkSBNbqQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nNYkm07SIf1hWG3Q9AvXsG/ITJQ1ellmql5jiHf2Pp6qFH1S/5LNiM5rXiVbbA3XaKAsh5KX5YcHDjxLjnUTeHcVGPmijiQZic3/MYtOng2VNAJ0WaK1kEb35LyYHyqeKwBCXSm2ekahPeR2uZ3Y34BSg5WCLJMuGGExvmNAJc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tgm8p7ao; arc=none smtp.client-ip=74.125.231.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931073BED44
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 22:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790546504; cv=pass; b=pDx0EWqAtVuRRkLrHXJx5aZH8fxZK2dxhl1cFHAEMZW/X1HilFkZ34BSjvLTdnx64bCzxjzrMNqRVkkuXGd1BXoNmzZc/hNh/NBHcRk7vQeqJH5xzVw9O4StMBq8PYAtigzUbM6CNz+JgTMe3B2pgogUGTprNBn5vCHEhUKXWxo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790546504; c=relaxed/simple;
+	bh=Pyy7SD6RT8GeOcXKhheqQq5nrt238c/zkSEnH//QW/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PxAliIPeBXQaqODQLiAfPDCwdD0Th7VRdDoGoM1RhdG6tXFrUGawHHBMO0ZMtjSY+rIOJ1x+RbTM/xSPvHEI2lu+kJmj20jtfs7v9EdPUhEZFllwOQMLurgEivKAzuTYsuzrJ2P39ohpQtF8I7EqUkbYrcJehW8JRj85tuEC3DY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tCTlp+Ej; arc=pass smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tgm8p7ao"
-Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-80032c08611so2022649a34.3
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 15:00:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tCTlp+Ej"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-34182b58d00so1592740eec.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 15:01:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790546502; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Hh4m8E96aTAn//6gVNw6wLiJv+tgIIWncsS9wifk2VeShEldPE8xiB7gtCuMKPP/lT
+         WzDxUfQ6nb78GzWCXAdKllOwq45C8VvUf1Ff3KhLPJiLRdgC16ZNwKqr7iY0qfavY/oT
+         zDzaoInYOq1MGzhdYkLl9oPiBbW5hncbODqzCO+BHHAhqE3UoBNE+kAx2chfV6+Y9wlt
+         FrRO06kWOkBxqATVszm5KD6rIAUdzWUByGb3sky9qEnfkX/JYfuptCNlP7ch4X3d1gCV
+         NNtnA2VQagLNYg9eMQ3TpaS45kIZiMrxq5vUP7kcI4fVuIkA3S741hPmw1wae6cpOb0m
+         dx4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=SMH0IqJfE7oMGpkLO0PFMf9m4Si2ICbZ5UhcXcmawtI=;
+        fh=pNTNZ5ea/zHKv6stBXgrFMLLjInmBevnRNC8womPLDY=;
+        b=AL2YUSBTTTJ1VjzpuAEeocus+GiVHMKOWrzcsNLfJb+aO2bVJ7zYZVT0+9fr6cWj2j
+         ++cJboXil6LoSNV7JcnW8DsGsFYnkms02+XRkiA4E9QXxqO4BAcZ23/zoHKRVG4E1XOz
+         VzcUN2scrwwkN0hsalabE4J+IA4EZgVjiAvziEMxf6V7w3W7D9cWlftzagbSyWQIfVvg
+         Edbi3VsBYCthTb3kuIFVyQipCkLGAhdvVATUJG1IJU3xEwvaTOsS9hUmlPhlaSq6UVT4
+         hSK3HMLHS3V+ZhttxzQOSZCWda5sYaIF1DDha7MG8RPIAtvy6th68FG/rtu9rQ9ZIhbc
+         GW3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790546438; x=1791151238; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1gLUXzy2Xjx8Cab+i1wrgHaR5HLup8/A3/8/0Q1nuNo=;
-        b=Tgm8p7aomEGQBmCTuo+iZ07z+LtqbVWzEq7KmxtQoqXQiQNUzuYZvrH8lRPZrKy6F1
-         u9FIBRTupdPczT7aJxyYf85590QugF4gIr2rRa6MkbrfBkabq/LpPQ3qL+RbZqK2mRjp
-         OBfyMPrMBxWc4dL00WRf1IySSJUjI5rKKjN3DHQQU2iutG4HhzNCOviLIqtYTN+nAzXL
-         oAn9pKLk+e2Vn37CL4LeW/Z9PLzNvXiYBHmUvNhX6DhOsxoUa2PbeMOWEhb6WbfitTQd
-         lU8mQiENkmOyI291QaPdtqFjh9T5Ovj81zEUOFp47LqP+A0pGM0z13JJ4ST5mFkM/AWL
-         pl9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790546438; x=1791151238;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790546502; x=1791151302; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1gLUXzy2Xjx8Cab+i1wrgHaR5HLup8/A3/8/0Q1nuNo=;
-        b=o0zBnzjfLvT2Ej8BSRRYAkqcPB7ef+zzawLx9qeoK0U1d7tsC8NkI/j6c661AwUNKR
-         qiMS+Y4+FZ/89NJ1MpL3HQa508C3U9DcVZrhVtGt+L1CoVAJOA+JXhpei7h7+LHVNwmb
-         /THrXUvbUVkPfbuOsIfBtJs9gHBklKrw/xkVqfmJutISCbvrEXbOJHVwMPafvmtM6Rom
-         ynTbNzTRdNebjzJx6u4Z3ZEaME8iBYtASGLquDDhOuuyyxhaKJ5yHjsaTTJtnvrzjPY/
-         vvpWYeE0tpyG/mdlnWzGC9eld5Ud9pIrwwl3jvUXYE/86BJFqdtZoZvA/cBMeAZy42jG
-         V3ZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz0e6oDkRbbt5Q2/E2bnFlYv9r4zHDoU26RDtKZeLTWpacUesFpYeLcQq2BK4Xtjf0MSeImc8U=@vger.kernel.org
-X-Gm-Message-State: AFuF++k+IIrAePUGt00tDMklTBM38xvq4v+88aXYemTamLm+1Urlalod
-	x65D4RYnHRqhmtTtBUfNrRWTvGgy+LOLkV6h+izy7aky84M4fJ92o87W
-X-Gm-Gg: AYBFou09wWUx0nhg+U1werKVAQJ+erNz9NOwWx2IRIx8+3hgnfTK0KSoCED0zkBjBOj
-	jglcK09KPrvnW/WHrRkkN2Ghcoa8XxVa16QxsHpj8ozVXpiqALsCP9IK/1i5IoQgIJ13J64ZpKf
-	tYlgzhcmfNbXFhl2juelfpG9t6FunD0clHvBiSlYSHVd8iHcTlYxCzup4TrqH3rMb/p5isZg492
-	gfSXlg7PF737VK6X8eZ9rU63FltzK10h3PZ55IyAx10JXh+AwpNoJyDWIh7wfU3EnVtoQymBf+N
-	3B0ddzkeoERU5xW1O5oRcnuK1bGgZ9I8vkNPcQ3FCEf1dx7+lmnMdRxGvTyi/A3XsDsWUAWGW2v
-	OL7Dlb3rgSPosFXDX7JgEo+p1OZQ6Hg+V9I4ab01rxh0KYbtqMlWb8Gqod46vkFGhIHUQJgIA5L
-	iua+Ja5oQo27M41/ed9VxV9wA8to+cUXgB5nKVD5lHm9x0fWFwh6iwEbAoEM+wjc47Q/sFxhKLe
-	hZKbKSrJm5nr/FyfgQgtG1gZt86djXYcq6jP0W3QpMrZOgLo3UsjyUZeqAiGR2Iszx7rqRmCKay
-	2gr48U7QiWbwl6vyPeA1Ghvs+0q5ehKzhmcPhRnmoHJQwbI/mYhauo89imHlb72dF4QSjpoy7dD
-	/MwQoYWq7tX/tB6JOCkoTDg7sn35uSlnKIZq5cmi/fg==
-X-Received: by 2002:a05:6820:a28b:20b0:6d7:97cf:dba5 with SMTP id 006d021491bc7-6d797cfdd2emr2266574eaf.37.1790546437865;
-        Sun, 27 Sep 2026 15:00:37 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81b3de6f7e1sm4874147a34.22.2026.09.27.15.00.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 15:00:36 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 27 Sep 2026 15:59:54 -0600
-Subject: [PATCH net-next v5 19/19] net: stmmac: retain DMA resources across
- MTU changes
+        bh=SMH0IqJfE7oMGpkLO0PFMf9m4Si2ICbZ5UhcXcmawtI=;
+        b=tCTlp+EjqBpsbEkzwKQPznYxkm+SKuKq/FZbM+p2LFcohO171Qrqq4RLP7lTsXQFad
+         WvxJpf2CY9OpaBArRMOF3xX8sxqZWYrcaR1vRTalYUP0s4DUDxOSlNvFn/FElJBktEt8
+         z989klW9pMXUO6Uny0TwOGe8k+YxRY7rybLxgAW4XB3ySB9Ktd4OxBXa6O2YxPpgzFkN
+         rnVfRj3kP/ljxN5vYUZKhDLhpyRVEDwZG/3+j+J2GAvXiDe9LZ8yscqQ8aXHCh7swNNX
+         DZsHZ9I0APP5/pLZZ3b3xaKaz1iPg+t0TvVEWUBMChqUdDLts2W7QjSgHI8rQ5GWljG3
+         EhFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790546502; x=1791151302;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=SMH0IqJfE7oMGpkLO0PFMf9m4Si2ICbZ5UhcXcmawtI=;
+        b=yzIDHFMrTnRpWkzG2b+mzac5yvzJ3tf2xBSZwYoSQ3GmITl++I4kBeXX0nZahSn9dY
+         j0yVvUtKB0H/kasFRahNUrwsNRIPlRbP12D45HSg/lPvtUYps/j+CxFpStrrcaNEPL+g
+         fuTJi2WU9TZLw5RQHSiNv3kL2GBXRTAk3QEpq3HxZFk3Pq/2StUzpyfiB/Y3fJev9AL3
+         oFACqyjsMj5d9yUxNrBoFG7vn+oygtmEQOOVG5GWRpj4Y4YrrDwNcG74WHnmAn6tBBYJ
+         f0jGgK4UN77TQu86OY2/OKc34YqHTCX8+SIk1BU9y3WtnL2gmEoqslqiVuX3Jy0mfjFY
+         j9wg==
+X-Forwarded-Encrypted: i=1; AKwUvBym2yzNCUJhH/S6XRdCU0dZHp5iEKqAnZU4A0XptBCImanRDSiUihGNPZDilm+0G9CJu7ca5Og=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLsiGp+/vQ7BO+6IHtS21c7vPXCttHHA4+aRyfkpf/FhgUAtohx
+	/1V5tnxeAzKG4HSRudFbuoyjEY1VPTEltZUBRhhufCBGi+JAJH4lLck3IaOdrRtar+XQo97vUau
+	oP9Q0GHiJ8tZ/zc34onmIM9ABuVLXIQ==
+X-Gm-Gg: AYBFou1hVh+GHbizEHHj+uz39Y+V5IRawO27qE58HbqptblXp9wLHePv7lzyKbcmsNo
+	MyHflZ0z+C1QINshyoe8+JcCvoPijEObI90LZQDeqwJAiqgNZP1IhPw+aIaS+4MyU5SgFXMqRrr
+	nCqLo4Dx6Yk3ElhmETAbfgRsSrxdygaCmEV7sXSNASSgxLHsK+HUc7lAh8QZqK5KI6fE+RUwU0n
+	1IQ8Vq99LTdFClL1hfXqB/hVRBHutnfghClhpwTH5mAOZv01cAAmRVtH9wgyxFwodIqA1QOaPSg
+	K3Urn8b4jszyM/9Xkkl4JUrFBuX1meJ061QZOfYCWRdXBv61gsmQcYNBVTMVUcwYNo451qYei+v
+	WhqV+7VGgN9YQLkk33NjNZhMF19aXZwYvmlT5VaBv
+X-Received: by 2002:a05:7300:a986:b0:342:56aa:67a6 with SMTP id
+ 5a478bee46e88-342711ac262mr12259339eec.7.1790546502439; Sun, 27 Sep 2026
+ 15:01:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260927-submit-stmmac-reset-fixes-v1-v5-19-feec6c14dd06@gmail.com>
-References: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
-In-Reply-To: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
-To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Christian Marangi <ansuelsmth@gmail.com>, 
- Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>, 
- Suraj Jaiswal <quic_jsuraj@quicinc.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Joao Pinto <Joao.Pinto@synopsys.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, 
- Ong Boon Leong <boon.leong.ong@intel.com>, 
- Voon Weifeng <weifeng.voon@intel.com>, 
- "Song, Yoong Siang" <yoong.siang.song@intel.com>, 
- Linus Walleij <linusw@kernel.org>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Simon Horman <horms@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>, 
- Yao Zi <me@ziyao.cc>, Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Richard Genoud <richard.genoud@bootlin.com>, 
- Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
- ZhaoJinming <zhaojinming@uniontech.com>, 
- Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
- Ding Hui <dinghui1111@163.com>, Linkui Xiao <xiaolinkui@kylinos.cn>, 
- Linkui Xiao <xiaolinkui@126.com>, linux-tegra@vger.kernel.org, 
- linux-sunxi@lists.linux.dev, James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+References: <CAM6_QD_PoTdwdM7DvzzgHRs-G5EvQu-c5oNGve=GuKV4wFYAvQ@mail.gmail.com>
+In-Reply-To: <CAM6_QD_PoTdwdM7DvzzgHRs-G5EvQu-c5oNGve=GuKV4wFYAvQ@mail.gmail.com>
+From: Dane Linssen <linssendane@gmail.com>
+Date: Mon, 28 Sep 2026 00:01:31 +0200
+X-Gm-Features: AclHuK_bGK2LhVv48Yhx7dpSF3Davb0qw8vDUCuDua9qRMsw9hK28exKJJamUlk
+Message-ID: <CAM6_QD_xAyTFVvYKvCrrZmS+fV5DBBje9V=VdkDMMSpt2ussRg@mail.gmail.com>
+Subject: r8152: RX stops until rebind after -EPROTO on the bulk-in endpoint
+To: linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Cc: Mathias Nyman <mathias.nyman@intel.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Prepare the replacement configuration before quiescing the old datapath.
-Retain its rings and IRQ registrations until setup succeeds so rollback
-needs no new allocations or IRQ requests. Fill RX buffer holes before
-reset without altering active descriptors; rebuild the retained rings
-only after a successful reset.
+Hi,
 
-Mask the device DMA interrupt sources, gate shared-IRQ handlers and
-drain all registered handlers before the final transmitter and timer
-cancellation. Restore saved interrupt masks only after the selected
-rings and NAPI are ready. This leaves interrupt-controller lines
-available to unrelated devices.
+An RTL8156B on r8152 stops receiving and stays that way until the
+driver is unbound and rebound. TX keeps working and nothing is logged.
+This has happened 5 times since 2026-09-23 on one host. The two on
+2026-09-27 were captured; both followed several minutes of about
+10k rx / 6k tx packets/s.
 
-Program receive limits using the prospective MTU and restore the old MTU
-before rollback. Reapply PHC and TC state before starting DMA,
-preserving the PHC registration and packet timestamp filters. Continuous
-PHC time across the reset is not preserved.
+  Kernel: 7.2.6-1-default (openSUSE MicroOS)
+  Device: 0bda:8156, bcdDevice 31.04, fw rtl8156b-2 v3 10/20/23
+  Host:   HP ENVY 13-ah0xxx (i5-8250U), xHCI 8086:9d2f, 5 Gbps
+  Link:   1000baseT/Full, EEE inactive, pause off
 
-If rollback fails, leave the administratively-up interface detached in a
-distinct HALTED state: rings retained, NAPI disabled and IRQ
-registrations released. Close or a later down/up can finish cleanup and
-recovery without freeing IRQs twice. Retain potentially active DMA
-memory until hardware shutdown is confirmed.
+During the stall at 18:08, read twice 5 s apart:
 
-Fixes: 3470079687448 ("net: ethernet: stmicro: stmmac: permit MTU change with interface up")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac.h      |   2 +
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 216 +++++++++++++++++-----
- 2 files changed, 173 insertions(+), 45 deletions(-)
+  ethtool -S  rx_packets  117909777 -> 117909777
+              rx_missed        9214 ->      9504
+              tx_packets  111602790 -> 111603644
+  host        rx_packets  117835758 -> 117835758
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 06fe750624b6..a65253d309d0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -279,6 +279,8 @@ enum stmmac_datapath_state {
- 	STMMAC_DATAPATH_RUNNING,
- 	/* Resources retained, NAPI disabled, DMA stop requested. */
- 	STMMAC_DATAPATH_SUSPENDED,
-+	/* Failed MTU rollback: rings retained, but no IRQs or running NAPI. */
-+	STMMAC_DATAPATH_HALTED,
- };
- 
- struct stmmac_priv {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 435c76b7db30..7951b3e60d84 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1016,7 +1016,7 @@ static void stmmac_release_ptp(struct stmmac_priv *priv)
- }
- 
- /* ptp_mutex excludes configuration and crosstimestamp operations. The
-- * spinlock also excludes atomic clock reads while changing this gate.
-+ * spinlock also excludes atomic gettime callers while changing this gate.
-  */
- static void stmmac_block_ptp(struct stmmac_priv *priv, bool block)
- {
-@@ -2251,6 +2251,30 @@ static void stmmac_free_tx_skbufs(struct stmmac_priv *priv)
- 		dma_free_tx_skbufs(priv, priv->dma_conf, queue);
- }
- 
-+/* NAPI is stopped, but DMA may still be using the old rings. Fill holes in
-+ * the software buffer array without changing any descriptors. If allocation
-+ * fails, the old rings can continue unchanged. Otherwise rollback after a
-+ * reset will not need to allocate buffers.
-+ */
-+static int stmmac_prepare_rx_buffers(struct stmmac_priv *priv)
-+{
-+	struct stmmac_dma_conf *dma_conf = priv->dma_conf;
-+	u32 queue, i;
-+	int ret;
-+
-+	for (queue = 0; queue < priv->plat->rx_queues_to_use; queue++) {
-+		struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
-+
-+		for (i = 0; i < dma_conf->dma_rx_size; i++) {
-+			ret = stmmac_alloc_rx_buffer(priv, rx_q, &rx_q->buf_pool[i]);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /* Only after a successful DMA reset. MTU rollback has already filled holes;
-  * resume may need new page-pool buffers or a partially populated XSK ring.
-  */
-@@ -4425,14 +4449,38 @@ static void stmmac_synchronize_irq(struct stmmac_priv *priv)
- 			synchronize_irq(msi->tx_irq[i]);
- }
- 
-+/* Keep the IRQ registrations, but prevent DMA handlers from using the rings.
-+ * The caller drains handlers after quiescing every channel and restores their
-+ * masks only once the active DMA configuration is ready again.
-+ */
-+static void stmmac_set_dma_irq_state(struct stmmac_priv *priv, bool enable,
-+				     u32 *irq_mask)
-+{
-+	u32 channels = max(priv->plat->rx_queues_to_use,
-+			   priv->plat->tx_queues_to_use);
-+	u32 chan;
-+
-+	for (chan = 0; chan < channels; chan++) {
-+		struct stmmac_channel *ch = &priv->channel[chan];
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&ch->lock, flags);
-+		ch->irq_quiesced = !enable;
-+		if (enable)
-+			stmmac_set_dma_irq_mask(priv, priv->ioaddr, chan,
-+						irq_mask[chan]);
-+		else
-+			irq_mask[chan] = stmmac_set_dma_irq_mask(priv, priv->ioaddr,
-+								 chan, 0);
-+		spin_unlock_irqrestore(&ch->lock, flags);
-+	}
-+}
-+
- /**
-- *  stmmac_setup_dma_desc - Generate a dma_conf and allocate DMA queue
-- *  @priv: driver private structure
-- *  @mtu: MTU to setup the dma queue and buf with
-- *  Description: Allocate and generate a dma_conf based on the provided MTU.
-- *  Allocate the Tx/Rx DMA queue and init them.
-- *  Return value:
-- *  the dma_conf allocated struct on success and an appropriate ERR_PTR on failure.
-+ * stmmac_setup_dma_desc - allocate and initialize a DMA configuration
-+ * @priv: driver private structure
-+ * @mtu: MTU to size the receive buffers for
-+ * Return: the allocated configuration, or an ERR_PTR on failure
-  */
- static struct stmmac_dma_conf *
- stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
-@@ -4666,7 +4714,7 @@ static int __stmmac_open(struct net_device *dev,
- 	priv->dma_conf = dma_conf;
- 
- 	/* The PHY is suspended when the interface is reopened without
--	 * disconnecting the PHY, e.g. on MTU change. IEEE 802.3 allows PHYs
-+	 * disconnecting the PHY, e.g. on an ethtool change. IEEE 802.3 allows PHYs
- 	 * to stop their receive clock while powered down, but the DMA
- 	 * software reset in stmmac_hw_setup() requires a running receive
- 	 * clock, and phylink_start() below resumes the PHY only after the
-@@ -4823,20 +4871,22 @@ static void stmmac_quiesce(struct stmmac_priv *priv)
- static void __stmmac_release(struct net_device *dev)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
-+	enum stmmac_datapath_state state = priv->datapath;
- 
--	/* A failed MTU reopen has already released the data path. */
-+	/* There may be no resources left after detached XDP reconfiguration. */
- 	if (priv->datapath == STMMAC_DATAPATH_DOWN)
- 		return;
- 
- 	phylink_stop(priv->phylink);
- 
--	/* Suspend retains the resources, but has already stopped activity. */
-+	/* SUSPENDED and HALTED retain rings with NAPI already disabled. */
- 	if (priv->datapath == STMMAC_DATAPATH_RUNNING)
- 		stmmac_quiesce(priv);
- 	priv->datapath = STMMAC_DATAPATH_DOWN;
- 
- 	/* Free the IRQ lines */
--	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
-+	if (state != STMMAC_DATAPATH_HALTED)
-+		stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
- 
- 	/* Drain any final IRQ-triggered network activity before DMA shutdown. */
- 	stmmac_stop_tx_queues(priv);
-@@ -6723,6 +6773,109 @@ static void stmmac_set_rx_mode(struct net_device *dev)
- 	stmmac_set_filter(priv, priv->hw, dev);
- }
- 
-+static int stmmac_reconfigure_mtu(struct net_device *dev, int mtu)
-+{
-+	struct stmmac_priv *priv = netdev_priv(dev);
-+	struct stmmac_dma_conf *old_conf = priv->dma_conf;
-+	struct stmmac_dma_conf *new_conf;
-+	int old_mtu = dev->mtu;
-+	int ret, restore_ret;
-+	u32 irq_mask[STMMAC_CH_MAX];
-+	u32 chan;
-+
-+	new_conf = stmmac_setup_dma_desc(priv, mtu);
-+	if (IS_ERR(new_conf))
-+		return PTR_ERR(new_conf);
-+
-+	mutex_lock(&priv->ptp_mutex);
-+	stmmac_block_ptp(priv, true);
-+	netif_device_detach(dev);
-+	phylink_stop(priv->phylink);
-+	stmmac_quiesce(priv);
-+	if (stmmac_fpe_supported(priv))
-+		ethtool_mmsv_stop(&priv->fpe_cfg.mmsv);
-+
-+	/* Drain handlers before the final TX stop and configuration swap,
-+	 * and keep the registrations for rollback.
-+	 */
-+	stmmac_set_dma_irq_state(priv, false, irq_mask);
-+	stmmac_synchronize_irq(priv);
-+	stmmac_stop_tx_queues(priv);
-+
-+	ret = stmmac_prepare_rx_buffers(priv);
-+	if (ret)
-+		goto restart;
-+
-+	stmmac_stop_all_dma(priv);
-+	phylink_prepare_resume(priv->phylink);
-+
-+	/* MAC receive limits must be programmed for the prospective MTU. */
-+	WRITE_ONCE(dev->mtu, mtu);
-+	priv->dma_conf = new_conf;
-+	stmmac_reset_queues_param(priv);
-+	ret = stmmac_hw_setup(dev, false, true);
-+	if (ret) {
-+		stmmac_stop_all_dma(priv);
-+		stmmac_mac_set(priv, priv->ioaddr, false);
-+		priv->dma_conf = old_conf;
-+		WRITE_ONCE(dev->mtu, old_mtu);
-+
-+		/* Reuse the retained rings. Reinitialize them only after reset
-+		 * has completed, not merely after clearing the DMA enable bits.
-+		 */
-+		restore_ret = stmmac_hw_setup(dev, true, true);
-+		if (restore_ret) {
-+			stmmac_stop_all_dma(priv);
-+			stmmac_mac_set(priv, priv->ioaddr, false);
-+			/* Setup may have restored DMA interrupt enables. */
-+			stmmac_set_dma_irq_state(priv, false, irq_mask);
-+			stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
-+			stmmac_stop_tx_queues(priv);
-+			stmmac_stop_all_dma(priv);
-+			memset(irq_mask, 0, sizeof(irq_mask));
-+			stmmac_set_dma_irq_state(priv, true, irq_mask);
-+			priv->datapath = STMMAC_DATAPATH_HALTED;
-+			netdev_err(dev, "MTU rollback failed: %pe; interface remains detached\n",
-+				   ERR_PTR(restore_ret));
-+			goto free_new;
-+		}
-+	} else {
-+		/* Hardware setup completed its reset before using the new rings.
-+		 * The old DMA allocations can now be released safely.
-+		 */
-+		stmmac_put_dma_conf(priv, old_conf);
-+		for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-+			hrtimer_setup(&new_conf->tx_queue[chan].txtimer,
-+				      stmmac_tx_timer, CLOCK_MONOTONIC,
-+				      HRTIMER_MODE_REL);
-+	}
-+
-+	stmmac_set_rx_mode(dev);
-+	stmmac_vlan_restore(priv);
-+	stmmac_start_all_dma(priv);
-+
-+restart:
-+	stmmac_block_ptp(priv, false);
-+	mutex_unlock(&priv->ptp_mutex);
-+	stmmac_enable_all_queues(priv);
-+	stmmac_set_dma_irq_state(priv, true, irq_mask);
-+	stmmac_enable_all_dma_irq(priv);
-+	phylink_start(priv->phylink);
-+	netif_device_attach(dev);
-+	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-+		stmmac_tx_timer_arm(priv, chan);
-+	if (!ret)
-+		return 0;
-+	goto free_conf;
-+
-+free_new:
-+	/* Failed rollback leaves the registered PHC inaccessible as well. */
-+	mutex_unlock(&priv->ptp_mutex);
-+free_conf:
-+	stmmac_put_dma_conf(priv, new_conf);
-+	return ret;
-+}
-+
- /**
-  *  stmmac_change_mtu - entry point to change MTU size for the device.
-  *  @dev : device pointer.
-@@ -6737,9 +6890,7 @@ static void stmmac_set_rx_mode(struct net_device *dev)
- static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
--	struct stmmac_dma_conf *old_conf = priv->dma_conf;
- 	int txfifosz = priv->plat->tx_fifo_size;
--	struct stmmac_dma_conf *dma_conf;
- 	const int mtu = new_mtu;
- 	int ret;
- 
-@@ -6765,35 +6916,9 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- 	 */
- 	if (netif_running(dev) &&
- 	    (dev->mtu > ETH_DATA_LEN || mtu > ETH_DATA_LEN)) {
--		netdev_dbg(priv->dev, "restarting interface to change its MTU\n");
--		/* Try to allocate the new DMA conf with the new mtu */
--		dma_conf = stmmac_setup_dma_desc(priv, mtu);
--		if (IS_ERR(dma_conf)) {
--			netdev_err(priv->dev, "failed allocating new dma conf for new MTU %d\n",
--				   mtu);
--			return PTR_ERR(dma_conf);
--		}
--
--		netif_device_detach(dev);
--		__stmmac_release(dev);
--
--		ret = __stmmac_open(dev, dma_conf);
--		if (ret) {
--			priv->dma_conf = old_conf;
--			stmmac_put_dma_conf(priv, dma_conf);
--			/*
--			 * Keep the administrative state and PHY/PM ownership until
--			 * ndo_stop(), but prevent use of the released data path.
--			 */
--			netif_device_detach(dev);
--			netdev_err(priv->dev, "failed reopening the interface after MTU change\n");
-+		ret = stmmac_reconfigure_mtu(dev, mtu);
-+		if (ret)
- 			return ret;
--		}
--
--		stmmac_put_dma_conf(priv, old_conf);
--
--		stmmac_set_rx_mode(dev);
--		netif_device_attach(dev);
- 	}
- 
- 	WRITE_ONCE(dev->mtu, mtu);
-@@ -7632,11 +7757,12 @@ static int stmmac_bpf(struct net_device *dev, struct netdev_bpf *bpf)
- 		return -EOPNOTSUPP;
- 
- 	/*
--	 * Pool removal must succeed even after a failed resume. Release the
--	 * suspended rings before their pool or XDP buffer layout can change.
-+	 * Pool removal must succeed after failed resume or MTU rollback. Release
-+	 * retained rings before their pool or XDP buffer layout can change.
- 	 * Leave the interface detached until it is closed and reopened.
- 	 */
--	if (priv->datapath == STMMAC_DATAPATH_SUSPENDED)
-+	if (priv->datapath == STMMAC_DATAPATH_SUSPENDED ||
-+	    priv->datapath == STMMAC_DATAPATH_HALTED)
- 		__stmmac_release(dev);
- 
- 	switch (bpf->command) {
+  xhci debugfs devices/02/ep-context, bulk-in endpoint:
+    State running mult 1 max P. Streams 0 interval 125 us
+    max ESIT payload 0 CErr 3 Type Bulk IN burst 3 maxp 1024
+    deq 000000010bd3f960 avg trb len 0, virt_state:0x40
 
--- 
-2.53.0
+virt_state reads 0x0 when healthy, both here and on a second host
+with the same adapter. The stall at 18:59 looked the same.
 
+0x40 is EP_HARD_CLEAR_TOGGLE. xhci sets it when it hard-resets a
+halted endpoint, which includes a bulk transaction error that
+outlasted MAX_SOFT_RETRY, and clears it in xhci_endpoint_reset() once
+the class driver calls usb_clear_halt(). r8152 never calls
+usb_clear_halt(). On -EPROTO, read_bulk_callback() re-queues the
+buffer without logging, so as far as I can tell the endpoint stays
+out of sync until a rebind resets it. No "Rx status" warning was
+ever logged, so it wasn't a stall (-EPIPE).
+
+usbnet doesn't clear the halt on -EPROTO either, so I'm not sure
+whether the fix belongs in r8152 or on the xhci side. It looks close
+to what Mathias's RFC "fix xhci endpoint restart at EPROTO" (March
+2026) discusses [1].
+
+The host now keeps an xhci-hcd trace instance with only the reset,
+stop, set-dequeue and configure events, plus dynamic debug for the
+"Transfer error" and "-reset ep" messages. I'll send those from the
+next stall, or anything else that would help.
+
+[1] https://lore.kernel.org/linux-usb/?q=s%3A%22fix+xhci+endpoint+restart+at+EPROTO%22
+
+Thanks,
+Dane Linssen
