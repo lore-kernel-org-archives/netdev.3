@@ -1,84 +1,42 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7125FA29
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D81DDFE;
+	Sun, 27 Sep 2026 06:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790490293; cv=none; b=OYlC8tKY/wJnjwwTgRr4AQKf3iTs68I+yjk7zQpENr9Xd1LNa3xJiF99FwGclhnu9jf00jHR39Vk+RxcDqunP/iUzLqJsYACse9PaDhxYnxtKM+CdW3RIzBQDCH+/E4JcjLId1mHIbesj7gLFGMbVrND8YWiYILwEKk2q53nW2g=
+	t=1790490660; cv=none; b=WZ3rHXCMIghbcVC5n+ZUPWmvh0TQsvnl+SUtRJBjs1SP0qHiyuWOQ+DUbAJbBWj0YNq3hUEgqbKkvH1B8ZLGxwb7BpcY02AznZlBgHRvA6MUGLAT8Otz3mhzdfJA9N6fNzJXv3LvlFEq6Eq6Gs8cncPSmcQvxhJV9vkt28Mqzq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790490293; c=relaxed/simple;
-	bh=eT/fj5vZ0Sj0xWvtck5u0p9IG2kOT0o4JMJn6zf0/qU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m9hK88DVae2+sj0kye/LnAPC1PibT+GFnODdQ1OQwEati2KPMqTFmMCUm+9LYdJg2pxD3zMxIoMuruJDsS/opAU9a0s9WCBqofWZ0lV5g7qfD5m0BJb5eZ/yUAxvJzN9epOvrFVLPwERLSGrbX+rXFnNXg0BiRsuZKJSpOa21n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FBqWKevv; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790490660; c=relaxed/simple;
+	bh=NMVkelhdF9XpauXeWAA0NLB/wkZSiMnCMLj6Hjq1AE4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Hs/kAViT7SyCYhW01j/TD26tuaAPRKSaGEXqX9VhKZ58lRAFQo/eZibH6OsJkaNQ35AOLtdFAA6RvJpjIyZ6gOZ5W/UwPVTG2f9ne37roM44etCiaX04lwRtbWnawhTJJKp5TVtFSpE0e8VgXVhzzWLYX6WVGAgv2r9JYzq63x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCF3uWTd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FBqWKevv"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33bc6ff6cadso245941eec.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790490291; x=1791095091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9lvIFmMP4hhC0qEm4iuvni2Axxi7Wmdx8mVA3p2P2mI=;
-        b=FBqWKevvtUd2QdrC97qdrqzsBIb61h0S1+7pNq9x7edXsNUKxvnvhoOusCjDhLUPmz
-         AAW8nV4hay+UuN/6Pcw0fABgsGacFzX44OoeXxvPHRnEbJRcVu8UyphbwqBjhhgJ9/R7
-         mqeQ2CfV4tB9DWQwuN1DSmwnNVx25CBDwhU39r4qUP4BzGC1jjT/bkfIK4qJ3pN0eCXL
-         CoLFnO2wxnuPtfiqPgEkcl0R4KFvEOKFcTxEnVUsHUwUdndlSVNTInYuWptdN+kwE/hN
-         ZjrAFr4vFrHywWVWVht1vs6M3Lj/xE9wZkVPq3g6xAIGMLZ9JM6m6FHpMn10X53Ba2SZ
-         C05Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790490291; x=1791095091;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9lvIFmMP4hhC0qEm4iuvni2Axxi7Wmdx8mVA3p2P2mI=;
-        b=SGUilAJjcea85lE3+pyEySMcWwWYaNmtWh6lUxc76OCr9WGIHsBTulo/Tj4dbLyXaW
-         m/XVy0o/QUR5V1kW57VR70Xx/lie1Sy9l+JAYbl2qwZpdZg+0H1HLRIetMtgleaTbw5v
-         O/S4LprcqSEyAjN5uDa+1peGn+GNaADVlVTma5UPECIrDIP4u3fDJCYhOcqIltm/PPHy
-         E/VI8Z/Mgh/4Q1+u1tN7hl4nNOwSNHnzuGHU8j/XXNPQVyrlmbY2/cuqDkKoKZ8Vk/wo
-         EeETRyqStfVSoCdnZ4S7AAFnZSztPewutq8aIHK79VfYCZb3/dBkQLPa0i0dMOfGeKAk
-         yhpw==
-X-Gm-Message-State: AFq9FYJFls7YsaYFZ42X+p/u9os/zIV3o5okLzPKjiFGEKbjAN8RDuEx
-	p3h3e1qfifHfLty5YsYPDlOIMaz5aaV4AqG8GgzkdpaWF6PypylKBUZ6
-X-Gm-Gg: AYBFou3IcBAfKY8riTbzgLd2ZyjkJMkpNoQkstwz5CRRDSp5sNFni+RE0p20RFYtyYr
-	SVegNi3r7Tt7Ji3pMb9c6ulhPlcisDuqouWtWa9as/98qsnCMsETB0ViRsb8h8tZw12pzfDSKJS
-	cL/noE9XDBJMZehGIXWi2RqGyEVaA/Lwz4EAuOEnBQSoGk2mZcr2B7sLLEurPGY9Mt9hDrY5HMM
-	ecAwHUQVhOMCUZmsj/oEv2Wyvp8dCZ/W3vlEKncuYY62uzxPQu3WImQnLCJgRN53Bh+6knhSEmp
-	Xztlzf9BMVE/ZsEFwJNndm5l5RMhIGBNSEj9FNwQsrHkklMCwz6/X810XN7YN2DwX++AAEdnbxK
-	z/71v48dXDrD6g0lTJDfZIX2zTGcWaoQK7gf4Ew6SIut6zh7hZikYN7S7REApXlO3pPuH0uVvII
-	a0KKKVc6INdN/AB1EGYMPYLqB35YIcx+kpvz1kVb6lPn0Gkav6RCLRjXuNtscU18GkNB9RAJjby
-	6ncQt+Tz+pCK5sTsCer0tXGT6YNm3LmYvxtb+gj+cK5IUcrpzxL9rxl3RcoW39SyDFWtpewJInG
-	cNnm
-X-Received: by 2002:a05:7300:f64b:b0:33e:4e49:d08d with SMTP id 5a478bee46e88-34272b4bc81mr8484339eec.1.1790490291342;
-        Sat, 26 Sep 2026 23:24:51 -0700 (PDT)
-Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3413fc2413dsm19056291eec.0.2026.09.26.23.24.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 23:24:50 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hans Schillstrom <hans.schillstrom@ericsson.com>
-Cc: netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] ipvs: fix protocol data lifetime during namespace teardown
-Date: Sun, 27 Sep 2026 14:24:35 +0800
-Message-ID: <20260927062435.3690129-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCF3uWTd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57FE1F000FF;
+	Sun, 27 Sep 2026 06:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790490659;
+	bh=6Onuq46hT8HhCdCIsChHuCUHl1PPlOXGAOe3ar1Mxhg=;
+	h=From:To:Cc:Subject:Date;
+	b=WCF3uWTdPTErAMvPec+GadcsKld2nXpRLGOgtAzt+C11Laq03bcQTnrviRyiB3X6P
+	 MEiLnkexQyV5N1pm1PlbYuNc+nICvowUhMXbs0ihIhj9s848Yc4Cn9AymFkVQdnD8F
+	 ysYaFEJjJKc3cVVrLJjcDBCF0yMeC8+pJdn0fIc1U/bg/0ydgavTn5MqoO1NpwE15i
+	 Fdi0UNR3JZmGWTKXPBLxAoMzHQQmZy0nt0uQSNf17nNpAdJBRD3LNylu8kvz30ci53
+	 ISrgv0gsB3/xrxFbkXcnCxl/PkpQoQBFTPwsvK9/jfsQEWPc5Ap8Ye8fegMYGNlB/5
+	 3yaJaDyGTgZnw==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org
+Subject: [PATCH net-next v4 0/2] net/rds: restrict the rdma_cm ids to IB devices
+Date: Sat, 26 Sep 2026 23:30:56 -0700
+Message-Id: <20260927063058.170273-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,86 +45,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IPVS frees its per-net protocol data before control cleanup cancels
-defense work and unregisters the sysctl table. A defense worker can load
-a protocol data pointer, then namespace cleanup can unlink and free that
-object before the worker dereferences pd->pp or pd->next. The worker's
-securetcp_lock does not serialize with protocol cleanup. A concurrent
-defense-mode sysctl write can reach the same timeout update path.
+Hi all,
 
-KASAN reported:
+This is v4 of the rdma_cm id restriction (v1 at [1], v2 at [2], v3 at
+[3]).  Patch 1 is the restriction itself; patch 2 is a small follow-on
+the v3 review turned up in the function patch 1 touches.
 
-  BUG: KASAN: slab-use-after-free in ip_vs_protocol_timeout_change
-  Workqueue: events_long defense_work_handler
-  Call Trace:
-   ip_vs_protocol_timeout_change+0x1b4/0x1e0
-   update_defense_level+0x63e/0xd80
-   defense_work_handler+0x1e/0xc0
-  Allocated by task 125:
-   ip_vs_protocol_net_init+0xda/0x2f0
-   __ip_vs_init+0x16b/0x240
-   setup_net+0xfc/0x310
-  Freed by task 12:
-   ip_vs_protocol_net_cleanup+0x1d6/0x2e0
-   __ip_vs_cleanup_batch+0x7d/0x100
-   cleanup_net+0x38c/0x770
+  Patch 1 restricts the listener, the per-connection id and the probe
+  id to RDMA_NODE_IB_CA with rdma_restrict_node_type(), so the rdma_cm
+  never installs the RDS listener on, or binds an RDS id to, a device
+  RDS has no transport for.
 
-Run control cleanup before protocol cleanup so that defense work and
-active sysctl handlers have finished before their protocol data is freed.
-Initialize protocols before exposing the control interface, and unwind
-in reverse order, to enforce the same lifetime on initialization failure.
-Protocol initialization and exit do not depend on control state.
+  Patch 2 has rds_rdma_listen_init_common() print the port it actually
+  bound: the IPv6 listener sits on RDS_CM_PORT, not RDS_PORT.
 
-Fixes: 9330419d9aa4 ("IPVS: netns, use ip_vs_proto_data as param.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/netfilter/ipvs/ip_vs_core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Changes since v3 [3]:
+ - Fixes: dcdede0406d3 ("RDS: Drop stale iWARP RDMA transport") added,
+   with a note that stable trees without rdma_restrict_node_type() need
+   the separate handler fix rather than a backport of this one, and
+   that the two patches are independent.
+ - New patch 2 for the listener debug line.
+ - Rebased onto current net-next.
+ - The v3 notes linked the wrong message id for v2; corrected below.
 
-diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-index fd503f0efb57..8a3c880fdb26 100644
---- a/net/netfilter/ipvs/ip_vs_core.c
-+++ b/net/netfilter/ipvs/ip_vs_core.c
-@@ -2502,12 +2502,12 @@ static int __net_init __ip_vs_init(struct net *net)
- 	if (ip_vs_estimator_net_init(ipvs) < 0)
- 		goto estimator_fail;
- 
--	if (ip_vs_control_net_init(ipvs) < 0)
--		goto control_fail;
--
- 	if (ip_vs_protocol_net_init(ipvs) < 0)
- 		goto protocol_fail;
- 
-+	if (ip_vs_control_net_init(ipvs) < 0)
-+		goto control_fail;
-+
- 	if (ip_vs_app_net_init(ipvs) < 0)
- 		goto app_fail;
- 
-@@ -2527,10 +2527,10 @@ static int __net_init __ip_vs_init(struct net *net)
- conn_fail:
- 	ip_vs_app_net_cleanup(ipvs);
- app_fail:
--	ip_vs_protocol_net_cleanup(ipvs);
--protocol_fail:
- 	ip_vs_control_net_cleanup(ipvs);
- control_fail:
-+	ip_vs_protocol_net_cleanup(ipvs);
-+protocol_fail:
- 	ip_vs_estimator_net_cleanup(ipvs);
- estimator_fail:
- 	net->ipvs = NULL;
-@@ -2547,8 +2547,8 @@ static void __net_exit __ip_vs_cleanup_batch(struct list_head *net_list)
- 		ipvs = net_ipvs(net);
- 		ip_vs_conn_net_cleanup(ipvs);
- 		ip_vs_app_net_cleanup(ipvs);
--		ip_vs_protocol_net_cleanup(ipvs);
- 		ip_vs_control_net_cleanup(ipvs);
-+		ip_vs_protocol_net_cleanup(ipvs);
- 		ip_vs_estimator_net_cleanup(ipvs);
- 		IP_VS_DBG(2, "ipvs netns %d released\n", ipvs->gen);
- 		net->ipvs = NULL;
+Changes since v2 [2]:
+ - The changelog no longer claims a handler-side rejection exists in
+   this tree; it names the separate net fix for the handler and the
+   a760e80e90f5 prerequisite.  The node_type half of the
+   rds_ib_laddr_check_cm() test, dead once the id is restricted, is
+   removed rather than described.
+
+[1] https://lore.kernel.org/netdev/20260917074108.174262-1-achender@kernel.org/
+[2] https://lore.kernel.org/netdev/20260919061042.250462-1-achender@kernel.org/
+[3] https://lore.kernel.org/netdev/20260922084837.390414-1-achender@kernel.org/
+
+Thank you,
+Allison
+
+
+Allison Henderson (2):
+  net/rds: restrict the rdma_cm ids to IB devices
+  net/rds: log the port a listener actually bound
+
+ net/rds/ib.c             | 14 ++++++--------
+ net/rds/ib_cm.c          | 12 ++++++++++++
+ net/rds/rdma_transport.c | 13 ++++++++++++-
+ 3 files changed, 30 insertions(+), 9 deletions(-)
+
 -- 
-2.43.0
+2.25.1
 
