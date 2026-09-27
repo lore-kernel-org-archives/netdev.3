@@ -1,169 +1,212 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3805C3B05A6
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 15:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790522650; cv=pass; b=b1H8PjfOdBtRizd7RwLcbN3hGs/kBbg5pRg2ClzRHGxmns7Yam56+a64jwk5OXrvayLPWw1pii3qcr619E0YdzpRsD4fmA9ldmwZLqtR4ExMSSdS2wGtk+lx9Mcbh0V2sICdaeRJNrJN6hHKzz2HIJ97aZerK4Bp08NPjKHePsI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790522650; c=relaxed/simple;
-	bh=IqYOXuenTrd/G7JC31ZlM5cYuEr0pOS90JESQYxp+5A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IWns8NDeS70Tg6l0eufLD9lBetubwq+24A7qRf2PraQ2BVy0R/ndu8QXALs1eZDf0OFaEBEo7g+dtpTFmzGG6I8JadUAZZl6SaFP5aHD3xvF2IcvaZ7kl9NFHi0A4BiAzAUFNf/kdndPoOhfdH9tXoHhII0JtQ9SOzoaHKzDjhI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=bvDNLnlw; arc=pass smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FC124A078;
+	Sun, 27 Sep 2026 15:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790522862; cv=none; b=Cd+YtB5P+tMiKWbdtik+48uQA32fnH6pzsGN+AFriTsTXDNOp99F3sF4zoa09z8TDxAzQs2GyDwUMBQtspN6aIxZsoVL4weGovXAU6ySn+xsOoVV1NBCDxtGW6Nar+JZYePkKq4Co2jdeUIbuxAi4PDFtqOEreU4T7y4ZposHzI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790522862; c=relaxed/simple;
+	bh=ZZctbrUtdp2u1m5vR8OUb3RsnNvd4XESXPNyA9NR6/4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ozPkFoOyFyTBezebjeiSzGmhsqebigwA4iD7dWxIc5fZi5cr3uqmts4Jk8L26/KGIWcq0iB3OYitAfkwjEdad81o8j5a23yIwO0XL99o3seMBXj/ph2lwmnrBNUI3ZnLSZNG4d5/LATR/GZhE6seeouBI0xv/VU+1p2WaYgPcPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJ9lOZUi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="bvDNLnlw"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a20f06cce6so25880501fa.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 08:24:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790522647; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sFXbF4psAtpeZ4jsTnZkZTMKBXtI6ekmmErBB4Mmg8HRVqNJ8iTY4aWd7o7e+p1nz4
-         XLeiTpwHLUoveCVEKfUY3cabGCtZPqRXbJtnx4ISX7OBslR1Mr4b89bVK3FB/njD54lv
-         JvnC4nyVbX8v/ioUHFeyYc83BXcjx43LvQ2F8p7gz0ywF7uSV39aq3FQwqtFqVxoyUet
-         jY/xU/GxcP76Y55W/oK4IGD8nLS2j1MTLmqMVcsu28Q2d3qGbISvSQRS7Bx2HeRi5sCb
-         Sitgm16l/Wup//1xhqYDOL1OVC3aYqWdCnjqtFXXDVJ3gFR7XAY3n9orVx50T0FA2phH
-         0boA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
-        fh=/FCEeOiMS8m+kRIO4gOCiw27YOf5yAaPjL4meAdn3gA=;
-        b=Zp+6gCN1V5FVWP7/NwySU/nSfwRutGG2clggRmQzcTqB1V3eBwPR/qG5+MGfWaFYwm
-         9OmNJDIvWh8arPvXCICvLHHfyyQRTtF4yDJZSJ0IjAYdnby1W6mnXjSDh/fdipBRKMR3
-         H/cJjGsOpZ6RKxDrtxh15+7wpIUdyN5WLggiw/AJaTBtG+MEiH8C92hMTU1lo1nTg9fL
-         LQgxmLbIykhbj779vFIi910rYhHeImoXGeyTWSYSydAe1RN1ujq9Nm1DTv96dKPsBvbj
-         tP42gJLg0cQ4qGQ48fYz5EJjLD6+BIjEe4ILtdiEqiWAklOnbXAn2nDovJXfmPQMm9Jn
-         87pg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790522647; x=1791127447; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
-        b=bvDNLnlw3JWJDcmPd1MdT2k8B/AD8S1/hBjBPSJfveFXjXweDtRMb6xHaSLFcvHEjt
-         6hceiOSwN3ndIPKPTRB/32pmlI4+YDqNN+sDOcKC1rQGCzDtFsPOr9HQhltk2PXDoCuH
-         B/VJXKsTUvALDvnAI1c1VlIlUOZGY47Lteh4Qh5aLu1vvbkOWw6Godf5Fp65Hnq/16/6
-         0sZ34cy7So17e4pmIjOnFVt0YWZFID3UogeyuNN9qeWCLFNziTUhsrQDC8aE70EOf7sO
-         u9IoXKkjPfhv/GtIJO52vYBzc6W+gjv17Lc3Jx6EXZ52ymTPadq6FT6DqDkGKn9xuI7i
-         XnfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790522647; x=1791127447;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lYYzgThSGrD/5n0iLNuP+nmqXn5Ij30rBL7XkqdHCKk=;
-        b=wDly8mQSnI4DobYxDe8GgSKBGNAYMnCMhrutwZ7YQgFx5csVHnmvNFkUairGIq47lY
-         yJCzd2AY6dd6aMoFhwXlJIUWymAVQZ9doBYPWQV0GFSe+X2oLbT7i11N/c0eSW5Ip1NL
-         DJwed/XZfX2XtIoDn23U8FlYQZpC//LWtEVuj0qpPJnWjXcyuLJGlupI8UawpFMHP07W
-         RJd7UFK5Ht5BI39T5K+PJGajXXIfQOD+6+BeqNKc1YU0sM73RaTaY/gqSja4DBZwK4M3
-         ZU5tMHYLdSCpEaKCn/RlUn3jBVvd6jux+WaWp7gIZEhLeN5V773hNFpOX1w5LLZ62xti
-         P6ig==
-X-Gm-Message-State: AFq9FYJekTU4Nxb52HigIWs6mKnmMdCuXJyGxsya9VJHHwf4YhWNeOwz
-	Q8T/NnPEPPGHKK3/svaqovO3V+lQYkHcMEp3wuvtwzXmUw0tRp7pEAdeRGEwQykxnYNcTGbwh1/
-	kXkl7FetbJdKD0LVwqaspDJFhLBIu7teZMczZYK3AyKw=
-X-Gm-Gg: AYBFou3/DMk7XRXIWdSRQlQxZiL+CrQPwzkzbXFHlKvlOfw6NdQYBcpWuk1nm0s5qbL
-	P/SlWT+Sj1qwggh4dHKR84jj5FUDAzY+oxdSqi4zuUDFBney5EcvqJg+kxVlU+xvL9ZORV8n2sG
-	pOPsitb+RmZeoPYHQ7efsPoeuaCLsprEGcYT42Zm1vHR4wNRIST9ZF2kmIfKirIKGjwIE8Bcozm
-	tknCRPrWGD7JHradexTMBeoybT5ZEkXqUh0QRSXPrps9kU9B74tHFoXFk1O2S9pp7B4nSXRtNNA
-	UNEA1v+pniU9ygM9EV38MmsOI7yq6qMhYwooOFGIXOtv3kyXLG/E7Y87PRgnI+h47hpWs/XdNkz
-	4iEMBRx76zw==
-X-Received: by 2002:a05:651c:1585:b0:3a3:61ec:43c7 with SMTP id
- 38308e7fff4ca-3a63c2fbf19mr25857111fa.24.1790522646186; Sun, 27 Sep 2026
- 08:24:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJ9lOZUi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21C41F000FF;
+	Sun, 27 Sep 2026 15:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790522861;
+	bh=ogmrucsA1GTOgB+NrmzwiRT9ggqTpVQd1FndsO0P5oI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XJ9lOZUioQgut0C+aOfkbVUFgxqx+RqYjpyXr8Jxy96ecgJqIkV1RCw6UOWab7LNK
+	 npnuMdCqFqPBu9Vdz+Xi44WpWRa/15gSMFKdNf5nOHEdnlGxcLgTLbbcX1v0jddA4n
+	 DTtcwbsgTHAczjpdB+WGatG5qHLVM+mdPShuwxaepAgUI5gwFUtZe9mY5VgWXfjDJz
+	 BtJTkK+/GCWmv31H+SAzM45DBdD1l3UWzQfWq6QdTk5HVxRYyqcgVECZfZiZOFeWGp
+	 N4REtcWRX2FuCnemnQtHe5E7Atjb6TOZh1k3QkQTDEqvZXKoKCywobAYj8fRFS/M3A
+	 Iybgv4QrKdwZA==
+Subject: Re: [PATCH net] net: mana: reserve RX buffer headroom to fix
+ forwarding performance
+From: netdev-bot+sashiko@kernel.org
+To: hamzamahfooz@linux.microsoft.com
+Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, horms@kernel.org,
+ ernis@linux.microsoft.com, dipayanroy@linux.microsoft.com,
+ gargaditya@linux.microsoft.com, jacob.e.keller@intel.com,
+ ssengar@linux.microsoft.com, linux-hyperv@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 27 Sep 2026 15:27:39 +0000
+Message-ID: <179052285930.2160803.11184804113286091670@kernel.org>
+In-Reply-To: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
+References: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1790266803.git.zihanx@nebusec.ai> <ce3d490f-4be4-7eaa-0993-c1e4d1fd863c@ssi.bg>
-In-Reply-To: <ce3d490f-4be4-7eaa-0993-c1e4d1fd863c@ssi.bg>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Sun, 27 Sep 2026 23:23:52 +0800
-X-Gm-Features: AclHuK_dLGbaKOOdt-gDveLynvCg56unCBYk_KeFbEJfV6pwu-pvHxZdAFl9y-U
-Message-ID: <CAANe3eTgtXLVzrXuXQykh67XaUzGj-kWKzB1Sp0fwT0kZ_74Pg@mail.gmail.com>
-Subject: Re: [PATCH nf v5 0/3] ipvs: avoid stack overflow from recursive
- connection expiration
-To: Julian Anastasov <ja@ssi.bg>
-Cc: netdev@vger.kernel.org, lvs-devel@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, horms@verge.net.au, pablo@netfilter.org, 
-	fw@strlen.de, phil@nwl.cc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 27, 2026 at 10:07=E2=80=AFPM Julian Anastasov <ja@ssi.bg> wrote=
-:
->
->
->         Hello,
->
-> On Fri, 25 Sep 2026, Zihan Xi wrote:
->
-> > Hi Linux kernel maintainers,
-> >
-> > We found and validated an issue in
-> > net/netfilter/ipvs/ip_vs_ftp.c and net/netfilter/ipvs/ip_vs_conn.c. The
-> > bug is reachable by a non-root user via a user namespace and a network
-> > namespace.
-> > We've tested it, and it should not affect any other functionality.
-> >
-> > This series contains 3 patches:
-> >
-> >   1/3 Fix the timer callback race during IPVS connection deletion.
-> >   2/3 Replace recursive controller expiration with an iterative cleanup
-> >       path.
-> >   3/3 Reject zero and configured FTP control ports as data ports.
-> >
-> > We will provide detailed information about the bug
-> > in this email, along with PoCs to trigger it.
->
->         There are some valid concerns in the Sashiko review
-> that we should solve with v6, so we are dropping v5.
->
-> pw-bot: changes-requested
->
-> > Best regards,
-> > Zihan Xi
-> >
-> > Julian Anastasov (1):
-> >   ipvs: wait the running timer cb on conn deletion
-> >
-> > Zihan Xi (2):
-> >   ipvs: avoid stack overflow from recursive connection expiration
-> >   ipvs: reject FTP control ports as data ports
-> >
-> >  net/netfilter/ipvs/ip_vs_conn.c | 117 ++++++++++++++++++--------------
-> >  net/netfilter/ipvs/ip_vs_ftp.c  |  18 +++++
-> >  2 files changed, 85 insertions(+), 50 deletions(-)
-> >
-> > --
-> > 2.43.0
->
-> Regards
->
-> --
-> Julian Anastasov <ja@ssi.bg>
->
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Hi Julian,
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
-Thanks for the review and for preparing the timer-callback fix. Understood
-that v5 is dropped and the series will be resent as v6.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I=E2=80=99ll revise my iterative-expiration and FTP-port patches to address=
- the
-relevant review points. Once your v6 patch is available, I=E2=80=99ll rebas=
-e the
-series on it and recheck the combined changes, particularly the controller
-lifetime handling. I=E2=80=99ll also clarify the active-mode condition and =
-how the
-FTP path can extend the controlled-connection chain.
+- [High] With XDP attached, the patch sets rxq->headroom to max_t(u32,
+  LL_RESERVED_SPACE(ndev), XDP_PACKET_HEADROOM) in…
+- [Low] mana_set_priv_flags() (mana_ethtool.c) keeps its own copy of the
+  old rule for when one buffer per page is forced anyway: `ndev->mtu +…
+- [Low] The comment above mana_get_rxbuf_cfg() still reads "Get RX
+  buffer's data size, alloc size, XDP headroom based on MTU".
 
-Regards,
-Zihan
+--
+
+net: mana: reserve RX buffer headroom to fix forwarding performance
+
+This patch reserves LL_RESERVED_SPACE(ndev) of headroom in MANA RX buffers,
+so forwarded packets no longer have to be reallocated by
+pskb_expand_head() to satisfy skb_cow() in ip_forward(). With XDP attached,
+the headroom is the larger of that value and XDP_PACKET_HEADROOM. The
+frag-vs-single-buffer decision now uses the computed buffer size instead of
+comparing the MTU against PAGE_SIZE / 2.
+
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 591fb4191d90d..e3f3b33ba9062 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -758,6 +758,36 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
+
+[ ... ]
+
+> +static u32 mana_get_rxbuf_headroom(struct mana_port_context *apc)
+> +{
+> +	u32 headroom = LL_RESERVED_SPACE(apc->ndev);
+> +
+> +	if (mana_xdp_get(apc))
+> +		return max_t(u32, headroom, XDP_PACKET_HEADROOM);
+
+[Severity: High]
+With XDP attached, can rxq->headroom now be larger than
+XDP_PACKET_HEADROOM while the XDP path still assumes 256?
+
+MANA_HEADROOM is sizeof(struct mana_skb_head), and that size grows with
+MAX_SKB_FRAGS. CONFIG_MAX_SKB_FRAGS can be anywhere from 17 to 45. With
+17 or 18 frags, LL_RESERVED_SPACE(ndev) is 256. With 19 to 45 frags it
+is 272 to 592, and then max_t() returns that value instead of 256.
+
+The NIC writes each frame at va + rxq->headroom in mana_get_rxfrag():
+
+    *da = dma_map_single(dev, va + rxq->headroom, rxq->datasize,
+                         DMA_FROM_DEVICE);
+
+However, mana_run_xdp() in mana_bpf.c still does:
+
+    xdp_prepare_buff(xdp, buf_va, XDP_PACKET_HEADROOM, pkt_len, true);
+
+On XDP_PASS, mana_build_skb() then reserves
+xdp->data - xdp->data_hard_start, which is 256 rather than
+rxq->headroom:
+
+    skb_reserve(skb, xdp->data - xdp->data_hard_start);
+
+In those configs, would the XDP program, the XDP_PASS skb, and the
+XDP_TX/REDIRECT/AF_XDP frames all start (headroom - 256) bytes before
+the real frame? The leading bytes would be stale page_pool contents, and
+the tail of the frame would be cut off.
+
+There is a related question about the MTU limit in include/net/mana/mana.h:
+
+    #define MANA_XDP_MTU_MAX (PAGE_SIZE - MANA_RXBUF_PAD - XDP_PACKET_HEADROOM)
+
+This still budgets 256 bytes of headroom, while the XDP branch of
+mana_get_rxbuf_cfg() keeps *alloc_size = PAGE_SIZE. mana_xdp_set() uses
+MANA_XDP_MTU_MAX both for the MTU check and to set max_mtu.
+
+At the largest accepted XDP MTU, does the DMA window now run
+(headroom - 256) bytes into the skb_shared_info area that
+napi_build_skb() initializes afterwards? If so, fixing only the
+xdp_prepare_buff() offset would leave this limit wrong.
+
+Before this patch the XDP headroom was always exactly
+XDP_PACKET_HEADROOM, so these values always matched.
+
+> +
+> +	return headroom;
+> +}
+> +
+> +static u32 mana_get_rxbuf_size(struct mana_port_context *apc, u32 mtu)
+> +{
+> +	u32 len = SKB_DATA_ALIGN(mtu + MANA_RXBUF_PAD +
+> +				 mana_get_rxbuf_headroom(apc));
+> +
+> +	return ALIGN(len, MANA_RX_FRAG_ALIGNMENT);
+> +}
+> +
+>  static bool
+>  mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
+>  {
+> @@ -770,11 +800,16 @@ mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
+>  	if (apc->priv_flags & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF))
+>  		return true;
+>  
+> -	/* For xdp and jumbo frames make sure only one packet fits per page. */
+> -	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc))
+> +	/* For xdp make sure only one packet fits per page. */
+> +	if (mana_xdp_get(apc))
+>  		return true;
+>  
+> -	return false;
+> +	/* Only use the page_pool fragment path when at least two buffers,
+> +	 * including the headroom each of them has to reserve, actually fit
+> +	 * into one page. Otherwise the fragment path degenerates into one
+> +	 * buffer per page while still paying the fragment accounting cost.
+> +	 */
+> +	return PAGE_SIZE / mana_get_rxbuf_size(apc, mtu) < 2;
+
+[Severity: Low]
+Should mana_set_priv_flags() in mana_ethtool.c use this same rule? It
+still has its own copy of the old one:
+
+		if (ndev->mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 ||
+		    mana_xdp_get(apc))
+			return 0;
+
+The comment above that check says single-buffer-per-page "is already
+forced regardless of this flag", so the detach/attach cycle can be
+skipped "since nothing changes".
+
+On 4K pages with an MTU of about 1459 to 1714, which includes the default
+1500, the old check is false. The new rule here already forces one buffer
+per page in that range (buf_size is 2112 at MTU 1500).
+
+Toggling the full-page-rx private flag at those MTUs would still run
+mana_pre_alloc_rxbufs(), mana_detach() and mana_attach(), even though the
+RX layout doesn't change. The mismatch only goes this way: a
+reconfiguration that is actually needed is never skipped.
+
+>  }
+>  
+>  /* Get RX buffer's data size, alloc size, XDP headroom based on MTU */
+
+[Severity: Low]
+This isn't a bug, but this comment still describes the headroom output as
+"XDP headroom". After this patch, *headroom is always set from
+mana_get_rxbuf_headroom(). Without XDP, that is LL_RESERVED_SPACE(ndev),
+reserved for the TX-path struct mana_skb_head.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923144500.4073380-1-hamzamahfooz%40linux.microsoft.com
