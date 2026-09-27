@@ -1,217 +1,205 @@
-Received: from mail-vs2-f38.google.com (mail-vs2-f38.google.com [74.125.227.38])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB70547064
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FFB1A683E
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790467559; cv=none; b=FqMY3fgB7VVrB63+KOd6hVdh6IbC/meeA9FcDW+t/Nk1DvGOBn4OZz7yf2oHYiGVsm33rIJ2xR8JGlP6n0N2L3PHaG1BKAm2GSPlE4HsOl6/PR29jvJack5rP2bBsYoUl3+rXLG6ieVo0pE9+2PJ7ZNf7v0zxwr4H4uP3RpFP0Q=
+	t=1790468365; cv=none; b=U1JUFt/Uew3ckHtZRTfuN90HVMRTpMk7inbYkoSucERsrWubIrGrYM6Oew2Tf8adBmKxmAn2tE94KKd+4GfPddNwIf5i7seSNj1GSJ0GSAvlWHUh8Pn699euLGLXqYgX34JR3S6IhcldF8FuO1SSrPysROSm2O0Ft+TZOEwhLYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790467559; c=relaxed/simple;
-	bh=HY826dZvlDafSAmJnu8Emmcu0uaPOPCZiR/8k0qM/AY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W/9o8cevlo1gVu70v7ZXVVJFxy5nH4IRlqRkpjxaKyTomdvrp6j+yuIhSG8zPztqyt8wNMMrBh2IYqTboGcyfGkBvrImOsHNIo8Wb5ZacrVKIt1KyD5JMM6bSAO8bYzN6I5xnba5BuHT5IcyonGxk/iD0UuJUyN4WYbBaob/0cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/l3IGgi; arc=none smtp.client-ip=74.125.227.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790468365; c=relaxed/simple;
+	bh=OpxJJg/lpzy9Omuc4zH4GerzVWXFIKf5U5NmmEG2bEY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ch/nZ+OyXVItzGBEL2zdZtkUdwsb7WvG0gJy6J+98lIwk53WqqmobK7n06TIq90lkg5qXchPcUIblYh9GBcqJVBWBqOPSpsP65vuzIMyb4PZW5nuBeO4PXMASK0u+UMAVp2yOOvwsuYxB6k0sQ9JfMdZYa+pMLzfUDHhboMqPWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VNVQY3zH; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/l3IGgi"
-Received: by mail-vs2-f38.google.com with SMTP id 71dfb90a1353d-5cddebe9b2cso760426e0c.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:05:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VNVQY3zH"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-385d2703b64so2383815a91.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790467557; x=1791072357; darn=vger.kernel.org;
-        h=content-type:content-transfer-encoding:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qkRCXQhv0Hnw4Etkjk3usHzodyvWdz99tiVp5tvgSSY=;
-        b=l/l3IGgipmseb+ZoMh2tfsYk3JN8vlPYQa5VOAHUOjoUca2LxjoTVX0SRLqYVJV4Am
-         9kZBCoicWDYezNdy68yTQw5oEB2zyDe87Bg/b/ki2/WYorUNRxZeRpvxc9J/pmeEaq1j
-         Us+h9X51D+pWZwD5k1Gh7V3SoOo49HTuSJ7fcqzIJ2QRXPha7e3JUFGoXi2aFKczcfxK
-         4PuEVe3zqJ8En5PavMBMDZqK81jUYEbmCJoP8lPlJcbK+rJZIEDJslPEA4PZAbcJORlp
-         bKStVPeRDcI101mvLWpMsj+IfX1GgcZVrSjGUYcaqDYGpl3x3cf6z2GpJMuDzaEYjYTO
-         FnVQ==
+        d=google.com; s=20251104; t=1790468363; x=1791073163; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IEdIa9RMQ1QXL88PLw7o/+9OHA7bgZryG9p24nbS8RY=;
+        b=VNVQY3zH4TF2gZ50SdretIZ4V1n7t7i7ZrEer29/sqT1/8dzeGsIlNkBM1UoQDjkqo
+         cU6T2x9B9vGma8LeKaxCcl0ohuHeA2ArxlWxy+A75CLc3KJ8f2X520lnXsSSC9A/ftlS
+         gB7rz8C1EcinpLiqB2Y0yViH54kFohLGUvhJme6xLt6XfGrWzR7wcsaqY5EJ81NWrHwu
+         Vi7KnsjFER9lzo3Y9tJNqjaIdODY2ZyDlwTr/dM2eHekDEnxqthmaH5JGjkHbhy4kJB2
+         MQp3rTDYAs7v1CVUxN4tufCXDiXCJ/VaZO2YYVjKCzcuXnOO89XBDqxkmSxjx6uF+Hpb
+         XaHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790467557; x=1791072357;
-        h=content-type:content-transfer-encoding:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790468363; x=1791073163;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qkRCXQhv0Hnw4Etkjk3usHzodyvWdz99tiVp5tvgSSY=;
-        b=u3z9mBzDROk+3qFob9xVJA1kzFlljYr+7IUE7HkvE8tf3DnyGU6CRaBahvpBA2kNt0
-         3f+pJPsNS8fz/yekavq8Zaq9gY0TCGr4h/8fR82ZK3YwNNjGz96CuebwzBNGQD3HkLwb
-         TA5oITVsixBZGlZwYA6moN7IukO2SKHIMF1FHKQsDHtdGnCMa/Nx5jH6fMIL3p7ySyfn
-         61oSNv0ofhKL4tkiDleoH5BPvigRE6tVtShwpa+pqPy7U6nHQ0i49op70WSpsHan3XuR
-         XylWdIqchX9VoxUJKLJgANkVDWLp5KQa9X5z037ajej/2/dOyceo9Um/W/QMu/NJ/wW0
-         0yPQ==
-X-Gm-Message-State: AFq9FYJnGtkpaH/MxsfHBFERp+HMFyhjCW96wqm35p/UgImqaP4qqhd/
-	mY+s+qrAuKU7FmprfTu4R0NXhE37WjOfRXmpW9ZhrA2i6ZFufulfOIs=
-X-Gm-Gg: AYBFou1NWfFYd2KUWP8PP/21EXvp6Ir/o15F/Y7cmN2QYHG+yRbEHiqrFQ+8p4veJPW
-	82GADPtQ/o+AN2QeFHn/wKFQK4pftN6MIcsBiaorIHY1U9c0YU138qYYe80gZEFsKiC65kfZR81
-	C6Y5J4KCAg3I5zwELKOioeot2oRQ3q65cMmpFJa+0chxYhx069FV0ccu8KgU2iKE3QKKMsid2ZK
-	67SbVMDUA0livTIoYfclwqC9SGvNodxphL8MLP6DlLHH+svaBEpsM89boyOk6VZ4hhGjmW5mIfE
-	5O7zTDJydIagkXeTScVMxYZlQ/yCIEU8s1ZHPfL9/KcQ33uDhduDKS/6jTgDOz/Iar5sdLpzyhv
-	tzDW3k8yxKnPwreb6/8rwMnirHlm2RjIXBWAhqweu7oYAj8IKFMgvEbW5Q+nSCZcl1RYlBhKA0S
-	PO2NnpmGPayNlMwhScIZ+QM3J1glkIsxKzsDiT85+AID9API85p9529LQT8tCjZwQ5PflZMz4uy
-	/gJlfBKmUlN+O8EUv4KuxI5RYjKGX7TBdQ8D7Bjfd0IRWE=
-X-Received: by 2002:a05:6122:4f9f:b0:5cf:13b4:913f with SMTP id 71dfb90a1353d-5cf13b4942dmr333780e0c.1.1790467556602;
-        Sat, 26 Sep 2026 17:05:56 -0700 (PDT)
-Received: from matheus-note.localnet ([2804:7f0:84b3:2201:fb27:8354:17d:2bcc])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5cde5a70282sm3475657e0c.10.2026.09.26.17.05.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 17:05:56 -0700 (PDT)
-From: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-To: Gaoyang Wei <yhyxwgy@gmail.com>
-Cc: netdev@vger.kernel.org, pbs05 <xuziyougm@gmail.com>,
- Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>
-Subject: Re: [RFC] net: towards a generic PON framework
-Date: Sat, 26 Sep 2026 21:05:52 -0300
-Message-ID: <tyVeMFhOR4aOm-Y3BnbglQ@gmail.com>
-In-Reply-To: <8675d110-2681-4065-96ee-e088696f59fb@gmail.com>
-References:
- <20260926174601.1675-1-yhyxwgy@gmail.com>
- <CADGChbMgws9wFCVzRPwMdYQ=E64_kAWtikK4v+1ca3hTeyrZUw@mail.gmail.com>
- <8675d110-2681-4065-96ee-e088696f59fb@gmail.com>
+        bh=IEdIa9RMQ1QXL88PLw7o/+9OHA7bgZryG9p24nbS8RY=;
+        b=e6SbuAJ5U9be6T5wLm1B9wqPRUJ+pfUriPeDVVR0rNoGj8E7zb8+9YOfrPp2YgqJZ/
+         esVv2jbNtUvQa3XqqXrr+ybDCobNv08k+X3PRs6bnDcjCVBWl3vqoojxD4TRWy2Notuv
+         V/Hdl1wmp9KVFo7hIGDmhajwN8tYYIqU644yxjHl2kjEjsW0GCVQHlzrttgubHtgsvw8
+         ngiQfNv0pb/JRzi5YTrJzfr6y5l6qN+xEOTE0eFovtKv+ePWFTrC9IvLGDVJcUtSLtKj
+         xS4/DJNbHTBc3aATHUAVME0s4G0MSSxwTBDsZniDdboQi3+AoNuaQsMoh7pyl8bEaMJ8
+         vUrA==
+X-Forwarded-Encrypted: i=1; AKwUvBwzsW5st6n+geJ+wcfmpKDPdMVdupDzk6YFfY0MTrH1Yz5VC2DwG1Sl9YUJWP31dqjsekAk6b8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJP4TvK66VDx0CkbW4y+gZQ3NQyB/XsdwiTcrS3N0P/MEgev3j7
+	lqjtXXzwgOm9QbScwdTwTbosML2R8C6fVYoo+uZaFNOJUiqr2PEZrqUtZ3Y07mWxFTXosaolyfK
+	wUlIjDw==
+X-Received: from pjbhs10.prod.google.com ([2002:a17:90b:200a:b0:3a0:e233:a080])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2250:b0:39e:6c68:fd93
+ with SMTP id 98e67ed59e1d1-3a098b92bf7mr5492586a91.40.1790468362413; Sat, 26
+ Sep 2026 17:19:22 -0700 (PDT)
+Date: Sun, 27 Sep 2026 00:18:38 +0000
+In-Reply-To: <CAMB2axN93iJnrZAk6hWraSnz32FtRDdpz_UbzsVB4YU7gRK_3Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+References: <CAMB2axN93iJnrZAk6hWraSnz32FtRDdpz_UbzsVB4YU7gRK_3Q@mail.gmail.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260927001921.604064-1-kuniyu@google.com>
+Subject: Re: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: ameryhung@gmail.com
+Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, bpf@vger.kernel.org, 
+	cleger@meta.com, daniel@iogearbox.net, eddyz87@gmail.com, edumazet@google.com, 
+	john.fastabend@gmail.com, kuni1840@gmail.com, kuniyu@google.com, 
+	martin.lau@linux.dev, memxor@gmail.com, ncardwell@google.com, 
+	netdev@vger.kernel.org, sdf@fomichev.me, ukyab@berkeley.edu, 
+	willemb@google.com, yonghong.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->  > with tests on en7523 and en751221 with some users, I saw them
->  > attaching the OMCI network interface within a bridge, and in order
->  > not to expose this interface again to a user, I implemented my OMCI
->  > within the kernel
-> 
-> Was that OMCI interface exposed as ARPHRD_ETHER?
-> 
-> I ask because I do not think a packet-oriented OMCI net_device would
-> need Ethernet semantics at all.
-> 
-> For example, it could use ARPHRD_NONE, have no synthetic L2 header,
-> and use IFF_NOARP / IFF_POINTOPOINT.  In that case it should not be a
-> valid device to enslave to an Ethernet bridge in the first place.
-> 
-> net_device itself is not synonymous with Ethernet.  CAN is another
-> example of a packet-oriented protocol exposed through net_device with
-> different link-layer semantics.
-> 
-> If the previous OMCI interface used ARPHRD_ETHER, then I wonder whether
-> the ability to bridge it was a property of that implementation rather
-> than a fundamental problem with representing OMCI as a net_device.
-> 
-> This would still leave the separate question of whether the G.988
-> agent itself belongs in kernel or userspace.
+From: Amery Hung <ameryhung@gmail.com>
+Date: Fri, 25 Sep 2026 10:33:50 -0700
+> On Thu, Sep 24, 2026 at 6:41=E2=80=AFPM Alexei Starovoitov
+> <alexei.starovoitov@gmail.com> wrote:
+> >
+> > On Thu, Sep 24, 2026 at 05:39 PM Kuniyuki Iwashima <kuniyu@google.com> =
+wrote:
+> > >> can we drop the flag ?
+> > >> hdr_opt_len() is called for every tx skb without per-socket opt-in.
+> > >
+> > > Oh, I assumed bpf_tcp_ops keeps the same behaviour.
+> >
+> > bpf_tcp_ops were moved out of BPF_SOCK_OPS_TEST_FLAG() guards on
+> > purpose. None of the existing members has per-socket opt-in.
+> > hdr_opt_len() runs for every tx skb, rtt() for every rtt sample.
+> > See the log of commit 3bb54768fe3e
+> > ("bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_ops"=
+):
+> > "A per-member/per-cgroup gate could be added later if the extra
+> > fast-path work proves measurable."
+> >
+> > > We have a bpf prog to turn the hook on (from cgroup_skb/ingress),
+> > > only when ingress rate exceeds the allocated capacity, to signal that
+> > > via a custom TCP option and turn the hook off from the hook itself.
+> > > (and I planned to post another patch for that)
+> >
+> > That should work today without another patch and without the flag.
+> > cgroup_skb/ingress prog does
+> >   bpf_sk_storage_get(&map, sk, 0, BPF_SK_STORAGE_GET_F_CREATE);
+> > when the rate is exceeded. hdr_opt_len() and write_hdr_opt() do
+> >   bpf_sk_storage_get(&map, sk, 0, 0);
+> > and return when it's NULL. write_hdr_opt() calls
+> > bpf_sk_storage_delete() after the option went out.
+> > cg_skb_func_proto() has both helpers and get_func_proto() in
+> > bpf_tcp_ops.c allows them in every member.
+> > egress_read_sock_fields() in test_sock_fields.c does the cgroup_skb
+> > part.
+> >
+> > > Anyway, is it because calling bpf prog is not very expensive
+> > > or per-prog switch is preferable to per-socket flag ?
+> >
+> > The switch is still per socket. It's sk_storage instead of a bit in
+> > tcp_sock, so every prog has its own.
+> >
+> > While such new flag is per socket, but it's one for all progs.
+> >
+> > And you want to take the last bit of u8 bpf_sock_ops_cb_flags...
+> >
+> > As far as the cost. A socket that didn't opt in pays for an indirect
+> > call into the prog and for bpf_sk_storage_get() that finds nothing,
+> > but only in cgroups where bpf_tcp_ops with enqueue_rcvq is attached.
+> > The members that are not set are NULL and bpf_tcp_ops_call() skips
+> > them. That's what hdr_opt_len() costs on tx.
+> >
+> > I don't remember what Amery measured, but worth benchmarking
+> > for your case.
+>=20
+> I did not benchmark the initial bpf_tcp_ops patch set, so per-socket
+> gating was deferred. Before deciding whether to add such a gate for
+> AutoLOWAT, could we compare:
+>=20
+> 1. No bpf_tcp_ops attached.
+> 2. No-op enqueue_rcvq() and dequeue_rcvq() callbacks attached.
+> 3. The same callbacks performing an sk-local-storage lookup (or maybe
+> rhashtable).
 
-I exposed it by poling in ioctl in the dirtiest way possible, by generic netlink and for sysfs. In all cases, there was an unnecessary overload on the CPU, making it very slow for other tasks
- 
->  > with this I also had less overhead in the ethernet system, and faster
->  > responses to OLT due to the new implementation.
-> 
-> This is also interesting.
-> 
-> Do you have any measurements for the CPU overhead and OMCI response
-> latency before and after moving the agent into the kernel?
-> 
-> It would help distinguish costs inherent to a userspace OMCI design
-> from costs specific to the previous implementation.
-> 
-> I still think it may be useful to treat OMCC transport and OMCI agent
-> placement as two separate design questions.
-> 
-> For example, a generic xPON layer might provide OMCC transport and
-> GEM/T-CONT operations while allowing either:
-> 
->    1. an in-kernel OMCI implementation, or
->    2. a userspace OMCI implementation through a packet interface.
-> 
-> That would avoid requiring every driver to make the same choice before
-> we know whether that choice is actually hardware-independent.
+I used tcp_rr (128 threads, 20000 flows) and didn't see a big
+perf diff between 1. and 2., but 3. showed some costs even when
+only looking up sk_storage and returning immediately:
 
-with a similar port of the Airoha SDK I had CPU usage of around 2~15% depending on the number of MIB objects in memory, in addition to memory usage of around 122~353Mb in userspace
-With OMCI in the kernel, the CPU overhead dropped to around 0.8~2.0% from what I was able to measure, and around 68~258Mb of memory usage with the same MIBs as the userspace
-
-userspace depends on packages arriving at fe+qdma and then userspace, the omci in kernel arrives at fe+qdma and goes directly to omci without going through any other subsystem. with userspace we have responses in around 0.8~1ms, in kernel space we have responses in around 0.5~0.8ms, this for MIB queries already in memory.
-
-for hardware queries we had responses of 1~4ms in userspace and 1ms in kernel space.
-
-on the GEM/T-CONT after the packets are synchronized between the OLT and ONU comes the configuration of the datapath itself, on the Airoha x(gs)PON the pse/fe takes care of the GEM and T-CONT parts, what I do now is decode these values and inform the origin for the xPON subsystem, otherwise it is taken care of by hardware, besides that in the userspace I had to expose several things that are not good are exposed in userspace and much of the work ends up being in kernel space, so That's why I combined the entire system in kernel space.
-
->  > I am also aware of some Realtek SoCs having slightly different OMCI in
->  > which my subsystems need to be adjusted to see this data, something
->  > that fails in my current implementation
-> 
-> I think this is particularly useful evidence for keeping the generic
-> boundary small.
-> 
-> If Realtek requires different OMCI handling, that seems to strengthen
-> the case for separating common OMCC transport and PON hardware
-> operations from the policy of where the G.988 implementation lives.
-
-Much of what was written works with the Realtek SoC, it has the same data as the OMCI export, but instead of passing it as a skbuff package it is treated in a separate way from their systems, but contains the same data as the OMCI package.
-When I said that my implementation needs to be an adapter, I'm talking about the issue of the origin of the data and the processing of the data and the delivery of the data to the hardware.
-Today, a large part of the system still originates from Airoha SDK, but a lot of things don't match what was done in their SDK.
-
->  > The optical subsystem in which I implemented it already uses several
->  > subsystems already present in Linux, so temperatures, bias and optical
->  > power are already used within hwmon, for calibration I already use
->  > nvmem to obtain the data and start LDDLA.
-> 
-> This is very close to what I had in mind.
-> 
-> Using hwmon for telemetry and NVMEM for calibration seems much cleaner
-> than exposing those through a PON-specific userspace ABI.
-> 
-> The remaining part I would like to understand better is the generic API
-> between the PON MAC and the fixed optical frontend, especially for:
-> 
->    - LOS;
->    - TX enable;
->    - burst enable / rearm;
->    - protocol and rate selection;
->    - wavelength selection where applicable.
-> 
-> I think this is also where Benjamin's earlier BOSA/SFP discussion is
-> directly relevant, and I would like to hear what the PHY/phylink/SFP
-> maintainers think before suggesting a concrete API.
-
-Benjamin idea was to expose the LDDLA subsystem within what we currently have in "sff,sfp"/"sff,sff", but to do so we have to adapt and expose several functions and emulated data for subsystems already present. but the problem that fell was Semtech's LDDLA, since it works for several vendors,
-So I implemented a more generic subsystem where it exposes several functions that the LDDLA supports, so it can provide data to the MAC xPON systems such as frequency/type that the LDDLA supports (GPON, EPON, XSPON, XEPON, etc.), BOSA status, hwmon, tx enable, rearm.
-
-From what I've seen in LDDLA Semtech and Airoha, what controls the frequency selector is the PHY and the loaded calibration, and it's not something that the optical subsystem should deal with for now in my view, this should only happen when the PHY doesn't control this part, something that I find difficult for any vendor to implement.
-
->  > a good part of the subsystem depends on values coming from the
->  > userspace, that's why we wrote a generic netlink and sysfs for
->  > userspace communication
-> 
-> That also makes sense.
-> 
-> For ONU identity in particular, I still think it is worth separating
-> hardware description from provisioning policy.
-> 
-> Some values may come from NVMEM, some may be derived from other device
-> identity, and some may be supplied by userspace.  I am therefore not
-> sure that values such as an OMCI vendor ID should become part of the DT
-> ABI unless they really describe immutable hardware properties.
-> 
-> I will spend some time reading through the implementation you posted.
-> 
-> At this point I think we have two useful implementation models:
-> 
->    - kernel PON MAC + userspace G.988;
->    - kernel PON MAC + in-kernel G.988.
-> 
-> That is a good basis for identifying which parts are genuinely generic
-> and which parts should remain implementation choices.
-
-values can be exchanged by the userspace controller for user-supplied values, SN, MIBs, etc...
-
-Normally these are values predefined by each device vendor, in this example of dts it was from a TP-Link device, where all or most of them use the initials "TPLG" plus part of the device's mac address for the GPON SN, there is little data that must be fixed, the rest must come from userspace.
-
-Then comes the issue of "profiles" where each OLT has its behavior slightly different from the ITU standard, something that could be a matter of some MIB data or even the status of the response, which is why I have some "profiles" ready in the OMCI implementation and a "Fake" status option
+                    |    w/o bpf    |     w/ bpf    |  diff   |  diff (abs)
+ -------------------+---------------+---------------+---------+------------=
+-
+ num_transactions   | 1,209,349,692 | 1,185,180,017 |  -2.00% | -24.17M tx
+ throughput (tx/s)  | 20,318,689.83 | 19,953,668.49 |  -1.80% | -365.0K tx/=
+s
+ remote_throughput  |    19,472,629 |    19,135,463 |  -1.73% | -337.2K tx/=
+s
+ latency_min        |      50.83 us |      46.08 us |  -9.34% | -4.75 us
+ latency_p25        |     911.35 us |     911.35 us |   0.00% | 0.00 us
+ latency_p50        |     972.79 us |     983.03 us |  +1.05% | +10.24 us
+ latency_mean       |     983.64 us |   1,001.71 us |  +1.84% | +18.08 us
+ latency_p90        |   1,136.63 us |   1,187.83 us |  +4.50% | +51.20 us
+ latency_p95        |   1,208.31 us |   1,259.51 us |  +4.24% | +51.20 us
+ latency_p99        |   1,392.63 us |   1,454.07 us |  +4.41% | +61.44 us
+ latency_stddev     |     141.82 us |     158.53 us | +11.78% | +16.71 us
+ cpu time (u+s, 60s)|     8,165.91s |     8,312.57s |  +1.80% | +146.66s
 
 
+Given the other hooks in the fast path (hdr_opt_len(),
+parse_hdr(), etc) should add costs at the same level,
+I think we should guard them with flags.
+
+But u8 is too small, so I think we could add a new field
+(maybe u32?) and a new kfunc for bpf_tcp_ops only.  Also,
+I'd add CONFIG_BPF_SOCK_OPS_LEGACY to save some calls.
+
+What do you think ?
+
+
+>=20
+> >
+> > >> The prog in patch 8 already returns when the socket has no
+> > >> sk_storage.
+> > >
+> > > Yes, but this is only for bpf verifier.
+> >
+> > tcp_init_autolowat_cb() can be the only place that passes
+> > BPF_SK_STORAGE_GET_F_CREATE.
+> > So for a socket that didn't do setsockopt(BPF_TCP_AUTOLOWAT)
+> > other cbs will return NULL on lookup.
+> >
+> > tcp_disable_autolowat() will do:
+> >   bpf_sk_storage_delete(&tcp_autolowat_map, sk);
+> >   bpf_tcp_ops_set_rcvlowat(sk, 1);
+> >
+> > > Just an idea, would it make sense to add a kfunc to move bpf_tcp_ops
+> > > callback to a shadow pointer by allocating sizeof(bpf_tcp_ops) * 2 ?
+>=20
+> A bpf_tcp_ops instance is shared by all sockets, so this would not
+> provide per-socket gating. Making it per-socket would require copying
+> the callback table for every tcp_sock, which seems more complex than
+> adding a gate directly to tcp_sock.
+>=20
+> Am I understanding your idea correctly?
+
+Yes, but this is overkill indeed.  I think most deployments
+use just a single SOCK_OPS/bpf_tcp_ops, and per-scoket flag
+would be enough.
