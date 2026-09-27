@@ -1,50 +1,50 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E0D346FA0;
-	Sun, 27 Sep 2026 09:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A572B25C818;
+	Sun, 27 Sep 2026 09:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790502027; cv=none; b=eiQvPXK6ahVW0YQIImjkQMKjkVpwYRutT/o2/e0XZLtNN+wFhV6GYcdTjGcMFeBBtd1cG9PyENnHPJeFB4wG6soA27KocJRxxVEXxvGQcWEx+vtoVgysIp/HoB/a8ZwqRh519jy/NFn28UWUouDO4vZoNpA0QplSV0qhWvGLNLI=
+	t=1790502153; cv=none; b=izFZEYSqQZPPmI6DiU6GhWuj/0Raa2gM5ngiF7xvJV4d+vOoh2z9/O7v3/svZrdO3zL/voK9mr5V0gecxsjO+BB1A77nGz/tiLkc7RtwUREAFeCIUfzKFzT90r+6VZEjVInSJJfxOO5pl7P6TUsMh0otADiyzIIL5pXxq0Z0ClI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790502027; c=relaxed/simple;
-	bh=C4dr4AceHCcfrxnX6nW9BTvD5zx5ZCyPhjchftk1IAA=;
+	s=arc-20240116; t=1790502153; c=relaxed/simple;
+	bh=mxK+/ueVP5LngDu0DZWjLyh5mJIf3J2f5r87BKB9GKM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jyyDbkMGsKfAl5u+6LyeLpEv1GrIC/ebX6qVNB3E2YjI+o2MrMxv0I7P+fT1ZrFCZZmmg6CQownlWGi0iJGlP6tNi0rpfmqsjyggM7TEXMqOK7Vgygr4bqbeOKmZzitWluVLWjiP9Ehk4MeFm2aReDgEytMeBHqz4fpPn5v6ipM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=WWi+iD/z; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=3Cc7KP4z; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:Content-Type; b=VhYuoVOloNUgYW/drCeMaHkYymRm7iEYs9CdYAIXsJEJVT7lej6PEhp9hV5WWZiDglxd/mkc85J0k6TYmYcq8bamLvel+zli9QYpqu5cp0GSDneX1ahA9WIIdA1LOOHEodWJBHXI9dgwWrxVpX74DcshwueEA6CHAblMHi8/GiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Nt/Hsul9; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Nt/Hsul9; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="WWi+iD/z";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="3Cc7KP4z"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Nt/Hsul9";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Nt/Hsul9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790502024;
-	bh=C4dr4AceHCcfrxnX6nW9BTvD5zx5ZCyPhjchftk1IAA=;
+	s=default; t=1790502149;
+	bh=mxK+/ueVP5LngDu0DZWjLyh5mJIf3J2f5r87BKB9GKM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WWi+iD/zCNfaTGbfbe/FzGv+Q/NoTnCe3cllMQfOntDXB0lIDlUK6JQVGnoERhje6
-	 rTkm8lLhWXCEgQoKxxdYA88E6POq+/ULIJp7Ry16sCl4pFkAAbq/xqgRc6wGdQkgQ2
-	 t71vYri3be+qnx9ozwJ6boRziiI1KoJwmKT6ZH7ENF7uc/reYZM5FuzkpZj9HmfVZW
-	 MYWO5l1aKEISKUL/PQGti+dYXm3BiiGLL5fBD8SIUNF2bDG3TljZhSB3PcEd4cNta+
-	 qHNina+5ZoRVvqv3oGDywtgBTUbPZZV7wMP8LmqQfeShIqX7GPNOayuXGA1vwkp4Uz
-	 6tBHEGUR2uJfA==
+	b=Nt/Hsul9wFs/gH5MQ4heCagVTc4723Tn1nGrbJFpzyZ5G/mpg5coW0VUEmObAc7d3
+	 tfZQB4uHHsMW0l2Dek9qWlY0o3k0Crl0xUE73k2RZF301TIl519DBxcGg+KH+ra8Z3
+	 XaygaSCv5a9WA5Yr0u41ppN73oe/YWkjlG4RuSFKDFM7vzFUUXheCKs5mTi0rRTaep
+	 +k+/6LQdOVWtEuuKdpZbYtL6v5M7DMywdNkY1UD7S8rFfcpjLoQIvCoTw45iCGFHBk
+	 8ppAjVlGAxa+WrcR7s3mw4BTgrUj0b2vnWbHkEcmAIawu1cyJS4qACFHWW7Qy4VhDF
+	 ZeBPAgD6xSjxA==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 41C86412E1; Sun, 27 Sep 2026 09:40:24 +0000 (UTC)
+	id E52D041312; Sun, 27 Sep 2026 09:42:29 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790502023;
-	bh=C4dr4AceHCcfrxnX6nW9BTvD5zx5ZCyPhjchftk1IAA=;
+	s=default; t=1790502149;
+	bh=mxK+/ueVP5LngDu0DZWjLyh5mJIf3J2f5r87BKB9GKM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=3Cc7KP4zSyDe8Wui6AC6e7AQqFCbG/ux9uNrJ8Gdq2FdR1yTxCrJBZth2bzC6k9vr
-	 mjvEdLLZ+e8lALQbcBzXa6SvtZveHL4TXSd607Uyr9Xx/Hh3Apuiv4Er9WE//JdBoh
-	 EiFyMobSbrJpS0crNJynf7yiY27otTYGrMtqto66y9H9495ToZ/S2OHtQ32Mog2aAz
-	 pvJ8lvkTil1Chk2gDzO/B/p75SnKtYD0OhIHtU/mJRtlv3rJ8w4VlAgt3t3HLmDjq/
-	 s7m2hf3EGd8o2KEr9r8U5gRpDv+HrOtjWzq+Y+BzbLcXeSPRlYTx453klurdHjYXzZ
-	 igDufJOT/4k3w==
+	b=Nt/Hsul9wFs/gH5MQ4heCagVTc4723Tn1nGrbJFpzyZ5G/mpg5coW0VUEmObAc7d3
+	 tfZQB4uHHsMW0l2Dek9qWlY0o3k0Crl0xUE73k2RZF301TIl519DBxcGg+KH+ra8Z3
+	 XaygaSCv5a9WA5Yr0u41ppN73oe/YWkjlG4RuSFKDFM7vzFUUXheCKs5mTi0rRTaep
+	 +k+/6LQdOVWtEuuKdpZbYtL6v5M7DMywdNkY1UD7S8rFfcpjLoQIvCoTw45iCGFHBk
+	 8ppAjVlGAxa+WrcR7s3mw4BTgrUj0b2vnWbHkEcmAIawu1cyJS4qACFHWW7Qy4VhDF
+	 ZeBPAgD6xSjxA==
 Received: from [192.168.2.51] (p5798b961.dip0.t-ipconnect.de [87.152.185.97])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 7BB50412CD;
-	Sun, 27 Sep 2026 09:40:23 +0000 (UTC)
-Message-ID: <2a618453-f9af-4595-a97a-7c5856be7fba@birger-koblitz.de>
-Date: Sun, 27 Sep 2026 11:40:23 +0200
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id EA074412CD;
+	Sun, 27 Sep 2026 09:42:28 +0000 (UTC)
+Message-ID: <4b43c4a0-16bc-474a-a775-5a09ec54a54f@birger-koblitz.de>
+Date: Sun, 27 Sep 2026 11:42:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,43 +52,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 14/15] ax88179_178a: Add support for
- AX88179A/772D/279 EEPROM access
+Subject: Re: [PATCH net-next v12 15/15] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
 To: netdev-bot+sashiko@kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
  hkallweit1@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, neuromoments@gmail.com
-References: <20260916-ax88179a-v12-14-60c04c9924a2@birger-koblitz.de>
- <178968030755.22033.11537311081987859211@kernel.org>
+References: <20260916-ax88179a-v12-15-60c04c9924a2@birger-koblitz.de>
+ <178968030887.22033.2787971070924550661@kernel.org>
 From: Birger Koblitz <mail@birger-koblitz.de>
 Content-Language: en-US
-In-Reply-To: <178968030755.22033.11537311081987859211@kernel.org>
+In-Reply-To: <178968030887.22033.2787971070924550661@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 17/09/2026 11:25 pm, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
+> Thank you for your contribution! Sashiko AI review found 6 potential
 > issue(s) to consider:
 > 
-> Critical: 0 · High: 0 · Medium: 3 · Low: 0
+> Critical: 0 · High: 0 · Medium: 6 · Low: 0
 > 
-> - [Medium] The patch smuggles an undisclosed RX-path repair into an
->    "EEPROM access" commit: `ax88179_bind()` now sets…
-ip_align moved to patch adding HW support.
+> - [Medium] asix_ax88279_config_aneg()
+>    (drivers/net/phy/ax88796b.c:146-166) programs the vendor 2.5G…
+This is tested and works as written and not the other way round. The
+firmware of the device seems to initiate autonegotiation on itself when
+link-modes are changed in the device (not by the other end of the link)
+in order to optimize the link. This is the reason for needing to rely on
+link mode changes by "interrupts" from the MAC layer, instead of reading
+inaccurate link mode registers.
 
-> - [Medium] `ax88179_eeprom_access_params()`
->    (drivers/net/usb/ax88179_lib.c:197-214) picks the hardware address…
-Will change the gating in ax88179_eeprom_access_params to correspond to
-the eeprom_read_cmd/eeprom_block gating in bind(), i.e. use
-else if (ax179_data->chip_version == AX_VERSION_AX88279) .
-get_eeprom() changed to reject reads from chip_version > 
-AX_VERSION_AX88279 to prevent the use of the AX88279 access 
-configuration with future unknown devices.
-As for hypothetical legacy devices with chip_version > 
-AX_VERSION_AX88279, they do not exist according to the vendor information.
+> - [Medium] asix_ax88279_read_status()
+>    (drivers/net/phy/ax88796b.c:108-121) does not check the return value…
+Added checking of return value and returning this as an error code.
 
-> - [Medium] `ax88179_get_eeprom()` (drivers/net/usb/ax88179_lib.c:237-249)
->    only rejects `ret < 0` from `__ax88179_read_cmd()`, but…
-> 
-Will change to  (ret != ax179_data->eeprom_block) to detect short reads
+> - [Medium] asix_ax88279_read_status() (drivers/net/phy/ax88796b.c:99-144)
+>    has no `if (!phydev->link) return 0;` guard.
+Will add this guard. Indeed it fixes reporting incorrect Speed/Duplex
+   values, instead of Unknown/Unknown.
+
+> - [Medium] asix_ax88279_read_status() hard-codes phydev->duplex =
+>    DUPLEX_FULL with the comment 'Only supports full duplex'…
+All erroneously reported modes are removed, this is successfully tested
+with real-world hardware. Removing further hypothetically reported modes
+is not necessary. If such modes were hypothetically reported, they may
+actually be valid modes, anyway.
+
+> - [Medium] In asix_ax88279_read_status() the link-partner 2.5G capability
+>    bit is only ever assigned inside `if (val >= 0 && val &…
+Added clearing of ETHTOOL_LINK_MODE_2500baseT_Full_BIT in lp_advertising
+before modifying the bit.
+
+> - [Medium] net: phy: ax88796b: incomplete clearing of 1000baseT
+>    capabilities for AX88772D
+You stated: Only ETHTOOL_LINK_MODE_1000baseT_Full_BIT is put into mask 
+and removed
+   from phydev->supported here, so if the hardware also sets
+   ESTATUS_1000_THALF or ESTATUS_1000_XFULL those bits survive in
+   phydev->supported.
+
+These other bits are not actually reported by actual PHYs, which are
+anyway just something accessed through the controller firmware. When
+hypothesising that they may report e.g. 1000X fiber modes one would also
+need to talk about hypothetically reported 10GBit modes. Where would 
+that end?
+This was tested on various hardware.
+The clearing will be shortened to just:
+linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported)
+as for the ax88279-case.
