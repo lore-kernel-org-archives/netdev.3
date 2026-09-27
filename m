@@ -1,240 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-106109.protonmail.ch (mail-106109.protonmail.ch [79.135.106.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE683B585D;
-	Sun, 27 Sep 2026 03:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BC7175A92;
+	Sun, 27 Sep 2026 03:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790479735; cv=none; b=AjQt5bCXNZ0scwSVxn3mloow7bWflajlfmVwws31edRvb0Zm774k94uJM6VttZoYMsZm8MDQlZ0pIwVkjxnxbfvOnnyatlnb4Bqc/U4tR4pdXM6pHaHnoI/MF+HUxuGBFsU2rHEgDzs8BBLH9pnHlUv7ModUKMRk6TxM1Fz+bQQ=
+	t=1790481241; cv=none; b=nPje3KFr8D1qfH/CN3iMbImPQOXbb0s1ZBcW1qZ6DS6nUH6kXuIjlr4CXvHmuJbJz9mqiK/hBf8unl5WNX/aDdRt/k5pToWYLFdoJm8vMt1LSi63esb13qqPiSovb65EqjVxKWnLgyLDp5hd8afXPR+4WgIU/pA7e/O2riLxNdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790479735; c=relaxed/simple;
-	bh=gsts6d6x1u+7S1ZwEq4vim+z3A0KCbboCnFaPe4oUPw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XetKA8KPuSrykfXgBF0g1BX/S4Oy/LTzVsy/H6Qu95SRhQS0INFUugnzPN2/fWBGqebCHhtELeJSVztNz+ZBfgtTLEAxOYEU64qYT5BwnLCgUH8ujIgFXBPpjpypfdX4rVbxts+kJKrjuV+FULvqx+CmWGx4CQacjZtvbpOkfaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/AZBRhh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790481241; c=relaxed/simple;
+	bh=72jOmKJsKtZbMfexR6DU2MSAN3lb/BvgsBkTbYP0Jow=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HKgmkkDOS2ot4fiir6l5AFwNN4Cy3kCWOdS5jVG1j07ZZU1QvueFytgVE3a27lMfexN4KLbaj1n6hR0gnge7nqo3wDkdZxZwuuRczPtpIj4hfDdYbQlRGLICDsTJkkpI0V8bU5FFpuweN245sYoHkhvYacCkNHXWJfEmPLbenzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=BUuAj1lg; arc=none smtp.client-ip=79.135.106.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/AZBRhh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC851F00898;
-	Sun, 27 Sep 2026 03:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790479733;
-	bh=T8rpIYRxynmwj+YRABxKQ0KfUWj0r0144BFAQo26olI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Y/AZBRhhh5ofOp6wIPoGangQ/tgm6Xp4WgpEvyZMIrzB09IvsuHzfbLRNkw4+r4ae
-	 KtZdcjgzIMk3ZVcT43g4jcWaaKhE/ylgOB4YW3hiXlUfPwM5BB5CTe+fpJ9+18pbI+
-	 G7obYyL0VlEOE0nCtpOhmNw0WNNTnr51VeqSaoIyVJzg+GfhHerKNtR186mbXH0/H4
-	 473Kv5ekO/MxAdohDugDOnY2jaGJ7tLrbiwW4XZDZZVBRPnoclY7tPSQlHsSQ9Tvmf
-	 Fzrxz5Gl0vN3sjMrZC77Leyopm6EiAIWMat48rOGsyI0774/Ls5SOaHtq2VeaaCp69
-	 0OpV243eC76dA==
-Subject: Re: [PATCH net-next 2/2] net: stmmac: dwmac-socfpga: Add support for
- Agilex5 TSN GMAC with FPGA converter
-From: netdev-bot+sashiko@kernel.org
-To: muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, dinguyen@kernel.org, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, devicetree@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Sun, 27 Sep 2026 03:28:52 +0000
-Message-ID: <179047973223.2160803.17475492528833274893@kernel.org>
-In-Reply-To:
- <20260923021823.46649-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References:
- <20260923021823.46649-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="BUuAj1lg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1790480887; x=1790740087;
+	bh=2n7v/f900ujYlkPeMFvncKXsx01rexWG+WoC8pk4+js=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=BUuAj1lgFGUnkpYeDBk0B5qaCypJk7m+iRRthctsXUPOhcEx20nFxompc4oPawyR0
+	 4I7PIiNFMHGpPKt/6cMwCRntk28dxo1zxdw9hTmfpjAa8TDaH0RwdKzyv1I3ciJj9P
+	 7wxRvOZ4Z8AxEGWwAi3/fZa+3Wq5I/Wp35f7BrXhYHAfIp/jyvhIfIRcTNban+zq8Z
+	 qYVd0ZI04ykGpbOsp6WqrUcYalse+aoXK04NUd5MgKrVdWJ63MDy3BpBBWLq0+w4pl
+	 XfZJieSOtkpeE9moC3vZc+3Yj04v5VHk/puYbey/OHGVyYP7Kafl9JxKsG5PYFkgeU
+	 HiR1JCNyFD9+w==
+Date: Sun, 27 Sep 2026 03:48:01 +0000
+To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+From: Alexander Koskovich <akoskovich@pm.me>
+Cc: David Heidelberg <david@ixit.cz>, Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
+Subject: Re: [PATCH v5 6/6] arm64: dts: qcom: milos-fairphone-fp6: Add NFC
+Message-ID: <AA1gQ_nENEVHK1oebVbNS1EUMIkabrgIPTl649QGQZvq_1LAMw5msh-2bmJt1DbB6K09JX1xc_VN0retl7XFImBTbpm81ucumJM_nzVKfYI=@pm.me>
+In-Reply-To: <20260811220135.472380-7-jorijnvdgraaf@catcrafts.net>
+References: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net> <20260811220135.472380-7-jorijnvdgraaf@catcrafts.net>
+Feedback-ID: 37836894:user:proton
+X-Pm-Message-ID: f3ec71461e33f107fcfa8c1f6b9d2d515788ab04
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Tuesday, August 11th, 2026 at 6:04 PM, Jorijn van der Graaf <jorijnvdgra=
+af@catcrafts.net> wrote:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+> +=09nfc@27 {
+> +=09=09compatible =3D "samsung,s3nrn4v";
+> +=09=09reg =3D <0x27>;
+> +
+> +=09=09interrupts-extended =3D <&tlmm 31 IRQ_TYPE_EDGE_RISING>;
+> +=09=09en-gpios =3D <&tlmm 56 GPIO_ACTIVE_HIGH>;
+> +=09=09wake-gpios =3D <&tlmm 7 GPIO_ACTIVE_HIGH>;
+> +=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
+> +
+> +=09=09pvdd-supply =3D <&vreg_l20b>;
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Looking at schematic, think this should be L7B? L20B is used for SIMVDD1_EX=
+T.
 
-- [Medium] The DT binding's allOf conditional was not updated for the new
-  compatible.
-- [Medium] socfpga_agilex5_tsn_gmac_setup_plat_dat() rewrites every RGMII
-  variant (rgmii, rgmii-id, rgmii-rxid, rgmii-txid) to…
-- [Low] socfpga_get_plat_phymode() (dwmac-socfpga.c:76-79) now returns
-  dwmac->mac_interface, the MAC-side interface selector, instead of…
-
---
-
-net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA converter
-
-This adds an "altr,socfpga-stmmac-agilex5-tsn" compatible for an Agilex5
-board that has an FPGA GMII-to-RGMII converter between gmac1 and its PHY.
-The new setup_plat_dat callback reuses the Agilex5 setup and forces GMII
-for the MAC interface selector. It also rewrites any RGMII phy_interface
-to plain RGMII.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> index 1d7f0a57d2889..0632105b420f1 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> @@ -69,12 +69,13 @@ struct socfpga_dwmac {
->  	void __iomem *tse_pcs_base;
->  	void __iomem *sgmii_adapter_base;
->  	bool f2h_ptp_ref_clk;
-> +	phy_interface_t mac_interface;
->  	const struct socfpga_dwmac_ops *ops;
+> +
+> +=09=09pinctrl-0 =3D <&nfc_default>;
+> +=09=09pinctrl-names =3D "default";
+> +=09};
 >  };
->  
->  static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
->  {
-> -	return dwmac->plat_dat->phy_interface;
-> +	return dwmac->mac_interface;
->  }
+>=20
 
-[Severity: Low]
-This isn't a bug, but socfpga_get_plat_phymode() now returns the MAC-side
-interface selector, not plat_dat->phy_interface. The comment in
-socfpga_gen10_set_phy_mode() was not changed:
-
-	/* Overwrite val to GMII if splitter core is enabled. The phymode here
-	 * is the actual phy mode on phy hardware, but phy interface from
-	 * EMAC core is GMII.
-	 */
-
-With the TSN ops, phymode is GMII and the PHY hardware runs RGMII, so
-this comment now says the opposite of what happens.
-
-Could the helper be renamed? The comments in socfpga_gen5_set_phy_mode()
-and socfpga_gen10_set_phy_mode() would also need updating to match.
-
-[ ... ]
-
-> @@ -670,10 +673,28 @@ static const struct socfpga_dwmac_ops socfpga_agilex5_ops = {
->  	.setup_plat_dat = socfpga_agilex5_setup_plat_dat,
->  };
->  
-> +static void socfpga_agilex5_tsn_gmac_setup_plat_dat(struct socfpga_dwmac *dwmac)
-> +{
-> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
-> +
-> +	socfpga_agilex5_setup_plat_dat(dwmac);
-> +
-> +	/* FPGA converter supplies RGMII delays; MAC uses GMII, PHY gets plain RGMII */
-> +	dwmac->mac_interface = PHY_INTERFACE_MODE_GMII;
-> +	if (phy_interface_mode_is_rgmii(plat_dat->phy_interface))
-> +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
-> +}
-
-[Severity: Medium]
-Should phy-mode values that this hardware cannot support be rejected here?
-At the moment every RGMII variant is turned into plain RGMII.
-
-The commit message says the FPGA converter provides both the TX and RX
-delays. Under the phy-mode rules in ethernet-controller.yaml, that leaves
-"rgmii-id" as the only consistent DT value. "rgmii" means the PCB already
-provides both delays. "rgmii-txid" and "rgmii-rxid" mean the PCB provides
-one of them. The binding also says:
-
-  # link. Thus the MAC should report a fatal error for any modes which
-  # cannot be supported.
-
-stmmac already has a path for this in stmmac_pltfr_probe():
-
-	if (plat->has_internal_tx_delay || plat->has_internal_rx_delay) {
-		plat->phy_interface =
-			phy_fix_phy_mode_for_mac_delays(plat->phy_interface,
-							plat->has_internal_tx_delay,
-							plat->has_internal_rx_delay);
-		if (plat->phy_interface == PHY_INTERFACE_MODE_NA)
-			return dev_err_probe(&pdev->dev, -EINVAL,
-					     "unsupported phy interface mode\n");
-	}
-
-When both delays are internal, phy_fix_phy_mode_for_mac_delays() converts
-rgmii-id to rgmii. For any other mode it returns PHY_INTERFACE_MODE_NA.
-
-This patch does its own conversion instead. A DT with phy-mode = "rgmii",
-"rgmii-txid" or "rgmii-rxid" then probes with no error. The converter then
-adds its own delay on top of the PCB delay.
-
-The phy-mode enum in altr,socfpga-stmmac.yaml accepts all four RGMII
-variants, so dtbs_check won't catch this either.
-
-Would setting plat_dat->has_internal_tx_delay and has_internal_rx_delay
-work here? That would let stmmac_pltfr_probe() do the conversion and the
-validation.
-
-> +
-> +static const struct socfpga_dwmac_ops socfpga_agilex5_tsn_gmac_ops = {
-> +	.set_phy_mode = socfpga_gen10_set_phy_mode,
-> +	.setup_plat_dat = socfpga_agilex5_tsn_gmac_setup_plat_dat,
-> +};
-> +
->  static const struct of_device_id socfpga_dwmac_match[] = {
->  	{ .compatible = "altr,socfpga-stmmac", .data = &socfpga_gen5_ops },
->  	{ .compatible = "altr,socfpga-stmmac-a10-s10", .data = &socfpga_gen10_ops },
->  	{ .compatible = "altr,socfpga-stmmac-agilex5", .data = &socfpga_agilex5_ops },
-> +	{ .compatible = "altr,socfpga-stmmac-agilex5-tsn", .data = &socfpga_agilex5_tsn_gmac_ops },
-
-[Severity: Medium]
-Does the allOf conditional in the binding also need the new compatible?
-
-In Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml, the if
-block matches only the plain Agilex5 string:
-
-  - if:
-      properties:
-        compatible:
-          contains:
-            const: altr,socfpga-stmmac-agilex5
-    then:
-      properties:
-        interrupts:
-          minItems: 17
-        ...
-        dma-coherent: true
-    else:
-      properties:
-        interrupts:
-          maxItems: 1
-
-        interrupt-names:
-          maxItems: 1
-
-        dma-coherent: false
-
-The earlier binding patch in this series added
-altr,socfpga-stmmac-agilex5-tsn to select and to the compatible enum. It
-also says agilex5 should not be used as a fallback. A node with
-"altr,socfpga-stmmac-agilex5-tsn", "snps,dwxgmac-2.10" therefore gets the
-else constraints.
-
-The driver treats this compatible as full Agilex5 XGMAC hardware. It calls
-socfpga_agilex5_setup_plat_dat(), which sets up the XGMAC core, TSO, TBS
-on TX queues 6/7 and cross-timestamping. The gmac1 node in
-socfpga_agilex5.dtsi, which the TSN board overrides, has 17 interrupts and
-dma-coherent.
-
-Won't dtbs_check reject a correct TSN gmac1 node, and accept one with a
-single interrupt and no dma-coherent? Should the if block match both
-strings, for example:
-
-          contains:
-            enum:
-              - altr,socfpga-stmmac-agilex5
-              - altr,socfpga-stmmac-agilex5-tsn
-
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, socfpga_dwmac_match);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923021823.46649-1-muhammad.nazim.amirul.nazle.asmade%40altera.com
+Thanks,
+Alex
