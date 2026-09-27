@@ -1,156 +1,111 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6963B774D
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 08:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8643C108E
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 08:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790496642; cv=none; b=si/OV+ma2T0LKr+fO8UyEo0okaKsAXILvlSU2qHmQB7Ip3cSMQQ59Z2txRONomDbk2Y6rRLVICHkrVBfOYmZD4Iltbfn1ZeJ0QanPildiL0kY3iRHy8UV58dmsffC6pUkmekoWGtEyTt/Q+2tAJQZ7CG6qKvDtGGMyx+54FLIN8=
+	t=1790496872; cv=none; b=FONvc9/Q4iEHI9IfVXF8zr0V+VrcPP09ToEidQZUgDiX716NEGZLmQnr4Yvg7P0LwXSSfP03KmEvwZeksLFpc/Q5gBA8VONVMkKB5+X6KxMzKbO9dMIiQBxKSowU4raOnT4lOZsscmuYNiNT16zcuq29112e7zadL+nsnDg6d9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790496642; c=relaxed/simple;
-	bh=nOi2ShRCU0TeMNd20nnqu8qobdbTpIfXNd+xI6yEhKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cMAqzzkNGMAb0q+AorxlV+ZHBLsyqvTpPJBTzSGr5qqn2koD2+TTEXw6sOZ0dIAmOpkbbXJMHSeM18NOkmwGFq0/2iiq85yvdtyuQjkDTcm8QumlDNcDnpZO2O0fFb6JiFUIiUTGya65x1Sk3jZiLbLlRx3/NxVm6pVu2u1oenY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jyF4bhyB; arc=none smtp.client-ip=74.125.225.141
+	s=arc-20240116; t=1790496872; c=relaxed/simple;
+	bh=dAWVxC/OYmorFhr2s/I59x2nCgD2yGNjyjqnWaTeP4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Be0F6zggqguaxVBngRGTbBYB9as4r4IcP2lwDUfxxtMi3BbHufhc2EDVOUzSG99iXf4Ce/4ACvBZYyGHYe134ATrEVwLc9ahGOwGO0f9IDLVQO1RnCPW4FrnXigaRaavgNK3AAfFT/7VtbC3+Gp/mDXVEQDt5fRbUX9uxiHI1pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PZH82y6D; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jyF4bhyB"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49fe8bf173aso10823785e9.3
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 01:10:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZH82y6D"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so20170105e9.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 01:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790496639; x=1791101439; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T9NtVLRAdrEtPzIkGo9792VQNjKKs+MEA/K2ye7PZBM=;
-        b=jyF4bhyBh+6thmQzHEYgGnKTWO19unlLenGC4qtFwO18wdbUgk9zRlK73SGQQLk+m3
-         231tcIpxhIUwr5PED6awXu16D+NTnN+v0x7vmuItPe3+Quu35klPr1mwFB5u/9t5+CA1
-         zdJ4hXXVgqG6b3bp1q8tk9RyMbzhA45E+ZtcCLIcs8zrJLvCONEqwGfNSuqotF9zzZPp
-         XkrkAJx/bB4nYP4oVdb3WI59ZNLI1N31rbpzDhHWWX4nU68mNUrQg9QN1A9Ge5arxsDF
-         K/Uu4f0RaZAkr6jN0bkbvmcRfz8wLMe2g5FUIS7mfdzqVGkLl3tUblSLC1DQFeNdZL00
-         6AIA==
+        d=gmail.com; s=20251104; t=1790496869; x=1791101669; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WQUgiPs4tmKVhr6VI6GahJDVSjaQB4aL5i8OrCuC+Dk=;
+        b=PZH82y6DvgkSX4ofsOuPCPF+u1XuAr+zmB9Skm9LYuKDldlbsjFcKhI81M5+f6k0oD
+         JgarPO1LTxkFjot08UlAG/AvfBZcndOma3KbFhgbkg59MSoX70EqV63f8zSxZw4aDgVB
+         uCJTIk7npqTxWgj9QEkSkVZQHBgrESNoikM0jXSfFbwQTvhFvw3C7Vg9nIp8vKZPnHOq
+         DMuBMUbzeXMJIDv370oz9wh91Pazh/PuungkRdkBNpfe+/fYIjeWPBRLeZnxHA2HM6a/
+         doIo2b3h+u36t/akwCUhubQ7JAA5SZc3fHPAb9mJaxShY3a5tjczyCKmuDNEUstvFofO
+         vdnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790496639; x=1791101439;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T9NtVLRAdrEtPzIkGo9792VQNjKKs+MEA/K2ye7PZBM=;
-        b=NsF7WaW4suwBp3DC/g9zWipKopZlBWgDgXkMMnpr5qnSfvqijMaL+ZXTLcbY1IaQEl
-         VeScq2KGlKJBoSP9uH0QtSUZZfONGvy17hTyuXw7jzgoOMTX6qCk3CPOdi++wBJICqCC
-         u4h3pMrq4tHD7fhZGzaG5IOp7OowwKygLfk9ckiC1jcMA5PJHYyYhGErmfCQo4Y+4hTT
-         8vaj/xpTFEGF+tbmX3uj4FLKPo89FmtzimBlNx3sTqkfEgLe6T2F2y8m3kKzHLZqvFCN
-         B/Z4okTNTSXPoluM47mAmWJDQEEJAR4HxFdYucsAZDNOQJx/wXbiPzFrGI9jAd5jW8Uy
-         HEjA==
-X-Gm-Message-State: AFuF++nKqN6FbCp9fdgSiynYMdelS5qFIZV2ljLDaYuefzgCQ4R5LVuG
-	QkhYxkX55hoxQxNdto2JtMOBMUCsg9VuZLXq9sDqGMcwRVsjOnFxU/ZzvjrvESCK
-X-Gm-Gg: AYBFou1zp4TX2Q1cSz9na0cPrChx9SxJPsS5YPs3f18oq42VXa3EPs41yCjr1kpDZLE
-	m5p0f8T9Fn3e8Q+YmAFcfWm1gVH6y/BH2WjRiG2r5ph0Uou1wqJ7NWPJWYOgO9bku4BpmnSO9Cd
-	ljSzfMpBNPuHFvSdCcHeBbovM1Gq0bPw9L9qJ0A8X7S9kXH0mV6YzDu0b7KhjxvmkYV94Jdk8Wo
-	DWo9KmFxBqViJ79cKVs/yt9H7Uh5VJAQwQLOta+p+RLTnpdlbeg3w994khA77VVe3ND4/GA3l9j
-	e7pQ20mtcKVM/8fvd98Ux7kHrL8R7UeqnmAoRjlmaR+8uWcw1uy0nIK2VzgDPnIMwVylGaaOFmV
-	VewZNvHaa+zv5muUe5tBjLOVi78+tHJXoCOH/i6/7RHkcTdIZjOdEz9Qc3HcnSdbWRDcS9e5Hxq
-	sN7pZaRPZffpjaVWekAzonMxRHayz53/WEXKEkv8IZ2esRDVqi+s90pPujWXTg/x+6WiHWpeCdA
-	bFyxoAaDIUgM65KbOsuNEWimUe/FlsE3m3/fTdd
-X-Received: by 2002:a05:600c:a4c:b0:49c:fa20:cc08 with SMTP id 5b1f17b1804b1-49fe67060cemr178391235e9.31.1790496638952;
-        Sun, 27 Sep 2026 01:10:38 -0700 (PDT)
-Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a002d1d8d5sm12462615e9.0.2026.09.27.01.10.37
+        d=1e100.net; s=20260707; t=1790496869; x=1791101669;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WQUgiPs4tmKVhr6VI6GahJDVSjaQB4aL5i8OrCuC+Dk=;
+        b=yYA0RoynumXksxCDepNu9G2sdwDMW0deeyKYk/29VxnHYR9+1fysLzYK3OSDMatlzj
+         MtQIkvypNp5ilkiVxym5k/nvZqUduLBIXceHtk13OK5ZZ2k1NSbeFDetBsTjieLTeMy1
+         BxgXjbLVjyQv8R8YGmeqkPrFJNEsi7F5tbbEyE3EXTLzs4B459A2PnrexliqTaR5ul8I
+         iJi6J0ML9JQbJQt3+lpWs21h25m+E/+AccJp390wsCtJwI0rDi/OL1m5m4c4t7TPpzky
+         NJvXrvpWYZ91kmmWTIaLZrfETy0EL5oxpdM+LMgd1os89+79+0RJoIXITUi0MzW5hJ/r
+         oD7g==
+X-Forwarded-Encrypted: i=1; AKwUvByae45aDW+29Oi3pIJ2wM7+LvgYe9mLuy1OMGzQ+Bajtl9lqC5uVonrM+BxEie2IqNyX1I7PuE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kncqLUXV3jKPALigtpQH2oqbI+wsv+F17laIxyJ2ph5ecVK5pZ
+	9ENT8GnOq2I6z+dJusHuTmqE38dQORnbARJQzxy9Dv48ALz2a8MjhW4+
+X-Gm-Gg: AYBFou1HGsrmed5/QPzU614siu9OleehsE56bDE8Zq9UZkMEdMtbWy0z1CQrPX/oPCz
+	UMwdoRzpJqMuJGyVYdEV+DKyOF6IDa49u5KbTge/VyNu/+zedTUzIj+6tV7bStddWJ/npb9of8Z
+	yEx2xOxHR6Y09QVtyhu4ytkUQ65skUP7GlD2QPfzUmboDlw7qyXIieDBIMvfY7wie1RWrixSAZV
+	8OHvAqYyJF5NGyxJJQJ1evZsV/GdMr526ht1kMe1D0+CbkzlPypAKBNGglc1+uegdXAeneP+6TI
+	RvHedgXN4nd71c+M/yWPEqmXOOfarmT64/9DJFvQzclzA+ui5a3y8KlH3el+WKkT04VIPQNkZcv
+	F7MkyAjsxTR6UtEnSgTkDY+lleBHq/ho/cNN8iQZLEWuHkFsGUBo4ToFhQJ/0getlLlkdSUtGDJ
+	KyUjKJbM+l2uypJUSc3DGf+rklueH1iPvxfk/aKthQqg6kXJ7R7USK5IYlP74X
+X-Received: by 2002:a05:600c:3486:b0:49f:f9d4:674d with SMTP id 5b1f17b1804b1-49ff9d4695dmr52148935e9.13.1790496868724;
+        Sun, 27 Sep 2026 01:14:28 -0700 (PDT)
+Received: from gmail.com ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00178bebasm42909255e9.11.2026.09.27.01.14.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 01:10:38 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: radhey.shyam.pandey@amd.com,
-	michal.simek@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	daniel@iogearbox.net,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
-Date: Sun, 27 Sep 2026 11:10:34 +0300
-Message-ID: <20260927081034.350422-1-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
+        Sun, 27 Sep 2026 01:14:28 -0700 (PDT)
+Date: Sun, 27 Sep 2026 10:14:26 +0200
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] [afs?] kernel BUG in
+ rxrpc_destroy_all_connections (2)
+Message-ID: <arjO9qbNdbvdi7ao@gmail.com>
+References: <6a73d174.5aeeccc9.207e63.000c.GAE@google.com>
+ <6ab29768.514bccd6.255447.001e.GAE@google.com>
+ <6ab8c8cb.e548f532.1ca396.0037.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ab8c8cb.e548f532.1ca396.0037.GAE@google.com>
 
-axienet_dma_bd_release() walks the RX ring to unmap and free every
-receive buffer before releasing it, but frees the TX descriptor ring
-with dma_free_coherent() alone.  Any descriptor that
-axienet_free_tx_chain() had not yet reclaimed still holds its skb and
-its streaming DMA mapping, and both are lost.
+I just don't understand why it is failing... :(
 
-axienet_stop() disables TX NAPI and stops the DMA engine before calling
-it, so nothing reclaims those descriptors afterwards.  Bringing the
-interface down while frames are in flight therefore leaks up to
-lp->tx_bd_num skbs and mappings each time.
+#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a7bfaba4823e
 
-Walk the TX ring the way axienet_dma_err_handler() already does: unmap
-every descriptor whose cntrl is still set - axienet_free_tx_chain()
-clears it on reclaim - and free any skb still attached.  The DMA engine
-has been stopped by then, so the hardware no longer references the
-buffers.  On the axienet_dma_bd_init() error path the TX ring has just
-been allocated zeroed, so the walk does nothing.
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 611c790bc6d0..111f0844b0d6 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -273,6 +273,17 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+ 	int ret;
 
-This was reported by the Sashiko AI review bot.
-
-Tested on an AXI Ethernet MAC behind a PCIe endpoint: traffic passes,
-and after each of ten down/up cycles and five module reloads, all made
-with traffic running and each running axienet_dma_bd_release(), traffic
-resumes and nothing is logged.  The leak itself was not measured.
-
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Assisted-by: LLM sparse
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
----
-
-Notes:
-    Found by the Sashiko review of v2 of "net: axienet: bound TX completion
-    cleanup by the NAPI budget":
-    https://lore.kernel.org/netdev/20260917115657.20697-1-maimon.sagi@gmail.com/
-    It is independent of that patch and applies on its own.
-
- .../net/ethernet/xilinx/xilinx_axienet_main.c  | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 1722b7038f34..02bcb89d1bbe 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -187,6 +187,24 @@ static void axienet_dma_bd_release(struct net_device *ndev)
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
- 	/* If we end up here, tx_bd_v must have been DMA allocated. */
-+	for (i = 0; i < lp->tx_bd_num; i++) {
-+		struct axidma_bd *cur_p = &lp->tx_bd_v[i];
-+
-+		/* axienet_free_tx_chain() clears cntrl when it reclaims a
-+		 * descriptor, so a non-zero value means the mapping is live.
+-	if (conn->state == RXRPC_CONN_ABORTED)
++	if (conn->state == RXRPC_CONN_ABORTED) {
++		/* A CHALLENGE packet queued for processing carries a ref on the
++		 * connection (see rxrpc_post_challenge()).  That ref has to be
++		 * dropped here because the caller frees the skb as soon as we
++		 * return.
 +		 */
-+		if (cur_p->cntrl) {
-+			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
-+
-+			dma_unmap_single(lp->dev, addr,
-+					 (cur_p->cntrl &
-+					  XAXIDMA_BD_CTRL_LENGTH_MASK),
-+					 DMA_TO_DEVICE);
++		if (sp->hdr.type == RXRPC_PACKET_TYPE_CHALLENGE &&
++		    sp->chall.conn) {
++			rxrpc_put_connection(conn, rxrpc_conn_put_challenge_input);
++			sp->chall.conn = NULL;
 +		}
-+		if (cur_p->skb)
-+			dev_kfree_skb(cur_p->skb);
+ 		return -ECONNABORTED;
 +	}
-+
- 	dma_free_coherent(lp->dev,
- 			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
- 			  lp->tx_bd_v,
 
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
--- 
-2.47.0
-
+ 	_enter("{%d},{%u,%%%u},", conn->debug_id, sp->hdr.type, sp->hdr.serial);
