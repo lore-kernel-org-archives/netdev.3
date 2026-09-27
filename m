@@ -1,105 +1,80 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CCE3F1061
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E0B3EF66B
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790513226; cv=none; b=daHfCNhoMuIOTDtsR9IGSVeZrCq1MqKCsbSWdaCktjFP8YtWqIo571EJQN0XEYwn2ig7Ptg30+x57Yvu/1/gpXzqZa9QM/+w7roE3SzSP09PCMgjqrKafCW/RB4bS6ibkYOoAMQdipGRBS0yO0aKejOnEJIH2lC/5ZLt9MrE31w=
+	t=1790514631; cv=none; b=ebFyCSelQvdymOP0PrHOhdT2lwD/gMLAnBnBQyGsMpZHRBm/Z8mh89of/cNtb3zGwPDawx9/wlxA6QX0lVQHv3KcR79OitJ6K953i/diBaVaQ1uemWgsYFkIsca3jDYLn18J4FhYUPhNlaacz6uPZAhGMj75TKMBJlUJOv3NCAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790513226; c=relaxed/simple;
-	bh=3vs5W3ZxvueDzALjPaBFsCU/2OT1GAPHaHHdKaDzoqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVFIc8xalFIEUXUJygvv22SBjxC0A7wQjLc4Sb6QQwdoYfu0LCDQ/h7oiDJGiItP3EhKb0aCfJoNXzvDtG5xYHuWm7tYEXSWl+BkszyhA614mA7n2umO9ZEcear45NjhqxM5ypqs1QGWXTt/f1UVpDUVZcuDLxwc9OObiQELQNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g9ZOb+nM; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790514631; c=relaxed/simple;
+	bh=HBEZ8gvSuuTPFRjoDeYmiebMx2iMq5KUi9vEstX2HoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LTucb1VTsu2njIuYJTepFheTzB42YPyTDhc4MQ+o4CMg9CE1nabvEiLSmDMBqbcQSw9aDMQ/dvWP0IagUwo9jbZIU41heMGyMEcaU3A1UtT2TkBFCAMscV6TxkZ0FYL8NQ152WFZ202HRClP7MALU1l/WCedp5Eoka++Pk8GEgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ktd/Ke2u; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g9ZOb+nM"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d8239so17666915e9.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:47:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ktd/Ke2u"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccb652d7so1438144a91.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:10:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790513219; x=1791118019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6zB+0WWhii4wkDeFGGBMQh2kAmrjDEBPIyj5hNlO7dA=;
-        b=g9ZOb+nMKxzDAoPs9MLuPqO2NqSx1+6QUjkbvWuh1rdEji9UIoch7m6uqyWmUQ/4V9
-         QByrKEY7jBkwie3dBMMaCx5NZBWWKLKhTxmBaDlNuOujqQXH1sbg+FHH+RZNdx7nZgzo
-         WrucTPaXKNFr7crldFo8biaNDgDDnRzif4xfzQIPRkMrPOAMi+Lha9NKYLmhDhmK7uZa
-         DVf2yyiyrz8N0MUTPGkUFgdLQKPUcA19IuC2az49AXJYOxHPotTSwVDLTf0n1RnnXPLS
-         k/h4g2rDGQvCIBQZNBiNUhN0FyIDL2s88OJCxxlJeuAfHgBGJEaYe8nRtEptYu3/DnpL
-         57Tw==
+        d=gmail.com; s=20251104; t=1790514629; x=1791119429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bkDmzZIfjmIBLLdMK74q6txJ55ZXC/oT66ennoBB6nM=;
+        b=Ktd/Ke2ulLTbNok0HLAA7F3DBiha7pSO5tXXOAW6iMLuHYuKRH6BT93iJnlgZMEdUa
+         b4rIOmhNg3rU8um8FVopGudbry66y1iftvcNVHX96vSI3Ue3z3kkAQuBRz+uEB0WDt5P
+         u3XmALWq1EPmZyzjvSsl1oSchdrORzwzJjjCv6lmNOeUriKtPkxduN7dHcN0X7q/CuUh
+         HmJ0C2B+bHdnWx1yF6E3mOjXHSKEQJs78ppNz5u8i8vjhmFnr6+4eRrRNRfriXgLIGvB
+         DEfGUVx1V39Ib/Wb1xSBoEOwWv24Wbfy0UEBGXbJixB2sTC4h4l+rOWxbQC54QmA/Jtj
+         NcVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790513219; x=1791118019;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6zB+0WWhii4wkDeFGGBMQh2kAmrjDEBPIyj5hNlO7dA=;
-        b=iWmpqGSAQhBKJ73+ewssVopRmoBrCHVU/lcHoCqr8/S1NGi+jUhPKedoPqK697+JqQ
-         0lwMnuMQokq4M0f89MDM9jqOx4HAiy+FT2+KAwEMWLEUORiytcF1H0/w7P9dwh4z9FXH
-         pJpWQBgru7PI/TXiZ+JMgPhRNccWlYjA3FYFbuEwxVH1FrZyK+CpRtdYBKrP0G2fUms0
-         H6OavRfI9FtLi3czKhz+y7ASGzhmmOSUekG7XqbXM+t1IpookwUENNYctCwQp1jhi7ka
-         EfIDf4wjPnwAOTqwP77CHTy6B+/cE16QfgTxyAx737Kb3kVHvswkWdFBedC1VUxRhuTb
-         5Z6Q==
-X-Forwarded-Encrypted: i=1; AKwUvByOzJeaWKl+yrVF2Yh3zjsHKCuqP5/sCl68IQaF+E8uPZJUJVl7x0gJhlGijUQIPldgQK3HplE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kCVruNApQf7wfVNZzR96R1etiocgC0GxMX3Bkhw2GMq28EKZs5
-	RW09FjH4K8yb3esNkhkiNDrhtF+7A6izPTi9AXaBPIMcVMpYgyZt9yBy
-X-Gm-Gg: AYBFou25IkDLTKfiFvfW+zRXCS9sgOuhSSa8YponL1txxD4etJiVY6vwNd+lrs2hrPH
-	Ze2E5xv1aNJHzcVUlu1mj9+WIoXNiHNAOD2ft3rD3qGjdb1CeJSFeFmYMBGC9hwkPerPnF1Gfnu
-	V31JdSyYHn+by6XqgkXQ5fWGYmfxtCaQdmzTq9dbNA+eb/dxImld93EpysMurwBlcruz4K4LfH3
-	br5rLF2s/dS2cQsdrlinftIcrjAgbU/Lcjo9xIHrVJGl4rkJdbDtLmvA0H2xSgYIlVzL2+TcKvf
-	R3lb5PiB631giGN/y/FHKTZrEwtwrvDgsImg5YeoCkwi6YmWwImQ/9MJmb7f0S4qqnugqIb60dQ
-	fgrNpCGj2cWMR8JAY7gw+VFciAqMqqJw3jJbRXjAxThmKzmF/0/oryQZlu+S3CdFuPphMKxGkXv
-	sblUsqnjTThLUp00zECKyijFwgjTNRZcyzIoy+0xc2OSebBMpW+lEfPKRzpW4grbTLirs2bfGEx
-	CKEEH7yYiI5Qbw35BS7ROHIMQbY4/vKLaJJ8I9ORUr3QkDpPV0iv8NBqzXFEeURKVIAhzhu9EhX
-	Almboojaa4Ef+UlVeswf/w==
-X-Received: by 2002:a05:600c:19d1:b0:49c:d818:8764 with SMTP id 5b1f17b1804b1-49fe7b62c5bmr188856695e9.11.1790513218838;
-        Sun, 27 Sep 2026 05:46:58 -0700 (PDT)
-Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm148440605e9.4.2026.09.27.05.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 05:46:58 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+        d=1e100.net; s=20260707; t=1790514629; x=1791119429;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bkDmzZIfjmIBLLdMK74q6txJ55ZXC/oT66ennoBB6nM=;
+        b=h6dFCXpDeet1sbQdEpSokk5PHA6E9Y1NuZqbvZ+NQrVEH0y5H7DyZcihfM5lq/O9J4
+         /dTstWRsZCshCsGnI8Qvutchvf7O6gW6VMfbmoMEOE1O6wA623vne3soP8b5mFsBwRJF
+         MYDRgusbCke77AD4AZrhTRS1NymVju+beBITb8jybA5E8BlvwOVR9VBpXL5n58CJUCp7
+         FL4VLH2VF1IOz5UEmlXIb3mDnS/r6XzuBWMvsm2+chqcLOI60Bpb+XasNf8oxLdzERJU
+         Ib6ZqWS18GevcsN+zf99cgEoR6BUq47CT+gkxfAuY9tEowMPNgXyREWmOPcyZlCghoVf
+         fHBw==
+X-Forwarded-Encrypted: i=1; AKwUvBy+TNCA5B+Jp4oAmhqQKwNX78nFJxH4dFEpETzRz+VFnCB9Q7VNjKfeGtF/TPait20PARLVtBc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKRFbQ0V+1DDZ/D65H5qcuQkzSnnuriHYhaLHs2nkzN/WQK6JQJ
+	olfzvcDGydQ6tY983SnCk/ndNsOdh5D+FMAsp7S1N11gPXtmp1ZIPlHs
+X-Gm-Gg: AYBFou0GWzh2U1bAzTZRQOGCakh7qELbIezHGiPy0DjvzsKMfRHk0GcPfCC6k6DD9VA
+	Px1DRG8JXq8pPjLH+t/gxkSBf8+f7suIZr2ic9/1VLW0hPUzDk3x4g0Bx8N7ktg+AAMAOO7icHI
+	qYiq87BLUJim/jlsJHhxJ/F5r6CiYSPDMNv2E26K2NaR77rZVUJ734XqKE877ZJOdkxc7OvgYGZ
+	gDrCTzZlW+vKZw18hdF8P12aqQXp5ZuxbP7EuOODcMAHUBnGSVNES/nyN1RxZCA2vT8TSwg58TU
+	EV7uPL5v6kyboArbyvrog1VyYdhCGuc1xAjAUIgj8M0kggaGBDAHS8CeDC01VrzqaxEfnhr31Pj
+	uN47iuT1BFDEqqbXBN1l4WJBXY6D6p3CypVtbVOmalSolpb0M54x37KQyTkUxJsN3GqgzDO+luR
+	oM1HsJajdRgE+VNgQ3SZEzxBKeW3BXvGVOYs+YrqmqrUsDjqyZyqT44CfABINuBV/Hc/DH3gq+d
+	dHlWNPYh2xrHOXjGZNsKU+tGbcZbWUf1io=
+X-Received: by 2002:a17:90a:d883:b0:3a0:2900:f577 with SMTP id 98e67ed59e1d1-3a098dff5b4mr8264184a91.51.1790514628797;
+        Sun, 27 Sep 2026 06:10:28 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a1e:2e81:7320:84a7:e3d7:8c7e:980a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9589f7esm14890506a91.10.2026.09.27.06.10.20
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 27 Sep 2026 06:10:27 -0700 (PDT)
+From: Yuchao Zhang <ndaugoing@gmail.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Joseph Guo <qijian.guo@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Stefan Eichenberger <eichest@gmail.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH v3 12/12] ARM: dts: imx6ul: Enable Variscite i.MX6UL board DTBs
-Date: Sun, 27 Sep 2026 14:46:27 +0200
-Message-ID: <6278961388356f27f483b896288e7b0c0d240962.1790512621.git.stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1790512621.git.stefano.r@variscite.com>
-References: <cover.1790512621.git.stefano.r@variscite.com>
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	cake@lists.bufferbloat.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuchao Zhang <ndaugoing@gmail.com>
+Subject: [PATCH net v3 0/2] net/sched: sch_cake: prevent shaper corruption and stall in cake_overhead()
+Date: Sun, 27 Sep 2026 21:10:07 +0800
+Message-ID: <20260927131009.24250-1-ndaugoing@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,136 +83,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+This series addresses two issues in cake_overhead() that can lead to
+corrupted rate shaper accounting or long dequeue stalls:
 
-Add Makefile targets for the VAR-SOM-6UL and DART-6UL board variants
-based on i.MX6UL, i.MX6ULL and i.MX6ULZ.
+Patch 1 fixes an integer underflow when segs == 0. When an skb with
+segs == 0 (such as dodgy GSO packets where gso_segs is not recomputed)
+reaches cake_overhead(), (segs - 1) wraps around to UINT32_MAX,
+multiplying per-segment overhead by ~4.29 billion and returning a length
+close to 4.29 GB. cake_advance_shaper() then charges that length to the
+shaper, stalling the dequeue queue for tens of seconds at 1 Gbit/s, and
+for minutes to hours at lower rates. This was introduced by commit
+c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()").
 
-Keep the existing Concerto DTB targets enabled alongside the new
-carrier, storage, wireless and audio combinations.
+Patch 2 validates the transport header offset computed in cake_overhead().
+When the transport header was never set, skb_transport_offset() returns
+the ~0U sentinel (~65535), which inflates shaper accounting by ~66 KB
+per segment. Furthermore, if preceding egress BPF filters (e.g.
+sch_handle_egress()) or cake classifier actions (e.g. act_bpf trimming
+headers via bpf_skb_adjust_room(BPF_ADJ_ROOM_MAC)) leave the transport
+header stale (bpf_skb_net_hdr_pop() only re-syncs it when it aliased
+network_header), skb_transport_offset() can become negative. Because
+hdr_len was declared as unsigned int, a negative offset wraps to near
+UINT_MAX. Patch 2 checks !skb_transport_header_was_set() and ensures
+hdr_len >= 0. Both hunks date back to commit a729b7f0bd5b ("sch_cake:
+Add overhead compensation support to the rate shaper"), so they share a
+single Fixes: tag and stable range.
 
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
-v2->v3:
- - Sort the Variscite DTB targets within each SoC group.
+Changes in v3:
+  - Split the v2 patch into a 2-patch series per Simon Horman and Sashiko
+    AI review so each logical fix carries its own accurate Fixes: tag and
+    matches proper stable tree backport ranges:
+    - Patch 1 Fixes: c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()")
+    - Patch 2 Fixes: a729b7f0bd5b ("sch_cake: Add overhead
+      compensation support to the rate shaper")
+  - Clarify the timing and code paths where header mangling can occur
+    (sch_handle_egress() and cake_classify() before cake_overhead()) rather
+    than inaccurate "post-enqueue mangling" wording.
+  - Link to v2: https://lore.kernel.org/netdev/20260922084124.36858-1-ndaugoing@gmail.com/
 
- arch/arm/boot/dts/nxp/imx/Makefile | 92 +++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
+Changes in v2:
+  - Accurately describe the impact as shaper accounting corruption / stall
+    rather than OOB read past the allocation.
+  - Fix integer underflow when segs == 0 by checking segs <= 1.
+  - Import companion check !skb_transport_header_was_set(skb) from
+    qdisc_pkt_len_segs_init() to prevent unset transport header sentinel
+    (~0U) from inflating packet length to ~66 KB.
+  - Link to v1: https://lore.kernel.org/netdev/20260917122153.62722-1-ndaugoing@gmail.com/
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index c5caca92ea10..0194b22bad2b 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -375,8 +375,38 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ul-tx6ul-0010.dtb \
- 	imx6ul-tx6ul-0011.dtb \
- 	imx6ul-tx6ul-mainboard.dtb \
-+	imx6ul-var-dart-emmc-sd-card-6ulcustomboard.dtb \
-+	imx6ul-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ul-var-dart-emmc-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ul-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ul-var-dart-emmc-wifi-iw61x-6ulcustomboard.dtb \
-+	imx6ul-var-dart-nand-sd-card-6ulcustomboard.dtb \
-+	imx6ul-var-dart-nand-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ul-var-dart-nand-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ul-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ul-var-dart-nand-wifi-iw61x-6ulcustomboard.dtb \
- 	imx6ul-var-som-concerto.dtb \
- 	imx6ul-var-som-concerto-full.dtb \
-+	imx6ul-var-som-emmc-sd-card-concerto-board.dtb \
-+	imx6ul-var-som-emmc-sd-card-symphony-board.dtb \
-+	imx6ul-var-som-emmc-sd-card-wm8731-concerto-board.dtb \
-+	imx6ul-var-som-emmc-sd-card-wm8731-symphony-board.dtb \
-+	imx6ul-var-som-emmc-wifi-brcm-concerto-board.dtb \
-+	imx6ul-var-som-emmc-wifi-brcm-symphony-board.dtb \
-+	imx6ul-var-som-emmc-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ul-var-som-emmc-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ul-var-som-emmc-wifi-iw61x-concerto-board.dtb \
-+	imx6ul-var-som-emmc-wifi-iw61x-symphony-board.dtb \
-+	imx6ul-var-som-nand-sd-card-concerto-board.dtb \
-+	imx6ul-var-som-nand-sd-card-symphony-board.dtb \
-+	imx6ul-var-som-nand-sd-card-wm8731-concerto-board.dtb \
-+	imx6ul-var-som-nand-sd-card-wm8731-symphony-board.dtb \
-+	imx6ul-var-som-nand-wifi-brcm-concerto-board.dtb \
-+	imx6ul-var-som-nand-wifi-brcm-symphony-board.dtb \
-+	imx6ul-var-som-nand-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ul-var-som-nand-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ul-var-som-nand-wifi-iw61x-concerto-board.dtb \
-+	imx6ul-var-som-nand-wifi-iw61x-symphony-board.dtb \
- 	imx6ull-14x14-evk.dtb \
- 	imx6ull-colibri-aster.dtb \
- 	imx6ull-colibri-emmc-aster.dtb \
-@@ -415,10 +445,70 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ull-tqma6ull2-mba6ulx.dtb \
- 	imx6ull-tqma6ull2l-mba6ulx.dtb \
- 	imx6ull-uti260b.dtb \
-+	imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dtb \
-+	imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dtb \
-+	imx6ull-var-dart-nand-sd-card-6ulcustomboard.dtb \
-+	imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dtb \
- 	imx6ull-var-som-concerto.dtb \
- 	imx6ull-var-som-concerto-full.dtb \
-+	imx6ull-var-som-emmc-sd-card-concerto-board.dtb \
-+	imx6ull-var-som-emmc-sd-card-symphony-board.dtb \
-+	imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dtb \
-+	imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dtb \
-+	imx6ull-var-som-emmc-wifi-brcm-concerto-board.dtb \
-+	imx6ull-var-som-emmc-wifi-brcm-symphony-board.dtb \
-+	imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dtb \
-+	imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dtb \
-+	imx6ull-var-som-nand-sd-card-concerto-board.dtb \
-+	imx6ull-var-som-nand-sd-card-symphony-board.dtb \
-+	imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dtb \
-+	imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dtb \
-+	imx6ull-var-som-nand-wifi-brcm-concerto-board.dtb \
-+	imx6ull-var-som-nand-wifi-brcm-symphony-board.dtb \
-+	imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ull-var-som-nand-wifi-iw61x-concerto-board.dtb \
-+	imx6ull-var-som-nand-wifi-iw61x-symphony-board.dtb \
- 	imx6ulz-14x14-evk.dtb \
--	imx6ulz-bsh-smm-m2.dtb
-+	imx6ulz-bsh-smm-m2.dtb \
-+	imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dtb \
-+	imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dtb \
-+	imx6ulz-var-som-emmc-sd-card-concerto-board.dtb \
-+	imx6ulz-var-som-emmc-sd-card-symphony-board.dtb \
-+	imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dtb \
-+	imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dtb \
-+	imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dtb \
-+	imx6ulz-var-som-nand-sd-card-concerto-board.dtb \
-+	imx6ulz-var-som-nand-sd-card-symphony-board.dtb \
-+	imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dtb \
-+	imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dtb \
-+	imx6ulz-var-som-nand-wifi-brcm-concerto-board.dtb \
-+	imx6ulz-var-som-nand-wifi-brcm-symphony-board.dtb \
-+	imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dtb \
-+	imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dtb \
-+	imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dtb \
-+	imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dtb
- 
- imx7d-colibri-emmc-aster-panel-cap-touch-7inch-parallel-dtbs := \
- 	imx7d-colibri-emmc-aster.dtb \
+Yuchao Zhang (2):
+  net/sched: sch_cake: fix shaper stall on segs == 0 in cake_overhead()
+  net/sched: sch_cake: validate transport header offset in
+    cake_overhead()
+
+ net/sched/sch_cake.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
 -- 
-2.47.3
+2.53.0
+
