@@ -1,207 +1,161 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B81348C7D
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A63E16A1
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790510657; cv=none; b=tsZK5f+ssADcplwkhlpFTbjMXuo7rNfjyeAZj8VFp6WAzeZdcSN94cs9sX4Ify3EuSpg1RyXF15XLhgvVX5Z8IQ2XKoFUIshrrJmaTfzhH09Yn8WphRdEesFIn3E9iRvrF2BDjmSwHsB+anxKPY3ZF2aXhYa+TYVBIQUaOAizhA=
+	t=1790510688; cv=none; b=spYupNG0Q80JcPk9yWe8eznne3EWQtx9hgCuz+K+kTFLkIh4ojeBvy9q30hjdiA72JtB2QY97oe0is3x272WFw0ydI7NsHW/RinuBQ5oCvw/oijW6wMA+A9A2N9m1OuPxkdCoSXYePJ2bAaqB0ZGT3A1IJ3VouF+bbMjvCGURWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790510657; c=relaxed/simple;
-	bh=JKbnCaIfmpdVJXM5YFAPNROoauvccZAiwILQlR0vHFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kZ/++shzQHb9qXFip9tv/zi0CJMRk/4Y5GJioBpLwglyzUkKU7fSVS+AKOTP4Vw5hawgLtn4mATObeNq+9Dtubkq1ZWj4j6PVsSUkwbLSWXGO/6MApY4raLRRzkaU+0u4BRggAzrA1kDddo8Scx5siOiwO8B2XJeEfYjq3R5p68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NZ3aP91h; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1790510688; c=relaxed/simple;
+	bh=ot0jbORaTJGRRQZg6tLvbXq+cyNGWm10JUVUlcn26vY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=fsTO1KE5AtBBd3cfPfDbr5PXIux4lyp66/bWC7xFfpkyec/9APpSeW3Qtvn4Qnwa47u97cEVLM8naaVGsajMWd0NOmOa9T1zd+KXBs7e4B6vijmJbqaATtQ+SHoGNFS4Q2qpvG73+NKjsPoAhfMiRqk3EzII6sZ+fVAZpNLfULU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2W2yhNn; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZ3aP91h"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fb334e72so8077425ad.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:04:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2W2yhNn"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso16110385e9.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790510655; x=1791115455; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lY7ubxHQGnEZ+clckpxrjcQkIrKZ8NMO8GGEkfEwk1w=;
-        b=NZ3aP91hkNdOBI/FFC/p2jtev9OaYqtfl4EnBTJcB5QIU01epzAKtOriiNQEa0v220
-         tiAmNkmdYCyUz1si3AAGusoaiSwSPYU8lh7Q238oB4XsHIbH5kvI7x9qBYuthjiw50Wj
-         aXR2tBcc5AI3v049Fj+TPmszbBtm1oUh1mvl7Lr1EzHCun+KxFqNqoucmRCoD2nSV2bT
-         W45Q3xPLpxkua+12LdPT0ZoDUiWhNqM4v1y9hpETyHijJmDB6if0q3oWHa7Nr7/RJRfY
-         UqvpDTNFOxgobYCpDxVpMlLcmeWKDldIjjn7nZT8rfHGGF6st96OFtrsJ23A2tVIQSle
-         jfwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790510655; x=1791115455;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790510685; x=1791115485; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lY7ubxHQGnEZ+clckpxrjcQkIrKZ8NMO8GGEkfEwk1w=;
-        b=kykJO3kPWqLxf455oxCX/VUROTDsg1ebv829uLxKpFZtVymwPxSjZrRxNgSgd5NBVY
-         CL31oJsoGwj7RFC9TgdZe/oloSTw6mInHVqp+B/q9UVNKlWu/pr55zjZCc0sJ/4hkeji
-         iWQYGoirVX6EcQ9VHgekfBMlD6EAl4WRt9m/32Uz7cwYyfKUW+lAPpkjhcv/3H0QhPtq
-         n8y2/FhQtRimhLGgxSjuFufa/WVtvpr8g6OF9Ov+Te0JqPXp+Ut0njky8owkCVUuuVMj
-         ri8k8rFt+rdG1DbBd2BavRqTA4+UHNNJ0pPTN9NlyGIkGgPDJ2qjWjqTEELih9hO4VgB
-         aXzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzEA9vbhQe4Itv186FIMRD36Ss5OyGjRtnlKv2D59iUDQw6n1yD5l4MvbdZlZNcfTxXerIBvT4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJmkVFWyjWu7hPnR9vYjjgjRgI6OgdhR3xi6mTbAOhqh/GzF0Ti
-	kdiQ5PDX0Aq9d5s9ZmCus2LD5cQI981dC7aYVxIYfSyD2lP600RHYUBR
-X-Gm-Gg: AYBFou0ns03Qk1U6WwILOk7kxmKUwYSDlxBYf+ifUpxrjSKZ5L2NWqy66yKTwwv9h/s
-	8DnV0tVfjzLHCm06JZdtn/WnB4HZq3KugNpXEKpqsoggVOokNS1GfIl5XwSTrc1ekJPV6WBA04U
-	w0+ZfywPBw3gKQwglrSwUUnt0TbQTT422+tGwFXFB1QgbHDWGsiLwngi8D/1o4l9xWgO2hafur+
-	uyHoARENR2/litwoXxde5lQT4eFYHrqTACWivV0vhzfacDXg+s9ViqvKYes6bvJTTXijDRbxbUV
-	svi4LCmbTzMDTNRQkcRetozYUBGqd5Gfw0uIbwQxayxsmnut6+U945sVruSA/QxoHcAIiOJEh2L
-	KiwLeCO9gj+/oZGd89N52kLg4hkmKG/l8foP21j1jV1zStF4Pe8foJwopR1mY8d1rBKr+suIj8E
-	oHn5N50DjxCOUxXKQjgZW5iDYF2QksqHhBD/M+qlvL7XMmZHOpLGZrqaB1ZbZxyMCvPHfE7g==
-X-Received: by 2002:a17:903:1b2e:b0:2df:9e2d:862a with SMTP id d9443c01a7336-2df9e2d8d3fmr39841315ad.54.1790510655243;
-        Sun, 27 Sep 2026 05:04:15 -0700 (PDT)
-Received: from thangnn-ASUS.. ([2a09:bac5:d459:e6::17:243])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913ff040sm27887735ad.32.2026.09.27.05.04.12
+        bh=p73dx9rkt6mjYajPsO9IbZU4Sl+ZeNH7qZWcKoqLHm0=;
+        b=C2W2yhNnYMWRAGglC538BAJOfK02X8t4pp7wOCoedwcFZHkfAZjmzllf7tMTuisdGD
+         AxmbdP2JDuMfekwfNF9C9q6pUCdIrzpu/ZFPQIQLAFSbIHYFHrEfmNSZpwvhv5K02G6B
+         V1kkY6CmX5uz88w6UOknmZy6d8MYuFY9RH3j1L55DepmJt7MDl8T31R+GhoWPzgDuCAt
+         9MtmlC423hSJ/b5ML9TIrlnwhH6IU9wvfJ184WS6OmjGWcdt3BQP7WtfkH5d86xGCLPp
+         s3+l/vu2M0YcajtTMxwkWmYngWQRdEGqSMD/S5J9hMnNNTOqtOFAeJN3dVD7hMgDXm7m
+         ASiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790510685; x=1791115485;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=p73dx9rkt6mjYajPsO9IbZU4Sl+ZeNH7qZWcKoqLHm0=;
+        b=lwhRDcS9br3WTGXhsfbyt0LKmszzEkXvxWv6DTf8VjV6qLefIG2vxazaixdmezXHja
+         ITc7g3SvxqeRWPml2XfR4TCyhGPrDe1718ceduhQ/AT39cJ8e6miMDeekhiJwxuWWjsq
+         rukfg4y4fN+r5HyQKcqokUGf865GTty4Wm0kEvffPKJAjk0uR3oQNoJrm6OfW+Z3eY23
+         sIn43JMERevM+2h1VUSykntq/cYTCmBWq8AvKKXLKoI9i4h3dJYM6nyU2yp3aS13cvej
+         UD5TbEkcvX7uhQQ5Dq61laDLRNxe/8bx+rt7VcmjhLD06Htsm3bwBsj9aURgJAuUG/77
+         Qbkg==
+X-Forwarded-Encrypted: i=1; AKwUvBxrHPJKbAo1eGeo5FecUGfV3W5DJl1lETd9oxtQWM0Q3/p2sK69oOTpA9fE2P6y1RkqzPxzUWc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kSA565PfPAumwToS+n708uslhXWQxmiwWKK5qeisBVtlN9KSQG
+	Coc63bIGsRgkmUwt8CtonW0GbuC5h2HTRfaxNw43VLPt2tQzcRgHolbL
+X-Gm-Gg: AYBFou3NNWOhCmteWRbsIyUFPrbyIIVQRPEs+BHGGrtlpWmlEXCy9kSlyxNhzT1CpgO
+	xu/fC8hxz7TnB2bXCb92jxIo9x3GuuJnFv2bZYSLjaWJyEB3ow5a6uUvLGTVKu2L+q5fgH2pWLS
+	zCw+4Fr8yATKv6u96KnwOH+0wL7baWeZerOFbbAZn+hIerWe3gT4wUTvyAe4lxHjmTDcsTAJ78F
+	SBoJSU7cYabw0GKLrOOtJDfZDNFG+1ctMOWf8dr65n6lxQKffbUe+VLGX30A+164Cg1pxMfJYWB
+	Am1eXIwnBtxHjoPFjAvVzOptrFRTIbuWUIH5PFTdmLQa6cTHtTQf2bxtllMBufRJeXhPyotKtIi
+	vyPoVnOz3KUrKGDOf/wA1JfRsIYn7miMG3I2ZmMViS4ziHKP7cbvg7qvIxcRhYK8wsgZPyqBy7C
+	R3H9YUNgBA0vLBgjSuD4ejOHdswXB3ERuizsNsTE1FKqM5U5QAicTIg7w8EP0afj16nTWpQg==
+X-Received: by 2002:a05:600c:c494:b0:49c:fa21:1c81 with SMTP id 5b1f17b1804b1-49fe7bab979mr173765785e9.22.1790510684687;
+        Sun, 27 Sep 2026 05:04:44 -0700 (PDT)
+Received: from gmail.com ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef4fc959sm179581875e9.2.2026.09.27.05.04.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 05:04:14 -0700 (PDT)
-From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-To: Chas Williams <3chas3@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net/atm: fix shift-out-of-bounds in __vcc_connect()/find_ci()
-Date: Sun, 27 Sep 2026 19:04:10 +0700
-Message-ID: <20260927120410.44906-1-ngocthang2710.1999@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sun, 27 Sep 2026 05:04:44 -0700 (PDT)
+Date: Sun, 27 Sep 2026 14:04:41 +0200
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] [afs?] kernel BUG in
+ rxrpc_destroy_all_connections (2)
+Message-ID: <arkFzpbQnWICoJDt@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ab29768.514bccd6.255447.001e.GAE@google.com>
 
-dev->ci_range.vpi_bits and vci_bits are documented (1..8 and 1..16)
-values a driver assigns after atm_dev_register(), with ATM_CI_MAX (-1)
-meaning "no restriction". find_ci() and __vcc_connect() use them
-directly as shift counts (1 << bits, x >> bits) without ever handling
-either the -1 sentinel or the all-zero value the field holds between
-atm_dev_register() making the device visible and the driver actually
-setting ci_range.
+#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a7bfaba4823e
 
-usbatm_atm_init() has exactly that window: it calls atm_dev_register()
-and only afterwards sets ci_range.vpi_bits/vci_bits. A bind() on
-AF_ATMPVC/AF_ATMSVC racing in during that window sees a vci_bits (or
-vpi_bits) value outside the documented range, and the plain shift is
-undefined behaviour, reported by UBSAN as a negative shift exponent.
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab..2ecfd58cd566 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1205,2 +1205,3 @@ void rxrpc_disconnect_call(struct rxrpc_call *);
+ void rxrpc_kill_client_conn(struct rxrpc_connection *);
++void rxrpc_discard_unactivated_client_conn(struct rxrpc_connection *);
+ void rxrpc_queue_conn(struct rxrpc_connection *, enum rxrpc_conn_trace);
+diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
+index 48519f0de185..8ccf69cc973f 100644
+--- a/net/rxrpc/conn_client.c
++++ b/net/rxrpc/conn_client.c
+@@ -697,2 +697,13 @@ static void rxrpc_unbundle_conn(struct rxrpc_connection *conn)
 
-Add ci_range_bound(), which turns a vpi_bits/vci_bits value into the
-exclusive upper bound of the VPI/VCI space, treating ATM_CI_MAX and
-any other value outside the documented range as "use the maximum
-range" instead of shifting by it. Use it at every site that currently
-shifts by ci_range.vpi_bits/vci_bits. The __vcc_connect() bounds check
-also gains an explicit vpi/vci < 0 check, since it used to rely on the
-implementation-defined sign-extension of the old ">>" for rejecting
-values other than the ATM_VPI/VCI_ANY/UNSPEC sentinels.
-
-Reported-by: syzbot+f6ac161ee9699270b8dd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6ac161ee9699270b8dd
-Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
----
-No C reproducer was attached to the syzbot dashboard for this report,
-so I converted the syz reproducer to C myself with syz-prog2c at the
-syzkaller revision syzbot used, and ran it in QEMU (KVM, x86_64)
-against syzbot's own kernel/config/disk image. It enumerates a fake
-USB device over raw-gadget matching idVendor 0x0572 / idProduct 0xcafe
-(binds drivers/usb/atm/cxacru.c), then races a
-setsockopt(SO_ATMQOS)+bind(AF_ATMPVC) against it:
-
-  usb 1-1: New USB device found, idVendor=0572, idProduct=cafe
-  ------------[ cut here ]------------
-  UBSAN: shift-out-of-bounds in net/atm/common.c:382:32
-  shift exponent -1 is negative
-   __vcc_connect+0x14b4/0x19c0
-   vcc_connect+0x328/0x8f0
-   pvc_bind+0x272/0x380
-  cxacru 1-1:1.0: send of cm 0x91 failed (-71)
-
-The "send of cm 0x91 failed" line right after the crash confirms the
-bind() really does win the race against cxacru's own device bring-up.
-This reproduced on every run against the unpatched kernel; with this
-patch applied I ran the same reproducer 6 times back to back and saw
-no UBSAN report in any of them. checkpatch.pl is clean on the diff.
-
- net/atm/common.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
-
-diff --git a/net/atm/common.c b/net/atm/common.c
-index 81195727fa18..bb6bc26eb599 100644
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -327,6 +327,21 @@ static int check_ci(const struct atm_vcc *vcc, short vpi, int vci)
- 	return 0;
- }
- 
-+/*
-+ * ci_range.vpi_bits/vci_bits are documented as 1..8 / 1..16, with
-+ * ATM_CI_MAX (-1) meaning "no restriction". Neither that sentinel nor
-+ * the all-zero value the field holds before a driver's probe has set
-+ * it (see the register-before-ci_range-is-set race in usbatm_atm_init())
-+ * is a valid shift count, so compute the exclusive upper bound instead
-+ * of shifting a VPI/VCI by a possibly negative or out-of-range amount.
-+ */
-+static int ci_range_bound(signed char bits, int max_bits)
++void rxrpc_discard_unactivated_client_conn(struct rxrpc_connection *conn)
 +{
-+	if (bits <= 0 || bits > max_bits)
-+		return 1 << max_bits;
-+	return 1 << bits;
++	if (!rxrpc_conn_is_client(conn) || !conn->bundle)
++		return;
++	if (conn->act_chans || !list_empty(&conn->cache_link))
++		return;
++
++	_debug("C=%x never activated", conn->debug_id);
++	rxrpc_unbundle_conn(conn);
 +}
 +
- static int find_ci(const struct atm_vcc *vcc, short *vpi, int *vci)
- {
- 	static short p;        /* poor man's per-device cache */
-@@ -342,12 +357,13 @@ static int find_ci(const struct atm_vcc *vcc, short *vpi, int *vci)
- 	/* last scan may have left values out of bounds for current device */
- 	if (*vpi != ATM_VPI_ANY)
- 		p = *vpi;
--	else if (p >= 1 << vcc->dev->ci_range.vpi_bits)
-+	else if (p >= ci_range_bound(vcc->dev->ci_range.vpi_bits, 8))
- 		p = 0;
- 	if (*vci != ATM_VCI_ANY)
- 		c = *vci;
--	else if (c < ATM_NOT_RSV_VCI || c >= 1 << vcc->dev->ci_range.vci_bits)
--			c = ATM_NOT_RSV_VCI;
-+	else if (c < ATM_NOT_RSV_VCI ||
-+		 c >= ci_range_bound(vcc->dev->ci_range.vci_bits, 16))
-+		c = ATM_NOT_RSV_VCI;
- 	old_p = p;
- 	old_c = c;
- 	do {
-@@ -358,13 +374,13 @@ static int find_ci(const struct atm_vcc *vcc, short *vpi, int *vci)
- 		}
- 		if (*vci == ATM_VCI_ANY) {
- 			c++;
--			if (c >= 1 << vcc->dev->ci_range.vci_bits)
-+			if (c >= ci_range_bound(vcc->dev->ci_range.vci_bits, 16))
- 				c = ATM_NOT_RSV_VCI;
- 		}
- 		if ((c == ATM_NOT_RSV_VCI || *vci != ATM_VCI_ANY) &&
- 		    *vpi == ATM_VPI_ANY) {
- 			p++;
--			if (p >= 1 << vcc->dev->ci_range.vpi_bits)
-+			if (p >= ci_range_bound(vcc->dev->ci_range.vpi_bits, 8))
- 				p = 0;
- 		}
- 	} while (old_p != p || old_c != c);
-@@ -378,8 +394,9 @@ static int __vcc_connect(struct atm_vcc *vcc, struct atm_dev *dev, short vpi,
- 	int error;
- 
- 	if ((vpi != ATM_VPI_UNSPEC && vpi != ATM_VPI_ANY &&
--	    vpi >> dev->ci_range.vpi_bits) || (vci != ATM_VCI_UNSPEC &&
--	    vci != ATM_VCI_ANY && vci >> dev->ci_range.vci_bits))
-+	    (vpi < 0 || vpi >= ci_range_bound(dev->ci_range.vpi_bits, 8))) ||
-+	    (vci != ATM_VCI_UNSPEC && vci != ATM_VCI_ANY &&
-+	    (vci < 0 || vci >= ci_range_bound(dev->ci_range.vci_bits, 16))))
- 		return -EINVAL;
- 	if (vci > 0 && vci < ATM_NOT_RSV_VCI && !capable(CAP_NET_BIND_SERVICE))
- 		return -EPERM;
--- 
-2.43.0
+ /*
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 611c790bc6d0..a30cbaa8a48b 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -40,2 +40,5 @@ static bool rxrpc_set_conn_aborted(struct rxrpc_connection *conn,
+ 		spin_unlock_irq(&conn->state_lock);
++
++		if (aborted)
++			rxrpc_discard_unactivated_client_conn(conn);
+ 	}
+@@ -274,4 +277,10 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
 
+-	if (conn->state == RXRPC_CONN_ABORTED)
++	if (conn->state == RXRPC_CONN_ABORTED) {
++		if (sp->hdr.type == RXRPC_PACKET_TYPE_CHALLENGE &&
++		    sp->chall.conn) {
++			rxrpc_put_connection(conn, rxrpc_conn_put_challenge_input);
++			sp->chall.conn = NULL;
++		}
+ 		return -ECONNABORTED;
++	}
+
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f8..6d453b9a9457 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -251,2 +251,3 @@ struct rxrpc_connection *rxrpc_get_connection(struct rxrpc_connection *conn,
+ 	__refcount_inc(&conn->ref, &r);
++	pr_err("AF_RXRPC: conn %x GET why=%d r=%d\n", conn->debug_id, why, r + 1);
+ 	trace_rxrpc_conn(conn->debug_id, r + 1, why);
+@@ -367,2 +368,3 @@ void rxrpc_put_connection(struct rxrpc_connection *conn,
+ 	dead = __refcount_dec_and_test(&conn->ref, &r);
++	pr_err("AF_RXRPC: conn %x PUT why=%d r=%d dead=%d\n", debug_id, why, r - 1, dead);
+ 	trace_rxrpc_conn(debug_id, r - 1, why);
+@@ -487,2 +489,18 @@ void rxrpc_destroy_all_connections(struct rxrpc_net *rxnet)
+
++	if (!list_empty(&rxnet->conn_proc_list)) {
++		struct rxrpc_connection *c;
++
++		pr_err("AF_RXRPC: conn_proc_list not empty\n");
++		write_lock(&rxnet->conn_lock);
++		list_for_each_entry(c, &rxnet->conn_proc_list, proc_link)
++			pr_err("AF_RXRPC: proc conn %x cid %x state %d ref %d act %d flags %lx cache_empty %d calls %px %px %px %px bundle %px\n",
++			       c->debug_id, c->proto.cid, c->state,
++			       refcount_read(&c->ref), c->act_chans, c->flags,
++			       list_empty(&c->cache_link),
++			       c->channels[0].call, c->channels[1].call,
++			       c->channels[2].call, c->channels[3].call,
++			       c->bundle);
++		write_unlock(&rxnet->conn_lock);
++	}
++
+ 	ASSERT(list_empty(&rxnet->conn_proc_list));
