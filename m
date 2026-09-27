@@ -1,191 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADC1350298;
-	Sun, 27 Sep 2026 05:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7274A21
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790485858; cv=none; b=fjr7mQNdF06/xoXZuPbaG8YuPtC/5Mm1sTToghd4o9N/4mHvamEA6mV+s0yxaXXjiBQ+ov7R2nht6zHdhhdh5ybu5o0lSYPxjV4q+Tobgw/zLgIYJLRHWaRP0l8no1mC/nopGq3aXJjuGf1fbP/BCuAYzNCKO4wJwEsQYXAm3pA=
+	t=1790486122; cv=none; b=QH847RGLGLcgzM4eCE+lCBudcZh5lsqPeBE1+eKknSRPH4lPGFh7ZDZLGrgBbp42wKdLtSdg+qmKxK2sONq9jJHruIj/q4znq/XkyTTtO8TJkXOqg6dCMrfnoc1PsMGuj0TkDXA7s6CW7FND1ro67dUETcQjfKJkAWdGpQcAvKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790485858; c=relaxed/simple;
-	bh=VSaqCwmdgw4zEq64XsGySiKl+BDauDQmoCCdTeBnXEo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EZBCgbumbdeyzUwDoLKMxdXLdNCVV35L0pTsFs8NSTVecchWy+nsFO/VBs+xP6TwW0wUJMUqeiy4czHI5X6BeuVHwcdzCT/y2rzMRYXJgwuB4psUIkgC8QlEimVGxkhuNB3A8dy1q8km9Xm78PyEX7r7dRVNvi86xJfJrb1KXSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtQdJYH+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790486122; c=relaxed/simple;
+	bh=Mj6a9MgdGCqWYAQGPhRA9sgl7Qe9WwUI4ge989Hfa88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AOZ1e4/GjPOeZ+T90oTCgPM2H5BEJ/YiZimTRVBd+tUSyYH9MuAyPKSM0gmI02SgqsULNPOUYt/aopYlZh0zMc23FeEK+P2Pucp9Qbj10GtcQmDliCw0Z8b9cTtMmX2QlmioGwrp3m92uHSMV+F0iCr+Woi25zi0/8MfIF2l10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtbCbEAL; arc=none smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtQdJYH+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8001F000FF;
-	Sun, 27 Sep 2026 05:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790485856;
-	bh=wB4Y83HrU5R7uYVDpiRV5wyAcrv1RqlEI7idRPirndc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RtQdJYH+jNCeVHGVJKpDRWln3tw8WMBzZWeKUzSQ+JUu62BzzWLQ4Y4uTsbBGFxpI
-	 azsycVbN3+CpZTdjnHM4PegFYsYsh7H0sMPTTXQxDK/nAYd80f61e9lLt80oH/7sqk
-	 m4Lb07lcP4XYqzU0lW7cNgAItkuKaLt21ENbwmdR0Seqp3LlBJrr4lxqSVUN16NE2B
-	 eFqaEzZW9WuCTdrIGIuWxlko5cwGDyciY4oBkV9dQFP8eILxC0hmBiGNISqAeor7ik
-	 FXDVGNBTmGuazVh7zxBSKXUsxDd6DQ3Ync2nNbI1BLS8xvYyXREGFoatcowRK2LAkV
-	 HNRj56tv2RzKQ==
-Subject: Re: [PATCH net] seg6: fix HMAC validation when an extension header
- precedes the SRH
-From: netdev-bot+sashiko@kernel.org
-To: yuya.kusakabe@gmail.com
-Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, david.lebrun@uclouvain.be, amsalam20@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 27 Sep 2026 05:10:55 +0000
-Message-ID: <179048585564.2160803.7331664213685103969@kernel.org>
-In-Reply-To:
- <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
-References:
- <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtbCbEAL"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso1036067b3a.1
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 22:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790486120; x=1791090920; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OjKSfukDZvlY1eXjlV/PoddSyojDKst8RtQu8NrZS7I=;
+        b=OtbCbEALZGSTOiKY8BVEckLUD9ldbK5dm0D6aa1cI8I730FdFdac2alwxRhh1HRViV
+         n+dtNgfbhS32jt0q9eWBN1IDQMMSVtDChdhx+EUPOdVJfeu3oLExKxGDY0SfAOn4YzYO
+         kAVraD65UwfYXeB+lagYMhT6HMyGBZaJFyZ184/Giu4NA0JESZoqWl6LR0vdvSxVUJiq
+         Sg2QkGJjqWxLbt6BwejAAoInbSp25n2CTW5XMLW/mvKGxFaWjbnFG3UYojN7Pi5FusK9
+         /9pt9Obi8op9riSFp11xFxT4SvUEySRU/44Duh5F05BsNTYBW+jk0UhDq0mfHxHCssHM
+         /gmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790486120; x=1791090920;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OjKSfukDZvlY1eXjlV/PoddSyojDKst8RtQu8NrZS7I=;
+        b=CSbAv/6fHOkIvCj/SqzSUfE1xaB/+9IQjqYXMVL3ERjNnvt2SFOkmf5BYPXuapL6Ry
+         qvHb2bFz5MVoy3VXgQAslP86BGtlU09b+gxNiTGou5Xkgy7mYFlGffviUxenGqdTWGmO
+         vgZ4QKloGeLSF5OM7MOFJJInNMisaxQeJ7qNceTznnb9cd5Rir9KQcKzOeVXFtq1xiOw
+         C3Sy+G687FGO9Cn8L3FcpSYtbKS+z0Wv3Nn1OmS2aKR3QxHF7FiBprlpa8hdEFihq78a
+         D7sNqav3LkKvVTIw85/3EKiJs42+y0x8wxQy5mOiHw/mWEhKvDIr0ywkKOFUtE81vgjd
+         PmUA==
+X-Gm-Message-State: AFuF++lbpm2i61OIClgKOlUnt+tPYP0Doq7IesCWxL4Mx4ULUpza65Da
+	ZdSd0XxYHqGhAae/VdGPa1OLDl+V2cCN+OX+m6aXG5kac+tQKNQ21mVd
+X-Gm-Gg: AYBFou3aEUO0GAICscozRKp6rn1gpsMCkPOJDQfn8xL1qB1us5GechoP16MFH+TWxyB
+	UwUDOQdDVaKMGqpvXGGZLXmjKPJX4WfJBCfDWoedwXn07T1vQ24U4iPcKMFwQa9s54T1Nq6XkCG
+	3f3LO8NcRGqQZbVghXgg6xk6AIQAFNxmLOOYvNJZjo3UuXzeZ0hxe+cy9kmSN6HRkoDOc0LHO1e
+	yQLVRkx03PiVtH61rebDMzDhHF4In81BqI+KrBsjjTLzh0fdTfogsCRyLEgsFYxnTDEYrYCgB4u
+	u0UnrfpGTwFocUzmaOPNuEWv1KC72M7NGj/+/9iccgysPgFFQxsh4uQJk2t/g5xqoKJmW1raRVY
+	aefR4NJn1mbQROeWW98wrniMxd27PR5QMWIkkZNl4vcwe6Lw9CkxpqJVsqaupz9zGY8remhL74t
+	DO1pEQUIOESu0UlxgVnzybUSPiYAnJDaidlLoIiBOJFytytfDFKtcIYb7RMLDuiBC/vzD2Mw==
+X-Received: by 2002:a05:6a00:464e:b0:881:e266:c3d4 with SMTP id d2e1a72fcca58-881e266c980mr1869862b3a.25.1790486119873;
+        Sat, 26 Sep 2026 22:15:19 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:7ff:4::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87feaf852d7sm2718078b3a.42.2026.09.26.22.15.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 22:15:17 -0700 (PDT)
+Date: Sat, 26 Sep 2026 22:14:55 -0700
+From: Narcisa Vasile <narcisav.kernel@gmail.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: netdev@vger.kernel.org, "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: reserve RX buffer headroom to fix
+ forwarding performance
+Message-ID: <arimAGRnmHEAviqi@gmail.com>
+References: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Sep 23, 2026 at 10:45:00AM -0400, Hamza Mahfooz wrote:
+> Commit 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers
+> instead of full pages to improve memory efficiency.") started handing
+> out RX buffers with zero headroom so that two buffers fit into one page
+> at the default MTU.
+> 
+> The MANA TX path, however, stores the per scatter-gather entry DMA
+> mappings in `struct mana_skb_head` at skb->head, and mana_start_xmit()
+> therefore calls skb_cow_head(skb, MANA_HEADROOM). The port advertises
+> this requirement as ndev->needed_headroom = MANA_HEADROOM.
+> 
+> As a result every packet that is received and then forwarded out of a
+> MANA port fails the skb_cow() in ip_forward() and gets reallocated and
+> copied by pskb_expand_head(). This is invisible to a plain RX or TX
+> workload, but it puts a full skb reallocation plus memcpy on the hot
+> path of every single forwarded packet, which is exactly what a
+> router/NVA workload does.
+> 
+> Restore the headroom. Note that reserving MANA_HEADROOM (232) is not
+> enough: ip_forward() asks for LL_RESERVED_SPACE(dev), which rounds
+> hard_header_len + needed_headroom up to HH_DATA_MOD and is 256 bytes on
+> ethernet. Use LL_RESERVED_SPACE() directly so the value keeps tracking
+> both constants.
+> 
+> At the default MTU on a 4K page this means a buffer no longer fits twice
+> into a page (SKB_DATA_ALIGN(1500 + MANA_RXBUF_PAD + 256) = 2112), so the
+> frag-vs-single decision is now made by computing the real buffer size
+> instead of comparing the MTU against PAGE_SIZE / 2. The page_pool
+> fragment path is still used wherever at least two buffers genuinely fit,
+> e.g. on 16K and 64K page sizes.
+> 
+> Measured on an Azure VM with a MANA NIC acting as a forwarding NVA (UDP,
+> 1400 byte payload, 4 streams, 8 Gbps offered, only the forwarding
+> node's kernel differs), 8 runs each, median:
+> 
+>                   forwarded pps    throughput
+>   before              272,830       3.06 Gbps
+>   after               390,560       4.37 Gbps   (+43%)
+> 
+> perf on the forwarding node, same workload:
+> 
+>                   memset_orig   __pi_memcpy   pskb_expand_head
+>   before             10.07%         3.96%         present
+>   after               0.94%         0.64%         gone
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers instead of full pages to improve memory efficiency.")
+> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 58 ++++++++++++++-----
+>  1 file changed, 44 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 591fb4191d90d..e3f3b33ba9062 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -758,6 +758,36 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
+>  	return va;
+>  }
+>  
+> +/* RX buffers must be allocated with enough headroom for the TX path:
+> + * mana_start_xmit() stores the SGE DMA mappings in struct mana_skb_head at
+> + * skb->head, which is why the port advertises ndev->needed_headroom =
+> + * MANA_HEADROOM.
+> + *
+> + * An skb that is forwarded out of a MANA port has to satisfy
+> + * skb_cow(skb, LL_RESERVED_SPACE(dev) + ...) in ip_forward(), so reserve
+> + * LL_RESERVED_SPACE() here rather than just MANA_HEADROOM - it rounds
+> + * hard_header_len + needed_headroom up to HH_DATA_MOD and is therefore
+> + * larger. Reserving less makes every forwarded packet get reallocated and
+> + * copied by pskb_expand_head().
+> + */
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+nit: maybe trim this comment to make it easier to read. For example, 
+"Reserve enough headroom to satisfy the skb_cow() call in ip_forward()
+and avoid reallocation."
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> +static u32 mana_get_rxbuf_headroom(struct mana_port_context *apc)
+> +{
+> +	u32 headroom = LL_RESERVED_SPACE(apc->ndev);
+> +
+> +	if (mana_xdp_get(apc))
+> +		return max_t(u32, headroom, XDP_PACKET_HEADROOM);
+> +
+This implies that the headroom could now be greater than XDP_PACKET_HEADROOM,
+in XDP case. Should we then use the actual headroom value, instead
+of assuming XDP_PACKET_HEADROOM, in mana_run_xdp() when preparing the buffer:
 
-- [Medium] The commit message says the misread header "is covered by the
-  pskb_may_pull() in seg6_get_srh(), so the result is a wrong verdict,…
-- [Medium] The code change is correct, but the commit message describes
-  the bug only as a false drop (a 'wrong verdict' that rejects a…
+  line 94:	xdp_prepare_buff(xdp, buf_va, XDP_PACKET_HEADROOM, pkt_len, true);
 
---
+Does MANA_XDP_MTU_MAX need to be updated?
 
-seg6: fix HMAC validation when an extension header precedes the SRH
-
-This patch passes the SRH found by the caller into
-seg6_hmac_validate_skb(). Before, the function derived the SRH from
-skb_transport_header(). On the seg6_local input path the transport header
-can still point at an extension header that sits in front of the SRH, so
-the HMAC was checked against the wrong header.
-
-> The HMAC is therefore computed over the Destination Options header,
-> and a packet carrying a valid HMAC TLV is dropped when
-> seg6_require_hmac is set.
-
-[Severity: Medium]
-Does this cover the whole impact of the bug? Before this patch, the
-mismatch could also let through packets that should have been rejected,
-even with seg6_require_hmac=1.
-
-seg6_hmac_compute() only hashes saddr, first_segment, flags, hmackeyid
-and the segment list:
-
-net/ipv6/seg6_hmac.c:seg6_hmac_compute() {
-    ...
-	/* saddr(16) + first_seg(1) + flags(1) + keyid(4) + seglist(16n) */
-	plen = 16 + 1 + 1 + 4 + (hdr->first_segment + 1) * 16;
-    ...
-}
-
-It does not hash nexthdr, hdrlen, type or segments_left. A sender who has
-captured one SRH with a valid HMAC could:
-
-1. copy the captured bytes into a Destination Options header and set its
-   nexthdr byte to IPPROTO_ROUTING. ipv6_find_hdr() sizes this header
-   with ipv6_optlen(), the same way it sizes an SRH, and does not check
-   the option TLVs.
-2. append an SRH of its own choosing, with segments_left > 0.
-3. send the packet to the SID from the captured source address.
-
-The old seg6_hmac_validate_skb() took srh from skb_transport_header(),
-which points at the Destination Options copy, so the captured HMAC would
-match.
-
-get_and_validate_srh(), decap_and_validate() and end_flv8986_core() would
-then act on the SRH returned by seg6_get_srh(). That is the
-unauthenticated SRH.
-
-A similar splice looks possible with a leading routing header that has
-segments_left=0, because get_and_validate_srh() passes IP6_FH_F_SKIP_RH
-to seg6_get_srh().
-
-This patch closes the hole, since the HMAC is now checked over the same
-pointer that is processed afterwards. Should the changelog describe this
-HMAC bypass as well as the false drop?
-
-> The misread header is covered
-> by the pskb_may_pull() in seg6_get_srh(), so the result is a wrong
-> verdict, not an out-of-bounds access.
-
-[Severity: Medium]
-Does this statement hold for every header that can sit in front of the
-SRH?
-
-The code change looks correct. However, the same root cause can be hit
-when a Fragment header with a zero fragment offset, or an AH header, sits
-between the IPv6 (or Hop-by-Hop) header and the SRH. ipv6_find_hdr() steps
-over both of them:
-
-net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
-    ...
-			_frag_off = ntohs(*fp) & ~0x7;
-			if (_frag_off) {
-				...
-			}
-			hdrlen = 8;
-		} else if (nexthdr == NEXTHDR_AUTH) {
-			...
-			hdrlen = ipv6_authlen(hp);
-    ...
-}
-
-So seg6_get_srh() pulls the real SRH further down the chain. Meanwhile
-the transport header set in ip6_rcv_core() still points at the Fragment
-or AH header.
-
-In a Fragment header, the byte the old code read as srh->hdrlen is the
-reserved byte, and first_segment and flags are Identification bytes. In
-AH they are the payload length byte and SPI bytes. The sender controls
-all of these bytes.
-
-Take reserved = 255, id[0] = 0 and id[1] = 0x08. With those values
-seg6_get_tlv_hmac() passes both its hdrlen check and sr_has_hmac(), and
-then does:
-
-net/ipv6/seg6_hmac.c:seg6_get_tlv_hmac() {
-    ...
-	tlv = (struct sr6_tlv_hmac *)
-	      ((char *)srh + ((srh->hdrlen + 1) << 3) - 40);
-
-	if (tlv->tlvhdr.type != SR6_TLV_HMAC || tlv->tlvhdr.len != 38)
-    ...
-}
-
-That reads 2008 bytes past the Fragment header. With a minimal 24-byte
-real SRH, the pskb_may_pull() in seg6_get_srh() only guarantees about 72
-bytes of linear data. Can this read go past skb->len, and even past
-skb->end?
-
-For AH, the misread length is larger than the real AH length by four
-times the AH length byte.
-
-The pre-patch seg6_hmac_validate_skb() called seg6_get_tlv_hmac() before
-it looked at seg6_require_hmac. Wouldn't this read then happen with any
-sysctl value, including the default of 0? If the bytes there happen to
-match, tlv->hmackeyid and tlv->hmac would also be read out of bounds.
-
-This patch does fix these cases, because it now passes the SRH that
-seg6_get_srh() validated. Could the changelog describe the out-of-bounds
-read reachable through get_and_validate_srh(), decap_and_validate() and
-end_flv8986_core(), instead of saying the result is only a wrong verdict?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9%40gmail.com
+> +	return headroom;
+> +}
+> +
