@@ -1,213 +1,154 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C23B774F
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521F3BFACB
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790540684; cv=none; b=b3kO13K93YDPQIow4B7Zkw1IP4mO+GHFS6r4Kh3CvxzkVlAQ39NnKrsD9ohkluMfner8ua94CG4TLz/H1ylgbXKhxLdlAZiIH5JPwKgja6l0rWkX8vQ0JQ4tia88FS/5hGgc2BJd2PrBgimjAUiaIBcfKQS1kOrPBpDuLuN02hE=
+	t=1790540914; cv=none; b=CJJayMLSZmqS7db9MHo0EIhk7bisX7yEpRk6d17EayZ9XjXkAsgmhUQYYSSyS7Z2mw4Pp5NboGvXb4qn3yssMxY9oFuuOla9esOKfbEaQpMECvBzS+czTWWEuHyv+Wlov/YdcBdjv6m79uvJeoV0QtKbyntcsV9fmABqj1mkA2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790540684; c=relaxed/simple;
-	bh=5oQqZlsdAdQQFiVGtPLf3B8/edF8PNBWde6KX2QYiRg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R1AmAFlztXsk78Sp1LW8Qe8XX3cHhUHSndk4CysQur33jglv6rk0ZYY15+5OOicNQ6QA1ta5yp1eKtJ6hk3xToszEryVrgFdaw8ZAuPZH1H9GL6e05vVeWCjXPyIOb2xuwnOTxEckXOJrhuWWgeVhNrIkOLnknRULcWqILutFr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c+sT+ckh; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1790540914; c=relaxed/simple;
+	bh=FSVVe/cPDU2HiWT6f26OgXG1GyfOSzOG3siiaAo3dOY=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pHU2DT9wlN0KHjKa76zrdRATCeCGQ5/gU0xP3yY0Pj8GHbH9OfO1uuzH5hNiotjvqzh99xwL0l9rJnPKDk69XK49oOnyhErfYw9mPxTc6qM4Y/Iwt96Doyk+vwH8XVHkzlS8KoLhZetVfjUloH90+mA6gdmfPQ4eBT0TiLT2kBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKZqtEiQ; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c+sT+ckh"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1ca15334cso2656408a12.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:24:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKZqtEiQ"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffed768deso4474845e9.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:28:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790540682; x=1791145482; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tXFzPCtESlJpidUEerkOiCAPLf1WMF1n9IsF0il7Pbs=;
-        b=c+sT+ckhsFoa1+WtR4i4uO7fe2sX2MnUmhpU+pz6UWS9j2aDVPXZWoseMBNM18Px2N
-         ZyZmfGy6iw37HTIbqZW1nHtW30JmCVXFdD0MBdndAotuEbJC9SIDLH9WyUKD1xSQc9W5
-         z7bpDn39tQaZtXs57N0Wb2z45P+X1W0oYe0mN5T22sutApbAtvfbCivN369ZIQrukhE8
-         z0vRERmoMs0E6LYOD/xXSIokcAw5f7LCg0Lc87PUATw5taP3w0f7N15U3Rk69tQlZjHp
-         BOY1JrhCB3dEECpKynFMRL2GtOhN3g1OQpx6qrjTD0Z0tLKXs2shD4yaL+Fql6lRA1NU
-         lfTw==
+        d=gmail.com; s=20251104; t=1790540911; x=1791145711; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZpDxu+FSADcYkY7OEJ6DHltLDpB0SvAaV3ZviPXPtHQ=;
+        b=gKZqtEiQNt2Gf2yCYfkyFVHF73EFKbd8MQ1TV9Nv4FKk+yIawe94Ud6voNrFcbuXsN
+         4j7AceejpUTCeLf95nSQWnOFxY0x/pNNbL+g75Sv653PtHRkp3ZTBuPX3AvHIBYCSoug
+         tLFpwWKdvQSzy7L7rt8tEBXP4nVHTixSuszgnCaOn/DRNmdYhZsmnYUhqSr266GFik1M
+         ybWZ1lxhVnyPDCfeUneecCkX3EKLekTh8vsBperf+uXuH6gxZqAWIzg+dlsBe8ijTGL2
+         5xl+ssxAU9sQA3q6SGC5E+HkTZd4or+aYT1IfVrR4ZEiGkjWFglhIWMTYl8z7K2gTL8I
+         Y3WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790540682; x=1791145482;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tXFzPCtESlJpidUEerkOiCAPLf1WMF1n9IsF0il7Pbs=;
-        b=R7AsFZcXLc75HQa9RnUJwU7A+L2UgZGr1kKfQphp63+d6OjEK9Q3Mrg+iKDsdl2CXe
-         Kcmyp/GPneVLQa6lpCBy50agCopb6G0VOsI1irRlJ+8It2CCewsiElUVPj7EyFf8Sehf
-         0Z3gsfVvjYkgF5epuQFRks8ygzkIxth5ZBVYOsnOLzbZdkWe3pmfcBh+q0AgHn9W6qbg
-         ApqS2Z/jpWTJWMAz96HNTnCuxQN2Q+g/0U6jxdOsV44bm2Pr2VrYERQTEztXxgN17/2g
-         AyXdPFNKQqSbuIl/jjgV1wFVNOIYwUECiQRNkXu/7Du+BoxTEt+QKiDLiCEVEQ/ZyVAv
-         lXZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy43yroVpH5xRMXzGU4ypxzbFA82A8YO3cwfehpO9KOieZ0OzpjPuG2uoSN+QtXH1Kh+2nDkmI=@vger.kernel.org
-X-Gm-Message-State: AFuF++ktWyBpraDXuvZipB5sA57Tqzk7Att8XprKk2t2D6o6qaUE/gP2
-	G6bYmBLGYdRlIQGNsqm+nEyjAKL31v/yVaW7fdCbImDtx5jx8Y+LLJewPwcKpy46hnw1WyR/BMb
-	zxFOrbw==
-X-Received: from pgdg6.prod.google.com ([2002:a05:6a02:51c6:b0:cc7:a826:e274])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9f8f:b0:3c3:a3f4:5485
- with SMTP id adf61e73a8af0-3de26c0f5efmr6610735637.6.1790540681880; Sun, 27
- Sep 2026 13:24:41 -0700 (PDT)
-Date: Sun, 27 Sep 2026 20:23:42 +0000
-In-Reply-To: <20260927202429.2452589-1-kuniyu@google.com>
+        d=1e100.net; s=20260707; t=1790540911; x=1791145711;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZpDxu+FSADcYkY7OEJ6DHltLDpB0SvAaV3ZviPXPtHQ=;
+        b=IL1EuBbC+6kcCl37ANXIy6xswQs5bDV2b5oB9MJU//7/qMcoeFbyZtimFNDswQP1Bn
+         X85THoo4KJj7v03diCcTjhnKKwTTmZPBV7cMPFIxDWZ1u/iKYKJ5Rfmc/OsHexZXp2Zl
+         1vRBGToo8TmoVygfHVZ97tycuu339bUl6GYofeldDaVER7nsjhhkzrYen2Eyu38A1eE4
+         C6J1OdmUJfQn2KhaqQuXl+VR20q44KN2GXVkTXp+bMZP1dvWmBVGUW61GmuYOFvjKDzH
+         TRY0rnTO51JmVKJV3jaNNxZBubdMcer1ySMc/e7T+KwU8UJPfWL44+dcTUzTAagSOjT9
+         z5hw==
+X-Forwarded-Encrypted: i=1; AKwUvBw432hXyRKj/NjbPehU2QGcTJWVWmGKzpzEr4cenFNUrhDlIPofBRi8T77NBUWEDnExEmrpDfo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kZHdhtrJtxMCGgaxxrJXXVlZu8gicdqGzCyWdEs8xOtaP4xe4M
+	rLbyDMknxTTusspYzC5x7hhIylR1psleMdPfhR331mnYnq74xj+JyRlu
+X-Gm-Gg: AYBFou1WT+T8uC7kVVcmqMDEMRqHxuSlOWcf3V9DQnxozQvdTjD13519U8SvGzd/M59
+	wFd9gfNZPN79K2Bfje+9qwSQ/+i+JRf7LJ8Qa9s5GatMgeA1/avwxXw8tPlmno5PEmHdKDgJMdp
+	89JYyk5b8sz/MKtC1cDAeokvbpwyT8a7tP00Hqcjgd0DZ/UPA2SQmgihXipL4QBQ6kVzPFZWlho
+	gGGsVcE42XC5CNLE1LssMLRnwmWQoGzH7M1YKPS39E70oT6726qBRVqRcyIG70vG8aJWHKdZILZ
+	pAEOFBVBDB2PUADwlI7WlK/zjIrpMJAQw6CrK0649/tHjUYAydBjnC1++6OaDzErsNAyfSGyiLf
+	ynpIjHUjucstqHbz5J1fE4ZjUbQxoisRP7Cu2W5PUXapAqEI9QA6B6rUneKpLfcGP7T0lRkkYxJ
+	R060oK1ifoKTccqVU86bFNu6/zIeqlWqcBtLcHFhE6s8ZPL7tKOfQwOrUyJ+QSlZNu8ISpqnNgh
+	DczZj8XIVbhRqLnoFnrzJ1cfWPqE8Q0YUJtphYzkCX6WyQ=
+X-Received: by 2002:a05:600c:1f83:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-49fe66c8087mr198495325e9.3.1790540911202;
+        Sun, 27 Sep 2026 13:28:31 -0700 (PDT)
+Received: from Ansuel-XPS. (host-82-57-191-234.retail.telecomitalia.it. [82.57.191.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00571744csm17037495e9.13.2026.09.27.13.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 13:28:30 -0700 (PDT)
+Message-ID: <6ab97c6e.f5ac67e6.37e70.11e5@mx.google.com>
+X-Google-Original-Message-ID: <arl8aT34M7MBL89n@Ansuel-XPS.>
+Date: Sun, 27 Sep 2026 22:28:25 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	mfd@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v23 8/9] net: dsa: mt7530: generalize and move
+ common function to lib module
+References: <20260925182435.21207-1-ansuelsmth@gmail.com>
+ <20260925182435.21207-9-ansuelsmth@gmail.com>
+ <cd200dee-1bde-4cc2-a296-c93d704cb906@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260927202429.2452589-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260927202429.2452589-6-kuniyu@google.com>
-Subject: [PATCH v1 net-next 5/5] ipv6: Batch rt6_uncached_list_flush_dev() for
- dying netns.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Chris J Arges <carges@cloudflare.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd200dee-1bde-4cc2-a296-c93d704cb906@lunn.ch>
 
-IPv6 uncached routes are linked to the global per-cpu lists,
-rt6_uncached_list.
+On Sun, Sep 27, 2026 at 09:02:09PM +0200, Andrew Lunn wrote:
+> On Fri, Sep 25, 2026 at 08:24:30PM +0200, Christian Marangi wrote:
+> > In preparation of support of DSA Switch from Airoha, create a mt7530
+> > library module and move there all the common function.
+> > 
+> > Function are generalized to use the reg_field regmap API but still apply
+> > the same exact logic. Every function is renamed to mt7530_lib prefix to
+> > better identify it.
+> > 
+> > Minimum modification are needed to the register header and common enum and
+> > macro are moved to the mt7530 library header to permit reuse.
+> > 
+> > A library struct is introduced with everything required for the common
+> > functions.
+> > 
+> > The generalization and the introduction of reg_field regmap API have the
+> > side effect of permitting to clean the mirror functions that required
+> > special handling for MT7530 and MT7531 based switch that had different
+> > registers. This is done by declaring a common MT7530 reg_field and a
+> > specific one in the Switch match table.
+> > 
+> > No behaviour change is expected by this change as it's just a code move and
+> > reimplementation.
+> > 
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> >  drivers/net/dsa/Kconfig       |    4 +
+> >  drivers/net/dsa/Makefile      |    1 +
+> >  drivers/net/dsa/mt7530-lib.c  | 1128 +++++++++++++++++++++++++++
+> >  drivers/net/dsa/mt7530-lib.h  |  391 ++++++++++
+> >  drivers/net/dsa/mt7530-mdio.c |    4 +
+> >  drivers/net/dsa/mt7530-mmio.c |    4 +
+> >  drivers/net/dsa/mt7530.c      | 1368 ++++++++-------------------------
+> >  drivers/net/dsa/mt7530.h      |  256 ++----
+> 
+> The number of mt* file keep going up. Is it time to move it into a
+> subdirectory?
 
-When unregistering a netdev, rt6_uncached_list_flush_dev()
-iterates over the potentially long lists to find uncached
-routes tied to the device and swap it with blackhole_netdev.
+The problem as always is that mediatek directory will also contain airoha
+stuff...
 
-Since it is called for every device in dying netns under RTNL,
-it adds O(N_dev x (N_cpu + N_route)) costs to netns dismantle.
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>
 
-Similar to IPv4, let's call it (almost) once per cleanup_net().
+I would like to fix some trivial things pointed out by sashiko. Can I apply
+those and keep the review tag? For this patch for example it's just the
+typo for the multicast MIB.
 
-Chris J Arges verified the changes improve RTNL wait time
-during cleanup_net() by 75x, quoted from [0]:
+For the other patch is also very trivial stuff. 
 
-  <...> I was able to confirm even greater reduction in contention
-  as measured by how much latency an unrelated process takes when
-  waiting for cleanup_net to complete. <...>
-
-  Some rough average latency numbers with 36 devices, 160k routes,
-  8 vCPUs:
-
-  - main: 137ms
-  <...>
-  - your patchset: 1.8ms
-
-Reported-by: Chris J Arges <carges@cloudflare.com>
-Closes: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com/
-Link: https://lore.kernel.org/netdev/aq2B8PSfjn-xau4V@20HS2G4/ #[0]
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/ipv6/route.c | 54 ++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 15 deletions(-)
-
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 475ced827ec5..7747e4f20fee 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -135,6 +135,22 @@ struct uncached_list {
- 
- static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt6_uncached_list);
- 
-+static void rt6_uncached_list_replace(struct rt6_info *rt)
-+{
-+	struct net_device *dev = dst_dev(&rt->dst);
-+	struct inet6_dev *rt_idev = rt->rt6i_idev;
-+
-+	if (rt_idev) {
-+		rt->rt6i_idev = in6_dev_get(blackhole_netdev);
-+		in6_dev_put(rt_idev);
-+	}
-+
-+	rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
-+	netdev_ref_replace(dev, blackhole_netdev,
-+			   &rt->dst.dev_tracker,
-+			   GFP_ATOMIC);
-+}
-+
- void rt6_uncached_list_add(struct rt6_info *rt)
- {
- 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
-@@ -143,7 +159,12 @@ void rt6_uncached_list_add(struct rt6_info *rt)
- 	rt->dst.rt_uncached_list = ul;
- 
- 	spin_lock_bh(&ul->lock);
--	list_add_tail(&rt->dst.rt_uncached, &ul->head);
-+
-+	if (check_net(dst_dev_net_rcu(&rt->dst)))
-+		list_add_tail(&rt->dst.rt_uncached, &ul->head);
-+	else
-+		rt6_uncached_list_replace(rt);
-+
- 	spin_unlock_bh(&ul->lock);
- }
- 
-@@ -162,6 +183,9 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
- {
- 	int cpu;
- 
-+	if (dev && net_pre_exit_done(dev_net(dev)))
-+		return;
-+
- 	for_each_possible_cpu(cpu) {
- 		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
- 		struct rt6_info *rt, *safe;
-@@ -173,23 +197,17 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
- 		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
- 			struct inet6_dev *rt_idev = rt->rt6i_idev;
- 			struct net_device *rt_dev = rt->dst.dev;
--			bool handled = false;
- 
--			if (rt_idev && rt_idev->dev == dev) {
--				rt->rt6i_idev = in6_dev_get(blackhole_netdev);
--				in6_dev_put(rt_idev);
--				handled = true;
-+			if (dev) {
-+				if (rt_dev != dev &&
-+				    (!rt_idev || rt_idev->dev != dev))
-+					continue;
-+			} else if (check_net(dev_net(rt_dev))) {
-+				continue;
- 			}
- 
--			if (rt_dev == dev) {
--				rt->dst.dev = blackhole_netdev;
--				netdev_ref_replace(rt_dev, blackhole_netdev,
--						   &rt->dst.dev_tracker,
--						   GFP_ATOMIC);
--				handled = true;
--			}
--			if (handled)
--				list_del_init(&rt->dst.rt_uncached);
-+			rt6_uncached_list_replace(rt);
-+			list_del_init(&rt->dst.rt_uncached);
- 		}
- 		spin_unlock_bh(&ul->lock);
- 	}
-@@ -6801,6 +6819,11 @@ static int __net_init ip6_route_net_init(struct net *net)
- 	goto out;
- }
- 
-+static void __net_exit ip6_route_net_pre_exit_batch(struct list_head *net_exit_list)
-+{
-+	rt6_uncached_list_flush_dev(NULL);
-+}
-+
- static void __net_exit ip6_route_net_exit(struct net *net)
- {
- 	kfree(net->ipv6.fib6_null_entry);
-@@ -6839,6 +6862,7 @@ static void __net_exit ip6_route_net_exit_late(struct net *net)
- 
- static struct pernet_operations ip6_route_net_ops = {
- 	.init = ip6_route_net_init,
-+	.pre_exit_batch = ip6_route_net_pre_exit_batch,
- 	.exit = ip6_route_net_exit,
- };
- 
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+	Ansuel
