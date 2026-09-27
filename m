@@ -1,110 +1,115 @@
-Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDB03BBFAD;
-	Sun, 27 Sep 2026 07:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790493696; cv=none; b=VpuyphpBktfH9wV0fef4I4LsyoqNddvXFHYkjpIX8j2E8zYo8MCz2N3aVvgCYt0dvTg5SebP0ml+HEs9zbSAlKlI0aGHSXNUAiydnrMXSxf/RhyntNbvloWLMzdQOwLY/kKtt37sNmBk/cncbEZCJR04W3LgvEKw/949e3wX7p8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790493696; c=relaxed/simple;
-	bh=U1WDcZC7qsYWQ4eJtn0pq/dQKkPUfjidP2jdkrhMwLU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=XMhYlIq29pN/A/JjMgGVjFPG/2NM99QPHfIdK1ca/O4k+DogWUSCgHtsvjN0+VBaW1eDmV3FYopT0SFF7DkXlUR9Tv8eXgVo0doIMinNpbrx3h957Wq0CPbNPJlBDiF3Vvs/L2/OROGmheMkX8TN57192hij04KwXAsZgVBwRO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Sun, 27 Sep
- 2026 15:16:21 +0800
-Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Sun, 27 Sep 2026 15:16:21 +0800
-From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Sun, 27 Sep 2026 15:16:21 +0800
-Subject: [PATCH 2/5] net: ftgmac100: Add AST2700 compatible support
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B663BB669
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790494138; cv=pass; b=FcusFc+VxmMEaxMB/CeR8JgVJdo025Pafh0XQcp4hM+WYdyyrXKcYnnAIgWgmnrDpDyo0UNixSmeqixMGMGshUnXAUIqysID+RY0uY1ZINhRKSiYtXsPdxdphM4BPRA1TUjI55BQ/Syz0DEyDPkUI3/0wrL9C6I78dzujpxjx+A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790494138; c=relaxed/simple;
+	bh=ehijlCEC3hrjcJAznMfeQDeOfDoaMPKsYEk0yQczBFM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cj40qTaGDqRgUsuW5gFAXLqLyhcUYZ2W2iD9Nvrh8pi6bx8P/UcAP08lpEsUvlfn4+BJdwOsDyM9LMHREk2UAZgGFtr1AuWTuTBnh2qK8aDhE+/0UFyU8Zy0YEHIN5tSbx2q7m8e0IQ73/98CWnQZiGWeDMnjeY9dQrYAE4DTlA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUP7ST4H; arc=pass smtp.client-ip=74.125.229.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUP7ST4H"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b76ff64d78so2063040e87.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:28:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790494135; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZnEzwN9ZZy/IO6pmirikht0g3EjW8giZvz5TBY1vD9GbCjc2EX8uLCk4rt7NhBXYXO
+         7e+hyNtXmenC5ozX0ENv4TFX/Bah7p/XkiSXm6fr6HzcffdMJE1fGBFeSDH4O4QLib3V
+         G/54k4wUpxt7vrw2B3erhFKpBmBBgZa1hZSrjingpwEbWgTp4feD6rNojjw0+aAi0A7h
+         3h9e1qg1d11ciORQQIDB1WkiuDCWsXPFOexguQdqvQ0IyCIyT61a5Uds8Z7gA2XZgCnn
+         NbmMiOHZiiKKaoQNdpqnrrHH/5NSEYYuViTubUobLdWVJuenDyTCMXIVTJZGrAocQWf/
+         YEVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
+        fh=vKFja0LSr0FxQhvuerK1UD7EXjSKsFax19DrbRxRzps=;
+        b=rqPgYXCx8x5N3zoPAf/24TzgxZXRg6bztfcR8pRHt7jb0vkn9qQdQw4dDDrzH4pTtV
+         O/3q+HxD6suejdTBA9hlKXKs41PZ2w4HdZwZs3OtW+wGvHRhKIe7LNdc2sKsOYNVs8yM
+         gkAGU9Lk4ADP/QAv6FtPIxQankqzZ0fteSCTE/S8m8iIGd5cNcADV31Bchh4owSeLEa4
+         7x9OHQi4ECTm7F1t6nTKGAsLJZIQ5leJhgnfiTHq9HS8NQ8VFol2CrgNYUHr1dhj+C5g
+         6bqYAd17XjUDbCmEvd0mxHJ1vlJIlQFnBarwK6ZiENlq/GaL3c1Pt75mriH4XQJnU4DD
+         fANQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790494135; x=1791098935; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
+        b=QUP7ST4HD4hHwLCrhLalJyjqqJxSSLxvhkwndOV3EcxUNDfLEIj7jTjaccryR8DqTp
+         FksqFwirqQJrhUIFhNsu3UDaL+soJ7AfXvMm6jBF8lU6EBBgGRsvGZNiGcooaxmdO5+U
+         wXZNFJ9ngRXIfc+xdCOkkJRyCzp6mAuRIT01rCnKhvDxmI+COG2YOy8mOYUicZpYzMc5
+         c41cZ3Jk7cNODF3W8/eZhddzuhSRLTzInShZ3a0yVDunpC16nujtzoYVehcR+rkO/qeM
+         fJ8xGfDsQWCvIr8v9Ya324Uze6JO2YplDEPD/mCEAN+4jApZyWln7Y5iiQhuusfKoHG2
+         T/bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790494135; x=1791098935;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/XyK2jKdoKkKL5T7snSnH60cAWdSpGKwMQSo4tA4mUM=;
+        b=LY08q+2S8yoWG7iZqeK/kp+qzSIdDZeZ2UhSqA3HbxeawOJmMiZ7x1/nGiAgzTF7lh
+         Vf9C9fZQRrB1tOVe/kP6PNEEULZJC6WHIzJlFIsTN/QkjVneac7K9+mtahIla+0YXKvR
+         Hq4bq5zsJXbt3H0PJ3g5I6HcvEEfeYxvQyH2gExI7RzLvqkV01qZcJ+KxANnKb5xsHLm
+         qy03EDFs0/WFa8eFe56YzX5KOI19/LStTr+gOVLZ+VtnFDEMAUJ7KRwOlhFF7cBp04y9
+         NttmU+/Hak7XnLG86d+K8R++lq2tmVWtk765rpbJpMNdZPlmTf6eS/o3PyoJEsd5xLd1
+         YcxQ==
+X-Gm-Message-State: AFq9FYK7C/uTfJxWOlLdItfl5bxrUnewuAgd4IrTTCN9+pKk6ZEwqfTu
+	djVQCEytkTdVaEltgZysQPCZ27kjx3W0CDVrE+WLXcmoKxbtZhAT9BT9QVsPaJyb1wtYc9zCPvs
+	XlgwphOGLZQ3bXsqmDMFeFrEpzAk7qJkllN/0omo=
+X-Gm-Gg: AYBFou0ONF5f2YSt2LrHhJ+Wex/4Oc0gFbY+1ph41HMkakWBg/Pwlbvw0CFTt2LsLcS
+	M4F5fmOMAZ2FHYu62nYG0c5u1MaIZRI1tEPnRlcRGeANeOMEZVnfwgVy/bkeJbhX4BGvxLD1/0e
+	t1qYDLHt41MMFWsCq1vN1xJTshTLRzFUsHFvssJZnyoOchJOGLOmGe67KpoWGyDBGCrOgA2T/sW
+	1etr+7Ahh/sIg22rfCKX88V1ql8ztBeLicPax9YbtQOjtHBG1pozqM9tm/dORRm/MXamKRZU2cw
+	IxObkPCe8cd8U/S3sMkywIy/ddtlJl6Wr5slytF08Cda+LL/ktUq1Q==
+X-Received: by 2002:a05:6512:39c3:b0:5b8:f42b:ee35 with SMTP id
+ 2adb3069b0e04-5b8f42bf011mr467408e87.51.1790494135280; Sun, 27 Sep 2026
+ 00:28:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260927-support_ast2700-v1-2-9f03f29d2c82@aspeedtech.com>
-References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
-In-Reply-To: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Po-Yu Chuang <ratbert@faraday-tech.com>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790493380; l=1994;
- i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=U1WDcZC7qsYWQ4eJtn0pq/dQKkPUfjidP2jdkrhMwLU=;
- b=AC/tmm6LUi+rOtWB7eqPpQ8a5PKLiv3wAr9TZYJBN6iu12kuCb2SMboQFdgM7guXDyDDNOwKF
- AXgh+6ga06gCVWzzlOzSNuEPimFHYqt+DX+kUS/Wt0YihyKmA4btxzl
-X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
- pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
+References: <20260924135116.185161-1-maimon.sagi@gmail.com>
+In-Reply-To: <20260924135116.185161-1-maimon.sagi@gmail.com>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Sun, 27 Sep 2026 10:28:29 +0300
+X-Gm-Features: AclHuK9jR81YtUx1RQCcrT9bGJMnvoX8CDMxKrKA2UGl4RFqsdHHmwLzPsS4b9g
+Message-ID: <CAMuE1bE9XGm31fKRf62kD_rP7xFvkjjePRTPfRSjwH815PPbBA@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/4] net: axienet: fix TX queue handling around a
+ DMA error reset
+To: netdev@vger.kernel.org
+Cc: radhey.shyam.pandey@amd.com, michal.simek@amd.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux@armlinux.org.uk, daniel@iogearbox.net, andybnac@gmail.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add match data for the Aspeed AST2700 FTGMAC100 controller and wire
-its compatible string into the OF match table. This lets AST2700 device
-tree nodes bind to the ftgmac100 driver.
+I am withdrawing this series.
 
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
----
- drivers/net/ethernet/faraday/ftgmac100.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+The review of v2 found a real gap in 3/4: axienet_open() and
+axienet_resume() can still wake the queue while the error handler is
+running, so the claim that the handler owns the queue state for its
+whole duration does not hold.  4/4 has a smaller hole in the same resume
+window.  The other findings are older problems on the same paths:
+axienet_open() ignores the result of axienet_device_reset(),
+axienet_resume() ignores the result of axienet_open(), and the dmaengine
+stop path has the same suspend race as the legacy one.
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 6d2fe5c2f390..67b1fa464a42 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -37,7 +37,8 @@ enum ftgmac100_mac_id {
- 	FTGMAC100_FARADAY = 1,
- 	FTGMAC100_AST2400,
- 	FTGMAC100_AST2500,
--	FTGMAC100_AST2600
-+	FTGMAC100_AST2600,
-+	FTGMAC100_AST2700
- };
- 
- struct ftgmac100_match_data {
-@@ -2017,7 +2018,8 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 
- 	if (priv->mac_id == FTGMAC100_AST2400 ||
- 	    priv->mac_id == FTGMAC100_AST2500 ||
--	    priv->mac_id == FTGMAC100_AST2600) {
-+	    priv->mac_id == FTGMAC100_AST2600 ||
-+	    priv->mac_id == FTGMAC100_AST2700) {
- 		priv->rxdes0_edorr_mask = BIT(30);
- 		priv->txdes0_edotr_mask = BIT(30);
- 		priv->is_aspeed = true;
-@@ -2131,6 +2133,10 @@ static const struct ftgmac100_match_data ftgmac100_match_data_ast2600 = {
- 	.mac_id = FTGMAC100_AST2600
- };
- 
-+static const struct ftgmac100_match_data ftgmac100_match_data_ast2700 = {
-+	.mac_id = FTGMAC100_AST2700
-+};
-+
- static const struct ftgmac100_match_data ftgmac100_match_data_faraday = {
- 	.mac_id = FTGMAC100_FARADAY
- };
-@@ -2142,6 +2148,8 @@ static const struct of_device_id ftgmac100_of_match[] = {
- 	  .data = &ftgmac100_match_data_ast2500 },
- 	{ .compatible = "aspeed,ast2600-mac",
- 	  .data = &ftgmac100_match_data_ast2600 },
-+	{ .compatible = "aspeed,ast2700-mac",
-+	  .data = &ftgmac100_match_data_ast2700 },
- 	{ .compatible = "faraday,ftgmac100",
- 	  .data = &ftgmac100_match_data_faraday },
- 	{ }
+Fixing that properly means reworking open, suspend and resume together,
+and I cannot test suspend and resume on the hardware I have.  I would
+rather not keep posting partial fixes for paths I cannot test, so I am
+dropping the series.  The TX buffer leak in axienet_dma_bd_release() is
+posted as a separate patch.
 
--- 
-2.34.1
-
+pw-bot: cr
