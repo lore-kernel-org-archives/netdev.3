@@ -1,242 +1,241 @@
-Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFA2D0620
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 01:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA6821B192;
+	Sun, 27 Sep 2026 01:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790473463; cv=none; b=CRw5FIEZ8i8FMbs5XCK74peNhfFkjQMo5cWJHoSRW0ag6XRlm7V//gEbOH0sQ71VaX7My2q7r+UwNaZIuR84YLDfqGwEXzrZD/3a6llYDJDEM1Q9drzJBVE6Fh3RX71uPTEJSlDnp1VYxjnWgHnFShPAXCfNW/Q7fas3QTQtG98=
+	t=1790474359; cv=none; b=ZTClAK0cgEOYSahDMGjyLYIwt2I3piRCQPxHffeprSS91V94uK9ovga9SL2Z2HQCEBL+/ko54TIliqyGHzwxKVdoQl7li8jFc5DIRFFF4i+jyEbbRZP6SlFg4qSaITtO8ulxZ2eE6bAEBBwibCjDQORl+a0LfeF/P+FK1ofxV7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790473463; c=relaxed/simple;
-	bh=P5J9Sf16uPUvsZ+JfrZlq2hmQ3Ky4R4QrKaKwbraMmQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=SNu+JZqLkxEk8HzFlAQaoYLuIk+du6bpVF0puDD1z89Aeuq4WgGuLXXQqvORzrVbdZr7YvrYqX4W7w0YMotZlorRChbmv1PTw4YGRjMdjjxiAG2zjzqytKTR4hXUFFiDB4Rugaf2wSFLpXz80AqFk6tng1g2WsAnn4EdfIiC1X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JoFggJVP; arc=none smtp.client-ip=74.125.230.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790474359; c=relaxed/simple;
+	bh=Cj1yxOQ7NmiOhB54Fj2kvY8sqe96D//wtEYKIYBNRx8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=osiKOwAD/npOO9fV3J5p3m9EhsrCx6ncgmrcuGVPI2PDsDrubw+aYklIII8Yuv8P+Bfx+JazlXUg+WtVjqJDoXbzTcxMJQQUCcOw2X3Qz6VLiyz3GwJyAvvd7KTMU9j3yz4knSC9+SSzzJs3SM4iMuOSo15cP196sxLrTqPe8zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfeeVtO7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JoFggJVP"
-Received: by mail-qk2-f39.google.com with SMTP id af79cd13be357-93c632d5d42so42587685a.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 18:44:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790473461; x=1791078261; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZDvIRroBF25q1jkpXLqTWAFH4anbNjoJF32ra/1qtW8=;
-        b=JoFggJVPQ8N2k4zi2zT7O79vhO51ZgBR69bMKH3FC+s6YmNZ7LjoDVBvP6HEaTM/J2
-         GsmZkTDqc4VdmA+6CkZqYbBi9xpmeHoarDTVNu4N0mqBBrfsv9FxD2AF0KaiYhou+M9m
-         P/vJd1lKrsKpStd8NCCxgw7s5NwYmOSm+hhYcQaunYCVPoZbKZAD6kNnIMagXPzD/Hp0
-         hfa/O+bbVC+kUVJBI/3qC8uVFGnHLl/yEmFtquPc+5ofo0VmWBHj1I6lBs2a8C/NfJY0
-         QhNTP2gTJeoXzbTWRimMuG7eErBMuQek3EE8FqJayv/gPYje3bA0+aeSY2YEF3tRuuna
-         MP2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790473461; x=1791078261;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZDvIRroBF25q1jkpXLqTWAFH4anbNjoJF32ra/1qtW8=;
-        b=H3+cFqtdCt6EB/mYLojjSxGhb5ZWddYTWzB0OY4xKKwIjdrQZbynmzSYRk6FOHnJJ+
-         HWfUTe4RuvKvXAEuiHH778Ya39sThrJO8mAXFCz4cgvSwhl34JBqY8TslkR+u3vGtjUI
-         apBf4HL0TfT1FYXo1L+KHCAaFHOZddXeGsAHpmjHqEwV9oCg3RsVv9MjJhCtvkY9BJjO
-         apYGkBpxDyT313kvPjvb/VLoFYqrdS+YILZsykd0fUvIBxuFXKejnc6oDIjPXFlVfMk4
-         zGtAn7RISdz97QRzpWAK3pcsb4Ddt8W3rNmPeMQxQKuSpHDtG+rwFFBuNjruznsThHAO
-         mD/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzuTW1+OqzA34IMr2qT77VXOufhbsuSVmX+cbAp2LaGe/d4krg0FENY7bNd7eUeIDWO1PDE5Ok=@vger.kernel.org
-X-Gm-Message-State: AFuF++kDsZjNs/E2wNn9t0emXprWhJRWTP8FBbGFOdVhcLFPaj+NBAbP
-	vazjo5Qd87+oQlf7mq2BkA7VCdVV2GT7kKx/g+PWsRn2p0Ukmxv4Hm3W
-X-Gm-Gg: AYBFou1gLEyW5y6Cv4hg5yzkV4AqHV4o8gF7qWldt3xr3GwJZvTwNDODRaInVDzdNpr
-	xenFRlx8CngzDfHJYV33YsW5h07ZHRzZuaSGb8xcXLeDUJ6KepfmzZY9Srx9jcYPad2UMvCLOOm
-	us3FHLyu2Rfl7oY0kxwb2Puvl5d0j4PMxzrREDmomtUv2RQKe5HZoixYdB/B8i8pp4vqcWLToFT
-	Nlm8vK3fpXibPT+yg2xgiAvmnHHQVVoA53ekrw1iebEko92lWXGA9mvjsY8wtvO/1NoEzZDKByA
-	lMn1n1a4chaagWRaQuPgurZNPXpLROEHCxq48Z6DqSjMAA4IeM+kdlg/aTN2e1wMiQD6ssbeIM4
-	7xszRd7Aj5bSm5FXQLV/YUyp0wtZnb0SJX5O5ddcSNZ3q3Yg3RhuHYWKa+s4qMSXSJ9pcxURHXY
-	3fniDq0XU3lrKkUUWVwg+uz+niW+53zbk1173wMLwMb3naz8VaNT0ICem5oXv7/x2/maNoMHoQ0
-	TlVdJYVCfVBRg==
-X-Received: by 2002:a05:620a:a515:b0:93c:5d68:107 with SMTP id af79cd13be357-93c5d683856mr415383485a.30.1790473460846;
-        Sat, 26 Sep 2026 18:44:20 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e0cb71sm50445796d6.31.2026.09.26.18.44.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Sep 2026 18:44:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfeeVtO7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755731F000FF;
+	Sun, 27 Sep 2026 01:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790474357;
+	bh=3mmxZtkXz6CMoG9+1fr08yaqLx0uIg8QGWPSaxHFEmQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mfeeVtO745hvKy5JDKZe0mq5Xp+dIMbWv6FY2A0tsEQd31GtzIjTpocTbRTlg2fHN
+	 uEu0FUH78rCbqLm5qsmHL5CtJgpECrjNHHrVzrRkhrIjHRdFNcUzaFQlAPcmuxJSVd
+	 SQGHNt5qK2LuU06CvmLaHbaVeeLZwb5DOV1furGgtmT5mJHlJMIe9zXwm1HhdSNJDq
+	 PsRyXGw34SMszmma88JhTfs5SDYSFpK0SthmaqCtuxHBTI/uFtmEftGvMUWJGZNGum
+	 U5WQ+83ZswSKqmhJRoPSC4OGwXi16+kNULIi0ppuzr5YJPlvHY2NYUlmLJ09cxvCyH
+	 cCvcBryhCpAnQ==
+Subject: Re: [PATCH net-next v4 2/2] selftests: net: test untracked NA
+ recovery of FAILED neighbors
+From: netdev-bot+sashiko@kernel.org
+To: lfqlee314@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ rdunlap@infradead.org, netdev@vger.kernel.org, aajith@arista.com,
+ roopa@nvidia.com, jhpark1013@gmail.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, shuah@kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 27 Sep 2026 01:59:16 +0000
+Message-ID: <179047435603.2160803.13373341999390974606@kernel.org>
+In-Reply-To:
+ <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com>
+References:
+ <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 26 Sep 2026 21:44:19 -0400
-Message-Id: <DLPPVC3CQK2B.A9S40J99PFH2@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <kuba@kernel.org>, <pabeni@redhat.com>, <shuah@kernel.org>,
- <willemdebruijn.kernel@gmail.com>, <horms@kernel.org>, <corbet@lwn.net>,
- <skhan@linuxfoundation.org>, <rdunlap@infradead.org>, <kuniyu@google.com>,
- <willemb@google.com>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH net-next 2/4] net: psp: require an established
- connection for association setup
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260925-psp-defeat-v1-2-9f0b430107aa@gmail.com>
- <179047267826.2160803.3880931721750245623@kernel.org>
-In-Reply-To: <179047267826.2160803.3880931721750245623@kernel.org>
+MIME-Version: 1.0
 
-On Sat Sep 26, 2026 at 9:31 PM EDT, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 2
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The new `sk->sk_state !=3D TCP_ESTABLISHED` check in
->   psp_sock_assoc_set_tx() (net/psp/psp_sock.c:261-265) does not close=E2=
-=80=A6
-> - [Low] The commit message says the tx-assoc check 'fixes a bug in commit
->   6b46ca260e22 ("net: psp: add socket security association code")', but=
-=E2=80=A6
-> - [Low] Baseline decision: false positive, kept only because
->   requires_validation=3Dtrue.
->
-> --
->
-> net: psp: require an established connection for association setup
->
-> With this commit, rx-assoc and tx-assoc return -ENOTCONN unless the socke=
-t
-> is in TCP_ESTABLISHED when checked under the socket lock. It also documen=
-ts
-> that the upgrade to PSP must happen on an established connection, and tha=
-t
-> disconnecting a socket with PSP assoc state is unsupported. The commit
-> message describes the tx-assoc check as a fix for an unsynchronized write
-> to an assoc shared with a timewait socket.
->
->> The check in the tx-assoc path fixes a bug in commit 6b46ca260e22 ("net:
->> psp: add socket security association code") where an unsynchronized
->> write can be performed an assoc shared with a timewait socket when the
->> socket is in TCP_CLOSE after shutdown. This commit is not included in
->> net, because its premise of preventing listen sockets from holding assoc
->> state depends on the net-next commit 8cc3aef0cb19 ("tcp: Do not allow
->> buggy transitions between ehash and lhash2.")
->
-> [Severity: Low]
-> This is described as a fix for 6b46ca260e22, so should it carry a Fixes:
-> tag? Documentation/process/maintainer-netdev.rst says the Fixes: tag is
-> required for fixes regardless of the tree.
->
-> The dependency on 8cc3aef0cb19 explains why this goes to net-next. That
-> dependency is about listen sockets, though. The tx-assoc case of TCP_CLOS=
-E
-> after shutdown does not seem to involve ehash/lhash2 transitions.
->
->> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
->> index a9cfeebe4ba1b..a6b1c42dd626f 100644
->> --- a/net/psp/psp_sock.c
->> +++ b/net/psp/psp_sock.c
->
-> [ ... ]
->
->> @@ -252,6 +258,12 @@ int psp_sock_assoc_set_tx(struct sock *sk, struct p=
-sp_dev *psd,
->> =20
->>  	lock_sock(sk);
->> =20
->> +	if (sk->sk_state !=3D TCP_ESTABLISHED) {
->> +		NL_SET_ERR_MSG(extack, "Socket must be in established state");
->> +		err =3D -ENOTCONN;
->> +		goto exit_unlock;
->> +	}
->> +
->
-> [Severity: High]
-> Does this check fully close the timewait sharing problem that the commit
-> message describes? A socket can return to TCP_ESTABLISHED after it has
-> already shared its psp_assoc with a timewait socket.
->
-> psp_twsk_init() shares the assoc unconditionally, even when only the Rx
-> key is installed:
->
-> net/psp/psp_sock.c:psp_twsk_init() {
-> 	struct psp_assoc *pas =3D psp_sk_assoc(sk);
->
-> 	if (pas)
-> 		refcount_inc(&pas->refcnt);
-> 	rcu_assign_pointer(tw->psp_assoc, pas);
-> 	...
-> }
->
-> tcp_disconnect() does not touch sk->psp_assoc. The new psp.rst text says
-> the same thing: "Disconnect on a socket after rx-assoc will leave a socke=
-t
-> that can be reconnected, but with potentially stale PSP assoc state
-> present".
->
-> rx-assoc and tx-assoc do not need admin permission, so this sequence look=
-s
-> reachable:
->
->   connect(fd, peer1)
->   rx-assoc                       pas->tx.spi =3D=3D 0
->   shutdown(fd, SHUT_WR)
->     peer FIN in FIN_WAIT2
->     tcp_time_wait()
->       inet_twsk_alloc()
->         psp_twsk_init()          tw->psp_assoc =3D pas
->     tcp_done()                   sk_state =3D TCP_CLOSE
->   connect(fd, AF_UNSPEC)
->     tcp_disconnect()             sk->psp_assoc left in place
->   connect(fd, peer2)             cleartext SYN/SYN-ACK allowed, !tx.spi
->                                  sk_state =3D TCP_ESTABLISHED
->   tx-assoc                       passes the new check
->     psp_sock_set_tx_key()
->       psp_assoc_set_tx()
->         memcpy(&pas->tx, key, sizeof(*key));
->       pas->upgrade_seq =3D tcp_sk(sk)->rcv_nxt;
->
-> Only the new connection's socket lock is held for these writes. The old
-> timewait socket is still hashed, and packets from peer1 go through:
->
-> tcp_timewait_state_process()
->   psp_twsk_rx_policy_check()
->     __psp_sk_rx_policy_check()
->
-> That path reads pas->tx.spi and pas->upgrade_seq and writes pas->peer_tx,
-> with only RCU protection:
->
-> 	if (!pse) {
-> 		if (!pas->tx.spi ||
-> 		    (!pas->peer_tx && psp_is_allowed_nondata(skb, pas)))
-> 			return 0;
-> 	}
->
-> Apart from the data race and possible torn reads, does the behavior of th=
-e
-> timewait socket also change? Once tx.spi is set for peer2, the timewait
-> socket would start dropping peer1's legitimate cleartext FIN retransmits
-> with SKB_DROP_REASON_PSP_INPUT.
->
-> On the timewait reply path, psp_reply_set_decrypted() would also see
-> pas->tx.spi !=3D 0 and mark the ACK/RST replies to peer1 as decrypted.
-> psp_validate_xmit() then resolves tw->psp_assoc to the same pas, so those
-> old-flow replies would be PSP encapsulated with peer2's Tx key and SPI.
->
-> The new documentation calls disconnect unsupported, but nothing prevents
-> it. Would the fix need to check whether the assoc is actually shared, or
-> reset or refuse assoc state across disconnect, instead of relying only on
-> a socket state check?
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Ok, I will need to rethink the approach a bit.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
-pw-bot: cr
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The Fixes:-tagged bug fix is bundled with new tests that
+  depend on a new feature.
+- [Low] The commit message says the test verifies that "disabling each
+  gate keeps the entry in FAILED without a link-layer address".
+
+Pre-existing issues:
+- [Low] Some script exit paths skip cleanup().
+
+--
+
+selftests: net: test untracked NA recovery of FAILED neighbors
+
+This adds cases to ndisc_unsolicited_na_test.sh that seed a NUD_FAILED
+neighbor. Each case checks whether an unsolicited NA moves the entry to
+STALE, based on drop_unsolicited_na, accept_untracked_na and forwarding.
+
+It also runs tcpdump in the background and waits for it to exit. It keeps
+the return code in test_unsolicited_na_combination() so existing cases stop
+reporting false success.
+
+Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail.com
+
+> diff --git a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+> index 5db69dad0cfc0..ba9e670b51498 100755
+> --- a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+> +++ b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+
+[ ... ]
+
+> @@ -102,24 +115,39 @@ setup()
+>  }
+>  
+>  start_tcpdump() {
+> -	set -e
+> -	tcpdump_stdout=`mktemp`
+> -	tcpdump_stderr=`mktemp`
+> +	tcpdump_stdout=$(mktemp) || return 1
+> +	tcpdump_stderr=$(mktemp) || return 1
+>  	${IP_ROUTER_EXEC} timeout 15s \
+>                  tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
+>                  "icmp6 && icmp6[0] == 136 && src ${HOST_ADDR}" \
+> -                > ${tcpdump_stdout} 2> /dev/null
+> -	set +e
+> +                > "${tcpdump_stdout}" 2> "${tcpdump_stderr}" &
+> +	tcpdump_pid=$!
+
+[Severity: Low]
+This is a pre-existing issue, but some exit paths in this script never reach
+cleanup(). log_test() does this when the user quits under PAUSE_ON_FAIL or
+PAUSE:
+
+	[ "$a" = "q" ] && exit 1
+
+Also, setup() runs under set -e after setup_ns() has created the namespaces.
+
+Neither the script nor lib.sh installs an EXIT trap. On those paths the
+namespaces, the veth pair and the mktemp files are left behind.
+
+This patch adds one new case. tcpdump now runs in the background here. If
+start_tcpdump() or host_link_up() fails and the user answers 'q' in
+log_test(), is the tcpdump process orphaned? It still stops by itself
+because of timeout 15s.
+
+[ ... ]
+
+> @@ -129,58 +157,145 @@ cleanup()
+
+[ ... ]
+
+> +	if [ -n "${expected_state}" ]; then
+> +		neigh_show_output=$(${IP_ROUTER} neigh show \
+> +			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
+> +		if [[ " ${neigh_show_output} " != \
+> +				*" ${expected_state} "* ]]; then
+> +			return 1
+> +		fi
+> +		if [ -n "${expected_lladdr}" ] &&
+> +				[[ " ${neigh_show_output} " != \
+> +				*" lladdr ${expected_lladdr} "* ]]; then
+> +			return 1
+> +		fi
+> +		if [[ "${expected_state}" == "FAILED" &&
+> +		      "${neigh_show_output}" == *"lladdr"* ]]; then
+> +			return 1
+> +		fi
+
+[Severity: Low]
+The commit message says:
+
+    Verify that disabling each gate keeps the entry in FAILED without a
+    link-layer address.
+
+Can this lladdr check in verify_ndisc() ever trigger? __neigh_fill_info()
+only emits NDA_LLADDR for NUD_VALID states:
+
+net/core/neighbour.c:__neigh_fill_info() {
+    ...
+	ndm->ndm_state	 = neigh->nud_state;
+	if (neigh->nud_state & NUD_VALID) {
+		char haddr[MAX_ADDR_LEN];
+
+		neigh_ha_snapshot(haddr, neigh, neigh->dev);
+		if (nla_put(skb, NDA_LLADDR, neigh->dev->addr_len, haddr) < 0)
+			goto nla_put_failure;
+	}
+    ...
+}
+
+NUD_VALID does not include NUD_FAILED, so ip neigh show never prints lladdr
+for a FAILED entry. Once the FAILED state match above succeeds, this check
+is always false. That means the "without a link-layer address" part is not
+actually tested.
+
+[ ... ]
+
+>  test_unsolicited_na_combination() {
+> -	test_unsolicited_na_common $1 $2 $3
+> +	local initial_state=${4:-absent}
+> +	local same_subnet=${5:-1}
+> +	local rc
+> +
+> +	test_unsolicited_na_common "$1" "$2" "$3" "${initial_state}" \
+> +		"${same_subnet}"
+> +	rc=$?
+>  	test_msg=("test_unsolicited_na: "
+>  		"drop_unsolicited_na=$1 "
+>  		"accept_untracked_na=$2 "
+>  		"forwarding=$3")
+> -	log_test $? 0 "${test_msg[*]}"
+
+[ ... ]
+
+> @@ -193,6 +308,16 @@ test_unsolicited_na_combinations() {
+>  	test_unsolicited_na_combination 1 0 1
+>  	test_unsolicited_na_combination 1 1 0
+>  	test_unsolicited_na_combination 1 1 1
+> +
+> +	# Expect FAILED entry to become STALE
+> +	test_unsolicited_na_combination 0 1 1 failed
+> +	test_unsolicited_na_combination 0 2 1 failed 1
+
+[Severity: Medium]
+This commit carries a Fixes: tag for f9a2fb73318e. The only change that
+fixes that commit seems to be the rc=$? move in
+test_unsolicited_na_combination(), which now runs before the test_msg=(...)
+assignment.
+
+These two new cases expect a seeded NUD_FAILED entry to become STALE with
+lladdr 02:00:00:00:00:02 and to keep extern_learn. That behaviour comes from
+the preceding series commit "ipv6: update NUD_FAILED neighbors from NA
+messages", which has no Fixes: or stable tag.
+
+Without that commit, ndisc_recv_na() still skips FAILED entries:
+
+net/ipv6/ndisc.c:ndisc_recv_na() {
+    ...
+	if (neigh && !IS_ERR(neigh)) {
+		u8 old_flags = neigh->flags;
+
+		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
+			goto out;
+    ...
+}
+
+Suppose a stable tree takes this patch because of the Fixes: tag, but not
+the feature commit. With rc now preserved, won't these two cases report
+FAIL?
+
+Could the rc fix go in its own patch with the Fixes: tag, and the
+FAILED-recovery tests in a separate patch without it? If they stay
+together, could the commit message at least state the dependency?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790127207.git.lfqlee314%40gmail.com
