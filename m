@@ -1,127 +1,77 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB3D423E99
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5213B231829;
+	Sun, 27 Sep 2026 19:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790536172; cv=none; b=gweKHQ0E+EcBe3SwBucFdkQfi6HFz1drDbQWwd9izRSM6/cBErWOgHIvASLcGw4Ol0dw35QDWLY0bENrdkRPwhZ6fFE53rONLEIwDR/kkqcViLvBCsoQeySqRT1e9RBFsonmX4kWPpPdQCPr9gFzwyQbpQD7VLQbWcpI+bqmNkE=
+	t=1790536542; cv=none; b=Dq4mfcwUEOHUvvTfGWoCMPel3nwEQSWFE5ZBaCM5H3h2+SG44l45bm7wsqu5EnaChrLIbqW6yx5BqNolSFjuxcW78ZfImugX8OaQmh2lEwmB3f7pfGFeF/6pXKZoYeRizqMKT0/70SeeXPJVlBDmBOwepxvQDY4H29D3vZWMLO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790536172; c=relaxed/simple;
-	bh=/Ncv4pmHB2k5k4a6mo3lzenG6x84qqCfM0wTLNgXudw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n7W/MTEGZAFr4kELm5UFvH0g6hTA7G+2AQwY5QNLPLPNb3ObW46hZ77ltz9/UihZek/HRqHO6vuB8Cn7EZNFW/A3xVDAAc/TbAocyQot7gGFA7JgxT90wuZNsBdGtLklEXYx5McWXYy0SVztVyPDsN9VRGObS7PI41iaQrtLpvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N7WKBKll; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790536542; c=relaxed/simple;
+	bh=I/Z4Dq5qP+62urdqFOFOTkrLhloFH1RT/ER5bPm6B2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D/Sw/++2wyzbfxEsJ6Jv8k0Q/BtrQich+sqniJ/7bQwb4djfd+N+NsS70F8nqY8iR9WTCPyZPIzZELJrpxaIVxsaQd1A0qD6+Qk2YFTmJ0J6lEHKjwLr7qsOzJ3FK9AkwaL2fPvDyZdIkCfW2Qu61XlIU5ujj5fqDz1HH9Fa5U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NRDOCaSx; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N7WKBKll"
-Received: by mail-pz2-f40.google.com with SMTP id d2e1a72fcca58-87c90648f99so1840399b3a.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790536171; x=1791140971; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OPb2gJjQHkq+JlwtbOznBiTNAc1qQBhHXizpCBFuJII=;
-        b=N7WKBKll8PWhnGQ1FyXM1gC3akstDhXuQvYgtpMaF1ek2oO1W1j0eSc9bEi4miPqa8
-         VSUsm97a3IZLk8yS2LoHAA7TRKip3Zn8kvwHFYVZucb46fYp7+PPIGL4AGgpF9ek2E3O
-         oAAYh93be1C8yuOqHPDBYnjzkRj2KmmVA1VXkCByWjwJ3vqJ7oxPIx6UoIJGjlh7seP9
-         7UKb0fH1/zYaKWK4PHUDiw1L3Tg8Xvrg2/y3069ttozpaF0Q43EnexupM4tvYJ/Ig4b8
-         xHE6U03/kLQWaM6z9vPGew6OXTHrDIvpum86R46o2DbbDcO+3b35xibdQ0q4kuDr/87/
-         uMtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790536171; x=1791140971;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OPb2gJjQHkq+JlwtbOznBiTNAc1qQBhHXizpCBFuJII=;
-        b=rSeBcDu1DCTvRFgAGvnEMac09WsjJbdVclZKcTmAFxEkAvbiYwy4h/5+GMiYiytchC
-         EqpNLHAkNmDB3NBecp+5C3ZaTKx2GdzTC69JG1Y2oBP4Zl/KmOOwud5CRZSpUcgbWnQ1
-         PfjKAYAphVnnTfdpc3ZeOlrjKhjo5J4wUviTnwtMVM0A4+UTdx5soJ2nHFdft8d123me
-         B0qAo8LZ7usin0jpjY7GBTBE3s1Ef/VurlRwjLDNwjmEVSQW7Wm0YppOwQvDR6DsZ43i
-         R1jy56kcEZrsFjcfD/M+Lvw/14SQ+mopOcGhmLSEFGsfWZ9y7hvuIZG3YyJ3QEqLEal6
-         /T8w==
-X-Forwarded-Encrypted: i=1; AKwUvBxBVmdVneHadTrUVUdZyjzOB82d9IklZraeLevK1NyYrNi29YgUfN8xndjmOv0OMvJ7GKmUiew=@vger.kernel.org
-X-Gm-Message-State: AFuF++mX6v4mMERotVlwaI41RcAAmkkv8to8DLSTWRPNEJLhNORuDbvm
-	BUGoxu7X51ZsHCdHtdCvS6R0LvwdIhLKEdlHpkadJ4f3fb3RGkwXMqkV
-X-Gm-Gg: AYBFou2bK+w2+up9Rk3/6+ZI9F6eGKgiQ2AWUIXuP8DpYkfIi5OOwbXtBisLe9oLIfy
-	gCHa7Jvd2WUUR2SLfpTxa3dnpfPUPnmHUlER4SKCwAXk79ns6DZdyVRs2LIwIuP+sZkVAaaou7P
-	Camxzyfa/NhfE6oQsl6gBwoX1QTZPIB7bDlVY4wcYuIOXfII3eZzMPqvbKzBc2b8+MiTSsB9FVd
-	pYfrWIgs3TEUNHuIT+SmbjwpfOGJVSH7CvvSF86FN/URTltpagEXrAxHkMUpgcnIC7wYgd5TWoX
-	1jRjJDa3WLv1Li/22n4LjssgTRLzE3WoQg3LjQ0cydO1Cfw7QWt8iw0+XGShvlnqP32X6fhS08u
-	jeenS95UHF6bhY+HnMduzih3BQuOetAGip19SexM/YCmlR8QFCBLSAtCvKmJqoKZiqlmipgv7IE
-	Q08k25Ja2+DD9CEG7YW/OfoebITS8XceflbWlGvgKfApSFkXAWPrpjPZGoSitEz2E450W3Olpin
-	bZxV+vh3eQvyy1Y/d35JD2d8YgW4YHlVPqSdMvxsQxkDc5+NZ7anBz8r9zXAqEPkxVxGvHW5w==
-X-Received: by 2002:a05:6a00:2347:b0:881:e266:c3f1 with SMTP id d2e1a72fcca58-881e266c8fdmr2589039b3a.21.1790536170813;
-        Sun, 27 Sep 2026 12:09:30 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:6651:2efb:bfb:bd73])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87feb385ed8sm3204478b3a.45.2026.09.27.12.09.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 12:09:29 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hemendranaik@gmail.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	tahiliani@nitk.edu.in,
-	vishy0777@gmail.com
-Subject: Re: [PATCH net-next v8 2/3] selftests: tc-testing: add fq_pie per-flow class stats test
-Date: Mon, 28 Sep 2026 00:39:15 +0530
-Message-Id: <20260927190915.12527-1-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <179028364138.2160803.8521628163584007831@kernel.org>
-References: <179028364138.2160803.8521628163584007831@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NRDOCaSx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=NqRBQ/l/KshauKybq+sCIFSt1P3/4rPlGdvjwaBtLAY=; b=NRDOCaSxs31myX620RHNR3NtbD
+	DlO/eHfwjSO2o1fszpdlSXh2acAKvIRswjuUu1MGGz9cmWY6uPQsWR+wpABZ3YVXMOEQ9M2QmS/U3
+	kNgqBqiQsXDHZ9xTK4RknHJ9VA3VJphoUQvDhss9bvsB8OG/gn+EKGhhxHZ3aPhfl/0Q=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xAuLM-007YXi-VD; Sun, 27 Sep 2026 21:15:24 +0200
+Date: Sun, 27 Sep 2026 21:15:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	mfd@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v23 9/9] net: dsa: Add Airoha AN8855 5-Port
+ Gigabit DSA Switch driver
+Message-ID: <c56b0621-a4c7-4276-91a7-dafb5c6cd5a8@lunn.ch>
+References: <20260925182435.21207-1-ansuelsmth@gmail.com>
+ <20260925182435.21207-10-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260925182435.21207-10-ansuelsmth@gmail.com>
 
-Thank you for the review. Our response to the low-severity comment is inline below.
+On Fri, Sep 25, 2026 at 08:24:31PM +0200, Christian Marangi wrote:
+> Add Airoha AN8855 5-Port Gigabit DSA switch. Switch can support
+> 10M, 100M, 1Gb, 2.5G and 5G Ethernet Speed but 5G is currently error out
+> as it's not currently supported as requires additional configuration for
+> the PCS.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-> [Severity: Low]
-> This is a robustness point, not a bug. fq_pie_walk() in
-> net/sched/sch_fq_pie.c only dumps flows that have a non-empty flowchain:
->
->     if (list_empty(&q->flows[i].flowchain)) {
->         arg->count++;
->         continue;
->     }
->
-> That makes this ping the only thing that gets class 2:1 into the output.
->
-> In the standard tdc setup this works. nsPlugin runs the command inside
-> the namespace, dummy is NOARP, and the 98-byte frame fits under tbf's
-> max_size of 100.
->
-> If ping is missing, or doesn't accept -i 0.001 / -W 0.01, the "|| true"
-> and the redirect hide the error. The test then fails as a regex mismatch
-> in the verify stage, not as a setup error.
->
-> Should this step be allowed to fail visibly? The same pattern is already
-> used elsewhere in tc-testing (infra/qdiscs.json), so it may be fine as is.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Keeping it as is. tc-tests/infra/qdiscs.json (test ca5e, "Check class
-delete notification for ffff:") already uses the identical pattern:
-
-    "ping -c1 -W0.01 -I $DUMMY 10.10.10.1 || true",
-
-as a setup step whose only job is to push a packet through the qdisc,
-with the same silent-failure trade-off described above. 83c0 follows
-existing practice here rather than introducing a new one.
-
-
-Regards,
-Hemendra
+    Andrew
