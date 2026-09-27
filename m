@@ -1,72 +1,75 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f21.google.com (mail-dl2-f21.google.com [74.125.229.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052313F20FA
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01923E5A2B
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790516244; cv=none; b=JPdULlQxShkxqz68fOmhOCZVX4E1odwQbmqYxcIdKqKv8znZWRatwFqXMgEClDuYPH8zSHna9JblZxLF/e00DKjNP1d1TuVQFwroowESMYKI1YSaf266sYS+YLbRrn8LLYxX4z72EjeLTUPNC6ThwljeVJFDJGUMLPouqxOlU6Q=
+	t=1790517259; cv=none; b=O/nt5BZTA1N+LrHeVeOeRtR7AYGrWdEEZMpPu+VGScHRyT6fbZsEj/tvWwSEl7sSg54ZGBjsKyPLpENDAV196XTdxSUKsav3AmDrcWB8gPRrOWFcU/7J7INjNHNniz8bjpwYmr7+62twKm4Q/CEbwJYYEL564pikxtkDYiZdd5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790516244; c=relaxed/simple;
-	bh=y2XQNiedrD/GbweFwiRwG63lCrwaAPfIBOifZlSTGTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/HiIxd9iqyr5nRUyabw2BmlakXePXJnlaZH1qRT2Ul6CRjTviOkSkhtBONvoL6sPX7ieHKUtJ4GwPB6MYZ66h7GcHH42A2A1KQCPiGPx3feD/j+7r//Xn8bCm9Ax2cFAZufOleNkjTz9fTBZCKPoJ7mXpM+2JbqIyoYFFMVUHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yuji6sq8; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790517259; c=relaxed/simple;
+	bh=PM8dkF+8etKed18lFD/2Y9REotHc2O/UVajZjOn2QyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T1t2tVR9zB2YSQy7sgTGKePNQv+4CILsG/2jybP757BDsSWh8tKM1tYAy44PpTHmHICCnvGvN9i9c2D8jzuDi+m+v7q4PrPN60Y+QK8v1jfdn3jervHokUjPIhGL2UvkTfDiOM33MbLWnzQOqpiIYZTPr3/H//7z/9mq2dqzAaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQP83zJb; arc=none smtp.client-ip=74.125.229.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yuji6sq8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7B7BB1A0FDB;
-	Sun, 27 Sep 2026 13:37:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5048F604FF;
-	Sun, 27 Sep 2026 13:37:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 93528102F1E66;
-	Sun, 27 Sep 2026 15:37:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790516239; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Z13EOcnX8B1/8BD2O0e2wgJx2zHuu7HyJIbYUX/IvJ8=;
-	b=yuji6sq87xQa34o57ctC8bpZqRxm3Xg83qGNyrkZi4fbw28Y93IKuTFZNxzAmiELimkyw4
-	9EpJEJv/pA9Vezd19TwJAq6fXk9crOgjZelrj/nVYtG/9iqTfWg8Y5gE1dCK+tXjkYn7W4
-	xS5e+3bGwLlIyIPyy3aezs/TfQEAVA9wJjjYHABo1x9XS502IvGmrzyHYjysuzuh2ouhsz
-	C4zhuc5bz5w3tj6Z/rHwqAfUwM4SJmUJzrnbFGHUWyAVu2j+6veNpFB+Zy2aJQmM+KJoo5
-	Yvo0Ug2l9dhlBfYYzZJjeDcWvJs04dEze9bpcT52ENyyBmfA6z48sVTpn/VAwA==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQP83zJb"
+Received: by mail-dl2-f21.google.com with SMTP id a92af1059eb24-1438421d1f8so72475c88.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790517257; x=1791122057; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ew/cE3p4ZACR2ABiKyvZI7K2codxGXMvh85xvLtScaU=;
+        b=bQP83zJbvaHRkpOsgalkPL0RtTKuzVo9zZ6I4TMt4XnLdggSZQ1Q9qCqgaVW3Pvzra
+         PzB8Zv++CIWn7gk4LZFDoaY1fcGgdMU8fpGVsQEBdUs4qGuiwzfoSanfNEhju/BG4LYu
+         ezEc2R9KMXdHzfRRsZujNO1VluNgeeU4R72jQjA93ojagmjnnVO3zliMcAz21N3QtHIx
+         7DyXmb1NQKxayxGXrQw+OzXIMRmNTgkTEAKGqXTkWCzYeeMb4KkmAeUvME6Jd0EBqAaX
+         BpXsMJi5aoZQo4kiWQKaYQqn4dsqJQlWym2sQy+w+q0hl8IEbAh3asvnAxJY3QaL8wqy
+         Yw/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790517257; x=1791122057;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ew/cE3p4ZACR2ABiKyvZI7K2codxGXMvh85xvLtScaU=;
+        b=oSFTfbHuk1oQkHQZimCdLY1s/jtmqsMfk1ySLoyVAMP1dhS/yW+owMh/oSPHEuw+6C
+         HpJ6pLbcfv1Db4Oe3DG2LFLkP3uvJEPVC/f7ltl9lPlWU1MQttaBn+y3TvYTLF/F/tFr
+         tbHMM/6SPTsEVpA4VyPC2HE4ixXcXewYQPxxTjSK47uD9Cw4lkENnJEv08afM0Ohf5pD
+         aT+OE44z+IkObWuKzeZ2/uwVFRAuaWgfeip5RC9hkxWCtucKUQywssuvMMcKn88f8gGi
+         oqcQi8uAQhFgk3p2XwN6vdgKF03IMh3i69Yy+nXEWcTIIsYdVzVz9DmTkqtBSDh5/exN
+         izFQ==
+X-Gm-Message-State: AFuF++lQa6t+OlKOxgwtl34n+TjicHODzccHlmDBz83TC8kMX7ChMQdo
+	9iD0Tlgt0XMNA6QX/l0CBz69L21bZ/uI0YyNMz5CARXyqfu/9NjvMttr
+X-Gm-Gg: AYBFou0Wip/DK+bfCYi3JvgveK7TWwXgLQPBVSBoI4rUaaDVKK5WIz80kdwlANMLcuz
+	CMEiR+4IUjE1DAkUQsiKidMQrIlOWX2OPc2/W58QjyM5XoSS8mL7VVSykS3ghYRVdKL/LGdwd2O
+	dpCkOY6OcOeO1zOxmCmlnOzZB4kgb56qmA2RpbboxAe4t+2HIs6PhdvDfQ/biJ43I/LUcNnTt3V
+	1jYe1mzRlGqQeVejESLQ1wuiYUVaAknLxqUz55hY4mIU8cYPDoK8qmbMtUuIgEmfLiRUQ0UHgw3
+	qbGS040k2l3iZlC0gswmRzq+ISq0I6rgJvSwmXOFdvjK2pGIePgYAFP8LSaBd8SKM4x+JaaXwuo
+	toPmC4EPE8fdPu1lE0nD7ABSAQRwVsSQVrlJ6iVLzyPh3Gwy/6JoNLYiGZS5ziAIedLkAAtCqtT
+	CE6bXX7Ws4nPo9dRXuKtI9yILyRl25mfdBxyOkZ4XRkjeaT85RxFP65mWobXezTt7Ucy0Y2YfeI
+	V9vOYF2g1yssw2x3qrLAJ+3YBO45jjb7TPAS0bQk8IVfF8qGNy3mjMdZlk1lPgAxBmbUDh30TpE
+	/ufQ
+X-Received: by 2002:a05:701b:4508:20b0:144:ff51:2d73 with SMTP id a92af1059eb24-146cfbd49d8mr9558498c88.2.1790517256737;
+        Sun, 27 Sep 2026 06:54:16 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145ad4028a9sm16386411c88.11.2026.09.27.06.54.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 06:54:16 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>,
-	Pietro Ameruoso <p.ameruoso@live.it>,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net-next v18 10/10] Documentation: networking: Update the phy_port infrastructure description
-Date: Sun, 27 Sep 2026 15:36:19 +0200
-Message-ID: <20260927133619.955236-11-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
-References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+	Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: [PATCH net-next v2] net: pktgen: return bool from __pktgen_NN_threads()
+Date: Sun, 27 Sep 2026 21:54:05 +0800
+Message-ID: <20260927135406.3969970-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,57 +77,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-With SFP now properly supported with phy_port, add some details in the
-documentation. Fix a typo along the way (driver -> driven).
+Callers of __pktgen_NN_threads() only check whether a pktgen_dev was
+found. Returning the pointer exposes it outside the helper even though
+neither caller uses the object itself.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Aleksei Sviridkin <f@lex.la>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Return bool instead and keep the pktgen_dev pointer internal to the
+helper.
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- Documentation/networking/phy-port.rst | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+Changes in v2:
+- Rebase directly onto the current net-next tree, independently of the
+  deferred RCU lifetime fix.
+- Update the commit message for the current helper implementation.
 
-diff --git a/Documentation/networking/phy-port.rst b/Documentation/networking/phy-port.rst
-index 6e28d9094bce..2a9b1ec93b70 100644
---- a/Documentation/networking/phy-port.rst
-+++ b/Documentation/networking/phy-port.rst
-@@ -99,13 +99,29 @@ will eventually be able to report its own ksettings::
-             (_____)-----| Port |
-                         +------+
+Link: https://lore.kernel.org/netdev/20260825185313.239861-1-nicoyip.dev@gmail.com/ [v1]
+---
+ net/core/pktgen.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 7f81aed46672..a89cb0760821 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -2024,11 +2024,11 @@ static const struct proc_ops pktgen_thread_proc_ops = {
+ };
  
-+SFP ports
-+=========
-+
-+SFP interfaces involve 2 distinct components, each represented by
-+a :c:type:`struct phy_port <phy_port>` instance :
-+
-+ - The SFP cage itself is a :c:type:`struct phy_port <phy_port>`. It's special
-+   in that it's not an MDI interface, but rather a hot-pluggable MII.
-+   The :c:type:`struct phy_port <phy_port>` associated to it lists the different
-+   MII interfaces we can use on the cage.
-+
-+ - The SFP module, when inserted, will also be associated to a
-+   :c:type:`struct phy_port <phy_port>`, that represents the various linkmodes
-+   that it gives access to. The module's :c:type:`struct phy_port <phy_port>`
-+   doesn't supersede the cage's port, it references it through
-+   the :c:type:`struct phy_port <phy_port>` :c:member:`upstream_port` field.
-+
- Next steps
- ==========
+ /* Think find or remove for NN */
+-static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+-					      const char *ifname, int remove)
++static bool __pktgen_NN_threads(const struct pktgen_net *pn,
++				const char *ifname, int remove)
+ {
+ 	struct pktgen_thread *t;
+-	struct pktgen_dev *pkt_dev = NULL;
++	struct pktgen_dev *pkt_dev;
+ 	bool exact = (remove == FIND);
  
--As of writing this documentation, only ports controlled by PHY devices are
--supported. The next steps will be to add the Netlink API to expose these
--to userspace and add support for raw ports (controlled by some firmware, and directly
--managed by the NIC driver).
-+As of writing this documentation, the port's presence and information can only
-+be queried, and it's not possible to change any of the port's settings or select
-+which one should be used.
+ 	list_for_each_entry(t, &pn->pktgen_threads, th_list) {
+@@ -2038,10 +2038,10 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+ 				pkt_dev->removal_mark = 1;
+ 				t->control |= T_REMDEV;
+ 			}
+-			break;
++			return true;
+ 		}
+ 	}
+-	return pkt_dev;
++	return false;
+ }
  
- Another parallel task is the introduction of a MII muxing framework to allow the
--control of non-PHY driver multi-port setups.
-+control of non-PHY driven multi-port setups.
+ /*
+@@ -2049,7 +2049,6 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+  */
+ static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
+ {
+-	struct pktgen_dev *pkt_dev = NULL;
+ 	const int max_tries = 10, msec_per_try = 125;
+ 	int i = 0;
+ 
+@@ -2058,8 +2057,7 @@ static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
+ 
+ 	while (1) {
+ 
+-		pkt_dev = __pktgen_NN_threads(pn, ifname, REMOVE);
+-		if (pkt_dev == NULL)
++		if (!__pktgen_NN_threads(pn, ifname, REMOVE))
+ 			break;	/* success */
+ 
+ 		mutex_unlock(&pktgen_thread_lock);
+@@ -3835,8 +3833,7 @@ static int pktgen_add_device(struct pktgen_thread *t, const char *ifname)
+ 
+ 	/* We don't allow a device to be on several threads */
+ 
+-	pkt_dev = __pktgen_NN_threads(t->net, ifname, FIND);
+-	if (pkt_dev) {
++	if (__pktgen_NN_threads(t->net, ifname, FIND)) {
+ 		pr_err("ERROR: interface already used\n");
+ 		return -EBUSY;
+ 	}
 -- 
-2.55.0
-
+2.43.0
