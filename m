@@ -1,174 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C8438D018;
-	Sun, 27 Sep 2026 06:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790489189; cv=none; b=ZYx1VdeuSMbMDtKm3+6NCqHm1IyajBDwZCTzeC223Drdibg26mRXSW3Vqp6hcERgWQTkSPCT1OqVVnVl0gFRfJQ4OLovGDCmUedFSma9DJQcOYCHAG2fpp07u8K3cXsQo+DGU9i5XKNRv44mGusG6DmiBQumM6pBhAKPRVIycrM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790489189; c=relaxed/simple;
-	bh=q9TSOTSIi9+HuU6Z3xuPHLQhCrcZVkfAk9Gg2SuhLPc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mSI3cCcmSABE2OAoOxQ6musd3J7v1aMW/ONEpq32jfnBS4tsHOdvsh7C9b3+Cx3RceWc/u2zaciV1XWQ7gjOlic87HWdsnKfFN+64X05NSWxyJDRErAmmq/OZ4fZ7hE0u43b1LhnCbHrmFJi9ldQ497wIWpfbyPy6Iz1glVDh8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+IRyGUo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5E14A21
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790489633; cv=pass; b=bhbGaQUNEAWDELkakbrOL0cKmb3Of2QShBojrwpk7adUjzYsFw8vZUXBL0pmpA0xLUxy1r/52l2wkuLSwcHjbDHyYUBy1rQoysZesGamEG4W4po9PY0IHdSc/of2rzwVPkhcNQ9901/tO3N7uP6SHTAAHIlALO4rb+bHIfL5uWg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790489633; c=relaxed/simple;
+	bh=sr4Z3lGmEaVF984a2Rc9vpNw3cyNxpoqGCKnkWqzbnA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eTzbZhKzkjnQliTIqp5ordaOKyf+KwcKJowWl2h0P/nn3Eyj3uM5z+2wJ5bjpVHDiJrUcKOzPgvejTzDGkkJ+0iVnsKIdBjwkwbmOpqHGpeFXpGpT1e4eU76Zlhb1hMt8ot7yhhI6cHBogPH7qwx4rzpiJAiMjYK1JrSNXwWnkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIfo6Fdf; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+IRyGUo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BAF1F00893;
-	Sun, 27 Sep 2026 06:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790489188;
-	bh=zoGgzmJctq9P+9QAiHN/L1LeKNQp0xc/BnPX6tii5Pc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U+IRyGUouw8BTLcXpQ1zvfnmozfzVD+XuJQt9mUL+IM7CBtA8eh6XM4WaHhoc5Rt+
-	 BC3BPEMTdKGc3LUopefLqhaxpTWVfEJgONjDiTwmfa1KYh1N2aFmV3d7/CHUFOzFzl
-	 kvgK7M6anOb8lgTtb7fG2m89WwERimNcdLRXOr0tE1+foA1pnpJQOq2UzXirzZUkPo
-	 C98XKK02jUpdOveJZUTO50ooRrg/HY9s/DBVHGDOBAn79OGKQDj7wnvEcZhw2An+yM
-	 0+CXVPlAnCfZFaxUrpD36Y+taTykY30nSGAcm/shA9omSglIyGqZrGEGQBWlzdQNVE
-	 FnpGjHzI/o6kg==
-Subject: Re: [PATCH net v2 2/2] net: dsa: mt7530: trap frames to conduit in
- MFC on EN7581 and AN7583
-From: netdev-bot+sashiko@kernel.org
-To: gongtao0607@gmail.com
-Cc: netdev@vger.kernel.org, chester.a.unal@arinc9.com, daniel@makrotopia.org,
- andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, lorenzo@kernel.org,
- arinc.unal@arinc9.com, florian.fainelli@broadcom.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, lorenzo.bianconi@oss.qualcomm.com
-Date: Sun, 27 Sep 2026 06:06:26 +0000
-Message-ID: <179048918667.2160803.15824370089117155993@kernel.org>
-In-Reply-To: <20260923055103.949540-3-gongtao0607@gmail.com>
-References: <20260923055103.949540-3-gongtao0607@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIfo6Fdf"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-3425f2b24a4so794461eec.0
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:13:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790489631; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L7hc74mGHrCmUK0LOBqeWo42yTy9duRtV4XYDrE5CZ8mEAw+RrAikv3H33pluQu3xD
+         SdkI99b4PYhMzNibQ2gdl3Il5viG37Dxgf24aAUvx1jTncTTxGjNcZFu9Fk/cbcXX+7d
+         1e2ef5t6NlZvII8tJ5+bJmCyfOVmkKoAgAzpk9ImCvzhcrNoSxCeHHa3EU27yoMxJKT4
+         ukmPoEVbJ33V+UnRsZ6McrRbrYqncVFP8GyamThJ4CD2jnMiW8tQqOaFT6S+LzmV7QXD
+         Lz9gcAoQ5bxfK+Iv7P8iAnFcddzF3CS8hV47yomsxabRzqrd9FrZc8+EEgHd5Mpcf6RF
+         YSqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sr4Z3lGmEaVF984a2Rc9vpNw3cyNxpoqGCKnkWqzbnA=;
+        fh=vNi2ytF3h2ey0PlNGrnQghq0jxf3DRawEZ5ksl6yRwc=;
+        b=cOBkuzO5OC1oBgJEKl/pWVNY0x7o1t12cEaIsos0/WJ13LfzDgEGdJCxaIZ4jJ+P9N
+         rb08Hum2MvxFwLjHSi5VdKbDc+vdGBVbHn7n6fWnHTf/9wC4SIzIexGedTqRPEECGEsb
+         ZrWrhNwgzY1oNq3LWeTVnkVX74yEzvDkDdgWmYm2LJSca8b7loXNrpYql4R0oHyRs/OP
+         AW0FtWAfcWPxIwS5YlvQigpn0aAv2eWDzPJzVWqvpKXwOPyok6Ctw+8YkiK950n0QgrT
+         IuBYd8r7lDvgvkpp6K5CtR/ddGq+k1lDUR63wsdxMswXpqn9F1PMScUGV1s5Ph6JIv84
+         WIRQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790489631; x=1791094431; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sr4Z3lGmEaVF984a2Rc9vpNw3cyNxpoqGCKnkWqzbnA=;
+        b=BIfo6FdfW9YzBUAJa9Bh2IkhjazzGe+0+EQjjp6qGgaX1iZh1DITClCAsvFsqSPItb
+         8wBDm5wjaEaXpnuQxIjrgCwiTxh1I61CSJJFpOZ3XaPIxYPvrF3qqExFN2TvCTeRZDBy
+         6D/dT0ULYH5jPQnbr4/azQewLJDbiAbkbroStRxmnwiCBEAx1WdiSQ4GEnd+lh0P0vDc
+         7nKuvr6p3ok/0usRu9JxwASvwdedRH16cCuKmW+pjrIdpuOV7cYEBNBGFllg2YFWYVKf
+         riuSpebv7OkVe0JvF79wIdpxuDoh4ao4VYBnash6MMhr+mZhd/yxoTMhDESzkTFIjOPt
+         uE4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790489631; x=1791094431;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sr4Z3lGmEaVF984a2Rc9vpNw3cyNxpoqGCKnkWqzbnA=;
+        b=aGVjktRfzAxPfk4+LRGcE+PAXt0bL8cJbz477/yfdO9q3ssBt3YeTi+igFa9acs7gh
+         g+RL14NKCQpgtJxV5KlTMlTan5YJZiDG7n8lfTdreHzwX9whoPIGdMm/QXzXrun+GR/m
+         iLm4o/zHS0o+QZ+gVsnRShZQXzWVwDr4end3ixeB8qfGSF1ExZAZynx0spiFAM3fOTbo
+         rbgGWmq5vyc6HnpWMNyzROV4gyAdw+kDt0ALuKxvxFPzBqf6HTDSU/Ki34OPL4HSs8hH
+         CdNtnFLsXoudQWyKKwbrcZF6G11cQKmJkOMweqWixj+btdm18BP4gK5UELAKCfFMUy6c
+         EYyg==
+X-Forwarded-Encrypted: i=1; AKwUvBy3pLcBUtYQ1yZafxcSvu9w0qoHTRu2HIdFbxM/WlFPF40+a5rmOdXq78yQtUc+YatRp2Uqw/k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL70Af4y2G3Yl+yIROwJZIVMbO3/JfMWTCkcX44rm7tBPhr3A4u
+	SjdrSUNhakHEyi+JJwe8ceqsONCmRHxpxg07pt+rHBgYSIuUT4F1i1w0L6ZvaFSjOJWQy04YIUe
+	HZUL16FhTCvqH+t95O68ZWwt+jwY59Ms=
+X-Gm-Gg: AYBFou3TXvhMipO5idjzb5q2fMqbYHVUuU69rXGZvz9kF1LuVBqNfjvqPuGRIv/S+5a
+	yfxOlkb7uDoqocArnsc54s7jO3v5KWucfdSTONsvBJhWVuxrY2AETFA5upuZjsDu7P56JU/Y1Rj
+	+VYgGW/g2iVzMEMiDBNP6WVGlzQvxx/j4HXeOk9SqcoCamSw8ksWde+uqRuLEAb+utfLocWBa/L
+	Q5wo5KFiergL8WsLcY5/Z+7LO+FG44eGCLZySZyqa1Defj8Zswb6xxtq5ceEn246BKDIXp9Jb3V
+	TzKmfoHS8S1OhvB8vh2J/Z6Tbu0ajRwLBkssbQNh6ZXWfrVY/Yxwa2I=
+X-Received: by 2002:a05:7301:7107:b0:341:2c6b:8c97 with SMTP id
+ 5a478bee46e88-34270ab8e8bmr4558045eec.12.1790489631424; Sat, 26 Sep 2026
+ 23:13:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260926210757.2152159-1-thisseanzhang@gmail.com> <DLPTN52TGGMY.TPWL2GZA38RK@gmail.com>
+In-Reply-To: <DLPTN52TGGMY.TPWL2GZA38RK@gmail.com>
+From: Sean zhang <thisseanzhang@gmail.com>
+Date: Sat, 26 Sep 2026 23:13:38 -0700
+X-Gm-Features: AclHuK8wXN2xAfp9zc6K6pU-EYUnBl-bodxzJ1vo68HRxFJW1oVa3YT6t8_CCik
+Message-ID: <CAEejd4QjwcjMNKuwDYBV_u4XJ_CfzGZGR5MXGtOgM+BoAMP23w@mail.gmail.com>
+Subject: Re: [RFC bpf-next 0/3] bpf: Add PPPoE encap/decap support to bpf_skb_adjust_room
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, netdev@vger.kernel.org, 
+	Nick Hudson <nhudson@akamai.com>, Felix Fietkau <nbd@openwrt.org>, Qingfang Deng <dqfext@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Alexei Starovoitov <alexei.starovoitov@gmail.com> =E4=BA=8E2026=E5=B9=B49=
+=E6=9C=8826=E6=97=A5=E5=91=A8=E5=85=AD 21:41=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Sat Sep 26, 2026 at 9:07 PM UTC, ThisSeanZhang wrote:
+> > Hello,
+> >
+> > This series adds PPPoE session encapsulation and decapsulation support =
+to
+> > bpf_skb_adjust_room(), allowing TC BPF programs to update packet data a=
+nd
+> > skb metadata consistently.
+>
+> Why?
+> Is this a research project on what llm can implement?
+> It certainly can, but it's not a reason to add new uapi.
+>
+> pw-bot: cr
+>
 
-Low priority / nit picks for your consideration:
+Hi Alexei,
 
-- [Low] The patch fixes the same missing MFC CPU_EN/CPU_PORT programming
-  on two switch variants, but the Fixes: tag names only the EN7581…
-- [Low] After this patch, the comments no longer match the code for
-  EN7581/AN7583.
+The use case comes from Landscape, an eBPF router I maintain. Its native
+PPPoE WAN mode is implemented in XDP/TC BPF.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but port
-  mirroring on AN7583 writes the wrong bit.
+The motivation is a bug we hit: forwarded GSO packets larger than the
+negotiated PPPoE MTU are dropped after the TC program inserts the PPPoE
+header, because the stack cannot segment a PPPoE frame. This was
+reported in https://github.com/ThisSeanZhang/landscape/issues/57
 
---
+The reason is that the PPPoE metadata transition cannot be expressed
+from BPF today: bpf_skb_adjust_room() cannot set
+skb->protocol =3D=3D ETH_P_PPP_SES, so an eBPF datapath cannot use the
+kernel's PPPoE GSO/GRO support (55a5d8fca836). Our egress program uses
+BPF_F_ADJ_ROOM_ENCAP_L3_IPV4/IPV6 as a workaround [1], which marks the
+skb as IP-in-IP (skb->encapsulation, SKB_GSO_IPXIP4/6) while the wire
+format is PPPoE. On decapsulation, a TC program similarly cannot restore
+skb->protocol to the inner protocol.
 
-net: dsa: mt7530: trap frames to conduit in MFC on EN7581 and AN7583
+The flags in this series let the helper make these transitions for
+skb-based datapaths; if this support is merged, we plan to switch
+Landscape to the new flags.
 
-On EN7581 and AN7583, setting the MT7531_CFC CPU_PMAP bitmap by itself
-does not get trapped control frames to the CPU port. This patch adds
-ID_EN7581 and ID_AN7583 to mt753x_conduit_state_change(). MT7530_CPU_EN
-and MT7530_CPU_PORT in MT753X_MFC are then programmed when the conduit
-becomes operational.
-
-> Fixes: 2b0229f67932 ("net: dsa: mt7530: Add EN7581 support")
-
-[Severity: Low]
-Should there also be a Fixes tag for the AN7583 commit?
-
-2b0229f67932 did not add ID_AN7583. It was added by d76556db10bf41
-("net: dsa: mt7530: Add AN7583 support"), and that commit added AN7583
-with the same missing MFC programming.
-
-Stable trees that have 2b0229f67932 but not d76556db10bf41 have no
-ID_AN7583. The AN7583 half of the check in mt753x_conduit_state_change()
-can't be applied there as written.
-
-Perhaps something like:
-
-Fixes: d76556db10bf ("net: dsa: mt7530: Add AN7583 support")
-
-> diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> index 20bb07fac0f7b..92b5e949ffab7 100644
-> --- a/drivers/net/dsa/mt7530.c
-> +++ b/drivers/net/dsa/mt7530.c
-> @@ -3338,7 +3338,8 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
->  	 * interface is up.
->  	 */
->  	if (priv->id != ID_MT7530 && priv->id != ID_MT7621 &&
-> -	    priv->id != ID_EN7528)
-> +	    priv->id != ID_EN7528 &&
-> +	    priv->id != ID_EN7581 && priv->id != ID_AN7583)
->  		return;
-
-[Severity: Low]
-This isn't a bug, but should the comments be updated now that this check
-also covers EN7581 and AN7583?
-
-The comment above this check still mentions only MT7530:
-
-	/* Set the CPU port to trap frames to for MT7530. Trapped frames will be
-	 * forwarded to the numerically smallest CPU port whose conduit
-	 * interface is up.
-	 */
-
-The comment in mt753x_cpu_port_enable() says the CFC CPU_PMAP bitmap
-chooses the trap destination. Its check also includes EN7581 and AN7583:
-
-	/* Add the CPU port to the CPU port bitmap for MT7531 and the switch on
-	 * the MT7988 SoC. Trapped frames will be forwarded to the CPU port that
-	 * is affine to the inbound user port.
-	 */
-	if (priv->id == ID_MT7531 || priv->id == ID_MT7988 ||
-	    priv->id == ID_EN7581 || priv->id == ID_AN7583)
-		mt7530_set(priv, MT7531_CFC, MT7531_CPU_PMAP(BIT(port)));
-
-The two comments now describe different forwarding rules for the same
-chips. Neither one says that EN7581 and AN7583 need both registers, or
-which register chooses the destination.
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. Looking
-at the AN7583 handling, MT753X_MIRROR_EN() in mt7530.h seems to be missing
-ID_AN7583:
-
-drivers/net/dsa/mt7530.h:
-#define MT753X_MIRROR_EN(id)		((id == ID_MT7531 || \
-					  id == ID_MT7988 || \
-					  id == ID_EN7581) ? \
-					 MT7531_MIRROR_EN : MT7530_MIRROR_EN)
-
-MT753X_MIRROR_REG() and the MT753X_MIRROR_PORT_*() macros do include
-ID_AN7583. On AN7583 the register is therefore MT7531_CFC, but the enable
-bit is MT7530_MIRROR_EN (BIT(3)). That bit is inside MT7531_CPU_PMAP_MASK
-(GENMASK(7, 0)).
-
-Does mt753x_port_mirror_add() then add port 3 to the CPU port bitmap for
-trapped frames, instead of enabling mirroring?
-
-	val = mt7530_read(priv, MT753X_MIRROR_REG(priv->id));
-	...
-	val |= MT753X_MIRROR_EN(priv->id);
-	...
-	mt7530_write(priv, MT753X_MIRROR_REG(priv->id), val);
-
-MT7531_MIRROR_EN (BIT(19)) is never set, so mirroring would not work on
-AN7583. The -EEXIST check in mt753x_port_mirror_add() also tests the wrong
-bit.
-
-When the last mirror is removed, mt753x_port_mirror_del() does this:
-
-	val &= ~MT753X_MIRROR_EN(priv->id);
-
-That clears CPU_PMAP bit 3 in MT7531_CFC, not the mirror enable bit.
-
-This seems to go back to d76556db10bf41 ("net: dsa: mt7530: Add AN7583
-support"). Adding ID_AN7583 to MT753X_MIRROR_EN() would fix it.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923055103.949540-1-gongtao0607%40gmail.com
+[1] https://github.com/ThisSeanZhang/landscape/blob/80bc43eef7143ad029283fe=
+2a8d510718c22af12/landscape-ebpf/src/bpf/tc_chain/tc_pppoe.bpf.c#L38-L47
