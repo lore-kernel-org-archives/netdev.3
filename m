@@ -1,65 +1,65 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBC6254B03
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD1424E4C6
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790468713; cv=none; b=UYJEYtWFK/a8KA0B1C2/RYBR6N36INR4LBW003eBOvXRukl9kpJyC9arY/vfcld2ajDvmlKiJWMTVVM1nGHYFlnUk3EW8qovq6/aU9ZfcQdgBBsOe3gZBjwKuacGFlQ2uk1W/1gXjxRiWJ9QCL/XlfKTswcWNgp0tuiq3gPieXg=
+	t=1790468719; cv=none; b=IVP0oVPrEq+m3EZrwq2d0TTk4bg5KORkmn8UUe2cjg8mxDVJMCF7jt1kuEU1tnSbmFBdQObdhGIPvTwhyKD0zES/B63f4ETLPpELkjo8eVANE25Rhqbr5RL/K8lEPb36Lni/Jkie49Kh4BQY3+mitKNk1VyJI1mPtzSy9/llXME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790468713; c=relaxed/simple;
-	bh=7ym8eCannUJoplyLEig2XRjsDs0s3r99iL28MZ1+Bek=;
+	s=arc-20240116; t=1790468719; c=relaxed/simple;
+	bh=AIe0tVI2MDMU+wAUIOGkfF/prRfDfU5eGXTYlmKrHJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXILF+7OKkIEcVp1kCFKnYxniBJco84usumrOT6zE7AFY+nesQRFhRgaGhVtpz7RMCsvJ62yQcQOOe/XzHvJiA5XbW1CenyWQEIwR4Wwe7nz+eLYvgqwECChNhnG2bRKv4MSP1mVfhMkY7VBgxMh+EKR+VsMMB4TbY8dkVL0etE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZKoSBqW/; arc=none smtp.client-ip=74.125.227.141
+	 MIME-Version; b=gXnc8QlRwOEV3fbe4ooAje0krcjhaXaHyLQ3Z4k9v52tABGZDRIqdBRju6j2iasLucFmMuWA1BRwlysrVcpcENqGsNNAw+FkHjIUoCPtdWFy73K8SNsk50d4+IMw45/o+jFjB0qcjuh3gs3bXBFY6PgaaN2zcTLUyeQAqMvUBbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DgGzvNGh; arc=none smtp.client-ip=74.125.228.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZKoSBqW/"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-398a147688bso1433559a91.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:25:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DgGzvNGh"
+Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc78e1a94b8so998750a12.0
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:25:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790468711; x=1791073511; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790468717; x=1791073517; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pvI2CLJV63upsK+i3iXF166plHPTeUWc5AYad+dRYdo=;
-        b=ZKoSBqW/7ZRkpRhuvjRWeHx3476/nIQGFnuum4MibYlUFK1BlxAxmXzYccMevn8PoC
-         DR9q76dgVUQOh2P8Ms4HF1RH/caX4KL1CzMc8227aZ1mTkBx5mgJGtAm/RKPc7xNXEsh
-         6e3XetlppqKKFxy6GhQfSXZntewnTfDmXZ5cqdqzkaKwGPXyNU3wtpyZpkixpl0FtWzR
-         unxVrrB5wgnEU3ADbpVo6IRlCqURmkxs9wQ6iplrHFdGF8uya1LHZP59f3mrYTLigb5m
-         NwLCWmzDlVuZ5NI3FK1hnd3cglMNQFPi+hYyOHVOaSj3czuML8kLwJGnj8z2UmxpyjpC
-         uh7w==
+        bh=nZghyl21slJP0T9zWNT6FTVcuW3rARquNgkyu57N/4I=;
+        b=DgGzvNGh74+hkd/2R1ppAw2hBKnkqM1ySNT0ubNHfvmtSH8XS7Ww4uzNM4KbOFlbKU
+         JS2gI2TDYJvvwlHs8dli/Rg7JJBKQLgCshdQZeI3j4jQmWyugZ+UHpw/u+kBNcMcIqxv
+         Y1lY+R71tAA6UraRyvFIJQvTqe9BPmZUd2TsdYx4+oHq/v/KMTUXxF7ZPDLyMNhAHUvB
+         Hmzf+f3UfSEMuQ4bmqm9hwtI/OyCSsgyzDjTojTdRaxXA6TIoMS7BX9gDHXPMsQxm2cK
+         McJBMvnvd8WFB1GV82q/8SDrex9ukP1iak/GeZR2LG1IgDftgjBnu0ezZUWtf6CnvvPs
+         c1bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790468711; x=1791073511;
+        d=1e100.net; s=20260707; t=1790468717; x=1791073517;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pvI2CLJV63upsK+i3iXF166plHPTeUWc5AYad+dRYdo=;
-        b=JqEJ+UHQxk2frxNn8cu1vh2pd8f+DtchJg48kNLbDUfktjT7fbnfGqfGZ08mrHlgti
-         Dak+zzyUaI0cUk20b+vvrjTakpEgv0BdNUtfuAVQg9tb0Jojqz6cz+eNgbHjjeY7sndW
-         HnqUhHlZoOjmiqiXReSCb4jFISbXizvAco4D5uKKHT5MoYrdUsWnZ93EJBFNBHZS8kuF
-         sHLyKZNoTEUFZLHZ+W2n8OQgFjIA+IklP9cbrF5HqE0pxMjBDuwvE3fsytHv/rYwTsrh
-         CmFz2uHZuteHfMNUEixaCYfCQyfU28cj3mif6mRyWdxNs3ubTt0shdPdtMEjHpX9GPp9
-         h5EA==
-X-Forwarded-Encrypted: i=1; AKwUvBxDwSIIr0vwq91fyEu8CcvczQiI+vlR1aG3YYzTsh3NJ5/mPGvdhfZRNiPIkzLUlickbc/lk9A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLOZPFd5zZKK08l9rlYIbVJmJv8gZI2kSaX8aZlApwbdAk6T60O
-	0fj/TOf6zJxDih0cpOpFeRNNwWIi6zKbkJFenPWcPqWRyqayrlsnq13q
-X-Gm-Gg: AYBFou3aJVwXYkNZolFuwnBBPs0aXiLUonSESWyobOKFN1UfiD1R46voShBKK0XsG8R
-	56vunIP6nU11z+WmKOgq0lHMsKK342La134/kCDZElCPi+wBCiGxjPpVA1nwyyBgKdygUNOwnt2
-	SW56S8jz4CHQHdH2g/FpIZYfCAbWVZbKkIBRRtSxxzbAAaGyzkQ0y5RKOR6Pm/uB+HHKVmr4Wcn
-	Zy12u/b/y6jnvB+1ohg+l7+c0sMLZ2xfCWL+rTnH8H7VluJVFM3fpGAeQqtZEGyIKlkMd9MRcGM
-	uhgmzOT/19MCzBxBfM1JMky7yQc/ea/YoilBvxepn++yfOw+Twut/T2bq4RwpWproqxxeUqhRtT
-	a/QB7NbomvYD734Zom24wTSzA4OMLm92wovCQaYWrkm2YtbGvD6gAi58fs5qEt5Q9lELDnQYhcO
-	20hxB+RZH0HxWVx4ZGjoPSvJe8vNNGXgjJ3Xw0vPtmOP3cNVPnyyRDw3fcOiJ/geaZOGOyZ8iA6
-	5Ed04AsnVddKNr952hStG3hln+rZ0VLFzoxCii+JM5cuTgWg7stIQ3jc+ge
-X-Received: by 2002:a17:90b:4d85:b0:39d:f254:4173 with SMTP id 98e67ed59e1d1-3a098d9612fmr8725519a91.21.1790468711049;
-        Sat, 26 Sep 2026 17:25:11 -0700 (PDT)
+        bh=nZghyl21slJP0T9zWNT6FTVcuW3rARquNgkyu57N/4I=;
+        b=0M9d56z+WZALRsS+POuZxCUrbOnrJ6D6gn8MMYqqz6eqbYq5/6evc8yiq0YhnH82Qy
+         tzjUOBWMdfAGMB8E1aLVLUAYEqbF/ybs1tD/NZ4laF/fIGgWstPZ0JxGo8/zbHWUoLHT
+         beEKOFBqZ5YqLd5E1qXyQT6LsDa1mnhkDKoCTRbrW6WjRju+QHmlnSpu67SB4gZ4q4yk
+         Y9if8Z34WaFwzn03KWdznXp4jZLtzFjQN7FF7u/rFLvuRS530K+rIO0QojcUS7WBnRtN
+         k9XRTP1hEZCDpdE8uT5Uxhfg0WCFWIFwUM8PTImsSBAD2yhI/o9Novd81bryJRqMNpQh
+         GxGg==
+X-Forwarded-Encrypted: i=1; AKwUvBzAwTfoHalGDW+mG6LerFFxEJnp5uaMdrvbUowor1+dz67osGx02Eh/ekG0Ccj5TZLCcrO19sU=@vger.kernel.org
+X-Gm-Message-State: AFuF++m82Ot/htUU5YZKVNjIFE+nWa2fEUhzj4EFO/tKyBFec/kU2Le1
+	fhN2d9CTcCBtEvIjauii0jg19HveM7MKErerDpDU+n1OGhuA/Fu1GW912K0bkHF3
+X-Gm-Gg: AYBFou0xCT68tQAG1u5kE5xpwXQc9SsKfCbuLyuC4+LWMuT7X9jKGYYDP9JKgyOTWIE
+	wbTuCketTQuXJg+G4b6iTY6TyKgB9XyPNy/Y+n/sjvNtwZGYVA3ly9RQFQpvUenFg6FskPCsPcl
+	NwAeiEas4PWrgBJfgDb0N9GRBWd6lZXR+00W5kn0j1l9EDwghzzLnwJwsCeC3TRwPiph+6mMDiR
+	AzB0E0hVy4iGB27mY9wDSa9ku4xiicOGvN/TMt9jtSGX/zVhooLmOlKZG4NZHYhgeFjoHkdrswH
+	i/CGWAk2JTGpL8Tv7Vd5Y23LA+cyHaX2Syq+FpqoqQDyFd3/h0KX6xjQAK0LnntUVAvxpmtWdzc
+	FOhyR1whYgA+qk85c34qqx9y6oSXtXWYv/BXg+VEQ8GM72CDx4ewIPech8O+1LWfDtwvwhniuQ5
+	MgBQJ/A22C/OeNxjOEC8uv2FMPmIAFjZI7G7LpnDP80HuuV3T7PlLmAiG332jT3XfspQrpwPB+S
+	WdKCr8500Pv2ODPARSLJ547RyLcD9zqhT3MaMWk2/wTuWPlSR0oro0mxQtzoqn8ccffQ/Y=
+X-Received: by 2002:a05:6a20:6f8f:b0:3dd:85a8:cb7d with SMTP id adf61e73a8af0-3de0e78b15emr9330708637.32.1790468716805;
+        Sat, 26 Sep 2026 17:25:16 -0700 (PDT)
 Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:78b6:7bf6:b1de:12ef])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78791c680sm2698224a12.16.2026.09.26.17.25.03
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78791c680sm2698224a12.16.2026.09.26.17.25.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 17:25:09 -0700 (PDT)
+        Sat, 26 Sep 2026 17:25:16 -0700 (PDT)
 Sender: Yuyang Huang <uyoko90@gmail.com>
 From: Yuyang Huang <sigefriedhyy@gmail.com>
 To: Yuyang Huang <sigefriedhyy@gmail.com>
@@ -84,9 +84,9 @@ Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v8 4/5] netlink: specs: rt-addr: document AF_PACKET multicast dumps
-Date: Sun, 27 Sep 2026 09:24:26 +0900
-Message-ID: <20260927002427.4519-5-sigefriedhyy@gmail.com>
+Subject: [PATCH net-next v8 5/5] selftests: net: test AF_PACKET multicast dumps
+Date: Sun, 27 Sep 2026 09:24:27 +0900
+Message-ID: <20260927002427.4519-6-sigefriedhyy@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260927002427.4519-1-sigefriedhyy@gmail.com>
 References: <20260927002427.4519-1-sigefriedhyy@gmail.com>
@@ -98,61 +98,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the global flag, list the attributes the AF_PACKET dump uses and
-describe how ifa-family selects IPv4, IPv6 or link-layer output for
-RTM_GETMULTICAST.
+Dump the link-layer multicast addresses of a dummy device and verify
+that ifa_index restricts the dump to that device, that the all-hosts
+address joined on link up is listed without IFA_F_GLOBAL, that an
+address added with SIOCADDMULTI is listed with IFA_F_GLOBAL and
+IFA_MC_USERS, and that IFA_TARGET_NETNSID dumps another netns.
 
 Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 ---
- Documentation/netlink/specs/rt-addr.yaml | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/rtnetlink.py | 73 +++++++++++++++++++++++-
+ 1 file changed, 71 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt-addr.yaml b/Documentation/netlink/specs/rt-addr.yaml
-index 17ead2203451..dc5c0ce259ba 100644
---- a/Documentation/netlink/specs/rt-addr.yaml
-+++ b/Documentation/netlink/specs/rt-addr.yaml
-@@ -77,6 +77,8 @@ definitions:
-         name: mcautojoin
-       -
-         name: stable-privacy
-+      -
-+        name: global
+diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
+index dc8c77db4897..5534ade056a5 100755
+--- a/tools/testing/selftests/net/rtnetlink.py
++++ b/tools/testing/selftests/net/rtnetlink.py
+@@ -5,13 +5,18 @@ import socket
+ import struct
+ import time
+ from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
+-from lib.py import ksft_not_in, ksft_not_none
++from lib.py import ksft_in, ksft_not_in, ksft_not_none
+ from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
+ from lib.py import defer
  
- attribute-sets:
-   -
-@@ -168,7 +170,15 @@ operations:
-           attributes: *ifaddr-all
-     -
-       name: getmulticast
--      doc: Get / dump IPv4/IPv6 multicast addresses.
-+      doc: |
-+        Get / dump multicast addresses. ifa-family must select the address
-+        family: AF_INET or AF_INET6 for the IP multicast groups joined on
-+        a device, AF_PACKET for the link-layer multicast addresses in the
-+        device filter. Link-layer entries added explicitly, e.g. with
-+        SIOCADDMULTI or "bridge fdb add ... self", rather than by a
-+        protocol join are reported with the global flag set. A non-zero
-+        ifa-index restricts the dump to that device, ifa-prefixlen,
-+        ifa-flags and ifa-scope must be zero.
-       attribute-set: addr-attrs
-       fixed-header: ifaddrmsg
-       do:
-@@ -181,10 +191,13 @@ operations:
-             - multicast
-             - mc-users
-             - cacheinfo
-+            - flags
-+            - target-netnsid
-       dump:
-         request:
-           value: 58
--          attributes: []
-+          attributes:
-+            - target-netnsid
-         reply:
-           value: 58
-           attributes: *mcaddr-attrs
+ IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
+ IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
+ IPV6_TEST_MULTICAST = bytes.fromhex('ff020000000000000000000000000123')
++ETH_ALL_HOSTS_MULTICAST = bytes.fromhex('01005e000001')
++ETH_TEST_MULTICAST_STR = '01:00:5e:01:01:01'
++ETH_TEST_MULTICAST = bytes.fromhex(ETH_TEST_MULTICAST_STR.replace(':', ''))
++ETH_PEER_MULTICAST_STR = '01:00:5e:02:02:02'
++ETH_PEER_MULTICAST = bytes.fromhex(ETH_PEER_MULTICAST_STR.replace(':', ''))
+ 
+ 
+ def _users_for(rtnl: RtnlAddrFamily, family: int, grp: bytes, ifindex: int):
+@@ -105,6 +110,69 @@ def dump_mcaddr6_check() -> None:
+                 s2.close()
+ 
+ 
++def dump_mcaddr_l2_check() -> None:
++    """
++    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
++    dump: the ifa-index filter, mc-users, the global flag and
++    target-netnsid.
++    """
++
++    with NetNS() as ns, NetNSEnter(str(ns)):
++        for ifname in ("dummy1", "dummy2"):
++            ip(f"link add name {ifname} type dummy")
++            ip(f"link set {ifname} up")
++        dev_idx = socket.if_nametoindex("dummy1")
++        ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
++
++        rtnl = RtnlAddrFamily()
++        defer(rtnl.close)
++        addresses = rtnl.getmulticast(
++            {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
++            dump=True)
++
++        # dummy2 has entries as well, only dummy1 may be listed
++        ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
++                "AF_PACKET multicast dump ignored ifa-index filter")
++
++        entries = {addr['multicast']: addr for addr in addresses}
++
++        # Bringing an Ethernet device up joins 224.0.0.1, which maps
++        # to 01:00:5e:00:00:01 in the device multicast list.
++        all_hosts = entries.get(ETH_ALL_HOSTS_MULTICAST)
++        ksft_not_none(all_hosts,
++                      "dummy1 does not have the all-hosts link-layer address")
++        if all_hosts is not None:
++            ksft_not_in('global', all_hosts['flags'],
++                        "protocol entry is global")
++
++        static = entries.get(ETH_TEST_MULTICAST)
++        ksft_not_none(static, "dummy1 does not have the SIOCADDMULTI address")
++        if static is not None:
++            ksft_eq(static['mc-users'], 1,
++                    "unexpected mc-users for the SIOCADDMULTI address")
++            ksft_in('global', static['flags'],
++                    "SIOCADDMULTI entry is not global")
++
++        # target-netnsid dumps another netns, ifa-index is relative to it
++        with NetNS() as peer:
++            ip(f"netns set {peer} 5")
++            ip("link add name dummy3 type dummy", ns=peer)
++            ip("link set dummy3 up", ns=peer)
++            ip(f"maddr add {ETH_PEER_MULTICAST_STR} dev dummy3", ns=peer)
++            peer_idx = ip("link show dummy3", json=True, ns=peer)[0]['ifindex']
++
++            addresses = rtnl.getmulticast(
++                {"ifa-family": socket.AF_PACKET, "target-netnsid": 5,
++                 "ifa-index": peer_idx}, dump=True)
++            ksft_eq({(addr['ifa-index'], addr['target-netnsid'])
++                     for addr in addresses}, {(peer_idx, 5)},
++                    "target-netnsid did not dump the peer netns")
++            # dummy1 in this netns can have the same ifindex as dummy3
++            ksft_in(ETH_PEER_MULTICAST,
++                    {addr['multicast'] for addr in addresses},
++                    "target-netnsid did not dump the peer device")
++
++
+ def ipv4_devconf_notify() -> None:
+     """
+     Configure an interface and set ipv4-devconf values through netlink
+@@ -424,7 +492,8 @@ def ipv6_verify_inter_scope_addr_order() -> None:
+ 
+ 
+ def main() -> None:
+-    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
++    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, dump_mcaddr_l2_check,
++              ipv4_devconf_notify,
+               ipv6_route_del_reason_expired,
+               ipv6_route_del_reason_ra_withdrawn,
+               ipv6_route_del_reason_absent,
 -- 
 2.43.0
 
