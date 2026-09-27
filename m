@@ -1,160 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C746C3290B7;
-	Sun, 27 Sep 2026 17:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842E135CB95;
+	Sun, 27 Sep 2026 17:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790530630; cv=none; b=l12evZ0uGVz0jUDONvq2pupHQjWKb1wAkfjRMZBo3Qpbzz3J3nhvLQjWx9cAzpTWgNI6mSnj2YRi6dl5MmJMKpAMWbhoW70bh0mPexlVzC7umG+ejvkvkXO/odIwiuaorBJoB4mb2NjymaJiqn+D24ejLYwDWNsybHxc6z9S+gI=
+	t=1790530800; cv=none; b=Bh9AL6hx1MYPtrhrz6YerbRMh7V0i1HoHG5u5xHP5GTcTgMZctXCZHKaPNQ6SbaDiq3GW/oHalJsctjOvl3JATUwHxWyT7eLsqmzQIm+6veEqiW9ttss9Um7v0tNnLgh/xNVGi+vDXiu8ybthr8lprtm5rlxAbnkQPC75JNfbZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790530630; c=relaxed/simple;
-	bh=NPH1JMV8CSWl+ZXSUjg5HmyTtc+DZ39hCmWb5Lw5gWU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h4hDDlSN3xf83ODCdHke0lwqGQWe/Js5lyhOR7Hxu1eU3pdeYzv8gzD0Sa+86T+YfYeFPK+UN+MQ+mbQr0H4TDAFJoLfdE/Z9OJGgwwX436ECn7aOWFTwPYCLQk/rlE5LL3ntuVStMS4lGo66+VTlnhz1rZNBfwxVren0uD++ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQsIXA4s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790530800; c=relaxed/simple;
+	bh=U9Q/3E11oseEz/2hH8f1J2cTCxzQ5lJt+Q1fp/l6Vz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TQatd0qVkuni0G4oCsHQBJkL0G+VUxSsJQknSZOPcBdIQWvST2/YiehrZHjlpbaHBbJgxlyRJP1+vZO2INQWGo7WfX+JwBR8ONgUeh8eGIfGToFu3a3zyYkjLUc8Lle2B9ThpQE76hSVlAffSVFSOGEyGFazbb48meeOoKYb7iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YHuyWNG7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQsIXA4s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C536A1F00893;
-	Sun, 27 Sep 2026 17:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790530626;
-	bh=+ESq2+ZtM3KyCClSZigX4CznLK6C+Qxn12joyNbMmiE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fQsIXA4snPiqwkIkXs0E9u0YvCFfSRrWkF5ujv5YdqNvpbuW3Be1q0FjBkwc8W9uq
-	 E04VIp9vrVHgdrgpMlAqoQyrsz/8m3GJmwFMo4i7VdtjUSrmOlyQ4/P+xTPFOsnuk7
-	 vX3PlGmu4RVtyaX3DyA9evmr/nhLdHlju3RG8MWXV/IEi5TSAJgaOzjB7Gt/B867gH
-	 jTUMoY2puEDfiOCClrfRsVYKTQK9mkKioOnrziB/a4LfAJA/KzZC4wBD0nkjinDgiA
-	 ERhNXh+mnA8448NG78SfpWpD7b2zW0c7ELbppZWy6tSPKeFZj8qw5ErsTgcaIutOs9
-	 wJkuriiFvEx0g==
-Subject: Re: [PATCH nf-next v4 4/4] netfilter: nf_conntrack_sip: use shared
- helper parsers
-From: netdev-bot+sashiko@kernel.org
-To: rc@rexion.ai
-Cc: pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de, phil@nwl.cc,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org
-Date: Sun, 27 Sep 2026 17:37:05 +0000
-Message-ID: <179053062534.2160803.18214039590923264255@kernel.org>
-In-Reply-To: <20260923171501.3254823-1-rc@rexion.ai>
-References: <20260923171501.3254823-1-rc@rexion.ai>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YHuyWNG7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=7WX6+BN1oNRZyY1oWGFe4jd3bJh7R/vmOzZu6ho3ooE=; b=YHuyWNG75/RLzBVWmxiikxHFgh
+	zqJY3eKxBCjXK/O0w+bni2s+iZGHNGTPizOnQOoCrilFw66W/9doqw40AtOG6O6TW9vjCcuCSzUwQ
+	rDJw3tYMTaivXzIS5E79faCPqIkY4oHdFQUfqPDDy+iR6Csk2Gm1KgM4qlcLRlx+PjrE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xAsqo-007Xym-Gf; Sun, 27 Sep 2026 19:39:46 +0200
+Date: Sun, 27 Sep 2026 19:39:46 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Po-Yu Chuang <ratbert@faraday-tech.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] net: ftgmac100: Add AST2700 support
+Message-ID: <14a281e2-c88e-42e3-acd3-b20f111a4c28@lunn.ch>
+References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sun, Sep 27, 2026 at 03:16:19PM +0800, Jacky Chou wrote:
+> Add the pieces needed for the FTGMAC100 driver to run on Aspeed AST2700
+> systems.
+> 
+> AST2700 keeps using the FTGMAC100 MAC IP, but the enablement is not
+> limited to a new compatible string. The SoC can boot with the MAC on
+> ARM64, needs the Aspeed-specific RMII mode bit programmed when a port is
+> wired for RMII, and requires the driver to use the upper DMA address
+> fields in the ring base registers and packet descriptors. Those fields
+> expose a 35-bit DMA address range on AST2700, so the driver must request
+> a mask that matches the address bits the hardware can encode.
+> 
+> The series first documents and wires up the aspeed,ast2700-mac
+> compatible. It then treats AST2700 as an Aspeed MAC in the driver,
+> enables the RMII mode programming, writes the AST2700 high descriptor-ring
+> base registers, carries the RX/TX descriptor high address bits, rebuilds
+> full DMA addresses before unmapping buffers, and requests a 35-bit DMA
+> mask. The high ring base registers are only touched for AST2700 so older
+> Aspeed device tree register windows remain unchanged. With that in place,
+> the FTGMAC100 Kconfig entry can be made available on ARM64 while keeping
+> the existing Aspeed MDIO dependency for AST2600 and newer ARCH_ASPEED
+> systems.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+There is no mention of RGMII here or RGMII delays. Given the mess that
+the AST2600 is, i would expect to see some explanation how that has
+been solved.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says "No functional change intended", but
-  the patch changes how sip_parse_port() in…
-
---
-
-netfilter: nf_conntrack_sip: use shared helper parsers
-
-This patch removes the SIP helper's private sip_strtouint() and switches
-its callers to nf_ct_helper_parse_uint(). The digit loop in
-sip_parse_port() is replaced with nf_ct_helper_parse_port(), while the
-SIP-specific handling of ':', the SIP_PORT default and the 1024 minimum
-stay in place. The commit message says no functional change is intended.
-
-> diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-> index 64bc440b1181f..0e12426227a80 100644
-> --- a/net/netfilter/nf_conntrack_sip.c
-> +++ b/net/netfilter/nf_conntrack_sip.c
-
-[ ... ]
-
-> @@ -199,29 +199,22 @@ static bool sip_parse_port(const char *dptr, const char **endp,
->  
->  	dptr++; /* skip ':' */
->  
-> -	while (dptr < limit && isdigit(*dptr)) {
-> -		p = p * 10 + (*dptr - '0');
-> -		dptr++;
-> -		len++;
-> -		if (len > 5) /* max "65535" */
-> -			return false;
-> -	}
-> -
-> -	if (len == 0)
-> +	if (nf_ct_helper_parse_port(dptr, limit - dptr, &p, &end))
->  		return false;
-
-[Severity: Medium]
-Does this change which ports sip_parse_port() accepts?
-
-The old loop counted digits and returned false once there were more than
-five, whatever the value. That rejected zero-padded ports such as
-"sip:1.2.3.4:0005060".
-
-The shared helper only checks the value:
-
-net/netfilter/nf_conntrack_helper.c:nf_ct_helper_parse_port() {
-    ...
-	val = nf_ct_helper_parse_uint(cp, len, &e);
-	if (e == cp || val == 0 || val > 65535)
-		return -1;
-    ...
-}
-
-nf_ct_helper_parse_uint() caps the digit count only at
-sizeof("4294967295"), which is 11. As a result, ports of 6 to 11 digits
-with leading zeros, such as ":0005060" or ":00000065535", now parse.
-
-That appears to change the outcome for the same packet in several
-callers:
-
-  - ct_sip_parse_header_uri() used to return -1 for these strings, and
-    process_register_request() and process_register_response() then
-    returned NF_DROP with "cannot parse contact". It now returns 1, so a
-    REGISTER request creates a signalling expectation:
-
-    sip_help_udp/tcp()->process_sip_msg()->process_sip_request()->
-      process_register_request()->ct_sip_parse_header_uri()->
-        sip_parse_port()
-
-  - ct_sip_parse_request() used to return -1 and now succeeds.
-
-  - epaddr_len() and skp_epaddr_len(), the match_len callbacks used by
-    ct_sip_get_header() and ct_sip_walk_headers(), used to return 0,
-    which made the lookup return -1. Now the header matches with a
-    longer matchlen, and nf_nat_sip mangles that range.
-
-  - process_sip_request() may now set ct_sip_info->forced_dport from a
-    zero-padded Via header that it used to ignore.
-
-The sip_strtouint() to nf_ct_helper_parse_uint() swap looks identical.
-The sip_parse_port() conversion is not, and the commit message quoted
-below does not mention it:
-
-  "No functional change intended."
-
-Should the old limit be kept, for example by rejecting end - dptr > 5?
-Otherwise, could the commit message document that leading zeros are now
-accepted?
-
->  
->  	/* reached limit while parsing port */
-> -	if (dptr >= limit)
-> +	if (end >= limit)
->  		return false;
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923091608.2617604-1-rc%40rexion.ai
+     Andrew
