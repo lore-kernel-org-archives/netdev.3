@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEF743C056;
-	Sun, 27 Sep 2026 19:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05CF43991C;
+	Sun, 27 Sep 2026 19:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790536765; cv=none; b=jZW9r1T9VtnBGuw3epL3NU5a8bmW1IqLBCtzfpg9C+G6N0M5CvKavERDJ8m92ra9FggbA9zvoA+UU2JC+6QzOgWfLwFNOHdO1X+AuLK9WBnrhXwFVrF5etP4HPCAdK8wF1pi0Zn7yDonfUBHkukFfcxf/QIalwQbKD1zCuBOEJ4=
+	t=1790536767; cv=none; b=ds3M5fY4o16BqSoLOT2NMTCmLMXZZHkWoJUKzbWpSvZt+DhGftZSSUPrnt4EBnUaVHSnEsxk/KXglyGj6T9J+ReXb2GdQsMbasWyeg4ksVyL5UfWy4k7g0ij+aFuyt0h+grdikrigRwaFMBlLjgWq9EeYrJop4o+R/IkDRie89w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790536765; c=relaxed/simple;
-	bh=ryKRyfOUnRCGCXRH1G23/G0mNTHH5jxmhoopmVkBQWs=;
+	s=arc-20240116; t=1790536767; c=relaxed/simple;
+	bh=2uwFgZjuFvL46ZpC2r+ufO7PevUyQI6wdXIt9CWH7HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0Mjv7y9BbUxXxq9iTqE84XlFIWvFDTNhFjjvXIn92q77ViOWOSmI+wdeltPUgfqt/N5XTYaHnYQoWPF/hRqwNrURpV/AjT7fOAi5x2Xsy+GGNS118Be0QESgxtuRby9dhd+/BVmk1M3uj+t/MapiE+SJ1/Zvl+1HprnT+AwAx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=GkcZBFgt; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=Itfyswidwqrg703TalyhlsG6HGexGAKx2XIH0vyi0obow+ywRSR+QptJfoSnM3btaFKtVmwSlvq4HXNUIUUUUuzXg7kKqZFvsFO10YiN5UanvVE+v2tDwM+d6TjPgABLjDN5ZnesP22MHV+i+fTXliUtGtUJjIDqhEwClxbUF4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=UHFBVwUN; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="GkcZBFgt"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="UHFBVwUN"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id B63CAE8388F;
-	Sun, 27 Sep 2026 21:19:20 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 8E3AAE83586;
+	Sun, 27 Sep 2026 21:19:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1790536760;
+	s=mail; t=1790536762;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pXUCWAqJd6Zh9W7aDYO4JBJHsT/sIWsJdX4+11+kpSw=;
-	b=GkcZBFgtYHPnQ/UsiFwdKXLxCOV+q7PcQf032bes8iFryIyBelIR3EqiWBF84myKZkTA0t
-	Tkd3K/d2N/QVEd06b+wpvMXs2Cm9LEJeFvDkwn3r55ms36RSuRfnIxT+fvT6lr5+tUf3bo
-	nFTFfh6Fs4vgIebIuHK/uH/J65KSVhCVwxRQBlmCzZdvmBGZ70vyKd2xRI0S/7DdJ6ns65
-	pj3E/BM52JYnh8Z+5Q4MPmcq4TOFbBh/BD288KNu+9nekBLYXY1VSO8BGZV/RsOfuFVsuJ
-	Jc00SunUCHIo/SPt68za1ZThsV7fzWOtIAvoPuHGfK8dgZzLR8oODd4pU0bV/Q==
+	bh=xP2gr9cjgiwf9nb2d++u96DQ3+HkDCz0LrMy+ljtWmE=;
+	b=UHFBVwUNiMPTpTvzEwiJ8WQJEqcUbyw3cI5sNtpcJPpCarpDkN6bz/ibgpX+JBztfGUCt7
+	mzq3JGKUWMeMC+X9fbs3TNzTyy43SQVB88v/96QX3tbxlxvzEYZ/2EMvLwACiADunkdQKU
+	8or3L9yHnsmh99BnvsOfkYOsEYmA+VcmGqeoI/NtACtL6HYdLIEgzLFfNvkK696+wjdNUt
+	Wby+E42EksCIIxIbhjpOIX8gabBilLiEG8m314U40u3+lsPApklE1Xti4KC8LCkH0qVwPt
+	PZTYlfl0DTl63VA1JfJjcvrpjExJKYj9B0jrlOiyVRdzusrp2OJjqwiJEicbQw==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id xuCGimgy84z8; Sun, 27 Sep 2026 21:19:20 +0200 (CEST)
+ id slGRnpJoImd1; Sun, 27 Sep 2026 21:19:22 +0200 (CEST)
 Received: from p14sgen5.. (ip-077-020-250-175.vkd66.pools.vodafone-ip.de [77.20.250.175])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 27 Sep 2026 21:19:19 +0200 (CEST)
+	Sun, 27 Sep 2026 21:19:21 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -58,9 +58,9 @@ Cc: Corey Leavitt <corey@leavitt.info>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v7 3/5] net: pse-pd: unwind allocations when controller registration fails
-Date: Sun, 27 Sep 2026 21:18:48 +0200
-Message-ID: <20260927191850.1370515-4-github@szelinsky.de>
+Subject: [PATCH net-next v7 4/5] net: pse-pd: check the PI vpwr supply before registering the controller
+Date: Sun, 27 Sep 2026 21:18:49 +0200
+Message-ID: <20260927191850.1370515-5-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260927191850.1370515-1-github@szelinsky.de>
 References: <20260927191850.1370515-1-github@szelinsky.de>
@@ -72,149 +72,163 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pse_controller_register() allocates the notification kfifo and, through
-of_load_pse_pis(), the PI array plus an OF reference per described PI.
-Every failure after that point simply returns: none of it is freed.
-kfifo_free() and pse_release_pis() only run from
-pse_controller_unregister(), which a failed registration never reaches,
-and devm_pse_controller_register() drops only its own devres cookie.
-pcdev->pi is a plain allocation, so nothing else will ever free it, and
-all five in-tree controller drivers keep pse_controller_dev inside their
-private data, whose last pointer goes away with the failed probe.
+Each PSE PI regulator is registered with a "vpwr" supply, which the
+bindings expect the board to provide via vpwr-supply in the PI node. The
+regulator core deliberately treats an unresolved supply at registration
+time as non-fatal: it logs, registers a bus device so the supply can be
+picked up later, and lets registration succeed.
 
-A partial pse_register_pw_ds() is worse than a leak. The power domains it
-already created are devm-allocated but live in the global pse_pw_d_map,
-so the failed probe frees them while that xarray still points at them,
-and the next controller to register walks into freed memory in
-regulator_is_equal().
+That leaves pse_controller_register() completing for a controller whose
+PIs cannot be handed out. regulator_get_exclusive() in
+pse_control_get_internal() resolves the supply itself and returns
+-EPROBE_DEFER until the provider appears, so of_pse_control_get() keeps
+failing for this PI even though the controller is registered and
+discoverable. A consumer that only retries on controller registration -
+as the phy layer does after the next patch - then never gets its PI.
 
-Unwind at two depths, because the PI array cannot always be freed here.
-pse_pi_ops.is_enabled(), .enable() and .disable() all index pcdev->pi[],
-and the PI regulators are devm-registered on pcdev->dev, so from the
-first successful devm_pse_pi_regulator_register() until devres unwinds
-the failed probe there are live regulators whose ops would follow a freed
-pointer. regulator_late_cleanup() and the "state" class attribute both
-reach those ops. So the array is released on the failures that happen
-while it exists and before the first PI regulator does: setup_pi_matrix()
-and the supply check. A driver's setup_pi_matrix() may well have
-registered devm regulators of its own by the time it fails - pd692x0
-registers its managers there - but those do not index pcdev->pi[], so
-they do not constrain this. Earlier than that there is nothing to release -
-pcdev->pi is still NULL, or of_load_pse_pis() has already freed it - and
-from the registration loop onwards the array has to stay, so those
-failures only free the kfifo and flush the power domains, leaving it
-leaked exactly as it is today rather than handing those regulators a
-dangling pointer. An allocation failure in the loop's first iteration
-leaks it too, where releasing would still have been safe, but the rule
-stays simple enough to read. Freeing it safely needs the NULL-and-guard
-treatment the pending net teardown fix adds to the regulator ops, which
-is not in net-next.
+Check every PI's supply first, before any regulator of ours is
+registered, so the error surfaces in the PSE driver's own probe and
+deferred probe retries it there. The check skips exactly the PIs the
+registration loop skips, so a controller with no pse-pis node - where
+every PI has a NULL np but a regulator is still created for it - is
+covered too, through the controller device rather than a PI node.
 
-of_load_pse_pis() already releases the PI array on its own failures, so
-that path only needs the kfifo.
+The check follows both stages regulator_resolve_supply() uses: the PI's
+own node, then the controller device. Both are needed. of_get_regulator()
+reads the node it is handed and otherwise walks that device's children,
+so a vpwr-supply written once on the controller node - covering every PI
+- is invisible from the PI node, while the core finds it at stage two.
+Checking only the PI node would let exactly the case this patch exists
+to prevent slip through unreported.
 
-pcdev->pi is cleared at the release_pis label and deliberately not
-inside pse_release_pis() itself. The label is the one place the array
-is freed while no PI regulator exists. pse_controller_unregister()
-calls the same helper with every PI regulator still registered - the
-devres node for devm_pse_controller_register() is added after them, so
-it is released first - and pse_pi_is_enabled() indexes pcdev->pi[]
-unguarded behind the regulator "state" attribute. Clearing the pointer
-in the helper would turn that pre-existing read of freed memory into a
-NULL dereference.
+It is still not a full replica. The core also falls back to a dummy
+under have_full_constraints(), which does not matter here because it
+bails on an explicit -EPROBE_DEFER first, and it defers when the
+provider's parent is not yet bound, which regulator_get_optional() does
+not check. So a PSE probe interleaving with the provider's own probe can
+still pass the check and resolve late. That window is narrower than the
+one being closed - a provider that has not registered at all - and
+closing it properly means asking the core about rdev->supply after
+registration, which the unwind constraints above do not allow.
+
+Doing all the checks before the registration loop also keeps the common
+deferral on the unwind path that can release the PI array: a controller
+can describe its PIs on different providers - ti,tps23881.yaml puts
+pse-pi@0 on vpwr1 and pse-pi@1 on vpwr2 - so "one PI resolves, the next
+defers" is the ordinary case, and checking inside the registration loop
+would leave registered regulators behind on every retry.
+
+This widens what a missing provider costs. Before, only the PI on that
+supply failed, and only when a consumer asked for it; now the controller
+itself defers, so a board whose PIs sit on different providers loses PSE
+on all of them until the last one appears. That is the normal contract
+for a regulator consumer, and the alternative - a controller that
+advertises PIs it cannot hand out - is the bug being fixed. A provider
+that never appears leaves the controller unbound rather than half
+working, which deferred probe reports in the usual way.
 
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- drivers/net/pse-pd/pse_core.c | 37 +++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 72 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 56cecf60c5c4..16d75b4babf3 100644
+index 16d75b4babf3..457eef5784f8 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -1092,17 +1092,18 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	    !pcdev->ops->pi_get_pw_status) {
- 		dev_err(pcdev->dev,
- 			"Mandatory status report callbacks are missing");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto free_kfifo;
- 	}
+@@ -12,6 +12,7 @@
+ #include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/pse-pd/pse.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
+ #include <linux/rtnetlink.h>
+@@ -860,6 +861,67 @@ static const struct regulator_ops pse_pi_ops = {
+ 	.set_current_limit = pse_pi_set_current_limit,
+ };
  
- 	ret = of_load_pse_pis(pcdev);
- 	if (ret)
--		return ret;
-+		goto free_kfifo;
- 
- 	if (pcdev->ops->setup_pi_matrix) {
- 		ret = pcdev->ops->setup_pi_matrix(pcdev);
- 		if (ret)
--			return ret;
-+			goto release_pis;
- 	}
- 
- 	/* Each regulator name len is pcdev dev name + 7 char +
-@@ -1110,7 +1111,12 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
++/* The regulator core treats an unresolved "vpwr" supply as non-fatal and
++ * retries it on its own later, which would leave this controller able to
++ * register while of_pse_control_get() still fails with -EPROBE_DEFER for
++ * this PI, and nothing to retry the consumer's attach. Check the supply
++ * up front so the PSE driver's own probe defers instead.
++ *
++ * of_regulator_get_optional() reports a PI with no vpwr-supply described
++ * as -ENODEV rather than falling back to the dummy regulator, and has a
++ * stub for CONFIG_OF=n. Those PIs keep their existing behaviour: the
++ * regulator core resolves them to the dummy when the PI regulator is
++ * registered.
++ */
++static int pse_pi_check_supply(struct pse_controller_dev *pcdev, int id)
++{
++	struct regulator *supply;
++	int ret;
++
++	/* Skip exactly the PIs the registration loop below skips, so every
++	 * regulator that will be created is covered.
++	 */
++	if (!pcdev->no_of_pse_pi && !pcdev->pi[id].np)
++		return 0;
++
++	/* Follow both stages regulator_resolve_supply() will use for the
++	 * regulator about to be registered: the PI's own node first, then
++	 * the controller device. Only -ENODEV moves on to the second stage;
++	 * a provider that has not registered yet gives -EPROBE_DEFER, which
++	 * is the case worth catching here.
++	 */
++	if (pcdev->pi[id].np) {
++		supply = of_regulator_get_optional(pcdev->dev,
++						   pcdev->pi[id].np, "vpwr");
++		if (!IS_ERR(supply)) {
++			regulator_put(supply);
++			return 0;
++		}
++
++		ret = PTR_ERR(supply);
++		if (ret != -ENODEV)
++			return dev_err_probe(pcdev->dev, ret,
++					     "PI %d: failed to get vpwr supply\n",
++					     id);
++	}
++
++	/* A vpwr-supply on the controller node covers every PI, and is
++	 * where a PI without a node of its own resolves too.
++	 */
++	supply = regulator_get_optional(pcdev->dev, "vpwr");
++	if (!IS_ERR(supply)) {
++		regulator_put(supply);
++		return 0;
++	}
++
++	ret = PTR_ERR(supply);
++	if (ret == -ENODEV)
++		return 0;
++
++	return dev_err_probe(pcdev->dev, ret,
++			     "PI %d: failed to get vpwr supply\n", id);
++}
++
+ static int
+ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
+ 			       char *name, int id)
+@@ -1111,6 +1173,16 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
  	 */
  	reg_name_len = strlen(dev_name(pcdev->dev)) + 18;
  
--	/* Register PI regulators */
-+	/* Register PI regulators. Once one of these exists, pse_pi_ops index
-+	 * pcdev->pi[] and nothing here can unregister it again, so the array
-+	 * must outlive this function. Failures below therefore unwind to
-+	 * free_kfifo and deliberately leak it, as they already do today,
-+	 * rather than hand the live regulators a freed pointer.
++	/* Check every PI supply before registering any regulator: a provider
++	 * that has not probed yet is the ordinary -EPROBE_DEFER case, and
++	 * unwinding it must not leave PI regulators behind.
 +	 */
- 	for (i = 0; i < pcdev->nr_lines; i++) {
- 		char *reg_name;
- 
-@@ -1119,20 +1125,22 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 			continue;
- 
- 		reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
--		if (!reg_name)
--			return -ENOMEM;
-+		if (!reg_name) {
-+			ret = -ENOMEM;
-+			goto free_kfifo;
-+		}
- 
- 		snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
- 			 dev_name(pcdev->dev), i);
- 
- 		ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
- 		if (ret)
--			return ret;
-+			goto free_kfifo;
- 	}
- 
- 	ret = pse_register_pw_ds(pcdev);
- 	if (ret)
--		return ret;
-+		goto flush_pw_ds;
- 
- 	mutex_lock(&pse_list_mutex);
- 	list_add(&pcdev->list, &pse_controller_list);
-@@ -1142,6 +1150,19 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 				     PSE_REGISTERED, pcdev);
- 
- 	return 0;
++	for (i = 0; i < pcdev->nr_lines; i++) {
++		ret = pse_pi_check_supply(pcdev, i);
++		if (ret)
++			goto release_pis;
++	}
 +
-+flush_pw_ds:
-+	pse_flush_pw_ds(pcdev);
-+	goto free_kfifo;
-+
-+release_pis:
-+	pse_release_pis(pcdev);
-+	pcdev->pi = NULL;
-+
-+free_kfifo:
-+	kfifo_free(&pcdev->ntf_fifo);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(pse_controller_register);
- 
+ 	/* Register PI regulators. Once one of these exists, pse_pi_ops index
+ 	 * pcdev->pi[] and nothing here can unregister it again, so the array
+ 	 * must outlive this function. Failures below therefore unwind to
 -- 
 2.43.0
 
