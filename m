@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84FD33DEC8;
-	Sun, 27 Sep 2026 14:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295EC3246EB;
+	Sun, 27 Sep 2026 14:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790521199; cv=none; b=eZe/PgoQ0s1BGjZvf4yvhYSb6KraxYA/VjLhgivJfyGjWrPjYgNq773z2k3fiGp3620pBSWWu7cRLqdYrdcfzZJ0dsApmGzdVWXRzWsMR1FBAksWuG+5bUq7MobsTFY4NP8K/mn16N2H8pufYoZOu/Klh3C+kA3FEc8TWlkaXOI=
+	t=1790521202; cv=none; b=Py/VwXW1BRn5NF0Wy2bRtk4Qf45qcKW1uAxBJALkwvJdX4auI5N5BMod6xWy/BblSctcq4n/41TVXrK1WI6jHj/U8cmbporLpO4OjarCNCsV+u+CPhDA2k82w7UVQpFVfKjiaCTb54sk6wJDUG3BUzppwFi8amtRpQ54wkzpIYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790521199; c=relaxed/simple;
-	bh=OvHB4aQy0jJMF0Z6h7CMesGDOPXu3jfrH4vQmnFTWf0=;
+	s=arc-20240116; t=1790521202; c=relaxed/simple;
+	bh=J5vlvOBmHGwH0FRYjntFQpYEhUBK1jNvUMyVDFeretA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IIH0s1giegyevrkI3zKjzjVnvTiQDdDY69UM5Ccp5AoXrRt0tCQcbIguPRqxWFFRhL350XwrxzOC5HulRHOykO8nG586kumIIsFsN38lQLN1lzXD0hudcXTg6JdDm0TxQf+PC2loL5OUkAgYG3TKaohlOOxhUTGgsrbMZfnCiBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e18ckbT/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=HhY6Zjeig3E5Tv+WeXiWGzc3iN2Eck1+nn3NfXN4o27ah2ogKFMgsGg4Y7tIqA3XJNs6wdJB7Dk/5qvt4+XzIEgfEVomQ4TKMGl6PCZnts/z1Pa7DaE3wjfQnkCCWfTFIhM30aY12YJisKs8uSBh4D0dFegdmOwpe/G9KBUjaxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luSEkLeB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e18ckbT/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A81F00893;
-	Sun, 27 Sep 2026 14:59:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luSEkLeB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35ED61F000FF;
+	Sun, 27 Sep 2026 14:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790521194;
-	bh=pWhYh6CbQa5IkgwuLCkQKb6dg55T/o+xW4XtiUmA+CU=;
+	s=k20260515; t=1790521196;
+	bh=5R3ns/ZIcdsOXOPE3fcSOXj+sFgEDeSqv5fnjvD7tIU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e18ckbT/LXnI1qoH+WKz9nfq4XyyTkDM2dtwnv8HNjRdnXsj40jh65SfRaZXaiiu+
-	 +pcbIBzA5Mi5+Jkhj1NTKjB4hr4AfiJ7belJ0m8PrmK3jSZxkBiLDdXYuRs+1n4tW8
-	 vb5ts2WC9WuYzYu0jl7ehjOFPB9QhoiqngGkH8kqTrtXUt3HCIaHTMsgRZx+Dt/7Vy
-	 XdaA9gQ1IYiVQxmyN/EjUy5avE7wmnSDeDbRhrypzwQ1+pQfchGOzwYzBI2/62tqmB
-	 mZ+DGuLJpLfKxRxB26jRTk6/UoBbx6QOwySqJcYowh88TzUVsPIQghn+lQiKfK/h11
-	 KrYTPtpoffvRQ==
-Subject: Re: [PATCH net v11 09/17] rxrpc: Fix packet encryption error handling
+	b=luSEkLeBCAgShcKLIhcTkBZLftHPcBpp7jkWDrnlvpxhEJz1p3eU41sbEnYqld3ui
+	 FKLnZ7OlAVoGlMnGMzQZC5BdC7tJnCkR4Kp9nacRFzwIJxX5L1UPSJbQ5xQp3jp9Kz
+	 m4VSp2X1+D3DUYJ0DDXmnyP15EKOHbehfnD90hO3A6SvqtGANfdrOf2MFz+aKZKK+6
+	 ka4m6yv+rCksQzvLr2b5xnBdhMv968e0DKVAcqk2zkj7OwdgM9nRdNbQYPrbzxI/5+
+	 G4rJLp3/qca9+5MY7FBQx32ZfiEqnSYQT+D0rYCx0wzsjeG6rltnKWk3m4qJa3uafM
+	 sNcWT7eY7oonw==
+Subject: Re: [PATCH net v11 13/17] rxrpc: Fix RxGK key parser to check enctype
+ is supported
 From: netdev-bot+sashiko@kernel.org
 To: dhowells@redhat.com
 Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
  qotmddnjs@ajou.ac.kr, stable@vger.kernel.org
-Date: Sun, 27 Sep 2026 14:59:53 +0000
-Message-ID: <179052119345.2160803.10650297223669839534@kernel.org>
-In-Reply-To: <20260923133706.1496540-10-dhowells@redhat.com>
-References: <20260923133706.1496540-10-dhowells@redhat.com>
-X-sashiko-severity: Low
+Date: Sun, 27 Sep 2026 14:59:55 +0000
+Message-ID: <179052119580.2160803.17216459884431219026@kernel.org>
+In-Reply-To: <20260923133706.1496540-14-dhowells@redhat.com>
+References: <20260923133706.1496540-14-dhowells@redhat.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,171 +48,167 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-- [Low] The patch renumbers the return-value comment block in
-  rxrpc_send_data() (net/rxrpc/sendmsg.c) and adds a new item (5) for…
-- [Low] The patch adds a new userspace-visible sendmsg() behaviour on
-  AF_RXRPC sockets that Documentation/networking/rxrpc.rst never…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but the
-  rxrpc_kernel_send_data documentation block the patch edits…
+- [Medium] The patch rewrote the RxGK key quota charge in
+  rxrpc_preparse_xdr_yfs_rxgk() (net/rxrpc/key.c) and dropped the size…
+- [Medium] The new key-length check in rxrpc_preparse_xdr_yfs_rxgk()
+  (net/rxrpc/key.c:235-238, `if (raw_keylen != enc->key_len) { ret =…
 
 --
 
-rxrpc: Fix packet encryption error handling
+rxrpc: Fix RxGK key parser to check enctype is supported
 
-This changes rxrpc_send_data() so that -ENOMEM from ->secure_packet() is
-treated as retryable. The data just added to the last packet is removed
-again and the iterator is rewound. Any other encryption error sets a new
-sticky RXRPC_CALL_TX_ERROR flag, and after that every data send on the
-call returns -EIO until the application aborts the call.
+The RxGK key parser now checks that the token's enctype is supported and
+that the key length matches that enctype. The RxGK key handling is now
+built only when CONFIG_RXGK is set. Quota is now charged in both the rxkad
+and RxGK parsers only after a token is accepted.
 
-Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
 
-> diff --git a/Documentation/networking/rxrpc.rst b/Documentation/networking/rxrpc.rst
-> index 01ad12fdf3058..9b7eeae841485 100644
-> --- a/Documentation/networking/rxrpc.rst
-> +++ b/Documentation/networking/rxrpc.rst
-> @@ -878,8 +878,10 @@ The kernel interface functions are as follows:
->       exclusively to in-kernel virtual addresses.  msg.msg_flags may be given
->       MSG_MORE if there will be subsequent data sends for this call.
->  
-> -     The msg must not specify a destination address, control data or any flags
-> -     other than MSG_MORE.
-> +     msg must not specify a destination address, control data or any flags
-> +     other than MSG_MORE.  The last-packet flag will only be set on the
-> +     outgoing packet if MSG_MORE is not set and all the data in the iterator is
-> +     buffered.
->  
->       notify_end_rx can be NULL or it can be used to specify a function to be
->       called when the call changes state to end the Tx phase.  This function is
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but it is in the same
-rxrpc_kernel_send_data() block that is being edited. The prototype
-documented just above this hunk doesn't match the header:
-
-Documentation/networking/rxrpc.rst:
-	typedef void (*rxrpc_notify_end_tx_t)(struct sock *sk,
-					      unsigned long user_call_ID,
-					      struct sk_buff *skb);
-
-include/net/af_rxrpc.h:
-typedef void (*rxrpc_notify_end_tx_t)(struct sock *, struct rxrpc_call *,
-				      unsigned long);
-
-rxrpc_notify_end_tx() in net/rxrpc/sendmsg.c calls it as
-notify_end_tx(&rx->sk, call, call->user_call_ID), which matches the header.
-So the documented version has the wrong argument types and order, and an
-sk_buff argument that doesn't exist.
-
-The documentation also calls the parameter notify_end_rx, but the header
-calls it notify_end_tx.
-
-Could the documented prototype and parameter name be updated to match
-include/net/af_rxrpc.h?
+> diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+> index cbd26da449510..904da3fe7e478 100644
+> --- a/net/rxrpc/key.c
+> +++ b/net/rxrpc/key.c
 
 [ ... ]
 
-> diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-> index 80c6afc647870..e3b6347888bfe 100644
-> --- a/net/rxrpc/sendmsg.c
-> +++ b/net/rxrpc/sendmsg.c
-
-[ ... ]
-
-> @@ -372,6 +373,13 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
->  		ret = -EPROTO;
->  		goto out_unlock;
+> @@ -202,10 +203,6 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+>  		goto reject;
 >  	}
-> +	if (unlikely(test_bit(RXRPC_CALL_TX_ERROR, &call->flags))) {
-> +		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_tx_error,
-> +				  call->cid, call->call_id, call->rx_consumed,
-> +				  0, -EIO);
-> +		ret = -EIO;
-> +		goto out_unlock;
+>  
+> -	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
+> -	prep->quotalen += datalen + plen;
+> -
+> -	plen -= sizeof(*token);
+>  	token = kzalloc_obj(*token);
+>  	if (!token)
+>  		goto nomem;
+> @@ -229,6 +226,17 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+>  	token->rxgk->key.data	= token->rxgk->_key;
+>  	token->rxgk->ticket.len = raw_tktlen;
+>  
+> +	/* Check the enctype is supported. */
+> +	enc = crypto_krb5_find_enctype(token->rxgk->enctype);
+> +	if (!enc) {
+> +		ret = -ENOPKG;
+> +		goto reject_token;
+> +	}
+> +	if (raw_keylen != enc->key_len) {
+> +		ret = -EKEYREJECTED;
+> +		goto reject_token;
 > +	}
 
-[Severity: Low]
-This changes what userspace sees from sendmsg() on AF_RXRPC sockets. If
-->secure_packet() fails with anything other than -ENOMEM,
-rxrpc_send_data() sets RXRPC_CALL_TX_ERROR. From then on, every data send
-on that call returns -EIO here until the application aborts the call.
+[Severity: Medium]
+Does the server side handle this new -EKEYREJECTED return? The server
+reaches this parser through this chain:
 
-Should this be described in Documentation/networking/rxrpc.rst? The only
-change there is to the rxrpc_kernel_send_data() paragraph.
+rxgk_verify_response()
+  -> rxgk_extract_token()
+    -> rxgk_yfs_decode_ticket()
+      -> key_instantiate_and_link()
+        -> rxrpc_preparse()
+          -> rxrpc_preparse_xdr()
+            -> rxrpc_preparse_xdr_yfs_rxgk()
 
-The "Notes on sendmsg" section and the client/server walkthroughs don't
-say that a call can become unusable for sending, that it then returns
--EIO, or that it has to be aborted explicitly. Right now the only place
-this is described is item (5) of the comment in rxrpc_send_data().
+rxgk_yfs_decode_ticket() compares klen with the ticket length but not with
+the enctype. It returns the error from key_instantiate_and_link() unchanged.
 
-The ENOMEM rewind can make a !MSG_MORE sendmsg() return a short count, but
-the existing text about returning the amount of data consumed already
-covers that. The missing part is mainly the sticky -EIO state and the need
-to abort.
+The cant_get_token switch in rxgk_extract_token() has no case for
+-EKEYREJECTED:
+
+net/rxrpc/rxgk_app.c:rxgk_extract_token() {
+    ...
+cant_get_token:
+	switch (ret) {
+	case -ENOMEM:
+		goto temporary_error;
+	case -EINVAL:
+		return rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EKEYREJECTED,
+					rxgk_abort_resp_tok_internal_error);
+	case -ENOPKG:
+		return rxrpc_abort_conn(conn, skb, KRB5_PROG_KEYTYPE_NOSUPP,
+					-EKEYREJECTED, rxgk_abort_resp_tok_nopkg);
+	}
+
+temporary_error:
+	...
+	return ret;
+}
+
+So the error is handled like a temporary error. rxgk_verify_response()
+then does goto out, the RESPONSE is dropped, and the connection stays in
+RXRPC_CONN_SERVICE_CHALLENGING.
+
+Before this patch, the same ticket got through key instantiation and failed
+later, in rxgk_generate_transport_key() -> rxgk_set_up_ciphers() ->
+crypto_krb5_calc_PRFplus().
+
+For the RFC3961 enctypes, a key length mismatch made rfc3961_calc_DK()
+return -EINVAL, and the connection was aborted with RXGK_NOTAUTH. For the
+other enctypes, the authenticator failed to decrypt and the connection was
+aborted with RXGK_SEALEDINCON.
+
+The ticket is decrypted with the server key, so only a buggy or
+misconfigured token issuer can produce one like this.
+
+Should the cant_get_token switch in rxgk_extract_token() get an
+-EKEYREJECTED case? Then the client would get an abort instead of being
+re-challenged until it times out.
+
+> +
+>  	if (token->rxgk->endtime != 0) {
+>  		expiry = rxrpc_s64_to_time64(token->rxgk->endtime);
+>  		if (expiry < 0)
 
 [ ... ]
 
-> @@ -481,22 +505,44 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
->  	 *
->  	 * (4) If another sendmsg() has already queued the last packet: -EPROTO.
->  	 *
-> -	 * (5) If we queue the last packet: the amount copied (which may be
-> +	 * (5) If an error occurs that may have corrupted the transmission
-> +	 *     buffer (e.g. crypto failure) or unusable crypto was encountered:
-> +	 *     the error given (and RXRPC_CALL_TX_ERROR is set to cause -EIO to
-> +	 *     be returned from further calls).
-> +	 *
-> +	 * (6) If we queue the last packet: the amount copied (which may be
->  	 *     zero).  recvmsg() should be used to collect the result.
->  	 *
-> -	 * (6) If some data has been copied by this call: the amount copied
-> +	 * (7) If some data has been copied by this call: the amount copied
->  	 *     (which will be greater than zero).
->  	 *
-> -	 * (7) Any other error.
-> +	 * (8) Any other error.
->  	 *
-> -	 * For (1)-(4), there's no point in continuing with the sendmsg().  The
-> -	 * app should abort the call (just in case the error came from
-> -	 * somewhere else) and then use recvmsg() to collect the final result
-> -	 * of the call.
-> +	 * For (1)-(6), there's no point in continuing with the sendmsg() and
-> +	 * we no longer care how much has been queued as the call is no longer
-> +	 * viable.  The app should abort the call (just in case the error came
-> +	 * from somewhere else) and then use recvmsg() to collect the final
-> +	 * result of the call.
+> @@ -257,6 +265,8 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
+>  	_debug("TICK: %*phN",
+>  	       min_t(u32, token->rxgk->ticket.len, 32), token->rxgk->ticket.data);
+>  
+> +	prep->quotalen += sizeof(*token) + datalen + tktlen + keylen;
 
-[Severity: Low]
-Should this range be (1)-(5)?
+[Severity: Medium]
+Was sizeof(*token->rxgk) meant to be dropped from the quota charge in
+rxrpc_preparse_xdr_yfs_rxgk()? The removed code included it:
 
-After the renumbering, item (6) is the case where the last packet was
-queued. That is the normal, successful end of the Tx phase.
+	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
 
-Saying the call is no longer viable and should be aborted contradicts
-item (6) itself, which says recvmsg() should be used to collect the
-result.
+token->rxgk is still allocated separately, and that allocation includes the
+fixed struct rxgk_key header:
 
-It also doesn't match rxrpc_kernel_send_data(), which treats consuming
-all the data as success:
+	token->rxgk = kzalloc_flex(struct rxgk_key, _key, raw_keylen);
 
-	if (msg_data_left(msg) == 0) {
-		ret = 0;
-		break;
-	}
+The rxkad hunk in this same patch still includes sizeof(*token->kad) in
+plen, so the two parsers now charge differently.
 
-Documentation/networking/rxrpc.rst agrees, saying the function "returns 0
-if all the data is queued".
+The datalen term doesn't make up the difference. rxrpc_preparse_xdr()
+requires the remaining datalen to be 0 before it calls the token parsers,
+so datalen is always 0 here.
 
-None of the later patches in the series touch net/rxrpc/sendmsg.c, so the
-wrong range would stay in the final state.
+So each accepted RxGK token uses about 72 bytes more (on 64-bit) than
+generic_key_instantiate() reserves against the user's key quota.
+
+Should this be something like:
+
+	prep->quotalen += sizeof(*token) + sizeof(*token->rxgk) + datalen +
+			  tktlen + keylen;
+
+> +
+>  	/* count the number of tokens attached */
+>  	prep->payload.data[1] = (void *)((unsigned long)prep->payload.data[1] + 1);
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923133706.1496540-1-dhowells%40redhat.com
