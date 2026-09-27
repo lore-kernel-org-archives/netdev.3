@@ -1,132 +1,151 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D318D62A
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF833B7B7F
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790492043; cv=none; b=PwV5YFXoOsYYmSLC31SgLl04+J0e5Jp5kgHVO5kZq5KBDtZRPkblBRc8GMrF9/n87OMgM4zwh3YNZ6OfUoMEPJT4diAyq7d0f6xq4w7ULNTL0FWhBir6FgGBn+97KKHlzdBdgodyTg3NZF3lLeSS0Ve/0bEs/7wGZ9rYo7hL+Yw=
+	t=1790493066; cv=none; b=RZcpoP80vPSQ6gi/kjAebnEZd5RCZ1G9uOwue4/UOccDHB9cO4Kn3gwulBTNS19BZu/mREwPohuHD4Xz8z9sffC6/kMq3sLnZNFE14ecHRebWXWJ7wx05jP74cnVCD2Gw8WEBXDDmwQGgO+h/eAGD1rrqi99PcIceOJ8z1dJkx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790492043; c=relaxed/simple;
-	bh=Rp2X+dx5hQ3lt91Pr5vYcPaasxyyoToGNSTmo5cX7rE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PW+XP5ObK7pC57keX4aecBD+6WyRofU+peVMZkgINQi9OJexAA65vm2w1FygQ2bak81sMuaLud4JZ1AZI/q09P6lg/FzCiJIZI6Ix629q8puu20Rs8aqh7E4InVf8QedowxTfqYwDKA6w/G7nE7vs0oyvZ4o34437TYaZSOQVxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GVmgCx8I; arc=none smtp.client-ip=74.125.225.99
+	s=arc-20240116; t=1790493066; c=relaxed/simple;
+	bh=0RQ/z4AsypFufaAVkW1Ij7MYV02j0Bqz1PEMbVd8BqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lthyK09Z6LWwo4rTfgLFaR87WcWKpp9izalMGoSph/+07b/272ImgaNgw+FgEcQhrVP3ZuBzsw6msu1udjOfKxDKWvpVy6F8QJmOBTc40uEQf7cOINuj5lAuKMqGKjNnfCEnTp8ByECUp9dwXRgXtNxBL4B881pgBpi+T8Mg/v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLImnVpB; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GVmgCx8I"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4885d4825adso1189367f8f.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:54:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLImnVpB"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-342d0acb224so7082eec.3
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:11:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790492040; x=1791096840; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=blA64iov7PIlD+oGU3ZepcahACLOoCoJ8JGCVHSsjCo=;
-        b=GVmgCx8IWI7BJwAGDmQqubdboZkfj9rKj+kWI/YizjieVCyI5F5r/LcTUzaBK8LZuv
-         +Jkv0NEwqONlns2PLh9jel/dshFd7vQ3RpakjyBu3MoUQRlVB+nr+sC+uMspPrjWWKkW
-         uV5T6rwrrco27Ro2bnNZsHhwFawMMdF5Umg5uNAwvO3hGeLH4cex/Im5CqxwTXwYjgyc
-         uiJgyeZeqfUo0oJe5XNNpUBWoKwR/48ydQHVoUNCCoZmg5hJ9dI74lBlIa74TNmtAe4W
-         kkVzpoiX9s39fxRLBfFgor7wv7C7CNutbf3mEqzOWYX1GomXigv0TmSTPlCT64V4Q/DA
-         iTHQ==
+        d=gmail.com; s=20251104; t=1790493064; x=1791097864; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MoYf1WznKmzccMmbZmdq7UQiskOv2xS1v3NBQI1ZhMM=;
+        b=XLImnVpBfKD3PnVFr7G0RORZnfsOwB4gxJNtHrbbAKgtuOmg6Se9a/y/3k2A2Ljgfo
+         QGXOKb8MvdS5jweVDk6xHdYGra+fUGaQwylI9u4M5Bhl38mE+0AEmFGpfcIZcVdE+qmX
+         IsnEe9kt0n8eXj+/4e903RTNVyKxh18mcsEUwElMOp/3XUiYV8X4zX5ReBiLEX5s6WHY
+         brvfDWRiPfDMgca+dCWzF9CQCCbjB6p//RiHXYIkjWHFo2zqzCkULVy1ReVI6CLDHopI
+         8Ei1g2nuR5V1E3qanIPiD6GnOaNGbWmMteK+1pE+koDVS//CMJT3TEsx7Eta0rHkRsUe
+         blZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790492040; x=1791096840;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=blA64iov7PIlD+oGU3ZepcahACLOoCoJ8JGCVHSsjCo=;
-        b=IQkBRM9SQeOQI299pCCRCCJ5EsCDMSkOj9YLhXyD6KbRExi0gTy0KnKrb73OnOQ5Hf
-         Dy5JdoRgn2ymWJN6AC4k4VNlXadjMNllp53dBRhjEn1Qo/Y1olAzOCRl98A2BlotyR4r
-         pQZd1ReQPquIyyjqMvQcmimbbH2NAacA42F8+fNoFRxP873yiiLqmK7gfM7M38O7BV/o
-         J7/Oz7h5hHa++mJ8ophy/uzaDdqFMI3YZ8bREY6tE9EnQOLU0FQuRiIsW7hrHPiUHPM8
-         ty/Fqcv/7bQTabPDWm37D9jxGWsTJTcPb/1AlPXajeGPZpGpTsflORGoIaSk0oH3pa4l
-         6RZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxo56/EAWYfxM12IzGlIK5hIyf6+R1CqICCzg+LGrWI3DmHA7P9Rg43fYYuW2370xWXPBnmAcs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJf1W15c8hRQVDQssx7S/JmNRFvW3Z9ahT6FbImOmf9XFqKf/Tu
-	Vheg1SBFfD64jgz4+qp+6UNpx3QwXZY+kC7N9D5F6rtJ/gwfk1GZZiDM
-X-Gm-Gg: AYBFou1pH4HDh1dIZGwMZiBHx98Byhou8hsTCeaE1CimFpR6Zu61FPc1oWCBN3X1OP+
-	7QMAer0doOb8BV20UUsmVfBynvj9IU65L3ZwLdrXTpDP2vIC8ATM2bQtNsTGLTbvupo2Zk+rnjy
-	8TMfO/uHV2nU9fWpp6am7hIBl2Cw+F7zuRZXYLhMKy9FXalYGlIJ/Yoo2RAiJHF0mwfFt2mYMU2
-	NCwsXbJz2/5F0Th/9AJy3M2QY9C5L9SIutFjJ33bE/7bqf8BEpuinZlGMjR5pFzhQOHY3Ye3HS1
-	K/GUKYU8Eo04caqE7QkyMVIl5RH3ssJ2FOXqDSU3uepit+tPNqwBOzeRoQOrNwC5HI5gJnnqEGQ
-	rWc4nuTFRDqIaY8IHfwUrsLsvVc+wPeAWEd3VuvN5Vr6WMiK+V5CodK3OCdPK+/8t7gjcXkGfJa
-	Qpf+xEf9SYvrTFyy7ikaHwENCEGyp5i2TcMlbNT4DT4Dd+1JPzsSqXVxgWLR8d94tvyb/7jITZX
-	HMKi7cijzy5Obd/cUsAwCVrbH2IcP2T16ybFRGtXi+RTQ==
-X-Received: by 2002:a05:6000:2504:b0:487:1256:ab80 with SMTP id ffacd0b85a97d-48871878daemr18432269f8f.57.1790492040099;
-        Sat, 26 Sep 2026 23:54:00 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349a0esm26432209f8f.10.2026.09.26.23.53.59
+        d=1e100.net; s=20260707; t=1790493064; x=1791097864;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MoYf1WznKmzccMmbZmdq7UQiskOv2xS1v3NBQI1ZhMM=;
+        b=DeBK3GRj8pPEQIv6+6sXr+TAM7rDtgzlFKYVbxWcK+ee5td1rtGFTIOpmdz+AW12+e
+         Wgp4NtyJhdt0XlA6ARnRLck7ot2Pp332PalLcas2vViBHydgn4keopfd+Lhf4dgUEEjC
+         I+stJ4SZBcfDc5PMPENVX6axRRMA082/8zrixhlE3On6aaXpBY8n7Gh9kJZd4XAdiHWV
+         p/kmZp6r81nDizUSDZ6uZTeCLCVEGJ44Y4/xF4lANKb7HGKq7Jql+PR0uet+YopOLsGK
+         F1NMjmpfvUNo/XqW107EzGtaFrEK0llyFiSZv/m1w+d8r87NQNWtu7CXSKhxv2OXj8Yj
+         l8Gg==
+X-Gm-Message-State: AFq9FYJ7Yz1HxCNwqrNmG2aRL4W6Lx9R5xTgwG+e1gKWT8wJkBsA+sCe
+	WAz8VE9uSSrLmy1JM2lHWCzo5ueEf0/lg9VzyxCj/FzrH3HUzgRlcJBK
+X-Gm-Gg: AYBFou3rHVwXJJq3EDdF15Mmwkunwb7XaCSOpdB94y7YVJ3DxmvAH51xKtakAMfEfIa
+	34WGuKxUhzoPv/7U0pHWTIb9z2inp7dMz/LLGExUTa3/9MuIZhwmlWTmaTX1prmKQbg3XbYuXdE
+	rUiBiS0WRxJkzeJJTtDmAZ577t+LdMv9q5+N+Nb3FK4ZRLR6Z1Oci95tHGn2i8lehNB5yPS3Fme
+	0ZraqbrO2+I/76W6ivFM4jgJvDtM1lrg9XxtzOYSDE+Lr6nYb5nJRrdFZI3YYf9kKwtY2Ag2S+L
+	cbo4LFaSqJ3i2vPPxZN+/NzbvppvHTJYfkq4NPjOxgdcxkdTX3B27+S9aHImzmEwgV2x6OtAtKI
+	gM4wt1TVAD8UeNxp/7+IImIjPLewGH+DV43/0RodDJpq2v/FMowOfwu+TGlOJAlBKcJCnS+nHgc
+	P6+427Ktju7FiyKtlMfcJjvSkkt0nwQ70m5bkYitV8ajj5S1N8p4WhO1Y3Lpcp/q8ZlI2pYdWYs
+	j71wutRBO1N5Y1IvwlkTTp7m4F7R4qoIYetYFXKAt6YD2zCIrHVP3H6rARGTBFHC41jOk1KRSTj
+	BQsq
+X-Received: by 2002:a05:7300:de0b:b0:341:f4d6:d9a5 with SMTP id 5a478bee46e88-3427169be76mr8534610eec.1.1790493063552;
+        Sun, 27 Sep 2026 00:11:03 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341447576b9sm22318886eec.15.2026.09.27.00.11.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 23:53:59 -0700 (PDT)
-Date: Sun, 27 Sep 2026 07:53:58 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Breno Leitao <leitao@debian.org>, David Ahern <dsahern@kernel.org>, Ido
- Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH net-next 1/6] ipv6: reject a negative optlen in
- do_ipv6_getsockopt()
-Message-ID: <20260927075358.129e5f65@pumpkin>
-In-Reply-To: <arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
-References: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
-	<20260925-sockopt_expand_out_v2-v1-1-c3ef2e3bb5c0@debian.org>
-	<arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Sun, 27 Sep 2026 00:11:03 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	John Heffner <jheffner@psc.edu>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] ipv4: Fix device use-after-free in ip_skb_dst_mtu()
+Date: Sun, 27 Sep 2026 15:10:51 +0800
+Message-ID: <20260927071051.3693368-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 25 Sep 2026 12:02:22 -0700
-Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+When a socket ignores the path MTU, ip_skb_dst_mtu() reads the device
+MTU without RCU protection. The multicast and broadcast output path
+through ip_mc_output() can reach this helper without an RCU read lock.
+Netfilter releases its internal read lock before calling
+ip_finish_output().
 
-> On 09/25, Breno Leitao wrote:
-> > IPv4's do_ip_getsockopt() rejects a negative optlen right after reading
-> > it. do_ipv6_getsockopt() never has, and nothing downstream treats it as
-> > an error either: len is an int, but every consumer compares it unsigned,
-> > so -1 behaves as a huge value and each site clamps to its own reply
-> > size.
-> > 
-> > 	len = min_t(unsigned int, sizeof(int), len);
-> > 
-> > So getsockopt(fd, SOL_IPV6, IPV6_TCLASS, buf, &len) with len set to -1
-> > answers 4 bytes and reports 4, rather than failing.
-> > 
-> > This is a bug ready to bite us in the near future, let's get this fixed.
-> > 
-> > I've found this because testing the rest of the patch was returning
-> > inconsistency when optlen = -1.  
-> 
-> If I can do getsockopt with len=-1 today and get 4 bytes back, isn't
-> that a uapi and we are gonna break someone?
-> 
+A sender can load dst->dev and then be preempted before reading dev->mtu.
+Concurrent device unregistration replaces dst->dev with blackhole_netdev
+and drops the old device reference. After the grace period and remaining
+references drain, the device can be freed before the sender resumes and
+reads its MTU, causing a use-after-free.
 
-Treating negative values as 4 goes way back into the pre-historic annals,
-And I agree that there could be code out there that fails to set a value
-so passes 'dirty stack' and it always works because it never passed 0..3.
+KASAN reported:
 
-I suspect all the per-protocol code ought to be passed an unsigned 'len'
-(and return back a possibly modified value for the wrapper code to give
-to the user).
-Then you have somewhere:
-	/* Historic bug compatibility */
-	ulen = len >= 0 ? len : 4;
+  BUG: KASAN: slab-use-after-free in ip_skb_dst_mtu+0x634/0x740
+  Read of size 4 at addr ffff88810921c038 by task poc/98
+  Call Trace:
+   ip_skb_dst_mtu+0x634/0x740
+   __ip_finish_output.part.0+0x22/0x2c0
+   ip_mc_output+0x287/0x930
+   ip_send_skb+0x11d/0x150
+   udp_send_skb+0x63e/0xdf0
+   udp_sendmsg+0x1235/0x1da0
+   __sys_sendto+0x32c/0x3a0
 
-David
+  Allocated by task 97:
+   __kvmalloc_node_noprof+0x1d4/0x620
+   alloc_netdev_mqs+0x81/0x12c0
+   rtnl_create_link+0xaa3/0xe30
+   rtnl_newlink+0xabc/0x1f70
+
+  Freed by task 99:
+   kfree+0x131/0x3c0
+   device_release+0xc8/0x240
+   kobject_put+0x14d/0x280
+   netdev_run_todo+0x4cb/0xc70
+   rtnl_dellink+0x362/0xa90
+
+Protect the device lookup and MTU read with RCU and use dst_dev_rcu() to
+access the device pointer. Keep the MTU limit and headroom calculation
+unchanged.
+
+Fixes: 628a5c561890 ("[INET]: Add IP(V6)_PMTUDISC_RPOBE")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ include/net/ip.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 6f602df72ee6..14d6f77f3bb8 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -543,7 +543,9 @@ static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
+ 		return ip_dst_mtu_maybe_forward(dst, forwarding);
+ 	}
+ 
+-	mtu = min(READ_ONCE(dst_dev(dst)->mtu), IP_MAX_MTU);
++	rcu_read_lock();
++	mtu = min(READ_ONCE(dst_dev_rcu(dst)->mtu), IP_MAX_MTU);
++	rcu_read_unlock();
+ 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
+ }
+ 
+-- 
+2.43.0
+
