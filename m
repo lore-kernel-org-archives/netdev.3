@@ -1,337 +1,351 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625953BB101
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DCC2DFA3A
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790540948; cv=none; b=sbHUqAzIbCERb7/wEkuqx6NYIeYlY/Y48ezRqr3LNeGHzQsvWXyiWWgDYlt94/mL6Nl/KDeThhkQETd+8HBMpZvMM/CeOCtEpisLynApGCZ8s7BoE0W7Y26BRqvpJ/XD02ePpCZSMantoSIvahVixavJ/UK4YfZ+glFLUcioe9g=
+	t=1790541219; cv=none; b=CdwZmmysltW6LjCuAMPNeFxlihBInBBjov6jkWgNwWyKN9W+J8AHxH2Sye15dxUBGf24CyUJFfZZCSuDvA0AXYoSZXRdmZYUm/8f54FatgOIv8TnR9TBAF7xJkUfNLTPvtJH3b3rSoVXs6smjNNwuBHxQneK5jVvuatPc+vKDp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790540948; c=relaxed/simple;
-	bh=uimwgWgCbR0REgLgwp3wuS1Xw+Cad+QfFXmC9ieLbU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ah3mpKQSou37VF+F/tMp65TuCJ3NM25BSjg3s8jxhhKl8mNHemVMzGjLU0xo32hGicHrjS6qfCTcqaDi8wgeXiNOWRbHs+k0Rb8xjEJm+amEMjZDb4uEwlDcmVpQ2cPW7YmfIF6jbKrOQ6ycoSf2dVIG+o+p3ho+3p1GCkfKc4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ae6sW6Db; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790541219; c=relaxed/simple;
+	bh=EdrRhRbGz4vcK0+ZzJABZLkqNgsxtIa6LE5BexlR1Kk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iblYk8uWI2xZBjumXXgoe5bdYKwtefXoXJXkgpOD6ApIXzZ1FGO8j9d5IpEKzmcprUvMevEQmsxo1+/sLQ458pMVP7IMpGoOA13sEGqxERX9Vy1KkOyQEwqpa8/lnWNDu61T6gqBeJ1occ6TCjAQb8WTBkOhG7FdLUtmal+oOq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WEh711Ug; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LKYduRfQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ae6sW6Db"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398a147688bso1741719a91.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:29:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WEh711Ug";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LKYduRfQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790541215;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z7+9ha8qRIkil3dyXXFMQiCYT96N0PYGVy3du4aK/RY=;
+	b=WEh711UgsQVpAEzLoemQg1F0a4DqcCLLgOWwnk1YZyCj3Mzj29UsfM8b8GltDnNknH2DM+
+	an2wp8ScWbbO2IRkW0foVj1tGKK6YIOttWM0HYRS3rcUVuOvKrPCtBhMvpCQNv5RGbkGki
+	lg7I94uVHoGCWALzH+8sB/7vb4jaC+0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-yga46ip7P1WNhG8vEz3Bow-1; Sun, 27 Sep 2026 16:33:32 -0400
+X-MC-Unique: yga46ip7P1WNhG8vEz3Bow-1
+X-Mimecast-MFC-AGG-ID: yga46ip7P1WNhG8vEz3Bow_1790541211
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-487038a4a88so1356855f8f.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790540947; x=1791145747; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pB4wLZelBvf/SuASyVrN93WtBZ6eBs6k4R08upTMeqs=;
-        b=Ae6sW6DbsPRZwUyb5323er5H1UO9m5zZOpTVOo1Y4g399WbHSAOwV2ApOuwR2ewy7w
-         uc/TYrkqsQYvt36jPm+YpGs7roHY9W9bBJkghvrDqVAz6h8Tnlt8/hJwRbpTBLWEn1O2
-         lCfCNUgZBHDanhZfH6mqocaSu9bRN5fbZ0y+N3MaRZ0zFnhjFSWxec+6y5Ds29PwiFNH
-         vwkkLNH9Y/SAyG+Z1dbQNFu+j/Jr2UT48yg4Rty/cRBHyHWkpBxAlrffuoTxRx3Fki3M
-         IYZ/b2hSEh9fc8PzbWfbbQmr8JTm3JEjPdZygxxGiBIpEM3D2l6XU163aHt3UK5GegzZ
-         t/Mw==
+        d=redhat.com; s=google; t=1790541211; x=1791146011; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=z7+9ha8qRIkil3dyXXFMQiCYT96N0PYGVy3du4aK/RY=;
+        b=LKYduRfQXiALyGxIMX9Z/ZAa/J87zA0sH+ufxxh2mvffXfBXGc5WIOtQ/7PHBsfGhq
+         wwL6HMtrMaQUmeWI40bo8aB/zWs8x+Nx+NgWl3S7kVMc7u6tSrqMmwtnY1PVYIBojTuV
+         ISSBoD4MbjnJyvOg5UnHbr7WVzBgkCRDP7Glrae61IItZzMRUnojnWmOmLgyggAOThBW
+         BzpvNAtqRBp4o8RiuUZKWZ0ZXxwMFMyurrv5QjO9lv5YTZKINp6XC/BWHbSbtR4Ox4a2
+         xnuG/5a20FoRRB09GlONLhhH+b0bzvZFfHC7XWavCAtKF35SskvXU5Hyr6AVyaiChUFV
+         Rkeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790540947; x=1791145747;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20260707; t=1790541211; x=1791146011;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pB4wLZelBvf/SuASyVrN93WtBZ6eBs6k4R08upTMeqs=;
-        b=xrZNPOKUaRLb0j8LUXd9RTbHH8cUjz3o25F0WYEriK9n7G1f2tSgE2vFFbkZxXcuhT
-         o8BSpGD+vMU1MVPo3nImGTzT1/PCAQoHrW5DGF/mhvcbBiOJmrn10ZSprG5+vzhq9rYf
-         kc9h5LrjMUzWVT2HcDFw/tXTvDRNsZfvvfjzR5lOTuwHX9FhZdti+U19iyxnzO48rJR5
-         MqWa7umZr+CGzdKlmilLHO4ZYERUcmvfe7ndM1yD5EQhKopgzVFJIdsymzaR+mqz/RvI
-         HRU3T1dBBdXPBMOmUFH0pDQRHNyGnbKi4XuH/WksVHxYgPfX3o4wpQu/Xkuk9rTBPIo4
-         Kulg==
-X-Gm-Message-State: AFq9FYI1bVlsnovPPxP1syY14g+OrEywXpj1cV6CDFw2riorn9qnCD8J
-	XdShb2vh7J59k6Rh9isfRg5r98Xc8R4H27Yk8D/qI1qv6tG/F80eIu5r4ANF9xaZ
-X-Gm-Gg: AYBFou2EUSMg+ed3EMoPn9KLtHzBsQV/3odZ6vPGYbqGTwCEMHmP29FU/h3g0IezFa6
-	7Xs7/x/Cvw0u7J3mZ/SJvdXhN1ecDOzlwpBxTbPdyKHyCRGlFIkdoysgpvWAQ+f/RPGqS9GXZa7
-	Lyu1EwGOWZ+6rz+DKN2dMxK1vf7rd50/0qupRiz/duMZmlMqtD0HE/8d6yzXlzO7sawZQ0tNHqw
-	c0J99+OBFXae6acAOn/dglf6QiSxwPdgH2DPLZRL0dEF6jt086c9bL1giUMQhxbmOgNyNB6qGHR
-	DtCat5HK7EmVLHSlS59cMN+dNtS99HKZazinTpxjdMp1JhQiuF4IHVKFiasa2U22DaDRtm8SiaB
-	/HhD1M/UOSceJgoB7cimILFCX1Ymhy7IolAKExEDeFMk0YHerrDFQHK+sZZolUoZBAMoSfjC2Zk
-	gc5aq1IXfOX5/quTvafkz0eAAXxQ1QHhsCzFtEprJ4MWU/xvB7gXa0mT+JPXaomPujB4YzGic=
-X-Received: by 2002:a17:90b:4d85:b0:39d:f254:4173 with SMTP id 98e67ed59e1d1-3a098d9612fmr10221030a91.21.1790540946594;
-        Sun, 27 Sep 2026 13:29:06 -0700 (PDT)
-Received: from [172.18.0.1] ([104.28.240.133])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976c7435sm23350161a91.11.2026.09.27.13.29.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2026 13:29:06 -0700 (PDT)
-Message-ID: <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
-Date: Mon, 28 Sep 2026 04:29:00 +0800
+        bh=z7+9ha8qRIkil3dyXXFMQiCYT96N0PYGVy3du4aK/RY=;
+        b=FfQ3CojBoXMjtx7UlGRUSxczP3zU5/mM6jSxA2s2xQinlv/xTq8gGeHiU4l6K19ilE
+         y1myOJo+FfewAI3M/3wFf6hSGy1EyLclp8yYwFg6CDpR/83x77JuHncKN4YM+NthrrWo
+         lO3q40NssRO0Xg05r/xTjGW9zPm5gYQYa06XWcQdqsNlR1qz3lLu8FUu63vB45+DwXGe
+         +ePrLxPyuVr5vH4lBsOmkBZgsmbZ4VEsiQN0WSz4YhgtVZMB3rJj7FkMnzFgmKjKhYVC
+         yak3GW4/fyf062HIOmb4iZ3oSA6fkcRT/9TWSHzfoDzj1z8TrmP99s6Gk9EPHDpmqa6O
+         85tg==
+X-Forwarded-Encrypted: i=1; AKwUvByqg7DhU2iKKMtvt2M8JKIkyCwWfhnxSL7cpobAdrbRedF0ukxgtHDbJ4pyvJyESZdqjDBtom4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKA7wLFCeCQYdsvFOvXv+co4du1P7Mctky/ZT3IrcMzO7d1mrE4
+	UH9IFQvr37YWqLaqHS1kMM6wgFQmocN6UcQ54jQxK8o/F7sXpkO6/P4UXE7Qrb6wq/VTKu59P9y
+	0qveMrUO5ZxY4KoKTY9S7xqryWgXV0YYuN97qI3d+V82fGrGFtZvkt4A8zQ==
+X-Gm-Gg: AYBFou35sFOxpuS+CqP4rdIkuQZ5e0vdS4flZeikxP7HkAQFW5qJ3WMQz7nyh47XQrU
+	HCr9fgUVXcL4VWRbsEGvl8lx+RpMAs1JPoZVcizwkq6grIFhW/+j7GKVrXRUbwI5rSm3ty3a5Fd
+	RAxULjVKd4G65RKUOYrZQJ+JlCLMPBamd/u/pnz1wRVV60m7dCjBxZDO6DUNxLWipPramRZZA1p
+	RJFLJxd6dQRU9SWo8lzrF6gxmUhg6OEmwvnGrGanmtD0mpG4clITNjwZ6Ldxm3+4o+DtT1FVnk9
+	yveSmzwAfffCvHDKwWoVweFLkPSyaApsywvJRn3AGnLDeZkos+szwSqnVeu9eBjUKn0o3rB4fI1
+	R3Z9+6V79UHQaGJ8zowMByGBU8Bqt9bnVKobOt90Vg8FGQMrleHBj+MHrzFkDD0qWjg==
+X-Received: by 2002:a05:6000:3c4:b0:487:8ba:8aa4 with SMTP id ffacd0b85a97d-4887169fae2mr22047640f8f.38.1790541210950;
+        Sun, 27 Sep 2026 13:33:30 -0700 (PDT)
+X-Received: by 2002:a05:6000:3c4:b0:487:8ba:8aa4 with SMTP id ffacd0b85a97d-4887169fae2mr22047616f8f.38.1790541210438;
+        Sun, 27 Sep 2026 13:33:30 -0700 (PDT)
+Received: from redhat.com (2a02-ab04-0158-f000-2548-f3bd-8b42-b18f.dynamic.v6.chello.sk. [2a02:ab04:158:f000:2548:f3bd:8b42:b18f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349fa1sm32485374f8f.8.2026.09.27.13.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 13:33:29 -0700 (PDT)
+Date: Sun, 27 Sep 2026 16:33:27 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	edumazet@kernel.org, Weiming Shi <bestswngs@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH net] net: always dissect GSO packets in
+ __virtio_net_hdr_to_skb()
+Message-ID: <20260927160750-mutt-send-email-mst@kernel.org>
+References: <20260927195536.2489079-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net: towards a generic PON framework
-To: Andrew Lunn <andrew@lunn.ch>, Gaoyang Wei <yhyxwgy@gmail.com>
-Cc: netdev@vger.kernel.org, Matheus Sampaio Queiroga
- <srherobrine20@gmail.com>, Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
-From: Ziyou Xu <xuziyougm@gmail.com>
-In-Reply-To: <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927195536.2489079-1-edumazet@google.com>
+
+On Sun, Sep 27, 2026 at 07:55:36PM +0000, Eric Dumazet wrote:
+> Commit 9e8db5913264 ("net: avoid false positives in untrusted gso
+> validation") added a '&& skb->network_header' check before flow-dissecting
+> GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM in
+> __virtio_net_hdr_to_skb(), because some callers (such as tun_get_user(),
+> tun_xdp_one(), virtnet_receive_done(), and raw_verify_header()) called
+> virtio_net_hdr_*_to_skb() before initializing skb->network_header and
+> skb->dev.
+> 
+> However, skb->network_header is an offset from skb->head, not a boolean
+> flag. When skb_headroom(skb) is 0 on a device without L2 headers (for
+> instance packet_snd() or tpacket_snd() on a tunnel/pure-L3 device where
+> LL_RESERVED_SPACE_EX(dev, 0) == 0), skb_reset_network_header(skb)
+> legitimately sets skb->network_header to 0.
+> 
+> Whenever the 'if (gso_type && skb->network_header)' branch was skipped,
+> the fallback 'else if (gso_type)' only pulled nh_min_len + thlen (40 bytes
+> for TCPv4) without dissecting the packet, without validating ip_proto or
+> n_proto, and without setting skb->transport_header. If an IPv4 packet
+> carries IP options (ihl > 5, up to 60 bytes) or an IPv6 packet carries
+> extension headers, pulling only nh_min_len + thlen leaves the TCP header
+> outside skb->head, causing tcp_hdrlen(skb) in skb_gso_transport_seglen()
+> to read out-of-bounds:
+> 
+>   BUG: KASAN: slab-out-of-bounds in skb_gso_transport_seglen+0x173/0x200 net/core/skbuff.c:5503
+>   Read of size 1 at addr ffff888103c7ec4d by task repro/5718
+>   Call Trace:
+>    <TASK>
+>    skb_gso_transport_seglen+0x173/0x200 net/core/skbuff.c:5503
+>    skb_gso_network_seglen include/linux/skbuff.h:4718 [inline]
+>    skb_gso_validate_network_len+0x92/0x1a0 net/core/skbuff.c:5566
+>    ip_finish_output_gso net/ipv4/ip_output.c:285 [inline]
+>    __ip_finish_output+0x28b/0x4a0 net/ipv4/ip_output.c:316
+> 
+> In addition, when skb->protocol is pre-set by a caller before
+> __virtio_net_hdr_to_skb(), 'if (!skb->protocol)' is skipped and
+> virtio_net_hdr_match_proto() was not checked.
+> 
+> Fix this by:
+> 1. Initializing skb->dev and skb->network_header (plus skb->protocol for
+>    IFF_TUN) before virtio_net_hdr_*_to_skb() in tun_get_user(),
+>    tun_xdp_one(), virtnet_receive_done(), and raw_verify_header().
+> 2. Removing '&& skb->network_header' and the unvalidated
+>    'else if (gso_type)' fallback in __virtio_net_hdr_to_skb() so all GSO
+>    packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are flow-dissected, have
+>    their transport header pulled into linear data, and have
+>    skb->transport_header set.
+> 3. Validating virtio_net_hdr_match_proto(keys.basic.n_proto, hdr_gso_type)
+>    after skb_flow_dissect_flow_keys_basic().
+> 
+> Fixes: 9e8db5913264 ("net: avoid false positives in untrusted gso validation")
+> Fixes: d5be7f632bad ("net: validate untrusted gso packets without csum offload")
+> Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260927163117.746432-2-bestswngs@gmail.com/
+> Assisted-by: LLM
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Willem de Bruijn <willemb@google.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>  arch/um/drivers/vector_transports.c |  1 +
+>  drivers/net/tun.c                   | 23 ++++++----
+>  drivers/net/virtio_net.c            |  2 +
+>  include/linux/virtio_net.h          | 66 ++++++++++++++---------------
+>  4 files changed, 48 insertions(+), 44 deletions(-)
+> 
+> diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
+> index ddd127ee96785daa4c485b2a06f078686efd2046..e1fb2a76fdff59ef3032d091be06a06fa58046cc 100644
+> --- a/arch/um/drivers/vector_transports.c
+> +++ b/arch/um/drivers/vector_transports.c
+> @@ -209,6 +209,7 @@ static int raw_verify_header(
+>  	if ((vheader->flags & VIRTIO_NET_HDR_F_DATA_VALID) > 0)
+>  		return 1;
+>  
+> +	skb_set_network_header(skb, ETH_HLEN);
+>  	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
+>  	return 0;
+>  }
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68aa3308b0c850b4a2957df3260b352..242899f7fd0711c5c59ff85accbf5bd1be9c6f39 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1897,12 +1897,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		}
+>  	}
+>  
+> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+> -		atomic_long_inc(&tun->rx_frame_errors);
+> -		err = -EINVAL;
+> -		goto free_skb;
+> -	}
+> -
+> +	skb->dev = tun->dev;
+>  	switch (tun->flags & TUN_TYPE_MASK) {
+>  	case IFF_TUN:
+>  		if (tun->flags & IFF_NO_PI) {
+> @@ -1927,9 +1922,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  			}
+>  		}
+>  
+> -		skb_reset_mac_header(skb);
+
+
+Could you explain why is this being removed?
+What sets the mac header then?
+Thanks!
+
+
+> +		skb_reset_network_header(skb);
+>  		skb->protocol = pi.proto;
+> -		skb->dev = tun->dev;
+>  		break;
+>  	case IFF_TAP:
+>  		if (!pskb_may_pull(skb, ETH_HLEN)) {
+> @@ -1937,10 +1931,19 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  			drop_reason = SKB_DROP_REASON_HDR_TRUNC;
+>  			goto drop;
+>  		}
+> -		skb->protocol = eth_type_trans(skb, tun->dev);
+> +		skb_set_network_header(skb, ETH_HLEN);
+>  		break;
+>  	}
+>  
+> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+> +		atomic_long_inc(&tun->rx_frame_errors);
+> +		err = -EINVAL;
+> +		goto free_skb;
+> +	}
+> +
+> +	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
+> +		skb->protocol = eth_type_trans(skb, tun->dev);
+> +
+>  	/* copy skb_ubuf_info for callback when skb has no error */
+>  	if (zerocopy) {
+>  		skb_zcopy_init(skb, msg_control);
+> @@ -2600,6 +2603,8 @@ static int tun_xdp_one(struct tun_struct *tun,
+>  
+>  	features = tun_vnet_hdr_guest_features(READ_ONCE(tun->vnet_hdr_sz));
+>  	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
+> +	skb->dev = tun->dev;
+> +	skb_set_network_header(skb, ETH_HLEN);
+>  	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
+>  		atomic_long_inc(&tun->rx_frame_errors);
+>  		kfree_skb(skb);
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index bf82ef9874abb4094931496fb6064a12ee75b789..daab43ac92ce4276b0f8f88684991e3993022ce6 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -2515,6 +2515,8 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
+>  		goto frame_err;
+>  	}
+>  
+> +	skb->dev = dev;
+> +	skb_set_network_header(skb, ETH_HLEN);
+>  	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
+>  				      vi->rx_tnl_csum,
+>  				      virtio_is_little_endian(vi->vdev))) {
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index c381b916c1b54afacba5473888af589a24fe087c..8902d5a5c418c46af0a6e7b26ae89948c20b0b54 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -111,48 +111,44 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+>  		p_off = nh_min_len + thlen;
+>  		if (!pskb_may_pull(skb, p_off))
+>  			return -EINVAL;
+> -	} else {
+> +	} else if (gso_type) {
+>  		/* gso packets without NEEDS_CSUM do not set transport_offset.
+>  		 * probe and drop if does not match one of the above types.
+>  		 */
+> -		if (gso_type && skb->network_header) {
+> -			struct flow_keys_basic keys;
+> -
+> -			if (!skb->protocol) {
+> -				__be16 protocol = dev_parse_header_protocol(skb);
+> -
+> -				if (!protocol)
+> -					virtio_net_hdr_set_proto(skb, hdr);
+> -				else if (!virtio_net_hdr_match_proto(protocol,
+> -								 hdr_gso_type))
+> -					return -EINVAL;
+> -				else
+> -					skb->protocol = protocol;
+> -			}
+> -retry:
+> -			if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
+> -							      NULL, 0, 0, 0,
+> -							      0)) {
+> -				/* UFO does not specify ipv4 or 6: try both */
+> -				if (gso_type & SKB_GSO_UDP &&
+> -				    skb->protocol == htons(ETH_P_IP)) {
+> -					skb->protocol = htons(ETH_P_IPV6);
+> -					goto retry;
+> -				}
+> -				return -EINVAL;
+> -			}
+> +		struct flow_keys_basic keys;
+>  
+> -			p_off = keys.control.thoff + thlen;
+> -			if (!pskb_may_pull(skb, p_off) ||
+> -			    keys.basic.ip_proto != ip_proto)
+> -				return -EINVAL;
+> +		if (!skb->protocol) {
+> +			__be16 protocol = dev_parse_header_protocol(skb);
+>  
+> -			skb_set_transport_header(skb, keys.control.thoff);
+> -		} else if (gso_type) {
+> -			p_off = nh_min_len + thlen;
+> -			if (!pskb_may_pull(skb, p_off))
+> +			if (!protocol)
+> +				virtio_net_hdr_set_proto(skb, hdr);
+> +			else if (!virtio_net_hdr_match_proto(protocol,
+> +							     hdr_gso_type))
+>  				return -EINVAL;
+> +			else
+> +				skb->protocol = protocol;
+>  		}
+> +retry:
+> +		if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
+> +						      NULL, 0, 0, 0,
+> +						      0)) {
+> +			/* UFO does not specify ipv4 or 6: try both */
+> +			if (gso_type & SKB_GSO_UDP &&
+> +			    skb->protocol == htons(ETH_P_IP)) {
+> +				skb->protocol = htons(ETH_P_IPV6);
+> +				goto retry;
+> +			}
+> +			return -EINVAL;
+> +		}
+> +
+> +		p_off = keys.control.thoff + thlen;
+> +		if (!pskb_may_pull(skb, p_off) ||
+> +		    keys.basic.ip_proto != ip_proto ||
+> +		    !virtio_net_hdr_match_proto(keys.basic.n_proto,
+> +						hdr_gso_type))
+
+
+
+
+> +			return -EINVAL;
+> +
+> +		skb_set_transport_header(skb, keys.control.thoff);
+>  	}
+>  
+>  	if (hdr_gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+> -- 
+> 2.56.0.rc1.315.gc6ed9934b7-goog
 
-Hi Andrew,
-
-I think I skipped over an important layering detail in my previous mail.
-
-An OMCI PDU does have its own protocol header, but on the wire it is 
-carried inside the PON transport framing. That lower layer is also where 
-the management channel is separated from normal user traffic.
-
-A little terminology may help here.
-
-The OLT (Optical Line Terminal) is the operator-side device, while the 
-ONU (Optical Network Unit) is the subscriber-side device.
-
-A PON is point-to-multipoint:
-
-                          OLT
-                           |
-                     passive splitter
-                    /       |       \
-                  ONU1     ONU2     ONU3
-
-Downstream traffic from the OLT is physically broadcast through the 
-splitter to the ONUs.
-
-Upstream transmission is shared in time. The OLT assigns transmission 
-opportunities to individual ONUs, which then transmit optical bursts in 
-their granted time slots.
-
-For GPON, the transmission convergence layer is called GTC, and service 
-traffic above it is carried using GEM, the GPON Encapsulation Method.
-
-For XG-PON and XGS-PON, the corresponding layer is XGTC and service 
-traffic is carried using XGEM.
-
-OMCI is the ONU Management and Control Interface specified by ITU-T G.988.
-
-OMCC is the ONU Management and Control Channel, the logical GEM/XGEM 
-connection over which OMCI PDUs are transported.
-
-PLOAM is another management mechanism at the TC/physical layer. It is 
-used during activation for things such as ONU identification, ranging 
-and assignment of transport resources. PLOAM and OMCI are separate 
-protocols.
-
-So, very approximately:
-
-                  service plane        management plane
-
-                   service SDU              OMCI
-                        |                     |
-                        |                  G.988 PDU
-                        |                     |
-                        +----------+----------+
-                                   |
-                               GEM / XGEM
-                                   |
-                               GTC / XGTC
-                                   |
-                               PON optical PHY
-
-For GPON, a GEM frame starts with a five-octet header.
-
-ITU-T G.984.3 defines it roughly as:
-
-      bit
-        0          11 12         23 24  26 27          39
-        +-------------+-------------+------+--------------+
-        |   PLI (12)  | Port-ID (12)| PTI  |   HEC (13)   |
-        +-------------+-------------+------+--------------+
-        |<---------------- 5 octets --------------------->|
-
-        PLI       Payload Length Indicator
-        Port-ID   GEM logical connection identifier
-        PTI       Payload Type Indicator
-        HEC       Header Error Control
-
-and the frame is:
-
-        +-----------------------+--------------------------+
-        | GEM header, 5 octets  |       GEM payload       |
-        +-----------------------+--------------------------+
-
-The field relevant here is the Port-ID.
-
-A GEM Port-ID identifies a logical connection; it is not an Ethernet 
-port number. Normal service traffic is transported on service GEM 
-Port-IDs, while the OMCC is transported on a GEM Port-ID assigned for 
-management.
-
-During GPON activation, the OLT configures the GEM Port-ID used by the 
-OMCC through PLOAM.
-
-A receive path can therefore look roughly like:
-
-                     downstream GTC
-                          |
-                          v
-                     +-----------+
-                     | GEM engine|
-                     +-----+-----+
-                           |
-                       Port-ID demux
-                           |
-                +----------+----------+
-                |                     |
-         service Port-ID         OMCC Port-ID
-                |                     |
-                v                     v
-        service datapath          OMCI adapter
-                                      |
-                                      v
-                                   OMCI PDU
-
-XG-PON/XGS-PON use the same general idea with XGEM.
-
-An XGEM header is eight octets:
-
-      bit
-        0       13 14 15 16        31 32        49 50 51        63
-        +----------+-----+------------+------------+--+------------+
-        | PLI (14) | Key | Port-ID(16)| Options(18)|LF|  HEC (13)  |
-        +----------+-----+------------+------------+--+------------+
-        |<--------------------- 8 octets -------------------------->|
-
-Again, the Port-ID identifies the logical XGEM connection.
-
-For XG-PON/XGS-PON, the OMCC is associated with a dedicated XGEM 
-Port-ID, and the PON MAC/OMCI adapter can select and de-encapsulate 
-those frames before passing the OMCI PDU further up.
-
-So, regarding:
-
- > How can you tell apart a OMCI PDU from a user data PDU?
-
-That distinction is normally made using the GEM/XGEM Port-ID before the 
-OMCI implementation sees the packet.
-
-Conceptually:
-
-              optical stream
-                   |
-                GTC/XGTC
-                   |
-               GEM/XGEM
-                   |
-              Port-ID demux
-                   |
-              OMCC selected
-                   |
-         GEM/XGEM header removed
-                   |
-                   v
-              raw OMCI PDU
-
-The OMCI PDU itself also has its own protocol header.
-
-For example, the beginning of a baseline OMCI message contains:
-
-      bit
-        0                    15 16       23 24       31
-        +----------------------+-----------+-----------+
-        | Transaction ID       | Msg type  | Device ID |
-        +----------------------+-----------+-----------+
-       32                    47 48                    63
-        +----------------------+-----------------------+
-        | ME class             | ME instance           |
-        +----------------------+-----------------------+
-        |                                              |
-        |              message contents                |
-        |                      ...                     |
-
-The transaction identifier associates a command with its response. The 
-message type identifies an OMCI operation such as Create, Delete, Set or 
-Get.
-
-The ME class and ME instance identify the Managed Entity being operated 
-on. These can represent things such as the ONU itself, a T-CONT, GEM 
-port, Ethernet UNI, VLAN configuration object, etc.
-
-So when I referred to a "raw OMCI PDU", I meant something like:
-
-         +-------------+----------------+-----+
-         | OMCI header | OMCI contents  | MIC |
-         +-------------+----------------+-----+
-
-rather than:
-
-         +-----------------+-------------+-----+
-         | GEM/XGEM header | OMCI PDU    | ... |
-         +-----------------+-------------+-----+
-
-The GEM/XGEM framing has already been handled by the PON side before 
-that point.
-
-For AF_PACKET, what I had in mind was exposing this 
-already-demultiplexed OMCI PDU.
-
-Your point about protocol-specific capture headers is interesting as well.
-
-Depending on the hardware, some information from the PON side may still 
-be available after de-encapsulation. A small capture pseudo-header could 
-carry things such as direction, the GEM/XGEM Port-ID, PON interface 
-information, or a hardware timestamp where available.
-
-That would be capture metadata rather than part of the OMCI PDU itself.
-
-This also makes me wonder whether we need a Generic Netlink interface 
-for the OMCI path at this stage.
-
-If the immediate userspace requirement is simply transporting 
-already-demultiplexed OMCI PDUs, AF_PACKET already provides a packet 
-transport abstraction.
-
-Without a packet endpoint, we would need to define equivalent RX/TX and 
-packet-delivery semantics through another interface such as Generic 
-Netlink. I am not yet sure what we would gain from doing that if the 
-object crossing the boundary is simply an opaque OMCI PDU.
-
-Other PON state could remain internal to the kernel or use existing 
-subsystems until there is a concrete operation which needs an 
-xPON-specific control UAPI.
-
-So the part I am still trying to understand is whether a minimal 
-non-Ethernet net_device, used only as an AF_PACKET endpoint for these 
-already-decapsulated OMCI PDUs, would itself be considered the wrong 
-abstraction.
-
-If so, the hostapd/nl80211 model may indeed be a better fit, but I think 
-it would be useful to understand what property of that model is 
-preferable for this particular packet stream.
-
-References:
-
-ITU-T G.984.3
-Gigabit-capable passive optical networks (G-PON):
-Transmission convergence layer specification
-https://www.itu.int/rec/T-REC-G.984.3
-
-ITU-T G.987.3
-10-Gigabit-capable passive optical networks (XG-PON):
-Transmission convergence (TC) layer specification
-https://www.itu.int/rec/T-REC-G.987.3
-
-ITU-T G.9807.1
-10-Gigabit-capable symmetric passive optical network (XGS-PON)
-https://www.itu.int/rec/T-REC-G.9807.1
-
-ITU-T G.988
-ONU management and control interface (OMCI) specification
-https://www.itu.int/rec/T-REC-G.988
-
-Thanks,
-Ziyou
