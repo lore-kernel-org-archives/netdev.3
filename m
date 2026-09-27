@@ -1,268 +1,170 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D572F8EAA
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790550688; cv=none; b=Oxv0QK0IOpM/uPPaZt21G5GwZbDHyx0qxfDInUreWAJP1NVLB7hOErVVoRNPDbOb5+MhidCCFH/Ma5j4JroKET6gG1CJXjjG0h0k2xLIJLB35JkhOSoS8B4T/PT5Ij5wYTrOyIWgzbft6XfkXDUHghEHgEOtHM6MXK8+xfBIkIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790550688; c=relaxed/simple;
-	bh=M7iuh3X+5ntSe8d0YDs2vqOC1YfZ5OnjexSr4Alxauo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=abFT+LuEsJCIwpl3PhNyyR+2NaCjpgiUvPCGt5nBYvsLS3vuxSIFP14X60iE0z+AVvRZaQoH9iz0erX4GL5aPz4PieWbePYUSram+q5rKqMhyq5gI6QkzQA18AP17TlFMCYTe3soLRRw4zceTX8iOM78L/FUoYEAA5/fr3Fbci4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bEh+TYRt; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8B63290C5
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790550952; cv=pass; b=tYnSCN4Tw+8t1FnWrGk+1+xkTaCr0gtnIeXIArAJqL+D7OAEjMmlRDVobPJmyTr3gl3wtPTjkGOTdlBqxaCTUAWi/zOMp2m8gphJK3AX+vb2tZ6FwEHdMH++Fb8s2F/dEctEp1Tvhbhx+5mXsrBBLeRQGAIxG2V05ElcoUk9KsU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790550952; c=relaxed/simple;
+	bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J8Tk4jMOfgOHbiRicSUQ5xdLbgQwUKBdqSSGlR+qnjgC1LTNf/1xxz/q6vOaSIzjIN6PxZzZyyLkakNACudmTTRCyGEE3z7I4PR5FmQ57+u6dpLna4S6mS27ijNCYJXWQV6bh0EGBXmCsRnmS+yLcDLB3ecnU+snmGnU7CM0D18=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T+PqK2M3; arc=pass smtp.client-ip=74.125.226.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bEh+TYRt"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-3a0b0fa2055so1419481a91.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 16:11:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T+PqK2M3"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982e8fa91d3so571447241.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 16:15:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790550950; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hC+2VGfKQV2wUgaapvofFazKDG5SAUTQifK0dQLU/lNJTcMC5vxdF0T2CYpAuZbaNg
+         5RhA28ZqgmsF+ToQHkCWyj6a0jVAWG3Vhqnpt9umvGTd5SroIo5cRsZRO7jO96FdD0OW
+         czk2cHtDN3tNUq/fLNG+mVxcZVkOn5RFZ4w450rPJySQvF4RRDlrhvGRodFonJSQKGfb
+         bVmPnYv9+4PXhdRCbDO7GHbV7izVqrvaU0GdqDqU7OQcvoLdja4d59TE6aoRVEq/qabU
+         7oTi6Hva0dbFpWzPQ+yjdQz3uqAlFy8d4LMqiTZz8hhPkL9R5dN5PhqQ/E62cIWop80L
+         3iUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
+        fh=LtQ3DekUb8shnID1ZURqs+RCb7xsfcevHGQW1F6yy9k=;
+        b=C03kIdrAEneZ7S+1VLpcAerHF/W4BUYDt4otjCbX/9XMbQsB932meevn03aU4OBD+2
+         w8n7/63sQkpcnfUPvmSZ4O5uzK+ZbsxUh4kVGBrauqAy3rN6MeHY10k5tDFG/muauEmU
+         eXAgrmv+hoPVbp1GF/yqD2VuWcg09z8AWewQGhdyvLf7sTGEcKFQKH330Cy5h0Jo7Lon
+         YSxixEg+Uw7fv/XcNuM6MMO1as/DNa4QX2mEojd1tsOUhB5IkC9MbD0r6ecQbJFccOYC
+         hp5hdoh23JtGkWajau313j9+wg3W/kMcWTs6S7YzyRMhVKRzhXaIT2aznuSiEDVgLCEi
+         VLfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790550686; x=1791155486; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fUuE+vPdSF3246lNZXLMovmF0LX7x0ib6mNhkCJDNGg=;
-        b=bEh+TYRtipd2JgY3rXMDNJyg94yM2lQVceuOg3mHpOuMVb3Jc/dd1OQdRrvHbbzGSt
-         7ak/bidKHMNG99wiRnQLusw+2ADhCTH/1PHt8XRQ48B++LQPoa8J4aANPCkyYzKgUoNo
-         UR/519jJ81GYrxKqZnmY6Uma/WC3ZgU3MSnhVaIsevOCKKq+w6OlLKU8cegjZgrO47ib
-         VCE/BX+v+NojFc/h8B5ODtazVAtPrU2XlHKIsueFPWgnwAOnNTPPAB/iYZfs4fQAfF2l
-         TbpIr3JGL7o9fUk1FuNPALBxglNvZ1ZjezwZ46kZol/VVDzxQ1gJ45QD7FGqR3TOE4if
-         diYw==
+        d=gmail.com; s=20251104; t=1790550950; x=1791155750; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
+        b=T+PqK2M3lz6/GTLTbfZ+wf3aH0CDX+6TeFjym9+zJKGpyXZBxlmBOEa+bHdSrN+L6L
+         BncmTDBzL/9lC4Xq4JftFpOBn6xfR1/LHL6L5gYkF6VoEtTAYYVQpTghOM6I4tcbtKar
+         oIcmUwPU3BmUtsKWo+aCKFc2Y8jdJBNNr5iABZ6lFf9QVCKtC13Lk8vgNU9OsSQpygb0
+         uYMd9wcsSuEnwRkV6OB7JdMHqA3/Vd2Bm1OgR75maAc6Vv9X3KdObSIWTvc8RXmLgoOn
+         ehx1VXnA2MTpbY1aXfrL11rTOH8IGNB9cOz63EOKNIRzunvpE7Jj1JbiZqQcONtUpp6s
+         e1Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790550686; x=1791155486;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20260707; t=1790550950; x=1791155750;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fUuE+vPdSF3246lNZXLMovmF0LX7x0ib6mNhkCJDNGg=;
-        b=koEUISB1xtASRWjzmN5dvK6i2gO4xqykYEN+5RI4dTrstv+rnHGdi4h+m4BSfsO1r9
-         TwJ/gKrgVClh2w7/DOCfdEmJH9wcs1WwG68qy895SdmNaiO4V4p68aGBX5evmtrsnpxX
-         BsFNVspiQdNrYtxCu6TlFGfoHMMv79i5SsYifWISRGxyKVFi3tAVTDIoyAVZT9Gjyc/S
-         a7ysGHdrcsTc1p0hADgouVNyqCP7IC4ovtI6Io3dqxCOA44txFQQCt5zF8KEVt2rGoWx
-         NranRunfPSoX7k+JQZCOJeCSPTgW5piuRnlC5FY84Obkn1WJ1SNeDUA//16WVfLyvvng
-         TVAQ==
-X-Gm-Message-State: AFq9FYLNuV9N+C5tXx2ZCdV/FDp+bWzcoi+emj0P3IxHyNcJIPYA8uT1
-	MShKg5GWPz+oV/EAKk9HBvgybMwCP5h2d+g5QRRP7GHuUV74caPKtse7
-X-Gm-Gg: AYBFou0YnASJa8a6IMpd/KgqdBjDma3EOkN2TeypzD4EkHOmf5hSO8Hz9UHiQc7OArv
-	EqlG7B/YaPyj8pR+E8ovKnhPV6hAfpEHxE+UlycVUBauXTLP8lrJrtyfG0Fng/t1NUiEv2LpJ4v
-	lN1Y5PDKkf8GsYeOu0IUum9QuUulF48a7NDa2Wgf2NenYU5Wr5VCKDYkLiu8jN0+dPWIc5yLtpF
-	egbqzJNEHns2r4N5vVu1CrWBnlFGZGF5HKNpymplCsaogO5LlOinAh4PKg2L4FXNEILp5AGB98P
-	PvhNULYU1o+tjatlTMuINtXKyr8UeG3RYSt6/I/x20Cpcwg5eOnst47FrZ02fYYrTcEfaJpIuP3
-	/unVcNwfkdaVJyzs5Jn6FQ92HhgR6eZQHRaIqA8RmirpBXIdzf3FzQCTOuNfutNzxAX0XY2x47w
-	Vb6Q6hIQqQkm/saZE1Vy/rUO/1h+RALy3DGefFq6Sh2Yc2IKTqSFmeEe9Jbr1+ohtQ63r5AX5xp
-	YVkNqL6Hb5FKRfWipWslE7evbfYLbKFeAvJUWBa0OS+TA1ziD7gXt/zJ+ea1xomBby6tbxiIyDO
-	AUqkQg==
-X-Received: by 2002:a17:90b:3888:b0:3a0:cc33:2287 with SMTP id 98e67ed59e1d1-3a0cc3324ccmr5625047a91.6.1790550686145;
-        Sun, 27 Sep 2026 16:11:26 -0700 (PDT)
-Received: from [0.0.0.0] ([2406:da1e:f76:8d20:77ec:b3e7:5372:2d36])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976cacbesm23114853a91.13.2026.09.27.16.11.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2026 16:11:24 -0700 (PDT)
-Message-ID: <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
-Date: Mon, 28 Sep 2026 07:11:19 +0800
+        bh=Ou3b3cWlbHbJ+7kgTjQuk4/2d8eoHkAAMLMLbj2Apo4=;
+        b=jqx6h6CNDUFFoTjHCXYHsvs5ObXD7jN5NqKEf5nc0o6owh2NWYpdOHutXPtblnfhJR
+         VDMj/Of/05qS/ZQDjsEZDsuNo06xTTffgVbO4hiT42MGxzGU382YNyv8vfOrhLZyrMl6
+         /YToLccgSGlydLIwKYyIEBxVAFKbCSrq6xvJwcnwu7fuyLyTJOEYEyEQfApE0v+VA8tT
+         mTN+HZ8pY+ZTVhq+xvl9+/gE3Hxo3/k6FIhwu2U1aEetfzF9Ro8udQOySgIqeHmvuIfj
+         1hPaVNqVKUOEXXnP5V1LtD1iu8tT5NJTs/UnPNEqtOJE33S+ZG4SBsDriWIdTpyOcNKb
+         JKwA==
+X-Forwarded-Encrypted: i=1; AKwUvBy+4JqUFCtgYZzL8GConv6ky3aou85F7/AX9F5pWA4/oR/p7ocd32WIlmcMQb+a9VQGU9pbSPw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL5KyF7fKC6v/t50OTDCqZdQbGFa9KcbPGouJLkU5AeoMdqAE+s
+	3YCrRRV0Mq2wAllvQwLPPza2wtGNcCtV8gLoKRRzlzdVi6FCnlf/ZDwkksuwUxY+p5mnBwv+8Oa
+	hDiKxiFCtv2OX+r9AQqb+6qfeizKhltA=
+X-Gm-Gg: AYBFou0GTsENkGLsPQbftqxbiaenSPI09Ksrzj8ut5vbAx3JDRSopsQLhGrMTuF7iKi
+	9q5FZZ0Cmlqp/GGGPNgDfPUsjwWbvSUfUYfJ7EK98Qo9IUMAo28NTUqJrBy8cMTbzUFfc7D/Hal
+	UzqVsf8teR7PMMZiYDoeM7w5vzdb++mNLHu+heh3pf/GuORzMCMnT2EhkYB+boRx9pCYedD5113
+	Ib+6xe4I0P11D5fPtr3TsboVMQCVCSg52PuVZSasGymO/fDAzx28xd4Q3WEilUc3X+I3jMLdtug
+	D0yjsM+jqCMsVbCBnkGJ8fbp9mwS5YUJGCSh6F5cF4a2N3Gw0PsNWMiaqFB50zJlw1/+YQf8T8O
+	PacqouOqAVkPW4XqcRhNMWnYuDBdEypts73RgN0LZEEXpbrSdm9hliAFO4D7YKtIbeFEIEHxUy+
+	suJ4jZGO/yv8M35k+67guvbJqjtm7z5FuNSf8E5ri8bz2M
+X-Received: by 2002:a05:6102:1627:b0:7a5:673f:9a37 with SMTP id
+ ada2fe7eead31-7af1eef5929mr3482037137.15.1790550949793; Sun, 27 Sep 2026
+ 16:15:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net: towards a generic PON framework
-To: Andrew Lunn <andrew@lunn.ch>, Ziyou Xu <xuziyougm@gmail.com>
-Cc: netdev@vger.kernel.org, Matheus Sampaio Queiroga
- <srherobrine20@gmail.com>, Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
- <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
- <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
-From: Gaoyang Wei <yhyxwgy@gmail.com>
-In-Reply-To: <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
+ <20260927151043.7c8dfb36@kernel.org>
+In-Reply-To: <20260927151043.7c8dfb36@kernel.org>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sun, 27 Sep 2026 17:15:38 -0600
+X-Gm-Features: AclHuK_THxkPfcffLWRyKYWHUWs5mZ9sx2wsFti5QobsyH-hd7-eV_3I5VuXwpA
+Message-ID: <CADvTj4pZpJBAa99F322jBetg96axu_Dbv-iKAWwhOUqe==EE1A@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 00/19] net: stmmac: preserve datapath state
+ across MTU and resume failures
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Christian Marangi <ansuelsmth@gmail.com>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Serge Semin <fancer.lancer@gmail.com>, Suraj Jaiswal <quic_jsuraj@quicinc.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Joao Pinto <Joao.Pinto@synopsys.com>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Ong Boon Leong <boon.leong.ong@intel.com>, 
+	Voon Weifeng <weifeng.voon@intel.com>, "Song, Yoong Siang" <yoong.siang.song@intel.com>, 
+	Linus Walleij <linusw@kernel.org>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Simon Horman <horms@kernel.org>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>, Yao Zi <me@ziyao.cc>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Richard Genoud <richard.genoud@bootlin.com>, 
+	"Alastair D'Silva" <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+	ZhaoJinming <zhaojinming@uniontech.com>, 
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Ding Hui <dinghui1111@163.com>, 
+	Linkui Xiao <xiaolinkui@kylinos.cn>, Linkui Xiao <xiaolinkui@126.com>, linux-tegra@vger.kernel.org, 
+	linux-sunxi@lists.linux.dev, Rayagond Kokatanur <rayagond@vayavyalabs.com>, 
+	Ding Hui <dinghui@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andrew,
+On Sun, Sep 27, 2026 at 4:10=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Sun, 27 Sep 2026 15:59:35 -0600 James Hilliard wrote:
+> > Keep the stmmac datapath coherent after failed MTU changes or hardware
+> > resume without changing the interface's administrative state. Retain th=
+e
+> > working MTU configuration for rollback, and allow ordinary down/up
+> > recovery when hardware cannot be restored.
+>
+> Please read:
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+>
+> The limit is 15 patches per tree, you have 22 outstanding to
+> net-next right now.
 
- > Another question which might affect the architecture. From what you
- > have described, an ONU might be assigned multiple Port-IDs so it can
- > carry multiple, separated, service traffic streams? You would want to
- > represent each stream as a Linux netdev, with its own IP addresses
- > etc.
+Oh, I had bundled some prerequisite patches to avoid breaking the review
+bot since my fix for prerequisite handling for the review bot doesn't appea=
+r
+to be live quite yet(it was merged but the live server looks to be on an ol=
+der
+tag still).
 
-An ONU can indeed have multiple GEM Port-IDs, but I think there is one
-important distinction here: a GEM Port-ID is not necessarily equivalent
-to one Linux service interface.
+https://github.com/sashiko-dev/sashiko/pull/389
 
-G.988 has an interworking layer between the GEM connections and the
-Ethernet-facing service.
+That just got merged so that shouldn't be an issue going forwards as I
+assume it should go live soon.
 
-For example, one Ethernet UNI can use an IEEE 802.1p mapper which sends
-different priority classes to different GEM ports.  Bridge and VLAN
-configuration can also make the relationship between Ethernet services
-and GEM connections non-1:1.
+This was originally on the net tree but I had switched to net-next since
+some additional prerequisite commits were only in net-next and I was
+trying to avoid conflicts or having to bundle the patches to avoid breaking
+the review bot.
 
-Very roughly:
+https://lore.kernel.org/all/8ed1298a-4c29-4db3-b76e-c8d34f91b4c9@bootlin.co=
+m/
 
-                       Ethernet UNI
-                            |
-                    bridge / mapper /
-                      VLAN handling
-                      /     |     \
-                     /      |      \
-               GEM port  GEM port  GEM port
-                  100       101       102
-
-So I think GEM Port-IDs are better viewed as PON bearer resources.
-
-A Linux netdev should represent an actual service interface where that
-is meaningful, rather than automatically creating one netdev for every
-GEM Port-ID.
-
-This is also why I was hesitant in the original RFC to make GEM ports
-the central Linux object.  They are important hardware resources, but
-the Linux service topology above them can be different.
-
- > This again made me think of 802.11 in Linux. I'm not too familiar with
- > it, but it has the concept of a wiphy, which represents the lowest
- > levels of the hardware. You can then instantiate clients & access
- > points on top of it, each being a linux netdev.
- >
- > [...]
- >
- > You might need something similar, an entity which represents the lower
- > levels of the ONU, and then you instantiate netdevs on top of it as
- > dictated by management.
-
-I think this may be the missing abstraction.
-
-It also fits very well with your AF_OMCI suggestion in the other mail.
-
-When I originally thought about a packet-oriented OMCI interface,
-SocketCAN was one of the models I had in mind: a non-Ethernet protocol
-using the Linux networking stack and normal socket/packet tooling.
-
-But your AF_OMCI suggestion makes me think I may have borrowed the
-wrong part of that model.
-
-With SocketCAN, can0 represents a real CAN interface, and PF_CAN
-sockets operate on that interface:
-
-         physical CAN controller
-                  |
-                can0
-                  |
-           PF_CAN socket binds
-              to can0
-
-The CAN protocol itself does not require creating another synthetic
-interface next to can0.
-
-Ziyou's current OMCI implementation effectively looks more like:
-
-                   PON hardware
-                   /          \
-            Ethernet path     omci0
-                                 |
-                             AF_PACKET
-
-where omci0 exists mainly to provide a packet endpoint for the
-already-demultiplexed OMCI PDUs.
-
-Putting your two suggestions together seems to lead to a cleaner model:
-
-                      +------------------+
-                      |    PON device    |
-                      |  (wiphy-like)    |
-                      +--------+---------+
-                               |
-                 +-------------+-------------+
-                 |                           |
-              AF_OMCI                 service interfaces
-                 |                           |
-           OMCI userspace             Linux net_device(s)
-                                             |
-                                    VLAN / TC / bridge
-                                             |
-                                       GEM mapping
-
-The PON object would represent the common lower level: the PON MAC,
-line/activation state, and its relationship with the optical frontend.
-
-The service netdevs above it would represent actual Linux-visible
-Ethernet services where needed.
-
-The GEM/T-CONT resources would remain below that service abstraction.
-They could still be managed or offloaded by the driver, but there
-would not necessarily be one netdev per GEM Port-ID.
-
-This also gives a much stronger reason for one of the original RFC
-questions about whether Linux needs a struct pon_device or equivalent.
-
-Initially I was thinking such an object might mainly be useful as a
-container for PON-specific state and resources such as GEM ports and
-T-CONTs.
-
-A wiphy-like model suggests a simpler and more fundamental purpose:
-represent the shared PON line/hardware itself.
-
-The minimum object might therefore only need to represent things such
-as:
-
-         PON mode
-         activation / line state
-         associated PON MAC / driver
-         associated optical frontend
-         service-interface relationships
-         management-protocol attachment points
-
-without making the complete GEM/T-CONT/service graph part of the first
-generic API.
-
-That also seems to answer part of the question raised by your AF_OMCI
-idea.
-
-If OMCI is a protocol associated with this lower-level PON object,
-then there is no need for a synthetic omci0 merely to obtain
-AF_PACKET semantics.
-
-Conceptually the receive path becomes:
-
-              PON MAC
-                 |
-          GEM/XGEM demux
-           /           \
-    service bearer      OMCC
-         |               |
-  service mapping     OMCI PDU
-         |               |
-      netdev(s)        AF_OMCI
-
-and TX follows the reverse path.
-
-I would still avoid defining the AF_OMCI socket ABI at this point,
-because one question remains: unlike can0, a wiphy itself is not a
-net_device.
-
-So if the PON parent is similarly a non-netdev object, AF_OMCI would
-need some way to identify the PON object rather than simply binding to
-a service-netdev ifindex.
-
-I do not think that is a reason to create another synthetic net_device
-just to obtain an ifindex, though.  It seems better to first decide
-what represents the PON device, and then design the management
-protocol attachment around that object.
-
-Is that approximately what you had in mind with the wiphy analogy?
-
-I think packet capture should be kept separate from this question as
-well.  Good observability of OMCI traffic is still important for PON
-interoperability debugging, but that does not require the OMCI
-transport endpoint itself to be a net_device.
-
-Thanks,
-Gaoyang
+I guess I could move this back to net and specify the prerequisites with b4
+metadata. It isn't entirely clear to me which branch is appropriate for thi=
+s
+however.
