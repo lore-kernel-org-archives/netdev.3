@@ -1,179 +1,256 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EBC3F076F
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE07379C35;
+	Sun, 27 Sep 2026 13:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790514647; cv=none; b=FiMMGPMKqWLnjYTYOTFHZgJ46o4cad3CNxnKTbEVeMg5X/m5xPB3PC6kYpAHFfQLOCLgKEgCsGaSC/VrhFmuL5UsYEawHUSMVB2jAForn5QwLDkgVHalPYz6z2PIzJp97d8mK2SKgqx20DlTe2mubJvZhOW228cSpWz5WST//2I=
+	t=1790515074; cv=none; b=Fqaiw+RJyStIXjKFLgoyXtL97DPs5qV9o3XDtlItqamBe9l4AykrotlZQ10qh1zX/jESnM3vQr3yhVbqTEHt/cia5FkhkD95gc33shPIQXQdtYkSALnqZfeTlsQAQlvGJbzCFNs0RKUauGn1tKQqwcGtggDFulyXWInCYTxMh74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790514647; c=relaxed/simple;
-	bh=GMVGcW/z1YmLoydR+yKyE5mO/6ycsecZsCwbxXRcr1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMZWbmWkRUc4NS4wzE5x0azqDHyR+I08DAR1GYtT3OZPOkbo9PwGihiIS5Wcq1nPyQJvdPjLOBitHU/fejEkU4iSwCUZpebWX01Cldz9VxPranABB4UipFBFg/CM5ziRibJkg2N0gFPA+tREzuCaqaFflWXs/MjcNVBqUFjjYnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ol+PuzBe; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790515074; c=relaxed/simple;
+	bh=ehAPXf1N5YPAbSkJGohYhfoCUuCi0NJhp5cZ9W40ejg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WRW9U0wS7D0s9I6LpWxFLS5zDGSv++USPL/CKd2tqfT2a/gX1vy2C6ctA5jzXGi7YoChmgH/FuPimOWbj3xqyfOxSy0nJN4bRxEDIayBVaYDiiJi4fK761ufnsU/LutrLyoCMziUw0Fg2e+Ai/RJCbKywoLStz6nrl4zpxdLF2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfieqZ+N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ol+PuzBe"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so1190085a91.3
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:10:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790514645; x=1791119445; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7VLUxpe6alY7Jo7e+VhiSQ88rPLMcwFQfsWyKXgdfUU=;
-        b=ol+PuzBeLKFtByfH0+NlU+RKQCdZohoXeHb0P5K3TAAwaPaIUot1l1awhqnfTqZuco
-         WIrJ7dDeis0yapAWA1dNyJJme+mAi22hty3Gm4f4XuxdHHjN7zy67d7L2yicMFdn2D26
-         1ttQHbbCC2FbAoeme0hrYEhar7nCKCfXsN7KvMwQWk6qg2p3kMEgbz6YUiYvotv6PGqm
-         DfbCMfedg3eIEw666Z8UBnwLB7hZlkr9Y6V5qeKwDDNmoi4QfVIcIDwJUuSVp4t1BFpC
-         3sTv8V2mXUjpzVHWYFGLgCzFq9RIfjgoDl/KZ6OHD1cKFpl9o2ETq8bzMOxdmtrOjFoP
-         m1PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790514645; x=1791119445;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7VLUxpe6alY7Jo7e+VhiSQ88rPLMcwFQfsWyKXgdfUU=;
-        b=E0HL6P4alnDgb1RyXX2jDbSLt2DI+vMuzyRdTnxGR2iUkcg60XKPNQItVCOsVAM0U6
-         vUQzcaQOoqp8HjDtieg+oKoe4wdKvX2lwa3suuzieWEIqkxjgXkRCJp2gQnLqXAQ8X9Y
-         N+VSFp1mdhRASZLZnzQ6oEyew3gkI2HJNKHMktMa/+Bee0rwsvti4cq58/VvkaGpkg4U
-         eKJ46BBvKrKlxa2Nwyfa6AndvuBh/7gD8RpPnkGINfobFWCim8Mp37nqo0Q9ufXSSpXc
-         7MggCzOPZiSkefpXZ+XQ1Mvb+RbbvDpo5mI4v5nsM8pFl3DRSdE46Inb1Y0rugZ7eAGI
-         pfFA==
-X-Forwarded-Encrypted: i=1; AKwUvBw17djxjhhP8dcFydr7A4Y21nxpD3nboktg4qgk8te5JmIWCjGualPs9OYrwkUdRFleVDfNFKo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKTsj69QxHnNDKx5jIWU7gAXiMX2qPfsRrWQ+Z/hduQn4zK4nzq
-	LPL6x5pTw/AtJF1iIiocmAiXHeS13cWg2w0WsxOAa3FsZQPTo634wV8r
-X-Gm-Gg: AYBFou0LVqKBXxsbudIeQ/hsG927SBLlODnTob1hsfTR0NHkZTdcgDXaAbTMv8E1uIP
-	syvSq9DDzUl+cdCi2ujIROPPLP5MpLeEEwl9Fc9DwGj7Fwv2LkkAQrd7YdVzxdRnLPkliOZBTtG
-	EtDQOnBGQA97YzCiZjVec11LN0LEOX8ezQBfnnaBgi/pmwXv6Tq+FUJyK0yfeYoKphwLqR3Fl8I
-	+UGYRKObDqHgJPyfGjUyNkgK07aObhBh5V/FngVYSN2VXYYTUwiScqv5JMtcTdJiSy0Bei2SQIC
-	ZeeLufzgQFWGy0RpZqfwsfQGIhCQubEpAWDi5Uq8r1Buyp/DgdQhPPjKeGV/J1jl8iJrU5on9Gq
-	w7EeK16O1DmRkzkO/Pyz8BKVVrqi4O8eCPbk7mJbm7SPrFsB3WiFqzJvmkwgqStc8vZhLBWREMp
-	Vb3ZwJVtkJxzHpsmgpOjIAdREmRB3K59KaU8HC/J8+36twXhG5fCEenDi5r94NP7DAbNkYT6QM5
-	5d69Q4RA90zE2xTDIgkZpHtRv7J46GCow==
-X-Received: by 2002:a17:90b:3e87:b0:39e:6a80:dda0 with SMTP id 98e67ed59e1d1-3a09872e15cmr8724182a91.39.1790514644816;
-        Sun, 27 Sep 2026 06:10:44 -0700 (PDT)
-Received: from localhost.localdomain ([2409:8a1e:2e81:7320:84a7:e3d7:8c7e:980a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9589f7esm14890506a91.10.2026.09.27.06.10.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 27 Sep 2026 06:10:44 -0700 (PDT)
-From: Yuchao Zhang <ndaugoing@gmail.com>
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	cake@lists.bufferbloat.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuchao Zhang <ndaugoing@gmail.com>
-Subject: [PATCH net v3 2/2] net/sched: sch_cake: validate transport header offset in cake_overhead()
-Date: Sun, 27 Sep 2026 21:10:09 +0800
-Message-ID: <20260927131009.24250-3-ndaugoing@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260927131009.24250-1-ndaugoing@gmail.com>
-References: <20260927131009.24250-1-ndaugoing@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfieqZ+N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAB51F000FF;
+	Sun, 27 Sep 2026 13:17:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790515070;
+	bh=SNTby+ZJfBPBO65NCLfxNLlVrsK2EF9fNY2XPiEaeRM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZfieqZ+N2w5ggOafYJiZC/6jWGOPMLPOjWJbfsYNTqSB2vnjTn6Xb3vdX7jGWOREe
+	 QR59kHbRuT0fFVCCEZg/fCUDXqfY5X3r9uwwwbpeJ16AKjSRzGjSkCrvxVVXsuD8Jy
+	 putwzZZCCHj0Y23AkhGWIUdtYcymDetsyi7ncXERrMsBkiho3gy2wfwoVk2D63CLB+
+	 55r4Jg4Wxn4AzjHI1MN2peVnhZXY7UL3XLfIHrfSlMyQNxL+7lTWDyRQCayNQAAVdw
+	 L2eoPPwpcDj0BJ76enb6wQ9rIWQCsMCPQqmDuA2kBv6bJ+uIH5qlW0uEJ+Mymnj5sz
+	 gANU2I93cZGsQ==
+Subject: Re: [PATCH net-next 1/2] dpaa2-eth: use the DPMAC id as the devlink
+ physical port number
+From: netdev-bot+sashiko@kernel.org
+To: vjardin@free.fr
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ioana.ciornei@nxp.com,
+ vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 27 Sep 2026 13:17:49 +0000
+Message-ID: <179051506971.2160803.13967739532547877580@kernel.org>
+In-Reply-To: <20260923-for-upstream-dpaa2_ports-v1-1-b59c865edd00@free.fr>
+References: <20260923-for-upstream-dpaa2_ports-v1-1-b59c865edd00@free.fr>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-In cake_overhead(), the header length up to the transport layer is
-computed using logic borrowed from qdisc_pkt_len_segs_init():
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-	/* borrowed from qdisc_pkt_len_segs_init() */
-	if (!skb->encapsulation)
-		hdr_len = skb_transport_offset(skb);
-	else
-		hdr_len = skb_inner_transport_offset(skb);
+Low priority / nit picks for your consideration:
 
-However, cake_overhead() does not validate the computed offset:
+- [Low] dpaa2_eth_dl_port_check() gets its 'current' value from
+  dpaa2_eth_dl_port_number(), which reads only the driver's cached…
+- [Low] In dpaa2_eth_probe(), dpaa2_eth_setup_irqs() (dpaa2-eth.c:4997)
+  enables the ENDPOINT_CHANGED IRQ before dpaa2_eth_dl_port_add()…
 
-1. When the transport header was never set, skb->transport_header holds
-   the sentinel value ~0U. skb_transport_offset() returns ~65535.
-   skb_header_pointer() subsequently fails, leaving hdr_len as ~65535,
-   charging ~66 KB per segment to the shaper.
-   Mirror qdisc_pkt_len_segs_init() by returning cake_calc_overhead()
-   when unlikely(!skb_transport_header_was_set(skb)).
+Pre-existing issues:
+- [High] This problem was not introduced by this patch, but the new
+  dpaa2_eth_dl_port_check() adds another priv access on the same path.
 
-2. While qdisc_pkt_len_segs_init() runs at the start of __dev_queue_xmit(),
-   packet headers may be adjusted before cake_overhead() is reached:
-   - in sch_handle_egress() via tc/BPF egress filters;
-   - inside cake_enqueue() via cake_classify() -> tcf_classify() (e.g.
-     act_bpf, act_pedit, act_mpls, act_vlan).
-   For example, bpf_skb_adjust_room(..., BPF_ADJ_ROOM_MAC) invokes
-   bpf_skb_net_hdr_pop(), which pulls skb->data forward and re-syncs
-   transport_header only when it aliased network_header, i.e. when no
-   transport header had been parsed. If a transport header had been
-   parsed, its offset is left where it was while skb->data moves forward,
-   so skb_transport_offset() becomes old_offset - len and can turn
-   negative. Since hdr_len was declared as unsigned int, a negative offset
-   wraps around to near UINT_MAX, corrupting header length accounting.
+--
 
-Declare hdr_len as int and fall back to cake_calc_overhead(q, len, off) if
-unlikely(hdr_len < 0).
+dpaa2-eth: use the DPMAC id as the devlink physical port number
 
-Fixes: a729b7f0bd5b ("sch_cake: Add overhead compensation support to the rate shaper")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
----
-v3:
- - Split from v2 into a standalone patch with its own Fixes: tag
-   (a729b7f0bd5b) per Simon Horman and Sashiko review.
- - Clarify header mangling ordering (sch_handle_egress() and cake_classify()
-   before cake_overhead()) rather than inaccurate "post-enqueue mangling"
-   wording per Sashiko review.
- - Link to v2: https://lore.kernel.org/netdev/20260922084124.36858-1-ndaugoing@gmail.com/
- - Link to v1: https://lore.kernel.org/netdev/20260917122153.62722-1-ndaugoing@gmail.com/
+This commit sets each DPNI's devlink physical port number to the id of
+its connected DPMAC, so interfaces no longer all report p0 as
+phys_port_name. Devlink port attributes cannot change after
+registration. For that reason, the endpoint-changed IRQ handler logs a
+warning when the DPMAC endpoint no longer matches the registered number.
 
- net/sched/sch_cake.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
+> index 8775c931106b4..8b2addd3f83ae 100644
+> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
+> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
+> @@ -213,16 +213,42 @@ void dpaa2_eth_dl_unregister(struct dpaa2_eth_priv *priv)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index b0d604a7052a..45969c1b95fc 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1413,10 +1413,11 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
- {
- 	const struct skb_shared_info *shinfo = skb_shinfo(skb);
--	unsigned int hdr_len, last_len = 0;
-+	unsigned int last_len = 0;
- 	u32 off = skb_network_offset(skb);
- 	u16 segs = qdisc_pkt_segs(skb);
- 	u32 len = qdisc_pkt_len(skb);
-+	int hdr_len;
- 
- 	WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8));
- 
-@@ -1424,10 +1425,16 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
- 		return cake_calc_overhead(q, len, off);
- 
- 	/* borrowed from qdisc_pkt_len_segs_init() */
--	if (!skb->encapsulation)
-+	if (!skb->encapsulation) {
-+		if (unlikely(!skb_transport_header_was_set(skb)))
-+			return cake_calc_overhead(q, len, off);
- 		hdr_len = skb_transport_offset(skb);
--	else
-+	} else {
- 		hdr_len = skb_inner_transport_offset(skb);
-+	}
-+
-+	if (unlikely(hdr_len < 0))
-+		return cake_calc_overhead(q, len, off);
- 
- 	/* + transport layer */
- 	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 |
+[ ... ]
+
+>  int dpaa2_eth_dl_port_add(struct dpaa2_eth_priv *priv)
+>  {
+>  	struct devlink_port *devlink_port = &priv->devlink_port;
+>  	struct devlink_port_attrs attrs = {};
+>  
+>  	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
+> +	attrs.phys.port_number = dpaa2_eth_dl_port_number(priv);
+>  	devlink_port_attrs_set(devlink_port, &attrs);
+>  	return devlink_port_register(priv->devlink, devlink_port, 0);
+>  }
+>  
+> +void dpaa2_eth_dl_port_check(struct dpaa2_eth_priv *priv)
+> +{
+> +	u32 registered = priv->devlink_port.attrs.phys.port_number;
+> +	u32 current_number = dpaa2_eth_dl_port_number(priv);
+
+[Severity: Low]
+Can this read of priv->devlink_port.attrs race with probe and remove?
+
+In dpaa2_eth_probe(), the endpoint-changed IRQ is enabled before the
+devlink port attributes are filled in:
+
+dpaa2_eth_probe() {
+    ...
+	err = dpaa2_eth_setup_irqs(dpni_dev);
+    ...
+	err = dpaa2_eth_dl_port_add(priv);
+    ...
+}
+
+dpaa2_eth_dl_port_check() reads attrs.phys.port_number without a lock
+and without checking that the port is registered. The mac_lock only
+covers the current_number side.
+
+dpaa2_eth_dl_port_add() reads the DPMAC id under mac_lock. It only
+publishes that id after dropping the lock, through the plain struct copy
+in devlink_port_attrs_set().
+
+Consider this interleaving:
+
+probe:
+dpaa2_eth_dl_port_add()
+    dpaa2_eth_dl_port_number()   <- reads DPMAC id N, drops mac_lock
+
+IRQ thread, ENDPOINT_CHANGED with had_mac == true:
+dpaa2_eth_disconnect_mac()       <- priv->mac = NULL
+dpaa2_eth_dl_port_check()
+    registered = 0               <- attrs still zeroed
+    current_number = 0           <- returns without a warning
+
+probe:
+    devlink_port_attrs_set()     <- publishes port_number = N
+    devlink_port_register()
+
+Wouldn't this register pN for a DPNI that no longer has a DPMAC, and
+never print the warning? The attrs are zeroed by alloc_etherdev(), and
+DEVLINK_PORT_FLAVOUR_PHYSICAL is 0, so registered reads as 0 here.
+
+Now take the opposite order: DPMAC M is connected before
+dpaa2_eth_dl_port_add() runs. That case seems to print a spurious
+"0 is stale, now M" warning, and then M is registered correctly.
+
+The unlocked read also races with the struct copy in
+devlink_port_attrs_set(), which KCSAN would likely flag.
+
+On the remove side, dpaa2_eth_remove() calls dpaa2_eth_dl_port_del()
+before fsl_mc_free_irqs(). The check can therefore also run against a
+port that is already unregistered.
+
+This still seems to be present after the follow-up patch in this series.
+That patch adds a read of attrs.flavour on the same unlocked path.
+
+> +
+> +	if (registered == current_number)
+> +		return;
+> +
+> +	netdev_warn(priv->net_dev,
+> +		    "devlink port number %u is stale, the DPMAC endpoint is now %u (0: none); rebind the DPNI to update it\n",
+> +		    registered, current_number);
+> +}
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> index 6f1046c9cc515..def2d5c0e7f7e 100644
+> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+> @@ -4771,6 +4771,8 @@ static irqreturn_t dpni_irq0_handler_thread(int irq_num, void *arg)
+>  			dpaa2_eth_disconnect_mac(priv);
+>  		else
+>  			dpaa2_eth_connect_mac(priv);
+> +
+> +		dpaa2_eth_dl_port_check(priv);
+
+[Severity: Low]
+Does the "current" value used by dpaa2_eth_dl_port_check() really
+reflect the firmware endpoint?
+
+dpaa2_eth_dl_port_number() only looks at the driver's cached priv->mac.
+The warning text, however, says "the DPMAC endpoint is now %u (0: none)".
+
+The return value of dpaa2_eth_connect_mac() is ignored here. Suppose
+fsl_mc_get_endpoint() finds a real DPMAC but the connect then fails, for
+example on a kzalloc failure, a dpaa2_mac_open() error, or
+dpaa2_mac_connect() returning -EPROBE_DEFER or another error. In that
+case priv->mac stays NULL and current_number is 0.
+
+If the registered number is N, wouldn't the warning then say the
+endpoint is 0 (none) while firmware actually has a DPMAC attached?
+
+If the registered value is 0, registered == current_number and nothing
+is printed. That happens even though the DPNI is now connected to a
+DPMAC in firmware and its devlink attributes are stale. The
+-EPROBE_DEFER case is especially quiet, because dpaa2_eth_connect_mac()
+only reports it with netdev_dbg().
+
+Also, when had_mac is true the handler only disconnects. Take a normal
+disconnect followed by a reconnect to the same dpmac.N. The disconnect
+prints the "stale ... rebind the DPNI" warning, but the reconnect, which
+makes the attributes correct again, prints nothing. Could this push
+users into a rebind that isn't needed?
+
+This also seems to remain after the follow-up patch in the series, which
+only changes how registered is computed.
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+the new dpaa2_eth_dl_port_check() call adds another priv access on this
+path. Can dpni_irq0_handler_thread() run after priv has been freed?
+
+dpaa2_eth_setup_irqs() installs the handler with
+devm_request_threaded_irq(). Neither dpaa2_eth_remove() nor the probe
+error unwind calls devm_free_irq() or synchronize_irq(). Both only call
+fsl_mc_free_irqs(), which just returns the IRQ resources to the pool:
+
+drivers/bus/fsl-mc/fsl-mc-allocator.c:fsl_mc_free_irqs() {
+    ...
+	for (i = 0; i < irq_count; i++) {
+		irqs[i]->mc_dev = NULL;
+		fsl_mc_resource_free(&irqs[i]->resource);
+	}
+
+	mc_dev->irqs = NULL;
+}
+
+Both paths then free the portal and the netdev:
+
+dpaa2_eth_remove() {
+    ...
+	fsl_mc_free_irqs(ls_dev);
+    ...
+	fsl_mc_portal_free(priv->mc_io);
+    ...
+	free_netdev(net_dev);
+}
+
+devres only releases the managed IRQ after the remove or probe callback
+returns. Suppose a LINK_CHANGED or ENDPOINT_CHANGED thread is already
+running in that window, for example blocked on the shared mc_io portal.
+Wouldn't it use the freed portal through dpni_dev->mc_io (set to
+priv->mc_io in dpaa2_eth_setup_dpni())? It would also touch priv->mac,
+priv->mac_lock and now priv->devlink_port.attrs, all of which live in
+the freed netdev.
+
+A link flap from the remote partner seems enough to hit this. The flap
+would have to arrive during unbind, or during a late probe failure after
+dpaa2_eth_setup_irqs() succeeded.
+
+>  	}
+>  
+>  	return IRQ_HANDLED;
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-for-upstream-dpaa2_ports-v1-0-b59c865edd00%40free.fr
