@@ -1,153 +1,123 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8736339B48D;
-	Sun, 27 Sep 2026 08:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F53C1D61;
+	Sun, 27 Sep 2026 08:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790497161; cv=none; b=ErpkuXjy6qYSGZM1N0S4d4OM5/VXpuC9+A5QmjZCXwsfSY/5QqlU8pI3Mrc7IH8z02Vw4wD9XOU1ekemRXsxjJZUGMjA9bYgrWeujHDxsQgvea16aHcnXwKIGw2XrxNLCAZ1hKtOeu4WUnJ/iudUyaHAh3T5u2LigvMeRjJQUY4=
+	t=1790497281; cv=none; b=LLNd0IHjr/BW6OX15KFsHzs8hgWrXTP5pqMIQ7sMkLZpjKhU0sN21gJy60xRHi35cWDCfoH9GvGtZnieT6CNdaovqFT/XxE9CxloG/yaEduOcudgBJgnOGvX1gBFRZ+Ztvv7psDuAmKEAWlTFNsqxxdqkSERe1UtuVUoVIP6hgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790497161; c=relaxed/simple;
-	bh=Eerh34NEDalT7cOEsgMj+oWM6IMiwMDKuegRj+hdGDM=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=OezF9RZZmp/gMMT8YULjNo/kkRKDCmmGXUB7dplRaebiqb88Mn2gswHXJKKfcWsVg6l1P+E0xjkt3FZ4Oyc8V8WO2ilBwmaVM5e+RGWmE32kOHfKeZ7CzEwyKJQCM0rO0nlGc96mbmAqjeR6OX/AnBI2wJiCsicRJ99RFX/NqdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=vQLlBTJ4; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1790497281; c=relaxed/simple;
+	bh=AIH3t5odWzXpYxLCsh3QJaVSHP6c8pjKBIOjj8LD4a8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AOpZTq72d6bFlbNNtaUjTX5W2IUyjRVKfgTQ+nfSbWFVtcH6Hrcm5a4QqI8E2EAhLUiL157eJ6mLK25HMg22gtPzFW5Y62hQoYIbmyYiKzKnvmDHs3PE6DcSLgoKXViTMy4XSvljk+/WrX51JrduvgHQU+lV2DdfZQQv3hgzJEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=2N8Bp1OW; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=h7fOisxU; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="vQLlBTJ4"
-Received: by dvalin.narfation.org (Postfix) id 30792202F3;
-	Sun, 27 Sep 2026 08:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1790497151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=He0WY3jCbriwnigCsrMUly3CG2kXHpH728uQPwmsPaI=;
-	b=vQLlBTJ4eC3l+pNRvSFlUaxIVfk5Hojnyeh3ymiRZ75iTAVtyFWl1fMleSfdhNHUM2lP69
-	Vq8wfCCoINFEiQdFKqfuZUNwQIvHLdK+CD5zMUE7dWfc4Xp4kqvBafj9FJ7IR37mVCtY1J
-	yd9/npehRVseGciIjGl4GkWnW4+BxaA=
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="2N8Bp1OW";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="h7fOisxU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1790497277;
+	bh=AIH3t5odWzXpYxLCsh3QJaVSHP6c8pjKBIOjj8LD4a8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=2N8Bp1OWkyq+Havj5OFVf8cGsW28gEu5o0186brEdJ953C0LmY7NyGujG4rTkjzN6
+	 vBzhdbGefjQH8GkwPf+osNMMhSdjEbzKnW5x3cLrv5x7HPvFUFO4Y0FT8Ameh0CvNS
+	 0arfiekiN3D4wxSBNpauwws5DlZaXpGCZVtVSPXMQUwwi4Ff6y/Z1PFL+WK8LA8XQL
+	 b6a1oTn+j4oxfv3nTev3+9UIfySC0aTaD48W+X4e5M0gbN2Jzc+HGfyct/GoTduj2w
+	 R4WFP2FztIdP6xwz80k/izqdOLbxmOICxFoHMqfJFUNeKXTbPWqUC1loeGSF8J674K
+	 XB18NOm6vO0kQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id BB160412D3; Sun, 27 Sep 2026 08:21:17 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1790497275;
+	bh=AIH3t5odWzXpYxLCsh3QJaVSHP6c8pjKBIOjj8LD4a8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h7fOisxUnY7APmemGX+FfOWka5UDYD8PUUCaJelK9LCk3jyDH01L1XBYBi7A320Dn
+	 tqz0EK6ALQXw4CiGZC3nCn/awZ23YqMxT18JOPJ567E09KSfwgHOoaC+Xpx0iDdnra
+	 ukunxkl6KujkQIua0qHQFfHaMcY3mOH16GYGSnWmJskfRcvJLP8px3+WPrITlAOqe9
+	 m4BZhqsT7A4oXlkKB5gHj/Cj7giPMeZ8VX9AadNB+dr3E1Wi5LnkBYkDtHkrWTVbx6
+	 NSjsIldH+xc05gLsf43Lmrmo8uppEu0k+kOkCLqARYO4L38hageyI0/pgCXV7yjhqD
+	 od2Hs7GcXB5EA==
+Received: from [192.168.2.51] (p5798b961.dip0.t-ipconnect.de [87.152.185.97])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 24D23412D3;
+	Sun, 27 Sep 2026 08:21:15 +0000 (UTC)
+Message-ID: <ce5a6051-4bde-46a9-b0a1-30d98e66aef8@birger-koblitz.de>
+Date: Sun, 27 Sep 2026 10:20:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] batman-adv: Close OGM aggregation before
- transmission
-From: Sven Eckelmann <sven@narfation.org>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Marek Lindner <marek.lindner@mailbox.org>, 
- Simon Wunderlich <sw@simonwunderlich.de>, 
- Antonio Quartulli <antonio@mandelbit.com>, 
- Sven Eckelmann <sven@narfation.org>, b.a.t.m.a.n@lists.open-mesh.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260926172600.2394088-1-nicoyip.dev@gmail.com>
-References: <20260926172600.2394088-1-nicoyip.dev@gmail.com>
-Date: Sun, 27 Sep 2026 10:19:00 +0200
-Message-Id: <179049714090.25414.9706892666916736240.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4389; i=sven@narfation.org;
- h=from:subject:message-id; bh=Eerh34NEDalT7cOEsgMj+oWM6IMiwMDKuegRj+hdGDM=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDFk7LpZHiNucl+29Nt84vbqNa/Lx+6uNAjepnhXpvduZ9
- 0pxEufkjlIWBjEuBlkxRZY9V/LPb2Z/K/952sejMHNYmUCGMHBxCsBEEm8zMqx3Wzv90rLK9E07
- 01n6W1PdVtQ7lgRdb652agvdqKt2/CYjw2mrpljNztVLGjl/nmWV/plxinXZsXJJKy07ZRGxpvQ
- z/AA=
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v12 06/15] ax88179_178a: Add HW support for
+ AX179A-based chips
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
+ <20260916-ax88179a-v12-6-60c04c9924a2@birger-koblitz.de>
+ <20260919151247.1a340644@kernel.org>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <20260919151247.1a340644@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thanks for the fix.
-
-Please don't submit batman-adv changes to netdev directly. And please send the
-patch also to the person which introduced the problem. You can use tools like
-`b4 prep --auto-to-cc` or just the underlying ./scripts/get_maintainer.pl 
-
-    $ b4 mbox 20260926172600.2394088-1-nicoyip.dev@gmail.com
-    $ ./scripts/get_maintainer.pl 20260926172600.2394088-1-nicoyip.dev@gmail.com.mbx
-    Marek Lindner <marek.lindner@mailbox.org> (maintainer:BATMAN ADVANCED)
-    Simon Wunderlich <sw@simonwunderlich.de> (maintainer:BATMAN ADVANCED,blamed_fixes:1/1=100%)
-    Antonio Quartulli <antonio@mandelbit.com> (maintainer:BATMAN ADVANCED)
-    Sven Eckelmann <sven@narfation.org> (maintainer:BATMAN ADVANCED,blamed_fixes:1/1=100%)
-    "Linus Lüssing" <linus.luessing@c0d3.blue> (blamed_fixes:1/1=100%)
-    b.a.t.m.a.n@lists.open-mesh.org (moderated list:BATMAN ADVANCED)
-    linux-kernel@vger.kernel.org (open list)
-
-This change should not go directly to net.git. The target tree must be
-batadv.git
-
-    $ ./scripts/get_maintainer.pl --scm 20260926172600.2394088-1-nicoyip.dev@gmail.com.mbx
-    [...]
-    git https://git.open-mesh.org/batadv.git
-    git git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-
-The last tree is irrelevant for you because it is really unlikely that Linus
-Torvalds will apply your patch directly.
-
-> The OGM send worker leaves its forwarding packet on forw_bat_list until
-> after batadv_iv_ogm_emit() returns. Aggregation holds forw_bat_list_lock,
-> but emission reads and clones the packet without that lock.
+On 20/09/2026 12:12 am, Jakub Kicinski wrote:
+> On Wed, 16 Sep 2026 05:24:05 +0200 Birger Koblitz wrote:
 > 
-> CPU 0 can therefore start emitting a queued packet while CPU 1 takes the
-> list lock, finds the same packet and appends another OGM. The sender can
-> observe the new packet length before the corresponding direct-link flag
-> is set, or clone the skb while its length and payload are being updated.
-> This can transmit an OGM with incorrect flags or inconsistent data.
+>> +	/* Stop RX/TX for link configuration */
+>> +	tmp16 = AX_RX_CTL_STOP;
+>> +	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_RX_CTL, 2, 2, &tmp16);
 > 
-> KCSAN reported:
+> don't you want to add a wrapper for the commands?
+> To write a cmd from a literal/immediate value?
+> Something like:
 > 
->   BUG: KCSAN: data-race in batadv_iv_ogm_queue_add / batadv_iv_send_outstanding_bat_ogm_packet
->   write to 0xffff888100fedcf8 of 2 bytes by interrupt on cpu 1:
->   read to 0xffff888100fedcf8 of 2 bytes by task 70 on cpu 2:
->   value changed: 0x00c0 -> 0x00d8
+> 	ax88179_cmd_imm(dev, AX_ACCESS_MAC, AX_RX_CTL, AX_RX_CTL_STOP,
+> 	2);
+> 
+> It'd save you all the temp buffers, which TBH I'm not sure are fully
+> correct since you cast u8 buf to a pointer which may need alignment.
+> 
+Will do, great suggestion!
+I added ax88179_write_u16() and ax88179_write_u8() which indeed 
+eliminate many of the temporary variables.
 
-Is there a reproducer and where can I find it?
 
-> Set num_packets to BATADV_MAX_AGGREGATION_PACKETS under the list lock
-> before emission. This waits for any ongoing append and makes the existing
-> aggregation limit check reject further appends before inspecting mutable
-> OGM flags. Emission walks packet_len rather than num_packets, so the
-> queued contents are still sent normally. Keep the packet on the list so
-> interface purging can still wait for the worker and retain its existing
-> ownership of the packet when freeing it.
+>> +	tmp8 = 0;
+>> +	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_MAC_PATH, 1, 1, &tmp8);
+>> +
+>> +	tmp8 = 0xa5;
+>> +	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_MAC_CDC_DELAY_TX, 1, 1, &tmp8);
+> 
+> Please wrap at 80 chars if it doesn't impact readability.
+Doing so as part of the introduction of the new write functions.
 
-I might be wrong but this reads a little bit like it was written by an LLM. If
-this is the case, please think about following the annotation style described
-in https://docs.kernel.org/process/coding-assistants.html
 
-> Backports before Linux 6.15 need count-handling adaptation.
+> 
+>> +	/* Check these packets */
+>> +	hdr_off = (rx_hdr & AX179A_RX_DH_DESC_OFFSET_MASK) >> AX179A_RX_DH_DESC_OFFSET_SHIFT;
+>> +	pkt_cnt = rx_hdr & AX179A_RX_DH_PKT_CNT_MASK;
+> 
+> Please define shifted masks and use FIELD_GET() FIELD_PREP()
+> Sometimes your masks are shifted sometimes not, makes the code harder
+> to follow. Not to mention that this is much shorter:
+> 
+> 	hdr_off = FILED_GET(AX179A_RX_DH_DESC_OFFSET, rx_hdr);
+> 
+> 
+>> +	/* TSO MSS */
+>> +	tx_desc |= ((u64)(skb_shinfo(skb)->gso_size & AX179A_TX_DESC_MSS_MASK)) <<
+>> +		   AX179A_TX_DESC_MSS_SHIFT;
+> 
+> (eg. this mask is not shifted)
+Done in next revision.
 
-This is wrong. You are depending on 434becf57bdc ("batman-adv: Limit number of
-aggregated packets directly") and not the counting adaption. Of course, for
-4.10.x-6.14.x, you also need to change the BATADV_MAX_AGGREGATION_PACKETS to
-BITS_PER_TYPE(forw_packet->direct_link_flags)
-
-And it doesn't belong in the commit message (like this). Please annotate the
-dependencies as described in
-https://docs.kernel.org/process/stable-kernel-rules.html#stable-kernel-rules
-
-> Fixes: 9b4aec647a92 ("batman-adv: fix rare race conditions on interface removal")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
->
-> diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-> index 53fbdbbe8f4f7..59847299a1237 100644
-> --- a/net/batman-adv/bat_iv_ogm.c
-> +++ b/net/batman-adv/bat_iv_ogm.c
-> @@ -1909,6 +1909,10 @@ static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
->  		goto out;
->  	}
->  
-> +	spin_lock_bh(&bat_priv->forw_bat_list_lock);
-> +	forw_packet->num_packets = BATADV_MAX_AGGREGATION_PACKETS;
-> +	spin_unlock_bh(&bat_priv->forw_bat_list_lock);
-> +
-
-Can you add a small comment above like "mark aggregate as full before forcing
-emit" (or something similar).
-
--- 
-Sven Eckelmann <sven@narfation.org>
