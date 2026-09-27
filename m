@@ -1,154 +1,93 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194013CF05E;
-	Sun, 27 Sep 2026 22:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5F3284880;
+	Sun, 27 Sep 2026 22:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790546922; cv=none; b=rFYhy6mzq7iwwld07/Nr9B/G8HqS4ORgSPklSh+ORFgxBn4Vffze00nKz6wR/NsnVg4Phg22Dc2Q9EV6oWWpuf3W1wCZJa0DmkYhPqpYWw0n+8ot2Vq/iUm3wWK140nBR3rp977rQ+5Hj3ZRemlXGzfC90SL0ZmYD4KiZG4XJ2k=
+	t=1790547047; cv=none; b=qw2yyRd5KZjiaqBZeBz05OazaSCLCto6+4HR+o0T+oxkjlUlVy4qIdQ7sMWAsYUavAPcUW44tjEsTxjd3ahc5O8AarTco2rgb1G+GU54fh6o65oSnua0lrus4cKrKSGmHRtn0Y6dxbdF4XRQthSlj8JWkaeYHlqw4vqroLebshk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790546922; c=relaxed/simple;
-	bh=J4MJVI4cmv2QPDx/rEn6/wlLrDJcKtHzJVQOkHNm9TY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=My5D1q2d4CNyWOWUilwQoMu1POFAnI86L6x/ko8ZQuAijtnh9U2U0We0T0T1dIAAr3b8RmQB8B1F9dOZL4SUgoDNHXy0vGBWqKW8nTEe/xanyqeQRSEFMBK023ySR/uKKXRNWEqHrEh7C9a3yJcQZx5eJJMVHQ3WIiE98+0dBn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=LZAqnG4q; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1790547047; c=relaxed/simple;
+	bh=jIdgRBOsRW1TtgaCNmjXamxDDZtw9OZfuArBIc9mxNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eAxVIlVvdqc9YRi/qmBwIVwSJFOAReQOlJz50o2OGHyKRl51BS3PPx04BCqEpPbgxdXSZtRXc0hQGsb+3MDkusnwEelVf65I2Oh+hhunLcdys6ltygPxs6cx/0zLAKp6gpE/d1kw4gRsXKzR5CdWoZBh6x8+eoj2+l9j7yAwZjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIVjtsTE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="LZAqnG4q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1790546915;
-	bh=0w6DbEuY9JLsIBk9b7BselWCnUjNV7dsqVe8I+hW2Ks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZAqnG4qeYgWyH3IJEwRSeoahqyEyE0GLBAOP7XzzOQ16a61MUhc1bRm1dRkYOez3
-	 zkt4ZijJhH6+FQbD75pxp0vmHojOf+xI8z5wUvtaDPTVfOvCXBzRXfDpW6G9RLigWD
-	 AkoWJzBjKJCjCt37Kpwfu0jJjI/fIMlPKwkxKqeZIU8BecISUPODpPOF77wOowyXij
-	 547OWAMqrNsYhba6FhA1NYXtmkRCKgh1IlEAHKG9uyZ9wsPc8aRzSzzuPzevgcCSTW
-	 7GJ1/APli+2NxnKMF/fXOlKndVsztgAfCXDNP0YaAL1AZOuczBtAWRXgmKPSHUqv1g
-	 +TW8w57HL7OyQ==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id E6FC6603DE;
-	Mon, 28 Sep 2026 00:08:34 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 11/11] netfilter: flowtable: restore ieee80211 forward path
-Date: Mon, 28 Sep 2026 00:08:16 +0200
-Message-ID: <20260927220816.268206-12-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260927220816.268206-1-pablo@netfilter.org>
-References: <20260927220816.268206-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIVjtsTE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B2D1F000FF;
+	Sun, 27 Sep 2026 22:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790547046;
+	bh=jIdgRBOsRW1TtgaCNmjXamxDDZtw9OZfuArBIc9mxNI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kIVjtsTETDjHyHlIzLfqL1PnL67SD8BwIlDBR5xowGDIzi357TG+ZybNlKMVV2sSP
+	 QpivesH3HOkN5Ux1ZT16H8WUVs+oPnEFRMQNkL52/byLyli9GDKt6qWEMaUcppkhoT
+	 16VKPIOoPlX40iE6GeikJgqyyrGzZqwhYauG4gDnf1SL0EHieyj9cGE3A8pvkmJE6W
+	 oBKVDgWFl2PsrfDHpjcY/8fXTZ1KyqKIusvfmeLKbMRTNzC2czmsNUY/n/3PpbhTOF
+	 Tnie5Hudsa6qHvBMIr9MgRfdzRY6pJpOz5o3sPkbOfzy1bIQv7/OIPFLqspQkd2auL
+	 KaORu8Ubyr0XQ==
+Date: Sun, 27 Sep 2026 15:10:43 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Christian Marangi
+ <ansuelsmth@gmail.com>, Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen
+ <chenhuacai@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
+ <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>, Suraj Jaiswal
+ <quic_jsuraj@quicinc.com>, Richard Cochran <richardcochran@gmail.com>, Joao
+ Pinto <Joao.Pinto@synopsys.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Ong Boon Leong <boon.leong.ong@intel.com>, Voon Weifeng
+ <weifeng.voon@intel.com>, "Song, Yoong Siang" <yoong.siang.song@intel.com>,
+ Linus Walleij <linusw@kernel.org>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Magnus Karlsson
+ <magnus.karlsson@intel.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Simon Horman <horms@kernel.org>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Thierry Reding
+ <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>,
+ Yao Zi <me@ziyao.cc>, Philipp Zabel <p.zabel@pengutronix.de>, Richard
+ Genoud <richard.genoud@bootlin.com>, Alastair D'Silva
+ <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, ZhaoJinming
+ <zhaojinming@uniontech.com>, Lorenzo Bianconi
+ <lorenzo.bianconi@oss.qualcomm.com>, Ding Hui <dinghui1111@163.com>, Linkui
+ Xiao <xiaolinkui@kylinos.cn>, Linkui Xiao <xiaolinkui@126.com>,
+ linux-tegra@vger.kernel.org, linux-sunxi@lists.linux.dev, Rayagond
+ Kokatanur <rayagond@vayavyalabs.com>, Ding Hui <dinghui@lixiang.com>
+Subject: Re: [PATCH net-next v5 00/19] net: stmmac: preserve datapath state
+ across MTU and resume failures
+Message-ID: <20260927151043.7c8dfb36@kernel.org>
+In-Reply-To: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
+References: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Before commit 871df5007eda ("netfilter: flowtable: bail out if forward
-path cannot be discovered"), there was a fallback to set up a forward
-path in case .ndo_fill_forward_path fails or DEV_PATH_MTK_WDMA was used.
-Such fallback was used by commit d787a3e38f01 ("mac80211: add support
-for .ndo_fill_forward_path").
+On Sun, 27 Sep 2026 15:59:35 -0600 James Hilliard wrote:
+> Keep the stmmac datapath coherent after failed MTU changes or hardware
+> resume without changing the interface's administrative state. Retain the
+> working MTU configuration for rollback, and allow ordinary down/up
+> recovery when hardware cannot be restored.
 
-One possibility is to handle DEV_PATH_MTK_WDMA from the flowtable
-forward path discovery. However, this is only used internally by drivers
-to retrieve mtk_wdma information to set up hardware offload. Felix
-decided to use the .fill_forward_path interface for this purpose due to
-the lack of a better interface at that time.
+Please read:
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Add a new DEV_PATH_IEEE80211 path which is offered if the new ieee80211
-flag is set on in the struct net_device_path_ctx to restore the
-flowtable with a ieee80211 netdevice. Handle this new DEV_PATH_IEEE80211
-path just like DEV_PATH_ETHERNET and DEV_PATH_DSA, ie. this is the last
-netdevice in the stack.
+The limit is 15 patches per tree, you have 22 outstanding to
+net-next right now.
 
-This new ieee80211 flag is implicitly unset for mtk_ppe and airoha which
-call dev_fill_forward_path() to retrieve a DEV_PATH_MTK_WDMA path.
-
-Fixes: 871df5007eda ("netfilter: flowtable: bail out if forward path cannot be discovered")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/linux/netdevice.h          | 3 +++
- net/mac80211/iface.c               | 7 +++++++
- net/netfilter/nf_flow_table_path.c | 3 +++
- 3 files changed, 13 insertions(+)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 87cafc932e9e..3cff2174dc03 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -887,6 +887,7 @@ enum net_device_path_type {
- 	DEV_PATH_DSA,
- 	DEV_PATH_MTK_WDMA,
- 	DEV_PATH_TUN,
-+	DEV_PATH_IEEE80211,
- };
- 
- struct net_device_path {
-@@ -953,6 +954,8 @@ struct net_device_path_ctx {
- 		u16		id;
- 		__be16		proto;
- 	} vlan[NET_DEVICE_PATH_VLAN_MAX];
-+
-+	bool			ieee80211;
- };
- 
- enum tc_setup_type {
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 889c32fd8de1..c5584435fde9 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1023,6 +1023,13 @@ static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx *ctx,
- 	struct sta_info *sta;
- 	int ret = -ENOENT;
- 
-+	if (ctx->ieee80211) {
-+		path->type = DEV_PATH_IEEE80211;
-+		path->dev = ctx->dev;
-+		ctx->dev = NULL;
-+		return 0;
-+	}
-+
- 	sdata = IEEE80211_DEV_TO_SUB_IF(ctx->dev);
- 	local = sdata->local;
- 
-diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_table_path.c
-index 1e55644f2edb..d90013685bf1 100644
---- a/net/netfilter/nf_flow_table_path.c
-+++ b/net/netfilter/nf_flow_table_path.c
-@@ -53,6 +53,7 @@ static int nft_dev_fill_forward_path(const struct dst_entry *dst_cache,
- 	struct net_device_path_ctx ctx = {
- 		.dev = dev,
- 		.ether_type = ether_type,
-+		.ieee80211 = true,
- 	};
- 	struct neighbour *n;
- 	u8 nud_state;
-@@ -114,6 +115,7 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
- 		path = &stack->path[i];
- 		switch (path->type) {
- 		case DEV_PATH_ETHERNET:
-+		case DEV_PATH_IEEE80211:
- 		case DEV_PATH_DSA:
- 		case DEV_PATH_VLAN:
- 		case DEV_PATH_PPPOE:
-@@ -123,6 +125,7 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
- 				memcpy(info->h_source, path->dev->dev_addr, ETH_ALEN);
- 
- 			if (path->type == DEV_PATH_ETHERNET ||
-+			    path->type == DEV_PATH_IEEE80211 ||
- 			    path->type == DEV_PATH_DSA)
- 				break;
- 
--- 
-2.47.3
-
+Violating the limit again will result in a temporary ban.
