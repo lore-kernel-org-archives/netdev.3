@@ -1,219 +1,175 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD1424E4C6
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6132175809;
+	Sun, 27 Sep 2026 00:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790468719; cv=none; b=IVP0oVPrEq+m3EZrwq2d0TTk4bg5KORkmn8UUe2cjg8mxDVJMCF7jt1kuEU1tnSbmFBdQObdhGIPvTwhyKD0zES/B63f4ETLPpELkjo8eVANE25Rhqbr5RL/K8lEPb36Lni/Jkie49Kh4BQY3+mitKNk1VyJI1mPtzSy9/llXME=
+	t=1790468969; cv=none; b=kaKScS6DpS7Eilm35D0lzlLMHvEKEM8kdDDMnYCh2TPCt1Sru7jjfD+HpFQIRKuhiPjQHfOFG8QipdPnyWShCtrq/y2BVLUZqUWKZrwp8GxFcqNUn4eAk9UGYG9PAt0jtis6DZmLszcJDoc+640MLCSlxz2odSjVQ6IN1Gv6CIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790468719; c=relaxed/simple;
-	bh=AIe0tVI2MDMU+wAUIOGkfF/prRfDfU5eGXTYlmKrHJ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXnc8QlRwOEV3fbe4ooAje0krcjhaXaHyLQ3Z4k9v52tABGZDRIqdBRju6j2iasLucFmMuWA1BRwlysrVcpcENqGsNNAw+FkHjIUoCPtdWFy73K8SNsk50d4+IMw45/o+jFjB0qcjuh3gs3bXBFY6PgaaN2zcTLUyeQAqMvUBbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DgGzvNGh; arc=none smtp.client-ip=74.125.228.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790468969; c=relaxed/simple;
+	bh=c0pNCWgU1i6GqWHh7u1ewAgAcGTO7EYScQt53GKWhQo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mLy0NWTEHycXzf1vOWEnB1ZDGbGPBI/JdSehEu5Gv+FMb/nkOrMSDh60BWbLtvppouHAhj2iPX8EdBAUUR3yTz6fXyFDlfgjRNGmj+/uutvrIHmIzdBy5AzR3WIFb5/yk7SLROr0glChQJqcECc8YxPzXmhf/PQX/jlclHSPYRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVqGA6cW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DgGzvNGh"
-Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc78e1a94b8so998750a12.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:25:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790468717; x=1791073517; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nZghyl21slJP0T9zWNT6FTVcuW3rARquNgkyu57N/4I=;
-        b=DgGzvNGh74+hkd/2R1ppAw2hBKnkqM1ySNT0ubNHfvmtSH8XS7Ww4uzNM4KbOFlbKU
-         JS2gI2TDYJvvwlHs8dli/Rg7JJBKQLgCshdQZeI3j4jQmWyugZ+UHpw/u+kBNcMcIqxv
-         Y1lY+R71tAA6UraRyvFIJQvTqe9BPmZUd2TsdYx4+oHq/v/KMTUXxF7ZPDLyMNhAHUvB
-         Hmzf+f3UfSEMuQ4bmqm9hwtI/OyCSsgyzDjTojTdRaxXA6TIoMS7BX9gDHXPMsQxm2cK
-         McJBMvnvd8WFB1GV82q/8SDrex9ukP1iak/GeZR2LG1IgDftgjBnu0ezZUWtf6CnvvPs
-         c1bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790468717; x=1791073517;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nZghyl21slJP0T9zWNT6FTVcuW3rARquNgkyu57N/4I=;
-        b=0M9d56z+WZALRsS+POuZxCUrbOnrJ6D6gn8MMYqqz6eqbYq5/6evc8yiq0YhnH82Qy
-         tzjUOBWMdfAGMB8E1aLVLUAYEqbF/ybs1tD/NZ4laF/fIGgWstPZ0JxGo8/zbHWUoLHT
-         beEKOFBqZ5YqLd5E1qXyQT6LsDa1mnhkDKoCTRbrW6WjRju+QHmlnSpu67SB4gZ4q4yk
-         Y9if8Z34WaFwzn03KWdznXp4jZLtzFjQN7FF7u/rFLvuRS530K+rIO0QojcUS7WBnRtN
-         k9XRTP1hEZCDpdE8uT5Uxhfg0WCFWIFwUM8PTImsSBAD2yhI/o9Novd81bryJRqMNpQh
-         GxGg==
-X-Forwarded-Encrypted: i=1; AKwUvBzAwTfoHalGDW+mG6LerFFxEJnp5uaMdrvbUowor1+dz67osGx02Eh/ekG0Ccj5TZLCcrO19sU=@vger.kernel.org
-X-Gm-Message-State: AFuF++m82Ot/htUU5YZKVNjIFE+nWa2fEUhzj4EFO/tKyBFec/kU2Le1
-	fhN2d9CTcCBtEvIjauii0jg19HveM7MKErerDpDU+n1OGhuA/Fu1GW912K0bkHF3
-X-Gm-Gg: AYBFou0xCT68tQAG1u5kE5xpwXQc9SsKfCbuLyuC4+LWMuT7X9jKGYYDP9JKgyOTWIE
-	wbTuCketTQuXJg+G4b6iTY6TyKgB9XyPNy/Y+n/sjvNtwZGYVA3ly9RQFQpvUenFg6FskPCsPcl
-	NwAeiEas4PWrgBJfgDb0N9GRBWd6lZXR+00W5kn0j1l9EDwghzzLnwJwsCeC3TRwPiph+6mMDiR
-	AzB0E0hVy4iGB27mY9wDSa9ku4xiicOGvN/TMt9jtSGX/zVhooLmOlKZG4NZHYhgeFjoHkdrswH
-	i/CGWAk2JTGpL8Tv7Vd5Y23LA+cyHaX2Syq+FpqoqQDyFd3/h0KX6xjQAK0LnntUVAvxpmtWdzc
-	FOhyR1whYgA+qk85c34qqx9y6oSXtXWYv/BXg+VEQ8GM72CDx4ewIPech8O+1LWfDtwvwhniuQ5
-	MgBQJ/A22C/OeNxjOEC8uv2FMPmIAFjZI7G7LpnDP80HuuV3T7PlLmAiG332jT3XfspQrpwPB+S
-	WdKCr8500Pv2ODPARSLJ547RyLcD9zqhT3MaMWk2/wTuWPlSR0oro0mxQtzoqn8ccffQ/Y=
-X-Received: by 2002:a05:6a20:6f8f:b0:3dd:85a8:cb7d with SMTP id adf61e73a8af0-3de0e78b15emr9330708637.32.1790468716805;
-        Sat, 26 Sep 2026 17:25:16 -0700 (PDT)
-Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:78b6:7bf6:b1de:12ef])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78791c680sm2698224a12.16.2026.09.26.17.25.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 17:25:16 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Nikolaos Gkarlis <nickgarlis@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v8 5/5] selftests: net: test AF_PACKET multicast dumps
-Date: Sun, 27 Sep 2026 09:24:27 +0900
-Message-ID: <20260927002427.4519-6-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260927002427.4519-1-sigefriedhyy@gmail.com>
-References: <20260927002427.4519-1-sigefriedhyy@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVqGA6cW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849221F000FF;
+	Sun, 27 Sep 2026 00:29:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790468968;
+	bh=XrTKhmN+bzHxb9X+iMRI8p0IuqIREbInH9xGjuSIv84=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oVqGA6cWjdYw9ow3kpUcwNaRqVb96bqVIWGI9m0nNJXfdwIbjARj8IumS1i3RdgmO
+	 3NKrMNh7KvxULXpTU6uEGxsqH+59k+dul7XLlFnNxVZxeB6YbgAm2eAompffmQ3CC8
+	 /dtu6MLcfpcfLCE4iEuhMyeKnp8ZLn1+F0Mn/itxDPEWUo5tYIDE9RzS5ZCSAluJ4V
+	 0Lj1SN1swaycISwByZooME2+yJCCDIZKY/WSKqgXCG/1wrz+yJ94eoT9oN7ZMsFlvp
+	 xEtnz/u6gB5mxDAOkOdm+623h3DnpWlnhkWqN74k3jJKUrLKx/FxZuvuWOChMVK+Pg
+	 ZZ5RQ0n8RaRjA==
+Subject:
+ Re: [PATCH net v2 1/2] net: phylink: allow stopping a suspended instance
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ qiangqing.zhang@nxp.com, rmk+kernel@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ansuelsmth@gmail.com,
+ yangtiezhu@loongson.cn, chenhuacai@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, richard.genoud@bootlin.com, alastair@d-silva.org,
+ mripard@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Sun, 27 Sep 2026 00:29:26 +0000
+Message-ID: <179046896605.2160803.3111812936943364050@kernel.org>
+In-Reply-To:
+ <20260922-submit-stmmac-reset-fixes-v1-v2-1-d92e609be996@gmail.com>
+References:
+ <20260922-submit-stmmac-reset-fixes-v1-v2-1-d92e609be996@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Dump the link-layer multicast addresses of a dummy device and verify
-that ifa_index restricts the dump to that device, that the all-hosts
-address joined on link up is listed without IFA_F_GLOBAL, that an
-address added with SIOCADDMULTI is listed with IFA_F_GLOBAL and
-IFA_MC_USERS, and that IFA_TARGET_NETNSID dumps another netns.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
----
- tools/testing/selftests/net/rtnetlink.py | 73 +++++++++++++++++++++++-
- 1 file changed, 71 insertions(+), 2 deletions(-)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index dc8c77db4897..5534ade056a5 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -5,13 +5,18 @@ import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import ksft_not_in, ksft_not_none
-+from lib.py import ksft_in, ksft_not_in, ksft_not_none
- from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
- from lib.py import defer
- 
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
- IPV6_TEST_MULTICAST = bytes.fromhex('ff020000000000000000000000000123')
-+ETH_ALL_HOSTS_MULTICAST = bytes.fromhex('01005e000001')
-+ETH_TEST_MULTICAST_STR = '01:00:5e:01:01:01'
-+ETH_TEST_MULTICAST = bytes.fromhex(ETH_TEST_MULTICAST_STR.replace(':', ''))
-+ETH_PEER_MULTICAST_STR = '01:00:5e:02:02:02'
-+ETH_PEER_MULTICAST = bytes.fromhex(ETH_PEER_MULTICAST_STR.replace(':', ''))
- 
- 
- def _users_for(rtnl: RtnlAddrFamily, family: int, grp: bytes, ifindex: int):
-@@ -105,6 +110,69 @@ def dump_mcaddr6_check() -> None:
-                 s2.close()
- 
- 
-+def dump_mcaddr_l2_check() -> None:
-+    """
-+    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
-+    dump: the ifa-index filter, mc-users, the global flag and
-+    target-netnsid.
-+    """
-+
-+    with NetNS() as ns, NetNSEnter(str(ns)):
-+        for ifname in ("dummy1", "dummy2"):
-+            ip(f"link add name {ifname} type dummy")
-+            ip(f"link set {ifname} up")
-+        dev_idx = socket.if_nametoindex("dummy1")
-+        ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
-+
-+        rtnl = RtnlAddrFamily()
-+        defer(rtnl.close)
-+        addresses = rtnl.getmulticast(
-+            {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-+            dump=True)
-+
-+        # dummy2 has entries as well, only dummy1 may be listed
-+        ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
-+                "AF_PACKET multicast dump ignored ifa-index filter")
-+
-+        entries = {addr['multicast']: addr for addr in addresses}
-+
-+        # Bringing an Ethernet device up joins 224.0.0.1, which maps
-+        # to 01:00:5e:00:00:01 in the device multicast list.
-+        all_hosts = entries.get(ETH_ALL_HOSTS_MULTICAST)
-+        ksft_not_none(all_hosts,
-+                      "dummy1 does not have the all-hosts link-layer address")
-+        if all_hosts is not None:
-+            ksft_not_in('global', all_hosts['flags'],
-+                        "protocol entry is global")
-+
-+        static = entries.get(ETH_TEST_MULTICAST)
-+        ksft_not_none(static, "dummy1 does not have the SIOCADDMULTI address")
-+        if static is not None:
-+            ksft_eq(static['mc-users'], 1,
-+                    "unexpected mc-users for the SIOCADDMULTI address")
-+            ksft_in('global', static['flags'],
-+                    "SIOCADDMULTI entry is not global")
-+
-+        # target-netnsid dumps another netns, ifa-index is relative to it
-+        with NetNS() as peer:
-+            ip(f"netns set {peer} 5")
-+            ip("link add name dummy3 type dummy", ns=peer)
-+            ip("link set dummy3 up", ns=peer)
-+            ip(f"maddr add {ETH_PEER_MULTICAST_STR} dev dummy3", ns=peer)
-+            peer_idx = ip("link show dummy3", json=True, ns=peer)[0]['ifindex']
-+
-+            addresses = rtnl.getmulticast(
-+                {"ifa-family": socket.AF_PACKET, "target-netnsid": 5,
-+                 "ifa-index": peer_idx}, dump=True)
-+            ksft_eq({(addr['ifa-index'], addr['target-netnsid'])
-+                     for addr in addresses}, {(peer_idx, 5)},
-+                    "target-netnsid did not dump the peer netns")
-+            # dummy1 in this netns can have the same ifindex as dummy3
-+            ksft_in(ETH_PEER_MULTICAST,
-+                    {addr['multicast'] for addr in addresses},
-+                    "target-netnsid did not dump the peer device")
-+
-+
- def ipv4_devconf_notify() -> None:
-     """
-     Configure an interface and set ipv4-devconf values through netlink
-@@ -424,7 +492,8 @@ def ipv6_verify_inter_scope_addr_order() -> None:
- 
- 
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, dump_mcaddr_l2_check,
-+              ipv4_devconf_notify,
-               ipv6_route_del_reason_expired,
-               ipv6_route_del_reason_ra_withdrawn,
-               ipv6_route_del_reason_absent,
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] phylink_stop() (drivers/net/phy/phylink.c:2506-2508) now
+  returns early when PHYLINK_DISABLE_STOPPED is already set.
+
+--
+
+net: phylink: allow stopping a suspended instance
+
+This commit lets phylink_stop() handle an instance that is still
+suspended by phylink_suspend(), for example after a driver's resume
+failed. Without MAC WoL it returns early, since phylink_suspend() already
+called phylink_stop(). With MAC WoL it finishes the deferred
+mac_link_down() and clears PHYLINK_DISABLE_MAC_WOL.
+
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index a1458da8111b6..df520d77fdedd 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -2495,11 +2495,18 @@ EXPORT_SYMBOL_GPL(phylink_start);
+
+[ ... ]
+
+>  void phylink_stop(struct phylink *pl)
+>  {
+>  	ASSERT_RTNL();
+>  
+> +	/* phylink_suspend() already stops the link without MAC WoL. */
+> +	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
+> +		return;
+> +
+
+[Severity: Medium]
+Does this early return leave the PHY speed-down from phylink_suspend() in
+place?
+
+phylink_suspend() does this after its own phylink_stop():
+
+drivers/net/phy/phylink.c:phylink_suspend() {
+    ...
+	} else {
+		phylink_stop(pl);
+	}
+
+	if (phylink_phy_pm_speed_ctrl(pl))
+		phylink_speed_down(pl, false);
+}
+
+In phylink, only the phylink_speed_up() call in phylink_resume() undoes
+this. With this patch, stopping a suspended instance leaves
+phydev->advertising reduced and the saved adv_old still pending. Phylink
+still treats the instance as cleanly stopped.
+
+With stmmac, which sets wol_phy_speed_ctrl, this looks reachable with
+PHY-only WoL (wolopts_mac == 0 and phy_may_wakeup() true):
+
+1. stmmac_resume() fails before it reaches phylink_resume(). Examples are
+   a failure in plat->resume, stmmac_legacy_serdes_power_up() or
+   stmmac_hw_setup().
+
+2. The interface is closed while device_may_wakeup(priv->device) is true.
+   stmmac_release() then calls phylink_speed_down() a second time:
+
+	if (device_may_wakeup(priv->device))
+		phylink_speed_down(priv->phylink, false);
+
+   phy_speed_down() always overwrites adv_old, before it checks whether
+   anything changed:
+
+	linkmode_copy(adv_tmp, phydev->advertising);
+	ret = phy_speed_down_core(phydev);
+	...
+	linkmode_copy(phydev->adv_old, adv_tmp);
+
+   This replaces the saved full advertisement with the reduced one.
+   __stmmac_release() then calls phylink_stop(), which returns early here.
+   phylink_disconnect_phy() runs next.
+
+3. On reopen, phylink_bringup_phy() copies the reduced phy->advertising
+   into pl->link_config.advertising. The phylink_speed_up() call in
+   stmmac_open() can only restore the reduced adv_old.
+
+Would the link then negotiate only the lowest common speed, for example
+10 Mbps instead of 1 Gbps? This would last through later close/open and
+suspend/resume cycles until the advertisement is reset with ethtool -s.
+
+The commit message says:
+
+  the driver still decides whether to retry resume or wait for an ordinary
+  administrative down/up cycle.
+
+In this case the down/up cycle does not appear to restore the speed. If
+device_may_wakeup() is false, the phylink_speed_up() call in stmmac_open()
+does restore the advertisement. That fix comes from the driver, though,
+and not from the new suspend-to-stop transition in phylink.
+
+Should the suspend-to-stop path in phylink_stop() also call
+phylink_speed_up() when phylink_phy_pm_speed_ctrl(pl) is true?
+
+>  	if (pl->sfp_bus)
+>  		sfp_upstream_stop(pl->sfp_bus);
+>  	if (pl->phydev)
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996%40gmail.com
