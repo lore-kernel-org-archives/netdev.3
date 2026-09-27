@@ -1,91 +1,85 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20043423A66;
-	Sun, 27 Sep 2026 19:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34802352C3F
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790538026; cv=none; b=ZpPktAfxioeouJteV433Vwb7gAMIOzgk4+odBWDspyeB1StFNTiqoSTWKxl8++Y9ytXbgdG2wSSfIusJoqmew6VVgc4EgAYxA08kCqVr5eAYEIHqbx1ZZdb4MyRfjlsEBOaCKUG7cj1vo/EwfvYy8DzSOSNLVXqqv2LBTP8zYAI=
+	t=1790538431; cv=none; b=iNiE3h5cKwtxnkIKmq7foE5I/nBJy0qMEnxzEUSwCBT7UyxyL7CAan+dsLe69y4wmjsxHV13fQPS70pYlf8OQy7tf6MKgvHEovvlxkzNWBtlP8TIiPNMqWTT7+uokryPFeV9vphTVx+g3E8qk4HfyJOLOdCwzCTacQhanp0C10Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790538026; c=relaxed/simple;
-	bh=6ymQVd+fsyAptecxks1UrJYb+TB4txUB6FnPeCzHsb0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Mbv5WxupP0S66/ZgInELX4M+dMkPoJe5yShS4EFwNCwqr2bR8olmI5YRpprdrpjc/lDZvMyO4fYNSyWYkbHBakS/PKBMAFAjhrgmEDz12LRmx+tBC0wswSQaBBubSBd+GSjbI1oHjDImejUUoiafNUPbMUsTNLDm8fe6NMLBXHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=0mKetHpv; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790538431; c=relaxed/simple;
+	bh=JZyZaY8L0qDWdgkL/XIv4rfr1fFAtgMzndD1hsWL4r8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OArn0J7SGj77zVDg1TIcI2yTjQGLBkUYkeyFAqbo0BjUPPC5spv1zci2k5XfrOkWGugg1ft4TVoxoq9fIvznrBLFsJOUAg8XvSLXjY6g1eookSvmiP+k1eqqGZSiFeYJAtaCIfhJTf8aqBhKZtW5J7nk534JeNCN35ZcTfWY1ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WRnLot42; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="0mKetHpv"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 37485A02D8;
-	Sun, 27 Sep 2026 21:40:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790538021; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KnrKA+LVxa/BuHBYa6dl9JUYtGsArMsZu7eJA/ScaHY=;
-	b=0mKetHpvFJhqM8YQ+WXRUtOK+rTu4qMQ5T+wRpVvif7LlEJ1Knmokj4MId+UVsUT0aOo63
-	pfr0zRlEt5ZlWhcPr34ZQpucxCNhEc65vN+g+VKbNoFksylY7+Um2JzWvqyfnts//cFYP9
-	rw2KG+iFYsJHasJEwN7gsf5fusP/zM8cuMX2dcDn9QboWoDQpqZsKtCkVrJbopIhy/LpOr
-	8rK9jOXp49/7rm2Wuc46rYL+T5HaQICeEP2DJd2yX/9pBMtZGGFuw+aj8SR0hu9oEgnZqJ
-	ozhPL+Vgw/NL7bNq/LOgQvUlpc1R2toAF15v7/HSTSBM/Z7vhcsXPHb1DLZEag==
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WRnLot42"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZV/65/lm6txMSvfwOzqDRArVAIYdzLFkpEL+cuAhogc=; b=WRnLot42y8TUVGAENs7vZOzPAp
+	DjqzkozfFvITazlb2aWK9cT77dxF9zSkiyIa7S9HNrGuvg9Ov4tcdSyy+NJNXrRVlK4x7XQSH0mcD
+	uCqS1NfE82vWlW3NVEsMOXlAIRCNglqxZYD5vsPaXWUuEloBar7seDVtC5UCrc5cI+MI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xAuq2-007YhG-O0; Sun, 27 Sep 2026 21:47:06 +0200
+Date: Sun, 27 Sep 2026 21:47:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Gaoyang Wei <yhyxwgy@gmail.com>
+Cc: netdev@vger.kernel.org, pbs05 <xuziyougm@gmail.com>,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [RFC] net: towards a generic PON framework
+Message-ID: <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
+References: <20260926174601.1675-1-yhyxwgy@gmail.com>
+ <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
+ <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 27 Sep 2026 21:40:21 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
- <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: bcmasp: remove duplicate MDA filter
- register definitions
-In-Reply-To: <20260922222525.3992167-3-florian.fainelli@broadcom.com>
-References: <20260922222525.3992167-1-florian.fainelli@broadcom.com>
- <20260922222525.3992167-3-florian.fainelli@broadcom.com>
-Message-ID: <72d6b4dd7ae8cd606868696351705a31@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
 
-On 23.9.2026 00:25, Florian Fainelli wrote:
-> Remove the redundant duplicate definitions of ASP_RX_FILTER_MDA_CFG,
-> ASP_RX_FILTER_MDA_PAT_H, ASP_RX_FILTER_MDA_PAT_L, 
-> ASP_RX_FILTER_MDA_MSK_H,
-> and ASP_RX_FILTER_MDA_MSK_L in bcmasp.h.
+On Mon, Sep 28, 2026 at 01:22:13AM +0800, Gaoyang Wei wrote:
+> Hi Andrew,
 > 
-> Assisted-by: LLM
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/asp2/bcmasp.h | 5 -----
->  1 file changed, 5 deletions(-)
+> Thanks, the hostapd/wpa_supplicant analogy is useful.
 > 
-> diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.h 
-> b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-> index 8c8ffaeadc79..b08a7ddc4c64 100644
-> --- a/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-> +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-> @@ -80,11 +80,6 @@
->  #define  ASP_RX_FILTER_MDA_PAT_L(sel)		(((sel) * 0x14) + 0x108)
->  #define  ASP_RX_FILTER_MDA_MSK_H(sel)		(((sel) * 0x14) + 0x10c)
->  #define  ASP_RX_FILTER_MDA_MSK_L(sel)		(((sel) * 0x14) + 0x110)
-> -#define  ASP_RX_FILTER_MDA_CFG(sel)		(((sel) * 0x14) + 0x100)
-> -#define  ASP_RX_FILTER_MDA_PAT_H(sel)		(((sel) * 0x14) + 0x104)
-> -#define  ASP_RX_FILTER_MDA_PAT_L(sel)		(((sel) * 0x14) + 0x108)
-> -#define  ASP_RX_FILTER_MDA_MSK_H(sel)		(((sel) * 0x14) + 0x10c)
-> -#define  ASP_RX_FILTER_MDA_MSK_L(sel)		(((sel) * 0x14) + 0x110)
->  #define  ASP_RX_FILTER_NET_CFG(sel)		(((sel) * 0xa04) + 0x400)
->  #define   ASP_RX_FILTER_NET_CFG_CH(sel)		((sel) << 0)
->  #define   ASP_RX_FILTER_NET_CFG_EN		BIT(9)
+> > But having a dedicated net_device seems wrong to me. However what
+> > you mentioned made me think of hostapd and wpa_supplicant. Can that
+> > sort of model be used? It does not require an additional interface
+> > by the side of the wifi interface.
+> 
+> Yes, I think that is worth considering.
+> 
+> One reason I initially found a packet net_device attractive was that
+> OMCI itself is a packet-oriented protocol, and an ARPHRD_NONE device
+> would give userspace a natural AF_PACKET interface without pretending
+> that OMCI is Ethernet.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+As i said, i know very little about PON, so i will likely ask lots of
+dumb questions...
 
-Thanks,
-Nicolai
+With hostapd/wpa_supplicant, the PDUs it needs to exchange between the
+Wireless client and the access point have normal 802.11 headers.
+
+Do raw OMCI PDUs not have headers? How can you tell apart a OMCI PDU
+from a user data PDU?
+
+Is there a PON header before the OMCI and data PDUs? Tools like pcap &
+wireshark do allow for protocol specific headers, so you can have
+802.3 headers, or 802.11 headers. You can even have fake headers, like
+wifi RSS, and more accurate time stamps from the hardware, etc.
+
+      Andrew
