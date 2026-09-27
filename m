@@ -1,187 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A97C2AD3C;
-	Sun, 27 Sep 2026 05:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADC1350298;
+	Sun, 27 Sep 2026 05:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790485405; cv=none; b=tzTbkTz2vZ9a5fEox/CDIMqH1Zz5GmyCpADbV/ur74YgsiHjKRJ1EfFYPoneSyuITlFbzhW7E3UxLwX2M78KWlHgLhgnttqMm2FlrVsEptvYyPW2ZKNGlTFUEoPY+TBmknxns/sPioqjwkB4yq9QUZSLJs4sdPjBKWrhV1SikIE=
+	t=1790485858; cv=none; b=fjr7mQNdF06/xoXZuPbaG8YuPtC/5Mm1sTToghd4o9N/4mHvamEA6mV+s0yxaXXjiBQ+ov7R2nht6zHdhhdh5ybu5o0lSYPxjV4q+Tobgw/zLgIYJLRHWaRP0l8no1mC/nopGq3aXJjuGf1fbP/BCuAYzNCKO4wJwEsQYXAm3pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790485405; c=relaxed/simple;
-	bh=Uo8noGOO68BJB7t4PdpWdLDbu/AxsJ36iAUxnDeu6G8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Rs4b4J9DSKByrzYWDJLg98OASsHQrYhrC1zww0ZivILdmI1LXkjtrnAa+1of99+zz7f892Bou0qpocFJE0ZRfLAPeaNsgwHNMIWx9dBxz6ocz9xP4VKMVBnE73CtTtXabQsOqrOZ8m50k6myzjVGHW6lZLMkmw0C3NkotzWd9N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0BJZ22K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790485858; c=relaxed/simple;
+	bh=VSaqCwmdgw4zEq64XsGySiKl+BDauDQmoCCdTeBnXEo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EZBCgbumbdeyzUwDoLKMxdXLdNCVV35L0pTsFs8NSTVecchWy+nsFO/VBs+xP6TwW0wUJMUqeiy4czHI5X6BeuVHwcdzCT/y2rzMRYXJgwuB4psUIkgC8QlEimVGxkhuNB3A8dy1q8km9Xm78PyEX7r7dRVNvi86xJfJrb1KXSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtQdJYH+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0BJZ22K"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 71894C2BCB3;
-	Sun, 27 Sep 2026 05:03:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790485404;
-	bh=Uo8noGOO68BJB7t4PdpWdLDbu/AxsJ36iAUxnDeu6G8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=D0BJZ22K7FXvYMieBiSGVYERA3pp5qu7y/NcknJ7VilXnbXJ74e+gH1eNo78KTjSu
-	 jb5U1bcmoRKgckUBap8rJVeBKl6pK3gqa6lsa7c3g8UnWbBdH193SCXXMROAb8Qas8
-	 ZOUwlcCNEh35bAL1dWUnZd6WjFdTwx1UC69S+dOBOX25jIRku0DpWIM8Uogo9DywaT
-	 MO+/DVqkfy4VjycgZ3wFPLJ52TZsroaZFgUHInuITs6tU95YTyxm2otJrDWgjUN+GA
-	 8wFfQ3Ybon0dii+qMF+bwQa2Hd+oPg7XgnmZFzr+ZGzPx/hJbo+U2fhwP3ZCVpqoKh
-	 9EJfxaa6VHIYg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A19AC98324;
-	Sun, 27 Sep 2026 05:03:24 +0000 (UTC)
-From: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
-Date: Sun, 27 Sep 2026 01:03:24 -0400
-Subject: [PATCH net] macsec: check the resolved SCI for duplicates
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtQdJYH+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8001F000FF;
+	Sun, 27 Sep 2026 05:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790485856;
+	bh=wB4Y83HrU5R7uYVDpiRV5wyAcrv1RqlEI7idRPirndc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RtQdJYH+jNCeVHGVJKpDRWln3tw8WMBzZWeKUzSQ+JUu62BzzWLQ4Y4uTsbBGFxpI
+	 azsycVbN3+CpZTdjnHM4PegFYsYsh7H0sMPTTXQxDK/nAYd80f61e9lLt80oH/7sqk
+	 m4Lb07lcP4XYqzU0lW7cNgAItkuKaLt21ENbwmdR0Seqp3LlBJrr4lxqSVUN16NE2B
+	 eFqaEzZW9WuCTdrIGIuWxlko5cwGDyciY4oBkV9dQFP8eILxC0hmBiGNISqAeor7ik
+	 FXDVGNBTmGuazVh7zxBSKXUsxDd6DQ3Ync2nNbI1BLS8xvYyXREGFoatcowRK2LAkV
+	 HNRj56tv2RzKQ==
+Subject: Re: [PATCH net] seg6: fix HMAC validation when an extension header
+ precedes the SRH
+From: netdev-bot+sashiko@kernel.org
+To: yuya.kusakabe@gmail.com
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, david.lebrun@uclouvain.be, amsalam20@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 27 Sep 2026 05:10:55 +0000
+Message-ID: <179048585564.2160803.7331664213685103969@kernel.org>
+In-Reply-To:
+ <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
+References:
+ <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJujuGoC/x2MQQ6CQAxFr0K6thGGMEavYliUTpUmMpIpGhPC3
- S0s38v/bwWTomJwq1Yo8lXTd3ZoThXwSPkpqMkZQh1ifQ0RH/rDidiEMX3mlzItgsaKki6x7Yg
- bbjvw+1zEt0f6DlkW6F0OZIJDoczjXnV9nkgzbNsfSsjjKYoAAAA=
-To: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, 
- Hannes Frederic Sowa <hannes@stressinduktion.org>, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Haseeb Malik <haseebulhaq55@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790485403; l=4803;
- i=haseebulhaq55@gmail.com; s=default; h=from:subject:message-id;
- bh=N1A+xRNu+DLjB78Ftg6Qjky4tZ5V4x/9AIQd+EByWy8=;
- b=SfylQ/QWPxKVrWMM2Dz8HGEh59uWQPV/8rOawh/xGabZvUfttHm9XqeCzy6YrK5RDZVsvDfjn
- UzY3am7lBi/BgPDDzcNxbQVB8SayP7SlLvl8eN4BLwv0WMcispruubF
-X-Developer-Key: i=haseebulhaq55@gmail.com; a=ed25519;
- pk=U/yCVc6cTsqDqxWLzvoONZ7DUA3EfRU+rfO9Xxo4p2w=
-X-Endpoint-Received: by B4 Relay for haseebulhaq55@gmail.com/default with
- auth_id=1026
-X-Original-From: Haseeb Malik <haseebulhaq55@gmail.com>
-Reply-To: haseebulhaq55@gmail.com
 
-From: Haseeb Malik <haseebulhaq55@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-An all-ones IFLA_MACSEC_SCI selects the default SCI derived from the
-MACsec device's MAC address and port 1. macsec_init_secy() resolves this
-value and stores the result in secy.sci, but macsec_newlink() checks for
-duplicates using the unchanged local sci argument.
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-Consequently, an all-ones request can create a second MACsec device with
-the same transmit SCI on the same lower device, while requesting that
-SCI explicitly returns -EBUSY.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Check the initialized SecY's SCI so that duplicate detection uses the
-value that the new device will actually use. Preserve the all-ones
-fallback when the resulting SCI is available.
+- [Medium] The commit message says the misread header "is covered by the
+  pskb_may_pull() in seg6_get_srh(), so the result is a wrong verdict,…
+- [Medium] The code change is correct, but the commit message describes
+  the bug only as a false drop (a 'wrong verdict' that rejects a…
 
-Add regression tests for duplicate rejection using default, explicit and
-all-ones SCI requests, and for valid fallback and reuse after deletion.
-The same tests reproduce two failures before the fix and pass afterward.
+--
 
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Link: https://lists.openwall.net/netdev/2026/09/16/11
-Assisted-by: LLM
-Signed-off-by: Haseeb Malik <haseebulhaq55@gmail.com>
----
-Tested on arm64/virtme with KASAN and lockdep: the new regression
-tests go from 5 pass/2 fail to 7 pass/0 fail. The full MACsec selftest
-passes all 15 cases without skips.
----
- drivers/net/macsec.c                          |  2 +-
- tools/testing/selftests/drivers/net/macsec.py | 48 +++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+), 1 deletion(-)
+seg6: fix HMAC validation when an extension header precedes the SRH
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 78a19b134632..7dabdac754f1 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -4254,7 +4254,7 @@ static int macsec_newlink(struct net_device *dev,
- 	if (err < 0)
- 		goto unregister;
- 
--	if (rx_handler && sci_exists(real_dev, sci)) {
-+	if (rx_handler && sci_exists(real_dev, macsec->secy.sci)) {
- 		err = -EBUSY;
- 		goto unlink;
- 	}
-diff --git a/tools/testing/selftests/drivers/net/macsec.py b/tools/testing/selftests/drivers/net/macsec.py
-index 9a83d9542e04..72ee1c6e146e 100755
---- a/tools/testing/selftests/drivers/net/macsec.py
-+++ b/tools/testing/selftests/drivers/net/macsec.py
-@@ -263,6 +263,52 @@ def test_offload_state(cfg) -> None:
-             "features should match first offload-on snapshot")
- 
- 
-+@ksft_variants([
-+    KsftNamedVariant("default", "", ""),
-+    KsftNamedVariant("explicit", "", "sci {sci}"),
-+    KsftNamedVariant("undefined", "", "sci ffffffffffffffff"),
-+    KsftNamedVariant("undefined_default", "sci ffffffffffffffff", ""),
-+    KsftNamedVariant("undefined_explicit", "sci ffffffffffffffff", "sci {sci}"),
-+    KsftNamedVariant("undefined_twice", "sci ffffffffffffffff",
-+                     "sci ffffffffffffffff"),
-+])
-+def test_duplicate_sci(cfg, first, second) -> None:
-+    """Reject duplicate transmit SCIs, including the undefined-SCI fallback."""
-+
-+    ms0 = _macsec_name(0)
-+    ms1 = _macsec_name(1)
-+    sci = _get_mac(cfg.ifname).replace(":", "") + "0001"
-+
-+    ip(f"link add link {cfg.ifname} {ms0} type macsec {first}")
-+    defer(ip, f"link del {ms0}")
-+    with ksft_raises(CmdExitFailure):
-+        ip(f"link add link {cfg.ifname} {ms1} type macsec "
-+           f"{second.format(sci=sci)}")
-+        # Clean up if the kernel incorrectly accepted the duplicate.
-+        defer(ip, f"link del {ms1}")
-+
-+
-+def test_undefined_sci(cfg) -> None:
-+    """An undefined SCI still selects the default when it is available."""
-+
-+    ms0 = _macsec_name(0)
-+    ms1 = _macsec_name(1)
-+    sci = _get_mac(cfg.ifname).replace(":", "") + "0001"
-+
-+    # A different port on the same lower device must not block the fallback.
-+    ip(f"link add link {cfg.ifname} {ms0} type macsec port 2")
-+    defer(ip, f"link del {ms0}")
-+    ip(f"link add link {cfg.ifname} {ms1} type macsec sci ffffffffffffffff")
-+    cleanup = defer(ip, f"link del {ms1}")
-+    info = ip(f"-d link show dev {ms1}", json=True)[0]
-+    ksft_eq(info["linkinfo"]["info_data"]["sci"], sci)
-+
-+    # Deleting a device must make its SCI available again.
-+    cleanup.exec()
-+    ip(f"link add link {cfg.ifname} {ms1} type macsec sci ffffffffffffffff")
-+    defer(ip, f"link del {ms1}")
-+
-+
- def _check_nsim_vid(cfg, vid, expected) -> None:
-     """Checks if a VLAN is present. Only works on netdevsim."""
- 
-@@ -333,6 +379,8 @@ def main() -> None:
-                   test_max_secy,
-                   test_max_sc,
-                   test_offload_state,
-+                  test_duplicate_sci,
-+                  test_undefined_sci,
-                   test_vlan,
-                   test_vlan_toggle,
-                   ], args=(cfg,))
+This patch passes the SRH found by the caller into
+seg6_hmac_validate_skb(). Before, the function derived the SRH from
+skb_transport_header(). On the seg6_local input path the transport header
+can still point at an extension header that sits in front of the SRH, so
+the HMAC was checked against the wrong header.
 
----
-base-commit: 11536ee3d3e0b1bd35b6f3f8df55a6053eb0c71d
-change-id: 20260926-fix-macsec-duplicate-sci-ed7635ac1c35
+> The HMAC is therefore computed over the Destination Options header,
+> and a packet carrying a valid HMAC TLV is dropped when
+> seg6_require_hmac is set.
 
-Best regards,
+[Severity: Medium]
+Does this cover the whole impact of the bug? Before this patch, the
+mismatch could also let through packets that should have been rejected,
+even with seg6_require_hmac=1.
+
+seg6_hmac_compute() only hashes saddr, first_segment, flags, hmackeyid
+and the segment list:
+
+net/ipv6/seg6_hmac.c:seg6_hmac_compute() {
+    ...
+	/* saddr(16) + first_seg(1) + flags(1) + keyid(4) + seglist(16n) */
+	plen = 16 + 1 + 1 + 4 + (hdr->first_segment + 1) * 16;
+    ...
+}
+
+It does not hash nexthdr, hdrlen, type or segments_left. A sender who has
+captured one SRH with a valid HMAC could:
+
+1. copy the captured bytes into a Destination Options header and set its
+   nexthdr byte to IPPROTO_ROUTING. ipv6_find_hdr() sizes this header
+   with ipv6_optlen(), the same way it sizes an SRH, and does not check
+   the option TLVs.
+2. append an SRH of its own choosing, with segments_left > 0.
+3. send the packet to the SID from the captured source address.
+
+The old seg6_hmac_validate_skb() took srh from skb_transport_header(),
+which points at the Destination Options copy, so the captured HMAC would
+match.
+
+get_and_validate_srh(), decap_and_validate() and end_flv8986_core() would
+then act on the SRH returned by seg6_get_srh(). That is the
+unauthenticated SRH.
+
+A similar splice looks possible with a leading routing header that has
+segments_left=0, because get_and_validate_srh() passes IP6_FH_F_SKIP_RH
+to seg6_get_srh().
+
+This patch closes the hole, since the HMAC is now checked over the same
+pointer that is processed afterwards. Should the changelog describe this
+HMAC bypass as well as the false drop?
+
+> The misread header is covered
+> by the pskb_may_pull() in seg6_get_srh(), so the result is a wrong
+> verdict, not an out-of-bounds access.
+
+[Severity: Medium]
+Does this statement hold for every header that can sit in front of the
+SRH?
+
+The code change looks correct. However, the same root cause can be hit
+when a Fragment header with a zero fragment offset, or an AH header, sits
+between the IPv6 (or Hop-by-Hop) header and the SRH. ipv6_find_hdr() steps
+over both of them:
+
+net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
+    ...
+			_frag_off = ntohs(*fp) & ~0x7;
+			if (_frag_off) {
+				...
+			}
+			hdrlen = 8;
+		} else if (nexthdr == NEXTHDR_AUTH) {
+			...
+			hdrlen = ipv6_authlen(hp);
+    ...
+}
+
+So seg6_get_srh() pulls the real SRH further down the chain. Meanwhile
+the transport header set in ip6_rcv_core() still points at the Fragment
+or AH header.
+
+In a Fragment header, the byte the old code read as srh->hdrlen is the
+reserved byte, and first_segment and flags are Identification bytes. In
+AH they are the payload length byte and SPI bytes. The sender controls
+all of these bytes.
+
+Take reserved = 255, id[0] = 0 and id[1] = 0x08. With those values
+seg6_get_tlv_hmac() passes both its hdrlen check and sr_has_hmac(), and
+then does:
+
+net/ipv6/seg6_hmac.c:seg6_get_tlv_hmac() {
+    ...
+	tlv = (struct sr6_tlv_hmac *)
+	      ((char *)srh + ((srh->hdrlen + 1) << 3) - 40);
+
+	if (tlv->tlvhdr.type != SR6_TLV_HMAC || tlv->tlvhdr.len != 38)
+    ...
+}
+
+That reads 2008 bytes past the Fragment header. With a minimal 24-byte
+real SRH, the pskb_may_pull() in seg6_get_srh() only guarantees about 72
+bytes of linear data. Can this read go past skb->len, and even past
+skb->end?
+
+For AH, the misread length is larger than the real AH length by four
+times the AH length byte.
+
+The pre-patch seg6_hmac_validate_skb() called seg6_get_tlv_hmac() before
+it looked at seg6_require_hmac. Wouldn't this read then happen with any
+sysctl value, including the default of 0? If the bytes there happen to
+match, tlv->hmackeyid and tlv->hmac would also be read out of bounds.
+
+This patch does fix these cases, because it now passes the SRH that
+seg6_get_srh() validated. Could the changelog describe the out-of-bounds
+read reachable through get_and_validate_srh(), decap_and_validate() and
+end_flv8986_core(), instead of saying the result is only a wrong verdict?
+
 -- 
-Haseeb Malik <haseebulhaq55@gmail.com>
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9%40gmail.com
