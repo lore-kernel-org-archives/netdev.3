@@ -1,80 +1,78 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8969F3B776A
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE303502A7
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790491246; cv=none; b=dIECgTTjLRCvZNFum67+4Pf+5lCDKQff4aHhvbP1fSZiaPDj096avo0Ywq/RHj9fDjgO2vwPCoM3VMQ4wqu/k8UJbWoPRwuJnU96oAws3v7yFB6X/8i4j8yR+9CSVyvrrxXILanvNWT2ZsPwZ9qzuMSEMdPRn/TBoXUs9tsx6OI=
+	t=1790491523; cv=none; b=NbGcATdQV2q2XQKrHIsoJ224VeKtCfHkZHZNjLDBOseWveypshv/gxOzEqWvETuKoB2IE6YPIyFAg+dIWQPYCkJRvIhnNpFHxux552JuS34vXG4HBUFcCRzTkGocjKlpa9m/4rvUnH/+tDa0qu/ZSSk6U4hw0SJjd5wxcKfXb5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790491246; c=relaxed/simple;
-	bh=Bc7rp4L028Tl9EXyqCmfTpsUXQ/jC2GtMhU6BV2AJx8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RdSK8EX9VKrEFQxUqWNDup3WpxQE99GkIYN54pexd3+SqCeXidePeYUv4nyarjjHIpP1JGkpElXikB4pBJPaTUlcjpfyPdmxknW/5lXEhX2AeQUBm5xeQzufl+QWySXEC2kPI6vOFeBIKAImBkTyfKyTQ2GBghM/2hhozPCL4aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9jtlfch; arc=none smtp.client-ip=74.125.229.42
+	s=arc-20240116; t=1790491523; c=relaxed/simple;
+	bh=IusPeKAJrDZ46U2jETL99MVTQOKyVY1wsj+XwyjWn8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nr1VDe/pgK774oy0nd4kUSqLKNHyjx7TQ8zBcQeJbFXPimeU7mb5nth+uZLdYrD3fAEDuBj0z2Ujw++oYq0cy3yBgLuS4DcGcGCqWoFRZfOnhPovK7557fUiVTsCmsvYi+hwDGG/TbDbMS99cPRa7mvvnJMKLl3eRWbedd9BIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FjpfP9VC; arc=none smtp.client-ip=74.125.229.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9jtlfch"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3427977d677so144517eec.0
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:40:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FjpfP9VC"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-141a5d476abso84669c88.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 23:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790491245; x=1791096045; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790491520; x=1791096320; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wSDCh9Q3eDQkB1vLD3xC3Yg4S14N+M5xHShZ9jLMyTA=;
-        b=P9jtlfchoHij9jns25gXzP5CPKFFVGqISsk6J8BiucI6ZDqnWGy9LM6+pbqQjnSwdp
-         hsGc3ybZspU/BvEW/Tt7+NS2s+jkOxSbXiyCTEScvpSbuUvnv6gLcxJe6Am1nGJy/erE
-         9bJdNRUNFLzF52m/ssSOc5jzrRaOl+GGsz9+X/5idanEWlSPQVPDzrYMzAKZn4uO7+Je
-         56uSwyGZK+3z9zUi/KIwOVkA/PWsm+Z01W0soSx15RpTHPkhBJj2wbv8Vk1Q0eDfnDAg
-         BjyY9y4bvp/IHeOM46GiEUIwtjsrFUuVKe61g3S8W4wBVPq3tYWVXodP/v/pazOyEjpC
-         1khA==
+        bh=HzB52n2hHJSMUa77CwTdg5ONrHIeWBM2nfC/CVriigE=;
+        b=FjpfP9VCFTI7RhrRfiv+teakNo0FXor34e2FnXr5S92AP17IkceCIpO0uBmFXZwY05
+         kbRiCxxAkWo1gDQK/l+HqGnnYenwbRSjcC5yP1+oJF6wTkp/t09CuUIxd0rJK/vNsRuu
+         KoF+85jlxO6yInuPL4GfVGevAYENNGdVC2LNLNEAY+2siIwg7CdrObMvE3ZFcc++mUYw
+         G8MQ+ogFmbyldUhRzEK5lRb/Dcbu+OW6yNY9Eu8HFlgYhEp6cyKiMZ0fgivHLS/gRk1w
+         UK5MhChqSfWEgbHTUFTvx37TCTlg0Wm89BiZ2sWwsAnmDRJGQkE5lC0qGrKGRadw3okw
+         mJAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790491245; x=1791096045;
+        d=1e100.net; s=20260707; t=1790491520; x=1791096320;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wSDCh9Q3eDQkB1vLD3xC3Yg4S14N+M5xHShZ9jLMyTA=;
-        b=T7/E2d0rR2xJLeJ95CfhMtnM7xaVNEyVNRTDczhLDrfTm12EdJLh6w4pOxFaGY7avP
-         FxPAUzVKlleM+QDp+1winzMcZqorV/w+9FZbpJ6364TscuMeNz4+mT4y4dCNM/TSOycP
-         NpvtGSRGL3q4vWqwVKqpeletXXxkEwwo5pnyVa7I/aOw6IBSw4xmY3WMojnhoWtVTzmI
-         DuuywDc3TeT8UwlHHjIjeaJ1CwHStCk//DnDAie6x/vaXtLAGSlYmHTLKvkPfw2LUQ5q
-         uea+x5Jq1jsWzleWKIUoOOiXgXm4Rvdy5rIMyJO+fz2qHYvokcFd/DuEe7Uxt3477MHV
-         +UTQ==
-X-Gm-Message-State: AFq9FYLpvibrkUr/AsFNJYhuBU3c3enrsX3HrkGhhXgjBNx+QjLua0Lu
-	g8k65C9qzg48hWF5F5Vl7HmDfdVbwyZgN54GmJW4G5RWN7G5tEgVEr+J
-X-Gm-Gg: AYBFou29JR02xjkb2wXEyYY3SE7oDRLDgBnhWC8d2RV0iTtIx5WgEKmSXuSW6Hz5KfG
-	f3gRIYcrJevMvjoDEZE7NXrat8l2vrK4RtClNdyzu9Rhd//X0psL/xAWFAf7oDT3DLkkQVJYu5d
-	1IL+wkIhcIdZ34/C6wAq+7DpC42UkdcnzWOCwdpBr91rrxIh31/TlGZGmx+sd2O2elkkbzQGylk
-	qFRVU9EX2iHF6AXmvvdF6fUSR7wCGpw8ucEiwnyxEMjX3GseFuFRthCmGEByWCqClJvDTpAqgyt
-	4WrMT8oiOsh0rnQ/dWywUAEh/Jr4g88RkGlVuqJQlLO14CwYmsPuwtXFFpfgy3LCJNCB3dR3vAZ
-	qSzJBfgOWxlSbm3UrsKQhwJrpSV4luEXw3fZUR5NF4h4RcSI0UJZ4NCPJ/zdtnmKD0c/eLgeGHq
-	Gr157Zp3Er2BCz7oKEYoIl2WrDo/Nhfj/9on7cM4Tamp715QU9oWHHwmj51DfpxX0MR8FbTDDCk
-	FTMvt23LetN4dtf5B1qJni4y5GY7N0MCaSnRZtdt6wJbBeLQiMbtZ6j9RYZexnPbJ7sLZWg80YH
-	4LKI
-X-Received: by 2002:a05:7301:4d08:b0:343:fdea:9a0 with SMTP id 5a478bee46e88-343fdea25bemr3651955eec.2.1790491243693;
-        Sat, 26 Sep 2026 23:40:43 -0700 (PDT)
+        bh=HzB52n2hHJSMUa77CwTdg5ONrHIeWBM2nfC/CVriigE=;
+        b=0Awr2bs9rTHkxjy+3mY94sKadLtWZK9X84ls9hjfPKnTnL91C30ADt+wzfGlTNqZMC
+         0nBysys2YN2xo+tSInjMq6xEcqd/TUYlaLgctsV/9f3AWtagbSLMIeivZVEAE5x8aHyB
+         ZPcH73EPFwa3yiiD5gLMgV11B1qiOPhdwjNbPA3aFjU1ytX0RjXN2vvKSKAE7UJqMoVs
+         MWGe0jHJ3vvdXuO4iKA/AJXVokWuZqY8y8nkJ33kjI/WU/qrHhj7lQX+jlMUO40Xba2E
+         tC1A1l0uqPfhRC05Tf4o/rByFdMnrx2q3yB95XsfqElTspRLpGIIxUXG1Mj/Q5ZtfVfy
+         ajDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw8RStp4IcjCsVs0U4slLBY1B3FWa+y7h0zddIxJQNMOqhqpXyVlJV69U9Gu8/DWaKmAIv1VcY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nqWbKsBfljn+bUl+70dUdfJqBClj2U4C2Gn27sWW4o4y8ExQRG
+	qQowhMvpBZ//MdTdz7FdEI2HGiTqg5tMGtQplZqRtJTiPVjqGZjDRPqj
+X-Gm-Gg: AYBFou17UWAA/HvLmfBGo5IAeKEbm2gwP3F/qqIQ6udRIVqIRmXvT3BfK7mtaJwq5ol
+	4NlIDuGSi+Zh4hTL/plkZU1712bcC1qNZHSSFwG1U+dyMxRJdlNltfpryZUSWBTh15DdU26qAe7
+	fELjRJtmGtd6UM4vRRkp0tgs/V23pjzpB64Nx1Y5Pefl5OaTpPAfyC1814AZVcRt7ppiX8xvlf3
+	Onm6PN82cp/WjRzgGa4rv2AU3MJPJWf35yb8jplwOY5wUNhA4gj6cwGiuelHOSlaENgSOvdtGHJ
+	7vnAEixtPosUsHMGZVVFtqxR03qsUz5BQXHFqcywhn9WmaWI9AZvxWfqBSlIzOX/U29Zd55lbhC
+	UTY/46Xnz/7tpE9+y2UbV/FMBX/ulRSFSEnlYA3jHObhz3nk9s7RpURmPJL6+7/x/EFvRrUPU2M
+	feKLue4A05do5HTJ3rvjMfda5W20kivQ7AjGKlLlP8LwFjr4DFcWF4RudL6WRGtnohq1+bUSHEJ
+	Hy3dUUw8ErtSQePiEzyMqZP07b/kt1XxHha9kkhmg2deJMVlqGgyS3cv+YanWxMfZN27lY=
+X-Received: by 2002:a05:701b:451c:10b0:143:8212:a43 with SMTP id a92af1059eb24-146cf7ee027mr8050559c88.1.1790491519432;
+        Sat, 26 Sep 2026 23:45:19 -0700 (PDT)
 Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3414504fae2sm19985283eec.20.2026.09.26.23.40.40
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145adcc5b00sm16702763c88.15.2026.09.26.23.45.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 23:40:43 -0700 (PDT)
+        Sat, 26 Sep 2026 23:45:18 -0700 (PDT)
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+To: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	GhantaKrishnamurthy MohanKrishna <mohan.krishna.ghanta.krishnamurthy@ericsson.com>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
+	Simon Horman <horms@kernel.org>
+Cc: linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Chengfeng Ye <nicoyip.dev@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] tipc: hold a reference to nodes found by link name
-Date: Sun, 27 Sep 2026 14:40:36 +0800
-Message-ID: <20260927064036.3691962-1-nicoyip.dev@gmail.com>
+Subject: [PATCH net] rxrpc: Prevent reusing service connections marked for reaping
+Date: Sun, 27 Sep 2026 14:44:34 +0800
+Message-ID: <20260927064434.3692113-1-nicoyip.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -84,109 +82,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tipc_node_find_by_name() returns a node after dropping its RCU read lock
-without taking a reference. The LINK_SET, LINK_GET and LINK_RESET_STATS
-handlers then lock and access the node, racing with timer-driven cleanup
-of a down peer. Generic netlink serialization does not exclude the node
-timer.
+The service connection reaper changes conn->active from 0 to -1 before
+unpublishing an idle connection. The I/O thread can have already found
+that connection and acquired an input reference. If it then allocates a
+new call, rxrpc_alloc_incoming_call() unconditionally increments
+conn->active, changing -1 back to 0. This violates the reaper's final
+assertion and can panic the kernel:
 
-The following interleaving can leave a handler using a freed node:
+  I/O thread                           Reaper
+  Look up conn and take input ref
+                                       Set active from 0 to -1
+  Allocate an incoming call
+    Increment active from -1 to 0
+                                       Assert active == -1
 
-  CPU 0: find the node under RCU and release the node read lock
-  CPU 1: tipc_node_timeout() clears the links and unlinks the down node
-  CPU 1: drop the list and timer references, queuing tipc_node_free()
-  CPU 0: leave the RCU read-side critical section
-  CPU 1: complete the grace period and free the node
-  CPU 0: acquire the node lock through the stale pointer
+The kernel reported:
 
-LINK_SET also uses the node's media address after releasing the node
-lock, when passing queued packets to tipc_bearer_xmit().
-
-KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in _raw_read_lock_bh+0x1d/0x40
-  Write of size 4 at addr ffff888112723808 by task poc/87
+  kernel BUG at net/rxrpc/conn_object.c:465!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  Workqueue: krxrpcd rxrpc_service_connection_reaper
+  RIP: 0010:rxrpc_service_connection_reaper+0x768/0xbc0
   Call Trace:
-   _raw_read_lock_bh+0x1d/0x40
-   tipc_nl_node_set_link+0x30e/0x680
-   genl_family_rcv_msg_doit+0x1e0/0x2c0
-   genl_rcv_msg+0x419/0x6d0
-   netlink_rcv_skb+0x11f/0x350
-  Allocated by task 28:
-   tipc_node_create+0x9c1/0x1fa0
-   tipc_node_check_dest+0x121/0x11e0
-   tipc_disc_rcv+0xdbf/0x1430
-  Freed by task 87:
-   kfree+0x149/0x330
-   rcu_core+0x50a/0x1850
-  Last potentially related work creation:
-   __call_rcu_common.constprop.0+0x71/0xa10
-   tipc_node_timeout+0xb1b/0xe70
+   process_one_work+0x5f2/0xf20
+   worker_thread+0x46e/0xda0
+   kthread+0x2b2/0x390
+   ret_from_fork+0x36e/0x5a0
 
-Acquire a reference to the selected node with kref_get_unless_zero()
-before leaving RCU, returning NULL if the node has already been released.
-Release that reference on every caller exit after the last node access,
-including transmission in LINK_SET. Keep the existing link lookup order
-and locking so concurrent link removal still takes the existing error
-paths.
+Use atomic_inc_unless_negative() before taking the call's connection
+reference. If reaping won the race, leave the activity count untouched
+and return through the existing BUSY rejection path without consuming a
+preallocated call. The caller's input reference keeps the connection
+live during this check. If call allocation wins, the positive activity
+count prevents the reaper from claiming the connection.
 
-Fixes: 6a939f365bdb ("tipc: Auto removal of peer down node instance")
+Fixes: 3cec055c5695 ("rxrpc: Don't hold a ref for connection workqueue")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- net/tipc/node.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/rxrpc/call_accept.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index bd91378b7540..2726bee3bb40 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -2424,6 +2424,8 @@ static struct tipc_node *tipc_node_find_by_name(struct net *net,
- 		if (found_node)
- 			break;
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index 47824120f1da..87bc3af2208b 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -299,8 +299,9 @@ static struct rxrpc_call *rxrpc_alloc_incoming_call(struct rxrpc_sock *rx,
+ 		rxrpc_see_connection(conn, rxrpc_conn_see_new_service_conn);
+ 		rxrpc_new_incoming_connection(rx, conn, sec, skb);
+ 	} else {
++		if (!atomic_inc_unless_negative(&conn->active))
++			return NULL;
+ 		rxrpc_get_connection(conn, rxrpc_conn_get_service_conn);
+-		atomic_inc(&conn->active);
  	}
-+	if (found_node && !kref_get_unless_zero(&found_node->kref))
-+		found_node = NULL;
- 	rcu_read_unlock();
  
- 	return found_node;
-@@ -2507,6 +2509,7 @@ int tipc_nl_node_set_link(struct sk_buff *skb, struct genl_info *info)
- 	tipc_node_read_unlock(node);
- 	tipc_bearer_xmit(net, bearer_id, &xmitq, &node->links[bearer_id].maddr,
- 			 NULL);
-+	tipc_node_put(node);
- 	return res;
- }
- 
-@@ -2558,12 +2561,14 @@ int tipc_nl_node_get_link(struct sk_buff *skb, struct genl_info *info)
- 		link = node->links[bearer_id].link;
- 		if (!link) {
- 			tipc_node_read_unlock(node);
-+			tipc_node_put(node);
- 			err = -EINVAL;
- 			goto err_free;
- 		}
- 
- 		err = __tipc_nl_add_link(net, &msg, link, 0);
- 		tipc_node_read_unlock(node);
-+		tipc_node_put(node);
- 		if (err)
- 			goto err_free;
- 	}
-@@ -2634,11 +2639,13 @@ int tipc_nl_node_reset_link_stats(struct sk_buff *skb, struct genl_info *info)
- 	if (!link) {
- 		spin_unlock_bh(&le->lock);
- 		tipc_node_read_unlock(node);
-+		tipc_node_put(node);
- 		return -EINVAL;
- 	}
- 	tipc_link_reset_stats(link);
- 	spin_unlock_bh(&le->lock);
- 	tipc_node_read_unlock(node);
-+	tipc_node_put(node);
- 	return 0;
- }
- 
+ 	/* And now we can allocate and set up a new call */
 -- 
 2.43.0
 
