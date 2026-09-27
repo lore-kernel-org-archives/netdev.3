@@ -1,65 +1,65 @@
 Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD983EC83F
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8493F0765
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790513223; cv=none; b=eckav8znC39rnucIqENza8DergASvg0CjkME6w0aRffZOLbqWhTlikECeJ7rglIKV3p+lJnf6Igu/oeRmeXtcsPOD7e0w5L5WYiJOgPLd93Jx10uIcJ3xxhd2Cs+vylZGjdzIxDer1OzbPQVm+2HIaMuyLulLG1ypuFDhjk8pAE=
+	t=1790513226; cv=none; b=o9e/MJSQjXZzWcw0IW38QWy52dgY0WnlEf2IIGdwHnD8WAmBSLTj6HURz+EZyNbkPqgv6cFGg9jFhfXiEopaLGqeluGY8URC2YE7fy0e2wnXHJYecAnj7ZFIuNNuigxwgFBbWleow/OXnvt9Z9ubNNsxeRTmEixNm6YU6nFRtJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790513223; c=relaxed/simple;
-	bh=XIXZf4f4ZYq+IcvRrJKmve5uw6vcjrjP6N+s9X21ehM=;
+	s=arc-20240116; t=1790513226; c=relaxed/simple;
+	bh=htXpuHN2eIspX5UEp9Af232bcJRmgLfiR2t4CCT/FOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghDojr9vR/oOMxGDIzAX+3h07UZZVKk5J99OBv49poYAQEtXPdrQk1w7c33VofoeRg0L/T/wFCDtgRpX4+q9b0k4uwR/yFCrKltfUwjdiE6MZiW5bs5U/sT/78QkF+UlFXSeEp0+6VNVAAQJTXOFcWtRYALUTARcEBarNVzRG50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o5zTv+ZX; arc=none smtp.client-ip=74.125.225.140
+	 MIME-Version; b=aFnOoCFkrVzUQeqvDTHs8+eVLDItObFa6HC0J3mWDtOyQk5D26DGx8LaM3iqjF3d5gaGs8uFeTRdlqkSAX6dV5HUN/3cyc1n0Y2E9OK5zA3hL5CFDiLrFwiA+K4/AgWRNBArsSrO1aNDP45boY6Q/tWwMcDcKK6DKKUQTgmBrcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctE0cgIT; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o5zTv+ZX"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffde3cec6so3825195e9.3
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:46:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctE0cgIT"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso16246345e9.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:46:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790513214; x=1791118014; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790513216; x=1791118016; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=us7fHF9BNlmKtu8l+ybnXkWYHXTgCcMVeTvTiMnpwU4=;
-        b=o5zTv+ZXXOYA9+NCoeVVTB9sw0M7htFgw1+a7ZxVdDxvyBjBI4+jUAvLVB7xBnana8
-         gAO3/Ws0KVJo2f9XmSTeMZaTEcTyA1YVAOHoSGFK6XJUPXeRBK/CMz5FR1ZZBn0+tIlJ
-         uTI5Iz2sFra/gc1WtpjduX5u283WO9X2vhsfwY6MtrfFvlMXY6vFH3M3j4KhLBwgxV03
-         XWFUggb1gEnNZESbumGezDNpED4dVkFJhLn0Njkgpl/LSx6wUdNfAzcmgTXuPwQb17pT
-         OEAkDqxZrOt2Pk2XSQISRsKyMLjgHYxqlCRkruq5vq1p/founv8RgSVFmAaGOWn+a23M
-         8cLA==
+        bh=kNuRDePVXJ9oNOK+zyTa8eRl0QFtPM/iNNylMvoO+3M=;
+        b=ctE0cgIT0t6BiDTPRryNxeYbp8+FCDrb/Rre8MLzlOtLZ3oM6VkVcK2nder5vNwGRA
+         NW9xk//o+SsBU3mviOyYP1qg3V/QdcsVKi/9uXcU1F8rBDnVJuR1uIf0b5y2rV2mn6Uj
+         +V0vvI5epVnpMWttqdSbNIYpW5tZA0dCb7QqYNnvXkkwNG4KVzx39CZe6Dl94tESPUON
+         5lfljSttlC3o/GE6Bz1/aWr8LDiqiql1Hj3bLqa8iMm91ruGfuTke6CHgCQn1O1mHtsp
+         7Sul/pF6DR+FphwwVJvfFC0cbGLakWqPJT0aZt6Hz6NaZQibziCGCdlu7SiMSjRLI3YA
+         Pi3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790513214; x=1791118014;
+        d=1e100.net; s=20260707; t=1790513216; x=1791118016;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=us7fHF9BNlmKtu8l+ybnXkWYHXTgCcMVeTvTiMnpwU4=;
-        b=E1VgKU8gC2Uco+kSnin51Hc/gq/ie+6LeZ1KLE/Nrb/l3BUOUFCGslHFw+mkhZ1j7H
-         tfm89DzSnDxBafXLwMaewGPDHVC23kEhMPNrAHgCXqDkNlTMobuaVA2DU5hL2y6j5kP+
-         CxGwp9QdgEMnDSekK4yZVK7awYF3rP+XY0n5q9AlBKjPlPFOS84PH6l1r7q+kclaLOuP
-         tWBR+67gVdt69Dsjh6Pkl0F+F6qtT9hBkuxhQ35vDHHPXuRBYZJk8mapep9IUO3Q+Uxf
-         v113DtspCtDt1F8txw1o+jR6M3md6GOj7JupcxqgBGYX5J6All2wUTxTVuAPjWn7U4v3
-         uYrg==
-X-Forwarded-Encrypted: i=1; AKwUvBzPZp4yn+yMonE3w6SDlH7QQ9vmpV8YjcsIUcDmCjcuHKd04MqvqsE3LHD7zU+NrjuVYbO480g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lNjVoxHvoK+wqlrS6A2FS5nqR/uuJ3y6LSUGePk+kBb/eA2G24
-	50O8nyl0GEr3o03by6cE8nDU3L2bWe8UfV2sAwoFVz+x5RKgEKzAhE7z
-X-Gm-Gg: AYBFou2Tpa7vN8ene+X/5YCH+3ULV1A2o1bMrU8v24q8BUPy0eFQDRMmUR4Cb+HPai2
-	A5jT0RGfYg8DGV2WfSukZZkO2tAYpdzCJtiGtHCY2HerXkYVOzlVGRKE0l2QcDk6BgR3lhwuhrG
-	52VxeRLdgcaKDZ3Wu/HY7rvrQanZfFHehBizrI8Icrre5zb0VyFlgsxmRulJ3UvxzsgvP3D+Nst
-	WYv48X7TF4jQCmfZi/hAYRTypIo4wkqe5iA6QyzTndmluYkWEZsoGvQ5XL6TnZUGevqcSyHArRM
-	DqbB58lLAPt8gFYhEKAPpUHxIKJz9cF3vNYXPuLE9eP+LsN4t0cWASB996XQOrRJS+LgSnTCAo7
-	KEXxoICOXtzbn3qDUc/6eFMd1vlMJ+HcYe4nQwT5DyEyS0X8L7ZZQYhOOYku1KS9kWRdp8ApQbC
-	FvK34qaSky04Ufg6/2fb/nczr3bFLFtDokbhbigGQ5jVSvEsmU6E6M1K3yZaGY+F1YGCENKhtv8
-	PGDabRA9Jz4Ts16l04sKtfLQq9JmYSht6YaguXTVjgQep235YZU0IlzfNQJEnA0rheNVYzvDleN
-	GVGQtVgADfZpSLQlytTaMg==
-X-Received: by 2002:a05:600c:a08:b0:49e:73e7:888c with SMTP id 5b1f17b1804b1-49fe66c8a3emr199937725e9.4.1790513214281;
-        Sun, 27 Sep 2026 05:46:54 -0700 (PDT)
+        bh=kNuRDePVXJ9oNOK+zyTa8eRl0QFtPM/iNNylMvoO+3M=;
+        b=aysuWCkyPmVa8yM7S4+CqVW4iCDfjifGZpJe+MyldCPk8TYR5hsR0W+z86gvuhay+7
+         oZUxBAmjS5Ne7vBPVMeZX+2nlCvGOOY4N+xVtQDqMMZ0Og7i+kVmRa88lEx9ES2rnEoN
+         mPDCaRUKTNMwmnCpoLo26IkfbQkpGQMmA6Xf3Eh3N7HxxG7r4thBQ/ARgz5UIycP23am
+         O50N3XZlhtnf/dupi8lW7oqfc/3vGZEWL8RTzOJZBuiq7RWrwElVjRLP+4uL2NDx+mGe
+         6HP9/UC0mkZQB8DDqYg1NEnab4loWUEsYaXr3lO6DEzpqf9NKroI+UuOki/UKWCRffiI
+         0RnA==
+X-Forwarded-Encrypted: i=1; AKwUvBwOuAICeLAD8jnXiUoTMzygyralnHcYD7vlbevA8pS11AZ5q0npNMNzScRC2VIhstzY/60sF8A=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0d2mIX70gkWb09HAPhQutXy5S5Rd3P57J5s0FU/Srtut8Rs+H
+	TextcSvfccQt3iWq2d2I6mEvlH7MpSgx1M+R0NhlIwdLOui56w9j+95j
+X-Gm-Gg: AYBFou3sEbFFSTm/t1GfBIuWcXSVc4ogvONLbXnQCRWKsRNGmMUAMZHm3A79tsKvaz1
+	GaBcu30CcRW8UxUayeEQD0wNg0ONBr13LwQ2FxfO0cCspXfnDphTCK1+EyrpdGjyLux+9xob3YZ
+	DFDXXg3C7fqZrCk1JDhCrAzBym+wo/reajnazZiXZKvC7x04/7MM0olnYDoHwMaNqc0VUsXWhPy
+	VauomaVrZO/qGFVcRfrfqQ21rHgGT2jfODQQf2op6PCv87dlxJUxAlgF6KekLjXi03mPvx0f+v8
+	+vszoOY8JbNk89APRpn4hEv+/R8Amhe7NFIozXhDBmMeRBZ0jqPrDU+8XPcd+mCKxAYfQ4dXi9K
+	XnMqaZcam0+/HIb5YtK7qWg/5bq9VWKkMIkGmjGgNIXuAwiZxYsigHvDYuCth2MuF2YXle72p/t
+	A54bvJVgTX4shkEyZmJ5CL4wOC4Oy8RF4C0Vf3L6jlI9pdMIJmUpql7CAtyoUCwldpBZDzyZHoI
+	GcXj8mZuqoUkE5CHRBn9k69N5zpUfm7ZERxyMAZB5SNddhBksyv/wnXTh1K3eAkVdKPgWlH2z96
+	/f72htJndkrMPN9A9y8KMg==
+X-Received: by 2002:a05:600c:870c:b0:49e:8377:c880 with SMTP id 5b1f17b1804b1-49fe7bd0128mr178151005e9.33.1790513216151;
+        Sun, 27 Sep 2026 05:46:56 -0700 (PDT)
 Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm148440605e9.4.2026.09.27.05.46.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm148440605e9.4.2026.09.27.05.46.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 05:46:52 -0700 (PDT)
+        Sun, 27 Sep 2026 05:46:55 -0700 (PDT)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: Frank Li <Frank.Li@nxp.com>,
@@ -94,9 +94,9 @@ Cc: pierluigi.p@variscite.com,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Stefan Eichenberger <eichest@gmail.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH v3 10/12] ARM: dts: imx6ull: Add Variscite i.MX6ULL board variants
-Date: Sun, 27 Sep 2026 14:46:25 +0200
-Message-ID: <a9c46d096a221302c3a775ec456f104acffc161c.1790512621.git.stefano.r@variscite.com>
+Subject: [PATCH v3 11/12] ARM: dts: imx6ulz: Add Variscite i.MX6ULZ board variants
+Date: Sun, 27 Sep 2026 14:46:26 +0200
+Message-ID: <4e63d123736daddc18dcddeabe96b6e2bfd65611.1790512621.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1790512621.git.stefano.r@variscite.com>
 References: <cover.1790512621.git.stefano.r@variscite.com>
@@ -110,10 +110,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefano Radaelli <stefano.r@variscite.com>
 
-Add i.MX6ULL board DTS files for VAR-SOM-6UL and DART-6UL with their
+Add i.MX6ULZ board DTS files for VAR-SOM-6UL and DART-6UL with their
 carrier, storage, wireless and audio options.
 
-Reuse the shared option and carrier descriptions with the i.MX6ULL
+Reuse the shared option and carrier descriptions with the i.MX6ULZ
 SoC and module wrappers.
 
 Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
@@ -124,74 +124,74 @@ v2->v3:
 v1->v2:
  - Update audio includes for the shared WM8904 and WM8731 files.
 
- ...l-var-dart-emmc-sd-card-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...art-emmc-sd-card-wm8731-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...var-dart-emmc-wifi-brcm-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...t-emmc-wifi-brcm-wm8731-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...ar-dart-emmc-wifi-iw61x-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...l-var-dart-nand-sd-card-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...art-nand-sd-card-wm8731-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...var-dart-nand-wifi-brcm-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...t-nand-wifi-brcm-wm8731-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...ar-dart-nand-wifi-iw61x-6ulcustomboard.dts | 20 +++++++++++++++++++
- ...ll-var-som-emmc-sd-card-concerto-board.dts | 20 +++++++++++++++++++
- ...ll-var-som-emmc-sd-card-symphony-board.dts | 20 +++++++++++++++++++
- ...som-emmc-sd-card-wm8731-concerto-board.dts | 20 +++++++++++++++++++
- ...som-emmc-sd-card-wm8731-symphony-board.dts | 20 +++++++++++++++++++
- ...-var-som-emmc-wifi-brcm-concerto-board.dts | 20 +++++++++++++++++++
- ...-var-som-emmc-wifi-brcm-symphony-board.dts | 20 +++++++++++++++++++
- ...m-emmc-wifi-brcm-wm8731-concerto-board.dts | 20 +++++++++++++++++++
- ...m-emmc-wifi-brcm-wm8731-symphony-board.dts | 20 +++++++++++++++++++
- ...var-som-emmc-wifi-iw61x-concerto-board.dts | 20 +++++++++++++++++++
- ...var-som-emmc-wifi-iw61x-symphony-board.dts | 20 +++++++++++++++++++
- ...ll-var-som-nand-sd-card-concerto-board.dts | 20 +++++++++++++++++++
- ...ll-var-som-nand-sd-card-symphony-board.dts | 20 +++++++++++++++++++
- ...som-nand-sd-card-wm8731-concerto-board.dts | 20 +++++++++++++++++++
- ...som-nand-sd-card-wm8731-symphony-board.dts | 20 +++++++++++++++++++
- ...-var-som-nand-wifi-brcm-concerto-board.dts | 20 +++++++++++++++++++
- ...-var-som-nand-wifi-brcm-symphony-board.dts | 20 +++++++++++++++++++
- ...m-nand-wifi-brcm-wm8731-concerto-board.dts | 20 +++++++++++++++++++
- ...m-nand-wifi-brcm-wm8731-symphony-board.dts | 20 +++++++++++++++++++
- ...var-som-nand-wifi-iw61x-concerto-board.dts | 20 +++++++++++++++++++
- ...var-som-nand-wifi-iw61x-symphony-board.dts | 20 +++++++++++++++++++
- 30 files changed, 600 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-concerto-board.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-symphony-board.dts
+ ...z-var-dart-emmc-sd-card-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...art-emmc-sd-card-wm8731-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...var-dart-emmc-wifi-brcm-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...t-emmc-wifi-brcm-wm8731-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...ar-dart-emmc-wifi-iw61x-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...z-var-dart-nand-sd-card-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...art-nand-sd-card-wm8731-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...var-dart-nand-wifi-brcm-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...t-nand-wifi-brcm-wm8731-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...ar-dart-nand-wifi-iw61x-6ulcustomboard.dts | 21 +++++++++++++++++++
+ ...lz-var-som-emmc-sd-card-concerto-board.dts | 21 +++++++++++++++++++
+ ...lz-var-som-emmc-sd-card-symphony-board.dts | 21 +++++++++++++++++++
+ ...som-emmc-sd-card-wm8731-concerto-board.dts | 21 +++++++++++++++++++
+ ...som-emmc-sd-card-wm8731-symphony-board.dts | 21 +++++++++++++++++++
+ ...-var-som-emmc-wifi-brcm-concerto-board.dts | 21 +++++++++++++++++++
+ ...-var-som-emmc-wifi-brcm-symphony-board.dts | 21 +++++++++++++++++++
+ ...m-emmc-wifi-brcm-wm8731-concerto-board.dts | 21 +++++++++++++++++++
+ ...m-emmc-wifi-brcm-wm8731-symphony-board.dts | 21 +++++++++++++++++++
+ ...var-som-emmc-wifi-iw61x-concerto-board.dts | 21 +++++++++++++++++++
+ ...var-som-emmc-wifi-iw61x-symphony-board.dts | 21 +++++++++++++++++++
+ ...lz-var-som-nand-sd-card-concerto-board.dts | 21 +++++++++++++++++++
+ ...lz-var-som-nand-sd-card-symphony-board.dts | 21 +++++++++++++++++++
+ ...som-nand-sd-card-wm8731-concerto-board.dts | 21 +++++++++++++++++++
+ ...som-nand-sd-card-wm8731-symphony-board.dts | 21 +++++++++++++++++++
+ ...-var-som-nand-wifi-brcm-concerto-board.dts | 21 +++++++++++++++++++
+ ...-var-som-nand-wifi-brcm-symphony-board.dts | 21 +++++++++++++++++++
+ ...m-nand-wifi-brcm-wm8731-concerto-board.dts | 21 +++++++++++++++++++
+ ...m-nand-wifi-brcm-wm8731-symphony-board.dts | 21 +++++++++++++++++++
+ ...var-som-nand-wifi-iw61x-concerto-board.dts | 21 +++++++++++++++++++
+ ...var-som-nand-wifi-iw61x-symphony-board.dts | 21 +++++++++++++++++++
+ 30 files changed, 630 insertions(+)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dts
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..ea8bf022744c
+index 000000000000..612246fe5638
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -199,25 +199,26 @@ index 000000000000..ea8bf022744c
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +#include "imx6ul-imx6ull-var-dart-6ulcustomboard-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, eMMC, SD card & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-emmc-sd-card-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, eMMC, SD card & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-emmc-sd-card-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..b0f02ebf158c
+index 000000000000..cddfce9c41d9
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -225,25 +226,26 @@ index 000000000000..b0f02ebf158c
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +#include "imx6ul-imx6ull-var-dart-6ulcustomboard-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, eMMC, SD card & WM8731 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-emmc-sd-card-wm8731-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, eMMC, SD card & WM8731 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-emmc-sd-card-wm8731-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..6e6a2c8ca180
+index 000000000000..c942538d64e7
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -251,25 +253,26 @@ index 000000000000..6e6a2c8ca180
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-emmc-wifi-brcm-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-emmc-wifi-brcm-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..7af5fe7dc1fb
+index 000000000000..cceb477aa49d
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -277,25 +280,26 @@ index 000000000000..7af5fe7dc1fb
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8731 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-emmc-wifi-brcm-wm8731-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8731 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-emmc-wifi-brcm-wm8731-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..26d266d731fb
+index 000000000000..708c341911b4
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -303,25 +307,26 @@ index 000000000000..26d266d731fb
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, eMMC, WiFi IW61x & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-emmc-wifi-iw61x-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, eMMC, WiFi IW61x & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-emmc-wifi-iw61x-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..617bccd11457
+index 000000000000..308514e7f1c2
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -329,25 +334,26 @@ index 000000000000..617bccd11457
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +#include "imx6ul-imx6ull-var-dart-6ulcustomboard-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, NAND flash, SD card & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-nand-sd-card-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, NAND flash, SD card & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-nand-sd-card-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..d983c60015af
+index 000000000000..20586513b1fe
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -355,25 +361,26 @@ index 000000000000..d983c60015af
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +#include "imx6ul-imx6ull-var-dart-6ulcustomboard-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, NAND flash, SD card & WM8731 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-nand-sd-card-wm8731-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, NAND flash, SD card & WM8731 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-nand-sd-card-wm8731-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..8d1620bc1209
+index 000000000000..afa3d3d9ac10
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -381,25 +388,26 @@ index 000000000000..8d1620bc1209
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-nand-wifi-brcm-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-nand-wifi-brcm-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..3c33aff6687e
+index 000000000000..ca16b34b5a1f
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -407,25 +415,26 @@ index 000000000000..3c33aff6687e
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8731 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-nand-wifi-brcm-wm8731-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8731 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-nand-wifi-brcm-wm8731-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
 new file mode 100644
-index 000000000000..061b427be774
+index 000000000000..7373a5d438fc
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -433,25 +442,26 @@ index 000000000000..061b427be774
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-dart.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-dart.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-dart-wm8904.dtsi"
-+#include "imx6ull-var-dart-6ulcustomboard.dtsi"
++#include "imx6ulz-var-dart-6ulcustomboard.dtsi"
 +
 +/ {
-+	model = "Variscite DART-6UL with i.MX6ULL, NAND flash, WiFi IW61x & WM8904 support on VAR-6ULCustomBoard";
-+	compatible = "variscite,dart-6ul-imx6ull-nand-wifi-iw61x-6ulcustomboard",
-+		     "variscite,dart-6ul-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite DART-6UL with i.MX6ULZ, NAND flash, WiFi IW61x & WM8904 support on VAR-6ULCustomBoard";
++	compatible = "variscite,dart-6ul-imx6ulz-nand-wifi-iw61x-6ulcustomboard",
++		     "variscite,dart-6ul-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-concerto-board.dts
 new file mode 100644
-index 000000000000..5c992800d4df
+index 000000000000..1351767d435e
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -459,25 +469,26 @@ index 000000000000..5c992800d4df
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, SD card & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-sd-card-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, SD card & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-sd-card-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-symphony-board.dts
 new file mode 100644
-index 000000000000..0460994a88ec
+index 000000000000..973fc53777e2
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -485,25 +496,26 @@ index 000000000000..0460994a88ec
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, SD card & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-sd-card-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, SD card & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-sd-card-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dts
 new file mode 100644
-index 000000000000..341252c08697
+index 000000000000..f34cb378a611
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -511,25 +523,26 @@ index 000000000000..341252c08697
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, SD card & WM8731 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-sd-card-wm8731-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, SD card & WM8731 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-sd-card-wm8731-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dts
 new file mode 100644
-index 000000000000..8f88432262b4
+index 000000000000..ea9f6e4d2e6e
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -537,25 +550,26 @@ index 000000000000..8f88432262b4
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, SD card & WM8731 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-sd-card-wm8731-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, SD card & WM8731 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-sd-card-wm8731-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dts
 new file mode 100644
-index 000000000000..a7085c837adf
+index 000000000000..2271acae99c5
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -563,25 +577,26 @@ index 000000000000..a7085c837adf
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-brcm-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-brcm-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dts
 new file mode 100644
-index 000000000000..6794d727c533
+index 000000000000..590cd1830787
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -589,25 +604,26 @@ index 000000000000..6794d727c533
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-brcm-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-brcm-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
 new file mode 100644
-index 000000000000..4987dc60be40
+index 000000000000..79a4b39c20af
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -615,25 +631,26 @@ index 000000000000..4987dc60be40
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8731 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-brcm-wm8731-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8731 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-brcm-wm8731-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
 new file mode 100644
-index 000000000000..2222bbefa2b9
+index 000000000000..eadface31718
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -641,25 +658,26 @@ index 000000000000..2222bbefa2b9
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi BRCM & WM8731 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-brcm-wm8731-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi BRCM & WM8731 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-brcm-wm8731-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dts
 new file mode 100644
-index 000000000000..9b81aef2f618
+index 000000000000..f16bf6b0de0c
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -667,25 +685,26 @@ index 000000000000..9b81aef2f618
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi IW61x & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-iw61x-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi IW61x & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-iw61x-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dts
 new file mode 100644
-index 000000000000..6269d432a846
+index 000000000000..44a2b61447d3
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -693,25 +712,26 @@ index 000000000000..6269d432a846
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-emmc.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC, WiFi IW61x & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-emmc-wifi-iw61x-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, eMMC, WiFi IW61x & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-emmc-wifi-iw61x-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-concerto-board.dts
 new file mode 100644
-index 000000000000..5ff9f360b7f2
+index 000000000000..c77d897864d8
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -719,25 +739,26 @@ index 000000000000..5ff9f360b7f2
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, SD card & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-sd-card-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, SD card & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-sd-card-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-symphony-board.dts
 new file mode 100644
-index 000000000000..4afac86bad23
+index 000000000000..a468c41e603d
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -745,25 +766,26 @@ index 000000000000..4afac86bad23
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, SD card & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-sd-card-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, SD card & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-sd-card-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dts
 new file mode 100644
-index 000000000000..9f8b8ac9f9ee
+index 000000000000..aabd99bd5c2d
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -771,25 +793,26 @@ index 000000000000..9f8b8ac9f9ee
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, SD card & WM8731 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-sd-card-wm8731-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, SD card & WM8731 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-sd-card-wm8731-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dts
 new file mode 100644
-index 000000000000..c496e014fe31
+index 000000000000..6531a4fe25d3
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -797,25 +820,26 @@ index 000000000000..c496e014fe31
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +#include "imx6ul-imx6ull-var-som-concerto-board-sd-card.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, SD card & WM8731 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-sd-card-wm8731-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, SD card & WM8731 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-sd-card-wm8731-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-concerto-board.dts
 new file mode 100644
-index 000000000000..2e9c22da94e6
+index 000000000000..b802e5f229be
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -823,25 +847,26 @@ index 000000000000..2e9c22da94e6
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-brcm-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-brcm-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-symphony-board.dts
 new file mode 100644
-index 000000000000..6045c936c56e
+index 000000000000..100f3f8a5764
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -849,25 +874,26 @@ index 000000000000..6045c936c56e
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-brcm-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-brcm-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
 new file mode 100644
-index 000000000000..6bad17ce5d03
+index 000000000000..c2b71b782e77
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -875,25 +901,26 @@ index 000000000000..6bad17ce5d03
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8731 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-brcm-wm8731-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8731 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-brcm-wm8731-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
 new file mode 100644
-index 000000000000..d8f55c62dcf7
+index 000000000000..c53bfe5b3b14
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -901,25 +928,26 @@ index 000000000000..d8f55c62dcf7
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-brcm.dtsi"
 +#include "imx6ul-imx6ull-var-wm8731.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi BRCM & WM8731 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-brcm-wm8731-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi BRCM & WM8731 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-brcm-wm8731-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-concerto-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dts
 new file mode 100644
-index 000000000000..7152317d89c0
+index 000000000000..82049810d604
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-concerto-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -927,25 +955,26 @@ index 000000000000..7152317d89c0
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-concerto-board.dtsi"
++#include "imx6ulz-var-som-concerto-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi IW61x & WM8904 support on Concerto-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-iw61x-concerto-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi IW61x & WM8904 support on Concerto-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-iw61x-concerto-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-symphony-board.dts
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dts b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dts
 new file mode 100644
-index 000000000000..aa34127052ea
+index 000000000000..b4980a5992f7
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-symphony-board.dts
-@@ -0,0 +1,20 @@
++++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dts
+@@ -0,0 +1,21 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
@@ -953,18 +982,19 @@ index 000000000000..aa34127052ea
 +
 +/dts-v1/;
 +
-+#include "imx6ull.dtsi"
-+#include "imx6ull-var-som.dtsi"
++#include "imx6ulz.dtsi"
++#include "imx6ulz-var-som.dtsi"
 +#include "imx6ul-imx6ull-var-nand.dtsi"
 +#include "imx6ul-imx6ull-var-wifi-iw61x.dtsi"
 +#include "imx6ul-imx6ull-var-wm8904.dtsi"
-+#include "imx6ull-var-som-symphony-board.dtsi"
++#include "imx6ulz-var-som-symphony-board.dtsi"
 +
 +/ {
-+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, NAND flash, WiFi IW61x & WM8904 support on Symphony-Board";
-+	compatible = "variscite,var-som-imx6ull-nand-wifi-iw61x-symphony-board",
-+		     "variscite,var-som-imx6ull",
-+		     "fsl,imx6ull";
++	model = "Variscite VAR-SOM-6UL with i.MX6ULZ, NAND flash, WiFi IW61x & WM8904 support on Symphony-Board";
++	compatible = "variscite,var-som-imx6ulz-nand-wifi-iw61x-symphony-board",
++		     "variscite,var-som-imx6ulz",
++		     "fsl,imx6ull",
++		     "fsl,imx6ulz";
 +};
 -- 
 2.47.3
