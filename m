@@ -1,298 +1,172 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazolkn19013077.outbound.protection.outlook.com [52.103.43.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418463CA487
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790495493; cv=none; b=jX4atnBroWHgpCxOJjdWcR+NtldudK1ZfCsvwPv3+TvKUeQOSDYD1enjnOa65QaqYD1vGpAFXBKyyuzW3r60nAN7K+yea0MdKK7XAwworyS2ar8M1xokDuVJEj4mhgsN8m0QyOaKNGBDWIJYDw+1DhUp5RJYECp/sXWfXvOl4N4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790495493; c=relaxed/simple;
-	bh=dlod1CpWCqRLRGZdexHX97cGGQWxbZmQMIDU5wgRoU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E4Nii4yZSgR2aErx8povK7ZdZHtkvFkBiSOXxGmpZfnGUEXlzRIjYphtpRbXofszuJ5YidtBM75wRccL+VkSgiqQSJb6OXR6678cbJ+Vs7EH746Au+SM40kZDge3q3uoETh8OzRUDxTk2i8aDVYisRNL1pSrTndRFsjoqp6CjYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6dtL95l; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7886822576E;
+	Sun, 27 Sep 2026 08:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790496339; cv=fail; b=OpqbWxW6nO++n08QE39xfDSX3EfKURDl8OeZ94/Jke2ModaIPG6OaF1wnsv/IeRfGfa77VQF1LKBHir9bw36DXy2O3PLairMrQijY39lR0yhuZkVsQ+t/nLXEZb0uiMRJ8DGr0jpvcq+hcAPpdOQgD7EwYJJDu04ef46V8Pt+q8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790496339; c=relaxed/simple;
+	bh=XXGP7avdZ6n7eArqerYlgYqYmKPQIvRZWaWdLfS9Swo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Xf4aq6PpYL96/xYCkPlgYUN8AWMTxV6FFZnLQe9Agtx6FfmVGB+5V9RhTGJVEk/wXvJGYWXBVeDD7qUX2yULK1SfvAcXU/svsnDJBOIXJ/bBT/16yNdAdOk/IFEhBTzbkqJ2e4+QURepoTF/zY24ZzzYlIYAXXmOu4LcMUQ6cEA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=VA85qRCE; arc=fail smtp.client-ip=52.103.43.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6dtL95l"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-343697ad877so42829eec.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:51:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790495489; x=1791100289; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ww6aqGhJtBvyRvMZDM65zhE1MjD4RPJH9QsBDwHkn30=;
-        b=s6dtL95lnEQD1T93TXEtIX3bzEzxyPks9PH5j1pAZYi07gxwdZXkJobWnV+nLcxxfE
-         UwFT8ax4js4sYgTC+G5gOVOc0yN6bzquIMUqzOkmIRRHHMuNQeb+pWjXh7NzTZjo+wLW
-         UeZhmMMkapjnBsaRGUYAdYwrYqo8DLJYYgnWtpQi2ceJgbcwytOEoXtRQ8DB7E0WprTN
-         BsWij6zbRv4kqhd4cVJuRSWshZqeul0Ijzk6Wo6gVUzV7/aypMQ55whLA4oahik8bJ3n
-         N9wAsxVcEv5HJZ6Re+jkZTF9LTm3GP5a7ny78nnQv6iNYdKXoCnrd76gKwu9X+FYrwtX
-         lXEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790495489; x=1791100289;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ww6aqGhJtBvyRvMZDM65zhE1MjD4RPJH9QsBDwHkn30=;
-        b=e9UjPkUErNF5IS+Ja7pgdTZCJAAwBTxbhxaLnraBP/xzTn/yEX0adAZHX/Mfq4a+rq
-         R/C6gwZ8Zd+pW520oD1yAGuJPxLuNPzAh8iRo9gFM2WFmu0SHH4JhSUKPl6T+hLPUcae
-         Nfjnalk8j+lRHOINEgmWZoKYjRJlUwEtIi3tNKB0LWAIiMoTUZOn8319q4EAhnV4GYWt
-         tWh23DZkLbU8BNl3v/t+kv1t/EVo5SarBl+jzr1d5w6GRHV/bdeg2e9XjvjsmqXv8Kwj
-         X73vgl4gs5ZHUoDeQIEtqmrvi/kFRmTlgyqlblMwlEb0vZQcRPZ9LhkQZ/+1M5kWyhB2
-         V29g==
-X-Forwarded-Encrypted: i=1; AKwUvBxIn4bbR5/xhmyXHrnWjFqwjk5ERt3j/KjX5dYWsu/AUPOin8/GgZCffnzZBUmXbnQTA6fyz5A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLNWG4AxVl+R7yCwMn0sr2IqyF5DJjmBh9zrVClgiDQc8ZhlOSg
-	dWbf7UGB1SIT9LAyf8T604LmSqGIZMupSX/+wB1LyLqWVmHE/4OtcgHJ
-X-Gm-Gg: AYBFou0mXs3FZgcPha+rOLWhhi+3DbdO3BvMCFm6hUed4ZAtJDICn40Ocu5XWjFACmx
-	8dkZToPKyQPFDg+U1PXbjSU1tTIJcvJIBT169zpi24P0CsAjCjqFyPoEqSHJCUPAipc10wb6ec7
-	aUpjqNPZHTNN3QTeCBJzvWoED6w3XyxC6fi+CgJxMHNMCGNG7gN3ZEL8rs/ELI/QJyBzFyX1IvE
-	xlm4fcnDOIwmcRGU7L38wbZfOKKQk990ogDvYnX5lYreAdudHrnPxvDoBlQ+0Dc+i0CLSDv9Yrc
-	nq3/nMy7kg7weB0yTJrm1w5Zs68p3b0OCEXLYZ9QD+WKRAJF/EaAbk33CL5TJ4cTnJrTzt8rN8V
-	3H2JwN+S+yUCnro10Ju70HpivpK7vVGfj7eoO6hTBK3DClwDxYPIwHk1jp2+mimUm692Ia9J7Hp
-	VMfgxfU1mPFOB7cTaDT3v6MkESGATmIPjZZl/v2wPfRbz8Dv4HbDfURS+9Ivg+HQMiUXrrsHCBu
-	Q5/RWEujLFfOBhm9ui0fYmllp8tl0YF0bR1gzPJOKALxMNHdSPWWG5KldzAKlGljOjwr+5F3upS
-	JZ6h
-X-Received: by 2002:a05:7301:540e:b0:33c:1bd2:1db6 with SMTP id 5a478bee46e88-3426d0df371mr8407759eec.0.1790495488467;
-        Sun, 27 Sep 2026 00:51:28 -0700 (PDT)
-Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3414504fae2sm20464916eec.20.2026.09.27.00.51.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 00:51:27 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ursula Braun <ubraun@linux.vnet.ibm.com>
-Cc: linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/smc: Hold a socket reference for transmit work
-Date: Sun, 27 Sep 2026 15:51:20 +0800
-Message-ID: <20260927075120.3695060-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="VA85qRCE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SbkEgvuL+pHyxoyuoVCjdAebDgU0TCn+1MK0o6/Mdk8C/mxm2j4NgqouTP8BihXVU/VtY4z63YWMCXBVzGtDrEruSF/5HYkvyRtObI5gJEH/RwTNwbGrD6876Tv2+kDnORz6aeZEZmorGS4IOMNW1PXYdE234zydrKCu+2D2IsMz4IOvZgWUT5HxEx76hNJhmO0Rkih/QdwTqbgLBYttTIj61f+aOKPLq8BXmjtSHFpEDo1agU0uzfIE0dixKIprHoM3yV9aGhUCSv8laMGBJryFESlo4CV317HOt6wGotl1VRlPE0irCZQlEFL9M55e09inz6iMo8Efz0C2t6vyYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ziCznKSqZsG+i3O69rAj5iAI6IkbrM5XWOtxUn7yYL0=;
+ b=ocL6OHHfDU/7KTB+zl7O3TZLtoCmfiNmafaAsVoxNUpMPLoDQB4D8GAZ5MXZ6avcL2US86pkHMlh3xXCssUg8o0IDN/dhK4cp0URd7aYj4CxZsoKPH24r1pyYVbYxItne24WyTiuNS0vwfHaruXJ09cs9AA0NOruQHzK3b6yVPZyD5fkp7WsTqcrj2cVy3n8IRKWlG8OeBQHZTjItGUSfeaUegSBROZ1CbXTtZyuURKWvTy+DjAAUgJ0ifMWPX14j7iUCCr/gQgQihz+UYjw1yTd7YyItT8qupHhWm5SFH3ibNvSY3q/xFtjaK1XEUKaSsqdAFNSvbnqP4YbusbOhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ziCznKSqZsG+i3O69rAj5iAI6IkbrM5XWOtxUn7yYL0=;
+ b=VA85qRCE5OGbpliTIEdULMK2lLYtfIJt56GIS6EWpCqNTNA4vN79IaudZSWuvDBcac3zR2xND4G/Yp7rFyK+4erdsR6Wj4S7IvuAlpvUZDzBnqzOcqmCxd3B7yOPfFauPcpaqU5YFPKM29BAgiFSzUOSySnP8bLCQod9dYNZJ8VkEHKhGfdyB+JlSpBMsYSVgPMhuHHY223IYsFU1+5ir/crO5GcruMqci0tGWC7xeHp9v0xaOclGMYXZ0DNBy5YNSs3nFeoSyDXJigl6vbb6KJHPiiJG/Q3fdYxQ4jw0B1tbCQmA0XX6M/14OF2eIxUNWbvoSPSPGPmhX8I+KWD0Q==
+Received: from SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+ (2603:1096:101:1e1::9) by KUZPR01MB7787.apcprd01.prod.exchangelabs.com
+ (2603:1096:d10:2e::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Sun, 27 Sep
+ 2026 08:05:33 +0000
+Received: from SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+ ([fe80::36dc:66d8:26a6:5612]) by SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+ ([fe80::36dc:66d8:26a6:5612%5]) with mapi id 15.21.0451.014; Sun, 27 Sep 2026
+ 08:05:33 +0000
+Message-ID:
+ <SEYPR01MB58827E0D18ACC93AF98A4109C98E2@SEYPR01MB5882.apcprd01.prod.exchangelabs.com>
+Date: Sun, 27 Sep 2026 16:05:26 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
+ internal CPU PHYs for SmartSpeed
+To: Yongzhao Chen <yongzhao.derek@gmail.com>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ Christian Marangi <ansuelsmth@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
+ <20260923215858.1653-5-yongzhao.derek@gmail.com>
+From: Ziyang Huang <hzyitc@outlook.com>
+In-Reply-To: <20260923215858.1653-5-yongzhao.derek@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TPYP295CA0026.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:a::20) To SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+ (2603:1096:101:1e1::9)
+X-Microsoft-Original-Message-ID:
+ <f633d189-6179-44b2-90e5-fbbbf0750831@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEYPR01MB5882:EE_|KUZPR01MB7787:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3290ec4a-2d5f-4433-d35e-08df1c6e1abb
+X-MS-Exchange-SLBlob-MailProps:
+	7J/vb0KDx3j4EGtrWC76yZtYjXYOkK33Ddjza6KtZw/4oa8VCHCM4DCLwsWYiod9U3mD4GxN2gRXBFOgySK30LSE7jwbDPTC6EjIfTMKJ7z+svx/kMF3b/izeqv5wC5mpIm/YMSgdjBdt6ELAqmdrGGkPRwUlKeEZIL6G9l/3V2BLn9RxQw28S2cFR77Zlprgp7hl4lBzwlz7H1yE+QSrXyHJlGzyUdRSDhBE4z2uk3ug/tIkJUUNz81mJ1hVkRl49OPkyDDzu21Bz5SK/jN2BrdSm2L1KyWdgrVcDGmgiCLwJsIZGLBndcaNcKqjLrqQ9d4G2vXZcgDDhho8GQxAEsiQX9S1g1FU+tx0RBAeKfw7GoAstnd/G+VIxhkeyJGzt5pP57v+ciSUq71lBRGmsHwxMaowo3aemxNo09iB4wSPxy9CWtNDQX1rTjUlP/vpTEXbHCkDnJl7uy4Lmunh19i0DawX7hIlaJZhVz4BHhiV9J2Uh6SIkN62H5Iy465gll5Fa9MOcZjrKwwguTTIc7cghZxJhVoeG3uz2383jOcReL+y9LBcXBm2FJ+aAwPKCmw8BsEnEEXsMhmZDxg8XOgShlgKbHj/k6tE8Nj70JlBT5GJwjc+2KrbaJ/HZBP1iviohrjoIFhc/ZuBg/gdS6hvGWBoYIM6JnAelV0HGW3LzLi5ttl/Jzk8a/4gciwlvdVhfN0ovEgQfrz19huE4wW82r7Bqy6D96vQgVfAcFLBDTkZXc1vDgfXk/NC5lsUVymH3FgekSjjYC8sfRLWRJGJtbLPuF+PFkS6SvQJ64=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|4140399003|6090799003|25010399006|12121999013|19110799012|8060799015|39105399006|5072599009|22121099003|24021099003|23021999003|15080799012|3412199025|26104999009|440099028|40105399003|2607281247196008;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?LzFLSFJ3VUtDSVNqcVl6TktuY0NUaXB1MmRTNjlsMUppV1hTbkQzTThJRk9B?=
+ =?utf-8?B?R05rVFYxbEV5bElXNy83MHJWemV3bDBSZTA3QnhKeTBuQXlRUkU1VjlSUkx4?=
+ =?utf-8?B?aVFHS05uTGlSM3haMlRVdGtla0hER2w3aVFQTGJSNVExeGxLOTRUelVXT2Y5?=
+ =?utf-8?B?QXNuWE1vWkF0bTZ6M05Tc1pqUjB2QXVYY1lreU1oNjJYM1prN1JXTGN0UEpW?=
+ =?utf-8?B?UW5kNzFFMU0zZHU0WDArNVBUcXdsZGlpY0JKbWxmZUdKcEU4OVY5R0UvbTBt?=
+ =?utf-8?B?NmRUYll1ZmZRRW5HMmNlTXVsWWZIb280NEVvcTJES1d3K1FqZWRSbkFadGRM?=
+ =?utf-8?B?Ui93bllURm8wd2k4MzRLV2I1aUZzTjdrSldDdFJ5bDJhYUxwSjFkRkIwYll5?=
+ =?utf-8?B?OEh2a1ltUVQvSTlieXZ6aXpUendLTGQ3NlFxMG9jWk14emlodjBKSEtGVHNx?=
+ =?utf-8?B?Q244WFFYUmh1WG5MKzlCczBVNldta3hWcm9QZERhdHBROTlIUnFDRzY2bzVP?=
+ =?utf-8?B?L0RTSi9nSUp4aWNmRTZ1Wm11QmhLbWZrQ1VaYU02SzlWTURVb3NTNWJwSVN4?=
+ =?utf-8?B?cTFFZnk1QzhScmRTTmVqZE5oc0o4b2wxdE5SLzlWaUUrdXVvaWthcEdEcGM5?=
+ =?utf-8?B?dlB6cWw1NVl3ZlRDWmhWZEk4aE9ob1VUMElLZzNJK3NtdTBrQ0VuUlFGaXIz?=
+ =?utf-8?B?REVlMnhMRmNVdlE2Sk5rUjE2dWNCZFpYQ1FhYnQraytocit5UnFlL0NsUlBT?=
+ =?utf-8?B?bzFEcFY0Z0hXNkZXTFNXYlp1aG9qMzZNQnNETmdITERoMlBhMndtWXV4S1RV?=
+ =?utf-8?B?V1ZsMjlodkVJa1ZabDhBYTdCWko1aUFuOUszakJ5VWlZelNJdnZ1UWU5Sld0?=
+ =?utf-8?B?V1VHRTlPREV1dzMzbW1rTlNYRE1WVlp5MWpOWC9PSnlGb3RLODFOcnNCM1JU?=
+ =?utf-8?B?cWF1LzcyeXV0YTQxZ3VXZDRlMlRzQm45TEdraHhUVG9wUUZ6MnFvL1JIdXhG?=
+ =?utf-8?B?aTc2YXdjbGd2SXlXTkNOd3lSbzUya2M5K1VvTlUxTXl6bDNyeVUvZGhEWjdB?=
+ =?utf-8?B?QzE0RHNoRHEyNGJoeWZ0Ty9PSEpsRHp2Tk9CQ3U1b3BwN1ZMZjY5cmU0RFp1?=
+ =?utf-8?B?c1NUTjNGU1hTVkZvdzcvaWhTKzZqSjdUK2hRSmtDZ3Jad3p6enBQOXRURG9E?=
+ =?utf-8?B?YmhSQmwzSVZxaHNjTEVBZVk0bUJwWCtUNVkvZGxwTjZrWFJEbHppcGUrMUY1?=
+ =?utf-8?B?ckFhSXpYQXZ4di9zWTcxaEVsdjlKSGRIakwxSWVzMXlabi81ZlBnUkZRUVRL?=
+ =?utf-8?B?M0UvMWlvVHVDTjhNVk5hdG5pYW5KR1paMjZuNCtrK0dNKzQvZ1c3ZzhmZWFP?=
+ =?utf-8?B?UUdseGtEam1XR2c9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OU1IUkJPbE1DYytBa1lUNG9MN0p1Ymw0czVhU2pIQm1JRTdMSW9SbzZVNGlI?=
+ =?utf-8?B?QUxEcjZFSDJqZmZpR3VEZzZ0OG1DK3haelhOcHl1QkRZeHZPdHBXNmV1RzBl?=
+ =?utf-8?B?eE04TENGd0pPeS9HdHlQc3lRNTNuN3E2cDlXWXhPQXI2dXN2ZG1vUlhmbDZQ?=
+ =?utf-8?B?TzgwdFRaVXIzTW9keW45dlNkMjRaQW8zL0pXTUxxd1c0OG1GZHc0VThrdjZH?=
+ =?utf-8?B?amRPMW9aamFobGNXaXR3QmZ0T3FvVXBMK0h3TG5aZi9kTlJoSkw4V2Uvby90?=
+ =?utf-8?B?SE9Rdm9LRUU2elE2NVlSOXBhWng5REtRN213L1hwMEFIMHFiWVhFemNiRGNo?=
+ =?utf-8?B?NFlJNWZOTFhSMG5sZEJ4Yjl2bWY5MG9kKzRjclpVdUlKa2J0emViWlhKeHU0?=
+ =?utf-8?B?OHZidVJPQng2QVJYSTh0L3J1empTNTJXREJ6RjhBVGxhMFpyUm9DaldBRlFR?=
+ =?utf-8?B?ekoycVhmRXMzWVhpeU9OVTFlVUJXdGs5eFFhZ2k3OGN1M3NVdHgzRUxKYjEv?=
+ =?utf-8?B?ZHR4TXk3M2JvSjVLU2lyTEdsaWtUWUIrV01MQjBkb0pybEQ1R01hSE1GbnRN?=
+ =?utf-8?B?dk8xV1g0NVA4TzlkTkhDbTZLQjBrR1VaZS9WZHoveExFVjVjeWVZZDNVa2tw?=
+ =?utf-8?B?bEZSOHg3Q1ZIYzZOdDd2aTJDZnR2ZWxsWEpmSExLbWdQTEJ6cGpkU2RKL2lB?=
+ =?utf-8?B?OWlSamN3RnZiRTRPZk9ZNGdLV1UrVVBZR3RoVGlIU3J2WHR1cGFQU2RlUVZE?=
+ =?utf-8?B?MDM2S3hGZEVvTGtVSGEzQ1E2K2xYaWZjUkJxYnV6YlMxMEJaQlNoNVpsNDBX?=
+ =?utf-8?B?d2JXRHdmQlJjNU5hemtaTkVka2lTVWdrNGZzLytUSStvSHFJS3QvanIxNDlP?=
+ =?utf-8?B?eHpDRXZwMDhaeGtsbVNUNGQ1U1c3SUMzQ3AxMDFEa2U0RzhMNk1JUWhsOVBD?=
+ =?utf-8?B?N3htL1hMUzA4U1JBeW5sQWxrQUJDNlNFNVN0NlZPMjdMK0d3QUFNYU1vcEZy?=
+ =?utf-8?B?YUlLLzFNcEFmVWpCU0tsVjVPSWRsb2tNUWNwNXpFTFVVdkVGWm05djNtQ0Rh?=
+ =?utf-8?B?MXJFRzk3alNncXI1UnZvbjVyL2RMU1NzM0VqSEl0Z1hJOWY3bUVKSnZMYlRR?=
+ =?utf-8?B?RGFJZldpaHE1YzRUMTVEQlhYa3BBZjRYTVpXQ2J1a2pCMnBEU1JETHdWMEJx?=
+ =?utf-8?B?cG5UUS84OTNSclN4cUsva1pmbW5BQ3ZFWTZCYnJSZWh5MFgwR3piYW1FTEVi?=
+ =?utf-8?B?ZHRQUXRWd0ZNQU8rVi92ZDRBRC9iTExFZjYwMTJJSytVVkN5VjZUbG1BYWxj?=
+ =?utf-8?B?RHF1Z3g4akJGVEpYKzFmQ2pRZGlsL0ZWSThxTTU5Zjdjc0MxSVFpMi8rVnNu?=
+ =?utf-8?B?ZURHMlQxWjBtSC9UWGlCSm9mT1RyZkR0eWxXZkRObDRwY0FrYUxEa0JmaEpq?=
+ =?utf-8?B?b20yRGo3ZnI0Z3dLSGxqa2lzNVZXWlFHL2N5bjNSV29CRHl4OFJDTXkxQUs3?=
+ =?utf-8?B?VGxmYnVrL2ZLZWxoZVlJZTUzSVZuNVlBMk1udHYvSGZQSEdCYmFTUHFPbCtC?=
+ =?utf-8?B?SnpnYjk0cUxiNmE0K3JWNE5Nd1ZzN0Z1aTJmQzI3TThoeDJCUjZqU0ZhWklq?=
+ =?utf-8?B?U2pZdXlYVjRpL08vakdUc0ZhQzVrUzlmcEg2djBXRktkYUdCaHArM2d3UXI1?=
+ =?utf-8?B?ZGYrRk0reDFndVFsSmprdkt3bmRIcDhmZkpHd1FQeXBTU0RCNFdDaWJWWkNL?=
+ =?utf-8?B?SmNLZmU3bGVOdG15ckJFdW5YSFN5OUNDcnVRNXkrYnVXSlZiL1dQZmtHM1pF?=
+ =?utf-8?B?Y3hERWtpZWZOSHNrYTJlT2tDaWxMcm80M0U2NU1PTFpYKzI3VHNVQUFNb1lV?=
+ =?utf-8?B?VDlVeFJRaWgvOUV0ZkR2MTUxOVo0ZTFFUXJPYll4dUJiVVJuaDRlTUtsSmcv?=
+ =?utf-8?Q?SWdPfJ+/7Yoim7/7Ry8jv8MJfhFcUq7n?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3290ec4a-2d5f-4433-d35e-08df1c6e1abb
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2026 08:05:33.3986
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUZPR01MB7787
 
-SMC transmit work is queued without holding a socket reference. After
-an active close has cancelled tx_work, a received CDC message can queue
-it again while the socket is in SMC_PEERCLOSEWAIT1. Passive close can
-then reach SMC_CLOSED, call smc_conn_free() and drop the last socket
-reference before smc_tx_work() acquires the socket lock. The worker
-then accesses the freed socket.
 
-KASAN reported:
+在 2026/9/24 5:58, Yongzhao Chen 写道:
+> In a diagnostic boot on one RA74, PHY4 initially advertised 1000BASE-T
+> full duplex, but a later read showed that advertisement cleared.
+> Clearing SmartSpeed before the initial reset preserved the 1 Gb/s link
+> on that board. This observation does not establish the root cause of the
+> advertisement loss or prove that a delayed conduit PHY caused it.
 
-  BUG: KASAN: slab-use-after-free in lock_sock_nested+0x97/0x180
-  Write of size 8 by task kworker/0:1/11
-  Workqueue: smc_tx_wq-00000000 smc_tx_work
-  Call Trace:
-   lock_sock_nested+0x97/0x180
-   smc_tx_work+0x5d/0x170
-   process_one_work+0x5ce/0xeb0
-   worker_thread+0x45b/0xd10
+Have you correct the DAC settings of the IPQ5018 PHY ?
 
-  Allocated by task 24:
-   sk_prot_alloc+0x56/0x210
-   sk_alloc+0x2b/0x6f0
-   smc_tcp_listen_work+0x16d/0xfc0
+Most of the IPQ5018 devices which use PHY-to-PHY CPU link require to 
+adjust it.
 
-  Freed by task 182:
-   slab_free_after_rcu_debug+0xa6/0x1e0
-   rcu_core+0x509/0x1850
+But some don't need. What's more, maybe some need different values.
 
-Hold a socket reference for each successful enqueue and release it when
-the worker finishes or a pending invocation is cancelled. Cover all three
-queue sites and all cancellation sites, including the socket options.
-Check conn->freed in smc_tx_pending() under the socket lock: retaining the
-socket does not retain connection resources released by smc_conn_free().
-This also covers pending transmit processing from smc_release_cb().
-
-Use queue_delayed_work() for the busy-slot retry as well. All tx_work
-delays are zero, so an already queued invocation needs no timer update.
-Unlike mod_delayed_work(), its return value distinguishes a successful
-enqueue from work disabled temporarily by cancel_delayed_work_sync(),
-allowing the extra reference to be returned when no work was queued.
-
-Fixes: e6727f39004b ("smc: send data (through RDMA)")
-Cc: stable@vger.kernel.org
-Link: https://lists.openwall.net/netdev/2026/09/09/105
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/smc/af_smc.c    |  6 ++++--
- net/smc/smc_close.c | 18 ++++++++++++------
- net/smc/smc_core.c  |  4 +++-
- net/smc/smc_tx.c    | 18 +++++++++++++-----
- 4 files changed, 32 insertions(+), 14 deletions(-)
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index e9f93b3ab435..7ebd51f922aa 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -3141,7 +3141,8 @@ int smc_setsockopt(struct socket *sock, int level, int optname,
- 			if (val) {
- 				SMC_STAT_INC(smc, ndly_cnt);
- 				smc_tx_pending(&smc->conn);
--				cancel_delayed_work(&smc->conn.tx_work);
-+				if (cancel_delayed_work(&smc->conn.tx_work))
-+					sock_put(sk);
- 			}
- 		}
- 		break;
-@@ -3152,7 +3153,8 @@ int smc_setsockopt(struct socket *sock, int level, int optname,
- 			if (!val) {
- 				SMC_STAT_INC(smc, cork_cnt);
- 				smc_tx_pending(&smc->conn);
--				cancel_delayed_work(&smc->conn.tx_work);
-+				if (cancel_delayed_work(&smc->conn.tx_work))
-+					sock_put(sk);
- 			}
- 		}
- 		break;
-diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-index bb0313ef5f7c..a8d4b4b65f24 100644
---- a/net/smc/smc_close.c
-+++ b/net/smc/smc_close.c
-@@ -118,7 +118,8 @@ static void smc_close_cancel_work(struct smc_sock *smc)
- 	release_sock(sk);
- 	if (cancel_work_sync(&smc->conn.close_work))
- 		sock_put(sk);
--	cancel_delayed_work_sync(&smc->conn.tx_work);
-+	if (cancel_delayed_work_sync(&smc->conn.tx_work))
-+		sock_put(sk);
- 	lock_sock(sk);
- }
- 
-@@ -230,7 +231,8 @@ int smc_close_active(struct smc_sock *smc)
- 	case SMC_ACTIVE:
- 		smc_close_stream_wait(smc, timeout);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&conn->tx_work);
-+		if (cancel_delayed_work_sync(&conn->tx_work))
-+			sock_put(sk);
- 		lock_sock(sk);
- 		if (sk->sk_state == SMC_ACTIVE) {
- 			/* send close request */
-@@ -264,7 +266,8 @@ int smc_close_active(struct smc_sock *smc)
- 		if (!smc_cdc_rxed_any_close(conn))
- 			smc_close_stream_wait(smc, timeout);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&conn->tx_work);
-+		if (cancel_delayed_work_sync(&conn->tx_work))
-+			sock_put(sk);
- 		lock_sock(sk);
- 		if (sk->sk_state != SMC_APPCLOSEWAIT1 &&
- 		    sk->sk_state != SMC_APPCLOSEWAIT2)
-@@ -372,7 +375,8 @@ static void smc_close_passive_work(struct work_struct *work)
- 		/* peer has not received all data */
- 		smc_close_passive_abort_received(smc);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&conn->tx_work);
-+		if (cancel_delayed_work_sync(&conn->tx_work))
-+			sock_put(sk);
- 		lock_sock(sk);
- 		goto wakeup;
- 	}
-@@ -462,7 +466,8 @@ int smc_close_shutdown_write(struct smc_sock *smc)
- 	case SMC_ACTIVE:
- 		smc_close_stream_wait(smc, timeout);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&conn->tx_work);
-+		if (cancel_delayed_work_sync(&conn->tx_work))
-+			sock_put(sk);
- 		lock_sock(sk);
- 		if (sk->sk_state != SMC_ACTIVE)
- 			goto again;
-@@ -475,7 +480,8 @@ int smc_close_shutdown_write(struct smc_sock *smc)
- 		if (!smc_cdc_rxed_any_close(conn))
- 			smc_close_stream_wait(smc, timeout);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&conn->tx_work);
-+		if (cancel_delayed_work_sync(&conn->tx_work))
-+			sock_put(sk);
- 		lock_sock(sk);
- 		if (sk->sk_state != SMC_APPCLOSEWAIT1)
- 			goto again;
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 9974149659c2..6021322253e9 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1070,7 +1070,9 @@ static int smc_switch_cursor(struct smc_sock *smc, struct smc_cdc_tx_pend *pend,
- 	    smc->sk.sk_state != SMC_CLOSED) {
- 		rc = smcr_cdc_msg_send_validation(conn, pend, wr_buf);
- 		if (!rc) {
--			queue_delayed_work(conn->lgr->tx_wq, &conn->tx_work, 0);
-+			sock_hold(&smc->sk);
-+			if (!queue_delayed_work(conn->lgr->tx_wq, &conn->tx_work, 0))
-+				sock_put(&smc->sk);
- 			smc->sk.sk_data_ready(&smc->sk);
- 		}
- 	} else {
-diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
-index 3144b4b1fe29..c5c00c63ce4c 100644
---- a/net/smc/smc_tx.c
-+++ b/net/smc/smc_tx.c
-@@ -570,8 +570,10 @@ static int smcr_tx_sndbuf_nonempty(struct smc_connection *conn)
- 			if (conn->killed)
- 				return -EPIPE;
- 			rc = 0;
--			mod_delayed_work(conn->lgr->tx_wq, &conn->tx_work,
--					 SMC_TX_WORK_DELAY);
-+			sock_hold(&smc->sk);
-+			if (!queue_delayed_work(conn->lgr->tx_wq, &conn->tx_work,
-+						SMC_TX_WORK_DELAY))
-+				sock_put(&smc->sk);
- 		}
- 		return rc;
- 	}
-@@ -667,7 +669,7 @@ void smc_tx_pending(struct smc_connection *conn)
- 	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
- 	int rc;
- 
--	if (smc->sk.sk_err)
-+	if (smc->sk.sk_err || conn->freed)
- 		return;
- 
- 	rc = smc_tx_sndbuf_nonempty(conn);
-@@ -690,6 +692,7 @@ void smc_tx_work(struct work_struct *work)
- 	lock_sock(&smc->sk);
- 	smc_tx_pending(conn);
- 	release_sock(&smc->sk);
-+	sock_put(&smc->sk);
- }
- 
- void smc_tx_consumer_update(struct smc_connection *conn, bool force)
-@@ -718,8 +721,13 @@ void smc_tx_consumer_update(struct smc_connection *conn, bool force)
- 			return;
- 		if ((smc_cdc_get_slot_and_msg_send(conn) < 0) &&
- 		    !conn->killed) {
--			queue_delayed_work(conn->lgr->tx_wq, &conn->tx_work,
--					   SMC_TX_WORK_DELAY);
-+			struct smc_sock *smc =
-+				container_of(conn, struct smc_sock, conn);
-+
-+			sock_hold(&smc->sk);
-+			if (!queue_delayed_work(conn->lgr->tx_wq, &conn->tx_work,
-+						SMC_TX_WORK_DELAY))
-+				sock_put(&smc->sk);
- 			return;
- 		}
- 	}
--- 
-2.43.0
+NOTE: Setting a large value may damage the SoC. Please check the vendor 
+dts.
 
