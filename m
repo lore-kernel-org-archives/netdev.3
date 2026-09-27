@@ -1,62 +1,64 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E0B3EF66B
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5B9394788
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790514631; cv=none; b=ebFyCSelQvdymOP0PrHOhdT2lwD/gMLAnBnBQyGsMpZHRBm/Z8mh89of/cNtb3zGwPDawx9/wlxA6QX0lVQHv3KcR79OitJ6K953i/diBaVaQ1uemWgsYFkIsca3jDYLn18J4FhYUPhNlaacz6uPZAhGMj75TKMBJlUJOv3NCAw=
+	t=1790514640; cv=none; b=hA5cwW8fHYauiJQCuVYp7f56OxziX2c31FNvZYBogMPEpgoflAALOoV0FOLRL+2MI8UhNA+l8sHYpoNWZln1SNRjHr76P9fjtVcuesIFEj14mEohPv1tRsn1oleuAPy21eSMmhrU9Biuy4FV7Y2f3ox7x79nxyL6+6Ey345hFXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790514631; c=relaxed/simple;
-	bh=HBEZ8gvSuuTPFRjoDeYmiebMx2iMq5KUi9vEstX2HoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LTucb1VTsu2njIuYJTepFheTzB42YPyTDhc4MQ+o4CMg9CE1nabvEiLSmDMBqbcQSw9aDMQ/dvWP0IagUwo9jbZIU41heMGyMEcaU3A1UtT2TkBFCAMscV6TxkZ0FYL8NQ152WFZ202HRClP7MALU1l/WCedp5Eoka++Pk8GEgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ktd/Ke2u; arc=none smtp.client-ip=74.125.227.171
+	s=arc-20240116; t=1790514640; c=relaxed/simple;
+	bh=Fjrf0Jf6vbEcNCBWCWr5LoI5uxPLnNxDyMf05k6qlng=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y5vq34eWw5FQBOT4O/76fkLqicSISlObOC7Vy3oCfk45yBxqDaWUDRsXZ8BKBX6pcGU7fz37WOMQ1sT79Wr4Hpt766EJkIyLEs5rHnl2ZAGdRK6Lp8Op0pygCv9LEUt38Gi3WjPPvGF4yljURDRNvrr2i03NtjPZvZUsxgf+pTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p0W+abng; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ktd/Ke2u"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccb652d7so1438144a91.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:10:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p0W+abng"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39d654f02baso927345a91.3
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:10:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790514629; x=1791119429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bkDmzZIfjmIBLLdMK74q6txJ55ZXC/oT66ennoBB6nM=;
-        b=Ktd/Ke2ulLTbNok0HLAA7F3DBiha7pSO5tXXOAW6iMLuHYuKRH6BT93iJnlgZMEdUa
-         b4rIOmhNg3rU8um8FVopGudbry66y1iftvcNVHX96vSI3Ue3z3kkAQuBRz+uEB0WDt5P
-         u3XmALWq1EPmZyzjvSsl1oSchdrORzwzJjjCv6lmNOeUriKtPkxduN7dHcN0X7q/CuUh
-         HmJ0C2B+bHdnWx1yF6E3mOjXHSKEQJs78ppNz5u8i8vjhmFnr6+4eRrRNRfriXgLIGvB
-         DEfGUVx1V39Ib/Wb1xSBoEOwWv24Wbfy0UEBGXbJixB2sTC4h4l+rOWxbQC54QmA/Jtj
-         NcVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790514629; x=1791119429;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790514637; x=1791119437; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bkDmzZIfjmIBLLdMK74q6txJ55ZXC/oT66ennoBB6nM=;
-        b=h6dFCXpDeet1sbQdEpSokk5PHA6E9Y1NuZqbvZ+NQrVEH0y5H7DyZcihfM5lq/O9J4
-         /dTstWRsZCshCsGnI8Qvutchvf7O6gW6VMfbmoMEOE1O6wA623vne3soP8b5mFsBwRJF
-         MYDRgusbCke77AD4AZrhTRS1NymVju+beBITb8jybA5E8BlvwOVR9VBpXL5n58CJUCp7
-         FL4VLH2VF1IOz5UEmlXIb3mDnS/r6XzuBWMvsm2+chqcLOI60Bpb+XasNf8oxLdzERJU
-         Ib6ZqWS18GevcsN+zf99cgEoR6BUq47CT+gkxfAuY9tEowMPNgXyREWmOPcyZlCghoVf
-         fHBw==
-X-Forwarded-Encrypted: i=1; AKwUvBy+TNCA5B+Jp4oAmhqQKwNX78nFJxH4dFEpETzRz+VFnCB9Q7VNjKfeGtF/TPait20PARLVtBc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRFbQ0V+1DDZ/D65H5qcuQkzSnnuriHYhaLHs2nkzN/WQK6JQJ
-	olfzvcDGydQ6tY983SnCk/ndNsOdh5D+FMAsp7S1N11gPXtmp1ZIPlHs
-X-Gm-Gg: AYBFou0GWzh2U1bAzTZRQOGCakh7qELbIezHGiPy0DjvzsKMfRHk0GcPfCC6k6DD9VA
-	Px1DRG8JXq8pPjLH+t/gxkSBf8+f7suIZr2ic9/1VLW0hPUzDk3x4g0Bx8N7ktg+AAMAOO7icHI
-	qYiq87BLUJim/jlsJHhxJ/F5r6CiYSPDMNv2E26K2NaR77rZVUJ734XqKE877ZJOdkxc7OvgYGZ
-	gDrCTzZlW+vKZw18hdF8P12aqQXp5ZuxbP7EuOODcMAHUBnGSVNES/nyN1RxZCA2vT8TSwg58TU
-	EV7uPL5v6kyboArbyvrog1VyYdhCGuc1xAjAUIgj8M0kggaGBDAHS8CeDC01VrzqaxEfnhr31Pj
-	uN47iuT1BFDEqqbXBN1l4WJBXY6D6p3CypVtbVOmalSolpb0M54x37KQyTkUxJsN3GqgzDO+luR
-	oM1HsJajdRgE+VNgQ3SZEzxBKeW3BXvGVOYs+YrqmqrUsDjqyZyqT44CfABINuBV/Hc/DH3gq+d
-	dHlWNPYh2xrHOXjGZNsKU+tGbcZbWUf1io=
-X-Received: by 2002:a17:90a:d883:b0:3a0:2900:f577 with SMTP id 98e67ed59e1d1-3a098dff5b4mr8264184a91.51.1790514628797;
-        Sun, 27 Sep 2026 06:10:28 -0700 (PDT)
+        bh=SkbFBTkqFbcQemO3yfmHiiKUHaQQdpKBirEnurxA9EY=;
+        b=p0W+abnggYLs4/d5ZI/q5OuJd8ePgjbbMr3hyzh+myGN1T7qDIVL1zE4FKdil9/Gx2
+         YqmtuJPWdaPRREaHi12TJlPfHPpXgEGGQn0u1TiNn364HM57uu5EoR/+C3uhQZl8qyun
+         GWtVHP1wyK5LwqjK+ZQFbciiadM1AD4cOCl1gMZRYJmYYJp0TkAHT24nXL8Xrf6epBo4
+         zt8PhtIAaWouz6hT7oIdX+JnBI+fKu4+0Q7oMmTnuQNd3+O8MtGQE0vsN19+TI33dlXg
+         4vRTatN+DXPrYh2rtYat/8UOGUJ4wOYZaOhh4lW8f8fHh44Gtj5OmEPFGb3ylY4Twll4
+         /60A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790514637; x=1791119437;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SkbFBTkqFbcQemO3yfmHiiKUHaQQdpKBirEnurxA9EY=;
+        b=a+ZqnuVHiA9cNo7Q83qkG9sgLZ79wc9N0FNBlEmC4WfwMIGB1hvKNifdrdEYPNHBfU
+         5nbYtWh0Hd1XCM7yFXfW0x9VqNrRojkZi7ggvA4/ha1al4Nlu/ujXfMZuA1KtoBgd7CZ
+         VeKZsv+YMMub4FL8bMIfI8S9iytKKSNzaqS2nQHFY1+gUzFMOqcnG/zoNsnia/6ZI2xl
+         J+EI99y7KFJm0LAp+wymF/P4GdyX0vrz19SL1IiR9W4A+WOSZNzBWL1v90Fm2HblsLmE
+         deJBYziNGUTxuYAvDD/3pUtvlVwJBi8qBpOEX7wqZhCTwEy84I25nwLp9/OW9SRYtPEC
+         PoxA==
+X-Forwarded-Encrypted: i=1; AKwUvBy9OjLkt97D2ujPCD2aXxYgki2gEOF4pAna+ZKzc2eKJevhriws/2W3kZ/Jbg5SB9LyB034QiI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKROr70ed4d5tFewTF3v5pN2iggBYydIu0gpYtlV1rNP5UoVdie
+	AfPHRBy2do0AV/O2qcDB5bpYC/gbX7ASZnFWFYsejVeEgrRx4QZWodNi
+X-Gm-Gg: AYBFou1z1jUw5BSOLrDyY6Bz0mmZBEQsnt3SwtP9hx9KkJMkDkK19otdHIgzKe953mG
+	Myncmwo7/nJ9KHJE+VA2W+gHijb93fKdO71EakWqdQxo8Z4bDtrheSQodgIhdGfIud7TY1qVVZ8
+	sJzVnPCsucF8VTiQZOsyHewu0mEVxFInNqLRiDARHkukUxT64+oyxs5+/ExiFuquCikWzeczak+
+	i8EMaPt+vwg8mI904PnJKPdh80DJKlmPtBxwgqb/xZQQprhSg/FzxqSCwCVcKvPMt+p3SaAczLf
+	LxNMIHuG4s26MMNJ7PJ4J53dUtvevqdw5uNuOYElXx3iO6pTIsiBZfcTfa5V5ZGTm/QiDZOYIba
+	7GubXMVEumc/9N2F17G9Z2VsUPk/25SAka+Vj8ZLUuce693okrvKtVZYyWwqz4ioch805IiUrnK
+	RDdCa1xlPs3a26hy4cSaKKuANBwmfLLX41JfymBEp9cQ+7zmEMm0lCYq2DDwVHji6dF9WwikPe2
+	243ixaLld5VUdi8H8acM6dwvGgMFe80bg==
+X-Received: by 2002:a17:90b:5107:b0:3a0:d823:c750 with SMTP id 98e67ed59e1d1-3a0d823cb37mr3627184a91.49.1790514637256;
+        Sun, 27 Sep 2026 06:10:37 -0700 (PDT)
 Received: from localhost.localdomain ([2409:8a1e:2e81:7320:84a7:e3d7:8c7e:980a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9589f7esm14890506a91.10.2026.09.27.06.10.20
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9589f7esm14890506a91.10.2026.09.27.06.10.29
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 27 Sep 2026 06:10:27 -0700 (PDT)
+        Sun, 27 Sep 2026 06:10:36 -0700 (PDT)
 From: Yuchao Zhang <ndaugoing@gmail.com>
 To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -71,10 +73,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Yuchao Zhang <ndaugoing@gmail.com>
-Subject: [PATCH net v3 0/2] net/sched: sch_cake: prevent shaper corruption and stall in cake_overhead()
-Date: Sun, 27 Sep 2026 21:10:07 +0800
-Message-ID: <20260927131009.24250-1-ndaugoing@gmail.com>
+Subject: [PATCH net v3 1/2] net/sched: sch_cake: fix shaper stall on segs == 0 in cake_overhead()
+Date: Sun, 27 Sep 2026 21:10:08 +0800
+Message-ID: <20260927131009.24250-2-ndaugoing@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260927131009.24250-1-ndaugoing@gmail.com>
+References: <20260927131009.24250-1-ndaugoing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,61 +87,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series addresses two issues in cake_overhead() that can lead to
-corrupted rate shaper accounting or long dequeue stalls:
+In cake_overhead(), packets with a single segment bypass multi-segment
+overhead calculations:
 
-Patch 1 fixes an integer underflow when segs == 0. When an skb with
-segs == 0 (such as dodgy GSO packets where gso_segs is not recomputed)
-reaches cake_overhead(), (segs - 1) wraps around to UINT32_MAX,
-multiplying per-segment overhead by ~4.29 billion and returning a length
-close to 4.29 GB. cake_advance_shaper() then charges that length to the
-shaper, stalling the dequeue queue for tens of seconds at 1 Gbit/s, and
-for minutes to hours at lower rates. This was introduced by commit
-c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()").
+	if (segs == 1)
+		return cake_calc_overhead(q, len, off);
 
-Patch 2 validates the transport header offset computed in cake_overhead().
-When the transport header was never set, skb_transport_offset() returns
-the ~0U sentinel (~65535), which inflates shaper accounting by ~66 KB
-per segment. Furthermore, if preceding egress BPF filters (e.g.
-sch_handle_egress()) or cake classifier actions (e.g. act_bpf trimming
-headers via bpf_skb_adjust_room(BPF_ADJ_ROOM_MAC)) leave the transport
-header stale (bpf_skb_net_hdr_pop() only re-syncs it when it aliased
-network_header), skb_transport_offset() can become negative. Because
-hdr_len was declared as unsigned int, a negative offset wraps to near
-UINT_MAX. Patch 2 checks !skb_transport_header_was_set() and ensures
-hdr_len >= 0. Both hunks date back to commit a729b7f0bd5b ("sch_cake:
-Add overhead compensation support to the rate shaper"), so they share a
-single Fixes: tag and stable range.
+Commit c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()") switched
+cake to retrieve the cached segmentation count via qdisc_pkt_segs(skb)
+instead of calculating it locally for dodgy GSO packets. If an skb with
+segs == 0 reaches cake_overhead(), it skips the segs == 1 early return
+and enters the multi-segment arithmetic:
 
-Changes in v3:
-  - Split the v2 patch into a 2-patch series per Simon Horman and Sashiko
-    AI review so each logical fix carries its own accurate Fixes: tag and
-    matches proper stable tree backport ranges:
-    - Patch 1 Fixes: c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()")
-    - Patch 2 Fixes: a729b7f0bd5b ("sch_cake: Add overhead
-      compensation support to the rate shaper")
-  - Clarify the timing and code paths where header mangling can occur
-    (sch_handle_egress() and cake_classify() before cake_overhead()) rather
-    than inaccurate "post-enqueue mangling" wording.
-  - Link to v2: https://lore.kernel.org/netdev/20260922084124.36858-1-ndaugoing@gmail.com/
+	len = shinfo->gso_size + hdr_len;
+	last_len = skb->len - shinfo->gso_size * (segs - 1);
 
-Changes in v2:
-  - Accurately describe the impact as shaper accounting corruption / stall
-    rather than OOB read past the allocation.
-  - Fix integer underflow when segs == 0 by checking segs <= 1.
-  - Import companion check !skb_transport_header_was_set(skb) from
-    qdisc_pkt_len_segs_init() to prevent unset transport header sentinel
-    (~0U) from inflating packet length to ~66 KB.
-  - Link to v1: https://lore.kernel.org/netdev/20260917122153.62722-1-ndaugoing@gmail.com/
+	return (cake_calc_overhead(q, len, off) * (segs - 1) +
+		cake_calc_overhead(q, last_len, off));
 
-Yuchao Zhang (2):
-  net/sched: sch_cake: fix shaper stall on segs == 0 in cake_overhead()
-  net/sched: sch_cake: validate transport header offset in
-    cake_overhead()
+Because segs is an unsigned 16-bit integer, (segs - 1) underflows to
+65535 (and is promoted to 4294967295 in the 32-bit unsigned arithmetic
+above). This multiplies the per-segment overhead by UINT32_MAX, so
+cake_overhead() returns a length close to 4.29 GB. cake_advance_shaper()
+then charges that length to the shaper, stalling the CAKE dequeue path
+for tens of seconds at 1 Gbit/s, and for minutes to hours at lower rates.
 
- net/sched/sch_cake.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Fix this by returning early with cake_calc_overhead(q, len, off) whenever
+segs <= 1.
 
+Fixes: c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+---
+v3:
+ - Split from v2 into a standalone patch with its own Fixes: tag
+   (c5d34f4583ea) per Simon Horman and Sashiko review.
+ - Link to v2: https://lore.kernel.org/netdev/20260922084124.36858-1-ndaugoing@gmail.com/
+ - Link to v1: https://lore.kernel.org/netdev/20260917122153.62722-1-ndaugoing@gmail.com/
+
+ net/sched/sch_cake.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index dc93267029e7..b0d604a7052a 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1420,7 +1420,7 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
+ 
+ 	WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8));
+ 
+-	if (segs == 1)
++	if (segs <= 1)
+ 		return cake_calc_overhead(q, len, off);
+ 
+ 	/* borrowed from qdisc_pkt_len_segs_init() */
 -- 
 2.53.0
 
