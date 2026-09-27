@@ -1,77 +1,169 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFB53403F1;
-	Sun, 27 Sep 2026 14:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C42B547057;
+	Sun, 27 Sep 2026 14:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790520971; cv=none; b=Ps4aKCuJRYEpfpKNE3x/uy+POdY0VbyCCWfJDRxwTG0FCpXHjjgKITr5KhH90mq1cC7hyjpxUD+KH28+SJweInqH5KysiFR2qxtIrU0N2dA4OeUVjyJpjJlf1CxjVaQUPkQa3HFQaIgYxy+dP/OjrmMZm96Pj2Yps+raJkx+pLw=
+	t=1790521192; cv=none; b=WlS9tQ5hll60pz24uK7P/U2reiEVP+1VnCJnVjWPUhtFMQ/qIm9S6eK8Uz8yd8HFmZxtKyiJAK0PBKVq0ndzJqzsnz9aHQemBEWm4rZb3qI7DLjW/Pbzk2LiUDogxhChy5g8FaiLCFKtxVaPgz/GHv17CoyaDsRJDzeFZHluOKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790520971; c=relaxed/simple;
-	bh=ZcU40FFHJvRddSme+YyOAgkWxq0a822Pw8UlCWr9AeM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=YT2ni7KOR8mLEqxXNU3Jf6k/P2oLIf4EaAu+0hRDlVDOrr0UrXbou00qnIZA3y0+u06mMWV5ry0fnJtfWDu+70kM4sO4u17UswsBhOEAJdKQfLXjJqesv49GfuLpM1G/ppD6iePuGCN5ZucvZieCAhHDEZouQXGuTuxa1SxSu6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=L8oNUjq+; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790521192; c=relaxed/simple;
+	bh=JBL/r1ZccMUeV1Qaj2Qx/DS5xAXu6HXhsfFKQ80Ek4k=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k6yk6GMox2/kY70HFKHCv+QCeCCmwXIRFI2nt972hmyh1jd25tsSIzHqqO8RQ7GUPVUIxH3UKBMqODppSYn3/fYANYpK2Gsjg85FZscnaJ/GaOGXbMLGkuyZOsdkTY42/sisVrP8gxRl4U3l9BVo/ERRnAPZAzpwWojca8ZmgDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjQvu4oL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="L8oNUjq+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=ZcU40FFHJvRddSme+YyOAgkWxq0a822Pw8UlCWr9AeM=; b=L
-	8oNUjq+tcdWjz7jjBOUBgDNCfP9iWtCFyIENykLxe9fdUnujyw6t7EwpEOPt5foT
-	uYMSOYNz+QXrNKcP0YGhayd9ZVdfl7ljWdXwp52XTkHPPnrBKdzIEac6ni/WDuTv
-	3PRmcTUeqS6m1KiOSydqI1GU9KcySA+xeXnCESRBxE=
-Date: Sun, 27 Sep 2026 22:53:53 +0800 (CST)
-From: "jiale yao" <19888972804@163.com>
-To: "Francesco Dolcini" <francesco@dolcini.it>
-Cc: "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>,
-	"Shenwei Wang" <shenwei.wang@nxp.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Fabio Estevam" <fabio.estevam@freescale.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re:Re: [PATCH 2/7] net: fec: manage the netdev lifetime with devres
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20260927143745.GA54546@francesco-nb>
-References: <20260927111005.1035089-1-yaojiale02@163.com>
- <20260927111005.1035089-3-yaojiale02@163.com>
- <20260927143745.GA54546@francesco-nb>
-X-NTES-SC: AL_Qu2SAvmZv0Ao5SeaY+kcn08ShO49XMOyvfoi2YFTc+wEtDDx5D0YcXZsLHvo+tO2Bwe2uhyyaypowcFTQZNHZW/RWTL+AessDjTw6V0abg==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjQvu4oL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A401F000FF;
+	Sun, 27 Sep 2026 14:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790521190;
+	bh=qfO0cOVHwAD+fvjw1GNXhVW+xDr1dAu1fpPZ7dM/atI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bjQvu4oLu4jhIl/qy5KB/Zm4JMMBILb4e6FUEpvsWoS8twB1+9tXZaDlLdajnkPSv
+	 VgICjVUREo7ZHFvWrZI4gCMfgsCeacLOJVKlxI9+EP8oFCvHWjdURaXGd8xTI3GM82
+	 XUohKYjCaHyrWPJIwMbDSWt5GkSb9Pr2+dVR0SqnikqMWD6IXVTgYx3Ha6mtrk8jCz
+	 Ec9lxw9RZkLOxD7gR6rNz3QtYPLr8ne3DLPZ3e1e2/8+bZhb1GA2/7Ajh58kYd/oL1
+	 anNRgmsWtU0MGchZpdkmq696PVOHwziCLrlv7jVi0ycCuUgqxLPEeNLxOHnbBcFuNO
+	 SJlstnCdMxavQ==
+Subject: Re: [PATCH net v11 04/17] rxrpc: Fix lack of short-send handling in
+ rxrpc_kernel_send_data()
+From: netdev-bot+sashiko@kernel.org
+To: dhowells@redhat.com
+Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
+ qotmddnjs@ajou.ac.kr, stable@vger.kernel.org
+Date: Sun, 27 Sep 2026 14:59:49 +0000
+Message-ID: <179052118957.2160803.647680873992562494@kernel.org>
+In-Reply-To: <20260923133706.1496540-5-dhowells@redhat.com>
+References: <20260923133706.1496540-5-dhowells@redhat.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <6db17bb3.2840.1a0e35bb6ca.Coremail.19888972804@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:ZygvCgD312ABLrlq4EVPAA--.48920W
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzQGUzmq5LgHgLwAA3l
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-SGkgRnJhbmNlc2NvLAoKVGhhbmtzIGZvciB0aGUgcmV2aWV3LiBTb3JyeSBJIG1pc3NlZCB0aGF0
-IKGqIEkndmUgZml4ZWQgdGhlIGVtcHR5CmxpbmVzIGJldHdlZW4gdGhlIHRhZ3MsIGFuZCBhcHBs
-aWVkIHRoZSBzYW1lIHRvIHRoZSBvdGhlciBjb21taXRzLgppbiBodHRwczovL2xvcmUua2VybmVs
-Lm9yZy9hbGwvMjAyNjA5MjcxNDQ3NDEuMTMyMDU1OC0xLXlhb2ppYWxlMDJAMTYzLmNvbS8KCkF0
-IDIwMjYtMDktMjcgMjI6Mzc6NDUsICJGcmFuY2VzY28gRG9sY2luaSIgPGZyYW5jZXNjb0Bkb2xj
-aW5pLml0PiB3cm90ZToKPk9uIFN1biwgU2VwIDI3LCAyMDI2IGF0IDA3OjA5OjU5UE0gKzA4MDAs
-IEppYWxlIFlhbyB3cm90ZToKPj4gZmVjX2Rydl9yZW1vdmUoKSBmcmVlcyB0aGUgbmV0ZGV2IGJl
-Zm9yZSBkZXZyZXMgcmVsZWFzZXMgdGhlIG1hbmFnZWQKPj4gSVJRcyB3aG9zZSBoYW5kbGVycyB1
-c2UgaXQgYXMgdGhlaXIgZGF0YSBwb2ludGVyLiBBIGxhdGUgaW50ZXJydXB0IGNhbgo+PiB0aGVy
-ZWZvcmUgYWNjZXNzIHRoZSBmcmVlZCBuZXRkZXYuCj4+IAo+PiBBbGxvY2F0ZSB0aGUgbmV0ZGV2
-IHdpdGggZGV2cmVzIHNvIHRoYXQgdGhlIGxhdGVyIElSUSByZWdpc3RyYXRpb25zIGFyZQo+PiBy
-ZWxlYXNlZCBmaXJzdCBkdXJpbmcgdGVhcmRvd24uCj4+IAo+PiBGaXhlczogMGQ5YjJhYjFjMzc2
-ICgiZmVjOiBVc2UgZGV2bV9yZXF1ZXN0X2lycSgpIikKPj4gCj5yZW1vdmUgdGhlIGVtcHR5IGxp
-bmUsIHRhZ3Mgc2hvdWxkIGJlIGFsbCB0b2dldGhlciB3aXRob3V0IGFueSBlbXB0eQo+bGluZSBp
-bi1iZXR3ZWVuLiBzYW1lIGFwcGxpZXMgdG8gdGhlIG90aGVyIGNvbW1pdHMuCj4+IENjOiBzdGFi
-bGVAdmdlci5rZXJuZWwub3JnCj4+IFNpZ25lZC1vZmYtYnk6IEppYWxlIFlhbyA8eWFvamlhbGUw
-MkAxNjMuY29tPgo+Cj5GcmFuY2VzY28KCkppYWxl
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
+
+Low priority / nit picks for your consideration:
+
+- [Low] The patch adds this sentence to
+  Documentation/networking/rxrpc.rst: rxrpc_kernel_send_data() "returns…
+
+Pre-existing issues:
+- [Low] Documentation/networking/rxrpc.rst says the msg passed to
+  rxrpc_kernel_send_data() must not carry "any flags other than…
+
+--
+
+rxrpc: Fix lack of short-send handling in rxrpc_kernel_send_data()
+
+This makes rxrpc_kernel_send_data() keep looping after a short send from
+rxrpc_send_data() until the iterator is drained. It also drops the len
+argument and uses the iterator count instead. On success the function now
+returns 0 rather than the amount copied.
+
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
+
+> diff --git a/Documentation/networking/rxrpc.rst b/Documentation/networking/rxrpc.rst
+> index 8926dab8e2e60..01ad12fdf3058 100644
+> --- a/Documentation/networking/rxrpc.rst
+> +++ b/Documentation/networking/rxrpc.rst
+
+[ ... ]
+
+> @@ -880,13 +879,16 @@ The kernel interface functions are as follows:
+>       MSG_MORE if there will be subsequent data sends for this call.
+>  
+>       The msg must not specify a destination address, control data or any flags
+> -     other than MSG_MORE.  len is the total amount of data to transmit.
+> +     other than MSG_MORE.
+
+[Severity: Low]
+This is a pre-existing issue, and this patch did not introduce it. Is the
+"any flags other than MSG_MORE" restriction still correct? The in-tree
+caller afs_make_call() passes MSG_WAITALL:
+
+fs/afs/rxrpc.c:afs_make_call() {
+    ...
+	msg.msg_flags		= MSG_WAITALL | (call->write_iter ? MSG_MORE : 0);
+    ...
+}
+
+rxrpc_send_data() also acts on both MSG_DONTWAIT and MSG_WAITALL:
+
+net/rxrpc/sendmsg.c:rxrpc_send_data() {
+    ...
+	timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
+    ...
+wait_for_space:
+	ret = -EAGAIN;
+	if (msg->msg_flags & MSG_DONTWAIT)
+		goto maybe_error;
+	...
+	ret = rxrpc_wait_for_tx_window(rx, call, &timeo,
+				       msg->msg_flags & MSG_WAITALL);
+    ...
+}
+
+This sentence is already being edited here. Could it be changed to list
+the flags that are actually honoured? The same wording is still present
+at the end of the series.
+
+>  
+>       notify_end_rx can be NULL or it can be used to specify a function to be
+>       called when the call changes state to end the Tx phase.  This function is
+>       called with a spinlock held to prevent the last DATA packet from being
+>       transmitted until the function returns.
+>  
+> +     It returns 0 if all the data is queued and a negative error code on
+> +     failure.
+
+[Severity: Low]
+Is "queued" the right word here? Suppose MSG_MORE is set and the data
+does not exactly fill a txbuf. In that case rxrpc_send_data() leaves the
+partly filled txbuf in call->tx_pending and does not call
+rxrpc_queue_packet():
+
+net/rxrpc/sendmsg.c:rxrpc_send_data() {
+    ...
+		/* add the packet to the send queue if it's now full */
+		if (!txb->space ||
+		    (msg_data_left(msg) == 0 && !more)) {
+			...
+			rxrpc_queue_packet(rx, call, txb, notify_end_tx);
+			call->tx_pending = NULL;
+		}
+    ...
+}
+
+At that point the iterator is empty, so the new loop in
+rxrpc_kernel_send_data() returns 0:
+
+		if (msg_data_left(msg) == 0) {
+			ret = 0;
+			break;
+		}
+
+Two examples of this path are rxperf_process_call() sending ZERO_PAGE
+chunks, and afs_make_call() sending the request header before
+write_iter.
+
+So a return of 0 seems to mean the data was taken from the iterator and
+buffered, not queued in the rxrpc_queue_packet() sense. A later patch in
+the series, "rxrpc: Fix sendmsg length", uses the word "buffered" for
+this same state in this document.
+
+A negative return can also now follow a partial transfer. An earlier pass
+of the loop may consume part of the iterator before a later pass fails.
+Should the documentation say so as well?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923133706.1496540-1-dhowells%40redhat.com
