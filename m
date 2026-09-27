@@ -1,76 +1,170 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7940F3B9927
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3383BFADD
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 07:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790494930; cv=none; b=mMcGpJdK5mMze2w4RHnwJ9Q7rWaIsOC/FeQCvKS2i6hyqqOuqxKBa7O7jyA3zgfB57JkVsbuEgzLBuoCaP9hVAL9GZ9ATkRtAarYm32KY+LUkxQ/y9ZyRp0QkcGlvYlYVQ0fAlv3oNiM284haPf+43ZFfUVB6oT5+bq1vCxbV+Y=
+	t=1790495012; cv=none; b=nhmKbb+i7W6HgehU5fBIUcf5pWBU150rULD5TdfU+DPUwS8jLjJLqQq8PNcb/HoGi8JiRM4reih9SdkebudO9XNU40mLNg+8TbuyZD/sidCDOnOzhmpESbKQur73eBS9gUHdwqLn4Pzvk3/DEbyHj4kocIWTReq6afI9YQWMRVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790494930; c=relaxed/simple;
-	bh=75A9M5TgIoM2gIrevlAnIGQ7eccqokJJNc5o6u/pqks=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=efhiQSf9Gn9Kp+HdmOfPa6WQ3quIAEp4rLkJ4fzvJpGpyEj7iOnLAscN2LaS9+POwHGeXIPKkVrc0UkvI0yHx/zW7MN+OjFYo4LrW6oOcsCFlu0rbK0/BfMl61sFZg38ZXLVytxicMEuXqE475H5mih6NgEIpPipXLdf9q+dkDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab4f652f9bso2528789b6e.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:42:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790494924; x=1791099724;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+dLWqk9Lfa1A8/fcjUQdJzQN+AEtevT8Cachr1mDVq0=;
-        b=Ck+AbUbWBGdUaNDy+gfwA0hgHe150KbgeqrK4AZpSMoAxNWNyIOfTEhdWrIBJyBiXr
-         gDzs0iwN0dlRt0ZqNq/4OjxniSc2jTA9jpM3gTUhqMcNPZ7sC7ECsu5kqSOCK7ixsdkb
-         LMr5QBneSOTVpAAONyjMUijkuG6ubI8uS3kgLtyPZMjiQrsM3Ashjva7xm3u+zAGCnjv
-         +JD22Gwl6seiNloJ1pOlznjxnKaa1g+dfxWd1L/x+cuQiWSepj5Hyuslw0/ih6MeVntc
-         RgIQzF1RZEGxxibS5LPt8q2q+LGxVIC4oYIEDBgiUjlZHu1Nyx0CCFZSwh0rN0nQLsiC
-         Y8yA==
-X-Forwarded-Encrypted: i=1; AKwUvBwoRm9k+ogOSc7GWBOiJjiCtpU5ywrlfDUc+ycMlOse2biy9WuDOxR/COWjxvwqi9hp4siggM4=@vger.kernel.org
-X-Gm-Message-State: AFuF++l68zlOtqe2kM2VSSR0sMaU9JBwywa4FkmdJi1VDY4wbaVAG1d8
-	+zGocytL4f0SxsMIHZdBoAE7Men+LrgfkKcucaRgTXt/v9xjs1tyPCDwHGPOffsTCV1rnYnSE9x
-	tDcTEOnDfNBGhl5e2j3Uq24VwCHRtm7gLZBZQhDo7oLERn0K10DgzTUvmyLM=
+	s=arc-20240116; t=1790495012; c=relaxed/simple;
+	bh=ZbJO8Gtrr3QowEw+MFdg2SPLU/ydrrRt2AYrsm/huDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qpgGu7pWIKQc/3FGRxP+R06wGepU7L5Ta+6JiqAqeZd70JHPcey3xiLcD43qPg8Ef14kAQ4RCwm4ze+NSAnevLE7TJP1LZJie/YPx9ofK7NVIvU38HuUzkM/XJUbGSpslVMc8b1CqWGq0i/uMc34cWfFeKzQz909mrguE6Wi7xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lolli.tech; spf=pass smtp.mailfrom=lolli.tech; dkim=pass (2048-bit key) header.d=lolli.tech header.i=@lolli.tech header.b=ZkSjVc6J; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=OIKR+Ycz; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lolli.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lolli.tech
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=lolli.tech header.i=@lolli.tech header.b="ZkSjVc6J";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="OIKR+Ycz"
+DKIM-Signature: a=rsa-sha256; b=ZkSjVc6JvujELKTTw8Rg505Q85zmMnPqB6GGGRZnZ6Rz4u2Gh/vUaRWBrizCO0NOCvKTf/3Ews8Y7ByeGH23NoM+1lhaW4wtJJ1U0uoXJ5TYwbk0BWOMTIU/cBg4QT+QCIoC+ydXFUZCMi07eAiw1UXH9B673oZuOoKiy0DpmajQbtN/49WUT2HiEBEEjjpJ9yMM7VXPF0J2QcHOHgxF2Esm9jGJtRZ35UG8o1Wzj/bqK/74qNPzNyzX94aOKYR6b0W6wxWLRO6rcZcbfSOMPEEMzhy9JGHU/CxBtbFd2P4VbMvwIAzzRlWxwrpEqbH7Jhq86tu5yIVgnij4MWFkag==; s=purelymail3; d=lolli.tech; v=1; bh=ZbJO8Gtrr3QowEw+MFdg2SPLU/ydrrRt2AYrsm/huDQ=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=OIKR+Yczu5cgkTudlEkr7RCHcU5fOL0v+kFFZRWRW5/ocNhJC6rRhP9TTnxTFDZnT0IbwEGgIVIHOXl7Sfx7qS7kpDzO0R3Th8D2WmUvZTka04YkfJ3hia6xsfmUXO82ehvtx/dTLIXJPeotqSceth5EaPZpONblmf1DLzsEUDWD2/fS68cMqKZK9UAu5a+lYvjNW0UJzBWUR5V6VJeVSlqHPnAY3ePzJcGXCLnS2SvpWczhilAW41pMJuBZFJajApSxWyQKtGDNmIzt68j6pe7pH6KSDZiLnQ1zKMuEzsOldqHZzND9YWa1PTNrKBVA8etGEWT/h9iFn4eKjv1O0g==; s=purelymail3; d=purelymail.com; v=1; bh=ZbJO8Gtrr3QowEw+MFdg2SPLU/ydrrRt2AYrsm/huDQ=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 1437734:55302:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Authentication-Results: purelymail.com; auth=pass
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1801541329;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sun, 27 Sep 2026 07:43:08 +0000 (UTC)
+From: lollipopkit <a@lolli.tech>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	io-uring@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lollipopkit <a@lolli.tech>,
+	stable@vger.kernel.org
+Subject: [PATCH] io_uring/cmd_net: end TX_TIMESTAMP multishot when the CQ is full
+Date: Sun, 27 Sep 2026 15:42:06 +0800
+Message-ID: <20260927074206.65427-1-a@lolli.tech>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:308e:b0:4d6:9232:b3bc with SMTP id
- 5614622812f47-4d72cd363ffmr13140368b6e.51.1790494923975; Sun, 27 Sep 2026
- 00:42:03 -0700 (PDT)
-Date: Sun, 27 Sep 2026 00:42:03 -0700
-In-Reply-To: <arjFl-vgg5vz1WWN@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab8c8cb.e548f532.1ca396.0037.GAE@google.com>
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
- (2)
-From: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
-To: azpijr@gmail.com, davem@davemloft.net, dhowells@redhat.com, 
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
-	linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	marc.dionne@auristor.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-Hello,
+SOCKET_URING_OP_TX_TIMESTAMP arms an EPOLLERR apoll multishot and, on
+each error queue edge, posts one 32 byte aux CQE per timestamp skb. Aux
+CQEs have no overflow backing, so io_uring_cmd_post_mshot_cqe32() fails
+once the CQ ring is full. The loop then stops, splices the unprocessed
+skbs back onto sk_error_queue and returns -EAGAIN.
 
-syzbot tried to test the proposed patch but the build/boot failed:
+-EAGAIN is IOU_RETRY, so the request goes idle until the next poll
+event. io_arm_apoll() forces EPOLLET and draining the CQ does not re-run
+the command, so the spliced-back timestamps stay queued until an
+unrelated later timestamp produces a new edge.
 
-failed to apply patch:
-error: corrupt patch at line 25
+End the multishot when a CQE cannot be posted, as multishot poll and
+recv already do. There is no partial result to report, so complete with
+-ENOBUFS: no CQ space is left for the timestamp CQEs. This command does
+not use provided buffers, so the value cannot be confused with a buffer
+ring running empty. The terminal CQE still reaches userspace because
+request completions can go to the overflow list. The application sees a
+CQE without IORING_CQE_F_MORE, which it already has to handle, and the
+first issue of the re-armed request delivers the queued timestamps.
 
+A timestamp that cannot be extracted keeps its current behaviour.
 
+This was found with LLM assistance while reviewing io_uring multishot
+handlers for the pattern behind a RECV_ZC stall reported earlier (see
+Link), and confirmed with a reproducer on v7.3-rc2 and an A/B run of
+this patch.
 
-Tested on:
+Fixes: 9e4ed359b8ef ("io_uring/netcmd: add tx timestamping cmd support")
+Link: https://lore.kernel.org/all/010001a0cd914529-23df2f94-bbe0-49cd-ae5d-=
+05922356fa12-000000@email.amazonses.com/
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-6-sol
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: lollipopkit <a@lolli.tech>
+---
+Reproduction and validation (measured on this revision):
+- Loopback, one process, software timestamps, CQE32 ring with 16 CQ
+  entries, a burst of 200 SO_TIMESTAMPING sends. The filling edge
+  delivers exactly 16 CQEs. With no further sends nothing more arrives,
+  although the application drains the ring and keeps entering io_uring;
+  more timestamped sends release them.
+  A burst smaller than the ring leaves nothing over and does not stall.
+- A/B in a KVM guest on axboe/io_uring-7.3 (a3bdf68feecc) + this patch,
+  with the new return behind a test-only runtime switch so both arms run
+  the same binary, 10 runs per arm, identical numbers on every run:
+    switch off (upstream behaviour): 10/10 stalled, 184 timestamps left
+      queued, no terminal CQE
+    switch on (this patch): 10/10 terminal CQE with res -ENOBUFS; after
+      re-arming, the queued timestamps were delivered
 
-commit:         a7bfaba4 ipv6: fix prefix route expiry in modify_prefi..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
-dashboard link: https://syzkaller.appspot.com/bug?extid=89001660f14fb7684c83
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=134df2c9580000
+ io_uring/cmd_net.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/io_uring/cmd_net.c b/io_uring/cmd_net.c
+index 7cd411fc4f33..90d4ec7cc761 100644
+--- a/io_uring/cmd_net.c
++++ b/io_uring/cmd_net.c
+@@ -69,8 +69,8 @@ static inline int io_uring_cmd_setsockopt(struct socket *=
+sock,
+ =09=09=09=09  optlen);
+ }
+=20
+-static bool io_process_timestamp_skb(struct io_uring_cmd *cmd, struct sock=
+ *sk,
+-=09=09=09=09     struct sk_buff *skb, unsigned issue_flags)
++static int io_process_timestamp_skb(struct io_uring_cmd *cmd, struct sock =
+*sk,
++=09=09=09=09    struct sk_buff *skb, unsigned int issue_flags)
+ {
+ =09struct sock_exterr_skb *serr =3D SKB_EXT_ERR(skb);
+ =09struct io_uring_cqe cqe[2];
+@@ -83,7 +83,7 @@ static bool io_process_timestamp_skb(struct io_uring_cmd =
+*cmd, struct sock *sk,
+=20
+ =09ret =3D skb_get_tx_timestamp(skb, sk, &ts);
+ =09if (ret < 0)
+-=09=09return false;
++=09=09return ret;
+=20
+ =09tskey =3D serr->ee.ee_data;
+ =09tstype =3D serr->ee.ee_info;
+@@ -98,7 +98,9 @@ static bool io_process_timestamp_skb(struct io_uring_cmd =
+*cmd, struct sock *sk,
+ =09iots =3D (struct io_timespec *)&cqe[1];
+ =09iots->tv_sec =3D ts.tv_sec;
+ =09iots->tv_nsec =3D ts.tv_nsec;
+-=09return io_uring_cmd_post_mshot_cqe32(cmd, issue_flags, cqe);
++=09if (!io_uring_cmd_post_mshot_cqe32(cmd, issue_flags, cqe))
++=09=09return -ENOBUFS;
++=09return 0;
+ }
+=20
+ static int io_uring_cmd_timestamp(struct socket *sock,
+@@ -135,7 +137,8 @@ static int io_uring_cmd_timestamp(struct socket *sock,
+ =09=09skb =3D skb_peek(&list);
+ =09=09if (!skb)
+ =09=09=09break;
+-=09=09if (!io_process_timestamp_skb(cmd, sk, skb, issue_flags))
++=09=09ret =3D io_process_timestamp_skb(cmd, sk, skb, issue_flags);
++=09=09if (ret)
+ =09=09=09break;
+ =09=09__skb_dequeue(&list);
+ =09=09consume_skb(skb);
+@@ -145,6 +148,12 @@ static int io_uring_cmd_timestamp(struct socket *sock,
+ =09=09scoped_guard(spinlock_irqsave, &q->lock)
+ =09=09=09skb_queue_splice(&list, q);
+ =09}
++=09/*
++=09 * Aux CQEs cannot overflow and the poll is edge triggered, so nothing
++=09 * re-runs the command once the CQ drains. End the multishot instead.
++=09 */
++=09if (ret =3D=3D -ENOBUFS)
++=09=09return -ENOBUFS;
+ =09return -EAGAIN;
+ }
+=20
+
+base-commit: a3bdf68feecc57af5c11fb599f860ac9790ffad9
+--=20
+2.54.0
 
