@@ -1,51 +1,70 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1A62949E0;
-	Sun, 27 Sep 2026 14:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653222F7F01;
+	Sun, 27 Sep 2026 14:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790520592; cv=none; b=REUfgwu5fiBAdfwdoXXovp0KWFJsH8XApQyQK1fZBZEzlMGyKkEpfExlJrS4x9oAdIcAnD4P9GdSS6kqMualE/n26VDpY/2yNUAnGCecoUxNCAkUmZCvNtwfciT+0Y6D5gRYsmBaD5lOI/6fjcK/c0pv5g83vmhSBsjRID8ZTH8=
+	t=1790520679; cv=none; b=NhAaRgSQTE+W/aSoxc7fbYyyptjnYKxEjZpZDmuZhHX19LP78+ulC2JiKjqThO7oxuMY50KMBgqMRQ5keDCeaeFCVRrf66cT0eC4xqKsGSWcAvdiMTAAuVnaBT2fl8kAEIJmNVk0s6Jm4VrK/8+wxPr0fT4r1lXD2yUA6aKVRC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790520592; c=relaxed/simple;
-	bh=PUe3957DnGN33LCRPpEhFs+Radc1/nniYEfXmRNK7AQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HNotxkrn7gwwYz9oIai9rniPVwpVjKIwiWfFNX/m9vJSANDzQHcYztzGtkMWbS8OQrsKoIs19LmL8wWsxpnUR6dW/7mmy6Z98H/IyFKeD9Hqf4Wg+qCyd/41aaO1y/5yOimQbfBK0zyVWgNu1DwhFmkWj30k71NBwFjnL4q0h8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kvp8RORE; arc=none smtp.client-ip=117.135.210.3
+	s=arc-20240116; t=1790520679; c=relaxed/simple;
+	bh=TK1gImBMhRgBTBDF7HKLfd+Byj7VBVGMv9S3OnhG6bg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sgH6k8/ySHK7BUr6zWKYg7abQMv02ZnGF1H+O/eSbDomFG629XnvfxJ/jnHweVvS332sAWefHnUCTG2kR7k6R0F788J8rO+zYeWTtmwjUqii/qnIKZ7zvJIoyeik4Yw5M9p8we8ZLRhMKQuckuMOJopzNT8D5MGqLiXkWWmXIP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=J1x87me6; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kvp8RORE"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="J1x87me6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ib
-	YWpP2OD5um9Lhj3sBU8JS6T73jA2kttEYd9+/YHAU=; b=kvp8ROREZ4dZUH9+Z5
-	PAOHM7wNDyUcTpher80CVJv6EOajlX1EEbddjfk6VD2AcHXLuiEAQ7DLe9PLcijI
-	6b/HEpSMRLyKGEQS8a6DyaGjpEJMRj4T6b4Mc6XG7tkUFmL/ZQIQFluWjnopsoqo
-	/fLrjPn+YjvONPOWIVuouK87c=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/X
+	MHc5GIuhjpObJjerDu36k2PUDjUw5VDqwU1ib8loI=; b=J1x87me6ZZu7bVUysv
+	gtwLlMGrw9y64gZnN4bKsnKEKUcBTGYpGnqiHB6/Wi1e5Ypuu/hN3rc9bsINTFqr
+	DFCo+ZdSHdzJh9xLyF3KfWCDrI6i+cwapFrR60l2iYbkWiL7nUOTzRk1RaH0hy+L
+	RHEM7FxgzonXHIA2eD/yUsvP8=
 Received: from pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD330OOLLlqjwJIBA--.47706S4;
-	Sun, 27 Sep 2026 22:47:47 +0800 (CST)
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD330OOLLlqjwJIBA--.47706S2;
+	Sun, 27 Sep 2026 22:47:44 +0800 (CST)
 From: Jiale Yao <yaojiale02@163.com>
-To: Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Paul Barker <paul@pbarker.dev>,
+	Byungho An <bh74.an@samsung.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Soren Brinkmann <soren.brinkmann@xilinx.com>,
 	Fabio Estevam <fabio.estevam@freescale.com>,
-	imx@lists.linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>,
+	dingtianhong <dingtianhong@huawei.com>,
+	Jiancheng Xue <xuejiancheng@hisilicon.com>,
+	Dongpo Li <lidongpo@hisilicon.com>,
+	Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vipul Pandya <vipul.pandya@samsung.com>,
+	Girish K S <ks.giri@samsung.com>,
+	Siva Reddy <siva.kallam@samsung.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jiale Yao <yaojiale02@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
-Date: Sun, 27 Sep 2026 22:47:35 +0800
-Message-Id: <20260927144741.1320558-3-yaojiale02@163.com>
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>
+Subject: [PATCH v2 0/7] net: ethernet: release managed IRQs before freeing netdevs
+Date: Sun, 27 Sep 2026 22:47:33 +0800
+Message-Id: <20260927144741.1320558-1-yaojiale02@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260927144741.1320558-1-yaojiale02@163.com>
-References: <20260927144741.1320558-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,60 +72,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD330OOLLlqjwJIBA--.47706S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tFW3GF1ftw15JrW7uFy7trb_yoW8Wry5pF
-	WDJay09rykGr17W3WDJr48AFy5C3y7t34DW3yxK3yfZ3s0yr1qgr1kXFWj9r4rZrW8uF1S
-	gw4jvryfZ3Z8XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pKg4h7UUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzRM4cmq5LJPHAwAA38
+X-CM-TRANSID:_____wD330OOLLlqjwJIBA--.47706S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4xZrykCFWDur4kWr43Awb_yoW8tr4Dpr
+	WrtFW3urn7JrWaqws7CF1IvF95AF4fKF4Ykr47tw4rZw15AryDtrW7WFyFvFW5tFZ7AF1j
+	qr4Yywn3u3WDu37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRaiiDUUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzhA4cmq5LJBNGgAA3s
 
-fec_drv_remove() frees the netdev before devres releases the managed
-IRQs whose handlers use it as their data pointer. A late interrupt can
-therefore access the freed netdev.
+Several Ethernet platform drivers request interrupts with
+devm_request_irq() but allocate and free their netdevs manually.
+Device-managed resources are released only after the driver's remove
+callback returns, so these callbacks free the IRQ data while the interrupt
+handlers can still be invoked. A late or shared interrupt in this window
+can dereference freed memory.
 
-Allocate the netdev with devres so that the later IRQ registrations are
-released first during teardown.
+For six drivers, make the netdev allocation device managed. Since each IRQ
+is requested after its netdev is allocated, devres ordering releases the
+IRQ before the netdev. SXGBE also keeps its hardware operations object
+alive through the same ordering because its handlers dereference that
+object directly.
 
-Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
----
- drivers/net/ethernet/freescale/fec_main.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+RAVB takes a separate path because its ndo_stop() participates in runtime
+PM teardown and its remove callback can encounter a resume failure before
+unregister_netdev(). Keep its netdev manually managed, place its IRQs in a
+dedicated devres group, and explicitly release that group after
+unregistering the netdev. On a resume failure, continue the software
+teardown without an unmatched runtime PM put.
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 794ec427b0ee..23e794a31ce8 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5219,8 +5219,9 @@ fec_probe(struct platform_device *pdev)
- 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
- 
- 	/* Init network device */
--	ndev = alloc_etherdev_mqs(sizeof(struct fec_enet_private) +
--				  FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
-+	ndev = devm_alloc_etherdev_mqs(&pdev->dev,
-+				       sizeof(struct fec_enet_private) +
-+				       FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
- 	if (!ndev)
- 		return -ENOMEM;
- 
-@@ -5480,8 +5481,6 @@ fec_probe(struct platform_device *pdev)
- failed_phy:
- 	dev_id--;
- failed_ioremap:
--	free_netdev(ndev);
--
- 	return ret;
- }
- 
-@@ -5522,7 +5521,6 @@ fec_drv_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 
- 	fec_enet_deinit(ndev);
--	free_netdev(ndev);
- }
- 
- static int fec_suspend(struct device *dev)
+Each patch handles one driver and is independently buildable.
+
+Changes in v2:
+- Keep commit message tags together without blank lines between them, as
+  requested by Francesco.
+
+Jiale Yao (7):
+  net: macb: manage the netdev lifetime with devres
+  net: fec: manage the netdev lifetime with devres
+  net: hip04: manage the netdev lifetime with devres
+  net: hisi_femac: manage the netdev lifetime with devres
+  net: hix5hd2: manage the netdev lifetime with devres
+  net: ravb: fix resource teardown ordering
+  net: sxgbe: manage IRQ data lifetimes with devres
+
+ drivers/net/ethernet/cadence/macb_main.c      | 17 +++++-------
+ drivers/net/ethernet/freescale/fec_main.c     |  8 +++---
+ drivers/net/ethernet/hisilicon/hip04_eth.c    |  4 +--
+ drivers/net/ethernet/hisilicon/hisi_femac.c   | 15 +++++------
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 15 +++++------
+ drivers/net/ethernet/renesas/ravb_main.c      | 23 +++++++++++-----
+ .../net/ethernet/samsung/sxgbe/sxgbe_main.c   | 26 +++++++------------
+ 7 files changed, 49 insertions(+), 59 deletions(-)
+
 -- 
 2.34.1
 
