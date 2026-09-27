@@ -1,159 +1,153 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2CC145B27
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 08:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8736339B48D;
+	Sun, 27 Sep 2026 08:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790497134; cv=none; b=Xv+EoylVE1MM/jDxm28WYl3E3gJsQos4W5CThn+67fLdHwt6zDXghDsn9ZiJ1Jor7Z5LPhkW5a2xiZ1HSPhGlo2wJ+a14++GV6vZ7CosANfxPokSSBWguHH5Iws+hRoZ18Rs8lniO35bhjp91eR/P4fxRxMimzbawb7Ui0BhWg8=
+	t=1790497161; cv=none; b=ErpkuXjy6qYSGZM1N0S4d4OM5/VXpuC9+A5QmjZCXwsfSY/5QqlU8pI3Mrc7IH8z02Vw4wD9XOU1ekemRXsxjJZUGMjA9bYgrWeujHDxsQgvea16aHcnXwKIGw2XrxNLCAZ1hKtOeu4WUnJ/iudUyaHAh3T5u2LigvMeRjJQUY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790497134; c=relaxed/simple;
-	bh=tnuxZHiMDP7NlbhxQnE94F7KWiJbmmUqD0qtt4RN/nY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WI+1RgzhXhugKgRMiw9sQGojDE/8dHhIx+JceaSBe6WFEzNqapLtp5tLNcldzNKXxt1v89p+CpDFWTIviifFvfMVb2LmnSewtVAIc3Iepvva+eaBSVlOPGoluxZiqOiCbP18W6SEONiWR+9sRVUp/ND7D81LuMn6UWOrWc2ZJGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C/sIZyTX; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790497161; c=relaxed/simple;
+	bh=Eerh34NEDalT7cOEsgMj+oWM6IMiwMDKuegRj+hdGDM=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=OezF9RZZmp/gMMT8YULjNo/kkRKDCmmGXUB7dplRaebiqb88Mn2gswHXJKKfcWsVg6l1P+E0xjkt3FZ4Oyc8V8WO2ilBwmaVM5e+RGWmE32kOHfKeZ7CzEwyKJQCM0rO0nlGc96mbmAqjeR6OX/AnBI2wJiCsicRJ99RFX/NqdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=vQLlBTJ4; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C/sIZyTX"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-344213c95bdso21124eec.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 01:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790497133; x=1791101933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d22dLlUUYyImrNJb1bwxtlpRx+qcfWK6QMtWMrfJRas=;
-        b=C/sIZyTXbWFlry9svumX8/IQXAreIq4EgfkG0uoZCfgcN5cpjjdjhuE3LcV3LFiV4/
-         dpvMkqD7iB2R8H6k2pBXteI1DhIMeAReDqJqEF8iq68dnIT1EwE865etPvGVKbhyiUtG
-         GnlkKCiJQ0DWzZiIvmaOCV2Q6DgaQIiaqKgRjGtQv5HfipBC9fDD06YTgmFF1LmRTw/c
-         mNYuui0eEkfRu0g80P1/b69KMTlaNhKKxF6Pny3CkCi/I0wlGhqCWeVZpPEocfUHXhKY
-         yWUQ79ecVesBMynHk8Jq2e8grTwTu1VSvaI46V36kL17K/SucNE1qfrByvJ/NY1D/dKt
-         Nglw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790497133; x=1791101933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=d22dLlUUYyImrNJb1bwxtlpRx+qcfWK6QMtWMrfJRas=;
-        b=gSRrp+HuAqk1u4mruJQsjmWPXxsgd8p4/+stgjAxMP/Vz93s+rNmL2Rdz7x9mSh/gH
-         Z3nP+f6crkRFz/mtE8RBunPN6f5G2xyT8g3IqF2Pyb+J3WLm/sPkw/T5jtoNeysE9nRA
-         d50juh4P053bEwGD2J0KrvOHXAm5iReolVkPJv2gq+G5jzK1vT91y6S48jIZOjyiRKcm
-         3A7wkZbbIXaWL6HBrVaLg+oWhWy5jYn4Cs+x/n/OAiYs3AIPBTf6kqk1BZJO6Ld3Mb7K
-         v8z8adMu7spPosEtKviyq9/WaAWKg4lMMXWmNdXvq7w+HF8Ug7dhJAp+sYz9mTDPyaO1
-         7UHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBybZzfwPgeAaX6XWNyfu5VLfGEDHpXTKLz3nz0Du33EUo4iPjNmy/IEyMvLDxOA/mcBMzRkLkM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ1YFZfhkFaK7nukILRhhZZWXzVWgGmE5sienEXOHYxt7lqMTrU
-	hnCJ+t6Qovg+j1tKebjtkPPUy3jUeBr9xJkfGG/0ahmrInBe9Sn4zlXc
-X-Gm-Gg: AYBFou1O1GSIPcityTAAnpcd+E2S6fKv5NZTsiq4o5duBixqLbrdPJgXSR/c4SdC/oF
-	yZ9Vlt2PAx96dA48eCe5VFu/fje3IZe6u98QMclkLYxYhFRNpP9gxrFunOnj+VuMc5TJtj6gt0v
-	Ue3wnVFytSpRD1vwEG8ERJjmyoOnOAUzt7P16L3ymlFj/byPopPpDDsZwyvAl6XlMWWuJTxTkeu
-	cGhezX/bW//L7BMqEaFuKVr+kMaWa5GWF8SsvWVnJmxPhEuy285LYVPWnYE8VKRZMSOIuyI+Z91
-	8suBloRbjJ30q/ER7yYjvVY8EncgG2q4oGVZWj9/dwsUeb0h6qg1D5wg3TRNL7MmAlQEgYoR7wi
-	upWm/TET1xHfkA9VmynNGTmR0bu9TSkQVLOvKUPuiBLaUdiflE55pdrE0Hvj0rEtYmdmBxSHpKx
-	WN1ZcyNJODvkTdcJI76rWOoSTKLjLRWOhtg2xUQ2gy/G2lD4mSbt1F5I+vfY4LI8i5EZ9AMe73S
-	KfLxla0l/Ddo6VNdihA5AE0Oe4PTXYrdXmeeLqSxjTJH3Hz7fLV5vgoJQZT/qoru7h8egEEp3T/
-	5Bjx
-X-Received: by 2002:a05:7301:dd97:b0:33e:6a79:5a81 with SMTP id 5a478bee46e88-3427179721dmr7985570eec.1.1790497132522;
-        Sun, 27 Sep 2026 01:18:52 -0700 (PDT)
-Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144172de6sm31192132eec.9.2026.09.27.01.18.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 01:18:51 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] rxrpc: Serialize client connection IDR updates
-Date: Sun, 27 Sep 2026 16:18:45 +0800
-Message-ID: <20260927081845.3696101-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="vQLlBTJ4"
+Received: by dvalin.narfation.org (Postfix) id 30792202F3;
+	Sun, 27 Sep 2026 08:19:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1790497151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=He0WY3jCbriwnigCsrMUly3CG2kXHpH728uQPwmsPaI=;
+	b=vQLlBTJ4eC3l+pNRvSFlUaxIVfk5Hojnyeh3ymiRZ75iTAVtyFWl1fMleSfdhNHUM2lP69
+	Vq8wfCCoINFEiQdFKqfuZUNwQIvHLdK+CD5zMUE7dWfc4Xp4kqvBafj9FJ7IR37mVCtY1J
+	yd9/npehRVseGciIjGl4GkWnW4+BxaA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] batman-adv: Close OGM aggregation before
+ transmission
+From: Sven Eckelmann <sven@narfation.org>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: Marek Lindner <marek.lindner@mailbox.org>, 
+ Simon Wunderlich <sw@simonwunderlich.de>, 
+ Antonio Quartulli <antonio@mandelbit.com>, 
+ Sven Eckelmann <sven@narfation.org>, b.a.t.m.a.n@lists.open-mesh.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260926172600.2394088-1-nicoyip.dev@gmail.com>
+References: <20260926172600.2394088-1-nicoyip.dev@gmail.com>
+Date: Sun, 27 Sep 2026 10:19:00 +0200
+Message-Id: <179049714090.25414.9706892666916736240.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4389; i=sven@narfation.org;
+ h=from:subject:message-id; bh=Eerh34NEDalT7cOEsgMj+oWM6IMiwMDKuegRj+hdGDM=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDFk7LpZHiNucl+29Nt84vbqNa/Lx+6uNAjepnhXpvduZ9
+ 0pxEufkjlIWBjEuBlkxRZY9V/LPb2Z/K/952sejMHNYmUCGMHBxCsBEEm8zMqx3Wzv90rLK9E07
+ 01n6W1PdVtQ7lgRdb652agvdqKt2/CYjw2mrpljNztVLGjl/nmWV/plxinXZsXJJKy07ZRGxpvQ
+ z/AA=
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-Client connection allocation runs in the local endpoint's I/O thread,
-but the final connection reference can be dropped by another thread.
-Connection cleanup then calls rxrpc_put_client_connection_id() directly
-or from a workqueue, without synchronizing with the I/O thread.
+Thanks for the fix.
 
-The I/O thread can be traversing or updating local->conn_ids in
-idr_alloc_cyclic() while a cleanup worker calls idr_remove() on the same
-IDR. The removal can change or retire a radix-tree node still being used
-by the allocator. Concurrent removals are also possible. These
-unsynchronized updates can corrupt the IDR and crash the kernel.
+Please don't submit batman-adv changes to netdev directly. And please send the
+patch also to the person which introduced the problem. You can use tools like
+`b4 prep --auto-to-cc` or just the underlying ./scripts/get_maintainer.pl 
 
-KCSAN reported:
+    $ b4 mbox 20260926172600.2394088-1-nicoyip.dev@gmail.com
+    $ ./scripts/get_maintainer.pl 20260926172600.2394088-1-nicoyip.dev@gmail.com.mbx
+    Marek Lindner <marek.lindner@mailbox.org> (maintainer:BATMAN ADVANCED)
+    Simon Wunderlich <sw@simonwunderlich.de> (maintainer:BATMAN ADVANCED,blamed_fixes:1/1=100%)
+    Antonio Quartulli <antonio@mandelbit.com> (maintainer:BATMAN ADVANCED)
+    Sven Eckelmann <sven@narfation.org> (maintainer:BATMAN ADVANCED,blamed_fixes:1/1=100%)
+    "Linus Lüssing" <linus.luessing@c0d3.blue> (blamed_fixes:1/1=100%)
+    b.a.t.m.a.n@lists.open-mesh.org (moderated list:BATMAN ADVANCED)
+    linux-kernel@vger.kernel.org (open list)
 
-  BUG: KCSAN: data-race in node_tag_clear / radix_tree_delete_item
+This change should not go directly to net.git. The target tree must be
+batadv.git
 
-  read (marked) to 0xffff9d03804b9fd0 of 8 bytes by task 109 on cpu 1:
-   radix_tree_delete_item+0x132/0x160
-   idr_remove+0x32/0x50
-   rxrpc_put_client_connection_id+0x53/0xe0
-   rxrpc_kill_client_conn+0x7d/0x190
-   rxrpc_clean_up_connection+0x193/0x370
-   rxrpc_put_connection+0x3d9/0x3e0
-   rxrpc_destroy_call+0x192/0x2e0
-   process_one_work+0x325/0x710
-   worker_thread+0x31d/0x5c0
+    $ ./scripts/get_maintainer.pl --scm 20260926172600.2394088-1-nicoyip.dev@gmail.com.mbx
+    [...]
+    git https://git.open-mesh.org/batadv.git
+    git git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 
-  write to 0xffff9d03804b9fd0 of 8 bytes by task 97 on cpu 0:
-   node_tag_clear+0x7a/0x110
-   radix_tree_iter_tag_clear+0x47/0x60
-   idr_alloc_u32+0x13e/0x1a0
-   idr_alloc_cyclic+0x7a/0xf0
-   rxrpc_connect_client_calls+0x375/0xa40
-   rxrpc_io_thread+0x79c/0xe20
+The last tree is irrelevant for you because it is really unlikely that Linus
+Torvalds will apply your patch directly.
 
-Serialize allocation and removal with the IDR's existing lock. Both
-paths run in process context and allocation already uses GFP_ATOMIC,
-so no additional lock or allocation changes are needed. RCU-protected
-lookups remain unchanged.
+> The OGM send worker leaves its forwarding packet on forw_bat_list until
+> after batadv_iv_ogm_emit() returns. Aggregation holds forw_bat_list_lock,
+> but emission reads and clones the packet without that lock.
+> 
+> CPU 0 can therefore start emitting a queued packet while CPU 1 takes the
+> list lock, finds the same packet and appends another OGM. The sender can
+> observe the new packet length before the corresponding direct-link flag
+> is set, or clone the skb while its length and payload are being updated.
+> This can transmit an OGM with incorrect flags or inconsistent data.
+> 
+> KCSAN reported:
+> 
+>   BUG: KCSAN: data-race in batadv_iv_ogm_queue_add / batadv_iv_send_outstanding_bat_ogm_packet
+>   write to 0xffff888100fedcf8 of 2 bytes by interrupt on cpu 1:
+>   read to 0xffff888100fedcf8 of 2 bytes by task 70 on cpu 2:
+>   value changed: 0x00c0 -> 0x00d8
 
-Fixes: 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O thread")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/rxrpc/conn_client.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Is there a reproducer and where can I find it?
 
-diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
-index 48519f0de185..93e08a13a236 100644
---- a/net/rxrpc/conn_client.c
-+++ b/net/rxrpc/conn_client.c
-@@ -45,7 +45,9 @@ static void rxrpc_activate_bundle(struct rxrpc_bundle *bundle)
- static void rxrpc_put_client_connection_id(struct rxrpc_local *local,
- 					   struct rxrpc_connection *conn)
- {
-+	idr_lock(&local->conn_ids);
- 	idr_remove(&local->conn_ids, conn->proto.cid >> RXRPC_CIDSHIFT);
-+	idr_unlock(&local->conn_ids);
- }
- 
- /*
-@@ -162,8 +164,10 @@ rxrpc_alloc_client_connection(struct rxrpc_bundle *bundle)
- 	if (!conn)
- 		return ERR_PTR(-ENOMEM);
- 
-+	idr_lock(&local->conn_ids);
- 	id = idr_alloc_cyclic(&local->conn_ids, conn, 1, 0x40000000,
- 			      GFP_ATOMIC | __GFP_NOWARN);
-+	idr_unlock(&local->conn_ids);
- 	if (id < 0) {
- 		kfree(conn);
- 		return ERR_PTR(id);
+> Set num_packets to BATADV_MAX_AGGREGATION_PACKETS under the list lock
+> before emission. This waits for any ongoing append and makes the existing
+> aggregation limit check reject further appends before inspecting mutable
+> OGM flags. Emission walks packet_len rather than num_packets, so the
+> queued contents are still sent normally. Keep the packet on the list so
+> interface purging can still wait for the worker and retain its existing
+> ownership of the packet when freeing it.
+
+I might be wrong but this reads a little bit like it was written by an LLM. If
+this is the case, please think about following the annotation style described
+in https://docs.kernel.org/process/coding-assistants.html
+
+> Backports before Linux 6.15 need count-handling adaptation.
+
+This is wrong. You are depending on 434becf57bdc ("batman-adv: Limit number of
+aggregated packets directly") and not the counting adaption. Of course, for
+4.10.x-6.14.x, you also need to change the BATADV_MAX_AGGREGATION_PACKETS to
+BITS_PER_TYPE(forw_packet->direct_link_flags)
+
+And it doesn't belong in the commit message (like this). Please annotate the
+dependencies as described in
+https://docs.kernel.org/process/stable-kernel-rules.html#stable-kernel-rules
+
+> Fixes: 9b4aec647a92 ("batman-adv: fix rare race conditions on interface removal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+>
+> diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+> index 53fbdbbe8f4f7..59847299a1237 100644
+> --- a/net/batman-adv/bat_iv_ogm.c
+> +++ b/net/batman-adv/bat_iv_ogm.c
+> @@ -1909,6 +1909,10 @@ static void batadv_iv_send_outstanding_bat_ogm_packet(struct work_struct *work)
+>  		goto out;
+>  	}
+>  
+> +	spin_lock_bh(&bat_priv->forw_bat_list_lock);
+> +	forw_packet->num_packets = BATADV_MAX_AGGREGATION_PACKETS;
+> +	spin_unlock_bh(&bat_priv->forw_bat_list_lock);
+> +
+
+Can you add a small comment above like "mark aggregate as full before forcing
+emit" (or something similar).
+
 -- 
-2.43.0
-
+Sven Eckelmann <sven@narfation.org>
