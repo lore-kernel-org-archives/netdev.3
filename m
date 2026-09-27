@@ -1,556 +1,163 @@
-Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999C319B3CB
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 03:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EF381724;
+	Sun, 27 Sep 2026 03:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790478419; cv=none; b=XyzgYBOcsXMnrUaJkzc8SXDOA7+089Z7fylzaChVAdOlPaaqftfkVFiUEV6R4Bue/C6CKrFpIo0c8Y1qzVSOmvRGz/GNCIJJZkfV7gUlW3wR3WvtvJNxg4XWejj7knjq9v3Zjp7sAULhIQ7R7hfRHaSMdNeUTa2ZZOSeWsrTBL8=
+	t=1790479733; cv=none; b=IP07sI+VX2/AIYpBsfNdDMoOkCKNg1hoyqPZ73vMUp8tYysJyHDAh/ATtNPwjnGLTxVziuh2/iZvX/JB5tegCo/dYRbGRigSTkgX7USdEQG26om4OEmjVDnB5iagKC/Mo6lpyMz0bgMx2NSXgPPLPS7mEWQZB+2zwLLi/bKOF6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790478419; c=relaxed/simple;
-	bh=z5xsdwlYmTTWdJH5POMdkRyVmVIfsQ21S8bMs4AiH2k=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=R88qBfQXZQuudr5efcQslxynWBzT/7gfz/nbQEZlVZu2xoUBr3rPs+tWWFMFqKJweTsZetIFx1xYa8fKV5p4UBKw8mUHEpq4YEslJeWvStWh6tXVwNHA5Vk/9kG46AfGuadeqSbv+eQUZk937XnzUmc5bA7Q3t1pbsqbbXEMjdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=rMFRP67Z; arc=none smtp.client-ip=185.70.43.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1790479733; c=relaxed/simple;
+	bh=k2u1ChEr6LZw5PLvA+8vLtxFSyAHOUNUCwIyreGdjTA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HkmvdXt40ywLbB4GTwAUDxtpUXSjCbKPjarLq16ZrstRrccQBWhiiFQDoc7pzpjqTuqS2w07LoKKv0n1kw564Sh83QZB09+wsRugm8x7Pp4oTepVhsc6Eq090gUKPH8rz4cTnEkqjhSJROLo6GkyDfNGku0JX0T7WIqtjNUN3kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6HXz66q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="rMFRP67Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1790478408; x=1790737608;
-	bh=Z2rTHNmpANHQ3QQtzML9meWtfXy7dja6/vhA0B7aLtw=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rMFRP67ZU36gI1/qnXhfxPpjKEKUsDgrqQ4pCBJLIG0pJqPnTSrhMp3lUteDRdMdP
-	 Y1YkIgQoAx7C1mk3L/eHjl/cICQZskqbMoWN2CM2h5d7esAAKYikQrzKyQuLbb2ek5
-	 T1f4gvAFWFT1E2u4lMeZLL+DEXel3Dbl1G3E02iSGbfezzkx4tVuYyiDOppmNCKa1i
-	 3kRl3uhPKGnEeKgWC+EGFY1TLtyK6qltZTuPZz9yw2b4H7jkvllWojEd0bbWFK7Pf9
-	 sZ0T2q3/Sgztt4Npr038pvdwjx/DjwbRoBSWTzz8IFXBIOklgh+xKjKJWcNSkWCOAh
-	 KcmjAHXIBRyGQ==
-Date: Sun, 27 Sep 2026 03:06:42 +0000
-To: Linux Networking <netdev@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: Notes on How to Install Coraza Web Application Firewall (WAF) + OWASP CRS on Debian 13.7.0 Linux Server
-Message-ID: <yqxeDm9kL1GLsZWM0v8J0Hpn6x2MsqxwFiUmjvlzGIJ-eRiqA19xrbIwpIQxEqIUTPN3B-Ap26_4odDUYzlWj6NCBgjlwgb5kH6zl2RCWEY=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: b14108e778ce7968ce7c06757630d1aa93932651
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6HXz66q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E44D1F000FF;
+	Sun, 27 Sep 2026 03:28:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790479732;
+	bh=6a0VT1f5TCixo51k9+lY1+LlgZn70eiYSlEvJbKsfbU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=V6HXz66qKIOMxyMLQqbHBfABI8ZMt3ztYEXexLFaEcHpKsfAO011oTmtM2YiDL6aK
+	 95W1VtJ+zSd0ooFRvlwTsi0CC2TbDkmimEbQHQ0n5RAyymDHztuTE4oQOlSPZ7mrwz
+	 28Ss9VqUwjIrsOR1rz+ne6ZUcxyYeEgRxuN5Box2kaL0ESMV4lgj2kCkoedrAK7jtc
+	 hVlr4jLAI6heNJOYLeA2FccBChv1H7AVtKF0OrIAJFTDotFqEBvdev59C4GjT2g3xI
+	 4fVwZzpIrcFDYQkatavpHrNX0Vew1pTblL2QgeB/Zii+5pcOHYvE2jUEl2au1PsaqC
+	 aBDSPGTwFkA+w==
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: altr,socfpga-stmmac: Add
+ altr,socfpga-stmmac-agilex5-tsn compatible
+From: netdev-bot+sashiko@kernel.org
+To: muhammad.nazim.amirul.nazle.asmade@altera.com
+Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, dinguyen@kernel.org, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, devicetree@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Sun, 27 Sep 2026 03:28:50 +0000
+Message-ID: <179047973070.2160803.3411978604945361082@kernel.org>
+In-Reply-To:
+ <20260923021823.46649-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+References:
+ <20260923021823.46649-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Subject: Notes on How to Install Coraza Web Application Firewall (WAF) + OW=
-ASP CRS on Debian 13.7.0 Linux Server
-
-Good day from Singapore,
-
-Author: Mr. Turritopsis Dohrnii Teo En Ming
-Date: 27 Sep 2026 Sunday 12.47 AM
-Country: Singapore
-
-Install Debian 13.7.0
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-nano /etc/apt/sources.list
-
-#deb cdrom:[Debian GNU/Linux 13.7.0 _Trixie_ - Official amd64 DVD Binary-1 =
-with firmware 20260912-09:36]/ trixie contrib main non-free-firmware
-
-apt update
-
-apt full-upgrade -y
-
-apt install -y curl wget git ca-certificates gnupg unzip tar jq
-
-reboot
-
-cat /etc/os-release
-
-Test connectivity to your existing HTTPS server
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-curl -vk https://192.168.88.8 # (This is a VMware ESXi 8.0 Update 3e Server=
-)
-
-Install Go
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-apt install -y golang-go
-
-go version
-
-Then install xcaddy:
-
-GOBIN=3D/usr/local/bin go install github.com/caddyserver/xcaddy/cmd/xcaddy@=
-latest
-
-xcaddy version
-
-Build Caddy with Coraza
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-
-mkdir -p /usr/local/src/caddy-coraza
-cd /usr/local/src/caddy-coraza
-
-xcaddy build --with github.com/corazawaf/coraza-caddy/v2
-
-./caddy version
-
-./caddy list-modules | grep -i waf
-
-install -m 755 ./caddy /usr/bin/caddy
-
-/usr/bin/caddy version
-
-Create Caddy user/directories
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-
-groupadd --system caddy 2>/dev/null || true
-useradd --system \
-  --gid caddy \
-  --create-home \
-  --home-dir /var/lib/caddy \
-  --shell /usr/sbin/nologin \
-  caddy 2>/dev/null || true
- =20
- =20
-mkdir -p /etc/caddy
-mkdir -p /etc/coraza
-mkdir -p /etc/coraza/crs
-mkdir -p /var/log/caddy
-mkdir -p /var/log/coraza
-
-
-chown -R root:caddy /etc/caddy
-chown -R root:caddy /etc/coraza
-chown -R caddy:caddy /var/log/caddy
-chown -R caddy:caddy /var/log/coraza
-
-chmod 750 /etc/caddy
-chmod 750 /etc/coraza
-
-Download OWASP Core Rule Set
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-
-cd /opt
-
-git clone https://github.com/coreruleset/coreruleset.git coreruleset
-
-cd /opt/coreruleset
-git status
-
-Install the CRS files
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-cp -a /opt/coreruleset/. /etc/coraza/crs/
-
-ls -la /etc/coraza/crs
-
-ls -la /etc/coraza/crs/rules | head -30
-
-chown -R root:caddy /etc/coraza
-
-find /etc/coraza -type d -exec chmod 750 {} \;
-find /etc/coraza -type f -exec chmod 640 {} \;
-
-Create Coraza base configuration
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-nano /etc/coraza/coraza.conf
-
-SecRuleEngine DetectionOnly
-
-SecRequestBodyAccess On
-SecResponseBodyAccess Off
-
-SecRequestBodyLimit 13107200
-SecRequestBodyNoFilesLimit 131072
-
-SecAuditEngine RelevantOnly
-SecAuditLogParts ABIJDEFHZ
-SecAuditLogType Serial
-SecAuditLog /var/log/coraza/audit.log
-
-Configure CRS
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-cp /etc/coraza/crs/crs-setup.conf.example \
-   /etc/coraza/crs/crs-setup.conf
-  =20
-Configure Caddy + Coraza
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-nano /etc/caddy/Caddyfile
-
-{
-    order coraza_waf first
-}
-
-https://192.168.88.7 {
-
-    coraza_waf {
-        directives `
-            Include /etc/coraza/coraza.conf
-            Include /etc/coraza/crs/crs-setup.conf
-            Include /etc/coraza/crs/rules/*.conf
-        `
-    }
-
-    reverse_proxy https://192.168.88.8 {
-        transport http {
-            tls
-            tls_insecure_skip_verify
-        }
-    }
-
-    log {
-        output file /var/log/caddy/access.log
-    }
-}
-
-***NOTICE: Please note that 192.168.88.7 is the Coraza WAF and 192.168.88.8=
- is the HTTPS web server it is protecting.***
-
-Better solution: trust the self-signed certificate
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-
-openssl s_client \
-  -connect 192.168.88.8:443 \
-  -showcerts </dev/null
- =20
-nano /etc/coraza/backend.crt
-
------BEGIN CERTIFICATE-----
----snipped---
------END CERTIFICATE-----
-
-
-chmod 644 /etc/coraza/backend.crt
-
-Validate Caddy configuration
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-
-caddy validate \
-  --config /etc/caddy/Caddyfile \
-  --adapter caddyfile
- =20
-Create systemd service
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-nano /etc/systemd/system/caddy.service
-
-[Unit]
-Description=3DCaddy with Coraza WAF
-Documentation=3Dhttps://caddyserver.com/
-After=3Dnetwork-online.target
-Wants=3Dnetwork-online.target
-
-[Service]
-Type=3Dnotify
-User=3Dcaddy
-Group=3Dcaddy
-
-ExecStart=3D/usr/bin/caddy run \
-  --environ \
-  --config /etc/caddy/Caddyfile
-
-ExecReload=3D/usr/bin/caddy reload \
-  --config /etc/caddy/Caddyfile \
-  --force
-
-TimeoutStopSec=3D5s
-LimitNOFILE=3D1048576
-PrivateTmp=3Dtrue
-ProtectSystem=3Dfull
-
-AmbientCapabilities=3DCAP_NET_ADMIN CAP_NET_BIND_SERVICE
-CapabilityBoundingSet=3DCAP_NET_ADMIN CAP_NET_BIND_SERVICE
-
-[Install]
-WantedBy=3Dmulti-user.target
-
-
-chown -R root:caddy /etc/coraza
-
-find /etc/coraza -type d -exec chmod 750 {} \;
-find /etc/coraza -type f -exec chmod 640 {} \;
-
-
-mkdir -p /var/log/caddy
-chown -R caddy:caddy /var/log/caddy
-chmod 750 /var/log/caddy
-
-chown caddy:caddy /var/log/caddy/access.log
-chmod 640 /var/log/caddy/access.log
-
-mkdir -p /var/log/coraza
-chown -R caddy:caddy /var/log/coraza
-chmod 750 /var/log/coraza
-
-chown caddy:caddy /var/log/coraza/audit.log
-chmod 640 /var/log/coraza/audit.log
-
-systemctl daemon-reload
-systemctl enable caddy
-systemctl start caddy
-
-systemctl status caddy --no-pager -l
-
-journalctl -u caddy -n 100 --no-pager
-
-Confirm ports
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-ss -lntp | grep -E ':80|:443'
-
-LISTEN 0      4096               *:443             *:*    users:(("caddy",p=
-id=3D11197,fd=3D7))
-LISTEN 0      4096               *:80              *:*    users:(("caddy",p=
-id=3D11197,fd=3D9))
-
-Test normal website traffic
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-Open https://192.168.88.7 (Coraza WAF) in a Google Chrome web browser.
-
-The site should work normally.
-
-Then watch Coraza/Caddy:
-
-journalctl -u caddy -f
-
-tail -f /var/log/coraza/audit.log
-
-Test SQL injection detection
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-
-While still in:
-
-SecRuleEngine DetectionOnly
-
-send a harmless test request:
-
-curl -k 'https://192.168.88.7/?id=3D1%27%20OR%20%271%27=3D%271'
-
-tail -100 /var/log/coraza/audit.log
-
-You should see CRS alerts associated with SQL injection.
-
-Test XSS detection
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-curl -k 'https://192.168.88.7/?q=3D%3Cscript%3Ealert(1)%3C%2Fscript%3E'
-
-tail -100 /var/log/coraza/audit.log
-
-Again, in DetectionOnly mode the request isn't supposed to be blocked; you'=
-re checking that CRS recognizes it.
-
-Turn blocking on
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-nano /etc/coraza/coraza.conf
-
-Change to
-
-SecRuleEngine On
-
-caddy validate \
- --config /etc/caddy/Caddyfile \
- --adapter caddyfile
-=20
-systemctl reload caddy
-
-Now repeat the SQLi test.
-
-Open https://192.168.88.7/?id=3D1%27%20OR%20%271%27=3D%271 in Google Chrome=
- web browser.
-
-Access to 192.168.88.7 was denied
-You don't have authorization to view this page.
-HTTP ERROR 403
-
-Automatically update OWASP CRS
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-
-<EMPTY>
-
-Create CRS update script
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-
-nano /usr/local/sbin/update-coraza-crs.sh
-
-#!/bin/bash
-set -euo pipefail
-
-WORKDIR=3D"/var/tmp/coraza-crs-update"
-INSTALLDIR=3D"/etc/coraza/crs"
-BACKUPDIR=3D"/etc/coraza/crs-backup"
-
-rm -rf "$WORKDIR"
-
-git clone --depth 1 \
-  https://github.com/coreruleset/coreruleset.git \
-  "$WORKDIR"
-
-# Preserve local CRS configuration
-if [ -f "$INSTALLDIR/crs-setup.conf" ]; then
-    cp "$INSTALLDIR/crs-setup.conf" \
-       "$WORKDIR/crs-setup.conf"
-else
-    cp "$WORKDIR/crs-setup.conf.example" \
-       "$WORKDIR/crs-setup.conf"
-fi
-
-# Backup existing CRS
-rm -rf "$BACKUPDIR"
-cp -a "$INSTALLDIR" "$BACKUPDIR"
-
-# Install candidate rules
-rm -rf "${INSTALLDIR}.new"
-cp -a "$WORKDIR" "${INSTALLDIR}.new"
-
-chown -R root:caddy "${INSTALLDIR}.new"
-chmod -R g+rX "${INSTALLDIR}.new"
-
-# Temporarily switch directories
-mv "$INSTALLDIR" "${INSTALLDIR}.old"
-mv "${INSTALLDIR}.new" "$INSTALLDIR"
-
-# Validate complete Caddy/Coraza configuration
-if /usr/bin/caddy validate \
-    --config /etc/caddy/Caddyfile \
-    --adapter caddyfile
-then
-
-    systemctl reload caddy
-
-    rm -rf "${INSTALLDIR}.old"
-
-    logger -t coraza-crs-update \
-      "OWASP CRS successfully updated"
-
-else
-
-    logger -t coraza-crs-update \
-      "CRS update FAILED validation; rolling back"
-
-    rm -rf "$INSTALLDIR"
-    mv "${INSTALLDIR}.old" "$INSTALLDIR"
-
-    exit 1
-fi
-
-rm -rf "$WORKDIR"
-
-
-Make executable:
-
-chmod 750 /usr/local/sbin/update-coraza-crs.sh
-
-Automate it with systemd
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-
-Instead of cron, use a systemd timer.
-
-nano /etc/systemd/system/coraza-crs-update.service
-
-[Unit]
-Description=3DUpdate OWASP Core Rule Set for Coraza
-
-[Service]
-Type=3Doneshot
-ExecStart=3D/usr/local/sbin/update-coraza-crs.sh
-
-
-
-nano /etc/systemd/system/coraza-crs-update.timer
-
-[Unit]
-Description=3DDaily OWASP CRS update check
-
-[Timer]
-OnCalendar=3D*-*-* 03:30:00
-Persistent=3Dtrue
-RandomizedDelaySec=3D30m
-
-[Install]
-WantedBy=3Dtimers.target
-
-
-This checks approximately once per day around 03:30.
-
-
-systemctl daemon-reload
-
-systemctl enable --now coraza-crs-update.timer
-
-systemctl list-timers | grep coraza
-
-Test the updater manually first
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Do not wait until 03:30 for the first run.
-
-systemctl start coraza-crs-update.service
-
-systemctl status coraza-crs-update.service
-
-journalctl \
-  -u coraza-crs-update.service \
-  -n 100 \
-  --no-pager
- =20
-=20
-systemctl status caddy
-
-Then access the website.
-
-https://192.168.88.7 (Coraza WAF)
-
-Automatic Debian security updates
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-You should also keep Debian patched.
-
-apt install -y unattended-upgrades
-
-dpkg-reconfigure unattended-upgrades
-
-Select Yes.
-
-systemctl status unattended-upgrades
-
-
-
-That's all.
-
-Regards,
-
-Mr. Turritopsis Dohrnii Teo En Ming
-Republic of Singapore
-27 Sep 2026 Sunday 1.00 am Singapore Time
-
-
-
-
-
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The binding patch makes the new compatible "altr,socfpga-
+  stmmac-agilex5-tsn" a peer of "altr,socfpga-stmmac-agilex5" in the…
+- [Low] At this commit, socfpga_dwmac_match in
+  drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c has no entry for…
+
+--
+
+dt-bindings: net: altr,socfpga-stmmac: Add altr,socfpga-stmmac-agilex5-tsn compatible
+
+This adds the altr,socfpga-stmmac-agilex5-tsn compatible for the Agilex5
+gmac1 port, which has an FPGA GMII-to-RGMII converter in front of the PHY.
+The new string goes in the same enum as altr,socfpga-stmmac-agilex5, with
+snps,dwxgmac-2.10 as the fallback. Plain agilex5 is intentionally not used
+as a fallback.
+
+> diff --git a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+> index d8f90d36d2469..ca768937d8905 100644
+> --- a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+
+[ ... ]
+
+> @@ -42,7 +43,9 @@ properties:
+>            - const: snps,dwmac-3.74a
+>            - const: snps,dwmac
+>        - items:
+> -          - const: altr,socfpga-stmmac-agilex5
+> +          - enum:
+> +              - altr,socfpga-stmmac-agilex5
+> +              - altr,socfpga-stmmac-agilex5-tsn
+>            - const: snps,dwxgmac-2.10
+
+[Severity: Medium]
+Should the allOf conditional further down in this file also cover the new
+compatible? It still matches only the plain agilex5 string:
+
+  - if:
+      properties:
+        compatible:
+          contains:
+            const: altr,socfpga-stmmac-agilex5
+    then:
+      properties:
+        interrupts:
+          minItems: 17
+
+        interrupt-names:
+          minItems: 17
+
+        dma-coherent: true
+    else:
+      properties:
+        interrupts:
+          maxItems: 1
+
+        interrupt-names:
+          maxItems: 1
+
+        dma-coherent: false
+
+The TSN port deliberately does not list agilex5 as a fallback. A node with
+compatible = "altr,socfpga-stmmac-agilex5-tsn", "snps,dwxgmac-2.10] will
+therefore never match the if. It falls into the else branch, which holds
+the Cyclone5/Arria10/Stratix10 limits.
+
+The TSN board would override the gmac1: ethernet@10820000 node in
+arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi. That node has 17
+interrupts (macirq, tx-queue-0..7, rx-queue-0..7) and dma-coherent.
+
+If a board DTS switches gmac1 to the TSN compatible, wouldn't it fail
+dtbs_check even though it describes the hardware correctly?
+
+In the companion driver patch, socfpga_agilex5_tsn_gmac_setup_plat_dat()
+calls socfpga_agilex5_setup_plat_dat() and changes only mac_interface.
+That suggests the MAC-side constraints match plain agilex5. Would
+something like this work instead:
+
+          contains:
+            enum:
+              - altr,socfpga-stmmac-agilex5
+              - altr,socfpga-stmmac-agilex5-tsn
+
+[Severity: Low]
+At this commit, socfpga_dwmac_match in
+drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c has no entry for
+altr,socfpga-stmmac-agilex5-tsn.
+
+Would a node using the new compatible bind through the
+snps,dwxgmac-2.10 entry in dwmac_generic_match instead? That path would
+skip the SoCFPGA sysmgr, reset and platform data setup.
+
+The next patch in the series, "net: stmmac: dwmac-socfpga: Add support
+for Agilex5 TSN GMAC with FPGA converter", adds the match entry. No
+in-tree DTS uses the new compatible before that patch.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923021823.46649-1-muhammad.nazim.amirul.nazle.asmade%40altera.com
