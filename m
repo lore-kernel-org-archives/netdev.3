@@ -1,82 +1,91 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071C4314A9E;
-	Sun, 27 Sep 2026 16:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8CD3F1046;
+	Sun, 27 Sep 2026 16:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790524849; cv=none; b=EAnKvUg+T/6hha5I1t85x2y51t2ChdVsGaRkzpvPxLBhzaFqorKapn6DDcQHReofnK44rNTOjBGM1KUAEIFvSH/d628fazMfEfSc1N2p2/zbA+sZJA50YQ4CAU8bJ4gwMOfrm2zv2RIfOG5F5na+ZwPgBy2sPYdwNKxYhfPlsOU=
+	t=1790524857; cv=none; b=N4NMdYPlnc2NVP7WslGVZKcYc304XNzl4xzq/qB0erFk3QvJjVb9NtwyPDq+mG+qb6xAJRwoJaXbMxEbno6WgAwmVZpEyxV5uWLh2mY9xrv3NGC68aIf4VO4ZqWu8wP29fdOd1drOsWOpLfA4yrz6FDHjthaY7zTHW3/pc8okgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790524849; c=relaxed/simple;
-	bh=1jXcilBCqxxtP/HG7T7p4/HErBemiED/CQUyeAFr5Vk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ygmf/8JoX0bH21A9MEHwY9+KxmH0Ky5Ne/aLQNcwiInnFjvrEM40Qm/fFBbM0fxT3GBOjCGtW8Tt1is/LH6WUfm+ispfOtRoVdkFRNRbjtAhBVFWUnQz5xCnbHdyq3wR1YvmNauSPHqaJCA1tH2VJzxFd3BAnrF26VnL0pZZZV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UzBREPF8; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790524857; c=relaxed/simple;
+	bh=0EN09pLTmyaoaapVLMwrGusF6EJ7ush3ooTVUXErJCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A0arOEuLx9Wx+GHC7lSA7kOwTgBFogF3DzQI+u+yliavGqlF5LDue1nntrogQtaRvIGsqI1AVPfc5uvThQySiY4u6yZRUno3YCYeAzC7lrTxuTN1AXdMhgLoPnmbqWGj415QiXBhWU4iSZa3zb/+oAVc6fH0xl0el7Gc4Bz4drc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r2EcfDHE; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UzBREPF8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CeE136aIIhy+ZFn9pE7CHCVaaq8lJW7PLCTFAuVc1Ks=; b=UzBREPF8M/dnld6kndhz7jS8Kn
-	/xV7Zy0le2aAzfiqPH006k75TaBmyEAvzGh0YKnaa4u1hm1aTJynrzBmxiMBSKlfFBRqQ2dbgWxXj
-	cE+GTGvgZ2ZdxdmpbXgPZnwhHaNsCgQhSiM9TvqO+rWGHYLbGtJ7x0V0CwCx7Q0fuqZE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xArIp-007XHF-Oz; Sun, 27 Sep 2026 18:00:35 +0200
-Date: Sun, 27 Sep 2026 18:00:35 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	George Moussalem <george.moussalem@outlook.com>,
-	Ziyang Huang <hzyitc@outlook.com>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: qcom: at803x: Fix IPQ5018 short-cable DAC
- values
-Message-ID: <2e59e8eb-42dc-4ecf-b4f2-56c18431f2f0@lunn.ch>
-References: <20260927155136.2489-1-yongzhao.derek@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r2EcfDHE"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0A4734E40ED6;
+	Sun, 27 Sep 2026 16:00:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D1A5E604FF;
+	Sun, 27 Sep 2026 16:00:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 35B33102F1E7B;
+	Sun, 27 Sep 2026 18:00:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790524851; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=RRLSL+GoK5LUxxlPufnEEW3D+B6EW5mhmoVlJqOBTWA=;
+	b=r2EcfDHEwurSbi4m0BQBc+XfxX9OHN8jqgDDrr5QxaXA4HbvjWS4LTrk0uWn6EZXI8dLhk
+	5dHe1aODDVYHfeYmX2/0bN5lPJeEZtrLGB8VIpIDqPngc40vY1BP9Wr9dOz3uhg7rYvI2b
+	clXc7xVsZxdyjoe/2+4PtS4DjKo4sC464OVkMs3l25AV9dGxJu+CLzg1IGGW6KHEHda6mr
+	knSHg+Hf/ZwvWKCyUUvWg2Ahhp9hfgZ0tO8tZ9rzDdOwIlHGZjpljcU1bZC9NX3CZPhHSw
+	MLkwCx6T5wKl3BI156q3GNS2lv2aZjNVB4EFi2xC4fQGVQ48N7JeNWMGuWL4fA==
+Message-ID: <7b5d8b3a-2c66-4e33-b5dc-2789d186a9a5@bootlin.com>
+Date: Sun, 27 Sep 2026 18:00:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260927155136.2489-1-yongzhao.derek@gmail.com>
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net v3 2/2] net: ethtool: let tsconfig reach a PHY-only
+ timestamp provider
+To: Nicolai Buchwitz <nb@tipi-net.de>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260925135237.3432266-1-nb@tipi-net.de>
+ <20260925135237.3432266-3-nb@tipi-net.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260925135237.3432266-3-nb@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Sep 27, 2026 at 05:51:36PM +0200, Yongzhao Chen wrote:
-> When "qcom,dac-preset-short-cable" is set, ipq5018_config_init()
-> programs the MDAC (MMD1 0x8100) and EDAC (debug 0x4380) fields. Both
-> fields occupy bits 15:8 (IPQ5018_PHY_DAC_MASK), but the value 0x10 is
-> passed unshifted as the set argument of phy_modify_mmd() and
-> at803x_debug_reg_mask(). Neither helper shifts or masks that argument,
-> so both fields are cleared to 0x00 instead of being set to 0x10, and
-> bit 4 of the low byte, which is outside the field, is set.
-> 
-> Use FIELD_PREP() to place the value in the field. This matches the
-> vendor SDK, which clears bits 15:8 and ORs in the value shifted left
-> by 8.
-> 
-> On a Redmi AX5400 board, where the IPQ5018 internal PHY connects to a
-> QCA8337 switch PHY without a cable, MDAC and EDAC read 0x6868 and
-> 0x7800 before the write. With this change they read back 0x1068 and
-> 0x1000, with the low byte preserved. Without it, the same writes would
-> leave 0x0078 and 0x0010.
-> 
-> No in-tree DTS sets this property yet, but it is documented in
-> qca,ar803x.yaml and used by several IPQ5018 boards in OpenWrt.
-> 
-> Fixes: d46502279a11 ("net: phy: qcom: at803x: Add Qualcomm IPQ5018 Internal PHY support")
-> Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-    Andrew
+On 9/25/26 15:52, Nicolai Buchwitz wrote:
+> TSCONFIG_GET and TSCONFIG_SET reject a device that implements neither
+> hwtstamp NDO, even when its PHY can serve the request. The ioctls they
+> meant to replace handle it, so the two interfaces disagree on the same
+> hardware and user space has to pick one.
+> 
+> Accept the default timestamping PHY and an already installed provider on
+> both sides. On the set side the test moves into ethnl_set_tsconfig() as
+> the validate callback runs without rtnl. On the get side it stays ahead
+> of ethnl_ops_begin(), so a device that can serve nothing keeps failing
+> with EOPNOTSUPP and a dump still skips it rather than stopping there.
+> 
+> A netdev provider needs ndo_hwtstamp_set to be programmed at all, so
+> don't pick that source without it, and test for ndo_hwtstamp_get before
+> calling it.
+> 
+> Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
