@@ -1,215 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622A73C8700;
-	Sun, 27 Sep 2026 13:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DC22BEC45
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790515076; cv=none; b=nYuQuh1Kmf80HPvQrzQ67yAWfBkOT+qdypUnRvd6ovEBdaRlVLng2cZTkHy/xlcEX8iAtqpxx6tsNBXcgmr6J4qefyue79zmlJJIi792IuCLyzi/R/PJwyY0ToF857HVoxXfZSt4pu01AcKAG95clrtNZxXko5NSz7Y2Yw30c2c=
+	t=1790515205; cv=none; b=iJbs12TrWdLWZzWmzFdYGibIxO3yviwrpn2SFaEhoJHTQNXV5Omw6ys1SS7Q/icB63nnHUBiWU6pTY3wkqBxNrJThT9gzaWQM8WUjVCbci8jmPQD6r0zj4x7iGCJQN8UBPZd1F89UsSFApOZShtf824lV8eWUIoJ5GdV5TVpia8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790515076; c=relaxed/simple;
-	bh=Rvj+GX0KeBSGW3bAxkUZn/cDy5Uev5pqi0+sFrDqYP8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mm1J6fWEr3CkJBMvoLfQ6uA2ldNTLVC2qOTBUh5f/7V9LXjkxu8OcuEU9lKfn71Rh5rnUNYLAIHAsEk4RWRhrHDt3z0Yv62lGiBcP310rBO2rpxek6lw+3tKUZzvTUUdbP9SphWdzUVj3PCfWFkeEbLEDdbram8GbxMFVQXCYUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfYgWGR+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790515205; c=relaxed/simple;
+	bh=dyYw3Tm3hTj8DLauIeAGN0ZLDTdgf7122SZJk55EqAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e+iie9JHdKMr3fp4FSWLLST6CM+PPpF9CP4waVdqgmp/tMMwZLIV5PAWTftCYzcbqrVReODxfkYuQC0JAh6s0ygYRaC92xyiD3QGvCrNhCoG9W24BoO1e5ANnfZXSObsUGiQXkuHAnakx8oAHeHdj1kgJmQGZqojqhZ/broKmTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l7WgXXDK; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfYgWGR+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605531F00893;
-	Sun, 27 Sep 2026 13:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790515071;
-	bh=+ESx11kR48L0Zb+ZsjyPc5kF3jPZYj5UPKu8WkwD0/s=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JfYgWGR+w+/3A/r34zBy5JFHRj1370ye4PeRVv5UsD9r/m+gAGbs+/4rLlKX6EYwl
-	 JJrMuesWCkjr81sZfsSiUlOKbJGmwXrg+5KIFtZjKZcjoOAXGsouGJP+ke74QpXrV7
-	 fScMtpdE0wvpEAtvxezT0Z9Hy5KJU+nPvTmNeJSDYBVzMePDukWrr2WkVhs5ENkeXg
-	 2xTgmXunWWhbF9860m+F/yOx1ow7a74zB3dbpVpWh96nZNhRrsbBVu09JhUauLiMLX
-	 5Q1N0MV19zkKnLymGx6O/4S+9hmOGbTq/UB/KfgiIXLY8r+FaACqk0IuayolK2wEAt
-	 KWTh6Kz/rIV0w==
-Subject: Re: [PATCH net-next 2/2] dpaa2-eth: DPNIs without a DPMAC should be
- virtual devlink ports
-From: netdev-bot+sashiko@kernel.org
-To: vjardin@free.fr
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ioana.ciornei@nxp.com,
- vladimir.oltean@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 27 Sep 2026 13:17:50 +0000
-Message-ID: <179051507094.2160803.2316498936147241429@kernel.org>
-In-Reply-To: <20260923-for-upstream-dpaa2_ports-v1-2-b59c865edd00@free.fr>
-References: <20260923-for-upstream-dpaa2_ports-v1-2-b59c865edd00@free.fr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l7WgXXDK"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so16198505e9.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 06:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790515202; x=1791120002; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aGzUbv8x/qChEM/5fcor4kLUFepBVWkPmo87o0g+kKg=;
+        b=l7WgXXDK7xi0o3VbL6PXPbA4nCjTRga1Z2rWq/ZOZKwk8hyuAxWBOz/PSVMz55yhJM
+         vfFQl+tG2vZLEzL1JL9c44Tn/9y4bygn+xuLCIQ+YYdiZMh9aqxA/nfFjXHAELRRe18s
+         XkieTPFK7u6f1tRsLiGJ8VWIf5A/i5SmgAGuCENNzjTH44fzatSdrzXwcr9gC0HkFlYs
+         qwiznfNFq29HaW0pc7KCL9N8M2wCfgAkJiQslG7anQUNJriJcs3cB9kcwUkTK2uUgOgZ
+         jSzG9BGItLqx3QlWDsCFsNRkdiUUil18UojS6kvZAT0jkHUslgluBggzROfg36ZBBE7Y
+         OiQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790515202; x=1791120002;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aGzUbv8x/qChEM/5fcor4kLUFepBVWkPmo87o0g+kKg=;
+        b=OdzbI27kb16YOI7enPGc+fOTZn1J/1J2nU6pQJBl2QfwFdDUcqYDi8MihM0qS3GnHm
+         wQKCTrzk8c/r4knXwlCyrPS7BwGbNiuRsUo8jazRxAZiy3g0x4F0L//O2WZ4mqiN1cLx
+         vpbSNSR+qNo6TOysbTwjtiXAPA7GZlp4g823zVW+pdmON1mCyirBnDfF8VfVdgth5Wuv
+         whUtwh6joRLDBQuN5B0pchaf4s+ciWNYQkA45S8Q4C7LTHDISp0lMW+8umAqiPq1REMk
+         2wJFaM6kUuaPCHjRJG1J7iqGpWQdmM2Y0A25aMfDb5hb9MHcnCIh5btgrRpq1IJvYYZf
+         zQcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzRqYGnu7yZg93JnvNCo+eTu65P3x+6urfoeTX8MqZj7X2AElIu1IXUd8ieUunrciKUUMDZjJc=@vger.kernel.org
+X-Gm-Message-State: AFuF++le1Mn54PTSC0kmBbVWHzZiHgLy1iO5EBjzDy97+a/dDmg76b6M
+	oAcv+afgWyLgIg2N/UnT5WWthMVXmRQNzH8fJaQdk/q9PBOz1gwnBxXP
+X-Gm-Gg: AYBFou20/junzOh8TNteINJ9UNu5HhcRq6ALPWXGCVVheFJquJtlr7kslOHag0ul+RF
+	QQI8RTAdHshWW9NhzVT5sjhIcXfR9I83e1xLEseeBbUqFG9IsJKL20Jwj6pq9R5oam2Iopx9QPj
+	L/q3ZcUioR+y1qQLSW8bTA1OeY63/TQcyX3kPHf6Aac0u2iD0uJGtZ7DS7wCQ2vGx2GjQA70bQ9
+	eDwC89p2NCOY2dCrmfYZw3/1V0ITT+dbPgG4OItbBA5itr96zyw43EMW3++cAXvRQz2JS7IY+Ex
+	C0a8uA35L7tN8p2ppKNeg8IMnu7jucxvZiRZ477KiE/obLXT97zWHoY6C3ELxbRV0DWVhSXovBK
+	m0eUBlu1uuEPsk+J0B0ZB4y161tKFjixgk5RdPutsAn8Kk4LdSHABuyl/9aTb/4vt7YYTokcgjL
+	ykS2grSepb611+ZCi8gvSGqxcNR3vMF1Vt9k6N/wmFjbvPilWERRu7pR2oxRslCCK2vn9aRioSy
+	+IGNhzKV7EHA42jydEtNhr6L0PI5qQvYFGvwVQ=
+X-Received: by 2002:a05:600c:4e53:b0:49f:d58f:1f8b with SMTP id 5b1f17b1804b1-49fe66d807bmr178581125e9.18.1790515202245;
+        Sun, 27 Sep 2026 06:20:02 -0700 (PDT)
+Received: from lima-dev.. (89-67-112-196.dynamic.play.pl. [89.67.112.196])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0019057cfsm73615905e9.11.2026.09.27.06.20.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 06:20:01 -0700 (PDT)
+From: Demian Shulhan <demyansh@gmail.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: Demian Shulhan <demyansh@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Marco Elver <elver@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Gow <davidgow@google.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	netdev@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH 0/2] arm64: csum: Add fused copy and Internet checksum
+Date: Sun, 27 Sep 2026 15:17:56 +0200
+Message-ID: <20260927131838.6774-1-demyansh@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+arm64 currently uses the generic csum_partial_copy_nocheck(), which
+performs memcpy() followed by a second pass for csum_partial(). This
+double pass exerts unnecessary pressure on the L1 cache.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Replace it with a single-pass implementation. The new implementation
+provides a general-purpose register path for short buffers and atomic
+contexts, and a kernel-mode NEON path for lengths >= 1024 bytes.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Measured in-kernel on an Ampere Altra (Neoverse-N1):
+- Scalar path: 1.2x-1.6x faster for lengths < 1024 bytes.
+- NEON path: 1.2x faster at 1024 bytes, scaling up to 1.6x-1.8x at
+  4096 bytes.
+On Apple M-series cores, gains are 1.3-1.7x below 1024 bytes and
+1.6-2.4x above. No length or alignment regresses on either
+microarchitecture.
 
-- [Medium] dpaa2_eth_probe() calls dpaa2_eth_setup_irqs()
-  (dpaa2-eth.c:4997), which enables DPNI_IRQ_EVENT_ENDPOINT_CHANGED,…
-- [Low] The commit message says that making DPNIs without a DPMAC virtual
-  means "only the DPNIs that serve a DPMAC report one, and \"p<dpmac…
-- [Low] After this patch, a DPNI with no DPMAC is registered as
-  DEVLINK_PORT_FLAVOUR_VIRTUAL.
+Patch 1 implements the fused routines and the dispatcher.
+Patch 2 adds KUnit test coverage for the new API and internal paths.
 
---
+Tested: in-kernel benchmark module on Neoverse-N1 with both
+implementations cross-checked (0 mismatches); KUnit suite under QEMU
+(with/without KASAN, with PREEMPT_RT), exhaustive and random userspace
+testing of both routines against a naive reference with PROT_NONE guard
+pages, gcc 13 and clang 18 W=1 builds, checkpatch --strict.
 
-dpaa2-eth: DPNIs without a DPMAC should be virtual devlink ports
+Demian Shulhan (2):
+  arm64: csum: Add fused copy and Internet checksum
+  lib/tests: checksum: Add KUnit tests for csum_partial_copy_nocheck()
 
-This commit registers a DPNI's devlink port as DEVLINK_PORT_FLAVOUR_VIRTUAL
-when the DPNI has no DPMAC endpoint at probe time. Otherwise the port is
-DEVLINK_PORT_FLAVOUR_PHYSICAL and numbered by the DPMAC id.
-dpaa2_eth_dl_port_check() now counts a virtual port as port number 0 when
-it compares against the current endpoint.
+ arch/arm64/include/asm/checksum.h |   3 +
+ arch/arm64/lib/Makefile           |   7 +-
+ arch/arm64/lib/csum-copy-neon.c   | 168 +++++++++++
+ arch/arm64/lib/csum-copy.c        | 108 +++++++
+ arch/arm64/lib/csum-copy.h        |  84 ++++++
+ arch/arm64/lib/csum.c             |  54 ++++
+ lib/Kconfig.debug                 |  10 +
+ lib/tests/checksum_kunit.c        | 463 ++++++++++++++++++++++++++++++
+ 8 files changed, 896 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/lib/csum-copy-neon.c
+ create mode 100644 arch/arm64/lib/csum-copy.c
+ create mode 100644 arch/arm64/lib/csum-copy.h
 
-> A virtual port has no phys_port_name, so only the DPNIs that serve a
-> DPMAC report one, and "p<dpmac id>" never collides.
 
-[Severity: Low]
-Is this still true when the topology changes after probe?
-
-dpaa2_eth_dl_port_add() picks the flavour and number once, from priv->mac
-at probe time. When DPNI_IRQ_EVENT_ENDPOINT_CHANGED fires later,
-dpni_irq0_handler_thread() connects or disconnects the MAC. It then only
-calls dpaa2_eth_dl_port_check(), which prints a warning and keeps the old
-attrs.
-
-For example, DPNI A is probed while connected to dpmac.3 and registers a
-physical "p3" port. dpmac.3 is then disconnected from A and connected to
-DPNI B, which is probed afterwards (for example, created with restool and
-found by the DPRC rescan). B also registers a physical "p3" port, so two
-netdevs report phys_port_name "p3".
-
-The same limit applies in two other cases:
-
-- A DPNI probed with no endpoint stays virtual, with no phys_port_name,
-  after a DPMAC is connected to it.
-- A DPNI whose DPMAC was disconnected stays a physical port with no
-  connector behind it.
-
-The earlier patch in this series already says the registered attributes
-cannot change at runtime, and it warns the user to rebind. So the issue
-here is the wording.
-
-Could the commit message limit the claim to endpoints that are fixed at
-probe time, or that are followed by a rebind?
-
-> diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
-> index 8b2addd3f83ae..30e6cb2190dbd 100644
-> --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
-> +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth-devlink.c
-> @@ -230,16 +230,23 @@ int dpaa2_eth_dl_port_add(struct dpaa2_eth_priv *priv)
->  	struct devlink_port *devlink_port = &priv->devlink_port;
->  	struct devlink_port_attrs attrs = {};
->  
-> -	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
->  	attrs.phys.port_number = dpaa2_eth_dl_port_number(priv);
-> +	if (attrs.phys.port_number)
-> +		attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
-> +	else
-> +		attrs.flavour = DEVLINK_PORT_FLAVOUR_VIRTUAL;
->  	devlink_port_attrs_set(devlink_port, &attrs);
-
-[Severity: Medium]
-Can this race with the endpoint changed IRQ thread during probe?
-
-dpaa2_eth_probe() enables the IRQ before it sets up the devlink port:
-
-dpaa2_eth_probe() {
-    ...
-	err = dpaa2_eth_setup_irqs(dpni_dev);
-    ...
-	err = dpaa2_eth_dl_port_add(priv);
-    ...
-}
-
-dpaa2_eth_dl_port_number() reads the DPMAC id under mac_lock. The flavour
-choice and the struct copy in devlink_port_attrs_set() happen after the
-lock is dropped. dpaa2_eth_dl_port_check() reads priv->devlink_port.attrs
-without taking any lock.
-
-One possible interleaving:
-
-probe thread:
-dpaa2_eth_dl_port_add()
-  dpaa2_eth_dl_port_number()        /* returns N */
-
-IRQ thread:
-dpni_irq0_handler_thread()
-  dpaa2_eth_disconnect_mac()        /* priv->mac = NULL */
-  dpaa2_eth_dl_port_check()
-    /* attrs are still zeroed from alloc_etherdev_mq(), flavour reads
-       as DEVLINK_PORT_FLAVOUR_PHYSICAL (0), registered = 0,
-       current_number = 0, no warning */
-
-probe thread:
-  attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL   /* number N */
-  devlink_port_attrs_set()
-  devlink_port_register()
-
-The port is then registered as a physical "pN" port for a DPNI that no
-longer has a DPMAC, and nothing is logged. In the reverse case, where a
-DPMAC is connected inside this window, the check prints a spurious "port
-number 0 is stale" warning.
-
-The plain read and write of devlink_port.attrs at the same time also
-looks like a data race that KCSAN would report.
-
-Would any of these avoid the race?
-
-- Register the devlink port before dpaa2_eth_setup_irqs().
-- Hold mac_lock across the number read and devlink_port_attrs_set().
-- Skip the check until the port is registered.
-
->  	return devlink_port_register(priv->devlink, devlink_port, 0);
->  }
->  
->  void dpaa2_eth_dl_port_check(struct dpaa2_eth_priv *priv)
->  {
-> -	u32 registered = priv->devlink_port.attrs.phys.port_number;
-> +	const struct devlink_port_attrs *attrs = &priv->devlink_port.attrs;
->  	u32 current_number = dpaa2_eth_dl_port_number(priv);
-> +	u32 registered = 0;
-> +
-> +	if (attrs->flavour == DEVLINK_PORT_FLAVOUR_PHYSICAL)
-> +		registered = attrs->phys.port_number;
->  
->  	if (registered == current_number)
->  		return;
-
-[Severity: Low]
-Is the warning that follows still accurate for a virtual port?
-
-	netdev_warn(priv->net_dev,
-		    "devlink port number %u is stale, the DPMAC endpoint is now %u (0: none); rebind the DPNI to update it\n",
-		    registered, current_number);
-
-When a virtual DPNI later gains a DPMAC, this prints "devlink port number
-0 is stale, the DPMAC endpoint is now N".
-
-Devlink core does not report a port number for virtual ports.
-devlink_nl_port_attrs_put() emits DEVLINK_ATTR_PORT_NUMBER only for the
-physical, cpu and dsa flavours. __devlink_port_phys_port_name_get()
-returns -EOPNOTSUPP for virtual ports.
-
-So the message names a port number that devlink port show never
-displayed. It also does not say that the stale parts are the flavour and
-the missing phys_port_name.
-
-Could the wording be updated for the virtual case?
-
+base-commit: 93f51579e7df248780214094418f205253383cc5
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-for-upstream-dpaa2_ports-v1-0-b59c865edd00%40free.fr
+2.43.0
+
