@@ -1,161 +1,440 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A63E16A1
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FB93B8D4F;
+	Sun, 27 Sep 2026 12:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790510688; cv=none; b=spYupNG0Q80JcPk9yWe8eznne3EWQtx9hgCuz+K+kTFLkIh4ojeBvy9q30hjdiA72JtB2QY97oe0is3x272WFw0ydI7NsHW/RinuBQ5oCvw/oijW6wMA+A9A2N9m1OuPxkdCoSXYePJ2bAaqB0ZGT3A1IJ3VouF+bbMjvCGURWs=
+	t=1790511100; cv=none; b=ciNfxfFxzRTbwYg+BuHYhdQ1tiMrIdAs5jgCOH9NPD/FEn01gEhQurdUFZNGjlALCKaZw/lphWKBWSl9uJf8al4C/7wQGcASThv7DmBFaLG6jC5JdonSLI+gs8DUCuJPdX/1LfE6xAaKNLqNKsMQflSJGZ5J0A+agrYCgotxOrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790510688; c=relaxed/simple;
-	bh=ot0jbORaTJGRRQZg6tLvbXq+cyNGWm10JUVUlcn26vY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=fsTO1KE5AtBBd3cfPfDbr5PXIux4lyp66/bWC7xFfpkyec/9APpSeW3Qtvn4Qnwa47u97cEVLM8naaVGsajMWd0NOmOa9T1zd+KXBs7e4B6vijmJbqaATtQ+SHoGNFS4Q2qpvG73+NKjsPoAhfMiRqk3EzII6sZ+fVAZpNLfULU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2W2yhNn; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790511100; c=relaxed/simple;
+	bh=rErvqSm2D7Pb0YD00v5JrmE6FK9DZRXYdNgS5wg5g2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ezK6PxxNWcRQRPTq6lycO8fkOxRHRx80wF51MHmn00nD3Kzu72FWDkFRkDlcOoISA8JRGmMZJzR4Ehiy/wF0wW2JVH9iDdjf5dw4LawoXgy6qXWU8JQFuXcRGGpyrT+uMuxBWdk+DT+u0xPFvlSHQRBsXh08C2F+tNPsSdOMdcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=PvPrFuF4; arc=none smtp.client-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2W2yhNn"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso16110385e9.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790510685; x=1791115485; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p73dx9rkt6mjYajPsO9IbZU4Sl+ZeNH7qZWcKoqLHm0=;
-        b=C2W2yhNnYMWRAGglC538BAJOfK02X8t4pp7wOCoedwcFZHkfAZjmzllf7tMTuisdGD
-         AxmbdP2JDuMfekwfNF9C9q6pUCdIrzpu/ZFPQIQLAFSbIHYFHrEfmNSZpwvhv5K02G6B
-         V1kkY6CmX5uz88w6UOknmZy6d8MYuFY9RH3j1L55DepmJt7MDl8T31R+GhoWPzgDuCAt
-         9MtmlC423hSJ/b5ML9TIrlnwhH6IU9wvfJ184WS6OmjGWcdt3BQP7WtfkH5d86xGCLPp
-         s3+l/vu2M0YcajtTMxwkWmYngWQRdEGqSMD/S5J9hMnNNTOqtOFAeJN3dVD7hMgDXm7m
-         ASiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790510685; x=1791115485;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p73dx9rkt6mjYajPsO9IbZU4Sl+ZeNH7qZWcKoqLHm0=;
-        b=lwhRDcS9br3WTGXhsfbyt0LKmszzEkXvxWv6DTf8VjV6qLefIG2vxazaixdmezXHja
-         ITc7g3SvxqeRWPml2XfR4TCyhGPrDe1718ceduhQ/AT39cJ8e6miMDeekhiJwxuWWjsq
-         rukfg4y4fN+r5HyQKcqokUGf865GTty4Wm0kEvffPKJAjk0uR3oQNoJrm6OfW+Z3eY23
-         sIn43JMERevM+2h1VUSykntq/cYTCmBWq8AvKKXLKoI9i4h3dJYM6nyU2yp3aS13cvej
-         UD5TbEkcvX7uhQQ5Dq61laDLRNxe/8bx+rt7VcmjhLD06Htsm3bwBsj9aURgJAuUG/77
-         Qbkg==
-X-Forwarded-Encrypted: i=1; AKwUvBxrHPJKbAo1eGeo5FecUGfV3W5DJl1lETd9oxtQWM0Q3/p2sK69oOTpA9fE2P6y1RkqzPxzUWc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kSA565PfPAumwToS+n708uslhXWQxmiwWKK5qeisBVtlN9KSQG
-	Coc63bIGsRgkmUwt8CtonW0GbuC5h2HTRfaxNw43VLPt2tQzcRgHolbL
-X-Gm-Gg: AYBFou3NNWOhCmteWRbsIyUFPrbyIIVQRPEs+BHGGrtlpWmlEXCy9kSlyxNhzT1CpgO
-	xu/fC8hxz7TnB2bXCb92jxIo9x3GuuJnFv2bZYSLjaWJyEB3ow5a6uUvLGTVKu2L+q5fgH2pWLS
-	zCw+4Fr8yATKv6u96KnwOH+0wL7baWeZerOFbbAZn+hIerWe3gT4wUTvyAe4lxHjmTDcsTAJ78F
-	SBoJSU7cYabw0GKLrOOtJDfZDNFG+1ctMOWf8dr65n6lxQKffbUe+VLGX30A+164Cg1pxMfJYWB
-	Am1eXIwnBtxHjoPFjAvVzOptrFRTIbuWUIH5PFTdmLQa6cTHtTQf2bxtllMBufRJeXhPyotKtIi
-	vyPoVnOz3KUrKGDOf/wA1JfRsIYn7miMG3I2ZmMViS4ziHKP7cbvg7qvIxcRhYK8wsgZPyqBy7C
-	R3H9YUNgBA0vLBgjSuD4ejOHdswXB3ERuizsNsTE1FKqM5U5QAicTIg7w8EP0afj16nTWpQg==
-X-Received: by 2002:a05:600c:c494:b0:49c:fa21:1c81 with SMTP id 5b1f17b1804b1-49fe7bab979mr173765785e9.22.1790510684687;
-        Sun, 27 Sep 2026 05:04:44 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef4fc959sm179581875e9.2.2026.09.27.05.04.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 05:04:44 -0700 (PDT)
-Date: Sun, 27 Sep 2026 14:04:41 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
-Cc: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in
- rxrpc_destroy_all_connections (2)
-Message-ID: <arkFzpbQnWICoJDt@gmail.com>
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="PvPrFuF4"
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id A08EAE837FF;
+	Sun, 27 Sep 2026 14:06:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1790510768;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b4jo0jjy2XCDVRSVsZS4cqMgn/Q1feuitrEHEwIs2bs=;
+	b=PvPrFuF4kQcATWbgRZiTtnTOy9K6L1vTpVAYeSEZrJxb+2tzYgw9lZb7p42LbwoOObJ7f1
+	Ny4U6wlzYcibz8AFU+PAL5E4X7xmED8gxVD0kc4PJPvp/mmppEDjAUZg0en1rsNHTnT62R
+	x/Q3WHDTfz6JCfZmvGRo5rH9JJDm3hYdy0/uGM4PmpiA8/2VJ2zY49Q8tF5iL+DpcwQw2k
+	K1TiujgUf3mPOwPgWYiW10wkIReE9ZTQLM7zpIqB9wWXYAe7wVkX9GDYEheZmulfhxJ0ve
+	IEHzrzlCzBrF4VcUD6sb100t7xu2gisf655UFdm2n9Oaf3TPodOzM0m3Y+9ISA==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id D9r4cbAJsvq6; Sun, 27 Sep 2026 14:06:08 +0200 (CEST)
+Received: from p14sgen5.lanhh (dslb-088-070-183-212.088.070.pools.vodafone-ip.de [88.70.183.212])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Sun, 27 Sep 2026 14:06:07 +0200 (CEST)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Corey Leavitt <corey@leavitt.info>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: Re: [PATCH net-next v6 0/5] net: pse-pd: decouple controller lookup from MDIO probe
+Date: Sun, 27 Sep 2026 14:05:48 +0200
+Message-ID: <20260927120548.367616-1-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2e89ce5a-3d7c-42fd-af82-899f6bc8a64a@redhat.com>
+References: <2e89ce5a-3d7c-42fd-af82-899f6bc8a64a@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ab29768.514bccd6.255447.001e.GAE@google.com>
+Content-Transfer-Encoding: 8bit
 
-#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a7bfaba4823e
+Hi Paolo,
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 865f05fe37ab..2ecfd58cd566 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1205,2 +1205,3 @@ void rxrpc_disconnect_call(struct rxrpc_call *);
- void rxrpc_kill_client_conn(struct rxrpc_connection *);
-+void rxrpc_discard_unactivated_client_conn(struct rxrpc_connection *);
- void rxrpc_queue_conn(struct rxrpc_connection *, enum rxrpc_conn_trace);
-diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
-index 48519f0de185..8ccf69cc973f 100644
---- a/net/rxrpc/conn_client.c
-+++ b/net/rxrpc/conn_client.c
-@@ -697,2 +697,13 @@ static void rxrpc_unbundle_conn(struct rxrpc_connection *conn)
+Spoiler: this is heavily assisted by AI agents - without them a change
+this size would get too complicated for me to hold together. Everything
+in it is verified by me personally.
 
-+void rxrpc_discard_unactivated_client_conn(struct rxrpc_connection *conn)
-+{
-+	if (!rxrpc_conn_is_client(conn) || !conn->bundle)
-+		return;
-+	if (conn->act_chans || !list_empty(&conn->cache_link))
-+		return;
-+
-+	_debug("C=%x never activated", conn->debug_id);
-+	rxrpc_unbundle_conn(conn);
-+}
-+
- /*
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 611c790bc6d0..a30cbaa8a48b 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -40,2 +40,5 @@ static bool rxrpc_set_conn_aborted(struct rxrpc_connection *conn,
- 		spin_unlock_irq(&conn->state_lock);
-+
-+		if (aborted)
-+			rxrpc_discard_unactivated_client_conn(conn);
- 	}
-@@ -274,4 +277,10 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+Thanks for the feedback, and for the pointer to c82ff94592fb - I had read
+the sashiko mails but hadn't replied, which is exactly what that commit
+says not to do. Won't happen again.
 
--	if (conn->state == RXRPC_CONN_ABORTED)
-+	if (conn->state == RXRPC_CONN_ABORTED) {
-+		if (sp->hdr.type == RXRPC_PACKET_TYPE_CHALLENGE &&
-+		    sp->chall.conn) {
-+			rxrpc_put_connection(conn, rxrpc_conn_put_challenge_input);
-+			sp->chall.conn = NULL;
-+		}
- 		return -ECONNABORTED;
-+	}
+I ran v7 through https://sashiko.dev/ myself before posting, as that
+commit asks, and it was worth doing. It found a regression I had missed,
+and later passes found more. Those are covered below. Doing that first
+should also keep the volume down on your side.
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 0ece717db0f8..6d453b9a9457 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -251,2 +251,3 @@ struct rxrpc_connection *rxrpc_get_connection(struct rxrpc_connection *conn,
- 	__refcount_inc(&conn->ref, &r);
-+	pr_err("AF_RXRPC: conn %x GET why=%d r=%d\n", conn->debug_id, why, r + 1);
- 	trace_rxrpc_conn(conn->debug_id, r + 1, why);
-@@ -367,2 +368,3 @@ void rxrpc_put_connection(struct rxrpc_connection *conn,
- 	dead = __refcount_dec_and_test(&conn->ref, &r);
-+	pr_err("AF_RXRPC: conn %x PUT why=%d r=%d dead=%d\n", debug_id, why, r - 1, dead);
- 	trace_rxrpc_conn(debug_id, r - 1, why);
-@@ -487,2 +489,18 @@ void rxrpc_destroy_all_connections(struct rxrpc_net *rxnet)
+You're right that most of the [High] ones are just the state of the tree
+between v6 patches 3 and 5. Instead of saying that five times, v7 folds
+v6 patches 3, 4 and 5 into one. The rtnl detour and the deferred release
+are then gone from every commit, so those findings no longer apply.
 
-+	if (!list_empty(&rxnet->conn_proc_list)) {
-+		struct rxrpc_connection *c;
-+
-+		pr_err("AF_RXRPC: conn_proc_list not empty\n");
-+		write_lock(&rxnet->conn_lock);
-+		list_for_each_entry(c, &rxnet->conn_proc_list, proc_link)
-+			pr_err("AF_RXRPC: proc conn %x cid %x state %d ref %d act %d flags %lx cache_empty %d calls %px %px %px %px bundle %px\n",
-+			       c->debug_id, c->proto.cid, c->state,
-+			       refcount_read(&c->ref), c->act_chans, c->flags,
-+			       list_empty(&c->cache_link),
-+			       c->channels[0].call, c->channels[1].call,
-+			       c->channels[2].call, c->channels[3].call,
-+			       c->bundle);
-+		write_unlock(&rxnet->conn_lock);
-+	}
-+
- 	ASSERT(list_empty(&rxnet->conn_proc_list));
+v7 follows this mail. It is still five patches, but not the same five -
+the review before posting found a regression that needed two more
+pse_core fixes. I go through everything below anyway, one block per
+patch. The numbering is v6's, to match the review mails.
+
+
+1/5 - notifier chain
+https://lore.kernel.org/netdev/178893559565.219967.17359688741683052582@kernel.org/
+
+> [Low] exported with no in-tree caller at this commit
+
+The review says itself this is the usual "add the API, then use it" split.
+Nothing to do.
+
+
+2/5 - fire lifecycle events
+https://lore.kernel.org/netdev/178893559705.219967.11674800741670127760@kernel.org/
+
+> [Low] the call sites discard the return value
+
+The first half is right, but not worth doing. There is one subscriber in
+tree, phy_pse_notifier_event(), and it returns NOTIFY_OK or NOTIFY_DONE,
+so nothing can stop the chain. A notifier_to_errno() check would test
+for something that cannot happen today.
+
+The second half is worth doing. In v7, by the time cancel_work_sync()
+returns, every handle should be gone: the walk drops the phy's and the
+drain drops the worker's. So if pcdev->pse_control_head is not empty
+there, someone still holds one I did not account for. That is the bug I
+describe further down. v7 patch 2 adds that warning.
+
+> [High] PSE_UNREGISTERED fires while pcdev is still on pse_controller_list
+
+Real, and v7 closes it here rather than leaving it to my net series [1].
+
+My first answer was going to be that the race isn't new. The old fwnode
+lookup ran from the same registration path, so it could wait for [1],
+whose patch 3 moves list_del() ahead of pse_release_pis().
+
+That is true but it isn't the whole picture. After the phy patch, a
+second controller registering runs a PSE_REGISTERED walk that calls
+of_pse_control_get() for every phy on mdio_bus_type. So this series adds
+a second trigger, and it is the one a two-controller board hits. Mine is
+one.
+
+So v7 patch 2 reorders pse_controller_unregister() around the event.
+disable_irq() and the unlink both move above it. of_pse_control_get() is
+the only thing that walks pse_controller_list, and subscribers get pcdev
+as the event data, so nothing needs the controller listed. A lookup can
+then no longer reach a controller whose pi[] is about to go.
+
+cancel_work_sync() moves the other way, below the event. That is the
+next answer.
+
+[1] still stands on its own for net and stable.
+
+> [High, pre-existing] pi freed before the worker is drained
+
+I had this filed as [1]'s problem. That was wrong.
+
+Before this series the phy's reference outlived the whole teardown. The
+worker takes a transient reference through pse_control_find_by_id(), but
+it could never be the last one, so __pse_control_release() did not run
+during unregister at all.
+
+The PSE_UNREGISTERED walk changes that. It drops the phy's reference, so
+the worker's put can be the last one. Left as it was, that put would
+land after pse_release_pis() had freed pcdev->pi. The window is much
+smaller than the one it replaces, but it is new, so it belongs in this
+series. The reorder below is what closes it.
+
+The obvious fix is cancel_work_sync() ahead of the frees, which is what
+[1] does for net. On its own that is not enough here, because the walk
+does more than drop references.
+
+A subscriber dropping the last reference reaches
+__pse_control_release(), which calls regulator_disable() if the PI is
+still on. With the static budget strategy that retries any port on the
+same power domain waiting for power, and if the domain is still over
+budget it sheds a lower priority port through pse_disable_pi_pol(),
+which queues a notification and calls schedule_work(). So draining the
+worker before the walk leaves new work queued behind it, racing the
+kfifo_free() below.
+
+Narrow - it needs tps23881 or another PSE_BUDGET_EVAL_STRAT_STATIC
+controller, over budget, with a port pending - but reachable.
+
+So in v7 patch 2 cancel_work_sync() sits after the event, with the frees
+below both. The order is not the same as [1]'s. There the unlink sits
+below cancel_work_sync() and pse_flush_pw_ds(), which is fine because
+[1] has no event to place. Here the event has to be after the unlink and
+before the frees, and cancel_work_sync() after the event, so the unlink
+moves to the top.
+
+The two will conflict on the back-merge - I tried the merge, and
+pse_controller_unregister() comes out with two conflict hunks. The
+merged function wants v7's order, which contains [1]'s fix. The cover
+spells it out.
+
+Kory reviewed [1]. This one turns on pse_pw_d_retry_power_delivery()
+re-entering from a release, so I would like him to check the placement
+here too.
+
+[1] has been sitting at Changes Requested since August, I'll respin it.
+
+
+3/5 - own phydev->psec via the notifier
+https://lore.kernel.org/netdev/178893559852.219967.17408171091451392990@kernel.org/
+
+> [Low] is the module unload part of this rationale the right way round?
+
+No, it is the wrong way round. try_module_get() pins the provider for as
+long as a phy holds a handle, so rmmod is refused before the module exit
+path runs and the walk never runs at all. What the walk covers is driver
+unbind and device removal, and v7 says that instead.
+
+> [Low] no Fixes: tag, no target tree
+
+The target tree is in the subject line. On the Fixes: tag - 5e82147de1cb
+("net: mdiobus: search for PSE nodes by parsing PHY nodes") is the commit
+to blame, but this is a refactor across two subsystems plus a new export,
+and tagging it invites a stable backport of all that to cure a
+probe-retry loop. Say the word if you want it anyway.
+
+> [Medium] is every error other than -ENOENT/-EPROBE_DEFER really a broken
+> binding?
+
+Fair point. pse_pi_is_hw_enabled() talks to the chip over i2c on
+tps23881, si3474, pd692x0 and realtek-pse-mcu, so -EIO is possible.
+Before this series that error came back out of
+fwnode_mdiobus_register_phy() and deferred probe retried it. Now the
+port ends up without PSE, and phy_try_attach_pse() logs it with
+phydev_warn() rather than dropping it silently. Patch 5 documents that.
+
+For a genuinely transient i2c error I am not convinced a retry is worth
+it. That needs a work item and a give-up policy, in a series whose whole
+point is taking work out of the probe path.
+
+Running v7 through sashiko.dev before posting turned up a worse case of
+the same thing, which I had missed and so had the review on the list.
+-EPROBE_DEFER here does not only mean "controller not registered yet".
+
+Every PI regulator is registered with a "vpwr" supply, and the regulator
+core treats an unresolved supply at registration as non-fatal. So
+pse_controller_register() completes, PSE_REGISTERED fires, and
+regulator_get_exclusive() inside pse_control_get_internal() keeps
+returning -EPROBE_DEFER until the vpwr provider shows up. phylib has no
+event left to retry on, so the port loses PSE for good, and silently.
+Deferred probe on the MDIO bus used to recover exactly that.
+
+So my "the notifier retries the latter at PSE_REGISTERED time" was wrong
+for that case. v7 patch 4 checks the PI's vpwr supply before registering
+anything, so the PSE driver's own probe defers and the ordering goes
+back where deferred probe can handle it.
+
+That in turn makes -EPROBE_DEFER a routine return from
+pse_controller_register(), which has no error unwind at all. The
+notification kfifo, the PI array and an OF reference per described PI
+are leaked on every failure, and a partial pse_register_pw_ds() leaves
+devm-allocated power domains in the global xarray for the next
+registration to trip over.
+
+Today those failures are terminal, so each leaks once. With the supply
+check the leak would repeat on every deferred-probe retry. So v7 also
+adds the unwind, as patch 3, ahead of the supply check.
+
+It unwinds at two depths, which is worth flagging.
+pse_pi_ops.is_enabled, .enable and .disable all index pcdev->pi[], and
+the PI regulators are devm-registered on pcdev->dev. So from the first
+successful registration until devres unwinds the failed probe there are
+live regulators whose ops would follow a freed pointer.
+regulator_late_cleanup() and the "state" attribute both reach them.
+
+The array is released on the failures that happen while it exists and
+before the first regulator does: setup_pi_matrix() and the supply check.
+Earlier than that there is nothing to release - pcdev->pi is still NULL,
+or of_load_pse_pis() has already freed it - and from the registration
+loop on it has to stay. An allocation failure in the loop's first
+iteration therefore leaks it too, where releasing would have been safe,
+but the rule stays simple. The supply check runs before the loop, so the
+ordinary deferral releases the array.
+
+On an arm64 boot with a PI whose supply never appears, kmemleak is clean
+with that patch in place.
+
+Unrelated thing I noticed while checking pse_control_get_internal():
+two exits after a successful try_module_get() jump to free_psec instead
+of put_module - the missing pi_get_admin_state callback, and a failing
+pse_pi_is_hw_enabled(). Both leak a module reference. Pre-existing, and
+it has to go to net separately.
+
+> [High] deferred put vs the bus walk
+> [High] does the detach walk close the UAF
+> [Medium] worker as last holder
+
+The first is the intermediate state that v6 patch 5 removes, and v7
+folds away entirely. The second is the list_del ordering above. The
+third is the worker answer under 2/5 - it turned out to be this series'
+problem, not [1]'s.
+
+
+4/5 - dedicated mutex instead of rtnl
+https://lore.kernel.org/netdev/178893560000.219967.12262382469111881440@kernel.org/
+
+> [Low] does netsec belong in that list?
+
+No, netsec does not belong there. It brings its MDIO bus up in probe,
+before register_netdev(). ndo_init allocates the rings, power-cycles the
+phy over that bus and resets the hardware - which only works because the
+bus is already there. lantiq_etop and sni_ave do match. v7 drops netsec.
+
+> [Medium] the deadlock was introduced two patches earlier, series isn't
+> bisectable
+
+Folded for v7. I agree the UAF windows aren't worth restructuring for,
+but at v6 patch 3 alone lantiq_etop and sni_ave hang on probe, and that
+is a boot failure rather than a theoretical window. So v6 patches 4 and
+5 go into 3, and the intermediate states are gone. Each of the five
+commits builds on its own.
+
+Jonas's and Aleksander's tags are on the folded patch. Jonas's tag is
+also on patch 2, which did change in v7, and the cover says so.
+
+> [High] off-bus phy keeps its pse_control
+> [High] does the mutex cover the teardown
+
+Intermediate state again, and the list_del ordering again. The
+kernel-doc is fixed either way: the mutex serialises phydev->psec
+against the notifier walk, the phy attach and detach paths and the
+ethtool paths. It does not protect the controller teardown and no longer
+says it does.
+
+
+5/5 - put phydev->psec back in phy_device_remove()
+https://lore.kernel.org/netdev/178893560151.219967.4509880385605166044@kernel.org/
+
+> [Medium] in-series regression fixed by a later patch, with no
+> attribution
+
+Same answer as under 4/5. v7 folds v6 patches 3, 4 and 5 into one, so
+there is no intermediate regression left, and nothing to attribute.
+
+> [Medium] do the error paths of phy_device_register() still reach it?
+
+They don't. That is a real leak, and v7 fixes it.
+
+device_add() puts the phy on the klist in bus_add_device() and can still
+fail after that, so a concurrent PSE_REGISTERED walk can attach a handle
+that nobody ever puts. The obvious fix is a locked put at the out:
+label, since the unwind calls bus_remove_device() for us. That is
+exactly what makes it wrong: by then the phy is off the bus, so the
+PSE_UNREGISTERED walk misses it too, and a concurrent unregister can
+free pcdev->pi before the put reads it.
+
+v7 instead sets phydev->psec_detached before device_add() and clears it
+only once registration has succeeded. No handle can be attached in that
+window, so there is nothing to release on the error path.
+
+> [High] can PSE_REGISTERED re-attach after the put has run?
+
+Yes, that one's real. The phy only comes off the mdio_bus_type klist in
+bus_remove_device(), which is a good way into device_del(), so between
+our unlock and that point the walk still sees it, psec is NULL again,
+and phy_try_attach_pse() re-binds it.
+
+The suggested fix doesn't work though. With the put after device_del(),
+the phy is off the klist first, so an unregistering controller can walk
+past it, free pcdev->pi, and then our put hits the freed array in
+__pse_control_release() - which is the UAF this patch exists to fix. The
+put has to stay in front of device_del(): while the phy is still on the
+klist the walk and the put take the same mutex, so whoever is second sees
+NULL.
+
+So v7 marks the phy as detached under the same lock and has
+phy_try_attach_pse() skip it. I did look at just holding pse_phy_lock()
+across device_del(), but that puts the PSE mutex above driver removal and
+the whole sysfs teardown, which seems like a lot for a window this small.
+
+The flag is a plain bool, not another bit in the flags word. It would
+otherwise share a storage unit with suspended and sysfs_links, which
+are written under phydev->lock and rtnl while this one is written under
+pse_phy_lock().
+
+> [High] "can no longer outlive the PSE controller" - accurate?
+
+Not as flatly as v6 put it. v7 says what the patch actually gives you:
+the phy's own reference goes away synchronously while it is still on
+the bus. With patch 2 unlinking the controller first, the controller
+side is closed too, so the claim holds for a different reason than the
+one v6 gave.
+
+> [High, pre-existing] nothing clears psec->attached_phydev
+
+Agreed. attached_phydev is only set when a fresh handle is allocated, an
+existing one at the same index is just kref_get()'d, and nothing ever
+clears it - so pse_send_ntf_worker() can end up dereferencing a freed
+phy_device.
+
+Not something this series introduces, and it needs a pse_core helper to
+clear it under pse_list_mutex. It has to go to net separately, after
+this series, with:
+
+Fixes: fa2f0454174c ("net: pse-pd: Introduce attached_phydev to pse control")
+
+
+So v7, which follows shortly, is five patches again, but not the same
+five:
+
+  - v6 patches 3, 4 and 5 folded into one, no intermediate rtnl or
+    deferred release
+  - patch 2 now reorders pse_controller_unregister() around the event -
+    unlink and disable_irq() before it, cancel_work_sync() after it, the
+    frees last - closing both the lookup-versus-teardown race and the
+    worker-as-last-holder one inside this series
+  - patch 2 also warns if pcdev->pse_control_head is not empty once the
+    worker is drained
+  - new patch 3: unwind the kfifo and PI allocations when controller
+    registration fails
+  - new patch 4: check the PI vpwr supply before registering the
+    controller, so a consumer never meets a registered controller that
+    can only answer -EPROBE_DEFER
+  - psec_detached is held across registration as well as removal, so
+    the PSE_REGISTERED walk can't attach a handle nothing will free
+  - psec_detached is a plain bool rather than another bit in the flags
+    word, since it is written under pse_phy_lock() while its neighbours
+    are written under phydev->lock and rtnl
+  - netsec dropped, module-unload wording fixed, the probe-defer
+    behaviour change documented
+  - kernel-doc no longer claims the mutex protects controller teardown
+  - <linux/notifier.h> included where struct notifier_block is used
+
+One more thing turned up while testing patch 3 on a device tree where
+the vpwr provider never appears. pse_controller_register() calls
+kfifo_alloc() with pcdev->nr_lines before the "if (!nr_lines) nr_lines =
+1" default below it, and __kfifo_alloc() rejects a size under two. So a
+controller with nr_lines of 0 or 1 cannot register at all, and that
+default is dead code. The three drivers with a compile-time constant
+cannot hit it; realtek-pse-mcu-core takes nr_lines from the device at
+runtime, so it is the one that could. Pre-existing, one line to fix,
+and it has to go to net separately.
+
+So, separately against net: the leaked module ref, the attached_phydev
+back-pointer, that kfifo ordering, and a respin of [1].
+
+[1] https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
+
+Thanks,
+Carlo
