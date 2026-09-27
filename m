@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3913E23393E;
-	Sun, 27 Sep 2026 12:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0F13BBFBF;
+	Sun, 27 Sep 2026 12:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790512113; cv=none; b=bXPxeDoKabv3vtFOlzTjCY6CuS2J8mAJ4T0RbjDky4UkDf0f/4+e7+OB6N/dJAPwR425rAnPjZ0QJ831XFokoAOacza27kDpYtcDkIAWNHbZzV0gYUbcdJkInFzChkKDSNpkKtSK+ChvR8+n9DuUiVk9KTkqLu3tRtkTZOvQovU=
+	t=1790512113; cv=none; b=cQGm1eiO3wgWZkxl3QInj9uWXBTfWB/1JFFrkO43Jw8k11STrPnhjVQJqhoOqfLQ6AS2XgYN5zrBRyen4gcMiLiyrRpYa0RBKkYApW3UmW3o5SSnjmcv58fm6WrxJCiS0OoTJBjFTA4mUn7g5KyVAmygL39102cp2TxHfvjyZBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790512113; c=relaxed/simple;
-	bh=mFYye6jjimZ2DwZ5t7Du857e1VxY0+BbUH4CzU/N7Rs=;
+	bh=7GorxFrhN1Qh9ImeEEttuYcqKMAG04guhLuaTF5vzJU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IEJCCrpIhiT9ISQFtDgwGdIK0tJdWpG7FbvvkHRNzbMqUCd4yotRWfBbofqQQywoWYy1ezfU4sdlFs6GRWc7jmstDOibU8882PsVIlm2Q9/frA9xLz4ICGgh/qcVZBcvqZqbtEAN6mI+B5zagpqF5eTy4JyC0PFIn77NoSKfuew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+8OIQP/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Vl2xZ4sayN+kpjv8QEoiv33r394Mq4d9pxM8rjkMSML+H55XXUn6Z22XKtbbNcJ8YbTExOoTX4OmG54nJUxJZWUA7a+GBXMR7MedVA+TZJpMTnUABvgXlTC21laXKBIyE9uwMO9EPf2nNeUdYfnnhCBW1+LvAO1LLC6HQRAWQTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gw4uDSZA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+8OIQP/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BE11F000FF;
-	Sun, 27 Sep 2026 12:28:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gw4uDSZA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAED1F00893;
+	Sun, 27 Sep 2026 12:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790512109;
-	bh=eLCzIoer01yXG+2fCSyfbNLUl6x4kDV4QWmMFCv92pM=;
+	s=k20260515; t=1790512112;
+	bh=aozkiCaY4t1cE5dbFPT+0Do9Io81/Nf2L04JYawvlx0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D+8OIQP/2S0oJcaIteHObvZLAPGhn6zowe0UCySyjCB2CRSQvChyGaUIZOScRZofK
-	 kDVEFWa1qhIzl1KUjaTrtVrsRX6J0mlMAeFk8qCm9n1nR8qKfpkvBbrelyQotGNyea
-	 15KSPqryCG+kNyutAMkivm0hMA58+VVzLTRGrF1Mb6ijdvr5Z+ra0oWPi+Rt1oWsN9
-	 NYgwjG0/NHleJYtl9Zvd1TRpYpGW4O2D5qGt6WQRYYWWMy7V1p3twAFSVRggizTAbJ
-	 v97qF3sgrj7vdsuBsq1+pu3cyD+QEkFOVSdD8kWI/t58E5z9rqVQMseu6B0cTD36sW
-	 8MbpNRtVDZuyg==
-Subject:
- Re: [PATCH net-next v3 4/8] net: dsa: Add tag handling for SoC-e switches
+	b=Gw4uDSZAnA2RFLuVirPiAP8GVmV9+A6vj3BRvikI0uNdLGwz/gud2+5KveTLud9sV
+	 7ah04YvzGOHfPWyqeq24BXCMQjCeVtP0bq1Dks6BxtE20mnOuRxVDP1IAYCfnD1K8z
+	 p5o18RXxc2V+hU9pLZO2yw8aKw6x6Ss2S1mY+VEJdWy98zqlG1gNdCwhrnS1Z9rsk4
+	 e36zfImr1sqUMjTh/LZ/jkOJrT57MySPOVaEzs7Il5/dmqL21mo83xNKRYls2qQSVs
+	 5rcSOaSW2QfOJyh6bBSckcZm2KYp5MvnXXw80uJzqWGp66qlfF4CCu4S4U2chancmu
+	 LZAvIv6SV2jKA==
+Subject: Re: [PATCH net-next v3 6/8] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
 From: netdev-bot+sashiko@kernel.org
 To: v.strassheim@linutronix.de
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
@@ -36,13 +36,13 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
  andrew+netdev@lunn.ch, hkallweit1@gmail.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  martin.kaistra@linutronix.de, b.spranger@linutronix.de
-Date: Sun, 27 Sep 2026 12:28:27 +0000
-Message-ID: <179051210768.2160803.1929188838067459585@kernel.org>
+Date: Sun, 27 Sep 2026 12:28:30 +0000
+Message-ID: <179051211083.2160803.7671691444003694031@kernel.org>
 In-Reply-To:
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-4-ddebafcb9ba7@linutronix.de>
+ <20260923-devel-vstrassheim-soce-dsa-ml-v3-6-ddebafcb9ba7@linutronix.de>
 References:
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-4-ddebafcb9ba7@linutronix.de>
-X-sashiko-severity: Medium
+ <20260923-devel-vstrassheim-soce-dsa-ml-v3-6-ddebafcb9ba7@linutronix.de>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -55,7 +55,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,138 +63,134 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] sdsa_xmit() writes the SDSA header at offset 12 (skb_push +
-  dsa_alloc_etype_header).
-- [Low] Whether sdsa_xmit() puts the VLAN in the SDSA header on transmit
-  depends on the conduit, and in-band 802.1Q tags are never handled.
+- [High] In soce_sw_probe() (drivers/net/dsa/soce/soce_dsa_core.c), child
+  platform devices are created with devm_of_platform_populate() at line…
+- [Medium] soce_setup() never puts the per-port INGR_EN/EGR_EN bits into
+  a known state for user ports, and probe does not reset the core.
 
 --
 
-net: dsa: Add tag handling for SoC-e switches
+net: dsa: soce: Add basic support for SoC-e switch IP cores
 
-This adds a DSA tagging driver for SoC-e switches. The driver uses an
-8-byte SDSA header with EtherType 0xdcdc, placed after the source MAC
-address. It builds FROM_CPU frames on transmit and parses TO_CPU frames
-on receive, and maps the optional 802.1Q TCI in the header to and from
-skb VLAN hwaccel metadata.
+This adds a DSA driver for SoC-e FPGA-based Ethernet switch IP cores. It
+reads the core version and feature registers at probe and enables DSA
+custom rules tagging during setup. The DSA port callbacks control port
+ingress and egress, and probe populates the MDIO controller and mux child
+devices.
 
-> diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
+> diff --git a/drivers/net/dsa/soce/soce_dsa_core.c b/drivers/net/dsa/soce/soce_dsa_core.c
 > new file mode 100644
-> index 0000000000000..8cc3fa357be42
+> index 0000000000000..d391b11b94ad6
 > --- /dev/null
-> +++ b/net/dsa/tag_sdsa.c
-> @@ -0,0 +1,158 @@
+> +++ b/drivers/net/dsa/soce/soce_dsa_core.c
 
 [ ... ]
 
-> +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_device *dev)
+> +static int soce_setup(struct dsa_switch *ds)
 > +{
-> +	struct dsa_port *dp = dsa_user_to_port(dev);
-> +	struct sdsa_tag *tag;
-> +	u16 vlan_tci;
+> +	struct soce_priv *priv = ds->priv;
 > +
-> +	BUILD_BUG_ON(sizeof(*tag) != SDSA_HLEN);
+> +	soce_sw_enable_tagging(&priv->local);
 > +
-> +	skb_push(skb, SDSA_HLEN);
-> +	dsa_alloc_etype_header(skb, SDSA_HLEN);
-> +
-> +	tag = dsa_etype_header_pos_tx(skb);
-> +	tag->ethertype = cpu_to_be16(ETH_P_SDSA);
-> +	tag->reserved = 0;
-> +	tag->frame_type_port_hi =
-> +		FIELD_PREP(SDSA_TAG_FRAME_TYPE_MASK, SDSA_FRAME_TYPE_FROM_CPU) |
-> +		FIELD_PREP(SDSA_TAG_PORT_HI_MASK,
-> +			   dp->index >> SDSA_TAG_PORT_HI_SHIFT);
-> +	tag->port_lo = FIELD_PREP(SDSA_TAG_PORT_LO_MASK, dp->index);
-> +	/* SDSA carries no TPID, so only encode 802.1Q C-tags. */
-> +	if (skb_vlan_tag_present(skb) &&
-> +	    skb->vlan_proto == htons(ETH_P_8021Q)) {
-
-[Severity: Low]
-The commit message says "Encode accelerated VLAN metadata into the header
-on transmit". Is the wire format meant to depend on which conduit is
-used?
-
-This branch only runs if the skb still has a hwaccel C-tag when it reaches
-the tagger. The user port gets its features from the conduit:
-
-net/dsa/user.c:dsa_user_setup_tagger() {
-    ...
-	user->features = conduit->vlan_features | NETIF_F_HW_TC;
-    ...
-}
-
-If the conduit's vlan_features do not include NETIF_F_HW_VLAN_CTAG_TX,
-validate_xmit_vlan() on the user netdev moves the tag in-band before
-dsa_user_xmit() runs:
-
-net/core/dev.c:validate_xmit_vlan() {
-    ...
-	if (skb_vlan_tag_present(skb) &&
-	    !vlan_hw_offload_capable(features, skb->vlan_proto))
-		skb = __vlan_hwaccel_push_inside(skb);
-    ...
-}
-
-In that case the frame goes out with the VLAN-info bit clear, followed by
-an in-band 0x8100 tag. This seems to apply to macb (Cadence GEM) on
-ZynqMP, which has no HW_VLAN features. It also applies to most other
-conduits, for example mlx4, nfp, bnxt, otx2, wangxun, and mtk_eth_soc,
-which masks out CTAG_TX explicitly.
-
-With stmmac (dma_cap.vlins) or bcmsysport, whose vlan_features do include
-CTAG_TX, the same frame goes out with the TCI in the SDSA header instead.
-
-Should sdsa_xmit() also handle in-band 802.1Q tags, so that the format is
-the same on every conduit? Or could the commit message describe this
-behaviour?
-
-> +		vlan_tci = skb_vlan_tag_get(skb);
-> +		__vlan_hwaccel_clear_tag(skb);
-> +		tag->frame_type_port_hi |= SDSA_TAG_VLAN_BIT;
-> +		tag->vlan = cpu_to_be16(vlan_tci);
-> +	} else {
-> +		tag->vlan = 0;
-> +	}
+> +	return 0;
+> +}
 
 [Severity: Medium]
-What happens to an accelerated tag whose vlan_proto is not ETH_P_8021Q?
-One example is an 802.1ad S-tag from an 802.1ad upper or from tc vlan
-push.
+Is there anything that sets SOCE_PORTS_CTRL_INGR_EN and
+SOCE_PORTS_CTRL_EGR_EN to a known state on user ports before tagging is
+enabled here?
 
-Such a tag takes the else branch and stays in skb->vlan_all, but the SDSA
-header is already at offset 12. When the skb is then sent on the conduit,
-the S-tag can be inserted at ETH_HLEN, in front of the 0xDCDC EtherType.
-The insertion is done either by the conduit hardware
-(NETIF_F_HW_VLAN_STAG_TX) or by:
+Probe does not reset the core. At setup time the DSA core calls
+port_disable only for unused ports:
 
-validate_xmit_vlan()
-  __vlan_hwaccel_push_inside()
-    __vlan_insert_tag()
+net/dsa/dsa.c:dsa_port_setup() {
+    ...
+	case DSA_PORT_TYPE_UNUSED:
+		dsa_port_disable(dp);
+		break;
+    ...
+}
 
-The switch would then see 0x88a8 where it expects the SDSA header, and
-would not recognise the FROM_CPU destination port. Depending on the
-hardware, the frame could be dropped, or it could be forwarded like
-ordinary CPU-port ingress.
+User ports get no port_enable or port_disable call until their netdev is
+opened or closed.
 
-For this to happen, the user netdev needs NETIF_F_HW_VLAN_STAG_TX, which
-it can only get through conduit->vlan_features. No in-tree conduit seems
-to set that today, but nothing in the tagger rules it out.
+Suppose the IP comes out of reset with ports enabled, or a bootloader left
+them enabled. Once soce_setup() turns on tag all frames and custom rules
+tagging, could a user port that is administratively down still receive
+frames and forward them tagged to the CPU port?
 
-Other taggers guard against this case. ks8995_xmit() in
-net/dsa/tag_ks8995.c does:
-
-	if (unlikely(skb_vlan_tag_present(skb))) {
-		skb = __vlan_hwaccel_push_inside(skb);
-
-so that the conduit cannot insert the tag outside the special tag.
-tag_sja1105.c does something similar.
-
-Could any leftover hwaccel tag be pushed in-band with
-__vlan_hwaccel_push_inside() before the SDSA header is inserted, with the
-NULL return handled?
+At the end of the series, soce_setup() resets VLAN, disables STP and
+enables tagging. It still doesn't seem to change the per-port enable bits.
+Would it make sense to clear them for all user ports here?
 
 [ ... ]
+
+> +	ds->ops = &soce_switch_ops;
+> +	ds->num_ports = hw_numports;
+> +	ret = devm_of_platform_populate(dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to populate child devices\n");
+> +
+> +	dev_set_drvdata(dev, priv);
+> +
+> +	ret = dsa_register_switch(ds);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to register DSA switch\n");
+
+[Severity: High]
+Can this probe loop without end when dsa_register_switch() returns
+-EPROBE_DEFER?
+
+devm_of_platform_populate() creates the child devices before
+dsa_register_switch() runs. dsa_register_switch() can defer in fairly
+common situations. One is a conduit netdev that isn't registered yet:
+
+net/dsa/dsa.c:dsa_port_parse_of() {
+    ...
+		conduit = of_find_net_device_by_node(ethernet);
+		of_node_put(ethernet);
+		if (!conduit) {
+			rtnl_unlock();
+			return -EPROBE_DEFER;
+    ...
+}
+
+It can also defer when dev_find_class() fails, or when the tagger lookup
+in dsa_switch_setup_tag_protocol() fails:
+
+		if (PTR_ERR(tag_ops) == -ENOPROTOOPT)
+			return -EPROBE_DEFER;
+
+Documentation/driver-api/driver-model/driver.rst says:
+
+  -EPROBE_DEFER must not be returned if probe() has already created child
+  devices ... it may result in an infinite loop of .probe() calls
+
+The sequence looks like this:
+
+soce_sw_probe()
+  devm_of_platform_populate()
+    mdio-soce, mdio-mux-mmioreg and the PHY devices bind
+      driver_bound()->driver_deferred_probe_trigger()
+        deferred_trigger_count++
+  dsa_register_switch()
+    returns -EPROBE_DEFER
+really_probe()
+  sees the trigger count changed and triggers deferred probing again
+devres removes the child devices
+soce_sw_probe() runs again and creates them again
+
+The children bind synchronously because MODULE_SOFTDEP loads their drivers
+first. The DSA ethernet phandle is not a fw_devlink supplier property, so
+nothing makes the switch probe wait for the conduit.
+
+If the conduit never appears, for example because its driver is missing
+or fails, would a kworker keep creating and removing the MDIO bus and PHY
+devices indefinitely?
+
+This still appears to be present at the end of the series.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7%40linutronix.de
