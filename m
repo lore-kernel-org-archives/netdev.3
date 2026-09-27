@@ -1,75 +1,121 @@
-Received: from mail-106109.protonmail.ch (mail-106109.protonmail.ch [79.135.106.109])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BC7175A92;
-	Sun, 27 Sep 2026 03:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4631AA1D5;
+	Sun, 27 Sep 2026 04:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790481241; cv=none; b=nPje3KFr8D1qfH/CN3iMbImPQOXbb0s1ZBcW1qZ6DS6nUH6kXuIjlr4CXvHmuJbJz9mqiK/hBf8unl5WNX/aDdRt/k5pToWYLFdoJm8vMt1LSi63esb13qqPiSovb65EqjVxKWnLgyLDp5hd8afXPR+4WgIU/pA7e/O2riLxNdw=
+	t=1790481782; cv=none; b=HSK577LWUbGioEb8qlJqU93IvEVYjH/KCBnSOOln4Y1cVu2A6DaH5bae1pe7OUbKYgTjCES5cBWCf57qzCnibHEh3sKWZyJlc6U5SQpHeJ+u8oytDRgbeYyXGXRjcx9/jKoYWhCTePiFkvdZkbbwZNtZfC+n2z8xSlb/eGUrMPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790481241; c=relaxed/simple;
-	bh=72jOmKJsKtZbMfexR6DU2MSAN3lb/BvgsBkTbYP0Jow=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HKgmkkDOS2ot4fiir6l5AFwNN4Cy3kCWOdS5jVG1j07ZZU1QvueFytgVE3a27lMfexN4KLbaj1n6hR0gnge7nqo3wDkdZxZwuuRczPtpIj4hfDdYbQlRGLICDsTJkkpI0V8bU5FFpuweN245sYoHkhvYacCkNHXWJfEmPLbenzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=BUuAj1lg; arc=none smtp.client-ip=79.135.106.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1790481782; c=relaxed/simple;
+	bh=8/Pbq6e0Egu5v5AdbXrKrQZKM8VxS12zXS4hrd1rh88=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SW3h5WXjnvIALfTTNDrq8c4ekw5bAqrOmYTMJgW27G78zDNi7DcHjVIyGR0YpVxpT+JJwo2Gg4CpNcipHZXnQ4BfwhOcM5F3ulSBXp6lqhoVTB9Y0u18tpGvCm6CeOf6gsh4DaAi5xSSWx9INj+AqYYhjuqbq9nV+MVQcrKK+XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFtP15S4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="BUuAj1lg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1790480887; x=1790740087;
-	bh=2n7v/f900ujYlkPeMFvncKXsx01rexWG+WoC8pk4+js=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=BUuAj1lgFGUnkpYeDBk0B5qaCypJk7m+iRRthctsXUPOhcEx20nFxompc4oPawyR0
-	 4I7PIiNFMHGpPKt/6cMwCRntk28dxo1zxdw9hTmfpjAa8TDaH0RwdKzyv1I3ciJj9P
-	 7wxRvOZ4Z8AxEGWwAi3/fZa+3Wq5I/Wp35f7BrXhYHAfIp/jyvhIfIRcTNban+zq8Z
-	 qYVd0ZI04ykGpbOsp6WqrUcYalse+aoXK04NUd5MgKrVdWJ63MDy3BpBBWLq0+w4pl
-	 XfZJieSOtkpeE9moC3vZc+3Yj04v5VHk/puYbey/OHGVyYP7Kafl9JxKsG5PYFkgeU
-	 HiR1JCNyFD9+w==
-Date: Sun, 27 Sep 2026 03:48:01 +0000
-To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-From: Alexander Koskovich <akoskovich@pm.me>
-Cc: David Heidelberg <david@ixit.cz>, Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-Subject: Re: [PATCH v5 6/6] arm64: dts: qcom: milos-fairphone-fp6: Add NFC
-Message-ID: <AA1gQ_nENEVHK1oebVbNS1EUMIkabrgIPTl649QGQZvq_1LAMw5msh-2bmJt1DbB6K09JX1xc_VN0retl7XFImBTbpm81ucumJM_nzVKfYI=@pm.me>
-In-Reply-To: <20260811220135.472380-7-jorijnvdgraaf@catcrafts.net>
-References: <20260811220135.472380-1-jorijnvdgraaf@catcrafts.net> <20260811220135.472380-7-jorijnvdgraaf@catcrafts.net>
-Feedback-ID: 37836894:user:proton
-X-Pm-Message-ID: f3ec71461e33f107fcfa8c1f6b9d2d515788ab04
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFtP15S4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5902F1F000FF;
+	Sun, 27 Sep 2026 04:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790481781;
+	bh=GC7coo6sKErkgEMskr01q7qu9o3kxRtbkgfzjm0Q4lY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kFtP15S4BUOShAcFAgqUdROdbeOeafymgeS9M6D0J0a8jC+wMgqDIK9tixgRQJCN9
+	 Z84+fZ30DBMhOxu23nmUx0Y9JS3ufzBhY6XakzL9m8Hr1s922PUM1YVTphFKo31fGL
+	 cvbpRc5TnfgDw3amSwr0eU9q+rukAocRDmHhZdTwR0LgohJB9gH3/qRULEMj4WMvv8
+	 /JIP6dtNjzuk3kWPS2SlNZq+SDBm/aWjNW4SjklbsCruOP5eZ0PaihE1Ev0TO5GvcO
+	 Ua1A4Ti13QprF5Tb1+fRiFBoXtJJK+UsQYaHaSBXT7NhlGHZlkZ7nRnKJLp25sMJhU
+	 DejpI9xv0LZbg==
+Subject: Re: [PATCH net] net: gen_estimator: protect seqcount updates from
+ hardirq readers
+From: netdev-bot+sashiko@kernel.org
+To: runyu.xiao@seu.edu.cn
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, rostedt@goodmis.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ stable@vger.kernel.org, jianhao.xu@seu.edu.cn
+Date: Sun, 27 Sep 2026 04:02:59 +0000
+Message-ID: <179048177964.2160803.12902537767476134602@kernel.org>
+In-Reply-To: <20260923032936.2020902-1-runyu.xiao@seu.edu.cn>
+References: <20260923032936.2020902-1-runyu.xiao@seu.edu.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On Tuesday, August 11th, 2026 at 6:04 PM, Jorijn van der Graaf <jorijnvdgra=
-af@catcrafts.net> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-> +=09nfc@27 {
-> +=09=09compatible =3D "samsung,s3nrn4v";
-> +=09=09reg =3D <0x27>;
-> +
-> +=09=09interrupts-extended =3D <&tlmm 31 IRQ_TYPE_EDGE_RISING>;
-> +=09=09en-gpios =3D <&tlmm 56 GPIO_ACTIVE_HIGH>;
-> +=09=09wake-gpios =3D <&tlmm 7 GPIO_ACTIVE_HIGH>;
-> +=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
-> +
-> +=09=09pvdd-supply =3D <&vreg_l20b>;
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Looking at schematic, think this should be L7B? L20B is used for SIMVDD1_EX=
-T.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> +
-> +=09=09pinctrl-0 =3D <&nfc_default>;
-> +=09=09pinctrl-names =3D "default";
-> +=09};
->  };
->=20
+- [Medium] The commit message describes a bug that nothing in the tree
+  can trigger, yet the patch carries Fixes: and Cc: stable.
 
-Thanks,
-Alex
+--
+
+net: gen_estimator: protect seqcount updates from hardirq readers
+
+This commit replaces preempt_disable_nested() with local_irq_save() around
+the est->seq write section in est_timer() in net/core/gen_estimator.c. The
+aim is to stop a hardirq reader of gen_estimator_read() on the same CPU
+from spinning on an odd sequence count while the timer is interrupted.
+
+> est_timer updates the estimator seqcount with preemption disabled, which
+> does not exclude hardirq readers on non-PREEMPT_RT kernels.  A reader can
+> observe an odd sequence and spin while the timer is interrupted.
+
+[ ... ]
+
+> The hardirq context is deliberately injected to
+> exercise this interleaving; ordinary userspace traffic does not guarantee
+> it.
+>
+> Fixes: 1c0d32fde5bd ("net_sched: gen_estimator: complete rewrite of rate estimators")
+> Cc: stable@vger.kernel.org
+
+[Severity: Medium]
+Is there an in-tree hardirq or NMI caller of gen_estimator_read()?
+
+struct net_rate_estimator is private to net/core/gen_estimator.c. That
+means gen_estimator_read() is the only reader of est->seq. Its callers
+appear to be:
+
+  gnet_stats_copy_rate_est() in net/core/gen_stats.c, reached from
+  netlink dump paths in process context: tcf_action_copy_stats(),
+  tc_fill_qdisc(), and the drr/hfsc/htb/qfq dump_class_stats callbacks.
+
+  xt_rateest_mt() in net/netfilter/xt_rateest.c, which runs from
+  netfilter hooks in softirq context or with BH disabled.
+
+  tcf_police_act() in net/sched/act_police.c, which runs in the tc
+  datapath in softirq context or under rcu_read_lock_bh().
+
+Netpoll transmits with IRQs off, but it calls netdev_start_xmit()
+directly. It never reaches qdiscs, tc actions or netfilter.
+
+On !PREEMPT_RT, est_timer() runs from the timer softirq. If the writer
+interrupts a process or BH reader, that reader just retries. On
+PREEMPT_RT, preempt_disable_nested() already expanded to a real
+preempt_disable().
+
+The commit message also says the reproducer relies on a test-only
+hardirq injection.
+
+If no real hardirq reader exists, could this be presented as hardening,
+with the Fixes: and Cc: stable tags dropped? If one does exist, could the
+commit message name the hardirq path that reaches gen_estimator_read()?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923032936.2020902-1-runyu.xiao%40seu.edu.cn
