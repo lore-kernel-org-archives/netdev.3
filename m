@@ -1,46 +1,49 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99011239068;
-	Sun, 27 Sep 2026 14:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F8729D288;
+	Sun, 27 Sep 2026 14:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790519062; cv=none; b=DFCxsKTWrrOWq8Z+ECb54KyRaqh2XPbMTtVrrFGXfW1sJtjy2zGAFWLBtaU8JaUsaoywa4hr8kd8h4IuCmj0cxwr2jceemzkSNDlmMjsT/YYlVjM3FgAEnMFLZmpdVz7+RxuIZbSOZNJoAqafMUEkeKs4KFbr1M5tnRuaVmM8MQ=
+	t=1790519875; cv=none; b=S4eLWs2sTzHhdqlZEmemG519URKPGGnb8fB/v/YUtNkh8loUBRsm++J/ioTCy1hsdchWmH0CjQ3/NY2DzgsCxsn5NX6FEHhxg0yC5ExYt3osn51/dTjaB8Nv5Lmw1ohIh3wPiVOK+fayDt+rA8Z6dmHLXSB/uz2nv9NB0ZCocJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790519062; c=relaxed/simple;
-	bh=IcSoJAc0uoXmVc71gAWhHhASwCqv+rTsfRuOofentWI=;
+	s=arc-20240116; t=1790519875; c=relaxed/simple;
+	bh=3kifUECnap8xTf1tSndDLZV6Gyt+fjzlJGi/q5QHSKU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WcQbwNVPM15jcayDUqlW2N5y54taxGPJkh3SdDBWIE/Pz/0k3BwVCJPK8YhnLlsCnQb//Gq74IsHbxtW3aXhNNNr+RcsP0Yg9JWWOsXfQ0tyw360CHzvhy52pEyjLKHn3nvDTAZNuvMltVGGtjv9nix/vvcnMQEReppvX2lqRWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=W4nLojvQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=QXaJoda3GLp0qf0EGhz6JPQaT4uPIlflBb13GZZdDVSTtYEjsDPsgEmKh3gUygxsjN6ln8mjFXNIkm0CtwCa9KJSzkKD+sSmphna3Rfkko+6XprreDGoC9H3ITw1yg91GF9QEPZOPR1PYLHlVD8riN6KN4OhcGVYSOGsfJ0XE3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=u/uk/hhm; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="W4nLojvQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GA2hUrkc8lTsQl4rvBCkFKw6kYz45j+l21TDu9L0Rrs=; b=W4nLojvQs+45Ob+mTiX/lLCQAq
-	d1J5oNSeCbaCPuh0wGe7a7yYo69Te23ay1cE1rdfvr4HjB8RK9VAP+HEk0BWeBiVzO3vBTrg6hB5S
-	YOnCN3Bq4rOoEXR3AhstwQUfL4RcWe0oPyoU5IBox04Syf3/XUlnFN1EkuzTJj3SDWuI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xApnX-007WMS-O9; Sun, 27 Sep 2026 16:24:11 +0200
-Date: Sun, 27 Sep 2026 16:24:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, neuromoments@gmail.com
-Subject: Re: [PATCH net-next v12 09/15] ax88179_178a: Add VLAN offload
- support for AX88179A
-Message-ID: <f27b2a1c-afb7-48db-9682-acf6c0a83479@lunn.ch>
-References: <20260916-ax88179a-v12-9-60c04c9924a2@birger-koblitz.de>
- <178968030096.22033.824447734953057557@kernel.org>
- <289700c4-8569-4160-97c5-2fc37a901a9d@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="u/uk/hhm"
+Received: from francesco-nb (xcpe-178-82-167-143.dyn.res.sunrise.net [178.82.167.143])
+	by mail11.truemail.it (Postfix) with ESMTPA id E72031F92B;
+	Sun, 27 Sep 2026 16:37:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1790519869;
+	bh=KMEiirLcdmzxclUk+A6aDUXj3pkkrLYqYUw4QNelmRk=; h=From:To:Subject;
+	b=u/uk/hhmF+fA0GAC7eJcJOUjLS9OdjdqR9K5vWNptv+A8mob4mPk3jVq67IqZoW/c
+	 hjGGWdd4SzE8vM24umDs8BAeXE/3BW1Q5tl6isgfp5TuF55VC1iTMWrbhCe9ntFa3l
+	 tUI8OOgi6Mnb4MNEsGdl13MRMfb2fKMvOCHjqaNbgAdoqJZRsA8gzxAwVDjKFp/yGu
+	 w7XRiaeEC9BZFmixnljEdsUVxvZP+EQ1ja++xWB3HTcGY9uq16a1u9vPEvwmWsQGs8
+	 XvhAezA3wX6tGwh8Rv0wpWB0FJAqs7DDXlBHg3cS99RS5XFFq6JI0apF7qqHyoxTVy
+	 mPqpmHEw9P0lA==
+Date: Sun, 27 Sep 2026 16:37:45 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Jiale Yao <yaojiale02@163.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Fabio Estevam <fabio.estevam@freescale.com>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/7] net: fec: manage the netdev lifetime with devres
+Message-ID: <20260927143745.GA54546@francesco-nb>
+References: <20260927111005.1035089-1-yaojiale02@163.com>
+ <20260927111005.1035089-3-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,19 +52,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <289700c4-8569-4160-97c5-2fc37a901a9d@birger-koblitz.de>
+In-Reply-To: <20260927111005.1035089-3-yaojiale02@163.com>
 
-> You ask: On a busy bus, or when a transfer stalls and hits the timeout, this
-> blocks
->   all other network configuration in the system for a long time.  Could the
->   clear be limited to rows actually in use, batched, or moved out of the
-> RTNL
->   section?
+On Sun, Sep 27, 2026 at 07:09:59PM +0800, Jiale Yao wrote:
+> fec_drv_remove() frees the netdev before devres releases the managed
+> IRQs whose handlers use it as their data pointer. A late interrupt can
+> therefore access the freed netdev.
+> 
+> Allocate the netdev with devres so that the later IRQ registrations are
+> released first during teardown.
+> 
+> Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
+> 
+remove the empty line, tags should be all together without any empty
+line in-between. same applies to the other commits.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
 
-How long does this typically take?
+Francesco
 
-And what is the worst case, if the device is hot-unplugged?
-
-If these values are small, i don't think it is an issue.
-
-   Andrew
