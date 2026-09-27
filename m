@@ -1,273 +1,540 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-oo2-f41.google.com (mail-oo2-f41.google.com [74.125.231.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C893CAE80
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACCF3CB8EB
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790546056; cv=none; b=WTnlC4w/FXswbpmMoz7EMxOOu59qCAJWF0Zb5z7cHoHudjhyYflqYc2isM7B3HKpFiWXCNIoF8/pxmcYuRlGY7QBAJEsvh7RUXb4h9BV7ny/rOHTxJhLNUVwXS8OK4xsFxO5vCe6xxzZFDlkm//eZI2N5aa87SU7lMjai9dL3Fs=
+	t=1790546392; cv=none; b=ez0i1WmaUIy+IFCzQGiXbRm2NMHTjC51nT2Mab/UekCBDP0b+Iq9PHdvo/MPbfKlNsXlAl7Hfr4y+s0oJBZ3baDzw6pdjeTDnWHdMvThTIjwWpY5c9oaHKKXx/qLb6aQ+/ZyeKDozTDVyFDq6ztoPEqpar4q5kyF822xGpTx7JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790546056; c=relaxed/simple;
-	bh=Lfxdl5FHI9p0iRHS5UbPOIM60iTEgOcCPeyqVKZDtdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kM7L1eUCNsg4IpHiCbPhnc9Nz26/CM+Md8LKQn7V8Bn4aVTN4iWHBqJhQyGM9V90meZ3xAMSdoN3l3/upQqIectiqmYfcx0Ui/a5/9vgB7O6xV/LS3bF5Xb7yfV7e87B90TDFK8Q9W+/G6t+nBNvgM07ToNWiKbsNNK8Yu9ia/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=phOgc6Eo; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790546392; c=relaxed/simple;
+	bh=qYGQCHXoEZV5jzZUL1na1NCk0N4dxc04XAI8z6cnaPs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kF+5mW4DsQblPwtRS37lCh+2WL04Wo8fHR8Up0ubc09otYYs0CuOjjWMzHTzxzvX7sKP9Y7PE1engXSACXr8XHsQD+Hbl1wdeAKYyLahgmXO0SZvZgyt/+Rqxd386dxkdbCrRJ3TyxMKgRAlZ7DL/UCjhCjPt+v3JW0f+1ZdVxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CAEssD63; arc=none smtp.client-ip=74.125.231.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="phOgc6Eo"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffe281cb1so6172345e9.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 14:54:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CAEssD63"
+Received: by mail-oo2-f41.google.com with SMTP id 006d021491bc7-6d33d80855eso1788154eaf.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 14:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790546050; x=1791150850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O/WHvsIO5Y+Y96SRnZS9/e4Q5LXfwyvIQtvUTuw0f7U=;
-        b=phOgc6EoAdIzvaqg5iPhsxSotT4GCXZNVdTdGB7TBEt5XvbagQ8Y1Di995i7LWbDpo
-         7hWffigVb2hQHRKQbv7MiO2w5D1IeYRpoqs/YFuAs/zISdEVLlVmw3rIghY2MsdthXRI
-         7OH/CnV14wwlURKBo6iHiZNS5lsT6J5bMcy6nsXWCjMTAxhc2DBgBIx75CEun1Ivta4+
-         DBtmgl+O7BRe7QemYZ/I74cp/KqQt1DOIWypSTpS+0l63m3KNhS52JrIOsttPeqMmiGS
-         KB4+7xoe++dD81PJF+4LVDqX8N+FrA8qPD7n3fwSxm6TFYTTc+35kR54FQCs7VAQ+kUc
-         p90g==
+        d=gmail.com; s=20251104; t=1790546386; x=1791151186; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=igAli1XIKkBSafQqyYALsMXsjZszlsyKkYv896bnSd8=;
+        b=CAEssD63xSev8cIlamG9fb6OmSBYBbpP3wNsYmE9dy6b5jVMoPUOoF0huYdEzGSowt
+         zNlnO19EgUh+FPrdWMLZpfKMePV9rySelzKSkepewWTNH06gSSWJhYgxQX31ufdzDHKq
+         vQH8sdXkZysef+0dzEwxkVX2dDheEby7po7S2R4aEA8YYn4WzBMvgc6pR0g+pSxjHZYF
+         jTenG+mDVJRSTTJdMNhk+oqbgyc6IPdg9KD7ChDVuLVn9Gwct6oV68e+IsIcqKFodemb
+         oaPaFki2d1yues6ZYBxZDDsJMK1fXTPVUb2AsouUBkxTsTkGXgU10LYstRthTOyIeSeA
+         xcxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790546050; x=1791150850;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O/WHvsIO5Y+Y96SRnZS9/e4Q5LXfwyvIQtvUTuw0f7U=;
-        b=103rojHW0+HIrDbH+cFS9lq/ypCg+DbjdXs9GaOD6OYNGkX7HLQzCQPqbXdWYLOSw2
-         4UHYhQdbtu9PPtA6MB7LMRble/1ARIqhMKnlYE/+GrXMGD6xNE8UrVmmMUHofpkVjEHc
-         nHR025TpNz1H7tgAF9wt1iEXQnJ0mMH0AO2uMKq0C1+h+kn+4AIM/u9elusv3Qe7yaXD
-         wxHLxBaEhpThwLVY/fUHr5LDmmySBQiu/wOkxodt/IH0IaJ0Ut5mmMReGbKLzsj2I2BY
-         XMYl40DtOCMP/NO9vC1VzrMrDC6fyiisAVWrbtiIvfJGMcsh/cz9C+LkW9mCrnrSwcJN
-         3KaQ==
-X-Gm-Message-State: AFuF++kGjMgMGucQHiQcFX0tlevB394p2lQCbZF7wcBzVxYfJLm5HJn+
-	kU4AjstfYniG2LWUUogR8qb+B+5+q3VEJOpDugOZMzJ3DXzKQdA6wHGGqw+D38PMp1E=
-X-Gm-Gg: AYBFou3nJrmaMLRIUfFKGoUDQI1JKBpVpE6Ia4VesNMG6n1tm23stHdZ0NySDvr9edD
-	3hMPyn7SZma34mSyF5tPUrOfbPhsGcY6O3iXXDoPbUff/r7vXNz0IRe+3djOu6OVDJyP40I5qTM
-	x2jXTCmIqbczBbJQiy7c3j+wACgEoQv0uw4oEp3QXLm9nLR7t48gTFN8d9NNsMiiXwJDFgRSy6q
-	aUrSdkrsHsvf3BAdMeu3KjFaSIyfINSwaaVKdbo95cUTzl6Ujc0l/hh05cfoyahESGrhEWx0Rag
-	8CNT9EUWXKrMjg9N2DrH+/UIu3qte0ONI8s4D5BPiXWYifHdE18szkn6OlPikQRNL8iOpCVXOEH
-	z5hsY9B9h21RqOOdBxHG/VBg79HHYU60BHi5ljva88oaIsUomVmF34EOhv605lwuJld6AwBCAYp
-	jsJHvlrx+RgS5zL8PRlJggTKUPrdHhD6gf/OOvXUmDd9Sms265HdMtz++HlbsLM73gKnyeV4n4X
-	Q==
-X-Received: by 2002:a05:600c:3ba9:b0:49f:fe48:d177 with SMTP id 5b1f17b1804b1-49ffe48d294mr86161315e9.32.1790546049505;
-        Sun, 27 Sep 2026 14:54:09 -0700 (PDT)
-Received: from kali ([169.224.126.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001922102sm89556865e9.15.2026.09.27.14.54.06
+        d=1e100.net; s=20260707; t=1790546386; x=1791151186;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=igAli1XIKkBSafQqyYALsMXsjZszlsyKkYv896bnSd8=;
+        b=QOrC7pM+6oXu0QJDgHiMJ1kOUgX8Ktklv+V+bPvAjp1hEVrSJg4oMwIEZEF8xCbWSC
+         TzRUr710TH5zpLF8m0HIOJHU7B3ytRfFQaEwqihu6Ts7jthxPWtnUuWOn2L1Cdp1/6Tc
+         3dP5n90XicieLFgmjZf3CQM4p1PTtbJ1FHKk94lZLSFq5rECKT7IZcStXbSZeKPfK8cU
+         09ypyLLiido1x+BvGAN/jhknEYru/48vQ+Qh3kMc9kx0ecDkWFtzutaBAvmOcNzHuh50
+         GDOYs3c21WtJ5/1JnBo0I6DBgWqw5nzC+U0hUX21JvpwNdj+KXKjX1Thd1HKN1t4n/u9
+         0Iqw==
+X-Forwarded-Encrypted: i=1; AKwUvBzeobuQ8tpGCCqsBrJX0ruENHozrQTiHCOk82iRq62m9Gy9uUZZKwEKi3L54eFyaV8MDT4ond4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nnM8J5YMJGzFtEJ7BM6Y7ZfPs6p2B8IUOgU9U0zIyTrR4EPGDn
+	U2jHwFJ0BZfRqrAfcyXbbqP2MJx1xOo9PaGlzXj6YRXWkjDs6ApZyMeX
+X-Gm-Gg: AYBFou1Q2AOideysCsTy0equXI86Zjv8qECmvempBSONarUZaL3niJedlEQ5+3AIsP/
+	+hSqWE56zzde/guwUkqhNlrF5w/Wh1AwwESnwR11mjJX5f/AU6+Iiao+zcKO3Hu2b/edbpie8CP
+	PjDSw0GXL59Ia3ozStEMgs3BMQLn+oKeXl3RVanltPlE8dJj9oARAjbrB3mLWd9vEn3lduGpLRd
+	XY85iARsxMHYnY6nEsPExfnLHuYFVIO6lqM3sPlw6OMr7HTnXgrt1dPRwrgM/CQbrFB2TCYDLx8
+	wr3Ohwu6rMcH0hU+4x+ZNMJ5hlncpr/dtOj6/Xt2swGe2FT12X2hUXi9woFRFgbDZgVXNspRchM
+	U7ZP2sitZIDecbMHcReLmBQ2uQUL1S/sbw5c1qg4No9qH52ojuLiZ8ayueD+GM232yItfWwNaxe
+	bTP64gosyp4NbFAkTM3BZiqaueofEZcJ5QFo6iXwqDJ0Ts4bZ+Ghz0BzP431ixv4Xm0Wvse5dmP
+	l0NRN7luUiuV48BtjUgtcH9cLLngIoWHMrJmC8gS/JG5jXaIrFH/Ao96A8Ysu3YOceygybEioan
+	TitukDNtzpgubCLLZq4EhcUY2b4UzoY+Ul7utVKE+C2uaKL4vTzpkwgkoDXQ1q9euQ8OYHtdAEU
+	7SeQlmFGjGvGVAMhk29aP
+X-Received: by 2002:a4a:ee0a:0:b0:6c9:80d8:a1f3 with SMTP id 006d021491bc7-6d4410d5fa6mr10516659eaf.48.1790546385625;
+        Sun, 27 Sep 2026 14:59:45 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81b3de6f7e1sm4874147a34.22.2026.09.27.14.59.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 14:54:09 -0700 (PDT)
-From: Ali Firas <alishmery18@gmail.com>
-To: netdev@vger.kernel.org,
-	idosch@nvidia.com
-Cc: kuba@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	razor@blackwall.org,
-	roopa@nvidia.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ali Firas <alishmery18@gmail.com>
-Subject: [PATCH net-next v3 6/6] selftests: net: test the vxlan vnifilter request limit and dump replay
-Date: Mon, 28 Sep 2026 00:52:09 +0300
-Message-ID: <20260927215209.2581830-7-alishmery18@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260927215209.2581830-1-alishmery18@gmail.com>
-References: <20260927215209.2581830-1-alishmery18@gmail.com>
+        Sun, 27 Sep 2026 14:59:44 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v5 00/19] net: stmmac: preserve datapath state
+ across MTU and resume failures
+Date: Sun, 27 Sep 2026 15:59:35 -0600
+Message-Id: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OwU7DMAwG4FeZciYocbKu5sR7oB1S19uCSIuSr
+ Bqa+u545VLtUiRfLP/+7LsqnCMX9ba7q8xTLHEcpNm/7BRdwnBmHXvpFRhoDILV5dqlWHWpKQX
+ SmQtXfYo3Lnqy+kDYdgg9YEAlxHfmZSbChxokOfCtquPfRKRPpvrQH9lLLHXMP8snk102/ndUy
+ uj2EDx7Z5mNeT+nEL9eaUzLqQnWGGxgIFiPwJLtGLF5xtwa8xuYE4yMfOVOLkALz5hfY80G5gV
+ jsmRgbzpHuMbmef4FduVD78sBAAA=
+X-Change-ID: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
+To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>, 
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>, 
+ Suraj Jaiswal <quic_jsuraj@quicinc.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Joao Pinto <Joao.Pinto@synopsys.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Ong Boon Leong <boon.leong.ong@intel.com>, 
+ Voon Weifeng <weifeng.voon@intel.com>, 
+ "Song, Yoong Siang" <yoong.siang.song@intel.com>, 
+ Linus Walleij <linusw@kernel.org>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Simon Horman <horms@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>, 
+ Yao Zi <me@ziyao.cc>, Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Richard Genoud <richard.genoud@bootlin.com>, 
+ Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+ ZhaoJinming <zhaojinming@uniontech.com>, 
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
+ Ding Hui <dinghui1111@163.com>, Linkui Xiao <xiaolinkui@kylinos.cn>, 
+ Linkui Xiao <xiaolinkui@126.com>, linux-tegra@vger.kernel.org, 
+ linux-sunxi@lists.linux.dev, James Hilliard <james.hilliard1@gmail.com>, 
+ stable@vger.kernel.org, Rayagond Kokatanur <rayagond@vayavyalabs.com>, 
+ Ding Hui <dinghui@lixiang.com>
+X-Mailer: b4 0.15.2
 
-Extend the vnifilter tests for the request-size limit, the 24-bit VNI
-range, and the dump/replay round trip the limit requires.
+Keep the stmmac datapath coherent after failed MTU changes or hardware
+resume without changing the interface's administrative state. Retain the
+working MTU configuration for rollback, and allow ordinary down/up
+recovery when hardware cannot be restored.
 
-The API test gains: the largest accepted add and one VNI past it; a
-rejected oversized add and a rejected multi-entry add whose entries are
-each under the limit but sum over it, each checked to install nothing
-(the range is asserted absent first, since vxlan_vni_add() folds an
-existing VNI into the update path and would return 0 either way). The cap
-is symmetric, so it also checks a maximum-size delete accepted and a
-max+1 delete rejected, with every VNI in the max+1 range installed first
-so the refusal can only come from the cap; a within-cap delete of a
-never-installed range, which must fail on the missing VNI; an inverted
-range accepted as a no-op; and the 24-bit bound exercised through END,
-not only START.
+This revision incorporates the following previously posted fixes as
+prerequisites:
 
-bridge(8) places one VXLAN_VNIFILTER_ENTRY per comma-separated item into
-a single message, so the multi-entry case is reachable without a
-hand-built netlink message.
+- Linkui Xiao's v3 MDIO reset GPIO fix:
+  https://lore.kernel.org/r/20260921015727.2643540-1-xiaolinkui@126.com
+- Ding Hui's v3 DMA descriptor allocation cleanup:
+  https://lore.kernel.org/r/20260919121436.1642724-1-dinghui1111@163.com
+- Lorenzo Bianconi's v3 EST series, patches 2-4:
+  https://lore.kernel.org/r/20260902-stmmac-est-reapply-after-open-v3-0-e72a6df5a7ef@oss.qualcomm.com
 
-vxlan_vnifilter_dump_replay() builds a contiguous run twice the limit
-from two requests, then replays every range the dump reports into a
-second device and requires all to be accepted and the two dumps to
-match. Without the dump clamp the run dumps as one over-limit entry that
-replay rejects; with it the run dumps as limit-sized entries that
-replay.
+The GPIO patch incorporates the review fixes for non-platform builds,
+disabled MDIO children and resume-only resets, and drops the unnecessary
+forward declaration. Ding's allocation patch is unchanged apart from our
+forwarding sign-off; its deliberate omission of Fixes tags is kept.
 
-vxlan_vnifilter_api() had no teardown of its own device and namespace;
-add veth-host and the test netns to cleanup(), which runs on EXIT, so a
-failing case does not leave them or its entries behind.
+The ownership transition and its XDP, ethtool and PM consumers land
+together, so resource cleanup does not precede the power-access guards
+it requires. The larger DMA shutdown change precedes MTU rollback,
+rather than leaving early retained-ring commits with unsafe teardown
+paths.
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Assisted-by: LLM
-Signed-off-by: Ali Firas <alishmery18@gmail.com>
+The ownership states remain distinct: DOWN owns no IRQs or enabled NAPI;
+RUNNING has active queues; SUSPENDED retains rings and IRQs; HALTED
+retains rings but has released IRQs after failed MTU rollback.
+Collapsing the last two states would make close free IRQs which it no
+longer owns. DMA memory ownership is tracked separately: a failed
+shutdown can retain allocations even in DOWN until hardware acknowledges
+a successful reset.
+
+Jumbo rollback allocates no new buffers or IRQ registrations. RX holes
+are filled before reset without changing the old descriptors;
+descriptors are rebuilt or retired only after reset succeeds. If
+rollback also fails, the interface remains detached until down/up
+recovery. This cannot guarantee recovery from indefinitely failing
+hardware.
+
+Failed interfaces still receive hardware/PHY sleep handling. A failed
+datapath with MAC WoL configured rejects suspend with -EBUSY because its
+wake path is unusable; PHY-only WoL is not rejected. Platform MAC WoL
+retains register, receive and timestamp power so a level wake interrupt
+can be acknowledged before normal resume. PCI power transitions instead
+run inside the noirq window, retaining PME/D3 wakeup. Failed PCI
+restoration masks only that function's INTx source until recovery, not a
+shared IRQ line. Optional platform wake resources are balanced
+separately from BSP power.
+
+Timestamp filters and PHC registration survive an MTU change. MTU reset
+and the live XDP/XSK reset fallback replay the platform PTP clock
+selector, frequency correction, PEROUT and EXTTS settings. Ordinary
+system resume retains the timestamp initialization path and does not
+replay cached PEROUT or EXTTS requests. Continuous PHC time is not
+preserved across reset.
+
+Live XDP and ethtool failures leave the administratively-up interface
+detached for ordinary down/up recovery. Program attachment failures
+return an error without consuming the proposed program. BPF-link and
+XSK-pool removal still complete if their datapath restart fails, so
+teardown can release the program or pool safely. AF_XDP pool
+reconfiguration now pauses all queues and replays the MAC link while
+rebuilding the rings. Successful reconfiguration leaves the PHY running
+rather than powering it down and restarting autonegotiation. All queues
+and other sockets are still paused while their rings are rebuilt. A
+failed restart stops phylink without reconfiguring the failed MAC, then
+permits ordinary down/up recovery.
+
+Close and live XDP/XSK release now require stopped DMA process states or
+a completed global reset before releasing DMA memory. Unsupported
+idle-register layouts, including XGMAC and GMAC4 with more than three
+channels, use the reset fallback. Replay cached L3/L4 filters, EtherType
+steering, VLAN priority, preemption/TC mapping and EST before starting
+DMA, with PHC replay on the reset paths described above. A datapath
+replay failure enters the existing rollback or detached recovery path.
+
+If shutdown and reset both fail, retain rings, mappings and backing
+memory. AF_XDP pool teardown still completes, with independent
+references keeping its DMA mapping, UMEM pages and buffer metadata
+alive. DMA-owned frames are not returned to the pool's reusable free
+list. A later successful down/up reset reclaims them. There is no
+generic isolation guarantee for permanently unresponsive hardware:
+removal reports and retains unsafe DMA allocations, which may therefore
+remain pinned until reboot.
+
+Assisted-by: Codex:gpt-6-astra
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
+Changes in v5:
 
-Notes:
-    v3: was 5/5. Add the request-limit, 24-bit-range, symmetric-delete and dump/replay cases; give the test its own netns teardown.
+- Keep platform MAC-WoL register access available while IRQ handlers can
+  run; separate STM32 wake-clock preparation from power removal and
+  retain Tegra private clocks/reset state. Publish wake handling before
+  arming PMT.
+- Move PCI BSP power changes into noirq while preserving PME/D3 wakeup.
+  Mask function-local INTx after failed restoration until datapath
+  recovery.
+- Acknowledge powered timestamp interrupts while PHC access is blocked,
+  including after PMT is disarmed; suppress delivery from a blocked
+  clock. Balance wake-only resources and unwind a failed suspend
+  callback.
+- Keep frequency correction when recalculating the PHC increment.
+- Retain XSK buffer metadata without delaying socket teardown, and keep
+  DMA-owned RX frames off the pool free list until shutdown is
+  confirmed.
+- Rebuild RX buffer addresses and read-format control words after a
+  successful resume reset, including page-pool holes and partial XSK
+  rings.
+- Target net-next and include the unmerged GPIO, allocation and EST
+  work, retaining authorship, sign-offs, review history and original
+  submission links. Place the EST group before PHC serialization and the
+  per-queue allocation cleanup immediately before the remaining
+  allocation fixes.
+- Drop our MDIO GPIO patch. Keep only the allocation-lifetime additions
+  not covered by Ding's per-queue allocation cleanup.
+- Incorporate the GPIO acquisition guards and declaration cleanup from
+  the prerequisite reviews. Cache reset resources even without
+  needs_reset, because system resume calls the reset routine directly.
+- Reuse Lorenzo's embedded EST state, explicit hardware enable argument
+  and shared replay helper; retain transactional schedule replacement
+  and replay before DMA starts, under the PTP mutex. Pass unpublished
+  replacements through the same base-time and programming helper as
+  reset replay.
+- Return EST disable, clock-update and EST replay errors from PHC time
+  adjustment. Keep the schedule locked throughout and attempt to rearm
+  it even if the clock update fails.
+- Preserve net-next PTP error propagation and timestamp-capability
+  checks, while tracking actual clock ownership independently during
+  failed PM.
+- Keep the already merged open-error DMA stop and extend it with
+  hardware shutdown confirmation and retained DMA memory on failure.
+- Link to v4:
+  https://patch.msgid.link/20260926-submit-stmmac-reset-fixes-v1-v4-0-ec1c0250b3c9@gmail.com
 
- .../selftests/net/test_vxlan_vnifiltering.sh  | 114 +++++++++++++++++-
- 1 file changed, 113 insertions(+), 1 deletion(-)
+Changes in v4:
 
-diff --git a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-index 8deacc565afa..f48bc861bb88 100755
---- a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-+++ b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-@@ -84,6 +84,7 @@ ret=0
- # all tests in this script. Can be overridden with -t option
- TESTS="
- 	vxlan_vnifilter_api
-+	vxlan_vnifilter_dump_replay
- 	vxlan_vnifilter_datapath
- 	vxlan_vnifilter_datapath_pervni
- 	vxlan_vnifilter_datapath_mgroup
-@@ -163,8 +164,9 @@ check_vm_connectivity() {
- cleanup() {
- 	ip link del veth-hv-1 2>/dev/null || true
- 	ip link del vethhv-11 vethhv-12 vethhv-21 vethhv-22 2>/dev/null || true
-+	ip link del veth-host 2>/dev/null || true
- 
--	cleanup_ns $hv_1 $hv_2 $vm_11 $vm_21 $vm_12 $vm_22 $vm_31 $vm_32
-+	cleanup_ns $hv_1 $hv_2 $vm_11 $vm_21 $vm_12 $vm_22 $vm_31 $vm_32 $testns
- }
- 
- trap cleanup EXIT
-@@ -371,6 +373,116 @@ vxlan_vnifilter_api()
- 	# change vxlan vnifilter flag
- 	run_cmd "ip -netns $testns link set dev vxlan-ext1 type vxlan external novnifilter"
- 	log_test $? 2 "Cannot unset vnifilter flag on a device"
-+
-+	# A single request may add at most 4096 VNIs. bridge(8) puts one
-+	# VXLAN_VNIFILTER_ENTRY per comma-separated item into a single message,
-+	# so both the single-entry and the multi-entry paths are reachable here.
-+
-+	# The largest accepted add, and one VNI more rejected.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 10000-14095"
-+	log_test $? 0 "Add a request of the maximum VNI count"
-+
-+	# The rejected oversized add must install nothing. Assert the range is
-+	# absent first: vxlan_vni_add() folds an already-present VNI into the
-+	# update path and returns 0, so a later probe cannot tell "installed
-+	# nothing" from "installed part" unless it started absent.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 20000"
-+	log_test $? 1 "VNI 20000 absent before the oversized add"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 20000-24096"
-+	log_test $? 255 "Cannot add a request over the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 20000"
-+	log_test $? 1 "The rejected oversized add installed nothing"
-+
-+	# Two entries each under the limit but summing over it: the per-message
-+	# total is what is bounded, not the span of one entry. This is the shape
-+	# a per-entry check would have let through.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 30000"
-+	log_test $? 1 "VNI 30000 absent before the oversized multi-entry add"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 30000-32047,32048-34097"
-+	log_test $? 255 "Cannot add a multi-entry request summing over the maximum"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 30000"
-+	log_test $? 1 "The rejected multi-entry add installed nothing"
-+
-+	# The cap is symmetric: a delete may touch at most the maximum too.
-+	# Install a maximum-size range and the VNI past it, so the max+1 delete
-+	# below has every VNI present and can only be refused by the cap, not by
-+	# a missing VNI.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 40000-44095"
-+	log_test $? 0 "Populate a maximum-size range to delete"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 44096"
-+	log_test $? 0 "Add the VNI past the maximum range"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 40000-44096"
-+	log_test $? 255 "Cannot delete a request over the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 40000-44095"
-+	log_test $? 0 "Delete a request of the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 44096"
-+	log_test $? 0 "Delete the VNI past the maximum range"
-+
-+	# A within-cap delete of a never-installed range reaches the handler and
-+	# fails there on the missing VNI, not on the cap.
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 50000-50010"
-+	log_test $? 255 "Cannot delete a range that was never installed"
-+
-+	# A start above the end selects nothing and is accepted as a no-op.
-+	# Use a VNI no earlier case installs, so the absence check is meaningful.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 55000"
-+	log_test $? 1 "VNI 55000 absent before the inverted range"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 55000-50000"
-+	log_test $? 0 "An inverted range is accepted as a no-op"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 55000"
-+	log_test $? 1 "The inverted range installed nothing"
-+
-+	# The VXLAN header carries 24 bits. The bound is on both endpoints, so a
-+	# range whose END alone leaves the space is rejected too.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215"
-+	log_test $? 0 "Add the highest VNI the header can carry"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 16777215"
-+	log_test $? 0 "Delete the highest VNI the header can carry"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215-16777216"
-+	log_test $? 255 "Cannot add a range whose END leaves the 24-bit space"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 100-4294967295"
-+	log_test $? 255 "Cannot add a range whose END wraps past the 24-bit space"
-+}
-+
-+# A device may hold a contiguous run longer than one request's limit, built
-+# from several requests. The dump coalesces it, so the dump must break the run
-+# into entries each no larger than the limit, or the configuration it reports
-+# cannot be replayed. Install such a run, then feed every range the dump
-+# reports back into a second device and require all to be accepted.
-+vxlan_vnifilter_dump_replay()
-+{
-+	local opts="external vnifilter local 172.16.0.1 dev veth-testns"
-+	local range rc=0 src_ranges dst_ranges
-+
-+	cleanup_vnifilter_api &>/dev/null
-+	setup_vnifilter_api
-+
-+	# The destination is on a different dstport so re-adding the same VNIs
-+	# does not collide with the source under vxlan_vni_in_use().
-+	run_cmd "ip -netns $testns link add vxlan-src type vxlan $opts dstport 4789"
-+	log_test $? 0 "dump/replay: create source device"
-+	run_cmd "ip -netns $testns link add vxlan-dst type vxlan $opts dstport 4790"
-+	log_test $? 0 "dump/replay: create destination device"
-+
-+	# 8192 contiguous VNIs sharing the default remote: one run, twice the
-+	# limit, installed in two accepted requests.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 10000-14095"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 14096-18191"
-+	log_test $? 0 "dump/replay: populate a run larger than the limit"
-+
-+	for range in $(bridge -netns $testns vni show dev vxlan-src | \
-+		       grep -oE '[0-9]+-[0-9]+|[0-9]{2,}'); do
-+		bridge -netns $testns vni add dev vxlan-dst vni "$range" \
-+			2>/dev/null || rc=$?
-+	done
-+	log_test $rc 0 "dump/replay: every dumped entry is accepted on replay"
-+
-+	src_ranges=$(bridge -netns $testns vni show dev vxlan-src | \
-+		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-+	dst_ranges=$(bridge -netns $testns vni show dev vxlan-dst | \
-+		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-+	[ -n "$src_ranges" ] && [ "$src_ranges" = "$dst_ranges" ]
-+	log_test $? 0 "dump/replay: source and destination dump the same ranges"
- }
- 
- # Sanity test vnifilter datapath
--- 
-2.53.0
+- Reorder prerequisites ahead of their consumers. Separate the
+  independent MDIO GPIO fix and PHC/IRQ preparation, and combine
+  datapath ownership with the XDP, ethtool and PM paths which must
+  observe it. Keep MTU rollback last.
+- Replay cached TC filters, steering, preemption mapping and EST after
+  reset, with DMA held stopped until replay succeeds. Preserve the
+  previous cached rule on installation failure and advance EST base time
+  by whole cycles.
+- Validate TAPRIO replacements without modifying the installed schedule;
+  reject failed PHC reads and retain a valid cache after setup failure.
+- Keep control operations from accessing unpowered registers after close
+  reattaches the netdev. Permit software-only VLAN, qdisc and TC filter
+  removal, and preserve open-time power recovery. Remove cached flower,
+  steering and u32 rules while down or detached so reset cannot replay
+  filters which TC has already deleted.
+- Use phylink link replay for live XDP/XSK updates, leaving the PHY
+  running on success and balancing replay with phylink_stop() on failed
+  restart.
+- Require a hardware idle acknowledgement or completed reset before DMA
+  memory retirement on close, XDP/XSK replacement and failed open.
+  Retain failed configurations for recovery, and defer IRQ TX recovery
+  and resume descriptor rebuilding until shutdown/reset is confirmed.
+- Add independent AF_XDP mapping/UMEM references so pool teardown can
+  complete without unmapping DMA-visible memory after a shutdown
+  failure. Document reset fallback and permanent-failure memory
+  retention.
+- Keep shared IRQ controller lines enabled during MTU replacement. Mask
+  DMA sources at the device, protect DMA-handler quiescence with the
+  channel lock, and drain registered handlers with synchronize_irq().
+- Preserve pending DMA status while quiesced, including when hardware
+  setup restores interrupt enables. Restore saved masks on restart and
+  leave DMA sources masked when failed rollback releases the driver's
+  IRQ handlers.
+- Reuse the final TX queue and timer drain after synchronizing IRQ
+  handlers.
+- Restore saved RX skb ownership immediately when taking partial receive
+  state, including a budget-one completion and a DMA-owned next
+  descriptor.
+- Cancel the EEE software timer after draining NAPI, and make GSO
+  feature checks use stable platform TBS capabilities rather than
+  replaceable rings.
+- Reuse the MDIO reset GPIO acquired at probe and reject TC queue work
+  when the datapath is not running, except for software-only filter
+  deletion.
+- Let carrier-down XSK TX polls complete instead of continuously
+  repolling, and remove the unused external XSK wakeup declaration.
+- Stop a PHY powered by prepare_resume() after failed ethtool setup.
+  Publish core queue counts transactionally only after the fallible open
+  work.
+- Initialize rollback RX addresses before publishing descriptor
+  ownership. Restore the platform PTP clock selection, frequency
+  adjustment, PEROUT and EXTTS settings; serialize PHC/devlink access
+  across reset and reject access to a failed retained clock.
+- Freeze deferred XSK pool teardown before device PM. Track platform
+  power, pending clock restoration and actual PTP clock ownership
+  separately from the datapath. Avoid unpowered MAC/MDIO accesses on
+  failed close-time recovery and balance clocks even after a noirq
+  resume failure.
+- Check unusable MAC WoL before the pending-sleep shortcut, and update
+  comments for HALTED ownership and the ethtool reopen path.
+- Link to v3:
+  https://patch.msgid.link/20260924-submit-stmmac-reset-fixes-v1-v3-0-c031e3f3a282@gmail.com
+
+Changes in v3:
+
+- Snapshot debugfs queue counts under RTNL with the descriptor ownership
+  check, so a reader blocked behind channel shrink uses the new
+  topology.
+- Complete pending core sleep state during close and retry restoration
+  on open after runtime-PM acquisition. Use the installed wake state
+  rather than mutable WoL settings, and retain the pending marker if
+  restoration fails.
+- Put the independent IRQ unwind fix first, ahead of the ownership
+  changes.
+- Correct the WoL/safety IRQ unwind order, fixing a repeated safety IRQ
+  free and a leaked WoL handler.
+- Account for live XDP release/reopen in datapath ownership. Stop DMA on
+  late IRQ failure, propagate program-attach errors without losing
+  program references, and allow BPF-link removal to complete after
+  restart failure.
+- Replace the void AF_XDP queue-enable helpers with the tracked XDP
+  restart. Unmap a removed pool only after freeing its rings, undo
+  failed pool attachment, and preserve TBS configuration while
+  rebuilding the channels.
+- Keep PHY/PM ownership across ethtool ring/channel changes, restoring
+  the old configuration after failed reopening and leaving the interface
+  detached for down/up recovery without a second runtime-PM put.
+  Explicitly disable the MAC during release even when link resolution
+  has not reached mac_link_up().
+- Split the MTU work into normal-size MTU handling, allocation unwind,
+  stable DMA/IRQ ownership (including timer lifetime), and the
+  retained-ring transaction. Keep the ownership change and its
+  open/error-path adaptations in the same patch.
+- Restore the PHY advertisement reduced by phylink_suspend() when
+  stopping a suspended instance, without restarting or reconfiguring the
+  MAC, in response to Andrew Lunn.
+- Keep suspend-owned PHY speed control separate from explicit driver
+  speed-down requests, so close-time power saving does not overwrite the
+  original advertisement and remains effective until the matching
+  speed-up.
+- Suspend a stopped PHY powered back up by phylink_prepare_resume() when
+  stopping after a failed MAC resume, without repeating phy_stop().
+- Add a separate MTU transaction patch retaining old DMA resources and
+  IRQ registrations until replacement succeeds, following Andrew Lunn's
+  request to keep the old setup for failure recovery.
+- Keep DMA configuration objects at stable addresses and use persistent
+  channel objects for per-queue interrupt contexts.
+- Drain transmitters and post-completion NAPI poll tails before
+  cancelling TX timers.
+- Avoid resetting normal-size MTU changes, including all supported
+  AF_XDP MTUs, and stop rebinding live pools through temporary RXQ
+  objects.
+- Program the new MAC receive limit before activation and restore the
+  old MTU on failure; refill old RX buffer holes before reset so
+  rollback does not require allocation.
+- Preserve coalescing, TBS state, PHC registration and timestamp
+  filters; leave a failed rollback detached with old rings retained for
+  close.
+- Harden partial-allocation unwind.
+- Separate core sleep completion from datapath ownership so failed MTU
+  and resume paths still receive hardware PM handling, without disabling
+  NAPI twice or restarting released queues. Address the skipped-suspend
+  issue reported by Sashiko; reject an unusable MAC WoL path with
+  -EBUSY.
+- Balance platform noirq PTP clock handling against resources still
+  owned after detached XDP cleanup.
+- Link to v2:
+  https://patch.msgid.link/20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996@gmail.com
+
+Changes in v2:
+
+- Drop forced netif_close() and retain the interface's administrative
+  state, as requested by Maxime Chevallier.
+- Separate queue quiescence from resource release and use explicit
+  datapath state instead of a napi_disabled argument to the release
+  helper.
+- Handle repeated suspend/resume after failure, preserve PHY/PM
+  ownership until ordinary close, and allow a fresh down/up recovery.
+- Check XDP/AF_XDP cleanup, descriptor readback and asynchronous reset
+  work while the netdev is administratively up but unavailable.
+- Explain the generic phylink suspend-to-stop transition and why
+  restarting phylink after a failed MAC resume is not a valid
+  substitute, in response to Andrew Lunn.
+- Combine the two stmmac error-path fixes so every user of the new state
+  has consistent resource and NAPI lifetime handling in one patch.
+- Link to v1:
+  https://patch.msgid.link/20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com
+
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Serge Semin <fancer.lancer@gmail.com>
+To: Suraj Jaiswal <quic_jsuraj@quicinc.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To: Linus Walleij <linusw@kernel.org>
+To: Russell King <linux@armlinux.org.uk>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Magnus Karlsson <magnus.karlsson@intel.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: Simon Horman <horms@kernel.org>
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Björn Töpel <bjorn@kernel.org>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Jose Abreu <Jose.Abreu@synopsys.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+To: Joao Pinto <Joao.Pinto@synopsys.com>
+To: Yao Zi <me@ziyao.cc>
+To: Thierry Reding <thierry.reding@kernel.org>
+To: Jonathan Hunter <jonathanh@nvidia.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+To: Ong Boon Leong <boon.leong.ong@intel.com>
+To: Voon Weifeng <weifeng.voon@intel.com>
+To: "Song, Yoong Siang" <yoong.siang.song@intel.com>
+To: Chen-Yu Tsai <wens@kernel.org>
+To: Jernej Skrabec <jernej.skrabec@gmail.com>
+To: Samuel Holland <samuel@sholland.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: bpf@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+
+---
+Ding Hui (1):
+      net: stmmac: fix error path cleanup in DMA descriptor ring allocation
+
+James Hilliard (14):
+      net: stmmac: unwind the WoL IRQ after a safety IRQ request failure
+      net: phylink: allow stopping a suspended instance
+      xsk: freeze deferred pool teardown during system sleep
+      net: stmmac: serialize and retain PHC configuration across reset
+      net: stmmac: leave the datapath running for normal-size MTU changes
+      net: stmmac: complete DMA configuration allocation unwind
+      net: stmmac: keep DMA configurations at stable addresses
+      net: stmmac: track datapath and power ownership across failed reopening
+      net: stmmac: use the tracked datapath restart for XSK pool changes
+      net: stmmac: restore TC offloads before restarting DMA
+      xsk: allow drivers to retain DMA mappings independently of pools
+      net: stmmac: retain DMA memory until hardware shutdown completes
+      net: stmmac: prepare device-local DMA interrupt quiescence
+      net: stmmac: retain DMA resources across MTU changes
+
+Linkui Xiao (1):
+      net: stmmac: request the MDIO reset GPIO only once
+
+Lorenzo Bianconi (3):
+      net: stmmac: embed struct stmmac_est in stmmac_priv struct
+      net: stmmac: pass the desired EST enable state to est_configure()
+      net: stmmac: re-apply taprio offload in __stmmac_open() and stmmac_resume()
+
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c   |    6 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c  |    2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   |    2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-motorcomm.c  |    2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c  |   18 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  |   28 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c  |   27 +-
+ .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |    4 +
+ .../net/ethernet/stmicro/stmmac/dwmac1000_dma.c    |    2 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac100_dma.c |    2 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c   |    4 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h   |    8 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c   |   29 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h    |    4 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c    |   30 +
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c |   11 +
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         |   11 +-
+ drivers/net/ethernet/stmicro/stmmac/ring_mode.c    |    4 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |   70 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c   |   49 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.h   |   13 +
+ .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |   15 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c   |    1 +
+ .../net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  |   10 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 1912 +++++++++++++++-----
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c  |   65 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c   |    2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c   |    3 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |   40 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c   |  190 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_selftests.c |    8 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c    |  375 ++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c  |    6 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c   |   83 +-
+ drivers/net/phy/phylink.c                          |   51 +-
+ include/linux/stmmac.h                             |    7 +
+ include/net/xdp_sock_drv.h                         |   25 +
+ include/net/xsk_buff_pool.h                        |    7 +
+ net/xdp/xsk_buff_pool.c                            |   72 +-
+ 39 files changed, 2390 insertions(+), 808 deletions(-)
+---
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
+change-id: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
