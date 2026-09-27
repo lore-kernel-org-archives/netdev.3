@@ -1,205 +1,178 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FFB1A683E
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDEE21CC71
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 00:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790468365; cv=none; b=U1JUFt/Uew3ckHtZRTfuN90HVMRTpMk7inbYkoSucERsrWubIrGrYM6Oew2Tf8adBmKxmAn2tE94KKd+4GfPddNwIf5i7seSNj1GSJ0GSAvlWHUh8Pn699euLGLXqYgX34JR3S6IhcldF8FuO1SSrPysROSm2O0Ft+TZOEwhLYM=
+	t=1790468685; cv=none; b=nIi6xaVNg0+raomUyT8K1Za7gOTVPa34iRlnrhuFm3WvLBstWgXsxRgzaaXg5FR9vNml7IcxkdcvNESgz07iwybwzS/mj1vRPf6JAr5OxhLLVH2ADkcqyBV4XU3bZ8K825TG7X8ejHj9I0eSjav5Y+lj8EMJfXmVWez/YpN+xvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790468365; c=relaxed/simple;
-	bh=OpxJJg/lpzy9Omuc4zH4GerzVWXFIKf5U5NmmEG2bEY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ch/nZ+OyXVItzGBEL2zdZtkUdwsb7WvG0gJy6J+98lIwk53WqqmobK7n06TIq90lkg5qXchPcUIblYh9GBcqJVBWBqOPSpsP65vuzIMyb4PZW5nuBeO4PXMASK0u+UMAVp2yOOvwsuYxB6k0sQ9JfMdZYa+pMLzfUDHhboMqPWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VNVQY3zH; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1790468685; c=relaxed/simple;
+	bh=8Fw2qNNSLeDry4szk2gig5m6yGuj0wWmeEbSqaBSsi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gl/d6z2gBJzgUNt3svVej8bLTsVb/2CeY2SSFN9XR7CWzmYKwscC4UXDwSeLwXcgonClhw2jzPulPGmYKF6hMMnwoj19zz4ypRuY1M7Uhxg8OWri8oUaHZgKnv9X9FpdBmub5Av7kRVPvLg5iGJplWHkTr4+2opG/+51x0jI7Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rLINiVuB; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VNVQY3zH"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-385d2703b64so2383815a91.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:19:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rLINiVuB"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469f204f6so939190b3a.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 17:24:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790468363; x=1791073163; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IEdIa9RMQ1QXL88PLw7o/+9OHA7bgZryG9p24nbS8RY=;
-        b=VNVQY3zH4TF2gZ50SdretIZ4V1n7t7i7ZrEer29/sqT1/8dzeGsIlNkBM1UoQDjkqo
-         cU6T2x9B9vGma8LeKaxCcl0ohuHeA2ArxlWxy+A75CLc3KJ8f2X520lnXsSSC9A/ftlS
-         gB7rz8C1EcinpLiqB2Y0yViH54kFohLGUvhJme6xLt6XfGrWzR7wcsaqY5EJ81NWrHwu
-         Vi7KnsjFER9lzo3Y9tJNqjaIdODY2ZyDlwTr/dM2eHekDEnxqthmaH5JGjkHbhy4kJB2
-         MQp3rTDYAs7v1CVUxN4tufCXDiXCJ/VaZO2YYVjKCzcuXnOO89XBDqxkmSxjx6uF+Hpb
-         XaHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790468363; x=1791073163;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790468682; x=1791073482; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IEdIa9RMQ1QXL88PLw7o/+9OHA7bgZryG9p24nbS8RY=;
-        b=e6SbuAJ5U9be6T5wLm1B9wqPRUJ+pfUriPeDVVR0rNoGj8E7zb8+9YOfrPp2YgqJZ/
-         esVv2jbNtUvQa3XqqXrr+ybDCobNv08k+X3PRs6bnDcjCVBWl3vqoojxD4TRWy2Notuv
-         V/Hdl1wmp9KVFo7hIGDmhajwN8tYYIqU644yxjHl2kjEjsW0GCVQHlzrttgubHtgsvw8
-         ngiQfNv0pb/JRzi5YTrJzfr6y5l6qN+xEOTE0eFovtKv+ePWFTrC9IvLGDVJcUtSLtKj
-         xS4/DJNbHTBc3aATHUAVME0s4G0MSSxwTBDsZniDdboQi3+AoNuaQsMoh7pyl8bEaMJ8
-         vUrA==
-X-Forwarded-Encrypted: i=1; AKwUvBwzsW5st6n+geJ+wcfmpKDPdMVdupDzk6YFfY0MTrH1Yz5VC2DwG1Sl9YUJWP31dqjsekAk6b8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJP4TvK66VDx0CkbW4y+gZQ3NQyB/XsdwiTcrS3N0P/MEgev3j7
-	lqjtXXzwgOm9QbScwdTwTbosML2R8C6fVYoo+uZaFNOJUiqr2PEZrqUtZ3Y07mWxFTXosaolyfK
-	wUlIjDw==
-X-Received: from pjbhs10.prod.google.com ([2002:a17:90b:200a:b0:3a0:e233:a080])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2250:b0:39e:6c68:fd93
- with SMTP id 98e67ed59e1d1-3a098b92bf7mr5492586a91.40.1790468362413; Sat, 26
- Sep 2026 17:19:22 -0700 (PDT)
-Date: Sun, 27 Sep 2026 00:18:38 +0000
-In-Reply-To: <CAMB2axN93iJnrZAk6hWraSnz32FtRDdpz_UbzsVB4YU7gRK_3Q@mail.gmail.com>
+        bh=1PK0e4PtkqQ5G4jrPyQfHAmFBUAvufJtROUufsHoDiw=;
+        b=rLINiVuBzVPrFieOmINzJr8lqxZmroCDK5Ae9xVPl1RgFQ4FBPzSs5dfhaiZ12+BiR
+         2pKB8yjA/NBYtEUp9Y3m41YC6qUHtZtXm6Fx/aP+2Wn1i8C5A2fXIdbpF9QZN1g1vaY3
+         NDr3cmzcHtc1IMQAnJFarDVnlo0hC9Nao0wXKxaGBY/8RWDGtG424/tImwMxKb9dZnC7
+         MEc9rcVbGClllD03SxHM7VOK18yxOP7m+5Q3JZ3SNV83Swnhd4a8aD2nmQgz8qqUdHO/
+         jJRwlMm79YDCvJzgM1wSmSLeQBrhTlz1vRfGjcaeJjvEsj0dpvsdvOIdw4nwz3Zz/U+V
+         E2pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790468682; x=1791073482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1PK0e4PtkqQ5G4jrPyQfHAmFBUAvufJtROUufsHoDiw=;
+        b=GChEByGsFwqYl7nsVV3rrvPRBliWI4DP2iKDzF+EIUIu0IjUzh8huDx5VDgef7cH+C
+         0XXXpShMNSYLZ60nma+jRISj255VjYeZAUdzB49SHSkmrrdzkE5I3e7RPL0/75h75++C
+         uzD4QJtYMBsruJWhK0L9vLvDMxBA97bX5LNJBN//8Ck+4vBqO+yKO3/q0Kw1QrSCthK2
+         NMP3OsrS+tpbOsXag+5ZTU3m3AR74gE8RjnkEbV79yzZVYwQfEJQ4w/fBB3/lXbizmVK
+         bcvR7m1oufliqBQPrkJcSu4sJrHBxsTdFlWYNU2qt62K7E3nomTEiwd1Eh3J8mSmWQvV
+         Puug==
+X-Forwarded-Encrypted: i=1; AKwUvBzp5GTwqKPTgBpmvvG08929CzsxAYU7Q96fVYNOan9tfpuf5f4ZypciEROgng1XqNzNWkuxc8w=@vger.kernel.org
+X-Gm-Message-State: AFuF++n6wTKeKXOB72QPz9mu5qrlR4dvOSwNAECVnmxldgb1iPej1Zs+
+	dGAJwrWyB+g9xe/CfT/X453jbU4WH1Hdyrbl+6B4J7hftleDSt90i1Xe
+X-Gm-Gg: AYBFou1cvFLYgV8Z9IWVhxyED7jXOWIDcRBgd7acK4bHx3iiYmRkfHAjyFtccsnuqd9
+	4uYemMElSklAovSSjz/Us1xAgdtQLE6JwTkvd9e4hdkAjK2Bw3XNHSCtaGTgR8+6GXiv+THk8ZG
+	JDtBhyuyaP/C78uRSSKLeDbLFSBaSQ3ell6XRMQfsTUsIRbC8gNYIZOhRLt2vGZCZI0F3emi4F2
+	uS14kC0+HvYREKut7az8Zi1BtQHHvSsG4LpY5AgwzsFLYV0U0CpOkU8k5eV7z7PKw4eHaLyjGgG
+	7vo0KxseAi7VBAz6Zh0A8Gy1/7Fboy+zLAcJ+cYIQaLQ7A80glSIb571m6itMIoxqi2Yp1SZCMv
+	ZY6iAI6ucMeP66eTq/jMSXU3WqrAVCB8x55cLNUE7r7TU1rSZKCv8NSE7IJco7t7ipda/Q1Jliu
+	Axh326cA8F3SVk1J5GXkmSH9hTTebkH29M5962GyEoiDtL3BieKgSnX3qh0RBk2BDPg6OT5gN3R
+	OPu2GRGSePqExl3zp1NGqTpWaLAqyUN7pkQg595c3jWb7pXWH9DRucfxe4X6Q==
+X-Received: by 2002:a05:6300:8053:b0:3de:1b92:a4dd with SMTP id adf61e73a8af0-3de1b92c673mr6070280637.18.1790468682175;
+        Sat, 26 Sep 2026 17:24:42 -0700 (PDT)
+Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:78b6:7bf6:b1de:12ef])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78791c680sm2698224a12.16.2026.09.26.17.24.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 17:24:39 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Nikolaos Gkarlis <nickgarlis@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v8 0/5] rtnetlink: dump link-layer multicast addresses
+Date: Sun, 27 Sep 2026 09:24:22 +0900
+Message-ID: <20260927002427.4519-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAMB2axN93iJnrZAk6hWraSnz32FtRDdpz_UbzsVB4YU7gRK_3Q@mail.gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260927001921.604064-1-kuniyu@google.com>
-Subject: Re: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: ameryhung@gmail.com
-Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, bpf@vger.kernel.org, 
-	cleger@meta.com, daniel@iogearbox.net, eddyz87@gmail.com, edumazet@google.com, 
-	john.fastabend@gmail.com, kuni1840@gmail.com, kuniyu@google.com, 
-	martin.lau@linux.dev, memxor@gmail.com, ncardwell@google.com, 
-	netdev@vger.kernel.org, sdf@fomichev.me, ukyab@berkeley.edu, 
-	willemb@google.com, yonghong.song@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Amery Hung <ameryhung@gmail.com>
-Date: Fri, 25 Sep 2026 10:33:50 -0700
-> On Thu, Sep 24, 2026 at 6:41=E2=80=AFPM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> >
-> > On Thu, Sep 24, 2026 at 05:39 PM Kuniyuki Iwashima <kuniyu@google.com> =
-wrote:
-> > >> can we drop the flag ?
-> > >> hdr_opt_len() is called for every tx skb without per-socket opt-in.
-> > >
-> > > Oh, I assumed bpf_tcp_ops keeps the same behaviour.
-> >
-> > bpf_tcp_ops were moved out of BPF_SOCK_OPS_TEST_FLAG() guards on
-> > purpose. None of the existing members has per-socket opt-in.
-> > hdr_opt_len() runs for every tx skb, rtt() for every rtt sample.
-> > See the log of commit 3bb54768fe3e
-> > ("bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_ops"=
-):
-> > "A per-member/per-cgroup gate could be added later if the extra
-> > fast-path work proves measurable."
-> >
-> > > We have a bpf prog to turn the hook on (from cgroup_skb/ingress),
-> > > only when ingress rate exceeds the allocated capacity, to signal that
-> > > via a custom TCP option and turn the hook off from the hook itself.
-> > > (and I planned to post another patch for that)
-> >
-> > That should work today without another patch and without the flag.
-> > cgroup_skb/ingress prog does
-> >   bpf_sk_storage_get(&map, sk, 0, BPF_SK_STORAGE_GET_F_CREATE);
-> > when the rate is exceeded. hdr_opt_len() and write_hdr_opt() do
-> >   bpf_sk_storage_get(&map, sk, 0, 0);
-> > and return when it's NULL. write_hdr_opt() calls
-> > bpf_sk_storage_delete() after the option went out.
-> > cg_skb_func_proto() has both helpers and get_func_proto() in
-> > bpf_tcp_ops.c allows them in every member.
-> > egress_read_sock_fields() in test_sock_fields.c does the cgroup_skb
-> > part.
-> >
-> > > Anyway, is it because calling bpf prog is not very expensive
-> > > or per-prog switch is preferable to per-socket flag ?
-> >
-> > The switch is still per socket. It's sk_storage instead of a bit in
-> > tcp_sock, so every prog has its own.
-> >
-> > While such new flag is per socket, but it's one for all progs.
-> >
-> > And you want to take the last bit of u8 bpf_sock_ops_cb_flags...
-> >
-> > As far as the cost. A socket that didn't opt in pays for an indirect
-> > call into the prog and for bpf_sk_storage_get() that finds nothing,
-> > but only in cgroups where bpf_tcp_ops with enqueue_rcvq is attached.
-> > The members that are not set are NULL and bpf_tcp_ops_call() skips
-> > them. That's what hdr_opt_len() costs on tx.
-> >
-> > I don't remember what Amery measured, but worth benchmarking
-> > for your case.
->=20
-> I did not benchmark the initial bpf_tcp_ops patch set, so per-socket
-> gating was deferred. Before deciding whether to add such a gate for
-> AutoLOWAT, could we compare:
->=20
-> 1. No bpf_tcp_ops attached.
-> 2. No-op enqueue_rcvq() and dequeue_rcvq() callbacks attached.
-> 3. The same callbacks performing an sk-local-storage lookup (or maybe
-> rhashtable).
+"ip maddr show" prints link-layer, IPv4 and IPv6 entries. The IPv4 and
+IPv6 ones come over netlink today, with IFA_MC_USERS for the user count.
+The link-layer list, dev->mc, is only exported via /proc/net/dev_mcast,
+so iproute2 and other users still parse procfs for it.
 
-I used tcp_rr (128 threads, 20000 flows) and didn't see a big
-perf diff between 1. and 2., but 3. showed some costs even when
-only looking up sk_storage and returning immediately:
+This series adds the AF_PACKET family to RTM_GETMULTICAST so that the
+link-layer multicast addresses are reported the same way. Patch 3 dumps
+dev->mc in the ifaddrmsg format of the IPv4 and IPv6 dumps: IFA_MULTICAST
+carries the address, IFA_MC_USERS the reference count and a new
+IFA_F_GLOBAL flag marks entries added explicitly, the "static" column of
+/proc/net/dev_mcast. ifa_index limits the dump to one device and
+IFA_TARGET_NETNSID selects another netns. Patch 2 adds a generation
+counter for dev->mc changes so a multi-part dump reports
+NLM_F_DUMP_INTR like the IPv4 and IPv6 ones. Patches 1 and 4 update the
+rt-addr spec and patch 5 adds a selftest.
 
-                    |    w/o bpf    |     w/ bpf    |  diff   |  diff (abs)
- -------------------+---------------+---------------+---------+------------=
--
- num_transactions   | 1,209,349,692 | 1,185,180,017 |  -2.00% | -24.17M tx
- throughput (tx/s)  | 20,318,689.83 | 19,953,668.49 |  -1.80% | -365.0K tx/=
-s
- remote_throughput  |    19,472,629 |    19,135,463 |  -1.73% | -337.2K tx/=
-s
- latency_min        |      50.83 us |      46.08 us |  -9.34% | -4.75 us
- latency_p25        |     911.35 us |     911.35 us |   0.00% | 0.00 us
- latency_p50        |     972.79 us |     983.03 us |  +1.05% | +10.24 us
- latency_mean       |     983.64 us |   1,001.71 us |  +1.84% | +18.08 us
- latency_p90        |   1,136.63 us |   1,187.83 us |  +4.50% | +51.20 us
- latency_p95        |   1,208.31 us |   1,259.51 us |  +4.24% | +51.20 us
- latency_p99        |   1,392.63 us |   1,454.07 us |  +4.41% | +61.44 us
- latency_stddev     |     141.82 us |     158.53 us | +11.78% | +16.71 us
- cpu time (u+s, 60s)|     8,165.91s |     8,312.57s |  +1.80% | +146.66s
+AF_PACKET dumps returned -EOPNOTSUPP before, so iproute2 can keep the
+procfs fallback for older kernels. The iproute2 side is ready and will
+be posted once this is in.
 
+Changes in v8:
+- Set the owner of every list a device has, not only dev->mc, and
+  check for dev->mc in one place when bumping the counter
+- Add __hw_addr_count_inc/dec/reset() so a change of list->count and
+  the counter bump stay together
 
-Given the other hooks in the fast path (hdr_opt_len(),
-parse_hdr(), etc) should add costs at the same level,
-I think we should guard them with flags.
+Changes in v7:
+- Add a per netns generation counter bumped on dev->mc changes and fold
+  it into cb->seq, dev_base_seq alone did not cover the dumped entries
+- Sample cb->seq under the address lock of each device and again when a
+  dump round ends, so the NLMSG_DONE check sees a change too
 
-But u8 is too small, so I think we could add a new field
-(maybe u32?) and a new kfunc for bpf_tcp_ops only.  Also,
-I'd add CONFIG_BPF_SOCK_OPS_LEGACY to save some calls.
+Changes in v6:
+- Move the dump to net/core/dev_addr_lists.c next to the dev->mc
+  helpers
+- Stamp cb->seq from dev_base_seq and check dump consistency
+- Let an unexpected dump error propagate instead of skipping
+- Check for an address only present in the peer netns in the
+  target-netnsid selftest, the peer and local ifindex can be equal
+- Document the ifa-index filter and the zero header fields in the spec
 
-What do you think ?
+Changes in v5:
+- Filter the target-netnsid selftest dump by ifa-index, a new netns
+  also contains the fallback tunnel devices
 
+Changes in v4:
+- Reset the resume offset when the device the dump stopped at is gone
+- Use a tracked netns reference (put_net_track)
+- Say ifa-family must be set in the spec doc, drop the AF_UNSPEC remark
+- Close the netlink socket and guard the checks in the selftest
+- Drop the Fixes tag
 
->=20
-> >
-> > >> The prog in patch 8 already returns when the socket has no
-> > >> sk_storage.
-> > >
-> > > Yes, but this is only for bpf verifier.
-> >
-> > tcp_init_autolowat_cb() can be the only place that passes
-> > BPF_SK_STORAGE_GET_F_CREATE.
-> > So for a socket that didn't do setsockopt(BPF_TCP_AUTOLOWAT)
-> > other cbs will return NULL on lookup.
-> >
-> > tcp_disable_autolowat() will do:
-> >   bpf_sk_storage_delete(&tcp_autolowat_map, sk);
-> >   bpf_tcp_ops_set_rcvlowat(sk, 1);
-> >
-> > > Just an idea, would it make sense to add a kfunc to move bpf_tcp_ops
-> > > callback to a shadow pointer by allocating sizeof(bpf_tcp_ops) * 2 ?
->=20
-> A bpf_tcp_ops instance is shared by all sockets, so this would not
-> provide per-socket gating. Making it per-socket would require copying
-> the callback table for every tcp_sock, which seems more complex than
-> adding a gate directly to tcp_sock.
->=20
-> Am I understanding your idea correctly?
+Changes in v3:
+- Report the static bit as a new IFA_F_GLOBAL flag in IFA_FLAGS
+  instead of IFA_F_PERMANENT
+- Support IFA_TARGET_NETNSID and test it
+- Describe global_use accurately, it is also set by dev_mc_add_excl()
+- Fix the target-netnsid type in the rt-addr spec, as its own patch
 
-Yes, but this is overkill indeed.  I think most deployments
-use just a single SOCK_OPS/bpf_tcp_ops, and per-scoket flag
-would be enough.
+Changes in v2:
+- Always validate the request header, not only with strict checking
+- Use a single "with" statement in the selftest (ruff)
+
+Yuyang Huang (5):
+  netlink: specs: rt-addr: fix the type of target-netnsid
+  net: add a generation counter for dev->mc changes
+  net: add AF_PACKET multicast dumps
+  netlink: specs: rt-addr: document AF_PACKET multicast dumps
+  selftests: net: test AF_PACKET multicast dumps
+
+ Documentation/netlink/specs/rt-addr.yaml |  19 +-
+ include/linux/netdevice.h                |   6 +
+ include/net/net_namespace.h              |   1 +
+ include/uapi/linux/if_addr.h             |   1 +
+ net/core/dev_addr_lists.c                | 247 ++++++++++++++++++++++-
+ net/core/rtnetlink.c                     |   2 +
+ tools/testing/selftests/net/rtnetlink.py |  73 ++++++-
+ 7 files changed, 336 insertions(+), 13 deletions(-)
+
+-- 
+2.43.0
+
