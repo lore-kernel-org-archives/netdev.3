@@ -1,128 +1,141 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2165395AC0
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 11:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3AA3D3012;
+	Sun, 27 Sep 2026 11:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790507347; cv=none; b=IpKjbUcCPVeZt233Dq5v6nJstS2O0Z1t125l8a649QntMW80zs8hIY0mf785NPZ+639M1+NiPlzPpXEmNnf0egyrDEAGn8+fzabvE9hvrPQxbiE0ZAa6XEeBUHrPtKrWFJI/Z5okxbR56nNK/x9jJkTAOqkfgsAcr4kYyl/Eu/M=
+	t=1790507460; cv=none; b=mP4ur1JDTJKpanKSM6keP2jDHJkdEyKbNa9d3VkOKoxVK5Y3GjSAeLMk55fYApiyAAzm8PXRugTl9sO/Zvvh4VvyTTts/PlWrX0b5xpeyQ7agJNCQ0VTvceyc4ybbOM70VhcQ5G3rjo2IB+QhGC/1HiTD+29pVPICxlHOhA60As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790507347; c=relaxed/simple;
-	bh=Z81fYpBC83tyl2EahQ5uVBovVzoQMII9SPGovm+WyHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=mtg1NUCbvQAh/3TiSEZGl2HYt74rBiqYF5eGlYqbxrN+lwKUvmr48SAPEPQ4lV1QqlgyrjJuQEDYmHLqZgkrLFiU1zKQWHK8s5Vogmh6NBwhuDOapW6MSYunU08cMddZuAzbjdm9MsjD8lFjGVCMmmSiz9GgjxP/XaefJbbo9DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/FHyv1X; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790507460; c=relaxed/simple;
+	bh=/q4wAXBEAGQ32gx0VWqHuJ93LPgUIRHq2IkmfG3dsIY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OSXMwHoFLmsVdswVu/xFscLu17SVSEO69uxChOhIM9ObOZAet6plgO1mXoyj7i5MJPkTsg2Pvr0wljcUHjUxUrN7eNDL/ePxjaEgIP4z8Gd321wj1VcsXJdwBQdm2lcuzw8oRNfCb4ZqzBxa0ENvtnI7UyY2QJPsxk2J1F7aS/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DL7R3WCm; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/FHyv1X"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843f22dcb8so1677486f8f.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 04:09:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790507344; x=1791112144; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3Yd776XVUL5K2a1r38X9yNDWujw1AE8eowaD1NftLV0=;
-        b=k/FHyv1X6LMBLb0zXGYJ4mdH5FhmpLWDuSr0uym5KRDqs7LZQcYAPTo/miz84fj0TT
-         Fw3ZTrCKfYzOMXXyt9je2i+YNMVDWWL8ao25Q9wHaysqmJZD3C0o7bjxLxw9ePe8wUBo
-         PrvRO0pWsAm4pDGkl+ATr9yS9lLS5cIxnIwfECixuqFPkJUBST48vkilQcpvBzVcsnlQ
-         NV7eXW7xuYJoL8F3IDXnpvXZ/8QwEOGBteyIGZ/1wtuCtfUjxZ8q9lUYQt82bT9GBohW
-         MvIODoBjA1U231CahqQwTVCABEv0jkGlqqIiMTnOV5ReBT05Qn/KLZeEgK0eOJ4aw9O3
-         uADA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790507344; x=1791112144;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3Yd776XVUL5K2a1r38X9yNDWujw1AE8eowaD1NftLV0=;
-        b=diZDo+/mBBMY8g2RX/ZODZd3Z9ar6l09gHrMuOda7pniziMv//jZuXPRE0lWJE1Bho
-         OaX6xaibvhMTTIRRXMTcR6KWGHLw+g3LIMhZDHN+tLccy7dsAYLwACe2HOyQOued9qV+
-         UuAOa60Cck+SWRsNGh+1+G/Lu8PBh+OzpJLnWXpjGtWnJQ/OIjV/S+WQZDo7Pb1EQhS1
-         zapqIfhCBK0CUAjwQBqEIIy9z8+DYP7sGvkMY2iRxZtmWpkHlTeDr7JCV0bhY5ENr1WN
-         1Rju2aIOQsaEVd3bbEriucD2OC2nQ5i49OFEX9+4Kc6YYLqld+nIFAYdCzK9rNzxpcwb
-         PeZg==
-X-Forwarded-Encrypted: i=1; AKwUvBy9xIBTxo07/e7SM5ju9Gwr7DFTaSiKX24Q/vVwfsVDZoPFasFeqmpI11J1/o0x5ULyIIjKRFg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJLN76R2ezP4hYp1YlUiHq1P1HD4HEiVTV6+rV5zyj1cC6voSwY
-	imBzrUmBqLvhqFoyFXtWasRD5XI53jI6KNf1c4Bii7BJoQOfNCK9uCxd
-X-Gm-Gg: AYBFou0bdpvRkNDLELsqorh8+5Jnondr1KDOSiJsm+ZgYBlBb/y37+SxNi+l8CqPVVX
-	G/U7qNvIRDFKKjlcwIAS3sI1sPi42foUywDEcYJKG5JgID5hBfFcJiovC0nJAwYai2gd8ncWaF4
-	U7FaBbqP0BnjOcgMbfX9LamWz+8/P3vsMGyDpyaUDaVniMoXbNJdl0+yll5+PPmCvlIi56NvFTk
-	PPg7Cmxv4uCGFE0+e0bLwEk7cXl7SbGx2Bb/xHR8M5tfXms6vSegFwL0rOxch0k3zhmzGW90g1/
-	9LF6FrFdzHhcigsJaCHxaCqQCWxl0OLviNX8yAGKfa/a2ET/whIqDlOPgnjZW0HbGAK17WAX0NP
-	yxq3+Tgz+oWmTlPc63nMK2Rc2Lfo0t5O9Tc3qhpUojBdgJNY7azOoud7Sa1CxMMM0tMXiKiGwx1
-	vIFeBBZrKuaGmbClxDiIqEfRezasH46QnExqcla8JyZCuPpCtSGUkDOLGgPibLe2AfezWlEg==
-X-Received: by 2002:a05:6000:230e:b0:488:5d44:6680 with SMTP id ffacd0b85a97d-4887175f986mr18594216f8f.36.1790507343764;
-        Sun, 27 Sep 2026 04:09:03 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64f795sm18090168f8f.31.2026.09.27.04.09.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 04:09:03 -0700 (PDT)
-Date: Sun, 27 Sep 2026 13:08:59 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
-Cc: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in
- rxrpc_destroy_all_connections (2)
-Message-ID: <arj4xgLi_4YZl929@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DL7R3WCm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oR
+	BG98w2GuYcMXXzEm5Pb5Z5Tt8jpFdSwhDK1zNz4NM=; b=DL7R3WCmW6yO3wUlUQ
+	fOqDTksf0jCpr5SF/Y+dEPUAbVSJV/z3YQCi6Mh2kKvaPHlS9o3DiuZNb+WN9vqX
+	dOPaSSMX+T7tY519+xddRn0adIR2U+d6pGFrdbRNUIPmvFk11bmk8sSbTsGTBkZR
+	svXZlqf3I4mkrhpl6o+C0i8dc=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3_92P+bhqB9V5BA--.4648S7;
+	Sun, 27 Sep 2026 19:10:15 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 5/7] net: hix5hd2: manage the netdev lifetime with devres
+Date: Sun, 27 Sep 2026 19:10:02 +0800
+Message-Id: <20260927111005.1035089-6-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260927111005.1035089-1-yaojiale02@163.com>
+References: <20260927111005.1035089-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ab29768.514bccd6.255447.001e.GAE@google.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_92P+bhqB9V5BA--.4648S7
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr15GF4kJFWrJF15tw45trb_yoW5GF43p3
+	WUGFWa9ry8Xw4ft34Dtr4UZFyrAa18Kay5CFW7Kwn3ZasIyrykXF4FkFy0vF4FyFWkGF4Y
+	qr42yr4ruan8urDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_Xo23UUUUU=
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC7xdspmq4+Zf3xQAA38
 
-lets see if this works.
+hix5hd2_dev_remove() manually frees the netdev before devres releases
+the IRQ. The interrupt handler receives that netdev as its data pointer
+and can access it during this teardown window.
 
-#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git a7bfaba4823e
+Allocate the netdev through devres so its later registered IRQ is
+released first.
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 611c790bc6d0..111f0844b0d6 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -274,4 +274,15 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
+Fixes: 57c5bc9ad7d7 ("net: hisilicon: add hix5hd2 mac driver")
 
--	if (conn->state == RXRPC_CONN_ABORTED)
-+	if (conn->state == RXRPC_CONN_ABORTED) {
-+		/* A CHALLENGE packet queued for processing carries a ref on the
-+		 * connection (see rxrpc_post_challenge()).  That ref has to be
-+		 * dropped here because the caller frees the skb as soon as we
-+		 * return.
-+		 */
-+		if (sp->hdr.type == RXRPC_PACKET_TYPE_CHALLENGE &&
-+		    sp->chall.conn) {
-+			rxrpc_put_connection(conn, rxrpc_conn_put_challenge_input);
-+			sp->chall.conn = NULL;
-+		}
- 		return -ECONNABORTED;
-+	}
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 0ece717db0f8..1295f3de3725 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -487,2 +487,18 @@ void rxrpc_destroy_all_connections(struct rxrpc_net *rxnet)
+diff --git a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+index 02282dc86faf..ffcb281230eb 100644
+--- a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
++++ b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+@@ -1100,7 +1100,7 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ 	struct mii_bus *bus;
+ 	int ret;
+ 
+-	ndev = alloc_etherdev(sizeof(struct hix5hd2_priv));
++	ndev = devm_alloc_etherdev(dev, sizeof(struct hix5hd2_priv));
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
+@@ -1115,26 +1115,26 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+ 		ret = PTR_ERR(priv->base);
+-		goto out_free_netdev;
++		goto out_return;
+ 	}
+ 
+ 	priv->ctrl_base = devm_platform_ioremap_resource(pdev, 1);
+ 	if (IS_ERR(priv->ctrl_base)) {
+ 		ret = PTR_ERR(priv->ctrl_base);
+-		goto out_free_netdev;
++		goto out_return;
+ 	}
+ 
+ 	priv->mac_core_clk = devm_clk_get(&pdev->dev, "mac_core");
+ 	if (IS_ERR(priv->mac_core_clk)) {
+ 		netdev_err(ndev, "failed to get mac core clk\n");
+ 		ret = -ENODEV;
+-		goto out_free_netdev;
++		goto out_return;
+ 	}
+ 
+ 	ret = clk_prepare_enable(priv->mac_core_clk);
+ 	if (ret < 0) {
+ 		netdev_err(ndev, "failed to enable mac core clk %d\n", ret);
+-		goto out_free_netdev;
++		goto out_return;
+ 	}
+ 
+ 	priv->mac_ifc_clk = devm_clk_get(&pdev->dev, "mac_ifc");
+@@ -1271,9 +1271,7 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(priv->mac_ifc_clk);
+ out_disable_mac_core_clk:
+ 	clk_disable_unprepare(priv->mac_core_clk);
+-out_free_netdev:
+-	free_netdev(ndev);
+-
++out_return:
+ 	return ret;
+ }
+ 
+@@ -1291,7 +1289,6 @@ static void hix5hd2_dev_remove(struct platform_device *pdev)
+ 	hix5hd2_destroy_hw_desc_queue(priv);
+ 	of_node_put(priv->phy_node);
+ 	cancel_work_sync(&priv->tx_timeout_task);
+-	free_netdev(ndev);
+ }
+ 
+ static const struct of_device_id hix5hd2_of_match[] = {
+-- 
+2.34.1
 
-+	if (!list_empty(&rxnet->conn_proc_list)) {
-+		struct rxrpc_connection *c;
-+
-+		pr_err("AF_RXRPC: conn_proc_list not empty\n");
-+		write_lock(&rxnet->conn_lock);
-+		list_for_each_entry(c, &rxnet->conn_proc_list, proc_link)
-+			pr_err("AF_RXRPC: proc conn %x cid %x state %d ref %d act %d flags %lx cache_empty %d calls %px %px %px %px bundle %px\n",
-+			       c->debug_id, c->proto.cid, c->state,
-+			       refcount_read(&c->ref), c->act_chans, c->flags,
-+			       list_empty(&c->cache_link),
-+			       c->channels[0].call, c->channels[1].call,
-+			       c->channels[2].call, c->channels[3].call,
-+			       c->bundle);
-+		write_unlock(&rxnet->conn_lock);
-+	}
-+
- 	ASSERT(list_empty(&rxnet->conn_proc_list));
