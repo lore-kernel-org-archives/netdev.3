@@ -1,56 +1,56 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF9A3B8BBF
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7201B3BF660
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790540682; cv=none; b=Nidq/NiM8/qmcyX7cH/phmxH/h99gB4sb+xaMl8jNbULFunaoBg3NX8d78+VelZpdTwoXzWG7uFi/rqbCFYuoEXPRBE+jkEtt5hXw1qcTva/2DuWfH2MhZFjYhHYBIUUJMngmlwdGpijs+Mzmh3bStMoCUPe4x13jQ898lQALNs=
+	t=1790540682; cv=none; b=peDeZOzCArYf+YKa0SjzMb2zwGkwmEV8/K1yfY2Z8yVY2scDiUZTzBv/yfP3ihp+n41IhhORRh4y7zB72/iYsakC24AnvzPfHMcBsEpb1Hb9kZbgSaqGtikYvyoIsOat2365GbDf4wZwO4avPMhy13nd7Fzx6cxB+6IhjYtbLtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790540682; c=relaxed/simple;
-	bh=qIpoQtqE2/MR7ZDNyoks+Ks+ZhsGXOmjKk9A9ta0yHc=;
+	bh=MYUiPAThlpXy3hDK8F98xpinNcjd1TVcnXxGddmia60=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RljdGB8ZpZnwN7XjtuLBiRRy9n9D5ub3qJ/FSuixWW7YK8r8Ks317F8mxGyqZxtpBeYoMdkIUtIbhjzulqUxOI0bk36ptEkEiylsCoKJoh5xAsXIFE33mSb2WDJVi84CK2MY42+CQEERHFRstBn/byYnE4PW5dlkeJLutB6pLy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J2n/ikgo; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=HPyQEU+aVU8sx6Z70jWW9POAFO+ZTDTf6C4pHZafF+8R3C6jkyRHtjNsHuqLrNkK8xkZyTjINBtKQp1NPNpIxA7IpeQJ85wddOxgvQJxOcbJaSyIo29aRrgnD1ikaDapjg93cbHPRHVWGhbv57256xNyIA9GfNyVCQvpJKJ5txI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8fA2m4Y; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J2n/ikgo"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3968bb86fb7so2426058a91.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:24:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8fA2m4Y"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3a0ad137e87so3776243a91.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 13:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790540680; x=1791145480; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790540681; x=1791145481; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fmVlVigYHsi+s/Ejaejdyy7SMCDA9n5B8aD7+vkGexE=;
-        b=J2n/ikgozwuWd4mUro1M2wISKdEO2cn6AZqXf5AJ5UQhXiJq6k/4til+iC54DGaAWR
-         CrOybRrYj0z2F68LChuDK5/WfrI+zG4RZRDyn+pM1c/gxx4grhRdAUPJFyax35qGrIix
-         w05q7YSTqq7ixOB0+TvKCr5AeEhpUm3Jyw2eStMMDgIGXNHzhBF8/tH762LIpqQ/eatN
-         Yj9ZlcrHUBX9jg4HJBh+bb1NcvaAETbFqMNOydOy5oQ7tINuuDiP+SMRFTKpkqWxmnqE
-         02DRzYVbUZwTBGGmfiPfNThjqHVfAvg3Ir759LxrJA6zgDURGJdaaGo0Tjly7tbXjOB4
-         E+EQ==
+        bh=B1rGGJ63C4FV3mScHHJc7Dvo/NCy52SWK0T6aRtJEMk=;
+        b=u8fA2m4YKzr+1RouyAoyGQHV0e8pNHS5A6ltmqHkefWvMgAw54K0OIaefVA32UFxqu
+         Iiufp9jMHm5dccx0QWuoP9p5YWhmDuqurHGdLj36waGhqlMIG4QEkasrdxpGQ7jaAaue
+         dhRKofH4CzG06zyDxxiZ2wq2C9mDUyciTjthty/l8XjW+Iso/sPrGodKZDQg3PKIHG3S
+         oIXedRMTSLVrtTri6vMJA8u68BnM2UFQlH/WQAjA6zP0nVOUJ8nV8/UNih76cJfSSdyQ
+         ojJJ2mEm5nBJPA9RQKN67RuLIbdVu5GpvhcwA9+/igaYGgMMIVdBbvpHnh32aMRxy58c
+         n79A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790540680; x=1791145480;
+        d=1e100.net; s=20260707; t=1790540681; x=1791145481;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fmVlVigYHsi+s/Ejaejdyy7SMCDA9n5B8aD7+vkGexE=;
-        b=v1vUIDgHhd5jg0HZrD0jywR/zpkcou1jovxncRdOTkz/wSfKsFTSjoIeTxIC6NEykr
-         roGVHPIMWMv4O/XgZHaOZBcWMril4SbLTUiiRkjNtPyVkv6qB6mQkODhAqtVvc9fot2s
-         cCmtQ+PLZ4UViIhDnzsFcXQkIS9nrTT7pHf0WN9LzBeQc1OJZeYMdsTL5xQ8EgIf5V0x
-         uX3K1B+eVtQiB3gy4pUSbHaJoRnkYJfO8SxqigSBWELqtBWdSaG35Kvj01KCVQzDMPR4
-         51wh8LsXz8tx/jkrR24lWFBjgCVRnWR3EofWI2VoqxC0Qji3B2FTmHsJQAjFdqw+aQj5
-         Bxsg==
-X-Forwarded-Encrypted: i=1; AKwUvBz3hRRH2oGW2guxx0x8LgYLD8ocivSsaQDZdl8rIRnpo8kLUMrYeDptdkIXPr0+lp1t3+W31Bc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYID3UFxZLZtEz/ZimiliAtoOmo0fyvC/vctk5KJpAty+CBefMyd
-	smeynYEn7mJo0AM004l2+O9MmHDWz7eqzu/ICCbPweCCNlGTB/5rST+ALu3Uf+AjGrbo9UAaGEh
-	Fdv2T8g==
-X-Received: from plld21.prod.google.com ([2002:a17:902:7295:b0:2db:1fc8:4e2e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d43:b0:3a2:ae51:f4ad
- with SMTP id 98e67ed59e1d1-3a2ae51f583mr1216209a91.28.1790540679421; Sun, 27
- Sep 2026 13:24:39 -0700 (PDT)
-Date: Sun, 27 Sep 2026 20:23:39 +0000
+        bh=B1rGGJ63C4FV3mScHHJc7Dvo/NCy52SWK0T6aRtJEMk=;
+        b=oAKf956AFhCwB5OVLnvDx+4BQqBE8knIYF88Ub3p60Mbz+hIsaEYQ5zTb6mJqTNS46
+         ZNC5PWmcBfu1lanrS+iTepoUl1rKAyTUz8YPjZ3d5DGhlrlcPVQC05qQA9Fp+QZMJ4TB
+         93qB8iKpkCrNQmK7Z2JYrkxUPJfBIUoHjF2ObPhPua00cj/7oVNZj6Cus1s/py3SUQsO
+         uKswWnlhOmqd705yXY7bQUOIQssOfT3kEu/OsQHhDRlQp4PQXI69CSkVZjeOMOUy23oE
+         3Afkc+tgLJeWpN63NoSNk/flLE4YytqaNPvETBL/DsVEJJFSs7ruXlFv/jOUxN5vuwsV
+         K7zA==
+X-Forwarded-Encrypted: i=1; AKwUvBypAmZ3VhUGLqf2AzwuzDBcBpS1f/3GnqLNphuwFrLYKJQKkgXQ85XFnK0qEIZKOEPHmhrj8AM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJdJPswjwW0etjnesFHca/98oSSpwav1gaRnhdRHLLGwoLMetYs
+	BIHDRpGpWUlGfREHxKpffPfmOqsxqdxFlyc7dJWA5GWvfC2TGotIAwHq89UKNwEytfLnUGi97sa
+	cb0C49A==
+X-Received: from pgei15.prod.google.com ([2002:a05:6a02:526f:b0:cc7:62a0:c318])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d41:b0:39e:4c81:6c5f
+ with SMTP id 98e67ed59e1d1-3a0986079a8mr5677886a91.26.1790540680259; Sun, 27
+ Sep 2026 13:24:40 -0700 (PDT)
+Date: Sun, 27 Sep 2026 20:23:40 +0000
 In-Reply-To: <20260927202429.2452589-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260927202429.2452589-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260927202429.2452589-3-kuniyu@google.com>
-Subject: [PATCH v1 net-next 2/5] net: Add ->pre_exit_batch() to struct pernet_operations.
+Message-ID: <20260927202429.2452589-4-kuniyu@google.com>
+Subject: [PATCH v1 net-next 3/5] net: Track state in ops_undo_list().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
 	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -70,57 +70,96 @@ Cc: Simon Horman <horms@kernel.org>, Chris J Arges <carges@cloudflare.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-While unregistering a netdev, we must find and clean up all
-resources holding refcounts of the device.
+We will call rt_flush_dev() and rt6_uncached_list_flush_dev()
+from ->pre_exit_batch().
 
-This operation is usually triggered for each component via
-NETDEV_UNREGISTER and typically requires a full scan of hash
-tables, etc.
+Then, we want them to return early when called again from
+ ->exit_rtnl() or default_device_exit_batch().
 
-For example, rt_flush_dev() and rt6_uncached_list_flush_dev()
-are called for each netdev and iterate over the global per-cpu
-lists to find uncached routes tied to the device, resulting
-in O(N_dev x (N_cpu + N_route)) loops during netns dismantle.
+However, we cannot simply return early when !check_net(net).
 
-Moreover, rt_flush_dev() and rt6_uncached_list_flush_dev()
-do not even require RTNL.
+In the following cases, even if check_net(net) is false,
+we cannot skip rt_flush_dev() / rt6_uncached_list_flush_dev():
 
-To batch such cleanup across dying netns without holding RTNL
-before ops_exit_rtnl_list(), let's add a new ->pre_exit_batch()
-hook to pernet_operations.
+  1. some ->pre_exit() call unregister_netdevice() before
+     fib_net_ops (e.g. ovs_pre_exit_net(), l2tp_pre_exit_net()).
+
+  2. ->dellink() could call unregister_netdevice() for another
+     netdev in a dying netns queued for the next cleanup_net()
+     batch, for which ->pre_exit_batch() has not been called
+     yet (e.g. veth).
+
+Thus, we need a clear flag to indicate that ->pre_exit_batch()
+has already been called.
+
+Let's add net->undo_state and update it only for dying netns.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/net/net_namespace.h | 1 +
- net/core/net_namespace.c    | 3 +++
- 2 files changed, 4 insertions(+)
+ include/net/net_namespace.h | 9 +++++++++
+ net/core/net_namespace.c    | 7 +++++++
+ 2 files changed, 16 insertions(+)
 
 diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index b4247e767d13..58b2601bb869 100644
+index 58b2601bb869..6a817326fbb8 100644
 --- a/include/net/net_namespace.h
 +++ b/include/net/net_namespace.h
-@@ -488,6 +488,7 @@ struct pernet_operations {
+@@ -57,6 +57,9 @@ struct uevent_sock;
+ struct netns_ipvs;
+ struct bpf_prog;
+ 
++enum {
++	NET_PRE_EXIT_DONE = 1,
++};
+ 
+ #define NETDEV_HASHBITS    8
+ #define NETDEV_HASHENTRIES (1 << NETDEV_HASHBITS)
+@@ -125,6 +128,7 @@ struct net {
+ 	 * it is critical that it is on a read_mostly cache line.
  	 */
- 	int (*init)(struct net *net);
- 	void (*pre_exit)(struct net *net);
-+	void (*pre_exit_batch)(struct list_head *net_exit_list);
- 	void (*exit)(struct net *net);
- 	void (*exit_batch)(struct list_head *net_exit_list);
- 	/* Following method is called with RTNL held. */
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 0e13de0cd36b..476fbf913bad 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -160,6 +160,9 @@ static void ops_pre_exit_list(const struct pernet_operations *ops,
- 		list_for_each_entry(net, net_exit_list, exit_list)
- 			ops->pre_exit(net);
- 	}
-+
-+	if (ops->pre_exit_batch)
-+		ops->pre_exit_batch(net_exit_list);
+ 	u32			hash_mix;
++	u8			undo_state;
+ 
+ 	struct net_device       *loopback_dev;          /* The loopback */
+ 
+@@ -364,6 +368,11 @@ static inline bool net_initialized(const struct net *net)
+ 	return READ_ONCE(net->list.next);
  }
  
- static void ops_exit_rtnl_list(const struct list_head *ops_list,
++static inline bool net_pre_exit_done(const struct net *net)
++{
++	return READ_ONCE(net->undo_state) >= NET_PRE_EXIT_DONE;
++}
++
+ static inline void __netns_tracker_alloc(struct net *net,
+ 					 netns_tracker *tracker,
+ 					 bool refcounted,
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 476fbf913bad..9e2462bfa478 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -226,7 +226,9 @@ static void ops_undo_list(const struct list_head *ops_list,
+ 			  bool expedite_rcu)
+ {
+ 	const struct pernet_operations *saved_ops;
++	bool dying = ops_list == &pernet_list;
+ 	bool hold_rtnl = false;
++	struct net *net;
+ 
+ 	if (!ops)
+ 		ops = list_entry(ops_list, typeof(*ops), list);
+@@ -248,6 +250,11 @@ static void ops_undo_list(const struct list_head *ops_list,
+ 	else
+ 		synchronize_rcu();
+ 
++	if (dying) {
++		list_for_each_entry(net, net_exit_list, exit_list)
++			WRITE_ONCE(net->undo_state, NET_PRE_EXIT_DONE);
++	}
++
+ 	if (hold_rtnl)
+ 		ops_exit_rtnl_list(ops_list, saved_ops, net_exit_list);
+ 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
