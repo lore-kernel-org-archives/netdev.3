@@ -1,106 +1,109 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f26.google.com (mail-wr2-f26.google.com [74.125.225.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5904B2C21E6;
-	Sun, 27 Sep 2026 19:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6223B71DC
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790535746; cv=none; b=uP11WtOLDZcGNdF4E5MQGH1l0k8EL9k554htHb6MeOvIxXq93P+hdvruWPrXZSMMm8zMlhYdcmjw+I9RpdNYkbn1p+ZQzB4Pb3/Y5VPHBWYtbaFUqE5Y7FyFf49l7RbUCX2cQj6EeTcrf/yTyzjVa0+DwHivn/idTqPrTeEKnEc=
+	t=1790535820; cv=none; b=im+hzGt038HlTmbRaHCCyqD+y6W9Mkv/O3LFjH1H64M46PAkA3WD2DQx+pxSNhtU2gYZPsTCAsf6hR2R+bazpC+tvUXVmbR/Y9EtqA+vCh9qjOW/UE03yIKX0euoHMeDZnKb+q68mB86/Ix5CjmaOdCCdRS9UAitBpzVmHT/Wr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790535746; c=relaxed/simple;
-	bh=bmZUXxIZqy0apceeyZkO/5n1tNNDoZ4axqt4nUT1I9I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gN/69XhpgYtIGwfTOmkwZlEb6wZ3wiFpl9RzyFs3CPF5s/+VgxTc9GvspIxGr4HymZ3DiM3o709Aw9TiDVu+m18D+Nz90ufeJ6rPtiqx56CNOBrrF5OYaUNeftDskgocMFQSoq1FOQ050ubPedSu3mDo96qRSH1gCEHAmsSNEFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GXE3mkqR; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790535820; c=relaxed/simple;
+	bh=iww9Rrw/7xVmPZYqt+U+P9KcHpNhKk1XEZ9j0Zir8vA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jm9v/CSfYnFh6HCBwU4EwiZyLzm+Ka5kqJUA/1pe6GuMTpkCMsh4Xl1pJYDWGqTKGN3oM6oGviMyRaDrqh2XPLgrPKzs6lpTf53H6wj8iOW+rmKxl4iADnisDj0bnf1NybQR/xrjV6hVqCuS8Utct7jHkgzy4rnT/MQGOBakrN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=snNZyDmN; arc=none smtp.client-ip=74.125.225.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GXE3mkqR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UQrtppGpAREwEBox3klCIQcjsYbUf0EeTuSwQEhRl+0=; b=GXE3mkqRY/t8zgm8M7PViX9qlw
-	2P5+5y4FfOjpjW3YAfRO/RNQR2B+mjHhHaLVo3V2PgXSwur4ZbiWg79L3t/UZde82dIYBCQgljmVE
-	MS+vGcDHhJ/arNtWKId8I4qV50ynJtihdgrIfdpN+Ohg7VE/tKgxabpA7UB6mN3tPwX8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xAu8X-007YUJ-0o; Sun, 27 Sep 2026 21:02:09 +0200
-Date: Sun, 27 Sep 2026 21:02:09 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	mfd@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v23 8/9] net: dsa: mt7530: generalize and move
- common function to lib module
-Message-ID: <cd200dee-1bde-4cc2-a296-c93d704cb906@lunn.ch>
-References: <20260925182435.21207-1-ansuelsmth@gmail.com>
- <20260925182435.21207-9-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="snNZyDmN"
+Received: by mail-wr2-f26.google.com with SMTP id ffacd0b85a97d-4843f22dc83so1968037f8f.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790535816; x=1791140616; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hyA13uQBPobSZN7QEDfmz9E3dETz4qLP4md8sLtn8EE=;
+        b=snNZyDmN31vH2iWiTXD1dogUrWuUcObLz/Egz0tuCZ42V76I5nrwJuAaE2Fw9R/89N
+         FBDrSSBtHJcKk2ACMWA9bO3AYJ70k12dGtBIQW2ahbm3PgzLAyWWzGvZ3GJilIdVHgE6
+         mQvBjppBfXrpHpAjzZXoWmyFUdfi+aDwYtYvRQEMzOTgIxJ5ygIVLmdi+b7IjpG6yy8p
+         aGuObClTT/kPyCXoofYznF5SbSqh+5MfkGUfL++y4YqPCy6R5XjSGtb6Ufm8Fg8bTLu2
+         VdFyOMKuCI81gHHxAXqE7Rm/Lzwt8CYssabJUX/bovswdrZ/8QPv2MZLpblR0QXtaVdJ
+         tw7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790535816; x=1791140616;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hyA13uQBPobSZN7QEDfmz9E3dETz4qLP4md8sLtn8EE=;
+        b=t3yiu1CllQfUHAPgd7AlIOSB/EGam1kzzMbg+5+8nz2WNnmi1FV2kd5PH3USPMyF44
+         U2kHrmxPg8EEeckaV6LgsjuNVRYWO1o9DCJDfvl0yvF17dz2areobH3DJ1yfEZEC/c46
+         jbzsTHpU8MmFbPqih2KaiZvSWwT9uEEd27BqUWDiuqRzRzR6StyvuMKHjjr+U9nue9zz
+         SF/hKr+eLonV6f0bINMFwR3ZeYOBWaCjrEHaOCEQfCmP48lb1NCnNzZjx8BfzuagaoQd
+         1U+cvL+Hw71RiSYZSePR8HWDkEuiNriFbEhuRlFwe0wJam/WkRObr+a8J42GzL67wZGa
+         nhYQ==
+X-Forwarded-Encrypted: i=1; AKwUvByik5bg0/nem3LPtV1/MlentynE9mXS2RRwur4bDFcIK5F9c+ttA66jKm4MQxdizG6O9fl7ERM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLSf7rOvwmvliKv202mNzOu/touRvLaON3ExdHwHnTnBG8nGiYO
+	aU1GRvL0Q4YqiSouHWysGBQc0V7jRzUk4JUuAjkoStApxSoujnxlJ26h
+X-Gm-Gg: AYBFou2GCqaFDJ645tEjyCWiPqozpCmnGo51tLC02ULGvECf+lsOp1yey30KsUoAOJn
+	GkHgLAii3GnGBnsVyaWtIhifLDb4udelzu3/2Q3zKxDJKwoC5TBAHxjEBxsSfdA72U/g1x/nYKL
+	051RDN3urRf753cBm8XWpd+Vwa24v3/RQughB+r6i9cSlPDAO/k7ZYYbRD/5prk3smn77qbI0SH
+	tfR1q6HkxBTsKbFMo222eyUqEEd56+zLQNYDHMUbvzMdF7mw+/69JmYFUA5RCWKum+iPSY3p5Tt
+	Z6QpHOotG09w5OzesdA6a18szDzBs1lSHDOGHTT52oFzm+SyIE9zdLVNZgdHtIWkTU0uLppZg01
+	cXRRRU8+CE8JnEmPR+dmPtnBpe80S3RRlHOO4jFpLQ3JnbhJzo+2bZatKg/DRxSfwiU7yyktZhd
+	728jvvR2lh3glI963ti7wTaBPJXL1Jou5qiVlaRnIiJixzn0mJyFJ1zu2lMC2xwwVfe5sSLRRdx
+	1xv3NSrvWLHJEgZsSkG7tgqdKUGXR382CDU2Yknw7Qg9MfRit5hMZteVf3N2GjK35mRuuSTdHDR
+	HvzpFFrpe0UOSjESRxSztc1KCNXTeSR9eaDd/umPuiliOpMqTCpc0ZydaNk=
+X-Received: by 2002:a5d:5f08:0:b0:488:89af:e95b with SMTP id ffacd0b85a97d-48889afec11mr7503670f8f.8.1790535816106;
+        Sun, 27 Sep 2026 12:03:36 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349a0esm30979151f8f.10.2026.09.27.12.03.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Sep 2026 12:03:35 -0700 (PDT)
+Message-ID: <5b65f83b-d30b-414c-bb71-197f72feb367@gmail.com>
+Date: Sun, 27 Sep 2026 20:03:34 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925182435.21207-9-ansuelsmth@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] io_uring/zcrx: requeue multishot receives stopped by a
+ local resource
+To: Junyuan Feng <a@lollipopkit.com>, axboe@kernel.dk
+Cc: dw@davidwei.uk, io-uring@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <010001a0cd914529-23df2f94-bbe0-49cd-ae5d-05922356fa12-000000@email.amazonses.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <010001a0cd914529-23df2f94-bbe0-49cd-ae5d-05922356fa12-000000@email.amazonses.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 25, 2026 at 08:24:30PM +0200, Christian Marangi wrote:
-> In preparation of support of DSA Switch from Airoha, create a mt7530
-> library module and move there all the common function.
+On 9/23/26 10:20, Junyuan Feng wrote:
+> A multishot RECV_ZC can go idle with unread TCP data when a receiver-local
+> resource runs out. An empty copy-fallback niov freelist returns -ENOMEM;
+> a full CQ returns -ENOSPC. After partial progress the stop reason is
+> lost: io_zcrx_copy_chunk() and io_zcrx_recv_skb() report the copied
+> bytes, and tcp_read_sock() drops an error from a later call once earlier
+> data was consumed. The edge-triggered request is then not requeued, so
+> it cannot consume the remaining data until another socket event arrives.
 > 
-> Function are generalized to use the reg_field regmap API but still apply
-> the same exact logic. Every function is renamed to mt7530_lib prefix to
-> better identify it.
-> 
-> Minimum modification are needed to the register header and common enum and
-> macro are moved to the mt7530 library header to permit reuse.
-> 
-> A library struct is introduced with everything required for the common
-> functions.
-> 
-> The generalization and the introduction of reg_field regmap API have the
-> side effect of permitting to clean the mirror functions that required
-> special handling for MT7530 and MT7531 based switch that had different
-> registers. This is done by declaring a common MT7530 reg_field and a
-> specific one in the Switch match table.
-> 
-> No behaviour change is expected by this change as it's just a code move and
-> reimplementation.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> ---
->  drivers/net/dsa/Kconfig       |    4 +
->  drivers/net/dsa/Makefile      |    1 +
->  drivers/net/dsa/mt7530-lib.c  | 1128 +++++++++++++++++++++++++++
->  drivers/net/dsa/mt7530-lib.h  |  391 ++++++++++
->  drivers/net/dsa/mt7530-mdio.c |    4 +
->  drivers/net/dsa/mt7530-mmio.c |    4 +
->  drivers/net/dsa/mt7530.c      | 1368 ++++++++-------------------------
->  drivers/net/dsa/mt7530.h      |  256 ++----
+> Record in io_zcrx_recv_skb() when a walk stops before consuming the
+> length it was offered, and requeue if the pass still returned data. The
+> failed chunk is first on the next pass. The resource is usually still
+> exhausted by then, so that pass fails at once and ends the request with
+> an error CQE, which the application must handle by re-arming. The
+> request does not spin, and the stall becomes a visible error. Keep the
+> existing skb limit and SOCK_DONE handling.
 
-The number of mt* file keep going up. Is it time to move it into a
-subdirectory?
+Looks good
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
-    Andrew
+-- 
+Pavel Begunkov
+
