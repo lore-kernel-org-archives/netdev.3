@@ -1,109 +1,305 @@
-Received: from mail-wr2-f26.google.com (mail-wr2-f26.google.com [74.125.225.90])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6223B71DC
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1502541DE0D
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790535820; cv=none; b=im+hzGt038HlTmbRaHCCyqD+y6W9Mkv/O3LFjH1H64M46PAkA3WD2DQx+pxSNhtU2gYZPsTCAsf6hR2R+bazpC+tvUXVmbR/Y9EtqA+vCh9qjOW/UE03yIKX0euoHMeDZnKb+q68mB86/Ix5CjmaOdCCdRS9UAitBpzVmHT/Wr4=
+	t=1790535950; cv=none; b=XDXCmAGqiT/wej9b5sEKOeVubZj3XdnrUFSLjb48jUIjvLIWkO34sZ8cIv0PBbUBH2LlOWryD7w2Qa0TWdYLhc8fJNVx1x0Fl9EkbBrSEPj3gSLsWwFKh5qMMKOarWQRuwsyrIBdX1PubMrlZ+mmcUDtoJ2QTTVoG4esqMmcTjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790535820; c=relaxed/simple;
-	bh=iww9Rrw/7xVmPZYqt+U+P9KcHpNhKk1XEZ9j0Zir8vA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jm9v/CSfYnFh6HCBwU4EwiZyLzm+Ka5kqJUA/1pe6GuMTpkCMsh4Xl1pJYDWGqTKGN3oM6oGviMyRaDrqh2XPLgrPKzs6lpTf53H6wj8iOW+rmKxl4iADnisDj0bnf1NybQR/xrjV6hVqCuS8Utct7jHkgzy4rnT/MQGOBakrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=snNZyDmN; arc=none smtp.client-ip=74.125.225.90
+	s=arc-20240116; t=1790535950; c=relaxed/simple;
+	bh=tSd4WidD9uoM4o3Uv5U0cfzn9drdswPKvzsIrp9/bbU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lnrAn0M6w+1XlGrp/XX894EVGCYpZ/CrndKiX9Vh8NGRLnxXRUK8wIvIveODm2eB/XmV9EgChkf5Y7Rl1J3yWJl6axWZDvU5n+T1V/neRoNUECGr9d0ShXxyJ5ySEz/yiGj8G+nU4DxcweW1X7DhAb+BNShCe9pJj6WWr2XpobU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9/b6VVg; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="snNZyDmN"
-Received: by mail-wr2-f26.google.com with SMTP id ffacd0b85a97d-4843f22dc83so1968037f8f.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:03:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9/b6VVg"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-342568a5b54so882585eec.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 12:05:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790535816; x=1791140616; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hyA13uQBPobSZN7QEDfmz9E3dETz4qLP4md8sLtn8EE=;
-        b=snNZyDmN31vH2iWiTXD1dogUrWuUcObLz/Egz0tuCZ42V76I5nrwJuAaE2Fw9R/89N
-         FBDrSSBtHJcKk2ACMWA9bO3AYJ70k12dGtBIQW2ahbm3PgzLAyWWzGvZ3GJilIdVHgE6
-         mQvBjppBfXrpHpAjzZXoWmyFUdfi+aDwYtYvRQEMzOTgIxJ5ygIVLmdi+b7IjpG6yy8p
-         aGuObClTT/kPyCXoofYznF5SbSqh+5MfkGUfL++y4YqPCy6R5XjSGtb6Ufm8Fg8bTLu2
-         VdFyOMKuCI81gHHxAXqE7Rm/Lzwt8CYssabJUX/bovswdrZ/8QPv2MZLpblR0QXtaVdJ
-         tw7g==
+        d=gmail.com; s=20251104; t=1790535948; x=1791140748; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sdxMO8egZNtQTxLy0h6hggIXOCvSuNp4M1vDnx1gf4A=;
+        b=d9/b6VVg0xCFegQYpn7gTEJj/teYDsxOCCoQLKPdwNQWmK1TwhsfiEV5gNThJ1nV3l
+         0bI11B3D8Zods4B3YxDZ+hHgCQKyKGv2HNhkfcBuvBWwDbmnHjOXxfk8Or4qcM20zDSH
+         UzCOg1C1iBCLKyAACc3eUVGt5gk8b3TD1QvuPNNzhEXneVbzeFzCuhTt5I5f610DvNEf
+         HAUIsbnwDG6WbsJQ4MAhSq1ykuHTs1fti3i8s15Ar+VDLmrzIR9I2k7JQCcx8N2zCvld
+         8Hk2Nk4xbeOTFiVQdM2UYnHLdDBdYNg9KJ+aE8ePEni71cx6hA8E+5apG3RFjTnQk6Rk
+         mktw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790535816; x=1791140616;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hyA13uQBPobSZN7QEDfmz9E3dETz4qLP4md8sLtn8EE=;
-        b=t3yiu1CllQfUHAPgd7AlIOSB/EGam1kzzMbg+5+8nz2WNnmi1FV2kd5PH3USPMyF44
-         U2kHrmxPg8EEeckaV6LgsjuNVRYWO1o9DCJDfvl0yvF17dz2areobH3DJ1yfEZEC/c46
-         jbzsTHpU8MmFbPqih2KaiZvSWwT9uEEd27BqUWDiuqRzRzR6StyvuMKHjjr+U9nue9zz
-         SF/hKr+eLonV6f0bINMFwR3ZeYOBWaCjrEHaOCEQfCmP48lb1NCnNzZjx8BfzuagaoQd
-         1U+cvL+Hw71RiSYZSePR8HWDkEuiNriFbEhuRlFwe0wJam/WkRObr+a8J42GzL67wZGa
-         nhYQ==
-X-Forwarded-Encrypted: i=1; AKwUvByik5bg0/nem3LPtV1/MlentynE9mXS2RRwur4bDFcIK5F9c+ttA66jKm4MQxdizG6O9fl7ERM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLSf7rOvwmvliKv202mNzOu/touRvLaON3ExdHwHnTnBG8nGiYO
-	aU1GRvL0Q4YqiSouHWysGBQc0V7jRzUk4JUuAjkoStApxSoujnxlJ26h
-X-Gm-Gg: AYBFou2GCqaFDJ645tEjyCWiPqozpCmnGo51tLC02ULGvECf+lsOp1yey30KsUoAOJn
-	GkHgLAii3GnGBnsVyaWtIhifLDb4udelzu3/2Q3zKxDJKwoC5TBAHxjEBxsSfdA72U/g1x/nYKL
-	051RDN3urRf753cBm8XWpd+Vwa24v3/RQughB+r6i9cSlPDAO/k7ZYYbRD/5prk3smn77qbI0SH
-	tfR1q6HkxBTsKbFMo222eyUqEEd56+zLQNYDHMUbvzMdF7mw+/69JmYFUA5RCWKum+iPSY3p5Tt
-	Z6QpHOotG09w5OzesdA6a18szDzBs1lSHDOGHTT52oFzm+SyIE9zdLVNZgdHtIWkTU0uLppZg01
-	cXRRRU8+CE8JnEmPR+dmPtnBpe80S3RRlHOO4jFpLQ3JnbhJzo+2bZatKg/DRxSfwiU7yyktZhd
-	728jvvR2lh3glI963ti7wTaBPJXL1Jou5qiVlaRnIiJixzn0mJyFJ1zu2lMC2xwwVfe5sSLRRdx
-	1xv3NSrvWLHJEgZsSkG7tgqdKUGXR382CDU2Yknw7Qg9MfRit5hMZteVf3N2GjK35mRuuSTdHDR
-	HvzpFFrpe0UOSjESRxSztc1KCNXTeSR9eaDd/umPuiliOpMqTCpc0ZydaNk=
-X-Received: by 2002:a5d:5f08:0:b0:488:89af:e95b with SMTP id ffacd0b85a97d-48889afec11mr7503670f8f.8.1790535816106;
-        Sun, 27 Sep 2026 12:03:36 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349a0esm30979151f8f.10.2026.09.27.12.03.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2026 12:03:35 -0700 (PDT)
-Message-ID: <5b65f83b-d30b-414c-bb71-197f72feb367@gmail.com>
-Date: Sun, 27 Sep 2026 20:03:34 +0100
+        d=1e100.net; s=20260707; t=1790535948; x=1791140748;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sdxMO8egZNtQTxLy0h6hggIXOCvSuNp4M1vDnx1gf4A=;
+        b=jHeZxiv4MCFxVrhy57CeVfxQcCXoXOVO4vNQFqD5H0y4XRaOcyvOfyxxTo7uu9/9or
+         KqV4hQPHoPk1NQTXrrb0bSla0pz3Li4u6EYBM//sDooDDpb04YYA778KayirAu4/212c
+         fH7KMsya68jMkydXJroYzpUa1R05Fb1QLLmeHUBo5Jf4JOGi51V5Hu/XL+SX0yRzSIfw
+         UV+7+2quuyW+iw4LW7WnidQ8kpIVzMtUhwfDtd/8tKY+VNlG98KIv9iOZ5TPrBHJXPEO
+         y+vYXMW0rliL2dnm0v1EMtAqiuycef0SvymugIP6fVK+qeUVKD13E4eyRyZX3d/VpaIq
+         qBbA==
+X-Forwarded-Encrypted: i=1; AKwUvBwhsj8DGSDrEVCTSYyKkfw/b93lzlFHvDkAdRbl9e5wPUuXH820JloBHOf02sNVHpLEfseaxrQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLaV2JRPaGeHh3op0QvGQxBzI6LMbTn2duLUBwDH0dvWbD31OHv
+	ASmfMWfbhcEfMmZC0X2Z5kV43+Yl9KrrgNGWiZJenhQnLkEeMzS9BbU2
+X-Gm-Gg: AYBFou2zdCIg5/8D56dRgqts2pKsOjzST83kRcMs/ogG1YjplbjIvy1Wo/O53TsemHt
+	xDyo76el7mJc9bEv490h04rattsdaDTElfWH/zboD0taLcwzinpOGeTR6sUkJPRRsuLMkE7Otg7
+	XOLT6SpWKhapnCGXIlRCZkxhoYGqIJLFi/JzWIob0o4MpCsSoBWYylxFHjVUa9Az8dd4WbqPvGv
+	p17URZEaHvdPfRXtq7IjE1911rCVlNm0MsxVvBUYd/7le8GJDL00NLjVy1uajvffjOHCZljj7Jx
+	z0weH8gWNo1WpZYO3AyLfLGyG1VMGDfos9tji5UU/lRfQbvrE9NcXqIQwKy15PREJ4Gk91Ouh8/
+	1EmdpgCVwN67WFZxFP0u6E7BbZPCMk9wcz0C1cMNC0cA+e1whxLZeDTR4iZgVJctMFSAevEUJqA
+	xmBii/V7C6HrBOqmm9ydVYFH5i6o/y1RGwUBquyGh5lzNcePJ5ty9w+QN7Mg0tCnl5h6bp7xc6X
+	uj7yQD/VpFQGebacy+hntdLedEm5jLMwiuksmh4GIbPr0S4FEY8hBA/E/q74smWy5x7QJHr2A==
+X-Received: by 2002:a05:7301:6183:10b0:346:d87c:b76 with SMTP id 5a478bee46e88-346d88b546dmr1852662eec.6.1790535947923;
+        Sun, 27 Sep 2026 12:05:47 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:6651:2efb:bfb:bd73])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34145727589sm23009054eec.23.2026.09.27.12.05.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 12:05:47 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: kuba@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	hemendranaik@gmail.com,
+	horms@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	tahiliani@nitk.edu.in,
+	vishy0777@gmail.com
+Subject: Re: [PATCH net-next v8 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
+Date: Mon, 28 Sep 2026 00:35:39 +0530
+Message-Id: <20260927190539.12287-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260925175027.07e8c158@kernel.org>
+References: <20260925175027.07e8c158@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring/zcrx: requeue multishot receives stopped by a
- local resource
-To: Junyuan Feng <a@lollipopkit.com>, axboe@kernel.dk
-Cc: dw@davidwei.uk, io-uring@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <010001a0cd914529-23df2f94-bbe0-49cd-ae5d-05922356fa12-000000@email.amazonses.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <010001a0cd914529-23df2f94-bbe0-49cd-ae5d-05922356fa12-000000@email.amazonses.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 9/23/26 10:20, Junyuan Feng wrote:
-> A multishot RECV_ZC can go idle with unread TCP data when a receiver-local
-> resource runs out. An empty copy-fallback niov freelist returns -ENOMEM;
-> a full CQ returns -ENOSPC. After partial progress the stop reason is
-> lost: io_zcrx_copy_chunk() and io_zcrx_recv_skb() report the copied
-> bytes, and tcp_read_sock() drops an error from a later call once earlier
-> data was consumed. The edge-triggered request is then not requeued, so
-> it cannot consume the remaining data until another socket event arrives.
-> 
-> Record in io_zcrx_recv_skb() when a walk stops before consuming the
-> length it was offered, and requeue if the pass still returned data. The
-> failed chunk is first on the next pass. The resource is usually still
-> exhausted by then, so that pass fails at once and ends the request with
-> an error CQE, which the application must handle by re-arming. The
-> request does not spin, and the stall becomes a visible error. Keep the
-> existing skb limit and SOCK_DONE handling.
+Hi Jakub,
 
-Looks good
+We have reviewed the low-severity comments. Please find our responses inline
+below.
 
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> [Severity: Low]
+> The commit message says the class ops are wired up:
+>
+>   so that 'tc -s class show' reports per-flow state (prob, delay, deficit,
+>   avg_dq_rate, dq_rate_estimating).
+>
+> Does that hold with an existing tc binary?
+>
+> Here the nine qdisc counters are zeroed and the per-flow data is in
+> class_stats at offset 40. A tc that predates the type field treats every
+> fq_pie xstats blob as qdisc stats. It would likely print a row of zero qdisc
+> counters for each active flow class and none of the per-flow values. Before
+> this patch fq_pie had no cl_ops, so 'tc class show' printed nothing for it.
+>
+> The companion iproute2 change is only mentioned in the follow-up commit
+> "selftests: tc-testing: add fq_pie per-flow class stats test" ("printed
+> with the companion iproute2 change"). Could this commit mention it as well?
 
--- 
-Pavel Begunkov
+That's expected, not a regression, and it holds in both directions.
+tc has copied min(RTA_PAYLOAD(xstats), sizeof(*st)) into a zeroed
+struct since fq_pie support was first added to iproute2 (commit
+9dced637, "tc: add support for FQ-PIE packet scheduler", 2019) - every
+released tc that knows fq_pie parses this way, so an old tc against a
+new kernel degrades to a zeroed row instead of erroring out. The
+companion iproute2 patch carries the same discipline forward on the
+new side too: fq_pie_print_xstats() treats a missing or zero type as
+the qdisc case (`if (!st->type || st->type == TCA_FQ_PIE_XSTATS_QDISC)`),
+so a new tc against an old, pre-type kernel also degrades gracefully
+instead of misreading the blob. The companion iproute2 dependency is already
+documented in patch 2/3's commit message and in both series' cover letters; 
+we don't think it needs a third copy here.
 
+> [Severity: Low]
+> Setting .cl_ops makes the TC core treat fq_pie as classful. Is the change
+> in user-visible errors intended?
+>
+> Filter add on parent <fq_pie>: used to fail in __tcf_qdisc_find() with
+> -EINVAL "Qdisc not classful". It now reaches this check instead:
+>
+> 	if (!cops->tcf_block) {
+> 		NL_SET_ERR_MSG(extack, "Class doesn't support blocks");
+> 		err = -EOPNOTSUPP;
+> 		goto errout_qdisc;
+> 	}
+>
+> Grafting or getting a child on parent <fq_pie>:N through qdisc_leaf() used
+> to return -EOPNOTSUPP "Parent qdisc is not classful". Because fq_pie_find()
+> always returns 0, it now returns -ENOENT "Specified class not found".
+>
+> RTM_GETTCLASS and RTM_DELTCLASS in __tc_ctl_tclass() also change from
+> -EINVAL to -ENOENT.
+>
+> fq_pie_init() still calls tcf_block_get(), and fq_pie_classify() still
+> reads q->filter_list and maps tcf results to flow ids 1..flows_cnt. That is
+> the class id space this patch exposes. With .tcf_block, .bind_tcf and
+> .unbind_tcf left out, the classifier path stays unreachable, as it was
+> before this patch.
+>
+> The commit message says these callbacks are "omitted on purpose". Could it
+> give the reason and mention the errno changes?
+
+Yes, intended - an unavoidable side effect of any qdisc gaining .cl_ops
+for the first time. fq_codel, sfq and cake don't document the same
+errno transitions either, so we don't think this needs it here.
+
+fq_pie_class_ops has no .tcf_block. __tcf_qdisc_find()
+(net/sched/cls_api.c) rejects any filter attach with -EOPNOTSUPP when
+cops->tcf_block is NULL, before q->filter_list is touched. So
+q->filter_list stays NULL for good, and fq_pie_classify()'s tcf branch
+never runs.
+
+That branch has no case for TC_ACT_CONSUMED - a gap shared with
+fq_codel, sfq, cake, htb, hfsc, drr, qfq, multiq, prio, sfb, ets and
+dualpi2, predating this series. It's unreachable here without
+.tcf_block, which we're not adding, so it's out of scope.
+
+We're not planning to fold this into the commit message - it's covered
+above.
+
+> [Severity: Low]
+> Should Documentation/netlink/specs/tc.yaml be updated along with this?
+>
+> In the spec, tc-fq-pie-xstats still lists only the nine original u32
+> members. The tca-stats-app-msg sub-message still binds fq_pie to it:
+>
+>       -
+>         value: fq_pie
+>         fixed-header: tc-fq-pie-xstats
+>
+> The spec has no type member, no class-stats member, no tc-fq-pie-cl-stats
+> struct and no enum for TCA_FQ_PIE_XSTATS_QDISC/CLASS.
+>
+> A spec-driven (YNL) decoder will only decode the first 36 bytes of the new
+> 64-byte payload. It cannot tell class records from qdisc records, and it
+> never shows prob, delay, deficit, avg_dq_rate or dq_rate_estimating.
+>
+> tc.yaml is still unchanged at the end of the series (after "net/sched: pie:
+> correct tc_pie_xstats field documentation").
+
+This is a gap and we don't dispute it, but it isn't new to fq_pie.
+tc-fq-codel-xstats in tc.yaml is the flat qdisc_stats view - no
+class-stats member, no enum for TCA_FQ_CODEL_XSTATS_QDISC/CLASS - even
+though tc_fq_codel_xstats, the union struct cited above as the pattern
+to follow, has had a class_stats arm since it was added. We believe this 
+would be better handled in a logically separate patch series to bring tc.yaml
+up to date with the current xstats structures across all qdiscs, rather than 
+addressing fq_pie in isolation here.
+
+> [Severity: Low]
+> Can the last flow be reported under the qdisc's own handle?
+>
+> fq_pie_change() accepts up to 65536 flows:
+>
+> 	if (!q->flows_cnt || q->flows_cnt > 65536) {
+>
+> fq_pie_walk() passes i + 1 as the class id. With flows_cnt == 65536, the
+> flow at index 65535 is dumped with cl == 65536. TC_H_MIN() masks that to
+> minor 0, which gives a handle of <major>:0, the same as the qdisc itself.
+>
+> fq_pie_dump_class_stats() still uses the unmasked cl, so the stats are
+> correct but userspace sees them under the qdisc handle.
+>
+> fq_codel has the same latent issue. This patch brings it into fq_pie.
+
+Agreed this exists, and we've addressed the same point in a previous patch 
+before: it's a display quirk. fq_codel has had the identical 16-bit 
+TC_H_MIN() wraparound at the identical 65536-flow limit since 2012, 
+and it isn't reachable through any other addressable operation - only 
+a dump can ever surface it. We're staying consistent with fq_codel's 
+long-standing, accepted behaviour rather than special-casing fq_pie alone 
+for a display-only edge case for now. A separate patch can address 
+both of these together.
+
+> [Severity: Low]
+> fq_pie_walk() lists a class <major>:<i+1> for every active flow, but
+> fq_pie_find() always returns 0. Is it intended that a class shown by
+> 'tc class show' gets -ENOENT from a targeted RTM_GETTCLASS, such as
+> 'tc class get dev X classid <major>:N' going through __tc_ctl_tclass()?
+>
+> fq_codel_find(), sfq_find() and cake_find() also return 0 for their
+> pseudo-classes. A non-zero return would also send qdisc_leaf() and the
+> RTM_DELTCLASS paths into ops that fq_pie does not implement. So this may
+> well be the intended convention. It does mean per-flow stats can only be
+> read through a full dump.
+
+Confirmed intentional - same convention as fq_codel_find(), sfq_find()
+and cake_find(). Pseudo-classes across this whole family are dump-only
+by design; nothing to change here.
+
+> [Severity: Low]
+> Are these lockless reads safe against the datapath writers?
+>
+> tc_fill_tclass() passes a NULL lock to gnet_stats_start_copy_compat(), so
+> this function runs under RTNL only. Meanwhile enqueue, dequeue and
+> fq_pie_timer() update the same fields under the qdisc root lock on other
+> CPUs.
+>
+> The writers of deficit, qlen and backlog use plain stores with no
+> WRITE_ONCE(). In fq_pie_qdisc_enqueue():
+>
+> 		if (list_empty(&sel_flow->flowchain)) {
+> 			...
+> 			sel_flow->deficit = q->quantum;
+> 			sel_flow->qlen = 0;
+> 			sel_flow->backlog = 0;
+> 		}
+> 		sel_flow->qlen++;
+> 		sel_flow->backlog += pkt_len;
+>
+> And in fq_pie_qdisc_dequeue():
+>
+> 	flow->qlen--;
+> 	flow->deficit -= pkt_len;
+> 	flow->backlog -= pkt_len;
+>
+> KCSAN_ASSUME_PLAIN_WRITES_ATOMIC does not cover compound writes like these,
+> so KCSAN will likely report them. The reader can also see intermediate
+> values, such as qlen == 0 on a flow that was just activated. fq_codel
+> annotates the equivalent writers, for example WRITE_ONCE(flow->deficit,
+> ...).
+>
+> vars.prob and vars.qdelay are u64, so READ_ONCE() can tear on 32-bit
+> kernels.
+>
+> pie_calculate_probability() also publishes an unclamped value before it
+> applies the overflow fix-up:
+>
+> 	WRITE_ONCE(vars->prob, vars->prob + delta);
+>
+> 	if (delta > 0) {
+> 		/* prevent overflow */
+> 		if (vars->prob < oldprob) {
+> 			WRITE_ONCE(vars->prob, MAX_PROB);
+>
+> A lockless reader here could therefore export a wrapped probability.
+>
+> fq_pie_dump_stats() in the same file takes sch_tree_lock(). Should the
+> class dump take it too, or should the fq_pie writers be annotated?
+
+Lockless READ_ONCE() stats dumps are already accepted, existing
+practice in net/sched, and sch_pie carries the same u64 and
+unclamped-prob exposure on the read side. Since this patch series is 
+focused on class_stats, we’d prefer to make such annotations in a separate one.
+
+
+Regards,
+Hemendra
