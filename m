@@ -1,82 +1,74 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842E135CB95;
-	Sun, 27 Sep 2026 17:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504DD23C8AE;
+	Sun, 27 Sep 2026 17:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790530800; cv=none; b=Bh9AL6hx1MYPtrhrz6YerbRMh7V0i1HoHG5u5xHP5GTcTgMZctXCZHKaPNQ6SbaDiq3GW/oHalJsctjOvl3JATUwHxWyT7eLsqmzQIm+6veEqiW9ttss9Um7v0tNnLgh/xNVGi+vDXiu8ybthr8lprtm5rlxAbnkQPC75JNfbZE=
+	t=1790530831; cv=none; b=kXp0B24KjpE4q1Gxry+9Yeil3XbntNiyqsQ0D2DxZGuUjfKsK5oc50t9lmlHs/TfKdLYZ1+9qqCOXeH4M42El+3r7WD62j4n+F97QAh6KOeCg4udOtp0S/hEtSKRz5oxZDy1T7+GRXtcvZopECGlASc89cx7BBYjgqQkKsukFX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790530800; c=relaxed/simple;
-	bh=U9Q/3E11oseEz/2hH8f1J2cTCxzQ5lJt+Q1fp/l6Vz8=;
+	s=arc-20240116; t=1790530831; c=relaxed/simple;
+	bh=yEFV3lkIaPKi7zVGKiJPo1Sjy0OlfxaF4BS2U1sBqUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQatd0qVkuni0G4oCsHQBJkL0G+VUxSsJQknSZOPcBdIQWvST2/YiehrZHjlpbaHBbJgxlyRJP1+vZO2INQWGo7WfX+JwBR8ONgUeh8eGIfGToFu3a3zyYkjLUc8Lle2B9ThpQE76hSVlAffSVFSOGEyGFazbb48meeOoKYb7iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YHuyWNG7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=U2eMoouuyyu01LLi7IekxFbJulSePyp32L0cELAfWc2Epk2ckLl1D5QZaA9JnTdJ6sH+XBkUh2aqTXYr4NeayURmdG+h3iWII/g/h7HL3Ai+S/IvcyWtby5qxdaevvO8vk7Xdxy3OMBpVVF7prkttAF9r/JL6+PsIUnQG4qraS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1QS/gdz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YHuyWNG7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7WX6+BN1oNRZyY1oWGFe4jd3bJh7R/vmOzZu6ho3ooE=; b=YHuyWNG75/RLzBVWmxiikxHFgh
-	zqJY3eKxBCjXK/O0w+bni2s+iZGHNGTPizOnQOoCrilFw66W/9doqw40AtOG6O6TW9vjCcuCSzUwQ
-	rDJw3tYMTaivXzIS5E79faCPqIkY4oHdFQUfqPDDy+iR6Csk2Gm1KgM4qlcLRlx+PjrE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xAsqo-007Xym-Gf; Sun, 27 Sep 2026 19:39:46 +0200
-Date: Sun, 27 Sep 2026 19:39:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Po-Yu Chuang <ratbert@faraday-tech.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] net: ftgmac100: Add AST2700 support
-Message-ID: <14a281e2-c88e-42e3-acd3-b20f111a4c28@lunn.ch>
-References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1QS/gdz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1651F000FF;
+	Sun, 27 Sep 2026 17:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790530829;
+	bh=rRicdbRpdSMevJVjz0k9ySyuClDHkZPdx7+N/XrY8Xk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A1QS/gdz5FrsJEDgePvIQvIDiUwOEyInkviYgzx/9+hBfEeEc8pymb8o+pJY1M8oh
+	 8L0mn5VXjz0rWJz5/UwLUUXb/SOl5vHH5zt5WYu/qCbnMy1hN7ZYmhzLxASav1oooc
+	 NSaiVY0Hmd3Fkm59yFY62+rHFC+ItPVWukVFAtNZROFPRdjIebaAGK3tCpAzVq2Ltt
+	 Tc3WZ+BzimCSWOaWfZBaGrAi+1srwhejw8DkcioK7Jg8VteKRiy/vEC7GBIDRwI3Zv
+	 ULcVnZ1fJawAVCzy9KKccZM+cgPp7qHitVH/Le98PXnIaXD1P4Ii525hrYXoh1W58g
+	 DucM6bhq1+FWQ==
+Date: Sun, 27 Sep 2026 19:40:25 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Changhuang Liang <changhuang.liang@starfivetech.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, 
+	Brian Masney <bmasney@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-hardening@vger.kernel.org, netdev@vger.kernel.org, 
+	Hal Feng <hal.feng@starfivetech.com>
+Subject: Re: [PATCH v4 17/22] dt-bindings: clock: Add StarFive JHB100
+ Peripheral-2 clock and reset generator
+Message-ID: <20260927-wild-modest-goat-b79b3c@quoll>
+References: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
+ <20260920120044.194901-18-changhuang.liang@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
+In-Reply-To: <20260920120044.194901-18-changhuang.liang@starfivetech.com>
 
-On Sun, Sep 27, 2026 at 03:16:19PM +0800, Jacky Chou wrote:
-> Add the pieces needed for the FTGMAC100 driver to run on Aspeed AST2700
-> systems.
+On Sun, Sep 20, 2026 at 05:00:39AM -0700, Changhuang Liang wrote:
+> Add bindings for the Peripheral-2 clock and reset generator (PER2CRG)
+> on the JHB100 RISC-V SoC by StarFive Ltd.
 > 
-> AST2700 keeps using the FTGMAC100 MAC IP, but the enablement is not
-> limited to a new compatible string. The SoC can boot with the MAC on
-> ARM64, needs the Aspeed-specific RMII mode bit programmed when a port is
-> wired for RMII, and requires the driver to use the upper DMA address
-> fields in the ring base registers and packet descriptors. Those fields
-> expose a 35-bit DMA address range on AST2700, so the driver must request
-> a mask that matches the address bits the hardware can encode.
-> 
-> The series first documents and wires up the aspeed,ast2700-mac
-> compatible. It then treats AST2700 as an Aspeed MAC in the driver,
-> enables the RMII mode programming, writes the AST2700 high descriptor-ring
-> base registers, carries the RX/TX descriptor high address bits, rebuilds
-> full DMA addresses before unmapping buffers, and requests a 35-bit DMA
-> mask. The high ring base registers are only touched for AST2700 so older
-> Aspeed device tree register windows remain unchanged. With that in place,
-> the FTGMAC100 Kconfig entry can be made available on ARM64 while keeping
-> the existing Aspeed MDIO dependency for AST2600 and newer ARCH_ASPEED
-> systems.
+> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+> ---
+>  .../clock/starfive,jhb100-per2crg.yaml        | 76 +++++++++++++++++++
+>  .../dt-bindings/clock/starfive,jhb100-crg.h   | 57 ++++++++++++++
+>  .../dt-bindings/reset/starfive,jhb100-crg.h   | 17 +++++
+>  3 files changed, 150 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100-per2crg.yaml
 
-There is no mention of RGMII here or RGMII delays. Given the mess that
-the AST2600 is, i would expect to see some explanation how that has
-been solved.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-     Andrew
+Best regards,
+Krzysztof
+
