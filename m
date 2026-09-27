@@ -1,192 +1,142 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7274A21
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C835AC07
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 05:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790486122; cv=none; b=QH847RGLGLcgzM4eCE+lCBudcZh5lsqPeBE1+eKknSRPH4lPGFh7ZDZLGrgBbp42wKdLtSdg+qmKxK2sONq9jJHruIj/q4znq/XkyTTtO8TJkXOqg6dCMrfnoc1PsMGuj0TkDXA7s6CW7FND1ro67dUETcQjfKJkAWdGpQcAvKs=
+	t=1790486272; cv=none; b=NPVOayRq9fnpQa4FnsdcGqlkNT0g4UMj4+l+1cJcFzvkhi8dbxdyhD8E5lSVbl1O2XqbkNaDRDqyY50QIUkI6dM+MxxYRr7WTubR8DXGAg+PVWgXBFPvgPYpwgzBI1OND4Xi9SXWjGB6k6iUczaXGnCy6omEIB5Vcl4mj47X4NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790486122; c=relaxed/simple;
-	bh=Mj6a9MgdGCqWYAQGPhRA9sgl7Qe9WwUI4ge989Hfa88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AOZ1e4/GjPOeZ+T90oTCgPM2H5BEJ/YiZimTRVBd+tUSyYH9MuAyPKSM0gmI02SgqsULNPOUYt/aopYlZh0zMc23FeEK+P2Pucp9Qbj10GtcQmDliCw0Z8b9cTtMmX2QlmioGwrp3m92uHSMV+F0iCr+Woi25zi0/8MfIF2l10g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtbCbEAL; arc=none smtp.client-ip=74.125.228.43
+	s=arc-20240116; t=1790486272; c=relaxed/simple;
+	bh=8C890wb6iVq5DP/8JE563fysfv8fOozfUheNIOh4oDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KNxWJbBefICYxNYzFqbYxi+THcUN2NgrpeUYJ8pmDwiPIqIrXNEmR816oy0ZeaB2DofOBGExdlhMYMiEgIoq+L6Zg+wNNOGOS/v8Ut4672J/KFMRX3cVYGnQ8pOeoxrxN2adGLnMt90bnoOLxLM6yRDBWtd6X4vL0TY0yxOeg6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iL8fFIPm; arc=none smtp.client-ip=74.125.229.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtbCbEAL"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso1036067b3a.1
-        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 22:15:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iL8fFIPm"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-3468ec3097dso88454eec.2
+        for <netdev@vger.kernel.org>; Sat, 26 Sep 2026 22:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790486120; x=1791090920; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OjKSfukDZvlY1eXjlV/PoddSyojDKst8RtQu8NrZS7I=;
-        b=OtbCbEALZGSTOiKY8BVEckLUD9ldbK5dm0D6aa1cI8I730FdFdac2alwxRhh1HRViV
-         n+dtNgfbhS32jt0q9eWBN1IDQMMSVtDChdhx+EUPOdVJfeu3oLExKxGDY0SfAOn4YzYO
-         kAVraD65UwfYXeB+lagYMhT6HMyGBZaJFyZ184/Giu4NA0JESZoqWl6LR0vdvSxVUJiq
-         Sg2QkGJjqWxLbt6BwejAAoInbSp25n2CTW5XMLW/mvKGxFaWjbnFG3UYojN7Pi5FusK9
-         /9pt9Obi8op9riSFp11xFxT4SvUEySRU/44Duh5F05BsNTYBW+jk0UhDq0mfHxHCssHM
-         /gmg==
+        d=gmail.com; s=20251104; t=1790486270; x=1791091070; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F9DTwN6BTCjhBQ/V2aTbf0gWJNiCrbevOZI9jXtiy6E=;
+        b=iL8fFIPmiWju6tMUKkfjgJ8cm1CjFfZ+bwbXMZVv4qMTudYCCkfH0+Z0kxClpXp7tR
+         2EMn1/74CsnrbrDNKQ9vqkbH25J6YcLy86paWUhCxJXfqpqMYIOfS5DRU2F/yAltKNhS
+         niTo6G0QWrJKMiuuUESdq1MtlK0qVdNkRLw7UxKCnlBMcHFYz0gYEQp8hvyXNkKLLMC1
+         M+8V6Ac0xdIKZe093rwMq/YW+qqilWY2KVbm/OVtZHoBW3WTijZxnC6sXnwEp69yvyGB
+         os8U0EKkyBbt6Nv5WlTGXNP7q1zwNWHEaLHNUMGI/gZ9Op/fFdsJcNK9xhkN2PV9HDvr
+         R/7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790486120; x=1791090920;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OjKSfukDZvlY1eXjlV/PoddSyojDKst8RtQu8NrZS7I=;
-        b=CSbAv/6fHOkIvCj/SqzSUfE1xaB/+9IQjqYXMVL3ERjNnvt2SFOkmf5BYPXuapL6Ry
-         qvHb2bFz5MVoy3VXgQAslP86BGtlU09b+gxNiTGou5Xkgy7mYFlGffviUxenGqdTWGmO
-         vgZ4QKloGeLSF5OM7MOFJJInNMisaxQeJ7qNceTznnb9cd5Rir9KQcKzOeVXFtq1xiOw
-         C3Sy+G687FGO9Cn8L3FcpSYtbKS+z0Wv3Nn1OmS2aKR3QxHF7FiBprlpa8hdEFihq78a
-         D7sNqav3LkKvVTIw85/3EKiJs42+y0x8wxQy5mOiHw/mWEhKvDIr0ywkKOFUtE81vgjd
-         PmUA==
-X-Gm-Message-State: AFuF++lbpm2i61OIClgKOlUnt+tPYP0Doq7IesCWxL4Mx4ULUpza65Da
-	ZdSd0XxYHqGhAae/VdGPa1OLDl+V2cCN+OX+m6aXG5kac+tQKNQ21mVd
-X-Gm-Gg: AYBFou3aEUO0GAICscozRKp6rn1gpsMCkPOJDQfn8xL1qB1us5GechoP16MFH+TWxyB
-	UwUDOQdDVaKMGqpvXGGZLXmjKPJX4WfJBCfDWoedwXn07T1vQ24U4iPcKMFwQa9s54T1Nq6XkCG
-	3f3LO8NcRGqQZbVghXgg6xk6AIQAFNxmLOOYvNJZjo3UuXzeZ0hxe+cy9kmSN6HRkoDOc0LHO1e
-	yQLVRkx03PiVtH61rebDMzDhHF4In81BqI+KrBsjjTLzh0fdTfogsCRyLEgsFYxnTDEYrYCgB4u
-	u0UnrfpGTwFocUzmaOPNuEWv1KC72M7NGj/+/9iccgysPgFFQxsh4uQJk2t/g5xqoKJmW1raRVY
-	aefR4NJn1mbQROeWW98wrniMxd27PR5QMWIkkZNl4vcwe6Lw9CkxpqJVsqaupz9zGY8remhL74t
-	DO1pEQUIOESu0UlxgVnzybUSPiYAnJDaidlLoIiBOJFytytfDFKtcIYb7RMLDuiBC/vzD2Mw==
-X-Received: by 2002:a05:6a00:464e:b0:881:e266:c3d4 with SMTP id d2e1a72fcca58-881e266c980mr1869862b3a.25.1790486119873;
-        Sat, 26 Sep 2026 22:15:19 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:7ff:4::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87feaf852d7sm2718078b3a.42.2026.09.26.22.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 22:15:17 -0700 (PDT)
-Date: Sat, 26 Sep 2026 22:14:55 -0700
-From: Narcisa Vasile <narcisav.kernel@gmail.com>
-To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: netdev@vger.kernel.org, "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+        d=1e100.net; s=20260707; t=1790486270; x=1791091070;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F9DTwN6BTCjhBQ/V2aTbf0gWJNiCrbevOZI9jXtiy6E=;
+        b=hiMDuhcM2cxZ59YrJbXjgJTIFNt+sLSzt/G0jjKmOvl7zJxECkBlEGEkxZHjNQCn5N
+         plM+AQRKRfmVHlTqRJkgniUlOoSjDT1sAqqZEe2+4wqpHWgZQAIB3dC9hLimFTTDfATN
+         QcjEiQXyL2jjgnmXrTykNyEnwXV+X2Lw/C5wSBzaYOF01d2TZWI3MSP3Ok45LvJTXSMR
+         VMXxmmsDJiGxAYfkGCCh0U+xEiLSTZVjlNGWGhG0ZASscvZFuKk/epFNQTTjo9Q1j/Q8
+         PfIpH8ubCQR2NxiUyT+khbvsmcmI+vS+15GLijPJs3IEtxvx6Cjmz5U3Gr57mFJL/6tg
+         CdAA==
+X-Gm-Message-State: AFq9FYKJjVO9/YjZ4jEBKwiTUmB5GA/LW9WI2jQyFWOa7hVmhc1/H2tV
+	ZjPlG/BLYIhmsVdbtxWsfso/RiFUXuR8DJzOgk4vzubQtm22nqF+gcO0
+X-Gm-Gg: AYBFou26hQyTV8vSYEY76rslFDeu2kpxDA28Kx/LQJ4KZC0jU9fOH7babg8GrUIH3Dc
+	sVlSY0kOy+Kt9cEUzhMG7TqbMDpyE+Y91m/tjxsN3XQhV0W4bKywcFZCzbZi9gQDdPvEX40GP4E
+	MjP/smjgLABf6wd34ueIkh1DqLRpzfJi3egJWv/MM2dfx30pJaJmDHrJnj7qS+ShA2VeNgkG0P9
+	ajACXMyjOH284k4s53lVr1PQJItceLJmFOcBEIpZg5pPitbKzXbVx+/wHithWZGLyj4nQlHT24n
+	4QLBcE2Rg58aXP6wQVQjePHNx3oZPvKpf1QuEDCRdswsQX37Wd3tW2jd9mYPhZbnyUhpioM2Uez
+	SejxXRBQBIGmRKSAebJose5fTooht8a+6RD3+eRkMpJMJpyuqMCcePO1VKsXYPFFlwQGdBBvexA
+	+DqguUn0W4z2qhk/L8Pf2I2y+xiFDw/JcYkeGXecYIbUdG5NgXuwAJ5v08ofRLfLkRZZvgY0r1t
+	hzniAwFkMsFMd6UCeZZYu2o2Fx8TLNdg2d8ZS1aQvcvQxF1ZYjiIqtGb3A8y5TD65oBNu7ahOG7
+	Pzr0qz4QJwtMSAbxIqkXCtbUAfHgs6351i3iPNpposejAJdFSgUhtpTn5c/lU03kc/ISAW//Nw=
+	=
+X-Received: by 2002:a05:7300:d20c:b0:339:7b3b:236d with SMTP id 5a478bee46e88-34270ebf074mr4728723eec.15.1790486270217;
+        Sat, 26 Sep 2026 22:17:50 -0700 (PDT)
+Received: from FT6N242TWK ([223.181.116.210])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144f4eb9esm18602721eec.19.2026.09.26.22.17.46
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 26 Sep 2026 22:17:49 -0700 (PDT)
+From: Shashank Mohan Jain <jain.sm@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
 	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org, bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: reserve RX buffer headroom to fix
- forwarding performance
-Message-ID: <arimAGRnmHEAviqi@gmail.com>
-References: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
+	Tal Gilboa <talgi@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] lib/dim: fix 32-bit overflow in dim_calc_stats()
+Date: Sun, 27 Sep 2026 10:47:41 +0530
+Message-ID: <20260927051743.71460-1-jain.sm@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 23, 2026 at 10:45:00AM -0400, Hamza Mahfooz wrote:
-> Commit 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers
-> instead of full pages to improve memory efficiency.") started handing
-> out RX buffers with zero headroom so that two buffers fit into one page
-> at the default MTU.
-> 
-> The MANA TX path, however, stores the per scatter-gather entry DMA
-> mappings in `struct mana_skb_head` at skb->head, and mana_start_xmit()
-> therefore calls skb_cow_head(skb, MANA_HEADROOM). The port advertises
-> this requirement as ndev->needed_headroom = MANA_HEADROOM.
-> 
-> As a result every packet that is received and then forwarded out of a
-> MANA port fails the skb_cow() in ip_forward() and gets reallocated and
-> copied by pskb_expand_head(). This is invisible to a plain RX or TX
-> workload, but it puts a full skb reallocation plus memcpy on the hot
-> path of every single forwarded packet, which is exactly what a
-> router/NVA workload does.
-> 
-> Restore the headroom. Note that reserving MANA_HEADROOM (232) is not
-> enough: ip_forward() asks for LL_RESERVED_SPACE(dev), which rounds
-> hard_header_len + needed_headroom up to HH_DATA_MOD and is 256 bytes on
-> ethernet. Use LL_RESERVED_SPACE() directly so the value keeps tracking
-> both constants.
-> 
-> At the default MTU on a 4K page this means a buffer no longer fits twice
-> into a page (SKB_DATA_ALIGN(1500 + MANA_RXBUF_PAD + 256) = 2112), so the
-> frag-vs-single decision is now made by computing the real buffer size
-> instead of comparing the MTU against PAGE_SIZE / 2. The page_pool
-> fragment path is still used wherever at least two buffers genuinely fit,
-> e.g. on 16K and 64K page sizes.
-> 
-> Measured on an Azure VM with a MANA NIC acting as a forwarding NVA (UDP,
-> 1400 byte payload, 4 streams, 8 Gbps offered, only the forwarding
-> node's kernel differs), 8 runs each, median:
-> 
->                   forwarded pps    throughput
->   before              272,830       3.06 Gbps
->   after               390,560       4.37 Gbps   (+43%)
-> 
-> perf on the forwarding node, same workload:
-> 
->                   memset_orig   __pi_memcpy   pskb_expand_head
->   before             10.07%         3.96%         present
->   after               0.94%         0.64%         gone
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers instead of full pages to improve memory efficiency.")
-> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 58 ++++++++++++++-----
->  1 file changed, 44 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 591fb4191d90d..e3f3b33ba9062 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -758,6 +758,36 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
->  	return va;
->  }
->  
-> +/* RX buffers must be allocated with enough headroom for the TX path:
-> + * mana_start_xmit() stores the SGE DMA mappings in struct mana_skb_head at
-> + * skb->head, which is why the port advertises ndev->needed_headroom =
-> + * MANA_HEADROOM.
-> + *
-> + * An skb that is forwarded out of a MANA port has to satisfy
-> + * skb_cow(skb, LL_RESERVED_SPACE(dev) + ...) in ip_forward(), so reserve
-> + * LL_RESERVED_SPACE() here rather than just MANA_HEADROOM - it rounds
-> + * hard_header_len + needed_headroom up to HH_DATA_MOD and is therefore
-> + * larger. Reserving less makes every forwarded packet get reallocated and
-> + * copied by pskb_expand_head().
-> + */
+On 32-bit kernels dim_calc_stats() multiplies the u32 byte, packet and
+completion counts of a DIM window by USEC_PER_MSEC (1000L) in 32-bit
+long arithmetic. Once a window carries more than about 4.3 MB, bpms
+wraps, and net_dim steers interrupt moderation on a meaningless
+throughput value. At 1 Gbit/s line rate a 64-event window passes that
+size when there are fewer than about 1,860 DIM events per second,
+which is common while NAPI keeps the interrupt masked under load.
+32-bit users of the library include mtk_eth_soc (MT7621, MT7623),
+bcmgenet and bcmsysport on 32-bit ARM, xilinx_axienet on Zynq-7000 and
+MicroBlaze, and virtio_net in 32-bit guests. The overflow goes back to
+the mlx5e code the library was moved from.
 
-nit: maybe trim this comment to make it easier to read. For example, 
-"Reserve enough headroom to satisfy the skb_cow() call in ip_forward()
-and avoid reallocation."
+Patch 1 does the multiplications in 64 bits and divides with
+DIV_ROUND_UP_ULL(); the results on 64-bit are unchanged. Patch 2 adds a
+KUnit suite for dim_calc_stats() whose large-window cases fail on
+32-bit without patch 1. It is part of this series as described under
+"Co-posting selftests" in maintainer-netdev.rst.
 
-> +static u32 mana_get_rxbuf_headroom(struct mana_port_context *apc)
-> +{
-> +	u32 headroom = LL_RESERVED_SPACE(apc->ndev);
-> +
-> +	if (mana_xdp_get(apc))
-> +		return max_t(u32, headroom, XDP_PACKET_HEADROOM);
-> +
-This implies that the headroom could now be greater than XDP_PACKET_HEADROOM,
-in XDP case. Should we then use the actual headroom value, instead
-of assuming XDP_PACKET_HEADROOM, in mana_run_xdp() when preparing the buffer:
+The series is based on net (a7bfaba4823e) and has no dependencies; both
+patches also apply to mainline (fd179f8a05be) and net-next.
 
-  line 94:	xdp_prepare_buff(xdp, buf_va, XDP_PACKET_HEADROOM, pkt_len, true);
+The bug was found and the patches were prepared with Claude Code
+(Anthropic), model Claude Opus 5.5 (claude-opus-5-5).
 
-Does MANA_XDP_MTU_MAX need to be updated?
+Tested:
+- KUnit (CONFIG_DIMLIB_KUNIT_TEST=y) on UML i386 (SUBARCH=i386):
+  without patch 1, 4 of the 7 dim_calc_stats cases fail (many_bytes,
+  bytes_32bit_limit, gigabit, many_packets); with it all pass. On UML
+  x86_64 all cases pass with and without patch 1. Both were run on
+  mainline and on net.
+- W=1 builds of lib/dim/ for UML x86_64 and i386 without warnings;
+  dim.o references no libgcc 64-bit division helpers. A native i386
+  defconfig build (vmlinux and modules, DIMLIB=y) succeeds.
+- checkpatch --strict. Its "does MAINTAINERS need updating?" warning
+  on patch 2 does not apply: lib/dim/ is already covered by the
+  DYNAMIC INTERRUPT MODERATION entry.
 
-> +	return headroom;
-> +}
-> +
+Not tested: 32-bit ARM or MIPS builds (no cross compiler was
+available), and no run on a 32-bit NIC. The traffic levels at which
+the drivers hit the overflow are derived from how they count DIM
+events, not measured.
+
+Shashank Mohan Jain (2):
+  lib/dim: fix 32-bit overflow in dim_calc_stats() rates
+  lib/dim: add KUnit test for dim_calc_stats()
+
+ lib/Kconfig.debug   |  15 ++++++
+ lib/dim/Makefile    |   2 +
+ lib/dim/dim.c       |  10 ++--
+ lib/dim/dim_kunit.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 150 insertions(+), 3 deletions(-)
+ create mode 100644 lib/dim/dim_kunit.c
+
+
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+-- 
+2.43.0
+
