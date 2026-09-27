@@ -1,123 +1,140 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C293CBE8B;
-	Sun, 27 Sep 2026 17:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A14A3B14C8
+	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 17:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790531313; cv=none; b=YljZvPAkzJNYtGKbII/cfUhFfOdqb2oA1ZNaeRVusYuCUV6OR/fqZhxx5j6vUm3lI/4pr8n4sDa41mk9e2RT9Mbh71B6eqxGXRSLGPxjB8xp/kNdStlrpMDaWgUjGnVgPe7TmffwPLd7sATPChWS83tAius5Ly+ZOVMDKYAxGaw=
+	t=1790531499; cv=none; b=gS7o1yqqhN4IlYo0EeLjSYLip7IM0TJz3h8TbJidoCHsdIGeuKwu5SYU4mNEKN2vZz4stN9O4iPaAMnmlEHgc/gudJkAEcHJaqPCLnFj6hp5guvnARGAhNG1Rbv8lh0oBMGXQK0UCSDShzSTU01pBZjSqNqgQhGgw/+ejs4xhpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790531313; c=relaxed/simple;
-	bh=77tu4iNrx8Sh3PiZPWpnqFZCgOQw/3Lq4YX1j1xZPf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SmfdKupBpRizPYeafIwE/R9RbHsdOhteotv0JrDo17oDNJd1EVfKSoI2zcKmo+wD22NlFeCDIiJu9OIQGFT7M44IiLn8ivE5nUKRm6xv72KZleF35efqsrE1Qv2M6RV93yHisvbMEYoYuCm9sxe/uAfn2a5i2VMAQulfxCXtlm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TdsNNYUE; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790531499; c=relaxed/simple;
+	bh=uNLixg9Om53qk3/LW06q9lxGKynTrGmFAPLimwn0KiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cGgyWFipRIP1rbDNSO21sE07i0nN7kUJ7/mUl/Svb9DbCcRgs9TMgKvnh6tOZl/ut1L4Hc39EpCrfB5UefU+eRPFeYe7Ucz+pUoA6HX/1K0DZpsT47JYzmP574yV5VTI3h9hCmRnayDCNKzpKT990KYimjeuxC4Kxf15hPlIY1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pfmvuPvy; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TdsNNYUE"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E9E1AC5CD41;
-	Sun, 27 Sep 2026 17:49:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 06961604FF;
-	Sun, 27 Sep 2026 17:48:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AD2B102F1E7E;
-	Sun, 27 Sep 2026 19:48:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790531305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=AfLFefFTZ9CCY0LnSyMHekNeX2TotPch4ikL4DSCq7U=;
-	b=TdsNNYUEGR/IlBVUa5FG0wm302dtB1cFBSLS4xtjpv0xlLK2c5SQFG14+2O+6kp8Zkzf+5
-	6auCNcbQvePq9bPfeHYNzImSnb4sxVuebq2UkFT59Y9cdJv7wxFy5XhQTM2ZKpD2AHOqVP
-	LU9zy2Z3/fcjkHK4MZAcVp+lnl/jMxIizh07sIJ6HCO5D/vMmLxC/iDBk/bPd7nPdzGSOT
-	G9xJBcGeVqr7fvZ1let+m6wXw6tAqNqgemQTI36cO0QmcGTwbGp17wf82fOTa3m4fxzI8j
-	FLvQBl3dtHJ/iysB5ksUHdtxADjdQ9a81tSbFup5guiEaGsrlhGHoScMxTSs5A==
-Message-ID: <9f7d6b86-3ccb-4ccf-8758-c4b8c6ad2ef1@bootlin.com>
-Date: Sun, 27 Sep 2026 19:48:16 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pfmvuPvy"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8a9d7f097c2so2985707b3.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 10:51:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790531496; x=1791136296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rxCoAEdqbJ08U0inGBb/kA6iY4dI/TH3O/5tNhidk5I=;
+        b=pfmvuPvypl5Ay9fi7Qi23CnfEMdYjsSw8fkJYln6ogqAx25RCBn9qxUe+V7ZL7Dxhz
+         NyPeeWFeQyKMy/sH2oGhRY+Xzmm5jl4Oe5rA65527rM88qNbY7GFoq4u60dSz2coKzJK
+         35Yue1uSxdDl4cu5mlZ59S3QS+Zu3VnoGSrbSo0vhgULjQ10crHx15QGtpYlO4BD7T5N
+         Lg5RCAPu1SwC2VgPh9MfGuSn60vdC0ZUYFS8K+gt66JADiH3R7ZY1V6/+ukrYzccG60/
+         TWkBLLrQ2Oh8sMAJd6rMgahvNE2iQ2jUQNis6YjFkUfSlD6n4+iIn877uQ4FS9BlEwnV
+         KnWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790531496; x=1791136296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rxCoAEdqbJ08U0inGBb/kA6iY4dI/TH3O/5tNhidk5I=;
+        b=OV9w8RkGPu8i6mn61QiiuorVdp73rl7L9A9DojjaeLpGhcyFWrao5lAvH/JR3AbqhD
+         WzOPbfTuW4Cz3B4UOUk4MFkHX96ZnaPpb7tw0LVn6PMr4gdiGmd0JawSaWYW74GxnIGO
+         hXjNVR0Q7zc2+HJfEFx0sb5/pQub6G+co7drdWft10AXgoqHjlbGiGXKA/A2FQ1FGfwt
+         GXl5weKIeK2xePMDAlUmdhcBCzpp2VIcwcBF84bRJwkJ+PiV5Houpjmz/j464i/eb0Xt
+         AeYcKl2dYjvpiSqhPP0kGURjnbXN23CDWOubKssELR7Tve+3nvkaCtPypmPzHPG9DVIx
+         rdPg==
+X-Forwarded-Encrypted: i=1; AKwUvByNuy+Dngs42ILRcZnyQ+PYNaJx4sDtMrys9qB4XS0QMLLbBIHq1pliP5UuoecsbtP2kfM11Bo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIVx+R2kdfQ/kTqvb4X1TRiAzlZzamhkuTJZ0/yQ8kMqNjjMmH4
+	oUXy/Bed1CyD/0b3AVJyqVC+F4NL41zJs3mqYs7IBRNAE9E3GGn1i44y0w9+Q8O7rfU=
+X-Gm-Gg: AYBFou3W/shXhAM9astbHWtDk0Sb57HH2ReC2c5Q2k2niX/IlyPUQcHlTzhxZW+C0Ti
+	XgBNQ1b8aA/1uHvHPBPTGBjWwJ9WDolKT7oCmSqpo52MQNEb1VaLDBlUpfUCpkHK3yhFqVZW7em
+	NkrXJRxt/cCdTLY5CpgVP22dEL7+bO8DSGt00pHRjk1DdFNNMuMcOjq5CsSKpkHYAhkEjFHRPCt
+	DoHWjfS6Ue6hcVUGmw5TOFg/IDpZb5gN8qpWMR4yXR4dlh/gFjNK1luNTvFFjcbhP0W+6yfdr9V
+	DZp8EB3j7enG4vTy5O2b2raJBWV5V9fzsfTUjbv5T6cCDVA6aoVBCBWjcai9P4Rt1gCEqLc0G1i
+	k7jmn0TK4zpLeimJlnzdi/Th6GQ0giTonfhxLNOmtv4XRdh11QVEXpubYgkz1ywuOFABJUjLsT1
+	KFOX5t708bsKpn0aiy1JLve0e5fEOvlqHRvhzOoaOuawZTzyigeTMgNeqJVFv+yT/z9pi64KqLD
+	g==
+X-Received: by 2002:a05:690c:6e84:b0:8a9:693a:326 with SMTP id 00721157ae682-8a9693a0d81mr16220507b3.7.1790531496465;
+        Sun, 27 Sep 2026 10:51:36 -0700 (PDT)
+Received: from ubuntu ([69.209.117.52])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860fbd09bsm33564127b3.26.2026.09.27.10.51.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 10:51:35 -0700 (PDT)
+From: AnishMulay <anishm7030@gmail.com>
+To: idosch@nvidia.com
+Cc: pimyn@google.com,
+	dsahern@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
+Subject: Re: [PATCH] ipv6: addrconf: drop "BUG: " prefix from pr_warn()
+Date: Sun, 27 Sep 2026 13:51:34 -0400
+Message-ID: <20260927175134.1909-1-anishm7030@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260909115655.GA1344764@shredder>
+References: <20260807131300.2677228-1-pimyn@google.com> <20260810095136.GA2582170@shredder> <CAJWNTGyLJubRHn2KbqQMeV_jqexSgaLbzTe+xJnGzUw=RUtntA@mail.gmail.com> <20260810103517.GA2626301@shredder> <20260908043143.120335-1-anishm7030@gmail.com> <20260909115655.GA1344764@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net: stmmac: fix rx Scatter-Gather support
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <Jose.Abreu@synopsys.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-References: <20260923-stmmac-rx-sg-fix-v3-1-ed26fea7180d@oss.qualcomm.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260923-stmmac-rx-sg-fix-v3-1-ed26fea7180d@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo,
+On Wed, Sep 09, 2026 at 02:56:55PM +0300, Ido Schimmel wrote:
+> Does your reproducer rely on both keep_addr_on_down being set on the
+> loopback device and its MTU going below 1280?
+>
+> The loopback device retains global addresses when this happens, unlike
+> any other device [...]
+>
+> So, given that this state is quite broken and unlikely to be used by
+> anyone other than fuzzers, I would like to simply align the loopback
+> behavior with other devices and avoid keeping its addresses when the MTU
+> goes below the minimum:
+>
+> [...]
+> -	if (!unregister && !idev->cnf.disable_ipv6) {
+> +	if (!unregister && !idev->cnf.disable_ipv6 &&
+> +	    dev->mtu >= IPV6_MIN_MTU) {
+>
+> Regenerating the route in this case is more complexity for a case that
+> nobody is hitting other than fuzzers.
 
-On 9/23/26 11:14, Lorenzo Bianconi wrote:
-> When a received frame is larger than dma_buf_sz, the DMA scatters it
-> across multiple RX descriptors (rx Scatter-Gather). The secondary RX
-> buffer (sec_page) was only allocated and programmed when split-header
-> (SPH) was active, so for regular frames buffer2 was neither allocated
-> nor backed by a valid mapping. As soon as an incoming frame overflowed
-> buffer1, the DMA wrote the overflow into the unmapped secondary-buffer
-> address, triggering an SMMU translation fault on IOMMU-based platforms:
-> 
-> arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x00000000, fsynr=0x7f0011, cbfrsynra=0x1c90, cb=11
-> arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x1c90
-> arm-smmu 15000000.iommu: FSYNR0 = 007f0011 [S1CBNDX=127 WNR PLVL=1]
-> 
-> Enable scatter-gather for non-SPH frames on cores that can program an
-> independent secondary RX buffer (GMAC4/XGMAC): allocate and mark buffer2
-> as valid in stmmac_init_rx_buffers() and stmmac_rx_refill(), and account
-> for it in the buffer length computation. Legacy cores have no set_sec_addr
-> op, so they keep buffer2 disabled.
-> 
-> Since buffer2 is handed to the DMA at page offset 0, the page pool sync
-> window is widened to cover both buffers in every mode: offset is set to 0
-> and max_len to dma_buf_sz + stmmac_rx_offset().
-> 
-> The FCS can straddle the buffer1/buffer2 boundary and a descriptor
-> boundary, so it is now stripped from the tail of the assembled frame with
-> pskb_trim() instead of from a single buffer, avoiding an unsigned underflow
-> for frames that overflow a buffer by 1..3 bytes. For single-buffer frames
-> the XDP program must not see the FCS, so it is removed from the XDP buffer
-> before the program runs.
-> 
-> Native XDP currently only supports single-buffer (linear) frames. An
-> oversized frame accepted by the MAC (jumbo enabled) is received via
-> buffer2; the XDP program only sees buffer1, so on a TX/REDIRECT verdict
-> the frame is forwarded truncated. XDP multi-buffer support to handle
-> this case is planned as a follow-up.
-> 
-> AF_XDP zero-copy RX is not covered by this change: a ZC queue still
-> programs buffer2 at DMA address 0 (and XGMAC has no buffer2-valid bit),
-> so an oversized frame overflowing buffer1 can still trigger the same
-> SMMU translation fault. Handling is planned as a follow-up.
-> 
-> Fixes: 88ebe2cf7f3f ("net: stmmac: Rework stmmac_rx()")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+No, mine does not touch MTU at all. dev->mtu stays above 1280 the whole
+time. My trigger is a second addrconf_ifdown() racing the pending
+addrconf_dad_work from an earlier up, both inside a single "ip link set
+lo up" call (that fires both NETDEV_UP and NETDEV_CHANGE through
+addrconf_notify()). The route gets deleted, the notifier gets skipped,
+and the async work later runs with ifp->rt NULL.
 
-Meh I replied to the previous iteration... I did test V3 actually, so
-here's the blurb I said on V2 + tag :
+I checked this against the source rather than assuming it: your MTU
+check sits in the NETDEV_CHANGEMTU branch of addrconf_notify(), and my
+reproducer never crosses that branch. So I think these are two separate
+entry points into the same broken state (kept address, no route,
+notifier skipped), not one bug with two descriptions of it.
 
-I was able to test that on DWMAC4 (stm32mp157) sending oversized frames,
-and they correctly spill over the next descriptor, no crashes no stall,
-the only limitation being the RX fifo size now.
+Your fix looks right to me and I would support it landing as is: it
+closes the MTU triggered path cleanly by gating keep_addr_on_down on
+dev->mtu >= IPV6_MIN_MTU in addrconf_ifdown(). It would not close mine
+though, since my race never brings dev->mtu below the minimum.
 
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+I still have a patch that regenerates the route reactively, at the
+point the DAD completion work discovers ifp->rt is NULL, tested against
+both my reproducer and the general shape of this race rather than just
+the MTU case. I think it is worth sending regardless of whether yours
+lands first, as a backstop for any other path into this state, but you
+know this code far better than I do, so it is your call on order. Happy
+to send mine as a follow up once yours lands, rebase mine on top of
+yours, or hold off entirely if you would rather keep this scoped to
+just your fix for now. Whatever is easiest for you to review.
 
-Maxime
+Thanks for digging into the MTU case, the unregister argument asymmetry
+in addrconf_ifdown() is what made the loopback only behavior click for
+me.
 
+Anish
