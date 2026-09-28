@@ -1,208 +1,334 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221CF302CD5
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790600121; cv=pass; b=e+9WvPAtsHlEVYLK/Gq9UPI238xATQpF7pIAi4MzbJHa3urPYXYdnGHDQv88movyQLZEV3SMY7J7lgKl9GXTbWkWZ0+Tvj0HZ9pTlWG+mTp05Imn/ndtLmkkbVLG/uVrs+9/MuwKAWQFXpoE23XhwhH5PgYK+t/vIv7HFIWvchA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790600121; c=relaxed/simple;
-	bh=HGdJ8P7pSskXwI6y7NBpLAw0+M7RovjnFsZII77q+BI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXyfqUtRjFEspCg4maYgAHmWuTCR1e84Ju4m04C2tqhEVoStfNGSKRJLS6dSl8XdIV50PuGHeRvknpiDTtc6TCjqIZS8vAq3ugcuIK4dqfEsfaswVoeW+zxX8pQ8+Igv960arf0VrmVVEZYV7T3Ox608o8JligMmgv3JoZSt0HE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uAwoQ9Ef; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540FB3655FF;
+	Mon, 28 Sep 2026 12:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790600367; cv=none; b=He2ooitALQ2fl+KeGtk5hPsYj+0VMWUVWAVk+82kKvHJNYv4bPATJg6VbD1qNxnmtlUt96JKMRH5CiiAB4YUX3M3BpNhIPYBVIzcwlLoKfsuUUBSZIjaD+MNOOK+OtCOm/wYBqCgn1DE3+7PzZLhYkBMpXUa1MC7Vz074JiUBo4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790600367; c=relaxed/simple;
+	bh=RGDnCrdHWJo+pEBGV1jWJDwkafZeAA1DD8n5tMYtBGI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qE/aAa4ZvQxorSdWcRd9rhgfG/rTB3qusXsnevBSOapH9VCq0UbU67rgpP+X7+u8dvVdHZUZoEgO9tze/gHPIxHSIGs11M2/HqdVxCiHBZ9taPPaQoyDR3Xq1HjrVymf931weBJ+bsd7/THo+NNt21WsHDdgRnbJTxh/MmnoJqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rgvu4hWU; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uAwoQ9Ef"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-53328262f7aso15996841cf.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:55:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790600118; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o1Mip59bXbVFZPw3BWshToUvKX9zgXzOA6YnGd7Pa0hYURg0OPH9raqekUlpSKKGUr
-         4uHIYMNT/QNymkYvu98pAjM7/sis2csfV7TXlOwWHpKaOQXhhdbrVJPySRtsufJrWfkY
-         dnKWu7ttKARvc8fBn/EM7Rn3zTh/FPUMXQRo4g+sP1diqku4DnJmczVCpQeaQfsh8Zg8
-         zmEQJ5//RTWKdrzT+LqP5d2QsY1G4ud6JxlUPkfwR+i7JkAz6NOmNK96HdiD5/yOdmM7
-         M/PaEiyjT4w1R5xTOwD7KUgyWJ4eX08O799d8wYzxA7/6mOSLzcIa5Z6uTInPuV5oCle
-         m9rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HGdJ8P7pSskXwI6y7NBpLAw0+M7RovjnFsZII77q+BI=;
-        fh=o2BIf8bJtPe5NfJbmSfTkKw6kd7a8/3pqeLESiyKqng=;
-        b=EjRqS6BoYn3/6/93JA5/65WaTGUcZ0jGPXlLjmPdWzk/urdNXNF2D9nW3e0tK3yw7f
-         tQdF1hXlYByE3JcUwrgA226EmxWpfEmIhDhixW5YIA+1b1Y91OEx2771KwrrLxR4s/Hi
-         hI32sz7PUZ177DNr9Qx6N9CC4jxGKA0xMqhRXTBt/5qCsPMeOsiezjuGoNqJAN6Q/Y55
-         UmYc4l/gV+8K+IH8oYitda7pNqPreLKwCjsbRX8e0ev9sJEyfTUa0b1V+x4fdRr+NqRl
-         t+thEIEhNhgg4s/D+WoTPhdsvfKkJuoFYK7yvRfqxS9MaOY4B6uI1bLDYE1kIjiq5ZXQ
-         ZV7A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790600118; x=1791204918; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HGdJ8P7pSskXwI6y7NBpLAw0+M7RovjnFsZII77q+BI=;
-        b=uAwoQ9EfMdXQoiQ6qvH15VDek8pr8DbNk+OhZ54MTIwwKW4/iYIEui8xLF4DrFKR1d
-         GnBSgljApr53qr1IIdgAjhnyOaz2bJT9GLEu+hZ5RcuLlcFtReUFJYZAhJQ4ax25/Qcf
-         ilJt4bj0A/nXzO+ymRRHwDbLhitrfqCod+c8JAzluzD7rDhLlQhycYAB2T5RaQvuziid
-         KM5U3Svz8RzzKvsgfGOBGMLU4kO/CF5ptsP5ea/iOObnmSqUCAMghJCq+VMgXwaOYj0G
-         o20qtjt10BKLoHKVjk4p9IcV+cfa3Yh7dEN2P0Vwn8PhL3+ExaoDFdPRoKhcK1QpBS/J
-         HSIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790600118; x=1791204918;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HGdJ8P7pSskXwI6y7NBpLAw0+M7RovjnFsZII77q+BI=;
-        b=JpuVo1kJJd0oelx6Ncmx3FDxtuW1tIz2VsNIJiav+IJ3zHJPGiD8y60KvTjk5rpn+b
-         wEQvwk9aKDhTsddDJPsEni6J4IhfPm0OAPWahW6lY9S7Z0eg1tDtuPkoClaaCtilE+EF
-         Zy3S/M3rqD+tAohY7Z4rO6ORoB23gcGbuaLfWiMsVo0EQBkCF1S6qtkQyI03pmSYSzwU
-         57Zt9F/ZC0IhG2wnSjTblodglJ/ckFeEYidM9pd3S+gMKjS/ObibXOZYCB9+kAFXfBm2
-         jez8wNLlmHaCdQCw7rjx46hffN5nBkA8xfzKFCfgHAzpYFJwp42HJsuAis78ZZXFLhO1
-         dgYQ==
-X-Gm-Message-State: AFuF++myiXasV4u28RlmVd4iDL9sT1SAIkPQDA+Asd2oNgo3DXfuPRQn
-	sbMR3cTkUGTtj0s7kEO+873sUb9MPUDqP3L3gEGCLPzEqWm4dvKI2pFQtwfwZtl2WqsW5PlG78h
-	vEd0B5eZ8SM6ltB0hJ3JXy/S87alKc2NvHaU9m2O20m7Jle9eq+RSrx1V
-X-Gm-Gg: AYBFou27Mp1pHlddlwmgeGJHDljTLe9cX9+u93JKADMd4g2Vi4AlHmYP92Sq7Ci9e42
-	dTe88nKzXYaegPOtKUG5K12zc9PkN17j0vOXAgwhXAAB8qVtoMsLwWGp8CLOyVtAo3ZS099w88l
-	zddGOJoadwUhtt9OfPU3/KsSswTC8W4z3JQYRkwL8zUcQbYpfmCBTZlwRMhYsSp//Nu8gy8nygl
-	aQz4nPo6JI19TnFMBIndYLP+CsHyYY1Q+0ICjZqcdMgo17HMWmWQUqTm13KNfeHjU6KR4wu1BuZ
-	c6uIQ3wfSdhS+1vjBWi+j9JKOwkl2AF2LO2zwfcWH6QYh3cWq6u+e/zkbnh8OYn2vreFcBdfnHP
-	QgT8WNFz791+CfpDWN7i5+MZCAXhErcVe+KJrUF37xyles27P1WW+hoN5dEnSRhrSdMES
-X-Received: by 2002:a05:622a:355:b0:533:3a42:aeaa with SMTP id
- d75a77b69052e-5333a42b791mr77615191cf.4.1790600117206; Mon, 28 Sep 2026
- 05:55:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rgvu4hWU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RGDnCrdHWJo+pEBGV1jWJDwkafZeAA1DD8n5tMYtBGI=; b=Rgvu4hWUtjuMYYhJrscusiyO7+
+	NCSIl6WKd8IFcV+eQT5xelbG2h4+XD3vMFPIZJbeoEHYTSA83cBKsPXmnJvlL0whkDAD9TRjJklAA
+	7vMUMIlMMC3g+g2xc12U+qQWyQOPzjFQqxwfuo8Ojux4sKjkx4Ep6WvMs+C48uzEpVBLijzDte2jm
+	hqgIayA/TzEzhzvlVZptP9havwo8ilFU0emAXIsGc/88UcbgJYXVik8x2b08n+/WUIVSU/e3D6RQ4
+	S++1CFpK+k5PVp/DBjCEMeU3UtaOp1uC+s3IsFrNJDmAIaI+Jc3+513MUw6c9FZxEhhSCIZ+ct1bH
+	WfE+KnWA==;
+Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=edge-m3-r2-132.e-iad51.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBAwr-00000006liu-3Y09;
+	Mon, 28 Sep 2026 12:59:14 +0000
+Message-ID: <aa9a0ec325a0cff908d19542b71b780424a4af30.camel@infradead.org>
+Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
+ pps_get_ts()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Rodolfo Giometti <giometti@enneenne.com>, Richard Cochran	
+ <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, John Stultz
+ <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,  Stephen Boyd
+ <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ linux-kernel@vger.kernel.org, 	netdev@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>
+Date: Mon, 28 Sep 2026 13:59:12 +0100
+In-Reply-To: <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+	 <20260829210041.40649-4-dwmw2@infradead.org>
+	 <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+	 <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
+	 <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-21G5AumZjtAr1ycSPf0G"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-9R8V.v4.20260928081529@mojatatu.com>
-In-Reply-To: <QDISC-9R8V.v4.20260928081529@mojatatu.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 28 Sep 2026 14:55:06 +0200
-X-Gm-Features: AclHuK9FtNEUEXpn14JvRmZ6b0QftR4i5sPaslooh9w1KzgEgklcCh1WUjgZQjg
-Message-ID: <CANn89iL0baGdqnKof1FtQyQwbb8qiLwTwHB2U+HCMFsBm4wsnQ@mail.gmail.com>
-Subject: Re: [PATCH net v4] net: cap skb->queue_mapping when the tx queue is picked
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
-	Simon Horman <horms@kernel.org>, Tonghao Zhang <xiangxia.m.yue@gmail.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Victor Nogueira <victor@mojatatu.com>, 
-	Zero Day Initiative <zdi-disclosures@trendmicro.com>, hybris <hybris@mojatatu.ai>, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	linux-rt-devel@lists.linux.dev, stable@vger.kernel.org
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-21G5AumZjtAr1ycSPf0G
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 2:46=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> skbedit can set skb->queue_mapping and raise the per-CPU skip_txqueue
-> flag so __dev_queue_xmit() honours the mapping. __dev_queue_xmit()
-> cleared the flag before sch_handle_egress() and only read it afterwards,
-> so the flag was not confined to the xmit that set it: a nested xmit
-> (mirred redirect or mirror, or a drop after skbedit) could set the flag
-> and the outer xmit would consume it for an skb that never went through
-> skbedit.
->
-> A forwarded packet still carries the ingress NIC's rx_queue + 1 in
-> skb->queue_mapping, so the outer device then indexes its tx queue state
-> with that stale value. Taprio's child array q->qdiscs[] is sized to the
-> device's queue count, so taprio_enqueue() indexes past its allocation
-> and dereferences the result as a struct Qdisc *.
->
-> We (ab)use the skb->nf_skip_egress which means "skip netfilter egress
-> for this packet" to tag to "am I in tc egress?". Despite the overload
-> I dont see it as a conflict since the marker is set only around the
-> single sch_handle_egress() call and ingress path is guarded by
-> tc_at_ingress.
-> I will send a followup(net-next) patch once this hits net-next to
-> rename the skb->nf_skip_egress bit/flag to skb->skip_egress
->
-> Arm the flag only from the egress classifier that can use it: raise
-> skip_txqueue from tcf_skbedit_act() only when it runs inside
-> sch_handle_egress(), thanks to skb->nf_skip_egress. An egress qdisc
-> classifier runs in q->enqueue(), after the tx queue has been picked,
-> so a mapping it sets cannot affect the current packet; arming the flag
-> there only pollutes it for a later xmit. Then own the flag for the xmit
-> frame the egress hook runs in: save the incoming value and clear it just
-> before sch_handle_egress(), and restore it after the hook - on the
-> consumed (drop) path, or, in the same call that reads it, on the
-> surviving path. The save and the restores stay inside the
-> egress_needed_key static branch, so a packet pays for them only when
-> egress hooks are active (2f1e85b1aee4).
->
-> Store the value netdev_cap_txqueue() selected back into skb->queue_mappin=
-g
-> in netdev_tx_queue_mapping(), as netdev_core_pick_tx() already does, so
-> the skip_txqueue path never hands a later reader on the xmit path a
-> mapping the device cannot serve. A store made still later in the same
-> frame, by a tc BPF program attached to a transmit qdisc, is outside this
-> path and is not re-capped; a separate followup will resolve that path.
->
-> netdev_xmit_skip_txqueue() returns the previous flag value so the
-> save-and-clear is one call, and a no-op stub is provided when
-> CONFIG_NET_EGRESS is disabled. skb->nf_skip_egress is compiled under
-> CONFIG_NET_EGRESS rather than CONFIG_NETFILTER_SKIP_EGRESS, so
-> skb_at_tc_egress() is valid whenever the egress path is built.
->
-> A local user in a network namespace can redirect a packet from a device
-> with more TX queues to one with fewer after setting a mapping valid only
-> on the larger device. That reaches these reads and, under KASAN, faults
-> with "slab-out-of-bounds in taprio_enqueue".
->
-> Conditions to recreate the bug: the report's own trigger is a local user
-> with CAP_NET_ADMIN in a network namespace, so no eBPF program is needed.
-> With CONFIG_NET_SCH_TAPRIO=3Dy, CONFIG_NET_ACT_SKBEDIT=3Dy,
-> CONFIG_NET_ACT_MIRRED=3Dy, CONFIG_NET_CLS_MATCHALL=3Dy,
-> CONFIG_NET_SCH_PRIO=3Dy and KASAN enabled, create qa (3 queues), qb
-> (2 queues) and qc (1 queue) as dummy devices; put a taprio root on qb
-> (num_tc 1, queues 2@0) and clsact on all three; then add an egress
-> matchall filter on every device. On qa: "action skbedit queue_mapping 2
-> pipe action mirred egress redirect dev qb". On qb: "action mirred egress
-> mirror dev qc". On qc: "action skbedit queue_mapping 0 pipe". Send one
-> packet out qa. qc's skbedit sets the flag while qb's outer xmit is in
-> flight; without the fix qb consumes it and reads its two-entry taprio
-> child array with the forwarded packet's stale mapping. A qc whose
-> skbedit is instead installed in a transmit-qdisc classifier (a matchall
-> filter on the qc root qdisc) reaches the same code path the same way
-> without the fix.
->
-> Testing: on a KASAN build with panic_on_warn=3D1 the unfixed kernel panic=
-s
-> with "BUG: KASAN: slab-out-of-bounds in taprio_enqueue", a read 0 bytes
-> past a 16-byte taprio_init() allocation, for the clsact-setter and the
-> transmit-qdisc-classifier reproducers and for a clsact skbedit-then-tc-BP=
-F
-> store; the fixed kernel runs all three with no report, and the BPF store
-> variant additionally shows the expected "selects TX queue" clamp notice
-> from the write-back.
->
-> Fixes: 2f1e85b1aee4 ("net: sched: use queue_mapping to pick tx queue")
-> Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
-> Link: https://lore.kernel.org/netdev/CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQ=
-T9WkQVeeNzNQHqQ@mail.gmail.com/
-> Link: https://lore.kernel.org/netdev/179008581937.2160803.711781429057426=
-2942@kernel.org/
-> Link: https://lore.kernel.org/netdev/179033713973.2160803.491457069399439=
-8206@kernel.org/
-> Link: https://lore.kernel.org/netdev/20260925180407.63647514@kernel.org/
-> Link: https://lore.kernel.org/netdev/CANn89i+k-mZKDQVtvws_MEXeuMTAdaCcOXF=
-ZE-RfhcGTu90sjA@mail.gmail.com/
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Tested-by: hybris <hybris@mojatatu.ai>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+On Mon, 2026-09-28 at 09:58 +0200, Rodolfo Giometti wrote:
+> On Sat, 2026-09-26 at 21:38 +0100, David Woodhouse wrote:
+> > So yes, the specific code path you're looking at *does* get slightly
+> > longer (50ns to the counter read instead of 30ns).
+> [...]
+> > However, they are *entirely* in the noise, as there's about 600 ns of
+> > hardware and 2-4 *microseconds* of software latency before we even get
+> > there.
+>=20
+> Thanks for measuring it, and on real hardware with a real edge. That
+> answers my concern: ~20 ns of constant cost against microseconds of
+> latency upstream of the handler is not something PPS can see, and
+> trading it for the removal of a non-constant error is the right
+> trade. It is arm64 rather than the 32-bit board I asked about, but I
+> accept the argument holds there too, since the software latency only
+> gets larger.
+>=20
+> There is still one thing I want to be sure we agree on, about what
+> ts_real means for userspace.
+>=20
+> Today, without CONFIG_NTP_PPS, ts_real comes from ktime_get_real_ts64(),
+> which is the same value userspace reads with
+> clock_gettime(CLOCK_REALTIME). A PPS timestamp and a clock_gettime()
+> reading are identical by construction: both are the sanitized clock.
+> With CONFIG_NTP_PPS the same held so far, since ktime_get_snapshot_id()
+> also returned the sanitized value.
+>=20
+> After 1/4 and this patch that is no longer true. Your 1/4 says it
+> explicitly: callers of ktime_get_snapshot_id() now receive the ideal
+> time, "not the sanitized version provided to gettimeofday()". So ts_real
+> becomes the ideal line, while clock_gettime(CLOCK_REALTIME) keeps
+> returning the sanitized one, and the two differ by ntp_error at the
+> instant of the edge.
+>=20
+> For hardpps this is clearly what we want, and your 1/4 and 2/4 make
+> that case. For userspace I am less sure. chrony and ntpd compare PPS
+> timestamps against other sources whose timestamps come from
+> clock_gettime(), i.e. from the sanitized clock, so after this series
+> the two would be referenced to different lines, ntp_error apart.
+> Miroslav, is that something chrony would notice? And David, how large
+> can that difference get in practice? Your 1/4 says the divergence can
+> span many ticks under NO_HZ.
 
-SGTM, thanks Jamal!
+Theoretically, absent other bugs (qv), ntp_error should rarely be more
+than a few tens of nanoseconds and even that is the extreme case.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+It swings slightly positive and negative as the reported CLOCK_REALTIME
+goes slightly behind, and ahead of, the ideal time.
+
+This happens because of the integer quantisation of the counter period.
+The kernel spends a while running with the base 'mult' and getting
+behind, and then switches to 'mult+1' to catch up. On a *tickful*
+kernel, it flips between them as soon as ntp_error goes
+positive/negative each tick.
+
+On the board I'm testing with, that =C2=B11 difference equates to about
+0.745ns/s. Right now, its "ideal" mult calibrated against the PPS
+signal is about in the middle (1342189164.4992), so that means it has a
+choice of running 0.372ns/s slow, or 0.373ns/s fast. Worst case, the
+value could come out very close to an integer, and the =C2=B11 choices coul=
+d
+approximate the full 0.745 in one direction, and almost negligible in
+the other.
+
+So on a *tickless* kernel when it doesn't course correct every tick, it
+could get set to gain 0.745ns/s and then go to sleep for, say, ten
+minutes, and accumulate... half a microsecond.
+
+I don't think ten minutes is really that realistic, of course. And in
+practice I definitely can't make nohz_full actually contribute a
+meaningful amount to ntp_error while *also* waking it up every second
+(or even every 5 seconds) to process a pulse.=20
+
+However, I *have* seen (and fixed) the tick_length changes at chrony
+startup introducing 83=C2=B5s into ntp_error, which would take *days* to
+drain through the normal =C2=B11 dithering, and would screw up the actual
+frequency settings while it was draining.
+
+I've pushed out my current WIP to my timekeeping branch=C2=B9. The fix for
+the 83=C2=B5s ntp_error is the first=C2=B2 in the series =E2=80=94 "timekee=
+ping: Allow
+tick_length changes to apply mid-tick".
+
+> Since the main users of ts_real are chrony and ntpd, not the kernel,
+> I would like an Acked-by from their maintainers before I ack this
+> patch. They are the ones who will have to live with the new semantics,
+> so they should know what is coming and agree with it.
+
+Absolutely. I've called this out explicitly in the patch which makes
+ktime_get_snapshot_id() do that correction. That's the second patch=C2=B3 i=
+n
+my branch =E2=80=94 "timekeeping: Apply extrapolated ntp_error to clock
+snapshots".
+
+I wonder if we should switch PPS to using ktime_get_snapshot_id() in an
+*earlier* patch, which wouldn't then include the behavioural change.
+Then the note in the 'Apply extrapolated error' patch can then cover
+PPS and we consider them all together.
+
+The PPS change does stand alone anyway =E2=80=94 regardless of the snapshot
+*corrections*, I want PPS using snapshots so that it can report the
+actual *counter* values to userspace, like PTP is going to be able to.
+Then userspace can choose to discipline the actual *counter* without
+worrying about the feedback loop of the kernel's own timekeeping at
+all.
+
+=C2=B9 https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=
+=3Drefs/heads/timekeeping
+=C2=B2 https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;=
+h=3D3ff34be9c943
+=C2=B3 https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;=
+h=3Dbac732b0bf23
+
+> So for v5 please put this in the commit message, not only in the
+> thread: why ktime_get_real_ts64() is inaccurate (the quantisation of
+> the multiplier), that ts_real is now the ideal NTP-disciplined time
+> rather than what clock_gettime() returns, the order of magnitude of
+> the difference, and a short summary of the latency numbers above.
+> Whoever runs git blame on pps_get_ts() in a few years should not have
+> to find this thread.
+
+Ack. I discussed the order of magnitude above. Let's see how my
+proposed optimisations land, and I'll update the comments on latency
+too.
+
+For the "ts_real is suddenly something different" aspect,=C2=A0I'll defer t=
+o
+Miroslav et al but I do believe that this is either in the noise at
+most levels of precision, or a *correction* where it's even noticeable.
+
+The use cases which consume a snapshot are the ones which return a
+tuple of that timestamp against something simultaneous =E2=80=94 either the=
+ raw
+counter value, a PPS pulse which is known to be at the top of a second,
+a PTP reading from an external clock. (Worst case, PTP sandwiches two
+local timestamps around an external clock reading).
+
+Those use cases run within an actual system call (not vDSO), and are
+never about the time "now", per se =E2=80=94 they're all about the pairing.
+
+They shouldn't be compared directly with a clock_gettime() where
+userspace... is preempted and... calls into the vDSO to get the time...
+is preempted again and... eventually does something with that timestamp
+which it considers to be current, or worse paired with whatever happens
+before or after it.
+
+So I'm not too worried about the fact that the two different mechanisms
+return time in a *slightly* different form, because the normal
+userspace path chooses speed and monotonicity over accuracy.
+
+--=-21G5AumZjtAr1ycSPf0G
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+Q/RRuduOCmcPKC5b3u0Sq24AAAAAAAA=
+
+
+--=-21G5AumZjtAr1ycSPf0G--
