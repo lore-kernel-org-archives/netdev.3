@@ -1,297 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB77F50AC15;
-	Mon, 28 Sep 2026 23:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2561E3CFF49
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 23:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790639707; cv=none; b=PlTjz9Uy/tKHMIPUt91vFBCBpKQVfKqbmm5biro1+2iKfYENUMr78VOxwQ++9JRbuTEMzPt5MkIucP7Tb1G8oQmKy5udKTc4n2J7fdL9fNniLkLYxzSAY6Pl3Txm6m3EgfkQ7R5GdNaCxzNxhnkK7cZEaulCClhOLr6kvVj0UrE=
+	t=1790639998; cv=none; b=MmgskLfV7p1FF7u+L+eaYrjtaCNtU/trp1VctpnRrwAbReor4FvoKf4bsZzipNj6h7DnrwdEWrvcVfDh9RQKhdmEty2017D3+pM1IxLzE6kVdiEKXoRLz1tcs+mHOKRpgd+PS3MJE2abF5VQRXeWK0db8lqYs/Amm1poFNS3Wok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790639707; c=relaxed/simple;
-	bh=zf29Gt2kDHEVWU5kwUp85rT5hDBBqORRpY0HNsjSpes=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OLY/bDmmfrvRC35uIVIv8M26Pm3HuMsguifSTr9652/ypBEu9QVXCx6Dm1eQq7Qzh5ETOks1bzqZ/yS7RB0/wXd6M731Cj0zF4H8urFTf8ljKbhI3Z4TSSKhHxdXoTUJsDvQtlQNTeGTD5UG/ejX7Y7vbDGnlWpXWReUnXA0qEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8VU8dnT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790639998; c=relaxed/simple;
+	bh=0McVIF+957NznDcxr6YE1XinPsyk21F2ddwRcHBLNPY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=onPgoTWnMZGGTfO0a8Syg8MUePQeSeJRJGuG4QytFUA61TE6oRyMlQJ/oLhn6ske7KbC7eOrL7TCNDDTSPjalc/7n0g+jFfufELKWcsHTCgXthNmBDvuUk39RTgxoNipduv7hdG4ViqiMcnDfk+8J/7IOne29E8krBsPLo6dbGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qeVz78F1; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8VU8dnT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F941F000FF;
-	Mon, 28 Sep 2026 23:55:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790639705;
-	bh=QIirEpJkvKIK16eJFYeEMYWOYwXzKi/NHgEhj6srvPI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V8VU8dnTR5/JwHTLJbrIh3jB+G87OZaYKXn3lPNisZOzLv+EClUPTNwleceRWZvPZ
-	 Z8TqdeowTQHL1WYkYT8hDTE//ycn0ro6cSCs6INyv03J5Q20TK3OQX7YXwjo7m6aM6
-	 tzdvxF04ePNLEqUPKEYvv9JV4OO9xUI4XAZTTqgIDDQCarW96jHziOK6+yEX1omsGs
-	 eUTBSE5TzTvD/BcNX+81TjtM7CSPHkGiZ3CsS5Yzqou0Gb/J0iW6VWU9Jm93n7sDwh
-	 j8++XxIZ1ah4b2s6B4t84mm0zDeYybX101biLM24P5vdhLOul+lAGYh+9TD5LDyqwr
-	 8Qz8DqIERb8zw==
-Subject:
- Re: [PATCH net 10/11] netfilter: flowtable: generalize pending status bit
-From: netdev-bot+sashiko@kernel.org
-To: pablo@netfilter.org
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Date: Mon, 28 Sep 2026 23:55:04 +0000
-Message-ID: <179063970489.3145.12908523239374463658@kernel.org>
-In-Reply-To: <20260927220816.268206-11-pablo@netfilter.org>
-References: <20260927220816.268206-11-pablo@netfilter.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qeVz78F1"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8a8f3f7ff7cso28125377b3.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 16:59:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790639996; x=1791244796; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bPam/rNOgWfNzKvIbPiu5X36dfYWg6BSNZ+Rj2PyNEs=;
+        b=qeVz78F1Pc9uLpCJVEBBCATnmLB31n0Z27t95gz5pi+N/Vz+KSvXtKMzz8Uyop7MQ9
+         180wS7y0ZBbvdQkb//YKg8aRALY2ayQlGvyG/cs/W0URq4p8ut9Q8e0XdG+hUaZ6K4Ed
+         1N7HU3J44EzAaTMFpb4wOgcBC0fNLhjM91ssl8gYVVPWKE2BPVW2ppuUDRaS1NnI+7pe
+         tYNZhGrez5fxHykXbHKhD2UxhB2O3JKTDANg9R7Y4r7hvWys0KL7MOJ2JwPxqoSFap2E
+         SrbOF9sKAcM33KiGDEXsgBe8OQ+BAhhqErWedD1LyM3/MM+SQITKFGtoezSWEwZrJjL7
+         /CAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790639996; x=1791244796;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bPam/rNOgWfNzKvIbPiu5X36dfYWg6BSNZ+Rj2PyNEs=;
+        b=gtajaUyMJauD7xY05JGbDSMOpnFZrJFsMfQv08MpSC5McJZDz6ugGI2OkrlBpDVMiR
+         uIuVpdqRFBZb/cUqvzSuBMuc4R80ykN8I6vJ8AVYxn8hRNLA6JsWPwfrORmZRfvzl2fY
+         RYrNbs+KwMRtEhyYnBO2RefYL9C8v6g+aZH28W87Vh4EU2UI6zj3Qy1IfvpGILjuSj5C
+         d9o125lqCEQZhtKkOrwKYlyMO/4k1PJTL0DWMzrRbMDCZvj5q/5dnZu97JDTcKSCDVhW
+         3mLtIKtbEnLp6Uhs/YxM3gMIOq0lhVvggAZDvA69fGFcLJEMyFIUoqOF/ohUH0qw5jE7
+         KWIw==
+X-Forwarded-Encrypted: i=1; AKwUvBwITMwA1ll88Zl8o637FbryqNjPVTxdtJPnbHvfyCljl1ueFewmpqQotW5W0ZtzsUMUV2hbnDk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIYJ8ylMMYM3PMdwas5S+uZmU1tTEliB5nT5UPgXsiZwoL2y08v
+	u/kRzKJ8NDrj8XsNvnYPpprQeFfFgEkDySSBbvyJiw/YKzuXL9efpSSr
+X-Gm-Gg: AYBFou0Nmf78QYPystjG5LtmsCfWFpLpPZCAhgBkVDOy8h5am8sDvPTxGct7oIdlodf
+	f5kTxDayeqOUQuOzoqjpk4tc82uo9zjTxj+re372pqfnZeiVR2Jm0YNef9VZzPWBrk3aMIWnCOj
+	/9scgisRJ5V2ksK/bUJ8RWki+SO+of+PjLeIICpKFzzOW3ssyE52fHKR/XeiIuBBEzS/Fzwpb5V
+	uR496exme9M58drgUdjQ/m17iCQyQEEHCwsR1FDk6xB7tuye/rSGm31ynNBIG70RhqNabsQFIeZ
+	LkTvMAL724J59f9Vcr/jUE+eGxxoUnUg8xdDUn9v5mha/LBjjDVaqAwNv6IZkvqK5HY5A49A9Vs
+	T50pAzPvEBQ/VTIIo9O4bWxLwfN8EF1kzO/WGZ3RjZIesb6GUjrOd/zHe5MMztSNWn3bSMbt1up
+	tut8JtUd2/3B7tgShPcr1X/DLw92IZii8KId0gJG1v32eYgENvJPiTJFn70iRpKEWat2KrYGDxV
+	XEHRDOJY4kgLcJ2oM106qydGm8BkSYacnx5adxiE+pW0i437TVw
+X-Received: by 2002:a05:690c:c4e8:b0:8ab:3dc2:a4b4 with SMTP id 00721157ae682-8ab3dc2a965mr4005777b3.22.1790639996000;
+        Mon, 28 Sep 2026 16:59:56 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a86104911csm52086127b3.44.2026.09.28.16.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 16:59:55 -0700 (PDT)
+Date: Mon, 28 Sep 2026 19:59:54 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Wang Zhan <wang.zhan@smartx.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ keyong.sun@smartx.com, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ dev@openvswitch.org, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Alice Mikityanska <alice@isovalent.com>, 
+ David Laight <david.laight.linux@gmail.com>, 
+ Wang Zhan <wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.3638f2d1c29b1@gmail.com>
+In-Reply-To: <20260928044102.1004310-6-wang.zhan@smartx.com>
+References: <20260928044102.1004310-1-wang.zhan@smartx.com>
+ <20260928044102.1004310-6-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v3 5/5] net: net_test: add tests for bounded GSO
+ segmentation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 1 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The new NF_FLOW_PENDING gate in nf_flow_offload_gc_step()
-  (nf_flow_table_core.c:580) is a single relaxed test_bit() snapshot.
-- [Low] flow_offload_work_handler() now releases the flow with
-  smp_mb__before_atomic() followed by clear_bit(NF_FLOW_PENDING)…
-
-Pre-existing issues:
-- [High] nf_flow_table_free()
-  (net/netfilter/nf_flow_table_core.c:775-788) does not wait for DESTROY…
-- [Medium] The datapath can re-offload a flow that GC has already torn
-  down and removed from hardware, and that rule is never deleted.
-- [Low] In nf_flow_offload_gc_step()
-  (net/netfilter/nf_flow_table_core.c:609-610), the last branch `else if…
-
---
-
-netfilter: flowtable: generalize pending status bit
-
-This renames NF_FLOW_HW_PENDING to NF_FLOW_PENDING. nf_flow_offload_gc_step()
-now skips any flow that has hardware offload work pending. It also moves the
-setting of NF_FLOW_HW_DEAD back into flow_offload_work_del(), reverting
-d644b23afe1e, and clears the pending bit after a barrier at the end of
-flow_offload_work_handler().
-
-> diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-> index 934c6151f558b..36bbc7be2f745 100644
-> --- a/net/netfilter/nf_flow_table_core.c
-> +++ b/net/netfilter/nf_flow_table_core.c
-> @@ -575,7 +575,12 @@ static void nf_flow_table_extend_ct_timeout(struct nf_conn *ct)
->  static void nf_flow_offload_gc_step(struct nf_flowtable *flow_table,
->  				    struct flow_offload *flow, void *data)
->  {
-> -	bool teardown = test_bit(NF_FLOW_TEARDOWN, &flow->flags);
-> +	bool teardown;
-> +
-> +	if (test_bit(NF_FLOW_PENDING, &flow->flags))
-> +		return;
-
-[Severity: High]
-Does this check actually stop GC from freeing a flow while offload work is
-pending? The test_bit() takes one snapshot, and nothing ties it to the
-flow_offload_del() call later in this function.
-
-The datapath can still claim NF_FLOW_PENDING after this check.
-flow_offload_refresh() is reached from nf_flow_offload_forward() and
-tcf_ct_flow_table_lookup() on a flow that was looked up under RCU. It only
-checks NF_FLOW_CLOSING and NF_FLOW_HW:
-
-net/netfilter/nf_flow_table_core.c:flow_offload_refresh() {
-    ...
-	if (likely(!nf_flowtable_hw_offload(flow_table)) ||
-	    test_bit(NF_FLOW_CLOSING, &flow->flags))
-		return;
-
-	if (test_bit(NF_FLOW_HW, &flow->flags))
-		nf_flow_offload_refresh(flow_table, flow);
-}
-
-nf_flow_offload_refresh() then calls nf_flow_offload_work_alloc() with
-FLOW_CLS_REPLACE. Its test_and_set_bit(NF_FLOW_PENDING) succeeds as soon as
-the DESTROY worker has cleared the bit. TEARDOWN, HW_DYING and HW_DEAD are
-never checked on this path.
-
-Could this sequence happen?
-
-CPU0 (datapath)                  GC / offload workqueue
-flow lookup finds F
-                                 gc_step(): teardown F
-                                   nf_flow_offload_del(), queue DESTROY
-                                 DESTROY worker:
-                                   set_bit(NF_FLOW_HW_DEAD)
-                                   clear_bit(NF_FLOW_PENDING)
-                                 later gc_step():
-                                   test_bit(NF_FLOW_PENDING) == 0
-flow_offload_refresh(F)
-  test_and_set_bit(PENDING)
-  queue FLOW_CLS_REPLACE
-                                   HW_DEAD set -> flow_offload_del()
-                                     call_rcu(flow_offload_free_rcu)
-leaves RCU read section
-                                 flow_offload_free_rcu():
-                                   nf_ct_put(flow->ct); kfree(flow);
-                                 REPLACE worker:
-                                   flow_offload_work_add() on freed F
-                                   clear_bit(NF_FLOW_PENDING) on freed F
-
-call_rcu() only waits for CPU0 to leave its RCU read section. It does not
-wait for the work that CPU0 queued.
-
-GC passes can run back to back through
-nf_flow_table_cleanup()->flush_delayed_work() on successive NETDEV_DOWN
-events. On PREEMPT_RT the reader can also be preempted for a long time.
-
-The commit message says the bit is used "to inhibit the flowtable GC worker
-until pending hw offload work has been completed" and "to prevent a race
-between GC and hw offload handler". Is a re-check of TEARDOWN or HW_DYING
-needed after the fully ordered test_and_set_bit() in
-nf_flow_offload_work_alloc() (or in nf_flow_offload_refresh()) to close
-this?
-
-[Severity: Low]
-Should this be test_bit_acquire()? flow_offload_work_handler() now does
-smp_mb__before_atomic() followed by clear_bit(NF_FLOW_PENDING) as the
-release side. The reader here is a relaxed test_bit(), though, and the
-if/return control dependency only orders later stores, not later loads.
-
-On weakly ordered CPUs such as arm64, GC can see PENDING already cleared by
-a FLOW_CLS_STATS work and still read an old flow->timeout in
-nf_flow_has_expired(). That would be the value from before
-flow_offload_work_stats() stored:
-
-	offload->flow->timeout = max_t(u64, offload->flow->timeout,
-				       lastused + flow_offload_get_timeout(offload->flow));
-
-In that case, could GC tear down a flow that the hardware has just reported
-as active? The HW_DEAD read is in the same word as PENDING, so it is not
-affected.
-
-> +
-> +	teardown = test_bit(NF_FLOW_TEARDOWN, &flow->flags);
+Wang Zhan wrote:
+> The GSO engine can now be asked to bound the number of MSS segments which
+> go into each output skb.  Add KUnit coverage for it.
+> 
+> The parameterized GSO test gains a max_segs input and three cases: two
+> bounds which cut the input into two and three output skbs, and a bound of
+> one MSS, which must leave the ungrouped output of the unbounded path
+> alone.  It drives skb_segment() directly, because the synthetic protocol
+> it uses has no gso_segment callback, and stores the bound in the GSO
+> control block itself.
+> 
+> The TCP test drives __skb_gso_segment() with a bound of two MSS and checks
+> that every output skb stays GSO, keeps its gso_size, and stays within the
+> bound.  The length test runs a 200 KiB TCP skb through
+> validate_xmit_skb_list(), the caller which sets the bound, and checks that
+> the length declared by every output matches the L3 length of that output.
+> The limit test checks that the GSO size limit which netif_skb_features()
+> applies follows the packet's L3 protocol, for an IPv4 and an IPv6 skb,
+> also with the tag inside the frame.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+> 
+> ---
+> v3:
+> - add cases for the length a bounded output declares and for a bound of one
+>   MSS, which must leave the output ungrouped
+> - cover the IPv4 half of the limit test, checking the protocol's own bit
+> - skip the TCP cases without CONFIG_INET and bound the expected index in
+>   the parameterized loop
+> - free the skb and the device on the failure paths
+> - reserve headroom so the VLAN step needs no atomic allocation
+> - drop NETIF_F_TSO: the transmit path passes the features without it
+> v2: https://lore.kernel.org/20260918084651.3022878-5-wang.zhan@smartx.com/
+> v1: https://lore.kernel.org/20260917063854.2011613-5-wang.zhan@smartx.com/
+> ---
+>  net/core/net_test.c | 347 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 347 insertions(+)
+> 
+> diff --git a/net/core/net_test.c b/net/core/net_test.c
+> index 9c3a590865d26..a4f61398a90ab 100644
+> --- a/net/core/net_test.c
+> +++ b/net/core/net_test.c
+> @@ -4,7 +4,14 @@
 >  
->  	if (nf_flow_has_expired(flow) ||
->  	    nf_ct_is_dying(flow->ct) ||
-
-[Severity: Low]
-This is a pre-existing issue, but the last branch of
-nf_flow_offload_gc_step() still queues stats work without checking
-NF_FLOW_HW_DYING:
-
-	} else if (test_bit(NF_FLOW_HW, &flow->flags)) {
-		nf_flow_offload_stats(flow_table, flow);
-	}
-
-Take a CLOSING flow whose hardware rule has already been destroyed
-(HW_DYING and HW_DEAD set, TEARDOWN not set). Will GC keep queueing
-FLOW_CLS_STATS work for a cookie the driver has already removed?
-
-With this patch each of those works also sets NF_FLOW_PENDING, so GC skips
-the flow until the work finishes. The stats result itself is harmless, but
-it adds redundant driver calls and can delay teardown of the flow by up to
-about one GC period. This behaviour dates back to commit fdbaf5163331.
-
-> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-> index 6757fd89c1f1a..4365859220e6a 100644
-> --- a/net/netfilter/nf_flow_table_offload.c
-> +++ b/net/netfilter/nf_flow_table_offload.c
-> @@ -995,6 +995,7 @@ static void flow_offload_work_del(struct flow_offload_work *offload)
->  	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_ORIGINAL);
->  	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
->  		flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
-> +	set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
->  }
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but can the datapath re-offload a
-flow after this DESTROY work has removed it from hardware?
-
-flow_offload_lookup() filters out TEARDOWN only at lookup time.
-flow_offload_refresh() then checks only NF_FLOW_CLOSING and NF_FLOW_HW.
-flow_offload_work_add() does not re-check TEARDOWN, HW_DYING or HW_DEAD
-before it does this:
-
-	err = flow_offload_rule_add(offload, flow_rule);
-	if (err < 0)
-		goto out;
-
-	set_bit(IPS_HW_OFFLOAD_BIT, &offload->flow->ct->status);
-
-Suppose a reader looks up the flow before GC sets TEARDOWN, and calls
-refresh after this worker has set HW_DEAD and cleared PENDING. The REPLACE
-work then re-installs the hardware rule.
-
-Once the REPLACE work clears PENDING, the next nf_flow_offload_gc_step()
-sees TEARDOWN, HW_DYING and HW_DEAD all set. It calls flow_offload_del()
-without issuing another DESTROY.
-
-Doesn't that leave a hardware rule for the 5-tuple, keyed by a cookie that
-points into the freed flow_offload? That rule would keep forwarding traffic
-outside conntrack and the ruleset until the flowtable or block is torn
-down.
-
-[ ... ]
-
-> @@ -1089,12 +1085,12 @@ nf_flow_offload_work_alloc(struct nf_flowtable *flowtable,
->  {
->  	struct flow_offload_work *offload;
+>  /* GSO */
 >  
-> -	if (test_and_set_bit(NF_FLOW_HW_PENDING, &flow->flags))
-> +	if (test_and_set_bit(NF_FLOW_PENDING, &flow->flags))
->  		return NULL;
+> +#include <linux/if_ether.h>
+> +#include <linux/if_vlan.h>
+> +#include <linux/ip.h>
+> +#include <linux/ipv6.h>
+> +#include <linux/netdevice.h>
+>  #include <linux/skbuff.h>
+> +#include <linux/tcp.h>
+> +#include <net/gso.h>
 >  
->  	offload = kmalloc_obj(struct flow_offload_work, GFP_ATOMIC);
->  	if (!offload) {
-> -		clear_bit(NF_FLOW_HW_PENDING, &flow->flags);
-> +		clear_bit(NF_FLOW_PENDING, &flow->flags);
->  		return NULL;
->  	}
+>  static const char hdr[] = "abcdefgh";
+>  #define GSO_TEST_SIZE 1000
+> @@ -34,6 +41,9 @@ enum gso_test_nr {
+>  	GSO_TEST_FRAG_LIST_PURE,
+>  	GSO_TEST_FRAG_LIST_NON_UNIFORM,
+>  	GSO_TEST_GSO_BY_FRAGS,
+> +	GSO_TEST_BOUNDED,
+> +	GSO_TEST_BOUNDED_MULTI,
+> +	GSO_TEST_BOUNDED_ONE_MSS,
 
-[Severity: High]
-This is a pre-existing issue, but what happens during flowtable teardown if
-this GFP_ATOMIC allocation fails for a DESTROY request?
+nit: bound is not a helpful name for this feature.
 
-If it fails, nf_flow_offload_del() returns without setting NF_FLOW_HW_DYING
-and nothing is queued. nf_flow_table_free() then continues with:
+The default segments to a stream of skbs of MSS 1, so segmenting to
+a stream of skbs larger MSS to me is not bounding. Quite the opposite.
 
-	nf_flow_table_gc_run(flow_table);
-	nf_flow_table_offload_flush_cleanup(flow_table);
-	rhashtable_destroy(&flow_table->rhashtable);
+Not a comment only about this test patch.
 
-and nf_flow_table_offload_flush_cleanup() does:
+Perhaps partial or re-segmentation better captures it.
 
-	if (nf_flowtable_hw_offload(flowtable)) {
-		flush_workqueue(nf_flow_offload_del_wq);
-		nf_flow_table_gc_run(flowtable);
-	}
+> +	{
+> +		/*
+> +		 * One MSS per skb is what the unbounded path produces, so a
+> +		 * bound of a single segment must not change the output.
+> +		 */
 
-The second gc_run now queues the DESTROY work on nf_flow_offload_del_wq,
-and nothing flushes that workqueue afterwards. rhashtable_destroy() does not
-free the entries, so the flow_offload and its ct and dst references are
-leaked.
-
-The callers free the flowtable straight away: kfree(flowtable) in
-nf_tables_flowtable_destroy() and kfree(ct_ft) in
-tcf_ct_flow_table_cleanup_work(). The queued work then runs:
-
-flow_offload_work_handler()
-  read_pnet(&offload->flowtable->net)
-  flow_offload_work_del()
-    flow_offload_tuple_del()
-      nf_flow_offload_tuple()
-        down_read(&flowtable->flow_block_lock)
-        list_for_each_entry(block_cb, block_cb_list, list)
-
-Isn't this a use-after-free of the nf_flowtable? If the allocation fails
-again in the second pass, the flow is simply leaked.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927220816.268206-2-pablo%40netfilter.org
+so setting max_segs = 0 is equivalent to setting max_segs = 1.
