@@ -1,218 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013048.outbound.protection.outlook.com [52.101.83.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253D546EF6A;
-	Mon, 28 Sep 2026 08:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790582628; cv=none; b=Z5Ilf+fkAxgYg0myUfOKsGIUNa1G/ufsNcKhOt9Fy5pMGjwuE1rfkWk/dza/KRtcoYz2A9F6wsYqVbDkcm8htWE/BSBzFptvdt6v/dMeR7A2knFTA/y5MpYC8Hxx/KdhY5XgfaG/6lOPRblQdKGk6Dn1fQOdVeKYQ81Vmm0gFAA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790582628; c=relaxed/simple;
-	bh=ZPV5p+j4KPjhk3iffSJAn2mihUCwMaMbCnf1VocEA1Y=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kj3+PwNB9hKARJl83bJOIoMSPKjr+klT83eZuRk0vTbHk6g3RcGaFSkyOchV0+IbgKTMPvHeldSo1Y97Y5jJiReAJ3edlWnawxbiEJP07uUgxT1b/kMvPAX/yjixpxmC78XUKUSGkhnwKsbWYxMr2f0YMxwLz347KTVEfBVotmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQwmu5tZ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836A735C69F;
+	Mon, 28 Sep 2026 08:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790582984; cv=fail; b=WpozfuTA9DGlrUCWhlcXRcMB+Y/Xc/Y7BmjiovsG98rGajx0C2YPv5FmP5sNk0gYWIeSl7xwSzA7oF/XgCBSUPzOFem2RoC3ZP5Fc58ewF1LmrLxhuu0S8O5OE0dXGOL7fMx/yKA5XN8Bk4arFVS3GnZBxiG630fK1Q842kkXsI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790582984; c=relaxed/simple;
+	bh=GTM6MPQ3xmcIms58QSPTSDHMI9maet9qUJEW7AVP0q0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=thAr4v9eDYWxM35G/tWGCrwAc5rgAxkDGSG2rVfwpb7wMimPSfeW9802Kf2z/vrgeetb01pKpKoGR8oolv0xF4COcxVEmDRQJ30dYqlSTWMfO5Tx3FSuAL6OHIqzKlfRMAVVb0VbHf7ZJsuMy+8EMxCb92xT8xO2jqGU40UkCxE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=NgbY3P3L; arc=fail smtp.client-ip=52.101.83.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQwmu5tZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FD1F000FF;
-	Mon, 28 Sep 2026 08:03:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790582624;
-	bh=wpKB8NWNIG9HI9GTo75J4nfgoxYdt8QoZF0s8fE5gFw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fQwmu5tZ++pPdx978y8XvVOELXuIhncUvhyxzvE3O28BzUdCEfshtgvu6Ynzj9ine
-	 bnC73Rzfo9sFCCL8gc8PvojoDaVGNcVeAjQXndfnduOZcKzV6AXEW/mppLXuwcgbli
-	 jDY2o76gvQzgaJ4E3zxjgnrWuYvCgick5VE2SEqzgpazPxoFnRBCLcicVatAGSQ8+a
-	 WbmRCmUD+U+2PA+bVTY2WzNpmeJh2Tfo8ZKfSVMMf2LtlFj0S6cAI8kNTtktL010mt
-	 t0+XXepyA6wezn0wGw/geaZ6Ijhfi0Sv/L0vKPTg1w7yPWhw8yQ1QtDF9a5bMhC5hU
-	 2feqsY/CYFnsg==
-Subject:
- Re: [PATCH net-next v2 7/7] net: stmmac: mediatek: add support for MT8189 SoC
-From: netdev-bot+sashiko@kernel.org
-To: louisalexis.eyraud@collabora.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, richardcochran@gmail.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, biao.huang@mediatek.com,
- maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, kernel@collabora.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-Date: Mon, 28 Sep 2026 08:03:42 +0000
-Message-ID: <179058262236.3145.17042342965998808468@kernel.org>
-In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-7-430bd74d5ef9@collabora.com>
-References: <20260924-dwmac-mediatek-mt8189-v2-7-430bd74d5ef9@collabora.com>
-X-sashiko-severity: Medium
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="NgbY3P3L"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fh1JXVEYiXO55xRSUOPWb4+BGfk4xK3gFQGABbIi/+14YZBS+A04Vbq+3FcIrOhUBzEkxoAxBXTNjEc5fESN7vlPoGaJkSP4+79jUSB/LaO/yhJkNEC/Z5bU6HsjoU5AUveTgfoHNcY16ZhAX2CkwiogIHEWaN4oSTHQucoGd4I82mLEXHofh+eZjfd6Oa+EAk/rDFKsjcpY/+6NpO6gyjYs3IY7xk//UwjtVNOQY4C6n1uq8G9uBBYEQ/vi3/5dQWUVvkQKRA0F1H5k3/286BdDByQ5/Q/5JT0MjnPi2dtoOZmQAnuGvJHbjFy39Bk+6stAiJXr0gZ4mG9oW1b+Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GTM6MPQ3xmcIms58QSPTSDHMI9maet9qUJEW7AVP0q0=;
+ b=gaAp+++yYt5fY/eUli0dUn8hdkMqUMaVxVj61qJF49o7Lr1V9IIiTbICnFms1FI3PYzK8YMSBkuYv5PHL835YpBidWCnFj/aP6i6dq5LCjpZ4sMKaeLCoXrtDo9ccbHPMZ+rYHPlGgqq3OFoAHdZsLwZ1ONEbxZgesT7Te9Z/WNqIw/CjJpbposFpb+bLaLnC1Y0krznikwpqI4dNj5WtYUqb34JZRaa/wr0DIfhKZJVbMSgU0WoWzS961VuR7lrU+wiQbwzpDD8iIVwWGSs6MWeXAuzv3P8ZzybbS42Itpf4LyxgbUO76xVD4GOVbdmdyBZVhYhX1ApriEygy0sUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GTM6MPQ3xmcIms58QSPTSDHMI9maet9qUJEW7AVP0q0=;
+ b=NgbY3P3LUDodr23NC2RiMUzy4LC4EOGpjv4hSjDlampGsKYhU/skybIpGrrew5bUHgkYPzqndNQ4GR1YENTxbaQw2o9Om53Ml6bHWBLM9OUB94fJUCQ9tqhWuqu6tVHNrGvoAf2n+5z63ASVC9FFjNwiPIb1PfWmmEZKL6y2vTIMIPS2ws/Stqsgt83AGhYSnojSWfRoC7WG9MKDT+3HUbV48udubgshIxFOEa6eJYw+FqSNUS2kt55vCuaFt/QTokPaiSvkuyd177wsQlDTwfKun8le1e8n9M7l4kJM5B9jPFoqcv+LdgiGILiTDDpRMy0PIlaVsD63Q334/tJnaQ==
+Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:617::19)
+ by DBBP189MB1307.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:1e2::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
+ 2026 08:09:38 +0000
+Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+ ([fe80::d422:dd3a:7c1e:f4f3]) by DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+ ([fe80::d422:dd3a:7c1e:f4f3%3]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 08:09:38 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: =?utf-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>
+Subject: RE: [PATCH] tipc: prevent GCM nonce reuse on peer key changes
+Thread-Topic: [PATCH] tipc: prevent GCM nonce reuse on peer key changes
+Thread-Index: AQHdTGJAYnXDVfR+i0mBwM/I1X2APrbjprMw
+Date: Mon, 28 Sep 2026 08:09:38 +0000
+Message-ID:
+ <DU4P189MB375013802A953EFC4EA7DECCC68D2@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <20260924202105.3722778-1-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20260924202105.3722778-1-Jeremy.Jean@oss.cyber.gouv.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU4P189MB3750:EE_|DBBP189MB1307:EE_
+x-ms-office365-filtering-correlation-id: c9be3d29-966a-4f71-2dd1-08df1d37d770
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|38070700021|6133799003|10067099003|5023799004|11063799006|56012099006|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ ywVv7ZPT2aj2ALoItU/6ZYDrcq6SsE39Y9k+ezqx90XbBOAC5fk8xJUZ4goR9/RGbnEbG6hXyyZDgAa34XTGRI0nWtY1H1zoN9O+773NJC7msOA34oevqKNW+oLYXcd0FrIctwCRWMM9g5HzA1TH4Nl7J8sS1+BxNvW6KB0jH8PLKUZ4E3Ncf9YDzokIZ1U0mecsCmD4Uuakh6T5bjDc/TwavxqZO4YyulULySJONUR8aVumqHrX2W9h7fx9/qcm/HhwxhErwVISTtnoaaHGZS2KK0W6HT6wN6hh6JpltEi0De3SApmG0XavUJanNnMLoKWaOChhySK4PaopmGI9flogpjhunyc/Bf/lTL293U2bnK0uGg/4iE+yJjxPGS9q8ZABSyisDwE3JIsXqhaHm7EiLHjBSROiN+XAj5D2fUdI0P8t25Tt6oqRZlTLUaxl005OenM5+3TEZc2G1Z5oDTc1IfUevIncEJy5E2YSLOllh29vUkRBv6psxhsDVyc89hs8e50DcAUybHp0RZ4iPP3XYs+xiH7Ek6Idzl6MunrrRFbocmFhTR6Qu6kaXc5JT2T0qs1UW3BIa5w7hfcIKV2zw/Mk83baX4zG5KfxiPQG0VzatyBtogib13TeU1WwrhxGVayolYxwxJ1cq4XrL1dyifexClBICtfjjU67LVBFdzi0/nDXrX2nZCU7l/vBZf1Pebv8UENHFBsQcn6Xbk7TctqTpS4whVPTBBBS47M=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4P189MB3750.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(38070700021)(6133799003)(10067099003)(5023799004)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?QlZ2anVrQnhlcWtqNWQ3MUZiSys3dEpxRmM1Mi96RXdFeWNTVTFNTTNnb0Vn?=
+ =?utf-8?B?bDVDTWN0SmgxZ0ljQ3hSWS9qbTlDa0JzUFBONXFqdVlvWm52cU1LcnFnbXNG?=
+ =?utf-8?B?dzh5SU9manU4dW1nNDQ1T0FHdUFLTEFBeVI4QmFWejZ6YXBpTzU4WXNodSsz?=
+ =?utf-8?B?Zlp0RlhRS21BL3JEM1pOY0hQbnBMQkEvTEMwekNRMm84NW5JUkpaZG1vK3R6?=
+ =?utf-8?B?UFB4OXpXeEg0NVZNeStBZHVxYmc3Y1NFQ0pIVmtlZGw0VXVNd3Rvd3htTjJW?=
+ =?utf-8?B?TWZjR2EyYzI1VDE1ampBWVpyZGZlS1VBVEs3dkk0RVNvQlNYTVJSeTkyVWsv?=
+ =?utf-8?B?dmQrTUtvaVgrWGx1OUVMQzBOZ1padmhFZitBN0Nxd3MxRGNDUUJ5Nmpud0FE?=
+ =?utf-8?B?U3VGZlVLTk5ncEpldVA3YVM2RDU5U3BrNVM5U3ZsNDJhTVBEbDQrc2M1RHRv?=
+ =?utf-8?B?amNFdGlHblZBWWxpMFdmWE9hOGY3MlZ5dlpuU0FaZjBFS0daMTBweHcxdWIv?=
+ =?utf-8?B?RFVvK1F2WXQzdjY5cE1pSCtScEJlSGZrVHl5VDRZUWI5UTFIRFd4Wm0wSmJw?=
+ =?utf-8?B?cisyd2k4SWRRRTd2eHgxRC91S2Q3UXU4ellYYUNYM05OK0NoUFpnOGRSekxH?=
+ =?utf-8?B?anpXSWcxcVZOOU44NW9OS2xsRnhwK2NOZG9COFJtL0ROUkNVcTljcnFtaHla?=
+ =?utf-8?B?dy9CQVRHR0lJeTVDa1B5VXJYc3BGMGJtYzM2RlRYMVhlTThoV2RWc0ZzWW10?=
+ =?utf-8?B?WHVOVHJ0dTlsY2I5YVExRkQ4ME42anliQ2ZTeUVNSTlQNG9QVzhDekZHakFi?=
+ =?utf-8?B?Zjh5eEVETkxjT0RjVktyRUFLUmsvTDNSU3Z3OGd4c3BlQlhEbFpndFcremxv?=
+ =?utf-8?B?VnBTRG5SaHUrRERiZ3MybS96NzJaa3NFNi84RjA4UzJXbUVOUDQ3dEtJOUQy?=
+ =?utf-8?B?YVUzSzhTNjZ3TEJDb1F5NkdtSENnRit4clIzWHYxNTZpdDVGZVpuaTUzektY?=
+ =?utf-8?B?eUhKN3NZL0NpbVRJYlBLQmR5SlIvN0kvcFp6TVlFOTg3SFBxaXEwNW14SmdI?=
+ =?utf-8?B?T01IMzgrUVZUdDBqZjBvMktDR3IwNGthOVBHM2YxMHNDM1RROG9JVTRxNDNJ?=
+ =?utf-8?B?THZYVmFQTVlFZkJzMi80MU8xQUsrZGQ1SU1Pc01YRHBKdUJDSzhzWnJMd2Fv?=
+ =?utf-8?B?WnlydXlzWDludVJNNHE5M1VXNFJyYnJBM28wMEZVbDZUR01IZkhRdU5jV3g4?=
+ =?utf-8?B?Rjg2SW5yVW51MzIvdGxKaW0wVnRWWm0wajQ0RHdWVk5KZXhJZWIzWFRKNko1?=
+ =?utf-8?B?K3lDVU5uZHg4UitmQkZDY2o3TkFGMis0L0pQMkRPWXlnZ0hua3phSjBwSE91?=
+ =?utf-8?B?UlZUb2xBK0d6N0lqd2oyMzlEdlZJT0pTR2ZoVGZLU3hPNzN3ZjVRMS95dDhQ?=
+ =?utf-8?B?VEMwRTFBNnptYTJQZmgxZlhlQVR3a0JjZEttUHo0SEN2ejFWUU43V3RIa0xn?=
+ =?utf-8?B?STAzTVBRc0dDR3U2Y2hkWXhSZnN3dlhobTJyNzR6UTROeTcyT1V6cnY4cmdw?=
+ =?utf-8?B?VTIvMTZDMGN0V2RWeVQzdFFTcXc3ODJLL0hpV2s3bFhpV1Q3OVFPWkl0d0or?=
+ =?utf-8?B?NFFmVlNFaEJUb0w0NlhqNU9IVnk0bS9GY1JVbXFNMU9BSUsrbHlYSk1Yb3lG?=
+ =?utf-8?B?eGtGYmYyWFRKREJoV2VDcGIzbjcxVHA3TkE5a2NsRWV0eE9iS3htaS9XeG5X?=
+ =?utf-8?B?czN6Y0dBYWlHOFpMTno4NGFaQ1pwRnhFbktVZEpsV2IrRmdITVd4czhsWEM4?=
+ =?utf-8?B?Tnc1TmtIU2sxYlExelpNclB3UWF4OERUbjVrYTVQUHlQQ1dBMmV6Wm9uTGM2?=
+ =?utf-8?B?WHlFT1F4eStzOGEvd2UvRGRyY0VjTk9MVlRNRCs2SmRDU2dlTE1JRUdIcGtw?=
+ =?utf-8?B?NlZtTTlKaGdxaVlxZCt3K0hTWWFkTU5TdUV5dTVLdXQrVDhZQ0h5SnZVMWc2?=
+ =?utf-8?B?VWRQOVlLU1ErOUViVnd0amFnMnJGM2JsUGVtOUdGTFhKY1FsRXhqRVByMXA1?=
+ =?utf-8?B?eHNqNWUzaHVUTDlockdRQVIrbTdTOEpOQmxreFRUMHJ0L3UrYjFDTktadnox?=
+ =?utf-8?B?ZDdhdjRiNU5QYlg1U2JLdFpSa2trKzNDejZ6cmFZTWlrM3VkTzBTWCtHSVMr?=
+ =?utf-8?B?MCtmNlY1b0RsVlRaTStpaXVaTSs5Qi9qK3hRRTF0TmsxK0RvNDVxZlRwODRi?=
+ =?utf-8?B?dk1hK2tmRkVXWW5tSlNRMnpDNWNUNmRiSU1mQU5CdGQzM0pLWmJ6UEMvcFhy?=
+ =?utf-8?B?alYxMWtUVnA3cWNwVU92bXlqK2JjYnJjTWFycy9WTFVSSDV5TlBlQT09?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9be3d29-966a-4f71-2dd1-08df1d37d770
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 08:09:38.4164
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: guTQ8743rVcuXAEoOCTaHVhKdU5k4CdtXxZazvcdClyjsuJzsEwA3wuJns1DJ1MjJ4DlEE8FTnXj341Bv6wrEGe+3Zb/X5V7JIb351Y6LMY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBP189MB1307
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] On MT8189, the driver and the DT binding disagree about MAC-
-  sourced RMII.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  mediatek_dwmac_probe() ignores the return value of…
-- [Medium] This problem wasn't introduced by this patch, but
-  mediatek_dwmac_clks_config(enabled=true) leaks clock enables.
-
---
-
-net: stmmac: mediatek: add support for MT8189 SoC
-
-This adds MT8189 support to the MediaTek dwmac glue driver. MT8189 reuses
-the MT8195 pericfg programming callbacks, with a different register
-offset, 180ps delay stage dividers, a shorter clock list and the TX clock
-output enable feature.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> index 36599dc33b14..f07c331b029f 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-
-[ ... ]
-
-> @@ -124,6 +131,10 @@ static const char * const mt8195_dwmac_clk_l[] = {
->  	"axi", "apb", "mac_cg", "mac_main", "ptp_ref"
->  };
->  
-> +static const char * const mt8189_dwmac_clk_l[] = {
-> +	"mac_main", "ptp_ref"
-> +};
-
-[Severity: Medium]
-How is RMII with the MAC providing the reference clock meant to work on
-MT8189?
-
-The MT8189 binding added earlier in this series ("dt-bindings: net:
-mediatek-dwmac: add support for MT8189 SoC") limits clock-names to exactly
-these two entries:
-
-    clock-names:
-      items:
-        - const: mac_main
-        - const: ptp_ref
-
-However, it still allows mediatek,rmii-clk-from-mac for this compatible.
-The tx/rx-delay-ps descriptions also mention the MT8189 RMII interface.
-
-If a board sets mediatek,rmii-clk-from-mac, mediatek_dwmac_clk_init()
-always requests a clock that the binding does not permit:
-
-drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_clk_init() {
-    ...
-	if (plat->rmii_clk_from_mac) {
-		plat->rmii_internal_clk = devm_clk_get(plat->dev, "rmii_internal");
-		if (IS_ERR(plat->rmii_internal_clk))
-			ret = PTR_ERR(plat->rmii_internal_clk);
-    ...
-}
-
-So a DT that passes schema validation fails to probe. A DT that supplies
-rmii_internal, and so would probe, fails schema validation.
-
-The new variant also reuses mt8195_set_interface() and mt8195_set_delay().
-These program MT8195_RMII_CLK_SRC_INTERNAL and the RMII_TXC/RMII_RXC delay
-path, so the driver seems to treat this mode as supported.
-
-Should the MT8189 binding gain an optional rmii_internal clock? Or should
-the binding and the driver reject mediatek,rmii-clk-from-mac for MT8189
-with a clear error?
-
-[ ... ]
-
-> @@ -495,6 +506,21 @@ static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
->  			   reg_val);
->  }
->  
-> +static const struct mediatek_dwmac_variant mt8189_gmac_variant = {
-> +	.dwmac_set_phy_interface = mt8195_set_interface,
-> +	.dwmac_set_delay = mt8195_set_delay,
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. Now that
-MT8189 uses mt8195_set_delay(), can it cause trouble that
-mediatek_dwmac_probe() ignores the return value of mediatek_dwmac_init()?
-
-drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_probe() {
-    ...
-	mediatek_dwmac_common_data(pdev, plat_dat, priv_plat);
-	mediatek_dwmac_init(&pdev->dev, priv_plat);
-
-	ret = mediatek_dwmac_clks_config(priv_plat, true);
-    ...
-}
-
-With phy-mode = "gmii", stmmac_get_phy_intf_sel() returns
-PHY_INTF_SEL_GMII_MII. That passes the check in mediatek_dwmac_init(), and
-mt8195_set_interface() writes CTRL0. mt8195_set_delay() then reaches:
-
-	default:
-		dev_err(plat->dev, "phy interface not supported\n");
-		return -EINVAL;
-
-CTRL1 and CTRL2 are never written, but probe still goes on into
-stmmac_dvr_probe() and succeeds.
-
-The error is also ignored for phy modes that mediatek_dwmac_init() rejects
-up front. In that case the device probes with the pericfg interface
-registers never programmed.
-
-Should probe fail when mediatek_dwmac_init() returns an error?
-
-> +	.dwmac_fix_mac_speed = mt8195_fix_mac_speed,
-> +	.clk_list = mt8189_dwmac_clk_l,
-> +	.num_clks = ARRAY_SIZE(mt8189_dwmac_clk_l),
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does
-mediatek_dwmac_clks_config() leak the bulk clock enables when the
-rmii_internal clock fails to enable?
-
-drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_clks_config() {
-    ...
-		ret = clk_bulk_prepare_enable(variant->num_clks, plat->clks);
-		...
-		ret = clk_prepare_enable(plat->rmii_internal_clk);
-		if (ret) {
-			dev_err(plat->dev, "failed to enable rmii internal clk, err = %d\n", ret);
-			return ret;
-		}
-    ...
-}
-
-That path has no clk_bulk_disable_unprepare(). mediatek_dwmac_probe() also
-returns the error directly, without reaching err_drv_probe:
-
-	ret = mediatek_dwmac_clks_config(priv_plat, true);
-	if (ret)
-		return ret;
-
-On MT8189 this leaves mac_main and ptp_ref prepared and enabled. The devm
-bulk get cleanup only drops the clock references. The same leak can
-happen through the clks_config callback on resume.
-
-On MT8189 this needs a DT that sets mediatek,rmii-clk-from-mac and also
-supplies an rmii_internal clock, which the MT8189 binding does not allow.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9%40collabora.com
+PlN1YmplY3Q6IFtQQVRDSF0gdGlwYzogcHJldmVudCBHQ00gbm9uY2UgcmV1c2Ugb24gcGVlciBr
+ZXkgY2hhbmdlcw0KPg0KPlRJUEMgY2FuIGVuY3J5cHQgdHJhZmZpYyBiZXR3ZWVuIG5vZGVzIHVz
+aW5nIGEgZGlmZmVyZW50IHRyYW5zbWl0IGtleSBmb3IgZWFjaA0KPm5vZGUuIEluIHRoaXMgbW9k
+ZSwgdGhlIEFFUy1HQ00gbm9uY2UgZm9yIGEgcGFja2V0IHNlbnQgdG8gYSBrbm93biBwZWVyDQo+
+Y29uc2lzdHMgb2YgYSAzMi1iaXQgcHJlZml4IChhIHBlci1rZXkgc2FsdCBYT1IgdGhlIHBlZXIn
+cw0KPmFkZHJlc3MpIGZvbGxvd2VkIGJ5IGEgNjQtYml0IGNvdW50ZXIuIFRoYXQgY291bnRlciBp
+cyBzdG9yZWQgaW4gdGhlIHBlZXIncyBSWA0KPmNyeXB0byBvYmplY3QuIFdoZW4gdGhlIHBlZXIg
+cmVwb3J0cyBhIGNoYW5nZSBpbiB3aGljaCBrZXkgaXQgdXNlcyB0byByZWNlaXZlDQo+cGFja2V0
+cywgVElQQyByZXNldHMgdGhpcyBjb3VudGVyLiBUaGUgc2VuZGVyIGNhbiBzdGlsbCBiZSB1c2lu
+ZyB0aGUgc2FtZSBUWCBrZXkNCj5hbmQgc2FsdCwgc28gc3Vic2VxdWVudCBwYWNrZXRzIHJldXNl
+IGVhcmxpZXIgbm9uY2VzLiBUaGlzIG5vbmNlIHJldXNlIGJyZWFrcw0KPmNvbmZpZGVudGlhbGl0
+eSBhbmQgZXhwb3NlcyBHQ00ncyBhdXRoZW50aWNhdGlvbiBrZXkuIFRoaXMgbWFrZXMgZm9yZ2Vy
+aWVzDQo+dHJpdmlhbDogYW4gYXR0YWNrZXIgY2FuIGV4cGxvaXQgQ1RSIG1hbGxlYWJpbGl0eSB0
+byBhbHRlciBjYXB0dXJlZCBjaXBoZXJ0ZXh0cw0KPmFuZCB1c2UgdGhlIHJlY292ZXJlZCBhdXRo
+ZW50aWNhdGlvbiBrZXkgdG8gY29tcHV0ZSBhIHZhbGlkIHRhZyBmb3IgdGhlDQo+bW9kaWZpZWQg
+Y2lwaGVydGV4dCwgdW5kZXIgdGhlIHNhbWUga2V5IGFuZCBub25jZS4NCj4NCj5Vc2UgdGhlIFRY
+IGtleSdzIGV4aXN0aW5nIGFlYWQtPnNlcW5vIGNvdW50ZXIgaW5zdGVhZC4gQWxsIGVuY3J5cHRp
+b25zIHVzaW5nDQo+dGhhdCBrZXkgb2JqZWN0IHNoYXJlIHRoZSBzYW1lIGF0b21pYyBjb3VudGVy
+LCBzbyBjb25jdXJyZW50IGVuY3J5cHRpb25zIGdldA0KPmRpc3RpbmN0IG5vbmNlIGNvdW50ZXIg
+dmFsdWVzLiBUaGUgY291bnRlciBzdXJ2aXZlcyBrZXkgYWN0aXZhdGlvbiBhbmQgcGVlcg0KPnJl
+Y29ubmVjdGlvbiwgYW5kIHBlZXIga2V5LXN0YXR1cyByZXBvcnRzIGNhbm5vdCByZXNldCBpdC4g
+VGhpcyBwcmV2ZW50cyB0aG9zZQ0KPnRyYW5zaXRpb25zIGZyb20gY2F1c2luZyBub25jZSByZXVz
+ZSB3aGlsZSB0aGUgc2FtZSBUWCBrZXkgcmVtYWlucyBpbnN0YWxsZWQuDQo+DQo+VGhlIG5vbmNl
+IGZvcm1hdCBpcyB1bmNoYW5nZWQsIGFuZCByZWNlaXZlcnMgZG8gbm90IHJlcXVpcmUgY29uc2Vj
+dXRpdmUNCj5jb3VudGVyIHZhbHVlcywgc28gc2hhcmluZyB0aGUgY291bnRlciBhY3Jvc3MgcGVl
+cnMgcmVtYWlucyBjb21wYXRpYmxlIHdpdGgNCj5leGlzdGluZyByZWNlaXZlcnMuIEEgcHJlLWV4
+aXN0aW5nIGNoZWNrIHN0aWxsIGludm9rZXMga2V5IHJldm9jYXRpb24gaW4gdGhlDQo+dW5saWtl
+bHkgZXZlbnQgdGhhdCB0aGUgY291bnRlciB3cmFwcyB0byB6ZXJvLg0KPg0KPkZpeGVzOiBmYzFi
+NmQ2ZGUyMjAgKCJ0aXBjOiBpbnRyb2R1Y2UgVElQQyBlbmNyeXB0aW9uICYgYXV0aGVudGljYXRp
+b24iKQ0KPkFzc2lzdGVkLWJ5OiBMTE0NCj5TaWduZWQtb2ZmLWJ5OiBKw6lyw6lteSBKZWFuIDxK
+ZXJlbXkuSmVhbkBvc3MuY3liZXIuZ291di5mcj4NCj4NCg0KTmV4dCB0aW1lLCBwbGVhc2UgYWRk
+ICduZXQnIHRvIFtQQVRDSF0gZm9yIGJ1ZyBmaXguDQoNClJldmlld2VkLWJ5OiBUdW5nIE5ndXll
+biA8dHVuZy5xdWFuZy5uZ3V5ZW5AZXN0LnRlY2g+DQo=
