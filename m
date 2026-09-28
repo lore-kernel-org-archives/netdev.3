@@ -1,115 +1,191 @@
-Received: from mail-ej2-f28.google.com (mail-ej2-f28.google.com [74.125.228.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CE94F96D3
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943B5502D5A;
+	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790633361; cv=none; b=aS5aQ4J0P5XuaiffXVG3lacjVxp3eHNhZEncG4X4v4DMe91lAR6pBotROYAl1oewqMD5g4DUKl8iJuER5IA+ZRnTH8hEXchpmnaIlQFOQKfpyFO6cabhRNY7OyPb4LTauIaDyGWlggr/FR/nghWmLNA65evoZ6jS/VCR9t7lCVQ=
+	t=1790634324; cv=none; b=qogPKrpbjzzOG38+qZjmvw2iNQfPJT/eqklTkMj5kOaqdjlPnTZ/bERxj68DF6T2KCQwBAMvzGQBRnrsGmGWxE23PlomeJ7d6xhjD4pagKKliQuZNAiWOmFhaM/Egk3LNbEG4NX5TJhN+xU6/t5U+h2Eh6h5Vf+lFxm/uljY56w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790633361; c=relaxed/simple;
-	bh=rZpmAD2x0KQnc/mc298y8EsNAb64mlW7AF4wYInWEok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP2W96pgSZ+iGo+WT4OBrci0L+0kr/N3qa3vizv+6IudNse7+cRdoJekkescXPCELazt/K6XdhzB8YdNkIaHqamxLR3BhLWNRL/6oNpNQiNVK8NvgY9YpvGtIGnVzYcf7b8XWjC84/xyBm0qS/p+Zdpin3DCzcEqsH/zE9Hr4lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qT4t8M2b; arc=none smtp.client-ip=74.125.228.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790634324; c=relaxed/simple;
+	bh=SfifI8TQpgUZexAhVD3NGks7syaRBvoFyfKlLs0zn/g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ojWx/PsOgJmzK3hhNNwoWtGlxnAYf9/wXllOfjRECFx64xOjo9+7HEVAqgOHZDWXSh5ewvZxrkqxdw8c8oTQ4ghCXGsypTkJM/0r9aX863Iy/aXVKVqJ4VRv4Q9VFEskS7H/IoLAsACsWfIGQFVtXNyQGHnh1bo5gRQLsI03FA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPpoWmMK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qT4t8M2b"
-Received: by mail-ej2-f28.google.com with SMTP id a640c23a62f3a-c2af3701927so516106366b.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:09:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790633357; x=1791238157; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rZpmAD2x0KQnc/mc298y8EsNAb64mlW7AF4wYInWEok=;
-        b=qT4t8M2bC+oDpuJX+btxKlouHWBNUN+PaROBkJX8eF4+ZLyL1w0XM/ACDzV8KPaa/Y
-         lzLVpKP3S6Q8QSllo7MUtzTNmiXyp3j2aa7TBI/T/dy1zqplloXaEc0NA2jmtzg22llJ
-         k2eGzZMG7LFi2I8EVFw+VH83Zke9dFTKfWcaMkY1ULvEtOQT9+KPYwCzLsELdtQI2uhA
-         ZC0T4KKNzaZbgp63ubJ8wt/C/vel/7crtoBAcOxziNUP8QKga1LySeKeylNg6TsTp7eo
-         3+3UwV1D7XUOYl/3faMCacLx1lv8YrQz83xSk1F5D3fJhuTG+ced26dEuFRfN0VTiXKL
-         b5/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790633357; x=1791238157;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rZpmAD2x0KQnc/mc298y8EsNAb64mlW7AF4wYInWEok=;
-        b=UJew2zIa5vbjKZAaKNqunszeSbmfZkgM0UVaQsfAX1ifOg8uNM8VwXHaPr01En7N2A
-         8/xBwvhiMxtJMJBZVi8wp4+n6jQ8TVayrQ0WyjB2hwEKVcC7wAVTNm2R11+ZGM/qZ0dR
-         42IKPjJd9U1fEJL+LrtF54p1Fi5ApzV4l145um0yvRXrjG0zh8Pto6sRYS0vzb1B7Zrc
-         eHcDU3e7ev0zxDZkfoWHRE2jytHQgqKhkzdyUtVQU/zukVl4wwdpeWLAYQ/u7BS6e1Up
-         OzmJ/fPtbk+EeL/T62l4q4e6GbDcy9HCLdNDNGVT3Htum4WyzUF6Yy8Xxs7T6hpflZZB
-         k5Xg==
-X-Gm-Message-State: AFuF++lR/1da5roWa8ezhwkXrcA4SJFgeD6Z74NzUyf4C5RzNSXVgoyJ
-	8PriXq0FfwWrLroILJnKpta3cWPvKczPxbxyxkAENnED5Z2Sm6FHS+ij
-X-Gm-Gg: AYBFou3qAskksv+OZ7k4ZNd1XqAMiHOuzxkNpU/GVPcc3dKykrndaTz2S8touUwuAAG
-	dRTK0TfKApgRVqxVyTRcpy/t0BvT/B8s6e9oLSVpS5kRA+5bZMAmtU9J5+BjthaZec2/zNGxDLh
-	KgHSeZnDOZOTVcbe/I6TEYM4hHGHpPLPAp44JdFbbxUr3K1TGI8hs6EbyXrdgN2eJlii3fI8hus
-	fa3z11goaSrgelKrvqTGKqagUH/46f8ahjQF1fGWGTOQWUoh9J0UkLGg0rXmaZx5rJVH1q2stoG
-	c9ADfHvTLUyXhii4PY0Va7oCjkWzEYYmBi4GusUxHFKYjQYLUhSZs50NOFyxUKzXZf3WKCBhudd
-	PHeAt/yV/eWkbr7Ubtmo0C5LRhhweIqnxWuafKuzrbHZDY5CA0OpfJNh+4AUktlZ2CDwpEF8jMM
-	9asOU31BJSloPpo9It3XQeu7v0NJP4WfDXsNB2g8Nxjxwy8G1Wgc9EzcUBV4Gpr0CjQ777oMZbG
-	BK63jMbw2Jk3AUR1FdBn4+wF9VwFGyHFscwFPw5clupAhomjyefmqsX
-X-Received: by 2002:a17:907:c24:b0:c29:f5d8:9c7d with SMTP id a640c23a62f3a-c2ac22cad65mr1258773566b.44.1790633356629;
-        Mon, 28 Sep 2026 15:09:16 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:801:793:68fd:c07a:9093:1956:b4bf])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae7352336sm533842866b.16.2026.09.28.15.09.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 15:09:16 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	ansuelsmth@gmail.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: qca8k: propagate MDIO errors
-Date: Tue, 29 Sep 2026 00:08:58 +0200
-Message-ID: <20260928220858.1982-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
-In-Reply-To: <179054715863.3145.10179961093285192493@kernel.org>
-References: <20260923215748.1336-1-yongzhao.derek@gmail.com> <179054715863.3145.10179961093285192493@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPpoWmMK"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 520C6C4AF0B;
+	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790634324;
+	bh=SfifI8TQpgUZexAhVD3NGks7syaRBvoFyfKlLs0zn/g=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FPpoWmMKkvVk3FJ1qcGgR/PVMDTrOvK8RhjK9x6ALiHV89YhGVr6vXYfCZTyQPGnq
+	 M0D73OIqXa8IOtTMGC9EyI4WOXlX31KgDzf2GRNQa70mnRqQVwNCabh2086+xhkjs0
+	 dMhXN9gZuzdJqWoLMKP2QB4fFuwdOsQmxemLiI3rY2TEKslLJrgjdwzAFIKP6yIrwr
+	 rQZuL42N6lRDxFRzWHHxJoZdkHeIBrG1F4GdAyYaVu2CPjGezQ59oVo8YAodopVf/3
+	 NG6QSQFrEZg7aGncENBCIXRyThzgFXCbP1B2vV7NK3QVFYcME47i22Gl4tXvJBJxkH
+	 QaLFjU3wsOWxQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31925CA5FAB;
+	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Date: Mon, 28 Sep 2026 15:25:09 -0700
+Subject: [PATCH net-next v8 02/11] Documentation: networking: Add timestamp
+ related APIs to OA TC6 framework
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260928-s2500-mac-phy-support-v8-2-7e011aacc309@onsemi.com>
+References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
+In-Reply-To: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
+To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Piergiorgio Beruto <pier.beruto@onsemi.com>, 
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>, 
+ netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Jerry Ray <jerry.ray@microchip.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790634319; l=4547;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=Gmvv6Ti63vpPjCFKBovXvgYEOjZncBV6qOW2BKbcfl4=;
+ b=MIpSr7dU1SurNcOhAAhIsrbD5h2LJ4LNPagCzdnHEM2PhnlVRJ34xZpY3Hj9SGnC3bd/8aYeN
+ MlJ051tttgfARI243IHRvXSh5z2lHHVIx2cB1S3349Fzw9vKMV3P+GB
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-On Sun, 27 Sep 2026 22:12:38 +0000, Sashiko wrote:
-> qca8k_mdio_read() has the same pattern. Could a set_page failure unlock
-> and return directly, or use a separate label, so that the MASTER_EN
-> clear only runs after page 0 has been selected?
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Yes. No transaction has started at that point, so there is nothing to
-clean up, and the write can hit a register on another page. The next
-version returns right after a failed page select. It also invalidates
-the cached page, since a failed page write may still have reached the
-switch.
+Added new APIs to support hardware timestamp feature as defined in
+OPEN Alliance 10BASE-T1x MAC-PHY serial interface specification.
 
-> Doesn't the same outcome remain on this Ethernet path? Should the check
-> after read_poll_timeout() in qca8k_phy_eth_command() also bail out when
-> ret < 0 and ret1 == 0?
+Added the newer read/write APIs that takes MMS as one of its parameters
+as these were not documented so far.
 
-Yes. The next version stops polling on the first failed request and
-returns the poll error or the timeout, so qca8k_internal_mdio_read()
-falls back to the MDIO bus. The same exit path also leaked read_skb;
-that is fixed too.
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Both problems predate this patch. I reproduced them with a userspace
-model that compiles the driver's own functions. My board (QCA8337 with
-its PHYs on the SoC MDIO bus and no CPU port 0) never uses these paths,
-so they are not hardware-tested. v2 will be a three-patch series with
-one patch per issue.
+---
+changes in v8
+  - Updated the the order of the parameters in oa_tc6_read_register_mms
+    and oa_tc6_write_register_mms apis.
+  - Removed the reference to ioctl
+changes in v7
+  - No change
+changes in v6
+  - No change
+changes in v5
+  - Fixed "no blank line" issues in four places
+changes in v4
+  - Added information for new APIs in OA TC6 framework
+changes in v3
+  - Added more information for documentation
+changes in v2
+  - Removed the changes to the existing API
+  - Updated information about newly added APIs
+changes in v1
+  - Added changes to an existing API
+  - Added documentation to new hardware timestamp related APIs
+---
+ Documentation/networking/oa-tc6-framework.rst | 59 +++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-pw-bot: cr
+diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
+index 0feda2f9d840..5bcc194be7ea 100644
+--- a/Documentation/networking/oa-tc6-framework.rst
++++ b/Documentation/networking/oa-tc6-framework.rst
+@@ -153,6 +153,10 @@ OPEN Alliance TC6 Framework
+ - Forwards the received Ethernet frame from 10Base-T1x MAC-PHY to n/w
+   subsystem.
+ 
++- If supported by the hardware and enabled, updates hardware timestamp
++  in skb, when indicated by one of the three timestamp capture registers
++  through TSC fields of the header.
++
+ Data Transaction
+ ~~~~~~~~~~~~~~~~
+ 
+@@ -496,3 +500,58 @@ the MAC-PHY.
+ Zero align receive frame feature can be enabled to align all receive ethernet
+ frames data to start at the beginning of any receive data chunk payload with a
+ start word offset (SWO) of zero.
++
++.. c:function:: int oa_tc6_ptp_register(struct oa_tc6 *tc6, \
++                                        struct ptp_clock_info *info);
++
++Registers the PTP hardware clock related functions with the kernel.
++This API simply registers. Initialization of the fields in the
++ptp_clock_info structure are left to the vendor as programming hardware
++timer is expected to be vendor dependent. The fields max_adj, owner,
++and all the functions for the clock operations, like adjfine, gettimex64,
++settime64, adjtime are expected to be initialized in the structure before
++calling the registering the hardware clock.
++
++.. c:function:: void oa_tc6_ptp_unregister(struct oa_tc6 *tc6);
++
++Unregisters the PTP hardware clock related callbacks.
++
++.. c:function:: int oa_tc6_get_ts_info(struct oa_tc6 *tc6, \
++                                       struct kernel_ethtool_ts_info *info);
++
++Provides timestamp related settings that are supported to ethtool.
++
++.. c:function:: void oa_tc6_hwtstamp_get(struct oa_tc6 *tc6, \
++                                         struct kernel_hwtstamp_config *cfg);
++
++Returns hardware timestamp configuration. Part of net_device_ops callbacks.
++
++.. c:function:: void oa_tc6_get_ts_stats(struct oa_tc6 *tc6, \
++                                         struct ethtool_ts_stats *ts_stats);
++
++Provides hardware timestamp related traffic statistics for ethtool.
++
++.. c:function:: int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6, \
++                                        struct kernel_hwtstamp_config *cfg);
++
++Helper to set hardware timestamp configuration. Part of net_device_ops
++callbacks.
++
++.. c:function:: void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms);
++
++Helper to map MDIO_MMD_VEND1 command to vendor specific Memory Map Select
++(MMS) value. This function offers flexibility for vendors that may have
++used any MMS value between 10 and 15 as allowed by the specification.
++MDIO_MMD_VEND2 is already mapped to MMS4 in the OA TC6 frame work code.
++
++.. c:function:: int oa_tc6_write_register_mms(struct oa_tc6 *tc6, \
++                                              u8 mms, u16 address, \
++                                              u32 value);
++
++Write a single register addressed by @mms and @address in the MAC-PHY.
++
++.. c:function:: int oa_tc6_read_register_mms(struct oa_tc6 *tc6, \
++                                             u8 mms, u16 address, \
++                                             u32 *value);
++
++Read a single register addressed by @mms and @address in the MAC-PHY.
 
-Thanks,
-Yongzhao
+-- 
+2.43.0
+
+
