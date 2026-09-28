@@ -1,113 +1,298 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f40.google.com (mail-yx2-f40.google.com [74.125.224.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6743009CB
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16F4E4324
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790607661; cv=none; b=CZ/trVNreO4SwDYMOlblvF0P0Rx0zkSh0FmvYCysOkEyTzDF944+p2YHtoluOKN+L3i0Kw+aECA7D31obryr6qGl6hxLfn28uNI9lJHBVepWzWTQpbH417Mo9Ex+2cLKyDcM/tBt/g+qvacyK9dGpRir8eSW2O5oQ4vhpD/XsBQ=
+	t=1790608246; cv=none; b=pnkD3mi1XasVQfdaxmYczGkgdi7m4Duf8upix6qnUWRknmfmEP+lK7zGuDnfHup8xkQwiT0VQzuNhUTq65wEg7ZP/eVx5ZWYD2k06OujDaVSheA4nD3hy/ewrbn2CwwYRenHGwppVE1TwVMiZY6NFpP7m9V8xX1fPGdn7Dn4jKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790607661; c=relaxed/simple;
-	bh=nGJsllp8L7sqYAKIQ2/Hr/XmIXmSD+YY1xB0lRGMVQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xab38WZtmNcNO67IlkJyoABVHPEQOspDMMtUe71X+d4z2vwYZz5kjJXe41b3LX6f0Og66QIfSggJtSDd/OAghedcKOaxNDsiIRNhj+/dzKoTrOmQDF3vPlj8gm77Jb4C/Day+JFYSE9yfAqzaiEb9uvrbDeLy9ylPl/CKkjMS+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZRJnRYmv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EelShbUI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790608246; c=relaxed/simple;
+	bh=bl3IwuCW6AmawdJ8nWbR3/O/dKwf+9Gdpx1v6y+FdoE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LctCRyTdxpzTMTNn1ueSmeFGFdzQ3WH5uw0HebTo4JQ2CLKrh6rMSacKEORCNEwiuIhdR/d3+ajNIdRWbKvuG+tkWSV1ewQDxKlRQ7SLmY85OsW7McYRGu4YVPbv5yLx5PAfS7vnqE6nYhtOCSWsuYD6rvWnOafm+2RW2nLwWdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bWeXWsXW; arc=none smtp.client-ip=74.125.224.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRJnRYmv";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EelShbUI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790607657;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vKOeRv5jdbU0/NaEiGEDb5uvk7fcRI56Q4PTcfyI8cI=;
-	b=ZRJnRYmvJIgmNYKaS56eP57E+EYRgVEY+VJHGCpRgk0n5buTmwneJfe2IUFCVLhccSrHhl
-	9kh+Zm+ouCdLWwNCKR0Nyft83FMB3kaaXhDsy4RBx0lK6grQ+R0dtIwC4bKjz02F4q3He8
-	T2PaoXx8PUp8OH6bKOuk+3Vz7Qy23Lg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-258-TnPzXXJ4MVidM2WB_w8G0A-1; Mon, 28 Sep 2026 11:00:56 -0400
-X-MC-Unique: TnPzXXJ4MVidM2WB_w8G0A-1
-X-Mimecast-MFC-AGG-ID: TnPzXXJ4MVidM2WB_w8G0A_1790607654
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e635a6002so38217875e9.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:00:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bWeXWsXW"
+Received: by mail-yx2-f40.google.com with SMTP id 00721157ae682-8a87fe69060so21767007b3.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:10:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790607654; x=1791212454; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vKOeRv5jdbU0/NaEiGEDb5uvk7fcRI56Q4PTcfyI8cI=;
-        b=EelShbUIxOpADeI2YrBW6+G/e7eqp/RtYA5pyAuMl1Lowv2yTEe3K0xBqvDlAp5wQO
-         soNEbbdtyf/aiPGsVeAn7BIXFJCTongbAlgYSFJ9OsF+MlhS3qcYXWFXV9c06f+pru3O
-         ADKH0mJFSn6xxOhaza909Klz8D2qrBpDLLSy7Dg99hYcDzZIGkK8mxH+1GInHqi+0wtl
-         j8xbWEHWYEIuYhTJNUSgZPlxpCzCf3+RsNd00/0tQa/yyMK5IQNFxi3UMNTNdiVdFVZa
-         zlcUwT5QLpI5wvOl9V9wq4AJ/OzU278j4yvG6KrPILe5ojsSWCeWqiBaj4MsNeFqu+Zp
-         7C2A==
+        d=gmail.com; s=20251104; t=1790608244; x=1791213044; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sYYFoaTMRB3GOnjpaYUTL6ry/fhz19rfZ6OU5bjdLfQ=;
+        b=bWeXWsXW6eombCz3QAfBsyiDlnOsxAcYvCUEgRr+1X038pc32WGhW0mKCB29z8nF2t
+         N6yLFtjhCXhYa7dTMTzP/73bG10zlG9XfOAcFC9VHmYuQESIXjm43GCj5sYS+qYw6Fui
+         OnIiDhMBPBPMOPR0bl9yqJjy+kHhYk1wCa23DtRha6+eLnoXwzM5WY3UgekMpXXWaB8n
+         6lW+UewjHBPa+FCTPTglKD3jG9YH3ialvDqyREe14uSrLHtZytMgi3sa1Q3euLht8duA
+         l+A6KOi5S0Ho8REJPcWMBCbi9riYXqYFrXOOqMxCxBljzMk1kkX4A7PwRA8F3LMoTerW
+         vMNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790607654; x=1791212454;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790608244; x=1791213044;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vKOeRv5jdbU0/NaEiGEDb5uvk7fcRI56Q4PTcfyI8cI=;
-        b=Qu3rDuF/ad1N58jFmU8L7HRYlwmgdFPlDPqQiBH2ioYVNzxSTKo2xwcK1vFBQd/dyK
-         Z7nW7ZvEY9KhwBeW1fnQQGvQLpun3z7BprXtqy0t4RvoP25P1YlIFYmMOGkMqXDtlT0n
-         hL5lbYnGSetQ1nQMzQImQayLt+h6YZ8t4oH2JTCwy0uimrVxFL6DS9o9XJBa1cnzWWD7
-         d2PWSghI3rGxrBbtL/VihlfACBmDQTHQJ6uKmJBkJ0bCn6sauXMd+ef7xCjuDxB5wAld
-         uHorGJ3f3VpKikT1ABmDZgXcOYGF3cN9WSyitNLHPEiNHZZpuyR8pjmYGYwVozcPiW+7
-         OBOQ==
-X-Gm-Message-State: AFuF++lNg5nSxWgXn0j7rslcJ7lxHSzNS3zz+otgfKTqWNBZXNa9ELpo
-	rbCGnWIrOH9LWwh3bmhDzMiAZNGC+/ucjavnYnaFG7rqNPK7rt24kN6iOc9KwO0g+jGbIFguMTi
-	51WTKQffgIHra+nHIQRelQUdy9YE91RjPrtYiteKxxs/hQEEyj8AvRryqZQ==
-X-Gm-Gg: AYBFou38hMeXGbrjUSb7IIqGoF71cAIAHeNLv2RUgq+WrIThdByrFMnlFkSjhg35x+T
-	FkYEb5vKjYx4o83u8k9HysTKkyqNTEVzMhrEhClShjTY89D+Tmn+69slAm98VwoI2IbIoGGCGYY
-	LjOustg44jszmYY/dZp0B0B8sLsdqchiu8hjb7cbC5lQ9+G2vBmMruVwnXMb+PobVplyE+lxQf4
-	SuHALKZTmR/mmkNV5zdC2hu6N3n9h9HSmgQfYcpJxRq6ChDxgfMfUM7rv28yQprkomaamzvJlWi
-	uBl8F9pUOspkYSkgTXGcgQD7PrpHEwUMyWAe+kh2ncOjDgkQLiKspIfPwDkW/6VQJW2UaA3kc80
-	9MXc=
-X-Received: by 2002:a05:600c:46c6:b0:49f:fe88:e7d1 with SMTP id 5b1f17b1804b1-49ffe88e87dmr94651135e9.15.1790607652033;
-        Mon, 28 Sep 2026 08:00:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:46c6:b0:49f:fe88:e7d1 with SMTP id 5b1f17b1804b1-49ffe88e87dmr94649615e9.15.1790607650593;
-        Mon, 28 Sep 2026 08:00:50 -0700 (PDT)
-Received: from sgarzare-redhat ([5.179.146.191])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001922102sm151770215e9.15.2026.09.28.08.00.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 08:00:49 -0700 (PDT)
-Date: Mon, 28 Sep 2026 17:00:47 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: David Carlier <devnexen@gmail.com>
-Cc: netdev@vger.kernel.org, bobbyeshleman@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] vsock/test: cover receive queue hints
-Message-ID: <arqBCldsgfzf1nUW@sgarzare-redhat>
-References: <20260923184008.153541-1-devnexen@gmail.com>
- <20260923184008.153541-3-devnexen@gmail.com>
+        bh=sYYFoaTMRB3GOnjpaYUTL6ry/fhz19rfZ6OU5bjdLfQ=;
+        b=YXQGIQJWQWuQhRLTv8iGTssrdCWLn1sD0K58Z10MxK/e96hu3o7RcvvFysk/g3p3zy
+         HNU2RfrCWnOfJvlSi+FaNihfGBudmfwB57eZ1JyF2Iq3JiM9Pql7NHei5jpTTv+cJYbd
+         AoLJacyGHkIKivt+pLqpPBnUJZrTZQnDihF93O95gNQi5vdG6cYv2Z/va82tTbPVLnHb
+         fpmIuA4Cnamlsb9oy5n2NH1MZXlM1eDB+KUNflSExm5uqI/bhu9WZ06RCi62CK+oL+/m
+         GtvLYmX8yyNfaKqoqbL9y4XCex0mX8uA9CpbzRoi11lSq0aOIWeyQ0BU9bNbbO8ipUNo
+         W+CQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxq+4URksXEH9H2jD/FverjAdtRvv9feUqhLs3SgF1T8oxhpoLF5Gwv8AlFHPRhJUGechdQ0zQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMkTl/mG4/pJBpB91LiFbsjhmsjjnhd0fbR899cuLmY3OkiFlZ
+	ZZ7P0lkYl5IZptlHzDAzV7NY82Nn9TcmJLwpDm1aN4PNI18krhbpoFbO
+X-Gm-Gg: AYBFou3a0lU6mhEi2nBa+5hziP5ziz9wG00/xXxMstxjuUt3rWBjF3DUnDg1OSAcWox
+	YxuEgksmW8vBy7igPhQr49MZ6i7V3rSZFZwv5fRykPtnN94FVBfpGVlMi0Rm+h9uA2zjQjP42ZM
+	07pYniEd62LDFAe0f71+WHX2ct88LXycukwfMKIJ70/MTH4CEJYIOiuVVcLTo3d4BvpwmPuppGo
+	9F8JS9e1wFdQPmaMkabHODuleGSN5m4HutewtwupA7wl5EF0xN5gU944DSd1bM25go9zZ2w177q
+	AjQsQYXC3cGJYI6Di+grTuobQTbHz1w+ERGW8xf7dKqIZMZ8VLd5Vc3nBhcWT5DG0OFFC9sKRKb
+	A1RYH7Xnn2ru6+QfrQ31p9S7kyjve3mVu8P5Cdpyn0I5VuyheEA0r+iz39Z0u/f9wNoS5ewO/xK
+	0BrN7ALREzynsCwXuSHTmCHlY05Rt7eKAbXdpvgQsjDlQ4ZN5DSG0GoXlUQfuqsbv4dWTB8E6AN
+	zJV
+X-Received: by 2002:a05:690c:385:b0:8a1:6582:7c16 with SMTP id 00721157ae682-8a649a74b2amr70254407b3.26.1790608244067;
+        Mon, 28 Sep 2026 08:10:44 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c8159a5f7sm167749685a.45.2026.09.28.08.10.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 08:10:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923184008.153541-3-devnexen@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 11:10:42 -0400
+Message-Id: <DLR1NAO40MWX.12Y7LOSUA92GR@gmail.com>
+Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 6/8] eth: mpnic: add a netdevice and basic
+ Tx handling
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260924-linux-mpnic-v2-6-4badc9b58b9e@gmail.com>
+ <179055370515.3145.17058486989024667735@kernel.org>
+In-Reply-To: <179055370515.3145.17058486989024667735@kernel.org>
 
-On Wed, Sep 23, 2026 at 07:40:08PM +0100, David Carlier wrote:
-> Add io_uring receive tests checking IORING_CQE_F_SOCK_NONEMPTY across a
-> partial receive, draining while the peer stays connected, EOF, a
-> nonblocking receive on an empty queue, a zero-length request, and a
-> multishot receive with provided buffers.
-> 
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
->  tools/testing/vsock/util.c             |   9 +
->  tools/testing/vsock/util.h             |   1 +
->  tools/testing/vsock/vsock_uring_test.c | 391 +++++++++++++++++++++++++
->  3 files changed, 401 insertions(+)
+On Sun Sep 27, 2026 at 8:01 PM EDT, netdev-bot+sashiko wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The netdev registered by this patch has no statistics
+>   reporting, and Tx drops are not counted anywhere.
+> - [Medium] mpnic_open() undoes the netif_device_detach() that this patch
+>   adds to mpnic_mmio_err(), and reports success on a dead device.
+> - [Low] Concern: mpnic_netdev_alloc() calls
+>   alloc_etherdev_mq(sizeof(*mpn), MPNIC_MAX_RXQS), which leaves=E2=80=A6
+>
+> --
+>
+> eth: mpnic: add a netdevice and basic Tx handling
+>
+> This commit registers the mpnic network interface and adds a transmit
+> path. Each skb gets a metadata descriptor followed by address/length
+> descriptors. A completion is requested only when xmit_more is not set. Th=
+e
+> index of the deferred metadata descriptor is latched, so that dropping a
+> packet can still ring the doorbell for packets already queued.
+>
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c b/drivers/ne=
+t/ethernet/meta/mpnic/mpnic_netdev.c
+>> new file mode 100644
+>> index 0000000000000..6d5007be6cadb
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
+>> @@ -0,0 +1,180 @@
+>
+> [ ... ]
+>
+>> +static int mpnic_open(struct net_device *netdev)
+>> +{
+>> +	struct mpnic_net *mpn =3D netdev_priv(netdev);
+>> +	int err;
+>> +
+>
+> [ ... ]
+>
+>> +	mpnic_enable(mpn);
+>> +	mpnic_napi_enable(mpn);
+>> +
+>> +	netif_tx_wake_all_queues(netdev);
+>> +	netif_carrier_on(netdev);
+>> +
+>> +	return 0;
+>
+> [Severity: Medium]
+> Can this undo the netif_device_detach() that this patch adds to
+> mpnic_mmio_err(), and report a successful open on a dead device?
+>
+> Suppose the device goes away while the interface is down. mpnic_enable()
+> ends with mpnic_wrfl(), which reads MPNIC_BDQ_SPARE. If that read returns
+> all ones, mpnic_mmio_err() clears uc_addr0 and calls
+> netif_device_detach().
+>
+> __dev_open() has already set __LINK_STATE_START before calling ndo_open.
+> So the detach clears __LINK_STATE_PRESENT and stops the Tx queues:
+>
+> __dev_open()
+>   set_bit(__LINK_STATE_START, &dev->state)
+>   mpnic_open()
+>     mpnic_enable()
+>       mpnic_wrfl()
+>         mpnic_rd64(mpd, MPNIC_BDQ_SPARE)
+>           mpnic_mmio_err()
+>             netif_device_detach()
+>     mpnic_napi_enable()
+>     netif_tx_wake_all_queues()
+>     netif_carrier_on()
+>     return 0
+>
+> mpnic_open() then wakes every queue again, turns the carrier on and
+> returns 0. The interface ends up IFF_UP, with carrier and awake Tx queues=
+,
+> while it is marked not present.
+>
+> Would mpnic_xmit_frame() then keep mapping skbs and writing to the cached
+> ring->doorbell until the ring fills, with nothing ever completing? The de=
+v
+> watchdog would not fire either, because it requires
+> netif_device_present().
+>
+> mpnic_netdev_register() checks mpnic_present() before register_netdev()
+> for this same reason. Does mpnic_open() need a similar check after enabli=
+ng
+> the device, so it can unwind and return an error?
+>
+> The version of mpnic_open() at the end of the series only adds
+> mpnic_fill(), so it seems to behave the same way.
+>
+> [ ... ]
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+See my reply in v1: https://lore.kernel.org/all/DLNQX7U9QRFW.2G0KYKS5W3X3H@=
+gmail.com/
 
+>
+>> +struct net_device *mpnic_netdev_alloc(struct mpnic_dev *mpd)
+>> +{
+>> +	struct net_device *netdev;
+>> +	struct mpnic_net *mpn;
+>> +	unsigned int queues;
+>> +
+>> +	netdev =3D alloc_etherdev_mq(sizeof(*mpn), MPNIC_MAX_RXQS);
+>> +	if (!netdev)
+>> +		return NULL;
+>
+> [Severity: Low]
+> alloc_etherdev_mq() uses MPNIC_MAX_RXQS for both the Tx and the Rx queue
+> count. Only the Tx count is trimmed later, in mpnic_netdev_register():
+>
+>     err =3D netif_set_real_num_tx_queues(netdev, mpn->num_tx_queues);
+>
+> Doesn't that leave real_num_rx_queues at 1024 at this commit? Sysfs and
+> netlink would then list 1024 rx-N queues that have nothing behind them.
+>
+> This looks resolved later in the series by "eth: mpnic: add basic Rx
+> handling". There, mpnic_netdev_register() and mpnic_set_netif_queues()
+> switch to netif_set_real_num_queues() with num_rx_queues.
+>
+> There is also a smaller point. The Tx queue count comes from
+> MPNIC_MAX_RXQS, but mpn->tx[] in struct mpnic_net is sized by
+> MPNIC_MAX_TXQS. Both are 1024u today, so the
+> mpn->tx[skb_get_queue_mapping(skb)] lookup in mpnic_xmit_frame() cannot
+> overflow.
+>
+> Would alloc_etherdev_mqs() with MPNIC_MAX_TXQS and MPNIC_MAX_RXQS express
+> the intent more precisely?
+>
+
+Like you said the real rx queues half is set in the commit that
+allocates rx queues. Don't think this needs to change here.
+
+1024 is the right count to use for both tx and rx. The Tx triads have a
+second submission queue for future use with xdp, but that should not be
+registered as a real tx queue.
+
+> [ ... ]
+>
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/=
+ethernet/meta/mpnic/mpnic_txrx.c
+>> index aaa3a3e99a138..b1fb0d3902a7a 100644
+>> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+>
+> [ ... ]
+>
+>> +static netdev_tx_t mpnic_xmit_frame_ring(struct sk_buff *skb,
+>> +					 struct mpnic_ring *ring)
+>> +{
+>> +	__le64 *meta =3D &ring->desc[ring->tail];
+>> +	u32 tail =3D ring->tail;
+>> +
+>> +	if (skb_put_padto(skb, MPNIC_MIN_FRAME_LEN))
+>> +		goto err_drop;
+>
+> [ ... ]
+>
+>> +	if (mpnic_tx_map(ring, skb, meta))
+>> +		goto err_free;
+>> +
+>> +	return NETDEV_TX_OK;
+>> +
+>> +err_free:
+>> +	dev_kfree_skb_any(skb);
+>> +	ring->tx_buf[tail] =3D NULL;
+>> +	ring->tail =3D tail;
+>> +err_drop:
+>> +	mpnic_tx_flush_doorbell(ring);
+>> +
+>> +	return NETDEV_TX_OK;
+>> +}
+>
+> [Severity: Medium]
+> Should these drop paths count the dropped skb somewhere?
+>
+> - A skb_put_padto() failure goes to err_drop with no log and no counter.
+> - An mpnic_tx_map() failure (oversized head or frag, or
+>   dma_mapping_error()) only logs a rate-limited netdev_err() before
+>   dev_kfree_skb_any().
+>
+> Neither path calls dev_core_stats_tx_dropped_inc() or updates any counter=
+.
+>
+> More broadly, mpnic_netdev_ops only provides ndo_open, ndo_stop,
+> ndo_validate_addr and ndo_start_xmit:
+>
+> - There is no ndo_get_stats64.
+> - pcpu_stat_type is not set.
+> - dev->stats is never updated.
+>
+> The per-packet totals in mpnic_clean_twq0() only go to
+> netif_txq_completed_wake() for BQL.
+>
+> Won't dev_get_stats() report zero for tx_packets, tx_bytes and tx_dropped
+> while traffic is flowing? The last patch in the series, "eth: mpnic: add
+> basic Rx handling", still doesn't add a stats callback.
+
+Stats coming in subsequent series.
