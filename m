@@ -1,186 +1,190 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+Received: from mta0.migadu.com (out-115.mta0.migadu.com [91.218.175.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E0B37E2E9
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D7043F4D7
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790576655; cv=none; b=ovHIQEEWq8Luwqvooca12qAutZViXijhwfaugosnvavIoTo7s2g3dl2MoVvQ3xuzuqbRg6bnhCcYlu4M/z+SxLgNueiMv9JpnCJNg6dfttzfbiEZNTU5RIpj1cPvkLFKF/2rXcOolujBCBvNorL/djMDuG/GaMsRdNCLIpQ5C/A=
+	t=1790576812; cv=none; b=YbJytPN1yeHDcPJWlHRfrZCOmzRJsqMlTL4NUuvJHgCNg8yIK98ULg/VvMyPZqdp7E2tLZPBsCUJ5jbEp5B63EDPCzHzolhcBwBCFe4JHzHX0NDlT0zgYfptawyK4DnDpn6KXzRVsQPjx2gsOwtqsjQHkNXiAaPvHeBE7IWPYqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790576655; c=relaxed/simple;
-	bh=Fuhci/NNQLVUzWkpUJ9YcTdRVY+06L73ZSAsWbc+3VE=;
-	h=Message-ID:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IA5b86aJPrb4DqoKSrIXdAMhXPaZ7USfU7XkzcGQVo1unARSpJesx3u+ekpYtMkK3/obu3unQN7ngTHIJ8tYIyEf8Z9/7ERu+cWqFaS6RPd48pHuhznJwzKptIBB7ragpeSDA1TfCCZWlNe6N7uoxv9GlKbahnvuA4/IDpJliVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwhbLYPl; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790576812; c=relaxed/simple;
+	bh=NkzURNoV5IsQG2K2rc3ZLHxvbgasq40uRSu34G2EpOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j9aTomTXmvFIWP2nJL2QBtQMdj3qjj4TLLTQqF7fCYBG4o3BeHs1cncr/xARJ/UYZDNjQA9Nt80oPYsUQetZsC79m2cYkWy3YfCFFc94beABNLkCQIB1wFeC9nbVrAkOaGRnk+UEPLtZ97KxfPq68oY9aUC1QjrNzAiwUbztCsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rQ/3lLNo; arc=none smtp.client-ip=91.218.175.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwhbLYPl"
-Received: by mail-yx2-f39.google.com with SMTP id 956f58d0204a3-67534eb4effso730695d50.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:24:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790576653; x=1791181453; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:subject:cc:to:from:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NgBUoAGMce0wDtJT/5tr5PejNWm/4KbKs95+kgenKk4=;
-        b=lwhbLYPl64zWjoPjXWDqJSw4cdTJLhD/Nr/crQNjqiUD6XiCKfFeTIPvEXhCdZ0mre
-         mFBx0rU9DBt9ioC07p3a9hsTI4CbrD1o+oAXQiTL2WspaDVX27vTfnFdTdRCtaT+hA+u
-         4lk9nCkNZPgrCwFoZOAdsOLXea/Cb+gAyZyc9lyLJHQTS2AVEMwrIEwFvyIVY0flVUeR
-         teo7bwE/oHbL/oENB1lSYFqVTHn9xRoNpUUVwemul0zUkBOyjr8Q/z7XixeaGOaGvXGe
-         RY40FAhjeVnE6U2urvMol5gubOXBNwfLCGnIdB3AZfzM8qrol1haTXmuJplIAOW0CpGD
-         w7Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790576653; x=1791181453;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:subject:cc:to:from:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NgBUoAGMce0wDtJT/5tr5PejNWm/4KbKs95+kgenKk4=;
-        b=IQPbQLyG44Vm+VkEHcdpyg4a/fYNJSBfdn9CeblajevquDCfxfBqzo/4FpjCWW0rDs
-         sC5909MYWz4OJLhspa2v6Px3wmz/B5Jmu+aJfCNpb1QBRjKT3Twc4Y/X9d1DrZZmzY19
-         3OoLDloxAjlq0tKzc+m9LxIv19UR+86q7CE4WRFoJVAj2puXpO5dKKsSpFUa+lx9bGmH
-         wALEY1n3R7jfjFxjG/o3ENbzo84i8fBti+12gvr3+M6E9JVmHvki80opK4mwI9Ag9VR+
-         axXOObrklKlJe/HT/kOzOY1R9+oYS65t3yiFEGIdYix9WxBsrgZLtrSiOQZkSK7KY3xy
-         7IEg==
-X-Forwarded-Encrypted: i=1; AKwUvByQSjAV+oidCpO0nVpGMgrecvwA3FUcbfldjBT82Bg0pvNUNwIFD5WjdpihjfQ7F9LSv5b9Fn0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6NPvWgqs0nyqm8j+a+EK+kOU6TOiwf48oa7WT4PTmR63ViTyn
-	c0meIlkbEqGxACdbnyMp0ZE1QNp2nzkoMRYssMMG2I8nn0+3R2M/Jmyf
-X-Gm-Gg: AYBFou0JUK1or3wGUSww3yQQnU+VGTU6PYq8UONl7KyRV6g8mMs6BnYyJ3aq95+YHQq
-	eDUAAet+rDc6xXg3Crxx03FiyZl1Nff7wG22LQuXEJajofadxlEa5xdk3xlF0MYRrugcWb8qvsU
-	+6+ZwtxQ4ExB3nt3hR4FPjFaQvNPVtVIyhS6Ap1h4WAtvMSB5fDaEsJ3QpHl5X3uaLElw+Lmi8j
-	rtGbFCX673waFaIenD/SRL+cM55RcppZTozPRRgOzisTu8a98S5KwuODicWhzNylyZiXFnFCdEG
-	Yy5xwp8rCTrjCEILU0isw0S/K/z2lZMvk53PG6q8NQLAkcvQBlUCxKbs8T0zJ702SS3UnCJ1Y+X
-	778DS6io31X1YKC3kvuNRo5abjNALLUJM1nlRhtof84QWuT8y+rux0DFZCRsNdwNctiJpFQM6iA
-	DqKPrcBdGS1dZUU2hzXfvNEfxWvtUQ4KdavOUIm+tC7hOKTLlCcUUX6YfnbvGTHit7kifkaSCjG
-	bAgeJBZ7TNkrchTtb42JF69P0j6aguepdiyPgcXv71WxboQOAX8MN36FVviq+qlrQXy5YkABHAC
-	45yrLIo44VyZuAWWfIcaKr/uZ4uDnuP+GrpQodP3iv9Aew6r5O0zTgoEQnSaUkPVxrHb0xRvV2+
-	s6CjB5TZ7hnrylte4NjmOymZ2AwspHoYecVt46Dl/92tIInAa9OTaTzoWdtnweKh1ZKoZ5OYpOA
-	VEjONXO/jGqNnSlcRUuNRyhJs3Vwky3SbmC/3+
-X-Received: by 2002:a05:690e:803:20b0:675:47ba:21b3 with SMTP id 956f58d0204a3-67547ba2609mr574124d50.103.1790576653226;
-        Sun, 27 Sep 2026 23:24:13 -0700 (PDT)
-Received: from [10.0.0.19] (c-73-137-217-102.hsd1.ga.comcast.net. [73.137.217.102])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a86108f052sm39434077b3.49.2026.09.27.23.24.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 23:24:12 -0700 (PDT)
-Message-ID: <6aba080c.b933486d.297b72.5042@mx.google.com>
-Date: Sun, 27 Sep 2026 23:24:12 -0700 (PDT)
-From: Atharva Vartak <atharva.a.vartak@gmail.com>
-To: security@kernel.org
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
- mjambigi@linux.ibm.com, sidraya@linux.ibm.com, w@1wt.eu,
- tonylu@linux.alibaba.com, guwen@linux.alibaba.com, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] net/smc: hold a reference on net_device returned by
- pnet_find_base_ndev()
-In-Reply-To: <arn3qTu_SeM8Yrjj@1wt.eu>
-References: <arn3qTu_SeM8Yrjj@1wt.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rQ/3lLNo"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NkzURNoV5IsQG2K2rc3ZLHxvbgasq40uRSu34G2EpOQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790576796; v=1; x=1791181596;
+ b=rQ/3lLNoVWSTdo+ZQZAPyrJNACT1hQ2izeNwJ04woM5b3wsqPjiQz8xi/LcJRaICqvIvjOyE
+ LHjmUduRRg7+LyWFXxlmczUgiYyoiTr9rDNRrioQaDGoK9hzf+ZJP7rCj5u9S43aAfh6u1w6gqd
+ GO42EXWolbBW5lzFt8bv9/t0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 565be971f620d08b;
+	Mon, 28 Sep 2026 06:26:36 +0000
+X-Mizu-Trace-ID: 565be971f620d08b
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 14:26:29 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	shuah@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next 3/5] selftests: seg6: move SRv6 End PSP setup
+ into its own helper
+Message-ID: <aroIlffAyMRLsJPD@fedora>
+References: <20260922-srv6_flavors_endx-v1-3-4d01c05c47b7@kylinos.cn>
+ <179025107823.2160803.7801303260933899523@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179025107823.2160803.7801303260933899523@kernel.org>
 
-pnet_find_base_ndev() resolves the base net_device for stacked devices
-under RTNL, then drops the lock and returns the raw pointer without
-taking a reference.  All three callers dereference the pointer after
-RTNL has been released, creating a use-after-free window if the device
-is concurrently unregistered.
+On Thu, Sep 24, 2026 at 11:57:58AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] Mid-run re-arming of the SETUP_ERR latch converts already-
+>   recorded test FAILures into an overall SKIP.
 
-Take dev_hold() before dropping RTNL and add the matching dev_put() in
-every return path of the three callers:
+OK, I will update the commit description.
 
-  - smc_pnet_add_eth()
-  - smc_pnet_find_roce_by_pnetid()
-  - smc_pnet_find_ism_by_pnetid()
+> - [Low] setup_end_flv_psp()
+>   (tools/testing/selftests/net/srv6_end_flavors_test.sh:651-670) is…
 
-Fixes: 0afff91c6f5e ("net/smc: add pnetid support")
-Fixes: 1619f770589a ("net/smc: add pnetid support for SMC-D and ISM")
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: Dust Li <dust.li@linux.alibaba.com>
-Cc: Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>
-Cc: Wen Gu <guwen@linux.alibaba.com>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: linux-rdma@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Atharva Vartak <atharva.a.vartak@gmail.com>
----
-Apologies for not Cc'ing the maintainers on the initial report, will
-follow the process properly going forward.
+ack, I will move the ret guard to this patch.
 
-Based on v7.3-rc5. Passes checkpatch and compiles cleanly.
-
- net/smc/smc_pnet.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index ff9c9c35c..d6e2f4454 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -367,8 +367,11 @@ static int smc_pnet_add_eth(struct smc_pnettable *pnetta=
-ble, struct net *net,
- 	if (ndev) {
- 		base_ndev =3D pnet_find_base_ndev(ndev);
- 		if (!smc_pnetid_by_dev_port(base_ndev->dev.parent,
--					    base_ndev->dev_port, ndev_pnetid))
-+					    base_ndev->dev_port, ndev_pnetid)) {
-+			dev_put(base_ndev);
- 			goto out_put;
-+		}
-+		dev_put(base_ndev);
- 	}
-=20
- 	/* add a new netdev entry to the pnet table if there isn't one */
-@@ -949,6 +952,8 @@ static struct net_device *pnet_find_base_ndev(struct net_=
-device *ndev)
- {
- 	rtnl_lock();
- 	ndev =3D __pnet_find_base_ndev(ndev);
-+	/* keep ndev alive after dropping RTNL, callers must dev_put() */
-+	dev_hold(ndev);
- 	rtnl_unlock();
- 	return ndev;
- }
-@@ -1094,8 +1099,10 @@ static void smc_pnet_find_roce_by_pnetid(struct net_de=
-vice *ndev,
- 	    smc_pnet_find_ndev_pnetid_by_table(base_ndev, ndev_pnetid) &&
- 	    smc_pnet_find_ndev_pnetid_by_table(ndev, ndev_pnetid)) {
- 		smc_pnet_find_rdma_dev(base_ndev, ini);
-+		dev_put(base_ndev);
- 		return; /* pnetid could not be determined */
- 	}
-+	dev_put(base_ndev);
- 	_smc_pnet_find_roce_by_pnetid(ndev_pnetid, ini, NULL, net);
- }
-=20
-@@ -1108,8 +1115,10 @@ static void smc_pnet_find_ism_by_pnetid(struct net_dev=
-ice *ndev,
- 	ndev =3D pnet_find_base_ndev(ndev);
- 	if (smc_pnetid_by_dev_port(ndev->dev.parent, ndev->dev_port,
- 				   ndev_pnetid) &&
--	    smc_pnet_find_ndev_pnetid_by_table(ndev, ndev_pnetid))
-+	    smc_pnet_find_ndev_pnetid_by_table(ndev, ndev_pnetid)) {
-+		dev_put(ndev);
- 		return; /* pnetid could not be determined */
-+	}
-=20
- 	mutex_lock(&smcd_dev_list.mutex);
- 	list_for_each_entry(ismdev, &smcd_dev_list.list, list) {
-@@ -1123,6 +1132,7 @@ static void smc_pnet_find_ism_by_pnetid(struct net_devi=
-ce *ndev,
- 		}
- 	}
- 	mutex_unlock(&smcd_dev_list.mutex);
-+	dev_put(ndev);
- }
-=20
- /* PNET table analysis for a given sock:
---=20
-2.54.0
-
+Thanks
+Hangbin
+> 
+> --
+> 
+> selftests: seg6: move SRv6 End PSP setup into its own helper
+> 
+> This moves the End PSP policy installation out of setup() into a new
+> setup_end_flv_psp() helper, and calls that helper from
+> host_srv6_end_flv_psp_tests() with errexit enabled around it. The intent
+> is to decouple the base topology setup from the flavor-specific test case.
+> 
+> > diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> > index 318487eda671b..56a1c5f865a77 100755
+> > --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> > +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> > @@ -645,6 +645,12 @@ setup()
+> >  	setup_rt_local_sids 3 "1 2 4"
+> >  	setup_rt_local_sids 4 "1 2 3"
+> >  
+> > +	# testing environment was set up successfully
+> > +	SETUP_ERR=0
+> > +}
+> > +
+> > +setup_end_flv_psp()
+> > +{
+> >  	# set up SRv6 policies
+> >  	# create a connection between hosts hs-1 and hs-2.
+> >  	# The path between hs-1 and hs-2 traverses SRv6 aware routers.
+> 
+> [ ... ]
+> 
+> >  	#  - rt-1 (SRv6 End flavor PSP with SL=1)
+> >  	setup_rt_policy_ipv6 2 1 "3:noflv 4:psp 2:psp"
+> >  	setup_rt_policy_ipv6 1 2 "1:psp"
+> > -
+> > -	# testing environment was set up successfully
+> > -	SETUP_ERR=0
+> >  }
+> 
+> [Severity: Low]
+> The commit message says the split lets "each PSP test case can setup and
+> later cleanup independently", but this commit only adds the setup half.
+> setup_end_flv_psp() installs the localsid seg6local routes, the cafe::<dst>
+> H.Insert route and the proxy NDP entries through __setup_rt_policy(), and
+> nothing releases them except the global EXIT trap cleanup(), which just
+> does:
+> 
+> 	for i in ${ROUTERS}; do
+> 		nsname="$(get_rtname "${i}")"
+> 		ip netns del "${nsname}" &>/dev/null || true
+> 	done
+> 
+> Would it make sense to mention in the commit message that the matching
+> cleanup_end_flv_psp() arrives in the following patch ("selftest: seg6: add
+> explicit cleanup for SRv6 End PSP test")? As it stands the description
+> promises a teardown path that does not exist yet at this commit. There is no
+> functional problem here, since the two PSP policies are the only flavor
+> state installed and netns deletion reclaims everything.
+> 
+> >  
+> >  check_rt_connectivity()
+> > @@ -758,7 +761,13 @@ host2gateway_tests()
+> >  
+> >  host_srv6_end_flv_psp_tests()
+> >  {
+> > -	log_section "SRv6 connectivity test hosts (h1 <-> h2, PSP flavor)"
+> > +	set -e
+> > +	SETUP_ERR=1
+> > +	setup_end_flv_psp
+> > +	SETUP_ERR=0
+> > +	set +e
+> 
+> [Severity: Low]
+> Can re-arming SETUP_ERR here turn already-recorded failures into a skip?
+> 
+> By the time host_srv6_end_flv_psp_tests() runs, router_tests() and
+> host2gateway_tests() have already executed and may have set ret=1 and
+> incremented nfail:
+> 
+> 	setup
+> 	set +e
+> 
+> 	router_tests
+> 	host2gateway_tests
+> 	host_srv6_end_flv_psp_tests
+> 
+> 	print_log_test_results
+> 
+> If any ip command inside setup_end_flv_psp() fails, for example the
+> "encap seg6local action End flavors psp" route add, errexit aborts the
+> script while SETUP_ERR is still 1, and the EXIT trap takes this path in
+> cleanup():
+> 
+> 	if [ "${SETUP_ERR}" -ne 0 ]; then
+> 		echo "SKIP: Setting up the testing environment failed"
+> 		exit "${ksft_skip}"
+> 	fi
+> 
+> 	exit "${ret}"
+> 
+> so the script exits 4 (skip) instead of reaching exit ${ret} with ret=1, and
+> print_log_test_results is never reached, meaning the tests passed/failed
+> summary is lost too.
+> 
+> The final patch of this series ("selftests: seg6: add End.X PSP selftest")
+> changes the guard to also require [ "$ret" -ne "$ksft_fail" ], which removes
+> the fail-to-skip masking. Could that guard change be moved earlier in the
+> series, so the intermediate commits do not carry the masking behaviour?
+> 
+> > +
+> > +	log_section "SRv6 connectivity test hosts (h1 <-> h2, End flavor PSP)"
+> >  
+> >  	check_and_log_hs_connectivity 1 2
+> >  	check_and_log_hs_connectivity 2 1
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7%40kylinos.cn
