@@ -1,174 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f226.google.com (mail-pf1-f226.google.com [209.85.210.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CB32D29C8;
-	Mon, 28 Sep 2026 04:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEA917D6
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790568586; cv=none; b=S26G+jPjhooR3/FXLchaTV8CwVATKZ/a0kNdogOHeJKnrz+RGKVXZexrKKjr3mDsVba7GKZL4O4gk5Ux4XAsrFfnqdU9BM7hnfvGVcORCEOHstOOZPbCVO0vGHbdLUnfkPO/kEhFPx0R2qTqkJGdl5Sl6jGdkCzk2GJx+BXfyfo=
+	t=1790569192; cv=none; b=So4tZivQl/98tlaKN/3Lsr2hxZS3JyIXhg8swmYvJHJUQG7I4Jmh8Xwcz7kmAIpGE4JwmCRxOwbf4r6S90ZKnHCPcSMZziPZxKENDYQFko6+eYjjl6p4lB+MRJzUKtpLKRJAlCFSdEXmr57HNuqsdityHz39yNSPrOv9qxmMmCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790568586; c=relaxed/simple;
-	bh=G8NMwEuSRB/CcoIUPcK0S3YolO7o8n6Bnm6GXQCevWM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BE8uHxB2nAZj6nAbmCd7ncF8ZSCIYCpC7blnURcAiMx5CkWvB8iSGtRmjPWiHM7eq0QcjjU1xJtDmeY37v+Mq2R9Z1j7jdLp0hOcp2fCJNaQzfcAmZd6uQu11ItSzccEIUVFX5fRN++1silr1PyhM6UUy5zCk3zn2c/nMhx3Y2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPpA495m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790569192; c=relaxed/simple;
+	bh=H6jxnY83pU05l9Y7KOvcI/JyPlS2RkNQhIFydXafmQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MDYXcVsfECFE2m5AmsXgxQ3XXaHPouBR8ckHrjpwmWsT8/tXQ54FbFlGjX6xAayxRrm+7YwOJXdeULdEeTIy2kGe2Vdhb6QgYLOwI9WPE6G0EJ37+vbunBoEdv46nk8zV/1tm8ONBBd/BIJzJbdo1xT4DFi3AMcFABX+U2+Bi3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hjzalvJ1; arc=none smtp.client-ip=209.85.210.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPpA495m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB311F000FF;
-	Mon, 28 Sep 2026 04:09:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790568584;
-	bh=u43RpCCF5drsEvpIG/ma+yDNf+UcywHh9C8ANoA0Ws4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IPpA495mypCm3cmjopHZFUY3Ony7mnJDP3VxDbQy3c9UyPv5DXQnz1AGP6PM7tJh5
-	 AQHH4UdbrPtpliAjZ6X+RBptjbio2oAdMyyDOpTNflU9QZGySZJQftWInpF7aDUm1r
-	 /4p/wudUVwA6YNVUUoH3EAZUW4u07W0ugZljfI6HAWaNdB6NqKKsgrAJSfqgZ9t7wH
-	 naHQiBlX58xaX8D28E8rXaacR56GlrBE/4k7lH1oMMsyN+Dg4kQcIF2ZQApJUy2aQZ
-	 Y1cuAVM0Ld9ANeO7G+LDb33w9IhTmYmx1mRzaGVsW6fwE42vfzX1IJj0lxJKiy9Tsb
-	 yXO9d3Nd+V6gA==
-Subject:
- Re: [PATCH net-next v2] net: phy: aquantia: add get_features() for AQR113C
-From: netdev-bot+sashiko@kernel.org
-To: hongmei.xu@oss.qualcomm.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 28 Sep 2026 04:09:43 +0000
-Message-ID: <179056858385.3145.15807151008226199830@kernel.org>
-In-Reply-To: =?utf-8?q?=3C20260924-net-phy-aqr113c-fix-pma-capability-v2-1-2?=
- =?utf-8?q?9b06283b0f3=40oss=2Equalcomm=2Ecom=3E?=
-References: =?utf-8?q?=3C20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29?=
- =?utf-8?q?b06283b0f3=40oss=2Equalcomm=2Ecom=3E?=
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hjzalvJ1"
+Received: by mail-pf1-f226.google.com with SMTP id d2e1a72fcca58-86927f9ba4dso1083049b3a.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:19:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790569191; x=1791173991;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vhZI5F0LVThmbgOR0wsCTrHX7316P9JyUbLN+QZD63w=;
+        b=beVE/UVKIhgdeZlX7O0Qj4d92O4qEcyFuedwyGyGKRasIrusr7bvQqwzCtObP4a8o5
+         ZsDVyoSd3fC92+kq45Wg1gabAmV+RXzFOzJ1HkqT7vPZJZpjWLA6FSYY8zrrR0W8NRUA
+         RPlLubrykJlIOOmW/v/Qz4MR7Oq25FLmI8xo0Y8g75wC9qwOlahUJ39Ng8k9EApe1fYO
+         GrXS0SGDApMpO4Q/JWAPWh65DeoFUniTcPBo55lxCxHwDmDUMElq08WlMYZMLCapm7ol
+         NGWtI4MlpwgEW/zuT3HzpHZBh2il8Zl4Oq6JOJBCPoLMoY8TILccuJA7mGXixTNPszq+
+         01aQ==
+X-Gm-Message-State: AFuF++kuF7EbYPe1GAWRwaPAQ/1eV2aLEqbsoglquwUhdnVTEMq5pEY7
+	HjDJlIkWPlz3CTJWWa96pTA4It97ok/SUcSEHPp2UKYtpGI7GUmXBx7qZlquQfxPrD4mWYBvoW4
+	qu7NzfMbiBuuqcuPLH5AVcwNuj8PIHzyhE9nimT3rnY1iPT1q3IBeZOWtpUsANBA5mh+dARDrmL
+	dyMtKBOIPM9eebVrc90/N/FF6Kbn+YIsoMsrIzXeVvfa1mKIgHMsogSJzaRWnyboFd79eT0K7f1
+	Qit/lVmwPs=
+X-Gm-Gg: AYBFou0kLH4LHXsSxTF+qzMRAog4aDIg7uV5+ksyc3OsqK0oZdnnMvKWlNMMHkw66FW
+	UOuBlnVzGMsdjjOvWRzKO2jLSUttFB61V8MU7stytX+IrRNn/OxvK/K9vz2oBt15dez6gY/qGjv
+	QwPUYDKPb06tUPGkZlXd/wsFyDnA55+pwNsZPC1aha9GUDe4ImRVifbJOcwJSQfbS6v7oZPnuGw
+	bv5Jp9ii72+0lWRcsxrS81nZ4P4enIu20iFzuzc1PIV0vdNBTdsAO7zG7t/m4s1JJnhxjmIs7lO
+	LDL5bOw/2bAcVQqMjRCNs4H28mK+NyJcYGBkTtwCm6AWCH3+Cx1j7kDZTGzFxvgNJWmQDZyyrwU
+	LaZj9B0E5tOm51a/4jBCrlV/bM9XfWqizBdLy9G570uoiX/LxQva32+/eeupP0KX/2WPdWhxPTF
+	Z69h41oegYYsGb9ppDt3Za05NDFRJq2ZOvOzo=
+X-Received: by 2002:a05:6a00:3285:b0:874:708d:b627 with SMTP id d2e1a72fcca58-8802bb8c71amr5789089b3a.28.1790569190614;
+        Sun, 27 Sep 2026 21:19:50 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-18.dlp.protect.broadcom.com. [144.49.247.18])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-880d6025c93sm3886992b3a.8.2026.09.27.21.19.50
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 27 Sep 2026 21:19:50 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1493b09d6bbso317675c88.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790569189; x=1791173989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vhZI5F0LVThmbgOR0wsCTrHX7316P9JyUbLN+QZD63w=;
+        b=hjzalvJ1YnRJ+HgSFa7N81PK/Jf/mvnjktj1yJU6M8LruKEf6HXU91D+89D2e3HIae
+         HE1jHjhAq+dJ4+ZYsmQyTXk0DR11EoSZnVAx/ymWy9MP7xiJlRF07rAPtMxGNd9N0Zu3
+         xEyB0d/wI3hoRykIaAda784e6cfHkHAaJx0ho=
+X-Received: by 2002:a05:701b:21c5:b0:145:5c4:6500 with SMTP id a92af1059eb24-146ce1a9f0fmr9116802c88.1.1790569188844;
+        Sun, 27 Sep 2026 21:19:48 -0700 (PDT)
+X-Received: by 2002:a05:701b:21c5:b0:145:5c4:6500 with SMTP id a92af1059eb24-146ce1a9f0fmr9116772c88.1.1790569188188;
+        Sun, 27 Sep 2026 21:19:48 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm14393222c88.9.2026.09.27.21.19.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 21:19:47 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com,
+	andrew.gospodarek@broadcom.com,
+	joe@dama.to
+Subject: [PATCH net v2 0/9] bnxt_en: Bug fixes
+Date: Sun, 27 Sep 2026 21:17:03 -0700
+Message-ID: <20260928041712.3467803-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+This patchset includes fixes and some required refactoring.  The
+first 5 patches are expanded fixes and refactoring since v1.
+These first 5 new patches plus the revised patch #6 make the fix
+more complete and address v1 issues reported by Sashiko.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+The first 6 patches fix ring accounting logic when FW is unable to
+reserve all the rings requested by the driver.  The driver will
+scale down the rings when this happens, but there are multiple
+issues with the existing code.  The first 6 patches fix all the
+issues related to this code path, including resetting the deafult
+RSS context if necessary.  Note that additional RSS contexts and
+n-tuple filters have similar problems if the RX rings are reduced
+and the fixes are deferred to a future patchset.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The 7th patch is unchanged.  It refactors a bnxt_clear_bars() helper
+needed by patch 8 and 9.  Patch 8 fixes a possible issue during
+driver init. in the kdump kernel by rewriting the BARs after FLR.
+Patch 9 is a similar fix int the PCIe AER code path for non-fatal
+errors.  Both patch 8 and patch 9 have been revised to address
+Sashiko issues on v1.
 
-- [Medium] The new aqr113c_get_features() stops the kernel from
-  discovering EEE on AQR113C.
-- [Low] If the premise is true, meaning AQR113C has never had its
-  10G/5G/2.5G modes set correctly under the generic PMA path since…
+v1: https://lore.kernel.org/netdev/20260831024342.2161156-1-michael.chan@broadcom.com/
 
---
+Michael Chan (8):
+  bnxt_en: Clear bp->total_irqs in bnxt_init_int_mode() during error
+  bnxt_en: Fix bnxt_reinit_features() when irq_re_init is true
+  bnxt_en: Refactor RSS table check logic
+  bnxt_en: Refactor IRQs required logic
+  bnxt_en: Reinit IRQ when configuring LRO/GRO/HDS
+  bnxt_en: Fix ring accounting and validation when rings are constrained
+  bnxt_en: Add bnxt_clear_bars() helper
+  bnxt_en: Fix driver init in kdump kernel
 
-net: phy: aquantia: add get_features() for AQR113C
+Pavan Chebbi (1):
+  bnxt_en: Re-write the BARs following any type of PCIe errors
 
-This commit adds a get_features() callback for the AQR113C PHY. The PHY is
-said to misreport its PMA capabilities, so the callback sets the
-10G/5G/2.5G/1G link modes directly instead of reading the PMA registers.
-
-> AQR113c does not correctly report its supported PMA
-> capabilities which includes speeds like 10G/5G/2.5G.
-
-[Severity: Low]
-If AQR113C has never had its 10G/5G/2.5G modes reported correctly through
-the generic PMA path, the bug goes back to the commit that added the
-driver entry:
-
-12cf1b89a668 ("net: phy: Add support for AQR113C EPHY")
-
-Should this carry a Fixes: tag so stable picks it up? The v2 changelog
-shows the patch was moved to net-next on purpose, so this is only a
-process question.
-
-> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-> index e95d391a6dc23..604f5492515dd 100644
-> --- a/drivers/net/phy/aquantia/aquantia_main.c
-> +++ b/drivers/net/phy/aquantia/aquantia_main.c
-> @@ -1094,6 +1094,18 @@ static int aqr111_get_features(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int aqr113c_get_features(struct phy_device *phydev)
-> +{
-> +	/* Generic C45 PMA abilities do not fully describe the PHY's copper
-> +	 * autonegotiation modes, so add the 10G mode explicitly.
-> +	 */
-> +	aqr111_get_features(phydev);
-> +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
-> +			 phydev->supported);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Does this stop EEE discovery on AQR113C?
-
-Before this patch, AQR113C had no .get_features. So phy_probe() took the
-is_c45 branch and called genphy_c45_pma_read_abilities(), which ends with
-genphy_c45_read_eee_abilities() and fills in phydev->supported_eee.
-
-With the new callback, phy_probe() takes the get_features branch instead.
-The core reads EEE abilities itself only in the static features branch:
-
-drivers/net/phy/phy_device.c:phy_probe() {
-    ...
-	if (phydrv->features) {
-		linkmode_copy(phydev->supported, phydrv->features);
-		genphy_c45_read_eee_abilities(phydev);
-	}
-	else if (phydrv->get_features)
-		err = phydrv->get_features(phydev);
-	else if (phydev->is_c45)
-		err = genphy_c45_pma_read_abilities(phydev);
-    ...
-}
-
-The new call chain is aqr113c_get_features()->aqr111_get_features()->
-aqr115c_get_features(). It only sets speed bits in phydev->supported and
-never touches supported_eee.
-
-Later in phy_probe(), the empty supported_eee then clears advertising_eee
-and eee_cfg.eee_enabled ends up false:
-
-	linkmode_and(phydev->advertising_eee, phydev->supported_eee,
-		     phydev->advertising_eee);
-
-genphy_c45_write_eee_adv() also writes the 7.60/7.62 advertisement
-registers only when supported_eee intersects PHY_EEE_CAP1_FEATURES or
-PHY_EEE_CAP2_FEATURES. That means the kernel can no longer change or clear
-the EEE advertisement the PHY comes up with. Also, ethtool --show-eee
-would report no supported modes.
-
-aqr105_get_features() in the same file keeps EEE discovery by calling the
-generic helper first and then adding the missing modes:
-
-	ret = genphy_c45_pma_read_abilities(phydev);
-	if (ret)
-		return ret;
-
-Would it make sense to follow that pattern here? Another option is to call
-genphy_c45_read_eee_abilities(phydev) after setting the link modes.
-
-AQR111, AQR114C and AQR115C already have the same gap. On AQR113C it is
-new with this patch.
-
-[ ... ]
-
-> @@ -1444,6 +1456,7 @@ static struct phy_driver aqr_driver[] = {
->  	.get_sset_count = aqr107_get_sset_count,
->  	.get_strings    = aqr107_get_strings,
->  	.get_stats      = aqr107_get_stats,
-> +	.get_features   = aqr113c_get_features,
->  	.link_change_notify = aqr107_link_change_notify,
->  	.led_brightness_set = aqr_phy_led_brightness_set,
->  	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 418 ++++++++++++------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |   2 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  10 +-
+ 3 files changed, 295 insertions(+), 135 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29b06283b0f3%40oss.qualcomm.com
+2.51.0
+
