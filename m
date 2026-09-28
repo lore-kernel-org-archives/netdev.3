@@ -1,168 +1,163 @@
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569A336A022
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790618478; cv=none; b=JrCl8Hz3GyIvG5hREuuZF++oXwRCdEk4whrBTd8ZkKzYBljZ/O2pY52m36jzB//Ap1E8UQr/U6+g/TY1G8Q4qxqDv3qwzP97sra8F++4hfiiYqmekBq3Sz+5GJ4TFxtUcLbZ9qs1gA39SFHm7gPPYMexIdk8z6oemOBVDZhWz0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790618478; c=relaxed/simple;
-	bh=V19N/8O0C40MZ4z+aeCO5wsjib+tdxPhTdrZCeAA7J8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a+sEUxZhmLiFcb5ZF60C8/fgoplFQFZaJgjbtfy6dhLZ3Q8ehT5bKcPcyDfAHQbdD+zZ8uVzb4zTGl5r1CMYOADSm/wpeqQEYw85jCowluG9dbSr+4Z5lroUxJQ0uBhPo2s2fHY9/Gc0iUMxrFkWEj0WDak6GARuy1FWjBf3Kh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8BjK5ZR; arc=none smtp.client-ip=74.125.225.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF38377AB3;
+	Mon, 28 Sep 2026 18:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790619162; cv=pass; b=iHpSGXpqpU3N3Qe000UdlE4xtQYlAala3nQ2KiPhYhEQ1+S028o97AQKhv3D5dfl3eD28mTR4Hi2oz8aSr2lYr3LbHq0Y4cQqUQVTa0KDMYk+j8BO23msHA/wFx2fjRdSk+PbvPfc1dhR8qVl4SBPCztAB01ca2qPrhJGGxvOls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790619162; c=relaxed/simple;
+	bh=xzss5aWqp9DrMdVNFvTUeyfpbbbhNkewJdgu7hkOytg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ueOH9s0KJyXBJ11UrMeo1HKB6oD15pBI+vQBtrVph4Po1104Waq7ygq81u6I1A7OpX5jqgyAnCImUU+fsHj7bt++frCLSkFg0dzHN/E9pZNaRfDUIn6wxJ1+5XWgW9PkEELvLCye12W8BkQLZSGTWigy/APQckkq6bUW5emxAGk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=Nk+zpTVO; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=bzbbevE4; arc=pass smtp.client-ip=81.169.146.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8BjK5ZR"
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48af0753c56so19221f8f.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:01:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790618474; x=1791223274; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fM70ruQDLDPWJkBQ4QIaKuZLG0MEnM9WE3Ur/EG+81g=;
-        b=C8BjK5ZRzMyWF8K8ojRdJb+6GWf6JiIoOdNuj3MiOgBOekzEMg4RuEhSm4IemMwd82
-         A5JRDsuMsNP/UzfJri/5kVR1DHwb/qjoFFYzxSjO7/b4DxsLHJbEc2K5amka7xO2eEMR
-         PNWYP6JHQJqI1zzDJ4l/SQc3aSa+Q2ecnLWX/aJmGDQB2cwO92XQbtl+Kb4vlIq+7867
-         MdpdUeE3zBco6+7BUH/CT9BTU7nozB2HE4j5Yz7M+ODTCX/sV0jo9tGZq2Mf3N30CUFC
-         kBqajB7tCFop1TnxEGo1t5MG2KGzYcHAXzXkFCcyxbSRuxLqHIXD1ffYJkaWKVAyzZgd
-         FiEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790618474; x=1791223274;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fM70ruQDLDPWJkBQ4QIaKuZLG0MEnM9WE3Ur/EG+81g=;
-        b=jcGWCatf+1fnvCg9stHLgwfsRDVlex5lz6IUbDM2HGe0ghxPyzGHJRI+D+tQRiq/Kq
-         JeW7Q6LmlC8GLcgBol6ISFRYXLBH6l6mMNtDuXM6O8IX6mIdGiKIwbcAs8NI1LQJN7oS
-         Zd2NYOg7LIDJBPcAUwJcyeOCS23q1/fD7EKCmHIjqYH/+X86ZHBzN3sUFH7WsBGylLsz
-         5SmtqBoyO2LVO99WUGhqYZYRuQyT0v4mdhzMEig4v5YO5CZOJimU4ELenZH19VsrnNHR
-         yuBcVuplyipXqKbDOH86f2VBC/mu07zKjNmLbn0BXNwtec/O76IbWzUV8d5a4TzozLwK
-         yJhA==
-X-Gm-Message-State: AFuF++lqGPIubbDSQT4B2HCHOOEPUxrbYNDuRGPDhtsZg6lrhlRPG9xn
-	tKrb4zZPCWXI8hY7mCCmIr9I5zxiKDfImWW1xwug+q/dMJoT4eT9a6d8
-X-Gm-Gg: AYBFou3tGQPV2+xniZhGSKgSkWBHNWjCNrFHcYoiutv/kJNDoVcMtW8D0j/Db+cyduF
-	fQfxWECIUELRfMuWkBRRdIFTMw9ToS7s8ykfzFBMOZcd45CwKKbBhETedS7aDkJ9qVN+/txZ9lf
-	PpuY585qm2rgjpAD452PShgkTUnMdrnU2cKq0BUjPIUQ/qK60Rx0ZqSTKNv4Exa9m0kjG+q7snO
-	ubGnseSbWqoZjjRXeTfNYODBilP0NSzmcfewXEQ963fia/nLBkrIbIig0fowAKj75AxOwCzoy01
-	fszWu9woCOOMmIspPabOGpJecd21VZSteMHBIRkcfPWtY8fNN7ceDnTIKKG5dvUszn2iEOfAbFj
-	KC156ik6JGI71Eoma4XHj/D0tCoM0jGZna6SzH8k6qXwbcIz+/3fKKnZOAhecHiaI4yoT0moWdU
-	BGwtT9Bq3vg8g8kx7FCObbEaF1gFKyx5TfBn2TRrbTiqF4qt5fhKxzRZ5I2R34GJg=
-X-Received: by 2002:a05:600c:6819:b0:49e:6806:5712 with SMTP id 5b1f17b1804b1-49feddcb5dcmr185608755e9.2.1790618474174;
-        Mon, 28 Sep 2026 11:01:14 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:500::5:c231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cf9dfdbsm15758645e9.1.2026.09.28.11.01.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 11:01:13 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Mon, 28 Sep 2026 19:00:06 +0100
-Subject: [PATCH net-next 4/4] netconsole: remove unnecessary target
- refcounting from the netdev notifier
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="Nk+zpTVO";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="bzbbevE4"
+ARC-Seal: i=1; a=rsa-sha256; t=1790617711; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=kSmeEdmdnxIcj/Ml9FGDXIwVfoAS3n1pUD/DbqyfSUYXsnhD4lxtuE46CmxwFt0I08
+    qTMB4tJ0PEm0+YRels12gScLih7rZJrArUhJFuGWODio48EjomQduPOJC8ta+X5kv98P
+    Lxj8Zizix/UPztJ1AWqNeGd4gQG1fqqUr9i4jCFYYr5WE+SE/8FaNwZ/QTUS3yFt4wOb
+    9Qzwdba9N0ypBUeD7f71vK139gOzvjh9pbS1y0RmRDcSj+AFLf89w5omwfkXpwwUdcFm
+    QVRVuBBaS+fd29dondvPbIrtuvSP4jmZKiQXKWQ611pxS00Tb+iEL86Rp3Zw6zU/YZnq
+    GlKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1790617711;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=ctr7Fl5PXofQpgNDSgqzb4LqqsTg3MiV8kqYT/rCfaM=;
+    b=WzWxeajjzt7PE9rEkgmVwRcEeyauJ2co6Mm9fliNOJ01h2I4TC28XMZOLGWuSNODMH
+    NMx2rhLopuwGoTsbpCoJnoAckUW9kljCX1o6q1wxGQzy5jtUo5sWSqSZv1SzIc86iTRT
+    9dYSAaUevUj3TIjVD6jzpwRDuFnD06ZIFg2ei1jpqXLVRg+ZsKAnX2wZHrKOkmm8TRAN
+    7LFRqdr7Eiy4qtaWhBpjKWfBTVv6+XHvXMvfkE0qzaW5PmFIOqHwvr01NGjrUTF+dBXo
+    bPtBqBBK/rgBbn1l/d2VcYH+EHcJT8NJ5WfVmdXXHkrmQhfFaaLHd9APerarvWsoB+VP
+    aGEg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1790617711;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=ctr7Fl5PXofQpgNDSgqzb4LqqsTg3MiV8kqYT/rCfaM=;
+    b=Nk+zpTVOjlOeBcaiMgt6Idd16aAaTElSRFcZ3DcFl9oYEGIWRI3K6WuKrMvcGQ5R/L
+    FfCNLYUMHkVt14zShyyX89CCAwr4mf6PSClrhiHgzCIuddkTg3wX+LnfcDBryJJ3CbGK
+    gbOrvloPeXf8dl5jc8GJ218zBbdEnGVlHim9l6FAeP6CibyXIlK4rtQITR2LNyvyOT2X
+    E2ORwKQFeqrxSOVYEnqC3gBjVI2bSvfCmBo66GU1OFgv1Ne79G14ehyKoReAZ9b6/tf4
+    POFhWvZqAW7soADE8ZmqRZhzU6jU8ZiJ6SR8qu8GKY8OzxFZwC1fqqnjtIgLNin0tar2
+    q1kg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1790617711;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=ctr7Fl5PXofQpgNDSgqzb4LqqsTg3MiV8kqYT/rCfaM=;
+    b=bzbbevE41YCGzzC70XHE+r3Vz0UAfWMP2R/hjnjIdZep/PbIGj60mInX/LRDnT7qb8
+    e5O8SuG4GYMgmr5U1IAg==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.6.2 AUTH)
+    with ESMTPSA id K04b9a28SHmVOnA
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 28 Sep 2026 19:48:31 +0200 (CEST)
+Message-ID: <4a398197-402e-438b-88ca-2c53733da2be@hartkopp.net>
+Date: Mon, 28 Sep 2026 19:48:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-netcons-fixes-v1-4-bb5ffe5e698a@gmail.com>
-References: <20260928-netcons-fixes-v1-0-bb5ffe5e698a@gmail.com>
-In-Reply-To: <20260928-netcons-fixes-v1-0-bb5ffe5e698a@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matt Mackall <mpm@selenic.com>, 
- =?utf-8?q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>, 
- Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.15.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] can: RX frames silently dropped in raw_rcv() with RPS
+ enabled since d4fb6514ff8e
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: =?UTF-8?Q?J=C3=B6rg_Willmann?= <joe@clnt.de>, linux-can@vger.kernel.org
+Cc: mkl@pengutronix.de, netdev@vger.kernel.org
+References: <VI1P18901MB0640EC60F0E40E18EED92A0AAA8D2@VI1P18901MB0640.EURP189.PROD.OUTLOOK.COM>
+ <2859AD3D-C805-41A0-9036-C5E8EE152419@clnt.de>
+ <9216a55d-957d-4f7c-b67a-6093a1917faf@hartkopp.net>
+Content-Language: en-US
+In-Reply-To: <9216a55d-957d-4f7c-b67a-6093a1917faf@hartkopp.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Since netconsole_netdev_event() holds target_list_lock, there is no need
-to also protect each target with netconsole_target_get/put()
-refcounting. There is no way a target reachable from the target_list
-would go away while we hold target_list_lock.
+Hi Jörg!
 
-This is similar to commit a6d403ac9689 ("netconsole: remove unnecessary
-netconsole_target_get/out() from write_msg()").
+I've sent out a v2 patch set where the third patch addresses your 
+reported RPS related bug.
 
-Since this is the only remaining user of netconsole_target_get/put(),
-remove those helpers as well.
+https://patchwork.kernel.org/series/1175458/
 
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
----
- drivers/net/netconsole.c | 31 -------------------------------
- 1 file changed, 31 deletions(-)
+The third patch needs patch 2 as both are changing code in can*_rcv.
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 627475f16383..6c938e37b2f3 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -262,23 +262,6 @@ static void __exit dynamic_netconsole_exit(void)
- 	configfs_unregister_subsystem(&netconsole_subsys);
- }
- 
--/*
-- * Targets that were created by parsing the boot/module option string
-- * do not exist in the configfs hierarchy (and have NULL names) and will
-- * never go away, so make these a no-op for them.
-- */
--static void netconsole_target_get(struct netconsole_target *nt)
--{
--	if (config_item_name(&nt->group.cg_item))
--		config_group_get(&nt->group);
--}
--
--static void netconsole_target_put(struct netconsole_target *nt)
--{
--	if (config_item_name(&nt->group.cg_item))
--		config_group_put(&nt->group);
--}
--
- static void dynamic_netconsole_mutex_lock(void)
- {
- 	mutex_lock(&dynamic_netconsole_mutex);
-@@ -300,18 +283,6 @@ static void __exit dynamic_netconsole_exit(void)
- {
- }
- 
--/*
-- * No danger of targets going away from under us when dynamic
-- * reconfigurability is off.
-- */
--static void netconsole_target_get(struct netconsole_target *nt)
--{
--}
--
--static void netconsole_target_put(struct netconsole_target *nt)
--{
--}
--
- static void populate_configfs_item(struct netconsole_target *nt,
- 				   int cmdline_count)
- {
-@@ -1982,7 +1953,6 @@ static int netconsole_netdev_event(struct notifier_block *this,
- 	mutex_lock(&target_cleanup_list_lock);
- 	spin_lock_irqsave(&target_list_lock, flags);
- 	list_for_each_entry_safe(nt, tmp, &target_list, list) {
--		netconsole_target_get(nt);
- 		if (nt->np.dev == dev) {
- 			switch (event) {
- 			case NETDEV_CHANGENAME:
-@@ -2012,7 +1982,6 @@ static int netconsole_netdev_event(struct notifier_block *this,
- 			 * notifier.
- 			 */
- 			queue_work(netconsole_wq, &nt->resume_wq);
--		netconsole_target_put(nt);
- 	}
- 	spin_unlock_irqrestore(&target_list_lock, flags);
- 	mutex_unlock(&target_cleanup_list_lock);
+Can you please test the patch set in your setup?
 
--- 
-2.55.0
+Many thanks,
+Oliver
+
+On 28.09.26 14:16, Oliver Hartkopp wrote:
+> Hi Joerg,
+> 
+> many thanks for the report!
+> 
+> On 28.09.26 13:55, Jörg Willmann wrote:
+> 
+>> since commit d4fb6514ff8e ("can: use skb hash instead of private
+>>   variable in headroom") we are losing received CAN frames on raw sockets
+>>   when RPS is enabled on the CAN interface. The problem also shows up in
+>>   the stable backports (seen on [6.12.109]).
+>>
+>>   Setup:
+>>   - Kernel: 6.12.109
+>>   - Platform: OpenWrt 25.12.5, 4 CPU cores
+>>   - CAN controller / driver: mcp251xfd
+>>   - OpenWrt enables packet steering (RPS) by default on multi-core
+>>   systems, so rps_cpus is non-zero on can0
+>>
+>>   Symptom:
+>>   The application on a CAN_RAW socket misses frames. /proc/net/can/stats
+>>   counts more RX frames than the application receives. With
+>>
+>>   echo 0 > /sys/class/net/can0/queues/rx-0/rps_cpus
+>>
+>>   the losses disappear completely. [Optional: rate/amount of loss, number
+>>   of filters on the socket, whether join_filters is used.]
+>>
+>>   Analysis (as far as I understand it):
+>>   1. RX skbs from the driver start with skb->hash == 0.
+>>   2. With RPS enabled, get_rps_cpu() calls skb_get_hash() in the
+>>   netif_rx() path before can_rcv() is reached. The flow dissector
+>>   finds no L3/L4 headers in CAN skbs, so every CAN frame gets the
+>>   same non-zero hash with sw_hash = 1.
+> 
+> Ouch! I wasn't aware of this.
+> 
+>>   3. can_set_skb_uid() only assigns a new counter value while
+>>   skb->hash is 0, so the RPS hash is kept and the frame gets no
+>>   unique identifier.
+> 
+> Correct! That's bad and not intended here.
+> 
+>>   4. raw_rcv() treats a frame as a duplicate when both the skb pointer
+>>   and skb->hash match the per-CPU uniq entry. Since the slab
+>>   allocator often returns the same address for the next skb, a new
+>>   frame with the same (constant) hash is dropped as a duplicate.
+> 
+> Right!
+> 
+>>   Before d4fb6514ff8e this could not happen because the unique id was
+>>   kept in can_skb_priv::skbcnt, independent of skb->hash.
+> 
+> Yes. We won't get can_skb_priv::skbcnt back but I will take a look at it.
+> 
+> Best regards,
+> Oliver
+> 
+> 
 
