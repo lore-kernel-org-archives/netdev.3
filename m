@@ -1,264 +1,206 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013016.outbound.protection.outlook.com [52.101.72.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53692F1FE4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A361A6823;
+	Mon, 28 Sep 2026 02:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790563638; cv=pass; b=po5gcC4jjp7tzYGaXSUlJgBC/tG//oOojQcGIpgyFKc9sTNwxW6MyQiW/6T+Z1N54gf4cNWECOSDgQZ+DW6VQ47smStfUYANIBSrZPkACcSboQkMMW9taCJldsL7GJ8gg0T6L7E0trgKlChpnnd2sda30t009KxCqK27NzrBQ+U=
+	t=1790564258; cv=fail; b=qtM+TsilSJKaMJ+fPkHaGXxMwHFS0NM/uNdYV2YbtKEzSbdowvwfFqWgk7MSYTYwbtuqOA3fFrsvRQAb+Mn4xGw8mhwb8WIlemWApZX1C30VzLNzpF+SKPGCfGxtmSH14tQi75IzMEIcPfebqHkz1lUSE30UxBeD11iWTvRN/dg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790563638; c=relaxed/simple;
-	bh=kfLoILawQtt3GmHszvYMld0py7d1Fw/qISyON4KY3vU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S8YBjWQltzGKhlEWX8lbnn99XO8Oa1MGfHdyvoiamSsNihiELxJenb1b87dtRxxNr0zyGUUWXX2lyqj1jruvtxiribHfnbQafknmCEywH4Z6Ttub4xdiZWNluTvOtol6LwGUXzz91yl4c2TiQ6dycqDp4CHz5M0kNfmZ58p2VZ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sl9KQhN+; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790564258; c=relaxed/simple;
+	bh=LIrbvkCOclnz442tubyeDPHoepObt/PBD1WJOKvxhV8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fmqIOj4TiMLjgk59TQRgYtnaQI1kWeXzIMfV368bxGVvPkTYFcx3CRphkdL8iQOZgP3QSuvBkEmqlQr1yKHhe/8SqOOEC/3XxjxMkiu3+vZP/EU5QoQW2FModLBgUeYVHRUVwwyqFuEQBb+u1eQY99oxVPEIC8B1/43J/MJaVCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fxO+YhP3; arc=fail smtp.client-ip=52.101.72.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sl9KQhN+"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d8facae850so59225ad.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:47:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790563635; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dmDyvHFOK72nfCJ91MjC7FapgvvRQrmuOFwfPy8VoZpRdsrEvCFB02wk/C3cUnRiTJ
-         76aoskThoJybhDEDyHdPazoxI1CxwIWThEBrOh4uletMOc2rLHcjGwnpilUer4TqXZtV
-         3Dsg9po/lyix8ACVrZWHGIJ+vAfCTlqkpy0pjZGSTwo1VMlOfzcimsfsHR0FXuiDMza8
-         Fz1wCUkk6bCNs74apQN5eBEWINptJva1F3pueJ/dIZJxcKE3zgyrkWj6WNWzQvx8sDC5
-         upFPg5ZuEUYUN2RMXk9z6b3G6i6hdhbRAX03z1xhvCj+YhzsDAAJfTh6MbjnlOymYNwS
-         Q35g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=augEudhXCRPhiwglRSNBL2Iu+v3w4mRzMH115XwWtzU=;
-        fh=WVGu8qasLbReNH5Z0xeeHlhMgVnzRxXG1LS2e8RBMDA=;
-        b=btO/dPEbddVAXCPb8SQEv6MzF5xCoBTojs+Rf+W5yunsigVj2MT8DtpD1nlpKilVnY
-         le+U56DEJi12ETedSjZIEPZunma9PHeSwx4QJE13u2doSX3wuAEVKHz0br7d/NMpbBmE
-         ZlcmFaKiRnYVmQMem39Bl4KL4CZt5KooP4UoOIaGCffJFODtyYpYtwVUtmja6gtJhzS4
-         eNQrD0qwQxRiezomGglq7Nn4cylRfqDRAGSlHP7Rz+h70RVteos5oCbkIBDaqN4elrNP
-         YEqnMmPufasDelbo8U4cVaW937PTpj9aqpduzMB2Gdh7tNCfQviQnbzQlg4Ygz5HP/W0
-         fFlQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790563635; x=1791168435; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=augEudhXCRPhiwglRSNBL2Iu+v3w4mRzMH115XwWtzU=;
-        b=sl9KQhN+QEgFViLK1ZumHInb9dLoKmqlMLEtfjnC5c/NImBRV2X84xcLiDOgtWvEoX
-         rXDWHJFPddtrenuz+7cGSDkEGpZ1PXkEEcPgXvj9KkXj/gObToD7Sh2soBldwb1PNna9
-         pP9/pdFvSfoWYuXWyDxKwEHnqZ7LV7Km5XYapKC+0AveZaCz9Tw7pBjcfRQ7NgdFTOBG
-         66ZkjiwkIybx+E5nLzNMQtdv3LWM1iyelLpQZ2Y4yXCY8ynISkvDR2Wa3sUd+hjPaSB9
-         Ry+uMw9/+wuf6WIfJMyy1rV6A+CCS3QyxgqWSSuvJXOsTEp46pGK2qnLp9CH0i3QNk2V
-         maGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790563635; x=1791168435;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=augEudhXCRPhiwglRSNBL2Iu+v3w4mRzMH115XwWtzU=;
-        b=eJV2txVHk+oWV/mHUiem0GGACIcSUoLZMNE5+4b2NaymlTxsRj/7CSGWpYyQyohYle
-         H7urkQJcEAHfSCauSeeJnUM3M8TASwsNtLNV+S9t6FZWff6hol7Y1VpOlFFJHAtxv9p9
-         IBJXnMlPBLMU9wJ30vCBSYovONNYgbfzRFYF5JhI05FQ1SWUJ3inb9ZvGE5NqLDUtG5D
-         GokH2N3xEXfQnWJKgH3Fc/WbDpX5vgonUbPyBHx0lRRhOSF5c46kP25l/vAneTgEqaK7
-         aBQ38EMqwOovPVWnJygtdqYKh60mpyF8aBy5XTr6yLAu3+YRdvE1kruJ5L0C24L4nKzR
-         nWog==
-X-Gm-Message-State: AFq9FYKq+4mKGGl+usR2LWhHL3v4J2fF2vNg4V9U9v1n48qpC2apmyHO
-	IRBI6439tzNPQPRkH2OhIUZ/l8yB8shC/TM1DsBoiJwGrO+SAcK6VhQ6bbUpDQ78Pb+KGBQAcdm
-	b4n857osRaPNKhXVFmKkzFpl6HCbv2/HOUKCr5OLc5s5wLh9tCYTf71lu8TU=
-X-Gm-Gg: AYBFou24knDkIHaVVgH3Kt26ciPpcY0UVFDliqdH+8tCeS6NU3BLjd80SLSahD9hUWJ
-	oSQ2aGqfBV4M4PlCCOoDFOd9AErDeixUf+wvDaTpsCADvznH2pb8RzF6wMjMVPfNnRNln43aPaP
-	QUsR365Q74TTGJAtF4AZ0dxX3edqS1dFcSU19TvLmXH8PkhmKEFGNm3N2l9TndAL9dTQAndUdQy
-	SXRvrP+VM6LBPeo2jWwU+9EkpLlslD9jO3N0yJoAjQMdnjavQy+u0LudDlVoSD12IqruQf3d88O
-	eZzONbyHp1SFrT4HiBgGoXDIAtIuoWhQNEDf0l8aaIgo+075xM4v/q0ACzADst+wfg07MyZBqQC
-	JKmSIQrtBo6lAfpzWOl8HzS4k7UH1ZhmEumDKDQGcEW8nmWNrlgmWiOE=
-X-Received: by 2002:a17:902:d54f:b0:2d5:c090:3810 with SMTP id
- d9443c01a7336-2dfa615a5b9mr3166565ad.2.1790563634286; Sun, 27 Sep 2026
- 19:47:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fxO+YhP3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FJZ9kVx/LImE6rBMhx1zjIn2mU71lO5G92NFAv0sLTqgaJFddK7OfiUnnIMMLcvVSQdrQxlqHl8BTljpwUJgVe4dCxSFGxjN/lpi+I/7EpshKa6MryzauV4w59xusvCzoTtHoDcw+HAe5Ux0JSGrtDF7RgbbQHOTkbKF4KqvU28nBvbfG/h0ilqrdnkVHnU8Aqd/YpoV+8EN6NqF7rZzHz8Ngw4dwbLcbsKbSNBWmZiYuf+TnQ6ba6BKg3RYHIM5xgVpndcN95H4BZ3eb7fprmq3nz0SZUXvhNErYEePXdoHxgQFcddx4VTxX18pq5foZuLRbxzVplWiVQEf5w9I7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yrbAJopO+FRE8xxHNQAairr9TpAveIw+D06s25fOpaY=;
+ b=Xn6UM6PSzcMWDVrbhYGw5quY92/94a3I1yidHoh9KlXTmuttI+55IOK8Izt1KrDCq9EQY6vmXCnjO4xbZZQX067qO+aRoytWcA7oenHEMYjIk675G+Uk6IjzJ+sXTvCtcsdFcq5LWLkS86y886dnBTh9che98uyosQsc1d6/MYgbNvG86GpSDGrH5Bi0vJhuOfO6pGHsuA+nCm06JOOWlAW7fvB3YCHKix7YA+IJmOlo5ilM5bb7jJ/9SqrU26usLxuENqfATvEJeZly2ye08XTpen9ofARCvGMFFOlih81ebBUM4BzsY6l83Ois92rmKyTHgrre6rXovps5uabj/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yrbAJopO+FRE8xxHNQAairr9TpAveIw+D06s25fOpaY=;
+ b=fxO+YhP3UY1Sjv5n2/Z/EaT/X+/jLjGntRAh5QLprPyG6Re0ErY5la6wLIPFDZLVJSGY36ZyyS1tRyrkpzxfltBKrsuJL4aOyT1/dOToVha8HUS92Sl6vQ2U9gi8wY0I5brcXYbWU4l71yRuw8cioiqk9//lVZPCxNC7JGroOQpfk8iky5jvbz0OR9+3joNKszXnrORis3wvVNL4gBHYhqxI3sbOhrWkajQ3KPgGPHQIQc3HtMpZpfPv/UA29IfiHJe75AHmxeT4ll16zOnisXw6BRkg/KlRqJC3TUgcIZ399rAQsQRiSTXfs3AwG4UYnEfIlAdq5EYjEr9eJDinkw==
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ by VI0PR04MB11024.eurprd04.prod.outlook.com (2603:10a6:800:260::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 02:57:31 +0000
+Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
+ ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 02:57:31 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jiale Yao <yaojiale02@163.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Frank Li
+	<frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Fabio Estevam <fabio.estevam@freescale.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
+Thread-Topic: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
+Thread-Index: AQHdTo9o+trnCymU5EaubEECaOY+dLbjRSlw
+Date: Mon, 28 Sep 2026 02:57:31 +0000
+Message-ID:
+ <AS4PR04MB9338CC981815D950C0813AB3888D2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
+ <20260927144741.1320558-3-yaojiale02@163.com>
+In-Reply-To: <20260927144741.1320558-3-yaojiale02@163.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|VI0PR04MB11024:EE_
+x-ms-office365-filtering-correlation-id: 748a3d8c-8b57-4101-a1f2-08df1d0c3d48
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ X43u8PzSRbnulvMWc5d80P0y5HqBmYWlcxKMsX7Zd7sOdOvvhRyj6C50dYF7UuyrcSNPNuspomst66/u6xVrSCrMxfqWvkp5mY7UUn/SCNniQ+Mzl1n9/izHliy4mq/EQ7kTnuA9bRX/EF5DH7tnBXiXoT/NDpBmviNiUl8gkmC1j1WPJEDaevbzPF824TIEHtKt6QtVtoIWMIEQh0tufJQdx458CWQ52GN7ye4y3R2k7re07cmXjzinjhmMAp+w3RoffoeXvNZuZXrt9KCplG5fxJR9a/sZEDG2tV0ZvECLgphVmtpC67Cf54L5uyJNmuCkWWLIRMGG1vzmILGKbxol/AQL9JJ5MN/jcjNvnjNcNZDHaJvtgd9hSGOaEFP0ytH0xBXQl38hEFCJlfOft0OyEDCi7It16Yem9ibn2Q/dkfLQujRKqSbhvASCYJP/8q+o9A0uDF0IbjW2MNaMuYhqS+6gIH6VsqGua+fCIEwb99okTcFMRo3Ltj//gw0Lioq1mGUsNSY5Lvx0zjmzPEYaGLt9bkcq+r0FcFc1bmo0oofwi2L021FI2JRsa5Be/PMnHSwobwDI5h0eukX9g3a5sPK18Z+QulMNLJxnjBNxgBtaeZl+u2qSJ4EiE72nbbxCefKrvEIFERCZw0Ta9u18EXJVqUSytGLT7fAtt3g=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?cXTBSAClx5KxrNzg43VOwUqi6Sc+WoXBGx+JztCXHmMHWR8cM+VGxTz4hiXu?=
+ =?us-ascii?Q?u07MBYwUjV/6TKxG8btqh21SOqBosIdXHjkG+Y+n9ffyR0Qbku5+kXjog1aL?=
+ =?us-ascii?Q?ENl368wYz75vtXDS+LtI5OmbdX1MxBIfISqfgcIwhTzowail3S2arAvMcfF1?=
+ =?us-ascii?Q?vXgFmFnVxp3Y8i0ZIjrFWo8/9p0ugCsg3zP3O69DGivcH5azL8HFjglgal63?=
+ =?us-ascii?Q?rM1O6fpPpvemCeUZkXrPgUA3yXAbXjaIuANz5BxqL4UST5aFSGD8CffeinRj?=
+ =?us-ascii?Q?x9wYfxEMV4btiHCT55BPGhffojhs9DkAVYad+QEGvyF+LAme76vWckIct5u7?=
+ =?us-ascii?Q?oeGwmHehDHsY6MTL3NGBcG0ltLMk98qvsUQCx14Y20fmTSXh4M3dem2xe6ci?=
+ =?us-ascii?Q?x9HA6tvLD/5zwwuDDrOolw34BZfAh9+Viq6sEJe7+2A3vfwB0x8/2iXBkq4o?=
+ =?us-ascii?Q?jYpgRfqtkQjUh8M4B/9f3lwYJy2qbGXdLGYGSZ6E0zDPM4nAEUcgVUi0YNX/?=
+ =?us-ascii?Q?muG/PLu3DZ0GU0ahyZ5Pe2foJy/5pQJl1LLJqjYjUFVc/6q6gKr6DK8yBY/D?=
+ =?us-ascii?Q?6SGa5UJDIvjZpeI2jENQzB2UNi/J6ECbCnRuI3JyI7eIWVFzJNtdrcW7wdup?=
+ =?us-ascii?Q?qQITdhGhoO+uloO+xwbvVgH5rvlPaBHWKoY3DGb56O/wSYFBOg9p/T9DNUN4?=
+ =?us-ascii?Q?tfzVgdk1e/LiaYZc/UTwvmBzi+nhMMKpYAGuvk7Nl3YbptPW9UDujdjwF5//?=
+ =?us-ascii?Q?Z5Pmxk43StWGnaYKUjEeZJg9L9li/Ak2mKuX0r8GwY+9wMKa2BTgmAnN2RNy?=
+ =?us-ascii?Q?NtOEw4HQLldrxAgxuF+GdzyowN1oSzODQg4O7lq7hZCdNiD7av2ysLqtvdz4?=
+ =?us-ascii?Q?tevdrOlvOYM8oEM+cWIrnN0xXzyHjA8hEXIDkublXaTVIOPaMDeVodA/U+4a?=
+ =?us-ascii?Q?rVjlqhcj5xA9U7UFG/5nCC0S4ZWKWMEfyyWhjVzpRA23/ZB4V/JEQoZJN/jV?=
+ =?us-ascii?Q?A8A2y4Kqb1ExRIkwjt4HZGPOni340qWIeSF86QA0Sbohxrd+kR7NFlTBaU84?=
+ =?us-ascii?Q?5FUvXI9+2+ndS/7Lm+rOXzNnGDW/aZKQecLh07wrffLB/G3jCpsQaoDrgQ7T?=
+ =?us-ascii?Q?lvi9PGu8084CG8G5ShpqvffDwyRpaecU2ky7NOeI++6LYXD5hXkFhSkSota+?=
+ =?us-ascii?Q?11vafFMJf5bwzmGZH3OMmpbN+2g86DeOL4OJkTAdhwWQpis/9GOt3HIUHSqc?=
+ =?us-ascii?Q?Doiklh0S7WYeVPmY9VO32zOMrM8OoSU5kUUIWfNU5vssBfdhXKjxRdPD6dSu?=
+ =?us-ascii?Q?K/wgOeohptYIejlURsXva0wfk1zLhjK2xwRLjc4oI7ZiqdoB+4vCSWsmLBaT?=
+ =?us-ascii?Q?SmgnzqPnB4dSJZu716chmX3yIEBclXvgF4a87NOUt4zQtzVj0JrfoSjm4R00?=
+ =?us-ascii?Q?xlgQU+A6r84o9Erqg1RSVY/afjmz11HVxuHAXP/Vvv46hfkkCwyONX21SpKP?=
+ =?us-ascii?Q?KXHqAKlkx1ci+u6zhFc8vej6K+kNta5yA3/cLase6wRq2Qm2Rvee+5Ytaf8x?=
+ =?us-ascii?Q?sqBU9mH33Og5zy8RyWHgX6w+u1/7X1O22WyMCDP12TAn9laMqnfvmWvKaEvM?=
+ =?us-ascii?Q?GyAAQFq/M0e2RyQBQC3qrYPEbRy8AW+mkRfgYPPZKoVOOBCB9V7l87Fq06Pe?=
+ =?us-ascii?Q?lwFH8fDD1ny242D8eC49eQw0KCfRtbIXCmrDygZK7DWYj9o7?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260924185316.2831077-1-hramamurthy@google.com>
-In-Reply-To: <20260924185316.2831077-1-hramamurthy@google.com>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Sun, 27 Sep 2026 19:47:01 -0700
-X-Gm-Features: AclHuK-e80j_tEsr2eWKoIEd6Nv5MH1_swonyIC0fjDKChHLUEFmd8yxlyMBtRM
-Message-ID: <CAEAWyHfHGhExuWf77nG7W=Bh0crzdb-LQvR0wsc7dRrtjs9yBw@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 00/12] gve: AdminQ mode related refactors
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, 
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	sdf@fomichev.me, jordanrhee@google.com, willemb@google.com, nktgrg@google.com, 
-	maolson@google.com, thostet@google.com, jacob.e.keller@intel.com, 
-	debarghyak@google.com, kees@kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, przemyslaw.kitszel@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748a3d8c-8b57-4101-a1f2-08df1d0c3d48
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 02:57:31.4821
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /6PGoyhcctny7GIi38xr+XlXhjAw6E5cKXF7lpWj8Fc/HASRw+pL/sK3AyIoQ9Za1CoySUY696sehtRPSFXmzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11024
 
-On Thu, Sep 24, 2026 at 11:53=E2=80=AFAM Harshitha Ramamurthy
-<hramamurthy@google.com> wrote:
->
-> This series is preparing the driver for the addition of a new control
-> plane mode(MailboxQ) by commonizing and reusing as much code as possible.
-> MailboxQ is a new control plane infrastructure which uses mailbox queues.
-> This is a new control plane to communicate with the device when the drive=
-r
-> is running on bare-metal instances as well as newer versions of the devic=
-e.
->
-> This series contains 2 main changes to the gve driver's existing control
-> plane(AdminQ):
-> 1) refactor some initialization/teardown path methods to make it work for
->    both control planes.
-> 2) add gve_ctrl_ops structure to the driver for various control plane
->    operations
->
-> The refactors are mainly around the init, reset and recover paths so that
-> functionalities could be moved into the control ops like 'set_num_queues'=
-,
-> 'set_num_ntfy_blks' etc.
->
-> This patch series only sets the control ops for AdminQ mode. This is
-> intended as a preparation for adding MailboxQ mode in upcoming series
-> which will add the new control plane infrastructure and then introduce
-> the corresponding control ops for MailboxQ mode.
->
-> The entire list of future patches can be found here for reference:
-> https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
->
-> Changes in v8:
-> - Patch 6(Sashiko):
->     - call gve_queues_stop() directly in gve_queues_start() to handle XDP
->       info unregistration
->     - drop gve_queues_mem_remove() from gve_queues_start() and leave it t=
-o
->       the caller; this moves a few function definitions around to avoid
->       forward declarations
->     - revert the gve_mgmnt_intr() behavior change from v7
->     - handle the TOCTOU when checking for a pending reset
->     - record all configurations in priv before sending an AQ command that
->       can result in a reset
->     - update the commit description regarding teardown-related resets
-> - Patch 8(Sashiko):
->     - gate mgmt IRQ and notify block teardown on different conditions
->     - move gve_teardown_notify_blocks() from gve_reset_device() to
->       gve_teardown_device(), and tear down notify blocks as part of the
->       device reset
->     - don't set block->irq when tearing down notify blocks; instead guard
->       the disable_irq() call in gve_remove_napi() on whether the IRQ was
->       requested
-> - v7: https://lore.kernel.org/netdev/20260916165533.2187434-1-hramamurthy=
-@google.com/
->
-> Changes in v7:
-> - All changes are in patch 6(Sashiko):
->     - Return IRQ_HANDLED instead of IRQ_NONE in gve_mgmnt_intr()
->     - disable service task instead of stats report task for gve_probe() e=
-rror
->     - cancel stats report in gve_free_stats_report()
->     - extract gve_teardown_control_plane_resouces() and gve_adminq_free()=
- into
->       new gve_reset_device() to ensure the device reset is triggered befo=
-re
->       stopping queues
->     - don't call gve_queues_stop() in the gve_close() error path since th=
-e
->       gve_reset() takes care of that.
-> - v6: https://lore.kernel.org/netdev/20260909191136.3811892-1-hramamurthy=
-@google.com/
->
-> Changes in v6:
-> - update commit message to be more consistent with code (patch 1,9 Sashik=
-o)
-> - call out MTU validation change (patch 1, Sashiko)
-> - A few other Sashiko related fixes (error propagation in patch 2, drop d=
-ouble
->   logging in patch 5, drop unintentional type conversion in patch 11)
-> - v5: https://lore.kernel.org/netdev/20260903215606.31633-1-hramamurthy@g=
-oogle.com/
->
-> Changes in v5:
-> - This series contains 12 patches since 3 patches from v4 were applied
-> - Picked up Przemek Kitszel's Reviewed-by tag
-> - Honor device provided default no. of Qs and max rx buffer size correctl=
-y (patch 1, Sashiko)
-> - drop unnecessary header files and __maybe_unused tag (patch 4, Sashiko)
-> - fix workqueue disable count, destroy rings before stopping Qs, stop que=
-ues in error path
->   in gve_close, preserve ordering of gve_turndown->gve_destroy_rings->gve=
-_queues_stop
->   during close and reset (patch 6, Sashiko)
-> - drop double logging in all paths for queue creation/destruction (patch =
-11, Sashiko)
-> - v4: https://lore.kernel.org/netdev/20260814021406.3044324-1-hramamurthy=
-@google.com/
->
-> Changes in v4:
-> - Reduce code churn by placing new functions directly in gve_adminq.c, in=
-troducing final tab spacing
->   and using local variable (Przemek Kitszel)
-> - Fix kdoc formatting and drop spurious management interrupt(patch 9)
-> - Propagate release_db_resources naming change (patch 12)
-> - Remove double logging in destroy queues path (patch 14)
-> - v3: https://lore.kernel.org/netdev/20260803184630.3813311-1-hramamurthy=
-@google.com/
->
-> Changes in v3:
-> - Fix driver compatibility verification in the reset and recovery paths (=
-patches 2, 8).
-> - Mark gve_adminq_get_device_properties() with __maybe_unused ahead of it=
-s usage (patch 7).
-> - Refine error handling and resource cleanup in reset, probe, and queue c=
-reation paths (patches 8, 9, 11, 14).
-> - Keep IRQ doorbell allocation/release in control plane resource helpers =
-(patch 12).
-> - Minor fixes: fix TOCTOU issue for link speed, correct kdoc comments, an=
-d remove redundant teardown calls (patches 4, 11, 15).
-> - v2: https://lore.kernel.org/netdev/20260602235900.3050782-1-hramamurthy=
-@google.com/
->
-> Changes in v2:
-> - Rebased against latest net-next to resolve apply failure for patch 5
-> - Fixed a few typos in commit messages of patch 9 and 14
-> - Fixed a kdoc warning in patch 9
-> - v1: https://lore.kernel.org/netdev/20260601175437.3767283-1-hramamurthy=
-@google.com/
->
-> Harshitha Ramamurthy (6):
->   gve: add struct gve_device_info to hold device properties
->   gve: introduce control plane operations structure
->   gve: introduce ctrl ops to set vectors and Qs
->   gve: introduce gve_adminq_get_device_properties()
->   gve: refactor gve_init_priv for reset path
->   gve: add ctrl ops for queue operations
->
-> Joshua Washington (6):
->   gve: simplify reset logic
->   gve: add gve_ctrl_ops for gve initialization/teardown sequences
->   gve: split up notify block allocation and setup paths
->   gve: introduce new methods to handle IRQ doorbells
->   gve: setup and teardown management interrupts
->   gve: add link status/speed ctrl ops
+> Subject: [PATCH v2 2/7] net: fec: manage the netdev lifetime with devres
 
-There are a few high/medium issues that Sashiko has spotted for patch
-6. Will fix in v9.
+Please add target tree to the subject. Since this is a fix, the target tree=
+ should be net.
 
->
->  drivers/net/ethernet/google/gve/gve.h           |   87 +-
->  drivers/net/ethernet/google/gve/gve_adminq.c    |  376 ++++++--
->  drivers/net/ethernet/google/gve/gve_adminq.h    |   30 +-
->  drivers/net/ethernet/google/gve/gve_ethtool.c   |    5 +-
->  drivers/net/ethernet/google/gve/gve_flow_rule.c |   15 +-
->  drivers/net/ethernet/google/gve/gve_main.c      | 1067 ++++++++++++-----=
-------
->  drivers/net/ethernet/google/gve/gve_utils.c     |    4 +-
->  7 files changed, 972 insertions(+), 612 deletions(-)
->
+>=20
+> fec_drv_remove() frees the netdev before devres releases the managed
+> IRQs whose handlers use it as their data pointer. A late interrupt can
+> therefore access the freed netdev.
+>=20
+> Allocate the netdev with devres so that the later IRQ registrations are
+> released first during teardown.
+>=20
+> Fixes: 0d9b2ab1c376 ("fec: Use devm_request_irq()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+> ---
+>  drivers/net/ethernet/freescale/fec_main.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index 794ec427b0ee..23e794a31ce8 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5219,8 +5219,9 @@ fec_probe(struct platform_device *pdev)
+>  	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+>=20
+>  	/* Init network device */
+> -	ndev =3D alloc_etherdev_mqs(sizeof(struct fec_enet_private) +
+> -				  FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+> +	ndev =3D devm_alloc_etherdev_mqs(&pdev->dev,
+> +				       sizeof(struct fec_enet_private) +
+> +				       FEC_STATS_SIZE, num_tx_qs, num_rx_qs);
+>  	if (!ndev)
+>  		return -ENOMEM;
+>=20
+> @@ -5480,8 +5481,6 @@ fec_probe(struct platform_device *pdev)
+>  failed_phy:
+>  	dev_id--;
+>  failed_ioremap:
+
+failed_ioremap is no longer needed, please remove it.
+
+> -	free_netdev(ndev);
+> -
+>  	return ret;
+>  }
+>=20
+> @@ -5522,7 +5521,6 @@ fec_drv_remove(struct platform_device *pdev)
+>  	pm_runtime_disable(&pdev->dev);
+>=20
+>  	fec_enet_deinit(ndev);
+> -	free_netdev(ndev);
+>  }
+>=20
+>  static int fec_suspend(struct device *dev)
 > --
-> 2.56.0.rc1.310.g51773c2048-goog
->
+> 2.34.1
+
+This patch just prevents the netdev from being freed in fec_drv_remove(),
+but fec_enet_interrupt() could still be called after the removal, and
+fec_enet_collect_events() will be called to access the registers, however,
+the ipg clk has been disabled, the registers are not accessible at that poi=
+nt,
+that is a problem.
+
+I think the hardware interrupts should be disabled on the removal path
+and disable_irq() should be called to disable the irqs.
+
+BTW, do not repost a new version within 24 hours.
+https://elixir.bootlin.com/linux/v7.3-rc4/source/Documentation/process/main=
+tainer-netdev.rst#L15
+
+There are other upstream rules in maintainer-netdev.rst, please
+refer to them.
+
