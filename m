@@ -1,106 +1,93 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f36.google.com (mail-oo2-f36.google.com [74.125.231.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8304C33D6
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F6E5013BC
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790631326; cv=none; b=a0rYimxpO5+l4WDXsUrqcJo23BqL/+AbnjmtSjObbELJsoNQJAKqGIOTmaU03aDGNJIMoIKzsUIqpFi7lFxIbTpbPd2meRCl2/nwY8BXCrO4g7aTpmO3nOgZxtk3Ev0f2xdBSttdo79U+SNfTK1Clv7/DZp8d90rBJSTV5d8fLM=
+	t=1790632503; cv=none; b=WNaYRFpjscHjHRjVHKJ7Uez8v3ulhV0JqDju/K4z18YWR/kcC8zVOkaIv94arWT5FtarDTTe7Iv+xf9JZzHnioMm+N9ugq0zuN1RyeGjGM9DTGwp0kfJzBeNnig/IKlAab7ItyS42vPWHKPIAlOhyRc2tJ0u7ndLAtXSsW+buv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790631326; c=relaxed/simple;
-	bh=RfR89RpfeKdZerhR/DGK9Vn0yTbd9SSuCVpkU5M8w6U=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=B0mC1CgJeMn6WhSWSsqI5EtSvvCL4JqPA+FHalT8OLictaMMYViQXYww7jNVJT991Zbx8kZqyFDFT/Y0XJDb+8Vsiqxer1DoZ+/zAkU3WsiuFiAuquanWMlnvJwyYiWEsq9kkRzoaAXWJfw5geLDHV6kh25rX0+quRP+FULJzP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=AtoeIs/h; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790632503; c=relaxed/simple;
+	bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P7lul0Rc2OLHJB7Hti/1bquq/ZUK3dP5TA64OYbqWN0A/BKsvnW5mm61nlX79j35HvznoHb3k6HQpZDZGtQvYedwCpQq4MRScB+O8NikC0dsOmqT9Jyiu3jaAePZLvmGgwuklK0ImsO+7ABZ89zXTtvEZ13TGA2qTFF54tgX628=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=DvUaaZIL; arc=none smtp.client-ip=74.125.231.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="AtoeIs/h"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94DDBA4A48;
-	Mon, 28 Sep 2026 23:35:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790631311; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=40qIwvCs45op1p7WjK9kukoIvc5ES8VqsImli/ianvw=;
-	b=AtoeIs/hVxQuseZXev6IkYXa5ErSovRpz4MYdqygSgGULV0x0VTpwa+xa2mJI698CRFDaG
-	tNL9cP0NzTJMrGHM375KmQhRkq8VwvMaCwM5UEPBExm3dvgg77NR+qA0GOTE0WIPWCvSlm
-	KY5F5iMXEfDCynHTlBXCRfML5nkthilPSdrbtzhFTzrYbif2z/U1yUxCCe6VG2kV9DuZjm
-	+pz+SMtdOTVsDYgBRtbwDNgT0RzameJ9iUj3m4dLqSHgIR6j2L/n0eoMmGZySxEq3e1+lS
-	X0g5B37ha7ZPF5cVJuhCTQlHRkNdLSeR/TW+J/lBCFb+faJY4/61KH+xwSFYtA==
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="DvUaaZIL"
+Received: by mail-oo2-f36.google.com with SMTP id 006d021491bc7-6d73f71a49bso1022574eaf.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790632497; x=1791237297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
+        b=DvUaaZILADnwMVKEUX0PgmuY8FmMMzWHVR7VQffs6C2jOX1gdv01eYO8hjq5bmj1I0
+         YhrZ7JUU24ePSO4mg0Zut1ABJ7tcrd0DIPH/Kfwlc3VCDRdcJjM+FDpI9m7j/n/H0v/N
+         EcYCH7zpN1uaiXnJalWp6Jj4doSd/8uLPGXEk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790632497; x=1791237297;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
+        b=C5YETY5dBP2oE95u1tNJANr04pxI0Lj1M7hMYCoiwS4TfhRUMbDRszNABIRR9CFgf3
+         Nqk9seH94clB9g/rtz93mZLrKKmjBMJpwcOatB8PVnC6JBbZK6Qc/dOnRojxgAtP38HQ
+         DuLsVy7GJ6IJQGg7EZP3TA76S1gsq0epFefgKcDFV/wIBNzipC40qIrCuk8h0+cljbKI
+         u6wVX92oQghKQQ51ofq81zNtqupBhszT+VPkAhBtHcB8rCqgRrfxh12Tf+zVIpa87Vys
+         xUuj5neRNYwGqz7+eAeVPKlvgHST9/SmewtRUUbSayFIqqzyhgg3nqiyphxYfbGyOnU0
+         6krQ==
+X-Gm-Message-State: AFuF++k9iWI9cDSZDxVoRq3FEcy8huzMNPXhqXMR6Ldf6wS3JzXmf2Bb
+	DabP2RMrV6dIrWAGTCtCqaNe5/LdP2enNtlhSdNgSsVNe1mQZUSPwyC7iLwh7eVe70mv6feeTVb
+	Y/SO7GVABTQ==
+X-Gm-Gg: AYBFou1nTeyiIVnITwzyYCvMY1ISZLU1FuzydL3w2xCWeXvqD+7GR9Ibh5wYZYUmaPf
+	sdcUPPvLrrbdQx2fsIIV+bL1J5x5Du4mV2xW1FjaeivdJnsJWH1QkhGBXDQ5E2qWR/FeAGuunVH
+	qKkmfZ921PX8CfyPXQTBdiTRKe+HUA1rIjXjoz8fJ54nV+TDZMMYYpq+PXgJHYdPbr4GnfnBPlb
+	3oiMCyeswvxac5RyBtcLbgNc++h9KzBt433p3U1szwffjeOsveQTuZxpdkDFjw97l3Wwxomk3uk
+	MPlUdDaaVXn8aWlA5Odx9yTuYL/c5WGHeyLohg/Q5BI1rUDY0RZFb5EmDfVWRsQoBhm3ode8pjU
+	bU35tyUAIoRO6NuiyX+Id3Y0crACSi0vWoHcLG58El3WRTmhaNUyeELH+FMdi/0HaB/yO8qHUXS
+	egTpN4z10pEeffj2r/TCEkD8cK08cTQCFKZyf/jjEPp7Jx7ErcKY7rfza5LuM+eOs5PFYiAF2bd
+	rXPCpIJFwT+zwEO4XIQXXx8uwFdUnJLBKVavr84zmttt9bmA38ECqV+y5hXKeS2gwU928gx7uu2
+	frQ=
+X-Received: by 2002:a05:6820:1798:b0:6d8:3caa:a468 with SMTP id 006d021491bc7-6d83cd96f72mr4817511eaf.77.1790632496519;
+        Mon, 28 Sep 2026 14:54:56 -0700 (PDT)
+Received: from com-68297.corp.openai.org ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81d57ef36b0sm2605923a34.6.2026.09.28.14.54.54
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 14:54:56 -0700 (PDT)
+From: nramaswamy@openai.com
+To: netdev@vger.kernel.org
+Cc: Neil Ramaswamy <nramaswamy@openai.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 0/2] tcp: preserve RACK tracking across partial undo
+Date: Mon, 28 Sep 2026 14:53:04 -0700
+Message-ID: <20260928215440.25109-2-nramaswamy@openai.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260926002520.42955-4-nramaswamy@openai.com>
+References: <20260926002520.42955-4-nramaswamy@openai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 28 Sep 2026 23:35:08 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: justin.chen@broadcom.com
-Cc: netdev@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
- horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, florian.fainelli@broadcom.com
-Subject: Re: [PATCH net] net: bcmasp: fix lost TX wakeup race with lockless
- queue API
-In-Reply-To: <20260928201816.3935530-1-justin.chen@broadcom.com>
-References: <20260928201816.3935530-1-justin.chen@broadcom.com>
-Message-ID: <a65f6e3445b1ea32becb8d974bc147ad@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Justin
+From: Neil Ramaswamy <nramaswamy@openai.com>
 
-On 28.9.2026 22:18, justin.chen@broadcom.com wrote:
-> From: Justin Chen <justin.chen@broadcom.com>
-> 
-> netif_stop_queue() in bcmasp_xmit() raced with netif_wake_queue() in
-> bcmasp_tx_poll(): a reclaim landing between the ring-full check and
-> the stop call left the queue stopped despite free descriptors,
-> hanging TX until timeout.
-> 
-> Switch to netif_txq_maybe_stop()/netif_txq_completed_wake() (the
-> lockless TX queue API, which also brings in BQL), replace
-> tx_spb_ring_full() with a live bcmasp_tx_avail() count.
-> 
-> Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet 
-> controller")
-> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-> Assisted-by: Claude:claude-sonnet-5
-> ---
->  .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 68 +++++++++++--------
+Adding the maintainers/lists I missed on the original CC. Sorry for the
+omission. The cover letter and both patches are available here:
 
-> [...]
-
->  static struct sk_buff *bcmasp_csum_offload(struct net_device *dev,
-> @@ -241,16 +239,18 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff 
-> *skb, struct net_device *dev)
->  	struct bcmasp_tx_cb *txcb;
->  	dma_addr_t mapping, valid;
->  	struct bcmasp_desc *desc;
-> +	struct netdev_queue *txq;
->  	bool csum_hw = false;
->  	struct device *kdev;
->  	skb_frag_t *frag;
-> 
->  	kdev = &intf->parent->pdev->dev;
-> +	txq = netdev_get_tx_queue(dev, 0);
-> 
->  	nr_frags = skb_shinfo(skb)->nr_frags;
-> 
-> -	if (tx_spb_ring_full(intf, nr_frags + 1)) {
-> -		netif_stop_queue(dev);
-> +	if (unlikely(bcmasp_tx_avail(intf) < nr_frags + 1)) {
-> +		netif_tx_stop_queue(txq);
-
-nit: AFAIU this is unreachable for now, but to prevent future races 
-maybe
-better use netif_txq_try_stop()?
-
-> [...]
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+https://lore.kernel.org/netdev/20260926002520.42955-4-nramaswamy@openai.com/T/
