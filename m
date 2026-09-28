@@ -1,186 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-205.mta1.migadu.com [95.215.58.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A5718DB26
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A47A32FA14
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790562488; cv=none; b=rDwgjQV5oELGfeDbi9YBu0kIkBkUN2W9PmWOIY6cHI/cWhbQFjE9zNSPWq0KPhqtYlC3v6PrqBicfg92PEYIgnvdV0b9jZavDEJbazYwv9NAZxucjbISH/tUSYt+BTG4brwTZ1MlLd5oN5YLLj1NnifE4fHANKwVH6xnGHTk0Yk=
+	t=1790562724; cv=none; b=jw8frcsAYYtFuOVUOu4E4TU4djGzvGhfv1D/1gF4gDlpKnQ3DSj3a+YSNPJ9VQFOjuL57PYh+PUUvPVK/UHuerpbFiZuP4ve0culsvYeTCZsFo4Lo2ufQN1RK1xpc1tCMjDtlbnXA0WH7Vt0CK5HyTpdtkXu3LKrwjlbXjcM0gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790562488; c=relaxed/simple;
-	bh=my6EIw6fL2RHtoLtIdGP5Xm3Wi74xrrvGHpEPMeYYus=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=igSGWAYKDbRfY6Zahs8vuU096gvB4XLKbnF1YE/j/LV/TV+eENA4+JU8OW8bnvhrCwvB+RUh/GappD9LeNNNEPBJ7KpafLfjWPeiEXnBGwg3SjB4WrAOj68ovhaYjsGxmTq13SKFrBClfzYEDgEW0TFcoUhTotA0UeeD8KiTDtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLO5GoXb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790562724; c=relaxed/simple;
+	bh=DW9brMfjxEZ4LdnlejE7w4LKans6SXlOOKLWOzSQBzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HRsqC5VQnjtjxgvL04VvITrqBWRX7dslcSs3fl4LhLDqNzLoJoOp/Dkoqzbrp3zEkOgaaFCw5FJHOyvZviAMeR06Aw3qF7dphTV0KZinhEIG/ShflUpXsfCDk9EDBYbHkdSlWa5pm28DXquJKuG0qyB9x3s+4mmeTFl97MBgyYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ijJoSFUY; arc=none smtp.client-ip=95.215.58.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLO5GoXb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA041F000FF;
-	Mon, 28 Sep 2026 02:28:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790562486;
-	bh=WiZ7abzepVt4mwOrWBfGnoXCLdutKeB1HXhjf7h70YY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CLO5GoXb9G9yOfJLcnnhac+j8UPv5fAw9egA5uuke9Wji/46vS/Lp1beudvpRNCAO
-	 pXQJ43w5CorC/p+0ufMmhs0pcsO71XxFAoy9VBSJtGxdB0rNIAq9b4eP8PJbQ6Z0xK
-	 OjfB2a7TlQQQ1qja30gIdWMdHXgZQqPW5mhgkfws7/84fMjKkkoGIugkKNIaDwgQRE
-	 GZiQ5/xnFMSYEqEI9iYuVH/dq+3dbjeDxSo4H0Z/HOngY/T0BDYenYakx37a7Bj1UL
-	 /5Fqjw2vRJBocyBA2F7Yu6PgxUyjL5d94I3h4XMCxqywNBiRSoork23E1KXaJeG+Kw
-	 +L8w/2VlCISUA==
-Subject: Re: [PATCH net v2 2/3] net: txgbe: keep MAC enabled for SP devices
- that support NCSI
-From: netdev-bot+sashiko@kernel.org
-To: jiawenwu@trustnetic.com
-Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- jacob.e.keller@intel.com, kees@kernel.org, zhaochenguang@kylinos.cn,
- rmk+kernel@armlinux.org.uk, maciej.fijalkowski@intel.com, horms@kernel.org
-Date: Mon, 28 Sep 2026 02:28:05 +0000
-Message-ID: <179056248542.3145.695648739378132787@kernel.org>
-In-Reply-To: <20260924020149.30800-3-jiawenwu@trustnetic.com>
-References: <20260924020149.30800-3-jiawenwu@trustnetic.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ijJoSFUY"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DW9brMfjxEZ4LdnlejE7w4LKans6SXlOOKLWOzSQBzA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790562720; v=1; x=1791167520;
+ b=ijJoSFUYe+zz3/n58IWQfAB4Z1p9abBRmTqLODyrVVqeXL/DkiS07qVcdK+wZfAtYaCckGCJ
+ ZxOayUHZyXdPH0sTnWLDF1HMBGwFqEKo2obg2F13TOOOmgpM3Wv9P4gzCcUOx0vf83bnBUCJvxY
+ DwYAp6SE0Ly0SYZvqUpOHMdc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 84bfa35f4903e19b;
+	Mon, 28 Sep 2026 02:31:59 +0000
+X-Mizu-Trace-ID: 84bfa35f4903e19b
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable+noautosel@kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Tom Herbert <therbert@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] udp: fix auto-selected port colliding with an existing SO_REUSEPORT socket
+Date: Mon, 28 Sep 2026 10:31:41 +0800
+Message-ID: <20260928023145.301855-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Observed with two independent servers in the same process:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (2)
+  fd1 = socket(AF_INET, SOCK_DGRAM, 0);
+  setsockopt(fd1, SOL_SOCKET, SO_REUSEPORT, ...);
+  bind(fd1, port 0);          /* got 40000 */
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  fd2 = socket(AF_INET, SOCK_DGRAM, 0);
+  setsockopt(fd2, SOL_SOCKET, SO_REUSEPORT, ...);
+  bind(fd2, port 0);          /* got 40000 as well */
 
-- [Medium] The fix covers only one of the phylink callbacks that turn off
-  the MAC transmitter.
+Both sockets end up on the same port and join the same reuseport
+group, so each of them takes part of the other's datagrams. The same
+port sharing happens with SO_REUSEADDR, without the reuseport group.
 
-Pre-existing issues:
-- [Low] At this patch, txgbe_mac_link_down_aml() in
-  drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c (lines 455-468) still…
-- [Low] The new condition in txgbe_mac_link_down() (txgbe_phy.c:185)
-  exempts only NCSI devices.
+udp_lib_lport_inuse() keeps the reuse rules when it scans for a free
+port: a socket with SO_REUSEADDR set, or one with SO_REUSEPORT and
+the same uid, is not a conflict, so its port is never marked in the
+bitmap and the scan can hand it out again. Those rules only make
+sense when the user asks for a specific port. bind(0) wants a free
+port and has no way to know whose port it lands on.
 
---
+TCP already does this: inet_csk_find_open_port() passes relax=false
+and reuseport_ok=false, so the scan treats every port in use as a
+conflict whatever options the sockets have. Commit aacd9289af8b
+("tcp: bind() use stronger condition for bind_conflict") did it for
+SO_REUSEADDR and commit 0643ee4fd1b7 ("inet: Fix get port to handle
+zero port number with soreuseport set") for SO_REUSEPORT.
 
-net: txgbe: keep MAC enabled for SP devices that support NCSI
+Do the same for UDP: ignore both options during a scan, keep them
+for an explicit port.
 
-This patch makes txgbe_mac_link_down() stop clearing WX_MAC_TX_CFG_TE when
-the subsystem device ID shows NCSI support. The aim is to keep the MAC
-transmitter on after link-down on SP devices, so NCSI keeps working.
-Other devices keep the existing link-down handling.
+This changes bind(0) for SO_REUSEADDR sockets once the port range is
+full: it used to share a port and now fails with EADDRINUSE, like
+TCP. Sharing a port on purpose when the range is full is a feature,
+TCP has net.ipv4.ip_autobind_reuse for it, off by default. UDP can
+get the same knob later, this patch only fixes the scan.
 
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> index dc9f243146580..d11f26dc13e92 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-> @@ -182,7 +182,8 @@ static void txgbe_mac_link_down(struct phylink_config *config,
->  {
->  	struct wx *wx = phylink_to_wx(config);
->  
-> -	wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
-> +	if (!((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP))
-> +		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+Fixes: ba418fa357a7 ("soreuseport: UDP/IPv4 implementation")
+Cc: stable+noautosel@kernel.org # bind() behaviour change
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v1 -> v2: also fix reuseaddr suggested by Eric.
+v1: https://lore.kernel.org/netdev/CANn89iKHH1s+kXqBXVKmDxmELU0fL-SwU4N8qHRUJjaNECMt_g@mail.gmail.com/
+---
+ net/ipv4/udp.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-[Severity: Medium]
-Does this keep the transmitter on for NCSI boards in all cases? Another
-callback in the same txgbe_mac_ops still clears TE with no NCSI check:
-
-drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c:txgbe_mac_prepare() {
-    ...
-	wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
-	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
-    ...
-}
-
-txgbe_mac_finish() turns the SEC TX path and MAC RX back on, but not TE:
-
-drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c:txgbe_mac_finish() {
-    ...
-	txgbe_enable_sec_tx_path(wx);
-	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, WX_MAC_RX_CFG_RE);
-    ...
-}
-
-So TE is only set again in txgbe_mac_link_up().
-
-mac_prepare runs on every major config, before any link is resolved:
-
-phylink_start()
-  phylink_mac_initial_config()
-    phylink_major_config()
-      txgbe_mac_prepare()
-
-Resume and SFP interface changes also reach this path.
-
-Here is a sequence on an NCSI SP board:
-
-1. ifup with no cable. txgbe_mac_prepare() clears TE. The link never
-   comes up, so txgbe_mac_link_up() never runs.
-
-2. ifdown. phylink_stop() only calls mac_link_down if the link was up,
-   so it isn't called. txgbe_disable_device() skips clearing TE for NCSI,
-   but it doesn't set TE either:
-
-	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-		/* disable mac transmiter */
-		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
-	}
-
-3. The host interface stays down with TE=0. If a cable is plugged in
-   later, BMC pass-through transmit would still be blocked.
-
-Even on a normal ifup, BMC transmit appears to be blocked from
-mac_prepare until link-up.
-
-I couldn't tell from the code whether firmware or a hardware reset turns
-TE back on in this state. On copper, txgbe_reset_hw() doesn't issue a
-LAN reset.
-
-The follow-up patch "net: txgbe: keep MAC enabled for AML devices that
-support NCSI" only touches txgbe_aml.c. That means txgbe_mac_prepare()
-and txgbe_mac_finish() are still unchanged at the end of the series.
-
-When (subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP, should
-txgbe_mac_prepare() leave TE set, or should txgbe_mac_finish() set it
-again?
-
-[Severity: Low]
-This isn't a bug introduced by this patch. At this point in the series,
-the AML link-down callback still clears both TX and RX on NCSI devices:
-
-drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c:txgbe_mac_link_down_aml() {
-    ...
-	wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
-	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
-    ...
-}
-
-The next patch in the series, "net: txgbe: keep MAC enabled for AML
-devices that support NCSI", wraps both writes in the same NCSI check.
-This looks resolved once the whole series is applied.
-
-[Severity: Low]
-This is a pre-existing inconsistency, not something this patch
-introduced. The new check only tests WX_NCSI_SUP. txgbe_disable_device()
-exempts both NCSI and WOL boards from clearing the same TE bit (see the
-snippet above).
-
-This patch doesn't change anything for WOL-only boards. WOL relies on
-MAC RX, which wx_disable_rx() keeps on, and txgbe doesn't implement WOL.
-So I don't see a functional effect.
-
-Is the difference between the two conditions intentional?
-
-[ ... ]
-
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index b3887c42adfd..cc7f8a4e5f2a 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -139,25 +139,26 @@ static int udp_lib_lport_inuse(struct net *net, __u16 num,
+ 	kuid_t uid = sk_uid(sk);
+ 	struct sock *sk2;
+ 
++	/* With @bitmap we are scanning for a free port: every port in use
++	 * is marked, whatever reuse options the sockets have. Without it
++	 * we are checking a specific port and honour the reuse options.
++	 */
+ 	sk_for_each(sk2, &hslot->head) {
+ 		if (net_eq(sock_net(sk2), net) &&
+ 		    sk2 != sk &&
+ 		    (bitmap || udp_sk(sk2)->udp_port_hash == num) &&
+-		    (!sk2->sk_reuse || !sk->sk_reuse) &&
++		    (bitmap || !sk2->sk_reuse || !sk->sk_reuse) &&
+ 		    (!sk2->sk_bound_dev_if || !sk->sk_bound_dev_if ||
+ 		     sk2->sk_bound_dev_if == sk->sk_bound_dev_if) &&
+ 		    inet_rcv_saddr_equal(sk, sk2, true)) {
+-			if (sk2->sk_reuseport && sk->sk_reuseport &&
+-			    !rcu_access_pointer(sk->sk_reuseport_cb) &&
+-			    uid_eq(uid, sk_uid(sk2))) {
+-				if (!bitmap)
++			if (!bitmap) {
++				if (sk2->sk_reuseport && sk->sk_reuseport &&
++				    !rcu_access_pointer(sk->sk_reuseport_cb) &&
++				    uid_eq(uid, sk_uid(sk2)))
+ 					return 0;
+-			} else {
+-				if (!bitmap)
+-					return 1;
+-				__set_bit(udp_sk(sk2)->udp_port_hash >> log,
+-					  bitmap);
++				return 1;
+ 			}
++			__set_bit(udp_sk(sk2)->udp_port_hash >> log, bitmap);
+ 		}
+ 	}
+ 	return 0;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924020149.30800-1-jiawenwu%40trustnetic.com
+2.43.0
+
