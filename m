@@ -1,46 +1,46 @@
-Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
+Received: from mta1.migadu.com (out-119.mta1.migadu.com [95.215.58.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AD5347500
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD57352C4F
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790557728; cv=none; b=tB8HjAJ28HNVR25l7mcDx5euQjTmI6JEA6WpzOK+btE279bIL2Hv0n47n5KSrcfYgHqltOnAZlvq8Dt53WCOOI2UWspMeqmjtTVZiifjs0eVgF9tGnYX4eEPr7Zaa/IkRc/kVLGW9JfPJn+TVgt9Bn5+0NVwV/gGuVjbhR4JlYo=
+	t=1790557998; cv=none; b=hGvYj/mfy4Pz9JATPH1WotNuEBU06JMzRO0qls4iN0atihNOl4yVyiMuhBoTgCJ2SiC2IKsPtIkpvnxOD/WO4LVPrPNSulgDPG0I+X+YwliBiEfVDBS+4WEgxQ9MTgyfW/+KDfHq0yRYpuKBXmpEWnBgu9TN0Dehce+MHw8V9w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790557728; c=relaxed/simple;
-	bh=cCng7KpHB8XUHBobAWoNKxFVYmCnEd85zIsuvav0mls=;
+	s=arc-20240116; t=1790557998; c=relaxed/simple;
+	bh=qfrFJW3AJ9iJ6i27LMZMOr/QdBCVBvO7g9eisgLV3WM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LNpM+mZR3dpP1PLG+u3+i8PAFhuU64x18BZ4/xUKqQhzsACoqzrVj+Wpi5o9h7NDi9lSfQK0N4nU/o2mdjI4swAg7yTj+EJKF0CwXoLSnrYZhnM57qkhvFk6ONyxeAgjF+9ynsB1wYewCrI6Djx/J7oIjO80AkWyDa5wfwgos0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wq89XQMr; arc=none smtp.client-ip=95.215.58.92
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xahc68scNfSSP5awJRQ6dlhQK4SQDjh96MFV949joCOfKNJZCgjB/Cw8XnUSTHwFoLDdQQkhyawFuYZGnwcoDSIT+J0Ae2DvhTfP51kvST5JiN+KUZgO6TEv539nU5lYePkW77FPh0WpAYToRDCF+1AMAVHRBUIql9hRM9+eCR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NlHWVgkP; arc=none smtp.client-ip=95.215.58.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wq89XQMr"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NlHWVgkP"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cCng7KpHB8XUHBobAWoNKxFVYmCnEd85zIsuvav0mls=;
+DKIM-Signature: a=rsa-sha256; bh=qfrFJW3AJ9iJ6i27LMZMOr/QdBCVBvO7g9eisgLV3WM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790557723; v=1; x=1791162523;
- b=wq89XQMrfdXXbmDB0iTekAfCvB5yKfZ6PU/iWuwy4GByizw/lrhu/HiGq8ToAqspp6gTzFdk
- o6/ZhANhPO2LgBisry2VNJHrGmA5rHvtwy5tt6O3MZ7SnwbTqzTFukjiUeGofYcd1XctMpzrYq7
- HMGZcGk80UqH69xPS4NsR2cs=
+ t=1790557994; v=1; x=1791162794;
+ b=NlHWVgkPhZoRCZ9CGCLlxD43QiA9RyrgP/Iy3XOa/eWeRterYgp6mR0xyv16yD9L2N5iFM2P
+ FW9pYBv2lB9hRDWoBQIbI6JDarQnoK6YvLdtzHdA+nRPckTbnmD2+Yx1TMl19jYXhzD9FrLmezp
+ RIeztihLUmI4XpuQPRPnOX+Q=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id cda8e86f05856a5a;
-	Mon, 28 Sep 2026 01:08:42 +0000
-X-Mizu-Trace-ID: cda8e86f05856a5a
+Received: by mta11.migadu.com with ESMTPS id b0d8cde6a6540824;
+	Mon, 28 Sep 2026 01:13:14 +0000
+X-Mizu-Trace-ID: b0d8cde6a6540824
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 09:08:37 +0800
+Date: Mon, 28 Sep 2026 09:13:05 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Hui Peng <benquike@gmail.com>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, leitao@debian.org
-Subject: Re: [PATCH net v4] ipv6: sr: enforce exact attribute length for
- SEG6_ATTR_DST
-Message-ID: <arm-FZQRDwkzas79@fedora>
-References: <20260924093610.3286959-1-benquike@gmail.com>
- <20260924180016.f1a9947223549a9a88c9a2fe@uniroma2.it>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: pktgen: return bool from
+ __pktgen_NN_threads()
+Message-ID: <arm_BZyS7Nf8N1AP@fedora>
+References: <20260927135406.3969970-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,78 +49,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924180016.f1a9947223549a9a88c9a2fe@uniroma2.it>
+In-Reply-To: <20260927135406.3969970-1-nicoyip.dev@gmail.com>
 
-Hi Andrea,
-On Thu, Sep 24, 2026 at 06:00:16PM +0200, Andrea Mayer wrote:
-> On Thu, 24 Sep 2026 09:36:10 +0000
-> Hui Peng <benquike@gmail.com> wrote:
+On Sun, Sep 27, 2026 at 09:54:05PM +0800, Chengfeng Ye wrote:
+> Callers of __pktgen_NN_threads() only check whether a pktgen_dev was
+> found. Returning the pointer exposes it outside the helper even though
+> neither caller uses the object itself.
 > 
-> > In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
-> > .len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
-> > maximum payload length and permits shorter payloads (e.g., 0 bytes).
-> > When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
-> > kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
-> > triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
-> > skb->head memory, which is stored in sdata->tun_src and leaked back to
-> > userspace via SEG6_CMD_GET_TUNSRC.
-> > 
-> > Switch SEG6_ATTR_DST in seg6_genl_policy to
-> > NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
-> > validation rejects any attribute whose length is not exactly
-> > sizeof(struct in6_addr) with -ERANGE.
-> > 
-> > Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
-> > Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
-> > by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
-> > succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
-> > uninitialized kernel heap memory; with this patch applied,
-> > SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
-> > -ERANGE (-34) and tun_src remains zeroed.
-> > 
-> > Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> > Reviewed-by: Hangbin Liu <hangbin.liu@linux.dev>
-> > Reviewed-by: Breno Leitao <leitao@debian.org>
-> > Assisted-by: LLM
-> > Signed-off-by: Hui Peng <benquike@gmail.com>
-> > ---
-> > Changes in v4:
-> > - Drop raw hex memory dump string from commit message as suggested by Breno
-> >   Leitao.
-> > - Add Reviewed-by tag from Breno Leitao.
-> > 
-> > Changes in v3:
-> > - Add Reviewed-by tag from Andrea Mayer.
-> > - Send as a fresh standalone thread (no In-Reply-To header) as requested by
-> >   Jakub Kicinski.
-> > 
-> > Changes in v2:
-> > - Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
-> >   sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
-> >   NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
-> >   length, as pointed out by Hangbin Liu.
-> > 
-> >  net/ipv6/seg6.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
+> Return bool instead and keep the pktgen_dev pointer internal to the
+> helper.
 > 
-> The v2 was applied to netdev/net.git (main) as commit 2d959c75c27f
-> ("ipv6: sr: enforce exact attribute length for SEG6_ATTR_DST"):
+> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+> Changes in v2:
+> - Rebase directly onto the current net-next tree, independently of the
+>   deferred RCU lifetime fix.
+> - Update the commit message for the current helper implementation.
 > 
-> https://git.kernel.org/netdev/net/c/2d959c75c27f90e9ec489d18ce5ee6b852ad4741
+> Link: https://lore.kernel.org/netdev/20260825185313.239861-1-nicoyip.dev@gmail.com/ [v1]
+> ---
+>  net/core/pktgen.c | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
 > 
-> One general note for your future postings, not about this patch which is
-> already applied: please do not repost a patch less than 24 hours after
-> the previous posting. See the "Resending after review" section of
-> Documentation/process/maintainer-netdev.rst:
-> 
-> https://docs.kernel.org/process/maintainer-netdev.html#resending-after-review
+> diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+> index 7f81aed46672..a89cb0760821 100644
+> --- a/net/core/pktgen.c
+> +++ b/net/core/pktgen.c
+> @@ -2024,11 +2024,11 @@ static const struct proc_ops pktgen_thread_proc_ops = {
+>  };
+>  
+>  /* Think find or remove for NN */
+> -static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+> -					      const char *ifname, int remove)
+> +static bool __pktgen_NN_threads(const struct pktgen_net *pn,
+> +				const char *ifname, int remove)
+>  {
+>  	struct pktgen_thread *t;
+> -	struct pktgen_dev *pkt_dev = NULL;
+> +	struct pktgen_dev *pkt_dev;
+>  	bool exact = (remove == FIND);
+>  
+>  	list_for_each_entry(t, &pn->pktgen_threads, th_list) {
+> @@ -2038,10 +2038,10 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+>  				pkt_dev->removal_mark = 1;
+>  				t->control |= T_REMDEV;
+>  			}
+> -			break;
+> +			return true;
+>  		}
+>  	}
+> -	return pkt_dev;
+> +	return false;
+>  }
+>  
+>  /*
+> @@ -2049,7 +2049,6 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+>   */
+>  static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
+>  {
+> -	struct pktgen_dev *pkt_dev = NULL;
+>  	const int max_tries = 10, msec_per_try = 125;
+>  	int i = 0;
+>  
+> @@ -2058,8 +2057,7 @@ static void pktgen_mark_device(const struct pktgen_net *pn, const char *ifname)
+>  
+>  	while (1) {
+>  
+> -		pkt_dev = __pktgen_NN_threads(pn, ifname, REMOVE);
+> -		if (pkt_dev == NULL)
+> +		if (!__pktgen_NN_threads(pn, ifname, REMOVE))
+>  			break;	/* success */
+>  
+>  		mutex_unlock(&pktgen_thread_lock);
+> @@ -3835,8 +3833,7 @@ static int pktgen_add_device(struct pktgen_thread *t, const char *ifname)
+>  
+>  	/* We don't allow a device to be on several threads */
+>  
+> -	pkt_dev = __pktgen_NN_threads(t->net, ifname, FIND);
+> -	if (pkt_dev) {
+> +	if (__pktgen_NN_threads(t->net, ifname, FIND)) {
+>  		pr_err("ERROR: interface already used\n");
+>  		return -EBUSY;
+>  	}
+> -- 
+> 2.43.0
 
-It looks like this is a bot sending the patches. It never replies to comments.
-When you suggest changes, it just posts a new version directly. For that
-reason, I've stopped reviewing its patches.
-
-Thanks
-Hangbin
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
