@@ -1,173 +1,293 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-71.mta0.migadu.com [91.218.175.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B6D3ACF02
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A2F41A55D
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790577126; cv=none; b=peqxO3r/JTeVWuIIAL5iXsw/t2tJFP5Z8uYgU3axx0yPwi+07mBE2LN+Qu9L9cS5MYWlhY+rYD7U1LNRYnSHi3mtUlxQJDNbHmpdORtHreex0DU8vnLsjo6YnwD281gNrpsE6Yx7i9Tc16/jzoitr4IzTrgZsHQ0kUYnCfRy3lw=
+	t=1790577465; cv=none; b=qZmvqSG3CkelbhJPCE8BKbd2MCVGRckWNc2m4gi2g1LeWoHTajOannVYgnf4Go+IANh4xpb2ZIthJHDauzcRMGQzb3EdsA4l0zYvndExCyspkofM8HJ+kU2RASOVJo+8HAi+G7zrlm1xqbcaoJV32YiLv6Ov/UlNXenjbXW8FaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790577126; c=relaxed/simple;
-	bh=RmomwUPDKd96ikbhLblsui1bL0lSJDGXpIlo2YQmnAI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UClBbycMaUTNxecvGJKIab+W/Zs5uFXtW4rg7iyv+0XfUjs4XDJP14pkOipgEjuoxa8bMFpJgxKAGpSX3V3+q3CXBY1p6csrI0tuNKZ9Srk7YMzHAX/8wTpuOSCALve8ZmSsyhgH8QIqI7e0Qrtlo2PcZMYUz4QvYhXoVec/omQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwP1yUrW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790577465; c=relaxed/simple;
+	bh=hUT/auhZhasn1dAsICGATUHjPsDMpF0qXhUrLgaODL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fxRsldRZRLH/Jeuq4lou9IeU+KjxXb40d82YpUQWrncfYEh3ZkfUoN0GzVKLeyJeNpIIST4eFoY9mqERYvI9S2jxOfAzYzknXsqIcQd1Bok6ptSbrtBvh6nWmHoajnyaGE64gqZ09X2pl8O7skE8yVGBlBrqHebOoIBhNd+EWbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mqm6sYcZ; arc=none smtp.client-ip=91.218.175.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwP1yUrW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0311F0089C
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790577125;
-	bh=yuBk2325yH7HdBHpbTnzqmIoNbAzHs3sLQzwFJdRbow=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cwP1yUrW1sv8gRbzKprMzm4HWBUG4/BGfk6oQMDAA0n5ypSu2uKczUVgnPI5knL8+
-	 A7ytPzm7QrFoxDZZLPgMUG0zb9TkrGK+g2+8FUA1AsgHNrtDdsUpzS4ZGDdyv/1HWD
-	 JCR62Ca1//V1IZF6ANkiJH5NtjC9kucZw+FA6SZmePWwjHr8W4xLNV0MCB6CJj3vm/
-	 YYZ9SZzsWsDhJnEQoA2XcPVIJ08OnSf5Gja2+lBcyZOgspyKDxvLlp6wingb7SdsYA
-	 /pRI2TtW+wKCwEDF90RrGfnksym+cmt0PiwEZO89DExVhdwquv3G3qC/ro+mtXvERK
-	 nXW06k3yrkIPw==
-Received: by mail-oa2-f34.google.com with SMTP id 586e51a60fabf-49499f845edso292170fac.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:32:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz0u6zEW7FSMA42tjOWFzakT+6Zs2YZgu7we6i1q/ESbeOfXRgSSG8pOAjnq5ZD9uYFM76iYlQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRj2ukhtTZYKh7cgm2BdPisKys6lIYA+pxWLFPqHBtGQ5HNcnz
-	MlRk7cTNfFfiyP7YFpc4mTktN5YEGe+Bl06L6hUiVenK1IZ5b42u2GPpey91qQu8iXHYoIA7STx
-	sZEm/rTTvUpTNDLTrjd+p/jGPm+rJvX0=
-X-Received: by 2002:a05:6870:d0c8:b0:475:e0a7:9f2e with SMTP id
- 586e51a60fabf-49357ced2ccmr8072193fac.28.1790577124686; Sun, 27 Sep 2026
- 23:32:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mqm6sYcZ"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hUT/auhZhasn1dAsICGATUHjPsDMpF0qXhUrLgaODL0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790577460; v=1; x=1791182260;
+ b=mqm6sYcZZxdI07RCjmEa4jjwz/ayN9ZVbZYuI/6DzdGXqHKXfsmcdaOYRz9jSsKAmNzdIVU4
+ svOuCUTnClNx2eHCbf22qH1Es5FXrLg5ONzdOyddse1gNWYYSh4jumPlGKc8G0ktWVooXkQcMPu
+ W+n10sO6qefzlqFwO7aebrkk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 10f09c6742e8c7e8;
+	Mon, 28 Sep 2026 06:37:40 +0000
+X-Mizu-Trace-ID: 10f09c6742e8c7e8
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v2] selftests/bpf: Add bpf_proactive_reclaim test
+Date: Mon, 28 Sep 2026 14:37:24 +0800
+Message-ID: <20260928063724.24008-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260927195536.2489079-1-edumazet@google.com> <20260927212942-mutt-send-email-mst@kernel.org>
- <CAL4Wiio9juqXbKZ7gsv8G=siXsdCwHtn0pYRpx-74akkamJvdA@mail.gmail.com>
-In-Reply-To: <CAL4Wiio9juqXbKZ7gsv8G=siXsdCwHtn0pYRpx-74akkamJvdA@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 28 Sep 2026 08:31:53 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqLV8GFDiUak5i8DyGR9b6PN3yy81iLcdmZAbkJxAHM1w@mail.gmail.com>
-X-Gm-Features: AclHuK91kmOOHFLPFqKxqNv_axpM_S9RQHBHF19JlIzaZbj2nIF6Ap2_PRYHzsg
-Message-ID: <CAL4WiiqLV8GFDiUak5i8DyGR9b6PN3yy81iLcdmZAbkJxAHM1w@mail.gmail.com>
-Subject: Re: [PATCH net] net: always dissect GSO packets in __virtio_net_hdr_to_skb()
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, Weiming Shi <bestswngs@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 28, 2026 at 8:22=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
-wrote:
->
-> On Mon, Sep 28, 2026 at 3:31=E2=80=AFAM Michael S. Tsirkin <mst@redhat.co=
-m> wrote:
-> >
-> > On Sun, Sep 27, 2026 at 07:55:36PM +0000, Eric Dumazet wrote:
-> > > Commit 9e8db5913264 ("net: avoid false positives in untrusted gso
-> > > validation") added a '&& skb->network_header' check before flow-disse=
-cting
-> > > GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM in
-> > > __virtio_net_hdr_to_skb(), because some callers (such as tun_get_user=
-(),
-> > > tun_xdp_one(), virtnet_receive_done(), and raw_verify_header()) calle=
-d
-> > > virtio_net_hdr_*_to_skb() before initializing skb->network_header and
-> > > skb->dev.
-> > >
-> > > However, skb->network_header is an offset from skb->head, not a boole=
-an
-> > > flag. When skb_headroom(skb) is 0 on a device without L2 headers (for
-> > > instance packet_snd() or tpacket_snd() on a tunnel/pure-L3 device whe=
-re
-> > > LL_RESERVED_SPACE_EX(dev, 0) =3D=3D 0),
-> >
-> > Hmm. I have:
-> >
-> > LL_RESERVED_SPACE_EX(dev, 0)
-> >         ((((hlen) + READ_ONCE((dev)->needed_headroom)) \
-> >           & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
-> >
-> > #define HH_DATA_MOD     16
-> >
-> > So how can LL_RESERVED_SPACE_EX(dev, 0) =3D=3D 0 ?
-> >
-> >
->
-> In practice, skb->network_header was 0 on tun_get_user() (including the
-> reported reproducer), tun_xdp_one(), virtnet_receive_done(), and
-> raw_verify_header() because __alloc_skb() / __build_skb_around()
-> zero-initializes skb->network_header to 0 (unlike mac_header and
-> transport_header which are initialized to ~0U), and those callers invoked
-> virtio_net_hdr_*_to_skb() before setting skb->network_header.
->
-> More generally, because 0 is both the initial value from alloc_skb() and =
-a
-> valid offset whenever skb_headroom(skb) =3D=3D 0, skb->network_header can=
-not
-> be used as a boolean to test whether the network header was initialized.
->
-> I can send a v2 with the corrected commit message if preferred, the
-> patch stays the same.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Revised changelog would look like this, let me know if it looks ok this tim=
-e.
+bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
+unlike a write to memory.reclaim, does not retry until the goal is
+reached.
 
-net: always dissect GSO packets in __virtio_net_hdr_to_skb()
+Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
+and check that the result is positive but well below the request: one
+pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
+4K and 64K page kernels.
 
-Commit 9e8db5913264 ("net: avoid false positives in untrusted gso
-validation") added a '&& skb->network_header' check before flow-dissecting
-GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM in
-__virtio_net_hdr_to_skb(), because some callers (such as tun_get_user(),
-tun_xdp_one(), virtnet_receive_done(), and raw_verify_header()) called
-virtio_net_hdr_*_to_skb() before initializing skb->network_header and
-skb->dev.
+The test deliberately covers only the kfunc itself. A full example of
+the intended asynchronous use, where a BPF program watches one cgroup's
+workingset refaults and reclaims another one from bpf_wq callbacks, is
+maintained out of tree at [1], released under GPLv2.
 
-Because __alloc_skb() and __build_skb_around() zero-initialize
-skb->network_header to 0 (unlike mac_header and transport_header which
-are initialized to ~0U), those four callers always had
-skb->network_header =3D=3D 0 and bypassed flow dissection in
-__virtio_net_hdr_to_skb(). More generally, skb->network_header is an
-offset from skb->head (where 0 is also a valid offset whenever
-skb_headroom(skb) is 0), not a boolean flag.
+Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
+is not built at all.
 
-Whenever the 'if (gso_type && skb->network_header)' branch was skipped,
-the fallback 'else if (gso_type)' only pulled nh_min_len + thlen (40 bytes
-for TCPv4) without dissecting the packet, without validating ip_proto or
-n_proto, and without setting skb->transport_header.
+[1] https://github.com/teawater/memcg-async-reclaim
 
-If the packet has a malformed network header, it is not rejected and a
-subsequent skb_probe_transport_header() also fails, leaving
-skb->transport_header at ~0U (0xffff). Similarly, if an IPv4 packet
-carries IP options (ihl > 5) or an IPv6 packet carries extension headers,
-pulling only nh_min_len + thlen can leave the TCP header outside
-skb->head. In both cases, tcp_hdrlen(skb) in skb_gso_transport_seglen()
-reads out-of-bounds:
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+Changelog:
+v2:
+According to the comment of Alexei, remove the samples/bpf sample patch.
+Ship it out-of-tree as a standalone project.
 
-  BUG: KASAN: slab-out-of-bounds in skb_gso_transport_seglen
-  Read of size 2 by task poc/133
-  skb_gso_transport_seglen (net/core/gso.c:155)
-  skb_gso_validate_mac_len (net/core/gso.c:270)
-  tbf_enqueue (net/sched/sch_tbf.c:260)
-  dev_qdisc_enqueue (net/core/dev.c:4227)
-  __dev_queue_xmit (net/core/dev.c:4884)
+ tools/testing/selftests/bpf/config            |   1 +
+ .../bpf/prog_tests/memcg_proactive_reclaim.c  | 124 ++++++++++++++++++
+ .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
+ 3 files changed, 159 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
 
-In addition, when skb->protocol is pre-set by a caller before
-__virtio_net_hdr_to_skb(), 'if (!skb->protocol)' is skipped and
-virtio_net_hdr_match_proto() was not checked.
+diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+index d292cb60a5a4..21bb0d4a37cb 100644
+--- a/tools/testing/selftests/bpf/config
++++ b/tools/testing/selftests/bpf/config
+@@ -57,6 +57,7 @@ CONFIG_LIRC=y
+ CONFIG_LIVEPATCH=y
+ CONFIG_LWTUNNEL=y
+ CONFIG_LWTUNNEL_BPF=y
++CONFIG_MEMCG=y
+ CONFIG_MODULE_SIG=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_MODULE_UNLOAD=y
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..d642658a2198
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+@@ -0,0 +1,124 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <test_progs.h>
++#include <limits.h>
++#include <linux/magic.h>
++#include <sys/statfs.h>
++#include <unistd.h>
++
++#include "cgroup_helpers.h"
++#include "memcg_proactive_reclaim.skel.h"
++
++#define CG_PATH "/memcg_proactive_reclaim"
++
++/*
++ * Large enough that a single reclaim pass cannot come close to it, so that
++ * "reclaimed less than was asked for" is not page-size noise: one pass is
++ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
++ * on 64K pages.
++ */
++#define FILE_SIZE (32 * 1024 * 1024UL)
++#define BUF_SIZE (64 * 1024)
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/*
++ * The data file has to sit on a regular filesystem: tmpfs pages are charged
++ * as shmem, so whether they can be reclaimed at all depends on swap being
++ * available. /tmp is tmpfs on many systems, and test_progs is routinely run
++ * from a tmpfs working directory, so both candidates need the check.
++ */
++static const char *workload_dir(void)
++{
++	static const char * const dirs[] = { "/tmp", "." };
++	struct statfs st;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(dirs); i++)
++		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
++		    st.f_type != RAMFS_MAGIC)
++			return dirs[i];
++
++	return NULL;
++}
++
++void test_memcg_proactive_reclaim(void)
++{
++	struct memcg_proactive_reclaim *skel = NULL;
++	struct reclaim_args args = {};
++
++	LIBBPF_OPTS(bpf_test_run_opts, opts,
++		    .ctx_in = &args,
++		    .ctx_size_in = sizeof(args));
++
++	char data_file[PATH_MAX];
++	static char buf[BUF_SIZE];
++	__u64 cgroup_id;
++	const char *dir;
++	off_t off;
++	int cg_fd = -1, data_fd = -1, err;
++
++	dir = workload_dir();
++	if (!ASSERT_OK_PTR(dir, "workload dir on a regular filesystem"))
++		return;
++
++	snprintf(data_file, sizeof(data_file),
++		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
++	data_fd = mkstemp(data_file);
++	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
++		return;
++
++	cg_fd = cgroup_setup_and_join(CG_PATH);
++	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
++		goto out;
++
++	cgroup_id = get_cgroup_id(CG_PATH);
++	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
++		goto out;
++
++	skel = memcg_proactive_reclaim__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		goto out;
++
++	/*
++	 * Charge FILE_SIZE of page cache to the cgroup. Reading rather than
++	 * writing keeps the pages clean, so reclaim does not have to start
++	 * writeback before it can evict them.
++	 */
++	if (!ASSERT_OK(ftruncate(data_fd, FILE_SIZE), "ftruncate"))
++		goto out;
++	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
++		if (!ASSERT_GT(read(data_fd, buf, sizeof(buf)), 0, "read"))
++			goto out;
++
++	args.cgroup_id = cgroup_id;
++	args.size = FILE_SIZE;
++	skel->bss->reclaimed = 0;
++	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
++				     &opts);
++	if (!ASSERT_OK(err, "test_run"))
++		goto out;
++	if (!ASSERT_EQ(opts.retval, 0, "retval"))
++		goto out;
++
++	/*
++	 * A single call is a single bounded pass: it reclaims something, but
++	 * stops well short of the requested size instead of retrying until the
++	 * goal is reached the way a write to memory.reclaim does.
++	 */
++	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
++	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
++
++out:
++	if (skel)
++		memcg_proactive_reclaim__destroy(skel);
++	if (cg_fd >= 0)
++		close(cg_fd);
++	if (data_fd >= 0) {
++		close(data_fd);
++		unlink(data_file);
++	}
++	cleanup_cgroup_environment();
++}
+diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..b551192526fc
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/* Signed, because bpf_test_run_opts.retval is a __u32. */
++__s64 reclaimed;
++
++SEC("syscall")
++int memcg_proactive_reclaim(struct reclaim_args *ctx)
++{
++	struct mem_cgroup *memcg;
++	struct cgroup *cgrp;
++
++	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
++	if (!cgrp)
++		return 0;
++
++	memcg = bpf_get_mem_cgroup(&cgrp->self);
++	if (memcg) {
++		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
++		bpf_put_mem_cgroup(memcg);
++	}
++	bpf_cgroup_release(cgrp);
++
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
+-- 
+2.43.0
 
-Fix this by:
-1. Initializing skb->dev and skb->network_header (plus skb->protocol for
-   IFF_TUN) before virtio_net_hdr_*_to_skb() in tun_get_user(),
-   tun_xdp_one(), virtnet_receive_done(), and raw_verify_header(). In
-   tun_get_user(), drop the redundant skb_reset_mac_header(skb) in the
-   IFF_TUN case since __virtio_net_hdr_to_skb() unconditionally resets
-   mac_header.
-2. Removing '&& skb->network_header' and the unvalidated
-   'else if (gso_type)' fallback in __virtio_net_hdr_to_skb() so all GSO
-   packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are flow-dissected, have
-   their transport header pulled into linear data, and have
-   skb->transport_header set.
-3. Validating virtio_net_hdr_match_proto(keys.basic.n_proto, hdr_gso_type)
-   after skb_flow_dissect_flow_keys_basic().
