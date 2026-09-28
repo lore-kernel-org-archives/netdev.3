@@ -1,45 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD22463B66;
-	Mon, 28 Sep 2026 08:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07FC31F9A4;
+	Mon, 28 Sep 2026 08:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790582427; cv=none; b=QsjHU+JBEOKxfeAj60yXmXwgUFuUWOMmG0fTchKZ/R2ofU+w8HIF6WZ49Xx+uGSynIjXrQdqUx7gfmKdcwII2R16DPc+oBT/aRv8NRYKISMpBllj/AGUEs/QMHpq+zerE6QCC1yrDNEoodFuA5M2XNJzMyD7+oVVIY55OAUE4CU=
+	t=1790582621; cv=none; b=A7w1dfqDcI7KV/hxf7R7bI3KNFFrHfVhgLqczWbyYZI7BI7ARil2bzcZgsAHU7xvwE6bIZG7mDdSTl7sewdJNkjM8uUkN0dImjEWk3L/GxfWkahDQD1Ec1BQgXAjW8ch+s6K6R7NcSipLiD6LZouo6zTaOAN3hnaTzUb9nPRErU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790582427; c=relaxed/simple;
-	bh=az3bMfr5G5sT3btF+qpknqCJ/1kpF4BiKYvJoy0muHg=;
+	s=arc-20240116; t=1790582621; c=relaxed/simple;
+	bh=e6awqmxpvcBVuu7S1grj/vD7SIBnQNNZjmJ2rP6Pp+k=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I+nsfyb5E7FFOnkmPTPgvYZjCpRFqLmygLY59eScDFfW4aoEhccA7mwT1nMdPqTDFqnuDe0ycjCmD0MFbnOpF+TN4GKYLFbX3DZERx1Be1rJ5vZj4rQpIcZKx8UVOWFUXVd3H0h9lt4cmFksc1gbknCiAw69q1PC5xcMQyFvApg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbvV1mvC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JY7cx0LhntUfQxAb9LT1vka04W/o0owAHkySf34HI/350UFAmZ95oDMXC6B8DH/bnzd5tb4ByxPi7qo/e5L8dHYKNt9Dsk0jBpT2+nwTg3r5QHAsTlosZ4qtwyaiLEj4kA3O5VAE6K0sEBO7PTKjBqCfx2gnWsVQOX5VWFfnSPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSiiO4zM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbvV1mvC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA731F00893;
-	Mon, 28 Sep 2026 08:00:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSiiO4zM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BBB1F000FF;
+	Mon, 28 Sep 2026 08:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790582425;
-	bh=j74msU6MmZ0h9fJHwbp7sZYGlIw0sWzkQW5TCKFT3rg=;
+	s=k20260515; t=1790582620;
+	bh=9JXzLiGWrc0ZvP4dkaspzOQkbHcGxUbgkFcHqpN3P5g=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AbvV1mvCinLB3oAXFO88qRAAG1khO6xtWzD992O/6SxQ4SdCAGSBhYc/Ya+dqpeN9
-	 h6B3TzkAHd0pClYk356zbMa3TlcWngKn37z5BINZMWDVYNg1M5QmxeNX5fUge2lyxA
-	 KHlb/qWXxOXyeXkkMUDzie5DymjhidcKSJpMe1jKfwiIM+HpylEDSAJYZv2h4r4Qpw
-	 1aVVYaGX6xaEWAHtuABU0RW4ZLqMBTNRAFvC5591C9tP4xPD1VBiy1q9Nax9QRypoT
-	 3TAQKdkBkG4UM/dER8+Zxvjk44993ZqD5JLCEcS4o/v/aeoqv6llZQ8b5hNDPHodPw
-	 cQVnj8YLBQBbQ==
-Subject: Re: [PATCH net-next 5/5] selftests: mptcp: convert iptables to
- nftables for mptcp_join.sh
+	b=fSiiO4zMb6Cnyw7M0Eogzh+70yORIy0JvRrrAKzkLMS9bLL2URV20ljgLZWW+9Xw0
+	 6D7Y/9dtojnI6MITmOfKa2hAYy460BcFH/tcqbNcmUmaw3/ocnCfJg65sFBAq0V5E+
+	 SyXh3JfneqT3SldJUJqErEDXFRwamAYGVYg7Qs3I3JpzMzm+SUZVsei2eJd4dLE4Pw
+	 Jaox6HR/fqtj5JGF43cmKGOuT4M0cOv7Fp0PJk2ILgyJjkM6nQqhIYifBf5tO5RUt3
+	 96BE1W4sqCZqGGhQ5wXj1Ijw5MWwOSXXKR37Jxt40liY3eMQmJlA2YztFUp78eUC+7
+	 QUAyJ0KIm5e9Q==
+Subject: Re: [PATCH net-next v2 1/7] dt-bindings: net: mediatek-dwmac: add
+ support for MT8189 SoC
 From: netdev-bot+sashiko@kernel.org
-To: matttbe@kernel.org
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- quanyeyang@proton.me
-Date: Mon, 28 Sep 2026 08:00:24 +0000
-Message-ID: <179058242453.3145.1450534124183352369@kernel.org>
-In-Reply-To:
- <20260926-net-next-mptcp-misc-feat-7-4-v1-5-67af4ab37406@kernel.org>
-References:
- <20260926-net-next-mptcp-misc-feat-7-4-v1-5-67af4ab37406@kernel.org>
+To: louisalexis.eyraud@collabora.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, richardcochran@gmail.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, biao.huang@mediatek.com,
+ maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, kernel@collabora.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
+Date: Mon, 28 Sep 2026 08:03:38 +0000
+Message-ID: <179058261870.3145.1804834157018403758@kernel.org>
+In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-1-430bd74d5ef9@collabora.com>
+References: <20260924-dwmac-mediatek-mt8189-v2-1-430bd74d5ef9@collabora.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 2 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,155 +64,195 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In endpoint_tests()
-  (tools/testing/selftests/net/mptcp/mptcp_join.sh), the new rule `tcp…
-- [Low] The patch removes CONFIG_NFT_COMPAT from
-  tools/testing/selftests/net/mptcp/config, "since we don't need it now".
+- [Medium] The MT8189 binding lets a DT pass validation even though the
+  driver cannot probe it.
+- [Low] The patch restructures how the existing mt2712/mt8188/mt8195
+  compatibles are validated, but the commit message only mentions adding…
+- [Low] Not confirmed (resolved later in the series).
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but the
+  `mediatek,tx-delay-ps`/`mediatek,rx-delay-ps` descriptions still say…
 
 --
 
-selftests: mptcp: convert iptables to nftables for mptcp_join.sh
+dt-bindings: net: mediatek-dwmac: add support for MT8189 SoC
 
-This converts the iptables/ip6tables rules in mptcp_join.sh to nftables.
-It keeps the same table and chain names and adds init_nftables() to set
-up the tables only when a test needs them. The cBPF bytecode that matched
-the ADD_ADDR and RM_ADDR suboptions is replaced with "tcp option mptcp
-subtype" matching. In the config fragment, CONFIG_NFT_COMPAT is swapped
-for the nft modules that are now needed.
+This adds the mediatek,mt8189-gmac compatible to the MediaTek DWMAC
+binding with a two-entry clock list (mac_main, ptp_ref). It also documents
+the MT8189 RX/TX delay stage divider of 180 ps. The existing clock
+definitions are moved into per-compatible allOf if:then blocks.
 
-> diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-> index bb9c4c97c6206..61057a0667192 100644
-> --- a/tools/testing/selftests/net/mptcp/config
-> +++ b/tools/testing/selftests/net/mptcp/config
-> @@ -29,7 +29,9 @@ CONFIG_NET_SCH_INGRESS=m
->  CONFIG_NET_SCH_NETEM=m
->  CONFIG_NF_TABLES=m
->  CONFIG_NF_TABLES_INET=y
-> -CONFIG_NFT_COMPAT=m
-> +CONFIG_NFT_NUMGEN=m
-> +CONFIG_NFT_REJECT=m
-> +CONFIG_NFT_REJECT_INET=m
+> diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+> index 3aab21b8e8de..6624dff015f0 100644
+> --- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+
+[ ... ]
+
+> @@ -36,6 +34,7 @@ properties:
+>            - const: snps,dwmac-4.20a
+>        - items:
+>            - enum:
+> +              - mediatek,mt8189-gmac
+>                - mediatek,mt8195-gmac
+>            - const: snps,dwmac-5.10a
 
 [Severity: Low]
-This isn't a bug, but CONFIG_NFT_COMPAT is removed here "since we don't
-need it now". Should the other xtables-only options in this fragment be
-removed too?
+At this commit, mediatek,mt8189-gmac has no driver match. Neither of the
+existing variants fits its 180 ps stage divider or its two-clock set.
 
-After this patch the config still has:
+This is resolved later in the series. "net: stmmac: mediatek: add support
+for MT8189 SoC" adds:
 
-CONFIG_IP6_NF_FILTER=m
-CONFIG_IP6_NF_TARGET_REJECT=m
-CONFIG_IP_NF_FILTER=m
-CONFIG_IP_NF_MANGLE=m
-CONFIG_IP_NF_TARGET_REJECT=m
-CONFIG_NETFILTER_XTABLES=m
-CONFIG_NETFILTER_XTABLES_LEGACY=y
-CONFIG_NETFILTER_XT_MATCH_BPF=m
-CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
-CONFIG_NETFILTER_XT_TARGET_MARK=m
+	{ .compatible = "mediatek,mt8189-gmac",
+	  .data = &mt8189_gmac_variant },
 
-Only the removed -m bpf, -m length, -m statistic, -j MARK and REJECT
-rules needed these. Nothing under tools/testing/selftests/net/mptcp/
-uses iptables or ip6tables anymore.
-
->  CONFIG_NFT_SOCKET=m
->  CONFIG_NFT_TPROXY=m
->  CONFIG_SYN_COOKIES=y
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> index 18ce7136a2b0e..b16e24418e737 100755
-> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+to mediatek_dwmac_match[]. That variant uses mac_main/ptp_ref and
+MT8189_DLY_*_STAGE_DIV = 180, which matches this binding. So this is only
+the normal binding-first ordering of a series.
 
 [ ... ]
 
-> @@ -4402,12 +4372,10 @@ endpoint_tests()
+> @@ -44,26 +43,6 @@ properties:
+>            - const: mediatek,mt8195-gmac
+>            - const: snps,dwmac-5.10a
 >  
->  		# To make sure RM_ADDR are sent over a different subflow, but
->  		# allow the rest to quickly and cleanly close the subflow
-> -		local ipt=1
-> -		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
-> -			-p tcp -m tcp --tcp-option 30 \
-> -			-m bpf --bytecode \
-> -			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-> -			-j DROP || ipt=0
-> +		local nft=1
-> +		ip netns exec "${ns2}" nft insert rule ip filter OUTPUT \
-> +			ip saddr 10.0.1.2 meta l4proto tcp \
-> +			tcp option mptcp subtype remove-addr drop || nft=0
+> -  clocks:
+> -    minItems: 5
+> -    items:
+> -      - description: AXI clock
+> -      - description: APB clock
+> -      - description: MAC Main clock
+> -      - description: PTP clock
+> -      - description: RMII reference clock provided by MAC
+> -      - description: MAC clock gate
+> -
+> -  clock-names:
+> -    minItems: 5
+> -    items:
+> -      - const: axi
+> -      - const: apb
+> -      - const: mac_main
+> -      - const: ptp_ref
+> -      - const: rmii_internal
+> -      - const: mac_cg
+> -
+>    interrupts:
+>      maxItems: 1
+
+[Severity: Low]
+This moves the existing clocks and clock-names definitions for mt2712,
+mt8188 and mt8195 out of the top-level properties and into an allOf
+if:then block. It also moves the snps,dwmac.yaml $ref to after required.
+
+The commit message only talks about adding MT8189. Could it also describe
+this restructuring?
+
+Documentation/devicetree/bindings/writing-schema.rst also says:
+
+  In top level 'properties' define the property with the broadest
+  constraints. In 'if:then:' blocks, further narrow the constraints for
+  those properties. Do not define the properties within an 'if:then:'
+  block
+
+Would it fit that convention better to keep clocks and clock-names at the
+top level with the widest limits (for example minItems: 2, maxItems: 6),
+and only narrow them per compatible in the if:then branches?
+
+> @@ -86,8 +65,10 @@ properties:
+>        or will round down. Range 0~31*170.
+>        For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
+>        or will round down. Range 0~31*550.
+> -      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a multiple of 290,
+> -      or will round down. Range 0~31*290.
+> +      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a
+> +      multiple of 290, or will round down. Range 0~31*290.
+> +      For MT8189 RGMII/RMII/MII interface, Allowed value need to
+> +      be a multiple of 180, or will round down. Range 0~31*180.
+
+[Severity: Low]
+This is a pre-existing issue, not something this patch introduced. The
+mediatek,tx-delay-ps and mediatek,rx-delay-ps descriptions still start
+with:
+
+      The internal TX clock delay (provided by this driver) in nanoseconds.
+
+The property names use picoseconds, and so does the driver (for example
+"Invalid TX clock delay: %dps"). Should this say picoseconds?
+
+The MT2712 range handling has a similar pre-existing problem.
+mt2712_gmac_variant uses tx_delay_max/rx_delay_max = 17600 for every
+phy-mode. As a result, an RGMII value above the documented 31*170 still
+passes the check in mediatek_dwmac_config_dt():
+
+	if (tx_delay_ps < plat->variant->tx_delay_max) {
+		mac_delay->tx_delay = tx_delay_ps;
+
+mt2712_delay_ps2stage() then divides by 170, and FIELD_PREP silently
+truncates the result into the 5-bit ETH_DLY_*_STAGES field. Is that
+intended?
+
+[ ... ]
+
+> @@ -147,6 +130,56 @@ required:
+>    - phy-mode
+>    - mediatek,pericfg
+>  
+> +allOf:
+> +  - $ref: snps,dwmac.yaml#
+
+[ ... ]
+
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - mediatek,mt8189-gmac
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: MAC Main clock
+> +            - description: PTP clock
+> +
+> +        clock-names:
+> +          items:
+> +            - const: mac_main
+> +            - const: ptp_ref
 
 [Severity: Medium]
-Can this rule ever match an RM_ADDR packet on an established connection?
+With this branch, an mt8189 node can only list mac_main and ptp_ref, so
+there is no way to provide rmii_internal.
 
-nft_exthdr_tcp_eval() stops at the first TCP option whose kind matches
-(30 for MPTCP). The subtype check therefore only ever sees the first
-MPTCP suboption:
+However, mediatek,rmii-clk-from-mac is still allowed at the top level for
+every compatible, and nothing here sets it to false for mt8189. The
+updated delay text also says MT8189 supports RMII.
 
-net/netfilter/nft_exthdr.c:nft_exthdr_tcp_eval() {
+Consider an mt8189 node with phy-mode = "rmii" and
+mediatek,rmii-clk-from-mac. It passes dt_binding_check. With the driver
+change later in this series ("net: stmmac: mediatek: add support for
+MT8189 SoC"), mediatek_dwmac_clk_init() then does:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_clk_init() {
     ...
-	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
-		optl = optlen(opt, i);
-
-		if (priv->type != opt[i])
-			continue;
-		...
-		return;
-	}
-    ...
-}
-
-Once can_ack is set, mptcp_established_options_dss() always selects a
-DSS ack:
-
-net/mptcp/options.c:mptcp_established_options_dss() {
-    ...
-	opts->ext_copy.use_ack = 1;
-	opts->suboptions = OPTION_MPTCP_DSS;
+	if (plat->rmii_clk_from_mac) {
+		plat->rmii_internal_clk = devm_clk_get(plat->dev, "rmii_internal");
+		if (IS_ERR(plat->rmii_internal_clk))
+			ret = PTR_ERR(plat->rmii_internal_clk);
     ...
 }
 
-mptcp_established_options_rm_addr() then ORs OPTION_MPTCP_RM_ADDR into
-suboptions, so the DSS is kept. mptcp_write_options() writes the DSS
-first and writes RM_ADDR later, after the mp_capable_done label:
+Wouldn't mediatek_dwmac_probe() then fail with -ENOENT?
 
-net/mptcp/options.c:mptcp_write_options() {
-    ...
-	if (likely(OPTION_MPTCP_DSS & opts->suboptions)) {
-    ...
-mp_capable_done:
-	if (OPTION_MPTCP_RM_ADDR & opts->suboptions) {
-    ...
-}
+The mt8189 variant also reuses mt8195_set_interface(), which programs
+MT8195_RMII_CLK_SRC_INTERNAL in this case. So the driver treats this mode
+as valid for MT8189, but the binding can't describe it.
 
-On these packets the first kind 30 option is the DSS (subtype 0x2), so
-wouldn't "subtype remove-addr" (0x4) always fail to match?
-
-The removed CBPF_MPTCP_SUBOPTION_RM_ADDR bytecode was written for this
-layout. Its comment said "a first suboption of 12B (DACK8), the RM_ADDR
-suboption". It checked ip[53] == 0x0c for the length of the first
-suboption and (ip[66] & 0xf0) == 0x40 for the subtype of the second one.
-
-The same problem affects the ns1 rule on 10.0.1.1 later in
-endpoint_tests(), which is installed right before
-"pm_nl_del_endpoint $ns1 42 10.0.1.1".
-
-In both places the rule installs without error, so the "|| nft=0"
-fallback never triggers. The tests keep passing, but RM_ADDR is no
-longer forced onto a different subflow.
-
-The commit message says the bytecode "is replaced with native nft
-matching using "tcp option mptcp subtype"". That is true for ADD_ADDR,
-because mptcp_write_options() emits ADD_ADDR in an else-if branch with
-the DSS. Is it also true for RM_ADDR?
-
-Would a raw payload match on the second MPTCP option (for example with
-@th,...) be needed here instead?
-
->  		local i
->  		for i in $(seq 3); do
->  			pm_nl_del_endpoint $ns2 1 10.0.1.2
-
-[ ... ]
+If MT8189 can't supply the RMII reference clock from the MAC, should this
+branch set mediatek,rmii-clk-from-mac: false? If it can, should an
+optional rmii_internal clock be allowed here?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9%40collabora.com
