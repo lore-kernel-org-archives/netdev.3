@@ -1,253 +1,120 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+Received: from mail-wr2-f8.google.com (mail-wr2-f8.google.com [74.125.225.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5646E3264C7
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B784EE86B
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790626946; cv=none; b=mS7ZTdtielImiCoVk8L04khk86ShSUBERYnOYhnAUUM/+tXrbWmMMesvRNVvcqhIXMvyc9NFHlP/VbmpFbIyVa5GnwfhnfXWx8sNHC/OY3m6RnwT+u3bko+wqk3xMeJi2jj3fbY8GQE0Rg2QcaplzZ302tpCktmdbHzADvQs+/w=
+	t=1790626999; cv=none; b=k4nqcFqrA+1aDfbcOp/zAmklqXyindA74LFpgOVZ/VvhwXCvSLYYjHSLMG5lrW0LKqW1MHptvSu4g0/aFTcqiP1tTeAhiuO+Sz1a47PCPx8JC/CYj/cdy+YXzHxxoKSQhBzUF6PUojz9yKjr2H+eiZPuAOJ0nxXLMXHjvNZdAmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790626946; c=relaxed/simple;
-	bh=rj2dlgLEBuOpytzHI5wM5/hxtR3c+DHnPjDvftN2BW4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=nhJtPmlqHcwkADm8o4mMJ8LEQg7AK+Kcrjrna9IP5g/FnyHT+cRRwy5t8oKFV0zzy7wIUvZHGQIsgTa+chtNk3vXYFZm71GqOIZo+JEn1VXQzLW+4bX8yqkJ3CB2AqX9gnNU90Z5DvT0TmS3Ng18sZPMH4K1L8RjLXW0/FLiowo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QlD/Fgik; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790626999; c=relaxed/simple;
+	bh=iLiBo0vYpod9vZLl9UBi8bgWGF2bDNR8qRFcnNTeCHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GXTLWnUNSM47bMKZQKxbyeephUHLK6YjgZ3WgQrclm9Ai55j2BkOoB/YdJJAW1opztFOyBYIRUCwD5ZyJFOb8yk8dP7OKNUQxZLNtnRWtl+kJV0n1aaOiG0P1uKnqBIM3ZQdqhyy8xknUsC2EGZXlQIWbtnIcW008KcjymQ46bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=SOnF6IhM; arc=none smtp.client-ip=74.125.225.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QlD/Fgik"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-89666ee9b3bso26153097b3.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 13:22:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="SOnF6IhM"
+Received: by mail-wr2-f8.google.com with SMTP id ffacd0b85a97d-4887b799104so1384375f8f.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 13:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790626944; x=1791231744; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LavvGF05LrUx2mjDIa0wySwJDHWA2NlYt6Sq2WNTH+4=;
-        b=QlD/FgikCmSHDUgLTlMAMQpW9S4zgbluHGAADn6Qp1OzElRHVdrQ8+7ZpbzObBPXB9
-         RuF6q3jIexCaPApYqdbXxRtOoNrm4pndOnBI2wIdwlbHWH6qwQsHwjLKA08vaxwlkGYZ
-         bz9r/XpTB56FdBmsBXBiUBbgOg7wVnv6BXw/WgpJeLNi2skpMqnLfVyALtGk1hbas249
-         UPGk+dpT0K5fpACMrQy9byQm4vYqskUrCEA0Kx8cXDNQaGcydzHqp18fwpt4vuty/KTW
-         eQAOLfLYpK6AOEm/dW3oAmZAOXHApqf0mQ2LlT+LYFYcGJNx86GesQExBh22t4di+dM2
-         J/aw==
+        d=blockcast.net; s=google; t=1790626996; x=1791231796; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Zy3J2tytWwgmIV36YeTTMRjanXAuGoVq/tIKUKUhT7o=;
+        b=SOnF6IhM67NUoMYEuW4Aw64sjECJ2uLqytTeLXM4FfhDSM683MKXm+KxOMN4hdjrFj
+         WDhTDMeIE3MmJzqCNoInb1vL101zxSfGJwoxf2Yx+m9E6bIvRjpD6zZNHG7RhzM7Ne3Y
+         6bxTLY1HeHQA93zW7ORRztmvmxm1EkNP4FtghaFYa4vyB8TZPqMA9qhUg1nc/BOFsBPw
+         99n2SjibgNgx5b3wbtS9fPJw+0NbTLcBtagye6BDCE1pu+nr+Xd2SzNDyZmTJ3UZ93J3
+         xHR3aJMUrbfC5VLfGTsa0wpnp1yDMaTL21JDW6xTz1rfoMr7AoaVKKy80/EmJvTOyvnt
+         28QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790626944; x=1791231744;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LavvGF05LrUx2mjDIa0wySwJDHWA2NlYt6Sq2WNTH+4=;
-        b=yaDXvtGVTgPhnKl93sS9oBCwIqWHKOT2Jtu681XFkT+CrhaIOldcUMg/8tNfwiY1VD
-         roUJscxKgzJNvgvFGtAJQcCQQ1+iUdyg8ppXCLNTcvg4DpbQTaVvVRZsCIeIGyoNsQRk
-         clYrivnZou5/ucVv6x4YKQHoPHO+0wOiUAB/He4yXxF/EAkkr31eFuk8jUj5fIW4QsQf
-         U/GrApgihqXSQOjZmHHMHbmtaOYlrzbh/doiBE89+hiZmaw58H+zKnctm2E31UtaxxpG
-         yOSePC8T6CoLMdw/5wx3yASO3puTeIkV+2a7HLR9nbFIs2LQxXLme+uYttUxOkWeJPF3
-         ZzoA==
-X-Forwarded-Encrypted: i=1; AKwUvByKBYr1GQRr6X+zcCls2jIK6DXfBU4g1MlYmBErdKfLSqV3N0HNwHgTSmRtJlFGPdv71gBoNxw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKf2QUqDZMhWQIYL3nnWO7BySorK7JstABYOgWaFFpnqFqCo1I3
-	2heOHP3VB/TQ9p19fAd3hZMOd8pHbg4VGG0ZqBureAo8P9vSzngECDZ3
-X-Gm-Gg: AYBFou06mAB56bIq3qm+71MakEQsMFEfK/Iw72tKa2/ZY8sfhdsFG6BFwbFPI8N/LD3
-	tGwt38CSmFNGrJPy3tdLs2zlwD2Qj4a7Dzs3Bb0CH37U9VZFHqs06IBp3kjI8ah7vkDG5sC6Sov
-	iaFJi8iaQcL8mHo+usdlvJGLhRaEV9Xkyo26NnMBaX0WIKMLpj+L8b3csTMvZIH5q87Y9jjWMcn
-	xtNxlvytwyUcDORfq/1aThXr6bw4pTjwJ3hAgT9P8AcRyJjtn6gnJ5blKQ+Ck67uAkxaFHySSfL
-	5oGM09V4fBsYvJ10+Ev/qDm3TKgf5VSJTEq5n389TPg0ra8bxxK7rw/DZJvOyts5nYgVhAzyX1h
-	5AE5qJnEYedVpXTlk9lsNqT0LHMYG+TakdiptZwGX1Oswn0fiKiTtAL6E+fM+4KKdQhDCCfX7Fb
-	ZwKyjOifOh0YvX0o4XqeQbd9x4NPlr0wR9YcDCsSGZhcRtZoVh5pKVONDtOAXrk/FnJxPEJw917
-	o8U0YqRqpxmoQxxDJTEJ0lkGvUHQ2h0OXmlLTDNADXEs3io3P3w
-X-Received: by 2002:a05:690c:c501:b0:8a9:9f40:24e0 with SMTP id 00721157ae682-8a99f4029dfmr32958567b3.14.1790626944148;
-        Mon, 28 Sep 2026 13:22:24 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a85ec40be3sm50315077b3.0.2026.09.28.13.22.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 13:22:23 -0700 (PDT)
-Date: Mon, 28 Sep 2026 16:22:23 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, 
- netdev@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.100d5c1377db@gmail.com>
-In-Reply-To: <CAL4Wiip8iSAYT0NgFgEidvk4TD35aemRNfFVUjAnUoVaqips9g@mail.gmail.com>
-References: <20260928144254.3361044-1-edumazet@kernel.org>
- <20260928144254.3361044-3-edumazet@kernel.org>
- <willemdebruijn.kernel.293b4851be048@gmail.com>
- <CAL4Wiip8iSAYT0NgFgEidvk4TD35aemRNfFVUjAnUoVaqips9g@mail.gmail.com>
-Subject: Re: [PATCH v2 net 2/2] selftests: net: tun: add test for VLAN-tagged
- GSO without NEEDS_CSUM
+        d=1e100.net; s=20260707; t=1790626996; x=1791231796;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Zy3J2tytWwgmIV36YeTTMRjanXAuGoVq/tIKUKUhT7o=;
+        b=KBmtbOVReCKmH/sNZVT2xoHLRUtOaUAOoQIlolnvsLSAd0ljynGiZZidSaLMb0eXVq
+         NL4j4SWokwvR8aFXwUhhsZYFpnFXfajMhtoJo57yB4pDy6gh9CoitncoqsgGAfJRGJO/
+         HWRZL9MeKXJy20jv1xc6jV+CRphrQwC/lUTHxjXwJ7JMWtvNkBnR9WVLgQ1dzlL9iJ05
+         T3q9N8ScCR4HIoPRmqg3gQO8bJmGWhxIVEe8bTMfC6Osr8bg/0du3XbUnAh+6f4HLdL1
+         HoEkZRajNNDKlyROWxYs4n4qxTDsaVS1TIG8GAFw/UhnBUHAC0bAe2tNj0XdzMibgBMq
+         rEPg==
+X-Forwarded-Encrypted: i=1; AKwUvByfIZvUocD9mfgQOqER+9S8UEWo/kJMjW0vKWmM3Xx7OZxODYvyYnQzpYvFyvSZRm/g1/Yb7v8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLIZORB4hQ4pDY4j0djH2n0GoRMKL8r4teLYE+Pjf648piKm6C8
+	Noqpk9YnE1gesBP05Gj2+R7cNmJZPViSl4DsO4mhhu2RA1e+69T3DlD4VpM9Ti2rGXE=
+X-Gm-Gg: AYBFou1OK2xPFKXnQFbkV9XxG1uewi62cj9inP4xDoSC9GITYe2VBIKRsLtwCzyGu48
+	kUKChKSJfbYke3TCHPTEv4Amc+ZT10eoW5FCLzgR+tGz6zJkHh6F9xx0lDztkK+C768SQwnYSeV
+	fbGBbhaZS+nx2rkadwX1RUoKSFJpJ6UQ+iIKAqkErJi36kl/8J1XSHsEsuHEY78WyMTkwheBa2g
+	peh9VVVxMIugMNkeQgduYwBtcmSDI4GxPCGbxAd/xwOOJubRFEUfg1+CBJpnqe+s5oEkf1IIlZf
+	d6kOiUImr55DTbuxPpMdTP3mN+h3SEyHDwAc/nL/mi2Pnx+/ADqEgi3mMmasggmezDrwkdS/WMK
+	axKQmaYGM+BiyEHQE40aCa41mfdwyuED3Tkf08AXmChWpoXQf2cvAIgQmCNscRKDlhqwyKqkc2W
+	PbGTBkuzBBW+Z8Grx7ctcMMvG3IfgLiwAwb8g/JuESm8PjvjkTMUzs+0m2lqVu6NnoKdwwumSkW
+	YFm1aMXSqV4oEYaaV//swhuHuFr4TEl2Afj0QE7yCXezxLSmom8aY54XR9fsk6GSGbIrltzT+ZN
+	QQ==
+X-Received: by 2002:a05:6000:2504:b0:487:1256:ab80 with SMTP id ffacd0b85a97d-48871878daemr25904268f8f.57.1790626996226;
+        Mon, 28 Sep 2026 13:23:16 -0700 (PDT)
+Received: from localhost.localdomain ([197.51.38.79])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a30bcdbsm29620500f8f.2.2026.09.28.13.23.14
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 13:23:15 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	Xiang Mei <xmei5@asu.edu>,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	Cen Zhang <cenzhang@linux.microsoft.com>
+Subject: [PATCH net v4 0/2] amt: send the relay's General Query directly from the receive path
+Date: Mon, 28 Sep 2026 23:23:10 +0300
+Message-ID: <20260928202312.74574-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Eric Dumazet wrote:
-> On Mon, Sep 28, 2026 at 9:17=E2=80=AFPM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Eric Dumazet wrote:
-> > > Add a selftest in tun.c verifying that a VLAN-tagged (802.1Q) TCPv4=
- GSO
-> > > packet without VIRTIO_NET_HDR_F_NEEDS_CSUM (both flags =3D 0 and
-> > > flags =3D VIRTIO_NET_HDR_F_DATA_VALID) is accepted when written to =
-a TAP
-> > > device (/dev/net/tun with IFF_TAP | IFF_NO_PI | IFF_VNET_HDR).
-> > >
-> > > Also verify that mismatched GSO types (e.g. VIRTIO_NET_HDR_GSO_TCPV=
-6 on
-> > > a VLAN-tagged IPv4 packet) and truncated headers without NEEDS_CSUM=
- are
-> > > rejected with -EINVAL.
-> > >
-> > > Based on a reproducer by Michael S. Tsirkin <mst@redhat.com>.
-> > >
-> > > Assisted-by: LLM
-> > > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> > > ---
-> > >  tools/testing/selftests/net/tun.c | 107 ++++++++++++++++++++++++++=
-++++
-> > >  1 file changed, 107 insertions(+)
-> > >
-> > > diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/self=
-tests/net/tun.c
-> > > index abe488bac50bb3b05df5c446836c1c3dfa9ea604..c6afafb7b957360e287=
-3640e60a7d580c6564a66 100644
-> > > --- a/tools/testing/selftests/net/tun.c
-> > > +++ b/tools/testing/selftests/net/tun.c
-> > > @@ -9,6 +9,7 @@
-> > >  #include <string.h>
-> > >  #include <unistd.h>
-> > >  #include <linux/if_tun.h>
-> > > +#include <netinet/tcp.h>
-> > >  #include <sys/ioctl.h>
-> > >  #include <sys/socket.h>
-> > >
-> > > @@ -542,6 +543,112 @@ TEST_F(tun, reattach_close_delete)
-> > >       EXPECT_EQ(tun_delete(self->ifname), 0);
-> > >  }
-> > >
-> > > +FIXTURE(tun_vnet_gso)
-> > > +{
-> > > +     char ifname[IFNAMSIZ];
-> > > +     int fd;
-> > > +};
-> > > +
-> > > +FIXTURE_SETUP(tun_vnet_gso)
-> > > +{
-> > > +     int flags =3D IFF_TAP | IFF_NO_PI | IFF_VNET_HDR;
-> > > +
-> > > +     memset(self->ifname, 0, sizeof(self->ifname));
-> > > +     self->fd =3D tun_open(self->ifname, flags, 0, 0, NULL);
-> > > +     ASSERT_GE(self->fd, 0);
-> > > +}
-> > > +
-> > > +FIXTURE_TEARDOWN(tun_vnet_gso)
-> > > +{
-> > > +     if (self->fd >=3D 0)
-> > > +             close(self->fd);
-> > > +}
-> > > +
-> > > +static int build_vlan_tcpv4_gso_packet(uint8_t *buf, int payload_l=
-en)
-> > > +{
-> > > +     uint16_t vlan_tag[2] =3D { htons(100), htons(ETH_P_IP) };
-> > > +     uint8_t *cur =3D buf + sizeof(struct virtio_net_hdr);
-> > > +     struct virtio_net_hdr vh =3D { 0 };
-> > > +     struct tcphdr tcph =3D { 0 };
-> > > +     uint32_t sum;
-> > > +
-> > > +     cur +=3D build_eth(cur, ETH_P_8021Q, param_hwaddr_outer_src,
-> > > +                      param_hwaddr_outer_dst);
-> > > +
-> > > +     /* 802.1Q tag: VID=3D100, inner protocol=3DETH_P_IP */
-> > > +     memcpy(cur, vlan_tag, sizeof(vlan_tag));
-> > > +     cur +=3D sizeof(vlan_tag);
-> > > +
-> > > +     cur +=3D build_ipv4_header(cur, IPPROTO_TCP,
-> > > +                              sizeof(tcph) + payload_len,
-> > > +                              &param_ipaddr4_outer_src,
-> > > +                              &param_ipaddr4_outer_dst);
-> > > +
-> > > +     tcph.source =3D htons(12345);
-> > > +     tcph.dest =3D htons(80);
-> > > +     tcph.seq =3D htonl(1);
-> > > +     tcph.doff =3D sizeof(tcph) / 4;
-> > > +     tcph.ack =3D 1;
-> > > +     tcph.window =3D htons(65535);
-> > > +     memcpy(cur, &tcph, sizeof(tcph));
-> > > +     memset(cur + sizeof(tcph), PKT_DATA, payload_len);
-> > > +
-> > > +     sum =3D add_csum((const uint8_t *)&param_ipaddr4_outer_src,
-> > > +                    sizeof(param_ipaddr4_outer_src));
-> > > +     sum +=3D add_csum((const uint8_t *)&param_ipaddr4_outer_dst,
-> > > +                     sizeof(param_ipaddr4_outer_dst));
-> > > +     sum +=3D htons(IPPROTO_TCP) + htons(sizeof(tcph) + payload_le=
-n);
-> > > +     sum +=3D add_csum(cur, sizeof(tcph) + payload_len);
-> > > +     tcph.check =3D finish_ip_csum(sum);
-> > > +     memcpy(cur, &tcph, sizeof(tcph));
-> > > +     cur +=3D sizeof(tcph) + payload_len;
-> > > +
-> > > +     vh.gso_type =3D VIRTIO_NET_HDR_GSO_TCPV4;
-> > > +     vh.gso_size =3D 1400;
-> > > +     vh.hdr_len =3D (cur - buf) - sizeof(vh) - payload_len;
-> > > +     memcpy(buf, &vh, sizeof(vh));
-> > > +
-> > > +     return cur - buf;
-> > > +}
-> > > +
-> > > +TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum)
-> > > +{
-> > > +     struct virtio_net_hdr vh;
-> > > +     uint8_t pkt[4096] =3D { 0 };
-> > > +     int len, ret;
-> > > +
-> > > +     len =3D build_vlan_tcpv4_gso_packet(pkt, 2800);
-> > > +     memcpy(&vh, pkt, sizeof(vh));
-> > > +
-> > > +     /* Valid VLAN-tagged TCPv4 GSO with flags =3D 0 (no NEEDS_CSU=
-M) */
-> >
-> > This is not a GSO packet if no vh.gso_type
-> >
-> > > +     vh.flags =3D 0;
-> > > +     memcpy(pkt, &vh, sizeof(vh));
-> > > +     ret =3D write(self->fd, pkt, len);
-> > > +     ASSERT_EQ(ret, len);
-> > > +
-> > > +     /* Valid VLAN-tagged TCPv4 GSO with flags =3D DATA_VALID */
-> >
-> > Same
-> =
+The relay queues its General Query on the amt device with a raw tunnel
+pointer in skb->cb, and a query that waits in a qdisc can outlive its
+tunnel: a use-after-free in amt_dev_xmit(), reported by Microsoft with
+a KASAN reproducer. Patch 1 sends the query directly from
+amt_request_handler(), inside the RCU section that found or created
+the tunnel, so it never waits in a qdisc and nothing is stored in
+skb->cb.
 
-> build_vlan_tcpv4_gso_packet() already sets:
-> =
+Patch 2 adds the selftest Taehee asked for. It counts the queries that
+leave the relay through its amt device and expects none. It fails
+without patch 1 and passes with it.
 
-> vh.gso_type =3D VIRTIO_NET_HDR_GSO_TCPV4;
-> vh.gso_size =3D 1400;
-> vh.hdr_len =3D (cur - buf) - sizeof(vh) - payload_len;
-> memcpy(buf, &vh, sizeof(vh));
+v4: patch 1 is unchanged from v3; patch 2 is new.
+v3: https://lore.kernel.org/netdev/20260928181601.85857-1-omar@blockcast.net/
+v2: https://lore.kernel.org/netdev/20260922214150.13970-1-cenzhang@linux.microsoft.com/
 
-Missed that, sorry. I was only looking at the top of the function.
+Omar Ramadan (2):
+  amt: send the relay's General Query directly from the receive path
+  selftests: net: amt: check that the relay's queries bypass the amt
+    device
 
-> and vlan_tcpv4_gso_no_csum() copies it back into the local vh right
-> afterwards:
-> =
+ drivers/net/amt.c                  | 48 ++++++++++--------------------
+ include/net/amt.h                  |  4 ---
+ tools/testing/selftests/net/amt.sh | 29 ++++++++++++++++++
+ 3 files changed, 44 insertions(+), 37 deletions(-)
 
-> len =3D build_vlan_tcpv4_gso_packet(pkt, 2800);
-> memcpy(&vh, pkt, sizeof(vh));
-> =
 
-> so vh.gso_type is VIRTIO_NET_HDR_GSO_TCPV4 (and vh.gso_size is 1400) fo=
-r
-> both the flags =3D 0 and flags =3D VIRTIO_NET_HDR_F_DATA_VALID cases.
-
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+-- 
+2.47.3
 
