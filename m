@@ -1,71 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F56430C619
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290003839A9
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790619678; cv=none; b=Iw+ZMp8nxIYzxV6LM5TyzEzLipRc2LjebIwj6iDoC5fZ6azyrruAfnwxlakac8kD4XXN/Dn8N7SdS+TWdT9QgNhalEbUmUEFT+eIRQRYRi4zIfH7EHyLJde1bTaAcoTXc6Ze/tWTcvVB6LnR0kObyHyTiMuUw49IpIO419LqLxc=
+	t=1790619809; cv=none; b=AB0fhQDWVSxDsXTbqkwFrLW1DtWzIxsbNZYEVgHZIEWJfQcZf3WUBvHyK8U0iOCfeNCAsGydAWYCYG8GgolrtGnTOhG3xr9e40OIMdIC0rAoCrCtDJv2h9wAWfwbg0SjkgvUTgAauC9zs/0/QYo4FW3nrVl6e2MjyTCLwd7/f6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790619678; c=relaxed/simple;
-	bh=Iz1jUJ8PYkI/xIvrRo6nkzRb6tq0Gz7ryEZH18pbLJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BZ0ATfbMJYui9vYwMdSCK9JXsn+Dah/j8EkvlT72t2oQFjD/IKI1LRfDp9BjkVJzKoAI0s7yhaJfb0eqHOwpIRz14A2VTWuI25QALBmq5AFPzrPyn9S1ZeNHin85xQaDPWKw9SNqkYdNpa/rpTVyCG/2ObFRPMIQnaHnd34MPLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0KBFjGf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790619809; c=relaxed/simple;
+	bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Vc2PDlSFk1/nbeRDgXeXKi0pb8PmCL2ZAznHJjBXQdgeMyGsoaDCwkZxNJTrPYBq7IGVbnvums1yTY20PIeGj3WYIk7lz5yyc651EXUTxBRP2jCAuMLMJZ+sU9IhZFkYwuqBTLeare5KvlXCkAlRNGi3985agqpAwf8EeaG4W9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=Zb4f5aNs; arc=none smtp.client-ip=74.125.225.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0KBFjGf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA991F000FF;
-	Mon, 28 Sep 2026 18:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790619676;
-	bh=Femqy5YucPhKQtqlHfsFg2683UcZE2IuR7plxOthRT4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=c0KBFjGfKbkN3SBEKLIX2ulglV6LjRzVevSsqhBRza7NAYcJoUj1gjQh300eJOpdA
-	 /UwaeurUKzAbn8c/BrMNEq14kK1pjwpvQ6XifQmeKM2IOwYM70ocWnnh+KSgFx3LfK
-	 I823blrAqNti6yYOPwhAzMXQACF9oW8RRgFb9Gn82FSpSnKVPGD4+3VSG7We0jYMxG
-	 /lQu1FbGJYVDP+jj0dgTcwZlp7Y3ObQ1GlFkdTNSsKSbOK6AzLm82CdcrxVPqPqPks
-	 kJIcKgaRdmV3Na3PU7utz3EEmxcPTP5WC2I8HYOpPtYH6Dqq8Qeu/gIzpiaLuLsxW2
-	 LKGLvW+xYlHRA==
-Date: Mon, 28 Sep 2026 11:21:15 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, sdf.kernel@gmail.com
-Subject: Re: [PATCH net-next v2 1/2] net: use two lockdep classes for the
- netdev instance lock
-Message-ID: <20260928112115.18a9d249@kernel.org>
-In-Reply-To: <CANn89iLdVkThwG0A3tNTd57FdBSNk6xgp0p26f43u3FOBBYnww@mail.gmail.com>
-References: <20260926041832.1649675-1-kuba@kernel.org>
-	<CANn89iLdVkThwG0A3tNTd57FdBSNk6xgp0p26f43u3FOBBYnww@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="Zb4f5aNs"
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49cfcf2548aso15207485e9.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blockcast.net; s=google; t=1790619806; x=1791224606; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
+        b=Zb4f5aNsl5iwLe1FSAwNb0ycX2DrDw2H4HofWQwFBIbhCwwyILo1YciTASRLUGshbU
+         +hATWqqRxaQj50ct6KhRnQZZNpD2biq0S0Us8wos/qa/FrCpGlWGYe/c6ASG7YiRfPg2
+         7XFhw3gcvxPp6rsE+8y+ssuz4b4wQxCAxn/W/KLW2a30J7ICRm+v+C6Hc4aTx3W4wkYl
+         BC3Ea31lnF6PQLfGwthnOpcoLU+SAzh4q7XYf3Q5YWWXYoHlWEn0KkLRaT9GZ2a+g7S0
+         7It0LA4w7MvkAGGQM+3ee2n13aq1mxVrGdFHJC43/BsYdMz6V80qRiadoD2KUFXfNync
+         7cCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790619806; x=1791224606;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
+        b=NgjXcV98rGjVgEzuR7m8eBtoME6hbu9JYh4hupg1+ER0/F/+PAzY7435uGLp89umJg
+         YpmhxFYwUP7Jr6TenZuELspGvfXHf9C+O9vAiKYCw4MBmrMS3cAQo0ZNwLXmhYrR1s7c
+         MjS7TvMxmpQAorekz+cn+OVsmzYOyB1fJ4GGZkZEV7PpCMZqK0AUfg4Zwa0KEJHV5A9f
+         +jp02nOdIkGhVUFWuHyWsPD/FyWSUtGRTHHmsJjejOEwA5yWLYW4U4NyVDkj+Zwj/puj
+         yyxQJisQomnstaFbMoE6uTnoo5868nSMJnme3KXy/wT/zGhU8CHH2MAx0YYp2ttog2mY
+         uLVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzNVHK11luP/XbfMn5TjnyPoNOf+mD0/5/eSfllukp8FkL7s9DEr5nqjnd+igFpyh6bOrdN8kk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nReuDtbqqdgqsVRZOcqPezwHh/OVk5ZHax0UkTxMo0GQqDCRph
+	rfMp5JyDdLA6mXgsYvvzuh5DkOIO35wh5NdBPiMtM9orSU1CYGUYOsPlk+0M8OuhU8o=
+X-Gm-Gg: AYBFou0n+9K2Ly46NuKGr8+6cogjrTWAYDbRKPqmHoPBWkHBZWed1KVqPOXPWN7jwMu
+	dyhyvBCyv8ILiYkEeJpCiwnoc90R84mh3F32yLJyx+7OFr+Odnp0pfsfp7CFrRCKrtLLdqSXIWD
+	q2crQj2057bV3NWIcDaRxqyXwcQ3iYwiojG6+AAgAiuhuNabVqz8F+j5251VbEh7L5kY0JI2+Fa
+	5o70nTTEUEjvmFlgyhC0IPF0PpoX0/VNbl/K+NiKGqdy0bfHlDd7LTqGk4ysRBY3vbBeiSinSTh
+	D8l0VQONp2Ori7c6LjuX7VdvohaFlQWmIsRiJWAxdB32JX3UDolLqBoPhqc+LeAjlzrOTcpAWxr
+	G0ZYtLUVpEiKsenOGq1+My+IiIcsxPwKsP9rme2GEwhcEMNEFoOFmXrl9d7Ecl85QVLh9nQP8/T
+	ZU6D/4rGf2u0/LOsUa4awYan2X0tlD1W8sSu9U0/s/WqMK/vAt1kBfCT4ai8L6VfIwMBG6fuXEy
+	koborabVloYMeHHbQns4ZvXNAFjVdpObr4dMsS0DnIv3Fe1oF0Piavk6jEs/5/SinLlPJz265kS
+	6Q==
+X-Received: by 2002:a05:600c:4744:b0:49c:e1cd:536 with SMTP id 5b1f17b1804b1-49fe7b6371bmr246224735e9.12.1790619806453;
+        Mon, 28 Sep 2026 11:23:26 -0700 (PDT)
+Received: from localhost.localdomain ([197.51.38.79])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00d0f68basm9476785e9.12.2026.09.28.11.23.24
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 11:23:25 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: Cen Zhang <cenzhang@linux.microsoft.com>
+Cc: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	Xiang Mei <xmei5@asu.edu>,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: Re: [PATCH net v2] amt: do not store tunnel pointer in skb control block
+Date: Mon, 28 Sep 2026 21:23:22 +0300
+Message-ID: <20260928182322.90171-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <179038364383.2160803.12085088814406803245@kernel.org>
+References: <20260922214150.13970-1-cenzhang@linux.microsoft.com> <179038364383.2160803.12085088814406803245@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 26 Sep 2026 09:08:16 +0200 Eric Dumazet wrote:
-> >         mutex_init(&dev->lock);
-> > +       /* see also netdev_set_instance_lock_class() */
-> > +       lock_set_cmp_fn(&dev->lock, netdev_lock_cmp_fn, NULL);
-> >         netif_rx_mode_init(dev);
-> >
-> >         dev->priv_flags = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;  
-> 
-> Some virttual drivers (like  tun and wireguard) do not use yet
-> netdev_lockdep_set_classes(),
-> I'm not sure if they eventually will.
-> 
-> We might ease their future request_ops_lock = true conversion by calling
-> netdev_set_instance_lock_class(dev) directly inside register_netdevice()
-> 
-> -> No EXPORT_SYMBOL_GPL(netdev_set_instance_lock_class) would be needed.  
-> In fact netdev_set_instance_lock_class couldd be static in net/core/dev.c
+On Sat, Sep 26, 2026, Sashiko wrote:
+> [Severity: Medium]
+> Can this lookup return a tunnel that amt_request_handler() has published but
+> not finished initializing?
 
-Ack, maybe I lazied out on this one a little. I wasn't sure what the
-consequences are of not setting the class before the first lock use.
-I _think_ I've seen a splat at some point when I did that.
+Yes, I think this one is real for v2. amt_request_handler() makes a
+new tunnel visible with list_add_tail_rcu() before it writes nonce and
+mac at the send: label. A query left in the qdisc from an expired
+tunnel can therefore match a re-created tunnel for the same gateway
+and port during that window.
 
-I will investigate further if I need to respin
+The direct-send approach proposed earlier in this thread avoids it by
+construction. amt_send_igmp_gq() and amt_send_mld_gq() run at the end
+of amt_request_handler(), after the same context has written nonce and
+mac. They call amt_send_membership_query() for that tunnel, and nothing
+is looked up again at dequeue. I've posted that as v3:
+https://lore.kernel.org/netdev/20260928181601.85857-1-omar@blockcast.net/
+
+I ran Cen's reproducer on net at 17741334d00 (KASAN, slub_debug=FZU):
+the unpatched tree reports the slab-use-after-free in amt_dev_xmit(),
+and both v2 and the direct-send diff run clean. The reproducer does
+not exercise the re-creation window above, so this confirms the UAF
+fix, not the v2 race.
+
+> [Severity: Medium]
+> [...] a query that was successfully handed to udp_tunnel_xmit_skb() is
+> counted as tx_dropped
+
+v3 removes the relay query branch from amt_dev_xmit(), so a General
+Query that was sent is no longer counted as dropped. The gateway report
+path (a successful amt_send_membership_update() followed by goto
+unlock) has the same miscount. That is independent of the UAF; I'll
+send a separate patch for it once v3 is in, since it applies on top.
+
+> [Severity: High]
+> amt_dev_stop() deletes the same entries with no lock at all
+
+This predates the fix and is independent of it. Reading net, it looks
+right to me: nothing disables the per-tunnel gc_wq before the unlocked
+loop. cancel_delayed_work_sync() comes after list_del_rcu(), so it can
+wait for a running amt_tunnel_expire() that then deletes the entry and
+calls kfree_rcu() on it a second time. Cen already posted a fix for
+this, "amt: fix tunnel list corruption on device stop":
+https://patchwork.kernel.org/project/netdevbpf/patch/20260822045407.28983-1-blbllhy@gmail.com/
+so I'll leave that one to that thread.
+
+pw-bot: cr
