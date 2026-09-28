@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F42B302CC1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1982DCBFA
 	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790599193; cv=none; b=LixSzlBvTm/d+jZeSNi9HWnx0CTGSvrYNLnfZKN8XG9w733T9SUTIktiEsJBBedgtdgAJZ+LpcfGJkR63W/BAQ5ZY3ON3MEsnOqr1yIK6sX+U9E6V1jubgWq1Ea+MO+dT5MvlJHHnRX9GP1R1O00V7Z0Ta8hOeQkU8gkXHAoqUA=
+	t=1790599194; cv=none; b=U+KKuVfQNKJx21zfcMJ1tIksA22KyaV/iLHgmdMyx/Qg054PrYzaozBlSFkkpF0Z6NvPgB7FakZiljXNoXDBa3/DfJ8YzQSPQHV9cUidVBJv/4TQtxShqokGF6XTaVqhzyYncsIlLpMrZKdDoEaBu6FeGfnNrwz/rL1I+KRIkdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790599193; c=relaxed/simple;
-	bh=VMgY1P+jq0WbBXIlteABApp+SfiYvc8Sqm5dpy9M9Hs=;
+	s=arc-20240116; t=1790599194; c=relaxed/simple;
+	bh=UyAyzavieMdg0lS3gk3bI+okGpB+dx8RpRe0h2EgdXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u/Qf15FmpuPAtRwfH1QWUREArA6phsRzOrf8G1YVWWri09mutvbz5aaEsl1eJ5UpZ82SrJGe0zLeMIcenRdumMBhMrhvgxepbLGUEy+86vRaNsA6enlDQfk5Vh/v+MX+GNYPffkpEmLvb82E07qmMIv4Yy5GvFnkBhSUHwUMqds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3PcN467P; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vGL6W76o; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=a/awtk8GKSfy3D3Pj7wfS6YMzJTg0Z9fYJt240nh09QD6gW+KTt3DqEXFDx5jt12pZzuUZdKeEHegVKCD9ZL27JyuDBCjvVViR4L2gs6Z2uITK/o8CNTLynvTIwJ5KXSbgcW/iVrI1IqmHdfUANKFH3Q5Qu8ybIWxjbBdu7stEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X6Sea2X8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lK5GhCHU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3PcN467P";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vGL6W76o"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X6Sea2X8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lK5GhCHU"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790599190;
+	s=2020; t=1790599191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LFlP7qcGF1jPukuNoCiG+brouPMOaIQQIzf+Iy2+3SY=;
-	b=3PcN467Pi+JOLR+SElIgU895fJucwes/lXWiUS83vbI9wYJXSfnhhwxMU8/NcI7DqJmPM5
-	EgBIKimuFFjEFBYrk6opyjJ75D/E7NYZtyBJ50Ia8bNSKkzxrNiAHSgGfsZh6BWar7r0x6
-	X1CbNr/QBepp9UlCJoF42S/aHSwM5itJ5vS5fXQs8iRJjWYZA8fOtMzgMcKWroWreXkO+u
-	jsKmnYi9Xe5wAAKoPYtXxqGGzezuebbxdRuuJoT8+HkACm2ipKdWfAQpacNPFr1vR+x7Sv
-	HKoPBAWauQXfyce5655WbICnd26rVPlEbBo6AJmgGXBC7F34t83qHBl13F37Ag==
+	bh=isdmlxt9+quv1NVZ9LI7vPzqMCT/HxLYck2xupik0HI=;
+	b=X6Sea2X84FLXQlXAXTWA7ONTV3KDE659gdUs9J3wc7FpNTOa4QPuGWWBEFHyTa+2ZA8MZs
+	u09GzPZaDs5n72Rx4jM5Tq0SvvFWAlaQjc9KnhKyODghiMPLtaE4EacOBq22bL+hK5FZK2
+	ZWOt6Mbo478IYUqzN7KgOLVDMQ4MWb2/wLyNFHdHO+3o3Tq8bdbStFpLjgkxc8fHPkf03B
+	Ng34ivRCxenMFuIW641FH361VaePs1kWE36P2pvdRFvhckA+wpLYgkx6aTrOHIY1z+ZTnO
+	6L8J5UicWkfUF+1kq+7ee09jtoMwVWlGdumZTaNo/z86odG1MCpEIV5siCNWgA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790599190;
+	s=2020e; t=1790599191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LFlP7qcGF1jPukuNoCiG+brouPMOaIQQIzf+Iy2+3SY=;
-	b=vGL6W76o+Np+fvDrBGWCsu2HQ5u41OMMjM0jW2KVQr8Qo6JuIILcTy8l3pV5EVwNyv+tAV
-	1QfngHTzWE7drlCg==
+	bh=isdmlxt9+quv1NVZ9LI7vPzqMCT/HxLYck2xupik0HI=;
+	b=lK5GhCHUP4kltoLC5CivtYYu2TokypS0CTG7/l4OYBVg8yW4ZNZZtJ0wha3Cmod5W9duvR
+	LRJQTJSF7jbYUMCQ==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
@@ -58,9 +58,9 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next v7 6/8] hsr: Assign a socket for cloned skbs
-Date: Mon, 28 Sep 2026 14:39:40 +0200
-Message-ID: <20260928-hsr_ptp-v7-6-d55d304d9a7e@linutronix.de>
+Subject: [PATCH net-next v7 7/8] hsr: Move struct hsr_ethhdr to a global header
+Date: Mon, 28 Sep 2026 14:39:41 +0200
+Message-ID: <20260928-hsr_ptp-v7-7-d55d304d9a7e@linutronix.de>
 In-Reply-To: <20260928-hsr_ptp-v7-0-d55d304d9a7e@linutronix.de>
 References: <20260928-hsr_ptp-v7-0-d55d304d9a7e@linutronix.de>
 Precedence: bulk
@@ -72,50 +72,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The cloned skb does not have a socket information recorded of
-the original skb. The original skb is never submitted. This means the
-requested timestamp information gets lost.
+In the offloading case the network driver needs to inspect the HSR
+header to find out if the encapsulated type is a PTP packet where it
+needs suppress offloading of the packet.
 
-Assign the socket of the original skb to the clone so the timestamp is
-forwarded to the user.
+Move the header so it can be included the driver.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/hsr/hsr_forward.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/if_hsr.h | 5 +++++
+ net/hsr/hsr_main.h     | 5 -----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 2ce31b1da7b35..eb696e33bd739 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -12,6 +12,7 @@
- #include <linux/skbuff.h>
- #include <linux/etherdevice.h>
- #include <linux/if_vlan.h>
-+#include <net/sock.h>
- #include "hsr_main.h"
- #include "hsr_framereg.h"
+diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
+index 7b6b60ef592db..0d58559724fc9 100644
+--- a/include/linux/if_hsr.h
++++ b/include/linux/if_hsr.h
+@@ -39,6 +39,11 @@ struct hsr_tag {
 =20
-@@ -348,6 +349,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fram=
-e_info *frame,
- 	if (!skb)
- 		return NULL;
+ #define HSR_HLEN	6
 =20
-+	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
-+		skb_set_owner_w(skb, frame->skb_std->sk);
++struct hsr_ethhdr {
++	struct ethhdr	ethhdr;
++	struct hsr_tag	hsr_tag;
++} __packed;
 +
- 	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
- 		return skb;
+ #if IS_ENABLED(CONFIG_HSR)
+ extern bool is_hsr_master(struct net_device *dev);
+ extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
+diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
+index 53e95bae0ee27..36eb82774000c 100644
+--- a/net/hsr/hsr_main.h
++++ b/net/hsr/hsr_main.h
+@@ -72,11 +72,6 @@ static inline void set_hsr_tag_LSDU_size(struct hsr_tag =
+*ht, u16 LSDU_size)
+ 				       0xF000) | (LSDU_size & 0x0FFF));
+ }
 =20
-@@ -581,6 +585,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
- 		 */
- 		if (frame->has_foreign_header && frame->skb_std) {
- 			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
-+			if (skb && frame->skb_std->sk)
-+				skb_set_owner_w(skb, frame->skb_std->sk);
- 			goto inject_into_stack;
- 		}
-=20
+-struct hsr_ethhdr {
+-	struct ethhdr	ethhdr;
+-	struct hsr_tag	hsr_tag;
+-} __packed;
+-
+ struct hsr_vlan_ethhdr {
+ 	struct vlan_ethhdr vlanhdr;
+ 	struct hsr_tag	hsr_tag;
 
 --=20
 2.55.0
