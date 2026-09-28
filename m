@@ -1,53 +1,53 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5DF455171;
-	Mon, 28 Sep 2026 07:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5501F1DDC37;
+	Mon, 28 Sep 2026 07:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790579106; cv=none; b=LAJlc+FeqKiU62f222PxtugV8a/j8YyCmV3/obUKDe5rL6inT18IjJZegRZebI7aNGwIrIJOnyCLv9fKVmjOgLT+C3zYm48nN1e3KM9QHJ0SLJaVQNyuL97pZ4mFIHCYzMc/dztYkL3doPT7Xz/coF2nSo+/DyNqM96arkJB0bo=
+	t=1790579106; cv=none; b=nkkEvQEWEkUW+YaAflX5viRpXwPNJ2NsgweqnkDbtbPmggCEqiL318ccxSr7IgSeUbcBSjLzc22LXebN+9KXVrx0b5GL+54FxMYLdpm0CQSh80AaTGMqFvFxokVeYP8TTNfMBhEo+q8FITnC4cZvSPhpIk7vafIL7lZ9542CTBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790579106; c=relaxed/simple;
-	bh=sct9Hd01/90UMG3HbTCIPrwrn1rjasmTdeottm3MYr4=;
+	bh=wvqtZPkmpYzPjOPAv4gnSXFC7dvGnZrYiTA+GiinzYg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sTDBBYxyej7kYXkYZId9bSnRm7MNGqsmZ6oYd+WO2Ueyl477MjCzLKP6Rhqx0YZYgJOt8idwGEibGIIS9y8Aop0YLlj/bi9NVEHHGWqkP1d5HLu22GMoRHm6TWsN2NA+weGPzlyOr2RaujMcSzSikS0DJXQ1o6u/FA0k2jMoxyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=hrQNeMHQ; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=OIu1QekCNg3kuyc8ylovjHnOkpw6XTf4CX514/4UAi0LB9lrnilXAj87OLcObzHwY3eg7hsf/CWR+Xyr7lFeESj8Xkv86LD1fsn66ecsjeleDZ5N0H/e/h/blzH8zuXxVh3PCcl/V0mWMvAXIwvP/dFOsaW0lEAu7edYoaadIIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=kYXSLcMh; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="hrQNeMHQ"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68S74QmsC217875, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="kYXSLcMh"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68S74RmtC217875, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1790579066;
-	bh=tu0dj/iOc0ttpvXlBHhYVCfdKvUJElcq/gbjQWL10yw=;
+	s=dkim; t=1790579067;
+	bh=33EWe2Y8CJ1/iEVYg8lpMTICXqJEIrXkRUWVJLCUp4Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=hrQNeMHQlen4ZoRt8LAyQzYTen0gbh1WRRKQs7C1yQ6owFCBNyVEYD0zPvm3k6+Qh
-	 vlv+nb1j07ISQKaLKoiV8O/Eu+5Q0ue3EJVfVU5KRyoRZ3aDO4x0NTpsA729EL8uLp
-	 LNe1TjHtKyvzVfPYLq1oA/Dt6GkIyp8XKb9olExqadK4S9ioVDYjUDDLGK5jPjVgXp
-	 zAy8V8FpEe1uoXK5U+1w/anHDveYJb/5KxCqj67z0rPmvhOXs/UgiqiLKH3lT7Fu29
-	 WN73hxGH12UWByQ241rWu/1VEzcNKbzekx5L4n2sIsGzC3Oo7kptOMi6Cg9kQgM0Jq
-	 8VuKYeZU6UL+Q==
+	b=kYXSLcMh8FuEF2g179bBqld7nTjTo5nqT0D25dSJVFADAjnAMud73pLlX6wLmU6uL
+	 VXWnjOiXxuzCjm2S+/KPdXAcuJHXq6SN3vLy3H9y/QdfF3MtwzMDAa6F0+AtSi9J75
+	 aRumZd27Ajm7ln/cNvOo/VIKfzS1bJvPBxjkZwaTwv0BtltG5GSxIjY9mI7VH7JDUj
+	 Nkim/Zy05KNL5zrcfp2Kk+0DrOMgViNZGglOPY1w5C83ts102i6+gnRPUL806WNDsY
+	 wWcgQpadcXly2FpayHV9xkpgPOBT5SF/YB3Ulyo+mU4fu/Kyk/uJpZLxv5w0o96BxE
+	 XdUUpaIAPv/Rg==
 Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68S74QmsC217875
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68S74RmtC217875
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 28 Sep 2026 15:04:26 +0800
+	Mon, 28 Sep 2026 15:04:27 +0800
 Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
  RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 28 Sep 2026 15:04:25 +0800
+ 15.2.2562.49; Mon, 28 Sep 2026 15:04:26 +0800
 Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
  (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Mon, 28 Sep 2026 15:04:25 +0800
+ Transport; Mon, 28 Sep 2026 15:04:26 +0800
 From: javen <javen_xu@realsil.com.cn>
 To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <horms@kernel.org>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v15 2/7] r8169: refactor RX path to prepare for multi-queue
-Date: Mon, 28 Sep 2026 15:04:18 +0800
-Message-ID: <20260928070423.202-3-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v15 6/7] r8169: move struct ethtool_ops
+Date: Mon, 28 Sep 2026 15:04:22 +0800
+Message-ID: <20260928070423.202-7-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260928070423.202-1-javen_xu@realsil.com.cn>
 References: <20260928070423.202-1-javen_xu@realsil.com.cn>
@@ -62,571 +62,132 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-This patch is a preparatory refactoring of the RX path. It introduces
-struct rtl8169_rx_ring and turns the previously embedded RX state in
-rtl8169_private into a per-queue array.
-While the netdev allocation is changed to devm_alloc_etherdev_mqs()
-with up to 8 RX queues, the actual number of active RX rings
-(num_rx_rings) is currently kept at 1. The actual multi-queue operation
-and RSS enablement will be introduced in subsequent patches.
+The patch moves the rtl8169_ethtool_ops definition further down in
+r8169_main.c so that subsequent additions of rtl8169_get_channels and
+rtl8169_set_channels can be referenced from the ops struct without
+needing forward declarations.
 
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
 Changes in v2:
- - sort some registers by its number
- - remove some unused definitions, like RX_DESC_RING_TYPE_MAX
- - change recheck_desc_ownbit type
- - remove rdsar_reg in rx_ring struct
- - opts1 are different in rx_desc and rx_desc_rss, move the judgement
-   to Patch 5/7
+ - no changes
 
 Changes in v3:
- - remove ring->rx_desc_alloc_size, use constant instead
+ - no changes
 
 Changes in v4:
- - change rdsar_reg type to unsigned int
- - follow reverse xmas tree, in rtl_set_rx_tx_desc_registers(),
-   rtl8169_alloc_rx_data(), rtl8169_alloc_rx_desc(),
-   rtl8169_free_rx_desc()
- - add comments on LED_CTRL, remove helper function
+ - no changes
 
 Changes in v5:
- - modify rtl8169_init_ring(), do rx clear when failed
- - add definition R8169_MAX_TX_QUEUES 1
+ - no changes
 
 Changes in v6:
- - Restore the secondary Rx error filter when NETIF_F_RXFALL is enabled
-   in rtl_rx()
+ - modify commit message
 
 Changes in v7:
- - remove code associated with recheck_desc_ownbit
+ - no changes
 
 Changes in v8:
- - remove le64_to_cpu() for addr, rx get addr from rx_desc_phy_addr
+ - no changes
 
 Changes in v9:
- - remove R8127_MAX_RX_QUEUES
- - remvoe rx_desc_ring_type to the following patch
- - Fix loop bound in init_ring_indexes
- - Restore checksum API
+ - no changes
 
 Changes in v10:
- - alloc rtl8169_rx_ring struct according to the num_rx_ring dynamically
+ - no changes
 
 Changes in v11:
- - leak rx_ring array on driver removal
+ - no changes
 
 Changes in v12:
  - no changes
 
 Changes in v13:
- - remove unused dirty_rx
+ - no changes
 
 Changes in v14:
- - REvert R8169_RX_RING_BYTES padding changes. It will be split into a
-   bugfix patch.
- - Fix phylink memory in rtl_init_one() by implementing a proper goto
-   unwind laber (err_destory_phylink) for memory allocation failures.
-   
+ - no changes
+ 
 Changes in v15:
  - no changes
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 244 +++++++++++++++++-----
- 1 file changed, 186 insertions(+), 58 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 56 +++++++++++------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a8214c48a775..7a2e7ce56e48 100644
+index 1024cf4596b9..f14178f41801 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -74,9 +74,13 @@
- #define NUM_TX_DESC	256	/* Number of Tx descriptor registers */
- #define NUM_RX_DESC	256	/* Number of Rx descriptor registers */
- #define R8169_TX_RING_BYTES	(NUM_TX_DESC * sizeof(struct TxDesc))
-+
- #define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
- #define R8169_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
- #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
-+#define R8169_MAX_RX_QUEUES	8
-+#define R8169_DEFAULT_RX_QUEUES	1
-+#define R8169_MAX_TX_QUEUES	1
+@@ -2637,34 +2637,6 @@ static int rtl8169_nway_reset(struct net_device *dev)
+ 	return phylink_ethtool_nway_reset(tp->phylink);
+ }
  
- #define OCP_STD_PHY_BASE	0xa400
+-static const struct ethtool_ops rtl8169_ethtool_ops = {
+-	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+-				     ETHTOOL_COALESCE_MAX_FRAMES,
+-	.get_drvinfo		= rtl8169_get_drvinfo,
+-	.get_regs_len		= rtl8169_get_regs_len,
+-	.get_link		= ethtool_op_get_link,
+-	.get_coalesce		= rtl_get_coalesce,
+-	.set_coalesce		= rtl_set_coalesce,
+-	.get_regs		= rtl8169_get_regs,
+-	.get_wol		= rtl8169_get_wol,
+-	.set_wol		= rtl8169_set_wol,
+-	.get_strings		= rtl8169_get_strings,
+-	.get_sset_count		= rtl8169_get_sset_count,
+-	.get_ethtool_stats	= rtl8169_get_ethtool_stats,
+-	.get_ts_info		= ethtool_op_get_ts_info,
+-	.nway_reset		= rtl8169_nway_reset,
+-	.get_eee		= rtl8169_get_eee,
+-	.set_eee		= rtl8169_set_eee,
+-	.get_link_ksettings	= rtl8169_get_link_ksettings,
+-	.set_link_ksettings	= rtl8169_set_link_ksettings,
+-	.get_ringparam		= rtl8169_get_ringparam,
+-	.get_pause_stats	= rtl8169_get_pause_stats,
+-	.get_pauseparam		= rtl8169_get_pauseparam,
+-	.set_pauseparam		= rtl8169_set_pauseparam,
+-	.get_eth_mac_stats	= rtl8169_get_eth_mac_stats,
+-	.get_eth_ctrl_stats	= rtl8169_get_eth_ctrl_stats,
+-};
+-
+ static const struct rtl_chip_info *rtl8169_get_chip_version(u32 xid, bool gmii)
+ {
+ 	/* Chips combining a 1Gbps MAC with a 100Mbps PHY */
+@@ -6761,6 +6733,34 @@ static void r8169_init_napi(struct rtl8169_private *tp)
+ 	}
+ }
  
-@@ -463,6 +467,7 @@ enum rtl8125_registers {
- 	TxPoll_8125		= 0x90,
- 	LEDSEL3			= 0x96,
- 	MAC0_BKP		= 0x19e0,
-+	RDSAR_Q1_LOW		= 0x4000,
- 	RSS_CTRL_8125		= 0x4500,
- 	Q_NUM_CTRL_8125		= 0x4800,
- 	EEE_TXIDLE_TIMER_8125	= 0x6048,
-@@ -750,6 +755,14 @@ enum rtl_dash_type {
- 	RTL_DASH_25_BP,
- };
- 
-+struct rtl8169_rx_ring {
-+	u32 cur_rx;
-+	struct RxDesc *rx_desc_array;
-+	dma_addr_t rx_desc_phy_addr[NUM_RX_DESC];
-+	dma_addr_t rx_phy_addr;
-+	struct page *rx_databuff[NUM_RX_DESC];
++static const struct ethtool_ops rtl8169_ethtool_ops = {
++	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
++				     ETHTOOL_COALESCE_MAX_FRAMES,
++	.get_drvinfo		= rtl8169_get_drvinfo,
++	.get_regs_len		= rtl8169_get_regs_len,
++	.get_link		= ethtool_op_get_link,
++	.get_coalesce		= rtl_get_coalesce,
++	.set_coalesce		= rtl_set_coalesce,
++	.get_regs		= rtl8169_get_regs,
++	.get_wol		= rtl8169_get_wol,
++	.set_wol		= rtl8169_set_wol,
++	.get_strings		= rtl8169_get_strings,
++	.get_sset_count		= rtl8169_get_sset_count,
++	.get_ethtool_stats	= rtl8169_get_ethtool_stats,
++	.get_ts_info		= ethtool_op_get_ts_info,
++	.nway_reset		= rtl8169_nway_reset,
++	.get_eee		= rtl8169_get_eee,
++	.set_eee		= rtl8169_set_eee,
++	.get_link_ksettings	= rtl8169_get_link_ksettings,
++	.set_link_ksettings	= rtl8169_set_link_ksettings,
++	.get_ringparam		= rtl8169_get_ringparam,
++	.get_pause_stats	= rtl8169_get_pause_stats,
++	.get_pauseparam		= rtl8169_get_pauseparam,
++	.set_pauseparam		= rtl8169_set_pauseparam,
++	.get_eth_mac_stats	= rtl8169_get_eth_mac_stats,
++	.get_eth_ctrl_stats	= rtl8169_get_eth_ctrl_stats,
 +};
 +
- enum rtl_sfp_mode {
- 	RTL_SFP_NONE,
- 	RTL_SFP_8168_AF,
-@@ -764,20 +777,18 @@ struct rtl8169_private {
- 	enum mac_version mac_version;
- 	enum rtl_dash_type dash_type;
- 	enum rtl_sfp_mode sfp_mode;
--	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
- 	u32 cur_tx; /* Index into the Tx descriptor buffer of next Rx pkt. */
- 	u32 dirty_tx;
- 	struct TxDesc *TxDescArray;	/* 256-aligned Tx descriptor ring */
--	struct RxDesc *RxDescArray;	/* 256-aligned Rx descriptor ring */
- 	dma_addr_t TxPhyAddr;
--	dma_addr_t RxPhyAddr;
--	struct page *Rx_databuff[NUM_RX_DESC];	/* Rx data buffers */
- 	struct ring_info tx_skb[NUM_TX_DESC];	/* Tx data buffers */
- 	struct napi_struct *rtl8169_napi;
-+	struct rtl8169_rx_ring *rx_ring;
- 	unsigned int num_rx_rings;
- 	u16 cp_cmd;
- 	u16 tx_lpi_timer;
- 	u32 irq_mask;
-+	unsigned int hw_supp_num_rx_queues;
- 	unsigned int irq_nvecs;
- 	struct clk *clk;
- 	int speed;
-@@ -2718,9 +2729,25 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
- 	}
- }
- 
-+static void rtl8169_rx_desc_init(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		memset(ring->rx_desc_array, 0x0, R8169_RX_RING_BYTES);
-+	}
-+}
-+
- static void rtl8169_init_ring_indexes(struct rtl8169_private *tp)
+ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
  {
--	tp->dirty_tx = tp->cur_tx = tp->cur_rx = 0;
-+	tp->dirty_tx = 0;
-+	tp->cur_tx = 0;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		ring->cur_rx = 0;
-+	}
- }
- 
- static void rtl_jumbo_config(struct rtl8169_private *tp)
-@@ -2773,6 +2800,14 @@ static void rtl_hw_reset(struct rtl8169_private *tp)
- static void rtl_setup_rx_params(struct rtl8169_private *tp)
- {
- 	tp->num_rx_rings = 1;
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_80:
-+		tp->hw_supp_num_rx_queues = R8169_MAX_RX_QUEUES;
-+		break;
-+	default:
-+		tp->hw_supp_num_rx_queues = R8169_DEFAULT_RX_QUEUES;
-+		break;
-+	}
- }
- 
- static void rtl_request_firmware(struct rtl8169_private *tp)
-@@ -2899,6 +2934,8 @@ static void rtl_set_rx_max_size(struct rtl8169_private *tp)
- 
- static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
- {
-+	struct rtl8169_rx_ring *ring = &tp->rx_ring[0];
-+
- 	/*
- 	 * Magic spell: some iop3xx ARM board needs the TxDescAddrHigh
- 	 * register to be written before TxDescAddrLow to work.
-@@ -2906,8 +2943,18 @@ static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
- 	 */
- 	RTL_W32(tp, TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
- 	RTL_W32(tp, TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
--	RTL_W32(tp, RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
--	RTL_W32(tp, RxDescAddrLow, ((u64) tp->RxPhyAddr) & DMA_BIT_MASK(32));
-+	RTL_W32(tp, RxDescAddrHigh, ((u64)ring->rx_phy_addr) >> 32);
-+	RTL_W32(tp, RxDescAddrLow,
-+		((u64)ring->rx_phy_addr) & DMA_BIT_MASK(32));
-+
-+	for (int i = 1; i < tp->num_rx_rings; i++) {
-+		unsigned int rdsar_reg = RDSAR_Q1_LOW + (i - 1) * 8;
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		RTL_W32(tp, rdsar_reg + 4, ((u64)ring->rx_phy_addr >> 32));
-+		RTL_W32(tp, rdsar_reg,
-+			((u64)ring->rx_phy_addr) & DMA_BIT_MASK(32));
-+	}
- }
- 
- static void rtl8169_set_magic_reg(struct rtl8169_private *tp)
-@@ -4330,8 +4377,9 @@ static void rtl8169_mark_to_asic(struct RxDesc *desc)
- }
- 
- static struct page *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
--					  struct RxDesc *desc)
-+					  struct rtl8169_rx_ring *ring, unsigned int index)
- {
-+	struct RxDesc *desc = ring->rx_desc_array + index;
- 	struct device *d = tp_to_dev(tp);
- 	int node = dev_to_node(d);
- 	dma_addr_t mapping;
-@@ -4349,55 +4397,107 @@ static struct page *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
- 	}
- 
- 	desc->addr = cpu_to_le64(mapping);
-+	ring->rx_desc_phy_addr[index] = mapping;
- 	rtl8169_mark_to_asic(desc);
- 
- 	return data;
- }
- 
--static void rtl8169_rx_clear(struct rtl8169_private *tp)
-+static void rtl8169_rx_clear(struct rtl8169_private *tp,
-+			     struct rtl8169_rx_ring *ring)
- {
- 	int i;
- 
--	for (i = 0; i < NUM_RX_DESC && tp->Rx_databuff[i]; i++) {
-+	for (i = 0; i < NUM_RX_DESC && ring->rx_databuff[i]; i++) {
- 		dma_unmap_page(tp_to_dev(tp),
--			       le64_to_cpu(tp->RxDescArray[i].addr),
-+			       ring->rx_desc_phy_addr[i],
- 			       R8169_RX_BUF_SIZE, DMA_FROM_DEVICE);
--		__free_pages(tp->Rx_databuff[i], get_order(R8169_RX_BUF_SIZE));
--		tp->Rx_databuff[i] = NULL;
--		tp->RxDescArray[i].addr = 0;
--		tp->RxDescArray[i].opts1 = 0;
-+		__free_pages(ring->rx_databuff[i], get_order(R8169_RX_BUF_SIZE));
-+		ring->rx_databuff[i] = NULL;
-+		ring->rx_desc_phy_addr[i] = 0;
-+		ring->rx_desc_array[i].addr = 0;
-+		ring->rx_desc_array[i].opts1 = 0;
- 	}
- }
- 
--static int rtl8169_rx_fill(struct rtl8169_private *tp)
-+static int rtl8169_rx_fill(struct rtl8169_private *tp, struct rtl8169_rx_ring *ring)
- {
- 	int i;
- 
- 	for (i = 0; i < NUM_RX_DESC; i++) {
- 		struct page *data;
- 
--		data = rtl8169_alloc_rx_data(tp, tp->RxDescArray + i);
-+		data = rtl8169_alloc_rx_data(tp, ring, i);
- 		if (!data) {
--			rtl8169_rx_clear(tp);
-+			rtl8169_rx_clear(tp, ring);
- 			return -ENOMEM;
- 		}
--		tp->Rx_databuff[i] = data;
-+		ring->rx_databuff[i] = data;
- 	}
- 
- 	/* mark as last descriptor in the ring */
--	tp->RxDescArray[NUM_RX_DESC - 1].opts1 |= cpu_to_le32(RingEnd);
-+	ring->rx_desc_array[NUM_RX_DESC - 1].opts1 |= cpu_to_le32(RingEnd);
- 
- 	return 0;
- }
- 
-+static int rtl8169_alloc_rx_desc(struct rtl8169_private *tp)
-+{
-+	struct pci_dev *pdev = tp->pci_dev;
-+	struct rtl8169_rx_ring *ring;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		ring = &tp->rx_ring[i];
-+		ring->rx_desc_array = dma_alloc_coherent(&pdev->dev,
-+							 R8169_RX_RING_BYTES,
-+							 &ring->rx_phy_addr,
-+							 GFP_KERNEL);
-+		if (!ring->rx_desc_array)
-+			return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+static void rtl8169_free_rx_desc(struct rtl8169_private *tp)
-+{
-+	struct pci_dev *pdev = tp->pci_dev;
-+	struct rtl8169_rx_ring *ring;
-+
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		ring = &tp->rx_ring[i];
-+		if (ring->rx_desc_array) {
-+			dma_free_coherent(&pdev->dev,
-+					  R8169_RX_RING_BYTES,
-+					  ring->rx_desc_array,
-+					  ring->rx_phy_addr);
-+			ring->rx_desc_array = NULL;
-+		}
-+	}
-+}
-+
- static int rtl8169_init_ring(struct rtl8169_private *tp)
- {
-+	int i, ret;
-+
- 	rtl8169_init_ring_indexes(tp);
-+	rtl8169_rx_desc_init(tp);
- 
- 	memset(tp->tx_skb, 0, sizeof(tp->tx_skb));
--	memset(tp->Rx_databuff, 0, sizeof(tp->Rx_databuff));
- 
--	return rtl8169_rx_fill(tp);
-+	for (i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		memset(ring->rx_databuff, 0, sizeof(ring->rx_databuff));
-+		ret = rtl8169_rx_fill(tp, ring);
-+		if (ret < 0)
-+			goto err_clear;
-+	}
-+	return 0;
-+
-+err_clear:
-+	while (--i >= 0)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
-+	return ret;
- }
- 
- static void rtl8169_unmap_tx_skb(struct rtl8169_private *tp, unsigned int entry)
-@@ -4486,16 +4586,23 @@ static void rtl8169_cleanup(struct rtl8169_private *tp)
- 	rtl8169_init_ring_indexes(tp);
- }
- 
--static void rtl_reset_work(struct rtl8169_private *tp)
-+static void rtl8169_rx_desc_reset(struct rtl8169_private *tp)
- {
--	int i;
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+
-+		for (int j = 0; j < NUM_RX_DESC; j++)
-+			rtl8169_mark_to_asic(ring->rx_desc_array + j);
-+	}
-+}
- 
-+static void rtl_reset_work(struct rtl8169_private *tp)
-+{
- 	netif_stop_queue(tp->dev);
- 
- 	rtl8169_cleanup(tp);
- 
--	for (i = 0; i < NUM_RX_DESC; i++)
--		rtl8169_mark_to_asic(tp->RxDescArray + i);
-+	rtl8169_rx_desc_reset(tp);
- 
- 	rtl8169_napi_enable(tp);
- 	rtl_hw_start(tp);
-@@ -4941,7 +5048,8 @@ static inline int rtl8169_fragmented_frame(u32 status)
- 	return (status & (FirstFrag | LastFrag)) != (FirstFrag | LastFrag);
- }
- 
--static inline void rtl8169_rx_csum(struct sk_buff *skb, u32 opts1)
-+static inline void rtl8169_rx_csum(struct sk_buff *skb,
-+				   u32 opts1)
- {
- 	u32 status = opts1 & (RxProtoMask | RxCSFailMask);
- 
-@@ -4951,15 +5059,30 @@ static inline void rtl8169_rx_csum(struct sk_buff *skb, u32 opts1)
- 		skb_checksum_none_assert(skb);
- }
- 
-+static bool rtl8169_check_rx_desc_error(struct net_device *dev,
-+					struct rtl8169_private *tp,
-+					u32 status)
-+{
-+	if (unlikely(status & RxRES)) {
-+		if (status & (RxRWT | RxRUNT))
-+			dev->stats.rx_length_errors++;
-+		if (status & RxCRC)
-+			dev->stats.rx_crc_errors++;
-+		return true;
-+	}
-+	return false;
-+}
-+
- static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
--		  int budget, struct napi_struct *napi)
-+		  struct rtl8169_rx_ring *ring, int budget,
-+		  struct napi_struct *napi)
- {
- 	struct device *d = tp_to_dev(tp);
- 	int count;
- 
--	for (count = 0; count < budget; count++, tp->cur_rx++) {
--		unsigned int pkt_size, entry = tp->cur_rx % NUM_RX_DESC;
--		struct RxDesc *desc = tp->RxDescArray + entry;
-+	for (count = 0; count < budget; count++, ring->cur_rx++) {
-+		unsigned int pkt_size, entry = ring->cur_rx % NUM_RX_DESC;
-+		struct RxDesc *desc = ring->rx_desc_array + entry;
- 		struct sk_buff *skb;
- 		const void *rx_buf;
- 		dma_addr_t addr;
-@@ -4975,15 +5098,11 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 		 */
- 		dma_rmb();
- 
--		if (unlikely(status & RxRES)) {
-+		if (rtl8169_check_rx_desc_error(dev, tp, status)) {
- 			if (net_ratelimit())
- 				netdev_warn(dev, "Rx ERROR. status = %08x\n",
- 					    status);
- 			dev->stats.rx_errors++;
--			if (status & (RxRWT | RxRUNT))
--				dev->stats.rx_length_errors++;
--			if (status & RxCRC)
--				dev->stats.rx_crc_errors++;
- 
- 			if (!(dev->features & NETIF_F_RXALL))
- 				goto release_descriptor;
-@@ -5010,8 +5129,8 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 			goto release_descriptor;
- 		}
- 
--		addr = le64_to_cpu(desc->addr);
--		rx_buf = page_address(tp->Rx_databuff[entry]);
-+		addr = ring->rx_desc_phy_addr[entry];
-+		rx_buf = page_address(ring->rx_databuff[entry]);
- 
- 		dma_sync_single_for_cpu(d, addr, pkt_size, DMA_FROM_DEVICE);
- 		prefetch(rx_buf);
-@@ -5155,7 +5274,8 @@ static int rtl8169_poll(struct napi_struct *napi, int budget)
- 
- 	rtl_tx(dev, tp, budget);
- 
--	work_done = rtl_rx(dev, tp, budget, napi);
-+	/* rtl8169_poll() is used only when there is a single RX ring. */
-+	work_done = rtl_rx(dev, tp, &tp->rx_ring[0], budget, napi);
- 
- 	if (work_done < budget && napi_complete_done(napi, work_done))
- 		rtl_irq_enable(tp);
-@@ -5255,18 +5375,17 @@ static int rtl8169_close(struct net_device *dev)
- 	phylink_stop(tp->phylink);
- 	netif_stop_queue(dev);
- 	rtl8169_down(tp);
--	rtl8169_rx_clear(tp);
-+	for (int i = 0; i < tp->num_rx_rings; i++)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
- 
- 	rtl8169_free_irq(tp);
- 
- 	phylink_disconnect_phy(tp->phylink);
- 
--	dma_free_coherent(&pdev->dev, R8169_RX_RING_BYTES, tp->RxDescArray,
--			  tp->RxPhyAddr);
- 	dma_free_coherent(&pdev->dev, R8169_TX_RING_BYTES, tp->TxDescArray,
- 			  tp->TxPhyAddr);
- 	tp->TxDescArray = NULL;
--	tp->RxDescArray = NULL;
-+	rtl8169_free_rx_desc(tp);
- 
- 	pm_runtime_put_sync(&pdev->dev);
- 
-@@ -5300,10 +5419,8 @@ static int rtl_open(struct net_device *dev)
- 	if (!tp->TxDescArray)
- 		goto out;
- 
--	tp->RxDescArray = dma_alloc_coherent(&pdev->dev, R8169_RX_RING_BYTES,
--					     &tp->RxPhyAddr, GFP_KERNEL);
--	if (!tp->RxDescArray)
--		goto err_free_tx_0;
-+	if (rtl8169_alloc_rx_desc(tp) < 0)
-+		goto err_free_rx_1;
- 
- 	retval = rtl8169_init_ring(tp);
- 	if (retval < 0)
-@@ -5333,12 +5450,10 @@ static int rtl_open(struct net_device *dev)
- 	rtl8169_free_irq(tp);
- err_release_fw_2:
- 	rtl_release_firmware(tp);
--	rtl8169_rx_clear(tp);
-+	for (int i = 0; i < tp->num_rx_rings; i++)
-+		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
- err_free_rx_1:
--	dma_free_coherent(&pdev->dev, R8169_RX_RING_BYTES, tp->RxDescArray,
--			  tp->RxPhyAddr);
--	tp->RxDescArray = NULL;
--err_free_tx_0:
-+	rtl8169_free_rx_desc(tp);
- 	dma_free_coherent(&pdev->dev, R8169_TX_RING_BYTES, tp->TxDescArray,
- 			  tp->TxPhyAddr);
- 	tp->TxDescArray = NULL;
-@@ -5505,6 +5620,7 @@ static void rtl_remove_one(struct pci_dev *pdev)
- 
- 	unregister_netdev(tp->dev);
- 	r8169_free_napi(tp);
-+	kfree(tp->rx_ring);
- 	phylink_destroy(tp->phylink);
- 
- 	if (tp->dash_type != RTL_DASH_NONE)
-@@ -6106,7 +6222,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	u32 txconfig;
- 	u32 xid;
- 
--	dev = devm_alloc_etherdev(&pdev->dev, sizeof (*tp));
-+	dev = devm_alloc_etherdev_mqs(&pdev->dev, sizeof(*tp),
-+				      R8169_MAX_TX_QUEUES,
-+				      R8169_MAX_RX_QUEUES);
-+
- 	if (!dev)
- 		return -ENOMEM;
- 
-@@ -6295,20 +6414,25 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		}
- 	}
- 
-+	tp->rx_ring = kcalloc(tp->num_rx_rings, sizeof(struct rtl8169_rx_ring),
-+			      GFP_KERNEL);
-+	if (!tp->rx_ring) {
-+		rc = -ENOMEM;
-+		goto err_destory_phylink;
-+	}
-+
- 	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct),
- 				   GFP_KERNEL);
- 	if (!tp->rtl8169_napi) {
--		phylink_destroy(tp->phylink);
--		return -ENOMEM;
-+		rc = -ENOMEM;
-+		goto err_free_rx_ring;
- 	}
- 
- 	r8169_init_napi(tp);
- 
- 	rc = register_netdev(dev);
--	if (rc) {
--		phylink_destroy(tp->phylink);
-+	if (rc)
- 		goto err_free_napi;
--	}
- 
- 	if (IS_ENABLED(CONFIG_R8169_LEDS)) {
- 		if (rtl_is_8125(tp))
-@@ -6342,6 +6466,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- err_free_napi:
- 	r8169_free_napi(tp);
-+err_free_rx_ring:
-+	kfree(tp->rx_ring);
-+err_destory_phylink:
-+	phylink_destroy(tp->phylink);
- 	return rc;
- }
- 
+ 	const struct rtl_chip_info *chip;
 -- 
 2.43.0
 
