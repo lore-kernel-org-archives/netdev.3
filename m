@@ -1,207 +1,129 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B08949AA22
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D991438F62F
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 23:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790636148; cv=none; b=uC+lBNezHSP2K7r6gIyezj322UBZ4g09DTMYD5+oAsHQLLIXl5WFqrcxrPNr45M2OwTJ22P6IMyxgUnFHtX9udC+MYQJwK7YjHLnf61wgXbQQNQIUYQILjcuXl4qcDykiPctkMd16/0/LLfosA9dCQ96Zze1SiumppQlYkuoGfM=
+	t=1790636685; cv=none; b=RZe25Yacff4Tg1+8vcGdHQRZrY+8B28Vb8ynHL7YVF0EhWUPMf3suWG/GErx54wEEXpgwAkF7dZSvAPGBL4Vh96QAyxHasbtv+lBv7SXSDS32YRgXUZmbrJChQKq+DHNnER/m81zOb5bfN+gY/4uNIG3nbSQ/kiMVUN+tp0FAls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790636148; c=relaxed/simple;
-	bh=c+1TmU9Z1heypwb9Tq4sZld/EcAfEMtsgtwzoNz4TzE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Xxw+DQVIgLrUokZR9DZBjiBUZ7SIXxGA1kPb5qM9AF/d3nv6JH9GU13/a6ZpEou3/36ao4hx9b8zWyMvcATWO2WqzDnC2D2QjLJbyVQJszELJLAdeXbD1m85VwGmkozPqoKIbHf5QR8G5Wlk+KAo4WTMnlhBavsQ99L0Zwf8Yp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xr43Q5ej; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790636685; c=relaxed/simple;
+	bh=0xXetb9xEfgzxJlMEyuUXTE0q5//hRICnZtyMRfJvIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uxZYM/KR1PjcLeK07B8DkPUv7XK0qYqHbD8Po6kcspF+aPFhkwsqNweH7Jp2rUV+hOfYltycRcy1nz2xlVZZ3vbnmTE8l2V6fUVtKAzaMuri1w/3Wc83rfxCr9WG/L+KGsnkaQTlmSY1zfxAgICZTlrTqCAQMa4iRQsnNW1srrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PoN468LW; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xr43Q5ej"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-895fd505832so30707257b3.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790636146; x=1791240946; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Oz4ORqhseW8wrGQtwuTHR97Ah7SXn4SA0Rm+AVP5OLQ=;
-        b=Xr43Q5ej81G9D1ufxqGLbrMclOn7I/yNv9PMc4GLDE0j+9y0vCAhuI5laDsFCMNOix
-         3mKSvy8SXjngJuTk7s1ACBhJHTVRItz1wN/v3YBybruqTLdbtBMrcdo1Ui2ttBfmBMcB
-         cfDqF+rn7dAi8TtXgnd4Yocgo2BakQOLbtwQViDxE299ouI84dteS9NKMnt4EiVCJ2H7
-         G99WBNSdancijgbKnQlDQ3WlppHy3AwaiaUNMvTdOdDrNbdJf54LN2aFhg4k/8iE9mHq
-         yq0geCz8ZWBlxkQ7vur20RLnsbsigPYAizypRfHOAFB2Xrzkh6MGkDzc6G1vNUG+2uGJ
-         MMLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790636146; x=1791240946;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Oz4ORqhseW8wrGQtwuTHR97Ah7SXn4SA0Rm+AVP5OLQ=;
-        b=Lore6bWIXzLX0QfS/E0KXgSpHshJfeeVuf1O1OjsG5a7DIptqPWe/qEFZM6FNGM8Ms
-         KxhNL1h6XHzer97otQ7DAlwDiAhY8Jd8OzWx0JMGiGFZDwOguAUrPvAuvnFAb7MFcCx+
-         D7hLBHuq6V/05FJGD/rMRE0gAOtnMYCTBbuTTVdLGPI3a/rDcgveNA13ZnUcTrjSHY3O
-         aJrlmJkm39ycZsWnrG2UyFxo1JZ9Ckmsufn0sXuv7d8o+Judc+/E1pzlqwAxJLTza+jH
-         /cR5t+9n5KA/SyURANUL38CpMpkYrEUifXpGO4u+HKx+e0GiBshJLwJ98C5KB2DugBnj
-         7Z/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwo6uaBv69MHBe9UMMarmqpIZJW0nnBf1Ywo2lhe7BTp3GMp0IAn4K0FhpE4SgSsN9stV7ZHBQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIFPxQjE/dJY40rEe/p8tuKZ63DmmGiPdVdD8TBYAGIV55GIgkn
-	azXCmFHbeCoeX8V5/MMOy+WJGT0y8IA724ke7fKPVkie0lr10Qmlsza2
-X-Gm-Gg: AYBFou2xIRPz7dBhegcRC95THoN9FDKFE25O9oIqMwSzBaC/3sUvvkcFc3F/mtZeKaT
-	VUDHUFwboWjO7VCzkwSh2IXrdFh2XcIHlXDb1/QhGaAC+5cDH2yYe/oH1eallpo5pzcGJne9YAB
-	VK8ow1KGE0Ys87FWU0MXhNRy5xVyK3AyQbMSyee3CCFH7bJivjTDVfff71+K+YrZczXzKLLu0NU
-	LaKjQ8GROAeiICnsgWEJoeqZ6jEJVyeysE7OsY9HhAtYBkxSiE3w4D8/9dq3sTP1lFAui+SghB+
-	SvQ460JgJ+QB+F7aSA0h8WwL0+7Sh+oKtD5hIk3hzJNHSrqygyQ+7G+yax8oas6ySyLj7cYDWzc
-	avSICzmzq7ROmqsYUThj5Try9uBy7OgtdfR9wjVaqxlJ4XV9QfG5uzU/VKaCeullzkqmWneAO4A
-	T+ORf+eSXijflFB15+OS+1A5ObCjLn+N8fb53OeB3fAv3Rn9Iz/sO7jBfNxxfAPTIHuXw78NGSj
-	FD4Sn8GUohETTAs1oXLkolpzsQRWJ/+D7qVGknwBOrTiRSlPAp0
-X-Received: by 2002:a05:690c:3489:b0:8a9:b587:f5ab with SMTP id 00721157ae682-8a9b587f722mr28533617b3.6.1790636146130;
-        Mon, 28 Sep 2026 15:55:46 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860e5a5e9sm51228887b3.17.2026.09.28.15.55.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 15:55:45 -0700 (PDT)
-Date: Mon, 28 Sep 2026 18:55:44 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Quchaosheng <quchaosheng000406@163.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Quchaosheng <quchaosheng000406@163.com>, 
- Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>, 
- Oliver Hartkopp <socketcan@hartkopp.net>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.2d23ff6855a34@gmail.com>
-In-Reply-To: <20260928113108.2127215-1-quchaosheng000406@163.com>
-References: <20260928113108.2127215-1-quchaosheng000406@163.com>
-Subject: Re: [PATCH v3 net] net/packet: guard the ll header push in
- packet_rcv_spkt()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PoN468LW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790636683; x=1822172683;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0xXetb9xEfgzxJlMEyuUXTE0q5//hRICnZtyMRfJvIw=;
+  b=PoN468LWL/vFVVcvhrr/WVtw8IxLzqdoEWxFcD646T6VP85X9tubs5ar
+   IbGcPWupitYhV4j6LExb3/GssSDmZ+s9MLMSoG0zRzsZJvFN5Uvpsgo15
+   AxCuM5ZB4dzprDHYbHlZyD6sXTt2pAlbJHch9kg712/WQ+Gyrt7NiS9sh
+   YKk8JzJS9wmxSIAVGknCpHPie7uTspUuXvdU4H2qMROxVYoD45FFCM+vc
+   yOKDbe+gxuCPl8fouA7HXsfuDjAnL90gOCIW7edatDkeZ1luJPH66i4/q
+   mOkGF8BZAo+XeU/8sV1MAzwaRd67OhJ5lcuO0Pmj/Z7vckeJ++viatS4l
+   w==;
+X-CSE-ConnectionGUID: 7VyCYVP2TZigitQQM9WTdA==
+X-CSE-MsgGUID: SkdaqBRTRiSAp0xKjXarqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="101513247"
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="101513247"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 16:04:42 -0700
+X-CSE-ConnectionGUID: lzdbtYGYRkOKowdydIaqQw==
+X-CSE-MsgGUID: 2upVVBcjSuyT7YPhaSSQrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="273317680"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa010.jf.intel.com with ESMTP; 28 Sep 2026 16:04:42 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	emil.s.tantilov@intel.com,
+	luoxuanqiang@kylinos.cn,
+	bryan.fraschetti@canonical.com,
+	tristan@talencesecurity.com,
+	tomasz.lichwala@linux.intel.com,
+	david.butler@appgate.com,
+	horms@kernel.org
+Subject: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates 2026-09-28 (idpf, ice, iavf)
+Date: Mon, 28 Sep 2026 16:04:21 -0700
+Message-ID: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Quchaosheng wrote:
-> packet_rcv_spkt() restores the link layer header with
-> 
-> 	skb_push(skb, skb->data - skb_mac_header(skb));
-> 
-> That subtraction is only meaningful when the device actually has a link
-> layer header.  packet_rcv() and tpacket_rcv() both wrap it in
-> dev_has_header(), which is also the predicate the block comment at the
-> top of the file states the restore in terms of; packet_rcv_spkt() does
-> not.  commit d549699048b4 ("net/packet: fix packet receive on L3
-> devices without visible hard header") introduced the helper and changed
-> the two call sites, and this one stayed behind.
-> 
-> A device without a visible ll header can leave skb->mac_header at the
-> 0xFFFF sentinel that __alloc_skb() initialises it to.  A CAN skb does:
-> init_can_skb() sets pkt_type and ip_summed but does not reset the
-> headers, and commit 9f10374bb024 ("can: remove private CAN skb
-> headroom infrastructure") dropped the skb_reset_*_header() calls that
-> used to be there.  skb_mac_header() is then 0xFFFF, the length becomes
-> a large negative number and skb_push() reports it through
-> skb_under_panic() -- from softirq context, so it is a full system panic
-> even with panic_on_oops=0:
-> 
->   skbuff: skb_under_panic: text:ffffffff8bd21bc1 len:-65455 put:-65471 head:... data:... tail:0x50 end:0x180 dev:can0
->   kernel BUG at net/core/skbuff.c:214!
->   RIP: 0010:skb_panic+0x50/0x60
->   Call Trace:
->    <IRQ>
->    skb_push+0x38/0x40
->    packet_rcv_spkt+0xe1/0x170
->    __netif_receive_skb_core.constprop.0+0x7e8/0xd30
->    ...
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> The socket type is reachable: packet_create() accepts SOCK_PACKET
-> alongside SOCK_RAW and SOCK_DGRAM behind the same CAP_NET_RAW check,
-> and neither the socket length nor a capability check keeps it away
-> from a CAN interface.
-> 
-> The missing skb_reset_*_header() calls in init_can_skb() are a
-> regression in their own right and are being fixed separately, but a
-> packet socket should not turn a link layer that did not initialise its
-> mac header into a kernel panic.  Guard the push the way the other two
-> receive paths do.
-> 
-> Tested on v7.3-rc5 under QEMU with a slcan device on a pty, which is
-> the driver RX path: vcan does not reproduce it, because can_send()
-> resets the headers on the way out.  One SOCK_PACKET socket bound to
-> can0 and one frame written into the line discipline panics an
-> unpatched kernel with the trace above; the same image with this patch
-> prints no panic and powers off normally.  Both kernels are this tree,
-> defconfig plus CONFIG_CAN_SLCAN=y, differing only in this hunk.
-> 
-> Fixes: d549699048b4 ("net/packet: fix packet receive on L3 devices without visible hard header")
-> Assisted-by: LLM
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Quchaosheng <quchaosheng000406@163.com>
-> ---
-> 
-> Hello Oliver,
-> 
-> Removed the comment block, as you suggested.  You are right that the other
-> two dev_has_header() call sites do not carry one, and that the block
-> comment at the top of the file already states the invariant -- so the
-> comment was only restating the commit message.  The hunk is the guard
-> alone now, two lines.
-> 
-> No behaviour change from v2: same predicate, same push.  I re-ran the
-> QEMU/slcan pair on this exact revision to be sure nothing else moved with
-> it -- unpatched still panics with skb_under_panic len:-65455 out of
-> packet_rcv_spkt+0xe1 in interrupt, patched prints no panic and powers off
-> normally.  checkpatch is clean on the resulting diff.
-> 
-> Thanks for the review,
-> Quchaosheng
->  net/packet/af_packet.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 7c83e01526ed..a951a1e3c088 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1911,7 +1911,8 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
->  
->  	spkt = &PACKET_SKB_CB(skb)->sa.pkt;
->  
-> -	skb_push(skb, skb->data - skb_mac_header(skb));
-> +	if (dev_has_header(dev))
-> +		skb_push(skb, skb->data - skb_mac_header(skb));
+For idpf:
+Emil fixes a remove/reset race by always stopping the vport during
+idpf_stop() so NAPI is properly torn down.
 
-Since SOCK_PACKET is equivalent to SOCK_RAW, this looks like a
-legitimate fix to me.
+For ice:
+Xuanqiang Luo resolves a use-after-free issue by changing order of
+operations so index is used before being freed.
 
-An earlier version of the patch gave a different reason: that CAN had
-removed skb_reset_mac_header. This is a not a fix for that change,
-agreed? Other locations in the stack also require it initialized, also
-on devices without mac header.
+Bryan Fraschetti restores ordered MMIO writes for ice Tx doorbells
+by replacing writel_relaxed() call with writel().
 
-I see that there is another CAN patch that reverts that change:
-https://lore.kernel.org/linux-can/20260917123716.63116-1-ndaugoing@gmail.com/#r
+Tristan Madani fixes representor use-after-free by releasing
+metadata_dst through dst_release() to ensure it is not freed until
+all references are dropped.
 
-Specifically to packet sockets, also see the detailed comments on this
-point at the top of net/packet/af_packet.c
+For iavf:
+Tomasz fixes reporting of statistics by always requesting statistics
+while the adapter is running as PTP commands can interfere with the
+previous fallback stats update mechanism.
 
-Small aside: please remember to not send more than 1 revision per 24h,
-per Documentation/process/maintainer-netdev.rst
+Dave Butler caps the advertised maximum packet size to the hardware's
+single-buffer limit, preventing PF queue-configuration failures caused
+by oversized multi-buffer frame limits.
 
->  
->  	/*
->  	 *	The SOCK_PACKET socket receives _all_ frames.
-> -- 
-> 2.43.0
-> 
+The following are changes since commit a7bfaba4823e3c165bb2004c74eff7c096672bc7:
+  ipv6: fix prefix route expiry in modify_prefix_route()
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 200GbE
 
+Bryan Fraschetti (1):
+  ice: Restore Ordered MMIO Writes for Tx Doorbells
+
+Dave Butler (1):
+  iavf: cap advertised max_pkt_size at the single-buffer HW limit
+
+Emil Tantilov (1):
+  idpf: fix possible race on remove during a reset
+
+Tomasz Lichwala (1):
+  iavf: fix VF stats not updating due to PTP command preemption
+
+Tristan Madani (1):
+  ice: fix metadata_dst refcount handling on representor teardown
+
+Xuanqiang Luo (1):
+  ice: fix use-after-free in dynamic port cleanup
+
+ drivers/net/ethernet/intel/iavf/iavf_main.c     | 14 ++++----------
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c |  8 ++++++++
+ drivers/net/ethernet/intel/ice/devlink/port.c   |  2 +-
+ drivers/net/ethernet/intel/ice/ice_eswitch.c    |  2 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c       |  4 ++--
+ drivers/net/ethernet/intel/idpf/idpf_lib.c      |  4 ----
+ 6 files changed, 16 insertions(+), 18 deletions(-)
+
+-- 
+2.47.1
 
