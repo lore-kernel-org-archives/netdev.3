@@ -1,228 +1,95 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.prosyst.ru (m2.prosoftsystems.ru [46.48.77.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E8C3D47A6
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598595; cv=pass; b=TYFwyawtEITuTos+aM1UkXSxxx07BU+Po/vDwnjPUfEHss/n9PlXJfNfkjwJKtenEQxFNBFRhmQdt8txRDPdT1snaxpMtMSI30lEdEfPXlvFtfNmwM9Ys/Ghe5eUmn9BWgJjIIiKADA+mczaZ/azxggs8w4OEmHrTsdhlsBmWt0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598595; c=relaxed/simple;
-	bh=xEL5URHcePqM5nbi5/mukI8PUvnbitE33QoPlYESpEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lN2EXEw27x8MEvgnLXdcnkrxlrSZBHRDmJ39Cj88xbVbswcnB3zMzCf8b1EYoAQv0a7ALUHq+u1VpOHduxos5bbM6pPr9c7SlLpbwCh23kwA04Hb31aXo6gLbIPssw0NmSGd3lcE9bbVpmzbuOdgX+nlZr6vda0vQdqGdqFIDhc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=O9ts7O2W; arc=pass smtp.client-ip=74.125.228.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12332472B8;
+	Mon, 28 Sep 2026 12:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.48.77.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790598690; cv=none; b=aircaLWHbxlzOd/qMUvBfYYuhRdbME8YJs7DDkJwRjrwAMUlaO4jJepqcyGWFOXZGzV4JMqxRv9AolGY6WRb7RtgLzJtozHJ07Sn8NA4Ly5Q6jcvxmMfa7CR6VX00P8ayXLwdsW84ZOMOUar9oiruRrXqYXbVZoL8ufrYnu2Rjk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790598690; c=relaxed/simple;
+	bh=UG5SjHlGto5qqVq/s9e1BJcnSof4gZlugHBCbCMcOmI=;
+	h=Content-Type:From:To:CC:Subject:Date:Message-ID:References:
+	 In-Reply-To:MIME-Version; b=VCOKwUE+E9xK43em2lA0NK0ypyDs/ra4lsfYwgnfQ1cm+M7ZHKYbNLrwCqqoP4pp5lk78RKsg2HhwTaEQGljbN0ypnCZFCBPHNfsesL2Qlhqlt6GU1sfBxq2gL9Fm9vSGhWeaFUbfRPa/RFsvvs996Iay1VJvhUFhOYRywAwtBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru; spf=pass smtp.mailfrom=prosoftsystems.ru; dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b=sRGG4v6C; arc=none smtp.client-ip=46.48.77.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prosoftsystems.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="O9ts7O2W"
-Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc78dd54610so930638a12.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:29:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790598592; cv=none;
-        d=google.com; s=arc-20260327;
-        b=W6vR7YQ0ffzbO5dFpexERHscAgIcI1R46Z/O8hFiiiqNcWIdg2P0H5Dq2TB61qJjg2
-         2Bve76k7Ogq7guTja3uyb2v4RTBU8I8HKmC3WNAwh17bhdkkoneO0auI4Pg/sgSQkl6H
-         3gz/O23fP2nzsTbmuzGLx28runIhCG8laYOjSccv9iDQGVnw43bA8BGOFngepwytkCFd
-         /l01bj8J63ogbCStBheUm/HmKkZDofm8R3d3HlMm1mj5IUarhKURjgc8pZuhg05sp2A0
-         CnWkh8K7GtosMlSRw2QMO2iYyB/5GnykGcp/219878CAvKTBa7ITAUXT5yDSObCDIKpo
-         V1pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lkBawcJZORsxZeSYcvknPN1o23VT6bn/NSzgx7OBRD0=;
-        fh=ulPH71by4tkgLTfrhmyKICaithV4StJTtz8QyrRvtMY=;
-        b=TRmVOXOjUZ3+hWH/wtqjSPRlTJo6kbFsu+xylKaUi9gUCW7p4Q3L1uVghjzfkjyk8H
-         fCQ4NhldDc9aHFNyWWNcvgBGJtZzOPTILTvg4w4f3rH+A6Fplk+VmJ1wxlN7TmCmB4mJ
-         mljySuQCBU0o4DxcAD/nZ+YVgpcu5d5R+QapE44Qx9mBFKB9jMn5CnOpe4pVxcrxg5go
-         /xlNyKT6jVcWechYRwdaZ/sVlTzVx0q0oV8VfHRWtKwZ/gE9yKVQeVspx+5jLOZ/IT65
-         UVhSwrNSyRImm1kpg9ZXEnxTR2d+qx6U3xGJmKFG4jxJtIUOBFGaUqHHle1es31V/UjX
-         6obQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1790598592; x=1791203392; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lkBawcJZORsxZeSYcvknPN1o23VT6bn/NSzgx7OBRD0=;
-        b=O9ts7O2Wr5fi7gySwHhPrDrpQ+m4+lErPU5pHrIE++5dMfKzGxvYu2wNbU5+I/hgFS
-         ZucpOsIYfvlPnnP54mHZsaAqCkcfKLMOmj8O5SJcA5Im/vRaYtoqfrPbdq5ZQqkiQdqJ
-         27ChfsmcNXNEOvln3r5WtD5GH1vcsPdout3/+s4rRhLRFUjoNwOOzmX7LR3ge9irWduL
-         DHc2S8OwcgrJ+yv+mrznjoElhn/3zlMrqCqX3me7I6i91LTW6dWez+ga7gmVDw/LMFdo
-         8gHWD61TdNUKf+nU5IsBlZKiUBUM1Nqp0zFodK2COQcbl7IwaXAxYX3v039CNbUfl4Hc
-         VW9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790598592; x=1791203392;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lkBawcJZORsxZeSYcvknPN1o23VT6bn/NSzgx7OBRD0=;
-        b=PBIflB0cBBiG3xYGS7HvQRtD9bjSUne9MYqgJOxmVPRls99BuA0+c/BsuCzXnsouga
-         Fz/hTX7S0VbU+/KSJ4qfHYI3IW5KLc5EwsJUy+32rprTwJGmSpVDNX57yqwJVadOrn99
-         yIoomzhlb75CxVOx9yf+/OHSM+C8m7pSHw68ouiLcs6RNJVGiHNsKevmOlvfnMP8oEjP
-         K4T0uXXgrS7tKpDWff94dZeh/Nikq+BooUtmRA/N0bWsxPT1Jl1xghKv3GPF1F+kvxou
-         WQJBHGX62+sMflu/kKfZTjrtSFmdIBMhryQ/x5RJQL1H/64rY8cLnL97UDr6ymTgzcrP
-         8u8A==
-X-Forwarded-Encrypted: i=1; AKwUvBxDQKO5s+SCWj1xfI5x+4kkmtNMrDYZXwE+zgXYNTIbS4AovDd4br8BMHq3t6h/XCkSquofF7M=@vger.kernel.org
-X-Gm-Message-State: AFuF++kDW4gdcekZgtbiavIeLKJ81Zp7voABI5b2KAsRwY2A44+AulUK
-	CHr4tmbmUYP+1M+7luPY67Q2tMm69e6UEobjM7LHOq2oSoD9/TPlumgXC3AlWQTakoNYq4/vpGD
-	d3x38eWD+S/dZR8vdTOdvlaLD4nkCoWh+kL7C95hqBA==
-X-Gm-Gg: AYBFou3p9S7zIqyXYbBFMuzBCx0BetSW5NEZpPX1/+sh36qSKT8c/likSdobNOEH4Td
-	1qJE7EO1uFIvYoJPXI5w67jSgZh1iHmmgLxkGF/0WbH1FHI6u9v0noBbALb/kz/3lW9GRePdS3N
-	AKHNe+mKcnIRGqlxOniBokTeAi1VOq0GacifhKcmla40Kz/H/cJyyqqWkgs5+BW9w0ZjRDxHu12
-	Ap/RakTtmBtMgakj7unru/ZL+Wfo6AYAgNPnF6rA6955QH4Wq/8txrUbvu9j5zmxGZMvq26aTAs
-	cbtpjF068AnjsR9ITgTgRVJ4LR7JCpT50Fp0maqf9FOXaKDTuRH3jVmT2IaAgd0mWXt7JvydNvo
-	dHF/FnSGC+DCw1bAP921TU7Ky7nCi912GO9U=
-X-Received: by 2002:a05:6a21:6f12:b0:3dd:a196:3091 with SMTP id
- adf61e73a8af0-3de0e953993mr11609993637.65.1790598592229; Mon, 28 Sep 2026
- 05:29:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b="sRGG4v6C"
+Content-Language: ru-RU
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7E398AB00A657D4F9A1CD3C297450863@prosoftsystems.ru>
+Content-Transfer-Encoding: base64
+DKIM-Signature: v=1; a=rsa-sha256; d=prosoftsystems.ru; s=ps;
+	c=relaxed/relaxed; t=1790598686; h=from:to:date:message-id:subject;
+	bh=UG5SjHlGto5qqVq/s9e1BJcnSof4gZlugHBCbCMcOmI=;
+	b=sRGG4v6C2jFQS6KLIOfu77Ed/iffwoZ5f9WJqc8PFP+cGeuBgf7H6q0H4d/hu1FttSm1WQGlaWy
+	NqtcAWCkgCuZjWwYJfZ+EUc8BbjtJ5AWqQiCCrDNS7TxHsGc1mFKoxc5ECnDmjYK6DyPo3eam4ztK
+	zQBFiB7f995hVR2+boCBMzlC6tdAItMQIZCtPQf1+LvJ9UHe8XUpXFJ84sVe+teo/Lw/e+q7bxpfH
+	+lfH6RL154mbOlbuHLbSnHOc4zeEgpr9PumeWYG84mTwDEbgDDaIFmikEvxoPdOf9MUFxyj82CeNd
+	gAI83edTTLfVRgOXf+DTVdYo0TaaBCvWplRw==
+Received: from echo-2.prosoft.ural.ru (172.21.245.22) by mx.prosoftsystems.ru
+ (172.21.240.33) with Microsoft SMTP Server (TLS) id 15.1.396.30; Mon, 28 Sep
+ 2026 17:31:25 +0500
+Received: from echo-2.prosoft.ural.ru (172.21.245.22) by
+ echo-2.prosoft.ural.ru (172.21.245.22) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Mon, 28 Sep 2026 17:31:17 +0500
+Received: from echo-2.prosoft.ural.ru ([::1]) by echo-2.prosoft.ural.ru
+ ([fe80::c1a2:90f7:8820:c669%17]) with mapi id 15.02.1748.039; Mon, 28 Sep
+ 2026 17:31:16 +0500
+From: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+ =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>
+To: "andrew@lunn.ch" <andrew@lunn.ch>
+CC: "benato.denis96@gmail.com" <benato.denis96@gmail.com>, "petrm@nvidia.com"
+	<petrm@nvidia.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"jacob.e.keller@intel.com" <jacob.e.keller@intel.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net 1/3] net: fealnx: fix teardown order in remove
+Thread-Topic: [PATCH net 1/3] net: fealnx: fix teardown order in remove
+Thread-Index: AQHdTBGoaPRFHxtaVUSWHKvuDP/4n7bdm8QAgAYCyQA=
+Date: Mon, 28 Sep 2026 12:31:16 +0000
+Message-ID: <d20c94930acc066f48abb40f82bdfadaa5ca30c2.camel@prosoftsystems.ru>
+References: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
+	 <95c9fa4a-79e5-47fe-9de5-2c6cd186216d@lunn.ch>
+In-Reply-To: <95c9fa4a-79e5-47fe-9de5-2c6cd186216d@lunn.ch>
+Accept-Language: ru-RU, en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922125112.2111256-1-robert.marko@sartura.hr>
- <20260928091804.hjnabzi52kz4ktmf@DEN-DL-M70577> <CA+HBbNG2nGXpXC63AVUJX3KaqzJG+Q=-Md92eTpq7Y-O4CHMzg@mail.gmail.com>
- <20260928110438.unoxnyymg7zwuuqk@DEN-DL-M70577>
-In-Reply-To: <20260928110438.unoxnyymg7zwuuqk@DEN-DL-M70577>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Mon, 28 Sep 2026 14:29:40 +0200
-X-Gm-Features: AclHuK_nzNTo2nwU3xgEirfWnjz5VEDaxc01jJkDIRwQ-q74rDelYXQzHvCKWN0
-Message-ID: <CA+HBbNHNdz3TpJRAYt08CnYtA081i-SXxO8ia+tbHvbcx+KAJw@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: lan969x: correct RGMII port mapping index
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	Steen.Hegelund@microchip.com, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	luka.perkov@sartura.hr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 1:04=E2=80=AFPM Daniel Machon
-<daniel.machon@microchip.com> wrote:
->
-> Hi Robert,
->
-> > On Mon, Sep 28, 2026 at 11:18=E2=80=AFAM Daniel Machon
-> > <daniel.machon@microchip.com> wrote:
-> > >
-> > > Hi Robert,
-> > >
-> > > > Currently, the lan969x_port_dev_mapping does not check for RGMII po=
-rts
-> > > > and just returns the physical port index.
-> > > >
-> > > > However, this does not work for RGMII ports as they have dedicated =
-DEVRGMII
-> > > > register space with an dedicated instance per RGMII port.
-> > > >
-> > > > So, check if requested port index is an RGMII port and return the c=
-orrect
-> > > > DEVRGMII index.
-> > > >
-> > > > Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> > > > ---
-> > > >  drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c | 9 ++++++=
-+++
-> > > >  1 file changed, 9 insertions(+)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.=
-c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > > > index f3a9c71bea36a..bf5320c7a6ca8 100644
-> > > > --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > > > +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > > > @@ -142,6 +142,15 @@ static u32 lan969x_get_dev_mode_bit(struct spa=
-rx5 *sparx5, int port)
-> > > >
-> > > >  static u32 lan969x_port_dev_mapping(struct sparx5 *sparx5, int por=
-t)
-> > > >  {
-> > > > +       if (lan969x_port_is_rgmii(port)) {
-> > > > +               switch (port) {
-> > > > +               case 28:
-> > > > +                       return 0;
-> > > > +               case 29:
-> > > > +                       return 1;
-> > > > +               }
-> > > > +       }
-> > > > +
-> > > >         if (lan969x_port_is_5g(port)) {
-> > > >                 switch (port) {
-> > > >                 case 9:
-> > > > --
-> > > > 2.55.0
-> > > >
-> > >
-> > > The mapping itself is right, but as far as I can see nothing upstream
-> > > uses the returned index to access DEVRGMII. Every caller of
-> > > sparx5_port_dev_index() pairs it with sparx5_to_high_dev() or
-> > > sparx5_to_pcs_dev(), which never return TARGET_DEVRGMII. Those paths
-> > > are also never taken for RGMII ports. The code that does access
-> > > DEVRGMII, in lan969x_rgmii.c, computes its own index with
-> > > RGMII_PORT_IDX(). Sashiko, correctly points this out.
-> > >
-> > > So I don't think anything is broken today. Did you see a problem on
-> > > hardware that this fixes?
-> > >
-> > > FYI, we carry the same change downstream. But there it was added toge=
-ther with
-> > > RGMII MTU support, which reads and writes DEVRGMII_MAC_MAXLEN_CFG() u=
-sing this
-> > > index.
-> >
-> > Hi Andrew,
-> > As pointed out nothing yet is broken, hence no fixes tag.
-> >
-> > I am using it downstream as well, for the MTU change support where as
-> > you pointed out RGMII code
-> > uses it to get the correct index.
-> >
-> > So, I thought that it would be good idea to send it upstream before
-> > eventually getting around to sending
-> > the MTU change support as well.
->
-> It wasn't clear to me that this was preparation work for a future feature=
-. As a
-> standlone patch it does nothing. IDK, to me it would make more sense to j=
-ust
-> send it together with the patchset that would actually use it.
-
-That is fine by me.
-
-Regards,
-Robert
-
->
-> /Daniel
->
-> >
-> > Regards,
-> > Robert
-> >
-> > >
-> > > /Daniel
-> >
-> >
-> >
-> > --
-> > Robert Marko
-> > Staff Embedded Linux Engineer
-> > Sartura d.d.
-> > Lendavska ulica 16a
-> > 10000 Zagreb, Croatia
-> > Email: robert.marko@sartura.hr
-> > Web: www.sartura.hr
-
-
-
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+T24gVGh1LCAyMDI2LTA5LTI0IGF0IDE4OjQzICswMjAwLCBBbmRyZXcgTHVubiB3cm90ZToNCj4g
+PiAtLS0NCj4gPiDCoGRyaXZlcnMvbmV0L2V0aGVybmV0L2ZlYWxueC5jIHwgMjkgKysrKysrKysr
+KysrKysrKy0tLS0tLS0tLS0tLS0NCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25z
+KCspLCAxMyBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
+ZXRoZXJuZXQvZmVhbG54LmMNCj4gPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZlYWxueC5jDQo+
+ID4gaW5kZXggYmRjMzhhYWM1ODUwLi5kN2NkMTY0NGEzNzUgMTAwNjQ0DQo+ID4gLS0tIGEvZHJp
+dmVycy9uZXQvZXRoZXJuZXQvZmVhbG54LmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5l
+dC9mZWFsbnguYw0KPiA+IEBAIC02NzgsMjAgKzY3OCwyMyBAQCBzdGF0aWMgaW50IGZlYWxueF9p
+bml0X29uZShzdHJ1Y3QgcGNpX2Rldg0KPiA+ICpwZGV2LA0KPiA+IMKgc3RhdGljIHZvaWQgZmVh
+bG54X3JlbW92ZV9vbmUoc3RydWN0IHBjaV9kZXYgKnBkZXYpDQo+ID4gwqB7DQo+ID4gwqDCoMKg
+wqDCoCBzdHJ1Y3QgbmV0X2RldmljZSAqZGV2ID0gcGNpX2dldF9kcnZkYXRhKHBkZXYpOw0KPiA+
+ICvCoMKgwqDCoCBzdHJ1Y3QgbmV0ZGV2X3ByaXZhdGUgKm5wOw0KPiA+ICsNCj4gPiArwqDCoMKg
+wqAgaWYgKCFkZXYpIHsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRldl9lcnIoJnBk
+ZXYtPmRldiwgInJlbW92ZSBmb3IgdW5rbm93biBkZXZpY2VcbiIpOw0KPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgcmV0dXJuOw0KPiA+ICvCoMKgwqDCoCB9DQo+IA0KPiBJIGtub3cgeW91
+IGFyZSBqdXN0IG1vdmluZyBjb2RlIGFyb3VuZCwgYnV0IGlzIHRoYXQgcG9zc2libGU/wqAgV2Ug
+dHJ5DQo+IGF2b2lkIGRlZmVuc2l2ZSBjb2RlLiBJdCBpcyBiZXR0ZXIgdG8gYWN0dWFsbHkgdW5k
+ZXJzdGFuZCB0aGUgY29kZQ0KPiBhbmQgc3RvcCBiYWQgdGhpbmdzIGhhcHBlbmluZy4NCj4gDQo+
+IMKgwqDCoMKgIEFuZHJldw0KPiANClRoYW5rIHlvdSBmb3IgcmV2aWV3Lg0KDQpUaGlzIGlzIGFj
+dHVhbGx5IG5vdCBwb3NzaWJsZSBhcyBzdWNjZXNzZnVsIHByb2JlIGFsd2F5cyBzZXRzIHRoZSBk
+ZXYNCmFuZCBpdCB3aWxsIG5ldmVyIGJlIE5VTEwuIElmIHByb2JlIHJldHVybmVkIGVhcmx5IHdp
+dGggYW4gZXJyb3IsDQpyZW1vdmUgd29udCBiZSBjYWxsZWQgYXQgYWxsLg0KDQpJIHdpbGwgcmVt
+b3ZlIGl0IGlmIHJlZmFjdG9yaW5nIHdpbGwgYmUgYXBwcm92ZWQgaW4gcmVzdWx0IG9mIHRoaXMN
+CnRocmVhZCwgYXMgaXQgaXMgbW9yZSBjb2RlIHF1YWxpdHkgZml4LCB0aGVuIGFuIGVycm9yLg0K
