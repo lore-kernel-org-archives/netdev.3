@@ -1,224 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3923783C5;
-	Mon, 28 Sep 2026 07:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790581659; cv=fail; b=RC9rhljPTx3enVvX8w8Z4djBw5BdHfxFePeMq4M1l8gSJK0s7ov8IWAxsLpXsb2/nDP5X0xVohcweeA42+KpDl4AbpsRTuizGoOdWrvDnVfRqevD3PIRmuH8PdRIA77JT0OeCZX6NeW5oXtpK3xm5TLrkaCrU3djeAZo/AGxlH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790581659; c=relaxed/simple;
-	bh=m/V0z6Gp1JAw7NIZpAfz7ADsgGs5v1N9Y7rQVzvXLo0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=npVemakGdVaciFchYxO8aEybiCXRtX64IahsQk0Ccj5rboPQO1eOPTunWN/Ma/U8s1gFU03bKCKvr/+TNzst1dh45jf9ymdO2u9E845ADEDFd6EpWgI7Ih4Gb4DZnIxGEp7Yf15+bPShGmcz6jPlOmVOa6UE1iK4BInt9i6CO8M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pxryfmqa; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC96037B01E;
+	Mon, 28 Sep 2026 07:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790581829; cv=none; b=JpbqDeEMDphOAEyuDiyj8jXqS7Id+7RyPTuAbqWHsq+vR/1PZTdhECOaAfp3fA5I5AQTgZOzKoUE6nBogbEgprJDsbqJkUfR84MZIYbt6lanJ0wsBF0m8w7TmGOkE6gycU/4foI6aVaJ3duL0u+9ygU8DN/P8OixJImf4eKDzLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790581829; c=relaxed/simple;
+	bh=R91UUIGxGdUUal1Fjt/Fda413UziiCKSUMl+y9Z8ltc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nYLK2tHZFXvg82Wx+IadDl6ugVxn1vqR5jLgDL+Y8+dhyLvGhOtxv17etEowOuB1qkRbKOwmJIRHtH0orOhRBVMIcWQBGuBEJghc4AXHyC/I5pXdnNzISNxWjMt2IN/PTegz8uPuXtbej2zkhDlyOz5F1C8svdOv4Nnbli08HYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E75x7JfB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pxryfmqa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790581656; x=1822117656;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=m/V0z6Gp1JAw7NIZpAfz7ADsgGs5v1N9Y7rQVzvXLo0=;
-  b=Pxryfmqar2+XI7hFzgq8fkSqGIJ3mnPFEWPFNjNZRyU2aQzq4pRxW/0b
-   PSERUxE2Epaa0MQS1IXTh9fN/1Ht8UKsTZiJC4i33ToBCoD39zplsrx1C
-   wW51Z+bh7GyVQksGJZSohbvjuoKGPoKXTBDLuU0OoUjHOW/GcI5mbrTds
-   A/tvDYWDxtp4h2cKYS10IcISKeJwSlW9Z2NRndgcJmrssKmXiFwiQMdDp
-   ctVmra8169sTebK2xPZF/bf4D5K6vf9S9i6dB0FR61M/+/RmsiCOSF6NC
-   oJ5XuEE6w/MzZq4o9kiPQ+oz8+c/w+qXHGSKIFnrF2+hYUrb6FhOigw+3
-   g==;
-X-CSE-ConnectionGUID: i+4DvE8uRR2mKV3TkvlV8g==
-X-CSE-MsgGUID: 71BvMcKSTUu/GJm2LPkk7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90315342"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90315342"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 00:47:35 -0700
-X-CSE-ConnectionGUID: JJKJSLIoQTCcNhBBpSgoWQ==
-X-CSE-MsgGUID: /bpVNwhJQaCUFHMzidPmtQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="275097306"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 00:47:34 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 00:47:34 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 28 Sep 2026 00:47:34 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.29) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 00:47:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VhB3lgQIxIjTsJDfTnLZ0hEQfgAFXo5ThHZZFeCFgATD3rIaLTYHSCvCkQsMy/2p+woGbwRW6NcmH+Z4I6KrmxiphBFRWEuPbWcSPvqmt442Xd3MlSv9sxdRbO9PDggYli7mgxuSlbhKViLLSn9n2h2hRWwTH/GBn18xC/JNdurZRgBtYUzW3kWedsTY+ZRhd41izidCyTWTjKOlQWnJ+do+pDfFfEKi8xegRrjhxmvTZbBqINGCe6G/4SaSf/6fCo2b775PknTkseWYr6PfA3mnImhoqHuhMkNhXun68C9eCvv+DB34c99O7UbWsx+hTB04cSY3z2sj9eSqoreQSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m/V0z6Gp1JAw7NIZpAfz7ADsgGs5v1N9Y7rQVzvXLo0=;
- b=lX8DaT0rWt9ykekg7RnujqZymDKXckCb4f8HYbpGApd+MVba/fjmQbrxg3N0e5VBNE9oszvt1XF9pdhhMXbMobcOnzxLi3KCqAjTUlJhnEp68WKKpC4YmkKcBM4wIiQWtM/q5MNjxy/XWHW+spwnBpQszzBcZwHbIsmI9wPXH9Cr9RqNrEFs4q0LAopbuQndL4kaUiOfmSXtyLonmHeWn0ULeK/uiEtQ23h0GKqrllAQ3ldUkcH6Ovlti3QzK81ZTLw91zB79yvcfgjqRIxyK9CumO08Vaa/WRmf8sRvuvXeNGHB+v23fc7tOsDP+yKsF9CwYdpIM+55tJMNdqp8vw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9301.namprd11.prod.outlook.com (2603:10b6:208:573::20)
- by IA3PR11MB9182.namprd11.prod.outlook.com (2603:10b6:208:579::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
- 2026 07:47:31 +0000
-Received: from IA3PR11MB9301.namprd11.prod.outlook.com
- ([fe80::714b:7d3e:aa0:104c]) by IA3PR11MB9301.namprd11.prod.outlook.com
- ([fe80::714b:7d3e:aa0:104c%5]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
- 07:47:31 +0000
-From: "Holda, Patryk" <patryk.holda@intel.com>
-To: luoxuanqiang <xuanqiang.luo@linux.dev>, Marcin Szycik
-	<marcin.szycik@linux.intel.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "Samudrala, Sridhar" <sridhar.samudrala@intel.com>,
-	"Drewek, Wojciech" <wojciech.drewek@intel.com>, "piotr.raczynski@intel.com"
-	<piotr.raczynski@intel.com>, "michal.swiatkowski@linux.intel.com"
-	<michal.swiatkowski@linux.intel.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net v1] ice: fix use-after-free in
- dynamic port cleanup
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v1] ice: fix use-after-free in
- dynamic port cleanup
-Thread-Index: AQHdE1vUr6Gm9bN9/UC4M6bFTJcRd7ZtD2KAgADVigCAdi96gA==
-Date: Mon, 28 Sep 2026 07:47:31 +0000
-Message-ID: <IA3PR11MB930172BD4BE20DA5B1C9CF818A8D2@IA3PR11MB9301.namprd11.prod.outlook.com>
-References: <20260714063937.26325-1-xuanqiang.luo@linux.dev>
- <36c68c94-0382-4d31-b114-fde2a5ad35cf@linux.intel.com>
- <2a1e5d38-1035-4f09-b4af-5a63ec04f1d1@linux.dev>
-In-Reply-To: <2a1e5d38-1035-4f09-b4af-5a63ec04f1d1@linux.dev>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9301:EE_|IA3PR11MB9182:EE_
-x-ms-office365-filtering-correlation-id: 0d705f82-a714-4b56-a193-08df1d34c068
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|10067099003|5023799004|11063799006|56012099006|4143699003|6133799003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: 4FqGR4l/n6n6QB62Bm0Ytxerx4YDEHc0+JF+aMyYtcuMQKOrkN0lK6Dd4kZzqJIbNJObuvsxJymj2GkMOEalCfPzp8pWVTthhx9k9TTa+mLsgg4LExSJO12Mqoogsi22a6q7vYuSQW8L/cQjqs8mPcVo694476e6ZE/4bjCP5mDJSc2oK8n0NX1Idoo+5TbROn/db+3Uz+3LafF5MQG3lUE9sJ5sS/iCnjiPZj3GAECycd6JD3HxwAqeBBjgHLRSuv/nwizk1hqH89aF4+hrli0GXM2yf6+OP1j6WS8O9XKbWHDLQmL/PU4G51/ckUou2Lq6SPnwq5I1pIt+g56knT8AXjdReqo/tiYBoXOGjvs30bodGKFYxI/aPPFR3TWdRXH/xYGmNkfZygYlnosKCsYqt7jLyqcNF/YXlqaNTR6+Hwv93CCAbWxdXn86Abqjhg/3p+fMhGHYXxKFZ3zyNgb5OOS1BnIrkzQZeuVO5fEL7cBZoKhPmSAeYBldSiIXln6BFkqqzir0jS0MZiGPi15lg03eXIIDP31KWZscW+m6PT/fv/8rD0VqRfBM2I/04nnHYneOxlYn2u8GNdfaVrfx2grLTLPjIMoeOvADgB8KqFOtWnJFkG4Wc9NtpEDE9rnoHJrEEXuF5OP1Bu/1P0na2CAgxFEtsV/Mowa3n8Sh5UL8tICKY6XwH8J8RE2XY82gzJbmNAA872XcmYeKGynu8SVQa6raoYzeMThKUDk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9301.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(10067099003)(5023799004)(11063799006)(56012099006)(4143699003)(6133799003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SkJxZHdiU2lTdEJjdjhCaUEyY2J5TzV0U2xqNkRlcTRyQlRGaENieWdCU2Ju?=
- =?utf-8?B?aUc4eXBpQnJRTHNOeXZwUi9CWFJIVG1xc0Rob01zZzJRczY5TUgvOWNyYmxZ?=
- =?utf-8?B?TXhjbHZ3ZjFjZlNLdTBHMG5XbnZOSjhpbFNteXhOR2tYZjc5UlBaRnJsQ0sx?=
- =?utf-8?B?RjNjWHFsMW05QUNvczl0OVlqaHZ5d2JoUlVReTZCSTQ3a050WDQ4U05YOXht?=
- =?utf-8?B?M3JQNXIwMUM3elMzNktNOUR1TzVQRUpDekR2anVWMVdlQUZrRjN4RzF6K0Rh?=
- =?utf-8?B?OThPQWt0VXJuSDQ0dGY0dUUxendyZk9rdklDam8wTmxHdjdlQW85UGlzak51?=
- =?utf-8?B?QUxwbE9rdVhUVm5zVkdmWkFiSkhTdDViR2dTNjd6ZWxkRFAwWkEzc2ZKV2Rl?=
- =?utf-8?B?cGRONFR2Z1RJb09ucGFQd1VJajB5d2FjblR4MUJZKzNlMGdEYjF2eHdDeHUy?=
- =?utf-8?B?Y2pXMkt3bHNWWUg5SWJwNnVJd1JRK2JEQnB4QzhJUHdLMzdmOFA1VUt2RkZJ?=
- =?utf-8?B?bUE4UFlZazVFaitNRkc0cktzTGVSQmEzTW9XNDQxcjNPQmFhYnJFbDBiQWRv?=
- =?utf-8?B?ZjRoWHpXQWVPSFNXVXJuRVJCRzR2dU5HL3lIa0NpaDFjc1J2NExnaWY3M25M?=
- =?utf-8?B?Mkl0RkNkUVFIQ2xsZEh3M0RWUTRSaHk2TWRQQ3NKZmRCaVRDaWQvQnY2OE40?=
- =?utf-8?B?VmRsdC9ycWpBQU5wemozYUY1ZWVkT2plK0lyYjBpMEQzVGFMYkg5d2JCZTRK?=
- =?utf-8?B?NDl0M0tlWXRaVWFYMFdBcE4vOUN1OS8xQlFkN28wTWxnVkk4WDFzc2xQOEta?=
- =?utf-8?B?dGRiT2VzaHdEWURZVTZVeGo5OHA5eEZ6L25hV2pxaUVXaitPMTNqRStPY0Yw?=
- =?utf-8?B?KytVNThWU2JwbzY1eSs1U2o2Z0lUYk5FMDVHTGYwU1ZrckR4MTlhRjFwSEEr?=
- =?utf-8?B?TkUyb2NUSVJXaUpHSERkcVRDM0ZkMnVFNlRuSlFzV3FkWkpsMmpGLzg3TWdw?=
- =?utf-8?B?eU5vcGM5bVQ2dFlWSDlRVkdnVjdKeU5LZFU1cHN3NjdiZHl1aU1CcDRQdXRs?=
- =?utf-8?B?UElWYVc2UCtCT0tJdGhqWi9MMzBQei91dmp5ZVhuaS9yWk9yWWQweS9RV1A0?=
- =?utf-8?B?eWdFYUFlVm51NEx4VTI5eXNGdTd2S0tYQXhwL1FoTzNCTXpzQVZQYmZaSDBC?=
- =?utf-8?B?WGlWZnJybDJ0MVFBTTRsM2wyTVpsVi9HRDdqeXJpT1JFV2p1K0xlK0tWWnZN?=
- =?utf-8?B?bU0yNEkyYVJtbWxDQmFrM0tsRkhsS2wzWXZlUStnekdtV0tqQVBjbTFTOWRS?=
- =?utf-8?B?MmNBWHN0V080Z2ZocEtvTktDZ3ZzK2ljeVJCalZBU3RGUzU5WVZPL1FjR1Bm?=
- =?utf-8?B?Z1VUR2dSbFJ3VEFsWVR4MW9ua2ljazM2U3hSSkUwd3U5bStqUXRORzBKUFht?=
- =?utf-8?B?MERWMTZWVnFXL2gvQUVwNWQ2MTFtazJsZHl0eHJEcnJZWTd2U2JsSGc3SGpG?=
- =?utf-8?B?WHNxN09Cajc5enlSS2lHcUNVQ3NFaGZGT253ZVFIODlpZDByaGdUUittVVpi?=
- =?utf-8?B?Yko5aTRHMFFBSlZXV3hqY2lxRk9SZ2d5UmUxb2dFVnBqWkxRN281RVZYUjB2?=
- =?utf-8?B?VDJwRkVYNW9FaVZ3YWJWeGRyMGpnVzREeWFOeCtpYlowdE1qUlBnc296YnNr?=
- =?utf-8?B?L001emNYUDBLZXpoaU8xWkNkVnI1T0txU0VSZGZmMUsyVGhpV3FTVG5PcUNp?=
- =?utf-8?B?NWJBY3VTcm5DMk5BVzJkZHpranlEZ1pURG1jbld1bzZyMHQ2aGNpbG5xMlBu?=
- =?utf-8?B?U0gvQ0oyVWhSalczT0xPTE9IU1l0RE5vODBYN0F2TEx1eDlOR1JSMjZNZ3Ux?=
- =?utf-8?B?ZDFyMnBRUE9VdTlmRmFOWi9pSVF3VVpkb2V6WVlsajlKOUVUT0pmTTdTZ3lL?=
- =?utf-8?B?K1JYY3hoQlQvb2pQUTl6K3JkSzduWWx2UjJ4WnlKa2l1VmRhSWtJSWg0TmhN?=
- =?utf-8?B?M0l6NHNXNDZ3aTdGKzRxWnMrM1VoT21uZUlIbmFaeFFhQnhqcXBlRk9KRW1v?=
- =?utf-8?B?YTg3d3VXcStVd20zK0ZtTDE4M1Q4UWhJeWVtd2Z2a2hjRmZ4Z1hJaXdVT2dz?=
- =?utf-8?B?WXJiRDNJYzlCaE1XN3dadjBEeHZ4YXQvNHpCUUEwT0l1SHhlajlTZ3FRaHV4?=
- =?utf-8?B?K0RVa01VNFdkaDhxWkdQOEk5eVN6QzluSDFWYy9yOThUS05mWlpVMkJqeWc4?=
- =?utf-8?B?VDlEU3BHQXh4YUprWEVrYkdGaUk3dzFwQUxtREZFb2tXTkpWWjhidGV3SGsx?=
- =?utf-8?B?NkNTbGVmN2VXZXBVcjlrWFErVG1SWDRYNmhoV2FiaDhwTWxHY3lJdz09?=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E75x7JfB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884751F000FF;
+	Mon, 28 Sep 2026 07:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790581827;
+	bh=dDbHCVi7NQDvGZJMX6z09Gx0Mb5wxCotL+4xFXUjdcM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=E75x7JfBLkSCIx80JCNO6MZo2TQgY+pNlojZ34G6ZaHgAAKzJbuMxy/1YjOYjPM5H
+	 noKREW2DboSoBxqre4h+80rXReD4ygomZdavRBGKL0x/q2xRnZbtY38ppqgQevCpgV
+	 JU2uSa47P2w3ui2X1w1qhfHWGjh8ldi3MjbE/2UKttRFYiTZZT60eaVUVD85E+uFXL
+	 wyEgrAvTaan3IQOhFPorA8Sp9EoJXlI9rBBNW+N3XulSwUBidMs6QbEGUW+q5FRfqm
+	 klN3lF9VxWcB91FRjspjbEYzl55P+atD5yVDGPSK6Tg9xfdFKLd6DaqkW/MK088VS3
+	 1vVvRpgoQ4btQ==
+Subject: Re: [PATCH net-next v5] selftests: net: move log_test to lib file and
+ remove duplicate code
+From: netdev-bot+sashiko@kernel.org
+To: hangbin.liu@linux.dev
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, andrea.mayer@uniroma2.it, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ liuhangbin@kylinos.cn
+Date: Mon, 28 Sep 2026 07:50:26 +0000
+Message-ID: <179058182603.3145.7204688879722696786@kernel.org>
+In-Reply-To: <20260924-self_log_test-v5-1-1f00bd383146@kylinos.cn>
+References: <20260924-self_log_test-v5-1-1f00bd383146@kylinos.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 3joI74LigFRGPUl57PpqGnYaDGC7JKWAYJVSxJA7bCecOmTb+5pRLq018ZMq7QrsYB88xfma3v2i1XubG6va1N5hrm9cRSkREGLCxggoTk1d+bDt+jnJqw6+DYtlbRQTbEa6srVJnsHl4j0g3LCBlz8Ama1p7/pBwVf/9h+mGdIwzX/juXEGhFmhhquSvZfmPZIr/kNYMJRzxSlgHmqz6iSEMMr4oBulVwZEEv+PdrUJ0HlceP87FnzSjjxBxvKtt60jhxGu6fSQzbemhE1jz6gnE34RwgKNL19JRnXe176l0EaBOQ0Wb1rhey/n593Qvr+5ccU1WH2H8UhAkIzdgQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9301.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d705f82-a714-4b56-a193-08df1d34c068
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 07:47:31.3242
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ChU2mlXmqwtXmJ3tfTcd3SV1sShkldg6jOzgE+zcECM6bDhCzKiBep63iJWbjdCqzCFdTrKBCn8Bmtv74BYCgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9182
-X-OriginatorOrg: intel.com
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEludGVsLXdpcmVkLWxhbiA8
-aW50ZWwtd2lyZWQtbGFuLWJvdW5jZXNAb3N1b3NsLm9yZz4gT24gQmVoYWxmIE9mDQo+IGx1b3h1
-YW5xaWFuZw0KPiBTZW50OiBXZWRuZXNkYXksIEp1bHkgMTUsIDIwMjYgNDo1OSBBTQ0KPiBUbzog
-TWFyY2luIFN6eWNpayA8bWFyY2luLnN6eWNpa0BsaW51eC5pbnRlbC5jb20+OyBpbnRlbC13aXJl
-ZC0NCj4gbGFuQGxpc3RzLm9zdW9zbC5vcmcNCj4gQ2M6IE5ndXllbiwgQW50aG9ueSBMIDxhbnRo
-b255Lmwubmd1eWVuQGludGVsLmNvbT47IEtpdHN6ZWwsIFByemVteXNsYXcNCj4gPHByemVteXNs
-YXcua2l0c3plbEBpbnRlbC5jb20+OyBhbmRyZXcrbmV0ZGV2QGx1bm4uY2g7IFNhbXVkcmFsYSwN
-Cj4gU3JpZGhhciA8c3JpZGhhci5zYW11ZHJhbGFAaW50ZWwuY29tPjsgRHJld2VrLCBXb2pjaWVj
-aA0KPiA8d29qY2llY2guZHJld2VrQGludGVsLmNvbT47IHBpb3RyLnJhY3p5bnNraUBpbnRlbC5j
-b207DQo+IG1pY2hhbC5zd2lhdGtvd3NraUBsaW51eC5pbnRlbC5jb207IEtlbGxlciwgSmFjb2Ig
-RQ0KPiA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPjsgbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsg
-WHVhbnFpYW5nIEx1bw0KPiA8bHVveHVhbnFpYW5nQGt5bGlub3MuY24+OyBzdGFibGVAdmdlci5r
-ZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbSW50ZWwtd2lyZWQtbGFuXSBbUEFUQ0ggaXdsLW5l
-dCB2MV0gaWNlOiBmaXggdXNlLWFmdGVyLWZyZWUgaW4NCj4gZHluYW1pYyBwb3J0IGNsZWFudXAN
-Cj4gDQo+IA0KPiDlnKggMjAyNi83LzE0IDIyOjE0LCBNYXJjaW4gU3p5Y2lrIOWGmemBkzoNCj4g
-PiBPbiAxNC4wNy4yMDI2IDA4OjM5LHh1YW5xaWFuZy5sdW9AbGludXguZGV2IHdyb3RlOg0KPiA+
-PiBGcm9tOiBYdWFucWlhbmcgTHVvPGx1b3h1YW5xaWFuZ0BreWxpbm9zLmNuPg0KPiA+Pg0KPiA+
-PiBpY2VfZGVhbGxvY19keW5hbWljX3BvcnQoKSB1c2VzIGR5bl9wb3J0LT52c2ktPmlkeCB0byBl
-cmFzZSB0aGUNCj4gPj4gZHluYW1pYyBwb3J0IGZyb20gcGYtPmR5bl9wb3J0cy4gSG93ZXZlciwg
-aXQgZnJlZXMgdGhlIFZTSSBiZWZvcmUNCj4gPj4gcmVhZGluZyB0aGUgaW5kZXggZm9yIHRoZSBl
-cmFzZSwgcmVzdWx0aW5nIGluIGEgdXNlLWFmdGVyLWZyZWUuDQo+ID4+DQo+ID4+IEZvbGxvdyB0
-aGUgcmV2ZXJzZSBvZiB0aGUgYWxsb2NhdGlvbiBvcmRlciBpbg0KPiA+PiBpY2VfYWxsb2NfZHlu
-YW1pY19wb3J0KCkgYnkgZXJhc2luZyB0aGUgeGFycmF5IGVudHJ5IGJlZm9yZSBmcmVlaW5nIHRo
-ZSBWU0kuDQo+ID4+DQo+ID4+IEZpeGVzOiBlZGE2OWQ2NTRjN2UgKCJpY2U6IGFkZCBiYXNpYyBk
-ZXZsaW5rIHN1YmZ1bmN0aW9ucyBzdXBwb3J0IikNCj4gPj4gQ2M6c3RhYmxlQHZnZXIua2VybmVs
-Lm9yZw0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBYdWFucWlhbmcgTHVvPGx1b3h1YW5xaWFuZ0BreWxp
-bm9zLmNuPg0KPiA+IFJldmlld2VkLWJ5OiBNYXJjaW4gU3p5Y2lrPG1hcmNpbi5zenljaWtAbGlu
-dXguaW50ZWwuY29tPg0KPiA+DQo+ID4gVGhhbmsgeW91IQ0KPiA+IEkgd29uZGVyIGhvdyBzdWNo
-IGEgZ2xhcmluZyBpc3N1ZSBzdXJ2aXZlZCBpbiB0aGUgY29kZWJhc2UgZm9yIHNvIGxvbmcuDQo+
-ID4gUGVyaGFwcyBpY2VfdnNpX2ZyZWUoKSBleGl0ZWQgZWFybHkgZm9yIHNvbWUgcmVhc29uLg0K
-PiANCj4gVGhhbmtzIGZvciB0aGUgcmV2aWV3IQ0KPiANCj4gSGFyZCB0byBzYXnigJRtYXliZSB0
-aGUgd2luZG93IGlzIHF1aXRlIHNtYWxsIGFuZCB0aGUgZnJlZWQgc2xhYiBzdGlsbCBob2xkcw0K
-PiB0aGUgb2xkIGlkeCBtb3N0IG9mIHRoZSB0aW1lLCBzbyBub3RoaW5nIG9idmlvdXMgc2hvd3Mg
-dXAuDQo+IA0KPiA+PiAtLS0NCj4gPj4gICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2Uv
-ZGV2bGluay9wb3J0LmMgfCAyICstDQo+ID4+ICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9u
-KCspLCAxIGRlbGV0aW9uKC0pDQo+ID4+DQo+ID4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9l
-dGhlcm5ldC9pbnRlbC9pY2UvZGV2bGluay9wb3J0LmMNCj4gPj4gYi9kcml2ZXJzL25ldC9ldGhl
-cm5ldC9pbnRlbC9pY2UvZGV2bGluay9wb3J0LmMNCj4gPj4gaW5kZXggMmEyZTU2Nzc3ZjlmNy4u
-M2VkZTI0NjQ5MDAyNyAxMDA2NDQNCj4gPj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50
-ZWwvaWNlL2RldmxpbmsvcG9ydC5jDQo+ID4+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2lu
-dGVsL2ljZS9kZXZsaW5rL3BvcnQuYw0KPiA+PiBAQCAtNTkwLDggKzU5MCw4IEBAIHN0YXRpYyB2
-b2lkIGljZV9kZWFsbG9jX2R5bmFtaWNfcG9ydChzdHJ1Y3QNCj4gPj4gaWNlX2R5bmFtaWNfcG9y
-dCAqZHluX3BvcnQpDQo+ID4+DQo+ID4+ICAgCXhhX2VyYXNlKCZwZi0+c2ZfbnVtcywgZGV2bGlu
-a19wb3J0LT5hdHRycy5wY2lfc2Yuc2YpOw0KPiA+PiAgIAlpY2VfZXN3aXRjaF9kZXRhY2hfc2Yo
-cGYsIGR5bl9wb3J0KTsNCj4gPj4gLQlpY2VfdnNpX2ZyZWUoZHluX3BvcnQtPnZzaSk7DQo+ID4+
-ICAgCXhhX2VyYXNlKCZwZi0+ZHluX3BvcnRzLCBkeW5fcG9ydC0+dnNpLT5pZHgpOw0KPiA+PiAr
-CWljZV92c2lfZnJlZShkeW5fcG9ydC0+dnNpKTsNCj4gPj4gICAJa2ZyZWUoZHluX3BvcnQpOw0K
-PiA+PiAgIH0NCj4gPj4NCg0KVGVzdGVkLWJ5OiBQYXRyeWsgSG9sZGEgPHBhdHJ5ay5ob2xkYUBp
-bnRlbC5jb20+wqANCg0KDQo=
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In the new log_test_expected()
+  (tools/testing/selftests/net/lib.sh), the failure branch calls the…
+- [Low] The commit message miscounts one output-format change.
+
+--
+
+selftests: net: move log_test to lib file and remove duplicate code
+
+This adds a shared log_test_expected() helper to
+tools/testing/selftests/net/lib.sh. It converts 31 net selftests so their
+local log_test() wrappers call the helper instead of carrying their own
+copies. The output format becomes "    TEST: %-60s" in all of them, and
+PAUSE, PAUSE_ON_FAIL and VERBOSE are handled the same way in every
+converted script.
+
+> In addition to the above, 13 tests that previously used "TEST:" now use
+> "    TEST:" (4-space prefix), and srv6 tests plus vrf_strict_mode_test.sh
+> that previously used "\n    TEST:" (newline + 4-space prefix) now with no
+> leading newline.
+
+[Severity: Low]
+Is the count of 13 still right? The patch converts 12 scripts that printed
+an unprefixed "TEST:":
+
+  fcnal-test.sh, fdb_flush.sh, fib_nexthop_multiprefix.sh,
+  fib_nexthop_nongw.sh, icmp_redirect.sh, l2tp.sh,
+  test_bridge_backup_port.sh, test_bridge_neigh_suppress.sh,
+  test_vxlan_mdb.sh, test_vxlan_nolocalbypass.sh, vrf-xfrm-tests.sh,
+  vrf_route_leaking.sh
+
+The 13th looks like fib_nexthops.sh. It was dropped in v4 and still has its
+own log_test() that prints "TEST: %-60s". Could the number be updated?
+
+> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+> index d46d2cec89e4..b31bd6f6efd8 100644
+> --- a/tools/testing/selftests/net/lib.sh
+> +++ b/tools/testing/selftests/net/lib.sh
+> @@ -454,6 +454,40 @@ log_test_xfail()
+>  	RET=$ksft_xfail retmsg= log_test "$@"
+>  }
+>  
+> +# Log test result with expected return value
+> +log_test_expected()
+> +{
+> +	local rc=$1
+> +	local expected=$2
+> +	local msg="$3"
+> +	local a
+> +
+> +	if [ "${rc}" -eq "${expected}" ]; then
+> +		nsuccess=$((nsuccess+1))
+> +		printf "    TEST: %-60s  [ OK ]\n" "${msg}"
+> +	else
+> +		ret="$ksft_fail"
+> +		nfail=$((nfail+1))
+> +		printf "    TEST: %-60s  [FAIL]\n" "${msg}"
+> +		if [ "$VERBOSE" = "1" ]; then
+> +			echo "    rc=$rc, expected $expected"
+> +		fi
+> +
+> +		pause_on_fail
+> +	fi
+
+[Severity: Medium]
+Could this call end a caller that runs under set -e? The shared
+pause_on_fail() in lib.sh ends with an && list:
+
+pause_on_fail()
+{
+	if [[ $PAUSE_ON_FAIL == yes ]]; then
+		echo "Hit enter to continue, 'q' to quit"
+		read a
+		[[ $a == q ]] && exit 1
+	fi
+}
+
+If the user presses Enter, or types anything other than q, the function
+returns 1. Here it is called as a plain command, so errexit applies to it.
+
+fib6_gc_test() in fib_tests.sh turns on errexit and then calls log_test:
+
+fib6_gc_test()
+{
+	...
+	set -e
+	...
+	check_rt_num 0 $($IP -6 route list |grep expires|wc -l)
+	log_test $ret 0 "ipv6 route garbage collection"
+
+Take "fib_tests.sh -p -t ipv6_gc" with a wrong route count. Pressing Enter
+at the prompt would then exit the whole script with status 1. The remaining
+tests and the summary are skipped, and the "return 0" at the end of
+log_test_expected() is never reached.
+
+The old log_test() in fib_tests.sh ran the prompt inline in an if body.
+There the trailing && list is exempt from errexit, so the script kept
+running. The other set -e regions in fib_tests.sh that call log_test
+before set +e look affected in the same way.
+
+This also doesn't match the commit message's statement that "The function
+always returns 0 to avoid influencing later code". Would something like
+"pause_on_fail || true" avoid the early exit?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-self_log_test-v5-1-1f00bd383146%40kylinos.cn
