@@ -1,124 +1,192 @@
-Received: from smtpdh17-1.aruba.it (smtpdh17-1.aruba.it [62.149.155.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A2C466AED
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B174E37E5E0;
+	Mon, 28 Sep 2026 08:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790582295; cv=none; b=TtxD6m7S1apLDrFv9oAwpEOWQSf4KIsczjPeJ7r/MGN8d3NFXc3okyz2zL55jX+yVgmnZNc2A4kN6Q0eBtJRVNGwlfRa54MmzgcAQ/x+TT+Nzil633h/lyvu2jWo/YUafidQzabLgegWh+BI67W6SGLxWbVqKTMRjNBoXCgIdZI=
+	t=1790582426; cv=none; b=j8sQRNg4miKmmEXiSWUI3YoEZLXDSol2Q8CVgUX8LqMMdol6uOrqlY6EOG1T2/W4bfTienZroYKnvxhhhnWOOAJI525QA53T65KrovWA4VYxZLk3jW+KUXz+lnu4VF1F7DC3Rgqh/ePDu2ZskgZ5rWdoRE/uDGMiqcQ2wD2GQV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790582295; c=relaxed/simple;
-	bh=FYiBSD2IKOEJoDyKbArro/hKFldwTHLZGK/L1fhcESA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ajXV19536UZmvssTrkx3KiD89rt3CAxxmbP3Ed3o7gxalfmWCeAFA4PDX47AUi9sdDOOeRElIrnOs5/3onEuC3yl/jzI4dR3tljciM4sXi61eBl8sPkFs+8FUuFhPzlhRo0nWyjDRP1idWpXn8iTb0BYORdyIIUN+/+os5x1hC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=YuW4Iawc; arc=none smtp.client-ip=62.149.155.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+	s=arc-20240116; t=1790582426; c=relaxed/simple;
+	bh=l81R9WM8DbHwJewLmAs9hgH/CkQjZFifExB+Lz9BM8c=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YqHTZxUIzA+d5lGi0bbctXVJunRON6U85A9izr+V6q/RfDwZEPLnln55uirk/mHNNu0HBT6EpXIHHKTJA1RIM/bHk+H3YmptcHntbI5KNH9I91aPM1WezuQch21K7qmvRvhzD56J/beo26YFRUuvgWrB5PjkDIKJfM92i9u03Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTYqcT1U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="YuW4Iawc"
-Received: from [192.168.0.186] ([101.57.122.26])
-	by Aruba SMTP with ESMTPSA
-	id B6FOx5k81Bm78B6FOxHNQS; Mon, 28 Sep 2026 09:58:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1790582283; bh=FYiBSD2IKOEJoDyKbArro/hKFldwTHLZGK/L1fhcESA=;
-	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=YuW4IawcQq8pk7wS3YCjYspQ2SvginI0P0pqRyxka36V2ZuJuoGuJslgAL9Aj4b9j
-	 WSj0sVmhIAPtSEVusYvhVS+o8rRm0yoNsSwPArvXnUvIVMU4sStoCCvYas/31NYHuk
-	 mLjwzqFeOPQUc7tM2EA6eLhjDab5zk+uoqbBRIvvPtU1N64SrMsJo4FsmIDDqCQp/A
-	 sy76dsb/6luu2jRlz8vDei1J4/jNKrqtqtRS0/dKKqc23Rza88VHMD2ptsuFo1YxAN
-	 j4L/yoBTMmyUGbqtWJxGkXmlaBXQrG4InI/K2J46FNZZLKwVFuYES3tmwygrv37sWV
-	 /5ZSw4UaUkJEw==
-Message-ID: <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
-Date: Mon, 28 Sep 2026 09:58:02 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTYqcT1U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB92F1F000FF;
+	Mon, 28 Sep 2026 08:00:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790582424;
+	bh=ur90cJ6ifeUP3pY3In1pURIlIV16eVbuGZv1wN4zN8g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FTYqcT1UePh9NGYFJ6EEBOC2Mtrnw+TGYJWhLBVD5FQmZ98qJbE0aR25rv/5o2Wmb
+	 CKAcl623fnb9UB1R08UCm9Qssr0Cz9kvmf4AfTZ+i2NGC0TVp5nDsYC7yoVns9XBt8
+	 9FwEr4gdXCh+GdzvGHxvce4MTci6PLM35Om8bPy4b2gea/hr337jhjaa2R+E2oSFhD
+	 hqprh/27U8F9Oqm6y8LaeWcrIxdNDi1D+zshUuOZxgdU4wP/CQRHbezVy1GMRm5Rae
+	 uITr1ckORE7G8czke6ObVsbopuChMJj9RXyEnALrMQJ2Ui/etAiWgxRMBJ5JWDnf2i
+	 W+e0lPHOTyJaw==
+Subject: Re: [PATCH net-next 4/5] selftests: mptcp: convert iptables to
+ nftables for mptcp_sockopt.sh
+From: netdev-bot+sashiko@kernel.org
+To: matttbe@kernel.org
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ quanyeyang@proton.me
+Date: Mon, 28 Sep 2026 08:00:23 +0000
+Message-ID: <179058242329.3145.13094983040753478975@kernel.org>
+In-Reply-To:
+ <20260926-net-next-mptcp-misc-feat-7-4-v1-4-67af4ab37406@kernel.org>
+References:
+ <20260926-net-next-mptcp-misc-feat-7-4-v1-4-67af4ab37406@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
- <20260829210041.40649-4-dwmw2@infradead.org>
- <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
- <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
-From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfLK5gGeMJMuqtRHU1WYiSTU4sfsnaNAWMZlJRUIFuJCZ3nm3Mn6iMxq4CcBiOB5DzzqOjtsP7pT+QRzhQyWvBqrz9X+5T5E3gv9Uu+Ot9vRFbaccgecZ
- uL6NtK1DUuhxp6d9Vexi+R2T0baP0x0cbvMvP48cKhup5Wemas41Mze/9S7G2CvTgtId54HDNap/79fhYs2FKJSdi/6XThNXp7ut/MEFIJ3eBxiFUw8uvEPU
- 5goQqo4HIrpb/PuVkifvA/PmuNHOAxUGviuW6srpbIoJje2al9BfLTVs+4ThJ7lM7GGAGWSzgRG1inyiFp3sxBtUccIxcVEuC8jUN1nNcnZkHWvF/tcHoZa9
- d7GEscpNQ0911tS8ARcEzGy/vRQdy9w/DzX5bRBRe3YlRBFsreAnKdLv5hWfeIkfmy9m1Ji8eF+cU2jaDBCuurawKOvA7UY7Gp3dOk9wnYe271aH3IEUcUlO
- xm9Z6aKEEI9O+Aw27a/VVjotJtUOFB/wwIpmKS5pUmLTQQkwZoaVOjVZYLNM8lWO5oEqPa45Jjxs7bWp15BTJb5kPOg3gHPTEKNp5ZQYgASgD0AuXAt8TzJF
- MLOpzKAtlXQkimB+x65Bjm5T
 
-On Sat, 2026-09-26 at 21:38 +0100, David Woodhouse wrote:
-> So yes, the specific code path you're looking at *does* get slightly
-> longer (50ns to the counter read instead of 30ns).
-[...]
-> However, they are *entirely* in the noise, as there's about 600 ns of
-> hardware and 2-4 *microseconds* of software latency before we even get
-> there.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Thanks for measuring it, and on real hardware with a real edge. That
-answers my concern: ~20 ns of constant cost against microseconds of
-latency upstream of the handler is not something PPS can see, and
-trading it for the removal of a non-constant error is the right
-trade. It is arm64 rather than the 32-bit board I asked about, but I
-accept the argument holds there too, since the software latency only
-gets larger.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-There is still one thing I want to be sure we agree on, about what
-ts_real means for userspace.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Today, without CONFIG_NTP_PPS, ts_real comes from ktime_get_real_ts64(),
-which is the same value userspace reads with
-clock_gettime(CLOCK_REALTIME). A PPS timestamp and a clock_gettime()
-reading are identical by construction: both are the sanitized clock.
-With CONFIG_NTP_PPS the same held so far, since ktime_get_snapshot_id()
-also returned the sanitized value.
+- [Medium] The nft/jq tool check added to mptcp_lib_check_tools()
+  (tools/testing/selftests/net/mptcp/mptcp_lib.sh:531-532) only runs…
+- [Low] In add_mark_rules()
+  (tools/testing/selftests/net/mptcp/mptcp_sockopt.sh:57-60), the…
 
-After 1/4 and this patch that is no longer true. Your 1/4 says it
-explicitly: callers of ktime_get_snapshot_id() now receive the ideal
-time, "not the sanitized version provided to gettimeofday()". So ts_real
-becomes the ideal line, while clock_gettime(CLOCK_REALTIME) keeps
-returning the sanitized one, and the two differ by ntp_error at the
-instant of the edge.
+--
 
-For hardpps this is clearly what we want, and your 1/4 and 2/4 make
-that case. For userspace I am less sure. chrony and ntpd compare PPS
-timestamps against other sources whose timestamps come from
-clock_gettime(), i.e. from the sanitized clock, so after this series
-the two would be referenced to different lines, ntp_error apart.
-Miroslav, is that something chrony would notice? And David, how large
-can that difference get in practice? Your 1/4 says the divergence can
-span many ticks under NO_HZ.
+selftests: mptcp: convert iptables to nftables for mptcp_sockopt.sh
 
-Since the main users of ts_real are chrony and ntpd, not the kernel,
-I would like an Acked-by from their maintainers before I ack this
-patch. They are the ones who will have to live with the new semantics,
-so they should know what is coming and agree with it.
+This commit makes mptcp_sockopt.sh use nftables instead of
+iptables/ip6tables. It creates ip/ip6 filter tables with an OUTPUT chain,
+and check_mark() now reads the drop counter through nft -j and jq. It also
+extends mptcp_lib_check_tools() to probe for nft and jq.
 
-So for v5 please put this in the commit message, not only in the
-thread: why ktime_get_real_ts64() is inaccurate (the quantisation of
-the multiplier), that ts_real is now the ideal NTP-disciplined time
-rather than what clock_gettime() returns, the order of magnitude of
-the difference, and a short summary of the latency numbers above.
-Whoever runs git blame on pps_get_ts() in a few years should not have
-to find this thread.
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+> index b9d14647f4019..e65b4ebee06a6 100644
+> --- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+> +++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+> @@ -528,7 +528,7 @@ mptcp_lib_check_tools() {
+>  				exit ${KSFT_SKIP}
+>  			fi
+>  			;;
+> -		"iptables"* | "ip6tables"*)
+> +		"iptables"* | "ip6tables"* | "nft" | "jq")
+>  			if ! "${tool}" -V &> /dev/null; then
 
-Ciao,
+[Severity: Medium]
+Is nft -V the right probe for nft here?
 
-Rodolfo
+For nft, -V prints extended build information, and only newer nftables
+releases have it. The portable version flag is -v or --version, which is
+what the other selftests use. For example, the netfilter/*.sh scripts call
+nft --version.
+
+If an older nft rejects -V, would mptcp_lib_check_tools() exit with
+KSFT_SKIP from the top-level call in mptcp_sockopt.sh?
+
+    mptcp_lib_check_tools ip nft jq
+
+That would also skip the transfer, sockopt and TCP_INQ subtests, which
+don't use nft at all.
+
+The opposite case is also a concern. check_mark() needs an nft that was
+built with JSON support:
+
+    drops=$(ip netns exec "$ns" nft -j list table "$tables" filter | \
+    ...
+    if [ -z "$drops" ] || [ "$drops" -ne 0 ]; then
+            mptcp_lib_pr_fail "got $tables $drops in ns $ns," \
+                              "not 0 - not all expected packets marked"
+            ret=${KSFT_FAIL}
+
+On an nftables build without libjansson, nft -V still exits 0 and just
+reports json: no. add_mark_rules() works, because it only uses nft -f.
+
+nft -j then fails with "JSON support not compiled-in", so drops is empty.
+The test then reports "not all expected packets marked" and sets
+KSFT_FAIL. Should a missing userspace feature give a skip here instead?
+
+The later patch in the series, "selftests: mptcp: convert iptables to
+nftables for mptcp_join.sh", keeps the same "nft" | "jq" case with the -V
+probe. So it looks like this is still present at the end of the series.
+
+Would a separate nft check match the real dependency better? For example,
+nft --version plus a JSON check such as nft -j list ruleset.
+
+>  				mptcp_lib_pr_skip "Could not run all tests without ${tool}"
+>  				exit ${KSFT_SKIP}
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+> index e850a87429b61..b4e3eddc9cf21 100755
+> --- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+> +++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+
+[ ... ]
+
+> @@ -49,16 +47,27 @@ add_mark_rules()
+>  	local ns=$1
+>  	local m=$2
+>  
+> -	local t
+> -	for t in ${iptables} ${ip6tables}; do
+> -		# just to debug: check we have multiple subflows connection requests
+> -		ip netns exec $ns $t -A OUTPUT -p tcp --syn -m mark --mark $m -j ACCEPT
+> -
+> -		# RST packets might be handled by a internal dummy socket
+> -		ip netns exec $ns $t -A OUTPUT -p tcp --tcp-flags RST RST -m mark --mark 0 -j ACCEPT
+> -
+> -		ip netns exec $ns $t -A OUTPUT -p tcp -m mark --mark $m -j ACCEPT
+> -		ip netns exec $ns $t -A OUTPUT -p tcp -m mark --mark 0 -j DROP
+> +	local table
+> +	for table in ip ip6; do
+> +		ip netns exec "$ns" nft -f - <<-EOF
+> +			add table $table filter
+> +			add chain $table filter OUTPUT \
+> +				{ type filter hook output priority 0; policy accept; }
+> +
+> +			# just to debug: check we have multiple subflows connection requests
+> +			add rule $table filter OUTPUT \
+> +				tcp flags & (fin | syn | rst | ack) == syn \
+> +				meta mark $m accept
+
+[Severity: Low]
+This isn't a bug, but is this comment still accurate after the conversion?
+
+With iptables every rule had implicit counters, so iptables -v -L could
+show how many subflow SYNs were sent. In nftables a rule only counts
+packets if it has an explicit counter statement, and this rule has none.
+
+Every packet this rule matches is also accepted by the later "meta
+l4proto tcp meta mark $m accept" rule, so the rule now does nothing.
+
+The commit message says:
+
+  "Counters are not added to accept rules because the test does not
+  inspect them."
+
+However, this rule was meant for manual debugging rather than for the test
+itself. Should it get a counter, or should the rule and its comment be
+removed?
+
+> +
+> +			# RST packets might be handled by a internal dummy socket
+> +			add rule $table filter OUTPUT \
+> +				tcp flags & rst == rst meta mark 0x0 accept
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406%40kernel.org
