@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40364DAFAD
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0CE4D9543
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790606587; cv=none; b=AmQ5f4tT5rqNDj9hZPLS7wo9zCcha3Xdd6VRY+URBR2UkG8j6kdsKG4Puz1FytNNYvZKGwRUAbZXpYiGPm1nmklP86CgDIHUXAs8sjgaoJnN+1tLW47fyj5ms339STxKky5MMmyGLxpGHP9iQ+14tIXvZu+o3/RzArqf8PzF+p4=
+	t=1790606589; cv=none; b=s/X66BLOGMkhu6ELiiC+8ibtc9UiC7asqfNPPStYhD6EDz8G+zHx1JO59zsfwyVcqaCHmMIj5AdQHo4o+BW1RoBEuwuGp4tyXHrYDUPxuSWMubhrw05uJLsStgLZDIwXXGXyA5YGfEXTAL8JB76Y+++PltCJXiW6B5N816ArCAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790606587; c=relaxed/simple;
-	bh=3igxtc4zUTESBw0Ar4iJeRH7/CeZG60+YdkXUFMRVR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aVs1rwI44Bjp947quM5nPtJK1k/Wl5yaG52+qlcfYtGg7DRdsOcIKDw02uVe9fguBBJnMms2WuOS0ycpwE0g60tnNGDJf1MRB6upF27PIl5u5WbsDBMGYyjvqh6LMQ89PZlJASXMdaaSxYADEBCkARHoLLU8cyyUJJ81FEFOA/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7IEfrCP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790606589; c=relaxed/simple;
+	bh=0/ago/yjAcGqXbMuHqxyyVi34IZe2+QlvgRpS+RN5jE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m/OHDG77OlzXL22fg/Ei2pLaT9OCip0qkDsdtVXDSk0kjzU5Eva8g/CETqIdFC4ik1oU0PuiUnJ/D4BAUdaN5DWB5fdCkk6v88KLp+RrJeh4DOQcktsiT1JP/bJgMBjE5bR/YyEsxZ8kuZfAxcnVsu8FzVE2Ljst2lIYfGy039k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e71UUtTz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7IEfrCP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2AB1F000FF;
-	Mon, 28 Sep 2026 14:42:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e71UUtTz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2908D1F00893;
+	Mon, 28 Sep 2026 14:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790606580;
-	bh=z8zrRA+MfPc3dht4cMUxmTSTeOKudZ0A8yNZJxI4LBY=;
-	h=From:To:Cc:Subject:Date;
-	b=T7IEfrCPxaTV6zJ4h+1rtsnuaXUG2GEJ6QoWSxBtrDO0r7LcoaqfJ/wjZt7zZbA90
-	 4inG63yP6+IIHhdVco2oFkMhlvRfRd8BlTqhyz8bQ5bXPALD3PJ1HiPkQDvW6tLbu0
-	 sOUHMqa/tw2ou3yTfIC3lQ0Ld1NOuPRPqY3zG7lf6U8ow3vXGktp11CRAdq83/6KN8
-	 R2VhV6++cg1gorRGB3S2eEYFJDlk46DAqRu8eGOXvS6SXnnrXRnpPCsRYkc5l3Vlj9
-	 c2e17AvWluctubIBNtyxtY1eG4hsKhXvHt3mneXJStsv+Wy3pK6aiqbMbInGSRZaXf
-	 Ab4f8dhwZoEBw==
+	s=k20260515; t=1790606581;
+	bh=Zr4kqeOZzzJ9h5DziT0lrw3cKDyvvTVlxDzPQjladN4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=e71UUtTzboxiCt912+lQYoOYofMgZSsbdKmhgiBgDNZdA+/M5dwMbkfuX1yiLo3V5
+	 hIRwZYchI0Q5vG9g+40AL31ZhdVH+q9q7gRWncTrEEnwECQ2nUWlBcMz7Y0o+i1t80
+	 J6fH3k+wY+Hwh/4H2HhdaVBwIUGAR/lUxY5//azNNrCLSi4EKeWcljR/rKM9HcTY3N
+	 PEws/bNb/SIDQvpD2MXYillEQoE2in1xpLNi4CG08R46CxMSpBTPLEq9nW0LsgP2DS
+	 PoSwh/11iL7bwdM06gHHrrZEQTLAWKZDBKJoa8FNvJ21BZ1q46O+rWYFn7S8alzvT+
+	 Cmi2NKkb3fSmA==
 From: Eric Dumazet <edumazet@kernel.org>
 To: "David S . Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -33,11 +34,14 @@ Cc: Simon Horman <horms@kernel.org>,
 	Willem de Bruijn <willemb@google.com>,
 	"Michael S . Tsirkin" <mst@redhat.com>,
 	netdev@vger.kernel.org,
-	edumazet@kernel.org
-Subject: [PATCH v2 net 0/2] net: always dissect GSO packets in __virtio_net_hdr_to_skb()
-Date: Mon, 28 Sep 2026 14:42:51 +0000
-Message-ID: <20260928144254.3361044-1-edumazet@kernel.org>
+	edumazet@kernel.org,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH v2 net 1/2] net: always dissect GSO packets in __virtio_net_hdr_to_skb()
+Date: Mon, 28 Sep 2026 14:42:52 +0000
+Message-ID: <20260928144254.3361044-2-edumazet@kernel.org>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+In-Reply-To: <20260928144254.3361044-1-edumazet@kernel.org>
+References: <20260928144254.3361044-1-edumazet@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,47 +50,241 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes a bypass of untrusted GSO flow dissection in
-__virtio_net_hdr_to_skb() when VIRTIO_NET_HDR_F_NEEDS_CSUM is not set,
-and adds a kselftest covering VLAN-tagged GSO packets without NEEDS_CSUM:
+Commit 9e8db5913264 ("net: avoid false positives in untrusted gso
+validation") added a '&& skb->network_header' check before flow-dissecting
+GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM in
+__virtio_net_hdr_to_skb(), because some callers (such as tun_get_user(),
+tun_xdp_one(), virtnet_receive_done(), and raw_verify_header()) called
+virtio_net_hdr_*_to_skb() before initializing skb->network_header and
+skb->dev.
 
-- Patch 1 initializes skb->dev and skb->network_header before calling
-  virtio_net_hdr_*_to_skb() in tun_get_user(), tun_xdp_one(),
-  virtnet_receive_done(), and raw_verify_header(), removes the
-  '&& skb->network_header' condition and the unvalidated
-  'else if (gso_type)' fallback in __virtio_net_hdr_to_skb(), and moves
-  virtio_net_hdr_match_proto() after skb_flow_dissect_flow_keys_basic()
-  so it validates the dissected L3 protocol (keys.basic.n_proto) rather
-  than the outer L2 protocol.
+Because __alloc_skb() and __build_skb_around() zero-initialize
+skb->network_header to 0 (unlike mac_header and transport_header which
+are initialized to ~0U), those four callers always had
+skb->network_header == 0 and bypassed flow dissection in
+__virtio_net_hdr_to_skb(). More generally, skb->network_header is an
+offset from skb->head (where 0 is also a valid offset whenever
+skb_headroom(skb) is 0), not a boolean flag.
 
-- Patch 2 adds a kselftest in tools/testing/selftests/net/tun.c verifying
-  that VLAN-tagged (802.1Q) TCPv4 GSO packets without NEEDS_CSUM (both
-  flags = 0 and flags = VIRTIO_NET_HDR_F_DATA_VALID) are accepted on a
-  TAP device, and that mismatched GSO types and truncated headers without
-  NEEDS_CSUM are rejected with -EINVAL.
+Whenever the 'if (gso_type && skb->network_header)' branch was skipped,
+the fallback 'else if (gso_type)' only pulled nh_min_len + thlen (40 bytes
+for TCPv4) without dissecting the packet, without validating ip_proto or
+n_proto, and without setting skb->transport_header.
 
-v2:
- - Patch 1: drop the pre-dissection virtio_net_hdr_match_proto() check
-   inside 'if (!skb->protocol)' so VLAN-tagged GSO frames without
-   NEEDS_CSUM are not rejected before flow dissection (Michael S. Tsirkin).
- - Patch 1: clarify the changelog regarding why skb->network_header was 0
-   in those callers and why skb_reset_mac_header() is dropped in
-   tun_get_user() for IFF_TUN (Michael S. Tsirkin).
- - Patch 2: add selftest in tools/testing/selftests/net/tun.c based on
-   Michael's reproducer.
- - Link to v1: https://lore.kernel.org/netdev/20260927195536.2489079-1-edumazet@google.com/
+If the packet has a malformed network header, it is not rejected and a
+subsequent skb_probe_transport_header() also fails, leaving
+skb->transport_header at ~0U (0xffff). Similarly, if an IPv4 packet
+carries IP options (ihl > 5) or an IPv6 packet carries extension headers,
+pulling only nh_min_len + thlen can leave the TCP header outside
+skb->head. In both cases, tcp_hdrlen(skb) in skb_gso_transport_seglen()
+reads out-of-bounds:
 
-Eric Dumazet (2):
-  net: always dissect GSO packets in __virtio_net_hdr_to_skb()
-  selftests: net: tun: add test for VLAN-tagged GSO without NEEDS_CSUM
+  BUG: KASAN: slab-out-of-bounds in skb_gso_transport_seglen
+  Read of size 2 by task poc/133
+  skb_gso_transport_seglen (net/core/gso.c:155)
+  skb_gso_validate_mac_len (net/core/gso.c:270)
+  tbf_enqueue (net/sched/sch_tbf.c:260)
+  dev_qdisc_enqueue (net/core/dev.c:4227)
+  __dev_queue_xmit (net/core/dev.c:4884)
 
- arch/um/drivers/vector_transports.c |   1 +
- drivers/net/tun.c                   |  23 +++---
- drivers/net/virtio_net.c            |   2 +
- include/linux/virtio_net.h          |  60 +++++++---------
- tools/testing/selftests/net/tun.c   | 107 ++++++++++++++++++++++++++++
- 5 files changed, 149 insertions(+), 44 deletions(-)
+In addition, checking virtio_net_hdr_match_proto() only inside
+'if (!skb->protocol)' before flow dissection both skipped validation when
+skb->protocol was pre-set by the caller and rejected VLAN-tagged frames
+whose outer L2 protocol is ETH_P_8021Q or ETH_P_8021AD.
 
+Fix this by:
+1. Initializing skb->dev and skb->network_header (plus skb->protocol for
+   IFF_TUN) before virtio_net_hdr_*_to_skb() in tun_get_user(),
+   tun_xdp_one(), virtnet_receive_done(), and raw_verify_header(). In
+   tun_get_user(), drop the redundant skb_reset_mac_header(skb) in the
+   IFF_TUN case since __virtio_net_hdr_to_skb() unconditionally resets
+   mac_header.
+2. Removing '&& skb->network_header' and the unvalidated
+   'else if (gso_type)' fallback in __virtio_net_hdr_to_skb() so all GSO
+   packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are flow-dissected, have
+   their transport header pulled into linear data, and have
+   skb->transport_header set.
+3. Moving the virtio_net_hdr_match_proto() check to after
+   skb_flow_dissect_flow_keys_basic(), validating keys.basic.n_proto
+   against hdr_gso_type.
+
+Fixes: 9e8db5913264 ("net: avoid false positives in untrusted gso validation")
+Fixes: d5be7f632bad ("net: validate untrusted gso packets without csum offload")
+Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260927163117.746432-2-bestswngs@gmail.com/
+Assisted-by: LLM
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+ arch/um/drivers/vector_transports.c |  1 +
+ drivers/net/tun.c                   | 23 ++++++-----
+ drivers/net/virtio_net.c            |  2 +
+ include/linux/virtio_net.h          | 60 ++++++++++++-----------------
+ 4 files changed, 42 insertions(+), 44 deletions(-)
+
+diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
+index ddd127ee96785daa4c485b2a06f078686efd2046..e1fb2a76fdff59ef3032d091be06a06fa58046cc 100644
+--- a/arch/um/drivers/vector_transports.c
++++ b/arch/um/drivers/vector_transports.c
+@@ -209,6 +209,7 @@ static int raw_verify_header(
+ 	if ((vheader->flags & VIRTIO_NET_HDR_F_DATA_VALID) > 0)
+ 		return 1;
+ 
++	skb_set_network_header(skb, ETH_HLEN);
+ 	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
+ 	return 0;
+ }
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 5a302709a68aa3308b0c850b4a2957df3260b352..242899f7fd0711c5c59ff85accbf5bd1be9c6f39 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1897,12 +1897,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 		}
+ 	}
+ 
+-	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+-		atomic_long_inc(&tun->rx_frame_errors);
+-		err = -EINVAL;
+-		goto free_skb;
+-	}
+-
++	skb->dev = tun->dev;
+ 	switch (tun->flags & TUN_TYPE_MASK) {
+ 	case IFF_TUN:
+ 		if (tun->flags & IFF_NO_PI) {
+@@ -1927,9 +1922,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			}
+ 		}
+ 
+-		skb_reset_mac_header(skb);
++		skb_reset_network_header(skb);
+ 		skb->protocol = pi.proto;
+-		skb->dev = tun->dev;
+ 		break;
+ 	case IFF_TAP:
+ 		if (!pskb_may_pull(skb, ETH_HLEN)) {
+@@ -1937,10 +1931,19 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			drop_reason = SKB_DROP_REASON_HDR_TRUNC;
+ 			goto drop;
+ 		}
+-		skb->protocol = eth_type_trans(skb, tun->dev);
++		skb_set_network_header(skb, ETH_HLEN);
+ 		break;
+ 	}
+ 
++	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
++		atomic_long_inc(&tun->rx_frame_errors);
++		err = -EINVAL;
++		goto free_skb;
++	}
++
++	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
++		skb->protocol = eth_type_trans(skb, tun->dev);
++
+ 	/* copy skb_ubuf_info for callback when skb has no error */
+ 	if (zerocopy) {
+ 		skb_zcopy_init(skb, msg_control);
+@@ -2600,6 +2603,8 @@ static int tun_xdp_one(struct tun_struct *tun,
+ 
+ 	features = tun_vnet_hdr_guest_features(READ_ONCE(tun->vnet_hdr_sz));
+ 	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
++	skb->dev = tun->dev;
++	skb_set_network_header(skb, ETH_HLEN);
+ 	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
+ 		atomic_long_inc(&tun->rx_frame_errors);
+ 		kfree_skb(skb);
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index bf82ef9874abb4094931496fb6064a12ee75b789..daab43ac92ce4276b0f8f88684991e3993022ce6 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2515,6 +2515,8 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
+ 		goto frame_err;
+ 	}
+ 
++	skb->dev = dev;
++	skb_set_network_header(skb, ETH_HLEN);
+ 	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
+ 				      vi->rx_tnl_csum,
+ 				      virtio_is_little_endian(vi->vdev))) {
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index c381b916c1b54afacba5473888af589a24fe087c..d6466f96cdd00cdf059d4fa8842ba1672780e556 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -111,48 +111,38 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		p_off = nh_min_len + thlen;
+ 		if (!pskb_may_pull(skb, p_off))
+ 			return -EINVAL;
+-	} else {
++	} else if (gso_type) {
+ 		/* gso packets without NEEDS_CSUM do not set transport_offset.
+ 		 * probe and drop if does not match one of the above types.
+ 		 */
+-		if (gso_type && skb->network_header) {
+-			struct flow_keys_basic keys;
+-
+-			if (!skb->protocol) {
+-				__be16 protocol = dev_parse_header_protocol(skb);
+-
+-				if (!protocol)
+-					virtio_net_hdr_set_proto(skb, hdr);
+-				else if (!virtio_net_hdr_match_proto(protocol,
+-								 hdr_gso_type))
+-					return -EINVAL;
+-				else
+-					skb->protocol = protocol;
+-			}
++		struct flow_keys_basic keys;
++
++		if (!skb->protocol) {
++			skb->protocol = dev_parse_header_protocol(skb);
++			if (!skb->protocol)
++				virtio_net_hdr_set_proto(skb, hdr);
++		}
+ retry:
+-			if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
+-							      NULL, 0, 0, 0,
+-							      0)) {
+-				/* UFO does not specify ipv4 or 6: try both */
+-				if (gso_type & SKB_GSO_UDP &&
+-				    skb->protocol == htons(ETH_P_IP)) {
+-					skb->protocol = htons(ETH_P_IPV6);
+-					goto retry;
+-				}
+-				return -EINVAL;
++		if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
++						      NULL, 0, 0, 0,
++						      0)) {
++			/* UFO does not specify ipv4 or 6: try both */
++			if (gso_type & SKB_GSO_UDP &&
++			    skb->protocol == htons(ETH_P_IP)) {
++				skb->protocol = htons(ETH_P_IPV6);
++				goto retry;
+ 			}
++			return -EINVAL;
++		}
+ 
+-			p_off = keys.control.thoff + thlen;
+-			if (!pskb_may_pull(skb, p_off) ||
+-			    keys.basic.ip_proto != ip_proto)
+-				return -EINVAL;
++		p_off = keys.control.thoff + thlen;
++		if (!pskb_may_pull(skb, p_off) ||
++		    keys.basic.ip_proto != ip_proto ||
++		    !virtio_net_hdr_match_proto(keys.basic.n_proto,
++						hdr_gso_type))
++			return -EINVAL;
+ 
+-			skb_set_transport_header(skb, keys.control.thoff);
+-		} else if (gso_type) {
+-			p_off = nh_min_len + thlen;
+-			if (!pskb_may_pull(skb, p_off))
+-				return -EINVAL;
+-		}
++		skb_set_transport_header(skb, keys.control.thoff);
+ 	}
+ 
+ 	if (hdr_gso_type != VIRTIO_NET_HDR_GSO_NONE) {
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
