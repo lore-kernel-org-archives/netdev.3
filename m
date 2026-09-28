@@ -1,252 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA55F4C10DC;
-	Mon, 28 Sep 2026 17:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790617086; cv=none; b=Pq3UptWM85MVL9BdzdlSSjp1NwAJ/5rVA+iDVB/LS8Q+zXna3ht9Cu1IvlaIvof9htoviYHjZsMocB1MVaLIZnMpOeI7JSdy223TA8XzqCJ8Bz4GoB30nFpJC+Dztnqf33m4ngkYOTpZo4DnDNgYjGmG4yGNu+ACAQJViQxEHGM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790617086; c=relaxed/simple;
-	bh=7bgGvkbBgqdIrTV2Pa46RiGjmjVFupX4w9gypNgpFCw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VaCFvdB5e4E0cfVxvoQ/p9nhC3Vu4v1midEkS2RORK/+i1G8PVdSfuM7f3oDrk/3/7TicTMTIg6uBR0Hn/Pmy/W25UZWicjs3xjr8d+uyBNsKxTXZC7rpLbBY/7CdNnn1OV2jdsEarGUlL9zztGNYvYAtOaStNou+z4G5QVra68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fq3bHI6k; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6A4E50D9
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790617381; cv=pass; b=jXFQyYUFQRiwkoVUh4vT+6cUsQutzvvAtSq0Bub39dMoCEI9Si0QXNwUIlaAuwTp31Z0F8cnMwO0ZcUxZsb8DrsJiocfMWhRoy9IQ5/ygmdaeIQl0mtWTgptzJxQGvqpcwYzvLdcpEfweGDMi6irg2N+cvbUpEEcBQbJAF9P/Tc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790617381; c=relaxed/simple;
+	bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qFiP3W5+4GjfscyByt2gp5cTjtmh0IEwQHpH7bRJoIqMWaIoLJ/+Br2+PfHZ0y2bEesufsbBLV5Eb5JJIUBnYDgKecICntPrG9s0NLhmqCG2K8JVA+F/6/U2mV9wc7Ow4G2HEQ7rx6tW1X72i5K9VGC8Tzz8THhYdqgZoCjH/vw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BiydTQbP; arc=pass smtp.client-ip=74.125.230.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fq3bHI6k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C40A1F000FF;
-	Mon, 28 Sep 2026 17:38:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790617084;
-	bh=VFvhxyBwyXWQRkFWEyLnWlqFIdvAR02bthwhHYXPspo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Fq3bHI6kSWQJHeO+dw0FFjAizkVriAQ8Ae7x3Df5yF5khievkYL0cy/YHSMvgqsc7
-	 Sif23yY0CAoJy+ulPUOHFX6we8QwQ0t/nkrf5v/tRXTqdi/eBGD+W0BmrBlkAtelkQ
-	 cBMzttOdsarhBDmc/SQx9QH5rgBDjgdxfslc9WcSaHWKiS6IK3+2+ueu/tOf2vsGN3
-	 MSoZckmueWJc+FJjJ9qObvPIjXDMUL7zB8bVwXV955DSp4eVlyX+r703mR+aNQxqqW
-	 Cmc0yZtlPS+bD9jvHhY31+WDATd0MI1bmPiQsvGfZQTpmaqG12kXzNPVcvB0tmsg62
-	 WpM5V5wpF1mHw==
-Subject: Re: [PATCH net] nfc: llcp: check socket state after locking in
- nfc_llcp_recv_dm()
-From: netdev-bot+sashiko@kernel.org
-To: qwe.aldo@gmail.com
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
-Date: Mon, 28 Sep 2026 17:38:03 +0000
-Message-ID: <179061708381.3145.1888668233789067177@kernel.org>
-In-Reply-To: <20260925023509.3060096-1-qwe.aldo@gmail.com>
-References: <20260925023509.3060096-1-qwe.aldo@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BiydTQbP"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91434eba587so32709386d6.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:43:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790617379; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WOmFN09V1/Xk4xVJ2Q0Tg9ESUPjbPeGYUWB/6j1U2/wBflXuq0uFx/mKByGAI1yBsF
+         zmydBcIQXRZyRQs9J86f76mX9hh4jf6qhtgjTOfG/VeSJ7EccsVTsj7rPRAkfcO46jri
+         qiNlxXnPqE5sqWFoxQZIrBLjclAl7HJPTB+KQJpoLY1O9AjYLnHQqfgf4CV+YVI24UUc
+         swWI4u5OTpw8JPO38SGNWaXERwiTb8K26N8MQGjtMrsly5xktgOT+9sfajLMEr8VHg0U
+         40m0uG/nU55Ui95oS6yxnmVZTmVyiBEfEpkH0ch7pMUnQX1FHlwjxGo3vr/gunZBZYj+
+         QKJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
+        fh=JawWCUzA618jMjYbRgB/cX/mxOjTcLKhHRlnVIZwBJI=;
+        b=ZGfPiy8+ittU18/ePygs9eLilqYQSmxwnzkoY2gnsDklNI4MtZjmwMDBvkYSlPjcLf
+         PasiDbRNjwxqoma5UalHCQPv/k2Xb0dKeaWFYGkIi2tBVm0nr5crwNJ7NoBhr4Wc0CaK
+         I+ujEjdF1cRrSLMGjjdh6AtBvYJrG6WP4JcfVwgzmJhhqIRgO78IlVeU54WTbrfV66kH
+         GTbHB8J9iOquNeomGF3zu17HLSP2+RJiYAtzi6mH3xi18H60Iv/Uob3H82xAJT5lO0ei
+         w2lnPGB1fod9PMt5hoW0YgovuCDgwGiUCUyFHIxMJfyt+dQzU1aajrWEsqKOrvD5c8Tr
+         JKkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790617379; x=1791222179; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
+        b=BiydTQbPOeAdEz0U+bzGEnx/hSE1k6ewf4aMRoMI/2XZlXpRXLQclvnvxsqPdEQG/l
+         h00rCmCFEAO7p6193k7t3r5BZ1/uO5vFJ5jRnNpc6euCKQQlYo9cFwDBrPle58+YUDCs
+         RnFFe7BesbeSIbde3fl4loiPTl6ckapSOxjdF/Hm62pwMLuubtuuu0w/cUqYRZwH4RkB
+         WAnf4uaBNuRDmMPQ4pP7M7m6qetqPjewMQqqtS5yhRLeQp0p+0YmTq8SVNnDv20jZdL7
+         9rJ1N8jll8Y1mcwGYYgd4ydjInK4EFedd6RZAYWyRalLFLG9X01Vmslp3yvMjQCC+VDS
+         /rYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790617379; x=1791222179;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
+        b=L/7O/QIe8Ux/hm1WoHA9oUuDqyK+I//JdDjhHhJVzeERhKptGz4lQt1c8eh2xOexOi
+         92YywmBVOuKL0sYoK3JVXGXEkf94sUAXLFAzZXmd4G/84Hc6+AE+RiB9JMiKQ0pC1ORh
+         ZqFSnsJLMvQNxfh7sSIg1mGijf9PQ/xuV2MaAdC7W6brabD7RoHIAq7gB8uSSvVH4gCF
+         lGam6k/plA6GCknty83wQ5tDIANeuYjk3Q7dSL1oFbE4jcOG+23UM5/J4UrgyN8DD1rr
+         YzvcK/zq2rSZ3krG7lZI/Ymb9gs8BVacO3kigoG6iOp4b7RaDjwXEWBVjQgF+4+v3ofe
+         KYQg==
+X-Forwarded-Encrypted: i=1; AKwUvBzOYcNuuPd/v8k0E9kmWnEHMiFPaOAS+iDC2XWkbPfPNJHjPb8rwt+XiKb4OLTI1YAZHs0UDFA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKifvBPV7N7uwf4n9e8gPKwwWW8lm0QZIPopY+uT9gwSTxMM+Tb
+	wGKoyw53/TQAiojCUSslliMiz3OBjubSaM8UmDuZxX5H9yrgMQzh2HXkHaGbj2VNL0KUFkq5MKn
+	6IACXj9BSEddnjpHG87J+myqrKThqTIKv00ZkXaYj
+X-Gm-Gg: AYBFou2M1jaPIhFOpAsbF4b1l+u+zHR+V+VsrWr9GzAzY9yNAh2Sdx+gu+DDPFYdUA4
+	WiyGsV2yDH8zod3pvbUOeIZcWbF3MuG3g1dsaF6WeOdfZj7SHYx+JYCs+nAfikggY661wie8Rq2
+	O5+Eq0OKUZT9H1OghekhxqSO4KoTMZi8Wylp+vZUBMX9dDBAqXCcuk+eui3pYQC+fj3IcdqA7h3
+	h3N2QAkqLf8T2IkPj7luRlNgqObHr8dmREF5XPd+q80kYCPqwfE/dBdfaMr+zVKw2FafqFQmVlz
+	qLvw+1Rl9gUYC8ADEFJIioj/5BTtvbUXb6O9f7klMBt0mS3UR96HKce3+0ROrthhwuguu/JZ/ro
+	LqkzBd+geigmdLD7Q0bAVR0fawWaJVEXTY+qwxuJUjw==
+X-Received: by 2002:a05:6214:21a9:b0:910:2f02:8c46 with SMTP id
+ 6a1803df08f44-9143222edc2mr218567806d6.14.1790617378675; Mon, 28 Sep 2026
+ 10:42:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <6a73d174.5aeeccc9.207e63.000c.GAE@google.com> <6ab29768.514bccd6.255447.001e.GAE@google.com>
+ <6ab8c8cb.e548f532.1ca396.0037.GAE@google.com> <arjO9qbNdbvdi7ao@gmail.com>
+In-Reply-To: <arjO9qbNdbvdi7ao@gmail.com>
+From: Pimyn Girgis <pimyn@google.com>
+Date: Mon, 28 Sep 2026 13:42:47 -0400
+X-Gm-Features: AclHuK-qpUM45iPuLgTgCnMsb-qo1Qn6VReor2uYb0e5oZPZ4T_26Jl9lysMnJ4
+Message-ID: <CAJWNTGzZ5=bBUzsAhaLLqNE0J3a_tj9BB0OvHhOaaWR8xn9S3g@mail.gmail.com>
+Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
+ (2)
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Sun, Sep 27, 2026 at 4:14=E2=80=AFAM Jose A. Perez de Azpillaga
+<azpijr@gmail.com> wrote:
+>
+> I just don't understand why it is failing... :(
 
-Critical: 0 · High: 3 (1) · Medium: 0 · Low: 0
+Hi Jose,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+For future reference, you can send the patch as a text file attachment
+with the `#syz test:` command instead, which will avoid any parsing
+issues.
 
-- [High] Incomplete fix: the new check only skips the unlink, so a stale
-  DM still resets the re-bound socket and leaves it hashed but…
-- [High] nfc_llcp_recv_cc(), which the comment says recv_dm mirrors,
-  still has the same race and unconditionally unlinks the socket from…
-- [High] In nfc_llcp_recv_dm() (net/nfc/llcp_core.c:1329-1330), a socket
-  in LLCP_CONNECTING may be on a different local's connecting_sockets…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  llcp_sock_connect() (net/nfc/llcp_sock.c:709-716) rejects only…
-
---
-
-nfc: llcp: check socket state after locking in nfc_llcp_recv_dm()
-
-For DM(NOBOUND)/DM(REJ), nfc_llcp_recv_dm() now unlinks the socket from
-local->connecting_sockets only if the socket is still LLCP_CONNECTING
-after lock_sock(). The goal is to close a race where a failed connect
-followed by a re-bind moves the socket onto local->sockets between the
-lookup and the lock.
-
-> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index 74bf817007cf2..acf1133114821 100644
-> --- a/net/nfc/llcp_core.c
-> +++ b/net/nfc/llcp_core.c
-> @@ -1326,7 +1326,7 @@ static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
->  	 * corrupt the connecting_sockets list / desync the socket refcount.
->  	 * This mirrors nfc_llcp_recv_cc().
->  	 */
-> -	if (connecting)
-> +	if (connecting && sk->sk_state == LLCP_CONNECTING)
->  		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
->  
->  	sk->sk_err = ENXIO;
-
-[Severity: High]
-When the socket is no longer LLCP_CONNECTING, the new check skips only
-the unlink. Execution still falls through to:
-
-	sk->sk_err = ENXIO;
-	sk->sk_state = LLCP_CLOSED;
-	sk->sk_state_change(sk);
-
-In the race the commit message describes, can a stale DM still reset a
-socket that has just been re-bound?
-
-llcp_sock_connect()
-  lock_sock(sk)
-  nfc_llcp_sock_link(&local->connecting_sockets, sk)
-                               rx_work: nfc_llcp_recv_dm()
-                                 nfc_llcp_connecting_sock_get() finds sk
-                                 lock_sock(sk) blocks
-  nfc_llcp_send_connect() fails
-  goto sock_unlink   /* sk_state is still LLCP_CLOSED */
-  release_sock(sk)
-llcp_sock_bind()
-  sk_state != LLCP_CLOSED check passes
-  nfc_llcp_sock_link(&local->sockets, sk)
-  sk->sk_state = LLCP_BOUND
-                                 lock_sock(sk) acquired
-                                 sk_hashed(sk) is true
-                                 sk_state != LLCP_CONNECTING, skip unlink
-                                 sk_state = LLCP_CLOSED, sk_err = ENXIO
-
-nfc_llcp_send_connect() can fail with -ENOMEM from the TLV or PDU
-allocations, or through sock_alloc_send_skb() with MSG_DONTWAIT. The DM
-comes from the remote peer. The new ssap is predictable because
-nfc_llcp_get_local_ssap() uses find_first_zero_bit().
-
-After this, sk is still hashed on local->sockets but in LLCP_CLOSED. A
-later listen() then fails with -EBADFD in llcp_sock_listen() even though
-bind() succeeded.
-
-A second bind() also passes the LLCP_CLOSED check in llcp_sock_bind()
-and calls nfc_llcp_sock_link(&local->sockets, sk) again. sk_add_node()
-is sock_hold() plus hlist_add_head() with no sk_hashed() check. Would
-that re-insert an already linked node and create a cycle in
-local->sockets?
-
-If so, sk_for_each() in nfc_llcp_sock_get() or nfc_llcp_sock_from_sn()
-would never terminate. The second bind() would also leak a sock
-reference, the first local kref, the first service_name buffer and any
-well-known service bit.
-
-Before this patch, this particular race left the socket unhashed.
-Other paths can also leave a socket hashed but LLCP_CLOSED, such as
-nfc_llcp_recv_disc() on a connected socket.
-
-When connecting is set but sk_state is not LLCP_CONNECTING, should the
-stale DM be ignored completely? The handler could call release_sock()
-and nfc_llcp_sock_put() and return, as the !sk_hashed() branch does,
-leaving sk_err and sk_state alone.
-
-[Severity: High]
-Should the check after lock_sock() also confirm that llcp_sock->local
-is still the local the DM was looked up on?
-
-Suppose nfc_llcp_send_connect() fails on local A while A's rx_work is
-waiting in lock_sock(). Userspace can then retry connect() on a second
-NFC device, local B, and get the lock first:
-
-llcp_sock_connect()   /* retry */
-  llcp_sock->local = local;   /* B */
-  nfc_llcp_sock_link(&local->connecting_sockets, sk);
-  nfc_llcp_send_connect() succeeds
-  sk->sk_state = LLCP_CONNECTING;
-  sock_wait_state() drops the socket lock
-
-A's DM worker then gets the lock. It sees sk_hashed() true and
-sk_state == LLCP_CONNECTING, and calls:
-
-	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);  /* local == A */
-
-That takes A->connecting_sockets.lock, but sk_del_node_init() removes
-the node from B's list. Can this race with nfc_llcp_connecting_sock_get()
-in B's rx_work, or with connect() and release() on B's list, and corrupt
-B->connecting_sockets?
-
-The stale DM from A would also force the connect attempt on B to
-LLCP_CLOSED with ENXIO.
-
-[Severity: High]
-The comment above this check still says:
-
-	 * For DM(NOBOUND)/DM(REJ) the socket is still linked on the
-	 * connecting_sockets list.
-	...
-	 * This mirrors nfc_llcp_recv_cc().
-
-After this change neither statement is accurate. The code no longer
-assumes the socket is on connecting_sockets, and nfc_llcp_recv_cc() has
-no matching check.
-
-Does nfc_llcp_recv_cc() have the same race? It also looks up the socket
-with nfc_llcp_connecting_sock_get() and calls lock_sock(). It checks
-only sk_hashed() and then does:
-
-	/* Unlink from connecting and link to the client array */
-	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-	nfc_llcp_sock_link(&local->sockets, sk);
-	llcp_sock->dsap = ssap;
-	...
-	sk->sk_state = LLCP_CONNECTED;
-
-Take the same failed connect plus re-bind sequence, with the peer
-sending a CC instead of a DM. sk is then on local->sockets in
-LLCP_BOUND. sk_del_node_init() would remove it from local->sockets
-while holding connecting_sockets.lock, not sockets.lock. Nothing
-synchronizes that removal with the other users of local->sockets.
-
-The socket would then be re-linked with a peer-chosen dsap and marked
-LLCP_CONNECTED, although it never sent a connect PDU.
-
-Should nfc_llcp_recv_cc() get the same revalidation, and the comment be
-updated?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the new check assumes
-sk_state tells which list the socket is on, and llcp_sock_connect() can
-break that. It rejects only two states:
-
-	if (sk->sk_state == LLCP_CONNECTED) {
-		ret = -EISCONN;
-		goto error;
-	}
-	if (sk->sk_state == LLCP_CONNECTING) {
-		ret = -EINPROGRESS;
-		goto error;
-	}
-
-A socket in LLCP_BOUND or LLCP_LISTEN is already on local->sockets
-because llcp_sock_bind() put it there. If connect() is then called on
-that socket, it overwrites llcp_sock->local, ssap and service_name
-without releasing the bind-time ones. That leaks a local kref, the
-service_name buffer and any well-known service bit.
-
-It then calls:
-
-	nfc_llcp_sock_link(&local->connecting_sockets, sk);
-
-sk_add_node() does sock_hold() and hlist_add_head() without an
-sk_hashed() check. This rewrites sk_node while its predecessor on
-local->sockets still points at it. Doesn't that cross-link
-local->sockets and connecting_sockets?
-
-Any later unlink in nfc_llcp_recv_cc(), nfc_llcp_recv_dm() or
-llcp_sock_release() would then work on a node that is on both lists.
-An unprivileged user can reach this by calling bind() and then connect()
-on the same socket while the DEP link is up.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925023509.3060096-1-qwe.aldo%40gmail.com
+--=20
+=E2=B2=A0=E2=B2=9F=E2=B2=93=E2=B2=99=E2=B2=8F=E2=B2=9B =E2=B2=84=E2=B2=89=
+=E2=B2=B1=E2=B2=A3=E2=B2=85=E2=B2=93=E2=B2=9F=E2=B2=A5 - Pimyn Girgis
+Software Engineer
+Kernel Dynamic Analysis
+pimyn@google.com
