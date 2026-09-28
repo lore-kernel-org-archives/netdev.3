@@ -1,57 +1,45 @@
-Received: from out-zbxj-a75.jellyfish.systems (out-zbxj-a75.jellyfish.systems [198.54.127.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853703E40FB
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 19:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0867B4C33ED
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 19:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790624668; cv=none; b=fZjhWxLVPRTZL0X+bvom65jxn1IQSQA6n9YTeDBb781J8ywpxQXy4kHof/4kfj3n7GICWoSJif5dBtTodTjABDNOABe3OHUy8t9dM+ZQ2ui9FoZyHz4iBcS3PWueQgvulTuZkYgy0EzSAyG68OQViQscAwENDkRMx5iD8yjdwuQ=
+	t=1790624730; cv=none; b=p4GvjT0gY8dWmG2QtUytPKdvXAklAuvAnU8z6pXeqNrWFyNTcBhyAaRmYYLco2VS9zsi45qQUgt0saUrB/t/5OcEFlgXteUOc0uqh0TjFHdaYuuEEgAqilWhlSmSVwnRkBJUieVzWqIhEpQdfKvvwrNn9yOtZI80V29XRDiQFew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790624668; c=relaxed/simple;
-	bh=8BtFffJxUMZjdKjUyZLZ65tt7JmrPqUPubeAIwEAWXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKTN10tlu87fiRDm4HSN4sMcjKvoqN0KBlrMxjpUX4b0h+GT4PnA+7btfqyLQM5XDiPSgigQNzjeoGbiCxND9Kg48oAY4URa9alXQ1bGkG5YWKrdX+Ghkqnm9x/N+zYugY+4j5lAZNV/l2OTe1l7Z4eUXxtTfJEc758kEbjcWcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=ZyULdGNJ reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1790624730; c=relaxed/simple;
+	bh=NY4plxob1QgUbaCen+v/0R+ek344biTN0+9oYlQErJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HEWKifFsWZ9dS8IuncAmyLyHi49w5vwTJx5BP+kEDdW+i0p2yzUiKmZmKawgeXVOikrZiY/IcSPEikwW3s2Yg2PgJ2bAjQpUnXMcuDvAybi1GZQ1/CNl93CsIBOX/A+fUXVJxd6P5WawvtK3wLV/ykchP+9Anzd0X8jQqPcgCNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYhvWuaS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="ZyULdGNJ"
-Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4htsFJ2FfDz2x9C;
-	Mon, 28 Sep 2026 19:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1790624645;
-	bh=aKwfpfR6D49NNS6/Iw5WZJrvQIJqO5dlq1ymNm9qL/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyULdGNJA+4WLNRmPeLHvG6yct6InDJotMb5DbspdJMKkTZGYXtxuwdD4HsyXlWGm
-	 g4CFUsWDo0H1dYHK5E5HXMyjAQv9O36IaJ5eNfdaexm5Y5XekdzAE8yvXfLrQwG/du
-	 4niefsgqGUprQhglgCOqCtCX8jrlsnZTUR+b+wJbFEfSTM5YLMzYcjwDEvCrFQAVHC
-	 GMrc7OTKgQHRcckfeh/9mgFgSZ0oAZ9IddWNQAIWpecv1HFA6jcjUM3Usm9PMZ+3Gf
-	 vNoWvj37UffKCNDseLHOIjaSTvGynTPsUxolzdIG5zeyPdxbXxKHP3eM8sDTfQryeK
-	 mWgga3xjyUthg==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYhvWuaS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45851F000FF;
+	Mon, 28 Sep 2026 19:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790624728;
+	bh=jFQadxVCZXEO7GR933a/bxx0A6m5Tew4bcmPNVpV1FA=;
+	h=From:To:Cc:Subject:Date;
+	b=lYhvWuaSXh38cwdaN6bLrVp1WMeR7jEWIDY8wqXdFQUld25WNPv5WakBLcygDgmZ+
+	 a47/iNl4l4gKBH++5dMMMZA5S0n5u4VPH9mYXMSHOPsYCL133xrSPOedCGHZtz/vL+
+	 OLYj53QjJo9ViBVt5oyvBuZIOc45YP7v8rhBCAYUbBMlUkUzTuiEvnDZmyMWj7RDIc
+	 4ZQN3s25erShN5B9TCEyx61sk3nJdplwDNWDMKRXOw1a0aqqQNDReq/mef/rCgT0N7
+	 hZUonvJxqLVxCdPr9Pp6zxWNU24BHLwD0WeA8tW52ri5rb8hbc4w4U+/J3QUhhIGZE
+	 XRyQffFGNIKVw==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	netdev@vger.kernel.org,
-	Rahul Chandelkar <rc@rexion.ai>,
-	Sashiko <netdev-bot+sashiko@kernel.org>
-Subject: [PATCH nf-next v5 3/4] netfilter: nf_conntrack_amanda: use nf_ct_helper_parse_port()
-Date: Mon, 28 Sep 2026 19:44:03 +0000
-Message-ID: <41754da04debbc9e82c77549e1cfc5171ae0f365.1790596690.git.rc@rexion.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790596690.git.rc@rexion.ai>
-References: <cover.1790596690.git.rc@rexion.ai>
+	edumazet@google.com,
+	Eric Dumazet <edumazet@kernel.org>,
+	syzbot+9408fbe0e6452a12e9ab@syzkaller.appspotmail.com
+Subject: [PATCH net] ipv6: sr: use skb_get_hash_net() in seg6_make_flowlabel()
+Date: Mon, 28 Sep 2026 19:45:24 +0000
+Message-ID: <20260928194524.3617299-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,72 +47,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
 
-amanda_help() passes the result of simple_strtoul() straight through
-htons() into a __be16, so values 65536-99999 are truncated (e.g. 65537
-becomes 1).  In addition, the port field is copied into a buffer that
-only holds five digits, so a longer field such as 123456 is cut down to
-12345 and accepted as a different port, and on the NAT path only its
-first five bytes are mangled.  Either way a conntrack expectation is
-created for a port that never appeared in the reply.
+Since commit d58e468b1112 ("flow_dissector: implements flow dissector
+BPF hook") __skb_flow_dissect() needs a net pointer, either from
+skb->dev, skb->sk, or since commit 3cbf4ffba5ee ("net: plumb network
+namespace into __skb_flow_dissect") a caller provided pointer.
 
-Make pbuf one byte larger so that a sixth digit is copied, and use
-nf_ct_helper_parse_port(), which rejects port 0, values above 65535 and
-digit runs longer than five characters.  The trailing len is still
-derived from the parser's end pointer for the NAT mangle path.
+syzbot was able to reach seg6_make_flowlabel() with an skb having
+neither skb->dev nor skb->sk set: a TIPC UDP bearer sends a discovery
+message through an IPv4 route using seg6 encap, while
+net.ipv6.seg6_flowlabel is set to 1.
 
-Build-tested with allmodconfig and allyesconfig (W=1) and sparse, and
-cross-built for i386 and big-endian powerpc.  The parser
-was also checked in a userspace harness; the change has not been
-run-time tested with Amanda traffic.
+seg6_make_flowlabel() already has a net pointer, use skb_get_hash_net().
 
-Fixes: 16958900578b ("[NETFILTER]: nf_conntrack/nf_nat: add amanda helper port")
-Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-Closes: https://lore.kernel.org/all/179053062399.2160803.9591526412956900613@kernel.org/
-Assisted-by: Claude-Code:claude-opus-5-5 sparse
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0x910/0x5368 net/core/flow_dissector.c:1126, CPU#0: syz.0.17/4930
+Call trace:
+  __skb_flow_dissect+0x910/0x5368 net/core/flow_dissector.c:1126 (P)
+  __skb_get_hash_net+0xe0/0x29c net/core/flow_dissector.c:1903
+  skb_get_hash include/linux/skbuff.h:1663 [inline]
+  seg6_make_flowlabel+0xcc/0x1ec net/ipv6/seg6_iptunnel.c:132
+  __seg6_do_srh_encap+0x320/0xbf4 net/ipv6/seg6_iptunnel.c:161
+  seg6_do_srh+0x4b4/0xa44 net/ipv6/seg6_iptunnel.c:431
+  seg6_output_core+0x164/0x688 net/ipv6/seg6_iptunnel.c:681
+  seg6_output+0x44/0x1ac net/ipv6/seg6_iptunnel.c:744
+  lwtunnel_output+0x3d0/0x664 net/core/lwtunnel.c:356
+  dst_output include/net/dst.h:470 [inline]
+  ip_local_out+0x110/0x148 net/ipv4/ip_output.c:131
+  iptunnel_xmit+0x50c/0xd38 net/ipv4/ip_tunnel_core.c:97
+  udp_tunnel_xmit_skb+0x220/0x348 net/ipv4/udp_tunnel_core.c:187
+  tipc_udp_xmit+0x75c/0x9c0 net/tipc/udp_media.c:202
+  tipc_udp_send_msg+0x214/0x374 net/tipc/udp_media.c:274
+  tipc_bearer_xmit_skb+0x260/0x3b0 net/tipc/bearer.c:576
+  tipc_enable_bearer net/tipc/bearer.c:366 [inline]
+  __tipc_nl_bearer_enable+0xc90/0xfb0 net/tipc/bearer.c:1048
+  tipc_nl_bearer_enable+0x2c/0x48 net/tipc/bearer.c:1057
+  genl_family_rcv_msg_doit+0x1e4/0x2d4 net/netlink/genetlink.c:1114
+
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Reported-by: syzbot+9408fbe0e6452a12e9ab@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6abac2eb.3654fce1.1bec97.0000.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- net/netfilter/nf_conntrack_amanda.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
-index 14ae660491f3..a9c1ef1ee415 100644
---- a/net/netfilter/nf_conntrack_amanda.c
-+++ b/net/netfilter/nf_conntrack_amanda.c
-@@ -88,7 +88,8 @@ static int amanda_help(struct sk_buff *skb,
- 	struct nf_conntrack_expect *exp;
- 	struct nf_conntrack_tuple *tuple;
- 	unsigned int dataoff, start, stop, off, i;
--	char pbuf[sizeof("65535")], *tmp;
-+	char pbuf[sizeof("65535") + 1], *tmp;
-+	u16 parsed_port;
- 	u16 len;
- 	__be16 port;
- 	int ret = NF_ACCEPT;
-@@ -127,15 +128,19 @@ static int amanda_help(struct sk_buff *skb,
- 			continue;
- 		off += start + search[i].len;
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 61c6a27bf202dd88b401fc33cee7bbfeecc0f531..7cbe0685f8bb9fa34c4611dd9dc3397d112e73b4 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -129,7 +129,7 @@ static __be32 seg6_make_flowlabel(struct net *net, struct sk_buff *skb,
+ 	u32 hash;
  
-+		/*
-+		 * pbuf holds one byte more than the longest port so that
-+		 * an over-long digit run is seen and rejected.
-+		 */
- 		len = min_t(unsigned int, sizeof(pbuf) - 1, stop - off);
- 		if (skb_copy_bits(skb, off, pbuf, len))
- 			break;
- 		pbuf[len] = '\0';
- 
--		port = htons(simple_strtoul(pbuf, &tmp, 10));
--		len = tmp - pbuf;
--		if (port == 0 || len > 5)
-+		if (nf_ct_helper_parse_port(pbuf, len, &parsed_port, &tmp))
- 			break;
-+		port = htons(parsed_port);
-+		len = tmp - pbuf;
- 
- 		exp = nf_ct_expect_alloc(ct);
- 		if (exp == NULL) {
+ 	if (do_flowlabel > 0) {
+-		hash = skb_get_hash(skb);
++		hash = skb_get_hash_net(net, skb);
+ 		hash = rol32(hash, 16);
+ 		flowlabel = (__force __be32)hash & IPV6_FLOWLABEL_MASK;
+ 	} else if (!do_flowlabel && skb->protocol == htons(ETH_P_IPV6)) {
 -- 
-2.43.0
+2.56.0.rc1.315.gc6ed9934b7-goog
 
