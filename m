@@ -1,76 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9635B33A02B
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACC73264FD
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790570719; cv=none; b=REpzIn+fnZBD7wHHat5Zt4//XQeUsupVWE4XFmksiKzqfMjbssvHMNuV2IVM1lf1QhnOInvRWsGjJzTQN8w1v9z+FQ9XyjM2c0j51GiKoNWFrA9ivPoTK+3llxIZoB0kpITC9Wt8kcRjkwcmbeygL2Muec1L8XTS4ryAwUC8MiU=
+	t=1790570800; cv=none; b=QWx/DNIOEv9T9e+yk1nFiZSMOPk/JZ3t2nLkT+O1olkP3l8LWpw/1e45eeCf/fMLqKrGfJ2GOBv1GDIxRRW5vruSUi4Y+MkScGxfahg54ViAu8mbjHNVN9DAR6WEDvGOywm3Xi+Gl81PxDcNujAElaaWyJLsR2XGNvxRFfEwD+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790570719; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pTMEkFrqN0V5r0ssSUWimC4bAEh9DRbAYmjUEBDtX8DqDqjtL4vrKkXqtX9+EV9K1ouNsMcwsn/xF8l2aiSTriOjW0E615N6PU6igUMc5ZcZR2gM1bCZ0Us1E0wLdrqwi9i4fvw1Lmjp2b7halDArEbQFp5D06NwHHnzzQRt9ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9yPxInl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790570800; c=relaxed/simple;
+	bh=y2oX2C+1PWcvUePRLeVC2WrEQwNq744I2qXkHAN8bUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jijw3/EMvLdJAWVeXbuveeWm1IRxdWfsWja6y9PAGyWxpgrEpktspOkLXfhPtvyzF5Llt/T8eW3ma+UDTxQpQ2KT3Lu7KxscwaOpu3ikv3EAx18hFD2WMMHcqk17H8lGzLl88z0hpWY00W6Zpju30BujgQSSIi1PUPPMt+g+92c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=q-lab.dev; spf=pass smtp.mailfrom=q-lab.dev; dkim=pass (2048-bit key) header.d=q-lab.dev header.i=@q-lab.dev header.b=SVe90heE; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=7cYgAZI+; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=q-lab.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=q-lab.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9yPxInl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102941F000FF;
-	Mon, 28 Sep 2026 04:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790570718;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y9yPxInlSNVPxUdFQJu3h+xVH5TqW3+20DCdxmuW42oMM5d5aToF5ujw3HB4aCB0E
-	 /VPQR4JyxUclgSxSvyZio3EMk5E08iFhlKAnSlHrzn8g8yye4L8D9OvPRAAn00HOV6
-	 PPQsW3DOJdSjT6D18KR2g2lrHSyYa+8s7ICutjUqc+GKIINILO1qN6bwUd2QgcDNyS
-	 ETnKK/Rfqqj+BBprCTWWDV6os6aTwbC+IN3v2I6c7h9IMNqzzRvXERioLvebfNhh2E
-	 F1fUrnJrQLAN18cOklfTrvJtEeTGqzFaCGYiZqB+mtmNHKJKpRmeDJOpqDo3bzfd6Y
-	 Rw6zJ3hnZ6b/w==
-From: netdev-bot+sinfo@kernel.org
-To: Wang Zhan <wang.zhan@smartx.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, dev@openvswitch.org,
- Daniel Borkmann <daniel@iogearbox.net>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Alice Mikityanska <alice@isovalent.com>,
- David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH net-next v3 0/5] net: resegment oversized TCP GSO skbs
-Date: Mon, 28 Sep 2026 04:45:16 +0000
-Message-ID: <179057071651.31693.213200671694715782@kernel.org>
-In-Reply-To: <20260928044102.1004310-1-wang.zhan@smartx.com>
-References: <20260928044102.1004310-1-wang.zhan@smartx.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=q-lab.dev header.i=@q-lab.dev header.b="SVe90heE";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="7cYgAZI+"
+DKIM-Signature: a=rsa-sha256; b=SVe90heEUMeEQiCYFeD21+8zfCcJs+Hq3d7m0LJh58mI41bAzvYAnu5ED08arlQ4lUkYqXlHPqotXc3aOQlrgCr6Sb0Y0/hD+zUDgB4nKLGQyBRYWC7bcmu1a73rOWZKAYiwppIfbMFC2gzeypWM3OyRIBmhXZwxQYpdylUuVQ77U1CDx1eb0EJgy3EVdHkdKMcOLh72I4HaXYe7avD5/irsei6VOtOWU4/KSXDUB0mYwv/Z3Em3HFSZGcwxha+k/8AFnmurKUZg6qfHT/Mw2KrVUQkudgxW/H31Qv4IyYMC9KSCmaXizAtoHdgxcx0shQab0q62Oa+ftLGZW1tJgg==; s=purelymail3; d=q-lab.dev; v=1; bh=y2oX2C+1PWcvUePRLeVC2WrEQwNq744I2qXkHAN8bUE=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=7cYgAZI+3O6mjlhAIlfYtlnyYlqkeGLdO8dHWuAGcI6w2GAgkFO1EyRgnIj5jTmAhOULWqSjH9/1OTkTDrhohTnqWdzZ/JA5A9c6ozcdgye0N/aA70I3MECk/TgWHzMPU++t1Ujs4uV5s1DufwLpuNuMftlM4Df1XRi/F+WmAy+WHtv9o+kToomqAm8m9WUcBibNbhGwSMeYjh4eF/f0QQarJw1lM0bEUoipEGp34fV6zQFqE4oi7KnAkyN3H9PzYaBrwMaFnQSmTL53N7Gr3jdM7Tmywqfc8SY405MmEHwvEcrh0v2GUyhxrj5LTbzOTYro9qrPGcVw/f8urTWXjg==; s=purelymail3; d=purelymail.com; v=1; bh=y2oX2C+1PWcvUePRLeVC2WrEQwNq744I2qXkHAN8bUE=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 284201:25281:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Authentication-Results: purelymail.com; auth=pass
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1853740651;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Mon, 28 Sep 2026 04:46:35 +0000 (UTC)
+From: Quentin Freimanis <quentin@q-lab.dev>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Richard Cochran <richardcochran@gmail.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: sparx5: skip ptp deinit if init was skipped
+Date: Sun, 27 Sep 2026 21:45:42 -0700
+Message-ID: <20260928044542.29287-1-quentin@q-lab.dev>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-Hi!
+sparx5_ptp_init() returns early on the base lan969x variants
+because they do not have the SPX5_FEATURE_PTP flag. It also returns early
+when no "ptp" interrupt is described. Unbinding the driver then causes a
+NULL pointer dereference when cleaning up uninitialized tx_skbs queues:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+    Unable to handle kernel NULL pointer dereference at virtual address
+    0000000000000008
+    Call trace:
+    skb_queue_purge_reason+0x68/0x120 (P)
+    sparx5_ptp_deinit+0x64/0xc0
+    mchp_sparx5_remove+0x38/0x70
+    platform_remove+0x20/0x30
+    device_remove+0x4c/0x80
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Before per-port tx_skbs were added, a NULL dereference would have happened
+when calling ptp_clock_unregister() on the never-registered PTP clocks.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Fix by returning early in sparx5_ptp_deinit() if PTP is not used.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Fixes: 0933bd04047c ("net: sparx5: Add support for ptp clocks")
+Signed-off-by: Quentin Freimanis <quentin@q-lab.dev>
+---
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/n=
+et/ethernet/microchip/sparx5/sparx5_ptp.c
+index a16ec8136d6d..5953e04ef14e 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+@@ -673,6 +673,9 @@ void sparx5_ptp_deinit(struct sparx5 *sparx5)
+ =09struct sparx5_port *port;
+ =09int i;
+=20
++=09if (!sparx5->ptp)
++=09=09return;
++
+ =09if (sparx5->ptp_irq >=3D 0) {
+ =09=09disable_irq(sparx5->ptp_irq);
+ =09=09sparx5->ptp_irq =3D -ENXIO;
+--=20
+2.55.0
+
