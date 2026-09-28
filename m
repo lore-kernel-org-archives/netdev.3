@@ -1,351 +1,188 @@
-Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F2C48F035
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863AA4A7C9F;
+	Mon, 28 Sep 2026 11:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790594626; cv=none; b=OkQsnNmE3GHMVsLd7num7k2tO8ewBig+xHshplTwHMioNPwy5qsYw+DvG5RrCJiUwOQFglZZvj9FNbH1RrqPH3b5WBWCEoEXR0hBz0IMEYDUme5KObqdDB+b1woQQ0MRyK0kFtxvRmw4rejiofcijCh9YGB8BibNIfeeh1o101Y=
+	t=1790594663; cv=none; b=SB0fWmuU1CIqdo1J8Ace+ILaxMFZn+tfhwvGVfAxcHBocvE+inaNSZMC8nwgL+9GLic7/1FSURk733+nF+BiA0IEw2wZVHy8UilsEhp8GY2Em9nuA+ynWoTltKUkaNmXweOrIcEs12yNEsvSg0eAHFof8TJHkYxu5bGoAySyPwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790594626; c=relaxed/simple;
-	bh=y3LG/oEMsYOKkvEz+prsL3huO8uzPU+cBqBzPjsZNVM=;
+	s=arc-20240116; t=1790594663; c=relaxed/simple;
+	bh=gtZDbubhec8csC6UVvBqQ4f8lijBqvFrlIsRpAyroKA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffAZB3MD0VD6Tnv4ziEqzHEgYpjIMCu2VEyuiuKVUmC+ZD45Xr9S0SNMAMC9W62MPI2uUWJ60OQDYvhY88S6FQnc6eJZ/wm7LHU30MWw5I/86z/DVEbAQLZ+vg0lsYrV+TbfLcspzVnKE92pzfdc+MV3YVMeKkZ1YB/TNfAghI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QoFEH6N5; arc=none smtp.client-ip=74.125.227.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=Qqew/9TSbmkIVEjDFablTHAgzq1DJyTRVnkqIFNJtUtCCKWo7Qs5QPA008jhyhLI67YxPrzPAT1sTuDQADH2Rn9sZYI0P6h5OLIds3+eltAO1vag80SN1+pfq8GXttMxKm+/tvOg/rxKdEkRsRhTi5PBouTAA0lXR1/Dx2G5CZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LhTm68xE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QoFEH6N5"
-Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0abca97c0so1445003a91.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790594624; x=1791199424; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cWADQNfVJU7i393TaaUZJY2Nfyu6YLHN28EbnBIQY50=;
-        b=QoFEH6N5LzUZdNeI53GWpc8/WxJEwbs00tAfkidhZTp0156X5fC8Aea9PdW05fXzcK
-         g5b/cdpw2nH6sr1ZzOsknbPWYy1Y4Q52FU0aBiEC5wJL2allNuUctrSzfGhHuaCbXV9j
-         X4jzgKVU2fXz5+b58R1Z8s0fQKifMEeFS+ti/gA/qCWRBCb7wBw4MEPX0m5Ik94wtj5Z
-         ykwo6AdZHTmtYRf7ffpG5+q30dwqP+hAYo3VOIa6FP9IvT0o8HufqGKY2TUW8z2rz6Ow
-         NkPEdXILMuNCiz/BplpOqgbtRSy59rr4hkAJX26G92aCxGOqO27tvWMeM+MFjSr/2rM6
-         it0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790594624; x=1791199424;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cWADQNfVJU7i393TaaUZJY2Nfyu6YLHN28EbnBIQY50=;
-        b=BZ4uT62tVtbjgodi9JgKlfxlpRU4S3SlerQzS31QLRy1kKYkUXvPAkM8CsUEOqXcFw
-         NysMy2FToJ5rv1HsNThlpv4GzZE1kKDcUrKNRnEFTqDRMuCPdQ50CRIltn/SipJHXVt3
-         Mv9OYkv3iYAx1o8vn2On3ZHBNcRh1Gqop5+TAHdmD0kYxkdDuEa67aHaJ2/GS+243zUX
-         S6ymLHrrSjCIff3eC97WgIQEWo8hduTxBq2AIQcLcy3wXQFZj5ioMYsHNfPp9n6RiDCk
-         K3Vx0Pvnyy8QUVe0WcHgd5sxc5z31efFJ8e0JitcSRTaXdw+vmd33ATUpmckzkINyiy5
-         3Rcw==
-X-Forwarded-Encrypted: i=1; AKwUvByWuHqBM6/l/IMwSMRKjki10zV5237eDx7ysWbJ1gH8dJlg1ZkTzbMGYpveRH2zPWpdpIKo8l8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLQztM48sUE2V5DOBORede8QUZ0r0utmyFt8JDWeBP1GYA0k3Gb
-	7DTkH7E8nTTIbpoV0VTqi6QoD0rKnalLd+t5jYiNIVuU4MW0RRBbTDcj
-X-Gm-Gg: AYBFou0N/gVjTmU78O7pzF54N8ZxB/bSS6SLeR6JYWWTyqYEUWRCDfLAejw0sxzNIed
-	FiLACewfh0TP0gcVLfsA+Ne/7omdmiznFguGYUplkBJEqftSfYVgbqA1xd7uEvEfLikro9FQe8M
-	EoNXQScWDgdlYgZEjjaykakmRPiB1B39d9bqVZ2BbIswvYOcp9xoOBx1AggkRmEr07TY2P7EMMy
-	o4g3sl44xbwllv6m2fyo7WRY8DsjC4ZIvkQ4B5UPW8Ho1FNssC7SIMDLfOib1rdP+MTObXK4W0D
-	qI/dKF3sYvEENB/KnH0uJLxmHop/Otsppv0Fr4MMZkM57fqsm2a/pPCLe1KduVV8LPLHRObW2ej
-	1GyWTak4T63j1v7yS0jsadWOZIijfR//f/7ezCb7JCRxzMoYInS1pOA1lMy+kjZsnkN5F0SdaM6
-	TW7Md1IyYYkzp+iDC6N4Zz2I5HBP8D/Uim91OS0ESaMuJVZUTJ5D4HmyLfgiXFjasRhs5vif3g8
-	JJDFI3XaChNxCWlcqI5IBw9G7fegxbx0FkOneRmPbCmyWYq6E96/3S0kZgqwjmlt8h5FGY+OBw0
-	BwUcnWngWE7fUc7F
-X-Received: by 2002:a17:90b:3c92:b0:3a4:7c19:6a0c with SMTP id 98e67ed59e1d1-3a47c196e00mr534135a91.31.1790594624049;
-        Mon, 28 Sep 2026 04:23:44 -0700 (PDT)
-Received: from [0.0.0.0] ([2406:da1e:f76:8d20:77ec:b3e7:5372:2d36])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0cd1c4ec9sm16039801a91.16.2026.09.28.04.23.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 04:23:42 -0700 (PDT)
-Message-ID: <785bffbc-b028-46dd-b3de-b95a28122258@gmail.com>
-Date: Mon, 28 Sep 2026 19:23:37 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LhTm68xE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2306C1F000FF;
+	Mon, 28 Sep 2026 11:24:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790594662;
+	bh=8vz7DW6qXG0wgoJPsKce8ZATJmLbORV6eL3r0XDbp7Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LhTm68xEuTe1a5nNaW6U37A7iuKqHGdNXEf0cHf8e1d/0cifUpWnAJzC9c1dzJGNb
+	 ZqRw1u5xGdgy/qv4fcAvWhFJpj9mKlMAcuBYSXOdXcxjvAKyAM60v0ogIKtfLUuq24
+	 yc98o8ALVYYKcBn9A5zaSH2TK3lXl6UE+qgua2E7agp8+qDmEuBD4JDWmMad6aa9c/
+	 lqj1LAyJi7lWt3FbIWtEZ+IDyVLI2o0HD+pBYos7mHO4WEat/5dNb8/OYNeQ//noJT
+	 OctyteAclRf/+Mj3Gr2IPEiiIh+Jq8+nx05Z4UwV/oMIR7MHkGPMWbJTCdZ51u55+T
+	 7q+7bzEKwu6hQ==
+Message-ID: <a6b1c774-ab85-4c58-93bf-aa0e24385139@kernel.org>
+Date: Mon, 28 Sep 2026 13:24:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net: towards a generic PON framework
-To: John Crispin <john@phrozen.org>, Andrew Lunn <andrew@lunn.ch>
-Cc: Ziyou Xu <xuziyougm@gmail.com>, netdev@vger.kernel.org,
- Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
- Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>,
- Christian Marangi <ansuelsmth@gmail.com>, upstream@airoha.com
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
- <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
- <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
- <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
- <372bc103-e98f-486d-8dd2-f013b1dbbdcb@lunn.ch>
- <0077ab02-2215-4015-9e74-eeb8c3de6b14@phrozen.org>
-From: Gaoyang Wei <yhyxwgy@gmail.com>
-In-Reply-To: <0077ab02-2215-4015-9e74-eeb8c3de6b14@phrozen.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next 4/5] selftests: mptcp: convert iptables to
+ nftables for mptcp_sockopt.sh
+Content-Language: fr
+To: netdev-bot+sashiko@kernel.org
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ quanyeyang@proton.me
+References: <20260926-net-next-mptcp-misc-feat-7-4-v1-4-67af4ab37406@kernel.org>
+ <179058242329.3145.13094983040753478975@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <179058242329.3145.13094983040753478975@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hello,
+
+On 28/09/2026 10:00, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+
+TL;DR: False positive: no new version needed here.
+
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The nft/jq tool check added to mptcp_lib_check_tools()
+>   (tools/testing/selftests/net/mptcp/mptcp_lib.sh:531-532) only runs…
+> - [Low] In add_mark_rules()
+>   (tools/testing/selftests/net/mptcp/mptcp_sockopt.sh:57-60), the…
+> 
+> --
+> 
+> selftests: mptcp: convert iptables to nftables for mptcp_sockopt.sh
+> 
+> This commit makes mptcp_sockopt.sh use nftables instead of
+> iptables/ip6tables. It creates ip/ip6 filter tables with an OUTPUT chain,
+> and check_mark() now reads the drop counter through nft -j and jq. It also
+> extends mptcp_lib_check_tools() to probe for nft and jq.
+> 
+>> diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+>> index b9d14647f4019..e65b4ebee06a6 100644
+>> --- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+>> +++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+>> @@ -528,7 +528,7 @@ mptcp_lib_check_tools() {
+>>  				exit ${KSFT_SKIP}
+>>  			fi
+>>  			;;
+>> -		"iptables"* | "ip6tables"*)
+>> +		"iptables"* | "ip6tables"* | "nft" | "jq")
+>>  			if ! "${tool}" -V &> /dev/null; then
+> 
+> [Severity: Medium]
+> Is nft -V the right probe for nft here?
+> 
+> For nft, -V prints extended build information, and only newer nftables
+> releases have it. The portable version flag is -v or --version, which is
+> what the other selftests use. For example, the netfilter/*.sh scripts call
+> nft --version.
+
+It requires nft >= 0.9.4, released in 2020. I think we are good.
+
+> If an older nft rejects -V, would mptcp_lib_check_tools() exit with
+> KSFT_SKIP from the top-level call in mptcp_sockopt.sh?
+> 
+>     mptcp_lib_check_tools ip nft jq
+> 
+> That would also skip the transfer, sockopt and TCP_INQ subtests, which
+> don't use nft at all.
+> 
+> The opposite case is also a concern. check_mark() needs an nft that was
+> built with JSON support:
+> 
+>     drops=$(ip netns exec "$ns" nft -j list table "$tables" filter | \
+>     ...
+>     if [ -z "$drops" ] || [ "$drops" -ne 0 ]; then
+>             mptcp_lib_pr_fail "got $tables $drops in ns $ns," \
+>                               "not 0 - not all expected packets marked"
+>             ret=${KSFT_FAIL}
+> 
+> On an nftables build without libjansson, nft -V still exits 0 and just
+> reports json: no. add_mark_rules() works, because it only uses nft -f.
+> 
+> nft -j then fails with "JSON support not compiled-in", so drops is empty.
+> The test then reports "not all expected packets marked" and sets
+> KSFT_FAIL. Should a missing userspace feature give a skip here instead?
+> 
+> The later patch in the series, "selftests: mptcp: convert iptables to
+> nftables for mptcp_join.sh", keeps the same "nft" | "jq" case with the -V
+> probe. So it looks like this is still present at the end of the series.
+> 
+> Would a separate nft check match the real dependency better? For example,
+> nft --version plus a JSON check such as nft -j list ruleset.
+
+I don't expect packet distributions not building nft with JSON support.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-Hi John,
-
-Thanks, this is very useful, and Benjamin's follow-up also helps narrow
-the problem.
-
-Having working code changes the discussion considerably, but I would
-still like to be careful not to make the boundaries of one working
-Airoha implementation become the generic Linux model before we compare
-them against another implementation.
-
-Ziyou and I have started looking more closely at public PON software
-from other vendors for exactly that reason.
-
-The most useful non-Airoha prior art I have found so far is the
-MaxLinear/Intel/Lantiq PON software:
-
-   https://github.com/maxlinear/pon_net_lib
-
-This is not the PON MAC/PHY driver itself.  It is a userspace
-network-adaptation layer between the OMCI/service model and Linux
-networking.
-
-Its ChangeLog is interesting because it shows many of the same
-boundaries we are discussing here.
-
-For example, it contains support for GEM/T-CONT relationships,
-VEIP/PPTP Ethernet UNI, Extended VLAN, hierarchical qdisc/QoS and
-multicast, but implements much of the networking side using Linux
-netlink, TC, qdisc and bridge mechanisms.
-
-There are also some particularly relevant historical changes:
-
-   - OMCI packets were classified and trapped to the CPU using a TC
-     trap action;
-
-   - functionality from a private pon_mcc_drv was moved towards
-     standard kernel interfaces;
-
-   - the old "OMCI Bridge" was removed;
-
-   - their VLAN handling was changed when the corresponding VLAN action
-     interface became available upstream.
-
-The MaxLinear platform is not just an abandoned historical codebase,
-either.  Their current prplOS profiles still build PON WAN images:
-
-   https://github.com/maxlinear/mxl_prplos_profiles
-
-So this looks like useful independent evidence that at least the
-general direction
-
-         userspace management model
-                 |
-         standard Linux networking
-                 |
-         PON-specific bearer mapping
-
-is not unique to the Airoha architecture.
-
-Realtek may become another useful comparison point, although it is not
-ready yet as a clean reference implementation.
-
-There is an active OpenWrt RTL9607C/RTL8198D bring-up:
-
-   https://github.com/openwrt/openwrt/pull/20064
-
-and separate community work has reported working GPON on RTL9602C and
-GPON/Ethernet/HW offload on RTL9607F:
-
-   https://github.com/Anime4000/RTL960x/discussions/474
-
-However, the PON/OMCI side still has proprietary components and a lot
-of reverse-engineering work, so I would not use it to define an ABI
-today.
-
-Broadcom BCM6858 is even less useful for this purpose at the moment:
-the SoC/platform support is public, but I have not found a comparable
-public PON MAC/PHY/OMCI implementation.
-
-This makes your implementation particularly valuable, but it also
-makes me want to distinguish two questions:
-
-         does this model work well for Airoha?
-
-and
-
-         which parts of this model are actually generic PON concepts?
-
- > net/pon has a struct pon_dev for each PON MAC. It is not a netdev,
- > which is what Andrew described with the wiphy comparison. Userspace
- > talks to it by a device id, not an ifindex.
-
-This looks like a good answer to the lower-level object question we
-had just reached.
-
-I would especially like to review:
-
-         - pon_dev lifetime and ownership;
-         - device-id allocation and namespace semantics;
-         - relationships between pon_dev and service netdevs;
-         - how multiple PON MACs are represented;
-         - which state is considered generic versus driver-private.
-
-I agree with Andrew that this is probably better than creating a
-synthetic net_device merely to obtain an ifindex.
-
- > Andrew's mapper exists too. A classifier on the data netdev maps
- > VLAN and 802.1p to GEM ports. The core keeps the T-CONTs, the GEM
- > ports and these rules. It replays them after a link loss. Everything
- > above that is plain bridge, VLAN devices and tc. T-CONT scheduling is
- > an offloaded ets qdisc.
-
-This is probably the part I would most like to compare against another
-vendor.
-
-I agree with the upper boundary:
-
-         bridge / VLAN / TC
-                |
-           classified traffic
-                |
-              mapper
-                |
-           PON bearer
-
-The new PON-specific operation is the mapping from Linux networking
-state to a bearer; Linux does not need another PON-specific VLAN or
-packet classifier.
-
-What I am less sure about yet is ownership below that boundary.
-
-In particular, why does the generic PON core need to own and replay
-the T-CONTs, GEM ports and classifier rules, rather than having some
-of that state owned by the driver or by the networking/offload objects
-which created it?
-
-Your hardware may require explicit replay after loss of activation,
-while another implementation may retain the state in firmware, rebuild
-it from userspace, or expose a different lifetime entirely.
-
-This is exactly the kind of detail where a second hardware family
-would help us determine whether the object belongs in net/pon or only
-in the Airoha driver.
-
-The old MaxLinear code may also be useful here as prior art.  Its
-history contains both GEM/T-CONT objects and Linux TC/qdisc/netdev
-integration, so comparing the lifetime and ownership model may expose
-which assumptions are hardware-specific.
-
- > Service traffic uses normal netdevs. There is one data netdev, plus
- > GEM netdevs where a GEM port needs its own bridge port.
-
-I like that this does not imply one netdev per GEM Port-ID.
-
-I would like to understand the exact criterion for when a GEM becomes
-a netdev, though.
-
-If "needs to be a bridge port" is the criterion, then it would be
-useful to document what Linux semantics that GEM netdev represents,
-and whether the same service can also be represented purely through
-the mapper without creating such a netdev.
-
- > Control is a single generic netlink family with a YAML spec. OMCI runs
- > in userspace, in a GPL daemon that sets up the PON objects over that
- > family and everything Ethernet over bridge, tc, ethtool and rtnetlink.
-
-This is probably the part where seeing the YAML specification early is
-most important.
-
-One of the main reasons for this RFC was to avoid freezing a
-vendor-specific interface and only later discovering that another PON
-MAC cannot implement the same model cleanly.
-
-So I would like to review the Generic Netlink schema together with the
-object lifetimes rather than treat it as an already-established ABI.
-
-Benjamin's follow-up also seems to support keeping the first version
-small here.
-
-There are MEs whose underlying data naturally comes from the kernel,
-such as hardware counters, timestamps or optical telemetry, but that
-does not necessarily mean that the G.988 ME itself needs to live in
-the kernel.
-
-The kernel can expose the primitive state through the appropriate
-Linux interface and the userspace OMCI agent can translate that into
-G.988 semantics.
-
-That seems preferable to introducing an in-kernel ME framework until
-we have a concrete ME which cannot reasonably be implemented that way.
-
- > On the OMCI transport I think Andrew is right that omci0 has to go.
- > Today it is an ARPHRD_NONE conduit used with AF_PACKET, which is an
- > interface that is not really an interface. Rather than add a new
- > address family, I would follow what hostapd and wpa_supplicant do.
-
-I agree that this is now the most promising direction.
-
-The AF_PACKET design was attractive mainly because it gave us packet
-semantics and observability without inventing another API.
-
-But if the PON Generic Netlink family already identifies the pon_dev,
-then OMCI registration plus TX/RX over the same family avoids both a
-synthetic omci0 and a new AF_OMCI address family.
-
-I would still like observability to be a first-class requirement.
-
-Does the planned OMCI netlink transport allow one or more listeners to
-monitor the raw RX/TX OMCI PDU stream, independently of the daemon
-which owns the active OMCI endpoint?
-
-Being able to capture the actual OMCI exchange is important when
-debugging OLT interoperability and vendor/private MEs.
-
-I think libpcap/Wireshark integration can be solved separately from the
-transport ABI, but we should make sure the kernel transport does not
-make passive observation unnecessarily difficult.
-
- > If all of this sounds plausible, I can post an RFC series of the
- > subsystem within a week, together with a link to a git repository
- > with pon-tool.
-
-Yes, please do.
-
-If possible, I would prefer the initial RFC series to be deliberately
-small: enough of pon_dev, the Generic Netlink/YAML model and one real
-hardware consumer to review the abstraction, with the complete working
-tree and pon-tool available separately in a repository.
-
-That would let us review the generic object model without requiring
-the whole working AN7581 implementation to be accepted as one unit.
-
-Christian, John mentioned that you and Airoha have already been
-working on this design for quite some time.  It would be very useful
-to hear which parts of the current model you consider inherent to PON
-and which parts were driven specifically by AN7581 hardware.
-
-It would also help a lot if the design could be independently tested
-by developers outside the existing implementation team.
-
-If Airoha is willing to make a small number of AN7581/AN7583
-EVK/reference boards and the necessary programming documentation
-available, Ziyou and I would be interested in testing the RFC and
-comparing it with the existing userspace implementation.
-
-Procurement and any NDA required for register-level documentation can
-of course be handled off-list.  For upstream review, though, it would
-be very helpful if the interface-level hardware behaviour needed to
-justify the Linux abstraction could eventually be documented publicly
-or at least be publicly discussable.
-
-If there is an Airoha engineer who is directly responsible for the
-PON MAC/SDK side, please feel free to add them to the discussion as
-well.
-
-Thanks,
-Gaoyang
