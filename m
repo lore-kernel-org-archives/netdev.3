@@ -1,116 +1,289 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5513C0A17
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13643D16F9;
+	Mon, 28 Sep 2026 05:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790574580; cv=none; b=hbrB7R0HmhiosNQdMb4xybxiQvHYtxtKeeIaaOFT5qtR0aVYWuqY9+dffdkumhIfP+ojb52XMhzh3E5JbCfF0JLwFSa4DPFLd8acG6XQ3DfsJkDJneEaGuxZhXUlrtsYkSuepq+prXsnvC3p5pYU0CGGMKStMObppa05NxChpe0=
+	t=1790574639; cv=none; b=FODKbTE2aTRgR2fxeFwXMlHsJ7Dm05RBh0PK1TF4yJKbe9vt27BRhA/BhR20a+aRWorCb4VNQr/5s+Wg5cloMPG5FwqFeaLHPoMOF5AZ3ihoMk7KQaaD/0fNCSKmVJQQzoQt9BjWeU/IHdcrlUmJS9WkZrV/mAK+i/TlSL3ocFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790574580; c=relaxed/simple;
-	bh=PYJO3BRdZuUQ2tA6+R6jTGrvu9LtNBMxYQ5mNvCBr0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KktkaIxKWS19D1FZ/rJbuLDxE09e1Ijbrv2Wvf60GzNiIanrxwQNUZaNCH22DpK9wXdAdHEdc4rbgWr7x70GUvkYUguxWJqoye86Dep/8noWwiAyCy3PXF5kzQVA5YMoQVkZgDcg1qC8nuPvtuEPxSoZLEc3wzYb+YTNynAOEf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=SwLVW1xw; arc=none smtp.client-ip=74.125.229.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1790574639; c=relaxed/simple;
+	bh=kJcsH2niv1dwszNlEv2mo7fJBxwFUFJeBFdUjlGg2Zc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pDLyimcRr2S6FuF4yDkAF8e3GfjYRInvtMSwtXWg7Tk7c7PC30Vv4etZMuqmkzhr4pcG9cpwkD2vLhAdFFZXxcLZGxtgC2jZiucGd6023Ry4gr+YOpeTe+B3xt0vQUZmz/HWyimr19oBCs6uvfgkC0GA8/crQw2TAuMKKT5G/OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wau/fZwo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="SwLVW1xw"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3411e0ace58so3736153eec.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 22:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790574572; x=1791179372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+A3YyPH8GVczArjQU1JaX5+TvDc91iqyVUi3xBaNlrc=;
-        b=SwLVW1xwDqkKVzsS9X/XP/Rm0YxfNjk+NeUJhLQ0kHEpWJvgsLKnYVHUS8IP/nV/R4
-         mpQVYGhWET7TLJhMIQApM+3aQi7i1lJTZpbaKKzWfS8DVnU4zj5mGLTjg1HiRZeV9Dwk
-         Dcc7l3mesdeijXih1+6G92fGgpZKdZLmo/BarLcV++CEDmDlS+KrQFtPASz5iGKKpYpS
-         R4qh6Mp04rw7lg6eBF+oILw9T/Zl4WlxmhmGD4g+zdg3Ll5LYXkSMhn9yUoN6dJZ2hcM
-         uTC/3AJLqPPGdxZczwz1qiFgSAeRVouH9NmTZizCeMgR1qLtpjrmYwq/KSWf/iAchEMV
-         MXgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790574572; x=1791179372;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+A3YyPH8GVczArjQU1JaX5+TvDc91iqyVUi3xBaNlrc=;
-        b=M1GYxvr8q7G0kkUxMyoEtqYT0xwvq5qJzsJM26OjG6JohXLQNPVlpJGx6dvWd6kbLG
-         5k9m3W3EQAFDRXypfBxS3Ssgm/8IsQTZiniCkx4MPkIW/c+0s4EpkTzb1Ne/fYv7Kc9G
-         sy+0gBhFVenof8PhSPur+HSxPOuDoWEkOFxBVKZDHu+om9cy3ftku7ucvFpzq5pDwIKs
-         dA0qNAVm6cZQJpio7R/Cc5ZIF/vPEeF4c2hAd1uicz7IW7KOir231Tk2fhlqkGB+2HG0
-         BzffT0w2QRTWS3FQLFqf1R5s1s9u5Y7ybfFn4/5v/kmDbHQeLioHp38v1E9qioMdozkM
-         dslw==
-X-Forwarded-Encrypted: i=1; AKwUvBxgf3DNa5noJZY3Xx3gGI8arE/2A1gvF71awYLsPufGJwgwPw+YgyjwTDE4FRBzqE1xdQc96s8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lSySWa7eLlyvohyaWxGEjITrpt/X8sTfzrR70g/A8l5usZ8+kW
-	a1Mtb1PvmA/SNvkifxobom0M3ljzytbFCXl3JJ4I3c3PF2A5nvLN1r9R38CjU0uliQbNwtBVkw+
-	/u4a07kByR0lYiuJuBilmhfJWTY9IgrN1YHzpN1BfFDMvg14Dscn4fUaQGDYkLWk2f+icBmvMTq
-	w=
-X-Gm-Gg: AYBFou2lSLS4Ts0X+QK9ZVm1wYjs755w+kF1jbEBG4itjh3zE4HTK8OOQpsAFOiaDS8
-	9q2Y7E7ycAsj92yQm5IjHDc/oyqJ+TrsNn3hIaSs+DzqzWknkj8d3m1eSrnv64Med4ei9yK7PFi
-	2FIb/sKxtjAbf3YQ+y01F8F+rcOU3GJiPCGA96PSSg9AHd9Xuuuv+TR4lOsLijrybdVo8XT0gXF
-	BxdqaxYH5yp30P/AQh8TiuyZlCD7lcm1habvAEKiaOIRkz4roMrJ+rXRpirMHuqKqFGHpjCHplh
-	IINGMgLrjwg7BQHal626iDdXcDS9gsehgP/XDuEKlHgLBynq+Uwg7/ElYsbXAzEwIvHILYAkAwN
-	1LNx8phAUVYboA+EQAjDEWYqmc6v1chP1MXodDa2flUC422s+91EOqcJYIj64EcwlZ4kVDLb+yA
-	24smsoq6oEXfEsZrIZDthu7V88aDw3Ti0iJODa7efxIhuqK8nBZTueUSVSU/eKTOAHiRoQkixGI
-	fyYB4fc4SY=
-X-Received: by 2002:a05:7300:fe8a:b0:33c:284c:d91e with SMTP id 5a478bee46e88-342705b702amr8511963eec.8.1790574571889;
-        Sun, 27 Sep 2026 22:49:31 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3444fd04d93sm7611370eec.12.2026.09.27.22.49.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 22:49:31 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev-bot+sinfo@kernel.org,
-	netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alice Mikityanska <alice@isovalent.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Wang Zhan <wang.zhan@smartx.com>
-Subject: Re: [PATCH net-next v3 0/5] net: resegment oversized TCP GSO skbs
-Date: Mon, 28 Sep 2026 13:49:20 +0800
-Message-ID: <20260928054920.1434795-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179057071651.31693.213200671694715782@kernel.org>
-References: <20260928044102.1004310-1-wang.zhan@smartx.com> <179057071651.31693.213200671694715782@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wau/fZwo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29A31F000FF;
+	Mon, 28 Sep 2026 05:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790574634;
+	bh=ry5nXhHymQ5z8JB19KnE1kjjIaemv8CwOfpIxSBXgcQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Wau/fZwosya3zh/hA29eiIzf74vjfg1JVwngMkZ1MtSfK0WeRNR5J7U2Z/Tvk0CaA
+	 Fwv8XrLLwS9bLykRB+mu/r5A9hT838Y8foo531mHMLgRCZ6xMCtgW89djmrYs3VmPH
+	 g0cfwq0ILioELo4skcsX5Hul+pCzywBX6j3COdd3h+H4D/jx34VxrHER+4X3lBqfmP
+	 s3QVHn8Snqcm7aM6cn4Pdy0Kmay+0ZdCPIRH5yl2B8Ti49api7vqOcR9kZXj5JmQRy
+	 rTDlh9OaNEGyqd8O92+1JsE4ySmlXYgKZhPVE5TSBs+tEVnEdmPghUhRX5HlLOEQi5
+	 DnSGpdhRq6P5A==
+Subject: Re: [PATCH net v2] net: ti: am65-cpsw-switchdev: flush dynamic FDB
+ entries by port on delete
+From: netdev-bot+sashiko@kernel.org
+To: danishanwar@ti.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org,
+ kees@kernel.org, arnd@arndb.de, stefan.wiehler@nokia.com, c-vankar@ti.com,
+ vigneshr@ti.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org
+Date: Mon, 28 Sep 2026 05:50:33 +0000
+Message-ID: <179057463349.3145.13175831323497920715@kernel.org>
+In-Reply-To: <20260924052146.594157-1-danishanwar@ti.com>
+References: <20260924052146.594157-1-danishanwar@ti.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Mon, 28 Sep 2026 04:45:18 +0000 netdev-bot+sinfo@kernel.org wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Only 1/5 carries a Fixes tag; the rest is new feature work.  1/5 was found
-by code inspection while writing the resegmentation path, and it is covered
-by the KUnit case gso_test_tcp_limit_l3_proto() in 5/5, which fails on the
-unpatched tree: a tagged IPv6 frame is measured against the IPv4 limit and
-segmented although the device could send it as one TSO frame, no crash.
+Critical: 0 · High: 0 (1) · Medium: 2 (1) · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch removes the `!fdb->added_by_user` gate from the
+  SWITCHDEV_FDB_DEL_TO_DEVICE branch of am65_cpsw_switchdev_event_work().
+- [Medium] Before this patch, dynamic DEL_TO_DEVICE events hit the
+  `!fdb->added_by_user` break and never touched hardware.
+
+Pre-existing issues:
+- [High] cpsw_ale has no internal lock (no spinlock, mutex or lockdep
+  assert in cpsw_ale.c).
+- [Medium] This problem wasn't introduced by this patch, but the older
+  CPSW switchdev driver has the same flush defect.
+
+--
+
+net: ti: am65-cpsw-switchdev: flush dynamic FDB entries by port on delete
+
+This patch drops the added_by_user gate on SWITCHDEV_FDB_DEL_TO_DEVICE in
+am65-cpsw-switchdev, so dynamic FDB deletes now reach the hardware. It adds
+cpsw_ale_del_ucast_dynamic_by_port(), which walks the ALE and frees
+non-persistent unicast rows that match (addr, port). When vid is 0 it frees
+matching rows in every vid.
+
+> diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> index 53cdac272b58..0dc681748b0e 100644
+> --- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> +++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> @@ -397,13 +397,19 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
+>  			   fdb->addr, fdb->vid, fdb->added_by_user,
+>  			   fdb->offloaded, port_id);
+>  
+> -		if (!fdb->added_by_user || fdb->is_local)
+> +		if (fdb->is_local)
+>  			break;
+
+[Severity: Medium]
+
+With the added_by_user gate removed, does routine bridge software ageing
+now remove live ALE rows as well?
+
+br_fdb_cleanup() ages out dynamic entries like this:
+
+br_fdb_cleanup()
+  fdb_delete(br, f, true)
+    fdb_notify(br, f, RTM_DELNEIGH, true)
+      br_switchdev_fdb_notify()
+        -> SWITCHDEV_FDB_DEL_TO_DEVICE, added_by_user = 0
+
+This driver never reports hardware-learned entries to the bridge (there is
+no SWITCHDEV_FDB_ADD_TO_BRIDGE). Also, am65_cpsw_port_attr_set() does not
+handle SWITCHDEV_ATTR_ID_BRIDGE_AGEING_TIME. As a result, the bridge only
+refreshes an entry when a frame from that station reaches the CPU.
+
+Take a station whose unicast traffic is switched only in hardware. Its
+bridge entry expires after the default 300 seconds, while traffic keeps
+refreshing its ALE row. The ALE ages out untouched rows after about 30
+seconds (AM65_CPSW_ALE_AGEOUT_DEFAULT with CPSW_ALE_F_HW_AUTOAGING), so any
+row still present at that point is in use.
+
+cpsw_ale_del_ucast_dynamic_by_port() does not check touched/untouched
+state. With vid == 0 it frees every matching row for that MAC on the port.
+
+Would traffic to that station then be flooded as unknown unicast until the
+station transmits again? That would happen once per bridge ageing interval,
+with a full ALE walk each time.
+
+The commit message only describes this as a flush fix. Should it mention
+the change in ageing behaviour, or should the ageing path be filtered out?
+
+>  		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
+>  			port_id = HOST_PORT_NUM;
+>  
+> -		cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
+> -				   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+> +		if (!fdb->added_by_user)
+> +			cpsw_ale_del_ucast_dynamic_by_port(cpsw->ale,
+> +							   (u8 *)fdb->addr,
+> +							   port_id,
+> +							   fdb->vid);
+
+[Severity: Medium]
+
+Before this patch, dynamic DEL_TO_DEVICE events hit the break before any
+hardware access. Now each one does a full ALE MMIO walk. Does this path
+need a runtime PM reference?
+
+On port-down the sequence looks like this:
+
+am65_cpsw_nuss_ndo_slave_stop()
+  am65_cpsw_nuss_common_stop()
+    cpsw_ale_stop()
+  pm_runtime_put(common->dev)
+
+NETDEV_DOWN then triggers:
+
+br_stp_disable_port()
+  br_fdb_delete_by_port()
+    -> one SWITCHDEV_FDB_DEL_TO_DEVICE per dynamic entry, added_by_user = 0
+
+am65_cpsw_switchdev_event_work()
+  cpsw_ale_del_ucast_dynamic_by_port()
+    cpsw_ale_read()   /* writel_relaxed/readl_relaxed of ALE regs */
+
+When the last port goes down, these work items access the ALE registers
+after the last runtime PM reference has been dropped. Other ALE users in
+am65-cpsw-nuss.c take pm_runtime_resume_and_get() first, for example the
+VLAN add/kill and set_mac_address paths.
+
+With CONFIG_TI_K3_AM65_CPTS disabled, am65_cpsw_init_cpts() returns before
+it calls pm_runtime_forbid(), so the device can runtime suspend. The comment
+there notes that K3 CPSWxG modules may lose context on ON->OFF transitions.
+
+Could this access a suspended module?
+
+> +		else
+> +			cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
+> +					   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+>  		break;
+
+[Severity: Medium]
+
+This is a pre-existing issue that was not introduced by this patch. The
+older CPSW switchdev driver seems to have the same flush problem.
+cpsw_switchdev_event_work() in drivers/net/ethernet/ti/cpsw_switchdev.c
+still has:
+
+	if (!fdb->added_by_user || fdb->is_local)
+		break;
+	...
+	cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port,
+			   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+
+cpsw_init_host_port() in cpsw_new.c enables ALE_VLAN_AWARE, so the nonzero
+vid mismatch described in the commit message applies there too.
+cpsw_switchdev_event() queues DEL_TO_DEVICE work without any filtering.
+
+Should cpsw_switchdev.c also use the new
+cpsw_ale_del_ucast_dynamic_by_port() helper, or is that planned as a
+separate fix?
+
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index e202bba49480..86bcea5744e0 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+
+[ ... ]
+
+> @@ -441,6 +441,48 @@ static int cpsw_ale_find_ageable(struct cpsw_ale *ale)
+>  	return -ENOENT;
+>  }
+>  
+> +int cpsw_ale_del_ucast_dynamic_by_port(struct cpsw_ale *ale, const u8 *addr,
+> +				       int port, u16 vid)
+> +{
+> +	u32 ale_entry[ALE_ENTRY_WORDS];
+> +	int type, ucast_type, idx;
+> +	u8 entry_addr[6];
+> +	int deleted = 0;
+> +	int entry_vid;
+> +
+> +	for (idx = 0; idx < ale->params.ale_entries; idx++) {
+> +		cpsw_ale_read(ale, idx, ale_entry);
+
+[ ... ]
+
+> +		memset(ale_entry, 0, sizeof(ale_entry));
+> +		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> +		cpsw_ale_write(ale, idx, ale_entry);
+
+[Severity: High]
+
+This is a pre-existing issue: the existing switchdev ucast add/del and VLAN
+ops can already race here. This patch adds a new full-table read/write
+walker and runs it much more often.
+
+ALE table accesses go through a shared indirect window: the index goes into
+ALE_TABLE_CONTROL, then the ALE_TABLE words are read or written.
+cpsw_ale.c has no internal lock. The only thing serializing this loop is
+rtnl_lock() taken by the switchdev work.
+
+am65_cpsw_nuss_ndo_slave_set_rx_mode() is called on the legacy
+ndo_set_rx_mode path in __dev_set_rx_mode(). It runs under
+netif_addr_lock_bh() without rtnl. It calls cpsw_ale_flush_multicast(),
+which reads every ALE_TYPE_ADDR/ALE_TYPE_VLAN_ADDR row, including unicast
+rows, and always writes it back:
+
+	for (idx = 0; idx < ale->params.ale_entries; idx++) {
+		cpsw_ale_read(ale, idx, ale_entry);
+		...
+		cpsw_ale_write(ale, idx, ale_entry);
+	}
+
+An unprivileged user can reach that path without rtnl:
+
+setsockopt(IPV6_ADD_MEMBERSHIP)
+  __ipv6_sock_mc_join()
+    __ipv6_dev_mc_inc()
+      igmp6_group_added()
+        dev_mc_add()
+          __dev_mc_add()
+            __dev_set_rx_mode()
+              am65_cpsw_nuss_ndo_slave_set_rx_mode()
+                cpsw_ale_flush_multicast()
+
+Suppose cpsw_ale_flush_multicast() reads row N, this function then frees
+row N, and cpsw_ale_flush_multicast() writes its stale copy back. Doesn't
+the deleted dynamic entry come back?
+
+The ALE_TABLE_CONTROL writes from the two paths could also interleave.
+Could one path then read another row's contents, or write its words to the
+wrong index? That would free or overwrite an unrelated VLAN, persistent or
+multicast row.
+
+Should ALE table accesses be serialized by a lock inside cpsw_ale?
+
+> +		deleted++;
+> +
+> +		if (vid)
+> +			return 0;
+> +	}
+> +
+> +	return deleted ? 0 : -ENOENT;
+> +}
+> +EXPORT_SYMBOL_GPL(cpsw_ale_del_ucast_dynamic_by_port);
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924052146.594157-1-danishanwar%40ti.com
