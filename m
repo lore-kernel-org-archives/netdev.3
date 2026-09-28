@@ -1,137 +1,185 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FC437F001;
-	Mon, 28 Sep 2026 05:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BF5412BFB
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790575031; cv=none; b=MPr/CzblTlByHd0RzwAYAIsPyEqhM6hiXcUBGnns9wexALqnWt4A6GzwoliYk31c/+TQOY7RKo7fMh20/pzDQ81p+BLhyHgLL0w1bRGIW+27L7GKte7p56Zo2+47mFKdtd72HJFyJT7Ckx9bIHKaEL1Yf4qiEunSe+OF9AT+Huc=
+	t=1790576005; cv=none; b=Cv3KQvMPuY7oKiWQOXSL3YABl2I4NZKVwZmfym0xs8OP0MYQ3sQoe/WBbwoTNgjCybrVj2FAy7GbmAdSDNUnW6/8rck5Covb0EHv+91vnytpBdmdt7jdUzAOKUCzS6ZrDjX5II1jtcY4Hjmzt3DhH52fm/Xl7PetlzV5yv2q8tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790575031; c=relaxed/simple;
-	bh=VaBdn5/4eyku5eCM/H9gAe8dnrP6K3AE3mbV+4KKGhU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p7MsexERDLDsbBAarKabw/Ix8JkaOi74fqzI7NnO3y/Oz8hO1XyLhdrNLkRRF+7p2skt0PzKWdp1a66BbefHexipm2NPM/Qk+5Kaz2Dk8qbETJrnkwewS5yxI37f/JqUuQfyrVYVa6gcwFFomHvEPSlWQRYlCfUinN1sWNApLYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b1eyqxOS; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790576005; c=relaxed/simple;
+	bh=6tD42cqvdIX5kuE3J6jtYXGA/Dn7Do6Ay0I8SZ+eFkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DSR8OxjoGVV3jKtW1DawZlYUnSbtY0/7tMu2guaTAZZseae5VSI/QGzMBYuIYaLpjQtYoPnGB/BhxEgdEnbnmyrpGRv5J5h0r4J4UwwQfdel0oAc9ui43+f/X1LIZ8p7rkjmhhmTBYkQRLaI931OGlZOy3MAvZPlr8sKpG3Dobs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C8SSlWi4; arc=none smtp.client-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b1eyqxOS"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68RLdmJm986650;
-	Mon, 28 Sep 2026 05:57:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5C46zn
-	l+fz3Fcmow214k3Bma9CDzZe8ZuUM1fvjbxHk=; b=b1eyqxOSsbrkpH7eXu6vuq
-	jwgNGMYPt06VkiiTIHgZFhA8BIZchX6ISxpMIWGlveOL1mqjtrgYCZ8dz7mCj20X
-	Cy1Pq5LSpynrvbgRfSih21NxIzakvH8uSRQNu0u/EZfrxCSnWq/hPrVefiepOVl1
-	euNw8JA6OHxiuu2g7qbBBiwmIvzbYjKmRNamZkQwCL4CFxhFSgXmtKP6NYrUGH20
-	/++UQHDXY4XIBk3b2yRxyk+QEinLcMNPQwC6aCu9p0Snjt3AackPt99aLxEmSjQG
-	wbI+/pFXQmrA9asmzX5r7Z0+NpEZioJSvoS/b9MvaeQ+jXU28YKKl9gXXxfY56RA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5psy7m4-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 05:57:01 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68S3Wcwl2070653;
-	Mon, 28 Sep 2026 05:57:00 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsck3vfn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 05:57:00 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68S5uxiW56099316
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Sep 2026 05:56:59 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5619C58052;
-	Mon, 28 Sep 2026 05:56:59 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC3BD58056;
-	Mon, 28 Sep 2026 05:56:52 +0000 (GMT)
-Received: from [9.39.20.37] (unknown [9.39.20.37])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Sep 2026 05:56:52 +0000 (GMT)
-Message-ID: <7960d73e-e316-4853-8398-144742e866d3@linux.ibm.com>
-Date: Mon, 28 Sep 2026 11:26:50 +0530
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C8SSlWi4"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3a0ad669450so1426436a91.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:13:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790576000; x=1791180800;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XJqX9wReYd0vAQ7JMnmN23yR6lPs88wXppo9VAOKHJo=;
+        b=SDmtVBTUDBWyO+9HF3z0PVW4D/PliX8//ja05ziElOzHpMcG2HB3JHVZkkzSTE4I9p
+         oNhBEPYp0+VcjhvmvuYqv+SQtmUTXo6HfRocaNn8gpl3qgc/+OMhuDgRSz5kjttPxlHJ
+         ZWbLwNTqR++BuiIdEVcdCM3MhfBDxx0yT8VK0DPTrCfECzlNcve+tnRnb7VFuNolt87D
+         Ak1o+LoXQkCYycaLL+Nng0u9ZR+GN8rZg1FH71lsxY1fZslE53Rsyzm9eE/fsKiCZow7
+         ODV5OWHigSJ1K0jjbJ4ViAD3zHjNnyihcTukQqb/LnKuqTtslBXY8sGOOjG9hwM2mZrL
+         9/eA==
+X-Gm-Message-State: AFq9FYKAL85wU5bQscZ9c8f2saseUameF6dxolDaS8AWL2FACFWLoDYp
+	siO292Ow9Cg+HnPAU11jQqsDKCn575NWs8B/VsK6/Dasf/VXUimSg02FaFMjKvv1RSs/jum3FEZ
+	rvEwgItYPf0QPwOsAwRjhxbdIE1digTG2JCG7mHNRjCk0gvYaKxBNtietlcuVkfDF2Ot9Jd7gsJ
+	+K3BtQVqeXgM2MOyp9FCBtJ7nQ9KrZtp8tFUCupYBgpBEtIFUaL+fXgKb9d5tNuiblwbSJXOLxp
+	fgYt8z+wg==
+X-Gm-Gg: AYBFou2zFfWVMtQwhYo39so0oEhXbgNDzWJvAyRvvlrMhvLqc7z5J7dUVLVPElp41FK
+	aoikQC/RWVyBLz70tyJNhPtEnriVVpmerV7hP3s8TFzRpSkd+asqPKLxKkpa78EZSOUyAchpq+d
+	lzfwOPcE9Eq/GA0vp2RxtH/ZNizEwG/YQvrp2TnRC4mZjtGIT11Crc/qotgMlJLlUAw+bqjWkbN
+	XenaG4YE5EVk/mPVKS2Xkt28TtdBKc0rfa04sA99fzxpS/rer1JSepLUQfOJAvTzFGXIeALu6op
+	XrQV+DdrBXmOWDs+pDOA0UhNGy0UAxm+0wDLclKCTPVuEt2I7lgJdpAOHHHZZmwbzwXheATbwi9
+	nXl0eNnGQy3sGLzvltBk7/hNG4dtVZ2E0UoG60xXEzctqe57bIbX4/Zd/NIeLO0wa6u4EoNAm0B
+	RtwPseGZdgRxd+nNTezQvqvZyT6EI6kkr8xQ==
+X-Received: by 2002:a17:90a:e7c6:b0:39e:2f57:67c7 with SMTP id 98e67ed59e1d1-3a098d45c0dmr11128829a91.3.1790575999713;
+        Sun, 27 Sep 2026 23:13:19 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a0c1399bdfsm6069300a91.7.2026.09.27.23.13.19
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 27 Sep 2026 23:13:19 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-342a0e1d8c4so4003279eec.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790575998; x=1791180798; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XJqX9wReYd0vAQ7JMnmN23yR6lPs88wXppo9VAOKHJo=;
+        b=C8SSlWi408iq4gU3c4exk8c3GPMI0VLjIO2H6i6FX4VbWCJTFFvKA7Cxslrp2dGuvp
+         TKHxRqs19Vcx2w5Uep8MEKEggCbAa4hP8tLxsfoxasiYbqxa4OyoC6Nn4VMy6uAoywAb
+         wz69CUsRDFXmmrWr2uKv0kFXFoup/PKCsGEHE=
+X-Received: by 2002:a05:701b:4558:20b0:148:4522:560c with SMTP id a92af1059eb24-148452256a6mr5733440c88.11.1790575997767;
+        Sun, 27 Sep 2026 23:13:17 -0700 (PDT)
+X-Received: by 2002:a05:701b:4558:20b0:148:4522:560c with SMTP id a92af1059eb24-148452256a6mr5733398c88.11.1790575997013;
+        Sun, 27 Sep 2026 23:13:17 -0700 (PDT)
+Received: from H5S1 ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-147913a776fsm17355561c88.17.2026.09.27.23.13.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 23:13:16 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [net-next, v4 00/10] add features to bnge
+Date: Mon, 28 Sep 2026 11:42:57 +0530
+Message-ID: <20260928061307.1172344-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: serialize sndbuf descriptor release with
- diagnostic dumps
-To: Chengfeng Ye <nicoyip.dev@gmail.com>,
-        "D. Wythe"
- <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20260927073203.3694279-1-nicoyip.dev@gmail.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260927073203.3694279-1-nicoyip.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: j5QSBf6hnu4gFjl0DmN0HbIBEwuT2KN9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDAyMiBTYWx0ZWRfXz7pw0chf3PJZ
- Mb99ouu4dBk2tDRMmi9MF8HiCAe5+NXAfAoEcJaDulLiX3aQxEIdA32BMjDQTQ8eeJUc+BqGj9j
- btjhUdtRRlSNLk8rliRmghheTOAF/r8Oc11fgk9CBCJYQjjGyoZI+Npa5++bty9MS4T/LHrlDBf
- NSzD5iZHHX31zMFe/xR44r2N/0NvpDNoR1+ohdrneAv9AtXF/yD4lXIt6rgY+oivJMT9SpKaMbc
- bt2Vr/zBXaUQgNTq4nbLWp/QcBm3SNjOMfVxqDadO3U+P+JMiNHarflvh5FntOIEC5QZtmtWGME
- P/AOIlYZiGKJEIOfrJRmGMNCLldLofZmZUECYpfLgmhiGOqQjBLIqcylCzcf2oDjqtHf7kJdbiY
- 98AWXbl4xxlgNOpN0Imh2lpSp8dydaPEWMrq7pA0sLUQJ1OrellCOVDyfOGpn6HeRwhx0O4RNrL
- cEmiWc0inUUrMjI1pFA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDAyMiBTYWx0ZWRfX3Dd8pCY31Kc9
- jXPmu8eyGc3u+ySkiQUHF2lIaIQjOfsMpCk1yHGCRngGm5/4c0Ejxer70523pZz/pQNgfAMn8d4
- nHY5CqgbPTSPmpF5UEqwqkkQyylLaOU=
-X-Authority-Analysis: v=2.4 cv=EY5d0/mC c=1 sm=1 tr=0 ts=6aba01ad cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=B3kcKS1toMKKngqSjDsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 2dlgop4EcxiqUDLEkERlk-6rUzB4D3N_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-26_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280022
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+
+Hi,
+
+This series adds ntuple filter, RSS context, and flow steering
+support to bnge driver.
+Patch 1 is a pure refactor (no functional change) that relocates the
+filter and VNIC related code into the appropriate files. Patch 7 drops
+the refcount usage from L2 filters, also with no functional change.
+The subsequent patches then add the ethtool commands for configuring 
+ntuple flows and RSS contexts.
+
+Thanks,
+Vikas
+
+v3-v4:
+    - Addressed comments from Sashiko
+      https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917064548.773334-1-vikas.gupta%40broadcom.com
+      https://sashiko.dev/#/patchset/20260917064548.773334-1-vikas.gupta%40broadcom.com
+    - The patch count drops to 10 now that the HSI patches have been merged.
+
+v2->v3:
+   - Build fix.
+   - Addressed comments from Sashiko
+    https://sashiko.dev/#/patchset/20260908093053.2596020-1-vikas.gupta%40broadcom.com
+    Below Sashiko comments are not valid:
+     Patch-8: 
+                Comment under bnge_toeplitz().
+                 Explanation: bnge_toeplitz() is not used for aRFS.
+     Patch-9:
+                Comment regarding bnge_clear_usr_fltrs().
+                 Explanation:
+                  Both bnge_clear_usr_fltrs() (only invoked while the
+                  interface is down) and bnge_grxclsrule() execute
+                  under the netdev instance lock, so they are
+                  serialized and never touch the filter list at the 
+                  same time.
+      Patch-10: 
+                Comment "Does this direct dereference of the MAC
+                header need a linearization ...".
+                 Explanation: ndo_rx_flow_steer runs on the RX path
+                after eth_type_trans(), which already accesses and
+                pulls the Ethernet header.
+
+                Comment Related to bnge_cfg_ntp_filters().
+                 Explanation:
+                   bnge_cfg_ntp_filters() runs from bnge_sp_task(),
+                   which holds the netdev instance lock while executing.
+v1->v2:
+   - Build fixes.
+   - Addressed comments from Sashiko
+   https://sashiko.dev/#/patchset/20260814011435.194631-1-vikas.gupta%40broadcom.com
 
 
+Vikas Gupta (10):
+  bnge: restructure VNIC and filter code
+  bnge: add NTUPLE/ARFS VNIC
+  bnge: add helper functions for multi RSS contexts
+  bnge: add RXFH ethtool support
+  bnge: add ethtool support to manage RSS contexts
+  bnge: remove refcount from L2 filter
+  bnge: add NTUPLE filter infrastructure
+  bnge: add NTUPLE filter support in ethtool
+  bnge: add aRFS flow steering ndo support
+  bnge: add cpu_rmap support for IRQ affinity
 
-On 27/09/26 1:02 pm, Chengfeng Ye wrote:
-> An SMC-D connection can remain in the socket hash while smc_conn_kill()
-> tears it down. For devices supporting DMB nocopy, smcd_buf_detach() frees
-> the send buffer descriptor without taking the hash lock held by the
-> diagnostic reader.
-> 
-> __smc_diag_dump() can load a non-NULL conn->sndbuf_desc, then a concurrent
-> smc_conn_kill() can clear the pointer and free the descriptor before the
-> dump reads its len field. The socket lock held by the teardown path does
-> not exclude the dump, and clearing the pointer before freeing it does
-> not protect a reader that has already loaded it.
+ drivers/net/ethernet/broadcom/bnge/Makefile   |    4 +-
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   19 +-
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c | 1035 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.c  |  684 +++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.h  |  126 ++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  156 ++-
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |    8 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  479 +++++---
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   89 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |  121 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_vnic.c    |  291 +++++
+ .../net/ethernet/broadcom/bnge/bnge_vnic.h    |   92 ++
+ 13 files changed, 2801 insertions(+), 304 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.h
 
-Agreed. This is addressed in v6[1] by unhashing the socket at the top of
-smc_conn_kill(), before smcd_buf_detach() runs, so no hashed socket can
-have its sndbuf_desc freed under a concurrent diag reader.
-
-[1]
-https://lore.kernel.org/netdev/20260926065023.1629497-1-mjambigi@linux.ibm.com/
-
+-- 
+2.52.0
 
