@@ -1,56 +1,89 @@
-Received: from out-2z4y-a152.jellyfish.systems (out-2z4y-a152.jellyfish.systems [198.54.127.152])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C24CDDF8
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE2E4F85C2
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790628556; cv=none; b=iri6qFdvyTgV3HhhPH3qAvIs0pKGNzQpNXWgTAZdm/eXZkdPfcWo+5omW/UHKSRnYUVjcgHOvIrq4UOmjkjk1OvnedWO3ZsU9p2cBi9Fn+FPBBBZeL8G3/u5cuPql6d02k23snpo+FbgFxVCXa6+qC+nkGYTRoq+ZTiqzXNkkoQ=
+	t=1790628848; cv=none; b=EbX5O1Zu3EbQHpbAQt+QzhpZyPonA9E3GLedzxHw+DxdCMljIpQlVwexKiWKKK1UAnbxMZ9qYDPOvRICr8Yj2xQUqwuHufofidgn4jgHZhymi6BIDiFPc/7VHf1S4sK5nICRS1/ZX267iRDY/Hc4UCjUNmRGFYpyUkRpSaPegPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790628556; c=relaxed/simple;
-	bh=5M6QjMNqJvQSS95Jj03HrLnqtgFcgUhJ8JkDOGCqW+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBK5jadsuaG9TQY2MHjMQuUBNBj4ZHEbhdWQRTQNQm7eUx+GXEFGZ6/N8/SeybmsTWOSuXbVcFW6Tx1TIWFV/+rwl9o79WB1/oDOwu9vJ2F6B0UdAiVA0o+CgCvP7B6FWJcUrsqNu6v3Yit1DQxxdq4VfRJJ7MmfKZ+rraRjPf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=BC6Oxz8J reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1790628848; c=relaxed/simple;
+	bh=p4z8FqgH2wRH3DNXfLP/C8tVgznBcTgSwV5kisQHgOU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sApG56YMj0HVl0F68JQiuGkZBErroZu3rI+Epzc5LU8SyqewcpQAUS9s009eMI6esMBER9tmX88ekR6Yf3BxDUhZ8wnye/hae3EfnvCgFBKD9H7n0eDGxWG48porwIfVmKVmiTPl0OYC0Ql4q9tAFLfVq/NkfQnhfhQedxDaiSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nizLRGAa; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="BC6Oxz8J"
-Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4htthL3ZfJz2x99;
-	Mon, 28 Sep 2026 20:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1790628547;
-	bh=bs/79qfpGoSWJ7Dn8JekcUQWRfZCEzCTzs3m2yBFoGI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BC6Oxz8J2CLmyy1p/HSPa73gUsLDSk5ZrAASrByxCqxpnjJc7Nr8xKyccWYWiMC9G
-	 WJx2xqK4D8JrwhXv58Oe7ESNrzCO8+QJW4H7Zj5BwlTvIPWcjBOCNO7TGnoV/qEl7o
-	 4HsUfLJrA+x1Gu7YxbIfsNRxYlPPpOtUkGyFl7ec0/G83MMEYl+w7yTZLwkOEQBI7K
-	 XNKfvxVeKDMKluQRlAm41Chwit/SSnprwUnvRxyZZBAXBT5mH/MeMojiIOVAq/PBZU
-	 XySViyMW7m1chjiVWrC7PypL+dUX+tEFHaQC5DJFEi9MaK+klWDlXv2aTEUtL6mfy0
-	 XaltVCHSIYTgA==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nizLRGAa"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffa15f67fso13389165e9.2
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 13:54:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790628844; x=1791233644; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MoftrO08HwDktpofinrTBCoRJxn64c18AOQxxmnppJw=;
+        b=nizLRGAaKFUMCIahkZZE2GItc1v6vkpzHOzS/r8qI487Td6UTZcGg7REC555U9QtyX
+         axizRcFPBZ6Lv5TYF102D2O1EDk/AdN3kkdXDKGwjHK7dok1oSa+qrAnAj5rM3uYg2+s
+         0QX9P+BRWYZj3N+9ReyoD87Go57wyskAS7KdvL6431DLvoX4V2u/bo5lBv+Y1QXY0yy3
+         /JE+5rV1jtMeCcQaPLPDZu1K+ELrv8L+WoSwIttqlheGpoZ+gX0SjBdBFDedGGOk7B8Q
+         mZscQevshL2fGEbhAnD9mpcAqUWSorJyhn3lZoTUF0w9tuN8uMNaX9s2DLeTpNl2tToh
+         RsiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790628844; x=1791233644;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MoftrO08HwDktpofinrTBCoRJxn64c18AOQxxmnppJw=;
+        b=yjznUXM6oTMs9aOLSimqIh0hRIzpDiV6Mekiq2jkN2bzDr0F7g/gNUiS9nLus1+Ycb
+         qqytugOlVfV6vjh2KhcLWK3DBVz16gkGj6a5FHD3vsl72PvITUUTT9egIIfSCoyvRniK
+         gcFFZ5AagEPSInO2R1dRddpwWDnq04pGoKjqFPEjJxHbu2VfzH5kIEs3bKoJLzZvxCqI
+         l10rJwuFpT0i1hx69d9aF6J9OytJCA2tfaXhIzgmRyDm4iMnJ6JgEuh+eiEUShyqs3O/
+         948QB5RY0FqN9VE4eGH7Sry9CH1btp4RMs6TjzVIupNg+tiE1JXLB1pyE2rMOH7FL7C4
+         SC8A==
+X-Forwarded-Encrypted: i=1; AKwUvBxknZhORmXNDBwSGl7t4YDuOg0hVydk1HBtdoUTqAEiLjwCQKpadf/vQK1TVEMvCIpsNAbCs34=@vger.kernel.org
+X-Gm-Message-State: AFuF++kFhQ/oxlH+YUkhIRlgEomZhKeSbxN8lOu6LyADwLq2DZ4Mv/1u
+	+sEvnPXOdW82/zFfdUK4Ske95jRKb5o4o6NviqGUPL2J4f3K8tmNT0T4
+X-Gm-Gg: AYBFou1h6Uyb1lOf6L/MkNf8l5hPpjIiK/V4r+pdXc1/rC1ewfhT1qK7KM4EkVm9SdM
+	khQfSZy/iVkoGI9BXPVMVDkydTOeQrWWufhoRc6WYe7ioVrwMDhYoO92zin2oj/Y8Rtujziw71c
+	qzfycaMUCXZTy2QYizBYCjFyQlpRtZqMgRv9pwdE7QkQyJmhOwN0znpCH9GAHD/QH6ndT+4e5Lx
+	O8gnqMBK9QOW+px+92T/HtQbivFKIBaquLdoXCQB1/HC5LS51JvelgZCYKT4WI2OvjAqKEDtQXx
+	8pHekVvKP0cGXpCyiu0WUI9QD28sYQmIcUw0/FvjP3iObplBt9IKxv1lmNrvCl93t2vOW22kt4K
+	VbXr2HjsmFD9ecoJmyuUvlefoRmTm5caZ7jRJwQk37Yc9IwOST0Z0coWYLt1CMwmk1k70Z08f8C
+	3zR0F6u4KuvgzSKoTvqflLBkOjrDrDK92B/kZ1+8M5M9EEAAeKUb3Rt48xZuRz8KU1Xka9Gdkvr
+	ReBWP/Tr7AmkYdfnuZo8GDLGkRGeD7wujFFBHoFITGwle/h5YyY9JRQ37zs62RPwfmqmf5xssUo
+	pCgUrkaK8YODD5BlSZoyCEW1Vw7BDjy5TKlcDNpQQ137raN5JhwlXegHhOfkIaQRdl73cS/Yoaz
+	f4nompUmbODM=
+X-Received: by 2002:a05:600c:8a1a:20b0:49f:f0bd:1e40 with SMTP id 5b1f17b1804b1-49ff0bd1ea8mr133111765e9.23.1790628843492;
+        Mon, 28 Sep 2026 13:54:03 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-acba-a601-4494-3582-465b-0eab.310.pool.telefonica.de. [2a02:3100:acba:a601:4494:3582:465b:eab])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00d0f66cfsm21210805e9.14.2026.09.28.13.54.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 13:54:03 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	Rahul Chandelkar <rc@rexion.ai>
-Subject: [PATCH nf-next v5 4/4] netfilter: nf_conntrack_sip: use shared helper parsers
-Date: Mon, 28 Sep 2026 20:49:05 +0000
-Message-ID: <4c502fdf5a929e1dfd04f7b1be9e20cb19f54bfa.1790596690.git.rc@rexion.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790596690.git.rc@rexion.ai>
-References: <cover.1790596690.git.rc@rexion.ai>
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Rae Moar <raemoar63@gmail.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] net: mctp: Make KUnit tests depend on flow support
+Date: Mon, 28 Sep 2026 22:53:52 +0200
+Message-Id: <20260928205352.30502-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260925192510.93840-1-kmehltretter@gmail.com>
+References: <20260925192510.93840-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,218 +91,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
 
-nf_conntrack_sip has its own bounded integer parser, sip_strtouint(),
-and its own digit loop in sip_parse_port().  Equivalent parsers now
-live in the conntrack helper core, so drop the private copies:
+MCTP_TEST selects MCTP_FLOWS, which also enables SKB_EXTENSIONS when no
+transport requires them. Enabling tests should not silently enable
+additional kernel functionality.
 
-  - sip_strtouint() is removed and its callers use
-    nf_ct_helper_parse_uint(), which has the same body.  Call sites
-    that no longer fit in 80 columns are rewrapped.
+Make the tests depend on MCTP_FLOWS instead, following the dependency
+rule in Documentation/dev-tools/kunit/style.rst.
 
-  - sip_parse_port() uses nf_ct_helper_parse_port() for the numeric
-    part, keeping the SIP-specific handling of the ':' separator, the
-    default SIP_PORT and the minimum port of 1024.  The shared parser
-    rejects the same inputs as the old loop: no digits, more than five
-    digits and values above 65535.
+This keeps the full flow-test coverage: the suite is available only
+when flow support is enabled, for example by the I2C transport.
 
-No functional change intended.  The old and new sip_parse_port(), taken
-from the kernel source, were compared in a userspace harness on three
-million random inputs with no difference in result, port or end
-pointer.
-
-Assisted-by: Claude-Code:claude-opus-5-5 sparse
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+Fixes: 109a5331143d ("net: mctp: tests: Test that outgoing skbs have flow data populated")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- net/netfilter/nf_conntrack_sip.c | 93 +++++++++-----------------------
- 1 file changed, 25 insertions(+), 68 deletions(-)
+Changes in v2:
+- Depend on MCTP_FLOWS instead of removing the selection, as Jeremy
+  requested, to retain full flow-test coverage.
+- Rebase onto current net-next (014d795c7383).
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 64bc440b1181..1264e77720a8 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -183,8 +183,8 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
- static bool sip_parse_port(const char *dptr, const char **endp,
- 			   const char *limit, __be16 *port)
- {
--	unsigned int p = 0;
--	int len = 0;
-+	char *end;
-+	u16 p;
+v1: https://lore.kernel.org/r/20260925192510.93840-1-kmehltretter@gmail.com/
+Review: https://lore.kernel.org/r/8edc4e71edceb124e2dca233cddb75e198b53a51.camel@codeconstruct.com.au/
+
+Validation on net-next 014d795c7383: x86_64 GCC 15.2 builds and QEMU
+run. Both MCTP suites pass all 80 cases, including both flow tests,
+with no skips. Kconfig checks cover flow support on/off,
+KUNIT_ALL_TESTS on/off and a module I2C transport.
+
+ net/mctp/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mctp/Kconfig b/net/mctp/Kconfig
+index d8d3413a37f7..e64d4f7ef6aa 100644
+--- a/net/mctp/Kconfig
++++ b/net/mctp/Kconfig
+@@ -14,7 +14,7 @@ menuconfig MCTP
  
- 	if (dptr >= limit)
- 		return false;
-@@ -199,29 +199,22 @@ static bool sip_parse_port(const char *dptr, const char **endp,
+ config MCTP_TEST
+         bool "MCTP core tests" if !KUNIT_ALL_TESTS
+-        select MCTP_FLOWS
++        depends on MCTP_FLOWS
+         depends on MCTP=y && KUNIT=y
+         default KUNIT_ALL_TESTS
  
- 	dptr++; /* skip ':' */
- 
--	while (dptr < limit && isdigit(*dptr)) {
--		p = p * 10 + (*dptr - '0');
--		dptr++;
--		len++;
--		if (len > 5) /* max "65535" */
--			return false;
--	}
--
--	if (len == 0)
-+	if (nf_ct_helper_parse_port(dptr, limit - dptr, &p, &end))
- 		return false;
- 
- 	/* reached limit while parsing port */
--	if (dptr >= limit)
-+	if (end >= limit)
- 		return false;
- 
--	if (p < 1024 || p > 65535)
-+	/* SIP ports below 1024 are not accepted */
-+	if (p < 1024)
- 		return false;
- 
- 	if (port)
- 		*port = htons(p);
- 
- 	if (endp)
--		*endp = dptr;
-+		*endp = end;
- 
- 	return true;
- }
-@@ -270,51 +263,6 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
- 	return epaddr_len(ct, dptr, limit, shift);
- }
- 
--/* simple_strtoul stops after first non-number character.
-- * But as we're not dealing with c-strings, we can't rely on
-- * hitting \r,\n,\0 etc. before moving past end of buffer.
-- *
-- * This is a variant of simple_strtoul, but doesn't require
-- * a c-string.
-- *
-- * If value exceeds UINT_MAX, 0 is returned.
-- */
--static unsigned int sip_strtouint(const char *cp, unsigned int len, char **endp)
--{
--	const unsigned int max = sizeof("4294967295");
--	unsigned int olen = len;
--	const char *s = cp;
--	u64 result = 0;
--
--	if (len > max)
--		len = max;
--
--	while (olen > 0 && isdigit(*s)) {
--		unsigned int value;
--
--		if (len == 0)
--			goto err;
--
--		value = *s - '0';
--		result = result * 10 + value;
--
--		if (result > UINT_MAX)
--			goto err;
--		s++;
--		len--;
--		olen--;
--	}
--
--	if (endp)
--		*endp = (char *)s;
--
--	return result;
--err:
--	if (endp)
--		*endp = (char *)cp;
--	return 0;
--}
--
- /* Parse a SIP request line of the form:
-  *
-  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
-@@ -682,7 +630,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
- 		return 0;
- 
- 	start += strlen(name);
--	*val = sip_strtouint(start, limit - start, (char **)&end);
-+	*val = nf_ct_helper_parse_uint(start, limit - start, (char **)&end);
- 	if (start == end)
- 		return -1;
- 	if (matchoff && matchlen) {
-@@ -1166,7 +1114,9 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 		mediaoff += t->len;
- 		medialen -= t->len;
- 
--		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
-+		port = nf_ct_helper_parse_uint(*dptr + mediaoff,
-+					       *datalen - mediaoff,
-+					       (char **)&end);
- 		if (port == 0 || *dptr + mediaoff == end)
- 			continue;
- 		if (port < 1024 || port > 65535) {
-@@ -1357,7 +1307,8 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
- 	 */
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
-+		expires = nf_ct_helper_parse_uint(*dptr + matchoff,
-+						  *datalen - matchoff, NULL);
- 
- 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
- 				      SIP_HDR_CONTACT, NULL,
-@@ -1467,7 +1418,8 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
- 
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
-+		expires = nf_ct_helper_parse_uint(*dptr + matchoff,
-+						  *datalen - matchoff, NULL);
- 
- 	while (1) {
- 		unsigned int c_expires = expires;
-@@ -1531,8 +1483,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 
- 	if (*datalen < strlen("SIP/2.0 200"))
- 		return NF_ACCEPT;
--	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
--			     *datalen - strlen("SIP/2.0 "), NULL);
-+	code = nf_ct_helper_parse_uint(*dptr + strlen("SIP/2.0 "),
-+				       *datalen - strlen("SIP/2.0 "), NULL);
- 	if (!code) {
- 		nf_ct_helper_log(skb, ct, "cannot get code");
- 		return NF_DROP;
-@@ -1543,7 +1495,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 		return NF_DROP;
- 	}
--	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+	cseq = nf_ct_helper_parse_uint(*dptr + matchoff, *datalen - matchoff,
-+				       (char **)&end);
- 	if (*dptr + matchoff == end) {
- 		nf_ct_helper_log(skb, ct, "cannot get cseq");
- 		return NF_DROP;
-@@ -1613,7 +1566,9 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
- 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 			return NF_DROP;
- 		}
--		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+		cseq = nf_ct_helper_parse_uint(*dptr + matchoff,
-+					       *datalen - matchoff,
-+					       (char **)&end);
- 		if (*dptr + matchoff == end) {
- 			nf_ct_helper_log(skb, ct, "cannot get cseq");
- 			return NF_DROP;
-@@ -1690,7 +1645,9 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 				      &matchoff, &matchlen) <= 0)
- 			break;
- 
--		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
-+		clen = nf_ct_helper_parse_uint(dptr + matchoff,
-+					       datalen - matchoff,
-+					       (char **)&end);
- 		if (dptr + matchoff == end)
- 			break;
- 
+
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
 -- 
-2.43.0
-
+2.39.5 (Apple Git-154)
