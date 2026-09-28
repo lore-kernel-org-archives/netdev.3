@@ -1,154 +1,99 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-49.mta1.migadu.com [95.215.58.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66CC369224;
-	Mon, 28 Sep 2026 06:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510F374A08
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790578497; cv=none; b=bKTYzienIj/55dKfw9GKpYy53l8mdanMMuSODjqUIm/Yrp+HS+D1+vXtRD/k58UGjgxt2otujAOpLsQ7rw2oPj/KIC2sV47l8qkNEo5NcleXoXBJW2bs4KD1iukFABlOJ2C3yIEohHBhIHT9NayIH4bLa0vzvnhPwcoQFDKnh74=
+	t=1790578544; cv=none; b=VJJ1RCrmaYS8w+G64/30BgXijn+F8pAPMcYYs435nYfulrqGqON3RQkrMJff045k4p3NngmBBoPx2xyDTKXcE85k29kRC4eP9bmC/lvWHPxUh+FYhSSx0iBSgL9ggmnyJRE+8wtEXB84DNRFgwi+Lb6CNgpSYp6lC06QG/NKg9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790578497; c=relaxed/simple;
-	bh=v0Qx0SVkWY4El4gyQblcQ7YByqNzQoPYAWg0Vjn8pto=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=StP4zlgf8ayYWz8OPMgxVHU+aeDnDDM+CKo6ZKtszrNr1AZUtaZUH7IsmqB+0GUK6LbOeqMbkbUwNgQoLXR5GzzRZHyUykx1INqI1yqkDWh6/4RCqOXw0XCYPT7w/JisNGJsPVfqlLlGJ4Lmkth4lD6NTwjQhXv4PYDJ9pqIZRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iMvs9S9u; arc=none smtp.client-ip=117.135.210.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1790578544; c=relaxed/simple;
+	bh=crpdjgnacTcafKdeQAx/uvrSIqrEny1qWVpRnFT9OXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GcprN6Jnl3CIXso8h5J5LADeQKmqU2ul+uialziDDZlE1gXxgSMMNc315ex/OJ4Aljdn+PtvwURuKPnI1xsOQP/Up65DwuvmeHcjgn4G9yKfNexIcye7g6pSJeNzrnH71GBvCShh808Z3kPB26wRMbyaQMQI41xOpfOgRDbO6uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cHmgeQo6; arc=none smtp.client-ip=95.215.58.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iMvs9S9u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=tj
-	uFWS1aagbpSLzq2GUkwsYPzV+6jqR8uoRndtikMxo=; b=iMvs9S9ue/eMQaf7fZ
-	CAGc/m7/nd+JcrnaKa8IJtVOB4KH6Tc0RLysMI0wUBEUEnFhba+1Mn97OvXR2c9B
-	xjljVh3/KEJvSRbgYFcnbenpwmO+Ts2eFq91jp73cOAqKduKFyzLtDHMQbMh12vg
-	mywnGQPRwdYrDocudV9czPUgk=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PikvCgD31_vUDrpqqwJlAg--.52624S3;
-	Mon, 28 Sep 2026 14:53:11 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2 2/2] ice: release the VF MSI-X window when ice_start_vfs() fails
-Date: Mon, 28 Sep 2026 14:53:06 +0800
-Message-Id: <20260928065306.1514795-2-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260928065306.1514795-1-xiaolinkui@126.com>
-References: <20260928065306.1514795-1-xiaolinkui@126.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cHmgeQo6"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=crpdjgnacTcafKdeQAx/uvrSIqrEny1qWVpRnFT9OXs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790578540; v=1; x=1791183340;
+ b=cHmgeQo6E7dgi/PEqE43JBtHl46EO1fIa9YGnV6fE+z0Z9OjDiMdrPA6RtbEfcOyxAIFlKrd
+ e5igr4sSU5lxpQpwdiIQcD/MG4v0t5vLDPJRKTnFIJLZhqVxCo75pRmYR4XJqYQMHpn7YWYA3Hd
+ aHtqiQ7Sbd75GT/yeqEtMGeU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 3a8bc4591c927e34;
+	Mon, 28 Sep 2026 06:55:40 +0000
+X-Mizu-Trace-ID: 3a8bc4591c927e34
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 14:55:50 +0800
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+	kerneljasonxing@gmail.com, netdev@vger.kernel.org,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	syzbot+2b120190d9e54ad8c65d@syzkaller.appspotmail.com, ja@ssi.bg
+Subject: Re: [PATCH net] ipvs: fix infinite loop with ipvlan L3 from
+ unconditional ipvs_property clear
+Message-ID: <20260928065550.GA620427@pc>
+References: <20260924063312.1194019-1-chenguang.zhao@linux.dev>
+ <20260925124242.GA112355@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PikvCgD31_vUDrpqqwJlAg--.52624S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw48ZFyxZw15WFWDtw4UXFb_yoWrGryxpr
-	Wqqr15Kr4kJF48WrZ7Ww1UZFn5uaySqFW8ury0g3Zakrs8Ar1UtF1Utr12y3W8C397Ca1a
-	vw4q9w1rZr1DJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uy5lnUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBcC2Gq6DteZhAAA3N
+In-Reply-To: <20260925124242.GA112355@shredder>
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On Fri, Sep 25, 2026 at 03:42:42PM +0300, Ido Schimmel wrote:
+> On Thu, Sep 24, 2026 at 02:33:12PM +0800, Chenguang Zhao wrote:
+> > From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> > 
+> > Commit de2c211868b9 ("ipvs: Always clear ipvs_property flag in
+> > skb_scrub_packet()") moved ipvs_reset() before the xnet check, making
+> > the call unconditional. The intent was to fix a bpf_redirect case where
+> > stale ipvs_property on an skb re-entering the RX path caused the SNAT
+> > hook to be skipped. However the change is too broad: when IPVS NAT
+> > sits above an ipvlan L3 interface in the same netns, the following
+> > loop happens:
+> > 
+> >   LOCAL_OUT -> IPVS DNAT (sets ipvs_property=1) -> dst_output -> ipvlan
+> >     -> skb_scrub_packet() -> ipvs_reset() clears the flag
+> >     -> ipvlan_process_v4_outbound() -> ip_local_out() -> LOCAL_OUT
+> >     -> IPVS sees ipvs_property=0, processes again -> infinite recursion
+> > 
+> > syzbot reported this as a stack overflow on a KASAN kernel where each
+> > level burns ~3.3 KB of stack and XMIT_RECURSION_LIMIT falls short. On
+> > non-KASAN kernels the dead-loop detector catches it and prints "Dead
+> > loop on virtual device", but traffic is still broken.
+> > 
+> > Fixes: de2c211868b9 ("ipvs: Always clear ipvs_property flag in skb_scrub_packet()")
+> > Reported-by: syzbot+2b120190d9e54ad8c65d@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=2b120190d9e54ad8c65d
+> > Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> 
+> 1. You need to copy IPVS maintainers on patches related to IPVS. Added
+> Julian.
 
-ice_init_vf_vsi_res() reserves the VF MSI-X window with
-ice_virt_get_irqs(), which does bitmap_set() on the PF-wide
-pf->virt_irq_tracker.bm, but nothing hands that window back when VF
-creation fails. ice_virt_free_irqs() is not called anywhere on this
-failure path: not from the release_vsi label of ice_init_vf_vsi_res(),
-not from the ice_eswitch_attach_vf() failure branch, and not from the
-teardown loop of ice_start_vfs(), which only undoes the queue mappings
-and the VF VSI. The caller does not help either, because
-err_unroll_vf_entries -> ice_free_vf_entries() -> ice_put_vf() ->
-ice_sriov_free_vf() only does mutex_destroy() and kfree_rcu().
+Thanks, will add Julian to CC in v2.
+> 
+> 2. Does it reproduce with commit 7f1de03e3103 ("net: reduce
+> XMIT_RECURSION_LIMIT under KASAN") in net-next?
 
-The tracker is allocated once per PF in ice_init_virt_irq_tracker() and
-freed only in ice_deinit_virt_irq_tracker(), and ice_set_per_vf_res()
-sizes the VFs from pf->virt_irq_tracker.num_entries rather than from the
-number of free bits. So each failed "echo N > sriov_numvfs" leaks the
-window reserved for every VF that got as far as ice_init_vf_vsi_res(),
-and once the tracker is exhausted ice_virt_get_irqs() keeps returning
--ENOENT, which means SR-IOV cannot be enabled again without reloading
-the driver. The hardware and the software bookkeeping also end up
-disagreeing, because ice_dis_vf_mappings() clears
-VPINT_ALLOC/VPINT_ALLOC_PCI and re-points GLINT_VECT2FUNC of exactly
-those vectors back at the PF.
+The dead loop itself still reproduces — dmesg shows "Dead loop on virtual device" for
+every connection, and IPVS InPkts keeps climbing. But the stack overflow crash does not
+reproduce with 7f1de03e3103 on KASAN, since the lower recursion limit catches the loop
+before the stack blows up. So 7f1de03e3103 turns the panic into a packet drop,
+which is expected, but doesn't fix the underlying issue (ipvs_property being cleared
+unconditionally in skb_scrub_packet).
 
-Return the window on the failure paths, in the order ice_free_vfs()
-uses: ice_virt_free_irqs() after ice_eswitch_detach_vf() in the teardown
-loop, and right after the VF VSI is released in the two branches that
-fail before the loop can reach that VF.
-
-The missing release is older than this change: the teardown loop has
-never returned the window. It turns into an accumulating leak because
-the tracker is now PF-wide and outlives a single SR-IOV enable.
-
-Fixes: a203163274a4 ("ice: simplify VF MSI-X managing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-Changes in v2:
-- New patch. Returns the VF MSI-X window that ice_init_vf_vsi_res() reserves
-  when ice_start_vfs() fails. The missing release is older than the
-  representor bug that patch 1/2 fixes, so it stays a separate patch.
-  (Sashiko AI review)
-
- drivers/net/ethernet/intel/ice/ice_sriov.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 95abc6704820..df84dbe12cba 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -446,8 +446,10 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
- 		return -ENOMEM;
- 
- 	vsi = ice_vf_vsi_setup(vf);
--	if (!vsi)
--		return -ENOMEM;
-+	if (!vsi) {
-+		err = -ENOMEM;
-+		goto free_irqs;
-+	}
- 
- 	err = ice_vf_init_host_cfg(vf, vsi);
- 	if (err)
-@@ -457,6 +459,9 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
- 
- release_vsi:
- 	ice_vf_vsi_release(vf);
-+free_irqs:
-+	ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
-+
- 	return err;
- }
- 
-@@ -490,6 +495,8 @@ static int ice_start_vfs(struct ice_pf *pf)
- 				dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
- 					vf->vf_id, retval);
- 				ice_vf_vsi_release(vf);
-+				ice_virt_free_irqs(pf, vf->first_vector_idx,
-+						   vf->num_msix);
- 				goto teardown;
- 			}
- 		}
-@@ -511,6 +518,7 @@ static int ice_start_vfs(struct ice_pf *pf)
- 		mutex_lock(&vf->cfg_lock);
- 
- 		ice_eswitch_detach_vf(pf, vf);
-+		ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
- 		ice_dis_vf_mappings(vf);
- 		ice_vf_vsi_release(vf);
- 		mutex_unlock(&vf->cfg_lock);
--- 
-2.25.1
-
+Thanks
+Chenguang
