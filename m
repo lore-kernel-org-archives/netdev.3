@@ -1,97 +1,149 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD67490BEE;
-	Mon, 28 Sep 2026 09:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5542548FF71;
+	Mon, 28 Sep 2026 09:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790588196; cv=none; b=c+mjiDTXti9mwldi/cgKCxnI7fqCnS9gXejLkR1Y19vw6ZMd4UMIJ1vyIiEYCegX0eU2cFyhVSDFki83ZcXaa8yP5/mHEa6Xv85SQbuYEBJ0wpbwWXmbi+J3zq+OvM4GDKyqtD3VVTkE1wo5NVp/vGoGAsvaVMBGMUEURmyadZM=
+	t=1790588214; cv=none; b=X3qb4Bn4lQnmyvVazZNPEVLoA97JalcR4yiMXazS7hhYG2YB/Rxq0F+8ort+OQ++LO25V1fMEXx9pygmP59tNAUpiVSlRjeu2vFSnbZHM+9pV1O5LdQp43N9VGApYp7iN1VZpcohBukFGjdKyK77jlHW5iVE5rJyveu0+wUUXe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790588196; c=relaxed/simple;
-	bh=bYFzn9s+Nv0Pj7tYcNYAiPo84HKQzQEg3f6Qp3ROCdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NP2qOPhhTNxbURAsyDr0+uUvh0IiMHRyDWduRfc1Wv0Ijowdy0dgCrqkPUaeSoMUGW8WVb1KeaCcsf2xun5lrvz9mx0DEeAzD4YjyMbyRZxe1WE2wDg5aaFuQfdA5PfiFAv5v/dAvYbvzocpfSrznY1TIwL4gOUxhT2UORm1QnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9xrThjU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790588214; c=relaxed/simple;
+	bh=//nOTnYqXvv9mHBNLoDhlpaQb/GlxlZG72oCbkhThgw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A6h5T19bSR8awo6oqPYVHGGX+D3hUmACZahXZU8ljMFfYp3dIrgN/xdB66gCvhr5X39REAIfoF9P7rCoG2eXI6V4354f3mNK/ijnrLnb4+LQ8T9ifPltUl/W3QDzvsnv3MCuoVBs+pEmuWe2/rYIw4WXZFDTd7XbihcChevG1ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KAKVZFBi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9xrThjU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBE41F000FF;
-	Mon, 28 Sep 2026 09:36:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KAKVZFBi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E480F1F000FF;
+	Mon, 28 Sep 2026 09:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790588195;
-	bh=XOs14AwKLFg4V8SGHzajS+S/B56ZsCGKEtjHhvvP85w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H9xrThjUBMJ7LZmiobzPWMU/VllhIYfd44Nk1Wu7/RNyY+O6j2hpW21HcmMjQkBAQ
-	 qq7EWCYhvQ61UOtpfUwhkzev8ya3ALDNTc/2IRr/rtqEgRUy7VS3a4MTCJtUUGZnrL
-	 bD5t9Xol4vn+BNuvD3QpI0vlw5j3+a0mYZ07K8E0bQPGNDLwMTfLuccBwcEqIveBzI
-	 cWh3klHpBKhJ185m64p5zbFb86p/rTg62a06onmEXqn+9kQF1rQ97VlJYDOYDvVIGV
-	 tk0RRlaaG72b3zvPFYFM8xr77JBpuiXX7NzRPppTWyCM6BrJ6v0Qvdss9gJ8nnmja1
-	 +4zbBnkba8SxQ==
-Date: Mon, 28 Sep 2026 10:36:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	aleksander.lobakin@intel.com, wojciech.drewek@intel.com,
-	marcin.szycik@linux.intel.com, linux-kernel@vger.kernel.org,
-	xuanqiang.luo@kylinos.cn, stable@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: Re: [PATCH net v2] pfcp: fix socket lifetime on netdevice
- registration failure
-Message-ID: <20260928093628.GM13925@horms.kernel.org>
-References: <20260924055252.33488-1-xuanqiang.luo@linux.dev>
+	s=k20260515; t=1790588213;
+	bh=ET3SDBOudBYKjNEuJ5fVpICh7BoHoXqCMUNtaznOzPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KAKVZFBiJ9BVIyZQqwhPizfAXyDUemIkTV41TmAltgPiGM/vlq6PTsJ3fUaEhCM+i
+	 ZIZXIJkq+9C125Rxs1a/RyN5/h0YgZjvqBSjC+TqN6sCe7G+WUePfz+IC+7gkcrCRc
+	 ZQedBaHTe/qO+wYjcsHBrAtzfimuY3JbnZLiu62m2f7IGYtKloDM21RI3GRDTrK8Ve
+	 tuvzCsHgoKVPvbnWadio1rUaFjwxHfWRq8BEEcmLTJStE5w6TUTwPUVL8HEzb/G+IV
+	 K+LdBiUONmvC6zFWssjWceVgK/bBJAtbO9gosNlwW8Vj0IoVROi6rhA5JALrfJ7Grd
+	 KmcvkApMaWSCw==
+Message-ID: <b8d31194-5b9b-49cc-9585-fa5f40ca9895@kernel.org>
+Date: Mon, 28 Sep 2026 11:36:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924055252.33488-1-xuanqiang.luo@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v18 01/10] net: phy: phy_link_topology: Add a
+ helper for opportunistic alloc
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
+ Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+ Frank Wunderlich <frank.wunderlich@linux.dev>,
+ Pietro Ameruoso <p.ameruoso@live.it>, Aleksei Sviridkin <f@lex.la>
+References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+ <20260927133619.955236-2-maxime.chevallier@bootlin.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260927133619.955236-2-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 01:52:52PM +0800, Xuanqiang Luo wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+
+
+Le 27/09/2026 à 15:36, Maxime Chevallier a écrit :
+> The phy_link_topology structure stores information about the PHY-related
+> components connected to a net_device. It is opportunistically allocated,
+> when we add the first item to the topology, as this is not relevant for
+> all kinds of net_devices.
 > 
-> pfcp_newlink() creates the UDP socket before register_netdevice().
-> If registration fails after pfcp_dev_init() succeeds, the core calls
-> pfcp_dev_uninit(), which releases the socket and clears pfcp->sk.
-> The newlink error path then releases it again, causing a NULL pointer
-> dereference. This was observed with failslab fault injection:
+> In preparation for the addition of phy_port tracking in the topology,
+> let's make a dedicated helper for that allocation sequence.
 > 
->   FAULT_INJECTION: forcing a failure.
->   kobject: kobject_add_internal failed for pfcp0 (error: -12 parent: net)
->   BUG: KASAN: null-ptr-deref in udp_tunnel_sock_release+0x1c/0x50
->   Read of size 8 at addr 0000000000000120 by task ip/1037
->   Call trace:
->    show_stack+0x18/0x24 (C)
->    dump_stack_lvl+0x78/0x90
->    print_report+0x468/0x5cc
->    kasan_report+0xa4/0xf0
->    __asan_load8+0x7c/0xd0
->    udp_tunnel_sock_release+0x1c/0x50
->    pfcp_newlink+0x128/0x184
->    rtnl_newlink+0x848/0xe44
->    rtnetlink_rcv_msg+0x468/0x514
->    netlink_rcv_skb+0xc0/0x1f0
->    rtnetlink_rcv+0x18/0x24
->    netlink_unicast+0x4b8/0x558
->    netlink_sendmsg+0x2b8/0x584
->    ...
-> 
-> Return from pfcp_del_sock() if pfcp->sk is NULL.
-> 
-> Fixes: 76c8764ef36a5 ("pfcp: add PFCP module")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Tested-by: Aleksei Sviridkin <f@lex.la>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
 > ---
-> Changes:
-> v2:
->   - Use a NULL check in pfcp_del_sock() as the minimal fix for net and
->     stable. (Simon Horman.)
+>   drivers/net/phy/phy_link_topology.c | 40 +++++++++++++++++++++++------
+>   1 file changed, 32 insertions(+), 8 deletions(-)
 > 
-> v1: https://lore.kernel.org/all/20260918123158.5631-1-xuanqiang.luo@linux.dev/
-
-Thanks for the update, and the link to v1.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+> diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+> index 4134de7ae313..0462283c8020 100644
+> --- a/drivers/net/phy/phy_link_topology.c
+> +++ b/drivers/net/phy/phy_link_topology.c
+> @@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+>   	return 0;
+>   }
+>   
+> +static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
+> +{
+> +	int ret;
+> +
+> +	if (dev->link_topo)
+> +		return dev->link_topo;
+> +
+> +	/* The topology is allocated the first time we add an object to it.
+> +	 * It is freed alongside the netdev. It can be called on multiple
+> +	 * contexts:
+> +	 *  - It can be called from .probe() : No rtnl, no netdev_lock
+> +	 *  - .ndo_open() : rtnl and possibly netdev_lock
+> +	 *  - SFP state machine : rtnl held or not
+> +	 *
+> +	 *  However, we can't really have races :
+> +	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
+> +	 *    and trigger the alloc. Only then the ports can be added through
+> +	 *    phylib or sfp.
+> +	 *  - If we don't, the SFP port for the cage is registered first, and
+> +	 *    only then other ports/PHYs can be registered.
+> +	 */
+> +	ret = netdev_alloc_phy_link_topology(dev);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	return dev->link_topo;
+> +}
+> +
+>   int phy_link_topo_add_phy(struct net_device *dev,
+>   			  struct phy_device *phy,
+>   			  enum phy_upstream upt, void *upstream)
+>   {
+> -	struct phy_link_topology *topo = dev->link_topo;
+> +	struct phy_link_topology *topo;
+>   	struct phy_device_node *pdn;
+>   	int ret;
+>   
+> @@ -45,13 +73,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
+>   	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+>   		return -EOPNOTSUPP;
+>   
+> -	if (!topo) {
+> -		ret = netdev_alloc_phy_link_topology(dev);
+> -		if (ret)
+> -			return ret;
+> -
+> -		topo = dev->link_topo;
+> -	}
+> +	topo = phy_link_topo_get_or_alloc(dev);
+> +	if (IS_ERR(topo))
+> +		return PTR_ERR(topo);
+>   
+>   	pdn = kzalloc_obj(*pdn);
+>   	if (!pdn)
 
