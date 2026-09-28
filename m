@@ -1,150 +1,247 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5654943D4FD
-	for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC32433A9F8;
+	Mon, 28 Sep 2026 00:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790553472; cv=none; b=iFE5I7bWnC1iCyqUoYrIQqX6rZ1DCALT2t1kI/wuIM1rE6J1Z6FGtld+0qKijJACLzGE+3XQzYTirIr1ppKwLmLpSY8wIpIHXEa0HdrCfH1D2QhDH8iwuyTQ4v8826E3ukfz+ElWeMQkkZlgkTJawaXQNMsgIkAiHl5JF1MExLs=
+	t=1790553702; cv=none; b=g8C9cUCcC8CRt0/FiONrFeCRS7FZ16V2S/LPZ7w/LrrGbd+sT6JJu9Msq46778KizWu0Qa21uiz+NOBteSmI0narJ0fn2LaGl/wLa2H/oHk2MqUOpxhZs+AhnHzQnHTIZgL3Y5//cKmJwW5tgRtS9GjE0AGZ6XQSSrC7eLR+vfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790553472; c=relaxed/simple;
-	bh=DTm+8VkU5gcH3XgRDOy8kN9YKZ+MZN+K6h7Y7ZTzZkE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlMJWRTmxDcsXdeM5SAAT0nOz78mArPKK5bqYyuXBE8kcJ8M3YLHrfarBqpS/7PLj+zvObxrCxvG2TN1fyOHQ0SvYetvZpMisk+yElgUOpyryYd2aHVRd6UXiTmeqix13t9KLX7Fianqy94VlHu8sbCF1a6UpSjD6AvYdPWSy3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=EiWrHDvo; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1790553702; c=relaxed/simple;
+	bh=Qxl/feIeV+jLSTC4GYXne/UCaFm+0GjpGzJkNZupFxI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eU38IkC+5p1xfr6EJOxtxWxzLBI4MCuddzgRT7L9gGMr/q55becYnogflYsFFzhXXMD+I5ZZbObGsFOmfKyN2C3CMLPHXzSpu4JJ8h+9H0h67a6FPOrFDJLQ0oDWhqo2hmj2JvhGmBAX/uKyQe39uA4Q0JvEW1kB2nMfjYXssFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITGKima2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="EiWrHDvo"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so9467335e9.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 16:57:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1790553465; x=1791158265; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gZ8p/NVIadAMhbwnanN8QfTI2Nz4vTcQTSBnLNkkJao=;
-        b=EiWrHDvoGPu1pv31N0eklGwGWwdl/XhlLest5aA9BDbyED0VD7KzLIeINxU6L49ZX1
-         f5n5XF823gLQyRCaR/vV+MsjCzgtNK9tWnfntpbLIVplARWK8uM48Mj9gjg1fBI30ksd
-         t4YJUAFYoOujuee1XGT80g3MUDoAjuRSNULPNd7GJHpY6IK746LsF6Anv0GG0syPeiO+
-         9xCd8fqcDHz/8WoO2QfKDl5ranjgvCTDB2M5sU9krjJhL6sx38cuwXH8BuxJeVmCFokF
-         1U0ehmgIUzd0KDhY43bGm+NIHEI1h5W5N7VKqPoMOOFM5vMtPf0Govc8VDd4qjo9wt8w
-         Z6ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790553465; x=1791158265;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gZ8p/NVIadAMhbwnanN8QfTI2Nz4vTcQTSBnLNkkJao=;
-        b=lwEYZSgA4HCnW7Uu7KeyvIWNkx78Uy99A07gjzh7yIWBSsm4sM7bdMD+HUe6ar2WHV
-         yxp1a+9NQUfC/QxGCdlq3qnHhIxp7jtHzojubhdRd3hFqDwe7c+AkR9jGMLZwNxragRL
-         gqV4Zm+KPd/5ruWx+0wOWIrTcoEb1okmKiU/+NunpDpHpPvITMWYgYwa79Yd5od1VM5i
-         w1dbzJ2GIbeWNcN/pXuN21uVnt43q7gvFGs07Mw56n8fqaLo4RizmtnecwyMvUMdQrKN
-         X+M7bcQX2ZRyzi8jOs33YOrUrx0KKJT+P9gAYkRcFxzuyNLugTMPzqA1i3ZAgP0zroAJ
-         kTWQ==
-X-Gm-Message-State: AFuF++lFLoUlMQH3G3Z+rMsYB44HVhxY+DQqkeABO0NmtotKdnW3BQ/+
-	cWRds/XczSy+z8/bdJPXfUd5fkiQbqo83/1HmudE5Sb2uQAavmsjtXqMjnE3krubd6QnK/ZbTF4
-	IBvW7mpwGhEZ1
-X-Gm-Gg: AYBFou0K2n5HpYjPicAuEwq7bcwa2/qYZyR/DJWhuQIr335/yTZbUyzGzZaMRgl5qDV
-	Fg6kilSVIqpjoUKK9SP4VlPuVe40+iox4JRlXp7/wrHOlNz77sYrVtlE435O5hQ8cIqd4Wa08EG
-	7OUui2lLjSCNlSiuP1IIlawnj06tJKr3Yxkq4cRUebAskNWrgUAEN8FOMMX/gltX4KwxHfS0ZoP
-	KkCRABnBmY6aloC80Jeh62wUA2Ft7VaHP/X0nypyZMhH9uuaLs1RCLfo60S+CMoCci4QtlR/UYL
-	XRhvCijvLzdfoGVKtMi/YHII87sBhxseR8qYyjSlAvbfjEgmCAvUguEljJJwMbeLpR9+jmXrzkw
-	Cb/rYySrYvdcacHEcY51uzRqna7gKus7b49S1Cc9dKS7Tx/eXbR2rN7O1V5/BBZACbIkZSkrj+H
-	BK6v8D4TxUjU6WWr2yzKbgQZ+XByB1+IKR/f+sWjtohl5bjRdVug==
-X-Received: by 2002:a05:600c:37c4:b0:4a0:b6:460f with SMTP id 5b1f17b1804b1-4a001e8c579mr42530565e9.33.1790553465459;
-        Sun, 27 Sep 2026 16:57:45 -0700 (PDT)
-Received: from remote-01 ([84.17.55.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0017998dbsm137971495e9.14.2026.09.27.16.57.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 16:57:45 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	olteanv@gmail.com,
-	Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	steve.glendinning@shawell.net,
-	f.fainelli@gmail.com,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v12 4/4] net: phy: restore the interrupt when the generic bind cycle fails
-Date: Mon, 28 Sep 2026 02:57:33 +0300
-Message-ID: <20260927235733.2619081-5-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260927235733.2619081-1-f@lex.la>
-References: <20260927235733.2619081-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITGKima2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D2D1F000FF;
+	Mon, 28 Sep 2026 00:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790553698;
+	bh=g2y0ROSbOBCB9Xnoeix/ZIG8/wgCNd3TevwH5Fiuvn4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ITGKima27hGECZN6ECqgYb+MHd3dJNvAzCIlzH+NDghmZQeWL18VG/nWZ4lFD4jon
+	 Hf5ZPYe5mYUSKDSDQTcesrJMbWugDUpgpkoeeNkj+sqdF8ZKpGifwKu/xSI6DAEYjT
+	 bmHtgasgpWSpS+v7tMBRwyQpa0gqpO2Hda02Uuh9thKzGqSVv5Uke4Gh91bWXCQ7u6
+	 VoftYM3vCCkeixXvyoi2yaFZK/lbu2VA8H+bQAl2kI7b+39Qe2NDiXrJT/MlPQps34
+	 uP9GgGUT8qiimFzItXCA05v0PzzLvAitAf3/bniL6jDLICFHje4iY3spobto4ZbJKZ
+	 Hn6RfFX0WV1jg==
+Subject: Re: [PATCH net-next v2 1/8] eth: mpnic: add scaffolding for Meta
+ Platforms NIC
+From: netdev-bot+sashiko@kernel.org
+To: daniel.zahka@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, dimitri.daskalakis1@gmail.com,
+ mohsin.bashr@gmail.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+Date: Mon, 28 Sep 2026 00:01:37 +0000
+Message-ID: <179055369730.3145.8922011696640547930@kernel.org>
+In-Reply-To: <20260924-linux-mpnic-v2-1-4badc9b58b9e@gmail.com>
+References: <20260924-linux-mpnic-v2-1-4badc9b58b9e@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When the generic driver is bound by hand and the bind fails, the PHY is
-left with polling in place of its interrupt. phy_probe() has already
-replaced phydev->irq with PHY_POLL by then. The unwind does not go
-through phy_detach(), so the restore there does not run, and a later
-attach finds a PHY that can only be polled.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Found on a Keenetic KN-1012 while adding the restore in phy_detach(),
-as the other way out of the same bind cycle.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Save the interrupt number on entry and put it back on the error path.
-The bus table is not the right source here. The same label is reached
-when a second attach of an already attached PHY fails, and there the
-field is live. The table also misses a PHY_MAC_INTERRUPT that a MAC
-wrote into phydev->irq.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Tested on the KN-1012 with a 6.18 distribution kernel and an injected
-failure of the generic probe: phydev->irq reads 15 afterwards, and -1
-with only the restore in phy_detach().
+- [High] eth: mpnic: missing PCI BAR0 length validation leads to out-of-
+  bounds MMIO access
 
-Fixes: 6d9f66ac7fec ("net: phy: Fix PHY module checks and NULL deref in phy_attach_direct()")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
+--
 
-Notes:
-    v12: shorter commit message, no code change.
-    
-    The Fixes: tag differs from patch 3 because 6d9f66ac7fec split this
-    failure off the label that calls phy_detach(). The failure was injected
-    with a debug-only module parameter, once for one MDIO address.
+> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+> --- /dev/null
+> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright (c) Meta Platforms, Inc. and affiliates. */
+> +
+> +#include <linux/dma-mapping.h>
+> +#include <linux/err.h>
+> +#include <linux/module.h>
+> +#include <linux/pci.h>
+> +#include <linux/slab.h>
+> +#include <linux/types.h>
+> +
+> +#include "mpnic.h"
+> +
+> +#define PCI_DEVICE_ID_META_MPNIC	0x0014
+> +
+> +static void mpnic_mmio_err(struct mpnic_dev *mpd, u32 reg)
+> +{
+> +	/* Hardware is giving us all 1's reads, assume it is gone */
+> +	WRITE_ONCE(mpd->uc_addr0, NULL);
+> +
+> +	dev_err(mpd->dev,
+> +		"Failed read (idx 0x%x AKA addr 0x%x), disabled CSR access, awaiting reset\n",
+> +		reg, reg << 2);
+> +}
+> +
+> +u64 mpnic_rd64(struct mpnic_dev *mpd, u32 reg)
+> +{
+> +	u32 __iomem *csr = READ_ONCE(mpd->uc_addr0);
+> +	u64 value;
+> +
+> +	if (!csr)
+> +		return ~0ULL;
+> +
+> +	value = readq(csr + reg);
+> +
+> +	/* If any bits are 0 value should be valid */
+> +	if (~value)
+> +		return value;
+> +
+> +	/* All ones can be a valid value, so confirm against a register
+> +	 * which never reads that way on a live device.
+> +	 */
+> +	if (reg != MPNIC_BDQ_SPARE && ~readq(csr + MPNIC_BDQ_SPARE))
+> +		return value;
+> +
+> +	mpnic_mmio_err(mpd, reg);
+> +
+> +	return ~0ULL;
+> +}
+> +
+> +static struct mpnic_dev *mpnic_alloc(struct pci_dev *pdev)
+> +{
+> +	struct mpnic_dev *mpd;
+> +
+> +	mpd = kzalloc_obj(*mpd);
+> +	if (!mpd)
+> +		return NULL;
+> +
+> +	pci_set_drvdata(pdev, mpd);
+> +	mpd->dev = &pdev->dev;
+> +
+> +	return mpd;
+> +}
+> +
+> +/**
+> + * mpnic_probe - Device initialization routine
+> + * @pdev: PCI device information struct
+> + * @ent: entry in mpnic_pci_tbl
+> + *
+> + * Return: 0 on success, negative on failure
+> + **/
+> +static int mpnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+> +{
+> +	void __iomem *uc_addr0;
+> +	struct mpnic_dev *mpd;
+> +	int err;
+> +
+> +	if (pdev->error_state != pci_channel_io_normal) {
+> +		dev_err(&pdev->dev,
+> +			"PCI device still in an error state. Unable to load...\n");
+> +		return -EIO;
+> +	}
+> +
+> +	err = pcim_enable_device(pdev);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "PCI enable device failed: %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(46));
+> +	if (err) {
+> +		dev_err(&pdev->dev, "DMA configuration failed: %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	mpd = mpnic_alloc(pdev);
+> +	if (!mpd)
+> +		return -ENOMEM;
+> +
+> +	uc_addr0 = pcim_iomap_region(pdev, 0, MPNIC_DRV_NAME);
+> +	if (IS_ERR(uc_addr0)) {
+> +		err = PTR_ERR(uc_addr0);
+> +		dev_err(&pdev->dev, "Mapping the register file failed: %d\n",
+> +			err);
+> +		goto err_free_mpd;
+> +	}
+> +	mpd->uc_addr0 = uc_addr0;
+> +
+> +	pci_set_master(pdev);
+> +	pci_save_state(pdev);
+> +
+> +	return 0;
+> +
+> +err_free_mpd:
+> +	kfree(mpd);
+> +
+> +	return err;
+> +}
+> +
+> +/**
+> + * mpnic_remove - Device removal routine
+> + * @pdev: PCI device information struct
+> + **/
+> +static void mpnic_remove(struct pci_dev *pdev)
+> +{
+> +	struct mpnic_dev *mpd = pci_get_drvdata(pdev);
+> +
+> +	kfree(mpd);
+> +}
+> +
+> +static const struct pci_device_id mpnic_pci_tbl[] = {
+> +	{ PCI_VDEVICE(META, PCI_DEVICE_ID_META_MPNIC) },
+> +	/* required last entry */
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(pci, mpnic_pci_tbl);
+> +
+> +static struct pci_driver mpnic_driver = {
+> +	.name		= MPNIC_DRV_NAME,
+> +	.id_table	= mpnic_pci_tbl,
+> +	.probe		= mpnic_probe,
+> +	.remove		= mpnic_remove,
+> +};
+> +
+> +module_pci_driver(mpnic_driver);
+> +
+> +MODULE_DESCRIPTION("Meta Platforms Network Interface Controller");
+> +MODULE_LICENSE("GPL");
+>
 
- drivers/net/phy/phy_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+[Severity: High]
+mpnic_probe() maps BAR0 with pcim_iomap_region() but never checks
+pci_resource_len(pdev, 0) against the register file size the driver
+expects. pcim_iomap_region() maps whatever length the device
+advertises. A device exposing a small BAR0, including a spoofed one
+behind Thunderbolt, ends up with a mapping much shorter than the CSR
+indices in mpnic_csr.h assume.
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index a9c71a286118..8bfb154402ad 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1755,6 +1755,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	struct mii_bus *bus = phydev->mdio.bus;
- 	struct device *d = &phydev->mdio.dev;
- 	struct module *ndev_owner = NULL;
-+	int irq = phydev->irq;
- 	int err;
- 
- 	/* For Ethernet device drivers that register their own MDIO bus, we
-@@ -1896,6 +1897,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 
- error_module_put:
- 	module_put(d->driver->owner);
-+	phydev->irq = irq;
- 	phydev->is_genphy_driven = 0;
- 	d->driver = NULL;
- error_put_device:
+mpnic_rd64() and mpnic_wr64() compute csr + reg with no bounds check.
+The all-ones fallback in mpnic_rd64() also unconditionally does a
+readq() at csr + MPNIC_BDQ_SPARE. That is byte offset 0x10804f8,
+roughly 16.5MiB into the BAR.
+
+Nothing calls the accessors in this patch yet. Once the follow-ups
+start touching CSRs from probe, a short BAR plus a single all-ones
+read would run past the end of the ioremap. That would fault, or hit
+whatever else happens to be mapped there.
+
+Could you reject the device in probe when BAR0 is too small to hold
+the register file? For example, compare pci_resource_len(pdev, 0)
+with the end of the highest CSR the driver touches (at least
+MPNIC_BDQ_SPARE * 4 + 8) and fail with -ENODEV. What is the
+architected size of BAR0 on this device?
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-linux-mpnic-v2-0-4badc9b58b9e%40gmail.com
