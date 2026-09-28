@@ -1,175 +1,197 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B7E4E9C27
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9981E4E36F1
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 16:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790610863; cv=none; b=mI7LrhCMlqs347e0ZfV1+JHSiK+8pPPsOhnSkzq8+hxnUBgo/rw5I0siJSqCFQWXj/cnWdteogPQZe3gprG7JehMXNFJl0C6JMyQpixNTdgmp/jgH2UlQOrEwzZcmU1SOlCrWzYK/c/I6BCUsKtBc3LCwyMyz0EJHs46Ync/fUc=
+	t=1790611285; cv=none; b=l7BQlxVcDsobeMfTooEGTzalcY+Dy2AdpO+ASa2UaAvbuKqWPeOfZptrZWndOsiEOyem2UFZgSe91hbyZRxodupLK0lYihnE1lWpZX86mhpIZ0hFS4FgGZaUGagrfrQpyPyPlUqMxTSi6Zra1gYjyTo9cyrDEaeMF/lO+qZrq3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790610863; c=relaxed/simple;
-	bh=ghSZTabWnqxavl/W4iUtPMg/mi1Uq99yCxVqS1s2Znc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GA/ToNDKZ8zxYAbqqGkhI3eSwXEMpRDQM3jlfnGoUdoLONrkB7UdBx28s1LiQyOjB1iijaJNDAA8s4vHYwOoJRjKxrOX83FGEYCzcywF50BJAlR+WDw5pa9Wqlh3QUA/aN26tuoleVFGRRcmcBegOQGa2IgBNqjCzcJ7Zxh9Jog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=VBA5bFza; arc=none smtp.client-ip=74.125.228.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1790611285; c=relaxed/simple;
+	bh=uSKWGEy+h0iZrPZ3sx1w7LlZBURNAT0ImgBibqITfCc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=rrui36k6DnACLpareCZv6j6MQZeExnC1CpIs+eDkqgbIgC+jc6QItg8A2sRrj/GZ3WERMa1Aks/sO5Yxy1BxMJRF2sgajp5QG5YiZ7V/oQxzuTCMN7wFlxVOZZeOmBLiQaZlDb9UnF/7/wu/yw7HW4G50ff/e2ij+QMdwp+xffk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mLYrsp8U; arc=none smtp.client-ip=74.125.230.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="VBA5bFza"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dcdc386ddso192131766b.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:54:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mLYrsp8U"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-9144443299bso16289006d6.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 09:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1790610860; x=1791215660; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bUFOamo9O9BYWzyDGfu0crdKrXnEWewsENPgbfRd9Ig=;
-        b=VBA5bFzaioQKl+YYYX3tEBHlYs17GUOJnsh7pZvigvrPuuYvmiKLOhWvOLECSVHvYR
-         Y6pEkoTPn80CicjSjzwn2Buby8Ck7eOcdwi2tIdY1gcZKECfQiOg/IokYDKP9OTbdqAH
-         3bwWH4cJkQWq3bQ5vp3HH91Y55FTEwE+2+Mpnq+z7WFk0wFexNCRIyBqR8BlnUB+Umee
-         JX2QpzZfEpStCvuRL0tjO8VT2H2hFHmi6DyhyU2ngduiPu89BIBAGG8pXGkrf4HJH18F
-         wrzqbWyQqc+E7ybjCXjyXap/6VqfzhbWhkA3+2iZO9SiyDnMWetW+FOZPDrtSVaulrjV
-         FqwA==
+        d=gmail.com; s=20251104; t=1790611282; x=1791216082; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0L0FfZEwFrI5hnOen6cKyT8bGV7DqSFD/qxUGYMRgC4=;
+        b=mLYrsp8U1ewdKN6ZuAjN904WjXAEnrq4AROfEBedTkheVduZCT4PiT55DZJIXp+0/I
+         PNJ+y1jYs8N5IIQ7GUemW/6n5Al57tktiB88eNM9uRcE64P2YRIpsyTlhReGwx7K213O
+         BXYWlQeY3KEpFgBEiiYxPvpEwv4S3sDJyCQBAoBkj/3JmujluI67wQvdOvoOGF5K30mI
+         UECe2a1QcygOk3lWajoZnfe0J1mLqNKfwfpWZ/lHvVZbtCLW+aEeyvMxFY1VsTT2eD1d
+         7JRkgdXyannb/R4mrCdxydOLkcXbm/8e0mstAqz3aI+xts6QHsPreWzJmNZENx2xJm9I
+         EqUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790610860; x=1791215660;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=bUFOamo9O9BYWzyDGfu0crdKrXnEWewsENPgbfRd9Ig=;
-        b=X0okeugHtqhayUnNskJE9nYColbLu/hUc6gXnH4daFegJDZ1SFVQvdfrTxd1ZEga5+
-         ZiIZmo0885zaK0GkQSt7/P0L9w+38hODtNbx22GtD1w5Vi6aIk8bF8noMPHbzpiUFGyt
-         Z54UEsbbxaLsHLvQbTPeck2nYEgaw/C4Sy37K1PotjicN5LMsvwDdinBJAzZfTFxgHk6
-         ucF0BD8g5bWean/RjLdwkIRg32h/ry4RDgWEdOOqi+q/Sv07W0Ss1NUtVDOT33viPrCQ
-         5yS+IQ0LwpnzS89MNcES5inftnbS2X3XCv6JJndKIhlbhLl/9n0bvVMReIyygEfiRFrg
-         eQMg==
-X-Forwarded-Encrypted: i=1; AKwUvBxBXqPBZJEAB3GunXSyDV4VQW9PsH/cZ7iA0YEVXQLndvRomJb9xWGm3qzePQ/2bhSqAGnOuxc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKF8DPMLNgCNOAiq93h6U9Lvx+TM3WLXEb1jj2PYWbaG8JhXB2I
-	IanUcsR34JOQh+wcYPEWKDk3Eg3XKAa3D9XVVwNb4nJkdl7QFxbTtWF5CYOOTzQpboM=
-X-Gm-Gg: AYBFou2smiQnyIjF8Zgd4yJZZ5r5YtYT2yeWOkvPEJTGMbATrKLpBiyltYT6gAVN+Sq
-	IaOP/xyVarWpO1CzOQbU4NL64u9sHUKE1vt6YsbGk0hlDsNhVTIpr6KYN/9dfIyXBJo/Xxyx9Oa
-	NUbOauhgtRuofOU7YdCNp5OmwAKNDPoySHk0rCjoaroTtioLqZCKGl6Ji0tEKgHcmofP7V1Cemc
-	B83weh1C6VTAAhia4UOoOszVQdvvqzIWwVA5MQrTwQrWEPyMM6CpCbUeIhdKQcmax4DkjarhZLz
-	XJnCBBDBDKPY+O1Aji6CMrN8FoOhWJTNn2i2WGjU5T805g3h/U/49X9Dap4pxz2/ZH+in1TD3VF
-	6WDaUOhm29CygxRROfNB2CnGaz3moOofBuuLdCAvI7R2Xrkavk20WBMrmGHZgWXblq/t4NpoxMl
-	xmT8aG0ShULyMPSbBiZS+y+ICFGRLfa4+eCN+/CSB5icxdXXApQxdZ80Ee81hC2zRRGo/49W/1
-X-Received: by 2002:a17:907:c24:b0:c20:1bc5:7002 with SMTP id a640c23a62f3a-c2ac22daf39mr1111903266b.3.1790610859621;
-        Mon, 28 Sep 2026 08:54:19 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae76a68aasm480717366b.35.2026.09.28.08.54.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 08:54:19 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-Cc: "Jakub Kicinski" <kuba@kernel.org>,  "Daniel Zahka"
- <daniel.zahka@gmail.com>,  <netdev@vger.kernel.org>,  "Kuniyuki Iwashima"
- <kuniyu@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Stanislav
- Fomichev" <sdf@fomichev.me>,  <bpf@vger.kernel.org>,
-  <kernel-team@cloudflare.com>,  "Daniel Borkmann" <daniel@iogearbox.net>,
-  "John Fastabend" <john.fastabend@gmail.com>,  "Andrii Nakryiko"
- <andrii@kernel.org>,  "Eduard Zingerman" <eddyz87@gmail.com>,  "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>,  "Martin KaFai Lau"
- <martin.lau@linux.dev>,  "Song Liu" <song@kernel.org>,  "Yonghong Song"
- <yonghong.song@linux.dev>,  "Jiri Olsa" <jolsa@kernel.org>,  "Emil
- Tsalapatis" <emil@etsalapatis.com>,  "David S. Miller"
- <davem@davemloft.net>,  "Eric Dumazet" <edumazet@google.com>,  "Simon
- Horman" <horms@kernel.org>,  "Jesper Dangaard Brouer" <hawk@kernel.org>,
-  "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,  "Florian Westphal"
- <fw@strlen.de>,  "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
- packet scrubbing
-In-Reply-To: <DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com> (Alexei Starovoitov's
-	message of "Fri, 25 Sep 2026 20:27:31 +0000")
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
-	<20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
-	<DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com>
-	<DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com>
-	<20260925121849.2ac5150b@kernel.org>
-	<DLONQQN0RB03.1NVWVFHGRRWV4@gmail.com>
-	<20260925132004.171b751e@kernel.org>
-	<DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Mon, 28 Sep 2026 17:52:03 +0200
-Message-ID: <87jyo5bcgs.fsf@cloudflare.com>
+        d=1e100.net; s=20260707; t=1790611282; x=1791216082;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0L0FfZEwFrI5hnOen6cKyT8bGV7DqSFD/qxUGYMRgC4=;
+        b=cJKUuMQINlXXh0EBsWcGgja+mJDULCC0Ux1XyVM4fcTb2wFp+UvUghMe7vbz+yEPtq
+         Iuc8wjncFhcXd4HFYYxDLy2JY0B2UXxS0TiMGPXhWDN2DeI+GF5Lp2hmrCz4BJXocZ0a
+         FLPRrymWBE/N5gaOE+GD8sTiDEFONWda+dhgj7XTtqb5G/IONFMn12HFhWOe0kUJ3uDi
+         hoYKe+aCcyRkii9O/YdeLaWyGcZaGKn4ZAiVf3n3FGub4IXhsHGHiu7QEZt5AbDTabtF
+         QPTnZKGA/Jng2bm+4RNw/7nQJLSo2BD7lPiyoiaVQ4ypwusmb0NHD3YwOARvOFIWqJzj
+         urzA==
+X-Forwarded-Encrypted: i=1; AKwUvBxuNfMX7wzEZoBBJc9A4OYwca1cGObEEkqBN+oBxWdqL3M6ljC0m5/lIq1NDobK9/fAWk5/+j8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLWRMW889SY3zyHLR8PKU4cnq5gDkcKG0MIkXaOox1iSEFCAqVf
+	4fbOkeGAap5ImGmda7ONYyfNL+gp7d2/8giyBDOAlxZWIT3HQcYU/By7
+X-Gm-Gg: AYBFou3xvGuT6Xh41qTuuhS/+N8BfITgcrK+rrmgw0wvqXFSz4peFXfIrVhPprXN8lL
+	dGBJRAj1Va0folxdvtswoihmCss8BCb5tO+Njj5FaXOb+Je6NT3WWcnE4Bp5DNCAq1giNa9z6lD
+	eqvSaeHOiBipHx9rcy1PcnxbQLEPEU44ySRhBNkfihS/XnJxc0kDq+HXEYlk1ceSqMd46lm3Q6n
+	U9tHFsBPf8Tso4S/8LoAr3U4vk3HcYsiVIFTQoCn0L7F2dl4MUpUiYn75QJPh2dSFrgWIZ2JPG1
+	X1ul85PAZmKjwkiQZVQacyGGmg7RTkTXe2zhxdjH8E83+e8JSAdVN6BgkhoF3iGGO2zxaqt9SkL
+	srk+syFnzsO9mxl+JHJeuENkyeN2a6K6OCXSKj470/8VNBm8MTLyhEbfeNA3zWfTlvqQd+dxZh3
+	9eUbGp7e1nrEM3E+i3EneNFs17gT/kXgX3l/lVAwNEtEXvHiMd9jjlcDHabjU+1U0xPKrLs1O74
+	X8=
+X-Received: by 2002:a05:6214:1d26:b0:914:40fb:8e89 with SMTP id 6a1803df08f44-91440fb8eebmr178876886d6.16.1790611281978;
+        Mon, 28 Sep 2026 09:01:21 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e09985sm83727016d6.30.2026.09.28.09.01.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 09:01:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 12:01:20 -0400
+Message-Id: <DLR2Q21OM7VS.EXK4BZIZJ1VL@gmail.com>
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
+Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 3/8] eth: mpnic: allocate MSI-X vectors
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260924-linux-mpnic-v2-3-4badc9b58b9e@gmail.com>
+ <179055370029.3145.13976204260796634034@kernel.org>
+In-Reply-To: <179055370029.3145.13976204260796634034@kernel.org>
 
-On Fri, Sep 25, 2026 at 08:27 PM GMT, Alexei Starovoitov wrote:
-> On Fri Sep 25, 2026 at 8:20 PM UTC, Jakub Kicinski wrote:
->> On Fri, 25 Sep 2026 19:51:37 +0000 Alexei Starovoitov wrote:
->>> On Fri, Sep 25, 2026 at 12:18 PM Jakub Kicinski <kuba@kernel.org> wrote:
->>> > Instead of improving the existing infra we're adding more BPF-specific
->>> > glue and another bit to the skb. Matter of perspective I suppose :/  
->>> 
->>> skb_ext version needs a bit too. SKB_EXT_BPF is the 8th id, so it takes
->>> the last bit of u8 active_extensions.
->>> skbuff_ext_cache object is sized for all ids, so it also grows by
->>> BPF_SKB_EXT_SIZE for xfrm, mptcp, psp whether bpf is used or not.
->>> 
->>> As I said earlier skb_ext is fine from bpf pov. If it can be made as
->>> cheap as bit + tracepoint I don't mind it at all.
->>> Which part of skb_ext would you improve?
->>
->> Mostly allocation speed. Either a small per-CPU cache like we have
->> for skbs or let the scalar matadata fields live inside the skb.
+On Sun Sep 27, 2026 at 8:01 PM EDT, netdev-bot+sashiko wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
 >
-> makes sense to me. Speeding up generic infra is always a good thing.
+> Low priority / nit picks for your consideration:
 >
->> That said, the selective tracing approach is also tempting.
->> It'd be great if we could have that for sockets.
->> Could we possibly think of a way to build that into tracepoints
->> instead of having the open coded
->>
->> obj_maybe_trace_bla()
->> {
->> 	if (obj->trace)
->> 		trace_bla();
->> }
->>
->> Having both:
->>
->> 	skb_maybe_trace_free(skb, SKB_CONSUMED);
->> 	skb_release_data(skb, SKB_CONSUMED);
+> - [Low] The driver frees its MSI-X vectors both by hand and through
+>   devres.
 >
-> with a 3rd enum argument for different use cases?
-> As a way to generalize different bits / different users?
+> --
 >
-> Also makes sense.
+> eth: mpnic: allocate MSI-X vectors
+>
+> This commit adds mpnic_irq.c, which allocates one MSI-X vector for FW
+> interrupts and one vector per online CPU for the completion queues. The
+> allocation happens in mpnic_probe(). The vectors are freed on the probe
+> error path and in mpnic_remove().
+>
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_irq.c b/drivers/net/e=
+thernet/meta/mpnic/mpnic_irq.c
+>> new file mode 100644
+>> index 0000000000000..bcc33655cbbea
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_irq.c
+>
+> [ ... ]
+>
+>> +void mpnic_free_irqs(struct mpnic_dev *mpd)
+>> +{
+>> +	struct pci_dev *pdev =3D to_pci_dev(mpd->dev);
+>> +
+>> +	mpd->num_irqs =3D 0;
+>> +	pci_free_irq_vectors(pdev);
+>> +}
+>
+> [Severity: Low]
+> Is it safe to call pci_free_irq_vectors() here when mpnic_probe() enables
+> the device with pcim_enable_device()?
+>
+> pcim_enable_device() sets pdev->is_managed. Because of that,
+> pci_alloc_irq_vectors() in mpnic_alloc_irqs() ends up in
+> pcim_setup_msi_release():
+>
+> drivers/pci/msi/msi.c:pcim_setup_msi_release() {
+>     ...
+> 	if (!pci_is_managed(dev) || dev->is_msi_managed)
+> 		return 0;
+>
+> 	ret =3D devm_add_action(&dev->dev, pcim_msi_release, dev);
+>     ...
+> }
+>
+> The kernel-doc for pci_free_irq_vectors() says not to do this:
+>
+>  * WARNING: Do not call this function if the device has been enabled
+>  * with pcim_enable_device(). In that case, IRQ vectors are automatically
+>  * managed via pcim_msi_release() and calling pci_free_irq_vectors() can
+>  * lead to double-free issues.
+>
+> With this patch, both the err_free_irqs path in mpnic_probe() and
+> mpnic_remove() call mpnic_free_irqs()->pci_free_irq_vectors(). Devres
+> then runs pcim_msi_release()->pci_free_irq_vectors() a second time.
+>
+> Today the second call does nothing, because pci_disable_msix() returns
+> early when !dev->msix_enabled. That makes it an internal guard, though,
+> not part of the API contract. The TODO in pcim_setup_msi_release() also
+> says the implicit managed mode is slated for removal.
+>
 
-The benchmarks from Friday were wrong. I got bit by KVM halt polling,
-which was randomly inflating the runtime cost by preventing batching.
+For these two reasons (second call idempotent, msix auto enrollment in
+devrez slated for removal), I think it is ok to keep as is. Let me know if
+that is a problem.
 
-The correct results - as in reproducible and with lower variance - are
-the other way around - BPF skb ext is cheaper CPU-wise than gated skb
-tracepoints. Please see:
+> The pattern is still present at the end of the series.
+>
+> Could the driver pick one owner for the vectors? It could drop the manual
+> pci_free_irq_vectors() and let devres free them. Or it could stop relying
+> on the implicit managed mode, so the explicit free is the only one.
+>
+>> +
+>> +int mpnic_alloc_irqs(struct mpnic_dev *mpd)
+>> +{
+>
+> [ ... ]
+>
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c b/drivers/net/e=
+thernet/meta/mpnic/mpnic_pci.c
+>> index 68a64377e6c5a..127b71b44b0fb 100644
+>> --- a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+>> @@ -112,12 +112,18 @@ static int mpnic_probe(struct pci_dev *pdev, const=
+ struct pci_device_id *ent)
+>
+> [ ... ]
+>
+>> +err_free_irqs:
+>> +	mpnic_free_irqs(mpd);
+>>  err_free_mpd:
+>>  	kfree(mpd);
+>> =20
+>> @@ -132,6 +138,7 @@ static void mpnic_remove(struct pci_dev *pdev)
+>>  {
+>>  	struct mpnic_dev *mpd =3D pci_get_drvdata(pdev);
+>> =20
+>> +	mpnic_free_irqs(mpd);
+>>  	kfree(mpd);
+>>  }
 
-https://patch.msgid.link/20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com
-
-Despite that, I agree that the tracepoint approach is tempting from the
-UX PoV.
-
-While an skb extension seems like a natural continuation of the XDP/TC
-metadata pattern, I think that model is not a great fit for skbs
-traveling through the network stack.
-
-For XDP hook, there will be usually a single owning process of the
-attached program, I think. While TC, cgroup, tracepoints can have
-independent program owners, each wanting to associate their own piece of
-metadata with the skb.
-
-
-I can iterate on on cosmetic aspects so that we don't have blocks like:
-
-        if (reason == SKB_CONSUMED)
-                trace_consume_skb(...)
-        else
-                trace_kfree_skb(..., reason, ...)
-        skb_maybe_trace_free(..., reason, ...)
-
-... in a couple places where they appear in v1.
-
-Thanks for feedback.
