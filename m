@@ -1,101 +1,135 @@
-Received: from smtp69.iad3a.emailsrvr.com (smtp69.iad3a.emailsrvr.com [173.203.187.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-zbxj-a78.jellyfish.systems (out-zbxj-a78.jellyfish.systems [198.54.127.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3FB4EB870
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 16:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006564EB87D
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 16:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790612807; cv=none; b=dhKOB7kiuH8/4Y+OdOXw3bV7ggGkld3bemqs84aPgRLSzfn0WiFmilifA0bL/Enn+nQUiX8zAW27ilOzocTojnih8w5A1idgjBjSClzpg7Y355rIYwgmfZoBeUE5wjWicX+6ja78yhFhC0UZXegYdia7kHWyVzPy232eoyf5zkY=
+	t=1790612954; cv=none; b=MF+rKAkLHbFLjhtW9qf0s8aZexxi6Jf0XV1fy3tELB9vIdoRY33t2O+6+QjfzGuLjQh97woTmZE9gVU+27JKWJ3DVUJE/372H8vy0C+TCSvFfbUScFS07N1FvoylHfguED+mDdH4LRBJsf5qit4tKSKxYL2mwHCPV933+eiHoTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790612807; c=relaxed/simple;
-	bh=dcfqKy8RuwJf19ZxcNaKgTpq2Zkz6O8a3A4laJuSYfM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HfYtTuyZl+z6S2bl7BqXISr3LmNMg8VL+f9/VCVTrNOsZjChRjNzArW0QjKBM48fbNq39OEGlglEDZEjE+Rmyv7pESQJWTJXf2emfxa02xX25/xplWA9C/ivbkVzpHfjZsB3waqe+tppPyvunCPkF70dM9nkslUILoDscrwhbsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b=knMpqU6M; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=dAAx1Q/7; arc=none smtp.client-ip=173.203.187.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+	s=arc-20240116; t=1790612954; c=relaxed/simple;
+	bh=GmCsQDu8Z57dznoMxRBT9nUlr6N6NETFackyEN85iWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AKXAY2Cezf2xgL8gi7grQepdGFAgnm1wxX4qOVPj73BvpfO4zbIedySgai6RFoCCMuuFY6UGgW6QP/ijVFUSaeZejGVQTKhwRnF7NwVtPza8Kpi4D+LyyQEr2gBiXJNx5VRp36I6+lLT6JoNPb5g1nV8ntI4f7wXdS2urkr2UDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=BFNTbaaT reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=g001.emailsrvr.com header.i=@g001.emailsrvr.com header.b="knMpqU6M";
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="dAAx1Q/7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=g001.emailsrvr.com;
-	s=feedback; t=1790612291;
-	bh=dcfqKy8RuwJf19ZxcNaKgTpq2Zkz6O8a3A4laJuSYfM=;
-	h=Date:Subject:To:From:From;
-	b=knMpqU6Mk0kmP+ISs7Cok7X4ebagiVtXT1NiP8qiqgH159TGzqgxajWFaZpSo70uz
-	 X4JvLjhst970T9CuQ/B1UK7DDj94fUZ9D0EuIcMXbSMkMJeSP20XqvG8xys/G508W2
-	 FOaJU8N23FUYtqhMknHHcQaVfBr5pD0xTp3BApkM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1790612291;
-	bh=dcfqKy8RuwJf19ZxcNaKgTpq2Zkz6O8a3A4laJuSYfM=;
-	h=Date:Subject:To:From:From;
-	b=dAAx1Q/7P23kXEJJmdf1NGwU5hwBxkB9RRRgCV8DxfO9tKEKn3op87rBbKCtMQxor
-	 A7xRjYnmS2/wTvYLr7pPA1i+MhM1dZVN9lyPAynl4YEL0TQoXXoZQxmf7SdxwFhpQQ
-	 4DXajLwgB0+U+CoG1uD67D8LZvzt6Rhe9+Cdueqc=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp17.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 02B6C23DAD;
-	Mon, 28 Sep 2026 12:18:06 -0400 (EDT)
-Message-ID: <efbb4382-45eb-41a5-afe3-6c359714aa89@mev.co.uk>
-Date: Mon, 28 Sep 2026 17:18:06 +0100
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="BFNTbaaT"
+Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4htmw75yRGz6tkM;
+	Mon, 28 Sep 2026 16:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1790612938;
+	bh=Jjt4tGbUn3XaVxYFqdlAHvBDWDRqdX3jcffveL7qe0E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BFNTbaaTscPETjOPA4VZ2mC1sX63SUvZZUOBIgDqNwT0OCD/hrC8veFTN1vvf00LC
+	 ksmzzHKAFrpfPLuIrUET2RrSmLyAuZ2pWLLzVW/m2PWVyiIkFPbijb/mNCwwAdKfka
+	 kI3NYaiiGSUGCRt8Tg2zd2NRyEn0319A3SH9SOkjANay8UIJshPgL1bBSB/S47oSbS
+	 MibBmb6bd6kDhjSiAcdUG8YPE1tUCwMoSij1Mc6tP8WPbbwcw2K21jn40n681ockro
+	 Cx0A81ics8Xu/OSW5/pII9jE/P5Bp5c1IuUVTMm6/NC/4b401bRsT0Vc2r/zR6+dCW
+	 dnUGEgTgXLBVg==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	Rahul Chandelkar <rc@rexion.ai>
+Subject: [PATCH nf-next v5 0/4] netfilter: conntrack: shared port parser for helpers
+Date: Mon, 28 Sep 2026 16:28:54 +0000
+Message-ID: <cover.1790596690.git.rc@rexion.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] drivers: Replace __MODULE_STRING() with __stringify()
-To: Petr Pavlu <petr.pavlu@suse.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck
- <linux@roeck-us.net>, H Hartley Sweeten <hsweeten@visionengravers.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rudolf Marek <r.marek@assembler.cz>, Andi Shyti <andi.shyti@kernel.org>,
- Chris Snook <chris.snook@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat
- <YehezkelShB@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Duncan Sands <duncan.sands@free.fr>,
- Chas Williams <3chas3@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>
-Cc: linux-watchdog@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
- netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260922-module-string-v1-0-c18766690185@suse.com>
- <20260922-module-string-v1-2-c18766690185@suse.com>
-Content-Language: en-US
-From: Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-In-Reply-To: <20260922-module-string-v1-2-c18766690185@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Classification-ID: 15bec65d-5b3a-44b5-8eff-f2a711d4e1ec-1-1
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-On 2026-09-22 14:32, Petr Pavlu wrote:
-> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
-> MODULE_PARM support for older modules" [1] in 2002-12. That change also
-> moved it to the graveyard section at the end of linux/module.h
-> 
-> Replace the remaining uses of __MODULE_STRING() with __stringify() in
-> preparation for its removal.
-> 
-> Link: https://git.kernel.org/tglx/history/c/136839a1b4 [1]
-> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Acked-by: Ian Abbott <abbotti@mev.co.uk>
+The IRC and Amanda conntrack helpers parse port numbers from packet
+payload with simple_strtoul(), which returns unsigned long without a
+range check, so a port above 65535 is truncated when it is stored in a
+u16 (65537 becomes 1) and an expectation is created for a port that
+never appeared in the payload.  Amanda also cuts a port field of six or
+more digits down to its first five.  Both problems are present in
+current nf-next.
 
+Instead of open-coding a range check in each helper, this series moves
+the sip_strtouint() parser of nf_conntrack_sip into the helper core as
+nf_ct_helper_parse_uint(), adds nf_ct_helper_parse_port() on top of it,
+and converts the three helpers:
+
+  1/4 adds the two parsers
+  2/4 and 3/4 fix the IRC and Amanda helpers
+  4/4 removes the now duplicate parsing code from the SIP helper
+      (no functional change)
+
+Testing: allmodconfig and allyesconfig builds with W=1, sparse, an
+allnoconfig build, i386 and big-endian powerpc cross-builds, and a
+build of each patch in turn.  The old and new sip_parse_port() were
+compared in a userspace harness built from the kernel source on three
+million random inputs with no difference.  The helpers have not been
+run-time tested with IRC, Amanda or SIP traffic.
+
+Tool use: v4 and v5 were prepared with Claude Code, an AI coding
+assistant, as recorded in the Assisted-by tags.  It wrote most of the
+code changes and changelogs from v3 and the review feedback, and ran
+the builds and tests listed above.  v4 should have carried the tags as
+well; it did not, sorry about that.
+
+Changes in v5:
+  - nf_ct_helper_parse_port(): reject digit runs longer than five
+    characters, so that sip_parse_port() still rejects zero-padded
+    ports and 4/4 has no functional change; return -EINVAL rather
+    than -1
+  - add kernel-doc for both parsers, including their digit limits
+  - amanda: make pbuf one byte larger so that a port field of six or
+    more digits is rejected instead of being cut to its first five
+    digits
+  - irc: remove the dcc_port == 0 test in help(), which can no longer
+    be true
+  - sip: rewrap call sites that no longer fit in 80 columns
+  - add Assisted-by tags
+  (the first four items address the Sashiko review of v4)
+v4: https://lore.kernel.org/all/20260923091608.2617604-1-rc@rexion.ai/
+  - rebase onto nf-next; move sip_strtouint() into the helper core
+    instead of adding a second parser, and convert nf_conntrack_sip
+    (Pablo Neira Ayuso, Phil Sutter, Florian Westphal)
+  - use a real name and target nf-next (Pablo Neira Ayuso)
+v3: https://lore.kernel.org/all/20260503083220.630655-1-rc@rexion.ai/
+  - add nf_ct_helper_parse_uint() and convert nf_conntrack_sip
+    (Phil Sutter)
+v2: https://lore.kernel.org/all/20260501063156.2520780-1-rc@rexion.ai/
+  - add a shared nf_ct_helper_parse_port() in the helper core instead
+    of open-coding range checks (Florian Westphal, Pablo Neira Ayuso)
+v1: https://lore.kernel.org/all/20260430161230.3438973-1-rc@rexion.ai/
+
+Rahul Chandelkar (4):
+  netfilter: conntrack: add shared uint and port parsers for helpers
+  netfilter: nf_conntrack_irc: use nf_ct_helper_parse_port()
+  netfilter: nf_conntrack_amanda: use nf_ct_helper_parse_port()
+  netfilter: nf_conntrack_sip: use shared helper parsers
+
+ include/net/netfilter/nf_conntrack_helper.h |  5 ++
+ net/netfilter/nf_conntrack_amanda.c         | 13 ++-
+ net/netfilter/nf_conntrack_helper.c         | 79 +++++++++++++++++
+ net/netfilter/nf_conntrack_irc.c            |  9 +-
+ net/netfilter/nf_conntrack_sip.c            | 93 ++++++---------------
+ 5 files changed, 123 insertions(+), 76 deletions(-)
+
+
+base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
 -- 
--=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
--=( registered in England & Wales.  Regd. number: 02862268.  )=-
--=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
--=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+2.43.0
 
