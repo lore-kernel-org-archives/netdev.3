@@ -1,95 +1,174 @@
-Received: from mta0.migadu.com (out-230.mta0.migadu.com [91.218.175.230])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-195.mail.aliyun.com (out28-195.mail.aliyun.com [115.124.28.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A517B336897
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586083264E9;
+	Mon, 28 Sep 2026 01:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790559641; cv=none; b=qiv3Eqdu6Qauna7Av7egwqo4N+vzdXidHb84hYdrd2WTYfKoTYw4SMlvBWPhaJMf4MnMYHtR++SRWVB993LM6vUIaH2E9da9m8SyomMCwsjsIvc+Fum8iVl6ytik7hHrLkHLyTHHmZS8Up2m+E536cSMoyt0tSoqkqU1i718s30=
+	t=1790559851; cv=none; b=FEQ1ozzpvR+pkCb3x3mO82F4SdPp23It/dDzI5l32ICSlDUUNccTBTIUmKKQWnTzcQa8LjYhx3crG/w1HlOJHnNp1qvz2sbSihlQBrdgBk7cIMshWSiLOPp+7ZA07ZOdPdxQPi8+1s7uf3bvn+Kgt6SWdNpItOClIQBHfdcfn90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790559641; c=relaxed/simple;
-	bh=fSwbFF5J20s2wFY0Hdz3ckg8kcRWrerizNdWX1h9AKM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WXL6gEluGSAM7eh0qrV6X9Ce+CK/BYZhL8byNNU1VNOTl8oZPqITuhC0T/kd7/LS6NP3q6Z42oTveE2d8ZFmBLyDC2dFJc3QZKJ6QbJ0RCTg5eVCzCfsPiwEDv8YRaakeS3aTVaSVvP3HASXvn1GPejYUOS8TEJRDsjQMKMHZco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MG9tfMLg; arc=none smtp.client-ip=91.218.175.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MG9tfMLg"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=fSwbFF5J20s2wFY0Hdz3ckg8kcRWrerizNdWX1h9AKM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790559637; v=1; x=1791164437;
- b=MG9tfMLgK7hjIkE2XKqaWaNooH6GV6x+BHHRo4vSD+rPBdB+T0hg/2D/Fv4pZVhb7rw0b/Zs
- j0a/7fFiIYslACnmQEfiNRXo/N8fYRKay4vUUWCxg1AR0wPthhnkmdmns4N7X799kJlGiJz1jYh
- AeUPIPxjQweSl9wFig9Q31mI=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 298b0f888c0bd511;
-	Mon, 28 Sep 2026 01:40:37 +0000
-X-Mizu-Trace-ID: 298b0f888c0bd511
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 09:40:25 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH net-next v2 6/9] netlink: specs: ethtool: re-align
- module-fw-flash-status
-Message-ID: <arnFiazPHNUKul04@fedora>
-References: <20260925213918.204767-1-ast@fiberby.net>
- <20260925213918.204767-7-ast@fiberby.net>
+	s=arc-20240116; t=1790559851; c=relaxed/simple;
+	bh=efSUk6AE2PleoNROsz51zl7Oh9s8rF2qCon4OZEEy2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BeW0dRTjNEgCbaJaRPrmShffhiJGL51Ot+1sc1ZRfbKvPdkiX8qaKfrjqxCDOxoe+qI3ZRkJnmCibuvYhy7tV7yW1byxzLnRWVy/J9nQNQ9ivhlCJgR76KFlvYwgCD1KnWGro7EfYaCsHpvR8xVtSbqHPnYGu+uhKP3h4387Ft0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0748968|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0236239-0.00567962-0.970697;FP=7125214396166179889|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=20;RT=20;SR=0;TI=SMTPD_---.jPe.ris_1790559829;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jPe.ris_1790559829 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 28 Sep 2026 09:43:58 +0800
+Message-ID: <24cdb178-7a94-487b-9f8a-42ba984e10bb@motor-comm.com>
+Date: Mon, 28 Sep 2026 09:43:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
+To: Conor Dooley <conor@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260924075048.4060414-1-kyle.switch@motor-comm.com>
+ <20260924075048.4060414-2-kyle.switch@motor-comm.com>
+ <20260924-vowed-roulette-abda42cec444@spud>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <20260924-vowed-roulette-abda42cec444@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260925213918.204767-7-ast@fiberby.net>
 
-On Fri, Sep 25, 2026 at 09:39:09PM +0000, Asbjørn Sloth Tønnesen wrote:
-> Correct the values for enum ethtool_module_fw_flash_status:
-> 
-> - ETHTOOL_MODULE_FW_FLASH_STATUS_STARTED is 1, not 0.
-> - ETHTOOL_MODULE_FW_FLASH_STATUS_IN_PROGRESS is 2, not 1.
-> - ETHTOOL_MODULE_FW_FLASH_STATUS_COMPLETED is 3, not 2.
-> - ETHTOOL_MODULE_FW_FLASH_STATUS_ERROR is 4, not 3.
-> 
-> Re-align the YNL spec by explicitly setting the first value to 1.
-> 
-> CC: Andrew Lunn <andrew@lunn.ch>
-> CC: Oleksij Rempel <o.rempel@pengutronix.de>
-> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-> ---
-> Note for Sashiko/Clashiko: Targeting net-next, so no "Fixes" tag.
-> 
->  Documentation/netlink/specs/ethtool.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-> index 439bf24e7c33..6868eb473478 100644
-> --- a/Documentation/netlink/specs/ethtool.yaml
-> +++ b/Documentation/netlink/specs/ethtool.yaml
-> @@ -47,6 +47,7 @@ definitions:
->        -
->          name: started
->          doc: The firmware flashing process has started.
-> +        value: 1
->        -
->          name: in-progress
->          doc: The firmware flashing process is in progress.
-> -- 
-> 2.55.0
-> 
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+On 9/25/26 01:07, Conor Dooley wrote:
+> On Thu, Sep 24, 2026 at 03:50:46PM +0800, Kyle Switch wrote:
+>> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
+>>
+>> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+>> ---
+>>   .../bindings/net/motorcomm,yt8824.yaml        | 69 +++++++++++++++++++
+>>   MAINTAINERS                                   |  2 +
+>>   2 files changed, 71 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+>> new file mode 100644
+>> index 000000000000..fd62b309e7ff
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+>> @@ -0,0 +1,69 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: MotorComm YT8824 Ethernet PHY
+>> +
+>> +maintainers:
+>> +  - Kyle Switch <kyle.switch@motor-comm.com>
+>> +
+>> +description:
+>> +  Motorcomm YT8824 Ethernet PHY is a PHY package of 4 PHYs.
+>> +
+>> +$ref: ethernet-phy-package.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - motorcomm,yt8824-package
+>> +  phy-mode:
+>> +    $ref: /schemas/types.yaml#/definitions/string
+>> +    enum: [ internal, 10g-qxgmii ]
+> This should be after ref, but also have a vendor prefix.
+> Additionally, the qcom ethernet-phy-package user also has a mode
+> property. Net folks, should this be made common?
+>
+Ans: okay, The next version will follow the approach used by the qcom, 
+package.
+>> +  reg:
+>> +    description:
+>> +      The absolute MDIO address of the YT8824 shared top extend
+>> +      register block.
+>> +      For internal mode, this is fixed at 9;
+>> +      For external mode it is (base MDIO address of the four
+>> +      member PHYs) + 4.
+>> +      Note that this is NOT the base ID of the first member PHY.
+>> +required:
+> Please use blank lines between properties and other elements of the
+> binding.
+>
+Ans: okay.
+>> +  - compatible
+>> +  - phy-mode
+>> +  - reg
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    mdio {
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        ethernet-phy-package@9 {
+>> +            #address-cells = <1>;
+>> +            #size-cells = <0>;
+>> +            compatible = "motorcomm,yt8824-package";
+>> +            reg = <9>;
+>> +
+>> +            phy-mode = "internal";
+>> +
+>> +            ethernet-phy@4 {
+>> +                reg = <4>;
+>> +            };
+>> +
+>> +            ethernet-phy@5 {
+>> +                reg = <5>;
+>> +            };
+>> +
+>> +            ethernet-phy@6 {
+>> +                reg = <6>;
+>> +            };
+>> +
+>> +            ethernet-phy@7 {
+>> +                reg = <7>;
+>> +            };
+> Unless the addresses and numbers of phys are entirely unconstrained, I
+> think you should add some pattern properties for them.
+
+Ans: I'm somewhat confused on this point. What might the pattern properties
+
+ Â Â Â  Â Â Â  you mentioned include? Could you provide more detail? thank you.
+
+>
+> Thanks,
+> Conor.
+>
+>> +        };
+>> +    };
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index e3ce77c839b0..ed7af1bd9521 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -18409,8 +18409,10 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+>>   
+>>   MOTORCOMM PHY DRIVER
+>>   M:	Frank <Frank.Sae@motor-comm.com>
+>> +M:	Kyle Switch <kyle.switch@motor-comm.com>
+>>   L:	netdev@vger.kernel.org
+>>   S:	Maintained
+>> +F:	Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+>>   F:	Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
+>>   F:	drivers/net/phy/motorcomm.c
+>>   
+>> -- 
+>> 2.25.1
+>>
