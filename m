@@ -1,68 +1,68 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180264ACC86
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A073F4AD7DF
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790595629; cv=none; b=sWdCpLSlCr+bheGfcj7D4fzMzNP430gjOjMjK56OgGaDnpfPhMJQcNYKifU771B03V7crvGE1YbjODh1oQADcF4SskAVrG03JYo3F/ZKdrw57o9lewh7+lGFSNFnCQF0Q9iNRo7/SHdwRZSiKvjYup4d/mgWOjOunYoLbtcpPDY=
+	t=1790595631; cv=none; b=j7/uansBp0MdxSti5x/1Dk0arG3ExCBgiko/xkHb1AU2n5xktV61PtW7hNScGeosJHvzPC7XE5DtULQWZ7s5XsZNOjvmnFmJA1wq/k+wwLG3m8KsA7+sY5jZZ2U6hZU1rEQYXDNTDjQBQPn8vZaRaqJBhVv9Ay9eDnGSmzUe63c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790595629; c=relaxed/simple;
-	bh=8/rChUYW7Td3PNJ8B7WVwcADIcz0IkfReOlFchPIltM=;
+	s=arc-20240116; t=1790595631; c=relaxed/simple;
+	bh=Yg072b+Z/X5P8+4FVQeKF8J6w2Bq4BWX3QT22OmOh/M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sW95iOZeBa6GS5C5890I9aF99/rGYcBykSthhh6AY9vfQ1iQhUnxDLFvivQ8FmukG+svsUGuvmXUo40kqziBDnXugmBxpmLtUsxRiGaGjZc0o3jIiMt6eQUg5Q+1B7CstpurzxLoP052gVSfl9gKIPN358nKRkCIXOuTniJPzn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=FMBwOXCh; arc=none smtp.client-ip=74.125.228.171
+	 In-Reply-To:To:Cc; b=tKZK9jRS3X8d+roOfP5F4Wpaqe5kVnO3hko4FbctVXd2xISBZNoXbXz8mX/MvtJ58D/LN+Y/Q/m+hGLCDgpWmNH67CUueQwO6RfpTLXqW88a5g2hkMJslGx6JGRoyj2Sn8p+fAABs8wWz34GreA+OZ8Q5xX48w2kFxb0WXUhXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=FFBXR6xV; arc=none smtp.client-ip=74.125.228.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="FMBwOXCh"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af3701927so404904966b.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:40:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="FFBXR6xV"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a60591ae54so4568252a12.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:40:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1790595626; x=1791200426; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1790595628; x=1791200428; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ie1AChGJyiZtE3erAbVg6bKiBAxNc2l4sps1XmU03pM=;
-        b=FMBwOXChUeipRu36MhNmY6Gth5Ky/guugms1/lnbM2QfNh4wCr7bWc2iybaPDrqWfe
-         D7r2auqn7IQODEixCR9rYeGi6i7VkXLqYi+TcnXYDCKP0sPExcE6tZqxEoZVAgcbGZmT
-         TRoCtx6xb3SVSeW9xmCjpNyfze3/Vz3TKZGERApjkGxxgLVzQJhFUd/2hLr9WppC+hfb
-         JoJNlA4PaHjmxU8B7opth8DviezunGKJzavhoBVtK0h5GRDRmfQF8P6UKvQAxARs8Sc4
-         cdjDhnhuXr6f5BXlY4lhSObcTkRTv1YDA+kAo6ZYCYEVCYwRZ+yc3NpS1pX0gpzCyMf1
-         dLPA==
+        bh=6QMoTFhLYSDONGaqbgqB8EA2izP8bK31Hq2jsWDZJo8=;
+        b=FFBXR6xVWs/CLy8tIq/bSazCvdEcIa8erdJeEkJdSBtXWt7fG6aFTEOuRlPdnK4wOu
+         044llJaATBVfLd7Im8i2ITyKuWc+IiR21Aw66MwhmdjN2+WD2im+kWXyned5ZImfAn18
+         9/LkY/ds5I6rZRPJAcO8YcZegazk2Q+WCRxB1kGCwqBfMlX+1nZL1MnuFzJ6Vu/37cD4
+         DwVHKcX2PlyPHG5MZJqsYbcXoKipPs58OKL6/8cKbmQYbBP1L7HxvCkgRs7JH3GOmnjK
+         ivs0kmGHfrG8JkMFrvlPi7UElahdSeCejNCyBUcY3MSv+ezuq3ZN21scxhU6hIrLculZ
+         dpOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790595626; x=1791200426;
+        d=1e100.net; s=20260707; t=1790595628; x=1791200428;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ie1AChGJyiZtE3erAbVg6bKiBAxNc2l4sps1XmU03pM=;
-        b=mlOnp64OhJpH5MPVMYbKAoC6kRJeXL44UnoA8aT2uJaWlBAxPnAxx3SX0W3b5S8Prm
-         8Z/r8B7mq7uPkwaBGRsyUHkmBZpyhuTSDwSmvmtgoEHHCXs1Spj7A6xCfiX0zIvD17k2
-         0vEU8F5g2Mgnkw7tITLsZH11ZvHUI7oUpZrotIvrmKZ7pMePN528FaaAfaxEPppJPe1S
-         j87qdvGu0PH2UdnTprc6Lrj5eVgw1jYn/Q1eiQMCdt3LCLA2r34u7OgdgV+l2ayroYU8
-         +bwAsjkYPHdDRogP3IOglMqZmrKmvsigQmYqsy63DcjA3W8hwHG/ZDPpz3Ic1aLDyayL
-         nWKw==
-X-Gm-Message-State: AFuF++n9DtVGJxyVQ/osFW2pUQQblcuE+NXF24ORR4pTJVWXp67pOpz8
-	04Aqbo8L0cg1kQnccAu2N5inrVU4tXacKP795H3DBFbSHJUA+1O8ZhiIR7Rdzg7c3YA=
-X-Gm-Gg: AYBFou2bJwG82B2egdMkyOG0Nul7ViyZrZKZWlsYTE0UuM61IKeYPQd4Ua6l1Ch+sr9
-	sJHLljUsN2XILs9fux538T0v5eSZEIQg6zilRfar5Wz/f0cSwdFMHK4J3uFuPLhv6y2CmNQsGkt
-	kl68dkmujEIVw7+34nL1f5MH2yFv86+fwLW1JBehs1p6PnQFq/MpXhC7WFb+f7vqldwVNVHFyx4
-	WIFJvJx3wsYlf19QQcKorO1KyykUFy4+pRkmgKZEWr2ZOKWCAZuUJ++HPyOm3DAKo3a7qr/lDbW
-	PxtCSLAY6WVlP71apYaD3YUjnwsKuSqOAux0DCX/KP5IDQxNh4vJHntlZgLW2Hn7zMdTGn2806T
-	MBVRnrUeZ7AXXkElIKPg8h2Zrvh6zaVfYjZ5bwUnINsi008qi3/tEwNLHrKCziJVleOj99sNPDN
-	rJyfDnQy0Egvt27lCAIeGamHxexTXFdRtwPCue65Ql5pUAKHW0jeLGIcgNI4kyND2Q79CSd+9Kx
-	fLDpMD446zQumc2UdtOliGf4arVNyf9YloDtRVyL8M4RVUNFu7Fgt7LcmxXydQIj0Uq3YdMczAJ
-	3kRO7z/Xe7NS
-X-Received: by 2002:a17:907:e8d:b0:c29:f5d8:9c7c with SMTP id a640c23a62f3a-c2ac22cb147mr1026776566b.43.1790595626450;
-        Mon, 28 Sep 2026 04:40:26 -0700 (PDT)
-Received: from cloudflare.com (2a01-110f-491b-1300-c0dd-2af4-566b-b23f.aa.ipv6.supernova.orange.pl. [2a01:110f:491b:1300:c0dd:2af4:566b:b23f])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dcf626b3esm180471466b.27.2026.09.28.04.40.25
+        bh=6QMoTFhLYSDONGaqbgqB8EA2izP8bK31Hq2jsWDZJo8=;
+        b=V48b8UFF8vqrjBIIXEWkAx9ET3C2ooazgpqDeizy53W3gSZGtYc2HYp8gJNCZVMmz+
+         zEGbkoBrgekD0gAUccKJeeyaDf7ZWRgyV5ZfVShRMeMOhf+Wd09HhXUL7nDUblVsaPJy
+         3jziw1pyIps/zd5QSL9FICShu74+cUDdKt2KZF3uOpkwOO/Ve7Yz17RIF0lvZ1aZFW3f
+         dFpIhT/7SG85/dCzFG1ApgP0mFAGN3dr5j/rr28G+LTaqATnxbwcav/Tfz2BN+3SswCx
+         IEJU9R2JSSnVnle3DgzP7sWhqahEUVh1aGKL5eOeplprg66/rbxNi/bpVyyCfLKdLvQk
+         hKrw==
+X-Gm-Message-State: AFq9FYLYACso7cD/gs1QNxplCt8jL1Ev8hm+i5OvVztnObqPAmM7ZF8f
+	vcolY/mrUiu7rV8GhFPt2e7Xn8zG5gHLJ4hQvBKFHJrD6g4hxMtUSeVohD5vx3+BvPw=
+X-Gm-Gg: AYBFou0HEqfDWHRteX27ujRlsZdVQGqHdeyT3gY98aBacYt/oKPdLHQBAG6aW+0j5Hh
+	1VMMxXOVtxo6TfofcZTm8SbLlXj27z1aTiXh1j+nYYquiDsNyzGfotQZRiLmf8+WqYkeYXmXl7Z
+	aBy/JLHixp1S13j25zNBwat8jlz3PNkNCFJx1B4a7P4XpK+7zpjbxdUZ9ChYAMUT26zyjBTbpai
+	slyn2QzojDCUUZrBhbdm8NvqvisbZM5t475rl2CKiCzVGFUdLk3MI4pUpT791hF5SPEhqbFbQA2
+	+hhY0wMMOA+uSQg90XpRYVZuwronA9dhPJdaMu/iR8BNZfBShcp1KlqTbkmIFg6YrrN0RoodEve
+	gsGEppRd9hahe3TsCmeh6cKphybNdMOsHHGVMeWlLvxa4Qon6sY7ChlbEkBkXe9VS5mvPaD4rxv
+	C/MfEJIenNG5RzmQ/KTpoguMfMMIgosbDTzbWNDb2vULiXnCDSTd8u/m5+C7wGCYE0i5WkL628F
+	ovEqFw=
+X-Received: by 2002:a05:6402:13cc:b0:6ab:373:54fd with SMTP id 4fb4d7f45d1cf-6ab03735664mr4763158a12.44.1790595627662;
+        Mon, 28 Sep 2026 04:40:27 -0700 (PDT)
+Received: from cloudflare.com ([2a01:110f:491b:1300:c0dd:2af4:566b:b23f])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aae5cb94b1sm4036958a12.8.2026.09.28.04.40.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 04:40:26 -0700 (PDT)
+        Mon, 28 Sep 2026 04:40:27 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Mon, 28 Sep 2026 13:40:19 +0200
-Subject: [PATCH net-next 02/15] bpf: Add bpf_skb_fclone_orig() kfunc
+Date: Mon, 28 Sep 2026 13:40:20 +0200
+Subject: [PATCH net-next 03/15] bpf: Accept trusted pointers to kern ctx
+ type for kfunc ctx args
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-bpf-meta-gated-tracepoints-v1-2-844dbf3e1edf@cloudflare.com>
+Message-Id: <20260928-bpf-meta-gated-tracepoints-v1-3-844dbf3e1edf@cloudflare.com>
 References: <20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com>
 In-Reply-To: <20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com>
 To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
@@ -90,62 +90,77 @@ Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 X-Mailer: b4 0.16.0
 
-TCP write-queue skbs are allocated from the fclone cache, the packet
-transmitted on the wire is a fast clone. A prog can only associate
-metadata with an skb by keying on its address. On retransmission TCP
-reuses the write-queue original, a different address with no packet
-hook, so the retransmit carries no metadata. A prog can use this kfunc
-to retrieve the address of the write-queue original and populate the
-metadata stash for it, so the metadata shows up on skb retransmits.
+A kfunc argument declared with the kernel projection of the program
+context type (struct sk_buff for __sk_buff hooks) is classified as
+KF_ARG_PTR_TO_CTX and, until now, accepted only the raw program context
+pointer (PTR_TO_CTX).
+
+That is fine when calling such a kfunc on the context itself, but it
+blocks passing a kernel pointer derived from it, such as the fast-clone
+twin returned by bpf_skb_fclone_twin():
+
+    SEC("tc")
+    int tc_write_twins(struct __sk_buff *ctx)
+    {
+        struct sk_buff *twin;
+
+        bpf_trace_skb(bpf_cast_to_kern_ctx(ctx), 0);  /* ok: PTR_TO_CTX */
+
+        twin = bpf_skb_fclone_twin(bpf_cast_to_kern_ctx(ctx));
+        if (!twin)
+            return TC_ACT_UNSPEC;
+
+        /* rejected: twin is PTR_TO_BTF_ID, not PTR_TO_CTX */
+        bpf_trace_skb(twin, 0);
+        return TC_ACT_UNSPEC;
+    }
+
+The last call fails to verify with "expected pointer to ctx, but got
+ptr_to_btf_id", even though twin is a trusted pointer to the very type
+the kfunc expects.
+
+Accept a trusted PTR_TO_BTF_ID pointing to the kernel context type in
+place of the raw ctx. Restricting the relaxation to trusted pointers
+without unsafe modifiers keeps the guarantee that the argument is a
+valid kernel object on the current path.
+
+The type match is only applied when the register points into vmlinux BTF:
+the type ID comparison is same-BTF, so a module-local type ID cannot alias
+the vmlinux context type ID.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- net/core/filter.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ kernel/bpf/verifier.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 33c1ee3b966b..fdfc1016030a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -12469,6 +12469,30 @@ __bpf_kfunc bool bpf_skb_is_traced(struct sk_buff *skb)
- 	return skb->traced;
- }
- 
-+/**
-+ * bpf_skb_fclone_orig() - Return the fast-clone original of an skb
-+ * @skb_: socket buffer allocated from the fclone cache
-+ *
-+ * TCP write-queue skbs are allocated from the fclone cache, the packet
-+ * transmitted on the wire is a fast clone. A prog can only associate
-+ * metadata with an skb by keying on its address. On retransmission TCP
-+ * reuses the write-queue original, a different address with no packet
-+ * hook, so the retransmit carries no metadata. A prog can use this kfunc
-+ * to retrieve the address of the write-queue original and populate the
-+ * metadata stash for it, so the metadata shows up on skb retransmits.
-+ *
-+ * Return:
-+ * * orig skb address  - skb is a fast clone
-+ * * %NULL             - skb is not a fast clone
-+ */
-+__bpf_kfunc struct sk_buff *bpf_skb_fclone_orig(struct sk_buff *skb)
-+{
-+	if (skb->fclone == SKB_FCLONE_CLONE)
-+		return &container_of(skb, struct sk_buff_fclones, skb2)->skb1;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 41b49c56e123..da5d6de58650 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -12891,6 +12891,23 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_call_arg_me
+ 			break;
+ 		case KF_ARG_PTR_TO_CTX:
+ 			if (reg->type != PTR_TO_CTX) {
++				/* Only accept trusted kernel-context pointers from
++				 * vmlinux BTF. reg->btf_id is scoped to reg->btf,
++				 * so a module-local ID could otherwise alias the
++				 * vmlinux context type ID.
++				 */
++				if (base_type(reg->type) == PTR_TO_BTF_ID &&
++				    reg->btf == btf_vmlinux &&
++				    is_trusted_reg(env, reg) &&
++				    !bpf_type_has_unsafe_modifiers(reg->type)) {
++					ret = get_kern_ctx_btf_id(&env->log,
++								  resolve_prog_type(env->prog));
++					if (ret < 0)
++						return -EINVAL;
++					if (reg->btf_id == ret)
++						break;
++				}
 +
-+	return NULL;
-+}
-+
- #endif /* CONFIG_SKB_GATED_TRACEPOINTS */
- 
- /**
-@@ -12856,6 +12880,7 @@ BTF_KFUNCS_END(bpf_kfunc_check_set_skb_meta)
- BTF_KFUNCS_START(bpf_kfunc_check_set_skb_tracepoints)
- BTF_ID_FLAGS(func, bpf_trace_skb)
- BTF_ID_FLAGS(func, bpf_skb_is_traced)
-+BTF_ID_FLAGS(func, bpf_skb_fclone_orig, KF_RET_NULL)
- BTF_KFUNCS_END(bpf_kfunc_check_set_skb_tracepoints)
- #endif
- 
+ 				verbose(env, "%s expected pointer to ctx, but got %s\n",
+ 					reg_arg_name(env, argno), reg_type_str(env, reg->type));
+ 				bpf_diag_call_arg_fmt(env, insn_idx, argno, func_name,
 
 -- 
 2.43.0
