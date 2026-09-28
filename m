@@ -1,190 +1,137 @@
-Received: from mta0.migadu.com (out-115.mta0.migadu.com [91.218.175.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012022.outbound.protection.outlook.com [40.107.200.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D7043F4D7
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.115
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790576812; cv=none; b=YbJytPN1yeHDcPJWlHRfrZCOmzRJsqMlTL4NUuvJHgCNg8yIK98ULg/VvMyPZqdp7E2tLZPBsCUJ5jbEp5B63EDPCzHzolhcBwBCFe4JHzHX0NDlT0zgYfptawyK4DnDpn6KXzRVsQPjx2gsOwtqsjQHkNXiAaPvHeBE7IWPYqc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790576812; c=relaxed/simple;
-	bh=NkzURNoV5IsQG2K2rc3ZLHxvbgasq40uRSu34G2EpOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9aTomTXmvFIWP2nJL2QBtQMdj3qjj4TLLTQqF7fCYBG4o3BeHs1cncr/xARJ/UYZDNjQA9Nt80oPYsUQetZsC79m2cYkWy3YfCFFc94beABNLkCQIB1wFeC9nbVrAkOaGRnk+UEPLtZ97KxfPq68oY9aUC1QjrNzAiwUbztCsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rQ/3lLNo; arc=none smtp.client-ip=91.218.175.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EDA3A1689
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790576862; cv=fail; b=XpKVnHf/Xd03sBmI+68wRLKinOm1BmMnSH32+S2gJOgARMAzGSMiHrvShdNGMgqXn7qzwB+Hl+svWW8FUoystbTOnUO/Mb8rtbDqY47kdZYv3+gGn+NEmQyEHyWrjgUn0HIrN2K+SndFZPmzIQvmDZ/3qPQYzbhwBEhiF6UIuyI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790576862; c=relaxed/simple;
+	bh=8YWxS93TQGQUdx68zN5Dmsv97fgK+V0dyR4kfFmFgec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Fdp0xnuD0HdRsmfq4xW8Ka+jk/6WQEw2297ollugUCoT4X/lofdwPnF1fnZFIGYEYf1SLpS0jyRpVu5IjbAZnAwkXzvZAZJzJvWXJdM5aeFUZYvYgF3LBdcPTqWE/W/Sd0GZfm17pXWApz5RxJ/0A1M2fn5mTbTMpoRL66uCA78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IsbMQK3R; arc=fail smtp.client-ip=40.107.200.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rQ/3lLNo"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NkzURNoV5IsQG2K2rc3ZLHxvbgasq40uRSu34G2EpOQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790576796; v=1; x=1791181596;
- b=rQ/3lLNoVWSTdo+ZQZAPyrJNACT1hQ2izeNwJ04woM5b3wsqPjiQz8xi/LcJRaICqvIvjOyE
- LHjmUduRRg7+LyWFXxlmczUgiYyoiTr9rDNRrioQaDGoK9hzf+ZJP7rCj5u9S43aAfh6u1w6gqd
- GO42EXWolbBW5lzFt8bv9/t0=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 565be971f620d08b;
-	Mon, 28 Sep 2026 06:26:36 +0000
-X-Mizu-Trace-ID: 565be971f620d08b
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 14:26:29 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	shuah@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	liuhangbin@kylinos.cn
-Subject: Re: [PATCH net-next 3/5] selftests: seg6: move SRv6 End PSP setup
- into its own helper
-Message-ID: <aroIlffAyMRLsJPD@fedora>
-References: <20260922-srv6_flavors_endx-v1-3-4d01c05c47b7@kylinos.cn>
- <179025107823.2160803.7801303260933899523@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IsbMQK3R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ir/V9y75ok020qODQEqmcBFKPm4gM3nWU0qYPEk4gcyr/kPzDWG1yhi6DJTzBvCoohhlLt057U+V6BwFmixQnKRTRlo+i8WsS8e/SWYcKZIVVuWyihyMob9NAk8mDnw797pnY3mfsRF33X32k9X432sL4R99j+Ly0tear7+Xim9G7GJh+dG9uvS9YmpoIs5qJPjr+K+unukj43hrYs0Tsh+0kl4F3npU8y7BCjCFBVQa4Gunyg7t4hxjzEwq4DMG5golDC1Kzuck/4FIqmfRjJpTAUNPfPnP54O+KsHwFoJvwcwo4DlztWEWTfpnb88SM/JXKEwyqwE77m4W/EpK/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h2yISKzTSokx87pjIDEBv66UZbylB9gt+xRWGYdR0H8=;
+ b=fTCl7dJZ2KGnHv/60Jmr6HiFCN+pyOL6KlpzRcQ47U53+cKU2AZZmOxKr2wHeO8jPFJCYgFEca9i90okDoCopzhfxuA36B0GXCgXqgzyKtur2S+EXxqm6gsHtWqqZK9XVadwC6HnyDIXaaR+IZocL4RHEyrsjA79FkWoAUumh7aSCVT6Bnbx/o4i5JrC2x2EPQn5gGy36Aw+4lnM6RbQpcDuK2yE4vEzLeVgwT8+s0wboGJPKDHtmtU2RZ7UqdqJwhk32OcYks+SLavJnYOn5A1KGVOiaqkY3UluNUlsQlNrBcBBZFbaGLyqj2aznyewOiimAyOmpQd1pKf5DVtnhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h2yISKzTSokx87pjIDEBv66UZbylB9gt+xRWGYdR0H8=;
+ b=IsbMQK3RRcno6NYYtUQ8dg63noIX5U5W1A1UhON4V8K4K3F2N/dkMrd79hN1KS1GsSsAlkXwa0trYVDF1P3vik92iwCFM/VMcE3vDVhnpeCJ8k1RxSU8ivHLApvDC0EGU7WD+PMip7pPVth1kpn4zs+fQj0XpmcS1Tyt4DLBMd3z94STC6baJv/py5ew/B5tNRefxBwIPLV7DpabRSejuKq8hHcljFtBNR/5Y+ZmW/dYYxVbBrucQm6qqXqICUGIp0Ojq8hlMzJ6lvslL1F92sr3joeDE8QkF+Wev7KXeQo0XI7Njk4B1HrntnKePzbzyZX4ANnSkMyXvP9qrnJdVA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DM4PR12MB6253.namprd12.prod.outlook.com (2603:10b6:8:a6::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 06:27:34 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 06:27:34 +0000
+Date: Mon, 28 Sep 2026 09:27:25 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net-next] ipv6: Remove FIB6_EXCEPTION_BUCKET_FLUSHED.
+Message-ID: <20260928062725.GA273658@shredder>
+References: <20260926033355.3295550-1-kuniyu@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260926033355.3295550-1-kuniyu@google.com>
+X-ClientProxiedBy: FR4P281CA0189.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ca::14) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179025107823.2160803.7801303260933899523@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB6253:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f04015e-3bfa-48cc-a3a8-08df1d29951c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	pMX+4cUEDRLce7B1RiyfcE9pzm8fM9suj+BmNrI0vACn7icACG/0hva9OO/Y+UVBfaDD5/TYl+DSuHs3WVVyCzwi2AEaO9J/dUmCQu12xnTtKksAdiAhnczdUs7HN7qpxlnGVs9JSnukipHlkriMGivWa80ni98lcQcAN16aQ3OwouuDOd0hfHy8qTrlYYjRqgcTtmmgeH54r7NTYXpFjQRf3WhaoMDzEIHqNK/JkmHCgPlFjmwSHg0RKwHN6fxaEjdKz9cuvqZK5q5LKhJ3ldHnx/qJvN2IXa9jFnHvCH9TSoI5XQeDYoS2wQtxUom/1g5A6YnnKypFp5dYG6LFE7sF36eKqcf3olJhCd0d75vKV0rCUcl1QD1kqCYVBVj0vXJdWMQZpZ86SZXD7XxxQYyHnFl+wv8RiIvDIDik7pp7ngHHRfv3xpu9kwWU0DRzmSsFOyeC3yI9va+a49ZHBe3DZNBcywMgZnEMeWFo7Vg4fJ3S5YJlxB2s1QnSQuIZ5RjkCG9UT8mVggL08B98TduCcgZbXvBh5k0LBX7JDSGbBcYc+bq81iVKqBciChIIWk9QQStNnGzyXRPNXZadUdyAqNa4890OKwwTeA8QYpgR2KiL3IppIR0e/Pxn8MNpNFEItNjRLcyonPTc3flu6f2EzGa+WwCJqRFTj+YlXJo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?538FyQgjbqfOxwUKLp+xacGwAYy1l+iCcmnttTgNKQw29kbWYA/nnkqBV9EB?=
+ =?us-ascii?Q?ER86ctPMODLnGRN7hvfRo6JhfHpQ8HEXcH+qJssFjOKycVJ0veH/bQLflCgS?=
+ =?us-ascii?Q?im9nJRKZbM6wNpSpzWUfVp9TEIkSp4hnLW+XLuU/Vyq1B+Yb1VyVUgF9Ox43?=
+ =?us-ascii?Q?8XqMPQySGVVs+F01iEghHe3RvUw8v8yfTOc2FtdDTsNXIX+a3H4WtK9wFLLa?=
+ =?us-ascii?Q?bHyh4DamL5z/iS1xsO1xxFXrZnF8U+Mgb5l3RyuNsEn3NUb9t/FPXJDsDMtm?=
+ =?us-ascii?Q?EECcY0G9RzWbdv8wTYu9raX/s4kq37r5C8mh6sPXfnQOdygDeijgzJyIkHae?=
+ =?us-ascii?Q?s5AZr9Wt2X4T0o6lu5GN52wx7C7HENsuQQmSNhQfMmRUpPS4t1t67mXDLQM3?=
+ =?us-ascii?Q?HQBafBXVHpcsoCxY+otswKWrzX0Tpq3eoJObKnHnXilZUOcUlZn4nA036II2?=
+ =?us-ascii?Q?Ak7YSOUTxCb66w0f5IZICv6dnsHQmoOuuBq852TbVA27I7jPfXZIRnpYBgA0?=
+ =?us-ascii?Q?kd2A+yGBxGaPHwhuQuSUGnC3o4nKMDvL3OSjLKJcM7lugFWGf+sa2gsQy4uk?=
+ =?us-ascii?Q?s6E2w6cf3EPUjdkXcvuirBLMrsybxA9DVyaCnz/2++HThZfvns3AqjeCRalz?=
+ =?us-ascii?Q?+lOL9AD2bbVC387WXqsnLyYXmXcmHqi7zA+P/B6FZZFC/gB2KYCFdfLVDWhp?=
+ =?us-ascii?Q?sE1B4Dp/E+2EKJ8cLYieUls6wv+RX+l4i93iIqAPRuvTDkciMKjK7D+v5t4X?=
+ =?us-ascii?Q?r2PSiOeqs1vABYjKtKgN/K46cR8NMUhrSpA1GxvqKP4K9CtoXKy4rvpACZUo?=
+ =?us-ascii?Q?a7A4JQiF40gzz8RaVCBO/E/NcM7TYOdOt5O+qjnLU9BEnBa6GgyqC3Me5A3G?=
+ =?us-ascii?Q?w+0UD1AprXJO7Ac6/EMsdy/sjsDjNNyg64bqSIsPMag2pr1Cfgjdi6mPDPsu?=
+ =?us-ascii?Q?V980XnPdCtx1q0+O00MlcBsSCRXseK1O8Ji8+H/CeyszFP4VtDDL16mcswCA?=
+ =?us-ascii?Q?y+VP92RZPRFDY9v2qrjEFwwEgZsn9ZOkhcezVFws+5N+VulUrkGfGBnfCaiE?=
+ =?us-ascii?Q?gENWfKHyxe36Rdin/flmi6XfoganxQfAOEmJCachk2lQ416IJuFapPOVU+C2?=
+ =?us-ascii?Q?nQw8eNl7NQj7e0LDsE+N3HXMFTGy0fkGcuV9oxlThWcwD6wwvsXo8h4DitSw?=
+ =?us-ascii?Q?wOhmLAnLeqKxHTygGImng04SUQqgQnMbN8ziN+MTpzKqnMOXGQYjXOQlZBri?=
+ =?us-ascii?Q?9ON+wbYLAPrZvhUhpHijcP2EOjhZrs9rN61AbEAF40xV/qFQUgTwWXT4M9GO?=
+ =?us-ascii?Q?Qp65FFAaBwuwY+yG5hr6V4d3jcUilZ0aaYyK+20t6b9Hb4c8PZXeDMJ98f0e?=
+ =?us-ascii?Q?+1hj1BGO4hmaApmckz5NEcmkiDYV7xl7AaH4KJckjK4jAumNiER8rzvBnblR?=
+ =?us-ascii?Q?7Coi/xzzmeowEkObUd+9R1Oq2jhCUX1qOflfw/1AHeqJPFK+kp12rpJTfqcU?=
+ =?us-ascii?Q?6XEKvpu5JhW8iUTwCeE9dxrd8dxrjopKXEPuIi90BnfOukDIaRInAuxLH8jz?=
+ =?us-ascii?Q?uZz6n481hyxajN3/q36+PVDFSGPTm3VBkvJYHagNMi1C5cqg3RQHjLrwi2T9?=
+ =?us-ascii?Q?it08hIgvNzRSWNUq3NA3oDgrEwvUZ91iISlLTTLcyps4W+0i4QEa9tFYxIYC?=
+ =?us-ascii?Q?j/iJviT9Xg4nQivfgTBcBYmGVCgcF5hymFhv+4FutA9euhKT?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f04015e-3bfa-48cc-a3a8-08df1d29951c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 06:27:34.6030
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RP6Qsd3Dv7LLJsVu1kQTtnFNmuSXl3r2Hm5FTfFIyPPdUP0E0evwYkUgRQkx7EvZA1LLxEi+1oA2aArlzCsgPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6253
 
-On Thu, Sep 24, 2026 at 11:57:58AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
+On Sat, Sep 26, 2026 at 03:33:52AM +0000, Kuniyuki Iwashima wrote:
+> The FIB6_EXCEPTION_BUCKET_FLUSHED logic has been dead since added.
 > 
-> Low priority / nit picks for your consideration:
+> Commit 0346ec2f080b ("ipv6: Prevent rt6_insert_exception() for
+> dying fib6_info.") restored the original race protection in
+> rt6_insert_exception() by reusing fib6_info.fib6_destroying.
 > 
-> - [Low] Mid-run re-arming of the SETUP_ERR latch converts already-
->   recorded test FAILures into an overall SKIP.
+> The flag now prevents two races for per-cpu and exception routes.
+> 
+> Let's remove FIB6_EXCEPTION_BUCKET_FLUSHED and set fib6_destroying
+> in fib6_purge_rt().
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-OK, I will update the commit description.
-
-> - [Low] setup_end_flv_psp()
->   (tools/testing/selftests/net/srv6_end_flavors_test.sh:651-670) is…
-
-ack, I will move the ret guard to this patch.
-
-Thanks
-Hangbin
-> 
-> --
-> 
-> selftests: seg6: move SRv6 End PSP setup into its own helper
-> 
-> This moves the End PSP policy installation out of setup() into a new
-> setup_end_flv_psp() helper, and calls that helper from
-> host_srv6_end_flv_psp_tests() with errexit enabled around it. The intent
-> is to decouple the base topology setup from the flavor-specific test case.
-> 
-> > diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> > index 318487eda671b..56a1c5f865a77 100755
-> > --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> > +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> > @@ -645,6 +645,12 @@ setup()
-> >  	setup_rt_local_sids 3 "1 2 4"
-> >  	setup_rt_local_sids 4 "1 2 3"
-> >  
-> > +	# testing environment was set up successfully
-> > +	SETUP_ERR=0
-> > +}
-> > +
-> > +setup_end_flv_psp()
-> > +{
-> >  	# set up SRv6 policies
-> >  	# create a connection between hosts hs-1 and hs-2.
-> >  	# The path between hs-1 and hs-2 traverses SRv6 aware routers.
-> 
-> [ ... ]
-> 
-> >  	#  - rt-1 (SRv6 End flavor PSP with SL=1)
-> >  	setup_rt_policy_ipv6 2 1 "3:noflv 4:psp 2:psp"
-> >  	setup_rt_policy_ipv6 1 2 "1:psp"
-> > -
-> > -	# testing environment was set up successfully
-> > -	SETUP_ERR=0
-> >  }
-> 
-> [Severity: Low]
-> The commit message says the split lets "each PSP test case can setup and
-> later cleanup independently", but this commit only adds the setup half.
-> setup_end_flv_psp() installs the localsid seg6local routes, the cafe::<dst>
-> H.Insert route and the proxy NDP entries through __setup_rt_policy(), and
-> nothing releases them except the global EXIT trap cleanup(), which just
-> does:
-> 
-> 	for i in ${ROUTERS}; do
-> 		nsname="$(get_rtname "${i}")"
-> 		ip netns del "${nsname}" &>/dev/null || true
-> 	done
-> 
-> Would it make sense to mention in the commit message that the matching
-> cleanup_end_flv_psp() arrives in the following patch ("selftest: seg6: add
-> explicit cleanup for SRv6 End PSP test")? As it stands the description
-> promises a teardown path that does not exist yet at this commit. There is no
-> functional problem here, since the two PSP policies are the only flavor
-> state installed and netns deletion reclaims everything.
-> 
-> >  
-> >  check_rt_connectivity()
-> > @@ -758,7 +761,13 @@ host2gateway_tests()
-> >  
-> >  host_srv6_end_flv_psp_tests()
-> >  {
-> > -	log_section "SRv6 connectivity test hosts (h1 <-> h2, PSP flavor)"
-> > +	set -e
-> > +	SETUP_ERR=1
-> > +	setup_end_flv_psp
-> > +	SETUP_ERR=0
-> > +	set +e
-> 
-> [Severity: Low]
-> Can re-arming SETUP_ERR here turn already-recorded failures into a skip?
-> 
-> By the time host_srv6_end_flv_psp_tests() runs, router_tests() and
-> host2gateway_tests() have already executed and may have set ret=1 and
-> incremented nfail:
-> 
-> 	setup
-> 	set +e
-> 
-> 	router_tests
-> 	host2gateway_tests
-> 	host_srv6_end_flv_psp_tests
-> 
-> 	print_log_test_results
-> 
-> If any ip command inside setup_end_flv_psp() fails, for example the
-> "encap seg6local action End flavors psp" route add, errexit aborts the
-> script while SETUP_ERR is still 1, and the EXIT trap takes this path in
-> cleanup():
-> 
-> 	if [ "${SETUP_ERR}" -ne 0 ]; then
-> 		echo "SKIP: Setting up the testing environment failed"
-> 		exit "${ksft_skip}"
-> 	fi
-> 
-> 	exit "${ret}"
-> 
-> so the script exits 4 (skip) instead of reaching exit ${ret} with ret=1, and
-> print_log_test_results is never reached, meaning the tests passed/failed
-> summary is lost too.
-> 
-> The final patch of this series ("selftests: seg6: add End.X PSP selftest")
-> changes the guard to also require [ "$ret" -ne "$ksft_fail" ], which removes
-> the fail-to-skip masking. Could that guard change be moved earlier in the
-> series, so the intermediate commits do not carry the masking behaviour?
-> 
-> > +
-> > +	log_section "SRv6 connectivity test hosts (h1 <-> h2, End flavor PSP)"
-> >  
-> >  	check_and_log_hs_connectivity 1 2
-> >  	check_and_log_hs_connectivity 2 1
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7%40kylinos.cn
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
