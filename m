@@ -1,178 +1,221 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA49149DB89;
-	Mon, 28 Sep 2026 15:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE43C4E4C54;
+	Mon, 28 Sep 2026 15:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790608474; cv=none; b=DLqPp02440qVSzLUTOm1AKsw4DFGru7uHQ5OGiKTD2MbJkgjB6eD3pfRKCmTuM/Z+e1bMwezJ0hbl0BpdFLlhRUPuNOdbwnRENQPzkJNjdRNSQTva2KqWnQr5sIhjyguJoVdZWcpIE8MkUK5v8+bas/0BEWlCoxkGVmi6v9D9Xo=
+	t=1790608499; cv=none; b=Jq7PGTo11blGMJzupmn07z0RIhAdxiqdyMq/HwrSAetrdT8YC3rB6TF4Z6+lB7aZu/VarbknM3SDS7VgYA3ZS0pgss+pgEeJUQudIUArVpLXgoQ4HDrFPgqp3LUo4cuFvNolzZ07hlwxJ+zu2f4mn7scg9xsFjmPIPYhPPcbO3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790608474; c=relaxed/simple;
-	bh=hb2cf8q8p9CanWzj9wu3j+yifOA3ZuTQCLGzXZv6/Ds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gBCq10qiqO+hWGmpjkWaGfdKTmMOjHepzIHcNJM2gyF9dH9vr6MTRJO/Oiu+FSWu0U2V+L/10GUq2N4dBNSSZt6kto1ReUTWiXKOjrcPcMyCvNPtZdyTCz0KgE0XSLKpyr9MKW8fdRg8D3nCrVjzNxsNkSJszgoFEXAfoRBdJBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L/P4q+mG; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790608499; c=relaxed/simple;
+	bh=//iA92Cb/95cVPrsed63yZV1ntnzxyLz5sN+/uqxqIc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PrpKWf/vc/jSx3iv8xduz6pcfmTG5P2d0k9pfWdoBzrx9Dyda9h3hXEK7DgLzcEpHj6wOX8wSZUVMW9H29nDfRYnZNWhfPWczEteIslTOq123cZqia2t8/QYBl8nOGO2RE77jdvGfjF/VCwaZpqElIHWfJp1EQco7Z9aRpBatVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AruLnew8; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L/P4q+mG"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SF5McC1460345;
-	Mon, 28 Sep 2026 15:14:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=sGfRxYoCiAtwA40VVXyn+8HtYoVkam6i2B6+it2F1
-	Xs=; b=L/P4q+mGZHiX9HULZ6QlwjXKXVwV7s0IL2ZWcuLf7NRvo84Awyp77oDCk
-	foCpUZrevY2siu6j4XJQ1r8an2keZCPlCwa+CKfkiSh3D9G6eqEqJf22hiaPEa7W
-	keAMhFuMbynr8nrQ8Yz0OwMKPtjU3WqU5xaM4RbVigT6uKzkKhiQnUPZzg/NKVjf
-	8KUPVhi3vRr5HYAsDdP2d0uFKdFzqlBEGULT8tJrRaJay9oanQ5IR0Sql+MEPLhn
-	AKk7ytRMKb+Kodhuv8Ilk/+F3fE8snM9kRAE2jZwHaURxMpJFIFDZopTXOyW9jps
-	ES7R5pgYaytnB4KfyqhtsJhwAGXWw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5s527yk-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 15:14:25 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68SElhgt291043;
-	Mon, 28 Sep 2026 15:14:24 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxu2y5jgk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 15:14:24 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68SFEKwQ46596468
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Sep 2026 15:14:20 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 92E7C2004B;
-	Mon, 28 Sep 2026 15:14:20 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C66920043;
-	Mon, 28 Sep 2026 15:14:20 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 28 Sep 2026 15:14:20 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
-	id 3D243162099; Mon, 28 Sep 2026 17:14:20 +0200 (CEST)
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: Aswin Karuvally <aswin@linux.ibm.com>, Gerd Bayer <gbayer@linux.ibm.com>,
-        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Julian Ruess <julianr@linux.ibm.com>, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        stable@vger.kernel.org
-Subject: [PATCH net v2] s390/ism: Zerorize dmb at allocation
-Date: Mon, 28 Sep 2026 17:14:20 +0200
-Message-ID: <20260928151420.383105-1-wintera@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AruLnew8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1790608502; x=1822144502;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=//iA92Cb/95cVPrsed63yZV1ntnzxyLz5sN+/uqxqIc=;
+  b=AruLnew86CVVitK4bzmWjnfc0xsyWrXWF4ISjpLe3avWou90GK1k3khV
+   0Ohfn+UhpAaCo/X5LTTY7jgPwHjL3zPStdSBLTmpDiZiDMED8IreChVf8
+   hwo/TKvyA4nh3vgGrKlIlPHXKY2j6kr6dii7PVUUKWbJF4RX8xQV0+/dd
+   t2QaWtdPBy60LuAJDWTgfLjcJLJPYhTziNIYVbV63JWYTMBOcevE5w02o
+   ShFWjI5wloE/qrRwPOLPgmEK2Uy/RQhs4xiU/CTcpJ7CSyXC7VI07eyrt
+   hotc/xwo8VQUsELttip/mi6ReFd+k099Ws1m0dfh4k/U90xcLBMYV0OkK
+   A==;
+X-CSE-ConnectionGUID: ruO/2bxPRV6E3dOTkw2JSg==
+X-CSE-MsgGUID: Y9gywBzxR4q9pSNX9VzmmQ==
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="231374969"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2026 08:15:01 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 28 Sep 2026 08:14:56 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 28 Sep 2026 08:14:54 -0700
+Date: Mon, 28 Sep 2026 17:14:53 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Quentin Freimanis <quentin@q-lab.dev>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
+ Cochran" <richardcochran@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: sparx5: start the domain 0 TOD counter on
+ non-PTP lan969x variants
+Message-ID: <20260928151453.fzch356vrp3ergy7@DEN-DL-M70577>
+References: <20260928044955.29647-1-quentin@q-lab.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA2MCBTYWx0ZWRfX7eKgsfCG4sg9
- j+PH2aWuzOwcNAjYhi/oaaQJKM98Py8CaFaIkApAFquaFILJVDpFvfAxDZHtFgfQsooyu7hyzz2
- efxy8tmvDsA6IXCSpbLG0JVTz1ZgM9s=
-X-Authority-Analysis: v=2.4 cv=HJ5WhYtv c=1 sm=1 tr=0 ts=6aba8451 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=BBuY1RymvebusuJm9ysA:9
-X-Proofpoint-GUID: dMcZZTSGqRxXwav2cgXaw-z_zQg77ZzF
-X-Proofpoint-ORIG-GUID: 3-oriRVOGmAk0BGZMGK3SCxQigrXtEEv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA2MCBTYWx0ZWRfX8h/T0kHsv3ax
- Nixg32TQBwZBNN4mG1kEOQ0C2G4pgjHNKCT9k6x6iFj0HDl/fe91UXHVqA/EuKQVkysXl1Xr/Ll
- ztRdeCcEO0234eUt06Yz54d4y2SHSqw+3N6Skwweu9Nl37gRiM0fitNpugKpA7CM2/WfOE4QS+e
- paRcBlhZQu/QmRt/c1r46mzwiMz+Xs1gucF6l45xBz8I4WMI3hpnqg5Qtm4KThckvmNfc3Tdnah
- J94GtbETatdrwH/8hg81NQ8q5ed+bfiB0csZmHnM5iduykMwn6HLEvE5jlHKaRzzrVdNhqjDIFT
- 8sYmmfvCnffHYXFI9K2kZYsjdGp4gyJ0PAQXP+uM9TXUM2J/mB+GbnhTpcLqD2sToz0IRR2+PrG
- /Z6vab0Lzo4+B1HC3hiPReiOVnQeTwGtUnRHNEhXsE01/MeL4gO1gm2a0WAusg+UR6mk7riqPEY
- h24S4d96CQH14lfUJew==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-28_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280060
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260928044955.29647-1-quentin@q-lab.dev>
 
-Sashiko reported [1] that 'Missing __GFP_ZERO in folio_alloc() causes
-uninitialized kernel memory to be exposed in the receive message buffer'.
-An ism dmb is receive-only, so the data is not leaked to a remote peer. I=
-n
-general the smc kernel module (dibs client) will only push newly received
-data to userspace. We still should not have uninitialized data in a recei=
-ve
-buffer.
+Hi Quentin,
 
-Since
-commit 750afb08ca71 ("cross-tree: phase out dma_zalloc_coherent()")
-dma_alloc_coherent no longer required the __GFP_ZERO flag, but when
-commit 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
-ation")
-switched to folio_alloc(), it should have added back the __GFP_ZERO flag.
+> Currently the base non-PTP capable lan969x variants don't forward any
+> ethernet frames. Testing showed that starting the domain 0 TOD counter
+> gets them working again.
 
-Add __GFP_ZERO flag and state in dibs.h that register_dbm() provides
-a zerorized buffer (dibs_lo already does).
+Ack. Not initializing the TOD domains on certain variants is a problem.
 
-Link: https://lore.kernel.org/linux-s390/20260903143746.A5CC41F00A3A@smtp=
-.kernel.org/ [1]
-Fixes: 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
-ation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
----
-v1->v2: CC Stable
----
- drivers/s390/net/ism_drv.c | 3 ++-
- include/linux/dibs.h       | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+However, TOD domains shouldn't affect basic forwarding. I tried it on my board
+with PTP forced off - no forwarding issues.
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index 035b233abb4e..405abd99c820 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -256,7 +256,8 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct =
-dibs_dmb *dmb)
- 		return -EINVAL;
-=20
- 	folio =3D folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
--			    __GFP_NORETRY, get_order(dmb->dmb_len));
-+			    __GFP_NORETRY | __GFP_ZERO,
-+			    get_order(dmb->dmb_len));
-=20
- 	if (!folio) {
- 		rc =3D -ENOMEM;
-diff --git a/include/linux/dibs.h b/include/linux/dibs.h
-index d3e0777f25ae..0c10c224bcca 100644
---- a/include/linux/dibs.h
-+++ b/include/linux/dibs.h
-@@ -261,12 +261,12 @@ struct dibs_dev_ops {
- 	 *	@vlan_id: deprecated, ignored if device does not support vlan
- 	 * Upon return in addition the following fields will be valid:
- 	 *	@dmb_tok: for usage by remote and local devices and clients
--	 *	@cpu_addr: allocated buffer
-+	 *	@cpu_addr: allocated, zerorized buffer
- 	 *	@idx: dmb index, unique per dibs device
- 	 *	@dma_addr: to be used by device driver,if applicable
- 	 *
--	 * Allocate a dmb buffer and register it with this device and for this
--	 * client.
-+	 * Allocate and zerorize a dmb buffer and register it with this device
-+	 * and for this client.
- 	 * Return: zero on success
- 	 */
- 	int (*register_dmb)(struct dibs_dev *dev, struct dibs_dmb *dmb,
---=20
-2.53.0
+Certain TSN features do require TOD domains to be configured, though. How did
+you test this, and what exactly did you see fail?
 
+> 
+> Fix by moving the TOD counter start code into a helper and calling it in
+> sparx5_ptp_init(). Non-PTP capable lan969x parts now start the domain 0
+> counter, and PTP-capable parts start all three, as they used to. A similar
+> workaround that starts all three and registers the PHC clocks is
+> implemented in the vendor BSP 6.18 kernel [1].
+
+What we do downstream, is to ensure that all domains and PHC's are configured
+and registered on all variants, with a very simple is_sparx5() check. 
+
+> 
+> [1] https://github.com/microchip-ung/linux/tree/bsp-6.18-2026
+> 
+> Fixes: 207966787b71 ("net: sparx5: add feature support")
+> Signed-off-by: Quentin Freimanis <quentin@q-lab.dev>
+> ---
+> If anyone with access to documentation more detailed than the
+> register map knows WHY this clock needs to be running, I'd like to add
+> that to the commit message.
+
+
+> 
+>  .../ethernet/microchip/sparx5/sparx5_ptp.c    | 72 +++++++++++++------
+>  1 file changed, 49 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> index 5953e04ef14e..b436684ddae6 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> @@ -573,6 +573,42 @@ static int sparx5_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+>         return 0;
+>  }
+> 
+> +static int sparx5_ptp_tod_start(struct sparx5 *sparx5, u8 phc_mask)
+> +{
+> +       u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
+> +       int i;
+> +
+> +       if (phc_mask > GENMASK(SPARX5_PHC_COUNT - 1, 0))
+> +               return -EINVAL;
+> +
+> +       /* Disable master counters */
+> +       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0), sparx5, PTP_PTP_DOM_CFG);
+> +
+> +       /* Configure the nominal TOD increment per clock cycle */
+> +       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(phc_mask),
+> +                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
+> +                sparx5, PTP_PTP_DOM_CFG);
+> +
+> +       for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
+> +               if (!(phc_mask & BIT(i)))
+> +                       continue;
+> +
+> +               spx5_wr((u32)tod_adj & 0xFFFFFFFF, sparx5,
+> +                       PTP_CLK_PER_CFG(i, 0));
+> +               spx5_wr((u32)(tod_adj >> 32), sparx5,
+> +                       PTP_CLK_PER_CFG(i, 1));
+> +       }
+> +
+> +       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0),
+> +                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
+> +                sparx5, PTP_PTP_DOM_CFG);
+> +
+> +       /* Enable master counters */
+> +       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(phc_mask), sparx5, PTP_PTP_DOM_CFG);
+> +
+> +       return 0;
+> +}
+> +
+>  static struct ptp_clock_info sparx5_ptp_clock_info = {
+>         .owner          = THIS_MODULE,
+>         .name           = "sparx5 ptp",
+> @@ -605,7 +641,6 @@ static int sparx5_ptp_phc_init(struct sparx5 *sparx5,
+> 
+>  int sparx5_ptp_init(struct sparx5 *sparx5)
+>  {
+> -       u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
+>         const struct sparx5_ops *ops = sparx5->data->ops;
+>         struct sparx5_port *port;
+>         int err, i;
+> @@ -622,8 +657,17 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
+>                 sparx5->ptp = 1;
+>         }
+> 
+> -       if (!sparx5->ptp)
+> +       if (!sparx5->ptp) {
+> +               if (!is_sparx5(sparx5)) {
+> +                       /* the base, non-ptp-capable lan969x variants need the first tod counter
+
+Nit: s/the/The
+
+> +                        * running to forward frames.
+> +                        */
+> +                       err = sparx5_ptp_tod_start(sparx5, BIT(0));
+> +                       if (err)
+> +                               return err;
+> +               }
+>                 return 0;
+> +       }
+> 
+>         for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
+>                 err = sparx5_ptp_phc_init(sparx5, i, &sparx5_ptp_clock_info);
+> @@ -635,27 +679,9 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
+>         spin_lock_init(&sparx5->ptp_ts_id_lock);
+>         mutex_init(&sparx5->ptp_lock);
+> 
+> -       /* Disable master counters */
+> -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0), sparx5, PTP_PTP_DOM_CFG);
+> -
+> -       /* Configure the nominal TOD increment per clock cycle */
+> -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0x7),
+> -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
+> -                sparx5, PTP_PTP_DOM_CFG);
+> -
+> -       for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
+> -               spx5_wr((u32)tod_adj & 0xFFFFFFFF, sparx5,
+> -                       PTP_CLK_PER_CFG(i, 0));
+> -               spx5_wr((u32)(tod_adj >> 32), sparx5,
+> -                       PTP_CLK_PER_CFG(i, 1));
+> -       }
+> -
+> -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0),
+> -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
+> -                sparx5, PTP_PTP_DOM_CFG);
+> -
+> -       /* Enable master counters */
+> -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0x7), sparx5, PTP_PTP_DOM_CFG);
+> +       err = sparx5_ptp_tod_start(sparx5, GENMASK(SPARX5_PHC_COUNT - 1, 0));
+> +       if (err)
+> +               return err;
+> 
+>         for (i = 0; i < sparx5->data->consts->n_ports; i++) {
+>                 port = sparx5->ports[i];
+> --
+> 2.55.0
+> 
+>
+
+/Daniel
