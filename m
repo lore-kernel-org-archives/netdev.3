@@ -1,96 +1,196 @@
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32E04AA3EA;
-	Mon, 28 Sep 2026 11:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19834AB3D4
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790595357; cv=none; b=kOyufqjMl6gCutchv34PU7t7vAKBT1VrO8noz8U7TmVkDwjoCa/ICynaQoItDbnyyC7aSNGM/8sylzPWL39v96auLO7pjLBVYY8NWeRO0cIkK80TYB9S9VnhHRAkYLWJ6EAOB1kK2fbb48kDIlhTbbrV33X8ouljHt28BefU1dw=
+	t=1790595627; cv=none; b=IItga3Bq1C+7Qrd7yh1pkw3AuH0H4xI7vak40BXfyHUSUGSqN0uGlAjffdM/Izc+jrO4jYQS06QTyTf2kW7H+zNiomwPtM+E/YmnkB0OhYb9sN9ePjIpzJMtMEx9YBW+G8tH2gT9blZbijwYNt5RAA4XbEKw8pVGumly7/MaIVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790595357; c=relaxed/simple;
-	bh=K9oarBLTsz3tYju3/iKUDoMfwg9+PAPFny7q0FdzE7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QM0bCo1MErznhf+DWpLvnkFK7hNcXVnh/w/8Jphd4lohKdHY/Chwvy9AEH0wtLnX4goFzKqFpQHpMyJqI9Lor1XugW38jhWGszceWjbfHSziBYuWZ9LYXQ12cVE+Tgh9Z8fKHQI+9wOOp+nNUGQRCIGPJFGA7qhkxwVvkwPp6HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=QZTNH+rg; arc=none smtp.client-ip=212.27.42.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	s=arc-20240116; t=1790595627; c=relaxed/simple;
+	bh=BN5QIfhCOfJT8qizCSFHHUYyXWZp4qGwJfodbyc0FUQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ae8NqLPk9S4aD44ldkSP5yz5XLRD9DebeVwTkSxR3BjRB+ncUEzXxUeeEFu10YYcYKM8OlvACtiLH/Isa819yWra9TvxRAueGbfG/g/poxjkFNavSzfYtD50RIZ89MIaIcCTX1mhzfb/QMRTXsRUlb68epSdz0AhrGrdm35T1ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Tp4JCkwc; arc=none smtp.client-ip=74.125.228.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="QZTNH+rg"
-Received: from L30177.local (unknown [78.240.193.235])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp4-g21.free.fr (Postfix) with ESMTPSA id 88DBE19F58A;
-	Mon, 28 Sep 2026 13:35:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1790595353;
-	bh=K9oarBLTsz3tYju3/iKUDoMfwg9+PAPFny7q0FdzE7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QZTNH+rgUbNtC3/+lctt8Fa3/C7FNRx8swV8HJBZI54aQvJ3mvmolxMBFru3nOrgB
-	 /8cyKK3PdE9V6EI6NpVYAb9XLNETF/yxo75FbqPRNWpCePhP7wfXH7rHG39Dk8GVlt
-	 F4gvyUP9Lr3lb3CEPvlxTOuHIxozUzdbppjY4rU5q45ClPPvqDIUI+HIsHZRBXf1OE
-	 vwAhwdLgI/eyTAZPor44lo1LEKVz7+aPbquR+dnXzF5Q/09VdPYBu5zLrfOG1TtDs7
-	 1i7zQ1ykTuzuKXbYwGp15qbQSPxGfG30gNWpbOdrM5rGcsfnzBsrZ7VOCg117+KoiR
-	 vrJEKOZoO6paw==
-Date: Mon, 28 Sep 2026 13:35:41 +0200
-From: Vincent Jardin <vjardin@free.fr>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] dpaa2-eth: DPNIs without a DPMAC should be
- virtual devlink ports
-Message-ID: <arpRDebOwAe08pc9@L30177.local>
-References: <20260923-for-upstream-dpaa2_ports-v1-0-b59c865edd00@free.fr>
- <20260923-for-upstream-dpaa2_ports-v1-2-b59c865edd00@free.fr>
- <hh6bjsyoe4hidiiyl3bt6tsmizfpf5p4h3gpbflcnsakcpgwjr@2pi6r22dpor2>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Tp4JCkwc"
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dc50c6edfso147702066b.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:40:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1790595624; x=1791200424; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NFEK3ubBPi1IZBwmUcsJb/U5KJU3Jv/GzmZN0pbsg6c=;
+        b=Tp4JCkwc9y/kwRnNwAhHUvvFkSf8Yo338Umg4Q9H7mGw069ewAx8pn1BFvrZnpgEsU
+         gFDmMYB2Ajz7WcUL/XFLFodX3vKAXZ76sJpNO1WhuIwcIlI+mSYECQrZHZ1CqU2LEutk
+         gT5qhcVOfzOP+SM0vRvRDWudz1hPAoASa9oMnY1AZX+4ZXl/EYpo0/MK9m4TCW0w98sp
+         AdkNg0ilJYILszf5qHUQ32wwbOtJIBlyGd0NQbAlgMkR5CZfn1/Dh7wFuNmgM6SIg0bi
+         x90T0GscimETFtwm3X4j+ytHYulkIjwvN7MUMe8mm2imkpJWP8TvNZhBoe/Ubg42dzAL
+         WDQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790595624; x=1791200424;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NFEK3ubBPi1IZBwmUcsJb/U5KJU3Jv/GzmZN0pbsg6c=;
+        b=yncZNaYbVpkMQ2nNec71FnZPf8ArnPbvJkDuPSEAOXly5RJQKL66dRPKeCRLEL6kAx
+         A4OP22qLY2YNkZs/IDVFYuBijn/2yzJFkBtblQi7l/jfK4QOCiOfByLS5eUgnXk1yzgD
+         Bhz5ZzZ82H5r6jqZJd5gK04e3cBDXGMpU3ZjDeJ2OSdlg06XO8tGQFUwhdC4MugTLwks
+         myoBTCAUUfc7+d4ZlxiKzUf4n/Ygvn5vgk+mGxX0/Bm+n1nIrLJzYAkYfCZngb2H60sH
+         BJJvSyLxAN5pIS06vjG9eB9LiT5T6C09PwBocpz2jnoNecKqyUd63BW/1saFMW+HP+FL
+         1ylQ==
+X-Gm-Message-State: AFuF++mySIjZqN06i8kMwX4DoOlkupQIQub02jIlONR0TI6JWS4V1fTr
+	1TK1lkAoaISxuZoJ7P3haY1lGBsyJLA4LlAS5x8SKeoP5tX1uKMJ6dU+18x+cJlvIa8=
+X-Gm-Gg: AYBFou2JXmmpOO4dq0CYjuvdYWxbLKFVUngSFFNImhiYUrBW6ItrGcA7wGUWa9xfGWu
+	n6T4YUyUZC5g/+y78AVpHzuk6ZGqpXAbqkO4Zn5CKhxwJWiqvmYTepWRjw4ut6EnTDAgq4UQzYd
+	4+fxjryXiN80akuRjdDlwMWmfr0PnvOjt0SkyR5eabUYNOMslgJa2zeS3F+bj5Vw9kZBWsdCsbS
+	F6Pnw3QabQPKJ2ZGybRbgRAgx5MOIeug7UZ2weOUSr8yJV1LkRMLtFdaVPirWzu4rFfybqqMBVw
+	ukXLG3mal/xRqCaeV7TMOkzGs8F+shATIDPJ7fzVNS41I+Kaqbo2YVyxFeh0DAHxdRlFMw+3rdN
+	bvammfHqG80s4nJqqnl5/Xw3fP4KDtiKJgbX7bc9+BYJHRQOPwYVUoOtYqMbLei1OSAtbszFAaJ
+	GygNrSDtm8SWDhs8urke9ewQkQtQYGgVqWqg5Bl4m2dO+i6WaKlMhA/0sSeHXFS1oG1TNSisa6+
+	eZ7DqrMGrhYJrzYBfND1L6F+uDz30mn56GuK6JyyKkXXMbW7lE/nZjksmhmqgrnN4Ph9wCv5Iiw
+	RcVlBSYAUJ1x
+X-Received: by 2002:a17:907:3d08:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2ac22db502mr1037605366b.6.1790595623924;
+        Mon, 28 Sep 2026 04:40:23 -0700 (PDT)
+Received: from cloudflare.com (2a01-110f-491b-1300-c0dd-2af4-566b-b23f.aa.ipv6.supernova.orange.pl. [2a01:110f:491b:1300:c0dd:2af4:566b:b23f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dec4cec91sm24711666b.28.2026.09.28.04.40.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 04:40:23 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Subject: [PATCH net-next 00/15] Gated tracepoints for skb lifecycle
+ (free+clone)
+Date: Mon, 28 Sep 2026 13:40:17 +0200
+Message-Id: <20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hh6bjsyoe4hidiiyl3bt6tsmizfpf5p4h3gpbflcnsakcpgwjr@2pi6r22dpor2>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACJSumoC/yXMQQrCMBBG4auUWTuQ1lDRq4iLNPlTRzANySiF0
+ rsbdfl48G1UUQSVLt1GBW+psqQW/aEjf3dpBktoTYMZRnMeLE858hPqeHaKwFqcR14kaWXrTsc
+ +BoM4WmpALoiy/vArJSgnrEq3/6mv6QGvX5v2/QNMHqygiAAAAA==
+X-Change-ID: 20260924-bpf-meta-gated-tracepoints-4a731fd0ef64
+To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
+Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+X-Mailer: b4 0.16.0
 
-Hi Ioana,
+This patch set implements Alexei's idea of gated tracepoints for skb lifecycle
+events, which offers an alternative to an skb extension for BPF metadata [1]. I
+have kept it down to a usable minimum - patches introduce gated tracepoints only
+for skb consume/drop and clone/copy.
 
-> > A DPNI whose endpoint is not a DPMAC has no physical connector: it
-> > may have no endpoint at all, or be connected to another DPNI or to a
-> > DPSW port. It is still registered as a physical devlink port, number 0,
-> > so userspace sees a physical port that does not exist.
-> 
-> Reword this so that it's clear that you are describing the state before
-> the patch.
+* Implementation
 
-Done, see v2
+... is pretty straightforward. Please see patch 1 description for details.
 
-> > A virtual port has no phys_port_name, so only the DPNIs that serve a
-> > DPMAC report one, and "p<dpmac id>" never collides.
-> 
-> Reword this as well and mention directly what you are changing.
+One note - at first I tried to use of skb extensions - the free bit left in
+skb->active_extensions and the skb_ext_reset/put/copy code paths. That turned
+out to be a wrong direction. A "special" skb extension that doesn't require
+space allocated in skb->extensions slab makes the logic messier.
 
-Done,
+Hence, I went back to simplest possible approach of having a dedicated bit
+directly in sk_buff and adding callbacks directly from core networking code.
 
-> 
-> I would also suggest a change in the subject title:
->  dpaa2-eth: mark DPNIs without a DPMAC as virtual devlink ports
+* Performance
 
-OK, thanks for the suggestion
+Early results I've posted on Friday [2] were wrong. I owe a correction. They
+were heavily skewed by KVM halt polling being enabled. That led to some
+nonsensical numbers sometimes - like a plain TC packet counter measuring as more
+expensive than TC + skb extensions.
 
-> >  void dpaa2_eth_dl_port_check(struct dpaa2_eth_priv *priv)
-> >  {
-> > -	u32 registered = priv->devlink_port.attrs.phys.port_number;
-> > +	const struct devlink_port_attrs *attrs = &priv->devlink_port.attrs;
-> >  	u32 current_number = dpaa2_eth_dl_port_number(priv);
-> > +	u32 registered = 0;
-> 
-> Move these changes to patch 1/2.
+New, stable, reproducible results tell a different story - gated tracepoints are
+~2.5x more expensive than skb extensions:
 
+| variant           | Δ busy         | ns/pkt @146k |
+|-------------------|----------------|--------------|
+| gated tracepoints | +16.4 ± 2.8 pp | ≈ +1125      |
+| bpf skb ext       | +6.6 ± 1.1 pp  | ≈ +450       |
 
-ok, done
+Setup:
+- 146k pps spread over 3 flows,
+- 36B UDP msgs over loopback,
+- 6 measured vCPUs on pinned cores clamped @ 2.7 GHz,
+- per-packet metadata on every packet,
+- KVM halt polling disabled on host.
 
-Thanks for the comments,
-  Vincent
+I've published full benchmark results + setup + code on GH [3].
+
+* Final thoughts
+
+Even though gated tracepoints are more CPU intensive, I think they offer a
+better building platform for users. Every user/tenant manages their own metadata
+stash and they can select an allocation strategy that best fits their use case.
+
+There is extra CPU overhead, but the fact that we need to pay it only for
+packets that we're tracing makes it palatable. As I mentioned earlier, we attach
+metadata to less than 1% of skbs today. Naturally, we would be looking to lower
+the gated-tracepoints cost.
+
+There is also potential for giving users finer-grained control over metadata
+lifetime in the future by adding tracepoints on skb scrub, GRO merge, or TCP
+coalesce/collapse.
+
+While we can make either solution work because we don't have tenants with access
+to BPF in production, others might not have that luxury. Now would be a good
+time for folks operating K8S environments to speak up.
+
+Looking forward to feedback,
+-jkbs
+
+PS. I'm prepping for Plumbers this week so probably won't be able to circle back
+to this until next week.
+
+[1] https://lore.kernel.org/all/20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com/
+[2] http://msgid.link/87fqyypp67.fsf@cloudflare.com/
+[3] https://github.com/jsitnicki/skb-metadata-bench/blob/main/REPORT.md
+
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+Jakub Sitnicki (15):
+      bpf: Add gated tracepoints for skb life-cycle
+      bpf: Add bpf_skb_fclone_orig() kfunc
+      bpf: Accept trusted pointers to kern ctx type for kfunc ctx args
+      bpf: Allow access to bpf_sock_ops_kern->skb
+      selftests/bpf: Basic tests for metadata passing with gated skb tracepoints
+      selftests/bpf: Test passing metadata across veth and GRE
+      selftests/bpf: Test metadata passing to cgroup_skb and sk_filter hooks
+      selftests/bpf: Test passing metadata to sock_ops and LSM hooks
+      selftests/bpf: Test passing metadata to kfree_skb tracepoint
+      selftests/bpf: Test passing metadata to TCP egress
+      selftests/bpf: Test passing metadata to netfilter hook
+      selftests/bpf: Test passing metadata to/from LWT hooks
+      selftests/bpf: Test passing metadata to seg6local End.BPF hook
+      selftests/bpf: Test passing metadata to sk_skb stream verdict hook
+      selftests/bpf: Use non-trivial test payload in xdp_context tests
+
+ include/linux/skbuff.h                             |   38 +
+ include/trace/events/skb.h                         |   57 +
+ kernel/bpf/verifier.c                              |   22 +
+ net/Kconfig                                        |    9 +
+ net/core/dev.c                                     |    1 +
+ net/core/filter.c                                  |  112 ++
+ net/core/gro.c                                     |    1 +
+ net/core/skbuff.c                                  |   25 +
+ tools/testing/selftests/bpf/config                 |    2 +
+ .../selftests/bpf/prog_tests/socket_helpers.h      |    1 +
+ .../bpf/prog_tests/xdp_context_test_run.c          | 1399 +++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  |  395 +++++-
+ 12 files changed, 2049 insertions(+), 13 deletions(-)
+
