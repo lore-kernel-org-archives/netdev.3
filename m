@@ -1,113 +1,183 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f6.google.com (mail-dy2-f6.google.com [74.125.229.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6AA3546DE;
-	Mon, 28 Sep 2026 04:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737DD36195A
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790570476; cv=none; b=G7sh0sjc5qOri6rzmVWSbAstLL4+98TB3e8LlIFiowzAzvDXys0VGrCE+lkPy4VjIza4wm+9E9wZFFrAXjkXzQWcM5XK9cObKvA+Zlw64Nhz3m3dsEYTKJAOCljx6T0GaCj9z7m1gfzbdvPAfMzL149072BMzremL+/R8ghM6Vo=
+	t=1790570480; cv=none; b=Xl7FRUvOGUHdqBFvC9JkwOIbjJFBAMTc2H7hvQIBLZnwIPVY6t19YpknIflDMWBy2IpykE6LLmUlzgKVgH/9aI4MHXBmuDXOex3HYMRtYaj6uCjmyZATFV+IEIrbpNp/irV+eM+jRSRI04aEpjPME4KPELAl+AsrYOKTFPCUxCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790570476; c=relaxed/simple;
-	bh=Qtn38T9yEm5zd4cKcGAxVCPnrnB+1QUYJYVJUF8RNUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V3XxWXeCBN73lpA0uRPNaKIWiVbTB48BSwc4TAK92fsdf87zqoC6XLL3Gm3pSjv41ZWY7lgyiQwuebaAtPYvrhfUK+37j8COJ8YNKOf4SELFIetLrgaUFwWm61XrC9LIZavdKu3gql7LuoDxXbGwIIPCn3qfxwcgS1DmEs5kTps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=NJYk3YZ0; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Pmaf/QmK; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1790570480; c=relaxed/simple;
+	bh=yN5iSxfHObU5enkVT7t0eCR5BOQK92T50qQGkC99TWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHLH4rQ490mFYJksoCupPvPn/8WyfzjiJzLRlI/ZAMFNR2JjWcLh9m2/JHrP08/qv06KkpFPzR68AWYXuAoOVZLm5ydzYA7hCGGHOd8yuSvsoNcBni+dS/nrz59zTJqBIx1yEAJSCioyju0cpZucflc5FPerPPk91rUd1VkgGa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=R+zriA17; arc=none smtp.client-ip=74.125.229.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="NJYk3YZ0";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Pmaf/QmK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790570472;
-	bh=Qtn38T9yEm5zd4cKcGAxVCPnrnB+1QUYJYVJUF8RNUY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NJYk3YZ03pCVnUJyC7PItYfgm9nW2isvvAhRjdjKgkLGKw2qs/GnJHQi1bJFXU32a
-	 bZi28NHiubbFJSdDRrlC1KsjgNbv1j0iL8js4D+6SBdzLRjTIOxWnyJs2sXs83XYdn
-	 DwcuAs9hAMYHxmdb0+ACwvn5kAZNs1uLv76+ltS4jtbx4Q5MXgqnhspW9p975a98zo
-	 /OvMshWRAC2AHpCRgDxHQuzJHAimRpFWmn+02ka4NPiF3+XYuQ7VbwenTqqYHase1i
-	 Gis9pziGrS+/pljKqj4PTv5LUOIGdt1mYOWOwO+2FJ0iA0EbtKG4l2SvsDuYKkJ4BV
-	 GXmAo58CA7X/A==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id B781E421D2; Mon, 28 Sep 2026 04:41:12 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790570470;
-	bh=Qtn38T9yEm5zd4cKcGAxVCPnrnB+1QUYJYVJUF8RNUY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pmaf/QmKTVYA0EVXeWt6AamRtSfRiRtS7uDPJJ1ikgI7moYOTpC45swCb8JKrXSAX
-	 N+eYTumNEkjOFfCJEWQH0L455DNd+Ml8keaywQuO9fJ+CdD6IAO2zxlDtJd4tQChRa
-	 pzTdDbqq/ZQUm5H1u3RGgMimmlQsXHd42nv+FbexapOl+gDUO8m/kTLcdd2JBsg29h
-	 d6bOZamDk4X3RCy1Yyc4vRW+CwCBNttL7XeaSw6DrG2s8XEsUZO0shGQReVbaRJgA2
-	 DuW2f3QPlntRatjkmbe37lAkn9FwNFbpSHPgdaxGF5cqwK1sLxp7N7i5DSSeYvnBE/
-	 TySmDtwyAS9fQ==
-Received: from [192.168.2.51] (p5dd1e959.dip0.t-ipconnect.de [93.209.233.89])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 2A5593F52D;
-	Mon, 28 Sep 2026 04:41:10 +0000 (UTC)
-Message-ID: <074fb937-52fd-4806-b225-c495e874baeb@birger-koblitz.de>
-Date: Mon, 28 Sep 2026 06:41:09 +0200
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="R+zriA17"
+Received: by mail-dy2-f6.google.com with SMTP id 5a478bee46e88-33e48934fa8so1364943eec.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:41:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790570476; x=1791175276; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=y5/RuB7BG8mXQE4VhaB5l8e0f9SkvMyTjmKRRegzpdI=;
+        b=R+zriA17KaEOrYCtp13iI5MEcS5PIhrtAnvEg3OAoAR7OyegRLlEpnbxtYnNfjSmo4
+         /fhNjP2RykbAoWT3ftLAZ1fMsaOvMNx31KYUlEVR4St5lSSeW5zjD13AUwxmqodSm7DS
+         MjS9ocI4UwmgTmcYS3iapC1lzNaFhqTR82EzO6E6Fv1/9WJGuSlUy37cdoyfDFUnbgaN
+         bSZsQ7q8ry4VHr57W/HyTxGraePU8neI2kwYVQT6HF9jN2O/Rs/GjaGy4UbzUQ6I8GiG
+         QqgPPV8IQTKL08RvOjs6byzPErCQymHkzbQPnQhPIQsMULT9miujeQhUhI9XQhPyWaE2
+         Zzxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790570476; x=1791175276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y5/RuB7BG8mXQE4VhaB5l8e0f9SkvMyTjmKRRegzpdI=;
+        b=dmbJdqfogdaUQIw7BDZ/C6fLb2DbSRrqoPtkHszshPwpJTkRTk+qgUpsIWBw+zjjYi
+         JN3kBtk2eX5j9CSi6yUGCiDoysFDFtOVTkJYVzYxAHQj51/ZBZtvFse9pdKfbmygfkg2
+         WG4iDujFYPznmiSZwCLNQc5/xHuJHMFrUNYaN7BvKQvTSF2QjlZXQU12SOJAmUtSOLJK
+         CzCeTdTI7RYtdN8XS8vrukC7UbZVYdqp/ATknvKo5hBvDY/iYlRzUzeU/XtRJ1POrDvJ
+         9qKf7HBLmVIzcXyX2vLAlaf8mZLc6iDsnlMXrTXmTNkNmXku0ky6RodqGRp+IF7prSeD
+         ZVQg==
+X-Gm-Message-State: AFq9FYKKMxF8qYceijIuvzYK2LsCpUIAJ6aRwgyg6XvtR65dHG5KCBl+
+	of8KevzUjAK7BMtx1lu4FdQyPPSpUamedN0qN6KCBotP1x90DvbXg79vr0Xx2GX6VoQrvC7lP/F
+	fc40OMd14DnJGX2WXtES/Fj9+uTW8Bf87Iwcym1fyBx1TULkyHkGpHdejfoLKvTnRncadUswJ2w
+	4IMA==
+X-Gm-Gg: AYBFou3mwDVuIqIC333118YplyWVVf6q4yudIjxu6vweDO5By+3c2let4cI1F80+QN7
+	ta/ILYa0kJavUoI5eaSKVrWozVefmSlngmhrPu04mVk5KPynyMXT/qsvHX5aNMohnOfG5CaY4gO
+	vpIMGdy2l8r5IXKppSRlqgdlCvImBBFGC5dg9PqincTsp1LhLNTRk6z6kNTR7W0UznSq03AQr2b
+	bF+8uDgKkpBnXZOOg7sSto4pJV+0Qpwnw4rkHPNYvjSH0V/lmN8phWl93AlaR18n94TBeCCmi9B
+	e+LgkxmEFUzasNHraakrFDVMfKDEwvELf5i+wbI36dkjKH8c/TejNFbotdxKLXiUWv2iZQ8qPjA
+	gZaFN6XY9lBwg/n/XDE8eXqKuX/XP/3LqYrtfbalLl61uf45CP+YCNfG1YVrsoV8uHsd9YkMNdd
+	fo8IWaykpHgNgDMRQeIvYNUXLHN+b4PtWL/6SZxNlwiiGFL0mYGf616GqutG4Dfh/xlu/X5Mg8z
+	rLMJv1kFhs=
+X-Received: by 2002:a05:7300:ea01:b0:33b:a4e3:9958 with SMTP id 5a478bee46e88-3426fcc9606mr8221941eec.2.1790570475869;
+        Sun, 27 Sep 2026 21:41:15 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm22772905eec.28.2026.09.27.21.41.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 21:41:15 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Wang Zhan <wang.zhan@smartx.com>
+Subject: [PATCH net-next v3 0/5] net: resegment oversized TCP GSO skbs
+Date: Mon, 28 Sep 2026 12:40:57 +0800
+Message-ID: <20260928044102.1004310-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 09/15] ax88179_178a: Add VLAN offload support
- for AX88179A
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, neuromoments@gmail.com
-References: <20260916-ax88179a-v12-9-60c04c9924a2@birger-koblitz.de>
- <178968030096.22033.824447734953057557@kernel.org>
- <289700c4-8569-4160-97c5-2fc37a901a9d@birger-koblitz.de>
- <f27b2a1c-afb7-48db-9682-acf6c0a83479@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <f27b2a1c-afb7-48db-9682-acf6c0a83479@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 27/09/2026 4:24 pm, Andrew Lunn wrote:
->> You ask: On a busy bus, or when a transfer stalls and hits the timeout, this
->> blocks
->>    all other network configuration in the system for a long time.  Could the
->>    clear be limited to rows actually in use, batched, or moved out of the
->> RTNL
->>    section?
-> 
-> How long does this typically take?
-> 
-> And what is the worst case, if the device is hot-unplugged?
-> 
-> If these values are small, i don't think it is an issue.
-> 
+BIG TCP is negotiated per netdevice, so BIG TCP and non-BIG TCP ports can
+coexist in one path.  When an skb exceeds the GSO limits of the port it is
+sent to, it loses its GSO feature mask and is segmented into individual MSS
+sized packets, which that port then sends without TSO.
 
-I tested this on an AX88279 with SS and AX88772D with FS.
-In both cases the time to update the VLAN offload table is 165ms, there 
-is very little statistical variation, since 768 transfers are made, 
-averaging out the individual transfer times.
+This series cuts such a TCP GSO skb into GSO skbs which fit the device
+limits instead, so the rest of the path keeps using TSO.  On a
+veth -> bridge -> TAP -> guest virtio-net path, with BIG TCP enabled on the
+veth endpoints and left off in the guest, a single iperf3 TCP flow, six
+alternating runs per state (-t 15 -O 5, fixed CPU affinity and port tuple):
 
-I then did
-sudo ethtool -K enx6c6e07090001 rx-vlan-filter on
-and unplugged immediately the device. This is not an issue at all, since 
-now all transfers fail immediately, so the whole table setting takes 2ms
-and then the device disappears.
+  protocol  no BIG TCP   mixed, no reseg  mixed, resegmented
+  TCP/IPv4  51.550 Gbps  15.850 Gbps      52.617 Gbps
+  TCP/IPv6  52.050 Gbps  15.783 Gbps      51.933 Gbps
 
-Finally, I started iperf transferring 2.5GBit/s and only then changed 
-rx-vlan-filter. The time to completion was now 173ms.
+The middle column is the same tree with the bounded path disabled.  A BIG
+TCP hop which feeds a 64 KiB hop loses 69% of the throughput of a path
+which never enables BIG TCP; bounded resegmentation recovers it.
 
-I really do not believe this to be a problem. bind() takes much longer 
-because of the wait-time for the PHY (phy-wait: 250ms, total: 320ms), 
-which is also seen e.g. on the r8152 driver (total 400ms). And bind() is 
-the much more common operation in practice compared to initializing VLAN 
-filtering.
+1/5 stands on its own as a fix: the size limit is picked from
+skb->protocol, which is the VLAN ethertype for a frame which already
+carries its tag in the packet, so an IPv6 frame was measured against the
+IPv4 limit.  2/5 is the preparation which lets the limit tests be skipped
+for one caller, and carries no functional change.
 
-That said, I actually managed to introduce a bug when adding return 
-value checking in v13 for the vlan-offload function, as the positive 
-length value of the last read was returned as an error. Will need to fix 
-that in the next round.
+The new path is taken only when the skb is an unencapsulated TCP GSO skb
+without a frag_list, it exceeds gso_max_size or gso_max_segs, and the
+device offloads that GSO type.  Everything else keeps today's
+segmentation.
 
-Birger
+The output obeys the GSO feature and limit contract the device already
+advertises, so this needs no new UAPI, no device state and no driver
+change, and it applies automatically.  The bound only says how the output
+is grouped; an over-limit skb pays one extra ndo_features_check() in
+exchange for staying a GSO skb.
+
+Alternatives considered:
+
+  - The caller could set skb_shinfo(skb)->gso_size to ~64K and adjust the
+    gso bits in the shared info afterwards, which would need
+    skb_unclone(), a repeat of the grouping logic skb_segment() already
+    has, and a recomputed IPv4 ID for the DF=0 case.
+
+Patch layout:
+
+  [1/5] the GSO size limit follows the packet's L3 protocol
+  [2/5] factor the device limit check out of gso_features_check()
+  [3/5] let the GSO engine bound the MSS segments per output skb
+  [4/5] apply that bound to oversized TCP GSO skbs in the TX path
+  [5/5] KUnit coverage for the bound, the device limits and the TCP path
+
+---
+v3:
+- patch 1 is new: the size limit follows the packet's L3 protocol
+- patch 2: move the check_gso_limits flag and the wrapper split in from patch 4
+- patch 3: drop the tcp_gso_segment() exception, the caller keeps the features
+- patch 3: cap the bound with GSO_MAX_SEGS and drop the output reset
+- patch 3: document the bound as TCP only and note the frag_list gate
+- patch 4: enter from the limit predicate gso_features_check() uses
+- patch 4: keep the features, so the bound shapes the output only
+- patch 4: drop the SG and checksum tests, fold the MSS minimum
+- patch 4: cap each output at GSO_LEGACY_MAX_SIZE, not the BIG TCP size
+- patch 5: cover the IPv4 and the IPv6 limit, with and without the tag
+- patch 5: skip the TCP cases without CONFIG_INET, reserve headroom
+- patch 5: free on the failure paths, check the ungrouped single MSS
+v2: https://lore.kernel.org/20260918084651.3022878-1-wang.zhan@smartx.com/
+v1: https://lore.kernel.org/20260917063854.2011613-1-wang.zhan@smartx.com/
+
+Wang Zhan (5):
+  net: core: use the packet's L3 protocol for the GSO size limit
+  net: core: factor out the GSO device limit check
+  net: gso: support bounded TCP segmentation
+  net: core: resegment oversized TCP GSO skbs
+  net: net_test: add tests for bounded GSO segmentation
+
+ drivers/net/tap.c          |   3 +-
+ include/linux/netdevice.h  |   4 +-
+ include/net/gso.h          |   6 +-
+ include/net/udp.h          |   2 +-
+ net/core/dev.c             |  91 ++++++++--
+ net/core/gso.c             |   6 +-
+ net/core/net_test.c        | 347 +++++++++++++++++++++++++++++++++++++
+ net/core/skbuff.c          |  14 +-
+ net/openvswitch/datapath.c |   2 +-
+ 9 files changed, 455 insertions(+), 20 deletions(-)
+
+
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
+-- 
+2.47.3
