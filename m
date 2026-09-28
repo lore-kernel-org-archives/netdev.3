@@ -1,174 +1,174 @@
-Received: from mail-vs2-f39.google.com (mail-vs2-f39.google.com [74.125.227.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D224E33A9C4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 03:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CB32D29C8;
+	Mon, 28 Sep 2026 04:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790567885; cv=none; b=XJKCm2v5OJPNgLoMT2hS0Aj4vHeIzShdvYqR6PQ3Hq104xIHsaYZyMMItIIQwY9EtIJkOkZ2zsGGTg1rpS9Fsj4yy9K9k2/jaHrZb8aqtsE/6BqCUnKbM8oG+gf0h6Acq8NeKb/4+fUfAtCFBGXeLRQNaEeD2t53bDRK9KfIT00=
+	t=1790568586; cv=none; b=S26G+jPjhooR3/FXLchaTV8CwVATKZ/a0kNdogOHeJKnrz+RGKVXZexrKKjr3mDsVba7GKZL4O4gk5Ux4XAsrFfnqdU9BM7hnfvGVcORCEOHstOOZPbCVO0vGHbdLUnfkPO/kEhFPx0R2qTqkJGdl5Sl6jGdkCzk2GJx+BXfyfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790567885; c=relaxed/simple;
-	bh=RCb84R1Ilbqk/brMo0ozsD4weTDX3UUsJYqs8fer/vM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKMZmpagfPIDFL73kB1AXgpuQ1fjHuU5pREJErnbDlQO64SvHQvKAh37TygT7GGwQ6IRjFCZ3OjHpGcAcAAdgMINmitZeSS+tpX8HUXubjOn9fL93nbtwCRaAmoNHgjCnj+eiwYvdgrNmNqtZyBpI+wc9eiuhOrCsCxz/Ok3l58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CE+5RxAk; arc=none smtp.client-ip=74.125.227.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790568586; c=relaxed/simple;
+	bh=G8NMwEuSRB/CcoIUPcK0S3YolO7o8n6Bnm6GXQCevWM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BE8uHxB2nAZj6nAbmCd7ncF8ZSCIYCpC7blnURcAiMx5CkWvB8iSGtRmjPWiHM7eq0QcjjU1xJtDmeY37v+Mq2R9Z1j7jdLp0hOcp2fCJNaQzfcAmZd6uQu11ItSzccEIUVFX5fRN++1silr1PyhM6UUy5zCk3zn2c/nMhx3Y2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPpA495m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CE+5RxAk"
-Received: by mail-vs2-f39.google.com with SMTP id 71dfb90a1353d-5cd0861cd1cso1737627e0c.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 20:58:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790567882; x=1791172682; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8PRQtLnkGcQLLad/iSnwkqrL/4wKHSNHecCDuETOGrQ=;
-        b=CE+5RxAkoZPF2ZDyvTb4nIJQXt18JC74S5W5fHZRCroLzNEnPs11sUoEz23V/sT3Z8
-         SVhKP+SJOvXap51n1nPCYIk92nSJ52oJMKqJPcKWpK2GQwxguKxijjjHd6/azrnwnmkM
-         Q2hOTulTf7+QyEUR2CGdNKcbuKfSBh6c0A+X3X/NPcY6h0zP1fWMe7h23OFZIl2gymI/
-         ayxf4a8x9I09g9E1PEv4xgQAVbQryQ6Rk9/r0/SlbaMcqe/D1Wrr+nfcrZrT6ih/oGMB
-         8dskjENNoAK3R9kQUmjMBNV9e+GBQYXGDdYuK7XUj63GnU+U0oou6DIakZPLGORJOKcR
-         py4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790567882; x=1791172682;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8PRQtLnkGcQLLad/iSnwkqrL/4wKHSNHecCDuETOGrQ=;
-        b=dXT5V5mSKzIubBvSvJxm5BszwxG+EDbC9wrAcf62528BZhx5ohSkdaiSp6Csa+Ur+F
-         4h2qQNKdP7VeQ7PwFi7tAQ8i9zBByCd98ctKqsaXbsiNUmgz/Z9+WndmZd1ZcXb9wjUS
-         lqsv/pfHrGpk6VeKlVACSJUp9QqKCEoMqeHw60SVkPzi4GbtGmhpOhsdcKTn7CMtGYfC
-         VoYQ0OJlTa253VEDjfFM21FNkGWs2Fc+iqlMvzqTN8wEDB9wIwk2QWbtz9Lln3rRss7a
-         Kqsp6f86z1eSZU6jZkZlyCbx/F4TSmthOuyJInDVxmazcuoyitJwULB/LC4Vf/wJogp1
-         7fpw==
-X-Forwarded-Encrypted: i=1; AKwUvBzasabxwg02G7P1N4UgvewFazHGsKyfodsQK6rh3OFqKAbk6s5m7IVq2RMZSZw9hcCnsyG2A40=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK26XorqRe19NduWkB8na6R2N/pZ6FwESb7BngQAfHXfQbdPdhN
-	JatMHpClNjd20lf0ce+DBJ4zHHD1S1BG8Edu+I1eqWegCCFtsSifWPCi
-X-Gm-Gg: AYBFou3bJA9VSpNY9cjA3jiq4IlNZTLkEV7KWY8ohiameiJWgjiE7MITcmz0F5VBIfn
-	sl29Wk3/ToKeXkK1+pfx/rSqyL2rzFMnQ8ZgHZPL8dVq5+ontbBnOuwh9GIz9sOLykJRorsBOUK
-	ehJ63ISaBO9fXElSorGPplClvHHNOB+5LDEDYfq1WGB3JoPWm2RWXIjNMfdSGgl8+BcZmFKQNyw
-	6zi/Cj3xCqmF14/JmSIhRDdOEDwo300M+ia1oJxvZa86MxUByR3BzcKwCRllH+jm27poymgMVDN
-	qD+VlkTqRLZrzTy+EOTsmJDsjFnFt7WWDEUshXdTpn4SDGR2lKJ6lG7hIeJZVBdBOCxm8U7SV97
-	bDKvl6Ni2tocImKCstTl6E9RwXIn5rVf2zOVZSsZh8vOBDc4HA4FK2GXNhp9zjjyznEYlphnB75
-	YEvP2UKabHpUlUa820midti9fKkskVj+hFmRgie0h8tWB5ACTnfo1/k09PzDFcHuw=
-X-Received: by 2002:a05:6102:358d:b0:79e:2b00:b4da with SMTP id ada2fe7eead31-7af1c692c06mr4663990137.6.1790567882180;
-        Sun, 27 Sep 2026 20:58:02 -0700 (PDT)
-Received: from beelink.. ([187.13.30.172])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7b39b15808esm8107452137.5.2026.09.27.20.57.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 20:58:01 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+ci3c472c63e196fe9e@syzkaller.appspotmail.com,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net v3] nfc: llcp: prevent resource leak on repeated connect after DM
-Date: Mon, 28 Sep 2026 00:57:49 -0300
-Message-ID: <20260928035749.2305913-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260925184857.357926-1-qwe.aldo@gmail.com>
-References: <20260925184857.357926-1-qwe.aldo@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPpA495m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB311F000FF;
+	Mon, 28 Sep 2026 04:09:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790568584;
+	bh=u43RpCCF5drsEvpIG/ma+yDNf+UcywHh9C8ANoA0Ws4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IPpA495mypCm3cmjopHZFUY3Ony7mnJDP3VxDbQy3c9UyPv5DXQnz1AGP6PM7tJh5
+	 AQHH4UdbrPtpliAjZ6X+RBptjbio2oAdMyyDOpTNflU9QZGySZJQftWInpF7aDUm1r
+	 /4p/wudUVwA6YNVUUoH3EAZUW4u07W0ugZljfI6HAWaNdB6NqKKsgrAJSfqgZ9t7wH
+	 naHQiBlX58xaX8D28E8rXaacR56GlrBE/4k7lH1oMMsyN+Dg4kQcIF2ZQApJUy2aQZ
+	 Y1cuAVM0Ld9ANeO7G+LDb33w9IhTmYmx1mRzaGVsW6fwE42vfzX1IJj0lxJKiy9Tsb
+	 yXO9d3Nd+V6gA==
+Subject:
+ Re: [PATCH net-next v2] net: phy: aquantia: add get_features() for AQR113C
+From: netdev-bot+sashiko@kernel.org
+To: hongmei.xu@oss.qualcomm.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 28 Sep 2026 04:09:43 +0000
+Message-ID: <179056858385.3145.15807151008226199830@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20260924-net-phy-aqr113c-fix-pma-capability-v2-1-2?=
+ =?utf-8?q?9b06283b0f3=40oss=2Equalcomm=2Ecom=3E?=
+References: =?utf-8?q?=3C20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29?=
+ =?utf-8?q?b06283b0f3=40oss=2Equalcomm=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-A rejected asynchronous connect leaves a local reference, SAP allocation,
-service name and device reference on a closed socket. Release them before
-retrying connect.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-The device pointer alone does not prove ownership: bind() puts its
-temporary device reference while retaining the pointer. When device
-teardown closes a bound socket, the retry cleanup would put that device
-again. Clear the pointer when a bound or listening socket becomes closed,
-and after a connected socket's device reference is put. Do the same when
-DM closes a bound or listening socket. A DM rejected connect keeps its
-device reference until the retry cleanup, so retain that put there.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://ci.syzbot.org/findings/64002827-5231-4183-bfca-0d91bded8543/syz_repro
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
----
-v3: Clear non-owning or already released device pointers on close, while
-    preserving the device put for rejected asynchronous connects.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
- net/nfc/llcp_core.c | 12 +++++++++++-
- net/nfc/llcp_sock.c | 17 +++++++++++++++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
+- [Medium] The new aqr113c_get_features() stops the kernel from
+  discovering EEE on AQR113C.
+- [Low] If the premise is true, meaning AQR113C has never had its
+  10G/5G/2.5G modes set correctly under the generic PMA path since…
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 199543c47eef..6382aacca69a 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -95,8 +95,14 @@
- 
- 		nfc_llcp_socket_purge(llcp_sock);
- 
--		if (sk->sk_state == LLCP_CONNECTED)
-+		if (sk->sk_state == LLCP_CONNECTED) {
- 			nfc_put_device(llcp_sock->dev);
-+			llcp_sock->dev = NULL;
-+		} else if (sk->sk_state == LLCP_BOUND ||
-+			   sk->sk_state == LLCP_LISTEN) {
-+			/* bind() already dropped its temporary device reference. */
-+			llcp_sock->dev = NULL;
-+		}
- 
- 		if (sk->sk_state == LLCP_LISTEN) {
- 			struct nfc_llcp_sock *lsk, *n;
-@@ -1330,6 +1336,10 @@
- 	if (connecting)
- 		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
- 
-+	/* Bound and listening sockets do not own a device reference. */
-+	if (sk->sk_state == LLCP_BOUND || sk->sk_state == LLCP_LISTEN)
-+		llcp_sock->dev = NULL;
-+
- 	sk->sk_err = ENXIO;
- 	sk->sk_state = LLCP_CLOSED;
- 	sk->sk_state_change(sk);
-diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-index 1e5ee4bcde68..9d76c12aee01 100644
---- a/net/nfc/llcp_sock.c
-+++ b/net/nfc/llcp_sock.c
-@@ -713,6 +713,23 @@
- 	if (sk->sk_state == LLCP_CONNECTING) {
- 		ret = -EINPROGRESS;
- 		goto error;
-+	}
-+
-+	if (sk->sk_state == LLCP_CLOSED) {
-+		/* Release resources retained by a previous failed connection. */
-+		if (llcp_sock->local) {
-+			if (llcp_sock->reserved_ssap < LLCP_SAP_MAX)
-+				nfc_llcp_put_ssap(llcp_sock->local, llcp_sock->ssap);
-+			nfc_llcp_local_put(llcp_sock->local);
-+		}
-+		if (llcp_sock->dev)
-+			nfc_put_device(llcp_sock->dev);
-+		kfree(llcp_sock->service_name);
-+		llcp_sock->local = NULL;
-+		llcp_sock->dev = NULL;
-+		llcp_sock->service_name = NULL;
-+		llcp_sock->service_name_len = 0;
-+		llcp_sock->reserved_ssap = LLCP_SAP_MAX;
- 	}
- 
- 	dev = nfc_get_device(addr->dev_idx);
+--
+
+net: phy: aquantia: add get_features() for AQR113C
+
+This commit adds a get_features() callback for the AQR113C PHY. The PHY is
+said to misreport its PMA capabilities, so the callback sets the
+10G/5G/2.5G/1G link modes directly instead of reading the PMA registers.
+
+> AQR113c does not correctly report its supported PMA
+> capabilities which includes speeds like 10G/5G/2.5G.
+
+[Severity: Low]
+If AQR113C has never had its 10G/5G/2.5G modes reported correctly through
+the generic PMA path, the bug goes back to the commit that added the
+driver entry:
+
+12cf1b89a668 ("net: phy: Add support for AQR113C EPHY")
+
+Should this carry a Fixes: tag so stable picks it up? The v2 changelog
+shows the patch was moved to net-next on purpose, so this is only a
+process question.
+
+> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+> index e95d391a6dc23..604f5492515dd 100644
+> --- a/drivers/net/phy/aquantia/aquantia_main.c
+> +++ b/drivers/net/phy/aquantia/aquantia_main.c
+> @@ -1094,6 +1094,18 @@ static int aqr111_get_features(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int aqr113c_get_features(struct phy_device *phydev)
+> +{
+> +	/* Generic C45 PMA abilities do not fully describe the PHY's copper
+> +	 * autonegotiation modes, so add the 10G mode explicitly.
+> +	 */
+> +	aqr111_get_features(phydev);
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
+> +			 phydev->supported);
+> +
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Does this stop EEE discovery on AQR113C?
+
+Before this patch, AQR113C had no .get_features. So phy_probe() took the
+is_c45 branch and called genphy_c45_pma_read_abilities(), which ends with
+genphy_c45_read_eee_abilities() and fills in phydev->supported_eee.
+
+With the new callback, phy_probe() takes the get_features branch instead.
+The core reads EEE abilities itself only in the static features branch:
+
+drivers/net/phy/phy_device.c:phy_probe() {
+    ...
+	if (phydrv->features) {
+		linkmode_copy(phydev->supported, phydrv->features);
+		genphy_c45_read_eee_abilities(phydev);
+	}
+	else if (phydrv->get_features)
+		err = phydrv->get_features(phydev);
+	else if (phydev->is_c45)
+		err = genphy_c45_pma_read_abilities(phydev);
+    ...
+}
+
+The new call chain is aqr113c_get_features()->aqr111_get_features()->
+aqr115c_get_features(). It only sets speed bits in phydev->supported and
+never touches supported_eee.
+
+Later in phy_probe(), the empty supported_eee then clears advertising_eee
+and eee_cfg.eee_enabled ends up false:
+
+	linkmode_and(phydev->advertising_eee, phydev->supported_eee,
+		     phydev->advertising_eee);
+
+genphy_c45_write_eee_adv() also writes the 7.60/7.62 advertisement
+registers only when supported_eee intersects PHY_EEE_CAP1_FEATURES or
+PHY_EEE_CAP2_FEATURES. That means the kernel can no longer change or clear
+the EEE advertisement the PHY comes up with. Also, ethtool --show-eee
+would report no supported modes.
+
+aqr105_get_features() in the same file keeps EEE discovery by calling the
+generic helper first and then adding the missing modes:
+
+	ret = genphy_c45_pma_read_abilities(phydev);
+	if (ret)
+		return ret;
+
+Would it make sense to follow that pattern here? Another option is to call
+genphy_c45_read_eee_abilities(phydev) after setting the link modes.
+
+AQR111, AQR114C and AQR115C already have the same gap. On AQR113C it is
+new with this patch.
+
+[ ... ]
+
+> @@ -1444,6 +1456,7 @@ static struct phy_driver aqr_driver[] = {
+>  	.get_sset_count = aqr107_get_sset_count,
+>  	.get_strings    = aqr107_get_strings,
+>  	.get_stats      = aqr107_get_stats,
+> +	.get_features   = aqr113c_get_features,
+>  	.link_change_notify = aqr107_link_change_notify,
+>  	.led_brightness_set = aqr_phy_led_brightness_set,
+>  	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
+
 -- 
-2.43.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29b06283b0f3%40oss.qualcomm.com
