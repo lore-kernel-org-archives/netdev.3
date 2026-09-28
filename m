@@ -1,78 +1,65 @@
-Received: from out-2uec-a100.jellyfish.systems (out-2uec-a100.jellyfish.systems [63.250.43.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8173333A9C4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9A84E77F2;
+	Mon, 28 Sep 2026 15:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609051; cv=none; b=Q7WhXw0d/ZsoPlc6dRwLoQI24qtNiUrxB/Q/I1ruu2VZMm8Lza06K6AMS1uVUeZHPkoTgBS5XRjSJK0C8V7tzfAQZliu7kzGWCG/9c+H4ghgfkr4eyPmDT+e5jK2iHI5WQU3JJ2csC3Me/thA82Vt2SaK8QQL6uD9fRk3+d2BuE=
+	t=1790609258; cv=none; b=ERrWSm6fOLvkv2mQVbo1Adimtkq246QfLSQ6DoUBDoU6XaV/EZ4hOXfJOjRSHy3+zY1OAe5exF8rTN6kV197btfZzPVX1Y6m9/gx4MKl8sn9zbB8JF0Knb9mbFql2TMR1FFrkNk9q1h1PQRUVPu1pl86Rog+IUL9V7LU37ui7d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609051; c=relaxed/simple;
-	bh=ClKhGltR4eB1XFj3pX95qGxTIPfqSLxeNuu3Fnxr/aQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dy7AV8jUU2wU31A0lHpA0VxBxSlIzRgqOBI0yO3AKOKFP+Z4/msVodsWnU8hQyYrtVCknWz2b7HGaLi9iiCmlsUBJCMqVBqzRedF8fcHjk/9NcrPMuY9Pv5wVrf7C1cL81kmxmlnI/B1xeLge7J6E70y90O5huTtIez2SmCZE1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=m/7CQ3Fa reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1790609258; c=relaxed/simple;
+	bh=IHh8o6Eyf4sfC4fE7VxeoWB53IkyZe751WSqQ1qUIoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RVvvolLN5yIk3gt1GTnEGYjXlOzw7h2/h0qmIgt7jmrGEJv18pedO7EaV6XBbzg/JytAFRkQ7gVU1z6REXBubEz87l+21KlLoyUZtLKI4mAR2wq06RJAZEuY5OvW3I5usvNx6F2z75wCTaryhiwxNXadWTifql0hWevxurFzB0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LENBGqWo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="m/7CQ3Fa"
-Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4htlT52n89z6tkL;
-	Mon, 28 Sep 2026 15:23:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1790609034;
-	bh=NcYeN5QvucJLvZ0yXZEuuOumqd10ui29ZwRx+Y0H3J0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/7CQ3Fa1ZrXJuwD2ljKB3rlIgiCgvC6WjwOMJybYEyM6m4tmIGVOIBMbdDOGtrGb
-	 yTdYofUvJzyk24+jcvvh3wfnZ5ky8dJuaZm9ieDTfP77NoOcy/wPLw1lgELtQ0xgEc
-	 8NKRFxAuMgaRzArupY5rr9ysi15r/stuB10LQVQ2fEJ9gSNOZ1zR58OmuOAcgWIyD3
-	 ZIlgIT09ddziYVUn8wJ7UzdD6SBW6J7ROX7B233BQbOH52HX+3iiAUp/T8vEpQ7Wlo
-	 NvuLjdBtALHe8sitF5MZ2Qxl/X7thmGF2lrcPy36h7603C7OKBGyIwzInxMNF30Gch
-	 yi+iE6ugzHoEA==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: netdev-bot+sashiko@kernel.org
-Cc: Rahul Chandelkar <rc@rexion.ai>,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH nf-next v4 2/4] netfilter: nf_conntrack_irc: use nf_ct_helper_parse_port()
-Date: Mon, 28 Sep 2026 15:23:52 +0000
-Message-ID: <20260928152352.143195-1-rc@rexion.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179053062273.2160803.6696795410529862010@kernel.org>
-References: <20260923131501.2934482-1-rc@rexion.ai> <179053062273.2160803.6696795410529862010@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LENBGqWo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=fK2Cf6Dp2mNF6xY+hMUHlfkWyvQDVQsBw2Z/h6yHNDY=; b=LENBGqWo/bPjVoj6Wj2SGnL4hz
+	lZP+sTVfa+B6d83MHJKlY5BFXec/2Y0UQ8iBIdRo+h4u7Ug+rFqB1bR2InYp07ZvvU3scwbB0b9Ro
+	f0kPOViyMgVqTORdUwtsM321ihuY9B19tknUYM84+L7GBsih5+rKG67j3nvjXtV2Jx18=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBDGJ-007jt8-6i; Mon, 28 Sep 2026 17:27:27 +0200
+Date: Mon, 28 Sep 2026 17:27:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, neuromoments@gmail.com
+Subject: Re: [PATCH net-next v12 01/15] phylink: Add phylink_mac_interrupt
+Message-ID: <07432e01-1ae7-460c-ae58-8ee5794a9033@lunn.ch>
+References: <20260916-ax88179a-v12-1-60c04c9924a2@birger-koblitz.de>
+ <178968029017.22033.2874254681410388676@kernel.org>
+ <17164abd-05ec-4b6b-bc51-a017cc87047b@birger-koblitz.de>
+ <bb4043d1-e89e-430b-8f68-e64fc2b0d11a@lunn.ch>
+ <21485f2f-b446-4a38-86c3-dc8d73260a0d@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21485f2f-b446-4a38-86c3-dc8d73260a0d@birger-koblitz.de>
 
-On Sun, 27 Sep 2026 17:37:02 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Should that clause be removed, with the logging change mentioned in the
-> commit message?
+> Thanks for the reference, I understand this better, now. My suggestion would
+> be to add a comment as part of the function description:
+> This function may be called in interrupt context, and therefore cannot take
+> a mutex. However, it is safe to assume that the reference to phy does not
+> disappear during the call, as only an SFP module may be unplugged to make a
+> PHY disappear. SFP modules however do not support interrupts.
 
-Yes.  v5 will remove the dcc_port == 0 test, and its commit message
-will say that a DCC command with port 0 now takes the "unable to parse
-dcc command" debug path instead of the "Forged DCC command" warning.
+Great.
 
-> Could the helper documentation, or this commit message, mention
-> the limit?
-
-Yes, both will in v5.
-
-Thanks,
-Rahul
+Thanks
+	Andrew
