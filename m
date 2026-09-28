@@ -1,111 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f40.google.com (mail-yx2-f40.google.com [74.125.224.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE53B05B4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC793BED44
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790621355; cv=none; b=NNJ5qWSQCu+zOhVVEzsL1ITbdzMWsoOLFOI793mSAU/JMqlEOq/SCFob4O/8pRfbpsZN8Rnvc5ozClErgc0lQ4RXKvKc2xDUpPTmnSCp/iV55hdeU0XVQfm4JT+Tvx8J1QjW38RbPOSUqcB5B0x7gaCCYXV97RoeRkbSVnAj/pE=
+	t=1790621507; cv=none; b=XNzwoQnwutLKUYzZlO+2/WBeOvAYj+gAEKkmQTwFKUjeubN+kswV3iBQnejho+zs6WTX8TBffgVpLjOOPoExIg7WrFilPXpeJGvTYkpvklaH5N+9Y0OnKGt+WoEotbz22glGNe4bQPl07apRhnpD/oRngQ5KrbMmJTo/CRKPtUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790621355; c=relaxed/simple;
-	bh=D1ImA6704AZb4rBw9TrBQ4IAtuWi/QT2kw7XcCifHlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ENYB9xvi1x5sMJhsFpKHPxPxDn7Cs90VDC1L1WeIv2DgTZVJbifQ/OpzeOorltsNtiFodMVghenst8VLpZFZbp8XoFOk9AVkUS24v2A0QpC/ecOVXMQhODS2/nPJ8QozWvzs5FG3XoXvk0hpFllo3roO5kzaal5Q6mAeq8vTpL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJtxxVBX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790621507; c=relaxed/simple;
+	bh=EBmE3giO3xcXmLQHaSN3V5pizTDx2BGOStLLtNnjxWg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=hfMjSiHj0pKuuVH8z85BJWkAcIpyCs1jf4jEq8/P2qgV5w8Fasr+lz/qaL4sq9/SwbteLwAnEGJhcvULmR5QWqbtH5bcwS5XaCmrsWv0nPqVy01/4bC4MlDJx0X2MdFZfzKL2EMOQBf+jlTrN5FqnzEtCirF1JgNKghN/Oypyjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dr4lDOvn; arc=none smtp.client-ip=74.125.224.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJtxxVBX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7431F000FF;
-	Mon, 28 Sep 2026 18:49:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790621348;
-	bh=0xADK4PAH9gpYYOcB+Hm9jQgR1T5jGNJSvmTMIj60ec=;
-	h=From:To:Cc:Subject:Date;
-	b=fJtxxVBXCoz0H0Ui/U4+Ummgh2wqpD53Q06DRRDTB40BmE3ygucgIBHbDf9iBpR+9
-	 e0FfsY1GadQgRyjfOwomhc1lqwThaJyns0zGxJjvtAFo0x9qMhnPDksg9p2ruRusTn
-	 uA9RiOOtZASp8emWe8WzzQ98GAfYkxTL+Gao1LtxS7h8ktFLmxHi55qdD2/U5Jnx0o
-	 sJTNBiJ6wzFObv9ut2lF35MYlzItm5wAc8jzvNNXc+84r9hhKD2YyQj9bJXKoEF4lO
-	 nai57mD/b94+aBsNcOqoQBWRwJJyF+u86i7UAxOtbHKugbVgRNKQYmQepqHOQSiGTC
-	 9gMBySlgPooIg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next] docs: netdev: additional info requirements for bug fixes
-Date: Mon, 28 Sep 2026 11:49:04 -0700
-Message-ID: <20260928184904.2496960-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dr4lDOvn"
+Received: by mail-yx2-f40.google.com with SMTP id 00721157ae682-8a886c555c5so21853167b3.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790621496; x=1791226296; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3egM1frRs32ga506avUD6lSWm9sZ+yGf/5m9pLjd+BE=;
+        b=dr4lDOvn8cWMDpqyfLr2uUJLpSDHRtYvkaqRkfA9qIySAiiXO7TKdfE2PGyDoRxJMb
+         7k9y2wXy/hUeDqZkwDSDGj/NLr7J+szGfhgp+wMBpLbPrdCysGEONA9rTUlabh3ESGe4
+         jdI5hv/ZJfef+ywd5xGRtxMx6HDkrAvA3+Imau8QCD9O9hfdr/CZbAApR5lr7VoiF5LW
+         +Be25mEvE84oJL3yaGpXCuBsd2s7SimW65zqMxNcwCbWtDPphIBAdbKECRzHugNZRiAm
+         qkv9y50xrcd3q8MCmVAP4n1ywYBvFhKMwGGRn+P+HBQEz2B1t8v3X/puBDZtiF3IkhNj
+         uYAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790621496; x=1791226296;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3egM1frRs32ga506avUD6lSWm9sZ+yGf/5m9pLjd+BE=;
+        b=b+AvjRzCobUPFWBbImYG+uT7C6G0+QTVFIlkUIISiWok3CAh4qdcteOvLWMyx2jvdq
+         goGgiN1OPhk8dWBylKaFnSYL//z7q781JMC3ae/fjyY5kIYPrT27uO9ycd3jPQFGk2MC
+         QsOaHlIaJ8KTOlpahZ8Trj13BoiOGHAKCqPc3LoNTFXwBJiou73q/0VZDV8lh6FfEava
+         SsIrZz0v4gw0cTYO4H04LpbSENBKjhF12uAyIAjFT9cTgzBV43UIu14aUlYYJIpf1mls
+         9AwYtNZvvNEyUMH3s4NrMu/fvQZU5/qU0jH81/UovIuoSA2tToCIYbgEGwr4r64UPpMe
+         C2Xg==
+X-Forwarded-Encrypted: i=1; AKwUvByTy2g8H+LW0Lz9nifPoLbuHsLlh3f5ubGPtsXne3oifrhTDIl6rfp9aOdYME9FkKrrRzpRKnw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKK0J7dizhnwq6AOAYbVJcaFXLSIy37jM2IXt2EE9tAa2u2yy2I
+	Kg59BBjNov6FN4sbRpU/E+0MRu7GE/cDUqvvfwNyxh8LG9+veOfUJENC
+X-Gm-Gg: AYBFou0GRd3MzIN+27Jd4Mp4xhpH+HpILATumaMnHEEC9Z/vi/zPZOQ2tvQEo9YmOyk
+	zQ2N4hUVWu2/GBH6QGS1kn2d0OoIqagfXhFIaU2KwEIku0818SJWeUxqjC77+o2L1P+j6Nm0Hik
+	mZbrWrg+7fcRKTNOlz9Oi4L+k2cQcfuokl4ciDT3GqKxXgz36wZN7RsY/T6ki6KJ0k+cFHGQqcV
+	pl6byPeRMU7cVxTgGyxRl/etlrSmIHW0yvcd3ufu8kG7drxGNpUscCXswYilsQYQUmwrMGtBGfF
+	ypGZBRTCT6pzls7AwoS8D8jz/n4hDqSfPK8LYvqbg3dGHQ6LkOlnVo2QBAI3EDcG4QpisNV37Ab
+	9J4Zq+P9UowNZ1//ubB2qmiHr13SmSSzdnxosWtVGWdFoF0/s17YRgl7Ngilk2SsTPn8NRjmDiF
+	O9jRZt+geJe2fTwZqj/b1jmwTR8AZoymYrJg0D25Ibkhg/935gLfUp7QyfjPd3KRjv8jd74/pvj
+	C6MLQJ1+dR3U2Yb82z6nSspPC1V0ymRfFPaCWx1n3ImYZO6maL8
+X-Received: by 2002:a05:690e:138a:b0:675:398e:b887 with SMTP id 956f58d0204a3-675398eba1amr2715071d50.5.1790621495747;
+        Mon, 28 Sep 2026 11:51:35 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6755f26183fsm329917d50.18.2026.09.28.11.51.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 11:51:35 -0700 (PDT)
+Date: Mon, 28 Sep 2026 14:51:34 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jiale Yao <yaojiale02@163.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>
+Message-ID: <willemdebruijn.kernel.2d99358fa8ef4@gmail.com>
+In-Reply-To: <20260926162554.163197-3-yaojiale02@163.com>
+References: <20260926162554.163197-1-yaojiale02@163.com>
+ <20260926162554.163197-3-yaojiale02@163.com>
+Subject: Re: [PATCH 2/3] tun: Drain eBPF RCU callbacks on module exit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Knowing how AI generated patches were tested would be a great help
-when reviewing them. Explicitly ask people to describe the discovery
-and validation process they followed.
+Jiale Yao wrote:
+> Replacing or clearing a TUN eBPF program defers its destruction to
+> tun_prog_free(). In the device teardown path, tun_free_netdev() can queue
+> this callback as a private destructor. The rcu_barrier() in
+> netdev_run_todo() runs before private destructors, so it cannot drain the
+> new callback.
+> 
+> After the last file or persistent-device reference is released, tun can
+> therefore unload before the callback runs. Drain outstanding callbacks at
+> the end of module cleanup so they cannot execute from freed module text.
+> 
+> Fixes: 96f84061620c ("tun: add eBPF based queue selection method")
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
 
-I posted this as an RFC a while back and there were some concerns
-from developers that it will gum up the process. With Linus's
-recent complaints about the size of our PRs, we really need
-this information. I launched an AI bot which complains if
-people don't explain how bugs were discovered and tested
-(look for netdev-bot+sinfo@kernel.org, s=series info).
-We need to document this requirement.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-rfc: https://lore.kernel.org/20260727204724.2787038-1-kuba@kernel.org
----
- Documentation/process/maintainer-netdev.rst | 31 +++++++++++++++++++++
- 1 file changed, 31 insertions(+)
-
-diff --git a/Documentation/process/maintainer-netdev.rst b/Documentation/process/maintainer-netdev.rst
-index 1739d9f856c3..d46011a9b4b6 100644
---- a/Documentation/process/maintainer-netdev.rst
-+++ b/Documentation/process/maintainer-netdev.rst
-@@ -283,6 +283,37 @@ as a patch to the list with a commit message explaining the technical
- problems with the reverted commit. Reverts should be used as a last resort,
- when original change is completely wrong; incremental fixes are preferred.
- 
-+Bug fixes
-+~~~~~~~~~
-+
-+All bug fixes must state how the issue was discovered and validated,
-+and how the fix was tested. This should be done in plain English, not with
-+special tags or annotations. That said, the information does not have to be
-+provided if the existing trailers imply it (e.g. ``Reported-by: syzbot...``
-+implies the discovery method and validation).
-+
-+Example statements describing discovery:
-+
-+ - discovered by a non-AI static analysis tool
-+ - discovered by an AI code review agent
-+ - discovered by manual code inspection
-+ - triggered during code development
-+ - triggered in CI testing
-+ - observed on a machine in real use
-+
-+If the discovery does not imply the issue was triggered, the next sentence
-+should describe the reproduction. The commit message must disclose if kernel
-+modifications (e.g. inserting a delay to widen the race, a loadable module
-+with the right sequence of calls) or error injection were necessary for
-+reproduction. The reproduction steps should be included in the commit
-+message if they are short (roughly 10 lines or fewer);
-+longer reproducers can be posted online with a link included.
-+
-+The testing statement should explain whether the fix was tested against the
-+reproducer and against kernel selftests. If the bug is in a hardware driver,
-+the testing statement must include information about the HW on which the
-+fix was tested.
-+
- Stable tree
- ~~~~~~~~~~~
- 
--- 
-2.55.0
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
