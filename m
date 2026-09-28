@@ -1,153 +1,181 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69E24CC28E;
-	Mon, 28 Sep 2026 16:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8B34E433A
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 16:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790612393; cv=none; b=Lespv7r+PyNKORAlBIwPTwVwj1RdSpGAdjKBhW9RkGAqMCF9szV6rRwjURfWMSLA+S8iqtK2cKWg2f9EFTcfJ60MRJlDPzbx0M1wq6uWPOYL/9n19UCIMjQwS8zx/1beX2YxPNByP7yf+k5UF8X31tDQ0mT+lORCpiIwagcLNzk=
+	t=1790612745; cv=none; b=SV5oPO7sUuqcS8BHWo+kBOf/o6llWLT+JWxYduZkL1+4UCpGy1hJuxLW7TLHVfyk2v26l7iLEfKgxw6fWQ//kPqw2ke6pt7AgJGmJBNKA7/ZF1vDuWam2JZrRIpVYyJeaSk8aZJi4GF/nTenXLUnkeeDEe3Tch8+lwMv8wmPqUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790612393; c=relaxed/simple;
-	bh=yYp5cNpz5PUJlVY2FeZV6LwZCwiiKi3/QRuJB2IWDY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qB71OM86cFQNKiR0cPzO2rKMMe/dlaWEZ45gLIAqaqhtbh5H1e0veK0EDVW+s0AIxgldnuRsynqRjoSo0s44YRKqxWjrV1qlNXdw71CBq2hjY2a5ZsSUbNhLXPbqV9PNbz+OrpQfYcX9duIDFH5s/tkwp8QaecSuLJD25Qyo1So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Mb5HDv5k; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nloeQVgi; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790612745; c=relaxed/simple;
+	bh=RBpxUWeldpvkQFz0ci2d1q8aSBH8yeW6c7VrkwVHoG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fTnU3gRWKuVDb74k8gFJr6A4qVWFq4DbpeU3vVmGFc70GiatwS50Up/+ICUPuHXSOK6Ao7Vco5q2JhGlJ6CcxJtXsBS1aCIPXejoOhuQkSnAXpc9AiJJDX/DIX/KA5vI1voSOpFHMzXvzTAvI5dw5dXtjD4Cl2rjuYnGpi0I1u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oprQ68Rv; arc=none smtp.client-ip=74.125.227.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Mb5HDv5k";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nloeQVgi"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id DD84F7A013C;
-	Mon, 28 Sep 2026 12:19:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 28 Sep 2026 12:19:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1790612388; x=1790698788; bh=DAOUi7GOni8Cdt13HRrVrHIrYtOcSvfh
-	HmGjs3zaKgo=; b=Mb5HDv5kyhfrbVzvfOLW+XIIVMTQL+yR00BjcDBa46oMJNQ6
-	sRE1ZYJ9g4F25wHkaC4Il6adqzmKqzWfizi/dOJ03OnrhbfAOyklCXHRujQEqEJ2
-	npmRudNFGJm6WAIGlMkchDXzDEM/zexOzApqkupSGSqAhUKziMJzzUGgqQzVTPw0
-	7XlBRJggps2rSrT/NuiuWviAr0Tw1z9vBrHXlCMC9nl4AGxtaemdoFWiMb2LDpvF
-	GDH+Nd2wE1jhLyRKDR2xT39bxfd5dKCqlKsyfgRSmw1aY+bxesbKfdd4Q46s7YMt
-	TZ8skvBSb1MMRSECEDbR9jHWBRM6AWIDN5dXrw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790612388; x=
-	1790698788; bh=DAOUi7GOni8Cdt13HRrVrHIrYtOcSvfhHmGjs3zaKgo=; b=n
-	loeQVgit0lxbnAs8lbTIP31qnytuaxfDLpGjU3jl9yBMWmn0Mhj3HbzQYF2RIlay
-	ynA9jZHL3/CYQ1vCPTmV+xHA46gjoYqsXUF5m0begPd3OcVQanCZvMsVln+LcyaY
-	IJ1JlhLTo+eof0rl5TwXRXAAY/9xSHqU/VdGMGFNpeWXCyBDnv970w0CQ5QQj1ek
-	X3UBhQjQbM1amtWDPDrP9G6XzeB/KCOD3ecg7bFeeVGOzMLbj+WDWTL7VFtHWnYE
-	LvNZrPqgWQKwWVz2I1ao2zrIRjCDUSzC+NdvXXWyIZcZIgNA64sGT7RmThVl7yh7
-	lNTYBl5sLrfrCV60pjRuw==
-X-ME-Sender: <xms:opO6auFOuAlQs-0rOx45PFDNyu0fYRca7mS_Ymi--wMOvm2rsZ4LRw>
-    <xme:opO6apYbEeIppsWeIzs3qp0OZuP1VlSzg-FF8r3QKUtAsZtGmXW9hqf2b_TOeXfNu
-    904DT56YKqbBmV9byYQiLqLLtqPk4fagR5qPdCqntm86xVMQdop36nc>
-X-ME-Received: <xmr:opO6aoDeM5aEEoHW4kfB8zJDWiKgG4FovsIcjz87krbag77k1OebBEcsne4m>
-X-ME-Proxy-Cause: dmFkZTEKrLlBov6TwZWkyHY7vVe3QYJBV7mCf6n//dlldHBQzDjnruk48aV/I7ITarStts
-    qBU+DRF/WoOAKURQvN//n2ZCuoFOql/FGv9uyMPDXqEZHq9/OXnGMYkGVtN3/qIGVRkkC6
-    jH6wqkc36JLxXKjiCntr52CVMxbuJdutf/C7JUYLoKW8wrRI74CQzZdSwkbZ7WkI0ac9q6
-    TY6KQizdV2oliV4ZoMuZBPoMZqJNUNxPdgrfGTwg7nnECgYMSiMo1ubCmv3TfYehJTrfUz
-    zMuYA+lGhfcbUQ51y4miIHcqcz2zZbpc4GHGhhBGtPopBMUykZ7wNa0OOPD5Zfz+QIrrFS
-    QV3WJQ3CoSVs4q+h+zF+nTtaBl7sU76zvudxMC75kkbdCDOiHVty79+JbkSI/Udat2vUsG
-    HsfL0nPStDqiBnbxDkAjvkabP5yI2T2umZ96rvFadvRXDJ4mRyyITbkDpIO7ZBlwcB3Tiu
-    7yJO2/3p6+qXdp/tq6nKO+qTLj8LrLm+rKmvmrpcYjzx8kq4xOmAA/UBH0dRV+EmNutQA2
-    wDr5icP2OqCD0vVEHbOw7fyzYMQgT8vAUkiCiikZgzSe0ZR1aBNeAM/KTdl3+sLK3cIOnp
-    nC1HIrftSYO9XV1z0TO4Ml7icH6+mPlcszxkzT9L/hRKPyyfYOStHGJmWrUQ
-X-ME-Proxy: <xmx:opO6apm3ZTqCUlFa8I2g34FeeBERBTp0cE5d5wg1kg7poDHeSMyYiQ>
-    <xmx:opO6ahxg28IbescFX7o81v3W3RHb0Z3Z9pFUeJ-P7DLh27C6ApnwKQ>
-    <xmx:opO6arQxemb7MECvhm5KXJd9jQv-olFKbeMuFC9p03txODN7DNvFTw>
-    <xmx:opO6ah9w3Xx_vGkMdiOthA518U252SjmY-rCGl4FgAbyxZbQ1_40vA>
-    <xmx:pJO6asR5U5GtQerjydBmhRxpB0aIWeQfDOGM1gekg9x6YnrFrnLytzsZ>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 12:19:46 -0400 (EDT)
-Date: Mon, 28 Sep 2026 18:19:44 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] xfrm: esp6: fix off-by-one IV counter causing AES-GCM
- nonce reuse
-Message-ID: <arqToNCxIwi9CZ--@krikkit>
-References: <20260925095105.446269-2-Jeremy.Jean@oss.cyber.gouv.fr>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oprQ68Rv"
+Received: by mail-pj2-f40.google.com with SMTP id d9443c01a7336-2db425c8ff1so2690365ad.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 09:25:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790612744; x=1791217544; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zoHFbGNtVQoHjVLOP0fq+w6gtBNh9zXQIgTMyktRzcM=;
+        b=oprQ68RvxFhGfjVCI9RyPnQNzoqrSmwfP0UVqH4Yf63OhB+OGcxvvznCZo+xWsZIJK
+         FX+JtB56xdqi8LMlLW/8jajr93PyjDseHZRL9ZiTBdOKsI++0coxfycyfFe6VjeRjSpH
+         GrgG1B5XS7TFHwsurgyZRtyzzDBXuo2LTWVwdhfkPBY1gKTRlY2g1JeC+bjBzZgQQART
+         zHS1+N+2pKYv2n3FcPZzfwyV6Q4yt9W5iuBuv5HKZaFvymm7Dw/PFDP97cXnI+ke1Ct4
+         lziCLbCZ7Rr1BnUNt5ETFMgHJvupsUWwpFI23oCEP7esQXa1JmNsYGJRIutxmBzq+fx8
+         LoeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790612744; x=1791217544;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zoHFbGNtVQoHjVLOP0fq+w6gtBNh9zXQIgTMyktRzcM=;
+        b=hEDaNjtKdLpOzylBPkBMgnvXuXH/NsnSV9RGUxnGzGigL8CXHdMUYQoyDvUPaZ/0k0
+         OI8etzReChL+sl/XYBwlMhhPOLiEGIv5QwpRireEgiQa+u8/qRw4nfzalBBkhrQ1ZxTx
+         Na+j3tsI2+IUzp8D3YwlNGci5Jk6gdsWTRoenPcIa4RoJvuFZ+BDUanBJAwJMLctDJK9
+         PjGk8RhliDj4ySJj1r2p6Q1lpPZ/naBA2CiATcAOwEP8zn0woGJZKMDToG/ZaoOPv5PO
+         fsyUu2dQomPl3PjDHTWkHcHbxJ006qlAgQulW+nYVRFUFkvFldqHfRA9dgsXZ5wwOhPN
+         SOXA==
+X-Forwarded-Encrypted: i=1; AKwUvBz/Cet1/CIqRGd5AhRXXUq8fJtHY4SbVl2hgBkXf7rtJMmeXFObIUBUg9hehtJZjl41Sdd9ETw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYItAgorxplVq/54WZpw8aGRTbK6og3et8YvrU1aYjrQRcy3CUO1
+	T3THlrrd+O9TbiPa25uQR5XVGoGzk3AKaxM+QHS8GIt6REN1zg9PdlM2
+X-Gm-Gg: AYBFou1GO/zwfQ34L8eOg0Ax9KwgqG6car1Pw+HHpl0mhPb8nmaukk08NanZAk38GNC
+	5tLavj1xnXiP4NWE6Xi0Uu/Sh4o4CKjy2fBVZwJtOuJefP8FZ+8tq0jIAl1DK88fPqhgTU/sRgr
+	tv2ia+s5YmtAadbDyMXCuz4OmEVB+RkUQ3SMxWgr68lSLnx0IxCiVMg0BZXWqcHA44xhFM75Ofj
+	uIuYsyLlzQxchKl19vpPRxi42LFu4UqSTjS9GcXl3S93QKqh+9zBDekPOY94648lUb4h64E15ec
+	+pEHevwZz84mwKjhmMIjb2Eg9TEKfz4vyowjhRVE12ujC3PCgTeaIgp7gzwIHBKOQU0tONlO+cj
+	GiCZ0ZVrGKiZt9mSr43fd5IeTvXvE3qYNPiMdaJDKB2zfG4aWONGHTuMIvQOzCMFF1Q5lOJdeX8
+	e1TPB/Vd+b9nAt7/vACjr7CvK51LhHhPHbKotRHTRUBLT0ohRQLdCOVXoFByrnXISAN6YY3Tkwa
+	7wSiYb5ClHqFaCWDtYvrlekgtf/n2YlEbz2UXrNYPtvabqfmWtN54kJYR1PalJb8VgfcL0=
+X-Received: by 2002:a17:903:3202:b0:2dd:190e:28b6 with SMTP id d9443c01a7336-2df7dd7b9bcmr188420695ad.2.1790612743509;
+        Mon, 28 Sep 2026 09:25:43 -0700 (PDT)
+Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34141a4a00dsm31259622eec.1.2026.09.28.09.25.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 09:25:42 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Wei Wang <weiwan@google.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ipv4: Fix device use-after-free in ip_mc_output()
+Date: Tue, 29 Sep 2026 00:25:34 +0800
+Message-ID: <20260928162534.2122207-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260925095105.446269-2-Jeremy.Jean@oss.cyber.gouv.fr>
 
-The subject prefix should be "PATCH ipsec" for IPsec bugfixes.
+ip_mc_output() reads rt->dst.dev and stores it in skb->dev without RCU
+protection.  dst_dev_put() can concurrently replace the destination device
+and release the old device after an RCU grace period, leaving the multicast
+output path with a stale skb->dev.
 
-2026-09-25, 09:51:06 +0000, Jérémy Jean wrote:
-> An off-by-one error in esp6_xmit() advances the IV counter before
-> encrypting each software-GSO segment. For N segments with sequence
-> numbers X through X+N-1, the IV counters are therefore X+1 through X+N.
-> The following non-GSO packet uses X+N for both its sequence number and
-> IV counter, repeating the last segment's AES-GCM nonce under the same
-> key.
+The stale device can be dereferenced by the post-routing path.  In
+particular, a socket using IP_PMTUDISC_PROBE reaches ip_skb_dst_mtu() from
+ip_finish_output() and reads the freed device's MTU.
 
-I find this description very unclear. All I'm managing to understand
-from this is "there's some situation where a packet isn't getting the
-seqno it should". I don't know where the "+1" comes from since for GSO
-the function does +N (xo->seq.low += skb_shinfo(skb)->gso_segs).
+KASAN reported:
 
+  BUG: KASAN: slab-use-after-free in ip_skb_dst_mtu+0x634/0x740
+  Read of size 4 at addr ffff88810921c038 by task poc/98
+  Call Trace:
+   ip_skb_dst_mtu+0x634/0x740
+   __ip_finish_output.part.0+0x22/0x2c0
+   ip_mc_output+0x287/0x930
+   ip_send_skb+0x11d/0x150
+   udp_send_skb+0x63e/0xdf0
+   udp_sendmsg+0x1235/0x1da0
+   __sys_sendto+0x32c/0x3a0
 
-Anyway, one process nit and one question on the code:
+  Freed by task 99:
+   kfree+0x131/0x3c0
+   device_release+0xc8/0x240
+   kobject_put+0x14d/0x280
+   netdev_run_todo+0x4cb/0xc70
+   rtnl_dellink+0x362/0xa90
 
-> The repeated nonce allows first a passive attacker who knows partial
-> plaintext from one packet to recover corresponding bytes from another
-> one, and second, an active attacker to recover GCM authentication key
-> to forge authentication tags without recovering the AES key.
-> 
-> Fix this by saving the complete current sequence number in esp.seqno
-> before advancing the shared GSO sequence state.
-> 
-> Fixes: 3dca3f38cfb8 ("xfrm: Separate ESP handling from segmentation for GRO packets.")
+Protect the whole multicast output path with an RCU read-side critical
+section, as ip_output() already does.  Load the destination device through
+skb_dst_dev_rcu() and keep it protected through the post-routing hooks and
+ip_finish_output().
 
-And if there's a crypto leak, this should probably have a "Cc: stable"
-tag.
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+Changes in v2:
+- Protect the whole ip_mc_output() path instead of only the MTU read.
+- Load the destination device with skb_dst_dev_rcu(), matching ip_output().
+- Use the commit that made dst device replacement RCU-protected as Fixes.
 
-> Assisted-by: LLM
-> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> ---
->  net/ipv6/esp6_offload.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-> index 2289552..05d13cc 100644
-> --- a/net/ipv6/esp6_offload.c
-> +++ b/net/ipv6/esp6_offload.c
-> @@ -346,6 +346,7 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
->  	}
->  
->  	seq = xo->seq.low;
-> +	esp.seqno = cpu_to_be64(seq + ((u64)xo->seq.hi << 32));
->  
->  	esp.esph = ip_esp_hdr(skb);
->  	esp.esph->spi = x->id.spi;
-> @@ -364,8 +365,6 @@ static int esp6_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features
->  	if (xo->seq.low < seq)
->  		xo->seq.hi++;
->  
-> -	esp.seqno = cpu_to_be64(xo->seq.low + ((u64)xo->seq.hi << 32));
+Link: https://lore.kernel.org/r/20260927071051.3693368-1-nicoyip.dev@gmail.com/ [v1]
 
-But then esp.seqno can have an inconsistent view of xo->seq.hi
-compared to what esp6_output_tail/esp_output_set_esn will see
-(xo->seq.hi++ just above this)?
+ net/ipv4/ip_output.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index a24cc8ee11d3..cf44597896cd 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -367,8 +367,11 @@ static int ip_mc_finish_output(struct net *net, struct sock *sk,
+ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct rtable *rt = skb_rtable(skb);
+-	struct net_device *dev = rt->dst.dev;
++	struct net_device *dev;
++	int ret;
+ 
++	rcu_read_lock();
++	dev = skb_dst_dev_rcu(skb);
+ 	/*
+ 	 *	If the indicated interface is up and running, send the packet.
+ 	 */
+@@ -406,7 +409,8 @@ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 		if (ip_hdr(skb)->ttl == 0) {
+ 			kfree_skb(skb);
+-			return 0;
++			ret = 0;
++			goto out;
+ 		}
+ 	}
+ 
+@@ -418,10 +422,13 @@ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 				ip_mc_finish_output);
+ 	}
+ 
+-	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+-			    net, sk, skb, NULL, skb->dev,
+-			    ip_finish_output,
+-			    !(IPCB(skb)->flags & IPSKB_REROUTED));
++	ret = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
++			   net, sk, skb, NULL, skb->dev,
++			   ip_finish_output,
++			   !(IPCB(skb)->flags & IPSKB_REROUTED));
++out:
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
 -- 
-Sabrina
+2.43.0
