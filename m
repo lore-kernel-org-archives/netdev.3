@@ -1,35 +1,35 @@
-Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
+Received: from mta0.migadu.com (out-230.mta0.migadu.com [91.218.175.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D01314D06
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A517B336897
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790559593; cv=none; b=MtgiQWyOJpC+3s6H5+mHgmo7653POgZBtusMm9ddo1gTSXE08m07JnUS6UONqhf4KcmtUiuCLM1L5aM038Cnc97fV5TkmYd+0A1DimUvVctdQtJA8hcQRscJ/9N5k2KVG1TILINt97p+Ux2o1dyPv9EW+CirTtfb+IlK9vg0d6o=
+	t=1790559641; cv=none; b=qiv3Eqdu6Qauna7Av7egwqo4N+vzdXidHb84hYdrd2WTYfKoTYw4SMlvBWPhaJMf4MnMYHtR++SRWVB993LM6vUIaH2E9da9m8SyomMCwsjsIvc+Fum8iVl6ytik7hHrLkHLyTHHmZS8Up2m+E536cSMoyt0tSoqkqU1i718s30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790559593; c=relaxed/simple;
-	bh=UWkm7cFORa8mURaCMX5JnqWElh5FP+tDwq5XS8obKmM=;
+	s=arc-20240116; t=1790559641; c=relaxed/simple;
+	bh=fSwbFF5J20s2wFY0Hdz3ckg8kcRWrerizNdWX1h9AKM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uJiClvYNzpAi04jVRWDj8MuvzehUx1V8QPDQJpg0H4nFRizEdKwuFQIb/x/M3TGb94du7Cb3kCLXQVc0ahpg4JvzjXvDeesSRY38zRGA+l4A4EAJtEQHeDj7UFskDsohaWzYg5uAulw/yAVMrNrf0G3WBzo1IEWDyO6xNVLe5Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FZtyCWs2; arc=none smtp.client-ip=95.215.58.61
+	 Content-Type:Content-Disposition:In-Reply-To; b=WXL6gEluGSAM7eh0qrV6X9Ce+CK/BYZhL8byNNU1VNOTl8oZPqITuhC0T/kd7/LS6NP3q6Z42oTveE2d8ZFmBLyDC2dFJc3QZKJ6QbJ0RCTg5eVCzCfsPiwEDv8YRaakeS3aTVaSVvP3HASXvn1GPejYUOS8TEJRDsjQMKMHZco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MG9tfMLg; arc=none smtp.client-ip=91.218.175.230
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FZtyCWs2"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MG9tfMLg"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=UWkm7cFORa8mURaCMX5JnqWElh5FP+tDwq5XS8obKmM=;
+DKIM-Signature: a=rsa-sha256; bh=fSwbFF5J20s2wFY0Hdz3ckg8kcRWrerizNdWX1h9AKM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790559589; v=1; x=1791164389;
- b=FZtyCWs21D85WGoHb1QYsXymcB4ap0wtpl7+AGRUW9GRxpzMxokKQstsffAvg0vXuNuHrzS7
- FnhDGjcaeaVD+aDNgNGJx7mDHA3Aaezv0CyamVt9vxt7ie5BPhRg4DjikP+VBVSr+4NINlQWumD
- r4iR1w9Bo7+r7wNZGvUnU2uc=
+ t=1790559637; v=1; x=1791164437;
+ b=MG9tfMLgK7hjIkE2XKqaWaNooH6GV6x+BHHRo4vSD+rPBdB+T0hg/2D/Fv4pZVhb7rw0b/Zs
+ j0a/7fFiIYslACnmQEfiNRXo/N8fYRKay4vUUWCxg1AR0wPthhnkmdmns4N7X799kJlGiJz1jYh
+ AeUPIPxjQweSl9wFig9Q31mI=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 3b473abf9002e32f;
-	Mon, 28 Sep 2026 01:39:49 +0000
-X-Mizu-Trace-ID: 3b473abf9002e32f
+Received: by mta11.migadu.com with ESMTPS id 298b0f888c0bd511;
+	Mon, 28 Sep 2026 01:40:37 +0000
+X-Mizu-Trace-ID: 298b0f888c0bd511
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 09:39:38 +0800
+Date: Mon, 28 Sep 2026 09:40:25 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
 To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
 Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
@@ -39,13 +39,12 @@ Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
 	Andrew Lunn <andrew@lunn.ch>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>
-Subject: Re: [PATCH net-next v2 5/9] netlink: specs: ethtool: re-align
- c33-pse-ext-state
-Message-ID: <arnFWpqnlZMKtbnE@fedora>
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH net-next v2 6/9] netlink: specs: ethtool: re-align
+ module-fw-flash-status
+Message-ID: <arnFiazPHNUKul04@fedora>
 References: <20260925213918.204767-1-ast@fiberby.net>
- <20260925213918.204767-6-ast@fiberby.net>
+ <20260925213918.204767-7-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,26 +54,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260925213918.204767-6-ast@fiberby.net>
+In-Reply-To: <20260925213918.204767-7-ast@fiberby.net>
 
-On Fri, Sep 25, 2026 at 09:39:08PM +0000, Asbjørn Sloth Tønnesen wrote:
-> enum ethtool_c33_pse_ext_state is misaligned with YNL:
+On Fri, Sep 25, 2026 at 09:39:09PM +0000, Asbjørn Sloth Tønnesen wrote:
+> Correct the values for enum ethtool_module_fw_flash_status:
 > 
-> - ETHTOOL_C33_PSE_EXT_STATE_OVLD_DETECTED is 6.
-> - ETHTOOL_C33_PSE_EXT_STATE_PD_DLL_POWER_TYPE is 7 (not in YNL).
-> - ETHTOOL_C33_PSE_EXT_STATE_POWER_NOT_AVAILABLE is 8, not 7.
-> - ETHTOOL_C33_PSE_EXT_STATE_SHORT_DETECTED is 9, not 8.
+> - ETHTOOL_MODULE_FW_FLASH_STATUS_STARTED is 1, not 0.
+> - ETHTOOL_MODULE_FW_FLASH_STATUS_IN_PROGRESS is 2, not 1.
+> - ETHTOOL_MODULE_FW_FLASH_STATUS_COMPLETED is 3, not 2.
+> - ETHTOOL_MODULE_FW_FLASH_STATUS_ERROR is 4, not 3.
 > 
-> In commit c8149739af86 ("netlink: specs: Expand the PSE netlink command
-> with C33 new features") the PD_DLL_POWER_TYPE enum member was skipped,
-> leading incorrect values for power-not-available and short-detected.
-> 
-> As PD_DLL_POWER_TYPE is not used, then skip it, but set the value for
-> power-not-available to 8.
+> Re-align the YNL spec by explicitly setting the first value to 1.
 > 
 > CC: Andrew Lunn <andrew@lunn.ch>
 > CC: Oleksij Rempel <o.rempel@pengutronix.de>
-> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 > Reviewed-by: Jakub Kicinski <kuba@kernel.org>
 > Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 > ---
@@ -84,17 +77,17 @@ On Fri, Sep 25, 2026 at 09:39:08PM +0000, Asbjørn Sloth Tønnesen wrote:
 >  1 file changed, 1 insertion(+)
 > 
 > diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-> index 5dd4d1b5d94b..439bf24e7c33 100644
+> index 439bf24e7c33..6868eb473478 100644
 > --- a/Documentation/netlink/specs/ethtool.yaml
 > +++ b/Documentation/netlink/specs/ethtool.yaml
-> @@ -89,6 +89,7 @@ definitions:
+> @@ -47,6 +47,7 @@ definitions:
 >        -
->          name: power-not-available
->          doc: Group of power_not_available states
-> +        value: 8
+>          name: started
+>          doc: The firmware flashing process has started.
+> +        value: 1
 >        -
->          name: short-detected
->          doc: Group of short_detected states
+>          name: in-progress
+>          doc: The firmware flashing process is in progress.
 > -- 
 > 2.55.0
 > 
