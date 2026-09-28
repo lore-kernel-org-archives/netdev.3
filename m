@@ -1,200 +1,175 @@
-Received: from cvsmtppost35.nm.naver.com (cvsmtppost35.nm.naver.com [114.111.35.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276684E7818
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B7E4E9C27
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609506; cv=none; b=uACSUxgpShmo1OzNoKDtRKnuvl4FNYiBZVCToQzlp/D3q+p+h7duzZO7gFltTnnV+DD//rb93CtCYtya5SRU9XjyvCOWtObjDr6soQeXoqb5GybsZDYhFxzMmStFBOTJLI7h1RpxSisLMYhgXUe2jK4wPGEvcGpnnveyKFCBCPI=
+	t=1790610863; cv=none; b=mI7LrhCMlqs347e0ZfV1+JHSiK+8pPPsOhnSkzq8+hxnUBgo/rw5I0siJSqCFQWXj/cnWdteogPQZe3gprG7JehMXNFJl0C6JMyQpixNTdgmp/jgH2UlQOrEwzZcmU1SOlCrWzYK/c/I6BCUsKtBc3LCwyMyz0EJHs46Ync/fUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609506; c=relaxed/simple;
-	bh=WjkOw+dq09Pw9UNWRg4QHNvc5KYfHbrtJx1tojYGQpE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fQgghl/Og8LZX30kGMvuhwfte2ju6Ce+kkr0b653ZIVcZyOJTKHCD8x3K6XVV51G3h3Qw8GrU0SL9bg2NeA4lQMWThuT+iun4mVAa/X4GJzXpAIZREjve0Ye4TogHwvhFsTMqUWQ6upEWz1ZN6wHB6GgHwiHfkJ2R2tg54dT5oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=FuyE6SY5; arc=none smtp.client-ip=114.111.35.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
+	s=arc-20240116; t=1790610863; c=relaxed/simple;
+	bh=ghSZTabWnqxavl/W4iUtPMg/mi1Uq99yCxVqS1s2Znc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GA/ToNDKZ8zxYAbqqGkhI3eSwXEMpRDQM3jlfnGoUdoLONrkB7UdBx28s1LiQyOjB1iijaJNDAA8s4vHYwOoJRjKxrOX83FGEYCzcywF50BJAlR+WDw5pa9Wqlh3QUA/aN26tuoleVFGRRcmcBegOQGa2IgBNqjCzcJ7Zxh9Jog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=VBA5bFza; arc=none smtp.client-ip=74.125.228.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="FuyE6SY5"
-Received: from cvsendbo022.nm ([10.112.20.47])
-  by cvsmtppost35.nm.naver.com with ESMTP id rNkzyzz9T8OUWSQ1NxaTJg
-  for <netdev@vger.kernel.org>;
-  Mon, 28 Sep 2026 15:21:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
-	t=1790608893; bh=WjkOw+dq09Pw9UNWRg4QHNvc5KYfHbrtJx1tojYGQpE=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=FuyE6SY5a3LzBr0bHSxH3B8MfFzRc6dSgKQy3aIaM10/E8lKDHIsqe1Xp+u0Y2jC0
-	 M4iF4wxzOe5MZJJSPgBSSOwgBllDqlKB64A7BYeNS9V2SwJjEWKow2gdME6sqQCHW+
-	 0X9OU6JpGMnhl+RT4UsUAicPfhqCAhoG4XgxB2YkmLz+SAAVimOZVs5i/pdaoUA0FO
-	 TBMffVJ7CNoIADuPivaoQ7962vQHzBgulcOBK9zmneemDbOA51RdPgKNZR239lODnB
-	 6JyQupI5k6N2oP3eHNkBSlaJs3cvoDm5S4r92tTjgCc9UWpbvyIGZC+8Cpo0R5+Lpj
-	 zT+jMStTNTDJA==
-X-Session-ID: TpC2W-GrRn2u2o-LQedDzQ
-X-Works-Send-Opt: 0rRoWNkNjHmmKAidp4JZKHmmjAumjAurKAKmKqtwaACYkEljxBmwjAg=
-X-Works-Smtp-Source: ednXFxglFqJZ+Hmqaxtr+6E=
-Received: from localhost.localdomain ([125.130.170.186])
-  by cvnsmtp012.nm.naver.com with ESMTP id TpC2W-GrRn2u2o-LQedDzQ
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Mon, 28 Sep 2026 15:21:33 -0000
-From: Seung Min Shin <guncraft2000@naver.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] sctp: hold transport reference across connect wait
-Date: Mon, 28 Sep 2026 15:21:32 +0000
-Message-Id: <20260928152132.3705137-1-guncraft2000@naver.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="VBA5bFza"
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dcdc386ddso192131766b.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:54:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1790610860; x=1791215660; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=bUFOamo9O9BYWzyDGfu0crdKrXnEWewsENPgbfRd9Ig=;
+        b=VBA5bFzaioQKl+YYYX3tEBHlYs17GUOJnsh7pZvigvrPuuYvmiKLOhWvOLECSVHvYR
+         Y6pEkoTPn80CicjSjzwn2Buby8Ck7eOcdwi2tIdY1gcZKECfQiOg/IokYDKP9OTbdqAH
+         3bwWH4cJkQWq3bQ5vp3HH91Y55FTEwE+2+Mpnq+z7WFk0wFexNCRIyBqR8BlnUB+Umee
+         JX2QpzZfEpStCvuRL0tjO8VT2H2hFHmi6DyhyU2ngduiPu89BIBAGG8pXGkrf4HJH18F
+         wrzqbWyQqc+E7ybjCXjyXap/6VqfzhbWhkA3+2iZO9SiyDnMWetW+FOZPDrtSVaulrjV
+         FqwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790610860; x=1791215660;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=bUFOamo9O9BYWzyDGfu0crdKrXnEWewsENPgbfRd9Ig=;
+        b=X0okeugHtqhayUnNskJE9nYColbLu/hUc6gXnH4daFegJDZ1SFVQvdfrTxd1ZEga5+
+         ZiIZmo0885zaK0GkQSt7/P0L9w+38hODtNbx22GtD1w5Vi6aIk8bF8noMPHbzpiUFGyt
+         Z54UEsbbxaLsHLvQbTPeck2nYEgaw/C4Sy37K1PotjicN5LMsvwDdinBJAzZfTFxgHk6
+         ucF0BD8g5bWean/RjLdwkIRg32h/ry4RDgWEdOOqi+q/Sv07W0Ss1NUtVDOT33viPrCQ
+         5yS+IQ0LwpnzS89MNcES5inftnbS2X3XCv6JJndKIhlbhLl/9n0bvVMReIyygEfiRFrg
+         eQMg==
+X-Forwarded-Encrypted: i=1; AKwUvBxBXqPBZJEAB3GunXSyDV4VQW9PsH/cZ7iA0YEVXQLndvRomJb9xWGm3qzePQ/2bhSqAGnOuxc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKF8DPMLNgCNOAiq93h6U9Lvx+TM3WLXEb1jj2PYWbaG8JhXB2I
+	IanUcsR34JOQh+wcYPEWKDk3Eg3XKAa3D9XVVwNb4nJkdl7QFxbTtWF5CYOOTzQpboM=
+X-Gm-Gg: AYBFou2smiQnyIjF8Zgd4yJZZ5r5YtYT2yeWOkvPEJTGMbATrKLpBiyltYT6gAVN+Sq
+	IaOP/xyVarWpO1CzOQbU4NL64u9sHUKE1vt6YsbGk0hlDsNhVTIpr6KYN/9dfIyXBJo/Xxyx9Oa
+	NUbOauhgtRuofOU7YdCNp5OmwAKNDPoySHk0rCjoaroTtioLqZCKGl6Ji0tEKgHcmofP7V1Cemc
+	B83weh1C6VTAAhia4UOoOszVQdvvqzIWwVA5MQrTwQrWEPyMM6CpCbUeIhdKQcmax4DkjarhZLz
+	XJnCBBDBDKPY+O1Aji6CMrN8FoOhWJTNn2i2WGjU5T805g3h/U/49X9Dap4pxz2/ZH+in1TD3VF
+	6WDaUOhm29CygxRROfNB2CnGaz3moOofBuuLdCAvI7R2Xrkavk20WBMrmGHZgWXblq/t4NpoxMl
+	xmT8aG0ShULyMPSbBiZS+y+ICFGRLfa4+eCN+/CSB5icxdXXApQxdZ80Ee81hC2zRRGo/49W/1
+X-Received: by 2002:a17:907:c24:b0:c20:1bc5:7002 with SMTP id a640c23a62f3a-c2ac22daf39mr1111903266b.3.1790610859621;
+        Mon, 28 Sep 2026 08:54:19 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae76a68aasm480717366b.35.2026.09.28.08.54.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 08:54:19 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+Cc: "Jakub Kicinski" <kuba@kernel.org>,  "Daniel Zahka"
+ <daniel.zahka@gmail.com>,  <netdev@vger.kernel.org>,  "Kuniyuki Iwashima"
+ <kuniyu@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Stanislav
+ Fomichev" <sdf@fomichev.me>,  <bpf@vger.kernel.org>,
+  <kernel-team@cloudflare.com>,  "Daniel Borkmann" <daniel@iogearbox.net>,
+  "John Fastabend" <john.fastabend@gmail.com>,  "Andrii Nakryiko"
+ <andrii@kernel.org>,  "Eduard Zingerman" <eddyz87@gmail.com>,  "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>,  "Martin KaFai Lau"
+ <martin.lau@linux.dev>,  "Song Liu" <song@kernel.org>,  "Yonghong Song"
+ <yonghong.song@linux.dev>,  "Jiri Olsa" <jolsa@kernel.org>,  "Emil
+ Tsalapatis" <emil@etsalapatis.com>,  "David S. Miller"
+ <davem@davemloft.net>,  "Eric Dumazet" <edumazet@google.com>,  "Simon
+ Horman" <horms@kernel.org>,  "Jesper Dangaard Brouer" <hawk@kernel.org>,
+  "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,  "Florian Westphal"
+ <fw@strlen.de>,  "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+In-Reply-To: <DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com> (Alexei Starovoitov's
+	message of "Fri, 25 Sep 2026 20:27:31 +0000")
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
+	<20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
+	<DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com>
+	<DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com>
+	<20260925121849.2ac5150b@kernel.org>
+	<DLONQQN0RB03.1NVWVFHGRRWV4@gmail.com>
+	<20260925132004.171b751e@kernel.org>
+	<DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Mon, 28 Sep 2026 17:52:03 +0200
+Message-ID: <87jyo5bcgs.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-sctp_sendmsg_to_asoc() selects a transport before waiting for a new
-interleaved association to become established. sctp_wait_for_connect()
-drops the socket lock while sleeping.
+On Fri, Sep 25, 2026 at 08:27 PM GMT, Alexei Starovoitov wrote:
+> On Fri Sep 25, 2026 at 8:20 PM UTC, Jakub Kicinski wrote:
+>> On Fri, 25 Sep 2026 19:51:37 +0000 Alexei Starovoitov wrote:
+>>> On Fri, Sep 25, 2026 at 12:18 PM Jakub Kicinski <kuba@kernel.org> wrote:
+>>> > Instead of improving the existing infra we're adding more BPF-specific
+>>> > glue and another bit to the skb. Matter of perspective I suppose :/  
+>>> 
+>>> skb_ext version needs a bit too. SKB_EXT_BPF is the 8th id, so it takes
+>>> the last bit of u8 active_extensions.
+>>> skbuff_ext_cache object is sized for all ids, so it also grows by
+>>> BPF_SKB_EXT_SIZE for xfrm, mptcp, psp whether bpf is used or not.
+>>> 
+>>> As I said earlier skb_ext is fine from bpf pov. If it can be made as
+>>> cheap as bit + tracepoint I don't mind it at all.
+>>> Which part of skb_ext would you improve?
+>>
+>> Mostly allocation speed. Either a small per-CPU cache like we have
+>> for skbs or let the scalar matadata fields live inside the skb.
+>
+> makes sense to me. Speeding up generic infra is always a good thing.
+>
+>> That said, the selective tracing approach is also tempting.
+>> It'd be great if we could have that for sockets.
+>> Could we possibly think of a way to build that into tracepoints
+>> instead of having the open coded
+>>
+>> obj_maybe_trace_bla()
+>> {
+>> 	if (obj->trace)
+>> 		trace_bla();
+>> }
+>>
+>> Having both:
+>>
+>> 	skb_maybe_trace_free(skb, SKB_CONSUMED);
+>> 	skb_release_data(skb, SKB_CONSUMED);
+>
+> with a 3rd enum argument for different use cases?
+> As a way to generalize different bits / different users?
+>
+> Also makes sense.
 
-While the lock is dropped, backlog processing can handle a COOKIE ACK and
-an ASCONF DEL-IP that removes the selected transport. sctp_assoc_rm_peer()
-then marks the transport dead and drops its association-owned reference.
-The transport can be freed through RCU before the send path resumes.
+The benchmarks from Friday were wrong. I got bit by KVM halt polling,
+which was randomly inflating the runtime cost by preventing batching.
 
-After the wait, the stale pointer is assigned to newly created DATA or
-I-DATA chunks and later dereferenced by sctp_outq_select_transport().
+The correct results - as in reproducible and with lower variance - are
+the other way around - BPF skb ext is cheaper CPU-wise than gated skb
+tracepoints. Please see:
 
-Hold a reference to the selected transport across
-sctp_wait_for_connect(). After the socket lock is reacquired, abort the
-send if the transport was marked dead. Callers without a selected
-transport pass NULL and retain their existing behavior.
+https://patch.msgid.link/20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com
 
-Cc: stable@kernel.org
-Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
-Assisted-by: LLM
-Signed-off-by: Seung Min Shin <guncraft2000@naver.com>
----
+Despite that, I agree that the tracepoint approach is tempting from the
+UX PoV.
 
-Notes:
-    Tested on 165768bb70265b5c38cf0b73fafd75be235f8b14 with
-    CONFIG_KASAN=y on x86-64.
-    
-    Before the patch:
-    - The attached reproducer triggered the reported transport use-after-free.
-    
-    After the patch:
-    - The exact attached reproducer completed 64 consecutive attempts without a
-      KASAN, refcount, BUG, WARNING, or panic report.
-    - A diagnostic run returned ESRCH in all 64 attempts and observed the
-      association in SCTP_ESTABLISHED state after each return.
-    - A normal stream-interleaving connect/send smoke test passed.
-    
-    The test config does not enable LOCKDEP, so this was not a LOCKDEP test.
+While an skb extension seems like a natural continuation of the XDP/TC
+metadata pattern, I think that model is not a great fit for skbs
+traveling through the network stack.
 
- net/sctp/socket.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+For XDP hook, there will be usually a single owning process of the
+attached program, I think. While TC, cgroup, tracepoints can have
+independent program owners, each wanting to associate their own piece of
+metadata with the skb.
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..621df93d3450 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -75,7 +75,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc,
- 				struct sctp_transport *transport,
- 				long *timeo_p, size_t msg_len);
- static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p);
--static int sctp_wait_for_connect(struct sctp_association *, long *timeo_p);
-+static int sctp_wait_for_connect(struct sctp_association *,
-+				 struct sctp_transport *, long *timeo_p);
- static int sctp_wait_for_accept(struct sock *sk, long timeo);
- static void sctp_wait_for_close(struct sock *sk, long timeo);
- static void sctp_destruct_sock(struct sock *sk);
-@@ -1245,7 +1246,7 @@ static int __sctp_connect(struct sock *sk, struct sockaddr *kaddrs,
- 		*assoc_id = asoc->assoc_id;
- 
- 	timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
--	return sctp_wait_for_connect(asoc, &timeo);
-+	return sctp_wait_for_connect(asoc, NULL, &timeo);
- 
- out_free:
- 	pr_debug("%s: took out_free path with asoc:%p kaddrs:%p err:%d\n",
-@@ -1843,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
- 
- 		if (asoc->ep->intl_enable) {
- 			timeo = sock_sndtimeo(sk, 0);
--			err = sctp_wait_for_connect(asoc, &timeo);
-+			err = sctp_wait_for_connect(asoc, transport, &timeo);
- 			if (err) {
- 				err = -ESRCH;
- 				goto err;
-@@ -1881,7 +1882,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
- 
- 	if (unlikely(wait_connect)) {
- 		timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
--		sctp_wait_for_connect(asoc, &timeo);
-+		sctp_wait_for_connect(asoc, NULL, &timeo);
- 	}
- 
- 	err = msg_len;
-@@ -9385,7 +9386,9 @@ static bool sctp_writeable(const struct sock *sk)
- /* Wait for an association to go into ESTABLISHED state. If timeout is 0,
-  * returns immediately with EINPROGRESS.
-  */
--static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
-+static int sctp_wait_for_connect(struct sctp_association *asoc,
-+				 struct sctp_transport *transport,
-+				 long *timeo_p)
- {
- 	struct sock *sk = asoc->base.sk;
- 	int err = 0;
-@@ -9394,12 +9397,16 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
- 
- 	pr_debug("%s: asoc:%p, timeo:%ld\n", __func__, asoc, *timeo_p);
- 
--	/* Increment the association's refcnt.  */
-+	/* Hold references while the socket lock is dropped. */
-+	if (transport)
-+		sctp_transport_hold(transport);
- 	sctp_association_hold(asoc);
- 
- 	for (;;) {
- 		prepare_to_wait_exclusive(&asoc->wait, &wait,
- 					  TASK_INTERRUPTIBLE);
-+		if (transport && transport->dead)
-+			goto do_transport_dead;
- 		if (!*timeo_p)
- 			goto do_nonblock;
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
-@@ -9428,7 +9435,8 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
- out:
- 	finish_wait(&asoc->wait, &wait);
- 
--	/* Release the association's refcnt.  */
-+	if (transport)
-+		sctp_transport_put(transport);
- 	sctp_association_put(asoc);
- 
- 	return err;
-@@ -9447,6 +9455,10 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
- do_nonblock:
- 	err = -EINPROGRESS;
- 	goto out;
-+
-+do_transport_dead:
-+	err = -EAGAIN;
-+	goto out;
- }
- 
- static int sctp_wait_for_accept(struct sock *sk, long timeo)
 
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
--- 
-2.34.1
+I can iterate on on cosmetic aspects so that we don't have blocks like:
 
+        if (reason == SKB_CONSUMED)
+                trace_consume_skb(...)
+        else
+                trace_kfree_skb(..., reason, ...)
+        skb_maybe_trace_free(..., reason, ...)
+
+... in a couple places where they appear in v1.
+
+Thanks for feedback.
