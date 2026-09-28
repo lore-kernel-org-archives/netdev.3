@@ -1,179 +1,141 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BEA34B43F
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C0F356A38
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790558751; cv=none; b=pWj9quMOyj+ojXwHcB244tTam7cLFBEC+9pIvb5Dj4ke3im1XLA76cs4Yak8l3frdai30HapOijufeukJY4bgmhZIh3yEyiR/Kloj+x0r8gAdNs4C6GrpWFdAbTNuiohkR2XXZwpR5KWLPRZ7eSGTpCJT5CSi3SjBxbN5O2kpgg=
+	t=1790558903; cv=none; b=h9b4k1Q+2hmfGQEhG5/SpZehK2tfNJCRLBkzPbKA0gUUYDVvEHsPBHQn23H9+GkCKMPj4BuJk8a2BMXj1wUixxsM8rjWtHBL4bV/dKyUS+2IrPpbK1zr7dpuvSkEFCZiboiupXjk7yyFBbm03kOhl+jdLgrnIjuRkh/HCICVzu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790558751; c=relaxed/simple;
-	bh=lj7HY0Y0O99ud7mHkoHfHzlsINmhRPcj+JhHzuXLxYo=;
+	s=arc-20240116; t=1790558903; c=relaxed/simple;
+	bh=2ehdvQIsANuzSyhG0PFVkeG3NOTtP55gQMYIpUaKWlE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DWmoFb+48ZOs7LnkcaqwhW4OY/H6iZPwWNFbQ0uUsQ6aYFaG68NoHaUNW9FEXB7Scgb2a12PiUoQsKNrKFWE7Gk8VN2Vtz0EZ17zVjRHavuJr0RVVDDeNYP5u3VJmdyCFi82WHQrj0vzwhXjUC/xPj1j6iYtOBYPSc+ZSMd9l2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=r5Crp9mz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=LiCtBisq7KwskXvZTBM35hiCKfX4fg9LSmEMo1tjrnBLlvEzMFiB8d01lLt7pZ2/QC3c8BbJQRVTiufs4wBWNUgogg5rLcTYLXOOv6kIWOieZD3SRfIBGNoJ3z9+TsRg7zeZmP/vG2NeQ/n2SDq2rCX3bNpMvBAWI2W9dL0RGrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KiAafJDw; arc=none smtp.client-ip=91.218.175.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="r5Crp9mz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=NjboV9Wg70zE9XkVdwrFWoz2fthmTJs1WzbV2940NEY=; b=r5Crp9mzM1xMuaDP8bw/Ep7808
-	0CrAxjr2uyxuadpbIDnFHNIKtjKFiXA6Z/Wl0njP78lqx6hJuwTwY8CSSqjuD1ohCjHWwNMrf+IKg
-	MYpib1qX1ourpyqsXyS1FgX5qkgICgeH1ODDlxUS0KmK+O8oeU5QIpIhj3TUT7ir8KWY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xB07l-007bWC-Rp; Mon, 28 Sep 2026 03:25:45 +0200
-Date: Mon, 28 Sep 2026 03:25:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Gaoyang Wei <yhyxwgy@gmail.com>
-Cc: Ziyou Xu <xuziyougm@gmail.com>, netdev@vger.kernel.org,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
-	Benjamin Larsson <benjamin.larsson@genexis.eu>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>
-Subject: Re: [RFC] net: towards a generic PON framework
-Message-ID: <372bc103-e98f-486d-8dd2-f013b1dbbdcb@lunn.ch>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
- <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
- <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
- <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KiAafJDw"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=2ehdvQIsANuzSyhG0PFVkeG3NOTtP55gQMYIpUaKWlE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790558898; v=1; x=1791163698;
+ b=KiAafJDwEiJHTuFjGg1kdCcAS+gxqU2XMsK+0F8u13ilgu1LEHFqgoz8JuX+nLCaP485EGLz
+ GEbAY60R6iue4VUOiO0GF5x5cYOijbPhj+RZx4SGU5oDjjYqLNrErWgxMsEtogAfX7mgVTBhpXp
+ L1VC/YaRKsK81jhnRvqjKlhI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 753f209cd2acc2f1;
+	Mon, 28 Sep 2026 01:28:18 +0000
+X-Mizu-Trace-ID: 753f209cd2acc2f1
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 09:28:11 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>, Heng Guo <heng.guo@windriver.com>
+Subject: Re: [PATCH net-next v2 2/9] netlink: specs: rt-link: re-align
+ ifla-inet6-stats
+Message-ID: <arnCq0o5forfSyiz@fedora>
+References: <20260925213918.204767-1-ast@fiberby.net>
+ <20260925213918.204767-3-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260925213918.204767-3-ast@fiberby.net>
 
-On Mon, Sep 28, 2026 at 07:11:19AM +0800, Gaoyang Wei wrote:
-> Hi Andrew,
+On Fri, Sep 25, 2026 at 09:39:05PM +0000, Asbjørn Sloth Tønnesen wrote:
+> YNL enum ifla-inet6-stats got misaligned with C, as two commits
+> reordered the enum.
 > 
-> > Another question which might affect the architecture. From what you
-> > have described, an ONU might be assigned multiple Port-IDs so it can
-> > carry multiple, separated, service traffic streams? You would want to
-> > represent each stream as a Linux netdev, with its own IP addresses
-> > etc.
+> In commit b4a11b2033b7 ("net: fix IPSTATS_MIB_OUTPKGS increment in
+> OutForwDatagrams."), IPSTATS_MIB_OUTPKTS was renamed to _OUTREQUESTS
+> and a new _OUTPKTS was as the last entry.
 > 
-> An ONU can indeed have multiple GEM Port-IDs, but I think there is one
-> important distinction here: a GEM Port-ID is not necessarily equivalent
-> to one Linux service interface.
+> In commit 652e2c777862 ("net: reorganize IP MIB values (II)"), the
+> IPSTATS_MIB_* enum was reorganized for data locality.
 > 
-> G.988 has an interworking layer between the GEM connections and the
-> Ethernet-facing service.
+> Neither of these commits updated the YNL spec.
 > 
-> For example, one Ethernet UNI can use an IEEE 802.1p mapper which sends
-> different priority classes to different GEM ports.  Bridge and VLAN
-> configuration can also make the relationship between Ethernet services
-> and GEM connections non-1:1.
+> This changed uAPI, as IPSTATS_MIB_* is used as indicies in an u64 array,
+> exported as IFLA_INET6_STATS by inet6_fill_ifla6_stats_attrs().
 > 
-> Very roughly:
+> This patch updates ifla-inet6-stats to reflect both of these commits.
+> Next time we want to reorganize these counters we should properly apply
+> mapping as to maintain the current order on the netlink side.
 > 
->                       Ethernet UNI
->                            |
->                    bridge / mapper /
->                      VLAN handling
->                      /     |     \
->                     /      |      \
->               GEM port  GEM port  GEM port
->                  100       101       102
-
-I think that is too roughly, because that is not how Linux actually
-works.
-
-A normal setup would be
-
-                 br0
-                  | 
-		Bridge
-		|    |
-               eth0 eth1
-
-and
-
-	vlan0:42
-	 |
-	 eth0
-
-What it sounds like it should be is
-
-
-                 br0
-                  | 
-		Bridge
-		|    |
-               eth0 eth1
-                |    
-       ------mapper------
-      /        |         \ 
-    GEM port  GEM port  GEM port
-       100       101       102
-
-You get your 802.1p tagged frames flowing down from user space and at
-the bottom you map them to GEM ports.
-
-How you classify frames above to tag them for 802.1p should be out of
-scope at this level, it is a TC problem, or done via the VLAN
-interfaces stacked on top of the base interface. It is a solved
-problem Linux can already do. It is the mapper which is new.
-
-But i assume this is also possible:
-
-
-               eth0                                 eth1		
-                |    		                     |    		
-       ------mapper------	            ------mapper------		
-      /        |         \ 	           /        |         \ 	
-    GEM port  GEM port  GEM port         GEM port  GEM port  GEM port
-       100       101       102              103       104       105  
-
-
-> Putting your two suggestions together seems to lead to a cleaner model:
+> While touching these entries, also remove the dash from ect{0,1}-pkts,
+> so that they align with the C naming.
 > 
->                      +------------------+
->                      |    PON device    |
->                      |  (wiphy-like)    |
->                      +--------+---------+
->                               |
->                 +-------------+-------------+
->                 |                           |
->              AF_OMCI                 service interfaces
->                 |                           |
->           OMCI userspace             Linux net_device(s)
->                                             |
->                                    VLAN / TC / bridge
->                                             |
->                                       GEM mapping
-
-You might want to talk to the wifi developers. Do they actually like
-the wiphy model, does it work for them, or do they wish they could
-throw it away and start again? What would they do differently?
-
-> That also seems to answer part of the question raised by your AF_OMCI
-> idea.
+> This pre-existing issue was identified by Sashiko during review of
+> commit 2b0aecb7b2b1 ("netlink: specs: rt-link: add accept-ra-min-lft").
 > 
-> If OMCI is a protocol associated with this lower-level PON object,
-> then there is no need for a synthetic omci0 merely to obtain
-> AF_PACKET semantics.
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260831093458.472180-1-ast%40fiberby.net
+> CC: Heng Guo <heng.guo@windriver.com>
+> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+> ---
+> Note for Sashiko/Clashiko: Targeting net-next, so no "Fixes" tag.
+> 
+>  Documentation/netlink/specs/rt-link.yaml | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+> index 8d63933f9910..3560053cea7a 100644
+> --- a/Documentation/netlink/specs/rt-link.yaml
+> +++ b/Documentation/netlink/specs/rt-link.yaml
+> @@ -532,11 +532,21 @@ definitions:
+>        -
+>          name: indelivers
+>        -
+> -        name: outforwdatagrams
+> +        name: noectpkts
+> +      -
+> +        name: ect1pkts
+> +      -
+> +        name: ect0pkts
+> +      -
+> +        name: cepkts
+> +      -
+> +        name: outrequests
+>        -
+>          name: outpkts
+>        -
+>          name: outoctets
+> +      -
+> +        name: outforwdatagrams
+>        -
+>          name: inhdrerrors
+>        -
+> @@ -587,14 +597,6 @@ definitions:
+>          name: outbcastoctets
+>        -
+>          name: csumerrors
+> -      -
+> -        name: noectpkts
+> -      -
+> -        name: ect1-pkts
+> -      -
+> -        name: ect0-pkts
+> -      -
+> -        name: cepkts
+>        -
+>          name: reasm-overlaps
+>    - name: br-boolopt-multi
+> -- 
+> 2.55.0
+> 
 
-So as you say, one question is, how do you associate an AF_OMCI socket
-to the lower level PON object? A typically home router probably has a
-single SFP cage, but maybe somebody will build a box with two SFP
-cages, you can connect to two independent providers so you have
-redundancy, and load balancing, etc.
-
-How does addressing work at this level? BSD Sockets can use bind(1) to
-set the local address. Or you have SO_BINDTODEVICE socket option, if
-there is a name which can be used. I don't think it needs an ifindex.
-
-	Andrew
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
