@@ -1,78 +1,79 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31004F5E04;
-	Mon, 28 Sep 2026 19:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFBA4F96CC;
+	Mon, 28 Sep 2026 19:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790623951; cv=none; b=KKpGiy/CB/4VCKMo7e5lk646TrL7UBXDz3CIPFW1F6AMFVvldiQK1t7CVDsO2jvesyCvdwael40zrJ1hOQr6Y3rBhXYSiEFacEnbchBRYJstE2AKnaqb+HmeOqsiuc4WWZPLSGEj9YQ0cs5u6uxVAaY6vXvIcbh/T2/ADpCpWGU=
+	t=1790623952; cv=none; b=ctSzAK1UZP/7C8TweXjsUJgtphUIx43AjcKfqg1fM6G83fSZdxNHoXn5R/Jcn1JhuRhS6ai88+7pl0sLJcnwlAvd3nsYKgw1Q/AnLTIp6Q6R+bWpd/Nkicxi5BmsI+Q+qLYWaUgM0dI99tnvpo+/Iv/oNdOumRgT9YFwwJGKT78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790623951; c=relaxed/simple;
-	bh=2ArWc7PKEsYEx+mNuhgkZOQUdQG2ojj+JQqjWtrHnB0=;
+	s=arc-20240116; t=1790623952; c=relaxed/simple;
+	bh=XvLlRT91OKxntugB1PUh2tIiqmHjaW3Whglr3pIB2V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmGNyXa8CHClPhnmT1+InDWWn9oEut2uoK/VuB/q+jiIRa9Iat1QjqRNxWMQo/sca/h0s4Dhcne5CUHcw3ZF7pjAOLEJjT7yV8h3xusF4HTFRKJwi/DXCgvPxHAVb1MzjWY6GUfDJyeMOkw5fSETNpYGJa8T+0K6hphTOVVxlV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HcaselTZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1NTSBWTO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nh4+NyJ8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=awFvs/Rf; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=nboYGU6tU7V3psTsnYS2SCNT8OgSYJCVq97yuQYNFCT8rWM9P+aR16DGOKndTG9/9zttWgPipQSlwqcKYDQ5VY1ENhb1CLBe7WFfYROZ5IZq+Kl+swXuhtVLGr157q902skzlYGh9d5DfsvlRt4yei9h/utSlysvklg2LpyFE8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2LzWKnsW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=X/48X4YI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dJ1lyYCO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PB5cSkJX; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HcaselTZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1NTSBWTO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nh4+NyJ8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="awFvs/Rf"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2LzWKnsW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X/48X4YI";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dJ1lyYCO";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PB5cSkJX"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 662F121BF1;
-	Mon, 28 Sep 2026 19:32:18 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2ADF921BF6;
+	Mon, 28 Sep 2026 19:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790623942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1790623944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JZ8h5Jzz8XpngoZnKBoT06ZAWwhOL69A3yCz3x1aRlA=;
-	b=HcaselTZPkQclKcIFmpORAAhKEsYYzXgdTIcP9iut6oCnZ8S/tLEAljCWMnF1K9WfEj0Ad
-	VjzYV/Do1UNUDziznAi2v9FPoCLdhvyLjJCRg5fs8At7Oqr59xBcO3n/VgSPmuMQhtsWlg
-	wmpgncDEYXkk5bRLAb61KguBXzmEUjI=
+	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
+	b=2LzWKnsWNf98Yanu/VBeAy+NXB6EUW8FkUHEpyA7QXCsXAuP2rBnqNl4xWNAILp/pEEPR6
+	ZYO0XMFwlMYFKqetSZdr7MkqJo2T5h/zLrhpm7YU9T0CBz16NibZeUikZKRCxXLekwpvaB
+	d1xmpfJDbQHJhIrT7L5/8NHRvWY8mNw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790623942;
+	s=susede2_ed25519; t=1790623944;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JZ8h5Jzz8XpngoZnKBoT06ZAWwhOL69A3yCz3x1aRlA=;
-	b=1NTSBWTOL5jM9NYam5D3QAOejgEawc9czQLxWXPx98iwWxsfK4gkSO6M0gixjus0I+eBk0
-	P5sLoZSRZVUZsZBw==
+	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
+	b=X/48X4YIFSRs6KjBzc7568RRZLKYIsN84EpWX2sRbpr0Nk8TGQ6Fxh7qULwJwP57m6m4e4
+	ThG6BzsrdO80OiCg==
 Authentication-Results: smtp-out1.suse.de;
-	none
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dJ1lyYCO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PB5cSkJX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790623938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1790623940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JZ8h5Jzz8XpngoZnKBoT06ZAWwhOL69A3yCz3x1aRlA=;
-	b=nh4+NyJ8mmYRt5TqEMmBvpEHOHx8QynfIuYDVh5tkF6d2sH6+lT1yTrmIcFVZVuork2QyL
-	BVs5AW12doU92aFHUOjygAGg+ERAQglV1BkbcSd7ZtTwBK5l2mvbDE9HBGhJcAq9dUpg0Q
-	bWQeijJD4vLpXUR80o8nnQjmCZC3TWY=
+	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
+	b=dJ1lyYCOEaON9wtV2Fvj4FDAuT2H0PDe56i73ICdbTbUBorjtrpOX5bqdLJls2IJrz5pgt
+	usaNYr1wydesu5rWNKIE/e7lfYRcR4CfH2V7mt2lM1BtZc3Rowsz+dTZ0rW1QiTrbzuXIK
+	wPrmO5pNuh2stwzTpEdbbBBPe9311yI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790623938;
+	s=susede2_ed25519; t=1790623940;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JZ8h5Jzz8XpngoZnKBoT06ZAWwhOL69A3yCz3x1aRlA=;
-	b=awFvs/RfPrlCPz4TJ2/m3tybU96vNvANo4sUBSpN1B3g2esqIPnUX3pqx7AyZdXvMHygZK
-	4+IuDffXmwFtv+DA==
+	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
+	b=PB5cSkJXFo3d0kxB0QdStweXD/8I8hJSoAcwK6dNf/QQPhUe1/Vikasx8C+NnfVWRfqM/W
+	I0Kdp2m7185c+pBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9413D133F1;
-	Mon, 28 Sep 2026 19:32:17 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F6BD1352C;
+	Mon, 28 Sep 2026 19:32:19 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4RBiFn3AumpWOAAAD6G6ig:T14
-	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:32:17 +0000
+	id 4RBiFn3AumpWOAAAD6G6ig:T15
+	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:32:19 +0000
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org,
@@ -81,14 +82,12 @@ Cc: horms@kernel.org,
 	edumazet@kernel.org,
 	davem@davemloft.net,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	bridge@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 13/16 net-next v2] net: bridge: guard ARP/RARP proxy and suppression with CONFIG_IPV4
-Date: Mon, 28 Sep 2026 21:30:09 +0200
-Message-ID: <20260928193046.6698-14-fmancera@suse.de>
+Subject: [PATCH 14/16 net-next v2] wifi: mac80211: replace CONFIG_INET with CONFIG_IPV4 guards
+Date: Mon, 28 Sep 2026 21:30:10 +0200
+Message-ID: <20260928193046.6698-15-fmancera@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260928193046.6698-1-fmancera@suse.de>
 References: <20260928193046.6698-1-fmancera@suse.de>
@@ -99,87 +98,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.01
+X-Rspamd-Queue-Id: 2ADF921BF6
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.80 / 50.00];
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	MX_GOOD(-0.01)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
 	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
 
-Historically, the bridge subsystem relied on CONFIG_INET to guard ARP
-and RARP proxy and suppression routines. As CONFIG_IPV4 is decoupled
-from the core stack and made optional, relying on CONFIG_INET is no
-longer accurate, as ARP and RARP are exclusively IPv4 protocols.
+Historically, the mac80211 subsystem used CONFIG_INET to guard
+IPv4-specific address notifiers, assuming that if IP networking was
+enabled, IPv4 was guaranteed to be present. As part of the effort to
+make CONFIG_IPV4 optional, this assumption is no longer valid.
+
+Update the conditional compilation guards around the IPv4 address change
+notifier and its associated registration routines to explicitly check
+for IS_ENABLED(CONFIG_IPV4). This ensures the mac80211 subsystem
+compiles successfully without undefined references when building an
+IPv6-only kernel.
 
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
- net/bridge/br_arp_nd_proxy.c | 2 +-
- net/bridge/br_device.c       | 2 +-
- net/bridge/br_input.c        | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index da15f4d7c1ae..d739b8697429 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -39,7 +39,6 @@ void br_recalculate_neigh_suppress_enabled(struct net_bridge *br)
- 	br_opt_toggle(br, BROPT_NEIGH_SUPPRESS_ENABLED, neigh_suppress);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 7816395681fa..1a0fa55db861 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -558,7 +558,7 @@ void ieee80211_restart_hw(struct ieee80211_hw *hw)
  }
+ EXPORT_SYMBOL(ieee80211_restart_hw);
  
--#if IS_ENABLED(CONFIG_INET)
- static bool
- br_is_neigh_suppress_enabled_vid(const struct net_bridge_port *p, u16 vid)
- {
-@@ -57,6 +56,7 @@ br_is_neigh_suppress_enabled_vid(const struct net_bridge_port *p, u16 vid)
- 	return br_is_neigh_suppress_enabled(p, v);
- }
- 
+-#ifdef CONFIG_INET
 +#if IS_ENABLED(CONFIG_IPV4)
- static void br_arp_send(struct net_bridge *br, struct net_bridge_port *p,
- 			struct net_device *dev, __be32 dest_ip, __be32 src_ip,
- 			const unsigned char *dest_hw,
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index ce9ea9ac3d0a..a3e5a521178f 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -69,7 +69,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 				&state, &vlan))
- 		goto out;
+ static int ieee80211_ifa_changed(struct notifier_block *nb,
+ 				 unsigned long data, void *arg)
+ {
+@@ -1655,7 +1655,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	wiphy_unlock(hw->wiphy);
+ 	rtnl_unlock();
  
--	if (IS_ENABLED(CONFIG_INET) &&
-+	if (IS_ENABLED(CONFIG_IPV4) &&
- 	    (eth_hdr(skb)->h_proto == htons(ETH_P_ARP) ||
- 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
- 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 4357d78524a6..584ac6c2215c 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -166,7 +166,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	BR_INPUT_SKB_CB(skb)->brdev = br->dev;
- 	BR_INPUT_SKB_CB(skb)->src_port_isolated = test_bit(BR_ISOLATED_BIT, &p->flags);
+-#ifdef CONFIG_INET
++#if IS_ENABLED(CONFIG_IPV4)
+ 	local->ifa_notifier.notifier_call = ieee80211_ifa_changed;
+ 	result = register_inetaddr_notifier(&local->ifa_notifier);
+ 	if (result)
+@@ -1673,11 +1673,11 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
  
--	if (IS_ENABLED(CONFIG_INET) &&
-+	if (IS_ENABLED(CONFIG_IPV4) &&
- 	    (skb->protocol == htons(ETH_P_ARP) ||
- 	     skb->protocol == htons(ETH_P_RARP))) {
- 		br_do_proxy_suppress_arp(skb, br, vid, p);
+ #if IS_ENABLED(CONFIG_IPV6)
+  fail_ifa6:
+-#ifdef CONFIG_INET
++#if IS_ENABLED(CONFIG_IPV4)
+ 	unregister_inetaddr_notifier(&local->ifa_notifier);
+ #endif
+ #endif
+-#if defined(CONFIG_INET) || defined(CONFIG_IPV6)
++#if IS_ENABLED(CONFIG_IPV4)
+  fail_ifa:
+ #endif
+ 	wiphy_unregister(local->hw.wiphy);
+@@ -1705,7 +1705,7 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	tasklet_kill(&local->tx_pending_tasklet);
+ 	tasklet_kill(&local->tasklet);
+ 
+-#ifdef CONFIG_INET
++#if IS_ENABLED(CONFIG_IPV4)
+ 	unregister_inetaddr_notifier(&local->ifa_notifier);
+ #endif
+ #if IS_ENABLED(CONFIG_IPV6)
 -- 
 2.55.0
 
