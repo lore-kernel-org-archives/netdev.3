@@ -1,68 +1,32 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7236F492E23
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 09:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8549158B;
+	Mon, 28 Sep 2026 09:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790588527; cv=none; b=nrlggeajBCncwSx1KfblzZ2eLX44gYEht9mR+usUh2PpKyZGc8VCr1qAQnGm2gV6MkxSe6zrScMf//WORBu5yLxv9k1MtoUo4icBusTnsVBOX+W9yL/uB85mJI2/MQFbuOrR5q2muRP4HOv48zHo1v4Pj8lq1h9Bq2S/aN6Q0t4=
+	t=1790588533; cv=none; b=EqJL0xRq2BLvTp7+W6EU0k8Os5Yu6iKOOojq0/W1GmOYLGhPlnTn8/VNZR7pXFGr3yU5HzeGHGg96nLcSSBMH7UumOfWsFH+NjO/SfuOjEqPqznI/5k+AAKede73WyNt7u9f694qD7eBPzeRLuLir3mPKJFRX8zx4jzxdXzIY84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790588527; c=relaxed/simple;
-	bh=h0g2cSklYj+E8R4yu0B0K9XX41R3rWf4QX9cI+EMJpI=;
+	s=arc-20240116; t=1790588533; c=relaxed/simple;
+	bh=Uzis3zwzOU7UBBDxg/EhQkXe5PWPIYAnmdFvNPj6tAU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KI+loh+QhHEYCXTQ3AbCHFmdqPaPfU4kvZABmN8u/jGvwHk5q7SYnruPhGqzwnyKttPdhQDdRErOo9NaIKnkVZLIo3OCMeA1nAWivlvgqi5xcC16lSG0+0GghkHp9VijcmB95sBUXQ+QreiurK6DBIhkQcEqr3GSh2/6JdoNTIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSCzZJ8I; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=bbpBDC65DC4+lspWa6ZtLsLl3t7YMUrw+g7TMyl3Vqt2zqgkUrH0DiI3ThmQUseGLruAKvTn9QZ/ozJP5+zbjXRlZHjPR0D8w4KCQ/y7yNIgDfL49+akG5kySBJzCDvpivimi6VyKv8TCvE8KlwOJEdpFRwBClUS+Gcwn3GnBLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMGLAdMB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSCzZJ8I"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843178b1c8so317769f8f.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790588523; x=1791193323; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jK0+4urBdoRm24BPDR63lzQtxeAkYMsHmBmlA17MxT8=;
-        b=TSCzZJ8ItIRInkzo6x6UAZw1KeCgliKJQXRJfHjwSb9Tdx3+QQmdUflLjEDQpXALRf
-         OGpnh0S9EqgXiMhbsICR+K7ZpZ0tJavqaGuaonmCn7IzrjyykwkuavU45fpTIRFqgq8U
-         P4RlNzUJYmOVeZmn5IF6Nd9kSWWkHKQ4NaUUjdifWugqHgcLwCSkdMtKwvBV/JloaS7W
-         gRkexk5yaVN+6ZM+bw8pauFSfr0qvfVpdX3BtREN8JmGUtfajaf+irhi3MQS+ovMRZ6z
-         d538oF1vx3xi/Vy3nAv2NhQkiehFvGa5KBNfAzL3Yq+a/gPfv3ucdL8rb8C5zI8MNeaw
-         FtYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790588523; x=1791193323;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jK0+4urBdoRm24BPDR63lzQtxeAkYMsHmBmlA17MxT8=;
-        b=yCH+6JGTdiHnb93PcoN0becdFti91oo6fEuPBTEx0FBCsJUVkLbuVGySVGdXDGBNZe
-         xOk4jK7aR6+SHnyEEMLWMfj2dpKjgXdHQ8ffvoEyIIapo6ezQvhlrJlPuUc5Xwz0zf9L
-         ZNWaIw34WrSLbT/ps8frBIiI6y840YCO8Ej8zETgtenlC/Od373Nx2UoV5s7j+0Qmr0b
-         exfdg/N1oEPyR6o1CrpSaKvc3BYdRSW8iOyXA3bZ2QMzrFgrWSuCZq2ctL+6smcpVgYF
-         jjNnF6gUpOUz/GEVuDHkwgbkmPLhPGLaL8WTC4hXUbJojLbCDR85j4mZzRXhtaUUlgXv
-         hcsw==
-X-Gm-Message-State: AFuF++m65oHAoTQinuxsTCwUrTCqzKYfDmF4r/TDa8lGwiPyzO/misMO
-	KPfCtvQoRg1vmsEWzWn5bx/1w7M9Tyo/VMgjKy3owN7m4flUh9/MMS9e
-X-Gm-Gg: AYBFou0Kp8yubVMb946or+gS3kwkCCxIkYMyzlFzAtYjIxBS+cAEmfs5MDexUVXzKxh
-	dYbwCB6bkEqZWSis2GfeAAPNY8tnwE5fGTN3C1jhG8IZzt4lcuv3G42PF+s07eg+XbIXOr6CpEK
-	3USXR9xnSr47CNGsjZ8LvZJ6EDT3+1qn7r9kXbzjSL3GNBBTNQiB+8lUDczZ63LodC6nImgT3fK
-	B+3ICF6Oc9yRHnTAqn1emc64rfmgoPyZ4BpwMWn9c55GcQmG1fJ7vmO9Pm5HSwyYPq9Aw/xZ0gy
-	Gcj8yKhWjF9+xwYfx+MiQ0u7REDOKuR88qlhA1HXn09TXrlYLx8ZXywWC1SbtuQGv6tvOPhktFj
-	HOpCaQlt7fbCyneEOn0qV3oXzpkfljABeNu1HVMZj+EEBnwLTSRT5mue263vagVX55Nt8jbLQMH
-	PeFMG5Oc/uuabi5a/OxFM/GfGtq6VImt4GOY7vNZIB1qRo3jcNTuTlkWW31ZiGGNlBIGX1LX4Bo
-	jI7fATvhqicE1sl6hFsqNOC3270wZ3AyAvozUXpU1qP5Yv1QjKRseNVC3lrblKo3W7IzuXcnSzf
-	o8npbkgJ+9iUk+sxi4wPv/5qP8GnynuP90dimaV1s2ArBHodPSEolx0xvCul2WV6i9RWfRK7cMG
-	vsxPB5OH71zJSz8ug+Q==
-X-Received: by 2002:a05:600c:548e:b0:49c:f9b8:bae0 with SMTP id 5b1f17b1804b1-49fede023d8mr167183535e9.2.1790588523350;
-        Mon, 28 Sep 2026 02:42:03 -0700 (PDT)
-Received: from ?IPV6:2a02:3100:5d04:affc:2501:4248:c28:faa9? (dynamic-2a02-3100-5d04-affc-2501-4248-0c28-faa9.310.pool.telefonica.de. [2a02:3100:5d04:affc:2501:4248:c28:faa9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349fa1sm37984144f8f.8.2026.09.28.02.42.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 02:42:02 -0700 (PDT)
-Message-ID: <52f4d7a6-6bbe-41fb-863c-5c71644e20d4@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMGLAdMB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA591F000FF;
+	Mon, 28 Sep 2026 09:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790588530;
+	bh=UTengHvPYhZtBlgD3KO0eZxvsMlDR5S47JsF2+I3aO8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MMGLAdMB1SK+dAHpsHxR0l1RGn/5uhjufqTy+67bIejnp34WcKMaznCq7CwxuELDE
+	 6bME+jyzuaXf4KKbtTS5HVJ0o1ToM77S16ZSG61L5b4+3bZAuvXW59hpfAoqzq/03/
+	 TtSAQA368xhScPVGlNpZcn6XIjiwGS2+fHmxLyxSSCUyWcgdLgRZRFtV7Gp8eK9GT7
+	 aV2tTxRobtWgpwfKm1g13228+SZ6Fr8H7YJGlN/gLrG3P5fozA29lAyDghFGX2ogK8
+	 YHSOgZ11C6chdzipze3p4rLPOTqgyPkqkKAx2jDKbqreF/uNA/1xZ/US3hd/stWjPa
+	 Ys7OU+aO39qvw==
+Message-ID: <8929fbe2-4a46-44c6-ac18-caff743b8075@kernel.org>
 Date: Mon, 28 Sep 2026 11:42:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -71,93 +35,417 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] net: hsr: unfold GSO super-packets at the forward
- entry
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
- shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
- qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
- xiaoliang.yang_1@nxp.com, skhawaja@google.com, liuhangbin@gmail.com,
- stable@vger.kernel.org, sdf.kernel@gmail.com
-References: <20260809121455.1745-1-xiexinet@gmail.com>
- <20260809121455.1745-4-xiexinet@gmail.com>
- <20260923104346.ur63K3h2@linutronix.de>
- <2cf54664-c07d-471f-af6d-4b70e09626b4@gmail.com>
- <20260925082954.MYDugnDU@linutronix.de>
- <21bfa8a9-c488-49aa-b2a1-4d282fd51c42@gmail.com>
- <20260928063824.0E3LO1vu@linutronix.de>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- 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
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <20260928063824.0E3LO1vu@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next v18 05/10] net: phy: Represent PHY-less SFP
+ modules with phy_port
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
+ Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+ Frank Wunderlich <frank.wunderlich@linux.dev>,
+ Pietro Ameruoso <p.ameruoso@live.it>, Aleksei Sviridkin <f@lex.la>
+References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+ <20260927133619.955236-6-maxime.chevallier@bootlin.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260927133619.955236-6-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> So veth. The test suite is using veth I don't remember that it was (is)
-> a problem there. But then there is no TCP.
-> Wouldn't it be also a problem if you attach veth interface to a bridge
-> and that large TCP skb would have to leave the bridge via a physical
-> port?
 
-When a bridge forwards a GSO skb from veth to a physical port, the
-outgoing TX path handles segmentation. validate_xmit_skb() checks
-whether software segmentation is needed. The networking core performs
-software segmentation as needed and can use hardware segmentation
-offload when available for that skb.
 
-The software HSR/PRP path needs to split the GSO skb earlier. Each
-segment needs its own sequence number and HSR tag or PRP trailer.
-We add these before calling dev_queue_xmit() on the lower device.
-The normal TX segmentation code cannot create these per-frame
-HSR/PRP fields for us.
+Le 27/09/2026 à 15:36, Maxime Chevallier a écrit :
+> Now that the SFP bus infrastructure notifies when PHY-less modules are
+> connected, we can create a phy_port to represent it. Instead of letting
+> the SFP subsystem handle that, the Bus' upstream is in charge of
+> maintaining that phy_port and register it to the topology, as the
+> upstream (in this case a phy device) is directly interacting with the
+> underlying net_device.
+> 
+> Add a phy_caps helper to get the achievable modes on this module based
+> on what the phy_port representing the bus supports.
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Tested-by: Aleksei Sviridkin <f@lex.la>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-TCP is the case I reproduced, but this is not limited to TCP. UDP
-GSO skbs can also pass through veth without being segmented.
-Passing normal PROFINET RT or GOOSE frames through veth does not
-make them GSO skbs. Patch 3 skips segmentation for these frames.
-They still follow the normal HSR/PRP forwarding path.
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-> This does not sound like it is limited to hsr. I think it deserves a
-> helper similar to skb_linearize().
+> ---
+>   drivers/net/phy/phy-caps.h   |   2 +
+>   drivers/net/phy/phy_caps.c   |  26 +++++++++
+>   drivers/net/phy/phy_device.c | 100 +++++++++++++++++++++++++++++++++--
+>   drivers/net/phy/phylink.c    |  76 ++++++++++++++++++++++++--
+>   include/linux/phy.h          |   6 +++
+>   5 files changed, 203 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/phy/phy-caps.h b/drivers/net/phy/phy-caps.h
+> index 421088e6f6e8..ec3d39a0ae06 100644
+> --- a/drivers/net/phy/phy-caps.h
+> +++ b/drivers/net/phy/phy-caps.h
+> @@ -66,5 +66,7 @@ void phy_caps_medium_get_supported(unsigned long *supported,
+>   				   enum ethtool_link_medium medium,
+>   				   int lanes);
+>   u32 phy_caps_mediums_from_linkmodes(unsigned long *linkmodes);
+> +void phy_caps_linkmode_filter_ifaces(unsigned long *to, const unsigned long *from,
+> +				     const unsigned long *interfaces);
+>   
+>   #endif /* __PHY_CAPS_H */
+> diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
+> index 942d43191561..558e4df4d63c 100644
+> --- a/drivers/net/phy/phy_caps.c
+> +++ b/drivers/net/phy/phy_caps.c
+> @@ -445,3 +445,29 @@ u32 phy_caps_mediums_from_linkmodes(unsigned long *linkmodes)
+>   	return mediums;
+>   }
+>   EXPORT_SYMBOL_GPL(phy_caps_mediums_from_linkmodes);
+> +
+> +/**
+> + * phy_caps_linkmode_filter_ifaces() - Filter linkmodes with an interface list
+> + * @to: Stores the filtered linkmodes
+> + * @from: Linkmodes to filter
+> + * @interfaces: Bitfield of phy_interface_t that we use for filtering
+> + *
+> + * Filter the provided linkmodes, only to keep the ones we can possibly achieve
+> + * when using any of the provided MII interfaces.
+> + */
+> +void phy_caps_linkmode_filter_ifaces(unsigned long *to,
+> +				     const unsigned long *from,
+> +				     const unsigned long *interfaces)
+> +{
+> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(ifaces_supported) = {};
+> +	unsigned int ifaces_caps = 0;
+> +	phy_interface_t interface;
+> +
+> +	for_each_set_bit(interface, interfaces, PHY_INTERFACE_MODE_MAX)
+> +		ifaces_caps |= phy_caps_from_interface(interface);
+> +
+> +	phy_caps_linkmodes(ifaces_caps, ifaces_supported);
+> +
+> +	linkmode_and(to, from, ifaces_supported);
+> +}
+> +EXPORT_SYMBOL_GPL(phy_caps_linkmode_filter_ifaces);
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 3c20d4cc1a79..ab9631b161bc 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1400,11 +1400,21 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
+>   {
+>   	struct phy_device *phydev = upstream;
+>   	struct net_device *dev = phydev->attached_dev;
+> +	int ret;
+>   
+> -	if (dev)
+> -		return phy_link_topo_add_phy(dev, phy, PHY_UPSTREAM_PHY, phydev);
+> +	phydev->has_sfp_mod_phy = true;
+>   
+> -	return 0;
+> +	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
+> +	 * topology.
+> +	 */
+> +	if (!dev)
+> +		return 0;
+> +
+> +	ret = phy_link_topo_add_phy(dev, phy, PHY_UPSTREAM_PHY, phydev);
+> +	if (ret)
+> +		phydev->has_sfp_mod_phy = false;
+> +
+> +	return ret;
+>   }
+>   
+>   /**
+> @@ -1422,6 +1432,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
+>   	struct phy_device *phydev = upstream;
+>   	struct net_device *dev = phydev->attached_dev;
+>   
+> +	phydev->has_sfp_mod_phy = false;
+> +
+>   	if (dev)
+>   		phy_link_topo_del_phy(dev, phy);
+>   }
+> @@ -1527,6 +1539,75 @@ static void phy_sfp_link_down(void *upstream)
+>   		port->ops->link_down(port);
+>   }
+>   
+> +static int phy_add_sfp_mod_port(struct phy_device *phydev)
+> +{
+> +	const struct sfp_module_caps *caps;
+> +	struct phy_port *port;
+> +	int ret = 0;
+> +
+> +	/* Create mod port */
+> +	port = phy_port_alloc();
+> +	if (!port)
+> +		return -ENOMEM;
+> +
+> +	port->active = true;
+> +
+> +	caps = sfp_get_module_caps(phydev->sfp_bus);
+> +
+> +	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
+> +					phydev->sfp_cage_port->interfaces);
+> +
+> +	if (phydev->attached_dev) {
+> +		ret = phy_link_topo_add_port(phydev->attached_dev, port);
+> +		if (ret) {
+> +			phy_port_destroy(port);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	/* we don't use phy_add_port() here as the module port isn't a direct
+> +	 * interface from the PHY, but rather an extension to the sfp-bus, that
+> +	 * is already represented by its own phy_port
+> +	 */
+> +	phydev->mod_port = port;
+> +
+> +	return 0;
+> +}
+> +
+> +static void phy_del_sfp_mod_port(struct phy_device *phydev)
+> +{
+> +	if (!phydev->mod_port)
+> +		return;
+> +
+> +	if (phydev->attached_dev)
+> +		phy_link_topo_del_port(phydev->attached_dev, phydev->mod_port);
+> +
+> +	phy_port_destroy(phydev->mod_port);
+> +	phydev->mod_port = NULL;
+> +}
+> +
+> +static int phy_sfp_module_start(void *upstream)
+> +{
+> +	struct phy_device *phydev = upstream;
+> +
+> +	/* If there's a downstream SFP module, and it doesn't contain a PHY
+> +	 * device, let's create a phy_port to represent that module.
+> +	 */
+> +	if (!phydev->has_sfp_mod_phy)
+> +		return phy_add_sfp_mod_port(phydev);
+> +
+> +	return 0;
+> +}
+> +
+> +static void phy_sfp_module_stop(void *upstream)
+> +{
+> +	struct phy_device *phydev = upstream;
+> +
+> +	/* Called upon module removal or upstream removal */
+> +	if (!phydev->has_sfp_mod_phy)
+> +		phy_del_sfp_mod_port(phydev);
+> +}
+> +
+>   static const struct sfp_upstream_ops sfp_phydev_ops = {
+>   	.attach = phy_sfp_attach,
+>   	.detach = phy_sfp_detach,
+> @@ -1536,6 +1617,8 @@ static const struct sfp_upstream_ops sfp_phydev_ops = {
+>   	.link_down = phy_sfp_link_down,
+>   	.connect_phy = phy_sfp_connect_phy,
+>   	.disconnect_phy = phy_sfp_disconnect_phy,
+> +	.module_start = phy_sfp_module_start,
+> +	.module_stop = phy_sfp_module_stop,
+>   };
+>   
+>   static int phy_add_port(struct phy_device *phydev, struct phy_port *port)
+> @@ -1638,6 +1721,7 @@ static int phy_sfp_probe(struct phy_device *phydev)
+>   		port = phy_setup_sfp_port(phydev);
+>   		if (IS_ERR(port)) {
+>   			ret = PTR_ERR(port);
+> +			port = NULL;
+>   			goto out_sfp;
+>   		}
+>   	}
+> @@ -1651,6 +1735,8 @@ static int phy_sfp_probe(struct phy_device *phydev)
+>   	 */
+>   	sfp_bus_put(bus);
+>   
+> +	phydev->sfp_cage_port = port;
+> +
+>   	return ret;
+>   
+>   out_port:
+> @@ -1744,6 +1830,8 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
+>   		phydev->attached_dev->phydev = NULL;
+>   		phydev->attached_dev = NULL;
+>   		phy_link_topo_del_phy(dev, phydev);
+> +		if (phydev->mod_port)
+> +			phy_link_topo_del_port(dev, phydev->mod_port);
+>   	}
+>   
+>   	phydev->phy_link_change = NULL;
+> @@ -1873,6 +1961,12 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>   		err = phy_link_topo_add_phy(dev, phydev, PHY_UPSTREAM_MAC, dev);
+>   		if (err)
+>   			goto error;
+> +
+> +		if (phydev->mod_port) {
+> +			err = phy_link_topo_add_port(dev, phydev->mod_port);
+> +			if (err)
+> +				goto error;
+> +		}
+>   	}
+>   
+>   	/* Some Ethernet drivers try to connect to a PHY device before
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index 19090916af75..db05d2dda429 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -96,6 +96,7 @@ struct phylink {
+>   	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
+>   	u8 sfp_port;
+>   	struct phy_port *sfp_cage_port;
+> +	struct phy_port *mod_port;
+>   
+>   	struct eee_config eee_cfg;
+>   
+> @@ -1792,10 +1793,15 @@ static int phylink_create_sfp_cage_port(struct phylink *pl)
+>   
+>   	ret = phy_link_topo_add_port(pl->netdev, port);
+>   	if (ret)
+> -		phy_port_destroy(port);
+> -	else
+> -		pl->sfp_cage_port = port;
+> +		goto out_destroy_port;
+> +
+> +	pl->sfp_cage_port = port;
+> +
+> +	return 0;
+>   
+> +out_destroy_port:
+> +	phy_port_destroy(port);
+> +	pl->sfp_cage_port = NULL;
+>   	return ret;
+>   }
+>   
+> @@ -4012,14 +4018,65 @@ static void phylink_sfp_module_remove(void *upstream)
+>   	phy_interface_zero(pl->sfp_interfaces);
+>   }
+>   
+> +static int phylink_add_sfp_mod_port(struct phylink *pl)
+> +{
+> +	const struct sfp_module_caps *caps;
+> +	struct phy_port *port;
+> +	int ret = 0;
+> +
+> +	if (!pl->sfp_cage_port)
+> +		return 0;
+> +
+> +	/* Create mod port */
+> +	port = phy_port_alloc();
+> +	if (!port)
+> +		return -ENOMEM;
+> +
+> +	port->active = true;
+> +
+> +	caps = sfp_get_module_caps(pl->sfp_bus);
+> +
+> +	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
+> +					pl->sfp_cage_port->interfaces);
+> +
+> +	if (pl->netdev) {
+> +		ret = phy_link_topo_add_port(pl->netdev, port);
+> +		if (ret) {
+> +			phy_port_destroy(port);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	pl->mod_port = port;
+> +
+> +	return 0;
+> +}
+> +
+> +static void phylink_del_sfp_mod_port(struct phylink *pl)
+> +{
+> +	if (!pl->mod_port)
+> +		return;
+> +
+> +	if (pl->netdev)
+> +		phy_link_topo_del_port(pl->netdev, pl->mod_port);
+> +
+> +	phy_port_destroy(pl->mod_port);
+> +	pl->mod_port = NULL;
+> +}
+> +
+>   static int phylink_sfp_module_start(void *upstream)
+>   {
+>   	struct phylink *pl = upstream;
+> +	int ret;
+>   
+>   	/* If this SFP module has a PHY, start the PHY now. */
+>   	if (pl->phydev) {
+>   		phy_start(pl->phydev);
+>   		return 0;
+> +	} else {
+> +		ret = phylink_add_sfp_mod_port(pl);
+> +		if (ret)
+> +			return ret;
+>   	}
+>   
+>   	/* If the module may have a PHY but we didn't detect one we
+> @@ -4028,7 +4085,16 @@ static int phylink_sfp_module_start(void *upstream)
+>   	if (!pl->sfp_may_have_phy)
+>   		return 0;
+>   
+> -	return phylink_sfp_config_optical(pl);
+> +	ret = phylink_sfp_config_optical(pl);
+> +	if (ret)
+> +		goto del_mod_port;
+> +
+> +	return 0;
+> +
+> +del_mod_port:
+> +	phylink_del_sfp_mod_port(pl);
+> +
+> +	return ret;
+>   }
+>   
+>   static void phylink_sfp_module_stop(void *upstream)
+> @@ -4038,6 +4104,8 @@ static void phylink_sfp_module_stop(void *upstream)
+>   	/* If this SFP module has a PHY, stop it. */
+>   	if (pl->phydev)
+>   		phy_stop(pl->phydev);
+> +	else
+> +		phylink_del_sfp_mod_port(pl);
+>   }
+>   
+>   static void phylink_sfp_link_down(void *upstream)
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 7c5098a0dd6c..dbd6ed5864f2 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -611,7 +611,10 @@ struct phy_oatc14_sqi_capability {
+>    * @irq: IRQ number of the PHY's interrupt (-1 if none)
+>    * @phylink: Pointer to phylink instance for this PHY
+>    * @sfp_bus_attached: Flag indicating whether the SFP bus has been attached
+> + * @has_sfp_mod_phy: Set true if downstream SFP bus's module contains a PHY
+>    * @sfp_bus: SFP bus attached to this PHY's fiber port
+> + * @sfp_cage_port: The phy_port connected to the downstream SFP cage
+> + * @mod_port: phy_port representing the SFP module, if it is phy-less
+>    * @attached_dev: The attached enet driver's device instance ptr
+>    * @adjust_link: Callback for the enet controller to respond to changes: in the
+>    *               link state.
+> @@ -802,7 +805,10 @@ struct phy_device {
+>   
+>   	/* This may be modified under the rtnl lock */
+>   	bool sfp_bus_attached;
+> +	bool has_sfp_mod_phy;
+>   	struct sfp_bus *sfp_bus;
+> +	struct phy_port *sfp_cage_port;
+> +	struct phy_port *mod_port;
+>   	struct phylink *phylink;
+>   	struct net_device *attached_dev;
+>   	struct mii_timestamper *mii_ts;
 
-Patch 3 already uses the common __skb_gso_segment() helper, then
-passes each segment through normal HSR/PRP forwarding. Do you mean
-a new common wrapper around this helper?
-
--- 
-Xin
