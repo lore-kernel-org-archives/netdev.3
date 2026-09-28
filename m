@@ -1,640 +1,167 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AD24DC552
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790616174; cv=pass; b=ifm7aekLsqGmYbqRzz4m3V+q0jXwxzi1pum/J+P9rtRxHf3gT2yry/z4j4YICihT1KVv+b9DTPyK+LEO8qDM1q97/gHjOXQEFAl8w1MfKx3uOadP/VtlpfvtGJs40Iy5VGNX/9qkLBi31g2Y1ZKnDIyYQOzvY8byG2Q1JIIFe1c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790616174; c=relaxed/simple;
-	bh=hho2DMUpWsCY94xeZA0WNwM6ZCUGWXA30U/4H8Oc2g8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oQ8mVPIk8aljXx96Qlxbe2FKfK8vYvvtYz6qFBVsNyBkLy80MEYU+dnajA8vmjnPqTiNFo9618Ur9L2fuVp5c7ZItjLyU23B/j6L0uuvOijGb6qiMUVM5YB7RVA/lyKkgp+Fjp+Laz6KObsgT5ZgiaxYIYUGf6wKf0hyiHkiy5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UpQ1omuD; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B184D37B7
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790616185; cv=none; b=aFJP26Tl22699Qs2YyZ3Zm5sOyGajy5FsxI3PvjuilxmLWbBmw1NcErKYaKhPpIvBDPP3B50ebCo9WviWLDge8C8eQTnx3jfp8IhaUF8MEhx2rwKXuVnc6URw7H5kLjgFBKbOw0VHxUPvYffNzDsMeviishJiR9kuzLH3nAr6UI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790616185; c=relaxed/simple;
+	bh=lCXyHm+iaIL3bQ9txdLtXflEDH1wllb3V7pgxbd6W7w=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=EgAB4pBiAXAR6Svy6RxLjQgZqPNQopJ3/ue4vdqzqGyC+J8icS6A8yiVuBABr7B7cuyaE4iR7+ignwbTXFjUEqntX5vKuIWKPv1rZd25ybAyX1K+E6qoX+plAzRXHYi68lC/H3TE/Sy1aIuc+rsoH2yGvz6F70iT0UcCACrNLNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=AFNlRC61; arc=none smtp.client-ip=74.125.228.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UpQ1omuD"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-53113d72966so21781cf.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:22:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790616155; cv=none;
-        d=google.com; s=arc-20260327;
-        b=msHSVfk7j7viLbeTHsZFS1OarAv6PMiS8Ih6k+LIt80STCDeqtTOSVIgx4ic2QrFsI
-         FYhfwpD3iP8bDojuuzR2FdXn35lINIkS/IwjZ2ZMgcNhPYSKOjdWdf48HPuKuvkVhy9f
-         1DiJP8rjr+wcJqCwDDXQRTdOBOn8DSoACpsLzX8qtK1Dqo7YVcI+rpObmG7zmkXl99L/
-         2yRIHZjLQrdbgUhmaMMGwX/KXlhm36hiEO31EzowFw9WU2iuF/RS0vr3RrzjtatWFmoc
-         MEx9sFhKaVrP8aAW+qFWPBTMq5qHqhZCXtt71J4iEMXk/CpDjxGhxTj/NqU1+ohekjo1
-         61HQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qn9IeVcamjlplvoMpkZXwtHnEFuRf27DcvOtQjuI+0g=;
-        fh=t1JtxbnAM1tVaTFILQ2972n+ptBUxcJw7wR0rLOZz7c=;
-        b=spMg+rD7uVqHLm5qAKeJk6y5jE3XIwq2Tk0QloMwUdtECMfHZByK86nmRcssEpZlFA
-         npiEzRkrhhH1cdHEFji5v6RFwlhqlM2KV5V02GNAg9q+8MGrJjIHljDaIsCx3Bsn4AeR
-         4wGClr7b6VU37sbY/DHPVuX/JUGdaNGxiDxgZeZmWrXxXymGX43lD5hTJY+GZKnQO2Ed
-         5Sa64hx+NAkYNhUeub/cAN4S2qIMYyTGVNpxXfZgh/5UFdYrMa9CjvYgPRhmMvaj/ma2
-         IJKsQnoSSqCqAecHSD9drIG0CD+U2mWo4rHBC5eBAFPsceFetpFJn8Yzon4LGcFx3wk6
-         0+aQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="AFNlRC61"
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dcdc386ddso207203866b.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:22:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790616155; x=1791220955; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Qn9IeVcamjlplvoMpkZXwtHnEFuRf27DcvOtQjuI+0g=;
-        b=UpQ1omuD86LCfhQd2ahnkKNLIJc/Q7TRmqVYfWu3VFAHjfkizD6/slcxhl8xUCQ2kE
-         DdTWJb0LYjgTRnttHwHDaq4Q7i+MuYW+lphbGJmEmfXaBs0tRcpefX/pCwdDLGX+dMuw
-         QpKS0VWFQVw/xVmiuewZwALGnH/Hnz9KBU5n3Oqt+UgsAkMsoVbCTAFZcoeuC0xniZYh
-         9/RFfwer8u/zy7L9cTCgKExXjeIo2Z8ra9x7mcMjC1zm+e/2szWQhOSvXl+rgBGXelO+
-         XXT7kNh9gJiS8DEkBEHISAe1zO9eAkCph6xyT74JY5fE8AMp259jFjihlwbxhGVouPfD
-         MBdA==
+        d=doyensec.com; s=google; t=1790616171; x=1791220971; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sx2gaek3RzQGvXZj14sm8lya8hmYE5akZiXZO8UHtHc=;
+        b=AFNlRC61IYKycta3I/AyUv0om1YYDS91qiWzotFvEyvlidIshv6Fb/1BBglFvxfCp6
+         CZp2dtlPV1AJU/gdh/HFbaE8XDhMvF46Z4YjANHxMZ1BgfMXeIgMP1hJDOPQgMmO9jKZ
+         vcXk9+4t78x1fYuRfSa8VXzacmk9h10JMX98IDtx044VCZET9+49ooyNGBBjay80Kn1e
+         +rPaKFJwdyk6KfyatvMaNL5OjMe/05rBxW9ncAzKEcuiVOAPXLQIM0PvqGnNIXTrQxom
+         xoREPlR9Tyk4G+2xto0XEUdkb5HUJ9EYhL99uFBponUA+b5IDkd8j0rthaANTye3SqkL
+         c4Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790616155; x=1791220955;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790616171; x=1791220971;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Qn9IeVcamjlplvoMpkZXwtHnEFuRf27DcvOtQjuI+0g=;
-        b=zy06cL6DxQNac4IBPQb89CDocaQx1+pePWcoZ7/aEyeXETTg1zQ5x/gaLkk0hI33oc
-         2vE5fpKthOMGAq9XkIQHbUmMRVwifZNA5bwG71YdEN6NST9+F9gfpdlKxX6Pxgzg+j3q
-         mtxBwfnm/rA3D50lX+abE5x5GJx9S7OZLnuQkHymbmHsFYfsqQRrshgEHOL7zCtH9bl6
-         H/jQ1a3AtcENLyttlY1Fvraqm7EAT8xrAY9uyHotT121iQI5F25jEYaZxmVHsSXLDpn/
-         qlwYv8c2+tiYD2/v8DPCBlF/WIuJX0Ok2OvEoGV0fkS7dk622NbaPENPZWhZsvJbH7Vr
-         Y7hw==
-X-Forwarded-Encrypted: i=1; AKwUvByMpLg94pUIWUudWrem417qQHzX7YUDvnG4OGShbtzlbGU4qXYwWKrpVhMc29Ss4cli5bl8+XY=@vger.kernel.org
-X-Gm-Message-State: AFuF++l1N2MfmA/IvxJ+zRKZyVrPsQL7yKUq7S50zFjcx5ZIf+EZE4XK
-	ub8R61+mSrjzT6moHLwu9szz4TJFayqz5p4CsB/7/ON4m1szElMMw13d2CynFYNEOwZC1OJItrX
-	KNXceGyvoNDtYzILTDGBH1paFWcCU+pg2wz9Gj87E
-X-Gm-Gg: AYBFou0i8+mWJmIBwqSIEaWGGPsellnj9u44zXd9xHmOpcd/n/PhjMS8iWa1lRl/I/W
-	yM/tGP5VOCNeqT+98US/BkDnPWjjVDaLMbnKvhGVI3Y58xX2R4QtWsYR0WDW55H5l7/xvSBHYlO
-	CfcDTh0yciEHIZEGRDcS6wA3xD0WBMlhIFvCChf/aHVotSd/O7SOAIkHaGrG0zbNWFCj3hwD7mc
-	TOhsnbzFqJYBPb5UgGhccy+UC6tGL9/RUTth6JST8g6Sp+ROK26QdSWKv30KupbYa2OPH+Ju4C7
-	sI2uIfBGS6fgExwqy5wrgNL+3hhgKvV3pwilL1qOmwAeEylVPeT3m26IX+dCF/cAfkvETilyuje
-	tnOCCPCtT0w==
-X-Received: by 2002:a05:622a:1926:b0:532:c99e:b16b with SMTP id
- d75a77b69052e-533225e5f2amr33109861cf.3.1790616153702; Mon, 28 Sep 2026
- 10:22:33 -0700 (PDT)
+        bh=sx2gaek3RzQGvXZj14sm8lya8hmYE5akZiXZO8UHtHc=;
+        b=1hHWuz2spWkWiJC6koCiLNnShj9gS500zYv5cGhCBvMwaW34rTqZZIVm59qybiYQJz
+         f/9xtfxMUli+ndniivkvOEawSaNazo1cDuFmyoLG97bVibHbo8/XUJrPXVryqXoNF+j4
+         bUR/EJd1UsN36OFfghURb3woOJq48sLrCZUiLkfMeaxxWOBHrsgNuNgY7W63NI647aev
+         1Awrb8EcPoVdfWghzYkfC0KIwH1x7PkP44lfZdNYavBXrtD3Sp9orxEuh5Lp5MiLDmOc
+         U3tgUru7ryfVxRCGZWmiscVvRJ7vea3BE5Iaa8thkOHVA6ha2pMD/6NKrmNVbZya0fS/
+         gNnA==
+X-Gm-Message-State: AFuF++nHr0bXr83ZitiDHWeMQO/AP6RwnS9pihXKSno2iYveJh8XaC25
+	XklZieRJ37gbAdgZn7cp+lcgIkGdD1zWWeg0Io2JlMDdJd+JYT4KimzFxVHSKstqp9KsgbSrCe5
+	X2JEPxc6xaw==
+X-Gm-Gg: AYBFou1+k+GaFAVwFpf9aCvK5ebgjE2cM25+TqeFpLi0GPGZOzKEWPtJPVH32QzXXGO
+	R9xe5nhpaQn6wGSj+q0l1vQVT8JQTDVvprSev/8PVatycAAs1ehgRY0o8QkRpCk4S5TNBSlSbu0
+	ePmYpVBn1uDA28OIgRsH6NiguYiY8ZUjhK7U/l4BYXH+cf85uWSqDw8NDDSpy3m4p26Mq/QKFSS
+	EYZWxdC1AaD7+pVUdKkZRDLRgMhh98P2JaywFx26k7KjzcQvqSURViTMFOX3J2DmGoOwdtYCjIT
+	p6K70vvclxdy6Q7hyFk3+2hlRYGVlpvTEwpe1+rCU1BBWbsiEZFFeQs/NG2j0iWawi1BByw5p3b
+	2HZlEdU1Mr0S9TyxPQ+Zc5mlC+9gqbci0yCTD6eq+QJvmfasjofWBxPZMp/TcfsOx8xrj1w6d38
+	QAz57z7qSMBOTRf8IzCKlSuUHe1kwE37I7OODc3PRb/6i1L7Fl55/3D7JjZvbc3426paARvEBq+
+	HSlu5NUF8KEDcog1eE43zHraiuE4K0QfFi8xINaR8M6FfDdGeaAW3C88TWJpQ==
+X-Received: by 2002:a17:907:728d:b0:c29:f5d5:5a94 with SMTP id a640c23a62f3a-c2ac23ec0b2mr1066751466b.30.1790616170862;
+        Mon, 28 Sep 2026 10:22:50 -0700 (PDT)
+Received: from smtpclient.apple (80.49.145.194.ipv4.supernova.orange.pl. [80.49.145.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dc8b71b4dsm275758466b.1.2026.09.28.10.22.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Sep 2026 10:22:50 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260925135244.3715196-1-edumazet@google.com> <20260925135244.3715196-3-edumazet@google.com>
-In-Reply-To: <20260925135244.3715196-3-edumazet@google.com>
-From: Wei Wang <weiwan@google.com>
-Date: Mon, 28 Sep 2026 10:22:22 -0700
-X-Gm-Features: AclHuK_hWWo0-foeHHvQGXzz24jxKsNaWFzlJ_qnigZMv9pPffpWe_WNhqdBiMM
-Message-ID: <CAEA6p_A4Rgk81_=b+osGxV-0PmcBDkP2H98=+bgp74jraVNueQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net 2/2] selftests/net: add SO_RESERVE_MEM test
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Cai Xinchen <caixinchen1@huawei.com>, netdev@vger.kernel.org, edumazet@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: [PATCH net] soreuseport: Fix use-after-free when a socket is added to
+ socks[] twice
+Message-Id: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
+Date: Mon, 28 Sep 2026 19:22:38 +0200
+Cc: Eric Dumazet <edumazet@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
 
-On Fri, Sep 25, 2026 at 6:52=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> Add a kselftest suite covering SO_RESERVE_MEM behavior:
-> - Reject unsupported socket types (UDP/SOCK_DGRAM, UNIX/SOCK_STREAM,
->   SOCK_RAW, MPTCP) with EOPNOTSUPP.
-> - Validate bounds (negative values and values > SZ_1G return EINVAL).
-> - Verify reserve adjustments (increase, decrease, page rounding, and
->   reset to 0) and corresponding sk_meminfo[SK_MEMINFO_FWD_ALLOC] changes
->   via getsockopt(SO_MEMINFO).
-> - Exercise cgroup v2 memory.max enforcement returning ENOMEM when the
->   requested reservation exceeds the cgroup limit.
-> - Verify that a child socket returned by accept() starts with a 0
->   reserve even when its parent listener configured a non-zero
->   SO_RESERVE_MEM.
-> - Verify reserve retention across TCP send/receive/ACK cycles.
->
-> Also enable CONFIG_CGROUPS=3Dy and CONFIG_MEMCG=3Dy in
-> tools/testing/selftests/net/config.
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Assisted-by: LLM
-> ---
->  tools/testing/selftests/net/.gitignore       |   1 +
->  tools/testing/selftests/net/Makefile         |   1 +
->  tools/testing/selftests/net/config           |   2 +
->  tools/testing/selftests/net/so_reserve_mem.c | 404 +++++++++++++++++++
->  4 files changed, 408 insertions(+)
->  create mode 100644 tools/testing/selftests/net/so_reserve_mem.c
->
-> diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selft=
-ests/net/.gitignore
-> index c9f46031ac73b20850d068125bb804420d236ad8..a15d7cc4fdcb22b36fdb35b9e=
-af47e511caa8673 100644
-> --- a/tools/testing/selftests/net/.gitignore
-> +++ b/tools/testing/selftests/net/.gitignore
-> @@ -41,6 +41,7 @@ skf_net_off
->  socket
->  so_incoming_cpu
->  so_netns_cookie
-> +so_reserve_mem
->  so_rcv_listener
->  stress_reuseport_listen
->  tap
-> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftes=
-ts/net/Makefile
-> index 3ee3378f8b26eff9d99a834491ad5ef594dcd782..300207a840c1bcb73a41151c8=
-f94e8f78d01a29b 100644
-> --- a/tools/testing/selftests/net/Makefile
-> +++ b/tools/testing/selftests/net/Makefile
-> @@ -196,6 +196,7 @@ TEST_GEN_PROGS :=3D \
->         sk_connect_zero_addr \
->         sk_so_peek_off \
->         so_incoming_cpu \
-> +       so_reserve_mem \
->         tap \
->         tcp_port_share \
->         tls \
-> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests=
-/net/config
-> index 737e7e6327b3793984718eb518d3fb79b7870e4d..d355cf98059770bbcdcda1a33=
-d8e84bc390eb26a 100644
-> --- a/tools/testing/selftests/net/config
-> +++ b/tools/testing/selftests/net/config
-> @@ -7,6 +7,7 @@ CONFIG_BRIDGE_VLAN_FILTERING=3Dy
->  CONFIG_CAN=3Dm
->  CONFIG_CAN_DEV=3Dm
->  CONFIG_CAN_VXCAN=3Dm
-> +CONFIG_CGROUPS=3Dy
->  CONFIG_CRYPTO_ARIA=3Dy
->  CONFIG_CRYPTO_CHACHA20POLY1305=3Dm
->  CONFIG_CRYPTO_SHA1=3Dy
-> @@ -61,6 +62,7 @@ CONFIG_L2TP_V3=3Dy
->  CONFIG_MACSEC=3Dm
->  CONFIG_MACVLAN=3Dy
->  CONFIG_MACVTAP=3Dy
-> +CONFIG_MEMCG=3Dy
->  CONFIG_MPLS=3Dy
->  CONFIG_MPLS_IPTUNNEL=3Dm
->  CONFIG_MPLS_ROUTING=3Dm
-> diff --git a/tools/testing/selftests/net/so_reserve_mem.c b/tools/testing=
-/selftests/net/so_reserve_mem.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..920aeccc0ddf780e1b7ffd217=
-2cf8bc2a01320f1
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/so_reserve_mem.c
-> @@ -0,0 +1,404 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#define _GNU_SOURCE
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <linux/sock_diag.h>
-> +#include <netinet/in.h>
-> +#include <sched.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <sys/mount.h>
-> +#include <sys/socket.h>
-> +#include <sys/stat.h>
-> +#include <unistd.h>
-> +
-> +#include "kselftest_harness.h"
-> +
-> +#ifndef IPPROTO_MPTCP
-> +#define IPPROTO_MPTCP 262
-> +#endif
-> +
+reuseport_stop_listen_sock() moves a shutdown()ed listener from the
+listening section of reuse->socks[] to the closed section: it removes =
+the
+socket with __reuseport_detach_sock() and adds it back with
+__reuseport_add_closed_sock(). The return value of the removal is
+discarded and the add runs unconditionally.
 
-Should we add
-#ifndef SO_RESERVE_MEM
-#define SO_RESERVE_MEM 73
-#endif
-for systems which don't have SO_RESERVE_MEM defined?
+The socket need not be in the listening section. inet_unhash() calls
+reuseport_stop_listen_sock() for a listener whenever sk->sk_reuseport_cb
+is set, but inet_hash() enters the reuseport path only when
+sk->sk_reuseport is set, and SO_REUSEPORT can be cleared in any state.
+Clearing it between shutdown() and listen() makes that listen() skip
+reuseport_add_sock(), and with it reuseport_resurrect(), so the socket =
+is
+hashed as a listener while it is still in the closed section. On the =
+next
+shutdown() __reuseport_detach_sock() does not find it in the listening
+section, returns false, and __reuseport_add_closed_sock() adds a second
+copy of it to socks[].
 
-> +#define SO_RESERVE_MEM_MAX (1 << 30)
-> +
-> +static int get_reserve_mem(struct __test_metadata *_metadata, int fd)
-> +{
-> +       int val =3D -1;
-> +       socklen_t len =3D sizeof(val);
-> +
-> +       EXPECT_EQ(getsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, &len),=
- 0);
-> +       return val;
-> +}
-> +
-> +static __u32 get_fwd_alloc(struct __test_metadata *_metadata, int fd)
-> +{
-> +       __u32 meminfo[SK_MEMINFO_VARS] =3D {};
-> +       socklen_t len =3D sizeof(meminfo);
-> +
-> +       EXPECT_EQ(getsockopt(fd, SOL_SOCKET, SO_MEMINFO, meminfo, &len), =
-0);
-> +       return meminfo[SK_MEMINFO_FWD_ALLOC];
-> +}
-> +
-> +static void wait_wmem_drained(struct __test_metadata *_metadata, int fd)
-> +{
-> +       __u32 meminfo[SK_MEMINFO_VARS] =3D {};
-> +       socklen_t len;
-> +       int i;
-> +
-> +       for (i =3D 0; i < 1000; i++) {
-> +               len =3D sizeof(meminfo);
-> +               ASSERT_EQ(getsockopt(fd, SOL_SOCKET, SO_MEMINFO, meminfo,=
- &len), 0);
-> +               if (meminfo[SK_MEMINFO_WMEM_QUEUED] =3D=3D 0)
-> +                       return;
-> +               usleep(1000);
-> +       }
-> +       EXPECT_EQ(meminfo[SK_MEMINFO_WMEM_QUEUED], 0U);
-> +}
-> +
-> +FIXTURE(so_reserve_mem)
-> +{
-> +       char cg_root[64];
-> +       char cg_child[128];
-> +       long page_size;
-> +       bool cg_mounted;
-> +       bool restore_subtree_ctrl;
-> +};
-> +
-> +FIXTURE_TEARDOWN(so_reserve_mem)
-> +{
-> +       char path[160];
-> +       int fd;
-> +
-> +       if (!self->cg_mounted)
-> +               return;
-> +
-> +       snprintf(path, sizeof(path), "%s/cgroup.procs", self->cg_root);
-> +       fd =3D open(path, O_WRONLY);
-> +       if (fd >=3D 0) {
-> +               dprintf(fd, "%d\n", getpid());
-> +               close(fd);
-> +       }
-> +       if (self->cg_child[0]) {
-> +               rmdir(self->cg_child);
-> +               self->cg_child[0] =3D '\0';
-> +       }
-> +       if (self->restore_subtree_ctrl) {
-> +               snprintf(path, sizeof(path), "%s/cgroup.subtree_control",
-> +                        self->cg_root);
-> +               fd =3D open(path, O_WRONLY);
-> +               if (fd >=3D 0) {
-> +                       if (write(fd, "-memory", 7) < 0)
-> +                               ;
-> +                       close(fd);
-> +               }
-> +               self->restore_subtree_ctrl =3D false;
-> +       }
-> +       umount2(self->cg_root, MNT_DETACH);
-> +       rmdir(self->cg_root);
-> +       self->cg_mounted =3D false;
-> +}
-> +
-> +FIXTURE_SETUP(so_reserve_mem)
-> +{
-> +       char procs_path[160], ctrl_path[160], ctrl_buf[256] =3D {};
-> +       int fd, ret, val =3D 0;
-> +
-> +       self->page_size =3D sysconf(_SC_PAGESIZE);
-> +       ASSERT_GT(self->page_size, 0);
-> +
-> +       if (unshare(CLONE_NEWNS))
-> +               SKIP(return, "Failed to unshare mount namespace (need roo=
-t)");
-> +
-> +       mount("none", "/", NULL, MS_REC | MS_PRIVATE, NULL);
-> +
-> +       snprintf(self->cg_root, sizeof(self->cg_root),
-> +                "/tmp/ksft_so_reserve_XXXXXX");
-> +       ASSERT_NE(mkdtemp(self->cg_root), NULL);
-> +
-> +       if (mount("none", self->cg_root, "cgroup2", 0, NULL)) {
-> +               rmdir(self->cg_root);
-> +               SKIP(return, "Failed to mount cgroup2 (need root)");
-> +       }
-> +       self->cg_mounted =3D true;
-> +
-> +       snprintf(ctrl_path, sizeof(ctrl_path), "%s/cgroup.subtree_control=
-",
-> +                self->cg_root);
-> +       fd =3D open(ctrl_path, O_RDWR);
-> +       if (fd < 0) {
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               SKIP(return, "Failed to open cgroup.subtree_control");
-> +       }
-> +       if (read(fd, ctrl_buf, sizeof(ctrl_buf) - 1) < 0) {
-> +               close(fd);
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               SKIP(return, "Failed to read cgroup.subtree_control");
-> +       }
-> +       if (!strstr(ctrl_buf, "memory")) {
-> +               if (write(fd, "+memory", 7) !=3D 7) {
-> +                       close(fd);
-> +                       so_reserve_mem_teardown(_metadata, self, variant)=
-;
-> +                       SKIP(return, "cgroup2 memory controller not avail=
-able");
-> +               }
-> +               self->restore_subtree_ctrl =3D true;
-> +       }
-> +       close(fd);
-> +
-> +       snprintf(self->cg_child, sizeof(self->cg_child), "%s/test_%d",
-> +                self->cg_root, getpid());
-> +       if (mkdir(self->cg_child, 0755)) {
-> +               self->cg_child[0] =3D '\0';
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               ASSERT_TRUE(false);
-> +       }
-> +
-> +       snprintf(procs_path, sizeof(procs_path), "%s/cgroup.procs",
-> +                self->cg_child);
-> +       fd =3D open(procs_path, O_WRONLY);
-> +       if (fd < 0 || dprintf(fd, "%d\n", getpid()) <=3D 0) {
-> +               if (fd >=3D 0)
-> +                       close(fd);
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               ASSERT_TRUE(false);
-> +       }
-> +       close(fd);
-> +
-> +       /* Verify memcg socket accounting is enabled on this kernel */
-> +       fd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       if (fd < 0) {
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               ASSERT_GE(fd, 0);
-> +       }
-> +       ret =3D setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(v=
-al));
-> +       close(fd);
-> +       if (ret && errno =3D=3D EOPNOTSUPP) {
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               SKIP(return, "memcg socket accounting not enabled");
-> +       }
-> +       if (ret) {
-> +               so_reserve_mem_teardown(_metadata, self, variant);
-> +               ASSERT_EQ(ret, 0);
-> +       }
-> +}
-> +
-> +static void check_non_tcp_rejected(struct __test_metadata *_metadata,
-> +                                  int domain, int type, int protocol,
-> +                                  int val)
-> +{
-> +       int fd =3D socket(domain, type, protocol);
-> +
-> +       if (fd < 0) {
-> +               EXPECT_TRUE(errno =3D=3D EAFNOSUPPORT ||
-> +                           errno =3D=3D EPROTONOSUPPORT ||
-> +                           errno =3D=3D ENOPROTOOPT);
-> +               return;
-> +       }
-> +       EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), -1);
-> +       EXPECT_EQ(errno, EOPNOTSUPP);
-> +       close(fd);
-> +}
-> +
-> +TEST_F(so_reserve_mem, non_tcp_rejected)
-> +{
-> +       int val =3D self->page_size * 4;
-> +
-> +       check_non_tcp_rejected(_metadata, AF_INET, SOCK_DGRAM, 0, val);
-> +       check_non_tcp_rejected(_metadata, AF_UNIX, SOCK_STREAM, 0, val);
-> +       check_non_tcp_rejected(_metadata, AF_INET, SOCK_RAW, IPPROTO_ICMP=
-, val);
-> +       check_non_tcp_rejected(_metadata, AF_INET, SOCK_STREAM, IPPROTO_M=
-PTCP, val);
+sk_destruct() calls reuseport_detach_sock(), which removes one of the =
+two
+entries. reuseport_grow() then dereferences the other one, because its
+loop runs over every slot up to reuse->max_socks:
 
-Add a test for check_non_tcp_rejected(_metadata, AF_INET, SOCK_DGRAM,
-0, 0) to validate that non-TCP socket with val =3D 0 also returns
--EOPNOTSUPP rather than 0?
+  BUG: KASAN: slab-use-after-free in reuseport_grow =
+(net/core/sock_reuseport.c:291)
+  Write of size 8 at addr ffff888132359988 by task poc/621
 
-> +}
-> +
-> +TEST_F(so_reserve_mem, grow_shrink_and_rounding)
-> +{
-> +       int ps =3D self->page_size;
-> +       int fd, val;
-> +
-> +       fd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(fd, 0);
-> +
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), 0U);
-> +
-> +       /* Negative or > SO_RESERVE_MEM_MAX value -> EINVAL */
-> +       val =3D -1;
-> +       EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), -1);
-> +       EXPECT_EQ(errno, EINVAL);
-> +
-> +       val =3D SO_RESERVE_MEM_MAX + 1;
-> +       EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), -1);
-> +       EXPECT_EQ(errno, EINVAL);
-> +
-> +       val =3D INT_MAX;
-> +       EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), -1);
-> +       EXPECT_EQ(errno, EINVAL);
-> +
-> +       /* 1 byte rounds up to 1 page */
-> +       val =3D 1;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)ps);
-> +
-> +       /* Grow to 16 pages */
-> +       val =3D 16 * ps;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 16 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(16 * ps));
-> +
-> +       /* Shrink by 1 byte (rounds delta down to 0 -> stays 16 pages) */
-> +       val =3D 16 * ps - 1;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 16 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(16 * ps));
-> +
-> +       /* Shrink to 4 pages */
-> +       val =3D 4 * ps;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 4 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(4 * ps));
-> +
-> +       /* Release all */
-> +       val =3D 0;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, fd), 0U);
-> +
-> +       close(fd);
-> +}
-> +
-> +TEST_F(so_reserve_mem, cgroup_memory_max)
-> +{
-> +       char max_path[160], procs_path[160];
-> +       int fd, max_fd, procs_fd, val;
-> +       int ps =3D self->page_size;
-> +
-> +       snprintf(max_path, sizeof(max_path), "%s/memory.max", self->cg_ch=
-ild);
-> +       max_fd =3D open(max_path, O_WRONLY | O_NONBLOCK);
-> +       if (max_fd < 0)
-> +               SKIP(return, "cgroup memory controller not delegated");
-> +
-> +       fd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(fd, 0);
-> +
-> +       /* Move test process back to root cgroup before lowering cg_child=
-'s
-> +        * memory.max so the limit only governs the socket's memcg charge=
-s
-> +        * and cannot trigger OOM on the test process itself.
-> +        */
-> +       snprintf(procs_path, sizeof(procs_path), "%s/cgroup.procs",
-> +                self->cg_root);
-> +       procs_fd =3D open(procs_path, O_WRONLY);
-> +       ASSERT_GE(procs_fd, 0);
-> +       ASSERT_GT(dprintf(procs_fd, "%d\n", getpid()), 0);
-> +       close(procs_fd);
-> +
-> +       /* Limit cg_child memory to 8 pages and try to reserve 128 pages =
-*/
-> +       ASSERT_GT(dprintf(max_fd, "%ld\n", 8L * ps), 0);
-> +
-> +       val =3D 128 * ps;
-> +       EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), -1);
-> +       EXPECT_EQ(errno, ENOMEM);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-> +
-> +       /* Restore unlimited memory.max */
-> +       ASSERT_GT(dprintf(max_fd, "max\n"), 0);
-> +       close(max_fd);
-> +
-> +       val =3D 4 * ps;
-> +       ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof=
-(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, fd), 4 * ps);
-> +
-> +       close(fd);
-> +}
-> +
-> +TEST_F(so_reserve_mem, accept_child_zero_reserve)
-> +{
-> +       struct sockaddr_in addr =3D {
-> +               .sin_family =3D AF_INET,
-> +               .sin_addr.s_addr =3D htonl(INADDR_LOOPBACK),
-> +       };
-> +       socklen_t alen =3D sizeof(addr);
-> +       int ps =3D self->page_size;
-> +       int lfd, cfd, sfd, val;
-> +
-> +       lfd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(lfd, 0);
-> +
-> +       /* Set SO_RESERVE_MEM on listener before listen() */
-> +       val =3D 4 * ps;
-> +       ASSERT_EQ(setsockopt(lfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeo=
-f(val)), 0);
-> +       ASSERT_EQ(bind(lfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-> +       ASSERT_EQ(listen(lfd, 2), 0);
-> +       ASSERT_EQ(getsockname(lfd, (struct sockaddr *)&addr, &alen), 0);
-> +
-> +       /* Grow SO_RESERVE_MEM on listener after listen() */
-> +       val =3D 8 * ps;
-> +       ASSERT_EQ(setsockopt(lfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeo=
-f(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, lfd), 8 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, lfd), (__u32)(8 * ps));
-> +
-> +       cfd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(cfd, 0);
-> +       ASSERT_EQ(connect(cfd, (struct sockaddr *)&addr, sizeof(addr)), 0=
-);
-> +
-> +       sfd =3D accept(lfd, NULL, NULL);
-> +       ASSERT_GE(sfd, 0);
-> +
-> +       /* Child after accept() must have 0 reserve while listener keeps =
-8 pages */
-> +       EXPECT_EQ(get_reserve_mem(_metadata, sfd), 0);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, sfd), 0U);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, lfd), 8 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, lfd), (__u32)(8 * ps));
-> +
-> +       /* Child can still independently set its own SO_RESERVE_MEM */
-> +       val =3D 6 * ps;
-> +       ASSERT_EQ(setsockopt(sfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeo=
-f(val)), 0);
-> +       EXPECT_EQ(get_reserve_mem(_metadata, sfd), 6 * ps);
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, sfd), (__u32)(6 * ps));
-> +
-> +       close(sfd);
-> +       close(cfd);
-> +       close(lfd);
-> +}
-> +
-> +TEST_F(so_reserve_mem, preserved_after_traffic)
-> +{
-> +       struct sockaddr_in addr =3D {
-> +               .sin_family =3D AF_INET,
-> +               .sin_addr.s_addr =3D htonl(INADDR_LOOPBACK),
-> +       };
-> +       socklen_t alen =3D sizeof(addr);
-> +       int ps =3D self->page_size;
-> +       int lfd, cfd, sfd, val;
-> +       char buf[8192] =3D {};
-> +
-> +       lfd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(lfd, 0);
-> +       ASSERT_EQ(bind(lfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-> +       ASSERT_EQ(listen(lfd, 1), 0);
-> +       ASSERT_EQ(getsockname(lfd, (struct sockaddr *)&addr, &alen), 0);
-> +
-> +       cfd =3D socket(AF_INET, SOCK_STREAM, 0);
-> +       ASSERT_GE(cfd, 0);
-> +       val =3D 16 * ps;
-> +       ASSERT_EQ(setsockopt(cfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeo=
-f(val)), 0);
-> +       ASSERT_EQ(connect(cfd, (struct sockaddr *)&addr, sizeof(addr)), 0=
-);
-> +
-> +       sfd =3D accept(lfd, NULL, NULL);
-> +       ASSERT_GE(sfd, 0);
-> +
-> +       /* Send & drain traffic; cfd must retain its 16-page forward allo=
-c,
-> +        * while sfd (0 reserve) reclaims its forward alloc back to 0.
-> +        */
-> +       ASSERT_EQ(send(cfd, buf, sizeof(buf), 0), (ssize_t)sizeof(buf));
-> +       ASSERT_EQ(recv(sfd, buf, sizeof(buf), MSG_WAITALL), (ssize_t)size=
-of(buf));
-> +       wait_wmem_drained(_metadata, cfd);
-> +
-> +       EXPECT_GE(get_fwd_alloc(_metadata, cfd), (__u32)(16 * ps));
-> +       EXPECT_EQ(get_fwd_alloc(_metadata, sfd), 0U);
-> +
-> +       close(sfd);
-> +       close(cfd);
-> +       close(lfd);
-> +}
-> +
-> +TEST_HARNESS_MAIN
-> --
-> 2.56.0.rc1.315.gc6ed9934b7-goog
->
+   reuseport_grow (net/core/sock_reuseport.c:291)
+   reuseport_add_sock (net/core/sock_reuseport.c:350)
+   inet_hash (net/ipv4/inet_hashtables.c:810)
+   inet_csk_listen_start (net/ipv4/inet_connection_sock.c:1359)
+   __inet_listen_sk (net/ipv4/af_inet.c:225)
+   inet_listen (net/ipv4/af_inet.c:247)
+   __sys_listen (net/socket.c:2014)
+
+  Allocated by task 621:
+   sk_prot_alloc (net/core/sock.c:2246)
+   sk_alloc (net/core/sock.c:2308)
+   inet_create (net/ipv4/af_inet.c:333)
+
+  Freed by task 0:
+   slab_free_after_rcu_debug (mm/slub.c:6570)
+   rcu_core (kernel/rcu/tree.c:2919)
+
+  The buggy address is located 904 bytes inside of
+   freed 2624-byte region [ffff888132359600, ffff88813235a040)
+
+Only move the socket to the closed section when =
+__reuseport_detach_sock()
+reports that it was removed from the listening section.
+
+Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport =
+group.")
+Assisted-by: LLM
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+---
+ net/core/sock_reuseport.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+index 29948cb44b7d..031b641be317 100644
+--- a/net/core/sock_reuseport.c
++++ b/net/core/sock_reuseport.c
+@@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
+ 			 */
+ 			bpf_sk_reuseport_detach(sk);
+=20
+-			__reuseport_detach_sock(sk, reuse);
+-			__reuseport_add_closed_sock(sk, reuse);
++			if (__reuseport_detach_sock(sk, reuse))
++				__reuseport_add_closed_sock(sk, reuse);
+=20
+ 			spin_unlock_bh(&reuseport_lock);
+ 			return;
+--=20
+2.55.0
+
