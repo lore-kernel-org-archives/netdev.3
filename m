@@ -1,258 +1,104 @@
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mta.kiivia.com (mta.kiivia.com [95.217.65.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02472474261
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8805263F44
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.65.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790585075; cv=none; b=qgfyz8LUKm6WL5gIiL2CMT9ENWoNbGPHW4DLEob2rFahlIQ4lGfiRqDYYKNLQX0869Q+DlNE+Eu4JYiJSxSonCZs7+Fpg4QqjZBqxawTPUTCVlYU4cxDSTAUEY++Pz6ZwvpjKnxJhB6Ug0/dujvlhX1Y8iJfabYvtTdBI3aZHS8=
+	t=1790585250; cv=none; b=oNx3499fA4tE0bHuU8amfAsCcr8L9d70WsIJ479VHEaPAbYPsP0M5CtJFHsNo8BZAfVR0tf9CO7fY0MJ/D5XPpfmC24H5sw0W0rgwDTNa54FlFqwdic05y4HR7bf7mG7X3wu/v5zzIoUfyIJF1gfx8Q+GPrfJywsjRUvL6b6ADk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790585075; c=relaxed/simple;
-	bh=tXzrfQ3Fk8jK4BlEPTK1UmMOMRhhbVRgMoaq5IM1RZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WVocbxfAvy3fWMun4+OkMRl5oTiLMHsKUtVsewtwMff27xkW+SBqVPlATFS6Um6CYBe1eIkb/iLiHgjxGJaeu3obm86uwSu5Q58JtlHPqISyeB/hPGuOtXL/tICFyM0QxFrRgybrwcp6HHuqU3z6UDrYWRCLdH1WFSruRGjDSQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org; spf=pass smtp.mailfrom=phrozen.org; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phrozen.org
-Received: from [2a04:4540:1402:f1fc:e4ac:7bd9:3fdf:bca3]
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <john@phrozen.org>)
-	id 1xB6ru-00C7sF-0s;
-	Mon, 28 Sep 2026 10:37:50 +0200
-Message-ID: <0077ab02-2215-4015-9e74-eeb8c3de6b14@phrozen.org>
-Date: Mon, 28 Sep 2026 10:37:48 +0200
+	s=arc-20240116; t=1790585250; c=relaxed/simple;
+	bh=4oz568CjYFq3wRD/Hmqkz+qIwafWxiN0GgI9BDHGMQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FSkK1pXR9t6Wf7ovs40uI+lISCthOCn01z2UscH+wppld5NFIAyXeO2KTr9YXFDENk07u4liIllh3RUzGDO+PuFPDuX566qayKuZJ4yR50HCz25r0dc1ui1oVI6UjA1rmFoxP/qsz9vWzrhkP2Ira7Gte2hvMoe4YkFjoiIiUXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org; spf=pass smtp.mailfrom=nocloud.org; arc=none smtp.client-ip=95.217.65.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nocloud.org
+Received: by mta.kiivia.com (Postfix) with ESMTPSA id 2219CA8021D;
+	Mon, 28 Sep 2026 11:47:21 +0300 (EEST)
+From: =?UTF-8?q?Jari=20Sepp=C3=A4l=C3=A4?= <jase@nocloud.org>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Jari=20Sepp=C3=A4l=C3=A4?= <jase@nocloud.org>,
+	kuba@kernel.org,
+	sgoutham@marvell.com,
+	gakula@marvell.com,
+	rkannoth@marvell.com,
+	sbhatta@marvell.com,
+	bbhushan2@marvell.com,
+	linux-yocto@lists.yoctoproject.org
+Subject: [PATCH net RESEND] octeontx2-pf: Fix RSS indirection table size
+Date: Mon, 28 Sep 2026 11:47:11 +0300
+Message-ID: <20260928084711.2462571-1-jase@nocloud.org>
+In-Reply-To: <20260927154803.4b4bdf35@kernel.org>
+References: <20260927154803.4b4bdf35@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net: towards a generic PON framework
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Ziyou Xu <xuziyougm@gmail.com>, netdev@vger.kernel.org,
- Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
- Benjamin Larsson <benjamin.larsson@genexis.eu>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King <linux@armlinux.org.uk>, Gaoyang Wei <yhyxwgy@gmail.com>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
- <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
- <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
- <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
- <372bc103-e98f-486d-8dd2-f013b1dbbdcb@lunn.ch>
-Content-Language: en-GB
-From: John Crispin <john@phrozen.org>
-In-Reply-To: <372bc103-e98f-486d-8dd2-f013b1dbbdcb@lunn.ch>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi all,
+The conversion to the dedicated RSS context operations replaced the
+pointer to struct otx2_rss_ctx with an inline u32 ind_tbl[] array.
+However, otx2_rss_init() still uses sizeof(*rss->ind_tbl) to set rss_size.
+This now yields the size of one u32 (4), rather than the 256 entries in
+the indirection table.
 
-Christian Marangi has been working on the design of a PON subsystem
-together with Airoha for almost a year. I started implementing it on
-the AN7581 two months ago. Reading this thread was a bit of a
-surprise, because the design you are converging on is very close to
-what we already have running and were planning to propose upstream in
-the near future. So rather than add another design on paper, let me
-describe working code.
+The RSS initialization and hardware programming loops use rss_size,
+so only four entries are initialized and programmed despite the NIX LF
+being allocated a 256-entry table. On an OCTEON CN102 with eight RX
+queues, the table contained 0, 1, 2, 3 followed by zeros. Traffic was
+concentrated on queue 0 and ethtool -X equal 8 did not correct the table.
 
-The design is modelled on nl80211/cfg80211 with a fullmac driver.
+Use ARRAY_SIZE() to count the indirection table entries. On the same
+hardware, this restores the full table repeating queue numbers 0 through
+7, and bidirectional multi-flow traffic increments multiple RX queues.
 
-net/pon has a struct pon_dev for each PON MAC. It is not a netdev,
-which is what Andrew described with the wiphy comparison. Userspace
-talks to it by a device id, not an ifindex.
+Fixes: 62e01d8c4170 ("eth: otx2: migrate to the *_rxfh_context ops")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/netdev/361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org/
+Signed-off-by: Jari Seppälä <jase@nocloud.org>
+---
+Resending with git send-email because the previous email had a mangled
+diff. The code change and commit message are unchanged.
 
-The MAC driver runs PLOAM and the key hierarchy itself, as Benjamin
-suggests. It reports the activation state to the core. The core checks
-it, publishes it together with the alarms and sets carrier from it.
+This is the formal patch requested in response to the bug report with
+Message-ID <361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org>.
 
-Service traffic uses normal netdevs. There is one data netdev, plus
-GEM netdevs where a GEM port needs its own bridge port. Frames leave
-through a GDM port of the Ethernet driver, which acts as a conduit in
-the DSA sense.
+Runtime testing was on an Asterfusion ET2500 (OCTEON CN102 A0), using
+Yocto BSP commit 9a05f15b453377f50632ebbb57c87b7ec3270492 plus the
+existing local board/build fixes. The kernel configuration was unchanged
+between the before/after tests. The resulting kernel was
+6.18.52-cn102-yocto-kvm, package revision 6.18.52-5.
 
-Andrew's mapper exists too. A classifier on the data netdev maps
-VLAN and 802.1p to GEM ports. The core keeps the T-CONTs, the GEM
-ports and these rules. It replays them after a link loss. Everything
-above that is plain bridge, VLAN devices and tc. T-CONT scheduling is
-an offloaded ets qdisc.
+The table was checked with ethtool after reboot, then bidirectional
+four-stream UDP traffic was used to check hardware RX queue counters.
+The upstream net tree has not been boot-tested on this device. Full
+upstream allyesconfig/allmodconfig W=1 builds have not been run.
 
-The design reuses existing infrastructure wherever it can. The optics
-report through hwmon and take their calibration from NVMEM. The PON
-serdes is a generic PHY. The PHY core only needed a PHY_MODE_PON and a
-set of PON configure options. Sync status, FEC counters and three
-reports (ready, loss, TX fault) go through a small PON side channel.
-That could become part of the PHY core, but that is a problem for
-another day.
+The diagnosis and patch were prepared with AI assistance and validated
+on the physical device as described above.
 
-Control is a single generic netlink family with a YAML spec. OMCI runs
-in userspace, in a GPL daemon that sets up the PON objects over that
-family and everything Ethernet over bridge, tc, ethtool and rtnetlink.
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There is also a small command line tool, pon-tool, which plays the
-role iw plays for nl80211. It has a verb for every attribute of the
-family, so the whole subsystem can be inspected and driven by hand.
-It dumps the device, T-CONTs, GEM ports, classifier rules, counters
-and alarms. A monitor mode follows the PLOAM state, alarms and object
-changes live. GEM netdevs are created over rtnetlink with their own
-link kind, the same way iw creates wireless interfaces.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 175992188..0e78a0531 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -394,7 +394,7 @@ int otx2_rss_init(struct otx2_nic *pfvf)
+ 	struct otx2_rss_info *rss = &pfvf->hw.rss_info;
+ 	int idx, ret = 0;
+ 
+-	rss->rss_size = sizeof(*rss->ind_tbl);
++	rss->rss_size = ARRAY_SIZE(rss->ind_tbl);
+ 
+ 	/* Init RSS key if it is not setup already */
+ 	if (!rss->enable)
 
-The current code reaches O5, passes traffic and survives fibre pulls
-against a production OLT. I have successfully tested HGU, SFU and IP
-host services running concurrently. PON flows are also offloaded in
-hardware through the Airoha PPE and NPU.
-
-On the OMCI transport I think Andrew is right that omci0 has to go.
-Today it is an ARPHRD_NONE conduit used with AF_PACKET, which is an
-interface that is not really an interface. Rather than add a new
-address family, I would follow what hostapd and wpa_supplicant do.
-Wifi once relied on a monitor interface for management frames. It
-moved to frame registration, TX and RX over generic netlink. The PON
-family would get the same: a daemon registers for OMCI on a PON
-device and receives and sends PDUs as netlink messages. That keeps
-the subsystem on the design that already works for wifi and needs no
-new address family. The core already knows which GEM port carries
-the OMCC, so there is nothing to classify.
-
-Benjamin, you wrote that some parts of the MIB should be handled
-inside the kernel. Which MEs do you have in mind? The OMCC transport
-belongs to the core, so an in-kernel handler could attach to it. I
-would like to understand which MEs need it before we design for it.
-
-If all of this sounds plausible, I can post an RFC series of the
-subsystem within a week, together with a link to a git repository
-with pon-tool. Before that I want to move the OMCI transport to
-generic netlink and validate it on a board.
-
-	John
-
-
-On 28.09.26 03:25, Andrew Lunn wrote:
-> On Mon, Sep 28, 2026 at 07:11:19AM +0800, Gaoyang Wei wrote:
->> Hi Andrew,
->>
->>> Another question which might affect the architecture. From what you
->>> have described, an ONU might be assigned multiple Port-IDs so it can
->>> carry multiple, separated, service traffic streams? You would want to
->>> represent each stream as a Linux netdev, with its own IP addresses
->>> etc.
->>
->> An ONU can indeed have multiple GEM Port-IDs, but I think there is one
->> important distinction here: a GEM Port-ID is not necessarily equivalent
->> to one Linux service interface.
->>
->> G.988 has an interworking layer between the GEM connections and the
->> Ethernet-facing service.
->>
->> For example, one Ethernet UNI can use an IEEE 802.1p mapper which sends
->> different priority classes to different GEM ports.  Bridge and VLAN
->> configuration can also make the relationship between Ethernet services
->> and GEM connections non-1:1.
->>
->> Very roughly:
->>
->>                       Ethernet UNI
->>                            |
->>                    bridge / mapper /
->>                      VLAN handling
->>                      /     |     \
->>                     /      |      \
->>               GEM port  GEM port  GEM port
->>                  100       101       102
-> 
-> I think that is too roughly, because that is not how Linux actually
-> works.
-> 
-> A normal setup would be
-> 
->                  br0
->                   | 
-> 		Bridge
-> 		|    |
->                eth0 eth1
-> 
-> and
-> 
-> 	vlan0:42
-> 	 |
-> 	 eth0
-> 
-> What it sounds like it should be is
-> 
-> 
->                  br0
->                   | 
-> 		Bridge
-> 		|    |
->                eth0 eth1
->                 |    
->        ------mapper------
->       /        |         \ 
->     GEM port  GEM port  GEM port
->        100       101       102
-> 
-> You get your 802.1p tagged frames flowing down from user space and at
-> the bottom you map them to GEM ports.
-> 
-> How you classify frames above to tag them for 802.1p should be out of
-> scope at this level, it is a TC problem, or done via the VLAN
-> interfaces stacked on top of the base interface. It is a solved
-> problem Linux can already do. It is the mapper which is new.
-> 
-> But i assume this is also possible:
-> 
-> 
->                eth0                                 eth1		
->                 |    		                     |    		
->        ------mapper------	            ------mapper------		
->       /        |         \ 	           /        |         \ 	
->     GEM port  GEM port  GEM port         GEM port  GEM port  GEM port
->        100       101       102              103       104       105  
-> 
-> 
->> Putting your two suggestions together seems to lead to a cleaner model:
->>
->>                      +------------------+
->>                      |    PON device    |
->>                      |  (wiphy-like)    |
->>                      +--------+---------+
->>                               |
->>                 +-------------+-------------+
->>                 |                           |
->>              AF_OMCI                 service interfaces
->>                 |                           |
->>           OMCI userspace             Linux net_device(s)
->>                                             |
->>                                    VLAN / TC / bridge
->>                                             |
->>                                       GEM mapping
-> 
-> You might want to talk to the wifi developers. Do they actually like
-> the wiphy model, does it work for them, or do they wish they could
-> throw it away and start again? What would they do differently?
-> 
->> That also seems to answer part of the question raised by your AF_OMCI
->> idea.
->>
->> If OMCI is a protocol associated with this lower-level PON object,
->> then there is no need for a synthetic omci0 merely to obtain
->> AF_PACKET semantics.
-> 
-> So as you say, one question is, how do you associate an AF_OMCI socket
-> to the lower level PON object? A typically home router probably has a
-> single SFP cage, but maybe somebody will build a box with two SFP
-> cages, you can connect to two independent providers so you have
-> redundancy, and load balancing, etc.
-> 
-> How does addressing work at this level? BSD Sockets can use bind(1) to
-> set the local address. Or you have SO_BINDTODEVICE socket option, if
-> there is a name which can be used. I don't think it needs an ifindex.
-> 
-> 	Andrew
-> 
-> 
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+-- 
+2.47.3
 
