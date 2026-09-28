@@ -1,175 +1,131 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D964B4043;
-	Mon, 28 Sep 2026 11:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790596075; cv=none; b=dsKP8anb+FzCNAmhp1BC8Ippr3YoeY3db+vDurmsAtYKkw/jbYKtWx2xD9PTyeWgy3n3zvCgjXMnBgW97NVx1FmkjVY7f/YZmRFv6CxzuG35IwGC/DWwMgQ4I1P7nZzltRbvD6lonWXZ3/h/iMBb+8CTIZrj3NMNbJ9dNqNktPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790596075; c=relaxed/simple;
-	bh=gKexWYj4TECJgjQ3HIK+q3fhPhIvU0FyrGQh73gBwyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=axbninAitQ4jO7cR+NJ7XisQ/9FhAD2Ot6Rw+VU4J9NX6wJFs8NWZhzNLNNNiBHbZHZ9pPCuv8pbaujTdQXahPnMH/NWYL8Z3pTvaCwbTlNzjYBTuy0PHd+3eo4Liu6jZRpiASbvfwtc3OsSryNOdgu1LzBGwBJ3H088heUqGbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nrEXB6Tp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA124B7A59;
+	Mon, 28 Sep 2026 11:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.217
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790596514; cv=pass; b=BJMufuSI3fPD4RZUILRn1bDp5AED9tlhJ2OmTgc+OGTLR69QtsxgMfALG/7gHhzELMste+GpKiLd1iiaTxNi6uxD4wmHiEHYc1lmqYhqH9Sg7h2bZ2G6/LJzKsVzK4TUdecb2FFDZdKckzFOF4xgnM0eE/oEddPdK37LZUj5WII=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790596514; c=relaxed/simple;
+	bh=SVZcJ55DzVNMNY5XMdT7WD2AhnBGmKabJpvR8EQwb0Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=p/EZK0Y15BtNAxdUfJ0h7Gs3LMJVktrQuMJI2XmyE7MXmGXDrJe4L3tyvg4+ymzlg+h2TUBfXNv83sgjVn+B59MTYcq/5O+Wo6SYpro9awmb5jFQKGuDJR6z7bizuz2weR2Na4eO8iw0HveQmywqFQ5ub5fHt50DVE0r1GLYLEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clnt.de; spf=none smtp.mailfrom=clnt.de; dkim=pass (2048-bit key) header.d=clnt.de header.i=@clnt.de header.b=kYVJ9qEB; dkim=permerror (0-bit key) header.d=clnt.de header.i=@clnt.de header.b=ePnFHYK2; arc=pass smtp.client-ip=81.169.146.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clnt.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=clnt.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nrEXB6Tp"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBa4ZK824443;
-	Mon, 28 Sep 2026 11:47:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=lp9alhCtwld/A22A4Gj2pxE1ElKr1x9Zcht5P/StL
-	dY=; b=nrEXB6TpzUWqvkRZHND+eLV1QCnVsNYgJ0Y8WweeabywETsyN7BNLJT1n
-	Av6xBUk8k0KYnetTn2kqIiBGj7BLHKxPUM49gZ7j9bwGH0ZfszXuqeuDGaXq8jub
-	Tz9O0U9tF29TBtHKzh0F/Av3SGBLuAjx5DjfiZxUswjKy2Eh4zODVnP+1Wv9Hf1X
-	O/+v3DlXgr4GcilXOePnJCf0QfJn7AU90ijJJvcqKKPrt+u3zIL0YyT5wPQEGmFA
-	DSih9LEPz7dZUWLagKKH3ubTMpdxTY0xXBALueGf8GPoWEioJGxdZnyXd9NoMRtO
-	FouoUkbzNdGYPKgyDrC1LBH0186Lw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx3fk102j-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 11:47:46 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBHYNr2943219;
-	Mon, 28 Sep 2026 11:47:45 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxtkg4uyd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 11:47:45 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68SBlfZh45220210
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Sep 2026 11:47:42 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE51A20043;
-	Mon, 28 Sep 2026 11:47:41 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90E0220040;
-	Mon, 28 Sep 2026 11:47:41 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 28 Sep 2026 11:47:41 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
-	id 4A112162099; Mon, 28 Sep 2026 13:47:41 +0200 (CEST)
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: Aswin Karuvally <aswin@linux.ibm.com>, Gerd Bayer <gbayer@linux.ibm.com>,
-        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Julian Ruess <julianr@linux.ibm.com>, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH net] s390/ism: Zerorize dmb at allocation
-Date: Mon, 28 Sep 2026 13:47:41 +0200
-Message-ID: <20260928114741.4135978-1-wintera@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=clnt.de header.i=@clnt.de header.b="kYVJ9qEB";
+	dkim=permerror (0-bit key) header.d=clnt.de header.i=@clnt.de header.b="ePnFHYK2"
+ARC-Seal: i=1; a=rsa-sha256; t=1790596502; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=UFC4aq5r2AZwRb5NG+M1XKiJCbl0GeB1QHZi/Fg5zRIHPzEgMoksM2eVsamE8UTI5I
+    73MYzAfKw/A+LqD18sPpgTtZpyPXLZbc0KLgZ5S6FBynNY3LwKRhhMdzBp5wUYSqjac4
+    ksTk2OT8ABU12fF2tj/H0+I19LuNM1OKdaugqod6MPqvvXArHmIr5eZ3T/JQhes7kyAG
+    j5bdEKcG3Tcu5AgNtRIaLvBmMkt083VqJ199navq/P85xYPykWdPZ13oNXgmuuDJa7Ax
+    IU2B1Cq3pic/nvETVubbuZsZSJNV/li+VwuvWTwen8isOU+XOwR+1SMKTdYgnp/bgSx/
+    LAAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1790596502;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
+    b=T2Iu1flPA9d2WgadXiLTiJi9rCPvOv3ZTQ6HM+203TL8U5W9AZOIYw0NgRIgeLmcrv
+    kz8ph/Z5mLQSvhrcaObkfiVRiaAHvaMJbZoWqJor0AQG1Zjl/AzRgV8YJuWRFah/wys8
+    QqEfOUsqw/Nj/1KRp/9pgFMiT2qYz/qZtiDkJfweh/uSqEhP4WXu653yH1llkstVpucq
+    4ta3yoauyw97xr5K0u5qlCIa4JAeBGqhCCxCtms/IwZRGj2jb/JDpib6qrwNyil14syT
+    ofCm5+Ul+TvRcsoMB4j3fQY4Jvh040PsFanxv/Sbv+L63EdcJZGtMP+Skjg8ZaZGD58v
+    qi+w==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1790596502;
+    s=strato-dkim-0002; d=clnt.de;
+    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
+    b=kYVJ9qEB/J9nAjf7VMhmHbjfF52vWP4WjmB5L67RlYnEJ6hsmMl+qBQYHioqO8GUx5
+    JxdOwQbfyN3lxDXCkxuMkmFCkDHVc2vc8l2W6icpZnUsHN7J0kq+S9c+mPZP8bLrsGOx
+    XLX6w696GreLgjRcFZ4KWTKGG+Gdu5RXyPduOc2DcIs5xwblYcA0qLdgwRoAtc42a+NT
+    Ib/OlJpwyQRI9LsXk+37SnNzCrrcoaCuaAZ29nTJC6nomjeiE2NYKD7d0rPp+NDnuO1e
+    J/IWWRpv0YGrJuLeiov+rKAIAU65fllTRDoTVc0r9rlMIBa7uAApr2ZTwqSU7U68gZe8
+    8+Ug==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1790596502;
+    s=strato-dkim-0003; d=clnt.de;
+    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
+    b=ePnFHYK2Q83NhPhlY9mfUSXANra+h1KRzAfQvPj9F9wRkcowEq4Mrrx9KelM5OS+/4
+    fD7xuNfcNPXCGB6n4fDQ==
+X-RZG-AUTH: ":JmMBZ0eIePPD0O4MAtHoOQRBn1SEQ1z2Q1DWy2WVkt1sV8N3AuWK5lfWPRbu91LSBytYvkGZVYo37PbZpRi9KWvmPfg="
+Received: from ehlo.thunderbird.net
+    by smtp.strato.de (RZmta 55.6.2 AUTH)
+    with ESMTPSA id f03c2e28SBt2Y1V
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 28 Sep 2026 13:55:02 +0200 (CEST)
+Date: Mon, 28 Sep 2026 13:55:01 +0200
+From: =?ISO-8859-1?Q?J=F6rg_Willmann?= <joe@clnt.de>
+To: linux-can@vger.kernel.org
+CC: socketcan@hartkopp.net, mkl@pengutronix.de, netdev@vger.kernel.org
+Subject: =?US-ASCII?Q?=5BBUG=5D_can=3A_RX_frames_silently_dropped_in_ra?=
+ =?US-ASCII?Q?w=5Frcv=28=29_with_RPS_enabled_since_d4fb6514ff8e?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <VI1P18901MB0640EC60F0E40E18EED92A0AAA8D2@VI1P18901MB0640.EURP189.PROD.OUTLOOK.COM>
+References: <VI1P18901MB0640EC60F0E40E18EED92A0AAA8D2@VI1P18901MB0640.EURP189.PROD.OUTLOOK.COM>
+Message-ID: <2859AD3D-C805-41A0-9036-C5E8EE152419@clnt.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: uPbcHMsHIozt5wumsDcRDrbo-GIhgVRs
-X-Proofpoint-GUID: Hz2SG6c1D61ZAEepy2SS8eAo4bMcVwSE
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA0NiBTYWx0ZWRfX20HfrasHbat3
- x02banvnur/bxlrvNoBLRug+CTAsK0E/GVpdZ5jB5ZfQDJEArpbRCCWZbDEv2bW56bfYEF/RmV4
- xDokBBWFdB5488kbV+v1XqkyEjhhANw=
-X-Authority-Analysis: v=2.4 cv=Vv62kO2n c=1 sm=1 tr=0 ts=6aba53e2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=BBuY1RymvebusuJm9ysA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA0NiBTYWx0ZWRfX454akF/7yk9G
- 6CtCuGKTjZs7cdyEFwMaY0OBgZ2yvzC8kO7EW/URhQbcKm8hNw0Xf3T1OnpLkTMRxDdvXxUvmtR
- A4HvQhb4s/AY897MjrXLKlj6leHdnemfk6W+RrJElshXrq5LZskx8XstRG2zxdoy9ubeySHpTW2
- dHWog8bHBWDmvhBW0TR9GxTj3sdrLLlvbug4EJZHgtv/hAdWUpcV6V2D83dK4UUE6405mLyBFPP
- SU4MQuFwkrB2oZ2Ckvr+9ahAQi1TABReZQ6J6dysj/49kPURQSjQFK/A1oqs8QCSLnMLH8xhfmd
- ux27f1YIf8qtRIPsI4TLRP/+f4NM8D+naSUhgeUaXh5XJCnOpwiC3n868CDO49uSgTG9EZPlDce
- JB0jF0sNhoQX50zRr0Pmj7HoM9+vFFV/uVSVlVkb/wXkWQ+BEineHncjR0odVPtxQnXjntpk0+u
- 8fkD5xtQ/8ylY8w7+aA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-28_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609280046
 
-Sashiko reported [1] that 'Missing __GFP_ZERO in folio_alloc() causes
-uninitialized kernel memory to be exposed in the receive message buffer'.
-An ism dmb is receive-only, so the data is not leaked to a remote peer. I=
-n
-general the smc kernel module (dibs client) will only push newly received
-data to userspace. We still should not have uninitialized data in a recei=
-ve
-buffer.
 
-Since
-commit 750afb08ca71 ("cross-tree: phase out dma_zalloc_coherent()")
-dma_alloc_coherent no longer required the __GFP_ZERO flag, but when
-commit 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
-ation")
-switched to folio_alloc(), it should have added back the __GFP_ZERO flag.
 
-Add __GFP_ZERO flag and state in dibs.h that register_dbm() provides
-a zerorized buffer (dibs_lo already does).
+Hi Oliver, hi Marc,
 
-Link: https://lore.kernel.org/linux-s390/20260903143746.A5CC41F00A3A@smtp=
-.kernel.org/ [1]
-Fixes: 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
-ation")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
----
- drivers/s390/net/ism_drv.c | 3 ++-
- include/linux/dibs.h       | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+since commit d4fb6514ff8e ("can: use skb hash instead of private
+ variable in headroom") we are losing received CAN frames on raw sockets
+ when RPS is enabled on the CAN interface=2E The problem also shows up in
+ the stable backports (seen on [6=2E12=2E109])=2E
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index 035b233abb4e..405abd99c820 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -256,7 +256,8 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct =
-dibs_dmb *dmb)
- 		return -EINVAL;
-=20
- 	folio =3D folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
--			    __GFP_NORETRY, get_order(dmb->dmb_len));
-+			    __GFP_NORETRY | __GFP_ZERO,
-+			    get_order(dmb->dmb_len));
-=20
- 	if (!folio) {
- 		rc =3D -ENOMEM;
-diff --git a/include/linux/dibs.h b/include/linux/dibs.h
-index d3e0777f25ae..0c10c224bcca 100644
---- a/include/linux/dibs.h
-+++ b/include/linux/dibs.h
-@@ -261,12 +261,12 @@ struct dibs_dev_ops {
- 	 *	@vlan_id: deprecated, ignored if device does not support vlan
- 	 * Upon return in addition the following fields will be valid:
- 	 *	@dmb_tok: for usage by remote and local devices and clients
--	 *	@cpu_addr: allocated buffer
-+	 *	@cpu_addr: allocated, zerorized buffer
- 	 *	@idx: dmb index, unique per dibs device
- 	 *	@dma_addr: to be used by device driver,if applicable
- 	 *
--	 * Allocate a dmb buffer and register it with this device and for this
--	 * client.
-+	 * Allocate and zerorize a dmb buffer and register it with this device
-+	 * and for this client.
- 	 * Return: zero on success
- 	 */
- 	int (*register_dmb)(struct dibs_dev *dev, struct dibs_dmb *dmb,
---=20
-2.53.0
+ Setup:
+ - Kernel: 6=2E12=2E109
+ - Platform: OpenWrt 25=2E12=2E5, 4 CPU cores
+ - CAN controller / driver: mcp251xfd
+ - OpenWrt enables packet steering (RPS) by default on multi-core
+ systems, so rps_cpus is non-zero on can0
 
+ Symptom:
+ The application on a CAN_RAW socket misses frames=2E /proc/net/can/stats
+ counts more RX frames than the application receives=2E With
+
+ echo 0 > /sys/class/net/can0/queues/rx-0/rps_cpus
+
+ the losses disappear completely=2E [Optional: rate/amount of loss, number
+ of filters on the socket, whether join_filters is used=2E]
+
+ Analysis (as far as I understand it):
+ 1=2E RX skbs from the driver start with skb->hash =3D=3D 0=2E
+ 2=2E With RPS enabled, get_rps_cpu() calls skb_get_hash() in the
+ netif_rx() path before can_rcv() is reached=2E The flow dissector
+ finds no L3/L4 headers in CAN skbs, so every CAN frame gets the
+ same non-zero hash with sw_hash =3D 1=2E
+ 3=2E can_set_skb_uid() only assigns a new counter value while
+ skb->hash is 0, so the RPS hash is kept and the frame gets no
+ unique identifier=2E
+ 4=2E raw_rcv() treats a frame as a duplicate when both the skb pointer
+ and skb->hash match the per-CPU uniq entry=2E Since the slab
+ allocator often returns the same address for the next skb, a new
+ frame with the same (constant) hash is dropped as a duplicate=2E
+
+ Before d4fb6514ff8e this could not happen because the unique id was
+ kept in can_skb_priv::skbcnt, independent of skb->hash=2E
+
+ Thanks,
+ Joerg 
