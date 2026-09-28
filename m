@@ -1,163 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D7B499F1E;
-	Mon, 28 Sep 2026 22:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EA14F68D7
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790635015; cv=none; b=KX0NeGBKjZZnECqRUMLQcvV4UBQx1Z4WgL9ilikWP1iL+1rELBb2DDQ5599aqkTszXJIkWQGjZugX6pVDX5huUwlpc/geP2XWI30YImxz89UkltDe16ThqzdVVAytU8D0lDUCJBb46JSqkHzoMiPIo10MlF1UjBbY4wTTIC+0UQ=
+	t=1790635310; cv=none; b=F3rrB4GMFlUfETGqpLKzN1nQCOt+2Xp/ixQyFF+oo8rPD0v0JTK2pEN5iQmYkFOtEN7lOBhkrQozgE+1h+LY1DHYUG1vn3XALqhAEuOnSozXoQ3rEwiDauqMI528wtuBhdG4y6mgWYAQRH21ZWl5Txi/EUBdpnBFBPaplDuF1i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790635015; c=relaxed/simple;
-	bh=NqBNE51bJx4UPSYMjOt1UjkT6HegT2zBHYDaKQlQUAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsLk9yqhghn6QQCLHZDLxnsuPMLF0K7mwUr3riz2+Chm/1WcfaaI9HC0MIjlmI8hGO9T9swKfneI910no7zlFKGTkzORVj0Sp1mJuNYxBkJhhnLoovYK/VdzaTE6PZtD+1+tuUnKpmKmpq+mnhyeaWCqQQQpptYSmsfxTMf1Oek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ii9hsZaB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790635310; c=relaxed/simple;
+	bh=Y7TrbY07MB1wxA/bsFezV+7VtGSYdawE26S7EDf+DDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s9gjDvIvawqgf2zjYmAgetIbo1PJJHoS8GmqnrD0nuvqdeeqS1PwJ8lH/bIGCmoqb0GIP6/LSBr/1iQX81foP2oXRgswFVCqm8f1ynuEcqF9cxMb+RJtwjIXnTwDzBwhuZpF16KIBwGlWYy5B2SABLGMm5Rzos6DRzuSgUeLisE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ey0VdUVh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NE8HRNk7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ii9hsZaB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDBA1F00899;
-	Mon, 28 Sep 2026 22:36:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790635013;
-	bh=fI+zezBWtJo4PhVH2Jn+7LYv6E+83YkjR2yJzrkGXm8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ii9hsZaBEoKorMBwVo+0DoFtJwJsurfvBv+3dndeEYJx7kdW85xFgBI2b8F3b6pax
-	 jv7bh13fK7lgyOnB+gqzEjIS/xqesNNSNHOlxVDpPXDesp7UpBDcmdV2z0dRyepu1q
-	 ilWwq+mgksUVxjV1Y7krSkXE1/2rZvaMAc9Fm0s2HOGl7LedYMR1c+YqfCC9CeieRJ
-	 iqDJzmruUBySalsHrI7lIGTIF26IGkQbzF1BJgnCNQFyVU8S0pBQbYZo0GHtu68qtk
-	 0jEVEpthqudxx1woGIkVTtRVuUZECL7DdZicwN5IU+Zl9yFDAL5I2xdt2TrOn01irX
-	 Hha0XCp7eQMYw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	jv@jvosburgh.net,
-	hawk@kernel.org,
-	sdf@fomichev.me,
-	emil@etsalapatis.com,
-	liuhangbin@gmail.com,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	willemdebruijn.kernel@gmail.com,
-	aleksander.lobakin@intel.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 5/5] net: drop GSO skbs instead of handing them to XDP
-Date: Mon, 28 Sep 2026 15:36:48 -0700
-Message-ID: <20260928223648.2739371-6-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260928223648.2739371-1-kuba@kernel.org>
-References: <20260928223648.2739371-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ey0VdUVh";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NE8HRNk7"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SLTWcW3200516
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:41:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lc0k+BB+B+pR9YWQ1iPcOnfiXQnv9hmfa3Jo581awKM=; b=ey0VdUVhTiQujIvu
+	rGOGRtg+9yJrmlcbf6Hr5HkLn11O5bp17i7/sX4iSRzZ0+jo9q6CHcogLe/AbW7Y
+	YBDGBKgqvxLsuaJaTiGaSi/2BF7AI3Q5y7EmQJQ03N4JkCHVRDkNLbFOTF/vnE1a
+	l1A1jz7V85ITb8dqyS18HxGllsQOwBscxmCaYZsWjbJckw5MSyqJy/XRbbSm+zjb
+	gReSYLUqJEIaGye2KK2IrV+RukChEpEPE1yJoi9P8kcn/R3rY9dyLX9g1Gx+rGrz
+	RqQ2x3uFs/VocJJ0DFcYNImWhNg8XAK4wer8zM8A2umryL5K/gsJMkC9psn8vfYD
+	5HtOTQ==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gynb6k553-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:41:47 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso5977075eec.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790635307; x=1791240107; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lc0k+BB+B+pR9YWQ1iPcOnfiXQnv9hmfa3Jo581awKM=;
+        b=NE8HRNk7vbRjwdtkKVZmF+gv/LeR5ZLYEe5Ae29Or77jM4n/XudyjW65cKxIqg0mxM
+         CyWsQHFvpwa7vh3h8rZQB2E8HFoBh/QB0zgStTIsPbxwXJfHG1kelP/AM4t14ZWWIhuf
+         IA3LR+r18LNo8lf4XXe1cOI1eZvA21D4Fuuir+R3gQz8jZtjniYhc1pR14cclQ6Ganu1
+         bmZhHh4fqYSMpFRgXh95yhNM/WI3Fr3oGvXfAZ2Cp5vr6OkVXitZr7+NpkKh8l9lwpuW
+         ZvSVYd6tOoFsH5knG7+YsyAj4qeFtFkHyNoQ99H8MZm3M53o4FeYleoDeJLi+dcd+qDY
+         KLZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790635307; x=1791240107;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lc0k+BB+B+pR9YWQ1iPcOnfiXQnv9hmfa3Jo581awKM=;
+        b=UJIcYeoZf747Q0jpC3/K9AiphbdZM1rNU18C8scDD6JsKklInN0IM466r2IY2hznKH
+         fZqBZEK2fWbM7K/akxyQL/Ae+Zs+7RwUNPQZF97ygtGjQj4f4CXPDj7mugOUWth6ci6W
+         kNnNdU46aV0ivJQZwyKfpyExLkDAVtNoQw6ZBsvTNK7lLR3ZiZaCppodpuUqeKEZVYBO
+         yTyPCesiMqfHi2YB5/hQBLMyYDnPLYoOTOQO3soleuVBNBC6H/uxAjaU7/MNsyp0kEvV
+         sQnY/aPmKismIKp4PTV2ZrhLj2mSSPCYTOdN6GtNsNde+FwZKfGdb9z0r205gpTxbXIM
+         HVcg==
+X-Forwarded-Encrypted: i=1; AKwUvBwVErtYDpZAU0XNiv/SxQEHFl7KN3Qb0Tvk3uSZ76zkQCxwPww30MMVYXUrx9nMX5oskevPN+k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJjYK4Th5DOdHe/SmBTw1yhenZL2LCbZHx5d8MlwQxSX41RA8Aw
+	bjaQFbo/KjOkfckymZwnR/FZxeNhMizFXyZStDLgwcCpz2Iroe8vUMaldm5UfwgpB0WGMJinCbO
+	cBfaEqo9cwfnQpfaTQRDzLibEDvobbi/y7cKgOixW1yoAvuKA9y9//mLjO4Q=
+X-Gm-Gg: AYBFou2C7+WtU5jXa9HYI4DoWRxiRbdUceMtZU/VKgjYV6zwEncTOMqNHQwTxLF4H9l
+	nCjezqCSG2bIjBj/O53J+8/GtQLjbnj+W0j3wPkyjKFqYCmhkDzH0s2iGBYA0KvFWzXyYumRy61
+	ZZNFMdJG1en6UMJP6LNT9NcslQYOfPt91m2nmyxGnt1yIa6wiOzA30nC4WjvkCt9oGQeRyBSze+
+	RZvO+lL+nUlcEP32D6WULN/SgEfPS/0mJGMbsQuJUSY2t6Xi58qAFCPWeU24spoqG7qvNnv3Ama
+	Q0uEMTiG6wdT9MPa1GFQKAJpyZEYJhU9kBcw9Lp2Yesm6g2m1puO6ql3uSGXlq2KBSVDs0/nQGy
+	nFjoAukhtAAPu+EABYWxyInuJAtTW6CCINqIj8wa1UAHe2/KKqkILeyw2BMIG1ks=
+X-Received: by 2002:a05:7301:6781:b0:341:a4ed:d910 with SMTP id 5a478bee46e88-3426fcc826cmr14033362eec.7.1790635306810;
+        Mon, 28 Sep 2026 15:41:46 -0700 (PDT)
+X-Received: by 2002:a05:7301:6781:b0:341:a4ed:d910 with SMTP id 5a478bee46e88-3426fcc826cmr14033328eec.7.1790635306198;
+        Mon, 28 Sep 2026 15:41:46 -0700 (PDT)
+Received: from [10.71.40.138] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341459234a1sm29893248eec.24.2026.09.28.15.41.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 15:41:45 -0700 (PDT)
+Message-ID: <db2e1a67-4b15-4bec-ab08-1a22457b52ba@oss.qualcomm.com>
+Date: Mon, 28 Sep 2026 15:41:44 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: dwxgmac2: enable L2 split header support
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Hongmei Xu <hongmei.xu@oss.qualcomm.com>,
+        Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>,
+        Sarosh Hasan <sarosh.hasan@oss.qualcomm.com>
+References: <20260922232116.889630-1-sagar.cheluvegowda@oss.qualcomm.com>
+ <aro7Yijt_d-KRD0Y@lore-desk>
+Content-Language: en-US
+From: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+In-Reply-To: <aro7Yijt_d-KRD0Y@lore-desk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA5MCBTYWx0ZWRfX7n70wEBJWplY
+ sXvpmPjme5MaQG+r32rAivw1yGBOaOZ8uhQ3maPLvTQzdKnIvL9a8Q9rrh8Ihd7z69Qh17dnwcU
+ /oP/MZ+512RCXxkXHzepTvtH0aaxJ1EiXMpydU563p6L0uqgzWA6dUD5jYjXQ59Jjw7h0h7035T
+ w9AHL+Ur2uUKafjJTADedERXzy08TwC64QhD/55Xn1yQb+PobxKKg9WbqL2kbMGYMEjsgcSLZzy
+ VaFN1X+y4dJTLBuUjfDwcHWZMUl0ueHLu2YjU1AenUcoo7y7wIhvP0Ai+jbywHiUeHkcdF190R4
+ iNiMKbrmLsYK9kOgGUIyZLsE8h9sIdd1uaM3Pxa0mtvW0ES116n9hUMC7KdEtbEpdACCEU7eBHw
+ fAqzb4HU699PxKzNXlKvHYEEl6S5dogjxRuoWQBOLZha43FnDvHjv7DK4+7qQXJEl1esczsGGjq
+ UN/JI0a5FK3n6kSNGfg==
+X-Authority-Analysis: v=2.4 cv=K+e3jCWI c=1 sm=1 tr=0 ts=6abaed2b cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=IMd6QsT5PRD0yrB2h3IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=bBxd6f-gb0O0v-kibOvt:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA5MCBTYWx0ZWRfX0t8axjsb0NlC
+ 9yXRNktqYivSjRXBNMaKcfDe+xLmfYmdeCHx7auuV3+5XM/6uNCa4Cg2BDIB3V5Z9/08QYRHxsw
+ Yb3dl6bDnKU6TaKzz9+hm3DyBXpq6/0=
+X-Proofpoint-ORIG-GUID: hWiu202qKXRmK34q-COkMmEMP7DW2G2J
+X-Proofpoint-GUID: hWiu202qKXRmK34q-COkMmEMP7DW2G2J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-28_06,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609280090
 
-skb BPF paths have a number of helpers to fix up the GSO
-state after packet modifications. XDP has no such support.
+Hi Lorenzo,
 
-"Real" / driver XDP runs before the SW GRO, and drivers generally
-disable HW-GRO when XDP is attached (with the exception of IDPF,
-story for another time), so this is not an issue. We also try
-to disable HW-GRO and elide SW GRO when generic XDP prog is
-attached. These precautions are not 100% today, and IMHO fixing
-that is impossible. Let's explicitly drop GSO skbs on input to XDP.
+Thanks for the review.
 
-First example how things can go sideways today - bonding.
-We only disable & elide GRO on the device to which program is
-attached. Nothing reaches the devices below it, and for a stacked
-device that is where the packets come from:
+> Hi Sagar,
+>
+> are we missing to set dma_cap->sphen for dwxgmac2?
 
-  ip link set dev bond0 xdpgeneric obj prog.o sec xdp
+No, that's already set — dwxgmac2_dma.c reads it from the HW_FEATURE1
+register (dma_cap->sphen = (hw_cap & XGMAC_HWFEAT_SPHEN) >> 17;),
+predates this patch and is unrelated to the sequence added here.
 
-leaves every slave with GRO on and no xdp_prog of its own, so
-netif_elide_gro() lets them coalesce as usual. bond_handle_frame()
-then returns RX_HANDLER_ANOTHER, __netif_receive_skb_core() loops back
-round to another_round with skb->dev switched to the bond, and the
-program gets handed a packet which was never on the wire. HW-GRO is
-the same story - while netif_disable_lro() walks the lower devices,
-its HW-GRO counterpart never did (this is largely the point of
-distinguishing between LRO and HW-GRO).
+> +#define XGMAC_EXT_CFG0_VPRE		BIT(8)
+> +#define XGMAC_EXT_CFG1			0x00000144
+> +#define XGMAC_CONFIG1_SAVE_EN		BIT(24)
+> +#define XGMAC_CONFIG1_SPLM(v)		FIELD_PREP(GENMASK(9, 8), v)
+> I guess it would be better to define a mask for XGMAC_CONFIG1_SPLM.
 
-Example two - veth. Generic XDP on a veth gets there by a different route.
-veth_xdp_set() takes NETIF_F_GSO_SOFTWARE away from the peer so that
-no GSO skb is ever built for a device running XDP, but generic XDP does
-not go through ndo_bpf, so none of that happens.
+Agreed, will send a v2 with:
+    #define XGMAC_CONFIG1_SPLM_MASK        GENMASK(9, 8)
+    #define XGMAC_CONFIG1_SPLM(v)        FIELD_PREP(XGMAC_CONFIG1_SPLM_MASK, v)
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- include/net/xdp.h  | 16 ++++++++++++++++
- drivers/net/veth.c |  3 +++
- net/core/dev.c     |  4 ++++
- 3 files changed, 23 insertions(+)
+> +
+> +	/* when FD=1 and LD=0, HL is RDES2[9:0] */
+> +	if (!(rdes3 & XGMAC_RDES3_LD)) {
+> +		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+> If XGMAC_RDES3_L34T is not defined on non-last descriptor, is it fine to use it
+> here? IIUC XGMAC_RDES2_HL depends on XGMAC_RDES3_L34T, right?
 
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index aa742f413c35..5a234aab1e1c 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -291,6 +291,22 @@ static inline bool xdp_buff_add_frag(struct xdp_buff *xdp, netmem_ref netmem,
- 	return true;
- }
- 
-+/**
-+ * xdp_skb_feature_check() - can this skb be handed to an XDP program?
-+ * @skb: skb about to be turned into an xdp_buff
-+ *
-+ * Return: true if the skb must not reach the program and has to be dropped.
-+ */
-+static inline bool xdp_skb_feature_check(const struct sk_buff *skb)
-+{
-+	if (likely(!skb_is_gso(skb)))
-+		return false;
-+
-+	net_warn_ratelimited("%s: dropping coalesced packet before XDP, receive offloads are still on\n",
-+			     skb->dev->name);
-+	return true;
-+}
-+
- struct xdp_frame {
- 	void *data;
- 	u32 len;
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 71227d0389aa..5635037e3b60 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -756,6 +756,9 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
- 	struct sk_buff *skb = *pskb;
- 	u32 frame_sz;
- 
-+	if (unlikely(xdp_skb_feature_check(skb)))
-+		goto drop;
-+
- 	if (skb_shared(skb) || skb_head_is_locked(skb) ||
- 	    skb_is_nonlinear(skb) ||
- 	    skb_headroom(skb) < XDP_PACKET_HEADROOM) {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 096d1dedebfd..fbeb3df4c11f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -158,6 +158,7 @@
- #include <linux/once_lite.h>
- #include <net/netdev_lock.h>
- #include <net/netdev_rx_queue.h>
-+#include <net/xdp.h>
- #include <net/page_pool/types.h>
- #include <net/page_pool/helpers.h>
- #include <net/page_pool/memory_provider.h>
-@@ -5516,6 +5517,9 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- 	u32 metalen, act;
- 	int off;
- 
-+	if (unlikely(xdp_skb_feature_check(skb)))
-+		return XDP_DROP;
-+
- 	/* The XDP program wants to see the packet starting at the MAC
- 	 * header.
- 	 */
--- 
-2.55.0
+The data book has the following table for this (Header Length
+Availability in RDES2):
+    Value of FD   Value of LD   Header Length (HL) Availability in RDES2
+    0             1             HL not available
+    1             0             HL is [9:0]
+    1             1             - IP packets, HL is [9:0]
+                                 - Non-IP packets, HL is [9:2]
+
+So when FD=1,LD=0 the full RDES2[9:0] is valid regardless of packet
+type; the L34T/L2T-gated split only applies when FD=1,LD=1
+(single-descriptor packet). So the non-last-descriptor branch
+deliberately doesn't consult L34T at all. This function is also only
+ever called on the first descriptor (dwxgmac2_get_rx_header_len() is
+invoked from stmmac_rx_buf1_len() only when len == 0), so that
+precondition holds at the call site too.
+
+Will send v2 with the SPLM mask fix.
+
+>> +		return;
+>> +	}
+>> +
+>> +	if (rdes3 & XGMAC_RDES3_L34T)
+>>  		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+>> +	else if (rdes3 & XGMAC_RDES3_L2T)
+>> +		*len = (le32_to_cpu(p->des2) & XGMAC_RDES2_NONIPHL) >> 2;
+>>  }
+>>  
+
+Regards,
+Sagar
 
