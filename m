@@ -1,56 +1,53 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C89410D15;
-	Mon, 28 Sep 2026 07:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55147453A52;
+	Mon, 28 Sep 2026 07:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790579107; cv=none; b=ANonhc3vGcORyyGOzoTUpeob7zDgfqKac6B7mfyFLaV8uaFdxNWd1SqVwIZIeWxZG+1wqKmG2rPr8WyeP2d42zd5i/THL8Uzifs6WZhNAqpHyzD1oXMX/qftVaFz74INvBA4yHqgFzMMcl4JEpE2wTIxn9DjEErL38u7bJwKXRE=
+	t=1790579106; cv=none; b=PzcFoHlBM5OXy21QxLMLBWmSltXgpNemUJeMc8H6MoMXGcMs+d3/JRycY7OTeQfssoFsbl8wRPz+FIxA8/hc+yOFODY3Ht1KvsrKO8bF1S6O4WVex4auKgBU4oAmpF9dJA5kBTZ+Vp6cz8kxsCn7iPO1xkrKwV5Zx793Lb0Thbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790579107; c=relaxed/simple;
-	bh=XMuu0V891oFPLsGjdeHY7ZpNAepD+dEjwAfGvrEdyEU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L9QVNf1CDgF3WyoR+F3fk3K/3v/bGsf87bsHB+tRTs5AlCYF2r7D/v9RVyRKHXCocqRieNaidI9Dv7wcq5zWZf0dCNu4FRZsuRHraUvNiPljmxoR0NCZbgEE1ZHH5zZKJ7LBABlDoBPQaHvLKxktpd4osg6iC1Hvdb54mriX+Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=YM6pEt5m; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1790579106; c=relaxed/simple;
+	bh=xW5HI047B2xMCce03u0tcIppx9S1Jln838V+U1kNKvM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S3RbfacVWPsEoeJTeHNIb+OgrwHDHBYSjxaYDO08PKkZvfBTQ31Dc1VaUF7dXQyek9zi2J3KEOlj+7E0nRb+zHy6d0/6ts3InLX+CbLLguUkBbyXIdvqZ4gswnCEoHZa6RIrCJQZ+SFdN/+ecJkSg6d2edS4/ITOb7aOby8b5Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=b3vH9SdY; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="YM6pEt5m"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68S74QmuC217875, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="b3vH9SdY"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68S74PmsC217875, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1790579067;
-	bh=d7PC6cIWJaHzXi3qAvWRHTNupDWQF/tqkkdpj7QfcG8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=YM6pEt5mWzGpkI2nzItKD0FpumbEZ9tWTKwNxajOGitf+QvmS/VuwWTlXIB61P3ad
-	 D0lDSV5T68OGFWZ02jLcvTdolmE/MZlNYy8BpwvU/jldtfVKRpvOMBTEJL8w5Ve/BR
-	 u+2STvVV28KmlLaoXTSZG4KOueyYraho03zibOLk4z2uUjYgUCa2Rzm+XaXMW/8QIo
-	 XULxWexH5fT4KPxnZeUUZRb/KI0haKEi3usjO1AkQ5hqoVj7TYt6r+itXRmdUDtwqO
-	 tl3IxnbvklGqaLsPHAA2Txjvoj7u0DV8+fuY8b1XPbAY1yLTqtekiHE0sJqoKDwsxw
-	 DhmkTX8N/w2XQ==
+	s=dkim; t=1790579065;
+	bh=k+MktGY3x7iMvh4/46AdR6V8IWjqceBQXvoQCZiTyjE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=b3vH9SdYEVqvhuhDdD/d376jD445srvaPfccEDPiv3hE6IK/2/p3Ht1c+mUmmGxm0
+	 Qq8FpfiXq6SEUwEADFyIJ1018/j/T9kIOytEoOBtbqqtZMGHgNUsEzQSOcibMEDyPV
+	 wqLrpEzFT6TWnhIDgr3+DKoZ6diy8JIrm/WB4M+xE/dZmdstv6fgc6vMCGm7YQVbue
+	 T8cxgiF0h+/XKmyLuL/pdpXTlWplAbIEEGchdyXFfg3SN1M5hYSTG6vfeJIw3Ir8oO
+	 jpylGWRAg26VZqgAJt0eUKEtV/qWmaKVLzNOVgDDvZdjI/Z9NOYB/kyRGuO7z5VMwg
+	 ybycJZZFhYe0A==
 Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68S74QmuC217875
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68S74PmsC217875
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 28 Sep 2026 15:04:26 +0800
+	Mon, 28 Sep 2026 15:04:25 +0800
 Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
  RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 28 Sep 2026 15:04:26 +0800
+ 15.2.2562.49; Mon, 28 Sep 2026 15:04:25 +0800
 Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
  (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Mon, 28 Sep 2026 15:04:26 +0800
+ Transport; Mon, 28 Sep 2026 15:04:25 +0800
 From: javen <javen_xu@realsil.com.cn>
 To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <horms@kernel.org>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v15 4/7] r8169: enable new interrupt mapping
-Date: Mon, 28 Sep 2026 15:04:20 +0800
-Message-ID: <20260928070423.202-5-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v15 0/7] r8169: add RSS support for RTL8127
+Date: Mon, 28 Sep 2026 15:04:16 +0800
+Message-ID: <20260928070423.202-1-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260928070423.202-1-javen_xu@realsil.com.cn>
-References: <20260928070423.202-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,221 +59,53 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-This patch enables new interrupt mapping for RTL8127 and add error pkts
-counter per ring.
+This patch series adds RSS (Receive Side Scaling) support for the r8169
+ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
-Changes in v2:
- - no changes
+RSS enables packet distribution across multiple receive queues, which can
+significantly improve network throughput on multi-core systems by allowing
+parallel processing of incoming packets.
 
-Changes in v3:
- - no changes
+Key features:
+- Multi-queue RX support (up to 8 queues)
+- MSI-X interrupt with vector mapping
+- Dynamic queue configuration via ethtool (-L)
+- RSS hash computation for flow classification
 
-Changes in v4:
- - no changes
+Experiments:
+Platform: AMD Ryzen Embedded R2514 with Radeon Graphics(4 Cores/8 Threads)
+Arch: x86_64
+Test command: 
+  Server: iperf3 -s
+  Client: iperf3 -c 192.168.2.1 -P 20 -t 3600
+Monitor: mpstat -P ALL 1
 
-Changes in v5:
- - no changes
+Before this patch (Without RSS):
+  Throughput: Unstable, fluctuating between 3.76 Gbits/sec and
+  8.2 Gbits/sec.
+  CPU Usage: A single CPU core is fully occupied with softirq reaching 
+  up to 96%.
 
-Changes in v6:
- - no changes
+After this patch (With RSS enabled):
+  Throughput: Stable at 9.42 Gbits/sec.
+  CPU Usage: The traffic load is evenly distributed across multiple CPU
+  cores. The maximum softirq on a single core dropped to 63%.
+  
+Other Experiments:
+Link: https://lore.kernel.org/netdev/0A5279953D81BB9C+f50c9b49-3e5d-467f-b69a-7e49ed223383@radxa.com/
 
-Changes in v7:
- - no changes
+Javen Xu (7):
+  r8169: prepare for multi irqs and napi
+  r8169: refactor RX path to prepare for multi-queue
+  r8169: add support for new interrupt mapping
+  r8169: enable new interrupt mapping
+  r8169: add support and enable rss
+  r8169: move struct ethtool_ops
+  r8169: add get_channel support for ethtool
 
-Changes in v8:
- - no changes
+ drivers/net/ethernet/realtek/r8169_main.c | 1119 ++++++++++++++++++---
+ 1 file changed, 970 insertions(+), 149 deletions(-)
 
-Changes in v9:
- - no changes
-
-Changes in v10:
- - no changes
-
-Changes in v11:
- - add error pkts counter per ring
-
-Changes in v12:
- - drop unrelated change in rtl8169_init_ring()
-
-Changes in v13:
- - no changes
-
-Changes in v14:
- - no changes
-
-Changes in v15:
- - no changes
----
- drivers/net/ethernet/realtek/r8169_main.c | 78 +++++++++++++++++++----
- 1 file changed, 67 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 605154d9a151..127594665289 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -30,6 +30,7 @@
- #include <linux/prefetch.h>
- #include <linux/ipv6.h>
- #include <linux/unaligned.h>
-+#include <linux/u64_stats_sync.h>
- #include <net/ip6_checksum.h>
- #include <net/netdev_queues.h>
- 
-@@ -768,6 +769,15 @@ struct rtl8169_rx_ring {
- 	dma_addr_t rx_desc_phy_addr[NUM_RX_DESC];
- 	dma_addr_t rx_phy_addr;
- 	struct page *rx_databuff[NUM_RX_DESC];
-+
-+	struct {
-+		u64 rx_errors;
-+		u64 rx_dropped;
-+		u64 rx_length_errors;
-+		u64 rx_crc_errors;
-+		u64 multicast;
-+		struct u64_stats_sync syncp;
-+	} stats;
- };
- 
- enum rtl_sfp_mode {
-@@ -4084,6 +4094,15 @@ DECLARE_RTL_COND(rtl_mac_ocp_e00e_cond)
- 	return r8168_mac_ocp_read(tp, 0xe00e) & BIT(13);
- }
- 
-+static void rtl8169_hw_enable_vec_mapping(struct rtl8169_private *tp)
-+{
-+	u8 tmp;
-+
-+	tmp = RTL_R8(tp, INT_CFG0_8125);
-+	tmp |= INT_CFG0_ENABLE_8125;
-+	RTL_W8(tp, INT_CFG0_8125, tmp);
-+}
-+
- static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- {
- 	rtl_pcie_state_l2l3_disable(tp);
-@@ -4092,6 +4111,9 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- 	RTL_W32(tp, RSS_CTRL_8125, 0);
- 	RTL_W16(tp, Q_NUM_CTRL_8125, 0);
- 
-+	if (tp->irq_nvecs > 1)
-+		rtl8169_hw_enable_vec_mapping(tp);
-+
- 	/* disable UPS */
- 	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
- 
-@@ -5088,15 +5110,16 @@ static inline void rtl8169_rx_csum(struct sk_buff *skb,
- 		skb_checksum_none_assert(skb);
- }
- 
--static bool rtl8169_check_rx_desc_error(struct net_device *dev,
--					struct rtl8169_private *tp,
-+static bool rtl8169_check_rx_desc_error(struct rtl8169_rx_ring *ring,
- 					u32 status)
- {
- 	if (unlikely(status & RxRES)) {
-+		u64_stats_update_begin(&ring->stats.syncp);
- 		if (status & (RxRWT | RxRUNT))
--			dev->stats.rx_length_errors++;
-+			ring->stats.rx_length_errors++;
- 		if (status & RxCRC)
--			dev->stats.rx_crc_errors++;
-+			ring->stats.rx_crc_errors++;
-+		u64_stats_update_end(&ring->stats.syncp);
- 		return true;
- 	}
- 	return false;
-@@ -5127,11 +5150,13 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 		 */
- 		dma_rmb();
- 
--		if (rtl8169_check_rx_desc_error(dev, tp, status)) {
-+		if (rtl8169_check_rx_desc_error(ring, status)) {
- 			if (net_ratelimit())
- 				netdev_warn(dev, "Rx ERROR. status = %08x\n",
- 					    status);
--			dev->stats.rx_errors++;
-+			u64_stats_update_begin(&ring->stats.syncp);
-+			ring->stats.rx_errors++;
-+			u64_stats_update_end(&ring->stats.syncp);
- 
- 			if (!(dev->features & NETIF_F_RXALL))
- 				goto release_descriptor;
-@@ -5147,14 +5172,18 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 		 * They are seen as a symptom of over-mtu sized frames.
- 		 */
- 		if (unlikely(rtl8169_fragmented_frame(status))) {
--			dev->stats.rx_dropped++;
--			dev->stats.rx_length_errors++;
-+			u64_stats_update_begin(&ring->stats.syncp);
-+			ring->stats.rx_dropped++;
-+			ring->stats.rx_length_errors++;
-+			u64_stats_update_end(&ring->stats.syncp);
- 			goto release_descriptor;
- 		}
- 
- 		skb = napi_alloc_skb(napi, pkt_size);
- 		if (unlikely(!skb)) {
--			dev->stats.rx_dropped++;
-+			u64_stats_update_begin(&ring->stats.syncp);
-+			ring->stats.rx_dropped++;
-+			u64_stats_update_end(&ring->stats.syncp);
- 			goto release_descriptor;
- 		}
- 
-@@ -5173,8 +5202,11 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
- 
- 		rtl8169_rx_vlan_tag(desc, skb);
- 
--		if (skb->pkt_type == PACKET_MULTICAST)
--			dev->stats.multicast++;
-+		if (skb->pkt_type == PACKET_MULTICAST) {
-+			u64_stats_update_begin(&ring->stats.syncp);
-+			ring->stats.multicast++;
-+			u64_stats_update_end(&ring->stats.syncp);
-+		}
- 
- 		napi_gro_receive(napi, skb);
- 
-@@ -5578,6 +5610,27 @@ rtl8169_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 	netdev_stats_to_stats64(stats, &dev->stats);
- 	dev_fetch_sw_netstats(stats, dev->tstats);
- 
-+	for (int i = 0; i < tp->num_rx_rings; i++) {
-+		u64 errors, dropped, length_errors, crc_errors, multicast;
-+		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-+		unsigned int start;
-+
-+		do {
-+			start = u64_stats_fetch_begin(&ring->stats.syncp);
-+			errors = ring->stats.rx_errors;
-+			dropped = ring->stats.rx_dropped;
-+			length_errors = ring->stats.rx_length_errors;
-+			crc_errors = ring->stats.rx_crc_errors;
-+			multicast = ring->stats.multicast;
-+		} while (u64_stats_fetch_retry(&ring->stats.syncp, start));
-+
-+		stats->rx_errors += errors;
-+		stats->rx_dropped += dropped;
-+		stats->rx_length_errors += length_errors;
-+		stats->rx_crc_errors += crc_errors;
-+		stats->multicast += multicast;
-+	}
-+
- 	/*
- 	 * Fetch additional counter values missing in stats collected by driver
- 	 * from tally counters.
-@@ -6595,6 +6648,9 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_destory_phylink;
- 	}
- 
-+	for (int i = 0; i < tp->num_rx_rings; i++)
-+		u64_stats_init(&tp->rx_ring[i].stats.syncp);
-+
- 	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct),
- 				   GFP_KERNEL);
- 	if (!tp->rtl8169_napi) {
 -- 
 2.43.0
 
