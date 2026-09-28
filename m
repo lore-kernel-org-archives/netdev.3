@@ -1,212 +1,151 @@
-Received: from mta1.migadu.com (out-248.mta1.migadu.com [95.215.58.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52B9449B3E
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F5F35201A;
+	Mon, 28 Sep 2026 06:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790578296; cv=none; b=laK2vB2UJ1NJhOoIdPFkbvG7+gPg0ODRbXhD1W1r2a2gOrRiij4MJuj8B+gdFwdoYkzPj/bWpWWeQ+aFeB+V7w3PoAjtjfnkh+QFUad27t/0QXcMADBOvt2pPlfNIiaAyEKgTiJl9sF8egD9WVFQtK39Vzl2/J90FjKCw87UVVU=
+	t=1790578456; cv=none; b=SgxJneJ3iLh9tCttHNtFtwAWs16TrQZxLIjdkIvBMtU6tKxxXFx8oet6sdOcCaX42p4+aW0V6TopawPF32pBhWaG2clA0B3pWcc7Ys/1J+AnRxjGSWHLOXO9+I0JRfskxa4XSFGv9MV5ZsfSIgiB4qDfR/a6w1dTVV/KinxPuH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790578296; c=relaxed/simple;
-	bh=S65Su3u6l3QjEEjqlT1UaR7HWq+bwOyoeYIpkTcHUUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ctc9TPM9cK3wa79dgLbj2oh1NVtJjw84oc5RhTDgddF7NfUPj2RAoN+NMhnVzrn9uOcXTmfO9TxFCCWUjNKH04+MHPag1daxpmZZOsGtPjWLc9wiM0d9vc8mw8leG24ydU5lY5j7FITDhBS5yHUjIQkAwc6FgtfUfviKuLcN8kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xDVvP07g; arc=none smtp.client-ip=95.215.58.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790578456; c=relaxed/simple;
+	bh=cRExvY2q6wNGMLVPNVeTX9GRZLTpul82LoyBRLUpfsA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZzSzwxKmBUdD1PmwxU83ICxpFlld/4qY9J4HGOYag9WaoeFXvpHJ9r9xd34ctcwmhcHtVYjRdf1D+sYN2S22nZnkqZaB3367WcTYk08GVr13wP/J8FnjfhpwHBynOi4FmOnBLLdKggtcLT42cnVDA6InJnupRB6bog0oB/3rKVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=eujclBaq; arc=none smtp.client-ip=220.197.31.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xDVvP07g"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=S65Su3u6l3QjEEjqlT1UaR7HWq+bwOyoeYIpkTcHUUM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790578292; v=1; x=1791183092;
- b=xDVvP07gNn6/KBANVOoN54dJAHWMkY+FFkIw296SJI4pdFGpMpgsjQpkBjiRBkLpELPQvao8
- NhrnifP03WvU89KCAH4edARDSqkRu49Nf3qG7bTqhxDTJh/D3HDW7BcWlFCYdNHKPTanbWui2mb
- ltUdaa0Ov+1XZrjs3zBfwpIU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id b44e6e57b2fd478e;
-	Mon, 28 Sep 2026 06:51:32 +0000
-X-Mizu-Trace-ID: b44e6e57b2fd478e
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 14:51:26 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	shuah@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	liuhangbin@kylinos.cn
-Subject: Re: [PATCH net-next 4/5] selftest: seg6: add explicit cleanup for
- SRv6 End PSP test
-Message-ID: <aroOXOzCzYjEQKCV@fedora>
-References: <20260922-srv6_flavors_endx-v1-4-4d01c05c47b7@kylinos.cn>
- <179025107951.2160803.7004145160447009717@kernel.org>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="eujclBaq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ku
+	A+RcV6eslsXCX6SwCHb49hYoGv+BR5GuVAEXcnzck=; b=eujclBaqLDFH1WUKVI
+	hhv7WRE9uH+OWmw/99oAMSS21v65hJZys6JPQ/IJ2ypXIa/nsQj3FwwhxUh4afzg
+	TBhT6B1Tbh+EsXY2ngAE3lTG35RH/I9peGp09qXr07A7kdrDN0u4OLtmUSJvIxM/
+	0Hw/FCrSVjIYW7G67yHt0Xg2Q=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgD31_vUDrpqqwJlAg--.52624S2;
+	Mon, 28 Sep 2026 14:53:08 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v2 1/2] ice: detach the VF representor when ice_start_vfs() fails
+Date: Mon, 28 Sep 2026 14:53:05 +0800
+Message-Id: <20260928065306.1514795-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179025107951.2160803.7004145160447009717@kernel.org>
+X-CM-TRANSID:PikvCgD31_vUDrpqqwJlAg--.52624S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGFy7Jw4kAF4DZF45GF17ZFb_yoWrAr15pr
+	WkXa4rGr4kJF1agw4Uua18u34F9a4rCFWagr1jkw1fCF45Gr9Ykr4UKry2vF18C39rC3Wa
+	vr4q9rn5u34DA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYiiDUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBQC2Gq6DtSq6QAA3v
 
-On Thu, Sep 24, 2026 at 11:57:59AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 � High: 0 � Medium: 1 � Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Asymmetric teardown: `cleanup_rt_policy_ipv6()` deletes
->   localsid routes it never created.
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Ack, I will not remove the End localsid routes.
+ice_start_vfs() attaches every VF it brings up to the eswitch with
+ice_eswitch_attach_vf(), but the teardown path only undoes the queue
+mappings and the VF VSI. Nothing calls ice_eswitch_detach_vf() for the
+VFs that were attached before the failure, and the caller, ice_ena_vfs(),
+goes straight to ice_free_vf_entries(), which drops its reference to
+every VF.
 
-Thanks
-Hangbin
-> 
-> --
-> 
-> selftest: seg6: add explicit cleanup for SRv6 End PSP test
-> 
-> This adds cleanup_rt_policy_ipv6() and cleanup_end_flv_psp(), called at the
-> end of host_srv6_end_flv_psp_tests(), to tear down the policy and localsid
-> state installed for the PSP test.  It also moves the host neighbour proxy
-> entries from __setup_rt_policy() into the common setup().
-> 
-> > diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> > index 56a1c5f865a77..52731983b4cc9 100755
-> > --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> > +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> 
-> [ ... ]
-> 
-> > @@ -576,6 +572,56 @@ setup_rt_policy_ipv6()
-> >  	__setup_rt_policy "$1" "$2" "$3"
-> >  }
-> >  
-> > +cleanup_rt_policy_ipv6()
-> > +{
-> [ ... ]
-> > +	for n in ${policy_rts}; do
-> > +		node="$(__get_srv6_rtcfg_id "${n}")"
-> > +		op_type="$(__get_srv6_rtcfg_op "${n}")"
-> > +		rt_nsname="$(get_rtname "${node}")"
-> > +
-> > +		case "${op_type}" in
-> > +		"noflv")
-> > +			function="${END_FUNC}"
-> > +			;;
-> 
-> [Severity: Medium]
-> Does the "noflv" case here delete a SID that the policy helper never
-> created?
-> 
-> On the add side, __setup_rt_policy() only installs the SID if it is not
-> already present:
-> 
-> 	fullsid="${LOCATOR_SERVICE}:${node}::${function}"
-> 
-> 	# add SRv6 Endpoint behavior to the selected router
-> 	if ! ip -netns "${rt_nsname}" -6 route get "${fullsid}" \
-> 		&>/dev/null; then
-> 		ip -netns "${rt_nsname}" -6 route \
-> 			add "${fullsid}" \
-> 	...
-> 
-> For "noflv" that guard is always taken, because setup_rt_local_sids()
-> already installed fcff:<rt>::${END_FUNC} for every router during the
-> common setup():
-> 
-> 	# Local End behavior (note that "dev" is a dummy interface chosen for
-> 	# the sake of simplicity).
-> 	ip -netns "${nsname}" -6 route \
-> 		add "${LOCATOR_SERVICE}:${rt}::${END_FUNC}" \
-> 		table "${LOCALSID_TABLE_ID}" \
-> 		encap seg6local action End dev "${DUMMY_DEVNAME}"
-> 
-> > +
-> > +		fullsid="${LOCATOR_SERVICE}:${node}::${function}"
-> > +
-> > +		# Remove SRv6 Endpoint behavior for the selected router
-> > +		if ip -netns "${rt_nsname}" -6 route get "${fullsid}" &>/dev/null; then
-> > +			ip -netns "${rt_nsname}" -6 route \
-> > +				del "${fullsid}" \
-> > +				table "${LOCALSID_TABLE_ID}" \
-> > +				dev "${DUMMY_DEVNAME}"
-> > +		fi
-> > +	done
-> 
-> Since the delete is gated on the route existing rather than on whether
-> this helper created it, the condition succeeds precisely for the
-> setup()-owned End SID, and it is removed.
-> 
-> [ ... ]
-> 
-> > @@ -669,6 +723,12 @@ setup_end_flv_psp()
-> >  	setup_rt_policy_ipv6 1 2 "1:psp"
-> >  }
-> >  
-> > +cleanup_end_flv_psp()
-> > +{
-> > +	cleanup_rt_policy_ipv6 2 1 "3:noflv 4:psp 2:psp"
-> > +	cleanup_rt_policy_ipv6 1 2 "1:psp"
-> > +}
-> > +
-> 
-> With the "3:noflv" entry above, every normal run ends with
-> fcff:3::${END_FUNC} deleted from rt-3's localsid table, so the
-> environment no longer matches what setup() built.  After the deletion a
-> lookup of fcff:3::000e in rt-3 falls through the
-> 
-> 	to fcff::/16 lookup localsid
-> 
-> rule down to the "unreachable default" route that setup_rt_local_sids()
-> installed.  Should the teardown mirror the guarded add and only remove
-> the flavor SIDs plus the encap route it actually created?
-> 
-> This matters for exactly the case the commit message mentions, "when
-> later tests are added to the same script": a later test that depends on
-> the default End SIDs would fail or take a different path unless it
-> happens to call __setup_rt_policy() with a noflv entry, which silently
-> re-creates the SID.  In this series the End.X PSP test added later does
-> re-add fcff:3::000e via setup_endx_flv_psp(), so the asymmetry is
-> currently masked and the behaviour becomes order dependent.  The
-> cleanup_rt_policy_ipv6() and cleanup_end_flv_psp() helpers are unchanged
-> at the end of the series, still passing "3:noflv".
-> 
-> The commit message describes the change as tearing down flavor-specific
-> state the PSP test installed:
-> 
->   "The PSP test installs policy and route state, but relies on global
->    cleanup to tear it down. That can leave flavor-specific state around
->    when later tests are added to the same script."
-> 
-> Could it also mention that shared state created by setup() is removed?
-> 
-> >  check_rt_connectivity()
-> >  {
-> >  	local rtsrc="$1"
-> > @@ -771,6 +831,8 @@ host_srv6_end_flv_psp_tests()
-> >  
-> >  	check_and_log_hs_connectivity 1 2
-> >  	check_and_log_hs_connectivity 2 1
-> > +
-> > +	cleanup_end_flv_psp
-> >  }
-> 
-> One more question on the call site: host_srv6_end_flv_psp_tests() runs
-> after "set +e", so a failing or over-reaching "ip route del" in
-> cleanup_end_flv_psp() produces no test failure.  Would it be worth
-> checking the return values here so teardown errors are visible?
-> 
-> -- 
-> Sashiko AI review � https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7%40kylinos.cn
+The port representors created for those VFs therefore outlive the
+failed VF creation:
+
+  - the representor netdev stays registered and its devlink port stays
+    registered too. That port is embedded in struct ice_vf, so it ends
+    up pointing into the memory that ice_sriov_free_vf() releases;
+
+  - repr->vf keeps pointing at the freed struct ice_vf, and repr->src_vsi
+    at the VF VSI that ice_vf_vsi_release() tore down. The leftover
+    netdev is still visible to the user, so even a plain
+    "ip -s link show" of it reaches ice_repr_get_stats64(), which calls
+    repr->ops.ready() -> ice_check_vf_ready_for_cfg(repr->vf) and then
+    reads repr->src_vsi through ice_update_eth_stats();
+
+  - the virtchnl ops of that VF, which ice_repr_add_vf() replaced with
+    ice_virtchnl_set_repr_ops(), are never handed back to
+    ice_virtchnl_set_dflt_ops();
+
+  - pf->eswitch.reprs never becomes empty, so ice_eswitch_detach() never
+    calls ice_eswitch_disable_switchdev(). pf->eswitch.is_running stays
+    true, with the bridge offloads and the devlink rate topology still
+    up, and ice_eswitch_release_env() is skipped, so the uplink VSI is
+    left in the switchdev configuration that ice_eswitch_setup_env()
+    gave it.
+
+Detach the representor in the teardown loop the way ice_free_vfs() does,
+ahead of ice_vf_vsi_release(), because ice_repr_rem_vf() and
+ice_eswitch_release_repr() both need repr->src_vsi to still be valid.
+Every VF the teardown loop walks completed ice_eswitch_attach_vf()
+successfully, and ice_eswitch_detach_vf() already returns early for a VF
+without a representor, so no extra condition is needed.
+
+Hold vf->cfg_lock across the teardown of each VF as well, like
+ice_free_vfs() does. The VFs unwound here are the ones that already
+reached set_bit(ICE_VF_STATE_INIT), which is exactly what
+ice_check_vf_ready_for_cfg() checks, so a host administrator can still
+run "ip link set dev <pf> vf N ..." and a VF can still send a mailbox
+message while the loop walks them. Both paths take cfg_lock and then run
+ice_reset_vf(), which gets to ice_eswitch_update_repr() and writes
+through the representor that is being freed, or reach
+ice_vc_process_vf_msg() reading vf->virtchnl_ops while
+ice_virtchnl_set_dflt_ops() hands them back.
+
+Fixes: fff292b47ac1 ("ice: add VF representors one by one")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+v1:
+- Link: https://lore.kernel.org/netdev/20260921031616.3390259-1-xiaolinkui@126.com/
+
+Changes in v2:
+- Hold vf->cfg_lock across the teardown of each VF, the way ice_free_vfs()
+  does, so that a concurrent VF reconfiguration cannot walk through the
+  representor and the virtchnl ops that are being torn down.
+  (Sashiko AI review)
+- Patch 2/2 is new and returns the VF MSI-X window that the same failure path
+  reserves. That is a separate, pre-existing bug, so it is not folded in here.
+  (Sashiko AI review)
+- Not carrying over the Reviewed-by from Aleksandr Loktionov, as the code
+  changed after his review.
+
+ drivers/net/ethernet/intel/ice/ice_sriov.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index e04de0215596..95abc6704820 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -508,8 +508,13 @@ static int ice_start_vfs(struct ice_pf *pf)
+ 		if (it_cnt == 0)
+ 			break;
+ 
++		mutex_lock(&vf->cfg_lock);
++
++		ice_eswitch_detach_vf(pf, vf);
+ 		ice_dis_vf_mappings(vf);
+ 		ice_vf_vsi_release(vf);
++		mutex_unlock(&vf->cfg_lock);
++
+ 		it_cnt--;
+ 	}
+ 
+-- 
+2.25.1
+
