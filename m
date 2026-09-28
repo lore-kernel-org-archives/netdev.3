@@ -1,192 +1,205 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441BD48C412
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790591983; cv=pass; b=Pp9eXlJmAYXx7kPOyuc0UOQAjoABT3366AsGx9R3q7o5Nek11ADbbrT6GGgn0278E9VJiLjWpdoFTNZXoOog1w65Cx1GfPURHpvBVmyFd1RPrqKowc3atcazCQRFbzOAkqGXXfaJsfTvqWOaGQyGh3mqcIpsEM3155uLxB4LUac=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790591983; c=relaxed/simple;
-	bh=wurLFDsJrGYbU/K5pvPYQOlsK0YNqiwggLLlZpmX24Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eT5YW1ubXWUV4QysvHNtS+wyW5UPcp1Ofd/d8TwBRoAoXw0g4A20rufPcTnvMYOdmgwu83/R3TOj2s5tj2EISGT6FdPrJzC+tsvCWiKQg0exXcgYl2GRknZiURI3hRlfiXDpP/vCsbjMXtAqvSFVr4zX+V49Mn7+PVEMGB6YJCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=g4oLjruu; arc=pass smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885B749C4B2
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790592283; cv=none; b=g/foi02un4ByKUUmIfI1NglG1itZpB4LqkamjfrDKVlSJcUUtO/HqWpaVQlQVzSNZpt02KOlUoaPi7mx7hGDCp1k/s1vFRjbE8dCEUjBwZ74Pn/MUaDXSqN5bu5vUNNkBzCjKR0Pq3fpNFjM2BeCZXb8U+oFKqmKYbeoeFOMBMU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790592283; c=relaxed/simple;
+	bh=begHgy37Cc2MAGYroVxkMgS2Nwr117LedfsOcUGpDX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cii5V+SjOmRSgTXvgmxlNvTraS0+FxU1eu2VDILX1/Ha+VF8GS+sh5Hgo+jE6qLBTsGVKTYO4YRrLU/hA5ruoakQaEMn2iglOS/Zcl8pIEFS9z+2NXl3shTSnxQFC97RrFBhyizfwxlM04Q1ialuD6ROSjwjiTUCThSc8S0CSDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P4iltFw1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GCNCKg/C; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="g4oLjruu"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e44so744516a12.2
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 03:39:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790591981; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HcHq0aV1JcfvS5lF4P7XXNsU75RvjuRiIralQew/nhTBxMQL5CncBvlXNBqCYkNhSH
-         rRyI8tsTA21KU7NB+9kNT9b5tidAEomXEgLdTTZPlm2fAexvLli7jmAzMR200Orbc8Tt
-         w3azUhBz16yU8jhsYfD/LQDZlcLuR+vxVVPI+0gIPtnA402J3HnBLTXqm/VSe0gXA2LH
-         2JATimwW/zNo3CdXdYbtt+L3QZ6MPrJizzfeVfJnDoJVaAdBbZrlQN6IZ+rnffq1hwtn
-         fZw79mCnoBfnKiWgMrmDgmZ+PCMf78tUHi65Ljd7ABH2ZHGWn7BRXwIoVGRZI9SPBb81
-         0k+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4rcW83D0FgJqP/k3DifjhLl2F+5l3cQ4k1NrP9DKuhU=;
-        fh=lXmoq1MrLQPjI9yfW2JAXgvahsBwl+pbwFP7/GJ0f7Y=;
-        b=DwtgTbTK9EqUygXalllwXGBwRMyFH4k8IkpE2BZuWPfFkvUnr68V6H+GvHpg/3Ea0+
-         AsDNOQexFpQg/CYKyYDoziidMZihUP3/aGYaJ2ErsbMZSWSDOmnaPuxfbcJVGBrFwiKh
-         hHgjLFEdwHeNvthd+3LuvKLdHL19LNfUBZZ9zByf7Hqg2k0qlFdlhSQfO1gjDMrRyxZS
-         HwoCrQYc1k1QULsSPnK/C92g9PaLJGAMQQdfl4HYAACR0CZI7GxDVZvhGUekiSY0lHAB
-         bYgkcK2QVD+Hw12KgonZ7cNBzvDhEhpeomaW+LTrczOoUrSOvyU5wtHCrfqJxcigHUXp
-         l+BA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P4iltFw1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GCNCKg/C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790592280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NWLn1uBdGE8DYyOCQu5LWmiRAP8fdcDmIDx3VaGdBYA=;
+	b=P4iltFw19wvua/SbnnpINr9ZwusegOOea/tSPtz55NYh9F8qFiC+tJr6JawGTwQJheOaYt
+	DxILCR7loC4ydGjbVPNsIIksNNkWWjEtL/1u4PXsSjCf+GtYL16HM728quKsbO/1HO1DAG
+	mu8mdSUwLGCEwVpoKE/Dj8IHGTCrsMo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-346-4U19c4nWPmOYpyPfB3CtAA-1; Mon, 28 Sep 2026 06:44:39 -0400
+X-MC-Unique: 4U19c4nWPmOYpyPfB3CtAA-1
+X-Mimecast-MFC-AGG-ID: 4U19c4nWPmOYpyPfB3CtAA_1790592278
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e635a6002so35322025e9.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 03:44:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1790591981; x=1791196781; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4rcW83D0FgJqP/k3DifjhLl2F+5l3cQ4k1NrP9DKuhU=;
-        b=g4oLjruuZ9a11euMSMCP9veTSbRVyhWm99X6NFQSBeem6WiNVC+nBBU6bOqbnWI75i
-         adUv4bGVoWVz04kyuG/0Zub1Rh58KZ3mYH5fJproQiBfysqfOvccVk/pyz7l0sNg93Vv
-         fqqG1gM8/skH2Neqctg5lwgczrYL/4JUv5iAgHxCSBDjuHUvAs0LQgqJ8MW0kYee+kfF
-         g6daocES0ADq91iYIjYIqV1TmnkeAabJblBYCdwXO8ToOZ1OZ/BrvxU3/rNfzACqRAyl
-         zBWkQuNB4nYfwgb9KF1ygZb/sHm3RWrWDNrlt/tAofwGZpt/d3QtIlDGN64tKDFEzFL4
-         pMTQ==
+        d=redhat.com; s=google; t=1790592278; x=1791197078; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NWLn1uBdGE8DYyOCQu5LWmiRAP8fdcDmIDx3VaGdBYA=;
+        b=GCNCKg/Cy0ahuEOUZ+M+7O2NQ5CYhBnYlXJQ/mh+l0NfJgYN/tCd9jRuJSIhSbfYpZ
+         TQiRQl7I3vk768OzetjaZH8OJJKhQpbcpTcehwQ7DzbySBVE4HYIZKykhZMVDbWtTyAk
+         knANuFny2/AmUNgORfYhxlvkwhGvkg3zSpbmv7/8Q4JV5PeyOxSF92SzWME0sCXAZlGf
+         tnZL5VNhfuB0LDDas5WYBjosCHnkcOIdH/icDln1q8vM9zdO+duTkQYKhd3qkL6NRKUa
+         8jFtZxVCI894u1IvreDunL5f6N4I3TcUfpbPZOEqjEzKbnXtc92MK/x8E/59uahsDRFC
+         BdrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790591981; x=1791196781;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4rcW83D0FgJqP/k3DifjhLl2F+5l3cQ4k1NrP9DKuhU=;
-        b=CObfi0u89+UVmwbKSzQavR6YBgl1MxKu5jldN50m+0j6YKNh3n6su+gLrwU+JoITQL
-         foWisTak7rHRZxMgGKn8OSLPX5ScfL5m44Cd0xM4PtAkCuNVs/VIPrBgKNJ9xvWJipXz
-         RV3/nk/DpVJPMx1yQaV37blWTjS8UbMqgzGGKiIElmV77Td5/MYLUfYbpduHZKhlZIoX
-         89Ktjic8VaNzGPu0rDONFnCl0EQ8wKH+JVFg4aOiuTdlpRFP6E0TVPx8d2hmQRDllFaH
-         P1WrKy5Rhws/Nbg6FV1O84QKGLjX2QoX3O1cVoyHC6IdgcJ5KFRqze5wBPjRr+DgMlP+
-         pATQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw3yphzCUz58k4k2wOR+RgCuGBSwlyzXZlv8zWiJUpCk+aJYYxhhzVA68mdvU1RvJyCLKeWT/M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL+AjFMhbQosV6mcZRQbKzwlF6xB0zM/hwbh9+ys6599eT1SYtp
-	aVrJ/EMLn17yPszr1hE0d7ml5Bczec6UesdRhifUK0WuZn2vh7WxTIcSp68/W4N6UZCTuUadAk4
-	nyjvomiZZBmGd6frdUxpQW71pMFOnxMZ1CIwP0d2tQw==
-X-Gm-Gg: AYBFou1l8kXgOEX3B6wjZrdsPewDzp9WHKM/5enmNephPaKDlUmozOKasKmEuMyXj4g
-	Jtzyp7fxSs/fqhTW8GRw+hFCe/hCocscuYI+N47RgkB2tbCsFUCDTW8eEVy8L7tmlkE3FqykUdU
-	1kbD1sihAOHXZH/g6B7WlWxm/jilUqa/GgsOE+LfjvYd+OGudvlYSboBUk6veLDRQBR0Kr1kiTz
-	sWEBSukP5l9j7dqn00Yg9dNU73EpPJn2XNbCDRABgCB8fwnAnCSLKfmEMR/AhiNRJzH1LItwsW2
-	q+uSvpeyCIgNgkBOf8t9fffY5NYLmKdumB/W49qiEw2J7nyh4HfXImmaiUjdgUPH9+cIcYRSeGP
-	I3I4GAGgzeMskSN0EjxO+vqYFhrLxATYVOyw=
-X-Received: by 2002:a17:902:e952:b0:2df:950d:8f4a with SMTP id
- d9443c01a7336-2df950dbb74mr71445885ad.22.1790591981383; Mon, 28 Sep 2026
- 03:39:41 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790592278; x=1791197078;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NWLn1uBdGE8DYyOCQu5LWmiRAP8fdcDmIDx3VaGdBYA=;
+        b=NLHhlWwLEZ+OroIMn+2nxaAFIVlnKnOkUdFx00DqtKGORSMa5OwMlQPLHGTFjGMKPH
+         qjcTJ+mxYPc9yznR8N0m2wfX/28FYfDsMXahDKzwjWQTw4Uqkj4HB21Q0E7wG0d4PdTa
+         I6EpHFyAWUQJ3Ayv5kc0NHCpBiLvjy98CLT8nuB3rFzY5ve1CaxKrCIFTU04Gpsedibd
+         fuo17xFS6OSvLcAawQ4Tb8pJcyo5XoqNvx+L5waTueebCYjvXSgBT26Uyqy466dTdT7O
+         6FEl9Io8XLvfwhbqIjviqz+9vRF6QqjZi1QMA/KXX++7CzOWSvy0eoAj+QTxHDt2jp5A
+         QBaw==
+X-Forwarded-Encrypted: i=1; AKwUvBzF+LxrE+1o6WXKS4Fi5+JDI7MYLlpBztS57IMLdx2Jg4bfU9L9fxuGZCtIVZDIlF/uIJIUoFo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDKBsBK7gPIo7lO7c6RivC1BtGz5a8hsdjqDOp2SLUYSUeVDkP
+	4UBjUc5iqflDxhdPbB3I4ksEfRoNTdjFFCdeOxuKbkiQUFsm68mDZcxO5pyXeCMfP8B2h3VSYIt
+	5Ok0kGXPbW3jz2pXKW2xEwYUPqMJUed8uji4WaXqiWaL6LJqBkU7iBqVY1w==
+X-Gm-Gg: AYBFou3WZMWXclm2u8KmZTGuWQqtMxzb1OcoxKfkCNVO41pQrVuxU7AbJhzM6xWD7eq
+	xyZrne1PSicGL2CKM8FYEP/DUUAnEY6HcHshnJOaxo4NhhaS1vZ0By0UiBP4DRDAF46Xu9+7Ai/
+	cjOZAsW0WxNlTYbSt63eIZuvXXB0ORrrvHsKJPM7fRpAUqFnFlq3aVsINLr9yayG7B2JnfyW15U
+	mAo+8sQbcrCmPGTQJwDw5AS8RXaoS7bD5iNow1Mx6pg6nyIARmxRJ/RCQsxW7bs5+zUIWGYaTFR
+	kjl76OoVTc266vToWVWK2Se8ufc30284CNQYCLbV6zIyjDTWAjbmR1UbMI5zeNfnauZvXeeLfn6
+	HZtw3
+X-Received: by 2002:a05:600c:4754:b0:49c:c96a:d36b with SMTP id 5b1f17b1804b1-49fe66d1663mr228734745e9.12.1790592277754;
+        Mon, 28 Sep 2026 03:44:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:4754:b0:49c:c96a:d36b with SMTP id 5b1f17b1804b1-49fe66d1663mr228734465e9.12.1790592277287;
+        Mon, 28 Sep 2026 03:44:37 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.134.73])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0018e6ba2sm138576485e9.5.2026.09.28.03.44.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 03:44:36 -0700 (PDT)
+Date: Mon, 28 Sep 2026 12:44:28 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 5/5] vsock: Handle sudden TCP_CLOSE during connect
+Message-ID: <arpCh0B77HUKe6Tf@sgarzare-redhat>
+References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-5-a1d9abb472f7@rbox.co>
+ <aqqIuUadZ_E1skmR@sgarzare-redhat>
+ <036cb16f-c3b6-4e94-9c3d-42e40d160833@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922125112.2111256-1-robert.marko@sartura.hr> <20260928091804.hjnabzi52kz4ktmf@DEN-DL-M70577>
-In-Reply-To: <20260928091804.hjnabzi52kz4ktmf@DEN-DL-M70577>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Mon, 28 Sep 2026 12:39:30 +0200
-X-Gm-Features: AclHuK-gDDCHfBtLac7JhmAB4p3Emj0wmBDLbCuTQrCHI_3_hiMQa7CF_cIXvSI
-Message-ID: <CA+HBbNG2nGXpXC63AVUJX3KaqzJG+Q=-Md92eTpq7Y-O4CHMzg@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: lan969x: correct RGMII port mapping index
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	Steen.Hegelund@microchip.com, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	luka.perkov@sartura.hr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <036cb16f-c3b6-4e94-9c3d-42e40d160833@rbox.co>
 
-On Mon, Sep 28, 2026 at 11:18=E2=80=AFAM Daniel Machon
-<daniel.machon@microchip.com> wrote:
->
-> Hi Robert,
->
-> > Currently, the lan969x_port_dev_mapping does not check for RGMII ports
-> > and just returns the physical port index.
-> >
-> > However, this does not work for RGMII ports as they have dedicated DEVR=
-GMII
-> > register space with an dedicated instance per RGMII port.
-> >
-> > So, check if requested port index is an RGMII port and return the corre=
-ct
-> > DEVRGMII index.
-> >
-> > Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> > ---
-> >  drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c b/=
-drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > index f3a9c71bea36a..bf5320c7a6ca8 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
-> > @@ -142,6 +142,15 @@ static u32 lan969x_get_dev_mode_bit(struct sparx5 =
-*sparx5, int port)
-> >
-> >  static u32 lan969x_port_dev_mapping(struct sparx5 *sparx5, int port)
-> >  {
-> > +       if (lan969x_port_is_rgmii(port)) {
-> > +               switch (port) {
-> > +               case 28:
-> > +                       return 0;
-> > +               case 29:
-> > +                       return 1;
-> > +               }
-> > +       }
-> > +
-> >         if (lan969x_port_is_5g(port)) {
-> >                 switch (port) {
-> >                 case 9:
-> > --
-> > 2.55.0
-> >
->
-> The mapping itself is right, but as far as I can see nothing upstream
-> uses the returned index to access DEVRGMII. Every caller of
-> sparx5_port_dev_index() pairs it with sparx5_to_high_dev() or
-> sparx5_to_pcs_dev(), which never return TARGET_DEVRGMII. Those paths
-> are also never taken for RGMII ports. The code that does access
-> DEVRGMII, in lan969x_rgmii.c, computes its own index with
-> RGMII_PORT_IDX(). Sashiko, correctly points this out.
->
-> So I don't think anything is broken today. Did you see a problem on
-> hardware that this fixes?
->
-> FYI, we carry the same change downstream. But there it was added together=
- with
-> RGMII MTU support, which reads and writes DEVRGMII_MAC_MAXLEN_CFG() using=
- this
-> index.
+On Tue, Sep 22, 2026 at 03:18:05PM +0200, Michal Luczaj wrote:
+> On 9/16/26 14:31, Stefano Garzarella wrote:
+> > On Tue, Sep 15, 2026 at 03:15:16PM +0200, Michal Luczaj wrote:
+> >> Virtio/PM events are serviced by virtio_vsock_reset_sock(), which resets
+> > 
+> > What "PM" means here?
+> 
+> Power Management, namely virtio_vsock_driver.freeze which is defined under
+> CONFIG_PM_SLEEP. I'll generalize this comment, as suggested below.
+> 
+> >> each connected socket. The reset is done under vsock_table_lock but without
+> >> taking lock_sock(), so from the point of view of vsock_connect() -
+> >> locklessly. The same pattern exists in VMCI's
+> >> vmci_transport_handle_detach() and vhost's vhost_vsock_reset_orphans().
+> >>
+> >> The complexity of connect() comes from the fact that:
+> >> 1. the virtio transport can be reassigned, so the old transport must be
+> >>   safely released;
+> >> 2. a failed connect can be followed by a retry, so the socket must be
+> >>   reverted to a sensible state.
+> >> Both cases apply only as long as the socket has not yet established a
+> >> connection.
+> >>
+> >> While connect() waits for TCP_SYN_SENT -> TCP_ESTABLISHED, other
+> >> transitions can also occur:
+> >>
+> >>  TCP_SYN_SENT -> TCP_CLOSE on connection failure, timeout or signal
+> >>  TCP_SYN_SENT -> TCP_ESTABLISHED -> TCP_CLOSING on VIRTIO_VSOCK_OP_RST
+> >>  TCP_SYN_SENT -> TCP_ESTABLISHED -> [TCP_CLOSING ->] TCP_CLOSE on event
+> >>
+> >> This further complicates connect(). Rather than making every event handler
+> >> drop the socket from connected_table or adapting connect() to handle more
+> >> transitions (while missing proper locking), use vsk->peer_shutdown as a
+> >> poison flag. Whatever state an event leaves the socket in, the flag bricks
+> >> it and prevents suspicious transport reassignments or TCP_SYN_SENT
+> >> retransmissions.
+> >>
+> >> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+> >> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> >> ---
+> >> net/vmw_vsock/af_vsock.c | 6 ++++++
+> >> 1 file changed, 6 insertions(+)
+> >>
+> >> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> >> index adf3f018347e..972952d04a81 100644
+> >> --- a/net/vmw_vsock/af_vsock.c
+> >> +++ b/net/vmw_vsock/af_vsock.c
+> >> @@ -1743,6 +1743,12 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+> >> 			goto out;
+> >> 		}
+> >>
+> >> +		/* Virtio/PM events are serviced locklessly. */
+> > 
+> > IMO we should be generic here (i.e. don't mention virtio or mention it 
+> > like one of the transport, but IIUC also VMCI does something similar) 
+> > and also we should explain better why we are doing this, like you did in 
+> > the commit description.
+> 
+> Sure, will do.
+> 
+> > Maybe we should document this behaviour also on top of this file.
+> 
+> OK, do you mind if I do that as a follow up? I worry top of the file needs
+> few more updates.
 
-Hi Andrew,
-As pointed out nothing yet is broken, hence no fixes tag.
+Sure, as you prefer, I'm fine to postpone this.
 
-I am using it downstream as well, for the MTU change support where as
-you pointed out RGMII code
-uses it to get the correct index.
+> 
+> >> +		if (READ_ONCE(vsk->peer_shutdown)) {
+> >> +			err = -ECONNRESET;
+> > 
+> > Is ECONNRESET a valid connect() error to return?
+> > 
+> >> +			goto out;
+> >> +		}
+> >> +
+> > 
+> >  From LLM reviewing, can you check if it's valid? :
+> >    - M (net/vmw_vsock/af_vsock.c:1747): VMCI regression.  vmci_transport_handle_detach() sets
+> >      peer_shutdown = SHUTDOWN_MASK unconditionally and then special-cases TCP_SYN_SENT with the
+> >      comment "we treat the detach event like a reset" — i.e. a connect() retry is the expected
+> >      recovery. It is reachable for a non-connected socket via vmci_transport_peer_detach_cb() (which
+> >      uses trans->sk, not the connected table). Since vsock_assign_transport() only clears
+> >      peer_shutdown when the transport actually changes (af_vsock.c:671-689), the retry now hits the
+> >      new check and returns -ECONNRESET forever: the fd is permanently bricked where it previously
+> >      reconnected.
+> 
+> I'm not sure I follow the logic. SHUTDOWN_MASK gets set no matter what's
+> the state at vmci_transport_handle_detach(). That means even if vmci's
+> reconnect succeeds, all the recvmsg()/sendmsg() at af_vsock layer would
+> fail anyway. Am I missing something?
 
-So, I thought that it would be good idea to send it upstream before
-eventually getting around to sending
-the MTU change support as well.
+Honestly, it didn't seem right to me either; I think we're fine the way 
+we are for now.
 
-Regards,
-Robert
+Thanks,
+Stefano
 
->
-> /Daniel
-
-
-
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
