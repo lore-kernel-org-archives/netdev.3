@@ -1,297 +1,135 @@
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445C9383C86
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A0F3CFF51;
+	Mon, 28 Sep 2026 21:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790629526; cv=none; b=pKy+QDo4psghtQsDDae6bI2x7G86LAJFUNBhupkiJ7kUUdG84VtA8lWbcCkP40hguOpzZAMaliuqp57JMZojop8ma/0Ihu8VPlqNxyeN0yysEsveqne8PMLLIQxUO8l+lTIKJVgMq2VZ/DHFfnccrrai8dMp8zsX1dR/fwe5oz4=
+	t=1790629560; cv=none; b=hb0X7SESd11jsHl0dFQis4Eu84X2x3byuVTU18HjjPhh/zZlfGa0GmlsWsmQUbE2+EiOZQ6yBrJ+Bm2EAgkmlJ0GXh27s3QFpkyUbkYa2RYOVyZicU/9x1HRgYM0m5+wfz87cNW0tHzWJz74X+TZb12j74cNkVxAzOnbCgWfhz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790629526; c=relaxed/simple;
-	bh=hf/nJoQlj3jNky1lczapN9s48cS3njDHn8wFP2wBWc8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=N2RPJoe4Ja2IuY7agEED+uu9wWAHMoQ4tDUs6BVINrnw9sljyK0NuDWZGU7m9PNqKrd+BQWl4eVkR3Qr8Le3h/JGwHnIxvXnR5RiGOEOD5Z24TybW5/pVxnYd5w4tzcaHPQPaL2XVGf3KT/SNTRD1wHu1t1il+530ewN0mKJ1Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kishorg.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hq3YZJOv; arc=none smtp.client-ip=74.125.82.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kishorg.bounces.google.com
+	s=arc-20240116; t=1790629560; c=relaxed/simple;
+	bh=wuUohBGbBXVSwT1F9oeyOYlWlZvZjHrxx80qx8HHdKc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M9eUGwDaMT8i6NJH41b5JkwXiJRwy7lGGOxtaMPsZ83JwNMtwal7XlGtX+p/1GJ0bbDHHxiDCE1Qh3kgabWZ9/Ear1bHS1QdrBXFykxDwREwlXvKUYNskzkcrr7lR7F2+OsGsY9mYmIpOHlkcZ0Sw84qwBGcAsOE+eivu1uNLkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ky1E9bM5; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hq3YZJOv"
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so7253851eec.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:05:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ky1E9bM5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790629524; x=1791234324; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2HURpRj3glseEN+6PQaM4W+J9k2Jme4I/Jgk3uxKQ5I=;
-        b=hq3YZJOvNYhICRbczzqc+dqMordLznhxF7K6m44PC75xTj5+9W7RdJKlm+ft8B1icV
-         HTK4dZ275enIqV68t06H6S8XG6zSNDVqatMnuHknEz5W2KZU7DPXZWwlEzk92pBstKCt
-         0DsfB7GWFj8lc1dI8lhAr3o8l4DXgKy938KIwIytsZMGzkLGG17w/HsoK5XRkGoFAEfr
-         QT0ImiTv3XcatphP02WtMIb8dwD6HEUS3i3jIqVz952wcW26+go03A2IHbA24KctVWck
-         HDjwT03HqO0OzOAM1la1GHXD1f8FwxWyUu1bAY0uaXmiZ21F1whkjCTnmfk7+x9E3HxA
-         F1Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790629524; x=1791234324;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2HURpRj3glseEN+6PQaM4W+J9k2Jme4I/Jgk3uxKQ5I=;
-        b=aRqTKEASwqMZC0gIs0U+v/knG7hC0JC0crap6Tvjq7CENboQ84t/L3yvZzhIAuSdpZ
-         7cKQI/sfojmjeqDbO/j0lm70VSK4uaiutQsrhzRcaG6SGYFoPI0xbfG9zInxvls9qIWv
-         JLzJ4ItvNedfsBansbyIeH26MJN0x0oKxA2eIx0M9bGpkwG59IQdH5dbwDfgH1M8c4o9
-         aN1JhhLggXvhDfG7W0osaiHz5k9T7MYTXkz35WX2VncRGRPmcTO6UrcwaEGqV4hHCu59
-         3FBmIR8vqrdSe/rB2//e59A1jCoUrHrTcrl3N2kukLmlk9p7eoKplcvFqalRRbxS1BGZ
-         5CVQ==
-X-Gm-Message-State: AFuF++lt4Vl69eKGic/vLxVcwp8W0/x9Pfpbpv8B+jp6LL/do5lLYKl4
-	mpq+ciEGe4zwZ2FNi7nyKYlwXOlqKfPZ5RTcKaHW61mm9vo/ppwESM49oEDZSQWLq4QX8dP67UD
-	DsSbZlMkAcQ==
-X-Received: from dlk3.prod.google.com ([2002:a05:7022:103:b0:14a:f387:29b1])
- (user=kishorg job=prod-delivery.src-stubby-dispatcher) by 2002:a05:701b:42cd:10b0:144:ff51:2d5f
- with SMTP id a92af1059eb24-146d077b156mr10609592c88.33.1790629523864; Mon, 28
- Sep 2026 14:05:23 -0700 (PDT)
-Date: Mon, 28 Sep 2026 21:05:08 +0000
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1790629558; x=1822165558;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=tNvKZbvCsCLtftmndSEfAYbnBNeVdMmjscu91WBu6mY=;
+  b=ky1E9bM5d17K+Xmau6PkP8Ti5VJDP5xatiR+mAVj+DW/J2hpcL2SeAw0
+   QI2xyImbNllu5DZAPedwIbU1U0OO11VIhMTZVcL5btycrqGRXi0IZeunf
+   ObWRYFLCB0A2D1nys92S3UMqQHahyZS28k7i+ctodjmhHiJ7rAnwUPi4K
+   /deicXgMn3lh0nTAEEgWHAo7A+nJrWAWnde5x7GC6qXfh77txfvkfax/d
+   oPpLwv4/0lyAq/VFNt5nZiKKwirZqxfVx87KXKxYQUMyCul2gQq5K0RvE
+   SRdYP+4P/G7Sb8Pbe+euKwSUJd6V0HbqedYaOXmD31hfOX4k8XpfJvEjc
+   Q==;
+X-CSE-ConnectionGUID: 5pmLN4V2R+G43Ca+EuE9Fw==
+X-CSE-MsgGUID: qj+ylq7qRTGk3cBUw90ouQ==
+X-IronPort-AV: E=Sophos;i="6.27,129,1787011200"; 
+   d="scan'208";a="29899893"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 21:05:58 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:10223]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.18:2525] with esmtp (Farcaster)
+ id 106b90de-cb53-4848-b400-37e7ebe7ecb4; Mon, 28 Sep 2026 21:05:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 106b90de-cb53-4848-b400-37e7ebe7ecb4
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Mon, 28 Sep 2026 21:05:57 +0000
+Received: from dev-dsk-hagan-1f-c6b5e25f.us-east-1.amazon.com (172.19.159.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Mon, 28 Sep 2026 21:05:56 +0000
+From: "Craig I. Hagan" <hagan@amazon.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Fabio Sabai
+	<sabfabio@amazon.com>, Matt Vollrath <tactii@gmail.com>
+Subject: [PATCH iwl-net v3] e1000e: restore jumbo config after DMoff exit
+Date: Mon, 28 Sep 2026 21:05:52 +0000
+Message-ID: <20260928210552.13266-1-hagan@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <b6db5335-cb5c-4a91-b823-1a114fce75a1@gmail.com>
+References: <b6db5335-cb5c-4a91-b823-1a114fce75a1@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260928210508.2645800-1-kishorg@google.com>
-Subject: [PATCH] ipvlan: no longer rely on RTNL in ipvlan_nl_fillinfo()
-From: Kishore Gummadidala <kishorg@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>
-Cc: netdev@vger.kernel.org, Kishore Gummadidala <kishorg@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-ipvlan_nl_fillinfo() currently relies on RTNL being held because it
-calls ipvlan_port_get_rtnl(ipvlan->phy_dev) to retrieve the ipvl_port,
-forcing "ip link show" dumps to hold RTNL.
+On an I219 (pch_spt+) at jumbo MTU, after a link partner reset (e.g. a
+switch reboot) the interface can come back up unable to pass traffic until
+it is manually reset. Observed on I219-LM (8086:15b7) at MTU 9000.
 
-However, ipvlan->port is already initialized in ipvlan_init() with a
-reference on port->count and remains valid until ipvlan_uninit(), after
-the net_device has been unregistered. Both ipvlan_nl_fillinfo() and
-ipvlan_nl_changelink() can therefore use ipvlan->port directly without
-dereferencing phy_dev->rx_handler_data or checking for a NULL port.
+When the MAC exits the DMoff state on link-up, the watchdog resets only
+the PHY. A bare PHY reset does not re-run the jumbo-frame workaround
+(e1000_lv_jumbo_workaround_ich8lan), so the jumbo configuration is left
+unapplied and traffic stalls. This was seen with NIC runtime PM disabled;
+if runtime PM were enabled, the device should go through a full reset on
+resume, avoiding this issue.
 
-In addition, port->mode and port->flags are updated under RTNL (via
-ipvlan_link_new(), ipvlan_nl_changelink(), and ipvlan_set_port_mode()),
-while being read locklessly from the data path and from
-ipvlan_nl_fillinfo():
-- ipvlan_queue_xmit(), ipvlan_handle_frame(), and ipvlan_skb_to_addr()
-  read port->mode,
-- ipvlan_is_private() and ipvlan_is_vepa() read port->flags.
+Request a full reset (FLAG_RESTART_NOW) instead of the bare PHY reset when
+the MAC exits DMoff, so the normal reset path re-applies the jumbo-frame
+configuration.
 
-Furthermore, ipvlan_nl_changelink() previously updated port->flags via
-separate read-modify-write calls for IPVLAN_F_PRIVATE and IPVLAN_F_VEPA,
-which could publish an intermediate value to concurrent readers. Since
-ipvlan_nl_validate() already validates that only those two flags exist
-and are mutually exclusive, replace the bit-manipulation helpers with a
-single WRITE_ONCE(port->flags, ...) in ipvlan_nl_changelink() (matching
-ipvlan_link_new()) and remove the unused ipvlan_{mark,clear}_{private,
-vepa}() helpers.
-
-Annotate all remaining accesses to port->mode and port->flags with
-READ_ONCE() and WRITE_ONCE(), caching READ_ONCE(port->mode) in a local
-variable in ipvlan_queue_xmit() and ipvlan_handle_frame() so the switch
-statement and fallback WARN_ONCE() observe a consistent value.
-
-Finally, add const qualifiers to local pointers in ipvlan_nl_fillinfo().
-
-Signed-off-by: Kishore Gummadidala <kishorg@google.com>
+Fixes: def4ec6dce39 ("e1000e: PCIm function state support")
+Cc: stable@vger.kernel.org
+Reported-by: Fabio Sabai <sabfabio@amazon.com>
+Closes: https://github.com/systemd/systemd/issues/25925
+Suggested-by: Matt Vollrath <tactii@gmail.com>
+Reviewed-by: Matt Vollrath <tactii@gmail.com>
+Tested-by: Matt Vollrath <tactii@gmail.com>
+Assisted-by: LLM
+Signed-off-by: Craig I. Hagan <hagan@amazon.com>
 ---
- drivers/net/ipvlan/ipvlan.h      | 24 ++------------------
- drivers/net/ipvlan/ipvlan_core.c | 12 ++++++----
- drivers/net/ipvlan/ipvlan_l3s.c  |  2 +-
- drivers/net/ipvlan/ipvlan_main.c | 38 ++++++++------------------------
- 4 files changed, 20 insertions(+), 56 deletions(-)
+v3: Correct the Fixes: tag to def4ec6dce39 ("e1000e: PCIm function
+    state support"), which introduced the DMoff-exit bare PHY reset;
+    2e7256f12cdb only added a pre-condition. This lets stable reach
+    the affected trees (v5.3+, including 5.4/5.10). Add Reviewed-by/
+    Tested-by from Matt Vollrath.
+v2: Rework per review: request a full reset on DMoff exit so the
+    jumbo-frame workaround is re-applied (root cause identified by
+    Matt Vollrath); drop the diagnostic e_info. v1:
+    https://lore.kernel.org/netdev/20260923235832.473-1-hagan@amazon.com/
 
-diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
-index 8d05ad480438..48176b546a46 100644
---- a/drivers/net/ipvlan/ipvlan.h
-+++ b/drivers/net/ipvlan/ipvlan.h
-@@ -125,32 +125,12 @@ static inline struct ipvl_port *ipvlan_port_get_rtnl(const struct net_device *d)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 844f31ab3..df7da86a8 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -5264,9 +5264,11 @@ static void e1000_watchdog_task(struct work_struct *work)
+ 					usleep_range(10000, 20000);
+ 					pcim_state = er32(STATUS);
  
- static inline bool ipvlan_is_private(const struct ipvl_port *port)
- {
--	return !!(port->flags & IPVLAN_F_PRIVATE);
--}
--
--static inline void ipvlan_mark_private(struct ipvl_port *port)
--{
--	port->flags |= IPVLAN_F_PRIVATE;
--}
--
--static inline void ipvlan_clear_private(struct ipvl_port *port)
--{
--	port->flags &= ~IPVLAN_F_PRIVATE;
-+	return !!(READ_ONCE(port->flags) & IPVLAN_F_PRIVATE);
- }
+-					/* Checking if MAC exited DMoff state */
+-					if (!(pcim_state & E1000_STATUS_PCIM_STATE))
+-						e1000_phy_hw_reset(&adapter->hw);
++					/* MAC exited DMoff; do a full reset. */
++					if (!(pcim_state & E1000_STATUS_PCIM_STATE)) {
++						adapter->flags |= FLAG_RESTART_NOW;
++						goto link_up;
++					}
+ 				}
+ 			}
  
- static inline bool ipvlan_is_vepa(const struct ipvl_port *port)
- {
--	return !!(port->flags & IPVLAN_F_VEPA);
--}
--
--static inline void ipvlan_mark_vepa(struct ipvl_port *port)
--{
--	port->flags |= IPVLAN_F_VEPA;
--}
--
--static inline void ipvlan_clear_vepa(struct ipvl_port *port)
--{
--	port->flags &= ~IPVLAN_F_VEPA;
-+	return !!(READ_ONCE(port->flags) & IPVLAN_F_VEPA);
- }
- 
- void ipvlan_init_secret(void);
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 7ad12dc7845c..c08d2bf88503 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -676,6 +676,7 @@ int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct ipvl_dev *ipvlan = netdev_priv(dev);
- 	struct ipvl_port *port = ipvlan_port_get_rcu_bh(ipvlan->phy_dev);
-+	u16 mode;
- 
- 	if (!port)
- 		goto out;
-@@ -683,7 +684,8 @@ int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (unlikely(!pskb_may_pull(skb, sizeof(struct ethhdr))))
- 		goto out;
- 
--	switch(port->mode) {
-+	mode = READ_ONCE(port->mode);
-+	switch (mode) {
- 	case IPVLAN_MODE_L2:
- 		return ipvlan_xmit_mode_l2(skb, dev);
- 	case IPVLAN_MODE_L3:
-@@ -694,7 +696,7 @@ int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	/* Should not reach here */
--	WARN_ONCE(true, "%s called for mode = [%x]\n", __func__, port->mode);
-+	WARN_ONCE(true, "%s called for mode = [%x]\n", __func__, mode);
- out:
- 	kfree_skb(skb);
- 	return NET_XMIT_DROP;
-@@ -782,11 +784,13 @@ rx_handler_result_t ipvlan_handle_frame(struct sk_buff **pskb)
- {
- 	struct sk_buff *skb = *pskb;
- 	struct ipvl_port *port = ipvlan_port_get_rcu(skb->dev);
-+	u16 mode;
- 
- 	if (!port)
- 		return RX_HANDLER_PASS;
- 
--	switch (port->mode) {
-+	mode = READ_ONCE(port->mode);
-+	switch (mode) {
- 	case IPVLAN_MODE_L2:
- 		return ipvlan_handle_mode_l2(pskb, port);
- 	case IPVLAN_MODE_L3:
-@@ -798,7 +802,7 @@ rx_handler_result_t ipvlan_handle_frame(struct sk_buff **pskb)
- 	}
- 
- 	/* Should not reach here */
--	WARN_ONCE(true, "%s called for mode = [%x]\n", __func__, port->mode);
-+	WARN_ONCE(true, "%s called for mode = [%x]\n", __func__, mode);
- 	kfree_skb(skb);
- 	return RX_HANDLER_CONSUMED;
- }
-diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
-index 7c017fe35522..3e9f5f051d86 100644
---- a/drivers/net/ipvlan/ipvlan_l3s.c
-+++ b/drivers/net/ipvlan/ipvlan_l3s.c
-@@ -24,7 +24,7 @@ static struct ipvl_addr *ipvlan_skb_to_addr(struct sk_buff *skb,
- 		goto out;
- 
- 	port = ipvlan_port_get_rcu(dev);
--	if (!port || port->mode != IPVLAN_MODE_L3S)
-+	if (!port || READ_ONCE(port->mode) != IPVLAN_MODE_L3S)
- 		goto out;
- 
- 	lyr3h = ipvlan_get_L3_hdr(port, skb, &addr_type);
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index 4939cf67b336..9c7c1a1f41c3 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -47,7 +47,7 @@ static int ipvlan_set_port_mode(struct ipvl_port *port, u16 nval,
- 			/* Old mode was L3S */
- 			ipvlan_l3s_unregister(port);
- 		}
--		port->mode = nval;
-+		WRITE_ONCE(port->mode, nval);
- 
- 		mutex_unlock(&port->pnodes_lock);
- 	}
-@@ -501,7 +501,7 @@ static int ipvlan_nl_changelink(struct net_device *dev,
- 				struct netlink_ext_ack *extack)
- {
- 	struct ipvl_dev *ipvlan = netdev_priv(dev);
--	struct ipvl_port *port = ipvlan_port_get_rtnl(ipvlan->phy_dev);
-+	struct ipvl_port *port = ipvlan->port;
- 	int err = 0;
- 
- 	if (!data)
-@@ -516,17 +516,7 @@ static int ipvlan_nl_changelink(struct net_device *dev,
- 	}
- 
- 	if (!err && data[IFLA_IPVLAN_FLAGS]) {
--		u16 flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
--
--		if (flags & IPVLAN_F_PRIVATE)
--			ipvlan_mark_private(port);
--		else
--			ipvlan_clear_private(port);
--
--		if (flags & IPVLAN_F_VEPA)
--			ipvlan_mark_vepa(port);
--		else
--			ipvlan_clear_vepa(port);
-+		WRITE_ONCE(port->flags, nla_get_u16(data[IFLA_IPVLAN_FLAGS]));
- 	}
- 
- 	return err;
-@@ -570,23 +560,13 @@ static int ipvlan_nl_validate(struct nlattr *tb[], struct nlattr *data[],
- static int ipvlan_nl_fillinfo(struct sk_buff *skb,
- 			      const struct net_device *dev)
- {
--	struct ipvl_dev *ipvlan = netdev_priv(dev);
--	struct ipvl_port *port = ipvlan_port_get_rtnl(ipvlan->phy_dev);
--	int ret = -EINVAL;
--
--	if (!port)
--		goto err;
--
--	ret = -EMSGSIZE;
--	if (nla_put_u16(skb, IFLA_IPVLAN_MODE, port->mode))
--		goto err;
--	if (nla_put_u16(skb, IFLA_IPVLAN_FLAGS, port->flags))
--		goto err;
-+	const struct ipvl_dev *ipvlan = netdev_priv(dev);
-+	const struct ipvl_port *port = ipvlan->port;
- 
-+	if (nla_put_u16(skb, IFLA_IPVLAN_MODE, READ_ONCE(port->mode)) ||
-+	    nla_put_u16(skb, IFLA_IPVLAN_FLAGS, READ_ONCE(port->flags)))
-+		return -EMSGSIZE;
- 	return 0;
--
--err:
--	return ret;
- }
- 
- int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
-@@ -682,7 +662,7 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
- 	 * to be consistent in setting it just like the mode attribute.
- 	 */
- 	if (data && data[IFLA_IPVLAN_FLAGS])
--		port->flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
-+		WRITE_ONCE(port->flags, nla_get_u16(data[IFLA_IPVLAN_FLAGS]));
- 
- 	if (data && data[IFLA_IPVLAN_MODE])
- 		mode = nla_get_u16(data[IFLA_IPVLAN_MODE]);
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+2.47.3
 
