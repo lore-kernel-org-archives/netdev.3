@@ -1,131 +1,150 @@
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA124B7A59;
-	Mon, 28 Sep 2026 11:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.217
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790596514; cv=pass; b=BJMufuSI3fPD4RZUILRn1bDp5AED9tlhJ2OmTgc+OGTLR69QtsxgMfALG/7gHhzELMste+GpKiLd1iiaTxNi6uxD4wmHiEHYc1lmqYhqH9Sg7h2bZ2G6/LJzKsVzK4TUdecb2FFDZdKckzFOF4xgnM0eE/oEddPdK37LZUj5WII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790596514; c=relaxed/simple;
-	bh=SVZcJ55DzVNMNY5XMdT7WD2AhnBGmKabJpvR8EQwb0Q=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=p/EZK0Y15BtNAxdUfJ0h7Gs3LMJVktrQuMJI2XmyE7MXmGXDrJe4L3tyvg4+ymzlg+h2TUBfXNv83sgjVn+B59MTYcq/5O+Wo6SYpro9awmb5jFQKGuDJR6z7bizuz2weR2Na4eO8iw0HveQmywqFQ5ub5fHt50DVE0r1GLYLEo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clnt.de; spf=none smtp.mailfrom=clnt.de; dkim=pass (2048-bit key) header.d=clnt.de header.i=@clnt.de header.b=kYVJ9qEB; dkim=permerror (0-bit key) header.d=clnt.de header.i=@clnt.de header.b=ePnFHYK2; arc=pass smtp.client-ip=81.169.146.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clnt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=clnt.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0084B95B0
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790596742; cv=none; b=CuGEWJsBqfTLkttz22gUl2ZciZcpTWniPkULKOtzUdaby4qj127DRnFWmvgrTnxO/VdlixMyra5PUyxsGr/A3S1y7qA0cb3p/yzl4DLLfT5ASZB42wcq2uGsOGqrFc3RIUyXkriOJ7r20f83etPeHqmqO8bdbCqsUsm3D17rXUU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790596742; c=relaxed/simple;
+	bh=CqbVlokaOL+bm8eId/Ib/ejGZ1bk7rb3ux6JMzy2uuc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XR8fvbUravAC82/DQlPm8URYISEzNNsEh+7VJSrUZPykB/iqEs59DMPoKiYhzQjSSzQlm8FpxwVYjCgAOL94LDu/G6xk4Ahd1wG3XGWwvSBJvdFOehYRrkklOniPJvbtA2LZLDG4dDN3vjfZ+9A0KOVDwlvuDUxQWuGqLcKBRk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=aAYZBbp7; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=clnt.de header.i=@clnt.de header.b="kYVJ9qEB";
-	dkim=permerror (0-bit key) header.d=clnt.de header.i=@clnt.de header.b="ePnFHYK2"
-ARC-Seal: i=1; a=rsa-sha256; t=1790596502; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=UFC4aq5r2AZwRb5NG+M1XKiJCbl0GeB1QHZi/Fg5zRIHPzEgMoksM2eVsamE8UTI5I
-    73MYzAfKw/A+LqD18sPpgTtZpyPXLZbc0KLgZ5S6FBynNY3LwKRhhMdzBp5wUYSqjac4
-    ksTk2OT8ABU12fF2tj/H0+I19LuNM1OKdaugqod6MPqvvXArHmIr5eZ3T/JQhes7kyAG
-    j5bdEKcG3Tcu5AgNtRIaLvBmMkt083VqJ199navq/P85xYPykWdPZ13oNXgmuuDJa7Ax
-    IU2B1Cq3pic/nvETVubbuZsZSJNV/li+VwuvWTwen8isOU+XOwR+1SMKTdYgnp/bgSx/
-    LAAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1790596502;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
-    b=T2Iu1flPA9d2WgadXiLTiJi9rCPvOv3ZTQ6HM+203TL8U5W9AZOIYw0NgRIgeLmcrv
-    kz8ph/Z5mLQSvhrcaObkfiVRiaAHvaMJbZoWqJor0AQG1Zjl/AzRgV8YJuWRFah/wys8
-    QqEfOUsqw/Nj/1KRp/9pgFMiT2qYz/qZtiDkJfweh/uSqEhP4WXu653yH1llkstVpucq
-    4ta3yoauyw97xr5K0u5qlCIa4JAeBGqhCCxCtms/IwZRGj2jb/JDpib6qrwNyil14syT
-    ofCm5+Ul+TvRcsoMB4j3fQY4Jvh040PsFanxv/Sbv+L63EdcJZGtMP+Skjg8ZaZGD58v
-    qi+w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1790596502;
-    s=strato-dkim-0002; d=clnt.de;
-    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
-    b=kYVJ9qEB/J9nAjf7VMhmHbjfF52vWP4WjmB5L67RlYnEJ6hsmMl+qBQYHioqO8GUx5
-    JxdOwQbfyN3lxDXCkxuMkmFCkDHVc2vc8l2W6icpZnUsHN7J0kq+S9c+mPZP8bLrsGOx
-    XLX6w696GreLgjRcFZ4KWTKGG+Gdu5RXyPduOc2DcIs5xwblYcA0qLdgwRoAtc42a+NT
-    Ib/OlJpwyQRI9LsXk+37SnNzCrrcoaCuaAZ29nTJC6nomjeiE2NYKD7d0rPp+NDnuO1e
-    J/IWWRpv0YGrJuLeiov+rKAIAU65fllTRDoTVc0r9rlMIBa7uAApr2ZTwqSU7U68gZe8
-    8+Ug==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1790596502;
-    s=strato-dkim-0003; d=clnt.de;
-    h=Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=IRQ8P8nmGPrpH/cBBhS5FaYGqbIqFX1UWUBcQOhpGVA=;
-    b=ePnFHYK2Q83NhPhlY9mfUSXANra+h1KRzAfQvPj9F9wRkcowEq4Mrrx9KelM5OS+/4
-    fD7xuNfcNPXCGB6n4fDQ==
-X-RZG-AUTH: ":JmMBZ0eIePPD0O4MAtHoOQRBn1SEQ1z2Q1DWy2WVkt1sV8N3AuWK5lfWPRbu91LSBytYvkGZVYo37PbZpRi9KWvmPfg="
-Received: from ehlo.thunderbird.net
-    by smtp.strato.de (RZmta 55.6.2 AUTH)
-    with ESMTPSA id f03c2e28SBt2Y1V
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 28 Sep 2026 13:55:02 +0200 (CEST)
-Date: Mon, 28 Sep 2026 13:55:01 +0200
-From: =?ISO-8859-1?Q?J=F6rg_Willmann?= <joe@clnt.de>
-To: linux-can@vger.kernel.org
-CC: socketcan@hartkopp.net, mkl@pengutronix.de, netdev@vger.kernel.org
-Subject: =?US-ASCII?Q?=5BBUG=5D_can=3A_RX_frames_silently_dropped_in_ra?=
- =?US-ASCII?Q?w=5Frcv=28=29_with_RPS_enabled_since_d4fb6514ff8e?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <VI1P18901MB0640EC60F0E40E18EED92A0AAA8D2@VI1P18901MB0640.EURP189.PROD.OUTLOOK.COM>
-References: <VI1P18901MB0640EC60F0E40E18EED92A0AAA8D2@VI1P18901MB0640.EURP189.PROD.OUTLOOK.COM>
-Message-ID: <2859AD3D-C805-41A0-9036-C5E8EE152419@clnt.de>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="aAYZBbp7"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71974de4so1619295e9.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:59:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1790596738; x=1791201538; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:references:cc:to:from:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=v3UXri323pcC3w5ZlfRHuF0Grc9/qviDz0NEMAdVQdo=;
+        b=aAYZBbp7AVGb9w93+Zf0gU7J1kmTpBGdJZTXrzk2NBpoNXxSPL4Zj+4u73UYeTX/Lv
+         m3Hu47K7uDOBn8zhHohRAonfT2bNrjHd6SgxuaKOq5TdCMKCX3q8AZOmqJ8GDKBj7JXh
+         KoG6b+L5enc1TO+QyySh1kWdpRQTfxeZ3tdW9hGWrFaUB1m6Ki8aUWn0ZPxQeQgq00sm
+         RbkxJCEY3j7FUhJvnDCOFIw34fXchS5FHy6OtQYH5BzG8X8VMHr3OdVrddUOHhuKgmGm
+         VrWFOmIpIjIincH3Vw4U5FFkcE5lvh4XcecVHWkzxjJxN/4n+4gjdcywceh5KqiyFtOd
+         7E5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790596738; x=1791201538;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:references:cc:to:from:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=v3UXri323pcC3w5ZlfRHuF0Grc9/qviDz0NEMAdVQdo=;
+        b=k29MTIXXzPGepkmM6s+b3TdrXVDqoAGrqjhpIo0Z6T95wyFP/JeTkFYzKCM+rdA4HY
+         MXdkrR+8owUaU2kNEwAOoXRm+CV6EynDT6HpriWhFE60C/E7YTvBszhDJtQD/+BSSIh/
+         q89CBHQDKjGQ3aH8ur4D4IXLKp3QlHz1hG3wG/Xf82wAGozB8s0nthVSGfH83RiOHI3L
+         KvDDiBKydx2YZDsE7PI8lrIkSEOJ2wGFPpu+OZqxtTCyaKpWuLfNYJI0kV2Etd+wdqb9
+         NdKm5VtDum6rM9q7dTvlNaB6Ih4QlpA9kXvZ51RcOxJnjQO6V/PNs0ce2j6Cu5TKjgP4
+         kW5w==
+X-Forwarded-Encrypted: i=1; AKwUvBy9Mri95f5tDhsyfMDiEmMM2K5ztTRqk1HKxZOUx0pryIWEb5CDRE1UgaWfYU5cDyCCPJQLJZg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nwd0ZTBvt7fDgMI3IIlo+i/AhZ8UESC1fX4HQ9CvEcKgGuw9j1
+	DwgKXNn1m5qii/rf3fcvSGiDpjwo3AQzyubJ0SG1Vb9rZ0D6JJoTlBqG2W7ZjEoV0YU=
+X-Gm-Gg: AYBFou2DNERw4k0ahwuGebSudI6VF7SgbnDyNyuDnl7v8Sz1VFuyTJcdqj4p8ehZX4V
+	y73Qmw3+eU04+2vttwQWCL8dSWPqvCNIfL6EGm5w0zITu2vaM5Pj9fH5f8qzgLCb9DNU6mRetq+
+	Ddi8VlLynu0jGKPU2+EJAM4XLzRiorSm+X47mg8fUJ8MXtuylPR21KVzeiJZmoi/4F34iKcQbX2
+	pqsBlsu1sKVMdwMnSUfXO3hCnroMBsQVosVGIwIxCJjPrWyPH7UduTVjNwshOpCC2UjLpJBUKdY
+	2HeMmL2R4yVgOt5AngKPnJHZI6RTYVU11Ux6ISViVuUDj+kqRjVi3NcJzNyGKDTeLHvqTN7Z60O
+	B1OkMSuKeTrNrApNoy/HiS7jWP0tDH3Qu+0FIo+x8r1JRFun3eoG67zIeGrzaznvYhUX5aEpkzK
+	zPy7RkHZscFmcKP6+Dkhk4pKQ1a10aNknTlvZE2lUkVulMihCxa0vItAcSj+uYRyi6ACQ0mJ6/8
+	AZLSgHvUBOld6EmEC96mbJP7/eM6sRfk9mb8qHWX5GLWDgswcc=
+X-Received: by 2002:a05:600c:a414:b0:49f:ff2c:e0cf with SMTP id 5b1f17b1804b1-49fff2ce1a7mr76035515e9.0.1790596738417;
+        Mon, 28 Sep 2026 04:58:58 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0017652d1sm200581185e9.5.2026.09.28.04.58.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 04:58:57 -0700 (PDT)
+Message-ID: <f72a5150-4c75-4d71-93a8-8b261ca9762a@6wind.com>
+Date: Mon, 28 Sep 2026 13:58:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net-next v8 2/5] net: add a generation counter for dev->mc
+ changes
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+ Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
+ Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+References: <20260927002427.4519-1-sigefriedhyy@gmail.com>
+ <20260927002427.4519-3-sigefriedhyy@gmail.com>
+ <cd00e6e7-aa2d-4f98-8a79-083b64b3376a@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <cd00e6e7-aa2d-4f98-8a79-083b64b3376a@6wind.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Le 28/09/2026 à 09:53, Nicolas Dichtel a écrit :
+> 
+> 
+> Le 27/09/2026 à 02:24, Yuyang Huang a écrit :
+>> A multi-part RTM_GETMULTICAST dump of dev->mc resumes by position, so
+>> entries added or removed between two dump rounds can be skipped or
+>> repeated. The IPv4 and IPv6 dumps report that with NLM_F_DUMP_INTR by
+>> stamping cb->seq from a per netns generation counter combined with
+>> dev_base_seq, see inet_base_seq().
+>>
+>> Add the equivalent for the device multicast lists: a per netns counter
+>> bumped whenever an entry is added to or removed from any dev->mc. The
+>> list helpers do not know which device a list belongs to, so give
+>> netdev_hw_addr_list an owner, set for the lists of a device and NULL
+>> for snapshots and other standalone lists, and change list->count
+>> through helpers that bump the counter of dev_net(owner) when the list
+>> is dev->mc. That covers the dev_mc_* helpers, both lists of a sync,
+>> the hardware sync helpers drivers call from their rx mode callbacks or
+>> their own workers and the reconciliation after an asynchronous rx mode
+>> update. It is atomic since the writers only hold the address lock of
+>> their own device.
+>>
+>> Used by the following patch for the AF_PACKET multicast dump.
+>>
+>> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+> 
+> 
+> If another version is needed, you can rename counter to _counter to highlight
+> that the helpers should be used.
+Sorry, this sentence is a leftover from the first version of my reply.
 
+[snip]
 
-Hi Oliver, hi Marc,
+> 
+> For correctness, __hw_addr_splice() should use helper:
+> 
+> @@ -509,8 +509,8 @@ static void __hw_addr_splice(struct netdev_hw_addr_list *dst,
+>  {
+>          src->tree = RB_ROOT;
+>          list_splice_init(&src->list, &dst->list);
+> -        dst->count += src->count;
+> -        src->count = 0;
+> +        __hw_addr_count_add(dst, src->count);
+> +        __hw_addr_count_reset(src);
+>  }
+> 
+> Renaming  struct netdev_hw_addr_list->count to _count would help to check all
+> users and highlight that modifying _count should be done with helpers.
 
-since commit d4fb6514ff8e ("can: use skb hash instead of private
- variable in headroom") we are losing received CAN frames on raw sockets
- when RPS is enabled on the CAN interface=2E The problem also shows up in
- the stable backports (seen on [6=2E12=2E109])=2E
+This comment stands.
 
- Setup:
- - Kernel: 6=2E12=2E109
- - Platform: OpenWrt 25=2E12=2E5, 4 CPU cores
- - CAN controller / driver: mcp251xfd
- - OpenWrt enables packet steering (RPS) by default on multi-core
- systems, so rps_cpus is non-zero on can0
-
- Symptom:
- The application on a CAN_RAW socket misses frames=2E /proc/net/can/stats
- counts more RX frames than the application receives=2E With
-
- echo 0 > /sys/class/net/can0/queues/rx-0/rps_cpus
-
- the losses disappear completely=2E [Optional: rate/amount of loss, number
- of filters on the socket, whether join_filters is used=2E]
-
- Analysis (as far as I understand it):
- 1=2E RX skbs from the driver start with skb->hash =3D=3D 0=2E
- 2=2E With RPS enabled, get_rps_cpu() calls skb_get_hash() in the
- netif_rx() path before can_rcv() is reached=2E The flow dissector
- finds no L3/L4 headers in CAN skbs, so every CAN frame gets the
- same non-zero hash with sw_hash =3D 1=2E
- 3=2E can_set_skb_uid() only assigns a new counter value while
- skb->hash is 0, so the RPS hash is kept and the frame gets no
- unique identifier=2E
- 4=2E raw_rcv() treats a frame as a duplicate when both the skb pointer
- and skb->hash match the per-CPU uniq entry=2E Since the slab
- allocator often returns the same address for the next skb, a new
- frame with the same (constant) hash is dropped as a duplicate=2E
-
- Before d4fb6514ff8e this could not happen because the unique id was
- kept in can_skb_priv::skbcnt, independent of skb->hash=2E
-
- Thanks,
- Joerg 
+Regards,
+Nicolas
