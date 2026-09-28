@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A35B466AED;
-	Mon, 28 Sep 2026 08:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253D546EF6A;
+	Mon, 28 Sep 2026 08:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790582623; cv=none; b=LBs2Ldw2FdPT/2HMpBIewO/uQJOOlJRb/t67CEZA7dPztR6H5IbfmW7cwk6OyO1LdD8/vojlSxSPdyBZ8LXgjwExVvvU0f8wDV27enR9jdW2dDxK24j6XZ26s0vFgxzBTKmT0GzaFhYye1kUMSWK37ZLMhAbCv64u1KF3R0+iVA=
+	t=1790582628; cv=none; b=Z5Ilf+fkAxgYg0myUfOKsGIUNa1G/ufsNcKhOt9Fy5pMGjwuE1rfkWk/dza/KRtcoYz2A9F6wsYqVbDkcm8htWE/BSBzFptvdt6v/dMeR7A2knFTA/y5MpYC8Hxx/KdhY5XgfaG/6lOPRblQdKGk6Dn1fQOdVeKYQ81Vmm0gFAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790582623; c=relaxed/simple;
-	bh=NCBjHBq6ROMBnWMjohzc9cvQDluFaiuKFu2JHXMqgtU=;
+	s=arc-20240116; t=1790582628; c=relaxed/simple;
+	bh=ZPV5p+j4KPjhk3iffSJAn2mihUCwMaMbCnf1VocEA1Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uCL9h2sKv6glUJLtAi8Lwt3MWdiFilQoQEPmBA2X4KYc7emqFBnzHKldLsSYO4o0zB6PK3dD05qu/6GNk7iPoJRhuN7y9F5WesXn1W/RiPJ/iBHH+HscmdUjPtmDu5QhkL0jZ9Z6NONsrii/hdt82xNtK7/9VJYvofOtAUj7Et4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPlhM0ur; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kj3+PwNB9hKARJl83bJOIoMSPKjr+klT83eZuRk0vTbHk6g3RcGaFSkyOchV0+IbgKTMPvHeldSo1Y97Y5jJiReAJ3edlWnawxbiEJP07uUgxT1b/kMvPAX/yjixpxmC78XUKUSGkhnwKsbWYxMr2f0YMxwLz347KTVEfBVotmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQwmu5tZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPlhM0ur"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00AE1F00893;
-	Mon, 28 Sep 2026 08:03:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQwmu5tZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FD1F000FF;
+	Mon, 28 Sep 2026 08:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790582622;
-	bh=d8sZX7sedqrjKDmZIkU7rI1DLwmYGwJUxtpLg+D3HK4=;
+	s=k20260515; t=1790582624;
+	bh=wpKB8NWNIG9HI9GTo75J4nfgoxYdt8QoZF0s8fE5gFw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DPlhM0urkOWYZf+yfDXria2xkmkIqwWNL/u29ZF44FB5lIyzOQN7JtwSOGx8rayHP
-	 /nAiq8X0crQ7ID/rWp0T/+jGM7LD43/EiqonSEcqdsaRHukP3xrmCeuy+T7HHB2LWI
-	 Nad/Zkmn8Axd4qcJ1J62AYkRaWjbIQ6s5qwLvmvNCKDAVftSuRkLK7bV75sMOZG0lq
-	 I4scMoGDKQqCMcpKxcs+x4/ad/CmMX8y/owDOOgg/xRGBeYLIznOMzjbJnjCLHXMct
-	 CBdcxoYQw4pOAIk4OikFc5RJzkVz7eKhIKu+67xpSIMPSaz+8UtHWh8iCMJIGVkXP4
-	 tOXsqaAGVXfWA==
-Subject: Re: [PATCH net-next v2 5/7] net: stmmac: mediatek: use TX clock phase
- shift in RGMII mode with 1Gbps speed
+	b=fQwmu5tZ++pPdx978y8XvVOELXuIhncUvhyxzvE3O28BzUdCEfshtgvu6Ynzj9ine
+	 bnC73Rzfo9sFCCL8gc8PvojoDaVGNcVeAjQXndfnduOZcKzV6AXEW/mppLXuwcgbli
+	 jDY2o76gvQzgaJ4E3zxjgnrWuYvCgick5VE2SEqzgpazPxoFnRBCLcicVatAGSQ8+a
+	 WbmRCmUD+U+2PA+bVTY2WzNpmeJh2Tfo8ZKfSVMMf2LtlFj0S6cAI8kNTtktL010mt
+	 t0+XXepyA6wezn0wGw/geaZ6Ijhfi0Sv/L0vKPTg1w7yPWhw8yQ1QtDF9a5bMhC5hU
+	 2feqsY/CYFnsg==
+Subject:
+ Re: [PATCH net-next v2 7/7] net: stmmac: mediatek: add support for MT8189 SoC
 From: netdev-bot+sashiko@kernel.org
 To: louisalexis.eyraud@collabora.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -39,10 +39,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  linux-stm32@st-md-mailman.stormreply.com
-Date: Mon, 28 Sep 2026 08:03:40 +0000
-Message-ID: <179058262053.3145.11439692575591950530@kernel.org>
-In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-5-430bd74d5ef9@collabora.com>
-References: <20260924-dwmac-mediatek-mt8189-v2-5-430bd74d5ef9@collabora.com>
+Date: Mon, 28 Sep 2026 08:03:42 +0000
+Message-ID: <179058262236.3145.17042342965998808468@kernel.org>
+In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-7-430bd74d5ef9@collabora.com>
+References: <20260924-dwmac-mediatek-mt8189-v2-7-430bd74d5ef9@collabora.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,187 +64,153 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] At 1Gbps, mt8195_fix_mac_speed()
-  (drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c) ignores the…
-- [Medium] mt8195_fix_mac_speed() and mt8195_set_delay() use different
-  rules for whether a TX delay is present.
-- [Medium] At SPEED_1000, mt8195_fix_mac_speed() sets reg_val to
-  MT8195_RGMII_TXC_PHASE_CTRL only (line 467).
-- [Low] In mt8195_fix_mac_speed(), `tx_delay_stage_val` is declared
-  without an initializer (line 445: `u32 tx_delay_stage_val,…
+- [Medium] On MT8189, the driver and the DT binding disagree about MAC-
+  sourced RMII.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  mediatek_dwmac_probe() ignores the return value of…
+- [Medium] This problem wasn't introduced by this patch, but
+  mediatek_dwmac_clks_config(enabled=true) leaks clock enables.
 
 --
 
-net: stmmac: mediatek: use TX clock phase shift in RGMII mode with 1Gbps speed
+net: stmmac: mediatek: add support for MT8189 SoC
 
-This patch adds a fix_mac_speed callback to the MediaTek dwmac glue and
-implements it for MT8195. The callback runs when a TX delay is set in the
-devicetree and the PHY mode is rgmii or rgmii-rxid. It enables the fixed
-2ns TXC phase shift at 1Gbps and uses the HW delay macro circuit at
-10/100Mbps.
+This adds MT8189 support to the MediaTek dwmac glue driver. MT8189 reuses
+the MT8195 pericfg programming callbacks, with a different register
+offset, 180ps delay stage dividers, a shorter clock list and the TX clock
+output enable feature.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> index dee12cfa437d..6123efbbaf02 100644
+> index 36599dc33b14..f07c331b029f 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
 
 [ ... ]
 
-> @@ -433,9 +436,62 @@ static int mt8195_set_delay(struct mediatek_dwmac_plat_data *plat)
->  	return 0;
+> @@ -124,6 +131,10 @@ static const char * const mt8195_dwmac_clk_l[] = {
+>  	"axi", "apb", "mac_cg", "mac_main", "ptp_ref"
+>  };
+>  
+> +static const char * const mt8189_dwmac_clk_l[] = {
+> +	"mac_main", "ptp_ref"
+> +};
+
+[Severity: Medium]
+How is RMII with the MAC providing the reference clock meant to work on
+MT8189?
+
+The MT8189 binding added earlier in this series ("dt-bindings: net:
+mediatek-dwmac: add support for MT8189 SoC") limits clock-names to exactly
+these two entries:
+
+    clock-names:
+      items:
+        - const: mac_main
+        - const: ptp_ref
+
+However, it still allows mediatek,rmii-clk-from-mac for this compatible.
+The tx/rx-delay-ps descriptions also mention the MT8189 RMII interface.
+
+If a board sets mediatek,rmii-clk-from-mac, mediatek_dwmac_clk_init()
+always requests a clock that the binding does not permit:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_clk_init() {
+    ...
+	if (plat->rmii_clk_from_mac) {
+		plat->rmii_internal_clk = devm_clk_get(plat->dev, "rmii_internal");
+		if (IS_ERR(plat->rmii_internal_clk))
+			ret = PTR_ERR(plat->rmii_internal_clk);
+    ...
+}
+
+So a DT that passes schema validation fails to probe. A DT that supplies
+rmii_internal, and so would probe, fails schema validation.
+
+The new variant also reuses mt8195_set_interface() and mt8195_set_delay().
+These program MT8195_RMII_CLK_SRC_INTERNAL and the RMII_TXC/RMII_RXC delay
+path, so the driver seems to treat this mode as supported.
+
+Should the MT8189 binding gain an optional rmii_internal clock? Or should
+the binding and the driver reject mediatek,rmii-clk-from-mac for MT8189
+with a clear error?
+
+[ ... ]
+
+> @@ -495,6 +506,21 @@ static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
+>  			   reg_val);
 >  }
 >  
-> +static void mt8195_fix_mac_speed(void *priv, phy_interface_t interface,
-> +				 int speed, unsigned int mode)
-> +{
-> +	struct mediatek_dwmac_plat_data *priv_plat = priv;
-> +	const struct mediatek_dwmac_variant *variant;
-> +	struct mac_delay_struct *mac_delay;
-> +	u32 tx_delay_stage_val, reg_offset;
-> +	u32 reg_val = 0;
-> +
-> +	if (!priv_plat)
-> +		return;
-> +
-> +	mac_delay = &priv_plat->mac_delay;
-> +	variant = priv_plat->variant;
-> +
-> +	if (!mac_delay->tx_delay ||
-> +	    (interface != PHY_INTERFACE_MODE_RGMII &&
-> +	     interface != PHY_INTERFACE_MODE_RGMII_RXID))
-> +		return;
+> +static const struct mediatek_dwmac_variant mt8189_gmac_variant = {
+> +	.dwmac_set_phy_interface = mt8195_set_interface,
+> +	.dwmac_set_delay = mt8195_set_delay,
 
 [Severity: Medium]
-Should this check the stage count instead of the raw picosecond value?
+This is a pre-existing issue, not one introduced by this patch. Now that
+MT8189 uses mt8195_set_delay(), can it cause trouble that
+mediatek_dwmac_probe() ignores the return value of mediatek_dwmac_init()?
 
-mt8195_set_delay() decides whether there is a TX delay from the number of
-stages:
+drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_probe() {
+    ...
+	mediatek_dwmac_common_data(pdev, plat_dat, priv_plat);
+	mediatek_dwmac_init(&pdev->dev, priv_plat);
 
-	tx_delay_stage_val = mac_delay->tx_delay / tx_delay_stage_div;
-	...
-	gtxc_delay_val |= FIELD_PREP(MT8195_DLY_GTXC_ENABLE,
-				     !!tx_delay_stage_val);
+	ret = mediatek_dwmac_clks_config(priv_plat, true);
+    ...
+}
 
-Take mediatek,tx-delay-ps set to a value from 1 to 289. The binding says
-the value rounds down to 0, and the probe path applies no TX delay. The
-same value still passes the !mac_delay->tx_delay check here, so at
-SPEED_1000 the callback enables the fixed ~2ns TXC phase shift.
+With phy-mode = "gmii", stmmac_get_phy_intf_sel() returns
+PHY_INTF_SEL_GMII_MII. That passes the check in mediatek_dwmac_init(), and
+mt8195_set_interface() writes CTRL0. mt8195_set_delay() then reaches:
 
-The 10/100 branch further down has the same mismatch:
+	default:
+		dev_err(plat->dev, "phy interface not supported\n");
+		return -EINVAL;
 
-	reg_val |= FIELD_PREP(MT8195_DLY_GTXC_ENABLE,
-			      !!mac_delay->tx_delay);
+CTRL1 and CTRL2 are never written, but probe still goes on into
+stmmac_dvr_probe() and succeeds.
 
-That sets GTXC_ENABLE=1 with STAGES=0, which is not what probe wrote.
+The error is also ignored for phy modes that mediatek_dwmac_init() rejects
+up front. In that case the device probes with the pericfg interface
+registers never programmed.
 
-Does this turn a documented "no delay" setting into a 2ns delay at 1G?
+Should probe fail when mediatek_dwmac_init() returns an error?
 
-> +
-> +	/*
-> +	 * When link speed is 1Gbps with RGMII interface, and a TX internal
-> +	 * delay needs to be applied on MAC, prefer to override the delay
-> +	 * settings with a 2ns fixed delay which is controlled by
-> +	 * RGMII_TXC_PHASE_CTRL. Otherwise, fallback to HW delay macro circuit
-> +	 * for 10/100Mbps link speeds.
-> +	 */
-> +	if (speed == SPEED_1000) {
-> +		reg_val = MT8195_RGMII_TXC_PHASE_CTRL;
-
-[Severity: Medium]
-Does this throw away the configured size of mediatek,tx-delay-ps at 1G?
-
-The property is only checked for non-zero above. Any value from 1 to 9279
-ps ends up writing only MT8195_RGMII_TXC_PHASE_CTRL here.
-MT8195_DLY_GTXC_ENABLE and MT8195_DLY_GTXC_STAGES are in the
-regmap_update_bits() mask, so the stages that mt8195_set_delay() programmed
-at probe and resume get cleared. As a result, <290>, <1160>, <2030> and
-<5000> all give the same 1G programming.
-
-The binding in Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-still describes the property as the internal TX delay:
-
-      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a
-      multiple of 290, or will round down. Range 0~31*290.
-
-It has no 1G exception, and this patch does not update it.
-
-The in-tree users (mt8395-genio-common.dtsi and mt8395-radxa-nio-12l.dts,
-both rgmii-rxid with <2030>) are close to 2ns. A board whose value was
-tuned for trace skew far from 2ns would get different 1G timing than
-before, with no warning.
-
-The commit message says the phase shift is used "when a delay needs to be
-inserted". It does not mention that the configured value is ignored.
-
-The later commit "net: stmmac: mediatek: add support for MT8189 SoC" reuses
-this callback unchanged, so this also applies to MT8189 with its 180 ps
-stages.
-
-Should the phase shift be used only when the configured delay is close to
-2ns? Otherwise, should the binding document the override?
-
-> +	} else {
-> +		if (variant->tx_delay_stage_div)
-> +			tx_delay_stage_val = mac_delay->tx_delay /
-> +					     variant->tx_delay_stage_div;
-> +
-> +		reg_val |= FIELD_PREP(MT8195_DLY_GTXC_ENABLE,
-> +				      !!mac_delay->tx_delay);
-> +		reg_val |= FIELD_PREP(MT8195_DLY_GTXC_STAGES,
-> +				      tx_delay_stage_val);
-
-[Severity: Low]
-Can tx_delay_stage_val be used uninitialized here?
-
-It is declared without an initializer and only assigned when
-variant->tx_delay_stage_div is non-zero. FIELD_PREP() always reads it,
-though, and the result is written to PERI_ETH_CTRL0.
-
-mt8195_set_delay() handles this case with an explicit else:
-
-	if (tx_delay_stage_div)
-		tx_delay_stage_val = mac_delay->tx_delay / tx_delay_stage_div;
-	else
-		tx_delay_stage_val = 0;
-
-clang's -Wsometimes-uninitialized is likely to warn here, which would break
-CONFIG_WERROR builds. Every current user has a non-zero divisor (290 for
-MT8195, and 180 for MT8189 later in the series), so this path is not hit at
-runtime today.
-
-> +		reg_val |= FIELD_PREP(MT8195_DLY_GTXC_INV,
-> +				      mac_delay->tx_inv);
-> +	}
-> +
-> +	reg_offset = variant->peri_eth_ctrl_offset + MT8195_PERI_ETH_CTRL0;
-> +	regmap_update_bits(priv_plat->peri_regmap,
-> +			   reg_offset,
-> +			   MT8195_RGMII_TXC_PHASE_CTRL |
-> +			   MT8195_DLY_GTXC_ENABLE |
-> +			   MT8195_DLY_GTXC_INV |
-> +			   MT8195_DLY_GTXC_STAGES,
-> +			   reg_val);
-> +}
+> +	.dwmac_fix_mac_speed = mt8195_fix_mac_speed,
+> +	.clk_list = mt8189_dwmac_clk_l,
+> +	.num_clks = ARRAY_SIZE(mt8189_dwmac_clk_l),
 
 [Severity: Medium]
-At SPEED_1000, reg_val holds only MT8195_RGMII_TXC_PHASE_CTRL, but
-MT8195_DLY_GTXC_INV is part of the mask. Does this clear the TX clock
-inversion requested by mediatek,txc-inverse at 1G?
+This isn't a bug introduced by this patch, but does
+mediatek_dwmac_clks_config() leak the bulk clock enables when the
+rmii_internal clock fails to enable?
 
-mediatek_dwmac_config_dt() reads that property into mac_delay->tx_inv, and
-mt8195_set_delay() programs it at probe and resume. The 10/100 branch keeps
-it through FIELD_PREP(MT8195_DLY_GTXC_INV, mac_delay->tx_inv). The TX clock
-would then be inverted at 10/100 but not at 1G.
+drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c:mediatek_dwmac_clks_config() {
+    ...
+		ret = clk_bulk_prepare_enable(variant->num_clks, plat->clks);
+		...
+		ret = clk_prepare_enable(plat->rmii_internal_clk);
+		if (ret) {
+			dev_err(plat->dev, "failed to enable rmii internal clk, err = %d\n", ret);
+			return ret;
+		}
+    ...
+}
 
-The binding describes the property as:
+That path has no clk_bulk_disable_unprepare(). mediatek_dwmac_probe() also
+returns the error directly, without reaching err_drv_probe:
 
-      1. tx clock will be inversed in MII/RGMII case,
+	ret = mediatek_dwmac_clks_config(priv_plat, true);
+	if (ret)
+		return ret;
 
-It has no speed exception. Neither the commit message nor the code comment
-mentions dropping the inversion.
+On MT8189 this leaves mac_main and ptp_ref prepared and enabled. The devm
+bulk get cleanup only drops the clock references. The same leak can
+happen through the clks_config callback on resume.
 
-Is this intended, or does the hardware ignore GTXC_INV once PHASE_CTRL is
-set?
+On MT8189 this needs a DT that sets mediatek,rmii-clk-from-mac and also
+supplies an rmii_internal clock, which the MT8189 binding does not allow.
 
 [ ... ]
 
