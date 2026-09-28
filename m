@@ -1,167 +1,173 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B184D37B7
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790616185; cv=none; b=aFJP26Tl22699Qs2YyZ3Zm5sOyGajy5FsxI3PvjuilxmLWbBmw1NcErKYaKhPpIvBDPP3B50ebCo9WviWLDge8C8eQTnx3jfp8IhaUF8MEhx2rwKXuVnc6URw7H5kLjgFBKbOw0VHxUPvYffNzDsMeviishJiR9kuzLH3nAr6UI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790616185; c=relaxed/simple;
-	bh=lCXyHm+iaIL3bQ9txdLtXflEDH1wllb3V7pgxbd6W7w=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=EgAB4pBiAXAR6Svy6RxLjQgZqPNQopJ3/ue4vdqzqGyC+J8icS6A8yiVuBABr7B7cuyaE4iR7+ignwbTXFjUEqntX5vKuIWKPv1rZd25ybAyX1K+E6qoX+plAzRXHYi68lC/H3TE/Sy1aIuc+rsoH2yGvz6F70iT0UcCACrNLNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=AFNlRC61; arc=none smtp.client-ip=74.125.228.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A01C4F96C6
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790616234; cv=pass; b=Lqeccojx6VcvzDAWASotgqR5QsY6jDMgdXw/52A1T/RcUEEuuPgu6dE1HOc9gXRqWqhN9PnuCq0xV2EUpdf6LIs+RTNaebhFvyPNupeIX7HCmUNLS55I6MlVQ+nv5uCyPRtnzV4pUjU2RTeoIM+4WlAPG4HSsXFNKoIZdAvAMAQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790616234; c=relaxed/simple;
+	bh=baEoNBgFzbqfywMSHz3HNl9nOlCtROqCrEUy4ioworM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gw11OGS/IoMQOXapYi7fOqXj1mriHiUsombNaW2QNoJd6wSOQga4SG0oLO+augc9AFRiUrp6aTiEDuxUO5sdPxjvQ3tVslJrB6WGKGSMMGmXnDImpJ0XZhGUf91vMUg3aZ5c/tyA6bmiqXUZxEM4Bd3uLMDO1nPKfduWxaRIYP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HzNfnmkk; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="AFNlRC61"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dcdc386ddso207203866b.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:22:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HzNfnmkk"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53328262efbso21681cf.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:23:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790616210; cv=none;
+        d=google.com; s=arc-20260327;
+        b=G1YGFvf+50ODMqN7aZrRi4wcetP9jLB58G/Kg0z+oEI7riB4EUusbExwSH6pWjIoe5
+         +wat8c7+RbeqkBF66mTX2HojFRTitRfWchQzptwdL0wHtutKCf5/IQ477NC23UJ0gYFz
+         fhBwiwJKbRiiKlF4KXKePSn9bVKlHOH/ELHqjsd4wskQuzDdnWs+rQf9QsI4FuW5HftX
+         FXnnjdeqyYTLNOG45n8C6rWM/EbxPGJg83UKxJoDZgP1coobCI6KW4f+6niGPdLY+AZc
+         dgfNyBKNDKm0uJItqxvA3koFKgsNooW7afFEr7BaiUSMqmbfAWEjdNHTMbXIPZ/KiHHr
+         YeHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cPo0YF7Va7CVijoS/jlD9MAoYPwOXID7b/jnLGim+H8=;
+        fh=+SawGVyjt2lqwdVXG+a9XyN9xhaDsoeaAsTti7yCLVE=;
+        b=CHwPF9B4/tA3Dga97ihC87UmkK9dLyXYEk7qLG1gH02nlGCzSz0uLpzn9a9oEIwq8B
+         ngFihuNaNiDDW8bypavth2akINbZMH+5mDjdD/AU1CvX1lmGryF4SVchWRF7sUPoz2rQ
+         PDJwjX8RwKu5lxZTthhev804ZpuYaggpN6juR1tWOZfCTQ6LtnkN2J5h5RVkSS88fqZ9
+         q4Ct+iFugpWwm/vojZx2eqGKfMsKUQFoHvSWbQSb6IBVnXyQOazAow2ZmPoM6BlNqF8r
+         UpVqSorytwRTFZO1oQ4lZWEKNeVInSQAVFVsoHrb/I5cT6+91oGOmmuZWDsOtp366g+y
+         zN2w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1790616171; x=1791220971; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sx2gaek3RzQGvXZj14sm8lya8hmYE5akZiXZO8UHtHc=;
-        b=AFNlRC61IYKycta3I/AyUv0om1YYDS91qiWzotFvEyvlidIshv6Fb/1BBglFvxfCp6
-         CZp2dtlPV1AJU/gdh/HFbaE8XDhMvF46Z4YjANHxMZ1BgfMXeIgMP1hJDOPQgMmO9jKZ
-         vcXk9+4t78x1fYuRfSa8VXzacmk9h10JMX98IDtx044VCZET9+49ooyNGBBjay80Kn1e
-         +rPaKFJwdyk6KfyatvMaNL5OjMe/05rBxW9ncAzKEcuiVOAPXLQIM0PvqGnNIXTrQxom
-         xoREPlR9Tyk4G+2xto0XEUdkb5HUJ9EYhL99uFBponUA+b5IDkd8j0rthaANTye3SqkL
-         c4Sg==
+        d=google.com; s=20251104; t=1790616210; x=1791221010; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cPo0YF7Va7CVijoS/jlD9MAoYPwOXID7b/jnLGim+H8=;
+        b=HzNfnmkkGqteRIKVnsKufpaXJHegJt9d4e1VJZiWYuVMx43Xs2uRZDsqGRzIzaI2Oh
+         I+ZucgOPR9pKWMMCX3ZExxoPLz7vRsMlIjY0nnYG9O4ijk/hCglcvKPGoBzhiU1FRWf7
+         STIg7SOyCYnAKG8zvEYXTnAsBsViHFvmCuzp3mcWo37VIedN3AFHrco9AV+uHO0aglco
+         PRyX+zmjCTqHHXCLeLzzZZaY9YymOOIGXjvDN3tNvUeYbF2Y4D6yhGEwZjgnAYSN1who
+         PC1IrzQmnOwctWQ17yRg7vGm4unNiISgmiB7llqheE8vVA9nCCemqpTPX2EBGzp6A4A7
+         FM+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790616171; x=1791220971;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790616210; x=1791221010;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sx2gaek3RzQGvXZj14sm8lya8hmYE5akZiXZO8UHtHc=;
-        b=1hHWuz2spWkWiJC6koCiLNnShj9gS500zYv5cGhCBvMwaW34rTqZZIVm59qybiYQJz
-         f/9xtfxMUli+ndniivkvOEawSaNazo1cDuFmyoLG97bVibHbo8/XUJrPXVryqXoNF+j4
-         bUR/EJd1UsN36OFfghURb3woOJq48sLrCZUiLkfMeaxxWOBHrsgNuNgY7W63NI647aev
-         1Awrb8EcPoVdfWghzYkfC0KIwH1x7PkP44lfZdNYavBXrtD3Sp9orxEuh5Lp5MiLDmOc
-         U3tgUru7ryfVxRCGZWmiscVvRJ7vea3BE5Iaa8thkOHVA6ha2pMD/6NKrmNVbZya0fS/
-         gNnA==
-X-Gm-Message-State: AFuF++nHr0bXr83ZitiDHWeMQO/AP6RwnS9pihXKSno2iYveJh8XaC25
-	XklZieRJ37gbAdgZn7cp+lcgIkGdD1zWWeg0Io2JlMDdJd+JYT4KimzFxVHSKstqp9KsgbSrCe5
-	X2JEPxc6xaw==
-X-Gm-Gg: AYBFou1+k+GaFAVwFpf9aCvK5ebgjE2cM25+TqeFpLi0GPGZOzKEWPtJPVH32QzXXGO
-	R9xe5nhpaQn6wGSj+q0l1vQVT8JQTDVvprSev/8PVatycAAs1ehgRY0o8QkRpCk4S5TNBSlSbu0
-	ePmYpVBn1uDA28OIgRsH6NiguYiY8ZUjhK7U/l4BYXH+cf85uWSqDw8NDDSpy3m4p26Mq/QKFSS
-	EYZWxdC1AaD7+pVUdKkZRDLRgMhh98P2JaywFx26k7KjzcQvqSURViTMFOX3J2DmGoOwdtYCjIT
-	p6K70vvclxdy6Q7hyFk3+2hlRYGVlpvTEwpe1+rCU1BBWbsiEZFFeQs/NG2j0iWawi1BByw5p3b
-	2HZlEdU1Mr0S9TyxPQ+Zc5mlC+9gqbci0yCTD6eq+QJvmfasjofWBxPZMp/TcfsOx8xrj1w6d38
-	QAz57z7qSMBOTRf8IzCKlSuUHe1kwE37I7OODc3PRb/6i1L7Fl55/3D7JjZvbc3426paARvEBq+
-	HSlu5NUF8KEDcog1eE43zHraiuE4K0QfFi8xINaR8M6FfDdGeaAW3C88TWJpQ==
-X-Received: by 2002:a17:907:728d:b0:c29:f5d5:5a94 with SMTP id a640c23a62f3a-c2ac23ec0b2mr1066751466b.30.1790616170862;
-        Mon, 28 Sep 2026 10:22:50 -0700 (PDT)
-Received: from smtpclient.apple (80.49.145.194.ipv4.supernova.orange.pl. [80.49.145.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dc8b71b4dsm275758466b.1.2026.09.28.10.22.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Sep 2026 10:22:50 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+        bh=cPo0YF7Va7CVijoS/jlD9MAoYPwOXID7b/jnLGim+H8=;
+        b=cjkXi9Lo0idDf4iNmJmzXObhpQ0lqpY3xoAgltOQXGptFJwCOb3cuNrtf0PeXQxwSp
+         vxFyPXVQ8JMFXfRJmXNFRuK8dizofS5juWUJ1uU8rH2x6J/Ghf/UeQujh50xwuI90ZXR
+         xsspOqpaVFg2ZxzlExKFr3YLKlbAbPZYwxPFbmmzW4l9uyyZ5JIpJ+oNp3YvvNWfqzJy
+         Ugsylj9hm8wbhhG8SBbhzk4GEG11W/aZ11s8KaNypYpduBq+AQ7Ox3w+7uh2MaghcM5U
+         GIgyc4yEkqzCHmWuVHfiXVposGJAsGTi+/c3ZoAVFxcB7aTTxCnAivvjCBNBeMw9FZV5
+         Pwzw==
+X-Forwarded-Encrypted: i=1; AKwUvBwNe1dbu2cZ935uZDI9ndkv6YxB7EZueNqdYK+CCqb1yUxMwlS6h3XH1UZktPf1NkQKLSGSaWk=@vger.kernel.org
+X-Gm-Message-State: AFuF++lr8qycbg6DGlY9bQNeUYzNExQFHT1nZtmUaCbgoIKWmg6ieI7I
+	/KcFqEjIFpNFqj6dP7k9JwbVxioAjXH9lxpi0rReUUWAApxtyinbMCSHER33UuN64Sz723SWS7o
+	LMI+UtCn1594+TT4CEW4NeLH/Ylj8W94VjQFJsf8Y
+X-Gm-Gg: AYBFou2iXqE7Fvr8gswRMXEIOErcQrzfJwmn9wFxoUWCh8dkykYbxTXTAdOFo/u/mUr
+	vRDuaiwfTPfC6lzJhU1fKvxYFonm1WTLrs1SSuXbik/n/au7FYHVZHWdGjAHmiuP5PXUQxrauS7
+	8jBuKLNdundDcQGCmwnVxFlxEXj53hpy5HImjgyKkAWKtyCMdKPpBHS/9il3CL/LxrSXz8BK774
+	JGBJOngrVXOhKTYz1qSu7x2wB8N+wWGKtfD2KPs/jTNU6KZVyOLgC89CkR6MqbIDMk7LX9oVvpt
+	4gmWRb+by1dBfFsiHlPWk5aA3eh649AbVAOFrozWjdEQy5FaZ3W452nKQ3M5h5aamqZyNIDpZjm
+	kDGYE8K5mZQ==
+X-Received: by 2002:a05:622a:514d:b0:530:e335:4ef with SMTP id
+ d75a77b69052e-53320076e0bmr27364431cf.2.1790616208912; Mon, 28 Sep 2026
+ 10:23:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: [PATCH net] soreuseport: Fix use-after-free when a socket is added to
- socks[] twice
-Message-Id: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
-Date: Mon, 28 Sep 2026 19:22:38 +0200
-Cc: Eric Dumazet <edumazet@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Daniel Borkmann <daniel@iogearbox.net>,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+MIME-Version: 1.0
+References: <20260925135244.3715196-1-edumazet@google.com> <20260925135244.3715196-2-edumazet@google.com>
+In-Reply-To: <20260925135244.3715196-2-edumazet@google.com>
+From: Wei Wang <weiwan@google.com>
+Date: Mon, 28 Sep 2026 10:23:18 -0700
+X-Gm-Features: AclHuK8xdsShSv3HRtdVr2Wm5x0BkXsFf5tWJ7cAhQHORhL5JRwHrn_nawAgudU
+Message-ID: <CAEA6p_BZrnrrQqMmh+fsxG=wd1V_yKqgYGCsJnjs_yG9mezEwg@mail.gmail.com>
+Subject: Re: [PATCH v2 net 1/2] net: restrict SO_RESERVE_MEM to TCP sockets
+ and cap max value
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Cai Xinchen <caixinchen1@huawei.com>, netdev@vger.kernel.org, edumazet@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-reuseport_stop_listen_sock() moves a shutdown()ed listener from the
-listening section of reuse->socks[] to the closed section: it removes =
-the
-socket with __reuseport_detach_sock() and adds it back with
-__reuseport_add_closed_sock(). The return value of the removal is
-discarded and the add runs unconditionally.
+On Fri, Sep 25, 2026 at 6:52=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> Commit 2bb2f5fb21b0 ("net: add new socket option SO_RESERVE_MEM") and
+> commit d00c8ee31729 ("net: fix possible NULL deref in sock_reserve_memory=
+")
+> only checked sk_has_account(sk), which is true for both TCP and UDP
+> sockets.
+>
+> However, SO_RESERVE_MEM and sk_unused_reserved_mem() are currently only
+> supported by TCP:
+> - On UDP sockets, sk->sk_forward_alloc is protected by
+>   sk->sk_receive_queue.lock, whereas sock_reserve_memory() and
+>   sock_release_reserved_memory() only acquire lock_sock(sk). Concurrent
+>   UDP packet reception/release and setsockopt(SO_RESERVE_MEM) corrupt
+>   sk_forward_alloc and memcg accounting.
+> - udp_rmem_release() reclaims excess sk_forward_alloc without
+>   accounting for sk_unused_reserved_mem(sk).
+>
+> Restrict sock_reserve_memory() to TCP sockets (sk_is_tcp(sk)) for now.
+> Supporting SO_RESERVE_MEM for UDP (acquiring sk_receive_queue.lock and
+> honoring sk_unused_reserved_mem() in udp_rmem_release()) can be done in
+> a future net-next series if needed.
+>
+> In addition, reject val > SZ_1G with -EINVAL in
+> sk_setsockopt(SO_RESERVE_MEM). Without an upper bound, values near
+> INT_MAX cause sk_mem_pages(delta) and (pages << PAGE_SHIFT) to overflow
+> 32-bit signed int, corrupting sk->sk_forward_alloc and
+> sk->sk_reserved_mem. Using a page-aligned cap (SZ_1G) ensures that the
+> page-rounded sk->sk_reserved_mem reported by getsockopt(SO_RESERVE_MEM)
+> can always be passed back to setsockopt(SO_RESERVE_MEM).
+>
+> Fixes: 2bb2f5fb21b0 ("net: add new socket option SO_RESERVE_MEM")
+> Reported-by: Cai Xinchen <caixinchen1@huawei.com>
+> Closes: https://lore.kernel.org/netdev/5a88421d-10ef-4fca-9acb-85a27a3c11=
+73@huawei.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: Wei Wang <weiwan@google.com>
+> ---
 
-The socket need not be in the listening section. inet_unhash() calls
-reuseport_stop_listen_sock() for a listener whenever sk->sk_reuseport_cb
-is set, but inet_hash() enters the reuseport path only when
-sk->sk_reuseport is set, and SO_REUSEPORT can be cleared in any state.
-Clearing it between shutdown() and listen() makes that listen() skip
-reuseport_add_sock(), and with it reuseport_resurrect(), so the socket =
-is
-hashed as a listener while it is still in the closed section. On the =
-next
-shutdown() __reuseport_detach_sock() does not find it in the listening
-section, returns false, and __reuseport_add_closed_sock() adds a second
-copy of it to socks[].
+Reviewed-by: Wei Wang <weiwan@google.com> for v2. :)
 
-sk_destruct() calls reuseport_detach_sock(), which removes one of the =
-two
-entries. reuseport_grow() then dereferences the other one, because its
-loop runs over every slot up to reuse->max_socks:
-
-  BUG: KASAN: slab-use-after-free in reuseport_grow =
-(net/core/sock_reuseport.c:291)
-  Write of size 8 at addr ffff888132359988 by task poc/621
-
-   reuseport_grow (net/core/sock_reuseport.c:291)
-   reuseport_add_sock (net/core/sock_reuseport.c:350)
-   inet_hash (net/ipv4/inet_hashtables.c:810)
-   inet_csk_listen_start (net/ipv4/inet_connection_sock.c:1359)
-   __inet_listen_sk (net/ipv4/af_inet.c:225)
-   inet_listen (net/ipv4/af_inet.c:247)
-   __sys_listen (net/socket.c:2014)
-
-  Allocated by task 621:
-   sk_prot_alloc (net/core/sock.c:2246)
-   sk_alloc (net/core/sock.c:2308)
-   inet_create (net/ipv4/af_inet.c:333)
-
-  Freed by task 0:
-   slab_free_after_rcu_debug (mm/slub.c:6570)
-   rcu_core (kernel/rcu/tree.c:2919)
-
-  The buggy address is located 904 bytes inside of
-   freed 2624-byte region [ffff888132359600, ffff88813235a040)
-
-Only move the socket to the closed section when =
-__reuseport_detach_sock()
-reports that it was removed from the listening section.
-
-Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport =
-group.")
-Assisted-by: LLM
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
----
- net/core/sock_reuseport.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
-index 29948cb44b7d..031b641be317 100644
---- a/net/core/sock_reuseport.c
-+++ b/net/core/sock_reuseport.c
-@@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
- 			 */
- 			bpf_sk_reuseport_detach(sk);
-=20
--			__reuseport_detach_sock(sk, reuse);
--			__reuseport_add_closed_sock(sk, reuse);
-+			if (__reuseport_detach_sock(sk, reuse))
-+				__reuseport_add_closed_sock(sk, reuse);
-=20
- 			spin_unlock_bh(&reuseport_lock);
- 			return;
---=20
-2.55.0
-
+>  net/core/sock.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index d23333bb4f3fafa19f58095522ef10d918d92496..e8551df8330ff4b1d662b0d01=
+33e20d1f74eb728 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -1034,7 +1034,7 @@ static int sock_reserve_memory(struct sock *sk, int=
+ bytes)
+>         bool charged;
+>         int pages;
+>
+> -       if (!mem_cgroup_sk_enabled(sk) || !sk_has_account(sk))
+> +       if (!mem_cgroup_sk_enabled(sk) || !sk_is_tcp(sk))
+>                 return -EOPNOTSUPP;
+>
+>         if (!bytes)
+> @@ -1661,7 +1661,7 @@ int sk_setsockopt(struct sock *sk, int level, int o=
+ptname,
+>         {
+>                 int delta;
+>
+> -               if (val < 0) {
+> +               if (val < 0 || val > SZ_1G) {
+>                         ret =3D -EINVAL;
+>                         break;
+>                 }
+> --
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+>
