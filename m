@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7194D0CED;
-	Mon, 28 Sep 2026 13:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110AF4BE456;
+	Mon, 28 Sep 2026 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603134; cv=none; b=WIN6O3Q2vL3FoU2gvjs8fUxKzMKJ4lsyidur8MSiVfVt4HqP2/V68R0DigmVTCom1ON/+vTM8v/UqflXFshMdCVpAYTRS7HMKXcJ5ZCmFFW8hhVPFtcXkQmaLfQXGqjBYupBr7lIUPqXYXxJ6UYPtUg2ddOTax8PRNQXHEGTmWs=
+	t=1790603148; cv=none; b=M5k4xvfcyDzpgZxiZgInkSGrEhIFFC3rGve2LoNRPuKbq3/VRhlkBGT2EQ52f7hG08N0Z6LU6pPXDmLvwDjjFNKqIldWHSQmicwmF3eN3DLAQqrbVx4gYQctDbV1FKKXJ39Os+ULQoLqKmp2iNvwfHome9eEnn+1SziyZ+qf4Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603134; c=relaxed/simple;
+	s=arc-20240116; t=1790603148; c=relaxed/simple;
 	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Gn+EBRYCfwMzhHmKq1v9Gm8vrs5HSgiEgd0qkdOPLHxv8WEbcad/Ck2tpWjfhr6wqDLdNE3H1/adojXEFG+eyAY8B7ZKs5jK38QAOVnspLVvv2kdVdjOZt6MTDNwNQQv95XB0dObss4K3LODYTrxQ005dAueuVuvD408SLSv2sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0mpjVrQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=OpNV/1J1uS539ijc1RH4cRUZ9oGHGRsno8u75nrqFrd3sx6efFjbzo7hcg83gBzU6IdjuK5ScEb1m/EHKKlBD1yItf/E3jBg1dNfRjTSPfr9QqSTVb5MONjsqwpDvkZy0QK63+8dqDf63S/PhB9OWo6M2bqzTIKP/38JGzhSn8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKQN+XVw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0mpjVrQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430721F000FF;
-	Mon, 28 Sep 2026 13:45:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKQN+XVw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DFC1F000FF;
+	Mon, 28 Sep 2026 13:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790603132;
+	s=k20260515; t=1790603146;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O0mpjVrQcqeeJW602rZX8ZSx8MBKd+qxhWmZ0465bdo05ZQsd5wfifAv929tacCmV
-	 mIYOD+8Drfk0nmf+9FdeLu3GwHJt7jHWCQEgkr9PqkVeUuqAeeOnwJVGppaFbEegzN
-	 OTbT60hDEC14UHBA9xWqmq2mkDAlBHbCcUiqoFYdhQOGaNy7jKzZL1TSDZF8Hci1c+
-	 bxZwpHHHouCrg5SWVptAYmjaZ3jkNVaGg2EG0Qjdoytcd0XqhaFC5v5UAvGtM//iOQ
-	 ARx4TVPlAGrBDVapCHebHnLwmx5+7Z9obMIGG5ycfcJUs5xjCKEPvsecfA7+01iykZ
-	 vtjDZi/6zqyCQ==
+	b=cKQN+XVwQ7UCa7EZC6kUj6mdDWB+hQhAfBNO5Nfmfmdh66dQKbPvE/znUP6VtZlex
+	 hl/+Wkaujhw24epzUCk+BSn/zlzUKIMKHYhGJIU12qlez++CPFcyfKnkvnCrNd6Lw8
+	 RqxcxNmsywmwUrRJDpTO5iTLSIoAMKJPLFlMsk63oAx1Vy5wMwp2t6FKchS9rS3rhK
+	 hpL9DkakzAEW05a3y5nBgPlcsPY8utsfG+T6qafh53jaDVOY5T43y3j1A4+yVcIJEt
+	 SVTojjjLeyEx4pmm6uP+DTYSc+835nRYuCH4VK/hOVbxNwb+Le6EnxJDD084uuDJo1
+	 6rPm820UriOKQ==
 From: netdev-bot+sinfo@kernel.org
 To: Hongyan Xu <getshell@seu.edu.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, o-takashi@sakamocchi.jp, kees@kernel.org,
- u.kleine-koenig@baylibre.com, bhelgaas@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
-Subject: 
- Re: [PATCH net] net: calxeda: cancel timeout work before freeing rings
-Date: Mon, 28 Sep 2026 13:45:31 +0000
-Message-ID: <179060313181.31693.1245077268553282942@kernel.org>
-In-Reply-To: <20260928134115.1957-1-getshell@seu.edu.cn>
-References: <20260928134115.1957-1-getshell@seu.edu.cn>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+Subject: Re: [PATCH net] net: e100: cancel timeout work during removal
+Date: Mon, 28 Sep 2026 13:45:45 +0000
+Message-ID: <179060314551.31693.4640700550731578626@kernel.org>
+In-Reply-To: <20260928134121.826-1-getshell@seu.edu.cn>
+References: <20260928134121.826-1-getshell@seu.edu.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
