@@ -1,217 +1,73 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8574E4E50C5
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 19:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E203CF047;
+	Mon, 28 Sep 2026 19:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790622277; cv=none; b=Ed1TfUEV6eH0cmiqD7i+H5LZ5DvuTQ4ByuIby0EFckJN6qYF8qAH3uNpFjZgI0OBQTKi7llRDh/yCAHdnRwbRMbO/nRpF5eFKq/o2yatHxPnNw24KSlFGKINdFkYC7A+2VpP68jQezIbsqsxbrxs5UgWxXmpzW8spldhn5ylNdk=
+	t=1790622358; cv=none; b=Ty3e5ZSEI1eU6BMl5+hT8LuCcGZ/TQoJpJwyILXcPOy+f6urZQLp7VQCEH9R7FTgtbTYQn2mcH1G9DE3CvAd5r8R7Xky0pp+6EgG+Bj1wn3FiegfHOOBV3P/kS9hhT1fYdBMApyf/xJNzvmiw4+CAyyRJ9qkNQjNR2g1kxkT73E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790622277; c=relaxed/simple;
-	bh=pK+7XCkdBfalcoLQB4C2MorhZtzVib1xqhWjiQSG8Z4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MTlDXBGRJiNk4EZs4XB+ZqHo8yirTOcSaT9tjggAimHTo9HYDG2TWpdurufgn+XS5mJU6P5oqZnHnT5cdrPWqyY+Ru87v5R2oFkIrENVG/KXV0yw1MYP53sGMOUOcstWknC8E1iRMrlJ69nADIpSfSbbrECtePCSf3lLUL4TbQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cellusys.com; spf=pass smtp.mailfrom=cellusys.com; dkim=pass (2048-bit key) header.d=cellusys.com header.i=@cellusys.com header.b=HMVpCAxK; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cellusys.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cellusys.com
+	s=arc-20240116; t=1790622358; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hqPNxxNY68MhsCiBhfZbyqea0MwMyi3h12YBzf1tkwJ6OuPPxDamwhQEFKh8cFYNbz4i2OaCNbFAL6qZILKJo0hXDZrCnO4TEVGbTm59cMnWVAZGhgMvEIpb1HwGTKjoK92uFdah9t6PLh7hy/BpwfQgOonkWRfovL8zIxircC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nez6B5ND; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cellusys.com header.i=@cellusys.com header.b="HMVpCAxK"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so32485585e9.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cellusys.com; s=google; t=1790622270; x=1791227070; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KFkyXhwW18GAT053qn0DCfTNGShaOy7jAryC8dH6Q/8=;
-        b=HMVpCAxKz8NLN6JL4VVSoh7yMjynDyGX9fWEk9BOeHv18hoD2KkMzwGqqJK6kD4V4T
-         V3gBGsycfzKmc/gugln52UCoq5HRmkZs3T2Za+YuleREgm2p1qsTcOmYmPPiou/Vo2tG
-         Derf8W+vKHctCbPfDEeNQzSbQz/1aLqaMs2r0scpHFJ8WW6tOyq+H2aA1oHZSJnGs17k
-         ZMXaxxJGUJivTTDYcmtSaE+QgxQAoNLjN/qm1VPgcFdslBlzhbHS0H+EC04WvWchAGvf
-         Q6J3ynajr5l8rWDFVnMaP70EAfx25k9uf2lPhwPJ+j4hbf4bzEQCV52AflNWbyY+juUg
-         y1WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790622270; x=1791227070;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KFkyXhwW18GAT053qn0DCfTNGShaOy7jAryC8dH6Q/8=;
-        b=n56lBP6yLN1GPyExDZW6FXpsj9I+/eaoVMjEWX3Hx1f49RXJnUyplK8Jdp73LgDHH8
-         Sajlzfrh0+/aBm1SWLsEysma7eyyxoEjzfb2ehH9P43QGvY4u6P/lS4DZaEb1hPUVSXC
-         IdEc32ZdZKYuLhy8eDrRtNHhuj5kjp03y7cI6zaZGq+uYjYQ2RrX2jeOEDJlevOxOCqa
-         /xLoukN0CsraAEn2KQqOO0LVUkuXZgFy8ZEOjL3f22fPCZ+dfc02gkP9RODMZBpWsE09
-         /Ml5SULjvN2Fazg5Hb88ma77/HCFWTj+uKlyBUE3lMKZpsRx6wXAmBluDaIOSYK3kh7x
-         8noA==
-X-Forwarded-Encrypted: i=1; AKwUvBz1Yvm7uzLp5qmlleBtbIgWW/6y/hPXWGlSlj+RgKUOCicbxufm6hqecxvt7+cSk7+YqSZZ5KQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mxA2BQxLUQcRhM6Jfk+Dm7zxDfG3hklbrfHwj4OaZ3a2pHDLnT
-	Hcvd17RkouCufPIguqF0YnM4uM7rA0EaDWfs2UwsNnMIrEYUQ1oco/9UfykvoYVFA+0=
-X-Gm-Gg: AYBFou1fb+B7zgGiqSJo4atmoRuOsJzy12mT5m81rtGWIgh+tVh6Oelc9CbWNTl0NaO
-	rNoaVtA0j6mP9ETIee8j+V4H4tnH1ChMLwDvs4M36v83+l8vaKeHH6iA2xnkvjiecebxhUseO0p
-	e6jaVuu6+xuyzEEYFyByK2tllch+JJQpkaM88zxN8m3RDCAD0j3xlyzxetqUIn0y7YnmrQe8tUJ
-	dg5TSmD98MtrObQTl7Dc3dd1xTf7bnYcx0nKVrUT8OlW8JUS9rVWeLYVhVvCa5Tzgxjz5gu/MV4
-	rMVq7v2+/SftN0VMpQh1UTTYTwdstBMKhZqxQMtHjOAx3Gmwnya5EZkvo3C6nqT5G7SpoVECfYi
-	rIi/Hg5HlrTALQMJeYB0PQrNiNJrqkeiaivOEyNEOeLpBXzGmVfMgAltHOMzKJMYwal43U2zseP
-	hZSlSXUdhKej9ABlyMOjztXsLUjpYDlE/O6f/rZ4p6D94p6ZxOyukozP+xr1hZ0VvdbHml2RD3V
-	f80omOZ8q9QcxwgXFDpnZj44sip1CCxykpPjn83EfFZSfgbM7KWw2JAHcTDXsEPhGU=
-X-Received: by 2002:a05:600c:8b4c:b0:49e:8184:f63b with SMTP id 5b1f17b1804b1-49fe66f3a68mr242422195e9.16.1790622270200;
-        Mon, 28 Sep 2026 12:04:30 -0700 (PDT)
-Received: from dscRocky-build.localdomain (ip-83-147-170-154.wfd.metro.digiweb.ie. [83.147.170.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00c0d538fsm24710695e9.1.2026.09.28.12.04.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 12:04:29 -0700 (PDT)
-From: Warren Briggs <wbriggs@cellusys.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Warren Briggs <wbriggs@cellusys.com>
-Subject: [PATCH net v4] sctp: carry peer capabilities across an INIT collision
-Date: Mon, 28 Sep 2026 15:04:01 -0400
-Message-ID: <20260928190401.1641260-1-wbriggs@cellusys.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nez6B5ND"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31F51F000FF;
+	Mon, 28 Sep 2026 19:05:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790622354;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Nez6B5NDfkeFmsBCGzd5A9msSEiBKFiAR8JeCRk8PZPGt3yFh7ESWu62GIeRt0pJG
+	 /Nocqdc9EIc5mUi7ByjFqcKCrco3Ue3jDthJeix3yFD8QfsuUcuxeEOcdG2QL35nC8
+	 s1yuvYw3s4HBixLlr+NCOnpMIeu3kE7md0ZnRB8PWLx7yky5yWTbCOBPMvlPO3t5Or
+	 m5FIZ/ml/AdFfR6egp2Euj6c7SHTG0jKnmbwzPsnYM3gSdR8jtZ1xKbsfC2n92ud1V
+	 PG/83GfYpFghkCqlnJP1AHuZsxRErTVYGF4H9yIBb1KU0n4lPo+UM5nsmA7sU18qsP
+	 id26NN+Ke08cw==
+From: netdev-bot+sinfo@kernel.org
+To: Vamsi Krishna Kattamuri <kattamurivamsikrishna17@gmail.com>
+Cc: netdev@vger.kernel.org, sam@mendozajonas.com, fercerpav@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, gwshan@linux.vnet.ibm.com, joel@jms.id.au,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: 
+ Re: [PATCH] net: ncsi: clamp filter table counts in GP response handling
+Date: Mon, 28 Sep 2026 19:05:53 +0000
+Message-ID: <179062235338.31693.7662054582529437023@kernel.org>
+In-Reply-To: 
+ <CAANnmVAicVNhy8fMUaFJ_N+b4DnbwpYi1MOL4yMVisix1WCX4w@mail.gmail.com>
+References: 
+ <CAANnmVAicVNhy8fMUaFJ_N+b4DnbwpYi1MOL4yMVisix1WCX4w@mail.gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-sctp_assoc_update() folds a temporary association into the existing one
-when an INIT collision is resolved. It copies asoc->c, peer.rwnd,
-peer.sack_needed, peer.auth_capable and peer.i, and nothing else.
+Hi!
 
-The remaining peer capability bits therefore keep whatever the surviving
-association was given when it was created, rather than what the peer
-advertised in the INIT that caused the collision.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Forward TSN is the visible case. The INIT-ACK is built from the
-temporary association, so it advertises Forward-TSN-Supported; once the
-collision is resolved the surviving association holds
-peer.prsctp_capable == 0, and the first FORWARD TSN chunk the peer sends
-is answered with ERROR "Unrecognized chunk type". The peer does not
-expect this, having been told the capability was supported.
-ecn_capable, asconf_capable and reconf_capable are lost in the same
-way.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-ASCONF and RE-CONFIG also depend on two inbound sequence counters,
-peer.addip_serial and strreset_inseq, which sctp_process_init() derives
-from the peer's Initial TSN on the temporary association only. Without
-them the surviving association would have the capability but discard
-the peer's ASCONF and refuse its RE-CONFIG requests as out of sequence,
-so they are re-derived from the copied peer.i.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-The two address flags fail the other way round. sctp_process_param()
-clears ipv4_address and ipv6_address and sets them from the peer's
-Supported Address Types, but only on the temporary association. The
-surviving association keeps the permissive defaults from
-sctp_association_init(), so it can believe a peer supports an address
-family that peer never advertised.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-peer.adaptation_ind is recorded on the temporary association in the
-same way, so the SCTP_ADAPTATION_INDICATION notification raised after
-the merge reads a stale value, or none.
-
-intl_capable is lost too but is deliberately not carried here. It
-selects asoc->stream.si and affects the fragmentation point, and the
-outqueue may already hold data when the merge runs, so changing it
-safely needs more than a copy. It will be addressed in a separate
-patch.
-
-peer.auth_capable is already carried, added by commit 1be9a950c646
-("net: sctp: inherit auth_capable on INIT collisions") for the same
-reason. This extends that to the rest of the block.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Warren Briggs <wbriggs@cellusys.com>
----
-Changes since v3:
- - re-derive peer.addip_serial and strreset_inseq from the peer's
-   Initial TSN, so inbound ASCONF and RE-CONFIG are accepted.
- - dropped intl_capable, to be handled in a separate patch.
- - carry peer.adaptation_ind.
-
-Changes since v2:
- - dropped asoc->peer.hostname_address. The field no longer exists,
-   removed by commit bd4b28189469 ("sctp: delete the obsolete code for
-   the host name address param").
- - wrapped the commit message at 75 columns.
- - added the Fixes tag.
- - retargeted at net, subject prefix corrected.
-
-Changes since v1:
- - added ecn_capable, asconf_capable, reconf_capable and intl_capable,
-   the missing fields identified in review of v1.
- - also added ipv4_address and ipv6_address, which are set from the
-   peer's Supported Address Types on the temporary association and are
-   lost at the merge in the same way.
-
-Testing. On a 4.18-based kernel carrying this change (the code paths
-involved are the same upstream), an INIT collision was created between
-two sockets on one host, one of them held in COOKIE_WAIT, and the
-surviving association's peer state was read back and exercised in both
-directions.
-
-Read back from the collided association, by socket option or sctp_diag:
-
-prsctp_capable   SCTP_PR_SUPPORTED            unpatched 0, patched 1
-reconf_capable   SCTP_RECONFIG_SUPPORTED      unpatched 0, patched 1
-asconf_capable   SCTP_ASCONF_SUPPORTED        unpatched 0, patched 1
-ecn_capable      SCTP_ECN_SUPPORTED           unpatched 0, patched 1
-ipv4_address     sctp_diag sctpi_peer_capable unpatched 1, patched 0,
-                 with the peer advertising IPv6 only
-ipv6_address     sctp_diag sctpi_peer_capable unpatched 1, patched 0,
-                 with the peer advertising IPv4 only
-
-Outbound, sent by the collided association, with the patch applied:
- - SCTP_RESET_STREAMS puts a RE-CONFIG on the wire; an unpatched kernel
-   refuses the call and sends nothing.
- - sctp_bindx(SCTP_BINDX_ADD_ADDR) puts an ASCONF on the wire; an
-   unpatched kernel sends nothing.
- - a PR-SCTP message it abandons is followed by a FORWARD TSN.
- - DATA it receives in a CE-marked packet is answered with an ECNE.
-
-Inbound, sent by the peer to the collided association:
- - a FORWARD TSN is SACKed; an unpatched kernel answers it with ERROR
-   cause 6.
- - a stream reset request is performed; v3 answered it with bad
-   sequence number.
- - an ASCONF (set primary) gets an ASCONF-ACK; v3 sent none.
- - the adaptation layer indication in the peer's INIT is delivered to
-   the application with the value sent; v3 did not deliver it.
-
- net/sctp/associola.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index 4521be3bd85a..77ac155fdb70 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1107,8 +1107,19 @@ int sctp_assoc_update(struct sctp_association *asoc,
- 	asoc->peer.rwnd = new->peer.rwnd;
- 	asoc->peer.sack_needed = new->peer.sack_needed;
- 	asoc->peer.auth_capable = new->peer.auth_capable;
-+	asoc->peer.prsctp_capable = new->peer.prsctp_capable;
-+	asoc->peer.ecn_capable = new->peer.ecn_capable;
-+	asoc->peer.asconf_capable = new->peer.asconf_capable;
-+	asoc->peer.reconf_capable = new->peer.reconf_capable;
-+	asoc->peer.ipv4_address = new->peer.ipv4_address;
-+	asoc->peer.ipv6_address = new->peer.ipv6_address;
-+	asoc->peer.adaptation_ind = new->peer.adaptation_ind;
- 	asoc->peer.i = new->peer.i;
- 
-+	/* Re-derive sequence counters from the peer's Initial TSN */
-+	asoc->peer.addip_serial = asoc->peer.i.initial_tsn - 1;
-+	asoc->strreset_inseq = asoc->peer.i.initial_tsn;
-+
- 	if (!sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
- 			      asoc->peer.i.initial_tsn, GFP_ATOMIC))
- 		return -ENOMEM;
--- 
-2.43.7
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
