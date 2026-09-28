@@ -1,111 +1,209 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6331E493626
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790605895; cv=none; b=s7mnbvUiZoOGek//mx+2P2x8cFXL/n3oZ799BFe/8wJjfKdVmh2kcpuMTc5P+Gj1RbcnhKykw2wnItre5E6yb/QI3RWZCp2LdC//Dbv2jejyfodvFcEL8IG/tqkoVg+R243jQBwq8F34ol00O/aQLObvg9Vw8fImGMZaWu6xc64=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790605895; c=relaxed/simple;
-	bh=D3TXq3ux30ZNnfK6lC/HKLzji/G3Th4nc3cSemt7ugs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Qev4reIUJ4eKs6cKbqh+EMKch8w3mJiJQ5Vzou7hgKLCXFAvb2jJkf/Nyo0n0AKgJrDzU5684VlsIZLpJftypYASDWASle8Ux+T+5nJKZT/yN3SY9UBwSFaFB+CcVrhJcn7wtCL4wtnuuHt5HmdtMK4g46oO7QCJviXwuobq+B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=00aMNaGV; arc=none smtp.client-ip=74.125.229.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541AE4DEC2D
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790606292; cv=pass; b=Yxi7B7cPO6cbqT7eFdHQ2UnClR7bTCR08buk/XPn2n5btgOtCpP5hzegwXIMFFGoR8W3LXwnSXa8nfYBk3QqscCT335fATrMbLdjbx5em4d6IVo0BcZlnneNZgfBfxyC2ZCBlKWjFosecKeWy76ZPCXBn5iJJLRePeckoNCQjF4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790606292; c=relaxed/simple;
+	bh=4k0LHDyoypKSpDOQPhxiCmgZgeyWFuLEb9lB5rabey0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MPgb5seBBZdXcGw4A+XatzN3AnsJRfgDHYkVJ9c10MUvXriWCt1w+I9dZycxkLD6aO4ak03rPxdf16SI6ViRx/htR0RVkLL1DTP7IJDkUpc5xGM/gzC0rjPMqy6CZoXbsWDutiUa6UebRBhLTe/RbmxslaLCCmTYrN9SBR95u2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jOdtLm98; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="00aMNaGV"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-144f7915355so2641849c88.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:31:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jOdtLm98"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb769ca17so26986271cf.2
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:38:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790606281; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SroyUo4CnDfuk2hA5VmhfxN8VmQtmjeXiSRxigdqMZLJCqzg2UU7VXONrs4/X10U2F
+         V2sJmF67plOwvGhNIzpdw+daQlSqhifNji2dVhvepIiH32Iw7CanUpOikTa3VXZnVpX0
+         ZHdQVmvm40vYkFW4kScZkQwB0dp5kuQ1wTrNOg2mnyRSlN6vwPs1BP1ie6MNOQWQ7QsG
+         PTKUfKcXzSusGFJEEz61DSDsjYzTmE/zBsLuIUlNg7NWLljJGUlJlYbkonon+kkNObiW
+         objCTAWBL2+DMpfS6a0BkE7q0yoLpdoxAemMDFjzv47FsorfChhBdo/rOPuqJc50Fyeh
+         VyJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MCXHheHbyEgrdJrYIEQeYJBtiFQx6U5h1CpDGebQRFU=;
+        fh=1Oso9/lzZ5LY6Zrj2xWgINLLXb3B/rIH0HPAAkLUCLo=;
+        b=X5UZsvxh+gPITyHwS5b681lijRHeeLwFIHRdP+302qE0zfLj7vBhkjqxh1t10I9KDd
+         IDRlMfPkRttohVZe8stYJWKFsW2XBHgzDBt2lRW8QFBahLcXul8kM4pS6zn8THUPferk
+         YpThbQhMTkbE/2RoPI3yB058STXMJqEX8X3bm0BHJjfuU1UXpa4u/XBwk/6z/v8h65Wj
+         Orjzhevaqg1fjRoEZtJaHTn2cuFcIHk8Y85ATsMxV6PZTey7kTHlNDMk1vvCtr9PteaX
+         +HJxlaMy0V/ARJwH/L8yhtchh6PnpMLJ0GyDn0MNk7b4yKAws6jOBsDcYE7GZ+GGunw+
+         VkIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1790605884; x=1791210684; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1z8ZKhhaN5u9NWisVj47vzqbZOwB7wmqGzyey1IEdyo=;
-        b=00aMNaGVqCsBfl/3kMvAjybg2Vic0g0YqY2HqJTRC6Q2Th1V1wJyLgQVmlOTsHSDb4
-         AKEa80v6S0UlWvhwrEY82BLapMF+5Lt1A5A+ucnzCQAC0zGPeXaSy2uKZs78+Kvt8pbJ
-         fb9dtu2ZNG5ZEXe45PgSkKfJUHoNqg0qNF+s0ydacdGlcQwxHxeXErNaukIeHKexvMTG
-         eHgw5rO0e0o9+rL0OTSHkc+AragEgST6rVHV5cjXDeZl3DiEfvBAMulO8gXjf9B1CAu/
-         3ZxYr/g+YMDSYPSIqm2NenDTIKVTHTZCOGsNI7Xm/h0BD9eeaVRiqZuKwvGBXlyROsd+
-         bMRg==
+        d=google.com; s=20251104; t=1790606281; x=1791211081; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MCXHheHbyEgrdJrYIEQeYJBtiFQx6U5h1CpDGebQRFU=;
+        b=jOdtLm987ZRhomvhYN0rn7mut+ZnrOKI2qM00j+VZUTz43hU9Ntr2YT2NDvTnyR47R
+         cs31K2NbuG9zMlSLQi3B+1VENtOS/SC9EM6weqzxEEWfPwXBfnpWLiR1COEjv0oAd3KG
+         h/qUiuWMvCNcQjqUaSOA6n7kJQbW/fQWq/WWGjxLYtOJxTVytq73SfoXCh6J2mN7Y+up
+         mUwAtA7QZUE2zybzI3tCko6paaFu0VOndULV8eZw72OHd2tGNWNR/KKsQJhiGuRYfOYx
+         6GzD7xZHfHRJQDmfaS9AlAdezc8+latWLEoDuN5843XiBRLnQqo66GyAiGv6P5b61/9L
+         VECg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790605884; x=1791210684;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790606281; x=1791211081;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1z8ZKhhaN5u9NWisVj47vzqbZOwB7wmqGzyey1IEdyo=;
-        b=aOimLAL6U9M4qb8zBUaZVo3+XA1tAA3UPxouRfSMC178U2eHYHpWXRzBkpN3Zo2HZ7
-         daidRzqjID3YixSyyuDpn4jwHrdQigXmaXnaKUltK+QJtxQM4eh8xtYnRne4ZSX3uAeY
-         v2U6BgqJl46XPE4ls+cSOkIC5F6xNq+D+Bkor53mcn+kBpBPgZ368rI/8Q4tSjDuWHrj
-         lzNcOs1qyz5NzVlha8qXqv+qy+HSHWtY7Oh3TmkJ+URh4jY5VhSuSV8mMlgH5CJIlkcC
-         RObA1x08aCyQQuj0as95YCNl/2nQR/1WxuKJI2DqWUwWPe8ppgRUimzMaPa9op+PklSK
-         OlYA==
-X-Forwarded-Encrypted: i=1; AKwUvBzA9qJHBYbah4UiQBLSOSrNKC/Jk1nt+KfDZF49MBEX/OxeOZF6kAAiAZKT0N+D+VL7Fy4haUw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nM2Lr39UPeDfP97k3wfKb8tTb6RHovbmEXzAlCaxBBH1dg6Lzu
-	ifyi+dpJGwCWidUK1QffccNlIVt1GbhTGNtkxdaP1rmGGd8RJlqBUsQAmgFQtOJ6da5L2/oBKdG
-	xGvHzA3U=
-X-Gm-Gg: AYBFou1zn07yeomeeJWk8ylILX+HzUBWQA+B1ZfK3Y3N4hEjnv6g8Mffxw7+q3v3vmL
-	djhA7wdlj7fBjl1WFoQcmXbazUj1Zx6VlcHm6a7QJZak5MId9FDrRxqcWoCgTsC9dSvcuZK+Eyj
-	gSfZ2Hk0vGwt3IEAU0JKGE8QcN24YD5pWlVLrs1DXwqHYA38c2Q4cuLI8MJV6VSDyF/ZmeztXsx
-	2dQS9k4eH6RTWJhtdIyjIa/q+4bCbABxaocvJhkEed+cq/MDbG1+J5CtZzy1oRmhnBsPmb5iXc6
-	8HcVtIFB1Y7h3vlQQqy+cjpSwOVlOE4px8/DuH4AghQdGxStmGFcW5tpzftXqgc1GDWm+FVCZ33
-	1ehDVVLN42JRbsZzjXq2MlVDd1V7Ff3l2TnmPkSgG5ApsbQ4Eh/rjY0bEfbnIGwwHJbyioWP9Ng
-	Pv3MFPcZ//Tn65AQ3e/+N+/wPlbi7YV3zaoNqFkmQPjT/AEH5Xy9LMPjEDZG3xG2kS4pFm9MMJ9
-	ARLnjwrUBBBNHeBLDV0IKQNtGrBOXgupbAMbiF1Lq+lygmWHQcMvDEmaQ==
-X-Received: by 2002:a05:701b:2616:b0:144:edc5:32d5 with SMTP id a92af1059eb24-146cfec8ddcmr8983096c88.22.1790605882718;
-        Mon, 28 Sep 2026 07:31:22 -0700 (PDT)
-Received: from [192.168.1.106] ([198.8.77.135])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145ad9e097fsm28616577c88.13.2026.09.28.07.31.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 07:31:21 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: lollipopkit <a@lolli.tech>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, 
- Willem de Bruijn <willemb@google.com>, io-uring@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260927074206.65427-1-a@lolli.tech>
-References: <20260927074206.65427-1-a@lolli.tech>
-Subject: Re: [PATCH] io_uring/cmd_net: end TX_TIMESTAMP multishot when the
- CQ is full
-Message-Id: <179060588158.984285.6234217255544312653.b4-ty@b4>
-Date: Mon, 28 Sep 2026 08:31:21 -0600
+        bh=MCXHheHbyEgrdJrYIEQeYJBtiFQx6U5h1CpDGebQRFU=;
+        b=cfTsX1EmTWaOP+AAa0GHKcR+EQVivMtGeG/a4i8PfPKMz+FUVFaRWRF1KriMjmZM/J
+         OcGcCD82ixzORFZsnYEjrxPUg1jAitJGT8D1kikEbGV3SqgJ5iKTIi+fyje/gj0NL5yO
+         MbtiuxMx9fYRw2p7IE+M9ZEr4EQ12+PpexgSOY3Uc+bB2wUqPkrk0LLwwuQRNcPNJbaq
+         a/5DRIN8YlTnUnqp4mEOC4EpUh4+pfiiT59uNx431QfKoyop7NPXKGCZRfFcsFo0+11i
+         ujD3qgKrSKN8/6bB3t56Rm5xoV5BxVlNB2FZHbgC8Zr6HdaJFpPJZBfmq52X2Doasjpz
+         z1qw==
+X-Forwarded-Encrypted: i=1; AKwUvBxTRfx9yRt9IpL+3lKc1og2C43F7VCyr4e3yjaQuNh9NFaYiKFPFetv193gke1g9nliMPXOhkQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/mBIuM33WqLcgdUlDiupE9E55ALqErrRC1QpDXq/QiYb8/HrX
+	otxfqCWroVcwIsLDokO4LjvcCRpcyeZ4P9YXhNh/xR894ob9NDDZLjHzh2PTVu7lP3QsuHieLXu
+	wX2JsBnREkI3/g8GaQDKi55KycPlg6YlbnvcUqcdi
+X-Gm-Gg: AYBFou3f+X4wAaT4+zMq2u/Y6AN42T/QHK1Fjh6yOOkO0n3SjQK1rhFLtN+rU01rijz
+	GHEGqAu2Pj17x8o+289U1zi6oFJSWB/4rBMaFymu/Y7zAG4K1OOglAz9aXV2Mrxkg2xdfE5UkTM
+	rhVCFQmSUiTo2PNJXZXsRZYY8tPInlLxKD0bFJfguWsAMZX0uaJ9xxH+Ebgh1ihRAGZzvMWYT1N
+	L/S1YceL77aQfL3f3YP+9nKEFILRjDphO8nSTAKKMNEzGuSlp8UlI0CmXDqBoovLfKQCMCagj/S
+	QgorIGQKvTi7YtPgefK/ZGXdaHZUTw8VP7ZVmYXM7NUeWWaycLJswW2bmZ+APuO10s0x4/ZJT+P
+	ePY58RGqSv3yDPc6mWLEoMlbbhSilyyXCdpToonSMoiJELRAQ0ciY9Z3pyere/tBoesx4
+X-Received: by 2002:a05:622a:1ba4:b0:532:9e8c:ba4f with SMTP id
+ d75a77b69052e-5330b6cac1amr208393701cf.49.1790606280418; Mon, 28 Sep 2026
+ 07:38:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+References: <20260928142233.1131459-1-adrianox@gmail.com>
+In-Reply-To: <20260928142233.1131459-1-adrianox@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 28 Sep 2026 16:37:49 +0200
+X-Gm-Features: AclHuK-tFW16D2bS4l9__sm1qQjTQdo5G6viOvl0vzKP-fuo1ANAfrNb4VqhQ10
+Message-ID: <CANn89i+dFQjW4vnTBWjtVGFmwY5KQZctrUrNYq=VYsOZz8okFQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: sched: revert tx_queue_len on partial qdisc
+ resize failure
+To: Adriano Cordova <adrianox@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Sep 28, 2026 at 4:22=E2=80=AFPM Adriano Cordova <adrianox@gmail.com=
+> wrote:
+>
+> Pass the old length to dev_qdisc_change_tx_queue_len() and, when a queue
+> fails to resize, use it to restore the queues already handled.
+>
+> Fixes: 48bfd55e7e41 ("net_sched: plug in qdisc ops change_tx_queue_len")
+> Signed-off-by: Adriano Cordova <adrianox@gmail.com>
+> ---
+>  include/net/sch_generic.h |  2 +-
+>  net/core/dev.c            |  2 +-
+>  net/sched/sch_generic.c   | 15 +++++++++------
+>  3 files changed, 11 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+> index f35bd06a6bad..0ce97b4b2da1 100644
+> --- a/include/net/sch_generic.h
+> +++ b/include/net/sch_generic.h
+> @@ -720,7 +720,7 @@ void qdisc_class_hash_remove(struct Qdisc_class_hash =
+*,
+>  void qdisc_class_hash_grow(struct Qdisc *, struct Qdisc_class_hash *);
+>  void qdisc_class_hash_destroy(struct Qdisc_class_hash *);
+>
+> -int dev_qdisc_change_tx_queue_len(struct net_device *dev);
+> +int dev_qdisc_change_tx_queue_len(struct net_device *dev, unsigned int o=
+ld_len);
+>  void dev_qdisc_change_real_num_tx(struct net_device *dev,
+>                                   unsigned int new_real_tx);
+>  void dev_init_scheduler(struct net_device *dev);
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index f660fccfc0db..57e1fa320d53 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -10002,7 +10002,7 @@ int netif_change_tx_queue_len(struct net_device *=
+dev, unsigned long new_len)
+>                 res =3D notifier_to_errno(res);
+>                 if (res)
+>                         goto err_rollback;
+> -               res =3D dev_qdisc_change_tx_queue_len(dev);
+> +               res =3D dev_qdisc_change_tx_queue_len(dev, orig_len);
+>                 if (res)
+>                         goto err_rollback;
+>         }
+> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> index 6f6a6f0d5eb0..8fd0fce23cc4 100644
+> --- a/net/sched/sch_generic.c
+> +++ b/net/sched/sch_generic.c
+> @@ -1422,13 +1422,14 @@ void dev_deactivate(struct net_device *dev, bool =
+reset_needed)
+>  EXPORT_SYMBOL(dev_deactivate);
+>
+>  static int qdisc_change_tx_queue_len(struct net_device *dev,
+> -                                    struct netdev_queue *dev_queue)
+> +                                    struct netdev_queue *dev_queue,
+> +                                    unsigned int len)
+>  {
+>         struct Qdisc *qdisc =3D rtnl_dereference(dev_queue->qdisc_sleepin=
+g);
+>         const struct Qdisc_ops *ops =3D qdisc->ops;
+>
+>         if (ops->change_tx_queue_len)
+> -               return ops->change_tx_queue_len(qdisc, dev->tx_queue_len)=
+;
+> +               return ops->change_tx_queue_len(qdisc, len);
+>         return 0;
+>  }
+>
+> @@ -1465,7 +1466,7 @@ void mq_change_real_num_tx(struct Qdisc *sch, unsig=
+ned int new_real_tx)
+>  }
+>  EXPORT_SYMBOL(mq_change_real_num_tx);
+>
+> -int dev_qdisc_change_tx_queue_len(struct net_device *dev)
+> +int dev_qdisc_change_tx_queue_len(struct net_device *dev, unsigned int o=
+ld_len)
+>  {
+>         bool up =3D dev->flags & IFF_UP;
+>         unsigned int i;
+> @@ -1475,13 +1476,15 @@ int dev_qdisc_change_tx_queue_len(struct net_devi=
+ce *dev)
+>                 dev_deactivate(dev, false);
+>
+>         for (i =3D 0; i < dev->num_tx_queues; i++) {
+> -               ret =3D qdisc_change_tx_queue_len(dev, &dev->_tx[i]);
+> -
+> -               /* TODO: revert changes on a partial failure */
+> +               ret =3D qdisc_change_tx_queue_len(dev, &dev->_tx[i],
+> +                                               dev->tx_queue_len);
+>                 if (ret)
+>                         break;
+>         }
+>
+> +       while (ret && i--)
+> +               qdisc_change_tx_queue_len(dev, &dev->_tx[i], old_len);
+> +
 
-On Sun, 27 Sep 2026 15:42:06 +0800, lollipopkit wrote:
-> SOCKET_URING_OP_TX_TIMESTAMP arms an EPOLLERR apoll multishot and, on
-> each error queue edge, posts one 32 byte aux CQE per timestamp skb. Aux
-> CQEs have no overflow backing, so io_uring_cmd_post_mshot_cqe32() fails
-> once the CQ ring is full. The loop then stops, splices the unprocessed
-> skbs back onto sk_error_queue and returns -EAGAIN.
-> 
-> -EAGAIN is IOU_RETRY, so the request goes idle until the next poll
-> event. io_arm_apoll() forces EPOLLET and draining the CQ does not re-run
-> the command, so the spliced-back timestamps stay queued until an
-> unrelated later timestamp produces a new edge.
-> 
-> [...]
+Ah... Probably driven by the TODO  comment and a LLM ?
 
-Applied, thanks!
+One caveat is that pfifo_fast_change_tx_queue_len() is currently the
+only ->change_tx_queue_len() implementation, and it only fails on
+-ENOMEM (inside skb_array_resize_multiple_bh() after freeing the
+previous ring arrays on already-processed queues).
 
-[1/1] io_uring/cmd_net: end TX_TIMESTAMP multishot when the CQ is full
-      commit: 3a3d93070c5ec8b8049d57025987ba313420bda9
+Trying to revert queues 0..i-1 back to old_len will therefore have to
+allocate new ptr_ring arrays right after an -ENOMEM failure (which is
+especially likely to fail again if old_len > new_len), and cannot
+recover packets already dropped if the ring was shrunk.
 
-Best regards,
--- 
-Jens Axboe
-
-
-
+pw-bot: cr
