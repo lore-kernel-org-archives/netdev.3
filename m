@@ -1,135 +1,203 @@
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A0F3CFF51;
-	Mon, 28 Sep 2026 21:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73214364E89;
+	Mon, 28 Sep 2026 21:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790629560; cv=none; b=hb0X7SESd11jsHl0dFQis4Eu84X2x3byuVTU18HjjPhh/zZlfGa0GmlsWsmQUbE2+EiOZQ6yBrJ+Bm2EAgkmlJ0GXh27s3QFpkyUbkYa2RYOVyZicU/9x1HRgYM0m5+wfz87cNW0tHzWJz74X+TZb12j74cNkVxAzOnbCgWfhz8=
+	t=1790630288; cv=none; b=senLT2axYMllpqtUehjsDZWjq+/4ZYvUC8QcPfTXkrKmTZTvdnW5iV4056EEp/hsxcdTOGkPVdY5ehIQYpUc4ldLg5CmKzw8nP5Oel6erq7fS6hkgvNnYITVuhuzThAGkeMgQqg+9qcMyMISPk2mjQNwzD/IBSfFSmHZxq6X9xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790629560; c=relaxed/simple;
-	bh=wuUohBGbBXVSwT1F9oeyOYlWlZvZjHrxx80qx8HHdKc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M9eUGwDaMT8i6NJH41b5JkwXiJRwy7lGGOxtaMPsZ83JwNMtwal7XlGtX+p/1GJ0bbDHHxiDCE1Qh3kgabWZ9/Ear1bHS1QdrBXFykxDwREwlXvKUYNskzkcrr7lR7F2+OsGsY9mYmIpOHlkcZ0Sw84qwBGcAsOE+eivu1uNLkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ky1E9bM5; arc=none smtp.client-ip=52.42.203.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1790630288; c=relaxed/simple;
+	bh=7M7fJ5FstXWzL5H1GQ2KodG1IQeWAG9XJtykoxuneAQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NhkKnaUExG2z77jg3XatGltVxSka0tItv+Uo47V+/l5Em1bF3NLYEIQLw7X1xU5umkYzTXk0nLFFRSjKAr6Wo2y5d0T49wAjnZMAGCeFWvZbD4cEphb1wuVLpxclilxxqy+x/yjU9eMvP4UnMjmvEOOaDKurAXPcilAReLr+Xg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dB9H5IKe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ky1E9bM5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1790629558; x=1822165558;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=tNvKZbvCsCLtftmndSEfAYbnBNeVdMmjscu91WBu6mY=;
-  b=ky1E9bM5d17K+Xmau6PkP8Ti5VJDP5xatiR+mAVj+DW/J2hpcL2SeAw0
-   QI2xyImbNllu5DZAPedwIbU1U0OO11VIhMTZVcL5btycrqGRXi0IZeunf
-   ObWRYFLCB0A2D1nys92S3UMqQHahyZS28k7i+ctodjmhHiJ7rAnwUPi4K
-   /deicXgMn3lh0nTAEEgWHAo7A+nJrWAWnde5x7GC6qXfh77txfvkfax/d
-   oPpLwv4/0lyAq/VFNt5nZiKKwirZqxfVx87KXKxYQUMyCul2gQq5K0RvE
-   SRdYP+4P/G7Sb8Pbe+euKwSUJd6V0HbqedYaOXmD31hfOX4k8XpfJvEjc
-   Q==;
-X-CSE-ConnectionGUID: 5pmLN4V2R+G43Ca+EuE9Fw==
-X-CSE-MsgGUID: qj+ylq7qRTGk3cBUw90ouQ==
-X-IronPort-AV: E=Sophos;i="6.27,129,1787011200"; 
-   d="scan'208";a="29899893"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 21:05:58 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:10223]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.18:2525] with esmtp (Farcaster)
- id 106b90de-cb53-4848-b400-37e7ebe7ecb4; Mon, 28 Sep 2026 21:05:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 106b90de-cb53-4848-b400-37e7ebe7ecb4
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Mon, 28 Sep 2026 21:05:57 +0000
-Received: from dev-dsk-hagan-1f-c6b5e25f.us-east-1.amazon.com (172.19.159.5)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Mon, 28 Sep 2026 21:05:56 +0000
-From: "Craig I. Hagan" <hagan@amazon.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Fabio Sabai
-	<sabfabio@amazon.com>, Matt Vollrath <tactii@gmail.com>
-Subject: [PATCH iwl-net v3] e1000e: restore jumbo config after DMoff exit
-Date: Mon, 28 Sep 2026 21:05:52 +0000
-Message-ID: <20260928210552.13266-1-hagan@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b6db5335-cb5c-4a91-b823-1a114fce75a1@gmail.com>
-References: <b6db5335-cb5c-4a91-b823-1a114fce75a1@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dB9H5IKe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC891F000FF;
+	Mon, 28 Sep 2026 21:18:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790630286;
+	bh=TFPWYRQoyz6NWOuEze9ht0jM/GEuJCUXxLhM2GrLzxU=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=dB9H5IKeAnra4gl9EZU9Ss3vj8CAYtRSkGFQHsZtDA1K0cSG3Mep+RsQViwoNTU/8
+	 AtSgEppgX+Den+KR9JprebA9MVJKryIiZw3CmG9J8iBAoT8KcqHUoJ7agr1ljceRiX
+	 eX+/vZGHJUOzzphPFIhYp6TaVsoW7FTgH9vPuOGQyL8PYKvqj6Sqyx0Z9WUve+rS+U
+	 EyXPeYO1z4NcfAbuFfrO8HGJUJAyeH865jo9HH37/Vu7yObS5YMyGNWpe9loDcVXqc
+	 epBNHVF6RboR3plEO4+q4fu8WJCJQhEClGWJhBAAz7SpTLj2Ihc3hROZCXpVgxaCrf
+	 N8362+EWdbmiA==
+Message-ID: <4278a970-2957-4387-8f20-604ae4ae97e9@kernel.org>
+Date: Mon, 28 Sep 2026 23:17:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next 5/5] selftests: mptcp: convert iptables to
+ nftables for mptcp_join.sh
+Content-Language: fr
+From: Matthieu Baerts <matttbe@kernel.org>
+To: netdev-bot+sashiko@kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ quanyeyang@proton.me
+References: <20260926-net-next-mptcp-misc-feat-7-4-v1-5-67af4ab37406@kernel.org>
+ <179058242453.3145.1450534124183352369@kernel.org>
+ <deb5e3b3-d1d7-4d1e-8bb6-95050769d656@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <deb5e3b3-d1d7-4d1e-8bb6-95050769d656@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWC003.ant.amazon.com (10.13.139.231) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On an I219 (pch_spt+) at jumbo MTU, after a link partner reset (e.g. a
-switch reboot) the interface can come back up unable to pass traffic until
-it is manually reset. Observed on I219-LM (8086:15b7) at MTU 9000.
+On 28/09/2026 13:24, Matthieu Baerts wrote:
+> Hello,
+> 
+> On 28/09/2026 10:00, netdev-bot+sashiko@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 2 potential
+>> issue(s) to consider.
+>>
+>> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+>>
+>> If you believe none of the issues are legitimate, please reply to each
+>> issue of Medium severity or higher and explain why the AI is wrong.
+> 
+> TL;DR: It looks like there are issues with NFTables, but no new version
+> needed here for these MPTCP patches.
+> 
+>> If any of them are legitimate and you plan to respin, please let patchwork
+>> know by including "pw-bot: cr" as a separate line at the end of your reply
+>> (one such reply per series is enough).
+>>
+>> - [Medium] In endpoint_tests()
+>>   (tools/testing/selftests/net/mptcp/mptcp_join.sh), the new rule `tcp…
+>> - [Low] The patch removes CONFIG_NFT_COMPAT from
+>>   tools/testing/selftests/net/mptcp/config, "since we don't need it now".
+>>
+>> --
+>>
+>> selftests: mptcp: convert iptables to nftables for mptcp_join.sh
+>>
+>> This converts the iptables/ip6tables rules in mptcp_join.sh to nftables.
+>> It keeps the same table and chain names and adds init_nftables() to set
+>> up the tables only when a test needs them. The cBPF bytecode that matched
+>> the ADD_ADDR and RM_ADDR suboptions is replaced with "tcp option mptcp
+>> subtype" matching. In the config fragment, CONFIG_NFT_COMPAT is swapped
+>> for the nft modules that are now needed.
+> 
+> (...)
+> 
+>>> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+>>> index 18ce7136a2b0e..b16e24418e737 100755
+>>> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
+>>> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+>>
+>> [ ... ]
+>>
+>>> @@ -4402,12 +4372,10 @@ endpoint_tests()
+>>>  
+>>>  		# To make sure RM_ADDR are sent over a different subflow, but
+>>>  		# allow the rest to quickly and cleanly close the subflow
+>>> -		local ipt=1
+>>> -		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
+>>> -			-p tcp -m tcp --tcp-option 30 \
+>>> -			-m bpf --bytecode \
+>>> -			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
+>>> -			-j DROP || ipt=0
+>>> +		local nft=1
+>>> +		ip netns exec "${ns2}" nft insert rule ip filter OUTPUT \
+>>> +			ip saddr 10.0.1.2 meta l4proto tcp \
+>>> +			tcp option mptcp subtype remove-addr drop || nft=0
+>>
+>> [Severity: Medium]
+>> Can this rule ever match an RM_ADDR packet on an established connection?
+>>
+>> nft_exthdr_tcp_eval() stops at the first TCP option whose kind matches
+>> (30 for MPTCP). The subtype check therefore only ever sees the first
+>> MPTCP suboption:
+>>
+>> net/netfilter/nft_exthdr.c:nft_exthdr_tcp_eval() {
+>>     ...
+>> 	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
+>> 		optl = optlen(opt, i);
+>>
+>> 		if (priv->type != opt[i])
+>> 			continue;
+>> 		...
+>> 		return;
+>> 	}
+>>     ...
+>> }
+> 
+> Indeed, the RM_ADDR will be added in a second MPTCP option. It looks
+> like Netfilter doesn't handle that case. But that seems to be an issue
+> on the Netfilter side, rather than with the command that should work. I
+> will follow up with Netfilter devs. If a fix cannot be added on their
+> side, I will change the nft command to look at a specific offset.
+> 
+> Note that the command here is just to check there is no RM_ADDR sent on
+> the wrong side: it shouldn't catch any packets here anyway.
 
-When the MAC exits the DMoff state on link-up, the watchdog resets only
-the PHY. A bare PHY reset does not re-run the jumbo-frame workaround
-(e1000_lv_jumbo_workaround_ich8lan), so the jumbo configuration is left
-unapplied and traffic stalls. This was seen with NIC runtime PM disabled;
-if runtime PM were enabled, the device should go through a full reset on
-resume, avoiding this issue.
+After a discussion with Netfilter devs, it looks like a fix will not be
+easy to have. Yet, I wonder if it wouldn't be better to apply this patch
+like that (it doesn't break things), and have an explicit follow-up/fix
+to document this issue somehow.
 
-Request a full reset (FLAG_RESTART_NOW) instead of the bare PHY reset when
-the MAC exits DMoff, so the normal reset path re-applies the jumbo-frame
-configuration.
+@Hangbin: do you plan to look at a fix for that? I guess a raw payload
+looking at the same fields as what the previous cBPF rule was doing
+would be enough.
 
-Fixes: def4ec6dce39 ("e1000e: PCIm function state support")
-Cc: stable@vger.kernel.org
-Reported-by: Fabio Sabai <sabfabio@amazon.com>
-Closes: https://github.com/systemd/systemd/issues/25925
-Suggested-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Matt Vollrath <tactii@gmail.com>
-Tested-by: Matt Vollrath <tactii@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Craig I. Hagan <hagan@amazon.com>
----
-v3: Correct the Fixes: tag to def4ec6dce39 ("e1000e: PCIm function
-    state support"), which introduced the DMoff-exit bare PHY reset;
-    2e7256f12cdb only added a pre-condition. This lets stable reach
-    the affected trees (v5.3+, including 5.4/5.10). Add Reviewed-by/
-    Tested-by from Matt Vollrath.
-v2: Rework per review: request a full reset on DMoff exit so the
-    jumbo-frame workaround is re-applied (root cause identified by
-    Matt Vollrath); drop the diagnostic e_info. v1:
-    https://lore.kernel.org/netdev/20260923235832.473-1-hagan@amazon.com/
+Don't hesitate to fix the "low" priority comments as well.
 
- drivers/net/ethernet/intel/e1000e/netdev.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+https://lore.kernel.org/all/20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406@kernel.org/T/#u
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab3..df7da86a8 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -5264,9 +5264,11 @@ static void e1000_watchdog_task(struct work_struct *work)
- 					usleep_range(10000, 20000);
- 					pcim_state = er32(STATUS);
- 
--					/* Checking if MAC exited DMoff state */
--					if (!(pcim_state & E1000_STATUS_PCIM_STATE))
--						e1000_phy_hw_reset(&adapter->hw);
-+					/* MAC exited DMoff; do a full reset. */
-+					if (!(pcim_state & E1000_STATUS_PCIM_STATE)) {
-+						adapter->flags |= FLAG_RESTART_NOW;
-+						goto link_up;
-+					}
- 				}
- 			}
- 
+Cheers,
+Matt
 -- 
-2.47.3
+Sponsored by the NGI0 Core fund.
 
