@@ -1,203 +1,167 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BBC36A341
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498F5440655
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580216; cv=none; b=J76rOy+p/H4q+Q8pNkkxk+LWmBSfVDUdW6wYNP0Hywb+rYBKLvYUlkO03ciMO0qvSvWbTuHKu6qMynvGtqGzY2ezy2lMRITUrgMtP04Sg3gwmx5r1yhcxXeemmAAojSbDCJZcmXKyj5bX7H13Vql6ewMJVRschtIuIdojj/INjs=
+	t=1790580254; cv=none; b=GTPh1TYjQMLxX9ej/z+YtlmUS6jZDuAyEHS2tPtEurRvSVDPoBkVZcpogkHzgZ/7KNcbn5syPuQqhNQZFhcaFiUzyDO1zJihUGsFu99pvElcPSq1PFM9RLJAFUM+SbuRFC8XZmHXP0aIyv6JEw3dsmOiFO3o7Swau9HitaP+6Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580216; c=relaxed/simple;
-	bh=KYZFP0gPWy/Wd7obFLKDxyqHNqvG5d6OlBTK+GoIZAw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HFbI5QKq4s0SMFu1woFHBnpNRZ0omwHLMjumMsdgudW9UBJ/5wBVjdOoE0f1WOUOiaQWV0WDb2p5fq0TK4Ce3NNldNNrfiwgI2Rz1WhOqzc7mdLrfIEHiezB7BMfiqUKDdFpPY9+v+RTfBSzr1SN7a9JVim0Qf/vAT937XVYae4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ehfCuvvW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dWCf3weT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790580254; c=relaxed/simple;
+	bh=XqL2HCd0UPofeqYeB/BZt1wok8dT8aPuwMtTYW3NGVs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=qfIETbsomdQw8qqjJfWtNOFcfoC4TzvWvJDVWkvw8wg+i1zBQj7xOdDjCB6on35vNi5GfJ+jYSuJ+9qxlVMg1AY9Kh1JApfDf61Epwjp7AuUtRw+WmMrN8ZbuBQukpA8VNPiRf3xHyuPpp8IMSliQ3kLE6ZUqjvGJRTG3LBPS0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IcbDtB+Z; arc=none smtp.client-ip=74.125.228.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ehfCuvvW";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dWCf3weT"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68S6eQN3718408
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:23:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=26JY99h+pS0QjWl2fYV2iX
-	kQch2O4CTOJVLN00yVygc=; b=ehfCuvvWwkztX8U2y/h2lcCK0LFh9sRldBMJmT
-	u+ZWZlwWaodsuraqN76fMI4lRyto/YRhzzFsB7dY/01Y+RXw/RRxm1hHMc2qIVWV
-	gYOLAWBDmKNLqB2+RfX0oEyLSVOaq25rMRRb/o0Mo5DfUGF+T2SVsdYqLOKhxkIe
-	JWxtpl2D/mNbJVHH2rGrVqDkiusC1CGR5o+to9y4JcErXuwjb3oP8lQuc0lQoB5E
-	yP1NsgauKkJHi13ekKqdJ67szPN/du2c28a0usySZHtEolCDN/0/NSB5qobqaoW+
-	32cGfut3LUN/+JLp4BB3wZfjqPReBCLSGHVMQDkmBH4LuYXg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gx526n3d6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:23:34 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93c599e3d3bso375482885a.2
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:23:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IcbDtB+Z"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2afd63c3e0so231681466b.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:24:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790580214; x=1791185014; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=26JY99h+pS0QjWl2fYV2iXkQch2O4CTOJVLN00yVygc=;
-        b=dWCf3weTdhJuu7WAEjF3RcizY+ki5/Nm01Ph/e6sjeP/ZaB3bd7spOXSB53N2jQXz6
-         QQpdtBAb2ME3YhJeF7dIXD7+u1zB54lskqGRrAfNfD33+cGbxrN/sZoA+N7D9wg4PG/+
-         5ZKTUPto9AJ79LKmHIkFGh4MMQ7mA/iM9i4hrm3WACT35VGtmqjlSq/uTS6LkRpwkZpd
-         zpL9A34/oZPEfFD0uprWoNOLd8jROY1uQbwCzKdBeYeLQTPjEpFgXthkJaOZJixOB1Wh
-         0VoR6lEDOOgfdAlqI5MWag2snLZtXcVyvaF1Hj7X3eWCXBIBA+3rMbdNCcGpe0GtEQhb
-         NVqQ==
+        d=gmail.com; s=20251104; t=1790580251; x=1791185051; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xoV67SdNy1ziTa8aJ6OVJtQuFKSbE7nYyY+jBoK/+ew=;
+        b=IcbDtB+ZP3p96Vy5AIzAjFJFaAL0u77TBp3yUmxK/UMxxYGfPfyittipcDov0bC8Qr
+         5AmYM9d038iq0eRqCS9Y0HKbTS1Dy0Ht6CW09m81AiTP1cLoJpfrnUDRtk320HkEyD/Z
+         gf12SDWG77uKwmpt4vDuQUbunFy+euLCy60hzdVGAZyMLtbieOqY36DEdPDLMEQYCyO3
+         2duMfvrTlR7NV/O7R1cjaZ6RazvxHBhpRjCSWzVuEo5qeQVsq73WxT7yup+KoNNX4NyP
+         nY/wbktvSx+rTFGq5W2ww9hxNJRswWhIVNT+YDXVfK4oxe0+G7Rm+OWio0hKuIEhx0T+
+         +o/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790580214; x=1791185014;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=26JY99h+pS0QjWl2fYV2iXkQch2O4CTOJVLN00yVygc=;
-        b=SZqIv+ctjl1YiXmJUJUYn65EqzWFiQntBlnIAPDsTVyuWU08gnjLbt1jyi8hGgWPF6
-         N2vLO4N3Ad4IQuNCjvMONV5wxG0rQEjjP6hfeTy5nb9YKm84IwDm+hv6fuQU5cUWhBoO
-         IKj2w1xdwml4C8WyakwzK96wA0USPsFsvc4UwY67uXnjOe5UdJefHO8ujqw2BmiFJt3m
-         r61+KHIDAxZlKZZsYAyIYcF10FXi6BO1ZFuFBvcVbqULJDCi6yn+zIr8yhQiUTYpGzYL
-         hAFNOVTBYotrTU2NbJ0zfd6qaSJoSYzDFiTXfxjW19DbBzWnkm+C9vdz9BAJX3PL5X7W
-         Hv7A==
-X-Gm-Message-State: AFuF++mIzKaTIQ7Ycv8oPtssAXG04CgboIa5p1rHCBdUWkqpMiFjedyo
-	xqSkRl7sXyxRNHuagxLpMG6g1cjWI0/DUnGefWVQlvn5ySZECPNswVFYhz5E9IvDSwLs9OMrmQw
-	Fo/rlr/OHlv6ALoAOODdT+6iZIQIfn2xnGgzUpG9lL6CKteOVfNTb4MDaMfQ=
-X-Gm-Gg: AYBFou0PPCUvsxXilzasDb3GbrSvcNa6Tzd4ceM9Qb9y8Tv4tJDCTsKXLCVEjcm9o2r
-	e8vxk9wSkZkTbEbbYElI24QN/048e0yqGWrO4UuDY6tLJilFOurIaTyqH+ctS6orSYaBn7bmsit
-	AMJFU094OlvGCym434VViKFlFXELu+lUZ8HCJDHdk84+VZ5R7+ozGTGBEPbOR+xxG5gj+nsXWvh
-	HKDUaofvZ5M8hXc5az+5Cvq4vaEa9HTC9a+pgIogxqH0TnN3Z4tuGtWuMcb9EWKm8Xeu7ikv25E
-	LVfsOZri7y8LtYwpCVYKKKaTF0wlm/32qkPzA5r6W3FY/zE4ebwEFdpf7KCnyX4MBf6mEd4wVl0
-	uwfB6xFTAesvjSQ==
-X-Received: by 2002:a05:620a:4408:b0:936:dbd7:fcb3 with SMTP id af79cd13be357-93c43cfd229mr1943777385a.21.1790580213728;
-        Mon, 28 Sep 2026 00:23:33 -0700 (PDT)
-X-Received: by 2002:a05:620a:4408:b0:936:dbd7:fcb3 with SMTP id af79cd13be357-93c43cfd229mr1943771785a.21.1790580213090;
-        Mon, 28 Sep 2026 00:23:33 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fee6ced69sm165493075e9.0.2026.09.28.00.23.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 00:23:32 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 28 Sep 2026 09:23:11 +0200
-Subject: [PATCH net v3] net: mvneta: clear XDP pfmemalloc flag between
- frames
+        d=1e100.net; s=20260707; t=1790580251; x=1791185051;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xoV67SdNy1ziTa8aJ6OVJtQuFKSbE7nYyY+jBoK/+ew=;
+        b=HeL8JEkAud7xjVjQtYc56QH0ZreJL9fu40gMLffCSRsfqdoykirPdCi4cJJ9ErAsYr
+         hubOxRxiMgyD5kr5Av/lReccDSfIQE4qPds0dvDSKw7d6iq94UD7Q8dx89Xp1h8GpPiL
+         0RX8MW/XXPzOOe6U+d8+T472MpegxxGSvvfJErpnMc4a+/2s7u60Ti8q4ArawLhayxMr
+         Qcel/CTD6j7UOQ+TehlCTkcmLDRHjbmyaJD/VlbH0EDGAfEbHuLGSpMuZv1bbqkVSRZv
+         9/1dTllao8ZDh+h9U5idJyc8fbyGg163yx+xFwflp+e9Z94t3vUgQnuPT5zuyQ1uolm3
+         /xVg==
+X-Forwarded-Encrypted: i=1; AKwUvBwOe8CO6ypBkIesxJODvr8lAhzw7WNUVV9YEXOHQ5VS6YkMimesKNK2/Y1PH8oRDKyVFMFHkhQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++ly5XWG7n8dHDQuelQ8NhV6nVcuZ4Qa7zYg6TV0XhZGh444+/bc
+	iHy+AlVKjd+15tWwVOTJ+oiJqB+eE1nZWTv8+2YeUCStITv5ZDu9PpmPOVXTeg==
+X-Gm-Gg: AYBFou1ySFGegQ6po1DBrRIkL7tJcY9J7GMpoRE+kTVpMqlhV+/LYQwhC6pOfsKBLK9
+	fiR3KrgckF+JtkDhAEwkk3a4OoNQG985PwxXco9OsRGNjQrea6cxLt5fxe+gEr1Hg7lqSlOKwKw
+	wIVlAR1YELRuQ9A76LWZVybXhdjmCPQiTjmnDE35uJMrsyhBgy4Ijvf3qbUyEF3UnE88zVMLs4/
+	rLXixbyeMTdkdPkLsVD6X5N+QRYTVU3HidUeIwzigxjSJa+9Va4KzZPnguvVnRheB0ypn4TvF1V
+	dcYxhtXL5GLCKSz+H9MvXkwtn1BtO+ldCDwl46HCA8Vrlb9pe4HvsRAOKyHHxB8soBrH3QoqEmY
+	wMjzqzv7DvC3P5BpAwY3EgqctBcMCbkjNWWq57BmSrLbnxt3FS22qI+5hMMVrNVC+n3hZZdYZq3
+	6dF985juLzux8db8yDH+lDUl6BPoTF7OFYcVYNufL6UtmNRGGUZr+/dOwIDuHrCGQh3TG07Er0B
+	1hxvaOe46D6HgsV3nKvnYChREBwz4H2JZefvM46LVB1lot+4foz0fRFZbUYYq3Bws898JkaKA4c
+	szbFU0xqqcoevNGtBU74dua0gAJjw+o++0NeV4E0QnTETJ4OkCXHM3BRPAwRELDtuZTgzvuzx+v
+	2tJLyzQD0+8+KEBJuPDLdF3Fw
+X-Received: by 2002:a05:6938:a085:20b0:c2a:fd39:f23b with SMTP id a640c23a62f3a-c2afd39f9c8mr338499466b.24.1790580251224;
+        Mon, 28 Sep 2026 00:24:11 -0700 (PDT)
+Received: from [192.168.0.2] (dslb-092-075-058-142.092.075.pools.vodafone-ip.de. [92.75.58.142])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2de104355fsm68983866b.19.2026.09.28.00.24.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 00:24:10 -0700 (PDT)
+Message-ID: <36af3503-48c7-4518-946c-84e2d7ff49fd@gmail.com>
+Date: Mon, 28 Sep 2026 09:24:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] atlantic: resume from S3 fails with -ENOMEM in
+ aq_ring_alloc(), leaves unusable netdev
+To: Stephan Hauser <kernel.org@s.arstneio.ch>, netdev@vger.kernel.org,
+ sukhdeeps@marvell.com
+References: <b382cde0-7a2f-4251-8b9c-6763c3fe4cad@s.arstneio.ch>
+Content-Language: en-US
+From: Jonas Gorski <jonas.gorski@gmail.com>
+In-Reply-To: <b382cde0-7a2f-4251-8b9c-6763c3fe4cad@s.arstneio.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-mvneta-xdp-clear-frag-fix-v3-1-af4a51499eaf@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NwQqDMAwG4FcZPS9iK9Z1p73H2CHWVAtqXeuKQ
- 3z3FXfZYXgJ/An/l5UF8pYCu55W5inaYN2YQnE+Md3h2BLYJmUmciFzxRUMcaQZYWkm0D2hB+O
- xBWMXqFBLxYnLUtUs9SdPab3bd5ZK7JGWnQ2z8+/9X+T76UuL/ICOHDg0FRlsSBtVqpsLIXu+s
- NduGLI0djyKX7A4AkUChbpIVWBFKOs/4LZtH8Hzdf4fAQAA
-X-Change-ID: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Toke Hoiland-Jorgensen <toke@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=VvS2kO2n c=1 sm=1 tr=0 ts=6aba15f6 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Bf4p-39G4bmrPmVIT4wA:9
- a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: i9HVDxJandlMpQoXbIfVp_FfuaAE3mBQ
-X-Proofpoint-ORIG-GUID: i9HVDxJandlMpQoXbIfVp_FfuaAE3mBQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDAyOSBTYWx0ZWRfX8HmS27DrRoJt
- mkH00nDq41ZjmHOe3TvnW759vB3/Zb14WGuKtnOh6QnmlWl5AN1u26WxJMUV/uvH74ZWPCdIz7e
- Xjdfk9r4FQ6Tq1jHmL/Lge7srATe0yhWj16VEWrRlHaqCmEFp5EfOGbEzxgu19wOL97utlcCIEI
- hTRGTdEgO1FejIu7cIRSf2+Q4FndpQ2pQh7padBwyAXpOCGAzA06TNtrOrrRDPWjrkTNP6jjJI/
- JqrfFBaRhOrJ8TCIuNOR4wkVLePzs7eH6mF+kc9f7OmFRgFfzOVmNoWXj+uGkLu5+l+H1l+fj/P
- QFfOUEDcJ17zmKma3hAtkHTdWLkEEPogWIjZM4CLJYTuTRkft/NE0v6zUpoUZsdvKB7VWjx9jgj
- XinSd2dkxKK5fC+wD9xOD1bQGJc5bKlKAGbhUopfRNdR/Iau0yxq08CqtxoTr9eUd8waIwHIvUn
- jSRvMTDzmVPi8f2aErA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDAyOSBTYWx0ZWRfX2RfEbuWcAsFl
- 2fkiPkGgSBws92AHnP26XHBZYHAWC0GyAgGSZhAWCFwpSYMktFdSVc0YzuZUzXvT7rmlJ7Am7xK
- /AjQYK8pQyu+TS+xPJ2ZWzvO+fxE4Gc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-26_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280029
 
-mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
-xdp_buff when a fragment page is a pfmemalloc one (page under memory
-pressure). The xdp_buff is reused for the next frame, but only the
-XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
-bit leaked from one frame into the following ones. mvneta_swbm_build_skb()
-propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_info(),
-so the skb of a subsequent fragmented frame could be wrongly marked as
-pfmemalloc even if none of its pages are under pressure.
+Hi,
 
-Clear all the xdp_buff flags in mvneta_swbm_rx_frame(), which is invoked
-for each new frame, instead of just the XDP_FLAGS_HAS_FRAGS bit.
+On 26/09/2026 21:49, Stephan Hauser wrote:
+> Hi,
+> 
+> The atlantic driver intermittently fails to resume an AQC107 from suspend-to-RAM.
+> aq_nic_init() reallocates its per-ring software buffer arrays from the PM resume
+> path, where the PM core has restricted allocations to GFP_NOIO. With the default
+> ring sizes these are order-5 and order-6 requests (128 KiB and 256 KiB), which
+> cannot reliably be satisfied in a context that can neither reclaim, compact, nor
+> dip into reserves.
+> 
+> Resume then returns -ENOMEM and the device is left half-initialised: the netdev
+> still exists and is still marked IFF_UP, but has no rings and no vectors. It
+> passes no traffic, DHCP never completes, and bringing the link down hangs.
+> 
+> I have 3 occurrences in 60 suspend/resume cycles (5%) over 5.5 weeks of journal,
+> across kernels 7.1.4 and 7.2.2. What makes this worth reporting rather than
+> filing under "memory was tight": the three failures have three *different*
+> proximate causes in the allocator, detailed below. The allocation is fragile in
+> several independent ways at once, which is why no amount of tuning fixes it.
+> 
+> Two distinct problems:
+> 
+>   1. A >PAGE_ALLOC_COSTLY_ORDER kmalloc() on the resume path, for memory that
+>      never needs to be physically contiguous.
+>   2. atl_resume_common() does not unwind when aq_nic_init() fails, so an
+>      allocation failure is converted into a wedged interface.
+> 
+> 
+> Disclosure
+> ----------
+> 
+> The analysis in this report, and the text of the report itself, were produced
+> with the assistance of Claude (Anthropic). Please weigh it accordingly.
+> 
+> What is directly evidenced: the hardware is real and in front of me, and every
+> log line, zone dump and free-page histogram quoted below is verbatim from my
+> journal. The failure counts come from scanning all boots in that journal.
+> 
+> What is inference rather than measurement, and where I would welcome a second
+> opinion:
+> 
+>   - The 64-byte element size is derived from the two reported allocation
+>     orders, not read out of the source.
+>   - The TX-before-RX ordering in aq_vec_ring_alloc(), and the claim that
+>     aq_nic_init() aborts on first failure, are inferred from the backtrace and
+>     from only ever seeing a single warning per event.
+>   - The ZONE_DMA32 lowmem_reserve arithmetic in case 3 is hand-computed from
+>     the zone dump.
+>   - The aq_nic_stop() attribution for the link-down hang is a guess; I say so
+>     again where it appears.
+>   - The suggested fixes were not compiled or tested, and were written without
+>     the source tree to hand. Treat them as a direction, not a patch.
+> 
+> I have read the whole thing and stand behind reporting it, but I have not
+> personally verified the driver internals against the code.
+> 
+> 
+> System
+> ------
+> 
+>   Kernel:    7.1.4 and 7.2.2 (also running 7.2.7), x86_64, PREEMPT(lazy)
+>   Hardware:  Micro-Star International Co., Ltd. MEG X570 UNIFY (MS-7C35),
+>              BIOS A.80 01/22/2021
+>   NIC:       Aquantia AQC107 NBase-T/IEEE 802.3an [Atlantic 10G] (rev 02)
+>              PCI 0000:24:00.0, [1d6a:07b1], subsystem [1d6a:0001]
+>   Driver:    atlantic, firmware-version 3.1.100
+>   Rings:     rx 2048 / tx 4096 (driver defaults; maximum 8184), 8 vectors
+>   Memory:    64 GB, no swap configured
+This is also happening to me, at least since 6.18 (where I first noticed it)
+with an AQC113 [1d6a:04c0 / sub 1043:889a]. Currently running 7.2(.4).
 
-Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info utility routine")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
-Changes in v3:
-- Rename xdp_buff_clear_flags() in xdp_reinit_buf().
-- Link to v2: https://lore.kernel.org/r/20260923-mvneta-xdp-clear-frag-fix-v2-1-298693a7ea6b@oss.qualcomm.com
+Looking at older boot logs I see the exact same allocation failures, then
+(later) hangs.
 
-Changes in v2:
-- Introduce xdp_buff_clear_flags() utility routine.
-- Link to v1: https://lore.kernel.org/r/20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com
----
- drivers/net/ethernet/marvell/mvneta.c | 2 +-
- include/net/xdp.h                     | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index c2b1098d8d1d..485af7e395ae 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -2340,7 +2340,7 @@ mvneta_swbm_rx_frame(struct mvneta_port *pp,
- 
- 	/* Prefetch header */
- 	prefetch(data);
--	xdp_buff_clear_frags_flag(xdp);
-+	xdp_reinit_buf(xdp);
- 	xdp_prepare_buff(xdp, data, pp->rx_offset_correction + MVNETA_MH_SIZE,
- 			 data_len, true);
- }
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index aa742f413c35..8d928eb73dc1 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -106,6 +106,11 @@ struct xdp_buff {
- 	};
- };
- 
-+static __always_inline void xdp_reinit_buf(struct xdp_buff *xdp)
-+{
-+	xdp->flags = 0;
-+}
-+
- static __always_inline bool xdp_buff_has_frags(const struct xdp_buff *xdp)
- {
- 	return !!(xdp->flags & XDP_FLAGS_HAS_FRAGS);
-
----
-base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
-change-id: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
+For me the hang often happens at suspend. I don't use the card as an uplink
+port, so most of the time it has no connection, and the issue only shows up
+when trying to tear down the interface on suspend after the allocation
+failed at the previous resume.
 
 Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-
+Jonas
