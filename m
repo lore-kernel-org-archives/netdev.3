@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905934503ED
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C548FF82
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790585460; cv=none; b=fp8NRq+C5Yt8qHlJMKrUeL/tck0xXogV63MRLLEY99rmSG2d/Rgs4a8fNWa4ZM15B4ol3lkQeESQBRAXt/oGkU1MCE6sx0pIkIuoplIdbi8npKkLXGZ/fBu3zFfQGYNrlyKRq9J5XUKUmFs4CXMZa9gnfWaBL0hACZd7N7Tz4u0=
+	t=1790585464; cv=none; b=VqdqFDy5/za+eHFp0kahaksfi4W1TgHXJmjz0floi4CnB21hTEi/ITy/KvO2RgWaOpTNYRElJsZKDP7ZRdTtsZrfaSqrpHbVsDAHUlge8UJImKELkVamAhhEUAoV/fsn9EULqjyehWtPixlbG3PfWGsZIjiQL5unVAnww5SnIo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790585460; c=relaxed/simple;
-	bh=x4m3IFNcdf/cGDYbNkKTXrFfeT/cAEdrTpQWrjEjSiM=;
+	s=arc-20240116; t=1790585464; c=relaxed/simple;
+	bh=cjCQN6vXNzSkai7l902An+M3DCrg55uEsY9fabF3IHc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SpyWazFK6zc6t3xUtW1zTLkRyyUun3YZz/7moAPYwH99w/XvQciRLYsrld+C0yzvWyerApWMjc3sPSlJQa6ilexp103Vs1vXc7Lybg2Q4ZcLm6NmXESPL4OeTXnnuG/ds9Vg62vR9fXoVkqXvpJJKP0v8Cjh3Ah4GhztrvwuDuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgPon4XF; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Y6TI66CgucBYvkkwPtLYxfd5XOwt2YK/8axTG7RqE514TGk7AoR69wfX5LFDk4TI+BMgPmL0pQgYqoihfOHshORk05h2B+XTjtrzEIlckT7yLLtZjcJZP/PA9I2h3Rnt19MnZ40irk1HHTlhNETH7ha3oBRr5y2MB2NeOEsAygI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrK7TN8n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgPon4XF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455331F00893;
-	Mon, 28 Sep 2026 08:50:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrK7TN8n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2371F00899;
+	Mon, 28 Sep 2026 08:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790585459;
-	bh=JGCoiyEQPgrt56gjIfjjwE6tIYvHy1NQoFaNsRvGMso=;
+	s=k20260515; t=1790585462;
+	bh=yUFgs5UunkX8+0xQ42E3JVGh+4yMdsGPqprv28m3SV0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PgPon4XF3fTmAKmseVF4mOtW4Bh16nG221OK+MaMW0XrhQGIKLrCxTjCo1GniRipN
-	 SuT8GYIvy+MbJfvnVhE1xFN43gMPDZybewfvY93ynt0n/EsSSj3/UrFHALC3QP9toJ
-	 19PM06XzC3vnX2HVVWir4RAJ/czTQMGkELmd39ADhH8yJYkpTFvtaiDLMayZsCOK36
-	 Yde1O6EG2Bgz2wDugOkWVm+/R08/sRRMCwZiiEOUrdgTasGZetphYNKe8q3poW0c7+
-	 R3vFrJvgTTIxCL0DHIvAhak5Vab7vOv3442nvuVbWonCSnleoBEh/7J86z7FJkcHzP
-	 PYYU8mvausbhQ==
+	b=jrK7TN8n1spXbIBtdONGqKeCaB5Q4j2lvZUBXqnr9lhA0OG96v8rP9Ig03nKFvD6f
+	 cKzl54Z1cYfFtpQglBW2Yd3lL8OWAfz3dhz7w2IiU7TRrE+IPb78RzLVno8r55Vdlj
+	 VS/G3WGlnKvt6S3JyG7e81v3BpW6APSIJvIymVtpZ3jzjTNaBVc+6BA0ITNPsrHOl/
+	 uq32c5CAi9dvAsugrYU/vpKJJFColoa4r6fxDHuKnElRlS+MK6pVame5KXGHPmZj6S
+	 GycM5S7Q8MJqgLQKAhNtUxwE230n9ADneJMAlfGcgcOfHzY5I/ruQJqBcfSYCVnhGw
+	 Pg7ivePBHmihA==
 From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 28 Sep 2026 10:50:33 +0200
-Subject: [PATCH net-next v2 07/11] net: ethernet: cortina: Synchronize RX
- fragments for the CPU
+Date: Mon, 28 Sep 2026 10:50:34 +0200
+Subject: [PATCH net-next v2 08/11] net: ethernet: cortina: Validate RX
+ fragment lengths
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-gemini-ethernet-fixes-3-v2-7-758a795d7a78@kernel.org>
+Message-Id: <20260928-gemini-ethernet-fixes-3-v2-8-758a795d7a78@kernel.org>
 References: <20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org>
 In-Reply-To: <20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -50,87 +50,91 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-Free queue pages use streaming DMA mappings with DMA_FROM_DEVICE. The RX
-path reads packet data after the device has filled a fragment without
-first transferring ownership of that range to the CPU.
+RX descriptor lengths are used to adjust the page offset and populate skb
+fragments without checking that the resulting range remains inside the
+posted free queue fragment. A zero-length descriptor is logged but is still
+appended.
 
-Synchronize each complete free queue fragment when its RX descriptor is
-claimed.
+The backing page is larger than the default 2 KiB DMA fragment, so checking
+only the page boundary would allow a malformed descriptor for the first
+half of a page to consume data from the sibling fragment. That fragment may
+still be owned by the device.
 
-Once all fragments have been claimed, tear down the full-page mapping with
-DMA_ATTR_SKIP_CPU_SYNC. Each range has already moved to the CPU domain, and
-another full-page synchronization could invalidate a sibling fragment
-already being consumed by the network stack.
-
-During queue teardown, synchronize only XArray entries still owned by the
-hardware before the skip-sync unmap. Claimed fragments may remain attached
-to skbs and must not be synchronized again.
+Reject a short initial fragment before applying NET_IP_ALIGN, reject frame
+length underflow and ranges extending beyond either the DMA fragment or the
+page, and drop zero-length fragments instead of adding them to the skb.
+Count these drops as receive and length errors.
 
 Assisted-by: LLM
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 385b78fd6653..d677d7431ab2 100644
+index d677d7431ab2..258bb44d5570 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -790,11 +790,15 @@ static struct page *geth_freeq_claim(struct gemini_ethernet *geth,
- 	if (!valid)
- 		goto err_unlock;
+@@ -1593,6 +1593,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+ 	unsigned short m = (1 << port->rxq_order) - 1;
+ 	struct gemini_ethernet *geth = port->geth;
++	unsigned int freeq_frag_len = 1 << geth->freeq_frag_order;
+ 	void __iomem *ptr_reg = port->rxq_rwptr;
+ 	unsigned int frag_nr = port->rx_frag_nr;
+ 	struct sk_buff *skb = port->rx_skb;
+@@ -1667,6 +1668,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 			if (!skb)
+ 				goto err_drop;
  
-+	dma_sync_single_range_for_cpu(geth->dev, page_mapping,
-+				      mapping - page_mapping, frag_len,
-+				      DMA_FROM_DEVICE);
- 	xa_erase(&geth->freeq_mappings, index);
- 	if (!--gpage->fragments) {
- 		slot = gpage - geth->freeq_pages;
--		dma_unmap_single(geth->dev, page_mapping, PAGE_SIZE,
--				 DMA_FROM_DEVICE);
-+		dma_unmap_single_attrs(geth->dev, page_mapping, PAGE_SIZE,
-+				       DMA_FROM_DEVICE,
-+				       DMA_ATTR_SKIP_CPU_SYNC);
- 		gpage->page = NULL;
- 		gpage->mapping = 0;
- 		__clear_bit(slot, geth->freeq_page_bitmap);
-@@ -1025,19 +1029,34 @@ static unsigned int geth_fill_freeq(struct gemini_ethernet *geth)
- 
- static void geth_freeq_release_pages(struct gemini_ethernet *geth)
- {
-+	unsigned int fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
-+	unsigned int frag_len = 1 << geth->freeq_frag_order;
- 	unsigned int pn;
- 
- 	for (pn = 0; pn < geth->num_freeq_pages; pn++) {
- 		struct gmac_queue_page *gpage;
-+		dma_addr_t mapping;
- 		struct page *page;
-+		unsigned int i;
- 
- 		gpage = &geth->freeq_pages[pn];
- 		if (!gpage->page)
- 			continue;
- 
- 		page = gpage->page;
--		dma_unmap_single(geth->dev, gpage->mapping, PAGE_SIZE,
--				 DMA_FROM_DEVICE);
-+		for (i = 0; i < (1 << fpp_order); i++) {
-+			mapping = gpage->mapping + i * frag_len;
-+			if (xa_load(&geth->freeq_mappings,
-+				    geth_freeq_mapping_index(geth, mapping)) != gpage)
-+				continue;
++			if (frag_len < NET_IP_ALIGN)
++				goto err_length;
 +
-+			dma_sync_single_range_for_cpu(geth->dev, gpage->mapping,
-+						      i * frag_len, frag_len,
-+						      DMA_FROM_DEVICE);
+ 			page_offs += NET_IP_ALIGN;
+ 			frag_len -= NET_IP_ALIGN;
+ 			frag_nr = 0;
+@@ -1675,15 +1679,26 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 			goto err_drop;
+ 		}
+ 
+-		if (word3.bits32 & EOF_BIT)
++		if (word3.bits32 & EOF_BIT) {
++			if (frame_len < skb->len)
++				goto err_length;
+ 			frag_len = frame_len - skb->len;
 +		}
-+		dma_unmap_single_attrs(geth->dev, gpage->mapping, PAGE_SIZE,
-+				       DMA_FROM_DEVICE,
-+				       DMA_ATTR_SKIP_CPU_SYNC);
- 		while (gpage->fragments) {
- 			put_page(page);
- 			gpage->fragments--;
+ 
+ 		/* append page frag to skb */
+ 		if (frag_nr == MAX_SKB_FRAGS)
+ 			goto err_drop;
++		if (frag_len > freeq_frag_len -
++			       (page_offs & (freeq_frag_len - 1)) ||
++		    frag_len > PAGE_SIZE - page_offs)
++			goto err_length;
+ 
+-		if (frag_len == 0 && net_ratelimit())
+-			netdev_err(netdev, "Received fragment with len = 0\n");
++		if (!frag_len) {
++			if (net_ratelimit())
++				netdev_err(netdev,
++					   "Received fragment with len = 0\n");
++			goto err_length;
++		}
+ 
+ 		skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
+ 		skb->len += frag_len;
+@@ -1698,6 +1713,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 		}
+ 		goto next_desc;
+ 
++err_length:
++		if (!dropping) {
++			port->stats.rx_errors++;
++			port->stats.rx_length_errors++;
++		}
+ err_drop:
+ 		if (skb) {
+ 			napi_free_frags(&port->napi);
 
 -- 
 2.55.0
