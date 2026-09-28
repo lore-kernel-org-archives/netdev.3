@@ -1,155 +1,115 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3894025228D;
-	Mon, 28 Sep 2026 12:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9DD28B4E2
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598938; cv=none; b=LrzdqZEj3XM8iT9RczEQI5hLxpUgwii3vdBoLfPkCR9i9qLsGhGFtsVxAnXTCkvYMnq3mzU51ljsV+OgE6BKWPwq9NURy7ZNA2BisfmB8ISqyOS7fbd3tmx28CpO5y0sz15Df4OoMPJAp7PW/JjBT05HZJbcuBYn55PIpJ8GJ8g=
+	t=1790599092; cv=none; b=ffzQBoQhKVzkcUaeLwTE3H3PQ95+bmh/MnGBCakM6fEeuyAEhZ+CU73y4JSWx9FB48iuPHzYHdhNIAtdbyZ+9cGd/NvcVQlQcFAeh3e6eHGzmp7eh09+2AxQNTScU1HeS/2pzCwDRa2iOQ1mOoQBwqR6m83xQRHkBaHUtEzwXjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598938; c=relaxed/simple;
-	bh=AAymeJ47wZJzijBjAjTeIOAL3/ew+7H0zqr/yz6O3Gc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OWKxVGlmS3fLu3FigqV+eHUi9HOIY0X76KbLq3bC/rourNrDA+OSrnpbGD9YtTQDkcIsV02sVPHDRgEbIsjKwmXpKbtE0S2Sf1C1OB9seu1FlTRbSYYiRyqIsanTkgVuIM6mQtRfJPgZH/ZbFfnptmt9j7IuSGYqbUyy71pgSXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=AWBllJTo; arc=none smtp.client-ip=220.197.31.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1790599092; c=relaxed/simple;
+	bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QqzyegkidIfGTx2Lj+AwQpY0504chIQynrx4ruvFOPjepe1w+IeHwgZiuvVT4bmP6Snkufe7vwqE4px4CkZri9F9JiHmJBE6SN9LarUuwOSpUAjIhb4dAsWOZdWUEdYrH7dejSp1aLDKZMRviiu0A47dEVwozgyXiycyaPEhMuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FTXlNY7Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ABYiVCN8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="AWBllJTo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zA
-	/NU+RNAgeD9BOrpSB6bKryvPeGYSvBJqFkKYtNmis=; b=AWBllJTokd4kPeZzb5
-	k8asaCq/kXPYcf0gWyyqx3rgebS7ek/aLQyFU4qvYPHa4KYZGnBpDaiTzfixQBxC
-	gBnsrmbfca7RnzFE7kUd3Fha2LdbifW4XMvxkP7slZWvenocYtFKLZwVqgX9gc+9
-	qdrZUuo5ipr93Zci/1ipXUAfw=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3P6HPXrpqTCkyAQ--.12557S2;
-	Mon, 28 Sep 2026 20:34:23 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] net: stmmac: do not keep the new TSO MSS cached on mapping failures
-Date: Mon, 28 Sep 2026 20:34:22 +0800
-Message-Id: <20260928123422.1698785-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FTXlNY7Y";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ABYiVCN8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790599090;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
+	b=FTXlNY7YmLadO8eIuA/7lionH5C/OVV6GERPAHfQE3JOchRSEaHSv0uijL7SVj7oZd4Cfd
+	68YuUI9PZWWqUb/kpH4JJpqCxRCMj/YztMYioTihA4cZKc2WazNdcLdPf6QbedXYe0B1Tj
+	UZykPbVaFQfj21MBDa+CEEVyQfR+GlQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-12_8P-KPN624DVDjqkfH0g-1; Mon, 28 Sep 2026 08:38:08 -0400
+X-MC-Unique: 12_8P-KPN624DVDjqkfH0g-1
+X-Mimecast-MFC-AGG-ID: 12_8P-KPN624DVDjqkfH0g_1790599088
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-486f9d150c3so1690705f8f.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790599087; x=1791203887; darn=vger.kernel.org;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
+        b=ABYiVCN8wAzIcARY91FF/qxdvK5ovWc3j2Rc4OdY2Vxv4AjkZHVl9ubSKEd3EZY0wh
+         K9wGP+Q9y11GxXTsHedoqEQ75GXUPzL97vArXGPG/3k1fr2reWZ9WoE6MZb+N8ekKZ2b
+         143Gl7g2k6JEgtLbA6Y2LWpFQyrDkQnrBU7vEtmLV2V/+BUOZtyH+OjRTYMndimT1orT
+         gEKKi5HLq0W4vvy6DUiIWLGof6/J4p22whgPJA7BvKUWAayH/LO1b0jkViumuiJGvPwX
+         K8FICdwd6sJGYVFpix4b3ASjDWTwG9zzvgiH6NyuntOUzC5ThOHRDZCQtyPwI7MLR2rs
+         LzIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790599087; x=1791203887;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
+        b=kCEKAnjlbpBpXJeghy8VzVzURVWuAccCIgSUo2Rheg7zIiIsY4dPoI9Ys8tvEtH/1h
+         S5zTcL/i0qBcSIZWhtL6F/jXUlj837sxkadUB2NnhDY+WnTrUlftO0760H5DcEoJjsZZ
+         k3VO4RL9YVzJbTWAiV0eyUhFCa0CqV6713WZKiaPiYqHA4smGrfmBL7xwt2rn9rGtyiB
+         xdFgw7IIe0DuSqhifcKgiGFP7H3VP659bKfmbdOR7wFFsALQ5XfWf53zTtUONnVQ7kDb
+         YDRxlm4JmgQ33eDKj8x96n+MvQGwEsG9Q/l3JVpIcILn+dQyD2MJsR9ozvefohBHZZ3y
+         YHvQ==
+X-Forwarded-Encrypted: i=1; AKwUvByC7RxgK/JBKyb7oQYxRmmr6qdfFVQJ9nDiSFzlmiYU2LKiaExjYHDxG/aLLeKIOT3PLwvnVNA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIH3G7FzTnh8kWdFD+Fg5aoqfr+nwnrKiCpPodEGSbt/p27G1NN
+	oYJBx/tYaq78mzDCmbanIj76rJmyK5CFGqIcShS8/mkJ9a1a11qiDTFWKdxPhnv4fntAWjEtozJ
+	b2qWJ8p86/quAeU20T4ZgN/l5sraPxwqYIQOBui43wRtQrchAF8f5RjAuBA==
+X-Gm-Gg: AYBFou3pWrg72LysXpCXmHU2/tp4pvvnBnA5EuGRdVwjdTpyV+E6kDxQ5gWk6ZylLjy
+	Xbo3cjHTWMvFZuRqe0fJsG9nQc06/BTfI522JdTQHw7TYCk+2BW0oAMuJbEaK9V2Hs6vNq0piav
+	D8gJq4gIRDZaggpuzvJCBSR/uDrsKlod0G4fHu2GFkRZyyLwEq7kC9UGoZcV+2+S8lzny5uc5BO
+	GSF1eIKNTwfr4dI7cHvw8HPiVnrqUd5bbe7PezNFU43O0eGcaA2HCstY37FqcRvggqmMZEhczcI
+	lMNbYqezsZUTDORYhMesS0DMQW+0S9ymG4hA3Ce9F5TeRRLsND6XSWKrqGUcz5Oey6lJygqp9VL
+	sah5OGTlMWA+GtS9988SE/x9522ccxcM=
+X-Received: by 2002:a5d:584a:0:b0:487:72f:fb42 with SMTP id ffacd0b85a97d-48871679eb5mr25760358f8f.14.1790599087569;
+        Mon, 28 Sep 2026 05:38:07 -0700 (PDT)
+X-Received: by 2002:a5d:584a:0:b0:487:72f:fb42 with SMTP id ffacd0b85a97d-48871679eb5mr25760323f8f.14.1790599087168;
+        Mon, 28 Sep 2026 05:38:07 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([24.151.142.216])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a84205esm26880704f8f.37.2026.09.28.05.38.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 05:38:06 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org,  houminxi@gmail.com,
+  netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
+  davem@davemloft.net,  edumazet@google.com,  pabeni@redhat.com,
+  horms@kernel.org,  shuah@kernel.org,  dev@openvswitch.org,
+  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP
+ flow key test over IPv6
+In-Reply-To: <20260924083601.651e11bd@kernel.org> (Jakub Kicinski's message of
+	"Thu, 24 Sep 2026 08:36:01 -0700")
+References: <20260918144647.2024095-2-houminxi@gmail.com>
+	<179008950943.2160803.15856491533624064435@kernel.org>
+	<f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+	<20260924083601.651e11bd@kernel.org>
+Date: Mon, 28 Sep 2026 08:37:54 -0400
+Message-ID: <f7tqzid8sbh.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P6HPXrpqTCkyAQ--.12557S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr17KFyUur4DJw43Aw13Arb_yoWrAF4rpF
-	W5Zws0k34kJr1Sqw48Cw48Xa4Fyayrtay5Cw1UK343Cwsxtr92grySgrWjg34UCFZ5Xr1S
-	9anxua43Cr4UJrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqA8U6mq6Xs9xjgAA3n
+Content-Type: text/plain
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Jakub Kicinski <kuba@kernel.org> writes:
 
-stmmac_tso_xmit() fills the MSS context descriptor and stores the new MSS
-in tx_q->mss right away, but the descriptor only gets its OWN bit much
-later, right before the frame is handed to the DMA. Every error path in
-between - the dma_map_single() of the linear part and the
-skb_frag_dma_map() of each fragment - returns with tx_q->mss already
-updated while the MAC is still programmed with the previous MSS.
+> On Wed, 23 Sep 2026 08:31:31 -0400 Aaron Conole wrote:
+>> I don't think either is needed for this series.
+>
+> Aaron, did you mean to ack this series? You (rightly) dismissed the AI
+> slop review, but no ack. Or there's something else that I'm missing?
 
-The context descriptor is now handled like the data descriptors are:
-tx_q->cur_tx is not advanced while it is being filled, so the slot stays
-where the next transmit fills it, and the error paths release it
-explicitly instead of leaving a descriptor the DMA will stop on in the
-middle of the ring. With the queue no longer wedged by that descriptor,
-the stale cached MSS is what remains: the next skb carrying the same
-gso_size compares equal to the cached value, no context descriptor is
-emitted, and the hardware segments the TCP stream with the MSS of an
-earlier frame, generating frames whose payload size does not match what
-the stack accounted for.
-
-Drop the cached value on those paths instead. Zero is what
-stmmac_reset_tx_queue() leaves behind, so the next TSO frame programs the
-context descriptor again.
-
-The store itself stays ahead of the mappings, as before, rather than
-moving next to the OWN bit: stmmac_tx_err() reinitialises the channel and
-clears tx_q->mss from the DMA interrupt handler, which takes no TX queue
-lock, so it can run in the middle of stmmac_tso_xmit(). Publishing the
-cache after the descriptor has been handed over would widen the window in
-which such a reset is overwritten with an MSS that the reinitialised
-channel was never programmed with.
-
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-v3:
-- Link: https://lore.kernel.org/netdev/20260922124408.645496-1-xiaolinkui@126.com/
-Changes in v4:
-- Drop the cached MSS on the mapping failure paths instead of publishing it
-  after the context descriptor has been given to the DMA. The deferred store
-  widened the window in which a stmmac_tx_err() from the DMA interrupt
-  handler, which takes no TX queue lock, is overwritten again with the new
-  MSS for a channel that was never programmed with it; zero cannot
-  republish anything, as it is what the reset itself leaves behind.
-  (Sashiko AI review)
-- Not carrying over the Acked-by from Lorenzo Bianconi, as the cache
-  handling changed again.
-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c    | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index af2d38a2bb3d..a20b2366f61a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4564,9 +4564,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 		stmmac_set_mss(priv, mss_desc, mss);
- 		tx_q->mss = mss;
--		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
--						priv->dma_conf.dma_tx_size);
--		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 	}
- 
- 	if (netif_msg_tx_queued(priv)) {
-@@ -4577,6 +4574,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	first_entry = tx_q->cur_tx;
-+	if (mss_desc)
-+		first_entry = STMMAC_NEXT_ENTRY(first_entry,
-+						priv->dma_conf.dma_tx_size);
- 	entry = first_entry;
- 
- 	WARN_ON(tx_q->tx_skbuff[entry]);
-@@ -4745,6 +4745,16 @@ error_dma_unmap:
- 						priv->dma_conf.dma_tx_size);
- 	}
- error:
-+	if (mss_desc) {
-+		/* The context descriptor never reached the DMA, so the MAC is
-+		 * still programmed with the previous MSS. Invalidate the cache
-+		 * instead of leaving it ahead of the hardware; zero is the
-+		 * value stmmac_reset_tx_queue() leaves behind.
-+		 */
-+		stmmac_release_tx_desc(priv, mss_desc, priv->descriptor_mode);
-+		tx_q->mss = 0;
-+	}
-+
- 	dev_err(priv->device, "Tx dma map failed\n");
- 	dev_kfree_skb(skb);
- 	priv->xstats.tx_dropped++;
--- 
-2.25.1
+I did, but didn't have access to email while attending a conference.
+Sending ACKs now.
 
