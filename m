@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2C548FF82
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40E14915B2
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790585464; cv=none; b=VqdqFDy5/za+eHFp0kahaksfi4W1TgHXJmjz0floi4CnB21hTEi/ITy/KvO2RgWaOpTNYRElJsZKDP7ZRdTtsZrfaSqrpHbVsDAHUlge8UJImKELkVamAhhEUAoV/fsn9EULqjyehWtPixlbG3PfWGsZIjiQL5unVAnww5SnIo4=
+	t=1790585466; cv=none; b=uudeJhM8rQKi7438jrxZF27laUOMAdFD92u/5/KfasyKI6+11YSlR0FsMJdmI35DgrIYqPK34wVViksfZPbeuM8KpXckEo4FsoLKTauivKSccIrl6k9nD/d5pp12bscIoR47lpJwP4fqLXIJuBk9UwttW3UvgrzkcarSypw3i20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790585464; c=relaxed/simple;
-	bh=cjCQN6vXNzSkai7l902An+M3DCrg55uEsY9fabF3IHc=;
+	s=arc-20240116; t=1790585466; c=relaxed/simple;
+	bh=sNIlgSlifep9ROXS/554Qy69xsjcueSdy0o5mKNGVPc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y6TI66CgucBYvkkwPtLYxfd5XOwt2YK/8axTG7RqE514TGk7AoR69wfX5LFDk4TI+BMgPmL0pQgYqoihfOHshORk05h2B+XTjtrzEIlckT7yLLtZjcJZP/PA9I2h3Rnt19MnZ40irk1HHTlhNETH7ha3oBRr5y2MB2NeOEsAygI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrK7TN8n; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=QYrKp51Nn+/vxMAtxV2ZxtgncmWScThrP0R3AUiuMrCUpUAUQTtfIaLfuubrPsbdwsE35/qcQPC0/FqjiTu2qOk5Ax1CDnwHb2e2hgk9Hg3WkNkO0DU8EvZVKvuVH3WDC3EXy9fIRCrSjJTLpWVEHrnz83EKShhyiA6r/dfgkTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gkhp2vM8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrK7TN8n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2371F00899;
-	Mon, 28 Sep 2026 08:50:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gkhp2vM8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55CE1F00898;
+	Mon, 28 Sep 2026 08:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790585462;
-	bh=yUFgs5UunkX8+0xQ42E3JVGh+4yMdsGPqprv28m3SV0=;
+	s=k20260515; t=1790585465;
+	bh=lRBqxHVfhe0eB2/rZl01xFaVlnTJLbF1KdkeOyjxlCs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jrK7TN8n1spXbIBtdONGqKeCaB5Q4j2lvZUBXqnr9lhA0OG96v8rP9Ig03nKFvD6f
-	 cKzl54Z1cYfFtpQglBW2Yd3lL8OWAfz3dhz7w2IiU7TRrE+IPb78RzLVno8r55Vdlj
-	 VS/G3WGlnKvt6S3JyG7e81v3BpW6APSIJvIymVtpZ3jzjTNaBVc+6BA0ITNPsrHOl/
-	 uq32c5CAi9dvAsugrYU/vpKJJFColoa4r6fxDHuKnElRlS+MK6pVame5KXGHPmZj6S
-	 GycM5S7Q8MJqgLQKAhNtUxwE230n9ADneJMAlfGcgcOfHzY5I/ruQJqBcfSYCVnhGw
-	 Pg7ivePBHmihA==
+	b=Gkhp2vM8YCarqZhhw5QfuaWOXgRFuEEumSulXJYRIsmudQtxLn4XXGAsnFwU9kiDf
+	 1UwRwfNfaji7vKOauu0+4RmAgKm799AHf7upHn5JAJLbIyMnF0UjHSAPV1FNulYjJ+
+	 69rsp75ctniNAuIVdHSxtBGw+ktVMvGXddM+Iv70KmAaSOSJPsM1sh2Z5cuUW7EM3Z
+	 B3+ekPLK65HLR3dT8kx9YzyvSL8FKPzA5/67v4R1+3Aq9Y/c20DKzd3+4NgNlK7gpA
+	 1QeP/tVh3QvsTid9rDzl4LaftzBTxLdhnJWoQHf2uLIivMQpcNRLhhhaCgxLOAjXXv
+	 SyY4hZgzR0ZsA==
 From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 28 Sep 2026 10:50:34 +0200
-Subject: [PATCH net-next v2 08/11] net: ethernet: cortina: Validate RX
- fragment lengths
+Date: Mon, 28 Sep 2026 10:50:35 +0200
+Subject: [PATCH net-next v2 09/11] net: ethernet: cortina: Release partial
+ RX frames on stop
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-gemini-ethernet-fixes-3-v2-8-758a795d7a78@kernel.org>
+Message-Id: <20260928-gemini-ethernet-fixes-3-v2-9-758a795d7a78@kernel.org>
 References: <20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org>
 In-Reply-To: <20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -50,91 +50,32 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-RX descriptor lengths are used to adjust the page offset and populate skb
-fragments without checking that the resulting range remains inside the
-posted free queue fragment. A zero-length descriptor is logged but is still
-appended.
+A NAPI poll can retain a partially assembled frame across invocations. The
+stop path clears that pointer without releasing its fragment references,
+leaking every page already attached to the frame.
 
-The backing page is larger than the default 2 KiB DMA fragment, so checking
-only the page boundary would allow a malformed descriptor for the first
-half of a page to consume data from the sibling fragment. That fragment may
-still be owned by the device.
-
-Reject a short initial fragment before applying NET_IP_ALIGN, reject frame
-length underflow and ranges extending beyond either the DMA fragment or the
-page, and drop zero-length fragments instead of adding them to the skb.
-Count these drops as receive and length errors.
+Free a pending fragment skb after disabling NAPI and before clearing the
+saved RX state.
 
 Assisted-by: LLM
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index d677d7431ab2..258bb44d5570 100644
+index 258bb44d5570..a7096690e4be 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1593,6 +1593,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	unsigned short m = (1 << port->rxq_order) - 1;
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned int freeq_frag_len = 1 << geth->freeq_frag_order;
- 	void __iomem *ptr_reg = port->rxq_rwptr;
- 	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
-@@ -1667,6 +1668,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
- 			if (!skb)
- 				goto err_drop;
- 
-+			if (frag_len < NET_IP_ALIGN)
-+				goto err_length;
-+
- 			page_offs += NET_IP_ALIGN;
- 			frag_len -= NET_IP_ALIGN;
- 			frag_nr = 0;
-@@ -1675,15 +1679,26 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
- 			goto err_drop;
- 		}
- 
--		if (word3.bits32 & EOF_BIT)
-+		if (word3.bits32 & EOF_BIT) {
-+			if (frame_len < skb->len)
-+				goto err_length;
- 			frag_len = frame_len - skb->len;
-+		}
- 
- 		/* append page frag to skb */
- 		if (frag_nr == MAX_SKB_FRAGS)
- 			goto err_drop;
-+		if (frag_len > freeq_frag_len -
-+			       (page_offs & (freeq_frag_len - 1)) ||
-+		    frag_len > PAGE_SIZE - page_offs)
-+			goto err_length;
- 
--		if (frag_len == 0 && net_ratelimit())
--			netdev_err(netdev, "Received fragment with len = 0\n");
-+		if (!frag_len) {
-+			if (net_ratelimit())
-+				netdev_err(netdev,
-+					   "Received fragment with len = 0\n");
-+			goto err_length;
-+		}
- 
- 		skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
- 		skb->len += frag_len;
-@@ -1698,6 +1713,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
- 		}
- 		goto next_desc;
- 
-+err_length:
-+		if (!dropping) {
-+			port->stats.rx_errors++;
-+			port->stats.rx_length_errors++;
-+		}
- err_drop:
- 		if (skb) {
- 			napi_free_frags(&port->napi);
+@@ -2077,6 +2077,8 @@ static int gmac_stop(struct net_device *netdev)
+ 	gmac_disable_tx_rx(netdev);
+ 	gmac_stop_dma(port);
+ 	napi_disable(&port->napi);
++	if (port->rx_skb)
++		napi_free_frags(&port->napi);
+ 	port->rx_skb = NULL;
+ 	port->rx_frag_nr = 0;
+ 	port->rx_dropping = false;
 
 -- 
 2.55.0
