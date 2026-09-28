@@ -1,79 +1,78 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876284F5DE7;
-	Mon, 28 Sep 2026 19:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56DE4F5E11;
+	Mon, 28 Sep 2026 19:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790623905; cv=none; b=e9q7qiAxU5P8hHdexIX3lYQc39tngCgZXfi7wTkwAY/LXHibyT04W8ZCbhL1x/+zbYtvU/07qpWHMw22wlNScxy7PEqtT/DQGNID0PhyRCH3LMQOL3Vicawell0w6vAyRFwRjz1H4a2NR69Ok7Jqhf3EKsma0jW5EaaDxhNjxpg=
+	t=1790623909; cv=none; b=WHm0jcFYl7lSntW5W29GBFIlydhc69+2CwMkVJUF0V/tzFAyV9Pe2MhjjhdGD9NbTI+GR7yGacMx6vJc/UH9bbBgrhM9c2HlaatFDQ1cmpid0ilE+yhEXEoBl8HG62vOY0pCh4cemLQS+yudV9Pwxq9pS0YNYH4DMUvS9q2TUws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790623905; c=relaxed/simple;
-	bh=/6zWI33GDKS7Lcbxs671d+r0KIE+G9GvXvjJqA+kYmE=;
+	s=arc-20240116; t=1790623909; c=relaxed/simple;
+	bh=p4xMUAoV47rG0aYO3Inzajlrdg/yNKGrRD0rRlUK5Jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSYjFvCjA1D2+JHShry21cP/Y2Ml2gxqb8FpY8LJFBIXa7zSeKBpDLj3ykrJxqtXIqDcYAfESgM7E9EMl4L1Ulqm/oEwHd64sbfr68yHyV+bquh5j9C+/CsALjOs0ZQ6zuroFfGPDjs0my6g2B0lGr+m20hWhBEgKeJHIa20ouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Yhl5pIRv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mvShzv/3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BvkPBH9K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qjODziIY; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=MzeVu2j8VSK6DJlIwmAix0DyXtP8oIpPO/JvGIe2cBBdewEoHWpZ0KBsNvyk3dH9oUJ2PLPru3NflCrAOlOVj1Sj7+Naejk3DjMaJWjI6XEjjnuycsuVO8yl1GK0nodTjEHr6jOiwyAHmKa7AB5/0PMlkH6L0MwKhgbW3G8750c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L5s4QsEb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JATAl0I7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cLjz2rTG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HLYCJtnc; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Yhl5pIRv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mvShzv/3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BvkPBH9K";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qjODziIY"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L5s4QsEb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JATAl0I7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cLjz2rTG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HLYCJtnc"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 602B021BC1;
-	Mon, 28 Sep 2026 19:31:33 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DF09B21B07;
+	Mon, 28 Sep 2026 19:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790623902; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lp8hvIoJ8Jqv5jVfxnkcNIiODK0r856bKYALyBJ9J64=;
+	b=L5s4QsEbUM5yiiBk+Xhx9cpcoUgPyqcP1OheRAQqezWRh0RQqfqEHjilwE31wlZq7qW3Tm
+	Dv16wldX6r9SWydvxSfetQrbFYwUZ4mJ+mrcVNDRDBqsvRyukKCw+JosEpOtCDoxjOHRqB
+	z62cnRIB0Of55fYC2pQAzqmBQln0mY8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790623902;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lp8hvIoJ8Jqv5jVfxnkcNIiODK0r856bKYALyBJ9J64=;
+	b=JATAl0I7a6OPqbtPGjBQ6sTtvBA5HmDXmQXj57likKBvvHucdchtmtgqzjpY2p1JCg1J//
+	mzZQizAYummc2PBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1790623897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HBQt5FZ3PztA2JtZhGd6hjOW2kZMD8lYQ7oO51kEBus=;
-	b=Yhl5pIRvpbEF4UHIqTUFkgFxoebTGrAW86C2XoBh0S6PameYAt6jpyyAekISRHlCpnKJ10
-	mo1q8Tr81LQuxoh5dMqVoRR1WztvdbcvQqIAcknZiUgWWrsgLLG18G9IY7SQm3skC4D1+t
-	v2dDfhQhvtyGFhugBSK6cl5x90idjtw=
+	bh=Lp8hvIoJ8Jqv5jVfxnkcNIiODK0r856bKYALyBJ9J64=;
+	b=cLjz2rTGFaDPu0ne0V7ZLAMl3gPYXFO9S3QYZg9VrhENI7TRO4x3FpT+nWWtrcS4wEZXp0
+	j50nL0LeoM45nakxauQ2UIA9Mgch5C6n0M1X+xzmiUB/LMjJa5p8t4cnerx5flStark503
+	QJl05nKFqUsxTRlaQRSqx9DUxm3DY2M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1790623897;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HBQt5FZ3PztA2JtZhGd6hjOW2kZMD8lYQ7oO51kEBus=;
-	b=mvShzv/3FWOVoLYeOylarbH1vl4pD9zHj0qa40JD9peHzZSkAtWnkGVN/6PZ7yqp4xBLoZ
-	CAPSADiiK7/WiBBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BvkPBH9K;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qjODziIY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790623893; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HBQt5FZ3PztA2JtZhGd6hjOW2kZMD8lYQ7oO51kEBus=;
-	b=BvkPBH9KD0Saoo5YIJLBqo1QbVNCBmSYyNogOVvQ/x/pbCOhxXA4gvFgP2ETBoo8Q4noO0
-	xm5CwCRo9j3vey/NQJA144DLGFcqt9wkG5q0C4Vz6jzkMfEKIEgPHOtpgEXRJPGCa48LRU
-	OJSEjr/Ad1TSQMnu7x1rrU8sLo5kU68=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790623893;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HBQt5FZ3PztA2JtZhGd6hjOW2kZMD8lYQ7oO51kEBus=;
-	b=qjODziIYlLLRq/n7JgU53SZ7FwFngBOTCPLmBaToVe+lNW5lPuW9kxAboBVoJGGqVQ2Rt1
-	qG8nw+Cvih5s+MDg==
+	bh=Lp8hvIoJ8Jqv5jVfxnkcNIiODK0r856bKYALyBJ9J64=;
+	b=HLYCJtncjLZSNZEAeLFOJRIr6Xq1NGH2j80UeHYjmLo95GGh6qJeBbdvQvlpJaIv88+IIQ
+	VrcvO+N8QZs7wMCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 546231340F;
-	Mon, 28 Sep 2026 19:31:31 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C55F313418;
+	Mon, 28 Sep 2026 19:31:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4RBiFn3AumpWOAAAD6G6ig:T3
-	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:31:31 +0000
+	id 4RBiFn3AumpWOAAAD6G6ig:T4
+	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:31:36 +0000
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org,
@@ -85,33 +84,17 @@ Cc: horms@kernel.org,
 	Eric Dumazet <edumazet@google.com>,
 	David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Neal Cardwell <ncardwell@google.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
 	Kees Cook <kees@kernel.org>,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Petr Machata <petrm@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH 02/16 net-next v2] net: core: add IPv4 fallback stubs and guards for CONFIG_IPV4=n
-Date: Mon, 28 Sep 2026 21:29:58 +0200
-Message-ID: <20260928193046.6698-3-fmancera@suse.de>
+	Willem de Bruijn <willemb@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 03/16 net-next v2] net: inet: relocate ip_generic_getfrag and guard IPv4 socket logic
+Date: Mon, 28 Sep 2026 21:29:59 +0200
+Message-ID: <20260928193046.6698-4-fmancera@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260928193046.6698-1-fmancera@suse.de>
 References: <20260928193046.6698-1-fmancera@suse.de>
@@ -122,421 +105,332 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.51
-X-Rspamd-Queue-Id: 602B021BC1
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.51 / 50.00];
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[34];
+	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
 	RCVD_TLS_ALL(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,suse.de,google.com,nvidia.com,iogearbox.net,gmail.com,fomichev.me,linux.dev,etsalapatis.com,bootlin.com,intel.com,tipi-net.de,vger.kernel.org];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,suse.de,google.com,nvidia.com,linux.dev,gmail.com,vger.kernel.org];
+	RCVD_COUNT_TWO(0.00)[2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLu6zfm1tkte8c1ooxktzp1s3b)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
 
-To enable compiling the core network stack without IPv4, generic
-networking code must avoid referencing missing IPv4 symbols.
+To enable compiling the INET subsystem without IPv4, shared generic
+utilities must be relocated and IPv4 socket logic must be guarded for
+CONFIG_IPV4.
 
-This patch provides static inline stubs in include/net/ip.h and
-include/net/route.h that return a proper error code when IPv4 is
-disabled. This behaves as IPv6 code does. In addition, it introduces
-guards around IPv4 specific code in generic implementations to prevent
-undefined reference errors while linking.
+This patch moves the generic ip_generec_getfrag() from ip_output.c to
+af_inet.c. It also introduces CONFIG_IPV4 guards around af_inet.c to
+reject IPv4-specific ioctls, protocol registrations and bind requests.
+The same guard is added to reject IPv4-mapped IPv6.
 
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
- include/linux/indirect_call_wrapper.h |   8 +-
- include/net/ip.h                      | 111 ++++++++++++++++++++++----
- include/net/route.h                   |   8 ++
- net/core/dev_ioctl.c                  |   3 +
- net/core/filter.c                     |  20 ++---
- net/core/neighbour.c                  |   4 +
- net/ipv4/inet_hashtables.c            |   3 +
- 7 files changed, 127 insertions(+), 30 deletions(-)
+ net/ipv4/af_inet.c   | 69 ++++++++++++++++++++++++++++++++++++++------
+ net/ipv4/ip_output.c | 18 ------------
+ net/ipv6/af_inet6.c  |  5 ++++
+ net/ipv6/datagram.c  |  4 +--
+ 4 files changed, 67 insertions(+), 29 deletions(-)
 
-diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
-index 0e4340ecd857..583efbc03446 100644
---- a/include/linux/indirect_call_wrapper.h
-+++ b/include/linux/indirect_call_wrapper.h
-@@ -57,16 +57,18 @@
-  * builtin, this macro simplify dealing with indirect calls with only ipv4/ipv6
-  * alternatives
-  */
--#if IS_ENABLED(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV4) && IS_ENABLED(CONFIG_IPV6)
- #define INDIRECT_CALL_INET(f, f2, f1, ...) \
- 	INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__)
--#elif IS_ENABLED(CONFIG_INET)
-+#elif IS_ENABLED(CONFIG_IPV4)
- #define INDIRECT_CALL_INET(f, f2, f1, ...) INDIRECT_CALL_1(f, f1, __VA_ARGS__)
-+#elif IS_ENABLED(CONFIG_IPV6)
-+#define INDIRECT_CALL_INET(f, f2, f1, ...) INDIRECT_CALL_1(f, f2, __VA_ARGS__)
- #else
- #define INDIRECT_CALL_INET(f, f2, f1, ...) f(__VA_ARGS__)
- #endif
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index d9421ac38d78..cf00386933d6 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -129,6 +129,28 @@
+ int disable_ipv6_mod;
+ EXPORT_SYMBOL(disable_ipv6_mod);
  
--#if IS_ENABLED(CONFIG_INET)
-+#if IS_ENABLED(CONFIG_IPV4)
- #define INDIRECT_CALL_INET_1(f, f1, ...) INDIRECT_CALL_1(f, f1, __VA_ARGS__)
- #else
- #define INDIRECT_CALL_INET_1(f, f1, ...) f(__VA_ARGS__)
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 6f602df72ee6..194a464c443a 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -171,8 +171,17 @@ int ip_mr_input(struct sk_buff *skb);
- int ip_mr_output(struct net *net, struct sock *sk, struct sk_buff *skb);
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb);
- int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb);
-+#if IS_ENABLED(CONFIG_IPV4)
- int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		   int (*output)(struct net *, struct sock *, struct sk_buff *));
-+#else
-+static inline int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
-+				 int (*output)(struct net *, struct sock *, struct sk_buff *))
++/* Keep the function here for now as it is generic, it should be moved
++ * to a common L3 place
++ */
++int
++ip_generic_getfrag(void *from, char *to, int offset, int len, int odd, struct sk_buff *skb)
 +{
-+	kfree_skb(skb);
-+	return -EAFNOSUPPORT;
-+}
-+#endif
- 
- struct ip_fraglist_iter {
- 	struct sk_buff	*frag;
-@@ -218,6 +227,7 @@ int ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb);
- int __ip_queue_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl,
- 		    __u8 tos);
- void ip_init(void);
-+#if IS_ENABLED(CONFIG_IPV4)
- int ip_append_data(struct sock *sk, struct flowi4 *fl4,
- 		   int getfrag(void *from, char *to, int offset, int len,
- 			       int odd, struct sk_buff *skb),
-@@ -225,27 +235,58 @@ int ip_append_data(struct sock *sk, struct flowi4 *fl4,
- 		   struct ipcm_cookie *ipc,
- 		   struct rtable **rt,
- 		   unsigned int flags);
--int ip_generic_getfrag(void *from, char *to, int offset, int len, int odd,
--		       struct sk_buff *skb);
--struct sk_buff *__ip_make_skb(struct sock *sk, struct flowi4 *fl4,
--			      struct sk_buff_head *queue,
--			      struct inet_cork *cork);
--int ip_send_skb(struct net *net, struct sk_buff *skb);
--int ip_push_pending_frames(struct sock *sk, struct flowi4 *fl4);
--void ip_flush_pending_frames(struct sock *sk);
- struct sk_buff *ip_make_skb(struct sock *sk, struct flowi4 *fl4,
- 			    int getfrag(void *from, char *to, int offset,
- 					int len, int odd, struct sk_buff *skb),
- 			    void *from, int length, int transhdrlen,
- 			    struct ipcm_cookie *ipc, struct rtable **rtp,
- 			    struct inet_cork *cork, unsigned int flags);
--
--int ip_queue_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
-+struct sk_buff *__ip_make_skb(struct sock *sk, struct flowi4 *fl4,
-+			      struct sk_buff_head *queue,
-+			      struct inet_cork *cork);
-+void ip_flush_pending_frames(struct sock *sk);
- 
- static inline struct sk_buff *ip_finish_skb(struct sock *sk, struct flowi4 *fl4)
- {
- 	return __ip_make_skb(sk, fl4, &sk->sk_write_queue, &inet_sk(sk)->cork.base);
- }
-+#else
-+static inline int ip_append_data(struct sock *sk, struct flowi4 *fl4,
-+				 int getfrag(void *from, char *to, int offset, int len,
-+					     int odd, struct sk_buff *skb),
-+				 void *from, int len, int protolen,
-+				 struct ipcm_cookie *ipc,
-+				 struct rtable **rt,
-+				 unsigned int flags)
-+{
-+	return -EAFNOSUPPORT;
-+}
++	struct msghdr *msg = from;
 +
-+static inline struct sk_buff *ip_make_skb(struct sock *sk, struct flowi4 *fl4,
-+					  int getfrag(void *from, char *to, int offset,
-+						      int len, int odd, struct sk_buff *skb),
-+					  void *from, int length, int transhdrlen,
-+					  struct ipcm_cookie *ipc, struct rtable **rtp,
-+					  struct inet_cork *cork, unsigned int flags)
-+{
-+	return ERR_PTR(-EAFNOSUPPORT);
-+}
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		if (!copy_from_iter_full(to, len, &msg->msg_iter))
++			return -EFAULT;
++	} else {
++		__wsum csum = 0;
 +
-+static inline struct sk_buff *ip_finish_skb(struct sock *sk, struct flowi4 *fl4)
-+{
-+	return ERR_PTR(-EAFNOSUPPORT);
-+}
-+
-+static inline void ip_flush_pending_frames(struct sock *sk)
-+{
-+}
-+#endif
-+
-+int ip_generic_getfrag(void *from, char *to, int offset, int len, int odd,
-+		       struct sk_buff *skb);
-+int ip_send_skb(struct net *net, struct sk_buff *skb);
-+int ip_push_pending_frames(struct sock *sk, struct flowi4 *fl4);
-+int ip_queue_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
- 
- /* Get the route scope that should be used when sending a packet. */
- static inline u8 ip_sendmsg_scope(const struct inet_sock *inet,
-@@ -768,7 +809,7 @@ static inline bool ip_defrag_user_in_between(u32 user,
- }
- 
- int ip_defrag(struct net *net, struct sk_buff *skb, u32 user);
--#ifdef CONFIG_INET
-+#if IS_ENABLED(CONFIG_IPV4)
- struct sk_buff *ip_check_defrag(struct net *net, struct sk_buff *skb, u32 user);
- #else
- static inline struct sk_buff *ip_check_defrag(struct net *net, struct sk_buff *skb, u32 user)
-@@ -813,24 +854,60 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev);
-  *	Functions provided by ip_sockglue.c
-  */
- 
--void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb, bool drop_dst);
-+#if IS_ENABLED(CONFIG_IPV4)
- void ip_cmsg_recv_offset(struct msghdr *msg, struct sock *sk,
- 			 struct sk_buff *skb, int tlen, int offset);
-+void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb, bool drop_dst);
- int ip_cmsg_send(struct sock *sk, struct msghdr *msg,
- 		 struct ipcm_cookie *ipc, bool allow_ipv6);
-+int ip_recv_error(struct sock *sk, struct msghdr *msg, int len);
-+int ip_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
-+		  unsigned int optlen);
-+int ip_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
-+		  int __user *optlen);
-+#else
-+static inline void ip_cmsg_recv_offset(struct msghdr *msg, struct sock *sk,
-+				       struct sk_buff *skb, int tlen, int offset)
-+{
-+}
-+
-+static inline void ipv4_pktinfo_prepare(const struct sock *sk,
-+					struct sk_buff *skb,
-+					bool drop_dst)
-+{
-+}
-+
-+static inline int ip_cmsg_send(struct sock *sk, struct msghdr *msg,
-+			       struct ipcm_cookie *ipc, bool allow_ipv6)
-+{
++		if (!csum_and_copy_from_iter_full(to, len, &csum, &msg->msg_iter))
++			return -EFAULT;
++		skb->csum = csum_block_add(skb->csum, csum, odd);
++	}
 +	return 0;
 +}
++EXPORT_SYMBOL(ip_generic_getfrag);
 +
-+static inline int ip_recv_error(struct sock *sk, struct msghdr *msg, int len)
-+{
-+	return -EAFNOSUPPORT;
-+}
-+
-+static inline int ip_setsockopt(struct sock *sk, int level, int optname,
-+				sockptr_t optval, unsigned int optlen)
-+{
-+	return -EAFNOSUPPORT;
-+}
-+
-+static inline int ip_getsockopt(struct sock *sk, int level, int optname,
-+				char __user *optval, int __user *optlen)
-+{
-+	return -EAFNOSUPPORT;
-+}
-+#endif
- DECLARE_STATIC_KEY_FALSE(ip4_min_ttl);
- int do_ip_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
- 		     unsigned int optlen);
--int ip_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
--		  unsigned int optlen);
- int do_ip_getsockopt(struct sock *sk, int level, int optname,
- 		     sockptr_t optval, sockptr_t optlen);
--int ip_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
--		  int __user *optlen);
- int ip_ra_control(struct sock *sk, unsigned char on,
- 		  void (*destructor)(struct sock *));
+ /* The inetsw table contains everything that inet_create needs to
+  * build a new socket.
+  */
+@@ -426,7 +448,8 @@ int inet_release(struct socket *sock)
+ 			BPF_CGROUP_RUN_PROG_INET_SOCK_RELEASE(sk);
  
--int ip_recv_error(struct sock *sk, struct msghdr *msg, int len);
- void ip_icmp_error(struct sock *sk, struct sk_buff *skb, int err, __be16 port,
- 		   u32 info, u8 *payload);
- void ip_local_error(struct sock *sk, int err, __be32 daddr, __be16 dport,
-diff --git a/include/net/route.h b/include/net/route.h
-index 6b55de2e4df8..8c21881eb5f4 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -169,8 +169,16 @@ static inline struct rtable *__ip_route_output_key(struct net *net,
- 	return ip_route_output_key_hash(net, flp, NULL);
- }
+ 		/* Applications forget to leave groups before exiting */
+-		ip_mc_drop_socket(sk);
++		if (IS_ENABLED(CONFIG_IPV4))
++			ip_mc_drop_socket(sk);
  
-+#if IS_ENABLED(CONFIG_IPV4)
- struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
- 				    const struct sock *sk);
-+#else
-+static inline struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
-+						  const struct sock *sk)
-+{
-+	return ERR_PTR(-EAFNOSUPPORT);
-+}
-+#endif
- struct dst_entry *ipv4_blackhole_route(struct net *net,
- 				       struct dst_entry *dst_orig);
- 
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 164643140a52..a10921aa3e23 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -44,6 +44,9 @@ int dev_ifconf(struct net *net, struct ifconf __user *uifc)
- 	size_t size;
- 	int len, total = 0, done;
+ 		/* If linger is set, we don't return until the close
+ 		 * is complete.  Otherwise we return immediately. The
+@@ -486,6 +509,9 @@ int __inet_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
+ 	u32 tb_id = RT_TABLE_LOCAL;
+ 	int err;
  
 +	if (!IS_ENABLED(CONFIG_IPV4))
 +		return -EAFNOSUPPORT;
 +
- 	/* both the ifconf and the ifreq structures are slightly different */
- 	if (in_compat_syscall()) {
- 		struct compat_ifconf ifc32;
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 70dc621672f2..86d531c63683 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2318,7 +2318,7 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- }
- #endif /* CONFIG_IPV6 */
+ 	if (addr->sin_family != AF_INET) {
+ 		/* Compatibility games : accept AF_UNSPEC (mapped to AF_INET)
+ 		 * only if s_addr is INADDR_ANY.
+@@ -968,6 +994,9 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	struct ifreq ifr;
+ 	struct rtentry rt;
  
--#if IS_ENABLED(CONFIG_INET)
++	if (!IS_ENABLED(CONFIG_IPV4))
++		return -EOPNOTSUPP;
++
+ 	switch (cmd) {
+ 	case SIOCADDRT:
+ 	case SIOCDELRT:
+@@ -1023,6 +1052,9 @@ static int inet_compat_routing_ioctl(struct sock *sk, unsigned int cmd,
+ 	compat_uptr_t rtdev;
+ 	struct rtentry rt;
+ 
++	if (!IS_ENABLED(CONFIG_IPV4))
++		return -EOPNOTSUPP;
++
+ 	if (copy_from_user(&rt.rt_dst, &ur->rt_dst,
+ 			3 * sizeof(struct sockaddr)) ||
+ 	    get_user(rt.rt_flags, &ur->rt_flags) ||
+@@ -1153,6 +1185,7 @@ static const struct net_proto_family inet_family_ops = {
+ 	.owner	= THIS_MODULE,
+ };
+ 
 +#if IS_ENABLED(CONFIG_IPV4)
- static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
- 			    struct net_device *dev, struct bpf_nh_params *nh)
+ /* Upon startup we insert all the elements in inetsw_array[] into
+  * the linked list inetsw.
+  */
+@@ -1193,6 +1226,7 @@ static struct inet_protosw inetsw_array[] =
+ };
+ 
+ #define INETSW_ARRAY_LEN ARRAY_SIZE(inetsw_array)
++#endif
+ 
+ void inet_register_protosw(struct inet_protosw *p)
  {
-@@ -2427,7 +2427,7 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 	kfree_skb(skb);
- 	return NET_XMIT_DROP;
+@@ -1267,6 +1301,9 @@ static int inet_sk_reselect_saddr(struct sock *sk)
+ 	struct ip_options_rcu *inet_opt;
+ 	int err;
+ 
++	if (!IS_ENABLED(CONFIG_IPV4))
++		return -EAFNOSUPPORT;
++
+ 	inet_opt = rcu_dereference_protected(inet->inet_opt,
+ 					     lockdep_sock_is_held(sk));
+ 	if (inet_opt && inet_opt->opt.srr)
+@@ -1371,6 +1408,9 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
+ 	int ihl;
+ 	int id;
+ 
++	if (!IS_ENABLED(CONFIG_IPV4))
++		return ERR_PTR(-EPROTONOSUPPORT);
++
+ 	skb_reset_network_header(skb);
+ 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
+ 	if (unlikely(!pskb_may_pull(skb, sizeof(*iph))))
+@@ -1774,6 +1814,10 @@ static int __init init_ipv4_mibs(void)
+ 	return register_pernet_subsys(&ipv4_mib_ops);
  }
--#endif /* CONFIG_INET */
+ 
++#if IS_ENABLED(CONFIG_IPV4)
++static int ipv4_proc_init(void);
++#endif
++
+ static __net_init int inet_init_net(struct net *net)
+ {
+ 	/*
+@@ -1824,8 +1868,6 @@ static int __init init_inet_pernet_ops(void)
+ 	return register_pernet_subsys(&af_inet_ops);
+ }
+ 
+-static int ipv4_proc_init(void);
+-
+ /*
+  *	IP protocol layer initialiser
+  */
+@@ -1870,20 +1912,25 @@ static int __init ipv4_offload_init(void)
+ 
+ fs_initcall(ipv4_offload_init);
+ 
++#if IS_ENABLED(CONFIG_IPV4)
+ static struct packet_type ip_packet_type __read_mostly = {
+ 	.type = cpu_to_be16(ETH_P_IP),
+ 	.func = ip_rcv,
+ 	.list_func = ip_list_rcv,
+ };
++#endif
+ 
+ static int __init inet_init(void)
+ {
++#if IS_ENABLED(CONFIG_IPV4)
+ 	struct inet_protosw *q;
+ 	struct list_head *r;
+ 	int rc;
++#endif
+ 
+ 	sock_skb_cb_check_size(sizeof(struct inet_skb_parm));
+ 
++#if IS_ENABLED(CONFIG_IPV4)
+ 	raw_hashinfo_init(&raw_v4_hashinfo);
+ 
+ 	rc = proto_register(&tcp_prot, 1);
+@@ -1958,7 +2005,7 @@ static int __init inet_init(void)
+ 	 */
+ 
+ 	ip_init();
+-
++#endif /* CONFIG_IPV4 */
+ 	/* Initialise per-cpu ipv4 mibs */
+ 	if (init_ipv4_mibs())
+ 		panic("%s: Cannot init ipv4 mibs\n", __func__);
+@@ -1980,6 +2027,9 @@ static int __init inet_init(void)
+ 	if (icmp_init() < 0)
+ 		panic("Failed to create the ICMP control socket.\n");
+ 
++	if (init_inet_pernet_ops())
++		pr_crit("%s: Cannot init ipv4 inet pernet ops\n", __func__);
++#if IS_ENABLED(CONFIG_IPV4)
+ 	/*
+ 	 *	Initialise the multicast router
+ 	 */
+@@ -1987,19 +2037,17 @@ static int __init inet_init(void)
+ 	if (ip_mr_init())
+ 		pr_crit("%s: Cannot init ipv4 mroute\n", __func__);
+ #endif
+-
+-	if (init_inet_pernet_ops())
+-		pr_crit("%s: Cannot init ipv4 inet pernet ops\n", __func__);
+-
+ 	ipv4_proc_init();
+ 
+ 	ipfrag_init();
+ 
+ 	dev_add_pack(&ip_packet_type);
 +#endif /* CONFIG_IPV4 */
  
- static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
- 				struct bpf_nh_params *nh)
-@@ -5781,7 +5781,7 @@ static int __bpf_setsockopt(struct sock *sk, int level, int optname,
+ 	ip_tunnel_core_init();
  
- 	if (level == SOL_SOCKET)
- 		return sol_socket_sockopt(sk, optname, optval, &optlen, false);
--	else if (IS_ENABLED(CONFIG_INET) && level == SOL_IP)
-+	else if (IS_ENABLED(CONFIG_IPV4) && level == SOL_IP)
- 		return sol_ip_sockopt(sk, optname, optval, &optlen, false);
- 	else if (IS_ENABLED(CONFIG_IPV6) && level == SOL_IPV6)
- 		return sol_ipv6_sockopt(sk, optname, optval, &optlen, false);
-@@ -5818,7 +5818,7 @@ static int __bpf_getsockopt(struct sock *sk, int level, int optname,
- 		err = sol_socket_sockopt(sk, optname, optval, &optlen, true);
- 	else if (IS_ENABLED(CONFIG_INET) && level == SOL_TCP)
- 		err = sol_tcp_sockopt(sk, optname, optval, &optlen, true);
--	else if (IS_ENABLED(CONFIG_INET) && level == SOL_IP)
-+	else if (IS_ENABLED(CONFIG_IPV4) && level == SOL_IP)
- 		err = sol_ip_sockopt(sk, optname, optval, &optlen, true);
- 	else if (IS_ENABLED(CONFIG_IPV6) && level == SOL_IPV6)
- 		err = sol_ipv6_sockopt(sk, optname, optval, &optlen, true);
-@@ -6346,7 +6346,7 @@ static struct net_device *bpf_fib_vlan_input_dev(struct net_device *dev,
+-	rc = 0;
++	return 0;
++#if IS_ENABLED(CONFIG_IPV4)
+ out:
+ 	return rc;
+ out_unregister_raw_proto:
+@@ -2009,12 +2057,14 @@ static int __init inet_init(void)
+ out_unregister_tcp_proto:
+ 	proto_unregister(&tcp_prot);
+ 	goto out;
++#endif
  }
- #endif
  
--#if IS_ENABLED(CONFIG_INET)
+ fs_initcall(inet_init);
+ 
+ /* ------------------------------------------------------------------------ */
+ 
 +#if IS_ENABLED(CONFIG_IPV4)
- static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
- 			       u32 flags, bool check_mtu)
+ #ifdef CONFIG_PROC_FS
+ static int __init ipv4_proc_init(void)
  {
-@@ -6678,7 +6678,7 @@ BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
- 		return -EINVAL;
+@@ -2051,3 +2101,4 @@ static int __init ipv4_proc_init(void)
+ 	return 0;
+ }
+ #endif /* CONFIG_PROC_FS */
++#endif
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index a24cc8ee11d3..4c6b34e70990 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -932,24 +932,6 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL(ip_do_fragment);
  
- 	switch (params->family) {
--#if IS_ENABLED(CONFIG_INET)
-+#if IS_ENABLED(CONFIG_IPV4)
- 	case AF_INET:
- 		return bpf_ipv4_fib_lookup(dev_net(ctx->rxq->dev), params,
- 					   flags, true);
-@@ -6722,7 +6722,7 @@ BPF_CALL_4(bpf_skb_fib_lookup, struct sk_buff *, skb,
- 		check_mtu = true;
+-int
+-ip_generic_getfrag(void *from, char *to, int offset, int len, int odd, struct sk_buff *skb)
+-{
+-	struct msghdr *msg = from;
+-
+-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+-		if (!copy_from_iter_full(to, len, &msg->msg_iter))
+-			return -EFAULT;
+-	} else {
+-		__wsum csum = 0;
+-		if (!csum_and_copy_from_iter_full(to, len, &csum, &msg->msg_iter))
+-			return -EFAULT;
+-		skb->csum = csum_block_add(skb->csum, csum, odd);
+-	}
+-	return 0;
+-}
+-EXPORT_SYMBOL(ip_generic_getfrag);
+-
+ static int __ip_append_data(struct sock *sk,
+ 			    struct flowi4 *fl4,
+ 			    struct sk_buff_head *queue,
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index f0efdc13baf4..f220eaab085b 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -302,6 +302,11 @@ int __inet6_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
+ 		struct net_device *dev = NULL;
+ 		int chk_addr_ret;
  
- 	switch (params->family) {
--#if IS_ENABLED(CONFIG_INET)
-+#if IS_ENABLED(CONFIG_IPV4)
- 	case AF_INET:
- 		rc = bpf_ipv4_fib_lookup(net, params, flags, check_mtu);
- 		break;
-@@ -12231,7 +12231,7 @@ BPF_CALL_1(bpf_skc_to_tcp_timewait_sock, struct sock *, sk)
- 	BTF_TYPE_EMIT(struct inet_timewait_sock);
- 	BTF_TYPE_EMIT(struct tcp_timewait_sock);
- 
--#ifdef CONFIG_INET
-+#ifdef CONFIG_IPV4
- 	if (sk && sk->sk_prot == &tcp_prot && sk->sk_state == TCP_TIME_WAIT)
- 		return (unsigned long)sk;
- #endif
-@@ -12254,7 +12254,7 @@ const struct bpf_func_proto bpf_skc_to_tcp_timewait_sock_proto = {
- 
- BPF_CALL_1(bpf_skc_to_tcp_request_sock, struct sock *, sk)
- {
--#ifdef CONFIG_INET
-+#ifdef CONFIG_IPV4
- 	if (sk && sk->sk_prot == &tcp_prot && sk->sk_state == TCP_NEW_SYN_RECV)
- 		return (unsigned long)sk;
- #endif
-@@ -12736,7 +12736,7 @@ __bpf_kfunc int bpf_icmp_send(struct __sk_buff *skb_ctx, int type, int code)
- 		return -ENETUNREACH;
- 
- 	switch (skb->protocol) {
--#if IS_ENABLED(CONFIG_INET)
-+#if IS_ENABLED(CONFIG_IPV4)
- 	case htons(ETH_P_IP): {
- 		struct sk_buff *nskb;
- 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 6ed8eb075146..63c2a1b86118 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3241,6 +3241,10 @@ int neigh_xmit(int index, struct net_device *dev,
- 		if (index == NEIGH_ARP_TABLE) {
- 			u32 key = *((u32 *)addr);
- 
-+			if (!IS_ENABLED(CONFIG_IPV4)) {
-+				rcu_read_unlock();
-+				goto out_kfree_skb;
-+			}
- 			neigh = __ipv4_neigh_lookup_noref(dev, key);
- 		} else {
- 			neigh = __neigh_lookup_noref(tbl, addr, dev);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 5abcb0debb27..ae9f45368571 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -596,6 +596,9 @@ static int __inet_check_established(struct inet_timewait_death_row *death_row,
- 	struct sock *sk2;
- 	spinlock_t *lock;
- 
-+	if (!IS_ENABLED(CONFIG_IPV4))
-+		return -EAFNOSUPPORT;
++		if (!IS_ENABLED(CONFIG_IPV4)) {
++			err = -EADDRNOTAVAIL;
++			goto out;
++		}
 +
- 	if (rcu_lookup) {
- 		sk_nulls_for_each(sk2, node, &head->chain) {
- 			if (sk2->sk_hash != hash ||
+ 		/* Binding to v4-mapped address on a v6-only socket
+ 		 * makes no sense
+ 		 */
+diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
+index 191c9733ff9f..079d1951405b 100644
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -153,7 +153,7 @@ int __ip6_datagram_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	int			err;
+ 
+ 	if (usin->sin6_family == AF_INET) {
+-		if (ipv6_only_sock(sk))
++		if (!IS_ENABLED(CONFIG_IPV4) || ipv6_only_sock(sk))
+ 			return -EAFNOSUPPORT;
+ 		err = __ip4_datagram_connect(sk, uaddr, addr_len);
+ 		goto ipv4_connected;
+@@ -186,7 +186,7 @@ int __ip6_datagram_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	if (addr_type & IPV6_ADDR_MAPPED) {
+ 		struct sockaddr_in sin;
+ 
+-		if (ipv6_only_sock(sk)) {
++		if (!IS_ENABLED(CONFIG_IPV4) || ipv6_only_sock(sk)) {
+ 			err = -ENETUNREACH;
+ 			goto out;
+ 		}
 -- 
 2.55.0
 
