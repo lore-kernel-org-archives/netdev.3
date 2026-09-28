@@ -1,143 +1,115 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA2E46F48F
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7694349B4
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790583072; cv=none; b=Q20V9xdeOIDt1hc7PqB95zs1GjKOPRKbPyDi5OY0p9X2KtmJc5fL7c9ClRA4pHVqtl7JIcDE0QuHETti1YWIwSipoKBiYuK+C7kdzwXdz0PmckxVrtfx2Oidtmf+yrcieo+9yoMHzajR6tcbpweoxeIjd9+erOWY61TTVxcCIFg=
+	t=1790583143; cv=none; b=LIciKFd/qPEPo0Gq7OqzpWNAhEPx/EV7KYeIS2+25TqRj88CQoMgEjczjp5j411UWzYaKbDoIvJBBUS5lLYkmr89arcdAL5vDrQeTVwf4dTknQpPEmIY0MN9JuOteYyJwOuDVhpI/Wi7vLuSFyQwZD8qUrMc4j0urZZo5cDAq2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790583072; c=relaxed/simple;
-	bh=pMI41QYJxbMc54+IsFqH0QgDw1A4UmTrboK/fdZGcgI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=hh1H45hzFQkmZd+avLYa8s78xEXCX5kjkUBVBwskVGp1i91IDgiLsQnx0vCXmr4H5lTCX/QEJbijTyNRZnW+SNmEvIEAvekHH8gfYjpJQ5HXerjD4n9oXIKRXZIe8rELei3uyRfNPv8KDRI/aPMy1FMgwRKD3Q4BVPWXK3m30Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=Ov/6MWCb; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1790583143; c=relaxed/simple;
+	bh=TyxHn0Wu36KDiL8WwciFmuuaKn7lMO1TcQeqTgcWM4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=im/PvBXdpSW5+kTu+avbLncr2jdZDgwQBK+eXZJoh+GhjfipUHTiftU2Fqy/plNGY0HUvhjcS7wo7VCICRh0AbqACqsQ5N+tOAoUXetiqDwf6iugad54NX/0CKD2iqHnQEcIqx7guJyENuXkg2X2woMtLnQSp/LnYC/Xl5zj2pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=ee08tlh6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TTwzN8bq; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="Ov/6MWCb"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 1DE66213E4;
-	Mon, 28 Sep 2026 11:10:56 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=Lqn5X9lPXYu5TW/Is9kmTXn7SeAFiyHE/K8hQjwfw0U=; b=Ov/6MWCbsKzL
-	NEBbikmeYEbKZMnrc4f3nV++PipKkRYHGTN1SudiMD9UsSoMzWNdG51x89GCGO5/
-	JM5IyF1wLTw0jhmaGaES8OZh0KkrkLi3fPZl6tXM+xSXf/LeXFr8lHFl2YH1mpbX
-	mfEqjfHDR9IDwgtiOYFSuhjyTDvrRPJN7GgvG8h/dMvas9IaihWtqY8FbxNTDetv
-	xyZdlaOFDfgCR3OGS8ON9MwJdK7Wu3CWVB2t3fQm4HYFVOizDloh9uU8nWzKRoTW
-	SElkPhajhp+qogAR7GWThUlBZGyEY7eS3cx/DHZtSlZNFim6yLZd7Qt60eEdH64H
-	9fiuomxSmZnmXWZe2ohHxDfT0PEaEIiiDu6gaekdffv2WspPCW6BFsuzon4iELPX
-	PaVeJsX9mz0s0N5ic84cXlhy9j7sTB3CJDQhJYbs36TNDeJOw3jaGvrMfyZkSatP
-	QP4TuJNBAu4ITY576P7aMF3pOS7XhO5JCJ9lkCeTcOVE6xvJPURcLeZX9bEN5x4K
-	MjdRKpFzPQa1Wai+pVSo24V/2rnVcr7VwhfakffC0YAgUjGzzsLOm+yoJUDZ3RwB
-	IQlOYUG6EzMvTyAKMtTEXEaLZ85qwhsFeBlqKUiYMO38sNeV6MtJ2nHLuvcRIoD6
-	ck9Y0woD14SOf+Bnkck2ZyfN9F2G4Yc=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Mon, 28 Sep 2026 11:10:55 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 4AF3460BB9;
-	Mon, 28 Sep 2026 11:10:58 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68S8AsH1022001;
-	Mon, 28 Sep 2026 11:10:55 +0300
-Date: Mon, 28 Sep 2026 11:10:54 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>
-cc: Ido Schimmel <idosch@nvidia.com>, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        dsahern@kernel.org, kerneljasonxing@gmail.com, netdev@vger.kernel.org,
-        Chenguang Zhao <zhaochenguang@kylinos.cn>,
-        syzbot+2b120190d9e54ad8c65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] ipvs: fix infinite loop with ipvlan L3 from
- unconditional ipvs_property clear
-In-Reply-To: <20260928065550.GA620427@pc>
-Message-ID: <8609d29f-750d-ef73-8df4-3ebf540b0892@ssi.bg>
-References: <20260924063312.1194019-1-chenguang.zhao@linux.dev> <20260925124242.GA112355@shredder> <20260928065550.GA620427@pc>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="ee08tlh6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TTwzN8bq"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 413CEEC00EA;
+	Mon, 28 Sep 2026 04:12:21 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 04:12:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1790583141; x=
+	1790669541; bh=fUO05wwfDPp2cjcPTEwadUMo5hF4h04UFs4Nk0G7upA=; b=e
+	e08tlh63IaOU31HHj92beLyc+ViSfkFc4Nf7ffmUp3QDslLgJqNetinp03bmn8DF
+	a7VxWJIgbRHZqWmbzR1gBJw8Vt/HWngVKhpqUjnWxS1f778jjE7ARdNg5C5c2uUG
+	GfHlHYGqfjFt87uUXSDf/pXT6NKRoyze3PvvTWcMHb3HyOlLKEQlx0Vc3pyaLSK9
+	cRar0uW53N+qfFLwXAT6ot6fS05PHbDgUY8U/vVWkbPaAsDqBXobadYIQ9VbWAYN
+	IWJ3cwxAbSeuE1tILef321x3ZOj1TO5j4LrgEtAylfwcA5yH8nw+tyUdn90XWkru
+	4aahekpZTFMvdTppbR6gg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790583141; x=1790669541; bh=fUO05wwfDPp2cjcPTEwadUMo5hF4h04UFs4
+	Nk0G7upA=; b=TTwzN8bqDlNo8i9GTOUreXrNF78Pnf/pkWEYtvJs+GNsNK8jB3v
+	CqITp03ggPh84KA/kEJ+vE4hS6CgU9GOb9sArRAVGGtICaPfxcH9RxpWzQwr+hx8
+	ETJvXq9rKoy4jByJrrhvHpg8BxfgSmafhdtdcDQauQ4GTKFxDhXgilaW2vayC2DF
+	DzoxxJx4NHr3Bt91RoyfpiEW2bmL3GoGXnqAel7Zexp6kmmNPfaIuNUAzx8B8hyt
+	SnNz1aHAH5asf8HlRPRC6CTyONhEUMxt7waXZCttkvouiNhGNt6DILg2LwreogPI
+	y8FQXfAEownSjM9q+Z0rLM5n5SK4Ax2GlaQ==
+X-ME-Sender: <xms:ZSG6apZvdgA3kNUfdXaSUxJdGi8Knqo9Es77gxhPV99cJHBERBwePg>
+    <xme:ZSG6ambmiWVqPsaAiuLf3VBA0-F9HKzuW3G5nma-i2kwe1J56lAUc7PpF-yPYz8QN
+    sFU5T9I2fKkgYLQb7TcGP5yPOi190J73BkTW3-Cwl2wwPPnu6Qvt9lA>
+X-ME-Received: <xmr:ZSG6apmzBy9-szdF-FlV2XdXsZQ5esfaQHz4ZzbABbLLlvKiQ2ysUO-no7L9>
+X-ME-Proxy-Cause: dmFkZTECWVJZRwmsUQHyQdPhZJRQny9omh7UV1fHsun8O48PDyi9yvGz1lzESyhsZqn+ct
+    GbsVOUP+CGtRWNkmzGvAGYCybz4XObf+fznuHaV4gE0vrMtoTFA62dlH3R7fsf3PiV7P1o
+    qjQmVXuimLZ442ctKap9M/PjqSJNq0WNuZj/zsQB+Fp+MyAFuOVuolNjN8Kj83af5PZ4Z9
+    PeAqT+pJzBDv87v2mpVzTsO/dYCSImdxzGhlCTe0dKu0VGcPnWUgDIUx6z580X4/H9879q
+    Zd9t6qRpevB/ZDYtEqeNPLY5H63IipEA5kPmr2LOFa2bBsOaCborxYbLw45yVYadU9kfHc
+    Yaz/VtU5f9YMTZZK2oRIsQ2qMNqqyfjuDcbwFS+ooRZ1IeBzfQvE/O/0Z31xVgfaTemJNf
+    dYDd6PZctXBP+tFcuht52bNgeEn/bre5JSZCzuh9re49Qzm1yblYL2/axyyaI8zNlZrxEY
+    /Tqi8yrtBzQWKtchKPF+QkDtTI9Gxvae+1+zDCZ8SqTG/5UbcPuw+2cZZRpEec+ZWifvSI
+    o2WtKrMhhBjKtfp1Sno2G8M9J8H+qqxXAecg+7l3Sdom/yT5VhFCmwEz+HOkEITxzeHzcb
+    MhQbU0cV1qSBXRhggaTMmZBQHSvJlfOjq/4GjIQqUs7Yu4FTAYVIDJfOIXaA
+X-ME-Proxy: <xmx:ZSG6aiw3iVgBLRswNAODxBAkhSgUwgmIOkgI2KZNj8qWh92PJqqpmw>
+    <xmx:ZSG6anODVOjyLAmceA_As8b5QeE-QNw8sTlJATOsE2QvxVjI2PYU3A>
+    <xmx:ZSG6amQ1sV8n4qswtrWy-PoifQuL-r-KACQMJi-KTCchrrSIP3F4Dg>
+    <xmx:ZSG6alZGMMDluFx0Ke1AzDDx7ZOQQj4JlTZ9gNZsHo5QucFn5XnZ4A>
+    <xmx:ZSG6avLz_5DhOgKeR4fMZocv6R0jb04ZmwqzT3SaLFUgvmLLF_9y7ckP>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Sep 2026 04:12:20 -0400 (EDT)
+Date: Mon, 28 Sep 2026 10:12:18 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: netdev@vger.kernel.org
+Cc: Hyunwoo Kim <imv4bel@gmail.com>
+Subject: Re: [PATCH net] strparser: make sure __strp_recv isn't running
+ before tearing down the parser
+Message-ID: <arohYhcuP2dZa8Qr@krikkit>
+References: <4c80ea646f95abbd5beca2c081d129fe7d61a0aa.1790344112.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463811672-1057209553-1790583056=:6942"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4c80ea646f95abbd5beca2c081d129fe7d61a0aa.1790344112.git.sd@queasysnail.net>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
----1463811672-1057209553-1790583056=:6942
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-
-	Hello,
-
-On Mon, 28 Sep 2026, Chenguang Zhao wrote:
-
-> On Fri, Sep 25, 2026 at 03:42:42PM +0300, Ido Schimmel wrote:
-> > On Thu, Sep 24, 2026 at 02:33:12PM +0800, Chenguang Zhao wrote:
-> > > From: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > > 
-> > > Commit de2c211868b9 ("ipvs: Always clear ipvs_property flag in
-> > > skb_scrub_packet()") moved ipvs_reset() before the xnet check, making
-> > > the call unconditional. The intent was to fix a bpf_redirect case where
-> > > stale ipvs_property on an skb re-entering the RX path caused the SNAT
-> > > hook to be skipped. However the change is too broad: when IPVS NAT
-> > > sits above an ipvlan L3 interface in the same netns, the following
-> > > loop happens:
-> > > 
-> > >   LOCAL_OUT -> IPVS DNAT (sets ipvs_property=1) -> dst_output -> ipvlan
-> > >     -> skb_scrub_packet() -> ipvs_reset() clears the flag
-> > >     -> ipvlan_process_v4_outbound() -> ip_local_out() -> LOCAL_OUT
-> > >     -> IPVS sees ipvs_property=0, processes again -> infinite recursion
-> > > 
-> > > syzbot reported this as a stack overflow on a KASAN kernel where each
-> > > level burns ~3.3 KB of stack and XMIT_RECURSION_LIMIT falls short. On
-> > > non-KASAN kernels the dead-loop detector catches it and prints "Dead
-> > > loop on virtual device", but traffic is still broken.
-> > > 
-> > > Fixes: de2c211868b9 ("ipvs: Always clear ipvs_property flag in skb_scrub_packet()")
-> > > Reported-by: syzbot+2b120190d9e54ad8c65d@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=2b120190d9e54ad8c65d
-> > > Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > 
-> > 1. You need to copy IPVS maintainers on patches related to IPVS. Added
-> > Julian.
+2026-09-25, 15:51:58 +0200, Sabrina Dubroca wrote:
+> The comment above strp_done() claims that if strp is stopped,
+> strp_recv will no longer be called. That's only true if the caller has
+> a mechanism (eg locking) to guarantee that strp_recv() calls that
+> started before strp_stop() have completed by the time we call
+> strp_done().
 > 
-> Thanks, will add Julian to CC in v2.
-
-	I saw it the first time, not needed. But I was busy
-with other changes, sorry for that. May be the packet scrubing
-needs 3 states, not just 2. But as this is not my area I have
-to dig more. SCRUB_REROUTE/SCRUB_TUNNEL (xdev=false, no ipvs_reset)
-used by IPVLAN L3, SCRUB_FORWARD (xdev=false, ipvs_reset) used
-by bpf_redirect in same netns, SCRUB_NET (xdev=true). But there
-are many call sites to check. The problem is to know how far
-a packet can reach without reset.
-
-	Another option is to add new skb_scrub_packet_XXX() for the
-needed sites, I'm not sure. But adding IPVS code in the IP layer
-does not look nice.
-
-> > 
-> > 2. Does it reproduce with commit 7f1de03e3103 ("net: reduce
-> > XMIT_RECURSION_LIMIT under KASAN") in net-next?
+> This adds a lock_sock/release_sock pair to guarantee that any
+> in-flight strp_recv() (which runs under either bh_lock_sock or
+> lock_sock, depending if it's called from ->sk_data_ready or strp_work)
+> has completed.
 > 
-> The dead loop itself still reproduces — dmesg shows "Dead loop on virtual device" for
-> every connection, and IPVS InPkts keeps climbing. But the stack overflow crash does not
-> reproduce with 7f1de03e3103 on KASAN, since the lower recursion limit catches the loop
-> before the stack blows up. So 7f1de03e3103 turns the panic into a packet drop,
-> which is expected, but doesn't fix the underlying issue (ipvs_property being cleared
-> unconditionally in skb_scrub_packet).
+> Only espintcp can be affected by this race condition, but this patch
+> makes sure no future user of strp can have the bug.
 > 
-> Thanks
-> Chenguang
+> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+> Link: https://lore.kernel.org/all/aZgpkyTDU3aXe_V0@v4bel/
+> Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 
-Regards
+And obviously I forgot the Cc: stable tag once more [*]. I guess I'll
+post a v2 tomorrow if I don't get any comments on this today.
 
---
-Julian Anastasov <ja@ssi.bg>
----1463811672-1057209553-1790583056=:6942--
+[*] but hopefully not again:
+https://lore.kernel.org/all/1e5824f7bb8f5d32783c5b47ef4c06b1fc59969a.1790437098.git.sd@queasysnail.net/
 
+-- 
+Sabrina
