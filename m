@@ -1,138 +1,121 @@
-Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290003839A9
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790619809; cv=none; b=AB0fhQDWVSxDsXTbqkwFrLW1DtWzIxsbNZYEVgHZIEWJfQcZf3WUBvHyK8U0iOCfeNCAsGydAWYCYG8GgolrtGnTOhG3xr9e40OIMdIC0rAoCrCtDJv2h9wAWfwbg0SjkgvUTgAauC9zs/0/QYo4FW3nrVl6e2MjyTCLwd7/f6o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790619809; c=relaxed/simple;
-	bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vc2PDlSFk1/nbeRDgXeXKi0pb8PmCL2ZAznHJjBXQdgeMyGsoaDCwkZxNJTrPYBq7IGVbnvums1yTY20PIeGj3WYIk7lz5yyc651EXUTxBRP2jCAuMLMJZ+sU9IhZFkYwuqBTLeare5KvlXCkAlRNGi3985agqpAwf8EeaG4W9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=Zb4f5aNs; arc=none smtp.client-ip=74.125.225.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698FC389E07
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790620055; cv=pass; b=PGfw0tcPzVLumnbmTAl7wuFj34t2Jk6jfRwn/lsYlSBEQWuX6P4Xp4Jt9mJthchno0iRwr8jLt9n8Vv8s25k+NeUM2285WB5bbfeR9CXSHnrI9bnbIPw0brCfZAtxgzsrwTqRhcO2KUPHHunLOpiuo2MAs/QGx6YecPFWdEL/pk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790620055; c=relaxed/simple;
+	bh=0p+1FcM4auFFpjb8JK6RspsnLEFEVKSBlFLSX9Qj6YA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CpBZ/mnGDPMm/0pEHkaoJRBkuinRBplyTJ6pN8kMfmOaKhh5RjxkF7CCDNhD3Q/z3B0njPZoHkOKRvW06Jq0k8AGZbSpqhyIufO/C9X+Y/8QCpzD0h6J00Hk6lnHsOJarWj/jVvoRwEDzzZOpnqZ3RFHrZpngciOlGMeQaUcHk4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yvrv/DEY; arc=pass smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="Zb4f5aNs"
-Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49cfcf2548aso15207485e9.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:23:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yvrv/DEY"
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939ca12ab70so430798185a.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:27:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790620053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=I4f9RjyuZOhL7eyaUyzCLzfJQ4WZC3Z6KkaahyAISoQoopwxFjAoCVNQif45Ma38P6
+         aSqg6/Fss2FmDDcxZOVxzfFkb31tcpknqemGZT+7dHyh8fv5kKL+JbVmfvOFHqBZPqfy
+         LlnkmcivWjAqVbIWONZk10UVtLM+dCYfSlv7v5MK7gi0RBalRVsMSZi6zi7KGib33IO4
+         +t0fr4wBI57M2lu0+o74z8wxYAU/YMlQ/ZSQlEpenrzVEs7LJ0VbU19E+HvpWbFDxyHM
+         gy3i8ojsM7Kx2YqKvcN8M1CLbsieDtkDAUlpqNDl34WxgC1r3OXwmaJ/ftEYy0rkRMfr
+         3z0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0p+1FcM4auFFpjb8JK6RspsnLEFEVKSBlFLSX9Qj6YA=;
+        fh=bultddj7DlG5m2zPfGObSpVXHmtUnCn7OTfZZ5ruN7M=;
+        b=pFsRJnBYmoo+A25k4oV9YZOAclBIUjmaljpBbyzNXsoDRsjEaaIReB95ePwYZa3Y2E
+         1R7rUMGV4YxOKb8pOqvbyywNKTiT/3B/eEoLM8eN99i7i/d0WlaLjqEE6ZS9v08Erm84
+         sftb9O/bJnUj4P6sE2VI7mOy8UHwWRzbmYxvT4/2gQvJekY2FMKmlOC/PxsDsT6QZO0c
+         ffvdgGtDUxx2UloLH/NQ7g1TTZvajxhp6Aluvw8kCX9Olo0ww0bjHI392cgXcysBvKRT
+         PkMpHGTrqbDp7ra/zQ2OXV5oHqJfvwvbL9nJJn4CF/pIS99pRDKTI7OBDcKub7SzUQWe
+         bsFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1790619806; x=1791224606; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
-        b=Zb4f5aNsl5iwLe1FSAwNb0ycX2DrDw2H4HofWQwFBIbhCwwyILo1YciTASRLUGshbU
-         +hATWqqRxaQj50ct6KhRnQZZNpD2biq0S0Us8wos/qa/FrCpGlWGYe/c6ASG7YiRfPg2
-         7XFhw3gcvxPp6rsE+8y+ssuz4b4wQxCAxn/W/KLW2a30J7ICRm+v+C6Hc4aTx3W4wkYl
-         BC3Ea31lnF6PQLfGwthnOpcoLU+SAzh4q7XYf3Q5YWWXYoHlWEn0KkLRaT9GZ2a+g7S0
-         7It0LA4w7MvkAGGQM+3ee2n13aq1mxVrGdFHJC43/BsYdMz6V80qRiadoD2KUFXfNync
-         7cCg==
+        d=google.com; s=20251104; t=1790620053; x=1791224853; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0p+1FcM4auFFpjb8JK6RspsnLEFEVKSBlFLSX9Qj6YA=;
+        b=Yvrv/DEYZi4ZR2fjeZ7XWootQGnar5vMQsG/k+FhKfOnbAJojdvHwohTCJ481gK+Cr
+         t9h34anbhwuySEc2dcua6We7mBR5izCp4/c/8abOmT5i1dEIccFSi7Ax/Vg8wQyIkgDf
+         3eLwDV/7JT3+YgCPrESS/vwuWPGI0x6D6JnJzjquGbHYAyAl6e5WRYMj0jScAf+un/xZ
+         do1VtP3TGaPrjJFsRfpv1V4GtGefJRKRzaFfL53uhtsxGwUvNmPoVKenLMJfGsBEmQZ6
+         EkU4bD+9LDw61YrXaoBsJPgHw4unRKpdG+XO9K3jVkwDpiOHFylcXUsCdCmSukxKQQHH
+         M92A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790619806; x=1791224606;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NKB5rqSwEt/lKn2AC1ELkAaqSFBsUp6D/aGlIYyMdac=;
-        b=NgjXcV98rGjVgEzuR7m8eBtoME6hbu9JYh4hupg1+ER0/F/+PAzY7435uGLp89umJg
-         YpmhxFYwUP7Jr6TenZuELspGvfXHf9C+O9vAiKYCw4MBmrMS3cAQo0ZNwLXmhYrR1s7c
-         MjS7TvMxmpQAorekz+cn+OVsmzYOyB1fJ4GGZkZEV7PpCMZqK0AUfg4Zwa0KEJHV5A9f
-         +jp02nOdIkGhVUFWuHyWsPD/FyWSUtGRTHHmsJjejOEwA5yWLYW4U4NyVDkj+Zwj/puj
-         yyxQJisQomnstaFbMoE6uTnoo5868nSMJnme3KXy/wT/zGhU8CHH2MAx0YYp2ttog2mY
-         uLVQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzNVHK11luP/XbfMn5TjnyPoNOf+mD0/5/eSfllukp8FkL7s9DEr5nqjnd+igFpyh6bOrdN8kk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nReuDtbqqdgqsVRZOcqPezwHh/OVk5ZHax0UkTxMo0GQqDCRph
-	rfMp5JyDdLA6mXgsYvvzuh5DkOIO35wh5NdBPiMtM9orSU1CYGUYOsPlk+0M8OuhU8o=
-X-Gm-Gg: AYBFou0n+9K2Ly46NuKGr8+6cogjrTWAYDbRKPqmHoPBWkHBZWed1KVqPOXPWN7jwMu
-	dyhyvBCyv8ILiYkEeJpCiwnoc90R84mh3F32yLJyx+7OFr+Odnp0pfsfp7CFrRCKrtLLdqSXIWD
-	q2crQj2057bV3NWIcDaRxqyXwcQ3iYwiojG6+AAgAiuhuNabVqz8F+j5251VbEh7L5kY0JI2+Fa
-	5o70nTTEUEjvmFlgyhC0IPF0PpoX0/VNbl/K+NiKGqdy0bfHlDd7LTqGk4ysRBY3vbBeiSinSTh
-	D8l0VQONp2Ori7c6LjuX7VdvohaFlQWmIsRiJWAxdB32JX3UDolLqBoPhqc+LeAjlzrOTcpAWxr
-	G0ZYtLUVpEiKsenOGq1+My+IiIcsxPwKsP9rme2GEwhcEMNEFoOFmXrl9d7Ecl85QVLh9nQP8/T
-	ZU6D/4rGf2u0/LOsUa4awYan2X0tlD1W8sSu9U0/s/WqMK/vAt1kBfCT4ai8L6VfIwMBG6fuXEy
-	koborabVloYMeHHbQns4ZvXNAFjVdpObr4dMsS0DnIv3Fe1oF0Piavk6jEs/5/SinLlPJz265kS
-	6Q==
-X-Received: by 2002:a05:600c:4744:b0:49c:e1cd:536 with SMTP id 5b1f17b1804b1-49fe7b6371bmr246224735e9.12.1790619806453;
-        Mon, 28 Sep 2026 11:23:26 -0700 (PDT)
-Received: from localhost.localdomain ([197.51.38.79])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00d0f68basm9476785e9.12.2026.09.28.11.23.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 28 Sep 2026 11:23:25 -0700 (PDT)
-From: Omar Ramadan <omar@blockcast.net>
-To: Cen Zhang <cenzhang@linux.microsoft.com>
-Cc: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	Xiang Mei <xmei5@asu.edu>,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: Re: [PATCH net v2] amt: do not store tunnel pointer in skb control block
-Date: Mon, 28 Sep 2026 21:23:22 +0300
-Message-ID: <20260928182322.90171-1-omar@blockcast.net>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <179038364383.2160803.12085088814406803245@kernel.org>
-References: <20260922214150.13970-1-cenzhang@linux.microsoft.com> <179038364383.2160803.12085088814406803245@kernel.org>
+        d=1e100.net; s=20260707; t=1790620053; x=1791224853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0p+1FcM4auFFpjb8JK6RspsnLEFEVKSBlFLSX9Qj6YA=;
+        b=BL2P1mmlV/DrrmhLqlBMyrheuLlbKn5sSiqCzri+oVGAVtDODOLqY/dctKH16FzGZr
+         dYItMIPzBqV9ndBr2eEFP8ec8eCBKeUvzcKry7He0Vlv+D8u1EABXO1ZLNTga4+/iQRd
+         Pk3a2iSKc6OASNZYxQsOStSV0JnjffsM9Iyu+qPPe86jxblAT7vbhjCMhqKbYXMVxez8
+         HJs0zTJF52Og44sJM/36jLOMpei0a6GTVi3V9VpbSSiuIeqqwchprIWxPWmGe9fnb/3W
+         rcpKpHgNaMQa1GQmdXf2mxdJk2kQeBTnXdSb1NcDdD0yg8mnAiG89UJFHrwMQ3EFIK0O
+         XRnQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw69H2mYlh2ngti9jE9RrFvwYkgey8tKOPTmuvjIulGwyGVkBcEBXyPHK4etktb9PoJt/n+f3I=@vger.kernel.org
+X-Gm-Message-State: AFuF++ms44zDbI+GbIY3xdgaGojn4KVkfhAzevU1HAwOJn0Zsq89UGzO
+	Z+FRBiw3uf5YHMU4BG1mWqyOaXTS5oMLrC1Vo5rw9ADtyJTOLIbl7Ay907RV5h9gTvK0d0UjbWl
+	ch9vAPMsa5EKEP6x49mG0e8BgL9URNyleyiCbadzR
+X-Gm-Gg: AYBFou0XswLViIUEnNexFGLqRixlJ+B5Q7fw9QuIv48aXYzsQI7DwXbw2aSFQ9M7lwL
+	84uvxo4ULNCJ4UNWfkT179NQ2UBzJkukaPPndmoUs2MlPgksiPKi4qEEGQdoWgoW6abUS3auqo3
+	huJKUAV1+eSFAsCL/GQ+Xty8cUA4Bb5MJQgfWdp7T4aV+/CB7lu92YUaR0XZPVexTkKdHpjJ9Ew
+	fvoR07OKIkynQxVu8Ovx+C7bLEsAfxbc/Q7oslHdXNmmqd5K5Sw4pcSGBrFB/vkI2R0SKFlwCB4
+	3tpww50xK6OawKiYD72uw89tSDxV+w6R55Rh3SrkBIkpH18HsGFVTUk+FrZrJf6r4cc7AjVL9MT
+	NxVOuXxNiwiBI4Tzlk7K0LqibS2oxtNvHmjbB3vm7/24SxsR2ABbxfy5/kT23KnKuhYbc
+X-Received: by 2002:a05:620a:40d6:b0:932:ddff:1241 with SMTP id
+ af79cd13be357-93c4738cc70mr2120552685a.26.1790620052603; Mon, 28 Sep 2026
+ 11:27:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260925135244.3715196-1-edumazet@google.com> <20260925135244.3715196-3-edumazet@google.com>
+ <CAEA6p_A4Rgk81_=b+osGxV-0PmcBDkP2H98=+bgp74jraVNueQ@mail.gmail.com>
+In-Reply-To: <CAEA6p_A4Rgk81_=b+osGxV-0PmcBDkP2H98=+bgp74jraVNueQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 28 Sep 2026 20:27:20 +0200
+X-Gm-Features: AclHuK8BMrAWgBDXT_SPHKWMKPh1oaK_tvecrWK9nVzMAc3o3ngcIFqgmsZOpcg
+Message-ID: <CANn89iJzxemnDsN74RCoEiwcz=NbUzb+=-WbXior_o=-=5H9Sw@mail.gmail.com>
+Subject: Re: [PATCH v2 net 2/2] selftests/net: add SO_RESERVE_MEM test
+To: Wei Wang <weiwan@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Cai Xinchen <caixinchen1@huawei.com>, netdev@vger.kernel.org, edumazet@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 26, 2026, Sashiko wrote:
-> [Severity: Medium]
-> Can this lookup return a tunnel that amt_request_handler() has published but
-> not finished initializing?
+On Mon, Sep 28, 2026 at 7:22=E2=80=AFPM Wei Wang <weiwan@google.com> wrote:
+>
 
-Yes, I think this one is real for v2. amt_request_handler() makes a
-new tunnel visible with list_add_tail_rcu() before it writes nonce and
-mac at the send: label. A query left in the qdisc from an expired
-tunnel can therefore match a re-created tunnel for the same gateway
-and port during that window.
+> Should we add
+> #ifndef SO_RESERVE_MEM
+> #define SO_RESERVE_MEM 73
+> #endif
+> for systems which don't have SO_RESERVE_MEM defined?
 
-The direct-send approach proposed earlier in this thread avoids it by
-construction. amt_send_igmp_gq() and amt_send_mld_gq() run at the end
-of amt_request_handler(), after the same context has written nonce and
-mac. They call amt_send_membership_query() for that tunnel, and nothing
-is looked up again at dequeue. I've posted that as v3:
-https://lore.kernel.org/netdev/20260928181601.85857-1-omar@blockcast.net/
+I removed it after sashiko rightfully complained.
 
-I ran Cen's reproducer on net at 17741334d00 (KASAN, slub_debug=FZU):
-the unpatched tree reports the slab-use-after-free in amt_dev_xmit(),
-and both v2 and the direct-send diff run clean. The reproducer does
-not exercise the re-creation window above, so this confirms the UAF
-fix, not the v2 race.
+https://lore.kernel.org/netdev/179034054266.2160803.16187930067723490774@ke=
+rnel.org/
 
-> [Severity: Medium]
-> [...] a query that was successfully handed to udp_tunnel_xmit_skb() is
-> counted as tx_dropped
 
-v3 removes the relay query branch from amt_dev_xmit(), so a General
-Query that was sent is no longer counted as dropped. The gateway report
-path (a successful amt_send_membership_update() followed by goto
-unlock) has the same miscount. That is independent of the UAF; I'll
-send a separate patch for it once v3 is in, since it applies on top.
 
-> [Severity: High]
-> amt_dev_stop() deletes the same entries with no lock at all
+> Add a test for check_non_tcp_rejected(_metadata, AF_INET, SOCK_DGRAM,
+> 0, 0) to validate that non-TCP socket with val =3D 0 also returns
+> -EOPNOTSUPP rather than 0?
 
-This predates the fix and is independent of it. Reading net, it looks
-right to me: nothing disables the per-tunnel gc_wq before the unlocked
-loop. cancel_delayed_work_sync() comes after list_del_rcu(), so it can
-wait for a running amt_tunnel_expire() that then deletes the entry and
-calls kfree_rcu() on it a second time. Cen already posted a fix for
-this, "amt: fix tunnel list corruption on device stop":
-https://patchwork.kernel.org/project/netdevbpf/patch/20260822045407.28983-1-blbllhy@gmail.com/
-so I'll leave that one to that thread.
-
-pw-bot: cr
+Hmm... I feel the test is already quite lengthy :)
