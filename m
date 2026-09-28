@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB9A361969;
-	Mon, 28 Sep 2026 13:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B8D4D1784;
+	Mon, 28 Sep 2026 13:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603155; cv=none; b=IDS14V7CQ0t2r9euVZlBi6s2V9RqOQlgYZdnKzNIg0LeUi6vh26lLYC8/oeBSXD0w61cD+4pMV5PW/41FYDcAUZk+3loEnPpxUGlHr28VrgyIdlhe4m76YCWUvU2/pE26G4XEG0DvI0lC/eKY4YKfm7v/bD2PFFn6jJDlGY4a/U=
+	t=1790603164; cv=none; b=fxXnLSVISBrED3VEVTol+LiGv+APNTYd4Ee+IvwU+xh0tcA5yFDIpd/1EfhlAH3K2JJHGC1JYUl+aSrF5uIIlFd86QyflvTNNXygFFrwtaWxqgzzoSkAbkKMz+Ty8lZsACarEDi0Ii7SnOGqQXpiRKe3BFAlZL0RRaTiOJqMpNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603155; c=relaxed/simple;
+	s=arc-20240116; t=1790603164; c=relaxed/simple;
 	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ctruWIUfBw8YVSWX2F3pT46LS4ZoQxlNCKUEK8s3UWvVBVBHhxzBtK6Xsg1XkX7oTDHMxKsHMjXCIk2Pe5QeQ6g6QvI2AhyM1eTbFRoyR++olB4cJett2mcFpV+oo4XM5KWIO7SKTorlFa4nk9710KZYYwE9JOcUFRWKUOVOYuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqrHfV6o; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=arTlNodemgJvDszbBz+tMXREtqUQRf1Aj9NpGb0DfqfUT4jLk0bioe8LSBxDVEl71G0I9PKYKGNDzhBkensgS26pE8g527wp93QXth6fdfvRQAMlPmWUe4YbirRn8MBCdEXPdlIF6/aMGqaNZhFKqTAZbZKVAjB2YnwA85YUARA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCh1KKb4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqrHfV6o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57E11F00893;
-	Mon, 28 Sep 2026 13:45:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCh1KKb4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C411F000FF;
+	Mon, 28 Sep 2026 13:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790603153;
+	s=k20260515; t=1790603162;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cqrHfV6oerB1IqFayR7kPvVek2UpX8jD5QpVjypppE1DbdEzCe8xBAyfRJ5GAtd2C
-	 dsTeQLs6LWG+5XrgyFuUrXuaTisJUYYmW5EaGhtUMMSlq2Sl7Bjj4p+lTXTlhKYJhq
-	 prGnIiQaC+R6sIdgv+6cJFFQxfhbD1/tf12Z+3pNVAvVJzcZlCAvdfQGOxNUnnQkBo
-	 rk/leURCsmN4lEDq+VGwfldTlrezk0dijMd41O39sxfXQdgsj9UUK8lRCxeifUBA2J
-	 WG5VUwX8wonLJOs6z4iOOFHKirKLLLrzhkxGFdEJ0RmWuDwGBfci81lRMNhi11i0tp
-	 clhASDjKS3fpA==
+	b=LCh1KKb4QcLoxQZQHTBmzV3EDqDB5dWr7P6aa/f8YqTLY77ZkNom3ObgPlGG6PGp6
+	 MN6pGhAJrS70mlLKJYXavOWBRIouS22Uez2llczbC+gppcz6Htczhv27ML5jCiqIA6
+	 38mdAKbyBBChj0nm+vBZV6tIif8aRcIkKslvSEWCLhtLBCtTwuY/ulqpNiKn/3zjnr
+	 oSMN/l2q8C9pOJHcSz8AqGfg528rFP8tMH4I/2ERt609XmFT9iIVpP+9xx8+fPqUMP
+	 Znpj5C8wTQ8gKrFYXucCyLkk6Rre/ox7pnbPp4/01pbid/rS6agf0j8r17ZwYhECpv
+	 3pucFJZ5gQnIQ==
 From: netdev-bot+sinfo@kernel.org
 To: Hongyan Xu <getshell@seu.edu.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
- kory.maincent@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
 Subject: 
- Re: [PATCH net] net: octeon_mgmt: kill TX tasklet before freeing rings
-Date: Mon, 28 Sep 2026 13:45:52 +0000
-Message-ID: <179060315243.31693.15075684213044441986@kernel.org>
-In-Reply-To: <20260928134125.2003-1-getshell@seu.edu.cn>
-References: <20260928134125.2003-1-getshell@seu.edu.cn>
+ Re: [PATCH net] net: octeontx2-af: quiesce devlink health work on teardown
+Date: Mon, 28 Sep 2026 13:46:01 +0000
+Message-ID: <179060316141.31693.9693184518346169092@kernel.org>
+In-Reply-To: <20260928134129.145-1-getshell@seu.edu.cn>
+References: <20260928134129.145-1-getshell@seu.edu.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
