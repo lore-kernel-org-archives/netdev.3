@@ -1,231 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f6.google.com (mail-yx2-f6.google.com [74.125.224.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D24931AABC;
-	Mon, 28 Sep 2026 04:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A325D17BED0
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790570330; cv=none; b=CdwZfSkcSMMe+mUhNbZfqyIJubUb8FZ+77VrJ+h9GJT1YqRYfP4jUaiENMR15LwPLdsNywuYOBiv2MaPPbSyBzqCBvG0Hkkl4DiB/A7UolfyJbKRxM1patsXyK4PmrY5NNJSFFOTwo9b4BOm/j1gUSkbpBxldmNMNX1qgsr4q8s=
+	t=1790570430; cv=none; b=bkq+HKN9s8NCZ0HPLNoUgXkxyOMkV1FCWk+G9FDMeTon3mV5eIa/gmDFDXvOsW1VuIzo9cQxOjYCAH/HrQfNAZEOA7Rqnf4POLaFsBf1q1fkraDJDy7+n4GRt7up8WosLKQE6kd3shTdZCM3uQ4Df0X4wwj4U5AyXb9/tTOK32I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790570330; c=relaxed/simple;
-	bh=ue0QM7Mir8rWRlAnTERaHNVkm+eOQtmICrgNWfSx1Qw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=paFUze5SEjqPuYXfpy/EopQ+etvHtHigSd4YLoV9vp4wJhJqCroGleRl4hVT2c/iRRtHlesGi2OLRGWiqNldRPTUVqC1w8J9PhAyhhS0xpKeAT/siWyasqrq2nWxs3kqibKGT8QMMNSXzG+8WONHDaGol1g7YHfPoMDqDuiYyoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpvYD6vF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790570430; c=relaxed/simple;
+	bh=ZyJlgK2kDWR3C9TbduJX74lPU1kiQGhl4K9ex08siEI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SMndb/hIQa+7rCeldh1uWUZsSzFjsNHfo0VqhrHlcVQSSOlcta6QvBg8s+uThhoQQDzjHlve17+Nv7ldFuY3oE/MxyotGwY6emDgY5ja1XQ+iHZ2JU7oi6dRK9QRKusiLsRT1exqzrrWWIfK8bvD4lrdMTfospkXVBHy0vhbdCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W621x2cB; arc=none smtp.client-ip=74.125.224.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpvYD6vF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856291F000FF;
-	Mon, 28 Sep 2026 04:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790570328;
-	bh=0cZrUf/IBYobzQta0cxvzQfyvQ8ia5XyPfmH82QNxSQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lpvYD6vFj3kn4Pj0+vkUWuxMhPCQAMDljmKRtREkb4kJaz+ELrM9NGS0gv6JUDSKx
-	 zTrT7uA6N1CmAsNrTif5R+LDQ1msu1I/hYxXVk37bmbPZx+PxQSqqSCzTdEc5myNmk
-	 D007X+hV4maS+W6l81tCs6YKQwqdnX23kKe8V7qrY7I57iMWKcb6UtZ+Z46ZDdfr54
-	 UJTuwdNanOHhcFzTvfmzs0aMYUTkjZprFlER6NLzzwKx/qNZtmi/jlQ+z1bNbU9Xn8
-	 +FFIX+xAnVZbzIuASTXjQt+ZFTx0A7MRIqJg2Ew3b3D+/bOWTRE2LhvOCB4FPP0Ttf
-	 jFgbuBaFWZ+XA==
-Message-ID: <5ee7e43c998eaaa75d630b077a77aef3721298c9.camel@kernel.org>
-Subject: Re: [PATCH net-next v3] net/rds: restrict the rdma_cm ids to IB
- devices
-From: Allison Henderson <achender@kernel.org>
-To: Simon Horman <horms@kernel.org>, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, kuba@kernel.org
-Date: Sun, 27 Sep 2026 21:38:47 -0700
-In-Reply-To: <20260927111140.GG13925@horms.kernel.org>
-References: <20260922084837.390414-1-achender@kernel.org>
-	 <179033694505.2160803.10055619633105856141@kernel.org>
-	 <20260927111140.GG13925@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W621x2cB"
+Received: by mail-yx2-f6.google.com with SMTP id 956f58d0204a3-66e623a0149so1145689d50.1
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790570427; x=1791175227; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KnkJG/BFuPflYXbPqzI6CXrDjqgOy9NIeRkK6DTXM0E=;
+        b=W621x2cBXhPUH8QpJ2nm8mhiNztL73PPiZeBhNpsL0UIKbk10KfCJXJWtRwyJztBt9
+         QRTI/MDKUQ5b8ea7lNSOzYdk8+hhKGfFrTZiRGhbM5GvJrelZUCilBLel5PGlHX1BLvf
+         uuAmgvvd5R8GooIMyOzHc7OBFR2E3845jHRSV0El2I+xmKzQHXdgkgZmXiicVO9vV14U
+         PfBiRXNUV6qlp6NtNbBxfpFWV22TdfVZ2N2ipUDy7osg3EA5JBUe3or1duxCr4G1gXQk
+         8pv3uTUqdnjOHyhHU+6selfR/fqo31J+L/uQmM3WqmEYfCzNA2AXM65229V2U9ppQJ7S
+         TgCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790570427; x=1791175227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KnkJG/BFuPflYXbPqzI6CXrDjqgOy9NIeRkK6DTXM0E=;
+        b=c8JOc1Ix8sDE4HOhufhB3bgSeQxQl0qqjNyPKLchHzDx9oPOgshVQFLTA2osu8wrP0
+         5Z+sFb+ROr0Le9juvJ/MB8bsbo2n/MhKqEVrNYdnFWjoXmnEnSUWNUukseJZQAdhee7V
+         Yt30uenYmx4azOgA87ODU0yau0r6uG8iEPIDskV2EXrHO4EKo3CMHeaUQQWnFz2p0eu+
+         eO+7SpvJYKwpi76f1v1u7OJafJYD/EJkZzrfssg1GIMmgRXICXTK+1ZtzyiVEnER0uiw
+         c7yWkWuboM3NJt3ZqpTYu/QQR9AfUZteEzKmk2JphTcaZJ32KNSiqv4GjIEUaGze9vlI
+         +3Hw==
+X-Gm-Message-State: AFq9FYLNpHSc+65bLUvX9BSEdvVnJu8NDTXYuReGPpXX1LU0pEjiyANF
+	wjWbnYvRFpNVTskh0L8o/WqeOLI7IPUCHSwC8mwaeRPihdpHR0KLIjCj9BHyEgiPEh8kjA==
+X-Gm-Gg: AYBFou0KEBhaYdnfc3fj74aFEAt9oU8Jr4+T6y1ElrKrnJVzMGR7kPZmTW9kt79MapS
+	bryLegHsLko9RvUpSYsGiwW/DhSVrPfScpovgNBoa1kxP2XmLrL4xCWb9COi0EZOYWF91impWeM
+	xzBKyCGmZAmaINueNtt1LRO3w0MW8tPrKArio9+t8edcr2c1qjiSBE9wOJ9QPjKORqovX3BQDQl
+	J0eun/tUJDzeWpOI6KJBNCIqJeUeJa1JhZycaU14gGlQDUXb5C34orci4/KLz/qLhKJYU8RM+4u
+	gE0bSIEZg+XxguFkki1iCzUhPfD2A3+BX2viNPDk/GbqvQr2mTgA8vob+QY14LTYHzaZNXjLHva
+	a8fGjmnOE4JPc0oadlrPmzpCVarKG8PGejwrU+fAVMvP1mX8UV5gFqu8r6VqNKuGqtfV+xeQ0ZU
+	E5et13odPuoRdE/uy0G9lYPTYpcZEmN7pgZoZQ2QUj06lFFen5UTp/qhs5VU3QBLpKO7fz41/nx
+	loRfdSkdruSX47/PiUL212ce5VfoTEMh9C7pE+vcoCkRQJJCxqj
+X-Received: by 2002:a05:690c:6609:b0:8a6:b4f4:7339 with SMTP id 00721157ae682-8a870638d9dmr35527787b3.35.1790570427627;
+        Sun, 27 Sep 2026 21:40:27 -0700 (PDT)
+Received: from Xinshengs-MBP.attlocal.net ([2600:1702:7d20:7d20:7139:eae7:b25b:5d54])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a85ec40be3sm38503747b3.0.2026.09.27.21.40.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 27 Sep 2026 21:40:26 -0700 (PDT)
+From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: usb: ax88172a: improve MAC address read error handling
+Date: Mon, 28 Sep 2026 00:40:11 -0400
+Message-ID: <20260928044011.63926-1-xinsheng.zhu.ny@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun, 2026-09-27 at 12:11 +0100, Simon Horman wrote:
-> On Fri, Sep 25, 2026 at 11:49:05AM +0000, netdev-bot+sashiko@kernel.org w=
-rote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> >=20
-> > Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
-> >=20
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >=20
-> > - [Medium] Commit-message misclassification: the changelog declares thi=
-s
-> >   change "hardening on top of it, not a fix in its own right, hence no=
-=E2=80=A6
-> >=20
-> > Pre-existing issues:
-> > - [Low] rds_rdma_listen_init_common() (net/rds/rdma_transport.c) logs t=
-he
-> >   listening port as the compile-time constant RDS_PORT (18634) at line=
-=E2=80=A6
-> >=20
-> > --
-> >=20
-> > net/rds: restrict the rdma_cm ids to IB devices
-> >=20
-> > This restricts the three rdma_cm ids RDS creates - the listener, the
-> > per-connection id in rds_ib_conn_path_connect() and the probe id in
-> > rds_ib_laddr_check_cm() - to RDMA_NODE_IB_CA with
-> > rdma_restrict_node_type() before they are bound.  The explicit node_typ=
-e
-> > test in rds_ib_laddr_check_cm() is dropped as redundant.
-> >=20
-> > > From the changelog:
-> >=20
-> > > With that, no rdma_cm event reaches RDS's handler from a device it
-> > > has no transport for.  The handler itself still assumes IB: it assign=
-s
-> > > its transport pointer only for RDMA_NODE_IB_CA and dereferences it
-> > > regardless, which is the crash that first surfaced this.  The fix for
-> > > that is a separate net patch, Aohan Mei's "net: rds: fix uninitialize=
-d
-> > > trans dereference in CM event handler", and is what stable kernels
-> > > without rdma_restrict_node_type() - which arrived in commit
-> > > a760e80e90f5 ("RDMA/core: introduce rdma_restrict_node_type()") - hav=
-e
-> > > to take; this patch is hardening on top of it, not a fix in its own
-> > > right, hence no Fixes tag.
-> >=20
-> > [Severity: Medium]
-> > Is the "not a fix in its own right, hence no Fixes tag" classification
-> > accurate for the tree this applies to?
-> >=20
-> > The referenced companion patch ("net: rds: fix uninitialized trans
-> > dereference in CM event handler") is not present here.  In
-> > rds_rdma_cm_event_handler_cmn() the transport pointer is still
-> > uninitialized on entry:
->=20
-> I find this to be a specious argument.
-> Of course a kernel without a fix applied is not fixed.
->=20
-> I believe the appropriate question, regarding fixing the Kernel, is if th=
-e
-> cited fixed actually fixes the problem.  That question is not addressed
-> here.  And indeed it's not a question to be answered here as it's a quest=
-ion
-> to be answered in the context of reviewing the cited fix.
+When retrieving the MAC address, ax88172a_bind() checks the return
+value of asix_read_cmd() against ETH_ALEN to detect short reads.
+Commit c28d9a285668 ("ax88172a: fix ax88172a_unbind() failures") added
+an -EIO assignment to ensure that this failure path returns a negative
+error code, even when asix_read_cmd() returns a non-negative short-read
+length.
 
-Agreed, I had sent out a v4 last night just before this response. The code =
-change
-is the same, but I did add the Fixes tag for the listeners the review talke=
-d about.
-As well a comment stating the patches are independent.
+Short-read handling was subsequently added to asix_read_cmd() by commit
+920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
+The helper now converts short reads to -ENODATA while preserving
+negative errors from the underlying USB read operation.
 
-The companion patch is Aohan's, and his v2 thread has been quiet since late
-August, so I'll carry it forward as a v3 to net with the review comments
-on v2 addressed.
+The MAC address short-read check in ax88172a_bind() is therefore
+redundant now, and overwriting the return value with -EIO is no longer
+necessary to ensure that the failure path returns a negative error code.
 
->=20
-> >=20
-> > net/rds/rdma_transport.c:rds_rdma_cm_event_handler_cmn() {
-> > 	struct rds_connection *conn =3D cm_id->context;
-> > 	struct rds_transport *trans;
-> > 	...
-> > 	if (cm_id->device->node_type =3D=3D RDMA_NODE_IB_CA)
-> > 		trans =3D &rds_ib_transport;
-> > 	...
-> > 	case RDMA_CM_EVENT_CONNECT_REQUEST:
-> > 		ret =3D trans->cm_handle_connect(cm_id, event, isv6);
-> > 	...
-> > 	case RDMA_CM_EVENT_ESTABLISHED:
-> > 		if (conn)
-> > 			trans->cm_connect_complete(conn, event);
-> > }
-> >=20
-> > So for any event arriving from a device whose node_type is not
-> > RDMA_NODE_IB_CA, trans is dereferenced as stack garbage, and the
-> > CONNECT_REQUEST case is reachable from an inbound connection on the RDS
-> > port.
-> >=20
-> > Before this patch cma_listen_on_dev() installed the RDS listener on eve=
-ry
-> > RDMA device, and cma_acquire_dev_by_src_ip() could pick a software iWAR=
-P
-> > device for the same netdev, which is what made that path reachable.  Wi=
-th
-> > the listener restriction added below, cma_listen_on_dev() honours
-> > restricted_node_type and no longer installs the listener on such a devi=
-ce.
-> >=20
-> > That makes this patch the change that removes the remotely reachable ro=
-ute
-> > to that indirect call in this tree.  Should it then carry a Fixes tag a=
-nd
-> > state the ordering dependency on the companion handler patch, rather th=
-an
-> > being described as hardening only?
-> >=20
-> > > diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-> > > index b15cf316b23a2..91ff1dde26af0 100644
-> > > --- a/net/rds/rdma_transport.c
-> > > +++ b/net/rds/rdma_transport.c
-> > > @@ -210,6 +210,14 @@ static int rds_rdma_listen_init_common(rdma_cm_e=
-vent_handler handler,
-> > >  		return ret;
-> > >  	}
-> > > =20
-> > > +	/* Only the IB transport is left, so only listen on IB devices */
-> > > +	ret =3D rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
-> > > +	if (ret) {
-> > > +		pr_err("RDS/RDMA: failed to setup listener, rdma_restrict_node_typ=
-e() returned %d\n",
-> > > +		       ret);
-> > > +		goto out;
-> > > +	}
-> > > +
-> > >  	/*
-> > >  	 * XXX I bet this binds the cm_id to a device.  If we want to suppo=
-rt
-> > >  	 * fail-over we'll have to take this into consideration.
-> >=20
-> > [Severity: Low]
-> > This isn't a bug introduced by this patch, but since the patch touches
-> > rds_rdma_listen_init_common() anyway: the debug line further down in th=
-e
-> > same function hard-codes the port,
-> >=20
-> > 	rdsdebug("cm %p listening on port %u\n", cm_id, RDS_PORT);
-> >=20
-> > while the helper has two callers with different ports.
-> > rds_rdma_listen_init() binds the IPv4 listener with
-> > sin.sin_port =3D htons(RDS_PORT) and the IPv6 listener with
-> > sin6.sin6_port =3D htons(RDS_CM_PORT), as the comment above it describe=
-s.
-> >=20
-> > For the IPv6 listener the message therefore prints 18634 rather than th=
-e
-> > 16385 that was bound.  Would it make sense to print the port from the s=
-a
-> > argument that was just bound instead?
->=20
-> If this is a problem it is separate to this patch,
-> and should be addressed separately.
+Check only for negative return values and remove the -EIO assignment
+to preserve the error returned by asix_read_cmd() through the existing
+cleanup path.
 
-Yes, v4 has that as a separate second patch to address this part
+Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+---
+ drivers/net/usb/ax88172a.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->=20
-> In all, this patch looks good to me.
->=20
-> Reviewed-by: Simon Horman <horms@kernel.org>
->=20
-Thank you!  I'll carry your rvb on patch 1 of v4 unless you'd
-rather look at it again.
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index 6b14bce2a552..f5036451f086 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -173,9 +173,8 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ 	/* Get the MAC address */
+ 	ret = asix_read_cmd(dev, AX_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, buf, 0);
+-	if (ret < ETH_ALEN) {
++	if (ret < 0) {
+ 		netdev_err(dev->net, "Failed to read MAC address: %d\n", ret);
+-		ret = -EIO;
+ 		goto free;
+ 	}
+ 	eth_hw_addr_set(dev->net, buf);
 
-Allison
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
+-- 
+2.54.0 (Apple Git-157)
 
