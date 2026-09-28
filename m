@@ -1,64 +1,64 @@
-Received: from mail-wr2-f22.google.com (mail-wr2-f22.google.com [74.125.225.86])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CCD4F6474
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 19:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F6E38911B
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 19:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790624761; cv=none; b=f6KeGe5DlJ6IGjUzonMkG3UxfqANdmrfiug3xT05Anuu/nvhBQUCICmmJPmDme9KUIY4L7NErQ5yAD6mhkHKAtU0QZBuSCHHkG4G0NDVgZKRKWL9p9Qrbt5YmestELDN/wU94bwBixW7vUZoYDkp0wCcSTKzwZmIwnsTkuMhTMc=
+	t=1790624764; cv=none; b=nPpqcqgPEZiDbeD+2tUnZGYPuA9+NwJOXQKbOEyBdsSBOyJRkCb72UKgBlXhi0sAlsip26zT7gGWQkaSkLoEXTfRN0zK0/GRcqTF9lQxEAAGZ9NNEFOA3yYrHLlUHRR0T+ckayvafOyXxjX3148D1mNbNjNV2LxDdLLbi8otiz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790624761; c=relaxed/simple;
-	bh=/IYRt7m1hBhlgCk4AnhppCirk0sLdTYFTGd86B/RQ+g=;
+	s=arc-20240116; t=1790624764; c=relaxed/simple;
+	bh=pOEzLfSLCr+9oxyGNTSsgNcprEznMU5MGTfyskpEb9w=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFDgAKNJHBQ3nxZvE1Qu2RySeQacNp3Of1gcJQ9O1NqNhbPMJNP3GN39IvR3IDeDCg4BdKrZAArycPWf/aQwaG61oGvIrvNPUepO3D6iX/6IDJsQ/FKY0MTKYyvguYq3ROoKgNuGXV4SM2ljzfbl6OsTsZkEQP/knKFoZHmX4ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=seYqIv6T; arc=none smtp.client-ip=74.125.225.86
+	 MIME-Version; b=VvPXWnR6nOQhNMvJOOIvF7HQGRdmYdG04ZNOlgSQ4e2tuc/iXh0jlwlojafKyvEI5DwZIuur/5DRTDbPvFb0vlqGEwTMDfO9UPKPaKRZbxj2GBiUtTQ0Q7reiXHFOTDzfjQwKc014+/oTrR2wTQvkXgmRMFsncs0ZzrLD4JvZ+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eLAjhplb; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="seYqIv6T"
-Received: by mail-wr2-f22.google.com with SMTP id ffacd0b85a97d-4887d06c669so2653777f8f.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:45:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eLAjhplb"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so19674375e9.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:46:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790624757; x=1791229557; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790624760; x=1791229560; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=RZXcrD1S7/I6W/aF1UhtK1+p0qebXOrwfnsiC5xoqRI=;
-        b=seYqIv6T85/OaRPHYw+SaLhFK9aad2/4460S2d44hD/igO+JHWU7Pvk6aaZegAeHlC
-         G62W/fq4N1wJPkzLR3i2aF8gp8mPz2kDmB2m6J3PHc3d/AcB1bPzvRsh9Ci0yU6ziB8/
-         FTaXejwpqNT6wR1Wx8IMHgY3mczuZUnQ5OTMUPe8USupKjE0WypsP+F04aCemPcqgj/m
-         yAGpA+wubclQjI8+O+fUvg46EvjRMaUrYsAzVhQos/+6thYHZdcoKGtw1V23APwFGTOn
-         0eFgrt4oZ1J+dLKzTEuaIBX2m9q7Aq10XelOmk3P1AFqAkkwiuEszAihwMMIWeAwhwn1
-         MBeg==
+        bh=e+ciZeljp4XbV+7Ul/HTP2zfMzICzcEEGNyLNPo0cRI=;
+        b=eLAjhplbLA9nazYtImE7qYZXO5UosFX1eTC4drbbh67GksLU6ooYUrxHIoyz5Yv86L
+         DzNpyUkxkh3U3MBQe4wkNV3zxwUA2ODoqOBDbZc2FA3+OGZDy/40pjqsQjdHgTveLKpF
+         DfXUKr6HEnNbb/b5xwNcGE6XO49X/0AYTbiGPzv13zMBxRpmTIwGQWa91pCuezXh/5s9
+         sYwvwqWGqALq5Abqvu77nyVsjYvQe9uN1C3MSUhcU0eBuY7RGyjcxMZErQCtim+BF+bu
+         /AdGh27PknQLU4g5OOvv13vrBS1cNjn6TL2Kf5ASpAi+YcOkf/M9LaaKC6UICFdcEURo
+         fW5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790624757; x=1791229557;
+        d=1e100.net; s=20260707; t=1790624760; x=1791229560;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=RZXcrD1S7/I6W/aF1UhtK1+p0qebXOrwfnsiC5xoqRI=;
-        b=aFaGjDin1yspCF0pcR8nL+Sfjb37dMF5V/hS3YLvTBfIhkSr3zoozt6MBxcWI0opQu
-         sCzmQkvSt2RBtAzJcH+uGGOWZYu7F+1thp25sPnqGE1VRpzS1HLSKd8NbciGDzyDvGAw
-         R0Z2y4KyhOUK/H8OYMSb25Yi8J2q0bCTc3X+ajzIqNz02yhro12E7lU0uqa9QgXS4Uwc
-         ToJrP8nfZ3+DkXktv9f5ETyljm+afpY9S3ChGH8wXlTRzU/5yyXgmirmszJOReM1cwVC
-         tyjVqs5S7im7wR1FcrKR1CNNHbXgZpGu0MDp1EPMCaNmWEGb8iSFgxIL4H02rZrxaEpD
-         4Vnw==
-X-Forwarded-Encrypted: i=1; AKwUvBwGKIWed5Cc4Za1U7gLSOmmMkwudjPlx6eRZaZq850oN9DHYrDny+Kor3y9PbbeD8RhObeD+54=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLW7B1fZFHP7MakZN+yRJVUZoMFbv/N0vPoqhXasPvdpB2O5KJN
-	zEVoWRiE45BSGr2PefEkW3pUjL5nolGpU2V+/WVr2DgiEuO/HrH93etO
-X-Gm-Gg: AYBFou0pUUq76zM30qc7xc60eoagIz1bwIdcKR6TsIeTNOpoDBPA7fWZgZwVDEZO6D6
-	B3r7NanGTMw++1KpgOpnOIWZVE2tC7EoBISaN7GaKQyDCj35McjW6/9pGfaxUTOPGYxPkqDdiWn
-	/l9QgHcSzTBr91lRroTItvY7F1pLIOD8RVYV6wAGC32E2zUrIBuRhWXWvfyOt/p4aaiXGetmaAP
-	gpW8/AfOlA1jgaa1SxxvKzEX3Y2wmJltB5subQem+12F914NG1aoGK+uyBm0TMih/Q40oveBBxK
-	XI8LLk/cDSRYbfBxTNJZ2pf4oz7y53tC58aCDkjvFNpStF0wVMP6nP3Ez5gVWrNw+rm3AsStz/f
-	K2lPp+uQMie33th/n35m+FTvxL1SgmU4dpVy9qG2jYGBYbXnbe0l8t5qNRPSIy0OwKY1WcuPkB3
-	sT7zSCx9C1rfJwDrrPl441FdmP5/YChKnS55OI0vIUWt5EXOBjczxcwNAP/HdR/DBP8oFP9NPch
-	L9vacvPu/eWBOoPKp/As1yZCSHbuf0MjNJQFgsHXsBD1jI9eIGgDv5CelTlxb+a
-X-Received: by 2002:adf:e188:0:b0:486:f980:2361 with SMTP id ffacd0b85a97d-48872ac750cmr24124073f8f.45.1790624757303;
-        Mon, 28 Sep 2026 12:45:57 -0700 (PDT)
+        bh=e+ciZeljp4XbV+7Ul/HTP2zfMzICzcEEGNyLNPo0cRI=;
+        b=T794DmwOlSbmjh5MoBO493JehcPP/W1ZntbgTXTheLoDcPdR4hYoIiwRDkSmB0XDDe
+         PCJS5LXrw6xQXsALCRHUQDLlzNJzwbGz2q1VUW9JtmQ2bQexp9aIyxPDGMrdYKrZ1XVD
+         cV1+aMvPfg2yFNeYzgcpnNjkLaQ7BNZq38G8iHP9P4esMmPq+IKroXqJ+Wffpi7paNor
+         W6mCER5vg18EDhz/LyeUrBO4zK1mU4XuSD1XXXa8HuelkhMolWXqrExUzxMX8cKKSbkA
+         lVlVrIpbIWwnHmdof/hlfpo2Wpe9TP+4EXIa3v+hGaSnj4l5UQHtpkvbo0ebhprpTxUB
+         jpOQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxMej77ug5MLS1hI1ct9jBYqhrILWL1zk1b6ca96ZrmQQJ5r2HpGCNRzCJ+DKZYdCpWdpT/a6A=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjYUa7h+oOLu9hsfQfY6DuK9B2KVMV/Sxx8vmkb5Mlc8K3DlJx
+	NyxuMKjiy08psKjLMEIj7NcvhvFTrWEdBXb9zt94yh5M4zMGPrfCJ0Qk
+X-Gm-Gg: AYBFou194RBdPpIfRMswH46bSDG3d6WFhq8cewETA777cKwSdRT4UL2YbTqXIy4vFIc
+	ozUkvJV00xOTM21SXCTASn1S4D7fD0R95lMLydibZJqC2H8grWoqyDqd2XRQqexAbVf21u7vQ9I
+	64hGfdo5zUfT++9B1hXzAPQYIQjafTfNnNcMnajuMvIv+lbKPRCIpXewFj45DkDOUzy8mLcf055
+	cX20lVhcxGEtBOpX4Voci9z/lAG6XcmXO1gdSm82t1I7PDcifpVgVS1ycXiNpeVL32kpHDizOrK
+	MCxvMVrYmMimtpezIwCMKEUUP5CKJU3mz2FIJfdSh6xsYfHiDjMqcQoLtVD2sMPgiRQFhbXgCtL
+	a5mjnFaYY5fqzl4kitC9A6mmnFS57CCdnLW4SNEHGOREdNmJ3DW6AqAUP8TnuLHYRWKhQq1bYdT
+	/00kf6Eb5bDKR5BFf7nJuRTC9cp2vBHpHuckgEK97OjOdw2FZD0EMB2FHj+HFS74QVqscklDuOG
+	zuHesQBuSVJ7Qrd9ruNB2Alr1RJeJeXXwY1U2zELOqjfgi9IhTDiPdu32XeVpSCwg==
+X-Received: by 2002:a05:600c:870c:b0:49e:6050:9fbe with SMTP id 5b1f17b1804b1-49fe66d76camr237998245e9.15.1790624760097;
+        Mon, 28 Sep 2026 12:46:00 -0700 (PDT)
 Received: from Ansuel-XPS24.localdomain (host-82-57-191-234.retail.telecomitalia.it. [82.57.191.234])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48af071532dsm1527706f8f.20.2026.09.28.12.45.55
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48af071532dsm1527706f8f.20.2026.09.28.12.45.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 12:45:56 -0700 (PDT)
+        Mon, 28 Sep 2026 12:45:59 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Christian Marangi <ansuelsmth@gmail.com>,
 	Lee Jones <lee@kernel.org>,
@@ -85,9 +85,9 @@ To: Christian Marangi <ansuelsmth@gmail.com>,
 	mfd@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v24 02/10] dt-bindings: net: Document support for AN8855 Switch Internal PHY
-Date: Mon, 28 Sep 2026 21:45:01 +0200
-Message-ID: <20260928194511.41878-3-ansuelsmth@gmail.com>
+Subject: [PATCH net-next v24 03/10] dt-bindings: mfd: Document support for Airoha AN8855 Switch SoC
+Date: Mon, 28 Sep 2026 21:45:02 +0200
+Message-ID: <20260928194511.41878-4-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260928194511.41878-1-ansuelsmth@gmail.com>
 References: <20260928194511.41878-1-ansuelsmth@gmail.com>
@@ -99,109 +99,199 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document support for AN8855 Switch Internal PHY.
+Document support for Airoha AN8855 Switch SoC. This SoC expose various
+peripherals like an Ethernet Switch, a NVMEM provider and Ethernet PHYs.
 
-Airoha AN8855 is a 5-port Gigabit Switch that expose the Internal
-PHYs on the MDIO bus.
-
-Each PHY might need to be calibrated to correctly work with the
-use of the eFUSE provided by the Switch SoC. This can be enabled by
-defining in the PHY node the NVMEM cell properties.
+It does also support i2c and timers but those are not currently
+supported/used.
 
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- .../bindings/net/airoha,an8855-phy.yaml       | 83 +++++++++++++++++++
- 1 file changed, 83 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml
+ .../bindings/mfd/airoha,an8855.yaml           | 176 ++++++++++++++++++
+ 1 file changed, 176 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
 
-diff --git a/Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml b/Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml
+diff --git a/Documentation/devicetree/bindings/mfd/airoha,an8855.yaml b/Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
 new file mode 100644
-index 000000000000..d2f86116badf
+index 000000000000..48127e956c96
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml
-@@ -0,0 +1,83 @@
++++ b/Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
+@@ -0,0 +1,176 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/net/airoha,an8855-phy.yaml#
++$id: http://devicetree.org/schemas/mfd/airoha,an8855.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Airoha AN8855 Switch Internal PHY
++title: Airoha AN8855 Switch SoC
 +
 +maintainers:
 +  - Christian Marangi <ansuelsmth@gmail.com>
 +
 +description: >
-+  Airoha AN8855 is a 5-port Gigabit Switch that expose the Internal
-+  PHYs on the MDIO bus.
++  Airoha AN8855 Switch is a SoC that expose various peripherals like an
++  Ethernet Switch, a NVMEM provider and Ethernet PHYs.
 +
-+  Each PHY might need to be calibrated to correctly work with the
-+  use of the eFUSE provided by the Switch SoC.
-+
-+allOf:
-+  - $ref: ethernet-phy.yaml#
-+
-+select:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - ethernet-phy-idc0ff.0410
-+  required:
-+    - compatible
++  It does also support i2c and timers but those are not currently
++  supported/used.
 +
 +properties:
++  compatible:
++    const: airoha,an8855
++
 +  reg:
 +    maxItems: 1
 +
-+  nvmem-cells:
-+    items:
-+      - description: phandle to SoC eFUSE tx_a
-+      - description: phandle to SoC eFUSE tx_b
-+      - description: phandle to SoC eFUSE tx_c
-+      - description: phandle to SoC eFUSE tx_d
++  reset-gpios:
++    maxItems: 1
 +
-+  nvmem-cell-names:
-+    items:
-+      - const: tx_a
-+      - const: tx_b
-+      - const: tx_c
-+      - const: tx_d
++  efuse:
++    type: object
++    $ref: /schemas/nvmem/airoha,an8855-efuse.yaml
++    description: EFUSE exposed by the Airoha AN8855 SoC
++
++  ethernet-switch:
++    type: object
++    $ref: /schemas/net/dsa/airoha,an8855-switch.yaml
++    description: Switch exposed by the Airoha AN8855 SoC
++
++  mdio:
++    type: object
++    $ref: /schemas/net/mdio.yaml#
++    description: MDIO exposed by the Airoha AN8855 SoC
++    unevaluatedProperties: false
 +
 +required:
 +  - compatible
 +  - reg
++  - mdio
++  - ethernet-switch
 +
-+dependentRequired:
-+  nvmem-cells: [ nvmem-cell-names ]
-+
-+unevaluatedProperties: false
++additionalProperties: false
 +
 +examples:
 +  - |
++    #include <dt-bindings/gpio/gpio.h>
++
 +    mdio {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        ethernet-phy@1 {
-+            compatible = "ethernet-phy-idc0ff.0410",
-+                         "ethernet-phy-ieee802.3-c45";
-+
++        soc@1 {
++            compatible = "airoha,an8855";
 +            reg = <1>;
-+        };
 +
-+        ethernet-phy@2 {
-+            compatible = "ethernet-phy-idc0ff.0410",
-+                         "ethernet-phy-ieee802.3-c45";
++            reset-gpios = <&pio 39 GPIO_ACTIVE_HIGH>;
 +
-+            reg = <2>;
++            efuse {
++                compatible = "airoha,an8855-efuse";
 +
-+            nvmem-cells = <&shift_sel_port0_tx_a>,
-+                          <&shift_sel_port0_tx_b>,
-+                          <&shift_sel_port0_tx_c>,
-+                          <&shift_sel_port0_tx_d>;
-+            nvmem-cell-names = "tx_a", "tx_b", "tx_c", "tx_d";
++                #nvmem-cell-cells = <0>;
++
++                nvmem-layout {
++                    compatible = "fixed-layout";
++                    #address-cells = <1>;
++                    #size-cells = <1>;
++
++                    shift_sel_port0_tx_a: shift-sel-port0-tx-a@c {
++                       reg = <0xc 0x4>;
++                    };
++
++                    shift_sel_port0_tx_b: shift-sel-port0-tx-b@10 {
++                        reg = <0x10 0x4>;
++                    };
++
++                    shift_sel_port0_tx_c: shift-sel-port0-tx-c@14 {
++                        reg = <0x14 0x4>;
++                    };
++
++                    shift_sel_port0_tx_d: shift-sel-port0-tx-d@18 {
++                       reg = <0x18 0x4>;
++                    };
++
++                    shift_sel_port1_tx_a: shift-sel-port1-tx-a@1c {
++                        reg = <0x1c 0x4>;
++                    };
++
++                    shift_sel_port1_tx_b: shift-sel-port1-tx-b@20 {
++                        reg = <0x20 0x4>;
++                    };
++
++                    shift_sel_port1_tx_c: shift-sel-port1-tx-c@24 {
++                       reg = <0x24 0x4>;
++                    };
++
++                    shift_sel_port1_tx_d: shift-sel-port1-tx-d@28 {
++                        reg = <0x28 0x4>;
++                    };
++                };
++            };
++
++            ethernet-switch {
++                compatible = "airoha,an8855-switch";
++
++                ports {
++                    #address-cells = <1>;
++                    #size-cells = <0>;
++
++                    port@0 {
++                        reg = <0>;
++                        label = "lan1";
++                        phy-mode = "internal";
++                        phy-handle = <&internal_phy1>;
++                    };
++
++                    port@1 {
++                        reg = <1>;
++                        label = "lan2";
++                        phy-mode = "internal";
++                        phy-handle = <&internal_phy2>;
++                    };
++
++                    port@5 {
++                        reg = <5>;
++                        label = "cpu";
++                        ethernet = <&gmac0>;
++                        phy-mode = "2500base-x";
++
++                        fixed-link {
++                            speed = <2500>;
++                            full-duplex;
++                            pause;
++                        };
++                    };
++                };
++            };
++
++            mdio {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                internal_phy1: ethernet-phy@1 {
++                  compatible = "ethernet-phy-idc0ff.0410",
++                               "ethernet-phy-ieee802.3-c22";
++                  reg = <1>;
++
++                  nvmem-cells = <&shift_sel_port0_tx_a>,
++                      <&shift_sel_port0_tx_b>,
++                      <&shift_sel_port0_tx_c>,
++                      <&shift_sel_port0_tx_d>;
++                  nvmem-cell-names = "tx_a", "tx_b", "tx_c", "tx_d";
++                };
++
++                internal_phy2: ethernet-phy@2 {
++                  compatible = "ethernet-phy-idc0ff.0410",
++                               "ethernet-phy-ieee802.3-c22";
++                  reg = <2>;
++
++                  nvmem-cells = <&shift_sel_port1_tx_a>,
++                      <&shift_sel_port1_tx_b>,
++                      <&shift_sel_port1_tx_c>,
++                      <&shift_sel_port1_tx_d>;
++                  nvmem-cell-names = "tx_a", "tx_b", "tx_c", "tx_d";
++                };
++            };
 +        };
 +    };
 -- 
