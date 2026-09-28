@@ -1,102 +1,208 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB44832E121
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 23:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AFA470429;
+	Mon, 28 Sep 2026 23:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790639484; cv=none; b=OZrOT0IRLJyYYFMW6udvWCK//Y5+mSf7bV96JBYd0Kt11eChirA+1VDJioMqrWpNGlebrc673tna+ihNF9zNBIsR4+ERaegas3xHlu2dSRWvzC8X6/ddhFLSgGgkMEbtNFwFgNt1dZpKiUMHpmAc0EgFDZYGWJJ1Ft4/HXXtV60=
+	t=1790639702; cv=none; b=AQBj5P6B886GUZ/j1hNxpx99Q6QvZ145q27N5dgWfdTjIlSZ0mSi8ObdzsvEqdcsvFFeeUWnvIRVCiW8jQQFvzCGC+7AiuuHrC/Pqacv5GJHl+5gPK9uMDRhQPDlG0zVWa49GtZLaqKxhOx0dkPIV1Oc9Vi3tSz2x/0PqOamblA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790639484; c=relaxed/simple;
-	bh=TdLQCP7SxBDqhCUXVE5pXEqf4c95P9KMT8BbuqecCYI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XvoXKglklIz7+wkvo7IUC+Yh1o5dHPP4LUlo8rnHsV/nd8qKsEOuJ89j/IdU63WESSd6+ZsaWnPKFERc8Tt91nu7TSVMan6mSB+4wTI156BzZLTbwFHAlZQ3KXMGbtNWUd9IoITpgDynQr8gXtyTRfsoaSkE7L/WC8sjGsrsvuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbMf6Ax+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790639702; c=relaxed/simple;
+	bh=GMYLWElEPaDNYpuF7kcK/VGOjMVakxVkFK1sPX0Ak/s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SAqlURlLeoi21nj8P0dgrGOO1D7HMv7NvpuhrG8OClyHCc9+0ZMlBnqGXyg87XJrSkxzTCODl7SJ0zqyhJeLR6Sj10KBSFYkv/DT+HeJU6bWfU9SVFgehw6kr0lJUVR87H94tAOv7E9aE3A2VkTpJj8fwsC3B86VyVBWE6eobm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muxbDkVm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbMf6Ax+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B361F000FF;
-	Mon, 28 Sep 2026 23:51:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muxbDkVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9843A1F000FF;
+	Mon, 28 Sep 2026 23:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790639483;
-	bh=ht3eolazAXRpJgIoM8sku4ZYh8UjG5oK1rj3oxKccuQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EbMf6Ax+qJbbW73K7c/s48yu+IEsorRDq0sgirheTYU+2GilgtM7mDOwUpFh9c7oK
-	 EpoW7tAdqsbrmDfDmLg6X+OHt5Twnl5tvnx9yvqK2t+l4j2BuWHGt4AM14pw092B0b
-	 t8YENS6m8dKf3H9jef4gZfvAPJZa5ogA5s3Kcz/3J5cMy3hi0dh9JxWHRMUu9OwjAL
-	 6mlRu07p1FnZXpCH+QL/CbzebbHkhizuTX+nA+jb5WAH0UxvjRxm4k8hf6TZJpH0ag
-	 2fbxWOSTeHM7WBogoW9TgXRSj6voasMHTeWFAZAfTmlQb1KI8NVEmI1tj3I4wgpH3o
-	 RdM0TcFk8Y7pg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199523924FE4;
-	Mon, 28 Sep 2026 23:50:09 +0000 (UTC)
+	s=k20260515; t=1790639701;
+	bh=JF0EuAvkoeFjqrzcUGARKPUfjOv5fyAiOQr0rrazrGs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=muxbDkVmCxWq2gzqHqxSYWxToQBz1WkYphkiZThPbj20fNDLE01U4O6rJae1AttQJ
+	 VjQpGixE0gtHWM/qOSE2LUuK6pAyRc3RO7tU7SARcvKiSDV4/1TDxHN+alkLJdVq/B
+	 2FSKQxgoStKx7Z8Tl+vuZm1TJNk8Uw3URBcXQ+lqC2wdzF4LMupXRZQGFFhsX/vhtr
+	 nFsZ1ka2IK/YxTboQFnnDtzLhizrlC+pgn+xiorZBfSZ6GHlfiBr65zTbdVSQyXf5Z
+	 4LC52avARIIhSPQ2iRgnrUCkYwMAB11YqL2WauEN/498zfqJhLEhaqaS2xHNx0WJhU
+	 Bvgn9HyNPB2YQ==
+Subject:
+ Re: [PATCH net 02/11] ipvs: fix buffer overflow when sending sync messages
+From: netdev-bot+sashiko@kernel.org
+To: pablo@netfilter.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Date: Mon, 28 Sep 2026 23:55:00 +0000
+Message-ID: <179063970014.3145.11099245705422825051@kernel.org>
+In-Reply-To: <20260927220816.268206-3-pablo@netfilter.org>
+References: <20260927220816.268206-3-pablo@netfilter.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 net-next 0/8] vxlan: convert configuration to RCU and
- enable lockless dumps
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179063940789.180557.14804652017550422979.git-patchwork-notify@kernel.org>
-Date: Mon, 28 Sep 2026 23:50:07 +0000
-References: <20260922181102.3989489-1-edumazet@google.com>
-In-Reply-To: <20260922181102.3989489-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-Hello:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-On Tue, 22 Sep 2026 18:10:54 +0000 you wrote:
-> This patch series converts struct vxlan_config to RCU protection, eliminates
-> redundant destination fields, and enables lockless RTNL-free link dumping
-> in vxlan_fill_info().
-> 
-> Changes in v6:
-> - In vxlan_multicast_leave_vnigrp(), skip entries matching the device-default
->   remote_ip and ignore -EADDRNOTAVAIL when multiple VNIs share a multicast
->   group, matching vxlan_multicast_join_vnigrp() (patches 1, 7).
-> - In vxlan_changelink(), still attempt vxlan_multicast_join() after
->   vxlan_config_apply() even if vxlan_multicast_leave() returned an error
->   (patches 1, 6, 7).
-> - In vxlan_vni_update_group(), set oldrip to the previous effective remote IP
->   when updating an existing VNI (!create) so replacing a VNI's group removes
->   the previous default FDB rdst instead of accumulating duplicates
->   (patches 1, 7).
-> - In vxlan_update_default_fdb_entry(), still delete the newly added rdst on
->   rollback (extack == NULL) if re-adding the previous rdst fails (patch 1).
-> - Link to v5: https://lore.kernel.org/netdev/20260921100139.508191-1-edumazet@google.com/
-> 
-> [...]
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Here is the summary with links:
-  - [v6,net-next,1/8] vxlan: update default fdb entries when the lower device changes
-    https://git.kernel.org/netdev/net-next/c/b0e75977c688
-  - [v6,net-next,2/8] vxlan: vnifilter: use list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()
-    https://git.kernel.org/netdev/net-next/c/d10b7b93c5e7
-  - [v6,net-next,3/8] vxlan: vnifilter: signal interrupted RTM_GETTUNNEL dumps
-    https://git.kernel.org/netdev/net-next/c/0e75889596aa
-  - [v6,net-next,4/8] vxlan: pass vxlan_config pointer to helper functions
-    https://git.kernel.org/netdev/net-next/c/3ea463294b1b
-  - [v6,net-next,5/8] vxlan: move VXLAN_F_MDB to struct vxlan_dev flags
-    https://git.kernel.org/netdev/net-next/c/0259a5f1279f
-  - [v6,net-next,6/8] vxlan: convert configuration to RCU protection
-    https://git.kernel.org/netdev/net-next/c/0db0197ef9e1
-  - [v6,net-next,7/8] vxlan: remove default_dst and use vxlan_config and lowerdev
-    https://git.kernel.org/netdev/net-next/c/7e9e6844befc
-  - [v6,net-next,8/8] vxlan: no longer rely on RTNL in vxlan_fill_info()
-    https://git.kernel.org/netdev/net-next/c/4b74deb12948
+- [Medium] The commit message for "ipvs: fix buffer overflow when sending
+  sync messages" says the SEQ_MASK race "should not be reproducible",…
 
-You are awesome, thank you!
+Pre-existing issues:
+- [Medium] After the patch, the flags are a consistent snapshot, but the
+  sequence data is still read without locking and without ordering…
+
+--
+
+ipvs: fix buffer overflow when sending sync messages
+
+This commit changes ip_vs_sync_conn_v0() and ip_vs_sync_conn() to read
+cp->flags once with READ_ONCE(). The same value is then used to size the
+sync entry and to decide whether to emit the sequence options. This
+prevents a heap overflow when another CPU sets IP_VS_CONN_F_SEQ_MASK
+between the two reads.
+
+Link: https://sashiko.dev/#/patchset/20260903004149.1037028-1-pablo%40netfilter.org
+Link: https://sashiko.dev/#/patchset/20260909111338.44357-1-ja%40ssi.bg
+
+> Note that IPVS does not set the SEQ_MASK anymore for the
+> ip_vs_ftp.c helper starting from commit 7f1c40757951
+> ("IPVS: make FTP work with full NAT support") (2.6.36+),
+> so the problem should not be reproducible.
+
+[Severity: Medium]
+Is the "should not be reproducible" part accurate?
+
+The ip_vs_ftp part is true. ip_vs_ftp_out() and ip_vs_ftp_in() always set
+*diff = 0, so vs_seq_update() is never reached. However, the SEQ bits
+still seem to have another writer, and received sync messages drive it.
+
+In ip_vs_proc_conn(), an existing connection has its flags updated under
+cp->lock:
+
+net/netfilter/ipvs/ip_vs_sync.c:ip_vs_proc_conn() {
+    ...
+		flags &= IP_VS_CONN_F_BACKUP_UPD_MASK;
+		flags |= cp->flags & ~IP_VS_CONN_F_BACKUP_UPD_MASK;
+		cp->flags = flags;
+    ...
+}
+
+IP_VS_CONN_F_BACKUP_UPD_MASK includes the SEQ bits:
+
+#define IP_VS_CONN_F_BACKUP_UPD_MASK (IP_VS_CONN_F_INACTIVE | \
+				      IP_VS_CONN_F_SEQ_MASK)
+
+ip_vs_proc_sync_conn() masks the wire flags with IP_VS_CONN_F_BACKUP_MASK,
+which also keeps the SEQ bits. It does not require an IPVS_OPT_SEQ_DATA
+option to be present. So a peer's sync message can set or clear the SEQ
+bits on an existing connection.
+
+start_sync_thread() checks the master and backup roles separately and then
+does ipvs->sync_state |= state, so one node can run both daemons. On such
+a node:
+
+CPU1 (backup kthread)
+ip_vs_process_message()
+  ip_vs_proc_sync_conn()
+    ip_vs_proc_conn()
+      cp->flags = flags;    /* SEQ bits toggled */
+
+CPU2 (packet path, or ip_vs_conn_expire())
+ip_vs_in()
+  ip_vs_sync_conn()
+    reads cp->flags to compute len, then again for IPVS_OPT_SEQ_DATA
+
+Before this patch, that double read could size len without the options.
+It could then write struct ip_vs_sync_conn_options past buff->end.
+
+Sync traffic is unauthenticated; a later patch in this series calls it
+not secure by design. Also, "ipvs: filter some flags received in the
+backup server" does not filter the SEQ bits, so this writer is still
+live at the end of the series.
+
+Could the commit message drop the "should not be reproducible" claim and
+mention the backup update path? The code change itself does look like it
+closes the overflow.
+
+> diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
+> index 5383aeafb0aed..dfa8487ec0c20 100644
+> --- a/net/netfilter/ipvs/ip_vs_sync.c
+> +++ b/net/netfilter/ipvs/ip_vs_sync.c
+
+[ ... ]
+
+> @@ -647,6 +650,7 @@ void ip_vs_sync_conn(struct netns_ipvs *ipvs, struct ip_vs_conn *cp, int pkts)
+>  sloop:
+>  	if (!ip_vs_sync_conn_needed(ipvs, cp, pkts))
+>  		goto control;
+> +	flags = READ_ONCE(cp->flags);
+>  
+>  	/* Sanity checks */
+>  	pe_name_len = 0;
+
+[ ... ]
+
+> @@ -744,7 +749,7 @@ void ip_vs_sync_conn(struct netns_ipvs *ipvs, struct ip_vs_conn *cp, int pkts)
+>  		s->v4.vaddr = cp->vaddr.ip;
+>  		s->v4.daddr = cp->daddr.ip;
+>  	}
+> -	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
+> +	if (seq_mask) {
+>  		*(p++) = IPVS_OPT_SEQ_DATA;
+>  		*(p++) = sizeof(struct ip_vs_sync_conn_options);
+>  		hton_seq(&cp->in_seq, (struct ip_vs_seq *)p);
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. The flags
+are now a consistent snapshot, but the sequence data is still read
+without cp->lock. Nothing orders that read against READ_ONCE(cp->flags).
+Can the master send stale or half-updated ip_vs_seq values here?
+
+ip_vs_sync_conn() here only holds ipvs->sync_buff_lock. The same applies
+to the memcpy() of cp->sync_conn_opt in ip_vs_sync_conn_v0().
+
+On the backup side, ip_vs_proc_conn() sets the SEQ bits in cp->flags under
+cp->lock and drops the lock. Only after that does it copy the sequence
+data, with no lock held:
+
+net/netfilter/ipvs/ip_vs_sync.c:ip_vs_proc_conn() {
+    ...
+		cp->flags = flags;
+		spin_unlock_bh(&cp->lock);
+    ...
+	if (opt) {
+		cp->in_seq = opt->in_seq;
+		cp->out_seq = opt->out_seq;
+	}
+    ...
+}
+
+On a node running both the master and backup daemons, ip_vs_sync_conn()
+could see seq_mask set and then send old or torn init_seq, delta and
+previous_delta values. A peer with an app bound to that connection would
+then apply the wrong TCP seq/ack adjustment after failover.
+
+vs_seq_update() in ip_vs_app.c is another writer. It updates the sequence
+data and flags under cp->lock, but the sync reader never takes that lock.
+In-tree it is only reached with diff != 0, which ip_vs_ftp never
+produces.
+
+This does not corrupt memory, because the buffer size and the option
+emission now both come from the same snapshot.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927220816.268206-2-pablo%40netfilter.org
