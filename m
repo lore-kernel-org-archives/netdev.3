@@ -1,96 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A58A2DF137;
-	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048554FD79E;
+	Mon, 28 Sep 2026 21:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790630371; cv=none; b=WUR5ByMkhNg1dKrFVfWzyEqnwSqCV4NldrfJjWKECBBg52BrU5UY94Ev1SybE+AOaZZT9nYPng38fD+KyJsmXcorLYdG6hVgNOoVRztwMg44FNe3Y60leYK1FRbPvQOeyCSZFDsOjkxSIwueSsUbfnbQLI+uoGFaWlQFh9baymk=
+	t=1790630771; cv=none; b=DU0qGyefPEvEyVfHL0cGxDeaD3xNRhEq1unbL0CHrqR0hrdmtsZpKtupAk+dQ6+gy+4pyVpmRz578iMLpMEdUpXBJMZJlT9dvINXphA5mtSak5OtkDmHaF51FemRKvkuk6CDPhUDyQ8O3bFGyMQeyeFWGLC3FoTf0hNMjzt8K+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790630371; c=relaxed/simple;
-	bh=kfmsQ9/d/zSC1kcaKVB7j/3bdEwiblUM+SnGKNFHH9k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UKAbtjHCA3iT/wu0sU0muHvlQ87JZntu6TSh5RLsdqHmWd9ibkE5OUFO3imWH8VIZJgET8UfaQY9/K8zYmzhZ4IUBYjT7bXOEXFh3AIN6TO/i0O4x5uXBPB8/udErOBgAl3qi8wLARkgZnbLRUCqkDgInCtUwkePFKRWKKU9cFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g26diT/P; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790630771; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nzPPbc7PJtENBnNfFBqgbMQuSF9MQL0CGrfwJ1qpCX3XScFwIjaRLsAb0XqAQS6wgxZMUC4zqkOIcTwsy38TLqw/L77o/Pxp0vtivbJFa4S1Nvnc99iplfd3UfzgTTxHPwMXu8Ur4M4OJIZVlQb8RFJ8rpqQSWcL+pFVuLPQmas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MduR3gtX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g26diT/P"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B4538C4AF0B;
-	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790630370;
-	bh=kfmsQ9/d/zSC1kcaKVB7j/3bdEwiblUM+SnGKNFHH9k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=g26diT/P6t76B5rrUQrKwIJCIXJMhezkkPTfgslb0W2RxTfbQsCKcrj38SQmhEabm
-	 zk3wS0S7TYwT/+kKuqicNid4n2dtGknjJ8/B1gq1sNq+nvAavEoLqde6eGR99ycVwR
-	 G4jB6RovSKpARWmXfNuUQBR93++t0i+taXhCAPohdRPjZxoEUjs7EFHMp7XvXpX7H7
-	 bT6/wI+0K3OydbkUPSy4RY2zwn6QhJd4U114yeeUSKauRsqdTXW16sX9Y4flJdtaKv
-	 UfspCFMI7/QWOfabQVjzGkeIkr0I/8r5JCm7Fp0C7O78AoQ+aDpILImvafHk1NcBj8
-	 xIKjwwT3QzVsg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92C79CA5FA1;
-	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
-From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Date: Mon, 28 Sep 2026 14:19:03 -0700
-Subject: [PATCH net-next v2 1/3] net: pcs: rzn1-miic: Fix port numbering on
- RZ/T2H
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MduR3gtX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972BA1F000FF;
+	Mon, 28 Sep 2026 21:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790630758;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MduR3gtXr91DWRG4YoQW3mgpUn1a2J6JlSpebGZygTQhFLkKXLl+FHe9YmxuqwW8A
+	 CwC5Xk+pRS0sP2E+umLdXVhoGyxVPt6BvPqtHXEZjqMhtAa0WCj33YEuC0ZqH1L6j3
+	 PnqU5tbAuhM7QmXPFVudy+4EiZnoXsC8CYdr8RDBy2IrZydSYPyVY/ovrlVrmKsh9E
+	 8zTHjNCadulUGvM8P8bQDrVpeZTTcNo/lOxwbHXRVMAeTUMkbA3ajh7BptPG8A7wCL
+	 gVql1Cok0abTm5mrBFkMz22BABYXLPF73GaA2oK2v3q20Qqa+X0yvzupKX+cH7rd8/
+	 gWzIGiJQoCwyQ==
+From: netdev-bot+sinfo@kernel.org
+To: khendry@reliablecontrols.com
+Cc: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/3] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+Date: Mon, 28 Sep 2026 21:25:57 +0000
+Message-ID: <179063075707.31693.10158252953196019880@kernel.org>
+In-Reply-To: 
+ <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
+References: 
+ <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-miic-validate-dtb-v2-1-1ee3d33748e9@reliablecontrols.com>
-References: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
-In-Reply-To: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
-To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790630370; l=911;
- i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=IeosEy2220CsO/HfUbuKH2ER3bJwKIrqImDfBfTHa5c=;
- b=44tZkjaG38VvzANRTfwqSvQcjhG8i9NeLc5hJj4t67SbtutaOTMaTg3wGFqxpuXIsIN4rq+Ub
- rxi7wE1m38uDsL/gIzqojAelmOlDbu2MjCzxB2PyUKD76PE157Ai0NA
-X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
- pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
-X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
- with auth_id=946
-X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
-Reply-To: khendry@reliablecontrols.com
 
-From: Kyle Hendry <khendry@reliablecontrols.com>
+Hi!
 
-The port numbers on the RZ/T2H are documented as 0 to 3. Update the info
-structure to reflect this.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: 08f89e42121d421b ("net: pcs: rzn1-miic: Add RZ/T2H MIIC support")
-Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
----
- drivers/net/pcs/pcs-rzn1-miic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-index cb74861e823c..df70309c2d97 100644
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -838,7 +838,7 @@ static struct miic_of_data rzt2h_miic_of_data = {
- 	.index_to_string = rzt2h_index_to_string,
- 	.index_to_string_count = ARRAY_SIZE(rzt2h_index_to_string),
- 	.miic_port_start = 0,
--	.miic_port_max = 4,
-+	.miic_port_max = 3,
- 	.sw_mode_mask = GENMASK(2, 0),
- 	.reset_ids = rzt2h_reset_ids,
- 	.reset_count = ARRAY_SIZE(rzt2h_reset_ids),
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
--- 
-2.43.0
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
