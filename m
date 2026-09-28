@@ -1,68 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6998D4F96DF;
-	Mon, 28 Sep 2026 20:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D014D597C;
+	Mon, 28 Sep 2026 20:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790628963; cv=none; b=Ao7JUPD8Q1p8mpaQ3lAAQqmjLiWaQx/oDquDRPA+m9bczRmMQb1QB6+LVGXd0y68zyJpuQdSmMam08f9e7W0DGK6cSyeKtNZo7I7kxzgoWLCV3Rb77GXFsATowLMk5gkn76nJFZC4PSEFDamDn2S0p/MSxYr7h4nmebfGskjGa8=
+	t=1790629192; cv=none; b=YqR0MfeccEE375Xy/M0Z6ONdO4ITw2rZiFyolVS4l4MoYgEDIGBU+Bcj+KksVDAim77NhSqBdB6gEM3rS+3zq0WigJV0PHbrGKILjAnTX2TdXMDPW7jTqJRlk1iR93wGPAA6AIAIlrLwGOzv//TwSXXnpHiNHsW1mmk+gCMJaFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790628963; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TWppzjGekOV+xKt5A+KQp3W2ZJYopjutBTmG1JduZ1e7rRhh5ipPluZRCXGo7StYsEAdLGX8Fxkgifdpr1MSVXsYz3jIjfNgUDHja6F9r0iX5CgoIQ3qPCRA33WJnTpMB3Vs07q2dp7kEhExWCM2ReLAeLKTpC5SKUoC2dnG82U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4TfXChe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790629192; c=relaxed/simple;
+	bh=AtUlGMucJQXIkXUipk5HYsf9isDfjM54zZfuQl6DZ7c=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tZ6WvaPIsMh9vXHG3MCkV0mQj6A6PUyuZYhosbPF+lQnU7R+9ui7eIQKQZCUtmQzAr22sOtaUc3KKcO3p6eaivGQMo/Oi4kTzZEw9vIH8hHiGsdXBuoYexF8Uw0Yqmbz3TzI10BeXCmEcDsujn9MwycXhwye6Nk7jYTE438xgjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYFs9bkg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4TfXChe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DF41F000FF;
-	Mon, 28 Sep 2026 20:56:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYFs9bkg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E71F000FF;
+	Mon, 28 Sep 2026 20:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790628961;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b4TfXCheWb3CWkwq2JY/X/FDmzeuqKmsheBHQ/8+l3b9hK27LgqhMvng0tb7IrEeq
-	 9MXHvkt/1HTkdsEL8+d05seA2dbwrfmhoKEyAY7eotAi4L9QcDgTLwprFu5oNSpZAI
-	 uC4+93NhZhh/AxwMCjhSb2gB/JQKTaZD+oZSHAoYZLVIzv14nn5n/Cw9tcs/1SG57Q
-	 akWjf+xZsYsgPSBx4kznLPR4+K4mqt+JaXndsTScG12efjvrnThdGM+lEyrzy9HMFW
-	 7qEYrgC/SbLgOfuUwUBjm/gjlZlB03QefKjWblg3bVOMVdZtz+i5dlk/uIL5POPz8a
-	 NQutiyl+f2Uww==
-From: netdev-bot+sinfo@kernel.org
-To: Rahul Chandelkar <rc@rexion.ai>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
- Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH nf-next v5 0/4] netfilter: conntrack: shared port parser
- for helpers
-Date: Mon, 28 Sep 2026 20:56:00 +0000
-Message-ID: <179062896069.31693.871473945227845464@kernel.org>
-In-Reply-To: <cover.1790596690.git.rc@rexion.ai>
-References: <cover.1790596690.git.rc@rexion.ai>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1790629191;
+	bh=W8qN3O9WrYkKGPXlg8iYV8CTpKEkfRh5hc0RvhUPcMo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=BYFs9bkgEqPtrlBXhGu7vr1mkFpD4SSsmRCYJn/DlDo5GGAm85f2pjHIyG6UD6jf+
+	 x35z0/gOp2Kqd8XetRL4H5NO7W7qRi0JLWCg+vgVBg18ZQgYvpqN8HsOiB0CF016R+
+	 qLSmMT0jf0kDwMpVjTQ2gYqmyfkeEwPG1p/BFMemdmd4u6WUnu0ClL16vukSy0S7Jp
+	 FB1Kn1C/SS9V7JWOzASJ+0axKkC34Yerv9R09g5yfI2sHPK0GRJbg0/9Xj35HPuTdn
+	 SG5ANMb0WvBEhI/ZMs52qB++cMagSot/Q3Lbqh0fA8T2wOV+2dRRQ1jCjLDF7Od5gh
+	 wG2+tBNALuKtg==
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
+References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
+Subject: Re: (subset) [PATCH v2 0/3] t7: add some nodes for Amlogc t7.
+Message-Id: <179061297157.139547.6136934434151909621.b4-ty@b4>
+Date: Mon, 28 Sep 2026 17:29:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=AtUlGMucJQXIkXUipk5HYsf9isDfjM54zZfuQl6DZ7c=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqutVBdPxu3mO+/QYSmKez/K5/WoTZFSbypUlv2
+ DPfFRtIxKGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarrVQQAKCRAk1otyXVSH
+ 0K0kB/4mbaGtsi70aV/NFaYYlWlhAifpV/KYYVUg+Ryug7wKdP7e8G+Fvk9UxGU6Zc+YCz+paBN
+ fDyw21n8yRALJRkZgbeizIzwv4HX9IsyvC6ENu0r6attk1LapUZJxA3DXYcWFIQ6kWzz6yJyL27
+ s/WVlZcX0GpCx1ekpXPirdWzFFCUSAY9kHI7CULFUf8mhdmYRd3ZIe8lncpaJ25gVjovhetpcGJ
+ KSE7dldpDwMaIzeGhoJPDxKHJ5vWXT+oT6PvSESvBcLRqY65o05ONmB8yJSp0TmWdnXvjfz25pK
+ 64kJIVKydHKfb8ONAnKhUXe4N2OV6fMJBVbs+qn64R1IIquB
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi!
+On Thu, 24 Sep 2026 05:51:07 +0000, Xianwei Zhao wrote:
+> t7: add some nodes for Amlogc t7.
+> 
+> Add device tree descriptions for the peripherals on the Amlogic T7
+> SoC and the T7 A311D2 AN400 board.
+> 
+> Add the Amlogic T7 SPICC compatible to the device tree binding.
+> Add the T7 compatible to the Meson DWMAC binding
+> 
+> [...]
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Applied to
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Thanks!
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+[1/3] spi: dt-bindings: amlogic,meson-gx-spicc: add T7 compatible
+      https://git.kernel.org/broonie/spi/c/2ec5d38037b8
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
