@@ -1,93 +1,163 @@
-Received: from mail-oo2-f36.google.com (mail-oo2-f36.google.com [74.125.231.164])
+Received: from mail-oo1-f99.google.com (mail-oo1-f99.google.com [209.85.161.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F6E5013BC
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2752397E9A
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790632503; cv=none; b=WNaYRFpjscHjHRjVHKJ7Uez8v3ulhV0JqDju/K4z18YWR/kcC8zVOkaIv94arWT5FtarDTTe7Iv+xf9JZzHnioMm+N9ugq0zuN1RyeGjGM9DTGwp0kfJzBeNnig/IKlAab7ItyS42vPWHKPIAlOhyRc2tJ0u7ndLAtXSsW+buv8=
+	t=1790632610; cv=none; b=oYWQBgO8wBbZy8wngtix0+MQKBBIrDEvwWuJwsxvaeOGyR3NQrIRJjn2/lQJIK0LkY6+asH+vUInRM3V6Duw/gcl4bhycj4jZ+yN+jJPHg8a2GoZQnbEz8KUiO3j3vJhJ5VTAVi6rc68GdybIKfq0VyFi87kzBHasabEAsfr2eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790632503; c=relaxed/simple;
-	bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7lul0Rc2OLHJB7Hti/1bquq/ZUK3dP5TA64OYbqWN0A/BKsvnW5mm61nlX79j35HvznoHb3k6HQpZDZGtQvYedwCpQq4MRScB+O8NikC0dsOmqT9Jyiu3jaAePZLvmGgwuklK0ImsO+7ABZ89zXTtvEZ13TGA2qTFF54tgX628=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=DvUaaZIL; arc=none smtp.client-ip=74.125.231.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1790632610; c=relaxed/simple;
+	bh=0SQHCz9X6Ktmc5E1mSbfi3WO/dnU0X7emYSvL0OHUxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DukliJnSUvh+gBS1ZfOYh22051JsONGmQtn30YUVPjE+vGdaWb/JR/UvQvRJNpr+r57npyAhT1TvO73Go3y9tfwyM1D2/gEXQ8EPYX6M9euebk/sZOa6FUnAgtKFnTDzPHsUOUyY19g+r/CfP/LI43u0KGSXyDF4vQtffSEAcHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fEYNUORw; arc=none smtp.client-ip=209.85.161.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="DvUaaZIL"
-Received: by mail-oo2-f36.google.com with SMTP id 006d021491bc7-6d73f71a49bso1022574eaf.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:54:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1790632497; x=1791237297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
-        b=DvUaaZILADnwMVKEUX0PgmuY8FmMMzWHVR7VQffs6C2jOX1gdv01eYO8hjq5bmj1I0
-         YhrZ7JUU24ePSO4mg0Zut1ABJ7tcrd0DIPH/Kfwlc3VCDRdcJjM+FDpI9m7j/n/H0v/N
-         EcYCH7zpN1uaiXnJalWp6Jj4doSd/8uLPGXEk=
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fEYNUORw"
+Received: by mail-oo1-f99.google.com with SMTP id 006d021491bc7-6b1b766bf01so79514eaf.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:56:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790632497; x=1791237297;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4aBCe9JhpyN4TkjwCmlcQnGVb5cYh2Qy34BAJ5vWWr8=;
-        b=C5YETY5dBP2oE95u1tNJANr04pxI0Lj1M7hMYCoiwS4TfhRUMbDRszNABIRR9CFgf3
-         Nqk9seH94clB9g/rtz93mZLrKKmjBMJpwcOatB8PVnC6JBbZK6Qc/dOnRojxgAtP38HQ
-         DuLsVy7GJ6IJQGg7EZP3TA76S1gsq0epFefgKcDFV/wIBNzipC40qIrCuk8h0+cljbKI
-         u6wVX92oQghKQQ51ofq81zNtqupBhszT+VPkAhBtHcB8rCqgRrfxh12Tf+zVIpa87Vys
-         xUuj5neRNYwGqz7+eAeVPKlvgHST9/SmewtRUUbSayFIqqzyhgg3nqiyphxYfbGyOnU0
-         6krQ==
-X-Gm-Message-State: AFuF++k9iWI9cDSZDxVoRq3FEcy8huzMNPXhqXMR6Ldf6wS3JzXmf2Bb
-	DabP2RMrV6dIrWAGTCtCqaNe5/LdP2enNtlhSdNgSsVNe1mQZUSPwyC7iLwh7eVe70mv6feeTVb
-	Y/SO7GVABTQ==
-X-Gm-Gg: AYBFou1nTeyiIVnITwzyYCvMY1ISZLU1FuzydL3w2xCWeXvqD+7GR9Ibh5wYZYUmaPf
-	sdcUPPvLrrbdQx2fsIIV+bL1J5x5Du4mV2xW1FjaeivdJnsJWH1QkhGBXDQ5E2qWR/FeAGuunVH
-	qKkmfZ921PX8CfyPXQTBdiTRKe+HUA1rIjXjoz8fJ54nV+TDZMMYYpq+PXgJHYdPbr4GnfnBPlb
-	3oiMCyeswvxac5RyBtcLbgNc++h9KzBt433p3U1szwffjeOsveQTuZxpdkDFjw97l3Wwxomk3uk
-	MPlUdDaaVXn8aWlA5Odx9yTuYL/c5WGHeyLohg/Q5BI1rUDY0RZFb5EmDfVWRsQoBhm3ode8pjU
-	bU35tyUAIoRO6NuiyX+Id3Y0crACSi0vWoHcLG58El3WRTmhaNUyeELH+FMdi/0HaB/yO8qHUXS
-	egTpN4z10pEeffj2r/TCEkD8cK08cTQCFKZyf/jjEPp7Jx7ErcKY7rfza5LuM+eOs5PFYiAF2bd
-	rXPCpIJFwT+zwEO4XIQXXx8uwFdUnJLBKVavr84zmttt9bmA38ECqV+y5hXKeS2gwU928gx7uu2
-	frQ=
-X-Received: by 2002:a05:6820:1798:b0:6d8:3caa:a468 with SMTP id 006d021491bc7-6d83cd96f72mr4817511eaf.77.1790632496519;
-        Mon, 28 Sep 2026 14:54:56 -0700 (PDT)
-Received: from com-68297.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81d57ef36b0sm2605923a34.6.2026.09.28.14.54.54
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 28 Sep 2026 14:54:56 -0700 (PDT)
-From: nramaswamy@openai.com
-To: netdev@vger.kernel.org
-Cc: Neil Ramaswamy <nramaswamy@openai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 0/2] tcp: preserve RACK tracking across partial undo
-Date: Mon, 28 Sep 2026 14:53:04 -0700
-Message-ID: <20260928215440.25109-2-nramaswamy@openai.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260926002520.42955-4-nramaswamy@openai.com>
-References: <20260926002520.42955-4-nramaswamy@openai.com>
+        d=1e100.net; s=20260707; t=1790632603; x=1791237403;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=31LnXNpedys/1BrWFIRmbLYL9goxpyg8z+C/5if56BE=;
+        b=zkPJ7ejZveQmI8W51p4WudkLHgXf6Yw+yD5SXgFbwO7ZwAOWRQOB00TcMm6ldcgIJy
+         7utG5nT+nYVsqZWk3y/6eO85DWdHrgoi/KtE1I+AMevKtPtWkjwkgscwOnmfP3xHeVRa
+         SqmdV6/ipIQ0X/MHsEAuiHs639RTSKdcvT0T/x2s0OR5HkxyuAGn9qAKSYXtcqr+JgGH
+         UJPnwfkhfCuSWeiV1ZdibtLqDh9WSkR2UFlMLHueXFWhM5lnB97mLvcyapTWSpm3eMuw
+         o4Utupf1XQJeisWuPwCvBJHa2g4/XzhuTyGkcw1T5kGjdANUzlXAnrczi/ZQMwFlO/LV
+         ysVQ==
+X-Gm-Message-State: AFuF++k+pp3K2GZldZlY23cO7X0u4MUucMuP0adKRL+FcPKs5FG33wJV
+	ikJPug8SfldtYBMVIzcn2Uij5T5MBuF62R8k4QkoDYWmv9B2wAU+xgowhFUlM3q1d8/WyzRzjeS
+	2KeUfQQHsVxd/lRBYHfwb1diwERddQL3ewXNf/18Tq6LK9nrfup6UMp4RHsD8lRFYk6J8y74BUg
+	QAnNcueUW28W4ZtXMBa6Xzy1Ph5wBTtjYMVCgwPG/9AwsKnfhXO3CslduPtgs74i932UJeSiHE4
+	rFnR8dELA==
+X-Gm-Gg: AYBFou26oHRme1Cc7jtWdfHxNQiSUlh0+5ki4cDhaQvHwKr+p6aItarlTt5ZY8haNWF
+	a4lpeV1PV8c7HB+r6fa77dtwxwKSptoJaxZsZjfhrqrE5vBTq6uUgB1Idnq6ssSpddzjlYbzBMB
+	pag/U3pR9hWbtnh5EdMeihG2KpD4l2gUmjitc1L6Wmn2MD1yf7iLZ7MB8SJsKaXWpz2Z6TWE9i2
+	/MRfYo5D/LELoBH6Uw4yRzTmB/EzYLEPsTepM1yQnhN/WTaukssFoAwHkzsYV1SA9WbIsWBBq4Q
+	sWHKkAuecW+ikBNTnpo+rbYHUTt4kpohVpMx68/TdXVgkogqjE6LTmLVPXp/nnCJyUJ+csDnKtn
+	orvnNUBIPXo8vV3/pT/6WsQSn1WUgxdZtCJnzXwVyzfj0wvMDAt5tIN+ZhJINUgsoztusBTSMQV
+	rcc8DKiB/LqbQHK1ZXEHMYOPPD8/2EOS3Rr4Zs
+X-Received: by 2002:a05:6820:1ca3:b0:6d9:ec:235b with SMTP id 006d021491bc7-6d900fb69dbmr3349666eaf.67.1790632602635;
+        Mon, 28 Sep 2026 14:56:42 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-81d58a13607sm830900a34.7.2026.09.28.14.56.42
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Sep 2026 14:56:42 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-349ffa249bdso2024618eec.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790632601; x=1791237401; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=31LnXNpedys/1BrWFIRmbLYL9goxpyg8z+C/5if56BE=;
+        b=fEYNUORwZMNOV771esXbEv6DRPRkwAmw5AP1eEEptUZsYqw6jbZN9K6fqQSSjURAkF
+         55sZ329XWczoBkFxOrO1FuwBn2FIXRxz4guYOf7jFbdGwrjHdDo2AeJVXHqbMBcwGyxq
+         iixI6y+YxRLjNfK8ZoonX5ocXLs1xb/2tX5rs=
+X-Received: by 2002:a05:693c:881c:20b0:341:6552:8c3b with SMTP id 5a478bee46e88-343c025e6f8mr7904691eec.30.1790632600830;
+        Mon, 28 Sep 2026 14:56:40 -0700 (PDT)
+X-Received: by 2002:a05:693c:881c:20b0:341:6552:8c3b with SMTP id 5a478bee46e88-343c025e6f8mr7904663eec.30.1790632600141;
+        Mon, 28 Sep 2026 14:56:40 -0700 (PDT)
+Received: from [10.14.4.122] ([192.19.161.248])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-343580930e2sm21272897eec.16.2026.09.28.14.56.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 14:56:39 -0700 (PDT)
+Message-ID: <bbbb6f23-44b6-4794-8bc4-6de58c7fb191@broadcom.com>
+Date: Mon, 28 Sep 2026 14:56:38 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bcmasp: fix lost TX wakeup race with lockless
+ queue API
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, andrew+netdev@lunn.ch, florian.fainelli@broadcom.com
+References: <20260928201816.3935530-1-justin.chen@broadcom.com>
+ <a65f6e3445b1ea32becb8d974bc147ad@tipi-net.de>
+Content-Language: en-US
+From: Justin Chen <justin.chen@broadcom.com>
+In-Reply-To: <a65f6e3445b1ea32becb8d974bc147ad@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Neil Ramaswamy <nramaswamy@openai.com>
 
-Adding the maintainers/lists I missed on the original CC. Sorry for the
-omission. The cover letter and both patches are available here:
 
-https://lore.kernel.org/netdev/20260926002520.42955-4-nramaswamy@openai.com/T/
+On 9/28/26 2:35 PM, Nicolai Buchwitz wrote:
+> Hi Justin
+> 
+> On 28.9.2026 22:18, justin.chen@broadcom.com wrote:
+>> From: Justin Chen <justin.chen@broadcom.com>
+>>
+>> netif_stop_queue() in bcmasp_xmit() raced with netif_wake_queue() in
+>> bcmasp_tx_poll(): a reclaim landing between the ring-full check and
+>> the stop call left the queue stopped despite free descriptors,
+>> hanging TX until timeout.
+>>
+>> Switch to netif_txq_maybe_stop()/netif_txq_completed_wake() (the
+>> lockless TX queue API, which also brings in BQL), replace
+>> tx_spb_ring_full() with a live bcmasp_tx_avail() count.
+>>
+>> Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet 
+>> controller")
+>> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+>> Assisted-by: Claude:claude-sonnet-5
+>> ---
+>>  .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 68 +++++++++++--------
+> 
+>> [...]
+> 
+>>  static struct sk_buff *bcmasp_csum_offload(struct net_device *dev,
+>> @@ -241,16 +239,18 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff 
+>> *skb, struct net_device *dev)
+>>      struct bcmasp_tx_cb *txcb;
+>>      dma_addr_t mapping, valid;
+>>      struct bcmasp_desc *desc;
+>> +    struct netdev_queue *txq;
+>>      bool csum_hw = false;
+>>      struct device *kdev;
+>>      skb_frag_t *frag;
+>>
+>>      kdev = &intf->parent->pdev->dev;
+>> +    txq = netdev_get_tx_queue(dev, 0);
+>>
+>>      nr_frags = skb_shinfo(skb)->nr_frags;
+>>
+>> -    if (tx_spb_ring_full(intf, nr_frags + 1)) {
+>> -        netif_stop_queue(dev);
+>> +    if (unlikely(bcmasp_tx_avail(intf) < nr_frags + 1)) {
+>> +        netif_tx_stop_queue(txq);
+> 
+> nit: AFAIU this is unreachable for now, but to prevent future races maybe
+> better use netif_txq_try_stop()?
+
+Will use netif_txq_try_stop() in v2. My understanding is this is still 
+reachable since the maybe_stop call at the end of the xmit may have 
+false wake ups when the ring is full. That is what is documented in the 
+function header description for netif_txq_try_stop().
+
+Thanks,
+Justin
+> 
+>> [...]
+> 
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+> 
+> Thanks,
+> Nicolai
+
