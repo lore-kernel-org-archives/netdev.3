@@ -1,87 +1,117 @@
-Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645B7485934
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 09:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9234DCD2;
+	Mon, 28 Sep 2026 09:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790586127; cv=none; b=dZb7Wrzz1Hyiy5smVL+Wz45N6HXa/OLg45m3zn0JBLzFRenTLxEFz5rEZy8Fey2O9iQA4BSJwKCGSZJU3ngBqGM0v3rbd8VvQrhwQLbtSkJbu81BRhHnOM9NHuDkdWo43BY293B5jdI44MsCXUO9k2ZMrOCbJ5GEM6Vqvv96Fhk=
+	t=1790586139; cv=none; b=A42sSvLVlJTZs5+IeY9deOn7b5cDkQDvM4SUj5OvcJ2M/MzWQJoTpnC88SnAFe1F04tqfGJOmjE3yeuz0GIXVOjyyQCK+VfnRUHiWo2Lp9guIQ41DacjRRDoSNLFmgNbLp0VGP7WfutbipPrJAEV64tHa9sHdKawyszC5sz2pwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790586127; c=relaxed/simple;
-	bh=KpDbosgzFURQlG4Re7sBNnDrAAwCRcvEDfEtveW0l70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+Fz8stAJdR1J0b5f24CewjSmjewc38x0w/x1dxlfxoYFyP4RkyWiEcOzBDIneADWs85PGcn4GKcVny24UROjesq1ajQptxWEkq1YB0ZKOnZ+jH+lo5lqGqoDAWSjl+a8ErmbL8w/IEi24L+5QASQtmy+ZyIXl3RW6ah/GR+kQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=zu+VZrmW; arc=none smtp.client-ip=195.10.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1790586139; c=relaxed/simple;
+	bh=7G51KArnG29LcWRmh3uK0kqHfYkcwE64yvpraIoZu3U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NUFTliv/sLXGnIr/PpeFwyKupZVjZCCOXgPZv/nlmaCEmQNWwJ+DR5XptlLnC3/F6SMuSWq7ooBYKTTKcC41grJ17knbOB0H1ZvucfzNLXGsV69W5aUbTTEb6ae7/TNYIpgYgaykT6Y+Mdmf5I9nv0/E+dbWBgzbswfKMF8DN5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oq6lfoet; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="zu+VZrmW"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4htZtT0Wg1zNll4;
-	Mon, 28 Sep 2026 10:56:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1790585809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQCXLeyQhc4kKC3F89Lil+fvvhoG4qFEfP8XB0RWdYg=;
-	b=zu+VZrmW6pFDW/nHHkp2gXkbV53MfOedf4bHgYXI4JANzsJEAJr4ty0Gc0iv4m0N999Ga/
-	o84WWmf/hYPtrFrMOGOwSHv1RAKQ24XUZDKK9o2sgNBGJ68zmyvr6uXR5nh5sEAIvjvXPL
-	frme5P4fEvoWceiIJsqHh76pdMBm1QxsYntwHaNz9la3g2ZHZ65sCq3H9yYPuonbclh4hS
-	RdnBdpyYbJnOuVh3s7oCqYIgLR6RLNIF1N0UEdtAPAYKaGAXIbbWtVti/3W9KXp9zzMp5d
-	6p5KQW5k/e/TfZHFnL+3PxYABSq73v/U070K6Ouoofy2Zr4NHHvngAucUtDLvA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
-From: Ralf Lici <ralf@mandelbit.com>
-To: Ralf Lici <ralf@mandelbit.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	netdev@vger.kernel.org,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB changes
-Date: Mon, 28 Sep 2026 10:56:38 +0200
-Message-ID: <20260928085639.151005-1-ralf@mandelbit.com>
-In-Reply-To: <20260918202718.36933-1-ralf@mandelbit.com>
-References: <20260918202718.36933-1-ralf@mandelbit.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oq6lfoet"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DEE1F000FF;
+	Mon, 28 Sep 2026 09:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790586138;
+	bh=vdonEvpZnOZU1yvJsjopOR6WU7Aqm7c/dPvUMJ/KK+0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Oq6lfoetLHxi8gmasTJE50aWrmt3DKsVicLkSYaEP6ZDv8vPePLaTiYYvrIKUGPGf
+	 nRao1PAQFarKjz5goR+tu9iGZ/Ro5egv0KG1mfl2pcsHxMjssPVRk8I4mcQ5mutX1M
+	 c/5viBL9mSGPN67iR8Cyx2tsECjb+1fPo2N7eV6GIXYpee4vE0kEJ9Rwfsve1kOfmG
+	 QLHBPgI8ZBzUj0z3iQ0QYNQ9soN+agkP3PPR+bn3Aeh1GrPlKUgZYJ3CdPg33MFhFr
+	 3FNaaW1CP2C+vterJAts+DH2dK9JxqiMnyfku17gNImol1t6siHxTJ2rAHugki8fIx
+	 mZOtSzyonBsLg==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ mohsin.bashr@gmail.com, mike.marciniszyn@gmail.com, leitao@debian.org,
+ horms@kernel.org, almasrymina@google.com, linux-kernel@vger.kernel.org,
+ netdev-bot+sashiko@kernel.org
+Subject: Re: [PATCH net v2] eth: fbnic: Keep real queue counts synchronized
+In-Reply-To: <179036391870.2160803.457228716006507823@kernel.org>
+References: <20260924191817.1843726-1-bjorn@kernel.org>
+ <179036391870.2160803.457228716006507823@kernel.org>
+Date: Mon, 28 Sep 2026 11:02:14 +0200
+Message-ID: <87h5j94ull.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4htZtT0Wg1zNll4
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+netdev-bot+sashiko@kernel.org writes:
 
-Just following up on this. Does my previous example clarify why storing
-an old dst with a new cookie defeats reuse-time validation?
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [High] The patch adds a hard `-ENOSPC` exit to `__fbnic_pm_resume()`
+>   (drivers/net/ethernet/meta/fbnic/fbnic_pci.c:523-529).
+>
+> --
+>
+> eth: fbnic: Keep real queue counts synchronized
+>
+> The patch publishes the default channel counts, and the counts set while
+> the device is down, to the core with netif_set_real_num_queues() right
+> away. It adds num_napi_cfg so the configured NAPI count survives suspend.
+> Resume now fails with -ENOSPC if fewer vectors come back than that layout
+> needs.
+>
+> Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333=
+281@kernel.org/
+>
+>> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/e=
+thernet/meta/fbnic/fbnic_pci.c
+>> index c6698e3002a13..48279a5214c8a 100644
+>> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+>> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+>
+> [ ... ]
+>
+>> @@ -519,8 +520,16 @@ static int __fbnic_pm_resume(struct device *dev)
+>>=20=20
+>>  	fbn =3D netdev_priv(netdev);
+>>=20=20
+>> -	/* Reset the queues if needed */
+>> -	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
+>> +	max_napis =3D fbd->num_irqs - FBNIC_NON_NAPI_VECTORS;
+>> +	if (fbn->num_napi_cfg > max_napis) {
+>> +		netdev_err(netdev,
+>> +			   "Unable to restore channel configuration: %u NAPI vectors require=
+d, only %u available\n",
+>> +			   fbn->num_napi_cfg, max_napis);
+>> +		err =3D -ENOSPC;
+>> +		goto unlock;
+>> +	}
+>
+> [Severity: High]
+> Can this leave the NIC unusable after a resume or an AER slot reset that
+> used to recover?
 
-If so, would you prefer that I pursue the kernel-wide lookup-provenance
-approach described in the RFC, or keep the fix self-contained in ovpn?
-The same late-cookie-sampling pattern is used by several drivers and
-callers in the networking core, so I think fixing it generically is the
-better architectural choice.
+Thanks, this is valid. The resume path limits the IRQ request using the
+online CPU count, then rejects the resulting allocation against the
+saved configuration. It can therefore fail without ever asking PCI for
+the required number of vectors. The administratively-down and AER cases
+are valid as well.
 
-If changing the generic interfaces is not acceptable, I can rework the
-patch as an ovpn-local fix, although that would duplicate IPv6 routing
-details in the driver and leave the equivalent pattern elsewhere
-unchanged.
+I'll rework the IRQ allocation and resume handling.
 
-Thanks,
-
--- 
-Ralf Lici
-Mandelbit Srl
+pw-bot: cr
