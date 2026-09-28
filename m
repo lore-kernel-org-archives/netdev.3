@@ -1,123 +1,182 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF65401486
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790576193; cv=pass; b=pnz75XNqj3sddKD16BcmSYpSXu1rugKJElVRmNZtDPVBlzY7uKynj+bjog1eaKMmbXuaXGl0pr3a4VygB1tvHPwzLeJThBrtOPs5Geof5tCqCPOkY0Kkd66xT2nDoLDfLydn2tlnbAwQf+mFOrGn//dOBwH9mIp283RzWTX6XbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790576193; c=relaxed/simple;
-	bh=UjLMTkNUsMTAhppS3VjvlrSLbd3vV2p7wtKDBinOEwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H0uJbF8WeLxvztln8lN1uHLqckfVtAOsMaXGesLKv1OksnNoGZiyImei8JQhQ9BxyAdr57XPsG0j+sq4BMkQVZel8p7gXVZfyfELaT/K+hDrJqGcuTqCDdy9EyWt2PDB43wf5ItFF99xdC0ffSg8wDwXlSdJGUF+dCR2pmBPYnU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KXDR2pEM; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D3345CAA
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790576525; cv=none; b=ZnzG1ygSDvHpO13Pbth/U9tFSHm4Q0IsmjsZb6EAqkD+tCk0/R/dbAbx7N5akCYRkmCnPCHwzhPaIArgabLmU7uAlfW+nHGdBwosQKw3L51n0UztkJsB/DgZ1NNNlv3Uydf9097K+yZwpsznEwelvaZcFkGtD7+PkSO0YOvfD1g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790576525; c=relaxed/simple;
+	bh=xym6Wj7a/N3u6kYO3/JK3RDdgZcFhCBlwPnIf4E3wOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o4lVWeax2LWnGPFHiSTAnuBaGCsfZCVoTkWj0NzzYDdFyTe+GIyh9cmn9vQvCJkT6+/gRTQ9JHpFBFLxXM5FWwDhy50TS5B6z4dGacSB9vD6qTHV0uAmunmb2lDwUvAAXxnu6DhOuJNqt73FYg/K4a4C7IEo1mj5wxEDC9vscHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VFvnTRfJ; arc=none smtp.client-ip=95.215.58.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KXDR2pEM"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fe8912so311772a12.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:16:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790576190; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F4meT2LqmSunGgTUkUhaozOW7L0P6vUc3GDXEAoo+Pf7Tf291wwKeLdiN0uNNMZnmC
-         zhK/c+xX8PPQnrKQFr/hBBCcyDdFDhoHB330+8Vz1Py3nzVZ/QWYXZcpAfzUatHiqfiE
-         ZHVp8d664dX8Lwv95r0NEOrzuedDXYDq3RWohPBXVMnu9eosT8KdoLffwLW6Za9hy/5R
-         7v0aq1ErLiJyRcqQWNiWzILCgY+9bviSMK571ktm1XTzTHBSCLck83rrDGohoZfY6smn
-         L5QJNHg/TOr7t+oLwczIthuFl41sjzafjS2a1kwAwzxTaGCeaHCrxHBgzgr3zFfDzyuU
-         65kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UjLMTkNUsMTAhppS3VjvlrSLbd3vV2p7wtKDBinOEwQ=;
-        fh=RXvWW9dhUDD3kQx3TCaAIDnsWJIUQ3kweyx5SlBLcXg=;
-        b=cqmb418rMq3pyrplTyfVkBbZDJz2kaSeV6lIPLfAi9vSxEtk1Uf2Wr7AZ/Tp+2bFON
-         H2NLT3J61p2sd4HFW6Guk0fDwz6xXUowEQNSsha2xYUik/Md2GHUOELVP5cZKcVNxq2L
-         ULI4azRTtIfPDk6amOP5rcX5t9GwOZsTPLwPqHZzKLJkkeykUbpeBjULU8pof+JF3TXc
-         LntBzAdK84OzxrEL1vXEA3KpD+vryMoI3TxtPHOJ8vCnBqSVaJOEBu4GaBGdmEZt+KAH
-         VtArB3hwBoA2AkcootI9DAsWSlqgdTbYLB0+Psc6FKHggzE/3NbAK+238ayxJRiaRF7i
-         +CnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790576190; x=1791180990; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UjLMTkNUsMTAhppS3VjvlrSLbd3vV2p7wtKDBinOEwQ=;
-        b=KXDR2pEM1JTLSxBj3wu9/o164MNmf454aZ44Thf2vTM156Ks03aMOJq5qhUWpydv7w
-         36dX8Lb++kFHLk7kqmqu4aABQ/f4OruhsYjcBE8lrUwl8ksmWOruS+UZtlJzfC/seFZr
-         HavIZXgr0de1ONBuIegYb4ZJM0v0ZtJMGZscsKr/vfVkd41aD/PVymcPgi/6iGTud0Fq
-         DLNJpmxvWn50jAkXnKdPy+zJw6rcz5Xy//6P/Js/ftYPFJl2M2R9Rpd+HW9RCE/Tc0xB
-         g+qNzwzqph/No56lN78rZ05898pllNfOGRguS5ZYQLXjj5+/cFR16gM1lQ+An4Lxfc7f
-         b2+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790576190; x=1791180990;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UjLMTkNUsMTAhppS3VjvlrSLbd3vV2p7wtKDBinOEwQ=;
-        b=ryBreQdzcjwy2L7N5gtiMmBxQTDdiwO8hJn6joD9nG4nFr3MKUnSta/1s/S5w8lVWL
-         JR/jimJqLNEL0MHUu7hcJU1u+SiVwQ8uc9Q/7SuRZvK9s5BquH4zawVlQL91etPWswg7
-         jUkJajr70tW66t/7g985n9DBu0n1EbWtqKuV8AT5cXrC7f63sHANjrgl009A1v+E6Fc2
-         m4sFbgmt/3zISqmHA9VGr+jVI/pWgnxSkzJPdzH/CunOkc13ZLXVHrBzmo3LpO7eJ2PL
-         H7su291WOTC66LV0VoQZ48yUaIA0gLe2MvG1y3KGYS1/z7Rd/LBWjSlVWBdbclaVbdRg
-         2faA==
-X-Forwarded-Encrypted: i=1; AKwUvBzxA8Ar+Iq93FGvZ1L2q27Gv/YgDg+BLneXOI8jxJesw2yQ8hR9KcgRsD1zvJZqaOe/+IizFTE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGXxhsGSACVf0l/nz1ySEmqwNDmrlU7Lr6OQ6WqHQTGSc7ZM7b
-	Jvfmv8NwcqnYotNiLT7gyPL1LNH9FWqMftQMn1WJanC9v09q4yVVe+UzvTSbe54u4jhmmY+cK99
-	rSHR7ykjLs2uJ5GUBxpFND5GEezYQtRo=
-X-Gm-Gg: AYBFou0jJkDRKQzr5eIHJYE9sSrUV/SB6lqXWiiACBCLwv9Loww0Yy2kSSbYgEMMD8I
-	GCKcwrPinmOAfWWdsX4rk8DAJGw3iPMJ2Y4PAVzC7DcunksesEWlO0qAMcMTZdvpQNPKCeqigOi
-	LroszBG5d1U/X9iCGorkhxGY0//7zEsNEdAndmnlZUPUnGBdcMbxY2XTDtG2tWhn90WFdTK6vbo
-	dnocpMqrX0vzb02fUlA4hGVC3jjdRntacxAiq1mdo+a4NG47+hiQHIKNKrKBJRTgBgnZlDhsevz
-	/K8KU0g6/r+mOerJrsR4nRR2o2yD3hGR/RHZtBT0r9gnuNCanqeXW2vsPOTO+tlWMsvhFmAvScI
-	Nefa0dbLpRtI=
-X-Received: by 2002:a05:6402:400b:b0:6aa:91c2:63b0 with SMTP id
- 4fb4d7f45d1cf-6aae1fb697dmr8189174a12.2.1790576189556; Sun, 27 Sep 2026
- 23:16:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VFvnTRfJ"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=xym6Wj7a/N3u6kYO3/JK3RDdgZcFhCBlwPnIf4E3wOM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790576520; v=1; x=1791181320;
+ b=VFvnTRfJFFAZonTkx+Um9XdugatgKpaamU4hx5IBOJSqOlDX7s64g4SPVKWgO+AvUE2UWnLe
+ XICLuCqXU5cZL8ZKTTS+KSXaAgBJoSsubyF5Y7VOi3rSUde7wiMrLuI5uDDxkt5xv0UweCKB7pE
+ AER1vc1Ph58gWa26+56teTcg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id b52d0056da5ef9c5;
+	Mon, 28 Sep 2026 06:22:00 +0000
+X-Mizu-Trace-ID: b52d0056da5ef9c5
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 14:21:48 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	shuah@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next 2/5] seg6: add RFC8986 flavor support for End.X
+Message-ID: <aroHfO-QWHwm5e19@fedora>
+References: <20260922-srv6_flavors_endx-v1-2-4d01c05c47b7@kylinos.cn>
+ <179025107692.2160803.16596847240332091038@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260927073203.3694279-1-nicoyip.dev@gmail.com> <7960d73e-e316-4853-8398-144742e866d3@linux.ibm.com>
-In-Reply-To: <7960d73e-e316-4853-8398-144742e866d3@linux.ibm.com>
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-Date: Mon, 28 Sep 2026 14:16:18 +0800
-X-Gm-Features: AclHuK96mTZ2XsqOn0lcw6M7Xfg64Z655RWGZWQn7KbinRvEPkfuuOyZHISF2wk
-Message-ID: <CAAo+4rU=hCYRfhQLf4DS-_5xsYqfVfQ0YYEgBj1OLdbbMPccrA@mail.gmail.com>
-Subject: Re: [PATCH net] net/smc: serialize sndbuf descriptor release with
- diagnostic dumps
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
-	Sidraya Jayagond <sidraya@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, 
-	Wen Gu <guwen@linux.alibaba.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, linux-rdma@vger.kernel.org, 
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179025107692.2160803.16596847240332091038@kernel.org>
 
-On Mon, Sep 28, 2026 at 1:57=E2=80=AFPM Mahanta Jambigi <mjambigi@linux.ibm=
-.com> wrote:
->
-> Agreed. This is addressed in v6[1] by unhashing the socket at the top of
-> smc_conn_kill(), before smcd_buf_detach() runs, so no hashed socket can
-> have its sndbuf_desc freed under a concurrent diag reader.
->
-> [1]
-> https://lore.kernel.org/netdev/20260926065023.1629497-1-mjambigi@linux.ib=
-m.com/
->
+Hi,
+On Thu, Sep 24, 2026 at 11:57:56AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] net/ipv6/seg6_local.c: the patch widens
+>   SEG6_LOCAL_END_X_FLV_SUPP_OPS to (SEG6_F_LOCAL_FLV_NEXT_CSID |…
 
-Hi Mahanta,
+Andrea has talked about this issue and will fix it in net tree.
 
-Thanks for pointing this out, I didn't notice there was a patch
-working on the same problem. Please drop my patch in favour of yours.
+> - [Low] net/ipv6/seg6_local.c:759-761 — the kerneldoc-style comment on
+>   end_flv8986_core() still says the helper processes the packet "on the…
 
-Best Regards,
-Chengfeng
+OK, I will update the comment.
+
+Thanks
+Hangbin
+> 
+> --
+> 
+> seg6: add RFC8986 flavor support for End.X
+> 
+> This adds PSP processing to the SRv6 End.X behavior by reusing
+> end_flv8986_core(), and widens SEG6_LOCAL_END_X_FLV_SUPP_OPS so End.X
+> advertises PSP flavor support alongside NEXT-C-SID.
+> 
+> > diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> > index 584e6aca38930..7462da1da3629 100644
+> > --- a/net/ipv6/seg6_local.c
+> > +++ b/net/ipv6/seg6_local.c
+> > @@ -121,7 +121,8 @@ struct bpf_lwt_prog {
+> >  
+> >  #define SEG6_LOCAL_END_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> >  					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> > -#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	SEG6_F_LOCAL_FLV_NEXT_CSID
+> > +#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> > +					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> 
+> [Severity: Medium]
+> With this mask widened, does parse_nla_flavors() now accept the
+> combination next-csid plus psp for an End.X instance?
+> 
+> parse_nla_flavors() only rejects bits outside the per-action mask:
+> 
+> 	rc = seg6_flv_supp_ops_by_action(action, &supp_fops);
+> 	if (rc < 0 || (fops & ~supp_fops)) {
+> 		NL_SET_ERR_MSG(extack, "Unsupported Flavor operation(s)");
+> 		return -EOPNOTSUPP;
+> 	}
+> 
+> 	finfo->flv_ops = fops;
+> 
+> and seg6_flv_supp_ops_by_action() returns SEG6_LOCAL_END_X_FLV_SUPP_OPS for
+> SEG6_LOCAL_ACTION_END_X, so "ip route ... action End.X nh6 <addr> oif <dev>
+> flavors next-csid,psp" would be installed, and put_nla_flavors() echoes the
+> stored mask including PSP back to user space.
+> 
+> Is PSP actually executed in that configuration?  In the new
+> input_action_end_x() below, the NEXT-C-SID test returns before
+> end_flv8986_core() is reached, and the arg-zero sub-case of
+> end_x_next_csid_core() goes to input_action_end_x_core():
+> 
+> 	if (seg6_next_csid_is_arg_zero(daddr, finfo))
+> 		return input_action_end_x_core(skb, slwt);
+> 
+> input_action_end_x_core() only does advance_nextseg() and then
+> input_action_end_x_finish(), so seg6_pop_srh() is never called and the SRH
+> stays on the packet even though PSP was accepted and is reported as
+> configured.  The comment above seg6_flv_supp_ops_by_action() states that
+> unsupported combinations make the kernel refuse to instantiate the tunnel.
+> 
+> Would it be better to reject next-csid together with psp for End.X in
+> parse_nla_flavors(), or to route the NEXT-C-SID arg-exhausted path into
+> end_flv8986_core()?
+> 
+> For reference, the same shape already exists for the End action via
+> SEG6_LOCAL_END_FLV_SUPP_OPS and input_action_end()/end_next_csid_core(),
+> but for End.X the combination only becomes configurable with this change.
+> At the end of the series the mask and input_action_end_x() are unchanged,
+> and the added selftest only installs psp on its own, so the combination
+> stays accepted but unimplemented.
+> 
+> >  
+> >  struct seg6_flavors_info {
+> >  	/* Flavor operations */
+> > @@ -841,12 +842,19 @@ static int input_action_end_x(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+> >  {
+> >  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
+> >  	__u32 fops = finfo->flv_ops;
+> > +	int ret;
+> > +
+> > +	if (!fops)
+> > +		return input_action_end_x_core(skb, slwt);
+> >  
+> >  	/* check for the presence of NEXT-C-SID since it applies first */
+> >  	if (seg6_next_csid_enabled(fops))
+> >  		return end_x_next_csid_core(skb, slwt);
+> >  
+> > -	return input_action_end_x_core(skb, slwt);
+> > +	ret = end_flv8986_core(skb, slwt);
+> > +	if (ret)
+> > +		return ret;
+> > +	return input_action_end_x_finish(skb, slwt);
+> >  }
+> 
+> [Severity: Low]
+> This isn't a bug, but the comment above end_flv8986_core() still reads:
+> 
+> 	/* process the packet on the basis of the RFC8986 flavors set for the given
+> 	 * SRv6 End behavior instance.
+> 	 */
+> 
+> With this new call site the helper also serves End.X, whose post-processing
+> differs (input_action_end_x_finish() forwards to slwt->nh6/slwt->oif rather
+> than doing a DA-based lookup).  Could the comment say "End* behavior", which
+> is the wording already used above seg6_flv_supp_ops_by_action() and in the
+> SEG6_F_LOCAL_FLAVORS comment?
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7%40kylinos.cn
