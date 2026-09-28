@@ -1,106 +1,71 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16F151356F;
-	Mon, 28 Sep 2026 19:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1232D4F4D01;
+	Mon, 28 Sep 2026 19:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790624042; cv=none; b=MHcji4n9sc3oZa5ZlT29V8mLikFTAJp1afKa0oJYeMIDsJ35Gxnt7vdeyetuax16D9Zs9+pa0AGhLdsIt8Gi1zO6417gt2AU6Z6OWZU26KaRkA2OMEY/6OfNgvUR06GrhiTGlONTkdwp50r2OUSzabddhxlG0fCupDAh1mxp6Qc=
+	t=1790624172; cv=none; b=n6piXBOBak9Pz60KQBATSBFUjsVO5cxY2viz8kioyvvQ1xICymwOCfcslwGcLY7a4IHNi3tHtphf53pFQdyOFgtYa8iJYlTi1bu3Mqh7ZBVTp4fT34hsVt8p6vfCgz5+uFkEMtgEVcJLPDW7/ZLt37CkMVdoMdaOkfcx0PcnJNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790624042; c=relaxed/simple;
-	bh=f1Jl7ARCrnbvOaZkK/LjDTX3tw1/5r96ssNQoJplEUQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=UnF9yqxO/FBJym5BCpasehW6w/lZh5doXMgtAw7/ipqw9JaKmQVIfDnORyjETrZTWcaimZiwbkBmISuxCvzH9SQex35SF2KPsujiINMZvZHSvlc/ImS8NGdNTjEzlby2mLoQ4oYAeBlz3BJlaH9bFPVJDljX9FJuwhxgEwPCueE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=II82ZhOV; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790624172; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nbMtaqbblqi5jwHgw0LCR1qktq2fFzmdPwdYdO+bis95VDcPfeQzYsspG/FJxkD1kgd5WfkMFZ4peUGJarD7ZoV37/+MWVhPmzNUwkZAXWC8fXSpmzz1ZNys+NO+fDBDoTpkWjWQX9PWYTezbIHqtt4nsc/wLU9FhfEa4/lc5Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdhqOquG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="II82ZhOV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790624040; x=1822160040;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=f1Jl7ARCrnbvOaZkK/LjDTX3tw1/5r96ssNQoJplEUQ=;
-  b=II82ZhOVggz0YTprPyYiGPy9RcTcNHUrf+ROzY8SJiufjRtPf7ILvIpJ
-   95bGw2eEBAxrdLlfuSRFcFOB5fVHPNOKUmYXq6LpYNitDqaxUfjxakox+
-   /IlaT20K/lcl7gg++NbcqFnfx8hqABuRUHzSYZF5AVPbzx89KU+kdsCUr
-   CkMoFxLuaL+w5gCysecZ8MLdRuzY1pKiEQQbkY3IXUpknxgo9vZ/NyAdv
-   xIhYEZvwXDihlGdY3y0SmisC9tWzUtULYgOKjzaVVBGFndTvN9xnlOcNj
-   e23yN7L9NbuQApxWUzOatv6YrhSRHgovdaD11SYbSviPh0J/2IF+5N2Vj
-   A==;
-X-CSE-ConnectionGUID: bG64uvDkT3myQSAY+44k0A==
-X-CSE-MsgGUID: sKhYwI4CS46B5rS8+iJvkw==
-X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
-   d="scan'208";a="74445087"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2026 12:33:59 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 28 Sep 2026 12:33:59 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 28 Sep 2026 12:33:55 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Mon, 28 Sep 2026 21:33:03 +0200
-Subject: [PATCH net-next v9 15/15] misc: lan966x-pci: dts: add fdma
- interrupt to overlay
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdhqOquG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A7B1F000FF;
+	Mon, 28 Sep 2026 19:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790624170;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gdhqOquGvaqbTSsnG3HkDIsneciiW/JvoLKdtLSBHTjDA1ml63B4QBIEA5R3d/PAj
+	 WgzrVG6NL50S09E7iiAQg8HNjcQwVHwOl4yKzfBxNIHSzScbspp0FlH9BYCNc1hW3F
+	 rZbx3evQFS93gAp776/4tCimFxRTR9Kyk3aCBK9tqaJNCNu+XTyCw6T2iv47pgYy4r
+	 vDkytqaHpZK7cnBlER7nhPYOUG/thRZHKAvpHpypArCIUQzV9obNxWeXKinrbY8Ldx
+	 PZrWLGQnAodKBQSXUg9BMAjfgSPVp6Ump7dL7D4QCn9uKNQb8XCsMOaj6e7FoKNXET
+	 kAUZhdWIwwafA==
+From: netdev-bot+sinfo@kernel.org
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de,
+ Vincent Mailhol <mailhol@kernel.org>, stable@kernel.org
+Subject: Re: [PATCH net 01/22] can: dev: can_dropped_invalid_skb: drop CAN XL
+ frames on non-CAN XL devices
+Date: Mon, 28 Sep 2026 19:36:09 +0000
+Message-ID: <179062416961.31693.13012733403972252556@kernel.org>
+In-Reply-To: <20260928193312.553632-2-mkl@pengutronix.de>
+References: <20260928193312.553632-1-mkl@pengutronix.de>
+ <20260928193312.553632-2-mkl@pengutronix.de>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260928-lan966x-pci-fdma-v9-15-a17caf60f89a@microchip.com>
-References: <20260928-lan966x-pci-fdma-v9-0-a17caf60f89a@microchip.com>
-In-Reply-To: <20260928-lan966x-pci-fdma-v9-0-a17caf60f89a@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Steen Hegelund
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
- Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>, "Simon Horman" <horms@kernel.org>
-CC: Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14.3
 
-Add the fdma interrupt (OIC interrupt 14) to the lan966x PCI device
-tree overlay, enabling FDMA-based frame injection/extraction when
-the switch is connected over PCIe.
+Hi!
 
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- drivers/misc/lan966x_pci.dtso | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
-index 7bb726550caf..5bb12dbc0843 100644
---- a/drivers/misc/lan966x_pci.dtso
-+++ b/drivers/misc/lan966x_pci.dtso
-@@ -141,8 +141,9 @@ switch: switch@e0000000 {
- 
- 					interrupt-parent = <&oic>;
- 					interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
-+						     <14 IRQ_TYPE_LEVEL_HIGH>,
- 						     <9 IRQ_TYPE_LEVEL_HIGH>;
--					interrupt-names = "xtr", "ana";
-+					interrupt-names = "xtr", "fdma", "ana";
- 
- 					resets = <&reset 0>;
- 					reset-names = "switch";
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
--- 
-2.34.1
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
