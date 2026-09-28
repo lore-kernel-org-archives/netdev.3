@@ -1,134 +1,119 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328852DFA3A;
-	Mon, 28 Sep 2026 06:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFA2DFA3A
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790578259; cv=none; b=gfaGsUBdEYp+rCXC6rcoeZxBk9QaFEre6HrkGSdUSMqVT4gIb99R23WOisRohG+kPNlN/n17RZnSu0EPBdP92zaHidwGjNFu/ztpaU01WyFsFX0tA57+RDVgUvYYvHCuB9TWpA7fE/uViZdc7oyjbI59e6gD0Vg+CWUWRqiVCsk=
+	t=1790578269; cv=none; b=g6+mCqsdidowH5TefeVgWDrBcPmSXtS7ytOpfjSJn9GWnuwaVO+1cPQ+gXv5+xTzSosumKjo2aoJJV9A18fZZgQkAbid2x/h1IFk0VOUSrPI+sBHl2psAOxkWJuIJGxbr4yJudGBVGKBarzH+rHyrleP0FbI9E39VaQiNQpzAk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790578259; c=relaxed/simple;
-	bh=2E9G4VmDFD6/yu3yb1708hufoVcnZW/LN7zidVbYqPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HddLOTZoDBRRZwLQeeJvZjNtLUbl4JtzyBVjNDJ6p7mFyu00lxatUuuHRnF0BP0/08sJeKMxYhWqrqgiGHZ7qVk89SYP0qM6TuAfxDTgeVAj8FEXDM/pNja4NSlUKFdXG2M5A7V9q3E7njJbNS/10oPYA4srhsdIb6CDsaej918=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=F9UBXykz; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790578269; c=relaxed/simple;
+	bh=eIKla4S6a3D0MHGwhrlPCSrXWKbvb2Ko4TtW5GQrom8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ShzO60KVPMpyNA7qApR/zoxD6N6CQLxmLRJtz/zR6iQfEiPgHB9qBwVKKroWEy62B2Yxg5dau1TZNHnwPU7b3q6Oo0iPfYp05dVHNdn7YfqydaAajTsmgm/qBDbhv2NXzOEtGpgb99xXv4a1+CO1swfv6PdfuJ05+5+6NmSyl58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRahg4cA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="F9UBXykz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=tI
-	Mde4K42epJIrlb7se7/az4aigvinEYHEwl4Q4UHOs=; b=F9UBXykzlwXRfhnsjy
-	u6t8cPrrZQ906qFWWSPpmt/NyE0ZBhJpKcYE7LF0HsuxEL0B6ad/ZRpJY/1KbFcW
-	R9Rf9ve8/+NwDAjw8eyfgE+Vc+EVl0LVdUToHTP9Z0XowuMsSwcabWh+f6HGSsjb
-	L3Y9QBxNSf4MgHQ/C+CUncNrg=
-Received: from chaosheng-ASUS-TUF-Gaming-F16-FX607JV-FX607JV.lan (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD350wnDrpqY_dYBQ--.60414S3;
-	Mon, 28 Sep 2026 14:50:17 +0800 (CST)
-From: Quchaosheng <quchaosheng000406@163.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Quchaosheng <quchaosheng000406@163.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/packet: guard the ll header push in packet_rcv_spkt()
-Date: Mon, 28 Sep 2026 14:50:00 +0800
-Message-ID: <20260928065000.1749383-2-quchaosheng000406@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260928065000.1749383-1-quchaosheng000406@163.com>
-References: <20260928065000.1749383-1-quchaosheng000406@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRahg4cA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9BB1F0089C
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790578268;
+	bh=s5UI4Wy+eGiErrBzR7b2VedGpOFJDsN75qbhAxc0yzs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jRahg4cAxN6Tle2r15oJe/vmxLHt/LqsTmTxt34l9F+NJ+DReohvk6pR5vCHz2B3O
+	 pcJWUAQ6QH4Lp0CuwBlUfYDuo8LRITlBQkrUs+FWRkmUazrwaGqVihIh4IqyqQnhho
+	 SzyMTgwzEgMUZNVh1F/Zj0azGL+N+c5Ip34weRdyBiQruy5eAGdfDQpOqcJy0xC9If
+	 XninYxyuXj034C3GWnRU/6CjCPxeYVDzZ7UFgT6+ITXDEVEQGj43lpS/oBRFluKgN6
+	 GcObbZtLOxjCr5AeIQf/biJ0/q1/t08Vi+9JBBBQYwnZtkEnOC4gB+89RwY77H8Rzi
+	 ckorlts8LfjXQ==
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910a0cefaso229268985a.2
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 23:51:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz2bs6dpyly+19nN7v4jP/9Dk10Rbu/LCoKvaY2lXKZprFlYnzZZcTUYf7BzFzzE1+huTPMY6c=@vger.kernel.org
+X-Gm-Message-State: AFuF++kFyZdl84raWVP587OlAaug9aVuSCNJwcowuQ0B9VaenJkX+Jhx
+	pjqIiF+lQij+0PhoV3soE4p1/+Pjw8/MLaLvwpiHef9dKIigDppfv2pRovvp9GDNJaSm6F8RWh8
+	vwCFv/wTKNrLpuhYScLDsjirD88uVYkk=
+X-Received: by 2002:a05:620a:6486:b0:93c:6925:dfeb with SMTP id
+ af79cd13be357-93c6925e8a2mr834739185a.56.1790578267654; Sun, 27 Sep 2026
+ 23:51:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD350wnDrpqY_dYBQ--.60414S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZF1xArykKF4fXr45tFy8AFb_yoW5uF1rpa
-	4DKa47Jr1kGr4ftr1xuF4xXF1YyF4rJayfGa48JryFkwn8WryFkFyFyFW5uFyUKFs5Ga1I
-	vryqgw1jy3WkZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zKjgxrUUUUU=
-X-CM-SenderInfo: xtxfxtprvkv0bjqqikiqw6il2tof0z/xtbC5AnWTGq6Din2bQAA3b
+References: <20260928063724.24008-1-hui.zhu@linux.dev>
+In-Reply-To: <20260928063724.24008-1-hui.zhu@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 28 Sep 2026 14:50:55 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wrWdw+4B10K3J+sDCSjVoBs2=LtObb6MKehuYsx9pXMg@mail.gmail.com>
+X-Gm-Features: AclHuK-c7GpN5AyOOlaUnzGeJcdZoBH-1EyfOLTse_68UQXS73MXqF_7DQKjthA
+Message-ID: <CAGsJ_4wrWdw+4B10K3J+sDCSjVoBs2=LtObb6MKehuYsx9pXMg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2] selftests/bpf: Add bpf_proactive_reclaim test
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Sep 28, 2026 at 2:37=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
+> unlike a write to memory.reclaim, does not retry until the goal is
+> reached.
+>
+> Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
+> and check that the result is positive but well below the request: one
+> pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
+> 4K and 64K page kernels.
+>
+> The test deliberately covers only the kfunc itself. A full example of
+> the intended asynchronous use, where a BPF program watches one cgroup's
+> workingset refaults and reclaims another one from bpf_wq callbacks, is
+> maintained out of tree at [1], released under GPLv2.
+>
+> Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.=
+c
+> is not built at all.
+>
+> [1] https://github.com/teawater/memcg-async-reclaim
+>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+[...]
+> +
+> +       /*
+> +        * Charge FILE_SIZE of page cache to the cgroup. Reading rather t=
+han
+> +        * writing keeps the pages clean, so reclaim does not have to sta=
+rt
+> +        * writeback before it can evict them.
+> +        */
+> +       if (!ASSERT_OK(ftruncate(data_fd, FILE_SIZE), "ftruncate"))
+> +               goto out;
+> +       for (off =3D 0; off < (off_t)FILE_SIZE; off +=3D sizeof(buf))
+> +               if (!ASSERT_GT(read(data_fd, buf, sizeof(buf)), 0, "read"=
+))
+> +                       goto out;
+> +
 
-packet_rcv_spkt() restores the link layer header with
+In case we might map file holes to the zero PFN someday (not sure when),
+this wouldn't necessarily give us page cache. So maybe write + fsync is
+more future-proof? In that case, you could also drop the two lines of
+comments.
 
-	skb_push(skb, skb->data - skb_mac_header(skb));
-
-That subtraction is only meaningful when the device actually has a link
-layer header and the producer initialised skb->mac_header.  A CAN skb
-does not: init_can_skb() sets pkt_type and ip_summed but leaves
-skb->mac_header at the 0xFFFF sentinel, because 9f10374bb024 ("can:
-remove private CAN skb headroom infrastructure") dropped the
-skb_reset_*_header() calls that used to be there.
-
-skb_mac_header() is then 0xFFFF, the length becomes a large negative
-number and skb_push() reports it through skb_under_panic() -- from
-softirq context, so it is a full system panic even with panic_on_oops=0:
-
-  skbuff: skb_under_panic: text:ffffffffadd28261 len:-65455 put:-65471 head:... data:... tail:0x50 end:0x180 dev:can0
-  kernel BUG at net/core/skbuff.c:214!
-  RIP: 0010:skb_panic+0x50/0x60
-  Call Trace:
-   <TASK>
-   skb_push+0x4d/0x60
-   packet_rcv_spkt+0xe1/0x170
-   ...
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-packet_rcv() and tpacket_rcv() already handle this: both wrap their
-skb_push() in dev_has_header(dev).  packet_rcv_spkt() is the only
-remaining receive path that does the subtraction unconditionally, and it
-is reachable with SOCK_PACKET -- a socket type that still works and that
-no length or capability check keeps away from a CAN interface.
-
-The missing skb_reset_*_header() calls in init_can_skb() are a regression
-in their own right and are being fixed separately, but a packet socket
-should not turn a link layer that forgot to initialise its mac header into
-a kernel panic.  Guard the push the same way the other two paths do.
-
-Tested on v7.3.0-rc5 under QEMU with a slcan device on a pty (the driver
-RX path is required; vcan resets the headers on the way out and does not
-reproduce it).  A SOCK_PACKET socket on can0 panics an unpatched kernel
-with the trace above and is silent with this patch applied.
-
-Fixes: 9f10374bb024 ("can: remove private CAN skb headroom infrastructure")
-Assisted-by: LLM
-Cc: stable@vger.kernel.org
-Signed-off-by: Quchaosheng <quchaosheng000406@163.com>
----
- net/packet/af_packet.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 7c83e0152..ab8e0309e 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1911,7 +1911,17 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
- 
- 	spkt = &PACKET_SKB_CB(skb)->sa.pkt;
- 
--	skb_push(skb, skb->data - skb_mac_header(skb));
-+	/* The push restores the link layer header, which only exists for
-+	 * devices that have one.  A device without a visible ll header
-+	 * (ARPHRD_CAN and other L3 types) must not be pushed, and the
-+	 * subtraction is meaningless when the producer never initialised
-+	 * skb->mac_header -- it then holds the 0xFFFF sentinel and the
-+	 * result is a huge negative length that trips skb_under_panic() in
-+	 * softirq context.  packet_rcv() and tpacket_rcv() already guard
-+	 * this with dev_has_header(); do the same here.
-+	 */
-+	if (dev_has_header(dev) && skb_mac_header_was_set(skb))
-+		skb_push(skb, skb->data - skb_mac_header(skb));
- 
- 	/*
- 	 *	The SOCK_PACKET socket receives _all_ frames.
-
+Best Regards
+Barry
