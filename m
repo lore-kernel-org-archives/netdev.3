@@ -1,167 +1,137 @@
-Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498F5440655
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857283ACF1B;
+	Mon, 28 Sep 2026 07:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580254; cv=none; b=GTPh1TYjQMLxX9ej/z+YtlmUS6jZDuAyEHS2tPtEurRvSVDPoBkVZcpogkHzgZ/7KNcbn5syPuQqhNQZFhcaFiUzyDO1zJihUGsFu99pvElcPSq1PFM9RLJAFUM+SbuRFC8XZmHXP0aIyv6JEw3dsmOiFO3o7Swau9HitaP+6Vc=
+	t=1790580270; cv=none; b=q6WC2Yh3aI5R/TlAZ+gdoRO1olEG4snhijFghe+/ael1RhQOg+J6mkdIPJpZIN0B3dmJFkDbXIkrF1WW1qPry1f/VeJ+zPWu2vx55Ikehv674Ran1UQeST1h8uDLCDQViYK9piauZmXFdV9lOV+C8agOqB5e/Q8Oq7V0EPX4CpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580254; c=relaxed/simple;
-	bh=XqL2HCd0UPofeqYeB/BZt1wok8dT8aPuwMtTYW3NGVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qfIETbsomdQw8qqjJfWtNOFcfoC4TzvWvJDVWkvw8wg+i1zBQj7xOdDjCB6on35vNi5GfJ+jYSuJ+9qxlVMg1AY9Kh1JApfDf61Epwjp7AuUtRw+WmMrN8ZbuBQukpA8VNPiRf3xHyuPpp8IMSliQ3kLE6ZUqjvGJRTG3LBPS0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IcbDtB+Z; arc=none smtp.client-ip=74.125.228.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790580270; c=relaxed/simple;
+	bh=13MWWB5FsD5BeUz9Yuiyr+vkYeGQ5edQpwcBr7Ki72o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ov+VD/gU1YxoLgMp92pYKln2dAdCMNygPfCHTKQys7qRQ9J6anz0jg3uvwalR5Q89RIhV3wzxA/jwJ3xC6rRBtm0eYYcw3Zg7Vv8vyr4o2BlxFcWMpWM3o3GBAXjJDZToeASJFVy3LZTFlpkzNtPqA8spq5lL7rl1E2QMQiFxwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=F6P0xBVp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IcbDtB+Z"
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2afd63c3e0so231681466b.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:24:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790580251; x=1791185051; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xoV67SdNy1ziTa8aJ6OVJtQuFKSbE7nYyY+jBoK/+ew=;
-        b=IcbDtB+ZP3p96Vy5AIzAjFJFaAL0u77TBp3yUmxK/UMxxYGfPfyittipcDov0bC8Qr
-         5AmYM9d038iq0eRqCS9Y0HKbTS1Dy0Ht6CW09m81AiTP1cLoJpfrnUDRtk320HkEyD/Z
-         gf12SDWG77uKwmpt4vDuQUbunFy+euLCy60hzdVGAZyMLtbieOqY36DEdPDLMEQYCyO3
-         2duMfvrTlR7NV/O7R1cjaZ6RazvxHBhpRjCSWzVuEo5qeQVsq73WxT7yup+KoNNX4NyP
-         nY/wbktvSx+rTFGq5W2ww9hxNJRswWhIVNT+YDXVfK4oxe0+G7Rm+OWio0hKuIEhx0T+
-         +o/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790580251; x=1791185051;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xoV67SdNy1ziTa8aJ6OVJtQuFKSbE7nYyY+jBoK/+ew=;
-        b=HeL8JEkAud7xjVjQtYc56QH0ZreJL9fu40gMLffCSRsfqdoykirPdCi4cJJ9ErAsYr
-         hubOxRxiMgyD5kr5Av/lReccDSfIQE4qPds0dvDSKw7d6iq94UD7Q8dx89Xp1h8GpPiL
-         0RX8MW/XXPzOOe6U+d8+T472MpegxxGSvvfJErpnMc4a+/2s7u60Ti8q4ArawLhayxMr
-         Qcel/CTD6j7UOQ+TehlCTkcmLDRHjbmyaJD/VlbH0EDGAfEbHuLGSpMuZv1bbqkVSRZv
-         9/1dTllao8ZDh+h9U5idJyc8fbyGg163yx+xFwflp+e9Z94t3vUgQnuPT5zuyQ1uolm3
-         /xVg==
-X-Forwarded-Encrypted: i=1; AKwUvBwOe8CO6ypBkIesxJODvr8lAhzw7WNUVV9YEXOHQ5VS6YkMimesKNK2/Y1PH8oRDKyVFMFHkhQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ly5XWG7n8dHDQuelQ8NhV6nVcuZ4Qa7zYg6TV0XhZGh444+/bc
-	iHy+AlVKjd+15tWwVOTJ+oiJqB+eE1nZWTv8+2YeUCStITv5ZDu9PpmPOVXTeg==
-X-Gm-Gg: AYBFou1ySFGegQ6po1DBrRIkL7tJcY9J7GMpoRE+kTVpMqlhV+/LYQwhC6pOfsKBLK9
-	fiR3KrgckF+JtkDhAEwkk3a4OoNQG985PwxXco9OsRGNjQrea6cxLt5fxe+gEr1Hg7lqSlOKwKw
-	wIVlAR1YELRuQ9A76LWZVybXhdjmCPQiTjmnDE35uJMrsyhBgy4Ijvf3qbUyEF3UnE88zVMLs4/
-	rLXixbyeMTdkdPkLsVD6X5N+QRYTVU3HidUeIwzigxjSJa+9Va4KzZPnguvVnRheB0ypn4TvF1V
-	dcYxhtXL5GLCKSz+H9MvXkwtn1BtO+ldCDwl46HCA8Vrlb9pe4HvsRAOKyHHxB8soBrH3QoqEmY
-	wMjzqzv7DvC3P5BpAwY3EgqctBcMCbkjNWWq57BmSrLbnxt3FS22qI+5hMMVrNVC+n3hZZdYZq3
-	6dF985juLzux8db8yDH+lDUl6BPoTF7OFYcVYNufL6UtmNRGGUZr+/dOwIDuHrCGQh3TG07Er0B
-	1hxvaOe46D6HgsV3nKvnYChREBwz4H2JZefvM46LVB1lot+4foz0fRFZbUYYq3Bws898JkaKA4c
-	szbFU0xqqcoevNGtBU74dua0gAJjw+o++0NeV4E0QnTETJ4OkCXHM3BRPAwRELDtuZTgzvuzx+v
-	2tJLyzQD0+8+KEBJuPDLdF3Fw
-X-Received: by 2002:a05:6938:a085:20b0:c2a:fd39:f23b with SMTP id a640c23a62f3a-c2afd39f9c8mr338499466b.24.1790580251224;
-        Mon, 28 Sep 2026 00:24:11 -0700 (PDT)
-Received: from [192.168.0.2] (dslb-092-075-058-142.092.075.pools.vodafone-ip.de. [92.75.58.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2de104355fsm68983866b.19.2026.09.28.00.24.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 00:24:10 -0700 (PDT)
-Message-ID: <36af3503-48c7-4518-946c-84e2d7ff49fd@gmail.com>
-Date: Mon, 28 Sep 2026 09:24:10 +0200
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="F6P0xBVp"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68S7NbCX2222568, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1790580217;
+	bh=13MWWB5FsD5BeUz9Yuiyr+vkYeGQ5edQpwcBr7Ki72o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=F6P0xBVpvgvV7sXbZq2k6ckh6h9D3+7tdyWRrKaCFXpja1P+lrSsSsQ+o/3UL/vC3
+	 Xdty/qYweWM4wCI6M03UB0s7UWxWXgNVXcQrYqUKwo2KLGLI9JzjI+lwGk+T8JVJHq
+	 WAnKyv98SbpxYx2g89Wcbc85gucJukb1YKxOCaC2GZtJxS1jL1Uc8GDKvemlgb/6l/
+	 5HoubuyjnGkNm157KJOYlmUwzT+u13DxlGdSZwO0ajCyBvSFClgFyUOKP2zGQL+buD
+	 Zk9mkvIzuPXETu8T/ZeafjUdMOFtrwm8T68jMBaLCcMiEOyL4/iCpE8Q6u8/EpPkbW
+	 HmBXInudc2hpQ==
+Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68S7NbCX2222568
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 28 Sep 2026 15:23:37 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 28 Sep 2026 15:23:37 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.049; Mon,
+ 28 Sep 2026 15:23:37 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Simon Polack <spolack+git@mailbox.org>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>
+CC: "f.fainelli@gmail.com" <f.fainelli@gmail.com>, "chad@monroe.io"
+	<chad@monroe.io>, "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next 3/3] net: phy: realtek: add LED support for
+ RTL8261C/D
+Thread-Topic: [PATCH net-next 3/3] net: phy: realtek: add LED support for
+ RTL8261C/D
+Thread-Index: AQHdSeUW/73ivrCDRk+7H/EUOZsxNbbjnznA
+Date: Mon, 28 Sep 2026 07:23:37 +0000
+Message-ID: <ee6ee488e3884540a82cfab11fb36ba3@realsil.com.cn>
+References: <20260921161817.565185-1-spolack+git@mailbox.org>
+ <20260921161817.565185-4-spolack+git@mailbox.org>
+In-Reply-To: <20260921161817.565185-4-spolack+git@mailbox.org>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] atlantic: resume from S3 fails with -ENOMEM in
- aq_ring_alloc(), leaves unusable netdev
-To: Stephan Hauser <kernel.org@s.arstneio.ch>, netdev@vger.kernel.org,
- sukhdeeps@marvell.com
-References: <b382cde0-7a2f-4251-8b9c-6763c3fe4cad@s.arstneio.ch>
-Content-Language: en-US
-From: Jonas Gorski <jonas.gorski@gmail.com>
-In-Reply-To: <b382cde0-7a2f-4251-8b9c-6763c3fe4cad@s.arstneio.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 26/09/2026 21:49, Stephan Hauser wrote:
-> Hi,
-> 
-> The atlantic driver intermittently fails to resume an AQC107 from suspend-to-RAM.
-> aq_nic_init() reallocates its per-ring software buffer arrays from the PM resume
-> path, where the PM core has restricted allocations to GFP_NOIO. With the default
-> ring sizes these are order-5 and order-6 requests (128 KiB and 256 KiB), which
-> cannot reliably be satisfied in a context that can neither reclaim, compact, nor
-> dip into reserves.
-> 
-> Resume then returns -ENOMEM and the device is left half-initialised: the netdev
-> still exists and is still marked IFF_UP, but has no rings and no vectors. It
-> passes no traffic, DHCP never completes, and bringing the link down hangs.
-> 
-> I have 3 occurrences in 60 suspend/resume cycles (5%) over 5.5 weeks of journal,
-> across kernels 7.1.4 and 7.2.2. What makes this worth reporting rather than
-> filing under "memory was tight": the three failures have three *different*
-> proximate causes in the allocator, detailed below. The allocation is fragile in
-> several independent ways at once, which is why no amount of tuning fixes it.
-> 
-> Two distinct problems:
-> 
->   1. A >PAGE_ALLOC_COSTLY_ORDER kmalloc() on the resume path, for memory that
->      never needs to be physically contiguous.
->   2. atl_resume_common() does not unwind when aq_nic_init() fails, so an
->      allocation failure is converted into a wedged interface.
-> 
-> 
-> Disclosure
-> ----------
-> 
-> The analysis in this report, and the text of the report itself, were produced
-> with the assistance of Claude (Anthropic). Please weigh it accordingly.
-> 
-> What is directly evidenced: the hardware is real and in front of me, and every
-> log line, zone dump and free-page histogram quoted below is verbatim from my
-> journal. The failure counts come from scanning all boots in that journal.
-> 
-> What is inference rather than measurement, and where I would welcome a second
-> opinion:
-> 
->   - The 64-byte element size is derived from the two reported allocation
->     orders, not read out of the source.
->   - The TX-before-RX ordering in aq_vec_ring_alloc(), and the claim that
->     aq_nic_init() aborts on first failure, are inferred from the backtrace and
->     from only ever seeing a single warning per event.
->   - The ZONE_DMA32 lowmem_reserve arithmetic in case 3 is hand-computed from
->     the zone dump.
->   - The aq_nic_stop() attribution for the link-down hang is a guess; I say so
->     again where it appears.
->   - The suggested fixes were not compiled or tested, and were written without
->     the source tree to hand. Treat them as a direction, not a patch.
-> 
-> I have read the whole thing and stand behind reporting it, but I have not
-> personally verified the driver internals against the code.
-> 
-> 
-> System
-> ------
-> 
->   Kernel:    7.1.4 and 7.2.2 (also running 7.2.7), x86_64, PREEMPT(lazy)
->   Hardware:  Micro-Star International Co., Ltd. MEG X570 UNIFY (MS-7C35),
->              BIOS A.80 01/22/2021
->   NIC:       Aquantia AQC107 NBase-T/IEEE 802.3an [Atlantic 10G] (rev 02)
->              PCI 0000:24:00.0, [1d6a:07b1], subsystem [1d6a:0001]
->   Driver:    atlantic, firmware-version 3.1.100
->   Rings:     rx 2048 / tx 4096 (driver defaults; maximum 8184), 8 vectors
->   Memory:    64 GB, no swap configured
-This is also happening to me, at least since 6.18 (where I first noticed it)
-with an AQC113 [1d6a:04c0 / sub 1043:889a]. Currently running 7.2(.4).
-
-Looking at older boot logs I see the exact same allocation failures, then
-(later) hangs.
-
-For me the hang often happens at suspend. I don't use the card as an uplink
-port, so most of the time it has no connection, and the issue only shows up
-when trying to tear down the interface on suspend after the allocation
-failed at the previous resume.
-
-Best regards,
-Jonas
+PlRoZSBSVEw4MjYxQy9EIHVzZSB0aGUgc2FtZSBMRUQgcmVnaXN0ZXIgYmxvY2sgYXMgdGhlIFJU
+TDgyMjFCOiBvbmUgY29udHJvbA0KPnJlZ2lzdGVyIHBlciBMRUQgYXQgVkVORDIgMHhkMDMyICsg
+MiAqIGluZGV4IHNlbGVjdGluZyB0aGUgbGluayBzcGVlZHMgdGhhdCBsaWdodA0KPml0LCBhY3Rp
+dml0eSBibGluayBiaXRzIGluIExDUjYgYW5kIHBlci1MRUQgcG9sYXJpdHkgYW5kIGVuYWJsZSBi
+aXRzIGluIExDUjcuDQo+Q29tcGFyZWQgdG8gdGhlIFJUTDgyMjFCIHRoZXJlIGFyZSBmb3VyIExF
+RHMgaW5zdGVhZCBvZiB0aHJlZSwgYW5kIHR3byBtb3JlDQo+c3BlZWQgYml0cyBmb3IgNUcgYW5k
+IDEwRy4NCj4NCj5SZXVzZSB0aGUgZXhpc3RpbmcgUlRMODIyWF9WTkQyXyogZGVmaW5pdGlvbnMg
+YW5kIGFkZCB0aGUgdHdvIHNwZWVkIGJpdHMNCj5hbmQgdGhlIGVuYWJsZSBiaXQuIFRoZSBjYWxs
+YmFja3MgZm9sbG93IHJ0bDgyMnhiX2xlZF8qKCkgY2xvc2VseSwgd2l0aCB0d28NCj5hZGRpdGlv
+bnM6DQo+DQo+IC0gbGVkX3BvbGFyaXR5X3NldCgpIGhvbm91cnMgYWN0aXZlLWxvdyBMRURzLiBU
+aGUgcG9sYXJpdHkgYml0IGluIExDUjcNCj4gICBkb3VibGVzIGFzIHRoZSBtYW51YWwgb24vb2Zm
+IGxldmVsIGluIGxlZF9icmlnaHRuZXNzX3NldCgpLCBzbyB0aGUNCj4gICBjb25maWd1cmVkIHBv
+bGFyaXR5IGlzIGNhY2hlZCBpbiB0aGUgcHJpdmF0ZSBkYXRhIGFuZCByZXN0b3JlZCBieQ0KPiAg
+IGxlZF9od19jb250cm9sX3NldCgpLg0KPg0KPiAtIGxlZF9od19jb250cm9sX3NldCgpIGFuZCBs
+ZWRfYnJpZ2h0bmVzc19zZXQoKSBzZXQgdGhlIG91dHB1dCBlbmFibGUNCj4gICBiaXQsIHdoaWNo
+IGZpcm13YXJlIG5vcm1hbGx5IGxlYXZlcyBzZXQgYWxyZWFkeS4NCj4NCj5UaGUgY2FsbGJhY2tz
+IGR1cGxpY2F0ZSBtb3N0IG9mIHJ0bDgyMnhiX2xlZF8qKCksIGRpZmZlcmluZyBvbmx5IGluIHRo
+ZSBMRUQNCj5jb3VudCwgdGhlIHNwZWVkIG1hc2sgYW5kIHRoZSBMQ1I3IGhhbmRsaW5nLiBNYWtp
+bmcgdGhlIFJUTDgyMjFCIGNvZGUNCj50YWJsZS1kcml2ZW4gYW5kIHNoYXJpbmcgaXQgd291bGQg
+YmUgdGhlIHJpZ2h0IGVuZCBzdGF0ZSwgYnV0IHRoYXQgdG91Y2hlcyBhDQo+d29ya2luZyBkcml2
+ZXIgYW5kIHdhbnRzIHRlc3Rpbmcgb24gYW4gUlRMODIyMUIsIHNvIGl0IGlzIGxlZnQgZm9yIGEg
+Zm9sbG93LXVwDQo+c2VyaWVzLg0KPg0KPlRoZSBjYWxsYmFja3MgYXJlIHdpcmVkIHRvIHRoZSBS
+VEw4MjYxQ19DRyBhbmQgUlRMODI2MUNFX0NHIGVudHJpZXMsIHdoaWNoDQo+YmV0d2VlbiB0aGVt
+IGNvdmVyIHRoZSBwYXJ0cyB0aGlzIHdhcyB0ZXN0ZWQgb24uIFJUTDgyNjFEX1ZNIGlzIGxlZnQg
+b3V0IGZvcg0KPmxhY2sgb2YgaGFyZHdhcmUuDQo+DQo+VGVzdGVkIG9uIGEgR2VtdGVrIFcxNzAw
+SyAoQWlyb2hhIEFONzU4MSkgd2l0aCBhbiBSVEw4MjYxQ0U6IGluZGV4IDINCj5kcml2ZXMgYSB5
+ZWxsb3cgYW5kIGluZGV4IDMgYSBncmVlbiBMRUQgb24gZWFjaCAxMEcgcG9ydC4gVW5kZXIgaGFy
+ZHdhcmUNCj5jb250cm9sIHRoZSBsaW5rIHNwZWVkIGJpdHMsIHRoZSBhY3Rpdml0eSBibGluayBh
+bmQgdGhlIGNvbWJpbmVkDQo+VFJJR0dFUl9ORVRERVZfTElOSyBhbGwgdGFrZSBlZmZlY3QgYW5k
+IG9mZmxvYWRpbmcgaXMgY29uZmlybWVkIHRocm91Z2ggdGhlDQo+bmV0ZGV2IHRyaWdnZXIuIFRo
+ZSBwb2xhcml0eSBiaXQgd2FzIHZlcmlmaWVkIHRvIGJlIGFjdGl2ZS1oaWdoIHdoZW4gY2xlYXIg
+b24gdGhhdA0KPmJvYXJkLiBBbHNvIHRlc3RlZCBvbiBBTjc1ODEgYW5kIE1UNzk4OEEgYm9hcmRz
+IHdpdGggYW4gUlRMODI2MUMgYW5kDQo+UlRMODI2MUQuDQo+DQo+U2lnbmVkLW9mZi1ieTogQ2hh
+ZCBNb25yb2UgPGNoYWRAbW9ucm9lLmlvPg0KPkNvLWRldmVsb3BlZC1ieTogU2ltb24gUG9sYWNr
+IDxzcG9sYWNrK2dpdEBtYWlsYm94Lm9yZz4NCj5TaWduZWQtb2ZmLWJ5OiBTaW1vbiBQb2xhY2sg
+PHNwb2xhY2srZ2l0QG1haWxib3gub3JnPg0KPkFzc2lzdGVkLWJ5OiBMTE0NCj4tLS0NCj4gZHJp
+dmVycy9uZXQvcGh5L3JlYWx0ZWsvcmVhbHRla19tYWluLmMgfCAyMjgNCj4rKysrKysrKysrKysr
+KysrKysrKysrKysrDQo+IDEgZmlsZSBjaGFuZ2VkLCAyMjggaW5zZXJ0aW9ucygrKQ0KPg0KPmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL25ldC9waHkvcmVhbHRlay9yZWFsdGVrX21haW4uYw0KPmIvZHJp
+dmVycy9uZXQvcGh5L3JlYWx0ZWsvcmVhbHRla19tYWluLmMNCj5pbmRleCAwNGQzOTdmMGEyZDgu
+LmIxZjAyMGFhNzc2MCAxMDA2NDQNCj4tLS0gYS9kcml2ZXJzL25ldC9waHkvcmVhbHRlay9yZWFs
+dGVrX21haW4uYw0KPisrKyBiL2RyaXZlcnMvbmV0L3BoeS9yZWFsdGVrL3JlYWx0ZWtfbWFpbi5j
+DQo+QEAgLTE4MywxMiArMTgzLDE1IEBADQo+ICNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUl9MSU5L
+XzEwMCAgICAgICAgICAgICAgQklUKDEpDQo+ICNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUl9MSU5L
+XzEwMDAgICAgICAgICAgICAgQklUKDIpDQo+ICNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUl9MSU5L
+XzI1MDAgICAgICAgICAgICAgQklUKDUpDQo+KyNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUl9MSU5L
+XzUwMDAgICAgICAgICAgICAgQklUKDYpDQo+KyNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUl9MSU5L
+XzEwMDAwICAgICAgICAgICAgQklUKDQpDQo+DQo+ICNkZWZpbmUgUlRMODIyWF9WTkQyX0xDUjYg
+ICAgICAgICAgICAgICAgICAgICAgMHhkMDQwDQo+ICNkZWZpbmUgUlRMODIyWF9WTkQyX0xFRF9B
+Q1QoeCkgICAgICAgICAgICAgICAgICAgICAgICBCSVQoeCkNCj4NCj4gI2RlZmluZSBSVEw4MjJY
+X1ZORDJfTENSNyAgICAgICAgICAgICAgICAgICAgICAweGQwNDQNCj4gI2RlZmluZSBSVEw4MjJY
+X1ZORDJfTEVEX1BPTEFSKHgpICAgICAgICAgICAgICBCSVQoeCkNCj4rI2RlZmluZSBSVEw4MjJY
+X1ZORDJfTEVEX0VOKHgpICAgICAgICAgICAgICAgICBCSVQoKHgpICsgNCkNCj4NCj4gI2RlZmlu
+ZSBSVEw4MjI0X01JSV9SVENUICAgICAgICAgICAgICAgICAgICAgICAweDExDQo+ICNkZWZpbmUg
+UlRMODIyNF9NSUlfUlRDVF9FTkFCTEUgICAgICAgICAgICAgICAgICAgICAgICBCSVQoMCkNCj5A
+QCAtMzA1LDYgKzMwOCw3IEBADQo+ICNkZWZpbmUgRldfU1VCX01BR0lDXzgyNjFEICAgICAgICAg
+ICAgIDB4MzIzNjMxNDQNCj4gI2RlZmluZSBSVEw4MjYxWF9QT0xMX1RJTUVPVVRfTVMgICAgICAg
+MTAwDQo+ICNkZWZpbmUgUlRMODI2MVhfTUFYX01NRF9ERVYgICAgICAgICAgIDMxDQo+KyNkZWZp
+bmUgUlRMODI2MVhfTEVEX0NPVU5UICAgICAgICAgICAgIDQNCg0KSGksDQoNCldlIGtpbmRseSBz
+dWdnZXN0IGRyb3BwaW5nIHRoaXMgcGF0Y2ggZm9yIHRoZSBzYW1lIHJlYXNvbiBhcyBpbiBQYXRj
+aCAyLzMuDQoNCkxFRCBjb25maWcgaXMgcmVsYXRlZCB0byBIVyBjb25maWcgYW5kIHdpbGwgYmUg
+Y29uZmlndXJlZCB2aWEgZmlybXdhcmUuDQoNCkJScywNCkphdmVuDQo=
