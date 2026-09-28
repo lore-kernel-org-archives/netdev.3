@@ -1,150 +1,79 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from out-2z4y-a134.jellyfish.systems (out-2z4y-a134.jellyfish.systems [198.54.127.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0084B95B0
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4ED4B5150
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790596742; cv=none; b=CuGEWJsBqfTLkttz22gUl2ZciZcpTWniPkULKOtzUdaby4qj127DRnFWmvgrTnxO/VdlixMyra5PUyxsGr/A3S1y7qA0cb3p/yzl4DLLfT5ASZB42wcq2uGsOGqrFc3RIUyXkriOJ7r20f83etPeHqmqO8bdbCqsUsm3D17rXUU=
+	t=1790596779; cv=none; b=lj/57L/nfcfheI64X2yirK95LtUtHrlzky/dU4EujHQADJUB4F7hVeAzx+NOq91LPQ7MpmfggPP0+2j5sC0WzEHu+rmBxdYHdDnL7mOHQGRFrUaA0uTZ01GWHfpyrZGmE8WijW1LW5McqilAmB9SSsV7eyldi0aDd6yD+I25La8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790596742; c=relaxed/simple;
-	bh=CqbVlokaOL+bm8eId/Ib/ejGZ1bk7rb3ux6JMzy2uuc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XR8fvbUravAC82/DQlPm8URYISEzNNsEh+7VJSrUZPykB/iqEs59DMPoKiYhzQjSSzQlm8FpxwVYjCgAOL94LDu/G6xk4Ahd1wG3XGWwvSBJvdFOehYRrkklOniPJvbtA2LZLDG4dDN3vjfZ+9A0KOVDwlvuDUxQWuGqLcKBRk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=aAYZBbp7; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1790596779; c=relaxed/simple;
+	bh=w4HsxY3dGeAezAsukrb3WtQRlY86g+fCCtv9tIaQP3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i6PIQm61L6M1Z0Emkffb0qU5DdfcfYVX9safF//Gf6xH8rq/KYj/ZRL3HmBP1xeUwBQP8CISz5RLNmNZZT7VeSyCFkodWa3yT6TXUR58rPLXGYMCokTA4xTwi4isnJt90BU0SdfwJ1dJSx+B+BlsmITzAJHoa2K52lx/T6yrOVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=LfZASq11 reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="aAYZBbp7"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71974de4so1619295e9.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1790596738; x=1791201538; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:from:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=v3UXri323pcC3w5ZlfRHuF0Grc9/qviDz0NEMAdVQdo=;
-        b=aAYZBbp7AVGb9w93+Zf0gU7J1kmTpBGdJZTXrzk2NBpoNXxSPL4Zj+4u73UYeTX/Lv
-         m3Hu47K7uDOBn8zhHohRAonfT2bNrjHd6SgxuaKOq5TdCMKCX3q8AZOmqJ8GDKBj7JXh
-         KoG6b+L5enc1TO+QyySh1kWdpRQTfxeZ3tdW9hGWrFaUB1m6Ki8aUWn0ZPxQeQgq00sm
-         RbkxJCEY3j7FUhJvnDCOFIw34fXchS5FHy6OtQYH5BzG8X8VMHr3OdVrddUOHhuKgmGm
-         VrWFOmIpIjIincH3Vw4U5FFkcE5lvh4XcecVHWkzxjJxN/4n+4gjdcywceh5KqiyFtOd
-         7E5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790596738; x=1791201538;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:references:cc:to:from:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=v3UXri323pcC3w5ZlfRHuF0Grc9/qviDz0NEMAdVQdo=;
-        b=k29MTIXXzPGepkmM6s+b3TdrXVDqoAGrqjhpIo0Z6T95wyFP/JeTkFYzKCM+rdA4HY
-         MXdkrR+8owUaU2kNEwAOoXRm+CV6EynDT6HpriWhFE60C/E7YTvBszhDJtQD/+BSSIh/
-         q89CBHQDKjGQ3aH8ur4D4IXLKp3QlHz1hG3wG/Xf82wAGozB8s0nthVSGfH83RiOHI3L
-         KvDDiBKydx2YZDsE7PI8lrIkSEOJ2wGFPpu+OZqxtTCyaKpWuLfNYJI0kV2Etd+wdqb9
-         NdKm5VtDum6rM9q7dTvlNaB6Ih4QlpA9kXvZ51RcOxJnjQO6V/PNs0ce2j6Cu5TKjgP4
-         kW5w==
-X-Forwarded-Encrypted: i=1; AKwUvBy9Mri95f5tDhsyfMDiEmMM2K5ztTRqk1HKxZOUx0pryIWEb5CDRE1UgaWfYU5cDyCCPJQLJZg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nwd0ZTBvt7fDgMI3IIlo+i/AhZ8UESC1fX4HQ9CvEcKgGuw9j1
-	DwgKXNn1m5qii/rf3fcvSGiDpjwo3AQzyubJ0SG1Vb9rZ0D6JJoTlBqG2W7ZjEoV0YU=
-X-Gm-Gg: AYBFou2DNERw4k0ahwuGebSudI6VF7SgbnDyNyuDnl7v8Sz1VFuyTJcdqj4p8ehZX4V
-	y73Qmw3+eU04+2vttwQWCL8dSWPqvCNIfL6EGm5w0zITu2vaM5Pj9fH5f8qzgLCb9DNU6mRetq+
-	Ddi8VlLynu0jGKPU2+EJAM4XLzRiorSm+X47mg8fUJ8MXtuylPR21KVzeiJZmoi/4F34iKcQbX2
-	pqsBlsu1sKVMdwMnSUfXO3hCnroMBsQVosVGIwIxCJjPrWyPH7UduTVjNwshOpCC2UjLpJBUKdY
-	2HeMmL2R4yVgOt5AngKPnJHZI6RTYVU11Ux6ISViVuUDj+kqRjVi3NcJzNyGKDTeLHvqTN7Z60O
-	B1OkMSuKeTrNrApNoy/HiS7jWP0tDH3Qu+0FIo+x8r1JRFun3eoG67zIeGrzaznvYhUX5aEpkzK
-	zPy7RkHZscFmcKP6+Dkhk4pKQ1a10aNknTlvZE2lUkVulMihCxa0vItAcSj+uYRyi6ACQ0mJ6/8
-	AZLSgHvUBOld6EmEC96mbJP7/eM6sRfk9mb8qHWX5GLWDgswcc=
-X-Received: by 2002:a05:600c:a414:b0:49f:ff2c:e0cf with SMTP id 5b1f17b1804b1-49fff2ce1a7mr76035515e9.0.1790596738417;
-        Mon, 28 Sep 2026 04:58:58 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0017652d1sm200581185e9.5.2026.09.28.04.58.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 04:58:57 -0700 (PDT)
-Message-ID: <f72a5150-4c75-4d71-93a8-8b261ca9762a@6wind.com>
-Date: Mon, 28 Sep 2026 13:58:57 +0200
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="LfZASq11"
+Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4htfwy3nLnz8sX1;
+	Mon, 28 Sep 2026 11:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1790596755;
+	bh=5rrmQ/LoeD3Jwr2hCIGkoDHuo61v0Gd6NUeS7mYztVQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LfZASq11SjmvJxZdND3YgzU5c+FqUYqpv8ASNeOft8rmXDVLNrNiYCHRp8ycmonZX
+	 7v2ZYn7woktL3GUmuRTYcZ8ZLRo/jYTGZHZkwLKKp9NfgKxA39KqzGQpLF7cnAujgh
+	 2VKyfGzL0cAKJzNifilyhZogEse+2CNhHZT6sSQEvDcJsotBY9fMBz0rCoRtWVqbUi
+	 7Cp6kJ2l55JRI9xotDGZrXEz0jcRm++Cf+Kg+qo0pTLcv9nTZoRe9iqr+2keIZh17e
+	 xzp47EAulOemUWm4u2A8IiEFDGAYOAd4EQzfySrXljHvZjxL8T2BNyfaS0OcgtyyZ2
+	 q0LW5oZkf9ByQ==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: netdev-bot+sashiko@kernel.org
+Cc: Rahul Chandelkar <rc@rexion.ai>,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH nf-next v4 3/4] netfilter: nf_conntrack_amanda: use nf_ct_helper_parse_port()
+Date: Mon, 28 Sep 2026 11:58:23 +0000
+Message-ID: <20260928115911.4057824-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179053062399.2160803.9591526412956900613@kernel.org>
+References: <20260923151501.3093863-1-rc@rexion.ai> <179053062399.2160803.9591526412956900613@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next v8 2/5] net: add a generation counter for dev->mc
- changes
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-References: <20260927002427.4519-1-sigefriedhyy@gmail.com>
- <20260927002427.4519-3-sigefriedhyy@gmail.com>
- <cd00e6e7-aa2d-4f98-8a79-083b64b3376a@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <cd00e6e7-aa2d-4f98-8a79-083b64b3376a@6wind.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-Le 28/09/2026 à 09:53, Nicolas Dichtel a écrit :
-> 
-> 
-> Le 27/09/2026 à 02:24, Yuyang Huang a écrit :
->> A multi-part RTM_GETMULTICAST dump of dev->mc resumes by position, so
->> entries added or removed between two dump rounds can be skipped or
->> repeated. The IPv4 and IPv6 dumps report that with NLM_F_DUMP_INTR by
->> stamping cb->seq from a per netns generation counter combined with
->> dev_base_seq, see inet_base_seq().
->>
->> Add the equivalent for the device multicast lists: a per netns counter
->> bumped whenever an entry is added to or removed from any dev->mc. The
->> list helpers do not know which device a list belongs to, so give
->> netdev_hw_addr_list an owner, set for the lists of a device and NULL
->> for snapshots and other standalone lists, and change list->count
->> through helpers that bump the counter of dev_net(owner) when the list
->> is dev->mc. That covers the dev_mc_* helpers, both lists of a sync,
->> the hardware sync helpers drivers call from their rx mode callbacks or
->> their own workers and the reconciliation after an asynchronous rx mode
->> update. It is atomic since the writers only hold the address lock of
->> their own device.
->>
->> Used by the following patch for the AF_PACKET multicast dump.
->>
->> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-> 
-> 
-> If another version is needed, you can rename counter to _counter to highlight
-> that the helpers should be used.
-Sorry, this sentence is a leftover from the first version of my reply.
+On Sun, 27 Sep 2026 17:37:03 +0000, netdev-bot+sashiko@kernel.org wrote:
+> Can a port field with six or more digits still be truncated into a
+> different valid port here?
 
-[snip]
+Yes.  pbuf only holds five digits, so a field such as 123456 is parsed
+as 12345, and on the NAT path only its first five bytes are mangled.
+This predates the series, but the commit message wrongly claims that
+the patch rejects every value above 65535.
 
-> 
-> For correctness, __hw_addr_splice() should use helper:
-> 
-> @@ -509,8 +509,8 @@ static void __hw_addr_splice(struct netdev_hw_addr_list *dst,
->  {
->          src->tree = RB_ROOT;
->          list_splice_init(&src->list, &dst->list);
-> -        dst->count += src->count;
-> -        src->count = 0;
-> +        __hw_addr_count_add(dst, src->count);
-> +        __hw_addr_count_reset(src);
->  }
-> 
-> Renaming  struct netdev_hw_addr_list->count to _count would help to check all
-> users and highlight that modifying _count should be done with helpers.
+v5 will make pbuf one byte larger so that a sixth digit is copied and
+the field is rejected by nf_ct_helper_parse_port().
 
-This comment stands.
+Thanks,
+Rahul
 
-Regards,
-Nicolas
+pw-bot: cr
