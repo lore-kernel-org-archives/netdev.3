@@ -1,139 +1,220 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC72E4CDDF4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 13:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77DE3DB620;
+	Mon, 28 Sep 2026 13:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790602494; cv=none; b=epmD2nrF/1fdIuSqjOCPoMEnPL8pYZVhxgjeDBxTnppyUnwNW3PeTjYWL4XyPUqyU5CRYEooZjVRFRD8wfnasVLKIXQy35InnHyzjzbVPGMI00hCs+/1SO6geV3znFWoyb9BPK6HPEuxOp38Ijt3TuZc93CkDrr6FtAn3N66j40=
+	t=1790602622; cv=none; b=hP+mUDRKJvEVzab7Boc2ozFr2GXkOmtjVp016AC/BBDI/ydlTQ2tRKlY2N+rB4HstJYAYcSi3xQaM+g9U0deWgTkHCjUaMGD0XWsYioZjOd7PRRMhMLp1mCNu9eRJw/M2nOAQXKWx/MHaU7kVljDlrCBNqGbCBdA09i0KbsK6D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790602494; c=relaxed/simple;
-	bh=T0ZnyZmNOhJs9F62i79irExNdtrq2m1MmyPDQyS/l2I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UlmgyLCTzpF7OVHTEzYHCk4XYjHjs18+QnF+WwXWHPiTdJozlX+lJrxYgHzDxA4hRmiAcrlNFzd8cgAclf6q5lyLdElzwTnKKExnxNJldo6xo2k1ospcQiLeh9dvIiz3V147L3gJZEdHa/WtEVnqBNXxFVnM37FisqiLd7IZnRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZXPwNlmG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XwKEOK4J; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790602622; c=relaxed/simple;
+	bh=uCJMNYRb0dJ23inpUSyXpDCAf6+VNJdEgZrUczNCgSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=liLE1157X718862ohXsliWf3lmug+1R7fbzpG0AvluiJhTN3adUFtXGzJB6wVb6ywzSpWB3pJx/zd/nUndEmn7UvOg+WNZ80Qc7imFBCVwwlEFKTnbLnwBjYS5Bay+i/0kGl0jEjHEzkulNlWPvJTwm9SvKIR8spwcWplHaWE3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyI8Owps; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZXPwNlmG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XwKEOK4J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790602489;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T0ZnyZmNOhJs9F62i79irExNdtrq2m1MmyPDQyS/l2I=;
-	b=ZXPwNlmGkQ/lC0N1sAPiWEN57qtRYgB5iWDecQ+MeoXBxigM/LCCUmHU1jVnpjcor4ZQ6y
-	+Uy4tLfQmApAf8AVkYM9LtDpo7A1mWPnjjO8er5Q1QmqcRQeX1gJZjwg+iFeMQlL9dYtiK
-	z3NQFvu/E04q7uA8bnZTLNu2H8Quyjg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-GAf4dLHTM9yub_OD1l-M0w-1; Mon, 28 Sep 2026 09:34:48 -0400
-X-MC-Unique: GAf4dLHTM9yub_OD1l-M0w-1
-X-Mimecast-MFC-AGG-ID: GAf4dLHTM9yub_OD1l-M0w_1790602487
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6b5c5f44so47398715e9.2
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 06:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790602487; x=1791207287; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=T0ZnyZmNOhJs9F62i79irExNdtrq2m1MmyPDQyS/l2I=;
-        b=XwKEOK4J3S9W0Cpx8hG0f3eacL1Bupaqhf3WcLXDY9+tvkxDD8gCBMd+ucQ4qPhSiw
-         so4SpHvQBQXtNstM5K5KSb5R50EnMc9I/S6KThvtHLAUpegcNgC+04Cc9L2SpreaFSPV
-         zmiTmj2g/wRzfJ0X9qQWQY2GTyDv6Yk50QnT8IjLKrKxMTrwO1iuho5YeMWogCLvLRhg
-         1YUNOA3Hu4DAosa4hoJfzZc4nnCc6itGjYzPnHYOUjVooGDufElVhtubVqxCFc8ZLnsl
-         v++I8tsAFEwt4gczDS1S+ZdwfKxJOBixQhyXm2/6ieVNEkeWxRpP+YtJv9uDf5n3qeXg
-         hSqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790602487; x=1791207287;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=T0ZnyZmNOhJs9F62i79irExNdtrq2m1MmyPDQyS/l2I=;
-        b=2cVxYaweC1+EJr0LqAhW+EMrio0RQgoZXPphDTwJt9XLViC/qL3uO2l1ylqv3lfyFh
-         ZafgDLEVSMLFfp+1wTR611JclykYBPdg3lPXfK738IaUIGN9HF+XMRqZhpqPEvKA/Bt8
-         y4yW/FU+eGRmBuE34+fXUq4BB0rhMKJDVwI3jHeuhn/dIlprLoaEzHfLGJEw3DOdLa8V
-         42hu//Qhb/Vy9Rhz68LojTaYrU4vx5jm/89Na966t1lr6LV30GBU9UYTiBUVHB46BUHr
-         HItejju9643lDECw6rDglgce4OklJV0L6SbASQHtHxD1ZHBeJnsXfYQ20npIT1izMurd
-         J0Cw==
-X-Forwarded-Encrypted: i=1; AKwUvBxEnriMqDDdaYSEAIyAaKQ9+LylfwHFjKiAZzUX/UEJwq2zTsvmXlJHl1/yXfqQ5Q5+xPki4/k=@vger.kernel.org
-X-Gm-Message-State: AFuF++lkPj8NbzOLAl9YnOqh1pxxPtLo6++BKmrLx4tBwM2PJFr2uurF
-	7NbOBoY/UtFuxeDmLplfyoCncYiTDSabGKEYJq5k56iCjVWot1XAnJ0gknA81g+n0yI44Y0KwY0
-	aoKq3qj14mwV6BnbVOw9b/Sf4znGPMAHIJKjMXdNdfdY1ge24xRBwzqeeLQ==
-X-Gm-Gg: AYBFou1nkMb7IIgUcxhGGdA5KotmKZKFORlNNk33XbMzJdC5x1sSo5tXX0tl33BFphw
-	UK47bJSyjcqXM9mf947xt5WEE8GZTUtF+4oLSMcks33P48pVrW6+sDfuMF11K1Cjna4juo5Qtms
-	5LSAgu4qRGmQPsktfwszYPf8qIS9zuuVlcYdSQan8HkAXobNmK7NALRk+rvEPJ7UYDTMMNRlFjF
-	fNKKBn8AKWhIW2B/5xVFiTP+/R7q+G0FBY54iwJs8HIFkUSDSPDvJGMJ4ZHqwg4IpxVIL4wtVLS
-	Swt2hix0P074MtkTo+D14FMm/FJx7fDmqLdLhLUJ47ZlHLY/zgDoHCHzv0VXo2hIsyi6zvlQa3I
-	/8aAaoAuxhSGkrcQU2/SFKWW994agwgQ=
-X-Received: by 2002:a05:600c:348a:b0:49d:1840:4fd2 with SMTP id 5b1f17b1804b1-49fe7bbaf83mr214992515e9.23.1790602486810;
-        Mon, 28 Sep 2026 06:34:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:348a:b0:49d:1840:4fd2 with SMTP id 5b1f17b1804b1-49fe7bbaf83mr214992045e9.23.1790602486412;
-        Mon, 28 Sep 2026 06:34:46 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([24.151.142.216])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001906c5esm144276535e9.12.2026.09.28.06.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 06:34:45 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-trace-kernel@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  netdev@vger.kernel.org,  Steven Rostedt <rostedt@goodmis.org>,  Masami
- Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Ilya Maximets <i.maximets@ovn.org>,
-  Matthieu Baerts <matttbe@kernel.org>,  Eelco Chaudron
- <echaudro@redhat.com>,  dev@openvswitch.org,  Adrian Moreno
- <amorenoz@redhat.com>,  Antoine Tenart <atenart@kernel.org>,  Johannes
- Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH v7 3/4] net: dropreason: use new __print_sym() in tracing
-In-Reply-To: <20260922110955.363677-9-johannes@sipsolutions.net> (Johannes
-	Berg's message of "Tue, 22 Sep 2026 13:08:42 +0200")
-References: <20260922110955.363677-6-johannes@sipsolutions.net>
-	<20260922110955.363677-9-johannes@sipsolutions.net>
-Date: Mon, 28 Sep 2026 09:34:39 -0400
-Message-ID: <f7t1pad8pow.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyI8Owps"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769AE1F000FF;
+	Mon, 28 Sep 2026 13:36:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790602620;
+	bh=o/h3Dk4bf2evwqsJUapzbYALe6zUA6ekei+vUYpPNBI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fyI8OwpsALSIH6r/7hxbSH8k9OaHdqLXD13rEcdHhjU1LCvKZHDOHavjUG9yDFUEV
+	 +G4NpbENoKXxi7usBHp+XTYh2MKdTTk4TyNlnvJzemf4p+4lERynVAHY0wQ35wzVIe
+	 sAss3PzUofyBM/JjpCpzMP36Il96vFEBfLCQGLvwnPiWg3x8k/1+me6FT8bNIHzj6I
+	 xplERgfMxifsJt5+7zybiH+P0kHDOOWwE4MVh0sCzPPiRO8kqtJ4tQ9KvpeNJNb62t
+	 GElWukl2jDALOQMMYeT/qePI+qc7RbnwxikHDVk+J1Yq1IT7RhPYykrOFUAE96IL7j
+	 8J2e5RKyyEPnQ==
+Date: Mon, 28 Sep 2026 14:36:54 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: florian.fainelli@broadcom.com, netdev@vger.kernel.org,
+	opendmb@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, zakkemble@gmail.com,
+	ryotkkr98@gmail.com, linux-kernel@vger.kernel.org, nb@tipi-net.de
+Subject: Re: [PATCH net 3/6] net: bcmasp: validate minimum RX packet size in
+ bcmasp_rx_poll()
+Message-ID: <20260928133654.GS13925@horms.kernel.org>
+References: <20260922221630.3864427-4-florian.fainelli@broadcom.com>
+ <179027136939.2160803.15243672598361037469@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179027136939.2160803.15243672598361037469@kernel.org>
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+On Thu, Sep 24, 2026 at 05:36:09PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 1 (2) · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The new minimum-size check in bcmasp_rx_poll()
+>   (bcmasp_intf.c:526) is `len < 2 + (intf->crc_fwd ?
+> - [Medium] The commit message overstates the impact.
+> - [Low] The new runt/invalid-length drop branch in bcmasp_rx_poll()
+>   (lines 526-530) increments `stats->rx_dropped`.
+> 
+> Pre-existing issues:
+> - [Medium] bcmasp_rx_poll() never checks desc->size or
+>   DESC_ADDR(desc->buf) against an upper limit.
+> - [Medium] One `struct u64_stats_sync` (`intf->stats64.syncp`) is written
+>   by several contexts that are not mutually exclusive: - `rx_napi`…
+> 
+> --
+> 
+> net: bcmasp: validate minimum RX packet size in bcmasp_rx_poll()
+> 
+> This patch adds a lower bound check on desc->size in bcmasp_rx_poll().
+> Descriptors smaller than the 2-byte alignment pad plus the optional FCS
+> are counted in rx_dropped and skipped before an skb is built.
+> 
+> > If the hardware reports a descriptor size smaller than the pad and CRC
+> > lengths (e.g. runt or corrupted frames), len -= 2 or len - ETH_FCS_LEN
+> > underflows u32 len, leading to out-of-bounds trimming and memory
+> > corruption.
+> 
+> [Severity: Medium]
+> Is "out-of-bounds trimming and memory corruption" accurate here? Both
+> helpers used by bcmasp_rx_poll() appear to guard against the underflowed
+> values:
+> 
+> include/linux/skbuff.h:skb_pull_inline() {
+> 	return unlikely(len > skb->len) ? NULL : __skb_pull(skb, len);
+> }
+> 
+> net/core/skbuff.c:skb_trim() {
+> 	if (skb->len > len)
+> 		__skb_trim(skb, len);
+> }
+> 
+> If desc->size is below 2, skb_pull() returns NULL and pulls nothing. If
+> len - ETH_FCS_LEN wraps to a value near 4G, skb_trim() does nothing.
+> 
+> Before this patch, the visible effects seem to be two:
+> 
+>   - a 0-3 byte skb reaches eth_type_trans() and GRO
+>   - the wrapped len is added to rx_bytes, about 4 GiB per frame:
+> 
+> 	u64_stats_add(&stats->rx_bytes, len);
+> 
+> Neither of these is an out-of-bounds write.
+> 
+> The driver also never sets UMC_CMD_RUNT_FILTER_DIS, so the UniMAC runt
+> filter should stay enabled. That leaves misbehaving or corrupted
+> descriptors as the only way to reach this path.
+> 
+> This carries a Fixes: tag, so it will go to stable. Could the commit
+> message describe the actual impact, and say whether such descriptors have
+> been seen on real hardware?
 
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> The __print_symbolic() could only ever print the core
-> drop reasons, since that's the way the infrastructure
-> works. Now that we have __print_sym() with all the
-> advantages mentioned in that commit, convert to that
-> and get all the drop reasons from all subsystems. As
-> we already have a list of them, that's really easy.
->
-> This is a little bit of .text (~100 bytes in my build)
-> and saves a lot of .data (~17k).
->
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
-> v7: update the selftest accordingly
+Hi Florian,
 
-Sorry for the late reply - this series was caught in a Spam filter for
-some reason.
+While tightening up the wording of the patch description might be nice
+I'm more concerned about the point made in the last paragraph.
 
-> ---
+And I think that if this is more hardening than fixing a bug
+that can manifest then it would be best sent via net-next
+without a Fixes tag or CCing stable.
 
-[ ... ]
+> 
+> > diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> > index 9ad5a982542f5..2ad8a7eac8888 100644
+> > --- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> > +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+> > @@ -523,6 +523,12 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
+> >  					DMA_FROM_DEVICE);
+> >  
+> >  		len = desc->size;
+> > +		if (unlikely(len < 2 + (intf->crc_fwd ? ETH_FCS_LEN : 0))) {
+> 
+> [Severity: High]
+> Should this threshold also include ETH_HLEN?
+> 
+> With crc_fwd set, any desc->size from 6 to 19 passes this check. With
+> crc_fwd clear, the range is 2 to 15. After the pad pull and the FCS trim,
+> the skb holds 0-13 bytes. With desc->size == 6 and crc_fwd set,
+> skb->len == 0.
+> 
+> That skb still goes to eth_type_trans(), and eth_skb_pull_mac() ignores
+> the failed pull:
+> 
+> include/linux/etherdevice.h:eth_skb_pull_mac() {
+> 	struct ethhdr *eth = (struct ethhdr *)skb->data;
+> 
+> 	skb_pull_inline(skb, ETH_HLEN);
+> 	return eth;
+> }
+> 
+> eth_skb_pkt_type() then reads h_dest, and eth_type_trans() reads
+> h_proto, from bytes past skb->len. The memcpy() never wrote those bytes.
+> They are stale page_pool page contents, or the stripped CRC, and they
+> decide skb->pkt_type and skb->protocol.
+> 
+> The frame is then passed to napi_gro_receive(). If a packet socket
+> receives it, eth_header_parse() copies h_source into sll_addr. Can that
+> leak 6 stale bytes to userspace?
+> 
+> Sizes just above the new limit still reach this path for the runt or
+> corrupted descriptors the commit message describes. bcmasp_xmit() already
+> uses ETH_ZLEN + ETH_FCS_LEN as the minimum frame size.
+> 
+> Would 2 + ETH_HLEN + (crc_fwd ? ETH_FCS_LEN : 0), or a bound based on
+> ETH_ZLEN, be more appropriate here?
 
-> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> index a31f7fb6882d..9b8edfcd2d1a 100755
-> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> @@ -234,7 +234,7 @@ ovs_drop_reason_count()
+This does seem to be a legitimate concern.
 
-For the OVS part (also nice to see the line count reduction) -
+> 
+> > +			u64_stats_update_begin(&stats->syncp);
+> > +			u64_stats_inc(&stats->rx_dropped);
+> 
+> [Severity: Low]
+> Is rx_dropped the right counter for a length error? The page_pool and
+> napi_build_skb() allocation failures also use it, and
+> bcmasp_get_stats64() exports it directly:
+> 
+> 	stats->rx_dropped = u64_stats_read(&lstats->rx_dropped);
+> 	stats->rx_crc_errors = u64_stats_read(&lstats->rx_crc_errs);
+> 	stats->rx_frame_errors = u64_stats_read(&lstats->rx_sym_errs);
+> 	stats->rx_errors = stats->rx_crc_errors + stats->rx_frame_errors;
+> 
+> include/uapi/linux/if_link.h describes the two counters differently:
+> 
+>   - rx_dropped: "e.g. due to lack of resources or unsupported protocol"
+>   - rx_length_errors: "Number of packets dropped due to invalid length",
+>     which is also counted in rx_errors
+> 
+> As written, ip -s link can't tell these drops apart from allocation
+> failures, and they never show up in rx_errors or rx_length_errors.
+> 
+> > +			u64_stats_update_end(&stats->syncp);
+> 
 
-Reviewed-by: Aaron Conole <aconole@redhat.com>
+Likewise, the analysis above does seem to be correct.
 
+> [Severity: Medium]
+> This is a pre-existing issue, but intf->stats64.syncp seems to have
+> several writers that are not mutually exclusive:
+
+I'm skipping over the issues that are flagged pre-existing.
+I'd appreciate it if you could look over them.
+And likewise for the AI-generated review for the remaining
+patches of this patch-set.
+
+...
+
+-- 
+pw-bot: changes-requested
