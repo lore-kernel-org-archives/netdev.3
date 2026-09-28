@@ -1,485 +1,391 @@
-Received: from out198-20.us.a.mail.aliyun.com (out198-20.us.a.mail.aliyun.com [47.90.198.20])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA393CD8C9;
-	Mon, 28 Sep 2026 12:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532671DFDA1;
+	Mon, 28 Sep 2026 12:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598786; cv=none; b=tp1FaTOzqkHcmQUsXy+rWln7og877l68pj3NMEiiqsmeAQCOz9m8vaLYZNzMBTKkJLO5hKAxMc51MAM6FTqtBroWsIeLtVMJTNV2g/ImhbzpVg4R18nSYVzxNOlJDCeNj6J+3wyaTWj8bTvJH/ryGi9OxzqAzzgM8hCvsVi/cOU=
+	t=1790598800; cv=none; b=U7HSeHXrDbqTYO5mdIjhDhACdrzAMQq1sXivVJR3wp7Yaj82ytspBWDFUPLTy3ROSynSE4IjgHF7cDTVB4t1zuDzEprd+P0he7RsFgGkoUGXE9I7cgX/IPwWBO7wQxCx2tzqGsrB01NeOmg6t3zO+vG2JLRkXKFhTtW1sATyDXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598786; c=relaxed/simple;
-	bh=iyA2i1GnmvL0qdxE4MRiK/ItjU0gTk0L72cguxLZvqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+8eAmMgjB/6bI/Wv9ZYaidvZTTsg3f18VlzQ14vLZvBlrS8QWtY56CBtvMNVCarE6Cdp0K6L4+lpRMn2TZjqeZAQBbq/MpVUiJpH/1ar4HZQ/+mh5LpkyFsoLwA6AmPkyS6L/YV+s9AjRcIRm3GQu1RZdmGEfur5GEirO5g6PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0113905-0.00586475-0.982745;FP=16308479958602763778|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033022149254;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jQ6tpn5_1790598766;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jQ6tpn5_1790598766 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 28 Sep 2026 20:32:47 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v30 net-next 7/8] net/nebula-matrix: add common/ctrl dev init/remove operation
-Date: Mon, 28 Sep 2026 20:32:32 +0800
-Message-ID: <20260928123237.88994-8-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
-References: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
+	s=arc-20240116; t=1790598800; c=relaxed/simple;
+	bh=ytGDVkmFrMzCVBW2oV2fmCr/wUuhkQuU9PFhfjxyMR4=;
+	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type; b=M9JDvJAheFoZnt//8Xgg/RlGCu/7poBDpgpSODR8d0/yRf68mvAloTEz6YLJ+QJusIUbeiaXJrgOjIxgi7/jl7IrC63QAE19qf/1Thr0Os1TFJP+8SvQ4P+vnBBPbteBX6uMT/bfUIfR40NVR3i/k0vuH5/bCg+jdQqUyoCNsOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4htghC2DvGz8XrrJ;
+	Mon, 28 Sep 2026 20:33:15 +0800 (CST)
+Received: from njy2app03.zte.com.cn ([10.40.13.14])
+	by mse-fl1.zte.com.cn with SMTP id 68SCX66r078408;
+	Mon, 28 Sep 2026 20:33:06 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njb2app06[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Mon, 28 Sep 2026 20:33:09 +0800 (CST)
+X-Zmail-TransId: 2afe6aba5e85201-22ae5
+X-Mailer: Zmail v1.0
+Message-ID: <20260928203309173h1139im2nvAFvKodp4Iav@zte.com.cn>
+In-Reply-To: <20260928202059763e9xqxhTwFe4DHa6a2wq0L@zte.com.cn>
+References: 20260928202059763e9xqxhTwFe4DHa6a2wq0L@zte.com.cn
+Date: Mon, 28 Sep 2026 20:33:09 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY0IDMvM10gZGluZ2hhaTogYWRkIGFzeW5jIGV2ZW50IHF1ZXVlIGZvciBmaXJtd2FyZQogbm90aWZpY2F0aW9ucw==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 68SCX66r078408
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 28 Sep 2026 20:33:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6ABA5E8B.000/4htghC2DvGz8XrrJ
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+From: Junyang Han <han.junyang@zte.com.cn>
 
-Add nbl_dev core device infrastructure for nebula-matrix NIC lifecycle
-management. Create nbl_dev.c, nbl_dev.h and nbl_def_dev.h to host
-device-level initialization and teardown logic, and wire the new
-nbl_dev_init() / nbl_dev_remove() entry points into core init/remove.
+Add the event queue table and the first async event queue, fed by the
+RISC-V management core of the firmware. The queue owns one MSI-X
+vector taken from the async pool and, on interrupt, reads the event_id
+from the PF receive sub-channel of the BAR message area, maps it to
+an event type and fans it out through the per-event-type notifier
+chains of the table. The PF probe creates and tears down the queue
+through the existing IRQ pool interfaces.
 
-Implement common device setup helper to allocate per-device state,
-initialize mailbox cleanup work, create mailbox channel queue, and
-pre-populate MSI-X service vector counts. Defer VSI/ETH identity
-lookup and MSI-X vector allocation to the subsequent start routine,
-to guarantee a fully ready control PF mailbox responder before any
-cross-PF RPC access and keep intermediate commits bisectable.
+The BAR message channel handshake that tells the firmware which
+vectors to signal comes with the BAR message subsystem in a later
+series; the PF side wired here is live as soon as that channel is
+enabled. Subscribers for the RISCV_READY event register on the
+notifier chains in later series as well.
 
-Implement control-PF-only device setup to invoke chip-level module
-initialization and program mailbox QINFO routing table entries for
-PF bus/devid mapping.
-
-Enforce hardware-aware init/teardown ordering: initialize common
-mailbox channel state before control device hardware setup, and
-teardown mailbox channel and drain in-flight DMA prior to firmware
-de-initialization notification, to avoid invalid DMA writes.
-
-The firmware handles global hardware cleanup and QINFO routing state
-reclamation asynchronously after driver status is marked inactive.
-Device link dependency established during non-control PF probe ensures
-sibling PFs are unbound before the control PF is removed.
-
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   1 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 253 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  55 ++++
- .../nbl/nbl_include/nbl_def_dev.h             |  14 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   9 +
- 6 files changed, 333 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ drivers/net/ethernet/zte/dinghai/Makefile  |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c   |  23 ++--
+ drivers/net/ethernet/zte/dinghai/en_pf.h   |   2 +
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.c | 137 +++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.h |  60 +++++++++
+ 5 files changed, 216 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index b7eebd89b4d1..71fbe3ee7e62 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -11,4 +11,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
- 		nbl_hw/nbl_interrupt.o \
- 		nbl_hw/nbl_chip.o \
- 		nbl_core/nbl_dispatch.o \
-+		nbl_core/nbl_dev.o \
- 		nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 4d8cea8d8ab3..c3c4dd685bf6 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -25,6 +25,7 @@ struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
- 	struct nbl_resource_mgt *res_mgt;
- 	struct nbl_dispatch_mgt *disp_mgt;
-+	struct nbl_dev_mgt *dev_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
- 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-new file mode 100644
-index 000000000000..e094b97acdfb
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -0,0 +1,253 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include "nbl_dev.h"
-+
-+static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+
-+	/* mailbox vector allocated in nbl_dev_start() via
-+	 * nbl_dev_init_interrupt_scheme(); nbl_dev_request_mailbox_irq()
-+	 * only attaches the irq handler to pre-allocated vectors.
-+	 */
-+	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
-+}
-+
-+/* ----------  Channel config  ---------- */
-+static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	struct nbl_common_info *common = dev_mgt->common;
-+
-+	if (!chan_ops->check_queue_exist(priv, chan_type))
-+		return;
-+
-+	/*
-+	 * common->hw_bus is the control PF's real bus number, captured in
-+	 * nbl_res_ctrl_dev_sriov_info_init() during nbl_res_init_leonis().
-+	 * nbl_core_init() runs resource init before nbl_dev_init(), so the
-+	 * value is always initialized when this control-PF-only path runs;
-+	 * nbl_res_intr_cfg_msix_map() consumes it for cfg_msix_map() the
-+	 * same way.
-+	 */
-+	chan_ops->cfg_chan_qinfo_map_table(priv, common->hw_bus, common->devid);
-+}
-+
-+static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->setup_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->teardown_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
-+				       u8 chan_type, struct work_struct *task)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
-+		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
-+					     chan_type, task);
-+}
-+
-+/* ----------  Tasks config  ---------- */
-+static void nbl_dev_clean_mailbox_task(struct work_struct *work)
-+{
-+	struct nbl_dev_common *common_dev =
-+		container_of(work, struct nbl_dev_common, clean_mbx_task);
-+	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
-+				      NBL_CHAN_TYPE_MAILBOX);
-+}
-+
-+/* ----------  Dev init process  ---------- */
-+static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev;
-+	int ret;
-+
-+	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
-+				  GFP_KERNEL);
-+	if (!common_dev)
-+		return -ENOMEM;
-+	common_dev->dev_mgt = dev_mgt;
-+
-+	/*
-+	 * Initialize clean_mbx_task before any operation that could jump
-+	 * to err_cleanup, so cancel_work_sync() is always safe there.
-+	 */
-+	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
-+
-+	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	if (ret)
-+		goto err_cleanup;
-+
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
-+				   &common_dev->clean_mbx_task);
-+	/*
-+	 * VSI/ETH identity fetch moved to nbl_dev_start().
-+	 * This avoids cross-PF probe race when manager PF is not ready.
-+	 */
-+	dev_mgt->common_dev = common_dev;
-+	nbl_dev_init_msix_cnt(dev_mgt);
-+
-+	return 0;
-+err_cleanup:
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
-+	return ret;
-+}
-+
-+static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+	int ret;
-+
-+	if (!common_dev)
-+		return;
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	ret = nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	if (ret)
-+		dev_warn(&adapter->pdev->dev, "mailbox queue teardown failed, inflight DMA may exist: %d\n",
-+			 ret);
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
-+}
-+
-+static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	return disp_ops->init_module(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+/*
-+ * Tear down control device: deinit_module sets driver_status=false
-+ * to notify firmware to clean all per-PF hardware state (including
-+ * qinfo registers).  The qinfo map programmed in nbl_dev_init() via
-+ * nbl_dev_setup_chan_qinfo() is not explicitly cleared; firmware
-+ * handles it on driver_status change.
-+ *
-+ * Teardown ordering guarantee: every non-management PF creates a
-+ * consumer->control PF device link in its probe path, so the driver
-+ * core always unbinds all siblings before allowing the control PF to
-+ * be detached (sysfs unbind, driver unregister and hot-unplug alike).
-+ * nbl_probe_chip_deps() defers a sibling's probe until the control PF
-+ * is fully bound (DL_DEV_DRIVER_BOUND), so no sibling can race its
-+ * mailbox setup against this deinit.
-+ *
-+ * Direct control-PF FLR (which never runs driver teardown) cannot be
-+ * guarded here.
-+ */
-+static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	disp_ops->deinit_module(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_dev_mgt *dev_mgt;
-+
-+	dev_mgt = devm_kzalloc(common->dev, sizeof(*dev_mgt), GFP_KERNEL);
-+	if (!dev_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	dev_mgt->common = common;
-+	return dev_mgt;
-+}
-+
-+int nbl_dev_init(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl =
-+		adapter->intf.dispatch_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl =
-+		adapter->intf.channel_ops_tbl;
-+	struct nbl_dev_mgt *dev_mgt;
-+	int ret;
-+
-+	dev_mgt = nbl_dev_setup_dev_mgt(common);
-+	if (IS_ERR(dev_mgt)) {
-+		ret = PTR_ERR(dev_mgt);
-+		return ret;
-+	}
-+
-+	dev_mgt->disp_ops_tbl = disp_ops_tbl;
-+	dev_mgt->chan_ops_tbl = chan_ops_tbl;
-+	adapter->core.dev_mgt = dev_mgt;
-+	if (common->has_ctrl)
-+		nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	/*
-+	 * Chip hardware initialization is completed by firmware at power-up.
-+	 * Only driver functional table/register config follows here, safe to
-+	 * access hardware registers before ctrl dev setup.
-+	 */
-+	ret = nbl_dev_setup_common_dev(adapter);
-+	if (ret)
-+		goto setup_err;
-+
-+	if (common->has_ctrl) {
-+		ret = nbl_dev_setup_ctrl_dev(adapter);
-+		if (ret)
-+			goto setup_ctrl_dev_fail;
-+	}
-+
-+	return 0;
-+setup_ctrl_dev_fail:
-+	nbl_dev_remove_common_dev(adapter);
-+setup_err:
-+	return ret;
-+}
-+
-+/*
-+ * Teardown order: Stop mailbox channel and drain all inflight DMA first,
-+ * then invoke deinit_module to notify firmware.
-+ *
-+ * This intentionally breaks strict init/teardown mirror symmetry due to
-+ * hardware constraint: firmware may perform asynchronous global hardware
-+ * cleanup once driver_status=false is set. We must guarantee no ongoing
-+ * mailbox DMA before deinit_module to avoid invalid DMA write.
-+ *
-+ * Init order: program mailbox QINFO routing (ctrl PF only) ->
-+ *            create mailbox queue/common_dev -> ctrl dev init_module
-+ * Teardown order: destroy mailbox queue/common_dev -> ctrl dev deinit_module
-+ */
-+void nbl_dev_remove(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+
-+	nbl_dev_remove_common_dev(adapter);
-+	if (common->has_ctrl)
-+		nbl_dev_remove_ctrl_dev(adapter);
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-new file mode 100644
-index 000000000000..24e890fd8987
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEV_H_
-+#define _NBL_DEV_H_
-+
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_hw.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_dispatch.h"
-+#include "../nbl_include/nbl_def_dev.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+#define NBL_STRING_NAME_LEN			32
-+
-+enum nbl_msix_serv_type {
-+	NBL_MSIX_NET_TYPE,
-+	NBL_MSIX_MAILBOX_TYPE,
-+	NBL_MSIX_TYPE_MAX
-+};
-+
-+struct nbl_msix_serv_info {
-+	char irq_name[NBL_STRING_NAME_LEN];
-+	u16 num;
-+	u16 base_vector_id;
-+	/* true: hw report msix, hw need to mask actively */
-+	bool hw_self_mask_en;
-+};
-+
-+struct nbl_msix_info {
-+	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
-+};
-+
-+struct nbl_dev_common {
-+	struct nbl_dev_mgt *dev_mgt;
-+	struct nbl_msix_info msix_info;
-+	char mailbox_name[NBL_STRING_NAME_LEN];
-+	/* for ctrl-dev/net-dev mailbox recv msg */
-+	struct work_struct clean_mbx_task;
-+};
-+
-+struct nbl_dev_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_dev_common *common_dev;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-new file mode 100644
-index 000000000000..51cf04e4c552
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_DEV_H_
-+#define _NBL_DEF_DEV_H_
-+
-+struct nbl_adapter;
-+
-+int nbl_dev_init(struct nbl_adapter *adapter);
-+void nbl_dev_remove(struct nbl_adapter *adapter);
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index bf4a5ea3e410..af430d3dfb70 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -12,6 +12,7 @@
- #include "nbl_include/nbl_def_hw.h"
- #include "nbl_include/nbl_def_resource.h"
- #include "nbl_include/nbl_def_dispatch.h"
-+#include "nbl_include/nbl_def_dev.h"
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-@@ -53,7 +54,14 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_disp_init(adapter);
- 	if (ret)
- 		goto disp_init_fail;
-+
-+	ret = nbl_dev_init(adapter);
-+	if (ret)
-+		goto dev_init_fail;
- 	return adapter;
-+
-+dev_init_fail:
-+	nbl_disp_remove(adapter);
- disp_init_fail:
- 	nbl_res_remove_leonis(adapter);
- res_init_fail:
-@@ -66,6 +74,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 
- void nbl_core_remove(struct nbl_adapter *adapter)
+diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
+index f4a8f9480291..2dc6d68cc0e1 100644
+--- a/drivers/net/ethernet/zte/dinghai/Makefile
++++ b/drivers/net/ethernet/zte/dinghai/Makefile
+@@ -4,4 +4,4 @@
+ #
+
+ obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
+-dinghai10e-y := en_pf.o zxdh_irq.o
++dinghai10e-y := en_pf.o zxdh_irq.o zxdh_eq.o
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+index d5462ac6468f..f7400d66bc69 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.c
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -513,7 +513,8 @@ static int zxdh_pf_irq_pools_init(struct zxdh_core_dev *zxdh_dev)
+
+ static void zxdh_pf_irq_pools_destroy(struct zxdh_pf_irq_table *pf_irq_table)
  {
-+	nbl_dev_remove(adapter);
- 	nbl_disp_remove(adapter);
- 	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
--- 
-2.47.3
+-	zxdh_irq_pool_free(pf_irq_table->async_pool);
++	if (pf_irq_table->async_pool)
++		zxdh_irq_pool_free(pf_irq_table->async_pool);
+ }
 
+ int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev)
+@@ -544,18 +545,17 @@ void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
+ {
+ 	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
+
+-	zxdh_pf_irq_pools_destroy(table->priv);
++	if (table->priv)
++		zxdh_pf_irq_pools_destroy(table->priv);
+ 	kvfree(table->priv);
++	table->priv = NULL;
+ 	pci_free_irq_vectors(zxdh_dev->pdev);
+ }
+
++/* Fetch a vector from the async pool for one async event queue. */
+ struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
+ {
+-	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
+-	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
+-
+-	if (!pf_irq_table->async_pool)
+-		return NULL;
++	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
+
+ 	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
+ }
+@@ -614,10 +614,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_irq_table;
+ 	}
+
++	ret = zxdh_pf_eq_table_init(zxdh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "zxdh_pf_eq_table_init failed: %d\n", ret);
++		goto err_eq_table;
++	}
++
+ 	devlink_register(devlink);
+
+ 	return 0;
+
++err_eq_table:
++	zxdh_pf_eq_table_destroy(zxdh_dev);
+ err_irq_table:
+ 	zxdh_pf_irq_table_destroy(zxdh_dev);
+ err_modern_cfg:
+@@ -637,6 +645,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
+ 	struct devlink *devlink = priv_to_devlink(zxdh_dev);
+
+ 	devlink_unregister(devlink);
++	zxdh_pf_eq_table_destroy(zxdh_dev);
+ 	zxdh_pf_irq_table_destroy(zxdh_dev);
+ 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
+ 	zxdh_pf_pci_close(zxdh_dev);
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
+index af25b06160ef..8220db579111 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.h
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
+@@ -9,6 +9,7 @@
+
+ #include <linux/types.h>
+
++#include "zxdh_eq.h"
+ #include "zxdh_irq.h"
+
+ #define ZXDH_PF_VENDOR_ID	0x1cf2
+@@ -81,6 +82,7 @@ struct zxdh_core_dev {
+ 	struct pci_dev *pdev;
+ 	struct devlink *devlink;
+ 	struct zxdh_irq_table irq_table;
++	struct zxdh_eq_table eq_table;
+ 	void *priv;
+ };
+
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.c b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+new file mode 100644
+index 000000000000..3e70f4f3063f
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+@@ -0,0 +1,137 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ZTE DingHai Ethernet driver - event queue plumbing
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ *
++ * Async event queues are the delivery path for firmware notifications:
++ * a queue owns one MSI-X vector of the async pool and fans interrupts
++ * out to the per-event-type notifier chains of the event queue table.
++ * The BAR message channel handshake that tells the firmware which
++ * vectors to signal comes with the BAR message subsystem in a later
++ * series; the PF side wired here is live as soon as that channel is
++ * enabled.
++ */
++
++#include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/mutex.h>
++#include <linux/notifier.h>
++#include <linux/slab.h>
++
++#include "en_pf.h"
++#include "zxdh_eq.h"
++#include "zxdh_irq.h"
++
++/* PF side of the event queue table: one async EQ fed by the RISC-V
++ * management core.
++ */
++struct zxdh_pf_eq_table {
++	struct zxdh_eq_async riscv_eq;
++};
++
++/* Fetch the event_id the RISC-V core posted in the PF receive
++ * sub-channel of the BAR message area. The field lives at byte offset
++ * 2 of the 12-byte message header, so a single 32-bit read of the
++ * sub-channel start covers it.
++ */
++static u16 zxdh_eq_event_id_get(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	void __iomem *subchan;
++
++	subchan = pf_dev->pci_ioremap_addr[0] + ZXDH_BAR_MSG_SUBCHAN_RECV;
++
++	return ioread32(subchan) >> 16;
++}
++
++static enum zxdh_eq_event_type zxdh_eq_event_type_get(u16 event_id)
++{
++	if (event_id == ZXDH_MSG_MODULE_RISC_READY)
++		return ZXDH_EQ_EVENT_TYPE_RISCV_READY;
++
++	/* Only the RISC-V ready notification is dispatched in this
++	 * series; the remaining firmware events arrive with the BAR
++	 * message subsystem.
++	 */
++	return ZXDH_EQ_EVENT_TYPE_MAX;
++}
++
++static int zxdh_eq_async_riscv_int(struct notifier_block *nb,
++				   unsigned long action, void *data)
++{
++	struct zxdh_eq_async *eq = container_of(nb, struct zxdh_eq_async, irq_nb);
++	struct zxdh_core_dev *zxdh_dev = eq->priv;
++	enum zxdh_eq_event_type event_type;
++
++	event_type = zxdh_eq_event_type_get(zxdh_eq_event_id_get(zxdh_dev));
++	if (event_type == ZXDH_EQ_EVENT_TYPE_MAX)
++		return NOTIFY_DONE;
++
++	atomic_notifier_call_chain(&zxdh_dev->eq_table.nh[event_type],
++				   event_type, NULL);
++
++	return NOTIFY_OK;
++}
++
++int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
++	struct zxdh_pf_eq_table *priv;
++	struct zxdh_eq_async *eq;
++	int err;
++	int i;
++
++	priv = kvzalloc_obj(*priv, GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	table->priv = priv;
++
++	mutex_init(&table->lock);
++	for (i = 0; i < ZXDH_EQ_EVENT_TYPE_MAX; i++)
++		ATOMIC_INIT_NOTIFIER_HEAD(&table->nh[i]);
++
++	eq = &priv->riscv_eq;
++	eq->priv = zxdh_dev;
++	eq->irq = zxdh_pf_async_irq_request(zxdh_dev);
++	if (IS_ERR(eq->irq)) {
++		err = PTR_ERR(eq->irq);
++		goto err_irq;
++	}
++
++	eq->irq_nb.notifier_call = zxdh_eq_async_riscv_int;
++	err = zxdh_irq_attach_nb(eq->irq, &eq->irq_nb);
++	if (err)
++		goto err_attach;
++
++	return 0;
++
++err_attach:
++	zxdh_irqs_release_vectors(&eq->irq, 1);
++err_irq:
++	eq->irq = NULL;
++	return err;
++}
++
++void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
++	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
++	struct zxdh_eq_async *eq;
++
++	if (!pf_eq_table)
++		return;
++
++	eq = &pf_eq_table->riscv_eq;
++
++	mutex_lock(&table->lock);
++	if (eq->irq) {
++		zxdh_irq_detach_nb(eq->irq, &eq->irq_nb);
++		zxdh_irqs_release_vectors(&eq->irq, 1);
++		eq->irq = NULL;
++	}
++	mutex_unlock(&table->lock);
++
++	mutex_destroy(&table->lock);
++	kvfree(table->priv);
++	table->priv = NULL;
++}
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.h b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+new file mode 100644
+index 000000000000..ac9df4763059
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+@@ -0,0 +1,60 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * ZTE DingHai Ethernet driver - event queue abstraction
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#ifndef __ZXDH_EQ_H__
++#define __ZXDH_EQ_H__
++
++#include <linux/mutex.h>
++#include <linux/notifier.h>
++
++struct zxdh_core_dev;
++struct zxdh_irq;
++
++/* BAR message area: shared-memory mailbox between the driver and the
++ * firmware, split into sub-channels of 2048 bytes. Notifications from
++ * the RISC-V management core are posted to the PF receive sub-channel,
++ * one interval above the area base.
++ */
++#define ZXDH_BAR_MSG_OFFSET		0x2000
++#define ZXDH_BAR_MSG_SUBCHAN_INTERVAL	2048
++#define ZXDH_BAR_MSG_SUBCHAN_RECV	(ZXDH_BAR_MSG_OFFSET +	\
++					 ZXDH_BAR_MSG_SUBCHAN_INTERVAL)
++
++/* event_id of the "RISC-V core ready" firmware notification, carried
++ * at byte offset 2 of the BAR message header.
++ */
++#define ZXDH_MSG_MODULE_RISC_READY	13
++
++/* Event types the upper layers can subscribe to over the per-type
++ * notifier chains of the event queue table. The full catalogue lives
++ * in the firmware; only the ones dispatched in this series are named.
++ */
++enum zxdh_eq_event_type {
++	ZXDH_EQ_EVENT_TYPE_RISCV_READY = 0,
++	ZXDH_EQ_EVENT_TYPE_MAX,
++};
++
++/* Asynchronous event queue delivering firmware notifications to the
++ * driver without a request/reply handshake.
++ */
++struct zxdh_eq_async {
++	struct zxdh_irq *irq;
++	struct notifier_block irq_nb;
++	void *priv;
++};
++
++struct zxdh_eq_table {
++	/* Notifier chains fanned out by event type. */
++	struct atomic_notifier_head nh[ZXDH_EQ_EVENT_TYPE_MAX];
++	/* Serializes async EQ setup/teardown. */
++	struct mutex lock;
++	void *priv;
++};
++
++int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev);
++void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev);
++
++#endif /* __ZXDH_EQ_H__ */
+-- 
+2.27.0
