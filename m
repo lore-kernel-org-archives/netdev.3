@@ -1,90 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1D24848AA;
-	Mon, 28 Sep 2026 09:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7198348BD5B;
+	Mon, 28 Sep 2026 09:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790586958; cv=none; b=jzDii2FP6zegK6IeFdDMAXue3vYlCnvRZOwAZZ5GigfcF6Rjbuy+gRu9TmJeTPuDdstViGZiZ3jLSu454I5f0SsOeUa2wLtAVeh9nkMeStuNw/aDjsp4DETxo6WVpveb3CwrgMBRB08P/qkKwcagXVL7bJTg1h7aocx8d3HRIlo=
+	t=1790587096; cv=none; b=FMH7BRr2KmZ/jQCuYYauTWwnE3uMtdGH83gjzmhZqE+J1Td2pq8SGKo1AgYtszHBBwgB0/C+ywzt2RRjl7UGNlygzAfMAxKd4SIW+cv8qA8vahlsx/IfxrzyV/bEx5OqDbEjx/YNzk2pC4lqsfhKmE6bTlyFKaKxtbZjQGhAao0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790586958; c=relaxed/simple;
-	bh=KA7msbkBhKRylE6ykkowL4wnegtKfawYoC5D3Gu2Aks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YdADtLIHSlKzS5Yp3X+tKpIvHZJ9iBGiHMColGrNvfYUWOw7nNWBN+A3iTaxq4xXhx6GF3sy9jNRy6OClM/6VCGl70JlC3ibAUY+rjn+PLEDdmMM3lLmsek9rOpj1jIT9Y434Bhh2PqTCBHtQHvyh2Np0NlLhBxyZr5Dd+Ys3Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ljpQiG5P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790587096; c=relaxed/simple;
+	bh=b44XUbiRQYUmDL/k+pA2FEOKYweiIA5RdOF7K3sTzhI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nyOYCJGxTbJ/1gRdWDH0O7EY7P+WCBPM9GYHTal7HKm2Uyg3DauZ7hjs9SiTuL++XakmYAtgCN4PvgxwynJA+ZAHiuROK32RqySKc1fo37TewPG+w4aNDNOyCiFGXKM+C2nPe5t/k4CoxOHxv4lFWAFf2XIAgkHkWNQpvm5L6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AvzYlyMi; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ljpQiG5P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566101F000FF;
-	Mon, 28 Sep 2026 09:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790586957;
-	bh=kSzIqxDU2Z4/O/az/Uu82s65RFvMqhh8MlAp8bqUwPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ljpQiG5P227/LcY7idizoYLptGbyQgKSFUC8/2oATpP46sCxkyyiRZO+xBsfikhis
-	 wHhMaRx2n1sARJHUW5/G4R6prUcGQHvYGrw0yQd2RcG9bqu9e4OcM6OiFloxbNKYRK
-	 hIHOtNF99l1wcmgq+m14bpB1LuoOAC0EUzG+P4T7A3id3/jKcucFyFl3veZg9PForS
-	 eWQmq5NDyU4Y7fwKCaC80kiXyVSxNRER0amoFDf7IvyC+h9qF3riQVMYmYwH67SWy5
-	 HARXCmqAjZ2+Xa4nV8m3goX8w84KTf1HELKMzcl7e74VyIqb7Jjc6seRq8/bQs7e3e
-	 GYfm/3YK30Vlg==
-Date: Mon, 28 Sep 2026 10:15:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yuho Choi <oss.patchbox@gmail.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v1] idpf: Fix vport IRQ name leak on request failure
-Message-ID: <20260928091551.GK13925@horms.kernel.org>
-References: <20260923234819.702327-1-oss.patchbox@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AvzYlyMi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1790587094; x=1822123094;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b44XUbiRQYUmDL/k+pA2FEOKYweiIA5RdOF7K3sTzhI=;
+  b=AvzYlyMiQqehsIw661p5RXFbvM3Q9TcyssQD+GnTKoIYsNCTqGJ6EwE5
+   xIumFkgJnsbqnqZ7sQGsLFyj2ACB979pp2q8lJ58emoNRvAiBmjSlpqp/
+   9xgAagcQmSRdigS5fRNlq5LJKMMGtMT4L5tmVJDI26/KcsZ/Ugrpl8bBf
+   D8+wnYdQmokzvw/VOgvFmTp3uk2SCZcaqpGS3vA4ffiWScGlQJglsJA/n
+   7xyb8mYckwtxkm8tSryJMINM9TyX9/XY9rwAtd7sjUUE2b539eK4r7OJ2
+   T6S0VA9NDx6glzY8qeV2I3dGUiOGmDJnHApq6WMRauuQGk6+2iG0hW2Cl
+   g==;
+X-CSE-ConnectionGUID: q5Ut9g5gQUS/I7W0oGo0YQ==
+X-CSE-MsgGUID: oaii23oQRuKf6L+crpEU7A==
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="231360037"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2026 02:18:08 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 28 Sep 2026 02:18:07 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 28 Sep 2026 02:18:05 -0700
+Date: Mon, 28 Sep 2026 11:18:04 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Robert Marko <robert.marko@sartura.hr>
+CC: <UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <Steen.Hegelund@microchip.com>,
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <luka.perkov@sartura.hr>
+Subject: Re: [PATCH net-next] net: lan969x: correct RGMII port mapping index
+Message-ID: <20260928091804.hjnabzi52kz4ktmf@DEN-DL-M70577>
+References: <20260922125112.2111256-1-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260923234819.702327-1-oss.patchbox@gmail.com>
+In-Reply-To: <20260922125112.2111256-1-robert.marko@sartura.hr>
 
-On Wed, Sep 23, 2026 at 07:48:06PM -0400, Yuho Choi wrote:
-> idpf_vport_intr_req_irq() allocates a name for each vector IRQ before
-> calling request_irq(). On success, the name is released later through
-> kfree(free_irq()), but when request_irq() fails, the error path only
-> unwinds the previous vectors and the name for the failed one is leaked.
+Hi Robert,
+
+> Currently, the lan969x_port_dev_mapping does not check for RGMII ports
+> and just returns the physical port index.
 > 
-> Free the allocated name on the request_irq() failure path, as done for
-> the mailbox IRQ in commit 9bff30482c10 ("idpf: Fix mailbox IRQ name leak
-> on request failure").
+> However, this does not work for RGMII ports as they have dedicated DEVRGMII
+> register space with an dedicated instance per RGMII port.
 > 
-> Fixes: bf9bf7042a38 ("idpf: avoid bloating &idpf_q_vector with big %NR_CPUS")
-
-I don't believe that commit introduced this problem.
-
-> Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
+> So, check if requested port index is an RGMII port and return the correct
+> DEVRGMII index.
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
 > ---
-> Compile-tested only (x86_64 defconfig + CONFIG_IDPF=m, W=1).
+>  drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c | 1 +
->  1 file changed, 1 insertion(+)
+> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> index f3a9c71bea36a..bf5320c7a6ca8 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+> @@ -142,6 +142,15 @@ static u32 lan969x_get_dev_mode_bit(struct sparx5 *sparx5, int port)
 > 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 4311ffa30bb1..e7d5e7923371 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -4073,6 +4073,7 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport,
->  		if (err) {
->  			netdev_err(vport->netdev,
->  				   "Request_irq failed, error: %d\n", err);
-> +			kfree(name);
+>  static u32 lan969x_port_dev_mapping(struct sparx5 *sparx5, int port)
+>  {
+> +       if (lan969x_port_is_rgmii(port)) {
+> +               switch (port) {
+> +               case 28:
+> +                       return 0;
+> +               case 29:
+> +                       return 1;
+> +               }
+> +       }
+> +
+>         if (lan969x_port_is_5g(port)) {
+>                 switch (port) {
+>                 case 9:
+> --
+> 2.55.0
+> 
 
-name is allocated by kasprintf() which is a wrapper around kvasprintf_const().
-And kvasprintf_const() documents that it's return value should be freed
-using kfree_const(). I don't think it will make any run-time difference
-here, but perhaps it would be best to follow that convention.
+The mapping itself is right, but as far as I can see nothing upstream
+uses the returned index to access DEVRGMII. Every caller of
+sparx5_port_dev_index() pairs it with sparx5_to_high_dev() or
+sparx5_to_pcs_dev(), which never return TARGET_DEVRGMII. Those paths
+are also never taken for RGMII ports. The code that does access
+DEVRGMII, in lan969x_rgmii.c, computes its own index with
+RGMII_PORT_IDX(). Sashiko, correctly points this out.
 
-Also, for completeness, shouldn't there be error handling for the case
-where the allocation of name fails?
+So I don't think anything is broken today. Did you see a problem on
+hardware that this fixes?
 
->  			goto free_q_irqs;
->  		}
+FYI, we carry the same change downstream. But there it was added together with
+RGMII MTU support, which reads and writes DEVRGMII_MAC_MAXLEN_CFG() using this
+index.
+
+/Daniel
