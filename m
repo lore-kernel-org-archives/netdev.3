@@ -1,76 +1,76 @@
-Received: from mail-yx1-f98.google.com (mail-yx1-f98.google.com [74.125.224.98])
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BA3346FA8
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AF0357D0A
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 04:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790569206; cv=none; b=s9VgDPimJzOBITchYn2ssECrkGkSBxuomIzub6USecuJj+efc8XerOroaP3SjVXRfsssRZHhfVr/YOlcTeMfAQxbJBomZseNBKYy5/f+wXZfGHe0vCheW37hZc6COatW+NGcp8UOW2Mx1XznWmSdcRGtK4HCtH98X8C/fQfbNuU=
+	t=1790569208; cv=none; b=n1q/BRU2V0DUw/g8Bbj/3WHlkljlsxqU+diN+J5T3/GQ/w5d6op7ZByPov6fCMmXq3YILI9CAikkVcrnTihxmGjipJwpvwDupIisLu4B/1YLlfq5p6I3ij8GZi6gCAskO5AbVTqbe3g2g6+xNLnBEUizLB/4Z4BqMmEnryQru48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790569206; c=relaxed/simple;
-	bh=4ZFNe3mxgNHLe+z5UhCxtDFG0sAc6xyOTnbK0+RLR0o=;
+	s=arc-20240116; t=1790569208; c=relaxed/simple;
+	bh=SJbbbpz+8dBIIJ5qPR3uLzMOIzuUPFXUx1mWDAQVjac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtcPByVLWjKG7OhUD9IpErwIeDlxmtJsYZ2EhUXeuqFAsih4+pbMawKW2TycycY9f8Dp2vsQkB4qRnOv5YE+y6swznzVYv0tOp7fKGatRE+d+Q8i+hYqr9uYvcR2YgKo962jQEF2teyyRMTBze7CzB+k/q9hV7UJqVV35Rp8UmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gRt/uGl0; arc=none smtp.client-ip=74.125.224.98
+	 MIME-Version; b=KAWdkLxDm8Ouf72QNDBbVsfy0z0PrcgoQupBl/iU6bcm/taPPkjUFYKOIgCt+4uRR+vkxGKUTheTjqYK6CpcN6hyTmuwCfIS09iCK+wdWZeE5F0+TlACpPmLRYiwmN/F3OPeb73LthJLZ5K72qjwisK5NMtzNszesjylD61vUI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cJZBJMFI; arc=none smtp.client-ip=209.85.214.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gRt/uGl0"
-Received: by mail-yx1-f98.google.com with SMTP id 956f58d0204a3-672c54f96e8so696614d50.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:20:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cJZBJMFI"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2dd4b3c752fso15548815ad.3
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:20:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790569203; x=1791174003;
+        d=1e100.net; s=20260707; t=1790569206; x=1791174006;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Qu5tVNpGFkHemP6V+Q0WNlrHLzm7Grq1uV3Ia9zcNaw=;
-        b=1BWmTEz/rRwXxOMLkdh/2xnFrI90h8fs65XEfXzg8EbWRAATj/s8+8lP2ud+kY+XiA
-         BirYNowek6OZS3/hcp12xmBbH6qyFwyUcLPsIuCt97/hdHUTxrqSkZWk6QXjmAx6mn2F
-         n6nJl03Q3lRJU9S/gb4Su0h7MYwg48wStYvQchT66haNyw6Q3ty8zukplE3y1pcVYM+G
-         nNUzzYmr45BNukbPmx2JVPCJ/nFYyMRLlj1ptOtTX7pjXXV3PMECRaQvv7/X+jr0pFHC
-         BAPh14LQSmwvQz39yZa7U8TBwGx1f9tP1T/EScXNw8iyuelnhA0ayOMPyiw56I9oZEck
-         hh/w==
-X-Gm-Message-State: AFq9FYJuR9yFP7cNlUH8cuAvleJxwTy0Yzp12um/h/CmnKYw97kCNSC4
-	5dti/MYKy77hRdRRED+JE2bZChLatss4koiBE81QfBje+tABlaZC7NjPHzK3fsVwtyx7l1uPyPg
-	I0kYYRjHdOgvTHwo/R5DKIuj8peyDOZbk6Vgo2vjgQ0ygiUfguCC8htRR4Xo6UG6VpU4ZW6kffh
-	Lop5/mfDq9HD9i9+uMptWfJ7/2S3KluSGD1ZzTm+lT+45EpYHcETZOZ3q2r/M2eMz6FlOfWzLON
-	S23hf7e1BI=
-X-Gm-Gg: AYBFou3H7xL2e9mmPxW10GrL4fMTxUYB5ssXjPmu8v09i8wEDilXgnURiVfA4o5BWdA
-	Tv+kL8d4k86RgR7lNVB9uH7jJqYKxfSK8iS9EcJnaS/dkmtRHTsbgNNbIro37H5k8oep8y4W/lr
-	Ls0HX/LY3ndz3pWEKrTogxNVBiUpxpqs48Bp7VUNgpxZlWSXkiffR1/ZY/zhrXz2Fwp4PYPPXbi
-	O26PCKSHEWy5DjxrdThoi80rtP1VFTnnyR+lRy9GsPo+J4nm2nNOdC3FjFnAJm3GOjvCP/UXyp1
-	Kz+jCzV/MU/9ZZFbbCtpIiVxiu6J5Tmv5g9bPRLJ8iS806Eglu57ycepJcYZ4cqv8CzCNR8tNeO
-	3U9lb/vUEwsj6EvmvlEULdm9CPDq7wgNZ/mPsUl90ah6wbwN6/85vJhfIKmRZCgjD0qbiM0g0l2
-	o3jLLEe0d5UB75yYiYm0b7IhJLes5bi36CFto=
-X-Received: by 2002:a05:690e:4181:b0:66c:c644:3938 with SMTP id 956f58d0204a3-672ed2627f6mr4808251d50.7.1790569203186;
-        Sun, 27 Sep 2026 21:20:03 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
-        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-6740ef80843sm1240520d50.21.2026.09.27.21.20.02
+        bh=OponxOyw1h8rELenxyhTE0PoKwNVtmigypiSkTASJRY=;
+        b=LmlbYg0ha+1YTxR0ytLG+xTeILYrtFf+Tg9BuL3/tJIolVP0zVli1UDnRRY6DG4zKT
+         NzFfRUQnhrZPQBwx/4krnJdbL4p/p3h17LvzEAGqgRYRTOa5NWRxjMLPip4aIZ/O7bv5
+         p3IpD+NQ7KY0rOoq/01eyJlb4SQI8+kuESxL6FCLlZne16zL2AGDvgvKfYdpjds5e/O1
+         xYgTWsnhCq6XOhjJ8nEk7FFgjPlIbu3nSMY3EmI3Vx6zRe9r0rxYFkMQ+P/Z9nzCrwPE
+         NLlZeBbekmSwOibia2ocYs5VpuJ/xZzighD3YGxH3B02SF9+Ra5h7doR0yRrfJRaPYob
+         XL3A==
+X-Gm-Message-State: AFq9FYJ42iLhxTsPjhdPkyZAFTa+Wp5TOaBbHR4vw04OatZGKV800Pna
+	nP2rAaYIG3ni6v9nIa5bHCWCHKZnjUGxnvE5NaBfNrR5foJaR0Rxj6mUQc4dvuDKRLg0a84vxgI
+	gX/1gOB5dxbi1k+JWVrryp9GbMOXAPNuEOPw2VpYUSL2Evyl32Ub6nyej6Sqhvx3wZxPQcetRtd
+	cdcTfbmxjdnaMMCDPElOTe1/qXaVs1xJaYLrpuThpOT5qKRkyoW/qErEsGsK8zCrzOeWyPsq678
+	e2XdRcE4/M=
+X-Gm-Gg: AYBFou3c6I7ZdzT7fWBGqXclw0tMcWQpb6loJQfZpyYSQDBbUi0pe1+JsP9W6WrbMg+
+	JDemrzOEmLB2JM+67XggSeCNWwNNTVjoebb99TG56ux/VPXRRvtDemnGtVw5rfU5NVyEWcj9XaQ
+	xVlk87DQ+rhsTUqfWER6l2aT81/aSem+qE3JHVUlOrpm2T7vheT4YGg5CTAzumVdJFO0Zp/LVdP
+	uX17IG97nzGoxhPy2qUVqJD2Wyw0ZIoJ26oHoXjVMy6ZASKoQ9JO//B/e5HqzF4kcJFTakt0zXa
+	KMKhOR8pPOehzjNWkDgtmeyOLK0Cad9yOFWxwoYO0GHogeKWhn5JbsyoQaUDDjajxeHpdNsA45U
+	zGk3VP/RbKfNK3BfFCa5NbTQ9wizcqOQEA1nmUcOvPSKOFjJs6zeEn+xIjhLQQ2ISP00nmmnUl6
+	tylRFPL9P6DrZSYralpk2rMHY0uphdoMLYNavvAw==
+X-Received: by 2002:a17:90b:3b4c:b0:3a4:6b54:863f with SMTP id 98e67ed59e1d1-3a46b548711mr1203102a91.41.1790569205892;
+        Sun, 27 Sep 2026 21:20:05 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a0b4f780f6sm611490a91.1.2026.09.27.21.20.04
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 27 Sep 2026 21:20:03 -0700 (PDT)
+        Sun, 27 Sep 2026 21:20:05 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-347536bd6fbso669736eec.1
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:20:02 -0700 (PDT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1466ab2bc8dso1647984c88.0
+        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 21:20:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790569201; x=1791174001; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1790569204; x=1791174004; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Qu5tVNpGFkHemP6V+Q0WNlrHLzm7Grq1uV3Ia9zcNaw=;
-        b=gRt/uGl0vFnC+wuC89Acj736jFJeL/2LHHRqmugOUoVHoRzZFxQ2oXmDeaCpqi2Zij
-         p7+fhTzMqSYKTNMpk9/i21shMhOo+iEfBTHoHilHH3x8iOEWySSuJbshzU6gCJ9n2Hos
-         nw+ofcBRpRRr//j5NptJ5Uc3gQH69z/30yiBs=
-X-Received: by 2002:a05:7022:4199:b0:144:fdf0:9d91 with SMTP id a92af1059eb24-146cfdd2b0dmr11671712c88.24.1790569201177;
-        Sun, 27 Sep 2026 21:20:01 -0700 (PDT)
-X-Received: by 2002:a05:7022:4199:b0:144:fdf0:9d91 with SMTP id a92af1059eb24-146cfdd2b0dmr11671668c88.24.1790569200469;
-        Sun, 27 Sep 2026 21:20:00 -0700 (PDT)
+        bh=OponxOyw1h8rELenxyhTE0PoKwNVtmigypiSkTASJRY=;
+        b=cJZBJMFId8JxHBlNSQ9Qzetcj37l1T6bh7nrEmpm6XJ1iVNDJCrgKaIHioGQMjQlXM
+         qQLHlt6XQoI5HoUPdyqbYU12AkooKwzcd5tdSmEv32EbTwV+AHXSqcuySqmUB4e1YWHF
+         COZtbHa3iGyEysnOoCiYJhM84a6pfYCWfgCfA=
+X-Received: by 2002:a05:701b:420f:20b0:13b:3c84:ef77 with SMTP id a92af1059eb24-146ced41605mr9322650c88.20.1790569203477;
+        Sun, 27 Sep 2026 21:20:03 -0700 (PDT)
+X-Received: by 2002:a05:701b:420f:20b0:13b:3c84:ef77 with SMTP id a92af1059eb24-146ced41605mr9322612c88.20.1790569202756;
+        Sun, 27 Sep 2026 21:20:02 -0700 (PDT)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm14393222c88.9.2026.09.27.21.19.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm14393222c88.9.2026.09.27.21.20.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 21:19:59 -0700 (PDT)
+        Sun, 27 Sep 2026 21:20:01 -0700 (PDT)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -81,11 +81,10 @@ Cc: netdev@vger.kernel.org,
 	pavan.chebbi@broadcom.com,
 	andrew.gospodarek@broadcom.com,
 	joe@dama.to,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>
-Subject: [PATCH net v2 7/9] bnxt_en: Add bnxt_clear_bars() helper
-Date: Sun, 27 Sep 2026 21:17:10 -0700
-Message-ID: <20260928041712.3467803-8-michael.chan@broadcom.com>
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Subject: [PATCH net v2 8/9] bnxt_en: Fix driver init in kdump kernel
+Date: Sun, 27 Sep 2026 21:17:11 -0700
+Message-ID: <20260928041712.3467803-9-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260928041712.3467803-1-michael.chan@broadcom.com>
 References: <20260928041712.3467803-1-michael.chan@broadcom.com>
@@ -98,59 +97,107 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-In bnxt_io_slot_reset(), we clear the 6 BAR registers.  Add a helper
-function to do that.  The helper will be used again in the next patch.
+Fix and strengthen the FLR sequence when initializing in the kdump
+kernel.  If the NIC is behind a PCIe switch in synthetic (smart)
+mode, the switch may need to see that the BARs have been initialized
+before it will pass mem read/write TLPs to the NIC.
 
+Add a new bnxt_kdump_reset() to do the expanded FLR sequence in the
+kdump kernel.  We now disable bus master and memory, save the PCI
+state, do the FLR, clear the BARs, and restore the PCI state.  The
+BARs have to be cleared to ensure that they get re-initialized and
+visible to the PCIe switch.
+
+Since it is the kdump kernel, we make every effort to continue in
+the best possible way even if the device is unresponsive after FLR
+or we encounter other errors.
+
+To avoid dealing with a possible 0xffff value for the MSI-X capabilty
+register after FLR, we call bnxt_get_max_irq() to get the valid
+number of MSIX before we do the FLR.
+
+Fixes: 8743db4a9acf ("bnxt_en: Issue PCIe FLR in kdump kernel to cleanup pending DMAs.")
 Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Joe Damato <joe@dama.to>
 Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+v2:
+Disable device before pci_save_state() and pcie_flr() and check for
+errors. 
+
+v1:
+https://lore.kernel.org/netdev/20260831024342.2161156-4-michael.chan@broadcom.com/
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 48 +++++++++++++++++++----
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 8e4bde720ef5..8c6bf10aba8a 100644
+index 8c6bf10aba8a..e4530b091d3b 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -17221,6 +17221,14 @@ void bnxt_print_device_info(struct bnxt *bp)
- 	pcie_print_link_status(bp->pdev);
+@@ -17229,6 +17229,42 @@ static void bnxt_clear_bars(struct pci_dev *pdev)
+ 		pci_write_config_dword(pdev, off, 0);
  }
  
-+static void bnxt_clear_bars(struct pci_dev *pdev)
++/* Clear any pending DMA transactions from crash kernel while loading driver in
++ * capture kernel.
++ */
++static void bnxt_kdump_reset(struct pci_dev *pdev)
 +{
-+	int off;
++	u16 cmd;
++	int rc;
 +
-+	for (off = PCI_BASE_ADDRESS_0; off <= PCI_BASE_ADDRESS_5; off += 4)
-+		pci_write_config_dword(pdev, off, 0);
++	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
++	cmd &= ~(PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
++	pci_write_config_word(pdev, PCI_COMMAND, cmd);
++
++	if (pci_save_state(pdev))
++		dev_warn(&pdev->dev, "Failed to save PCI state, PCI restore may be incomplete\n");
++
++	/* Since it is kdump kernel, try to continue in the best possible way
++	 * even if the device is unresponsive after FLR.  The device may
++	 * eventually respond to HWRM_VER_GET later in the init sequence.
++	 */
++	rc = pcie_flr(pdev);
++	if (rc)
++		dev_warn(&pdev->dev, "pcie_flr() failed (rc: %d), trying to continue\n",
++			 rc);
++
++	/* A complete or partial reset has been done.  Clear the BARs
++	 * if the device is responsive.
++	 */
++	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
++	if (PCI_POSSIBLE_ERROR(cmd))
++		dev_warn(&pdev->dev, "PCI config space inaccessible after FLR, not clearing BARs\n");
++	else
++		bnxt_clear_bars(pdev);
++
++	pci_restore_state(pdev);
 +}
 +
  static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
  {
  	struct bnxt_hw_resc *hw_resc;
-@@ -17703,7 +17711,6 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
- 	struct bnxt *bp = netdev_priv(netdev);
- 	int retry = 0;
- 	int err = 0;
--	int off;
+@@ -17244,15 +17280,11 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		return -ENODEV;
+ 	}
  
- 	netdev_info(bp->dev, "PCI Slot Reset\n");
- 
-@@ -17732,11 +17739,8 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
- 		 * write the BARs to 0 to force restore, in case of fatal error.
- 		 */
- 		if (test_and_clear_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN,
--				       &bp->state)) {
--			for (off = PCI_BASE_ADDRESS_0;
--			     off <= PCI_BASE_ADDRESS_5; off += 4)
--				pci_write_config_dword(bp->pdev, off, 0);
--		}
-+				       &bp->state))
-+			bnxt_clear_bars(pdev);
- 		pci_restore_state(pdev);
- 
- 		bnxt_inv_fw_health_reg(bp);
+-	/* Clear any pending DMA transactions from crash kernel
+-	 * while loading driver in capture kernel.
+-	 */
+-	if (is_kdump_kernel()) {
+-		pci_clear_master(pdev);
+-		pcie_flr(pdev);
+-	}
+-
+ 	max_irqs = bnxt_get_max_irq(pdev);
++
++	if (is_kdump_kernel())
++		bnxt_kdump_reset(pdev);
++
+ 	dev = alloc_etherdev_mqs(sizeof(*bp), max_irqs * BNXT_MAX_QUEUE,
+ 				 max_irqs);
+ 	if (!dev)
 -- 
 2.51.0
 
