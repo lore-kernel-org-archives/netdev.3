@@ -1,104 +1,121 @@
-Received: from mta.kiivia.com (mta.kiivia.com [95.217.65.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8805263F44
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.65.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044A84848BE
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790585250; cv=none; b=oNx3499fA4tE0bHuU8amfAsCcr8L9d70WsIJ479VHEaPAbYPsP0M5CtJFHsNo8BZAfVR0tf9CO7fY0MJ/D5XPpfmC24H5sw0W0rgwDTNa54FlFqwdic05y4HR7bf7mG7X3wu/v5zzIoUfyIJF1gfx8Q+GPrfJywsjRUvL6b6ADk=
+	t=1790585442; cv=none; b=j1mCiH3vtRV3aii8aHSP11WYUNmyhIxFRngZwGs+60bERxAnJsMTnmfMR3U9U5GhcxPQCO2mSe8t077PwjFgyc56j2YSSXCz9RHSKgJOxYpzm/b34SNwNDXQ2nmMQczLSvsyLw4bwy1Qyp5ogkM90hEwJsRYUqFcaDqAk28q0TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790585250; c=relaxed/simple;
-	bh=4oz568CjYFq3wRD/Hmqkz+qIwafWxiN0GgI9BDHGMQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=FSkK1pXR9t6Wf7ovs40uI+lISCthOCn01z2UscH+wppld5NFIAyXeO2KTr9YXFDENk07u4liIllh3RUzGDO+PuFPDuX566qayKuZJ4yR50HCz25r0dc1ui1oVI6UjA1rmFoxP/qsz9vWzrhkP2Ira7Gte2hvMoe4YkFjoiIiUXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org; spf=pass smtp.mailfrom=nocloud.org; arc=none smtp.client-ip=95.217.65.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nocloud.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nocloud.org
-Received: by mta.kiivia.com (Postfix) with ESMTPSA id 2219CA8021D;
-	Mon, 28 Sep 2026 11:47:21 +0300 (EEST)
-From: =?UTF-8?q?Jari=20Sepp=C3=A4l=C3=A4?= <jase@nocloud.org>
-To: netdev@vger.kernel.org
-Cc: =?UTF-8?q?Jari=20Sepp=C3=A4l=C3=A4?= <jase@nocloud.org>,
-	kuba@kernel.org,
-	sgoutham@marvell.com,
-	gakula@marvell.com,
-	rkannoth@marvell.com,
-	sbhatta@marvell.com,
-	bbhushan2@marvell.com,
-	linux-yocto@lists.yoctoproject.org
-Subject: [PATCH net RESEND] octeontx2-pf: Fix RSS indirection table size
-Date: Mon, 28 Sep 2026 11:47:11 +0300
-Message-ID: <20260928084711.2462571-1-jase@nocloud.org>
-In-Reply-To: <20260927154803.4b4bdf35@kernel.org>
-References: <20260927154803.4b4bdf35@kernel.org>
+	s=arc-20240116; t=1790585442; c=relaxed/simple;
+	bh=kxYaYiEHDMS4m3fVw67y8ftjVeCbEffDronW4N0WsGM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mJU8BDwNwEG0bplpjqMnYONv6O3jXGDcxNeaNpjEAeEjGs0U6UyaczYwrFEgS/mi0CR0JxUpVuFSSh53D3OyyAD83cjZI4EMh3xj4J1jTy1Mm5c4ndbIHeeQnycmGwGenTlkd+VWk0Jj4Hn6hbiV9aVrh54BTUZoewxqsjkF3E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPuo7BVi; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPuo7BVi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA391F000FF;
+	Mon, 28 Sep 2026 08:50:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790585439;
+	bh=6pZC0pcMP3A7jIwgAYdpG9lTyipNmzfLYRGU9KDOJXI=;
+	h=From:Subject:Date:To:Cc;
+	b=NPuo7BVixNfW/m+PIbYW5iAJI1mPzuvkO5iyjNc5L2BnxPAoq1tg9FLvpTrcQFrvk
+	 tM2xL49FBoJKMpoIUsPR8uhYyu5scGhorrclePECkN77Jq6273tIo8P0r0vi5v8sMb
+	 bZmSgBJozNjR8aUcHQjgQE/yb2hjuEnBVIX0HrcktOUPD7kOYWds2rXAK4aENmNyF6
+	 PNXztSiqFpai+N5AYPr9ghWlJpEpSuvPsx6ZmNwqGIskWWeczR4gIUfncamtfmzoh5
+	 M2hwTS0cZKDnokdIPO9c85/JADE2s9QYZeie72KdoT9PKS0h0lAcu/M2hbNg4cPleF
+	 wPRTJW8gekUnw==
+From: Linus Walleij <linusw@kernel.org>
+Subject: [PATCH net-next v2 00/11] net: ethernet: cortina: Fix Gemini RX
+ buffer management
+Date: Mon, 28 Sep 2026 10:50:26 +0200
+Message-Id: <20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ6CMBBEf4Xs2TVLKwQ8+R+GQyNL2aiFtA3BE
+ P7dUs8eJ2/ezAaBvXCAa7GB50WCTC4FdSrgMRpnGaVPGRSpmtqyRctvcYIcR/aOIw6yckCNA11
+ I15UelDaQ7NlzRkm+w1F0vEboEhklxMl/8uVSZv5bV/R3fSmRUBtlKjKN7pv29jwKr/PkLXT7v
+ n8BmgkLiskAAAA=
+X-Change-ID: 20260919-gemini-ethernet-fixes-3-f0403653f23a
+To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
+ Myeonghun Pak <mhun512@gmail.com>
+Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.16.0
 
-The conversion to the dedicated RSS context operations replaced the
-pointer to struct otx2_rss_ctx with an inline u32 ind_tbl[] array.
-However, otx2_rss_init() still uses sizeof(*rss->ind_tbl) to set rss_size.
-This now yields the size of one u32 (4), rather than the 256 entries in
-the indirection table.
+The Gemini ethernet uses a custom software free queue shared by both
+ports. Its page metadata, DMA mappings and fragment references are not
+managed consistently as pages move through the free queue and RX queues.
 
-The RSS initialization and hardware programming loops use rss_size,
-so only four entries are initialized and programmed despite the NIX LF
-being allocated a 256-entry table. On an OCTEON CN102 with eight RX
-queues, the table contained 0, 1, 2, 3 followed by zeros. Traffic was
-concentrated on queue 0 and ethtool -X equal 8 did not correct the table.
+Correct the DMA address bookkeeping and synchronization.
 
-Use ARRAY_SIZE() to count the indirection table entries. On the same
-hardware, this restores the full table repeating queue numbers 0 through
-7, and bidirectional multi-flow traffic increments multiple RX queues.
+Track exact fragment mappings with an XArray and keep
+in-flight page metadata in bitmap-allocated slots until all hardware
+references have been claimed.
 
-Fixes: 62e01d8c4170 ("eth: otx2: migrate to the *_rxfh_context ops")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/netdev/361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org/
-Signed-off-by: Jari Seppälä <jase@nocloud.org>
+Serialize queue resize against the refill interrupt, harden fragment
+validation and teardown, then scale the default queue sizes for systems
+with 32 or 64 MiB of RAM.
+
+This series wasn't so complex to begin with but Sashiko and the other
+LLMs just find more and more corner cases. It's for the better I
+guess.
+
+Before these patches the network driver would crash under strong load
+but it does not happen any more after. Tested on the D-Link DIR-685
+playing back media and transfering new media using ksmbd while
+issuing ping storms.
+
+Assisted-by: LLM
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Resending with git send-email because the previous email had a mangled
-diff. The code change and commit message are unchanged.
+Changes in v2:
+- Replace the page_pool conversion with several smaller fixes using the
+  existing free queue page allocator.
+- Split DMA bookkeeping, XArray lookup, bitmap allocation, cursor rotation,
+  synchronization, validation and teardown into individual patches.
+- Drain the threaded free queue interrupt before resizing the shared queue.
+- Allocate and DMA-map refill pages outside the IRQ-disabled free queue
+  lock.
+- Reject and unwind partial initial free queue fills, reset their hardware
+  pointers and leave the refill interrupt masked so setup can be retried.
+- Avoid full-page CPU synchronization after fragments enter the network
+  stack.
+- Bound RX lengths to the posted fragment and account rejected lengths as
+  receive errors.
+- Keep the fixes, and keep the add-on RAM sizing patch.
+- Link to v1: https://patch.msgid.link/20260920-gemini-ethernet-fixes-3-v1-0-3a2a50a83d89@kernel.org
 
-This is the formal patch requested in response to the bug report with
-Message-ID <361df563-e29e-43bf-8806-24bdfefed33d@nocloud.org>.
+---
+Linus Walleij (11):
+      net: ethernet: cortina: Keep shared free queue parent-owned
+      net: ethernet: cortina: Drain free queue IRQ before resize
+      net: ethernet: cortina: Correct free queue DMA mappings
+      net: ethernet: cortina: Index free queue fragments with XArray
+      net: ethernet: cortina: Preserve in-flight free queue pages
+      net: ethernet: cortina: Rotate free queue page allocation
+      net: ethernet: cortina: Synchronize RX fragments for the CPU
+      net: ethernet: cortina: Validate RX fragment lengths
+      net: ethernet: cortina: Release partial RX frames on stop
+      net: ethernet: cortina: Scale Gemini RX queues to system memory
+      net: ethernet: cortina: Use guard helpers for locking
 
-Runtime testing was on an Asterfusion ET2500 (OCTEON CN102 A0), using
-Yocto BSP commit 9a05f15b453377f50632ebbb57c87b7ec3270492 plus the
-existing local board/build fixes. The kernel configuration was unchanged
-between the before/after tests. The resulting kernel was
-6.18.52-cn102-yocto-kvm, package revision 6.18.52-5.
+ drivers/net/ethernet/cortina/gemini.c | 577 +++++++++++++++++++++-------------
+ 1 file changed, 358 insertions(+), 219 deletions(-)
+---
+base-commit: 2ff4ca33660706f4092866b220eb0c94940f7e0c
+change-id: 20260919-gemini-ethernet-fixes-3-f0403653f23a
 
-The table was checked with ethtool after reboot, then bidirectional
-four-stream UDP traffic was used to check hardware RX queue counters.
-The upstream net tree has not been boot-tested on this device. Full
-upstream allyesconfig/allmodconfig W=1 builds have not been run.
-
-The diagnosis and patch were prepared with AI assistance and validated
-on the physical device as described above.
-
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 175992188..0e78a0531 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -394,7 +394,7 @@ int otx2_rss_init(struct otx2_nic *pfvf)
- 	struct otx2_rss_info *rss = &pfvf->hw.rss_info;
- 	int idx, ret = 0;
- 
--	rss->rss_size = sizeof(*rss->ind_tbl);
-+	rss->rss_size = ARRAY_SIZE(rss->ind_tbl);
- 
- 	/* Init RSS key if it is not setup already */
- 	if (!rss->enable)
-
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
--- 
-2.47.3
+Best regards,
+--  
+Linus Walleij <linusw@kernel.org>
 
