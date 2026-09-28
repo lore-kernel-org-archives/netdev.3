@@ -1,71 +1,57 @@
-Received: from mail-vs2-f40.google.com (mail-vs2-f40.google.com [74.125.227.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cvsmtppost35.nm.naver.com (cvsmtppost35.nm.naver.com [114.111.35.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD764E73B4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276684E7818
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609369; cv=none; b=o1bylW0NMo4vQTdSgmyTU+tOeeGyb+B+HK4W/DdVkRBBmY3N/bcBvi+sdq5xYybrW4IrBAZyfeVS9+IxJe002OxARZoXeo2rp61Arhi2IHbvW2fgXRUN/6lC0UM/uTNdK7C18Q9HZwYsKF6xemYmIJ2awiCz3E4MvkuJgrHwSFs=
+	t=1790609506; cv=none; b=uACSUxgpShmo1OzNoKDtRKnuvl4FNYiBZVCToQzlp/D3q+p+h7duzZO7gFltTnnV+DD//rb93CtCYtya5SRU9XjyvCOWtObjDr6soQeXoqb5GybsZDYhFxzMmStFBOTJLI7h1RpxSisLMYhgXUe2jK4wPGEvcGpnnveyKFCBCPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609369; c=relaxed/simple;
-	bh=pM2ZaPJvm5Rgd1AaTYxU7u4yvAKak1gkstY7SWaFSQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pciz9IYBZOjWcM+PVwaPvSC8K5rE8hVPAidmqIXkVbqTcG3npT+niHnxJjCReNeLkLj3ylkpz3keMBvrlPEcfigvcAzocI0zTcsrOErskSXypxI8YC40EcxNa1IUnX6jtabqawNz9fCgrhWsIvxRJQbYhIjxjPTPX05ImShUcp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5Uhr49o; arc=none smtp.client-ip=74.125.227.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790609506; c=relaxed/simple;
+	bh=WjkOw+dq09Pw9UNWRg4QHNvc5KYfHbrtJx1tojYGQpE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fQgghl/Og8LZX30kGMvuhwfte2ju6Ce+kkr0b653ZIVcZyOJTKHCD8x3K6XVV51G3h3Qw8GrU0SL9bg2NeA4lQMWThuT+iun4mVAa/X4GJzXpAIZREjve0Ye4TogHwvhFsTMqUWQ6upEWz1ZN6wHB6GgHwiHfkJ2R2tg54dT5oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=FuyE6SY5; arc=none smtp.client-ip=114.111.35.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5Uhr49o"
-Received: by mail-vs2-f40.google.com with SMTP id 71dfb90a1353d-5caec6d2983so2686697e0c.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790609367; x=1791214167; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MEOfh53Bs8xIHBW+TfNPqEs+6m7Qp6MngOl0fo6oGhY=;
-        b=H5Uhr49o/k2R31KkZZxBwJHiP37KX6Yi4ayy413sHdwd2/xuU4T1W03qyto6M6a5xH
-         IOwCp77NAZUs0BtR8mVRbNPQFsPHk4nwk3UtvVzc8xrWJzdDljsuAcENY4GeniI5SSVd
-         l4V16WQ2NUDef0u8gMvGBZ2pG474I10NSHAeQXWefK6e9dA9xRcw/yLmvWzn4RGk3HzJ
-         cidxrqP3UOJvvA5Tb8wNxgMzefZLW+Bw1/coB3dnG700imT9DHPfnVqYdPi6nHQtkKer
-         tg0pHua9ivOBQ/CTOnPcGba7E0ImFd+4sWPvPkhJvaJAj+M4vun7eCe2fZGopFTqspyK
-         fglg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790609367; x=1791214167;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MEOfh53Bs8xIHBW+TfNPqEs+6m7Qp6MngOl0fo6oGhY=;
-        b=ygRTS0ScbupOJ9eXghhGHXVXE2rW3N8KE3XHcVXEqwqRPXF7hN6VufOgCWDz+Uu/SQ
-         8LM55gyAhtlD9zXIVbENXPEghyRk4nRrGREmWi1Vn2UjZZz7tUjGN+NqGXIwpSlNBwQm
-         K3PIjW3V8ytmMc7bVM4nfTx+q3spJwnxQyjRNR2GgGfRNzdLDctfN/IuvZp8ZQPcznwb
-         9sPxfJevWJMaofdLMX7v8s2o6gZmEl4MikbpGgtuoZM/fJXvy1zWbHECpAiCyFid8Fh6
-         skBF6oNOOIRYTQcUGLIIXMIeuSC4mWINpLP7DQunqYOVu/pPYpYHHiwqinIqgVJnkauJ
-         djKw==
-X-Forwarded-Encrypted: i=1; AKwUvBwhxmYRwSblF+GqkJj2S5jj7i1Isye/qkeUmI+L6pMfGUIes7XCaZaJ96YZS4LkAeIoBKcHOu4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKEjDjiuFA9xr1M6yf91MjwcXPG69rfbd3FMmK9Ma67sr8J48bb
-	4qWyBgiu7Zx5s31xOu6QMuL3wrjxT9rfrL1Cdp8DHEwc7zNNNqRuIq8wGQqKwgNDelM=
-X-Gm-Gg: AYBFou3BUex93M7qET0C8Fh8ul21RLy69Y/NblYvLaRU13S4/1u+prU/tOSt8S6Iq0M
-	EuC5mCD2Tg9mkPFC0bx0voTg8xdpDraqWR8TbK9VvPzDuKOxUj28S1LcQ9CqyGsyxxrfW5lgDUM
-	EZDw0AFrkiLTGL/UI8GUUohWgcpJMIHK/863ZM9Ab3OhaUQKcNuCzBiJ9A284bcp3htFalc8jHn
-	zKgwtYA3Bl7U8MMrQnFEs1xFZl3B4MVVfQ/zQM+3yQW2kMB0/1cfFdbJMnCNffIWtrCjvrzs5xu
-	ZmNj1/V0SjUa7eBoFTX6b3CHc4wqGHyKtghb8/w+4JGS5whTkEZTWlZK+6DitMs1q6C6pho0dx0
-	UE/gpKEX/YqTZLrNPoi1L53K8Uv7f12Qv7h55RXCFIc+pA889KsN825WWDG3IAQRlJynn1VAU3q
-	stFx3fFTBCGb+3Ugre21G4PsqPBtkh4CRjUxKKLv6iC4UlDgoepIDVILW5STQHcTAcQ5V7QiiWu
-	teA579vwXsjRR3dnB1RszuYuOoRTwQqJ2dKq9eZMU7wLoCMsfCvSbGuqUpHp5rM4IrwXqRNcAs=
-X-Received: by 2002:a05:6122:2804:b0:5ca:f811:25ac with SMTP id 71dfb90a1353d-5cb0b48d45dmr6283450e0c.14.1790609366686;
-        Mon, 28 Sep 2026 08:29:26 -0700 (PDT)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5cde615a356sm9194650e0c.14.2026.09.28.08.29.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 08:29:26 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-09-28
-Date: Mon, 28 Sep 2026 11:29:19 -0400
-Message-ID: <20260928152919.942973-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="FuyE6SY5"
+Received: from cvsendbo022.nm ([10.112.20.47])
+  by cvsmtppost35.nm.naver.com with ESMTP id rNkzyzz9T8OUWSQ1NxaTJg
+  for <netdev@vger.kernel.org>;
+  Mon, 28 Sep 2026 15:21:33 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1790608893; bh=WjkOw+dq09Pw9UNWRg4QHNvc5KYfHbrtJx1tojYGQpE=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=FuyE6SY5a3LzBr0bHSxH3B8MfFzRc6dSgKQy3aIaM10/E8lKDHIsqe1Xp+u0Y2jC0
+	 M4iF4wxzOe5MZJJSPgBSSOwgBllDqlKB64A7BYeNS9V2SwJjEWKow2gdME6sqQCHW+
+	 0X9OU6JpGMnhl+RT4UsUAicPfhqCAhoG4XgxB2YkmLz+SAAVimOZVs5i/pdaoUA0FO
+	 TBMffVJ7CNoIADuPivaoQ7962vQHzBgulcOBK9zmneemDbOA51RdPgKNZR239lODnB
+	 6JyQupI5k6N2oP3eHNkBSlaJs3cvoDm5S4r92tTjgCc9UWpbvyIGZC+8Cpo0R5+Lpj
+	 zT+jMStTNTDJA==
+X-Session-ID: TpC2W-GrRn2u2o-LQedDzQ
+X-Works-Send-Opt: 0rRoWNkNjHmmKAidp4JZKHmmjAumjAurKAKmKqtwaACYkEljxBmwjAg=
+X-Works-Smtp-Source: ednXFxglFqJZ+Hmqaxtr+6E=
+Received: from localhost.localdomain ([125.130.170.186])
+  by cvnsmtp012.nm.naver.com with ESMTP id TpC2W-GrRn2u2o-LQedDzQ
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Mon, 28 Sep 2026 15:21:33 -0000
+From: Seung Min Shin <guncraft2000@naver.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] sctp: hold transport reference across connect wait
+Date: Mon, 28 Sep 2026 15:21:32 +0000
+Message-Id: <20260928152132.3705137-1-guncraft2000@naver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,75 +60,141 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The following changes since commit 6d91041bb38b97e2feb625123cc0529d7b83a0e1:
+sctp_sendmsg_to_asoc() selects a transport before waiting for a new
+interleaved association to become established. sctp_wait_for_connect()
+drops the socket lock while sleeping.
 
-  Bluetooth: RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame() (2026-09-21 09:37:20 -0400)
+While the lock is dropped, backlog processing can handle a COOKIE ACK and
+an ASCONF DEL-IP that removes the selected transport. sctp_assoc_rm_peer()
+then marks the transport dead and drops its association-owned reference.
+The transport can be freed through RCU before the send path resumes.
 
-are available in the Git repository at:
+After the wait, the stale pointer is assigned to newly created DATA or
+I-DATA chunks and later dereferenced by sctp_outq_select_transport().
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-28
+Hold a reference to the selected transport across
+sctp_wait_for_connect(). After the socket lock is reacquired, abort the
+send if the transport was marked dead. Callers without a selected
+transport pass NULL and retain their existing behavior.
 
-for you to fetch changes up to 848a7a91c7f03675d3bd8db6f7721cbf9cb50e21:
+Cc: stable@kernel.org
+Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
+Assisted-by: LLM
+Signed-off-by: Seung Min Shin <guncraft2000@naver.com>
+---
 
-  Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown (2026-09-28 11:00:20 -0400)
+Notes:
+    Tested on 165768bb70265b5c38cf0b73fafd75be235f8b14 with
+    CONFIG_KASAN=y on x86-64.
+    
+    Before the patch:
+    - The attached reproducer triggered the reported transport use-after-free.
+    
+    After the patch:
+    - The exact attached reproducer completed 64 consecutive attempts without a
+      KASAN, refcount, BUG, WARNING, or panic report.
+    - A diagnostic run returned ESRCH in all 64 attempts and observed the
+      association in SCTP_ESTABLISHED state after each return.
+    - A normal stream-interleaving connect/send smoke test passed.
+    
+    The test config does not enable LOCKDEP, so this was not a LOCKDEP test.
 
-----------------------------------------------------------------
-bluetooth pull request for net:
+ net/sctp/socket.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-Core:
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325ec1c..621df93d3450 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -75,7 +75,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc,
+ 				struct sctp_transport *transport,
+ 				long *timeo_p, size_t msg_len);
+ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p);
+-static int sctp_wait_for_connect(struct sctp_association *, long *timeo_p);
++static int sctp_wait_for_connect(struct sctp_association *,
++				 struct sctp_transport *, long *timeo_p);
+ static int sctp_wait_for_accept(struct sock *sk, long timeo);
+ static void sctp_wait_for_close(struct sock *sk, long timeo);
+ static void sctp_destruct_sock(struct sock *sk);
+@@ -1245,7 +1246,7 @@ static int __sctp_connect(struct sock *sk, struct sockaddr *kaddrs,
+ 		*assoc_id = asoc->assoc_id;
+ 
+ 	timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
+-	return sctp_wait_for_connect(asoc, &timeo);
++	return sctp_wait_for_connect(asoc, NULL, &timeo);
+ 
+ out_free:
+ 	pr_debug("%s: took out_free path with asoc:%p kaddrs:%p err:%d\n",
+@@ -1843,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 
+ 		if (asoc->ep->intl_enable) {
+ 			timeo = sock_sndtimeo(sk, 0);
+-			err = sctp_wait_for_connect(asoc, &timeo);
++			err = sctp_wait_for_connect(asoc, transport, &timeo);
+ 			if (err) {
+ 				err = -ESRCH;
+ 				goto err;
+@@ -1881,7 +1882,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 
+ 	if (unlikely(wait_connect)) {
+ 		timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
+-		sctp_wait_for_connect(asoc, &timeo);
++		sctp_wait_for_connect(asoc, NULL, &timeo);
+ 	}
+ 
+ 	err = msg_len;
+@@ -9385,7 +9386,9 @@ static bool sctp_writeable(const struct sock *sk)
+ /* Wait for an association to go into ESTABLISHED state. If timeout is 0,
+  * returns immediately with EINPROGRESS.
+  */
+-static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
++static int sctp_wait_for_connect(struct sctp_association *asoc,
++				 struct sctp_transport *transport,
++				 long *timeo_p)
+ {
+ 	struct sock *sk = asoc->base.sk;
+ 	int err = 0;
+@@ -9394,12 +9397,16 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ 
+ 	pr_debug("%s: asoc:%p, timeo:%ld\n", __func__, asoc, *timeo_p);
+ 
+-	/* Increment the association's refcnt.  */
++	/* Hold references while the socket lock is dropped. */
++	if (transport)
++		sctp_transport_hold(transport);
+ 	sctp_association_hold(asoc);
+ 
+ 	for (;;) {
+ 		prepare_to_wait_exclusive(&asoc->wait, &wait,
+ 					  TASK_INTERRUPTIBLE);
++		if (transport && transport->dead)
++			goto do_transport_dead;
+ 		if (!*timeo_p)
+ 			goto do_nonblock;
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+@@ -9428,7 +9435,8 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ out:
+ 	finish_wait(&asoc->wait, &wait);
+ 
+-	/* Release the association's refcnt.  */
++	if (transport)
++		sctp_transport_put(transport);
+ 	sctp_association_put(asoc);
+ 
+ 	return err;
+@@ -9447,6 +9455,10 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ do_nonblock:
+ 	err = -EINPROGRESS;
+ 	goto out;
++
++do_transport_dead:
++	err = -EAGAIN;
++	goto out;
+ }
+ 
+ static int sctp_wait_for_accept(struct sock *sk, long timeo)
 
- - hci_core: Serialize ACL scheduling with channel deletion
- - hci_core: Serialize SCO and ISO scheduling with teardown
- - hci_core: Serialize fragmented ISO packet queueing
- - hci_core: Fix inquiry cache timestamps on 64-bit systems
- - hci_core: free the HCI ID if naming fails
- - hci_conn: Lock parent access during enhanced SCO setup
- - hci_sync: Fix inquiry cache use-after-free
- - hci_sync: don't drain cmd_sync backlog on unregister
- - RFCOMM: Fix initial port reference race
- - SMP: Serialize SMP remote OOB data access
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+-- 
+2.34.1
 
-Drivers:
-
- - btintel: fix buffer over-read in btintel_hw_error()
- - btintel: validate DDC record lengths
- - btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
- - btintel_pcie: reject oversized TX packets in send_frame()
-
-----------------------------------------------------------------
-Chandrashekar Devegowda (3):
-      Bluetooth: btintel: fix buffer over-read in btintel_hw_error()
-      Bluetooth: btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
-      Bluetooth: btintel_pcie: reject oversized TX packets in send_frame()
-
-Chengfeng Ye (7):
-      Bluetooth: hci_conn: Lock parent access during enhanced SCO setup
-      Bluetooth: hci_core: Serialize fragmented ISO packet queueing
-      Bluetooth: hci_sync: Fix inquiry cache use-after-free
-      Bluetooth: RFCOMM: Fix initial port reference race
-      Bluetooth: Serialize SMP remote OOB data access
-      Bluetooth: hci_core: Serialize ACL scheduling with channel deletion
-      Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown
-
-Linmao Li (1):
-      Bluetooth: hci_core: Fix inquiry cache timestamps on 64-bit systems
-
-Nguyen Ngoc Thang (1):
-      Bluetooth: hci_sync: don't drain cmd_sync backlog on unregister
-
-Sai Teja Aluvala (1):
-      Bluetooth: btintel: validate DDC record lengths
-
-Sang-Hoon Choi (1):
-      Bluetooth: hci_core: free the HCI ID if naming fails
-
- drivers/bluetooth/btintel.c      | 15 ++++++++---
- drivers/bluetooth/btintel_pcie.c | 12 ++++++++-
- include/net/bluetooth/hci_core.h |  5 ++--
- net/bluetooth/hci_conn.c         | 18 ++++++++++----
- net/bluetooth/hci_core.c         | 54 ++++++++++++++++++++++++++++++++--------
- net/bluetooth/hci_debugfs.c      |  2 +-
- net/bluetooth/hci_sync.c         | 19 ++++++++++++--
- net/bluetooth/rfcomm/tty.c       |  7 +++---
- net/bluetooth/smp.c              |  2 ++
- 9 files changed, 106 insertions(+), 28 deletions(-)
