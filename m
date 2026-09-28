@@ -1,70 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5847E4D1781;
-	Mon, 28 Sep 2026 13:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F4D4D1799;
+	Mon, 28 Sep 2026 13:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790603172; cv=none; b=oqj0P3xfnBcnH67q141DfBQWnadSKWMIXFYXpOyjYL3UIeJRxrIWY1FVAmgVd+a1H4wVWexB7pQU0W44E+vyBU+5kgkQSvGVTxlA5pdV0rRCdbEr3BflRAFv76PRNdIRD3Q3bdVZ/lFpn1B7pWXjEBXfk9OEL5NpcWgMfgZnJ+A=
+	t=1790603345; cv=none; b=TiPsRAgakRoNncoSEUeYRaglvwTsxL+Sg+YdoW2OrfIFZwhuc4VtexuOugNOd0k3Nq2PQDNnxK6Lvng+ru6FZ9GpYsKr/V+FXFdR1lUFzLVlXqMXPoOVH8g2Fv9Xs4SJg6aohUa07uJb/C+l926OP/mA0uZdWfabOv26zcCL0nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790603172; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PFnFjF0JnJMlqmQLezfN4/WzrYsQ+9dnv0I0h/hzWMRiKnxNf0GrBL1aTBrdyzhuoa+txsIg1p0JfZEka46JqaGG/CtO0cibgPSb9uCDYQJtOREADlqGfCLr/iWLSqZtNOrwR77LcO3/OFtSAb6JjttsXiOO8/goqHvlo8VFO5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPzT9Olp; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPzT9Olp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87EF1F000FF;
-	Mon, 28 Sep 2026 13:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790603171;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fPzT9OlpZ/+lk/Ptrvbc/ffrAEOrz6tXgWiCXvYl0+V+7T3WNrnnChIiWf7fHdaqG
-	 UUz1a7jvGLE9aroeB7aq+FU/PJn59yILXFajNBPHF4oz5+2m1llU+rbnXoxqxPjbgV
-	 1ohCbaCImEGz4fq63Um7nC4e69jjIkZEtjxOUYYy6zsz6XmFZMzkjWuWc40J1Im/oK
-	 6XMiDyk4wQpfil2K5S4ZNDeDFm4LQ1Yg5T9N5OHRl6+JZvIqh0LXD8zK9628uaEsEI
-	 rY5ook47DQaeHnBzlp3R3Ax+sYZ2ZlJcLZ6TllddVxTN/zKt+S3CQh4dYLH8Lt3Zpz
-	 Lw8+SNto8khKA==
-From: netdev-bot+sinfo@kernel.org
-To: Hongyan Xu <getshell@seu.edu.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
-Subject: 
- Re: [PATCH net] net: plip: quiesce private work when stopping the interface
-Date: Mon, 28 Sep 2026 13:46:10 +0000
-Message-ID: <179060317028.31693.7593520343375109759@kernel.org>
-In-Reply-To: <20260928134136.1213-1-getshell@seu.edu.cn>
-References: <20260928134136.1213-1-getshell@seu.edu.cn>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1790603345; c=relaxed/simple;
+	bh=XJoluPe8klrmOrQuwGDVDDIEwvnsLYAmbcH38lTrp8M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HW18YqTEhsrThUDzOhoCo1cDNlG0z9RmObcx08tuIzuZDwmZ22tHnR0mP39Kf5v1umUox/lvE2Q9Iv9i20G6whw7GlctOhaSu+0GhLw5oRHyrbwFRuPa47H/CBWH+xAE5K9qWoL+nigqfLqi6uf5u1tXaoD0Oho/2LEJJL6hpg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: mail.toke.dk; dkim=none
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+To: Yuchao Zhang <ndaugoing@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
+ Jiri Pirko <jiri@resnulli.us>, cake@lists.bufferbloat.net,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Yuchao Zhang <ndaugoing@gmail.com>
+Subject: Re: [PATCH net v3 1/2] net/sched: sch_cake: fix shaper stall on
+ segs == 0 in cake_overhead()
+In-Reply-To: <20260927131009.24250-2-ndaugoing@gmail.com>
+References: <20260927131009.24250-1-ndaugoing@gmail.com>
+ <20260927131009.24250-2-ndaugoing@gmail.com>
+Date: Mon, 28 Sep 2026 14:30:39 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <877bk5lfrk.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Yuchao Zhang <ndaugoing@gmail.com> writes:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+> In cake_overhead(), packets with a single segment bypass multi-segment
+> overhead calculations:
+>
+> 	if (segs =3D=3D 1)
+> 		return cake_calc_overhead(q, len, off);
+>
+> Commit c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()") switched
+> cake to retrieve the cached segmentation count via qdisc_pkt_segs(skb)
+> instead of calculating it locally for dodgy GSO packets. If an skb with
+> segs =3D=3D 0 reaches cake_overhead(), it skips the segs =3D=3D 1 early r=
+eturn
+> and enters the multi-segment arithmetic:
+>
+> 	len =3D shinfo->gso_size + hdr_len;
+> 	last_len =3D skb->len - shinfo->gso_size * (segs - 1);
+>
+> 	return (cake_calc_overhead(q, len, off) * (segs - 1) +
+> 		cake_calc_overhead(q, last_len, off));
+>
+> Because segs is an unsigned 16-bit integer, (segs - 1) underflows to
+> 65535 (and is promoted to 4294967295 in the 32-bit unsigned arithmetic
+> above). This multiplies the per-segment overhead by UINT32_MAX, so
+> cake_overhead() returns a length close to 4.29 GB. cake_advance_shaper()
+> then charges that length to the shaper, stalling the CAKE dequeue path
+> for tens of seconds at 1 Gbit/s, and for minutes to hours at lower rates.
+>
+> Fix this by returning early with cake_calc_overhead(q, len, off) whenever
+> segs <=3D 1.
+>
+> Fixes: c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
