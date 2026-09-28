@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C69C3C1963;
-	Mon, 28 Sep 2026 10:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA7049B465;
+	Mon, 28 Sep 2026 10:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790591959; cv=none; b=mbLWcWN+0CG+T5bZJmavFUJ+DI+kykJOfauye/2X2Qp1BVQ/3mP4X9GasdYCDa9sP+YWPo4stdIHQPNN8LJ79OEDP9KAva6HthEB80Ng2Is+KFc3e1AtSHhVnpYp49PFYhjQY1aG9zdKsVNvLXuk8eRxtAZoPM0a8IoHfi7KGL4=
+	t=1790591961; cv=none; b=B2o1D2m37tspcOxz2XikUPkhdouC9RY0VzLZbImkLgmzrynFLS+JxPQUD2VZaz6Niu83WN6a5IXhQ8dY35X6J2Zw0sPnIU0M/e0fMgNQQ4z+9ibey4eBwet1skZFR1GAOYSA0WgDhcQYT3VwDFLnVla8N6UesDGigIIypwsjc3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790591959; c=relaxed/simple;
-	bh=ADPtp/Oc5lFEs5dMRUsEbgt+WzHkpAzmiaSLVBI1fv4=;
+	s=arc-20240116; t=1790591961; c=relaxed/simple;
+	bh=6gTVcHRbICw0sz0jRiXa3L5E5R7mJOsLQ8DrOiV0hT0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M3Dx7xdboDpA4EfDQ6XMvFMglNrXVi2QBmZ20Zg8V9+5q5T1Y2mBMLncvr7nW1uQJqZBoQvqgW+zcPFthL/runawUaUuL3of9lxBtDjPhJC4eubGx6htaCaAy9ZCoGd4MmksJkq84V5QnWVY5gAfxRGgY60Q2wVWy7kwdkd365M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZATl2RjT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lyLK9otdB/YUIldICvOkTq31Xy/zK5bUcTnztewQ/kywNpyKg7gr4ZRVjPFtNkIXFTCFqdh7nj2JMqGH6H/w6U9y5jM1fsZPr1NJN2efSuqL279BFg25MsdvEDarzlYD5t+m9v1xd6ajo+euxEUTmvmCpK8Y1YBHCNt69GNByuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R26SCuVs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZATl2RjT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1301A1F000FF;
-	Mon, 28 Sep 2026 10:39:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R26SCuVs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE921F00893;
+	Mon, 28 Sep 2026 10:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790591957;
-	bh=dU1fO+8ko1Hu02NqAiEeZAWbKqbgBCGb6F+NzyW7M9g=;
+	s=k20260515; t=1790591959;
+	bh=1LZ3XpDsjo8wGL6BDOWLVtSDb0Lw5LJi/frYniFXLkU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZATl2RjTwXvLcaTNOGWny+ArqZsNwW3PMO67MhIFMltO05ZZqqR9DMm+5YRkyCPJk
-	 v4YpAT+LNa/WPTgYUnYB0nVzf7dwQpw01WCIJJGbvAvMe+4j+zsWHsBk6PHjqcdzQq
-	 oq/LnHBErSu/QJQrCT37yuHQyoGH/a0V7D4pH9W6YKekRlZkfI/3dmA0imtPjXtawo
-	 ZGm6zeeQhFDhdlf0svZAIR9EEHaxoGahBnoeHKF1TTbOVJ/hT6u88jH0rHCaV+vzvO
-	 4YrKKr4lsdAusKJo31/iNM8Ct2GvLKcTa96wGkM91yeG8dUnQpiktbo+HO4iWjvgUD
-	 6qlt62VaFBswQ==
-Subject: Re: [PATCH net-next v9 1/7] net: dsa: motorcomm: initialize
- dsa_switch based on chipid
+	b=R26SCuVsWSX6Bwz1IObBsyjom028w2Z9fKqz7HC6D6oC9ggy3HOLeSg1nlg3kAkRf
+	 02cjQfTbOOeDlja2Xa8bq5/tKgXxsfSxnaQ2t15RCo19NWPuj8h7Hf54QbVJqpRrAn
+	 BtIcFY+Gn3M6nHzEJjLqWn4IIVGSobR/XJ00D9V/JxN/M9JxbepZYN+toEwNUJEOLq
+	 bfYktSkw5JUpXQFeSR6F+Ly6hm9fjZFQB9lt3lD7TUv+kDFCsb6d9S669qqi0cTX6j
+	 nbinQRcPaEw4Iu5Tg3Nk9vzOLLrI5t9+s0QbHwRuvBugFQFDIB1EBdorh6Ga+HD6LF
+	 J/91SAFOt4Mzg==
+Subject: Re: [PATCH net-next v9 2/7] net: dsa: motorcomm: use max_ports in
+ series for port bounds checking
 From: netdev-bot+sashiko@kernel.org
 To: kyle.switch@motor-comm.com
 Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
@@ -36,11 +36,11 @@ Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
  linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
  xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
  sijia.huang@gl-inet.com
-Date: Mon, 28 Sep 2026 10:39:16 +0000
-Message-ID: <179059195658.3145.7289429681974059958@kernel.org>
-In-Reply-To: <20260924094146.4128703-2-kyle.switch@motor-comm.com>
-References: <20260924094146.4128703-2-kyle.switch@motor-comm.com>
-X-sashiko-severity: Medium
+Date: Mon, 28 Sep 2026 10:39:18 +0000
+Message-ID: <179059195808.3145.17249114041755929761@kernel.org>
+In-Reply-To: <20260924094146.4128703-3-kyle.switch@motor-comm.com>
+References: <20260924094146.4128703-3-kyle.switch@motor-comm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,194 +50,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] Concern: the commit overclaims, and nothing ties
+  series->max_ports to the fixed-size port storage.
 
-- [Medium] yt92xx_register_switch() in drivers/net/dsa/motorcomm/chip.c
-  declares `u32 chipid;` with no initializer.
-- [Low] The commit message does not match the patch.
-- [Low] At this commit, enum yt92xx_mode declares YT92XX_MODE_YT922X and
-  YT92XX_MODE_MAX, but yt92xx_series_table[] fills only…
-- [Low] yt921x_mdio_probe() calls mutex_init(&priv->reg_lock)
-  (chip.c:4806) and now returns early if yt92xx_register_switch() fails…
+Pre-existing issues:
+- [Low] Concern: yt921x_mbus_int_read()/write() and phy_mask bound the
+  internal MDIO bus by the total DSA port count (series->max_ports = 11…
 
 --
 
-net: dsa: motorcomm: initialize dsa_switch based on chipid
+net: dsa: motorcomm: use max_ports in series for port bounds checking
 
-This patch moves the dsa_switch setup out of yt921x_mdio_probe() into a
-new yt92xx_register_switch() helper. The helper reads the chip ID at probe
-time and fills in the dsa_switch fields from a per-series table entry.
-
-> Replace the hardcoded chip handling in yt92xx_register_switch() with a
-> data-driven loopup based on the chip ID.
-
-[Severity: Low]
-Is this description accurate? yt92xx_register_switch() is added by this
-patch. The hardcoded ds-> assignments it removes were in
-yt921x_mdio_probe().
-
-There's also a typo: "loopup" should be "lookup".
-
-The lookup is also not really data-driven. yt92xx_series_lookup() writes
-the majors into an if-statement:
-
-    if (major == YT9215_MAJOR || major == YT9218_MAJOR)
-        return &yt92xx_series_table[YT92XX_MODE_YT921X];
-
-yt921x_mdio_probe() now reads YT921X_CHIP_ID over MDIO. It can fail with
-an I/O error or -ENODEV before dsa_register_switch() is reached. Before
-this patch, the chip ID was only read later, from yt921x_chip_detect() in
-the DSA setup path. Could the message mention this change?
-
-It could also say this is groundwork for YT922X, since nothing in this
-patch uses YT92XX_MODE_YT922X or YT92XX_MODE_MAX.
+This patch replaces the hardcoded YT921X_PORT_NUM with the per-series
+priv->series->max_ports in three places: the internal MDIO bus bounds
+checks in yt921x_mbus_int_read() and yt921x_mbus_int_write(), and the
+phy_mask computed in yt921x_mbus_int_init().
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 8b0ac5fc8c8b..d4a565994940 100644
+> index d4a565994940..b95f3c355511 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -4679,6 +4679,68 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
-
-[ ... ]
-
-> +static int yt92xx_register_switch(struct dsa_switch *ds)
-> +{
-> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
-> +	struct device *dev = to_device(priv);
-> +	const struct yt92xx_series *series;
-> +	u32 chipid;
-> +	u32 major;
-> +	int res;
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +	res = yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
-> +	mutex_unlock(&priv->reg_lock);
-> +	if (res) {
-> +		dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
-
-[Severity: Medium]
-Can chipid be uninitialized when it is printed here? yt921x_reg_read()
-ends up in yt921x_reg_mdio_read(), which stores to *valp only on success:
-
-drivers/net/dsa/motorcomm/chip.c:yt921x_reg_mdio_read() {
-    ...
-	res = __mdiobus_read(bus, addr, reg_data);
-	if (res < 0)
-		goto end;
-	val = (val << 16) | (u16)res;
-
-	*valp = val;
-	res = 0;
-
-end:
-    ...
-}
-
-If any of the MDIO accesses fail, this prints leftover stack contents as
-the chip ID, and a bus failure looks like an ID mismatch.
-
-The message seems to come from yt921x_chip_detect(). There it is printed
-only after a successful read with an unknown major:
-
-drivers/net/dsa/motorcomm/chip.c:yt921x_chip_detect() {
-    ...
-	res = yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
-	if (res)
-		return res;
-    ...
-	if (!info->name) {
-		dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
-		return -ENODEV;
-	}
-    ...
-}
-
-Should the read failure get its own message? The chip ID could then be
-printed in the unknown-major branch below, which currently leaves it out.
-
-This code is unchanged at the end of the series, in "net: dsa: motorcomm:
-Add support for Motorcomm YT922x".
-
-> +		return res;
-> +	}
-> +
-> +	major = FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
-> +	series = yt92xx_series_lookup(major);
-> +	if (!series) {
-> +		dev_err(dev, "Undefined series info for the corresponding major\n");
-> +		return -ENODEV;
-> +	}
-
-[ ... ]
-
-> @@ -4754,15 +4817,10 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+> @@ -357,7 +357,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
+>  	u16 val;
+>  	int res;
 >  
->  	ds = &priv->ds;
->  	ds->dev = dev;
-> -	ds->assisted_learning_on_cpu_port = true;
-> -	ds->dscp_prio_mapping_is_global = true;
->  	ds->priv = priv;
-> -	ds->ops = &yt921x_dsa_switch_ops;
-> -	ds->ageing_time_min = 1 * 5000;
-> -	ds->ageing_time_max = U16_MAX * 5000;
-> -	ds->phylink_mac_ops = &yt921x_phylink_mac_ops;
-> -	ds->num_lag_ids = YT921X_LAG_NUM;
-> -	ds->num_ports = YT921X_PORT_NUM;
-> +	res = yt92xx_register_switch(ds);
-> +	if (res)
-> +		return res;
+> -	if (port >= YT921X_PORT_NUM)
+> +	if (port >= priv->series->max_ports)
+>  		return U16_MAX;
 
 [Severity: Low]
-This isn't a bug, but this new early return comes after
-mutex_init(&priv->reg_lock) and skips mutex_destroy(). The only
-mutex_destroy() call is in yt921x_mdio_remove(), which doesn't run when
-probe fails.
+The commit message says this "removes family-specific constants from the
+common code path". Nothing in the patch ties series->max_ports to the size
+of the per-port storage, though. Is that intended?
 
-Nothing leaks. priv is devm allocated, and mutex_destroy() only poisons
-the magic field when CONFIG_DEBUG_MUTEXES is set. The existing
-dsa_register_switch() failure path already skips it too.
+struct yt921x_priv still sizes its port array with the YT921x constant:
 
-Is it worth adding mutex_destroy() to the probe error paths for symmetry?
+drivers/net/dsa/motorcomm/chip.h:struct yt921x_priv {
+    ...
+	struct yt921x_port ports[YT921X_PORT_NUM];
+    ...
+};
+
+YT921X_PORT_NUM also still bounds loops in these functions:
+
+  yt921x_lag_set()
+  yt921x_isolate()
+  yt921x_bridge() (twice)
+  yt921x_chip_setup_dsa() (twice)
+
+Meanwhile ds->num_ports now comes from priv->series->max_ports.
+
+With the current table this can't happen. At the end of the series,
+YT921X has max_ports = 11 and YT922X has max_ports = 9, so both fit. The
+remaining YT921X_PORT_NUM loops are also only reachable from YT921x-only
+code.
+
+If a future series entry had max_ports greater than YT921X_PORT_NUM,
+though, could priv->ports[] be indexed out of bounds? Would a
+BUILD_BUG_ON() or a probe-time check that max_ports is no larger than
+ARRAY_SIZE(priv->ports) be worth adding?
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-> index 83cd454955dd..c446aea449ed 100644
-> --- a/drivers/net/dsa/motorcomm/chip.h
-> +++ b/drivers/net/dsa/motorcomm/chip.h
-> @@ -960,9 +960,29 @@ struct yt921x_reg_ops {
->  	int (*write)(void *context, u32 reg, u32 val);
->  };
->  
-> +enum yt92xx_mode {
-> +	YT92XX_MODE_YT921X,
-> +	YT92XX_MODE_YT922X,
-> +	YT92XX_MODE_MAX,
-> +};
-> +
-> +struct yt92xx_series {
-> +	enum yt92xx_mode mode;
-> +	const char *name;
+> @@ -402,7 +403,8 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+>  	mbus->read = yt921x_mbus_int_read;
+>  	mbus->write = yt921x_mbus_int_write;
+>  	mbus->parent = dev;
+> -	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
+> +	max_ports = priv->series->max_ports;
+> +	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
 
 [Severity: Low]
-At this commit, yt92xx_series_table[] fills only [YT92XX_MODE_YT921X].
-There is no table entry for YT92XX_MODE_YT922X, and no BUILD_BUG_ON ties
-the table size to YT92XX_MODE_MAX. The later patch "net: dsa: motorcomm:
-Add support for Motorcomm YT922x" adds the YT922X entry, so this part is
-resolved by the end of the series.
+This is a pre-existing issue, and this patch didn't introduce it. It
+shows up here because the bound is being changed. max_ports counts every
+DSA port, not only the integrated PHYs:
 
-Are the mode and name fields needed? Nothing reads series->mode or
-series->name, even at the end of the series. The name field also
-duplicates yt921x_info.name, which is the name that gets printed.
+drivers/net/dsa/motorcomm/chip.h:
+/* 8 internal + 2 external + 1 mcu */
+#define YT921X_PORT_NUM			11
+
+As a result, yt921x_mbus_int_read() and yt921x_mbus_int_write() still
+allow internal MDIO bus transactions to addresses 8-10 if the DT puts a
+PHY there. The phy_mask computed here doesn't limit scanning either,
+because __of_mdiobus_register() overwrites it with ~0.
+
+The baseline used the same value, so "No functional change for existing
+YT921X devices" is accurate.
+
+Bounding by info->internal_mask may not be right either. Later in the
+series, YT922x uses internal bus addresses that are not integrated UTP
+PHYs, via yt922x_sds_phyaddr_get(): SerDes addresses 0 and 8, and
+YT922X_COMMON_EXT_PHYADDR (9).
+
+Should the internal bus bound describe the addresses that actually exist
+on that bus, rather than the total port count? Or is using max_ports here
+intentional?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924094146.4128703-1-kyle.switch%40motor-comm.com
