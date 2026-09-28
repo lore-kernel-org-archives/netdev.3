@@ -1,39 +1,80 @@
-Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FDB25228D;
-	Mon, 28 Sep 2026 12:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4752F5321
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790599100; cv=none; b=O/tUMTerPo/uxaBLcCkuHZc5a7ndFCIrfY+NIjPIZWOrAHosVrdzBLhHuWMPBEouZ71Lq9nryPnIy4AeTOiXyTqkNHON1XZoFBfNe+a/Jtjvguu5XDkSdZjvvOBUYHfV3N2fvNUGRAmhdghPvBcEmkUbbCJM9/U5OlBNowTBNF8=
+	t=1790599115; cv=none; b=mbrP8IQrz22PEE/7vdUqcZkWScOe6HH44QQxIkEe1jq/WtBbADWhEBrNlvZthEnawQ3GRl/Of5mcozCkVPvfuFrCinDYbTNn7aBsNtFVSY1BvFUsr44w59t7xpLxAYY27CgsxwId2SCi8cZewwYEOqkEV8C37UnN+RMOJ/vJMDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790599100; c=relaxed/simple;
-	bh=JqTEbRMZt/qRoV2k/yt93V8wYd3uGIEGGN6rjnT6dFk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vk3ogaMTn11z/JAVLnbtSDtMPOzIOPyb9644iO/AhgawvEMCBk6s5FBYCqFtGHFCPnHobbBU0l6DLnE+HZSPE9SdbUtvraSaMoC9gyRUM0m//i6LO8VRdPoT8PZuLXEesdU2yqX/HABoP2pXAaTZyVdgnJOd6Ab5MTzhoUjKkJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0296641-0.00568381-0.964652;FP=11986132744289129986|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jQ6tplI_1790598764;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jQ6tplI_1790598764 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 28 Sep 2026 20:32:45 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
+	s=arc-20240116; t=1790599115; c=relaxed/simple;
+	bh=eGWh/UwqM5JjiDpOuyETKfrpirh9r6j0dXiN+aB0t5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QY+RyZiH1NyvNI4Bml6Qni61jT9LAGNCkVPf1mPlqqxq3NJ9LTIyHPOELDqPNZlCCS0vYWLYsKQP+YD8ucLjiDJPpJm50lOKJgUiVGp0R/bdgZLhd5zRF429/OUdtsmxzRDcjkPjHiq+h/UUYdT3JAGNSUW0/p+yzfbDcC+LduU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1/oRNTo; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1/oRNTo"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c2940ef15c1so388776866b.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790599112; x=1791203912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D+buAjiyG4ncBlcUW+2BpEu2Hb7PWv2fVmuPggXs8iY=;
+        b=Q1/oRNToeLjB/9+ZiUDBqmLg4/4RpqYLTtQ3dtXFDHve+P2i6Be+Cjdnjop5o4S2aO
+         tLpsTT23t3hhZ3IIfs5jKsgJy/p00J9L2yu9AMlm2X64pOa7t42qP2MhjqCxtK3DlIBk
+         6jIqrg9l1JxC1X+HDtcI6ZEum0K98OWiYvMtZ+7XVBqSwl08uYZmdpYdnUF5+JeJswQC
+         I7ejwGVG2om/2wfhDq7zxe1F0AJE6E3Ud65hGwPCt4hbpZFdjASSSksBiOqWAeC7P27s
+         FYRWN/BzrRf+owoBRsmpu5H75+UUa63nNCr67uvPvJDE42b473gAw5Vd1gECetw00LjV
+         oFbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790599112; x=1791203912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D+buAjiyG4ncBlcUW+2BpEu2Hb7PWv2fVmuPggXs8iY=;
+        b=JVMjqyDq4At3qYKL7mq+DdCR5itIJflVF8NdCkpyRa4T3m1mw/M/TpZwqhRPv7zWcd
+         SEdf7GjOCXEP8xjYPuswZaCjshbuBnr+IBevX+H6/ridUJe9uIrUL2/lxGxHgBt5kgwi
+         orNPPpD+SLZ3dKFn0ToFUxSzi4yGQ/dU0Ya/zIB3XP04lBfD6mQPBtiA4EmwU3g1XD+I
+         jzyHJCdaSbpUj94qHYAJitf4wfibGL9YcAewsRPsL0HDoW3jYvQOxWz2p5ckRPeAp4tl
+         LS66uRYgWvkSjEpPXLIP+5pMVan3pQuvOdxEyqbukbRYEsgNW/+UT2s0hLv7ZmRsSgG+
+         hUZg==
+X-Forwarded-Encrypted: i=1; AKwUvBya/OTjVpCiyr3lXx4CEbqCURstxTdJ5FvrfwJMGUydDc+XdzwJSxzHGj3+Bm+js+ADh4dtqGc=@vger.kernel.org
+X-Gm-Message-State: AFuF++lFuqSVNiC60OY8BKAelGVKVWtbxmWClHyVT+45D0HWuB50d8LL
+	OjeCt8v5Me//OqaUZ+VRUDlfTeqv5oLefsx9p9WyhwRHdvd1iFM6vYfR
+X-Gm-Gg: AYBFou0KZ1zr1J8o613YccXJvhnp6Qb40QTyTGi4/alyMGvCpu8lAukugs3QVKTLi0E
+	S3olb+zTtefdyoYggH2zvSY5IyCCEGWGRt0ipT9Z78QHuCZ1g0ypLXEfT3bj57qUX2htW1zFkbT
+	pVLMl97UG4eP1jPRgn8fbpshAG6drBqp78KrUNxmDjjjZyw8GT9u2VylF5zy+CMduClJe5jEhqO
+	pxX3a/0P5ra7HVtOLlsyytB4MbCd8Me34td4uWXSO4Cu3hK0sDaASBNppR9UCBofV8JydjdoveC
+	ym0He2FfOeXiM3nwm+lrGGgj18D74DND+0P8I9WaUkqATUbMqtoq/ZbWaen7ubGefcTdfQ/6Hue
+	LhrfvimrZtN32eezadT7E15sIBhLk0mn3X07SrxOKwoRinTwBG0F64c0NXeqj1Lc5ctoaWEckJc
+	kOCqckR7V7uspBGTzCEw9Wvi0pP2LOBiftEYGy4yh74Jd9v/aLGr8JkLa2XWynf8bCDzqQDPmM6
+	QIKrU/+ajNmCoJaEA==
+X-Received: by 2002:a17:907:97c3:b0:c25:9102:ed with SMTP id a640c23a62f3a-c2ac2311b07mr1040138666b.5.1790599111445;
+        Mon, 28 Sep 2026 05:38:31 -0700 (PDT)
+Received: from localhost.localdomain ([94.240.182.136])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dd69d4f65sm161462966b.22.2026.09.28.05.38.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 05:38:30 -0700 (PDT)
+From: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v30 net-next 5/8] net/nebula-matrix: dispatch: add control-level routing core infrastructure
-Date: Mon, 28 Sep 2026 20:32:30 +0800
-Message-ID: <20260928123237.88994-6-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
-References: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Svyatoslav Nikolenko <nsvatoslav515@gmail.com>,
+	syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v5] net: e1000: fix warning in iounmap on probe failure
+Date: Mon, 28 Sep 2026 15:38:13 +0300
+Message-ID: <20260928123814.2605-1-nsvatoslav515@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,297 +83,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+In e1000_probe(), the error unwinding path at err_sw_init unconditionally
+calls iounmap(hw->ce4100_gbe_mdio_base_virt). On non-CE4100 hardware,
+hw->ce4100_gbe_mdio_base_virt remains NULL.
+Passing NULL to iounmap() triggers a WARN_ON_ONCE on x86 architectures.
+Furthermore, on CE4100 hardware, if probe fails before or during
+MDIO mapping, ce4100_gbe_mdio_base_virt is also NULL.
 
-Allocate dispatch management state and ops table, add ctrl_lvl bitmap
-to track control privileges, and hook init_module/deinit_module wrappers
-to resource ops.
+Fix this by adding a NULL pointer check before calling iounmap() on
+hw->ce4100_gbe_mdio_base_virt. iounmap(hw->hw_addr) remains unconditional
+because every code path reaching err_sw_init occurs after hw->hw_addr has
+been successfully mapped.
 
-MGT level is only enabled for Control PF. Add kerneldoc for caller
-permission constraints. Add wire ABI structures with static_assert for
-upcoming mailbox RPC.
-
-Dispatch objects are devm-managed and require no explicit remove logic.
-
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ca1ef9e2e234b8d3599b
+Fixes: 13acde8fffc0 ("e1000: cleanup CE4100 MDIO registers access")
+Cc: stable@vger.kernel.org
+Signed-off-by: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c | 117 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |  23 ++++
- .../nbl/nbl_include/nbl_def_dispatch.h        |  45 +++++++
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   8 ++
- 6 files changed, 196 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+v5:
+  - Updated commit message and changelog to accurately describe the NULL pointer
+    check implemented in the diff.
+  - Fixed subject string in the Fixes: tag to match commit 13acde8fffc0.
+v4:
+  - Actually include the code changes (v3 was sent un-staged by mistake)
+v3:
+  - Switched from pointer null-checks to checking hw->mac_type == e1000_ce4100
+  - Removed redundant check for hw->hw_addr since it cannot be NULL here
+  - Added missing Cc: stable tag and Closes tag
+v2:
+  - Expanded commit message to answer reviewer questions (reproduction details)
+  - Added appropriate Fixes tags
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index be314b909d66..b7eebd89b4d1 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -10,4 +10,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
- 		nbl_hw/nbl_resource.o \
- 		nbl_hw/nbl_interrupt.o \
- 		nbl_hw/nbl_chip.o \
-+		nbl_core/nbl_dispatch.o \
- 		nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index dd24ebec0171..4d8cea8d8ab3 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -17,12 +17,14 @@ enum {
- struct nbl_interface {
- 	struct nbl_hw_ops_tbl *hw_ops_tbl;
- 	struct nbl_resource_ops_tbl *resource_ops_tbl;
-+	struct nbl_dispatch_ops_tbl *dispatch_ops_tbl;
- 	struct nbl_channel_ops_tbl *channel_ops_tbl;
- };
- 
- struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
- 	struct nbl_resource_mgt *res_mgt;
-+	struct nbl_dispatch_mgt *disp_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
- 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-new file mode 100644
-index 000000000000..966fee2dec8b
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include "nbl_dispatch.h"
-+
-+static void nbl_disp_deinit_module(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-+	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-+
-+	if (res_ops->deinit_module)
-+		res_ops->deinit_module(p);
-+}
-+
-+static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-+	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-+
-+	if (res_ops->init_module)
-+		return res_ops->init_module(p);
-+	return -EOPNOTSUPP;
-+}
-+
-+static void nbl_disp_set_ctrl_bit(struct nbl_dispatch_mgt *disp_mgt, u32 lvl)
-+{
-+	set_bit(lvl, disp_mgt->ctrl_lvl);
-+}
-+
-+static void nbl_disp_refresh_ctrl_ops(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = disp_mgt->disp_ops_tbl->ops;
-+
-+	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
-+		disp_ops->init_module = nbl_disp_init_module;
-+		disp_ops->deinit_module = nbl_disp_deinit_module;
-+	}
-+}
-+
-+static struct nbl_dispatch_mgt *
-+nbl_disp_setup_disp_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_dispatch_mgt *disp_mgt;
-+	struct device *dev = common->dev;
-+
-+	disp_mgt = devm_kzalloc(dev, sizeof(*disp_mgt), GFP_KERNEL);
-+	if (!disp_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_mgt->common = common;
-+	return disp_mgt;
-+}
-+
-+static struct nbl_dispatch_ops_tbl *
-+nbl_disp_setup_ops(struct device *dev, struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_dispatch_ops *disp_ops;
-+
-+	disp_ops_tbl = devm_kzalloc(dev, sizeof(*disp_ops_tbl), GFP_KERNEL);
-+	if (!disp_ops_tbl)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_ops = devm_kzalloc(dev, sizeof(*disp_ops), GFP_KERNEL);
-+	if (!disp_ops)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_ops_tbl->ops = disp_ops;
-+	disp_ops_tbl->priv = disp_mgt;
-+
-+	return disp_ops_tbl;
-+}
-+
-+int nbl_disp_init(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_resource_ops_tbl *res_ops_tbl =
-+		adapter->intf.resource_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl =
-+		adapter->intf.channel_ops_tbl;
-+	struct device *dev = &adapter->pdev->dev;
-+	struct nbl_dispatch_mgt *disp_mgt;
-+	int ret;
-+
-+	disp_mgt = nbl_disp_setup_disp_mgt(common);
-+	if (IS_ERR(disp_mgt)) {
-+		ret = PTR_ERR(disp_mgt);
-+		return ret;
-+	}
-+
-+	disp_ops_tbl = nbl_disp_setup_ops(dev, disp_mgt);
-+	if (IS_ERR(disp_ops_tbl)) {
-+		ret = PTR_ERR(disp_ops_tbl);
-+		return ret;
-+	}
-+
-+	disp_mgt->res_ops_tbl = res_ops_tbl;
-+	disp_mgt->chan_ops_tbl = chan_ops_tbl;
-+	disp_mgt->disp_ops_tbl = disp_ops_tbl;
-+	adapter->core.disp_mgt = disp_mgt;
-+	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
-+
-+	if (common->has_ctrl)
-+		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
-+
-+	nbl_disp_refresh_ctrl_ops(disp_mgt);
-+	return 0;
-+}
-+
-+void nbl_disp_remove(struct nbl_adapter *adapter)
-+{
-+	/* Dispatch structures are allocated via devm */
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
-new file mode 100644
-index 000000000000..a7e5802344b4
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DISPATCH_H_
-+#define _NBL_DISPATCH_H_
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_dispatch.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+struct nbl_dispatch_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_resource_ops_tbl *res_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	DECLARE_BITMAP(ctrl_lvl, NBL_DISP_CTRL_LVL_MAX);
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-new file mode 100644
-index 000000000000..b3398591035b
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_DISPATCH_H_
-+#define _NBL_DEF_DISPATCH_H_
-+
-+#include <linux/types.h>
-+
-+struct nbl_dispatch_mgt;
-+struct nbl_adapter;
-+enum {
-+	NBL_DISP_CTRL_LVL_MGT,
-+	NBL_DISP_CTRL_LVL_MAX,
-+};
-+
-+/**
-+ * struct nbl_dispatch_ops - dispatch control plane operation callbacks
-+ * @init_module: dispatch layer initialization, control-PF exclusive,
-+ *               caller must check has_ctrl guard
-+ * @deinit_module: dispatch layer cleanup, control-PF exclusive,
-+ *                 caller must check has_ctrl guard
-+ *
-+ * Warning: init_module/deinit_module are control-PF exclusive. The five
-+ * resource ops (cfg_msix_map, destroy_msix_map, set_mailbox_irq,
-+ * get_vsi_id, get_eth_id) are PF-only and resolve to either a local
-+ * resource call (control PF) or a mailbox RPC (non-control PF with
-+ * has_net). A function with neither has_ctrl nor has_net leaves these
-+ * pointers NULL; callers must not invoke them on such functions. VFs are
-+ * rejected by the responders with -EPERM.
-+ */
-+struct nbl_dispatch_ops {
-+	int (*init_module)(struct nbl_dispatch_mgt *disp_mgt);
-+	void (*deinit_module)(struct nbl_dispatch_mgt *disp_mgt);
-+};
-+
-+struct nbl_dispatch_ops_tbl {
-+	struct nbl_dispatch_ops *ops;
-+	struct nbl_dispatch_mgt *priv;
-+};
-+
-+int nbl_disp_init(struct nbl_adapter *adapter);
-+void nbl_disp_remove(struct nbl_adapter *adapter);
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index e1a30b5ba0cd..bf4a5ea3e410 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -11,6 +11,7 @@
- #include "nbl_include/nbl_def_channel.h"
- #include "nbl_include/nbl_def_hw.h"
- #include "nbl_include/nbl_def_resource.h"
-+#include "nbl_include/nbl_def_dispatch.h"
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-@@ -48,7 +49,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_res_init_leonis(adapter);
- 	if (ret)
- 		goto res_init_fail;
-+
-+	ret = nbl_disp_init(adapter);
-+	if (ret)
-+		goto disp_init_fail;
- 	return adapter;
-+disp_init_fail:
-+	nbl_res_remove_leonis(adapter);
- res_init_fail:
- 	nbl_chan_remove_common(adapter);
- chan_init_fail:
-@@ -59,6 +66,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 
- void nbl_core_remove(struct nbl_adapter *adapter)
- {
-+	nbl_disp_remove(adapter);
- 	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
- 	nbl_hw_remove_leonis(adapter);
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index d7f5c6f16142..d7e279b739b8 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -1227,7 +1227,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	kfree(adapter->rx_ring);
+ err_dma:
+ err_sw_init:
+-	iounmap(hw->ce4100_gbe_mdio_base_virt);
++	if (hw->ce4100_gbe_mdio_base_virt)
++		iounmap(hw->ce4100_gbe_mdio_base_virt);
+ 	iounmap(hw->hw_addr);
+ err_ioremap:
+ 	disable_dev = !test_and_set_bit(__E1000_DISABLED, &adapter->flags);
 -- 
 2.47.3
 
