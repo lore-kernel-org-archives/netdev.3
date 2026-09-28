@@ -1,115 +1,338 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9DD28B4E2
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FDB25228D;
+	Mon, 28 Sep 2026 12:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790599092; cv=none; b=ffzQBoQhKVzkcUaeLwTE3H3PQ95+bmh/MnGBCakM6fEeuyAEhZ+CU73y4JSWx9FB48iuPHzYHdhNIAtdbyZ+9cGd/NvcVQlQcFAeh3e6eHGzmp7eh09+2AxQNTScU1HeS/2pzCwDRa2iOQ1mOoQBwqR6m83xQRHkBaHUtEzwXjs=
+	t=1790599100; cv=none; b=O/tUMTerPo/uxaBLcCkuHZc5a7ndFCIrfY+NIjPIZWOrAHosVrdzBLhHuWMPBEouZ71Lq9nryPnIy4AeTOiXyTqkNHON1XZoFBfNe+a/Jtjvguu5XDkSdZjvvOBUYHfV3N2fvNUGRAmhdghPvBcEmkUbbCJM9/U5OlBNowTBNF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790599092; c=relaxed/simple;
-	bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QqzyegkidIfGTx2Lj+AwQpY0504chIQynrx4ruvFOPjepe1w+IeHwgZiuvVT4bmP6Snkufe7vwqE4px4CkZri9F9JiHmJBE6SN9LarUuwOSpUAjIhb4dAsWOZdWUEdYrH7dejSp1aLDKZMRviiu0A47dEVwozgyXiycyaPEhMuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FTXlNY7Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ABYiVCN8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FTXlNY7Y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ABYiVCN8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790599090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
-	b=FTXlNY7YmLadO8eIuA/7lionH5C/OVV6GERPAHfQE3JOchRSEaHSv0uijL7SVj7oZd4Cfd
-	68YuUI9PZWWqUb/kpH4JJpqCxRCMj/YztMYioTihA4cZKc2WazNdcLdPf6QbedXYe0B1Tj
-	UZykPbVaFQfj21MBDa+CEEVyQfR+GlQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-12_8P-KPN624DVDjqkfH0g-1; Mon, 28 Sep 2026 08:38:08 -0400
-X-MC-Unique: 12_8P-KPN624DVDjqkfH0g-1
-X-Mimecast-MFC-AGG-ID: 12_8P-KPN624DVDjqkfH0g_1790599088
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-486f9d150c3so1690705f8f.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790599087; x=1791203887; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
-        b=ABYiVCN8wAzIcARY91FF/qxdvK5ovWc3j2Rc4OdY2Vxv4AjkZHVl9ubSKEd3EZY0wh
-         K9wGP+Q9y11GxXTsHedoqEQ75GXUPzL97vArXGPG/3k1fr2reWZ9WoE6MZb+N8ekKZ2b
-         143Gl7g2k6JEgtLbA6Y2LWpFQyrDkQnrBU7vEtmLV2V/+BUOZtyH+OjRTYMndimT1orT
-         gEKKi5HLq0W4vvy6DUiIWLGof6/J4p22whgPJA7BvKUWAayH/LO1b0jkViumuiJGvPwX
-         K8FICdwd6sJGYVFpix4b3ASjDWTwG9zzvgiH6NyuntOUzC5ThOHRDZCQtyPwI7MLR2rs
-         LzIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790599087; x=1791203887;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=30TSjMEV6qyJ0V5WI/lINyWBwwXZSPxQWv/Wft1fKBs=;
-        b=kCEKAnjlbpBpXJeghy8VzVzURVWuAccCIgSUo2Rheg7zIiIsY4dPoI9Ys8tvEtH/1h
-         S5zTcL/i0qBcSIZWhtL6F/jXUlj837sxkadUB2NnhDY+WnTrUlftO0760H5DcEoJjsZZ
-         k3VO4RL9YVzJbTWAiV0eyUhFCa0CqV6713WZKiaPiYqHA4smGrfmBL7xwt2rn9rGtyiB
-         xdFgw7IIe0DuSqhifcKgiGFP7H3VP659bKfmbdOR7wFFsALQ5XfWf53zTtUONnVQ7kDb
-         YDRxlm4JmgQ33eDKj8x96n+MvQGwEsG9Q/l3JVpIcILn+dQyD2MJsR9ozvefohBHZZ3y
-         YHvQ==
-X-Forwarded-Encrypted: i=1; AKwUvByC7RxgK/JBKyb7oQYxRmmr6qdfFVQJ9nDiSFzlmiYU2LKiaExjYHDxG/aLLeKIOT3PLwvnVNA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIH3G7FzTnh8kWdFD+Fg5aoqfr+nwnrKiCpPodEGSbt/p27G1NN
-	oYJBx/tYaq78mzDCmbanIj76rJmyK5CFGqIcShS8/mkJ9a1a11qiDTFWKdxPhnv4fntAWjEtozJ
-	b2qWJ8p86/quAeU20T4ZgN/l5sraPxwqYIQOBui43wRtQrchAF8f5RjAuBA==
-X-Gm-Gg: AYBFou3pWrg72LysXpCXmHU2/tp4pvvnBnA5EuGRdVwjdTpyV+E6kDxQ5gWk6ZylLjy
-	Xbo3cjHTWMvFZuRqe0fJsG9nQc06/BTfI522JdTQHw7TYCk+2BW0oAMuJbEaK9V2Hs6vNq0piav
-	D8gJq4gIRDZaggpuzvJCBSR/uDrsKlod0G4fHu2GFkRZyyLwEq7kC9UGoZcV+2+S8lzny5uc5BO
-	GSF1eIKNTwfr4dI7cHvw8HPiVnrqUd5bbe7PezNFU43O0eGcaA2HCstY37FqcRvggqmMZEhczcI
-	lMNbYqezsZUTDORYhMesS0DMQW+0S9ymG4hA3Ce9F5TeRRLsND6XSWKrqGUcz5Oey6lJygqp9VL
-	sah5OGTlMWA+GtS9988SE/x9522ccxcM=
-X-Received: by 2002:a5d:584a:0:b0:487:72f:fb42 with SMTP id ffacd0b85a97d-48871679eb5mr25760358f8f.14.1790599087569;
-        Mon, 28 Sep 2026 05:38:07 -0700 (PDT)
-X-Received: by 2002:a5d:584a:0:b0:487:72f:fb42 with SMTP id ffacd0b85a97d-48871679eb5mr25760323f8f.14.1790599087168;
-        Mon, 28 Sep 2026 05:38:07 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([24.151.142.216])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a84205esm26880704f8f.37.2026.09.28.05.38.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 05:38:06 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org,  houminxi@gmail.com,
-  netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
-  davem@davemloft.net,  edumazet@google.com,  pabeni@redhat.com,
-  horms@kernel.org,  shuah@kernel.org,  dev@openvswitch.org,
-  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP
- flow key test over IPv6
-In-Reply-To: <20260924083601.651e11bd@kernel.org> (Jakub Kicinski's message of
-	"Thu, 24 Sep 2026 08:36:01 -0700")
-References: <20260918144647.2024095-2-houminxi@gmail.com>
-	<179008950943.2160803.15856491533624064435@kernel.org>
-	<f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-	<20260924083601.651e11bd@kernel.org>
-Date: Mon, 28 Sep 2026 08:37:54 -0400
-Message-ID: <f7tqzid8sbh.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1790599100; c=relaxed/simple;
+	bh=JqTEbRMZt/qRoV2k/yt93V8wYd3uGIEGGN6rjnT6dFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Vk3ogaMTn11z/JAVLnbtSDtMPOzIOPyb9644iO/AhgawvEMCBk6s5FBYCqFtGHFCPnHobbBU0l6DLnE+HZSPE9SdbUtvraSaMoC9gyRUM0m//i6LO8VRdPoT8PZuLXEesdU2yqX/HABoP2pXAaTZyVdgnJOd6Ab5MTzhoUjKkJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0296641-0.00568381-0.964652;FP=11986132744289129986|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jQ6tplI_1790598764;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jQ6tplI_1790598764 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 28 Sep 2026 20:32:45 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	edumazet@google.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v30 net-next 5/8] net/nebula-matrix: dispatch: add control-level routing core infrastructure
+Date: Mon, 28 Sep 2026 20:32:30 +0800
+Message-ID: <20260928123237.88994-6-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
+References: <20260928123237.88994-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski <kuba@kernel.org> writes:
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-> On Wed, 23 Sep 2026 08:31:31 -0400 Aaron Conole wrote:
->> I don't think either is needed for this series.
->
-> Aaron, did you mean to ack this series? You (rightly) dismissed the AI
-> slop review, but no ack. Or there's something else that I'm missing?
+Allocate dispatch management state and ops table, add ctrl_lvl bitmap
+to track control privileges, and hook init_module/deinit_module wrappers
+to resource ops.
 
-I did, but didn't have access to email while attending a conference.
-Sending ACKs now.
+MGT level is only enabled for Control PF. Add kerneldoc for caller
+permission constraints. Add wire ABI structures with static_assert for
+upcoming mailbox RPC.
+
+Dispatch objects are devm-managed and require no explicit remove logic.
+
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+---
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c | 117 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |  23 ++++
+ .../nbl/nbl_include/nbl_def_dispatch.h        |  45 +++++++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   8 ++
+ 6 files changed, 196 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+index be314b909d66..b7eebd89b4d1 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -10,4 +10,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
+ 		nbl_hw/nbl_resource.o \
+ 		nbl_hw/nbl_interrupt.o \
+ 		nbl_hw/nbl_chip.o \
++		nbl_core/nbl_dispatch.o \
+ 		nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+index dd24ebec0171..4d8cea8d8ab3 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -17,12 +17,14 @@ enum {
+ struct nbl_interface {
+ 	struct nbl_hw_ops_tbl *hw_ops_tbl;
+ 	struct nbl_resource_ops_tbl *resource_ops_tbl;
++	struct nbl_dispatch_ops_tbl *dispatch_ops_tbl;
+ 	struct nbl_channel_ops_tbl *channel_ops_tbl;
+ };
+ 
+ struct nbl_core {
+ 	struct nbl_hw_mgt *hw_mgt;
+ 	struct nbl_resource_mgt *res_mgt;
++	struct nbl_dispatch_mgt *disp_mgt;
+ 	struct nbl_channel_mgt *chan_mgt;
+ };
+ 
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+new file mode 100644
+index 000000000000..966fee2dec8b
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++#include <linux/device.h>
++#include <linux/pci.h>
++#include "nbl_dispatch.h"
++
++static void nbl_disp_deinit_module(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	if (res_ops->deinit_module)
++		res_ops->deinit_module(p);
++}
++
++static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	if (res_ops->init_module)
++		return res_ops->init_module(p);
++	return -EOPNOTSUPP;
++}
++
++static void nbl_disp_set_ctrl_bit(struct nbl_dispatch_mgt *disp_mgt, u32 lvl)
++{
++	set_bit(lvl, disp_mgt->ctrl_lvl);
++}
++
++static void nbl_disp_refresh_ctrl_ops(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = disp_mgt->disp_ops_tbl->ops;
++
++	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
++		disp_ops->init_module = nbl_disp_init_module;
++		disp_ops->deinit_module = nbl_disp_deinit_module;
++	}
++}
++
++static struct nbl_dispatch_mgt *
++nbl_disp_setup_disp_mgt(struct nbl_common_info *common)
++{
++	struct nbl_dispatch_mgt *disp_mgt;
++	struct device *dev = common->dev;
++
++	disp_mgt = devm_kzalloc(dev, sizeof(*disp_mgt), GFP_KERNEL);
++	if (!disp_mgt)
++		return ERR_PTR(-ENOMEM);
++
++	disp_mgt->common = common;
++	return disp_mgt;
++}
++
++static struct nbl_dispatch_ops_tbl *
++nbl_disp_setup_ops(struct device *dev, struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
++	struct nbl_dispatch_ops *disp_ops;
++
++	disp_ops_tbl = devm_kzalloc(dev, sizeof(*disp_ops_tbl), GFP_KERNEL);
++	if (!disp_ops_tbl)
++		return ERR_PTR(-ENOMEM);
++
++	disp_ops = devm_kzalloc(dev, sizeof(*disp_ops), GFP_KERNEL);
++	if (!disp_ops)
++		return ERR_PTR(-ENOMEM);
++
++	disp_ops_tbl->ops = disp_ops;
++	disp_ops_tbl->priv = disp_mgt;
++
++	return disp_ops_tbl;
++}
++
++int nbl_disp_init(struct nbl_adapter *adapter)
++{
++	struct nbl_common_info *common = &adapter->common;
++	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
++	struct nbl_resource_ops_tbl *res_ops_tbl =
++		adapter->intf.resource_ops_tbl;
++	struct nbl_channel_ops_tbl *chan_ops_tbl =
++		adapter->intf.channel_ops_tbl;
++	struct device *dev = &adapter->pdev->dev;
++	struct nbl_dispatch_mgt *disp_mgt;
++	int ret;
++
++	disp_mgt = nbl_disp_setup_disp_mgt(common);
++	if (IS_ERR(disp_mgt)) {
++		ret = PTR_ERR(disp_mgt);
++		return ret;
++	}
++
++	disp_ops_tbl = nbl_disp_setup_ops(dev, disp_mgt);
++	if (IS_ERR(disp_ops_tbl)) {
++		ret = PTR_ERR(disp_ops_tbl);
++		return ret;
++	}
++
++	disp_mgt->res_ops_tbl = res_ops_tbl;
++	disp_mgt->chan_ops_tbl = chan_ops_tbl;
++	disp_mgt->disp_ops_tbl = disp_ops_tbl;
++	adapter->core.disp_mgt = disp_mgt;
++	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
++
++	if (common->has_ctrl)
++		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
++
++	nbl_disp_refresh_ctrl_ops(disp_mgt);
++	return 0;
++}
++
++void nbl_disp_remove(struct nbl_adapter *adapter)
++{
++	/* Dispatch structures are allocated via devm */
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+new file mode 100644
+index 000000000000..a7e5802344b4
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DISPATCH_H_
++#define _NBL_DISPATCH_H_
++#include "../nbl_include/nbl_include.h"
++#include "../nbl_include/nbl_def_channel.h"
++#include "../nbl_include/nbl_def_resource.h"
++#include "../nbl_include/nbl_def_dispatch.h"
++#include "../nbl_include/nbl_def_common.h"
++#include "../nbl_core.h"
++
++struct nbl_dispatch_mgt {
++	struct nbl_common_info *common;
++	struct nbl_resource_ops_tbl *res_ops_tbl;
++	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
++	DECLARE_BITMAP(ctrl_lvl, NBL_DISP_CTRL_LVL_MAX);
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+new file mode 100644
+index 000000000000..b3398591035b
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_DISPATCH_H_
++#define _NBL_DEF_DISPATCH_H_
++
++#include <linux/types.h>
++
++struct nbl_dispatch_mgt;
++struct nbl_adapter;
++enum {
++	NBL_DISP_CTRL_LVL_MGT,
++	NBL_DISP_CTRL_LVL_MAX,
++};
++
++/**
++ * struct nbl_dispatch_ops - dispatch control plane operation callbacks
++ * @init_module: dispatch layer initialization, control-PF exclusive,
++ *               caller must check has_ctrl guard
++ * @deinit_module: dispatch layer cleanup, control-PF exclusive,
++ *                 caller must check has_ctrl guard
++ *
++ * Warning: init_module/deinit_module are control-PF exclusive. The five
++ * resource ops (cfg_msix_map, destroy_msix_map, set_mailbox_irq,
++ * get_vsi_id, get_eth_id) are PF-only and resolve to either a local
++ * resource call (control PF) or a mailbox RPC (non-control PF with
++ * has_net). A function with neither has_ctrl nor has_net leaves these
++ * pointers NULL; callers must not invoke them on such functions. VFs are
++ * rejected by the responders with -EPERM.
++ */
++struct nbl_dispatch_ops {
++	int (*init_module)(struct nbl_dispatch_mgt *disp_mgt);
++	void (*deinit_module)(struct nbl_dispatch_mgt *disp_mgt);
++};
++
++struct nbl_dispatch_ops_tbl {
++	struct nbl_dispatch_ops *ops;
++	struct nbl_dispatch_mgt *priv;
++};
++
++int nbl_disp_init(struct nbl_adapter *adapter);
++void nbl_disp_remove(struct nbl_adapter *adapter);
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+index e1a30b5ba0cd..bf4a5ea3e410 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -11,6 +11,7 @@
+ #include "nbl_include/nbl_def_channel.h"
+ #include "nbl_include/nbl_def_hw.h"
+ #include "nbl_include/nbl_def_resource.h"
++#include "nbl_include/nbl_def_dispatch.h"
+ #include "nbl_include/nbl_def_common.h"
+ #include "nbl_core.h"
+ 
+@@ -48,7 +49,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 	ret = nbl_res_init_leonis(adapter);
+ 	if (ret)
+ 		goto res_init_fail;
++
++	ret = nbl_disp_init(adapter);
++	if (ret)
++		goto disp_init_fail;
+ 	return adapter;
++disp_init_fail:
++	nbl_res_remove_leonis(adapter);
+ res_init_fail:
+ 	nbl_chan_remove_common(adapter);
+ chan_init_fail:
+@@ -59,6 +66,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 
+ void nbl_core_remove(struct nbl_adapter *adapter)
+ {
++	nbl_disp_remove(adapter);
+ 	nbl_res_remove_leonis(adapter);
+ 	nbl_chan_remove_common(adapter);
+ 	nbl_hw_remove_leonis(adapter);
+-- 
+2.47.3
 
