@@ -1,176 +1,172 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010016.outbound.protection.outlook.com [52.101.61.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D0D140E5F
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868682DA756;
+	Mon, 28 Sep 2026 12:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598847; cv=pass; b=KCdJGj7MNC06g3hZmzC+POOZcwCtyTYo6WorNmh/Tw+KL2/Rr9O5cPBJPuYWWGzFdvvbLejGVx7Q/153FDkhamNpnRPmwugdA0VfucSPXnovj93xZwbfAo8SBNvbxODt9eo7nuLbllhzSmJLeGYFlwt0R0nuZno9DKNj9I3oQPY=
+	t=1790598867; cv=fail; b=EQC8rOtz8vbn9nVP9vP/sCstezQ6n23yPdtv0CubasMNFY2Da92RBJIuOxCPzw77VBKs5p0IDYi7RSSn8l+uGe4lq+0VyYyOmz0hdgpSPElgislaF8+Q3+x0sEnDwYf8Fc9yayDQx4hASxcyQkGn0hJRTqDBGm4a5+DexZahuXw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598847; c=relaxed/simple;
-	bh=Owjh33g6i0pCXKgFwfHmOLLCD1SdIrozUP34tvIBMns=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qW7cQ75RsoPJRrvQOCuR6/ue+h56ol1VIFMFY1bVkn0xQIaAjcvzNHDOrYDYT8x/5Vpg1+Jp5WNz9kkqhWI2298rpIIHrEQOonYZCLYFo2YOhWMb+bS8WJwd0g8vUQBpKBCg8tUMA0EghmRY+eOI2qpFAG/Y74mOIQ8lLvUMmYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q3nXc4lv; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790598867; c=relaxed/simple;
+	bh=ApHR+DKowN845oXFRDGB5PprWFTT+BVSADMDT7un7uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S1abWVMNt97xbi0aoM+SkimLEWVCwgDS6uAe1wjMx1p0GyJj5oAcEjJBGmW/jrlQHSnGfkGk1ozrSPoNzZRvIZkXnCBEiBLm6+6l2PLDGGs9o/stztZE4cswyAYHcQv7OwlChG9+ik9XIj1fDEW6YQs4HddmNhl5yWcKD7lH2JE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dzRgf8lk; arc=fail smtp.client-ip=52.101.61.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q3nXc4lv"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530e28a62abso47341511cf.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:34:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790598845; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CZL2yGjCFrElUl6d3sdGjIRyP25BKXihnQuzKqzYlLcGL79ZWm5HuOR3KMK75aldp/
-         mv0UtEJ/aoJ5HNsRvhcw/P9uiSdt8ESZtAG6YY4rCNLX302Q73E6m8fAGLALHPH723ar
-         M0gWuwa6k+cv49zQa7JDSlgwm3SKQufK9LST83ToAOPoG9Vor8YWYNR+O/BARcf9VRLJ
-         2Lhb1rOuiHIaq4Fyx2K3VWYJeQQcSKS0PH94Hbrn/h84nEXtvfrok/VbnSF4Vw7Myaxj
-         3kWNPeudRDFYvVm+rSj6RrlF2T5xOW11AFbSypQ5TY57QgSMBc1RLjnXuVgAIxsMi9sq
-         JLiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U7l+r5+9U0CBVRhBEzoj9hWYpVtHLgr+opW35WkRHB0=;
-        fh=ZBqB0NHB3G+gfuKM/R8+S6nA0gcasGrOH96gCEpvEhU=;
-        b=NDiQExxiO+Ym2hMePYW3LJqx3EdK8w82y/fffoKOALtZ8jyIH+kM746vc31PJOgjYI
-         khHZEjpk5K+TxvUs84GAGYKlZVcZX7hvCyM5DMqXsb8wpd2MK9D0teeUvvS+5xsrpoh+
-         P56jexhxCql4iGGcXVAlcnkAiN7zzX00Mn0CLnolpl7OhT66+DfwJOphh0/uKBJpd9VA
-         HG33HnParuGLJ+riqX5eBi7qYXwAPczVxMZzmubzvGjGA/sMk+rfd8iI8xvr0rPHwaD9
-         1MtQe321KPZxuRz/9NbDch0XVM2XqJuoYkrsXwxPXbiF756h+g7nhj9rCdJWXIMWv9jK
-         NZXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790598845; x=1791203645; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=U7l+r5+9U0CBVRhBEzoj9hWYpVtHLgr+opW35WkRHB0=;
-        b=q3nXc4lvHnx5fMOD9WoyfGwYz16hmC0hANkEy12dKP1DMLEK5s9Y0J0LZhOfcMOJ5L
-         zOJHkNDT410PKFeWDa6NCZ5KClUiY8C5FG1B3baehAsDkdXhafPkkaoO4HAtek9ZnVyz
-         GwxVguEAe3Ng2w6kyiPCUkhJIIFvtUbd6hdTjfIYCPjTB84OEu+6SeTe5D1GfXP6kmQS
-         edNOEkxAZayWv/MIWHEG5R/izbR2P4mNDNTB0AR6ttUC+iho421GvNdBNlg0QBUnEoi1
-         qkR1dikzcn76EiGUBEuYpq/h+s2xWaZdbmgbhzg2qR7jIq8inCYUPR4TkpX8uQJRZCDn
-         hE5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790598845; x=1791203645;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U7l+r5+9U0CBVRhBEzoj9hWYpVtHLgr+opW35WkRHB0=;
-        b=fE0VjbirMz/syYMtWIgZaQMaJ/qaSq7JaPohwHFrDo1oT70OA3iNObCeBc7nrIVUHw
-         hW6fShSZ5rThANS6CbDydw9jgkUEFgxXzEIyI7nXwozqX5WrDEGzWF4ogRQjzzW76mLs
-         ZJoUf1Mh43wcFoe7o1gPeIgomBMWfm4c+fKF1+CMLr1jBxreuuZvVbgdt8AjAXGqJ/Ri
-         reX6c8oqB4cDejNeYJewzaxnZANhUFOsEJ7O9Fna2dQUSeX+lqrj+AxSVMVygt/f4dWl
-         G1Bpuvf7AbdE6vcaEIOzIEVgQ/Rz+g3N7TFNKs/7c/lc4KBdLzCYzbLhhSwVmKiurvr+
-         STmQ==
-X-Gm-Message-State: AFuF++kA6TmcrfyyRVUwyAI7NuPm6Mg6CtX1pXWAuWZPsGlxxzFAtGGa
-	kVqlYD0mQcTFN4QJ2fyJJXrx6K7H69+UD2bnjsosGa2f6KPklRjxiPPyGhDdQbzYRq7vnM6iT3j
-	813OztdwlNmYKTWBLhReW+vPfcRZlTFufLjqEP5FP
-X-Gm-Gg: AYBFou2CG5wCIW9pfp+yLKDJCLtFaMsfUyzPJ3Su/fwn1GFYCf6I0iX6oOUvKrKM1YW
-	+sY8Y3UVkLv5acLINuzLuUTF2b+St7M7uKWSpS9venlLbLesXn5IXKPS57xmYT8Coq0abg7Funw
-	Zptye28YzHl1SPVPT1uZo0/XvdWqr0XQYqfDYt3cAMDMtQqV0ZUIs0tZ54NuPvgFOMluE71gKeS
-	ysEtqtEAbE+6djtwWFNN5f9x9krtXVnhF6V100hJrSex+Ri5zznR/Bz+FWNpfAAw4IsI5Cmq/Ik
-	/Q8GmLqaNrplgF2sEoCs0QE7Fa23Mozza61VxEALreLFY5+QMlfdMDhudvzvQ+f/Bb1JsXGMh6P
-	W/u3j1xXW5KMRk/2Qsn5QBAAU6djs5KPhWuE4TmdIK71a1PDB3Z2tkT/IhJvL2MlkqiTP
-X-Received: by 2002:a05:622a:5588:b0:531:218b:ee3f with SMTP id
- d75a77b69052e-5330dc5ca37mr213290801cf.25.1790598843947; Mon, 28 Sep 2026
- 05:34:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dzRgf8lk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KBRKcnjWICylm+HxmGnnSnGsJ+BjKxdTWYj5hQzt/qZxfzSpUMFD1jp/CFdsqUQldsNCk3qyC43uGXkzOh+9iBsXtZnJzNwSkNQ8eQfPlDUrUBhFJsd4uj/WAM0zfZoDrkMIa2eBVJBbb9yZmFVTZocSr4YCMP7Cyl/TDnEe+fnfEdhIm5YRXTmWaoO1O/6Dq+daE6hTNHimE8y0FuCmJ3/b42DkCpTzZo5ls8fhu9sFY/tiAk7cYLQEQ+EM0u2kwZCZjGIWi5l5TdLzNDHAEaQiJzcWRELfgkZKQ6IQcvil4Op3SThEcEMJglvEFWky9WgBmzORrBtcz7jNZ2jlyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=roRsTpaCXlT9R2w9XbaPCqx3fwNy6eeo3DWWOF3CJgA=;
+ b=zUPlodDQ32JnKPNLMWOCU57pakSalU3dQJb3PsBJ5uYxm3aU+L4jN46gWrXuvAVvgRkQbTYIjAka4crDEFzXfoIlOImxaDVl14GKlqfUPSBHonwP2tK2JS0srmCci64UCIZMvuwI/hIK9pcJrxYaDDsMQNPWwxKB+A3oOGJZKelww7vyqf5LCX74TzLqcHik5offLUnT+Fpbs88LdnarahM/rkE5tYGfLJhh6S2V8XV5RrzN1RtYkPFki1lPy+S1oHYZv1SASQGDAl9CT8S17CmNr9rMUsF6LYTtn7KierGnkdbRkMWUhTtuA4NIksqjQdODrxPpHAyblOXU0babFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=roRsTpaCXlT9R2w9XbaPCqx3fwNy6eeo3DWWOF3CJgA=;
+ b=dzRgf8lk1X6CVR7V0PRCc516lP65jOGYUWRs1JEjixzEt6aD9rHZkgNzujQW1OPSsMgogBPsHXNhHCH7GI5FOz+xo0EzFlS8wHVdRjj+OQCRQdZtuMTVp4wnVVgDb2VvEGJ0v6MscRyoNW33hUNEqLAXOm6zS+W2ruRQMbYYB7M/AmR93sEl0q0fwBUCp3MNdG1oaf/VggCojyz/wXBbCh9PLRilYqmx4oZXbCRuleewYpMdZhvzzu38QwDX7SlfeLclqM1PAGpunuFm15Epm9QaQki8WYo7iQnJN7aqNu/tIIWOkBMUdVgfsatV442QKZEJe1DE5jc6jDJFiQ5GNQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by IA1PR12MB6185.namprd12.prod.outlook.com (2603:10b6:208:3e7::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 28 Sep
+ 2026 12:34:21 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 12:34:21 +0000
+Date: Mon, 28 Sep 2026 15:34:11 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, John Heffner <jheffner@psc.edu>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] ipv4: Fix device use-after-free in ip_skb_dst_mtu()
+Message-ID: <20260928123411.GA440063@shredder>
+References: <20260927071051.3693368-1-nicoyip.dev@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927071051.3693368-1-nicoyip.dev@gmail.com>
+X-ClientProxiedBy: FR0P281CA0013.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:15::18) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v2.20260926123300@mojatatu.com>
-In-Reply-To: <QDISC-BA27.v2.20260926123300@mojatatu.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 28 Sep 2026 14:33:50 +0200
-X-Gm-Features: AclHuK8RHBXbb0dCnDGM6uMwoUbwRNmxLUMXWKrgWCkdRRhvNALrs_kLAxdH6oU
-Message-ID: <CANn89i+99jPh7JjZf=G3Ouaom2tuOtAEiHUf2MEsRdVPd=nz4w@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net/sched: cap the accounted backlog before
- it can wrap
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>, 
-	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, moeller0@gmx.de, 
-	cake@lists.bufferbloat.net, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|IA1PR12MB6185:EE_
+X-MS-Office365-Filtering-Correlation-Id: 241bd679-f470-45a4-7c58-08df1d5cd226
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|10067099003|56012099006|3023799007|18002099003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	zkoiByvj2uAHAr8KJZuX38lmaZJ6FEvRHjSv8qfSf8bv5g1ixPAmjT3EWRhYM6rUq+HTNLr2Na9W4xGbwEdrbVw423tt8qvx/IjXrIn+nO9dzyNPgRyNBNbRDjj06CxudeM9P5INmGzL0ik4PuJMfYgN8l1L1bCYelDlHaKGMGFTlcYGHS3pyhrSk66BPQ5oJQ71xgrOxQHAJ7xCjKnhuCOsSOgvNoFJalnp+xz626JfgMYkRYtk/BijRq8+O0NXlAEug0cWPd1qsKZkWq/b4orhCv9e5jf3/U5PIXIW1XS1BdFrr5EHehfX4R6a0mdUPsu14uJnjHM18CxZ4o4qm6TtF34OXJtSUk45euL6vPnshr+IhD0HFVXJaoQhDuTqXr4kknKHmH4ZFLMk2ceaI3gRx5xTUq6NWoFGtvj/a9JLOJX8LzRk0G/jL6lCt9mK0FJxW3vDDFSmBQQL165QGE/ysG4fMoOldUt3K2q43vXGcrJO5YKhfEg3zYLrCHNFDujuvRiLUXOpyeZJySlswY1bhEnqFIAYEwLcBeuFjQkfOmaxhB3mBsFRRNZu2qSEycnWqY+B58EVtcGR2emrEzXhp9HX/DJK1n7iMYyPNZEJCmS+dLL4/MMKKxGP4K/dhITQu1+I8kdeRO30SoSl9UMKh8FtW+YxBOSH+mT+9nw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(10067099003)(56012099006)(3023799007)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LQm8kJVyiuMnsGWI6Y9QvyFYpbyTFT5d3U6YQN6cTh7wtGxImVjOVWkpufRX?=
+ =?us-ascii?Q?pgHcjVMpYsZhas+P2LDxVGQkVKtp1ydi5LZn2Uvr43h94XpolFuVCLFoebcY?=
+ =?us-ascii?Q?KgpMRMz7spEMqVBy46keCjEYsVgfft/9cY4AMtp4AexbAhDv8kIK/QNgV14S?=
+ =?us-ascii?Q?Jtp+r6i4aZdvRwbV6sPymKLYRUEsSx12Rx3Rm4Hdw1aa4MqBBImV8f+EQFMP?=
+ =?us-ascii?Q?M9n4+NQN3tCvqcxLCrzq7KJa6L/2SND3FPeoGhsnPCVXKAJqG0CVnzkglgou?=
+ =?us-ascii?Q?OG5x9aDvRVi0QPggVmDc7DLkYUIgwVbT1Y76wGE4RHkRUR2wlv1vjefHp0fi?=
+ =?us-ascii?Q?8+3FIQh+6zCdDkkkDWnAbu18BVOJkgWYOzMotpuorgIqiEiuf1bbLj+0sp0X?=
+ =?us-ascii?Q?1bKMBA01g5FVdEwmd+170aUPlG+b/X4w+s8B78h/zkN9dQiCIjY3oYxIh35j?=
+ =?us-ascii?Q?Hg6N+wKt+UxN6ozRU1quBNPpFOekpY3+ga69J0mbNkK3K3o4VMCIUp3Fsm5C?=
+ =?us-ascii?Q?Wb4iXoe/ac5VBFyAiZhWrN1YIGKUnyOEgPxTKmdVesXC+ZTW+zAGNxEG7zg5?=
+ =?us-ascii?Q?CFQ3gEHbH+LH/QheIGHQjQmMN4iDKE3D8njRn93weQ9R8D/dBdyRTi+/qn1I?=
+ =?us-ascii?Q?gWquTFFf1tEJafAfCf+VxY+hTK3rI6c2nmNjPVZkO3iHkxTkJQY2YAayvmEj?=
+ =?us-ascii?Q?GMyXjvrfqwxfERRSYIqYXdvi9lXA90U1itL5alaibYkJFcBseROFyiSCyYhP?=
+ =?us-ascii?Q?MzhkVfA0d1yICKs5N359bLlS3UmBFlDtuvjwzWS3N4YIQPAMiqx1C3Q/pFW+?=
+ =?us-ascii?Q?5aXHsKo5sBKvlI2AfHY5X65app9juy6oxDSFZxkdv2bY+xRjTTiHVeVfZkin?=
+ =?us-ascii?Q?XxtF5zPKFzi3d10UXINDHNozCsv14SfBZ/5Muu3q5QEDfozrsXyM2awfuxtK?=
+ =?us-ascii?Q?gFUVHS5QvIngdLhssaKntJ/UmoYk2bvsb6w2AwRYcSa5fNL7NC99Tw+JHVGd?=
+ =?us-ascii?Q?ClHnBueILRm/pJAaVjFAFBKapSjgmx8EmMr0jZro/tPIn7z7VN66ZzLRycbc?=
+ =?us-ascii?Q?LHLSocIW7ZmTmxRSGDQ1rr4RtBHZIg/ECj/SBAEi8sUHgCdqQMW6GLOl9OUO?=
+ =?us-ascii?Q?MTsRwyNdOP3bqJKJVlu31rcfpn/761Refc5atNxdIh3b4y5Y0t4esKhUSDnO?=
+ =?us-ascii?Q?rqzwjwzzwOLEvV76js5uOIy8ef5VBBqZa7RHHMjCnvfjZjM7gYQRYR9xmv6q?=
+ =?us-ascii?Q?MguGJhOQebsjUjj8vC+X6tH2sbdE117bAp/5GUJIK2cglLsoB86SNo1NMAmN?=
+ =?us-ascii?Q?PlKLXeLlzi8E2oUWkpZllgVJkUdOKpETB/ATXOUltDIxVSjwDlGqA/Jm41EN?=
+ =?us-ascii?Q?c9B+QOT8UxtIVCNsTwwiDCDmnY5d7qUZZ6Tewf8/dqoz9uatWYIxxB5S4fYi?=
+ =?us-ascii?Q?ySIw4Vc5phIN356RgoocfnNMGM30Z4bwExlWTVsg9i9sr+Ak8ziFAVlkkNy9?=
+ =?us-ascii?Q?9ehoLAFBEDZ+7HHlz0n3y6G+RuRHh5my2/gXSOeIiYz6Q051wG9kfyDJLIeP?=
+ =?us-ascii?Q?PZwRTCxJN+Q7J2emEPHOMmCAW06VxGVsi04kXVLDco/H4hNO4PWOQa+A2EWA?=
+ =?us-ascii?Q?qkXdFhDgmLX9aAOtLEZzWAwwAfFSnNubfxwv9LAMlpAEgfAVZUkz74tZxxSY?=
+ =?us-ascii?Q?tZ335SMv6p9uA76Zz8tLjXKu+BSROhM+XVdqybR+fdYb0fsV?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 241bd679-f470-45a4-7c58-08df1d5cd226
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 12:34:21.2504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jzVpDb4Q+FEcKATPG+aXyi7uwy0EDS6MEtPtAQRKKAj6estfpbcSoBr309CbCl+Xo+7vst+zuninpJzt38RZDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6185
 
-On Sat, Sep 26, 2026 at 7:49=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> fq_codel, cake, codel, pie, fq_pie and dualpi2 account every enqueued
-> packet's stab-adjusted length into a 32-bit sch->qstats.backlog.
-> fq_codel/codel uses it do decide if they should drop a packet at deq;
-> cake uses it to prune the longest-flow heap from per-flow backlogs;
-> pie and fq_pie use it to make early drop decisions and, dualpi2 decides
-> must_drop() on it. RED can can decide on a child's backlog based on it.
-> A crafted tc size table (TC_STAB) inflates qdisc_pkt_len() up to
-> QDISC_PKT_LEN_MAX (1 MiB), so a few thousand packets wrap the counter
-> mod 2^32. The AQM algo then reads a small backlog and makes the wrong
-> drop decision, and the dequeue-side subtractions keep the counter corrupt=
-.
->
-> Fix:
-> Drop at enqueue once the accounted backlog would cross QDISC_MAX_BACKLOG
-> (U32_MAX - QDISC_PKT_LEN_MAX), the largest backlog one more maximum-size
-> packet cannot wrap.  This follows the existing bfifo/gred approach
-> (safe because its limit is checked against the accounted packet length);
-> the fixed qdiscs' limits are packet counts or otherwise do not bound
-> the aggregate bytes, so they need the byte bound here.
+On Sun, Sep 27, 2026 at 03:10:51PM +0800, Chengfeng Ye wrote:
+> When a socket ignores the path MTU, ip_skb_dst_mtu() reads the device
+> MTU without RCU protection. The multicast and broadcast output path
+> through ip_mc_output() can reach this helper without an RCU read lock.
+> Netfilter releases its internal read lock before calling
+> ip_finish_output().
+> 
+> A sender can load dst->dev and then be preempted before reading dev->mtu.
+> Concurrent device unregistration replaces dst->dev with blackhole_netdev
+> and drops the old device reference. After the grace period and remaining
+> references drain, the device can be freed before the sender resumes and
+> reads its MTU, causing a use-after-free.
+> 
+> KASAN reported:
+> 
+>   BUG: KASAN: slab-use-after-free in ip_skb_dst_mtu+0x634/0x740
+>   Read of size 4 at addr ffff88810921c038 by task poc/98
+>   Call Trace:
+>    ip_skb_dst_mtu+0x634/0x740
+>    __ip_finish_output.part.0+0x22/0x2c0
+>    ip_mc_output+0x287/0x930
+>    ip_send_skb+0x11d/0x150
+>    udp_send_skb+0x63e/0xdf0
+>    udp_sendmsg+0x1235/0x1da0
+>    __sys_sendto+0x32c/0x3a0
+> 
+>   Allocated by task 97:
+>    __kvmalloc_node_noprof+0x1d4/0x620
+>    alloc_netdev_mqs+0x81/0x12c0
+>    rtnl_create_link+0xaa3/0xe30
+>    rtnl_newlink+0xabc/0x1f70
+> 
+>   Freed by task 99:
+>    kfree+0x131/0x3c0
+>    device_release+0xc8/0x240
+>    kobject_put+0x14d/0x280
+>    netdev_run_todo+0x4cb/0xc70
+>    rtnl_dellink+0x362/0xa90
+> 
+> Protect the device lookup and MTU read with RCU and use dst_dev_rcu() to
+> access the device pointer. Keep the MTU limit and headroom calculation
+> unchanged.
 
-Hi Jamal,
-
-Thanks for reworking this for v2. A few comments on the implementation:
-1. QDISC_MAX_BACKLOG check
-Since QDISC_MAX_BACKLOG is already defined as
-(U32_MAX - QDISC_PKT_LEN_MAX), it already reserves QDISC_PKT_LEN_MAX
-of headroom below U32_MAX for the incoming packet. Doing:
-    if (unlikely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) >
-                 QDISC_MAX_BACKLOG))
-accounts for the incoming packet size twice and forces a 64-bit addition
-at every call site.
-Why not just check unlikely(sch->qstats.backlog > QDISC_MAX_BACKLOG)
-(or provide a small helper in include/net/sch_generic.h)?
-
-
-2. sch_cake.c (cake_enqueue)
-There are a few issues with how cake_enqueue() is handled:
-- The first check is placed after cake_classify(), which has already
-  modified the packet's DSCP (cake_handle_diffserv()) and updated
-  set-associative hash state and host bulk-flow counters in cake_hash()
-  (srchost_bulk_flow_count / dsthost_bulk_flow_count) assuming the
-  packet will be enqueued into flow.
-- In the CAKE_FLAG_SPLIT_GSO branch, the second check runs after lines
-  1780-1801 have already updated b->max_skblen, shaper timestamps
-  (time_next_packet), qstats.overlimits, and scheduled &q->watchdog.
-- Walking segs a second time on every GSO packet just to sum slen is
-  unnecessary, and calling both kfree_skb_list_reason(segs, ...) (under
-  the qdisc lock instead of via to_free) and qdisc_drop_reason(skb, ...)
-  triggers duplicate drop tracepoints for both the segments and the
-  parent GSO skb.
-Since QDISC_MAX_BACKLOG already leaves QDISC_PKT_LEN_MAX (1 MiB) of
-headroom, a single check at the very beginning of cake_enqueue() before
-cake_classify() is sufficient and avoids touching the GSO split path
-altogether.
-
-3. sch_fq_codel.c (fq_codel_enqueue)
-Can we move the backlog check before fq_codel_classify() (or in the
-!q->filter_list fast path before fq_codel_hash()) so we do not compute
-the flow hash for packets we are about to drop?
-Also, please mention in the commit message that wrapping q->backlogs[i]
-to 0 in fq_codel causes fq_codel_drop() to leave idx =3D 0 and dereference
-a NULL flow->head if flow 0 is empty.
-
-4. sch_red.c and sch_fifo.c (pfifo)
-In red_enqueue(), red_calc_qavg() reads child->qstats.backlog. In your
-commit message example, child->qstats.backlog wrapped because the child
-was a packet-limited pfifo (limit 100000).
-Shouldn't pfifo_enqueue() and pfifo_tail_enqueue() in
-net/sched/sch_fifo.c also guard against qstats.backlog wrapping when
-used standalone or under other classful qdiscs?
-
-Thanks!
+This still leaves other potential UAFs in the ip_mc_output() path.
+Better to fix it by adding an RCU read-side critical section in
+ip_mc_output() in a similar fashion to its unicast counterpart. See
+commit 1dbf1d590d10 ("net: Add locking to protect skb->dev access in
+ip_output"). You can blame 4a6ce2b6f2ec ("net: introduce a new function
+dst_dev_put()").
