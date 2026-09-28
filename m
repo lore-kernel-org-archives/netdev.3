@@ -1,66 +1,67 @@
 Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1F32FD1AA
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C84376466
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 18:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790618471; cv=none; b=Rt2XNQlEWueyJoucKDbvS9XV2CGHCetlyKR5Fnyh2jxr5dr2WWwlkFi7KABr+ILuEKAa2M1q+UPPD5vup20iHmRHf+89aqQA50satcpp5JoPj7WAEEU4srDHnXSYfQkBl87cIVR5hpgjzPtfYk5BJcTbqUCDpZLFTU+Wo2Kk1nw=
+	t=1790618473; cv=none; b=TUo7GJAal27Xvo5cmGMyQNmXq3kpW6wiBtdMK5nubY6Vc8QOh4xFd92rdcMVvC/ulJ6JfUkwoow7qd/auR6yxPx6EEK0V19uJQVF+aPaS5R61m31amR13qyFV0fuldfQ2VoL959WBAKOeaznJOhmQ6R+X67Tm50uDU2ggM1Mz1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790618471; c=relaxed/simple;
-	bh=hCjncUcjccL8dLLQkdqgionB2mq4SnnDe6up7exhToM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=STanmvbgFExoqmbSdmcr0d6CFl4m3Hg5N8VaXsICZEcIj0gy7CNp3p8FxwSE6xmKYrgcwULHeQ9ZUjDCOv7ufZ0yv7caoivLbO+cioxP3/U1tgchxEDVYB/yF3D9+W/KFVZaGtITV7LZCTedFz7PlywOrUR45d0TRx+Av7H2H/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JfwFC3/A; arc=none smtp.client-ip=74.125.225.76
+	s=arc-20240116; t=1790618473; c=relaxed/simple;
+	bh=JtNlKuZX9/sU1bTMsVw4IAAFkE/YW1CXkk5G3Rh4M8I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LjWgnKbWQVX1TlV7132w2pW0sCi89kVNe3yH7zbOSG2NnyzXWZRz75ehA7qGqCwIPRnNmgjq+ZCazalo/hruJm8aLIJ3pjIuOWsjCNAKmh16m/CuTaCEd/4yrq0NHs2iwHEiJcmDu+uNtn2whe15Z2GUAkSzgEEdqLbCMfMNMaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8QT1AAc; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfwFC3/A"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-484399babcaso369653f8f.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:01:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8QT1AAc"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843178b1c8so375991f8f.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 11:01:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790618468; x=1791223268; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Kfh49rBnp+fv8rYbtPwFIFAZ780+WTkGnS4eo4NPc78=;
-        b=JfwFC3/A+g+/pwKCMx0IVPg8SXQ0H9Jbn0XLGlIFKutinPeBMPWwYQkZLBATaZ+F5S
-         S/buuuH51QMU2IA65IqnUTRZQ+vXg3Azxs4oSNgK1x6H5VOyXfDDdP6OsNMu6l+j47+h
-         Mf6oE7lVzDG5GarVZOS0oXzasa5plOdcyMu5lCmoiRN/AR4T5DgxflcN6HzrIrKjmn9e
-         61rjp+kn2+o6SlRyKOfbRadUNmFVbMkDBHOOyhWwADncdR7Vg098fJaQqaxf+zsdm9yu
-         zY8ztioiaCnfu08KZvq2vOUzJ2qie5lvhMJ0FOpIUhkkE3fTHj9Kp93Vo7n3VAwiUc8d
-         ogdw==
+        d=gmail.com; s=20251104; t=1790618470; x=1791223270; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nmpTVow7I5KawbWbjtXYLbBgNUQkJQlP4LemooUJQPE=;
+        b=P8QT1AAcVWMeay1ltTYZ2pAaGyfYjiHAQe+xGTVP92qNHFhflp0nssY8Hg13sk1hMx
+         X5AqN+kMJVBacOOl3t3zwYXSaj1cOTM56LWZnYa4pXZTDtz1VxVOtJOa4OgiKMbzIHCo
+         1ksSkK51a+Z3GsM5Z5+0djS3eqoEv/b5tqm/5Z7z+DIpJuGiIH8Zx03stwoa2nuDYIoS
+         xlz8n/p4GIFQjU6m9DAFET0WcYx8wWppzJKbjTkwrwgvLk2bt5PGNr3QMCUw+/mMDkj+
+         GGWZTeBmkp3W/mQJ+TKa2v3W7Iz0mVLhlKXmvLh5tNuf9JjVmppQSWamLTjDLMEJcnxx
+         T41Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790618468; x=1791223268;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Kfh49rBnp+fv8rYbtPwFIFAZ780+WTkGnS4eo4NPc78=;
-        b=vSvjSEWBtpdSn9K7zU62lEwlszNZbPYfEBYr4er/+NHUqt6KBvES1aY3FiUfxzgTtH
-         0VvzovhPNxIYah9ogimjXJdYtAq5XoyyvORizSwkTAgWj72EjwBt9I00FU0poOvylVzo
-         K50q48yZqFZOHMcdPf/Ev9fzgje+QU8BnhvkpH3a4OUpLu+eULfQpJ+YkkTMusyPNyWD
-         V3yhcTgU5dxQ5LSPFNE4Erswe6iXavSTEmII4Zcethu5AZQaLaOYANB2xxwYXkE54k+U
-         hK2ayBGtI+b9kgkfGsZ1x8Ec+NijvKgcehcXzMsRILYH2wfhtS/9BdXBBqZdPe/ZfU22
-         knjg==
-X-Gm-Message-State: AFuF++mk7K/b+BRtHW6jIiAgqKMGFBQ0Q0ixw8JbBvAkcsEJbsTdDw5F
-	7XFsj0v49I0XnGkS05ohvrlIKImuUBvegQ5Ei7Vx3OaAiEmim+IX6uAU
-X-Gm-Gg: AYBFou3ZMuAGGSIRg8QJ0rlw3XFzJ1NZhChiXr3wQRMV2TWqAUUsBiya1NoT6yS9LOP
-	ydSI/hFNl+nZWUvibrVF+O8ybYUgWRYwfjbA5bnqMYFfNEUFUvbjVpunXJ4+UVccuKLNyRmCs4d
-	g1k7taB6y7u0Uj2De/WnGcHeHxUP/eawoC0ZqTSsoxdvGfDGEbo/DoLH6VClgUjKp7kaeUsX+tq
-	W29A6infCuwTWH+q21i4xR4+jRugObglLNZxvpLt2v1vRZisSnmmQnPNHgcFWeCFgpmE3Yt3eRP
-	LcmohB0sUE5A911Vmfm0PIw1yDRaAdj676hHG5dB0xD4VoMyKivuDE4fmDXHCjKgsy/6CD97/us
-	o4cVSI4dfcl7UpnilUvTa4CHhsB1cCIltcRUlEvBCVIxAfgeanl7jzc5tM3ysloKCBaDXV1fW1k
-	s6UBul1eqneJpBs5AulUQkykb8o7tpMKqLRwINTm4O/muvRvuOqkvY
-X-Received: by 2002:a05:600c:c48e:b0:49e:6683:d227 with SMTP id 5b1f17b1804b1-49fedd2c6dfmr164489635e9.0.1790618468247;
-        Mon, 28 Sep 2026 11:01:08 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790618470; x=1791223270;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nmpTVow7I5KawbWbjtXYLbBgNUQkJQlP4LemooUJQPE=;
+        b=jKXtJ6HbScg1GfM1kego5TCsmw+5eTMv/HMOPFSefl5OPmA8/mB5qAFg51dZBAbAmf
+         JwejFtw6Uoy88ArQ+3WkCo39rKuGN94mqkaLvQFCBAG49+0TXW8r9o9KVqFDE8DQeOoX
+         1mnZfHvgC1ZDYwZwvSofjFpHMG8Awys75S+6UepP/7yf3IVGH7KiPHteqZOQnxWH5EYq
+         XunG1LqSYTvQaSxgzX1JUl9U+WYYmLTlG6UE4Ws4dNkZQYDun052uFI5WWi/MNjycJA1
+         edATMyNPA/ALdlDfI6PtsYx/DKCYMpxg08jMx+qJujHiFYcPn8VxJJGEW70N8XZ4E7ut
+         KiDQ==
+X-Gm-Message-State: AFq9FYI4hRYdotbbp8aW37/d9PUQGEQzeQOpw5vG9v1RqsylcpcBY1sP
+	DgDtsZWIbxxjTkU4fvzupZTJUWCRmvk7tnMEqnO0TaJVMJCfQszJ1MvT
+X-Gm-Gg: AYBFou2OjRhAs4q6r8yUgvl6C1WnTOV05TalALq+ygm4W6P7SBZNCUyhGLyZguEruFu
+	hTVBsfjWYWkoJEMuXm1XoxFFIcxuYScw2qSemYBtXBaPOSX4pSUpxlg7hstERHqBh8nFWWfdv8X
+	VyVu752+jhMJ8FXahGDeJpu8BW4cW0jFlqoLd6JYzkJoLtgQ7fGAm0JZDr2jwhzVIC2lQW6XYPy
+	cereDp4sxNISqmU22gnvG3LBqmfsVE2Adq8RY7Xac/DkijQWwonSHTz0ldI4QqApwESjO7ItPaT
+	oplIGNNEa9qvs1ABRb4acsLwz870D741JUUsg8eXBKAhm3slWw1+izjMqzxWQSqaUhXKpiHFdZF
+	6HXQwnsGIkZEeyM366G7vrGj3dMczYKHunp/dsn+NC5t5UPehLkCvHnFtemQqqYJnRVSoB91z1h
+	n8m9EaSzESMW6CNTeAl4UPUEUcOmz5NyDcZhFes8OwKPQrBJsKzFPL
+X-Received: by 2002:a05:6000:2c11:b0:488:7787:4696 with SMTP id ffacd0b85a97d-4887abc29d8mr18917939f8f.5.1790618469651;
+        Mon, 28 Sep 2026 11:01:09 -0700 (PDT)
 Received: from localhost ([2620:10d:c092:500::5:c231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cf4598esm10991745e9.0.2026.09.28.11.01.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48aecf40a8dsm4425649f8f.18.2026.09.28.11.01.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 11:01:07 -0700 (PDT)
+        Mon, 28 Sep 2026 11:01:09 -0700 (PDT)
 From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Subject: [PATCH net-next 0/4] netconsole: fix target enable race and
- configfs read locking
-Date: Mon, 28 Sep 2026 19:00:02 +0100
-Message-Id: <20260928-netcons-fixes-v1-0-bb5ffe5e698a@gmail.com>
+Date: Mon, 28 Sep 2026 19:00:03 +0100
+Subject: [PATCH net-next 1/4] netconsole: finish enabling the target before
+ releasing RTNL
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,10 +70,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CMBREr0JmbRNogQSvYlxAHfW7KKa/GBLC3
- f3K8mXemw3KLFScqw2ZH1GZk0FzqhCfY3rQyc0YvvZ9PfjOJZY4J3V3WaluCGNg0wbfTx2seWf
- +B0suMNX0teB6LLpML8byu8O+fwFeDvocewAAAA==
-X-Change-ID: 20260925-netcons-fixes-93a3e14326b5
+Message-Id: <20260928-netcons-fixes-v1-1-bb5ffe5e698a@gmail.com>
+References: <20260928-netcons-fixes-v1-0-bb5ffe5e698a@gmail.com>
+In-Reply-To: <20260928-netcons-fixes-v1-0-bb5ffe5e698a@gmail.com>
 To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -80,35 +80,83 @@ To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
  =?utf-8?q?Bruno_Pr=C3=A9mont?= <bonbons@linux-vserver.org>, 
  Stephen Hemminger <stephen@networkplumber.org>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>, 
- Sashiko <netdev-bot+sashiko@kernel.org>
+ Gustavo Luiz Duarte <gustavold@gmail.com>
 X-Mailer: b4 0.15.2
 
-While looking into the sashiko report about local_ip_show() and
-remote_ip_show() missing proper locking [1] (fixed in patch 3/4), I
-noticed a couple other places that need locking: patch 1/4 fixes a
-null-ptr-deref when enabling a target races against a NETDEV_UNREGISTER
-event, and patch 2/4 fixes a use-after-free when the local_mac_show()
-callback races against a NETDEV_UNREGISTER event. Patch 4/4 is mostly
-cosmetic but worth fixing.
+netcons_netpoll_setup() publishes nt->np.dev inside __netpoll_setup(),
+then releases the RTNL and waits for an RCU grace period before
+returning. Only after that does its caller store STATE_ENABLED:
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+A NETDEV_UNREGISTER event landing in that window tears the target down
+and we end up storing STATE_ENABLED with a NULL np->dev, leading to a
+null-ptr-deref in netconsole_write():
 
+  BUG: KASAN: null-ptr-deref in netconsole_write+0xb9/0x7f0
+  Read of size 8 at addr 00000000000000a8 by task pr/netcon_ext0/135
+   netconsole_write+0xb9/0x7f0
+   nbcon_emit_next_record+0x501/0x550
+   nbcon_emit_one+0x10e/0x170
+   nbcon_kthread_func+0x2ff/0x3b0
+   kthread+0x199/0x1e0
+
+Store STATE_ENABLED before dropping the RTNL lock to avoid racing with
+netconsole_netdev_event().
+
+Fixes: 2382b15bcc39 ("netconsole: take care of NETDEV_UNREGISTER event")
 Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 ---
-Gustavo Luiz Duarte (4):
-      netconsole: finish enabling the target before releasing RTNL
-      netconsole: read np.dev under the RTNL in local_mac_show()
-      netconsole: avoid printing partially updated target attributes
-      netconsole: remove unnecessary target refcounting from the netdev notifier
+ drivers/net/netconsole.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
- drivers/net/netconsole.c | 110 ++++++++++++++++++++++++++---------------------
- 1 file changed, 60 insertions(+), 50 deletions(-)
----
-base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
-change-id: 20260925-netcons-fixes-93a3e14326b5
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 267254f046de..7dde00eb8e98 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -552,13 +552,16 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
+ 	err = __netpoll_setup(np, ndev);
+ 	if (err)
+ 		goto put;
+-	rtnl_unlock();
+ 
+ 	/* Make sure all NAPI polls which started before dev->npinfo
+ 	 * was visible have exited before we start calling NAPI poll.
+ 	 * NAPI skips locking if dev->npinfo is NULL.
++	 * Hold RTNL until enable is finished so we don't race with
++	 * netconsole_netdev_event()
+ 	 */
+-	synchronize_rcu();
++	synchronize_net();
++	nt->state = STATE_ENABLED;
++	rtnl_unlock();
+ 
+ 	return 0;
+ 
+@@ -589,7 +592,6 @@ static void resume_target(struct netconsole_target *nt)
+ 		return;
+ 	}
+ 
+-	nt->state = STATE_ENABLED;
+ 	pr_info("network logging resumed on interface %s\n", nt->np.dev_name);
+ }
+ 
+@@ -1079,7 +1081,6 @@ static ssize_t enabled_store(struct config_item *item,
+ 			goto out_unlock;
+ 		}
+ 
+-		nt->state = STATE_ENABLED;
+ 		pr_info("network logging started\n");
+ 	} else {	/* false */
+ 		/* We need to disable the netconsole before cleaning it up
+@@ -2667,8 +2668,6 @@ static struct netconsole_target *alloc_param_target(char *target_config,
+ 			 * otherwise, keep the target in the list, but disabled.
+ 			 */
+ 			goto fail;
+-	} else {
+-		nt->state = STATE_ENABLED;
+ 	}
+ 	populate_configfs_item(nt, cmdline_count);
+ 
 
-Best regards,
---  
-Gustavo Luiz Duarte <gustavold@gmail.com>
+-- 
+2.55.0
 
