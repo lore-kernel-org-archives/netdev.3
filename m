@@ -1,61 +1,63 @@
 Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C254F7CB0
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BC5502794
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790633213; cv=none; b=tdISv14tBMai0PXKeINpiOVLn90H5KSYWzj3eggOcLA18qfRTse6WHW5iHDMWO4IEZDTTZp+Uly986ybvyhUfEFMGrBbDiHnnGwFEk8ncIUvGVZnA76k3Hv/D383Ll/ZG6XOz7I9LYO9zczZBt+Z82eQRkTGyrZeSn0+4zegrvQ=
+	t=1790633223; cv=none; b=hPM9q7X9clV1ek2uv5A/T2bgzvj3/8EqgpNUUT12BfQFklEAyCFi8VdfkW4DJOt7g6kFjBaYdPohBJqBro7rwv6qNevjUnERH0k0I+diCoHF9N9QA68juVxpPxMxvyZ/rKylUCGZEMKXz4GZqnqo6FCXxYBcEfCQ37yleKGcwPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790633213; c=relaxed/simple;
-	bh=VA1PPp1FMJ21LCxz7xn35Wp1a4bo/XM5ylNH+VhiGv8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MkAJNuwtEFO7DcDFyybqXyYEOkeOdsF7Fi78XIWtrTP6R1zMCzqOD3EY/saD95dVb+62hhLDPcq/VOHJigS38/4k5smxI+H4PDkEnYh4x8lc5913XRASIwO66XL7g5C+5MJ1xEeGxVjLFXZC/Ms55qsmMBvHjb57EwWHLOvDDPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sNZXCDQ1; arc=none smtp.client-ip=74.125.228.170
+	s=arc-20240116; t=1790633223; c=relaxed/simple;
+	bh=X41/cIbMvzxPRUI5NOfiDZIbIvjDef8SxPQiIMMnTi4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IDDNu6Y/EIZpy/kwHvcDTZUDPjL7yHy2+jk5cZ03ciear90a20lRNNbCR5gm3YRRsah3J5WOEZOTit7iL7R0g0rfbgATTb6Al1jXC8LH4ygoQ8KPW+FO96S/P3VzzInFmEjSq3+fHUdx0eO6FXq7+8cPGdmXNWt4OncjfQww2Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/N1UpI6; arc=none smtp.client-ip=74.125.228.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sNZXCDQ1"
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2dbbf409b8so320472866b.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:06:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/N1UpI6"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2dbdcb4f59so330801066b.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790633209; x=1791238009; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8y6eEk+phFinuim1+Sgx9zrq/h1dTfgS9jzVTEFSOX0=;
-        b=sNZXCDQ1C3gzM7jYeFQMPuzJYTUvoqQ5CxMTlpRJiLrEXC7XbsB+4PQaf5HUl1A4ah
-         YNwqdn4Wdilg3K9StoOGQzxRF4KLgQkN8bOaoTrwUfkxw9MhjzKCPgO1rMlArCFGeHK9
-         7cBUnRgsNlcTw/fKKwgM91kRtF2qTwJreHFgprJDBASwQpuS7EDxJlHn2Msn0EPBmcSe
-         nzAfpQy+t5X72IYzA5Yqwa/hBiYsqwAPp3ChDRcWNGip2G/cKb041bNGPPsZIQf2hYfD
-         fSSsD6aVZxa+UmYPrlY1A8ufYisMKat0BWWJMAUP+d0ZRBVP/8WPJsVfJ/n8ZYlMvq6K
-         6kcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790633209; x=1791238009;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790633220; x=1791238020; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8y6eEk+phFinuim1+Sgx9zrq/h1dTfgS9jzVTEFSOX0=;
-        b=jurmxetfKNTAb1RQZ8NV9z5lu47HfwnjdqrCu25RucqJ0/1oSHRVgFGq8Vl0KZ6049
-         aqw2RLavtoJbQ9s9iRqNZo0eSuvAj6tsW4DQlo5bNiL0zZB35HWwxIlGt0+rNemFj7ld
-         148i6E0RPhbqUjg/Ono2uA4OfARXxkxrpfobTJQDqwlQgqtaZffcCIf7suRqsfRJ//Px
-         B+Gkkt5Jh2xWv4BZ8p08Hvs1+rddt1Sz223uEG8+biWnRtMutd+A/hOtG7FrZLjGWK7E
-         ZftGNsawogu9nsVVCzdMF6CJtu30vDRp77m3xbcKBYHmeFTuzOBpVumD8WAAyLItIS4o
-         fzLw==
-X-Gm-Message-State: AFuF++mF52zqXWvu2rCCmi0oKl4FVkLiovLtJpH0eGURb+gp54gDOscG
-	CAS5+eyKMFEtHTUtlWXSGqgZAm3ilXrLHZCBgHvtNKNB3w+ciJoKQyQubmmlfdvy8sDhuw==
-X-Gm-Gg: AYBFou1CLz0WpqnI1JsaqNfmAp3sZsFWSRm6DYDkUMgt7Bu6U6JkhzXNeg6YLuqVc2t
-	sKl8c3FvqdRnA+Qnq3HiyUFmXM7IMtR97S2i9HZDC9rGr0Gi4YWDWBFosZTnDe5+EjTwkaIvcs/
-	zIO4fYtWeb6djJEQt7Koxmwsf30zm2pEEJXV69L1JWa7Pvo6duMUe8B0t6KF65poBPf46vYjLpx
-	b2MuFhVemi4COuGi+XMtJ/YEy5uZsvH42O6rjyL0iN1m8m0A4cbpIpr2ztnSjywoC6mzHgO2ajQ
-	ArVgIh5Wzrw3lVUlYldtRUGvPdU2l6LpMCcIVO2vEDx1B2l5d7XgS/h0dewjObmx8MYV8pFdcvV
-	po529YBaXSGpgmrseIQsgIFYzKdbGsjgrnwIDjzogiU59bBTkxxLXS4yHVBaGOYzzshzO52WrFq
-	uIU3WtHsTEEcM6J/PHTG3JCNo5bJGcW1qa5fg9SJlz7bGu65RiDkx9m4IFtb8JG8V+cR6LnaSnA
-	V6FwcmL3A9fSupV+d9d6sL/84snlRQEZLN+5/8woWI0utGB5Mx1gE4i8g==
-X-Received: by 2002:a17:906:6a0b:b0:c2d:c33d:a9db with SMTP id a640c23a62f3a-c2dc33dad2dmr569606766b.6.1790633209082;
-        Mon, 28 Sep 2026 15:06:49 -0700 (PDT)
+        bh=NBXPUjjR8+JdvTG8x+WkgNQCyJpOtYcJ55dEf/OrhJ0=;
+        b=Z/N1UpI6wlazl2/eggTKH31+4UEzARtIY8qX3/+G25ttsVOGsXUN/vj34NluSMETCJ
+         0dlzDuuhrvTYFn2iIrHyr05Xyc+2YBFWcn5sZOwU1anKXCwsYNp3Na6SXVkwMeDRR3pc
+         /BSrrZo7Qwku3H5fKLYaogSYdYF4xrW6M52XkhSm8bKt5EiQBhs541oeZj3sH3V8ERc/
+         IUGIomPQTYpyXxA2HjxKe+FN9Vgb50db4bmYtTXrd1uc5uVtGJVoVVwlAGVH9vv+gtkq
+         98E15ssYV4B793Uxoj8N8yNCkrCHs3b3imm9pfDWxd33S3D8sGfUUidt8f38ApdFnY31
+         3mFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790633220; x=1791238020;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NBXPUjjR8+JdvTG8x+WkgNQCyJpOtYcJ55dEf/OrhJ0=;
+        b=kRtxYC45e8iIAsOm2xxxGCmy+2yU5rDWeByr6wZ2TAPSB2ymbVW7Nbflf1bDQmOQN3
+         AjUDlNXgOay4dDYAOgYpn6JT0k4YvZ54+4fsjodhQohrV6Dl37T3lLsApWn78d3tcTXm
+         wa8+oq419LaGi7BiOk7vgdGw0BQWFJ+9Gom3HJ5ODhvY1JNxv4zXMMNDte8bN2X7yryS
+         ++xXHuUPevaYJ1PJWPnrB25r/7tuXcZPlH4BMgurblT8UJK2c6HiwR6OPJj04QcqGmIG
+         fDX7o0D5DLDuUyM6n1TyTcwXlnx+TNx2tsRae+e7G4nVTqGNcM8Rf9VPUFDKDGSlejK5
+         aNcg==
+X-Gm-Message-State: AFuF++kIctJJvG4MxW1BNAxi/riItoN/mmFtVbkmCEO2zxAHpPJ3D+/W
+	gcH/hKGWPMky2GWPhAv8XsF3WP9Cq0gBCGPawonWtRnHto5Xb1Ty4F7ofuy/5qOQpjo2WA==
+X-Gm-Gg: AYBFou3YZ6C1AdWIGs5KTCGs/l6YyQVcs1U3JmVPYimH+0r+2vR4ePxd4jJiknFuHkx
+	MF84SfPN/E0l5LFP9p48qRAtBbVosvplOfNpYMIujDv4Qj+yL1cV4NNfg0OIGkB+D1dDEPueVJs
+	ZyujtlGRoFLh4fYTMkmFo69qvFSDbWDEabyuthaP5pj4wlvjfLjTAfs7tdw5AIQm8+tFIq6jea1
+	b+6JR8BRsgrHlsw6pkEW6ePzIHyjUgd7WmPeMJ083ekDMGjLdA+Gnagns7fHnSalI5K/E8U++Vs
+	FNER5Jo59mWFRIaAkMX/q2Y8ZDoX0QDo0OrwFchsE6L7dQOYilPvg1B290/YLcRg6NzvO0Rs8jb
+	Q3kY5kY/zSZIssVfsEs5kOPPkynSZfEfByfM+yVw4RZ46ocbsIl9mph3ZbuvDoet9KV0iQKo/hp
+	zCX63giFN0aM0049h9YfoysesQ72HVexL1MozHfN8Rw/zWm4GOB4FYfE4F/KTPL/uzu6Bm/n97U
+	tBrF92eHi3FbEoHyXUqeojR4dwjmClnwH7v3I13dddTfRIlnAJMddJ8
+X-Received: by 2002:a17:906:7946:b0:c26:1648:a06b with SMTP id a640c23a62f3a-c2ac2511a13mr1112807466b.38.1790633219855;
+        Mon, 28 Sep 2026 15:06:59 -0700 (PDT)
 Received: from localhost.localdomain ([2a00:801:793:68fd:c07a:9093:1956:b4bf])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757b50fsm520177266b.32.2026.09.28.15.06.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757b50fsm520177266b.32.2026.09.28.15.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 15:06:48 -0700 (PDT)
+        Mon, 28 Sep 2026 15:06:59 -0700 (PDT)
 From: Yongzhao Chen <yongzhao.derek@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Christian Marangi <ansuelsmth@gmail.com>,
@@ -67,10 +69,12 @@ Cc: Christian Marangi <ansuelsmth@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	John Crispin <john@phrozen.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/3] net: dsa: qca8k: fix MDIO error handling
-Date: Tue, 29 Sep 2026 00:06:26 +0200
-Message-ID: <20260928220629.238-1-yongzhao.derek@gmail.com>
+Subject: [PATCH net v2 1/3] net: dsa: qca8k: propagate MDIO errors
+Date: Tue, 29 Sep 2026 00:06:27 +0200
+Message-ID: <20260928220629.238-2-yongzhao.derek@gmail.com>
 X-Mailer: git-send-email 2.45.2.windows.1
+In-Reply-To: <20260928220629.238-1-yongzhao.derek@gmail.com>
+References: <20260928220629.238-1-yongzhao.derek@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,57 +83,177 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-These patches fix error handling in the qca8k internal MDIO master
-paths.
+qca8k_mii_write32() ignores errors from both 16-bit half-word writes.
+Its callers (register writes and read-modify-write helpers) then return
+the earlier successful page selection or read result, incorrectly
+reporting success even when writing the switch register failed.
 
-Patch 1 propagates MDIO read and write errors instead of reporting
-success or returning 0xffff. Apart from the trailers it is the v1
-patch.
+Propagate write errors from both the low and high half-words through the
+regmap paths and internal MDIO master transactions. Attempt to clear
+MASTER_EN even if a transaction fails, preserving the initial error, and
+report a cleanup failure if the transaction itself succeeded. Preserve
+the existing Ethernet-to-MDIO fallback order.
 
-Patches 2 and 3 fix the two problems the Sashiko review found around
-v1 [1]. Both predate v1:
-- After a failed page select, the MASTER_EN cleanup write went to
-  whichever page the switch still had selected, which can clear the
-  upper half of an unrelated register. The page cache also kept the old
-  page even though the failed write may have reached the switch.
-- A management Ethernet busy wait that timed out with successful poll
-  requests carried on to the data read, so a read could return data
-  from an incomplete transaction and never fall back to the MDIO bus.
+Propagate read errors through the internal and legacy MDIO bus callbacks
+instead of masking them as 0xffff. Returning 0xffff causes PHY
+read-modify-write callers to treat the failed read as valid register
+data, which can corrupt unrelated bits on writeback.
 
-Testing: each patch builds with W=1 for arm64 (drivers/net/dsa/qca,
-net/dsa, drivers/net/phy/qcom), and checkpatch --strict reports only
-the missing sign-off and the Fixes: IDs that my shallow clone cannot
-resolve. A userspace model compiles the driver's own MDIO functions
-against a simulated paged switch and a scripted management Ethernet
-responder, including phylib's read-modify-write helper as a consumer.
-Each patch fixes its own cases; the base fails all of them.
+Stop polling when reading the MDIO busy status fails, and return the
+error immediately. Because the read helper clears its output on failure,
+checking only the BUSY bit mistakes an unsuccessful read for transaction
+completion.
 
-A Redmi AX5400 (IPQ5018 + QCA8337) was tested with a 6.18 backport of
-this series in OpenWrt. Connectivity was verified after boot, reboot,
-cold boot, link re-initialization and MTU changes. That board has its
-switch PHYs on the SoC MDIO bus and no CPU port 0, so it never uses the
-internal MDIO master or management Ethernet. On hardware this only
-shows that normal register access through the page select path still
-works.
-
+Fixes: 6b93fb46480a ("net-next: dsa: add new driver for qca8xxx family")
+Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
+Assisted-by: LLM
+---
 v2:
-- Patch 1: removed the blank line between Fixes: and the other trailers;
-  Cc John Crispin, author of the commit named in Fixes:.
-- Patches 2 and 3 are new.
+- Removed the blank line between the Fixes: tag and the other trailers.
+- Cc John Crispin, author of the commit named in the Fixes: tag.
 
 v1: https://lore.kernel.org/netdev/20260923215748.1336-1-yongzhao.derek@gmail.com/
 
-[1] https://lore.kernel.org/netdev/179054715863.3145.10179961093285192493@kernel.org/
+ drivers/net/dsa/qca/qca8k-8xxx.c | 51 ++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 23 deletions(-)
 
-Yongzhao Chen (3):
-  net: dsa: qca8k: propagate MDIO errors
-  net: dsa: qca8k: do not clear MASTER_EN after a failed page select
-  net: dsa: qca8k: fail mgmt Ethernet MDIO access on busy wait errors
-
- drivers/net/dsa/qca/qca8k-8xxx.c | 66 +++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 27 deletions(-)
-
-
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 4c928983b86..0851e4d65b8 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -129,13 +129,16 @@ qca8k_mii_read32(struct mii_bus *bus, int phy_id, u32 regnum, u32 *val)
+ 	return ret;
+ }
+ 
+-static void
++static int
+ qca8k_mii_write32(struct mii_bus *bus, int phy_id, u32 regnum, u32 val)
+ {
+-	if (qca8k_mii_write_lo(bus, phy_id, regnum, val) < 0)
+-		return;
++	int ret;
++
++	ret = qca8k_mii_write_lo(bus, phy_id, regnum, val);
++	if (ret < 0)
++		return ret;
+ 
+-	qca8k_mii_write_hi(bus, phy_id, regnum + 1, val);
++	return qca8k_mii_write_hi(bus, phy_id, regnum + 1, val);
+ }
+ 
+ static int
+@@ -462,7 +465,7 @@ qca8k_write_mii(struct qca8k_priv *priv, uint32_t reg, uint32_t val)
+ 	if (ret < 0)
+ 		goto exit;
+ 
+-	qca8k_mii_write32(bus, 0x10 | r2, r1, val);
++	ret = qca8k_mii_write32(bus, 0x10 | r2, r1, val);
+ 
+ exit:
+ 	mutex_unlock(&bus->mdio_lock);
+@@ -492,7 +495,7 @@ qca8k_regmap_update_bits_mii(struct qca8k_priv *priv, uint32_t reg,
+ 
+ 	val &= ~mask;
+ 	val |= write_val;
+-	qca8k_mii_write32(bus, 0x10 | r2, r1, val);
++	ret = qca8k_mii_write32(bus, 0x10 | r2, r1, val);
+ 
+ exit:
+ 	mutex_unlock(&bus->mdio_lock);
+@@ -799,14 +802,13 @@ qca8k_mdio_busy_wait(struct mii_bus *bus, u32 reg, u32 mask)
+ 
+ 	qca8k_split_addr(reg, &r1, &r2, &page);
+ 
+-	ret = read_poll_timeout(qca8k_mii_read_hi, ret1, !(val & mask), 0,
++	ret = read_poll_timeout(qca8k_mii_read_hi, ret1,
++				ret1 < 0 || !(val & mask), 0,
+ 				QCA8K_BUSY_WAIT_TIMEOUT * USEC_PER_MSEC, false,
+ 				bus, 0x10 | r2, r1 + 1, &val);
+ 
+-	/* Check if qca8k_read has failed for a different reason
+-	 * before returnting -ETIMEDOUT
+-	 */
+-	if (ret < 0 && ret1 < 0)
++	/* Preserve an MDIO read error instead of treating it as ready. */
++	if (ret1 < 0)
+ 		return ret1;
+ 
+ 	return ret;
+@@ -818,7 +820,7 @@ qca8k_mdio_write(struct qca8k_priv *priv, int phy, int regnum, u16 data)
+ 	struct mii_bus *bus = priv->bus;
+ 	u16 r1, r2, page;
+ 	u32 val;
+-	int ret;
++	int ret, ret1;
+ 
+ 	if (regnum >= QCA8K_MDIO_MASTER_MAX_REG)
+ 		return -EINVAL;
+@@ -836,14 +838,18 @@ qca8k_mdio_write(struct qca8k_priv *priv, int phy, int regnum, u16 data)
+ 	if (ret)
+ 		goto exit;
+ 
+-	qca8k_mii_write32(bus, 0x10 | r2, r1, val);
++	ret = qca8k_mii_write32(bus, 0x10 | r2, r1, val);
++	if (ret < 0)
++		goto exit;
+ 
+ 	ret = qca8k_mdio_busy_wait(bus, QCA8K_MDIO_MASTER_CTRL,
+ 				   QCA8K_MDIO_MASTER_BUSY);
+ 
+ exit:
+ 	/* even if the busy_wait timeouts try to clear the MASTER_EN */
+-	qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, 0);
++	ret1 = qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, 0);
++	if (!ret)
++		ret = ret1;
+ 
+ 	mutex_unlock(&bus->mdio_lock);
+ 
+@@ -856,7 +862,7 @@ qca8k_mdio_read(struct qca8k_priv *priv, int phy, int regnum)
+ 	struct mii_bus *bus = priv->bus;
+ 	u16 r1, r2, page;
+ 	u32 val;
+-	int ret;
++	int ret, ret1;
+ 
+ 	if (regnum >= QCA8K_MDIO_MASTER_MAX_REG)
+ 		return -EINVAL;
+@@ -873,7 +879,9 @@ qca8k_mdio_read(struct qca8k_priv *priv, int phy, int regnum)
+ 	if (ret)
+ 		goto exit;
+ 
+-	qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, val);
++	ret = qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, val);
++	if (ret < 0)
++		goto exit;
+ 
+ 	ret = qca8k_mdio_busy_wait(bus, QCA8K_MDIO_MASTER_CTRL,
+ 				   QCA8K_MDIO_MASTER_BUSY);
+@@ -884,7 +892,9 @@ qca8k_mdio_read(struct qca8k_priv *priv, int phy, int regnum)
+ 
+ exit:
+ 	/* even if the busy_wait timeouts try to clear the MASTER_EN */
+-	qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, 0);
++	ret1 = qca8k_mii_write_hi(bus, 0x10 | r2, r1 + 1, 0);
++	if (!ret)
++		ret = ret1;
+ 
+ 	mutex_unlock(&bus->mdio_lock);
+ 
+@@ -919,12 +929,7 @@ qca8k_internal_mdio_read(struct mii_bus *slave_bus, int phy, int regnum)
+ 	if (ret >= 0)
+ 		return ret;
+ 
+-	ret = qca8k_mdio_read(priv, phy, regnum);
+-
+-	if (ret < 0)
+-		return 0xffff;
+-
+-	return ret;
++	return qca8k_mdio_read(priv, phy, regnum);
+ }
+ 
+ static int
 -- 
 2.43.0
+
