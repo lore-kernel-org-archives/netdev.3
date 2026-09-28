@@ -1,54 +1,51 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877174D1786
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7824C6521;
+	Mon, 28 Sep 2026 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790604622; cv=none; b=smvVBCvIYBcKCKdSJtiXIaK2o+ogkXo3fqRY7YkRxeoa9YTLpqE7qTnedJRceH0E8YbNjkRQZz02clAsJgdBatHwgVOZwPQovqZRTq7yvAm7mE0P3+0DQ1Dnb4JkDvw4XNhf7uep4tnfMq8pfblgf5CDNyJw7ur3h1WxK7/Owt4=
+	t=1790604770; cv=none; b=I4Zc8yBCq6yrSMZbxDYlW+ElEW0GXfvfyIIWKPEEzOo0HXBQ5KjBRAtRWOS8NF2BLghfR4G6u2XWgwFn3uVhGi20joSiLSWTD8QUHZPh3OjBOWvYTL7fgbCTNF6ImpIbBGjHAiCNM55cUCyM+/EBiuFG4C5gCHHL9efayw/NB9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790604622; c=relaxed/simple;
-	bh=ibXVRhQV9XVe6uL0EeqxAWPPfBAUvcInh0xeJW5ny70=;
+	s=arc-20240116; t=1790604770; c=relaxed/simple;
+	bh=I1OkBqVPr+9G+RJLMxC5TQVtfMBI/TY4oZRVasYidvU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gAD30LdnhOYSVVdeqK+Dv0CRzHV3kWswH10UOcwUteJMCVGwTt42fBa95IuErMT9tfBEywIb4NGfwh/lHdoC8vNkXkHVhT1KOtyiJYjym+vjrVXrRDs17laWJq5TkpQEfnPgC6wYfg9Sv1rjmV6XilCRd67+91/Xbw63LjrrJRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=X+U+i5vZ; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCU9zv84U44EyTBJaRFTFsIxNOK+plYo/JfCNLve/Fxf1Gn6wMgIn3ei2REXWGmeGXotjmgzDx6AinX6q+YPxxdDesU7YlszrUvWKBNszpd51/+c+EzLOc2rplkT0xPHNypFwOQwzsM+d7tYKmuSBrSmQhMRVBwoBM3jQ+FQUC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KCXg6xm1; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="X+U+i5vZ"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KCXg6xm1"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BKiLtZtIuHwYcDNSLZ28bKiuCe1HYL8jjB5xzC2jMvA=; b=X+U+i5vZ7FRwTJ4hoKbJIUf7C9
-	siA7UGwOJGqrRAiVG0okUvx5yf3quNa41jo3GlyJsmJTmkzqJoPAp8Hp876KWAJ2XPllpRwfOhnpH
-	J6CZCMMad87w4nM4uf3iTxAR4lpaVvzk1/qbZ/n4AjLYlmtxka+nAUQ1DDFEd/0kS8Us=;
+	bh=UwA7q79XkQQsz+Uy3hKsQ1FetQP83ctPZqJR3PIPVmw=; b=KCXg6xm1ncflYpI4MfnUO7xLUn
+	ciO6Y10Gasp9xt1yg2IR1zhm0Lw5Gcy5bSV/rbrr4/4W5kHmI+8HIxpqTGhLjVnCFIaduffj33eYf
+	W274KyRBodj33H3IPLyy9Rx861poUxDhk5Yxf2G9gEpDj7w68P/ngw/hEvaQgqczu9u4=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xBC3d-007j3F-5M; Mon, 28 Sep 2026 16:10:17 +0200
-Date: Mon, 28 Sep 2026 16:10:17 +0200
+	id 1xBC5y-007j7G-10; Mon, 28 Sep 2026 16:12:42 +0200
+Date: Mon, 28 Sep 2026 16:12:42 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Benjamin Larsson <benjamin.larsson@genexis.eu>
-Cc: John Crispin <john@phrozen.org>, Ziyou Xu <xuziyougm@gmail.com>,
-	netdev@vger.kernel.org,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>,
-	Gaoyang Wei <yhyxwgy@gmail.com>
-Subject: Re: [RFC] net: towards a generic PON framework
-Message-ID: <e3dfe67b-6d29-4bfb-9642-8c9e86a9a7b1@lunn.ch>
-References: <20260926174601.1675-1-yhyxwgy@gmail.com>
- <b0d1908c-a6f6-4c28-bb4f-b00644acacfc@lunn.ch>
- <92d9c8a9-ef43-45ce-a599-2c00d0a2fa61@gmail.com>
- <3d5e9f9f-09e0-41a2-aa3a-e3bcfcecbef3@lunn.ch>
- <7a469037-1266-4ca3-904b-9e8117cce5e9@gmail.com>
- <e17ad80f-f2f8-4776-9f8b-1b7d3407c438@lunn.ch>
- <86e368cd-9f5a-49cb-a798-0f26a661fc30@gmail.com>
- <372bc103-e98f-486d-8dd2-f013b1dbbdcb@lunn.ch>
- <0077ab02-2215-4015-9e74-eeb8c3de6b14@phrozen.org>
- <747749a2-b168-4ba4-98d1-12991e8694bc@genexis.eu>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	nico@fluxnic.net, linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
+Message-ID: <06910e8b-5717-41cd-b18a-d1c4f92fb8dc@lunn.ch>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-2-gerg@linux-m68k.org>
+ <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
+ <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
+ <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
+ <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
+ <b9a686cf-0d28-4feb-b971-f1bf2264964f@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,14 +54,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <747749a2-b168-4ba4-98d1-12991e8694bc@genexis.eu>
+In-Reply-To: <b9a686cf-0d28-4feb-b971-f1bf2264964f@linux-m68k.org>
 
-> In the case of ANI-G 263 I looked at hwmon a while ago and IIRC there was no
-> nice way to consume hwmon information from inside the kernel
+On Mon, Sep 28, 2026 at 10:59:52PM +1000, Greg Ungerer wrote:
+> 
+> On 24/9/26 00:15, Andrew Lunn wrote:
+> >> The driver will always need to support big and little endian hardware, so I
+> >> am not sure how to avoid some abstraction like this.
+> > 
+> > I was wondering if there is a linux standard set of macros which is
+> > supposed to handle this big/little difference, the macro knows the
+> > architecture and does the correct thing?
+> 
+> There is regmap, but that is way more than just access macros.
+> At least one driver shared across big and little endian architectures
+> does use that - the freescale dspi driver (drivers/spi/spi-fsl-dspi.c).
+> There is probably others.
+> 
+> If the issue is more to do with code churn then a simpler approach here
+> might be to just essentially keep the same work around but move it locally
+> into fec.h. Something like the patch below.
+> 
+> This could be cleaned up to use ioread32be()/iowrite32be() after the final
+> readl()/writel() changes have been applied.
 
-Not my subsystem, but that surprises me. How is temperature management
-performed, where you need to reduce clocks speeds if the system is
-getting too warm. Fan control is a similar problem. Both need access
-to temperature sensor values.
+The changes are fine, i just did not know all the background and
+wanted to make sure we were not missing something. Thanks for the
+explanations.
 
-	Andrew
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
