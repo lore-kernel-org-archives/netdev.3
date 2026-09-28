@@ -1,79 +1,78 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFBA4F96CC;
-	Mon, 28 Sep 2026 19:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FE34F85BC;
+	Mon, 28 Sep 2026 19:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790623952; cv=none; b=ctSzAK1UZP/7C8TweXjsUJgtphUIx43AjcKfqg1fM6G83fSZdxNHoXn5R/Jcn1JhuRhS6ai88+7pl0sLJcnwlAvd3nsYKgw1Q/AnLTIp6Q6R+bWpd/Nkicxi5BmsI+Q+qLYWaUgM0dI99tnvpo+/Iv/oNdOumRgT9YFwwJGKT78=
+	t=1790623956; cv=none; b=ovrRxVUoqo6EDLTaRMl3+/UCPWQ4d1/qmxGAaf5mdFEZWw88KmndyBrQf916w8oC4VNOOGingy4TmJ2R8CuaOl58xUCE0oCQvBVweUV35WNwpjecyolGMYfZm4pDM0ga9Mv7a4xt1DDPR6ErpVDileFgCpwLfAhDCvpWpja9Tho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790623952; c=relaxed/simple;
-	bh=XvLlRT91OKxntugB1PUh2tIiqmHjaW3Whglr3pIB2V0=;
+	s=arc-20240116; t=1790623956; c=relaxed/simple;
+	bh=d6dIZFKHlyli+R1yz9dS/Siu7xlhmy+Qy/l6h7zI1CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nboYGU6tU7V3psTsnYS2SCNT8OgSYJCVq97yuQYNFCT8rWM9P+aR16DGOKndTG9/9zttWgPipQSlwqcKYDQ5VY1ENhb1CLBe7WFfYROZ5IZq+Kl+swXuhtVLGr157q902skzlYGh9d5DfsvlRt4yei9h/utSlysvklg2LpyFE8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2LzWKnsW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=X/48X4YI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dJ1lyYCO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PB5cSkJX; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=qhyNFjFWRnyytDrc3HAV98Tcjh945npqzfkhunVFpULqMb8opvzFSaqO9BiqCbUAk5rZjjdb9mKe90XXPwypBiIhmyjINyCch6vlkNq1/jiEvNA/GT9DAbHjFQOsJA4CwRNZrFzQo7W0ftnFhjNHJZW0e6/qf/QIukvI6DUy6Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bycrCb+k; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VEUv6JWr; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eWiKt9Xl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=znW8eBE2; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2LzWKnsW";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X/48X4YI";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dJ1lyYCO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PB5cSkJX"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bycrCb+k";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="VEUv6JWr";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eWiKt9Xl";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="znW8eBE2"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2ADF921BF6;
-	Mon, 28 Sep 2026 19:32:20 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8D35021BC1;
+	Mon, 28 Sep 2026 19:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790623948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bOb9EAVU+mXpLF5VLUPL4uBXCcc4Of/8wWK86aVYA2Q=;
+	b=bycrCb+kwXytQqUIUlLYer2/KcBHzXw+ATAC5YIdxWeMfeajC7vLFuc9nz8NnPQ3fdpLf5
+	pXGWVsTzGWS4Wh95wEiMGUHIjVOgdoq9tyzMZ34hQNh7kveY6V1iwalG7C0pqLHryYkM47
+	dWonViLp3Bqp7OItMV6pcXvAh+QBIOk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790623948;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bOb9EAVU+mXpLF5VLUPL4uBXCcc4Of/8wWK86aVYA2Q=;
+	b=VEUv6JWrxplUMpgu6R23PJ6E59R01KketKXSZx4KeHVODl9ZSwwlYf7Wkqz8+XzX16GptH
+	t+WSLPrTnqF1hIBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1790623944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
-	b=2LzWKnsWNf98Yanu/VBeAy+NXB6EUW8FkUHEpyA7QXCsXAuP2rBnqNl4xWNAILp/pEEPR6
-	ZYO0XMFwlMYFKqetSZdr7MkqJo2T5h/zLrhpm7YU9T0CBz16NibZeUikZKRCxXLekwpvaB
-	d1xmpfJDbQHJhIrT7L5/8NHRvWY8mNw=
+	bh=bOb9EAVU+mXpLF5VLUPL4uBXCcc4Of/8wWK86aVYA2Q=;
+	b=eWiKt9XlBcCcpQ6afiZBJim+8IUDkAXGfWUBepzxW6GlwZeti86fffxvl7OpY5kRVZb9up
+	Uk3rRTKgQzrkXB4JTKyzicBkxiVm+qR5W/JbtlTgWh1T2UrYBIIr49SPnJa68y/o4BvAGr
+	992VKUsX7zk9LLyguadoiuhWS+Uv9fk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1790623944;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
-	b=X/48X4YIFSRs6KjBzc7568RRZLKYIsN84EpWX2sRbpr0Nk8TGQ6Fxh7qULwJwP57m6m4e4
-	ThG6BzsrdO80OiCg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dJ1lyYCO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PB5cSkJX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790623940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
-	b=dJ1lyYCOEaON9wtV2Fvj4FDAuT2H0PDe56i73ICdbTbUBorjtrpOX5bqdLJls2IJrz5pgt
-	usaNYr1wydesu5rWNKIE/e7lfYRcR4CfH2V7mt2lM1BtZc3Rowsz+dTZ0rW1QiTrbzuXIK
-	wPrmO5pNuh2stwzTpEdbbBBPe9311yI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790623940;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cQJanie8EYQn8rJ3v6cUjqxfZzTtx4sUVWsNMC80pjk=;
-	b=PB5cSkJXFo3d0kxB0QdStweXD/8I8hJSoAcwK6dNf/QQPhUe1/Vikasx8C+NnfVWRfqM/W
-	I0Kdp2m7185c+pBA==
+	bh=bOb9EAVU+mXpLF5VLUPL4uBXCcc4Of/8wWK86aVYA2Q=;
+	b=znW8eBE29rLtL+ucKSdHmrp5A5R0kw/542bb18YxEiDsCimLYrTrMJ5zYaP9e9TTxeT83l
+	V9bsBbT+WYb2sFDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F6BD1352C;
-	Mon, 28 Sep 2026 19:32:19 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 288E71340F;
+	Mon, 28 Sep 2026 19:32:23 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4RBiFn3AumpWOAAAD6G6ig:T15
-	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:32:19 +0000
+	id 4RBiFn3AumpWOAAAD6G6ig:T16
+	(envelope-from <fmancera@suse.de>); Mon, 28 Sep 2026 19:32:23 +0000
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org,
@@ -82,12 +81,26 @@ Cc: horms@kernel.org,
 	edumazet@kernel.org,
 	davem@davemloft.net,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org,
+	Paul Moore <paul@paul-moore.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Yung Chih Su <yuuchihsu@gmail.com>,
+	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 14/16 net-next v2] wifi: mac80211: replace CONFIG_INET with CONFIG_IPV4 guards
-Date: Mon, 28 Sep 2026 21:30:10 +0200
-Message-ID: <20260928193046.6698-15-fmancera@suse.de>
+Subject: [PATCH 15/16 net-next v2] netlabel: cipso: introduce CONFIG_CIPSO to decouple IPv4 dependency
+Date: Mon, 28 Sep 2026 21:30:11 +0200
+Message-ID: <20260928193046.6698-16-fmancera@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260928193046.6698-1-fmancera@suse.de>
 References: <20260928193046.6698-1-fmancera@suse.de>
@@ -98,98 +111,249 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Rspamd-Queue-Id: 2ADF921BF6
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -2.80
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00];
+X-Spamd-Result: default: False [-2.80 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,suse.de,paul-moore.com,google.com,schaufler-ca.com,namei.org,hallyn.com,strlen.de,nokia-bell-labs.com,icloud.com,nvidia.com,gmail.com,vger.kernel.org];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLrr9ek4ud4f4qwi71m7motjzt)];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,icloud.com]
 X-Spam-Flag: NO
 
-Historically, the mac80211 subsystem used CONFIG_INET to guard
-IPv4-specific address notifiers, assuming that if IP networking was
-enabled, IPv4 was guaranteed to be present. As part of the effort to
-make CONFIG_IPV4 optional, this assumption is no longer valid.
+Currently, the Commercial IP Security Option (CIPSO) is unconditionally
+tied to CONFIG_NETLABEL. Because CIPSO is inherently an IPv4 protocol
+feature, this creates a transitive dependency where subsystems relying
+on NetLabel (such as Smack) are forced to depend on CONFIG_IPV4, even if
+the user only wants to utilize IPv6/CALIPSO.
 
-Update the conditional compilation guards around the IPv4 address change
-notifier and its associated registration routines to explicitly check
-for IS_ENABLED(CONFIG_IPV4). This ensures the mac80211 subsystem
-compiles successfully without undefined references when building an
-IPv6-only kernel.
+This patch introduces a new CONFIG_CIPSO boolean that is automatically
+enabled only when both NETLABEL and IPV4 are selected. It abstracts the
+CIPSO-specific Makefile targets, sysctls, and kernel APIs behind this
+new config.
+
+By safely stubbing out the CIPSO netlabel_kapi functions to return
+-ENOSYS when disabled, this allows NetLabel and Smack to be successfully
+built and used on IPv6-only kernels.
 
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
- net/mac80211/main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/net/cipso_ipv4.h         | 18 +++++++++++-------
+ net/Kconfig                      |  3 ---
+ net/ipv4/Makefile                |  2 +-
+ net/ipv4/sysctl_net_ipv4.c       |  4 ++--
+ net/netlabel/Kconfig             |  4 ++++
+ net/netlabel/Makefile            |  2 +-
+ net/netlabel/netlabel_cipso_v4.h |  7 +++++++
+ net/netlabel/netlabel_kapi.c     |  3 +++
+ security/smack/Kconfig           |  1 -
+ 9 files changed, 29 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 7816395681fa..1a0fa55db861 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -558,7 +558,7 @@ void ieee80211_restart_hw(struct ieee80211_hw *hw)
+diff --git a/include/net/cipso_ipv4.h b/include/net/cipso_ipv4.h
+index d6780d7903f4..6f50a0a6951b 100644
+--- a/include/net/cipso_ipv4.h
++++ b/include/net/cipso_ipv4.h
+@@ -100,7 +100,7 @@ struct cipso_v4_std_map_tbl {
+  * Sysctl Variables
+  */
+ 
+-#ifdef CONFIG_NETLABEL
++#ifdef CONFIG_CIPSO
+ extern int cipso_v4_cache_enabled;
+ extern int cipso_v4_cache_bucketsize;
+ extern int cipso_v4_rbm_optfmt;
+@@ -111,7 +111,7 @@ extern int cipso_v4_rbm_strictvalid;
+  * DOI List Functions
+  */
+ 
+-#ifdef CONFIG_NETLABEL
++#ifdef CONFIG_CIPSO
+ int cipso_v4_doi_add(struct cipso_v4_doi *doi_def,
+ 		     struct netlbl_audit *audit_info);
+ void cipso_v4_doi_free(struct cipso_v4_doi *doi_def);
+@@ -144,19 +144,23 @@ static inline struct cipso_v4_doi *cipso_v4_doi_getdef(u32 doi)
+ 	return NULL;
  }
- EXPORT_SYMBOL(ieee80211_restart_hw);
  
--#ifdef CONFIG_INET
-+#if IS_ENABLED(CONFIG_IPV4)
- static int ieee80211_ifa_changed(struct notifier_block *nb,
- 				 unsigned long data, void *arg)
++static inline void cipso_v4_doi_putdef(struct cipso_v4_doi *doi_def)
++{
++}
++
+ static inline int cipso_v4_doi_walk(u32 *skip_cnt,
+ 		     int (*callback) (struct cipso_v4_doi *doi_def, void *arg),
+ 		     void *cb_arg)
  {
-@@ -1655,7 +1655,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	wiphy_unlock(hw->wiphy);
- 	rtnl_unlock();
+ 	return 0;
+ }
+-#endif /* CONFIG_NETLABEL */
++#endif /* CONFIG_CIPSO */
  
--#ifdef CONFIG_INET
-+#if IS_ENABLED(CONFIG_IPV4)
- 	local->ifa_notifier.notifier_call = ieee80211_ifa_changed;
- 	result = register_inetaddr_notifier(&local->ifa_notifier);
- 	if (result)
-@@ -1673,11 +1673,11 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ /*
+  * Label Mapping Cache Functions
+  */
  
- #if IS_ENABLED(CONFIG_IPV6)
-  fail_ifa6:
--#ifdef CONFIG_INET
-+#if IS_ENABLED(CONFIG_IPV4)
- 	unregister_inetaddr_notifier(&local->ifa_notifier);
- #endif
- #endif
--#if defined(CONFIG_INET) || defined(CONFIG_IPV6)
-+#if IS_ENABLED(CONFIG_IPV4)
-  fail_ifa:
- #endif
- 	wiphy_unregister(local->hw.wiphy);
-@@ -1705,7 +1705,7 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
- 	tasklet_kill(&local->tx_pending_tasklet);
- 	tasklet_kill(&local->tasklet);
+-#ifdef CONFIG_NETLABEL
++#ifdef CONFIG_CIPSO
+ void cipso_v4_cache_invalidate(void);
+ int cipso_v4_cache_add(const unsigned char *cipso_ptr,
+ 		       const struct netlbl_lsm_secattr *secattr);
+@@ -171,13 +175,13 @@ static inline int cipso_v4_cache_add(const unsigned char *cipso_ptr,
+ {
+ 	return 0;
+ }
+-#endif /* CONFIG_NETLABEL */
++#endif /* CONFIG_CIPSO */
  
--#ifdef CONFIG_INET
-+#if IS_ENABLED(CONFIG_IPV4)
- 	unregister_inetaddr_notifier(&local->ifa_notifier);
+ /*
+  * Protocol Handling Functions
+  */
+ 
+-#ifdef CONFIG_NETLABEL
++#ifdef CONFIG_CIPSO
+ void cipso_v4_error(struct sk_buff *skb, int error, u32 gateway);
+ int cipso_v4_getattr(const unsigned char *cipso,
+ 		     struct netlbl_lsm_secattr *secattr);
+@@ -303,6 +307,6 @@ static inline int cipso_v4_validate(const struct sk_buff *skb,
+ 	return err_offset;
+ 
+ }
+-#endif /* CONFIG_NETLABEL */
++#endif /* CONFIG_CIPSO */
+ 
+ #endif /* _CIPSO_IPV4_H */
+diff --git a/net/Kconfig b/net/Kconfig
+index ca86f20540dd..2ef4ea6ce056 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -136,10 +136,7 @@ if INET
+ source "net/ipv4/Kconfig"
+ source "net/ipv6/Kconfig"
+ source "net/mptcp/Kconfig"
+-
+-if IPV4
+ source "net/netlabel/Kconfig"
+-endif # if IPV4
+ 
+ endif # if INET
+ 
+diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
+index 83c25f52eb58..871187937add 100644
+--- a/net/ipv4/Makefile
++++ b/net/ipv4/Makefile
+@@ -62,7 +62,7 @@ obj-$(CONFIG_TCP_CONG_YEAH) += tcp_yeah.o
+ obj-$(CONFIG_TCP_CONG_ILLINOIS) += tcp_illinois.o
+ obj-$(CONFIG_NET_SOCK_MSG) += tcp_bpf.o
+ obj-$(CONFIG_BPF_SYSCALL) += udp_bpf.o
+-obj-$(CONFIG_NETLABEL) += cipso_ipv4.o
++obj-$(CONFIG_CIPSO) += cipso_ipv4.o
+ 
+ obj-$(CONFIG_XFRM) += xfrm4_policy.o xfrm4_state.o xfrm4_input.o \
+ 		      xfrm4_output.o xfrm4_protocol.o
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 6096e9e4d82d..89b0caf5a9f5 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -573,7 +573,7 @@ static struct ctl_table ipv4_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec
+ 	},
+-#ifdef CONFIG_NETLABEL
++#ifdef CONFIG_CIPSO
+ 	{
+ 		.procname	= "cipso_cache_enable",
+ 		.data		= &cipso_v4_cache_enabled,
+@@ -602,7 +602,7 @@ static struct ctl_table ipv4_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
+ 	},
+-#endif /* CONFIG_NETLABEL */
++#endif /* CONFIG_CIPSO */
+ 	{
+ 		.procname	= "tcp_available_ulp",
+ 		.maxlen		= TCP_ULP_BUF_MAX,
+diff --git a/net/netlabel/Kconfig b/net/netlabel/Kconfig
+index 4383ac29693e..bcc27196d5bd 100644
+--- a/net/netlabel/Kconfig
++++ b/net/netlabel/Kconfig
+@@ -17,3 +17,7 @@ config NETLABEL
+ 	   * https://github.com/netlabel/netlabel_tools
+ 
+ 	  If you are unsure, say N.
++
++config CIPSO
++	def_bool y
++	depends on NETLABEL && IPV4
+diff --git a/net/netlabel/Makefile b/net/netlabel/Makefile
+index 5a46381a64e7..8afc1bf00424 100644
+--- a/net/netlabel/Makefile
++++ b/net/netlabel/Makefile
+@@ -12,5 +12,5 @@ obj-y	+= netlabel_mgmt.o
+ 
+ # protocol modules
+ obj-y	+= netlabel_unlabeled.o
+-obj-y	+= netlabel_cipso_v4.o
++obj-$(CONFIG_CIPSO) += netlabel_cipso_v4.o
+ obj-$(subst m,y,$(CONFIG_IPV6)) += netlabel_calipso.o
+diff --git a/net/netlabel/netlabel_cipso_v4.h b/net/netlabel/netlabel_cipso_v4.h
+index 9518ab56ec98..fb718f86bcbd 100644
+--- a/net/netlabel/netlabel_cipso_v4.h
++++ b/net/netlabel/netlabel_cipso_v4.h
+@@ -147,6 +147,13 @@ enum {
+ #define NLBL_CIPSOV4_A_MAX (__NLBL_CIPSOV4_A_MAX - 1)
+ 
+ /* NetLabel protocol functions */
++#if IS_ENABLED(CONFIG_CIPSO)
+ int netlbl_cipsov4_genl_init(void);
++#else
++static inline int netlbl_cipsov4_genl_init(void)
++{
++	return 0;
++}
++#endif
+ 
  #endif
- #if IS_ENABLED(CONFIG_IPV6)
+diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
+index 3583fa63dd01..c088f599b53d 100644
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -332,6 +332,9 @@ int netlbl_cfg_cipsov4_map_add(u32 doi,
+ 	struct netlbl_domaddr_map *addrmap = NULL;
+ 	struct netlbl_domaddr4_map *addrinfo = NULL;
+ 
++	if (!IS_ENABLED(CONFIG_CIPSO))
++		return -ENOSYS;
++
+ 	doi_def = cipso_v4_doi_getdef(doi);
+ 	if (doi_def == NULL)
+ 		return -ENOENT;
+diff --git a/security/smack/Kconfig b/security/smack/Kconfig
+index b4e6d0168bd1..5a8dfad469c3 100644
+--- a/security/smack/Kconfig
++++ b/security/smack/Kconfig
+@@ -3,7 +3,6 @@ config SECURITY_SMACK
+ 	bool "Simplified Mandatory Access Control Kernel Support"
+ 	depends on NET
+ 	depends on INET
+-	depends on IPV4
+ 	depends on SECURITY
+ 	select NETLABEL
+ 	select SECURITY_NETWORK
 -- 
 2.55.0
 
