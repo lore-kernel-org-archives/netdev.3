@@ -1,170 +1,289 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FB64BA9F2;
-	Mon, 28 Sep 2026 12:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462A84AE8A9
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 12:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790597443; cv=none; b=p4TSfBq4Nk0Fserv9sf3GSkdMFOtiTU7kj9WYS16LpNV+448ovukAIGYc5LCx4Bn5UIE6v5W5wu3zxLvPFsPSM6JedKwpqgpou6zYYlHEhaWy2qU8isZ4e4jgoTCKm2Rizc9CDS3ys19EEiUtPb4tvSk2HqMPx1QhAEt4lkZABg=
+	t=1790597593; cv=none; b=hbDyUZliqdgX+fH8WpWwLlIakfkF1Gy7p5dCfNjukkY5VZmKyCwXjBfHXmM9e8d1dN8/YEsurm7atalEkhFhRHWow1lEcnbpx7Yajd/kbyHOn1uMwWaVBX3iZRVQbkjWQDYDZNDQQgPv1bD9fcamyt8y2AxL/zTX5eL4JgNbKU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790597443; c=relaxed/simple;
-	bh=11T/FXaU6/yHKFLaw2ytHH77JsNUcI8PhrK/1EEIHWw=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=knIGcTOMgm1DAOx70M+pOW1HwXRjd9MkBd4C2926yotkYc+4h/VzyTfwi1vTp645uuUX0bBJf6mxlVnVM2pW4aQhEqK54TghA/IVOfjk2tRrKTeHGM/2th2x4wwyu95X59BcXGblXvDU/lI2aZcY3FnFQ3gD8tBO1gbJiehS7ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4htgB66gGXz8Xrrg;
-	Mon, 28 Sep 2026 20:10:38 +0800 (CST)
-Received: from njb2app05.zte.com.cn ([10.55.22.121])
-	by mse-fl1.zte.com.cn with SMTP id 68SCARCe062864;
-	Mon, 28 Sep 2026 20:10:27 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njb2app05[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Mon, 28 Sep 2026 20:10:30 +0800 (CST)
-X-Zmail-TransId: 2afd6aba59367b8-060b9
-X-Mailer: Zmail v1.0
-Message-ID: <202609282010301316BZ8zDUYb1NPROJaErr_Q@zte.com.cn>
-In-Reply-To: <20260922100913.GA13925@horms.kernel.org>
-References: 202609211451400236_aZ55Ox3y7NW8MQnYImM@zte.com.cn,202609211459460680vBvKdpuZZ9yR4QVn3ONR@zte.com.cn,20260922100913.GA13925@horms.kernel.org
-Date: Mon, 28 Sep 2026 20:10:30 +0800 (CST)
+	s=arc-20240116; t=1790597593; c=relaxed/simple;
+	bh=pAjRehj8F2j7YLpJBXjI5H4PFUnfO1AJMSx44eoRbVk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Fkkl/f8JZtuTvoTfdogZ2/Ih0UVQv/mJNdgrwDXdDP6Abu3MQuU3ayboy8arHNvMvVRAKUocVH3fFAH0VdaNCvZlBuKVCINPxeVspLnlRXutpqeniG3PIulpo/9RGLF4ncTE9N3VFgQ0CeYQJvn7XWw2Zd74TDWkROlSW2SpzTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pG531J3D; arc=none smtp.client-ip=74.125.230.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pG531J3D"
+Received: by mail-qk2-f39.google.com with SMTP id af79cd13be357-93c632d5d42so117073785a.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 05:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790597589; x=1791202389; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bxl5WCUMMfk8Oam1N+6ZJljVTjYwuVFvrDnpSkfKV00=;
+        b=pG531J3D1AnTLru/UdUfCK82CNJ1HPIz3WdkCnYwlTF4hlJn3KI/KimUkzsocGHY+S
+         kgBWsVMsMdIYze0wPFK5MZzVdudTcyORwMRBm9v9jkgAqr57W4+QDexRLeu9OVzbchB+
+         vVnGTLcU5lCBWcNhSK7wAX0oLk41YJ+RAdo73506IK1fj40fkOsoeqeJ//KipD5XmYIS
+         UcP2FqbZq7U5QShfnd+SmbksEIT/ROOZuVObR/do4+dAAtH8gnvCtlnRsjZhWRBsDUVh
+         x4r1HkAQHcD7RFSUSEr2Gm0HRgIue9UjLXszXezqDbMMf44K3LqP1rUTS+xiLolwfAdQ
+         eYfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790597589; x=1791202389;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bxl5WCUMMfk8Oam1N+6ZJljVTjYwuVFvrDnpSkfKV00=;
+        b=RcokOBlV7i44UwgiJsQ8rObdTqYpnhbR+LTPUDrYVbTLjtLW6ED+77JqDNP0P1/Ptg
+         08YKvwIdviH/gF3OJS7AVvx9MRTYwKaN8qSYTJpagXnNH6mfwAKnpjtzjvwZriJgn31C
+         QukTlaN9nVHJM2bam+MscNJ5ORZoqdYE+szsvaXsjQwWAc43WH1iA0NeghCIwTfTSnSV
+         82u49J4kBUkgC8RNNGC33gT8UsE5Hoe9a3E8WcHBcVG+1a9aXsDpGxxMAlsnlqLqktlK
+         juB+X76nrTMZAThXRHxmONhrtuOn6ewoNa+h6JayKyZONi+IkTPwCVfQEUUupruhDTCY
+         6YQg==
+X-Forwarded-Encrypted: i=1; AKwUvBz8BImNnCKBCwLpvtk4v/0xLWMVHMGeUcuhsZ2g+Dhl+kfwBiFQA3pZCE7lpLvQWdzMgVVdi+I=@vger.kernel.org
+X-Gm-Message-State: AFuF++nmR+J08OaZ4a70woATPw+aChLeyhweoi2YjCJAwxgpP775IK9k
+	GDdo1WEOV3ilQOrv8n7ebyL5mjZbMUEKN6jyCjT2F6H6gj0Bt4A2oBk8
+X-Gm-Gg: AYBFou3UN5A97/Lib6pbVdR2NELuSqAuS50POztthIFCzqiwrLsJnaZyyzv9UHl2RWk
+	CEotrm3PbmAdR+sXpHSUuiIH7mkDr+BYPcnoIxVisOrNw0QXN+09dmgMGvEtorkAw6xEK6NSasb
+	V5znNNj2SmxcGDVWM3DarAvH06DwbzLrul+25z5I0FXRkpvDZ/YdIY64SGZbniCLd4VDDoBSGlc
+	WDs+zbIvr0MWYV3fQ4EzWq38axJiGIazzsJ7FAe1yAsWrOQdgq0UHO4lAXVNG9193j9E5VuN1Lf
+	PrfSMcdfNITcNJMhSJIBAqXzpDbiRucyXx36Bb0zI14rNjPhwwEZ2pergod0me2ncO9+bPYqFqQ
+	bO5BtBsqcoZrKD4g2nm6/TEH+H5FQK4LRVgBclRClIojMSRoZNQ2YS/1Ins0OupLdFlUXjLHgAn
+	lGvWDQYY3thsRgKN3EWNXP040tfyEyLQNYDUMF3Nxmtb0jy5C/LWEiqnc+X59J3CZ5BmdJ212AX
+	g+NgTwOUTdLjg==
+X-Received: by 2002:a05:620a:404b:b0:93c:8544:6ad8 with SMTP id af79cd13be357-93c85446bcemr165910085a.28.1790597588505;
+        Mon, 28 Sep 2026 05:13:08 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c813a4587sm130752085a.7.2026.09.28.05.13.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Sep 2026 05:13:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <horms@kernel.org>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXQtbmV4dCB2MyAyLzNdIGRpbmdoYWk6IGFkZCBNU0ktWCBpbnRlcnJ1cHQgcG9vbHM=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 68SCARCe062864
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 28 Sep 2026 20:10:38 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6ABA593E.000/4htgB66gGXz8Xrrg
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 08:13:07 -0400
+Message-Id: <DLQXVBJ05DI0.3CGZJGFQTFXRU@gmail.com>
+Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 1/8] eth: mpnic: add scaffolding for Meta
+ Platforms NIC
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260924-linux-mpnic-v2-1-4badc9b58b9e@gmail.com>
+ <179055369730.3145.8922011696640547930@kernel.org>
+In-Reply-To: <179055369730.3145.8922011696640547930@kernel.org>
 
-On Mon, Sep 21, 2026 at 02:59:46PM +0800, han.junyang@zte.com.cn wrote:
-> > From: Junyang Han <han.junyang@zte.com.cn>
-> >
-> > Allocate the fixed MSI-X vector layout of the device and manage the
-> > vectors in per-purpose pools: the async event queues first, a range
-> > reserved for RDMA in between and the vq queue pairs last. This series
-> > wires up the async pool; the vq pool comes with the netdev series.
-> >
-> > IRQs are reference counted so that several event queues can share one
-> > vector. The pool hands out the least loaded matching IRQ once it passes
-> > the pool minimum threshold, and binds newly created IRQs to the least
-> > loaded CPU of the requested affinity mask. Interrupt delivery fans out
-> > through an atomic notifier chain attached to each IRQ, which the async
-> > event queue setup posted later in this series hooks into.
-> >
-> > Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
+On Sun Sep 27, 2026 at 8:01 PM EDT, netdev-bot+sashiko wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] eth: mpnic: missing PCI BAR0 length validation leads to out-of-
+>   bounds MMIO access
+>
+> --
+>
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c b/drivers/net/e=
+thernet/meta/mpnic/mpnic_pci.c
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+>> @@ -0,0 +1,147 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/* Copyright (c) Meta Platforms, Inc. and affiliates. */
+>> +
+>> +#include <linux/dma-mapping.h>
+>> +#include <linux/err.h>
+>> +#include <linux/module.h>
+>> +#include <linux/pci.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/types.h>
+>> +
+>> +#include "mpnic.h"
+>> +
+>> +#define PCI_DEVICE_ID_META_MPNIC	0x0014
+>> +
+>> +static void mpnic_mmio_err(struct mpnic_dev *mpd, u32 reg)
+>> +{
+>> +	/* Hardware is giving us all 1's reads, assume it is gone */
+>> +	WRITE_ONCE(mpd->uc_addr0, NULL);
+>> +
+>> +	dev_err(mpd->dev,
+>> +		"Failed read (idx 0x%x AKA addr 0x%x), disabled CSR access, awaiting =
+reset\n",
+>> +		reg, reg << 2);
+>> +}
+>> +
+>> +u64 mpnic_rd64(struct mpnic_dev *mpd, u32 reg)
+>> +{
+>> +	u32 __iomem *csr =3D READ_ONCE(mpd->uc_addr0);
+>> +	u64 value;
+>> +
+>> +	if (!csr)
+>> +		return ~0ULL;
+>> +
+>> +	value =3D readq(csr + reg);
+>> +
+>> +	/* If any bits are 0 value should be valid */
+>> +	if (~value)
+>> +		return value;
+>> +
+>> +	/* All ones can be a valid value, so confirm against a register
+>> +	 * which never reads that way on a live device.
+>> +	 */
+>> +	if (reg !=3D MPNIC_BDQ_SPARE && ~readq(csr + MPNIC_BDQ_SPARE))
+>> +		return value;
+>> +
+>> +	mpnic_mmio_err(mpd, reg);
+>> +
+>> +	return ~0ULL;
+>> +}
+>> +
+>> +static struct mpnic_dev *mpnic_alloc(struct pci_dev *pdev)
+>> +{
+>> +	struct mpnic_dev *mpd;
+>> +
+>> +	mpd =3D kzalloc_obj(*mpd);
+>> +	if (!mpd)
+>> +		return NULL;
+>> +
+>> +	pci_set_drvdata(pdev, mpd);
+>> +	mpd->dev =3D &pdev->dev;
+>> +
+>> +	return mpd;
+>> +}
+>> +
+>> +/**
+>> + * mpnic_probe - Device initialization routine
+>> + * @pdev: PCI device information struct
+>> + * @ent: entry in mpnic_pci_tbl
+>> + *
+>> + * Return: 0 on success, negative on failure
+>> + **/
+>> +static int mpnic_probe(struct pci_dev *pdev, const struct pci_device_id=
+ *ent)
+>> +{
+>> +	void __iomem *uc_addr0;
+>> +	struct mpnic_dev *mpd;
+>> +	int err;
+>> +
+>> +	if (pdev->error_state !=3D pci_channel_io_normal) {
+>> +		dev_err(&pdev->dev,
+>> +			"PCI device still in an error state. Unable to load...\n");
+>> +		return -EIO;
+>> +	}
+>> +
+>> +	err =3D pcim_enable_device(pdev);
+>> +	if (err) {
+>> +		dev_err(&pdev->dev, "PCI enable device failed: %d\n", err);
+>> +		return err;
+>> +	}
+>> +
+>> +	err =3D dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(46));
+>> +	if (err) {
+>> +		dev_err(&pdev->dev, "DMA configuration failed: %d\n", err);
+>> +		return err;
+>> +	}
+>> +
+>> +	mpd =3D mpnic_alloc(pdev);
+>> +	if (!mpd)
+>> +		return -ENOMEM;
+>> +
+>> +	uc_addr0 =3D pcim_iomap_region(pdev, 0, MPNIC_DRV_NAME);
+>> +	if (IS_ERR(uc_addr0)) {
+>> +		err =3D PTR_ERR(uc_addr0);
+>> +		dev_err(&pdev->dev, "Mapping the register file failed: %d\n",
+>> +			err);
+>> +		goto err_free_mpd;
+>> +	}
+>> +	mpd->uc_addr0 =3D uc_addr0;
+>> +
+>> +	pci_set_master(pdev);
+>> +	pci_save_state(pdev);
+>> +
+>> +	return 0;
+>> +
+>> +err_free_mpd:
+>> +	kfree(mpd);
+>> +
+>> +	return err;
+>> +}
+>> +
+>> +/**
+>> + * mpnic_remove - Device removal routine
+>> + * @pdev: PCI device information struct
+>> + **/
+>> +static void mpnic_remove(struct pci_dev *pdev)
+>> +{
+>> +	struct mpnic_dev *mpd =3D pci_get_drvdata(pdev);
+>> +
+>> +	kfree(mpd);
+>> +}
+>> +
+>> +static const struct pci_device_id mpnic_pci_tbl[] =3D {
+>> +	{ PCI_VDEVICE(META, PCI_DEVICE_ID_META_MPNIC) },
+>> +	/* required last entry */
+>> +	{}
+>> +};
+>> +MODULE_DEVICE_TABLE(pci, mpnic_pci_tbl);
+>> +
+>> +static struct pci_driver mpnic_driver =3D {
+>> +	.name		=3D MPNIC_DRV_NAME,
+>> +	.id_table	=3D mpnic_pci_tbl,
+>> +	.probe		=3D mpnic_probe,
+>> +	.remove		=3D mpnic_remove,
+>> +};
+>> +
+>> +module_pci_driver(mpnic_driver);
+>> +
+>> +MODULE_DESCRIPTION("Meta Platforms Network Interface Controller");
+>> +MODULE_LICENSE("GPL");
+>>
+>
+> [Severity: High]
+> mpnic_probe() maps BAR0 with pcim_iomap_region() but never checks
+> pci_resource_len(pdev, 0) against the register file size the driver
+> expects. pcim_iomap_region() maps whatever length the device
+> advertises. A device exposing a small BAR0, including a spoofed one
+> behind Thunderbolt, ends up with a mapping much shorter than the CSR
+> indices in mpnic_csr.h assume.
+>
+> mpnic_rd64() and mpnic_wr64() compute csr + reg with no bounds check.
+> The all-ones fallback in mpnic_rd64() also unconditionally does a
+> readq() at csr + MPNIC_BDQ_SPARE. That is byte offset 0x10804f8,
+> roughly 16.5MiB into the BAR.
+>
+> Nothing calls the accessors in this patch yet. Once the follow-ups
+> start touching CSRs from probe, a short BAR plus a single all-ones
+> read would run past the end of the ioremap. That would fault, or hit
+> whatever else happens to be mapped there.
+>
+> Could you reject the device in probe when BAR0 is too small to hold
+> the register file? For example, compare pci_resource_len(pdev, 0)
+> with the end of the highest CSR the driver touches (at least
+> MPNIC_BDQ_SPARE * 4 + 8) and fail with -ENODEV. What is the
+> architected size of BAR0 on this device?
 
-...
-
-> > @@ -516,10 +604,24 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > goto err_modern_cfg;
-> > }
-> >
-> > + ret = zxdh_pf_irq_table_init(zxdh_dev);
-> > + if (ret) {
-> > + dev_err(&pdev->dev, "zxdh_pf_irq_table_init failed: %d\n", ret);
-> > + goto err_modern_cfg;
-> > + }
-> > +
-> > + ret = zxdh_pf_irq_table_create(zxdh_dev);
-> > + if (ret) {
-> > + dev_err(&pdev->dev, "zxdh_pf_irq_table_create failed: %d\n", ret);
-> > + goto err_irq_table;
-> > + }
-
-> I am wondering if you considered calling zxdh_pf_irq_table_create()
-> from zxdh_pf_irq_table_init(). And likewise for
-> zxdh_pf_eq_table_init()/zxdh_pf_eq_table_create() in patch 3/3.
-
-> I mainly ask because it seems like it would simplify zxdh_pf_probe()
-> slightly. But I don't feel strongly about this.
-
-Both taken in v4: the create() steps are folded into their init() counterparts,
-and every probe error path now goes through the same destroy() functions
-remove() uses, so each patch carries one cleanup authority from the start.
-This also drops the internal pci_free_irq_vectors() on the pools failure
-path - destroy() releases the vectors exactly once for any partial init state.
-
-> > +
-> > devlink_register(devlink);
-> >
-> > return 0;
-> >
-> > +err_irq_table:
-> > + kvfree(zxdh_dev->irq_table.priv);
-
-> As a counter to my previous comment: I see the line is changed to call
-> zxdh_pf_irq_table_destroy() in patch 3/3. But I'm wondering if it should be
-> (or would be nicer if it was) zxdh_pf_irq_table_destroy() in this patch.
-
-> > err_modern_cfg:
-> > zxdh_pf_modern_cfg_uninit(zxdh_dev);
-> > err_cfg_init:
-
-...
-
-> > diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_irq.c b/drivers/net/ethernet/zte/dinghai/zxdh_irq.c
-
-...
-
-> > +static struct zxdh_irq *zxdh_irq_alloc(struct zxdh_irq_pool *pool, int vecidx,
-> > + const struct cpumask *affinity)
-> > +{
-> > + struct zxdh_core_dev *zxdh_dev = pool->dev;
-> > + struct zxdh_irq *irq;
-> > + int err;
-> > + int cpu;
-> > +
-> > + irq = kzalloc_obj(*irq, GFP_KERNEL);
-> > + if (!irq)
-> > + return ERR_PTR(-ENOMEM);
-> > +
-> > + irq->pool = pool;
-> > + irq->irqn = pci_irq_vector(zxdh_dev->pdev, vecidx);
-> > + if (irq->irqn < 0) {
-> > + err = irq->irqn;
-> > + goto err_irqn;
-> > + }
-> > +
-> > + ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
-> > + snprintf(irq->name, ZXDH_MAX_IRQ_NAME, "%s_%d@pci:%s", pool->name,
-> > + vecidx, pci_name(zxdh_dev->pdev));
-
-> W=1 builds complain about this. E.g. GCC 16.2.0 on x86_64 says:
-
-> CC [M] drivers/net/ethernet/zte/dinghai/zxdh_irq.o
-> drivers/net/ethernet/zte/dinghai/zxdh_irq.c: In function 'zxdh_irq_alloc':
-> drivers/net/ethernet/zte/dinghai/zxdh_irq.c:94:52: warning: '%d' directive output may be truncated writing between 1 and 11 bytes into a region of size between 0 and 99 [-Wformat-truncation=]
-> 94 | snprintf(irq->name, ZXDH_MAX_IRQ_NAME, "%s_%d@pci:%s", pool->name,
-> | ^~
-> drivers/net/ethernet/zte/dinghai/zxdh_irq.c:94:9: note: 'snprintf' output 8 or more bytes (assuming 107) into a destination of size 100
-> 94 | snprintf(irq->name, ZXDH_MAX_IRQ_NAME, "%s_%d@pci:%s", pool->name,
-> | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 95 | vecidx, pci_name(zxdh_dev->pdev));
-> | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-> ....
-
-Thanks for testing with GCC 16. Fixed in v4: the pool name now has a
-buffer bound of its own (16 bytes; the longest pool name is 13) instead
-of sharing the 100-byte IRQ name buffer, and the copy uses strscpy().
-The series is now built per-patch with W=1 before submission.
+This complaint was addressed in v1. For a pci device, we are assuming a
+malicious or spoofed device is out of scope.
