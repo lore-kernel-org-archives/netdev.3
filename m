@@ -1,155 +1,126 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C158E1397
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AD5347500
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790556890; cv=none; b=YCnRuBR/P4hvXXXcqkWQPusXAX02v+0GAEvG6LItUEjUU8NJjgJNTZ1CihdpE5DaTM1Qrq5DijxPFlQDVoyWAT/r/mE1QyLLmeX0RckEyhPRmbtleUh3xICvsY2Lp3tZcAbLUs3YRdJG638r1tBRrwtGOWGU189wSZ2cygHa1uY=
+	t=1790557728; cv=none; b=tB8HjAJ28HNVR25l7mcDx5euQjTmI6JEA6WpzOK+btE279bIL2Hv0n47n5KSrcfYgHqltOnAZlvq8Dt53WCOOI2UWspMeqmjtTVZiifjs0eVgF9tGnYX4eEPr7Zaa/IkRc/kVLGW9JfPJn+TVgt9Bn5+0NVwV/gGuVjbhR4JlYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790556890; c=relaxed/simple;
-	bh=v+7EAOat2bUhmXZxCVn/VDDKLd8H6fA4w1b07cXkcvM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=XJ5EGp9PUpEEbwfkqPNCCBJ6eiLoGLO4g2t5kuhwoWL4LOeIuuJnXwf2j917tqm5akDaK9D0n4ypa7HojJtcvO5Ww7d3d4ANGNamG+77eemfEyTeKhiGjzStTpdAyE+NJ6TXZ2DFvKWJnfgwcG/KsoIIYM3ybOCdUzlEZs5S0ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ebbWhg1E; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790557728; c=relaxed/simple;
+	bh=cCng7KpHB8XUHBobAWoNKxFVYmCnEd85zIsuvav0mls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNpM+mZR3dpP1PLG+u3+i8PAFhuU64x18BZ4/xUKqQhzsACoqzrVj+Wpi5o9h7NDi9lSfQK0N4nU/o2mdjI4swAg7yTj+EJKF0CwXoLSnrYZhnM57qkhvFk6ONyxeAgjF+9ynsB1wYewCrI6Djx/J7oIjO80AkWyDa5wfwgos0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wq89XQMr; arc=none smtp.client-ip=95.215.58.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ebbWhg1E"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-8a45b788a71so17677697b3.0
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 17:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790556887; x=1791161687; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/XZW0RmfCHiZbi2JmDAjRdogx5VNu3G15/mPaOcUQ8A=;
-        b=ebbWhg1EY0bbEcHCEGIZ8nvsI6BEC6cq0GajAhkShVlT/5JWR1S3sCuAL4Liuj5q8S
-         w1V5SLHouKOTkBdnNgpdfh2mHBYQ0zHF8r9DVpf+JcJK1V9xpivy/+yVKDt8EQO2nG6S
-         ihuAuR/viQtSIJLIKhYdnlFLef9GOFc/HIKKOfE0niz/usvaU1BmnGG5pL6FON1B9aRj
-         eRuDdeoA2HsMV3bVewGxz6dDbh/lRNVQp6IKGe8sxU8nJuNK7zarluTfVCBKxUboFo6x
-         6O1zSu72zRU2lFKom/12KmLcUN2OT0DRgFkXD1UzyidDIQ8HsUEu1eehmQ9L8SrWjPmU
-         YmRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790556887; x=1791161687;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/XZW0RmfCHiZbi2JmDAjRdogx5VNu3G15/mPaOcUQ8A=;
-        b=VQfA6xiz2ntQKKXna2dWeDpZKp2IpI3rS5ci5hs6WZfuwejzc6jqWH/ybz8tbb7lPE
-         hmCaYkGG3lBX1xW+RhESoNikm729L989aP/TfKoX7gf4VjaUbMcQVnR5ELV8UP6rgWH3
-         c1ujpelkEtcpGaZCknX4Q72OgMvJkuqk5xZvtP/sPRTSo6Mzdb94jb3/E998PM4bRHYP
-         YNvyNAd9P3Ws9NPG8EDioUEj3ENXj48QzhkTnRLbjINFLTr4+V1pXFtVs8VHDwQQXCA9
-         Ph5RtomR1nBLCvrTCnLgcUg3pZUyCrb7g2m1khy6Qb5kizrMexO8Sir07HqC1XUSRdM9
-         5DhQ==
-X-Forwarded-Encrypted: i=1; AKwUvByt51qw+c3LKHNz0i1/Lp0zLigzGYbMRUQidFdn35+LHxFJs2c18yvDrqAa30II2+tKaZEEwAc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJrAKgLM2R5m8jpJdq9z/QwEOIH6BhpIZVYEH622ftOVNS1rNXg
-	ahppcj5yKJw2sSFJCCUMU6gmg46X4r2J65ogtFydKq3jyM2ecYxaxtvw
-X-Gm-Gg: AYBFou3TesP1oCBmIaO1v7fCt1I1OyjKuXI03GNeHXQ3RQHXqy6etbTHvDMuCFI2sqg
-	R1FC7aOqTggMpa8BBFgGFxlO8vay1GZkSjb0+P3Yug5HYQKuoS24lqOLcuJF2VPU5izjNVHQouA
-	AQb9vLyTdvxaDWEf4XDZllv6Jt16Ctllxn+byxlzFNDx30j9kEVHdNpqGLjLFFKcj2EUw18uh8L
-	m4Q1atOwRrVFkCF8rgWGcOB3jcASIXaKFbVMxwTvqk/A44ej6dRH5SC8Ui8LXtlwtIuO2+IfZ/E
-	dofHoNSawiGdnDh6xCPddkKDjCYnVCUhzWxt+HDY0+F0SP+mQy3UyRZiZXdxYd7FfU9P2vMU9pF
-	b+mSdkgwRNmXSE848uEhyR/yPbW1BDtb/Q6+yyr5+JIAHRG2OX/PX+SGCgKs2iFyTzd/JPQGRlQ
-	5bb1Rct76CNNFVGVEZ1c2HRdmamyr9ssMMxIEhg7/hhQhwgt0Sj/n54xiFDyf/XO00zrEbtJwcd
-	VZkZIP2PfwlFgzQCJ7ksxzr3+8fkHVivyUzSM0KtuVg0DPoBydb
-X-Received: by 2002:a05:690c:6e81:b0:8a9:c0ba:3ecb with SMTP id 00721157ae682-8a9c0ba418cmr16301617b3.3.1790556887583;
-        Sun, 27 Sep 2026 17:54:47 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860ff8099sm36669067b3.33.2026.09.27.17.54.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 17:54:47 -0700 (PDT)
-Date: Sun, 27 Sep 2026 20:54:46 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@google.com>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- edumazet@kernel.org, 
- Eric Dumazet <edumazet@google.com>, 
- Weiming Shi <bestswngs@gmail.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Jason Wang <jasowang@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Message-ID: <willemdebruijn.kernel.e1283f58a0ec@gmail.com>
-In-Reply-To: <20260927195536.2489079-1-edumazet@google.com>
-References: <20260927195536.2489079-1-edumazet@google.com>
-Subject: Re: [PATCH net] net: always dissect GSO packets in
- __virtio_net_hdr_to_skb()
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wq89XQMr"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=cCng7KpHB8XUHBobAWoNKxFVYmCnEd85zIsuvav0mls=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790557723; v=1; x=1791162523;
+ b=wq89XQMrfdXXbmDB0iTekAfCvB5yKfZ6PU/iWuwy4GByizw/lrhu/HiGq8ToAqspp6gTzFdk
+ o6/ZhANhPO2LgBisry2VNJHrGmA5rHvtwy5tt6O3MZ7SnwbTqzTFukjiUeGofYcd1XctMpzrYq7
+ HMGZcGk80UqH69xPS4NsR2cs=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id cda8e86f05856a5a;
+	Mon, 28 Sep 2026 01:08:42 +0000
+X-Mizu-Trace-ID: cda8e86f05856a5a
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 09:08:37 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: Hui Peng <benquike@gmail.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, leitao@debian.org
+Subject: Re: [PATCH net v4] ipv6: sr: enforce exact attribute length for
+ SEG6_ATTR_DST
+Message-ID: <arm-FZQRDwkzas79@fedora>
+References: <20260924093610.3286959-1-benquike@gmail.com>
+ <20260924180016.f1a9947223549a9a88c9a2fe@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924180016.f1a9947223549a9a88c9a2fe@uniroma2.it>
 
-Eric Dumazet wrote:
-> Commit 9e8db5913264 ("net: avoid false positives in untrusted gso
-> validation") added a '&& skb->network_header' check before flow-dissecting
-> GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM in
-> __virtio_net_hdr_to_skb(), because some callers (such as tun_get_user(),
-> tun_xdp_one(), virtnet_receive_done(), and raw_verify_header()) called
-> virtio_net_hdr_*_to_skb() before initializing skb->network_header and
-> skb->dev.
+Hi Andrea,
+On Thu, Sep 24, 2026 at 06:00:16PM +0200, Andrea Mayer wrote:
+> On Thu, 24 Sep 2026 09:36:10 +0000
+> Hui Peng <benquike@gmail.com> wrote:
 > 
-> However, skb->network_header is an offset from skb->head, not a boolean
-> flag. When skb_headroom(skb) is 0 on a device without L2 headers (for
-> instance packet_snd() or tpacket_snd() on a tunnel/pure-L3 device where
-> LL_RESERVED_SPACE_EX(dev, 0) == 0), skb_reset_network_header(skb)
-> legitimately sets skb->network_header to 0.
+> > In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
+> > .len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
+> > maximum payload length and permits shorter payloads (e.g., 0 bytes).
+> > When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
+> > kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
+> > triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
+> > skb->head memory, which is stored in sdata->tun_src and leaked back to
+> > userspace via SEG6_CMD_GET_TUNSRC.
+> > 
+> > Switch SEG6_ATTR_DST in seg6_genl_policy to
+> > NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
+> > validation rejects any attribute whose length is not exactly
+> > sizeof(struct in6_addr) with -ERANGE.
+> > 
+> > Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
+> > Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
+> > by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
+> > succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
+> > uninitialized kernel heap memory; with this patch applied,
+> > SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
+> > -ERANGE (-34) and tun_src remains zeroed.
+> > 
+> > Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> > Reviewed-by: Hangbin Liu <hangbin.liu@linux.dev>
+> > Reviewed-by: Breno Leitao <leitao@debian.org>
+> > Assisted-by: LLM
+> > Signed-off-by: Hui Peng <benquike@gmail.com>
+> > ---
+> > Changes in v4:
+> > - Drop raw hex memory dump string from commit message as suggested by Breno
+> >   Leitao.
+> > - Add Reviewed-by tag from Breno Leitao.
+> > 
+> > Changes in v3:
+> > - Add Reviewed-by tag from Andrea Mayer.
+> > - Send as a fresh standalone thread (no In-Reply-To header) as requested by
+> >   Jakub Kicinski.
+> > 
+> > Changes in v2:
+> > - Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
+> >   sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
+> >   NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
+> >   length, as pointed out by Hangbin Liu.
+> > 
+> >  net/ipv6/seg6.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
 > 
-> Whenever the 'if (gso_type && skb->network_header)' branch was skipped,
-> the fallback 'else if (gso_type)' only pulled nh_min_len + thlen (40 bytes
-> for TCPv4) without dissecting the packet, without validating ip_proto or
-> n_proto, and without setting skb->transport_header. If an IPv4 packet
-> carries IP options (ihl > 5, up to 60 bytes) or an IPv6 packet carries
-> extension headers, pulling only nh_min_len + thlen leaves the TCP header
-> outside skb->head, causing tcp_hdrlen(skb) in skb_gso_transport_seglen()
-> to read out-of-bounds:
+> The v2 was applied to netdev/net.git (main) as commit 2d959c75c27f
+> ("ipv6: sr: enforce exact attribute length for SEG6_ATTR_DST"):
 > 
->   BUG: KASAN: slab-out-of-bounds in skb_gso_transport_seglen+0x173/0x200 net/core/skbuff.c:5503
->   Read of size 1 at addr ffff888103c7ec4d by task repro/5718
->   Call Trace:
->    <TASK>
->    skb_gso_transport_seglen+0x173/0x200 net/core/skbuff.c:5503
->    skb_gso_network_seglen include/linux/skbuff.h:4718 [inline]
->    skb_gso_validate_network_len+0x92/0x1a0 net/core/skbuff.c:5566
->    ip_finish_output_gso net/ipv4/ip_output.c:285 [inline]
->    __ip_finish_output+0x28b/0x4a0 net/ipv4/ip_output.c:316
+> https://git.kernel.org/netdev/net/c/2d959c75c27f90e9ec489d18ce5ee6b852ad4741
 > 
-> In addition, when skb->protocol is pre-set by a caller before
-> __virtio_net_hdr_to_skb(), 'if (!skb->protocol)' is skipped and
-> virtio_net_hdr_match_proto() was not checked.
+> One general note for your future postings, not about this patch which is
+> already applied: please do not repost a patch less than 24 hours after
+> the previous posting. See the "Resending after review" section of
+> Documentation/process/maintainer-netdev.rst:
 > 
-> Fix this by:
-> 1. Initializing skb->dev and skb->network_header (plus skb->protocol for
->    IFF_TUN) before virtio_net_hdr_*_to_skb() in tun_get_user(),
->    tun_xdp_one(), virtnet_receive_done(), and raw_verify_header().
-> 2. Removing '&& skb->network_header' and the unvalidated
->    'else if (gso_type)' fallback in __virtio_net_hdr_to_skb() so all GSO
->    packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are flow-dissected, have
->    their transport header pulled into linear data, and have
->    skb->transport_header set.
-> 3. Validating virtio_net_hdr_match_proto(keys.basic.n_proto, hdr_gso_type)
->    after skb_flow_dissect_flow_keys_basic().
-> 
-> Fixes: 9e8db5913264 ("net: avoid false positives in untrusted gso validation")
-> Fixes: d5be7f632bad ("net: validate untrusted gso packets without csum offload")
-> Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Closes: https://lore.kernel.org/netdev/20260927163117.746432-2-bestswngs@gmail.com/
-> Assisted-by: LLM
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Willem de Bruijn <willemb@google.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
+> https://docs.kernel.org/process/maintainer-netdev.html#resending-after-review
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+It looks like this is a bot sending the patches. It never replies to comments.
+When you suggest changes, it just posts a new version directly. For that
+reason, I've stopped reviewing its patches.
 
-Thanks Eric.
+Thanks
+Hangbin
