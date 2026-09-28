@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C864E5038E5;
-	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7DD503915;
+	Mon, 28 Sep 2026 22:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790634324; cv=none; b=pP6UJb7Or21Pv97ymQAfuwRTVDCD5zuLv3tDWT7g8sHjqCsc0DytqBDvhrbD0B4C+pb6Mtvlu9DXac89+TNmRUI0ulXaFtleiYctB9p1RFdN+rK+aDNwD/Oo6ItxF3o1LOD5OnF1IBhDhNuz2l4je6qyIRC3SluyJE1PcJ/43CQ=
+	t=1790634325; cv=none; b=TPdWLyFWxqYhDgIl8rZj9VZZcc1PsgxgEDzxY1N5U693GZPDy/Dp/mtmMgyWGZpuopUgjJzfgznRxAs4oYv63GhMm+FDIvqAthk4s4CTskox/MxotxSm8FEe23kBvMkCo+ZVh5KuC9NfCm+tOH2VGqH0L3pjXYtFhPNxDF3arrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790634324; c=relaxed/simple;
-	bh=xCK4ZN45BBmZH4eqj3BHK8o5ZoGntyVni20+PCKEE1s=;
+	s=arc-20240116; t=1790634325; c=relaxed/simple;
+	bh=5bc6pfk28wmcByOW/Kr8ah3RV0BtojVxsQeAPP9E0HI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r8M1peeHgbiMHlvnc1GGiEXn5pEDw7RdMV44IpzhBT7vGL8W/KSxOnL+N23/0GheOC7WQnWj7/Ngvw/7kNkBvl0/AwH9y081avf2ZRb70UHmx0Wt5Z13oTFdJzrRnbhK8xADyiCM2hVXxL1S3dexi6rwnrppEu7G4/xBdpcu/JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMVf5MXP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E4UtxMG70UlCh8wddrE89ukhCItDQPDGc/L6GVon65OpEn5tAqeOnHQHx1mXkUJJBQ3LwoIZYaLU8+Ab9N0lDpDTcmTJC9Zp0+JK4K+Mb8GdCXw7d9F8OlJ2sJHiFOtDBnYRTlMa4VIfk4mh+BZGch8Peg9K3nCg8hGp/kmAcEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBgmdBZM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMVf5MXP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B029C4AF62;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBgmdBZM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E206AC4AF13;
 	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790634324;
-	bh=xCK4ZN45BBmZH4eqj3BHK8o5ZoGntyVni20+PCKEE1s=;
+	bh=5bc6pfk28wmcByOW/Kr8ah3RV0BtojVxsQeAPP9E0HI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EMVf5MXPogjwHK+oWebf4kW88c9W5XGRDWJdqlJG9IlmxL9pYq3EwR4z6J8V4ticw
-	 wYejL94cQdwh61KRAHaoIUaKtj12OVACRadTgKRUCZmfdDD3iO9qIUstWCC2q4zsro
-	 2vI8XGRf1FcTyQl+PO2TaLdFw0FFcwS3s+V+5HBY9WW2fQf1Hfas8WZEp5BxmfcXDS
-	 vIr7jUNNXsLdSZHvyxWzkNilo1OW+8G3Cs5VtRIC/nEAC0BhLfLmuhdeGKDLtlOgaP
-	 j1WzdRYed9XuS5MKNkecyzmG1zKvQJV+U67E7p+T5DUdlg0HGTZ4aCaRJJX4Iehujw
-	 EKRltsLBPN2Vw==
+	b=vBgmdBZM+nhrDq4pd6kK9oCdeOKTQKYurin6b581i2J18YP440W6o6ic9ZAT/1dl3
+	 gnZ9j8x1JN3FMEs8Sl5ZN7fASY6ILqcOsGYo2ThbhGJ+GQa1+o3HPZJWf2DZeax4Kh
+	 p18nsSqqr79EuQXr7S7ioPmnLYZw4IFwZWpEWvTAbFQGSep6cAWKF9JaylGFf1sENi
+	 a3vEBlEU38oTpYkiS+1KrMFkgvOQbNeU+QYo3LXrI/SkbDa4LsXqoyob1z7jE8g61L
+	 Kk+jlRkr+Ma74KwhVGqgeUZ4HCGHOLvQ0w6hYTPKjhcwUWL8idUGkel0lHmzwQUt78
+	 PkYK7BOK5xAxQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77144CA5FA1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D026FCA5FA5;
 	Mon, 28 Sep 2026 22:25:24 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Mon, 28 Sep 2026 15:25:13 -0700
-Subject: [PATCH net-next v8 06/11] net: ethernet: oa_tc6: Support for
- vendor specific MMS
+Date: Mon, 28 Sep 2026 15:25:18 -0700
+Subject: [PATCH net-next v8 11/11] onsemi: s2500: Added selftest support to
+ onsemi's S2500 driver
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-s2500-mac-phy-support-v8-6-7e011aacc309@onsemi.com>
+Message-Id: <20260928-s2500-mac-phy-support-v8-11-7e011aacc309@onsemi.com>
 References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
 In-Reply-To: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
 To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
@@ -63,11 +63,11 @@ Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  Jerry Ray <jerry.ray@microchip.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790634319; l=3615;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790634319; l=1480;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=NqQh5AjrG3OFsRhaNIoGIEp2Di6NevhQyuBM33Wjyoo=;
- b=/IHASgfAyLNstEy0MQHet0KBtVIdhtFtgxzgiG22gPO48XqRuVNJq26RL2w4iDgVs3Ont7orE
- ApuGKrAsV5FCTVsLuHOYvp+2kiVsEWmScGGV31KDxnlgPAdXHYDbKuN
+ bh=1G0xxGdLzP5HuRKATIb1vzj6jozdw4TcGyJtI0dwg80=;
+ b=9XpdRET7UlN2MZL26nkvyywpj7rD9gHt9MwMOfS/Jem5RU3mNw/O+eu9TfqkGXPEebeBZZ3il
+ jiJFkbI1U+HBIXtx8WREg84qF1Si960MYRLdIGxZxum6pGaES3nYu93
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -77,12 +77,9 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-OPEN Alliance 10BASE-T1x Serial Interface specification, table 6
-allows vendors to use any memory map select (MMS) value between
-10 and 15. This new API interface enables vendor to map one of
-thes MMS values to MDIO_MMD_VEND1.
+Adds selftest support for onsemi S2500 MAC-PHY. Added as a separate
+patch for the ease of review.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
@@ -91,104 +88,47 @@ changes in v8
 changes in v7
   - No change
 changes in v6
-  - No change
+  - Moved the signed off information to the correct place.
 changes in v5
-  - no change
-changes in v4
-  - no change
-changes in v3
-  - no change
-changes in v2
-  - Moved the handling of vendor specific MMS mapping to separate patch
-  - new patch
+  - No change
+changes in v4:
+  - Added a selftest as a separate patch
+  - First patch
 ---
- drivers/net/ethernet/oa_tc6/oa_tc6.c         | 20 +++++++++++++++++---
- drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h |  1 +
- include/linux/oa_tc6.h                       |  1 +
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
-index 5cbe049f76ef..c1774fe84ba4 100644
---- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
-@@ -250,6 +250,18 @@ static int oa_tc6_update_standard_capability(struct oa_tc6 *tc6)
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
+index 65bbcc1c7dc8..08e748d4b10c 100644
+--- a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
++++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
+@@ -5,6 +5,7 @@
+  */
  
-+/**
-+ * oa_tc6_set_vend1_mms - Add vendor specific MDIO_MMD to OA TC6 MMS
-+ * mapper value.
-+ * @tc6: oa_tc6 struct.
-+ * @mms: vendor defined MMS value for VEND1 mdio device.
-+ */
-+void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms)
-+{
-+	tc6->vend1_mms = mms;
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_set_vend1_mms);
-+
- static __be32 oa_tc6_prepare_ctrl_header(u32 addr, u8 length,
- 					 enum oa_tc6_register_op reg_op)
- {
-@@ -577,7 +589,7 @@ static int oa_tc6_mdiobus_write(struct mii_bus *bus, int addr, int regnum,
- 				     val);
- }
+ #include <linux/ethtool.h>
++#include <net/selftests.h>
+ #include <linux/phy.h>
  
--static int oa_tc6_get_phy_c45_mms(int devnum)
-+static int oa_tc6_get_phy_c45_mms(struct oa_tc6 *tc6, int devnum)
- {
- 	switch (devnum) {
- 	case MDIO_MMD_PCS:
-@@ -590,6 +602,8 @@ static int oa_tc6_get_phy_c45_mms(int devnum)
- 		return OA_TC6_PHY_C45_AUTO_NEG_MMS5;
- 	case MDIO_MMD_POWER_UNIT:
- 		return OA_TC6_PHY_C45_POWER_UNIT_MMS6;
-+	case MDIO_MMD_VEND1:
-+		return tc6->vend1_mms;
+ #include "s2500_hw_def.h"
+@@ -193,6 +194,8 @@ static int s2500_get_sset_count(struct net_device *ndev, int sset)
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+ 		return S2500_MAC_STATS_LEN;
++	case ETH_SS_TEST:
++		return net_selftest_get_count();
  	default:
  		return -EOPNOTSUPP;
  	}
-@@ -603,7 +617,7 @@ int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
- 	int mms;
- 	int ret;
+@@ -206,6 +209,9 @@ static void s2500_get_strings(struct net_device *ndev, u32 stringset,
+ 		memcpy(buf, s2500_mac_stat_strings,
+ 		       S2500_MAC_STATS_LEN * ETH_GSTRING_LEN);
+ 		break;
++	case ETH_SS_TEST:
++		net_selftest_get_strings(buf);
++		break;
+ 	}
+ }
  
--	mms = oa_tc6_get_phy_c45_mms(devnum);
-+	mms = oa_tc6_get_phy_c45_mms(tc6, devnum);
- 	if (mms < 0)
- 		return mms;
- 
-@@ -621,7 +635,7 @@ int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
- 	struct oa_tc6 *tc6 = bus->priv;
- 	int mms;
- 
--	mms = oa_tc6_get_phy_c45_mms(devnum);
-+	mms = oa_tc6_get_phy_c45_mms(tc6, devnum);
- 	if (mms < 0)
- 		return mms;
- 
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-index 06fe88f1ed7c..192cc2eaa041 100644
---- a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-@@ -127,6 +127,7 @@ struct oa_tc6 {
- 	u64 tx_hwtstamp_err;
- 	u8 ts_ttsc_pending;
- 	u8 ttsc_current_id;
-+	int vend1_mms;
- };
- 
- enum oa_tc6_header_type {
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 365abdbf60d3..88e7d5491b20 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -114,5 +114,6 @@ void oa_tc6_get_ts_stats(struct oa_tc6 *tc6,
- 			 struct ethtool_ts_stats *stats);
- int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6,
- 			struct kernel_hwtstamp_config *cfg);
-+void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms);
- void oa_tc6_ptp_unregister(struct oa_tc6 *tc6);
- #endif /* _LINUX_OA_TC6_H */
 
 -- 
 2.43.0
