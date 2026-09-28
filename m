@@ -1,163 +1,186 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388D8EADC
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A5718DB26
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 02:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790561918; cv=none; b=Hp/Ez+z4S/d2ncOTrN5rs3Eg464qZERjnJ1MEYDNpgzlUJYNyErPdyBPLUYHnC+qU3C44vTwOeAlLtlN5E716DH1kk1YqLUfu3dxJc9hV1sMBPOPC3KEVA0k/HqB/Zu2waEm5+yefe0tN8d/sBfwtFdmJgiwZEecnQcbHP4eR4Q=
+	t=1790562488; cv=none; b=rDwgjQV5oELGfeDbi9YBu0kIkBkUN2W9PmWOIY6cHI/cWhbQFjE9zNSPWq0KPhqtYlC3v6PrqBicfg92PEYIgnvdV0b9jZavDEJbazYwv9NAZxucjbISH/tUSYt+BTG4brwTZ1MlLd5oN5YLLj1NnifE4fHANKwVH6xnGHTk0Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790561918; c=relaxed/simple;
-	bh=dpHqYiLpdGEhlWJ1NnGL2UjLzICJpNOUDte/rX3eCuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pXb3bNHlNs3QFSr22vDQeKP9+0T0G1ygBW4TLsmlNXa7wRBv8QvxqDwrOvHIYMB3hGMhCYzHesE3UTg9+Y59Q9j8YlOa8zQvTkbnNeu8iiJpjOBYRy8nXGHIn5QrVQELG8qdT56it3es7oqwSC+i71+Sp/XNiU3RB0KmPvDFpoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMO3tmzx; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790562488; c=relaxed/simple;
+	bh=my6EIw6fL2RHtoLtIdGP5Xm3Wi74xrrvGHpEPMeYYus=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=igSGWAYKDbRfY6Zahs8vuU096gvB4XLKbnF1YE/j/LV/TV+eENA4+JU8OW8bnvhrCwvB+RUh/GappD9LeNNNEPBJ7KpafLfjWPeiEXnBGwg3SjB4WrAOj68ovhaYjsGxmTq13SKFrBClfzYEDgEW0TFcoUhTotA0UeeD8KiTDtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLO5GoXb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMO3tmzx"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e44so589078a12.2
-        for <netdev@vger.kernel.org>; Sun, 27 Sep 2026 19:18:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790561916; x=1791166716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zyPOBsQ95As/bAUQjJfBc5qcRWRX4ZcJs+UrgJwMK0U=;
-        b=fMO3tmzx+wW4IzshcQyYXfRC1CPTZkuxMUOBQz8RrCfHOMr5H07YXdaMZvf4sS8fIc
-         iFnSf7rWpXy/q9/s6mN6i3ndQD3T+8iEiNdAneK1/8d+5jbdT735W5f9bnd9NgaJS6Fn
-         TUVxX6Scy+NB58uPpXqVrBH/YXD+gLfp+hTGDZggm8KoulvxaCDz5b873+zZTGWgLlId
-         vf88xF96ZGyRRrWCs5vFW16lbV/zP7VmM31L/e4Sm5FnHyvskCvoGsuW2vxJEVDGinHy
-         lBuiDJiUGt3W7T6jWtTKzsBKY0vcvY5JTrbiOL4gCmouyTaKEfC4JjE8czmg4AtvypPf
-         8Zkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790561916; x=1791166716;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zyPOBsQ95As/bAUQjJfBc5qcRWRX4ZcJs+UrgJwMK0U=;
-        b=dOI4TbYFDf6z+zLZpHDRHKLRBLxBU98d5S3WL90kOZgjdUP7Ul+Re4YaCze+VsW4k1
-         hFUtCeIDf5ilObBEqbCMkpStU7D5L1vSDansiXz8e2vmlil3k52y6hc/8Bma8sMhBKUr
-         MacbrbK7dLl34kJnQmy092kO5Nj6l5vV34ZTbMmLrk/flT5VU3R0t1e7H3V8fCVO4J7V
-         djuCxV7Be6Ee2oy41jUA+SFI/cLRBIfB2z3LwjpjFB3BUTScW7oUOt723Wzpyv83mBfk
-         oVdwPU9utQNdZtetnSHS/RfqhGdXF7FL+31ReH04VrGV11nSC9ENkRZiXYRj1BiiEvE2
-         KsMg==
-X-Forwarded-Encrypted: i=1; AKwUvBwNk3DvKxCHlRxG7TXo3ktLpfRleGQ5H5wUwXiFBHK1A+9Zj2t78s3JGzGvYbqwecWvO9V/nrs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqvxjqVpxfmI7q0Pi6j7HZITEvz4yhpjK8GtUYShunq8bb2Nkm
-	rLc23utuGZMw1zS+9Hzu5egObsN5Iozq3jN2+VVkpcJESUzJ0PZeIPIf
-X-Gm-Gg: AYBFou3ca55JvbtGdaviWWJ7I2UlnhaZ/5jFQ/VqNB3kiK1XDF7FyYoK2vDyeQ7FFkH
-	90hwoaPIpnouiwLNAIXejM3VoE8w72pYk5EhDTCNgHUNudlaWUwawPwqv5Sqvbq3xOUum0t1XLd
-	+GFdKLzcu3PQmYwbyI9oR9ZBYCarpj1TNX0+qWZ7rYhQ1iq72C20/OATSg5WIp18UzYslnFkPRf
-	s/dC5U/BxHEUN399ttMeywink6QDYv+W/vwXQiwbP6B9d1YqbzC9FD/SuX1vToCfFYUUWjXGkS0
-	50QIC8AnJNab+peXv1q0dSadesxpwY4yZ+AGAFWN7V27Vd78Tugvm2VkDh+vPcR/xiXBnSPxZ5u
-	JOZfOb17AeXRHV+BTxrDiSsLvafKLkbCkf+ECCioTcvpT0WVIxMNCzQ06Y65cCb74DnevPxaSy+
-	7ePFl1qTtstFvOu5iwmTIz/P36zsC/RCSA9BRAxHosWcVIUGRACPWK+k4sZm5vm7WM0nmsn/BMK
-	AVB46JmK54psNoeJsFw2ay/QAn5NGd6njPAeAMgro3h45Q=
-X-Received: by 2002:a17:90b:4e86:b0:39e:4c7f:7306 with SMTP id 98e67ed59e1d1-3a098b8addcmr9157354a91.29.1790561915972;
-        Sun, 27 Sep 2026 19:18:35 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b94936ddsm17588500a91.7.2026.09.27.19.18.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 27 Sep 2026 19:18:35 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: tung.quang.nguyen@est.tech
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	jmaloy@redhat.com,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@vger.kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net v2] tipc: reject name table updates with invalid origin node
-Date: Mon, 28 Sep 2026 10:17:54 +0800
-Message-ID: <20260928021807.7945-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLO5GoXb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA041F000FF;
+	Mon, 28 Sep 2026 02:28:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790562486;
+	bh=WiZ7abzepVt4mwOrWBfGnoXCLdutKeB1HXhjf7h70YY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CLO5GoXb9G9yOfJLcnnhac+j8UPv5fAw9egA5uuke9Wji/46vS/Lp1beudvpRNCAO
+	 pXQJ43w5CorC/p+0ufMmhs0pcsO71XxFAoy9VBSJtGxdB0rNIAq9b4eP8PJbQ6Z0xK
+	 OjfB2a7TlQQQ1qja30gIdWMdHXgZQqPW5mhgkfws7/84fMjKkkoGIugkKNIaDwgQRE
+	 GZiQ5/xnFMSYEqEI9iYuVH/dq+3dbjeDxSo4H0Z/HOngY/T0BDYenYakx37a7Bj1UL
+	 /5Fqjw2vRJBocyBA2F7Yu6PgxUyjL5d94I3h4XMCxqywNBiRSoork23E1KXaJeG+Kw
+	 +L8w/2VlCISUA==
+Subject: Re: [PATCH net v2 2/3] net: txgbe: keep MAC enabled for SP devices
+ that support NCSI
+From: netdev-bot+sashiko@kernel.org
+To: jiawenwu@trustnetic.com
+Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ jacob.e.keller@intel.com, kees@kernel.org, zhaochenguang@kylinos.cn,
+ rmk+kernel@armlinux.org.uk, maciej.fijalkowski@intel.com, horms@kernel.org
+Date: Mon, 28 Sep 2026 02:28:05 +0000
+Message-ID: <179056248542.3145.695648739378132787@kernel.org>
+In-Reply-To: <20260924020149.30800-3-jiawenwu@trustnetic.com>
+References: <20260924020149.30800-3-jiawenwu@trustnetic.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-tipc_rcv() locates the sending peer using msg_prevnode(), while
-tipc_named_rcv() takes the node address for NAME_DISTRIBUTOR updates
-from msg_orignode(). These are separate fields in the message header,
-so finding a valid peer does not validate the origin node.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (2)
 
-For a WITHDRAWAL with origin node 0, tipc_nametbl_remove_publ() treats
-the node as a wildcard and can remove a matching peer publication from
-the name table. tipc_node_unsubscribe() then returns without unlinking
-binding_node because in_own_node() treats node 0 as local.
-tipc_update_nametbl() subsequently calls kfree_rcu(), leaving its
-binding_node linked on the peer's publ_list.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Once the publication has been freed, withdrawing an adjacent publication
-from the same peer can access the stale list entry in list_del_init().
-The following KASAN report shows this access in the list validation code:
+- [Medium] The fix covers only one of the phylink callbacks that turn off
+  the MAC transmitter.
 
-  BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report
-  Read of size 8 at addr ffff8880249c7120 by task a.out/9456
+Pre-existing issues:
+- [Low] At this patch, txgbe_mac_link_down_aml() in
+  drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c (lines 455-468) still…
+- [Low] The new condition in txgbe_mac_link_down() (txgbe_phy.c:185)
+  exempts only NCSI devices.
 
-  CPU: 0 UID: 0 PID: 9456 Comm: a.out Not tainted
-  7.3.0-rc4-00385-ga7bfaba4823e #81 PREEMPT(full)
+--
 
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl lib/dump_stack.c:122
-   print_address_description mm/kasan/report.c:379 [inline]
-   print_report mm/kasan/report.c:482
-   kasan_report mm/kasan/report.c:597
-   __list_del_entry_valid_or_report lib/list_debug.c:62
-   __list_del_entry include/linux/list.h:261 [inline]
-   list_del_init include/linux/list.h:333 [inline]
-   tipc_node_unsubscribe net/tipc/node.c:687
-   tipc_update_nametbl net/tipc/name_distr.c:311 [inline]
-   tipc_named_rcv net/tipc/name_distr.c:389
-   tipc_rcv net/tipc/node.c:2202
-   tipc_udp_recv net/tipc/udp_media.c:390
-   udp_queue_rcv_one_skb net/ipv4/udp.c:2433
-   udp_queue_rcv_skb net/ipv4/udp.c:2472
-   udp_unicast_rcv_skb net/ipv4/udp.c:2625
-   udp_rcv net/ipv4/udp.c:2697
+net: txgbe: keep MAC enabled for SP devices that support NCSI
 
-Reject zero and own-node origin addresses at the start of
-tipc_update_nametbl(), before inserting or removing any publication.
-Neither value is a valid origin for a peer name-table update, and
-in_own_node() covers both cases.
+This patch makes txgbe_mac_link_down() stop clearing WX_MAC_TX_CFG_TE when
+the subsystem device ID shows NCSI support. The aim is to keep the MAC
+transmitter on after link-down on SP devices, so NCSI keeps working.
+Other devices keep the existing link-down handling.
 
-Fixes: 218527fe27ad ("tipc: replace name table service range array with rb tree")
-Cc: stable@vger.kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-v2:
-- Explain the distinction between the sending peer and the origin node.
-- Correct the Fixes tag to the commit introducing the node-zero wildcard.
-- Link to v1: https://lore.kernel.org/netdev/20260731101657.29119-1-juny24602@gmail.com/
-- Review: https://lore.kernel.org/netdev/GV1P189MB19887144315DA4A6AF16FE02C6D52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM/
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> index dc9f243146580..d11f26dc13e92 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> @@ -182,7 +182,8 @@ static void txgbe_mac_link_down(struct phylink_config *config,
+>  {
+>  	struct wx *wx = phylink_to_wx(config);
+>  
+> -	wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+> +	if (!((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP))
+> +		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
 
- net/tipc/name_distr.c | 3 +++
- 1 file changed, 3 insertions(+)
+[Severity: Medium]
+Does this keep the transmitter on for NCSI boards in all cases? Another
+callback in the same txgbe_mac_ops still clears TE with no NCSI check:
 
-diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index ba4f4906e13b..a496e2e9ef62 100644
---- a/net/tipc/name_distr.c
-+++ b/net/tipc/name_distr.c
-@@ -286,6 +286,9 @@ static bool tipc_update_nametbl(struct net *net, struct distr_item *i,
- 	u32 key = ntohl(i->key);
- 	struct tipc_uaddr ua;
- 
-+	if (in_own_node(net, node))
-+		return false;
-+
- 	/* A peer-advertised binding with lower > upper can never be matched
- 	 * or withdrawn and would leak the publication; the local bind path
- 	 * rejects such ranges, so reject ranges learned from the network too.
+drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c:txgbe_mac_prepare() {
+    ...
+	wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
+    ...
+}
+
+txgbe_mac_finish() turns the SEC TX path and MAC RX back on, but not TE:
+
+drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c:txgbe_mac_finish() {
+    ...
+	txgbe_enable_sec_tx_path(wx);
+	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, WX_MAC_RX_CFG_RE);
+    ...
+}
+
+So TE is only set again in txgbe_mac_link_up().
+
+mac_prepare runs on every major config, before any link is resolved:
+
+phylink_start()
+  phylink_mac_initial_config()
+    phylink_major_config()
+      txgbe_mac_prepare()
+
+Resume and SFP interface changes also reach this path.
+
+Here is a sequence on an NCSI SP board:
+
+1. ifup with no cable. txgbe_mac_prepare() clears TE. The link never
+   comes up, so txgbe_mac_link_up() never runs.
+
+2. ifdown. phylink_stop() only calls mac_link_down if the link was up,
+   so it isn't called. txgbe_disable_device() skips clearing TE for NCSI,
+   but it doesn't set TE either:
+
+	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
+		/* disable mac transmiter */
+		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+	}
+
+3. The host interface stays down with TE=0. If a cable is plugged in
+   later, BMC pass-through transmit would still be blocked.
+
+Even on a normal ifup, BMC transmit appears to be blocked from
+mac_prepare until link-up.
+
+I couldn't tell from the code whether firmware or a hardware reset turns
+TE back on in this state. On copper, txgbe_reset_hw() doesn't issue a
+LAN reset.
+
+The follow-up patch "net: txgbe: keep MAC enabled for AML devices that
+support NCSI" only touches txgbe_aml.c. That means txgbe_mac_prepare()
+and txgbe_mac_finish() are still unchanged at the end of the series.
+
+When (subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP, should
+txgbe_mac_prepare() leave TE set, or should txgbe_mac_finish() set it
+again?
+
+[Severity: Low]
+This isn't a bug introduced by this patch. At this point in the series,
+the AML link-down callback still clears both TX and RX on NCSI devices:
+
+drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c:txgbe_mac_link_down_aml() {
+    ...
+	wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
+	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
+    ...
+}
+
+The next patch in the series, "net: txgbe: keep MAC enabled for AML
+devices that support NCSI", wraps both writes in the same NCSI check.
+This looks resolved once the whole series is applied.
+
+[Severity: Low]
+This is a pre-existing inconsistency, not something this patch
+introduced. The new check only tests WX_NCSI_SUP. txgbe_disable_device()
+exempts both NCSI and WOL boards from clearing the same TE bit (see the
+snippet above).
+
+This patch doesn't change anything for WOL-only boards. WOL relies on
+MAC RX, which wx_disable_rx() keeps on, and txgbe doesn't implement WOL.
+So I don't see a functional effect.
+
+Is the difference between the two conditions intentional?
+
+[ ... ]
+
 -- 
-2.54.0 (Apple Git-157)
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924020149.30800-1-jiawenwu%40trustnetic.com
