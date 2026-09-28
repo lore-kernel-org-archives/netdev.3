@@ -1,121 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9509228DB55;
-	Mon, 28 Sep 2026 07:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85DD378D74
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580687; cv=none; b=bcNfTtDCZfX8DDpM5sldWrKyxVDnuYrXmFwdgzPNkOb64GTP6FVYnmDR9tfEAn3QQOaEwAWwCKW3MyRC3oxE31h0xbp9y2AKNSBMb8qJ+zBrZRIl4SSyVv1agKtBxEHIIIZlyqMLAwq1ztP9PQe55upgfQww7zIaaO+DKOVqlv8=
+	t=1790581384; cv=none; b=Lqc+NCemorvVfFPTLXBhb6fEJT32qZIePOJIfR7MtfGw/d3Laf/qBE+8RS/YHdmVxnB+7AMVSpi62Mvd4m/eydCoHqZvtqIhBloj6Jt1zlxl09/srW19jo+FdpNb79nlYrbV3+3adHymQBMSxkmPBbq37K77h95axOPPNR3S4J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580687; c=relaxed/simple;
-	bh=Ca9sZ4RBLOYv0TdqAiJl97XpGIudxDx96U1gD4wT5Hk=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=knb1EUebGY9k1fGeizw8SYGRtvxJghdKwK0EIorfhITtTqmDdDo54d0m39SU/4jj8G1nscZaBZPAHQHxiTSsYqVz25as/tWDQDxALKGXsmO2YWV2PptGcbkIEW3qHYW1xSezriAMQZxyxMD4PWFXXlQvCIta+brkOAham0K/LKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlNvvELL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790581384; c=relaxed/simple;
+	bh=lmGXDbYVJ4P/Gl0CZ3e6mbtv65rIVdEbeZHx2e/i/nM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7JDRTIxVm5/de0NhHKbZB3BLjuFXWOMAiOK22hshA0qIkUrWX5oip5ktPwDNQSpiupQ0Z/CsJAJu7m01DP2diCIVsZl7YjhW5Sfde4VvxjKsV7zb+DdQppk+blXa3Chskmhas3AcnbSsxhoP4N1R8wNk6FkAc6AjiwNM1cAyY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=omOS5BWk; arc=none smtp.client-ip=74.125.228.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlNvvELL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1861F000FF;
-	Mon, 28 Sep 2026 07:31:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790580686;
-	bh=eUkQZnFeJ7aRQhuoiAx/6V9HaJwecxUtJMzNDOUByhI=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=nlNvvELLQetkR33rdbttAnu4L1qLqJERdAp3Lql0uneIYMjLpl25dXtbCJTzu7mxw
-	 E+IeQrkVozoIhK/y7PJ9Sjl5/ngEQsVaRQDjXaGnpPAdIimdL9TDTjSYISmJqpUMwB
-	 I7x/PEEZVI2K/WUHJrebBNztLY97PeeLfo0JrGG4PP/yrfUaardojyoTB5W8Pu1+TN
-	 DANSCnB/+lm1GcJm506WSNAFS50VeGCDfd84+FFHqe9zN+nKKjPSwP1f44swhsWaKV
-	 jHK1SFF6iYjMwl8BVkoSEo9IceMNzkfNvmNXoLzCNbOwUvnJ7ycyqqb4GvLOIbRBP/
-	 IYyt0IOB6A5UA==
-Content-Type: multipart/mixed; boundary="===============1352127693393188869=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="omOS5BWk"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2db9cc3b45so153443066b.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790581381; x=1791186181; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FP+gLOszNdkYTUHyCbw8OXVGoIovDektjO/Dfou+tRs=;
+        b=omOS5BWkwlX4ewc3ESkuJOiefR/2MFY+cgnUQOv/0FEsbULfyVzGRlBGMi4rgoUPVw
+         ppqu/uqYXOTFL5RKgOdUMioQ3hGdbQvMpJjYw1p3rUUye6pjdnn0MCFafNKuGhiHeAEv
+         HWH8QmfRzWiVRv27mJ/rLPujU71W1aFWvoKaWz66r5GwFp4A/w1MQBJB8pWPDANBZEqJ
+         iaxltmCCvLJN8YQstdAVyJJuIXPhitUF8qNby2w0Jz23ldS3OnoW/cEJxAmGF3MTaqUt
+         ZfjoGLDjXnGPmkm8MVd4A0Kpnk5DrhQDRkYuRcBgHa3/yPv3dMI6Aj9VYaUjHTLTtQt4
+         Oy1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790581381; x=1791186181;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FP+gLOszNdkYTUHyCbw8OXVGoIovDektjO/Dfou+tRs=;
+        b=T+rWtOwl5A55Bcef2jwV6k7av0umtA2fo8BMAz3NbzFEQ9ErPlEe+rD1G/+5Yqsfo+
+         Nsas+ZziCQhCTa5XA9Bcvvbo8hkqUNqcedKY1TwDo2uQZGqFuJBeLrAwyo6rqXZdiTVG
+         Q0kWG7rF8F2akZfyeFTf9NZubM428Cgv2MGJweU/Ahtmjw5LAxwfuOxZ3VZPW+mJ8Og0
+         2aA5UpngUP4hkOSHUaGrLJFe8vl6do0mo3WO1c6bGE6sErwBxRGYiJBQfNfYXD2wJeNv
+         sXiv8TxF2Itvq+c3xw5v1fVttHgyXZRkmBWkejkcVa87NnSgRQm731lpOFidRd2WrOwW
+         pXdw==
+X-Gm-Message-State: AFq9FYIX0Fh1dTZVjTk8fxmL19w+I6fZvYQJJk+z34OZxHIFTxZgwzpj
+	2D8mPdrhLR193nIaz/iG1E869LA52ppjiGp0zxyna7QNH4TLJarU2OCnXonMruR/
+X-Gm-Gg: AYBFou31/vkl1k7eG6xjRguFJGI+Yw0473SfdXVT8Lnoa6jzdCZzQRiA/lN1GhP1fOe
+	dppUR0A2q6W6tX2WhU+pD7wUO3dCFOhbCdyRuiMFb5Dm6hUh91BA3sa5KaNhz35lCcPh/0XBd+h
+	2LPpQ/AoppIrgdQFmnErodWGliYeNPXcGoulS7GyvYLzGf1dFP01c59Dvrn+0VLaIe8z0VC+itp
+	ve/CiBXi2NeGjHF+9f8W2F7ZobPkh8VIUrWlC+qEC+21SJrSpb2A1nyFHigyjLUZrMEnf1no58A
+	o3bf7NzJnaBp9N9Jy0NP273Hc4/hjLaz+PEdQBRCtDPmJp5v14B2TqU19T2TfR27Njvjvs9s8/8
+	q674GF5DRg8lIPSLgA16sX7Qq2qRPfweEGvYoIdx10MPNeoTCo5OG26jKzHWmoeDb5K1MlhQph/
+	AUUhfrGNPigp90DijG6edmoTO8LE0yc3o8IEsbHUoiI2bslvq11uLMbdLngy1mgz+/V3R1Usdhd
+	oQ6Iw3UpJdpiqFMnWWzR/IfMxDWyjG7Xm76sirn
+X-Received: by 2002:a17:907:1888:b0:c26:19de:9ae3 with SMTP id a640c23a62f3a-c2ac25ed786mr991954666b.34.1790581380877;
+        Mon, 28 Sep 2026 00:43:00 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae76ac760sm419415166b.39.2026.09.28.00.42.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 00:43:00 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux@armlinux.org.uk,
+	vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net-next v2 0/2] net: axienet: allow instantiation without a device tree
+Date: Mon, 28 Sep 2026 10:42:54 +0300
+Message-ID: <20260928074256.462345-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <1b9e3f19e7883e9d62c2d4c7de0fbaa17017346d92943e36a17704f7a68864ef@mail.kernel.org>
-In-Reply-To: <20260928063724.24008-1-hui.zhu@linux.dev>
-References: <20260928063724.24008-1-hui.zhu@linux.dev>
-Subject: Re: [PATCH bpf-next v2] selftests/bpf: Add bpf_proactive_reclaim test
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,david@kernel.org,baohua@kernel.org,geliang@kernel.org,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org,netdev@vger.kernel.org
-Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Mon, 28 Sep 2026 07:31:24 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============1352127693393188869==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The ADVA TimeCard X2 is a PCIe timing card driven by ptp_ocp.  Its FPGA
+contains an AXI Ethernet MAC with an AXI DMA engine.  The plan discussed
+on netdev [1] is for ptp_ocp to register the MAC as a child platform
+device described by a software node, so that this driver runs it rather
+than a copy in ptp_ocp; Vadim Fedorenko agreed that a platform device is
+the way to go.
 
-> diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-> index 2b883b388f90..5621ef94ad7e 100644
-> --- a/tools/testing/selftests/bpf/config
-> +++ b/tools/testing/selftests/bpf/config
-> @@ -57,6 +57,7 @@ CONFIG_LIRC=y
->  CONFIG_LIVEPATCH=y
->  CONFIG_LWTUNNEL=y
->  CONFIG_LWTUNNEL_BPF=y
-> +CONFIG_MEMCG=y
->  CONFIG_MODULE_SIG=y
->  CONFIG_MODULE_SRCVERSION_ALL=y
->  CONFIG_MODULE_UNLOAD=y
+These two patches are what axienet needs for that, apart from one more
+change - letting the DMA device differ from the platform device - which
+has no user without ptp_ocp and will be posted together with the ptp_ocp
+patches:
 
-[ ... ]
+1/2 reads the probe-time configuration through the device_property and
+    fwnode APIs, so it can come from a software node.  No change for
+    device tree users.
+2/2 adds a MODULE_ALIAS, so a device registered by name autoloads the
+    module.
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-> new file mode 100644
-> index 000000000000..d642658a2198
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+Both were tested on the X2 with a local ptp_ocp change.
 
-[ ... ]
+[1] https://lore.kernel.org/netdev/CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com/
 
-> +	/*
-> +	 * Charge FILE_SIZE of page cache to the cgroup. Reading rather than
-> +	 * writing keeps the pages clean, so reclaim does not have to start
-> +	 * writeback before it can evict them.
-> +	 */
-> +	if (!ASSERT_OK(ftruncate(data_fd, FILE_SIZE), "ftruncate"))
-> +		goto out;
-> +	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-> +		if (!ASSERT_GT(read(data_fd, buf, sizeof(buf)), 0, "read"))
-> +			goto out;
+Changes in v2:
+- 1/2: convert only the four lookups a software node provides:
+  xlnx,rxmem, phy-mode, the MAC address and the PHY connection.
+  xlnx,switch-x-sgmii and the deprecated xlnx,phy-type stay OF only, as
+  Andrew asked, and so do xlnx,txcsum, xlnx,rxcsum and the "dmas" test,
+  which the X2 does not use either.
+- 1/2: v1's hardware test was not re-run.  The X2's software node sets
+  none of the lookups that went back to OF, so each finds nothing with
+  either version.
+- 2/2: unchanged.
+- v1: https://lore.kernel.org/netdev/20260927073843.346910-1-maimon.sagi@gmail.com/
 
-Could this allocation method cause issues if file holes are mapped to the
-zero PFN in the future? The read() approach assumes that accessing a
-ftruncate()-created sparse file will allocate page cache, but if the kernel
-someday maps file holes to a shared zero page instead of allocating backing
-pages, this wouldn't necessarily give us page cache to reclaim.
+Sagi Maimon (2):
+  net: axienet: use device_property and fwnode APIs for probe-time
+    config
+  net: axienet: add a MODULE_ALIAS for platform instantiation
 
-Barry Song suggested using write() followed by fsync() as a more future-proof
-way to ensure actual page cache allocation, which would also allow removing
-the two lines of explanatory comments above.
-
-> +
-> +	args.cgroup_id = cgroup_id;
-> +	args.size = FILE_SIZE;
-> +	skel->bss->reclaimed = 0;
-> +	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-> +				     &opts);
-> +	if (!ASSERT_OK(err, "test_run"))
-> +		goto out;
-> +	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-> +		goto out;
-> +
-> +	/*
-> +	 * A single call is a single bounded pass: it reclaims something, but
-> +	 * stops well short of the requested size instead of retrying until the
-> +	 * goal is reached the way a write to memory.reclaim does.
-> +	 */
-> +	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-> +	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-
-[ ... ]
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 22 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
+-- 
+2.47.0
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/36389535910
---===============1352127693393188869==--
