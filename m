@@ -1,120 +1,166 @@
-Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6A4E50D9
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790617381; cv=pass; b=jXFQyYUFQRiwkoVUh4vT+6cUsQutzvvAtSq0Bub39dMoCEI9Si0QXNwUIlaAuwTp31Z0F8cnMwO0ZcUxZsb8DrsJiocfMWhRoy9IQ5/ygmdaeIQl0mtWTgptzJxQGvqpcwYzvLdcpEfweGDMi6irg2N+cvbUpEEcBQbJAF9P/Tc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790617381; c=relaxed/simple;
-	bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qFiP3W5+4GjfscyByt2gp5cTjtmh0IEwQHpH7bRJoIqMWaIoLJ/+Br2+PfHZ0y2bEesufsbBLV5Eb5JJIUBnYDgKecICntPrG9s0NLhmqCG2K8JVA+F/6/U2mV9wc7Ow4G2HEQ7rx6tW1X72i5K9VGC8Tzz8THhYdqgZoCjH/vw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BiydTQbP; arc=pass smtp.client-ip=74.125.230.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C344DD3D1
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790617548; cv=none; b=Ul6HEG3+8JAOK8+fiOJvrI9/dLr3yFGjZBb0BJI3a/NEaUWYZdle0fjp2sFJRGCY+OzAW2hLrRaJyRnCzr3lMl5Sx3xWAA5KbxnWvJejTwl3Z3yz/zI20KIxgxq01tLvm+vWY1BhoJeFarBNZCikKAlYwo+aFeWoisAmCVn5zjQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790617548; c=relaxed/simple;
+	bh=RsVbnR0UtECwZn1WfCNNpKAP7w5m36r3ODk/PEWCa4I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fli+tmK1OXhu9J+KfufM+BTNe9wJplCurUR8Oik73WMIvm22/gUqzig93ox/1FfFAbJj4np93dlNZt0Lbwz1H/WtmKDzxXTjO11c/tp6u6CSyfPqxdyddH8LSZZYppktw02HpSSsorObi5NLNqKLYtFPXryopuR/0bsXLZpQfHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s8t4jzFA; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BiydTQbP"
-Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91434eba587so32709386d6.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:43:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790617379; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WOmFN09V1/Xk4xVJ2Q0Tg9ESUPjbPeGYUWB/6j1U2/wBflXuq0uFx/mKByGAI1yBsF
-         zmydBcIQXRZyRQs9J86f76mX9hh4jf6qhtgjTOfG/VeSJ7EccsVTsj7rPRAkfcO46jri
-         qiNlxXnPqE5sqWFoxQZIrBLjclAl7HJPTB+KQJpoLY1O9AjYLnHQqfgf4CV+YVI24UUc
-         swWI4u5OTpw8JPO38SGNWaXERwiTb8K26N8MQGjtMrsly5xktgOT+9sfajLMEr8VHg0U
-         40m0uG/nU55Ui95oS6yxnmVZTmVyiBEfEpkH0ch7pMUnQX1FHlwjxGo3vr/gunZBZYj+
-         QKJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
-        fh=JawWCUzA618jMjYbRgB/cX/mxOjTcLKhHRlnVIZwBJI=;
-        b=ZGfPiy8+ittU18/ePygs9eLilqYQSmxwnzkoY2gnsDklNI4MtZjmwMDBvkYSlPjcLf
-         PasiDbRNjwxqoma5UalHCQPv/k2Xb0dKeaWFYGkIi2tBVm0nr5crwNJ7NoBhr4Wc0CaK
-         I+ujEjdF1cRrSLMGjjdh6AtBvYJrG6WP4JcfVwgzmJhhqIRgO78IlVeU54WTbrfV66kH
-         GTbHB8J9iOquNeomGF3zu17HLSP2+RJiYAtzi6mH3xi18H60Iv/Uob3H82xAJT5lO0ei
-         w2lnPGB1fod9PMt5hoW0YgovuCDgwGiUCUyFHIxMJfyt+dQzU1aajrWEsqKOrvD5c8Tr
-         JKkA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s8t4jzFA"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39af92138f9so132863a91.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790617379; x=1791222179; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
-        b=BiydTQbPOeAdEz0U+bzGEnx/hSE1k6ewf4aMRoMI/2XZlXpRXLQclvnvxsqPdEQG/l
-         h00rCmCFEAO7p6193k7t3r5BZ1/uO5vFJ5jRnNpc6euCKQQlYo9cFwDBrPle58+YUDCs
-         RnFFe7BesbeSIbde3fl4loiPTl6ckapSOxjdF/Hm62pwMLuubtuuu0w/cUqYRZwH4RkB
-         WAnf4uaBNuRDmMPQ4pP7M7m6qetqPjewMQqqtS5yhRLeQp0p+0YmTq8SVNnDv20jZdL7
-         9rJ1N8jll8Y1mcwGYYgd4ydjInK4EFedd6RZAYWyRalLFLG9X01Vmslp3yvMjQCC+VDS
-         /rYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790617379; x=1791222179;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790617547; x=1791222347; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tBMm4XuAu0hAMOVLllg1YwkUSfbdG6RXoepaWP9ckQU=;
-        b=L/7O/QIe8Ux/hm1WoHA9oUuDqyK+I//JdDjhHhJVzeERhKptGz4lQt1c8eh2xOexOi
-         92YywmBVOuKL0sYoK3JVXGXEkf94sUAXLFAzZXmd4G/84Hc6+AE+RiB9JMiKQ0pC1ORh
-         ZqFSnsJLMvQNxfh7sSIg1mGijf9PQ/xuV2MaAdC7W6brabD7RoHIAq7gB8uSSvVH4gCF
-         lGam6k/plA6GCknty83wQ5tDIANeuYjk3Q7dSL1oFbE4jcOG+23UM5/J4UrgyN8DD1rr
-         YzvcK/zq2rSZ3krG7lZI/Ymb9gs8BVacO3kigoG6iOp4b7RaDjwXEWBVjQgF+4+v3ofe
-         KYQg==
-X-Forwarded-Encrypted: i=1; AKwUvBzOYcNuuPd/v8k0E9kmWnEHMiFPaOAS+iDC2XWkbPfPNJHjPb8rwt+XiKb4OLTI1YAZHs0UDFA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKifvBPV7N7uwf4n9e8gPKwwWW8lm0QZIPopY+uT9gwSTxMM+Tb
-	wGKoyw53/TQAiojCUSslliMiz3OBjubSaM8UmDuZxX5H9yrgMQzh2HXkHaGbj2VNL0KUFkq5MKn
-	6IACXj9BSEddnjpHG87J+myqrKThqTIKv00ZkXaYj
-X-Gm-Gg: AYBFou2M1jaPIhFOpAsbF4b1l+u+zHR+V+VsrWr9GzAzY9yNAh2Sdx+gu+DDPFYdUA4
-	WiyGsV2yDH8zod3pvbUOeIZcWbF3MuG3g1dsaF6WeOdfZj7SHYx+JYCs+nAfikggY661wie8Rq2
-	O5+Eq0OKUZT9H1OghekhxqSO4KoTMZi8Wylp+vZUBMX9dDBAqXCcuk+eui3pYQC+fj3IcdqA7h3
-	h3N2QAkqLf8T2IkPj7luRlNgqObHr8dmREF5XPd+q80kYCPqwfE/dBdfaMr+zVKw2FafqFQmVlz
-	qLvw+1Rl9gUYC8ADEFJIioj/5BTtvbUXb6O9f7klMBt0mS3UR96HKce3+0ROrthhwuguu/JZ/ro
-	LqkzBd+geigmdLD7Q0bAVR0fawWaJVEXTY+qwxuJUjw==
-X-Received: by 2002:a05:6214:21a9:b0:910:2f02:8c46 with SMTP id
- 6a1803df08f44-9143222edc2mr218567806d6.14.1790617378675; Mon, 28 Sep 2026
- 10:42:58 -0700 (PDT)
+        bh=/WI+uqjCP32lvx9Hh4Cxb0Uvk0Dah2pSWZwhm+yPsGk=;
+        b=s8t4jzFAYIORKUOMxQbGy3KmgwGz0kKxP6tOgKmDIlHmUQ9oy7gMeTm7qFfDPdaPNm
+         oV5D5FsStlp1M5kSnXP3lp8iRgvZQ7ATxAD6d8UPhzCthJKC5zwfbBz4RvoT+NC0VkUW
+         rIGRMKh7mJukjTQuV6uVoh6eBH9mNPFZkFJGfwFQCNvhjLyleGLnVV7SPwEDnEy/dqnY
+         5s8lZ7nIZcHTF+vm2mFGtFvmSm2CrwOlBHDB4WL8Mjl2vrviVshBT2zu8gRp9FVLqgg4
+         ev1doXpkVBv0yuBDPRF/+538ec/lZ0Hp6kcGg0yNwKW3yFAlV0x68vel/dMwlX5cjSDS
+         berw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790617547; x=1791222347;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/WI+uqjCP32lvx9Hh4Cxb0Uvk0Dah2pSWZwhm+yPsGk=;
+        b=judREFRsEzalClhWcB4SwNw+q2zrv+qbXcSGpHQSI6ewmSJaubswcaYcxcQzSW8sSO
+         Tdl1OjfgXfiCXw/Y9s294SIs17wiPzM3z+wQz/clTpe908wVSMtxQRYiFzH5WzVzJFOE
+         imRM9Cee+S/fKDOxEGvP70xfuUVNgNLuf3hHsvEZoC4WmFMsNS3eJiBud3InrqLm4jck
+         4cGPngXhVNpEzR9dp09C1mS1Gon/It/I5g62QcZ0q+Nxr/BE41TZm+lo07LyJ3ONGgn7
+         sMYuooHczfmvzUjC+sbyusP1HpkNdo2AWa+m1n/+htXF1puQQ35QQoo01pTTNyRXrYL5
+         ESPg==
+X-Forwarded-Encrypted: i=1; AKwUvByzZlIClEkihVOYD+9HP+RVdg4MbfecO5Ujf+MOaJsg23ADKAN/BYcOabanogyjKAVx9Htir3k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJieFA7xTRWvi4gUpzNgypqEjO/7w+QrLCfFeUb4lfyO3H+NMyo
+	gJpzlsLao5vUYJzdvYDdUWydYUAVsMFfsvnLyO8Urxtv0rEatY5Iwpq/hoII5ddM6lOBh8K1lm7
+	Xy1MssQ==
+X-Received: from pjbhs10.prod.google.com ([2002:a17:90b:200a:b0:3a0:e233:a080])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:37cf:b0:3a0:cca0:4a8c
+ with SMTP id 98e67ed59e1d1-3a49ab4ecd1mr69880a91.7.1790617546538; Mon, 28 Sep
+ 2026 10:45:46 -0700 (PDT)
+Date: Mon, 28 Sep 2026 17:45:04 +0000
+In-Reply-To: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <6a73d174.5aeeccc9.207e63.000c.GAE@google.com> <6ab29768.514bccd6.255447.001e.GAE@google.com>
- <6ab8c8cb.e548f532.1ca396.0037.GAE@google.com> <arjO9qbNdbvdi7ao@gmail.com>
-In-Reply-To: <arjO9qbNdbvdi7ao@gmail.com>
-From: Pimyn Girgis <pimyn@google.com>
-Date: Mon, 28 Sep 2026 13:42:47 -0400
-X-Gm-Features: AclHuK-qpUM45iPuLgTgCnMsb-qo1Qn6VReor2uYb0e5oZPZ4T_26Jl9lysMnJ4
-Message-ID: <CAJWNTGzZ5=bBUzsAhaLLqNE0J3a_tj9BB0OvHhOaaWR8xn9S3g@mail.gmail.com>
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
- (2)
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Cc: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>, 
-	davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+References: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260928174546.4022833-1-kuniyu@google.com>
+Subject: Re: [PATCH net] soreuseport: Fix use-after-free when a socket is
+ added to socks[] twice
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: norbert@doyensec.com
+Cc: daniel@iogearbox.net, davem@davemloft.net, edumazet@kernel.org, 
+	horms@kernel.org, kuba@kernel.org, kuniyu@google.com, 
+	linux-kernel@vger.kernel.org, martin.lau@linux.dev, netdev@vger.kernel.org, 
+	pabeni@redhat.com, willemb@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 27, 2026 at 4:14=E2=80=AFAM Jose A. Perez de Azpillaga
-<azpijr@gmail.com> wrote:
->
-> I just don't understand why it is failing... :(
+From: Norbert Szetei <norbert@doyensec.com>
+Date: Mon, 28 Sep 2026 19:22:38 +0200
+> reuseport_stop_listen_sock() moves a shutdown()ed listener from the
+> listening section of reuse->socks[] to the closed section: it removes the
+> socket with __reuseport_detach_sock() and adds it back with
+> __reuseport_add_closed_sock(). The return value of the removal is
+> discarded and the add runs unconditionally.
+> 
+> The socket need not be in the listening section. inet_unhash() calls
+> reuseport_stop_listen_sock() for a listener whenever sk->sk_reuseport_cb
+> is set, but inet_hash() enters the reuseport path only when
+> sk->sk_reuseport is set, and SO_REUSEPORT can be cleared in any state.
 
-Hi Jose,
+This has long been a known problem, and I think it's time
+to fix it instead of working around it:
 
-For future reference, you can send the patch as a text file attachment
-with the `#syz test:` command instead, which will avoid any parsing
-issues.
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 2948dffcc3e1..a33cdf99368d 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1324,6 +1324,8 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 	case SO_REUSEPORT:
+ 		if (valbool && !sk_is_inet(sk))
+ 			ret = -EOPNOTSUPP;
++		else if (!valbool && rcu_access_pointer(sk->sk_reuseport_cb))
++			ret = -EBUSY;
+ 		else
+ 			sk->sk_reuseport = valbool;
+ 		break;
 
---=20
-=E2=B2=A0=E2=B2=9F=E2=B2=93=E2=B2=99=E2=B2=8F=E2=B2=9B =E2=B2=84=E2=B2=89=
-=E2=B2=B1=E2=B2=A3=E2=B2=85=E2=B2=93=E2=B2=9F=E2=B2=A5 - Pimyn Girgis
-Software Engineer
-Kernel Dynamic Analysis
-pimyn@google.com
+
+> Clearing it between shutdown() and listen() makes that listen() skip
+> reuseport_add_sock(), and with it reuseport_resurrect(), so the socket is
+> hashed as a listener while it is still in the closed section. On the next
+> shutdown() __reuseport_detach_sock() does not find it in the listening
+> section, returns false, and __reuseport_add_closed_sock() adds a second
+> copy of it to socks[].
+> 
+> sk_destruct() calls reuseport_detach_sock(), which removes one of the two
+> entries. reuseport_grow() then dereferences the other one, because its
+> loop runs over every slot up to reuse->max_socks:
+> 
+>   BUG: KASAN: slab-use-after-free in reuseport_grow (net/core/sock_reuseport.c:291)
+>   Write of size 8 at addr ffff888132359988 by task poc/621
+> 
+>    reuseport_grow (net/core/sock_reuseport.c:291)
+>    reuseport_add_sock (net/core/sock_reuseport.c:350)
+>    inet_hash (net/ipv4/inet_hashtables.c:810)
+>    inet_csk_listen_start (net/ipv4/inet_connection_sock.c:1359)
+>    __inet_listen_sk (net/ipv4/af_inet.c:225)
+>    inet_listen (net/ipv4/af_inet.c:247)
+>    __sys_listen (net/socket.c:2014)
+> 
+>   Allocated by task 621:
+>    sk_prot_alloc (net/core/sock.c:2246)
+>    sk_alloc (net/core/sock.c:2308)
+>    inet_create (net/ipv4/af_inet.c:333)
+> 
+>   Freed by task 0:
+>    slab_free_after_rcu_debug (mm/slub.c:6570)
+>    rcu_core (kernel/rcu/tree.c:2919)
+> 
+>   The buggy address is located 904 bytes inside of
+>    freed 2624-byte region [ffff888132359600, ffff88813235a040)
+> 
+> Only move the socket to the closed section when __reuseport_detach_sock()
+> reports that it was removed from the listening section.
+> 
+> Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
+> Assisted-by: LLM
+> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+> ---
+>  net/core/sock_reuseport.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+> index 29948cb44b7d..031b641be317 100644
+> --- a/net/core/sock_reuseport.c
+> +++ b/net/core/sock_reuseport.c
+> @@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
+>  			 */
+>  			bpf_sk_reuseport_detach(sk);
+>  
+> -			__reuseport_detach_sock(sk, reuse);
+> -			__reuseport_add_closed_sock(sk, reuse);
+> +			if (__reuseport_detach_sock(sk, reuse))
+> +				__reuseport_add_closed_sock(sk, reuse);
+>  
+>  			spin_unlock_bh(&reuseport_lock);
+>  			return;
+> -- 
+> 2.55.0
+> 
