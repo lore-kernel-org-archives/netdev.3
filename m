@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A70947141C;
-	Mon, 28 Sep 2026 21:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7B747ECC2;
+	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790630371; cv=none; b=ovLrYxYlfKzIzQjNoWZo5NF0i7+lsIeNkkTVFpMX8CLo1Ly8GyzEZbfp0aaY8JE4xSAUhhkFWIGoPp+hUbeQDoH7zXM2e3DA49q/HPuuibvb/jPfhgeYqN++Ph9GNd1hBqDw3AnZQ34ocsmHjskQEx1QnEHioxm5J3DC7+IB6pc=
+	t=1790630371; cv=none; b=S+UnDP0RRocTXeeTr6ikCmimjmgq37Aw/p1Stuv5GiAPyjw0McM4JBeepF9WaSHXZfjwMYx1BFXMfIIsKCvXO0bZXU2sgFQCprJ0/f8zw1cU6oVNdOSacuLJnDJaecuX9mCea+gRCuNc3eGl58JeRhc2Jj99E//9vqY68DDQ7Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790630371; c=relaxed/simple;
-	bh=7SYgDh+LGJS5bZnPuhGNBV3A3QhKDfKMMjmZEgL9O+M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=djk4eWVfaENkk18/y/Ix4eN40s0nUZ1JUVRgUWCTAuDxGLHPSUm4h8ONy61V44ufeB3MUMAQpHc0P0tAq75G8LbtJzxitbb9AIq/IXneyX/hKmqCUcXyvaKkonlO4mmgzn3nc8fk5EsFm65DySDuDt2XxlSeUSXs3lP1Aptk/Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKOEeAin; arc=none smtp.client-ip=10.30.226.201
+	bh=iRVAveAkN4lPEVWRQS+tEuxrYtH4+i3EDxsR7o9RjZ0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mEbP+TTZdLY3p8L/XzUFLQ2lDOLo9cm6tspCHdEztqAWP6Xjx6v7ybTlwkqv5r/n9WNiNaQw3CkPQPzXfCOJO9Z9vJ1uRP3qVvbSo6lDjg92dOJrSGbdZc78dp8d2dGGO7d7yYUdz7ISd0TwSpOzrH0rq8Zwy2g2VCglu/2//3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0CyNRPW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKOEeAin"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C4419C4AF13;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0CyNRPW"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A38E0C2BCB3;
 	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790630370;
-	bh=7SYgDh+LGJS5bZnPuhGNBV3A3QhKDfKMMjmZEgL9O+M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hKOEeAinOvYV5G4AsPpLzCF+7QwYjI6MwIaqgYR0rrSqABM4wH9s4sNyXMPk5Bv7P
-	 JUmkudg3ME7RrqnzvZF2LN1IDhdEJVsSFdM9qlAHiAHhi1Gtezeedv411WwJf1o+bI
-	 Qx2SAP0H6Fqfv2T3BPEfsNQj/nDy+pzB26aFlLCPjPTPSxF7ios1FPGWOXjM/rXLkS
-	 9yIEQacd9vZmYzKjvrcjGA2Mptw1BvrsoX533cEzq3cUu/SxhGIHBUICMUxxzazwB6
-	 PvA1MQ7CJp0Sgp/U2nq5NuDknPo0254VPshg3ja/XEgAMHLZb9LY9PKpy2IZtTdfCU
-	 qVYCP6kL+uTlQ==
+	bh=iRVAveAkN4lPEVWRQS+tEuxrYtH4+i3EDxsR7o9RjZ0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=I0CyNRPWVju8Nn+IXfpyxbOiw43JbQhnsuXu7zcxRKw8eUCEqrHZahhLMEF3VBQ86
+	 SDFvoRPHJs0qFv+Mnfc9fuPrJbiQrGEoCN00bqg+1VTXyYN4AMvyiOu/+qYlCl3Rwx
+	 mN60o6OhBpHRE/KC4nEKp7AbqpXvCEy2YEYEm+OfcPWp1YpbZi74oHjGJpUHHQtGye
+	 rWiA44I4X3Gq3Hbq4+sA3Hh5nR/1e6VD4ZzYHBTslBPC8yikNkuuibybfhN3gw2RWU
+	 N3EovUHZDutJnLWui3UYa57yi/nLqrhUDcdKTd/303tzYDpThEsVt/Ff+IjD7dz2dJ
+	 AXdPsy8q9R0+w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3E19CA5FA9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DAF6CA5FA3;
 	Mon, 28 Sep 2026 21:19:30 +0000 (UTC)
 From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Date: Mon, 28 Sep 2026 14:19:04 -0700
-Subject: [PATCH net-next v2 2/3] net: pcs: rzn1-miic: Fix miic register
- initialization loop
+Subject: [PATCH net-next v2 0/3] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+Date: Mon, 28 Sep 2026 14:19:02 -0700
+Message-Id: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-miic-validate-dtb-v2-2-1ee3d33748e9@reliablecontrols.com>
-References: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
-In-Reply-To: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
+X-B4-Tracking: v=1; b=H4sIAMbZumoC/22NywrCMBBFf6XM2khM3678D+kij6kdSBNJQqiU/
+ ruhuHR5ONxzd4gYCCPcqx0CZorkXQFxqUAv0r2QkSkMgouOj6JhK5FmWVoyMiEzSTE160bVA1f
+ 9IKDs3gFn2s7mExwm5nBLMBWzUEw+fM6zfDv9r9v+6eYb46yWnVGjUn2L+hHQklQWtXcpeBuv2
+ q8wHcfxBbi7mR/HAAAA
 To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
  Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
  Russell King <linux@armlinux.org.uk>, 
@@ -53,11 +54,11 @@ To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>,
 Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790630370; l=1506;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790630370; l=1083;
  i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=MeWwaPFPGgQ87CIdgWZjV/qJ5i7/Sn8eqK39QKBx+dg=;
- b=P9B0WRGYWgL47uKob0ASKkRxyPSYsKI1IB4Df8MMYW8pQDVkDcON+wMUMfm7a+xNK5MvCkpq0
- UW/9sSe73TgDBiDbJ1ISSNMaCEf0MldaNlM48VSzvlRbO0Vy0M4TXo+
+ bh=iRVAveAkN4lPEVWRQS+tEuxrYtH4+i3EDxsR7o9RjZ0=;
+ b=qrz/MSsI7PE74TwbQ6TijW5nwDtWRzcnZRvgr5mo+Exqx+4rRNYoXk7QWy/Rd5ir6lFE1HiHu
+ Lx8lvFSv3kxACdeqXc1IIEA3N6GJ7/thkUHQprN9KOKU5W9OaiV0pFo
 X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
  pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
 X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
@@ -65,44 +66,33 @@ X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
 X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
 Reply-To: khendry@reliablecontrols.com
 
-From: Kyle Hendry <khendry@reliablecontrols.com>
+This series addresses issues found when reviewing another fix:
+https://lore.kernel.org/netdev/20260915-rzn1-miic-fix-array-v5-1-b7173fd5b97d@reliablecontrols.com/
 
-The function to write default values to miic registers was looping from
-zero to miic_port_max, which might not cover all ports depending on SoC
-numbering. Determine the port count from SoC data and loop over that.
+Invalid values from the dtb could cause out of bounds array access. Checking
+the values as they're parsed should prevent this.
 
-Fixes: c112520de041758e ("net: pcs: rzn1-miic: move port range handling into SoC data")
 Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
 ---
- drivers/net/pcs/pcs-rzn1-miic.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Changes in v2:
+- Simplify fixes by making miic_port_max the last documented port number
+- Add fixes tags
+- Link to v1: https://lore.kernel.org/r/20260925-miic-validate-dtb-v1-0-3a6db9bb75ec@reliablecontrols.com
 
-diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-index df70309c2d97..9e830932ce49 100644
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -520,6 +520,7 @@ EXPORT_SYMBOL(miic_destroy);
- static int miic_init_hw(struct miic *miic, u32 cfg_mode)
- {
- 	u8 sw_mode_mask = miic->of_data->sw_mode_mask;
-+	int num_ports;
- 	int port;
- 
- 	/* Unlock write access to accessory registers (cf datasheet). If this
-@@ -535,7 +536,10 @@ static int miic_init_hw(struct miic *miic, u32 cfg_mode)
- 	miic_reg_writel(miic, MIIC_MODCTRL,
- 			((cfg_mode << __ffs(sw_mode_mask)) & sw_mode_mask));
- 
--	for (port = 0; port < miic->of_data->miic_port_max; port++) {
-+	num_ports = miic->of_data->miic_port_max -
-+		miic->of_data->miic_port_start + 1;
-+
-+	for (port = 0; port < num_ports; port++) {
- 		miic_converter_enable(miic, port, 0);
- 		/* Disable speed/duplex control from these registers, datasheet
- 		 * says switch registers should be used to setup switch port
+---
+Kyle Hendry (3):
+      net: pcs: rzn1-miic: Fix port numbering on RZ/T2H
+      net: pcs: rzn1-miic: Fix miic register initialization loop
+      net: pcs: rzn1-miic: Validate dtb configuration values
 
+ drivers/net/pcs/pcs-rzn1-miic.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+---
+base-commit: 014d795c73837ea2339a4ea8e8f82c6e959b845d
+change-id: 20260924-miic-validate-dtb-bfc4b380b782
+
+Best regards,
 -- 
-2.43.0
+Kyle Hendry <khendry@reliablecontrols.com>
 
 
