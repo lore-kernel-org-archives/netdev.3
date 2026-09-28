@@ -1,391 +1,110 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532671DFDA1;
-	Mon, 28 Sep 2026 12:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F8A2931D1;
+	Mon, 28 Sep 2026 12:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598800; cv=none; b=U7HSeHXrDbqTYO5mdIjhDhACdrzAMQq1sXivVJR3wp7Yaj82ytspBWDFUPLTy3ROSynSE4IjgHF7cDTVB4t1zuDzEprd+P0he7RsFgGkoUGXE9I7cgX/IPwWBO7wQxCx2tzqGsrB01NeOmg6t3zO+vG2JLRkXKFhTtW1sATyDXY=
+	t=1790598815; cv=none; b=Rqt4MrGmlbGcrB09RGBojIC7aMOJJd5h7truxISGnT7UBuO9h24LnLLmNCKMH0LjJYPsIL/jEYRTRHrn1Vpkvi3MyK3/TU+/DklHrxiPzi1PG9hZB+cw0vKL762ws7al6VuRhAgMYZxTyPRzf5UsUNkxWVu3I1eSE6b//dOeO6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598800; c=relaxed/simple;
-	bh=ytGDVkmFrMzCVBW2oV2fmCr/wUuhkQuU9PFhfjxyMR4=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=M9JDvJAheFoZnt//8Xgg/RlGCu/7poBDpgpSODR8d0/yRf68mvAloTEz6YLJ+QJusIUbeiaXJrgOjIxgi7/jl7IrC63QAE19qf/1Thr0Os1TFJP+8SvQ4P+vnBBPbteBX6uMT/bfUIfR40NVR3i/k0vuH5/bCg+jdQqUyoCNsOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4htghC2DvGz8XrrJ;
-	Mon, 28 Sep 2026 20:33:15 +0800 (CST)
-Received: from njy2app03.zte.com.cn ([10.40.13.14])
-	by mse-fl1.zte.com.cn with SMTP id 68SCX66r078408;
-	Mon, 28 Sep 2026 20:33:06 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njb2app06[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Mon, 28 Sep 2026 20:33:09 +0800 (CST)
-X-Zmail-TransId: 2afe6aba5e85201-22ae5
-X-Mailer: Zmail v1.0
-Message-ID: <20260928203309173h1139im2nvAFvKodp4Iav@zte.com.cn>
-In-Reply-To: <20260928202059763e9xqxhTwFe4DHa6a2wq0L@zte.com.cn>
-References: 20260928202059763e9xqxhTwFe4DHa6a2wq0L@zte.com.cn
-Date: Mon, 28 Sep 2026 20:33:09 +0800 (CST)
+	s=arc-20240116; t=1790598815; c=relaxed/simple;
+	bh=R+JPwCZXOqxIJ97ZMlwQIS/8ge6qhpo5e4Q7C5QxnZk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WtDRKGB0MT1F7qNh4f7TEBCGLpTiXcWsqG5ajQ/LazxEQMY0754UZ/af85lqkYYP6FuRu+K8y/NrQotczUz3G6mCHoGEpm4HVo1LDvPfcN8pl58KK08QMEinLUWQXIeglcPnhvdo4bTbyxO4fWYZL3fvqRICDgBygzEG+MenOBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=n1Ukvfpz; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="n1Ukvfpz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=aCQ+H0c+wVftlMBVRbtm3uG4VWV5k7egRAeD7StXg4Y=;
+	b=n1Ukvfpz6YJb1tXnfP6VyeZouJ/gQl9yilQdCaZ2yCKmna6ZXRzvSjRhuRtH4O
+	b2UzA6Z4sTBjxVHzO+2D9c6UuYN7wNYlPDTxq/dfrhWCpGa3KtHXzx+jbuoV6kIU
+	Umv9UeC7wgfOCGR1B7e7i0lIgXhRJ+8WBlGm791iBx7DY=
+Message-ID: <9ae72d05-dd76-42d6-ae29-b49cfddf85e9@126.com>
+Date: Mon, 28 Sep 2026 20:32:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY0IDMvM10gZGluZ2hhaTogYWRkIGFzeW5jIGV2ZW50IHF1ZXVlIGZvciBmaXJtd2FyZQogbm90aWZpY2F0aW9ucw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 68SCX66r078408
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 28 Sep 2026 20:33:15 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6ABA5E8B.000/4htghC2DvGz8XrrJ
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: stmmac: do not cache the new TSO MSS before
+ it reaches the DMA
+To: netdev-bot+sashiko@kernel.org
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ xiaolinkui@kylinos.cn, stable@vger.kernel.org,
+ lorenzo.bianconi@oss.qualcomm.com
+References: <20260922124408.645496-1-xiaolinkui@126.com>
+ <179016759614.2160803.12192059495158802876@kernel.org>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <179016759614.2160803.12192059495158802876@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PikvCgD3n_5AXrpq+9lyAg--.58147S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJF48tFWkWw47uw47Kr1UAwb_yoW5WF15pa
+	y3Kwn0kr1DGFWSqF4xCw40ya4rZw4rtFy5Ar98KrW5Aws8WryIgrW3Ka4Y9Fy7Cw4kX34Y
+	yr4Yg3sxZFWDZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UuCJQUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqALwx2q6XkJr0AAA3q
 
-From: Junyang Han <han.junyang@zte.com.cn>
+ > [Medium] Can this new write position re-publish a stale non-zero
+ > tx_q->mss after a concurrent TX channel reset has invalidated it?
 
-Add the event queue table and the first async event queue, fed by the
-RISC-V management core of the firmware. The queue owns one MSI-X
-vector taken from the async pool and, on interrupt, reads the event_id
-from the PF receive sub-channel of the BAR message area, maps it to
-an event type and fans it out through the per-event-type notifier
-chains of the table. The PF probe creates and tears down the queue
-through the existing IRQ pool interfaces.
+Agreed, and v4 no longer moves the store: the value is now dropped on the
+paths that never hand the context descriptor to the DMA, which is what the
+commit message was claiming in the first place.
 
-The BAR message channel handshake that tells the firmware which
-vectors to signal comes with the BAR message subsystem in a later
-series; the PF side wired here is live as soon as that channel is
-enabled. Subscribers for the RISCV_READY event register on the
-notifier chains in later series as well.
+Two things are worth separating though.
 
-Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
----
- drivers/net/ethernet/zte/dinghai/Makefile  |   2 +-
- drivers/net/ethernet/zte/dinghai/en_pf.c   |  23 ++--
- drivers/net/ethernet/zte/dinghai/en_pf.h   |   2 +
- drivers/net/ethernet/zte/dinghai/zxdh_eq.c | 137 +++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/zxdh_eq.h |  60 +++++++++
- 5 files changed, 216 insertions(+), 8 deletions(-)
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+The interleaving itself is not introduced by the patch.
+stmmac_tx_err() is called from the DMA interrupt handler without any
+serialisation against ndo_start_xmit(), so a reset can land anywhere
+inside stmmac_tso_xmit(), and a reset that lands before the early
+"tx_q->mss = mss" -- anywhere between the entry of the function and that
+store, which includes stmmac_tso_get_num_desc() and the availability check
+-- leaves a non-zero cache for the channel that was just re-initialised
+with the old placement as well. So it is not true that "with the old
+placement a later reset always won"; what the patch did is widen that
+window by roughly the length of the mapping section holding the two
+dma_map_single()/skb_frag_dma_map() calls, and that is what the new
+placement has to answer for. Which it now does not: v4 keeps the store
+where it was and invalidates the cache on the error paths instead. Zero is
+what stmmac_reset_tx_queue() leaves behind, so it cannot republish
+anything even if the reset lands in between, and the next TSO frame
+programs the context descriptor again.
 
-diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
-index f4a8f9480291..2dc6d68cc0e1 100644
---- a/drivers/net/ethernet/zte/dinghai/Makefile
-+++ b/drivers/net/ethernet/zte/dinghai/Makefile
-@@ -4,4 +4,4 @@
- #
+Second, in that interleaving the cached MSS is not the only thing left out
+of step: the transmit path keeps running from its local first_entry, writes
+tx_q->cur_tx = entry and lets stmmac_flush_tx_descriptors() push the tail,
+while stmmac_init_tx_chan() has pointed the channel back at tx_q->dma_tx_phy
+-- the software ring state and the hardware no longer agree, which is what
+the reset is supposed to establish. Fixing that means the reset must stop
+racing ndo_start_xmit() altogether, and it cannot be a lock taken in the
+handler: the interrupted transmit path already holds the queue's
+_xmit_lock, so the handler would be waiting for the context it interrupted.
+That needs the channel reset moved out of hard IRQ context, and I would
+rather send it as a separate change than fold it into a -net fix for the
+ring wedge.
 
- obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
--dinghai10e-y := en_pf.o zxdh_irq.o
-+dinghai10e-y := en_pf.o zxdh_irq.o zxdh_eq.o
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-index d5462ac6468f..f7400d66bc69 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.c
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -513,7 +513,8 @@ static int zxdh_pf_irq_pools_init(struct zxdh_core_dev *zxdh_dev)
+v4 therefore:
 
- static void zxdh_pf_irq_pools_destroy(struct zxdh_pf_irq_table *pf_irq_table)
- {
--	zxdh_irq_pool_free(pf_irq_table->async_pool);
-+	if (pf_irq_table->async_pool)
-+		zxdh_irq_pool_free(pf_irq_table->async_pool);
- }
+   1. drops tx_q->mss on the error paths of stmmac_tso_xmit() (new),
+   2. keeps filling the context descriptor at the slot tx_q->cur_tx points
+      to and releasing it explicitly on those paths (unchanged from v3),
+   3. leaves the store ahead of the mappings, so the patch no longer changes
+      the timing with respect to your interleaving at all.
 
- int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev)
-@@ -544,18 +545,17 @@ void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
- {
- 	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
+The subject changed accordingly: the patch no longer moves the store, it
+invalidates the cached value. Code changed, so the Acked-by from Lorenzo
+Bianconi is not carried over.
 
--	zxdh_pf_irq_pools_destroy(table->priv);
-+	if (table->priv)
-+		zxdh_pf_irq_pools_destroy(table->priv);
- 	kvfree(table->priv);
-+	table->priv = NULL;
- 	pci_free_irq_vectors(zxdh_dev->pdev);
- }
+pw-bot: cr
 
-+/* Fetch a vector from the async pool for one async event queue. */
- struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
- {
--	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
--	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
--
--	if (!pf_irq_table->async_pool)
--		return NULL;
-+	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
-
- 	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
- }
-@@ -614,10 +614,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_irq_table;
- 	}
-
-+	ret = zxdh_pf_eq_table_init(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_eq_table_init failed: %d\n", ret);
-+		goto err_eq_table;
-+	}
-+
- 	devlink_register(devlink);
-
- 	return 0;
-
-+err_eq_table:
-+	zxdh_pf_eq_table_destroy(zxdh_dev);
- err_irq_table:
- 	zxdh_pf_irq_table_destroy(zxdh_dev);
- err_modern_cfg:
-@@ -637,6 +645,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
- 	struct devlink *devlink = priv_to_devlink(zxdh_dev);
-
- 	devlink_unregister(devlink);
-+	zxdh_pf_eq_table_destroy(zxdh_dev);
- 	zxdh_pf_irq_table_destroy(zxdh_dev);
- 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
- 	zxdh_pf_pci_close(zxdh_dev);
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-index af25b06160ef..8220db579111 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.h
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -9,6 +9,7 @@
-
- #include <linux/types.h>
-
-+#include "zxdh_eq.h"
- #include "zxdh_irq.h"
-
- #define ZXDH_PF_VENDOR_ID	0x1cf2
-@@ -81,6 +82,7 @@ struct zxdh_core_dev {
- 	struct pci_dev *pdev;
- 	struct devlink *devlink;
- 	struct zxdh_irq_table irq_table;
-+	struct zxdh_eq_table eq_table;
- 	void *priv;
- };
-
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.c b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-new file mode 100644
-index 000000000000..3e70f4f3063f
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * ZTE DingHai Ethernet driver - event queue plumbing
-+ * Copyright (c) 2022-2026, ZTE Corporation.
-+ *
-+ * Async event queues are the delivery path for firmware notifications:
-+ * a queue owns one MSI-X vector of the async pool and fans interrupts
-+ * out to the per-event-type notifier chains of the event queue table.
-+ * The BAR message channel handshake that tells the firmware which
-+ * vectors to signal comes with the BAR message subsystem in a later
-+ * series; the PF side wired here is live as soon as that channel is
-+ * enabled.
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/notifier.h>
-+#include <linux/slab.h>
-+
-+#include "en_pf.h"
-+#include "zxdh_eq.h"
-+#include "zxdh_irq.h"
-+
-+/* PF side of the event queue table: one async EQ fed by the RISC-V
-+ * management core.
-+ */
-+struct zxdh_pf_eq_table {
-+	struct zxdh_eq_async riscv_eq;
-+};
-+
-+/* Fetch the event_id the RISC-V core posted in the PF receive
-+ * sub-channel of the BAR message area. The field lives at byte offset
-+ * 2 of the 12-byte message header, so a single 32-bit read of the
-+ * sub-channel start covers it.
-+ */
-+static u16 zxdh_eq_event_id_get(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	void __iomem *subchan;
-+
-+	subchan = pf_dev->pci_ioremap_addr[0] + ZXDH_BAR_MSG_SUBCHAN_RECV;
-+
-+	return ioread32(subchan) >> 16;
-+}
-+
-+static enum zxdh_eq_event_type zxdh_eq_event_type_get(u16 event_id)
-+{
-+	if (event_id == ZXDH_MSG_MODULE_RISC_READY)
-+		return ZXDH_EQ_EVENT_TYPE_RISCV_READY;
-+
-+	/* Only the RISC-V ready notification is dispatched in this
-+	 * series; the remaining firmware events arrive with the BAR
-+	 * message subsystem.
-+	 */
-+	return ZXDH_EQ_EVENT_TYPE_MAX;
-+}
-+
-+static int zxdh_eq_async_riscv_int(struct notifier_block *nb,
-+				   unsigned long action, void *data)
-+{
-+	struct zxdh_eq_async *eq = container_of(nb, struct zxdh_eq_async, irq_nb);
-+	struct zxdh_core_dev *zxdh_dev = eq->priv;
-+	enum zxdh_eq_event_type event_type;
-+
-+	event_type = zxdh_eq_event_type_get(zxdh_eq_event_id_get(zxdh_dev));
-+	if (event_type == ZXDH_EQ_EVENT_TYPE_MAX)
-+		return NOTIFY_DONE;
-+
-+	atomic_notifier_call_chain(&zxdh_dev->eq_table.nh[event_type],
-+				   event_type, NULL);
-+
-+	return NOTIFY_OK;
-+}
-+
-+int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-+	struct zxdh_pf_eq_table *priv;
-+	struct zxdh_eq_async *eq;
-+	int err;
-+	int i;
-+
-+	priv = kvzalloc_obj(*priv, GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	table->priv = priv;
-+
-+	mutex_init(&table->lock);
-+	for (i = 0; i < ZXDH_EQ_EVENT_TYPE_MAX; i++)
-+		ATOMIC_INIT_NOTIFIER_HEAD(&table->nh[i]);
-+
-+	eq = &priv->riscv_eq;
-+	eq->priv = zxdh_dev;
-+	eq->irq = zxdh_pf_async_irq_request(zxdh_dev);
-+	if (IS_ERR(eq->irq)) {
-+		err = PTR_ERR(eq->irq);
-+		goto err_irq;
-+	}
-+
-+	eq->irq_nb.notifier_call = zxdh_eq_async_riscv_int;
-+	err = zxdh_irq_attach_nb(eq->irq, &eq->irq_nb);
-+	if (err)
-+		goto err_attach;
-+
-+	return 0;
-+
-+err_attach:
-+	zxdh_irqs_release_vectors(&eq->irq, 1);
-+err_irq:
-+	eq->irq = NULL;
-+	return err;
-+}
-+
-+void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
-+	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-+	struct zxdh_eq_async *eq;
-+
-+	if (!pf_eq_table)
-+		return;
-+
-+	eq = &pf_eq_table->riscv_eq;
-+
-+	mutex_lock(&table->lock);
-+	if (eq->irq) {
-+		zxdh_irq_detach_nb(eq->irq, &eq->irq_nb);
-+		zxdh_irqs_release_vectors(&eq->irq, 1);
-+		eq->irq = NULL;
-+	}
-+	mutex_unlock(&table->lock);
-+
-+	mutex_destroy(&table->lock);
-+	kvfree(table->priv);
-+	table->priv = NULL;
-+}
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.h b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
-new file mode 100644
-index 000000000000..ac9df4763059
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
-@@ -0,0 +1,60 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * ZTE DingHai Ethernet driver - event queue abstraction
-+ * Copyright (c) 2022-2026, ZTE Corporation.
-+ */
-+
-+#ifndef __ZXDH_EQ_H__
-+#define __ZXDH_EQ_H__
-+
-+#include <linux/mutex.h>
-+#include <linux/notifier.h>
-+
-+struct zxdh_core_dev;
-+struct zxdh_irq;
-+
-+/* BAR message area: shared-memory mailbox between the driver and the
-+ * firmware, split into sub-channels of 2048 bytes. Notifications from
-+ * the RISC-V management core are posted to the PF receive sub-channel,
-+ * one interval above the area base.
-+ */
-+#define ZXDH_BAR_MSG_OFFSET		0x2000
-+#define ZXDH_BAR_MSG_SUBCHAN_INTERVAL	2048
-+#define ZXDH_BAR_MSG_SUBCHAN_RECV	(ZXDH_BAR_MSG_OFFSET +	\
-+					 ZXDH_BAR_MSG_SUBCHAN_INTERVAL)
-+
-+/* event_id of the "RISC-V core ready" firmware notification, carried
-+ * at byte offset 2 of the BAR message header.
-+ */
-+#define ZXDH_MSG_MODULE_RISC_READY	13
-+
-+/* Event types the upper layers can subscribe to over the per-type
-+ * notifier chains of the event queue table. The full catalogue lives
-+ * in the firmware; only the ones dispatched in this series are named.
-+ */
-+enum zxdh_eq_event_type {
-+	ZXDH_EQ_EVENT_TYPE_RISCV_READY = 0,
-+	ZXDH_EQ_EVENT_TYPE_MAX,
-+};
-+
-+/* Asynchronous event queue delivering firmware notifications to the
-+ * driver without a request/reply handshake.
-+ */
-+struct zxdh_eq_async {
-+	struct zxdh_irq *irq;
-+	struct notifier_block irq_nb;
-+	void *priv;
-+};
-+
-+struct zxdh_eq_table {
-+	/* Notifier chains fanned out by event type. */
-+	struct atomic_notifier_head nh[ZXDH_EQ_EVENT_TYPE_MAX];
-+	/* Serializes async EQ setup/teardown. */
-+	struct mutex lock;
-+	void *priv;
-+};
-+
-+int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev);
-+void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev);
-+
-+#endif /* __ZXDH_EQ_H__ */
--- 
-2.27.0
