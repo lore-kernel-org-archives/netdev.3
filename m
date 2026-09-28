@@ -1,65 +1,148 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs2-f40.google.com (mail-vs2-f40.google.com [74.125.227.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9A84E77F2;
-	Mon, 28 Sep 2026 15:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD764E73B4
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609258; cv=none; b=ERrWSm6fOLvkv2mQVbo1Adimtkq246QfLSQ6DoUBDoU6XaV/EZ4hOXfJOjRSHy3+zY1OAe5exF8rTN6kV197btfZzPVX1Y6m9/gx4MKl8sn9zbB8JF0Knb9mbFql2TMR1FFrkNk9q1h1PQRUVPu1pl86Rog+IUL9V7LU37ui7d8=
+	t=1790609369; cv=none; b=o1bylW0NMo4vQTdSgmyTU+tOeeGyb+B+HK4W/DdVkRBBmY3N/bcBvi+sdq5xYybrW4IrBAZyfeVS9+IxJe002OxARZoXeo2rp61Arhi2IHbvW2fgXRUN/6lC0UM/uTNdK7C18Q9HZwYsKF6xemYmIJ2awiCz3E4MvkuJgrHwSFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609258; c=relaxed/simple;
-	bh=IHh8o6Eyf4sfC4fE7VxeoWB53IkyZe751WSqQ1qUIoQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RVvvolLN5yIk3gt1GTnEGYjXlOzw7h2/h0qmIgt7jmrGEJv18pedO7EaV6XBbzg/JytAFRkQ7gVU1z6REXBubEz87l+21KlLoyUZtLKI4mAR2wq06RJAZEuY5OvW3I5usvNx6F2z75wCTaryhiwxNXadWTifql0hWevxurFzB0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LENBGqWo; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790609369; c=relaxed/simple;
+	bh=pM2ZaPJvm5Rgd1AaTYxU7u4yvAKak1gkstY7SWaFSQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pciz9IYBZOjWcM+PVwaPvSC8K5rE8hVPAidmqIXkVbqTcG3npT+niHnxJjCReNeLkLj3ylkpz3keMBvrlPEcfigvcAzocI0zTcsrOErskSXypxI8YC40EcxNa1IUnX6jtabqawNz9fCgrhWsIvxRJQbYhIjxjPTPX05ImShUcp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5Uhr49o; arc=none smtp.client-ip=74.125.227.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LENBGqWo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fK2Cf6Dp2mNF6xY+hMUHlfkWyvQDVQsBw2Z/h6yHNDY=; b=LENBGqWo/bPjVoj6Wj2SGnL4hz
-	lZP+sTVfa+B6d83MHJKlY5BFXec/2Y0UQ8iBIdRo+h4u7Ug+rFqB1bR2InYp07ZvvU3scwbB0b9Ro
-	f0kPOViyMgVqTORdUwtsM321ihuY9B19tknUYM84+L7GBsih5+rKG67j3nvjXtV2Jx18=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xBDGJ-007jt8-6i; Mon, 28 Sep 2026 17:27:27 +0200
-Date: Mon, 28 Sep 2026 17:27:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, neuromoments@gmail.com
-Subject: Re: [PATCH net-next v12 01/15] phylink: Add phylink_mac_interrupt
-Message-ID: <07432e01-1ae7-460c-ae58-8ee5794a9033@lunn.ch>
-References: <20260916-ax88179a-v12-1-60c04c9924a2@birger-koblitz.de>
- <178968029017.22033.2874254681410388676@kernel.org>
- <17164abd-05ec-4b6b-bc51-a017cc87047b@birger-koblitz.de>
- <bb4043d1-e89e-430b-8f68-e64fc2b0d11a@lunn.ch>
- <21485f2f-b446-4a38-86c3-dc8d73260a0d@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5Uhr49o"
+Received: by mail-vs2-f40.google.com with SMTP id 71dfb90a1353d-5caec6d2983so2686697e0c.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:29:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790609367; x=1791214167; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MEOfh53Bs8xIHBW+TfNPqEs+6m7Qp6MngOl0fo6oGhY=;
+        b=H5Uhr49o/k2R31KkZZxBwJHiP37KX6Yi4ayy413sHdwd2/xuU4T1W03qyto6M6a5xH
+         IOwCp77NAZUs0BtR8mVRbNPQFsPHk4nwk3UtvVzc8xrWJzdDljsuAcENY4GeniI5SSVd
+         l4V16WQ2NUDef0u8gMvGBZ2pG474I10NSHAeQXWefK6e9dA9xRcw/yLmvWzn4RGk3HzJ
+         cidxrqP3UOJvvA5Tb8wNxgMzefZLW+Bw1/coB3dnG700imT9DHPfnVqYdPi6nHQtkKer
+         tg0pHua9ivOBQ/CTOnPcGba7E0ImFd+4sWPvPkhJvaJAj+M4vun7eCe2fZGopFTqspyK
+         fglg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790609367; x=1791214167;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MEOfh53Bs8xIHBW+TfNPqEs+6m7Qp6MngOl0fo6oGhY=;
+        b=ygRTS0ScbupOJ9eXghhGHXVXE2rW3N8KE3XHcVXEqwqRPXF7hN6VufOgCWDz+Uu/SQ
+         8LM55gyAhtlD9zXIVbENXPEghyRk4nRrGREmWi1Vn2UjZZz7tUjGN+NqGXIwpSlNBwQm
+         K3PIjW3V8ytmMc7bVM4nfTx+q3spJwnxQyjRNR2GgGfRNzdLDctfN/IuvZp8ZQPcznwb
+         9sPxfJevWJMaofdLMX7v8s2o6gZmEl4MikbpGgtuoZM/fJXvy1zWbHECpAiCyFid8Fh6
+         skBF6oNOOIRYTQcUGLIIXMIeuSC4mWINpLP7DQunqYOVu/pPYpYHHiwqinIqgVJnkauJ
+         djKw==
+X-Forwarded-Encrypted: i=1; AKwUvBwhxmYRwSblF+GqkJj2S5jj7i1Isye/qkeUmI+L6pMfGUIes7XCaZaJ96YZS4LkAeIoBKcHOu4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEjDjiuFA9xr1M6yf91MjwcXPG69rfbd3FMmK9Ma67sr8J48bb
+	4qWyBgiu7Zx5s31xOu6QMuL3wrjxT9rfrL1Cdp8DHEwc7zNNNqRuIq8wGQqKwgNDelM=
+X-Gm-Gg: AYBFou3BUex93M7qET0C8Fh8ul21RLy69Y/NblYvLaRU13S4/1u+prU/tOSt8S6Iq0M
+	EuC5mCD2Tg9mkPFC0bx0voTg8xdpDraqWR8TbK9VvPzDuKOxUj28S1LcQ9CqyGsyxxrfW5lgDUM
+	EZDw0AFrkiLTGL/UI8GUUohWgcpJMIHK/863ZM9Ab3OhaUQKcNuCzBiJ9A284bcp3htFalc8jHn
+	zKgwtYA3Bl7U8MMrQnFEs1xFZl3B4MVVfQ/zQM+3yQW2kMB0/1cfFdbJMnCNffIWtrCjvrzs5xu
+	ZmNj1/V0SjUa7eBoFTX6b3CHc4wqGHyKtghb8/w+4JGS5whTkEZTWlZK+6DitMs1q6C6pho0dx0
+	UE/gpKEX/YqTZLrNPoi1L53K8Uv7f12Qv7h55RXCFIc+pA889KsN825WWDG3IAQRlJynn1VAU3q
+	stFx3fFTBCGb+3Ugre21G4PsqPBtkh4CRjUxKKLv6iC4UlDgoepIDVILW5STQHcTAcQ5V7QiiWu
+	teA579vwXsjRR3dnB1RszuYuOoRTwQqJ2dKq9eZMU7wLoCMsfCvSbGuqUpHp5rM4IrwXqRNcAs=
+X-Received: by 2002:a05:6122:2804:b0:5ca:f811:25ac with SMTP id 71dfb90a1353d-5cb0b48d45dmr6283450e0c.14.1790609366686;
+        Mon, 28 Sep 2026 08:29:26 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5cde615a356sm9194650e0c.14.2026.09.28.08.29.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 08:29:26 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth 2026-09-28
+Date: Mon, 28 Sep 2026 11:29:19 -0400
+Message-ID: <20260928152919.942973-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <21485f2f-b446-4a38-86c3-dc8d73260a0d@birger-koblitz.de>
+Content-Transfer-Encoding: 8bit
 
-> Thanks for the reference, I understand this better, now. My suggestion would
-> be to add a comment as part of the function description:
-> This function may be called in interrupt context, and therefore cannot take
-> a mutex. However, it is safe to assume that the reference to phy does not
-> disappear during the call, as only an SFP module may be unplugged to make a
-> PHY disappear. SFP modules however do not support interrupts.
+The following changes since commit 6d91041bb38b97e2feb625123cc0529d7b83a0e1:
 
-Great.
+  Bluetooth: RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame() (2026-09-21 09:37:20 -0400)
 
-Thanks
-	Andrew
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-28
+
+for you to fetch changes up to 848a7a91c7f03675d3bd8db6f7721cbf9cb50e21:
+
+  Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown (2026-09-28 11:00:20 -0400)
+
+----------------------------------------------------------------
+bluetooth pull request for net:
+
+Core:
+
+ - hci_core: Serialize ACL scheduling with channel deletion
+ - hci_core: Serialize SCO and ISO scheduling with teardown
+ - hci_core: Serialize fragmented ISO packet queueing
+ - hci_core: Fix inquiry cache timestamps on 64-bit systems
+ - hci_core: free the HCI ID if naming fails
+ - hci_conn: Lock parent access during enhanced SCO setup
+ - hci_sync: Fix inquiry cache use-after-free
+ - hci_sync: don't drain cmd_sync backlog on unregister
+ - RFCOMM: Fix initial port reference race
+ - SMP: Serialize SMP remote OOB data access
+
+Drivers:
+
+ - btintel: fix buffer over-read in btintel_hw_error()
+ - btintel: validate DDC record lengths
+ - btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
+ - btintel_pcie: reject oversized TX packets in send_frame()
+
+----------------------------------------------------------------
+Chandrashekar Devegowda (3):
+      Bluetooth: btintel: fix buffer over-read in btintel_hw_error()
+      Bluetooth: btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
+      Bluetooth: btintel_pcie: reject oversized TX packets in send_frame()
+
+Chengfeng Ye (7):
+      Bluetooth: hci_conn: Lock parent access during enhanced SCO setup
+      Bluetooth: hci_core: Serialize fragmented ISO packet queueing
+      Bluetooth: hci_sync: Fix inquiry cache use-after-free
+      Bluetooth: RFCOMM: Fix initial port reference race
+      Bluetooth: Serialize SMP remote OOB data access
+      Bluetooth: hci_core: Serialize ACL scheduling with channel deletion
+      Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown
+
+Linmao Li (1):
+      Bluetooth: hci_core: Fix inquiry cache timestamps on 64-bit systems
+
+Nguyen Ngoc Thang (1):
+      Bluetooth: hci_sync: don't drain cmd_sync backlog on unregister
+
+Sai Teja Aluvala (1):
+      Bluetooth: btintel: validate DDC record lengths
+
+Sang-Hoon Choi (1):
+      Bluetooth: hci_core: free the HCI ID if naming fails
+
+ drivers/bluetooth/btintel.c      | 15 ++++++++---
+ drivers/bluetooth/btintel_pcie.c | 12 ++++++++-
+ include/net/bluetooth/hci_core.h |  5 ++--
+ net/bluetooth/hci_conn.c         | 18 ++++++++++----
+ net/bluetooth/hci_core.c         | 54 ++++++++++++++++++++++++++++++++--------
+ net/bluetooth/hci_debugfs.c      |  2 +-
+ net/bluetooth/hci_sync.c         | 19 ++++++++++++--
+ net/bluetooth/rfcomm/tty.c       |  7 +++---
+ net/bluetooth/smp.c              |  2 ++
+ 9 files changed, 106 insertions(+), 28 deletions(-)
