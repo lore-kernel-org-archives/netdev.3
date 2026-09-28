@@ -1,339 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC4A49B1EF;
-	Mon, 28 Sep 2026 10:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5613C2BA4
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790591001; cv=none; b=qq9pKhcYK6u0KZ7Y/Yrcix+mzJIfFi0gynJYAfKrPzsiMVyh58j8QJC8lB/14yO+yuUUs5maeva7OyqF6RwU6eTiqgkSlUvgfSO4hj+1uNzOLmZmdId6OADQOukULD5cvtm9+8RGZk2cjb54jeZnhjBlWK503Xc2c1YFvh4rRYs=
+	t=1790591485; cv=none; b=bqdI9sNP2jG4BxC2NbNr4hgxwKoup3UqnNrGdZd1P2DV0mYLkaV/ui7Qq5P8+muFPXqF51HKsNRI2XC/Et6GmJ/nsG7SEN6+92Dkh+elr8XXn3geWnzrUDadSXcFIAsplM7kVnmiHg6KF7cLKjWpXy+GiIcfVKDsbo1rQdbYYQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790591001; c=relaxed/simple;
-	bh=vbSu80ghWbPdiK10CKQKluUm32lnCYFMEbWE0ul/66U=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=twtpLZI0Es0RnUtTnxq9DXsU5q/DyrRfBPhalc/E+JDi3M93Oz7RSBOWh4owuRcKMzC+Sg+FlS+7flCbv+ypjl6Gh27Ws8w0PQlimnrqhIp6AP+rMvGYd89ZH81E6LanbMM5067WUweO6DOe2II6sqMLbGNRBQxZYyQ6a9sAy/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0aKfkLZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790591485; c=relaxed/simple;
+	bh=ZcL7dYl+t7tDUahafwYFHtczoNBxBHDjjQvSaDt7MN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V4J3hH0NEQuUpolQJLpw+P5clX0737Lk5YtYlGlxVzvRWMCJ2YWDmCHE8lxwIQW69PuOaU3hO5J0XMHicdSp4ENWrXN1JKbhEduX1cq5VwemK20UnEIBVdmFsknfOB4F51FitMOL/ke6Z5C68mSOAh+NZJFcqTbwhrZXGgXoNWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B98DsrMB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LLfHoAqM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0aKfkLZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ADD1F000FF;
-	Mon, 28 Sep 2026 10:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790590999;
-	bh=HbrxqwlWMk7wkbkXjO/zgQgsJbR9yA4kZRKmILIPtQ0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=E0aKfkLZ44QttXO5f+zx+lC/CIfXsBDm6OCb190KpA/Za1QphskcYAVsRwpnu0SgE
-	 /izb47RmUGIt0pj3pgZFNwIsfQfFnOFohlz40vt1PbRK4aLiiuLsaEdPTgwaqj+hKK
-	 11/jlgHJlXyYXuboFLTurdciqBfc4eAxNuW1nF1vnt/ByEDM5fFcrxQHJtHBzEHmRN
-	 ZsibRHnLxFjBb8eKiKQbR3xBW1vFribSh8mcpsZvlelTGcXu1plZDWzSowo/DDsCn5
-	 cv8uS56vUJmoxc9uZWrus5UihUSNMDT31uczpS5TKn25NULlzzG9timQkdACLDz6jU
-	 r54aVXa8y973g==
-Subject: Re: [PATCH net-next v11 3/3] w5100: detect carrier state using link
- status bit and optional interrupt
-From: netdev-bot+sashiko@kernel.org
-To: arthur@marmottus.net
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 28 Sep 2026 10:23:18 +0000
-Message-ID: <179059099826.3145.7654211997843249181@kernel.org>
-In-Reply-To: <20260924-wiznet-link-gpio-v11-3-42a332517b30@marmottus.net>
-References: <20260924-wiznet-link-gpio-v11-3-42a332517b30@marmottus.net>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B98DsrMB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LLfHoAqM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790591482;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+	b=B98DsrMBjnf5iDw9nSChF6bK6zL1oKdVmXnT/jmeZJly01byA3P5GZHgXulJ3uc8YKVoq1
+	VVwNkz1ZlJFXqosJFDdbDZaCYpGuoUta+6SvhLR8gT8GTOxpSZPCf7pN2eILiElu20m3cq
+	XBPodlhYzWz/ASqfq1G4MowXHFtpnzg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-QN73tB9kP0ugjzYyfs2Rdg-1; Mon, 28 Sep 2026 06:31:20 -0400
+X-MC-Unique: QN73tB9kP0ugjzYyfs2Rdg-1
+X-Mimecast-MFC-AGG-ID: QN73tB9kP0ugjzYyfs2Rdg_1790591479
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e745d5dabso28714565e9.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 03:31:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790591479; x=1791196279; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+        b=LLfHoAqMX1aMROUtL7jkYlwegXn6NLXlwBpFOXDCTW7ZREhmIOhxtopDrJNxvH1jMr
+         57hgESpRVS2aMMkqYtnXfI9aItZn4+WXxI8Z2G4BS0dz48bidd56trrg41UfYQnE9Tci
+         IJIoHS3oxPSiTcfdTsg14HRyhT26x1Tux9t+fiIJMH1x+Vw8AmlVtDwm37MDstfAQx5o
+         3nz0lmJScXPLi7g0HI9AcX4hcWuzHVxVNGNg2tu1msfp4Z6owAa2sX767r8O81TQQJ5B
+         aN++X9pVsZxNBVNCZjwoRVdu9d8wSZXhHTd/YXQTIvlX3d6o2qIehIHlxSFFQ+EsjrnP
+         tghg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790591479; x=1791196279;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+        b=mbh8hUSiz3HmV888LMD9uXb/D5mYzEC/rDPz/HQHM5R4JiiHTW5sQGVdULjh3QATaj
+         nR9QiNwIJK9c19EyFjAptoocen/24eymZVimsd17H9cQRS5qs7eWTAlWVJLExy/q7UZP
+         Zb6ZNwMcoCncmT2t5rMa3R9CfQtLksqt+92Fm0Ri7kwUQYRzo+2zR9rOmtrqnGSGb66S
+         UwZDbXcNeR3Fnm3gcCgHjJWRZPHfeKZlFv9MVN7NlHawy3hgblvrW1UzzT9F9ec/LHE7
+         OYXqoL/Us/YJJVrtk/CppYlBYmahvoxKSmK6y5yV9D5RAePJCrq3DBjABbvJ5/SzXl9e
+         Zg0A==
+X-Forwarded-Encrypted: i=1; AKwUvBxcErp8z/ZF1Ep/hqNNe4aNO7OFfsDyBbHFPa9p44SD3xH9JK2Mr4lKZg0YX5Aj69JTVTJ+yME=@vger.kernel.org
+X-Gm-Message-State: AFuF++k0FkMaYWHA64fOhy9SRGfI0lLbq0D4UKe+TZTnbfyyq36gcLsJ
+	O5UTElkoDxaPMnAi+1wQREejOo8CHOVd9+2RcWwgjJzXvlVO1Te+MdwHWF5fWkrcE6Cm6owLwI+
+	5k5jEZ0ra0Bdzo1MShWCC6WWomnrz+A2qdNewYXHQlZPHP3nYb4gH8LpFmg==
+X-Gm-Gg: AYBFou05enzdlAJnjx4HgXTmfq1/kFbZ3X6BOuDwWvjcGkqb5C+Pn52j2KU3sbiWWGW
+	vgd05Hb4HwCkzzc4Mp1jmbmx10hLH2EJmooxFvGDQujWHLEY3NmNElK8w+sFMn8xcnsX6mlQILk
+	QFg5cH2hX1vaA13zp8YGxY7WTm8QnZBHBH25xWJfAGwpu1m3cDC+UET6If5/ZhqnDittq/EMsPU
+	nm6I5+YDn+T1JAf7UZRzW6zwNrkOQz36Ozfz0xjYQ/DPOI1oG7BqmcrnQaQtl5A5y5nIz97whsF
+	uj31SChw1zvQnd/aoz7R1aT4hddUMfTgmBE5vRXVrhmxkehkn7FwD02PeWRC8myqr0xf58s1MdQ
+	Xj+at
+X-Received: by 2002:a05:600c:a10d:b0:49f:e8bf:8f9b with SMTP id 5b1f17b1804b1-49fe8bf91bbmr166404295e9.4.1790591479284;
+        Mon, 28 Sep 2026 03:31:19 -0700 (PDT)
+X-Received: by 2002:a05:600c:a10d:b0:49f:e8bf:8f9b with SMTP id 5b1f17b1804b1-49fe8bf91bbmr166403775e9.4.1790591478661;
+        Mon, 28 Sep 2026 03:31:18 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.134.73])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64ed6esm29113119f8f.29.2026.09.28.03.31.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 03:31:18 -0700 (PDT)
+Date: Mon, 28 Sep 2026 12:31:05 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
+ TCP_LISTEN sockets
+Message-ID: <arpBYXWb9pohx-8v@sgarzare-redhat>
+References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
+ <aqp7CV9DnfsG1GJc@sgarzare-redhat>
+ <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+ <arT3jXoS7OaU6Tsc@sgarzare-redhat>
+ <6c1516ca-4699-4d9b-af6e-c7762759d495@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6c1516ca-4699-4d9b-af6e-c7762759d495@rbox.co>
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Thu, Sep 24, 2026 at 11:26:47PM +0200, Michal Luczaj wrote:
+> On 9/24/26 12:17, Stefano Garzarella wrote:
+> > On Tue, Sep 22, 2026 at 03:18:13PM +0200, Michal Luczaj wrote:
+> >> ...
+> >> I've addressed all your other comments for v2 and went through Ashiko's
+> >> reports (side effects of lockless peer_shutdown write, imperfect
+> >> no-transport TCP_LISTENER enforcement). I've decided to try the
+> >> eager-unassign approach. I think/hope this way we sidestep the lockless
+> >> writes and enforce the invariant without breaking the API, while fixing the
+> >> bugs.
+> >>
+> >> This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
+> >> have a go (too). Hope I'm not breaking any workflow. Let me know what you
+> >> think.
+> > 
+> > I think you can add RFC also on a v3 patch, just to make it clear you 
+> > are not sure it's ready to be merged.
+> > 
+> > That said, thanks for that :-) I'll take a look today or next week 
+> > because I'm off tomorrow.
+> > 
+> > I'm just worried it's becoming too big for net. Anyway, I'll comment 
+> > there.
+> 
+> Yeah, I get it. Would you rather have a single net.git patch[1] for the
+> original report + keep all the rest for net-next, or do the whole series as
+> is, but slowly at net-next?
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 1 (1)
+I'd go with the first option. Let's try to get the fix into net first, 
+and then move the rest to net-next at a reasonable pace. WDYT?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> [1]: Basically
+> https://lore.kernel.org/netdev/20260915-vsock-connect-reset-closing-v2-4-a1d9abb472f7@rbox.co/
+> + your comments addressed + addressing one of Sashiko's comments, and
+> ignoring the transport-reset-surprise one
+> 
 
-- [Medium] This patch quietly fixes a user-visible regression that commit
-  dacf281771a9 ("w5100: remove unused gpio link detection") introduced.
-- [Medium] In w5100_stop(), netif_stop_queue() runs before
-  cancel_work_sync(&priv->restart_work).
-- [Medium] w5100_open() now calls w5100_hw_reset() but ignores its return
-  value.
-- [Medium] w5100_suspend() now calls w5100_stop() (disable_irq(irq),
-  disable_irq(link_irq), napi_disable()) but leaves __LINK_STATE_START…
-- [Low] When all three PHYCFGR reads in w5500_get_phycfgr_lnk() fail,
-  w5500_report_carrier_state() leaves carrier unchanged, and…
+Yeah, that!
 
-Pre-existing issues:
-- [Low] Claim: making w5100_tx_timeout() always schedule restart_work
-  removes the xmit exclusion that dev_watchdog() (tx_global_lock plus…
+Thanks,
+Stefano
 
---
-
-w5100: detect carrier state using link status bit and optional interrupt
-
-This commit reads the w5500 PHYCFGR link status bit to detect carrier. It
-adds an optional second interrupt, wired to the LINKLED pin, that triggers
-carrier updates. It also reworks bring-up and teardown: register_netdev()
-moves to the end of probe, the main irq is only enabled in open, and
-suspend/resume now call w5100_stop()/w5100_open().
-
-> On w5100/w5200, which lack this register, get_link() is not implemented
-> and the carrier state is not reported (netif_carrier_(on|off) is not
-> called).
-
-[Severity: Medium]
-Does this patch also fix a regression introduced by commit dacf281771a9
-("w5100: remove unused gpio link detection")?
-
-That commit removed the only netif_carrier_on() calls in the driver, in
-w5100_open() and w5100_resume(). It kept netif_carrier_off() in
-w5100_stop() and w5100_suspend(). At the baseline there is no
-netif_carrier_on() anywhere in drivers/net/ethernet/wiznet/.
-
-As a result, on every chip the first ifdown or suspend leaves
-__LINK_STATE_NOCARRIER set. The interface then stays NO-CARRIER after the
-next ifup or resume.
-
-This patch makes the netif_carrier_off() calls in stop and suspend
-conditional on link_irq > 0, which fixes that. However, the commit message
-reads as though nothing changes for devices without a link irq, and there
-is no Fixes: tag.
-
-Could the commit message describe this as a fix and add:
-
-Fixes: dacf281771a9 ("w5100: remove unused gpio link detection")
-
-That way stable kernels that carry dacf281771a9 would pick it up.
-
-> diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
-> index 53d8dc642fbd..dff39ba8103c 100644
-> --- a/drivers/net/ethernet/wiznet/w5100.c
-> +++ b/drivers/net/ethernet/wiznet/w5100.c
-
-[ ... ]
-
-> @@ -345,6 +352,82 @@ static void w5500_memory_configure(struct w5100_priv *priv)
-
-[ ... ]
-
-> +static void w5500_report_carrier_state(struct net_device *ndev)
-> +{
-> +	struct w5100_priv *priv = netdev_priv(ndev);
-> +	int state;
-> +
-> +	mutex_lock(&priv->link_lock);
-> +
-> +	state = w5500_get_phycfgr_lnk(ndev);
-> +	if (state > 0) {
-> +		netif_info(priv, link, ndev, "link is up\n");
-> +		netif_carrier_on(ndev);
-> +	} else if (state == 0) {
-> +		netif_info(priv, link, ndev, "link is down\n");
-> +		netif_carrier_off(ndev);
-> +	}
-> +
-> +	mutex_unlock(&priv->link_lock);
-> +}
-> +
-> +static irqreturn_t w5500_detect_link_interrupt(int irq, void *ndev_instance)
-> +{
-> +	struct net_device *ndev = ndev_instance;
-> +
-> +	if (netif_running(ndev))
-> +		w5500_report_carrier_state(ndev);
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-[Severity: Low]
-What happens if all three PHYCFGR reads in w5500_get_phycfgr_lnk() fail on
-the link-up edge?
-
-In that case the carrier stays off, and w5500_detect_link_interrupt()
-returns IRQ_HANDLED without scheduling a retry. A stable link produces no
-further LINKLED edge, so the carrier can stay down even after SPI recovers.
-
-w5500_get_link() might then report the link as up through ethtool, but it
-doesn't update the carrier. dev_watchdog() also won't start the restart
-path while the carrier is off. The only ways to recover seem to be a cable
-replug or ifdown/ifup.
-
-These errors can really happen: w5500_spi_read() passes on errors from
-spi_write_then_read(), including -ENOMEM from its bounce buffer allocation.
-
-Should a failed read schedule a later re-read of the link state?
-
-[ ... ]
-
-> @@ -448,12 +531,28 @@ static void w5100_restart(struct net_device *ndev)
->  {
->  	struct w5100_priv *priv = netdev_priv(ndev);
->  
-> +	if (!netif_running(ndev) || !netif_device_present(ndev))
-> +		return;
-> +
-> +	disable_irq(priv->irq);
-> +	if (priv->link_irq > 0)
-> +		disable_irq(priv->link_irq);
-> +
->  	netif_stop_queue(ndev);
-> +	w5100_hw_close(priv);
-> +	flush_work(&priv->rx_work);
-> +	flush_work(&priv->tx_work);
->  	w5100_hw_reset(priv);
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but netif_stop_queue() doesn't
-wait for an ndo_start_xmit that is already running. Can w5100_start_tx()
-still queue tx_work after flush_work(&priv->tx_work) here?
-
-w5100_start_tx() {
-	...
-	if (priv->ops->may_sleep) {
-		WARN_ON(priv->tx_skb);
-		priv->tx_skb = skb;
-		queue_work(priv->xfer_wq, &priv->tx_work);
-	...
-}
-
-If it can, tx_work could issue SPI transfers at the same time as
-w5100_hw_reset() during tx timeout recovery. The baseline w5100_restart()
-had no flush at all, so this patch narrows the window rather than opening
-it.
-
-Always scheduling restart_work in w5100_tx_timeout() doesn't change
-behaviour for in-tree users. Every w5100_ops in w5100-spi.c already sets
-may_sleep = true.
-
-[ ... ]
-
-> @@ -656,9 +753,17 @@ static int w5100_open(struct net_device *ndev)
->  	struct w5100_priv *priv = netdev_priv(ndev);
->  
->  	netif_info(priv, ifup, ndev, "enabling\n");
-> +	w5100_hw_reset(priv);
-> +	enable_irq(priv->irq);
->  	w5100_hw_start(priv);
-
-[Severity: Medium]
-Should the return value of w5100_hw_reset() be checked here?
-
-w5100_hw_reset() returns -ENODEV when the RTR read-back doesn't match. This
-is its only check that the chip came out of reset and is responding:
-
-	if (w5100_read16(priv, rtr) != RTR_DEFAULT)
-		return -ENODEV;
-
-Even if the reset fails, w5100_open() does all of the following and still
-returns 0:
-
-- enables the level-low main irq
-- calls w5100_hw_start(), which opens the socket and unmasks its interrupt
-- enables the link irq and reports carrier from PHYCFGR
-
-w5100_resume() now calls w5100_open() and also ignores its result. So a
-failed reset after resume isn't reported either, and netif_device_attach()
-still marks the interface as present.
-
-[ ... ]
-
-> @@ -667,13 +772,40 @@ static int w5100_stop(struct net_device *ndev)
->  	struct w5100_priv *priv = netdev_priv(ndev);
->  
->  	netif_info(priv, ifdown, ndev, "shutting down\n");
-> -	w5100_hw_close(priv);
-> -	netif_carrier_off(ndev);
-> +
-> +	disable_irq(priv->irq);
-> +	if (priv->link_irq > 0)
-> +		disable_irq(priv->link_irq);
-> +
->  	netif_stop_queue(ndev);
->  	napi_disable(&priv->napi);
-> +
-> +	cancel_work_sync(&priv->restart_work);
-
-[Severity: Medium]
-Can a restart_work that is already running wake the queue again after the
-netif_stop_queue() above?
-
-w5100_restart() checks netif_running() and netif_device_present() only on
-entry, and it always ends with netif_wake_queue(). w5100_tx_timeout()
-schedules restart_work on system_percpu_wq, which isn't freezable:
-
-w5100_suspend()
-  netif_device_detach()
-  w5100_stop()
-    netif_stop_queue()
-    cancel_work_sync(&priv->restart_work)   <- waits
-
-w5100_restart() (already past its entry check)
-  ...
-  netif_wake_queue()                        <- clears XOFF
-
-After suspend returns, the TX queue is awake on a detached device.
-
-The suspend path doesn't deactivate the qdisc, and w5100_start_tx() doesn't
-check netif_device_present(). A later transmit can therefore queue tx_work
-on xfer_wq. xfer_wq isn't WQ_FREEZABLE, so this would issue SPI transfers
-after the suspend callback has completed.
-
-The commit message says w5100_stop() makes sure "there is no race condition
-or unfinished work". Should the queue be stopped again after
-cancel_work_sync() returns?
-
-[ ... ]
-
-> @@ -839,10 +1011,11 @@ static int w5100_suspend(struct device *dev)
->  	struct w5100_priv *priv = netdev_priv(ndev);
->  
->  	if (netif_running(ndev)) {
-> -		netif_carrier_off(ndev);
-> +		mutex_lock(&priv->link_lock);
->  		netif_device_detach(ndev);
-> +		mutex_unlock(&priv->link_lock);
->  
-> -		w5100_hw_close(priv);
-> +		w5100_stop(ndev);
->  	}
->  	return 0;
->  }
-
-[Severity: Medium]
-What happens if the core calls ndo_stop between this suspend and the
-matching resume?
-
-Here w5100_stop() disables both irqs and calls napi_disable(). However,
-__LINK_STATE_START stays set, and suspend takes neither rtnl nor the netdev
-lock.
-
-A kernel-initiated dev_close() can run during the suspend window, for
-example from cleanup_net() on the non-freezable netns workqueue. In that
-case w5100_stop() runs a second time:
-
-__dev_close_many()
-  w5100_stop()
-    disable_irq(priv->irq)          <- disable depth now 2
-    napi_disable(&priv->napi)
-      napi_disable_locked()         <- SCHED/NPSVC still set from the
-                                       first napi_disable()
-
-napi_disable_locked() would then spin forever in usleep_range() while
-holding rtnl.
-
-After that, netif_running() is false, so w5100_resume() skips w5100_open().
-The irq disable depth stays raised, and a later ifup leaves both irqs
-disabled.
-
-Before this patch, suspend only called w5100_hw_close(), which touched
-neither NAPI nor the irq disable depth.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924-wiznet-link-gpio-v11-0-42a332517b30%40marmottus.net
