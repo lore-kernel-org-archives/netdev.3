@@ -1,36 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB064C8C50
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FA94D6C3F
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790607060; cv=none; b=QRgz+fnte6ZQ+JeUKqw0LulAu0xMlSr4w7NibxTzz0pWJV4KPPftkt7oIhz8bppJNmHdxXZK6I4AU2ihLJETQSJ2at0sl7yxCobcu+xL9+A0DlQxvsM4dQmuKpskuw+CGF0aoHAuHgOtOD4y705+y/At0ANXeucsrT6vbnzJgOY=
+	t=1790607062; cv=none; b=UyTl9S5dOUXOmro/N4vrLt+fvQAYXg5jN2EOv1Ux8tXrPOHEHMtYavWRgWoZdSUGrduJvn7ZZOfH+HZ6Z6R2TZAApNqRfSU4m//hVIkkWYaoI6hKqipq+D/piOaywiTBAv7ASg75Ru5GR8qocNXYWIFhvvl0/NuNpzSDRDv3fOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790607060; c=relaxed/simple;
-	bh=iWkWDGNdURg+OiihageyrbZ+a1Gfd++w69an/fPU3Mg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r2maWbtVNghqKpf7EHH/GTWhCMT/rq0PWr4c0Jg6XFs4mThAboajJD6S6jPYZHp3rV6zMDsFSZTAfKK6ZtQbl3Pqr7PwZuL8n4e7DqfVNdysLWMMDCLEDJ8zD31FP8cm+o5OAC3tRk//4tjrwtHYuQ9wO7tNOy3wOBaf3zPoQXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UKL7/9h7; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1790607062; c=relaxed/simple;
+	bh=RSMXLle6IeDMYBW5/Ujco3LlAzF/DLousyHeQV0wswA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GjCXT90rA+zcrpCihK6jOc1eFp1BcDADxRrKCpT4XRMOgFiHamrqnaQFNo0SayLNO2DH+iot8RIJqL3CNp9loelTgG+BQw2tcdpsi5fciKn3khCryrcm4wGDw0cL9JH+DWkVsa4hVS58CxWy0L+1M9dE+RPNpRoZmsY0j2Gf3cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vkqOSCIZ; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UKL7/9h7"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vkqOSCIZ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7ADAD1A1036;
-	Mon, 28 Sep 2026 14:50:55 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 06B281A1038;
+	Mon, 28 Sep 2026 14:50:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 36976601BD;
-	Mon, 28 Sep 2026 14:50:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4672D10329684;
-	Mon, 28 Sep 2026 16:50:44 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CE6D7601BD;
+	Mon, 28 Sep 2026 14:50:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BC44103294FE;
+	Mon, 28 Sep 2026 16:50:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790607053; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=TvuuZ6aLqblf+H0W8nqZvZBIx+Xtg4eiL7p4ol//ojc=;
-	b=UKL7/9h7KmpkIo3dALdGSlM5n7z1V5/Yd4YECQ5G4LmP12RroYSNYjfwu7P/4SYsf8U+JF
-	54OHmcgorp8B56TQTY85WLxck1r4yQ/ovJbvx1oHdpVRbYQgSaHdYh5bSMUbo+KLjCgukV
-	lORj+NtvVj8K7DLUMKPd02Gvm3JE7v83rohMt9sKrrkqoPOaIJJ2gWNAlqKDxDja05yiLa
-	q5GR4aCvMdof/nokisMmUqyCAq8HR7eW1meMrwb+5be+XTr9fA9bMOMJQ5jSGMSjh/CKHa
-	uIZPQP5flK4JuHJePICzTxXxh6+OXkJKoDYi9oeaiOWtwRV5B308kgP05j8qOg==
+	t=1790607057; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=A8fu8QWqXpe2Gyvs1H5hAyun/lTjh9IKFR/yCOmv8rI=;
+	b=vkqOSCIZmsSpcNDP7cjdZzfM5O/CDP/k33daOqxfqivgMuJXVPRAsS6D+JO7EjZES0Xhqp
+	gUPV+2NfXNLktFSaeBzAIp0sVJ7velx+4zAcB03tYsqPiai2Gu9wSi72WalfVlMe9/OZzO
+	KTDrethn4QQYloWqEGLyKx9V+KNJ2mrSpyIWRCSrwksI2v2Qvx1jS/HbBEqRafI94UuwGi
+	o63ryg1pdWCkRmOM7yFZjc+VX7N/KFKMt6NUr3MeM5uB0NUUUIgcvFTnmWB32rLNNjwdSP
+	2heIvm0s0ZjZlKUTHlGfrbntDzuNXiSUMftPUoBe070ky99Hk8YoVuClI7+Bsw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -51,10 +53,12 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Peter Robinson <pbrobinson@gmail.com>
-Subject: [PATCH net-next v2 0/2] net: stmmac: Report RSS as not supported
-Date: Mon, 28 Sep 2026 16:50:40 +0200
-Message-ID: <20260928145043.1228968-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 1/2] net: stmmac: Introduce a helper to check RSS support
+Date: Mon, 28 Sep 2026 16:50:41 +0200
+Message-ID: <20260928145043.1228968-2-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260928145043.1228968-1-maxime.chevallier@bootlin.com>
+References: <20260928145043.1228968-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,46 +68,61 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi everyone,
+The RSS feature is only available in stmmac if the hardware reports it
+through the DMA caps and if the platform glue sets rss_en.
 
-This is V2 of an RSS cleanup for stmmac, discovered while running the
-rss kselftests on stmmac. It returns bogus indirection tables and key
-sizes, when RSS isn't actually available at all.
+Introduce a helper that checks both.
 
-RSS is currently not supported on any stmmac devices upstream, so
-code that was already useless is now effectively dead. It has been the
-case since 2019 when the code was added, as platforms need to set rss_en
-in their plat data, and no glue ever did that.
+For now, no platform sets rss_en, but there's interest in the topic so
+leave the door open instead of dropping the feature altogether.
 
-Russell King ran a poll in february 2026 [1] asking if the code should
-be dropped, without any reply going in either direction.
+No functional changes intended.
 
-Jitendra Vegiraju from Broadcom sent 9 iterations of a Broadcom PCIe glue
-driver [2] that actually sets rss_en = 1, so there's some hope that this
-may be used in the future.
+Suggested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-[1]: https://lore.kernel.org/netdev/aYd4BkAeNW6d0iIC@shell.armlinux.org.uk/
-[2]: https://lore.kernel.org/netdev/20260402213629.1996133-1-jitendra.vegiraju@broadcom.com/
-
-Nvidia platforms seem to be RSS capable, but it's not going to work out
-of the box. Let's leave the feature there for now, with proper -EOPNOTSUPP
-returned for RSS ops.
-
-V2:
- - target net-next
- - Add a dedicated helper, following Nicolai's review.
-
-V1: https://lore.kernel.org/netdev/20260926093343.292181-1-maxime.chevallier@bootlin.com/#t
-
-Maxime Chevallier (2):
-  net: stmmac: Introduce a helper to check RSS support
-  net: stmmac: Don't set or get RSS parameters when not supported
-
- drivers/net/ethernet/stmicro/stmmac/stmmac.h         |  5 +++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 12 ++++++++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    |  4 ++--
- 3 files changed, 19 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index 7582fca63741..e2873d46e049 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -433,6 +433,11 @@ struct timespec64 stmmac_calc_tas_basetime(ktime_t old_base_time,
+ 					   ktime_t current_time,
+ 					   u64 cycle_time);
+ 
++static inline bool stmmac_rss_is_supported(const struct stmmac_priv *priv)
++{
++	return priv->dma_cap.rssen && priv->plat->rss_en;
++}
++
+ #if IS_ENABLED(CONFIG_STMMAC_SELFTESTS)
+ void stmmac_selftest_run(struct net_device *dev,
+ 			 struct ethtool_test *etest, u64 *buf);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 4dee3542df3b..08feb18d62ba 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3538,7 +3538,7 @@ static void stmmac_mac_config_rx_queues_routing(struct stmmac_priv *priv)
+ 
+ static void stmmac_mac_config_rss(struct stmmac_priv *priv)
+ {
+-	if (!priv->dma_cap.rssen || !priv->plat->rss_en) {
++	if (!stmmac_rss_is_supported(priv)) {
+ 		priv->rss.enable = false;
+ 		return;
+ 	}
+@@ -8037,7 +8037,7 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	for (i = 0; i < ARRAY_SIZE(priv->rss.table); i++)
+ 		priv->rss.table[i] = ethtool_rxfh_indir_default(i, rxq);
+ 
+-	if (priv->dma_cap.rssen && priv->plat->rss_en)
++	if (stmmac_rss_is_supported(priv))
+ 		ndev->features |= NETIF_F_RXHASH;
+ 
+ 	ndev->vlan_features |= ndev->features;
 -- 
 2.55.0
 
