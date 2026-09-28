@@ -1,118 +1,106 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566BF4F3929
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 17:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38A54E9C35;
+	Mon, 28 Sep 2026 17:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790615345; cv=none; b=NuMkQoILOnTcgwT6cw8LEyBGh4Yk2ZStczerf/wm9kyjv8OPDq1JGQ/L17hhe3J3F4kHkqWz3pbYJi8ePcfmkKWfTzSshJrLh4jd3ikC7NM5OJk6C5iwNU4+Ii3NkqnB7MSG+siequ+4fc2mjqSvxouyy5672rwbalRsy9PLrb0=
+	t=1790615970; cv=none; b=Y62wCYk6M3PZ91zYuthGl9whIXPrB5nKp819PoZX0C4tOBoW4m7fPOjuAgJ3WJOMg7plueEbYElAqqKduNsOV94+LYqGQLl/EnG1ZfejYFQxq+nzOAjooL0UPdr6yLxREskJqznFFDztQR3A7Gb+ouTzgaolh8Va+zbIAOu3Kvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790615345; c=relaxed/simple;
-	bh=FOfyznfJ2I/vomdjPJ2GT3QatQvztwc9D//G3n37QkI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=LF0awJd55+aqIh66LaJF+xebH4qh6XNVPFmuHPI61EDDZfebxld12RqQuYHQdZYzOfmQUt0/41VQ2r6fWyqEsk6G2qTE/NzlEhxsaqZzmRhv+2eLwv1077VEAK+9q42XNL5IbGH7ZEENdAg2vcEvK+Yyj4kHI/T56sI0LjCmcCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lRlhqQiC; arc=none smtp.client-ip=74.125.224.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790615970; c=relaxed/simple;
+	bh=H08XxfjU8+mr0Iz1TEtY8Xc2pff39+BjlRm12m9n7+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRO8msNSX0g4MUK4mgegJK0ABgrt08Lq7bv6pnyMyg9ZzxlpbPuQdHLARxD9njvz/LlansH+UPA+rb3c3HLdgY9Gws0MwCq+EunvibXx+yyAu1CH2HSv7h+7EAshrO0jeCQzoCMNykAg8WOnyrzpq2QgLIlziX2bsruYMOKeUxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0dKAqV3N; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lRlhqQiC"
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-86382f10801so15655977b3.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 10:09:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790615342; x=1791220142; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=M3NKplF+PpVk9qApo2SlPFNSD/uutcAtE+AxjuZEnTM=;
-        b=lRlhqQiC0cRbMKx3Q0niG83ORUBaYcm9AbcjgBgvj1wWi9bowjEWhlHNw1zYVQIveq
-         qg4oWP+OL55Sz1UPlMJl9NCCW8bMsufKhYqiKE0I425WtX5/1cGfMwqAirnVnNmlWaup
-         MftFFlbi82ktHJyvh3WDCXEDi6CgikAk7xAtR9y8LqI+lyk21IP5wQ7T6GaNwDnLLYls
-         RW546soDQc0j13PtQ5ZgkqlzbQIW8QkAdygFqaBlHbN5gD1uG9xLCAtNhFKefeZ6O1X0
-         FOvunW9MmaI+kguYoHylm/bwx5qJXcIj0A2pJhklVzcnuu23EiTJCNaqBRa0uCLghcTe
-         VMQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790615342; x=1791220142;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M3NKplF+PpVk9qApo2SlPFNSD/uutcAtE+AxjuZEnTM=;
-        b=W0KTeVvWL4Wej2oIS7GYC1K5ZUddOjeER+9rRzKTR5UPBArIEmcU/7EVlKINL3xZ4q
-         QrKaHOygcNt2FOI6xO0PQ2R5Fr/DSU4XPlkVqNWD/ZGMrqtra0QE8thWeiX6uvCrH65+
-         ZE7ETVC8erwrz9pjZLpzy3VvFkW50OnrF9LlJqMPGoBAhpZZystvffA2aiOBp+fX7NoI
-         E/HSmf55JvYVNDD4zN0RbJHm++sYbCJnrvbQtO0tO6rIGVbg09+uaiImN0339nQe15HK
-         NFw3OYL78fThCZ9OdkbvxQzYzNQyUshPCXuaFm6PbbCpSQ4OMIJxq7dDRQzIxjyAgsXe
-         170A==
-X-Gm-Message-State: AFq9FYK3EamkveZKirp53Rk1eDY5AQniuklXlb77i2enWbAhxxWcu4aE
-	cUc8p9BxaYuBe1JGteqx71g5RU8fHWxpGbYItO0J03ozDU4Rchrv67DGYJf89w==
-X-Gm-Gg: AYBFou2YD2UpHA7/j+rVpiIlgMdaVCBj4ok+MR3igJT7sWUjaaRymX8EggzTZICGzD4
-	U8++B4ukh/si+xsJrM85eSk7O38jIdWDiySRTK1+JN34Nw9/pC9hebtGYY6fpOK4a9acrSHMx0j
-	vlznHxCZxduSXqidzzOLqaUimYBrRjG+Rv1SWRuy2b/ZbvVHKJYC2xW/npITjD7fLTBoyCaFbhn
-	p/uI8EyAhkJZ1nyRl6a+PflWhJuytTQidmG5Y0kfknurwyTAlwdGL4thRIOFztndNdRweezVlwO
-	yzJigLMPuBpkZVVK+mGRggx1x4+k1NyjYbUky42mV6pS3fMlGZgig55/NJo2pD7ifxYodBX/hGX
-	isO4G4+a+e8o24Rf3jjF6VHLlTSmV2XYXYOSGBiRs+95IDnwEXO9FGGYkI3QOL5N4kngSsvBdqj
-	fSHB6djqss+sWf7V+Ci7fBOEsbHUUSGc1ugLAyw7KAQQf1Z+ZDjcqtIIgOhLsgx/zaCPM2v/gy3
-	I99Yzdlo6jw/W6WgsdbZ2V2W4CIuXQf+ycDbJ1fZVVr/MGuPpY3+KIzV3KMi70=
-X-Received: by 2002:a05:690c:85:b0:8ab:36db:e30e with SMTP id 00721157ae682-8ab3ca8b28bmr321877b3.18.1790615327211;
-        Mon, 28 Sep 2026 10:08:47 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a86100b564sm47786087b3.36.2026.09.28.10.08.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 10:08:46 -0700 (PDT)
-Date: Mon, 28 Sep 2026 13:08:46 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Fernando Fernandez Mancera <fmancera@suse.de>, 
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, 
- horms@kernel.org, 
- pabeni@redhat.com, 
- edumazet@google.com, 
- davem@davemloft.net
-Message-ID: <willemdebruijn.kernel.736256d759b9@gmail.com>
-In-Reply-To: <5d1557c8-6e0b-42cb-9132-b150f211444a@suse.de>
-References: <20260910144914.8025-1-fmancera@suse.de>
- <20260914172459.04db43b2@kernel.org>
- <5d1557c8-6e0b-42cb-9132-b150f211444a@suse.de>
-Subject: Re: [PATCH 00/13 net-next] Allow compiling an IPv6-only kernel
- network stack
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0dKAqV3N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3FVaKbDiYk4u7VSrQ05eP5FO1po2GZJQdT5CKehQq1w=; b=0dKAqV3NrfVvnDh614huaPuBfE
+	RHJ6aVDujUvbOQkb2O6k85yZX3fIojrINSgvjP9XWsTSyCXOAZcVkCdWs0UbbxHskQYQY2+rXOxjK
+	RYyTWvuwlEwCjBM6SwHRDPh95i7TL8Lf/SHelCNhyPxcYRAy5YwQo+MQkRtWAH/V6aZA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBF0Y-007lHA-7P; Mon, 28 Sep 2026 19:19:18 +0200
+Date: Mon, 28 Sep 2026 19:19:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux@armlinux.org.uk, vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com
+Subject: Re: [PATCH net-next v2 1/2] net: axienet: use device_property and
+ fwnode APIs for probe-time config
+Message-ID: <f89024c3-0c71-4976-893d-656e154858d8@lunn.ch>
+References: <20260928074256.462345-1-maimon.sagi@gmail.com>
+ <20260928074256.462345-2-maimon.sagi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928074256.462345-2-maimon.sagi@gmail.com>
 
-Fernando Fernandez Mancera wrote:
-> On 9/15/26 2:24 AM, Jakub Kicinski wrote:
-> > On Thu, 10 Sep 2026 16:48:25 +0200 Fernando Fernandez Mancera wrote:
-> >> The primary goal of this patch series is to enable the compilation of an
-> >> IPv6-only kernel by decoupling the core networking infrastructure from the IPv4
-> >> protocol.
-> > 
-> > Could you useful to know for example how many of the recent CVEs were
-> > IPv4 specific, if you have enough token budget to get such data?
-> > 
+On Mon, Sep 28, 2026 at 10:42:55AM +0300, Sagi Maimon wrote:
+> axienet_probe() reads its configuration exclusively through the of_*
+> API, so the driver can only be instantiated from a device tree node.
 > 
-> Hi Jakub I will include the numbers in the v2 cover letter but in essence:
+> The ADVA TimeCard X2 is a PCIe timing card, driven by ptp_ocp, whose
+> FPGA contains an AXI Ethernet MAC with an AXI DMA engine.  ptp_ocp is
+> going to register the MAC as a child platform device described by a
+> software node, so that this driver runs it rather than a copy in
+> ptp_ocp.  That needs the probe-time configuration to be readable from a
+> software node.
 > 
-> 0.3% (32) of the released CVEs since 2025. FWIW, this only includes 
-> strictly IPv4-only code. The percentage is also stable over time if we 
-> extend the search up to 2020, 0.3% (57) of the released CVEs.
+> Convert only the lookups such a caller needs: "xlnx,rxmem", which probe
+> requires; "phy-mode"; the MAC address; and the PHY connection, which is
+> where phylink finds a "fixed-link" child.  On a device tree this is a
+> no-op: device_property_read_u32() dispatches to the of_* implementation
+> when dev->fwnode is an OF node, phylink_of_phy_connect() is a wrapper
+> around phylink_fwnode_phy_connect(), and device_get_phy_mode() and
+> device_get_mac_address() are thin fwnode wrappers around the same
+> lookups.  device_get_mac_address() also keeps the "mac-address" nvmem
+> cell fallback that of_get_mac_address() has.
 > 
-> > High level, I don't have must to say beyond what you already know -
-> > the code movement may be too painful for backports. There are too
-> > many ifdefs (as Stan pointed out).
-> > 
+> Note that device_get_phy_mode() returns the mode as a positive value
+> rather than through an out parameter, so the error test changes from
+> "if (ret)" to "if (ret < 0)".
 > 
-> Yes, the code movement is the biggest pain. Regarding the ifdefs, they 
-> are being reduced greatly in the v2 as I have decided to rely on DCE 
-> (Dead Code Elimination) to avoid using them. The code looks much better 
-> this way.
+> Everything else stays on the OF API.  "xlnx,txcsum", "xlnx,rxcsum" and
+> "xlnx,switch-x-sgmii" are optional, and "xlnx,phy-type" is deprecated in
+> favour of "phy-mode".  Without an OF node each of those lookups finds
+> nothing, exactly as for a device tree node that leaves them out: no
+> checksum offload, no runtime SGMII/1000BASE-X switching and a
+> fall-through to "phy-mode".  The "dmas" test likewise selects the
+> built-in AXI DMA engine.  The "axistream-connected", "pcs-handle" and
+> "phy-handle" phandle lookups stay too: a caller without an OF node takes
+> neither branch, getting its DMA registers from its own platform
+> resources, and it cannot use the SGMII and 1000BASE-X modes, which need
+> a PCS.
+> 
+> No functional change intended.
+> 
+> Tested on the X2 with a local ptp_ocp change, with CONFIG_OF disabled
+> and enabled: the interface probes with its configuration read from the
+> software node and passes traffic.  No device tree board was available,
+> so the claim that this is a no-op for device tree users rests on the
+> dispatch described above.
+> 
+> Assisted-by: LLM sparse
+> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 
-On code movement: are the large code block movements into separate ipv4
-files needed, or could those just as well stay in place, behind an if
-enabled check?
+Lets see what the AI reviewer says about this, but it looks O.K. to me:
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
