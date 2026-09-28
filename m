@@ -1,238 +1,186 @@
-Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A508C4E3245
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD284E36DC
+	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 15:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790607622; cv=none; b=j9U+6O2Qr+iEcpO5iqLrkoR5FDD77AcLF/RXU4lBSJGs/N5IjDeiL0yy/f5W4VHe5EWGqhoEseZ1yi2MtkV0WnfS/wXNor4+JXdN5n3skEwQdCm6C/X/BM5+AJdRQREeRYcQQXxqD0zpmuZCwsOEq+QNH1F9ou0gMd0+4Z9s2JU=
+	t=1790607628; cv=none; b=TmIUi+FiUui9Lt0zMVlsCHsuytaMVeqi4cxcO1l8utryP4YaJuOTP9+BMlTIOGFNoPuUr9Y8H7UNT7uExeY+IMF/BPMEqB/zt/JvXPKgjy9Zb6PiuIAYKGFPTRhfCvXFEgm1xb9GnxfB+2Fk86REoxLyEMtwMGgGGArgnnC28LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790607622; c=relaxed/simple;
-	bh=ofLhtOUraYrBU9vH7dVYS99Kn/ZKr6TmW9UdLaKMYnE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Ji1Mbl7ZYyWULzf8iH29WHMILOHX1L/BXq/quieILGIEVY06cIXIRGkdMd7CrFLVMiAG3QeSLmxNDLjsD3yO4i0PbOiEfnZp9LTbWoyqclQDsJoboNAvVwwIpBe5yHmtYUEYEqERbjZkYQ7ZrwJhUkvRcptBLuuG/RgoSFCfYx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WmYqnuJ+; arc=none smtp.client-ip=74.125.230.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790607628; c=relaxed/simple;
+	bh=FarrX1AXajp0rcAMMevqe1ADxQNLZJK0VOe0E5fUEKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZByuBU5k02StFLYt24Ey8FPvfYjARmRFH/k/tUK5R5gqxRXQj2vIZa29/wXc5tjK7zC/8xAHNxULdR3mJPyy6jt9vMkYEwDW6Du/SK3Z6SoLisP70uznoFs2wm8wPEvthoHgsY9e0vqA/Eqz64AwWZ0rEYr4XHzo4/vkoEwsdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KQEXO095; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kVUhd8t6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WmYqnuJ+"
-Received: by mail-qk2-f39.google.com with SMTP id d75a77b69052e-5332f3092eeso14535511cf.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:00:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KQEXO095";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kVUhd8t6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790607624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eLs8yZfJYGp54djsbn71UyAfwiNLWW6mOvXDf6yGk6E=;
+	b=KQEXO095cr7w/2y/QKSIbVo3b3+XPYsgB+4hJwNH/Js/WDxs8RK09aHO0OYs2J9NS3BAMP
+	t+iS3dR0skWgZo6Cs+Of0HTpM5kbhYSAUADRZL4HUNCUhhiGy8ccqzHeJdfCs4COvjLDw1
+	mWsmkwS8ekVdS6/7wJEkpssAzEvdBRs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-sBPcBHVaNna93DfVK-wp0w-1; Mon, 28 Sep 2026 11:00:22 -0400
+X-MC-Unique: sBPcBHVaNna93DfVK-wp0w-1
+X-Mimecast-MFC-AGG-ID: sBPcBHVaNna93DfVK-wp0w_1790607621
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48589603501so2123858f8f.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 08:00:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790607618; x=1791212418; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=l4pH9TWXZJHK102QKSQ5xfmRzXhpONAZW7fKUqg/bHg=;
-        b=WmYqnuJ+46B0CyUHEK39N3jeLZJGPd6/S4xTSwn+XFdZ4I8g1xMxmiFG7BFyJvlzOz
-         QYpSr4HLJh5P4EQLSewdpOQ9NnCInXWAhmdPXRry2DQG8UUokOy1iUDwf47rV5GzJQSg
-         lJ7V7B0lXbcvlsOHYmYMp4yABEnp1HIRRDFp/n/c03xYApY+0As0YSoLDASMCOV7jf0O
-         frblB61G/oDyoYz/Xh4Mp2F9bteHXYkGMBrPFZuOLqLEThDB4gOIxBpc2aHgLdPXTNUs
-         XEA1Mp6ngJge1xuX0Ky17+/5cs4iKrc2E8dWev+VBdrLdVJZ1YQ88+SSe7meMx2LXmp+
-         Y8nw==
+        d=redhat.com; s=google; t=1790607621; x=1791212421; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eLs8yZfJYGp54djsbn71UyAfwiNLWW6mOvXDf6yGk6E=;
+        b=kVUhd8t63D+j3O51VASIOK0p2f7DLjaWKg1FZ/wrkFTfosbtaAz9e3KZrWFAdVnpnk
+         fdsEl8YlwVYUHNmLal+tuOzBsMV5JPIFPXRIvunCbhIFsE+ZTqJdbyNhRIbzvx83amZb
+         3yMzFjV/TyZZXOBJokYzd6F7wAky/tQQW9NXcWnIfLukZtX6u0d7MpXHOJo60qOw4zUh
+         O425Mw0y8qV3OoLE5485BVMrjtNdU/YYXavj5UjK0dkKo+xhaGPYpF+wdi+XsNhMpkLI
+         aeJSg9TzT0SZTI/b/iW3tGFjtjSuN3+M6FX3dZrPHuDKgnPc7eFRwvYWjyjTBq6z+Gyb
+         oWjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790607618; x=1791212418;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790607621; x=1791212421;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l4pH9TWXZJHK102QKSQ5xfmRzXhpONAZW7fKUqg/bHg=;
-        b=2LZMm5wMnWdU3tjr+9mWbqzwzLEh2gOkqx6yilLZkdIELMy3lGU5CmnTbUqaTyUUIe
-         NB4+xbSlHFlAyqDzC5OhWQPwCvocLEmnng8QgPBep8Ov1ONWy4C24g2kSUa/YzsAF8pI
-         RelcbRU5u4e78V7Q3KAZq7/ubJHlNQCgsOzLxcLO2fx4x/VZcQLYQFahZ760kZNu51zq
-         N5lZ6PssimFPIu7axDWnN404s9kHQeM9Ewo+X5mBIZsPruFfglQoiSfSEeTZR4lu0xbr
-         uj047509dUjBWYyOBdWxq5hynwwYkFsN9PlUUJCws1LCE+U77smJrIAdVbYtly1e7/XD
-         74VQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxepuTmDJpizww9H4ruehWrz2fmQy2NZ5EvqIxoOI/LJgOdi3HSc7L7LEdIDHZ+dlOApO7SQAo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIBytX3LUgWUfHEy6mGguuOqwhHHVEqMycyPTZ7BZowYF0k91aD
-	aUGafmIHZh6IHzW3PNkvuSxLapHa0wuHVUuSVoWOqBSxe6JzYspVEEJM
-X-Gm-Gg: AYBFou29+RrSqEngDD5tKXi5lNqaxAcrcBVNyJWoHWGzk7+TcmVMJ25/c08jxJGEgvv
-	f+scExPVEveREMr8hFs3ZDMCB3ZaNxceRNqph36KaKkfnQMcMAm3/5vDtLh/pyp+Cu/UZFg9mlX
-	khksdVHiZwq/xzx8LZhQhbHoI/lzUg5HQ5xjmXrpCJsli7ZzvClNyATtsptAjaLSvxbZBGL6PtX
-	KGVPzJD9Gh49YslLMz0B9qm9jt/bfaDH+EoirCYMJEiQlaICDgzG/HxBu1A0F3CydtGG/C15Xqz
-	7Kcq1utpa8PaFiQL7URt4ajYrBUUsOzwfJ7XrrMb1AHv3/0A6xGLfTe5IfSsNq83BZicfyHRJSu
-	YDA4WJALXII9jdnDpODY82EwOJ6Os5Y7vd/9Ah3D5SeAvYyXWjhWk5i3dXp08LlaaVCReRK2p91
-	49yKSVORQEkzkJw458Jp7HXGowq0AXVK2FToxP7jLDnuCJdpR4vVOe99S8RdpfvXruNy8TUZq8v
-	Ak=
-X-Received: by 2002:a05:6214:d84:b0:914:5176:a0a6 with SMTP id 6a1803df08f44-9145176a45emr123730886d6.2.1790607615421;
-        Mon, 28 Sep 2026 08:00:15 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e281a8sm81970906d6.33.2026.09.28.08.00.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 08:00:14 -0700 (PDT)
+        bh=eLs8yZfJYGp54djsbn71UyAfwiNLWW6mOvXDf6yGk6E=;
+        b=tyQ8IqqSJzHbrv1RPhkC+3P7M9hPXZtG95hpBukE2bzkw/XoktB1GqO6q6SAgGZLUv
+         Wl0y1FyMXjtxfArABFrqQC+BBq5K64dugZaBn51ManKjqi8S1N55n1R8BpPIDBcyXQte
+         58tr6om3SaxN8980VpVrbw5bQNPEv1ol/P8iGQXnHd9vDb8fC+UXaH41LHMAI9BLQogT
+         eFZuVDAOOAg1ezYm3J4F9tLO4mdyOVGIyQbSfO2g+xiKMNkE40jLwB/IMeIDglM1leNm
+         XhWiY1DD+OPKC/TylXfILt+dbV4e5W6plTH2gGZVGELaDUfcWxtu9s5Pt/ZkLjCt5LMi
+         +3zA==
+X-Gm-Message-State: AFq9FYKv9+sAfnG+UNsSDBSMKC92k/s+wCU34/z1megA/VaOdCwz0ZnU
+	qrhVPgvwwGKFL6MWHdcpUhMLH+JjBgmwU6XbJfvbJ3pf6i3iTFJxl2r4mJhilaI66opRf3jhIjs
+	B8MBjc0gT+O/JcEU8PUkZ20TcpbzdVTFL6XYPmWNZXqyVeeaSAc5zRFBEXA==
+X-Gm-Gg: AYBFou37XWijgMwt8MZMMAE7R0pV4O/GSAIe4couqpDfG3inZjzwk0E32YYIkYsI/EF
+	7DXsR1EqiLUD/fgc1J3HVSKplxvIdeB7vdsgkvD3ZiOFY3jFy/7O/tXsIoY51MYT0tXj5TjWD2c
+	F+ZoMtDzJpR/z1Vol2axIGRRMHdQzpc9Wzuh9Az7qq6VaDXHiy12E6/TLWKjvrApdk5bqQFWbFA
+	YD8asjei4GCoL1L5pu8NVTMhqdrZ6GEuKm5DV/wV7ByN5c+2H9qmwYrwGaJXzUk/TvC6JerAzoy
+	hgInOa+4WyJpGiAaJGweDdToNMA21OX0yLmZ+k+/lrgYOlMzBDJb0pQZ23b11ZlsIp8T39kCiTJ
+	hK6w=
+X-Received: by 2002:a05:6000:4b0a:b0:488:823d:507b with SMTP id ffacd0b85a97d-488823d5296mr15209805f8f.52.1790607621387;
+        Mon, 28 Sep 2026 08:00:21 -0700 (PDT)
+X-Received: by 2002:a05:6000:4b0a:b0:488:823d:507b with SMTP id ffacd0b85a97d-488823d5296mr15209714f8f.52.1790607620571;
+        Mon, 28 Sep 2026 08:00:20 -0700 (PDT)
+Received: from sgarzare-redhat ([5.179.146.191])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a349731sm28558683f8f.12.2026.09.28.08.00.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 08:00:19 -0700 (PDT)
+Date: Mon, 28 Sep 2026 17:00:12 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: netdev@vger.kernel.org, bobbyeshleman@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] vsock: report pending receive data to
+ io_uring
+Message-ID: <arqAF53k2arP4enr@sgarzare-redhat>
+References: <20260923184008.153541-1-devnexen@gmail.com>
+ <20260923184008.153541-2-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Sep 2026 11:00:13 -0400
-Message-Id: <DLR1F9RXTT06.UETFCFM0S7X9@gmail.com>
-Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
- <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
- <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 5/8] eth: mpnic: start and stop the Tx HW
- queues
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260924-linux-mpnic-v2-5-4badc9b58b9e@gmail.com>
- <179055370349.3145.18291043056842354620@kernel.org>
-In-Reply-To: <179055370349.3145.18291043056842354620@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923184008.153541-2-devnexen@gmail.com>
 
-On Sun Sep 27, 2026 at 8:01 PM EDT, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] mpnic_wait_all_queues_idle() returns void and drops the
->   -ETIMEDOUT from read_poll_timeout().
-> - [Low] mpnic_enable_twq() writes fls(size_mask) & MPNIC_TWQ_SIZE_SIZE (a
->   4-bit field), and mpnic_enable_tcq() writes the same exponent into=E2=
-=80=A6
->
-> --
->
-> eth: mpnic: start and stop the Tx HW queues
->
-> This commit writes the Tx work queue and completion queue base addresses
-> and sizes into the hardware. It adds mpnic_enable() and mpnic_disable() t=
-o
-> turn the Tx queues on and off. It also adds mpnic_wait_all_queues_idle(),
-> which polls the TWQ, TQS, TDE and TCQ idle bitmaps, and mpnic_flush(),
-> which throws away any Tx work left in the rings.
->
->> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/=
-ethernet/meta/mpnic/mpnic_txrx.c
->> index 853976e11b032..aaa3a3e99a138 100644
->> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->
-> [ ... ]
->
->> @@ -467,6 +468,180 @@ void mpnic_reset_netif_queues(struct mpnic_net *mp=
-n)
->>  	}
->>  }
->> =20
->> +static void mpnic_enable_twq(struct mpnic_dev *mpd, struct mpnic_ring *=
-twq)
->> +{
->> +	u32 log_size =3D fls(twq->size_mask);
->> +	u32 i =3D twq->q_idx;
->
-> [ ... ]
->
->> +	/* Store descriptor ring address and size */
->> +	mpnic_wr64(mpd, MPNIC_TWQ_BASE_ADDR(i, 0), twq->dma);
->> +	mpnic_wr64(mpd, MPNIC_TWQ_SIZE(i, 0), log_size & MPNIC_TWQ_SIZE_SIZE);
->
-> [ ... ]
->
->> +static void mpnic_enable_tcq(struct mpnic_dev *mpd,
->> +			     struct mpnic_napi_vector *nv,
->> +			     struct mpnic_ring *tcq)
->> +{
->> +	u32 log_size =3D fls(tcq->size_mask);
->> +	u32 i =3D tcq->q_idx;
->
-> [ ... ]
->
->> +	/* Store descriptor ring address and size */
->> +	mpnic_wr64(mpd, MPNIC_TCQ_BASE_ADDR(i), tcq->dma);
->> +	mpnic_wr64(mpd, MPNIC_TCQ_SIZE(i), log_size & MPNIC_TCQ_SIZE_SIZE);
->
-> [Severity: Low]
-> This isn't a bug with the current fixed 1024-entry rings, but
-> mpnic_enable_twq() and mpnic_enable_tcq() mask the same exponent with
-> fields of different widths in mpnic_csr.h:
->
->   #define MPNIC_TWQ_SIZE_SIZE    CSR_GENMASK(3, 0)
->   #define MPNIC_TCQ_SIZE_SIZE    CSR_GENMASK(4, 0)
->
-> For a 64K-entry ring (fls() =3D=3D 16), TWQ_SIZE would get 0 and TCQ_SIZE
-> would get 16. Is this the intended encoding for each register?
->
+On Wed, Sep 23, 2026 at 07:40:07PM +0100, David Carlier wrote:
+> AF_VSOCK stream receives never fill msghdr.msg_inq, so io_uring cannot set
+> IORING_CQE_F_SOCK_NONEMPTY and retries a multishot receive even after the
+> queue has been drained.
+> 
+> Fill the hint at the common receive exit using the transport callback that
+> SIOCINQ already uses, and report 1 once the connection is finished so the
+> caller performs the receive which observes EOF, as TCP does after a FIN.
+> 
+> A vsock loopback ping-pong with io_uring multishot receive drops entries
+> into __vsock_connectible_recvmsg from 1.97 to 1.00 per delivered message,
+> and receiver CPU time by about 3% (25 runs of 50000 messages, p=0.006).
+> 
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+>  net/vmw_vsock/af_vsock.c | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index f840498b58af..20d6f9ca6a96 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2543,6 +2543,35 @@ static int __vsock_seqpacket_recvmsg(struct sock *sk, struct msghdr *msg,
+>  	return err;
+>  }
+>  
+> +/* Bytes a following receive can consume, 1 if it would only see EOF, or -1
+> + * if the transport cannot tell.
+> + *
+> + * Called under the socket lock after a nonnegative stream receive, so a NULL
+> + * transport implies SOCK_DONE.
+> + */
+> +static int vsock_stream_inq_hint(struct sock *sk)
+> +{
+> +	struct vsock_sock *vsk = vsock_sk(sk);
+> +	s64 data;
+> +
+> +	if ((sk->sk_shutdown & RCV_SHUTDOWN) || !vsk->transport ||
+> +	    (sock_flag(sk, SOCK_DONE) && sk->sk_state != TCP_ESTABLISHED))
+> +		return 1;
+> +
+> +	data = vsock_stream_has_data(vsk);
+> +	if (data < 0)
+> +		return -1;
+> +	if (data > 0)
+> +		return min_t(s64, data, INT_MAX);
+> +
+> +	/* Empty but finished: keep the caller reading so it sees EOF. */
+> +	if (sock_flag(sk, SOCK_DONE) ||
+> +	    (READ_ONCE(vsk->peer_shutdown) & SEND_SHUTDOWN))
+> +		return 1;
+> +
+> +	return 0;
+> +}
+> +
+>  int
+>  __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  			    int flags)
+> @@ -2606,6 +2635,12 @@ __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  		err = __vsock_seqpacket_recvmsg(sk, msg, len, flags);
+>  
+>  out:
+> +	/* Seqpacket has_data counts messages, while io_uring treats msg_inq as
 
-The code is correct. TWQ has a max ring size of 64k, and that has an
-encoding of 0 (like fbnic). TCQ actually supports rings as large as
-256k, but it does not have/need the 0 encoding for that, as there is an
-extra bit in the size field.
+Do you mean vsock_stream_has_data() on SOCK_SEQPACKET doesn't return 
+bytes?
 
-> fbnic has a comment for the 4-bit form: "Write lower 4 bits of log size
-> as 64K ring size is 0". Would a similar comment help here?
->
-> [ ... ]
->
->> +void mpnic_wait_all_queues_idle(struct mpnic_dev *mpd)
->> +{
->> +	static const struct mpnic_idle_regs queues[] =3D {
->> +		{ MPNIC_TWQ_IDLE(0), MPNIC_TWQ_IDLE_CNT, "TWQ" },
->> +		{ MPNIC_TQS_IDLE(0), MPNIC_TQS_IDLE_CNT, "TQS" },
->> +		{ MPNIC_TDE_IDLE(0), MPNIC_TDE_IDLE_CNT, "TDE" },
->> +		{ MPNIC_TCQ_IDLE(0), MPNIC_TCQ_IDLE_CNT, "TCQ" },
->> +	};
->> +	u32 non_idle_bitmap;
->> +	int err;
->> +
->> +	err =3D read_poll_timeout(mpnic_non_idle_queues, non_idle_bitmap,
->> +				!non_idle_bitmap, 20, 500000, false, mpd,
->> +				queues, ARRAY_SIZE(queues));
->> +	if (err)
->> +		mpnic_idle_dump(mpd, queues, ARRAY_SIZE(queues),
->> +				non_idle_bitmap, err);
->> +}
->
-> [Severity: High]
-> What happens to the Tx rings if this poll times out?
->
-> The commit message says every block "has to report idle before the
-> descriptors are safe to free". However, the -ETIMEDOUT from
-> read_poll_timeout() is only logged. mpnic_wait_all_queues_idle() returns
-> void, so a caller can't tell a timeout apart from a clean drain.
->
-> mpnic_stop() is added later in the series, in "eth: mpnic: add a netdevic=
-e
-> and basic Tx handling". It carries on whatever the result:
->
->   mpnic_disable(mpn);
->   mpnic_wait_all_queues_idle(mpn->mpd);
->   mpnic_flush(mpn);
->
->   mpnic_reset_netif_queues(mpn);
->   mpnic_free_resources(mpn);
->
-> mpnic_disable_twq() and mpnic_disable_tcq() only clear the enable bits.
-> TWQ_BASE_ADDR and TCQ_BASE_ADDR still point at the rings.
->
-> After a timeout, mpnic_flush()->mpnic_clean_twq0(..., true, tail) unmaps
-> the in-flight Tx buffers and consumes their skbs. Then
-> mpnic_free_ring_resources() calls dma_free_coherent() on the TWQ and TCQ
-> descriptor memory.
->
-> Could a Tx engine that is still busy then fetch descriptors or payload fr=
-om
-> freed memory and put it on the wire? Could the TCM write completion
-> descriptors into memory that now belongs to another user?
->
-> fbnic_wait_all_queues_idle() handles the same case differently. It turns
-> on Tx drop through fbnic_tx_flush(), polls again, and returns an int.
-> Would something similar be needed here? At minimum, could the error be
-> returned so the caller can avoid freeing the rings?
+IMO names are confusing, but it should return number of bytes, we should 
+fix it, but of course not in this patch.
 
-This was addressed many times in the v1 sashiko review.
+LGTM:
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+
+> +	 * a byte length when sizing retries, so only streams report a hint.
+> +	 */
+> +	if (msg->msg_get_inq && err >= 0 && sk->sk_type == SOCK_STREAM)
+> +		msg->msg_inq = vsock_stream_inq_hint(sk);
+> +
+>  	release_sock(sk);
+>  	return err;
+>  }
+> -- 
+> 2.55.0
+> 
+
