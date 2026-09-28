@@ -1,331 +1,217 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E416A46D2B4
-	for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 07:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A48746D56E;
+	Mon, 28 Sep 2026 07:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790581993; cv=none; b=AhwFQAS/wyMecFaFuQuuV/kV04w6+rCj/N2IDBX9JTga6VDP/aHfwLUTIuTOgySWkrYi7NMRRyyHd/wUSM+/x4JuEaO2TUCIxzfaRbbRz7RrMlzZ791yxNhYvBuPLbLe4pu4qoRQ3PKk99XBCSWY5voYZlLKou3Inxs0nZkAh7E=
+	t=1790582021; cv=none; b=oKck8HD4azOQxK8A45Wnh2HvgXSUknJDWW5RH8Vt7QoyevbrHBSOMcaLU1mh8Uq9ekrX+3XlX2takQM0dlcel83xLZSMYQM+LIWPa/JEefylwWcP9vd4qoZ8ZNVH0HBKu7w7JSQgJxc4k0jwxT2HyG2XlnSQlF83rXUzjumpwYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790581993; c=relaxed/simple;
-	bh=aA/zrPMspakEuvzH3RaiPDVitAjjOTzjf/L/Kpmyf0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MA5bZWbuHU36lmhgemkCu/xl4un2kqDWsP3RgGbVpJarItH/pwEUJOtGiAk38oWvBmUjDYKLAv+MSGNPTqGfgLHwnjyr3Lhr664M5iFgZnWgcQ/qHUSNL3iWH1ooUQ9i4pCjpU/9svbd4nTuKZeA3O3aIQD6VR6cW0DY6ClsWdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=jFJ+16CF; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1790582021; c=relaxed/simple;
+	bh=rLMemcTGjmm8SHWfRqw2bH6bqVNgymdng9wGI6zJmgc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hzefQpFh5OvOMxTp6o0L/ovNboX9HObz/J/pQYTTg76He+mEsyvF72D5nlayU0vmBkjGIkZWH3oftsOzfBk4KAyQtTKeniTy4oQp3hgCOqjN9Zx7nmbTOO/KZD5GxxMYcBXjzg1lgvhyjP2YTax0l+C5uIXTDdyn62Ruim8t71A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGCvmFyh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="jFJ+16CF"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887dc451d7so247182f8f.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 00:53:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1790581989; x=1791186789; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BF10bhz/UbdNdYSJY9TUFjfFC06TQP6+N+yfVQ0ryuw=;
-        b=jFJ+16CFM+jjpt2BWFeCO0quo16TnjakV33xfGKLyK/hjPepDAD0KA0xNzxQi+Us72
-         jQVCm+wnHpKDbXX5oGaU+FSTNaSMk6fmEvZqLQdtxoJWUTol0NvVJbSzlV5Hu/aL4LPT
-         DiTdbnzeISIkNohNqdaYaHHc29U3qdP3oLmv+sz0Vdy3qhEjbMls5wjGibT9UH9bVGtL
-         aDwFnm2fBF9/GdwWAJGp2z1j9Oi3lAcH0Cky89rXK2yKmsn/ziBVKd+w+GUWgxjHlWBr
-         quwHEC79+TfhQRf3934ZIIpEC3CDg2bnKgPfH3VEkTMANujdjmaE0VQeK5MtUTFO75XB
-         d+sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790581989; x=1791186789;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BF10bhz/UbdNdYSJY9TUFjfFC06TQP6+N+yfVQ0ryuw=;
-        b=GDZMTSDU12tmZoQEWJaeh4wzEvUfMKzw7olneOLRpzVz2oa1etPAh1I6kUBeSIQKAi
-         zouEKSf4SapwppZB6NF6xhSLviBBXdwx4XUZ3WgftInp7xRD5A8HfLgeDQAiI5AWnAAy
-         H06D6DtdcO9RQ1VMFbPo0/K0Cu1fQh/sgIxcayRDqSABlziBXwv091K5xMK4rxHbD8Hr
-         J0/lfZGs5O5QjknjX2WjNtLbM3W+f3tZcVEbKsUW54e87CurJWUD+lVQ9kpkzP6qq+wD
-         87c0hjZlyH73cZWyq5wYhYOt+bxtB8GR+freJ/dEOnlfZ01XJhc/IN3te9Eg5G8hEhQL
-         INmw==
-X-Forwarded-Encrypted: i=1; AKwUvBz61aWAfdCLoOECCYpkVJKJZk7dWZe7tEPrANDHHgafUIrJw+qeld8PKF0UZqgXv00TBHGLX0g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lpVpusa5bxmo742V8mSmNlkmQxzcBwTC+gXj/NP5bHv9QSye1H
-	wiu5Mut7MycbOxewAvFxnPKQ/bRRxrF6Q1gcT9cLOSKWS57CSXcdOseNxmVKcDqNM+o=
-X-Gm-Gg: AYBFou2sAvqxXcdIB3v9kvZOsOlqzO/zWp605eqh4Zb0+f5Dv4KK6o32R9D+lrTZRTo
-	Lq4jT7h/CGJcLd/gPWyUgd241Zu2xvKTDAMUMhIkx6qAU5CQuivRR95VB/vKhMoWgYm5OLs6aBx
-	H84Vz/y+6CPvuTGayMgU6fj45z2K8bddcvBQogioe1mHzqwRgdkYVY4rTje3XfuNMnWh8lHfC3X
-	HmkC/Stoh46xWaTcfGHmerEAwuxRrLuLJ315WkvxDzDo2F0tu9pLgNmywrXsY0AAVW+Y5VbBNKM
-	tFq1MFNF8rnM4StjgftG75MCqUqYSYP3+A/McM6F9dcr5TPRx3W2FoZIIqhEZV6Lq50XZOTU8kj
-	hZ+swYHC9MYvWOzibjDDADr5M1ABSSj+wO6twnxDW6BHskpBRwRWbN+uA5m2cyclXzxp5CEVRpU
-	meOEVN/ho84FaPPXjRq12yOgDsoJMF/0cCXnRJzewZt+IywhiFl6GrAf2SJqfSzjRo66SI/dOkz
-	kvHid6BBSkwg1njHcY6/JnUqR2O+6CiTdD01kWAUh60sSDYdhk=
-X-Received: by 2002:a05:600c:a414:b0:49f:ff2c:e0cf with SMTP id 5b1f17b1804b1-49fff2ce1a7mr66131745e9.0.1790581988608;
-        Mon, 28 Sep 2026 00:53:08 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a001922102sm122800265e9.15.2026.09.28.00.53.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Sep 2026 00:53:08 -0700 (PDT)
-Message-ID: <cd00e6e7-aa2d-4f98-8a79-083b64b3376a@6wind.com>
-Date: Mon, 28 Sep 2026 09:53:07 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGCvmFyh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7642E1F000FF;
+	Mon, 28 Sep 2026 07:53:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790582019;
+	bh=rm8mvrgOXmhM8P747mp7fE4w601Zhc6br4KrfkiHnWs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZGCvmFyhnKyA42mxO7fiS3BI8EwGUSGuFYfELzG+raisLWdMcGUxOPT9O++/aB0/J
+	 JATY+PYgTLVXVn8T1oyzmoZzMKFU7xSLj4VeNTK3/wOFtMuuklhN7tG3/DMy4iRv4E
+	 zqh4y+pvoFheD7SeJyngH5x76f81dPsa7cPBU2y6rWyF4QIjNM03LRKHUGtv1lWiiO
+	 8msTJbiES8KeGG7n3ArtXzXeM7Q+FmYEIXObcc73O/9vh9yaF+LBi3senIaZh8ogc2
+	 RJWEEJbOzfSxqtPEI4Qqsb+IkdMQgKmpwKin4OSKpkqPjZoXjyZVMEpbpmDzJS8q6Z
+	 e+11BOMosayUA==
+Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
+From: netdev-bot+sashiko@kernel.org
+To: kyle.switch@motor-comm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+Date: Mon, 28 Sep 2026 07:53:37 +0000
+Message-ID: <179058201796.3145.3820811818247443890@kernel.org>
+In-Reply-To: <20260924075048.4060414-2-kyle.switch@motor-comm.com>
+References: <20260924075048.4060414-2-kyle.switch@motor-comm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next v8 2/5] net: add a generation counter for dev->mc
- changes
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-References: <20260927002427.4519-1-sigefriedhyy@gmail.com>
- <20260927002427.4519-3-sigefriedhyy@gmail.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20260927002427.4519-3-sigefriedhyy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
+Critical: 0 · High: 0 · Medium: 1 · Low: 5
 
-Le 27/09/2026 à 02:24, Yuyang Huang a écrit :
-> A multi-part RTM_GETMULTICAST dump of dev->mc resumes by position, so
-> entries added or removed between two dump rounds can be skipped or
-> repeated. The IPv4 and IPv6 dumps report that with NLM_F_DUMP_INTR by
-> stamping cb->seq from a per netns generation counter combined with
-> dev_base_seq, see inet_base_seq().
-> 
-> Add the equivalent for the device multicast lists: a per netns counter
-> bumped whenever an entry is added to or removed from any dev->mc. The
-> list helpers do not know which device a list belongs to, so give
-> netdev_hw_addr_list an owner, set for the lists of a device and NULL
-> for snapshots and other standalone lists, and change list->count
-> through helpers that bump the counter of dev_net(owner) when the list
-> is dev->mc. That covers the dev_mc_* helpers, both lists of a sync,
-> the hardware sync helpers drivers call from their rx mode callbacks or
-> their own workers and the reconciliation after an asynchronous rx mode
-> update. It is atomic since the writers only hold the address lock of
-> their own device.
-> 
-> Used by the following patch for the AF_PACKET multicast dump.
-> 
-> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [Medium] The new binding
+  Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml redefines…
+- [Low] The patch adds `M: Kyle Switch <kyle.switch@motor-comm.com>` as a
+  second maintainer for the whole existing MOTORCOMM PHY DRIVER section…
+- [Low] The `reg` description in motorcomm,yt8824.yaml gives its address
+  rule in terms of 'internal mode' and 'external mode'.
+- [Low] (Discarded as a false positive in the final series state.) The
+  concern was that no in-tree code reads the required `phy-mode` or uses…
+- [Low] motorcomm,yt8824.yaml says the package `reg` is 'fixed at 9' in
+  internal mode, but the schema does not enforce it.
+- [Low] (Discarded as a false positive.) The concern was that the example
+  (member PHYs at 4..7, package reg 9) contradicts the 'base + 4' rule.
 
-If another version is needed, you can rename counter to _counter to highlight
-that the helpers should be used.
-> ---
->  include/linux/netdevice.h   |  5 ++++
->  include/net/net_namespace.h |  1 +
->  net/core/dev_addr_lists.c   | 52 +++++++++++++++++++++++++++++++------
->  3 files changed, 50 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index d037faff7c44..69d1cde0a38a 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -256,6 +256,11 @@ struct netdev_hw_addr_list {
->  
->  	/* Auxiliary tree for faster lookup on addition and deletion */
->  	struct rb_root		tree;
-> +
-> +	/* The device a list belongs to, NULL for snapshots and other
-> +	 * standalone lists
-> +	 */
-> +	struct net_device	*owner;
->  };
->  
->  #define netdev_hw_addr_list_count(l) ((l)->count)
-> diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-> index 46b4c67e2966..d8c681ab5c74 100644
-> --- a/include/net/net_namespace.h
-> +++ b/include/net/net_namespace.h
-> @@ -71,6 +71,7 @@ struct net {
->  	spinlock_t		rules_mod_lock;
->  
->  	unsigned int		dev_base_seq;	/* protected by rtnl_mutex */
-> +	atomic_t		dev_mc_genid;	/* bumped on dev->mc changes */
->  	u32			ifindex;
->  
->  	spinlock_t		nsid_lock;
-> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-> index 08528ca0a8b3..c941c3ec1007 100644
-> --- a/net/core/dev_addr_lists.c
-> +++ b/net/core/dev_addr_lists.c
-> @@ -16,6 +16,37 @@
->  
->  #include "dev.h"
->  
-> +/* Only dev->mc is tracked, RTM_GETMULTICAST dumps use the netns generation
-> + * counter to detect changes between dump rounds.
-> + */
-> +static void __hw_addr_changed(struct netdev_hw_addr_list *list)
-> +{
-> +	struct net_device *dev = list->owner;
-> +
-> +	if (dev && list == &dev->mc)
-> +		atomic_inc(&dev_net(dev)->dev_mc_genid);
-> +}
-> +
-> +static void __hw_addr_count_inc(struct netdev_hw_addr_list *list)
-static void __hw_addr_count_add(struct netdev_hw_addr_list *list, int value)
-> +{
-> +	list->count++;
-list->count += value;> +	__hw_addr_changed(list);
-> +}
-#define __hw_addr_count_inc(l) __hw_addr_count_add(l, 1)
+--
 
-> +
-> +static void __hw_addr_count_dec(struct netdev_hw_addr_list *list)
-> +{
-> +	list->count--;
-> +	__hw_addr_changed(list);
-> +}
-> +
-> +static void __hw_addr_count_reset(struct netdev_hw_addr_list *list)
-> +{
-> +	if (!list->count)
-> +		return;
-> +	list->count = 0;
-> +	__hw_addr_changed(list);
-> +}
-> +
->  /*
->   * General list handling functions
->   */
-> @@ -125,7 +156,7 @@ static int __hw_addr_add_ex(struct netdev_hw_addr_list *list,
->  	rb_insert_color(&ha->node, &list->tree);
->  
->  	list_add_tail_rcu(&ha->list, &list->list);
-> -	list->count++;
-> +	__hw_addr_count_inc(list);
->  
->  	return 0;
->  }
-> @@ -161,7 +192,7 @@ static int __hw_addr_del_entry(struct netdev_hw_addr_list *list,
->  
->  	list_del_rcu(&ha->list);
->  	kfree_rcu(ha, rcu_head);
-> -	list->count--;
-> +	__hw_addr_count_dec(list);
->  	return 0;
->  }
->  
-> @@ -492,7 +523,7 @@ void __hw_addr_flush(struct netdev_hw_addr_list *list)
->  		list_del_rcu(&ha->list);
->  		kfree_rcu(ha, rcu_head);
->  	}
-> -	list->count = 0;
-> +	__hw_addr_count_reset(list);
->  }
->  EXPORT_SYMBOL_IF_KUNIT(__hw_addr_flush);
->  
-> @@ -501,6 +532,7 @@ void __hw_addr_init(struct netdev_hw_addr_list *list)
->  	INIT_LIST_HEAD(&list->list);
->  	list->count = 0;
->  	list->tree = RB_ROOT;
-> +	list->owner = NULL;
->  }
->  EXPORT_SYMBOL(__hw_addr_init);
+dt-bindings: net: Document Motorcomm YT8824 PHY package
 
-For correctness, __hw_addr_splice() should use helper:
+This commit adds a devicetree binding for the Motorcomm YT8824, a package
+of four Ethernet PHYs. The binding is built on ethernet-phy-package.yaml.
+The commit also updates the MOTORCOMM PHY DRIVER section in MAINTAINERS
+with the new file and a new maintainer.
 
-@@ -509,8 +509,8 @@ static void __hw_addr_splice(struct netdev_hw_addr_list *dst,
- {
-         src->tree = RB_ROOT;
-         list_splice_init(&src->list, &dst->list);
--        dst->count += src->count;
--        src->count = 0;
-+        __hw_addr_count_add(dst, src->count);
-+        __hw_addr_count_reset(src);
- }
+> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+> new file mode 100644
+> index 000000000000..fd62b309e7ff
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+> @@ -0,0 +1,69 @@
 
-Renaming  struct netdev_hw_addr_list->count to _count would help to check all
-users and highlight that modifying _count should be done with helpers.
+[ ... ]
 
->  
-> @@ -536,7 +568,7 @@ int __hw_addr_list_snapshot(struct netdev_hw_addr_list *snap,
->  			entry = list_first_entry(&cache->list,
->  						 struct netdev_hw_addr, list);
->  			list_del(&entry->list);
-> -			cache->count--;
-> +			__hw_addr_count_dec(cache);
->  			memcpy(entry->addr, ha->addr, addr_len);
->  			entry->type = ha->type;
->  			entry->global_use = false;
-> @@ -554,7 +586,7 @@ int __hw_addr_list_snapshot(struct netdev_hw_addr_list *snap,
->  
->  		list_add_tail(&entry->list, &snap->list);
->  		__hw_addr_insert(snap, entry, addr_len);
-> -		snap->count++;
-> +		__hw_addr_count_inc(snap);
->  	}
->  
->  	return 0;
-> @@ -604,14 +636,14 @@ void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
->  			if (delta > 0) {
->  				rb_erase(&ref_ha->node, &ref->tree);
->  				list_del(&ref_ha->list);
-> -				ref->count--;
-> +				__hw_addr_count_dec(ref);
->  				ref_ha->sync_cnt = delta;
->  				ref_ha->refcount = delta;
->  				list_add_tail_rcu(&ref_ha->list,
->  						  &real_list->list);
->  				__hw_addr_insert(real_list, ref_ha,
->  						 addr_len);
-> -				real_list->count++;
-> +				__hw_addr_count_inc(real_list);
->  			}
->  			continue;
->  		}
-> @@ -622,7 +654,7 @@ void __hw_addr_list_reconcile(struct netdev_hw_addr_list *real_list,
->  			rb_erase(&real_ha->node, &real_list->tree);
->  			list_del_rcu(&real_ha->list);
->  			kfree_rcu(real_ha, rcu_head);
-> -			real_list->count--;
-> +			__hw_addr_count_dec(real_list);
->  		}
->  	}
->  
-> @@ -685,6 +717,7 @@ int dev_addr_init(struct net_device *dev)
->  	/* rtnl_mutex must be held here */
->  
->  	__hw_addr_init(&dev->dev_addrs);
-> +	dev->dev_addrs.owner = dev;
->  	memset(addr, 0, sizeof(addr));
->  	err = __hw_addr_add(&dev->dev_addrs, addr, sizeof(addr),
->  			    NETDEV_HW_ADDR_T_LAN);
-> @@ -962,6 +995,7 @@ EXPORT_SYMBOL(dev_uc_flush);
->  void dev_uc_init(struct net_device *dev)
->  {
->  	__hw_addr_init(&dev->uc);
-> +	dev->uc.owner = dev;
->  }
->  EXPORT_SYMBOL(dev_uc_init);
->  
-> @@ -1177,6 +1211,7 @@ EXPORT_SYMBOL(dev_mc_flush);
->  void dev_mc_init(struct net_device *dev)
->  {
->  	__hw_addr_init(&dev->mc);
-> +	dev->mc.owner = dev;
->  }
->  EXPORT_SYMBOL(dev_mc_init);
->  
-> @@ -1348,6 +1383,7 @@ static void netif_rx_mode_retry(struct timer_list *t)
->  void netif_rx_mode_init(struct net_device *dev)
->  {
->  	__hw_addr_init(&dev->rx_mode_addr_cache);
-> +	dev->rx_mode_addr_cache.owner = dev;
->  	timer_setup(&dev->rx_mode_retry_timer, netif_rx_mode_retry, 0);
->  }
->  
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - motorcomm,yt8824-package
+> +  phy-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ internal, 10g-qxgmii ]
 
+[Severity: Medium]
+Would a vendor-prefixed property fit better here than phy-mode?
+
+ethernet-controller.yaml defines phy-mode as the interface type between
+the MAC and the PHY:
+
+  phy-mode:
+    $ref: "#/properties/phy-connection-type"
+
+This binding gives phy-mode its own string type and enum on the package
+node and uses it to pick the package operating mode. In the driver patch
+later in this series, yt8824_phy_package_probe_once() reads it only to
+choose between the internal and external init/reset sequences:
+
+  res = of_get_phy_mode(np, &priv->interface_mode);
+
+qcom,qca807x.yaml has a similar PHY package and uses a vendor property
+for the same purpose:
+
+  qcom,package-mode:
+    ...
+    $ref: /schemas/types.yaml#/definitions/string
+    enum:
+      - qsgmii
+      - psgmii
+
+writing-bindings.rst also asks for a vendor prefix on device-specific
+property names.
+
+This value on the package node also duplicates the MAC's phy-mode, which
+phylink already passes to the PHY as phydev->interface. Can the two
+disagree? The YT8824 driver never looks at phydev->interface.
+
+phy-mode is also listed under required, so every YT8824 DT will carry it.
+Changing its name or meaning after merge would break those DTs.
+
+> +  reg:
+> +    description:
+> +      The absolute MDIO address of the YT8824 shared top extend
+> +      register block.
+> +      For internal mode, this is fixed at 9;
+> +      For external mode it is (base MDIO address of the four
+> +      member PHYs) + 4.
+> +      Note that this is NOT the base ID of the first member PHY.
+
+[Severity: Low]
+Which phy-mode value does "external mode" mean? The phy-mode enum above
+only allows internal and 10g-qxgmii. The text never says that the base + 4
+rule applies to phy-mode = "10g-qxgmii".
+
+That can only be worked out from the driver patch later in the series,
+which treats any mode other than PHY_INTERFACE_MODE_INTERNAL as external.
+
+The value matters. of_phy_package_join() stores this reg as
+shared->base_addr, and ytphy_read_top_ext() and ytphy_write_top_ext()
+reach the top block at that address.
+
+[Severity: Low]
+Could the schema enforce the "fixed at 9" rule for internal mode? No
+allOf/if block ties reg to phy-mode, so a node with phy-mode = "internal"
+and reg = <5> still passes dt_binding_check and dtbs_check.
+
+Something along these lines would cover it:
+
+  allOf:
+    - if:
+        properties:
+          phy-mode:
+            const: internal
+      then:
+        properties:
+          reg:
+            const: 9
+
+With the driver added later in the series, a wrong reg value is used
+directly at runtime:
+
+of_phy_package_join()
+  phy_package_join(phydev, base_addr, ...)
+
+ytphy_write_top_ext()
+  __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, ...)
+
+In that case, writes to the top block would go to the wrong MDIO device.
+The schema can't express the external base + 4 rule, but it can express
+the internal-mode constant.
+
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e3ce77c839b0..ed7af1bd9521 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18409,8 +18409,10 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+>  
+>  MOTORCOMM PHY DRIVER
+>  M:	Frank <Frank.Sae@motor-comm.com>
+> +M:	Kyle Switch <kyle.switch@motor-comm.com>
+
+[Severity: Low]
+This line makes Kyle Switch a second maintainer of the whole MOTORCOMM PHY
+DRIVER section. That section also covers drivers/net/phy/motorcomm.c and
+motorcomm,yt8xxx.yaml, not just the new binding.
+
+The commit message only says:
+
+  Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
+
+It doesn't mention the maintainer change, and there's no Acked-by from the
+current maintainer.
+
+Could this be split into its own patch, or at least be described in the
+changelog?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260924075048.4060414-1-kyle.switch%40motor-comm.com
