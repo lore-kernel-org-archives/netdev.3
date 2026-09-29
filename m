@@ -1,124 +1,130 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992B2B9B7
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AE34F30E3
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790691129; cv=none; b=anuZmvKCvQUppHDACS1azggYrA2Zlw2vLLdqFyG7vWbXwriHPdtyoUilBBV0MkXaKhfP3KhO5GsXB3EoGOB0jN2n9fSBoAcwpMb5kiDib7ud7d6ncfSrwC9lMyZgxAYAloQFYr0i4d0MHbTP5Nj0f4+bqlMa7sNUkRHpM/pL6NQ=
+	t=1790691824; cv=none; b=Wfx2NWS7tQAXO0BSftD2CNrZGReO11XxEa/8HaTLHaDiiGV6dcJXlhJcwZfpaOEH7yXhv3mAPJDDzM4bropN2Va+iG72AaEWpc/tJfXA+TdJf2/sbZ+bKVyqTcJ7Epob9hJaIha2dwuEeLDb3/4amWA/1jdFSEq2VszKurKR+6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790691129; c=relaxed/simple;
-	bh=GeatX/mSgt8EYGKrJweaQ6M1vHW/l+J78fDDVRnanZo=;
+	s=arc-20240116; t=1790691824; c=relaxed/simple;
+	bh=YFg442dzmYLAsAia1lyH3HC9c9oEaiM/RKHPe9FKX+A=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=G0hC+vI2K6UbGm8+1PajY9bxr7Nrf7u574GhB47Bb+6MuY4tWvr6X94dxDAOsxG3y63NmMHbtLx+B5Dht+hUGV1rFND0E5n1MEDJKF2qPfH5KhQqG+H7JmJuzjeibIh8Z3q5rwI2dGwl+3/1/pIWbUCXoIbM1rjM+evGeEoPcys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tn5bU1Be; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YkfMBEbQ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=KxLBofmPA0YBq/Toc3+PRuiBeYkph74JA/j+3pynZGDS0R3K3lMQ7Tz/u/JO3k5gGuvg62tckqCLP+iyc4rk1U2kjmBEDV+NOfgseIgb4SlxCHN+xHGBMW4LLoB6P4TVJDvNakbG+Gmd7q0RW5FqIFeRBAb8eDPwUQHx5dEzPIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JT9Lyt4e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FtqM8gch; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tn5bU1Be";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YkfMBEbQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JT9Lyt4e";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FtqM8gch"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790691127;
+	s=mimecast20190719; t=1790691822;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2p0mpabVoWXtlpkN0tOfNpGONGhlkPF/zvbxue/ki/k=;
-	b=Tn5bU1BeiPisUTcUA3452F2MrcYVAbayNC+yFntxW75PELjWC5aOsyZPjAl9sHgm6Immlc
-	Sxzkkta3bhuyRZCsRURIcopUPH1iRwy8soUzZf2QdkFVDrCla7GHaBWcZGjUecAMM0AKHL
-	u3brMMZw71Tp/m8MrxbyJOSGzsXEZk0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=YFg442dzmYLAsAia1lyH3HC9c9oEaiM/RKHPe9FKX+A=;
+	b=JT9Lyt4etH6ARxziCExQRGuwvBXzqDl3S7e0eRi++uEmTcXSpONBHvyrHiBwx6sAK/S0tL
+	oMqX5xWkl+Pnkn3Rh0gv27m118n/d5QfmWCxk9bjhtrMlG5p/tAjAHv2lGduKYwy5/FAE5
+	/TrySt09SViiqoNxV7GZPNfHqpprmMQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-4R7sEYA2Pue6JM9cYaajIw-1; Tue, 29 Sep 2026 10:12:05 -0400
-X-MC-Unique: 4R7sEYA2Pue6JM9cYaajIw-1
-X-Mimecast-MFC-AGG-ID: 4R7sEYA2Pue6JM9cYaajIw_1790691124
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e6683d48fso46150815e9.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 07:12:04 -0700 (PDT)
+ us-mta-488-Y-AGB4KLNqywe4peirs4wA-1; Tue, 29 Sep 2026 10:23:40 -0400
+X-MC-Unique: Y-AGB4KLNqywe4peirs4wA-1
+X-Mimecast-MFC-AGG-ID: Y-AGB4KLNqywe4peirs4wA_1790691819
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e65f2f1baso38999335e9.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 07:23:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790691124; x=1791295924; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2p0mpabVoWXtlpkN0tOfNpGONGhlkPF/zvbxue/ki/k=;
-        b=YkfMBEbQrf6BdVVZ4feI8A8i1jiQcRaDPObyAwKTaohvmnqhJuEGI4l5b6hCIc8kI0
-         fSZwUG9pt6ZWozcGsMRzp3miSNlImyiNI+Hr90r2i5+OhZStUw2ZDyw3RFbsjAGknsFn
-         08YpOn6FkgE/SVxDbnfMHCNJpvK13LBq0mGx3jK1ZJ8Nm4QeVw4nEa/1QEaIcrfz82kq
-         ayPmfulXTMcCEyeLVTx5FY4ubhrIxFFFpivchcIlWf4pAc5dODTppJUq8Kl+THtUNjBb
-         hFyLei3EekM/SiWPqZO/SS/eJD3T71TOA7Q2m4fMKY0DezU6XBzImdwOdCDfwaiQUJHJ
-         VXng==
+        d=redhat.com; s=google; t=1790691819; x=1791296619; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YFg442dzmYLAsAia1lyH3HC9c9oEaiM/RKHPe9FKX+A=;
+        b=FtqM8gchF+ManqU9ls2eCinTJbMR7qlydUZQ+c0yY62zIhZfVgOJNWbYo/kWufCoE8
+         SAYysEnlLGLhhPcESPqLMrjY74KODwIyTqQgOhsKxPrwXYAND8AmQppBBBdicabMBRLu
+         pm1ps3GWAgAAENzl7sXT/2tIfCbH4oqV5UqMGwvj4n4jaAR86+tID9exwdc3KGEIYh+B
+         WL/ilTyNq30bgbmXfRTnBW1Ym2mJPdnTF9uhY4qHk2jy60UWwU0R+a/IkeC7U5rPQimr
+         xI8ODD2RhgodcnlK4gQr0FbmwZqMgdDy8O+Ip8zyWSB3vfGUeiVUK0YHLH/RurKGnKcE
+         yMPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790691124; x=1791295924;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=2p0mpabVoWXtlpkN0tOfNpGONGhlkPF/zvbxue/ki/k=;
-        b=Yf83A3FsZsILrl4tGcT7W/oG8EiYmvyGeA205ryL/FCcq7Q2UCLtnpbORQvG+UXSSw
-         UdBCMqd68jDn6jPxeHiLQSt8DTzE9gkGio4yV4QmVhOBdDnHoKP6rkzMY8aqQG/7ysAj
-         ME4S4C6aYH4i1ToSIjXdjnnVUeuIxePyHIHrvxIqFEZhPNaukLx+2l0sKeHhGHl739tn
-         6XDnZkIy7vJQQMPo+nsu1kfzqcDWswmslpjiS0wbJLURrSPCAsn4WAzfvN3GmG3aO8op
-         hps7SbMmDG4TcV/JBZZXscD2rfHzN/20YOb1yZTBv81s0KR4GpKZGfVRD5TXg2st60mY
-         Fvnw==
-X-Forwarded-Encrypted: i=1; AKwUvBxRNa8n899qejWzS9KRBJ/LTVhROCmQM6y9+PPXn9RR1tKoNoSzhItTKZrMpnsV3x8Jr4sqkME=@vger.kernel.org
-X-Gm-Message-State: AFuF++meOKPoG1Ah89Tf5okNiKEw557FgICrwwgBIVNuiWiBBn9yuRNo
-	MENlT9GUhy5eGZxVcoMq2t5kVgZBQ2hXAI1IQTMeQxiOl6CQp6QlcHaBM4t4Uif4/8a+XrTaiZG
-	NTnEiMBCTfZI0mLmoqGrzvlGYu62sApESKjwV8knXonMETdsC9oOTM9zmpA==
-X-Gm-Gg: AYBFou1vu37Gs70GlWdROzYuve6c8+Ynm5tKnfGQDvAyLyNXvIIBU0N/NkIRIRzCJ6J
-	sSVBN3zpF0h/UOMxu00K7G5RCdtqVapgvEfctsyd3qb370O2kF6J21cnyQUHtRYISqd5fJnZ6lW
-	InZlJ8p/pSQr5H3wnwMqkTUUxwNwbuTsSRpMQ8dR51gkUSFiOuZ7dTEtoO/TSObPCnV0HurHyBt
-	M79i3QQ2A6N/vZalxlWzgijuKD/JqmTBLNFhmmFvo9hxO/voqOt/bue6G/ZSJr0zQ0rlJqLGK72
-	aWneN64uj+3u+sfri9RFmgCKLpsbQ6lw1NjXnvqyzyyNXjh067iGuWILufjYOHUfy8032lPmkzL
-	qDBGyTX++5umHYAuV2DKs/AKKDscSUGo=
-X-Received: by 2002:a05:600c:46cc:b0:4a0:857:a3a5 with SMTP id 5b1f17b1804b1-4a00857a46amr82578645e9.16.1790691123709;
-        Tue, 29 Sep 2026 07:12:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:46cc:b0:4a0:857:a3a5 with SMTP id 5b1f17b1804b1-4a00857a46amr82578175e9.16.1790691123350;
-        Tue, 29 Sep 2026 07:12:03 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([24.151.142.216])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a013c64fecsm6760665e9.0.2026.09.29.07.11.59
+        d=1e100.net; s=20260707; t=1790691819; x=1791296619;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YFg442dzmYLAsAia1lyH3HC9c9oEaiM/RKHPe9FKX+A=;
+        b=nE3vK8FqhbcekgCiJUxVJNjV/NCTjpmYijfbrP2DBOObWnzWJ9SBaFAvv/tT1VyYyk
+         kMzXVzrtyHqJqpIXOt2ZSJfpgWUczkXX7Qf5AuaHC9ElIijl/1XHE4ZR40wPecLTrvhA
+         X3hr9yxDyOgCRnNz/94s0v8/mOh8EbOGGagcR45tLTCtgreovoEGv+yDXuFHrogkd+jr
+         0i6OTP70x0Mrh1P5CeRVhqNr+laVnIYjt1tKskq7xbb2sAhfYDB5SI9DotjmZCbv+O/T
+         VhGXxy24JH58YZ4O2SvjRVIPWOpZ3HUhNRCI/+IMOSfyjlAdNKsBcmMEVDv19sCeKqyD
+         Ow6A==
+X-Gm-Message-State: AFuF++mHM/6oC4ts4kst6NgFi7eiWnPpAVZg2bntNw5oEeSinR+5U1To
+	HQcMxdRmUZLt1o/G3un14zXf38J1nPyfd9GqkbnuWlOxNyXBLS5Hfcv9ri+w1Ulyf5tuONpY+qz
+	QfnjbNwQ5cpq03in5okcxBLwoY/VqCbduGeyJPo+zpBRiBLkwYu2Jj1a0IQ==
+X-Gm-Gg: AYBFou00770irs5THCvkgGViCTiuLCdvtdca8ZrKghN5YMWlb+NxjRYe2Si8XzAlWmW
+	LedtlcrzKp7XRiu6rHRjUnY9BTRNDDv8zzJ3rXNe2JUj0ze/1aKzOcV2FeL7VdaoRrTTGRe6cjJ
+	trntNT/AHWHzznZjWhJxUVZakNU/HCRGNzR9vvPIN/S/NNLhdzz/Jo86eJfEjdyejQ6f3Pj4sxi
+	cQMIinuviorzy41gj2rUUK0sjBewl1QZk2uoYkdqlSCbRlGUaS1U84Nm4/LTy0NAJf2P1a/B8DQ
+	kyVegFAlGIykwD9vCEcqQ3qqhyhL8WdYdto6Wzwx+7218qLcqvbA55SMH021nd0vHa+Um2BVCDp
+	udi8THeXLkRImDgV8VWMgI2zPag==
+X-Received: by 2002:a05:600c:8b32:b0:49f:fc13:189d with SMTP id 5b1f17b1804b1-4a00c6813dfmr53749135e9.1.1790691819356;
+        Tue, 29 Sep 2026 07:23:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b32:b0:49f:fc13:189d with SMTP id 5b1f17b1804b1-4a00c6813dfmr53748395e9.1.1790691818907;
+        Tue, 29 Sep 2026 07:23:38 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cf9dd27sm83481025e9.2.2026.09.29.07.23.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:12:01 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  kernel@xen0n.name,  chenhuacai@kernel.org,  tsbogend@alpha.franken.de,
-  deller@gmx.de,  razor@blackwall.org,  idosch@nvidia.com,
-  ardb@kernel.org,  tim.bird@sony.com,  loongarch@lists.linux.dev,
-  linux-mips@vger.kernel.org,  linux-parisc@vger.kernel.org
-Subject: Re: [PATCH net-next 3/3] net: drop unused LLC-related includes
-In-Reply-To: <20260928190800.2521749-4-kuba@kernel.org> (Jakub Kicinski's
-	message of "Mon, 28 Sep 2026 12:08:00 -0700")
-References: <20260928190800.2521749-1-kuba@kernel.org>
-	<20260928190800.2521749-4-kuba@kernel.org>
-Date: Tue, 29 Sep 2026 10:11:53 -0400
-Message-ID: <f7tpkxw405y.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        Tue, 29 Sep 2026 07:23:38 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 3D5A3A1017A; Tue, 29 Sep 2026 16:23:37 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Marcin Wojtas
+ <marcin.s.wojtas@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Lorenzo
+ Bianconi <lorenzo@kernel.org>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, Lorenzo Bianconi
+ <lorenzo.bianconi@oss.qualcomm.com>
+Subject: Re: [PATCH net v4] net: mvneta: clear XDP pfmemalloc flag between
+ frames
+In-Reply-To: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+References: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 29 Sep 2026 16:23:37 +0200
+Message-ID: <87h5j8jfva.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com> writes:
 
-> The bridge and the openvswitch code include <net/llc.h>,
-> <net/llc_pdu.h> and <linux/llc.h> without using anything out of them.
-> parse_ethertype() is the one exception: it wants LLC_SAP_SNAP, which
-> comes from the uAPI header <linux/llc.h> pulls in, so flow.c keeps
-> that one. The LLC core has leftovers of its own - slab, string,
-> interrupt and net_namespace - which it has not used in a long time.
+> mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
+> xdp_buff when a fragment page is a pfmemalloc one (page under memory
+> pressure). The xdp_buff is reused for the next frame, but only the
+> XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
+> bit leaked from one frame into the following ones. mvneta_swbm_build_skb()
+> propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_info(=
+),
+> so the skb of a subsequent fragmented frame could be wrongly marked as
+> pfmemalloc even if none of its pages are under pressure.
 >
-> None of this is new, the type 2 removal has just shrunk the LLC
-> headers enough to make it easy to see.
+> Clear all the xdp_buff flags in mvneta_swbm_rx_frame(), which is invoked
+> for each new frame, instead of just the XDP_FLAGS_HAS_FRAGS bit.
 >
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
+> Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info ut=
+ility routine")
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-The openvswitch changes look fine to me.  I guess it's just a minimal
-header adjustment so:
-
-Acked-by: Aaron Conole <aconole@redhat.com>
-
-NOTE: I didn't review anything else in the series.
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
