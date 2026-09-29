@@ -1,123 +1,101 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mta1.migadu.com (out-244.mta1.migadu.com [95.215.58.244])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3320A3CF688
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790660274; cv=pass; b=uxDR62wWn6WktScfW5dd4CCN6M8iM4UXxogSp7FTSYjD8RGO93Qf7FxWrhHd3bJxISvbR84isY1x+guYSQzEeTk/ove95NFfQY9Gx1lbZZ0ZN/hVhVBj1JnIA6P2tMqShLkqU2/VG1ncb8oGu+9h8/4sOpfheBbFXMqSZIVX7xc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790660274; c=relaxed/simple;
-	bh=mGEEXHKxugm1ji6dPF/Vka2irdvzEg3Ov0k4PxuefyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=eauAKJGxNmV1FJto11qKw4jfkcW6XK0WKGXjxiH1DfpZwlN+RwFIxnrqT2eqVzBGf5wjz8BwNEFslzZ9jxDkKJZhMr2GuL+6EBaGbLuh9gSflhV6OFSFaOxGQE+hg+1dl1ULr2KaP5CbHffJWxGz+PQHZ4XEnT0ZMN3jFG19dxY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHMl6NBA; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876064AEEF
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.244
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790660351; cv=none; b=domNXiaCwswQ51KAvEFkSl+VtrP6A3BSBE60Gi6hRG3MrBcyzd7pvjL/eUMJ+GL9EBybrJQIits5sO9j8URuYnF1+EBpN+Okpn5VozLQYRAr29M8IAe4IWeukWM2GuDMIjDRTs7S2ZqJhhT5xpmXoszgn1UW1AxaH4ZcH8unM3I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790660351; c=relaxed/simple;
+	bh=y5ovlXJVaSOvb+pxH+S+lOfJKqZySdVR+G72WrcnNP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lHAEWkbrgEvNbEfLNJ3QmjQF+7Un4p6BzsGw+DIeqCIWQjppdShz1xyR+Qe9uW9ycOuQGDhk5SJI1GqrtZFyWeHNBjDCHP5DbWA8mNJbBycVT2lDDvjcgooIAUw9/ayzgMpatbuTJvnhdOLt2o7quDw7LOI3D2zuJIx+Z8rA66c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bvm9XAEe; arc=none smtp.client-ip=95.215.58.244
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHMl6NBA"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3a76ac0bdafso613121fa.1
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:37:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790660271; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fIxhoCdqh9A1KNDvZNkPmvx9JDDzJMseLU/8POowvIpGRZoTmQKGoZMik4We2VKK8P
-         jiWYFQ3MvILrW+qV0xkzE/g5TSDy/1X8n5K5adzVa/r93joAnN6cmxczrIN3vdBN6djR
-         4F3Uw6bpjXIlqgbOM3O7oCmQrAce5CmISfc5lFoqkBKIQjWRsYIbRNZ73pns9jgfTOxt
-         p8qeAPCH/lnodCuoetUnA75AJONZHW48W+iFXKTf2TN8SXcnoUrzYUOuFbeatU/glcWp
-         tLzVmSVFJr83I5OPVVO1DJ/I/dbSPQSp/l+qYh1DTqz8/NWOwEr0KRXv6QslKvdmHBnx
-         jMsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ywMDNY3EI7iDZTym+kV52AlLxDjfRMFnaIbif0jeJZU=;
-        fh=4INox0qVL7jvLvevYqpx9KmHV/ykbzvpPMjngNvt0nQ=;
-        b=WHNkQ6RotkEewEuR5TLw/0sNA7shG9eG/zXEbMrzblv4Mvq4q+ZB7bgmc7cy/9UeZ2
-         AgBRYZW9BlCC9VOn1IDNl2vLtpw0MNpDqVhUNRLrc1FAFqKXdHakwH2Otwdu/w1Kevi2
-         DuiHXd9DDpLBT3Zv1mEeYYIIGxQqrUQ9mJ6iclD9S0zkt+JYWUbENha4CjVy7AFdWSYW
-         nAzFFlU4/EflHTOrtc1RHpcO6ennOgPeNFrwHo+ybhJhr4W2NyI20wWkHIrtvH42tN7B
-         Je6YajudMxWVwfjpn/ATSdKNL2JwibaDOOsKtkY/uCL/4+HDXVZx5QwbstPgFZoWVT3j
-         zkxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790660271; x=1791265071; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ywMDNY3EI7iDZTym+kV52AlLxDjfRMFnaIbif0jeJZU=;
-        b=NHMl6NBAU721ciWyDdItxZBecriRV4fL0N1xWEQR7mY38+Gjeactn4MABx0d/2SZna
-         92yndCf4VZ8L0hv/1dk9qOlbWDM4hHXJp0vaMMeEA33grbpeUKAqNWvPGFZdiF80CmbM
-         If4EsEFlHjOTOJO2aswpG8qdya5K6sd2vKZyTrXgb6zUfEdlnSdXlUFrDWbjkNliB+IJ
-         bcpI+BZl+9ofEi8+wxOKN+UP3JlESB5Uno9hx9btGwm7YV2Ux1WJGAAqiglJnIpyoETT
-         3gMlbzIoLueXusJqyx3mBH4yVPFEV3ZUyJc7Pzo3lzeTND/Rm2K/gKJ4uXs3yVTgk1cN
-         SFmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790660271; x=1791265071;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ywMDNY3EI7iDZTym+kV52AlLxDjfRMFnaIbif0jeJZU=;
-        b=lo3ZF2uhr1TqvIYcU0GD3JNNTCr9gTmRPJ9hyIfYriZISutE2hw7lsW8WIuCEeqjRX
-         sEBbq/9LlIFuzsiV2XeGO0vG9RrRyL7XRr6wsiuZ92ftCNyWZRFcJEIqWKBEXLRT7iCd
-         9c+JX4uNcMXM/fBcDxJUzWbYely/YnnyfxNdzOQfYArAS7IFnaH3PSJLR9p6Zp1qIlKi
-         nmuEFdH7qcSdLNZMBMlkYNQ9NCrLgcjowAySkK5/mzKUDvleMsJTq78WEY1Sw3Y149So
-         swJ+K44WDlnEFQYqjoUOLY8DTtPCzNWAg7o4qA0rRCu5/Vg3S97nfP7zVPZw/rT/Kb2k
-         jA+g==
-X-Forwarded-Encrypted: i=1; AKwUvBxigawNxzx9kaJJDI6K7wQ8vQNDZI/Jcymu+LXFbGv2E3A/L3EhulSN8xuzb/M3p1e6VNz6H1U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL6HEG5THJW+6ZznC8JrADnJnBkYXSN+2O1lkUKmwxU11PW+DfE
-	FKWUgWb+izNRFI4kLcEUA/g73SMF+sCO2h/eEVS/jLqjrdBw4MsLOOU+OYQJNBBXpjUmzVUTQH5
-	ufFI0F4vBWhXmO/M9WaiGma0Y7WtVGxs=
-X-Gm-Gg: AYBFou22FL+RwNCyqWMlD42qsLJI9qKG4gBcLLKn3NvXnfQcZspIiUQ5fPpEj3HgFsd
-	QoySXz/ofB9tHv/UmA27R4fux2NV/fU4Gy3i8JFa2Jt52pq/R/ED8kaJ1sYgALKP7mAZErNLgee
-	F5/CuHnZKGsScJdMyg09rrhJb/knkXa2EXmBszXpDejqzjmbGnE84suHj1VbjJSHBmF6BIgGAPN
-	nSruBmuLDvHWd2/Go11P/eVaCrsYBQmw6aJUidU0Kln2SEowKxcCIih9EUbx86bwGldquKmquJR
-	wGxRfvcQcDIz0d4HPKu0yhjvrSU/vrzmuvfOtxqdYUhHG174O8EeMw==
-X-Received: by 2002:a2e:a803:0:b0:3a6:62bb:906e with SMTP id
- 38308e7fff4ca-3a76479b880mr2991121fa.20.1790660270947; Mon, 28 Sep 2026
- 22:37:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bvm9XAEe"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=y5ovlXJVaSOvb+pxH+S+lOfJKqZySdVR+G72WrcnNP4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790660346; v=1; x=1791265146;
+ b=Bvm9XAEeZTSDEqvA2I9hnizt+++kp+grvzY4oV0L/HfnJD52AUOyMddyHMkIo6R1Am9561b8
+ pc6jKMVAIeaxjYTvQ2QPdsANwsKZDRDJ+Y0OTvWKYLGOgCgUG/BaRSa6VqauN1Am/jiPKCrESY8
+ +yXQLU0KvGp0Y+HjdPRfQwss=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 50b0b3738406d612;
+	Tue, 29 Sep 2026 05:39:06 +0000
+X-Mizu-Trace-ID: 50b0b3738406d612
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ee827cf4-f773-4fdb-800c-e9c86e595405@linux.dev>
+Date: Tue, 29 Sep 2026 13:38:58 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260927081034.350422-1-maimon.sagi@gmail.com> <arsCWFmUhSYkhcCv@devvm20253.cco0.facebook.com>
-In-Reply-To: <arsCWFmUhSYkhcCv@devvm20253.cco0.facebook.com>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Tue, 29 Sep 2026 08:37:24 +0300
-X-Gm-Features: AclHuK8JAeWlDi0d7__PRO1w7MUiU220HLhnmM4wnT1m-kDeU30Mnzj_nbHR38A
-Message-ID: <CAMuE1bH_=zqxf0-cfJozeaytGmK=q_WK0iwVxP_yH+AkJxHO=g@mail.gmail.com>
-Subject: Re: [PATCH net] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
-To: Joe Damato <joe@dama.to>, Sagi Maimon <maimon.sagi@gmail.com>, netdev@vger.kernel.org, 
-	radhey.shyam.pandey@amd.com, michal.simek@amd.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	daniel@iogearbox.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipv6: sr: use skb_get_hash_net() in
+ seg6_make_flowlabel()
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+ edumazet@google.com, syzbot+9408fbe0e6452a12e9ab@syzkaller.appspotmail.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20260928194524.3617299-1-edumazet@kernel.org>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260928194524.3617299-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 3:12=E2=80=AFAM Joe Damato <joe@dama.to> wrote:
->
-> On Sun, Sep 27, 2026 at 11:10:34AM +0300, Sagi Maimon wrote:
->
-> [...]
->
-> > Walk the TX ring the way axienet_dma_err_handler() already does: unmap
-> > every descriptor whose cntrl is still set - axienet_free_tx_chain()
-> > clears it on reclaim - and free any skb still attached.
->
-> The code added in this patch and in axienet_dma_err_handler are almost
-> identical (as your commit message suggests). I am wondering if it's possi=
-ble
-> to factor this code out into a helper and instead call it from both place=
-s
-> instead of repeating the same code?
+On 2026/9/29 at 03:45 Eric Dumazet wrote:
+> Since commit d58e468b1112 ("flow_dissector: implements flow dissector
+> BPF hook") __skb_flow_dissect() needs a net pointer, either from
+> skb->dev, skb->sk, or since commit 3cbf4ffba5ee ("net: plumb network
+> namespace into __skb_flow_dissect") a caller provided pointer.
+> 
+> syzbot was able to reach seg6_make_flowlabel() with an skb having
+> neither skb->dev nor skb->sk set: a TIPC UDP bearer sends a discovery
+> message through an IPv4 route using seg6 encap, while
+> net.ipv6.seg6_flowlabel is set to 1.
+> 
+> seg6_make_flowlabel() already has a net pointer, use skb_get_hash_net().
+> 
+> WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0x910/0x5368 net/core/flow_dissector.c:1126, CPU#0: syz.0.17/4930
+> Call trace:
+>    __skb_flow_dissect+0x910/0x5368 net/core/flow_dissector.c:1126 (P)
+>    __skb_get_hash_net+0xe0/0x29c net/core/flow_dissector.c:1903
+>    skb_get_hash include/linux/skbuff.h:1663 [inline]
+>    seg6_make_flowlabel+0xcc/0x1ec net/ipv6/seg6_iptunnel.c:132
+>    __seg6_do_srh_encap+0x320/0xbf4 net/ipv6/seg6_iptunnel.c:161
+>    seg6_do_srh+0x4b4/0xa44 net/ipv6/seg6_iptunnel.c:431
+>    seg6_output_core+0x164/0x688 net/ipv6/seg6_iptunnel.c:681
+>    seg6_output+0x44/0x1ac net/ipv6/seg6_iptunnel.c:744
+>    lwtunnel_output+0x3d0/0x664 net/core/lwtunnel.c:356
+>    dst_output include/net/dst.h:470 [inline]
+>    ip_local_out+0x110/0x148 net/ipv4/ip_output.c:131
+>    iptunnel_xmit+0x50c/0xd38 net/ipv4/ip_tunnel_core.c:97
+>    udp_tunnel_xmit_skb+0x220/0x348 net/ipv4/udp_tunnel_core.c:187
+>    tipc_udp_xmit+0x75c/0x9c0 net/tipc/udp_media.c:202
+>    tipc_udp_send_msg+0x214/0x374 net/tipc/udp_media.c:274
+>    tipc_bearer_xmit_skb+0x260/0x3b0 net/tipc/bearer.c:576
+>    tipc_enable_bearer net/tipc/bearer.c:366 [inline]
+>    __tipc_nl_bearer_enable+0xc90/0xfb0 net/tipc/bearer.c:1048
+>    tipc_nl_bearer_enable+0x2c/0x48 net/tipc/bearer.c:1057
+>    genl_family_rcv_msg_doit+0x1e4/0x2d4 net/netlink/genetlink.c:1114
+> 
+> Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+> Reported-by: syzbot+9408fbe0e6452a12e9ab@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6abac2eb.3654fce1.1bec97.0000.GAE@google.com/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
 
-Yes, the unmap-and-free part is the same; the error handler also clears
-each descriptor for reuse, and frees with dev_kfree_skb_irq() where this
-uses dev_kfree_skb(), so a shared helper would use dev_kfree_skb_any().
-Since this goes to net with a Fixes: tag I kept it to the minimal
-change.  I will send the helper to net-next once this fix has reached
-it, if that works for you.
+Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+
 Thanks,
-Sagi
+Xuanqiang
+
