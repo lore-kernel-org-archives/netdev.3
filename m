@@ -1,169 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C0B3F327A;
-	Tue, 29 Sep 2026 12:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F4250AC08;
+	Tue, 29 Sep 2026 12:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790683867; cv=none; b=NM4mav0ZVddnpPPSb01Y9FrY2Inqg9oaNA16Icbhl57WYZ6WAZA5tcQdDuZMeuzTM5/MyMn08gqtlJMleSMGJaahc88pbc8ddY/DCR11VruqsRctWTRTvZDyEJGPYynbp792wZr+lcOVZjRwSLMATxxRpXclfV7SChWSNaXOQ5M=
+	t=1790684090; cv=none; b=hi8U0kuaEm6dBJC0AlBInlhL2hpWjoJzJQ2DkUiWIp0+RsJ66GWiG56DGv4JVPiOPkiwwH+UWWMn2sO4nUUKHdeoJ9IYyAA0qHX8BU8qeMmW/sTyOg5GnxfUfLjr/chzFSU58SjchOs62IR00rsqQYonEm/WLCrfeEl33YoF4bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790683867; c=relaxed/simple;
-	bh=JMpibS+emmAWxrdejAIKkVgRpGUMsskFaZuanFvenTY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Rri8xZsoueZX5edRlyhkICvSZVfCFeZgKhczZZgpSDLfx9NqgrtXv/o5XQ6GnY9w9wt2ImLOlkgKWRO12ca2C91cammPuZNzMdBCT+g3qhat0RTttXAsnrlGt99JQomlJHsMiDxowXxQvN13ktS4k4hgoG2eYXH3CAR621n0ryM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkhSEivx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790684090; c=relaxed/simple;
+	bh=N5Nhi5z/usOaVfZykoGEfYu522fzvn1tNbyWE+YN1ao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQtOWzq8IMDmzTJ7KCJv/0FDi3BHEasCu44B3bSHbHsVgDwCcqq57Aa4I6ZTsGaUzsUqz8pFzWSH8ZcJpJLgerPYKFEUmVuhD+JegG3Q6sgtpqd7IxJw5CRVRxVUX4OU8vWtjDi9lV0n6wklQ/QaAzuyLnXmO2pQsvykVDcOgwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NU7aZCYc; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkhSEivx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EE21F000FF;
-	Tue, 29 Sep 2026 12:10:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790683860;
-	bh=sAfgFHfkUXD+jfvtAi4J7fZQjFaGsP2RE564qdfQ5Pc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NkhSEivxCTyq0tMOyqxPLe/1KDtvBflMbVqqRdiuAi6fQ1nbZFtzd+oo9HWzXN8d6
-	 UwBtB5r7z0n305ThhQg9kTbbyeoeGQW8QMHEGbMQe7KwWf6GRm3cTQ+kTKRWqaS3Os
-	 3lUoy6I9va0dTBbfxJJckEoYLxCp6221j9qqlN4+z3clJ/5IzbFNzgKD5YToHxEssj
-	 cRs+c8e5T90jjwjUr4NijhWoXjQnQoH0T2CwIuiWD/6uGlHc8UXiw+43JB/GGkgMox
-	 /aovIO8zz3xkcco8MCjueC4HZEfznbLShl/4LwjjErACRde9BivxeixG40sAaOXIS/
-	 scgBFrK7Dl6Bg==
-Subject: Re: [PATCH net] ipv4: Fix device use-after-free in ip_skb_dst_mtu()
-From: netdev-bot+sashiko@kernel.org
-To: nicoyip.dev@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jheffner@psc.edu, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Tue, 29 Sep 2026 12:10:58 +0000
-Message-ID: <179068385893.434549.3173123670853979127@kernel.org>
-In-Reply-To: <20260927071051.3693368-1-nicoyip.dev@gmail.com>
-References: <20260927071051.3693368-1-nicoyip.dev@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NU7aZCYc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7EYxW6eHl+vVXk5DCcuxkBfN5sk69z/6MHf2ovNOkvc=; b=NU7aZCYcyPWAEXAPhrmKW9+jx3
+	YF7tXFWAVZWluxZfKd21ec29upiLKL6ev1AyyI1+WgpFaZMhtEw9n6/mIxlnCwo2a3HRBY8VxyCuU
+	v9YeFqcjbw3GLFJLsX3pcXDddDVR6ohhv+JPHb1wJuEfwDpEQqZGyJZA0TgZdpXB/MPK9fLR43PpR
+	dpfe7tiMT8SQhuWKMtvfsOkOvU54Ma4sCC+BX4vL0Je+xR0Mm0XqnZ5SOvmlKMfmpO9X2tMUWS6yC
+	hWMjjiWbQkpG6KHrpLKDTgfTgMq3Et1gXF4RAA2Dn3Dc66zX6dx6YWcnZ1kpFSKP14jjvShSS2E/H
+	kD9cI+BA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xBWiy-008OwB-2b;
+	Tue, 29 Sep 2026 12:14:21 +0000
+Date: Tue, 29 Sep 2026 05:14:13 -0700
+From: Breno Leitao <leitao@debian.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Stanislav Fomichev <sdf.kernel@gmail.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next 1/6] ipv6: reject a negative optlen in
+ do_ipv6_getsockopt()
+Message-ID: <arurcoXJjvorXN4w@gmail.com>
+References: <20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org>
+ <20260925-sockopt_expand_out_v2-v1-1-c3ef2e3bb5c0@debian.org>
+ <arbE6i8JZrOs-DO9@devvm7509.cco0.facebook.com>
+ <20260927075358.129e5f65@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927075358.129e5f65@pumpkin>
+X-Debian-User: leitao
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sun, Sep 27, 2026 at 07:53:58AM +0100, David Laight wrote:
+> On Fri, 25 Sep 2026 12:02:22 -0700
+> Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> 
+> > On 09/25, Breno Leitao wrote:
+> > > IPv4's do_ip_getsockopt() rejects a negative optlen right after reading
+> > > it. do_ipv6_getsockopt() never has, and nothing downstream treats it as
+> > > an error either: len is an int, but every consumer compares it unsigned,
+> > > so -1 behaves as a huge value and each site clamps to its own reply
+> > > size.
+> > > 
+> > > 	len = min_t(unsigned int, sizeof(int), len);
+> > > 
+> > > So getsockopt(fd, SOL_IPV6, IPV6_TCLASS, buf, &len) with len set to -1
+> > > answers 4 bytes and reports 4, rather than failing.
+> > > 
+> > > This is a bug ready to bite us in the near future, let's get this fixed.
+> > > 
+> > > I've found this because testing the rest of the patch was returning
+> > > inconsistency when optlen = -1.  
+> > 
+> > If I can do getsockopt with len=-1 today and get 4 bytes back, isn't
+> > that a uapi and we are gonna break someone?
+> > 
+> 
+> Treating negative values as 4 goes way back into the pre-historic annals,
+> And I agree that there could be code out there that fails to set a value
+> so passes 'dirty stack' and it always works because it never passed 0..3.
+> 
+> I suspect all the per-protocol code ought to be passed an unsigned 'len'
+> (and return back a possibly modified value for the wrapper code to give
+> to the user).
+> Then you have somewhere:
+> 	/* Historic bug compatibility */
+> 	ulen = len >= 0 ? len : 4;
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Ack, I will respin it and add this approach rather than -EINVAL.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] This fix is incomplete.
+Thanks for the review and suggestions,
+--breno
 
 --
-
-ipv4: Fix device use-after-free in ip_skb_dst_mtu()
-
-This patch wraps the dev->mtu read in ip_skb_dst_mtu() in
-rcu_read_lock()/rcu_read_unlock() and switches it to dst_dev_rcu(). It
-targets a KASAN-reported net_device use-after-free on the multicast and
-broadcast output path, where ip_mc_output() reaches ip_finish_output()
-without an RCU read lock held.
-
-> diff --git a/include/net/ip.h b/include/net/ip.h
-> index 6f602df72ee62..14d6f77f3bb89 100644
-> --- a/include/net/ip.h
-> +++ b/include/net/ip.h
-> @@ -543,7 +543,9 @@ static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
->  		return ip_dst_mtu_maybe_forward(dst, forwarding);
->  	}
->  
-> -	mtu = min(READ_ONCE(dst_dev(dst)->mtu), IP_MAX_MTU);
-> +	rcu_read_lock();
-> +	mtu = min(READ_ONCE(dst_dev_rcu(dst)->mtu), IP_MAX_MTU);
-> +	rcu_read_unlock();
-
-[Severity: High]
-Is this fix complete? The commit message names the root cause as
-ip_mc_output() reaching ip_finish_output() with no RCU read lock held.
-That is still the case after this patch, so the other device reads on the
-same path are still unprotected.
-
-ip_mc_output() in net/ipv4/ip_output.c does a plain load of the device.
-It takes no RCU and no reference, then stores the pointer in skb->dev and
-passes it as outdev:
-
-net/ipv4/ip_output.c:ip_mc_output() {
-	struct rtable *rt = skb_rtable(skb);
-	struct net_device *dev = rt->dst.dev;
-	...
-	skb->dev = dev;
-	...
-	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-			    net, sk, skb, NULL, skb->dev,
-			    ip_finish_output,
-			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-}
-
-Right after ip_skb_dst_mtu() returns, __ip_finish_output()->
-ip_finish_output2() reads the device again, before its own
-rcu_read_lock():
-
-net/ipv4/ip_output.c:ip_finish_output2() {
-	struct net_device *dev = dst_dev(dst);
-	unsigned int hh_len = LL_RESERVED_SPACE(dev);
-	...
-	if (unlikely(skb_headroom(skb) < hh_len && dev->header_ops)) {
-	...
-	rcu_read_lock();
-	neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
-	...
-}
-
-Can the same race described in the commit message now hit freed memory in
-ip_finish_output2() instead of in ip_skb_dst_mtu()?
-
-The same seems to apply to ip_do_fragment(). It calls ip_skb_dst_mtu() and
-then reads the device outside RCU when reached from ip_mc_output() via
-ip_fragment():
-
-	ll_rs = LL_RESERVED_SPACE(rt->dst.dev);
-
-There are more users of the pointer that ip_mc_output() saved in skb->dev.
-On the GSO path, ip_finish_output_gso() calls netif_skb_features(skb).
-The multicast and broadcast loopback clones go through
-ip_mc_finish_output()->dev_loopback_xmit().
-
-No caller on the UDP path from the KASAN trace provides RCU either.
-ip_send_skb() calls ip_local_out() directly:
-
-net/ipv4/ip_output.c:ip_send_skb() {
-	err = ip_local_out(net, skb->sk, skb);
-	...
-}
-
-ip6_send_skb() wraps ip6_local_out() in rcu_read_lock().
-
-The unicast path already has the full-coverage pattern. It was added to
-ip_output() by commit 1dbf1d590d10a6 ("net: Add locking to protect
-skb->dev access in ip_output"):
-
-	rcu_read_lock();
-	dev = skb_dst_dev_rcu(skb);
-	skb->dev = dev;
-	...
-	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-				net, sk, skb, indev, dev,
-				ip_finish_output,
-				!(IPCB(skb)->flags & IPSKB_REROUTED));
-	rcu_read_unlock();
-
-Would it be better to apply the same outer RCU section in ip_mc_output(),
-and maybe also in ip_send_skb() to match ip6_send_skb()? That would cover
-the whole ip_finish_output() chain instead of only the dev->mtu read here.
-
->  	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927071051.3693368-1-nicoyip.dev%40gmail.com
+pw-bot: cr
