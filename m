@@ -1,130 +1,114 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C0145D908;
-	Tue, 29 Sep 2026 21:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790716061; cv=pass; b=nPmzffBgawtSGeLK0cgWX+wfrw4PUNV/Cl1eunY1h+TyfZkcDx5ALhp4CJK/jPj5C+SMbWFsSQe4Ribhhsw7yrVb9CjEQpgrbyzUDHW+fQjY0716aKiPaYAVTrLw1EDVRab4Bh99KL9sAb7fbsp8jF+RBWDzQqGkEPwc/U9I0bk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790716061; c=relaxed/simple;
-	bh=KDe9fHVSNEr529q5iusnG0EQmQ/8PUuh3in0I4G5Re0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCPjHA+Hks1lNUjuDgDRDz1/iZWwT5Jl4bAF7GZwinyQcwGpuSLumaxALk3kN8/REE7sHtUxIFpeHeETM1Hyf0TPCqh9IZhY+kV9O0gHGyxvfcAQTN4Ygi04ZBBSuhyG7er+NMSAKAfM4aLpUtmOhNEyRjvG6BXXE5SLus6/2Fk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=fG9QXBLi; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE7E3C10BF
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790716207; cv=none; b=ntMFjeM6P1S6luHOvtdu75ksoilYXdPvuulMcCauNE2g3XhyKznyknuGmaVx0UIcZzhxCEHWHfY/LICFfRGV3+8ijS+GkgXVJg+4LL0BkZ37e4+wQp2zVIoXK4l9oC2k91mXLnwdprJcAAnnGimDuCNmQfRA/mANFCnH8Q+E/8w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790716207; c=relaxed/simple;
+	bh=OHAGTcU81QC5e/48d7MJVqu7pxnUvtE58EI0VYOG570=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=kCiQ0QOzufJuys7CJbv2uke195HR008lai0Dsi70FrlXaLOb88DGo8sYe65osMDWjdJ3wJQ5xmSFU4hSThU8nLGkwlijS1TzmXW0D0Nk133lCaVtOxJU6iyISY5uCmLVJPfNvT9WrUAoR9K+asrLH1yrh5DBPQc6LszIGnrqWYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=NAiAjxES; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="fG9QXBLi"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2D5F2201F03;
-	Tue, 29 Sep 2026 23:07:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790716024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZfGkW2/1hivBUzl01QmbV8IEUXpupiMov1cfpC61a4=;
-	b=fG9QXBLijz2GMfnQbDZuKlRJYL/04LGHQU5OPgap6hCC0hbdZepy8VoKuHHDQ82EG8bZx7
-	1PQU7SwZzIUro5t1ZoJk0dt/YvvlLmbR8flSotThBR7klvzaBI/1YD8ZXiB9qd5xh9176Z
-	NfEzQlcjrpVfd1JYxI9zU3T+6NCSbC86MvZms69AtDuQRb0B3ihEGSuW2/WhxutNymSeQT
-	ErCxi6QP7EOTY0oVwvtMgYj+1zstMUqSXws9FWYY63AaYSrawMNjSYyEKnc6FMpU/vCezZ
-	mV/97KJ/cMQI+tC0rNVdJf6kie63nPT1HHi1Mrp59uEHsTcKnQsBbt6bD5tUIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790716024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZfGkW2/1hivBUzl01QmbV8IEUXpupiMov1cfpC61a4=;
-	b=V08mKC3n2dMmSyeAjlp+Jbxc331vC0iVQKiL6EE8M0XZ1Y+Px079CGGOtfbSGQ5uKysd+I
-	m4zmxJ6gxZDE7BcS4oXBG9+8qwpDGXqWix/UV94ZKer+SLFFs1y+l3lzt924KQyqVx9Dya
-	SpT8m+K1Sywy3bzgBovcw4BJ0Sp6W8oXbqIYW7DDW0jk1BsmuctfqJYjQjU6niw8AZSnfT
-	S+F+t+ZP35OlFCefSiHj9c7rQsRv8PE4wS8rdljOTZ48BrDNBJzg6aAhdfeYhmNvffmHHe
-	eJRq2U7x6ssg+p6LGnzZnHH6Ezlg/lJH+CPKH9pkOVSPqPLZvmZBqMl21WB5wQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790716024; a=rsa-sha256;
-	cv=none;
-	b=JkegYgECMcWckFyg6fPzMW1HVzKUe9hwsZ46SIXwHhDapTORUWV/Vr+Yk4fHhgTof/ZVGc
-	0+uOmZHSP2qgZRQHEZ3LXWClGvoXjwKwD/ovwsZAgiym2nciaguDZ+JjRCPNfO+HiF6msM
-	4QVGMKJH4MypvISkokgiH574u/7fLgmH7fb1Pway+wnUqtHPJWfhVHEpyXi73ZlFhWpy39
-	70xnnSE5IgN/CaCkaOb2Xu4MYVIGWUoK9OXM3Fo7KilGVBU8eZdab5MlNgn279QFYE+8fx
-	md1LlsZND3CdNcs+laTMhkMkfrI7FZIHB4AYsqolPGFe8qCsQ59pUn2JJxWlBg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xBf2W-003S4B-0A;
-	Tue, 29 Sep 2026 23:07:04 +0200
-Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C4E255B4CDF;
-	Tue, 29 Sep 2026 21:07:03 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Chris Strong <chris.strong@flocksafety.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 15/16] can: rx-offload: add IRQ queue flush predicate
-Date: Tue, 29 Sep 2026 22:44:05 +0200
-Message-ID: <20260929210700.1183036-16-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260929210700.1183036-1-mkl@pengutronix.de>
-References: <20260929210700.1183036-1-mkl@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="NAiAjxES"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DC71BA4ABD;
+	Tue, 29 Sep 2026 23:09:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790716200; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=2rAqzsu6pQzAoWfOB8fCjrivk7TXhqFbCo/L91p88x4=;
+	b=NAiAjxES3BDwSBr72QRKY5UpES6JrmU4T9AU8xeRYTSYGrovOdVQ3JJlszKvCy6poYHGNV
+	XIKY8ZU0Et5Btq8WFpj1yMAwm4rfSeN+dUWEWV8oGiRmPOXcKYgfZcv04X9T0cJbdmjZW4
+	qoB0JVWoupzqM8ltIw6K5hTWWc3HCLkcyVCLi1UaWOze8hXBTFJ+dAZpzHb9IpfQZnN33A
+	tdKzlCctDDJHtPfJEEhvEQ5qdqCHgesaKfBTzWcptAViJvy11F3RGTov/1h6fFpZe2elnB
+	e5K4cFux/DHodLd/1xIIAtJRos6huWP10PNnkkCSLZ8BKZwE27YSdH+OmVijNA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Tue, 29 Sep 2026 23:09:58 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, florian.fainelli@broadcom.com,
+ opendmb@gmail.com
+Subject: Re: [PATCH net] net: bcmgenet: if UMAC was suspended in SW_RESET,
+ restore it to SW_RESET
+In-Reply-To: <20260929192216.1490017-1-justin.chen@broadcom.com>
+References: <20260929192216.1490017-1-justin.chen@broadcom.com>
+Message-ID: <27f4423822acfaa3f121e3637ed173e0@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Chris Strong <chris.strong@flocksafety.com>
+Hi Justin
 
-Drivers that queue received SKBs from a threaded interrupt may need to
-publish a partial batch before the handler returns. The existing overflow
-check covers only the NAPI-visible queue after the IRQ-local queue has been
-spliced, so it cannot guide that decision.
+On 29.9.2026 21:22, Justin Chen wrote:
+> When the revised suspend/resume sequence was introduced this led to an 
+> edge
+> case where the TX is left disabled in the following sequence.
+> 
+> 1. phy link is down, so UMAC is held in reset and then network 
+> interface
+>    is WoL enabled
+> 2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since 
+> MAC
+>    is in SW_RESET
+> 4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
+>    and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link 
+> up.
+> 
+> Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
+> Fixes: 88f6c8bf1aae ("net: bcmgenet: keep MAC in reset until PHY is 
+> up")
 
-Add can_rx_offload_irq_queue_needs_flush() to report when the IRQ-local
-queue reaches the NAPI poll weight. Keep the query separate from the flush
-operation so callers can finish processing related interrupt sources before
-publishing the batch.
+AFAIU before 254f3239dd07 resume always went through init_umac(), so 
+older
+kernels shouldn't be affected. If we drop the tag for, it would save 
+some
+backports to the older LTS kernels.
 
-Assisted-by: LLM
-Signed-off-by: Chris Strong <chris.strong@flocksafety.com>
-Link: https://patch.msgid.link/20260929-upstream-can-rx-offload-batching-v2-1-3b587c519f5d@flocksafety.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- include/linux/can/rx-offload.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c 
+> b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+> index 96d5d4f7f51f..984432952963 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+> @@ -253,6 +253,17 @@ int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv 
+> *priv,
+>  	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+>  	reg &= ~CMD_CRC_FWD;
+>  	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
+> +
+> +	/*
+> +	 * Mirror wol_power_down_cfg(). If only UMAC_RX
+> +	 * is enabled, then we must place the UMAC back
+> +	 * into SW_RESET.
+> +	 */
+> +	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+> +	if ((reg & CMD_RX_EN) && !(reg & CMD_TX_EN)) {
+> +		reg |= CMD_SW_RESET;
+> +		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
+> +	}
+>  	spin_unlock_bh(&priv->reg_lock);
+> 
+>  	/* Resume link status tracking */
 
-diff --git a/include/linux/can/rx-offload.h b/include/linux/can/rx-offload.h
-index d29bb4521947..f9b9474f7190 100644
---- a/include/linux/can/rx-offload.h
-+++ b/include/linux/can/rx-offload.h
-@@ -62,4 +62,11 @@ static inline void can_rx_offload_disable(struct can_rx_offload *offload)
- 	napi_disable(&offload->napi);
- }
- 
-+static inline bool
-+can_rx_offload_irq_queue_needs_flush(const struct can_rx_offload *offload)
-+{
-+	/* skb_irq_queue is owned by the interrupt context queuing the SKBs. */
-+	return skb_queue_len(&offload->skb_irq_queue) >= offload->napi.weight;
-+}
-+
- #endif /* !_CAN_RX_OFFLOAD_H */
--- 
-2.53.0
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
+Thanks,
+Nicolai
