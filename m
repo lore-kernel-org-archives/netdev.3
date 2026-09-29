@@ -1,69 +1,78 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF22353EEB;
-	Tue, 29 Sep 2026 07:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2260A3A71A8;
+	Tue, 29 Sep 2026 07:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790667457; cv=none; b=KPpqgkkQ6r4iVSqHGBAJTN0sRfDMIVp6dQyHmgxy+juUIpH2zh7QwLMyuqCWdfFZJpWt8QKw/zOG9S/4Y2DjAly7w96g1To10eVuI7VtKgD1P9F7sSEspaRWRWh/pIuQCvw0fUh0We3tExUChXY44g5EnzR4ShnTlu6C3zt2bos=
+	t=1790667516; cv=none; b=RM2UUD4AAU5XTzvbHsjbqAJNnJXhqYYWmkjxoW7h4bxjQPt3R8fRK3tpqlIrVJRgNKhlxLFZXGwr2hCICiSX+RcSWQ7+hzSaC90LXzt/PJpa13X1C0mVSvmISqNGxYNFLpwncnOHwDa1ZG4Q5FwSHrY+FVSsrsbSO618qJHGdHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790667457; c=relaxed/simple;
-	bh=gb7R/N7K8gCcMGFUWCwn+BiCBHM21fe0W7MgkwSXdwY=;
+	s=arc-20240116; t=1790667516; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqiQV0dzRsXYkQUi2UJaTZiJrYOAhe4rHD8TWroWl0J14lXUwps9qmsdFIoQc9o+mgK1i0ALTqh+0ZT2FyPuWH5VLtrdlYUPfOmyIjyvbIfA7KxaxIPyl8Z07FvSdiZTUoifMWOSOLsqT8wrKOPM04MVOU1Ad+KDI+ZCjn8qL34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CtZzmzrO; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	 Content-Type:MIME-Version; b=EPx2MrvsAl0XHr04mZUk7FRwXtwDITJvIvPjqUP3BqluUP0ioVDJdhQo3nCaNQJWzWYEfV/j1le+bEQE4ehieZusHLEpcTxUyiDg3J6t1r3Ad1TyMM4gFlPitdBoBN8AI/OTP7IwA42am3cBUg88AI74nYJaMLJBCx1Pb8fesNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcSU90Ad; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CtZzmzrO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=8q
-	16KiQcHbMAGIdFnDq/h8ps6GG0maK7Jsk5o0N8IW4=; b=CtZzmzrO2xnQDhbDVP
-	/fIroVAT0CanIw++DH8t3o0rrcUTcwvRm7PF9M4y6jnLxi9v9ZlPk9WOR7MwwqIu
-	6GCmBt3ypsAFFodJn4qMmHiyL5g5JPaPptMumtm6xU9whiXyB8L4MsvwRQX0MswO
-	Edns6AyLpJz7KwhNzb0Lk9Q7M=
-Received: from chaosheng-ASUS-TUF-Gaming-F16-FX607JV-FX607JV.lan (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3lyyRartqogPaBQ--.50073S2;
-	Tue, 29 Sep 2026 15:36:50 +0800 (CST)
-From: Quchaosheng <quchaosheng000406@163.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Quchaosheng <quchaosheng000406@163.com>
-Subject: Re: [PATCH v3 net] net/packet: guard the ll header push in packet_rcv_spkt()
-Date: Tue, 29 Sep 2026 15:36:48 +0800
-Message-ID: <20260929073648.2748099-1-quchaosheng000406@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <willemdebruijn.kernel.2d23ff6855a34@gmail.com>
-References: <willemdebruijn.kernel.2d23ff6855a34@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcSU90Ad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD81F000FF;
+	Tue, 29 Sep 2026 07:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790667514;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fcSU90Adnp98yCJypomf3WB79+psLhtiUWYQ2ZPgHod2TnBC7PWDOGjmnQJakhUnA
+	 xehASfu9CifQ8FjnnBACDMXF5XgdZmQJ1pt1fH6lteSzXpnWCXHiW2wP0vQTahX0xA
+	 lOcWZksHU/+kw2grns45lRdWhootoyjgQ5KPVP1gxcd8+DXiSXtkR9fMWypZRUKOkO
+	 CRAco2xaK+0XYpkte8QBNJbdFlRizCSdtXC/qdPCNJGS2YoKoUiT9lN0E2FX9C0LDN
+	 eFYJSafWvy91n4hZBfMvTI/7CA1UQsxMh65Jl2PIvZwnPtRUrLulCb9KYuG96/g3MW
+	 RC03Gv2ud+eZA==
+From: netdev-bot+sinfo@kernel.org
+To: Zxyan Zhu <zxyan0222@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, richardcochran@gmail.com,
+ maxime.chevallier@bootlin.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
+ rohan.g.thomas@altera.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 0/3] net: stmmac: dwxgmac2: timestamp
+ interrupt support + Agilex5 fix
+Date: Tue, 29 Sep 2026 07:38:32 +0000
+Message-ID: <179066751275.31693.16105226302048502437@kernel.org>
+In-Reply-To: <20260929073553.4136336-1-zxyan0222@gmail.com>
+References: <20260929073553.4136336-1-zxyan0222@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3lyyRartqogPaBQ--.50073S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRKuWlUUUUU
-X-CM-SenderInfo: xtxfxtprvkv0bjqqikiqw6il2tof0z/xtbC4xJIvWq7apJcOQAA3I
 
-Agreed, this is not a fix for that change.  init_can_skb() is being fixed
-separately -- zjamg's patch, now 05/22 in Marc's tree.
+Hi!
 
-packet_rcv_spkt() is the only ll header restore that d549699048b4 left
-without a dev_has_header() check, and SOCK_PACKET reaches it.  That is all
-this patch is.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Nothing else queued for net.  I'll keep the 24 hours.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Thanks,
-Quchaosheng
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
