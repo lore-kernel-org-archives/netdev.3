@@ -1,113 +1,88 @@
-Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D5D38DC62;
-	Tue, 29 Sep 2026 07:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EF9344036;
+	Tue, 29 Sep 2026 07:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790666465; cv=none; b=iHEsvG9LIO/DsVQM//cKISaGBbzsqEzIEhm6PhFxPxGYzREtn8dLLF+PAq49/ZXFWAtBU0J3tfpqtEX3624YIX6lbdum9FMCve/qKpJE3ulGRGn5TsIfA6d4JWVLqP3pxeCZ0M1DmCFGIyUGu+Eb0O3rdQ3v6IFWFv2prp7n49Y=
+	t=1790666678; cv=none; b=hVsNAp9fyBARrPT4CTBVykgyJJ5iQ3WNV0Xa7v2M2soYxd3OeR5N835LNEq0zjy6NHgG4YiOqQzQqvjoSvtp31o5xklO1Ja2scn6dZF88L2Kjjzkwuie38DxTTSVF8hdeYQL0GGhuIiYaYsxBj1QGmlgSXq+bN831SHAZhpZTuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790666465; c=relaxed/simple;
-	bh=Vs/P4dXs6c8s/aZmKt4aclnH7hl6ek5iwzflNmhTyyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mUBAeykQ3wuiSvdyR75nruySloFVxxmaIrxCtZZHCvMpHOZpxBQHToGsc8Gpz5WI6zUVt+V2IV/C87PXCezUYz7EskupetQz8blfRe29NngFmGAfmMpfvZ4Nomohz4+jmYztUYuoNMRbY3GnxStmHvaJ/7lGxZn4OcvHjomuU7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht; spf=pass smtp.mailfrom=yinhe.ht; dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b=C9wDqC8o; arc=none smtp.client-ip=115.124.28.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	s=arc-20240116; t=1790666678; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MlPaaxfH79q1vrzawx5Gz5dGs2v04LQgUTZUWK2W9uHJreI1TS9rroAOT7V3PrvsCPoA2hmBJjCclUyujxk+VqTQnL78/XOc1th8W1l4kZOHscDVJjeLRU/rLWRVTBArI7apT2vqVdONME79YtUp/gLmRvj97svQhgQoCri6EKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORul1xW9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b="C9wDqC8o"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1790666459; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=6gcvWUduQgZEnxtGhj0Epfu23aKKk62jDLHDS30ht6o=;
-	b=C9wDqC8osqPOZl+Hs2sURwG47VrZILMaqtOt5S/kbFKpsF1+KXtXdGIMQrGzyqVGO0SJdX1Eh8oD/A/9dS8y+U7DyU4wZF25CyL3NKMlU6knkTkr61BKTZwxbu6xed2brG3ltiGAL99nGweqfV6G++TyjaBkbMI+kKZ38b8EzqfGeqYh8IzEAvBGOnojx6Qtpfc10IBhRc+QtwSfcGblESXfSvAAifCFV4chdB5lGBTqz1AmZWaFD63k4zMSaikMsEgF+Dgv67GqiTojPDZ0ItybG/gT1BgAfkT4gC5goPyyeSKM804hbOO4VxymuDLGRUmnOu7mUK5symf8fJ4tKQ==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07798738|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00296266-0.0030093-0.994028;FP=16189559442658389668|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jR1atg0_1790666138;
-Received: from galx..(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jR1atg0_1790666138 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 15:15:38 +0800
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-To: netdev@vger.kernel.org
-Cc: linux-can@vger.kernel.org,
-	mkl@pengutronix.de,
-	kernel@pengutronix.de,
-	haibo.chen@oss.nxp.com,
-	shawnguo@kernel.org,
-	imx@lists.linux.dev,
-	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Subject: [PATCH net v2] can: flexcan: fix synchronous external abort in flexcan_get_berr_counter()
-Date: Tue, 29 Sep 2026 15:12:36 +0800
-Message-ID: <20260929071236.185683-1-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORul1xW9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4B81F000FF;
+	Tue, 29 Sep 2026 07:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790666677;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ORul1xW9USuUDjtn8B3qbLkIBR+R47hz9P3yPidY48GRn803DHgTJ+QMx5QbqfvMS
+	 ZYRm+jFx1sKfk9eUgOCp5fb9VuTXS4XqZi8sPkYqJxCpS5SkOeZ5f2qFLQqBx4sN3B
+	 oRAFJtLePKANnTIeCHoxZwBSXft1IeiEXSVzkRD7d3BPBor1fzAHVtHLzSkm5vRjnm
+	 VMPrNw4tqqrGzyIEOusNLpLKgow3oQT/b93KXU/VIJoktSazn5DT59Z62TGK6yExnY
+	 QrqGOSJXWZrQ36A3gBo717mNumXNDXMW+W3CVQ05eprC9gBvu1K79T8PUxGt5iQPY3
+	 9+sOg/V7h7q8A==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ edumazet@google.com, netdev@vger.kernel.org,
+ Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>,
+ gfs2@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, Matthieu Baerts <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ mptcp@lists.linux.dev, Wen Gu <guwen@linux.alibaba.com>,
+ Dust Li <dust.li@linux.alibaba.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ linux-nfs@vger.kernel.org, Allison Henderson <achender@kernel.org>,
+ rds-devel@oss.oracle.com, Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ Christoph =?utf-8?q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, drbd-dev@lists.linux.dev,
+ Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ linux-nvme@lists.infradead.org, Ilya Dryomov <idryomov@gmail.com>,
+ Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
+ ceph-devel@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 0/9] tcp: avoid struct socket cache line miss
+ in tcp_check_space()
+Date: Tue, 29 Sep 2026 07:24:34 +0000
+Message-ID: <179066667444.31693.3326934466907750947@kernel.org>
+In-Reply-To: <20260929071743.23624-1-edumazet@kernel.org>
+References: <20260929071743.23624-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When the interface is down, can_fill_info() still calls
-flexcan_get_berr_counter() to fill the error counters for a netlink
-dump. On some SoCs (e.g. i.MX8QXP) this can trigger a synchronous
-external abort.
+Hi!
 
-The root cause is platform-specific clocking. On i.MX8QXP the CAN
-clocks are gated through the SCU LPCG and the whole subsystem shares
-the IMX_SC_R_CAN_0 power domain. flexcan_runtime_resume() only calls
-flexcan_clks_enable(); combined with the LPCG e10858 synchronization
-erratum, there is a window where pm_runtime_resume_and_get() has
-returned but the clock has not actually reached the module yet. The
-immediate readl(&regs->ecr) in that window hits an un-clocked target
-and faults with the external abort:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-    Internal error: synchronous external abort: 0000000096000210 [#1] PREEMPT SMP
-    pc : flexcan_read_le+0x0/0x18
-    lr : flexcan_get_berr_counter+0x4c/0x8c
-    Call trace:
-     flexcan_read_le+0x0/0x18
-     can_fill_info+0x1f8/0x434
-     rtnl_fill_ifinfo+0x8fc/0xbb4
-     rtnl_dump_ifinfo+0x364/0x448
-     ...
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-This is the same class of problem that was already fixed for m_can:
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-  commit 91a55c72a821d ("can: m_can: m_can_get_berr_counter(): don't
-  wake up controller if interface is down")
-
-Fix this by returning early if the interface is not running.
-
-Tested on i.MX8QXP: after the patch, `ip link show` no longer triggers
-the abort.
-
-Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch on clocks before accessing ecr register")
-Link: https://lore.kernel.org/netdev/20260915063511.3010642-1-chunyuzhiqiang@yinhe.ht/
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
-v1 -> v2:
-  - Reword the commit message to drop the MDIS reasoning and describe
-    the actual i.MX8QXP SCU/LPCG clocking window as the root cause.
-  - Reference the m_can precedent (91a55c72a821d).
-  - Add Fixes: tag pointing to ec56acfef2af1.
-  - Add Link: to v1.
-
- drivers/net/can/flexcan/flexcan-core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 06d5d35fc1b5..b08779ee2a0a 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct net_device *dev,
- 	const struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
- 
-+	if (!netif_running(dev))
-+		return 0;
-+
- 	err = pm_runtime_resume_and_get(priv->dev);
- 	if (err < 0)
- 		return err;
--- 
-2.47.3
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
