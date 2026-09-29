@@ -1,161 +1,300 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010019.outbound.protection.outlook.com [52.101.193.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f226.google.com (mail-yw1-f226.google.com [209.85.128.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACAA49620;
-	Tue, 29 Sep 2026 20:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790713979; cv=fail; b=PbN/o8L1pbnB7wRaBLUbXa2AGQVb4Vv0dYqNYFZfoNy5c0eCCzf4PbVZgUO52x0m/dv/sPdVdqf8h10xO8rosJBCnSdjIBGYsLI1znUATUwabJ4nhkJ3evvwgyu7tUdI08jBje/qtrvyDO3RqLbhTt+NdPObRU4hmUNpr76VgNc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790713979; c=relaxed/simple;
-	bh=Mcd+ofT9GwErb+SagCTGhz+BWCxuXQetm20dzw23Sks=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=haOA1lRrKDIq4WFJWM8L7S0qfgOLOmvXnjfYlYnhhlkRC3DlEXa/CuWdhPkq/ODrfBK+ZVVUX6Z99PF2oteiak2smt2SNXf9bGvr/B8hEcN1Iob12hGkIbXArsyuT1AIkLTlvaPscGNYZCA8zZexhEtwnDUAiISuut2IchSMKnU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=appgate.com; spf=pass smtp.mailfrom=appgate.com; dkim=pass (1024-bit key) header.d=appgate.com header.i=@appgate.com header.b=pYML0PQu; arc=fail smtp.client-ip=52.101.193.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=appgate.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=appgate.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E2434C141
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 20:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.226
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790714050; cv=none; b=TomcDHnu17b+m3u0xyz58TX07qjzF/Cu/f/SN4EBJh3VroZXXxPWp36wa4lb/1+47bw8e7lavl5HKBgl5YUW3s30hQvG3scvBZZM1us0envkGWZ+6VlUt/Og+Ayt0TroRP36R7U4/OvL9KHPknjCznsz8SL1ZkgQsUOOJnF9jp4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790714050; c=relaxed/simple;
+	bh=De7eltRwalqiQrn7lBxC0mddwix6DUieUyY3KsO6L4I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RuljZRg26sLMXr2V/0+OJtZ/HPOLQOoQgbz6VTNcPvMzXySPXHumt9iFIf4/woQYd+LBKXCSh54fO1RGqm7ynkjfo2iymK7lXadYzNOZwCdWb8jZhfCXviZy5jXkJqtz/ePdolGYtljNVMkaY5lqv9cY1JXwJ6gzC4yRc7DCUQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JjORaoXR; arc=none smtp.client-ip=209.85.128.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=appgate.com header.i=@appgate.com header.b="pYML0PQu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GALHi3ApVoTPg/8MZc4dlU+coLclpG0wHAySui2WRpICQGFlKOv9Q5Jw/B7/iu1NC9TT2X2dd+4waFbkDW82l2zSlWL/fmaNY6F1AG+7c6MFgO3vMDodm/tHzNKfZ0tPsyeeBXh3KKtB/Wtxcq4XH+cq5ziEWsyZWh2WRTjj9FvByPJIE0VGGbU+Tfr4fWC4/hrxwF8NK5JkhgcrHzhR8yy2+QGGsX4HlyOSIKhhh36hjKtGeNujfpJldjOP8wi7VPp0c8UfLAGWZnybEzihDrgU16gvhmMP1BqT0sxmW3l29NT71KUlw78/WMf3LALDy7O/GMEJaxirfNY7qL6/Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=0pNmNLsHD5uO6G7DqiH/wGg0jXsNRt/31ex/F/SOyfY=;
- b=YSLMkk8rwEiSnoD93Ij2n5aqeG+ca9fpJMrdcl6WqI6gWi+Co8b2Eh+K4+JBNjcuxLza/7dsGZdkwF+Y26dCl4df8wthUcQFCEdJPjbqJxGUwYvP6c2Um74ngz9l0P6NtH5q8fXlgon4vYSUJAjTJNqdc2AQZdNt4ZOA/hmX1VyrtO/FN/LJB+HItEQl6pwfeoMJURQ7JTC6weV7GFrBhsYglmYoKmN1ODiwNK1JefcWytluquNk3py+Z5qBxNZGxeBdVNytWmi1z1MHnqqgFWTl60OZf+5aVDiUUWWOntv5uwh+pPC88/Ly7v4GwLVEqQxc6QgRlJFqo/ZcEcPTeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=appgate.com; dmarc=pass action=none header.from=appgate.com;
- dkim=pass header.d=appgate.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=appgate.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0pNmNLsHD5uO6G7DqiH/wGg0jXsNRt/31ex/F/SOyfY=;
- b=pYML0PQuK2m/FaWcF1ZTAyAeV8WvN0HZe37sdkcbPJvVx6JM9TPSyXb4uyb9S7GAZu4sgBQCnTc0gXc5FSKoecIsdT/251jNNJTWdT5iIn2Mnm+70iXgjrngfL/stZ/AjGjN6lh0H6EUS/95vtgGFYlv7hnP6rzxGE4TjY/+DUY=
-Received: from DS7PR05MB7320.namprd05.prod.outlook.com (2603:10b6:5:2c5::22)
- by SABPR05MB998952.namprd05.prod.outlook.com (2603:10b6:806:4f0::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 20:32:53 +0000
-Received: from DS7PR05MB7320.namprd05.prod.outlook.com
- ([fe80::90e8:a175:4ca1:74ec]) by DS7PR05MB7320.namprd05.prod.outlook.com
- ([fe80::90e8:a175:4ca1:74ec%4]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 20:32:53 +0000
-From: Dave Butler <david.butler@appgate.com>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"edumazet@kernel.org" <edumazet@kernel.org>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"emil.s.tantilov@intel.com" <emil.s.tantilov@intel.com>,
-	"luoxuanqiang@kylinos.cn" <luoxuanqiang@kylinos.cn>,
-	"bryan.fraschetti@canonical.com" <bryan.fraschetti@canonical.com>,
-	"tristan@talencesecurity.com" <tristan@talencesecurity.com>,
-	"tomasz.lichwala@linux.intel.com" <tomasz.lichwala@linux.intel.com>,
-	"horms@kernel.org" <horms@kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, Aleksandr
- Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH net 6/6] iavf: cap advertised max_pkt_size at the
- single-buffer HW limit
-Thread-Topic: [PATCH net 6/6] iavf: cap advertised max_pkt_size at the
- single-buffer HW limit
-Thread-Index: AQHdT53CBEJx2voabEC4EKwJRzbAtLblvSaAgAA9gVE=
-Date: Tue, 29 Sep 2026 20:32:53 +0000
-Message-ID:
- <DS7PR05MB73201A15AD9E0795156F88B18B8C2@DS7PR05MB7320.namprd05.prod.outlook.com>
-References: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
- <20260928230429.495442-7-anthony.l.nguyen@intel.com>
- <ab87c498-b1c3-4d0d-b4ba-57e1826592a8@intel.com>
-In-Reply-To: <ab87c498-b1c3-4d0d-b4ba-57e1826592a8@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=appgate.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS7PR05MB7320:EE_|SABPR05MB998952:EE_
-x-ms-office365-filtering-correlation-id: c6669282-9d35-4c3a-df05-08df1e68d65d
-x-appgate-rule-whitelistdomains: triggered
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|56012099006|4143699003|10067099003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- kSNAk1PfuuK3FcQL0hQXYdwoiqDlb0QfFP2ni0knNf3dWmyPwSuzezSNbNzHuFjT/Vk/fdIoktymL+uEM4aCe2JEoW358VQri4zAdNyssQ1v3qxmeHw3KK7Ni1LMwqBVkfbA2qJoHmpWV4UinLvtaxGjdo7O0/W7bQTqkv64+L7NL0ar5QLu7r3QlT206UItALAmTRomz2CSOv7wlIlPSGTTGv8kCf/u1SbdvAj4ncvlVKU5zD1XBYtdMDWASKV1PichswEWzihJWA4AkBim6O61ZYE4ZhUjAZvQuqBpsxhDKMW2k9G42aufc6GAJe90sCdsAOMEow8By9Zxwq2ijKvGfEOp04zQSa0+N/XRSf4oEw4OWFo416HvRJy+eU7LhiNnhaqAHcoL1fzSi/qadQKvTWRFmtJS7fCJhT9rQGvpqmT9LKUOOnQ5qbiZLxXv9Jl93YpaT5sJ9m3SaNasq/+HbZpk8cfHFk0RjTsdhDbkfHkNx0MhgcSVtU0I1KAu5asmyx2/s5LdHI1/9cnfIgMfLEmfYQEr5fXm289KqYBlKN48nAHdqUFIk0liI0WsZdxn18rbXMLDDBD2EUQf/fV7yfM9qFTL3IULRyfJ5Gr9LiYiBvqda+mTqgP9DliyfH0jjXcg8FK4skLo6qvmTCZ5turxi4dDqTQPYpi7T+BsyEpvb8LbaUc9pNCJ9wzJpvCia42jyymNYJqO30jneUZIVWA8effWZe29qCzxIzM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR05MB7320.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?52XdcIy/3nPAc23do2RFanXfsaZYZhXcBNefLVYFSqqHmD0IyDAk2166nr?=
- =?iso-8859-1?Q?YV4PeDxrC4hnktdjfU3HidEEDkxVc9YUCVhaYiiZDI3W5UeaPoa8Dea03Y?=
- =?iso-8859-1?Q?OajiD3MGVCEjA9n1MFrHEsSmlmMiRaY81AZDsq6A96mugD1D6mx9SX8mrp?=
- =?iso-8859-1?Q?+tN0dfTK01sMzMMHG+FS0vig0d7TTPWhVPVL5PpBvApXh/LmoN8ROC+VEA?=
- =?iso-8859-1?Q?2HH4VWBWh4gNu/VP6Qbh7mmVvP7X8zxYg1dxMuwVlW6vxNsGps5cnHzF5B?=
- =?iso-8859-1?Q?mB9Ph6vjr0esPKVKEcFPFBF4KdsiuVAx0MDu9GktBB03po5MsnjDJqbIsW?=
- =?iso-8859-1?Q?LZcjv+jJ8PXg3xCbodbp/GF8SOheL5T/nU6rTxmXarZgNB3GyZehPp0Cby?=
- =?iso-8859-1?Q?UZrD8goj4a47GV43yNbfoWHHafdGcsqbnRxuT3PBtGQhYOfFfmXILPw1Fh?=
- =?iso-8859-1?Q?0dddXOQFHot58CCDFOk3YrD3R0fqrDsmirEtlGcUVfqzhWpEZqBN3krQKN?=
- =?iso-8859-1?Q?klXO4ni8fjvAttRtXY2vuAdX2eDauBDPFDACSqisF6Vo0jGR7JnaqG2LbF?=
- =?iso-8859-1?Q?UK2mfEBn/58McRW7uTV3jbC1skTsmV5+Pgpr7cJ9LOCXIk9xsnRVnWQxFd?=
- =?iso-8859-1?Q?5ne9oIh8hgM4r7fw7qu+yBGJV2Im/WwWbg+c6FKBPirOwYJR5lH1XDBUm2?=
- =?iso-8859-1?Q?G1t2sNYKdIjqPsSle0V2rQXDEEfEkl5ovb1ZejRTURUa8fjvwXBXFTlcGm?=
- =?iso-8859-1?Q?+MP3jfQynqgWAHMvQEHUpWWaOv7mx3H7DpToKui9rVzF9j5YcKRK003t3g?=
- =?iso-8859-1?Q?JXWVR3nWMHpuwJ0XeHqkf/1uf+EOuHpDNWVxsPCbuys+OC1cVpGm1UhhwT?=
- =?iso-8859-1?Q?Ztof7a3eLOOUQRYCR3H4eL5Xak+8S1r592n/xSJgObjL1Tm7uED+aEgxBA?=
- =?iso-8859-1?Q?hFDsrToxmPgcUvUe7TQpc/RBcwdQEBxtqocgiduskCwiqF899SwJjvRjKd?=
- =?iso-8859-1?Q?tbHL92h6XLOzufwS8wwZTfKVjDn+5WKOUUJFtyHwLDJgJjTocUFe2FM6aD?=
- =?iso-8859-1?Q?SBjLUFS+g7ew2TDre+8e4MATM1CZPnPoZdm9Rqip1Ylpoz5Jvl1sv0M8Xb?=
- =?iso-8859-1?Q?NRwOOBkHU9hMO5YIsqEilnRFGuO0DzJfzYSwsBifUouTP4ElpBc6KfBDrw?=
- =?iso-8859-1?Q?jrA2PlY/hl4Q+cyL2rNnJpHIxHgE1boIQ4x7OjDuagKEhPix6b0JpBnTGq?=
- =?iso-8859-1?Q?4Pw3AWCFSeO7mb50gT3IsikpMCLdXlb40hWvjUoSGwjULbK4rI6dtlBsHp?=
- =?iso-8859-1?Q?jYfUIU2Gos40LDbKT7vDyJvfvgxwOfeFltxLeEkHneLhASY5FwP8yWWeBZ?=
- =?iso-8859-1?Q?63Xq6336NVUvhTG5eWea11I9ksK84/sqo0cg9m+cHvkcNYoGhgmR2fsaqH?=
- =?iso-8859-1?Q?R+NXz3rqDLt1epQ+7TynOMRUNfQx9GKBctymnO8C34zzRzXx2hbwqga2QE?=
- =?iso-8859-1?Q?b5i8qQuplI4v0AsmPhC1WO0F9q9sGo9MMFsggjiEFff3JEgSjok5rlrB59?=
- =?iso-8859-1?Q?XgZqMXXn7JMp3Y+RVEDvNp8m9HyVRcKhFt7JxMc2emFF+/rL7Nk5Rrpyfp?=
- =?iso-8859-1?Q?fDaj5zSxIg36UzBoRoU5Cx2/yzWi5LJX0K4ki6r6HhzLtMv9aazAMUJI3f?=
- =?iso-8859-1?Q?/MLpnNAHQruZkNeETREofeFDJiXEQla81TvASA7N1ElgvLw1z6WEoB0xAJ?=
- =?iso-8859-1?Q?z/hR9auvOtzakF6+ucQvF0Qqne0dmhXBnLZtblbwxWMZT+4IQclEZ8WjB8?=
- =?iso-8859-1?Q?WHRb6mklKA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JjORaoXR"
+Received: by mail-yw1-f226.google.com with SMTP id 00721157ae682-8ab395abf79so3912287b3.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 13:34:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790714048; x=1791318848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Mpa0hpSv14UQyMwgqtztOn5RksbysXc/NSBWcCnzeNM=;
+        b=JBrby3hJUfU0PhzTHvUFtDkTgmQEc/Ww7LYeHqPs2WZFk2MOIWe0SH25OGqqiWa4xG
+         Vueq4tOxV5ueYPnwJI0xEWQ15R5L/AiXfoMcOY0iEKgp7vUQlFfiHKgdK+a15uyi+WLD
+         HnxGZqlVbXWga78sJQCFLzhvO8xIwV4f4eGkRgJEfE4QGPJ/NbwfUMiKo4Umk5KfSMvJ
+         bUwRjs2GmjUuya8zKa/249TDEqrW370a5sPCkxmhX11/KXPxfm3iA4t8jUnC2TYw1K9y
+         F0tSndDCAMTwOcv6r0stIHWnAQ87/PCAJKfs7ajLSqF4qu4AmgnXb9HCutfwQrCBH2kB
+         nFfA==
+X-Gm-Message-State: AFq9FYKD9Mxy7EWP0tVgbNMuXFvTpZwkPlgZD/5zXz3ZQxTq6swlJ1VR
+	sPPBaLgT7W5PNEOdZIjgu4vc8VwgaTIbEq8F3uSu+Q37iZJJjx2b9UFgdBV+W5VL4y9NXsMpsJw
+	KgmKEqs8FdhgIrPzyA/oDK9rjpPZ7Bqj8u3Iks4ZMHGVe4SkrMW1B/ZbUvAssi+f/AgeMSoLdla
+	ujUS2uMLrqaORCUagdXoCEFkHmwPUlOkK9h4ZjtCNqpPiV3X0lGDyFkOwc2NmMYWl7k72dyEDTL
+	a89YWQaRw==
+X-Gm-Gg: AYBFou3x3+SLXJTlsJgLXUY6EawauSnQevPOp48GtJ1JefDfA8fUIctK+otWne2VtIO
+	tRXLMXLdrAPid5UcrBcnobXHwYSCRTzSFR742Qt9mPzw1P0Zi5zH+W6sBCcu4DYzLTe24C0+NM4
+	e7kAm5MjiJrsJ7GfJLODIot5M2QKKotF9Kz+pALEy5Q4DF/Yj3iGcQZA6cRFkHUhplth34Q6pK1
+	wYdwe6TJxD9W+DGYfV1Cycn0ONT+U9qGI1gU1aUWl+rzDCP1zCiAY+IPqSOyIH+09/0mp8n8qFD
+	YK0QTcKE3Yxy6USGihg3FUjEH+Sbkn1gZoBiXqGnmM5dVbRt6dMAKSMZzUHSuwRl1cz2+25Hgd2
+	0D+0WitO9wl+XEbdJi3ryxzt8DY/7vbuD73T5TrrQOOZsMxMID55E2vqIB/q2S5daY+DjowMhtJ
+	M4GW2PDWJBSOxreNgFsuYwiJnOn4ganHB8JQ==
+X-Received: by 2002:a05:690e:43d9:b0:671:471d:c3b8 with SMTP id 956f58d0204a3-676440493cdmr136038d50.17.1790714047860;
+        Tue, 29 Sep 2026 13:34:07 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-675b2800376sm287897d50.7.2026.09.29.13.34.07
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Sep 2026 13:34:07 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1384427c3efso6805591c88.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 13:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790714046; x=1791318846; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Mpa0hpSv14UQyMwgqtztOn5RksbysXc/NSBWcCnzeNM=;
+        b=JjORaoXRiSGSYg28YaBiBwdGQYHN3+X/tL1j/9aW8L+XvJIsz1yDkWebVJJxtC73+0
+         AOFZcdB7m1Mv9+TGiSfbd3zt/fJhUiHEfXE/Ebn/Np+2b2sotZ/NedUZf55KukKtZ8IG
+         ueW1EJ/FBIpB+qhtcTkeCUhzhDaQU3riAuCrc=
+X-Received: by 2002:a05:7022:296:20b0:148:aef3:a2a7 with SMTP id a92af1059eb24-14c9f30f810mr342185c88.24.1790714046097;
+        Tue, 29 Sep 2026 13:34:06 -0700 (PDT)
+X-Received: by 2002:a05:7022:296:20b0:148:aef3:a2a7 with SMTP id a92af1059eb24-14c9f30f810mr342142c88.24.1790714045199;
+        Tue, 29 Sep 2026 13:34:05 -0700 (PDT)
+Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34c350c0a51sm1301315eec.2.2026.09.29.13.34.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 13:34:04 -0700 (PDT)
+From: Justin Chen <justin.chen@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: bcm-kernel-feedback-list@broadcom.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@kernel.org,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	florian.fainelli@broadcom.com,
+	nb@tipi-net.de,
+	Justin Chen <justin.chen@broadcom.com>
+Subject: [PATCH net v2] net: bcmasp: fix lost TX wakeup race with lockless queue API
+Date: Tue, 29 Sep 2026 13:34:00 -0700
+Message-Id: <20260929203400.1588868-1-justin.chen@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: appgate.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR05MB7320.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6669282-9d35-4c3a-df05-08df1e68d65d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2026 20:32:53.1288
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b93e809a-49c5-4a0f-a606-82b846acc30d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NS+K8E8HwaEOks+XSHwQ/Pfk8OrhsNbMBklvGtknOuLbAR+nuKjLLOEaINEcy0+HQXBUdO1gc0+EVGIXUzd7OgdMFYpliNXz8fPPksL43qM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SABPR05MB998952
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
->> +     max_frame =3D min(max_frame, LIBIE_MAX_RX_BUF_LEN);
-> Shouldn't we cap it to 9728 instead?
+netif_stop_queue() in bcmasp_xmit() raced with netif_wake_queue() in
+bcmasp_tx_poll(): a reclaim landing between the ring-full check and
+the stop call left the queue stopped despite free descriptors,
+hanging TX until timeout.
 
-No objection.  To be clear, LIBIE_MAX_RX_BUF_LEN is 9728, so it's
-the same value.
+Switch to netif_txq_maybe_stop()/netif_txq_completed_wake() (the
+lockless TX queue API, which also brings in BQL), replace
+tx_spb_ring_full() with a live bcmasp_tx_avail() count.
 
-Before 5fa4caff59f2 the cap was IAVF_MAX_RXBUFFER (9728, "largest size for
-single descriptor"), and that same commit replaced it with LIBIE_MAX_RX_BUF=
-_LEN
-(9728U, "The largest size for a single descriptor as per HW").
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Assisted-by: Claude:claude-sonnet-5
+---
+v2
+	- replaced netif_tx_stop_queue() with netif_txq_try_stop()
 
-That said, I'm happy to do whatever.  Just let me know your preference.
+ .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 69 +++++++++++--------
+ 1 file changed, 41 insertions(+), 28 deletions(-)
 
-Intended recipient is public
-The information contained in this electronic mail is confidential informati=
-on intended only for the use of the individual(s) or entity(s) named. If th=
-e reader of the message is not the addressee (or authorized to receive for =
-the addressee), you are hereby notified that any dissemination, distributio=
-n or copying of this communication is strictly prohibited. If you have rece=
-ived this communication in error, please immediately notify the sender by r=
-eply e-mail and/or by telephone and destroy the original message.
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index f2176ef3a127..3369c45b49d5 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -15,11 +15,15 @@
+ #include <linux/platform_device.h>
+ #include <net/ip.h>
+ #include <net/ipv6.h>
++#include <net/netdev_queues.h>
+ #include <net/page_pool/helpers.h>
+ 
+ #include "bcmasp.h"
+ #include "bcmasp_intf_defs.h"
+ 
++#define BCMASP_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
++#define BCMASP_TX_START_THRS	(2 * MAX_SKB_FRAGS)
++
+ static int incr_ring(int index, int ring_count)
+ {
+ 	index++;
+@@ -143,19 +147,13 @@ static void bcmasp_clean_txcb(struct bcmasp_intf *intf, int index)
+ 	txcb->last = false;
+ }
+ 
+-static int tx_spb_ring_full(struct bcmasp_intf *intf, int cnt)
++static int bcmasp_tx_avail(struct bcmasp_intf *intf)
+ {
+-	int next_index, i;
+-
+-	/* Check if we have enough room for cnt descriptors */
+-	next_index = intf->tx_spb_index;
+-	for (i = 0; i < cnt; i++) {
+-		next_index = incr_ring(next_index, DESC_RING_COUNT);
+-		if (next_index == intf->tx_spb_clean_index)
+-			return 1;
+-	}
++	int used = (READ_ONCE(intf->tx_spb_index) -
++		    READ_ONCE(intf->tx_spb_clean_index) + DESC_RING_COUNT) %
++		   DESC_RING_COUNT;
+ 
+-	return 0;
++	return DESC_RING_COUNT - used - 1;
+ }
+ 
+ static struct sk_buff *bcmasp_csum_offload(struct net_device *dev,
+@@ -241,16 +239,19 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct bcmasp_tx_cb *txcb;
+ 	dma_addr_t mapping, valid;
+ 	struct bcmasp_desc *desc;
++	struct netdev_queue *txq;
+ 	bool csum_hw = false;
+ 	struct device *kdev;
+ 	skb_frag_t *frag;
+ 
+ 	kdev = &intf->parent->pdev->dev;
++	txq = netdev_get_tx_queue(dev, 0);
+ 
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 
+-	if (tx_spb_ring_full(intf, nr_frags + 1)) {
+-		netif_stop_queue(dev);
++	if (unlikely(bcmasp_tx_avail(intf) < nr_frags + 1)) {
++		netif_txq_try_stop(txq, bcmasp_tx_avail(intf),
++				   BCMASP_TX_START_THRS);
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "Tx Ring Full!\n");
+ 		return NETDEV_TX_BUSY;
+@@ -333,15 +334,17 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	 */
+ 	wmb();
+ 
+-	intf->tx_spb_index = spb_index;
++	WRITE_ONCE(intf->tx_spb_index, spb_index);
+ 	intf->tx_spb_dma_valid = valid;
+ 
++	netdev_tx_sent_queue(txq, total_bytes);
++
+ 	skb_tx_timestamp(skb);
+ 
+ 	tx_spb_dma_wq(intf, intf->tx_spb_dma_valid, TX_SPB_DMA_VALID);
+ 
+-	if (tx_spb_ring_full(intf, MAX_SKB_FRAGS + 1))
+-		netif_stop_queue(dev);
++	netif_txq_maybe_stop(txq, bcmasp_tx_avail(intf),
++			     BCMASP_TX_STOP_THRS, BCMASP_TX_START_THRS);
+ 
+ 	return NETDEV_TX_OK;
+ }
+@@ -398,14 +401,16 @@ static void umac_enable_set(struct bcmasp_intf *intf, u32 mask,
+ 		usleep_range(1000, 2000);
+ }
+ 
+-static int bcmasp_tx_reclaim(struct bcmasp_intf *intf)
++static int bcmasp_tx_reclaim(struct bcmasp_intf *intf, unsigned int *bytes_out)
+ {
+ 	struct bcmasp_intf_stats64 *stats = &intf->stats64;
+ 	struct device *kdev = &intf->parent->pdev->dev;
+-	unsigned long read, released = 0;
++	unsigned int bytes_compl = 0;
+ 	struct bcmasp_tx_cb *txcb;
+ 	struct bcmasp_desc *desc;
++	unsigned long read;
+ 	dma_addr_t mapping;
++	int packets = 0;
+ 
+ 	read = tx_spb_dma_rq(intf, TX_SPB_DMA_READ);
+ 	while (intf->tx_spb_dma_read != read) {
+@@ -423,6 +428,9 @@ static int bcmasp_tx_reclaim(struct bcmasp_intf *intf)
+ 			u64_stats_inc(&stats->tx_packets);
+ 			u64_stats_add(&stats->tx_bytes, txcb->bytes_sent);
+ 			u64_stats_update_end(&stats->syncp);
++
++			bytes_compl += txcb->bytes_sent;
++			packets++;
+ 		}
+ 
+ 		desc = &intf->tx_spb_cpu[intf->tx_spb_clean_index];
+@@ -433,33 +441,37 @@ static int bcmasp_tx_reclaim(struct bcmasp_intf *intf)
+ 			  intf->tx_spb_clean_index);
+ 
+ 		bcmasp_clean_txcb(intf, intf->tx_spb_clean_index);
+-		released++;
+ 
+-		intf->tx_spb_clean_index = incr_ring(intf->tx_spb_clean_index,
+-						     DESC_RING_COUNT);
++		WRITE_ONCE(intf->tx_spb_clean_index,
++			   incr_ring(intf->tx_spb_clean_index, DESC_RING_COUNT));
+ 		intf->tx_spb_dma_read = incr_first_byte(intf->tx_spb_dma_read,
+ 							intf->tx_spb_dma_addr,
+ 							DESC_RING_COUNT);
+ 	}
+ 
+-	return released;
++	if (bytes_out)
++		*bytes_out = bytes_compl;
++
++	return packets;
+ }
+ 
+ static int bcmasp_tx_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct bcmasp_intf *intf =
+ 		container_of(napi, struct bcmasp_intf, tx_napi);
+-	int released = 0;
++	struct netdev_queue *txq = netdev_get_tx_queue(intf->ndev, 0);
++	unsigned int bytes = 0;
++	int packets;
+ 
+-	released = bcmasp_tx_reclaim(intf);
++	packets = bcmasp_tx_reclaim(intf, &bytes);
++
++	netif_txq_completed_wake(txq, packets, bytes,
++				 bcmasp_tx_avail(intf), BCMASP_TX_START_THRS);
+ 
+ 	napi_complete(&intf->tx_napi);
+ 
+ 	bcmasp_enable_tx_irq(intf, 1);
+ 
+-	if (released)
+-		netif_wake_queue(intf->ndev);
+-
+ 	return 0;
+ }
+ 
+@@ -847,6 +859,7 @@ static void bcmasp_init_tx(struct bcmasp_intf *intf)
+ 	intf->tx_spb_index = 0;
+ 	intf->tx_spb_clean_index = 0;
+ 	memset(intf->tx_cbs, 0, sizeof(struct bcmasp_tx_cb) * DESC_RING_COUNT);
++	netdev_tx_reset_queue(netdev_get_tx_queue(intf->ndev, 0));
+ 
+ 	/* Make sure channels are disabled */
+ 	tx_spb_ctrl_wl(intf, 0x0, TX_SPB_CTRL_ENABLE);
+@@ -944,7 +957,7 @@ static void bcmasp_netif_deinit(struct net_device *dev, bool stop_phy)
+ 	} while (timeout-- > 0);
+ 	tx_spb_dma_wl(intf, 0x0, TX_SPB_DMA_FIFO_CTRL);
+ 
+-	bcmasp_tx_reclaim(intf);
++	bcmasp_tx_reclaim(intf, NULL);
+ 
+ 	umac_enable_set(intf, UMC_CMD_TX_EN, 0);
+ 
+-- 
+2.34.1
+
