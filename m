@@ -1,80 +1,81 @@
-Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
+Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DDC56260F;
-	Tue, 29 Sep 2026 18:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11DE5616C5;
+	Tue, 29 Sep 2026 18:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790708396; cv=none; b=K75bn7yvjXkOO4AcJmqInHEFVT0MAnB1bcv/v+iaagBjLDrxB18yWkEdgnUEeHrZIIM8xDe3uHihJ72n8H2K+Yw/vAMZnPP0xlXrVpEmXkFh9SYsDNREDzTC9dwekMG9mN+oFyW8iWTk6cDIxQT4l0QJxQm7xKPXvCdwVtVXiDw=
+	t=1790708398; cv=none; b=jjIRMYZAg+FawzJkZhALJRTrilpkqI0arF28ygVhwEXrSbWHD+TgRH8H6JnDR39+MzzGQPehefdZz8Vvzix2JCJGywMwXiRR3gqF0iXQOKAJquIsf+qODzfb8YQbbYVIpDewONkdU5ifCYWXWdmhkYOfkpfrub+bD0iif6t61EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790708396; c=relaxed/simple;
-	bh=EAqEXQoV3rkCgq9D3zc698tdMUkLUjA1gSV0B76kF9s=;
+	s=arc-20240116; t=1790708398; c=relaxed/simple;
+	bh=kiwcPwn+nAl/1mlGv/rFR90QnkfXIzUfuUsPu3HVzIQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uDAkSLUXJYHO9yvx06ttjd9E0cUcylsmpsWa5gKvXc/2eCVnvOfFI/71TkPtSd4peEva/iZpBiSkQmM9nNQpjFw1g2szDez3jaGdvlPv5OXbeDw4e08GbvnP9tU9twIXB/L6iNsxMH0WXEAdfC5TX96wGGPmlQHUh9vP5hHakHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=jYmIqnd+; arc=none smtp.client-ip=173.37.86.75
+	 In-Reply-To:To:Cc; b=T1qiicB6mfHebhuyg1r5jZeccdchZSgFRU+FmoewQm1vRxcW90gwiXOGfherSakWSyfV+Whjkuwchzph66NtWvGSfzaKuH9S1UTp6g7BkJbmavYWWx6nh6plNR14idB5lpftpGRC3RTicpz68rMwGp2JMhd4VNjP9VGiGCZydns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=XRsUe1vz; arc=none smtp.client-ip=173.37.86.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="jYmIqnd+"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="XRsUe1vz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=30596; q=dns/txt;
-  s=iport01; t=1790708387; x=1791917987;
+  d=cisco.com; i=@cisco.com; l=21093; q=dns/txt;
+  s=iport01; t=1790708391; x=1791917991;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=4rPmAcNZgo1Lo5Gk3M7mSIyAN9cdwHJUElNLKAtO7Ws=;
-  b=jYmIqnd+/Yl5mKq+U9e+qGb9RM/DL15woE0WmZGYpmM+UkshXCiKAM88
-   PZyqVqxb0TeS3cL8b2qFDi0qEeKuHIaDcD9pRwj+LyhBLQ6vBTcNlzxEJ
-   YsOgZ4ynxmOkghps+OfCi7vMatSftq4laxvV799Lb7Oe69DSz67hzbznF
-   jQW+L2KqTsdRcIYbMx5Aoxf6E4m5v2XvmMxY5stK1ICzS2UxuyRr4gsIp
-   uHdERuBMl3IWWaOQtyNqH0puzcQuUqh6HFWLWhF79YqqRbdq0gRUZIJDW
-   p/NiPrW+5WJSWjdgg7O+vaLdiV/B3K/AAg64XGsVkoqXu4vHnP14wPAQ8
+  bh=C4fo672G5kakYyBBoWzAdpbjFI5C+uogp3NSi5IPuiI=;
+  b=XRsUe1vzJagTl8LStqVYshz8NqkaakL+WlA8EGqhkDYl7V/9qn4TFVSX
+   UeQ9UFOSUlVVmujHAuflvM6ElKTyPpQJaJqF3YB91WetCBBfvv+ql8JIw
+   CB+vKHPpoJS8Y3rOILhj8BdESr8Wh1EthfXKcMFVyHSTOaG/ChWmRCYze
+   ylt6yxxEDwfnJJZuknsieXewSQ2KaFz9jT6X2r4kf7qn6eyeOVYpGs0y1
+   lMc9dVQIqmbkiqcVv0GIKdV4zSrDXwLqMQrjueXV5PsIEjNcLe0l3bPSv
+   RL9N5UjE7N/7iX00yT8HAsHtvrgrXHwM9WdJZQHuVgOMaCyg8rEhLS0eN
    g==;
-X-CSE-ConnectionGUID: 5qSXqQoYRseE92ga1tG1bA==
-X-CSE-MsgGUID: 6eMpzLxiSFqbIBLQDcR5NQ==
-X-IPAS-Result: =?us-ascii?q?A0BJAgA3Cbxq/4v/Ja1aHgEBCxIMggULghg/gVVDSYRXj?=
- =?us-ascii?q?1KCIZFMjFEUgWoPAQEBD1EEAQGFBQKOCAImNAkOAQIEAwIDAQEBAQEBAQEBA?=
- =?us-ascii?q?QEBCgEBBQEBAQIBBwWBDhOGXJATAgEDGgkECwE0EhAlAiYCAkUBEAYBEoIqW?=
- =?us-ascii?q?IJ1A8FTen8zgQGEftlKgWgBCxQBgQouhXKCbQGBcYQIO4NGeycbgUlEgRWCW?=
- =?us-ascii?q?CJvhB8Lg3SCagSDHBKCXYc0ixcJP4ECHANZLAFVEw0KCwcFYVIzAyAKCxISG?=
- =?us-ascii?q?BUCFB0SDwQWMh1wDCcSLBcvWBsGBYEddRQEE4IZIxk2eoEJXoErKWABEBeBB?=
- =?us-ascii?q?4IHAoJUggACAUlBDgdFUwklRRJHJiIIEgkBExowC4EbOD4JKD0YDUgRLDcGD?=
- =?us-ascii?q?xkEPQFuB5A3HoFoBgFRDgIJBwENCBcCDhwBNRMIYAQtEAkzGxoJJ0UDkmAKg?=
- =?us-ascii?q?3SOSoE1n1qEKIFmoBAzl2eTCJkII6NJBg8JAU+EaYFoPIFZMxoIGxU7gmdTG?=
- =?us-ascii?q?Q+OLhaBFAECkgYBvHsnMj4BBwIHDwKBc5AABA0XdmABAQ?=
-IronPort-Data: A9a23:wMNhd6zLbkiPuqcvElp6t+flxyrEfRIJ4+MujC+fZmUNrF6WrkVSy
- WpJXWuFP/mDMGOme49/b9mzo0MPv5PdxoRrSgE/+FhgHilAwSbn6Xt1DatR0we6dJCroJdPt
- p1GAjX4BJlqCCKa/lHyYuCJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
- 4yaT/H3Ygf/hWYlaDNMscpvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE8NvK6X
- evK0Iai9Wrf+Ro3Yvv9+losWhRXKlJ6FVHmZkt+A8BOsDAbzsAB+vpT2M4nVKtio27hc+adZ
- zl6ncfYpQ8BZsUgkQmGOvVSO3kW0aZuoNcrLZUj2CCe5xWuTpfi/xlhJBwvBr0Bw+FGO3pD2
- K1CJzlUcj/ajcvjldpXSsE07igiBNPgMIVavjRryivUSK58B5vCWK7No9Rf2V/chOgXQq2YP
- JVfM2cyKk2bMnWjOX9PYH46tPyhmnjkcz5YgFmUvqEwpWPUyWSd1ZCwaouMKozVGZ89ckCw+
- G/j53bdEhAhGsWV6BChy16nvLLppHauMG4VPPjinhJwu3Wfz3IeDTUaXEW2pP2+hFL4Xd9DQ
- 2QZ9jcrpLo/6GSkSd7yWxD+q3mB1jYcXMBVCMU55RuLx66S5ByWbkAHUzRIQN8rrsk7QXotz
- FDht9rvCSZir/6TRG6R+6m8qS60P24eLQcqfSYOQA0Ey8PurIE6klTESdMLOKq0iMDlXDL92
- TaHqAAgiLgJy80GzaO2+RbAmT3Ejp7EUgI4+C3JUW+/qAB0foioY8qv81ez0BpbBJySQl/Eu
- D0PnNKTqbhUS5qMjyeKBu4KGdlF+sq4DdEVunY3d7FJythn0yfLkVx4iN2mGHpUDw==
-IronPort-HdrOrdr: A9a23:bEakhqqhA62cFSJv/nrsEtoaV5rdeYIsimQD101hICG9vPbo8/
- xG+8576faUslgssR4b9OxoVJPrfZqYz+8W3WBzB9iftXfd2FdARbsKheDfKn/bak7DH4VmuZ
- uIHZIObeHYPBxWgdn35Q+gH81l4tWWmZrY/Nv2/jNBQR5nbqd44xw8MAaUFUVqWBJLbKBJcq
- Z0nvA3wAaISDAwctmxAGUDUqzoot3Gk4+jXDs9biRXkDVnSViTmcTH+9/y5GZkbw9y
-X-Talos-CUID: 9a23:158e4W4OU/fgbLXPU9ssqVcvKtkcdUzn13r9chW3AD91Z+SfYArF
-X-Talos-MUID: 9a23:PUa1jgRE2WgaMemeRXSyiRR6JuN44p+AEUosu7E/l8K+aApJbmI=
+X-CSE-ConnectionGUID: fcySWMRAQxWe8nKKtET7+w==
+X-CSE-MsgGUID: KJ/2UKVrRK27F5vzJI+O0w==
+X-IPAS-Result: =?us-ascii?q?A0BHAgA3Cbxq/4v/Ja1aHgEBCxIMggULgleBVUNJhFePU?=
+ =?us-ascii?q?oIhkUyMURSBag8BAQEPUQQBAYUFAo4IAiY0CQ4BAgQDAgMBAQEBAQEBAQEBA?=
+ =?us-ascii?q?QEKAQEFAQEBAgEHBYEOE4ZckBMCAQMjBEASECUCJgICRhAGARKDAoJ1A8FTe?=
+ =?us-ascii?q?n8zgQGEftlKgWgBCxQBgQouhXKCbQGBcYQIO4RBJxuBSUSBFYNphBsEC4N0g?=
+ =?us-ascii?q?moEgxwSgl2HNIsXCT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQdEg8EF?=
+ =?us-ascii?q?jIdcAwnEiwXL1gbBgWBHXUUBBOCGSMZNnqBCV6BKylgARAXgQeCBwKCVIIAA?=
+ =?us-ascii?q?gFJQQ4HRVMJJUUSRyYiCBIJARMaMAuBGzg+CSg9GA1IESw3Bg8ZBD0BbgeQN?=
+ =?us-ascii?q?x6BbgFRHwEBDQgXLRsae0EdFQ4XGgEBLQFFklcMHSWDPI1fa4E1n1qEKIFmo?=
+ =?us-ascii?q?BAzhASTY5MImQgjgjahEwYPCQECTYRpgWg8gVkzGggbFTuCZ1MZD44uFpMdA?=
+ =?us-ascii?q?bx7JzI9AQEHAgcOAwuBaJAAAQQMF4FWAQE?=
+IronPort-Data: A9a23:XyayvKL1Rqa6kfQ0FE+RA5QlxSXFcZb7ZxGr2PjKsXjdYENS1jIPz
+ GUeDGyBaKqCZDCkKoh/Po7l/E8OsZHRyNQwHlEd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcoZpCCea+Uf1WlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnS0
+ T/Oi5eHYgH9imQlajh8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
+ vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
+ /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN1gB1ANAqgi099nPmwe8
+ 987NB0xMVOc0rfeLLKTEoGAh+w5J8XteYdasXZ6wHSBV7AtQIvIROPB4towMDUY358VW62BI
+ ZBENHw2N0Wojx5nYj/7DLollfupnXn8cxVTqUmeouw85G27IAlZjeK8boCOIYXXLSlTtmW64
+ Tj73FrjODJAa/LC1yin0zGL3vCayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3J
+ kAJ/yM8oLQa+0usQd3wGRa/pRasvhkGXsF4EOAg7gyJjK3O7G6xBXUORxZCZcYguctwQiYlv
+ neAmd/zCCMstrCJRX+D3rOJqzX0Mih9BXcLbyICTCMf7tXjqZ11hRXKJv5nEaionpj2FCv2z
+ jSisicznfMQgNQN2qH9+krI6xqqq4TFQxAd+AraRCSm4xl/aYrjYJangWU39t5aJ4qfC13Et
+ 38elo3GtqYFDIqGk2qGR+Bl8KyV2stp+Qb02TZHd6TNPRz2k5J/Vei8OA1DGXo=
+IronPort-HdrOrdr: A9a23:SPGx/qn4Zt13RtR4wsuU+J7/UvfpDfLa3DAbv31ZSRFFG/FwWf
+ re+MjzsiWUtN9xYh8dcL+7VZVoLUm3yXcx2/hyAV7AZmbbURWTTL2KhLGKq1bd8m/Fh41gPM
+ xbH5SWZueAaGRSvILW7Ba1FtA4zMLC0qy57N2utktFfEVGZ75t6gFhBh3eKE15QwFaGYE0fa
+ DsgPav3wDQHkg/X4CcGmQPWfTFqpngkZLrZgNDOjscgTP+9Q9BLNXBYmKlNtB0aUI1/Ysf
+X-Talos-CUID: 9a23:l4Gw0GHzhtUGHpc7qmJp/18vJeUfW0TN83qAJWybFUtVF/6KHAo=
+X-Talos-MUID: =?us-ascii?q?9a23=3AkbnYzw+ADHHRu36VMDIfqdqQf+RKpP6TK34Xq7Z?=
+ =?us-ascii?q?c5OfZKz5SGnS61CviFw=3D=3D?=
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.27,130,1787011200"; 
-   d="scan'208";a="529188742"
+   d="scan'208";a="529623315"
 Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
-  by rcdn-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Sep 2026 18:58:37 +0000
+  by rcdn-iport-3.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Sep 2026 18:58:40 +0000
 Received: from [127.0.0.1] (unknown [10.25.128.208])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPS id C38AB18000364;
-	Tue, 29 Sep 2026 18:58:36 +0000 (GMT)
+	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPS id 3F56F180007CB;
+	Tue, 29 Sep 2026 18:58:39 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Date: Tue, 29 Sep 2026 11:58:06 -0700
-Subject: [PATCH net-next v2 3/6] enic: recover V2 VF mailbox when PF state
- is unknown
+Date: Tue, 29 Sep 2026 11:58:09 -0700
+Subject: [PATCH net-next v2 6/6] enic: configure V2 VF receive mode over
+ mailbox
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,8 +83,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-3-5962c10061b2@cisco.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-6-5962c10061b2@cisco.com>
 References: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
 In-Reply-To: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,884 +94,636 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Satish Kharat <satishkh@cisco.com>, sebaddel@cisco.com
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790708314; l=31581;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790708314; l=21894;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=EAqEXQoV3rkCgq9D3zc698tdMUkLUjA1gSV0B76kF9s=;
- b=P/ibM7TroCePfbyAw3Zoj/hEEDpnEQdX8ygAjrm9nLlOpke0qrNknwjRV0o+SZaIYoKB3sXy+
- aatSlJ7knXcAWXc7qZFBH3OuDUqiLVyI7RDpXYJ4fxvatBoS4cifYPV
+ bh=kiwcPwn+nAl/1mlGv/rFR90QnkfXIzUfuUsPu3HVzIQ=;
+ b=LcYJstdC1pLGvwtJYtCuUwt9UHCgXhPTtMToZ50JsIUmHtofQJv2DC+GG4hMDLU1qx1eOtfGh
+ scPb5U8vIwCBBNLsg125QqAm/G80cga/xmMRFxmg/GZQePVTpKWkU7N
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.208];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.128.208, [10.25.128.208]
 X-Outbound-Node: rcdn-l-core-02.cisco.com
 
-A mailbox send can complete and still lose its reply. In that case the VF
-cannot know whether the PF changed its address or receive-filter state. A
-send-completion timeout is different because the admin-WQ descriptor may
-still belong to the device.
+V2 VFs cannot program receive filters directly. Add an asynchronous
+receive-mode callback that sends individual unicast and multicast address
+changes and packet-filter settings through the VF's one-request-at-a-time
+mailbox path.
 
-Reconnect the V2 VF mailbox after the first case. After a hardware send
-timeout, stop using the channel and leave the timed-out DMA mapping for
-admin-channel teardown to reclaim safely.
+Complete all phases required for one address-list snapshot before returning
+from the callback. Enable newly required broad receive coverage before
+changing individual-address filters. Withdraw stale broad coverage before
+installing its finite replacement. This preserves synchronous completion
+when the netdev core executes the sleepable callback inline.
 
-Stop V2 VF receive traffic when the VF can no longer trust that its state
-matches the PF. Rebuild and register the admin channel again at a safe
-open/reset boundary, then restore receive traffic after the station address
-and filters have been replayed. Defer notification acknowledgments so
-receive dispatch cannot block behind a VF request.
+Use the netdev address-list synchronization state to batch operations:
+sync_cnt == 0 identifies a new entry, refcount > sync_cnt identifies an
+address that is still requested, and refcount == sync_cnt identifies an
+installed entry which has become stale. The asynchronous netdev core
+reconciles the resulting sync_cnt changes from the snapshot back to the
+live list.
 
-Do not let a failed recovery handshake continuously requeue the worker
-which is attempting the reset. Keep the VF quarantined after that failed
-attempt until an administrative close/open or another external recovery
-event.
+Track detailed per-address results so idempotent outcomes converge, stable
+policy denials do not consume the retry budget, and failed deletes or
+contradictory replies require a new VF registration. Keep the station
+address out of both secondary address lists.
 
-Reinitialize non-dynamic vNICs after a successful soft reset before
-programming queue resources. This restores the initialization sequence used
-during probe and ensures that reset recovery rebuilds the vNIC before
-reopening the datapath.
+Deployed async PFs count the station address in the same 32-entry unicast
+table used for secondary addresses. Request broad coverage at 32 secondary
+unicast addresses so those PFs do not silently lose the final address.
 
-Also use this recovery after malformed or dropped admin receive traffic,
-and track whether the V2 datapath is open so a failed internal reset cannot
-stop it twice.
+Select the asynchronous netdev operations only for V2 VFs and detach the
+device before mailbox teardown so no receive-mode callback can race
+removal.
 
 Assisted-by: LLM
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h       |  28 +++-
- drivers/net/ethernet/cisco/enic/enic_admin.c |  27 +++-
- drivers/net/ethernet/cisco/enic/enic_main.c  | 219 +++++++++++++++++++++++----
- drivers/net/ethernet/cisco/enic/enic_mbox.c  | 172 +++++++++++++++++++--
- drivers/net/ethernet/cisco/enic/enic_mbox.h  |   2 +
- drivers/net/ethernet/cisco/enic/enic_rq.c    |  11 +-
- 6 files changed, 409 insertions(+), 50 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic.h      |   3 +
+ drivers/net/ethernet/cisco/enic/enic_main.c | 468 +++++++++++++++++++++++++++-
+ 2 files changed, 458 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 3945fe28f199..4285b63083cc 100644
+index 1e369e6704e1..80056b5f4124 100644
 --- a/drivers/net/ethernet/cisco/enic/enic.h
 +++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -303,8 +303,26 @@ struct enic {
- 	 * left the resources freed.
+@@ -387,6 +387,9 @@ struct enic {
  	 */
- 	bool admin_chan_up;
--	/* set on send timeout; cleared on channel re-open */
-+	/* Blocks sends while the channel is closed or awaiting recovery. */
- 	bool mbox_send_disabled;
-+	/* A send timeout leaves a descriptor hardware-owned.  Do not reopen the
-+	 * channel during this device lifetime until reset/DMA fencing is proven.
-+	 */
-+	bool mbox_tx_poisoned;
-+	/* After a lost or inconsistent reply, the VF cannot know whether the PF
-+	 * applied the request. Reconnect during the next open or reset.
-+	 */
-+	bool vf_mbox_reconnect_required;
-+	/* Suppress self-requeue while a reset worker is already attempting the
-+	 * reconnect. A failed handshake remains quarantined until a later external
-+	 * recovery event or administrative close/open.
-+	 */
-+	bool vf_mbox_recovery_active;
-+	u32 vf_mbox_fault_generation;
-+	/* One slow-path-owned predicate keeps the RX hot path fail-closed while
-+	 * VF registration is lost or receive state may not match the PF.
-+	 */
-+	bool vf_rx_quarantined;
- 	struct vnic_wq admin_wq;
- 	struct vnic_rq admin_rq;
- 	struct vnic_cq admin_cq[2];
-@@ -325,6 +343,10 @@ struct enic {
- 	spinlock_t vf_link_state_lock;
- 	enum enic_vf_link_state vf_link_state;
- 	bool vf_link_running;
-+	/* Tracks a completely opened V2 VF datapath.  An internal reset can stop
-+	 * it while netif_running() remains true, then fail before reopen.
-+	 */
-+	bool vf_datapath_open;
- 
- 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
- 	struct mutex mbox_lock;
-@@ -337,6 +359,10 @@ struct enic {
- 	struct completion mbox_comp;
- 	struct mutex vf_mbox_request_lock; /* serializes VF request lifetimes */
- 	spinlock_t mbox_state_lock;	/* protects expected reply state */
-+	spinlock_t vf_ack_lock;		/* protects vf_ack_list */
-+	struct list_head vf_ack_list;
-+	struct work_struct vf_ack_work;
-+	unsigned int vf_ack_count;
- 	u64 mbox_expected_msg_num;
- 	u8 mbox_expected_reply;
+ 	struct enic_mac_addr *mbox_reply_mac_addrs;
+ 	u16 mbox_reply_mac_count;
++	u16 vf_pkt_filter_requested;
++	u16 vf_pkt_filter_applied;
++	bool vf_pkt_filter_valid;
  	bool mbox_initialized;
-diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-index 61c82b48044d..30c0a5c89a2d 100644
---- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-@@ -132,14 +132,22 @@ unsigned int enic_admin_wq_cq_service(struct enic *enic)
-  */
- #define ENIC_ADMIN_MSG_MAX	256
  
-+static void enic_admin_rx_lost(struct enic *enic)
-+{
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_require_reconnect(enic);
-+}
-+
- static void enic_admin_msg_enqueue(struct enic *enic, void *buf,
- 				   unsigned int len)
- {
- 	struct enic_admin_msg *msg;
- 
- 	msg = kmalloc_flex(*msg, data, len);
--	if (!msg)
-+	if (!msg) {
-+		enic_admin_rx_lost(enic);
- 		return;
-+	}
- 
- 	msg->len = len;
- 	memcpy(msg->data, buf, len);
-@@ -152,6 +160,7 @@ static void enic_admin_msg_enqueue(struct enic *enic, void *buf,
- 			netdev_warn(enic->netdev,
- 				    "admin msg backlog full (%u); dropping\n",
- 				    ENIC_ADMIN_MSG_MAX);
-+		enic_admin_rx_lost(enic);
- 		return;
- 	}
- 	list_add_tail(&msg->list, &enic->admin_msg_list);
-@@ -194,8 +203,10 @@ unsigned int enic_admin_rq_cq_service(struct enic *enic)
- 		rq_desc = desc;
- 		bwf = le16_to_cpu(rq_desc->bytes_written_flags);
- 		bytes_written = bwf & CQ_ENET_RQ_DESC_BYTES_WRITTEN_MASK;
--		if (bytes_written > buf->len)
-+		if (bytes_written > buf->len) {
-+			enic_admin_rx_lost(enic);
- 			goto next_desc;
-+		}
- 
- 		dma_sync_single_for_cpu(&enic->pdev->dev,
- 					buf->dma_addr, buf->len,
-@@ -210,11 +221,13 @@ unsigned int enic_admin_rq_cq_service(struct enic *enic)
- 		if (bwf & CQ_ENET_RQ_DESC_FLAGS_TRUNCATED) {
- 			netdev_warn_once(enic->netdev,
- 					 "admin RQ: truncated message dropped\n");
-+			enic_admin_rx_lost(enic);
- 			goto next_desc;
- 		}
- 		if (!(rq_desc->flags & CQ_ENET_RQ_DESC_FLAGS_FCS_OK)) {
- 			netdev_warn_once(enic->netdev,
- 					 "admin RQ: bad FCS, dropping message\n");
-+			enic_admin_rx_lost(enic);
- 			goto next_desc;
- 		}
- 
-@@ -534,6 +547,11 @@ int enic_admin_channel_open(struct enic *enic)
- 
- 	if (!enic->has_admin_channel)
- 		return -ENODEV;
-+	if (READ_ONCE(enic->mbox_tx_poisoned)) {
-+		netdev_err(enic->netdev,
-+			   "Refusing to reopen admin channel after send timeout\n");
-+		return -EIO;
-+	}
- 
- 	/* Keep MBOX sends disabled for the entire open sequence.  It is
- 	 * cleared only after every resource is allocated and enabled below,
-@@ -641,6 +659,11 @@ void enic_admin_channel_close(struct enic *enic)
- 	enic_admin_teardown_intr(enic);
- 	cancel_work_sync(&enic->link_notify_work);
- 	cancel_work_sync(&enic->admin_msg_work);
-+	/* admin_msg_work is the sole VF ACK producer.  Drain it before the ACK
-+	 * worker so an enqueue cannot race the final cancel and queue purge.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_ack_cancel(enic);
- 	enic_admin_msg_drain(enic);
- 
- 	enic_admin_qp_type_set(enic, QP_DISABLE);
+ 	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
 diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 9086e6dd558a..28738bd14fa7 100644
+index 2132bfa9c8d3..382bac6669bf 100644
 --- a/drivers/net/ethernet/cisco/enic/enic_main.c
 +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -71,6 +71,8 @@
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_V2   0x02b7  /* enet SRIOV V2 VF */
- #define PCI_DEVICE_ID_CISCO_VIC_ENET_VF_USNIC 0x00cf /* enet USNIC VF */
- 
-+static int __enic_stop(struct net_device *netdev, bool remove_vf_station);
-+
- /* Supported devices */
- static const struct pci_device_id enic_id_table[] = {
- 	{ PCI_VDEVICE(CISCO, PCI_DEVICE_ID_CISCO_VIC_ENET) },
-@@ -1718,6 +1720,8 @@ static void enic_notify_timer_start(struct enic *enic)
- 	}
+@@ -1051,6 +1051,7 @@ void enic_reset_addr_lists(struct enic *enic)
+ 	enic->mc_count = 0;
+ 	enic->uc_count = 0;
+ 	enic->flags = 0;
++	enic->vf_pkt_filter_valid = false;
  }
  
-+static int enic_admin_chan_reopen(struct enic *enic);
-+
- /* rtnl lock is held, process context */
- static int enic_open(struct net_device *netdev)
- {
-@@ -1736,6 +1740,30 @@ static int enic_open(struct net_device *netdev)
- 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 	};
- 
-+	/* A reply timeout invalidates the current request generation.  Rebuild
-+	 * and re-register the channel before allocating datapath resources so a
-+	 * later userspace down/up can recover a failed open or reset handshake.
-+	 * A send timeout is intentionally not recoverable here because its WQ
-+	 * descriptor may still be hardware-owned.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic) &&
-+	    READ_ONCE(enic->mbox_tx_poisoned))
-+		return -EIO;
-+	if (enic_is_sriov_vf_v2(enic) &&
-+	    (!enic->admin_chan_up || !READ_ONCE(enic->vf_registered) ||
-+	     READ_ONCE(enic->vf_mbox_reconnect_required))) {
-+		/* Re-registration makes the PF discard the old VF-requested
-+		 * filters.  Clear the netdev-core synchronization state so the
-+		 * receive-mode callback replays the current address lists.
-+		 */
-+		enic_reset_addr_lists(enic);
-+		if (enic->admin_chan_up)
-+			enic_admin_channel_close(enic);
-+		err = enic_admin_chan_reopen(enic);
-+		if (err)
-+			return err;
+ static int enic_set_mac_addr(struct net_device *netdev, char *addr)
+@@ -1352,8 +1353,12 @@ static void enic_vf_admin_mac_work(struct work_struct *work)
+ 	if (station_installed)
+ 		enic_vf_station_addr_set(enic, selected);
+ 	enic_vf_station_sync_reset(enic);
+-	if (enic->netdev->reg_state == NETREG_REGISTERED && changed)
+-		call_netdevice_notifiers(NETDEV_CHANGEADDR, enic->netdev);
++	if (enic->netdev->reg_state == NETREG_REGISTERED) {
++		if (changed)
++			call_netdevice_notifiers(NETDEV_CHANGEADDR,
++						 enic->netdev);
++		netif_rx_mode_schedule_update(enic->netdev);
 +	}
-+
- 	err = enic_request_intr(enic);
- 	if (err) {
- 		netdev_err(netdev, "Unable to request irq.\n");
-@@ -1794,17 +1822,41 @@ static int enic_open(struct net_device *netdev)
- 		netdev_err(netdev, "Failed to enable device: %d\n", err);
- 		goto err_out_dev_enable;
- 	}
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		/* Commit the replay only if no mailbox fault arrived while station
-+		 * and receive policy were being programmed.  Keep the state lock
-+		 * through the carrier transition so a later fault necessarily wins
-+		 * and turns carrier back off.
-+		 */
-+		spin_lock_bh(&enic->mbox_state_lock);
-+		if (!READ_ONCE(enic->vf_registered) ||
-+		    READ_ONCE(enic->mbox_send_disabled) ||
-+		    READ_ONCE(enic->mbox_tx_poisoned) ||
-+		    READ_ONCE(enic->vf_mbox_reconnect_required)) {
-+			err = -EIO;
-+		} else {
-+			WRITE_ONCE(enic->vf_rx_quarantined, false);
-+			enic_mbox_vf_link_state_set_running(enic, true);
-+		}
-+		spin_unlock_bh(&enic->mbox_state_lock);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "MBOX state changed during VF datapath open\n");
-+			goto err_out_dev_disable;
-+		}
-+	}
+ 	netdev_info(enic->netdev, "MBOX: admin MAC set to %pM\n", selected);
  
- 	for (i = 0; i < enic->intr_count; i++)
- 		vnic_intr_unmask(&enic->intr[i]);
--
- 	enic_notify_timer_start(enic);
- 	enic_rfs_timer_start(enic);
- 	if (enic_is_sriov_vf_v2(enic))
--		enic_mbox_vf_link_state_set_running(enic, true);
-+		enic->vf_datapath_open = true;
+ unlock:
+@@ -1573,6 +1578,7 @@ static int enic_set_mac_address_dynamic(struct net_device *netdev, void *p)
+ 			enic_vf_station_addr_set(enic, addr);
+ 			enic_vf_station_sync_reset(enic);
+ 			enic_vf_admin_mac_cache_selected(enic, addr);
++			netif_rx_mode_schedule_update(netdev);
+ 		}
  
- 	return 0;
- 
-+err_out_dev_disable:
-+	enic_dev_disable(enic);
- err_out_dev_enable:
- 	for (i = 0; i < enic->rq_count; i++)
- 		napi_disable(&enic->napi[i]);
-@@ -1834,12 +1886,20 @@ static int enic_open(struct net_device *netdev)
+ 		return err;
+@@ -1615,17 +1621,380 @@ static int enic_set_mac_address(struct net_device *netdev, void *p)
+ 	return enic_dev_add_station_addr(enic);
  }
  
- /* rtnl lock is held, process context */
--static int enic_stop(struct net_device *netdev)
-+static int __enic_stop(struct net_device *netdev, bool remove_vf_station)
- {
- 	struct enic *enic = netdev_priv(netdev);
- 	unsigned int i;
- 	int err;
- 
-+	/* Internal reset leaves netif_running() set while the datapath is down.
-+	 * If re-registration or reopen then fails, a later administrative close
-+	 * must not disable NAPI a second time.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic) && !enic->vf_datapath_open)
-+		return 0;
-+	(void)remove_vf_station;
-+
- 	for (i = 0; i < enic->intr_count; i++) {
- 		vnic_intr_mask(&enic->intr[i]);
- 		(void)vnic_intr_masked(&enic->intr[i]); /* flush write */
-@@ -1893,10 +1953,17 @@ static int enic_stop(struct net_device *netdev)
- 		vnic_cq_clean(&enic->cq[i]);
- 	for (i = 0; i < enic->intr_count; i++)
- 		vnic_intr_clean(&enic->intr[i]);
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic->vf_datapath_open = false;
- 
- 	return 0;
- }
- 
-+static int enic_stop(struct net_device *netdev)
++static u16 enic_rx_mode_to_pkt_filter(struct net_device *netdev,
++				      unsigned int uc_count,
++				      unsigned int mc_count)
 +{
-+	return __enic_stop(netdev, true);
++	u16 flags = CMD_PFILTER_DIRECTED;
++
++	if (netdev->flags & IFF_MULTICAST)
++		flags |= CMD_PFILTER_MULTICAST;
++	if (netdev->flags & IFF_BROADCAST)
++		flags |= CMD_PFILTER_BROADCAST;
++	if ((netdev->flags & IFF_PROMISC) ||
++	    uc_count > ENIC_UNICAST_PERFECT_FILTERS)
++		flags |= CMD_PFILTER_PROMISCUOUS;
++	if ((netdev->flags & IFF_ALLMULTI) ||
++	    mc_count > ENIC_MULTICAST_PERFECT_FILTERS)
++		flags |= CMD_PFILTER_ALL_MULTICAST;
++
++	return flags;
 +}
 +
- static int _enic_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	bool running = netif_running(netdev);
-@@ -2196,14 +2263,15 @@ static bool enic_has_admin_chan(struct enic *enic)
- 	       (enic_sriov_enabled(enic) && enic->vf_type == ENIC_VF_TYPE_V2);
- }
- 
--/* Re-establish the admin/MBOX channel after a reset has re-created the data
-- * path.  Mirrors the relevant part of the probe / SR-IOV-enable sequence:
-+/* Re-establish the admin/MBOX channel after a reset has re-created the vNIC
-+ * resources.  Mirrors the relevant part of the probe / SR-IOV-enable sequence:
-  * reinitialise MBOX and reopen the channel, then for a VF re-run the PF
-  * handshake (the reset wiped the VF's admin QP, so the VF must register
-  * again), or for a PF re-push the current link state to registered VFs.
-  */
--static void enic_admin_chan_reopen(struct enic *enic)
-+static int enic_admin_chan_reopen(struct enic *enic)
- {
-+	u32 recovery_generation = 0;
- 	int err;
- 
- 	/* Install the MBOX receive handler and clear pending reply state before
-@@ -2222,12 +2290,17 @@ static void enic_admin_chan_reopen(struct enic *enic)
- 	 */
- 	if (enic_is_sriov_vf_v2(enic))
- 		WRITE_ONCE(enic->vf_registered, false);
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		spin_lock_bh(&enic->mbox_state_lock);
-+		recovery_generation = enic->vf_mbox_fault_generation;
-+		spin_unlock_bh(&enic->mbox_state_lock);
++/* Deployed async PFs count the station MAC in the 32-entry UC table. */
++static bool enic_vf_uc_needs_promisc(unsigned int uc_count)
++{
++	return uc_count >= ENIC_UNICAST_PERFECT_FILTERS;
++}
++
++static int enic_vf_set_pkt_filter(struct enic *enic, u16 flags,
++				  u16 *applied_flags)
++{
++	u16 applied;
++	int err;
++
++	/* The PF can change trust policy independently and thereby withdraw
++	 * broad modes. Always refresh those requests so the returned applied
++	 * flags remain authoritative. The other modes are not trust-gated and
++	 * can be reused for ordinary address-list churn.
++	 */
++	if (!(flags & (CMD_PFILTER_PROMISCUOUS |
++		       CMD_PFILTER_ALL_MULTICAST)) &&
++	    enic->vf_pkt_filter_valid &&
++	    enic->vf_pkt_filter_requested == flags) {
++		if (applied_flags)
++			*applied_flags = enic->vf_pkt_filter_applied;
++		return 0;
 +	}
- 
- 	err = enic_admin_channel_open(enic);
- 	if (err) {
- 		netdev_err(enic->netdev,
- 			   "admin channel reopen after reset failed: %d\n", err);
--		return;
++
++	err = enic_mbox_vf_set_pkt_filter(enic,
++					  !!(flags & CMD_PFILTER_DIRECTED),
++					  !!(flags & CMD_PFILTER_MULTICAST),
++					  !!(flags & CMD_PFILTER_BROADCAST),
++					  !!(flags & CMD_PFILTER_PROMISCUOUS),
++					  !!(flags & CMD_PFILTER_ALL_MULTICAST),
++					  &applied);
++	if (err)
 +		return err;
- 	}
- 
- 	if (enic_is_sriov_vf_v2(enic)) {
-@@ -2237,7 +2310,7 @@ static void enic_admin_chan_reopen(struct enic *enic)
- 				   "MBOX capability check after reset failed: %d\n",
- 				   err);
- 			enic_admin_channel_close(enic);
--			return;
-+			return err;
- 		}
- 		err = enic_mbox_vf_register(enic);
- 		if (err) {
-@@ -2245,6 +2318,26 @@ static void enic_admin_chan_reopen(struct enic *enic)
- 				   "MBOX VF re-registration after reset failed: %d\n",
- 				   err);
- 			enic_admin_channel_close(enic);
-+			return err;
-+		}
-+		enic_reset_addr_lists(enic);
-+		/* Capability negotiation and registration establish a new protocol
-+		 * generation. RX remains quarantined until enic_open() replays the
-+		 * station and receive policy.
-+		 */
-+		spin_lock_bh(&enic->mbox_state_lock);
-+		if (enic->vf_mbox_fault_generation != recovery_generation ||
-+		    READ_ONCE(enic->mbox_tx_poisoned)) {
-+			err = -EAGAIN;
-+		} else {
-+			WRITE_ONCE(enic->vf_mbox_reconnect_required, false);
-+		}
-+		spin_unlock_bh(&enic->mbox_state_lock);
-+		if (err) {
-+			netdev_warn(enic->netdev,
-+				    "MBOX state changed during VF re-registration\n");
-+			enic_admin_channel_close(enic);
-+			return err;
- 		}
- 	} else {
- 		/* The link came back up during enic_open() above while MBOX
-@@ -2253,79 +2346,128 @@ static void enic_admin_chan_reopen(struct enic *enic)
- 		 */
- 		schedule_work(&enic->link_notify_work);
- 	}
++
++	enic->vf_pkt_filter_requested = flags;
++	enic->vf_pkt_filter_applied = applied;
++	enic->vf_pkt_filter_valid = true;
++	if (applied_flags)
++		*applied_flags = applied;
 +
 +	return 0;
- }
- 
- static void enic_reset(struct work_struct *work)
- {
- 	struct enic *enic = container_of(work, struct enic, reset);
-+	bool vf_recovery = enic_is_sriov_vf_v2(enic);
-+	int err;
- 
- 	if (!netif_running(enic->netdev))
- 		return;
-+	if (vf_recovery)
-+		WRITE_ONCE(enic->vf_mbox_recovery_active, true);
- 
- 	rtnl_lock();
-+	/* V2 protocol recovery can be queued immediately before ndo_stop()
-+	 * acquires RTNL.  Recheck under RTNL so that new recovery path cannot
-+	 * reopen a device userspace just closed.  Preserve the existing reset
-+	 * behavior for every other ENIC device.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic) && !netif_running(enic->netdev))
-+		goto unlock;
- 
- 	/* Stop any activity from infiniband */
- 	enic_set_api_busy(enic, true);
- 
--	/* Fully tear down the V2 admin/MBOX channel before the soft reset.
--	 * The reset wipes all hardware queues including the admin WQ/RQ;
--	 * closing first tells firmware to stop the admin QP (so it no longer
--	 * DMAs from the about-to-be-reset rings) and frees the admin resources
--	 * so they are cleanly re-allocated afterwards.
-+	/* Stop the datapath and existing admin/MBOX channel before the soft
-+	 * reset. Do not send DEL_MAC from this path: a timeout would poison the
-+	 * channel while reset and fresh registration already discard the old
-+	 * VF-requested protocol state before the station address is replayed.
-+	 * Reopen allocates fresh admin resources after reset recreates the vNIC.
- 	 */
-+	__enic_stop(enic->netdev, false);
- 	if (enic_has_admin_chan(enic))
- 		enic_admin_channel_close(enic);
- 
--	enic_stop(enic->netdev);
- 	if (enic_is_sriov_vf_v2(enic))
- 		enic_mbox_vf_link_state_reset(enic);
-+	err = enic_dev_soft_reset(enic);
-+	if (err)
-+		goto reset_out;
++}
 +
-+	if (!enic_is_dynamic(enic)) {
-+		err = vnic_dev_init(enic->vdev, 0);
-+		if (err) {
-+			netdev_err(enic->netdev,
-+				   "vNIC init after soft reset failed: %d\n",
-+				   err);
-+			goto reset_out;
-+		}
-+	}
- 
--	enic_dev_soft_reset(enic);
- 	enic_reset_addr_lists(enic);
- 	enic_init_vnic_resources(enic);
- 	enic_set_rss_nic_cfg(enic);
- 	enic_dev_set_ig_vlan_rewrite_mode(enic);
- 	enic_ext_cq(enic);
- 
--	enic_open(enic->netdev);
-+	/* A V2 VF needs PF registration before enic_open() can install its
-+	 * station address.  A V2 PF reopens afterwards and replays carrier.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		err = enic_admin_chan_reopen(enic);
-+		if (err)
-+			goto reset_out;
-+	}
++static void enic_vf_report_pkt_filter_denial(struct net_device *netdev,
++					     u16 requested, u16 applied)
++{
++	if ((requested & CMD_PFILTER_PROMISCUOUS) &&
++	    !(applied & CMD_PFILTER_PROMISCUOUS))
++		netdev_dbg(netdev, "PF policy denied promiscuous receive mode\n");
++	if ((requested & CMD_PFILTER_ALL_MULTICAST) &&
++	    !(applied & CMD_PFILTER_ALL_MULTICAST))
++		netdev_dbg(netdev,
++			   "PF policy denied all-multicast receive mode\n");
++}
 +
-+	err = enic_open(enic->netdev);
-+	if (err)
-+		netdev_err(enic->netdev,
-+			   "Failed to reopen datapath after reset: %d\n", err);
- 
--	/* Re-establish the admin/MBOX channel after the data path is back up.
--	 * It was fully torn down by enic_admin_channel_close() above;
--	 * enic_admin_chan_reopen() reopens it and, for a PF re-pushes link
--	 * state, or for a VF re-runs the probe-time PF handshake.
-+	/* A PF reopens its admin channel after the datapath and re-pushes link
-+	 * state.  The VF handshake, which open depends on, completed above.
- 	 */
--	if (enic_has_admin_chan(enic))
-+	if (enic_has_admin_chan(enic) && !enic_is_sriov_vf_v2(enic))
- 		enic_admin_chan_reopen(enic);
- 
-+reset_out:
- 	/* Allow infiniband to fiddle with the device again */
- 	enic_set_api_busy(enic, false);
- 
- 	call_netdevice_notifiers(NETDEV_REBOOT, enic->netdev);
- 
-+unlock:
-+	if (vf_recovery)
-+		WRITE_ONCE(enic->vf_mbox_recovery_active, false);
- 	rtnl_unlock();
- }
- 
- static void enic_tx_hang_reset(struct work_struct *work)
- {
- 	struct enic *enic = container_of(work, struct enic, tx_hang_reset);
-+	bool vf_recovery = enic_is_sriov_vf_v2(enic);
-+	int err;
-+
-+	if (vf_recovery)
-+		WRITE_ONCE(enic->vf_mbox_recovery_active, true);
- 
- 	rtnl_lock();
-+	/* The V2 changes below add admin-channel recovery to this worker.  Do not
-+	 * let that new path reopen a VF after userspace completed ndo_stop();
-+	 * leave the existing behavior for other ENIC devices unchanged.
-+	 */
-+	if (enic_is_sriov_vf_v2(enic) && !netif_running(enic->netdev))
-+		goto unlock;
- 
- 	/* Stop any activity from infiniband */
- 	enic_set_api_busy(enic, true);
- 
--	/* Fully tear down the V2 admin/MBOX channel before the hang reset, for
--	 * the same reason as the soft reset path: stop the admin QP and free
--	 * the admin resources before the hardware queues are wiped.
-+	/* Preserve the firmware hang-notification contract by reporting the hung
-+	 * queue before stopping and cleaning it. As in the soft-reset path, skip
-+	 * DEL_MAC because reset and fresh registration are the cleanup boundary.
- 	 */
-+	enic_dev_hang_notify(enic);
-+	__enic_stop(enic->netdev, false);
- 	if (enic_has_admin_chan(enic))
- 		enic_admin_channel_close(enic);
- 
--	enic_dev_hang_notify(enic);
--	enic_stop(enic->netdev);
- 	if (enic_is_sriov_vf_v2(enic))
- 		enic_mbox_vf_link_state_reset(enic);
--
- 	enic_dev_hang_reset(enic);
- 	enic_reset_addr_lists(enic);
- 	enic_init_vnic_resources(enic);
-@@ -2333,21 +2475,32 @@ static void enic_tx_hang_reset(struct work_struct *work)
- 	enic_dev_set_ig_vlan_rewrite_mode(enic);
- 	enic_ext_cq(enic);
- 
--	enic_open(enic->netdev);
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		err = enic_admin_chan_reopen(enic);
-+		if (err)
-+			goto hang_reset_out;
-+	}
-+
-+	err = enic_open(enic->netdev);
-+	if (err)
-+		netdev_err(enic->netdev,
-+			   "Failed to reopen datapath after hang reset: %d\n", err);
- 
--	/* Re-establish the admin/MBOX channel after the data path is back up.
--	 * It was fully torn down by enic_admin_channel_close() above;
--	 * enic_admin_chan_reopen() reopens it and, for a PF re-pushes link
--	 * state, or for a VF re-runs the probe-time PF handshake.
-+	/* A PF reopens its admin channel after the datapath and re-pushes link
-+	 * state.  The VF handshake, which open depends on, completed above.
- 	 */
--	if (enic_has_admin_chan(enic))
-+	if (enic_has_admin_chan(enic) && !enic_is_sriov_vf_v2(enic))
- 		enic_admin_chan_reopen(enic);
- 
-+hang_reset_out:
- 	/* Allow infiniband to fiddle with the device again */
- 	enic_set_api_busy(enic, false);
- 
- 	call_netdevice_notifiers(NETDEV_REBOOT, enic->netdev);
- 
-+unlock:
-+	if (vf_recovery)
-+		WRITE_ONCE(enic->vf_mbox_recovery_active, false);
- 	rtnl_unlock();
- }
- 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index b8a18d9682b2..30a5f6fda676 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -149,7 +149,20 @@ static int enic_mbox_send_msg_id(struct enic *enic, u8 msg_type,
- 		 * or free the buffer: the device may still DMA from dma_addr.
- 		 * Mark the channel unusable so no further sends are attempted.
- 		 */
-+		spin_lock_bh(&enic->mbox_state_lock);
- 		WRITE_ONCE(enic->mbox_send_disabled, true);
-+		WRITE_ONCE(enic->mbox_tx_poisoned, true);
-+		if (enic_is_sriov_vf_v2(enic)) {
-+			/* The request may have changed PF receive policy even though
-+			 * local descriptor ownership is still uncertain. Fail the VF
-+			 * closed and do not turn this into an ordinary protocol
-+			 * reconnect; the admin-channel lifecycle owns final reclamation.
-+			 */
-+			WRITE_ONCE(enic->vf_rx_quarantined, true);
-+		}
-+		spin_unlock_bh(&enic->mbox_state_lock);
-+		if (enic_is_sriov_vf_v2(enic))
-+			enic_mbox_vf_link_state_set_running(enic, false);
- 	}
- 
- 	netdev_dbg(enic->netdev,
-@@ -184,6 +197,105 @@ static int enic_mbox_send_reply(struct enic *enic, u8 msg_type,
- 				     payload_len, msg_num, true, 0);
- }
- 
-+struct enic_mbox_vf_ack {
-+	struct list_head list;
-+	u64 msg_num;
-+	u16 ret_major;
-+	u8 msg_type;
++struct enic_vf_mac_op {
++	struct netdev_hw_addr *ha;
++	unsigned int *filter_count;
 +};
 +
-+static void enic_mbox_vf_ack_work(struct work_struct *work)
++static unsigned int
++enic_vf_addr_list_count(const struct enic *enic,
++			const struct netdev_hw_addr_list *list)
 +{
-+	struct enic *enic = container_of(work, struct enic, vf_ack_work);
-+	struct enic_mbox_vf_ack *pending;
++	const struct netdev_hw_addr *ha;
++	unsigned int count = 0;
 +
-+	for (;;) {
-+		struct enic_mbox_generic_reply ack = {};
-+		u8 msg_type;
-+		int err;
++	netdev_hw_addr_list_for_each(ha, list)
++		if (ha->refcount > ha->sync_cnt &&
++		    !(enic->vf_station_addr_valid &&
++		      ether_addr_equal(ha->addr, enic->vf_station_addr)))
++			count++;
 +
-+		spin_lock_bh(&enic->vf_ack_lock);
-+		if (list_empty(&enic->vf_ack_list)) {
-+			spin_unlock_bh(&enic->vf_ack_lock);
-+			break;
++	return count;
++}
++
++static int enic_vf_collect_mac_ops(struct enic *enic,
++				   struct netdev_hw_addr_list *list,
++				   bool install_new,
++				   unsigned int *filter_count,
++				   struct enic_mac_addr *macs,
++				   struct enic_vf_mac_op *ops,
++				   u16 *num_ops)
++{
++	struct netdev_hw_addr *ha;
++	u16 pos = *num_ops;
++
++	/* Deletes precede adds so a full perfect-filter table has room for a
++	 * replacement address in the same transaction.
++	 */
++	netdev_hw_addr_list_for_each(ha, list) {
++		if (enic->vf_station_addr_valid &&
++		    ether_addr_equal(ha->addr, enic->vf_station_addr))
++			continue;
++		if (!ha->sync_cnt ||
++		    ha->refcount != ha->sync_cnt)
++			continue;
++		if (pos == ENIC_MBOX_MAX_MAC_OPS)
++			return -E2BIG;
++
++		ether_addr_copy(macs[pos].addr, ha->addr);
++		macs[pos].flags = 0;
++		ops[pos].ha = ha;
++		ops[pos].filter_count = filter_count;
++		pos++;
++	}
++
++	if (!install_new)
++		goto done;
++
++	netdev_hw_addr_list_for_each(ha, list) {
++		if (enic->vf_station_addr_valid &&
++		    ether_addr_equal(ha->addr, enic->vf_station_addr))
++			continue;
++		if (ha->sync_cnt)
++			continue;
++		if (pos == ENIC_MBOX_MAX_MAC_OPS)
++			return -E2BIG;
++
++		ether_addr_copy(macs[pos].addr, ha->addr);
++		macs[pos].flags = cpu_to_le16(ENIC_MAC_ADDR_FLAG_ADD);
++		ops[pos].ha = ha;
++		ops[pos].filter_count = filter_count;
++		pos++;
++	}
++
++done:
++	*num_ops = pos;
++	return 0;
++}
++
++static int enic_vf_sync_mac_filters(struct enic *enic,
++				    struct netdev_hw_addr_list *uc,
++				    struct netdev_hw_addr_list *mc,
++				    bool install_uc, bool install_mc)
++{
++	struct enic_vf_mac_op *ops;
++	struct enic_mac_addr *macs;
++	bool permanent_add = false;
++	bool reconnect = false;
++	bool retryable_add = false;
++	u16 num_ops = 0;
++	unsigned int i;
++	int err = 0;
++
++	/* A class can contribute at most its installed perfect filters as
++	 * deletes and its finite perfect-filter limit as adds. Keep the wire
++	 * batch large enough for both classes so an update always fits in one
++	 * transaction and -E2BIG remains only a defensive state-corruption
++	 * check.
++	 */
++	BUILD_BUG_ON(ENIC_MBOX_MAX_MAC_OPS <
++		     2 * (ENIC_UNICAST_PERFECT_FILTERS +
++			  ENIC_MULTICAST_PERFECT_FILTERS));
++
++	macs = kcalloc(ENIC_MBOX_MAX_MAC_OPS, sizeof(*macs), GFP_KERNEL);
++	if (!macs)
++		return -ENOMEM;
++	ops = kcalloc(ENIC_MBOX_MAX_MAC_OPS, sizeof(*ops), GFP_KERNEL);
++	if (!ops) {
++		err = -ENOMEM;
++		goto free_macs;
++	}
++
++	err = enic_vf_collect_mac_ops(enic, uc, install_uc,
++				      &enic->uc_count,
++				      macs, ops, &num_ops);
++	if (err)
++		goto free_ops;
++	err = enic_vf_collect_mac_ops(enic, mc, install_mc,
++				      &enic->mc_count,
++				      macs, ops, &num_ops);
++	if (err || !num_ops)
++		goto free_ops;
++
++	/* The protocol carries all changed unicast and multicast addresses in
++	 * one request.  Besides matching the native ABI, this bounds time spent
++	 * in the RTNL-held asynchronous receive-mode callback to one MAC reply.
++	 */
++	err = enic_mbox_vf_add_del_macs(enic, macs, num_ops);
++	if (err)
++		goto free_ops;
++
++	for (i = 0; i < num_ops; i++) {
++		u16 flags = le16_to_cpu(macs[i].flags);
++		bool add = flags & ENIC_MAC_ADDR_FLAG_ADD;
++
++		if (flags & ENIC_MAC_ADDR_FLAG_SKIPPED) {
++			if (add)
++				retryable_add = true;
++			else
++				reconnect = true;
++			continue;
 +		}
-+		pending = list_first_entry(&enic->vf_ack_list,
-+					   struct enic_mbox_vf_ack, list);
-+		list_del(&pending->list);
-+		enic->vf_ack_count--;
-+		spin_unlock_bh(&enic->vf_ack_lock);
-+
-+		if (READ_ONCE(enic->mbox_send_disabled)) {
-+			kfree(pending);
++		if (flags & ENIC_MAC_ADDR_FLAG_PERMANENT_MASK) {
++			if (add)
++				permanent_add = true;
++			else
++				reconnect = true;
 +			continue;
 +		}
 +
-+		msg_type = pending->msg_type;
-+		ack.ret_major = cpu_to_le16(pending->ret_major);
-+		err = enic_mbox_send_reply(enic, msg_type, ENIC_MBOX_DST_PF,
-+					   &ack, sizeof(ack), pending->msg_num);
-+		kfree(pending);
-+		if (err && net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: failed to send ACK type %u: %d\n",
-+				    msg_type, err);
++		if (add) {
++			ops[i].ha->sync_cnt++;
++			ops[i].ha->refcount++;
++			(*ops[i].filter_count)++;
++		} else {
++			ops[i].ha->sync_cnt--;
++			ops[i].ha->refcount--;
++			if (WARN_ON_ONCE(!*ops[i].filter_count))
++				err = -EIO;
++			else
++				(*ops[i].filter_count)--;
++		}
 +	}
-+}
 +
-+static void enic_mbox_vf_queue_ack(struct enic *enic, u8 msg_type,
-+				   u64 msg_num, u16 ret_major)
-+{
-+	struct enic_mbox_vf_ack *pending;
-+
-+	if (READ_ONCE(enic->mbox_send_disabled))
-+		return;
-+	pending = kmalloc_obj(*pending, GFP_ATOMIC);
-+	if (!pending) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: dropping ACK type %u: no memory\n",
-+				    msg_type);
-+		return;
-+	}
-+	pending->msg_num = msg_num;
-+	pending->ret_major = ret_major;
-+	pending->msg_type = msg_type;
-+
-+	spin_lock_bh(&enic->vf_ack_lock);
-+	if (READ_ONCE(enic->mbox_send_disabled) ||
-+	    enic->vf_ack_count >= ENIC_ADMIN_DESC_COUNT) {
-+		spin_unlock_bh(&enic->vf_ack_lock);
-+		kfree(pending);
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: dropping ACK type %u: queue unavailable\n",
-+				    msg_type);
-+		return;
-+	}
-+	list_add_tail(&pending->list, &enic->vf_ack_list);
-+	enic->vf_ack_count++;
-+	spin_unlock_bh(&enic->vf_ack_lock);
-+	schedule_work(&enic->vf_ack_work);
-+}
-+
-+void enic_mbox_vf_ack_cancel(struct enic *enic)
-+{
-+	struct enic_mbox_vf_ack *pending, *tmp;
-+	LIST_HEAD(discard);
-+
-+	if (!enic->mbox_initialized)
-+		return;
-+	cancel_work_sync(&enic->vf_ack_work);
-+	spin_lock_bh(&enic->vf_ack_lock);
-+	list_splice_init(&enic->vf_ack_list, &discard);
-+	enic->vf_ack_count = 0;
-+	spin_unlock_bh(&enic->vf_ack_lock);
-+	list_for_each_entry_safe(pending, tmp, &discard, list) {
-+		list_del(&pending->list);
-+		kfree(pending);
-+	}
-+}
-+
- static int enic_mbox_vf_send_request(struct enic *enic, u8 request_type,
- 				     u8 expected_reply, void *payload,
- 				     u16 payload_len)
-@@ -193,6 +305,27 @@ static int enic_mbox_vf_send_request(struct enic *enic, u8 request_type,
- 				     expected_reply);
- }
- 
-+static void enic_mbox_vf_mark_reconnect_locked(struct enic *enic,
-+					       bool registration_lost)
-+{
-+	lockdep_assert_held(&enic->mbox_state_lock);
-+
-+	if (registration_lost)
-+		WRITE_ONCE(enic->vf_registered, false);
-+	enic->vf_mbox_fault_generation++;
-+	WRITE_ONCE(enic->vf_mbox_reconnect_required, true);
-+	WRITE_ONCE(enic->mbox_send_disabled, true);
-+	WRITE_ONCE(enic->vf_rx_quarantined, true);
-+}
-+
-+static void enic_mbox_vf_kick_recovery(struct enic *enic)
-+{
-+	enic_mbox_vf_link_state_set_running(enic, false);
-+	if (netif_running(enic->netdev) &&
-+	    !READ_ONCE(enic->vf_mbox_recovery_active))
-+		schedule_work(&enic->reset);
-+}
-+
- static int enic_mbox_wait_reply(struct enic *enic, unsigned long timeout_ms)
- {
- 	unsigned long left;
-@@ -203,9 +336,9 @@ static int enic_mbox_wait_reply(struct enic *enic, unsigned long timeout_ms)
- 	if (left)
- 		return 0;
- 
--	/* Invalidate a request that the handler has not already accepted.  A
--	 * delayed reply cannot match a later request because message numbers are
--	 * monotonic across channel reopen.
-+	/* Invalidate a request that the handler has not already accepted. Whether
-+	 * losing the reply invalidates the current protocol generation is an
-+	 * operation-specific decision made by the caller.
- 	 */
- 	spin_lock_bh(&enic->mbox_state_lock);
- 	if (enic->mbox_expected_reply) {
-@@ -468,9 +601,8 @@ static void enic_mbox_vf_handle_link_state(struct enic *enic, void *payload,
- 					   u64 msg_num)
- {
- 	struct enic_mbox_pf_link_state_notif_msg *notif = payload;
--	struct enic_mbox_pf_link_state_ack_msg ack = {};
- 	u32 link_state = le32_to_cpu(notif->link_state);
--	int err;
-+	u16 ret_major = 0;
- 
- 	spin_lock_bh(&enic->vf_link_state_lock);
- 	switch (link_state) {
-@@ -491,16 +623,16 @@ static void enic_mbox_vf_handle_link_state(struct enic *enic, void *payload,
- 	default:
- 		netdev_warn(enic->netdev, "MBOX: unknown link state %u\n",
- 			    link_state);
--		ack.ack.ret_major = cpu_to_le16(ENIC_MBOX_ERR_GENERIC);
-+		ret_major = ENIC_MBOX_ERR_GENERIC;
- 		break;
- 	}
- 	spin_unlock_bh(&enic->vf_link_state_lock);
- 
--	err = enic_mbox_send_reply(enic, ENIC_MBOX_PF_LINK_STATE_ACK,
--				   ENIC_MBOX_DST_PF, &ack, sizeof(ack), msg_num);
--	if (err && net_ratelimit())
--		netdev_warn(enic->netdev,
--			    "MBOX: failed to send link state ACK: %d\n", err);
-+	/* Notification dispatch must not wait behind a synchronous request send:
-+	 * its matching reply may be queued behind this notification.
++	/* A failed DELETE can leave hardware accepting an address no longer in
++	 * the requested list.  Registration is the fail-closed cleanup boundary.
++	 * A skipped ADD changes no acceptance state and can use the bounded core
++	 * retry path.  Permanent ADD denials remain stable policy results.
 +	 */
-+	enic_mbox_vf_queue_ack(enic, ENIC_MBOX_PF_LINK_STATE_ACK, msg_num,
-+			       ret_major);
- }
- 
- void enic_mbox_vf_link_state_reset(struct enic *enic)
-@@ -525,6 +657,17 @@ void enic_mbox_vf_link_state_set_running(struct enic *enic, bool running)
- 	spin_unlock_bh(&enic->vf_link_state_lock);
- }
- 
-+void enic_mbox_vf_require_reconnect(struct enic *enic)
-+{
-+	/* A fresh REGISTER transaction lets the PF discard any VF-requested
-+	 * configuration whose final state became uncertain.
-+	 */
-+	spin_lock_bh(&enic->mbox_state_lock);
-+	enic_mbox_vf_mark_reconnect_locked(enic, false);
-+	spin_unlock_bh(&enic->mbox_state_lock);
-+	enic_mbox_vf_kick_recovery(enic);
++	if (reconnect) {
++		enic_mbox_vf_require_reconnect(enic);
++		err = -EIO;
++	} else if (retryable_add) {
++		err = -EAGAIN;
++	} else if (permanent_add) {
++		err = -EACCES;
++	}
++
++free_ops:
++	kfree(ops);
++free_macs:
++	kfree(macs);
++	return err;
 +}
 +
- static bool enic_mbox_vf_payload_ok(struct enic *enic, u8 msg_type,
- 				    u16 payload_len, size_t min_len)
++static int enic_set_vf_rx_mode(struct net_device *netdev,
++			       struct netdev_hw_addr_list *uc,
++			       struct netdev_hw_addr_list *mc)
++{
++	struct enic *enic = netdev_priv(netdev);
++	unsigned int uc_count = enic_vf_addr_list_count(enic, uc);
++	unsigned int mc_count = enic_vf_addr_list_count(enic, mc);
++	u16 flags = enic_rx_mode_to_pkt_filter(netdev, uc_count, mc_count);
++	bool uc_overflow = enic_vf_uc_needs_promisc(uc_count);
++	bool mc_overflow = mc_count > ENIC_MULTICAST_PERFECT_FILTERS;
++	u16 broad_modes = CMD_PFILTER_PROMISCUOUS |
++			  CMD_PFILTER_ALL_MULTICAST;
++	bool broad_enable_needed;
++	bool broad_withdrawal;
++	bool filter_needed;
++	bool target_filter_updated = false;
++	u16 prefilter_flags;
++	u16 applied_flags;
++	int err;
++
++	if (uc_overflow)
++		flags |= CMD_PFILTER_PROMISCUOUS;
++
++	if (!READ_ONCE(enic->vf_registered))
++		return -ENODEV;
++
++	filter_needed = !enic->vf_pkt_filter_valid ||
++			 enic->vf_pkt_filter_requested != flags ||
++			 (flags & broad_modes);
++	broad_enable_needed =
++		(!enic->vf_pkt_filter_valid && (flags & broad_modes)) ||
++		(flags & broad_modes & ~enic->vf_pkt_filter_requested);
++	broad_withdrawal = enic->vf_pkt_filter_valid &&
++		(enic->vf_pkt_filter_applied & broad_modes & ~flags);
++	if (broad_enable_needed) {
++		/* Establish newly required broad coverage before an independent
++		 * exact-address rejection can block it. Retain any broad mode that
++		 * is currently applied until its finite replacement is installed.
++		 */
++		prefilter_flags = flags;
++		if (enic->vf_pkt_filter_valid)
++			prefilter_flags |= enic->vf_pkt_filter_applied & broad_modes;
++		err = enic_vf_set_pkt_filter(enic, prefilter_flags,
++					     &applied_flags);
++		if (err)
++			return err;
++		target_filter_updated = prefilter_flags == flags;
++		enic_vf_report_pkt_filter_denial(netdev, flags, applied_flags);
++	}
++
++	if (broad_withdrawal) {
++		/* Withdraw stale broad acceptance before installing its finite
++		 * replacement. Complete both phases in this callback so a synchronous
++		 * receive-mode operation cannot return between them.
++		 */
++		err = enic_vf_set_pkt_filter(enic, flags, &applied_flags);
++		if (err) {
++			/* The previously applied broad mode may still be active.  Do
++			 * not rely on the core's bounded retry budget to narrow it.
++			 * Fresh registration is the fail-closed policy boundary.  A
++			 * local send timeout is already terminal and cannot use ordinary
++			 * reconnect recovery.
++			 */
++			if (!READ_ONCE(enic->mbox_tx_poisoned) &&
++			    !READ_ONCE(enic->vf_mbox_reconnect_required))
++				enic_mbox_vf_require_reconnect(enic);
++			return err;
++		}
++		target_filter_updated = true;
++		enic_vf_report_pkt_filter_denial(netdev, flags, applied_flags);
++	}
++
++	/* Keep the finite subset of exact filters already installed for an
++	 * overflowing class. Broad mode covers the remaining addresses when PF
++	 * policy permits it, while the independent finite class can still make
++	 * progress. When a class becomes finite again, stale broad acceptance was
++	 * withdrawn above before this exact-filter reconciliation.
++	 */
++	err = enic_vf_sync_mac_filters(enic, uc, mc, !uc_overflow,
++				       !mc_overflow);
++	if (err == -EACCES) {
++		/* Do not spend the core retry budget repeating an exact operation
++		 * that the PF rejected permanently. Finish any independent packet
++		 * policy change below before returning success.
++		 */
++		err = 0;
++	}
++	if (err)
++		return err;
++
++	if (!target_filter_updated && filter_needed) {
++		err = enic_vf_set_pkt_filter(enic, flags, &applied_flags);
++		if (err)
++			return err;
++	} else if (!target_filter_updated) {
++		applied_flags = enic->vf_pkt_filter_applied;
++	}
++
++	enic_vf_report_pkt_filter_denial(netdev, flags, applied_flags);
++
++	return 0;
++}
++
+ /* netif_tx_lock held, BHs disabled */
+ static void enic_set_rx_mode(struct net_device *netdev)
  {
-@@ -600,6 +743,8 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 			netdev_warn(enic->netdev,
- 				    "MBOX: truncated message (len %u < %zu)\n",
- 				    len, sizeof(*hdr));
-+		if (!enic->vf_state)
-+			enic_mbox_vf_require_reconnect(enic);
- 		return;
- 	}
+ 	struct enic *enic = netdev_priv(netdev);
+-	int directed = 1;
+-	int multicast = (netdev->flags & IFF_MULTICAST) ? 1 : 0;
+-	int broadcast = (netdev->flags & IFF_BROADCAST) ? 1 : 0;
+-	int promisc = (netdev->flags & IFF_PROMISC) ||
+-		netdev_uc_count(netdev) > ENIC_UNICAST_PERFECT_FILTERS;
+-	int allmulti = (netdev->flags & IFF_ALLMULTI) ||
+-		netdev_mc_count(netdev) > ENIC_MULTICAST_PERFECT_FILTERS;
++	u16 filter_flags = enic_rx_mode_to_pkt_filter(netdev,
++					       netdev_uc_count(netdev),
++					       netdev_mc_count(netdev));
++	int directed = !!(filter_flags & CMD_PFILTER_DIRECTED);
++	int multicast = !!(filter_flags & CMD_PFILTER_MULTICAST);
++	int broadcast = !!(filter_flags & CMD_PFILTER_BROADCAST);
++	int promisc = !!(filter_flags & CMD_PFILTER_PROMISCUOUS);
++	int allmulti = !!(filter_flags & CMD_PFILTER_ALL_MULTICAST);
+ 	unsigned int flags = netdev->flags |
+ 		(allmulti ? IFF_ALLMULTI : 0) |
+ 		(promisc ? IFF_PROMISC : 0);
+@@ -2233,6 +2602,10 @@ static int enic_open(struct net_device *netdev)
+ {
+ 	struct enic *enic = netdev_priv(netdev);
+ 	bool vf_mac_added = false;
++	u16 vf_filter_applied;
++	u16 vf_filter_flags;
++	unsigned int vf_mc_count;
++	unsigned int vf_uc_count;
+ 	unsigned int i;
+ 	int err, ret;
+ 	unsigned int max_pkt_len = netdev->mtu + VLAN_ETH_HLEN;
+@@ -2313,7 +2686,6 @@ static int enic_open(struct net_device *netdev)
  
-@@ -756,7 +901,12 @@ void enic_mbox_init(struct enic *enic)
- 		mutex_init(&enic->vf_mbox_request_lock);
- 		init_completion(&enic->mbox_comp);
- 		spin_lock_init(&enic->mbox_state_lock);
-+		spin_lock_init(&enic->vf_ack_lock);
-+		INIT_LIST_HEAD(&enic->vf_ack_list);
-+		INIT_WORK(&enic->vf_ack_work, enic_mbox_vf_ack_work);
- 		enic->mbox_msg_num = 0;
-+		if (enic_is_sriov_vf_v2(enic))
-+			WRITE_ONCE(enic->vf_rx_quarantined, true);
- 		enic->mbox_initialized = true;
- 	} else {
- 		reinit_completion(&enic->mbox_comp);
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-index 60409bad2f28..37bc41a900f4 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -90,6 +90,8 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
- void enic_mbox_vf_link_state_reset(struct enic *enic);
- void enic_mbox_vf_link_state_set_running(struct enic *enic, bool running);
-+void enic_mbox_vf_ack_cancel(struct enic *enic);
-+void enic_mbox_vf_require_reconnect(struct enic *enic);
- int enic_mbox_vf_capability_check(struct enic *enic);
- int enic_mbox_vf_register(struct enic *enic);
- int enic_mbox_vf_unregister(struct enic *enic);
-diff --git a/drivers/net/ethernet/cisco/enic/enic_rq.c b/drivers/net/ethernet/cisco/enic/enic_rq.c
-index ccbf5c9a21d0..80fe7e819c37 100644
---- a/drivers/net/ethernet/cisco/enic/enic_rq.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_rq.c
-@@ -330,8 +330,6 @@ static void enic_rq_indicate_buf(struct enic *enic, struct vnic_rq *rq,
- 	u16 bytes_written, vlan_tci, checksum;
- 	u32 rss_hash;
- 
--	rqstats->packets++;
+ 	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
+ 		enic_dev_add_station_addr(enic);
 -
- 	cq_enet_rq_desc_dec((struct cq_enet_rq_desc *)cq_desc, &ingress_port,
- 			    &fcoe, &eop, &sop, &rss_type, &csum_not_calc,
- 			    &rss_hash, &bytes_written, &packet_error,
-@@ -340,8 +338,15 @@ static void enic_rq_indicate_buf(struct enic *enic, struct vnic_rq *rq,
- 			    &tcp_udp_csum_ok, &udp, &tcp, &ipv4_csum_ok, &ipv6,
- 			    &ipv4, &ipv4_fragment, &fcs_ok);
+ 	if (enic_is_sriov_vf_v2(enic)) {
+ 		if (!READ_ONCE(enic->vf_registered)) {
+ 			netdev_err(netdev, "VF is not registered with its PF\n");
+@@ -2331,9 +2703,38 @@ static int enic_open(struct net_device *netdev)
+ 		enic_vf_station_addr_set(enic, netdev->dev_addr);
+ 		enic_vf_station_sync_reset(enic);
+ 		vf_mac_added = true;
++
++		netif_addr_lock_bh(netdev);
++		vf_uc_count = enic_vf_addr_list_count(enic, &netdev->uc);
++		vf_mc_count = enic_vf_addr_list_count(enic, &netdev->mc);
++		netif_addr_unlock_bh(netdev);
++
++		vf_filter_flags = enic_rx_mode_to_pkt_filter(netdev,
++							     vf_uc_count,
++							     vf_mc_count);
++		if (enic_vf_uc_needs_promisc(vf_uc_count))
++			vf_filter_flags |= CMD_PFILTER_PROMISCUOUS;
++		err = enic_vf_set_pkt_filter(enic, vf_filter_flags,
++					     &vf_filter_applied);
++		if (err) {
++			netdev_err(netdev,
++				   "Failed to configure VF packet filter: %d\n",
++				   err);
++			goto err_out_disable_wq;
++		}
++		if ((enic_vf_uc_needs_promisc(vf_uc_count) &&
++		     !(vf_filter_applied & CMD_PFILTER_PROMISCUOUS)) ||
++		    (vf_mc_count > ENIC_MULTICAST_PERFECT_FILTERS &&
++		     !(vf_filter_applied & CMD_PFILTER_ALL_MULTICAST))) {
++			netdev_err(netdev,
++				   "PF denied receive mode required by VF address lists\n");
++			err = -EACCES;
++			goto err_out_disable_wq;
++		}
+ 	}
  
--	if (enic_rq_pkt_error(rq, packet_error, fcs_ok, bytes_written))
-+	if (enic_rq_pkt_error(rq, packet_error, fcs_ok, bytes_written)) {
-+		rqstats->packets++;
-+		return;
-+	}
-+	if (unlikely(READ_ONCE(enic->vf_rx_quarantined))) {
-+		dev_core_stats_rx_dropped_inc(enic->netdev);
- 		return;
-+	}
-+	rqstats->packets++;
+-	enic_set_rx_mode(netdev);
++	if (!enic_is_sriov_vf_v2(enic))
++		enic_set_rx_mode(netdev);
  
- 	if (eop && bytes_written > 0) {
- 		/* Good receive
+ 	netif_tx_wake_all_queues(netdev);
+ 
+@@ -2971,6 +3372,13 @@ static void enic_reset(struct work_struct *work)
+ 	if (err)
+ 		netdev_err(enic->netdev,
+ 			   "Failed to reopen datapath after reset: %d\n", err);
++	else if (enic_is_sriov_vf_v2(enic)) {
++		/* Internal reset bypasses __dev_open(), which normally schedules the
++		 * asynchronous receive-mode upload after ndo_open. Schedule an update
++		 * after enic_reset_addr_lists() marked the lists unsynchronized.
++		 */
++		netif_rx_mode_schedule_update(enic->netdev);
++	}
+ 
+ 	/* A PF reopens its admin channel after the datapath and re-pushes link
+ 	 * state.  The VF handshake, which open depends on, completed above.
+@@ -3038,6 +3446,8 @@ static void enic_tx_hang_reset(struct work_struct *work)
+ 	if (err)
+ 		netdev_err(enic->netdev,
+ 			   "Failed to reopen datapath after hang reset: %d\n", err);
++	else if (enic_is_sriov_vf_v2(enic))
++		netif_rx_mode_schedule_update(enic->netdev);
+ 
+ 	/* A PF reopens its admin channel after the datapath and re-pushes link
+ 	 * state.  The VF handshake, which open depends on, completed above.
+@@ -3292,6 +3702,30 @@ static const struct net_device_ops enic_netdev_dynamic_ops = {
+ 	.ndo_features_check	= enic_features_check,
+ };
+ 
++static const struct net_device_ops enic_netdev_vf_v2_ops = {
++	.ndo_open		= enic_open,
++	.ndo_stop		= enic_stop,
++	.ndo_start_xmit		= enic_hard_start_xmit,
++	.ndo_get_stats64	= enic_get_stats,
++	.ndo_validate_addr	= eth_validate_addr,
++	.ndo_set_rx_mode_async	= enic_set_vf_rx_mode,
++	.ndo_set_mac_address	= enic_set_mac_address_dynamic,
++	.ndo_change_mtu		= enic_change_mtu,
++	.ndo_vlan_rx_add_vid	= enic_vlan_rx_add_vid,
++	.ndo_vlan_rx_kill_vid	= enic_vlan_rx_kill_vid,
++	.ndo_tx_timeout		= enic_tx_timeout,
++	.ndo_set_vf_port	= enic_set_vf_port,
++	.ndo_get_vf_port	= enic_get_vf_port,
++	.ndo_set_vf_mac		= enic_set_vf_mac,
++#ifdef CONFIG_NET_POLL_CONTROLLER
++	.ndo_poll_controller	= enic_poll_controller,
++#endif
++#ifdef CONFIG_RFS_ACCEL
++	.ndo_rx_flow_steer	= enic_rx_flow_steer,
++#endif
++	.ndo_features_check	= enic_features_check,
++};
++
+ static const struct net_device_ops enic_netdev_ops = {
+ 	.ndo_open		= enic_open,
+ 	.ndo_stop		= enic_stop,
+@@ -3959,7 +4393,9 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 */
+ 	enic->rx_coalesce_usecs = enic->tx_coalesce_usecs;
+ 
+-	if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
++	if (enic_is_sriov_vf_v2(enic))
++		netdev->netdev_ops = &enic_netdev_vf_v2_ops;
++	else if (enic_is_dynamic(enic) || enic_is_sriov_vf(enic))
+ 		netdev->netdev_ops = &enic_netdev_dynamic_ops;
+ 	else
+ 		netdev->netdev_ops = &enic_netdev_ops;
+@@ -4106,12 +4542,18 @@ static void enic_remove(struct pci_dev *pdev)
+ 
+ 		/* Close the admin channel and unregister from the PF before
+ 		 * unregister_netdev() to prevent a late PF notification from
+-		 * touching a netdev that is being torn down. VF_UNREGISTER is the
++		 * touching a netdev that is being torn down.  VF_UNREGISTER is the
+ 		 * protocol teardown operation: the PF removes all VF-requested
+ 		 * configuration, including the station address, before replying.
++		 * Detach first while holding RTNL so any running asynchronous
++		 * receive-mode update has completed and queued updates cannot enter
++		 * the mailbox callback.
+ 		 */
+ 		if (enic_is_sriov_vf_v2(enic)) {
+ 			enic_vf_admin_mac_quiesce(enic);
++			rtnl_lock();
++			netif_device_detach(netdev);
++			rtnl_unlock();
+ 
+ 			if (READ_ONCE(enic->vf_registered)) {
+ 				int unreg_err = enic_mbox_vf_unregister(enic);
 
 -- 
 2.43.0
