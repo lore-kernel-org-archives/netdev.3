@@ -1,122 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A64344D9B;
-	Tue, 29 Sep 2026 00:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28003632;
+	Tue, 29 Sep 2026 00:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790642446; cv=none; b=AiAHXtfOOSF8ZhG6SwPh/2+idnM6sjSMToQI6zbRFnO8aARI2tEqRi8kCiinLNC9rfxlL+2ZDjwk+vJmGoMkNxSTPaB7UlE/21jyaiBLBgIlkG3en8uWd5gSlcmguR0TS3xXtrdoFxb6i2Z35hFpxKgSx8d+vqCgbdXA9DHPIk0=
+	t=1790642830; cv=none; b=tg2xscBkNRS8nsADIz34NOj2JKGQCLwMpGSb/hdE/1cgxrZ6ZsC05ETCmCzSirN5DErf6OmknbjtaCzVgkIbLG9r2H8oE6ivWVc6FW3qLl9hCoj9Kw7xljDMHtTFquM0SWepWe8+ZZsY6KZ+1asjPPDLQzKtxf0Q2Z6AHq/x2Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790642446; c=relaxed/simple;
-	bh=LzNbdN0uaOSVOL15u5V46O1zF4ixCb5IE2pw1QccxKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jy1yqkf2PeqFubVxueIoBU0rJeNdK9AZOUonkZxrJlSWZHfX+CBGpAvtxlBQXs61x21I0feXZiHTTMpCb+hJ/F3bt0IRXTMtnLP6dVzgjauVj0Mvm/bGQICBQ6FpEYI1+bAiPHank3K1/mOSz+Ky9/68Qo5Y5lkEsSTdPTocZ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=snATtY7W; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="snATtY7W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H+3P9/1H80uhqAW/O2F9lJsnZpl88zS81n6oqSI+3zE=; b=snATtY7W4q5KrAcTqigzQCiJld
-	ryNVpo9AeN1ibl8sLIj+ohKoH2CTeJq2kejTSzqLG5hDIMKfoKSCtcEhY9MARzeCfbNJB4QbhNuOy
-	3VKJ6/neWEi90O4T9+SozQl+F8g58iVu+6eYkjmV63Bv75JaF5zgCVBYMz0BYyD/x+1g=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xBLtd-007pae-Qv; Tue, 29 Sep 2026 02:40:37 +0200
-Date: Tue, 29 Sep 2026 02:40:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: qca83xx: read resolved QCA8337 link
- status
-Message-ID: <01a62e77-6c4e-4665-ba46-26d12b1c77b4@lunn.ch>
-References: <20260928220749.857-1-yongzhao.derek@gmail.com>
+	s=arc-20240116; t=1790642830; c=relaxed/simple;
+	bh=yr7R0yAqqrRxcBqE3AxsER9xJKKPZMEBP1EWS2WVllQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s9kQGabayHQTU4GNXejB6O+pCN4PMpfNqEsnpFi28FLYNvgxIzaEeoJUTQvIxH04LUQ522hIrybpPRd2720I4wvZmXg8hjX7JnuMYwSaaBlMUd3djC8K5JjOJUrVcE33B8nQDn8ZP5DeMxQW6qvaqvpI3CUDN3M2E7LrgXEyX40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1717306|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.091997-0.0167288-0.891274;FP=16849052104064075120|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=20;RT=20;SR=0;TI=SMTPD_---.jQih9rx_1790642818;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jQih9rx_1790642818 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Sep 2026 08:47:03 +0800
+Message-ID: <b7065fa7-ffb9-4358-baa9-2aa48b0a2033@motor-comm.com>
+Date: Tue, 29 Sep 2026 08:46:58 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260928220749.857-1-yongzhao.derek@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Conor Dooley <conor@kernel.org>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, Frank.Sae@motor-comm.com,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+ xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+ jie.han@motor-comm.com
+References: <20260924075048.4060414-1-kyle.switch@motor-comm.com>
+ <20260924075048.4060414-2-kyle.switch@motor-comm.com>
+ <20260924-vowed-roulette-abda42cec444@spud>
+ <c78999ec-82c5-4719-9358-5dbded43ccdf@lunn.ch>
+ <415c6c1c-f59e-41c7-9045-22f20408a7f2@motor-comm.com>
+ <34fc057d-17e2-4693-971a-63898708545a@motor-comm.com>
+ <648ae914-e116-4417-87c7-5726e63fc6d9@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <648ae914-e116-4417-87c7-5726e63fc6d9@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 12:07:49AM +0200, Yongzhao Chen wrote:
-> Read QCA8337's vendor status on each autonegotiated link check so the
-> reported speed matches the PHY after SmartSpeed changes negotiation.
-> Keep link down while that status is unresolved or encodes a reserved
-> speed; PHYLIB then notifies its consumers when valid status returns.
-> Forced mode continues to use the generic BMCR result.
-> 
-> Suggested-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
-> Assisted-by: LLM
-> ---
-> Andrew suggested this in his review of RFC v3 4/5, where he noted that
-> read_status should report the real speed from the vendor register.
-> Thanks, Andrew. I mentioned this change in the same thread:
-> https://lore.kernel.org/netdev/20260924234814.1734-1-yongzhao.derek@gmail.com/
-> 
-> It does not depend on the qca8k series and applies to net-next on its own.
-> 
-> Testing: a model test compiles this function with the real
-> genphy_read_status(), phy_resolve_aneg_pause(), phy_read_status() and
-> phy_check_link_status() and covers 10/100/1000 in both duplexes,
-> unresolved and reserved speed codes, a speed change while the link
-> stays up, forced mode, pause resolution and MDIO read errors. W=1
-> builds for arm64 are clean. The same function is in my OpenWrt Linux
-> 6.18.52 build for a Redmi AX5400 (QCA8337), including the build used
-> to test the at803x IPQ5018 fixes. I have not injected a real SmartSpeed
-> downshift on a user port.
-> 
->  drivers/net/phy/qcom/qca83xx.c | 49 ++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
-> 
-> diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
-> index bc70ed8efd8..b3f3183d4a4 100644
-> --- a/drivers/net/phy/qcom/qca83xx.c
-> +++ b/drivers/net/phy/qcom/qca83xx.c
-> @@ -92,6 +92,54 @@ static int qca83xx_probe(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int qca8337_read_status(struct phy_device *phydev)
-> +{
-> +	int ret, ss;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret)
-> +		return ret;
-> +	if (phydev->autoneg == AUTONEG_DISABLE)
-> +		return 0;
-> +
-> +	phydev->speed = SPEED_UNKNOWN;
-> +	phydev->duplex = DUPLEX_UNKNOWN;
-> +	phydev->pause = false;
-> +	phydev->asym_pause = false;
-> +	if (!phydev->link)
-> +		return 0;
 
-If there is no link, genphy_read_status() will of already set these to
-_UNKNOWN etc. There is no need to clear them.
+On 9/29/26 00:54, Andrew Lunn wrote:
+>> What we're trying to express here is simply whether it's a phy8824 built
+>> into the switch or
+>>
+>> a standalone phy8824. In both scenarios, there is one 10G serdes outputting
+>> four UTPs,
+>>
+>> and the only difference is that some operations are slightly different, such
+>> as soft reset,
+> If it is a different PHY, it should have a different ID value in
+> registers 2 and 3.
 
-> +	/* SmartSpeed can make the actual speed differ from the advertised modes. */
-> +	ss = phy_read(phydev, AT803X_SPECIFIC_STATUS);
-> +	if (ss < 0)
-> +		return ss;
-> +	if (!(ss & AT803X_SS_SPEED_DUPLEX_RESOLVED)) {
-> +		phydev->link = 0;
+They are the same phy and have the same phyid, but for the phy built
 
-Can this really happen? BCMR says there is link, but this says there
-is no link? What does the data sheet say? It seems unlikely to me.
+into the switch, performance and issue fixes were made based on the phy8824.
 
-	Andrew
+>
+>> power down, and power up. How should these two types be defined and
+>> identified?
+> More details needed. Why does it need a different soft reset? Why is
+> power up/down different?
+
+For the standalone phy8824 scenario, performing a soft reset on the UTP
+
+requires an additional soft reset and isolation of the SerDes address space
+
+to prevent intermittent packet loss after link-up.
+
+However, the phy built into the switch does not require this step,
+
+and the same applies to power down and power up.
+
+In addition, there are differences in the initialization configuration,
+
+so the driver distinguishes between "internal" and "external" phy.
+
+>
+> 	Andrew
