@@ -1,79 +1,80 @@
-Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
+Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ADA525A6D;
-	Tue, 29 Sep 2026 18:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D9560AD4;
+	Tue, 29 Sep 2026 18:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790708386; cv=none; b=oRce02x/P97f53RYczGuZbQJZURfRYUzHYlOfuIfhS4CpqzR9ikIW9B6eJ9/8UYkIoqFhRvwYNY+B03rKrkJVOY+phHog86ApkVq+8AK5jhsvr75rxkGkSv50HKs+itMkmej8yteN8V6uJZOi4YIFjochN11WeYczB/Iz4cn5D0=
+	t=1790708387; cv=none; b=EQLP+sWOpsDAMxsv504l0vXvy6IC+nCqyzTxlqO6TCdC94xZ+gO1z/hZKy+h3KQjhqZGbsBfkp3F0lY9cbfR2IJQ72V2z8oMb8Gje8zOOAvEy6eU+Xcbq0+CXvHcNsdXzDfOkzSGO8gylKiv+uxAdirkZsd1MYAMLpns0UtmiGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790708386; c=relaxed/simple;
-	bh=T7M606s5vldyC2gZPIBAKuihIjTz0Boam0DAU4ulpXE=;
+	s=arc-20240116; t=1790708387; c=relaxed/simple;
+	bh=sFh0aQamfTAjvNlnNEhb6wt7vj2SCLsQOvGzBgc1wfU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JwryDI/rYLZ50JOOaUpOkjMVDoj0KtnITrHvyWqOZy7i3svxxIFtL8ijv9v2nBsdDPZaLdlOcz30Yh3x3anBQm5TVSF+L0vm1DPUqnqgZFEZ16qpmGmk+g4Ro5dI0hf2NhvYH+eYJPcSxnLdqRMgauAmCly+AvqMfkmI0M+KRuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=e1mXWbln; arc=none smtp.client-ip=173.37.86.79
+	 In-Reply-To:To:Cc; b=G5ufw5iaMMTKoHtAuDZ0jl08cbCbQ0xeIy1Q0Aw/vZI8POMm043K6Enppdn8Y4gl+eAJ8xpDK9jDdcPYjhPhdrHznhHfTB7/nvtJv16FIQwQ4O5xCNkKWhHfoytgeNSEUAxdSIT1a6L1otIjr70gdpQhFcDodG6pbzBfv4I79As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=CP4QBLq2; arc=none smtp.client-ip=173.37.86.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="e1mXWbln"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="CP4QBLq2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2537; q=dns/txt;
-  s=iport01; t=1790708384; x=1791917984;
+  d=cisco.com; i=@cisco.com; l=4854; q=dns/txt;
+  s=iport01; t=1790708385; x=1791917985;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=R4hPtRfaWDKfBwbUfI7yvomeCyTu6BIrnCEYPK06b7A=;
-  b=e1mXWblndxXdtT6X1QgR8iS6ppFm3fYM7nHAWkm6lIAnt6+Gnv78wYAH
-   E8CnehcTj+sRhgbQ/aJZIIZuWvb9hcO3yvAOAJqLWlZ8QJL3yWofqdQJ+
-   KaR1ON4h19qnjiSSqiLJccxksjBDmKCB7GVpQlNJ0H2njGBLdjLaIZ8JH
-   +5i5tfPIS8SGBGk0yhOQyhrqmLbaTRB9vXJUl5ES5GiL5o7JlfHRz+1Rf
-   yfaq865W1xhXS6q+PDK0SSobcmIicvj1Cm4x9oGqIqFXiJjVrHzUuBkrb
-   sMRuV1JqyBU/UrkZd5K1B0yfeGAWEPp36hxHtx5kaYWyzlKourQx+M9ji
+  bh=SMC6SgLhwngWg/peGv5/1lQgClaqRttLnJ85Qw8EPrU=;
+  b=CP4QBLq2NuuL60P84vaL030ccfkASG9vmY1vni1LmcONaNu6CopGVybs
+   kwTRzGXqBZAiXvDyz01KwdeZkw6nYfGyo5S8Uw6w8kunu42KnX4YiTqRm
+   a9jYb/X44tLsYB6FP3/ktkp21HhexFhkme6yBm7OIWra5z4k1YDBjocwm
+   JS7xjwrf/w9r8v3ki3PiB+hONxw8bmtiKMk8RQzrlIEAb1dWf/ALEkUYP
+   RBcQldgb9C+vfaoxuF5Db2TPc3tcOrBnuOcQqJw7PenKgNRla0ncnV2eK
+   rbYlKCSMH6lNsfPwhElxiuQvu/zgtfXNzU4irWliF8CHG7Hg2Qs3qM/cH
    g==;
-X-CSE-ConnectionGUID: RV/ookTAQBuXv0Vc1c+lKg==
-X-CSE-MsgGUID: BkaOsKKESdumIJkF+k5ybg==
-X-IPAS-Result: =?us-ascii?q?A0BGAgDCCbxq/4v/Ja1aglmCGD+BVUNJhFePUoIhmD+FX?=
- =?us-ascii?q?hSBag8BAQEPUQQBAYUFAo4IAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFA?=
- =?us-ascii?q?QEBAgEHBYEOE4ZckBMCAQMjVhAlAiYCAkYQBgESgwKCdQPBQXqBMoEBhH7ZS?=
- =?us-ascii?q?oFoAQsUAYEKLoVygm0BgXGECDuEQScbgUlEgRWDaYQqg3SCagSDHBKCXZJLC?=
- =?us-ascii?q?T+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQdEg8EFjIdcAwnEiwXL1gbB?=
- =?us-ascii?q?gWBHXUUBBOCGSMZNnqBCV6BKylgARAXgQeCBwKCVIIAAgFJQQ4HRVMJJUUSR?=
- =?us-ascii?q?yYiCBIJARMaMAuBGzg+CSg9GA1IESw3Bg8ZBD0BbgeQNx6BbmACEIEPJVqBF?=
- =?us-ascii?q?FWTQoNZjV9roQ+EKIFmoBAzhASTY5MILodmkHQjgjaiAYRpgWg8gVkzGggbF?=
- =?us-ascii?q?TuCZ1MZD44uFoEUAQGSBwG8eycyPgEHAgcPAoFzkX4BAQ?=
-IronPort-Data: A9a23:uYNmMK32SiT62Qz7OfbD5QFwkn2cJEfYwER7XKvMYLTBsI5bp2AOz
- 2oaCmnSOKuPYzCgftxwPITl9U1X6pPSzNU1Twdv3Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
- 512huHodZ5yEzmE4Ej9atANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXX5
- rsen+WFYAX7g28uYzpOg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
- u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
- OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGNn9xOoobxs9OK3x+6
- 6QmI2kGLRSgiLfjqF67YrEEasULNsLnOsYb/3pn1zycVaxgSpHYSKKM7thdtNsyrpkRRrCFO
- IxDNGcpNU+RC/FMEg9/5JYWh+60h2L/cD1wo1OOrq1x6G/WpOB0+OW3aYKOIYTbHq25mG6yp
- Wvh5EfaLyoWKdm+6zmrsXHxl+XAyHaTtIU6UefQGuRRqFGa2GEWIBEfS1a+pf63lgi4Vs43A
- 0EY5y8nv6Uu3EOsSdb5Uluzp3vslh4bQd9LO+438geAzuzT+QnxLmsZRDdpa9E8ssIyAzsw2
- TehltXlHzFw87uYVX6Q6J+QsDW0fyMVRUcabCUJSwot+dTvoIgvyBnIS75LFK+zk82wGjzqx
- T2OhDYxiq9VjsMR0ai/u1fdjFqEoJXVQgMrzhvYU3jj7Q5jYoOhIYuy5jDmAe1oNo2VSByF+
- XMDgcXbtLpIBpCWnyvLS+IIdF2028u43PTnqQYHN/EcG/6FohZPoag4DOlCGXpU
-IronPort-HdrOrdr: A9a23:mgD7NqANun34jWnlHela55DYdb4zR+YMi2TDGXoBLSC9Ffb4qy
- nOppomPHDP5Qr5NEtLpTnEAtjjfZq+z/FICPcqXYtKNTOO0ACVxcNZnOjfKlbbdxEWmNQtsJ
- tIQuxSBML9CF5igd2/wgWpeuxQueWvweSEifjTynF1QRovUaFv6A9lFh2We3cGIjWufaBJc6
- a0145guyeqf2gRY4CQA3kIWPWGmvjw/aiWGSLvw3UcmXOzZfTC0s+ALySl
-X-Talos-CUID: 9a23:izqebm3e1AqDDfe3kZbSHbxfIP5idXre8F7pCVKIFz5XQ+SeCluz9/Yx
-X-Talos-MUID: =?us-ascii?q?9a23=3AJagU9g6H/0qalRTDcMlfSWafxoxC4K2JE2MuvK4?=
- =?us-ascii?q?KpsylFy9eeDTAnT64F9o=3D?=
+X-CSE-ConnectionGUID: 1dQ047lPSk2zw6W3Ms7diw==
+X-CSE-MsgGUID: SP6ivtapSqOmAs3xx7gtGw==
+X-IPAS-Result: =?us-ascii?q?A0AaAADCCbxq/4v/Ja1aHAEBAQEBAQcBARIBAQQEAQGBf?=
+ =?us-ascii?q?AcBAQsBglaBVUNJhFeIG4c3giGeHYF+DwEBAQ9RBAEBhQUCjggCJjQJDgECB?=
+ =?us-ascii?q?AMCAwEBAQEBAQEBAQEBAQoBAQUBAQECAQcFgQ4ThlyQEwIBAyMEUhAlAiYCA?=
+ =?us-ascii?q?kUBEAYBEoMCgnUDwUF6fzOBAYR+2UqBaAELFAGBCi4BhXGCbQGBcYQIO4RBJ?=
+ =?us-ascii?q?xuBSUSBFYNpgQUBgxmDf4JqBIMcEpUoCT+BAhwDWSwBVRMNCgsHBWFSMwMgC?=
+ =?us-ascii?q?gsSEhgVAhQdEg8EFjIdcAwnEiwXL1gbBgWBHXUUBBOCGSMZNnqBCV6BKylgA?=
+ =?us-ascii?q?RAXgQeCBwKCVIIAAgFJQQ4HRVMJJUUSRyYiCBIJARMaMAuBGzg+CSg9GA1IE?=
+ =?us-ascii?q?SwUIwYPGQQ9AW4HkDcegmCBBAslJmEBgQAwlyaNX2uhD4QogWagEDOXZ5MIm?=
+ =?us-ascii?q?Qgjo2dQhGmBaDyBWTMaCBsVgyJTGQ+OLgsLkx0BvHsnMj0BAQcCBw4DC4Fok?=
+ =?us-ascii?q?BGBbQEB?=
+IronPort-Data: A9a23:IbD/86LX2Mc74iLNFE+RA5QlxSXFcZb7ZxGr2PjKsXjdYENS0zIFy
+ DYZWmuDO/aCNGGmLdhya46+9R8PuJPXn4RjHlMd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcoZpCCea+Uf1WlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnS0
+ T/Oi5eHYgH9imQlajh8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
+ vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
+ /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN03AHhuYdIcwt10W3NRq
+ 8NDDStSYhGc0rfeLLKTEoGAh+w5J8XteYdasXZ6wHSBV7AtQIvIROPB4towMDUY358VW62BI
+ ZBENHw2N0Wojx5nYj/7DLollfupnXn8cxVTqUmeouw85G27IAlZjeK8aYGKI4XXLSlTtn2g+
+ GPY423hOQg9MfWEkiqVrX2wqfCayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3J
+ kAJ/yM8oLQa+0usQd3wGRa/pRasvhkGXsF4EOAg7gyJjK3O7G6xBXUORxZCZcYguctwQiYlv
+ neAmd/zCCMstrCJRX+D3rOJqzX0Mih9BXcLbyICTCMf7tXjqZ11hRXKJv5nEaionpj2FCv2z
+ jSisicznfMQgNQN2qH9+krI6xqqq4TFQxAd+AraRCSm4xl/aYrjYJangWU39t5aJ4qfC13Et
+ 38elo3GtqYFDIqGk2qGR+Bl8KyV2stp+Qb02TZHd6TNPRz0k5J/Vei8OA1DGXo=
+IronPort-HdrOrdr: A9a23:5rQA0aFBD0EyP7dEpLqEHseALOsnbusQ8zAXPo5KOHhom6uj9v
+ xG/c506faaslsssR0b8+xofZPwI080lqQb3WBuB9eftWDd0QPCEGgh1/qA/9SKIUHDH4BmpM
+ JdWpk7JdHuAV19lMrgpCu1A78bsaC62ZHtqOvAw3JqVA1wL5th4QBwFxqBHiRNNW977OICZf
+ 2hz/sCgSa8cnIKacn+LHwEU+/f4+DvrvvdEGY779pN0nj1sdtug4SKaCSl4g==
+X-Talos-CUID: =?us-ascii?q?9a23=3AWUPFiWrwAf4asbeO/2cR7yrmUZkpSyWBk3PoGEz?=
+ =?us-ascii?q?iG3k3d+awUgCc+bwxxg=3D=3D?=
+X-Talos-MUID: 9a23:HR+fzgt5MeSczRZ+ns2nvwk8Ndl06ryVEWcIuI5dq9nbOjBfJGLI
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.27,130,1787011200"; 
-   d="scan'208";a="521033093"
+   d="scan'208";a="529137115"
 Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
-  by rcdn-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Sep 2026 18:58:36 +0000
+  by rcdn-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Sep 2026 18:58:36 +0000
 Received: from [127.0.0.1] (unknown [10.25.128.208])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPS id 420DF180000F5;
+	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPS id 05D0A1800037C;
 	Tue, 29 Sep 2026 18:58:35 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Date: Tue, 29 Sep 2026 11:58:04 -0700
-Subject: [PATCH net-next v2 1/6] net: add netif_rx_mode_schedule_update()
+Date: Tue, 29 Sep 2026 11:58:05 -0700
+Subject: [PATCH net-next v2 2/6] enic: serialize V2 VF mailbox requests
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,7 +83,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-1-5962c10061b2@cisco.com>
+Message-Id: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-2-5962c10061b2@cisco.com>
 References: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
 In-Reply-To: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -92,77 +93,164 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Satish Kharat <satishkh@cisco.com>, sebaddel@cisco.com
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790708314; l=2543;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790708314; l=4981;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=T7M606s5vldyC2gZPIBAKuihIjTz0Boam0DAU4ulpXE=;
- b=uSiMYct1ywXgKUSiME2K1srBST+tvDUqsQdi7iXM8d0JInCzM2JCKu7l+ci3N7kmEm/ehbYnr
- v9o/WtYCcjpCoFkLQ4sSez2X2t3CR/btRKCX07ccVGPHJQ7nhHyxe2R
+ bh=sFh0aQamfTAjvNlnNEhb6wt7vj2SCLsQOvGzBgc1wfU=;
+ b=hiyFt3aRJ4IxeSG/x3/aQ2oO1Q5X+FSQpUKTTLEGn+eNLsjRhSzXTYm5rCFIZm/SBOltWPm7M
+ 7zZVIpt/z1KCg5qxvBX9zB8o+ctSaliTAyawmhG8TYXnI2bkHr1GCHF
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.208];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.128.208, [10.25.128.208]
 X-Outbound-Node: rcdn-l-core-02.cisco.com
 
-Add a receive-mode scheduling helper for callers which start a new update
-after a state transition. Cancel a pending retry and reset its backoff
-before queueing the immediate update so the preceding operation's retry
-state cannot shorten the new operation's bounded retry sequence.
+The VF stores one expected reply and uses one completion for mailbox
+requests. If two VF control paths issue requests at the same time, the
+second request can replace the reply state for the first.
 
-The helper preserves address-list synchronization state. Callers which need
-to replay configuration lost by the device must unsynchronize the affected
-address lists before scheduling the update.
+Add a request mutex used only by the VF. Hold it from before a request is
+armed until its reply or timeout has been consumed. Recheck VF registration
+after taking the mutex and clear pending state on send failure so a later
+request cannot inherit it.
+
+PF-side request processing is unchanged. Unsolicited PF notifications and
+their acknowledgments remain asynchronous.
 
 Assisted-by: LLM
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- include/linux/netdevice.h |  1 +
- net/core/dev_addr_lists.c | 21 +++++++++++++++++++++
- 2 files changed, 22 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic.h      |  1 +
+ drivers/net/ethernet/cisco/enic/enic_mbox.c | 49 +++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 5d16737167ee..c1807a8f733b 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5197,6 +5197,7 @@ static inline void __dev_mc_unsync(struct net_device *dev,
- 
- /* Functions used for secondary unicast and multicast support */
- void dev_set_rx_mode(struct net_device *dev);
-+void netif_rx_mode_schedule_update(struct net_device *dev);
- void netif_rx_mode_schedule_retry(struct net_device *dev);
- int netif_set_promiscuity(struct net_device *dev, int inc);
- int dev_set_promiscuity(struct net_device *dev, int inc);
-diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-index 08528ca0a8b3..17770a38b5ab 100644
---- a/net/core/dev_addr_lists.c
-+++ b/net/core/dev_addr_lists.c
-@@ -1337,6 +1337,27 @@ static void netif_rx_mode_queue(struct net_device *dev)
- 	__netdev_work_core_sched(dev, NETDEV_WORK_RX_MODE);
+diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
+index 7a509a056990..3945fe28f199 100644
+--- a/drivers/net/ethernet/cisco/enic/enic.h
++++ b/drivers/net/ethernet/cisco/enic/enic.h
+@@ -335,6 +335,7 @@ struct enic {
+ 	 * the requester.
+ 	 */
+ 	struct completion mbox_comp;
++	struct mutex vf_mbox_request_lock; /* serializes VF request lifetimes */
+ 	spinlock_t mbox_state_lock;	/* protects expected reply state */
+ 	u64 mbox_expected_msg_num;
+ 	u8 mbox_expected_reply;
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+index 5c93ca49552a..b8a18d9682b2 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+@@ -218,6 +218,32 @@ static int enic_mbox_wait_reply(struct enic *enic, unsigned long timeout_ms)
+ 	return err;
  }
  
-+/**
-+ * netif_rx_mode_schedule_update() - schedule a new receive-mode update
-+ * @dev: network device
-+ *
-+ * Cancel any pending retry and reset its backoff before scheduling an
-+ * immediate receive-mode update. This does not reset address-list
-+ * synchronization state. Callers which need to replay lost device state must
-+ * unsynchronize the affected address lists before scheduling the update.
-+ *
-+ * Context: sleepable. The caller must hold the device operations lock, or
-+ * RTNL for a device which still uses RTNL-compatible operations.
-+ */
-+void netif_rx_mode_schedule_update(struct net_device *dev)
++static void enic_mbox_vf_request_start(struct enic *enic)
 +{
-+	might_sleep();
-+	netdev_assert_locked_ops_compat(dev);
-+	netif_rx_mode_cancel_retry(dev);
-+	netif_rx_mode_queue(dev);
++	mutex_lock(&enic->vf_mbox_request_lock);
++	reinit_completion(&enic->mbox_comp);
++	spin_lock_bh(&enic->mbox_state_lock);
++	enic->mbox_expected_msg_num = 0;
++	enic->mbox_expected_reply = 0;
++	spin_unlock_bh(&enic->mbox_state_lock);
 +}
-+EXPORT_SYMBOL_GPL(netif_rx_mode_schedule_update);
 +
- static void netif_rx_mode_retry(struct timer_list *t)
++static void enic_mbox_vf_request_abort(struct enic *enic)
++{
++	lockdep_assert_held(&enic->vf_mbox_request_lock);
++	spin_lock_bh(&enic->mbox_state_lock);
++	enic->mbox_expected_reply = 0;
++	enic->mbox_expected_msg_num = 0;
++	spin_unlock_bh(&enic->mbox_state_lock);
++	mutex_unlock(&enic->vf_mbox_request_lock);
++}
++
++static void enic_mbox_vf_request_finish(struct enic *enic)
++{
++	lockdep_assert_held(&enic->vf_mbox_request_lock);
++	mutex_unlock(&enic->vf_mbox_request_lock);
++}
++
+ int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
  {
- 	struct net_device *dev =
+ 	struct enic_mbox_pf_link_state_notif_msg notif = {};
+@@ -623,6 +649,7 @@ int enic_mbox_vf_capability_check(struct enic *enic)
+ 	u32 version;
+ 	int err;
+ 
++	enic_mbox_vf_request_start(enic);
+ 	WRITE_ONCE(enic->pf_cap_version, 0);
+ 	req.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
+ 
+@@ -630,11 +657,14 @@ int enic_mbox_vf_capability_check(struct enic *enic)
+ 					ENIC_MBOX_VF_CAPABILITY_REQUEST,
+ 					ENIC_MBOX_VF_CAPABILITY_REPLY,
+ 					&req, sizeof(req));
+-	if (err)
++	if (err) {
++		enic_mbox_vf_request_abort(enic);
+ 		return err;
++	}
+ 
+ 	err = enic_mbox_wait_reply(enic, 3000);
+ 	version = READ_ONCE(enic->pf_cap_version);
++	enic_mbox_vf_request_finish(enic);
+ 	if (err) {
+ 		netdev_warn(enic->netdev,
+ 			    "MBOX: no capability reply from PF\n");
+@@ -656,15 +686,19 @@ int enic_mbox_vf_register(struct enic *enic)
+ 	bool registered;
+ 	int err;
+ 
++	enic_mbox_vf_request_start(enic);
+ 	WRITE_ONCE(enic->vf_registered, false);
+ 
+ 	err = enic_mbox_vf_send_request(enic, ENIC_MBOX_VF_REGISTER_REQUEST,
+ 					ENIC_MBOX_VF_REGISTER_REPLY, NULL, 0);
+-	if (err)
++	if (err) {
++		enic_mbox_vf_request_abort(enic);
+ 		return err;
++	}
+ 
+ 	err = enic_mbox_wait_reply(enic, 3000);
+ 	registered = READ_ONCE(enic->vf_registered);
++	enic_mbox_vf_request_finish(enic);
+ 	if (err) {
+ 		netdev_warn(enic->netdev,
+ 			    "MBOX: VF registration with PF timed out\n");
+@@ -684,16 +718,24 @@ int enic_mbox_vf_unregister(struct enic *enic)
+ 
+ 	if (!READ_ONCE(enic->vf_registered))
+ 		return 0;
++	enic_mbox_vf_request_start(enic);
++	if (!READ_ONCE(enic->vf_registered)) {
++		enic_mbox_vf_request_finish(enic);
++		return 0;
++	}
+ 
+ 	err = enic_mbox_vf_send_request(enic,
+ 					ENIC_MBOX_VF_UNREGISTER_REQUEST,
+ 					ENIC_MBOX_VF_UNREGISTER_REPLY,
+ 					NULL, 0);
+-	if (err)
++	if (err) {
++		enic_mbox_vf_request_abort(enic);
+ 		return err;
++	}
+ 
+ 	err = enic_mbox_wait_reply(enic, 3000);
+ 	registered = READ_ONCE(enic->vf_registered);
++	enic_mbox_vf_request_finish(enic);
+ 	if (err)
+ 		return err;
+ 	if (registered)
+@@ -711,6 +753,7 @@ void enic_mbox_init(struct enic *enic)
+ 	 */
+ 	if (!reinit) {
+ 		mutex_init(&enic->mbox_lock);
++		mutex_init(&enic->vf_mbox_request_lock);
+ 		init_completion(&enic->mbox_comp);
+ 		spin_lock_init(&enic->mbox_state_lock);
+ 		enic->mbox_msg_num = 0;
 
 -- 
 2.43.0
