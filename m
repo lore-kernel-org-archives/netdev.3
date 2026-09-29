@@ -1,113 +1,89 @@
-Received: from mail-pj2-f14.google.com (mail-pj2-f14.google.com [74.125.227.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A835226A1
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAF25218BA;
+	Tue, 29 Sep 2026 14:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790691873; cv=none; b=uZvwU2uwXsFeUzKt0k23rLG/0n6BJCBjojIW4rvONn+W7etEI1vqSjKS7WyJmY/oifMy+/Wk84OetzYhvGU3v7bc3S9TtJiwz1iMQ8PTsxVWJd6lYOyHsl767b6rlqwr38Ifdjk/zET0RyKjw1R8HEmTusP2WSuOPxzCvNMn2e8=
+	t=1790692047; cv=none; b=h2eK24HYw0ioTVuiaiDHrED+7DGDonCT3nri4G9LZ3oWw1QWPb1ME4DupyhgNnvR5iisnYKtveWXq4EObS7490tBKRuR2Ta2VYBH2om5UknD7UbWG8EMpajapa6vUNfDKHTatID+FDnJ5FGJEYJ/bhWKPB/1fL7l7pGmIbeTITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790691873; c=relaxed/simple;
-	bh=FF5+ULRw4hO54xck9KwGDwRdr7GuxwcSVd/mkPyqdPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LuKGbEoRph4j6E444Wy/BGCIipQ7WjHXl6WgJvtfX7yJflUH/1UgsaLNTcRJG7wHzI4CNhvq1fH98TzbSDekHyCpLxMxxVO5jct0D+2R9yLp5oJZEyogy8WJF5lVjO2qfIbP9yfkYruy+TUhChLmwGRKatUSzSWDs+8NXVh///E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ruOvqu3w; arc=none smtp.client-ip=74.125.227.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790692047; c=relaxed/simple;
+	bh=Bwk2Sbj+akQ3diAVdTcu04i0hLai1HH/u9GO5nLS0DE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=elsB5WDeDzawGvF5lLrOh3GIP4XZ52w433g5elVMZg+1ddbBEg1gHqknHsmdb/00/z2RCUyJp1UObwfl8hsJnSdfyvY0a83CVDPA1l6AVHUUrxqqsbA+S2K4/pgOAp00UE6n4hDMYLPghlXY1B6hB0cEq2FQu2eWiG3Z7LC9Lk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwQJzShy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ruOvqu3w"
-Received: by mail-pj2-f14.google.com with SMTP id d9443c01a7336-2dd58e1e2c7so19555345ad.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 07:24:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790691868; x=1791296668; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kE1PErOwA5bxVXYFyrSKZUxCQRKAPU34Zm0v54vSkyo=;
-        b=ruOvqu3w5IR9syS7ZYisvJwUi6aZqPrXWfh/3ASr1C3v8jVt6d4nnGVbThuIyYV1Bi
-         MZi7bOaXKwgxzq2oGNBWL+j/9S3LF57aQyygUO+pUA5sXCrTq/HaLEtg4VrF44Z8fHRN
-         vyF9iXcdncrjjnjwWcTVVe4a3xyCJYgTw1ylRo7FQEIqX3tOzsuTilHVdCMyODuVe1ms
-         GYFkfD/9mp6B+EK8CzFbulG4ivdtZkEJ5hSwxoBeayhWMjQlb8yvbP5CQXw3W24WP9tX
-         SfCw+Bb59phTzgeHF2KRdS720EMfcOhRAuv/WznvGKDm1LINIxsPGBiJGw2BzhB55X6D
-         18Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790691868; x=1791296668;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kE1PErOwA5bxVXYFyrSKZUxCQRKAPU34Zm0v54vSkyo=;
-        b=bYHkXklMwraVz3a0IBwSgLJYJRcqbRgxI8KOiD+StUlLJMZjAtm79rF57mt1Zwi6zo
-         SU2Z0BHzMHvRFaFT3xr6JGgHb27xzO75BrU+UupD6Fijy0pSRKBtC0SLziCDErklNeva
-         ArUy1Z61KveY6yY3M7A/GzFxJiJjhxtnolrTKYK1gSKcMr0xRyH7QMsjyYXxG7bcqKs4
-         rJoZePrgElpRDZPxjuM4vbRD0RTinQLxn4M9dVSdhISdlGzR+l/MAibhm7587y81ll9q
-         U5bGLOTnN0zMk12ehNqX1XayDhfLrwDCNLesbKUHQkBo+lE/NvLOOtoVKDPXLtuml3iF
-         0Qtw==
-X-Gm-Message-State: AFq9FYKGT1IwE2bmXWIm63Q3ptoi1hEzurhC//cqmL8s1XX5qWpqmpqZ
-	t7hiqhP8KhfBetkpIKvfFeowCLCl36ArJpyMoeAHK8MDgTgs3j7VkrIA
-X-Gm-Gg: AYBFou11rS6+7q4+lL+T230OdOpf2iEGjGXyBCWyCjtpwQBlKzPndHwOI+UyZazXO0D
-	WX0dD7gyAKBnesGz1DYKeUUsflVJ3btbyaKyM4++4kPli/XcKtTKTCi0FrxHbcPn4OM0Tueu2ZV
-	lA5hiMTVsY3iCfIPUQoCqHAHb3bH71UB8NjvppaISJK0pd1KMO7LsAX2VejIHmUWJO29T09LvOZ
-	e5+iW/dmztZTzTRz9QLlpe4nA7S91ygT5ZCeatqyaAZiR8otsLPyUL15yd8mWoBw4XT+Cg5S9yu
-	2rdYJKwiP5cxwFD3hcX3M/dM83u3RZvN5KU10FarHYg/lZYPeunKT0n0oiR2K3dr0ZFJjNnghGH
-	AxMn0PNYU0NWXkt3x8H8NNZl4Robt36K4YRfEhu2BXxGgp2SfrDi1BhO7qajJSleVAlhxNi3ZjM
-	tRdUN0nLBBwM60JeFybNTBfsQ1YfN7I7G6/4eVUR0M3oqh8CgVtqVe93kRy/KGkZ0aD0ICdTUd+
-	PNjAH6gosSBBy+N0h163g==
-X-Received: by 2002:a17:90b:35c4:b0:3a2:b16d:928b with SMTP id 98e67ed59e1d1-3a2b16da167mr5814264a91.46.1790691868252;
-        Tue, 29 Sep 2026 07:24:28 -0700 (PDT)
-Received: from umang-Inspiron-3501 ([2401:4900:1f3b:8187:c8eb:84b1:3b4e:3624])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4b71ceea2sm439666a91.1.2026.09.29.07.24.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:24:27 -0700 (PDT)
-From: Umang Pokhriyal <umangpokhriyall@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] tap: report IFF_DETACH_QUEUE in TUNGETIFF
-Date: Tue, 29 Sep 2026 19:52:38 +0530
-Message-ID: <20260929142238.41742-1-umangpokhriyall@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwQJzShy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE151F00893;
+	Tue, 29 Sep 2026 14:27:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790692042;
+	bh=DnI00DpYKUiWrAQ2VQ34nPrOmLv5QkaMmD+3SRHPxEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WwQJzShyxEh5mqIFTtW6rwAdxkfKY0g16gmXemDmquxWmpkcrOrpXGj2QWtcJJQCe
+	 6YzFYe7CaJyl9nl+R7f2G10FSdSRGBNtMvug8Dtd7TrIfXrf/kDWY7yK+2OOYUMI1y
+	 EI05UNljuH5uC+piW1ZX66Qc9LrAx+9WqQXUoJF+HwaofIlD1ayuyl92cuTx6EgNeh
+	 0cjLccpMZuL1tbPWYh/rfzGZpLVdpDcghi9z6S9CU+4UGKFJZftmC2NccKbL0d0eYy
+	 lKPJOFLdad8MFhGFv7VL6983OmWkaBU6+FSDrUb40kfnvjKSVL1qafajRa4VMC6izt
+	 2dntYiTe8ZwFw==
+Date: Tue, 29 Sep 2026 15:27:17 +0100
+From: Simon Horman <horms@kernel.org>
+To: Matvey Valigura <valigurasm@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Chas Williams <3chas3@gmail.com>,
+	Duncan Sands <duncan.sands@free.fr>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: atm: use request_firmware_direct() for firmware
+ probing
+Message-ID: <20260929142717.GV13925@horms.kernel.org>
+References: <20260924050654.15347-1-valigurasm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924050654.15347-1-valigurasm@gmail.com>
 
-tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
-queue is detached, since commit 3d407a80b62f ("tun: Report whether the
-queue is attached or not"). tap_ioctl() returns only q->flags, so a
-detached macvtap or ipvtap queue is reported as attached.
+On Thu, Sep 24, 2026 at 08:06:54AM +0300, Matvey Valigura wrote:
+> When disconnecting a device while firmware is not present on the system,
+> usbatm_usb_disconnect() waits for the heavy_init thread to finish:
+>     wait_for_completion(&instance->thread_exited);
+> 
+> If CONFIG_FW_LOADER_USER_HELPER_FALLBACK is enabled, missing firmware
+> causes request_firmware() to fall back to sysfs/udevd. This creates a
+> circular dependency during disconnect:
+> 1. usb_disconnect() holds device_lock(&udev->dev).
+> 2. usbatm_usb_disconnect() waits for instance->thread to exit.
+> 3. instance->thread waits for request_firmware() sysfs fallback.
+> 4. udevd receives the firmware uevent and attempts to read sysfs
+>    attributes (e.g. serial), blocking on device_lock(&udev->dev).
+> 
+> Furthermore, the fallback wait uses wait_for_completion_killable_timeout(),
+> which ignores the non-fatal SIGTERM signal sent by usbatm_usb_disconnect().
+> Because speedtch and cxacru probe multiple candidate firmware files
+> sequentially, each file stalls for the 60-second fallback timeout,
+> triggering hung task timeouts (>120s) reported by syzbot.
+> 
+> Switch to request_firmware_direct() to probe firmware files directly from
+> the filesystem without falling back to user-mode helper.
+> 
+> Reported-by: syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=9ca2c9f85bd8b5e46516
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Matvey Valigura <valigurasm@gmail.com>
+> ---
+>  drivers/usb/atm/cxacru.c   | 2 +-
+>  drivers/usb/atm/speedtch.c | 6 +++---
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 
-Cloud Hypervisor ran into this when checking queue state on macvtap.
+I am assuming that in practice users do not load firmware for these devices
+from user-space.
 
-Report the flag from q->enabled, as tun does.
-
-Assisted-by: LLM
-Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
----
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index ff67d99deb39e..cb8ffb0c4a315 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -950,6 +950,8 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
- 
- 		ret = 0;
- 		u = q->flags;
-+		if (!q->enabled)
-+			u |= IFF_DETACH_QUEUE;
- 		if (copy_to_user(&ifr->ifr_name, tap->dev->name, IFNAMSIZ) ||
- 		    put_user(u, &ifr->ifr_flags))
- 			ret = -EFAULT;
-
-base-commit: c66d93e68728cfb5f40b40d0f24129d7768faf43
--- 
-2.53.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
