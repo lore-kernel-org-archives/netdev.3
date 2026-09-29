@@ -1,74 +1,137 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.holtmann.org (mail.holtmann.org [81.169.141.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D174E3CF1F0;
-	Tue, 29 Sep 2026 17:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820EF51815B;
+	Tue, 29 Sep 2026 17:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.169.141.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790701697; cv=none; b=UV1JjwRt/u++vR+UtyNYh24s2JL/aYu9/evvWadNvnAi4li8ghZZPmDF6Q51adSLtwq+JAR3n4I54ibuAkdsaRL3m8yqAhvWLfY1e853lnY8HiRIJC99VuyERhFjHRKkUqPHIQulF5OFRdw2RTR8ElYr/QIZidp8/FUy/lvcDMQ=
+	t=1790702078; cv=none; b=uQOF2U8RPdB5SJUFTxgYmkywecfFfI7XYjMypWFV9KpfIgWFJ58+62TfZrvif3lmCYsBaE35FNKKWZ5ZFCxrjxuBKsSOV2Z/u4L6O8PXRfPfyEL99srYIQvOnyVkK2EgomOaD//AGSWYx4Ioe5WUFR/ZD8e+g5er0x31deKBe8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790701697; c=relaxed/simple;
-	bh=1T/3DOW2LSLCBaZrPUhD7ZDCqrfXxV89qF30RGN+lM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NxmdfOo02wNsghsBwjOy3WkYGGag0apvZZf5GGcPuTqj1lCwl5/UhsCYw8DKnRgs83U1i++vGfybXwEGdLnh/O5XQIR7z+qRuuz07gWOf2rwE4p2vBVN2vhMqMh1buk5uj4GM402bmTM82s4K9HsA6Y5mnvxhqwdK5iTA/rPvd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nPNXpA1D; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nPNXpA1D"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=bVqiwYvqBDRYgnbvE97lGWFpjKFcPJENqU7hkjMEoaU=; b=nPNXpA1DYh8OalQce3L3qElCh4
-	dVZUl4cykos+Tcr+dflxi8MaCz11NDCBDxUQAg9GV3PIxVehk5RnQTotoBZLfuEuUdl4ZUFagniCv
-	ZF+81BhBVpF+ajVLo3sZ//v6f9o2HCeZnNl9ht7z1HDn1Dmv0nIko7HUlx1POoeES8uI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xBbJD-007zXo-PA; Tue, 29 Sep 2026 19:08:03 +0200
-Date: Tue, 29 Sep 2026 19:08:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Po-Yu Chuang <ratbert@faraday-tech.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?5Zue6KaG?= =?utf-8?Q?=3A?= [PATCH 0/5] net: ftgmac100:
- Add AST2700 support
-Message-ID: <36d6dac0-30ab-440a-bf35-81b33ecd8e8b@lunn.ch>
-References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
- <14a281e2-c88e-42e3-acd3-b20f111a4c28@lunn.ch>
- <SEYPR06MB5134D5AEAD86D3E4C97D1DB99D8C2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	s=arc-20240116; t=1790702078; c=relaxed/simple;
+	bh=kmQ1hbQPD5iWUSj9w4INyopw+EVylQeht+K3g4IU9JM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=qKllbXwfRAiwxvGIAnWGtdClGFyJxCdEAHEmGNCDnzm0lVK26xxM1HTuJvvgaQaGrq+KJ73jZqW+kdW6YxjtOUKQ1/tWA9bsCJB6uUOAr8rVodabYCFHsHq3nJJC8eg198AY4+GDTvnj0ULn9QDju/HReT2wZ86ubRhXrbBuoQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org; spf=pass smtp.mailfrom=holtmann.org; arc=none smtp.client-ip=81.169.141.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
+Received: from smtpclient.apple (p5b0a9ac0.dip0.t-ipconnect.de [91.10.154.192])
+	by mail.holtmann.org (Postfix) with ESMTPSA id 0F38CFF100;
+	Tue, 29 Sep 2026 19:05:42 +0200 (CEST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB5134D5AEAD86D3E4C97D1DB99D8C2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
+Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
+From: Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
+Date: Tue, 29 Sep 2026 19:05:31 +0200
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>,
+ linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org,
+ ath12k@lists.infradead.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+ Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <13BFC5B0-77E6-48F2-B857-37686EA1DB2C@holtmann.org>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+ <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+ <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
+To: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.12)
 
-> Currently, we provide our custom or user to configure RGMII delay in bootloader stage,
-> it is the same as AST2600 in bootloader.
+Hi Deepak,
 
-From what i understand, openBMC have changed their bootloader to not
-insert delays, for the ATS2600. That allows them to have DTS files
-with the correct 'rgmii-id'.
+>> Now that the QRTR driver allows using the unique node id for each =
+device,
+>> which is different from the node id received from the remote node, =
+compute
+>> a unique node id using a new API, qrtr_host_node_id().
+>>=20
+>> This API takes the 'index' parameter and adds it to =
+QRTR_NODE_HOST_BASE,
+>> whose value is outside of the node id range used by the remote nodes =
+(0 to
+>> 0xffff).
+>>=20
+>> Finally, call the new API from MHI endpoint driver by passing the MHI
+>> controller index as the parameter. The MHI controller index is unique =
+for
+>> each controller, thereby for each MHI endpoint device.
+>>=20
+>> Signed-off-by: Manivannan Sadhasivam =
+<manivannan.sadhasivam@oss.qualcomm.com>
+>> ---
+>>  MAINTAINERS        |  1 +
+>>  include/net/qrtr.h | 21 +++++++++++++++++++++
+>>  net/qrtr/mhi.c     |  4 +++-
+>>  3 files changed, 25 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index df8ab9b82402..9c8bb086be28 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -22511,6 +22511,7 @@ QUALCOMM IPC ROUTER (QRTR) DRIVER
+>>  M: Manivannan Sadhasivam <mani@kernel.org>
+>>  L: linux-arm-msm@vger.kernel.org
+>>  S: Maintained
+>> +F: include/net/qrtr.h
+>>  F: include/trace/events/qrtr.h
+>>  F: include/uapi/linux/qrtr.h
+>>  F: net/qrtr/
+>> diff --git a/include/net/qrtr.h b/include/net/qrtr.h
+>> new file mode 100644
+>> index 000000000000..745d51b4a6ba
+>> --- /dev/null
+>> +++ b/include/net/qrtr.h
+>> @@ -0,0 +1,21 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +
+>> +#ifndef _NET_QRTR_H
+>> +#define _NET_QRTR_H
+>> +
+>> +#include <linux/types.h>
+>> +
+>> +/* The offset is chosen carefully to not collide with the node ids =
+allocated by
+>> + * the remote nodes. All the remote nodes use node ids in range 0 to =
+0xffff.
+>> + */
+>> +#define QRTR_NODE_HOST_BASE 0x10000u
+>=20
+> Can it be exposed with include/uapi/linux/qrtr.h also. There are user =
+space clients like modem manager
+> which need to calculate modified node id to distinguish same service =
+from multi modem over mhi.
+> This is same as wlan use case.
 
-> So, when booting to kernel, the RGMII delay will
-> be kept. The ftgmac100 driver with AST2600 and the next generation AST2700 does not
-> need to configure the RGMII delay.
+did anybody actually looked at the proposal that Denis and I came up =
+with. It was exactly addressing this properly.
 
-Does your AST2700 bootloader also have the delays off by default?
+It seems you guys came up with some hot fix and want to run with it. =
+After month and month of silence and not bothering to review the =
+proposal, you are trying to push your thing?
 
-     Andrew
+If you don=E2=80=99t support userspace, your proposal is broken. Plain =
+and simple.
+
+Regards
+
+Marcel
 
