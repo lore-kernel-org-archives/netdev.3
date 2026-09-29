@@ -1,75 +1,35 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195404F4D07
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BE03AE6FC
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790677081; cv=none; b=bCeEuN16EQXW5RAsJTK5RJBkIoY6BpasNzt23QnX3+qDrH9bdxWLU6+2HBHKVDd+TbVrFN+JAVXu15Sy97OviApRiHtrWe8KnAnzzaQzIioVEfYLSaGyK0ipnarG3LZmq+xzvmFUx+weYKpzgQb/UzxIe0nrZeEp2k9Qn4IgRNA=
+	t=1790677218; cv=none; b=dbKS5NDfOopfFfRu4i+fWmvyQVmeAHZXSQebKUt+LzllUFJYlxRvbxZCYbljanti9qCW4d53ljvliOXLzufnIry2TlFjO7xZq6Pjy+vw3Fgliyzgg5Bf58X7POBcg7wIbe1QjyqetwkqOt8bLRplOm4OVmWd0odejFQ6aPhLDxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790677081; c=relaxed/simple;
-	bh=An6mkPZDYZWrG8lcKKYm9brAuxjDgA3tyL1/ir2SVvM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D2X7k18FYzqjwI/tGT3WhlEe3bOrgdZFLJMbsrVeQHWlLLNeamZwSvbiMoF0VP58NfFhNOfVj14f644/BqMbA9rMdJEKAA9sIeB16nrYU0Iy/E+OyyS3IBD72jw6hSN0ll0g/+pKRw6qexO0Cf9H/KyrRtcMfhpy8qi6ShfC9A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVNRMy1W; arc=none smtp.client-ip=74.125.229.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790677218; c=relaxed/simple;
+	bh=hD5LUt6njxwMB38/hWkelFy4YaxUugtHJB1D3rB0KKA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BMiEH9m7Vn1yqNqXb1B4F+dTxrQNvcxOfkxOTe2j8WklUEWaieNqw6quERasZ9CygkaIpAaLDUta0J3A9nYCdamAT4YMfYT7+V7M4gBdFL/V9CH7bqjBS+DvRs9W+Ni7L7YnLXCtcnEdnpsLMWOW15lgDND4u8Z1fZ+0XdFFwGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUwDYxn4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVNRMy1W"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-142dd046b87so2866840c88.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790677071; x=1791281871; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BBxqqrX6VFrTTZg5kn1+eJIOqRCLIYMSYIE031U9CBQ=;
-        b=KVNRMy1W82VMa6evEJQFwzBGvqNAdhkM9STuV5kF8qrXpCrnfcn9pb/HdkajfYbcDo
-         1fSwlCWD+3WPj3JKwI4bHH5P5mmFlbDvzyGKe5eYQkggUtmRBY6o0Nvelcx/1bBUbZab
-         7PDvyxXzVdpB524q5eqrYYpxQJ3ui2HfR1xwfUpQWhBL53x+YFgyo3+sDEp2BEyA9GHc
-         SKwih4f+aF9w5JVd5yuO0v9Nqo4Zz6kfh6J5pi87Skj4rsK/Rug6xpHcJHFgRxNQrX45
-         9EBod4pDP4PnCx5Bnghe3KC+OuUoSwo9P/KxfNS26LLyPEGNXTxZePvJelzN4MdU6KH9
-         z9kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790677071; x=1791281871;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BBxqqrX6VFrTTZg5kn1+eJIOqRCLIYMSYIE031U9CBQ=;
-        b=jGpFW6xv/JceLDAklar7ESeCEQfe2uXsapGqRWv+vPWp2Hp7NYkXX7ZEXuduOKBJlL
-         rdsEXXSqgDfpPazBIdOkg8jxCYR3978mpyFBx05sAV8/tjtpLqa2WRUnGHiUZemIXbLQ
-         N+4dWlTdEVx4YMmw4glafRjJIHs0stpKHDjkfWojsNjQ/7lWMtII8+cXMPrBf2GiE5BQ
-         JbgXSf+wuM0KxybVK+moxIsFWU6OCt1KY+gJlmKBp1AE8cftFG5/kPW8B9Fov1+fcDR7
-         cd557K8RA+XgyIT8o4bwDzoaGk2JKE0Eo/skDBkW4lTd/xuRH4IgdHqQhjHYY4hpPF8a
-         o4oQ==
-X-Gm-Message-State: AFuF++nHoxZl70r6aJAnCSzJIoiKXqXq6kHa+YuTiibVAg5sHqEZ/j/j
-	TSstB/hVDQvDh724zhHgPc8lPO89o0eLbTmKG7lHeIPdpP1DMHGAfiW3
-X-Gm-Gg: AYBFou2qrV7DjvI97eK7MiJdAPl9WVF+Bcc8YfGpxao0ye1ko7wA7SDjg37N2N14Knv
-	VeOutJlotSFlRDMHKgIDB8Z7zyIy66Ov1o1hsHJWjRkiNiXgQpWM2WIhX4HC5ziBOPQA90FBV5O
-	Kn6Ry1Kla+MeJu9OzRBB2SlxECvkpN61xhJPxq3AzZr0uGQIp6JzOHD+/cMx0l9COft7C/J6eb4
-	LjUOVXVUm1KDrAECF0774truJjgCthuBRqjIKFW1F/3V3ENLceYGjSTpZ6KUP4rRFjQQ6LyPwQ7
-	uDCBywTtwlhTc9MqT4snXg29mjQWbcRlpd4M335iYjHYj5YRI69K9qc81zW2f6LlM4S4HpLYA2e
-	XIOLdrll7jgvcVEgxIWfKwMs5kEUfQZ+5MudiZ3WRyCfSZr+E4KmSHPVvqwnJHb9yt/ciu1zm1F
-	GWg9JQHpAL+FojLOda1ecpiqofpLYJNOZUa5o1imtBZMl3enG2LceOiKn+Gg==
-X-Received: by 2002:a05:701b:4344:b0:144:fc5b:2121 with SMTP id a92af1059eb24-146ce67fa31mr13579743c88.17.1790677071222;
-        Tue, 29 Sep 2026 03:17:51 -0700 (PDT)
-Received: from evangelion-g ([2a09:bac5:40e4:11cd::1c6:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145ad9e097fsm34324648c88.13.2026.09.29.03.17.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 03:17:50 -0700 (PDT)
-From: Ayush Yaduvanshi <ayush37735@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel-mentees@lists.linux.dev,
-	Ayush Yaduvanshi <ayush37735@gmail.com>
-Subject: [PATCH net-next] atlx: fix kernel-doc description for atlx_tx_timeout
-Date: Tue, 29 Sep 2026 15:47:13 +0530
-Message-ID: <20260929101714.51579-1-ayush37735@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUwDYxn4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCAF1F000FF;
+	Tue, 29 Sep 2026 10:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790677212;
+	bh=lkCexcVYx3hFBwNsHTthvU0NREeHN37g7RTPF9ik6vA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=NUwDYxn4FJMDKdozeESWsfsmr1ZzQSvzs9jN31Di7ERap8QhwJu7F4rSEaSR8IrLR
+	 nLvsuKX+qUBDi06qIskH3/r++3w7Kdx9oDett4XFToTHXIVhypAo7OjO5AnXD1qC5X
+	 5T7Eo3UF0UDZetJ3g1p9+4RKidNyrPM1IYJqM5X0e3gptWG9iu9zfmKvGCLl7EKm4m
+	 Yto0q/0RBildKD9yAa8b6i1z6lJRzyQuIkQ3SY1qpBXD3vw+Ah0n0EMjIddNqLtRuU
+	 nfJG+VW8O3tK3He+rqWcA/cV3WV+dZSbvZ8e4JCPW1cE52lldWFTurkuT7lvG3sAKa
+	 bzxM1bPe2NB6A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F151E39263A9;
+	Tue, 29 Sep 2026 10:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,28 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] gve: DQO: accept TSO packets with non-protocol
+ gso_type bits
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179067721058.405469.9511514569119396750.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 10:20:10 +0000
+References: <20260925115237.56465-1-hannu@varjosoft.com>
+In-Reply-To: <20260925115237.56465-1-hannu@varjosoft.com>
+To: Hannu Varjoranta <hannu@varjosoft.com>
+Cc: joshwash@google.com, hramamurthy@google.com, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, nktgrg@google.com, willemb@google.com,
+ pkaligineedi@google.com, edumazet@google.com
 
-Add missing @txqueue parameter description to atlx_tx_timeout
+Hello:
 
-to eliminate kernel-doc warning.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
----
- drivers/net/ethernet/atheros/atlx/atlx.c | 1 +
- 1 file changed, 1 insertion(+)
+On Fri, 25 Sep 2026 14:52:37 +0300 you wrote:
+> Since commit 014c607f86ab ("gve: add support for UDP GSO for DQO
+> format"), gve_prep_tso() matches shinfo->gso_type exactly. gso_type is
+> a bitmask, though: SKB_GSO_DODGY is set on every GSO packet that comes
+> from tun/tap, packet sockets or other untrusted sources, and
+> SKB_GSO_TCP_ECN and SKB_GSO_TCP_FIXEDID can be set as well. Such packets
+> hit the default case, gve_tx_add_skb_dqo() fails and gve_try_tx_skb()
+> drops them, counting them in tx_dropped.
+> 
+> [...]
 
-diff --git a/drivers/net/ethernet/atheros/atlx/atlx.c b/drivers/net/ethernet/atheros/atlx/atlx.c
-index e8cfbf4ff1b5..0a6205e5c19d 100644
---- a/drivers/net/ethernet/atheros/atlx/atlx.c
-+++ b/drivers/net/ethernet/atheros/atlx/atlx.c
-@@ -182,6 +182,7 @@ static void atlx_clear_phy_int(struct atlx_adapter *adapter)
- /**
-  * atlx_tx_timeout - Respond to a Tx Hang
-  * @netdev: network interface device structure
-+ * @txqueue: transmit queue index
-  */
- static void atlx_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- {
+Here is the summary with links:
+  - [net,v2] gve: DQO: accept TSO packets with non-protocol gso_type bits
+    https://git.kernel.org/netdev/net/c/f8932b2c0c9a
+
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
