@@ -1,148 +1,139 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53E33D4E9
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0B14EF127
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790672793; cv=none; b=GarVFeFoOn4rdiPN6WWm87DLz+vKVo0diSTF7+4V7JIYPHszGSiPD56yq5ayB1i9IopVwKgcPW2/C2TRVwVQkto47bPULDiwoeZV6aVhKxgVIyCDwC0XjEHJEShTOza3JNlsfGBuIubkiFMjTqd3OINMlPen9WgqzkBYd+D4gQ8=
+	t=1790672925; cv=none; b=Ma8qA8YK044RzgT5+uOa7DhtSVSgbMsqCvVMWzu0Al4dRv1BQ5NjepvAXAwvz9xdMVJFqjf26gH8zLQBfZnAqkksd3LlikRTENYeNH6lifKogr5aVCxvgyG9g75PAttF0kKyCMT5lCfOYKTxeGFvDZF/gzvFfmKtF7kKHacVmpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790672793; c=relaxed/simple;
-	bh=tXJ+qY81QYX6ntiL17hDKcWY+jDR6CzEofjkGotGB90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bmv/dBr8XOy7j+tLTaNsr+KNxkemaa75FKt1xnUXbBphotCyKeGLeIJ3mEmdugyfOL+svSOZSvKpLCvHUSpf19iIjxKmzP6CCyTeI4cyYzZ981aHtLK4yw9A1uOBL7t4zmK70+bRtl0NIgGgUTaoLznYCum9U0B6Ed4U+uFcbCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DSNpgtnO; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790672925; c=relaxed/simple;
+	bh=ruJ+OC8TeuBbcfhTBYGa0RnK/itzn1qKU2Z9PqQpXyE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j/Jrl+FEbx13DeOGy1CXiwr3F2vDqlSgBN/yBxU9gCbdAIGSF1IfA46bxIrYxkvodg/GMuIF7I4GVVz/+sOcUMYN8WhRrayElfgwh0aTC8epwd0Fd236zd6RTeFZnc95Pyw9Zeau2lAcxFb/6Ye/reA7isnojTLGYQUbLtO5uQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=deC5XP0+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ORvyZlhK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSNpgtnO"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e83a388f8so29649705e9.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 02:06:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="deC5XP0+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ORvyZlhK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790672917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K/tDQmq8LLYXlBRzwGWyXEcI6FT4qeqUihRf6IwcU/I=;
+	b=deC5XP0+flxFisnNxniV6209R+cZPkgraqQH/0ss5kRzdrcj1QYm+WT5x5BLe84Ba9bi3k
+	H65V5MPfqPl5iajPlqIXcAuFG/hyN/CVjr+mt4oxVVzSq/tNoLBo03Wcscl0EDnGbIJvgE
+	r886jxjNuEBeYsHVjNJuOtKbUI/Sd0k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-711-Ved390sVOxKymNfY_IwJUw-1; Tue, 29 Sep 2026 05:08:36 -0400
+X-MC-Unique: Ved390sVOxKymNfY_IwJUw-1
+X-Mimecast-MFC-AGG-ID: Ved390sVOxKymNfY_IwJUw_1790672915
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49ff43a1ecbso22020175e9.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 02:08:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790672769; x=1791277569; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yVeHQ0WAriz76dL1hysd44dqzM4X8EtO0BJ7xNzSj4A=;
-        b=DSNpgtnOd5FV31vC8ZOmXn+8R0a9zXQAz+jVnfMhjmoh7Hs9z0pQo7KIOulBI9Rl+Q
-         ig1KgCzTuj3F2GoQ9+8KgC+ep7ywewlNc8wajiYE88md8LgJ8FBBsWaGbv31nSk/ZBT6
-         sQo2uhKeTL1QjoLi3nc2VOfVJUiQAaT8B/AW5DuXIvQCf6ICemg/VFFjD6RusGRYOMyN
-         GdiDRkjpY/JG1e8w6PmwuZ3ntqwdXX/MFon8eqqOB0kRJ3Uhxnnsn1ZzpI2u8a4aN2XQ
-         npypCMWc8XqiC0vSH4beQZ38GWb3pdJ6wuGBNaMdFbKsEqNeSNFyZnTOdWcwEtvTW8Wt
-         QF6A==
+        d=redhat.com; s=google; t=1790672915; x=1791277715; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K/tDQmq8LLYXlBRzwGWyXEcI6FT4qeqUihRf6IwcU/I=;
+        b=ORvyZlhKMqUmKvNXzg1BWoc2QBC/FMkf18vXY5+nZxI7iI5ECzEIRSzaT19fsi/3IK
+         D0hRv07+lQU0c9jIuUb9Pv21hMIQIehnIR6yMmHZfI3DmXDhpl5Pb/lMjRDi3Nm5A4MM
+         2X0g0bvi7vvuCWDxneWJpHiG0qRmYwaS60bqYwCBuI3ZbHtRadRJ8qy1x3U9shJbzKWz
+         hQb761DbNohgOLkLow6S1J4wwY16SGXGy0ZHFrh078rpcy96G/Fb6NskxSdQedgzvdD5
+         yjWbIeopYKpi0fkNnjFwwjTGMoL4S8MfITqLebCP2md/gOFygSgdYhz4jLhHJ0E2dB0H
+         vHCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790672769; x=1791277569;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yVeHQ0WAriz76dL1hysd44dqzM4X8EtO0BJ7xNzSj4A=;
-        b=rGDuxfnLCNb9qvIyA4kJPlB+BMXIraj2GvtlSge3Cqq0RCJhX7XCWL0oRFrmr3nr68
-         tpogQ89DM4idra3c8gXR5secYrHjYEO9V0ftdKO4r3jhjkgR/uunDbs+N5pJOZOmSClC
-         duGuOaSL8Ahrfy95B6ZtgVDZc886ovInk2kNLWVDB0IVgFl3vZcalYAkP4iVLoH5vDJB
-         PnCgZQm+F7l5ZjzjaXCGmoVHZxtJdo5SKMoTj3DXLyFB2dqfPWXksvB4ko5WM59h02XP
-         /dv42/TnjkSv1657eu0sKlNmD9iEDb4Li6/i+DlEDiKC8hcqg6+yLrcjT/35X3y9v+XJ
-         f70w==
-X-Forwarded-Encrypted: i=1; AKwUvBwN0JE60S3uAk5PBzDJYpGggesYSvjuQL5ltQk857+2dx6mDLAUttcnaZWl/TxEVcyjbNryvk4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m8B1g/avFDX6LqkkJ2AfAc9Ezeh/HIY5CPXzySnkMbpy8vmJKp
-	sYxfucinCfGI5qAeDO9lZS4YAuq4hKZH7djR+OQGZP1JTdkhCSAjyGmV
-X-Gm-Gg: AYBFou04q6Oi+mRvr10/wTsumHtIaDm+nvuCHGEH4fgWMzxUO8tJmHOcKgKBcDmaqwn
-	NYBreXXUuj1MJKner8HgIgaqg34GUhdbUHQlk6M33gXQtzAcI9GiSKtb3i4QjQr9lBfdjtdi262
-	u2zkxLwPiY5DzKd5YIatH+tHt2Xsrnby5I8xqSW+eMu8fNTGqtHvfyDAr1H+hNfvETsWda5MenX
-	kTZTQHQrRyteVe5JlTjEnOUQZa6t1wb/g75uB1Ix/3gJ1B3UuIpxhI2KQrG6iMjzOtBUmURwFl9
-	dQdJNrcPYV2FGL/gOKnNtOd+gQK0ogs/KOMNxx2ZtXHWSyhJ0KnhQERvgvPrRTrKQgJaSG6Zs0z
-	OS5UkupJErfGCKUJx+jDvTaxO+vM9qlpZJARz2UsQbqCqUCx7LaGF3Cre5e4Et/KfoXejKlyamp
-	zqEWeI46SWJT9U3BYM5o5kz0hxy29eadv5IFYL9Lf4IpqyTuEZBFipwM9mjphqIGZhzzWtlxM+4
-	GuMV9l2deRpaGr3s2icf81OPu8LfxzKDKITNn1qugdPlTXycg6qLPgJqpYQASgHpC8o6OrNV+Ge
-	2JcfZlNotf8tdAO1qBYFRgHoMra1
-X-Received: by 2002:a05:600c:314f:b0:49f:e4ca:e09 with SMTP id 5b1f17b1804b1-49fe66ca9e5mr261828235e9.3.1790672768454;
-        Tue, 29 Sep 2026 02:06:08 -0700 (PDT)
-Received: from Lord-Beerus.station ([31.27.155.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00d0ea7c0sm65937205e9.11.2026.09.29.02.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 02:06:07 -0700 (PDT)
-Date: Tue, 29 Sep 2026 11:06:05 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Joseph Guo <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Mehmet Fide <mehmet.fide@screeningeagle.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 01/12] dt-bindings: arm: fsl: Document Variscite
- i.MX6UL boards
-Message-ID: <art_faJ7Zx5CaWfW@Lord-Beerus.station>
-References: <cover.1790512621.git.stefano.r@variscite.com>
- <a4e262cfb08153c23c80cd3098a684816993f1e9.1790512621.git.stefano.r@variscite.com>
- <20260929-logical-fanatic-quail-2ff20b@quoll>
+        d=1e100.net; s=20260707; t=1790672915; x=1791277715;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K/tDQmq8LLYXlBRzwGWyXEcI6FT4qeqUihRf6IwcU/I=;
+        b=Bt6yAtKjF4Y00ZKx05MCeKKzup7t+l2t5BlVCAFjFRlGaDkTP4RKyb5WrSK3g0YjSl
+         hzrxCD6L9WFJiiED3E0uXkeskDZs26pO0QgobrvrQw3yr6r7aU59VEJwQ6WvN+dkuL7i
+         VOpN2Cr9/Jdi5xcdxxk7iTZb08xtPimUDkqNyfFRKq/94jKYLgG/Wd+Uh2fJW8yGw2Nm
+         I9L6EqpY4f1DlwosRrUu80/lZ9PqQyuHDON42wfjGSuMB+/FgmavxaLiemiX4WK4Z98X
+         SeGciYP49FrchKAV/OASuEZXimCpyUGKaCV+IiPthwWhtmXFk5/aOanHOos2erEXbYlB
+         llHA==
+X-Forwarded-Encrypted: i=1; AKwUvBwIdZZwBYMiaL+fEy4IByOCPl91MLkRoKElJm2rHLD31lElakza4vmq40cRLZvGK1OUuTEpgDE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nilaVLW90Tv4Z/wH1xJk0hwXt/6KZrUzYCM0pgiCXlIsqVWwbI
+	ZL1MbGSd44dxzfRY2qHjIbRngiOpvxy66TGiYSqE22n84Ng/o/fnAria4E+H9KkNI9w5l8a8hHN
+	BY591dZnO5SBVCyvdWdfygu9pDc6r2y8eh/eRqpW74x5CrwHkOvig7LLFNA==
+X-Gm-Gg: AYBFou1y5tPTJjZTCm7+JU7A4MPY3anPP829/w/GNkoSsDbfjRSD3TXh9I7zseLzUhA
+	HURaJTKw4jcAjMeqPj5anhK/8PU/93NU82zfxj5CuRPPRx9IMWQ7ClABkhw9QJanTYtT7bzKwYp
+	WcvEGjH5plYb5kNfmYzOtO/zmEKnGPuWPybL4VOnQcqDAP37m3XCGC/4cbv7qOm6bcssLxy6g9W
+	NGa/GLhblK2LAXfzkrCSwTgAOvRJGrfY5d+pcCV07Wh7AT1z3zLd4nW8Z/F28ZHJXIm5CAmaI6E
+	OrnF3Sof4OlJnfzWyEEM6IfwzlFrpTnqWgQAAqbQwynPZZwTJnYIgwAZkfDyj0bsdPLqMIZIMpe
+	S6u5D0/Elwz7WjM8dEevJl/USoT9pECQ+DqpS6kAp5ph6V64CK3WKEPhlhSwgh1nLWBzFeWKZVA
+	==
+X-Received: by 2002:a05:600c:3150:b0:49f:fd2d:23d1 with SMTP id 5b1f17b1804b1-49ffd2d2627mr138475405e9.27.1790672914985;
+        Tue, 29 Sep 2026 02:08:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:3150:b0:49f:fd2d:23d1 with SMTP id 5b1f17b1804b1-49ffd2d2627mr138475085e9.27.1790672914566;
+        Tue, 29 Sep 2026 02:08:34 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48af5080925sm2483598f8f.25.2026.09.29.02.08.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 02:08:34 -0700 (PDT)
+Message-ID: <10d0c5a6-98d0-45d5-a196-aa839b452172@redhat.com>
+Date: Tue, 29 Sep 2026 11:08:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260929-logical-fanatic-quail-2ff20b@quoll>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 0/2] net: dsa: mt7530: fix trapped frame forwarding
+ and egress tagging
+To: Tao Gong <gongtao0607@gmail.com>, netdev@vger.kernel.org
+Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+ Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?=
+ <arinc.unal@arinc9.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20260923055103.949540-1-gongtao0607@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260923055103.949540-1-gongtao0607@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 10:49:08AM +0200, Krzysztof Kozlowski wrote:
-> On Sun, Sep 27, 2026 at 02:46:16PM +0200, Stefano Radaelli wrote:
-> >  
-> > -      - description: i.MX6UL Variscite VAR-SOM-6UL Boards
-> > -        items:
-> > -          - const: variscite,mx6ulconcerto
-> > -          - const: variscite,var-som-imx6ul
-> > -          - const: fsl,imx6ul
-> > +      - description: i.MX6UL Variscite VAR-SOM-6UL and DART-6UL Boards
-> > +        oneOf:
+On 9/23/26 07:51, Tao Gong wrote:
+> This series resolves two issues in the MT7530 DSA switch driver preventing
+> trapped link-local control frames (such as STP BPDUs) from reaching the CPU
+> host when bridge VLAN filtering is enabled:
 > 
-> Please do not introduce own style.
+> 1. Commit 3ac85bcfd404 ("net: dsa: mt7530: preserve VLAN tags on trapped
+>     link-local frames") set MT7530_VLAN_EG_DISABLED to preserve VLAN tags,
+>     but in hardware this disables the per-packet override and causes
+>     trapped frames to follow the CPU port's active VLAN table (VAWD2) rule.
+>     When bridge VLAN filtering is active, the CPU port is in stack mode,
+>     causing incoming untagged BPDUs (01:80:C2:00:00:00) to be egressed with
+>     a VLAN tag, which userspace STP daemons (such as ustpd) and the kernel
+>     bridge drop. MT7530_VLAN_EG_CONSISTENT correctly preserves wire state
+>     (untagged frames stay untagged, tagged frames stay tagged).
 > 
-> > +          - items:
-> > +              - enum:
-> > +                  - variscite,mx6ulconcerto
-> > +                  - variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto-board
-> 
-> "board" is redundant
-> 
+> 2. On Airoha EN7581 and AN7583 switch IP, setting MT7531_CFC (0x04)
+>     CPU_PMAP alone is insufficient; the switch MAC forwarding control
+>     (MT753X_MFC, 0x10) must also have CPU_EN and CPU_PORT configured for
+>     trapped frames to exit to the CPU conduit.
+It's unclear to me if you are observing the issue with real H/W or if the
+patches comes from LLMs or static analysis. Please clarify such info
+in the next iteration.
 
-Thank you for the review.
-I will keep the existing Concerto binding entries separate, use the
-surrounding items/enum style, and drop the redundant -board suffix.
+Also clashiko feedback looks relevant, please have a look. You should
+address LLM's feedback proactively.
 
-> Also, look at other examples here, like Toradex. The actual variant
-> should be the last.
-> 
+/P
 
-Could you clarify what you mean by “the actual variant should be the last”?
-For a board with eMMC, SD card and WM8731 mounted on SOM, would you prefer
-variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto or
-variscite,var-som-imx6ul-concerto-emmc-sd-card-wm8731?
-I had used the former ordering following examples such as
-toradex,colibri-imx6ull-emmc-aster. (som - som variants - carrier)
-
-Thank you!
-Best Regards,
-Stefano
