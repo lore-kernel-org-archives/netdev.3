@@ -1,152 +1,469 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462BF50C291;
-	Tue, 29 Sep 2026 10:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790677642; cv=none; b=ZApUuBdW8dufB3SjZAuail2UhylagUpxB9OwFpLFYo7hTE+i3QovKVP25p+S/gpscRILiy7/FxEVZC4iLdk9HJaQjx+FvymMfbCJKxHFx1ECvSbBGbnZDxzOSotvdiiONrurdA9lJxQXMIT4x3GG4lauvhrq6TPi81rGJNdLFMo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790677642; c=relaxed/simple;
-	bh=yYsWTOgE2HuLS/Ptf5JGliz68o7bjAWc2Zg8+RSNoac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1gPWHBVISvX25GOFJ5P3Y67GPrPdslrtYu0KxGv/mn6NnnvVRuDO106w8qHb18HDXj7XoWGgBELKdQskAA7flQ0ZqKe1E9/YvYwqImPIQssFNFArp2BjQ3YDKcHxUwb7m8bJPpNNt7z44h0Gg0LE91JBsPgzmp6JoWL+m5Q3wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=qdNfpRN8; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95A33D811C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790677656; cv=pass; b=kB+Xor9HIhW3aqk9Uy8gjNPwzs1AKZP9f128AmN/SES5quq8MFu2C1Rh+zci3h3QBiIaZGoFUKeDERRGuWb9pZAPnMl80E6Uewv1n1dRMA5diTBkFB9bbzfiDg6AKGdriOiIORuZhkHk5sxliRrtaNYS3X90qV0gOlYIXnmrlkM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790677656; c=relaxed/simple;
+	bh=Ul2M1bjGycaN4Axn1qBleEwDxvfjv2obOgR5Aaq/75A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jfDa3dooEYxOBrIp+ngRO4P6AZxLp3Naus+w2eMlKekGUh7z5JHLIXHXVe0AreMUmxPVrWUU6TAmT1m+W4xdc9zroqNLTdn3M3UhVY8bns5Kls/EFyFQ0xeg/FeaAWCsP0EYLStBeZj4URoWVv2W+qhQYzMsVS22xj+U71memDQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fPNqNEq4; arc=pass smtp.client-ip=74.125.224.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="qdNfpRN8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1790677622;
-	bh=37ud5Y+ktqC5GdoQ50TkRBZqS2diQRdsjUlxYSpnzoA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qdNfpRN8LcWLlvRvJKLEyOeGGdSpH38yNNps/q/mGXjY6h4h4KchMOVXgH3WeLTvi
-	 nyD7a3fSZ0tIXjtYVqn7WT6CUgQhvY07ZlrLkGtWYT+1GQzhdd6Hi4dnYXBP84xjMj
-	 kgjDo0wW9nyDV3xx/cjYwoqq46kgyiXpgbTfAoqHz7GhM+7r800uAMi0zKRyNgyLgf
-	 VM2rZuUDDTkHwEPTU6KX+Pwdr78sxDFuDSqRFnW3Hq1P3KkeVvEBrtSD0IydAEhIes
-	 7SL9gKy/u3+eF8zX+RgbENbkO+iQ0DOfRMmr8UCs3iH052ybxo8jfqVFczanQIFDIU
-	 VteuN5frYn48g==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6888D6020E;
-	Tue, 29 Sep 2026 12:27:02 +0200 (CEST)
-Date: Tue, 29 Sep 2026 12:27:00 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Julian Anastasov <ja@ssi.bg>, netdev-bot+sashiko@kernel.org,
-	netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
-	horms@kernel.org, fw@strlen.de
-Subject: Re: [PATCH net 02/11] ipvs: fix buffer overflow when sending sync
- messages
-Message-ID: <aruSdAPXTRbH430w@chamomile>
-References: <20260927220816.268206-3-pablo@netfilter.org>
- <179063970014.3145.11099245705422825051@kernel.org>
- <2aa8af69-3843-3ffd-cfa4-2daf3c949127@ssi.bg>
- <634b26a1-cf1f-46c0-8026-c9c08f398169@redhat.com>
- <aruIKBhVhp3KKvJp@chamomile>
- <f5766ebd-7436-4c82-a835-49d09b68ce0f@redhat.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fPNqNEq4"
+Received: by mail-yx2-f41.google.com with SMTP id 956f58d0204a3-6756d2aff02so127629d50.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:27:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790677637; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NCFFFSRutp4+Yjy9EtcO6rxjSZ9P5NSVsshUgoxIE865Q5hCXsdXhWFQT32E6tsfsa
+         bcbpw1whlbAqAWgeS4aLSJTsDFlJZ98PQGuPmtKXEkU+Fce+fL8gMottPT+QgpXiFO3P
+         K4Hp7fDvjVWlTO6AvtiX9N3rmcPR5tAZa4iG0ueS2FIizJ5OccPXnunemSwD97KsOSji
+         Oq5EhT3sm7RQRhoueDUyQytYKwXb43a8z8txDJkoymk5kH+jvYyzEJVtY+uuiZ2PfKc6
+         4ltgQmfSv66n621xhcAs80I8gjTqNjSn0x2jdHhAC79+qTiCLCozP6VTHdgkodc8gpq9
+         gspw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RJanHjrwOsybD6/zIQUKLFTdjkj45QFu+VoTVO6bjGE=;
+        fh=hEN6MmFfgcSiD6x1I9+LyG4AM2YoOLySh3VnRoY6z4s=;
+        b=Xi8goFowTaQW2CGS6amg1+o3clBBNPaZOSY3LPbwb6ytiWVKn88Jg9sZZtgSQl3if7
+         ByayV77vlerX1w/ksykr9tH2Ky861uC7+Iqi8WuQSEfThvCkvv/5MfkGRMROKsUwhE50
+         GIB96am7BYFWPN2a/8W5T+D1ScPGiAn+ud3ovd+nVFzhQbbj6GBa2iDq28SX8S6tDLX6
+         pVRDi/wmBLAwkAHg2hCTXPDLcSkTizLDW4U1eFhDzC1nQdanra2yl+cIFV4loz4kHp/d
+         kYYr8co4vXPq5fuPhxJVgXY1gW1XEC4u0gscVKgPsDsbx1FnWPv965sXNN0DZ72HiQlI
+         7XVw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1790677637; x=1791282437; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RJanHjrwOsybD6/zIQUKLFTdjkj45QFu+VoTVO6bjGE=;
+        b=fPNqNEq4iLDMF9PmXmZvHyAVw1VNQonlQ0eMvw9hsa4bSC7X0qwdCCRLkojM2iGSuB
+         w177L3rV2+HiZbEBqGcrq+IjaY9T+5nhjnxmEm6Ut7QNqSueSPAyAZLw+aZFfySn/S9t
+         Wj2qpJeHcA6y+pO4jRCPM2LDYgBfgtbYTd/Oc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790677637; x=1791282437;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RJanHjrwOsybD6/zIQUKLFTdjkj45QFu+VoTVO6bjGE=;
+        b=fdDrwRz5oM0CYFn5hY2RRdTu6swlY9ZNIs0uOPZVFJCMXLIdIZkPwpGKiBtlmK+K2k
+         7amsodvn9BSds/HiU7buxOjzGtJ9dxyZvY4yClkJ3deCOkoU2XdpSzOI61BPOBOSpgHx
+         6KwwYh0Kn0qj4vXI6pgGf8f1tBnqOT1K7ZTAJQjwrDhc8H2jTawNC5+bXZp4/bjqZ8Ni
+         SG4/1IJbMDAwnuT/cFKbd4tQqTejjZg1zsIwSTMgCJF5E2OK9roj0Nay64T4YzE4WMBg
+         A07wQNWHln8go/EDVXWdQgCjujA9NVFwcVZ/5NRi2OlENjujT6KLFXxM+BmfASCXKvRg
+         poiA==
+X-Gm-Message-State: AFq9FYJPC4JnYQG/Z4cMm7SMi4ki2M9QoJM1CM5fq12u+/vduxfb4TWV
+	CMaImqF2qG/kgGtuilFLOPCS2RzUUeKkfg5mjXIvoQ740lY1PRW/ZaDrRhKCaYVjtXIXEFQkSQb
+	xVaL2Qme/yhb/5pvM/9f9rXLq7E4x5umu1gNqhWhL
+X-Gm-Gg: AYBFou2GTpvSSqbiHr0Pvk3D7bL9ccwRI06LXaqGOQaWtTNwgXbm4V5cwkSeoASzrdb
+	a/QFAsWxM1CmTItcQ4ePhC2gvXkG4wQ/8OzgIHPvN4PSiihpry5r1C4cZiPtuZxKAyTl+Hvd52/
+	eVGa4PMIsMoHdy7ElHNd0jnoH2MPlw5fnvqHrBUj/uNcTexXK/97TidmtzlBlLmgdAI5y21RNBd
+	NTL8GsvgCC99qRvaQ4vQE3M/q7m2Vjne1+KisFUw5a6y7TwL+ybv/Y1D9f+hKqZOo/yioiaH5mn
+	+y9bz7bU2PCyfYGm8FnStcocAkfcIbAaD4wEQh9dk8GZ0ZWZ4wDpUPPiFmRP497tnqiY0VfHQ1S
+	iazRfXkcj6w5mfHRrT3kRTBoMQGmipq1HuqtOWlU=
+X-Received: by 2002:a05:690e:812:10b0:66f:c1be:3186 with SMTP id
+ 956f58d0204a3-672ed4b4f85mr3890290d50.93.1790677637318; Tue, 29 Sep 2026
+ 03:27:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f5766ebd-7436-4c82-a835-49d09b68ce0f@redhat.com>
+References: <QDISC-BA27.v2.20260926123300@mojatatu.com> <179064308977.3145.8022757162677341059@kernel.org>
+In-Reply-To: <179064308977.3145.8022757162677341059@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 29 Sep 2026 06:27:04 -0400
+X-Gm-Features: AclHuK-jwz0A4Hld1XDaZIqCXOIwU5eEjJI4L2EKvx-e_IW2WnT-rJVjeStuFaw
+Message-ID: <CAM0EoMnig3XKiT2aBnRtvjfYVcFxpAqDwdhsozhkvCifVvfcNw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net/sched: cap the accounted backlog before
+ it can wrap
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	victor@mojatatu.com, hybris@mojatatu.ai, toke@toke.dk, moeller0@gmx.de, 
+	cake@lists.bufferbloat.net, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026 at 11:55:11AM +0200, Paolo Abeni wrote:
-> On 9/29/26 11:43, Pablo Neira Ayuso wrote:
-> > Hi Paolo,
-> > 
-> > On Tue, Sep 29, 2026 at 10:19:55AM +0200, Paolo Abeni wrote:
-> > > On 9/29/26 06:06, Julian Anastasov wrote:
-> > > > > > @@ -744,7 +749,7 @@ void ip_vs_sync_conn(struct netns_ipvs *ipvs, struct ip_vs_conn *cp, int pkts)
-> > > > > >    		s->v4.vaddr = cp->vaddr.ip;
-> > > > > >    		s->v4.daddr = cp->daddr.ip;
-> > > > > >    	}
-> > > > > > -	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
-> > > > > > +	if (seq_mask) {
-> > > > > >    		*(p++) = IPVS_OPT_SEQ_DATA;
-> > > > > >    		*(p++) = sizeof(struct ip_vs_sync_conn_options);
-> > > > > >    		hton_seq(&cp->in_seq, (struct ip_vs_seq *)p);
-> > > > > 
-> > > > > [Severity: Medium]
-> > > > > This is a pre-existing issue, not one introduced by this patch. The flags
-> > > > > are now a consistent snapshot, but the sequence data is still read
-> > > > > without cp->lock. Nothing orders that read against READ_ONCE(cp->flags).
-> > > > > Can the master send stale or half-updated ip_vs_seq values here?
-> > > > > 
-> > > > > ip_vs_sync_conn() here only holds ipvs->sync_buff_lock. The same applies
-> > > > > to the memcpy() of cp->sync_conn_opt in ip_vs_sync_conn_v0().
-> > > > > 
-> > > > > On the backup side, ip_vs_proc_conn() sets the SEQ bits in cp->flags under
-> > > > > cp->lock and drops the lock. Only after that does it copy the sequence
-> > > > > data, with no lock held:
-> > > > > 
-> > > > > net/netfilter/ipvs/ip_vs_sync.c:ip_vs_proc_conn() {
-> > > > >       ...
-> > > > > 		cp->flags = flags;
-> > > > > 		spin_unlock_bh(&cp->lock);
-> > > > >       ...
-> > > > > 	if (opt) {
-> > > > > 		cp->in_seq = opt->in_seq;
-> > > > > 		cp->out_seq = opt->out_seq;
-> > > > > 	}
-> > > > >       ...
-> > > > > }
-> > > > > 
-> > > > > On a node running both the master and backup daemons, ip_vs_sync_conn()
-> > > > > could see seq_mask set and then send old or torn init_seq, delta and
-> > > > > previous_delta values. A peer with an app bound to that connection would
-> > > > > then apply the wrong TCP seq/ack adjustment after failover.
-> > > > 
-> > > > 	Agreed, this can be improved to take a snapshot of
-> > > > flags and seqs together under lock. I'll request to drop
-> > > > this version, it is not urgent to apply it.
-> > > 
-> > > It looks like a respin of the PR is needed, I'll drop the revision from PW.
-> > 
-> > Just wrote to Jakub with a summary on the LLM report.
-> > 
-> > I would take this PR as is if it is still possible.
-> > 
-> > If you feel strong about to need to respin this PR, that's also fine
-> > with me, just let confirm where to go.
+On Mon, Sep 28, 2026 at 8:51=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
 >
-> Uhm... I must admit that given the pressure we received from Linus on
-> shrinking/prevent from increasing the net PR size I think we are better
-> off dropping patch 2/11 entirely.
-> 
-> I'm sorry for the extra work, but the messaging from Linus was pretty
-> strong:
-> 
-> https://lore.kernel.org/netdev/CAHk-=wiSnTE9vBZ=5_v+3EEkdazCCbBM5YABRzRHUAeRdyd4Xw@mail.gmail.com/
+> Thank you for your contribution! Sashiko AI review found 8 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 2 =C2=B7 Low: 4
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] RED's new ceiling check (red_enqueue(), sch_red.c:79-84) only
+>   tests sch->qstats.backlog + qdisc_pkt_len(skb) before the skb goes to=
+=E2=80=A6
+> - [High] The patch moves `len =3D qdisc_pkt_len(skb)` in red_enqueue() fr=
+om
+>   after the red_action() switch to the top of the function=E2=80=A6
+> - [Medium] The commit message leaves GRED untouched, saying it follows a
+>   safe approach ("safe because its limit is checked against the=E2=80=A6
+> - [Medium] In the new split-GSO pre-check in cake_enqueue(), segment
+>   lengths are summed into `unsigned int slen` (declared at=E2=80=A6
+> - [Low] The commit fixes a user-visible bug.
+> - [Low] In the split-GSO path of cake_enqueue(), when the post-split
+>   total would cross the ceiling, the patch frees every temporary segment=
+=E2=80=A6
+> - [Low] The comment on QDISC_MAX_BACKLOG (include/net/pkt_sched.h:16-19)
+>   and the commit message treat QDISC_PKT_LEN_MAX (1 MiB) as the maximum=
+=E2=80=A6
+> - [Low] The new RED ceiling rejection in red_enqueue() (sch_red.c:80-84)
+>   only calls qdisc_qstats_overlimit() and qdisc_drop_reason().
+>
 
-Yes, I read that. I tried to move what is less relevant to nf-next (if
-you look at my nf-next PR, it's contains not so relevant fixes too).
+I will send a V3 to address some of these issues (also brought up by Eric)
 
- include/linux/netdevice.h               |  3 ++
- include/net/netfilter/nf_flow_table.h   |  2 +-
- net/mac80211/iface.c                    |  7 +++++
- net/netfilter/ipset/ip_set_bitmap_gen.h |  2 +-
- net/netfilter/ipvs/ip_vs_conn.c         |  3 ++
- net/netfilter/ipvs/ip_vs_lblc.c         |  4 +++
- net/netfilter/ipvs/ip_vs_lblcr.c        |  3 ++
- net/netfilter/ipvs/ip_vs_sync.c         | 56 ++++++++++++++++++++++++++-------
- net/netfilter/nf_flow_table_core.c      |  7 ++++-
- net/netfilter/nf_flow_table_offload.c   | 14 +++------
- net/netfilter/nf_flow_table_path.c      |  3 ++
- net/netfilter/nf_nat_bpf.c              |  3 ++
- net/netfilter/nf_nat_core.c             |  5 +--
- net/netfilter/nft_flow_offload.c        |  7 ++++-
- net/netfilter/nft_set_rbtree.c          |  2 ++
- net/sched/act_ct.c                      |  2 +-
- 16 files changed, 95 insertions(+), 28 deletions(-)
+cheers,
+jamal
 
-Yes, this patch is larger in the diffstat. I can just move it to
-nf-next if you prefer.
-
-I will respin and send v2 today without this.
-
-Thanks.
+> --
+>
+> net/sched: cap the accounted backlog before it can wrap
+>
+> This patch adds an enqueue-side check to fq_codel, cake, codel, pie,
+> fq_pie, dualpi2 and RED. The check drops a packet when the 32-bit
+> sch->qstats.backlog would cross QDISC_MAX_BACKLOG
+> (U32_MAX - QDISC_PKT_LEN_MAX). The goal is to stop a crafted stab from
+> wrapping the backlog counter and corrupting AQM drop decisions.
+>
+> Link: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.=
+com/
+>
+> > This follows the existing bfifo/gred approach
+> > (safe because its limit is checked against the accounted packet length)=
+;
+>
+> [Severity: Medium]
+> Is this accurate for GRED? In non-WRED mode (plain or RIO),
+> gred_backlog() returns the per-VQ q->backlog. That means gred_enqueue()
+> only checks each virtual queue against its own q->limit:
+>
+> net/sched/sch_gred.c:gred_enqueue() {
+>     ...
+>         if ((u64)gred_backlog(t, q, sch) + qdisc_pkt_len(skb) <=3D q->lim=
+it) {
+>                 q->backlog +=3D qdisc_pkt_len(skb);
+>                 return qdisc_enqueue_tail(skb, sch);
+>         }
+>     ...
+> }
+>
+> Every accepted packet is still added to the shared 32-bit
+> sch->qstats.backlog through qdisc_enqueue_tail(). Each q->limit is capped
+> at sch->limit, but there can be up to 16 VQs.
+>
+> With two or more VQs whose limits add up to more than 4 GiB, plus the
+> same 1 MiB stab, can the aggregate wrap?
+>
+> Once it wraps, the pass-through admission compares against a value that
+> is too small:
+>
+>         if (likely((u64)sch->qstats.backlog + qdisc_pkt_len(skb) <=3D
+>                         sch->limit))
+>                 return qdisc_enqueue_tail(skb, sch);
+>
+> gred_backlog() returns this same aggregate in WRED mode. The WRED idle
+> check in gred_dequeue() also reads it if the table is switched to WRED
+> while packets are still queued. So a wrapped value could reach
+> red_calc_qavg().
+>
+> Should GRED get the same QDISC_MAX_BACKLOG check, or should the commit
+> message be changed?
+>
+> > Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101=
+130.16203-1-jhs@mojatatu.com
+> > Link: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatat=
+u.com/
+> > Tested-by: hybris <hybris@mojatatu.ai>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+>
+> [Severity: Low]
+> Should this have a Fixes: tag? The commit message describes a bug that
+> can be reached from a user namespace and includes a reproducer, but
+> there is no Fixes: tag, so the stable tooling will not pick it up
+> automatically.
+>
+> QDISC_MAX_BACKLOG also depends on QDISC_PKT_LEN_MAX and on the pkt_len
+> clamp in __qdisc_calculate_pkt_len(). Both come from commit 8f735d64382d
+> ("net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup").
+>
+> Could the commit message mention that dependency? A backport without it
+> will not build. 8f735d64382d has its own Fixes: 1da177e4c3f4, so it will
+> probably reach stable anyway.
+>
+> > diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+> > index 90d3e7943b19a..351b92f956efc 100644
+> > --- a/include/net/pkt_sched.h
+> > +++ b/include/net/pkt_sched.h
+> > @@ -13,6 +13,11 @@
+> >  #define DEFAULT_TX_QUEUE_LEN 1000
+> >  #define STAB_SIZE_LOG_MAX    30
+> >  #define QDISC_PKT_LEN_MAX    (1 << 20)       /* 1 MiB */
+> > +/*
+> > + * Largest accounted backlog for which enqueuing one more maximum-size
+> > + * packet cannot wrap the 32-bit sch->qstats.backlog.
+> > + */
+> > +#define QDISC_MAX_BACKLOG    (U32_MAX - QDISC_PKT_LEN_MAX)
+>
+> [Severity: Low]
+> Is QDISC_PKT_LEN_MAX really the largest possible accounted packet length?
+> The clamp is only applied in __qdisc_calculate_pkt_len(), which runs only
+> when a size table is attached:
+>
+>         pkt_len =3D clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
+>
+> Without a stab, qdisc_pkt_len_segs_init() sets the length with no clamp:
+>
+>         qdisc_skb_cb(skb)->pkt_len +=3D (gso_segs - 1) * hdr_len;
+>
+> packet_snd() skips the MTU check for GSO packets and can build skbs
+> larger than 500 KB. virtio_net_hdr_to_skb() only forces
+> gso_size >=3D TCP_MIN_GSO_SIZE. So a GSO skb can carry an accounted lengt=
+h
+> well above 1 MiB.
+>
+> The new checks compare in u64 against the real length, so they do not
+> wrap on their own. Still, the "one more maximum-size packet cannot wrap"
+> invariant in this comment and in the commit message does not hold. The
+> RED child segmentation question below relies on the same headroom
+> assumption.
+>
+> >
+> >  struct qdisc_walker {
+> >       int     stop;
+> > diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> > index dc93267029e70..6a16546aa5b0e 100644
+> > --- a/net/sched/sch_cake.c
+> > +++ b/net/sched/sch_cake.c
+>
+> [ ... ]
+>
+> > @@ -1801,7 +1809,7 @@ static s32 cake_enqueue(struct sk_buff *skb, stru=
+ct Qdisc *sch,
+> >               WRITE_ONCE(b->max_skblen, len);
+> >
+> >       if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_=
+SPLIT_GSO) {
+> > -             struct sk_buff *segs, *nskb;
+> > +             struct sk_buff *segs, *nskb, *seg;
+> >               netdev_features_t features =3D netif_skb_features(skb);
+> >               unsigned int slen =3D 0, numsegs =3D 0;
+> >
+> > @@ -1809,6 +1817,23 @@ static s32 cake_enqueue(struct sk_buff *skb, str=
+uct Qdisc *sch,
+> >               if (IS_ERR_OR_NULL(segs))
+> >                       return qdisc_drop(skb, sch, to_free);
+> >
+> > +             /* The segment list is accounted by the sum of its length=
+s,
+> > +              * which can exceed the original packet's accounted lengt=
+h, so
+> > +              * sum it before linking any segment and drop the whole l=
+ist if
+> > +              * the post-split total would cross the ceiling.
+> > +              */
+> > +             skb_list_walk_safe(segs, seg, nskb)
+> > +                     slen +=3D seg->len;
+> > +
+> > +             if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_=
+BACKLOG)) {
+>
+> [Severity: Medium]
+> Can slen wrap before the u64 comparison? slen is still an unsigned int.
+> If the segment list adds up to more than 4 GiB, the sum wraps and the
+> check passes with a small value.
+>
+> cake would then add the wrapped slen to sch->qstats.backlog,
+> b->tin_backlog and b->backlogs[idx], while the queued segments keep
+> their real lengths. Later dequeue or cake_drop() subtractions would then
+> underflow those counters.
+>
+> Here is how that size might be reached:
+>
+>   - packet_snd() skips the MTU check for GSO packets and has no
+>     GSO_MAX_SIZE cap.
+>   - packet_alloc_skb() allows about 557 KB of order-3 frags plus a large
+>     linear part.
+>   - virtio_net_hdr_to_skb() only raises gso_size to TCP_MIN_GSO_SIZE (8).
+>   - ipv6_gso_pull_exthdrs() walks any number of GSO-capable extension
+>     headers.
+>
+> A TCPv6 DODGY skb with about 60 KB of extension headers and 560 KB or
+> more of payload at gso_size 8 would split into more than 70k segments of
+> about 60 KB each. pkt_segs is a truncated u16 but is still > 1, so the
+> split path is taken.
+>
+> This needs skb_segment() to succeed at more than 4 GiB of GFP_ATOMIC
+> allocations from a single packet. Not every check on the segmentation
+> path has been traced. Would a u64 accumulator for this pre-check be
+> simpler than working out whether it can happen?
+>
+> > +                     kfree_skb_list_reason(segs, SKB_DROP_REASON_QDISC=
+_DROP);
+> > +                     WRITE_ONCE(flow->dropped, flow->dropped + 1);
+> > +                     WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
+> > +                     qdisc_qstats_overlimit(sch);
+> > +                     return qdisc_drop_reason(skb, sch, to_free,
+> > +                                              QDISC_DROP_OVERLIMIT);
+> > +             }
+>
+> [Severity: Low]
+> When this ceiling is hit, the segments are freed with
+> SKB_DROP_REASON_QDISC_DROP. The original skb is then also dropped with
+> QDISC_DROP_OVERLIMIT.
+>
+> Doesn't that produce N+1 kfree_skb tracepoint and drop-monitor events,
+> under two different reasons, for one rejected packet? flow->dropped,
+> tin_dropped and qstats.drops each go up by only one.
+>
+> The segments were never queued. Could they be consumed instead, or
+> dropped with the same overlimit reason, so the event is reported once?
+> That would also match the changelog's statement that this "drops with
+> QDISC_DROP_OVERLIMIT".
+>
+> [ ... ]
+>
+> > diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+> > index d7598214270b8..dff3d8b0556bf 100644
+> > --- a/net/sched/sch_red.c
+> > +++ b/net/sched/sch_red.c
+> > @@ -76,6 +76,13 @@ static int red_enqueue(struct sk_buff *skb, struct Q=
+disc *sch,
+> >       unsigned int len;
+> >       int ret;
+> >
+> > +     len =3D qdisc_pkt_len(skb);
+> > +     if (unlikely((u64)sch->qstats.backlog + len > QDISC_MAX_BACKLOG))=
+ {
+> > +             qdisc_qstats_overlimit(sch);
+> > +             return qdisc_drop_reason(skb, sch, to_free,
+> > +                                      QDISC_DROP_OVERLIMIT);
+> > +     }
+>
+> [Severity: High]
+> Does this check still bound RED's backlog when the child segments GSO
+> skbs? It only looks at the length before segmentation, before the skb
+> is handed to the child.
+>
+> With a TBF child, tbf_enqueue() calls tbf_segment() when
+> qdisc_pkt_len(skb) > q->max_size. tbf_segment() re-accounts every
+> segment at its raw length and pushes the difference up to RED:
+>
+> net/sched/sch_tbf.c:tbf_segment() {
+>     ...
+>                 seg_len =3D segs->len;
+>                 qdisc_skb_cb(segs)->pkt_len =3D seg_len;
+>     ...
+>         qstats_backlog_add(sch, len);
+>         if (nb > 0) {
+>                 qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
+>     ...
+> }
+>
+> qdisc_tree_reduce_backlog() calls qstats_backlog_sub() on each ancestor.
+> A negative adjustment therefore grows RED's backlog by (len - prev_len)
+> with no ceiling check. netem_enqueue() does the same through its
+> netem_segment() path:
+>
+>         qdisc_tree_reduce_backlog(sch, -(nb - 1), -(len - prev_len));
+>
+> A DODGY GSO skb from packet_snd() has no GSO size cap, and gso_size can
+> be as small as TCP_MIN_GSO_SIZE (8). With maximum IPv4/TCP headers
+> (134 bytes), about 60 KB of payload then yields more than 1 MiB of
+> segment bytes. A stab can map that skb to a length just above TBF
+> max_size, while filler packets map to 1 MiB.
+>
+> Take the commit's own RED reproducer, with the packet-limited pfifo
+> placed under a TBF, and RED's backlog near QDISC_MAX_BACKLOG. Can both
+> RED's and TBF's 32-bit backlogs still wrap?
+>
+> If so, red_enqueue() would feed the wrapped child->qstats.backlog into
+> red_calc_qavg(), which is what this patch is meant to prevent for RED.
+> cake and dualpi2 re-check after segmentation, but RED with a segmenting
+> child does not.
+>
+> [Severity: Low]
+> This new drop path only increments qstats.overlimits and qstats.drops.
+> Should it also update one of RED's own counters? red_dump_stats()
+> exports pdrop from q->stats.pdrop, and the uAPI defines it as:
+>
+>         __u32           pdrop;          /* Drops due to queue limits */
+>
+> Every other drop path in red_enqueue() updates prob_drop, forced_drop or
+> pdrop, so a drop at the byte ceiling never shows up in RED's xstats.
+> Qevent TC_ACT_SHOT drops are already missing from xstats, so the
+> breakdown did not add up to qstats.drops before this patch either.
+>
+> [ ... ]
+>
+> > @@ -135,7 +142,6 @@ static int red_enqueue(struct sk_buff *skb, struct =
+Qdisc *sch,
+> >               break;
+> >       }
+> >
+> > -     len =3D qdisc_pkt_len(skb);
+> >       ret =3D qdisc_enqueue(skb, child, to_free);
+> >       if (likely(ret =3D=3D NET_XMIT_SUCCESS)) {
+> >               qstats_backlog_add(sch, len);
+>
+> [Severity: High]
+> Since this read moved to the top of red_enqueue(), len is now taken
+> before the qe_mark tcf_qevent_handle() calls in the RED_PROB_MARK and
+> RED_HARD_MARK cases. Can a qevent action change qdisc_pkt_len(skb) in
+> between?
+>
+> With RED in ecn mode and an act_ct action in the qe_mark block, act_ct
+> does this after a successful defragmentation:
+>
+> net/sched/act_ct.c:tcf_ct_act() {
+>     ...
+> out_clear:
+>         if (defrag)
+>                 qdisc_skb_cb(skb)->pkt_len =3D skb->len;
+>         return retval;
+>     ...
+> }
+>
+> tcf_qevent_handle() returns the reassembled skb for any verdict other
+> than shot or stolen. RED then adds the stale len here, while
+> red_dequeue() subtracts the new length:
+>
+>         qdisc_qstats_backlog_dec(sch, skb);
+>
+> If the reassembled packet is larger, doesn't RED's u32 backlog underflow
+> to nearly 2^32, which is above QDISC_MAX_BACKLOG?
+>
+> After that, every red_enqueue() would fail the new ceiling check even
+> with an empty child. RED would drop all traffic until the qdisc is
+> reset. If the stab-inflated fragment length is the larger one, the
+> backlog grows instead and eventually hits the ceiling too.
+>
+> Before this patch, len was read after the qevents, so the two values
+> matched. Could the ceiling check use qdisc_pkt_len(skb) directly, and the
+> original read stay just before qdisc_enqueue()?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/QDISC-BA27.v2.20260926123300%40mojatatu.com
