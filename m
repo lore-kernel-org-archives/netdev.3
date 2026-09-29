@@ -1,345 +1,263 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CB55172E3;
-	Tue, 29 Sep 2026 12:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A237651C079;
+	Tue, 29 Sep 2026 12:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790683752; cv=none; b=IIY1rClQIeTbzJeofzofMFSbKP01PXW5lmuw5ttj7W5S0E4RQTVveDAgTktWthz62/TRzOVu65FFIqHjhR29vPJQLkfxhXS29MP7z9M/NjfKzIduzkDd7sKihSUQcKgXRujgTJTbsNt+kJ4seFyR/iUPbr2567YOdJhQiLFzk/Q=
+	t=1790683867; cv=none; b=DPG9rwAcH2yZaOcBRrg7iDi9SI+rtl74p53Z/BhtijEiRJzukbCWqjl9jIGcyhrABxMJf9z4vzrrXHtJVaJ1WW7mByXw+wvIPcxxZql/utm8/QaOkzrICQNoQw+cWYuu0nPK+TZXMAoPAs0WO9OlaYfd3HTsvX1eS36TdQI4MIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790683752; c=relaxed/simple;
-	bh=fUEHF47M7WKRCHrthzZ0wgaJU0aCQTKdbRlyJ0WN10M=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfHJyC+aNs58XgOpvDqtNgWHCgv6IEXnfh76S+OLe9JK3RRRWFe+GUDgDNIeC07PVT0/h3pcdWMMg76Kf4PrJcnQd4OC8zg0ytYKnChPrWEHc8FP1VVyH7ZfEu9zguxvAwWkAjttP8869KUfSRmqul21IImuTCzkcmZRHUtRcpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Mf8Js0ww; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790683867; c=relaxed/simple;
+	bh=8cadxgE6m7HGlBNCWyc+F83lgakCQxg9/O88RMyBSJU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AfaxJ7mniBGFQNphBL+RALx1qjdT93ErQ1N6xh8gpR+Jsbe9fgJRBaBn+/GTGsAVMfdmyIGUcSb7b1/tkviu6HhXJAoLTJ+XU/D4DAuUQ2FuNowr9gUGUIOEpXtPWY8ngVzEZUZRSWR9QY9D4a8nzROJlAOgvVwgq4TEhnT8mMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIfAjOtk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Mf8Js0ww"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790683749; x=1822219749;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fUEHF47M7WKRCHrthzZ0wgaJU0aCQTKdbRlyJ0WN10M=;
-  b=Mf8Js0wwBY7WcKqSB4XUT2KvGtOnkx18zBQGno218jO8FP90C50uOGAX
-   nNfhU+hbdIW2ozDIMCSfNzi4MgcgWgf+2HWp+om9RLQIwlHGVEtNkffss
-   hCqKYmdj6BjUSrO7W4GVNLyhz4iWpcOO+aqsI/MsQgABR4GFDpwBzoNIh
-   /0TjA68BeIFik8Ac3IkCVQ4JefoHwOIoUOzqXCAU8qHXJ9dlvQVkXQcLM
-   BlR/gvnU0jAtG8JypN5QVo3KLuboPqX0qzsmAt+pJEEr2G0uJO3W1qpp7
-   Ehjcwz1PCX+HXYymu8O8TZQk9rtOPo8TE8JFYBDw24t73yaPbb5xv1TjF
-   A==;
-X-CSE-ConnectionGUID: m9FKC+SuTGSgQF4KR/WVAQ==
-X-CSE-MsgGUID: 1e1vtWY5TeqyxnmFszmc5w==
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="231424125"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 05:09:03 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Tue, 29 Sep 2026 05:09:02 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 29 Sep 2026 05:09:00 -0700
-Date: Tue, 29 Sep 2026 14:09:00 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Quentin Freimanis <quentin@q-lab.dev>
-CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
- Cochran" <richardcochran@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: sparx5: start the domain 0 TOD counter on
- non-PTP lan969x variants
-Message-ID: <20260929120900.zld2c3h4keqcnmcj@DEN-DL-M70577.microsemi.net>
-References: <20260928044955.29647-1-quentin@q-lab.dev>
- <20260928151453.fzch356vrp3ergy7@DEN-DL-M70577>
- <4e1ef527-e843-4f1b-9f7f-cf2400fa443e@q-lab.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIfAjOtk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C061F00893;
+	Tue, 29 Sep 2026 12:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790683861;
+	bh=cbOL7hDoZzuX8z50y+d7XvRXuCqltdGfnWd75Ikn+pU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bIfAjOtkfMk5/96iaoWmEVColEG63KiXwU5Q3fZZxPjQa79TeaZjOKZEOnygjGET/
+	 MmUZIsou6J1wbXqHXfr1B80Sqs1Ae8WXwrCcRqD/WSwxcku7Ir3zGB9DCC/XFlY69q
+	 0VO6Gs5Jrk8QZh/bbywu0VidAq7Y0bGqbWLWvA5f9mNLtkuubdMTrH4dSu96l/wihU
+	 nu2JuWUCxIAUmipq29QGu1MgpfBeVGms7cOFM2HNe5UYSmxnLj2l/O9g9T1cGFfJ2Q
+	 jD7lovEqFQcQn20vXr0pTGrftIlOtlpzQErfbfk1Pjb47m0o5jav+Elt+FIWcSnmvo
+	 sHOaem9RC/8dQ==
+Subject: Re: [PATCH net] net: axienet: free outstanding TX buffers in
+ axienet_dma_bd_release()
+From: netdev-bot+sashiko@kernel.org
+To: maimon.sagi@gmail.com
+Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, daniel@iogearbox.net
+Date: Tue, 29 Sep 2026 12:11:00 +0000
+Message-ID: <179068386068.434549.2275598075562085411@kernel.org>
+In-Reply-To: <20260927081034.350422-1-maimon.sagi@gmail.com>
+References: <20260927081034.350422-1-maimon.sagi@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4e1ef527-e843-4f1b-9f7f-cf2400fa443e@q-lab.dev>
 
-Hi Quentin,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-> Hi Daniel, thanks for taking the time to reply.
-> 
-> On 9/28/26 8:14 AM, Daniel Machon wrote:
-> > Hi Quentin,
-> > 
-> > > Currently the base non-PTP capable lan969x variants don't forward any
-> > > ethernet frames. Testing showed that starting the domain 0 TOD counter
-> > > gets them working again.
-> > 
-> > Ack. Not initializing the TOD domains on certain variants is a problem.
-> > 
-> > However, TOD domains shouldn't affect basic forwarding. I tried it on my board
-> > with PTP forced off - no forwarding issues.
-> > 
-> > Certain TSN features do require TOD domains to be configured, though. How did
-> > you test this, and what exactly did you see fail?
-> 
-> Here is my test setup:
-> 
-> - a LAN9698-V/3KW purchased on digikey in October 2025.
-> 
-> - My SoM dtsi [1], board dts [2], schematics of the som [3] and
-> schematics of the carrier board [4].
-> 
-> - net/main commit a7bfaba4823e
-> 
-> - a minimal buildroot initramfs [5]
-> 
-> - eth10 in the test log is a 1g RGMII port connected to a RTL8211F PHY.
-> 
-> Note: I've snipped the output of some commands to save space.
-> 
-> Without this patch, right after a reboot:
-> 
->     $ cat /proc/cmdline
->     console=ttyAT0,115200 earlycon
->     systemd.mask=systemd-networkd.service
->     systemd.mask=systemd-networkd.socket
-> 
->     $ uname -a
->     Linux buildroot 7.3.0-rc4 #11 SMP PREEMPT Mon Sep 28 19:14:03 PDT
-> 2026 aarch64 GNU/Linux
-> 
->     $ ip link set eth10 up
-> 
->     $ ip addr add 10.0.0.45/24 dev eth10
-> 
->     $ ping 10.0.0.1
->     PING 10.0.0.1 (10.0.0.1): 56 data bytes
->     --- 10.0.0.1 ping statistics ---
->     9 packets transmitted, 0 packets received, 100% packet loss
-> 
->     $ cat /proc/interrupts
->                 CPU0
->     20:          0  GIC-0  120 Level     sparx5-fdma
-> 
->     $ ip -s link
->     12: eth10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq
-> state UP mode DEFAULT group default qlen 1000
->         link/ether 4e:b7:8e:61:37:1e brd ff:ff:ff:ff:ff:ff
->         RX:  bytes packets errors dropped  missed   mcast
->             53745     278      0       0       0     174
->         TX:  bytes packets errors dropped carrier collsns
->                 0       0      0       0       0       0
->         altname enx4eb78e61371e
-> 
-> After a fresh boot with this patch:
-> 
->     $ cat /proc/cmdline
->     console=ttyAT0,115200 earlycon
-> systemd.mask=systemd-networkd.service systemd.mask=systemd-networkd.socket
-> 
->     $ uname -a
->     Linux buildroot 7.3.0-rc4 #10 SMP PREEMPT Sun Sep 27 21:23:12 PDT
-> 2026 aarch64 GNU/Linux
-> 
->     $ ip link set eth10 up
-> 
->     $ ip addr add 10.0.0.45/24 dev eth10
-> 
->     $ ping 10.0.0.1
->     PING 10.0.0.1 (10.0.0.1): 56 data bytes
->     64 bytes from 10.0.0.1: seq=0 ttl=64 time=1.927 ms
->     64 bytes from 10.0.0.1: seq=1 ttl=64 time=0.876 ms
->     64 bytes from 10.0.0.1: seq=2 ttl=64 time=0.832 ms
->     --- 10.0.0.1 ping statistics ---
->     3 packets transmitted, 3 packets received, 0% packet loss
->     round-trip min/avg/max = 0.832/1.211/1.927 ms
-> 
->     $ cat /proc/interrupts
->                 CPU0
->     20:       2039  GIC-0  120 Level     sparx5-fdma
-> 
->     $ ip -s link
-> 
->     12: eth10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq
-> state UP mode DEFAULT group default qlen 1000
->         link/ether a2:ef:53:a5:06:73 brd ff:ff:ff:ff:ff:ff
->         RX:  bytes packets errors dropped  missed   mcast
->             147075    1646      0      96       0      61
->         TX:  bytes packets errors dropped carrier collsns
->             75918     957      0       0       0       0
-> 
-> 
-> > 
-> > > 
-> > > Fix by moving the TOD counter start code into a helper and calling it in
-> > > sparx5_ptp_init(). Non-PTP capable lan969x parts now start the domain 0
-> > > counter, and PTP-capable parts start all three, as they used to. A similar
-> > > workaround that starts all three and registers the PHC clocks is
-> > > implemented in the vendor BSP 6.18 kernel [1].
-> > 
-> > What we do downstream, is to ensure that all domains and PHC's are configured
-> > and registered on all variants, with a very simple is_sparx5() check.
-> 
-> My reasoning for only enabling the first counter and not registering the
-> clocks is that the part does not have SPX5_FEATURE_PTP, so it should not
-> expose any PTP features to userspace.
-> 
+Critical: 0 · High: 0 · Medium: 1 (2) · Low: 2
 
-I acknowledge the problem, and I agree that the PHCs should not be registered.
-As for the solution, downstream we always start all three TOD domains, including
-on sparx5. If you take the same approach here, you don't need the new helper.
-Just move the existing TOD start sequence above the if (!sparx5->ptp) early
-return, so the counters are always started, while the PHC registration below it
-is still skipped on the non-PTP variants.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> > 
-> > > 
-> > > [1] https://github.com/microchip-ung/linux/tree/bsp-6.18-2026
-> > > 
-> > > Fixes: 207966787b71 ("net: sparx5: add feature support")
-> > > Signed-off-by: Quentin Freimanis <quentin@q-lab.dev>
-> > > ---
-> > > If anyone with access to documentation more detailed than the
-> > > register map knows WHY this clock needs to be running, I'd like to add
-> > > that to the commit message.
-> > 
-> > 
-> > > 
-> > >   .../ethernet/microchip/sparx5/sparx5_ptp.c    | 72 +++++++++++++------
-> > >   1 file changed, 49 insertions(+), 23 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-> > > index 5953e04ef14e..b436684ddae6 100644
-> > > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-> > > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
-> > > @@ -573,6 +573,42 @@ static int sparx5_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
-> > >          return 0;
-> > >   }
-> > > 
-> > > +static int sparx5_ptp_tod_start(struct sparx5 *sparx5, u8 phc_mask)
-> > > +{
-> > > +       u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
-> > > +       int i;
-> > > +
-> > > +       if (phc_mask > GENMASK(SPARX5_PHC_COUNT - 1, 0))
-> > > +               return -EINVAL;
-> > > +
-> > > +       /* Disable master counters */
-> > > +       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0), sparx5, PTP_PTP_DOM_CFG);
-> > > +
-> > > +       /* Configure the nominal TOD increment per clock cycle */
-> > > +       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(phc_mask),
-> > > +                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > +                sparx5, PTP_PTP_DOM_CFG);
-> > > +
-> > > +       for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
-> > > +               if (!(phc_mask & BIT(i)))
-> > > +                       continue;
-> > > +
-> > > +               spx5_wr((u32)tod_adj & 0xFFFFFFFF, sparx5,
-> > > +                       PTP_CLK_PER_CFG(i, 0));
-> > > +               spx5_wr((u32)(tod_adj >> 32), sparx5,
-> > > +                       PTP_CLK_PER_CFG(i, 1));
-> > > +       }
-> > > +
-> > > +       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0),
-> > > +                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > +                sparx5, PTP_PTP_DOM_CFG);
-> > > +
-> > > +       /* Enable master counters */
-> > > +       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(phc_mask), sparx5, PTP_PTP_DOM_CFG);
-> > > +
-> > > +       return 0;
-> > > +}
-> > > +
-> > >   static struct ptp_clock_info sparx5_ptp_clock_info = {
-> > >          .owner          = THIS_MODULE,
-> > >          .name           = "sparx5 ptp",
-> > > @@ -605,7 +641,6 @@ static int sparx5_ptp_phc_init(struct sparx5 *sparx5,
-> > > 
-> > >   int sparx5_ptp_init(struct sparx5 *sparx5)
-> > >   {
-> > > -       u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
-> > >          const struct sparx5_ops *ops = sparx5->data->ops;
-> > >          struct sparx5_port *port;
-> > >          int err, i;
-> > > @@ -622,8 +657,17 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
-> > >                  sparx5->ptp = 1;
-> > >          }
-> > > 
-> > > -       if (!sparx5->ptp)
-> > > +       if (!sparx5->ptp) {
-> > > +               if (!is_sparx5(sparx5)) {
-> > > +                       /* the base, non-ptp-capable lan969x variants need the first tod counter
-> > 
-> > Nit: s/the/The
-> > 
-> > > +                        * running to forward frames.
-> > > +                        */
-> > > +                       err = sparx5_ptp_tod_start(sparx5, BIT(0));
-> > > +                       if (err)
-> > > +                               return err;
-> > > +               }
-> > >                  return 0;
-> > > +       }
-> > > 
-> > >          for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
-> > >                  err = sparx5_ptp_phc_init(sparx5, i, &sparx5_ptp_clock_info);
-> > > @@ -635,27 +679,9 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
-> > >          spin_lock_init(&sparx5->ptp_ts_id_lock);
-> > >          mutex_init(&sparx5->ptp_lock);
-> > > 
-> > > -       /* Disable master counters */
-> > > -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0), sparx5, PTP_PTP_DOM_CFG);
-> > > -
-> > > -       /* Configure the nominal TOD increment per clock cycle */
-> > > -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0x7),
-> > > -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > -                sparx5, PTP_PTP_DOM_CFG);
-> > > -
-> > > -       for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
-> > > -               spx5_wr((u32)tod_adj & 0xFFFFFFFF, sparx5,
-> > > -                       PTP_CLK_PER_CFG(i, 0));
-> > > -               spx5_wr((u32)(tod_adj >> 32), sparx5,
-> > > -                       PTP_CLK_PER_CFG(i, 1));
-> > > -       }
-> > > -
-> > > -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0),
-> > > -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > -                sparx5, PTP_PTP_DOM_CFG);
-> > > -
-> > > -       /* Enable master counters */
-> > > -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0x7), sparx5, PTP_PTP_DOM_CFG);
-> > > +       err = sparx5_ptp_tod_start(sparx5, GENMASK(SPARX5_PHC_COUNT - 1, 0));
-> > > +       if (err)
-> > > +               return err;
-> > > 
-> > >          for (i = 0; i < sparx5->data->consts->n_ports; i++) {
-> > >                  port = sparx5->ports[i];
-> > > --
-> > > 2.55.0
-> > > 
-> > > 
-> > 
-> > /Daniel
-> 
-> [1]
-> https://gitlab.com/qfreiman/buildroot-external-qlab/-/blob/master/board/qlab/openswitch-lan969x/dts/microchip/lan9698-openswitch.dtsi
-> [2]
-> https://gitlab.com/qfreiman/buildroot-external-qlab/-/blob/master/board/qlab/openswitch-lan969x/dts/microchip/lan9698-openswitch-10x10g.dts
-> [3]
-> https://gitlab.com/qfreiman/openswitch-lan969x/-/blob/master/openswitch-lan969x.pdf
-> [4]
-> https://gitlab.com/qfreiman/openswitch-10x10g-carrier/-/blob/master/openswitch-10x10g-carrier.pdf
-> [5]
-> https://gitlab.com/qfreiman/buildroot-external-qlab/-/blob/master/configs/qlab_openswitch_lan969x_defconfig
-> 
-> - Quentin
-> 
+- [Medium] The patch adds an unguarded walk of lp->tx_bd_v[] to
+  axienet_dma_bd_release()…
+- [Low] The new TX walk frees never-transmitted, in-flight skbs with
+  dev_kfree_skb(), which include/linux/skbuff.h:1479 defines as…
+- [Low] The commit message justifies the new unmap/free by saying 'The
+  DMA engine has been stopped by then, so the hardware no longer…
 
-/Daniel
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the same
+  interface-down leak remains in the dmaengine configuration…
+- [Medium] This problem wasn't introduced by this patch, but
+  axienet_open() allocates the BD rings and maps the RX skbs via…
+
+--
+
+net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
+
+This patch makes axienet_dma_bd_release() walk the legacy DMA TX
+descriptor ring before freeing it. It unmaps every descriptor whose cntrl
+is still set and frees any skb still attached. Frames that are in flight
+when the interface goes down are then no longer leaked.
+
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index 1722b7038f340..02bcb89d1bbef 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -187,6 +187,24 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+>  	struct axienet_local *lp = netdev_priv(ndev);
+>  
+>  	/* If we end up here, tx_bd_v must have been DMA allocated. */
+> +	for (i = 0; i < lp->tx_bd_num; i++) {
+> +		struct axidma_bd *cur_p = &lp->tx_bd_v[i];
+> +
+> +		/* axienet_free_tx_chain() clears cntrl when it reclaims a
+> +		 * descriptor, so a non-zero value means the mapping is live.
+> +		 */
+> +		if (cur_p->cntrl) {
+
+[Severity: Medium]
+Can lp->tx_bd_v be NULL or already freed when axienet_stop() gets to this
+loop?
+
+The comment above says tx_bd_v must have been DMA allocated. However,
+axienet_open() throws away the result of axienet_device_reset():
+
+axienet_open() {
+	...
+	ret = axienet_device_reset(ndev);
+	axienet_unlock_mii(lp);
+
+	ret = phylink_of_phy_connect(lp->phylink, lp->dev->of_node, 0);
+	...
+}
+
+So open still succeeds in each of these cases:
+
+- __axienet_device_reset() times out and axienet_dma_bd_init() never runs.
+  On the first open tx_bd_v is still NULL. On a later open it still points
+  at the ring that the previous stop freed.
+
+- dma_alloc_coherent() for the TX ring fails in axienet_dma_bd_init(), which
+  leaves tx_bd_v NULL.
+
+- The RX allocation or mapping fails. The out: label then calls
+  axienet_dma_bd_release(), which frees both rings but leaves tx_bd_v and
+  rx_bd_v pointing at the freed memory.
+
+On the next ifdown, axienet_stop()->axienet_dma_bd_release() reads
+cur_p->cntrl and cur_p->skb through that pointer. If the pointer is NULL
+this oopses. If the ring was freed, garbage can be passed to
+dma_unmap_single() and dev_kfree_skb().
+
+Before this patch the TX side only called dma_free_coherent(), and
+dma_free_attrs() returns early for a NULL cpu_addr. So the NULL cases did
+no harm when no traffic had been sent.
+
+The RX half of this function already has a guard:
+
+	if (!lp->rx_bd_v)
+		return;
+
+Should the TX walk have a similar check? It might also help to clear
+tx_bd_v and rx_bd_v after freeing them, and to check the
+axienet_device_reset() return value in axienet_open().
+
+> +			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
+> +
+> +			dma_unmap_single(lp->dev, addr,
+> +					 (cur_p->cntrl &
+> +					  XAXIDMA_BD_CTRL_LENGTH_MASK),
+> +					 DMA_TO_DEVICE);
+
+[Severity: Low]
+The commit message says:
+
+  "The DMA engine has been stopped by then, so the hardware no longer
+  references the buffers."
+
+Is that guaranteed? axienet_dma_stop() checks for HALT at most five times
+and carries on without any message if HALT never appears. It then ignores
+the return value of __axienet_device_reset():
+
+axienet_dma_stop() {
+	...
+	sr = axienet_dma_in32(lp, XAXIDMA_TX_SR_OFFSET);
+	for (count = 0; !(sr & XAXIDMA_SR_HALT_MASK) && count < 5; ++count) {
+		msleep(20);
+		sr = axienet_dma_in32(lp, XAXIDMA_TX_SR_OFFSET);
+	}
+
+	/* Do a reset to ensure DMA is really stopped */
+	axienet_lock_mii(lp);
+	__axienet_device_reset(lp);
+	axienet_unlock_mii(lp);
+}
+
+__axienet_device_reset() returns -ETIMEDOUT and logs "DMA reset timeout!"
+if the reset bit never clears.
+
+If MM2S is still running at that point, could this loop unmap live TX
+mappings and free skb data that the engine is still reading?
+
+The RX half of this function and axienet_dma_err_handler() already rely on
+the same assumption, so this patch adds little new exposure. Before the
+patch, though, the TX buffers were leaked, which meant they stayed valid
+in this failure case.
+
+> +		}
+> +		if (cur_p->skb)
+> +			dev_kfree_skb(cur_p->skb);
+
+[Severity: Low]
+Should these frames be freed as drops? dev_kfree_skb() is consume_skb(),
+which marks frames that were never transmitted as successfully consumed.
+
+The commit message says this mirrors axienet_dma_err_handler(). That
+function frees the same descriptors with:
+
+		if (cur_p->skb)
+			dev_kfree_skb_irq(cur_p->skb);
+
+which reports them as drops. With consume_skb(), frames thrown away at
+ifdown do not show up in drop_monitor or the kfree_skb tracepoint.
+Something like dev_kfree_skb_any() would keep the two paths consistent.
+
+> +	}
+> +
+>  	dma_free_coherent(lp->dev,
+>  			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+>  			  lp->tx_bd_v,
+
+[Severity: Medium]
+This is a pre-existing issue that this patch did not introduce. The
+dmaengine configuration (lp->use_dmaengine) seems to have the same leak on
+interface down. In axienet_stop():
+
+	} else {
+		dmaengine_terminate_sync(lp->tx_chan);
+		dmaengine_synchronize(lp->tx_chan);
+		dmaengine_terminate_sync(lp->rx_chan);
+		dmaengine_synchronize(lp->rx_chan);
+
+		for (i = 0; i < TX_BD_NUM_MAX; i++)
+			kfree(lp->tx_skb_ring[i]);
+		kfree(lp->tx_skb_ring);
+		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++)
+			kfree(lp->rx_skb_ring[i]);
+		kfree(lp->rx_skb_ring);
+
+xilinx_dma_terminate_all()->xilinx_dma_free_descriptors() frees the done,
+active and pending descriptors without running their callbacks.
+
+The TX skb and its dma_map_sg() mapping stored by
+axienet_start_xmit_dmaengine() are only released in axienet_dma_tx_cb().
+The RX skb and its dma_map_single() mapping stored by
+axienet_rx_submit_desc() are only released in axienet_dma_rx_cb().
+
+Does each down cycle therefore leak every posted RX skb and any in-flight
+TX skbs, along with their DMA mappings?
+
+[Severity: Medium]
+This is also a pre-existing issue that this patch did not introduce.
+axienet_open() allocates the BD rings and maps the RX skbs through
+axienet_device_reset()->axienet_dma_bd_init() before it calls
+axienet_init_legacy_dma(). If a request_irq() fails there, the unwind is:
+
+err_tx_irq:
+	napi_disable(&lp->napi_tx);
+	napi_disable(&lp->napi_rx);
+	cancel_work_sync(&lp->dma_err_task);
+	dev_err(lp->dev, "request_irq() failed\n");
+	return ret;
+
+axienet_open() then jumps to err_phy, which only undoes phylink and the
+stats work. Neither path calls axienet_dma_stop() or
+axienet_dma_bd_release().
+
+Are the coherent rings, the RX skbs and their mappings leaked here, with
+the DMA engine left running? The next open overwrites tx_bd_v and rx_bd_v.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927081034.350422-1-maimon.sagi%40gmail.com
