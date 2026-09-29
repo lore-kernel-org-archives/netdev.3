@@ -1,116 +1,140 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CB243D4FD;
-	Tue, 29 Sep 2026 23:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608CC3D953E;
+	Tue, 29 Sep 2026 23:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790725187; cv=none; b=XLWSSPZhnIfv9ZrfmYFHegzLEg5ppPDzsRe0IlSYvfOhhpg2anzxrwTj3gwGm5PvsizqsSBBDlnsTkTQy4JVwNXxPcfr9FxSW/CI3wCcB1j9vp7xilAO5Jm/5ehc1LRdwvjsZeC88Ss+wB4bhSBrdpCdo4R9bY87O+QqKIFOupw=
+	t=1790725515; cv=none; b=gpJ42LvNm0uAWEdqQZ/hR8H/jaO9ujFklSQBdJDHzRW+8kjxruJcd9GY9ieckKFaetN3TbSP9BfinhH0rLiAMegq9TJnFJxniA+IqkXH8Zr4hfl4Vj2BOpTJa4uaRd/eC5jbBAnld3UlZq8CObhJYSnJ3mBz4wCQmVnZyIJF1XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790725187; c=relaxed/simple;
-	bh=/ZO0HV1CHAVxHhcwpZu2/IgbMnvUsZ6FcDt33Df3jBk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kMtfodLi0IcnYacXtKGR0cMQm8BVYrrwiA40MKyOtaErbM3TfE/jrVv6Kk9Mal/h10+tPtS7x5LmKDPsbqb39LMzHlowcDKYYjan1wuPzojwb8t7JHGrp2Kw5hRl2Pve0qT8yCPURW2wZgyWKoggShIE1I3MsPVIigyiP2QSr2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Td1Ui6ET; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=ZpS1/gLD; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1790725515; c=relaxed/simple;
+	bh=qaD+oUK2DtSCtyltd/DU1cGOaw33iQMQ/3aJCRprPkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HUH+vUTkCHI3A3zK1va7Uh9M1jbrp2tFY/fzBROAad84lsNbtLMsMymZswTTvSDYTclFScsE3ZPtnu3feEE8Ggw1t8paZFzims5Ab1uAO3emkqlwP//3rjEcQLDOi616Lemnop0ZQyWfDx2SJB1yDUKyr5rHqqzRWumdaPvBW/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NgkLEWKL; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Td1Ui6ET";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="ZpS1/gLD"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68TNdGTX030368;
-	Wed, 30 Sep 2026 01:39:21 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 4E31A1228D0;
-	Wed, 30 Sep 2026 01:39:11 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1790725151; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYnov7C+eQCVb8E/UF6F7bZulO2iyu3Dr9Y6cOu87z4=;
-	b=Td1Ui6ETiJp5CwrMi6glMBfX2TgBEYxVc0h7nA0A7ZOGgoiWv15vp6eIAYv6Wioe7OXrIH
-	iIixEgCLmhM0olBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1790725151; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYnov7C+eQCVb8E/UF6F7bZulO2iyu3Dr9Y6cOu87z4=;
-	b=ZpS1/gLDKqAwsUIz0j9h7VRuhzzIqsTn14VHGe1utBlCGPFV23RqYOHMwovx2PySmzjn3/
-	UY3p4Nu2OgOl6xszd0cbAR/YJTngfMJr+/DuDE1s8fpHBsti9ZFzy4IFtAMPLXdlyYtaUj
-	zIV/+R1VX80y7rODWAK+RQFl90j///ZWfKmHhKiqf9i1TRROQoPIgUWgwj/yyegClreYoN
-	bYSCG9wXhCeqF3Yy6+uyBVTcskcd3NaMZK8oxwAN0NnkFHYNS1TFi3hvMAfz3Ft9wPjZ6y
-	wQ9Db+Jhcc6Z9tfzZs3CCYqg8M2JHD3qGIrmw/Su8dRWsWJ27TwyuRJAOGs/2g==
-Date: Wed, 30 Sep 2026 01:39:10 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
-        Simon Horman
- <horms@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David Lebrun <david.lebrun@uclouvain.be>,
-        Stefano Salsano
- <stefano.salsano@uniroma2.it>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net] seg6: ensure packet data is writable before
- modifying SRH and IPv6 DA
-Message-Id: <20260930013910.ef20606a1141e83edeee0771@uniroma2.it>
-In-Reply-To: <arsqomcYCLJqtWSC@fedora>
-References: <20260925133807.32-1-andrea.mayer@uniroma2.it>
-	<arsqomcYCLJqtWSC@fedora>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NgkLEWKL"
+Received: from CPC-mawas-YGKSX.localdomain (unknown [70.37.26.35])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7D43D20B7166;
+	Tue, 29 Sep 2026 16:44:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7D43D20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1790725461;
+	bh=FuVEsT1W2BzsrFSye+6V6QlSXmi+gbYDtaB0fNAucQI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NgkLEWKLuqLGYVaKVKJ7I8Bkj6eL0gl4Q1U2MjjsFwhgNlaIbUv5JK5OMIT+x8Pl6
+	 lGKr2yfpcP/5Tzdd2O1NR1GihuZyOqzj4aveKxpODnlW88Cb2G54QVnaNrva5m1TJN
+	 amefGb0muT+7m1V/zMTU0UvxD8IJY9vtXfPwmP0o=
+From: Manish Awasthi <mawasthi@linux.microsoft.com>
+To: horms@kernel.org
+Cc: netdev-bot+sashiko@kernel.org,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com,
+	gargaditya@linux.microsoft.com,
+	ernis@linux.microsoft.com,
+	kees@kernel.org,
+	paulros@microsoft.com,
+	mawasthi@microsoft.com,
+	Manish Awasthi <mawasthi@linux.microsoft.com>
+Subject: Re: [PATCH net-next 4/4] net: mana: Add support for CDX device ID 0x00C2
+Date: Tue, 29 Sep 2026 23:45:08 +0000
+Message-ID: <20260929234508.10647-1-mawasthi@linux.microsoft.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260929135738.GT13925@horms.kernel.org>
+References: <20260924173054.589291-5-mawasthi@linux.microsoft.com> <179035761944.2160803.12943182451050438147@kernel.org> <20260928202555.617331-1-mawasthi@linux.microsoft.com> <20260929135738.GT13925@horms.kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Sep 2026 11:05:02 +0800
-Hangbin Liu <hangbin.liu@linux.dev> wrote:
-
-> [snip]
->
-> >  static int input_action_end_core(struct sk_buff *skb,
-> >  				 struct seg6_local_lwt *slwt)
-> >  {
-> > +	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
-> >  	struct ipv6_sr_hdr *srh;
-> > +	int err = -EINVAL;
-> >  
-> >  	srh = get_and_validate_srh(skb);
-> >  	if (!srh)
-> >  		goto drop;
-> >  
-> > -	advance_nextseg(srh, &ipv6_hdr(skb)->daddr);
-> > +	srh = advance_nextseg(skb, srh, &reason);
-> > +	if (!srh) {
-> > +		err = -ENOMEM;
-> > +		goto drop;
-> > +	}
->
-> The srh is not used in the later function, maybe just
->
-> 	if (!advance_nextseg(skb, srh, &reason)) {
-> 		err = -ENOMEM;
-> 		goto drop;
-> 	}
->
-> [snip]
-
-Hi Hangbin,
-
-Right. Since the patch changed advance_nextseg() to return the SRH,
-I updated srh at every call site. Your form works as well where srh
-is not used afterwards.
-
-Thanks,
-Andrea
+> On Mon, Sep 28, 2026 at 08:25:55PM +0000, Manish Awasthi wrote:
+> > thanks for review. Comments inline.
+> > 
+> > > Thank you for your contribution! Sashiko AI review found 3 potential
+> > > issue(s) to consider.
+> > > 
+> > > Critical: 0 · High: 0 (1) · Medium: 1 · Low: 2
+> > > 
+> > > If you believe none of the issues are legitimate, please reply to each
+> > > issue of Medium severity or higher and explain why the AI is wrong.
+> > > If any of them are legitimate and you plan to respin, please let patchwork
+> > > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > > (one such reply per series is enough).
+> > > 
+> > > - [Medium] The CDX transport installs `.dev_reset = mana_cdx_dev_reset`
+> > >   (-> `cdx_dev_reset()`) but has no way to recover afterwards.
+> > > - [Low] `mana_cdx_setup_hwc_irqs()` skips IRQ affinity hints.
+> > > - [Low] The comment in `mana_gd_query_max_resources()` (gdma_main.c)
+> > >   says: "Only reset on platforms that support dynamic MSI-X allocation;…
+> > > 
+> > > Pre-existing issues:
+> > > - [High] This problem wasn't introduced by this patch, but the shared HWC
+> > >   bootstrap path that the new CDX transport now reaches trusts a device-…
+> > > 
+> > > --
+> > > 
+> > > net: mana: Add support for CDX device ID 0x00C2
+> > > 
+> > > This adds a CDX bus transport for MANA, built as mana_cdx.ko on top of
+> > > the shared gdma_core.ko, for device ID 0x00C2. It allocates the whole MSI
+> > > pool at probe time, limits the queue count to the available vectors,
+> > > restricts DMA to 32 bits, and adds a per-bus auxiliary device name prefix
+> > > so the CDX auxiliary devices stay separate from the PCI ones.
+> > > 
+> > > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_cdx.c b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
+> > > > new file mode 100644
+> > > > index 0000000000000..0d01e3d2f0d96
+> > > > --- /dev/null
+> > > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
+> > > > @@ -0,0 +1,340 @@
+> > > 
+> > > [ ... ]
+> > > 
+> > > > +static int mana_cdx_dev_reset(struct gdma_context *gc)
+> > > > +{
+> > > > +	return cdx_dev_reset(gc->dev);
+> > > > +}
+> > > 
+> > > [Severity: Medium]
+> > > Can this reset leave the whole function unusable, with no recovery short
+> > > of a manual rebind?
+> > > 
+> > > mana_dealloc_queues() calls it when a TX queue still has pending_sends
+> > > after the drain timeout:
+> > > 
+> > > mana_tx_timeout()
+> > >   -> queue_reset_work
+> > >     -> mana_per_port_queue_reset_work_handler()
+> > >       -> mana_dealloc_queues()
+> > >         -> mana_gd_dev_reset()
+> > >           -> mana_cdx_dev_reset()
+> > >             -> cdx_dev_reset()
+> > > 
+> > This version of the driver doesn't support recovery after mana_cdx_dev_reset.
+> 
+> I don't think it needs to delay progress of this patchset.
+> But I am curious to know if there are plans to add such support.
+> 
+    It is possible to have similar recovery support as the pci in this path
+    after cdx_dev_reset() and we do have plans to add it in future.
+> ...
