@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7613803D7;
-	Tue, 29 Sep 2026 00:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39AB22F767;
+	Tue, 29 Sep 2026 00:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790642315; cv=none; b=KwkKWswG59EpKjk4+LsmYKx+k1EqdoOXjNj/fW+ucp21eCeaSY3mjctLvZkRPizmsPD0aYlNj4u4pRNtu2WDTZRnnU/8eMHY8urMUOctVr51aCyC4KT6d7lsWosI3kvzWZQwrkAOCN/Vnfc6p8KvtGare68kyjRXSBt24bik3nI=
+	t=1790642319; cv=none; b=YLqMLAbXBtZmOkD712owtV/BWWzutZrJ54V5BcUzQOka2jcylBG/VKiwhIU02zcGR/MdxkR3pRdQ/bt5x0yUA6yzIlj8Fh7dZN/2M02wukXeKvYOXCm5zJmu+XDI8tbJsxeAbSy/SYA6JMhdp/m+iXqborQ133+G7ngmI8pFYSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790642315; c=relaxed/simple;
-	bh=u1qNzmdYnGPZRudytcOo4/YvE76QSeW3BiKBiS2q4FU=;
+	s=arc-20240116; t=1790642319; c=relaxed/simple;
+	bh=xUV6f1bvzEznlgjCogh7ZcvER2dBGYcOewQ6TcZRPDA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tJXb8houkH3gak/4IWxQrd1JuzRU01/MTMgh7ky3bHixgPT4icLWG1Qc7RGko4lrmQeIBKRwjqU+cDBJyXYEr1BaXE35CTasjTd7Ll9PFBZbKQX1XaVaDoNnhVqUjRWkEWH7xOtCJ6MS4rvz61Iim3SKUXp5Gy5tYasR1iK0bKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rm2eH/WX; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=TmLg/eEZNrYQmqhsVCJIprOBRFUzu2vClCHZHuBdobfA5pbvY6kvTo8aqYsEmf/Ema4Ympj+UFbcBYSffdX1y1+yfTuU2GDDjKfFvrzytMU1L0QrABBCvdN+aKaXKHDKqnJzkVHmxPWank2xo94mbW2oyn+mwZ6x8XoseysuRgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDJUZRu2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rm2eH/WX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC0C1F00893;
-	Tue, 29 Sep 2026 00:38:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDJUZRu2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23921F00899;
+	Tue, 29 Sep 2026 00:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790642311;
-	bh=2qZEWsjI6nrtWOM3TwU/zTl443CJGwIcv5kuObM97q8=;
+	s=k20260515; t=1790642315;
+	bh=17dMlqOyECTGvLdCsfaw4dQdmSvdzkKlibyFeU8G58c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Rm2eH/WXx0cvsyzzjm58uBciiyXIo8vboGRmTEsQehEtnDq6IhsQHJ0hTsqHvwI/K
-	 vyJV6uPcWVZ4wKJTJCT7aQIGVlBJn0EN6/uBBSWM/0g3VYl0Jk0ja9DJE8U+OYH7qD
-	 AVJ8q7LlTi+MhWQaZxoqY2AEYMUGifhgmluNtX5yIBsE4M3vokHNs8DFYxJt0XFRAi
-	 ylTqX/z9y6lcnUrU5hBhaiELf3YWG+d6iJqIL28qSnvKiv1AMPHNFwMmgrUBtkQ9Ro
-	 BH6DijdlaZiIisFyn5qK1XVVBE5MCjbeZIeC0DI1QyryRRkat2QdW8AGtx0hjMppVQ
-	 LhKNuv50WU4ew==
-Subject: Re: [PATCH net-next v18 01/10] net: phy: phy_link_topology: Add a
- helper for opportunistic alloc
+	b=RDJUZRu2obt2VFVNk4PqcCI7Txkgr1s+6pKMHTiNAL8Q1fQCWJnSWzR6XrJV9m8WD
+	 ixs3tU3f/z6T5eL7mWRcpPYxJjx8q82hqFx3e2zibYxJynILhwhbSidaPSmoyzR0Ot
+	 LE/rsODszRCn0DSEJHs0T0pKHs7RX8dCy2WRQyJKi7EMIbwa7msxvA+WfpSZOTJ76b
+	 B4s6qX/LlBbY0vz1d16fvA3U9Nps8DtuG5sazxaHoTUkrHTzipBetn6svWBpCZOjkj
+	 9nasAnJ8DZXZzC4gkbKoMg1GCrwQVzJyzqGJT4gy6jcXaPQMEvgwnC6wsM61HmEvNN
+	 dhuiMfQjNrDGA==
+Subject: Re: [PATCH net-next v18 03/10] net: phylink: Register a phy_port for
+ MAC-driven SFP cages
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
@@ -40,11 +40,11 @@ Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
  romain.gantois@bootlin.com, daniel@makrotopia.org,
  dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
  f@lex.la
-Date: Tue, 29 Sep 2026 00:38:29 +0000
-Message-ID: <179064230932.3145.9260154404781275100@kernel.org>
-In-Reply-To: <20260927133619.955236-2-maxime.chevallier@bootlin.com>
-References: <20260927133619.955236-2-maxime.chevallier@bootlin.com>
-X-sashiko-severity: Low
+Date: Tue, 29 Sep 2026 00:38:33 +0000
+Message-ID: <179064231334.3145.4250740133245274216@kernel.org>
+In-Reply-To: <20260927133619.955236-4-maxime.chevallier@bootlin.com>
+References: <20260927133619.955236-4-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,118 +54,157 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] The new comment in phy_link_topo_get_or_alloc()
-  (drivers/net/phy/phy_link_topology.c) lists the contexts the helper…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Low] Documentation/networking/phy-link-topology.rst (API section) says
-  struct phy_link_topology "is a per-netdevice resource, that gets…
+- [Medium] phylink_create_sfp_cage_port() calls phy_link_topo_add_port()
+  without RTNL.
+- [Low] phylink_create_sfp_cage_port() publishes a phy_port into the
+  netdev's link topology without setting parent_type.
 
 --
 
-net: phy: phy_link_topology: Add a helper for opportunistic alloc
+net: phylink: Register a phy_port for MAC-driven SFP cages
 
-This commit moves the lazy allocation of dev->link_topo out of
-phy_link_topo_add_phy() and into a new helper,
-phy_link_topo_get_or_alloc(). The helper returns the existing topology
-or allocates a new one. It prepares for tracking phy_port objects in
-the topology.
+This commit registers a phy_port for SFP cages that the MAC drives
+directly through phylink, and attaches it to the netdev's link
+topology. The port is only created for phylink instances that have a
+netdev. It is created in phylink_register_sfp() and removed in
+phylink_destroy().
 
-> diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
-> index 4134de7ae313d..0462283c80202 100644
-> --- a/drivers/net/phy/phy_link_topology.c
-> +++ b/drivers/net/phy/phy_link_topology.c
-> @@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
->  	return 0;
->  }
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index a7d086cdc9b25..19090916af75f 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+
+[ ... ]
+
+> @@ -1767,6 +1770,50 @@ static void phylink_fixed_poll(struct timer_list *t)
 >  
-> +static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
+>  static const struct sfp_upstream_ops sfp_phylink_ops;
+>  
+> +static int phylink_create_sfp_cage_port(struct phylink *pl)
 > +{
-> +	int ret;
+> +	struct phy_port *port;
+> +	int ret = 0;
 > +
-> +	if (dev->link_topo)
-> +		return dev->link_topo;
+> +	if (!pl->netdev || !pl->sfp_bus)
+> +		return 0;
 > +
-> +	/* The topology is allocated the first time we add an object to it.
-> +	 * It is freed alongside the netdev. It can be called on multiple
-> +	 * contexts:
-> +	 *  - It can be called from .probe() : No rtnl, no netdev_lock
-> +	 *  - .ndo_open() : rtnl and possibly netdev_lock
+> +	port = phy_port_alloc();
+> +	if (!port)
+> +		return -ENOMEM;
+> +
+> +	port->is_sfp = true;
+> +	port->is_mii = true;
+> +	port->active = true;
 
 [Severity: Low]
-Can phy_link_topo_get_or_alloc() actually be reached with netdev_lock
-held?
+parent_type is never set here. Should it be?
 
-At this commit, the only caller is phy_link_topo_add_phy(). It returns
-early for ops-locked devices before it calls the helper:
+phy_port_alloc() uses kzalloc, so this port ends up with
+parent_type == PHY_PORT_PHY and port->phy == NULL. The only parent
+type defined in include/linux/phy_port.h is:
 
-phy_link_topo_add_phy() {
+enum phy_port_parent {
+	PHY_PORT_PHY,
+};
+
+and its kernel-doc says "Indicates that the port is driven by a PHY
+device". This looks like the first phy_port that is driven by the MAC
+or phylink instead of a PHY.
+
+The other initializers in phy_device.c, such as phy_setup_sfp_port(),
+always set the two fields together:
+
+	port->parent_type = PHY_PORT_PHY;
+	port->phy = phydev;
+
+Nothing reads parent_type today, so this does not cause a NULL
+dereference right now. Would it make sense to add a phylink/MAC
+parent type to enum phy_port_parent and set it here? That way the
+published port would not claim a PHY parent it lacks.
+
+The same applies to phylink_add_sfp_mod_port() later in the series.
+
+> +
+> +	phy_interface_and(port->interfaces, pl->config->supported_interfaces,
+> +			  phylink_sfp_interfaces);
+> +	phy_port_update_supported(port);
+> +
+> +	ret = phy_link_topo_add_port(pl->netdev, port);
+
+[Severity: Medium]
+This runs from phylink_create(), which is documented as "the rtnl lock
+must not be held when calling this function". Can this race with
+ethtool readers of dev->link_topo?
+
+If the netdev has no topology yet, phy_link_topo_add_port() allocates
+and publishes it with a plain store:
+
+drivers/net/phy/phy_link_topology.c:netdev_alloc_phy_link_topology() {
     ...
-	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
-		return -EOPNOTSUPP;
+	xa_init_flags(&topo->ports, XA_FLAGS_ALLOC1);
+	topo->next_port_index = 1;
+
+	dev->link_topo = topo;
     ...
 }
 
-Later in the series, phy_link_topo_add_port() rejects the same devices
-with WARN_ON_ONCE(dev->netdev_ops && netdev_need_ops_lock(dev)).
+This store has no RTNL, WRITE_ONCE() or release barrier.
 
-On the open path, dev_open() only takes netdev_lock through
-netdev_lock_ops():
+phylink_create() can be called on a netdev that is already registered.
+For example, dpaa2 handles a runtime endpoint change like this:
 
-include/net/netdev_lock.h:netdev_lock_ops() {
-	if (netdev_need_ops_lock(dev))
-		netdev_lock(dev);
-}
+dpni_irq0_handler_thread()
+  dpaa2_eth_connect_mac()
+    dpaa2_mac_connect()
+      phylink_create()               <- no RTNL held
+        phylink_register_sfp()
+          phylink_create_sfp_cage_port()
+            phy_link_topo_add_port()
+              netdev_alloc_phy_link_topology()
 
-That means netdev_lock is held only for the devices that both callers
-reject. Would it be more accurate to drop "possibly netdev_lock" from
-the .ndo_open() line?
+Only the later phylink_fwnode_phy_connect() call in dpaa2_mac_connect()
+is inside rtnl_lock(). Before this patch, that later call was the one
+that first allocated the topology, through
+phy_attach_direct()->phy_link_topo_add_phy().
 
-This comment also mentions ports and the SFP cage port, which don't
-exist yet at this commit. struct phy_link_topology only has phys and
-next_phy_index. The rest of the series fixes that. "net: phy:
-phy_link_topology: Track ports in phy_link_topology" adds the ports
-xarray and phy_link_topo_add_port(). Later patches add
-phylink_create_sfp_cage_port(), phylink_add_sfp_mod_port() and
-phy_add_sfp_mod_port(). By the end of the series, only the netdev_lock
-part is still inaccurate.
+The ethtool netlink readers read dev->link_topo and dereference it
+while holding RTNL, not via RCU. For example,
+ethnl_tsinfo_dump_one_net_topo() does:
 
-> +	 *  - SFP state machine : rtnl held or not
-> +	 *
-> +	 *  However, we can't really have races :
-> +	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
-> +	 *    and trigger the alloc. Only then the ports can be added through
-> +	 *    phylib or sfp.
-> +	 *  - If we don't, the SFP port for the cage is registered first, and
-> +	 *    only then other ports/PHYs can be registered.
-> +	 */
-> +	ret = netdev_alloc_phy_link_topology(dev);
+	if (!dev->link_topo) {
+	...
+	xa_for_each_start(&dev->link_topo->phys, ctx->pos_phyindex, pdn,
+
+phy_link_topo_get_phy(), ethnl_req_get_phydev() and the PHY dump in
+net/ethtool/netlink.c follow the same pattern.
+
+On arm64, can such a reader see the new pointer before the
+kzalloc/xa_init_flags() stores are visible?
+
+The comment in phy_link_topo_get_or_alloc() explains the ordering
+between writers, but it does not seem to cover RTNL-holding readers.
+Also, phylink_destroy_sfp_cage_port() takes rtnl_lock() around
+phy_link_topo_del_port() with the comment "The port may still be
+accessed under RTNL". Should the insertion side use the same locking?
+
 > +	if (ret)
-> +		return ERR_PTR(ret);
-
-[Severity: Low]
-This is a pre-existing issue, not something this patch introduced. The
-API section of Documentation/networking/phy-link-topology.rst still
-says struct phy_link_topology "is a per-netdevice resource, that gets
-initialized at netdevice creation".
-
-The code allocates dev->link_topo only when the first object is added.
-phy_link_topo_empty() and phy_link_topo_get_phy() both handle a NULL
-dev->link_topo.
-
-The baseline already did this allocation inline in
-phy_link_topo_add_phy(). The last patch in the series, "Documentation:
-networking: Update the phy_port infrastructure description", leaves
-that sentence unchanged.
-
-Could the documentation say that the topology is allocated when the
-first object is added?
+> +		phy_port_destroy(port);
+> +	else
+> +		pl->sfp_cage_port = port;
+> +
+> +	return ret;
+> +}
 
 [ ... ]
 
