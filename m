@@ -1,78 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B12225788
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BEB215161;
+	Tue, 29 Sep 2026 01:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790645412; cv=none; b=Tr1bYwgr1PlJ4mWo4mJq3Iiwv6d5gPR4vwJC9WCwrn/RAtrKy1c11GlHaXDp6BVbRLWwe3D7I1Q/4S6Htlzbz1O6oI911rgyK65TsBswJrpH4m4x2F+Ldw5+lPBnsPmYK63eKAarcOjB1A5zjvirOHDR+ZsC2Q7TcvdgSCzQeVA=
+	t=1790645727; cv=none; b=mrXOVvfJ17XclsBsJJp/HR3GXXr54K32mrEYF9VOPKLPXuHFi2TpvwdRf872wIPfHVlukuwDuQIuTwXiKrQnb8BQ+kVJsM8FN3HtJK6o1GQ2J7fLlp0cZEUnlT8RurtSD83ftSmlNRLiaYV57GRvCKfP8sNyzHrJHiTKW3z7uTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790645412; c=relaxed/simple;
-	bh=mMscyOMm6MSP/kYeT1nr9NuLti+Fslnn9YoadJxp4tc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gd6p7RpJHZjYCwD0p6s3iVt/kEPHivkQEJXxp79C7tL2ZCJ+vzTllxlO9akOiyInksKkU56NjUoGieAVToyD8YUL4MumJc8esmqZqY29eZm3rh0hjPuNmdxGNZPBIjKxAF0vBM5fVLxnHmFqQ5T0k6y9D8Vb9VPcnQPqdld+B60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoLXYCYz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790645727; c=relaxed/simple;
+	bh=NJSyGXD2EwTKcLGu1HY9B7Os49k1NqxHt9x5UnhYyvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ydi7bYU7LIabNIIVYBrsA7Oj5EKyrj+L8d5+JW9VXx6XfXtoxpZI2sQw0DnUS9KByvTFe0wAWI9XdMjx2Ql9r4hxs3HPWdqZSAbrm3Tq32+Mt/EhNPBi6TJqxAWxcDQIz3I4mByzJ0ie9DcwOO/FPbpIpjwuSOYgQ4qV6p+zKr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQYNSjdV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoLXYCYz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF2F1F000FF;
-	Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQYNSjdV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBD81F000FF;
+	Tue, 29 Sep 2026 01:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790645410;
-	bh=x6ZAD+MbR3ivS/hFW5FO3d6cy7ssNb3Mekh6/7/HhBU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PoLXYCYzDxSM8PCbJgw24S0f8vrJw2HZRU97SFlH+RCN2XEpGFC5IxnX+hZLC12ff
-	 yFQ8oV6HVnK1QQ54s4mCEtaC7FGdNpefjmKJMYotqldHiESPrqXLzpr4rIzC/y+ODu
-	 DrvFRNSx7BWwzJKMgz7Vnao+3/O9p/Y3Cn9vFCHJ/Quj43WQEpTKCd5qOg69Pm+bDZ
-	 4rB4Tti39SstLA0CLDx94ObsOk3PE6xBlipDzpa1YHxtEbCNoI/kp+43GZwX7ehGac
-	 F2evxY5lGaHXpd8XAF/8S9UWjedFmQhqAfcW3ZPabiwLEygOqQ7By+UEm1AHY6ZMYh
-	 1ENhSP5t4omig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44703924FED;
-	Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790645725;
+	bh=pCrG0k1yDWx7CtWGccoJCO4e36Yro3RuOIif7AX3wEs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UQYNSjdV91mcpdlkgGvkQ4y5QAmUgy9+tHY9OM9D3LIMyRbXXwqyHL0Nv+G5z3OMB
+	 iUXuME4c1lqq6K27hU3V1KdzE0NTuCCIWv6f4DaP8diB4ICG/e67QilwZTmp9cVE77
+	 7CygRoj1DaN6lL67LpioKyx/V1nAnBeeAkbZaCY+j8G3xbzX23TDKpoygT8hvkAfkX
+	 sL+ETpeDJf7i5huSAd93qFYfZ/hCQ7hC39IetjwccEiTIcqp7OVrqadD1rwY9Od4RQ
+	 BPGXSCxZTZxbsNhUd+lPdi4gnUMeQRbAdK0/iN320AVfYxzO/Wpchik4XBS1R2dz6g
+	 5rmqFBWYpL4gw==
+Date: Mon, 28 Sep 2026 18:35:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: dhowells@redhat.com, netdev@vger.kernel.org, marc.dionne@auristor.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, linux-afs@lists.infradead.org,
+ linux-kernel@vger.kernel.org, qotmddnjs@ajou.ac.kr, stable@vger.kernel.org
+Subject: Re: [PATCH net v11 08/17] rxrpc: Fix error handling in
+ rxrpc_send_data()
+Message-ID: <20260928183524.42b4bfc4@kernel.org>
+In-Reply-To: <179052119212.2160803.8225282033493339825@kernel.org>
+References: <20260923133706.1496540-9-dhowells@redhat.com>
+	<179052119212.2160803.8225282033493339825@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tools: ynl-gen-c: keep the type values of a nest
- in
- spec order
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179064540953.207932.6619783602064306487.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 01:30:09 +0000
-References: <20260924223245.530132-1-kuba@kernel.org>
-In-Reply-To: <20260924223245.530132-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 27 Sep 2026 14:59:52 +0000 netdev-bot+sashiko@kernel.org wrote:
+> - [High] The fix leaves the new -ESHUTDOWN contract incomplete, and this
+>   breaks AFS abort handling.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 24 Sep 2026 15:32:45 -0700 you wrote:
-> Family._load_nested_set_nest() collects the type-value names of a
-> nest-type-value attribute into a set and Struct.set_inherited() renders
-> them sorted, while TypeNestTypeValue._attr_get() passes them to the
-> parse helper in the order the spec lists them.  For nlctrl's
-> 
->   type-value: [policy-id, attr-id]
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] tools: ynl-gen-c: keep the type values of a nest in spec order
-    https://git.kernel.org/netdev/net-next/c/c20d84c6dec8
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+This one looks like the main blocker for the series, right?
