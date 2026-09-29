@@ -1,76 +1,78 @@
-Received: from mail-ua2-f28.google.com (mail-ua2-f28.google.com [74.125.226.220])
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674B84FDA5D
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859D5012A6
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790676316; cv=none; b=jnQdZxUn9q9D15tnrMVH8i06azUko9KITz7VCB34MOnd7v7VZP6DwD646fZSLSbG7JwbYIzzL8MgpZ3eglf4+EnrKHfhwG/+m5RHyAXeM4PwDMrtNWgYMzqkgYxL+8cYqT6BMK3gc9fSStbebdhtNS7GL+uXA6HGWiwlv+2Qx0Y=
+	t=1790676465; cv=none; b=iLCpLjbipD/5u3APhZYVkT5qM2xckR5SJxr13l9i9P26ZFPFhYC1NRYL1JALI3V2qnFV9Iov6bXdlPq+VD0mQznsT0EahbZYgrVGwRNZCZq7tVINpAaC7bvHmZXgBHS92pIjzGoA2bR0KO7147vfM1gDXF/kkDx4BwHsjEQ51RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790676316; c=relaxed/simple;
-	bh=HO3kMzX3++941hDd+4FiOnTVZEiTsHEAJWUsba7xzCo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nPb7G5yFBKYR6BSQD4/rQiRACjhPtlN6goNPRFpg4qD1/NdCv/DgZUR9QQM4yDkRCIO/guDILn2MqyhzcK60EnA1dWT83L1y3QazBbi9SwR8P6LEsCZXbu1x3/3M5fv5NTELEbEybFo1NotcaxkL0/93MspFcYxXHubhD2rwsQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=EbKRY/5q; arc=none smtp.client-ip=74.125.226.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790676465; c=relaxed/simple;
+	bh=KJFLEZ1v4mTD+m/l/3qSuOzDumZPPFtC6lZTh/jPfDs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kw6dEuAm+3FK4VHrB07DwcgfyvKc6k07C6OtfAwpYJdeL5iMC/biHj/jI58bJVLmHZhLPtQK65PcIk5tFkIONGztRr1IiYgk4DNPmqDiaDKc4TFX5hJN+zEE++j7GHxuTFC1ZBmd0U+BUqHFWy+nfloJfmtU+swqSY288OdDTG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UufCtY2/; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="EbKRY/5q"
-Received: by mail-ua2-f28.google.com with SMTP id a1e0cc1a2514c-97e7c796e3aso829336241.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:05:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UufCtY2/"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144efd1ea76so2291751c88.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790676304; x=1791281104; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790676443; x=1791281243; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UoyoK9QhTWTjtlh2q64dzZQ7shB0zCBWTARiumkOiSI=;
-        b=EbKRY/5qx2mTAd3MdnsYVSSU3iVPaZ+hMxYWQBF/ZXQuvXovtSYpijcgJF1/wxg9O5
-         Djog+TegeUqewO6V3C6aIhAW+Zno4FcedSfBj3ds/aLurjUGBSkYA4CbfW8EgmEJoKVp
-         5jVy2ykFO3UjywNAD+g68FV2NtJrhUWi2XYh4=
+        bh=mMSM/kY1l4Gzn1BlIvdJFdJREWDCkpXwh6FxH2SOcxI=;
+        b=UufCtY2/weguc8BuB8PzLTNjXPYbV6Dips6UZ7khgiwkLJP27IGu//WOhYnvSVWIJ4
+         gTka285nd6BvGc1W7cUGmwhwEAPm0l0JQFleDnV5+YylH0IGWQuC/uw1KJfAqgRRNs6b
+         rsSIreJV9u1sItJxp3/bF06xyQ3e99l1le1YZoT6c2ph3OT2Vb1oUeKDuUHUNDEJvHaS
+         eXyfD6+g+a4U8vqeyw4DQU2VAz4x401rmLjO2oNMzcXhWCjlp6GzackIQIBV7A6DhpZl
+         S+5tLKHwGJfKOW1tB+E0VSldVMQcTA+zOqk5xSrSI+Vg0C+UyUIjGG7sZiw1rTpQbrg2
+         rZcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790676304; x=1791281104;
+        d=1e100.net; s=20260707; t=1790676443; x=1791281243;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UoyoK9QhTWTjtlh2q64dzZQ7shB0zCBWTARiumkOiSI=;
-        b=Hf6Hk7ABtIakPwsgGH2KAihBtAAr8dQEhSQyj7L1Wra8qYdiAMPOqL0VBlWfGS/4eg
-         Tbr+1FTC/CCAbsPAsnEQTdOR7R2IrA8s1x9sf6ES8446GFHgMVAGRVYPAhXoSpTo8PKI
-         teDFY3KVJXDpugJs27l1ZWe9SY75PjV39EmUjKszQjniipft9H3XXPK2xKKdvm0yFisY
-         /iWujBi3FxNaf29q0GSXpx+ZBcnezFRUt7bLodB7kXxb9Cerdt1spbJMbprelVp2J+bF
-         6+FfSZA76OsysfEGmhQ0VNt7VNDM+oDMIUjZFrB0JmLYZnTM7FtuwmahkBS9DJZx5K1E
-         Vs+Q==
-X-Gm-Message-State: AFq9FYIWKCuk7UrrIL4c4nQY2xUnT+Hjla42bis2lVqZ0msSrssAYuUD
-	4eSV++W90zypS5mndIhQo8F43GG+k1WvuOfCMUNwiDOz559zQOpnwHXYZ/UY8jmj58FB8dKFCUa
-	KnSgxAA==
-X-Gm-Gg: AYBFou2F+zKveIaOUN765JofR/oJz6UUGf//DfUH8qSw3o2WHahkBs6Nd4qY33W+6BX
-	+zgbnHwZidmLSnovVmvDToa9odUsxgHgq43RMiZGUEydHvcOBcaT2SV19oaweKtXmk7fhCYANlI
-	3elfQp4MQDndlHQKOohCsICvcf84z9mhyN4p38xB0O8b9z0hP/Ty2FiB0LXdlbYXMz0jEQndsh7
-	nPwX/5tcge4iY2rPJg5HNDrHsP0FurwZdHDiYqvHh8yXZ0RBqBBJ6NoG2PS0B9oUV9qlqnt6f23
-	EJ8tASHefLuT46hbQh6aXkVY8Gcd4b1dVRzZnUZRNFvqav7hnm4zrSnZYtbmz3vD1FgMAUBjLpl
-	YgoGlshwf9SSQfJ5M718oVxm6z+A7eQvAzJDalGODS1ySBKaUHUHJOeXXu0V6M/30tEvVN+vbRl
-	PFsbzmTd7dza34i+sGKmS0wPEUQspN6knzCTG7NXRhw3gNGR1z9X5azfEGtEnNXa0eNxDvLDUc+
-	n87mrvNDo0WAWGrQYdGZnwddvMxOgOtKAcxnWz1mKWD7GZNug==
-X-Received: by 2002:a05:6102:3ec3:b0:7a7:19aa:f0d8 with SMTP id ada2fe7eead31-7af1f621049mr4571207137.37.1790676303901;
-        Tue, 29 Sep 2026 03:05:03 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7b39b6a6272sm12764792137.7.2026.09.29.03.05.01
+        bh=mMSM/kY1l4Gzn1BlIvdJFdJREWDCkpXwh6FxH2SOcxI=;
+        b=izsGyZFtREQ7JFgkc+yrjNzC4/D0IHUIGZOzVHjXiRO+ep2yzWr3p9KbNTvuC4M7o9
+         w79t8nH5EtQWCyZffYC5wHVqqLRp8c3uzSaawwg8FZzGlQsiqPnqbXhjxmGqktAuQ89K
+         ksNbRHblUd803E+hNiq7VoMKIRUWMB8xzplAo3+YYxyl59+sdGGFcmSYASGsGQ2vL6VA
+         cDccPXU4ecL+sd+y2OSRQUC16q/n075GN5W3JVazpHnSIfS4q7BLvzcJSAv2cyVy/Dyz
+         IHXUMsTMpLAYj8tIVM0z6cOJUvBpsF/UhCa8z7mq7MQLvDQjvFCVZS/XLORwNzAYR8Nq
+         wsIA==
+X-Gm-Message-State: AFuF++nRV2Ts3m1oyPMvQmooyRrpGalZeT/ihJGQsdE4JpVbyWrhVCvj
+	7Gyiqq5vJukFVtF9pFYkNotqV5fqU3I/N6kBlDQsT5t0518vi1noVxTM
+X-Gm-Gg: AYBFou0UXzXcI0uGWrxOIKAedojhL5/5PANJZlDEeKtUYw/6SGVBq4NPNr5wIFGJN/Y
+	9mbdQaSpJXRbWq/XiNVskB+PXxGRfe66+3gp+7Q6om6z5I9cJuvrGxlNkphvcgwYkVTWfN8YjFu
+	EaECNIhNx92yR1wfm/LYa9XfQVFqrAiZFTbBbNgX5ugPk/9THsm05SRqtKVUZEUprv587hsvqWo
+	la/VQy9V3EoY4OHiUdxTYj6B23CBgb2qySU51ICNBLc73IE2A5FLtZRrT/Nf2x1wmF8GQfGsoKE
+	fMFA7V2Bo86vSh2KlNHtD8G6nTJxS3Xm5dcz2ON2Q1v5jeyx07j54UH941twpRgDp6jJPikI8xI
+	7v07tKudefpHD7EvuSh6J1OTlrpAuqgvgGf/CL2BVWfP4XTVTwYDG/XYcXSt1ZaqlDEWiah2job
+	Qq5tI3cDN09twWTw3W4REK8vV1bKawNxzDWVm1g5YN2GH4S+ONhP+//3FEUA==
+X-Received: by 2002:a05:7022:289:b0:14a:33d:f581 with SMTP id a92af1059eb24-14a033df628mr5250637c88.22.1790676442638;
+        Tue, 29 Sep 2026 03:07:22 -0700 (PDT)
+Received: from evangelion-g ([2a09:bac5:40e4:11cd::1c6:2])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34141a4a5ecsm36445307eec.3.2026.09.29.03.07.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 03:05:02 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+        Tue, 29 Sep 2026 03:07:22 -0700 (PDT)
+From: Ayush Yaduvanshi <ayush37735@gmail.com>
+To: Edward Cree <ecree.xilinx@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	hybris <hybris@mojatatu.ai>,
-	sashiko-bot@kernel.org
-Subject: [PATCH net 0/2] net/sched: sch_teql: fix shared headroom and header strip
-Date: Tue, 29 Sep 2026 06:04:47 -0400
-Message-Id: <QDISC-6HS9.v1.20260928064754@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel-mentees@lists.linux.dev,
+	Ayush Yaduvanshi <ayush37735@gmail.com>
+Subject: [PATCH net-next] sfc: siena: fix kernel-doc description for efx_ptp_timeset
+Date: Tue, 29 Sep 2026 15:36:24 +0530
+Message-ID: <20260929100625.50380-1-ayush37735@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,29 +81,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two pre-existing defects on the teql transmit path, both around
-teql_master_xmit() -> teql_resolve().  The first makes the slave's
-headroom write corrupt a shared skb and strips a userspace-supplied link
-header on retry; the second leaves skb->dev pointing at the teql master
-while the skb is parked on a slave's neighbour arp_queue.
+Remove excess @valid struct member description from
 
-Patch 1 fixes the shared-headroom write and the header-strip on retry,
-tracking the header length the slave actually added.
-Patch 2 moves skb->dev = slave ahead of teql_resolve() and restores
-skb->dev at the arp-queue reinjection point, so a parked skb names the
-device whose neighbour took it and is delivered with a link header.
+efx_ptp_timeset.
 
-Both are follow-ups to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
-skb->dev on the slave failure path").
+Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
+---
+ drivers/net/ethernet/sfc/siena/ptp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Jamal Hadi Salim (2):
-  net/sched: sch_teql: fix shared headroom and header strip on slave
-    retry
-  net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
-
- net/core/neighbour.c |  1 +
- net/sched/sch_teql.c | 34 ++++++++++++++++++++++++++++------
- 2 files changed, 29 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/net/ethernet/sfc/siena/ptp.c b/drivers/net/ethernet/sfc/siena/ptp.c
+index 0b723a127364..d643e41ae773 100644
+--- a/drivers/net/ethernet/sfc/siena/ptp.c
++++ b/drivers/net/ethernet/sfc/siena/ptp.c
+@@ -196,7 +196,6 @@ struct efx_ptp_event_rx {
+  * @wait: Number of NIC clock ticks between hardware timestamp being read and
+  *          host end time being seen
+  * @window: Difference of host_end and host_start
+- * @valid: Whether this timeset is valid
+  */
+ struct efx_ptp_timeset {
+ 	u32 host_start;
 -- 
-2.43.0
+2.53.0
+
