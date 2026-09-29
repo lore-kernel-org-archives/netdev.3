@@ -1,156 +1,123 @@
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8246E346ADB;
-	Tue, 29 Sep 2026 19:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AD74483B4;
+	Tue, 29 Sep 2026 19:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790709794; cv=none; b=f6OusgKsDkV4aJiuqhASQs7kN4cHJNo6oIXxMv+iHrN+qDYJMMj6SEZXjT7GyyyST6u4PkrB0Wmakzl30UKeUBhUOvNO9SOUHyc48dm+/qNonpuSD2i0va0iub9lOdb5KFHcTqCzdEkBXmn5KNzRroCEmWQ9WcvLO7zPKNRiIvw=
+	t=1790710102; cv=none; b=MHrPtgr1NOApB+Zshl4YP1uhCtxXo4Y/gmb8LZi/RfdunwSOupjapitccNRcP42Dbo/3BXCLvYghKQ3LomaAae8WXPR9NPZBkWHiJw1E3mt/pWtPXYELAUeLwpSML4YZVReKgC25KVmn9plIpbKoJ+4IIVZlpqRe3hdjjfp6ABA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790709794; c=relaxed/simple;
-	bh=cSQ7YCu+UoGfjz8hkxjPBkniKzoBGa1mW6bgEpORYvU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oCVM6r93zTICVjnuXIXYvDqxdYFwU2Peom6S+hqYcPdpfc7eJFU4I1sB4OI/mcP1MDh4JZPkWw+ZGWY0Tg6uySEeYR+G4wwfigLY4R9znJhhcZjyp+SROSTYhrL7HaWEtrK35wULzgDePLDjPQkAtvawtj56hPBrfmnhMxn5WNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.104] (91.78.6.248) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 29 Sep
- 2026 22:07:53 +0300
-Message-ID: <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
-Date: Tue, 29 Sep 2026 22:07:52 +0300
+	s=arc-20240116; t=1790710102; c=relaxed/simple;
+	bh=O0Omiyq/KcRHNIGn7ewYt7swzYz69/cx2EweUWG4Vkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GwF7GHvzAH77XntEWTCrpN3Sd83H3L0t4OsufXUPA4fh+gxH2LjQSgnLE4Jb72m9XD0L9XFf46yLsMqwcpPhCSmmyGlxBFOjYIXpLQnd80yY+fAFm36XkDBMPBKstIYsnvZ9l94AK1RNckal+Z5+cTJ+v7ItrUF5Oq/IVetNQmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuegzX1U; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuegzX1U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2AA1F000FF;
+	Tue, 29 Sep 2026 19:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790710100;
+	bh=WPq1lDMEISVN+4Wuw6T9MQdT1Hadq3U5RnwOvLWqtiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NuegzX1UKYqn/UPWpQSpkyHmTr3d3g03TW7g+C5olyCVAouYMAlk6oBFelgupSEYt
+	 8VH+lhlaHXzsRENC+xixzvC9g3gG1JhjwQbpK1+PPlyLDOkVoDZwMw54PdnOTqHnq9
+	 23BqfIn1ooJac4iV67+OB+G++SPLudSAyWBQjfLTJto0vIz1jeglLhKYZIb2gJyYYD
+	 rCpDS1itH8K8mtMEfHh90+S1AxiFcCCGE1T1I5gfiawCG/Brf2LpyLUEoDvE/5lwTw
+	 mlyRMAtmt8JrRhyjPUQl6Wc3IdFvauM9SLa6oJlXsruUTfGpJ3LHiZFDp63CpPWnIq
+	 /EcVbqkJAeV3g==
+Date: Tue, 29 Sep 2026 21:28:11 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, Bjorn Andersson <andersson@kernel.org>, 
+	Chris Lew <christopher.lew@oss.qualcomm.com>, Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
+	Juha-Matti Tilli <juha-matti.tilli@iki.fi>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
+Message-ID: <4dt7cguc4trc5i55ot3numuzz3nolbcpgtl4iztxw4a7b46v23@relb42cpotlz>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+ <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+ <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
-To: Jiale Yao <yaojiale02@163.com>, =?UTF-8?Q?Niklas_S=C3=B6derlund?=
-	<niklas.soderlund@ragnatech.se>, Paul Barker <paul@pbarker.dev>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, <netdev@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <stable@vger.kernel.org>
-References: <20260927144741.1320558-1-yaojiale02@163.com>
- <20260927144741.1320558-7-yaojiale02@163.com>
-Content-Language: en-US
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <20260927144741.1320558-7-yaojiale02@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/29/2026 18:54:33
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 206322 [Sep 29 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.27
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 125 0.3.125
- 408a76d0ab6a6a06c054d212c38932c1e9d7db86
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 91.78.6.248
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/29/2026 18:57:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/29/2026 5:22:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
 
-Hello!
-
-   I guess you used scripts/get_maintainer.pl -- if so, I suggest that
-you add --no-git-fallback next time. Your current To: list is painfully
-long and contains some long defunct addresses (like mine)...
-
-On 9/27/26 5:47 PM, Jiale Yao wrote:
-
-> ravb_remove() frees the netdev before devres releases the managed IRQs.
-> The handlers use the netdev as their data pointer, so an interrupt during
-> that window can access freed memory. Probe error paths have the same
-> ordering problem.
+On Tue, Sep 29, 2026 at 10:15:52PM +0530, Deepak Kumar Singh wrote:
 > 
-> The remove callback also returns when runtime resume fails. That leaves
-> the netdev registered while the driver core still releases its managed
-> resources. A running interface already holds a runtime PM reference, so
-> the extra get cannot invoke a failing resume. A resume failure therefore
-> occurs while the interface is down and ndo_stop() will not be called.
-
-   Seems like a separate problem?
-
-> Place the IRQ resources in a dedicated devres group and release it before
-> freeing the netdev. Continue unregistering and freeing software resources
-> when runtime resume fails, but skip the unmatched runtime PM put.
+> On 9/22/2026 7:11 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > 
+> > Now that the QRTR driver allows using the unique node id for each device,
+> > which is different from the node id received from the remote node, compute
+> > a unique node id using a new API, qrtr_host_node_id().
+> > 
+> > This API takes the 'index' parameter and adds it to QRTR_NODE_HOST_BASE,
+> > whose value is outside of the node id range used by the remote nodes (0 to
+> > 0xffff).
+> > 
+> > Finally, call the new API from MHI endpoint driver by passing the MHI
+> > controller index as the parameter. The MHI controller index is unique for
+> > each controller, thereby for each MHI endpoint device.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > ---
+> >   MAINTAINERS        |  1 +
+> >   include/net/qrtr.h | 21 +++++++++++++++++++++
+> >   net/qrtr/mhi.c     |  4 +++-
+> >   3 files changed, 25 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index df8ab9b82402..9c8bb086be28 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -22511,6 +22511,7 @@ QUALCOMM IPC ROUTER (QRTR) DRIVER
+> >   M:	Manivannan Sadhasivam <mani@kernel.org>
+> >   L:	linux-arm-msm@vger.kernel.org
+> >   S:	Maintained
+> > +F:	include/net/qrtr.h
+> >   F:	include/trace/events/qrtr.h
+> >   F:	include/uapi/linux/qrtr.h
+> >   F:	net/qrtr/
+> > diff --git a/include/net/qrtr.h b/include/net/qrtr.h
+> > new file mode 100644
+> > index 000000000000..745d51b4a6ba
+> > --- /dev/null
+> > +++ b/include/net/qrtr.h
+> > @@ -0,0 +1,21 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +#ifndef _NET_QRTR_H
+> > +#define _NET_QRTR_H
+> > +
+> > +#include <linux/types.h>
+> > +
+> > +/* The offset is chosen carefully to not collide with the node ids allocated by
+> > + * the remote nodes. All the remote nodes use node ids in range 0 to 0xffff.
+> > + */
+> > +#define QRTR_NODE_HOST_BASE 0x10000u
 > 
-> Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-> Fixes: 48f894ab07c4 ("net: ravb: Add runtime PM support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> ---
->  drivers/net/ethernet/renesas/ravb_main.c | 23 +++++++++++++++++------
->  1 file changed, 17 insertions(+), 6 deletions(-)
+> Can it be exposed with include/uapi/linux/qrtr.h also. There are user space clients like modem manager
+> which need to calculate modified node id to distinguish same service from multi modem over mhi.
+> This is same as wlan use case.
 > 
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index ea1c7e536791..a25f5ac7062f 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-[...]> @@ -3124,6 +3131,8 @@ static int ravb_probe(struct platform_device *pdev)
->         pm_runtime_disable(&pdev->dev);
->         pm_runtime_dont_use_autosuspend(&pdev->dev);
->         clk_unprepare(priv->refclk);
-> +out_release_irqs:
 
-   Somewhat unobvious label name, given the following call...
+I'm OK with exposing the final nid to the userspace, but not just the offset and
+asking client to calculate the nid on its own.
 
-> +       devres_release_group(&pdev->dev, priv);
->  out_reset_assert:
->         reset_control_assert(rstc);
->  out_free_netdev:
-> @@ -3141,9 +3150,10 @@ static void ravb_remove(struct platform_device *pdev)
-> 
->         error = pm_runtime_resume_and_get(dev);
->         if (error < 0)
-> -               return;
-> +               dev_warn(dev, "failed to resume device: %d\n", error);
-> 
->         unregister_netdev(ndev);
-> +       devres_release_group(dev, priv);
->         if (info->nc_queues)
->                 netif_napi_del(&priv->napi[RAVB_NC]);
->         netif_napi_del(&priv->napi[RAVB_BE]);
-> @@ -3153,7 +3163,8 @@ static void ravb_remove(struct platform_device *pdev)
->         dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
->                           priv->desc_bat_dma);
-> 
-> -       pm_runtime_put_sync_suspend(&pdev->dev);
-> +       if (error >= 0)
-> +               pm_runtime_put_sync_suspend(&pdev->dev);
+Will implement this final nid ABI in next version.
 
-   Hm, definitely seems like a material for a separate patch...
+- Mani
 
-[...]
-
-MBR, Sergey
-
+-- 
+மணிவண்ணன் சதாசிவம்
