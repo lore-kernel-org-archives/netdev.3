@@ -1,65 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E986B2931DF;
-	Tue, 29 Sep 2026 08:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1D03DEAD3;
+	Tue, 29 Sep 2026 08:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790670452; cv=none; b=e8UYthDh43zspQGd60S8UHS8o/4kUse0CTrSfR1ifntXW4K4A0l7NuQ5V07LQB7XCRcjSAFCxqntqtXiQGs+mDkuY4CFHdL2Bh6QTEsSLjKUUkPEAc3apVE6bSrooH4mmcEil4EKi0hLqrmxerNMggLMJx/MXAksDFWwRGUWSZ4=
+	t=1790670949; cv=none; b=FGwnHag/hyKbqEXuyBwuzBIBdGsegKwc8id2bZ5iKCVxga2drsC5eY+ZoONL2r0ejSUmMkIBPD/qQH6O7wmM7qGcYk/4Brdf5BQPh0rJZA9q9XwRtKy30G9KlfVEo1oYVDkR7eAjqZG9n+aUKkyGEi4nUc2bpIGAoNc5NyFUZ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790670452; c=relaxed/simple;
-	bh=OLyupj4VY2YdQb6ysUVJTbnElUAa+kENmXAjI+Ba+Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=piEVOVVICneA58h4yiejEuXKlqdBaAXecf1bl4DrkhPUTZA+LG3T8fbk3kUsXFSuxYnmAaTw6ld6QwcD5keB440bg99HDe8h/d9hVXllfAj7q+vpDl6yRbN2/HhjwL/aAg6pC/k81upjUUHPZsECVTQROF9GueyxSnP2mbJr7h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lKtpxG6J; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790670949; c=relaxed/simple;
+	bh=26s2Byk8YuXobhtK9pQRAsPXANbN9TjshX7nxF2Q1Mg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e1816dsVHbuAKvkEpMqVR/0jkq8GrBeIDyLXb93jtaaVk8QXqSUPqIhLoQJjg5ZdJELBzdk32TgPpic0XM/x7Aok2vNjTxv4WGR4x4sC/WX2pLnW6mT+lGI8FGbdtgHVZLi9QwLX+cTotoPBNjQk5jXcra52jZOyl3gEfLu2PsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gFsDpE4k; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lKtpxG6J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790670449; x=1822206449;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OLyupj4VY2YdQb6ysUVJTbnElUAa+kENmXAjI+Ba+Gk=;
-  b=lKtpxG6JMQsXPfIzWqSA2oHnWjZK2zzq4oGfw+Uyq1Lcq9SEr6eWjo8X
-   TDTiGBt00S3OlB8m7D9Q64haDVtsKbCNMmSHT2K8sWDd0h8DaoBtcykFX
-   5Txsi5zy8A+9L/irDNW6tCNmPaZGJ+8MUjh8o6VOv+HaDW5F5lm8RxqZC
-   z7aXFv8BxPLz8lojGUuJQjc/RVNVjY3MiOP4jspDcVdMsFDK7xuJPmC/R
-   oBwehRxpN9Ee7R6RyveyaNzOHxTH/XZ8gqiB1Ti4CzzQ+MmE6AdeAsnPI
-   CVBHvTLAhaoAHjFYRcy19E1v3DguP9JKTGm4ZHDBnp8a6hZj2UtGSpzv/
-   g==;
-X-CSE-ConnectionGUID: PkC5E9wyQ/yxIATDRs12Zw==
-X-CSE-MsgGUID: rh7lApFZRuOeAT6lQcv98g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="94264651"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="94264651"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 01:27:28 -0700
-X-CSE-ConnectionGUID: mTZreb/GQQOIAd/exbegJw==
-X-CSE-MsgGUID: zWxYh8ooTQeerp3UuqfzmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="278518144"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa003.jf.intel.com with ESMTP; 29 Sep 2026 01:27:25 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id D1ECB99; Tue, 29 Sep 2026 10:27:23 +0200 (CEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gFsDpE4k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=a0
+	/ApTQ8z0E7J+4U7miE76EY6mccpvjtxEhGKrs8PsQ=; b=gFsDpE4kp5zysSD2tz
+	U5AnEoyRfe5fVmL/iREYTwefBBl0zAjSSy+oo7ekUeII51mg0dwaQ8taESRgwque
+	qr2GXsokVuUtDfdYTJYQFJUStZXpwLza3PnXTHs//nWIpLQ0VnuMfK1dodpbjpEK
+	Hvj7Cq8oUjnT24fvDNJBOsOI0=
+Received: from nec8-i7 (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3vx8seLtq177cBQ--.12081S3;
+	Tue, 29 Sep 2026 16:34:55 +0800 (CST)
+From: chenyuan_fl@163.com
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	daniel@iogearbox.net,
+	ast@kernel.org,
+	cong.wang@bytedance.com,
 	linux-kernel@vger.kernel.org
-Cc: Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v1 1/1] eea: Drop temporary buffer by using %pEp directly
-Date: Tue, 29 Sep 2026 10:27:22 +0200
-Message-ID: <20260929082722.3368741-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
+Subject: [PATCH bpf-next 1/2] bpf, sockmap: Fix udp_bpf_recvmsg() spinning on backlog-only ingress
+Date: Tue, 29 Sep 2026 16:34:46 +0800
+Message-ID: <20260929083447.558818-2-chenyuan_fl@163.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260929083447.558818-1-chenyuan_fl@163.com>
+References: <20260929083447.558818-1-chenyuan_fl@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,38 +48,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3vx8seLtq177cBQ--.12081S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFykCF48WrWxAF47ZF43Jrb_yoW8WFyxpF
+	WYvayrAF1ktr4j9wn5AFWxX3Wfuw15Ja1xGr1rCw1fZwsYkr1fXFWrKFyFvF4jyr4vya1Y
+	qFWvgr1aywsxA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbdb8UUUUU=
+X-CM-SenderInfo: xfkh05pxdqswro6rljoofrz/xtbC5Q+ycGq7eC9sMwAA3x
 
-Instead of calling string_escape_str() followed by %s specifier,
-use %pEp specifier directly. With this being done, drop temporary
-buffer.
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+udp_bpf_recvmsg() re-arms its msg_bytes_ready loop whenever
+psock_has_data() is true, but that predicate also covers an skb parked
+in psock->ingress_skb, which sk_msg_recvmsg() can never consume: it
+only walks psock->ingress_msg.
+
+When the backlog stays populated, e.g. while sk_psock_handle_skb()
+keeps returning -EAGAIN, every round gets copied == 0 and
+udp_msg_wait_data() returns 1 again from that same skb, so the loop
+never sleeps: recvmsg() spins at 100% CPU while holding the socket
+lock, ignores SO_RCVTIMEO and never returns to user space.
+
+The wide probe is intended for the entry check and the wait condition,
+but re-arming can only make progress from ingress_msg. TCP and
+unix_bpf_recvmsg() therefore re-arm on !sk_psock_queue_empty(psock)
+and otherwise fall back to the plain receive path. Do the same for UDP
+so the reader sleeps and returns -EAGAIN on timeout as expected.
+
+Fixes: 9f2470fbc4cb ("skmsg: Improve udp_bpf_recvmsg() accuracy")
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
 ---
- drivers/net/ethernet/alibaba/eea/eea_adminq.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ net/ipv4/udp_bpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_adminq.c b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-index 73d0caf25700..d17575a76890 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-@@ -522,16 +522,8 @@ void eea_adminq_config_host_info(struct eea_net *enet)
- 			dev_warn(dev, "The hardware-driven state validation may be abnormal.\n");
+diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
+index ad57c4c9eaab..8aca9fb89334 100644
+--- a/net/ipv4/udp_bpf.c
++++ b/net/ipv4/udp_bpf.c
+@@ -91,7 +91,7 @@ static int udp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+ 		data = udp_msg_wait_data(sk, psock, timeo);
+ 		if (data) {
+-			if (psock_has_data(psock))
++			if (!sk_psock_queue_empty(psock))
+ 				goto msg_bytes_ready;
  
- 		if (rep->has_reply) {
--			char buf[EEA_HINFO_MAX_REP_LEN] = {0};
--
- 			rep->reply_str[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
--
--			string_escape_str(rep->reply_str, buf, sizeof(buf),
--					  ESCAPE_NP, NULL);
--
--			buf[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
--
--			dev_warn(dev, "Device replied: %s\n", buf);
-+			dev_warn(dev, "Device replied: %pEp\n", rep->reply_str);
- 		}
- 	}
- 
+ 			release_sock(sk);
 -- 
-2.50.1
+2.54.0
 
