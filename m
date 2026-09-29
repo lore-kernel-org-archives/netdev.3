@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A7E3B6370
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775253B6370;
+	Tue, 29 Sep 2026 23:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790725807; cv=none; b=ZGU6fgJzOTj0Jh/K6YVnY3k2tZp6sSHXnoKbxMLMxlQdHJlZgxppSmY2bFvD4qfBpGFsSNddgcYAcqYW1o787DGfMTPaYUYS2U9/s+aQ4h2FUl1LDtBW9n5agSEireMR9y9KUGnw9d7oY4PCRNmsWMdf1496hNAuf2T7VndKH2M=
+	t=1790725810; cv=none; b=p8uIhD1xAQN4kg6QPk3C81X4ju2gwieYOnhe1a+djDcSH9rHW+RCt58SydLtOlZXeKkYTzLOxkTkM9u9wgomLkTrfmpo7Epn/bE7TqTLJwtymFYltqb8ONgbYCfeWuIKX/y/woSxYz+X8I9PrKgCmGkEWVl2YdUUyCJiE3KMwc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790725807; c=relaxed/simple;
-	bh=TA+J3yQqhB0Bp/EQNZb0uNSjHp6QXI2tfJDfelzzG10=;
+	s=arc-20240116; t=1790725810; c=relaxed/simple;
+	bh=8w2HKW1hOCY/1LMK3e6/ZsRot11crplpjWA+dW+c0cM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rIS4aYLZT9lBVA280r2+cnWOQGcGfZfN6Cn2D2Y+ErGR1gidMFerduhgZ+UQLg9gL+TECT74z+DBPUFoLy8DK7dDVio78Mwg9zAT5OlK+KgS7N2+NceRFsaG1NXI1rkqEbtxVAyHD60gJSvRvM25Ij3GwR6tmuSjoganCFpqgCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7xfWkdb; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=UEOd5khoysm27m7A7W9m5A/zHNMjkPhhLnKuLAHvxlxF16ykj3cWkZgNWHatWIqeBRg0MTgU/W/cAWrA/8DNHDgbt9aqc74gOcOoeRfNZcOgqPP6ccaS08gg6ja+vR3MGTLJLWdbwVriZBQnx27+RM2jxY6TEwSRu9lA+f+eLWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPIqWhSG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7xfWkdb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8701F000FF;
-	Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPIqWhSG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C411F000FF;
+	Tue, 29 Sep 2026 23:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790725805;
-	bh=K5STqsST9hTqkYRA5GaFdliU8v5WFv2Y71PI1VdU6a8=;
+	s=k20260515; t=1790725809;
+	bh=xxUwmjfHxdPkhVzSMNKGk/NalI7DwH719XPdmccjABc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=b7xfWkdb2ALCoaAA2iPpwSFpYSzd5sngh41nW8695nI/tw5Lk85TUyF7+tgYRgnv7
-	 PqFkQqxjaaadO06nmBkyxfxJeQITmoCqfMHIAP/rmKH8M6svrhPSxVIlrHNxbZG/jx
-	 HP2mPtXkdWoLE3HEG8VYThv3/MBNbptb7UFfgyjwGlcGo/xq9SaWrOuF6oYIVYgXPx
-	 zElpYQVnaIaEOIDtBgwChzyAREGVO8Che9QYmXQ/BDcJCRgNuMrCzdH6BAZl9qYSDB
-	 NoQQ8jehx7X4yG85YZuZqFKl4AwrpcecLh/15aedZFiRFgk2y5BpBZ+FmF/BgXJq0I
-	 WRILnce0dQMCQ==
+	b=CPIqWhSGp0SiwyZQ2eEI3dQJgc5ebYaBrht90l5fxZ+UTQzXUJEeqL1DCrnkiIwGZ
+	 XWdqJcsZKqfploqJ1K3eZ5honEenojtiqtxhW8mnQzuxYxxwi646alzkegw9L4e/pB
+	 8ceVnMg5U2im3S3AL/8F5dT08QvQu8cMSkmnzCl4qn8165AcsL1FoR1PAX/c04lnzb
+	 GawtANFuCsjHLVqO9caH/TSZVT8UkfFW0rRPItCWjoYPxbqfDbIEA1WGC8Dk7PopL/
+	 YAyzzE9/lOTrQMitJKC8qq+5T7fNCafbMyN5jE4w+OBxJxMES265KF13+ySz3FJYfe
+	 M4ONOyKZhe0DA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B481439D5FDD;
-	Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15FC39D5FDD;
+	Tue, 29 Sep 2026 23:50:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/packet: prevent TX_RING byte count overflow
+Subject: Re: [PATCH] usb: atm: use request_firmware_direct() for firmware
+ probing
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179072580454.1169866.3216258817099435365.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 23:50:04 +0000
-References: <20260925124829.6595-1-ilkka.lappetelainen@gmail.com>
-In-Reply-To: <20260925124829.6595-1-ilkka.lappetelainen@gmail.com>
-To: =?utf-8?q?Ilkka_Lappetel=C3=A4inen_=3Cilkka=2Elappetelainen=40gmail=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
- security@kernel.org
+ <179072580753.1169866.12044189359267660382.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 23:50:07 +0000
+References: <20260924050654.15347-1-valigurasm@gmail.com>
+In-Reply-To: <20260924050654.15347-1-valigurasm@gmail.com>
+To: Matvey Valigura <valigurasm@gmail.com>
+Cc: gregkh@linuxfoundation.org, 3chas3@gmail.com, duncan.sands@free.fr,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org,
+ syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com, stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 25 Sep 2026 15:48:29 +0300 you wrote:
-> tpacket_snd() drains every SEND_REQUEST frame in a TX ring and adds
-> each valid packet length to the signed int len_sum. Userspace can
-> recycle completed frames concurrently, so a single blocking send call
-> is not bounded by the ring size.
+On Thu, 24 Sep 2026 08:06:54 +0300 you wrote:
+> When disconnecting a device while firmware is not present on the system,
+> usbatm_usb_disconnect() waits for the heavy_init thread to finish:
+>     wait_for_completion(&instance->thread_exited);
 > 
-> After enough successful transmissions len_sum wraps into the negative
-> range. In particular, 65536 65535-byte frames followed by a 65007-byte
-> frame produce 0xfffffdef, or -EIOCBQUEUED. sock_sendmsg_nosec() treats
-> that as an impossible return and triggers a BUG. On systems configured
-> to panic on oops, a CAP_NET_RAW holder can panic the host kernel.
+> If CONFIG_FW_LOADER_USER_HELPER_FALLBACK is enabled, missing firmware
+> causes request_firmware() to fall back to sysfs/udevd. This creates a
+> circular dependency during disconnect:
+> 1. usb_disconnect() holds device_lock(&udev->dev).
+> 2. usbatm_usb_disconnect() waits for instance->thread to exit.
+> 3. instance->thread waits for request_firmware() sysfs fallback.
+> 4. udevd receives the firmware uevent and attempts to read sysfs
+>    attributes (e.g. serial), blocking on device_lock(&udev->dev).
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/packet: prevent TX_RING byte count overflow
-    https://git.kernel.org/netdev/net/c/2cf81fc9505b
+  - usb: atm: use request_firmware_direct() for firmware probing
+    https://git.kernel.org/netdev/net-next/c/f10883b37d9c
 
 You are awesome, thank you!
 -- 
