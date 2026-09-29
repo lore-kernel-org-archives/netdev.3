@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A6757C726
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D226657D20A
 	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790721728; cv=none; b=slCMXjpQUuzwvgDwNXubOPcNhD9xCSExVTsbbJRxog6Mn+/7Llp8QxpuQgUYVEvoIN+E+qIOt866j6hKPfdc3gyIWrUX3T7N8bi8wvAO+/V7cuMut3+Ka94LC8clf5Eitd2LH452DCcgy8Fl6WiAQoyFDZN4sqlAVVRTTyIaycw=
+	t=1790721728; cv=none; b=JuwnL2jr7TwoYqkY2mGNizLaQzdLt4do2WV91j2ROaYjZaIc5N/B1NZJ/h363/AE5hlc85V4UMsCFAesfPsl9JHdDUqHGcg8W2+V5Lx328OCPeTySv4uv1CHRTC8SGnvJthL80or/J03oMoXjpME6CK3t7ZfC9Mj+hJ1cGuDmzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790721728; c=relaxed/simple;
-	bh=1jeofeOcIlSqrtgIJ5r5carB/17a4FMnpSTsXzeUI7k=;
+	bh=uh4FdMuHAwT9B2zLb2vIrnKfu0GrMrFO7d9Ky1TIp4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPK8RurQvtx0c62YQydXFyFaV1uyVh17KfcznB4TFVTk1ULiVFp8wkQ+nmePsjNseJ48Sp8dAUxa74G2wpYx7v2r/0a6J9BtJhgfYYSGA1zfXqIuJ+NsnYoLE+qkEay8T9Uwxp7EwPZMRlMRUY3zzkhCqdOC3kBCllNKN0utIA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eWVr1nKR; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=BHoXD/iKZRsPsDC8xNUAA4lhKTHknOUFZnXm1Fc0d2l8ZlAdN6jG1LW3ulhqSiM/6qAJu0Gbb6fWGAujbpcUCuAPRpFr3RRyS1yMe78fuxkiWIBWFLdgGZqd123UEfTvgf5Vf3Q9MAiJl0XRpDqvgu8MRNChtGj1HMq3C472de0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XhcBxUpD; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eWVr1nKR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XhcBxUpD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1790721725; x=1822257725;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1jeofeOcIlSqrtgIJ5r5carB/17a4FMnpSTsXzeUI7k=;
-  b=eWVr1nKRUotwkBUJs4foB1RYac+WASIsPG++6sofXYyDS8Z/6PXsK/sl
-   aNQDwCv8Ku3FlqUudu/E4OZv1Jhq+75qnS+hkqi7THf1gKxmqvcXKzr3G
-   Dt2HEei/l1pc2y10G44wpADZdZ4qFQa+tLHnr1zOHKyu+CLPyUmra2Y8Z
-   VGCJnCfqynlbutNZmDzZbw0dkRrcV0HGA0dBgvLIpw/W83gPWRLpBPO9J
-   Cg7eD6a1rUTgeeR4p8xNbNXzuTXKoF0ZRQAE31TgQb8xKOvougu506aW2
-   nL4jo/Qt8lkIlmB3YOLeGcQesJLz9MvXjUDpawP5TKBmPhihf1PQRSTbf
-   Q==;
-X-CSE-ConnectionGUID: ct3BeLUeRLSzjn//9G1Rtg==
-X-CSE-MsgGUID: RNn+0aSHQ52vOZZ1TsF6fg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91548857"
+  bh=uh4FdMuHAwT9B2zLb2vIrnKfu0GrMrFO7d9Ky1TIp4w=;
+  b=XhcBxUpDOg6cgn+r7Psxvvap3GGyiTCsb3tqXFUm35JirUgYZDxdX5lS
+   GpoPh6ZYqKlgXEsEz6nFd9ieyXMrWxVWRZnZKpxMxtZ5+hqzJp/BkvjVQ
+   JK/PshbwYzlVLdn0NzxabpdspuXPXXffs5nw3gdu6MzgGN5obKp2WiS/8
+   iDj68r9Tp0ovdrf4tNQ47DN4qFxt/xs+r/C8pxSrVIpp4YAIuunXdBqUd
+   V2odvqZH/C0Nt+XCYowOVr3gcZC2eDzhJc8ehwh5tYL+AVErARb2ozKGp
+   FU/vHa+F2avF1kBIApomjV2kSzrHhuC7EEEtysQ5Fv8SXwy4rQUryMW6b
+   g==;
+X-CSE-ConnectionGUID: tE/hXik3Q3uGaT7sSgVe2A==
+X-CSE-MsgGUID: nxAvyEcmSoaFaCUYvEBPUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91548871"
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="91548857"
+   d="scan'208";a="91548871"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 15:42:01 -0700
-X-CSE-ConnectionGUID: /aAk9UKpQQ2Zat+b7oF8OQ==
-X-CSE-MsgGUID: 2K0l4enGQSKPpUiLqFz1bQ==
+X-CSE-ConnectionGUID: EvgYysY3R8qzwsWB8dV4qg==
+X-CSE-MsgGUID: 0n48MesXQ0qk1oLMPi8v+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="313452300"
+   d="scan'208";a="313452311"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa001.jf.intel.com with ESMTP; 29 Sep 2026 15:42:01 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,21 +50,20 @@ To: davem@davemloft.net,
 	edumazet@kernel.org,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Marcin Szycik <marcin.szycik@intel.com>,
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	anthony.l.nguyen@intel.com,
 	grzegorz.nitka@intel.com,
-	aleksandr.loktionov@intel.com,
+	marcin.szycik@intel.com,
 	jacob.e.keller@intel.com,
 	przemyslaw.korba@intel.com,
 	xiongwm2026@163.com,
 	ynorov@nvidia.com,
 	przemyslaw.kitszel@intel.com,
 	horms@kernel.org,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 02/10] ice: use ice_fill_eth_hdr() in ice_fill_sw_rule()
-Date: Tue, 29 Sep 2026 15:41:42 -0700
-Message-ID: <20260929224153.1455466-3-anthony.l.nguyen@intel.com>
+	Alexander Nowlin <alexander.nowlin@intel.com>
+Subject: [PATCH net-next 04/10] ice: increase OICR interrupt moderation rate to 20K interrupts/sec
+Date: Tue, 29 Sep 2026 15:41:44 -0700
+Message-ID: <20260929224153.1455466-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260929224153.1455466-1-anthony.l.nguyen@intel.com>
 References: <20260929224153.1455466-1-anthony.l.nguyen@intel.com>
@@ -76,56 +75,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marcin Szycik <marcin.szycik@intel.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-Use the already existing helper function to fill Ethernet header. Also
-replace sizeof with a (also existing) macro to reduce the number of
-variables.
+The miscellaneous interrupt cause (OICR) is throttled to 8K
+interrupts per second (124 us minimum spacing). This interrupt
+handles VF mailbox messages and Tx timestamps, so the low rate
+imposes a minimum latency floor on both use-cases.
 
-Suggested-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
+Raise the rate to 20K interrupts per second (50 us minimum
+spacing) to allow lower latency handling for Tx timestamp
+bursts and high VF message rates.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 6a5875bd9c6b..4daee252e2a6 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -2612,7 +2612,6 @@ ice_fill_sw_rule(struct ice_hw *hw, struct ice_fltr_info *f_info,
- 	u16 vlan_id = ICE_MAX_VLAN_ID + 1;
- 	u16 vlan_tpid = ETH_P_8021Q;
- 	void *daddr = NULL;
--	u16 eth_hdr_sz;
- 	u8 *eth_hdr;
- 	u32 act = 0;
- 	__be16 *off;
-@@ -2625,11 +2624,10 @@ ice_fill_sw_rule(struct ice_hw *hw, struct ice_fltr_info *f_info,
- 		return;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 707c7431b91a..73f69d453542 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3428,7 +3428,7 @@ static int ice_req_irq_msix_misc(struct ice_pf *pf)
+ 		     ((pf->ll_ts_irq.index + pf_intr_start_offset) &
+ 		      PFINT_SB_CTL_MSIX_INDX_M) | PFINT_SB_CTL_CAUSE_ENA_M);
+ 	wr32(hw, GLINT_ITR(ICE_RX_ITR, pf->oicr_irq.index),
+-	     ITR_REG_ALIGN(ICE_ITR_8K) >> ICE_ITR_GRAN_S);
++	     ITR_REG_ALIGN(ICE_ITR_20K) >> ICE_ITR_GRAN_S);
  
--	eth_hdr_sz = sizeof(dummy_eth_header);
- 	eth_hdr = s_rule->hdr_data;
- 
- 	/* initialize the ether header with a dummy header */
--	memcpy(eth_hdr, dummy_eth_header, eth_hdr_sz);
-+	ice_fill_eth_hdr(eth_hdr);
- 	ice_fill_sw_info(hw, f_info);
- 
- 	switch (f_info->fltr_act) {
-@@ -2730,7 +2728,7 @@ ice_fill_sw_rule(struct ice_hw *hw, struct ice_fltr_info *f_info,
- 
- 	/* Create the switch rule with the final dummy Ethernet header */
- 	if (opc != ice_aqc_opc_update_sw_rules)
--		s_rule->hdr_len = cpu_to_le16(eth_hdr_sz);
-+		s_rule->hdr_len = cpu_to_le16(DUMMY_ETH_HDR_LEN);
- }
- 
- /**
+ 	ice_flush(hw);
+ 	ice_irq_dynamic_ena(hw, NULL, NULL);
 -- 
 2.47.1
 
