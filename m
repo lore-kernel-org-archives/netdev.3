@@ -1,214 +1,266 @@
-Received: from mta0.migadu.com (out-25.mta0.migadu.com [91.218.175.25])
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A223E0C66
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C003DC856
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651123; cv=none; b=O0uFCPXfL3CyhcuOzy6skIMcZ25PGwlPPGclUtLb/Qg8IOohf/Nw3vFJlL2PNIby7gDcx7U+YhrondIP163DjKyetB1cRsuC7F8MfIkGVEVM5/VysuXfCRYmoqwuCzBffq2Ggbx8sZanwPRIbq09onPWFixpumt/FgH/+vbJclM=
+	t=1790651137; cv=none; b=SANQ4AAwegVFFdFEasqfoZBEoSUVIn+lEmA77Sfk5J8GE6CguvnZHFA9uJM0ccUCB4mjjO146UCGmt9fsU9Ggzem7V9cFgtPUcCFjrXLYJom+hoI20XV00YqBrP4rS22v+GwYqdWUqmFP7nnfL/WaUDa583TQNhdYZKlQn4xL8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651123; c=relaxed/simple;
-	bh=2mV2hgecMuOB9d9EKn+9htCFjAreW0YsD1K4eAScb9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TWQzzf7QdB7muAYArsnj371pcDTe28jpP/U19WqRWmObSqH83q26JEM7I7S9erQGiOpSpkZa+a3NcBrKixdHsfuc9bVzgCQJyJ7dPzqzlQXBulBDmxp6AIteOkXsO3kL4M16XIh5/+qn41us3sRp8ExetJw/4L4o1ggQCBHvqyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dve9HpeF; arc=none smtp.client-ip=91.218.175.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790651137; c=relaxed/simple;
+	bh=w8DOuZZGd2nm/gkt6BoLViQEfnm/YPVtC9gklxjn1mc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYuuWqiMbRiuVL9IbxFkMjt4jWfCGhwAPnCUJbpP+u+XGjhj8IOiTCfnCNMqzcg3kXa/TeaWw+drZj5bWaAT1myXJ9o3hX/xiS4G09wgz2qX9WmbYiUY/mTA4V0Ei2EgT0wQj//vYHMtu8aSVM34Al176PHXzetk9i47zrn/pu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=ZVKh1sZY; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dve9HpeF"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=2mV2hgecMuOB9d9EKn+9htCFjAreW0YsD1K4eAScb9c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790651114; v=1; x=1791255914;
- b=Dve9HpeFBfDc2JiGF5yebT3+RjKbKB8PDXu7XrsGbWEA9KncdUfzrwk/x85hXCNu28atmHww
- XtiQllzxrvfUGSyBCnkwRWs1lDVxsBYDyuIeEizZ1lKbLi5j4pD8K0aMBWECanLJ+qTHlOeNk0r
- S6MP0B/B84lbjXpsD/FGhND4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id ee85fcfe31a1df00;
-	Tue, 29 Sep 2026 03:05:11 +0000
-X-Mizu-Trace-ID: ee85fcfe31a1df00
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 29 Sep 2026 11:05:02 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>
-Subject: Re: [PATCH net] seg6: ensure packet data is writable before
- modifying SRH and IPv6 DA
-Message-ID: <arsqomcYCLJqtWSC@fedora>
-References: <20260925133807.32-1-andrea.mayer@uniroma2.it>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="ZVKh1sZY"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144d60be6b0so2157925c88.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1790651130; x=1791255930; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xj/nT+s+vfeEgAANroYRGDSiPbdpYtnqapJFVXVuFHg=;
+        b=ZVKh1sZY41Ki2YuxgAD9wQzogZIwnkeFyrQSAKJ2TfNBCvVCRu1Zb5VpmeLhJOWuvv
+         Zmvt2dPHqnjBhjGwbcF5mob+V16UN0Ro5qW8xxfy0gVWUi4vDfA6l6sxF8aUKTkiZp3B
+         vdFtsPto1z/Pkr7xWR/u6RLYMaqOVB1/xZHt4ct/dtsfoLkLbXdzu1Z0ezlIQg64QjBd
+         xbpMP7isMvIiIuJdCbvM4B2/t6Ytixa5kzNzASfY1klyjLM4HTZQPg/5ZPKqZdycg492
+         fqlF5gqrJXxHjx4Kd/vKzAynCSJT28ImkBdZltoUdcJCYm0PG9NVgDheYOYPM1bP9hO6
+         xYJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790651130; x=1791255930;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xj/nT+s+vfeEgAANroYRGDSiPbdpYtnqapJFVXVuFHg=;
+        b=qDErBRsZ3MSVHHB+O1gNdf+llX1N9sPeHgAJrZTJqjK94+hwIJlh4exBYKMdCQBU0M
+         H6EMvtAjsF7L+z8/ZmckomdISWOE/w75zqU4pAcDjpkvu3FfKj/k1naXN++Oj2yV5+VP
+         nqpIQaEc0MsVjYh/HwGlMDwp2rRk+Pi7oL5P/E+1G0cZlSCR5KfLn7eSdYO7ShTIxSRT
+         2ER9gQPICUY2juLc+QobMfdlA1AkdIMLjZHX68e6XmQ4XUz34unFrjOj5iR3cQ4LC8Io
+         sMwErd6bs1nelNQotmsWotvebHN1tOqn5sCIggToyU3CFdnN2sxPUG/iSOoO0g2V1HlG
+         AKBA==
+X-Forwarded-Encrypted: i=1; AKwUvBwYxrppR+JrdVX64DuWr4KzLrq2AIZ7vpqSVhq9mkrYm44iMOiPIAneA9K0K2ftw92wBqeLOL4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nXPvGli9dakEX9WQ8Ph9wSCSjuU6EV6unqHRAi3zFUwGt8s/BU
+	m1WMgltTFCXQLX0W/qERo0kza2S/XY5wLoUpDhtbFcI7//3OMuocbUJoGOREotzOgLk=
+X-Gm-Gg: AYBFou3b7LjRLfAPO5RqHNPplPKTPDTFyLBsZLPH5vatZaYcTi4T7FDmQ+e6xNDWlkX
+	b1G70+p4O4RkJRnirhfrZ9eEPzeGxP+WxBFO5PbJ1/BQsjCvLZ8PyEOOokdCsAzMm75A+5cvfIW
+	IztYxsprP+NETtFzQp3UTwgqV11wfC24KpJQTVQhCOh5mYwn1eY7yx7mcZqe+s6mynOOmmWH4L0
+	xwLdIxJMV+T5LXj9yegqllkal1LBaSLKc0yp2pFgwI9/lwT4pf8H8sdP0XjLJglfugKHNqosLnn
+	Ayb9x6yjLcn7SqAi5uN3VDG2BoPlYuEcIbX0xw99s8tsNbPBCyx/9J/4ApktXjZCP3U8TkdynaU
+	xDM8GH1H9GgbwI4VhpTyjkmJlsIHUynk3FpAYk09+CvlB1y9q4J/gQ/qm7cZGgb7Y5bv8Z23f0+
+	sx7+gYG1SoH173YXXLZzYLmPfUwz6cjNiqpT0jSFTOWkDTHSPrdgqZM/VaqxazvAPVrI/ndXFZb
+	sEaWaWzzCjsFlp85f/PjI7u8SE6Z39kjCfamfu3R8D2rdLNTKz+xLOeHet0QAnhlIZN7cA=
+X-Received: by 2002:a05:701b:2506:b0:141:4c37:a20a with SMTP id a92af1059eb24-146cdeb8d0fmr11289108c88.9.1790651130029;
+        Mon, 28 Sep 2026 20:05:30 -0700 (PDT)
+Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm20275279c88.9.2026.09.28.20.05.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 20:05:29 -0700 (PDT)
+From: Artem Dinaburg <artem@trailofbits.com>
+To: stable@vger.kernel.org
+Cc: Artem Dinaburg <artem@trailofbits.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	netdev@vger.kernel.org,
+	sdf@google.com,
+	toke@redhat.com
+Subject: [PATCH 6.6.y] bpf: Defer work in bpf_timer_cancel_and_free
+Date: Mon, 28 Sep 2026 23:05:23 -0400
+Message-ID: <20260929030524.86560-1-artem@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925133807.32-1-andrea.mayer@uniroma2.it>
+Content-Transfer-Encoding: 8bit
 
-Hi Andrea,
-On Fri, Sep 25, 2026 at 03:38:07PM +0200, Andrea Mayer wrote:
-> advance_nextseg() modifies the SRH Segments Left field and the IPv6
-> destination address without ensuring the packet data is writable.
-> seg6_next_csid_advance_arg() has the same problem when it advances the
-> NEXT-C-SID argument in the destination address.
-> 
-> The skb may be cloned, for example by an AF_PACKET socket receiving on
-> the ingress device. advance_nextseg() and seg6_next_csid_advance_arg()
-> then write into the packet data shared with the clone. A read from that
-> socket can return the modified packet instead of the received one. The
-> simplified path below shows this for advance_nextseg():
-> 
-> __netif_receive_skb_one_core
->   __netif_receive_skb_core
->     deliver_skb               [orig: users=2, cloned=0]
->       packet_rcv
->         skb_clone             clone queued to the AF_PACKET socket
->         consume_skb(orig)     [orig: users=1, cloned=1]
->   ipv6_rcv
->     ip6_rcv_core              skb_share_check: no-op [orig: users=1]
->     [...]
->       input_action_end_core
->         advance_nextseg       writes into the data shared with the clone
-> 
-> Call skb_ensure_writable() in advance_nextseg() and in
-> seg6_next_csid_advance_arg() before they modify the packet data.
-> skb_ensure_writable() may reallocate skb->head, which invalidates the
-> pointers into the packet data taken before the call.
-> advance_nextseg() now returns a valid SRH pointer, or NULL if
-> skb_ensure_writable() fails.
-> seg6_next_csid_advance_arg() takes the pointer to the destination
-> address from the skb after skb_ensure_writable().
-> On failure, the callers drop the packet with SKB_DROP_REASON_NOMEM.
-> 
-> Fixes: 140f04c33bbc ("ipv6: sr: implement several seg6local actions")
-> Fixes: 848f3c0d4769 ("seg6: add NEXT-C-SID support for SRv6 End behavior")
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  net/ipv6/seg6_local.c | 140 +++++++++++++++++++++++++++++++++++-------
->  1 file changed, 117 insertions(+), 23 deletions(-)
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[...]
+[ Upstream commit a6fcd19d7eac1335eb76bc16b6a66b7f574d1d69 ]
 
->  
->  static int input_action_end_finish(struct sk_buff *skb,
-> @@ -408,31 +454,42 @@ static int input_action_end_finish(struct sk_buff *skb,
->  static int input_action_end_core(struct sk_buff *skb,
->  				 struct seg6_local_lwt *slwt)
->  {
-> +	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
->  	struct ipv6_sr_hdr *srh;
-> +	int err = -EINVAL;
->  
->  	srh = get_and_validate_srh(skb);
->  	if (!srh)
->  		goto drop;
->  
-> -	advance_nextseg(srh, &ipv6_hdr(skb)->daddr);
-> +	srh = advance_nextseg(skb, srh, &reason);
-> +	if (!srh) {
-> +		err = -ENOMEM;
-> +		goto drop;
-> +	}
+Currently, the same case as previous patch (two timer callbacks trying
+to cancel each other) can be invoked through bpf_map_update_elem as
+well, or more precisely, freeing map elements containing timers. Since
+this relies on hrtimer_cancel as well, it is prone to the same deadlock
+situation as the previous patch.
 
-The srh is not used in the later function, maybe just
+It would be sufficient to use hrtimer_try_to_cancel to fix this problem,
+as the timer cannot be enqueued after async_cancel_and_free. Once
+async_cancel_and_free has been done, the timer must be reinitialized
+before it can be armed again. The callback running in parallel trying to
+arm the timer will fail, and freeing bpf_hrtimer without waiting is
+sufficient (given kfree_rcu), and bpf_timer_cb will return
+HRTIMER_NORESTART, preventing the timer from being rearmed again.
 
-	if (!advance_nextseg(skb, srh, &reason)) {
-		err = -ENOMEM;
-		goto drop;
-	}
+However, there exists a UAF scenario where the callback arms the timer
+before entering this function, such that if cancellation fails (due to
+timer callback invoking this routine, or the target timer callback
+running concurrently). In such a case, if the timer expiration is
+significantly far in the future, the RCU grace period expiration
+happening before it will free the bpf_hrtimer state and along with it
+the struct hrtimer, that is enqueued.
 
->  
->  	return input_action_end_finish(skb, slwt);
->  
->  drop:
-> -	kfree_skb(skb);
-> -	return -EINVAL;
-> +	kfree_skb_reason(skb, reason);
-> +	return err;
->  }
->  
->  static int end_next_csid_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
->  {
->  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
->  	struct in6_addr *daddr = &ipv6_hdr(skb)->daddr;
-> +	enum skb_drop_reason reason;
->  
->  	if (seg6_next_csid_is_arg_zero(daddr, finfo))
->  		return input_action_end_core(skb, slwt);
->  
->  	/* update DA */
-> -	seg6_next_csid_advance_arg(daddr, finfo);
-> +	reason = seg6_next_csid_advance_arg(skb, finfo);
-> +	if (reason) {
-> +		kfree_skb_reason(skb, reason);
-> +		return -ENOMEM;
-> +	}
->  
->  	return input_action_end_finish(skb, slwt);
->  }
-> @@ -448,19 +505,25 @@ static int input_action_end_x_finish(struct sk_buff *skb,
->  static int input_action_end_x_core(struct sk_buff *skb,
->  				   struct seg6_local_lwt *slwt)
->  {
-> +	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
->  	struct ipv6_sr_hdr *srh;
-> +	int err = -EINVAL;
->  
->  	srh = get_and_validate_srh(skb);
->  	if (!srh)
->  		goto drop;
->  
-> -	advance_nextseg(srh, &ipv6_hdr(skb)->daddr);
-> +	srh = advance_nextseg(skb, srh, &reason);
-> +	if (!srh) {
-> +		err = -ENOMEM;
-> +		goto drop;
-> +	}
+Hence, it is clear cancellation needs to occur after
+async_cancel_and_free, and yet it cannot be done inline due to deadlock
+issues. We thus modify bpf_timer_cancel_and_free to defer work to the
+global workqueue, adding a work_struct alongside rcu_head (both used at
+_different_ points of time, so can share space).
 
-Same here and all later similar functions.
+Update existing code comments to reflect the new state of affairs.
 
->  
->  	return input_action_end_x_finish(skb, slwt);
->  
->  drop:
-> -	kfree_skb(skb);
-> -	return -EINVAL;
-> +	kfree_skb_reason(skb, reason);
-> +	return err;
->  }
->  
+[ Backport to 6.6.y: mapped deferred deletion to the older bpf_async_cb
+  layout while retaining the work and RCU lifetime ordering. ]
 
-[...]
+Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20240709185440.1104957-3-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Assisted-by: LLM
+Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
+---
+Hi Greg, Sasha, and bpf maintainers,
 
->  
-> @@ -1434,6 +1523,7 @@ static int input_action_end_bpf(struct sk_buff *skb,
->  				struct seg6_local_lwt *slwt)
->  {
->  	struct seg6_bpf_srh_state *srh_state;
-> +	enum skb_drop_reason reason;
->  	struct ipv6_sr_hdr *srh;
->  	int ret;
->  
-> @@ -1442,7 +1532,11 @@ static int input_action_end_bpf(struct sk_buff *skb,
->  		kfree_skb(skb);
->  		return -EINVAL;
->  	}
-> -	advance_nextseg(srh, &ipv6_hdr(skb)->daddr);
-> +	srh = advance_nextseg(skb, srh, &reason);
-> +	if (!srh) {
-> +		kfree_skb_reason(skb, reason);
-> +		return -ENOMEM;
-> +	}
+I am working through the small CVE backports still missing from 6.6.y.
+This one addresses CVE-2024-41045. It defers timer destruction so callbacks
+cannot deadlock or leave an enqueued timer freed.
 
-The srh here is still needed by later srh_state->srh = srh; so we can keep it.
+The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
+This fix also affects 6.1.y, which will need a separate backport; this
+submission contains only the 6.6.y patch.
+The target-specific adjustment is recorded in the bracketed note above.
 
-Thanks
-Hangbin
+Could you please queue it for 6.6.y?
+
+CVE: CVE-2024-41045
+Upstream: a6fcd19d7eac1335eb76bc16b6a66b7f574d1d69
+
+AI assistance: An LLM helped identify, adapt, and validate this backport; I
+reviewed the resulting code and validation evidence.
+
+Thanks,
+Artem Dinaburg
+
+ kernel/bpf/helpers.c | 58 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 12 deletions(-)
+
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 419e49946cbdb6..1fa140915b0c03 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1104,7 +1104,10 @@ struct bpf_async_cb {
+ 	struct bpf_prog *prog;
+ 	void __rcu *callback_fn;
+ 	void *value;
+-	struct rcu_head rcu;
++	union {
++		struct rcu_head rcu;
++		struct work_struct delete_work;
++	};
+ 	u64 flags;
+ };
+ 
+@@ -1188,6 +1191,22 @@ static enum hrtimer_restart bpf_timer_cb(struct hrtimer *hrtimer)
+ 	return HRTIMER_NORESTART;
+ }
+ 
++static void bpf_timer_delete_work(struct work_struct *work)
++{
++	struct bpf_hrtimer *t = container_of(work, struct bpf_hrtimer,
++					     cb.delete_work);
++
++	/* Cancel the timer and wait for callback to complete if it was running.
++	 * If hrtimer_cancel() can be safely called it's safe to call
++	 * kfree_rcu(t) right after for both preallocated and non-preallocated
++	 * maps. The timer->timer = NULL was already done and no code path can see
++	 * address 't' anymore. A timer armed before bpf_timer_cancel_and_free()
++	 * will have been cancelled.
++	 */
++	hrtimer_cancel(&t->timer);
++	kfree_rcu(t, cb.rcu);
++}
++
+ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u64 flags,
+ 			    enum bpf_async_type type)
+ {
+@@ -1230,6 +1249,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
+ 		t = (struct bpf_hrtimer *)cb;
+ 
+ 		atomic_set(&t->cancelling, 0);
++		INIT_WORK(&t->cb.delete_work, bpf_timer_delete_work);
+ 		hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
+ 		t->timer.function = bpf_timer_cb;
+ 		cb->value = (void *)async - map->record->timer_off;
+@@ -1484,14 +1504,8 @@ void bpf_timer_cancel_and_free(void *val)
+ 	__bpf_spin_unlock_irqrestore(&timer->lock);
+ 	if (!t)
+ 		return;
+-	/* Cancel the timer and wait for callback to complete if it was running.
+-	 * If hrtimer_cancel() can be safely called it's safe to call kfree(t)
+-	 * right after for both preallocated and non-preallocated maps.
+-	 * The timer->timer = NULL was already done and no code path can
+-	 * see address 't' anymore.
+-	 *
+-	 * Check that bpf_map_delete/update_elem() wasn't called from timer
+-	 * callback_fn. In such case don't call hrtimer_cancel() (since it will
++	/* We check that bpf_map_delete/update_elem() was called from timer
++	 * callback_fn. In such case we don't call hrtimer_cancel() (since it
+ 	 * deadlock) and don't call hrtimer_try_to_cancel() (since it will just
+ 	 * return -1). Though callback_fn is still running on this cpu it's
+ 	 * safe to do kfree(t) because bpf_timer_cb() read everything it needed
+@@ -1499,10 +1513,30 @@ void bpf_timer_cancel_and_free(void *val)
+ 	 * since timer->timer = NULL was already done. The timer will be
+ 	 * effectively cancelled because bpf_timer_cb() will return
+ 	 * HRTIMER_NORESTART.
++	 *
++	 * However, it is possible the timer callback_fn calling us armed the
++	 * timer _before_ calling us, such that failing to cancel it here will
++	 * cause it to possibly use struct hrtimer after freeing bpf_hrtimer.
++	 * Therefore, we _need_ to cancel any outstanding timers before we do
++	 * kfree_rcu, even though no more timers can be armed.
++	 *
++	 * Moreover, we need to schedule work even if timer does not belong to
++	 * the calling callback_fn, as on two different CPUs, we can end up in a
++	 * situation where both sides run in parallel, try to cancel one
++	 * another, and we end up waiting on both sides in hrtimer_cancel
++	 * without making forward progress, since timer1 depends on timer2
++	 * callback to finish, and vice versa.
++	 *
++	 *  CPU 1 (timer1_cb)			CPU 2 (timer2_cb)
++	 *  bpf_timer_cancel_and_free(timer2)	bpf_timer_cancel_and_free(timer1)
++	 *
++	 * To avoid these issues, punt to workqueue context when we are in a
++	 * timer callback.
+ 	 */
+-	if (this_cpu_read(hrtimer_running) != t)
+-		hrtimer_cancel(&t->timer);
+-	kfree_rcu(t, cb.rcu);
++	if (this_cpu_read(hrtimer_running))
++		queue_work(system_unbound_wq, &t->cb.delete_work);
++	else
++		bpf_timer_delete_work(&t->cb.delete_work);
+ }
+ 
+ BPF_CALL_2(bpf_kptr_xchg, void *, map_value, void *, ptr)
+-- 
+2.39.5
+
