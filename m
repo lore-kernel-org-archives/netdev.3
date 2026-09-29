@@ -1,193 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276C94C226E;
-	Tue, 29 Sep 2026 08:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD4F4CE663;
+	Tue, 29 Sep 2026 08:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790671723; cv=none; b=YYEkwuYvNSGXxhbSboV40mhtnyWSOLuDT4T6pIlIvrWhN1z1prsFJg2ortMvi4W7lG+TNmVYqHc3InnfHm1jK1ynSofhYpAnZPyw91p1vjFiqMsmpFeJ3xRBrvm9LoZ1bXh2QROUj+Eog5Uzrc0WmOcqrYdDCd+NHBCNLKqMrr0=
+	t=1790671760; cv=none; b=i+hHhojQa0cOmm15fx8Af3T/TDOltpvDwEsa8VQGW4il+ZNx3dqjRsK1f8kB1wPMJsyczEWzCbTcUSYgFDlY0XLaE4lHKGDJ6s0PVpHrnBac47GNmDG6sRbhp5oveohDf6LmimIm8XixJTBjqt6jy66S3e8/VojGfC/aYb/olTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790671723; c=relaxed/simple;
-	bh=pPXDYD/RGJb0O3s+6lRqbo7NLPSamfflZ0IeEdlBN3c=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cFwwILVnlyos4J6TyCgaa159KSy5Vn8oT/IkiDZZHO10GGJjanmdB/kzUJI3hbauVFYp2WWCsRqZaf+hLZ3BTaxigFU5HuyyTdOi3L2D4QgjyfuVIdef1G9Jp2mpPrP1bMIXYlWHaKN3TzL/FAukHY2YNcxyXhAHDqMhy9/+bG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYigNocC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790671760; c=relaxed/simple;
+	bh=zLSUSrIO6UNWf7qON0V3tBKQM/dUiz/r3LMVw+ocjL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RFmd9SML9xl7zpolntO0I3meoPFq2g+Viw8qOCnXoqtHBftIqRRUkMwsQPHoiPfWdBLktOdpuX5SJe/WxXu8zvb2SdUV0UJEI7wcd4nojt1n1yp5wXa22VEKLM0QWnFxwF1He82NLth0G0JDcoKX+V1RFBKiP37kiasiCc8xnaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uotl77A9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYigNocC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AE11F000FF;
-	Tue, 29 Sep 2026 08:48:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uotl77A9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E111F000FF;
+	Tue, 29 Sep 2026 08:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790671714;
-	bh=2en9nq3L+d0fr45TyjrHfqOEIYBYC2n45esf7o40X7A=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NYigNocC7aAx7W+GLbnPMunsoyfwqUQ9jQNXDOV9zR2XcQh8dV2dRnO3HHeBCN7DM
-	 GMnGrpB7o1I22tyHKh/YKrWl9BD2hkGn3H96OCDVpCzWQWrUEO4KqvVcVEQjDJmh+A
-	 jN9Nd66ILgzhzeNPjqKi0HWTxGrxACuTJWwTxQFlfTcVCPKQQHnlMHoeLd7kHyWIoK
-	 xwd+5w0pzS6K1ls1vkzmM1t4jmqnROIMz7UwZS1IpK2Cc799vqAahxryNr/0AKcazb
-	 he3dXzNzjKsIWyZSniQ/4mAAZQLTHhxTj+iU9mT+A52Cs2dwIO7QToU0x+pWUM+YtI
-	 dualbVsMeLIow==
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Don't set or get RSS
- parameters when not supported
-From: netdev-bot+sashiko@kernel.org
-To: maxime.chevallier@bootlin.com
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, nb@tipi-net.de, jitendra.vegiraju@broadcom.com,
- thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, pbrobinson@gmail.com
-Date: Tue, 29 Sep 2026 08:48:33 +0000
-Message-ID: <179067171307.434549.1093187286398187440@kernel.org>
-In-Reply-To: <20260928145043.1228968-3-maxime.chevallier@bootlin.com>
-References: <20260928145043.1228968-3-maxime.chevallier@bootlin.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1790671752;
+	bh=OEvFdXxmiBBOQnGv/bJzw1AJCNWoYVHX2U47VS0pVAo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Uotl77A9faR8cxDMalABDPuVUSxa4nXqz5VdvUeq20CLbJ6gGG3pajwP7UASCNfrf
+	 xM9yiJAlYiyQUcexXENjt/0nvf8XPlnxKN13hqYHJnmuEkayhJKIrmwJDw1JR9z1mM
+	 lzM5yVL5mfQym4eZUUv0D0SQvzlzlIKNFEX2/P/X3uvtn4rkXqyeWOQK6OF2FpCTWe
+	 Tg1xmnoYoFwvC6UttwThBW5xtSB98hkzDIzyGNLz+NxN11CletfA46GN5nhLLTl3GV
+	 uQgOZ2d/BWw92s0irFQcLG7E1KkSc0nmPIcSEOCjz2d2pgj0deVjGR0p4FVmcg+MFa
+	 NRLIBLFJsmg5g==
+Date: Tue, 29 Sep 2026 10:49:08 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Joseph Guo <qijian.guo@nxp.com>, 
+	Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
+	Mehmet Fide <mehmet.fide@screeningeagle.com>, Markus Niebel <Markus.Niebel@ew.tq-group.com>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, Maud Spierings <maudspierings@gocontroll.com>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v3 01/12] dt-bindings: arm: fsl: Document Variscite
+ i.MX6UL boards
+Message-ID: <20260929-logical-fanatic-quail-2ff20b@quoll>
+References: <cover.1790512621.git.stefano.r@variscite.com>
+ <a4e262cfb08153c23c80cd3098a684816993f1e9.1790512621.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a4e262cfb08153c23c80cd3098a684816993f1e9.1790512621.git.stefano.r@variscite.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sun, Sep 27, 2026 at 02:46:16PM +0200, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
+> 
+> Document the existing VAR-SOM-6UL Concerto compatibles and the new
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Which are existing? Don't mix up different issues.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] This patch makes stmmac_get_rxfh() in
-  drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c return…
-- [Low] The commit message describes a user-visible bug: on stmmac
-  devices without RSS, 'ethtool -x reports an indirection table and a…
-
---
-
-net: stmmac: Don't set or get RSS parameters when not supported
-
-This commit changes the stmmac ethtool RSS ops to return early when
-stmmac_rss_is_supported() is false. The key and indirection sizes now
-report 0, and get_rxfh/set_rxfh return -EOPNOTSUPP. The aim is to stop
-reporting bogus RSS data and to make the RSS kselftests work on stmmac.
-
-> The RSS kselftests fail on stmmac, and this is partly due to the driver
-> reporting bogus data for the RSS ops :
->
->  - ethtool -x reports an indirection table and a key while the hardware
->    doesn't have any of that
->  - ethtool -X fails with -EINVAL.
->
-> Let's return early in the rss ops if we know the hardware and platform
-> don't support RSS.
->
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-[Severity: Low]
-The commit message describes a bug that users can see, but there is no
-Fixes: tag.
-
-Blame shows that the unconditional stmmac_get_rxfh_key_size(),
-stmmac_get_rxfh_indir_size(), stmmac_get_rxfh() and stmmac_set_rxfh()
-logic came from commit 76067459c686. The later refactor fb6e30a72539 only
-moved these functions to the ethtool_rxfh_param API.
-
-Should this carry the following tag?
-
-Fixes: 76067459c686 ("net: stmmac: Implement RSS and enable it in XGMAC core")
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> index 1cf0f8820b33..56019683f399 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-
-[ ... ]
-
-> @@ -943,6 +949,9 @@ static int stmmac_get_rxfh(struct net_device *dev,
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	int i;
+> VAR-SOM-6UL and DART-6UL board variants based on i.MX6UL, i.MX6ULL
+> and i.MX6ULZ.
+> 
+> Add specific compatibles for the storage, wireless, audio and
+> carrier combinations while retaining the legacy Concerto strings.
+> 
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> ---
+>  .../devicetree/bindings/arm/fsl.yaml          | 148 ++++++++++++++++--
+>  1 file changed, 138 insertions(+), 10 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 36e28e0e4ad9..726d563d1482 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -688,11 +688,51 @@ properties:
+>            - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
+>            - const: fsl,imx6ul
 >  
-> +	if (!stmmac_rss_is_supported(priv))
-> +		return -EOPNOTSUPP;
-> +
+> -      - description: i.MX6UL Variscite VAR-SOM-6UL Boards
+> -        items:
+> -          - const: variscite,mx6ulconcerto
+> -          - const: variscite,var-som-imx6ul
+> -          - const: fsl,imx6ul
+> +      - description: i.MX6UL Variscite VAR-SOM-6UL and DART-6UL Boards
+> +        oneOf:
 
-[Severity: Medium]
-Does this -EOPNOTSUPP break namespace-wide ETHTOOL_MSG_RSS_GET dumps?
+Please do not introduce own style.
 
-rss_dump_one_dev() in net/ethtool/rss.c only skips a device when it has
-no get_rxfh op, and stmmac still provides one:
+> +          - items:
+> +              - enum:
+> +                  - variscite,mx6ulconcerto
+> +                  - variscite,var-som-imx6ul-emmc-sd-card-wm8731-concerto-board
 
-net/ethtool/rss.c:rss_dump_one_dev() {
-    ...
-	if (!dev->ethtool_ops->get_rxfh)
-		return 0;
+"board" is redundant
 
-	if (!ctx->ctx_idx) {
-		ret = rss_dump_one_ctx(skb, cb, dev, 0);
-		if (ret)
-			return ret;
-    ...
-}
+Also, look at other examples here, like Toradex. The actual variant
+should be the last.
 
-The error then comes back through this path:
+Best regards,
+Krzysztof
 
-ethnl_rss_dumpit()
-  rss_dump_one_dev()
-    rss_dump_one_ctx()
-      rss_prepare()
-        rss_prepare_get()
-          ops->get_rxfh() -> stmmac_get_rxfh() returns -EOPNOTSUPP
-
-When it reaches ethnl_rss_dumpit(), the loop stops:
-
-	for_each_netdev_lock_ops_compat_scoped(net, dev, ctx->ifindex) {
-		...
-		ret = rss_dump_one_dev(skb, cb, dev);
-		if (ret)
-			break;
-	}
-
-	return ret;
-
-So the dump fails at the stmmac netdev, and no device with a higher
-ifindex gets reported. That includes NICs that do support RSS.
-
-No in-tree platform sets plat->rss_en. The only match is the declaration
-in include/linux/stmmac.h. That means stmmac_rss_is_supported() is false
-for every in-tree stmmac device.
-
-Before this patch, stmmac_get_rxfh() always returned 0. The dump used to
-complete, even though it reported bogus data.
-
-The RSS selftests use this dump path. In
-tools/testing/selftests/drivers/net/hw/rss_ctx.py,
-test_rss_context_dump() calls:
-
-    ctxs = cfg.ethnl.rss_get({}, dump=True)
-
-It also runs a dump with {'start-context': 1}. On a test host that has a
-stmmac port plus the NIC under test, would these now fail, when they
-passed before?
-
-mvpp2 and mvneta already return -EOPNOTSUPP from get_rxfh, so the core
-already stopped dumps this way. This patch applies that behaviour to every
-in-tree stmmac device.
-
-Would it be better to have rss_dump_one_dev() skip devices whose get_rxfh
-returns -EOPNOTSUPP, or that report zero indir and key sizes? Another
-option is to not provide the stmmac get_rxfh op when RSS is unsupported.
-
->  	if (rxfh->indir) {
->  		for (i = 0; i < ARRAY_SIZE(priv->rss.table); i++)
->  			rxfh->indir[i] = priv->rss.table[i];
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928145043.1228968-1-maxime.chevallier%40bootlin.com
