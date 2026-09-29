@@ -1,299 +1,317 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9143D955C
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9123E1222;
+	Tue, 29 Sep 2026 03:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790650904; cv=none; b=AEQoSsLErZ02DNrdHqkGYxxoP+4/OyzPg3vT9WVbGtPtrhZCqJSCIfpwn99J0iNLC7L4GQ1Zy7U//tUt1tsZmj/4DUljMaQbUkuFDXd3JG1L0oOfIXObt+tExnay5RfMVNKQIr81I8CnWmSQGffijg6Uo+9myIdg/rwVoKL6ICI=
+	t=1790651083; cv=none; b=HxI+HmKFIi8c3YZtDnFjEiLegHEAAVs/WsSON7w6AQz1GYzc23TP8mdA/All2WTrMFi8bQfzVapqU7yZmUk259BAK2L4AoAjAYmhM8/gaeRfYXb2ym8QPwF8bdn+dJ/30Gh3NWMdF627letlo2v6WQWsp4SJCJITgP+pv47KeU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790650904; c=relaxed/simple;
-	bh=tjuHuJmSUWSzgdSY1MqrxhyhZbB4/rCV+kP6Py9vzxc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o5xWXB5ugFIQQ8Y9FEyOCOs3Z7eoe8LQ42CKYvSanTIkl965EUwyhKjlQFDiprCpR0HG4j2OR7e1ntPenFoAjFxV26Cq2+XUcdJDtt3tLhZcjUgcdctWsnzt+5I8KfpvfgiTQhdO+a/f85EOBu6DEyVJAJmu+8DziONakix2ZFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Av2JwbfY; arc=none smtp.client-ip=74.125.229.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790651083; c=relaxed/simple;
+	bh=4Zie9hSdMvYNoyzlbe+llwRhxwcMIs6J3J9q2KyhJmU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MuxBxYIGv8jebR64ODF/Gn+A9ZthAS6oYOuwG3rfvcw0a+EHDDZ80o7sfQ4WkojGqC4LN4RmTRR/ZflbmHzEHasr0FHJ6cgSMs2CcWonkPbBz9CtCQ+s0AfhSSvmsZSwENNeu2n7y22eunbMhjRaDDfMZ7AyW2+UVdF+MDhqn30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LP+a1zyt; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Av2JwbfY"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-145047ad220so1171727c88.3
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790650893; x=1791255693; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=By2LEtvJF+8W3qvYb/dMgFvkCaBZwK3OmiKAlzBobDg=;
-        b=Av2JwbfYQOAH73ibHQOh53j7ZTDzaN/fzE1EwOUPTZXX+zslX3tu6c1CKp4gBwHMsp
-         1VD6D+pfwz7XrWkagsvYyAKvfsUt7D9ouKScqddjpJGWBPBT0Qe+OmF1BqcDrz53GjFv
-         z0Yu9gl9xfkIwjo2Elw5APPq+9PsuEdDfrSuHjb+p91WZYtsBZ7JY8u9OfafCV3+prsy
-         rtIOlckiqnLZyLrVlBGK4bwh4vFybRFYOidBTMk5KQNaw2p5/9XKzPDI7W0raAsJd1a7
-         5HxwePHsklbQ1p/KAAoUOezZ784PL5gRCJPFnA167IksO6pUE+yQiVMHcqJnmYw6fhtc
-         bXcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790650893; x=1791255693;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=By2LEtvJF+8W3qvYb/dMgFvkCaBZwK3OmiKAlzBobDg=;
-        b=yDG2Ti4EFwOQ6tkMhiV+BMDV8gz8H5hgOFVvxx7poRj39Ma5OcIpCrF1+QSP0iOc8M
-         vniQbro6Ln1ZdGOAaZ0qo+AOlt/Nsn8teET9vJ6VWYT9UuBOu0HnmFzDZTSuMBySJH19
-         sWa4smQI6zxj4BUd9VKHhY3Dd3AnvMtaXjBXC+/8mJnZ8ZCRaRGKgoGKxGe2tgQAyVc+
-         4xJJU2Cb1GdjoVXnC0auGKsy9Ny39twFchleQ1wrIuSTxFBVFamR72b1Zxw/L+j7Y4zw
-         lVS0HZZsa2tb2uM8IwsMFBCC64Ccc4IbXLpFQ73SPWdUuCHEFJ1V8fSeqIuW9qfLpopt
-         vx6A==
-X-Forwarded-Encrypted: i=1; AKwUvBxLHdk30uC19XtB4hZSr9mP+dgq9+9sMFI6O+aSirzMBy/3xzJOOjpa5ihNnQT3Ez+octyJ9v8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKZb60vqf5jvRuvieb6m3C0Z1mndMHayJcu3D3mZR4X0HLlcCY9
-	veFYKlXuqvPgH8ZFt+BW/NdhPQy0gXmMfhRp+c/TD827mB6v5l+wxnRQAaPkIDOsWL4=
-X-Gm-Gg: AYBFou1mPhHUP3w2XaOfuj8j4Rf5qquOzG8xW5m2aDrZlehLo6O3cMd9towobhLdAY0
-	I+MjWnwrz6NcBLWg7C6f0q1cSLTfVuH2vlcaLu7lqEeAmCL563j5ixTt4GJQGN2DPDzbLzs8Tha
-	cta2Kos8xzZb4Ar6urTPd8ykLoXSY5p4/Zl43K6n7/NbHQM4I+Ve/WGT/FvVQVicYqsMNZHukFt
-	e180yytiLj+cFRp/i+w4dkrORIG7roqZulRoWp1pUKy6lhRlp0XFh8zofD1o6kzaqw5zHlhMj9k
-	KYboes44nCfBQN3vgHmo1a3LBUigxcE+6Ia4pbcEcbTnTnwFQGdHra9JGywadLCgU9PIMLWJGBE
-	rtGc/ykUA/p05Maj5Yog+NXJm2vNZDKnzKS518uiUq3Ixg7wZiGTjyWR/eNHKcNRun9hwSWxbBF
-	6clN+1U90T606P0VKWS2kycv6HI6rgisqxbc2Mtt/d4yadjY6u452XtdINhM+TFShrxO7XVdIrZ
-	APMVWeH8la/KnQZ+cCVkjH5IHGIbdEsIO/r/O9/Xj4e0wzcko/EQoH3H9YY9W135euoHf0=
-X-Received: by 2002:a05:7300:a987:b0:33c:1f00:358 with SMTP id 5a478bee46e88-34270ac690bmr14894659eec.17.1790650893218;
-        Mon, 28 Sep 2026 20:01:33 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-347323f5a7esm10650314eec.15.2026.09.28.20.01.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 28 Sep 2026 20:01:32 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	syzbot+ad9ec60c8eaf69e6f99c@syzkaller.appspotmail.com,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	sdf@google.com
-Subject: [PATCH 6.6.y] bpf: Fail verification for sign-extension of packet data/data_end/data_meta
-Date: Mon, 28 Sep 2026 23:01:25 -0400
-Message-ID: <20260929030127.86206-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LP+a1zyt"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68T2Dal7040435;
+	Mon, 28 Sep 2026 20:04:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=e
+	nqzxNGURiWOIAcns9609AQ4dQZbOJWdVw3AbnUULI8=; b=LP+a1zytOevjvtfLF
+	TYcyF18MTro6sS47eji+xk0/SNQQtgwnkjnqueC9d/X/ba/+SQAB8ANk1xTO7bqV
+	Mi6PD1D/jtAioAgsCJYg2nTpgtt994GTQUp3eHtxensFtFuoudjcf/rTJQkK7DPo
+	DJyigMAMt54UY8acVRFvmXog8YWbAqmT6i65lCHyu8lCcycTei1+eDMh41J0BHeP
+	TXNiFG69bgc+f0p4MNHH0cyxr7F9YIT5ih/FsRGCyHKcwPkHnCk84I8CqQbqiYWz
+	8OukdAdJtnC8BhndY4Ti3/AP8RvBNIx9PrzXF+bf0wklld8YQKzD6p2Q8SSWssyd
+	WtbKQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4h04c386bu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Sep 2026 20:04:16 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 28 Sep 2026 20:04:16 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 28 Sep 2026 20:04:16 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id DDAA75B6927;
+	Mon, 28 Sep 2026 20:04:12 -0700 (PDT)
+Date: Tue, 29 Sep 2026 08:34:06 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        <sumang@marvell.com>
+Subject: Re: [PATCH v2 net-next] octeontx2-af: add tracepoints for NPC MCAM
+ entry programming
+Message-ID: <arsqputGsC73NWsk@rkannoth-OptiPlex-7090>
+References: <20260923034858.1764461-1-rkannoth@marvell.com>
+ <179048437748.2160803.288999340916708222@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <179048437748.2160803.288999340916708222@kernel.org>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDAxMiBTYWx0ZWRfXyI9DulWA+jIJ
+ RV4D+VE9d+Lksi+YaR8mhEN33FyJqtr+jvyOa65h2GCDUeGi7iJRcIzDY5IvqSNpbwRqHd/0Xev
+ CTIFyjG37hliaUwUmf6aa6019YSEibs=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDAxMiBTYWx0ZWRfXyMuVuOYYBO2c
+ XYQMuN7B8o3Pzl99nPjN0eOSYXVZsJbSkrGTVmJ4FkJym2kbcC/XUB+6/3VXOs5MWywY+WfZeoV
+ utIxiaRtzERcVu+d1IJR+MKxYKH7M/RiBwmuTes0qSs6MBaYJYy4o6qf3mJ8ek9TEFOElv1tdt0
+ /f5P0cAvKFLbleXILw3fJVovnrvl3Sh6RTPCWgodBBktfJT8y3JkpT8pX/YAGDlow0FPo+Reju1
+ RXnEz7t+B1jDFlHjzUbPAf3qETjK9ScJJ2cVH8DfLsUpafYPbrN0fCRq+tswWk0UqvvlvG8ojz2
+ 7qm1UiK49l8mXjkl0DVqKK8NsA6Nl1cb08D/PWqRzSIFr15vW1Qgvmr2UgRaPrlaqV1Z5RL/JrH
+ JXo2qF1lo2aiSv+C6I5cpytlcKr9Fl4QnccwjRuhddaFwn7qD8x9iLWPCNTRcrubtnWoIzxi2K4
+ 5hVY0pUUspksYdOP1ug==
+X-Proofpoint-ORIG-GUID: 4rjbSAq9HKoeeE-VwLUbukJEQYgKzLiZ
+X-Authority-Analysis: v=2.4 cv=R/WWitRX c=1 sm=1 tr=0 ts=6abb2ab0 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=q4MdBjMpcODzqTu0AqsA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: 4rjbSAq9HKoeeE-VwLUbukJEQYgKzLiZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_01,2026-09-21_02,2025-10-01_01
 
-From: Yonghong Song <yonghong.song@linux.dev>
+On 2026-09-27 at 10:16:17, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+>
+> Critical: 0 · High: 1 · Medium: 1 · Low: 3
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [High] In rvu_mbox_handler_npc_cn20k_mcam_alloc_and_write_entry()
+>   (drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c), the patch…
+Pre-existing issue.
 
-[ Upstream commit 92de36080c93296ef9005690705cba260b9bd68a ]
+> - [Medium] The commit message says the events are emitted from 'the
+>   legacy and CN20K NPC alloc, config, read, and shift paths'.
+Some cn20k path are covered as both uses same path. We will add more
+traces in future if needed.
 
-syzbot reported a kernel crash due to
-  commit 1f1e864b6555 ("bpf: Handle sign-extenstin ctx member accesses").
-The reason is due to sign-extension of 32-bit load for
-packet data/data_end/data_meta uapi field.
+> - [Low] The otx2_npc_cam event (rvu_trace.h) defines and prints its
+>   payload as w0_cam0/w0_cam1/w1_cam0/w1_cam1 and has no word-offset…
+This is ok. We can debug with these word prints.
 
-The original code looks like:
-        r2 = *(s32 *)(r1 + 76) /* load __sk_buff->data */
-        r3 = *(u32 *)(r1 + 80) /* load __sk_buff->data_end */
-        r0 = r2
-        r0 += 8
-        if r3 > r0 goto +1
-        ...
-Note that __sk_buff->data load has 32-bit sign extension.
+> - [Low] In the submitted patch, the 'v1 -> v2' changelog begins with a
+>   '---' separator, and both Signed-off-by tags (Suman Ghosh, Ratheesh…
+Hmm. My bad. should i respin ?
 
-After verification and convert_ctx_accesses(), the final asm code looks like:
-        r2 = *(u64 *)(r1 +208)
-        r2 = (s32)r2
-        r3 = *(u64 *)(r1 +80)
-        r0 = r2
-        r0 += 8
-        if r3 > r0 goto pc+1
-        ...
-Note that 'r2 = (s32)r2' may make the kernel __sk_buff->data address invalid
-which may cause runtime failure.
+> - [Low] On CN20K, npc_cn20k_ref_idx_alloc() replaces the physical indices
+>   in the returned mcam_idx list with virtual indices ('Return vidx to…
+We have debugfs entries to map virtual to physical (and viceversa). so this
+is ok.
 
-Currently, in C code, typically we have
-        void *data = (void *)(long)skb->data;
-        void *data_end = (void *)(long)skb->data_end;
-        ...
-and it will generate
-        r2 = *(u64 *)(r1 +208)
-        r3 = *(u64 *)(r1 +80)
-        r0 = r2
-        r0 += 8
-        if r3 > r0 goto pc+1
-
-If we allow sign-extension,
-        void *data = (void *)(long)(int)skb->data;
-        void *data_end = (void *)(long)skb->data_end;
-        ...
-the generated code looks like
-        r2 = *(u64 *)(r1 +208)
-        r2 <<= 32
-        r2 s>>= 32
-        r3 = *(u64 *)(r1 +80)
-        r0 = r2
-        r0 += 8
-        if r3 > r0 goto pc+1
-and this will cause verification failure since "r2 <<= 32" is not allowed
-as "r2" is a packet pointer.
-
-To fix this issue for case
-  r2 = *(s32 *)(r1 + 76) /* load __sk_buff->data */
-this patch added additional checking in is_valid_access() callback
-function for packet data/data_end/data_meta access. If those accesses
-are with sign-extenstion, the verification will fail.
-
-  [1] https://lore.kernel.org/bpf/000000000000c90eee061d236d37@google.com/
-
-[ Backport to 6.6.y: implemented the packet-field check without the newer
-  is_retval verifier API. ]
-
-Reported-by: syzbot+ad9ec60c8eaf69e6f99c@syzkaller.appspotmail.com
-Fixes: 1f1e864b6555 ("bpf: Handle sign-extenstin ctx member accesses")
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20240723153439.2429035-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi Greg, Sasha, and bpf maintainers,
-
-I am working through the small CVE backports still missing from 6.6.y.
-This one addresses CVE-2024-47702. It rejects sign-extended loads that can
-turn packet pointers into invalid addresses.
-
-The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
-The target-specific adjustment is recorded in the bracketed note above.
-
-Could you please queue it for 6.6.y?
-
-CVE: CVE-2024-47702
-Upstream: 92de36080c93296ef9005690705cba260b9bd68a
-
-AI assistance: An LLM helped identify, adapt, and validate this backport; I
-reviewed the resulting code and validation evidence.
-
-Thanks,
-Artem Dinaburg
-
- include/linux/bpf.h   |  1 +
- kernel/bpf/verifier.c |  5 +++--
- net/core/filter.c     | 21 ++++++++++++++++-----
- 3 files changed, 20 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index fd20812cbcc331..1b2f3c94365e72 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -929,6 +929,7 @@ static_assert(__BPF_REG_TYPE_MAX <= BPF_BASE_TYPE_LIMIT);
-  */
- struct bpf_insn_access_aux {
- 	enum bpf_reg_type reg_type;
-+	bool is_ldsx;
- 	union {
- 		int ctx_field_size;
- 		struct {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index f7f5f54dc44852..46c205087160c2 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -5664,11 +5664,12 @@ static int check_packet_access(struct bpf_verifier_env *env, u32 regno, int off,
- /* check access to 'struct bpf_context' fields.  Supports fixed offsets only */
- static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off, int size,
- 			    enum bpf_access_type t, enum bpf_reg_type *reg_type,
--			    struct btf **btf, u32 *btf_id)
-+			    struct btf **btf, u32 *btf_id, bool is_ldsx)
- {
- 	struct bpf_insn_access_aux info = {
- 		.reg_type = *reg_type,
- 		.log = &env->log,
-+		.is_ldsx = is_ldsx,
- 	};
- 
- 	if (env->ops->is_valid_access &&
-@@ -6917,7 +6918,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 			return err;
- 
- 		err = check_ctx_access(env, insn_idx, off, size, t, &reg_type, &btf,
--				       &btf_id);
-+				       &btf_id, is_ldsx);
- 		if (err)
- 			verbose_linfo(env, insn_idx, "; ");
- 		if (!err && t == BPF_READ && value_regno >= 0) {
-diff --git a/net/core/filter.c b/net/core/filter.c
-index f568006baafa8a..bcf1f453f0373a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -8631,13 +8631,16 @@ static bool bpf_skb_is_valid_access(int off, int size, enum bpf_access_type type
- 		if (off + size > offsetofend(struct __sk_buff, cb[4]))
- 			return false;
- 		break;
-+	case bpf_ctx_range(struct __sk_buff, data):
-+	case bpf_ctx_range(struct __sk_buff, data_meta):
-+	case bpf_ctx_range(struct __sk_buff, data_end):
-+		if (info->is_ldsx || size != size_default)
-+			return false;
-+		break;
- 	case bpf_ctx_range_till(struct __sk_buff, remote_ip6[0], remote_ip6[3]):
- 	case bpf_ctx_range_till(struct __sk_buff, local_ip6[0], local_ip6[3]):
- 	case bpf_ctx_range_till(struct __sk_buff, remote_ip4, remote_ip4):
- 	case bpf_ctx_range_till(struct __sk_buff, local_ip4, local_ip4):
--	case bpf_ctx_range(struct __sk_buff, data):
--	case bpf_ctx_range(struct __sk_buff, data_meta):
--	case bpf_ctx_range(struct __sk_buff, data_end):
- 		if (size != size_default)
- 			return false;
- 		break;
-@@ -9081,6 +9084,14 @@ static bool xdp_is_valid_access(int off, int size,
- 			}
- 		}
- 		return false;
-+	} else {
-+		switch (off) {
-+		case offsetof(struct xdp_md, data_meta):
-+		case offsetof(struct xdp_md, data):
-+		case offsetof(struct xdp_md, data_end):
-+			if (info->is_ldsx)
-+				return false;
-+		}
- 	}
- 
- 	switch (off) {
-@@ -9413,12 +9424,12 @@ static bool flow_dissector_is_valid_access(int off, int size,
- 
- 	switch (off) {
- 	case bpf_ctx_range(struct __sk_buff, data):
--		if (size != size_default)
-+		if (info->is_ldsx || size != size_default)
- 			return false;
- 		info->reg_type = PTR_TO_PACKET;
- 		return true;
- 	case bpf_ctx_range(struct __sk_buff, data_end):
--		if (size != size_default)
-+		if (info->is_ldsx || size != size_default)
- 			return false;
- 		info->reg_type = PTR_TO_PACKET_END;
- 		return true;
--- 
-2.39.5
-
+>
+> --
+>
+> octeontx2-af: add tracepoints for NPC MCAM entry programming
+>
+> This commit adds five ftrace events to the octeontx2 AF driver:
+> otx2_npc_mcam_alloc_entries, otx2_npc_mcam_copy,
+> otx2_npc_enable_mcam_entry, otx2_npc_cam and otx2_npc_action. They are
+> emitted from the legacy and CN20K NPC MCAM alloc, config, read, enable
+> and copy paths. The commit also zero-initializes the
+> npc_mcam_alloc_entry_req used by the two alloc-and-write mailbox handlers.
+>
+> > Add ftrace events for MCAM allocation, CAM keyword writes, action/tag
+> > programming, enable/disable, and entry copies. Emit them from the legacy
+> > and CN20K NPC alloc, config, read, and shift paths so mailbox-driven
+> > rule changes can be correlated with the programmed MCAM state.
+>
+> [Severity: Medium]
+> Is the CN20K coverage described here complete?
+>
+> The copy and enable events are emitted only from the generic wrappers
+> npc_copy_mcam_entry() and npc_enable_mcam_entry() in rvu_npc.c. The
+> cam/action read events come only from the legacy npc_read_mcam_entry().
+> Several CN20K paths call the raw helpers directly.
+>
+> npc_defrag_move_vdx_to_free() in cn20k/npc.c:
+>
+>     if (npc_cn20k_enable_mcam_entry(rvu, blkaddr, old_midx, false)) {
+>     ...
+>     if (npc_cn20k_copy_mcam_entry(rvu, blkaddr, old_midx, new_midx)) {
+>     ...
+>     if (npc_cn20k_enable_mcam_entry(rvu, blkaddr, new_midx, true)) {
+>
+> A defrag move therefore leaves no otx2_npc_mcam_copy or
+> otx2_npc_enable_mcam_entry record. The trace still shows the rule at
+> old_midx, but the hardware now holds it at new_midx.
+>
+> npc_cn20k_config_mcam_entry() does its disable-before-update and its
+> final enable through npc_cn20k_enable_mcam_entry(). So it emits no
+> enable/disable events, unlike the legacy npc_config_mcam_entry().
+>
+> npc_cn20k_dft_rules_free() disables default entries through
+> npc_cn20k_enable_mcam_entry() without a trace.
+>
+> npc_cn20k_read_mcam_entry() is not instrumented at all. Its callers are
+> rvu_mbox_handler_npc_cn20k_mcam_read_entry(),
+> rvu_mbox_handler_npc_cn20k_read_base_steer_rule() and
+> npc_update_dmac_value().
+>
+> The v2 changelog also says otx2_npc_mcam_copy was added "to cover MCAM
+> entry shifts". Should these CN20K paths be traced too, or should the
+> commit message be narrowed?
+>
+> [Severity: Low]
+> This isn't a bug, but the applied commit has no Signed-off-by tags.
+>
+> In the submitted patch, the "v1 -> v2" changelog begins with a "---"
+> separator. Both Signed-off-by lines (Suman Ghosh, Ratheesh Kannoth) come
+> after it, so git am drops them along with the changelog.
+>
+> Could the Signed-off-by lines go above the first "---", with the version
+> changelog after it?
+>
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> > index 7c829b1da3e52..0b485728f3990 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+>
+> [ ... ]
+>
+> > @@ -1018,43 +1021,46 @@ static void npc_cn20k_config_kw_x2(struct rvu *rvu, struct npc_mcam *mcam,
+>
+> [ ... ]
+>
+> > -	npc_cn20k_get_keyword(entry, kw + 3, &cam0, &cam1);
+> > +	npc_cn20k_get_keyword(entry, kw + 3, &w3_cam0, &w3_cam1);
+> >  	rvu_write64(rvu, blkaddr,
+> >  		    NPC_AF_CN20K_MCAMEX_BANKX_CAMX_W3_EXT(index, bank, 1),
+> > -		    cam1);
+> > +		    w3_cam1);
+> >  	rvu_write64(rvu, blkaddr,
+> >  		    NPC_AF_CN20K_MCAMEX_BANKX_CAMX_W3_EXT(index, bank, 0),
+> > -		    cam0);
+> > +		    w3_cam0);
+> > +
+> > +	trace_otx2_npc_cam(actindex, bank, w0_cam0, w0_cam1, w1_cam0, w1_cam1);
+> > +	trace_otx2_npc_cam(actindex, bank, w2_cam0, w2_cam1, w3_cam0, w3_cam1);
+>
+> [Severity: Low]
+> The otx2_npc_cam event labels its payload as w0_cam0/w0_cam1/w1_cam0/
+> w1_cam1 and has no word-offset field. Won't the second call here print
+> the W2/W3 CAM values under the "w0_cam0 ... w1_cam1" labels, with the
+> same mcam_index and bank as the first record?
+>
+> For X4 entries, npc_cn20k_config_kw_x4() emits four of these records per
+> entry. The only way to tell the W0/W1 records from the W2/W3 records is
+> emission order.
+>
+> Would a word index field, or a separate event for W2/W3, make these
+> records unambiguous?
+>
+> [ ... ]
+>
+> > @@ -1434,7 +1445,7 @@ int rvu_mbox_handler_npc_cn20k_mcam_alloc_and_write_entry(struct rvu *rvu,
+> >  {
+> >  	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, req->hdr.pcifunc);
+> >  	struct npc_mcam_free_entry_req free_req = { 0 };
+> > -	struct npc_mcam_alloc_entry_req entry_req;
+> > +	struct npc_mcam_alloc_entry_req entry_req = { 0 };
+>
+> [Severity: High]
+> With entry_req now zeroed, can NPC_CN20K_MCAM_ALLOC_AND_WRITE_ENTRY ever
+> succeed on CN20K?
+>
+> The handler sets hdr.pcifunc, contig, ref_prio, ref_entry, count and
+> virt, but never entry_req.kw_type. So kw_type is always 0, which is
+> NPC_MCAM_KEY_X1 / NPC_MCAM_KEY_DYN.
+>
+> rvu_mbox_handler_npc_mcam_alloc_entry() passes req through unchanged,
+> and npc_mcam_alloc_entries() rejects it on CN20K:
+>
+> rvu_mbox_handler_npc_cn20k_mcam_alloc_and_write_entry()
+>   rvu_mbox_handler_npc_mcam_alloc_entry()
+>     npc_mcam_alloc_entries()
+> 	/* Only x2 or x4 key types are accepted */
+> 	if (req->kw_type != NPC_MCAM_KEY_X2 && req->kw_type != NPC_MCAM_KEY_X4)
+> 		return NPC_MCAM_INVALID_REQ;
+>
+> Before this patch, kw_type was uninitialized stack, so the outcome
+> depended on whatever happened to be there. Now every request fails with
+> NPC_MCAM_INVALID_REQ before any entry is allocated or programmed.
+>
+> The missing kw_type assignment is older than this patch. However, the
+> v2 change to zero the struct is what makes the failure deterministic.
+>
+> Should entry_req.kw_type be set here instead, for example from
+> req->req_kw_type or from the profile key type?
+>
+> The legacy rvu_mbox_handler_npc_mcam_alloc_and_write_entry() in
+> rvu_npc.c got the same "= { 0 }" change and also never sets kw_type. It
+> would fail the same way if reached on CN20K silicon.
+>
+> [ ... ]
+>
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
+> > index 4cd0fc4b0d203..ea1c5d7f10076 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_trace.h
+> > @@ -159,6 +159,120 @@ TRACE_EVENT(otx2_parse_dump,
+> >  		      __entry->w3, __entry->w4, __entry->w5)
+> >  );
+> >
+> > +TRACE_EVENT(otx2_npc_mcam_alloc_entries,
+>
+> [ ... ]
+>
+> > +	    TP_fast_assign(__entry->pcifunc = pcifunc;
+> > +			   __entry->contig = req->contig;
+> > +			   __entry->ref_prio = req->ref_prio;
+> > +			   __entry->ref_entry = req->ref_entry;
+> > +			   __entry->req_count = req->count;
+> > +			   __entry->kw_type = req->kw_type;
+> > +			   __entry->virt = req->virt;
+> > +			   __entry->start_mcam_idx = req->contig ? rsp->entry :
+> > +				(rsp->count ? rsp->entry_list[0] :
+> > +				 NPC_MCAM_ENTRY_INVALID);
+>
+> [Severity: Low]
+> On CN20K, can rsp->entry_list[0] be a virtual index here rather than a
+> physical MCAM index?
+>
+> npc_cn20k_ref_idx_alloc() returns vidx values when defrag_candidate
+> (!ref_valid && !contig && virt) is true:
+>
+> 	/* Return vidx to caller */
+> 	mcam_idx[i] = vidx;
+>
+> npc_mcam_alloc_entries() converts these with npc_cn20k_vidx2idx() for
+> its own bookkeeping, but it passes the unconverted rsp to
+> trace_otx2_npc_mcam_alloc_entries(). In that case rsp_start_mcam_idx
+> holds a vidx.
+>
+> Meanwhile otx2_npc_cam, otx2_npc_action, otx2_npc_mcam_copy and
+> otx2_npc_enable_mcam_entry all record physical indices. No event records
+> the vidx to physical mapping.
+>
+> Could the event record the physical index, or both, so the alloc record
+> can be matched to the later programming records?
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923034858.1764461-1-rkannoth%40marvell.com
