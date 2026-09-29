@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0F657ED98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946F757ED9C
 	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790721730; cv=none; b=TdTW8KJ83E9bkINTIWwNp1VKL2IKMVDV9eaw8wja7Jxsy0ozV3YYJyxehqEMG2Hm3IkdHgRDyLoG9R0IwFVV5asGR+M3tpUO4I2I4L00lgx38FHMs7y912433VJmMD2GPlY3kKPxxniYuFHgjAGd3flP9t0w5mnmbJkRG3Pp714=
+	t=1790721730; cv=none; b=b0ZK+TEPlkS/7e6G/6XcILerF5V5BKi7KxaI7ikD0+fzjP9L4+ZDDw+lqtJk/ge0fmN/zuWjwS++9rvAXLOtQQwLmkgF4xSAUoQKurEuzYzz0pB476Hc3DB6mpijCViHhZdBNKglgMHLFVvppuatp0A9nAI1ONvOMVw0plUAC5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790721730; c=relaxed/simple;
-	bh=ki3QZDtvRDeyIzE/5QqKOeKqJl7emQO5II/+YZv/IDY=;
+	bh=ySGYoCUKv0DHkZKfSI2Oj/UWAJwZDBeRTdaWg0Nuy3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YP9pj0aMycMMTQJvZKOlEwoyEeRWB80ZQchIUHlJl+yZQV00nVbvjLtbVYwg5UdDe38CW9KXROaGBUE3KwQDPyAPTXvkB2VOYLqgniYYsYgOb+f5Z7lVy2UDl4qj9eIgQH1GMLS/q9Pwhq3yeLYbplto+Fk7x3Uu/WRT9l8zCiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SvS4xSX5; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=uPIe3TZucFn4W3JLoQH+swJcRGK3hD3RrB//LuSn2ePUsOLxFgKiZ5Se0W3loWf4trcJd69Q4r96+DRgbSYrOAvRQA+sM92Xc25W2c8hoMfzi0AS9lmmRLDxoIERrMJKko2nck4UQYv29pppfenkfswSu1ectU/hRs2A2MSKzrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YjNxGMWg; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SvS4xSX5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YjNxGMWg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1790721728; x=1822257728;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ki3QZDtvRDeyIzE/5QqKOeKqJl7emQO5II/+YZv/IDY=;
-  b=SvS4xSX5BLf+CjuoaHiJPY6QKdpfS7OjQClcds9fIiGBxPBs+Fk9DW/X
-   Ae818wz6EAi5BQg3JgxFHUvXct6jE5jAzg/N+dGnyIqwQAKa5TXB+dIg0
-   b6CbIX11cYSZMx87OBplxo01NXG4Lf1WtIgPtvG+2acSlK1XGB/X9C7vB
-   YCAuWZsqveJ8VKOi0sKveQ48Lc6cN8XGVcA7Y4jGZCQXts0K+IOPegqIe
-   rUcFNcf9dV2f7ClKeC3bquBO2HY/7jljKj/piLfwvAd4XSW30vw6+/j4r
-   AS1bYa2m+795+ns0NOYt2Zv/2WYZlVso9z9mOyMgKD4LUczMtORPQhW6O
-   A==;
-X-CSE-ConnectionGUID: nqfMvGGQTySTZPIMVtEIBw==
-X-CSE-MsgGUID: SXOpQW0zS6eBh8uEaAVYkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91548886"
+  bh=ySGYoCUKv0DHkZKfSI2Oj/UWAJwZDBeRTdaWg0Nuy3U=;
+  b=YjNxGMWgn+YoSUyMfZ+W8rxw79+fF4VTr0Zn2GU6NaRK62X4PRNh1kT+
+   Me8u13RSGE6BV5CYX2W1wMJp7NvZo9ttS95PMzf2e4nlXL5xgeyZAtlEu
+   ujjDTktwi+XCkRQ85iOh+iTYlcwndujoD0sP2jMfGZClPLPO3x63Simqk
+   WpV0q4tZujC+x8eQmCvtYJVXCqK0RkD6X5qImCq9sR2hCpZHlRYgtcf1o
+   ooo6aQn/YLgvGcvyzDo7mQxvXh/jmyX2tGGBXX8vhUdDa113+Bbu4amTl
+   7G4A/L4v3J7pZE+EAtv9135ZaV3cUBxxcVZ5pEEQcqgIi23TMc3LjL477
+   g==;
+X-CSE-ConnectionGUID: NI5W37SjTzaoQZ4uIWY7fw==
+X-CSE-MsgGUID: I7uqkOqBQDulkjkZZJpFCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91548893"
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="91548886"
+   d="scan'208";a="91548893"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 15:42:01 -0700
-X-CSE-ConnectionGUID: ftuq+SCORPW0x5ybM1X3TA==
-X-CSE-MsgGUID: X0SvCfrHSNSk/2B2TZkGkw==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 15:42:02 -0700
+X-CSE-ConnectionGUID: G7uccRIRTF+evg79lcccmw==
+X-CSE-MsgGUID: E7XWiL/1Rj2RWE7ftHlkYg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="313452322"
+   d="scan'208";a="313452326"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa001.jf.intel.com with ESMTP; 29 Sep 2026 15:42:01 -0700
+  by orviesa001.jf.intel.com with ESMTP; 29 Sep 2026 15:42:02 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,20 +50,19 @@ To: davem@davemloft.net,
 	edumazet@kernel.org,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Przemyslaw Korba <przemyslaw.korba@intel.com>,
+Cc: Weimin Xiong <xiongwm2026@163.com>,
 	anthony.l.nguyen@intel.com,
 	grzegorz.nitka@intel.com,
 	aleksandr.loktionov@intel.com,
 	marcin.szycik@intel.com,
 	jacob.e.keller@intel.com,
-	xiongwm2026@163.com,
+	przemyslaw.korba@intel.com,
 	ynorov@nvidia.com,
 	przemyslaw.kitszel@intel.com,
-	horms@kernel.org,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 06/10] ice: add rx timestamp tracepoint for debugging
-Date: Tue, 29 Sep 2026 15:41:46 -0700
-Message-ID: <20260929224153.1455466-7-anthony.l.nguyen@intel.com>
+	horms@kernel.org
+Subject: [PATCH net-next 07/10] ice: parser: use kcalloc for table allocation
+Date: Tue, 29 Sep 2026 15:41:47 -0700
+Message-ID: <20260929224153.1455466-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260929224153.1455466-1-anthony.l.nguyen@intel.com>
 References: <20260929224153.1455466-1-anthony.l.nguyen@intel.com>
@@ -75,67 +74,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Weimin Xiong <xiongwm2026@163.com>
 
-Add ice_rx_hwtstamp trace event to help debug PTP rx timestamp issues.
-The trace captures cached_time, ts_high, and the extended ts_ns value in
-ice_ptp_get_rx_hwts().
+Use kcalloc() when calculating the parser table allocation size so an
+overflow in the firmware-provided item dimensions is detected before
+allocation.
 
-Enable with:
-echo 1 > /sys/kernel/debug/tracing/events/ice/ice_rx_hwtstamp/enable
-cat /sys/kernel/debug/tracing/trace_pipe
-
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Signed-off-by: Weimin Xiong <xiongwm2026@163.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c   |  2 ++
- drivers/net/ethernet/intel/ice/ice_trace.h | 18 ++++++++++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_parser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index e54a98a0bdd0..b781004f856d 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2330,6 +2330,8 @@ u64 ice_ptp_get_rx_hwts(const union ice_32b_rx_flex_desc *rx_desc,
- 	ts_high = le32_to_cpu(rx_desc->wb.flex_ts.ts_high);
- 	ts_ns = ice_ptp_extend_32b_ts(cached_time, ts_high);
+diff --git a/drivers/net/ethernet/intel/ice/ice_parser.c b/drivers/net/ethernet/intel/ice/ice_parser.c
+index 3ede4c1a5a8a..d239102c52ff 100644
+--- a/drivers/net/ethernet/intel/ice/ice_parser.c
++++ b/drivers/net/ethernet/intel/ice/ice_parser.c
+@@ -102,7 +102,7 @@ ice_parser_create_table(struct ice_hw *hw, u32 sect_type,
+ 	if (!seg)
+ 		return ERR_PTR(-EINVAL);
  
-+	ice_trace(rx_hwtstamp, cached_time, ts_high, ts_ns);
-+
- 	return ts_ns;
- }
+-	table = kzalloc(item_size * length, GFP_KERNEL);
++	table = kcalloc(length, item_size, GFP_KERNEL);
+ 	if (!table)
+ 		return ERR_PTR(-ENOMEM);
  
-diff --git a/drivers/net/ethernet/intel/ice/ice_trace.h b/drivers/net/ethernet/intel/ice/ice_trace.h
-index 7568c917cdbe..7c43683a77d4 100644
---- a/drivers/net/ethernet/intel/ice/ice_trace.h
-+++ b/drivers/net/ethernet/intel/ice/ice_trace.h
-@@ -261,6 +261,24 @@ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_req);
- DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_done);
- DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_complete);
- 
-+/* Trace event for Rx timestamp */
-+TRACE_EVENT(ice_rx_hwtstamp,
-+	    TP_PROTO(u64 cached_time, u32 ts_high, u64 ts_ns),
-+
-+	    TP_ARGS(cached_time, ts_high, ts_ns),
-+
-+	    TP_STRUCT__entry(__field(u64, cached_time)
-+			     __field(u32, ts_high)
-+			     __field(u64, ts_ns)),
-+
-+	    TP_fast_assign(__entry->cached_time = cached_time;
-+			   __entry->ts_high = ts_high;
-+			   __entry->ts_ns = ts_ns;),
-+
-+	    TP_printk("cached_time=%llu ts_high=%u ts_ns=%llu",
-+		      __entry->cached_time, __entry->ts_high, __entry->ts_ns)
-+);
-+
- DECLARE_EVENT_CLASS(ice_esw_br_fdb_template,
- 		    TP_PROTO(struct ice_esw_br_fdb_entry *fdb),
- 		    TP_ARGS(fdb),
 -- 
 2.47.1
 
