@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF234D0CD0;
-	Tue, 29 Sep 2026 03:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDAB4D6C24;
+	Tue, 29 Sep 2026 03:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651974; cv=none; b=kyV3KgvWzklwSVhOqs77jVz4iGobmRos5UVjJhCMPGr00VHNMF6MhdzEYsgSBJFS9W7Td6zcguzmTPXhH8wn7uzV6Rv4C65iRuhVmO+TkQNuiGgSiDsQboarPtV9HU3sszdUgCqtGMSWtmvd5BJYI6C9UpkbHq6p5WnPTwGOSTg=
+	t=1790651975; cv=none; b=cxguVxrmh31eg2YqY8mfUUHCTUlm5NGJFdysUJ4PRKsg4RFBgp1Ee0WaqkoFAWv8kybNPrK8Xfo+R4afPpDl2W6NmrmoijkaA3iakY7OzNwiEdwAFNmxKEjeaLrNipASp8S5RISRAJ0UYeJBTduH/c3Yao7TPaiSCxU/o8eYXIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651974; c=relaxed/simple;
-	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
+	s=arc-20240116; t=1790651975; c=relaxed/simple;
+	bh=aIESsd1MIYvyD9ig8en/i82IfOWwWDuZSS5pbC1x0Lg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KdGBF1geK4EitBoKVYJ2hqKpWgHnNGPTsdXUY8r3+vrbvk61bBBBtQYK2PujODEW6qRZZmDeKEPiLAECfd34DHq8e4vLyu56R6oftQ4qDUAmu4dqK9/NIQgD2cfCi/9D9M1eJ9Uu0jFdHKIaj2BCag9IGyA1VhNs6NjHPGxjWZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=2Iw1ddAg; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=FnFyrZ9J; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=WZa5DiHmUhmIg8jyVwnCBnq0D72NF6PAXHTbWMNzDXeRx38ieyXwx58tO2G67mHlwXKBj2SGY6RAXLQr6NH4Jg57gZoNIdtdIWVCtsj0o3+9X8LSLeD0ttZlHDhzXN/yQE16LiM7cZ+LIcJ4t9kGar1ZF8mwepdD36+1wrcrYs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=eaY7FD6d; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=CuU4lgUV; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="2Iw1ddAg";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="FnFyrZ9J"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="eaY7FD6d";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="CuU4lgUV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651954;
-	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
+	s=default; t=1790651963;
+	bh=aIESsd1MIYvyD9ig8en/i82IfOWwWDuZSS5pbC1x0Lg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=2Iw1ddAgzDDmPCo1HGeVv3l4fmKmaZqyta8wYqzxT6qtKouyBVNaF5rMmg1o3fLn7
-	 6wER0HcdgYPZT21VZb4NK50PpepKX85wKApQTUhtt8AogMCr2tHp87lDePB/oYjWrg
-	 cH0PK7bzdLYxapnWpma/GYtgMs/6kMlCGN8JloOLMo1bLDC3aGaTmMTNhOiArkc6iz
-	 7PGUGjZj5r8zUdfHJeXaWOucYs5GrJQ89lzsVl4QbTXQzBwB4ScXARWjm0Wghdkp0j
-	 s/bn6NBTbtR3WuKmj4nReBTUtkn2EfTcdiAKwRT3RNkmSy6xJ09mg2eZZ64R8z0zw2
-	 3Kxrry4tRDP9w==
+	b=eaY7FD6dBLK+N1ub0Ud160mF4iVa3wsPRLsWz2fWSrQpZRRwLKkNudP5Wfu4rGvTZ
+	 E0sP7qZXQN3I4dQbeqZ3CsaxfP9zZA+ywx5p2c2H47vXGTaxJSVlqQqakHk/7hqva3
+	 1Je/LBHrpuVFbzhkRttHDwhZQV0NvkTcs2SbBil/KEWCfE8QshPYh9DzJFvEwhCbP0
+	 QJvZkm0va02CP7giHT9CeeeABwR9YDKcKDV4JSNML1If6cCh2TCu+ab/SJx+DI76CH
+	 6m9uGfIDRB5dh8HBOhJFtyrGHqvD0qK9mloPDMaoAjALGsT4QRGwVWouv+LbAfb5YP
+	 NuNhXNIndr74g==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 33E5742285; Tue, 29 Sep 2026 03:19:14 +0000 (UTC)
+	id 55FD542271; Tue, 29 Sep 2026 03:19:23 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651939;
-	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
+	s=default; t=1790651941;
+	bh=aIESsd1MIYvyD9ig8en/i82IfOWwWDuZSS5pbC1x0Lg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FnFyrZ9JKvt8EW5ehPP8GWO5vBGB3lje0oacEoQa7Uw3PDi/76TuUv3GqH6DjD78F
-	 BSUJ6PgLmy+ov4R9X1pj8qyPEIDh62F9QmLLB2yvUyISPLP3JEgSAFrlzpek1C2Za4
-	 8WOyKPugvnXMKf9L4dl4dabhQQAnsM9ySnsAJK5MomYhA5niVxn6Sa32F1vJJ/Xh0g
-	 Q0eeJVjkQtQ/q1dYqVQyrhWmjETYHM2uTZNaNn5GNjpEw7aI7nzrg0E3VdL2s3HeXO
-	 mqTjl4itXWJwjSBHHPpgMFEqnmEW8ce5aQQnA9/5MmUczP8yKzyFvFntWU856J18HI
-	 /SE81CddUC68A==
+	b=CuU4lgUVwL5VJb3+7wv2BQgtAf2qZoUVfufAx/ns1gq+g8JWUDY6a/4/ZHMh/syVK
+	 wJzo2uziU5gT1og/GsDHIdeg7ikfRMM9p+rbTJwq67ge6OI7GPrFD7KdDJhHHxkB8p
+	 YypEgWqNysEQuxGGEF4/+VZNBMOW9v7ngX61bm1i1M03GZJpMhWI+gl6Ay/H/+flXM
+	 1O3LL/zZwTQe/8rKC0RsdaT+T+tb2xe+zMCsh/o+HgvtxvMDZIcC4HunaxEQt8E/Ao
+	 6pxvhtP65NsOD1yYREk463ufsKC504FHg1UT+bCuARdsHZ1qPpSfbJaSEhFE5cH7AE
+	 QwaSAM8FaNLkw==
 Received: from AMDDesktop.lan (p5dd1eaf2.dip0.t-ipconnect.de [93.209.234.242])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 6E0BD4225D;
-	Tue, 29 Sep 2026 03:18:59 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 3EF6542270;
+	Tue, 29 Sep 2026 03:19:01 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 29 Sep 2026 05:18:54 +0200
-Subject: [PATCH net-next v14 06/14] ax88179_178a: Add EEE configuration
- support for AX88179A MACs
+Date: Tue, 29 Sep 2026 05:19:01 +0200
+Subject: [PATCH net-next v14 13/14] ax88179_178a: Add support for
+ AX88179A/772D/279 EEPROM access
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-ax88179a-v14-6-a1f2249e42ea@birger-koblitz.de>
+Message-Id: <20260929-ax88179a-v14-13-a1f2249e42ea@birger-koblitz.de>
 References: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 In-Reply-To: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -70,49 +70,133 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-The AX88179A uses a simple HW configuration for EEE
-via a single EEE configuration register without LPI timer support
-Add support for setting this EEE enable/disable register in implementations
-of mac_enable_tx_lpi/mac_disable_tx_lpi.
+The AX88179A/772D devices have 32 efuses with 20 bytes each,
+which can be randomly programmed. The AX88279 has 16K FLASH.
+
+Provide ethtool read capability for these devices. However,
+no write access is provided.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/ax88179a_devices.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/usb/ax88179_178a.c |  6 +++++
+ drivers/net/usb/ax88179_lib.c  | 56 ++++++++++++++++++++++++++++++++----------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-index b15eddb0ebe290fcd6da7653afec19918a47717a..96748ca49743dcaef71bbf649a543508be01b8e6 100644
---- a/drivers/net/usb/ax88179a_devices.c
-+++ b/drivers/net/usb/ax88179a_devices.c
-@@ -395,10 +395,27 @@ static void ax88179a_mac_link_up(struct phylink_config *config,
- 			 AX_MAC_RX_PATH_READY | AX_MAC_TX_PATH_READY);
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 8b52994e2a604101b61ec9cc0d698a0ecb520a14..7ec71438054844c7263c82ca911e42ea5854a682 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -724,6 +724,12 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	ax88179_reset(dev);
+ 
+ 	return 0;
++
++err_nodev:
++	kfree(ax179_data);
++	ax179_data = NULL;
++
++	return ret;
  }
  
-+static void ax88179a_mac_disable_tx_lpi(struct phylink_config *config)
-+{
-+	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
-+
-+	ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, false, 0, NULL);
-+}
-+
-+static int ax88179a_mac_enable_tx_lpi(struct phylink_config *config, u32 timer, bool tx_clk_stop)
-+{
-+	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
-+
-+	/* AX88179A does not provide LPI timer registers */
-+	return ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, true, 0, NULL);
-+}
-+
- static const struct phylink_mac_ops ax88179a_phylink_mac_ops = {
- 	.mac_config = ax88179a_mac_config,
- 	.mac_link_down = ax88179a_mac_link_down,
- 	.mac_link_up = ax88179a_mac_link_up,
-+	.mac_disable_tx_lpi = ax88179a_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ax88179a_mac_enable_tx_lpi,
- };
+ static void ax88179_unbind(struct usbnet *dev, struct usb_interface *intf)
+diff --git a/drivers/net/usb/ax88179_lib.c b/drivers/net/usb/ax88179_lib.c
+index 6f32d4da601ca11d19cf428ecb79206ab4460f3e..de849650f7871022290fc1ba3e3d463434e42fbe 100644
+--- a/drivers/net/usb/ax88179_lib.c
++++ b/drivers/net/usb/ax88179_lib.c
+@@ -210,36 +210,61 @@ int ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
+ 	return 0;
+ }
  
- static int ax88179a_phylink_setup(struct usbnet *dev)
++static void
++ax88179_eeprom_access_params(struct ax88179_data *ax179_data, int i, u16 *value, u16 *idx)
++{
++	/* AX88179 has a word-addressable EEPROM
++	 * AX88179A uses EFUSES with 20 bytes length
++	 * AX88279 has an EEPROM addressable in 256 byte blocks
++	 */
++	if (ax179_data->chip_version < AX_VERSION_AX88179A) {
++		*value = i;
++		*idx = 1;
++	} else if (ax179_data->chip_version == AX_VERSION_AX88279) {
++		*value = (i * ax179_data->eeprom_block) >> 16;
++		*idx = (i * ax179_data->eeprom_block) & 0xffff;
++	} else {
++		*value = i << 4;
++		*idx = 0;
++	}
++}
++
+ int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
+-	u16 *eeprom_buff;
+-	int first_word, last_word;
+-	int i, ret;
++	struct ax88179_data *ax179_data;
++	int first, last, i, ret;
++	u8 *eeprom_buff;
++
++	ax179_data = dev->driver_priv;
+ 
+ 	if (eeprom->len == 0)
+ 		return -EINVAL;
+ 
+ 	eeprom->magic = AX88179_EEPROM_MAGIC;
+ 
+-	first_word = eeprom->offset >> 1;
+-	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+-	eeprom_buff = kmalloc_array(last_word - first_word + 1, sizeof(u16),
+-				    GFP_KERNEL);
++	first = eeprom->offset / ax179_data->eeprom_block;
++	last = (eeprom->offset + eeprom->len - 1) / ax179_data->eeprom_block;
++
++	eeprom_buff = kzalloc((last - first + 1) * ax179_data->eeprom_block, GFP_KERNEL);
+ 	if (!eeprom_buff)
+ 		return -ENOMEM;
+ 
+-	/* ax88179/178A returns 2 bytes from eeprom on read */
+-	for (i = first_word; i <= last_word; i++) {
+-		ret = __ax88179_read_cmd(dev, AX_ACCESS_EEPROM, i, 1, 2,
+-					 &eeprom_buff[i - first_word]);
+-		if (ret < 0) {
++	for (i = first; i <= last; i++) {
++		u16 value, idx;
++
++		ax88179_eeprom_access_params(ax179_data, i, &value, &idx);
++		ret = __ax88179_read_cmd(dev, ax179_data->eeprom_read_cmd,
++					 value, idx, ax179_data->eeprom_block,
++					 eeprom_buff + (i - first) * ax179_data->eeprom_block);
++
++		if (ret != ax179_data->eeprom_block) {
+ 			kfree(eeprom_buff);
+ 			return -EIO;
+ 		}
+ 	}
+ 
+-	memcpy(data, (u8 *)eeprom_buff + (eeprom->offset & 1), eeprom->len);
++	memcpy(data, eeprom_buff + eeprom->offset % ax179_data->eeprom_block, eeprom->len);
+ 	kfree(eeprom_buff);
+ 	return 0;
+ }
+@@ -247,12 +272,17 @@ int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8
+ int ax88179_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+ {
+ 	struct usbnet *dev = netdev_priv(net);
++	struct ax88179_data *ax179_data;
+ 	u16 *eeprom_buff;
+ 	int first_word;
+ 	int last_word;
+ 	int ret;
+ 	int i;
+ 
++	ax179_data = dev->driver_priv;
++	if (ax179_data->chip_version >= AX_VERSION_AX88179A)
++		return -EOPNOTSUPP;
++
+ 	netdev_dbg(net, "write EEPROM len %d, offset %d, magic 0x%x\n",
+ 		   eeprom->len, eeprom->offset, eeprom->magic);
+ 
 
 -- 
 2.47.3
