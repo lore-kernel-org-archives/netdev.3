@@ -1,137 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100B12E8DEB;
-	Tue, 29 Sep 2026 14:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797DE531612
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790693834; cv=none; b=oNxObKVs6MWgKVs/qkKdUou3Vu6+gUouxunEiEolaKBOv4D4m9AHHA1DaBIopgVKwA5154PxntBeRfZemhFrVnhakDNImGKk1sS0PwJyqJ5a08mI2kUSmReEjN1A5e+hxAiFmzrfJEnFVohECUwD2C/O7S3T1X3B9sB4Cxi0ctE=
+	t=1790693919; cv=none; b=UN6cmUz8bBjr/UiwbPxytpB/uuTgek55k+ShaAWlzhJLXo8Htv7aOLAY6ENebp3pFAnjBbLeL8k5JIldTpOA28XcsJV2BY5NgtHRBqgLpAmrHMJiwaIWuWJLt6b/MFEZMpWVDX2CN3/j/xN9LfiYVvPgGpR9EgxtUMEJ8OVAeQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790693834; c=relaxed/simple;
-	bh=Mb/eWLB1hzxMamN2EaZvoHO/5kRqgqUoNzTGvIBJ/bQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Hhru/E7RQRM+OVBwkjtJuzaFU+ZCMipwYOslOCXkKjXrjSXFJmZDDnATqYZiGpJVWWCY6QQePdJvvYv82r6n/8xCCmvZFXTdG6bNR2sh+Rid2QM4LxtVRyDuge04fDX6CaBJJiVYju3/CG86vXATw4VwJgsfNfkrQ4/nqMtiE/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrJ2DxZa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790693919; c=relaxed/simple;
+	bh=+Nae+VQCeZSmSPqR0LLrqa4yrCW4mwWubd2DoSBMmm4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=NR747ApSMCAEOWsjb5GPvQNauYplIQuVAnwJVc71cj8gv9f+W+WGtb6ju6XJHz3F9uSmuDNnPvyIsu8wDxJ/e/GeCg1uWCG4P+F80ThKpnk97ingYVqcLMbqV/5dk3YY+g9XyM/tCI71hChpwEKuYOJjVTrCCw6EF4zsSh5Zfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rSeO5Rtb; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrJ2DxZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056A31F00893;
-	Tue, 29 Sep 2026 14:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790693816;
-	bh=VfFU+43eV00HgURhccuIVtc5YQSWyFjP5EWQQctgOTI=;
-	h=Date:From:To:Cc:Subject;
-	b=hrJ2DxZaJAAh4OGyaSKX2PVX7ZrIpdRRMIzh/fIS05+3d5m84PwzDwkkLENiUJxFS
-	 xrGa1/vdLTmRqFsbAHLgeb4Fu/Ye5IC22Uq2elxOEzpn3N2IabB1+4JGzIkq64CVUZ
-	 jK//7eYpjijnp/PwOu7hdLEyqWUmK5NhOOeBskyqTgqkkRo7Z9AI/9F/JC7pd2bE9/
-	 Oh6wEeHzD/cOIzvS43aWGPdg2xStSzl7PDiE7EGpt98zt6y8VeUhfZDVO5GXk9tqXY
-	 4z1u2zQvDu/YrpFZ9AFyFV+4Fjo9otqXJkiPqIYkcJOUBrit/8E5C0GBztncs8vL4X
-	 8u90VA7KTsAsA==
-Date: Tue, 29 Sep 2026 15:56:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>
-Cc: Florent Revest <florent.revest@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the bpf-next tree with the bpf tree
-Message-ID: <arvRs4KdojDnW1O6@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rSeO5Rtb"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8aa75b33a26so23835247b3.2
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 07:58:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790693886; x=1791298686; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=iS0vI6VPFheNRyG7TeQ5h4c/DL9d1CbeqeEtao3CvUY=;
+        b=rSeO5Rtb4rpBcgalBZME4CzwkFx/cHcUp0pnWTFuvBvuATOZxAqH3QH6niCkqsXk9g
+         /AtGQvGgh3s+nmfVrAamu3+jqmi6YpxtAz646NJhpYkNHfB4liSfKwKXLMO2P+h5eINh
+         3dz3ZBMG8JkrkquaV8rcCUYqOZkpvizKG1TjhtGhunoZIAfhEbrZi4HYW1CkWL5sBW2G
+         wFdLRvymoreXAJtxof1T8M3O0PzjmWiU+eHUH8uiejRVePAAVWm1a/4C5VOWqpt2kU7r
+         jfCoYvyO+A801Zntyd/0oV5ZP4AFedPwB0HNilBmjvZ0VskCut8Lm/Ja5FYe/Fm2uVMN
+         6tMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790693886; x=1791298686;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iS0vI6VPFheNRyG7TeQ5h4c/DL9d1CbeqeEtao3CvUY=;
+        b=NI0rhx726KPxZJaLnrQTNwB38lgEjdO/Zmw5lagIKT8P6+zIuFvFJnNnMbRrLwUjw3
+         tf7G6BkGjltSJQHvMn+TkK2ymctgInjpzEPXI2CNv8kXzJVZbupmxkr84IwMKWEySTSa
+         YiCm8bwBGMxnk1PU8WKiR52aFQGFWeIwJEXxPPE77Ri+K2noik1F5s6CsXCyhobSvG2u
+         amzTHX3egwCfL6tt07sMkUYDPfQh0K5MdIzQ260V9iEGy/TENGSZNWbYhO9EBNlMV+te
+         HL0QpMw7ydvWDd2AF+talnOh/bMQ5mNL7Xo+YuApW0GPb7Y0lU1Gjk7op/c6RJ6i1/Zh
+         KYhg==
+X-Forwarded-Encrypted: i=1; AKwUvBzwH30zqdLhM39bh8bWruXBaXyZrz6wgLBLuJaXe/Jc7a+sYdSABXQUaAvDa7cyWyT3WLfpapA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcJn04Vh3m7NgqBrcKh+n+SiVo/FMxhfGBMDAXhViuLPxwLamu
+	g7NLSJFUHiR05ZgrqrbttBvFV3TqDhqtMYcpcPU2stSkmsdOtW5p6XDQ
+X-Gm-Gg: AYBFou2dh0hWRViFrhDyn5Xl8+Cefwb55QtuQbVNlRYJfedpMAtFsVVWI1GF/00fVD/
+	Hb1I1H6YW/xpsCz2iBnUcIbUCEU5cQKyqYsSJNA8Ya4K7MK1FquSdNT05Rl2mJ311myj06VwAtX
+	8V+OWKNiM9RErc2BTgcXZB+mZUOuYGwubKdu+sesbJfxPzi8jmOvsZJZZCtz3Jt7K9CfSOdT9WK
+	biypjTwUDgR93RV3rjtPWMfyqDJ5G6+oBRszSDakXYzWnxKA4LrzRvmcwes8N52v9ODD/dFRNBY
+	1i4IhrSrEax8MBzFyH2hCl8wIVb99QpCtSeZRwwE4mU5/quRM6zFBYtRkcQsElrP4JZ57dNqG/2
+	Cxqeg6nlTHfUeu4hSsV2OAb68AATVgjnB4NyzSMwPZLS3XQ7GcSJKv+4HjhrXLegxWTMkBzgBiK
+	pg48dwgua58e+Q5+s+mQEO+tjmO4XZ/ycLlLKXaDGfystRfY4t3t1601PtmV2trp/bfJ2WKegAW
+	7bA/8PDJGXI2xoyrrwv/qIXGXpvkfpAVbIFzTLUU0usK8GX3E5L
+X-Received: by 2002:a05:690c:e68d:20b0:8ab:318f:1b61 with SMTP id 00721157ae682-8ab9588cbf2mr959057b3.41.1790693885914;
+        Tue, 29 Sep 2026 07:58:05 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ab46e3d02bsm6381477b3.29.2026.09.29.07.58.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 07:58:05 -0700 (PDT)
+Date: Tue, 29 Sep 2026 10:58:04 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Quchaosheng <quchaosheng000406@163.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Quchaosheng <quchaosheng000406@163.com>, 
+ Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.24f9b153d245a@gmail.com>
+In-Reply-To: <20260928113108.2127215-1-quchaosheng000406@163.com>
+References: <20260928113108.2127215-1-quchaosheng000406@163.com>
+Subject: Re: [PATCH v3 net] net/packet: guard the ll header push in
+ packet_rcv_spkt()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="U28t0JN67+uLvANc"
-Content-Disposition: inline
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
+Quchaosheng wrote:
+> packet_rcv_spkt() restores the link layer header with
+> 
+> 	skb_push(skb, skb->data - skb_mac_header(skb));
+> 
+> That subtraction is only meaningful when the device actually has a link
+> layer header.  packet_rcv() and tpacket_rcv() both wrap it in
+> dev_has_header(), which is also the predicate the block comment at the
+> top of the file states the restore in terms of; packet_rcv_spkt() does
+> not.  commit d549699048b4 ("net/packet: fix packet receive on L3
+> devices without visible hard header") introduced the helper and changed
+> the two call sites, and this one stayed behind.
+> 
+> A device without a visible ll header can leave skb->mac_header at the
+> 0xFFFF sentinel that __alloc_skb() initialises it to.  A CAN skb does:
+> init_can_skb() sets pkt_type and ip_summed but does not reset the
+> headers, and commit 9f10374bb024 ("can: remove private CAN skb
+> headroom infrastructure") dropped the skb_reset_*_header() calls that
+> used to be there.  skb_mac_header() is then 0xFFFF, the length becomes
+> a large negative number and skb_push() reports it through
+> skb_under_panic() -- from softirq context, so it is a full system panic
+> even with panic_on_oops=0:
+> 
+>   skbuff: skb_under_panic: text:ffffffff8bd21bc1 len:-65455 put:-65471 head:... data:... tail:0x50 end:0x180 dev:can0
+>   kernel BUG at net/core/skbuff.c:214!
+>   RIP: 0010:skb_panic+0x50/0x60
+>   Call Trace:
+>    <IRQ>
+>    skb_push+0x38/0x40
+>    packet_rcv_spkt+0xe1/0x170
+>    __netif_receive_skb_core.constprop.0+0x7e8/0xd30
+>    ...
+>   Kernel panic - not syncing: Fatal exception in interrupt
+> 
+> The socket type is reachable: packet_create() accepts SOCK_PACKET
+> alongside SOCK_RAW and SOCK_DGRAM behind the same CAP_NET_RAW check,
+> and neither the socket length nor a capability check keeps it away
+> from a CAN interface.
+> 
+> The missing skb_reset_*_header() calls in init_can_skb() are a
+> regression in their own right and are being fixed separately, but a
+> packet socket should not turn a link layer that did not initialise its
+> mac header into a kernel panic.  Guard the push the way the other two
+> receive paths do.
+> 
+> Tested on v7.3-rc5 under QEMU with a slcan device on a pty, which is
+> the driver RX path: vcan does not reproduce it, because can_send()
+> resets the headers on the way out.  One SOCK_PACKET socket bound to
+> can0 and one frame written into the line discipline panics an
+> unpatched kernel with the trace above; the same image with this patch
+> prints no panic and powers off normally.  Both kernels are this tree,
+> defconfig plus CONFIG_CAN_SLCAN=y, differing only in this hunk.
+> 
+> Fixes: d549699048b4 ("net/packet: fix packet receive on L3 devices without visible hard header")
+> Assisted-by: LLM
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Quchaosheng <quchaosheng000406@163.com>
 
---U28t0JN67+uLvANc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-Today's linux-next merge of the bpf-next tree got a conflict in:
-
-  arch/x86/net/bpf_jit_comp.c
-
-between commit:
-
-  17637e1a581a2 ("bpf: Skip detached progs in trampoline images that are st=
-ill in use")
-
-=66rom the bpf tree and commit:
-
-  29fcf9ce4bbdf ("bpf, x86: Use global buffer for trampoline size generatio=
-n")
-
-=66rom the bpf-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc arch/x86/net/bpf_jit_comp.c
-index 6bca87457e872,6c7a0578760e7..0000000000000
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@@ -3817,25 -4152,15 +4158,15 @@@ out
-  int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
-  			     struct bpf_tramp_nodes *tnodes, void *func_addr)
-  {
- -	struct bpf_tramp_image im;
- +	struct bpf_tramp_image im =3D {};
-- 	void *image;
-- 	int ret;
- =20
-- 	/* Allocate a temporary buffer for __arch_prepare_bpf_trampoline().
-- 	 *
-- 	 * We cannot use kvmalloc here, because we need image to be in
-- 	 * module memory range.
-- 	 * Since it must be writable use execmem_alloc(EXECMEM_MODULE_DATA)
-- 	 * that returns writable memory in the module address space.
-- 	 */
-- 	image =3D execmem_alloc(EXECMEM_MODULE_DATA, PAGE_SIZE);
-- 	if (!image)
-+ 	if (!trampoline_size_image)
-  		return -ENOMEM;
- =20
-- 	ret =3D __arch_prepare_bpf_trampoline(&im, image, image + PAGE_SIZE, ima=
-ge,
-- 					    m, flags, tnodes, func_addr);
-- 	execmem_free(image);
-- 	return ret;
-+ 	return __arch_prepare_bpf_trampoline(&im, trampoline_size_image,
-+ 					     trampoline_size_image + PAGE_SIZE,
-+ 					     trampoline_size_image, m, flags,
-+ 					     tnodes, func_addr);
-  }
- =20
-  static int emit_bpf_dispatcher(u8 **pprog, int a, int b, s64 *progs, u8 *=
-image, u8 *buf)
-
---U28t0JN67+uLvANc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq70bIACgkQJNaLcl1U
-h9CIeAf/aTtse9gSc8Y06UHaIxa3EIIm1SYMyj0BImtt6DeoA592sdNNjPXKbgit
-DGg9Bas77yScTZ2GJv0eo/gTKOPrHzWj3nmmZC1xjJKEkmc332Z25TlzB1FTrvQn
-3V0eb4zInVbXJZQYFZ8HVtcjAMsneCFT/tIoyujTn20gouvZR13YWBcCyA/e5z1z
-l1YwuhBcOsZJdc4CjExcqc5PULNEOy+7fgFqhoQT8gtC5wjo+s3GsxLWj0f/55Z0
-sdTlwXiT/K6KBA3zE8cQNdIy9zHQUz4VKY4pj+MZ+M9Ma3xo/C0zPH6wQ7I/Vz3p
-xxo/0uS8kEDtEa0A2FMu0Y5b66Xrig==
-=pacq
------END PGP SIGNATURE-----
-
---U28t0JN67+uLvANc--
+Reviewed-by: Willem de Bruijn <willemb@google.com>
