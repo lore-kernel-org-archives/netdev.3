@@ -1,82 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F10229CE9;
-	Tue, 29 Sep 2026 00:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6C8547043;
+	Tue, 29 Sep 2026 00:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790640089; cv=none; b=jvgHOzmdGV2S0iHpXXeiDNpvT04REaSqKbQK85D02Q5RSPh/xl/4J9/JWqwjqz6Bb71YegojT66hjFOuH+7KqhTkFxfE912+pdG0fToe1Jmrx0R5lQohsRWV8WMHzM1VGYxt7vuyYLb+OjVe/5a+c/mdGVNfolVvoMv77tOqn1k=
+	t=1790640238; cv=none; b=h00jGn7M280dhdXfkvki0ZLJRkpnTvahSiqZsGO5EkNTImvBoNb9dDPi820T9t6ICTLBJetomaPLo5f2OKZJoK/MUKbKIhIFhoPU9B08UfyeAgeUdLWarefOgxXela/3a6QxKIUbTq6wP1OOgdbL43qoYP/UYvJVdbAqpTN5R7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790640089; c=relaxed/simple;
-	bh=e/xgFaenQnWSKQoguTiKDz/FBKjh/BR421qowvLfL48=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RCSlkKH+q3orQ4gU/k1weYVRmVKUNIS/SkicT1P34hmatcFRqdUHdVLz7EnX0wB+dl6gdWuv0/a68cJ5XEshSvSSBxbtlQqnAV4lC8OGalXb6BgbJsGB79AsKXs+pUCQFFo8bEz6fu5v2jbXFp13LXF+JiFNGpLuPsbm7RPSR1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PALq4FMA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790640238; c=relaxed/simple;
+	bh=GMY/980GNTG1x7RLqGkM7AwXdKgIOinuBg1AFppA5Fs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rZfBaBmaWMQmKq53wrb2zWBbmS9zpY0wn3OTz8GmrgEqzZJeDddHAE04PuhwEATcDg+dmRImINzl8W+nc/SzGRWk1cLrsmo3w6tfRvt91Gn34bo7FAPx8rTu8kLHRUQQSoPK/ysplu3LHkt+IJQm8mQ9PB+1UsQx8ODEitfpcm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POnpiKpG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PALq4FMA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0F51F000FF;
-	Tue, 29 Sep 2026 00:01:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POnpiKpG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C551F000FF;
+	Tue, 29 Sep 2026 00:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790640088;
-	bh=mUvKujSeBTuGDWuLxfPM4RRXqVA2zzdGSNqciw3nWG4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PALq4FMAm9EpwouJGcyk5uNDzOadQtKFXttpmeuZ1yyBhAcQdqfGsjfUlaBAh5Yyt
-	 YZCz8DoGi0MNimJkZjEN4xkhczDG0czkdh57A68PSN/h7iVH3KjPvXGVek7ZAgTlrM
-	 BpFXEofDTsLN2GXaO9ZfEZIKdP/l0upCmbLAGiZZaToSINOny27aWCt0SQ00oM8zIZ
-	 BBsCgLzwn5iJISpCZ7yha2Ym278SEBDVcZbuOV4ju7wiPGY8EEhUYGe99RNMV4Bfg4
-	 TkkV4tRM4dZPR36Gj2KHZRuGekmZlVNWBuQoStVvTNJjh8pfrK1NSHp5dMaYy3x7AM
-	 YSz6FlMhDto9A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09FF3924FE4;
-	Tue, 29 Sep 2026 00:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790640237;
+	bh=eFh23lNDTV8z5iPbY7t5PTdAOrgzBPtFJ/YyjYpjsHs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=POnpiKpGZdeIOJWuFnuAEsq/OG37e7uPjkRHE/lh96bzodCXRd4LmO1fjc7yCxS1M
+	 jBz+2CWpqIy6AR8WF+2iWg97yyEOfsebdltQtwt0q1ZqR7yNooLvrFFVyYBH19bs/2
+	 du2Cuc3LadX2s2nhdAFY7OzsJfDBGyx6rFBdVahp+9f6GKHw1VpnomIb1+F9JL75HT
+	 qXhgtjtH+VISrSAGns4Z1Ky6j5DwGoSs5W1MRPPFCgApYPG5Jg7qtxYjpvEJZ/lF49
+	 nc2ssLs64JSRx8WpKwU6yku8KnKNwPh1ZinoiDllb4uy5W0H089zTB3C3sVF32Ixzk
+	 HDBvEg1srywOw==
+Date: Mon, 28 Sep 2026 17:03:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Zak Kemble
+ <zakkemble@gmail.com>, Simon Horman <horms@kernel.org>, Ryo Takakura
+ <ryotkkr98@gmail.com>, linux-kernel@vger.kernel.org (open list), Nicolai
+ Buchwitz <nb@tipi-net.de>
+Subject: Re: [PATCH net v2 06/10] net: systemport: Fix potential packet
+ length underflow in bcm_sysport_desc_rx()
+Message-ID: <20260928170356.439aedc8@kernel.org>
+In-Reply-To: <20260922232440.598918-7-florian.fainelli@broadcom.com>
+References: <20260922232440.598918-1-florian.fainelli@broadcom.com>
+	<20260922232440.598918-7-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net: broadcom: Couple of minor changes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179064001238.182825.15168110483572588045.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 00:00:12 +0000
-References: <20260922222525.3992167-1-florian.fainelli@broadcom.com>
-In-Reply-To: <20260922222525.3992167-1-florian.fainelli@broadcom.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, opendmb@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
- linux-kernel@vger.kernel.org, nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 22 Sep 2026 15:25:23 -0700 you wrote:
-> The first change makes sure there is proper reference counting handling
-> in case of error/removal for the bcmsysport driver.
+On Tue, 22 Sep 2026 16:24:36 -0700 Florian Fainelli wrote:
+> In bcm_sysport_desc_rx(), the packet length 'len' extracted from the RSB
+> is only validated against RX_BUF_LENGTH. If a malformed or corrupted
+> frame is received with 'len' smaller than the prepended Receive Status
+> Block (sizeof(*rsb)) plus 2 padding bytes (and optional FCS).
 > 
-> The second change removes duplicates definitions in the ASP2 driver.
-> 
-> Florian Fainelli (2):
->   net: systemport: Fix missing phy-handle parsing for non-fixed PHYs
->   net: bcmasp: remove duplicate MDA filter register definitions
-> 
-> [...]
+> Furthermore, subtracting (sizeof(*rsb) + 2) from 'len' (u16) will
+> underflow, resulting in corrupted packet stats and potential
+> out-of-bounds operations.
 
-Here is the summary with links:
-  - [net-next,1/2] net: systemport: Fix missing phy-handle parsing for non-fixed PHYs
-    https://git.kernel.org/netdev/net-next/c/5277d2c55286
-  - [net-next,2/2] net: bcmasp: remove duplicate MDA filter register definitions
-    https://git.kernel.org/netdev/net-next/c/78cccb00ec16
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I don't think we are required to protect from bad/malicious PCI or SoC
+devices. If this is a LLM suggestion - up to you if it goes in but
+net-next and no Fixes tag.
