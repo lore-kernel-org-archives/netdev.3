@@ -1,174 +1,154 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5514A3B0591
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C28253B345
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790694397; cv=none; b=A4uTz9Tx+/1doBVoa8AJDpyQU9iD9RjsApAaqYjfa/33QYeHUdR+GrBDYLsUk1nQOtcVJbjdTCh3BsVSxN6JdXZRAN++4q10JSyq6zzTv1QOlv032Xjn1x6qgjYA6Fac+vnfQuyhMU44osYwsSiz/VNMurA6HAFgl3Fzwt2zSjQ=
+	t=1790694409; cv=none; b=GRNTjDcNnG6iR3qIG+IGbbRjMpx2GXUxYp8/4KorCu1qBK492DNbdosTYK414m5eYhiWOsUDPxsqEIfO8h0fzIXhmStytFN7Zwc7HM7jdufFybpmWT6n1c2ikzTxPnjtsmMRO0uRkzPgDA4aMVQPEYZg/ChaZnq0ANjfh8qgHnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790694397; c=relaxed/simple;
-	bh=8vcedn3CUP1Ygu4h0fKEORUNhcyZl/aYo2TO5TrUblA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SUPUHrRBMTs68VfDkwkIcXOCRwmI7DnZbgwg200e2os0UlQhLFnhZBIO93S+fC4+4DCNvivpEL59gnNKFzSxokPjNuQFqr7lvl/42C2qqRy5Iu5eNi4rI/WJckc6dZDPFjlepHLcsn8hcedFhnrk+h3pPyoWEkQRgVlGtuDQCAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=ff7feR11; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1790694409; c=relaxed/simple;
+	bh=jwEA9tszSdXiqK2lVGbK9zWNHlffeaTYOxNnAuJHg0s=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Pu/rLgR483dCDLvStfY53XFlnvNVZqXJp+3eBDCHbafKPb5V68PC8wQCLiu9XytChGIY2svJXX9kMCBVxIjsjnLTjp56zWA+NswvmlI+M06Nh4hBqWPA47uenui398Ixg2R/4eq/j5f77e91N2D0wBZdZJXmrr+quiIvRdTGcJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h6GT5t2o; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="ff7feR11"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-482f635552aso3392851f8f.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:06:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h6GT5t2o"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8ab3694b2acso16255567b3.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:06:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1790694375; x=1791299175; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YLptK7nHgocKDIIOZU1ThQFrj1CHU/IAWIcXLfeThzY=;
-        b=ff7feR11aSekwydcvym14NWKr0RFC1kE1CKVvHVryeaGzD633tzAO8T0mElTFaxhtu
-         Y56NLQzAGWRs0e3RhvpKEHAVelxx4nI2yaHdQdGuyFR72aEsEJ04oWPSvAW6kaQKTmpY
-         5lMMk0LAhXvZ2kGvZQI/NJHLl5BhgC6ZV+IgSfViffE3t9MysfoDPjrLtvrBZdqrS+ZJ
-         Ep0JvqhugV2Df+lNjIUP1mCyzZ/vWiT7ZqEouQH7ynYvgIrqRZPfhBDQYR+HH+RWsRxi
-         IzToElRdW4JpCUpCXHzMdL87b4/dZKs+npxUQs2uhqR4Cs03x3hm+ZjOhpGDkjAs5U48
-         lvQA==
+        d=gmail.com; s=20251104; t=1790694388; x=1791299188; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aBbvMtdtXkPr9NqwMjzBWKgQ9hOQ8+AsNzjKBiR/MZM=;
+        b=h6GT5t2oAjpHhnStHfZZs5+v/BGAaWIu/60oc/Jvtrwgq25a5N78TqLWlLY6tAon4h
+         CUKwPT4nszAokGPumvJbv0xMvmD3KJbacNAD4CKQSd+3ue/XjXYvXB81nfL2qRoQmA2X
+         /K7XkENNeq0m7wX+miFKcfZrwHwZM/Nn7TC4VlpXCjqvSCLzqWslN1U9szSJZx1/W4dz
+         KWiToeXr+ZUMsx9/i7ZeQkOGaIm41XisMs6mmxTjZjYrWYqlgmdjdjBVCPeGxBwg9v9q
+         q+O3vyHinS+AHmQy8NviMV8vGooteQFhkUTjtTggt8Zcl8rlDz88/WTcnZIg8DXVix3M
+         ouzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790694375; x=1791299175;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YLptK7nHgocKDIIOZU1ThQFrj1CHU/IAWIcXLfeThzY=;
-        b=YTdlLFDJyw+VDhewfHIQD4BNNqnOhEehvNWDvTQzGhddGoE3ozLNYHdwaURaVF98zZ
-         0X0cZdJD5HyOPtA5x/k5jnlcn0XlyF3hw4Zqu5UnBIGxmHZcg4owAs1roBuapaIVfDE/
-         dM1wGuJ6La/4ONGM7FD5o7wC3Q409JhuHQGjuoyEmgA3AlkHGEcKR7t8/UkOBAOH4aTP
-         KCZ0nwi3UmHhTf4hnc2I3iQ8HN0EadS1HucupuZa7hyzHqA+5QAOktw6xMcrlx3PJgV3
-         RFW5L5oxaRJ4Qkr21vEUcMQtcjorxdCBLWzFs7iVFYwIhV2TruV+5lVxuHkYIa4WkgKO
-         c18A==
-X-Forwarded-Encrypted: i=1; AKwUvBxNz7bLuOcS9XFmoQUU8JR5n5Zyt9VG490t1NEVA9n65Dkzkv+FEPNm1TDWm0Cm4Rm49sOD030=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK/nlT20zyR/6GqZeM+d6Vmwdl0lCjah0BAGUG8w7jm5wgFXcB5
-	3f9GbuQssAj465ONrLU9U+rJy+6jebE5ja2dqmfp02g4HXJ8QZm1Q5gY/L+m/O+oxhw=
-X-Gm-Gg: AYBFou2NIrinaTnwv3XJEdjkme9hVvUwFDR+ihokAoeD+VIlKJ8Mb3OKsED8eUJtwZr
-	ckuF3ugNpfIjsu9HsddFtDYEapMGlb0pLiiiiTpS7jVwr/Ea/j5mqcpCqf+ixtkv3qi4WhQwxJp
-	0JBHUGkoqIrFNdCV832Aq6YBsOprykZoTaZZuKymzkuc/w7v8BDYHeVD9p0Fx1xJJHyA8qFMKii
-	KuiIdD8Xj5QpdXUnJbEFjeYZKuoU7mKPc1qdkc1pTNGA+fFwuml1ZcN2qBkxekysJhbxwuWfmN6
-	+ThxJz5TO4LXlGYO/CsED+7mIygpuVocx+L+AWO01qE9W26GpAeUYwgxXC08uzIv1fdiBaGxDrZ
-	jpvuUCD3ziRF1AspLv2Gq2NAfMAO9ynifCRm2iXkgJSAWgTqBwtcdX91Hly934zdKWRi5kquXgr
-	TFv5udQgaNKFW3AKWsSkb68T3sf6Xqo+VhuHQgZwwlWZ+LkQDhEHU96Mk1c95+3bW/E4BFDVUBV
-	6Nnwu5wcVPjs+04XfWWHQZQev6TEQ==
-X-Received: by 2002:adf:e19c:0:b0:487:799:c04a with SMTP id ffacd0b85a97d-48872a5c8dcmr29383832f8f.3.1790694375596;
-        Tue, 29 Sep 2026 08:06:15 -0700 (PDT)
-Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48af4f8edebsm4909091f8f.2.2026.09.29.08.06.14
+        d=1e100.net; s=20260707; t=1790694388; x=1791299188;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aBbvMtdtXkPr9NqwMjzBWKgQ9hOQ8+AsNzjKBiR/MZM=;
+        b=GPhO18rpL9P/oK3NsFTKZl6NGYZhJPWcmYZOG2blXiqfQ7g+fodZXlmCVVtNKXjD3m
+         3tdoLO6hWpLwRwnDmxdigBIYSCda/DvdKn+324iq2RO/iqn6kCk5HaMSvO6Z12EQFcZ3
+         wu+UfD4nyFC+boLqAxH8qTYh+F7MmiKDnv2E5j8sA2xV7Dkg1I/oyVJO4yaXh2RX0Ty2
+         nFgW9kKrfRxHGzCBWSR5DrwjvrF2bQBWsF7jd+OwWYp+QJ/jkPF5vHH+ycUTdA/gsW0F
+         n0TRQKAGru00RkVFfuJTHnvMVOMDohmFi599PshiAFe5xkOO8d3UAN0nU+nqw/fkwckg
+         4CuA==
+X-Forwarded-Encrypted: i=1; AKwUvBy3qoJu0WlaaJXobsIb1iMrQweKC9THE7p529fAQEPF4cl7uu0u4mXaizdaVlsll/JO+CKy+Us=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKIhDnZvY9YaVqPzpn2IE4o5JoLhVYfUT9+j5m5IIzOHc2Lz7aP
+	0MCCp4PD3OnY65UR73hfIF3IQv6oRncpkFG7gwE2BpuhM2PI3Ejvzb0v
+X-Gm-Gg: AYBFou0P+VMS6soxMDiPsLPUE1sNuKioPqok4xDg2xpBLwDZjC7AA2EWJZd1d3egrNJ
+	2h9VnhahEjs5KvMucpOyApRKZ0wXyUkMk/Dpzx82GAEmgLbQ1oeNo5dw1k4My2/QZWXuANJ+Vbz
+	7TgStKSqdGCiCBoIsaK/2GlQzZjGG7ERZaiXCbyMtuZzkV3D4fApY30hxfhbhxlz+fMWEUlc9C6
+	ZNeU/ADiMO2gUDMNSbINUwx1Suet41vXkIeXR+IZ1FBAtlx+34K49IdwwGiMiubRMmsxVVP46v4
+	QImx3eGAkKPUQgppwNfErr50rmR8Zk/9DuYDv82r1HdyMtBeP6zYavaytzKjtfsoN+gSxKqZ6b0
+	iZTZyHmdi1garhuX3Zbgj1fVnRN1Lhn84G17qmhpz3PQWKUS3IlmU6G87UzltJale7uWnjCrfIg
+	LRhmqcABExOY3VxLhbg8rXIEbes5MgIBakwMBEgTTRmZWhZR/stDZHgqssX4xOdKYe9Yi+RDn08
+	wqzsZZYhJmHlCCYgXoJD51W8EhtSZRsRMHckNZ8as5gNr7nNHVD
+X-Received: by 2002:a05:690c:c50f:b0:8a9:a1e9:2659 with SMTP id 00721157ae682-8a9a1e92fcfmr37633367b3.50.1790694387584;
+        Tue, 29 Sep 2026 08:06:27 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860f9cdb0sm60566977b3.24.2026.09.29.08.06.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 08:06:14 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Richard
- Cochran <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, Andre Przywara
- <andre.przywara@arm.com>
-Subject: Re: [PATCH net-next v3 0/5] net: stmmac: Add support for Allwinner
- A733 GMAC210
-In-Reply-To: <b41e7fe4-2ec8-428e-81ff-47e1c75003b1@lunn.ch>
-References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
- <9cc61625-47c9-4bdf-97f0-0528f661a399@lunn.ch>
- <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
- <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
- <1jv77u8yak.fsf@starbuckisacylon.baylibre.com>
- <491f043e-6dc6-4936-a490-31a3362c5b6e@lunn.ch>
- <1jse2x91oh.fsf@starbuckisacylon.baylibre.com>
- <b41e7fe4-2ec8-428e-81ff-47e1c75003b1@lunn.ch>
-Date: Tue, 29 Sep 2026 17:06:14 +0200
-Message-ID: <1jecec3xnd.fsf@starbuckisacylon.baylibre.com>
+        Tue, 29 Sep 2026 08:06:26 -0700 (PDT)
+Date: Tue, 29 Sep 2026 11:06:26 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: lollipopkit <a@lolli.tech>, 
+ Jens Axboe <axboe@kernel.dk>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ io-uring@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ lollipopkit <a@lolli.tech>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.570e0a646f4@gmail.com>
+In-Reply-To: <20260929045433.59435-1-a@lolli.tech>
+References: <20260929045433.59435-1-a@lolli.tech>
+Subject: Re: [PATCH] io_uring/cmd_net: drop unextractable TX_TIMESTAMP skbs
+ instead of requeueing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On ven. 25 sept. 2026 at 21:45, Andrew Lunn <andrew@lunn.ch> wrote:
+lollipopkit wrote:
+> SOCKET_URING_OP_TX_TIMESTAMP selects error-queue skbs with
+> skb_has_tx_timestamp() but extracts the timestamp with
+> skb_get_tx_timestamp().  The two use different checks and can disagree:
+> a skb the walk accepted can be rejected with -ENOENT forever.  When
+> that happens the processing loop stops and skb_queue_splice() puts the
+> unprocessed skbs back onto the HEAD of sk_error_queue.  The rejected
+> skb is selected first on every following run, fails again, and blocks
+> every skb behind it: new timestamps keep arriving and keep re-running
+> the command, but nothing is ever delivered again.
+> 
+> The disagreement is reachable without a race.  With
+> SOF_TIMESTAMPING_BIND_PHC the walk never looks at sk_bind_phc, but
+> skb_get_tx_timestamp() converts the hardware timestamp through
+> ptp_convert_timestamp(), which returns 0 when no virtual clock matches
+> sk_bind_phc (for example when the vclock was destroyed after the
+> socket bound to it).  ktime_to_timespec64_cond() then fails and the
+> extractor returns -ENOENT permanently.  Any skb with a non-zero
+> hwtstamp is selected while SOF_TIMESTAMPING_RAW_HARDWARE is set, so a
+> single such skb blocks even the software timestamps queued behind it.
+> 
+> Measured on real hardware, an I219-V (e1000e), using
+> /sys/class/ptp/ptpN/n_vclocks to create and destroy the vclock the
+> socket was bound to: 22 error-queue skbs generated (16 software + 6
+> hardware).  Of the 21 extractor calls, 20 failed with -ENOENT and the
+> one that succeeded delivered 1 software timestamp; deliveries then
+> froze while 8 further sends kept re-running the command, and the
+> remaining 21 skbs (15 software + 6 hardware) sat in the error queue.
+> Both control arms (vclock kept alive; no BIND_PHC) delivered
+> everything.
+> 
+> With this patch applied on top of the CQ-full fix ("io_uring/cmd_net:
+> end TX_TIMESTAMP multishot when the CQ is full"), A/B tested in a KVM
+> guest from a single kernel binary, with the new behaviour behind a
+> test-only runtime switch (the switch is test scaffolding and is not
+> part of this patch).  The guest needs no special hardware: QEMU's igb
+> model emulates hardware TX timestamping (TSYNCTXCTL/TXSTMPL/TXSTMPH)
+> and the igb driver registers a PTP clock, so the guest reproduces the
+> same failure the same way.  The two arms are separate runs with their
+> own sockets and sends; the device holds one pending hardware
+> timestamp, so how many of the 16 sends get a hardware skb varies per
+> run (12 and 8 here).  Switch off: 28 skbs generated (16 software + 12
+> hardware), deliveries froze at 1 and the remaining 27 (15 software +
+> 12 hardware) sat in the error queue.  Switch on: 24 skbs generated (16
+> software + 8 hardware); all 16 software timestamps were delivered, the
+> 8 hardware skbs the extractor rejected with -ENOENT were dropped, and
+> the error queue drained.
+> 
+> recvmsg(MSG_ERRQUEUE) already treats such a skb as skippable:
+> sock_recv_errqueue() dequeues it, returns the error message without a
+> timestamp, and frees it.  Do the same here and keep the deliverable
+> timestamps moving: drop the skb the extractor rejected and continue
+> with the rest of the list.  The CQE-full case keeps its
+> requeue-and-end-multishot behaviour.
+> 
+> Fixes: 9e4ed359b8ef ("io_uring/netcmd: add tx timestamping cmd support")
+> Cc: stable@vger.kernel.org # needs the CQ-full fix above
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: lollipopkit <a@lolli.tech>
 
->> > You need to differentiate between small fine tuning delays, and the
->> > 2ns delay required by the RGMII standard. If the MAC is just doing
->> > fine tuning, you need to still pass PHY_INTERFACE_MODE_RGMII_ID so the
->> > PHY adds the 2ns delay. If the MAC is adding a big delay, you need to
->> > pass PHY_INTERFACE_MODE_RGMII to the PHY.
->> 
->> The PHY is one concern but the series here does not really address this
->> topic. DTS and board specific concerns will come later.
->
-> They are all interconnected. When phy-mode says 'rgmii-id', it is the
-> MAC/PHY pair which needs to decide who adds the delay. If the phy-mode
-> is 'na', how does the MAC know it needs to use RGMII, not MII, as you
-> said.
->
-> We need to keep the big picture in mind, otherwise you could go down a
-> dead end, and a dead end which makes backwards compatibility really
-> messy.
+Is this a real name?
 
-I agree with you with on all this. I understand this particular MAC/PHY
-combo is sparking this discussion, Let's sort this out properly, no
-rush.
+https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
 
-I'm merely pointing out that the problem is not introduced by the code
-submited here. Other MAC can set delays, Other MACs would need to handle
-mis-behaving PHY too.
-
->
->> It is really just the MAC. So, how does the MAC is supposed to
->> make the decision to amend the PHY mode ? is there a threshold you'd
->> like to recommend for this differentiation ? 
->
-> This is the first time we have had this condition. So it has not
-> really been thought about too much. Maybe 1ns. That is the middle of
-> the 2ns required by RGMII.
->
->> I'll try to reach out, just in case. I have the schematics but without
->> the PHY doc, it does not help much.
->
-> From that i assume you missed the other emails. Somebody from ARM give
-> a link to the data sheet. It documents the strapping. Search for the
-> patch adding the PHY driver, it is in that thread.
->
-
-Thanks for the heads up. So if I'm reading the doc correctly the PHY
-adds 2ns
- * on RX if there a 4.7k pull-up on RXD0
- * on TX if there a 4.7k pull-up on RXD1
-
-The schematics for the board are available here [1]
-
-* 4.7k pull-up on RXD0: so we should have 2ns Rx from the PHY
-* 4.7k pull-down on RXD1: no idea what this does. Presumably no delay ?
-
-I've cross-checked the HW, the resistors are actually fitted as the
-schematic says they are.
-
-With the HW setup, the MAC setup that works for me remains
-
-	tx-internal-delay-ps = <1620>;
-	rx-internal-delay-ps = <1800>;
-
-I know it is not aligned with what it expected but still.
-
-I've tried with
- * rx-internal-delay-ps = <0>. No Rx.
- * tx-internal-delay-ps at 1800ps, it still works with some TCP retries here and
-   there on iperf3. 1980ps stalls after just a few packets.
-
-[1]: https://dl.radxa.com/cubie/a7a/docs/hw/radxa_cubie_a7a_v1.10_schematic.pdf
-
-> 	Andrew
-
--- 
-Jerome
+"a known identity (sorry, no anonymous contributions.)"
