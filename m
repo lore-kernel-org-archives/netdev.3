@@ -1,980 +1,177 @@
-Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012023.outbound.protection.outlook.com [52.101.66.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DC15616D0;
-	Tue, 29 Sep 2026 18:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790708399; cv=none; b=URWgoG40rFLUO4/o5f7V8Zn1FdES5zVAqbp8x+viA0fxjkBXa8wC0dBRTrqHrb4Qm4F72SNJqayJktnUUlqJppHGBIrmwdY9cET30vd3w+u1QUyederqaBqQ4JjrYn7+r8YRfkHf8lRG3YAgxD1vRD7KU3dKmS/Zn+9g5bbOxyY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790708399; c=relaxed/simple;
-	bh=zkamJO3YxFjZbrrskjrrKvqbelbL71UscnMFe4M/11s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MlMZsJkxjs7htjK2r3C4ZNkPSB46Xxgec4hEapFMXP0uaL4kDRMwjcJHUNUwxRXWpjP0iIroENuGgx4FMGFuvw6SR04uk/Xh84QIy4w2og9VYyGldSylqKAw8bNsZpKt5vr97FkUB5BSXJGuBnpyUbI6emqX1FU3cutgjXfjo+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=DUxKTP86; arc=none smtp.client-ip=173.37.86.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE0E3EC810;
+	Tue, 29 Sep 2026 19:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790708810; cv=fail; b=MB3unA69VF1Ro8ejRvq33ivz9ZU57vUq1Vv0kMoh8FBU2xlydfz1Ta+7cHoGEnBp4VfQI6NtQfr93vUnjaEgIR2TmDtRvvWYc8ZP/ND2GWAdYZerrqcaF/fIaE4aEF7BOdZXDBsLjl/a9uRL0jOC3DgRPmVwiOCboE8g6+UiXXY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790708810; c=relaxed/simple;
+	bh=IP3Gt4np9PcFDuAnZ6bOjT8lPH3LJeu7L6Kj9Htd1E8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZgFGlYmB04vjEaoq6yoMghs+LBiaikZ1ub9VEZ97rlTDVEWEvQm42u7SEacZZ4xU+Uiy88HDesIcaHNwuC6npA8Q7H9DBA+or++VeEwfa9aTUmHlPwtmsAZCkDd02Fnxtl0WwGlg+nut+tqZBMkBMEh6Ksby4IvkNtwERE3y+98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fWXFGd80; arc=fail smtp.client-ip=52.101.66.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="DUxKTP86"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=29703; q=dns/txt;
-  s=iport01; t=1790708396; x=1791917996;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=Ux7h55hqarA9uLIYQdiU7XVgRv5tsRFhBZYsLDZiyso=;
-  b=DUxKTP86Q3V8olofeKsLcAEEEKjomsFxwAcrcaRIVS7YMAFN/6iueYxL
-   QLHzMx0UKHC7IA80RXl850AfZEUqU473L4Whum1YgzjTJy74IGM1s80zM
-   e7nQqwTmyhTIpqos3xJlYh/MgBk01gXUrz2iM5BqJrzDFnytszuZHGKUJ
-   mMBsK6QIeWUTNDEfneIfLgMMGSUkubHzcEmV3mBA6e3nl17N15bLZdQGw
-   5U8njPsw085vOO6qOJw+NNzsWK2bDGdxVltldjYO9XG6M1t3oMSmZnjUF
-   XxOsGmHFAZjJ1P6TVn2lxfrB6macp3jr0ng+rg20ozT2JiciqyBqF3E/n
-   w==;
-X-CSE-ConnectionGUID: M8vgPAeQROq45RO3EuV06g==
-X-CSE-MsgGUID: xvbUtGDHQIalrRqYTaFHRA==
-X-IPAS-Result: =?us-ascii?q?A0AaAADCCbxq/4v/Ja1aHAEBAQEBAQcBARIBAQQEAQGBf?=
- =?us-ascii?q?AcBAQsBglaBVUNJhFeIG4c3giGRTIxRFIFqDwEBAQ9RBAEBghKCcwKOCAImN?=
- =?us-ascii?q?AkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBBQEBAQIBBwWBDhOGXJATAgEDGgkEU?=
- =?us-ascii?q?hAlAiYCAkYQBgESgwKCdQPBQXp/M4EBhH7ZSoFoAQsUAYEKLgGFcYJtAYFxh?=
- =?us-ascii?q?Ag7hEEnG4FJRIEVg2mBGYMGC4N0gmoEgxwSgQ2JBIsXCT+BAhwDWSwBVRMNC?=
- =?us-ascii?q?gsHBWFSMwMgCgsSEhgVAhQdEg8EFjIdcAwnEiwXL1gbBgWBHXUUBBOCGSMZN?=
- =?us-ascii?q?nqBCV6BKylgARAXgQeCBwKCVIIAAgFJQQ4HRVMJJUUSRyYiCBIJARMaMAuBG?=
- =?us-ascii?q?zg+CSg9GA1IESw3Bg8ZBD0BbgeQNx6BbgFRGQYBDggXEB01exAhAQ8IKgoHF?=
- =?us-ascii?q?AQRBi4XL5JjCQE4gzyNX2uBNZ9ahCiBZqAQM4QEk2M0klSZCCOCNqEZDwkBA?=
- =?us-ascii?q?k2EaYFoPIFZMxoIGxWDIlMZD44uFpMdAbx7JzI+AQcCBw8CgXOQAAQNF4FWA?=
- =?us-ascii?q?QE?=
-IronPort-Data: A9a23:+z9DLapkJl9FlTKI+SdXmbAH6kdeBmLKZBIvgKrLsJaIsI4StFCzt
- garIBmPPPmKY2emLt4lOY6y8BsF6pHRnYc2QAI/rXg1ECtH9uPIVI+TRqvS04x+DSFioGZPt
- Zh2hgzodZhsJpPkjk7zdOWn9T8jhfngqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvV0
- T/Ji5OZYgDNNwJcaDpOtfrS8kI35pwehRtB1rAATaET1LPhvyF94KI3fcmZM3b+S49IKe+2L
- 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVHT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
- I4lWapc5useFvakdOw1C3G0GszlVEFM0OevzXOX6aR/w6BaGpfh660GMa04AWEX0sMnH2523
- PEhEhcUMk25oLmb3YzjFOY506zPLOGzVG8ekmtrwTecCbMtRorOBv2Qo9RZxzw3wMtJGJ4yZ
- eJANmEpN0uGOUASfA5MWfrSn8/w7pX7WyZRtFOOpak3y2PS1wd2lrPqNbI5f/TXH5UEwxjD+
- zuuE2LREg8QCcCw5Rq803uonNXWrB/ydqIoPejtnhJtqBjJroAJMzUaXEW2pNG1g1CzXtZYJ
- VBS/CcyxYA/+FGuR8vwQzW3p3mLuhNaUN1Ve8U67xuI0YLX7hyfC2xCSSROAPQlqcU/bT8nz
- FmEm5XuHzMHmLSTRWiQ6fSSoC++NDY9KXIEY2kPTWMt+9DprYcypgjCQtZqDOi+ididMTXxx
- S2a6SsznbMeieYV2Kihu1PKmTShot7OVAFdzgPaQm6o8Ctna4O/IY+l817W6bBHNonxc7Wal
- GIPl87b6KUFCouA0XTXBu4MB7quof2CNVUwnGJSInXozBz1k1bLQGyayG0WyJtBWircRQLUX
- Q==
-IronPort-HdrOrdr: A9a23:MOL8banhdn7XQu+eyXuPFgKhsWTpDfLa3DAbv31ZSRFFG/FwWf
- re+MjzsiWUtN9xYh8dcL+7VZVoLUm3yXcx2/hyAV7AZmbbURWTTL2KhLGKq1bd8m/Fh41gPM
- xbH5SWZueAaGRSvILW7Ba1FtA4zMLC0qy57N2utktFfEVGZ75t6gFhBh3eKE15QwFaGYE0fa
- DsgPav3wDQHkg/X4CcGmQPWfTFqpngkZLrZgNDOjscgTP+9Q9BLNXBYmKlNtB0aUI1/Ysf
-X-Talos-CUID: =?us-ascii?q?9a23=3Apt2YuGpMzYglX524a+sqIZ3mUeV1bHLl5XrpGWi?=
- =?us-ascii?q?hVTtTb+a4VGHIpqwxxg=3D=3D?=
-X-Talos-MUID: 9a23:mQ/7cgXPrlnrX3Hq/C/yjgx+G+tI2oWnDFo3iKQ6suekDwUlbg==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,130,1787011200"; 
-   d="scan'208";a="528956351"
-Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
-  by rcdn-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Sep 2026 18:58:39 +0000
-Received: from [127.0.0.1] (unknown [10.25.128.208])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPS id 6BC891800037C;
-	Tue, 29 Sep 2026 18:58:38 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-Date: Tue, 29 Sep 2026 11:58:08 -0700
-Subject: [PATCH net-next v2 5/6] enic: manage V2 VF station and
- administrative MAC
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fWXFGd80"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CBjPF8xjvai8+rk71VMj+ZFJAXmn20eQM/ksWpPhPWlUX+mNehiqgmW3L/u2tAsW++n8mRh3W0z0fr8wwWFw3e/8Kl2VbZ7WWP9un4vcnnaY08oplFB6XvLsamWbUErWyuSwwyFqrzhhF+ZXbnZC2V/iZOuqNOMVZw1tnvVfPlgoIcuw5+HyLGVHLjS+44grhz72GfCv8Y/MqYEhG943MPHoKXn7hCqq+ueUjgx6bDayEDltfqbrFqMsnc15fPyTNjQ8CXywQm4dHHMipUz4uwZ5kKASFl55pVvDO6wwomTD38gf0gbM346uzZPrGOgPIvTffqcxVFMtjkoP/1Dh1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HeT0xizABDVvfmPND3KOkhjqtTL/Ptu1R9Ha+08a+5Y=;
+ b=YXhLt1l2kTIR+Y0Blr9Amrynf+hPNdOkYDPA9wr3DNZYjCxCPXCRannyPfYV7oAxcvSb7mzVtUdFgqxiXIJCtivK9RvTsgODEW9XCb0pseT9dA5KRHeTONWlEF2I6+TGHY1SgFGGlq19ln8STEvTI/kvNEme8GQIS8xFGYDpH/1VIcrjQ2WQrdLd8rlZpeGT6pUbh5lue7WCTLvqcCTLncSI5742OEjMfl7+tSuoTFW/NHKCnPoltjU/Q8yQb1WhKWTgVAIprMJt3U/m8o35yOmX1aG8zgCeYorTJR0mwiMojYghlVls67QePV974OzCApGp3F8rg2mUMjR+gL6DwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HeT0xizABDVvfmPND3KOkhjqtTL/Ptu1R9Ha+08a+5Y=;
+ b=fWXFGd809HS9kequLTYdZXCukNcWuabLcpXtdq28DXz0VvMGMwTloIl4F6/6ffE0ZjxmLhd6k89veMJIEbBGqCymKdtbEZHx8PJDUkFN+DiCoLapTM5Pbr0z++alBr9Wivd8lhLZG5lFIcaP5++7jue9MBftS5RHY2GYLR0ySgq+dgiPZ9iwAyvoHkEK7QCbwFTVcVj98M8ku1IV55aCvbyUhZtKqlt7Z4u/ZZ02XBYXC6YvfxuCJjAqCoRVhiJ/qcQ+EQ8IMJrW+AxCxKXaqqLeDRR1d49JZrMAMW7X2NAFwe7748nK6DIeQKFCy6m11+1Zdk0+TgeQmn1Zxh3GWQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AMBPR04MB759424.eurprd04.prod.outlook.com (2603:10a6:20b:799::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Tue, 29 Sep
+ 2026 19:06:46 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 19:06:46 +0000
+From: Frank.Li@oss.nxp.com
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <kees@kernel.org>,
+	Li Youhong <liyouhong@kylinos.cn>,
+	Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner sunXi SoC support),
+	linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
+	linux-kernel@vger.kernel.org (open list)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 1/1] net: allwinner: remove dmaengine_desc_free()
+Date: Tue, 29 Sep 2026 15:06:36 -0400
+Message-ID: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CYXPR02CA0073.namprd02.prod.outlook.com
+ (2603:10b6:930:ce::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-5-5962c10061b2@cisco.com>
-References: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
-In-Reply-To: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2@cisco.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Satish Kharat <satishkh@cisco.com>, sebaddel@cisco.com
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790708314; l=30575;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=zkamJO3YxFjZbrrskjrrKvqbelbL71UscnMFe4M/11s=;
- b=z9VgfYDNRhMbiNlSKHdzcYVqhCXEp50BsZE8489aNqlJgrFJNgoSmAZ3MEke7UZcPeNXQ4RZu
- AWrnVKwzbXlCiW9eG1mZFVx0m0gatHTsm7TWp7gOorAVkNM0E5lBr/j
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.208];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.128.208, [10.25.128.208]
-X-Outbound-Node: rcdn-l-core-02.cisco.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMBPR04MB759424:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f5d9efe-2c0b-4c8e-ae96-08df1e5cceb2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|23010399003|7416014|921020|5023799004|18002099003|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	kYoHH08lNuxdHP/cQCIyXLxFnRb+AgBsFtZaP9X88JsO7NFhY9xgRKVn3XteWxjHaO6YABrFajF+Pke1XHAdWAnZjxoMw1QIQRIzItaoM3OnOgK6lJ35BXlktKv3uklgXfPTViTp+qA30y+3YJ06xXHDi2RV6tbq9I5uBeutlxmBqr0YgsvDgYu7kk3AQyUzpQG18CVXZvccTdcHxEX7/Pp5qAwnnoQPDfukbDz6NUPPXvaVaa0SqLzSL+B2T/ct6OG3yIwPuqrKDUJNoIBPF0qyW4kIvjfP+lYoSKc3ip6nUywT7BHpiib1FPHRhbLRiLJqIq2cZasPdX1wBlqqYmoEbwv06AtGmm1MbmVGWNrdYFS4kwEKG5uQBAtLUXxHRse1u+wVHm4P4PQI9LxyGxKZs+agA11exVP+UpB9tBvnfA7ww3Zx1xo04NP7baASGmJgZzM2Kqf51HFmm+HxqWuMzASnAL4IUm4lKhKVs921P4XogYEDcabNi+K21gJrT1/sSu3F5aQS3k+yhY4uEnmmeYPhxDN6BGctlEI8BGdaGwYvVkvBKPkShZgWcjfRvsf/icm1/k23v3yrkd737EegxgxAA0MSC6YjP9nkUHwHlUaJzHok1Kk14wn/qNDPRZKgdsCS3XdwBX9XNsmOPtPOMJMnwt1obKT8LcvsYO8H7Kaea/cbzZW2xLWZ2movZGQifYINYpxEP3uvB3IdYA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(23010399003)(7416014)(921020)(5023799004)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0x08VXYqpyU/WDK+992EPn2g86BrM83qXZp0hocK95/CSrhkUFg/RAKBhrZk?=
+ =?us-ascii?Q?KV2o3smfbGPAiICxyyW4WIOP9hlyzNkggC02SO0SA1QfAfXolU06TRFJ2u6a?=
+ =?us-ascii?Q?B2hFAX7P8nHCLADWeAZLV+dLCnkbIdiNRbo09AypvqF60HD768ZMSsQlDU96?=
+ =?us-ascii?Q?gCB4RFFSFlu/rh4iIuhbOvAeAHysjn0L9B45zwzvMjW0UjkvefWWIQ8ZMJTz?=
+ =?us-ascii?Q?8NvM4mx+kVV/9/05Lkkn3UvuzDdcozglEh1BOF06iCIyNfzZMcbIbas/eVCw?=
+ =?us-ascii?Q?lndPpkgy2+PzOx3s+KCxR6syDmGbN3XK/8Zi/wrSXDOU8W3c51q27m7RVTDn?=
+ =?us-ascii?Q?x/cK9nY2In1bRq8JpBbUf3bI30P/WxKY/5SYydfgRADWb5afAVUNyiVJGdr3?=
+ =?us-ascii?Q?5+iL4NDOei9s81brpGVzg9dSPh4clqikYTnHh6YEnul7s/B8p5tiFMTcT77V?=
+ =?us-ascii?Q?8uCk9zvJD4H+WSWt6B2UgKbtteh23HlDybQTYceexEiovXBslmalGktmeLf1?=
+ =?us-ascii?Q?t5gHIaIvBFX/8xeVWaPHBcpLU4xsbYSnx7RBLMD6Jbb2SKKKdVCkHhXw1Wc4?=
+ =?us-ascii?Q?gnPEt4Ed46gS45D8kKn0J+u8uE1XawglusLHvFlVNn21hewkTjYY1bF1p6qw?=
+ =?us-ascii?Q?msPJwIxAN9kJju5IOQizpp2i7EBxsSwPeqq2dMUMEGN4CE/Z7ePbHZnTLKCu?=
+ =?us-ascii?Q?GiORCHXsls/xGS7WVJ9RJHC1k6koVECxYy8GEM4EBND9D76rwVBzK1r48GOh?=
+ =?us-ascii?Q?CQQ6LNyFsX1Hht/HlfxolBlgAB5UBarb9Tz+0umO80XicE12OoMHVsT9Frft?=
+ =?us-ascii?Q?94G//hP2+tFoYw4T6z2SlVdC3Z5NwqAnwScgVScwlXciPDk80F7BUEI8TyxI?=
+ =?us-ascii?Q?+LIHuSCw8tQeOmfMR7jnT/WZicJcZWHIgtCI0Xwlu3xm2pdVp2ih23uJpK/J?=
+ =?us-ascii?Q?PQASbUSgl0OUZDXiNPUDnuj64fW05I1s1RaEwWDKFh+Sn2Rdbf6+18P1NswD?=
+ =?us-ascii?Q?4qtKHyWnmyLTN/9rrp+xEl91eT6Fr9OBna2R4GG/qdJNYPE74Pa7nbOv3mI9?=
+ =?us-ascii?Q?/s1L+Yx79f1zRvEnMDIZZYErIpTQFgUGHADFjEJBfQ2BMpjyaBy/91CXC0rr?=
+ =?us-ascii?Q?enbUjzdHM34EVh32Oe3N2PM+6g+UPlLdqnrQEZecYv3z42l3sKx7yWRGwG4c?=
+ =?us-ascii?Q?sPiHDRpr2yfox4SOvTGNstZitOUkob7ux1X14vPHHGzO6XfA3tJCuxnuxiaZ?=
+ =?us-ascii?Q?iUSmbs7B9ZeXcWSX6LHv+/gWTs570C+LHbglmDCft2Qdx8vN6CKLa42bQ0ZM?=
+ =?us-ascii?Q?Nk5DtUz+RFe63B0Hpq+pR3bSNDM/WbaKHPXb6yVa9mw58afs5u628A/lI6TF?=
+ =?us-ascii?Q?O0qBrVPwFYbnFCmVY8Wvh8a4yhc5eE9jtPr/vxeDKnYsYS4CHoMl7uMPJ+F2?=
+ =?us-ascii?Q?ltJAcuQpwiBxYvp89aar1IzszwxIxe2q3xtPeGIP76CJAd1B6snQdtBukh7N?=
+ =?us-ascii?Q?HNNhPzE/NXNcgmCipRH4RgCvUcCSUtyqg8Df7QeDqD169yGq6kjyXn5NXJiH?=
+ =?us-ascii?Q?+7EMfVBbS6oYB1AmEbL6iJ+Jfm0zaFEYbQ9Wfg40XRuVNasML32iE2ymMeMZ?=
+ =?us-ascii?Q?er096qoKGaTmFFcSLVv0G+ElLut10Tom972MC09327f6wE/ewZZ1+LICrJJv?=
+ =?us-ascii?Q?VeaiwG2nk8fdVJaDZ66xb9+m9ScXK4ybfTyvz1WHwrZYoWKljjS+P88v+AUf?=
+ =?us-ascii?Q?CNYSB59tURnF7lubLbQLfF+KUSX56BFxIQZ4uSVEJ6/lcJWhjkDE?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f5d9efe-2c0b-4c8e-ae96-08df1e5cceb2
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:06:46.5203
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JoQV21bz4VITnyDUTn7hVf6kR6kc+ngHo5NlhiVuqKmsvgcIX2bpg1TKxQ7k1Yq2RzvgBHih3ss3lEjT6c8nWfVzqG2ZuQFTGpNVu/5GqdB593rlrLOThoy4LcbYmFAn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB759424
 
-Use the V2 mailbox MAC operation for the VF station address and keep that
-address separate from netdev secondary-unicast synchronization. Replace a
-station address with one mailbox request containing a delete followed by an
-add. If the PF reports that only part of the replacement was applied,
-require the VF to register again before accepting traffic.
+From: Frank Li <Frank.Li@nxp.com>
 
-Treat the PF administrative MAC as authoritative. Process notifications
-outside receive dispatch, preserve a delegated VF-selected address, refresh
-the policy after every registration, and protect VF worker shutdown and
-restart against teardown and recovery.
+dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
+is not set, dmaengine_desc_free() will return -EPERM.
 
-Reject a VF MAC change which conflicts with a cached nonzero administrative
-MAC even while the datapath is down. During registration, repair an actual
-device-address mismatch even when the administrative policy itself did not
-change since the previous registration.
+	if (!dmaengine_desc_test_reuse(desc))
+		return -EPERM;
 
-Install the station address during open and remove it during an ordinary
-stop. At reset and removal boundaries, rely on VF_UNREGISTER or the next VF
-registration to clear the old state.
+So calling dmaengine_desc_free() does nothing.
+dmaengine_terminate_(a)sync() will free all already allocated descriptors.
 
-Assisted-by: LLM
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h       |  17 +
- drivers/net/ethernet/cisco/enic/enic_admin.c |   2 +
- drivers/net/ethernet/cisco/enic/enic_dev.c   |  11 +
- drivers/net/ethernet/cisco/enic/enic_dev.h   |   1 +
- drivers/net/ethernet/cisco/enic/enic_main.c  | 578 ++++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.c  |  30 ++
- 6 files changed, 635 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/allwinner/sun4i-emac.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index ef8332138c5a..1e369e6704e1 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -345,6 +345,9 @@ struct enic {
- 	spinlock_t vf_link_state_lock;
- 	enum enic_vf_link_state vf_link_state;
- 	bool vf_link_running;
-+	/* Last station address which may still be installed at the PF. */
-+	u8 vf_station_addr[ETH_ALEN] __aligned(2);
-+	bool vf_station_addr_valid;
- 	/* Tracks a completely opened V2 VF datapath.  An internal reset can stop
- 	 * it while netif_running() remains true, then fail before reopen.
- 	 */
-@@ -365,6 +368,16 @@ struct enic {
- 	struct list_head vf_ack_list;
- 	struct work_struct vf_ack_work;
- 	unsigned int vf_ack_count;
-+	struct delayed_work vf_admin_mac_work;
-+	spinlock_t vf_admin_mac_lock;	/* protects pending admin MAC */
-+	u8 vf_admin_mac[ETH_ALEN];
-+	u8 vf_admin_mac_random_addr[ETH_ALEN];
-+	bool vf_admin_mac_pending;
-+	bool vf_admin_mac_random_valid;
-+	bool vf_admin_mac_work_enabled;
-+	bool vf_admin_mac_recovery_attempted;
-+	u32 vf_admin_mac_generation;
-+	u8 vf_admin_mac_retries;
- 	u64 mbox_expected_msg_num;
- 	u8 mbox_expected_reply;
- 	int mbox_reply_status;
-@@ -498,6 +511,10 @@ static inline int enic_dma_map_check(struct enic *enic, dma_addr_t dma_addr)
- }
- 
- void enic_reset_addr_lists(struct enic *enic);
-+void enic_vf_admin_mac_notify(struct enic *enic, const u8 *addr);
-+void enic_vf_admin_mac_quiesce(struct enic *enic);
-+void enic_vf_admin_mac_rearm(struct enic *enic);
-+void enic_vf_admin_mac_purge(struct enic *enic);
- int enic_sriov_enabled(struct enic *enic);
- int enic_is_valid_vf(struct enic *enic, int vf);
- int enic_is_dynamic(struct enic *enic);
-diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-index 30c0a5c89a2d..5e52d4da8d3c 100644
---- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-@@ -641,6 +641,8 @@ void enic_admin_channel_close(struct enic *enic)
- {
- 	int err;
- 
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_vf_admin_mac_quiesce(enic);
- 	if (!enic->has_admin_channel)
- 		return;
- 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_dev.c b/drivers/net/ethernet/cisco/enic/enic_dev.c
-index 659787f73cf1..48c1ca9b40fb 100644
---- a/drivers/net/ethernet/cisco/enic/enic_dev.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_dev.c
-@@ -32,6 +32,17 @@ int enic_dev_stats_dump(struct enic *enic, struct vnic_stats **vstats)
- 	return err;
- }
- 
-+int enic_dev_get_mac_addr(struct enic *enic, u8 *mac_addr)
-+{
-+	int err;
-+
-+	spin_lock_bh(&enic->devcmd_lock);
-+	err = vnic_dev_get_mac_addr(enic->vdev, mac_addr);
-+	spin_unlock_bh(&enic->devcmd_lock);
-+
-+	return err;
-+}
-+
- int enic_dev_add_station_addr(struct enic *enic)
- {
- 	int err;
-diff --git a/drivers/net/ethernet/cisco/enic/enic_dev.h b/drivers/net/ethernet/cisco/enic/enic_dev.h
-index 698d0cb02064..66d0e51681f5 100644
---- a/drivers/net/ethernet/cisco/enic/enic_dev.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_dev.h
-@@ -26,6 +26,7 @@
- 
- int enic_dev_fw_info(struct enic *enic, struct vnic_devcmd_fw_info **fw_info);
- int enic_dev_stats_dump(struct enic *enic, struct vnic_stats **vstats);
-+int enic_dev_get_mac_addr(struct enic *enic, u8 *mac_addr);
- int enic_dev_add_station_addr(struct enic *enic);
- int enic_dev_del_station_addr(struct enic *enic);
- int enic_dev_packet_filter(struct enic *enic, int directed, int multicast,
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 28738bd14fa7..2132bfa9c8d3 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -89,6 +89,9 @@ MODULE_DEVICE_TABLE(pci, enic_id_table);
- 
- #define ENIC_LARGE_PKT_THRESHOLD		1000
- #define ENIC_MAX_COALESCE_TIMERS		10
-+#define ENIC_VF_ADMIN_MAC_MAX_RETRIES		4
-+#define ENIC_VF_ADMIN_MAC_RETRY_MS		100
-+#define ENIC_VF_ADMIN_MAC_REFRESH_RETRIES	3
- /*  Interrupt moderation table, which will be used to decide the
-  *  coalescing timer values
-  *  {rx_rate in Mbps, mapping percentage of the range}
-@@ -1040,8 +1043,10 @@ void enic_reset_addr_lists(struct enic *enic)
- {
- 	struct net_device *netdev = enic->netdev;
- 
-+	netif_addr_lock_bh(netdev);
- 	__dev_uc_unsync(netdev, NULL);
- 	__dev_mc_unsync(netdev, NULL);
-+	netif_addr_unlock_bh(netdev);
- 
- 	enic->mc_count = 0;
- 	enic->uc_count = 0;
-@@ -1065,6 +1070,461 @@ static int enic_set_mac_addr(struct net_device *netdev, char *addr)
- 	return 0;
- }
- 
-+static void enic_vf_station_recovery_required(struct enic *enic)
-+{
-+	enic_mbox_vf_require_reconnect(enic);
-+}
-+
-+static void enic_vf_station_addr_set(struct enic *enic, const u8 *addr)
-+{
-+	ether_addr_copy(enic->vf_station_addr, addr);
-+	enic->vf_station_addr_valid = true;
-+}
-+
-+static int enic_vf_keep_nonstation_sync(struct net_device *netdev,
-+					const u8 *addr)
-+{
-+	struct enic *enic = netdev_priv(netdev);
-+
-+	if (!ether_addr_equal(addr, enic->vf_station_addr))
-+		return -ENOENT;
-+	if (WARN_ON_ONCE(!enic->uc_count))
-+		return 0;
-+	enic->uc_count--;
-+
-+	return 0;
-+}
-+
-+static void enic_vf_station_sync_reset(struct enic *enic)
-+{
-+	if (!enic->vf_station_addr_valid)
-+		return;
-+
-+	/* The PF keys its MAC ledger by address. A station entry is also the
-+	 * receive filter for that address and must not retain a second core
-+	 * synchronization reference which could later delete the station.
-+	 */
-+	netif_addr_lock_bh(enic->netdev);
-+	__dev_uc_unsync(enic->netdev, enic_vf_keep_nonstation_sync);
-+	netif_addr_unlock_bh(enic->netdev);
-+}
-+
-+static int enic_vf_station_addr_del(struct enic *enic)
-+{
-+	int err;
-+
-+	if (!enic->vf_station_addr_valid)
-+		return 0;
-+
-+	err = enic_mbox_vf_add_del_mac(enic, enic->vf_station_addr,
-+				       false, true);
-+	if (!err) {
-+		enic->vf_station_addr_valid = false;
-+	} else if (READ_ONCE(enic->mbox_tx_poisoned)) {
-+		enic_mbox_vf_link_state_set_running(enic, false);
-+	} else if (err == -EACCES) {
-+		/* A definitive rejected DELETE leaves an unrequested station
-+		 * filter installed. Fresh registration is the cleanup boundary.
-+		 */
-+		enic_vf_station_recovery_required(enic);
-+	}
-+
-+	return err;
-+}
-+
-+/* End every replacement with an equal-address DEL+ADD pair. A bare ADD could
-+ * report DUPLICATE for a secondary exact filter without applying the current
-+ * station-address policy. If another station is tracked, delete it first in
-+ * the same compound request.
-+ */
-+static int enic_vf_station_addr_replace(struct enic *enic, const u8 *addr)
-+{
-+	struct enic_mac_addr macs[3] = {};
-+	bool all_deletes_skipped = true;
-+	bool deletes_converged = true;
-+	u16 num_macs = 0;
-+	unsigned int i;
-+	u16 result;
-+	int err;
-+
-+	if (enic->vf_station_addr_valid &&
-+	    !ether_addr_equal(enic->vf_station_addr, addr)) {
-+		ether_addr_copy(macs[num_macs].addr, enic->vf_station_addr);
-+		macs[num_macs++].flags =
-+			cpu_to_le16(ENIC_MAC_ADDR_FLAG_STATION);
-+	}
-+	ether_addr_copy(macs[num_macs].addr, addr);
-+	macs[num_macs++].flags = cpu_to_le16(ENIC_MAC_ADDR_FLAG_STATION);
-+	ether_addr_copy(macs[num_macs].addr, addr);
-+	macs[num_macs++].flags = cpu_to_le16(ENIC_MAC_ADDR_FLAG_ADD |
-+					    ENIC_MAC_ADDR_FLAG_STATION);
-+
-+	err = enic_mbox_vf_add_del_macs(enic, macs, num_macs);
-+	if (err) {
-+		if (READ_ONCE(enic->mbox_tx_poisoned))
-+			enic_mbox_vf_link_state_set_running(enic, false);
-+		return err;
-+	}
-+
-+	for (i = 0; i < num_macs - 1; i++) {
-+		result = le16_to_cpu(macs[i].flags) &
-+			 ENIC_MAC_ADDR_FLAG_REPLY_MASK;
-+		if (result != ENIC_MAC_ADDR_FLAG_SKIPPED)
-+			all_deletes_skipped = false;
-+		if (result && result != ENIC_MAC_ADDR_FLAG_NOT_FOUND)
-+			deletes_converged = false;
-+	}
-+	result = le16_to_cpu(macs[num_macs - 1].flags) &
-+		 ENIC_MAC_ADDR_FLAG_REPLY_MASK;
-+	if (deletes_converged && !result)
-+		return 0;
-+
-+	/* A policy-rejected ADD can be reported with all preceding DELETEs
-+	 * skipped. No operation changed state in that coherent result tuple.
-+	 */
-+	if (all_deletes_skipped && result) {
-+		if (result & (ENIC_MAC_ADDR_FLAG_DUPLICATE |
-+			      ENIC_MAC_ADDR_FLAG_PERMANENT_MASK))
-+			return -EACCES;
-+		return -EIO;
-+	}
-+
-+	/* After any other partial or contradictory result, the VF does not know
-+	 * which station address the PF kept. Re-register before accepting traffic.
-+	 */
-+	enic_vf_station_recovery_required(enic);
-+	for (i = 0; i < num_macs; i++)
-+		if (le16_to_cpu(macs[i].flags) &
-+		    ENIC_MAC_ADDR_FLAG_PERMANENT_MASK)
-+			return -EACCES;
-+
-+	return -EIO;
-+}
-+
-+static void enic_vf_admin_mac_cache_selected(struct enic *enic,
-+					     const u8 *addr)
-+{
-+	/* A zero administrative policy delegates the operational address to
-+	 * the VF. Preserve a successful user selection across reconnects.
-+	 */
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	if (is_zero_ether_addr(enic->vf_admin_mac)) {
-+		ether_addr_copy(enic->vf_admin_mac_random_addr, addr);
-+		enic->vf_admin_mac_random_valid = true;
-+	}
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+}
-+
-+static void enic_vf_admin_mac_work(struct work_struct *work)
-+{
-+	struct enic *enic = container_of(to_delayed_work(work), struct enic,
-+					 vf_admin_mac_work);
-+	u8 policy[ETH_ALEN];
-+	u8 selected[ETH_ALEN];
-+	unsigned long delay = 0;
-+	u32 generation = 0;
-+	bool changed;
-+	bool mutated = false;
-+	bool reschedule = false;
-+	bool station_installed = false;
-+	bool stale = false;
-+	bool zero_policy;
-+	bool pending;
-+	int err = 0;
-+
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	pending = enic->vf_admin_mac_pending &&
-+		enic->vf_admin_mac_work_enabled;
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+	if (!pending)
-+		return;
-+
-+	/* Teardown owns RTNL while synchronously cancelling this work. Do not
-+	 * block that owner.
-+	 */
-+	if (!rtnl_trylock()) {
-+		spin_lock_bh(&enic->vf_admin_mac_lock);
-+		if (enic->vf_admin_mac_pending &&
-+		    enic->vf_admin_mac_work_enabled)
-+			mod_delayed_work(system_wq, &enic->vf_admin_mac_work,
-+					 msecs_to_jiffies(10));
-+		spin_unlock_bh(&enic->vf_admin_mac_lock);
-+		return;
-+	}
-+
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	pending = enic->vf_admin_mac_pending &&
-+		enic->vf_admin_mac_work_enabled;
-+	if (pending) {
-+		ether_addr_copy(policy, enic->vf_admin_mac);
-+		generation = enic->vf_admin_mac_generation;
-+		zero_policy = is_zero_ether_addr(policy);
-+		if (zero_policy && enic->vf_admin_mac_random_valid)
-+			ether_addr_copy(selected,
-+					enic->vf_admin_mac_random_addr);
-+	}
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+	if (!pending)
-+		goto unlock;
-+
-+	if (zero_policy && !READ_ONCE(enic->vf_admin_mac_random_valid)) {
-+		eth_random_addr(selected);
-+		spin_lock_bh(&enic->vf_admin_mac_lock);
-+		if (!enic->vf_admin_mac_pending ||
-+		    !enic->vf_admin_mac_work_enabled ||
-+		    enic->vf_admin_mac_generation != generation ||
-+		    !is_zero_ether_addr(enic->vf_admin_mac)) {
-+			stale = true;
-+		} else if (enic->vf_admin_mac_random_valid) {
-+			ether_addr_copy(selected,
-+					enic->vf_admin_mac_random_addr);
-+		} else {
-+			ether_addr_copy(enic->vf_admin_mac_random_addr, selected);
-+			enic->vf_admin_mac_random_valid = true;
-+		}
-+		spin_unlock_bh(&enic->vf_admin_mac_lock);
-+		if (stale)
-+			goto unlock;
-+	} else if (!zero_policy) {
-+		ether_addr_copy(selected, policy);
-+	}
-+
-+	if (!netif_device_present(enic->netdev) ||
-+	    !READ_ONCE(enic->vf_registered)) {
-+		err = -EAGAIN;
-+		goto unlock;
-+	}
-+
-+	/* A nonzero notification describes a station address the PF has already
-+	 * installed. Zero delegates selection to the VF, which registers the
-+	 * selected random address through the policy-safe replacement request.
-+	 */
-+	if (!READ_ONCE(enic->vf_datapath_open)) {
-+		station_installed = !zero_policy &&
-+			(!enic->vf_station_addr_valid ||
-+			 ether_addr_equal(enic->vf_station_addr, selected));
-+	} else if (zero_policy) {
-+		mutated = true;
-+		err = enic_vf_station_addr_replace(enic, selected);
-+		station_installed = !err;
-+	} else if (enic->vf_station_addr_valid &&
-+		   !ether_addr_equal(enic->vf_station_addr, selected)) {
-+		mutated = true;
-+		err = enic_vf_station_addr_del(enic);
-+		station_installed = !err;
-+	} else {
-+		station_installed = true;
-+	}
-+	if (err)
-+		goto unlock;
-+
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	if (!enic->vf_admin_mac_pending ||
-+	    !enic->vf_admin_mac_work_enabled ||
-+	    enic->vf_admin_mac_generation != generation) {
-+		stale = true;
-+		/* If policy changed while the request was running, the completed
-+		 * station change may no longer match it. Record recovery while holding
-+		 * vf_admin_mac_lock, which also protects VF worker shutdown. Teardown
-+		 * therefore either suppresses the update or sees it first, and already
-+		 * uses unregister/register to clear old state.
-+		 */
-+		if (mutated && enic->vf_admin_mac_work_enabled)
-+			enic_vf_station_recovery_required(enic);
-+	} else {
-+		enic->vf_admin_mac_pending = false;
-+		enic->vf_admin_mac_retries = 0;
-+		enic->vf_admin_mac_recovery_attempted = false;
-+		if (!zero_policy)
-+			enic->vf_admin_mac_random_valid = false;
-+	}
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+	if (stale)
-+		goto unlock;
-+
-+	changed = !ether_addr_equal(enic->netdev->dev_addr, selected);
-+	enic_vf_station_sync_reset(enic);
-+	eth_hw_addr_set(enic->netdev, selected);
-+	if (!zero_policy || changed)
-+		enic->netdev->addr_assign_type = zero_policy ?
-+			NET_ADDR_RANDOM : NET_ADDR_SET;
-+	ether_addr_copy(enic->mac_addr, selected);
-+	if (station_installed)
-+		enic_vf_station_addr_set(enic, selected);
-+	enic_vf_station_sync_reset(enic);
-+	if (enic->netdev->reg_state == NETREG_REGISTERED && changed)
-+		call_netdevice_notifiers(NETDEV_CHANGEADDR, enic->netdev);
-+	netdev_info(enic->netdev, "MBOX: admin MAC set to %pM\n", selected);
-+
-+unlock:
-+	rtnl_unlock();
-+
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	if (err && enic->vf_admin_mac_pending &&
-+	    enic->vf_admin_mac_work_enabled &&
-+	    generation == enic->vf_admin_mac_generation &&
-+	    !READ_ONCE(enic->mbox_send_disabled)) {
-+		if (enic->vf_admin_mac_retries <
-+		    ENIC_VF_ADMIN_MAC_MAX_RETRIES) {
-+			enic->vf_admin_mac_retries++;
-+			reschedule = true;
-+			delay = msecs_to_jiffies(ENIC_VF_ADMIN_MAC_RETRY_MS);
-+		} else if (!enic->vf_admin_mac_recovery_attempted) {
-+			enic->vf_admin_mac_recovery_attempted = true;
-+			/* vf_admin_mac_lock also protects VF worker shutdown. */
-+			enic_vf_station_recovery_required(enic);
-+		}
-+	}
-+	if (enic->vf_admin_mac_pending &&
-+	    enic->vf_admin_mac_work_enabled &&
-+	    generation != enic->vf_admin_mac_generation) {
-+		reschedule = true;
-+		delay = 0;
-+	}
-+	if (enic->vf_admin_mac_pending && reschedule)
-+		mod_delayed_work(system_wq, &enic->vf_admin_mac_work, delay);
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+}
-+
-+void enic_vf_admin_mac_notify(struct enic *enic, const u8 *addr)
-+{
-+	bool new_policy;
-+
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	new_policy = !enic->vf_admin_mac_pending ||
-+		!ether_addr_equal(enic->vf_admin_mac, addr);
-+	if (new_policy) {
-+		ether_addr_copy(enic->vf_admin_mac, addr);
-+		if (!is_zero_ether_addr(addr))
-+			enic->vf_admin_mac_random_valid = false;
-+		enic->vf_admin_mac_pending = true;
-+		enic->vf_admin_mac_generation++;
-+		enic->vf_admin_mac_retries = 0;
-+		enic->vf_admin_mac_recovery_attempted = false;
-+	}
-+	if (new_policy && enic->vf_admin_mac_work_enabled)
-+		mod_delayed_work(system_wq, &enic->vf_admin_mac_work, 0);
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+}
-+
-+void enic_vf_admin_mac_quiesce(struct enic *enic)
-+{
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	enic->vf_admin_mac_work_enabled = false;
-+	enic->vf_admin_mac_generation++;
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+	cancel_delayed_work_sync(&enic->vf_admin_mac_work);
-+}
-+
-+void enic_vf_admin_mac_rearm(struct enic *enic)
-+{
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	enic->vf_admin_mac_work_enabled = true;
-+	if (enic->vf_admin_mac_pending)
-+		mod_delayed_work(system_wq, &enic->vf_admin_mac_work, 0);
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+}
-+
-+void enic_vf_admin_mac_purge(struct enic *enic)
-+{
-+	enic_vf_admin_mac_quiesce(enic);
-+	spin_lock_bh(&enic->vf_admin_mac_lock);
-+	enic->vf_admin_mac_pending = false;
-+	enic->vf_admin_mac_random_valid = false;
-+	enic->vf_admin_mac_recovery_attempted = false;
-+	enic->vf_admin_mac_retries = 0;
-+	enic->vf_admin_mac_generation++;
-+	spin_unlock_bh(&enic->vf_admin_mac_lock);
-+}
-+
-+/* CMD_GET_MAC_ADDR is the PF-owned policy store. Re-read it after REGISTER so
-+ * a lost notification cannot leave the VF using stale administrative policy.
-+ */
-+static int enic_vf_admin_mac_refresh(struct enic *enic)
-+{
-+	u8 previous_policy[ETH_ALEN];
-+	u8 random_addr[ETH_ALEN];
-+	u8 selected[ETH_ALEN];
-+	u8 policy[ETH_ALEN];
-+	u32 generation;
-+	bool apply_policy;
-+	bool changed;
-+	bool pending;
-+	bool policy_changed;
-+	bool zero_policy;
-+	unsigned int attempt;
-+	int err;
-+
-+	for (attempt = 0; attempt < ENIC_VF_ADMIN_MAC_REFRESH_RETRIES;
-+	     attempt++) {
-+		spin_lock_bh(&enic->vf_admin_mac_lock);
-+		generation = enic->vf_admin_mac_generation;
-+		pending = enic->vf_admin_mac_pending;
-+		ether_addr_copy(previous_policy, enic->vf_admin_mac);
-+		spin_unlock_bh(&enic->vf_admin_mac_lock);
-+
-+		err = enic_dev_get_mac_addr(enic, policy);
-+		if (err)
-+			return err;
-+		if (is_multicast_ether_addr(policy))
-+			return -EADDRNOTAVAIL;
-+
-+		zero_policy = is_zero_ether_addr(policy);
-+		if (zero_policy)
-+			eth_random_addr(random_addr);
-+
-+		spin_lock_bh(&enic->vf_admin_mac_lock);
-+		if (enic->vf_admin_mac_generation != generation) {
-+			spin_unlock_bh(&enic->vf_admin_mac_lock);
-+			continue;
-+		}
-+
-+		policy_changed = !ether_addr_equal(previous_policy, policy);
-+		apply_policy = pending || policy_changed ||
-+			!is_valid_ether_addr(enic->netdev->dev_addr) ||
-+			(!zero_policy &&
-+			 !ether_addr_equal(enic->netdev->dev_addr, policy));
-+		if (!apply_policy) {
-+			ether_addr_copy(selected, enic->netdev->dev_addr);
-+			if (zero_policy) {
-+				ether_addr_copy(enic->vf_admin_mac_random_addr,
-+						selected);
-+				enic->vf_admin_mac_random_valid = true;
-+			}
-+		} else if (zero_policy && enic->vf_admin_mac_random_valid) {
-+			ether_addr_copy(selected,
-+					enic->vf_admin_mac_random_addr);
-+		} else if (zero_policy) {
-+			ether_addr_copy(selected, random_addr);
-+			ether_addr_copy(enic->vf_admin_mac_random_addr, selected);
-+			enic->vf_admin_mac_random_valid = true;
-+		} else {
-+			ether_addr_copy(selected, policy);
-+			enic->vf_admin_mac_random_valid = false;
-+		}
-+		ether_addr_copy(enic->vf_admin_mac, policy);
-+		enic->vf_admin_mac_pending = false;
-+		enic->vf_admin_mac_recovery_attempted = false;
-+		enic->vf_admin_mac_retries = 0;
-+		enic->vf_admin_mac_generation++;
-+		spin_unlock_bh(&enic->vf_admin_mac_lock);
-+
-+		changed = !ether_addr_equal(enic->netdev->dev_addr, selected);
-+		eth_hw_addr_set(enic->netdev, selected);
-+		if (!zero_policy || changed)
-+			enic->netdev->addr_assign_type = zero_policy ?
-+				NET_ADDR_RANDOM : NET_ADDR_SET;
-+		ether_addr_copy(enic->mac_addr, selected);
-+		if (changed && enic->netdev->reg_state == NETREG_REGISTERED)
-+			call_netdevice_notifiers(NETDEV_CHANGEADDR,
-+						 enic->netdev);
-+
-+		return 0;
-+	}
-+
-+	return -EAGAIN;
-+}
-+
- static int enic_set_mac_address_dynamic(struct net_device *netdev, void *p)
- {
- 	struct enic *enic = netdev_priv(netdev);
-@@ -1072,6 +1532,52 @@ static int enic_set_mac_address_dynamic(struct net_device *netdev, void *p)
- 	char *addr = saddr->sa_data;
- 	int err;
- 
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		if (!is_valid_ether_addr(addr))
-+			return -EADDRNOTAVAIL;
-+
-+		spin_lock_bh(&enic->vf_admin_mac_lock);
-+		err = is_valid_ether_addr(enic->vf_admin_mac) &&
-+		      !ether_addr_equal(enic->vf_admin_mac, addr);
-+		spin_unlock_bh(&enic->vf_admin_mac_lock);
-+		if (err)
-+			return -EPERM;
-+		if (ether_addr_equal(addr, netdev->dev_addr))
-+			return 0;
-+
-+		if (enic->vf_datapath_open &&
-+		    !READ_ONCE(enic->vf_registered))
-+			return -ENODEV;
-+
-+		/* An internal reset keeps IFF_UP set while its failed reopen leaves
-+		 * the datapath closed. Cache the requested address in that state; the
-+		 * next successful open installs it together with the datapath.
-+		 */
-+		if (!enic->vf_datapath_open) {
-+			err = enic_set_mac_addr(netdev, addr);
-+			if (!err)
-+				enic_vf_admin_mac_cache_selected(enic, addr);
-+			return err;
-+		}
-+
-+		/* Keep the old software address visible until the complete station
-+		 * replacement proves convergence.
-+		 */
-+		err = enic_vf_station_addr_replace(enic, addr);
-+		if (err)
-+			return err;
-+
-+		enic_vf_station_sync_reset(enic);
-+		err = enic_set_mac_addr(netdev, addr);
-+		if (!err) {
-+			enic_vf_station_addr_set(enic, addr);
-+			enic_vf_station_sync_reset(enic);
-+			enic_vf_admin_mac_cache_selected(enic, addr);
-+		}
-+
-+		return err;
-+	}
-+
- 	if (netif_running(enic->netdev)) {
- 		err = enic_dev_del_station_addr(enic);
- 		if (err)
-@@ -1726,6 +2232,7 @@ static int enic_admin_chan_reopen(struct enic *enic);
- static int enic_open(struct net_device *netdev)
- {
- 	struct enic *enic = netdev_priv(netdev);
-+	bool vf_mac_added = false;
- 	unsigned int i;
- 	int err, ret;
- 	unsigned int max_pkt_len = netdev->mtu + VLAN_ETH_HLEN;
-@@ -1807,6 +2314,25 @@ static int enic_open(struct net_device *netdev)
- 	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
- 		enic_dev_add_station_addr(enic);
- 
-+	if (enic_is_sriov_vf_v2(enic)) {
-+		if (!READ_ONCE(enic->vf_registered)) {
-+			netdev_err(netdev, "VF is not registered with its PF\n");
-+			err = -ENODEV;
-+			goto err_out_disable_wq;
-+		}
-+
-+		err = enic_vf_station_addr_replace(enic, netdev->dev_addr);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "Failed to register VF station address: %d\n",
-+				   err);
-+			goto err_out_disable_wq;
-+		}
-+		enic_vf_station_addr_set(enic, netdev->dev_addr);
-+		enic_vf_station_sync_reset(enic);
-+		vf_mac_added = true;
-+	}
-+
- 	enic_set_rx_mode(netdev);
- 
- 	netif_tx_wake_all_queues(netdev);
-@@ -1864,6 +2390,15 @@ static int enic_open(struct net_device *netdev)
- 		for (i = 0; i < enic->wq_count; i++)
- 			napi_disable(&enic->napi[enic_cq_wq(enic, i)]);
- 	netif_tx_disable(netdev);
-+err_out_disable_wq:
-+	if (vf_mac_added) {
-+		ret = enic_vf_station_addr_del(enic);
-+		if (ret) {
-+			netdev_warn(netdev,
-+				    "Failed to remove VF station address during open rollback: %d\n",
-+				    ret);
-+		}
-+	}
- 	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
- 		enic_dev_del_station_addr(enic);
- 	for (i = 0; i < enic->wq_count; i++)
-@@ -1898,7 +2433,6 @@ static int __enic_stop(struct net_device *netdev, bool remove_vf_station)
- 	 */
- 	if (enic_is_sriov_vf_v2(enic) && !enic->vf_datapath_open)
- 		return 0;
--	(void)remove_vf_station;
- 
- 	for (i = 0; i < enic->intr_count; i++) {
- 		vnic_intr_mask(&enic->intr[i]);
-@@ -1923,6 +2457,15 @@ static int __enic_stop(struct net_device *netdev, bool remove_vf_station)
- 		for (i = 0; i < enic->wq_count; i++)
- 			napi_disable(&enic->napi[enic_cq_wq(enic, i)]);
- 	netif_tx_disable(netdev);
-+	if (remove_vf_station && enic_is_sriov_vf_v2(enic) &&
-+	    READ_ONCE(enic->vf_registered)) {
-+		err = enic_vf_station_addr_del(enic);
-+		if (err) {
-+			netdev_warn(netdev,
-+				    "Failed to remove VF station address: %d\n",
-+				    err);
-+		}
-+	}
- 
- 	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
- 		enic_dev_del_station_addr(enic);
-@@ -2321,9 +2864,18 @@ static int enic_admin_chan_reopen(struct enic *enic)
- 			return err;
- 		}
- 		enic_reset_addr_lists(enic);
-+		enic->vf_station_addr_valid = false;
-+		err = enic_vf_admin_mac_refresh(enic);
-+		if (err) {
-+			netdev_err(enic->netdev,
-+				   "Failed to refresh VF admin MAC after reset: %d\n",
-+				   err);
-+			enic_admin_channel_close(enic);
-+			return err;
-+		}
- 		/* Capability negotiation and registration establish a new protocol
--		 * generation. RX remains quarantined until enic_open() replays the
--		 * station and receive policy.
-+		 * generation after authoritative MAC policy is refreshed. RX remains
-+		 * quarantined until enic_open() replays station and receive policy.
- 		 */
- 		spin_lock_bh(&enic->mbox_state_lock);
- 		if (enic->vf_mbox_fault_generation != recovery_generation ||
-@@ -2339,6 +2891,7 @@ static int enic_admin_chan_reopen(struct enic *enic)
- 			enic_admin_channel_close(enic);
- 			return err;
- 		}
-+		enic_vf_admin_mac_rearm(enic);
- 	} else {
- 		/* The link came back up during enic_open() above while MBOX
- 		 * sends were still disabled (channel not yet reopened), so that
-@@ -3333,6 +3886,9 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	 * cancel_work_sync()) would otherwise act on an uninitialised work.
- 	 */
- 	INIT_WORK(&enic->link_notify_work, enic_link_notify_work_handler);
-+	spin_lock_init(&enic->vf_admin_mac_lock);
-+	INIT_DELAYED_WORK(&enic->vf_admin_mac_work,
-+			  enic_vf_admin_mac_work);
- 
- 	/* V2 VF: open admin channel and register with PF.
- 	 * Must happen before register_netdev so the VF is fully
-@@ -3362,6 +3918,12 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 				"MBOX VF registration failed: %d\n", err);
- 			goto err_out_admin_close;
- 		}
-+		err = enic_vf_admin_mac_refresh(enic);
-+		if (err) {
-+			dev_err(dev,
-+				"MBOX VF admin MAC refresh failed: %d\n", err);
-+			goto err_out_admin_close;
-+		}
+diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/ethernet/allwinner/sun4i-emac.c
+index 0ba67a55705d6..09b2abdfc9e84 100644
+--- a/drivers/net/ethernet/allwinner/sun4i-emac.c
++++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
+@@ -300,7 +300,7 @@ static int emac_dma_inblk_32bit(struct emac_board_info *db,
+ 	if (!req) {
+ 		dev_err(db->dev, "alloc emac dma req error.\n");
+ 		ret = -ENOMEM;
+-		goto alloc_req_err;
++		goto prepare_err;
  	}
  
- 	netif_set_real_num_tx_queues(netdev, enic->wq_count);
-@@ -3487,6 +4049,8 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		dev_err(dev, "Cannot register net device, aborting\n");
- 		goto err_out_admin_close;
- 	}
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_vf_admin_mac_rearm(enic);
+ 	desc->callback_param = req;
+@@ -319,9 +319,6 @@ static int emac_dma_inblk_32bit(struct emac_board_info *db,
+ submit_err:
+ 	emac_free_dma_req(req);
  
- 	return 0;
- 
-@@ -3542,9 +4106,13 @@ static void enic_remove(struct pci_dev *pdev)
- 
- 		/* Close the admin channel and unregister from the PF before
- 		 * unregister_netdev() to prevent a late PF notification from
--		 * touching a netdev that is being torn down.
-+		 * touching a netdev that is being torn down. VF_UNREGISTER is the
-+		 * protocol teardown operation: the PF removes all VF-requested
-+		 * configuration, including the station address, before replying.
- 		 */
- 		if (enic_is_sriov_vf_v2(enic)) {
-+			enic_vf_admin_mac_quiesce(enic);
-+
- 			if (READ_ONCE(enic->vf_registered)) {
- 				int unreg_err = enic_mbox_vf_unregister(enic);
- 
-@@ -3563,6 +4131,8 @@ static void enic_remove(struct pci_dev *pdev)
- 		 * enic_link_check() scheduled it just as SR-IOV was disabled.
- 		 */
- 		cancel_work_sync(&enic->link_notify_work);
-+		if (enic_is_sriov_vf_v2(enic))
-+			enic_vf_admin_mac_purge(enic);
- #ifdef CONFIG_PCI_IOV
- 		if (enic_sriov_enabled(enic)) {
- 			if (enic->vf_type == ENIC_VF_TYPE_V2)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index 265b58cd39be..1fd2b23e2d8f 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -860,6 +860,25 @@ static void enic_mbox_vf_handle_link_state(struct enic *enic, void *payload,
- 			       ret_major);
- }
- 
-+static void enic_mbox_vf_handle_admin_mac(struct enic *enic, void *payload,
-+					  u64 msg_num)
-+{
-+	struct enic_mbox_pf_set_admin_mac_notif_msg *notif = payload;
-+	u16 ret_major = 0;
-+
-+	if (is_multicast_ether_addr(notif->mac_addr)) {
-+		netdev_warn(enic->netdev,
-+			    "MBOX: rejecting multicast admin MAC %pM\n",
-+			    notif->mac_addr);
-+		ret_major = ENIC_MBOX_ERR_GENERIC;
-+	} else {
-+		enic_vf_admin_mac_notify(enic, notif->mac_addr);
-+	}
-+
-+	enic_mbox_vf_queue_ack(enic, ENIC_MBOX_PF_SET_ADMIN_MAC_ACK,
-+			       msg_num, ret_major);
-+}
-+
- void enic_mbox_vf_link_state_reset(struct enic *enic)
- {
- 	spin_lock_bh(&enic->vf_link_state_lock);
-@@ -984,6 +1003,17 @@ static void enic_mbox_vf_process_msg(struct enic *enic,
- 		enic_mbox_vf_handle_link_state(enic, payload, msg_num);
- 		break;
- 	}
-+	case ENIC_MBOX_PF_SET_ADMIN_MAC_NOTIF: {
-+		size_t exp = sizeof(struct enic_mbox_pf_set_admin_mac_notif_msg);
-+
-+		if (!enic_mbox_vf_payload_ok(enic, hdr->msg_type,
-+					     payload_len, exp)) {
-+			enic_mbox_vf_malformed_msg(enic, hdr->msg_type, msg_num);
-+			return;
-+		}
-+		enic_mbox_vf_handle_admin_mac(enic, payload, msg_num);
-+		break;
-+	}
- 	case ENIC_MBOX_VF_ADD_DEL_MAC_REPLY:
- 		enic_mbox_vf_handle_add_del_mac_reply(enic, payload,
- 						      payload_len, msg_num);
-
+-alloc_req_err:
+-	dmaengine_desc_free(desc);
+-
+ prepare_err:
+ 	dma_unmap_single(db->dev, rxbuf, count, DMA_FROM_DEVICE);
+ 	return ret;
 -- 
 2.43.0
 
