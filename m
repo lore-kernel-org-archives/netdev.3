@@ -1,40 +1,87 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F199E3B0584
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610E14C900C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790672246; cv=none; b=YOVgUFs0x4fEMeRw0zlzFdJecr8Tqpuv9UpGYrMhwr55K78ESzDt2oNarEGcuZrMWSThV616L9eG4SXzMaciL9ODxwLOLafMJ5TZ+4Z3maBYNhTaGwwko+kX6pmD0GZTuobwH0fZTuaxd+JjaGd4gb184XivMTgNk0y5bfiZCLg=
+	t=1790672398; cv=none; b=BTKO/08p3AJGdA339azJEJ4XC52NXpb0n1MyaCBalzKZFzLGmPv9eHeqJypQj/wQNBe0HSEmZsTDEM/MKVsJlfuPkxlk5rJAXTMEv7JTGiI3BG8e7nyAhgsTKCwXRCypMsQtGGNzOe1SS0VBHT7gHejcpV8sODECHc5Tg7AlZII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790672246; c=relaxed/simple;
-	bh=fn01v37sTX+YflkjNpAtD8uiYjLXgWJk7Gmw9YTWLKA=;
+	s=arc-20240116; t=1790672398; c=relaxed/simple;
+	bh=IyspYJuvnDQiFffor9pIZti6hii3F6jxoMPcS2SzFIU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TGSoI/JB5C7W6G/2Ui/lqbjd/qFLHpvUz/6w+V+VdkQ26BfjuzK2uKKnGju23fsECe6hhDlhdPVkLGzax0KlLT11eAYLQM2GYNf7rM1O6UDEBFKmaWBF0nkuJjD0aC+6IojsNawpHXUAtDPx+JtptAFRaQE2VcZ2e30R39Bw/sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KgLqauzA; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=iZCmkwssnkHyoXZNKO33gFfSwJ7ZdKMEKjo+j9Aaxfb42LnXUCkpxwlp6GnAp9MBZ8srVS+VVj3OJM9U346GwrkuFFf6UxzPqXj4AmzqkdjajqMwq6YjUsaMKXGM/xW2CsWtIkPZpgCMyDE33D8fwHZ/uEtqZJBfEDX+2tnfglM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GAEVk6MU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IZmgmQCe; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KgLqauzA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 32BDA1A1042;
-	Tue, 29 Sep 2026 08:57:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EFE24601BD;
-	Tue, 29 Sep 2026 08:57:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB3F9103297AE;
-	Tue, 29 Sep 2026 10:57:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790672239; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=H5UwJNPGKcha+BEqcOeEOR60KH3Iqw+tbYJAQ8Lz5aY=;
-	b=KgLqauzAR6/y8fJ7UrTmLhZEq9sGDWuoQKVmMLsfIXs8KOxeN/scZ0m7RstahgEovHqcsS
-	RSCf/3vZO1swFxm4mQGCGMHb0ETcOsE4WtUpeAMZ6rfYp6JQbkmnvfG81zT9vDx8y0c/HK
-	b0pwoZ1X3+ZR5hGZtpt2DxAItkfUQ8FYKku9b6bo1UF+brG9hHcRfq0g/mnwU68n7S1s0l
-	MgEKP4EZv92gacR7fL//8mpexu493XGC5kHwsaLYR0v4iXK1+rqEyGk38uam2Cl3WCxAX1
-	Wa/ikYwb6ksKP9OamsQwD1IE6+DQpdve/eKPUC7UhfkrQbr9axcSOu3oeFjOXg==
-Message-ID: <71adb267-2dd9-4225-91e5-19848a87eb49@bootlin.com>
-Date: Tue, 29 Sep 2026 10:57:10 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GAEVk6MU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IZmgmQCe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790672395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Y/oFOa1oxhQ1GdKVJmuNjJ216LwSgeUy79De2Uv5lM=;
+	b=GAEVk6MUdaHD+woVWLegCArPhmc6TU7XFHJSFRwb6Sm9MztxdCzguw66O+CnASyOJ/PPGv
+	w38SD/4POIKlc0Ew6WLqclG3CTuGFBoJ3Ty5azM15bc3GHjsPAxeJm1u2y+AelZ17Zh+tu
+	nHw6cPhRLu2trkcRV3InP5GOKMqat3M=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-1tcGlfTkN0-_bfBl2UDmfQ-1; Tue, 29 Sep 2026 04:59:53 -0400
+X-MC-Unique: 1tcGlfTkN0-_bfBl2UDmfQ-1
+X-Mimecast-MFC-AGG-ID: 1tcGlfTkN0-_bfBl2UDmfQ_1790672393
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49fcc575709so39479705e9.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 01:59:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790672392; x=1791277192; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/Y/oFOa1oxhQ1GdKVJmuNjJ216LwSgeUy79De2Uv5lM=;
+        b=IZmgmQCeFtm8hBMCzhd1u8jKfG2LubfFaxq+LRmLnOhkoCBczLZtRSn+Gj4YQg4ldv
+         umvXBHWjYZFBW7JI5hbjKtgNdUzYYLscPdlAKNfHvLDy8scqAuAg3+SQFKojl7HJ3qOO
+         nMVM6bPaXcZrpjQ3xftifPovQixQGVAmPZSj3pulwDC8ckHXd9hxKs1sw39ufmYddTvx
+         jmoN5lFt5nuttTXRfzZ9MFdIchuTvpyRO3yUKFvjggXOoOfRkOdV7DDT7LlOnncA+86B
+         DqrJD2R5PYDV85JHlYnpootF8/wF2J3ytevTLm+s9HZve+MyzE94d+WBfb3wJCQ4qlCI
+         xqbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790672392; x=1791277192;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/Y/oFOa1oxhQ1GdKVJmuNjJ216LwSgeUy79De2Uv5lM=;
+        b=0F55im1n5YDhgQ8KMpop/XttbXpcpyQd7Dl2n2kMYmP5KKQoiJ6jkFO0dG615aw0CA
+         uSmtMuwn78fJZ0GwYmKgALK8RzEF2oKB6/Yojln16sZ3vB8oQH4WwZGrgdKjw453u5wW
+         cAFuM8vltuhoAv09M12nPYvqjVyv3gltZGDYdMb6mbpZDW9kT8P7iQDwfclqRc9p98me
+         AZDs5kr6sj2KqZ9BEILuWl0LO8ar+LeKB4lHvj7TqwxLDH4eFxPlfwq3R1WRWY+RmS+l
+         q63XNYkE3Eo6dxTrjLNbv/h8GlmSD9cK1geFiFT9QxF7zR92vK4e5e6KMmLBwVtmFyzt
+         Skkw==
+X-Forwarded-Encrypted: i=1; AKwUvBwY0QGm2KfQI2rtH2wEzvAX3RaRMTDE3pRmCrKLyojdtgkNOyBFBxEvJT4mk9PcPBiyxz+zAVA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQzl6n5HLmKw2RiPgvT7UPfYfZZivMRp+nAKdvWpNwOBhRAGrx
+	1gt2j2ivWZFcSmMSkvdK6vcdrVchQPXirMDPoXSlq76mxfqxdInIsRJxG3MeoWW/O5wNDaIFe6O
+	7KLNzkZtEGbjbuVUOXPrUC4R+10djktzhFHUmoRGzSRa3rmvvkWPyVl9HsA==
+X-Gm-Gg: AYBFou0eYXG9E9xBybTdbkYWV+4mnORgdrCe/2J2PYOBpxtCip+SjSjZ4AMV4RB47Mg
+	Sj7qXzYhVW6WZoGh4bTayPuuZA+4+RLbGbMqcxuo/8/ZcPYUtbuzOGx/kFEftPrhM7un6jaDtRw
+	pDTMG1rc8FBSsIggmm9c4NBLYngjPwAom/8YU8E3cMwauHUwSnqPCkoxgoaeLa5kxXVm9CFU0ru
+	Tu85RPSXGbCnLIpEnGnE2JuB3Li5QW0NDUVwV3eQbtRZ/b7ViserQ3VlFpJRWdiCllbZ26+N2yA
+	XKKcECa/kENE24u14XJMDHd6StLaiXjToQQkz4J9JNU2ufO9e85b6M0llhgcOpob5y3BVd5cCo+
+	RR4PfWB2wtNAUjg9a/P/bi5ymvsXvjAGsbTogBSJvQSk7Cg+pb/4Yh6MWWvrkX7ztlg+bjzv4+g
+	==
+X-Received: by 2002:a05:600c:8b33:b0:49f:f9fa:fcfe with SMTP id 5b1f17b1804b1-49ff9fafdccmr148517455e9.13.1790672392630;
+        Tue, 29 Sep 2026 01:59:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b33:b0:49f:f9fa:fcfe with SMTP id 5b1f17b1804b1-49ff9fafdccmr148516975e9.13.1790672392160;
+        Tue, 29 Sep 2026 01:59:52 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfec770sm65459555e9.8.2026.09.29.01.59.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 01:59:51 -0700 (PDT)
+Message-ID: <4f03112d-e5c5-486b-8317-1ecc1aeb6636@redhat.com>
+Date: Tue, 29 Sep 2026 10:59:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,104 +89,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Don't set or get RSS
- parameters when not supported
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, nb@tipi-net.de, jitendra.vegiraju@broadcom.com,
- thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, pbrobinson@gmail.com
-References: <20260928145043.1228968-3-maxime.chevallier@bootlin.com>
- <179067171307.434549.1093187286398187440@kernel.org>
+Subject: Re: [PATCH v3 0/4] net: qrtr: Add support for using identical MHI
+ endpoint devices
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+ Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+ Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+ Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
 Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <179067171307.434549.1093187286398187440@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 9/22/26 15:41, Manivannan Sadhasivam wrote:
+> This series reworks the QRTR driver to add support for using identical MHI
+> endpoint devices at the same time. Currently, QRTR driver has a limitation on
+> using more than one identical MHI endpoint devices like QCS6490 or any Qcom
+> Endpoint device making use of QRTR at the same time. Because of the fact that
+> these devices will have the identical QRTR node id, they cannot be used at the
+> same time, on the same host machine.
+> 
+> This limitation is a blocker for running upstream kernel on devices like Qcom
+> based routers as they often have multiple identical WLAN Endpoint devices
+> connected to the Router SoC.
+> 
+> This series supersedes the following 2 series from Juha:
+> https://lore.kernel.org/all/20260915054207.2513877-1-juha-matti.tilli@iki.fi
+> https://lore.kernel.org/all/20260915074135.2567411-1-juha-matti.tilli@iki.fi
+> 
+> Compared to the series from Juha, this series simplifies the multi-endpoint
+> support by computing a unique node id for each MHI endpoint and uses it for the
+> internal QRTR book keeping. This ensures that even if the MHI endpoint devices
+> have same node ids, the host QRTR will always use a unique node id for each one
+> of them.
+> 
+> More details can be found in the individual patches.
+> 
+> Testing
+> =======
+> 
+> Juha tested this series on multi ath11k/12k setup by backporting this series to
+> 6.6 kernel.
+> 
+> Merge Strategy
+> ==============
+> 
+> Since both QRTR and ath drivers are falling under the networking tree, the whole
+> series can be merged through netdev tree.
+IMHO doable, with Johannes/Jeff ack.
 
+Anyhow the clashiko provided feedback looks relevant, please have a look.
 
-On 9/29/26 10:48, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] This patch makes stmmac_get_rxfh() in
->   drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c return…
-> - [Low] The commit message describes a user-visible bug: on stmmac
->   devices without RSS, 'ethtool -x reports an indirection table and a…
-> 
-> --
-> 
-> net: stmmac: Don't set or get RSS parameters when not supported
-> 
-> This commit changes the stmmac ethtool RSS ops to return early when
-> stmmac_rss_is_supported() is false. The key and indirection sizes now
-> report 0, and get_rxfh/set_rxfh return -EOPNOTSUPP. The aim is to stop
-> reporting bogus RSS data and to make the RSS kselftests work on stmmac.
-> 
->> The RSS kselftests fail on stmmac, and this is partly due to the driver
->> reporting bogus data for the RSS ops :
->>
->>  - ethtool -x reports an indirection table and a key while the hardware
->>    doesn't have any of that
->>  - ethtool -X fails with -EINVAL.
->>
->> Let's return early in the rss ops if we know the hardware and platform
->> don't support RSS.
->>
->> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> 
-> [Severity: Low]
-> The commit message describes a bug that users can see, but there is no
-> Fixes: tag.
-> 
-> Blame shows that the unconditional stmmac_get_rxfh_key_size(),
-> stmmac_get_rxfh_indir_size(), stmmac_get_rxfh() and stmmac_set_rxfh()
-> logic came from commit 76067459c686. The later refactor fb6e30a72539 only
-> moved these functions to the ethtool_rxfh_param API.
-> 
-> Should this carry the following tag?
-> 
-> Fixes: 76067459c686 ("net: stmmac: Implement RSS and enable it in XGMAC core")
+Also please note you are supposed to react to such feedback proactively.
 
-targetting net-next, problem always existed, doesn't crash the kernel,
-it's just returning bogus harmless stuff
+/P
 
-> 
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
->> index 1cf0f8820b33..56019683f399 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> 
-> [ ... ]
-> 
->> @@ -943,6 +949,9 @@ static int stmmac_get_rxfh(struct net_device *dev,
->>  	struct stmmac_priv *priv = netdev_priv(dev);
->>  	int i;
->>  
->> +	if (!stmmac_rss_is_supported(priv))
->> +		return -EOPNOTSUPP;
->> +
-> 
-> [Severity: Medium]
-> Does this -EOPNOTSUPP break namespace-wide ETHTOOL_MSG_RSS_GET dumps?
-
-This was reported by Nicolai already, and other drivers report -EOPNOTSUPP
-here.
-
-If we address that, I'd say we do that in the RSS ethnl code.
-
-Maxime
