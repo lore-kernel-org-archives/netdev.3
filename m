@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6F4D09FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C2C3DB64A;
 	Tue, 29 Sep 2026 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695666; cv=none; b=nM3sVOYbXMwDgtRsQPr/nU1k16vxmkuNzltzx3ZbwC6XTUdPPTIyAppuKl+DHdsmkTg4kJqsViX/AvMhY+QSrGO9zDA1u1X7GYo5owLjOO7NUHUSdLWqouyvum63kTrZ6xZT+wFvAji3sZ7dK/FlFlpUgvSimeQaxk7YbE/qnwo=
+	t=1790695666; cv=none; b=I5tXYgFKsDIFXa84XyoD+5RBq8645N/VXIIfmUo9Lz5o2hRq9+HNq3u4E5i+WU75fLP59FNwuTmNUY774bRN4JIeS6358lhn/MwqW14qflrZAGjkqOLWCQdd3l3f2mw55QikXXScSHhl586Xf2DmEEf2ut3JGFK4I/TMYteP+U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790695666; c=relaxed/simple;
-	bh=eX9lfVVJR2BVhzV/tYGwXGSNKNujiiugoM7nlHQ/m7Q=;
+	bh=sAEpbqN+3poWHbya/BmEJrQtJipnQHhZl5UAqUKwn4I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n8PGmKhhxQ51DupafKYZ+1DoFS0LptC5r1fiuqgqI3SK+T6eiQ4JbztncdaJnOv6j5fqi+hJ8tuQDKYOjolhd3+v3r5qBUkQalS28FHow2bxmMuu2ajZOMk6PJA0snQbT8zOn/Avfx7ZoZvEa1NNVxQvvzHj9DaKnx3u5vT2/xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4woDOZM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=S8HZUa/6cJoEh86l6+Z/pvAXZpAGwmIVt2xkbR+dLwt3/DcjqNK+oDnvBSkDY4tn+yDPyUvsAIbmYBUYr6G47Hnu8MGWzKxXDR66YTtVWia+3E5VOoqlRKJgiH1kpnBVhglHLm8wz2YSGKbCvX6g1827It274hc1RaALanGKLaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAudfDhL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4woDOZM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5D61F00893;
-	Tue, 29 Sep 2026 15:27:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAudfDhL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48B81F000FF;
+	Tue, 29 Sep 2026 15:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790695661;
-	bh=2Nzo6EeAYcXqhCvISVz53NpYjzT3ifyMIXr6KdWohrQ=;
+	s=k20260515; t=1790695660;
+	bh=QYOjcvwm8IvLdqo31Ia+V27XLsn8fLfzlUhQM59Ycfk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=f4woDOZMMxIysvAwiUELij/Dp9emEiuHRk48Juj6mXQ1vo1M/QQkzx0neid5RFc0i
-	 TRFLwz3Dcg5gZRMTKDJQ8NY/BgQ/r10NQXDN9Caga1KPp6eLi4VISsPcgx8YYWYHrz
-	 E2uGOn3LJfxJpQNy4Y71qEQi2f3Kqo3MyTfQhOmmEhKEw17rsHCX+2kbw9Xyz1+bTW
-	 Gy92eRPDbijMPYO6iTJ95vGgO6oHxFsErBqawbCkxI1hupCa+1lPB+6DQneFHL1wYD
-	 RymDRGr+lkNrZYzTHub66yGZVQvSziiUOblhcsdMOa3Ez00UL+evN2wFsBEgVz1ZjS
-	 uY3sNokTbo2NA==
-Subject: Re: [PATCH net-next 2/2] net: pcs: rzn1-miic: Validate dtb
- configuration values
+	b=EAudfDhL9HsiBNE5axjIHAY0jXYy6iS2xRl14nrrOp8V+gw4SXlD+6Blf9Yc4SK7D
+	 nxA1h6rtM6pZWG08X6OIh+0aKZM2sVdSgHY9v8eboUJfwn6/vBZvFzctQCT7Ti3r9Z
+	 xocq8+KUAWhmTHyRglxf7HZmzReJPBIwMw1aJypv12m1ns4UeQM0lC3UGnxovTOfw1
+	 MVF7BEJkz0WpcVoulLD3qy20gjg3oIfain3d4H9xuN4XUBJbUf16Snh1Lbx55vm7z9
+	 g+1y8CQTFpPizPeSu5g/mNVmv5e79OGotxwWXhIc6iAi7cvbT7ohdcqUWITHyRyNAc
+	 0y9d2HtGxpm7w==
+Subject: Re: [PATCH net-next 1/2] net: pcs: rzn1-miic: Make usage of
+ miic_port_max consistent
 From: netdev-bot+sashiko@kernel.org
 To: khendry@reliablecontrols.com
 Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
@@ -35,13 +35,13 @@ Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
  kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
  linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Tue, 29 Sep 2026 15:27:40 +0000
-Message-ID: <179069566060.434549.16590048574814647850@kernel.org>
+Date: Tue, 29 Sep 2026 15:27:39 +0000
+Message-ID: <179069565933.434549.5780027645108841461@kernel.org>
 In-Reply-To:
- <20260925-miic-validate-dtb-v1-2-3a6db9bb75ec@reliablecontrols.com>
+ <20260925-miic-validate-dtb-v1-1-3a6db9bb75ec@reliablecontrols.com>
 References:
- <20260925-miic-validate-dtb-v1-2-3a6db9bb75ec@reliablecontrols.com>
-X-sashiko-severity: High
+ <20260925-miic-validate-dtb-v1-1-3a6db9bb75ec@reliablecontrols.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,135 +51,138 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2 (1)
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix is incomplete.
-- [Low] The patch fixes a real memory-safety bug but has no Fixes: tag.
-- [Low] Coding style in the new code in miic_parse_dt().
+- [Low] The commit message describes this patch as a consistency cleanup
+  ("Make usage of miic_port_max consistent").
 
 Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but the kernel-doc
-  for struct modctrl_match.conv says that for RZ/T2H/RZ/N2H 'the first…
+- [Medium] In the reviewed commit, miic_parse_dt() reads the per-
+  converter DT "reg" into `int port` and never checks it against the…
 
 --
 
-net: pcs: rzn1-miic: Validate dtb configuration values
+net: pcs: rzn1-miic: Make usage of miic_port_max consistent
 
-This patch adds range checks in miic_parse_dt() for the "reg" and
-"renesas,miic-input" values read from child nodes. If either value is
-out of range for the SoC, the probe fails with -EINVAL.
-
-> Bad configuration values from the dtb could result in out of bounds array
-> access. Verify that parsed values are within range for the SoC and fail the
-> probe if they are invalid.
->
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
-
-[Severity: Low]
-Should this have a Fixes: tag?
-
-Before this patch, miic_parse_dt() used an unchecked DT "reg" value here:
-
-	dt_val[port + !miic->of_data->miic_port_start] = conf;
-
-That could write outside the conf_conv_count byte buffer. The buffer was
-originally a fixed on-stack array. This unchecked write and the
-conf_to_string[conf[i]] lookup both appear to date back to commit
-7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver").
-
-The earlier commit daf677c2c644 ("net: pcs: rzn1-miic: Fix config array
-initialization") has a Fixes: tag. Would something like this work here?
-
-Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
+This patch makes miic_port_max always mean a port count rather than the
+last port number. It adds a MIIC_PORT_END() helper for the last valid port
+and uses it for the range check in miic_create(). The per-SoC values now
+come from the index_to_string tables.
 
 > diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-> index 62daaf76e0525..30ac2d4070052 100644
+> index cb74861e823c8..62daaf76e0525 100644
 > --- a/drivers/net/pcs/pcs-rzn1-miic.c
 > +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -695,9 +695,24 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
-
-[ ... ]
-
->  		if (of_property_read_u32(conv, "renesas,miic-input", &conf))
->  			continue;
+> @@ -59,6 +59,8 @@
 >  
-> +		if (conf >= miic->of_data->conf_to_string_count) {
-> +			dev_err(miic->dev, "Port configuration out of range: %d\n", conf);
-> +			of_node_put(conv);
-> +			ret = -EINVAL;
-> +			goto err;
-> +			}
-
-[Severity: High]
-The commit message says the patch will "Verify that parsed values are
-within range for the SoC". Is the renesas,miic-switch-portin value still
-unchecked? Earlier in miic_parse_dt() it is stored directly:
-
-	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
-		dt_val[0] = conf;
-
-Take an out-of-range value, such as 20 on RZ/N1 (where conf_to_string[]
-has 14 entries) or 9 or more on RZ/T2H. No modctrl_match entry will
-match it, so the error path uses it as an index:
-
-miic_parse_dt()
-  miic_match_dt_conf()
-    miic_dump_conf()
-      conf_name = of_data->conf_to_string[conf[i]];
-
-Can this read past the end of conf_to_string[] and then pass the pointer
-it finds to dev_err() as a %s string?
-
-dt_val is also s8, so the u32 is truncated with no check:
-
-- 128 to 254 become negative indexes.
-- 255 becomes MIIC_MODCTRL_CONF_NONE, so the property is silently
-  ignored.
-- 258 wraps to 2 and is accepted as a valid value.
-
-The binding limits this property to enum [0, 1, 2], but that is only
-checked by dt_binding_check, not at runtime.
-
-Could the same range check be applied to the u32 value before it is
-stored in dt_val[0]? Checking it against the PORTIN values the SoC
-allows would be stricter still.
-
-[Severity: Low]
-This isn't a bug, but the closing brace of this new block is indented one
-tab too far.
-
-Also, conf is a u32. Should the dev_err() use %u instead of %d?
-
+>  #define MIIC_MAX_NUM_RSTS		2
+>  
+> +#define MIIC_PORT_END(x) ((x)->miic_port_start + (x)->miic_port_max - 1)
 > +
->  		/* Adjust for 0 based index */
->  		dt_val[port + !miic->of_data->miic_port_start] = conf;
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The
-kernel-doc for struct modctrl_match describes RZ/T2H and RZ/N2H like
-this:
-
- * @conv: Configuration of ethernet port muxes. First index is SWITCH_PORTIN,
- *	  then index 1 - 5 are CONV1 - CONV5 for RZ/N1 SoCs. In case
- *	  of RZ/T2H and RZ/N2H SoCs, the first index is SWITCH_PORTIN then
- *	  index 0 - 3 are CONV0 - CONV3.
-
-Index 0 is already SWITCH_PORTIN. This line stores RZ/T2H converter p at
-dt_val[p + 1], which matches rzt2h_index_to_string[] being
-{"SWITCH_PORTIN", "CONV0", ..., "CONV3"}.
-
-Should the comment say that index 1 - 4 are CONV0 - CONV3?
+>  /**
+>   * struct modctrl_match - Matching table entry for  convctrl configuration
+>   *			  See section 8.2.1 of manual.
 
 [ ... ]
+
+> @@ -482,7 +484,7 @@ struct phylink_pcs *miic_create(struct device *dev, struct device_node *np)
+>  
+>  	miic = platform_get_drvdata(pdev);
+>  	of_data = miic->of_data;
+> -	if (port > of_data->miic_port_max || port < of_data->miic_port_start) {
+> +	if (port > MIIC_PORT_END(of_data) || port < of_data->miic_port_start) {
+>  		put_device(&pdev->dev);
+>  		return ERR_PTR(-EINVAL);
+>  	}
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. Now that
+MIIC_PORT_END() exists, should miic_parse_dt() use it as well?
+
+miic_parse_dt() reads each converter's reg into int port and uses it with
+no range check:
+
+drivers/net/pcs/pcs-rzn1-miic.c:miic_parse_dt() {
+    ...
+	for_each_available_child_of_node(np, conv) {
+		if (of_property_read_u32(conv, "reg", &port))
+			continue;
+		...
+		/* Adjust for 0 based index */
+		dt_val[port + !miic->of_data->miic_port_start] = conf;
+		...
+		miic_configure_phy_link(miic, conf, port, active_low);
+	}
+    ...
+}
+
+dt_val is allocated with conf_conv_count entries (6 on RZ/N1, 5 on
+RZ/T2H). On RZ/T2H, reg = 4 writes dt_val[5], one byte past the end of the
+allocation. Larger or negative reg values write further out of bounds.
+
+miic_configure_phy_link() also builds BIT(port + shift) from the same
+unchecked value, and the result is written to MIIC_PHY_LINK.
+
+The miic_probe()->miic_parse_dt() path runs before miic_create() sees the
+port, so the new check here does not cover it. Only a malformed DT can
+reach this, since the binding restricts reg per SoC.
+
+A later patch in this series, "net: pcs: rzn1-miic: Validate dtb
+configuration values", appears to add a port < miic_port_start ||
+port > MIIC_PORT_END() check to miic_parse_dt() and fail probe with
+-EINVAL. That would resolve this.
+
+[ ... ]
+
+> @@ -838,7 +840,7 @@ static struct miic_of_data rzt2h_miic_of_data = {
+>  	.index_to_string = rzt2h_index_to_string,
+>  	.index_to_string_count = ARRAY_SIZE(rzt2h_index_to_string),
+>  	.miic_port_start = 0,
+> -	.miic_port_max = 4,
+> +	.miic_port_max = ARRAY_SIZE(rzt2h_index_to_string) - 1,
+>  	.sw_mode_mask = GENMASK(2, 0),
+>  	.reset_ids = rzt2h_reset_ids,
+>  	.reset_count = ARRAY_SIZE(rzt2h_reset_ids),
+
+[Severity: Low]
+The subject describes this as a consistency cleanup:
+
+  net: pcs: rzn1-miic: Make usage of miic_port_max consistent
+
+Isn't this really a functional fix that only affects RZ/T2H and RZ/N2H?
+
+The value here is still 4, but its meaning has changed. Before this patch,
+miic_init_hw() already used it as a count:
+
+	for (port = 0; port < miic->of_data->miic_port_max; port++) {
+
+miic_create(), on the other hand, used it as the last valid port:
+
+	if (port > of_data->miic_port_max || port < of_data->miic_port_start) {
+
+So on RZ/T2H, a PCS node with reg = 4 was accepted, even though
+rzt2h_index_to_string only lists CONV0..CONV3. That produced
+miic_port->port = 4. The phylink ops then wrote MIIC_CONVCTRL(4) and
+toggled bit 4 of CONVRST for a converter that does not exist.
+
+After this patch, MIIC_PORT_END() is 0 + 4 - 1 = 3 on RZ/T2H, so
+miic_create() now rejects reg = 4 with -EINVAL.
+
+Nothing changes on RZ/N1. ARRAY_SIZE(index_to_string) - 1 is still 5, and
+MIIC_PORT_END() is 1 + 5 - 1 = 5.
+
+Could the commit message name the affected SoC, describe this change in
+behaviour, and note that RZ/N1 is unaffected?
+
+Should it also carry a Fixes: tag? The mismatch appears to come from
+08f89e42121d ("net: pcs: rzn1-miic: Add RZ/T2H MIIC support"). That commit
+added .miic_port_max = 4, while the check from c112520de041 ("net: pcs:
+rzn1-miic: move port range handling into SoC data") treated the value as
+the last port.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925-miic-validate-dtb-v1-0-3a6db9bb75ec%40reliablecontrols.com
