@@ -1,102 +1,104 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+Received: from mail-dl2-f41.google.com (mail-dl2-f41.google.com [74.125.229.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E38308F39
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 04:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185F34AEEF
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 04:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790654497; cv=none; b=iVvDmpQ/vLNxw7eT6Nss9kDSmSnpVCXBvF8oKD9N9VdHhERXBjIa2IJt7HTpDtmSUrZTPRprUNFLeF8FbGzWPRDrxtzS0yELwZDOh0m3tsEewL5xN7nnMFvSbIUkYRd38wPOB7YA3Mp6Yz6otFnWWGY7peB2JAOc2Cil0baDsgI=
+	t=1790654644; cv=none; b=YtvigkM26hrjok1N5/4E0Qz02ACBLilWscLNPPRp5lmjH5KMPGd7saOHdgiNsXo+QI9eUHHTM/gMrKm7MM6Nk7mXYC0B5Orui/dRr7hIHM9giUTDOLkcuwmcb8vGeypbiWN7HbmDMeteu6IIbCuEpKt1/N/Ys4k7kKvepjP3WIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790654497; c=relaxed/simple;
-	bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
+	s=arc-20240116; t=1790654644; c=relaxed/simple;
+	bh=IIvZdgwC9AnhXHTdbcoHptNLgQYNMlSNRKt2BBJ3DBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeRrH2PC+qYBwd+9C2n+V6V17dUDqaD5wgciUh2TWtdxb/uuoXiwF+GrHrPYwRLPxyqNUFC2ERGXUZIu/05RD2JLS3LKerAuGsBLaFiwSW0fsPH26Mt+pa92hKuaGSaFFS08qjhvppFKv4fm4SbO6TmsiQ500svBdHmqItPCA2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=stDY82kg; arc=none smtp.client-ip=74.125.229.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
+	 Content-Type:MIME-Version; b=BeDUH9ui9JOV/ugJ5ROev5w5KmxuP/bEgsfLxg2XKZgtB75E382jvVHMZ2ni0EhRYOAUOjXKao3cA7FWRE+vpXHiTKBYA196aLvyTXHK2EMg1IzllskBk0QJ0sFr0/IS3jXrVoPfoDGfbizrkqF3Hj4doH2AAB3Ly0gFJ0B3fVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYEIdr73; arc=none smtp.client-ip=74.125.229.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="stDY82kg"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144d60be6b0so2173830c88.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:01:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BYEIdr73"
+Received: by mail-dl2-f41.google.com with SMTP id a92af1059eb24-1474c6b7742so2161271c88.1
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790654494; x=1791259294; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
-        b=stDY82kg9AlRKNsHJu9kz7uQrUhxvip5RTy3FyrE8Q8omaHpgbG/rPc6DDZQ4NWDtO
-         S06biiYbptd5DGE6lODTog+Ijv49xMFsnbwcou2Ftokjas8m4iW5wnx5voYvFQO3WPy5
-         5DFz34HhLvcog+kK6KB0lQZbA+zX5ehUixb+7NblWElHpHkWxyVze5UOQHRMq6wVXKMD
-         /+5MMuoJa8jxMa0UbrpOtTWc/CfPP3dIcyDfkbYmO48V6+gs4WL23julafhnH0mp3U0u
-         X8WkeJbFaIAG8kD0oBTJhPy13wU1B2opvHF1E4sQLYYMkl/qLbLKIvrp/bXIZDraAoam
-         25Ng==
+        d=gmail.com; s=20251104; t=1790654642; x=1791259442; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IIvZdgwC9AnhXHTdbcoHptNLgQYNMlSNRKt2BBJ3DBs=;
+        b=BYEIdr73NzxizhVvriA4Ye7mVnuB9z5Ntfi0Hmv6EZ7cxyJVOFg8+k/elMS7zvLzk/
+         VUee/RyJpkQ3Tm/XIzICyZ6ChkSUPhZ/nvI6nB4jfvHsteuebYEOcVVUuynk6uYNFE55
+         Jb/J4l8tgtj23KZ4Do6H3sZVP1137bsm7r5zIAktIJyw1Nsvsfct2vw3OFTXAcgtUl1R
+         drlET9QOzskVDV5LtnGmewZa4aIzugzL0D7iKz6WxURDNUuSKEgMiVLQVMoJwOsa1Axr
+         vHe3P/YBvrPgoXwoRviPg09k7sqPG2bzWmugOq4aBItkXgP3nzbYeX0Y82nQeF0Kvz8Z
+         wCAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790654494; x=1791259294;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
-        b=sqPoMdrUStl0DnV0EZnhd3kca0CXPJkeYWOuH6cFsh3HUu/ocuJ5E2O1JedxNbgfI3
-         tjJ/klroc59GaT2J388x3sffXJwQ+ZX8RX2bi4oYSuUilPC/op8kAeR+Rm8gsBDD/2P0
-         zLR/LZXmXjx8SqrVpts+CCkiw5sojtJ02qukkMKFFSO3Nit518M7L2cw30AVT5TqkMZr
-         FMJ6nN86nbD35mDRaiUVISXx51YhaGX7TMmO9nS830zlOUbn1xjmRXgiLG+g3b6gdCXX
-         rD4h78DoSLINt1y8gH68nAOQW1zclK6TjKfa8IkYzTO/c8OWWFAN5ehP//3Lnc9DAGYb
-         V73Q==
-X-Gm-Message-State: AFq9FYJ9NP/xsSjc00PEP3NlKu5TwMHfDGh98rnDU1jMp3+7StVc1q4q
-	0L9LH2nhFvHnaCUjBWOA5/1LFey8NJ9x8SC+X43byMCeJfeoVXjAbQAM0iHGUvdNEdvQ6fMxnwv
-	u+omJh7B+ThlJfwVokx162cbd8FMbiH7dy0TXb32I2aHvcGUjqA3vH5wfpGqEFeHRsBQCf2pO
-X-Gm-Gg: AYBFou0POCpB9hMTSt3YHE3RXmIZqA/BUOciubxfJ5hacW8H7HDVquxJpuoeGFWpir/
-	8QivEN4d2XSsaIfPNDJkkiMTBfEeupBleyGAAnqNZmLIRKIt2C7i2wo6e1WqYUsaIZK300upXP7
-	340MPlewEB8iTNb3dwCU2bx5CkYN5Zghg3JmbBtDB7KmHCTYYgMkeXk8h3tqgHU0sSfKTY9frr0
-	HrqcNpRC+vqKtcKZGn2MUSCbYJCSQZ0XUlBX5weDTgIVrlhOs8FaoxXZmLN1aqo7wDIvftRRQPC
-	tBLtbc0IdfwnIJdaN0vbBbWAUOLvsqy8wwzjYOhByTC0pjbxkLC0fa2J6WiSNiw7mIlTOsmyxB3
-	lqfXLg7mOM8rBtio8/AuW99KjxmjQHgsiO+tz4qo+c1ZOjN/9pC4GlFnw4e91an0gOkftL+WwBn
-	g43dKeHfFezpmQ+Z+Xsf8ToTuaVJG5Cdcvfe2xz/bKE/42US0l+Z43Uc2EyK8mqxyJKw1ipSkOy
-	BBaIyjNehk=
-X-Received: by 2002:a05:701b:418f:20b0:143:2719:566e with SMTP id a92af1059eb24-146d077cfe5mr12164739c88.42.1790654493420;
-        Mon, 28 Sep 2026 21:01:33 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145adbcd1bcsm37866313c88.14.2026.09.28.21.01.28
+        d=1e100.net; s=20260707; t=1790654642; x=1791259442;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IIvZdgwC9AnhXHTdbcoHptNLgQYNMlSNRKt2BBJ3DBs=;
+        b=ervIUkAcW1Xwfj8BqMqfSSvXNAzPAn5St5rUhqtSwdQuPOHDxyMSQ0WIeNzmPBuyw7
+         h0tJ7xYorFXaMGBNnauurGx+dnuCRajjilqO89gvbYYHZjPrt/FPIQ+G00K8u0Aybu1J
+         21K+2sye5h1feO/Hr55G8GFm42VzqCXq8BP9RDlw7Z8MS+5FWAr8I7p5X6UiGB1eY1Rr
+         gsEvn0s2NVcKf4Mnn71kL6YN6AXJ1nfeD/ViPSGpIGq3o9/h4FuDR4J7m46TPe1Nc1f7
+         G6lpuZOdZz/CGGVymgPWgbypuus1lWCSv1RpUOcTjFRGTzSQO7YXfAoCkP/remS9zwyX
+         AHAA==
+X-Gm-Message-State: AFuF++nKe8mTsAgZVvNIY63beQiAg/JnjSxMmUDWEZgwiWmAa6R+p0Y5
+	1jXVbq6E5diUO54lxXe9k2o/hZK4x8qBnUsoBCGu1uSRTBe1ZHu7GDjy
+X-Gm-Gg: AYBFou0t17TIsjLH/YA2BrKF5opEe4AQg/4EM5/4BlCAF/jqajIukhYxUqw0L86jYo9
+	NeIacMry3tmD0jgSCjEQ+ju/a01ehB8VS4iM4qcM6rkXbgXx3CcpjAo0GsMy1jA3VEoErjbmLB0
+	nyexpw/coFJkt8nyGQvD2NQ87KDt3g//uvdeUcO1rbYoZmfmvwnx5DvF1r6XlOKdbepwy2eYL66
+	FpLoGHZqtzPF3MhwI0vipapuMDJh8A5lG+el1UMY6tJMgz0vS9btOoW9VTKMh2rdES551iVyj2k
+	TzAnLAREalrrSKb9nuJ8epEf5z/SiEN/R0XXtoV1NMYXpO5tAPJpwGhZ2OUNRkIgHFVcP+BxeH+
+	ziA80+kWf0kuyaT2nUkimj2caTVQdBX6I+q+xy+p4l8NVnmT1dpO63DM6y0d3yKnak1d1pykE2H
+	aMD7iGSBDqTVIP3VqvOLl8NMwtEbuueO0yM3AaDxGcf+QA+SumHHni0ArUL9ZiQ7L5UrL7DF9Tp
+	lY=
+X-Received: by 2002:a05:7022:b048:10b0:144:e658:94f with SMTP id a92af1059eb24-146d0f33db2mr12863370c88.43.1790654641936;
+        Mon, 28 Sep 2026 21:04:01 -0700 (PDT)
+Received: from [43.242.224.196] ([43.242.224.196])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm20527028c88.9.2026.09.28.21.03.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 21:01:32 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Wang Zhan <wang.zhan@smartx.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alice Mikityanska <alice@isovalent.com>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH net-next v3 1/5] net: core: use the packet's L3 protocol for the GSO size limit
-Date: Tue, 29 Sep 2026 12:01:22 +0800
-Message-ID: <20260929040122.1968641-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <willemdebruijn.kernel.2f18198a6e1e0@gmail.com>
-References: <20260928044102.1004310-1-wang.zhan@smartx.com> <20260928044102.1004310-2-wang.zhan@smartx.com> <willemdebruijn.kernel.2f18198a6e1e0@gmail.com>
+        Mon, 28 Sep 2026 21:04:01 -0700 (PDT)
+From: Roshan Kumar <roshaen09@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, chopps@labn.net,
+ shubham@octane.security, robert@octane.security, gio@octane.security,
+ kuba@kernel.org
+Subject:
+ Re: [PATCH v2] xfrm: iptfs: hold a device reference while packets are queued
+Date: Tue, 29 Sep 2026 04:03:28 +0000
+Message-ID: <179065460862.1915782.13934055353367749026@gmail.com>
+In-Reply-To: <179023970333.2160803.2776986020964028023@kernel.org>
+References: <20260921084743.817859-1-roshaen09@gmail.com>
+ <179023970333.2160803.2776986020964028023@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Mon, 28 Sep 2026 19:36:01 -0400 Willem de Bruijn wrote:
-> If netif_get_gso_max_size needs to inspect the result from
-> vlan_get_protocol, call it inside that function directly? More robust
-> and a one line change.
+Thanks for the detailed review. The findings are valid. I have reworked the
+next revision to keep the reassembly device reference through the nested
+xfrm_input() processing. Reassembly and reorder window deadlines are now
+tracked independently, so completing one does not strand the other or apply a
+stale deadline to new state. The timer is also armed for reassembly created
+from a runt.
 
-Or we can move it to dev.c, only one caller in-tree (before this series).
+The reference is released on every completion, timeout, abort, and teardown
+path. The code uses netdev_hold() and netdev_put(), documents ownership, and
+fixes the style issues. I replaced the mismatched pasted trace with a concise
+description verified against the KASAN reproducer, which remains private. I
+also removed the incorrect bounded lifetime claim and the self reporting
+credit.
+
+I have split the timer correction into a prerequisite patch. The resulting
+series now passes the ten case KASAN and reference tracker lifecycle matrix on
+both the regular kernel and the lockdep and RCU debug kernel. It also passes
+the stale deadline overlap and runt created reassembly regressions. I will
+coordinate the timer prerequisite before posting v3 as a new thread.
+
+pw-bot: cr
