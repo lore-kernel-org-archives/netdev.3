@@ -1,55 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BEB215161;
-	Tue, 29 Sep 2026 01:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC7725771;
+	Tue, 29 Sep 2026 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790645727; cv=none; b=mrXOVvfJ17XclsBsJJp/HR3GXXr54K32mrEYF9VOPKLPXuHFi2TpvwdRf872wIPfHVlukuwDuQIuTwXiKrQnb8BQ+kVJsM8FN3HtJK6o1GQ2J7fLlp0cZEUnlT8RurtSD83ftSmlNRLiaYV57GRvCKfP8sNyzHrJHiTKW3z7uTo=
+	t=1790646009; cv=none; b=Rkdj3TZEmCbjrg1DaCsDYGnfc1/PtJerbbeQ4ZjD3EYk8dP0CIthYmVS5RNPXVCAVN7emnr3LqQ+dJUsKgZnIcSb0JjEAnwSUCoZuaag9lDnmkg0ZhLABQsTtVVC8FUy+ZaopLQAISWpYeUpvX3ItCBL8VekgTK6FzLSG9uoc6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790645727; c=relaxed/simple;
-	bh=NJSyGXD2EwTKcLGu1HY9B7Os49k1NqxHt9x5UnhYyvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ydi7bYU7LIabNIIVYBrsA7Oj5EKyrj+L8d5+JW9VXx6XfXtoxpZI2sQw0DnUS9KByvTFe0wAWI9XdMjx2Ql9r4hxs3HPWdqZSAbrm3Tq32+Mt/EhNPBi6TJqxAWxcDQIz3I4mByzJ0ie9DcwOO/FPbpIpjwuSOYgQ4qV6p+zKr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQYNSjdV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790646009; c=relaxed/simple;
+	bh=P2+d3C0mfcLvngyYLp8dwpB0uVQd0bFz1v32+uGgFHw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dSOx5dzdhyqalayzMciZb/oPjdcDFecHQk0XuYJs2r6fiVvb9K6m7A6HRLXkuaDqSBTezzTdapyU8+56/vbTND+hR30XPNZ5GyH0bpSt12D1Yup7AA9p1xQYq+yZqGBDz3N6+2VzzUcIWV1jkTtiVRU7hE/3LBExqbOSXOhDeF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHdRe2YW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQYNSjdV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBD81F000FF;
-	Tue, 29 Sep 2026 01:35:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHdRe2YW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E61F000FF;
+	Tue, 29 Sep 2026 01:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790645725;
-	bh=pCrG0k1yDWx7CtWGccoJCO4e36Yro3RuOIif7AX3wEs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UQYNSjdV91mcpdlkgGvkQ4y5QAmUgy9+tHY9OM9D3LIMyRbXXwqyHL0Nv+G5z3OMB
-	 iUXuME4c1lqq6K27hU3V1KdzE0NTuCCIWv6f4DaP8diB4ICG/e67QilwZTmp9cVE77
-	 7CygRoj1DaN6lL67LpioKyx/V1nAnBeeAkbZaCY+j8G3xbzX23TDKpoygT8hvkAfkX
-	 sL+ETpeDJf7i5huSAd93qFYfZ/hCQ7hC39IetjwccEiTIcqp7OVrqadD1rwY9Od4RQ
-	 BPGXSCxZTZxbsNhUd+lPdi4gnUMeQRbAdK0/iN320AVfYxzO/Wpchik4XBS1R2dz6g
-	 5rmqFBWYpL4gw==
-Date: Mon, 28 Sep 2026 18:35:24 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: dhowells@redhat.com, netdev@vger.kernel.org, marc.dionne@auristor.com,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, linux-afs@lists.infradead.org,
- linux-kernel@vger.kernel.org, qotmddnjs@ajou.ac.kr, stable@vger.kernel.org
-Subject: Re: [PATCH net v11 08/17] rxrpc: Fix error handling in
- rxrpc_send_data()
-Message-ID: <20260928183524.42b4bfc4@kernel.org>
-In-Reply-To: <179052119212.2160803.8225282033493339825@kernel.org>
-References: <20260923133706.1496540-9-dhowells@redhat.com>
-	<179052119212.2160803.8225282033493339825@kernel.org>
+	s=k20260515; t=1790646008;
+	bh=ynrF6uAD3nXHgp31yB3iKjXnb88LPiS2VEooJDC9oTo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=IHdRe2YWfhJv9UOgS3HE/uBqq70pjPXQ6s+tiWTOI0VZVjQeYsdeM36Nq/MvI1nAy
+	 AM6WEIYpgrwV5skPc2Ra6XRJOFalxaVo8Ji1aU0L+PiENQOLXgQi/PtncOf4c7ADx1
+	 93N76PSXLSebtP4xcw9B/4dLx2wApw+dh/lFsFGH5sy8A96ZQ2G8BanCgC9wLOmrJg
+	 7pvhnvKxROtEX/sdFnTPqPu3OVNgw0QJ3kg6Mlq5J3Nwx9rZkchonuFoNiO6SMzCtK
+	 hqSJ0VQRFDuRFfyAjo8GOZpZrW5HeP8cV7SWLFa8kezvn7U1uBtAWUT0KYG3klOLuR
+	 k9ppwQU1HISEw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4DD3924FED;
+	Tue, 29 Sep 2026 01:40:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v7 0/2] octeontx2: Misc fixes for RVU drivers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179064600678.210624.13233942205571941938.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 01:40:06 +0000
+References: <20260922102149.2078168-1-subratp@marvell.com>
+In-Reply-To: <20260922102149.2078168-1-subratp@marvell.com>
+To: Subrat Pandey <subratp@marvell.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+ andrew+netdev@lunn.ch, sbhatta@marvell.com, rkannoth@marvell.com,
+ gakula@marvell.com, sgoutham@marvell.com
 
-On Sun, 27 Sep 2026 14:59:52 +0000 netdev-bot+sashiko@kernel.org wrote:
-> - [High] The fix leaves the new -ESHUTDOWN contract incomplete, and this
->   breaks AFS abort handling.
+Hello:
 
-This one looks like the main blocker for the series, right?
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 22 Sep 2026 15:51:47 +0530 you wrote:
+> A few independent fixes for the Marvell OcteonTX2 (RVU AF/PF) drivers:
+> 
+>  - Fix aura/CQ BPID assignment under CONFIG_DCB, which assumed
+>    queue_to_pfc_map was always allocated (not true for SDP VFs).
+>  - Fix the SC resource cleanup loop that iterated over secy.max
+>    instead of sc.max.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v7,1/2] octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
+    https://git.kernel.org/netdev/net/c/056994563935
+  - [net,v7,2/2] octeontx2-af: mcs: Fix SC resource cleanup loop
+    https://git.kernel.org/netdev/net/c/cdef07f3002f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
