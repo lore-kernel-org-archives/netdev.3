@@ -1,460 +1,185 @@
-Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230D25448AA
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6F4D09FE;
+	Tue, 29 Sep 2026 15:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695512; cv=none; b=G2ncjR2lnLo0g8Duwy775vISAnhKvj29ANLzqrO/TefF7Sc8mmxKtLeVkWdVLmBWeeGDhczZ5ayCKNmwOevrT2VooghMd557l8P912dffN+muGJbXAVmMLTasd+2jWnI+F3Sajm0Wgw6gcdK27YaNL63ccyZioRC3xlUK1cYHdA=
+	t=1790695666; cv=none; b=nM3sVOYbXMwDgtRsQPr/nU1k16vxmkuNzltzx3ZbwC6XTUdPPTIyAppuKl+DHdsmkTg4kJqsViX/AvMhY+QSrGO9zDA1u1X7GYo5owLjOO7NUHUSdLWqouyvum63kTrZ6xZT+wFvAji3sZ7dK/FlFlpUgvSimeQaxk7YbE/qnwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790695512; c=relaxed/simple;
-	bh=rMYV4MJQPjqIONFY6sAmuplTJiX72QqIAgPSaAKfacM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nbERfgkqQXNOhTCK4DtS8fSIb031opzOGIQ6dxT/NyPk9bifU3ZC1euxTZQ65kRbzB97PsCnQTNIFf7togfd80khDhbCvoPYlNTbvI2Kr7lephcFVUPD4ayLoYElD+j/PTS3cEHEdarytFJ4TL79pqfs/uLz59MGsNW9N8Sifrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GmP5zWV5; arc=none smtp.client-ip=74.125.227.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790695666; c=relaxed/simple;
+	bh=eX9lfVVJR2BVhzV/tYGwXGSNKNujiiugoM7nlHQ/m7Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=n8PGmKhhxQ51DupafKYZ+1DoFS0LptC5r1fiuqgqI3SK+T6eiQ4JbztncdaJnOv6j5fqi+hJ8tuQDKYOjolhd3+v3r5qBUkQalS28FHow2bxmMuu2ajZOMk6PJA0snQbT8zOn/Avfx7ZoZvEa1NNVxQvvzHj9DaKnx3u5vT2/xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4woDOZM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GmP5zWV5"
-Received: by mail-pj2-f40.google.com with SMTP id d9443c01a7336-2e2a68e185cso15015635ad.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:24:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790695493; x=1791300293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RoaKi5XCa2I68GF1aVkzZj7HfbAYluk0X3vR4zMEZl8=;
-        b=GmP5zWV5Kf0B4lORcgq0LuQqB8WQ2+73Ye7jhdTe1dppNydW2GKuC9PVvDgiCU2Lmn
-         R6rTk+aXdUN+6WC5m5SMeayP5pB4l5R0ziuPFHwKiDsNLxmadLtQtuhrrY4hztVLa0cI
-         Gr+xlvWiNO1pdB9ygxl/1rt+KXhmzwa8P62cKP7qg+/EDJ1xUS4SkWJVcw7iX+zp7jte
-         l4jbX7UXVnqNmMRBEpioKyxKBVphh9oBrMZ17/v/mZl8EXRHAEHlQfbe86UYorJINOjD
-         CBxZLO45JGeHst80+t7fgteiykynnpUU23NQPIQ30y3bD50n/GWf0wqAbblLYNcQu1V1
-         gYcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790695493; x=1791300293;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RoaKi5XCa2I68GF1aVkzZj7HfbAYluk0X3vR4zMEZl8=;
-        b=v5EL69/DCSTyPLOrSZa8h0cp+QFygqaEa/U7gog0owticmP8o7jQ9mqx8/D9/qIIow
-         IXcZIxxgUjlTuyLyPog54aZNXy8swLFavjiE+M+daOE2bT8gUklHP4r+hEuGrCNhEZ2o
-         sUPDSpDAjFZ5lJYb9l11hK79NyAO/CTzEsOPz6aPVm7ea+fut8oVWqxrFIlH0MJ/V8dc
-         ouaaEWUE2duN/XmaZSKnO+9/EeKGzHZhkvUFsHggNvc+8xTWa4FHD7zjZtLNCdoZHuzO
-         3wgBaz8N+okbwX/veBbQ8+vgo+6JFk6pHNsOcANRM8ays5GkUhfSONcgbvMUeQDTsOvS
-         PsUw==
-X-Forwarded-Encrypted: i=1; AKwUvBwHtWxaNqz+j5gJjdVOO4oc8PPmbwcN49C3Pbl0GD09LsfAidzwoPFHUVSHUJQmnSKpXFiEtzw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJTjhrsxltPv8gat0WHA5WDMpXaot/NfHikZ6GW6earinCwSw+/
-	TM+aItSJ8QH9ewXOWK2ZS/BkiJefxA+iY7YvmaSA9+H9Q5aZB16qRmDP
-X-Gm-Gg: AYBFou0saawBFQDZQvXJzw3/6vOwF7dFw2P9Cp479aUKkZp4tRfS3Flf9hwZsbZq03E
-	v4Ea90jnxkNDr5eBew/nJpeUiZDpXTmKXh4MHrU78F87gf9PAJT2PC9dgPeVJmiCkBM1C+BMB9p
-	IHHl4jLVJQ3RrHrBx6nr2Zs27cEujWB7EcnUr3C/iA+ridcD6Fy/3MJ7yrxswujXQDgjOYPqpRQ
-	QI92dkzFteao0ev3lHLyOPq95ZR9ySuuHynb0yoeuMmXHps//2RAGYq0v5XM97Y6pnYaWudLUwk
-	R/vRH4E8+/7mjXmS7vL6J4i6UxSdOD6xuPHQZjyy4ynwObhWRsMvqzG0kLEKMY8U/ByxkItsDwl
-	COsUJq9IoawFmAU0AFJmQXNmeBMd1aZ3KPe0W7UR3saczQG7pRh40XQXVZNphcfC/qYUoiJk8P9
-	xAdodRH1Lcq951Tqq+0rb9JGr4H7HNI3mMMCUMHaY3N3O9kfNcyqEBuwTVOu2pX9PpGCf+IQx+m
-	LqmhHc4AnXDPpE2Iha6S6ZLBoRNcbwZ+73/G5tcwZgA8GMgQlFTSLnzH9/FCxW/Seepn2YVXVMd
-	uJa8sU4ng8ZcTNdkTmh6dYqdH4MhLEk=
-X-Received: by 2002:a17:903:94c:b0:2df:a4d8:579c with SMTP id d9443c01a7336-2dfa4d85ab1mr84179815ad.17.1790695493317;
-        Tue, 29 Sep 2026 08:24:53 -0700 (PDT)
-Received: from NV-9MNJ414.tailae2068.ts.net (2001-b011-2005-5b75-0412-f652-3152-53f1.dynamic-ip6.hinet.net. [2001:b011:2005:5b75:412:f652:3152:53f1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df91476bb4sm59762255ad.83.2026.09.29.08.24.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 08:24:52 -0700 (PDT)
-From: Yiwei Lin <s921975628@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jon Maloy <jmaloy@redhat.com>,
-	netdev@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yiwei Lin <s921975628@gmail.com>
-Subject: [PATCH v2 2/4] rbtree: declare augmented callbacks per field with RB_AUG()
-Date: Tue, 29 Sep 2026 23:24:37 +0800
-Message-Id: <20260929152439.91443-3-s921975628@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260929152439.91443-1-s921975628@gmail.com>
-References: <20260929152439.91443-1-s921975628@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4woDOZM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5D61F00893;
+	Tue, 29 Sep 2026 15:27:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790695661;
+	bh=2Nzo6EeAYcXqhCvISVz53NpYjzT3ifyMIXr6KdWohrQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=f4woDOZMMxIysvAwiUELij/Dp9emEiuHRk48Juj6mXQ1vo1M/QQkzx0neid5RFc0i
+	 TRFLwz3Dcg5gZRMTKDJQ8NY/BgQ/r10NQXDN9Caga1KPp6eLi4VISsPcgx8YYWYHrz
+	 E2uGOn3LJfxJpQNy4Y71qEQi2f3Kqo3MyTfQhOmmEhKEw17rsHCX+2kbw9Xyz1+bTW
+	 Gy92eRPDbijMPYO6iTJ95vGgO6oHxFsErBqawbCkxI1hupCa+1lPB+6DQneFHL1wYD
+	 RymDRGr+lkNrZYzTHub66yGZVQvSziiUOblhcsdMOa3Ez00UL+evN2wFsBEgVz1ZjS
+	 uY3sNokTbo2NA==
+Subject: Re: [PATCH net-next 2/2] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+From: netdev-bot+sashiko@kernel.org
+To: khendry@reliablecontrols.com
+Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 29 Sep 2026 15:27:40 +0000
+Message-ID: <179069566060.434549.16590048574814647850@kernel.org>
+In-Reply-To:
+ <20260925-miic-validate-dtb-v1-2-3a6db9bb75ec@reliablecontrols.com>
+References:
+ <20260925-miic-validate-dtb-v1-2-3a6db9bb75ec@reliablecontrols.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-RB_DECLARE_CALLBACKS_MULTI() asks its user for a function that copies
-the augmented fields and one that recomputes them from the children,
-with the early-exit protocol of ->propagate() hand-coded in the latter.
-sched/eevdf, its only user, needs five helpers for three fields.
+Critical: 0 · High: 1 · Medium: 0 · Low: 2 (1)
 
-Describe each augmented field instead: RB_AUG(val, aug, fold) names the
-per-node value, the member holding the subtree aggregate and how two
-aggregates combine (min, max, a sum, ...).  RB_AUG_FUNC() takes a
-function for the per-node value.  The template then generates, per
-field, a recompute that works on a local and stores once, and a copy,
-and combines them into the callbacks; the early exit is the AND of the
-per-field results.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-RB_DECLARE_CALLBACKS() is the only template left.
-RB_DECLARE_CALLBACKS_MAX() becomes RB_AUG_FUNC(RBVALUE, RBAUGMENTED,
-max) in a wrapper, with its RBCOMPUTE argument renamed to RBVALUE,
-since it returns the per-node scalar and is a different thing from the
-RBCOMPUTE of the generic template it used to build on.
-RB_DECLARE_CALLBACKS_MULTI() goes away.
+- [High] The fix is incomplete.
+- [Low] The patch fixes a real memory-safety bug but has no Fixes: tag.
+- [Low] Coding style in the new code in miic_parse_dt().
 
-sched/eevdf shrinks to a wrapping-safe min() for min_vruntime and
-three RB_AUG() lines.  net/tipc's service range tree uses RB_AUG()
-directly.
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but the kernel-doc
+  for struct modctrl_match.conv says that for RZ/T2H/RZ/N2H 'the first…
 
-No functional change intended.
+--
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20260928213736.GA2947991@noisy.programming.kicks-ass.net
-[yiwei: take a fold(a, b) instead of a "replace?" compare so that sums
- and counts can be expressed too, which also lets min()/max() replace
- RB_MIN()/RB_MAX(); wrapped the lines over 100 columns]
-Signed-off-by: Yiwei Lin <s921975628@gmail.com>
-Assisted-by: LLM
----
- include/linux/rbtree_augmented.h | 165 ++++++++++++++++++++-----------
- kernel/sched/fair.c              |  70 ++-----------
- net/tipc/name_table.c            |   7 +-
- 3 files changed, 120 insertions(+), 122 deletions(-)
+net: pcs: rzn1-miic: Validate dtb configuration values
 
-diff --git a/include/linux/rbtree_augmented.h b/include/linux/rbtree_augmented.h
-index d2fa1c41bfd2b..eac1d4edb9775 100644
---- a/include/linux/rbtree_augmented.h
-+++ b/include/linux/rbtree_augmented.h
-@@ -15,6 +15,8 @@
- #include <linux/compiler.h>
- #include <linux/rbtree.h>
- #include <linux/rcupdate.h>
-+#include <linux/args.h>
-+#include <linux/minmax.h>
- 
- /*
-  * Please note - only struct rb_augment_callbacks and the prototypes for
-@@ -86,6 +88,86 @@ rb_add_augmented_cached(struct rb_node *node, struct rb_root_cached *tree,
- 	return leftmost ? node : NULL;
- }
- 
-+#define RB_FOR_EACH_1(what, RBNAME, RBSTRUCT, RBFIELD, x)	\
-+	what(1, RBNAME, RBSTRUCT, RBFIELD, x)
-+#define RB_FOR_EACH_2(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(2, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_1(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_3(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(3, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_2(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_4(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(4, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_3(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_5(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(5, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_4(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_6(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(6, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_5(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_7(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(7, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_6(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+#define RB_FOR_EACH_8(what, RBNAME, RBSTRUCT, RBFIELD, x, ...)	\
-+	what(8, RBNAME, RBSTRUCT, RBFIELD, x)				\
-+	RB_FOR_EACH_7(what, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+
-+#define RB_FOR_EACH(action, RBNAME, RBSTRUCT, RBFIELD, ...)		\
-+	CONCATENATE(RB_FOR_EACH_, COUNT_ARGS(__VA_ARGS__))		\
-+		(action, RBNAME, RBSTRUCT, RBFIELD, __VA_ARGS__)
-+
-+/*
-+ * One augmented field: @val is the node's own contribution (a member for
-+ * RB_AUG(), a function of the node for RB_AUG_FUNC()), @aug the member
-+ * holding the aggregate over the subtree, and @fold(a, b) combines two
-+ * aggregates: min, max, a sum, ...  It must be commutative and associative.
-+ */
-+#define RB_AUG_FUNC(val, aug, fold) (val(s), aug, fold)
-+#define RB_AUG(val, aug, fold) (s->val, aug, fold)
-+#define RB_UNPACK(...) __VA_ARGS__
-+
-+#define __RB_INST(n, RBNAME, RBSTRUCT, RBFIELD, val, aug, fold)		\
-+static inline void							\
-+RBNAME ## _copy_ ## n(RBSTRUCT *old, RBSTRUCT *new)			\
-+{									\
-+	new->aug = old->aug;						\
-+}									\
-+static inline bool							\
-+RBNAME ## _compute_ ## n(RBSTRUCT *s, bool exit)			\
-+{									\
-+	TYPEOF_UNQUAL(s->aug) _old_aug = s->aug;			\
-+	TYPEOF_UNQUAL(s->aug) _val = val;				\
-+	struct rb_node *_node = &s->RBFIELD;				\
-+	if (_node->rb_right) {						\
-+		RBSTRUCT *_c = container_of(_node->rb_right, typeof(*s), RBFIELD); \
-+		_val = fold(_val, _c->aug);				\
-+	}								\
-+	if (_node->rb_left) {						\
-+		RBSTRUCT *_c = container_of(_node->rb_left, typeof(*s), RBFIELD); \
-+		_val = fold(_val, _c->aug);				\
-+	}								\
-+	s->aug = _val;							\
-+	return _old_aug == _val;					\
-+}
-+#define _RB_INST(n, RBNAME, RBSTRUCT, RBFIELD, args)			\
-+	__RB_INST(n, RBNAME, RBSTRUCT, RBFIELD, args)
-+#define RB_INST(n, RBNAME, RBSTRUCT, RBFIELD, x)			\
-+	_RB_INST(n, RBNAME, RBSTRUCT, RBFIELD, RB_UNPACK x)
-+
-+#define __RB_COPY(n, RBNAME, RBSTRUCT, RBFIELD, val, aug, fold)		\
-+	RBNAME ## _copy_ ## n(old, new);
-+#define _RB_COPY(n, RBNAME, RBSTRUCT, RBFIELD, args)			\
-+	__RB_COPY(n, RBNAME, RBSTRUCT, RBFIELD, args)
-+#define RB_COPY(n, RBNAME, RBSTRUCT, RBFIELD, x)			\
-+	_RB_COPY(n, RBNAME, RBSTRUCT, RBFIELD, RB_UNPACK x)
-+
-+#define __RB_COMPUTE(n, RBNAME, RBSTRUCT, RBFIELD, val, aug, fold)	\
-+	ret &= RBNAME ## _compute_ ## n(node, exit);
-+#define _RB_COMPUTE(n, RBNAME, RBSTRUCT, RBFIELD, args)			\
-+	__RB_COMPUTE(n, RBNAME, RBSTRUCT, RBFIELD, args)
-+#define RB_COMPUTE(n, RBNAME, RBSTRUCT, RBFIELD, x)			\
-+	_RB_COMPUTE(n, RBNAME, RBSTRUCT, RBFIELD, RB_UNPACK x)
-+
- /*
-  * Template for declaring augmented rbtree callbacks (generic multi fields)
-  *
-@@ -93,18 +175,29 @@ rb_add_augmented_cached(struct rb_node *node, struct rb_root_cached *tree,
-  * RBNAME:      name of the rb_augment_callbacks structure
-  * RBSTRUCT:    struct type of the tree nodes
-  * RBFIELD:     name of struct rb_node field within RBSTRUCT
-- * RBCOPY:	name of function that copies the RBAUGMENTED datas
-- * RBCOMPUTE:   name of function that recomputes the RBAUGMENTED datas
-+ * RBAUG...:	list of RB_AUG() describing the augmented data
-  */
--
--#define RB_DECLARE_CALLBACKS_MULTI(RBSTATIC, RBNAME,			\
--			     RBSTRUCT, RBFIELD, RBCOPY, RBCOMPUTE)	\
-+#define RB_DECLARE_CALLBACKS(RBSTATIC, RBNAME,				\
-+			     RBSTRUCT, RBFIELD, RBAUG...)		\
-+RB_FOR_EACH(RB_INST, RBNAME, RBSTRUCT, RBFIELD, RBAUG)			\
-+static inline void							\
-+RBNAME ## __copy(RBSTRUCT *old, RBSTRUCT *new)				\
-+{									\
-+	RB_FOR_EACH(RB_COPY, RBNAME, RBSTRUCT, RBFIELD, RBAUG);		\
-+}									\
-+static inline bool							\
-+RBNAME ## __compute(RBSTRUCT *node, bool exit)				\
-+{									\
-+	bool ret = true;						\
-+	RB_FOR_EACH(RB_COMPUTE, RBNAME, RBSTRUCT, RBFIELD, RBAUG);	\
-+	return ret;							\
-+}									\
- static inline void							\
- RBNAME ## _propagate(struct rb_node *rb, struct rb_node *stop)		\
- {									\
- 	while (rb != stop) {						\
- 		RBSTRUCT *node = rb_entry(rb, RBSTRUCT, RBFIELD);	\
--		if (RBCOMPUTE(node, true))				\
-+		if (RBNAME ## __compute(node, true))			\
- 			break;						\
- 		rb = rb_parent(&node->RBFIELD);				\
- 	}								\
-@@ -114,15 +207,15 @@ RBNAME ## _copy(struct rb_node *rb_old, struct rb_node *rb_new)		\
- {									\
- 	RBSTRUCT *old = rb_entry(rb_old, RBSTRUCT, RBFIELD);		\
- 	RBSTRUCT *new = rb_entry(rb_new, RBSTRUCT, RBFIELD);		\
--	RBCOPY(new, old);						\
-+	RBNAME ## __copy(old, new);					\
- }									\
- static void								\
- RBNAME ## _rotate(struct rb_node *rb_old, struct rb_node *rb_new)	\
- {									\
- 	RBSTRUCT *old = rb_entry(rb_old, RBSTRUCT, RBFIELD);		\
- 	RBSTRUCT *new = rb_entry(rb_new, RBSTRUCT, RBFIELD);		\
--	RBCOPY(new, old);						\
--	RBCOMPUTE(old, false);						\
-+	RBNAME ## __copy(old, new);					\
-+	RBNAME ## __compute(old, false);				\
- }									\
- RBSTATIC const struct rb_augment_callbacks RBNAME = {			\
- 	.propagate = RBNAME ## _propagate,				\
-@@ -130,27 +223,6 @@ RBSTATIC const struct rb_augment_callbacks RBNAME = {			\
- 	.rotate = RBNAME ## _rotate					\
- };
- 
--/*
-- * Template for declaring augmented rbtree callbacks (generic single field)
-- *
-- * RBSTATIC:    'static' or empty
-- * RBNAME:      name of the rb_augment_callbacks structure
-- * RBSTRUCT:    struct type of the tree nodes
-- * RBFIELD:     name of struct rb_node field within RBSTRUCT
-- * RBAUGMENTED: name of field within RBSTRUCT holding data for subtree
-- * RBCOMPUTE:   name of function that recomputes the RBAUGMENTED data
-- */
--
--#define RB_DECLARE_CALLBACKS(RBSTATIC, RBNAME,				\
--			     RBSTRUCT, RBFIELD, RBAUGMENTED, RBCOMPUTE)	\
--static inline void							\
--RBNAME ## _copy_single(RBSTRUCT *new, RBSTRUCT *old)			\
--{									\
--	new->RBAUGMENTED = old->RBAUGMENTED;				\
--}									\
--RB_DECLARE_CALLBACKS_MULTI(RBSTATIC, RBNAME,				\
--		     RBSTRUCT, RBFIELD, RBNAME ## _copy_single, RBCOMPUTE)
--
- /*
-  * Template for declaring augmented rbtree callbacks,
-  * computing RBAUGMENTED scalar as max(RBCOMPUTE(node)) for all subtree nodes.
-@@ -159,34 +231,15 @@ RB_DECLARE_CALLBACKS_MULTI(RBSTATIC, RBNAME,				\
-  * RBNAME:      name of the rb_augment_callbacks structure
-  * RBSTRUCT:    struct type of the tree nodes
-  * RBFIELD:     name of struct rb_node field within RBSTRUCT
-- * RBTYPE:      type of the RBAUGMENTED field
-- * RBAUGMENTED: name of RBTYPE field within RBSTRUCT holding data for subtree
-- * RBCOMPUTE:   name of function that returns the per-node RBTYPE scalar
-+ * RBTYPE:      type of the RBAUGMENTED field -- unused, assumed typeof(RBAUGMENTED)
-+ * RBAUGMENTED: name of field within RBSTRUCT holding data for subtree
-+ * RBVALUE:     name of function that returns the per-node RBTYPE scalar
-  */
- 
--#define RB_DECLARE_CALLBACKS_MAX(RBSTATIC, RBNAME, RBSTRUCT, RBFIELD,	      \
--				 RBTYPE, RBAUGMENTED, RBCOMPUTE)	      \
--static inline bool RBNAME ## _compute_max(RBSTRUCT *node, bool exit)	      \
--{									      \
--	RBSTRUCT *child;						      \
--	RBTYPE max = RBCOMPUTE(node);					      \
--	if (node->RBFIELD.rb_left) {					      \
--		child = rb_entry(node->RBFIELD.rb_left, RBSTRUCT, RBFIELD);   \
--		if (child->RBAUGMENTED > max)				      \
--			max = child->RBAUGMENTED;			      \
--	}								      \
--	if (node->RBFIELD.rb_right) {					      \
--		child = rb_entry(node->RBFIELD.rb_right, RBSTRUCT, RBFIELD);  \
--		if (child->RBAUGMENTED > max)				      \
--			max = child->RBAUGMENTED;			      \
--	}								      \
--	if (exit && node->RBAUGMENTED == max)				      \
--		return true;						      \
--	node->RBAUGMENTED = max;					      \
--	return false;							      \
--}									      \
--RB_DECLARE_CALLBACKS(RBSTATIC, RBNAME,					      \
--		     RBSTRUCT, RBFIELD, RBAUGMENTED, RBNAME ## _compute_max)
-+#define RB_DECLARE_CALLBACKS_MAX(RBSTATIC, RBNAME, RBSTRUCT, RBFIELD,		\
-+				 RBTYPE, RBAUGMENTED, RBVALUE)			\
-+RB_DECLARE_CALLBACKS(RBSTATIC, RBNAME, RBSTRUCT, RBFIELD,			\
-+		     RB_AUG_FUNC(RBVALUE, RBAUGMENTED, max))
- 
- 
- #define	RB_RED		0
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7455a83a6a990..fa7f01159b493 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1004,71 +1004,17 @@ static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
- 	return entity_before(__node_2_se(a), __node_2_se(b));
- }
- 
--static inline void __min_vruntime_update(struct sched_entity *se, struct rb_node *node)
-+/* min() for wrapping vruntimes */
-+static inline u64 __min_vruntime(u64 a, u64 b)
- {
--	if (node) {
--		struct sched_entity *rse = __node_2_se(node);
--
--		if (vruntime_cmp(se->min_vruntime, ">", rse->min_vruntime))
--			se->min_vruntime = rse->min_vruntime;
--	}
--}
--
--static inline void __min_slice_update(struct sched_entity *se, struct rb_node *node)
--{
--	if (node) {
--		struct sched_entity *rse = __node_2_se(node);
--		if (rse->min_slice < se->min_slice)
--			se->min_slice = rse->min_slice;
--	}
--}
--
--static inline void __max_slice_update(struct sched_entity *se, struct rb_node *node)
--{
--	if (node) {
--		struct sched_entity *rse = __node_2_se(node);
--		if (rse->max_slice > se->max_slice)
--			se->max_slice = rse->max_slice;
--	}
--}
--
--static inline void min_vruntime_copy(struct sched_entity *new, struct sched_entity *old)
--{
--	new->min_vruntime = old->min_vruntime;
--	new->min_slice = old->min_slice;
--	new->max_slice = old->max_slice;
-+	return vruntime_cmp(a, "<", b) ? a : b;
- }
- 
--/*
-- * se->min_vruntime = min(se->vruntime, {left,right}->min_vruntime)
-- */
--static inline bool min_vruntime_update(struct sched_entity *se, bool exit)
--{
--	u64 old_min_vruntime = se->min_vruntime;
--	u64 old_min_slice = se->min_slice;
--	u64 old_max_slice = se->max_slice;
--	struct rb_node *node = &se->run_node;
--
--	se->min_vruntime = se->vruntime;
--	__min_vruntime_update(se, node->rb_right);
--	__min_vruntime_update(se, node->rb_left);
--
--	se->min_slice = se->slice;
--	__min_slice_update(se, node->rb_right);
--	__min_slice_update(se, node->rb_left);
--
--	se->max_slice = se->slice;
--	__max_slice_update(se, node->rb_right);
--	__max_slice_update(se, node->rb_left);
--
--	return se->min_vruntime == old_min_vruntime &&
--	       se->min_slice == old_min_slice &&
--	       se->max_slice == old_max_slice;
--}
--
--
--RB_DECLARE_CALLBACKS_MULTI(static, min_vruntime_cb, struct sched_entity,
--		     run_node, min_vruntime_copy, min_vruntime_update);
-+RB_DECLARE_CALLBACKS(static, min_vruntime_cb,
-+		     struct sched_entity, run_node,
-+		     RB_AUG(vruntime, min_vruntime, __min_vruntime),
-+		     RB_AUG(slice, min_slice, min),
-+		     RB_AUG(slice, max_slice, max));
- 
- /*
-  * Enqueue an entity into the rb-tree:
-diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
-index 6fda36ab17669..45189012a0f94 100644
---- a/net/tipc/name_table.c
-+++ b/net/tipc/name_table.c
-@@ -88,10 +88,9 @@ struct tipc_service {
- 	struct rcu_head rcu;
- };
- 
--#define service_range_upper(sr) ((sr)->upper)
--RB_DECLARE_CALLBACKS_MAX(static, sr_callbacks,
--			 struct service_range, tree_node, u32, max,
--			 service_range_upper)
-+RB_DECLARE_CALLBACKS(static, sr_callbacks,
-+		     struct service_range, tree_node,
-+		     RB_AUG(upper, max, max));
- 
- #define service_range_entry(rbtree_node)				\
- 	(container_of(rbtree_node, struct service_range, tree_node))
+This patch adds range checks in miic_parse_dt() for the "reg" and
+"renesas,miic-input" values read from child nodes. If either value is
+out of range for the SoC, the probe fails with -EINVAL.
+
+> Bad configuration values from the dtb could result in out of bounds array
+> access. Verify that parsed values are within range for the SoC and fail the
+> probe if they are invalid.
+>
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+Before this patch, miic_parse_dt() used an unchecked DT "reg" value here:
+
+	dt_val[port + !miic->of_data->miic_port_start] = conf;
+
+That could write outside the conf_conv_count byte buffer. The buffer was
+originally a fixed on-stack array. This unchecked write and the
+conf_to_string[conf[i]] lookup both appear to date back to commit
+7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver").
+
+The earlier commit daf677c2c644 ("net: pcs: rzn1-miic: Fix config array
+initialization") has a Fixes: tag. Would something like this work here?
+
+Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
+
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
+> index 62daaf76e0525..30ac2d4070052 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -695,9 +695,24 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
+
+[ ... ]
+
+>  		if (of_property_read_u32(conv, "renesas,miic-input", &conf))
+>  			continue;
+>  
+> +		if (conf >= miic->of_data->conf_to_string_count) {
+> +			dev_err(miic->dev, "Port configuration out of range: %d\n", conf);
+> +			of_node_put(conv);
+> +			ret = -EINVAL;
+> +			goto err;
+> +			}
+
+[Severity: High]
+The commit message says the patch will "Verify that parsed values are
+within range for the SoC". Is the renesas,miic-switch-portin value still
+unchecked? Earlier in miic_parse_dt() it is stored directly:
+
+	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
+		dt_val[0] = conf;
+
+Take an out-of-range value, such as 20 on RZ/N1 (where conf_to_string[]
+has 14 entries) or 9 or more on RZ/T2H. No modctrl_match entry will
+match it, so the error path uses it as an index:
+
+miic_parse_dt()
+  miic_match_dt_conf()
+    miic_dump_conf()
+      conf_name = of_data->conf_to_string[conf[i]];
+
+Can this read past the end of conf_to_string[] and then pass the pointer
+it finds to dev_err() as a %s string?
+
+dt_val is also s8, so the u32 is truncated with no check:
+
+- 128 to 254 become negative indexes.
+- 255 becomes MIIC_MODCTRL_CONF_NONE, so the property is silently
+  ignored.
+- 258 wraps to 2 and is accepted as a valid value.
+
+The binding limits this property to enum [0, 1, 2], but that is only
+checked by dt_binding_check, not at runtime.
+
+Could the same range check be applied to the u32 value before it is
+stored in dt_val[0]? Checking it against the PORTIN values the SoC
+allows would be stricter still.
+
+[Severity: Low]
+This isn't a bug, but the closing brace of this new block is indented one
+tab too far.
+
+Also, conf is a u32. Should the dev_err() use %u instead of %d?
+
+> +
+>  		/* Adjust for 0 based index */
+>  		dt_val[port + !miic->of_data->miic_port_start] = conf;
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. The
+kernel-doc for struct modctrl_match describes RZ/T2H and RZ/N2H like
+this:
+
+ * @conv: Configuration of ethernet port muxes. First index is SWITCH_PORTIN,
+ *	  then index 1 - 5 are CONV1 - CONV5 for RZ/N1 SoCs. In case
+ *	  of RZ/T2H and RZ/N2H SoCs, the first index is SWITCH_PORTIN then
+ *	  index 0 - 3 are CONV0 - CONV3.
+
+Index 0 is already SWITCH_PORTIN. This line stores RZ/T2H converter p at
+dt_val[p + 1], which matches rzt2h_index_to_string[] being
+{"SWITCH_PORTIN", "CONV0", ..., "CONV3"}.
+
+Should the comment say that index 1 - 4 are CONV0 - CONV3?
+
+[ ... ]
+
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925-miic-validate-dtb-v1-0-3a6db9bb75ec%40reliablecontrols.com
