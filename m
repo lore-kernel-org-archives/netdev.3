@@ -1,120 +1,225 @@
-Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490743C456F
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 17:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623043DE43D
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 17:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790703465; cv=none; b=lwFlIoWuWor4K4heUXSy3mPC0RhGZhMIERwRe+J0QNDNKIylvNjOdJhh+3Up7yWPh9Zotd6CE7HD0BBUfEu252lI4Om/Dj+2UCDvat6xJvZ2vMvhUWtMgo7o5aLPgXnG6Il8fHSEYkgvJOwn7p1hRXHWzdp2nXrUHgZYLRaHzks=
+	t=1790703675; cv=none; b=XrwLMbmv8ErOoQe9hjs/0kZ9BSFR/CZAjFYP9C/RXafScGKvlW6XlTm3cLQ1PfvbtesYwEXIfGIg66MN2YKY+Msip4zecKredDvbibLnQAXsnbB/WnJcAMmByJLZE9i/WjELp2z9WB49/zfgodaYD6l9rYyjnVOpW2H/3ryZgkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790703465; c=relaxed/simple;
-	bh=DIoJg2nbqGI0AbbMvvT0cdi9VAuv9ZIUB+2oKOFih1c=;
-	h=From:To:Cc:Date:Message-ID:Subject:MIME-Version:Content-Type; b=KDfF+aevthZienXZE6KLsKgPOgCiuDGAYMsLSDXPUhBEk7mf64zBxDhSTyKEVeorhIENRdasPNuiRG4ieehdahgZv1Ny2oPN51ZbAIlnptkb9WFduwWTJlz43G33mMWw0bTmr8XTsadtZAeJT/3/WAV4mQkBuABCTn2Sh1SRrrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MxFFkOwn; arc=none smtp.client-ip=74.125.227.168
+	s=arc-20240116; t=1790703675; c=relaxed/simple;
+	bh=TYK82yEFZyTUKcvmqFCrtcuvaXuFrEA017DIBbyHshY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXjcqcqzrnm04jUx6xkaBvKrOq0XJlj0PmQ/Fz5M6gENubfmeUtFIHuX6AZFn8v60LlgrS3LWJlab0+kSU/8kNsxqh8MHouRrgU0lmq1horXd9bsLcKdLuZJrOEIwAYH4uVkpL4wb2E1d4Nwi+6GTw9UdcXDW5rlNYVxsitr0Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgTtxQft; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MxFFkOwn"
-Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a2adb9bc3cso1557513a91.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:37:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgTtxQft"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so35094535e9.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:41:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790703463; x=1791308263; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :message-id:date:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=MMtEMaLNv4OE7naboHkkwhRLjbqMr0IiSIVxyihv5gE=;
-        b=MxFFkOwngJlNmfDr+gB+Igazk2PpZ7dzkXIazwTRqdN9rIcrJXXcuAKzbJzKFwi+FZ
-         9I93U4l1olNjOJCit345R7c2k4FmEC+aa0tslxXys2b3/9un4JUuHkewK6ZVlQkXBmJM
-         rYlp996aX/e48OU+bMdUgQyyLSJOcsiqhAO2Y/I/QR3sU2M+L1nrabUvVjpYZR8Pq3+k
-         EgdiV4RMFC0w2ytKS8P0IfFzUORYXg2HWepKxivYgZK1bk2t5OZ3SrzEYeohn0yNG9OL
-         TzmXj5UfM7l3bSHS+IDanq0a/tOsEpwFOhS9/CMFCTxVVW0N061P3epkI1W+LAdodUVP
-         Ditw==
+        d=gmail.com; s=20251104; t=1790703671; x=1791308471; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
+        b=ZgTtxQft2G6JJv2ASxf29zPykWup8dFQNjU4V3jffV9qb1FAR8fazuNDBKARHQG3uH
+         Q4M+fBWQr8JldfPz7+GM0RAJvy5DwL2FliUpGdjHnWn2qIH7jPjG3kz54wgFBFEUN+2Y
+         ny3MWj+pDnqnu3qO+y47NMLpjCPaldwtS7whwYU2hF7jKhzpTsF3sKfskb+EGCRyqSL0
+         CAPG4HCXSkAKGL4Fy9cro8q7sRgWXGshHVjQMYbBphdveXx71wNncJe0Vy2G6UwozucT
+         2nsAf1sBhVLboWF68MRbrYR9NdC0lui+VSTBsLvGSHz9UzX/CIDEuPmV/bUX+7Tb3U5j
+         IeGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790703463; x=1791308263;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :message-id:date:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=MMtEMaLNv4OE7naboHkkwhRLjbqMr0IiSIVxyihv5gE=;
-        b=kii8hm/Mp85yGzwsMEVg8kR7pztpC2EQzdy7cjkBTZExi8wIzFvcAMP/T3M+4cXB77
-         7vd1HkRWvuWwQVKkosT5rGUSEAmdv8gxhRWuIznAqmx6nwmcdI+hmmovvmjP66UM32yP
-         Zv+dShj5EjV2cyr4dTIWBNosRXna1Bf6rAYzABxBdTnIFUolw+CF6qn1D1DrdmFHFcWY
-         DEAxUOMDDZqmyZIEXtxxf54XAoLvf0lUCBXTjFMOq2bmtMyHjFQQ6TrP/fspZ7Tnz2Ro
-         uLR4iYgTV9FWAc8AGsFRl3aMnoRU3/Z07aH3Ku+aMCPGE+RcNWcJI6x4jJhPixzAPPbB
-         wqcg==
-X-Gm-Message-State: AFq9FYIqZdnkBaG9QFvT0ztD4vau4QlwUWCNX99EtIjlcjxDoCFtgGIE
-	sqc1+oyeJ1xyE18JEpL+ssyo/QunWE3jnQ1oRLP5bsYIzp1ukWZUzd1EB9SArA==
-X-Gm-Gg: AYBFou3AQjWTPmMoyhqYEXBMEfTlYS88baWl0b8RQixsj/5LBNRR7PQPW3UE6bI04Yj
-	xnTvhxoX4JkM8s7UW0Vxx7IxviMCTSQG/P28nUkyGa3TEmn6m2PWgBjtW96+hAzlMUL9uZ6fLej
-	TuUrJTZRnoqSX6NQNtG8qZ+pSYweL+prcTYvOqsq+yEQ2zWAhokkCinSoUe9ulTHEJWf6I0D3Hl
-	OHzfowH+v2MEKu2wbItOe0DpX2CpB9CqzVzR7F/JlOqfSMNflICKbW7eQSKs/4GIjyMgMko7p9F
-	N7KrpZqnvPGVex3d/Rp9BsVLNjVsk2l40sAgZBRIx6MbDUhbIEXvcJrXw6jqRq+tIQI+avGMOOy
-	3haZv7P4PWqbkEyUlwnwXsJ8RO7F3hCd2rDNTuSDQ90prH9Rk4+VhLWBY/v/UmlT+Z6fdtEfwSL
-	jVeHsLAnDX8cY1WFQIOPi1UHrQt9AKjHpfLqSYC52M3Gse78as1oMhdV9YauX34RQgDd47t6KDL
-	96KVqSksmLELthkoK8V3pA=
-X-Received: by 2002:a17:90a:e7c6:b0:3a0:e243:28fc with SMTP id 98e67ed59e1d1-3a4bfe94b3cmr36459a91.35.1790703463434;
-        Tue, 29 Sep 2026 10:37:43 -0700 (PDT)
-Received: from SANGHOON. ([1.220.132.212])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4bf19bf4asm124187a91.2.2026.09.29.10.37.41
+        d=1e100.net; s=20260707; t=1790703671; x=1791308471;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XT6rzbwAq56nChpqUTQ2q9VsJKHTV6VFi8vBlbe3c+g=;
+        b=abqdNy+5VGLU8unXaKxbA8xNszkT3FUgBKKNvwK+qfr6ss8sHW95SxwKZVGDNbpKlN
+         J/CkFdjPdM/ivhUf76sbzSQci2mcydXwUZv9gw7c//rzNZzi7b8xYc8liL0XA9BsqDSq
+         9Ul+4BuhmkEaFXy/yE2lZYkCCNDctW8amjq8BvnKEIW+LWTlF3+P9eP7mdnDw4FSC4Wu
+         nnWXLilDZrkKcFFZ4tfGyXFU5MRORUtF5SfGLV7Yj3BKA7XsTYE2fpqKbhD1nG/1rWhK
+         ju/4QGEgkR6KL45WcQY3iiJUHYBXKtc/iugcW4OEoXLeDtbrllXxAkVDqGqDnfteXGcT
+         naug==
+X-Forwarded-Encrypted: i=1; AKwUvBxxCMcODKpFQ3cwQI77dDBlqUYHSoWWDBidLJ7++GOCgVEME5bDw+ZNezKxlcD8cSUsqrK4XL0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nmWczNnftr5xOATdELLs2Z4ukckZoRceDSf1oXNycp2vreQrnZ
+	HzUhRuPoxvYM/IWLCITth9g+qr8dKrTJXs4RjBHNzwY+lmVsLMpHmlR1
+X-Gm-Gg: AYBFou2n0EEWpBMY6TvY76ikCi0p7OlF1E34PWG0pcw38G9Ks4yz47Bkz6zBrp5kWBT
+	lOJ0Whl+zOQHiwfndy7Srckbq90tOp+v7T1y6GdoHnsXDm098AlnyqyEP9oG8+Wuq7CMdMYSgY9
+	rn8B210JVHdJ+sAkioAI/ZER46fpqIyylT6GV0dqrfJs5rDrg4iSuscvBfNU5dI1nn2P9EKbCVD
+	X8vTznI3DlixgrDLx3h7AgkoEZ9ICjc6PUmuCyUFTuQqrfjfzYwvjZu3G/pyX89/S9t3Q4vVF0C
+	Z8oLKTMjlL94JE2n0w6bgJoKFf5sR7KFPWtRDcifiEPDtWUMT8DgzHg824qBNQZc+eVdpb9EfeE
+	jSHLKNlEMCn5hZQFEdLUvgObUVFP1M0f7S1mXCho+Xsow6P5rNrLw59z5PopinhE2biZWR9Ob9r
+	wQamRHRjUt1Vr6ilWe2RY6psFyplsCvYZ9XO8D4KNdRVqoIFoLkyuGaQAq50A6CnudQ0wNzOk1C
+	ANb7m+4MZyFaBZ/kPwKxshU1PkYhNs5Odu7HteqRPhMfR4lC28INeBjNS+4g/nO/7KpWDeUP/ty
+	IZzGz0CYCGUTW88/KWSSpl75MrI+
+X-Received: by 2002:a05:600c:8b33:b0:49f:f9fa:fcfe with SMTP id 5b1f17b1804b1-49ff9fafdccmr177606485e9.13.1790703671207;
+        Tue, 29 Sep 2026 10:41:11 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfec770sm100002515e9.8.2026.09.29.10.41.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 10:37:42 -0700 (PDT)
-From: Sang-Hoon Choi <csh0052@gmail.com>
-To: Ayush Sawal <ayush.sawal@chelsio.com>
-Cc: netdev@vger.kernel.org, Changyul Lee <lcy8047@gmail.com>
-Date: Wed, 30 Sep 2026 02:37:34 +0900
-Message-ID: <179070264839.12871.11715792321728503844.idr-bug-51@gmail.com>
-Subject: [PATCH net] cxgb4/ch_ktls: disable softirqs around tid_list erases
+        Tue, 29 Sep 2026 10:41:10 -0700 (PDT)
+Date: Tue, 29 Sep 2026 19:41:07 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>, Joseph Guo <qijian.guo@nxp.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL and
+ DART-6UL
+Message-ID: <arv4MwHV4LntROkN@Lord-Beerus.station>
+References: <cover.1790693249.git.stefano.r@variscite.com>
+ <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260929121455.437291ea4b53130e3e19778c@hugovil.com>
 
-chcr_ktls_cpl_act_open_rpl() inserts into tid_list from the receive path
-using xa_insert_bh().  The array is shared by the adapter's connections
-and initialized with XA_FLAGS_LOCK_BH.  However, chcr_ktls_dev_del() and
-the chcr_ktls_dev_add() error path use xa_erase(), which takes the XArray
-lock without disabling softirqs.
+On Tue, Sep 29, 2026 at 12:14:55PM -0400, Hugo Villeneuve wrote:
+> Hi Stefano,
+> 
+> Your title seems to imply that VAR-SOM-6UL support did not
+> exist before your patch, but it did. Please rephrase that, and
+> your description accordingly.
+> 
 
-When cleanup runs with softirqs enabled, a receive softirq for another
-connection on the same CPU can interrupt the erase and spin on the lock
-held by the interrupted task.  Use xa_erase_bh() at both sites to match
-the insertion path.
+Hi Hugo,
+You’re right that VAR-SOM-6UL already has mainline support.
+I’ll reword the title and description to distinguish the existing
+support from the new variants and DART-6UL boards.
 
-Fixes: 65e302a9bd57 ("cxgb4/ch_ktls: Clear resources when pf4 device is removed")
-Reported-by: Changyul Lee <lcy8047@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Sang-Hoon Choi <csh0052@gmail.com>
----
-Compile-tested with x86_64 allmodconfig and W=1.
-I have not tested this on Chelsio hardware.
+> 
+> On Tue, 29 Sep 2026 17:17:27 +0200
+> Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
+> 
+> > Add device trees for Variscite VAR-SOM-6UL and DART-6UL modules based on
+> > i.MX6UL, i.MX6ULL and i.MX6ULZ. VAR-SOM-6UL is supported on the
+> > Concerto-Board and Symphony-Board carriers, and DART-6UL on the
+> > VAR-6ULCustomBoard. The 90 new DTBs cover the supported combinations of
+> > storage, wireless and audio options.
+> 
+> Do they? You would need far more than 90 DTBs to support all options...
+> 
+> When I submitted the latest changes for the VAR-SOM-6UL, I did not
+> create DTBs for every available options knowing that it would lead to
+> an insane number of files. So I simply created a full DTB that
+> incorporated most of the DTSI options. And my custom boards simply
+> include only the required DTSI for their specific options.
+> 
+> Looking simply at the ENET phy level, you seem to have now removed
+> the two individual DTSI to selectively add support for ENET1 and ENET2,
+> but not all board use these, so that is why they
+> were created as individual DTSI files in the first place to make it
+> easier to create a DTB with only the required options. As an example,
+> one of my custom boards do not have ethernet at all, so i don't want
+> that support enabled by default.
+> 
+> Please keep the existing DTSI as distinct and individual files.
+> 
+> Maybe using DT overlays would be better suited if you really want to
+> support every available combinations?
+> 
 
- drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Just to be clear about the 90 DTBs: They are the minimum set of prebuilt
+DTBs for the Variscite-supported configurations that select between
+mutually exclusive hardware alternatives. Selecting an alternative changes
+the hardware described on a SoM interface and therefore requires changes
+to Device Tree nodes, pin configuration or controller properties.
+For example, the SD interface may connect to an SD card or an SDIO wireless
+module; storage, wireless-module and codec choices similarly require
+different descriptions.
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-index f5acd4be1e69dcb551758dd27808a1b1eec374bd..dbec95b4977736b9b2fefdf5648a7eaca16429cb 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-@@ -389,7 +389,7 @@ static void chcr_ktls_dev_del(struct net_device *netdev,
- 		cxgb4_remove_tid(&tx_info->adap->tids, tx_info->tx_chan,
- 				 tx_info->tid, tx_info->ip_family);
- 
--		xa_erase(&u_ctx->tid_list, tx_info->tid);
-+		xa_erase_bh(&u_ctx->tid_list, tx_info->tid);
- 	}
- 
- 	port_stats = &tx_info->adap->ch_ktls_stats.ktls_port[tx_info->port_id];
-@@ -577,7 +577,7 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
- 	cxgb4_remove_tid(&tx_info->adap->tids, tx_info->tx_chan,
- 			 tx_info->tid, tx_info->ip_family);
- 
--	xa_erase(&u_ctx->tid_list, tx_info->tid);
-+	xa_erase_bh(&u_ctx->tid_list, tx_info->tid);
- 
- put_module:
- 	/* release module refcount */
--- 
-2.43.0
+These are not every possible combination of fitted and unfitted components.
+We do not add another DTB merely because an optional peripheral is not
+populated.
+This follows the existing VAR-SOM-MX7 mainline approach: it provides
+separate DTBs for hardware choices such as eMMC versus NAND and codec
+variants, without enumerating every optional component’s presence or
+absence.
+
+> 
+> > The descriptions use shared module, option and carrier DTSI files with
+> > SoC-specific wrappers. In particular, the WM8904 and WM8731 codecs are
+> > selected explicitly instead of keeping a codec in the module base.
+> > The four existing Concerto DTBs are converted to this layout without
+> > changing their DTB names or compatible strings. This also replaces the
+> > non-working legacy LVDS panel description with the LCDIF configuration
+> 
+> Can you describe what exactly is not working? When I submitted these
+> LVDS changes I tested the LVDS panel with the Variscite concerto EVK
+> (VAR-SOM-6UL LD option) and it was working ok (also tested with two
+> custom boards).
+> 
+> If a fix is needed for this bug, this should go in a separate patch.
+> 
+
+In an initial hardware test, the display timing behavior did not appear
+to match what we observe with Variscite’s downstream configuration.
+I will repeat the test and measure the output before proposing any display
+change. If a fix is needed, I will send it as a separate patch.
+
+> 
+> > for the Variscite display. Wi-Fi and Bluetooth enable/reset sequencing
+> > on these modules is handled by userspace, so the legacy kernel-managed
+> > power-sequence and Bluetooth nodes are not carried forward.
+> 
+> That is not ok. I specifically implemented enable/reset sequencing in
+> the kernel to finally get rid of the need for external
+> proprietary userspace scripts, and it was tested ok. If somethings needs
+> to be fixed or improved in this sequencing, fine if you submit a patch
+> to do it, but certainly do not get rid of it.
+> 
+
+Calling these “external proprietary userspace scripts” misses their purpose.
+First because they are not proprietary :D. Second, because they implement
+the initialization procedure Variscite validates for the Broadcom
+modules we ship (talking about the brcm, the existing one in your DTSs)
+folowing the datasheet instructions.
+
+This is not equivalent to the sequence in the existing Concerto DT.
+For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
+enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
+re-enumerating the SDIO device.
+The other Broadcom option does not use the separate WIFI_PWR step.
+The existing regulator and MMC power-sequence nodes do not express that
+complete, module-dependent procedure, particularly the BT_EN step during
+Wi-Fi initialization.
+The scripts also select the Bluetooth firmware according to the detected
+SDIO device.
+
+We use that procedure to avoid sequencing-related failures for our
+customers.
+This approach is not new to Variscite’s mainline DTS files.
+
+Thank you for your time,
+Best Regards,
+Stefano
