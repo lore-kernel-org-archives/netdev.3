@@ -1,118 +1,189 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from out28-74.mail.aliyun.com (out28-74.mail.aliyun.com [115.124.28.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702AE380FEB;
-	Tue, 29 Sep 2026 02:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF46351C17;
+	Tue, 29 Sep 2026 02:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790649561; cv=none; b=lqSyfQwwpvFZ/FGoPfuMsoTIVEBtwkCrKwG8QZ7RBOVDNr3kBTUhr8xd1iG40EdpGKMfprGIJsfhpybbcLzV2Duj6JFsGIuKvOSQbL7FFebIH9LlKidT1pzZu0aAIgqDl4jXTBMqjb6OzBYis3uwlv//nfGwIwVXeopTChrwne4=
+	t=1790649568; cv=none; b=EcXONRylTzDY3m0Uj7YhG6vgIYF2bM0HMM8SvmOs8yTUJmZgtRMdMJSjXJ3LYA5KdvurIlQuwTWEiYq1TySurMwiNYRE+k1K8bF19qyMK/DhbNptQDGrg6jvr2hFFk/F31vb5lhFhWTvXmnUIA9wxGGQwCBKinYm86AnRXOl48k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790649561; c=relaxed/simple;
-	bh=damWrBBGmIcQTno6NBJ6oL9EeTirZwkZeLruaUPclpY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JpdUmVTdxFGTDZO1DmbRbbJpjMMqrY/S1wovvYEHHEs2Yo4mrP9PmlJqvDNLRUCxOhbOTokEZabMUhZsbs+JWRFUU2Msv+i5wtOD/k1+KMFjjHvE/aU/0F/IdnZPkXhBB5prIif9GKhW74J8RKDHteyZUBiGQgdHX7/6JOSSQOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Rf5i8GZB; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1790649568; c=relaxed/simple;
+	bh=WV+1vG6r/S/WKkOQObfkAsdbddxIKMKiumGpwtu9B8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dPqFmU91DOFlMS3A7tTwi9BBq7w246nng3ahQBkAFey6wO1KcSUnKWySdnTc5KQY3ShLz3wc5WRQbepbLtCqbtLqXoRM/V2TGcmaOJqaUxNr/QUNzLnPdtT8zGHIL4Z44uxXiRzT8m7rHSmjCcsiGhLoVmYMn/VgIjR0f7/3IzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=aqXy1lyc; arc=none smtp.client-ip=115.124.28.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Rf5i8GZB"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68T1XhDH2597632;
-	Mon, 28 Sep 2026 19:39:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=p
-	9WHRi7MsCm+8+WIcyN8SwgQ4M7hJSFcSn0/8Ih01cI=; b=Rf5i8GZB2zlYkLOjB
-	FAOqUHl2EsIjekEt2y4G41MHEK6K5DXpldLS+9gbMWcgWzSbUgdBY4ltmVNiHCHm
-	YlfyiWxK89A5mmAVZUm76Bxt0jIoZVJumFvJxAUBOfQAqCYzwteCXX8Be0jVxNyV
-	aKp6l4xF4nZfz1BMpYO3p7RmMqjRAbCYqLxPKHcnULqlkxQgcX3lGb4hUDlalfwj
-	vRbqdrSTPjF+A7skz4tY4v71+0ObuMhFhgwygJHOEP3SaqzQbFoDZGxzaxPagVJM
-	ArNJA1ZmfM580tqjqkunAIIQ4gnroJSPGLXa3LuZgzTRtZdx9vPDRycXoVXaDxEI
-	HtlwA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gymvs3vjb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 19:39:11 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 28 Sep 2026 19:39:10 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 28 Sep 2026 19:39:10 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 403C75B6928;
-	Mon, 28 Sep 2026 19:39:07 -0700 (PDT)
-Date: Tue, 29 Sep 2026 08:09:01 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v3 net-next] octeontx2-af: pass devlink switch id and
- cache representor map
-Message-ID: <arskxWnvfGGv-xMZ@rkannoth-OptiPlex-7090>
-References: <20260924082614.1947742-1-rkannoth@marvell.com>
- <179058473451.3145.9297107718800202799@kernel.org>
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="aqXy1lyc"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1790649556; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=3S3qJl7wU6ok42IM6/A9TRrEJi+qKG+KXTexZJ1Q6jE=;
+	b=aqXy1lycxOg+70ol5WhdJ/AHrVq19Pg5iRe61JlBodkhwEQIPqNPdjAK2AnJP+Xf1Iv3bjkrh2tLJbAsqaay8KcTo3mFfoDR4aH0WxeHRFbW3QXmhg2plHu5Z2R/2L/2dUboPI9oyWHLCDnCU8RQrYj8PMImbeQ9N6GMho9bAR4=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07847276|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0146087-0.00380905-0.981582;FP=11396015069220981788|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=zhugl3@xiaopeng.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.jQoX4OC_1790649554;
+Received: from DESKTOP-UL5U09E.xiaopeng.local(mailfrom:zhugl3@xiaopeng.com fp:SMTPD_---.jQoX4OC_1790649554 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Sep 2026 10:39:15 +0800
+From: Guanglei Zhu <zhugl3@xiaopeng.com>
+To: chandrashekar.devegowda@intel.com,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com
+Cc: haijun.liu@mediatek.com,
+	ricardo.martinez@linux.intel.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	guozh23@xiaopeng.com
+Subject: [PATCH v2] net: wwan: t7xx: validate the HS2 message data length
+Date: Tue, 29 Sep 2026 10:39:14 +0800
+Message-ID: <20260929023914.247374-1-zhugl3@xiaopeng.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260909054401.718959-1-zhugl3@xiaopeng.com>
+References: <20260909054401.718959-1-zhugl3@xiaopeng.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179058473451.3145.9297107718800202799@kernel.org>
-X-Proofpoint-GUID: nlqKUQtVCYCMxqD_uIcXD_63taOzCiKi
-X-Proofpoint-ORIG-GUID: nlqKUQtVCYCMxqD_uIcXD_63taOzCiKi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDAxMCBTYWx0ZWRfX/Bgbuh6qlu2K
- dl3UzXT9CJZa/dbl3LrW/VGs7InWTOTxXClxc8Gr2q2Xv/I5QUMIQNOlXWmLTLckJzeBAYo3tmZ
- V85+PPjV1V+f+FKKEeum8/Je73g9fZYZmERahw2PDnOG6r1CI834qqclwhije0SCgHOmJRnPBRZ
- pWho26CSpkl60MWrXrvyTyQizguzwDfmkcx+AVs9Xpjg1wfDxQP3GhRwrOif8h0+WP3LCH0qqNZ
- u6tfuUO2znhZlxxeMJbnZEEwTt0tRbv43JBC+JkqvNN5KF+Ts2kPAfQTIc01DmvJdUqLOjFz6uq
- GDc+zc12r28YoOswXfHloPhfnDw2cS9xXR7rOprc9BiD4AmQvYRmZRVkhYHQc7RBGJsxDBTCCjm
- HeU2q0bwBGSXItlgQnaodADLxpRxj4FTSyQ3WI9c/nzZ+EG1+hLlL37xii9vw9VNXILJdlkLso0
- 8dNrwtjvMkzZvHoPGfg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDAxMCBTYWx0ZWRfXwv07NmpPp+Qv
- /mjdRDf+rOTQ+FoZHAoE+7k7M4YTZGik1lxtEw5ULIgSrMuKCEFJTH0jxC7k/cA9c8naCCnAL/M
- Rm7XQ7tusGlEOcRRLWPlLp/MkTuWPsU=
-X-Authority-Analysis: v=2.4 cv=JuxkP84C c=1 sm=1 tr=0 ts=6abb24cf cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8
- a=01oDmyOgafZaCAmfZGYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=lhd_8Stf4_Oa5sg58ivl:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_01,2026-09-21_02,2025-10-01_01
 
-On 2026-09-28 at 14:08:54, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
-> Thank you for your contribution! Sashiko AI review found 7 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 (4) · Medium: 6 (3) · Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] Turning off the eswitch now makes the AF forget the
->   representor PF before that PF has freed its hardware resources.
-> - [Medium] struct esw_cfg_req grows from 32 bytes to 72 bytes:
->   switch_id[MAX_PHYS_ITEM_ID_LEN] and switch_id_len are appended after…
-> - [Medium] The new call to rvu_rep_cache_reset() in __rvu_flr_handler()
->   sets rep_mode = 0 when the representor PF goes through FLR.
-> - [Medium] The patch puts rep_pcifunc, rep_mode,
->   rswitch.switch_id/switch_id_len, rep_cnt and rep2pfvf_map under…
-> - [Medium] Before this patch, rep_pcifunc was only ever set.
-> - [Medium] rvu_mbox_handler_esw_cfg() reads req->switch_id_len from the
->   shared mailbox several times: once for the bounds check, once as the…
-> - [Low] The switch-id plumbing the commit message describes has no
->   consumer.
+control_msg_handler() passes the modem-supplied data_length field of a
+CTL_ID_HS2_MSG message straight to t7xx_fsm_append_event(), which
+memcpy()s that many bytes out of the skb.  Nothing compares the field
+with the actual length of the message, so a modem reporting a larger
+data_length makes the driver read past the end of the skb and store
+kernel heap memory in the FSM event.
 
-ACK.
+The message is not even checked against the control header itself:
+for a message shorter than sizeof(struct ctrl_msg_header) the
+skb_pull() is a no-op and ctrl_msg_h->data_length is read past the
+skb tail.  And on the consumer side, t7xx_prepare_device_rt_data()
+reads a full struct feature_query out of the event without looking at
+its length, so a short data_length makes it read past the end of the
+event allocation and echo the out-of-bounds bytes back to the modem
+in the HS3 reply.
 
-pw-bot: changes-requested
+Reject the message when it is shorter than the control header or when
+data_length does not fit into the skb, and make
+t7xx_prepare_device_rt_data() bail out when the payload is shorter
+than struct feature_query.
+
+Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+---
+Changes in v2, addressing the sashiko AI review:
+
+- reject messages shorter than the control header, so
+  ctrl_msg_h->data_length is not read past the skb tail
+- make t7xx_prepare_device_rt_data() length-aware: a payload shorter
+  than struct feature_query is rejected instead of being read past
+  the end of the event allocation and echoed back in the HS3 reply
+- flatten the HS2 arm nesting while at it
+
+The data_length upper-bound check was verified in a QEMU guest with a
+fault injector feeding the driver's control port thread a handshake
+message whose data_length exceeds the skb: the unpatched driver trips
+KASAN on a read of 8192 bytes past a 500-byte payload, and the extra
+bytes land in the FSM event.  With this check the message is
+rejected, and well-formed handshakes are unaffected.
+
+ drivers/net/wwan/t7xx/t7xx_modem_ops.c     | 10 ++++++--
+ drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 27 ++++++++++++++++++----
+ 2 files changed, 30 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+index adb29d3..de689aa 100644
+--- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
++++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+@@ -400,13 +400,18 @@ static void t7xx_prepare_host_rt_data_query(struct t7xx_sys_info *core)
+ }
+ 
+ static int t7xx_prepare_device_rt_data(struct t7xx_sys_info *core, struct device *dev,
+-				       void *data)
++				       void *data, int data_length)
+ {
+ 	struct feature_query *md_feature = data;
+ 	struct mtk_runtime_feature *rt_feature;
+ 	unsigned int i, rt_data_len = 0;
+ 	struct sk_buff *skb;
+ 
++	if (data_length < sizeof(*md_feature)) {
++		dev_err(dev, "Invalid runtime data length: %d\n", data_length);
++		return -EINVAL;
++	}
++
+ 	/* Parse MD runtime data query */
+ 	if (le32_to_cpu(md_feature->head_pattern) != MD_FEATURE_QUERY_ID ||
+ 	    le32_to_cpu(md_feature->tail_pattern) != MD_FEATURE_QUERY_ID) {
+@@ -563,7 +568,8 @@ static void t7xx_core_hk_handler(struct t7xx_modem *md, struct t7xx_sys_info *co
+ 	if (ctl->exp_flg)
+ 		goto err_free_event;
+ 
+-	ret = t7xx_prepare_device_rt_data(core_info, dev, event->data);
++	ret = t7xx_prepare_device_rt_data(core_info, dev, event->data,
++					  event->length);
+ 	if (ret) {
+ 		dev_err(dev, "Device failure parsing runtime data: %d", ret);
+ 		goto err_free_event;
+diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+index f869e4e..5ed07c4 100644
+--- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
++++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+@@ -178,22 +178,39 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
+ 
+ 	ctrl_msg_h = (struct ctrl_msg_header *)skb->data;
+ 	switch (le32_to_cpu(ctrl_msg_h->ctrl_msg_id)) {
+-	case CTL_ID_HS2_MSG:
+-		skb_pull(skb, sizeof(*ctrl_msg_h));
++	case CTL_ID_HS2_MSG: {
++		u32 data_length;
++
++		if (skb->len < sizeof(*ctrl_msg_h)) {
++			dev_err(port->dev,
++				"Invalid HS2 message: need %zu, have %u\n",
++				sizeof(*ctrl_msg_h), skb->len);
++			ret = -EINVAL;
++			dev_kfree_skb_any(skb);
++			break;
++		}
+ 
+-		if (port_conf->rx_ch == PORT_CH_CONTROL_RX ||
+-		    port_conf->rx_ch == PORT_CH_AP_CONTROL_RX) {
++		skb_pull(skb, sizeof(*ctrl_msg_h));
++		data_length = le32_to_cpu(ctrl_msg_h->data_length);
++
++		if (data_length > skb->len) {
++			dev_err(port->dev, "Invalid HS2 message length %u\n",
++				data_length);
++			ret = -EINVAL;
++		} else if (port_conf->rx_ch == PORT_CH_CONTROL_RX ||
++			   port_conf->rx_ch == PORT_CH_AP_CONTROL_RX) {
+ 			int event = port_conf->rx_ch == PORT_CH_CONTROL_RX ?
+ 				    FSM_EVENT_MD_HS2 : FSM_EVENT_AP_HS2;
+ 
+ 			ret = t7xx_fsm_append_event(ctl, event, skb->data,
+-						    le32_to_cpu(ctrl_msg_h->data_length));
++						    data_length);
+ 			if (ret)
+ 				dev_err(port->dev, "Failed to append Handshake 2 event");
+ 		}
+ 
+ 		dev_kfree_skb_any(skb);
+ 		break;
++	}
+ 
+ 	case CTL_ID_MD_EX:
+ 	case CTL_ID_MD_EX_ACK:
+-- 
+2.43.0
+
