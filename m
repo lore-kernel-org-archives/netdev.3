@@ -1,81 +1,58 @@
-Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8BC502555
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9F83C1D48;
+	Tue, 29 Sep 2026 12:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790686729; cv=none; b=Eo9XS6vyy/usqMxNallLsdjUgcHFaiK3HBuqu4yC+EQpqE4CfUCuKzCRyCqyYOC+pCRCTiwYXB0I4c7V1WnnqRb74hufbQXDTz75seDGkq2UqGPhA96ZW3fdh6FAYkWBkAI2wPRIBNOUrAQ90z9Qyw9JqAfFmYVq8PjHzNyhyrs=
+	t=1790686781; cv=none; b=CILyapv6yr5xYuS5mvC1D6zRVhTB4OE94pcgW4C/DZ3HRPo7mTLytjFW8huu7C/cINBLtRZWYeVSCbBYGjR2Cv7zIi+xRVMv1e6SPkom6Lm2m7CWMLhJ4jWcaIq1mAcqZsmusoHu0jFZOSCJh4alfgMh5kHEtkchuRbR+o01yoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790686729; c=relaxed/simple;
-	bh=QsvX/9Uae7qLGQUIHlgGcdg1HE+YLgZ1QWvZCXAA3xA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTF+2fcyGTEg4tNOrELm3PHlT8koAB9j2Eh+NmyOAGCfj4HwSo1vkVvG+UcGVEa+nnjfsc/QX9d7Yk9KXkN+XJRfY52JnXRZce8sqnUHoYjHpnIWf+a0LoywEoa/Hk3r4SA5Rrrnezlo0q/3DlcScwxQLliMsB4vJEuyl4h9uoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=I4wtw50e; arc=none smtp.client-ip=74.125.227.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1790686781; c=relaxed/simple;
+	bh=uoNHIDxXmy04/NmkSnzkRIlCasd9BAyZ+rJgLus+txQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ol0ANX7cwyazYxZi0d2gz4meJvpcJhtfk+nI36kyGGkheJr0A0uCIKAYkG5XYLRvf9TmYOHOf7yo+r8toRAFmRmHNJOwYuhNSr99kKLut+PZ5juTz1eB+mp/xGAOsK/X+ymDoVfFfJYfWJSo5w18T8zG6O6nLlPocrExSTtZ+1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=zHXxClmc; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="I4wtw50e"
-Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0d31bda43so2377320a91.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:58:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790686726; x=1791291526; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pUh4O99671nsimpfC56hDaVgU0hoG+9KFPLpUAeDtPs=;
-        b=I4wtw50eAHN+y1rm28WnUAWP3BE2UX+AZ+O+xO5H+A7R2l1eK77+Sui+6Vzz70KMuu
-         Is9z3ClDCurWNzMUeS1Gcts4tWG1yAZsgAyZgLtORTueAxKQoFh4NoOU+wNFPPAaCg+e
-         A5uZXBu+r9GJunmHrl9EkWQFeodIh75KALGHTiWBXoSkZweKz5jpp6L+zpbarDFtd1Ys
-         8H4i9qjGiQnsyuLpMb6cyllvpdVKtZrfCEiUjtURLEdxK3iurb3EY3uNWBxd1xa66IUG
-         GrcX62IOWQJLgiQgJrVFyDEbT+I4voed3a0/rgrICUc7+8V8PM1cjITL9lmz5eNP+sdx
-         QVHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790686726; x=1791291526;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pUh4O99671nsimpfC56hDaVgU0hoG+9KFPLpUAeDtPs=;
-        b=zu0uH03P4WoR0U0Y1XaTcIM2qh8MZsEYnyFVHPaYPZ4+FKqP7gLuHuCuo8winUIwMj
-         uo7JpSLcDffqZF+Aysq9XchifHo9F9cRCgz36sQMIK52raduNHumsPLo5CIeycgm/zWS
-         gTunAEW8lV9++6vvEmne+ugw87Tk7Pbw3y6VGXsM4zMneR/hhnbLQG8uMiwBHti2joxi
-         R+yqBJ6Ah4EV74EK67BxaRRPwi+Q3FwQD1TqXszcFcZJTT+gY7j6n+Jp5eiM5Z7PPI6N
-         AbJVaI/miNIFT4mgMRvGGJ2UsOMaQUU83vunewQbEr8OxMc/xcqf9yHssfq8H8rhR3cp
-         8j8A==
-X-Forwarded-Encrypted: i=1; AKwUvBwaAJQldQg8j2j0QDPQv8JnHvHQj0gy84adQOcbobj9rkDEca2loo27I395LN91Oa3JfvaNH18=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLrWj76TF6tUbPYiybWwcTYjGkcPjyo7IKU+ErnNdnsl/BmqIhp
-	mXOy4zTEYZXGey5SFLMA5urpboaY9xTLODQN7iIi4CyBZDlF7jJfgv9oIZZGWn6RJWimInSRLx7
-	UooqOcoda
-X-Gm-Gg: AYBFou0Gx7LcxcTlJtmYyg5/KD0MBrXeYjQWmCiKkD0PSiBP2ylh6k+yRZbbReKzL/g
-	8cwFipK9XsooTTEkFKw0WV671Azr2xhKnkKDxj6b/V5bcX4Y0h3IpueyNX0j3FyoXqaPw0XPPN3
-	eZJthJRkYAao6L7NFwMnRx2iqeql5pMYYJrR0Lj9K24cM/QJKnEIgNBQgOKpWa9fBQxg5/qaMgp
-	Nk2e+w6QScV6Zm5nFDbBk+xw63OZ5Tc6ggb8sBH5MBsOvCTjwTUAwkJ20jNX3hu9i7yp3Vthe89
-	ROUf9uEpAclPqrset9nCT/xO6aNnKC6AdTrsjNC7b4xW9tDQPegGvOFIbGHp6WgISt4s11L4KmS
-	lb15zJpTy+hzM2kXhalNJVrQn0oMUhcf+zdsrmHuJERRwSpTLN1pOmjWe3+XChOb1s+RbXGwwzz
-	Ft6LbU6LbKfREm5RoB4TPOUNd1St6TMEiQYrrzv2tjYmUHcJyBBroRNm3w+R2AD3Furt1PxHfJG
-	C0hj9tLWyfiFHCA8KLpEXjBziKXJk2HV1Ps63LR
-X-Received: by 2002:a17:90a:ec8e:b0:3a0:345a:3620 with SMTP id 98e67ed59e1d1-3a098df852amr12874873a91.45.1790686725852;
-        Tue, 29 Sep 2026 05:58:45 -0700 (PDT)
-Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78794aa7fsm6180113a12.24.2026.09.29.05.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 05:58:45 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netfilter-devel@vger.kernel.org
-Cc: fw@strlen.de,
-	pablo@netfilter.org,
-	phil@nwl.cc,
-	netdev@vger.kernel.org,
-	zihanx@nebusec.ai,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH nf v5 1/1] netfilter: nf_dup: reject TEE and IPv4/IPv6/netdev nft dup in userns
-Date: Tue, 29 Sep 2026 12:58:32 +0000
-Message-ID: <20260929125832.25316-2-zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260929125832.25316-1-zihanx@nebusec.ai>
-References: <20260929125832.25316-1-zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="zHXxClmc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1790686779; x=1822222779;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uoNHIDxXmy04/NmkSnzkRIlCasd9BAyZ+rJgLus+txQ=;
+  b=zHXxClmcIu6XByJ+jl/5PndtDT9QbpS/7jJdSZOJLSUx/WtrbX1HGHtG
+   QsfNuKQt7ECC/PVsdEw/nv6yiAAw1gS4a3beolF//nlUTW4m/+7EZ5NBX
+   o6sWedSXgMtdkFAhVRPGsXsgoh6JOyCPoZry4Ofa91RsMh+WxvuRN1Ps+
+   58ohCi4eG2ZEOqiaGGOeHMUIGhFiPF/NayUZhOvylaYBdh4rPokRWC3lz
+   GbAH4S8ADTEc9CF7+oNmnGsZQejnA4PzUlFJgjvG6dwOk8Zc7wIQkhxio
+   lZGqo/CQV7XA3fP+Z+JarO0xzIF5b5iURlWMvYrMlsrEdwZ4Cy4Kb7bM6
+   w==;
+X-CSE-ConnectionGUID: EgqXQM4oSLq2EVB1srT/dQ==
+X-CSE-MsgGUID: 7fBzXk5CQBuAhXWc3idclw==
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="64611201"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 05:59:38 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Tue, 29 Sep 2026 05:59:38 -0700
+Received: from che-ll-i17164.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 29 Sep 2026 05:59:34 -0700
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<UNGLinuxDriver@microchip.com>, <Parthiban.Veerasooran@microchip.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Subject: [PATCH net-next v4 0/4] net: microchip_t1s: fix collision detection on PLCA status change
+Date: Tue, 29 Sep 2026 18:29:24 +0530
+Message-ID: <20260929125928.611784-1-parthiban.veerasooran@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,156 +60,117 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The packet-duplication frontends can permit repeated packet duplication and
-resource consumption when configured in a network namespace owned by a
-non-initial user namespace. Users with CAP_NET_ADMIN in that namespace can
-configure the affected rules.
 
-No use case for TEE or nft dup in such namespaces has been identified.
-Reject TEE and IPv4/IPv6/netdev nft dup rule or expression setup with
--EPERM there, without adding checks to packet-processing fast paths.
+In a 10BASE-T1S multidrop network, the PHY can autonomously change its PLCA
+state based on BEACON availability. The existing collision detection logic
+only synchronized CDEN on explicit PLCA configuration changes, leaving it
+stale across autonomous PLCA status transitions.
 
-This is a namespace policy restriction, not a general fix for asynchronous
-duplication behavior. Rules remain installable in init_user_ns-owned
-network namespaces, and their existing packet-processing behavior is
-unchanged.
+This series fixes that gap by tracking PLCA status changes through the PHY
+interrupt path, providing a polling fallback for PHYs without a routed
+interrupt, and improving collision detection and link-status handling for
+LAN867X Rev.D0.
 
-Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
-Fixes: 502061f81d3e ("netfilter: nf_tables: add packet duplication to the netdev family")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v5:
-  - describe the patch as a non-initial-userns setup restriction, not a
-    general recursion fix; state that init_user_ns behavior is unchanged
-  - remove path-specific trigger details and run-specific metrics from the
-    public commit and cover prose
-  - drop d877f07112f1 from Fixes: because it added a later frontend, not the
-    shared duplication behavior addressed by this restriction
-  - record the v5 build and setup-time validation, distinguishing them from
-    earlier unpatched-baseline and root-OOM runs
-  - v4 Link:
-    https://lore.kernel.org/all/cover.1790408011.git.zihanx@nebusec.ai/
-changes in v4:
-  - add Fixes tags for TEE, IPv4/IPv6 nft dup, and netdev nft dup
-    frontends
-  - clarify that fcd53c51d037 only added a synchronous guard
-  - clarify that this restricts non-initial user namespaces and does not
-    fix asynchronous recursion in init_user_ns-owned network namespaces
-  - state explicitly that the netdev loop was not runtime-reproduced
-  - v3 Link:
-    https://lore.kernel.org/all/cover.1790042930.git.zihanx@nebusec.ai/
-changes in v3:
-  - reroll the fix against the latest nf.git main after no follow-up on v2
-  - add the Co-developed-by trailer and matching Signed-off-by
-  - v2 Link:
-    https://lore.kernel.org/all/cover.1788425393.git.zihanx@nebusec.ai/
-changes in v2:
-  - drop the persistent struct sk_buff::nf_duplicated field and nf_copy()
-    change from v1
-  - disable IPv4/IPv6 duplication in non-initial user namespaces
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1787903722.git.zihanx@nebusec.ai/
----
- net/ipv4/netfilter/nft_dup_ipv4.c | 4 ++++
- net/ipv6/netfilter/nft_dup_ipv6.c | 4 ++++
- net/netfilter/nft_dup_netdev.c    | 4 ++++
- net/netfilter/xt_TEE.c            | 4 ++++
- 4 files changed, 16 insertions(+)
+The OA TC6 MAC-PHY SPI driver delivers the in-band PHY interrupt to phylib
+through a nested virtual IRQ. LAN865X enables this path for its internal
+PHY, which has no dedicated interrupt line. This allows the PHY driver to
+receive PLCA status change interrupts through the MAC-PHY SPI interface.
 
-diff --git a/net/ipv4/netfilter/nft_dup_ipv4.c b/net/ipv4/netfilter/nft_dup_ipv4.c
-index d53a65ddbd7b..db62e30456e4 100644
---- a/net/ipv4/netfilter/nft_dup_ipv4.c
-+++ b/net/ipv4/netfilter/nft_dup_ipv4.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/netlink.h>
-+#include <linux/user_namespace.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables.h>
-@@ -37,6 +38,9 @@ static int nft_dup_ipv4_init(const struct nft_ctx *ctx,
- 	struct nft_dup_ipv4 *priv = nft_expr_priv(expr);
- 	int err;
- 
-+	if (ctx->net->user_ns != &init_user_ns)
-+		return -EPERM;
-+
- 	if (tb[NFTA_DUP_SREG_ADDR] == NULL)
- 		return -EINVAL;
- 
-diff --git a/net/ipv6/netfilter/nft_dup_ipv6.c b/net/ipv6/netfilter/nft_dup_ipv6.c
-index 95ec27b3971c..6219ef57633e 100644
---- a/net/ipv6/netfilter/nft_dup_ipv6.c
-+++ b/net/ipv6/netfilter/nft_dup_ipv6.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/netlink.h>
-+#include <linux/user_namespace.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables.h>
-@@ -35,6 +36,9 @@ static int nft_dup_ipv6_init(const struct nft_ctx *ctx,
- 	struct nft_dup_ipv6 *priv = nft_expr_priv(expr);
- 	int err;
- 
-+	if (ctx->net->user_ns != &init_user_ns)
-+		return -EPERM;
-+
- 	if (tb[NFTA_DUP_SREG_ADDR] == NULL)
- 		return -EINVAL;
- 
-diff --git a/net/netfilter/nft_dup_netdev.c b/net/netfilter/nft_dup_netdev.c
-index 06866799e946..8d9dfd18475c 100644
---- a/net/netfilter/nft_dup_netdev.c
-+++ b/net/netfilter/nft_dup_netdev.c
-@@ -7,6 +7,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/netlink.h>
-+#include <linux/user_namespace.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables.h>
-@@ -37,6 +38,9 @@ static int nft_dup_netdev_init(const struct nft_ctx *ctx,
- {
- 	struct nft_dup_netdev *priv = nft_expr_priv(expr);
- 
-+	if (ctx->net->user_ns != &init_user_ns)
-+		return -EPERM;
-+
- 	if (tb[NFTA_DUP_SREG_DEV] == NULL)
- 		return -EINVAL;
- 
-diff --git a/net/netfilter/xt_TEE.c b/net/netfilter/xt_TEE.c
-index 5d34ceb893ed..51c643987526 100644
---- a/net/netfilter/xt_TEE.c
-+++ b/net/netfilter/xt_TEE.c
-@@ -10,6 +10,7 @@
- #include <linux/module.h>
- #include <linux/skbuff.h>
- #include <linux/route.h>
-+#include <linux/user_namespace.h>
- #include <linux/netfilter/x_tables.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-@@ -95,6 +96,9 @@ static int tee_tg_check(const struct xt_tgchk_param *par)
- 	struct xt_tee_tginfo *info = par->targinfo;
- 	struct xt_tee_priv *priv;
- 
-+	if (par->net->user_ns != &init_user_ns)
-+		return -EPERM;
-+
- 	/* 0.0.0.0 and :: not allowed */
- 	if (memcmp(&info->gw, &tee_zero_address,
- 		   sizeof(tee_zero_address)) == 0)
+For LAN86XX PHYs, collision detection state is synchronized across explicit
+PLCA configuration changes, PHY interrupt handling, and the polling status
+path. A per-PHY mutex serializes collision-detection control updates
+between PHY configuration and interrupt handling.
+
+LAN867X Rev.D0 uses its hardware CCMFC mechanism to autonomously gate
+collision forwarding based on live PLCA_Status, avoiding the software CDEN
+toggling used on older revisions. Its link-status handling also accounts
+for the optional PRSCTL1 CSMA/CD fallback, selecting the semaphore source
+when the PHY can autonomously fall back to CSMA/CD.
+
+Changes in v4:
+Addresses Sashiko AI review feedback on v3.
+- Add a polling fallback to synchronize CDEN from the live PLCA status for
+  PHYs without a routed PHY interrupt.
+- Serialize accesses to the collision-detection control register across
+  PLCA configuration, interrupt configuration, interrupt handling, and
+  status polling to avoid races.
+- Preserve the tri-state semantics of plca_cfg->enabled, so an ethtool
+  request with the attribute set to -1 does not unintentionally modify CDEN
+  or Rev.D0 link-status configuration.
+- Fix the OA TC6 virtual IRQ masking path so disabling the nested PHY IRQ
+  also masks the in-band PHY interrupt source, and retain deferred dispatch
+  to phylib.
+- Enable the OA TC6 virtual PHY interrupt for LAN865X and clarify that this
+  completes the collision-detection fix for LAN865X. Add the corresponding
+  Fixes tag.
+- Update LAN867X Rev.D0 interrupt handling to use the cached PLCA enable
+  state and current CSMA/CD fallback configuration instead of re-reading
+  the complete PLCA configuration on every PLCA status change.
+- Preserve cable-test polling when the Rev.D0 PHY interrupt path is
+  enabled.
+- Clarify the Rev.D0 CDEN/CCMFC behavior and document that CDEN remains
+  enabled by default while CCMFC autonomously gates collision forwarding
+  from PLCA_Status.
+- Correct commit-message and register-comment details identified during
+  review.
+
+The LAN865X fix depends on the OA TC6 virtual IRQ support, so the series
+should be applied together.
+
+Changes in v3:
+Addresses Sashiko AI review feedback on v2.
+- Patch 1: Synchronize CDEN with live PLCA status before unmasking
+  PSTCM, closing a window where a status change could be silently
+  dropped. Use phy_interrupt_is_valid() instead of testing PHY_POLL
+  alone. Treat plca_cfg->enabled as tri-state so an ethtool call that
+  omits the enable attribute no longer disables collision detection.
+  Factor shared STS1/IMSK1 sequences into helpers reused by patch 4.
+- Patch 2: Replace dummy_irq_chip with a proper irq_chip implementing
+  mask/unmask via bus_lock/bus_sync_unlock, closing an interrupt-storm
+  risk. Select IRQ_DOMAIN in Kconfig. Defer PHY interrupt dispatch to a
+  workqueue so the chunk-processing thread stays independent of
+  phydev->lock.
+- Patch 3: Add Fixes: 78341049fbcd, since this patch is required for
+  the fix to take effect on LAN865X. Document that CDEN correctness
+  relies on the hardware reset default.
+- Patch 4: Give Rev.D0 its own config_intr() instead of branching
+  inside the shared one, so CCMFC-owned CDEN can never be touched by
+  the shared resync. Skip link-status updates when enabled == -1.
+  Correct the AN1760 -> AN1699 reference. Resync Rev.D0 link status on
+  interrupt (re-)enable, closing the same dropped-edge window as patch
+  1. Account for Rev.D0's autonomous PLCA-to-CSMA/CD fallback
+  (PRSCTL1): force semaphore mode when that fallback is enabled, since
+  PLCA_Status is meaningless once the PHY has already fallen back.
+
+Changes in v2:
+- Patch 2: Introduce OA_TC6_PHY_INT quirk flag to guard the virtual IRQ
+  infrastructure; PHYINT is optional per the OA TC6 standard. Move
+  oa_tc6_phy_irq_setup()/oa_tc6_phy_irq_teardown() into
+  oa_tc6_mdiobus_register()/oa_tc6_mdiobus_unregister(). Populate all
+  mii_bus->irq[] entries with the virtual IRQ before mdiobus_register()
+  so phy_device_create() picks it up regardless of the PHY's MDIO
+  address, keeping mii_bus->irq[] and phydev->irq consistent.
+- Patch 3 (new): Pass OA_TC6_PHY_INT quirk flag from the LAN865X driver
+  to enable the virtual IRQ infrastructure for LAN865X.
+
+
+Parthiban Veerasooran (4):
+  net: phy: microchip_t1s: fix collision detection on PLCA status change
+  net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+  microchip: lan865x: enable PHY interrupt via virtual IRQ
+  net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
+
+ drivers/net/ethernet/Kconfig                  |   1 +
+ .../net/ethernet/microchip/lan865x/lan865x.c  |   4 +-
+ drivers/net/ethernet/oa_tc6.c                 | 227 +++++++++++
+ drivers/net/phy/microchip_t1s.c               | 365 +++++++++++++++++-
+ include/linux/oa_tc6.h                        |   3 +
+ 5 files changed, 587 insertions(+), 13 deletions(-)
+
+
+base-commit: c66d93e68728cfb5f40b40d0f24129d7768faf43
 -- 
 2.43.0
 
