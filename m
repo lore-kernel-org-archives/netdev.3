@@ -1,142 +1,102 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60242BEC34;
-	Tue, 29 Sep 2026 03:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E38308F39
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 04:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790654210; cv=none; b=f0QLzsd7BiNydFcBgRer8g3gfMnUlrkIm/8FZLPekk7weZSMVSvwVSFrnJ3G1oRfdK3a1WU9CY1Xwgd/r6EgPImVeRWzx20c92wjyWpzm9eITJCXTpXAnYjmxPpSB+68Fj7NgWu+vyaZ6Z17hRilEW02nEcuH1laVLF/Ep7xq1M=
+	t=1790654497; cv=none; b=iVvDmpQ/vLNxw7eT6Nss9kDSmSnpVCXBvF8oKD9N9VdHhERXBjIa2IJt7HTpDtmSUrZTPRprUNFLeF8FbGzWPRDrxtzS0yELwZDOh0m3tsEewL5xN7nnMFvSbIUkYRd38wPOB7YA3Mp6Yz6otFnWWGY7peB2JAOc2Cil0baDsgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790654210; c=relaxed/simple;
-	bh=fGHFf/O/P1z8nGwRq2XqL2rEpCvjM3ClXWDapFSfBwE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=u6Jj105K5+tB5ji4DFQRaYaP4LFrHXKAfbTwrFNW/ufiHZgZ8mPeQWVj7HNHjMxPb7wc71rYGb8aF+KNjKmDx1oz3VG3LsOexZ6ongM+s5tqyi+7QgbyPFfvzRaBKtv8fTrwuWUxgZnYykcNjKypKlCxVH9bDEcjYEj2DW2MJuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=PM7cTrg3; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790654497; c=relaxed/simple;
+	bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qeRrH2PC+qYBwd+9C2n+V6V17dUDqaD5wgciUh2TWtdxb/uuoXiwF+GrHrPYwRLPxyqNUFC2ERGXUZIu/05RD2JLS3LKerAuGsBLaFiwSW0fsPH26Mt+pa92hKuaGSaFFS08qjhvppFKv4fm4SbO6TmsiQ500svBdHmqItPCA2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=stDY82kg; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="PM7cTrg3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=fGHFf/O/P1z8nGwRq2XqL2rEpCvjM3ClXWDapFSfBwE=; b=P
-	M7cTrg3OLAGg9vkORwbXk9d6pGh8v8AbzJM9blwZh+NCIwFfZLc+n0dEh65MKXrk
-	S+WXietCSq/z2KnpCA1PqIeJCEeYQxaowuLHaQs23lLJbcL9YGfdG1Df3F88B50s
-	ANHi0K9Akdyf7psSXSzdwzXRdaIpor4F73ieXbmAQw=
-Date: Tue, 29 Sep 2026 11:56:04 +0800 (CST)
-From: taozj888  <taozj888@163.com>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: maintainer@kernel.org, linux-kernel@vger.kernel.org,
-	conor.dooley@microchip.com, andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Subject: Re:Re: [PATCH] net: macb: rate limit netdev error info print in the
- data path
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <DLNFAUX8MFA1.3UMOGNLDKDRJM@bootlin.com>
-References: <20260920100920.65773-1-taozj888@163.com>
- <DLNFAUX8MFA1.3UMOGNLDKDRJM@bootlin.com>
-X-NTES-SC: AL_Qu2SAvqeu0kt4iiYbOkfk0cUj+c7WcCwvPkm3YRec/wEiQ3R1QIGQV5uBEvv3OKvLwuutRiuST1q6f9kcaRHBC5yWTDn+9OYYyl1Z6wuhQ==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="stDY82kg"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144d60be6b0so2173830c88.0
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 21:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790654494; x=1791259294; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
+        b=stDY82kg9AlRKNsHJu9kz7uQrUhxvip5RTy3FyrE8Q8omaHpgbG/rPc6DDZQ4NWDtO
+         S06biiYbptd5DGE6lODTog+Ijv49xMFsnbwcou2Ftokjas8m4iW5wnx5voYvFQO3WPy5
+         5DFz34HhLvcog+kK6KB0lQZbA+zX5ehUixb+7NblWElHpHkWxyVze5UOQHRMq6wVXKMD
+         /+5MMuoJa8jxMa0UbrpOtTWc/CfPP3dIcyDfkbYmO48V6+gs4WL23julafhnH0mp3U0u
+         X8WkeJbFaIAG8kD0oBTJhPy13wU1B2opvHF1E4sQLYYMkl/qLbLKIvrp/bXIZDraAoam
+         25Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790654494; x=1791259294;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pa3YvauWFf1bhC+tatqe82CzP8lq+sELn0oMPCrA5+U=;
+        b=sqPoMdrUStl0DnV0EZnhd3kca0CXPJkeYWOuH6cFsh3HUu/ocuJ5E2O1JedxNbgfI3
+         tjJ/klroc59GaT2J388x3sffXJwQ+ZX8RX2bi4oYSuUilPC/op8kAeR+Rm8gsBDD/2P0
+         zLR/LZXmXjx8SqrVpts+CCkiw5sojtJ02qukkMKFFSO3Nit518M7L2cw30AVT5TqkMZr
+         FMJ6nN86nbD35mDRaiUVISXx51YhaGX7TMmO9nS830zlOUbn1xjmRXgiLG+g3b6gdCXX
+         rD4h78DoSLINt1y8gH68nAOQW1zclK6TjKfa8IkYzTO/c8OWWFAN5ehP//3Lnc9DAGYb
+         V73Q==
+X-Gm-Message-State: AFq9FYJ9NP/xsSjc00PEP3NlKu5TwMHfDGh98rnDU1jMp3+7StVc1q4q
+	0L9LH2nhFvHnaCUjBWOA5/1LFey8NJ9x8SC+X43byMCeJfeoVXjAbQAM0iHGUvdNEdvQ6fMxnwv
+	u+omJh7B+ThlJfwVokx162cbd8FMbiH7dy0TXb32I2aHvcGUjqA3vH5wfpGqEFeHRsBQCf2pO
+X-Gm-Gg: AYBFou0POCpB9hMTSt3YHE3RXmIZqA/BUOciubxfJ5hacW8H7HDVquxJpuoeGFWpir/
+	8QivEN4d2XSsaIfPNDJkkiMTBfEeupBleyGAAnqNZmLIRKIt2C7i2wo6e1WqYUsaIZK300upXP7
+	340MPlewEB8iTNb3dwCU2bx5CkYN5Zghg3JmbBtDB7KmHCTYYgMkeXk8h3tqgHU0sSfKTY9frr0
+	HrqcNpRC+vqKtcKZGn2MUSCbYJCSQZ0XUlBX5weDTgIVrlhOs8FaoxXZmLN1aqo7wDIvftRRQPC
+	tBLtbc0IdfwnIJdaN0vbBbWAUOLvsqy8wwzjYOhByTC0pjbxkLC0fa2J6WiSNiw7mIlTOsmyxB3
+	lqfXLg7mOM8rBtio8/AuW99KjxmjQHgsiO+tz4qo+c1ZOjN/9pC4GlFnw4e91an0gOkftL+WwBn
+	g43dKeHfFezpmQ+Z+Xsf8ToTuaVJG5Cdcvfe2xz/bKE/42US0l+Z43Uc2EyK8mqxyJKw1ipSkOy
+	BBaIyjNehk=
+X-Received: by 2002:a05:701b:418f:20b0:143:2719:566e with SMTP id a92af1059eb24-146d077cfe5mr12164739c88.42.1790654493420;
+        Mon, 28 Sep 2026 21:01:33 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145adbcd1bcsm37866313c88.14.2026.09.28.21.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 21:01:32 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Wang Zhan <wang.zhan@smartx.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: Re: [PATCH net-next v3 1/5] net: core: use the packet's L3 protocol for the GSO size limit
+Date: Tue, 29 Sep 2026 12:01:22 +0800
+Message-ID: <20260929040122.1968641-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <willemdebruijn.kernel.2f18198a6e1e0@gmail.com>
+References: <20260928044102.1004310-1-wang.zhan@smartx.com> <20260928044102.1004310-2-wang.zhan@smartx.com> <willemdebruijn.kernel.2f18198a6e1e0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <45a98260.3bff.1a0eb4e2f51.Coremail.taozj888@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:dCgvCgD3dz3VNrtqGjRQAA--.53634W
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+RRMFGq7NtR5ngAA3h
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CgoKCgoKCgoKCkhpIFRoZW86wqAKClRoYW5rIHlvdSB2ZXJ5IG11Y2ggZm9yIHlvdXIga2luZGx5
-IHJlcGx5LgoKRm9yIGFsbCB5b3VyIGNvbmNlcm5zIGluIHRoaXMgbWFpbCB0aHJlYWQgYW5kIFsw
-XVsxXSwgSSB0cnkgdG8gZ2l2ZSBteSBhbnN3ZXJzIGhlcmUKYW5kIGhvcGUgaXQgZG9lcyBub3Qg
-bWlzcyBhbnl0aGluZzoKCgoxLiBZZXMsIEkgbWlzc2VkIHRoZSBwcmVmaXggW1BBVENIIG5ldF0s
-IEkgd2lsbCBhZGQgaXQgaW4gbXkgbmV4dCBjb21taXQ7IEkgd291bGQgbGlrZSB0byBzZW5kIGl0
-IGFnYWluIGFzIHRoZSAxc3QgdmVyc2lvbgpzaW5jZSBJIG1pc3NlZCB0aGlzIG5lZWRlZCBwYXJ0
-IFtQQVRDSCBuZXRdOwoKCjIuIEZvciB0aGUgVG8vQ2MgbGlzdCwgSSB3aWxsIHVzZSBgZ2l0IHNl
-bmQtZW1haWwgLS1jYy1jbWQ9c2NyaXB0cy9nZXRfbWFpbnRhaW5lci5wbGAgYXMgeW91IGluZGlj
-YXRlZDsKCgozLsKgVGhpcyB3aG9sZSBwYXRjaCBpcyAgTk9UIExMTSBnZW5lcmF0ZWQsIGl0J3Mg
-cmVhbGx5IGEgYnVnIGhpdCBpbiBwcmFjdGljZSwgdGhlICJQSFlUMDAzNjowMCIgCmRldmljZSBu
-YW1lIGlzIHRoZSByZWFsIG5hbWUgdGhhdCBzaG93ZWQgaW4gb3VyIGNvbnNvbGUgb3V0cHV0LCBJ
-IGNhbid0IGp1c3QgaW1hZ2luZSBvciBtYWRlIHRoaXMgbmFtZSBhbmQgaXQncyByZWFsbHkgb2Yg
-b3V0IG9mIG15IGltYWdpbmF0aW9uLgogSSB0aGluayBpdCBtYXkgYmUgcmVsYXRlZCB0byBhIHZl
-bmRvciB3aXRoIHNvbWUgb2YgdGhlIFBDSSBhZGRyIGJ1dCBJIHRoaW5rIGl0IG1heSBub3QgYmUg
-cG9saXRlIHRvIHNheSBpdCBkaXJlY3RseS4gCkFjdHVhbGx5IGhhbGx1Y2luYXRpbmcgYSBrZXJu
-ZWwgbG9nIGV2ZW4gYSBrZXJuZWwgcGF0Y2ggaXMgb3V0IG9mIG15IGtub3dsZWRnZSwgaWYgeW91
-IGtub3cgdG8gaG93IGFuZCAKd2lzaCB0byB0ZWxsIG1lLCBJIHRoaW5rIGl0IHNob3VsZCBiZSBy
-ZWFsbHkgaW50ZXJlc3RpbmchCgoKNC4gV2h5IGl0IGJvdGhlcmVkIHRoZSBib290aW5nIHByb2Nl
-c3M/IApJbiB0aGUgYm9vdGluZyBwcm9jZXNzLCB0aGUgTUFDQiBkcml2ZXIgcmVjZWl2ZWQgYSBs
-YXJnZSBudW1iZXIgb2YganVtYm8gcGt0cyB0aGF0IHRoZSBkcml2ZXIgY2FuJ3Qgc2VlIAp0aGUg
-UlhfRU9GICBmbGFnIGluIHRoZSBjdHJsIHNpbmNlIHRoZSBsZW5ndGggb2YgdGhlIHBrdCBpcyBs
-YXJnZXIgdGhhbiB0aGUgY3VycmVudCBNVFUuIFRob3NlIGp1bWJvIHBhY2tldHMgYXJlIApzZW50
-IGJ5IG90aGVyIG5ldHdvcmsgY2FyZHMgaW4gb3VyIG1hY2hpbmUgYm94IGFuZCB0aGV5IGFyZSBs
-ZWdhbCBhbmQgdXNlZCB0byBjb2xsZWN0IGluZm9ybWF0aW9uIGZvciBhbGwgb3RoZXIgY2FyZHMv
-YmxhZGVzIFNvIG5ldGRldl9lcnIoKSAKcHJpbnRzIGEgbG90IG9mIGVycm9yIGluZm9ybWF0aW9u
-IGluIHRoZSBjb25zb2xlIGFuZCBvY2N1cGllZCB0aGUgZnVsbCBiYW5kd2lkdGggb2YgY29uc29s
-ZSwgYnV0IG90aGVyIGJvb3RpbmcgcHJvY2Vzc2VzCmFsc28gd2FudCB0byBzaG93IHNvbWUgaW5m
-b3JtYXRpb24gaW4gdGhlIGNvbnNvbGUsIGFuZCB0aGV5IGhhdmUgdG8gd2FpdCB1dGlsIHRoZSB3
-aG9sZSBlcnJvciBwcmludCBvZiAibm90IHdob2xlIGZyYW1lIHBvaW50ZWQgYnkgZGVzY3JpcHRv
-ciIKZmluaXNoZWQsIHNvIHRoZSBzeXN0ZW0gaXMgZGVsYXllZCB0byBiZSByZWFkeSB0byB0aGUg
-dXNlci4KCjUuIEZvciB0aGUgc2V2ZXJpdHkgdGFnIGFuZCBzaG91bGQgdGhpcyBjYXJyeSBhIEZp
-eGVzIHRhZyBhbmQgbmFtZSB0aGUgaW50ZW5kZWQgdHJlZSwgIHBsZWFzZSBnaXZlIG91dCBhIGNs
-ZWFyIGluZGljYXRpb24gZnJvbSB5b3VyIGV4cGVyaWVuY2VzIGZvciB3aGF0IEkgZGVzY3JpYmVk
-IGFib3ZlLiBJIHJlYWxseSBoYXZlIG5vdCB0b28gbXVjaCBrbm93bGVkZ2UgYWJvdXQgdGhhdC4K
-ClRoYW5rcywKClppamluIFRhbwoKCkF0IDIwMjYtMDktMjQgMTc6MDI6MDMsICJUaMOpbyBMZWJy
-dW4iIDx0aGVvLmxlYnJ1bkBib290bGluLmNvbT4gd3JvdGU6Cj5IZWxsbyBaaWppbiwKPgo+WW91
-IG1pc3NlZCBwYXJ0IG9mIG15IHJlY2VudCBmZWVkYmFjayBbMF1bMV0uIENvcHkgcGFzdGU6Cj4K
-PiAtIEFsc28geW91IGFyZSBtaXNzaW5nIHRoZSBwcmVmaXggW1BBVENIIG5ldF0gb3IgW1BBVENI
-IG5ldC1uZXh0XS4KPiAgIFJlYWQgdXAgYWJvdXQgdGhpcyBoZXJlIChhbmQgcmVhZCB0aGUgZnVs
-bCBwYWdlKToKPiAgIGh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nl
-c3MvbWFpbnRhaW5lci1uZXRkZXYuaHRtbAo+Cj4gLSBBbHNvIHlvdXIgVG8vQ2MgbGlzdCBpcyB3
-ZWlyZCwgbWFrZSBzdXJlIHRvIHVzZQo+ICAgc2NyaXB0cy9nZXRfbWFpbnRhaW5lci5wbCAob3Ig
-dXNlIGI0IGZvciBwYXRjaAo+ICAgbWFuYWdlbWVudCB3aGljaCB1c2VzIGl0IGF1dG9tYXRpY2Fs
-bHkpLgo+Cj5JbiBhZGRpdGlvbiwgbWFrZSBzdXJlIHRvIHJlYWQgdGhlICJzdWJtaXR0aW5nIHBh
-dGNoZXMiIGd1aWRlIFsyXS4KPllvdSBtaXNzZWQ6Cj4gLSByZXBseWluZyB0byBhbGwgcmV2aWV3
-IHBvaW50cyBvbmUgYnkgb25lIHVzaW5nIGludGVybGVhdmVkIFs0XQo+IC0gVjIgaW4gc3ViamVj
-dCBbM10KPiAtIHdyaXRlIHVwIGEgY2hhbmdlbG9nIFs0XQo+Cj5BbHNvIHRoaXMgb25lIGlzIGxl
-c3Mgd2VsbCBrbm93biwgYnV0IHRoZSBuZXQgc3Vic3lzdGVtIChhbmQgbWFueSBvdGhlcnMKPm5v
-d2FkYXlzKSBleHBlY3QgcGVvcGxlIHRvIHJlcGx5IHRvIFNhc2hpa28gcmV2aWV3IGVtYWlscyB0
-byBzYXkKPndoZXRoZXIgdGhleSBhZ3JlZSBvciBkaXNhZ3JlZS4gRXNwZWNpYWxseSBpZiB0aGV5
-IGRpc2FncmVlLiBZb3UgY2FuCj5tb3N0bHkgc2tpcCBvdmVyIHRoZSBwcmUtZXhpc3RpbmcgaXNz
-dWVzIHdoaWNoIGRvbid0IHJlbGF0ZSB0byB5b3VyCj5zZXJpZXMuCj4KPkZvciBleGFtcGxlIFNh
-c2hpa28gc2F5cyB5b3UgZG9uJ3QgY292ZXIgc29tZSBsb2cgbmV0ZGV2X2VycigpIGNhbGxzLgo+
-WW91IGNhbiByZXBseSBleHBsYWluaW5nIHdoeSBvbmx5IHRoZSBvbmVzIHlvdSB0b3VjaGVkIGFy
-ZSBpbXBvcnRhbnQgdG8KPmRlYWwgd2l0aC4KPgo+LS0KPgo+QW5kIEkgc2VlIGp1c3Qgbm93IEkg
-aGF2ZSBpbiBteSBpbmJveCBhbiBlbWFpbCBmcm9tIHlvdSBhc2tpbmcgaG93IHRvIGRvCj5pdCBw
-cm9wZXJseS4gR29vZCEgQnV0IGl0IGRvZXNuJ3Qgc2hvdyB1cCBvbiBsb3JlLCBJJ20gbm90IHN1
-cmUgd2h5Lgo+Cj5SZXBseWluZyB0byBpdCBoZXJlOgo+Cj4gLSBEb24ndCBzZW5kIHRoZSBzYW1l
-IHBhdGNoIGJ1dCBzbGlnaHRseSBtb2RpZmllZC4gTWFpbnRhaW5lcnMgbmVlZCB0bwo+ICAga25v
-dyB0aGUgbGF0ZXN0IHZlcnNpb24uIE5ldyB2ZXJzaW9uIG1lYW5zIFYyL1YzL2V0YywgZXZlbiBp
-Zgo+ICAgY2hhbmdlcyBhcmUgdGlueSAobGlrZSBhIHR5cG8gZml4IGluIGNvbW1pdCBtZXNzYWdl
-KS4KPgo+IC0gRG9uJ3QgcHV0IFYxIGZvciB0aGUgZmlyc3QgcmV2aXNpb24uIEkgdGhpbmsgdGhh
-dCdzIGdpdC1mb3JtYXQtcGF0Y2gKPiAgIGRlZmF1bHQgYmVoYXZpb3IuCj4KPiAtIFVzaW5nIGdp
-dC1mb3JtYXQtcGF0Y2ggbG9va3Mgc29tZXRoaW5nIGxpa2U6Cj4KPiAgIOKfqSBnaXQgZm9ybWF0
-LXBhdGNoIC0xIDk5OGIxNTlmZGQ3OCAtLXN1YmplY3QtcHJlZml4PSJQQVRDSCBuZXQiIC12Mgo+
-ICAgdjItMDAwMS1uZXQtbWFjYi10YWtlLWJwLWxvY2stYXJvdW5kLU5DUi1yZWFkLW1vZGlmeS13
-cml0LnBhdGNoCj4KPiAgIOKfqSBncmVwIF5TdWJqZWN0IHYyLTAwMDEtbmV0LW1hY2ItdGFrZS1i
-cC1sb2NrLWFyb3VuZC1OQ1ItcmVhZC1tb2RpZnktd3JpdC5wYXRjaAo+ICAgU3ViamVjdDogW1BB
-VENIIG5ldCB2Ml0gbmV0OiBtYWNiOiB0YWtlIGJwLT5sb2NrIGFyb3VuZCBOQ1IgcmVhZC1tb2Rp
-Znktd3JpdGVzCj4KPiAgIOKfqSBzY3JpcHRzL2dldF9tYWludGFpbmVyLnBsIHYyLTAwMDEtKi5w
-YXRjaAo+ICAgIlRow6lvIExlYnJ1biIgPHRoZW8ubGVicnVuQGJvb3RsaW4uY29tPiAobWFpbnRh
-aW5lcjpBVE1FTCBNQUNCIEVUSEVSTkVUIERSSVZFUikKPiAgIENvbm9yIERvb2xleSA8Y29ub3Iu
-ZG9vbGV5QG1pY3JvY2hpcC5jb20+IChyZXZpZXdlcjpBVE1FTCBNQUNCIEVUSEVSTkVUIERSSVZF
-UikKPiAgIEFuZHJldyBMdW5uIDxhbmRyZXcrbmV0ZGV2QGx1bm4uY2g+IChtYWludGFpbmVyOk5F
-VFdPUktJTkcgRFJJVkVSUykKPiAgIC4uLgo+Cj4gICBJIHRoaW5rIG1vc3QgcGVvcGxlIGNhbGwg
-c2NyaXB0cy9nZXRfbWFpbnRhaW5lci5wbCBhbmQgd3JpdGUgdGhlCj4gICBnaXQgc2VuZC1lbWFp
-bCAtLXRvLy0tY2MgZmxhZ3MgYnkgaGFuZC4gSSd2ZSBiZWVuIHVzaW5nIGI0IGZvciBhIGZldwo+
-ICAgeWVhcnMgbm93IHNvIEkgZG9uJ3QgcmVhbGx5IGtub3cgdGhlIHVzdWFsIGdpdCBmb3JtYXQt
-cGF0Y2ggd29ya2Zsb3cuCj4KPiAgIE9yIHlvdSBjYW4gdXNlIGBnaXQgc2VuZC1lbWFpbCAtLWNj
-LWNtZD1zY3JpcHRzL2dldF9tYWludGFpbmVyLnBsYC4KPgo+WzBdOiBodHRwczovL2xvcmUua2Vy
-bmVsLm9yZy9hbGwvRExLVkNPWFROR1ZaLjNDQzZLRlhESUZKM1hAYm9vdGxpbi5jb20vCj5bMV06
-IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC9ETEtWRVhTN1gxNE4uWExMTUJERFg2WkpXQGJv
-b3RsaW4uY29tLwo+WzJdOiBodHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9w
-cm9jZXNzL3N1Ym1pdHRpbmctcGF0Y2hlcy5odG1sCj5bM106IGh0dHBzOi8vd3d3Lmtlcm5lbC5v
-cmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3Mvc3VibWl0dGluZy1wYXRjaGVzLmh0bWwjc3ViamVj
-dC1saW5lCj5bNF06IGh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nl
-c3Mvc3VibWl0dGluZy1wYXRjaGVzLmh0bWwjcmVzcG9uZC10by1yZXZpZXctY29tbWVudHMKPgo+
-VGhhbmtzLAo+Cj4tLQo+VGjDqW8gTGVicnVuLCBCb290bGluCj5FbWJlZGRlZCBMaW51eCBhbmQg
-S2VybmVsIGVuZ2luZWVyaW5nCj5odHRwczovL2Jvb3RsaW4uY29tCg==
+On Mon, 28 Sep 2026 19:36:01 -0400 Willem de Bruijn wrote:
+> If netif_get_gso_max_size needs to inspect the result from
+> vlan_get_protocol, call it inside that function directly? More robust
+> and a one line change.
+
+Or we can move it to dev.c, only one caller in-tree (before this series).
