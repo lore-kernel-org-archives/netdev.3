@@ -1,165 +1,112 @@
-Received: from mail-yx1-f99.google.com (mail-yx1-f99.google.com [74.125.224.99])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78EF38C2D1
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDE93D1CCA
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790722067; cv=none; b=cGP49TPhaqgx15+OrLSXqcro0/4269Mn3Elv10k9is0P0UTuymDDwhDB4w6r5PhjLFJvj1aaS1Jsv1hyJesAaQdl++kLuHe8x/11NmRMvUWxPKb3WSoTXPfkrt9CGBRVICkWT28EXr6nhQqizD77MQtXKewkEDbHgfkpRrO0IPQ=
+	t=1790722785; cv=none; b=fRZjuYM3UOGA9XVvbWgHa3mTdUIjdJW1EFBYLrbB87KjsN+Y4N+TACK7DMMRksClfBS8D1oQj7pLU5+p85UUFxVKsLZ9BL6vLMPnrtzTBP5Q6J1ewq51EFRSyvw3ahbR/dLLqISYdMal07xzsXdAJ5BygTdUf9BSzUQAt519M8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790722067; c=relaxed/simple;
-	bh=qE/l+zbniP1TDPX5DRyNmNMxempA3seMAdhTQPSaFIY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M2zqHeC9tNNpiu6HUwTz6q312isAD7gyEIM61OXY8vrvxmTM2TkUZvmJsEW/TOoRV7yM/CUJL6bvPupv39PzZo9DCZBrLGJRJleUZdJ/6gb5ahQwRGP2j9ZVmqMD9YKZqvxeokIEpicQErxmVKE8bKrOslgJBCp0Rcwt1sd87zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=IH6HQMZA; arc=none smtp.client-ip=74.125.224.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1790722785; c=relaxed/simple;
+	bh=yciXXgFMGDVOMZPQ+5IrugMojC+KS2xZdRYXVl6T17Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pBRFAljFq2E3BSwkvrwnAuGAJ7PSPcs5Q0GLDZ/Rgch+RUy79nHx1Rn7jfaspd0fkxB+APdLMdFymBO11U+w/KIc8mnrR3fdNeqvFlEiJTrloZxXdND9noqkijUijiCVXhp6KX9tp+lIZYWPCLofSuxG5/NnzVYqVooIdCE3/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcTI2Fci; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="IH6HQMZA"
-Received: by mail-yx1-f99.google.com with SMTP id 956f58d0204a3-672b164bdaeso697183d50.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:47:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790722065; x=1791326865;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=zIW+w8L028Ly1vJGzzdfTedRZ4XSuxvHLfykjxpeaoc=;
-        b=BL/dcNz89sR3gEdIuGXHwyljl0cSby7UAvQqFQEXuQb+6MiluafyDxFf3fX3R+0sNc
-         ijPGKQCOt+lt0SePtWtimahc46X7jhaMjo4vf4AsNnrU7tIcNKeYhRh/918ggs0zG7zx
-         7Fr6xdrUmBPMWfzNZ8Jczt4sPzjiJveKAzmyiM+A3dwMcsk+mjq3q5fS5yOuO2veddCr
-         cIDhYz+Er0acgQFJGs4IDOLIT3MVOGKW1VZGQciv06KbzMhamvrXHC6CQ+9/a7Xtjnsw
-         eAD3Km4ze/hR15qCeHEuNMir5lgjatqai6BexcozIHn6dMBpdz8jyiQoLofJ989fwZ60
-         97qA==
-X-Gm-Message-State: AFq9FYKohcSWrgz+sUANSn6iI0vao38/R2GPUwUry0KTCYIUDGfoA8FS
-	AltnOVtNkj2O5ruC9wpG/epHUWYsO4rJXj48o5MM6kGnryUk9mCuZtFWDfq0S8qbgB0FBZQzeDD
-	2Ox7f1rgUuNpS3FLQbqYpPBs+h3KMSYnpDmTrkdGuX2uonjYxPh/m6HQ/gwx+rasj9RRZ3i/Ej+
-	h/xwvt7EDvhbJr/8FiXtfZYFz+Sq4iNsICZsoEZrr9g96e7tcwwgJvtW1V5Hm2WRhTLOkgvCatt
-	ab1Rj1RIQ==
-X-Gm-Gg: AYBFou3d2+fYj3OMnziC7qzbdxylph//hso/kL4cM2zGast3+VAe+XYV79lII4O7yH2
-	/LZNYO5SeYeJZMetRPdaDl4AloH4LYBsEaY7i3bs4mPLQyeyMf8V2wwSZlqCPhNlbCONSI+QcRK
-	E8IMrNhcCuVn2lslxU8N0U9nHnKCeqhrd8yz0lOcAOfbcsM8N+ZNtza+3/7pxZMiMzQ5cXaLN9y
-	YhnF8eMlvYxbgYZLyYl89tzmnD7NVjKTCFWTAkgXkJAtJ/WKwZOanZDlHOdbdgwvGvOgdX5OlxL
-	KGVHXqBKnsWHDVtJkZO9bjmoOln0XRNSKnlTbP4YES5EOhe2PjWoZxTwa0BkMdAI2hKy3Qn/fCC
-	YOOPhX2BDD/CIUzkpSJshqohaUG58vvtoLHFldjvYIalS3T/sG4P50DdcqcRrOH5M2G722xrYwQ
-	d98glB4qXmW4c8iXO0Gas4jsGoAmBDE8fkA0fz
-X-Received: by 2002:a05:690e:48a:b0:66f:b219:9ed8 with SMTP id 956f58d0204a3-676440509edmr236407d50.23.1790722064349;
-        Tue, 29 Sep 2026 15:47:44 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-124.dlp.protect.broadcom.com. [144.49.247.124])
-        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-675b2834f6fsm466829d50.12.2026.09.29.15.47.43
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Sep 2026 15:47:44 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33baaba6371so17616294eec.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:47:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcTI2Fci"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d3931so35625185e9.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790722063; x=1791326863; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zIW+w8L028Ly1vJGzzdfTedRZ4XSuxvHLfykjxpeaoc=;
-        b=IH6HQMZAhTOTyfhB16Bk+BVMwGY7SkUtWOGAtuzgZmzEciBrSKSQ0+xEpP+qXu+w6T
-         lA2FYa68Z4fFtvLd5DyvQqeMSu8T1mrJidHZMv+lJpSuZ1ji/mCV1NHfRN34czF6j2aS
-         7fxal576mHqoPvlDH3qSuRw4988jt9o/l0LZU=
-X-Received: by 2002:a05:693c:8382:10b0:34b:7e89:99d with SMTP id 5a478bee46e88-34c6558b73bmr966816eec.36.1790722062689;
-        Tue, 29 Sep 2026 15:47:42 -0700 (PDT)
-X-Received: by 2002:a05:693c:8382:10b0:34b:7e89:99d with SMTP id 5a478bee46e88-34c6558b73bmr966775eec.36.1790722062007;
-        Tue, 29 Sep 2026 15:47:42 -0700 (PDT)
-Received: from [192.168.1.117] (162-230-227-228.lightspeed.sndgca.sbcglobal.net. [162.230.227.228])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34c386b6a49sm1862314eec.17.2026.09.29.15.47.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2026 15:47:41 -0700 (PDT)
-Message-ID: <c07041b9-ca73-447f-bb24-d3fc8e77ca79@broadcom.com>
-Date: Tue, 29 Sep 2026 15:47:39 -0700
+        d=gmail.com; s=20251104; t=1790722782; x=1791327582; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Gv+PysJI6ddPMh+/2D1kK5GEPdkeF2uLZFjE2FJN3E=;
+        b=EcTI2FcitOqfphbCCL7eny8bTwBNKzWtYEszT0bkwhgIHJ1SzSNyf2t8xOg/lp8A3+
+         +w5Y640OqMdr3dy1rmVWHd9a/0P9d96H7aln+BuA++Ntuj3yF/8hJQUpdIGZFJB+VWdF
+         BR5D+sboZ2cQIK6GLFQRP4dHmE1CLdnqAA3MRxkmMCGWHaempFsFKYTc4VwzyXwbwaQ8
+         nVXBahy3dXLG/7G/+Dbw50YwhCoTImDlv/sBu1xpVlQRPGSuuHCd+jPf8W3mJ5yhXsKu
+         xxH1W6SFPgq1b+VHd34+EZkZzlWhMX5Nn8fXvXEqLDcUWojQD3BkGZTdb5IAf/x2DZHV
+         hVbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790722782; x=1791327582;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Gv+PysJI6ddPMh+/2D1kK5GEPdkeF2uLZFjE2FJN3E=;
+        b=Zi9/Y9VJrMoSwsvbPqBD8lIUl+80/Go+HOPH8UGyo1l3dysTuy7VhS0U8/x54YNVrB
+         +4jRz1+TeFTqU1ZEZ3SLlyTXnv1eALOccloesGN5VOsSdoJ6S9Pn0KOgXXUi6vQ6ymGi
+         U/yLQHqB7l0CZEpy3W56viQunWiew6uo32fCym6A+bmCl1EXKZ46jLexvTNczOii9cvS
+         aft5AeRs1uMv+F7d2cdX1Ckv9opsZeYvOS23yiu/owNVguB8sUYfse3AKTr6/v+9gl06
+         yBG7t/JS/xBLhQf303THAXNyyE4lKmaurr3sSfBHMDStwj5s3UioDgVfyxtFNdw/mB7E
+         0B2w==
+X-Forwarded-Encrypted: i=1; AKwUvBxhzFwjcjVPPyU2SudBHMc5Ah4bnmMusijwfEJWxhCU1J5JF1OGO6HopF3bt0LMgp+n1nssZ60=@vger.kernel.org
+X-Gm-Message-State: AFuF++lpufsjQBabHA2OIzhYSDRNfVoxwk5gYDtL8uFWI8byvgAk3Kvy
+	BAg8AlfCWwwAgLL86APbb0NCJJOeOaMCqcFyJhy06pZh6FGAF+3fkoFC
+X-Gm-Gg: AYBFou3hSniV6OaA7GRRKXGOdW35ijyrbYp48PeSaE/4j4f/o1tnE5Q/5MBo4eKleX8
+	rw5CH7+t/HkdLTPUXldw0cgvZemSX2oZsWsuRXT2eq3o/aw51V8RAiViyNH/cNA2vh1hsPM8mR9
+	vwITJ6XqdUSB4k0a5Cf3SNc2jQnAkdiSR+jhb6mD0VOHWfGx5bJXGMcUj6Fh4V2vdJTQHF4Go2k
+	1R0h0eI7aURaMpFr/ngJ8W8tOmBSHhpX2nNedXqZmAAa73nyWWKm+VsD8Yzi3SGjCm+sb/nk45m
+	JWCrr86MzLHVKGNDtB5YMTdhnqpdkF0xqL1V+9yXBRRvhdbgrmXczerLY4EKmHW7zFMZdafsg5u
+	XFkvHZu7j0atab3AUQFHmQA+g+La4NPxkem027Kg5IU/KB4qLxTuG2kCBBFHq5jo3eoFrNc8nO+
+	HzEsnR8Q2hBYGcDgvzXwJYVCcj+AQpHhOB7NlmWmD8do5uU0M5pIUE3ifQV6DZhx4y7WD4Rh5EG
+	KtuKEb5e1jPpydg3gfWL+pt54xpf+qNtqjZiYhyFltP
+X-Received: by 2002:a05:600c:8b38:b0:49f:fd4c:cccd with SMTP id 5b1f17b1804b1-4a015146b71mr8103765e9.28.1790722782234;
+        Tue, 29 Sep 2026 15:59:42 -0700 (PDT)
+Received: from andreayoga.wind3.hub ([31.189.116.68])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0174e161bsm2551225e9.5.2026.09.29.15.59.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 15:59:41 -0700 (PDT)
+From: Andrea Parri <parri.andrea@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Andrea Parri <parri.andrea@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] rtnetlink: wait for RCU readers in rtnl_link_unregister()
+Date: Wed, 30 Sep 2026 00:59:30 +0200
+Message-ID: <20260929225932.349581-1-parri.andrea@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
+References: <20260929170444.218093-1-parri.andrea@gmail.com> <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: bcmgenet: if UMAC was suspended in SW_RESET,
- restore it to SW_RESET
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, florian.fainelli@broadcom.com,
- opendmb@gmail.com
-References: <20260929192216.1490017-1-justin.chen@broadcom.com>
- <27f4423822acfaa3f121e3637ed173e0@tipi-net.de>
-Content-Language: en-US
-From: Justin Chen <justin.chen@broadcom.com>
-In-Reply-To: <27f4423822acfaa3f121e3637ed173e0@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+
+On Tue, Sep 29, 2026 at 08:01:39PM +0200, Eric Dumazet wrote:
+> Patch looks good, but I would probably add a comment here, because all
+> these barriers without comments
+> are a pain.
+>
+> /* Wait for rtnl_link_ops_get() readers that found ops but have not
+> yet taken ops->srcu. */
+> > +       synchronize_rcu();
+
+Will do in v2, thanks.
 
 
+> Adding comments for the other barriers in a future followup would be awesome.
 
-On 9/29/26 2:09 PM, Nicolai Buchwitz wrote:
-> Hi Justin
-> 
-> On 29.9.2026 21:22, Justin Chen wrote:
->> When the revised suspend/resume sequence was introduced this led to an 
->> edge
->> case where the TX is left disabled in the following sequence.
->>
->> 1. phy link is down, so UMAC is held in reset and then network interface
->>    is WoL enabled
->> 2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since MAC
->>    is in SW_RESET
->> 4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
->>    and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link 
->> up.
->>
->> Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
->> Fixes: 88f6c8bf1aae ("net: bcmgenet: keep MAC in reset until PHY is up")
-> 
-> AFAIU before 254f3239dd07 resume always went through init_umac(), so older
-> kernels shouldn't be affected. If we drop the tag for, it would save some
-> backports to the older LTS kernels.
-> 
+Sure.  I have a net-next patch ready which comments the remaining waits
+in net/core/rtnetlink.c: synchronize_rcu() in rtnl_af_unregister(), the
+synchronize_srcu() calls in rtnl_link_unregister() and
+rtnl_af_unregister(), and synchronize_net() in rtnl_unregister_all().
+I'll send it once this fix reaches net-next, unless you meant a wider
+scope than this file.
 
-That's a good point. I will drop the 88f6c8bf1aae Fixes tag in v2.
 
-Thanks,
-Justin
+> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
->> Signed-off-by: Justin Chen <justin.chen@broadcom.com>
->> ---
->>  drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/ 
->> drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
->> index 96d5d4f7f51f..984432952963 100644
->> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
->> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
->> @@ -253,6 +253,17 @@ int bcmgenet_wol_power_up_cfg(struct 
->> bcmgenet_priv *priv,
->>      reg = bcmgenet_umac_readl(priv, UMAC_CMD);
->>      reg &= ~CMD_CRC_FWD;
->>      bcmgenet_umac_writel(priv, reg, UMAC_CMD);
->> +
->> +    /*
->> +     * Mirror wol_power_down_cfg(). If only UMAC_RX
->> +     * is enabled, then we must place the UMAC back
->> +     * into SW_RESET.
->> +     */
->> +    reg = bcmgenet_umac_readl(priv, UMAC_CMD);
->> +    if ((reg & CMD_RX_EN) && !(reg & CMD_TX_EN)) {
->> +        reg |= CMD_SW_RESET;
->> +        bcmgenet_umac_writel(priv, reg, UMAC_CMD);
->> +    }
->>      spin_unlock_bh(&priv->reg_lock);
->>
->>      /* Resume link status tracking */
-> 
-> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-> 
-> Thanks,
-> Nicolai
-
+Thanks for the review,
+  Andrea
