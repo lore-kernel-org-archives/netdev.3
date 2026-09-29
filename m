@@ -1,260 +1,162 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7B73D9670;
-	Tue, 29 Sep 2026 17:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790704079; cv=none; b=UC4IPIOWs5ZfqyME0Irux4UF2erQJ6sOlHRWeBHl5owmIRh0tfGH6uIDgyDScoK4cgGRISe7O+0KwtXjn72VqKySG0F/Udu2Z0+JMIC3KRdi7an0sDGlL603b7WBW7QxeIW8CND7WFkIEk2hqtuglJJwzNbXwcZ1yBUw/YKVYKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790704079; c=relaxed/simple;
-	bh=ZvC9qdwXTWTOqOTiPeJScGaoSpJpcPyTlpVsE2dOXXo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=hVV/iWp7seFy4JS+tVM7WdM+LCszlEL99E/+PCb0tjWY6q9ytls+5zOV7xkEH15fCPrReW9axNrSV84kPg6maeq4wHonXF3kCty8EoSqEPzwU32b1biGXb2LaqKQ2ZVcztR0ytpmzVWyEIpEBOfs9PJ3O1C6mD4o+ihAXGQCxLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=SX8RL13S; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AB4544D64
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 17:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790704147; cv=pass; b=qYyS7YM4qBuBSnqcHA4YK/DKJrldB+c7QUrs8pkwMso8TG0mrT4p39tWdr3Xq0PtLZzWtAkpprV6xnCTkPn1bJZupVqxdbilSmGvHmF6iYewVeSZp5riTkmk/Rhe9B4JIlUw15HxIVRvxAOSoUS6XfZImKEAFNLrT7voyzriBvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790704147; c=relaxed/simple;
+	bh=EgbFuS2Te6lm8qVRteJKBIzVGTmmynIix9CPN6Z3edM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kGZbqRVXSed+8D4wecygee/CmXK4y+CjEczBRmjkM/gflVJ82IVIFBKxjSizTNe2CY3Nc9YaUiPDwMcLpA9AzchvMxLCV34886FErI1Xcq39HMqtrfJM4w9xAfvS52QwhJHTBMTYwrHVxL6W6TG0dqU5kuo/nuZ+Coi7/iqHqOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BjJk/HSI; arc=pass smtp.client-ip=74.125.228.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="SX8RL13S"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 12042213E5;
-	Tue, 29 Sep 2026 20:47:49 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=nBfBhUVW7tf2p40fK0KiGZVej/m6dXBXVjeUMlOZDDk=; b=SX8RL13STzNU
-	q3zjSOfI6B/v81yJ4NccximUZiORFI4eXuGiJ01R4rcVWdtriXIqyW/TeJ/cU7m9
-	9BwaCJWeZKQIjXzGFiIpTA0ZAa5qaBU9e8YwVyV846t/zy/GVxMJThvSPsQBrhPV
-	lJYGZ+35BD74nWw9HVYyUZWbVLsYL+fQ0wYb6kxH81Syqx59M1ASGnKbBBAbAtSD
-	I9CwUJ9AsC0zBKxc+JIHBwfq0lTCkJb86kJVIe7LXywQEzzmpFSb+dpPADt2CnEU
-	0G4FNbiin5d8OxHAxgdXy0+9JEzCsW1ISfkAgPp9I557ZadsObu+73l8JnANOL05
-	1arpwtDGJUyjEnT3zIgnt7PPc556qViVnL8wlcSCbBNMitzxd6tOzaXJXxuyHsF7
-	BMK9TPD7Z3Y8oqCq9YP+JLSX4MmbBbRRn+WeYA4EEOML8DVhjwxTFFm0slIwzPr1
-	+Kc2WqPHsLMFGYGNYWiWtmUTsoo4oamS8LffzW6MlbKYpn3bcYz6YFvX0TR/IaP6
-	nc4kpCin36XH5RcppjOV/1SgI7dMrqmGCHwAxN3oHdGb58+Q/op14rgZy3XGamHx
-	S+BVZmHKr1/17DSG1FW4/nhhZL2zIzgg4zwRxrun4/AodVvCY/s2ocOXeuEeAcin
-	K/E7m61rHMcbw4MCPW9VqYqnKaXf/3s=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 29 Sep 2026 20:47:48 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 368C660450;
-	Tue, 29 Sep 2026 20:47:51 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68THljjd077059;
-	Tue, 29 Sep 2026 20:47:45 +0300
-Date: Tue, 29 Sep 2026 20:47:45 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: netdev-bot+sashiko@kernel.org
-cc: axel.mierczuk@1password.com, horms@verge.net.au, pablo@netfilter.org,
-        fw@strlen.de, phil@nwl.cc, netfilter-devel@vger.kernel.org,
-        lvs-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, w@1wt.eu, keith.hoodlet@1password.com,
-        stable@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH nf 1/2] ipvs: validate cport in received sync records
-In-Reply-To: <179069643951.434549.3382665015308925440@kernel.org>
-Message-ID: <0c29566c-b595-7955-c32e-7937c9a1232a@ssi.bg>
-References: <20260925141115.16126-2-axel.mierczuk@1password.com> <179069643951.434549.3382665015308925440@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BjJk/HSI"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af43c5b0cso587155566b.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:49:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790704144; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lwxRCnLHqq4UEGAr+TELx3XARhdpg549hEtKLpq4E5VNN8RhVqr+B20Q06GeFcfeEA
+         i0e6fRefWzaAWPexRAlG39Xy9yq6Dy4Cm7SE8av6YtI9JPq8D4zVYAvHkyWvkzsPgEDu
+         4dDOmAdg9p3zsDjgoC4srFfUOCNctOmSHJTtu+ZvsoozkpRXJfwUSUxXUBNailCHLyD2
+         s9r2lmHgLsjCSTbHITdmda+Zc6ut+NeLZCwMWdVpV8Py7drxPMnLBQKKd/m7dzYEXi+/
+         CRxglyzoKW4+RPwFcgR8X/jJ1hmcVtliu5l0aOy85hPyeFa3+0lKv7/+9ubWQzj65jRF
+         c57A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
+        fh=NQoQ+BGStpXH7k7rq33CEdLVJRPdObqFqvXHmcDD5SE=;
+        b=e+CYe2ied52dlPEPsqdeqHCZCa76bWYsbor2h5UiJdQdnssDHpAHGkkrv//CSe/NNb
+         al2r9Yhl89OM1gXS/9svI0wFPS+MqzSpuc+6gBexwOCePRpjFP3f8rQBkdzLTqQeKbk+
+         WGryWXv2vHkBI+IXmL0bkyA9oAQ6zaJrfWbtFENkkuWpI5IuoLqU/yUxqU1Df/363kn0
+         844URexHZkCU5nGGJ79FZ9foth8cRX0jlxPOx37mpRihZGrx79Y5CpQR7jlpaONRzb65
+         AKD9bGwTb01v+Brhp5YNg89KLY6E+1tX6DNHBeShudUqpzCUgzPdvgWyYIicHDrBHGch
+         95oA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790704144; x=1791308944; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
+        b=BjJk/HSI+d90L8k+v3ogtsrpdBV9RBnS8n9GzfFAp2qbzia0SRN0MnUBBfbhTcD5bQ
+         SKlFbDp1k3y4hc1U+ArLcT/CdMPQw9rDNtPllSD+amC96TQqeF36EtM+zHn16BWbFGQo
+         v0YYl2anDZBgTxw2WKpOjBYmiZQkgZyjkQiW2hZC7677ZQaEhs1XMpoNUdlZ7pwRFczJ
+         PtTN2FTUT+dqknbyhByvt9rPvNZF4KTFNegi8e3DNcGfF20nLlIS3EHgQvm9GDvyX7s3
+         d7N+2F7wTDYiitczhVvx4FnL9GQe/QDPEqlpCEFIFWCOrSZlRyFZqvvnDXGwyei20/nw
+         uC7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790704144; x=1791308944;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
+        b=GeEZCJvwsM7CO7hZLfuQ06IWlR2mf7/PqJuryMDSrdOIU0ca7SftKVUznoqFuKYvID
+         5VG5pXyPyBuWXfxP1s2VrbhWtD6v9jLRbgEuYVzC+Kpnzmucz1z0fDlPQbRU2MRyWdDK
+         TjFfHQIKh/7mFjX4751sRrOX0Mx1dKJpG9uWguFG2Z+3P/lqAxAxiEOIde88MmRbymhF
+         LjipYCGe1KY/CBJWe28kjaKAsV5LHRUIgXfXeT+c/JawAKln7ar1zyxnSS/ecNTGipZ9
+         cKJGNLHdcgWoPc04/ed0HEqPZV7mXLFK2XXoJuIKVTDxBUHT3z3i4oMJe4Hzwiy/08DU
+         KOPg==
+X-Gm-Message-State: AFuF++kUQNy6479ArjzrsY9lTGcjXr1vCT9uHfIbxV9kHTUHirqvB1q8
+	yfZShAen2K0JbM+cdvCETNQbZdaG8Fi3W7TzOwlnsTgHykuVHg33hys9I8rC0fyBSq8VURSaJEl
+	CpWCIggZSqYaj3IShcI1x/gMUBNpMuN+aryyaay2DEjAGOHj5iEIJGSWj
+X-Gm-Gg: AYBFou0aTNs5x4kkw4da0STEhUOPC999ZOmky5+8hlWakjBQkCn471qMC8bf+TXjBij
+	seH5b2PqzOsTwSbk2QP8wAieZV0ty+Bca/p4UiPxyIvDCB09bPUQbs7W0b9+m6yonv2e2iOH87a
+	YHMKfHEXZ7lWRfI6dzHlBjVbW+b0FNjZ+X3ivdIVmu7J+4JBN1jahZIHeUFkZC/eOoFr3/8hrBJ
+	T6WMOOWo/D69NEcHT633Wg+FoeZIan6/ashs8hFLwhonURnSfyiEbiCXQ3ABZfnB23MabjZ2SwV
+	8qPHSwRDLYiPmY0nOnEozJl+x9+hbRbvWMXa2f/KdpivImKdsQZhYk01
+X-Received: by 2002:a17:907:7289:b0:c2d:e067:275d with SMTP id
+ a640c23a62f3a-c2e15c0da9amr18432266b.2.1790704143373; Tue, 29 Sep 2026
+ 10:49:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463811672-16744191-1790704069=:5433"
+References: <20260922194533.631387-1-joshwash@google.com>
+In-Reply-To: <20260922194533.631387-1-joshwash@google.com>
+From: Joshua Washington <joshwash@google.com>
+Date: Tue, 29 Sep 2026 10:48:51 -0700
+X-Gm-Features: AclHuK-4Jen_xaBqivrTS2m8jiJGtwTSvDPOut6gW97lQXY41zUzIIPLnIv2r1s
+Message-ID: <CALuQH+VWjT2VZTOUjseLfcON4=Me6v99KyW=k=Uh2Y1dvpNkcw@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/9] gve: various XDP fixes
+To: netdev@vger.kernel.org
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tim Hostetler <thostet@google.com>, Ankit Garg <nktgrg@google.com>, 
+	Eddie Phillips <eddiephillips@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Jeroen de Borst <jeroendb@google.com>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
----1463811672-16744191-1790704069=:5433
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-
-	Hello,
-
-On Tue, 29 Sep 2026, netdev-bot+sashiko@kernel.org wrote:
-
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The new check in ip_vs_proc_conn()
->   (net/netfilter/ipvs/ip_vs_sync.c) is incomplete for templates.
-> - [Low] The new comment and rejection in ip_vs_proc_conn() say ordinary
->   connections must have NO_CPORT exactly when cport is 0, and records…
-
-	The patch is fine. I'll reply to both concerns below.
-
+On Tue, Sep 22, 2026 at 12:45=E2=80=AFPM Joshua Washington <joshwash@google=
+.com> wrote:
+>
+> This patch series includes a number of XDP-related fixes, both in the
+> control plane and the dataplane.
+>
+> A summary of the changes:
+> 1) fix an issue where XDP packets weren't being counted against NAPI
+>    budget
+> 2) fix an issue where XSK buffers that have not been processed are
+>    leaked when disabling XSK pools
+> 3) fix an XSK buffer leak when an RX error descriptor comes back from
+>    the hardware
+> 4) fix a NULL dereference due to incorrect registration of XSK pools on
+>    queues not set up in XSK zero copy mode
+> 5) fix a deadlock introduced by attempting to acquire the netdev lock
+>    after it has already been acquired
+> 6) fix a racy NULL dereference due to DMA umapping the XSK pool before
+>    queues are fully stopped
+> 7) fix potential data race on priv->xsk_pool when the field is set while
+>    NAPIs are enabled
+> 8) attempt to register memory model in all cases when disabling XSK
+>    pools
+> 9) clean xdp frames when tearing down DQO queues
+>
+> ---
+> v2:
+> - introduce 3 new patches (7, 8, 9) based on Sashiko feedback
+> - corrected stat counting for packets according work_done behavioral
+>   change (patch 1)
+>
+> Eddie Phillips (1):
+>   gve: prevent XDP frame leak and corruption during DQO TX cleanup
+>
+> Joshua Washington (8):
+>   gve: increment work_done for XDP and error packets
+>   gve: fix XSK buffer leak when rings are stopped
+>   gve: fix XSK buffer leak on error descriptor
+>   gve: don't register xsk pool on pre-existing queues in RDA mode
+>   gve: fix napi_disable deadlock when attempting to disable XSK pools
+>   gve: fix NULL dereference from premature XSK pool DMA unmap
+>   gve: disable NAPI when registering XSK pools in QPL mode
+>   gve: ensure XDP mem model is registered when disabling XSK pools
+>
+>  drivers/net/ethernet/google/gve/gve_main.c   | 153 +++++++----
+>  drivers/net/ethernet/google/gve/gve_rx_dqo.c |  31 ++-
+>  drivers/net/ethernet/google/gve/gve_tx_dqo.c | 256 +++++++++++++------
+>  3 files changed, 314 insertions(+), 126 deletions(-)
+>
 > --
-> 
-> ipvs: validate cport in received sync records
-> 
-> This patch adds cport checks to ip_vs_proc_conn() for sync records
-> received by the backup. Templates with a nonzero cport are dropped.
-> Ordinary connections are dropped unless IP_VS_CONN_F_NO_CPORT is set
-> exactly when cport is 0.
-> 
-> > diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-> > index 5383aeafb0aed..3998e9a0a391c 100644
-> > --- a/net/netfilter/ipvs/ip_vs_sync.c
-> > +++ b/net/netfilter/ipvs/ip_vs_sync.c
-> > @@ -848,6 +848,25 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
-> >  	struct ip_vs_dest *dest;
-> >  	struct ip_vs_conn *cp;
-> >  
-> > +	/* Templates require cport 0. Ordinary connections require
-> > +	 * NO_CPORT exactly when cport is 0.
-> > +	 */
-> > +	if (flags & IP_VS_CONN_F_TEMPLATE) {
-> > +		if (param->cport) {
-> > +			IP_VS_DBG(2, "BACKUP, template with cport dropped\n");
-> > +			kfree(param->pe_data);
-> > +			return;
-> > +		}
-> 
-> [Severity: Medium]
-> Should the template branch also reject IP_VS_CONN_F_NO_CPORT?
-> 
-> A template with cport 0 and IP_VS_CONN_F_NO_CPORT set passes this check.
-> The commit message leaves that case to "ipvs: filter some flags received
-> in the backup server". That patch is not in this tree, and this one is
-> tagged for stable.
-> 
-> In this tree, IP_VS_CONN_F_BACKUP_MASK still includes both NO_CPORT and
-> TEMPLATE, so ip_vs_proc_sync_conn() lets the combination through. The v0
-> parser applies no mask at all:
-> 
-> net/netfilter/ipvs/ip_vs_sync.c:ip_vs_process_message_v0() {
->     ...
-> 		flags = ntohs(s->flags) | IP_VS_CONN_F_SYNC;
-> 		flags &= ~IP_VS_CONN_F_HASHED;
->     ...
-> }
-> 
-> A companion fix that only changes IP_VS_CONN_F_BACKUP_MASK would
-> therefore not cover v0 records.
-> 
-> If ip_vs_ct_in_get() misses, ip_vs_conn_new() hashes the template and
-> turns on the cport-zero fallback:
-> 
-> net/netfilter/ipvs/ip_vs_conn.c:ip_vs_conn_new() {
->     ...
-> 	if (unlikely(flags & IP_VS_CONN_F_NO_CPORT)) {
-> 		int af_id = ip_vs_af_index(cp->af);
-> 
-> 		atomic_inc(&ipvs->no_cport_conns[af_id]);
-> 	}
->     ...
-> }
-> 
-> A later packet from that client, from any source port, misses the first
-> lookup. ip_vs_conn_in_get() then retries with cport 0. The match in
-> __ip_vs_conn_in_get() has no IP_VS_CONN_F_TEMPLATE exclusion, so the
-> retry returns the template:
-> 
-> 				    (!p->cport ^
-> 				     (!(cp->flags & IP_VS_CONN_F_NO_CPORT))) &&
-> 
-> The datapath then treats the template as an ordinary connection:
-> 
-> ip_vs_in_hook()
->   ip_vs_conn_in_get()        /* returns the template */
->   ip_vs_set_state()
->   cp->packet_xmit()
->     ip_vs_conn_fill_cport()  /* NAT: rewrites cport, clears NO_CPORT */
-> 
-> After fill_cport rehashes the template, ip_vs_ct_in_get() no longer finds
-> it, which breaks persistence for that client.
-> 
-> set_tcp_state() also changes dest->activeconns for the template, based
-> only on IP_VS_CONN_F_INACTIVE. For templates, ip_vs_bind_dest() and
-> ip_vs_unbind_dest() only adjust persistconns, so activeconns on the real
-> server can drift.
-> 
-> Template state is validated now, so this does not seem to lead to
-> out-of-bounds reads. Still, isn't this the same class of problem the
-> commit message describes, a template reaching the protocol state machine
-> through ip_vs_conn_in_get()?
-> 
-> Would adding "|| (flags & IP_VS_CONN_F_NO_CPORT)" to the template check
-> make this patch self-contained and cover the v0 path as well?
+> 2.55.0.1082.g2b9226bbc0-goog
+>
 
-	No, "ipvs: filter some flags received in the backup server"
-should handle the above problems.
+In the interest of getting some of the more trivial fixes merged, I
+will send out a v3 with only the very simple fixes, and continue
+working on the more problematic/invasive changes in the background.
+This will include patches 2, 3, and 5.
 
-> 
-> > +	} else if (!param->cport && !(flags & IP_VS_CONN_F_NO_CPORT)) {
-> > +		IP_VS_DBG(2, "BACKUP, conn without cport dropped\n");
-> > +		kfree(param->pe_data);
-> > +		return;
-> > +	} else if (param->cport && (flags & IP_VS_CONN_F_NO_CPORT)) {
-> > +		IP_VS_DBG(2, "BACKUP, conn with cport and NO_CPORT dropped\n");
-> > +		kfree(param->pe_data);
-> > +		return;
-> > +	}
-> 
-> [Severity: Low]
-> Can the master itself briefly send a record with a nonzero cport and
-> IP_VS_CONN_F_NO_CPORT still set?
-> 
-> ip_vs_conn_fill_cport() can use hn1 (use2, e.g. NAT/FTP data
-> connections). In that case the dir 1 pass sets cport while the flag stays
-> set. cp->lock is then released, and only the dir 0 pass clears the flag:
-> 
-> net/netfilter/ipvs/ip_vs_conn.c:ip_vs_conn_fill_cport() {
->     ...
-> 	if (cp->flags & IP_VS_CONN_F_NO_CPORT && (!cp->cport || by_me)) {
-> 		/* If we race with resizing make sure cport is set for dir 1 */
-> 		if (!cp->cport) {
-> 			cp->cport = cport;
-> 			by_me = true;
-> 		}
-> 		if (!dir) {
-> 			atomic_dec(&ipvs->no_cport_conns[af_id]);
-> 			cp->flags &= ~IP_VS_CONN_F_NO_CPORT;
-> 		}
->     ...
-> }
-> 
-> In that window, another CPU can handle a packet of the same connection
-> and call ip_vs_sync_conn(). That function copies cp->flags and cp->cport
-> without taking cp->lock:
-> 
-> net/netfilter/ipvs/ip_vs_sync.c:ip_vs_sync_conn() {
->     ...
-> 	s->v4.flags = htonl(cp->flags & ~IP_VS_CONN_F_HASHED);
-> 	s->v4.state = htons(cp->state);
-> 	s->v4.protocol = cp->protocol;
-> 	s->v4.cport = cp->cport;
->     ...
-> }
-> 
-> Before this patch, the backup matched such a record to its existing
-> cport 0 NO_CPORT connection through the cport-zero fallback. It then
-> updated that connection's INACTIVE/SEQ flags and seq options. Now the
-> record is dropped.
-> 
-> The next sync record restores the state, so the effect looks small. Is
-> the comment "NO_CPORT exactly when cport is 0" accurate, given what the
-> master can send in this window?
-
-	TCP conns before establishment are not synced by master,
-so such race can not occur. And it is normal the backup to drop
-inconsistent cport and NO_CPORT flag.
-
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
----1463811672-16744191-1790704069=:5433--
-
+-- Josh
