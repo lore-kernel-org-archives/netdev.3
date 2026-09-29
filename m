@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D8622F767;
-	Tue, 29 Sep 2026 00:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E2D31E831;
+	Tue, 29 Sep 2026 00:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790641923; cv=none; b=JqHJIhxSAcwH0576hvafOrnJalK1etfLkrq4XmOj2pSs8IKd29K5Zt6H76VDoa+GdmlYOAenWVuPKSSwhR8ZsCO19E9sapatTfqmmS0gdx1X2WDxt44Ea8vUAAubfSdXpuQy8SRIeOMyEDq+Mn0lq4QwdDzE+TPZnuckjbRZjOE=
+	t=1790641924; cv=none; b=rsV6nYtzZLZEkEBL3OOGLRZT8yuHHkXwDVaxkdqNTOOCt5K3b08Bt9iez7pgo0Z+2+RBIoBL5nXBXCdUgfyczt90QOrRG3a0GycBBf9oNLuxvF6r1NgOEQWnyVFVUpfUsED4/xrUXoVpd1ZpKgforrVVUTD6XAlXkEvxHhtX0hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790641923; c=relaxed/simple;
-	bh=ZbckNXvV5uKiRT3U3L689/mCxd0VFD/hRzQ8ybLoP24=;
+	s=arc-20240116; t=1790641924; c=relaxed/simple;
+	bh=UXA5wu3CPeF7BOYx+25TH+fwtBXd4GyFGZsJDj0EmOc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eUxJUEOAjVl9wsr9wQnEn7TNGKE7jKKxdJ6Vtf5vEKntAPQsxfKBRob2l61Jwf8TAvBkS8iRTiC/jZb4Icg2krGA4If5EduheT8KGvdL9j72Z2sKd0W0f+6oNRtf+J0btIaw/agEcY+eVCMrddFjaM/tX+ll9CqOryrIZecS8zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTeRpSY0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ddao9zLuJkRxQRuv2hjn/ePJJVul2eoAJTKhOJGeSSj+XUK0BRVbF0KNjcxELWmXAurQKcsFGjMMX+64NreSUptuy+LiVZvDkexlvznyuS4AWNRh7H4JpbbO1+Cp5CJryKp3dTiyDZae6gTwyUny6fX9SFpr70lvWAY4mBUULi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BAxO1vpp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTeRpSY0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849281F000FF;
-	Tue, 29 Sep 2026 00:32:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BAxO1vpp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210E31F00893;
+	Tue, 29 Sep 2026 00:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790641921;
-	bh=nY0fE+YQHjIgslNjpPF/UF5o9rAcDKDWb+akzffcQY8=;
+	s=k20260515; t=1790641923;
+	bh=YZi1ypieVFvTNbRUJLyNDXRClXWjs3iDMCHGJQWrE/8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QTeRpSY0++Y6kQgf8kmFBO05yjLxZn2zTEv39eXdZJyRbHJon58QMJl9zhMZY37Zk
-	 Nu//t+5fBXOq7WyJ5ulFMte3z3aQSgkW+c9Te1FyCwJ4ej2yA/5BbPct4TDlVbWvzA
-	 etj2i8qyj6wPLWpRuN9x04Ck9UNCNGka9SNrm43Bp/GuByO1s1s1MpxzVrvlGIZO5j
-	 SFBaLm1BGuqrAIDLOGX1oD3UE44jveZ1rbgDz57SPR/kEcANSbQ6e+j8G41cexRGNL
-	 RzYo1WS2KJ6hduCpSspQFUrDFaVz9ckRMpjsHeQhAiFzcxPoLJqBe9qBEPvQXUEsNc
-	 o+aa/raFvhRaQ==
-Subject: Re: [PATCH net-next v4 1/2] dt-bindings: net: ethernet-phy: add
- needs-host-firmware
+	b=BAxO1vpp0GmfaW7ho7ka6JvRhmzh1DzOpd4Wrlmv/2gsZVyZUUhkzHBznPhlfxTQZ
+	 llj6q9TD4B65BZBT7jHA+Yo9FNAMVLNSGRvDCNoldX4MZwaYXq06txMR1UBsjURSdT
+	 8GR2sWgF9HJaGzK7fD8h67DA/P+qNxlRNPwEW3qvebwC5AX+qdZGgL6tg86pmqZaeY
+	 fkBIoILmwrJg/KPRXHjqLIJBkCYpfirIVI5AZDAero0PvSjizhib6+FF8NP0qyj5QP
+	 b5IrrHsTmTs9WJmu6xwxjjWdIte72oKDNPf2ao1MIN6xbgc5obqlsq/pdIJE1tSQXM
+	 3Hx/b74YEfjuQ==
+Subject: Re: [PATCH net-next v4 2/2] net: phylink: wait for PHYs that are
+ known to probe late
 From: netdev-bot+sashiko@kernel.org
 To: f@lex.la
 Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
@@ -36,11 +36,11 @@ Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
  robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, conor@kernel.org,
  f.fainelli@gmail.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Tue, 29 Sep 2026 00:31:59 +0000
-Message-ID: <179064191988.3145.13772240561731551467@kernel.org>
-In-Reply-To: <20260925001209.2334139-2-f@lex.la>
-References: <20260925001209.2334139-2-f@lex.la>
-X-sashiko-severity: Medium
+Date: Tue, 29 Sep 2026 00:32:01 +0000
+Message-ID: <179064192169.3145.15914679496475412857@kernel.org>
+In-Reply-To: <20260925001209.2334139-3-f@lex.la>
+References: <20260925001209.2334139-3-f@lex.la>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,102 +61,243 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] For the only PHY the patch names, the new generic `needs-host-
-  firmware` flag can be deduced from the compatible.
-- [Low] Concern: the new `needs-host-firmware` property in
-  Documentation/devicetree/bindings/net/ethernet-phy.yaml has no…
+- [High] Returning success before the PHY is attached causes a NULL
+  pointer dereference in ucc_geth_open() on CONFIG_PPC_85xx.
+- [Medium] The patch changes what a 0 return from
+  phylink_fwnode_phy_connect()/phylink_of_phy_connect() means: it can…
+- [Medium] The poller attaches the PHY based on a lockless readiness
+  check, phylink_phy_is_usable() (`device_is_bound()` &&…
+- [Low] Before this patch, a successful phylink_fwnode_phy_connect() in
+  MLO_AN_PHY mode always replaced a PHY_INTERFACE_MODE_NA link_interface…
+- [Low] The new kernel-doc of phylink_fwnode_phy_connect() says that for
+  a needs-host-firmware PHY that is not usable yet, 'a poller connects…
 
 --
 
-dt-bindings: net: ethernet-phy: add needs-host-firmware
+net: phylink: wait for PHYs that are known to probe late
 
-This adds a generic needs-host-firmware flag to the ethernet-phy binding.
-The flag says the host has to load firmware into the PHY before it can be
-driven. A consumer that sees the flag keeps the port and connects the PHY
-once its real driver binds, which fixes a dead lan4 port on a Keenetic
-KN-1012 with an EN8811H PHY.
+This commit changes phylink_fwnode_phy_connect() for PHYs whose DT node
+has needs-host-firmware and whose driver has not bound yet. It now
+returns 0 and arms a delayed work poller, which attaches the PHY once
+the driver binds. Until then, the ethtool paths report no link modes and
+refuse configuration changes.
 
-> diff --git a/Documentation/devicetree/bindings/net/ethernet-phy.yaml b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-> index c3ebb3af8b528..73827662ddce2 100644
-> --- a/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-> +++ b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-> @@ -215,6 +215,12 @@ properties:
->        used. The absence of this property indicates the muxers
->        should be configured so that the external PHY is used.
->  
-> +  needs-host-firmware:
-> +    $ref: /schemas/types.yaml#/definitions/flag
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index a7d086cdc9b25..4a5b98b558891 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
 
-[Severity: Low]
-In this patch alone, nothing reads needs-host-firmware. Is anything in
-this commit meant to consume it?
+[ ... ]
 
-A later patch in the series, "net: phylink: wait for PHYs that are known
-to probe late", appears to resolve this. There, phylink_fwnode_phy_connect()
-checks:
+> +/* Stale the moment it returns: the device lock this wants cannot be held
+> + * across the attach, whose own failure path takes it again.
+> + */
+> +static bool phylink_phy_is_usable(struct phy_device *phy_dev)
+> +{
+> +	return phy_dev && device_is_bound(&phy_dev->mdio.dev) && phy_dev->drv;
+> +}
 
-    if (fwnode_property_present(phy_fwnode, "needs-host-firmware") &&
-        !phylink_phy_is_usable(phy_dev)) {
+[ ... ]
 
-When the check matches, it arms the phylink_late_phy_poll() delayed work
-instead of attaching genphy. This is noted only for completeness, since
-the binding lands before its user in the same series.
-
-> +    description:
-> +      This PHY runs firmware that the host must load before it can be
-> +      driven, and is not usable until then.
+> +	ret = phylink_attach_phy(pl, phy_dev, pl->link_interface,
+> +				 pl->late_phy_flags);
+> +	if (!ret && phy_driver_is_genphy(phy_dev)) {
+> +		/* Lost the race: the attach bound the generic driver, which
+> +		 * is the outcome this poller exists to avoid.
+> +		 */
+> +		phy_detach(phy_dev);
+> +		lost_race = true;
+> +		ret = -EAGAIN;
+> +	}
+> +	if (!ret) {
+> +		ret = phylink_bringup_phy(pl, phy_dev,
+> +					  pl->link_config.interface);
 
 [Severity: Medium]
-For the EN8811H, doesn't the compatible already imply this flag?
-Documentation/devicetree/bindings/writing-bindings.rst says:
+What happens if an unbind of the PHY driver overlaps this attach? Sysfs
+unbind, rmmod and MDIO bus teardown take only the device lock, not rtnl.
+__device_release_driver() runs its steps in this order:
 
-  - DON'T add properties to avoid a specific compatible. DON'T add
-    properties if they are implied by (deducible from) the compatible.
-
-airoha,en8811h.yaml fixes the compatible to ethernet-phy-id03a2.a411. The
-driver loads host firmware for every instance without any condition:
-
-drivers/net/phy/air_en8811h.c:en8811h_probe() {
+__device_release_driver()
+    device_remove(dev)
+        phy_remove()
+            phydev->drv = NULL;
     ...
-	ret = en8811h_load_firmware(phydev);
-	if (ret < 0)
-		return ret;
-    ...
-}
+    device_unbind_cleanup(dev)          <- clears dev->driver
+    klist_remove(&dev->p->knode_driver);
 
-en8811h_load_firmware() always calls request_firmware_direct() for
-EN8811H_MD32_DM and EN8811H_MD32_DSP. The AN8811HB probe calls
-an8811hb_load_firmware() the same way.
+In that window phy_attach_direct() still sees d->driver non-NULL. It
+does not select genphy and leaves is_genphy_driven at 0. Then it calls:
 
-The commit message says:
+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
 
-    The need is not derived from the compatible because the knowledge that
-    an ID needs host firmware lives in the PHY driver, and that driver is a
-    module not yet loaded when the MAC connects, so it has to come from the
-    device tree.
+That dereferences the NULL drv.
 
-Isn't that a question of Linux module loading and rootfs timing, rather
-than something about the hardware? The ethernet-phy-id compatible is
-already in the DT and can be seen before any PHY module loads.
+If the attach does get through, phy_driver_is_genphy() is false here, so
+the lost_race recovery does not run. phylink_bringup_phy() then does:
 
-The EN8811H binding is also not updated for the flag.
-airoha,en8811h.yaml neither requires it nor shows it in its example, and
-its required list only has:
+	phylink_info(pl,
+		     "PHY [%s] driver [%s] (irq=%s)\n",
+		     dev_name(&phy->mdio.dev), phy->drv->name, irq_str);
 
-    required:
-      - reg
+Under rmmod, try_module_get(d->driver->owner) fails with -EIO instead.
+That uses up one of the bounded retries as if the connect had really
+failed.
 
-The existing in-tree EN8811H node in mt7981b-openwrt-one.dts does not get
-the flag either:
+The commit message says the attach-versus-unbind window is phylib's to
+close. But the poller decides when to attach, based on a check it
+documents as stale. Could this oops the work item while it holds rtnl?
 
-    phy15: ethernet-phy@f {
-        compatible = "ethernet-phy-id03a2.a411";
+[ ... ]
 
-Would an EN8811H node without the flag still pass dt_binding_check? If so,
-it would keep the dead-port behavior whenever the driver is a module that
-loads late.
+> @@ -2418,7 +2578,13 @@ EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
+>   * Connect the phy specified @fwnode to the phylink instance specified
+>   * by @pl.
+>   *
+> - * Returns 0 on success or a negative errno.
+> + * If the PHY node carries the needs-host-firmware property and the
+> + * PHY is not usable yet, 0 is returned with no PHY connected: a poller
+> + * connects it once its driver has probed. Until then the MAC runs
+> + * without a PHY and ethtool reports no link modes.
 
-Could the late-connect behavior come from the compatible instead?
+[Severity: Low]
+Is this description complete? phylink_late_phy_poll() can stop for good
+after PHYLINK_LATE_PHY_RETRIES + 1 failed connects with the real driver
+bound:
+
+		} else {
+			/* Silence from here reads as success otherwise. */
+			phylink_err(pl, "giving up on %pfw after %u attempts\n",
+				    pl->late_phy_fwnode,
+				    PHYLINK_LATE_PHY_RETRIES + 1);
+		}
+
+That branch leaves pl->late_phy_fwnode set, so
+phylink_late_phy_pending() stays true. The ethtool paths then keep
+reporting no link modes and returning -EOPNOTSUPP until the MAC calls
+disconnect and connect again. Rebinding the PHY driver does not restart
+the poller.
+
+Could the kernel-doc mention this terminal state?
+
+[ ... ]
+
+> @@ -2440,6 +2608,23 @@ int phylink_fwnode_phy_connect(struct phylink *pl,
+>  	}
+>  
+>  	phy_dev = fwnode_phy_find_device(phy_fwnode);
+> +	if (fwnode_property_present(phy_fwnode, "needs-host-firmware") &&
+> +	    !phylink_phy_is_usable(phy_dev)) {
+> +		/* -ENODEV here would also send DSA to the switch's own bus. */
+> +		if (phy_dev)
+> +			phy_device_free(phy_dev);
+> +
+> +		pl->late_phy_fwnode = phy_fwnode;
+> +		pl->late_phy_flags = flags;
+> +		pl->late_phy_poll_ms = PHYLINK_LATE_PHY_POLL_MS;
+> +		pl->late_phy_waited_ms = 0;
+> +		pl->late_phy_retries = PHYLINK_LATE_PHY_RETRIES;
+> +		pl->late_phy_warned = false;
+> +		queue_delayed_work(system_freezable_power_efficient_wq,
+> +				   &pl->late_phy_poll, 0);
+> +		return 0;
+> +	}
+
+[Severity: High]
+Can this leave dev->phydev NULL for callers that take 0 to mean the PHY
+is attached? ucc_geth_open() is one of them:
+
+	err = phylink_of_phy_connect(ugeth->phylink, ugeth->dev->of_node, 0);
+	if (err) {
+		dev_err(&dev->dev, "Could not attach to PHY\n");
+		return -ENODEV;
+	}
+	...
+	device_set_wakeup_capable(&dev->dev,
+			qe_alive_during_sleep() || dev->phydev->irq);
+
+With CONFIG_PPC_85xx, qe_alive_during_sleep() always returns 0, so
+dev->phydev->irq is evaluated. The deferral branch never calls
+phy_attach_direct(), so dev->phydev is still NULL at that point.
+
+Would this oops in ndo_open with rtnl held on an 85xx QE board? The
+conditions are a PHY node with needs-host-firmware and a PHY driver that
+is not loaded yet.
+
+Before this patch, the same situation either bound genphy or returned
+-ENODEV, and ucc_geth_open() handles both.
+
+[Severity: Medium]
+A related question: several callers do one-time PHY setup right after a
+successful connect. The late attach in phylink_late_phy_poll() only does
+phylink_attach_phy(), phylink_bringup_phy() and phy_start(), so that
+setup is never repeated.
+
+enetc_phylink_connect():
+
+	/* disable EEE autoneg, until ENETC driver supports it */
+	memset(&edata, 0, sizeof(struct ethtool_keee));
+	phylink_ethtool_set_eee(priv->phylink, &edata);
+
+With pl->phydev NULL, phylink_ethtool_set_eee() returns -EOPNOTSUPP and
+changes nothing. ENETC has no LPI mac ops, so phylink_bringup_phy() does
+not touch EEE either. Does the late PHY end up advertising EEE on a MAC
+that explicitly tries to turn it off?
+
+stmmac_init_phy() passes priv->tx_lpi_timer to phylib through
+phylink_ethtool_get_eee() and phylink_ethtool_set_eee(). Both fail when
+there is no PHY, so a timer set before the first open looks to be lost.
+
+mvneta_mdio_probe() calls device_set_wakeup_capable() once, from
+phylink_ethtool_get_wol(), right after the connect. Nothing updates it
+after the late attach, so PHY WoL would never be reported.
+
+sparx5_port_open() takes a NULL phydev after a successful connect to
+mean the port has no PHY, and powers up the SerDes:
+
+	if (!ndev->phydev) {
+		/* power up serdes */
+		port->conf.power_down = false;
+
+The phylink_of_phy_connect() kernel-doc also still says "Actions
+specified in phylink_connect_phy() will be performed". That is not true
+on the deferred path.
+
+Is there a way for these callers to learn that the connect was deferred,
+or for the poller to re-run their post-connect setup?
+
+[Severity: Low]
+Does returning here skip the PHY_INTERFACE_MODE_NA fix-up that the
+non-deferred path does further down?
+
+	/* Use PHY device/driver interface */
+	if (pl->link_interface == PHY_INTERFACE_MODE_NA) {
+		pl->link_interface = phy_dev->interface;
+		pl->link_config.interface = pl->link_interface;
+	}
+
+A DSA user port with no phy-mode in DT gets PHY_INTERFACE_MODE_NA from
+dsa_port_phylink_create():
+
+	err = of_get_phy_mode(dp->dn, &mode);
+	if (err)
+		mode = PHY_INTERFACE_MODE_NA;
+
+Before this patch, a successful connect in MLO_AN_PHY mode meant the
+interface was set before phylink_start() ran. Now
+phylink_start()->phylink_mac_initial_config() copies pl->phy_state with
+the interface still NA. phylink_major_config() then passes it to
+mac_select_pcs(), mac_prepare() and mac_config().
+
+The poller's forced major config fixes this later. In the meantime, can
+the MAC/PCS be programmed with PHY_INTERFACE_MODE_NA, or fail on it and
+set major_config_failed?
+
+>  	/* We're done with the phy_node handle */
+>  	fwnode_handle_put(phy_fwnode);
+>  	if (!phy_dev)
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925001209.2334139-1-f%40lex.la
