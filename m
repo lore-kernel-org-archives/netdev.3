@@ -1,48 +1,48 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FB451DAE0;
-	Tue, 29 Sep 2026 12:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B8651AFFF;
+	Tue, 29 Sep 2026 12:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790686785; cv=none; b=vGsaH+rKRtOaGF98QZsblKAgqZZLo2+3aNcAJZZtsaNIU7S5q048oOP/uNtjEMR7mrHFwrAgeH5XnbZbgSPJGIfbtxVyXvFpMk1AV8mRdS20TIk0cpBQOQZDWCEvFCPO5GcgQXTii3P0MSl+e92BlggLHydYbJD4UmWUElCPsXU=
+	t=1790686791; cv=none; b=hxTqF07vwM9SK6W8ZvEmvwe450ZlYpZaKtfrNA5EG0Pa/pxkBRYW8iRbPQYWXW3/r0eL3V3QvUQ/ZvW4SKpWC0k/gI3eawSwwRZT43P5cWObikqXCedmEIfzI1w2OIDPsPApOMjZFRhf1vLJy7VYRLe31orG3pvOlBg+P7jyZD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790686785; c=relaxed/simple;
-	bh=y9Mpo6EndMUJcLkH5Pg/OZGcLdNlAIztTGIYCaggfoA=;
+	s=arc-20240116; t=1790686791; c=relaxed/simple;
+	bh=6Co9etOdIYKgteWOWjrPodwliHYJzcEyx728NzbxKt4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kcrjjuu/ITdf6rkGttX8qVjpSaFzQ4O++XTKCTzMUgFDqDs6QfFEjLwA0E98Bv6G9gKOlfkNoU77HvG8aIo57ikFpnesA3EzMUagRKHbBRJ4dg5OD5Kjgfd2p0XRHU0od1h/5Ed9bozCCW4qIQx7HSagIQNVCCzza+MvrGC2v9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AMg/9RE0; arc=none smtp.client-ip=68.232.154.123
+	 MIME-Version:Content-Type; b=gTJYG3kBEPSrIMOQmTRkV5CkctJrxtdaWnTcTcEFB6chiXJCvyTCtmTUK8CB0uc3fkgZgSNYh+Z/OBRP6KEa4Ioc07S30dFxsf+p0FBIHLEY1clAMX/qNcKyBqm6AuDvyvcc+EIBvT10FwAlCP7jdWYllDAUfQ92ciOZiV9+blY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=pD1oSG2n; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AMg/9RE0"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="pD1oSG2n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790686783; x=1822222783;
+  t=1790686789; x=1822222789;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=y9Mpo6EndMUJcLkH5Pg/OZGcLdNlAIztTGIYCaggfoA=;
-  b=AMg/9RE0maykNgUk7juTbYC64OL+GV6hVR4f7e1YMa035FAlBgla3huq
-   LOa6n77722cW3yPq0/Wks4fT/xdGSiplrXYSk+Lnpah7N96QdrwZx8mMB
-   mjEArq1PUJq7pLkqfV564CWDn41s51xO+bCWTPMXhVVPg+2De6z22/pIC
-   YMLspXDi2jAVjdKjt1xYgT4wyxRAsR1zoSJpKdnEn8GQdN4BPUrDsRERf
-   C/6UEHYFeOIHvtAVQkVaaRz4qmzvKgD5mqOUoBQO3dPO48qbfh6hb2JIE
-   edpyI50c45uUO7oBzi9wQj7KAlMgC+8kNYpt3sN2+gYbRDRtGml+CV9Ws
-   A==;
-X-CSE-ConnectionGUID: 2i+0xySVSpii5iUDpPv8LA==
-X-CSE-MsgGUID: kjxAg6FzS7uN0ElUqZdUqw==
+  bh=6Co9etOdIYKgteWOWjrPodwliHYJzcEyx728NzbxKt4=;
+  b=pD1oSG2nA5nTnX9EZjqFLwjToBAervXfgAYhydkhikHqR/TQcSTM9GNI
+   /ITLdSyW9gBbJ5wTtfTU7W103622OdtxYctfEJFg3h8d6+ZI5ZPhzFcy3
+   1YoUIHpsGKMdHWkgCPuI8ufcwGnfUg/1pKuY7krwge5TVc8JEoFxHiGSc
+   jKmLcm8NnvZtuZgbh7Crr5d4MX1fzhiAeI96uXyWVlCliBc3oAinc/ZpB
+   dDyD0FupjU58XqI29BApK8tgC1bEYNLRmh+66hEAxSHMjQSYwP/KQhc68
+   66bDhh7hJdRBdLZqd0VPZD4fhlnqsCVLRPABTkxBBcfGl9aqkP6Pzvldt
+   g==;
+X-CSE-ConnectionGUID: /82tH26/Q4C45h1U7lsXpw==
+X-CSE-MsgGUID: LBom3/5zSlijkOvzbYqCLw==
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="64611205"
+   d="scan'208";a="74502195"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Sep 2026 05:59:43 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Sep 2026 05:59:48 -0700
 Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 29 Sep 2026 05:59:42 -0700
+ 15.1.2507.58; Tue, 29 Sep 2026 05:59:47 -0700
 Received: from che-ll-i17164.microchip.com (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 29 Sep 2026 05:59:38 -0700
+ 15.1.2507.58 via Frontend Transport; Tue, 29 Sep 2026 05:59:43 -0700
 From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
@@ -50,9 +50,9 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<UNGLinuxDriver@microchip.com>, <Parthiban.Veerasooran@microchip.com>,
 	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next v4 1/4] net: phy: microchip_t1s: fix collision detection on PLCA status change
-Date: Tue, 29 Sep 2026 18:29:25 +0530
-Message-ID: <20260929125928.611784-2-parthiban.veerasooran@microchip.com>
+Subject: [PATCH net-next v4 2/4] net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+Date: Tue, 29 Sep 2026 18:29:26 +0530
+Message-ID: <20260929125928.611784-3-parthiban.veerasooran@microchip.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260929125928.611784-1-parthiban.veerasooran@microchip.com>
 References: <20260929125928.611784-1-parthiban.veerasooran@microchip.com>
@@ -65,371 +65,384 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Collision detection was only updated on explicit ethtool PLCA changes,
-missing autonomous PLCA-status transitions driven by BEACON presence.
-When PLCA went offline, CDEN stayed disabled, leaving CSMA/CD running
-unprotected.
+The OA TC6 standard defines PHY interrupt delivery via the SPI status
+register as optional. The PHY has no dedicated interrupt line in that
+case; its interrupt is signalled through the MAC-PHY SPI interface, but
+phy_mac_interrupt() can't make the PHY driver read and acknowledge its
+own status registers. Expose it to phylib instead as a nested virtual
+IRQ, gated by a new OA_TC6_PHY_INT quirk flag for drivers that route
+PHY interrupts in-band.
 
-Add lan86xx_config_intr()/lan86xx_handle_interrupt() to track PSTC and
-update CDEN in COL_DET_CTRL0 accordingly, resyncing before unmasking to
-avoid racing a genuine interrupt. CDEN also depends on PRSCTL1's
-autonomous CSMA/CD fallback bit: a missing BEACON only means CSMA/CD is
-active if fallback is enabled. read_status() also resynchronizes CDEN,
-providing a polling-based fallback when the PHY interrupt is
-unavailable. A per-PHY lock serializes COL_DET_CTRL0 access, since
-config_intr() isn't guaranteed to run under phydev->lock while
-handle_interrupt() is.
+When set, a nested virtual IRQ is created in oa_tc6_mdiobus_register()
+before mdiobus_register(), and all mii_bus->irq[] entries are populated
+with it so phy_device_create() picks it up regardless of MDIO address.
+Teardown is integrated into oa_tc6_mdiobus_unregister().
 
-Also fix plca_cfg->enabled being treated as boolean instead of tri-state
-(-1 = "don't change"), which could disable CDEN on an unrelated ethtool
-write.
+A custom irq_chip (oa_tc6_phy_irq_chip) implements mask/unmask via
+irq_bus_lock/irq_bus_sync_unlock, writing the mask bit to hardware over
+SPI. The interrupt starts masked (hardware reset default) and is only
+unmasked when phylib requests it, so disabling the nested IRQ actually
+masks the hardware source too, preventing interrupt storms.
 
-Wired to LAN867X Rev.C1, C2 and LAN865X Rev.B0/B1. Rev.B1 is
-unsupported/undocumented silicon and stays out of scope. Rev.D0 is
-handled separately (follow-on patch).
+Dispatch is deferred to a workqueue rather than run synchronously from
+the threaded IRQ: phy_interrupt() takes phydev->lock and PHY
+handle_interrupt() issues synchronous SPI transfers, either of which
+would otherwise stall the single thread pumping every TX/RX data chunk.
+PHYINT is level triggered and stays asserted until acked, so a no-op
+reschedule on an already-pending work item can't lose or duplicate an
+event.
 
-Fixes: 78341049fbcd ("net: phy: microchip_t1s: configure collision detection based on PLCA mode")
+Select IRQ_DOMAIN in Kconfig for the irq_domain APIs used here.
+
+Prerequisite for "net: phy: microchip_t1s: fix collision detection on
+PLCA status change" (Fixes: 78341049fbcd) to fully cover the LAN865X
+internal PHY.
+
 Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 ---
- drivers/net/phy/microchip_t1s.c | 238 ++++++++++++++++++++++++++++++--
- 1 file changed, 227 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/Kconfig  |   1 +
+ drivers/net/ethernet/oa_tc6.c | 227 ++++++++++++++++++++++++++++++++++
+ include/linux/oa_tc6.h        |   3 +
+ 3 files changed, 231 insertions(+)
 
-diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
-index 73c23d311d72..5ce0304bf095 100644
---- a/drivers/net/phy/microchip_t1s.c
-+++ b/drivers/net/phy/microchip_t1s.c
-@@ -18,8 +18,8 @@
- /* Both Rev.B0 and B1 clause 22 PHYID's are same due to B1 chip limitation */
- #define PHY_ID_LAN865X_REVB 0x0007C1B3
- 
-+/* PHY interrupt status 2 register */
- #define LAN867X_REG_STS2 0x0019
--
- #define LAN867x_RESET_COMPLETE_STS BIT(11)
- 
- #define LAN865X_REG_CFGPARAM_ADDR 0x00D8
-@@ -27,6 +27,21 @@
- #define LAN865X_REG_CFGPARAM_CTRL 0x00DA
- #define LAN865X_REG_STS2 0x0019
- 
-+/* PHY interrupt status 1 register */
-+#define LAN86XX_REG_STS1		0x0018
-+#define LAN86XX_STS1_PLCA_STS_CHANGED	BIT(11)
-+
-+/* PHY interrupt mask 1 register */
-+#define LAN86XX_REG_IMSK1		0x001C
-+
-+/* PLCA Reconciliation Sublayer Control 1 Register (PRSCTL1). Bit 10 controls
-+ * whether the PHY autonomously falls back to CSMA/CD mode when no BEACON is
-+ * observed while PLCA is enabled, versus staying pinned to PLCA mode regardless
-+ * of BEACON presence.
-+ */
-+#define LAN86XX_REG_PRSCTL1               0x0035
-+#define PRSCTL1_PLCA_FALLB_TO_CSMACD_EN   BIT(10)
-+
- /* Collision Detector Control 0 Register */
- #define LAN86XX_REG_COL_DET_CTRL0	0x0087
- #define COL_DET_CTRL0_ENABLE_BIT_MASK	BIT(15)
-@@ -136,6 +151,30 @@ static const u16 lan867x_revd0_fixup_values[8] = {
- 	0x001C, 0x0C0B, 0x8C07, 0x9660,
- };
- 
-+struct lan86xx_priv {
-+	/* Serializes CDEN state synchronization. */
-+	struct mutex cden_lock;
-+	int plca_enabled;
-+};
-+
-+static int lan86xx_probe(struct phy_device *phydev)
-+{
-+	struct lan86xx_priv *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	ret = devm_mutex_init(&phydev->mdio.dev, &priv->cden_lock);
-+	if (ret)
-+		return ret;
-+
-+	phydev->priv = priv;
-+
-+	return 0;
-+}
-+
- /* Pulled from AN1760 describing 'indirect read'
-  *
-  * write_register(0x4, 0x00D8, addr)
-@@ -430,6 +469,57 @@ static int lan867x_revd0_link_active_selection(struct phy_device *phydev,
- 			     LAN867X_REG_LINK_STATUS_CTRL, value);
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index c2b0161d0bec..9b102a91c36a 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -151,6 +151,7 @@ config OA_TC6
+ 	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
+ 	depends on SPI
+ 	select PHYLIB
++	select IRQ_DOMAIN
+ 	help
+ 	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
+ 	  Serial Interface protocol for supporting 10BASE-T1x MAC-PHYs.
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 364027c39fa4..74fe65b76359 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -10,6 +10,8 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/iopoll.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdomain.h>
+ #include <linux/mdio.h>
+ #include <linux/phy.h>
+ #include <linux/oa_tc6.h>
+@@ -72,6 +74,11 @@ struct oa_tc6 {
+ 	struct phy_device *phydev;
+ 	struct mii_bus *mdiobus;
+ 	struct spi_device *spi;
++	struct mutex phy_irq_lock; /* Serialises irq_bus_lock/sync_unlock */
++	bool phy_irq_masked; /* Shadow of OA_TC6_INT_MASK0_PHY_INT_MASK */
++	struct irq_domain *phy_irq_domain;
++	int phy_virq;
++	struct work_struct phy_irq_work;
+ 	struct mutex spi_ctrl_lock; /* Protects spi control transfer */
+ 	spinlock_t tx_skb_lock; /* Protects tx skb handling */
+ 	void *spi_ctrl_tx_buf;
+@@ -531,6 +538,178 @@ int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
  }
+ EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
  
-+static int lan86xx_fallback_to_csmacd(struct phy_device *phydev)
++static int oa_tc6_phy_irq_unmask_hw(struct oa_tc6 *tc6)
 +{
++	u32 regval;
 +	int ret;
 +
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_PRSCTL1);
-+	if (ret < 0)
-+		return ret;
++	mutex_lock(&tc6->phy_irq_lock);
 +
-+	return !!(ret & PRSCTL1_PLCA_FALLB_TO_CSMACD_EN);
-+}
-+
-+/* Collision detection must stay disabled while the device is actually operating
-+ * in PLCA mode, and enabled while it is actually operating in CSMA/CD.
-+ * A missing BEACON (pst == 0) only means the device is running CSMA/CD if
-+ * autonomous fallback is enabled (PRSCTL1 bit 10); if fallback is disabled,
-+ * the device stays pinned to PLCA mode regardless of BEACON presence,
-+ * so collision detection must remain disabled.
-+ */
-+static int lan86xx_update_cden(struct phy_device *phydev)
-+{
-+	struct lan86xx_priv *priv = phydev->priv;
-+	struct phy_plca_status plca_st;
-+	int fallback, ret;
-+	u16 cden;
-+
-+	fallback = lan86xx_fallback_to_csmacd(phydev);
-+	if (fallback < 0)
-+		return fallback;
-+
-+	ret = genphy_c45_plca_get_status(phydev, &plca_st);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* PLCA disabled                          -> CDEN enabled
-+	 * PLCA enabled + BEACON                  -> CDEN disabled
-+	 * PLCA enabled + no BEACON + fallback    -> CDEN enabled
-+	 * PLCA enabled + no BEACON + no fallback -> CDEN disabled
-+	 */
-+	if (!priv->plca_enabled)
-+		cden = COL_DET_ENABLE;
-+	else if (plca_st.pst)
-+		cden = COL_DET_DISABLE;
-+	else if (fallback)
-+		cden = COL_DET_ENABLE;
-+	else
-+		cden = COL_DET_DISABLE;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
-+			      COL_DET_CTRL0_ENABLE_BIT_MASK, cden);
-+}
-+
- /* As per LAN8650/1 Rev.B0/B1 AN1760 (Revision F (DS60001760G - June 2024)) and
-  * LAN8670/1/2 Rev.C1/C2 AN1699 (Revision E (DS60001699F - June 2024)), under
-  * normal operation, the device should be operated in PLCA mode. Disabling
-@@ -444,10 +534,14 @@ static int lan867x_revd0_link_active_selection(struct phy_device *phydev,
- static int lan86xx_plca_set_cfg(struct phy_device *phydev,
- 				const struct phy_plca_cfg *plca_cfg)
- {
-+	struct lan86xx_priv *priv = phydev->priv;
- 	int ret;
- 
--	/* Link status selection must be configured for LAN8670/1/2 Rev.D0 */
--	if (phydev->phy_id == PHY_ID_LAN867X_REVD0) {
-+	/* Link status selection must be configured for LAN8670/1/2 Rev.D0.
-+	 * Only update link status selection if enabled is explicitly specified
-+	 * (not -1, which means "don't change").
-+	 */
-+	if (phydev->phy_id == PHY_ID_LAN867X_REVD0 && plca_cfg->enabled != -1) {
- 		ret = lan867x_revd0_link_active_selection(phydev,
- 							  plca_cfg->enabled);
- 		if (ret)
-@@ -458,14 +552,18 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
- 	if (ret)
- 		return ret;
- 
--	if (plca_cfg->enabled)
--		return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
--				      LAN86XX_REG_COL_DET_CTRL0,
--				      COL_DET_CTRL0_ENABLE_BIT_MASK,
--				      COL_DET_DISABLE);
-+	if (plca_cfg->enabled != -1)
-+		priv->plca_enabled = plca_cfg->enabled;
- 
--	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
--			      COL_DET_CTRL0_ENABLE_BIT_MASK, COL_DET_ENABLE);
-+	if (plca_cfg->enabled != -1) {
-+		mutex_lock(&priv->cden_lock);
-+		ret = lan86xx_update_cden(phydev);
-+		mutex_unlock(&priv->cden_lock);
-+		if (ret)
-+			return ret;
++	if (READ_ONCE(tc6->phy_irq_masked)) {
++		ret = 0;
++		goto unlock;
 +	}
 +
-+	return 0;
- }
- 
- static int lan867x_revd0_config_init(struct phy_device *phydev)
-@@ -493,6 +591,9 @@ static int lan867x_revd0_config_init(struct phy_device *phydev)
- 
- static int lan86xx_read_status(struct phy_device *phydev)
- {
-+	struct lan86xx_priv *priv = phydev->priv;
-+	int ret;
++	ret = oa_tc6_read_register(tc6, OA_TC6_REG_INT_MASK0, &regval);
++	if (ret)
++		goto unlock;
 +
- 	/* The phy has some limitations, namely:
- 	 *  - always reports link up
- 	 *  - only supports 10MBit half duplex
-@@ -503,7 +604,112 @@ static int lan86xx_read_status(struct phy_device *phydev)
- 	phydev->speed = SPEED_10;
- 	phydev->autoneg = AUTONEG_DISABLE;
- 
--	return 0;
-+	/* LAN867X Rev.B1 is unsupported/undocumented silicon (absent from the
-+	 * current AN1699 and datasheet) and is kept out of scope for the CDEN
-+	 * tracking below.
-+	 */
-+	if (phydev->phy_id == PHY_ID_LAN867X_REVB1)
-+		return 0;
++	regval &= ~OA_TC6_INT_MASK0_PHY_INT_MASK;
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
 +
-+	/* When no PHY interrupt is available, phylib polls read_status().
-+	 * Use the PLCA status from that poll to resync CDEN.
-+	 */
-+	mutex_lock(&priv->cden_lock);
-+	ret = lan86xx_update_cden(phydev);
-+	mutex_unlock(&priv->cden_lock);
++unlock:
++	mutex_unlock(&tc6->phy_irq_lock);
++
 +	return ret;
 +}
 +
-+/* Read LAN86XX_REG_STS1, which clears the latched status bits on read. */
-+static int lan86xx_read_clear_sts1(struct phy_device *phydev)
++static void oa_tc6_phy_irq_work(struct work_struct *work)
 +{
-+	return phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
-+}
-+
-+/* Mask (mask bit = 1) or unmask (mask bit = 0) the given STS1 bits in
-+ * IMSK1.
-+ */
-+static int lan86xx_set_intr_mask(struct phy_device *phydev, u16 mask,
-+				 bool enable)
-+{
-+	if (enable)
-+		/* A mask bit of 0 enables the corresponding interrupt. */
-+		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
-+					  LAN86XX_REG_IMSK1, mask);
-+
-+	return phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_IMSK1,
-+				mask);
-+}
-+
-+static int lan86xx_config_intr(struct phy_device *phydev)
-+{
-+	struct lan86xx_priv *priv = phydev->priv;
++	struct oa_tc6 *tc6 = container_of(work, struct oa_tc6, phy_irq_work);
 +	int ret;
 +
-+	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+		/* Read to clear any pending status before enabling. */
-+		ret = lan86xx_read_clear_sts1(phydev);
-+		if (ret < 0)
-+			return ret;
++	/* Dispatched off the SPI chunk-processing thread so that
++	 * phy_interrupt() taking phydev->lock and issuing synchronous SPI
++	 * control transfers from PHY handle_interrupt() cannot stall the single
++	 * thread pumping TX/RX data chunks.
++	 */
++	handle_nested_irq(tc6->phy_virq);
 +
-+		/* STS1 may have cleared a PSTC event that occurred while the
-+		 * interrupt was masked, so synchronize CDEN with the current
-+		 * PLCA state before enabling PSTC.
-+		 */
-+		mutex_lock(&priv->cden_lock);
-+		ret = lan86xx_update_cden(phydev);
-+		mutex_unlock(&priv->cden_lock);
-+		if (ret)
-+			return ret;
-+
-+		return lan86xx_set_intr_mask(phydev,
-+					     LAN86XX_STS1_PLCA_STS_CHANGED,
-+					     true);
-+	}
-+
-+	ret = lan86xx_set_intr_mask(phydev, LAN86XX_STS1_PLCA_STS_CHANGED,
-+				    false);
++	ret = oa_tc6_phy_irq_unmask_hw(tc6);
 +	if (ret)
-+		return ret;
-+
-+	/* Read to clear any pending status after disabling. */
-+	ret = lan86xx_read_clear_sts1(phydev);
-+	return ret < 0 ? ret : 0;
++		dev_err(&tc6->spi->dev, "Failed to unmask PHY interrupt: %d\n",
++			ret);
 +}
 +
-+static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
++static int oa_tc6_phy_irq_mask_hw(struct oa_tc6 *tc6)
 +{
-+	struct lan86xx_priv *priv = phydev->priv;
-+	irqreturn_t ret_irq = IRQ_NONE;
-+	int sts1, ret;
++	u32 regval;
++	int ret;
 +
-+	/* Reading the status register clears the latched event bits. */
-+	sts1 = lan86xx_read_clear_sts1(phydev);
-+	if (sts1 < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
++	mutex_lock(&tc6->phy_irq_lock);
++
++	ret = oa_tc6_read_register(tc6, OA_TC6_REG_INT_MASK0, &regval);
++	if (ret)
++		goto unlock;
++
++	regval |= OA_TC6_INT_MASK0_PHY_INT_MASK;
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
++
++unlock:
++	mutex_unlock(&tc6->phy_irq_lock);
++
++	return ret;
++}
++
++static void oa_tc6_phy_irq_mask(struct irq_data *irqd)
++{
++	struct oa_tc6 *tc6 = irq_data_get_irq_chip_data(irqd);
++
++	WRITE_ONCE(tc6->phy_irq_masked, true);
++}
++
++static void oa_tc6_phy_irq_unmask(struct irq_data *irqd)
++{
++	struct oa_tc6 *tc6 = irq_data_get_irq_chip_data(irqd);
++
++	WRITE_ONCE(tc6->phy_irq_masked, false);
++}
++
++static void oa_tc6_phy_irq_disable(struct irq_data *irqd)
++{
++	struct oa_tc6 *tc6 = irq_data_get_irq_chip_data(irqd);
++
++	WRITE_ONCE(tc6->phy_irq_masked, true);
++}
++
++static void oa_tc6_phy_irq_bus_lock(struct irq_data *irqd)
++{
++	struct oa_tc6 *tc6 = irq_data_get_irq_chip_data(irqd);
++
++	mutex_lock(&tc6->phy_irq_lock);
++}
++
++static void oa_tc6_phy_irq_bus_sync_unlock(struct irq_data *irqd)
++{
++	struct oa_tc6 *tc6 = irq_data_get_irq_chip_data(irqd);
++	u32 regval;
++	int ret;
++
++	ret = oa_tc6_read_register(tc6, OA_TC6_REG_INT_MASK0, &regval);
++	if (ret) {
++		dev_err(&tc6->spi->dev, "Failed to read INT_MASK0: %d\n", ret);
++		goto unlock;
 +	}
 +
-+	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
-+		/* AN1760/AN1699: disable collision detection while actually
-+		 * operating in PLCA mode; re-enable it only once actually
-+		 * operating in CSMA/CD (see lan86xx_update_cden()).
-+		 *
-+		 * https://www.microchip.com/en-us/application-notes/an1760
-+		 * https://www.microchip.com/en-us/application-notes/an1699
++	if (READ_ONCE(tc6->phy_irq_masked))
++		regval |= OA_TC6_INT_MASK0_PHY_INT_MASK;
++	else
++		regval &= ~OA_TC6_INT_MASK0_PHY_INT_MASK;
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
++	if (ret) {
++		dev_err(&tc6->spi->dev, "Failed to write INT_MASK0: %d\n", ret);
++		/* Note: on SPI failure, mask state is undefined until next
++		 * sync. This follows genirq's regmap_irq_sync_unlock() pattern
++		 * since the callback returns void and has nowhere to propagate
++		 * errors.
 +		 */
-+		mutex_lock(&priv->cden_lock);
-+		ret = lan86xx_update_cden(phydev);
-+		mutex_unlock(&priv->cden_lock);
-+		if (ret < 0) {
-+			phy_error(phydev);
-+			return IRQ_NONE;
-+		}
-+
-+		ret_irq = IRQ_HANDLED;
 +	}
 +
-+	return ret_irq;
++unlock:
++	mutex_unlock(&tc6->phy_irq_lock);
++}
++
++static struct irq_chip oa_tc6_phy_irq_chip = {
++	.name                   = "oa_tc6_phy",
++	.irq_mask               = oa_tc6_phy_irq_mask,
++	.irq_unmask             = oa_tc6_phy_irq_unmask,
++	.irq_disable            = oa_tc6_phy_irq_disable,
++	.irq_bus_lock           = oa_tc6_phy_irq_bus_lock,
++	.irq_bus_sync_unlock    = oa_tc6_phy_irq_bus_sync_unlock,
++};
++
++static int oa_tc6_phy_irq_map(struct irq_domain *domain, unsigned int irq,
++			      irq_hw_number_t hwirq)
++{
++	irq_set_chip_data(irq, domain->host_data);
++	irq_set_chip_and_handler(irq, &oa_tc6_phy_irq_chip, handle_simple_irq);
++	irq_set_nested_thread(irq, true);
++	irq_set_noprobe(irq);
++
++	return 0;
++}
++
++static const struct irq_domain_ops oa_tc6_phy_irq_domain_ops = {
++	.map = oa_tc6_phy_irq_map,
++};
++
++static int oa_tc6_phy_irq_setup(struct oa_tc6 *tc6)
++{
++	INIT_WORK(&tc6->phy_irq_work, oa_tc6_phy_irq_work);
++
++	tc6->phy_irq_domain =
++		irq_domain_create_linear(NULL, 1,
++					 &oa_tc6_phy_irq_domain_ops, tc6);
++	if (!tc6->phy_irq_domain)
++		return -ENOMEM;
++
++	tc6->phy_virq = irq_create_mapping(tc6->phy_irq_domain, 0);
++	WRITE_ONCE(tc6->phy_irq_masked, true);
++	if (!tc6->phy_virq) {
++		irq_domain_remove(tc6->phy_irq_domain);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++static void oa_tc6_phy_irq_teardown(struct oa_tc6 *tc6)
++{
++	irq_dispose_mapping(tc6->phy_virq);
++	irq_domain_remove(tc6->phy_irq_domain);
++}
++
+ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ {
+ 	int ret;
+@@ -562,9 +741,25 @@ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ 	snprintf(tc6->mdiobus->id, ARRAY_SIZE(tc6->mdiobus->id), "%s",
+ 		 dev_name(&tc6->spi->dev));
+ 
++	if (tc6->quirk_flags & OA_TC6_PHY_INT) {
++		ret = oa_tc6_phy_irq_setup(tc6);
++		if (ret) {
++			mdiobus_free(tc6->mdiobus);
++			return ret;
++		}
++		/* Populate all irq[] entries before registration so
++		 * phy_device_create() picks up the virtual IRQ regardless of
++		 * the PHY's MDIO address.
++		 */
++		for (int i = 0; i < PHY_MAX_ADDR; i++)
++			tc6->mdiobus->irq[i] = tc6->phy_virq;
++	}
++
+ 	ret = mdiobus_register(tc6->mdiobus);
+ 	if (ret) {
+ 		netdev_err(tc6->netdev, "Could not register MDIO bus\n");
++		if (tc6->quirk_flags & OA_TC6_PHY_INT)
++			oa_tc6_phy_irq_teardown(tc6);
+ 		mdiobus_free(tc6->mdiobus);
+ 		return ret;
+ 	}
+@@ -575,6 +770,8 @@ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ static void oa_tc6_mdiobus_unregister(struct oa_tc6 *tc6)
+ {
+ 	mdiobus_unregister(tc6->mdiobus);
++	if (tc6->quirk_flags & OA_TC6_PHY_INT)
++		oa_tc6_phy_irq_teardown(tc6);
+ 	mdiobus_free(tc6->mdiobus);
  }
  
- static struct phy_driver microchip_t1s_driver[] = {
-@@ -521,8 +727,11 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC1),
- 		.name               = "LAN867X Rev.C1",
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
-+		.probe              = lan86xx_probe,
- 		.config_init        = lan867x_revc_config_init,
- 		.read_status        = lan86xx_read_status,
-+		.config_intr        = lan86xx_config_intr,
-+		.handle_interrupt   = lan86xx_handle_interrupt,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
- 		.set_plca_cfg	    = lan86xx_plca_set_cfg,
- 		.get_plca_status    = genphy_c45_plca_get_status,
-@@ -531,8 +740,11 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVC2),
- 		.name               = "LAN867X Rev.C2",
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
-+		.probe              = lan86xx_probe,
- 		.config_init        = lan867x_revc_config_init,
- 		.read_status        = lan86xx_read_status,
-+		.config_intr        = lan86xx_config_intr,
-+		.handle_interrupt   = lan86xx_handle_interrupt,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
- 		.set_plca_cfg	    = lan86xx_plca_set_cfg,
- 		.get_plca_status    = genphy_c45_plca_get_status,
-@@ -541,6 +753,7 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVD0),
- 		.name               = "LAN867X Rev.D0",
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
-+		.probe              = lan86xx_probe,
- 		.config_init        = lan867x_revd0_config_init,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
- 		.set_plca_cfg	    = lan86xx_plca_set_cfg,
-@@ -554,8 +767,11 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN865X_REVB),
- 		.name               = "LAN865X Rev.B0/B1 Internal Phy",
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
-+		.probe              = lan86xx_probe,
- 		.config_init        = lan865x_revb_config_init,
- 		.read_status        = lan86xx_read_status,
-+		.config_intr        = lan86xx_config_intr,
-+		.handle_interrupt   = lan86xx_handle_interrupt,
- 		.read_mmd           = genphy_read_mmd_c45,
- 		.write_mmd          = genphy_write_mmd_c45,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+@@ -624,6 +821,7 @@ static void oa_tc6_phy_exit(struct oa_tc6 *tc6)
+ 	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
+ 		return;
+ 
++	cancel_work_sync(&tc6->phy_irq_work);
+ 	phy_disconnect(tc6->phydev);
+ 	oa_tc6_mdiobus_unregister(tc6);
+ }
+@@ -780,7 +978,12 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+ 	netif_tx_disable(tc6->netdev);
+ 	oa_tc6_drop_tx_skb(tc6, skb);
+ 	oa_tc6_free_ongoing_skbs(tc6);
++	/* Serialize INT_MASK0 write with phylib's mask/unmask to prevent
++	 * read-modify-write races in oa_tc6_phy_irq_bus_sync_unlock().
++	 */
++	mutex_lock(&tc6->phy_irq_lock);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
++	mutex_unlock(&tc6->phy_irq_lock);
+ 	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
+ 	dev_err(&tc6->spi->dev, "Device interrupt disabled to avoid interrupt storm");
+@@ -813,6 +1016,29 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
+ 		return ret;
+ 	}
+ 
++	/* Dispatch the PHY interrupt to phylib via the nested virtual IRQ so
++	 * the PHY driver reads and acknowledges its status. This is deferred
++	 * to a workqueue rather than dispatched synchronously here, since
++	 * phy_interrupt() takes phydev->lock and PHY handle_interrupt() issues
++	 * synchronous SPI control transfers, which would otherwise block this
++	 * thread.
++	 *
++	 * Mask the hardware interrupt immediately to avoid wasting SPI cycles
++	 * on redundant STATUS0 reads until the worker runs and phylib acks it.
++	 * PHYINT is level triggered and stays asserted until acked, so every
++	 * RX chunk footer would re-read STATUS0 until the worker schedules.
++	 * Gate on phy_virq (the actual resource) rather than just the flag to
++	 * be self-consistent if OA_TC6_BROKEN_PHY skips initialization.
++	 */
++	if (tc6->phy_virq && FIELD_GET(OA_TC6_STATUS0_PHY_INT, value)) {
++		ret = oa_tc6_phy_irq_mask_hw(tc6);
++		if (ret)
++			dev_err(&tc6->spi->dev,
++				"Failed to mask PHY interrupt: %d\n", ret);
++		else
++			schedule_work(&tc6->phy_irq_work);
++	}
++
+ 	if (FIELD_GET(OA_TC6_STATUS0_RX_BUFFER_OVERFLOW_ERROR, value)) {
+ 		oa_tc6_look_for_new_frame(tc6);
+ 		net_err_ratelimited("%s: Receive buffer overflow error\n",
+@@ -1471,6 +1697,7 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
+ 	tc6->spi = spi;
+ 	tc6->netdev = netdev;
+ 	SET_NETDEV_DEV(netdev, &spi->dev);
++	mutex_init(&tc6->phy_irq_lock);
+ 	mutex_init(&tc6->spi_ctrl_lock);
+ 	spin_lock_init(&tc6->tx_skb_lock);
+ 
+diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
+index 27f652d4920b..1c8cc263c5e5 100644
+--- a/include/linux/oa_tc6.h
++++ b/include/linux/oa_tc6.h
+@@ -30,6 +30,7 @@
+ 
+ /* Status Register #0 */
+ #define OA_TC6_REG_STATUS0			0x0008
++#define OA_TC6_STATUS0_PHY_INT			BIT(7)
+ #define OA_TC6_STATUS0_RESETC			BIT(6)	/* Reset Complete */
+ #define OA_TC6_STATUS0_HEADER_ERROR		BIT(5)
+ #define OA_TC6_STATUS0_LOSS_OF_FRAME_ERROR	BIT(4)
+@@ -43,6 +44,7 @@
+ 
+ /* Interrupt Mask Register #0 */
+ #define OA_TC6_REG_INT_MASK0				0x000C
++#define OA_TC6_INT_MASK0_PHY_INT_MASK			BIT(7)
+ #define OA_TC6_INT_MASK0_HEADER_ERR_MASK		BIT(5)
+ #define OA_TC6_INT_MASK0_LOSS_OF_FRAME_ERR_MASK		BIT(4)
+ #define OA_TC6_INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
+@@ -68,6 +70,7 @@ struct oa_tc6;
+ 
+ enum oa_tc6_quirk_flag {
+ 	OA_TC6_BROKEN_PHY = BIT(0),
++	OA_TC6_PHY_INT    = BIT(1),
+ };
+ 
+ struct oa_tc6_quirks {
 -- 
 2.43.0
 
