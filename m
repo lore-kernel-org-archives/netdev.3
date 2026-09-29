@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F66941C2E4
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 06:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846BF41D133
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 06:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790663213; cv=none; b=PYdzJusOtZ0VHCYQMFEV6pYz91IlLquVNqshRdT7I/M/BeCN1lfusMv2ve04f93aKxEWAWGoCxYYN6LyC+DU4QMd3BIr0PYt1v8lqFCnZ5K8GqG6hnkovdt3xXkM05yF8DDNO/8IaU8a+V8sJnoC+sV/qHxuocf2tcA3+35LEr8=
+	t=1790663214; cv=none; b=kls0PLiylrGO4HvQ3ADembgeK3jCEBJhIvOaXB93jRg8MkEiFUQw5Xt+lqQnWFLkzfNbE49X/Yfou8KYPXt+/+tnxkWFrOdDfV8IkD1LOUY8NgKohlaHfBKYwcYr+8MCgSYwnopzZxVS32lvQ877Q7ikTaE8PM07I4Ffu6TrZTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790663213; c=relaxed/simple;
-	bh=5vdcJ4Kz5OSIYX4ifesf+yRJlY0M5qAjjaJANAMGgek=;
+	s=arc-20240116; t=1790663214; c=relaxed/simple;
+	bh=qMOvlFzn2vADHctv/0mGCCmyr13DY/QQ4g7rG6mLLJA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OQ+J1mIiZoeW0s58GcYbyFJZU+zGZmugvX0BKtwXFYSXCx9X3X+vPgbGvSMonM4rsADCgBqfqkxNirwEk/Sw9VU5OvsHsFiDbMKbEPbPt1CDtX4Q7yhGiKp44gKVLzWHwQBLvxxGOygk15CZIGWHiiiE8AZgMl7BxiglerL39xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmJCHmpv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hekD4ugaYWDUt2ZLRcQG12rZJzC7AdETyg8sjGxu+EQ0+2rppkAupHKYg4t3DH++zc0G8pGUON2UBe0qZBFUETbwBGxLcM+bgpXvvzlQSkXS8ITcOTFbSKmWYktkimlOfkgK5O941fOKO+ywtXtySKuknFgMrzGF4rRDDMueyFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brRXPfhy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmJCHmpv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF351F000FF;
-	Tue, 29 Sep 2026 06:26:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brRXPfhy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAC21F00893;
+	Tue, 29 Sep 2026 06:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790663212;
-	bh=fhpo7lhZP7QU3k0EPR6wCU4jDVocmLG2PGUF50xcGr8=;
+	s=k20260515; t=1790663213;
+	bh=yuAE3FNlRZ8WBe6lofgamRVfmpNsTRBW6UouxfPPKTU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AmJCHmpvCkgKifxKxbmQgGqkLjCfcLckSfgZML9DlJlPtwagVxsKpPBHlYoN4I6dG
-	 brm0CNypqDHhbBaE4QMq4svCUve8AztoZsCwZhWjpLfThFmESrVg7fVoFF4+aTjTER
-	 BBCGBMHo6RuYxB93vkLczkthDOXnlJ+fytFbemjhqqlmHzLYBhnj7GZ/YXi7J6jgnD
-	 XU7YwlBLkEIU3q84K6LMDp/3fJOOuf+E6/TgmWCASYyjB83u5HUQzViZtzh5SUtaDi
-	 svWgZpa7vYZan0NZCxTic12Zxyn4IrjCQv7rMcDRmXZxYY8Cju4wOkOrIQpmi16dHm
-	 W4dewIlKx0r2A==
-Subject: Re: [PATCH v1 net-next 1/5] net: Remove net->is_dying.
+	b=brRXPfhyo4q9ljWw/ulVBP2h4GYEtz/0y2bTrtnTc18AYQANlFTK3TB6qidysa1qS
+	 c0NJBkqbyCbDh+RsDFAmAEyZMxx5c+UkuGzrmYYgjYS7TrcqraaOBaUrfHNr4bcyNp
+	 Yn0rX+7Y6bxPkIwK3V0g0+VguQNSWeWwcPrjffNasuwdh4/GXlhiv/nsGXNE5SnJSC
+	 JGz063HaIppmhbrt7uhH6HCuXGAAOQurHaA3PY2+scbFISOZfQJANbK3RZ8w9aFJ8+
+	 UF1/P+0KM/RGT5dgjMxUe2RyZK6bE27MOGSQrJHuY9VGtbHkOP5ViRuHa2H+mnXDGc
+	 /wIBqtsQ1RftA==
+Subject: Re: [PATCH v1 net-next 2/5] net: Add ->pre_exit_batch() to struct
+ pernet_operations.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  carges@cloudflare.com, kuni1840@gmail.com, netdev@vger.kernel.org
-Date: Tue, 29 Sep 2026 06:26:51 +0000
-Message-ID: <179066321100.434549.2778096770217672912@kernel.org>
-In-Reply-To: <20260927202429.2452589-2-kuniyu@google.com>
-References: <20260927202429.2452589-2-kuniyu@google.com>
+Date: Tue, 29 Sep 2026 06:26:52 +0000
+Message-ID: <179066321227.434549.13771615629655873291@kernel.org>
+In-Reply-To: <20260927202429.2452589-3-kuniyu@google.com>
+References: <20260927202429.2452589-3-kuniyu@google.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,138 +53,99 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message for "net: Remove net->is_dying." says
-  net->is_dying "is an alias of !check_net(net)".
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but a valid NSID
-  of INT_MAX makes the signed cursor in unhash_nsid() overflow, which…
-- [Low] This problem wasn't introduced by this patch, but the block
-  comment in cleanup_net() right after the loop this patch edits says…
+- [Low] The new ->pre_exit_batch() hook is undocumented, and the commit
+  message describes its scope inaccurately.
 
 --
 
-net: Remove net->is_dying.
+net: Add ->pre_exit_batch() to struct pernet_operations.
 
-This patch removes the is_dying flag from struct net. cleanup_net() used
-to set that flag on the nets in its current kill batch. In unhash_nsid()
-the flag check is replaced with check_net(peer), on the grounds that
-is_dying is an alias of !check_net(net).
+This commit adds a pre_exit_batch() callback to struct pernet_operations.
+ops_pre_exit_list() calls it after the per-net pre_exit() calls. The goal
+is to let subsystems batch device-related cleanup, such as flushing
+uncached routes, across dying namespaces without holding RTNL and before
+ops_exit_rtnl_list().
 
+> diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+> index b4247e767d135..58b2601bb8691 100644
+> --- a/include/net/net_namespace.h
+> +++ b/include/net/net_namespace.h
+> @@ -488,6 +488,7 @@ struct pernet_operations {
+>  	 */
+>  	int (*init)(struct net *net);
+>  	void (*pre_exit)(struct net *net);
+> +	void (*pre_exit_batch)(struct list_head *net_exit_list);
+>  	void (*exit)(struct net *net);
+>  	void (*exit_batch)(struct list_head *net_exit_list);
+>  	/* Following method is called with RTNL held. */
 > diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-> index da5f881fbd3b9..0e13de0cd36b6 100644
+> index 0e13de0cd36b6..476fbf913bad8 100644
 > --- a/net/core/net_namespace.c
 > +++ b/net/core/net_namespace.c
-> @@ -644,7 +644,7 @@ static void unhash_nsid(struct net *last)
->  			int curr_id = id;
->
->  			id++;
+> @@ -160,6 +160,9 @@ static void ops_pre_exit_list(const struct pernet_operations *ops,
+>  		list_for_each_entry(net, net_exit_list, exit_list)
+>  			ops->pre_exit(net);
+>  	}
+> +
+> +	if (ops->pre_exit_batch)
+> +		ops->pre_exit_batch(net_exit_list);
 
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. What
-happens here when a netns_ids IDR has an entry at INT_MAX?
+[Severity: Low]
+The commit message says the hook is there "To batch such cleanup across
+dying netns". Is net_exit_list here always a list of dying namespaces?
 
-rtnl_net_newid() accepts any s32 NETNSA_NSID. alloc_netid() then does:
+ops_pre_exit_list() is also reached through ops_undo_single() from
+__unregister_pernet_operations(). That function builds the list from every
+live netns, including init_net:
 
-	min = reqid;
-	max = reqid + 1;
+net/core/net_namespace.c:__unregister_pernet_operations() {
+    ...
+	for_each_net(net)
+		list_add_tail(&net->exit_list, &net_exit_list);
 
-For reqid == INT_MAX, max wraps to INT_MIN. idr_alloc() treats end <= 0
-as unbounded, so ID INT_MAX gets allocated.
-
-When unhash_nsid() later reaches that entry, id++ wraps to INT_MIN,
-whether or not the entry is removed. On the next iteration idr_get_next()
-turns the cursor into an unsigned long above INT_MAX. idr_get_next_ul()
-finds no slot and leaves the value unchanged, so this fires:
-
-lib/idr.c:idr_get_next() {
-	unsigned long id = *nextid;
-	void *entry = idr_get_next_ul(idr, &id);
-
-	if (WARN_ON_ONCE(id > INT_MAX))
-		return NULL;
-	...
+	list_del(&ops->list);
+	ops_undo_single(ops, &net_exit_list);
 }
 
-An unprivileged user can reach this with unshare(CLONE_NEWUSER |
-CLONE_NEWNET) followed by RTM_NEWNSID with NETNSA_NSID set to INT_MAX.
-The next netns teardown anywhere on the system then hits the WARN. With
-panic_on_warn=1 that becomes a panic. No entries get skipped, because
-INT_MAX is the last possible ID.
+It is also reached from the error path of __register_pernet_operations().
+It is reached from the setup_net() failure path through ops_undo_list() as
+well, and there check_net() is still true for the net being torn down.
 
-Would it make sense to use an unsigned long cursor with idr_get_next_ul(),
-or to break out of the loop after processing INT_MAX?
+The two users later in this series seem to cope with this by ignoring the
+list and filtering on !check_net(). Could the commit message be updated to
+describe the scope the hook actually has?
 
-> -			if (!peer->is_dying)
-> +			if (check_net(peer))
->  				continue;
+Separately, the comment block above struct pernet_operations describes
+how pre_exit(), exit() and exit_batch() are ordered and where
+synchronize_rcu() falls between them. It is not updated for the new
+member.
 
-[Severity: Low]
-The commit message says:
+Would it make sense to document the following there?
 
-    It is an alias of !check_net(net), and having two ways to represent
-    the same state is confusing.
+  - pre_exit_batch() runs after all pre_exit() calls for the same ops.
+  - It runs before the synchronize_rcu() that comes ahead of exit_rtnl(),
+    exit() and exit_batch().
+  - It runs while the netns devices may still be registered and up.
+  - net_exit_list may contain live namespaces.
 
-Is that equivalence exact? is_dying was only set on the nets that
-cleanup_net() took from cleanup_list with llist_del_all(). check_net()
-is false for every net whose refcount has reached zero.
+There is a related and more speculative case later in the series. The
+change "net: Track state in ops_undo_list()" marks nets as
+NET_PRE_EXIT_DONE whenever ops_list == &pernet_list. That includes the
+setup_net() out_undo path, where check_net(net) is true.
 
-That set also includes nets queued after this cleanup_net() pass took its
-snapshot:
+In that case, rt_flush_dev(NULL) and rt6_uncached_list_flush_dev(NULL)
+would skip that net's routes because check_net() is true. The per-device
+flush on NETDEV_UNREGISTER would then return early because
+net_pre_exit_done() is true.
 
-put_net()
-  ns_ref_put() reaches 0
-  __put_net()
-    llist_add(&net->cleanup_list, &cleanup_list)
+If an uncached route pointing at a device of the failing netns existed at
+that point, would its device reference ever be released? It is not clear
+that such a route can exist in a netns that is not yet visible, so this
+may not be reachable.
 
-It also includes nets whose refcount has hit zero but which have not yet
-reached llist_add(). Those nets are still on net_namespace_list and still
-sit in other nets' netns_ids IDRs.
-
-Before this patch, unhash_nsid() skipped them because is_dying was false,
-and their own later cleanup pass handled them. With check_net(peer), the
-current pass now calls idr_remove() on them and sends RTM_DELNSID
-straight away. That means userspace can see the notification one pass
-earlier.
-
-The wider condition does look safe. peernet2id_alloc() goes through
-maybe_get_net(peer), and rtnl_net_newid() gets its peer from
-get_net_ns_by_pid() or get_net_ns_by_fd(). So a zero-refcount peer can
-never be added back to an IDR, and the later pass finds nothing left to
-remove.
-
-Could the commit message say that the new check covers more nets than the
-old flag did, and explain why that is fine?
-
-Later patches in the series ("net: Track state in ops_undo_list()." and
-"ipv4: Batch rt_flush_dev() for dying netns.") describe a dying netns
-queued for the next cleanup_net() batch as having !check_net() without
-being in the current batch. That also contradicts the "alias" wording.
-
-[ ... ]
-
-> @@ -681,7 +681,6 @@ static void cleanup_net(struct work_struct *work)
->  	llist_for_each_entry(net, net_kill_list, cleanup_list) {
->  		ns_tree_remove(net);
->  		list_del_rcu(&net->list);
-> -		net->is_dying = true;
->  	}
->  	/* Cache last net. After we unlock rtnl, no one new net
->  	 * added to net_namespace_list can assign nsid pointer
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the comment says "After we
-unlock rtnl". This section of cleanup_net() never takes rtnl. It uses
-net_rwsem instead:
-
-	down_write(&net_rwsem);
-	llist_for_each_entry(net, net_kill_list, cleanup_list) {
-	...
-	last = list_last_entry(&net_namespace_list, struct net, list);
-	up_write(&net_rwsem);
-
-Should the comment say net_rwsem? The guarantee it describes actually
-comes from the maybe_get_net() check in peernet2id_alloc().
+>  }
+>  
+>  static void ops_exit_rtnl_list(const struct list_head *ops_list,
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927202429.2452589-1-kuniyu%40google.com
