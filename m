@@ -1,179 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8706D3BFADE;
-	Tue, 29 Sep 2026 22:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEE4577E2C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790721424; cv=none; b=JaNbRdHq1PAnMkzmqsZeCUU2Z9YD4UTL5BiVpndyBXxR57Pph3RHH/MTdGCJ4fxzf5H3bDg9dZ8tRlPiXPx7DXMRVTmT+RQWMj9hVVHP6d6J0KVeVtCSjp2QZwwicQxhvTD/abNXZDBi+NQGjkcyvYU7aFamNyUCiGmOqZtZfUM=
+	t=1790721725; cv=none; b=myFeMHRfVmF1c3MPunCR4idJLLhcTaUWyfV/xxS6gvPD44FULSUWgOP96ZsDyJQadVPsU11Ied7KASOUZBpfGYhrhJkWnbm6Gg2/XwzaJ88iYT2wis9sRL6CzUhQyUtrfaosyub8uYvRffKimqc9IL7Fwb2WOaNqvPaFrAMR9Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790721424; c=relaxed/simple;
-	bh=0/bUjykIrp72QLvJHNFdHMLZHU8wdgAhaRLlMxZ2wvU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uB+eQvo/tN1lv84ZadOmChlYxPejgJBez8qLPXzODYso98ACKg3RDoEgrP5cfrWBgVs+htsffIdJuoHsPnMf2ycR746WH5bdLMhyCLtnLzBI958xUbLjsHwZ7EEiAcFQDAuIFB+XRQAZul0fd0B0aCIgtF+lhUkKQqthYBmI3JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1Fv4mH5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790721725; c=relaxed/simple;
+	bh=PrzdNJziqPAKxA77zp2g8melLy2r+M33L8bhk9msJ+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k4t0gAUp9cmsaultyF7DqFBIqUsPUift540+BdzIgLKAxeTCPGl/1lJZwCVliE/jrZh0xsw8bBDZ3I7+9OU0zjAJ4E2c0z+lsyiAtUuRXDmgsKZyGGZT8yUfoXTVUMTwAwVI+B09P9krM/GxWd51sVYSaN9vxLloB/RfLqqNm7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBQFxtI9; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1Fv4mH5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7291F000FF;
-	Tue, 29 Sep 2026 22:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790721423;
-	bh=fyajHbBwa3PbgcDWFEbuxluxVFd5ikA4w22SdqV8tQY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=C1Fv4mH5KynA8vEBVfanTp6yKFVR3yx22yCvMc26gWobso96oz85HpRu4GyEFpDBu
-	 hRAZU2cWsUBsmwft2Q5uAd0Pvim6pMFFlozjRRKrUWYELMZrxCdBXU7puuCrC+B755
-	 mXrs47kEHcZ+Lh6ThL4xSr+yqEmiyYmV2mRXi8X6VhEy0rSWdWOT1CQiE1Q5RLN+yh
-	 9AcxUUpB0lB70bWcsCRngJvieR6ESHwKuEvbl5njkjVi6tG2srHGWRC5lCpqPkXAbh
-	 MJnHGPg1sLgngG6/f/2GO3v3y9b2ivlMMStkBibR99p7tWU7IKImCwRGK1+KdliYUm
-	 K/XV5fffBGzcQ==
-Subject: Re: [PATCH net-next] dt-bindings: net: Convert hisilicon,hns-mdio to
- DT schema
-From: netdev-bot+sashiko@kernel.org
-To: robh@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
- shenjian15@huawei.com, shaojijie@huawei.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 29 Sep 2026 22:37:02 +0000
-Message-ID: <179072142212.434549.1306076815346983081@kernel.org>
-In-Reply-To: <20260925215911.2950356-1-robh@kernel.org>
-References: <20260925215911.2950356-1-robh@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBQFxtI9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790721722; x=1822257722;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PrzdNJziqPAKxA77zp2g8melLy2r+M33L8bhk9msJ+0=;
+  b=FBQFxtI9b4bcqF8o+GgKdCQhauhtjxBCaZfW+Ed1x6q2dRlnIcfoPRk7
+   NYKjkfTDYFGzaMX1J79sBNN4je85Lm8oDEQDuvP1dVghOxtztNAKATykm
+   m770DulOJU06NfNV2YgOm46SYOQAhfD5Vp9APlKmAiXCuYTBTfm4BF0b0
+   rojwVZIRffKugxf7m4zKS/zut72YttHzRDSEbyvS5SZ4JJ0hM47XYwFpq
+   BKwDegLJdY7kvQh6jaCQE+lVspZFOYmBmBiGpxshacdKI7+wn7ma1XBJg
+   aak87ZEibXTLez448R+RMcXRFaExAxz4Xtaui2K13I/xLGiwxlIAkYHr5
+   A==;
+X-CSE-ConnectionGUID: L8YWZJ0HSNCw/mwGcDbsBQ==
+X-CSE-MsgGUID: QdPSN1KkTham5x5Yd/jNrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91548846"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="91548846"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 15:42:01 -0700
+X-CSE-ConnectionGUID: 4k+OG0uGRxCR+T94+zpsuQ==
+X-CSE-MsgGUID: PSYCbpb0TfGgZ1u55YjI1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="313452293"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa001.jf.intel.com with ESMTP; 29 Sep 2026 15:42:01 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	grzegorz.nitka@intel.com,
+	aleksandr.loktionov@intel.com,
+	marcin.szycik@intel.com,
+	jacob.e.keller@intel.com,
+	przemyslaw.korba@intel.com,
+	xiongwm2026@163.com,
+	ynorov@nvidia.com,
+	przemyslaw.kitszel@intel.com,
+	horms@kernel.org
+Subject: [PATCH net-next 00/10][pull request] Intel Wired LAN Driver Updates 2026-09-29 (ice)
+Date: Tue, 29 Sep 2026 15:41:40 -0700
+Message-ID: <20260929224153.1455466-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Grzegorz reduces DSCP message from error to debug when FW DCB
+management is active since it's an expected condition.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Marcin utilizes, existing, ice_fill_eth_hdr() call to set ethernet
+header value.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Jake reduces padding in ice_flash_info struct by moving sr_words
+location.
 
-- [Medium] In the new
-  Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml, two of…
-- [Low] The new schema lists 'subctrl-vbase' but doesn't make it
-  required; the required list is only compatible, reg, #address-cells…
+Aleksandr adjusts OICR interrupt moderation rate to reduce latency for
+Tx timestamps and VF mailbox messages. He also simplifies IPv6 mask
+checks; replacing memcmp() and mask structs to helper functions.
 
---
+Przemek Korba adds an Rx timestamp tracepoint to help debug PTP issues.
 
-dt-bindings: net: Convert hisilicon,hns-mdio to DT schema
+Weimin Xiong converts parser-table allocation to kcalloc().
 
-This converts the hisilicon,hns-mdio text binding to DT schema format.
-It also adds the subctrl-vbase property. The driver and the hip06/hip07
-device trees already use that property.
+Yury Norov simplifies PF nominal-state check by reducing the number of
+calls and removes a redundant NULL check as most are already non-NULL.
 
-> diff --git a/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml b/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml
-> new file mode 100644
-> index 0000000000000..b8350794650d4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/hisilicon,hns-mdio.yaml
-> @@ -0,0 +1,59 @@
+Przemek Kitszel simplifies VF queue disabling by removing ineffective
+batching for queues.
 
-[ ... ]
+The following are changes since commit 6e23f90f2b8c3ea3bf904f86f3ed06bf2844b4bc:
+  Merge branch 'net-consolidate-devmem-net_iov-freelist-and-dma-handling'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
 
-> +  subctrl-vbase:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: syscon phandle
-> +          - description: MDIO clock enable register offset
-> +          - description: MDIO reset request register offset
-> +          - description: MDIO reset done register offset
-> +          - description: MDIO reset deassert register offset
+Aleksandr Loktionov (2):
+  ice: increase OICR interrupt moderation rate to 20K interrupts/sec
+  ice: use inline helpers instead of memcmp() for IPv6 mask checks in
+    ice_ethtool_fdir
 
-[Severity: Medium]
-Do the last two argument cell descriptions match how the driver reads
-them?
+Grzegorz Nitka (1):
+  ice: reduce loglevel to debug for 'Can't delete DSCP' message
 
-hns_mdio_probe() in drivers/net/ethernet/hisilicon/hns_mdio.c reads the
-last two cells as status registers. It gets the disable and deassert
-offsets by adding 4 to the first two cells:
+Jacob Keller (1):
+  ice: reorder ice_flash_info fields to eliminate padding
 
-drivers/net/ethernet/hisilicon/hns_mdio.c:hns_mdio_probe() {
-    ...
-	mdio_dev->sc_reg.mdio_clk_en =
-		(u16)reg_args.args[0];
-	mdio_dev->sc_reg.mdio_clk_dis =
-		(u16)reg_args.args[0] + 4;
-	mdio_dev->sc_reg.mdio_reset_req =
-		(u16)reg_args.args[1];
-	mdio_dev->sc_reg.mdio_reset_dreq =
-		(u16)reg_args.args[1] + 4;
-	mdio_dev->sc_reg.mdio_clk_st =
-		(u16)reg_args.args[2];
-	mdio_dev->sc_reg.mdio_reset_st =
-		(u16)reg_args.args[3];
-    ...
-}
+Marcin Szycik (1):
+  ice: use ice_fill_eth_hdr() in ice_fill_sw_rule()
 
-hns_mdio_reset() then polls mdio_clk_st and mdio_reset_st after it
-writes the enable/disable and request/deassert registers.
+Przemek Kitszel (1):
+  ice: simplify ice_vc_dis_qs_msg() a little
 
-The in-tree users agree with the driver. hip06.dtsi and hip07.dtsi have:
+Przemyslaw Korba (1):
+  ice: add rx timestamp tracepoint for debugging
 
-    subctrl-vbase = <&peri_c_subctrl 0x338 0xa38 0x531c 0x5a1c>;
+Weimin Xiong (1):
+  ice: parser: use kcalloc for table allocation
 
-These values are MDIO_SC_CLK_EN, MDIO_SC_RESET_REQ, MDIO_SC_CLK_ST and
-MDIO_SC_RESET_ST. MDIO_SC_RESET_DREQ (0xa3c) is RESET_REQ + 4, not a
-cell.
+Yury Norov (2):
+  ice: simplify ice_pf_state_is_nominal()
+  ice: drop pf == NULL check in ice_pf_state_is_nominal()
 
-Suppose a new DT follows this schema and puts the reset deassert offset
-in the last cell. Then hns_mdio_reset() would poll the wrong register and
-time out, and the MDIO bus would fail to register.
-
-Should the last two cells be described as the MDIO clock status and
-MDIO reset status register offsets? It could also help to say that the
-clock disable and reset deassert registers sit at +4 from the first two
-offsets.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#address-cells'
-> +  - '#size-cells'
-
-[Severity: Low]
-Should subctrl-vbase be added to the required list?
-
-On DT systems the driver does not seem to work without it. In
-hns_mdio_probe(), if of_parse_phandle_with_fixed_args() fails to find
-subctrl-vbase, the driver only warns. It leaves subctrl_vbase as NULL
-and still calls of_mdiobus_register(). The bus reset callback then
-fails:
-
-hns_mdio_probe()
-  of_mdiobus_register()
-    __mdiobus_register()
-      bus->reset() == hns_mdio_reset()
-
-drivers/net/ethernet/hisilicon/hns_mdio.c:hns_mdio_reset() {
-    ...
-	if (dev_of_node(bus->parent)) {
-		if (!mdio_dev->subctrl_vbase) {
-			dev_err(&bus->dev, "mdio sys ctl reg has not mapped\n");
-			return -ENODEV;
-		}
-    ...
-}
-
-__mdiobus_register() then fails with that error.
-
-So a node without subctrl-vbase passes dt_binding_check, but the bus
-can never come up. The example in this schema is one such node.
-
-Both in-tree users, hip06.dtsi and hip07.dtsi, already set the property.
-Making it required would not break any existing DTs.
+ drivers/net/ethernet/intel/ice/ice_dcb_nl.c   |  2 +-
+ .../ethernet/intel/ice/ice_ethtool_ntuple.c   | 57 ++++++-------------
+ drivers/net/ethernet/intel/ice/ice_lib.c      | 11 +---
+ drivers/net/ethernet/intel/ice/ice_main.c     |  4 +-
+ drivers/net/ethernet/intel/ice/ice_parser.c   |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c      |  2 +
+ drivers/net/ethernet/intel/ice/ice_switch.c   |  6 +-
+ drivers/net/ethernet/intel/ice/ice_trace.h    | 18 ++++++
+ drivers/net/ethernet/intel/ice/ice_type.h     |  2 +-
+ drivers/net/ethernet/intel/ice/virt/queues.c  | 17 +-----
+ 10 files changed, 47 insertions(+), 74 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925215911.2950356-1-robh%40kernel.org
+2.47.1
+
