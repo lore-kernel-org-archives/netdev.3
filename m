@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A925343E09A;
-	Tue, 29 Sep 2026 03:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8834543F8C3;
+	Tue, 29 Sep 2026 03:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651971; cv=none; b=FLeKdj8rqAaXarVhDP4UlG42IAa0hLe6j9DdVc3bnMtLx0JwnBUMxNWz7ki/+VwvlDkNZ41Iss2itBnUDRn6kpVi/0w41zQAGhB9s61Yy1OXbzOQ+RTRwgPHLf/qTShzBOLMgQ9NHNO83dAqiF1FIZeyXQfeFJmJq1IRmFE4ZFE=
+	t=1790651975; cv=none; b=QXtJpLNcbP0h3GF6clSFSPaYTUz2GMbUO96IN3BWs+iCJhUeDARxhDpdPw5gEzOILgmwOjezekVvRO1WawHpGAmcnkOUI3wFUupKwd1ePRAYWvLI64KxJ06xcYRdAv57pan0nuWO/EXq0pzteFCm9GHRr3jHWdAqZkAQp7PhjiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651971; c=relaxed/simple;
-	bh=czvZ5IkrDTQqIInhjHSyPHYhske8wESFBzUsuaxF1b0=;
+	s=arc-20240116; t=1790651975; c=relaxed/simple;
+	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RsmU0UK5h5DZW5dkcItU0NxuF6STxuTxJktS9L//emariJO50hL+FHnVA7CVEChbvceMyF/tF6Q5VxQaJ2rv/Ae9GmNSyVU9mo1MeI9cbYIMNhB/ISjeK1mDsCIE1MKy4bmmmEBl+/GI1ovL/d2B1TaZP8YvmqdZDPpvJye49yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Q2PRgfbn; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=SVkTMn3S; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=c3q8NcSzTQ0U+TBHrlktrBvL8Q7ztDf5FTmSJnkfCnNQCkETPyJnsbYDrsPl3DwzdOaFTTeZHL9utiDMyNay0i3a6y876zwtwYKabXlo8hhOHpVuSYDkAm3dSc4poAXnOMP0HMc5imzEgMLVq1+zKo1M6fgnmLN0G6CXjFDaybg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=fFDKBiDx; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=lwRp+IvI; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Q2PRgfbn";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="SVkTMn3S"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="fFDKBiDx";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="lwRp+IvI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651957;
-	bh=czvZ5IkrDTQqIInhjHSyPHYhske8wESFBzUsuaxF1b0=;
+	s=default; t=1790651964;
+	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Q2PRgfbnH388IPzMpWicAhSAeJZL5LvDkRGKZm4E5tZBMszvHbmQ6yiHqsVaVUFtg
-	 8beBa5EvdRsMy+caeiG9a8mvTkdphkw6Smal8cQzl6QWc6sR5MdpfazycXnssqPbYw
-	 lb4g74uPU3+eDwNS2o7E1g0lJZJPPOncvjJ57Ywcex9pg3EccMKZG2I1Drx1GH9ayo
-	 e7s1KuooL8SdfhvhMkE7wKZmEwWfu2ZZPjT19B2d7p2RaqtVKl6IXSPWdww5CVLBSj
-	 Ezuegc1XfBrhjIGKOUI7cBzhK/g9aLCVBfOkgIh+vGqqOJ+OpnRcn11juTGujHbZm7
-	 oDenUTjnkaa4A==
+	b=fFDKBiDx+lBnX+jV32MiC5KajO0TgZS68yyt7MRKf6yWdE51InVxRBHsrG7jOrwAX
+	 J2JWxGnvgnjLXro7QBKIGam4Kk4+5e/kEIxw/z9JJ5/Dh0Jg1JYrhv+CWs27HLx3nQ
+	 TAXv/S4ZmouOSFwJb3jc8sE4oCWF3yh0wxacrP6CHX7CPyoOIurdTeXjBDQVYewv/j
+	 y2HxlKp+oJUUZ3sCsIUHFMB48tcEQ6FKndTbgltDNnlozeG2CcMT8/V4y4GtbswXBF
+	 asxOc6nVVs3c8mVDguMBV+oYbVvjucQK+TwEo3o/JiOwywpQybT0U7yY6Ca+8zj6jN
+	 78k6vAKHMzGNA==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 1F2C3422CD; Tue, 29 Sep 2026 03:19:17 +0000 (UTC)
+	id 3D8F042263; Tue, 29 Sep 2026 03:19:24 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651940;
-	bh=czvZ5IkrDTQqIInhjHSyPHYhske8wESFBzUsuaxF1b0=;
+	s=default; t=1790651941;
+	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SVkTMn3SdBSxovFrTjcJKmC+FaX/vgms7S/iGslS0pUmZ51D4CL/wXIgZ+mwbjzUu
-	 gxAvRxvqsnEdp6WOAjrx+VSCM752UP0BG1PL9THrN4m0YvAVSdAAlh+NFfN0TuQRte
-	 dk6MYXXycO789V2JOyYOICvbbcRtsFYisCtKzzLNaNiBW94FRM10DUfCgFeMxlTzw3
-	 lezbGsnJ6W0IzUV9p5QweBxFsuGmnVy06xvgXjN1ubxw8Xo/5oYTVVz69iBlN7pyKJ
-	 Ja76zw8WaOdCvx8o5cy7Ebl7WxyWsSbmeDKLljp94Wgjrs/qp0Fb+jarEWM62K3Avh
-	 Gfy+55omLlo+g==
+	b=lwRp+IvIp73LE3jk1ticl3vHa8T7Ode88zUZ96GX9TXVSFB7JTSDSlIJAxAcN959e
+	 devDqXYpZO9ybyLwJ/aCSoyDXfANio5Sn96rCVh4iaBnj41M7/whZq8Xfq8kFBb4JX
+	 BhD+ikSsnUsRtS1wLwIXdGVUNRI/OhyuZ6s9oXdchE9OyjUJceCXq8wmdvEmoXzlIP
+	 S/VY1nNpOyYIoNzUEJJMKUbp/uM4NYu01bXI6H7csSMsFudUwNg18LaoSjEme0vHbi
+	 R/aTjveRa0sz5BQppMXvNMZgSX4SEMvAyLffXj7TLQxuICblLhn2Oo+E/q+ha8VC1X
+	 +bFAzxJ4UhpWA==
 Received: from AMDDesktop.lan (p5dd1eaf2.dip0.t-ipconnect.de [93.209.234.242])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id EECFE4225F;
-	Tue, 29 Sep 2026 03:18:59 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 7CBA842276;
+	Tue, 29 Sep 2026 03:19:01 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 29 Sep 2026 05:18:56 +0200
-Subject: [PATCH net-next v14 08/14] ax88179_178a: Add VLAN offload support
- for AX88179A
+Date: Tue, 29 Sep 2026 05:19:02 +0200
+Subject: [PATCH net-next v14 14/14] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-ax88179a-v14-8-a1f2249e42ea@birger-koblitz.de>
+Message-Id: <20260929-ax88179a-v14-14-a1f2249e42ea@birger-koblitz.de>
 References: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 In-Reply-To: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -70,192 +70,222 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-The AX88179A-based chips support VLAN offload. Add configuration
-support in netdev_ops. Features supported are:
-NETIF_F_HW_VLAN_CTAG_TX, NETIF_F_HW_VLAN_CTAG_RX
-and NETIF_F_HW_VLAN_CTAG_FILTER.
+The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
+2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
+same name.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/ax88179a_devices.c | 141 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 140 insertions(+), 1 deletion(-)
+ drivers/net/phy/ax88796b.c | 167 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 167 insertions(+)
 
-diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-index e2ea9724433929d4cbfba0597787ddcb84dacf98..febb4b0ef12895414f9bdea916315d6d48246ab8 100644
---- a/drivers/net/usb/ax88179a_devices.c
-+++ b/drivers/net/usb/ax88179a_devices.c
-@@ -258,6 +258,88 @@ static const struct ethtool_ops ax88179a_ethtool_ops = {
- 	.get_ts_info		= ethtool_op_get_ts_info,
- };
+diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
+index f20ddf64914993f7097070d1f56c1103ec1e40e8..0f1437d1e3e9b4004bdd240df43c929caf31819c 100644
+--- a/drivers/net/phy/ax88796b.c
++++ b/drivers/net/phy/ax88796b.c
+@@ -13,6 +13,19 @@
+ #define PHY_ID_ASIX_AX88772A		0x003b1861
+ #define PHY_ID_ASIX_AX88772C		0x003b1881
+ #define PHY_ID_ASIX_AX88796B		0x003b1841
++#define PHY_ID_ASIX_AX88772D		0x003b772d
++#define PHY_ID_ASIX_AX88179A		0x003b179a
++#define PHY_ID_ASIX_AX88279		0x003b2790
++
++#define AX_ADVERTISE_2500		0x1000
++
++/* MII Vendor registers */
++#define AX_CTRL_STATUS			0x1d
++#define AX_CTRL_STATUS_SPEED_MASK	0x0c
++#define   AX_CTRL_STATUS_SPEED_10	0x0
++#define   AX_CTRL_STATUS_SPEED_100	0x4
++#define   AX_CTRL_STATUS_SPEED_1000	0x8
++#define   AX_CTRL_STATUS_SPEED_2500	0xc
  
-+static int ax88179a_vlan_rx_kill_vid(struct net_device *net, __be16 proto, u16 vid)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	u8 vlan_ctrl;
-+	int ret = 0;
-+	u16 reg16;
-+	u8 reg8;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+	vlan_ctrl = reg8;
-+
-+	/* Address */
-+	reg8 = (vid / 16);
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Data */
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_RD;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+	reg16 &= ~(1 << (vid % 16));
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_WE;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int ax88179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vid)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	u8 vlan_ctrl;
-+	int ret = 0;
-+	u16 reg16;
-+	u8 reg8;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret)
-+		return ret;
-+	vlan_ctrl = reg8;
-+
-+	/* Address */
-+	reg8 = (vid / 16);
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Data */
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_RD;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+	reg16 |= (1 << (vid % 16));
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_WE;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static void ax88179a_mdio_unregister(struct ax88179_data *data)
- {
- 	mdiobus_unregister(data->mdio);
-@@ -517,6 +599,58 @@ static int ax88179a_mii_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
- 	return phylink_mii_ioctl(data->phylink, rq, cmd);
+ MODULE_DESCRIPTION("Asix PHY driver");
+ MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
+@@ -83,6 +96,110 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
+ 	return 0;
  }
  
-+static int ax88179a_set_features(struct net_device *net, netdev_features_t features)
++static int asix_ax88279_read_status(struct phy_device *phydev)
 +{
-+	struct usbnet *dev = netdev_priv(net);
-+	netdev_features_t changed;
-+	int ret;
-+	u8 tmp;
++	int ret, val;
 +
-+	changed = net->features ^ features;
-+
-+	ret = ax88179_set_features(net, features);
++	ret = genphy_read_status(phydev);
 +	if (ret)
 +		return ret;
 +
-+	if (changed & NETIF_F_HW_VLAN_CTAG_FILTER) {
-+		if (features & NETIF_F_HW_VLAN_CTAG_FILTER) {
-+			for (int i = 0; i < 256; i++) {
-+				/* Address */
-+				tmp = i;
-+				ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS,
-+						  1, 1, &tmp);
-+				/* Data */
-+				ax88179_write_u16(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0,
-+						  2, 0);
-+				ax88179_write_u8(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
-+						 1, AX_VLAN_CONTROL_WE);
-+			}
-+			ret = ax88179_read_cmd(dev, AX_ACCESS_MAC,
-+					       AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+			tmp ^= AX_VLAN_CONTROL_VFE;
-+			ret = ax88179_write_cmd(dev, AX_ACCESS_MAC,
-+						AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+		}
++	if (!phydev->link)
++		return 0;
++
++	/* Read actual speed from vendor register */
++	val = phy_read(phydev, AX_CTRL_STATUS);
++	if (val < 0)
++		return val;
++
++	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
++	case AX_CTRL_STATUS_SPEED_2500:
++		phydev->speed = SPEED_2500;
++		break;
++	case AX_CTRL_STATUS_SPEED_1000:
++		phydev->speed = SPEED_1000;
++		break;
++	case AX_CTRL_STATUS_SPEED_100:
++		phydev->speed = SPEED_100;
++		break;
++	case AX_CTRL_STATUS_SPEED_10:
++		phydev->speed = SPEED_10;
 +	}
 +
-+	if (changed & NETIF_F_HW_VLAN_CTAG_RX) {
-+		ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
-+				       1, 1, &tmp);
-+		if (ret < 0)
-+			return ret;
-+		tmp ^= AX_VLAN_CONTROL_VSO;
-+		ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
-+					1, 1, &tmp);
-+		if (ret < 0)
-+			return ret;
++	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
++	 * the link-partner advertised 2500M if remotely AN succceded
++	 * for link speed > 1000M and we locally have a link speed of
++	 * 2500M
++	 */
++	linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->lp_advertising);
++	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
++	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
++		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
++				 phydev->lp_advertising,
++				 phydev->speed == SPEED_2500);
 +	}
++	/* Only supports full duplex */
++	phydev->duplex = DUPLEX_FULL;
++
++	/* PHY switches interface between 2.5GBit and slower modes */
++	if (phydev->speed == SPEED_2500)
++		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
++	else
++		phydev->interface = PHY_INTERFACE_MODE_SGMII;
++
 +	return 0;
 +}
 +
- static const struct net_device_ops ax88179a_netdev_ops = {
- 	.ndo_open		= usbnet_open,
- 	.ndo_stop		= usbnet_stop,
-@@ -527,6 +661,9 @@ static const struct net_device_ops ax88179a_netdev_ops = {
- 	.ndo_set_mac_address	= ax88179_set_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_eth_ioctl		= ax88179a_mii_ioctl,
-+	.ndo_set_features	= ax88179a_set_features,
-+	.ndo_vlan_rx_add_vid	= ax88179a_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid	= ax88179a_vlan_rx_kill_vid,
++static int asix_ax88279_config_aneg(struct phy_device *phydev)
++{
++	bool adv_2500;
++	int ret;
++
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		phydev_warn(phydev, "Disabling autoneg is not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	ret = genphy_config_aneg(phydev);
++
++	if (ret < 0)
++		return ret;
++
++	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
++	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
++			 adv_2500 ? AX_ADVERTISE_2500 : 0);
++
++	return ret;
++}
++
++static int asix_ax88279_get_features(struct phy_device *phydev)
++{
++	int ret;
++
++	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
++	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
++
++	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
++			       phydev->supported);
++
++	ret = genphy_c45_pma_read_abilities(phydev);
++	if (ret < 0)
++		return ret;
++
++	/* AX88279 does not support reported 100baseT-half duplex mode */
++	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
++
++	return 0;
++}
++
++static int asix_ax88279_config_init(struct phy_device *phydev)
++{
++	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
++
++	return 0;
++}
++
+ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
+ {
+ 	/* Reset PHY, otherwise MII_LPA will provide outdated information.
+@@ -94,6 +211,24 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
+ 	}
+ }
+ 
++static int asix_ax88772D_get_features(struct phy_device *phydev)
++{
++	int ret;
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
++
++	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
++	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
++
++	ret = genphy_read_abilities(phydev);
++	if (ret < 0)
++		return ret;
++
++	/* AX88772D does not support reported 1000baseT mode */
++	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
++
++	return 0;
++}
++
+ static struct phy_driver asix_driver[] = {
+ {
+ 	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A),
+@@ -111,6 +246,35 @@ static struct phy_driver asix_driver[] = {
+ 	.suspend	= genphy_suspend,
+ 	.resume		= genphy_resume,
+ 	.soft_reset	= asix_soft_reset,
++}, {
++	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D),
++	.name		= "Asix Electronics AX88772D",
++	.flags		= PHY_IS_INTERNAL,
++	.get_features	= asix_ax88772D_get_features,
++	.read_mmd	= genphy_read_mmd_c45,
++	.write_mmd	= genphy_write_mmd_c45,
++	.suspend	= genphy_suspend,
++	.resume		= genphy_resume,
++}, {
++	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A),
++	.name		= "Asix Electronics AX88179A",
++	.flags		= PHY_IS_INTERNAL,
++	.suspend	= genphy_suspend,
++	.resume		= genphy_resume,
++	.read_mmd	= genphy_read_mmd_c45,
++	.write_mmd	= genphy_write_mmd_c45,
++}, {
++	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
++	.name		= "Asix Electronics AX88279",
++	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
++	.get_features	= asix_ax88279_get_features,
++	.read_status	= asix_ax88279_read_status,
++	.config_aneg	= asix_ax88279_config_aneg,
++	.config_init	= asix_ax88279_config_init,
++	.read_mmd	= genphy_read_mmd_c45,
++	.write_mmd	= genphy_write_mmd_c45,
++	.suspend	= genphy_suspend,
++	.resume		= genphy_resume,
+ }, {
+ 	PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B),
+ 	.name		= "Asix Electronics AX88796B",
+@@ -124,6 +288,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
+ 	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
++	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
++	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
++	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
+ 	{ }
  };
  
- static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
-@@ -611,9 +748,11 @@ static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
- 		dev->mii.supports_gmii = 1;
- 
- 	dev->net->features |= NETIF_F_SG | NETIF_F_IP_CSUM |
--			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO;
-+			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO |
-+			      NETIF_F_HW_VLAN_CTAG_TX;
- 
- 	dev->net->hw_features |= dev->net->features;
-+	dev->net->hw_features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER;
- 
- 	dev->net->vlan_features = NETIF_F_SG | NETIF_F_IP_CSUM |
- 				  NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO;
 
 -- 
 2.47.3
