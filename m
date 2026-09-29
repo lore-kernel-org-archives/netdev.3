@@ -1,99 +1,66 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBAC2D77F5;
-	Tue, 29 Sep 2026 01:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35E71F12F8;
+	Tue, 29 Sep 2026 01:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790643753; cv=none; b=Zs5SUmAWoQtbp0sOCWfjmJA2zcnqaeB7RBSsjtDb6m3ay8FYAtHp3YqNascvRelDl65Zb78kdi6+mCZ3MSqpfJPsREGx5wf2a/hLi0VB1i/0U7WLleG9OUB27MesvY7pNNvygNOvv2p2b85/1m+TGWQnFOsJT95KXGud5uhfQgE=
+	t=1790644164; cv=none; b=WvDdxpY2QxAfKEO1U0QFB4Oig4UanxJfbA+WtnVsYCzrgnYJhRImtjTPq1LxVLndlKBzBcpzBTLzUFrczhkDnE5h5GJL8IXDD8XYJqVdLbQZD7FwIdgIm3F/LFjuf3B+r7j5RTU98YTOw6+9MIlJUcwjouwoha215AsGUB1EX+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790643753; c=relaxed/simple;
-	bh=+z9Mq2l7b3cFxrV7k+MsiFGNtBO5JFhZFrNKYZF4rUc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GScZMp/G6LE9ZXo7+kb3wK9DYMtoCwumBeRttaEQGXwZ3E7Jtbd1YTx+MY342RcWbjlxriskWm9O0SqjEppOtlFu8Py3Yvqe68w1FZ3D1MvsjiuWHVwNsck5t1w5Z5do2zJrH1XFBYVOmJcQEi0evxlDSvqa9YsMGauhricQ8T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=LhunU1bU; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1790644164; c=relaxed/simple;
+	bh=I0OmZNKyRkTsakc1BK2fZum/DdnBwj4dYllItNisJ+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hh03bav9SkwRH7vjo+ZJKvIaCpziBN5zyTNhTbQIB/q9SSVKsC2xg1MfACkS2mivOYqgdctBPqfEJ7/GezV3vWmYqnvl0qXLyCMP/swFki25j8gu1+DYylxYJ3E/gXZJC6bCniCqiREJfsz3Pl8hAyZSS00P1Nj/I/KK8QaqLIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZklEqjrf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="LhunU1bU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1790643741;
-	bh=+z9Mq2l7b3cFxrV7k+MsiFGNtBO5JFhZFrNKYZF4rUc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LhunU1bUK0FzoGVM3lm6Qyg9pLDmLV247fK01cT88nwObtZzocpfzKvULZ86UF7Fy
-	 TY+zxQPKUUo9DC/7AnPEOf+K97ejxUR+ZaT2NZjfBQ8g0kKHSplqPZ/DPK86cyc+TB
-	 oeN3R2Y9PGFnJ7oskDVJ+2cXRIaXsxCjcEZ4vG0NWYzA6BOczh+2BGfT8F0s4Kxw2S
-	 Nh/XKtAb8ifgiC9XQbcYIlLM22eV1hjGn5yuRMjl3UzzmHtIpWfBmeSAYVPe1sXvY0
-	 JpMrLs8AI7Gzsh2fdJUI+FYLZg1r9/yoguBUIclc3T7ms+LSLvpEgjiAHLYqzITDxL
-	 qIrahGqUTeZHQ==
-Received: from [192.168.72.161] (210-10-213-150.per.static-ipl.aapt.com.au [210.10.213.150])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id E04E56C457;
-	Tue, 29 Sep 2026 09:02:19 +0800 (AWST)
-Message-ID: <fb39875c7fa4131e565eebf8ffc9b3b19bb5ad87.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next v2] net: mctp: Make KUnit tests depend on flow
- support
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Karl Mehltretter <kmehltretter@gmail.com>, Matt Johnston
-	 <matt@codeconstruct.com.au>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>,
- netdev@vger.kernel.org, Geert Uytterhoeven	 <geert@linux-m68k.org>, Brendan
- Higgins <brendan.higgins@linux.dev>, David Gow	 <david@davidgow.net>, Rae
- Moar <raemoar63@gmail.com>, 	linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, 	linux-kernel@vger.kernel.org
-Date: Tue, 29 Sep 2026 09:02:23 +0800
-In-Reply-To: <20260928205352.30502-1-kmehltretter@gmail.com>
-References: <20260925192510.93840-1-kmehltretter@gmail.com>
-	 <20260928205352.30502-1-kmehltretter@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZklEqjrf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CF81F000FF;
+	Tue, 29 Sep 2026 01:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790644162;
+	bh=wpxBY8dgiroer/Uu1UAO3GEdyrZypT/qC8j4Sb1sqvU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZklEqjrfMRgDOG2+nZXnfGzYFqM1Hwv5Zd0J8M+X1Vo+sn2noqU3naEE6JOobtAhn
+	 /sRllKe4hFxr0Yj/rdfydFttCQ1QWguxevsJcklWc56NkrQ1jVGmbnQwC7hqXV4ZzH
+	 1ceNPSkYTeKA+H8WppnP0aY8+Q1Lvu4XkWuhq3PuwCMdm+IDzVi67CcJEiVF4TtuAe
+	 K25hwd0wUoIBV65m6+h7n9rPmJVD4p1S0byLSQAlIrN/hlbZYUzh99wPmpkr7TNePe
+	 71gIGmQ0D4MIl8V02ahGJunymWfitlKOXhb0XiGL8eIAwx62ypOxCqVuCOpRgWr5AY
+	 ja4ZBPLq7QBXw==
+Date: Mon, 28 Sep 2026 18:09:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, linux-can@vger.kernel.org,
+ kernel@pengutronix.de
+Subject: Re: [PATCH net 0/22] pull-request: can 2026-09-28
+Message-ID: <20260928180921.4200d711@kernel.org>
+In-Reply-To: <20260928193312.553632-1-mkl@pengutronix.de>
+References: <20260928193312.553632-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Karl,
+On Mon, 28 Sep 2026 20:45:07 +0200 Marc Kleine-Budde wrote:
+> this is a pull request of 22 patches for net/main.
 
-> MCTP_TEST selects MCTP_FLOWS, which also enables SKB_EXTENSIONS when no
-> transport requires them. Enabling tests should not silently enable
-> additional kernel functionality.
->=20
-> Make the tests depend on MCTP_FLOWS instead, following the dependency
-> rule in Documentation/dev-tools/kunit/style.rst.
+Oof, Linus just shouted at us for pulling too many LLM-driver fixes 
+late in the release cycle. Could you whittle this down a little bit? 
 
-[...]
+At a glance the skb freeing from IRQ, and propagating impossible init
+time failures (patch 8) can probably go? 9, 10, 13, 16 too?
+Driver init error paths and remove races are things I commonly apply
+to net-next these days, 'cause those patches usually come from LLM
+jockeys and nobody cares in practice.
 
-> index d8d3413a37f7..e64d4f7ef6aa 100644
-> --- a/net/mctp/Kconfig
-> +++ b/net/mctp/Kconfig
-> @@ -14,7 +14,7 @@ menuconfig MCTP
-> =C2=A0
-> =C2=A0config MCTP_TEST
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool "MCTP core tests" i=
-f !KUNIT_ALL_TESTS
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select MCTP_FLOWS
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on MCTP_FLOWS
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on MCTP=3Dy && K=
-UNIT=3Dy
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default KUNIT_ALL_TESTS
-> =C2=A0
+I pushed the Sashiko review to high prio, so pls wait for it to pass
+judgment before you respin:
 
-Now _the whole suite_ is not going to get enabled for the usual kunit
-testing, since flows isn't individually selectable.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928193312.553632-1-mkl%40pengutronix.de
 
-> This keeps the full flow-test coverage: the suite is available only
-> when flow support is enabled, for example by the I2C transport.
-
-Hardware transports are typically not enabled for kunit test kernels.
-
-Are you attempting to fix an actual problem you're encountering? What's
-the aim with this change?
-
-Cheers,
-
-
-Jeremy
+Up to you what you keep and what you toss, FWIW, I mostly want to avoid
+obvious egg-on-face conditions, which I think the driver init error
+paths could bring about.
