@@ -1,46 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E2D31E831;
-	Tue, 29 Sep 2026 00:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7613803D7;
+	Tue, 29 Sep 2026 00:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790641924; cv=none; b=rsV6nYtzZLZEkEBL3OOGLRZT8yuHHkXwDVaxkdqNTOOCt5K3b08Bt9iez7pgo0Z+2+RBIoBL5nXBXCdUgfyczt90QOrRG3a0GycBBf9oNLuxvF6r1NgOEQWnyVFVUpfUsED4/xrUXoVpd1ZpKgforrVVUTD6XAlXkEvxHhtX0hM=
+	t=1790642315; cv=none; b=KwkKWswG59EpKjk4+LsmYKx+k1EqdoOXjNj/fW+ucp21eCeaSY3mjctLvZkRPizmsPD0aYlNj4u4pRNtu2WDTZRnnU/8eMHY8urMUOctVr51aCyC4KT6d7lsWosI3kvzWZQwrkAOCN/Vnfc6p8KvtGare68kyjRXSBt24bik3nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790641924; c=relaxed/simple;
-	bh=UXA5wu3CPeF7BOYx+25TH+fwtBXd4GyFGZsJDj0EmOc=;
+	s=arc-20240116; t=1790642315; c=relaxed/simple;
+	bh=u1qNzmdYnGPZRudytcOo4/YvE76QSeW3BiKBiS2q4FU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ddao9zLuJkRxQRuv2hjn/ePJJVul2eoAJTKhOJGeSSj+XUK0BRVbF0KNjcxELWmXAurQKcsFGjMMX+64NreSUptuy+LiVZvDkexlvznyuS4AWNRh7H4JpbbO1+Cp5CJryKp3dTiyDZae6gTwyUny6fX9SFpr70lvWAY4mBUULi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BAxO1vpp; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tJXb8houkH3gak/4IWxQrd1JuzRU01/MTMgh7ky3bHixgPT4icLWG1Qc7RGko4lrmQeIBKRwjqU+cDBJyXYEr1BaXE35CTasjTd7Ll9PFBZbKQX1XaVaDoNnhVqUjRWkEWH7xOtCJ6MS4rvz61Iim3SKUXp5Gy5tYasR1iK0bKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rm2eH/WX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BAxO1vpp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210E31F00893;
-	Tue, 29 Sep 2026 00:32:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rm2eH/WX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC0C1F00893;
+	Tue, 29 Sep 2026 00:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790641923;
-	bh=YZi1ypieVFvTNbRUJLyNDXRClXWjs3iDMCHGJQWrE/8=;
+	s=k20260515; t=1790642311;
+	bh=2qZEWsjI6nrtWOM3TwU/zTl443CJGwIcv5kuObM97q8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BAxO1vpp0GmfaW7ho7ka6JvRhmzh1DzOpd4Wrlmv/2gsZVyZUUhkzHBznPhlfxTQZ
-	 llj6q9TD4B65BZBT7jHA+Yo9FNAMVLNSGRvDCNoldX4MZwaYXq06txMR1UBsjURSdT
-	 8GR2sWgF9HJaGzK7fD8h67DA/P+qNxlRNPwEW3qvebwC5AX+qdZGgL6tg86pmqZaeY
-	 fkBIoILmwrJg/KPRXHjqLIJBkCYpfirIVI5AZDAero0PvSjizhib6+FF8NP0qyj5QP
-	 b5IrrHsTmTs9WJmu6xwxjjWdIte72oKDNPf2ao1MIN6xbgc5obqlsq/pdIJE1tSQXM
-	 3Hx/b74YEfjuQ==
-Subject: Re: [PATCH net-next v4 2/2] net: phylink: wait for PHYs that are
- known to probe late
+	b=Rm2eH/WXx0cvsyzzjm58uBciiyXIo8vboGRmTEsQehEtnDq6IhsQHJ0hTsqHvwI/K
+	 vyJV6uPcWVZ4wKJTJCT7aQIGVlBJn0EN6/uBBSWM/0g3VYl0Jk0ja9DJE8U+OYH7qD
+	 AVJ8q7LlTi+MhWQaZxoqY2AEYMUGifhgmluNtX5yIBsE4M3vokHNs8DFYxJt0XFRAi
+	 ylTqX/z9y6lcnUrU5hBhaiELf3YWG+d6iJqIL28qSnvKiv1AMPHNFwMmgrUBtkQ9Ro
+	 BH6DijdlaZiIisFyn5qK1XVVBE5MCjbeZIeC0DI1QyryRRkat2QdW8AGtx0hjMppVQ
+	 LhKNuv50WU4ew==
+Subject: Re: [PATCH net-next v18 01/10] net: phy: phy_link_topology: Add a
+ helper for opportunistic alloc
 From: netdev-bot+sashiko@kernel.org
-To: f@lex.la
-Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
- andrew+netdev@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, conor@kernel.org,
- f.fainelli@gmail.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 29 Sep 2026 00:32:01 +0000
-Message-ID: <179064192169.3145.15914679496475412857@kernel.org>
-In-Reply-To: <20260925001209.2334139-3-f@lex.la>
-References: <20260925001209.2334139-3-f@lex.la>
-X-sashiko-severity: High
+To: maxime.chevallier@bootlin.com
+Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, christophe.leroy@csgroup.eu,
+ herve.codina@bootlin.com, f.fainelli@gmail.com, vladimir.oltean@nxp.com,
+ kory.maincent@bootlin.com, kabel@kernel.org, o.rempel@pengutronix.de,
+ nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
+ romain.gantois@bootlin.com, daniel@makrotopia.org,
+ dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
+ f@lex.la
+Date: Tue, 29 Sep 2026 00:38:29 +0000
+Message-ID: <179064230932.3145.9260154404781275100@kernel.org>
+In-Reply-To: <20260927133619.955236-2-maxime.chevallier@bootlin.com>
+References: <20260927133619.955236-2-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,254 +54,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 2
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The new comment in phy_link_topo_get_or_alloc()
+  (drivers/net/phy/phy_link_topology.c) lists the contexts the helper…
 
-- [High] Returning success before the PHY is attached causes a NULL
-  pointer dereference in ucc_geth_open() on CONFIG_PPC_85xx.
-- [Medium] The patch changes what a 0 return from
-  phylink_fwnode_phy_connect()/phylink_of_phy_connect() means: it can…
-- [Medium] The poller attaches the PHY based on a lockless readiness
-  check, phylink_phy_is_usable() (`device_is_bound()` &&…
-- [Low] Before this patch, a successful phylink_fwnode_phy_connect() in
-  MLO_AN_PHY mode always replaced a PHY_INTERFACE_MODE_NA link_interface…
-- [Low] The new kernel-doc of phylink_fwnode_phy_connect() says that for
-  a needs-host-firmware PHY that is not usable yet, 'a poller connects…
+Pre-existing issues:
+- [Low] Documentation/networking/phy-link-topology.rst (API section) says
+  struct phy_link_topology "is a per-netdevice resource, that gets…
 
 --
 
-net: phylink: wait for PHYs that are known to probe late
+net: phy: phy_link_topology: Add a helper for opportunistic alloc
 
-This commit changes phylink_fwnode_phy_connect() for PHYs whose DT node
-has needs-host-firmware and whose driver has not bound yet. It now
-returns 0 and arms a delayed work poller, which attaches the PHY once
-the driver binds. Until then, the ethtool paths report no link modes and
-refuse configuration changes.
+This commit moves the lazy allocation of dev->link_topo out of
+phy_link_topo_add_phy() and into a new helper,
+phy_link_topo_get_or_alloc(). The helper returns the existing topology
+or allocates a new one. It prepares for tracking phy_port objects in
+the topology.
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index a7d086cdc9b25..4a5b98b558891 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-
-[ ... ]
-
-> +/* Stale the moment it returns: the device lock this wants cannot be held
-> + * across the attach, whose own failure path takes it again.
-> + */
-> +static bool phylink_phy_is_usable(struct phy_device *phy_dev)
-> +{
-> +	return phy_dev && device_is_bound(&phy_dev->mdio.dev) && phy_dev->drv;
-> +}
-
-[ ... ]
-
-> +	ret = phylink_attach_phy(pl, phy_dev, pl->link_interface,
-> +				 pl->late_phy_flags);
-> +	if (!ret && phy_driver_is_genphy(phy_dev)) {
-> +		/* Lost the race: the attach bound the generic driver, which
-> +		 * is the outcome this poller exists to avoid.
-> +		 */
-> +		phy_detach(phy_dev);
-> +		lost_race = true;
-> +		ret = -EAGAIN;
-> +	}
-> +	if (!ret) {
-> +		ret = phylink_bringup_phy(pl, phy_dev,
-> +					  pl->link_config.interface);
-
-[Severity: Medium]
-What happens if an unbind of the PHY driver overlaps this attach? Sysfs
-unbind, rmmod and MDIO bus teardown take only the device lock, not rtnl.
-__device_release_driver() runs its steps in this order:
-
-__device_release_driver()
-    device_remove(dev)
-        phy_remove()
-            phydev->drv = NULL;
-    ...
-    device_unbind_cleanup(dev)          <- clears dev->driver
-    klist_remove(&dev->p->knode_driver);
-
-In that window phy_attach_direct() still sees d->driver non-NULL. It
-does not select genphy and leaves is_genphy_driven at 0. Then it calls:
-
-	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-
-That dereferences the NULL drv.
-
-If the attach does get through, phy_driver_is_genphy() is false here, so
-the lost_race recovery does not run. phylink_bringup_phy() then does:
-
-	phylink_info(pl,
-		     "PHY [%s] driver [%s] (irq=%s)\n",
-		     dev_name(&phy->mdio.dev), phy->drv->name, irq_str);
-
-Under rmmod, try_module_get(d->driver->owner) fails with -EIO instead.
-That uses up one of the bounded retries as if the connect had really
-failed.
-
-The commit message says the attach-versus-unbind window is phylib's to
-close. But the poller decides when to attach, based on a check it
-documents as stale. Could this oops the work item while it holds rtnl?
-
-[ ... ]
-
-> @@ -2418,7 +2578,13 @@ EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
->   * Connect the phy specified @fwnode to the phylink instance specified
->   * by @pl.
->   *
-> - * Returns 0 on success or a negative errno.
-> + * If the PHY node carries the needs-host-firmware property and the
-> + * PHY is not usable yet, 0 is returned with no PHY connected: a poller
-> + * connects it once its driver has probed. Until then the MAC runs
-> + * without a PHY and ethtool reports no link modes.
-
-[Severity: Low]
-Is this description complete? phylink_late_phy_poll() can stop for good
-after PHYLINK_LATE_PHY_RETRIES + 1 failed connects with the real driver
-bound:
-
-		} else {
-			/* Silence from here reads as success otherwise. */
-			phylink_err(pl, "giving up on %pfw after %u attempts\n",
-				    pl->late_phy_fwnode,
-				    PHYLINK_LATE_PHY_RETRIES + 1);
-		}
-
-That branch leaves pl->late_phy_fwnode set, so
-phylink_late_phy_pending() stays true. The ethtool paths then keep
-reporting no link modes and returning -EOPNOTSUPP until the MAC calls
-disconnect and connect again. Rebinding the PHY driver does not restart
-the poller.
-
-Could the kernel-doc mention this terminal state?
-
-[ ... ]
-
-> @@ -2440,6 +2608,23 @@ int phylink_fwnode_phy_connect(struct phylink *pl,
->  	}
+> diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+> index 4134de7ae313d..0462283c80202 100644
+> --- a/drivers/net/phy/phy_link_topology.c
+> +++ b/drivers/net/phy/phy_link_topology.c
+> @@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+>  	return 0;
+>  }
 >  
->  	phy_dev = fwnode_phy_find_device(phy_fwnode);
-> +	if (fwnode_property_present(phy_fwnode, "needs-host-firmware") &&
-> +	    !phylink_phy_is_usable(phy_dev)) {
-> +		/* -ENODEV here would also send DSA to the switch's own bus. */
-> +		if (phy_dev)
-> +			phy_device_free(phy_dev);
+> +static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
+> +{
+> +	int ret;
 > +
-> +		pl->late_phy_fwnode = phy_fwnode;
-> +		pl->late_phy_flags = flags;
-> +		pl->late_phy_poll_ms = PHYLINK_LATE_PHY_POLL_MS;
-> +		pl->late_phy_waited_ms = 0;
-> +		pl->late_phy_retries = PHYLINK_LATE_PHY_RETRIES;
-> +		pl->late_phy_warned = false;
-> +		queue_delayed_work(system_freezable_power_efficient_wq,
-> +				   &pl->late_phy_poll, 0);
-> +		return 0;
-> +	}
-
-[Severity: High]
-Can this leave dev->phydev NULL for callers that take 0 to mean the PHY
-is attached? ucc_geth_open() is one of them:
-
-	err = phylink_of_phy_connect(ugeth->phylink, ugeth->dev->of_node, 0);
-	if (err) {
-		dev_err(&dev->dev, "Could not attach to PHY\n");
-		return -ENODEV;
-	}
-	...
-	device_set_wakeup_capable(&dev->dev,
-			qe_alive_during_sleep() || dev->phydev->irq);
-
-With CONFIG_PPC_85xx, qe_alive_during_sleep() always returns 0, so
-dev->phydev->irq is evaluated. The deferral branch never calls
-phy_attach_direct(), so dev->phydev is still NULL at that point.
-
-Would this oops in ndo_open with rtnl held on an 85xx QE board? The
-conditions are a PHY node with needs-host-firmware and a PHY driver that
-is not loaded yet.
-
-Before this patch, the same situation either bound genphy or returned
--ENODEV, and ucc_geth_open() handles both.
-
-[Severity: Medium]
-A related question: several callers do one-time PHY setup right after a
-successful connect. The late attach in phylink_late_phy_poll() only does
-phylink_attach_phy(), phylink_bringup_phy() and phy_start(), so that
-setup is never repeated.
-
-enetc_phylink_connect():
-
-	/* disable EEE autoneg, until ENETC driver supports it */
-	memset(&edata, 0, sizeof(struct ethtool_keee));
-	phylink_ethtool_set_eee(priv->phylink, &edata);
-
-With pl->phydev NULL, phylink_ethtool_set_eee() returns -EOPNOTSUPP and
-changes nothing. ENETC has no LPI mac ops, so phylink_bringup_phy() does
-not touch EEE either. Does the late PHY end up advertising EEE on a MAC
-that explicitly tries to turn it off?
-
-stmmac_init_phy() passes priv->tx_lpi_timer to phylib through
-phylink_ethtool_get_eee() and phylink_ethtool_set_eee(). Both fail when
-there is no PHY, so a timer set before the first open looks to be lost.
-
-mvneta_mdio_probe() calls device_set_wakeup_capable() once, from
-phylink_ethtool_get_wol(), right after the connect. Nothing updates it
-after the late attach, so PHY WoL would never be reported.
-
-sparx5_port_open() takes a NULL phydev after a successful connect to
-mean the port has no PHY, and powers up the SerDes:
-
-	if (!ndev->phydev) {
-		/* power up serdes */
-		port->conf.power_down = false;
-
-The phylink_of_phy_connect() kernel-doc also still says "Actions
-specified in phylink_connect_phy() will be performed". That is not true
-on the deferred path.
-
-Is there a way for these callers to learn that the connect was deferred,
-or for the poller to re-run their post-connect setup?
+> +	if (dev->link_topo)
+> +		return dev->link_topo;
+> +
+> +	/* The topology is allocated the first time we add an object to it.
+> +	 * It is freed alongside the netdev. It can be called on multiple
+> +	 * contexts:
+> +	 *  - It can be called from .probe() : No rtnl, no netdev_lock
+> +	 *  - .ndo_open() : rtnl and possibly netdev_lock
 
 [Severity: Low]
-Does returning here skip the PHY_INTERFACE_MODE_NA fix-up that the
-non-deferred path does further down?
+Can phy_link_topo_get_or_alloc() actually be reached with netdev_lock
+held?
 
-	/* Use PHY device/driver interface */
-	if (pl->link_interface == PHY_INTERFACE_MODE_NA) {
-		pl->link_interface = phy_dev->interface;
-		pl->link_config.interface = pl->link_interface;
-	}
+At this commit, the only caller is phy_link_topo_add_phy(). It returns
+early for ops-locked devices before it calls the helper:
 
-A DSA user port with no phy-mode in DT gets PHY_INTERFACE_MODE_NA from
-dsa_port_phylink_create():
+phy_link_topo_add_phy() {
+    ...
+	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+		return -EOPNOTSUPP;
+    ...
+}
 
-	err = of_get_phy_mode(dp->dn, &mode);
-	if (err)
-		mode = PHY_INTERFACE_MODE_NA;
+Later in the series, phy_link_topo_add_port() rejects the same devices
+with WARN_ON_ONCE(dev->netdev_ops && netdev_need_ops_lock(dev)).
 
-Before this patch, a successful connect in MLO_AN_PHY mode meant the
-interface was set before phylink_start() ran. Now
-phylink_start()->phylink_mac_initial_config() copies pl->phy_state with
-the interface still NA. phylink_major_config() then passes it to
-mac_select_pcs(), mac_prepare() and mac_config().
+On the open path, dev_open() only takes netdev_lock through
+netdev_lock_ops():
 
-The poller's forced major config fixes this later. In the meantime, can
-the MAC/PCS be programmed with PHY_INTERFACE_MODE_NA, or fail on it and
-set major_config_failed?
+include/net/netdev_lock.h:netdev_lock_ops() {
+	if (netdev_need_ops_lock(dev))
+		netdev_lock(dev);
+}
 
->  	/* We're done with the phy_node handle */
->  	fwnode_handle_put(phy_fwnode);
->  	if (!phy_dev)
+That means netdev_lock is held only for the devices that both callers
+reject. Would it be more accurate to drop "possibly netdev_lock" from
+the .ndo_open() line?
+
+This comment also mentions ports and the SFP cage port, which don't
+exist yet at this commit. struct phy_link_topology only has phys and
+next_phy_index. The rest of the series fixes that. "net: phy:
+phy_link_topology: Track ports in phy_link_topology" adds the ports
+xarray and phy_link_topo_add_port(). Later patches add
+phylink_create_sfp_cage_port(), phylink_add_sfp_mod_port() and
+phy_add_sfp_mod_port(). By the end of the series, only the netdev_lock
+part is still inaccurate.
+
+> +	 *  - SFP state machine : rtnl held or not
+> +	 *
+> +	 *  However, we can't really have races :
+> +	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
+> +	 *    and trigger the alloc. Only then the ports can be added through
+> +	 *    phylib or sfp.
+> +	 *  - If we don't, the SFP port for the cage is registered first, and
+> +	 *    only then other ports/PHYs can be registered.
+> +	 */
+> +	ret = netdev_alloc_phy_link_topology(dev);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+
+[Severity: Low]
+This is a pre-existing issue, not something this patch introduced. The
+API section of Documentation/networking/phy-link-topology.rst still
+says struct phy_link_topology "is a per-netdevice resource, that gets
+initialized at netdevice creation".
+
+The code allocates dev->link_topo only when the first object is added.
+phy_link_topo_empty() and phy_link_topo_get_phy() both handle a NULL
+dev->link_topo.
+
+The baseline already did this allocation inline in
+phy_link_topo_add_phy(). The last patch in the series, "Documentation:
+networking: Update the phy_port infrastructure description", leaves
+that sentence unchanged.
+
+Could the documentation say that the topology is allocated when the
+first object is added?
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925001209.2334139-1-f%40lex.la
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927133619.955236-1-maxime.chevallier%40bootlin.com
