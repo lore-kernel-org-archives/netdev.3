@@ -1,111 +1,139 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787713CB2C7
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 16:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F133CB2C7;
+	Tue, 29 Sep 2026 16:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790699500; cv=none; b=E6tFN8zlKXtP+/oKnhQTZ5PyTXoRtSJbtWHwyMhpq8ICMPhyTYmJ5U/ydldAxYiz5z0uDaTHzmDvlA916CK2rryI8Zg6Fx4wMnWZdVoOTm0sDip3Y+T2/WVH3VvkjJ012wGg6dy6Wh6QGUiGm13dffJmfwZABWJg3BMDy/O9S3M=
+	t=1790699587; cv=none; b=oZOrzFdrlah5rnO/rNTrUfRsPuw8jRybVnnAAlMmLHDEm//H8zR76J7Afmo8odkdpgmlQ1nVaiyTuJ18ym2tkobGFLa67wPXFPwQdIpoQUXI80q1tpnIInPpO46Tz3DHg8C4g/Tgj7soEKJmlVRroTvpHXuLCsPi3pYFsX/ng+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790699500; c=relaxed/simple;
-	bh=lnpKMnLuqv+oX44Oz2gq1nLSEgp1cliwREafqFlWmDY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=YQ4Wxp5ETdAou1Mh7DrPP4RJ4H56FrxOl7CnGSSI697JJQYAlComTSgOvFlq7VBQ7OcteNRLzVmjVOWHCNXTZbDYRijgJjCCKuVdl6e0ncbyeyboQEh9DjK9f2UjaBUU2d1HD7cpbqi4VzQ0/G36FuwBuRLg1xBTdwNik/5cUrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXLZnBkh; arc=none smtp.client-ip=74.125.228.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790699587; c=relaxed/simple;
+	bh=0RUTTWkAztuBE6kNH8F0KG1K63UvbLEBc1iYCnmJwiQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F9m6L9WjaXz/YXcwmTVSleZxUGPMj5G05H/jpu1KYJVo+4gaSNBiGHI1LkVlXrliEl1TyBgaFTp5wuMK2vlr0sh9dxiD8Gjmw69tEFIxhRHE3+ZCiN9q3m+VcZ29F7aKCwNpq61qadaf/n0L6IhUQkJ2GqsM3FIoti3hqN8RBQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqdKaM/C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXLZnBkh"
-Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc794a06e5fso2267779a12.3
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:31:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790699499; x=1791304299; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vWBRVFg3TNII9e3JzDYA1qiuNTLpJveN/yke9DPuJTk=;
-        b=WXLZnBkhaQdF/n4yC0ECg3VUQDF1tfB5yHqnqXisqAp9F9pakdePCmKAKHtu4mZ3C2
-         5h7bRYuW4CKnad0F6ikmUcR7KhJECVan+A4XYV9UIm5yacC94ktORqUpxiTu85MNUbw6
-         1Zte8PAEukPCRYONDX3xeeZZVLSnhoKgEZy4zgl/7RAG64hMciGhHjZmCmn63j+e6q+e
-         jAGLTztlNpk2eHGxEhzoiMRHr4N5ZjxGrMVoVZHGRbtKyuwVTr48tfRk4RMwavxJXYI/
-         /K2C3CzsFVsSqE1nr7BqgZ0nw3YG0jIGSWml4hDAYj6mbslFeGojuj9f4tmkBu7bxRrh
-         JGjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790699499; x=1791304299;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vWBRVFg3TNII9e3JzDYA1qiuNTLpJveN/yke9DPuJTk=;
-        b=znIk34B5jKe6p3PV5U2ZjuJSnOwcJmTASq/V7bmo3j3BCmbUK23F0XpSn6yRcxhdRh
-         Pyk+hLTwxnM67eF98Uydu0ajImSm9akpwvmLmSVodJ24I8M+CvgA9KF/gaqe6utoxr26
-         LElQrh5htZ8wgxW7IQkVlm894aKzfasBVtawA51ROgXNgq/V88RI9gjHbfsrpy2zKiyn
-         n4MCFQOZdZ5ELghHZRwKaWU6YXHv7nzXSSdyL+h2FqbLwS6Fxt9ZaTZ8X7pbOITdybc8
-         CDzM1VDefB/ucT5DkSIrhNuaHmYyPKWZkq304mJwiUovkxfnkNP+uKmdoYmoAx4ZQOp4
-         ah+g==
-X-Forwarded-Encrypted: i=1; AKwUvBzd+T+3I+sAEfwSMjlWGx8rb+3dXlPQ+AF8PqWT/p5vtGl4HsvaVu2KsUBIhtwvIKJI7dHVD6Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++ma8pONYDZlrNBreRMmSBTyX5mXTJv1jTbSLY6n8H34fL+B+Y8r
-	l9qIZm4iy5M3gGWguTZfn3SdsVUZ7Gg/L+bN1K8jc13rn/jtO5rFSBPe
-X-Gm-Gg: AYBFou3MnOt96ejMnRIhBXS32BxmZtJGAvOeWvULJB5Z90EKqMg+OkKmcLf7XjhOysC
-	Lxv536J1xSOJJyXkpgy2gE1bz4EjaFrDMUtyH7kpn4UDS0Nz1WpDarDAgV3Vnr7d4RWqo0wHK2b
-	fgGCdtbLvSugL7Do8avscfmf4WNtjcj60Sf1WF3CQLv/ZFCOF0OIqSeNkLzWFKD1KjKyjVyFmaw
-	0X3jB0DpyBjkAE5QQVTF8/WaQKg95aWIoZk1UPQ75ZL96J1nvoPAS1YPx6JfnN58v4xF9zx7HDq
-	LllKz4xX5cF2fD3xXrD+0YU8JPoZhMQAWl82ElruP8zJo1fJckNwvaD96/6BWJbjtssC0QJwW+d
-	oMwdKQhyUkXEAtbwVrWENt132cTs94MNgAt3HWgcAnWfGBKEGnRdeL7COVtLqhRg8F9YqbK02Ku
-	Ov1DVnMHsY13EfSH3D8qRYWPXzMPxQT/PDH3f1U8OVHlYrFM0o87JUaGL6RVa8yiBJu02uQ7qi4
-	esSq8D4GIXdGVplNbAd3ZGkVDkjVDSs2Tn1dSQLYeMshKlD7x7bbFvmvYoqJZVji+gsWff35oYi
-	Pn4Y
-X-Received: by 2002:a05:6a20:9e4c:b0:3dd:a007:cb2a with SMTP id adf61e73a8af0-3de26db5242mr11967568637.38.1790699498710;
-        Tue, 29 Sep 2026 09:31:38 -0700 (PDT)
-Received: from localhost ([153.61.198.250])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7d2b562d8sm109617a12.24.2026.09.29.09.31.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2026 09:31:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqdKaM/C"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B6AFEC4AF0B;
+	Tue, 29 Sep 2026 16:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790699586;
+	bh=0RUTTWkAztuBE6kNH8F0KG1K63UvbLEBc1iYCnmJwiQ=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=AqdKaM/C9shv7K4p87qMEdsdgC6ywFh2ZnedXGpLU6O74lFpfhYYX5UZtMawuMsnJ
+	 LgEwStb8FyzfqKJOcoIpG5H9Ym/A0Ol/MKcm/bCRDAiMBNmUJq4DKkhA9fBy+8TmXS
+	 8JBOgKGwCB4+xIYddejgj7NMlhoh5pqZ8YJatMQZchRei5FuzLYAdXxfSOj0Qhtl67
+	 F9VZL+MDLTw0pjc7WGuJELeuUGsuwuTAms87HSuSCPDXs3hgE3oYSVyLV2QLkkdlrT
+	 jhNWxRX6GvFZHqQIKxH7ftdrJ3qXCP8cOQ08sXeGoq+brW2q/oBm8VXFb5r7POT20U
+	 EkWEfqdByUMSw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 918DBCA5FA5;
+	Tue, 29 Sep 2026 16:33:06 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Tue, 29 Sep 2026 18:33:04 +0200
+Subject: [PATCH net] vsock/bpf: release sock lock while waiting for data in
+ recvmsg
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Sep 2026 16:31:37 +0000
-Message-Id: <DLRXZSBSYJ2K.3UN9IME1MKDD9@gmail.com>
-Cc: "Florent Revest" <florent.revest@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Linux Kernel Mailing List"
- <linux-kernel@vger.kernel.org>, "Linux Next Mailing List"
- <linux-next@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the bpf-next tree with the bpf tree
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Mark Brown" <broonie@kernel.org>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Eduard Zingerman" <eddyz87@gmail.com>, "Daniel
- Borkmann" <daniel@iogearbox.net>, "Alexei Starovoitov" <ast@kernel.org>,
- "Andrii Nakryiko" <andrii@kernel.org>, "bpf" <bpf@vger.kernel.org>,
- "Networking" <netdev@vger.kernel.org>
-X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
-References: <arvRs4KdojDnW1O6@sirena.org.uk>
-In-Reply-To: <arvRs4KdojDnW1O6@sirena.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-kbh3-1-022-fix-v1-1-cc97cc95d269@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQrCMBAFf6W8swubjVjqr4iHtN3YVYiStCKU/
+ nujHmdgZkXRbFpwblZkfVuxZ6rgDg2GKaSbko2VISwn7qSjRz95csQiFO1D/sgh+NhGbh1q9Mp
+ a9W94QdIZ178sS3/XYf6usG07HflYVHcAAAA=
+X-Change-ID: 20260929-kbh3-1-022-fix-340aa3f7f071
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Bobby Eshleman <bobby.eshleman@bytedance.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org, 
+ Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790699585; l=2593;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=4IPBHLtgo8ghTbbKAwJ8yZ9NmPZQTYBQyUYCEEc51UE=;
+ b=a5k/85Mme7ztf5MTcaik5O/66KyvJ3vqg/NckJwjUvqqNN5AX0f09Nk7mbJKtmd2bED+s22s3
+ o2QNttsa+atCbSNoqOIKaMTU4xeuiPQ5/JHuHN5r0C3z65nhuT8jNyQ
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
 
-On Tue Sep 29, 2026 at 2:56 PM UTC, Mark Brown wrote:
-> Hi all,
->
-> Today's linux-next merge of the bpf-next tree got a conflict in:
->
->   arch/x86/net/bpf_jit_comp.c
->
-> between commit:
->
->   17637e1a581a2 ("bpf: Skip detached progs in trampoline images that are =
-still in use")
->
-> from the bpf tree and commit:
->
->   29fcf9ce4bbdf ("bpf, x86: Use global buffer for trampoline size generat=
-ion")
->
-> from the bpf-next tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-all correct. It will get fixed when bpf gets cross mereged into bpf-next.
-Likely on Thu or Fri this week.
+vsock_bpf_recvmsg() takes lock_sock(sk) and holds it across the whole
+receive loop, including vsock_msg_wait_data(), which sleeps in
+wait_woken() without dropping the lock. When data arrives, the
+transport's delivery context (the vsock-loopback worker, or the
+virtio/vhost rx path) calls virtio_transport_recv_pkt() -> lock_sock()
+on the same socket and blocks. That context is the only one that would
+queue the skb and call sk_data_ready() to wake the reader, so neither
+side makes progress. A blocking recv() hangs until a signal arrives (a
+finite SO_RCVTIMEO also breaks it); while it lasts the shared delivery
+worker is stalled, so all vsock rx on that transport stops, not only
+the affected socket. The hung-task watchdog reports the worker blocked
+in D state:
+
+  INFO: task kworker/1:3:107 blocked for more than 5 seconds.
+  task:kworker/1:3 state:D Workqueue: vsock-loopback vsock_loopback_work
+  Call Trace:
+   __schedule
+   schedule
+   __lock_sock
+   lock_sock_nested
+   virtio_transport_recv_pkt
+   vsock_loopback_work
+
+The reader holds the same sk_lock-AF_VSOCK it is waiting on, taken in
+vsock_bpf_recvmsg().
+
+This code is based on net/unix/unix_bpf.c, whose unix_msg_wait_data()
+drops u->iolock around wait_woken() and re-takes it afterwards. The
+vsock port substituted lock_sock() for that serialisation lock but
+omitted the unlock and relock. tcp_bpf and the native
+vsock_connectible_wait_data() both drop the lock across the wait;
+vsock_bpf is the only one that does not.
+
+Release the socket lock around the wait and re-acquire it before
+re-checking for data, so the caller's locking is unchanged.
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+ net/vmw_vsock/vsock_bpf.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index 9049d2648646..bb7d81a95baa 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -50,7 +50,9 @@ static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long ti
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	ret = vsock_has_data(sk, psock);
+ 	if (!ret) {
++		release_sock(sk);
+ 		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
++		lock_sock(sk);
+ 		ret = vsock_has_data(sk, psock);
+ 	}
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+
+---
+base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+change-id: 20260929-kbh3-1-022-fix-340aa3f7f071
+
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
+
+
