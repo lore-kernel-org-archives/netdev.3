@@ -1,63 +1,34 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608CC3D953E;
-	Tue, 29 Sep 2026 23:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A7E3B6370
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790725515; cv=none; b=gpJ42LvNm0uAWEdqQZ/hR8H/jaO9ujFklSQBdJDHzRW+8kjxruJcd9GY9ieckKFaetN3TbSP9BfinhH0rLiAMegq9TJnFJxniA+IqkXH8Zr4hfl4Vj2BOpTJa4uaRd/eC5jbBAnld3UlZq8CObhJYSnJ3mBz4wCQmVnZyIJF1XQ=
+	t=1790725807; cv=none; b=ZGU6fgJzOTj0Jh/K6YVnY3k2tZp6sSHXnoKbxMLMxlQdHJlZgxppSmY2bFvD4qfBpGFsSNddgcYAcqYW1o787DGfMTPaYUYS2U9/s+aQ4h2FUl1LDtBW9n5agSEireMR9y9KUGnw9d7oY4PCRNmsWMdf1496hNAuf2T7VndKH2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790725515; c=relaxed/simple;
-	bh=qaD+oUK2DtSCtyltd/DU1cGOaw33iQMQ/3aJCRprPkQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HUH+vUTkCHI3A3zK1va7Uh9M1jbrp2tFY/fzBROAad84lsNbtLMsMymZswTTvSDYTclFScsE3ZPtnu3feEE8Ggw1t8paZFzims5Ab1uAO3emkqlwP//3rjEcQLDOi616Lemnop0ZQyWfDx2SJB1yDUKyr5rHqqzRWumdaPvBW/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NgkLEWKL; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1790725807; c=relaxed/simple;
+	bh=TA+J3yQqhB0Bp/EQNZb0uNSjHp6QXI2tfJDfelzzG10=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=rIS4aYLZT9lBVA280r2+cnWOQGcGfZfN6Cn2D2Y+ErGR1gidMFerduhgZ+UQLg9gL+TECT74z+DBPUFoLy8DK7dDVio78Mwg9zAT5OlK+KgS7N2+NceRFsaG1NXI1rkqEbtxVAyHD60gJSvRvM25Ij3GwR6tmuSjoganCFpqgCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7xfWkdb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NgkLEWKL"
-Received: from CPC-mawas-YGKSX.localdomain (unknown [70.37.26.35])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7D43D20B7166;
-	Tue, 29 Sep 2026 16:44:21 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7D43D20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1790725461;
-	bh=FuVEsT1W2BzsrFSye+6V6QlSXmi+gbYDtaB0fNAucQI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgkLEWKLuqLGYVaKVKJ7I8Bkj6eL0gl4Q1U2MjjsFwhgNlaIbUv5JK5OMIT+x8Pl6
-	 lGKr2yfpcP/5Tzdd2O1NR1GihuZyOqzj4aveKxpODnlW88Cb2G54QVnaNrva5m1TJN
-	 amefGb0muT+7m1V/zMTU0UvxD8IJY9vtXfPwmP0o=
-From: Manish Awasthi <mawasthi@linux.microsoft.com>
-To: horms@kernel.org
-Cc: netdev-bot+sashiko@kernel.org,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kotaranov@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org,
-	nipun.gupta@amd.com,
-	nikhil.agarwal@amd.com,
-	gargaditya@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	kees@kernel.org,
-	paulros@microsoft.com,
-	mawasthi@microsoft.com,
-	Manish Awasthi <mawasthi@linux.microsoft.com>
-Subject: Re: [PATCH net-next 4/4] net: mana: Add support for CDX device ID 0x00C2
-Date: Tue, 29 Sep 2026 23:45:08 +0000
-Message-ID: <20260929234508.10647-1-mawasthi@linux.microsoft.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260929135738.GT13925@horms.kernel.org>
-References: <20260924173054.589291-5-mawasthi@linux.microsoft.com> <179035761944.2160803.12943182451050438147@kernel.org> <20260928202555.617331-1-mawasthi@linux.microsoft.com> <20260929135738.GT13925@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7xfWkdb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8701F000FF;
+	Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790725805;
+	bh=K5STqsST9hTqkYRA5GaFdliU8v5WFv2Y71PI1VdU6a8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=b7xfWkdb2ALCoaAA2iPpwSFpYSzd5sngh41nW8695nI/tw5Lk85TUyF7+tgYRgnv7
+	 PqFkQqxjaaadO06nmBkyxfxJeQITmoCqfMHIAP/rmKH8M6svrhPSxVIlrHNxbZG/jx
+	 HP2mPtXkdWoLE3HEG8VYThv3/MBNbptb7UFfgyjwGlcGo/xq9SaWrOuF6oYIVYgXPx
+	 zElpYQVnaIaEOIDtBgwChzyAREGVO8Che9QYmXQ/BDcJCRgNuMrCzdH6BAZl9qYSDB
+	 NoQQ8jehx7X4yG85YZuZqFKl4AwrpcecLh/15aedZFiRFgk2y5BpBZ+FmF/BgXJq0I
+	 WRILnce0dQMCQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B481439D5FDD;
+	Tue, 29 Sep 2026 23:50:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,75 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/packet: prevent TX_RING byte count overflow
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179072580454.1169866.3216258817099435365.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 23:50:04 +0000
+References: <20260925124829.6595-1-ilkka.lappetelainen@gmail.com>
+In-Reply-To: <20260925124829.6595-1-ilkka.lappetelainen@gmail.com>
+To: =?utf-8?q?Ilkka_Lappetel=C3=A4inen_=3Cilkka=2Elappetelainen=40gmail=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
+ security@kernel.org
 
-> On Mon, Sep 28, 2026 at 08:25:55PM +0000, Manish Awasthi wrote:
-> > thanks for review. Comments inline.
-> > 
-> > > Thank you for your contribution! Sashiko AI review found 3 potential
-> > > issue(s) to consider.
-> > > 
-> > > Critical: 0 · High: 0 (1) · Medium: 1 · Low: 2
-> > > 
-> > > If you believe none of the issues are legitimate, please reply to each
-> > > issue of Medium severity or higher and explain why the AI is wrong.
-> > > If any of them are legitimate and you plan to respin, please let patchwork
-> > > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > > (one such reply per series is enough).
-> > > 
-> > > - [Medium] The CDX transport installs `.dev_reset = mana_cdx_dev_reset`
-> > >   (-> `cdx_dev_reset()`) but has no way to recover afterwards.
-> > > - [Low] `mana_cdx_setup_hwc_irqs()` skips IRQ affinity hints.
-> > > - [Low] The comment in `mana_gd_query_max_resources()` (gdma_main.c)
-> > >   says: "Only reset on platforms that support dynamic MSI-X allocation;…
-> > > 
-> > > Pre-existing issues:
-> > > - [High] This problem wasn't introduced by this patch, but the shared HWC
-> > >   bootstrap path that the new CDX transport now reaches trusts a device-…
-> > > 
-> > > --
-> > > 
-> > > net: mana: Add support for CDX device ID 0x00C2
-> > > 
-> > > This adds a CDX bus transport for MANA, built as mana_cdx.ko on top of
-> > > the shared gdma_core.ko, for device ID 0x00C2. It allocates the whole MSI
-> > > pool at probe time, limits the queue count to the available vectors,
-> > > restricts DMA to 32 bits, and adds a per-bus auxiliary device name prefix
-> > > so the CDX auxiliary devices stay separate from the PCI ones.
-> > > 
-> > > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_cdx.c b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
-> > > > new file mode 100644
-> > > > index 0000000000000..0d01e3d2f0d96
-> > > > --- /dev/null
-> > > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
-> > > > @@ -0,0 +1,340 @@
-> > > 
-> > > [ ... ]
-> > > 
-> > > > +static int mana_cdx_dev_reset(struct gdma_context *gc)
-> > > > +{
-> > > > +	return cdx_dev_reset(gc->dev);
-> > > > +}
-> > > 
-> > > [Severity: Medium]
-> > > Can this reset leave the whole function unusable, with no recovery short
-> > > of a manual rebind?
-> > > 
-> > > mana_dealloc_queues() calls it when a TX queue still has pending_sends
-> > > after the drain timeout:
-> > > 
-> > > mana_tx_timeout()
-> > >   -> queue_reset_work
-> > >     -> mana_per_port_queue_reset_work_handler()
-> > >       -> mana_dealloc_queues()
-> > >         -> mana_gd_dev_reset()
-> > >           -> mana_cdx_dev_reset()
-> > >             -> cdx_dev_reset()
-> > > 
-> > This version of the driver doesn't support recovery after mana_cdx_dev_reset.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 25 Sep 2026 15:48:29 +0300 you wrote:
+> tpacket_snd() drains every SEND_REQUEST frame in a TX ring and adds
+> each valid packet length to the signed int len_sum. Userspace can
+> recycle completed frames concurrently, so a single blocking send call
+> is not bounded by the ring size.
 > 
-> I don't think it needs to delay progress of this patchset.
-> But I am curious to know if there are plans to add such support.
+> After enough successful transmissions len_sum wraps into the negative
+> range. In particular, 65536 65535-byte frames followed by a 65007-byte
+> frame produce 0xfffffdef, or -EIOCBQUEUED. sock_sendmsg_nosec() treats
+> that as an impossible return and triggers a BUG. On systems configured
+> to panic on oops, a CAP_NET_RAW holder can panic the host kernel.
 > 
-    It is possible to have similar recovery support as the pci in this path
-    after cdx_dev_reset() and we do have plans to add it in future.
-> ...
+> [...]
+
+Here is the summary with links:
+  - [net] net/packet: prevent TX_RING byte count overflow
+    https://git.kernel.org/netdev/net/c/2cf81fc9505b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
