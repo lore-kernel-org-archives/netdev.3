@@ -1,117 +1,76 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D8E632;
-	Tue, 29 Sep 2026 00:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC542EAD15;
+	Tue, 29 Sep 2026 01:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790643405; cv=none; b=VCPvr0j8NdtNBXWJKUTWhtxxjQvmyO+7JkWWL+m3iM7umHVnkwpz5IdT7jr2JmQyVEqjeboesrX8fejUYVSlZhpM6nFaxhDP1uoVWP7+WhjBPlQ0RlS5JTqQ63GHQmeAcrTBlCdm3hIqDhfMyWCfyZSXng6VqXW3OK4hETPthxE=
+	t=1790643615; cv=none; b=R4TuGFhYLdYClKcQ6B6nCLya2Q6h65rLyTLA1b88LrrWZ60FZWGIllE6ueVvEeaac+EAqLW/soqJeTCwxJ/v0P3HqX6Sqzpv5ehwryy66JyHUcKvXCwYU6PGP/WSv5zotZfBeZeFtfzrH311SevDnEOrx3op+1GCj4S3+cLtIoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790643405; c=relaxed/simple;
-	bh=kOql9ef48kSmauF9b29iH4298MhH1lVV7If/MDsNPiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t8MBYuWfDBL/DvTHwVJgXdzsGEDebe1P7kLIJAAj7PkYx66wADvuggiLygqKJ23C5tG2iNUWZoD3jFXaHPzwjtY4RNNHbOszoOvrvA9UjgP+CtedeVeOzP/wJMCticDw93Lhjsg55rfbRDDRj2Q2ovALwI1mPYU+mLXOlgC8AYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=UtkDfbvA; arc=none smtp.client-ip=220.197.31.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1790643615; c=relaxed/simple;
+	bh=gkalNelW/D/0P3Ly3PJWns2c9Izn8LTjvaT89Zl3BZE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GnEaEHZ8esbxbLxZKfXAfjblF2tJmLUJ1h98JsuEs0Qcgmf7JQARcvLETvccv6EL+w1dHggWgX+MCtPjBTLhLndr1RvSl7IMQokfvF1Cqh5tm28X5jX+75UhgiWArn0E9pndbbU9y06AaPLbQD83XPdBuuC9oRRtK0kP/pUVkS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b6OOJEFj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="UtkDfbvA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=3RP0bnqMIII/pg2ONC6Opo4xbcWoQQB6/I+wlhye0es=;
-	b=UtkDfbvAzPIoQ1EEOd85g1MfunZokxLA2parXhp6dnZM5f87rdA8xY5jd96WzQ
-	HdOhfTHQbOBziYufv1PyELXZMdJuzGLAcBeToOSTxx//5QdWfPldMlSabCMh/P0J
-	MPR9q81X/F+CewOZ1XZHn0OTyCICAwRYMm4CxiuHviw3E=
-Message-ID: <ee7cc693-864c-48ad-ac26-459396245c8f@126.com>
-Date: Tue, 29 Sep 2026 08:55:41 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b6OOJEFj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D7B1F000FF;
+	Tue, 29 Sep 2026 01:00:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790643614;
+	bh=l7o+SthR0IG03K+lwiN1f5f7Rhh/++PQDpOdzUajsdY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=b6OOJEFjMf9jhmEawYnY0KNx/h4pK9lyKJmUgLMh2ecoVTpBhayCiQdEFRuVnDp4+
+	 bfrb3LapnniU7LKO9jv7XhQIOzxwiL73GtjIXI655VnhZ0cBSlG8cmCj76N7Woh9U2
+	 KpiHpS/GQVK3/DoUXJg9l71NroKeC+0s2w8QtSeocIp5Jqs66OMPt11cIj+yfV2JOV
+	 dI1tnf8xhWLYnLQkeZt9akZ6C459Iw844vzhvCVY3GH9vjEngU2PdTVC35kN1tMGdH
+	 mZ1eZ96Nb1KfB8d2gnoofFu9xCgyMQTAUV3ftbdurFH8yUfCRB+7V08SN2j029qbrl
+	 AU+DgPWS6VBEg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2C23924FED;
+	Tue, 29 Sep 2026 01:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 2/2] ice: release the VF MSI-X window when
- ice_start_vfs() fails
-To: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>,
- anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>,
- stable@vger.kernel.org
-References: <20260928065306.1514795-1-xiaolinkui@126.com>
- <20260928065306.1514795-2-xiaolinkui@126.com>
- <143280f0-1c93-405b-b03d-b6404893cdd7@linux.intel.com>
-Content-Language: en-US
-From: Linkui Xiao <xiaolinkui@126.com>
-In-Reply-To: <143280f0-1c93-405b-b03d-b6404893cdd7@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD3j6qNDLtq9SOUAQ--.43551S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KF4DCFyxKFW7WrWxuFW7urg_yoW8AF45pa
-	yDXFy3Ar1kJFy3Wrn2qay8ZF95Wayxt3yF9340k3WSy398Ar1rtFyDtrW29348C397CF1a
-	va1j9r43Crn8JrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcBMNUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQ6vhmq7DI6EtwAA3u
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] bluetooth 2026-09-28
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179064361278.199999.16060652770128006151.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 01:00:12 +0000
+References: <20260928152919.942973-1-luiz.dentz@gmail.com>
+In-Reply-To: <20260928152919.942973-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
+Hello:
 
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On 2026/9/28 21:08, Tomasz Lichwala wrote:
+On Mon, 28 Sep 2026 11:29:19 -0400 you wrote:
+> The following changes since commit 6d91041bb38b97e2feb625123cc0529d7b83a0e1:
 > 
+>   Bluetooth: RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame() (2026-09-21 09:37:20 -0400)
 > 
-> On 28.09.2026 08:53, Linkui Xiao wrote:
+> are available in the Git repository at:
 > 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
->> index 95abc6704820..df84dbe12cba 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
->> @@ -446,8 +446,10 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
->>   		return -ENOMEM;
->>   
->>   	vsi = ice_vf_vsi_setup(vf);
->> -	if (!vsi)
->> -		return -ENOMEM;
->> +	if (!vsi) {
->> +		err = -ENOMEM;
->> +		goto free_irqs;
->> +	}
->>   
->>   	err = ice_vf_init_host_cfg(vf, vsi);
->>   	if (err)
->> @@ -457,6 +459,9 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
->>   
->>   release_vsi:
->>   	ice_vf_vsi_release(vf);
->> +free_irqs:
->> +	ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
->> +
->>   	return err;
->>   }
->>   
->> @@ -490,6 +495,8 @@ static int ice_start_vfs(struct ice_pf *pf)
->>   				dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
->>   					vf->vf_id, retval);
->>   				ice_vf_vsi_release(vf);
->> +				ice_virt_free_irqs(pf, vf->first_vector_idx,
->> +						   vf->num_msix);
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-28
 > 
-> Nit: For consistency with the teardown: loop (which frees IRQs before releasing the VSI), consider swapping the order here too - currently this branch releases the VSI first, then frees IRQs, the opposite order. Not functionally significant, just readability.
+> [...]
 
-Thanks for the review, Tomasz.
+Here is the summary with links:
+  - [GIT,PULL] bluetooth 2026-09-28
+    https://git.kernel.org/netdev/net/c/382cf9768987
 
-Agreed this is only a readability nit. The two calls are independent and
-the current order is functionally safe, so I'll keep v2 as is.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-No v3 planned for this change.
-
-Thanks,
-Linkui
-> 
->>   				goto teardown;
->>   			}
->>   		}
-> 
-> Reviewed-by: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-> 
 
