@@ -1,115 +1,103 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773134F46F
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738534EC658;
+	Tue, 29 Sep 2026 09:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790674683; cv=none; b=Kfbmjo0zyvauNohBd/JCpDHpKFjVXlKiHwsoiQELa+9r/pKRvWR1Z5co/Fa6AWEIzwIifwqg5OYSVV7q0RrK8OpA43WHdhJxwpMer9C4bS6DNy8p3bQlj/GhDkevFdoInC9ZwfV6/wM77SiEI3887PrNSEi7WobaFvw/q9Lyvow=
+	t=1790674909; cv=none; b=KD3TUUGBTta+rBYChng+3bequpgg1rnDLsYE74NipNS7CLftEhb1NUtR2k5PzmiqrPfQNRz3LqhcBcO+XN78sOCtohiRvQzxNmkZGDyj4p0TXmzYZBZYTIZmKAuPHeoRU8rlrQhfLt9i08qJlkRbTFRQMZaItj31YRELSFnKaKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790674683; c=relaxed/simple;
-	bh=h0zlRFYCYAWkoSgwUwwSA0wIPj1xDikfYhQbz0D7xFg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UObxmEc9w58pCWGIJdnFX9BcLL3AXxmO9WegiD8dNI5lheqehDdfFggCAPYw+QcoVKpz9R015dU2pCEaQqwV6jaxayCEO7y+THwHYcXH7l+f2C7F0GIYMReXW7dR5skA2IfF1c1b9fpY3cKm9Da22cPCBkIcp7jKRJxVapQmeII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=l6jIQ6C7; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790674909; c=relaxed/simple;
+	bh=jCHNFYQG1sUx//KhemrhYHUZT7SOFEUWwbrq/w+nmJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PBBu9fGTNopK9V3ywp8Pjqk28KKla/tBMjVaGlDts9YiX+Dc+N/WxC2s/qvEE9v3Ve5NYAWyUTNfwtEf3vYeqwdCUiaDIaCibeg5dbGtOqziRCm4YL7Pq4z9EyqYmoBHlbo18hUpWG5JQaZ5QguwQEFQptCMD9w4GE+fAb+XiUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=En5qEA4F; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="l6jIQ6C7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=XI
-	9bzJKhu82tyFu0e8V4QWVv+TywtBWmQMA0cOxWKQo=; b=l6jIQ6C7WRE0ggPP/j
-	MwXmC1w65ZBNdclR8rjBlYcdBGLLl1dakgZRF41hP/x9m/RQhd50lsiBO4B0MEDB
-	UtVXHHBAuRMJdmNSLHlnqhnwferHzdnPKkdX6/mh0wMoljopOqu8uxllqRNLfyPa
-	DU+5f3mmK8TCi2VOtYNywTQmU=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wCnt5nKhrtqVp7nBQ--.16613S3;
-	Tue, 29 Sep 2026 17:37:17 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	Rongguang Wei <weirongguang@kylinos.cn>
-Subject: [PATCH v2 1/4] tun: fix inverted error check when re-attaching the filter
-Date: Tue, 29 Sep 2026 17:37:09 +0800
-Message-Id: <20260929093712.131096-2-clementwei90@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260929093712.131096-1-clementwei90@163.com>
-References: <20260929093712.131096-1-clementwei90@163.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="En5qEA4F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1790674904;
+	bh=61hhHjPWxIQKgA7J2na8F72qNmDA8mFtE+h+O5qJ5kU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=En5qEA4FJo/6z+siaRw9LQDBgQ5Lpn9z0N+24zCod553PRjzxLDlSE55md+ScpeG/
+	 II/AKC/CvgHtnFFRxN1jS1I+KEXtwLSMDGdL239EUilDJPukchkzUxcfIBkXqD6Z/Z
+	 pMjFWGhjPWlMKpm0w13wy9MKKngH6NnA4rRdzgN4sUJBfd98bEBKZN+eiq72lIGnwV
+	 ujEUKBnph2bE9eyJzU223XystXyx0gVzhRLch/iVNKQTgsF23QGvOHQG0ogkDTkikO
+	 nTNZSDYhb03xfa4V50DYhOzKZ+rFtDKEayyFgoXPBtNoXGCxAxSxyuac/Ip5Q1RGai
+	 Ecchs8LrMgRxA==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 32BB260262;
+	Tue, 29 Sep 2026 11:41:44 +0200 (CEST)
+Date: Tue, 29 Sep 2026 11:41:41 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 00/11] Netfilter/IPVS fixes for net
+Message-ID: <aruH1faUO3GEZvcM@chamomile>
+References: <20260927220816.268206-1-pablo@netfilter.org>
+ <20260928191120.28c28fdb@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnt5nKhrtqVp7nBQ--.16613S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJrW5XF4fGw1kAF45CFW5GFg_yoW8Cw1kpr
-	W5WayYqr15Wa48X3ZIyayjvr1aqwnFgayxury8J34Y9F4vgrWjvay5KFWYk3Z8Ar4DA3Z8
-	AF1qgrW5Zr1DAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzq2_UUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-Q5eyWq7hs7Q6wAA3G
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260928191120.28c28fdb@kernel.org>
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+Hi Jakub, Paolo,
 
-tun_attach() returns early when sk_attach_filter() succeeds instead of when
-it fails, so a queue attached to a persistent TAP is never published in
-tun->tfiles[] while TUNSETIFF still reports success.
+On Mon, Sep 28, 2026 at 07:11:20PM -0700, Jakub Kicinski wrote:
+> On Mon, 28 Sep 2026 00:08:05 +0200 Pablo Neira Ayuso wrote:
+> > The following batch contains Netfilter fixes for net:
+> 
+> I didn't spot anything obviously needing a respin in the AI feedback,
+> could you confirm that it's good as is? If you have to respin it'd be
+> good to remove the claim that patch 2 is a nop, Linus is onto us for
+> sending too many LLM-induced, low impact fixes.
 
-Fix the check, so that a failed re-attach aborts the attach, and detach the
-filter again if a later step of tun_attach() fails.
+I would say yes too. LLM comments say:
 
-Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
-Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
----
- v2: roll back the filter attach when a later step of tun_attach() fails
- v1: https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
----
- drivers/net/tun.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+- Patch 2/11 (ipvs): commit description could be improved (yes, there
+  is always room for improvement in that regard but I think description
+  is fair fine enough). There is a report on a pre-existing issue, but
+  I think that can be addressed as a follow up.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 5a302709a68a..a2fffef3735f 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -728,6 +728,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- {
- 	struct tun_file *tfile = file->private_data;
- 	struct net_device *dev = tun->dev;
-+	bool rollback_filter = false;
- 	int err;
- 
- 	err = security_tun_dev_attach(tfile->socket.sk, tun->security);
-@@ -754,8 +755,9 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 		lock_sock(tfile->socket.sk);
- 		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
- 		release_sock(tfile->socket.sk);
--		if (!err)
-+		if (err)
- 			goto out;
-+		rollback_filter = true;
- 	}
- 
- 	if (!tfile->detached &&
-@@ -817,6 +819,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
- 	tun_set_real_num_queues(tun);
- out:
-+	if (err && rollback_filter) {
-+		lock_sock(tfile->socket.sk);
-+		sk_detach_filter(tfile->socket.sk);
-+		release_sock(tfile->socket.sk);
-+	}
- 	return err;
- }
- 
--- 
-2.25.1
+- Patch 3/11 (netfilter): commit description could be improved again,
+  but patch is good IMO.
 
+- Patch 7/11 (ipvs): there's seem to be another path to abuse this
+  code LLM found, I would address this as a follow up.
 
-No virus found
-		Checked by Hillstone Network AntiVirus
+- Patch 8/11 (netfilter): refers to a pre-existing issue.
+  It also refers to issues with reordering elements of the range,
+  but this API really need elements in order to work fine, otherwise
+  overlap detection will likely fire.
 
+- Patch 10/11 (netfilter): refers to a pre-existing issues.
+  nf_flow_offload_refresh() also needs to be disabled in pending
+  work is enqueued. Also disable stats fetching for dying hw entries.
+
+In particular, I am observing IPVS patches are getting stuck because
+of reports of pre-existing issues. Sometimes you find two or three
+things that need an adjustment, and you can start tackling one of the
+aspects at a time (because addressing them all at once it not easy).
+I think it will help Julian if he has a chance to address issues as
+follow up, unless LLM reports something really sound and compelling
+that can be classified as a blocker.
+
+In that regard, my impression is that LLMs are a bit overwhelming
+because they complain about one aspect that still needs to be
+addressed. Not coming in this series, but I can see this is happening
+too with Florian when he has been addressing some of the existing
+issues with ipset hashtable resizing.
+
+Oh well, and me, because most of the reports here seem to be like
+pre-existing issues.
+
+Just my two cents here, these folks are doing very useful work and
+they (and me too) will just follow up on pre-existing issues.
