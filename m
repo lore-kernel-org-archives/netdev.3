@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E8A50E585;
-	Tue, 29 Sep 2026 10:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E281950E58F
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790679026; cv=none; b=BdmRj89+VObN4h7kY6uAWAmIJvLrMm5S1OaI1cF0TS/iYYaKkQJvk0dNuAZfSu/AOvhiwo4hJ5HEdJfcFl5SWBH/biGyN+fA79T3afnbO+5IIlZJg3UMiBcHXKoTO6UVOnrc8jHcazznFVUFDcSxrH2jSCAWVQzKLvxiISe8DEw=
+	t=1790679612; cv=none; b=d1ICmMsKfq3k7W2k//Uam2bp3FyMIeemCRHDK8Ay050nAtVXlE7l2x7aeeIAOsvj6+BlAVYEyav8E1aH2dM8Ica8cXReF8yjnGumNhBx+1R1XcPKuZnEH7b5MPeQIObH8fv+iriu9V1v7rYXPpfOK8+7IEB3Y0us+fjHGgFa+z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790679026; c=relaxed/simple;
-	bh=o2/8TWYywI4nEo+ESUn/g2tu9uywXevzV6w6dambVbs=;
+	s=arc-20240116; t=1790679612; c=relaxed/simple;
+	bh=5efsZJZ+M2WSLihtpZq/EqcYIiSRUJlWq9fRWp7ESyY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qpmDnu7f8QacTim+Al5zwk7zG9hpnhW4bmKVlxaICAwSYsISyLQgIp+z6EUJMV2cSjW8cWTcspqfiFtRZ/rLogMFL+8nxXkK2GAkI2Rhd3edFHVQwrstXBkIkK6rjTG1X5VN0wwEJmrYK8lRQEh3VkBrUYPYKDXdmpdVme7BalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XR91flTC; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=r2/Kk97spzshnmjdorWQtr0c5cFFUKxUX2q7IqV3sK9y2vYAsfcG8KR5vPBvu1ngdnHKPy9yXpfdVmJ1cWzUtJTAs85/nlOrS6ddy2YWF3OqHBa4BpqnlMWK/rB/Huj7PZacxSsq+QrppJVhQGDFFnJriDznFgX4Jjh8nWWbLvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXWVepKD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XR91flTC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C931F0089A;
-	Tue, 29 Sep 2026 10:50:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXWVepKD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FB71F000FF;
+	Tue, 29 Sep 2026 11:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790679014;
-	bh=MSFZinW0vLdryXw6ZgTln6m9SLNxnYwGM6Rt3T27BGA=;
+	s=k20260515; t=1790679606;
+	bh=6T9Di3cEZaIrPhmPxW0EhikD8n6QpoOJonZVDzGP4gA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XR91flTCtfXGkU85SW/+Ynrr/O7YMPYj5szeMDsIAwPUYb50R97Wc+9fTYnl2DdNm
-	 8pT6FU2ltNptL2DLc5PwZP5UGLwZEsaeAIbX2f4/APUARsM3noxZBfzqJAYq4r8snu
-	 gSeuujunHvBh7ubBymcKE2o7jewYFmfXExf2XtWtoqNBE0sxChI0luwmP01GE4WXdo
-	 ZhAuw0HvdXaLIi0SObl6s2fKonB+1aAi0lOwkb48NGtX0m4tqUaMDGNJOC6KIr4Ffv
-	 WBeMxg25ckFOH6n7UkgHm0xPx3oheBcm820jq/AgI54Pqpja3RIf0D0S99QvF7LpHh
-	 g22DEdyQHeu+w==
+	b=dXWVepKDU0MYaml9aY4tb8tNXzP4G3viovXY1wZp62PgiVITX9ILtsKfjiaTRiEHw
+	 V4pIsIRupKxQ5ReGjbIltfedcwjpcmnRGvPTUQO+CmteXG/VEdKI7JVbY1Lr1O3SDd
+	 Ng/I+X9e9qsCG82vk5KIiz1hRJpc97kzUSsjG8B5LPbPmx5C0veAuwv44rxQ8PVHro
+	 iHhLHvrjjZK7/g/yfWJPx5SA8onLG12tVSqT7qNDW7WGWHhDr0FNof0qDpI3OGxvi4
+	 GseX1jpU4fDRBMBfUIuBpD3Q4IZW5SEdB3nTcL0VUnnDEo1P22ODBm+tIDTNbJT2//
+	 RwabnPpP/lV9g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7749339263B1;
-	Tue, 29 Sep 2026 10:50:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A29739263B1;
+	Tue, 29 Sep 2026 11:00:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6] rust: net: netlink: validate attribute length
- before
- casting to `c_int`
+Subject: Re: [PATCH net 1/2] net/sched: fq_codel: match the no-drop threshold
+ to
+ the packet size
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179067901302.426683.9503370759137996060.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 10:50:13 +0000
-References: <20260925085449.22553-1-sagartaunk@proton.me>
-In-Reply-To: <20260925085449.22553-1-sagartaunk@proton.me>
-To: Sagar Taunk <sagartaunk@proton.me>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, cmllamas@google.com,
- mmaurer@google.com, andrew@lunn.ch, gregkh@linuxfoundation.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179067960478.430916.14919565233820396894.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 11:00:04 +0000
+References: <QDISC-34MS.v1.20260925165535@mojatatu.com>
+In-Reply-To: <QDISC-34MS.v1.20260925165535@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, hybris@mojatatu.ai, sashiko-bot@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Fri, 25 Sep 2026 08:55:04 +0000 you wrote:
-> `put()` trusted an unchecked `as` cast from `usize` to `c_int`.
-> When the length exceeds `i32::MAX` that cast wraps around to a
-> negative value.
-> 
-> This ultimately resulted in a kernel panic when the reinterpreted
-> value via `__nla_reserve()` and `skb_put()` became enormous.
+On Sat, 26 Sep 2026 14:03:27 -0400 you wrote:
+> commit d9ebd8f9aa8b ("net/sched: fq_codel: clamp default quantum and mtu")
+> clamped both q->quantum and q->cparams.mtu to [256, FQ_CODEL_QUANTUM_MAX].
+> The two fields mean different things: quantum is a DRR credit that wants
+> the 256 floor, but cparams.mtu is the CoDel no-drop threshold
+> (codel_impl.h "*backlog <= params->mtu"). On a link whose maximum
+> transmitted packet size is below 256, the floor extends CoDel's
+> minimum-backlog exemption beyond one packet and delays drop or mark
+> eligibility by several small packets.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v6] rust: net: netlink: validate attribute length before casting to `c_int`
-    https://git.kernel.org/netdev/net/c/0923198be4ae
+  - [net,1/2] net/sched: fq_codel: match the no-drop threshold to the packet size
+    https://git.kernel.org/netdev/net/c/d031465acc36
+  - [net,2/2] net/sched: sch_codel: match the no-drop threshold to the packet size
+    https://git.kernel.org/netdev/net/c/54518e0e827f
 
 You are awesome, thank you!
 -- 
