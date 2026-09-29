@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39AB22F767;
-	Tue, 29 Sep 2026 00:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621537E5F3;
+	Tue, 29 Sep 2026 00:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790642319; cv=none; b=YLqMLAbXBtZmOkD712owtV/BWWzutZrJ54V5BcUzQOka2jcylBG/VKiwhIU02zcGR/MdxkR3pRdQ/bt5x0yUA6yzIlj8Fh7dZN/2M02wukXeKvYOXCm5zJmu+XDI8tbJsxeAbSy/SYA6JMhdp/m+iXqborQ133+G7ngmI8pFYSg=
+	t=1790642317; cv=none; b=EXONGi+FwoIkiuDK18qsQ5aha5/ICOZtXNJDTAyVmIKFrUxHBe+jEOxXZMCOP83RJgKa2gjxi2uuoDOEnkuMOCV8gpI3fswk0EbFh8lZKqmkcac6Ka2BMI+3ll2XhpWBH7P1TiGpbVwzihIQiJHjUfD1EvDWLl97mcWBacJeecg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790642319; c=relaxed/simple;
-	bh=xUV6f1bvzEznlgjCogh7ZcvER2dBGYcOewQ6TcZRPDA=;
+	s=arc-20240116; t=1790642317; c=relaxed/simple;
+	bh=firi5a6EzmNQVqBwD1pM5V/xdVirrEQ0dLKGrMR9HCM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TmLg/eEZNrYQmqhsVCJIprOBRFUzu2vClCHZHuBdobfA5pbvY6kvTo8aqYsEmf/Ema4Ympj+UFbcBYSffdX1y1+yfTuU2GDDjKfFvrzytMU1L0QrABBCvdN+aKaXKHDKqnJzkVHmxPWank2xo94mbW2oyn+mwZ6x8XoseysuRgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDJUZRu2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=IVAI8etILuLhiyhAQ2DWkmfPBjIeWa9wn1usXi/4bCVA5ap9OI2CNjxCFEU5SXyqFxbZH46su7WcIwyjsJFmeXvO8BB6r0Spuww+/wxU6w5Ru6nj5gtl3zUKEAkVLGEVRyzHQiDgvXbxPI54PH1yzvrGy+QeLn1N8NDWCr+1Ypc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQ2EI4LG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDJUZRu2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23921F00899;
-	Tue, 29 Sep 2026 00:38:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQ2EI4LG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15CC1F00898;
+	Tue, 29 Sep 2026 00:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790642315;
-	bh=17dMlqOyECTGvLdCsfaw4dQdmSvdzkKlibyFeU8G58c=;
+	s=k20260515; t=1790642313;
+	bh=dvwmNLhwWrbxkGOKSYCHC5k9VcrB6bqYAHgAcrFsVIA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RDJUZRu2obt2VFVNk4PqcCI7Txkgr1s+6pKMHTiNAL8Q1fQCWJnSWzR6XrJV9m8WD
-	 ixs3tU3f/z6T5eL7mWRcpPYxJjx8q82hqFx3e2zibYxJynILhwhbSidaPSmoyzR0Ot
-	 LE/rsODszRCn0DSEJHs0T0pKHs7RX8dCy2WRQyJKi7EMIbwa7msxvA+WfpSZOTJ76b
-	 B4s6qX/LlBbY0vz1d16fvA3U9Nps8DtuG5sazxaHoTUkrHTzipBetn6svWBpCZOjkj
-	 9nasAnJ8DZXZzC4gkbKoMg1GCrwQVzJyzqGJT4gy6jcXaPQMEvgwnC6wsM61HmEvNN
-	 dhuiMfQjNrDGA==
-Subject: Re: [PATCH net-next v18 03/10] net: phylink: Register a phy_port for
- MAC-driven SFP cages
+	b=CQ2EI4LG8vlezqOTN4nXqPlGf9VfrZF4YSahg+SdCUcm5yFrzZWOwtoWsyLO7G7sv
+	 KmkoBMay6dXR07nnRFyJvrJ31E+Lxy8/n/3Ju84VnAQVWQHBzQbRABml2xtft4UZFD
+	 JDfaPmJD4KuufFQ+QOJpEqIC0Jv3/Lx/bPL8Vn8U4Z6OZLlRC58b9Vec6QG/XTBD7L
+	 n99bDvGOkeI/2P9Bksx9WKQu716ETO3PIqV2QKtDbMbnU6wrDvKOMzxX60zMyBbTED
+	 CsNAj8WwfAMuKr27B6vSspZ71sS4FcFwefhPE5rIXBDHlnP7lt/JKD156kMHCS30sr
+	 ZakzQGaAPsX8A==
+Subject: Re: [PATCH net-next v18 02/10] net: phy: phy_link_topology: Track
+ ports in phy_link_topology
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
@@ -40,11 +40,11 @@ Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
  romain.gantois@bootlin.com, daniel@makrotopia.org,
  dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
  f@lex.la
-Date: Tue, 29 Sep 2026 00:38:33 +0000
-Message-ID: <179064231334.3145.4250740133245274216@kernel.org>
-In-Reply-To: <20260927133619.955236-4-maxime.chevallier@bootlin.com>
-References: <20260927133619.955236-4-maxime.chevallier@bootlin.com>
-X-sashiko-severity: Medium
+Date: Tue, 29 Sep 2026 00:38:31 +0000
+Message-ID: <179064231143.3145.13494941094645193325@kernel.org>
+In-Reply-To: <20260927133619.955236-3-maxime.chevallier@bootlin.com>
+References: <20260927133619.955236-3-maxime.chevallier@bootlin.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,10 +54,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -65,146 +65,278 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] phylink_create_sfp_cage_port() calls phy_link_topo_add_port()
-  without RTNL.
-- [Low] phylink_create_sfp_cage_port() publishes a phy_port into the
-  netdev's link topology without setting parent_type.
+- [High] Ports of SFP module PHYs that are connected via PHY_UPSTREAM_PHY
+  can be freed while they are still in dev->link_topo->ports, leaving…
+- [Medium] phy_link_topo_del_port() erases topo->ports[port->id] without
+  checking that the stored entry is this port, and port->id is…
+- [Medium] The patch makes two paths touch the same data under locks that
+  never overlap.
+- [Low] Adding and removing ports in the topology is asymmetric.
 
 --
 
-net: phylink: Register a phy_port for MAC-driven SFP cages
+net: phy: phy_link_topology: Track ports in phy_link_topology
 
-This commit registers a phy_port for SFP cages that the MAC drives
-directly through phylink, and attaches it to the netdev's link
-topology. The port is only created for phylink instances that have a
-netdev. It is created in phylink_register_sfp() and removed in
-phylink_destroy().
+This commit adds a ports xarray to struct phy_link_topology and an id
+field to struct phy_port. PHY-driven ports are added to the netdev
+topology when phy_link_topo_add_phy() runs. They are removed from it in
+phy_link_topo_del_phy() and phy_del_port().
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index a7d086cdc9b25..19090916af75f 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 5b13a74e2fa92..c4d2c03b8282b 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1580,6 +1580,9 @@ static void phy_del_port(struct phy_device *phydev, struct phy_port *port)
+>  
+>  	list_del(&port->head);
+>  
+> +	if (phydev->attached_dev)
+> +		phy_link_topo_del_port(phydev->attached_dev, port);
+> +
+
+[Severity: High]
+
+Can this leave freed ports in dev->link_topo->ports for SFP module PHYs?
+
+phy_sfp_connect_phy() adds the module PHY with PHY_UPSTREAM_PHY:
+
+    struct net_device *dev = phydev->attached_dev;
+
+    if (dev)
+        return phy_link_topo_add_phy(dev, phy, PHY_UPSTREAM_PHY, phydev);
+
+The new loop in phy_link_topo_add_phy() then inserts all of the module
+PHY's ports into the upstream netdev's topology. The module PHY never
+goes through phy_attach_direct(), so its attached_dev stays NULL. Because
+of that, the check above never calls phy_link_topo_del_port() for it.
+
+One path is an unbind of the module PHY's driver:
+
+phy_remove(M)
+  phy_cleanup_ports(M)
+    phy_del_port()      <- M->attached_dev is NULL, no xa_erase()
+    phy_port_destroy()  <- kfree(port)
+
+Later, phy_sfp_disconnect_phy() -> phy_link_topo_del_phy(dev, M) walks
+M->ports. That list is empty by then, so the entry is never erased.
+
+A second path involves MAC drivers that connect the PHY in ndo_open and
+disconnect it in ndo_stop (for example mvpp2 or mvneta via phylink). With
+a module PHY present, taking the link down runs phy_detach_internal(P) ->
+phy_link_topo_del_phy(dev, P), which removes only P's own ports.
+
+When the module is then unplugged, sfp_sm_phy_detach() -> sfp_remove_phy()
+-> phy_sfp_disconnect_phy() sees P->attached_dev == NULL and skips
+phy_link_topo_del_phy(dev, M). phy_device_remove(M) -> phy_remove() ->
+phy_cleanup_ports() then frees M's ports without erasing them.
+
+xa_destroy() doesn't dereference the entries, so this commit alone won't
+crash. However, a later patch in this series, "net: ethtool: Introduce
+ethtool command to list ports", adds an ETHTOOL_MSG_PORT_GET dump with no
+admin permission flag. That dump walks xa_for_each(&dev->link_topo->ports).
+Its port_prepare_data() copies port->supported and port->interfaces and
+dereferences port->upstream_port.
+
+Wouldn't that dump read freed memory? phy_del_port(),
+phy_sfp_disconnect_phy() and phy_link_topo_del_phy() are unchanged at the
+end of the series.
+
+>  	phydev->n_ports--;
+>  }
+>  
+> diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+> index 0462283c80202..28c5bf3a8849a 100644
+> --- a/drivers/net/phy/phy_link_topology.c
+> +++ b/drivers/net/phy/phy_link_topology.c
 
 [ ... ]
 
-> @@ -1767,6 +1770,50 @@ static void phylink_fixed_poll(struct timer_list *t)
+> @@ -56,12 +60,45 @@ static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *d
+>  	return dev->link_topo;
+>  }
 >  
->  static const struct sfp_upstream_ops sfp_phylink_ops;
->  
-> +static int phylink_create_sfp_cage_port(struct phylink *pl)
+> +int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port)
 > +{
-> +	struct phy_port *port;
-> +	int ret = 0;
+
+[ ... ]
+
+> +	/* Attempt to re-use a previously allocated port_id */
+> +	if (port->id)
+> +		ret = xa_insert(&topo->ports, port->id, port, GFP_KERNEL);
+> +	else
+> +		ret = xa_alloc_cyclic(&topo->ports, &port->id, port,
+> +				      xa_limit_32b, &topo->next_port_index,
+> +				      GFP_KERNEL);
 > +
-> +	if (!pl->netdev || !pl->sfp_bus)
-> +		return 0;
+> +	return ret < 0 ? ret : 0;
+> +}
+> +EXPORT_SYMBOL_GPL(phy_link_topo_add_port);
 > +
-> +	port = phy_port_alloc();
-> +	if (!port)
-> +		return -ENOMEM;
+> +void phy_link_topo_del_port(struct net_device *dev, struct phy_port *port)
+> +{
+> +	struct phy_link_topology *topo = dev->link_topo;
 > +
-> +	port->is_sfp = true;
-> +	port->is_mii = true;
-> +	port->active = true;
-
-[Severity: Low]
-parent_type is never set here. Should it be?
-
-phy_port_alloc() uses kzalloc, so this port ends up with
-parent_type == PHY_PORT_PHY and port->phy == NULL. The only parent
-type defined in include/linux/phy_port.h is:
-
-enum phy_port_parent {
-	PHY_PORT_PHY,
-};
-
-and its kernel-doc says "Indicates that the port is driven by a PHY
-device". This looks like the first phy_port that is driven by the MAC
-or phylink instead of a PHY.
-
-The other initializers in phy_device.c, such as phy_setup_sfp_port(),
-always set the two fields together:
-
-	port->parent_type = PHY_PORT_PHY;
-	port->phy = phydev;
-
-Nothing reads parent_type today, so this does not cause a NULL
-dereference right now. Would it make sense to add a phylink/MAC
-parent type to enum phy_port_parent and set it here? That way the
-published port would not claim a PHY parent it lacks.
-
-The same applies to phylink_add_sfp_mod_port() later in the series.
-
+> +	if (!topo)
+> +		return;
 > +
-> +	phy_interface_and(port->interfaces, pl->config->supported_interfaces,
-> +			  phylink_sfp_interfaces);
-> +	phy_port_update_supported(port);
-> +
-> +	ret = phy_link_topo_add_port(pl->netdev, port);
+> +	xa_erase(&topo->ports, port->id);
 
 [Severity: Medium]
-This runs from phylink_create(), which is documented as "the rtnl lock
-must not be held when calling this function". Can this race with
-ethtool readers of dev->link_topo?
 
-If the netdev has no topology yet, phy_link_topo_add_port() allocates
-and publishes it with a plain store:
+Can this erase an entry that belongs to a different port?
 
-drivers/net/phy/phy_link_topology.c:netdev_alloc_phy_link_topology() {
-    ...
-	xa_init_flags(&topo->ports, XA_FLAGS_ALLOC1);
-	topo->next_port_index = 1;
+port->id is deliberately kept across detach and attach. When the id is
+reused, phy_link_topo_add_port() calls xa_insert(). That returns -EBUSY if
+another port in the target topology already owns the index, and there is
+no fallback to a fresh allocation.
 
-	dev->link_topo = topo;
-    ...
-}
+In that case phy_link_topo_add_phy() rolls back the ports it inserted and
+returns the error. phy_attach_direct() then does:
 
-This store has no RTNL, WRITE_ONCE() or release barrier.
+    err = phy_link_topo_add_phy(dev, phydev, PHY_UPSTREAM_MAC, dev);
+    if (err)
+        goto error;
 
-phylink_create() can be called on a netdev that is already registered.
-For example, dpaa2 handles a runtime endpoint change like this:
+The error path calls phy_detach_internal() while attached_dev is still
+set:
 
-dpni_irq0_handler_thread()
-  dpaa2_eth_connect_mac()
-    dpaa2_mac_connect()
-      phylink_create()               <- no RTNL held
-        phylink_register_sfp()
-          phylink_create_sfp_cage_port()
-            phy_link_topo_add_port()
-              netdev_alloc_phy_link_topology()
+phy_detach_internal()
+  phy_link_topo_del_phy(dev, phydev)
+    list_for_each_entry(port, &phy->ports, head)
+      phy_link_topo_del_port(dev, port)
+        xa_erase(&topo->ports, port->id)
 
-Only the later phylink_fwnode_phy_connect() call in dpaa2_mac_connect()
-is inside rtnl_lock(). Before this patch, that later call was the one
-that first allocated the topology, through
-phy_attach_direct()->phy_link_topo_add_phy().
+This walks every port in phy->ports, including the port that failed and
+any ports that were never inserted. The failing port's id belongs to
+another live port.
 
-The ethtool netlink readers read dev->link_topo and dereference it
-while holding RTNL, not via RCU. For example,
-ethnl_tsinfo_dump_one_net_topo() does:
+Wouldn't that live port be removed from the topology while its owner
+still exists? Would checking the stored entry, for example with
+xa_cmpxchg(&topo->ports, port->id, port, NULL, 0), avoid this?
 
-	if (!dev->link_topo) {
-	...
-	xa_for_each_start(&dev->link_topo->phys, ctx->pos_phyindex, pdn,
+The same full teardown runs when phy_link_topo_add_phy() fails earlier,
+either on pdn allocation -ENOMEM or on a phyindex collision.
 
-phy_link_topo_get_phy(), ethnl_req_get_phydev() and the PHY dump in
-net/ethtool/netlink.c follow the same pattern.
+On -ENOMEM from xa_alloc_cyclic(), __xa_alloc() may already have written
+an index into port->id that was never stored. The port could then carry an
+id it doesn't own.
 
-On arm64, can such a reader see the new pointer before the
-kzalloc/xa_init_flags() stores are visible?
+The PHY attach also fails with -EBUSY in the collision case. The code is
+unchanged at the end of the series. Later patches add more pre-registered
+ports, such as the phylink SFP cage port allocated at phylink_create()
+time, and these could collide with kept ids.
 
-The comment in phy_link_topo_get_or_alloc() explains the ordering
-between writers, but it does not seem to cover RTNL-holding readers.
-Also, phylink_destroy_sfp_cage_port() takes rtnl_lock() around
-phy_link_topo_del_port() with the comment "The port may still be
-accessed under RTNL". Should the insertion side use the same locking?
-
-> +	if (ret)
-> +		phy_port_destroy(port);
-> +	else
-> +		pl->sfp_cage_port = port;
-> +
-> +	return ret;
 > +}
+> +EXPORT_SYMBOL_GPL(phy_link_topo_del_port);
+
+[ ... ]
+
+> @@ -110,8 +147,20 @@ int phy_link_topo_add_phy(struct net_device *dev,
+>  	if (ret < 0)
+>  		goto err;
+>  
+> +	/* Add all the PHY's ports to the topology */
+> +	list_for_each_entry(port, &phy->ports, head) {
+> +		ret = phy_link_topo_add_port(dev, port);
+> +		if (ret)
+> +			goto del_ports;
+> +	}
+
+[Severity: Low]
+
+Should phy_add_port() also add the port to the topology?
+
+phy_del_port() now calls phy_link_topo_del_port() whenever
+phydev->attached_dev is set, but phy_add_port() only does:
+
+    list_add(&port->head, &phydev->ports);
+
+    phydev->n_ports++;
+
+Ports reach topo->ports only through this loop, at attach or connect time.
+
+Consider an attached PHY whose driver is unbound and rebound through
+sysfs. phy_remove() leaves attached_dev and the PHY's topology entry in
+place, and phy_cleanup_ports() -> phy_del_port() removes the original
+ports from the topology.
+
+The rebind then runs phy_probe() -> phy_setup_ports() -> phy_add_port().
+That rebuilds phydev->ports but doesn't add the new ports to the topology.
+No phy_attach_direct() runs, so the netdev's topology is missing all of
+the PHY's ports until the next detach and attach.
+
+The same gap applies to a module PHY whose driver binds after
+phy_sfp_connect_phy() has already walked an empty port list.
+
+The comment in phy_link_topo_get_or_alloc() also says:
+
+ *  - If we have a PHY, phy_link_topo_add_phy() will always run first
+ *    and trigger the alloc. Only then the ports can be added through
+ *    phylib or sfp.
+
+However, there doesn't seem to be a per-port add path in phylib.
+phy_add_port() is unchanged at the end of the series.
+
+> +
+>  	return 0;
+>  
+> +del_ports:
+> +	list_for_each_entry_continue_reverse(port, &phy->ports, head)
+> +		phy_link_topo_del_port(dev, port);
+> +
+> +	xa_erase(&topo->phys, phy->phyindex);
+>  err:
+>  	kfree(pdn);
+>  	return ret;
+> @@ -123,10 +172,14 @@ void phy_link_topo_del_phy(struct net_device *dev,
+>  {
+>  	struct phy_link_topology *topo = dev->link_topo;
+>  	struct phy_device_node *pdn;
+> +	struct phy_port *port;
+>  
+>  	if (!topo)
+>  		return;
+>  
+> +	list_for_each_entry(port, &phy->ports, head)
+> +		phy_link_topo_del_port(dev, port);
+> +
+
+[Severity: Medium]
+
+Is it safe to walk phy->ports here with only RTNL held?
+
+phy_link_topo_add_phy() and phy_link_topo_del_phy() now walk
+phydev->ports under RTNL, from phy_attach_direct() and
+phy_detach_internal(). The driver unbind path changes the same list under
+device_lock only, without RTNL:
+
+phy_remove()
+  phy_cleanup_ports()
+    phy_del_port()
+      list_del(&port->head)
+      phy_link_topo_del_port()   <- xa_erase() on dev->link_topo->ports
+    phy_port_destroy()           <- kfree(port)
+
+Suppose an attached PHY is unbound through sysfs while "ip link set down"
+runs phy_disconnect() -> phy_detach_internal() -> phy_link_topo_del_phy().
+Could this walk then follow a port that phy_cleanup_ports() has just
+unlinked and freed?
+
+phy_del_port() also reads phydev->attached_dev with no RTNL and no
+READ_ONCE(), then uses it to reach dev->link_topo. Can
+phy_detach_internal() clear attached_dev between that check and the use?
+
+A later patch in this series, "net: phy: phy_link_topology: Add a helper
+to retrieve ports", says that "the caller must hold rtnl until it's done
+with it", and phy_link_topo_get_port() does ASSERT_RTNL(). The xa_erase()
+and kfree() in phy_remove() run without RTNL.
+
+Could an ethtool port dump that holds RTNL xa_load() a port that is then
+freed underneath it?
+
+>  	pdn = xa_erase(&topo->phys, phy->phyindex);
+>  
+>  	/* We delete the PHY from the topology, however we don't re-set the
 
 [ ... ]
 
