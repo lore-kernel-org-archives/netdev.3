@@ -1,131 +1,183 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E62751C04D;
-	Tue, 29 Sep 2026 14:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A25383F2
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790692596; cv=none; b=dtYaUwyh43IifeBPpOO1SO1pif2AB9IyCISVGphFgRATiQ3fkQZWyS5Ig8/jXRZ5JPoZFfwprD/3KrHPQbjYArF7gxW8D16SfC831tg4uROPxJQO2m5dxPBGmJOqjPGFWq1mOqN9msgIPfJYMGA1o5ZlPhfF9IGetGjoEAA/GVw=
+	t=1790692940; cv=none; b=Y6h2eKymMQaIUybQjTPE91cxm9I0c2hYm4icsMaNej22mBUR4Stuue9O7WiesSSv/+PX/9FKo3+iUnY7Hjvx4+OXkZH8423M/35v6OXpE6AMW0/KyJc2muJjpS8I8uuBU4hAqYgA/QMEebtaaJ88JAQ5O+HBnh5glk4cZJEntLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790692596; c=relaxed/simple;
-	bh=41OyKo8AA7bmoCoxHe40VGXLS46yixBA+0eQ9aV4r94=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=ceLpSGE9H3yj5f8kQWcQ+xrXT+bm3xbml6ouLFox59VS8R22PP4iaZx6NOTj8oU/qtESRo5jXy8S0L6IPowoe9NxZQBE7aLyuc64vOehego18fN+s8LSZXOy9Aksn9eat/A3HS2GtOFmFUru70pIshFJj5FW8h3ObCvq0VvbIhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=MytAsbfq; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1790692940; c=relaxed/simple;
+	bh=QPhGD2tzq/MohOfOyWKlfII/ivWJ/1HwH7q4f0v8GH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ea45GVfoEBmyh/xCZuQhsYoCN0N/bDB2Atq5znMXXD7/zAVpVRYg8Dw7+I8jJEJk74YzF+j1tCLFDawOmyWooeYzcvSvdLSUh0zGR4ub8Vvmmv8L33Ts9g9OZvFSHugDQtA493/5OBxXOAvUJJnqIMKxZKgRz4cD/0/vCdTYJiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ek7XAPuO; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="MytAsbfq"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 6529F213E8;
-	Tue, 29 Sep 2026 17:36:23 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=EFJRJAmInJbL42OH66AUdL96HXKJcoSU80nlGp+WbKU=; b=MytAsbfqtEKX
-	w2/DaNrFpgcJTC5FIpsAQAd4/UvKx4RoSCTbUU2kZ6EJlVYPW3pgfuIrNL390jAQ
-	mKU1LIXqJrTp9QO0g4CA8CF2wwGQGbQsdV6/fZgWqLj5cxPYJj1HjYvAbWO1yiks
-	yOBfSu88alxbrD2SqlPuz1zI0jBa6U6ZZl1UhUaHnj3kP57BmJgQ1VAzxtCtn6sz
-	oxRF0w9ruNvg2vH1Yh/OlrY/QGyIowRHaG9U+R3cqUEcWSmo9kUUqp/H3wDgddX3
-	m6I8bkUxpF9Dlf6dWp4r6xXXd+YHYFD9ZNEw8j4Ma08Qx7DL/XwgNsXH/x5ChycE
-	ZSaqL/d7MeDmSsZWMYLdN0/5FmOwGz1gGJHv+fX2vDBZ8Y1MO3AW9ZzWjc3GZwcN
-	52eILAiBJCvyX7/LyzKI62VcotGPhyZodmf+8B8apnwrz2y5fas+3tqbxguSDnLl
-	U4kd3jZ3KGWjNyCwcKhZHAYo5yzYRS65IqgsERl0d5ePxzr4GIxfZ2lCiPsj4r1h
-	/MQaj4NSm3qRTfiocFxT7XkrLN1h/cpS3phlx7tjqSF/Uh0n1+6BY1emoZ6VFa/O
-	636YY4PnIcN/h+PfSopgBDa+mkIt7V/eNIHYv2/ZP/ajQ/LMFI7VdZa4Ril1k4GN
-	QpU9bJC7OGH5xiFx0gahXaFQ9d4+M5c=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 29 Sep 2026 17:36:23 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id B1510604D4;
-	Tue, 29 Sep 2026 17:36:25 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68TEaKQt060712;
-	Tue, 29 Sep 2026 17:36:21 +0300
-Date: Tue, 29 Sep 2026 17:36:20 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-cc: Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org,
-        davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com,
-        edumazet@google.com, horms@kernel.org, fw@strlen.de
-Subject: Re: [PATCH net 00/11] Netfilter/IPVS fixes for net
-In-Reply-To: <aruH1faUO3GEZvcM@chamomile>
-Message-ID: <5d761dbe-b74c-4ebc-116b-34f2b60a69c9@ssi.bg>
-References: <20260927220816.268206-1-pablo@netfilter.org> <20260928191120.28c28fdb@kernel.org> <aruH1faUO3GEZvcM@chamomile>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ek7XAPuO"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BC3CA1A1064;
+	Tue, 29 Sep 2026 14:42:14 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 82584601BD;
+	Tue, 29 Sep 2026 14:42:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5262A103297F7;
+	Tue, 29 Sep 2026 16:42:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790692929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=tc1nEVZolmCCR2ZFwJ+f5R5PC/tPEHSlzkXfC/LcRKA=;
+	b=ek7XAPuO1G7nNgqyPmnGpWp22ylr5Zdpydl4tYrkQ8CwHDtO9qSK2tj+umhPnUlPjoGAAo
+	kZX0ZM9hokjIoYu3zS6INykyiC8C7nvMrGFDgHDJIDjRQHQF1wQLlKR70pMsep2w9rz8Db
+	xbzK2IcBs0dSzdv1wzeRDtQUXRMLDYGCZkWHvNG2GrhPOMkKyofpMT8NEmQm9TRgv0y90e
+	nfCqZ4eeFKMHi0r/V6VaFaMgQ9GNb3LppmiBRmOPT+eTYqrpvg6oGw3IweFUDwV2ckTnW7
+	bzNk603rjnAzoREbiOhLqmXKgSsJMBPd79wTYizp6zeDcnN4xldTD6dihcGNwA==
+Message-ID: <dc37c03d-b604-404d-af90-18d617c96f37@bootlin.com>
+Date: Tue, 29 Sep 2026 16:42:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 01/11] net: dsa: microchip: fully save the
+ periodic output request
+To: netdev-bot+sashiko@kernel.org
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ pascal.eberhard@se.com, miquel.raynal@bootlin.com,
+ thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260925-ksz-perout-v4-1-d675bd21ce49@bootlin.com>
+ <179068487632.434549.12891294812675724957@kernel.org>
+Content-Language: en-US
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+In-Reply-To: <179068487632.434549.12891294812675724957@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi all,
 
-	Hello,
-
-On Tue, 29 Sep 2026, Pablo Neira Ayuso wrote:
-
-> Hi Jakub, Paolo,
+On 9/29/26 2:27 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
 > 
-> On Mon, Sep 28, 2026 at 07:11:20PM -0700, Jakub Kicinski wrote:
-> > On Mon, 28 Sep 2026 00:08:05 +0200 Pablo Neira Ayuso wrote:
-> > > The following batch contains Netfilter fixes for net:
-> > 
-> > I didn't spot anything obviously needing a respin in the AI feedback,
-> > could you confirm that it's good as is? If you have to respin it'd be
-> > good to remove the claim that patch 2 is a nop, Linus is onto us for
-> > sending too many LLM-induced, low impact fixes.
+> Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0 (1)
 > 
-> I would say yes too. LLM comments say:
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> - Patch 2/11 (ipvs): commit description could be improved (yes, there
->   is always room for improvement in that regard but I think description
->   is fair fine enough). There is a report on a pre-existing issue, but
->   I think that can be addressed as a follow up.
-
-	I already have v2 for 2/11, now as 2 patches:
-
-https://sashiko.dev/#/patchset/20260929113436.44306-1-ja%40ssi.bg
-
-	But better to leave it for next week, it is a low
-priority fix. As usually, if we stop 1 patch, it is replaced
-by 2 for the next round :)
-
-> - Patch 3/11 (netfilter): commit description could be improved again,
->   but patch is good IMO.
+> - [High] The patch keeps one saved request (ptp_data->perout_request) and
+>    one device-wide tou_mode, but the driver allows several trigger output…
+> - [Medium] This patch fixes a user-visible bug that already exists on the
+>    switches supported today (KSZ9477 family), but the commit message does…
 > 
-> - Patch 7/11 (ipvs): there's seem to be another path to abuse this
->   code LLM found, I would address this as a follow up.
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but it is serious.
+> - [Medium] This problem wasn't introduced by this patch, but the restart
+>    path calls ptp_find_pin() without holding ptp_clock::pincfg_mux, which…
+> - [Low] ksz_ptp_enable_perout() selects the TOU and resets it with
+>    ksz_ptp_tou_reset(), which clears TRIG_ENABLE, before validation,…
 > 
-> - Patch 8/11 (netfilter): refers to a pre-existing issue.
->   It also refers to issues with reordering elements of the range,
->   but this API really need elements in order to work fine, otherwise
->   overlap detection will likely fire.
+> --
 > 
-> - Patch 10/11 (netfilter): refers to a pre-existing issues.
->   nf_flow_offload_refresh() also needs to be disabled in pending
->   work is enqueued. Also disable stats fetching for dying hw entries.
+> net: dsa: microchip: fully save the periodic output request
 > 
-> In particular, I am observing IPVS patches are getting stuck because
-> of reports of pre-existing issues. Sometimes you find two or three
-> things that need an adjustment, and you can start tackling one of the
-> aspects at a time (because addressing them all at once it not easy).
-> I think it will help Julian if he has a chance to address issues as
-> follow up, unless LLM reports something really sound and compelling
-> that can be classified as a blocker.
+> This commit replaces the saved start time and period in struct
+> ksz_ptp_data with a full copy of the last successful struct
+> ptp_perout_request. After settime/adjtime, ksz_ptp_restart_perout() now
+> reuses that saved request, including its index and flags, instead of
+> forcing both to zero.
+> 
+>> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+>> index 39cc70d65900b..47cf397481d5e 100644
+>> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+>> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+> 
+> [ ... ]
+> 
+>> @@ -263,6 +261,8 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> +	memcpy(&ptp_data->perout_request, request,
+>> +	       sizeof(struct ptp_perout_request));
+>>   	ptp_data->tou_mode = KSZ_PTP_TOU_PEROUT;
+>>   
+>>   	return 0;
+> 
+> [Severity: High]
+> struct ksz_ptp_data has only one perout_request and one tou_mode. What
+> happens when more than one periodic output is active?
+> 
 
-	I don't find the LLM reviews wrong, so I don't
-complain :) I'll note if a followup is preferred but in
-most of the time the patches need to be corrected. I try
-to post different patches for the different problems but
-this is also a load for the other maintainers. I hope
-I'll improve with the time but it is true that we are
-overloaded. The only hope is that the bug-report rate will
-slowdown with the time...
+Indeed, this patch series supports only one periodic output at a time, 
+as is already the case for the others switches (which also have several 
+output pins). This is sufficient for my use case, and it doesn't prevent 
+more advanced support from being added later.
+[...]
 
-Regards
+> 
+> [Severity: Low]
+> This isn't a bug introduced by this patch,
 
---
-Julian Anastasov <ja@ssi.bg>
+[...]
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch,
 
+[...]
+> 
+> [Severity: Medium]
+> The commit message says:
+> 
+>    I don't know if other switches use non-zero indexes but the KSZ8463 has
+>    twelve periodic outputs, so this index has to also be saved from now on.
+> 
+> Doesn't the removed request.index = 0 already break restart on the
+> KSZ9477-family switches supported today? ksz_ptp_clock_register()
+> advertises:
+> 
+> 	ptp_data->caps.n_per_out	= 3;
+> 
+> ptp_perout_request() in drivers/ptp/ptp_chardev.c only rejects
+> perout->index >= n_per_out, so indexes 1 and 2 reach
+> ksz_ptp_enable_perout().
+> 
+> With the old code, a clock step through ksz_ptp_settime() or
+> ksz_ptp_adjtime() while channel 1 or 2 is running goes one of two ways:
+> 
+> - If no pin is assigned to PEROUT channel 0, ptp_find_pin() fails and
+>    ksz_ptp_enable_perout() returns -EINVAL. settime/adjtime then returns
+>    an error and the real channel is never re-armed.
+> 
+> - If a pin is assigned to channel 0, TOU0 is re-armed on that pin with
+>    the other channel's period.
+> 
+> Could the commit message describe this? Should it also carry a Fixes: tag
+> for 1f12ae5b67608f ("net: dsa: microchip: ptp: add periodic output
+> signal") so it can be considered for stable?
+>
+
+I had sent a fix for this but we agreed to handle this directly in 
+net-next (cf 
+https://lore.kernel.org/all/ee69ae01-97ab-470c-ba1d-658f1700463c@bootlin.com/)
+
+>>   
+>>   	return ksz_ptp_enable_perout(dev, &request, 1);
+> 
+> [Severity: Medium]
+> This is a pre-existing issue,
+
+[...]
+
+
+Best regards,
+Bastien
