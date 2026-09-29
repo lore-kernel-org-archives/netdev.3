@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FB8420480
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 06:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90DA426436
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 06:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790663216; cv=none; b=K1DQsmU6kOrq0P7MoRbOtNdRxelr4Jo06/90VWEtOgADxHdJjV3hBQnBPO/SnxogxH6k6nFxzNHP/7zG8sKOk81r0cBAq1huo6heV0aEoBLoAgLM8ZWTYi1qFF5A1qjN9A2uHmrkDDyNwo0hAmd2XAeuNm1mPsqGG5vw3h0napQ=
+	t=1790663217; cv=none; b=sB/ELvxAQiEYh90VJ90iFH6dgEldRYDm+RpQWUInqAgiYUD1x3wPfsmo5dA/BB6+WyduuigshQci4oaHcHzStCSR6Fjk74nMYi8mm7Zm5AuTdKfPTCLlveLmnKkMMWl4k3zGzFsdiqvRCiZFY2ysYGtM/fJa1X+ZWIm2AY9hdQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790663216; c=relaxed/simple;
-	bh=zdvNIuPm7NWOPM1TsiCZxWZ4G7CtiXKu690bXTwm8qI=;
+	s=arc-20240116; t=1790663217; c=relaxed/simple;
+	bh=gYYGpi7IteaQmi5+FRR89wngB4TMJCI03U+E3bimvZs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QnKpEjiz927j5tF0kbSUQTJSBXgnS8ExGgenrW5JcYrjKdJEeDzTsLdHoD4a/Lm4mIG2681Km1EClPrsgCyKAxvRIqyJOAQRP3zrV+/nwhP87PEdZ80XQ3Rl+XfuHswozmFyisx/zRg2wAsflBX15LarwCkLxl1X0TUT6nRwnCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nroJU7LO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=eM030uA+bCTFHk5519xpiMEb/sFNbZumGe7aexS1ZrBRF+MKLKhcLgpuw6KH4Z0x1/XGifVPUMO4WNAlHHrDz/AFvRtUele75OvJo6AX+lcy3divM9BFB2L9guRrHJk/XT6fBy5F0ZeGHoyqFkyobG1gLGIgKYUAt4koaTCzyUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9RzJPSd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nroJU7LO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3E11F000FF;
-	Tue, 29 Sep 2026 06:26:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9RzJPSd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084661F00893;
+	Tue, 29 Sep 2026 06:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790663214;
-	bh=bcPuGJolLwyknyYMlDAQSy8JA4u2m9rgJ9aA4Z8Qcak=;
+	s=k20260515; t=1790663215;
+	bh=A38pLlTcbn8xd0njEYHBeEIlXgH3nZNJ5YhlXrRfpTI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nroJU7LOA62VyOA99UBZV/nw9pXNQVFXgHbOeYuY2XtpZpCZVmPsUVMp1MK3mdDv8
-	 z0ewC7sNX5l7GSu0W6lMmFx/LCXTwaiugz9aq9kln9AMbDPwUGc8gCgBeu/KCCyLFd
-	 hS/f0ZnGkUCdZf+V3LPC/0toq/PpT6iIlh/+GZzh+UoeJ3UsIHggZXByCL6AyLW0hs
-	 VGFjI47rjXLm5JlblBMkQb/LwkxL1NF8C69gObvKWrOGfpPVXsYsYmi0M7kCIml5Ly
-	 6jEa8c4FgXq1SeY7hqSVSAvQ9YynqIethrK5AbUhyIhNUvGjMBC6Cybxt/WK2onCJk
-	 99Kj+8y05WdeQ==
-Subject:
- Re: [PATCH v1 net-next 4/5] ipv4: Batch rt_flush_dev() for dying netns.
+	b=j9RzJPSd6ETl8bt5K+BjUx1fnMaiO5TgWsxaEwtAVPP6Y1xZsNdedwPnwUI8QZFDW
+	 oKELkTT1S7KTVz07g8XmFveuUFtGd3w7R33tLUJ995gsY18BES38gazVcgOAoYrE9L
+	 VS8UDMfYVsMqoqdfEF3rh/sbzpY9B2cjjfvA3B9I4j7T/zV029FeGDjpLFErhyMvGP
+	 s00cU6+Dde7xDi2p/4TM0YLJj9mEPu249Q7QvzcI21AbjspU3le0E/vcvi9b0VlgJg
+	 H0CeNtUt04HsuqDiMg7RwOZ0ii+txGn0ED2c7W8jYO7ke7xriTHBb8GxJ861FC+/li
+	 jKIIdtGsilAPw==
+Subject: Re: [PATCH v1 net-next 5/5] ipv6: Batch rt6_uncached_list_flush_dev()
+ for dying netns.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  carges@cloudflare.com, kuni1840@gmail.com, netdev@vger.kernel.org
-Date: Tue, 29 Sep 2026 06:26:53 +0000
-Message-ID: <179066321347.434549.4867798681835830977@kernel.org>
-In-Reply-To: <20260927202429.2452589-5-kuniyu@google.com>
-References: <20260927202429.2452589-5-kuniyu@google.com>
+Date: Tue, 29 Sep 2026 06:26:54 +0000
+Message-ID: <179066321461.434549.4404823988585129411@kernel.org>
+In-Reply-To: <20260927202429.2452589-6-kuniyu@google.com>
+References: <20260927202429.2452589-6-kuniyu@google.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -58,34 +58,32 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The early return in rt_flush_dev() and the batch purge use two
-  different tests for "dying netns", and they disagree when setup_net()…
-- [Medium] rt_flush_dev(NULL) now runs from ->pre_exit_batch(), before
-  any RCU grace period (ops_undo_list() calls ops_pre_exit_list() before…
+- [Medium] The new ->pre_exit_batch() callback can crash the IPv6 init
+  error path.
+- [Medium] Race between the batch flush and rt6_uncached_list_add().
 
 --
 
-ipv4: Batch rt_flush_dev() for dying netns.
+ipv6: Batch rt6_uncached_list_flush_dev() for dying netns.
 
-This patch calls rt_flush_dev(NULL) once from fib_net_ops->pre_exit_batch().
-That call purges uncached routes whose device belongs to a netns with a zero
-refcount, so the flush no longer runs once per device. rt_add_uncached_list()
-now swaps in blackhole_netdev for routes of a dying netns, and
-rt_flush_dev(dev) returns early once net_pre_exit_done() is true.
+This commit flushes IPv6 uncached routes for dying netns from a new
+->pre_exit_batch() callback, which runs about once per cleanup_net().
+Once NET_PRE_EXIT_DONE is set, the per-device rt6_uncached_list_flush_dev()
+now returns early. rt6_uncached_list_add() now checks check_net() under
+ul->lock, and a route for a dying netns is moved straight to
+blackhole_netdev instead of being linked.
 
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index d7da2f1acbb59..cbe328b3f2545 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -1554,14 +1554,29 @@ struct uncached_list {
+Closes: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com/
+Link: https://lore.kernel.org/netdev/aq2B8PSfjn-xau4V@20HS2G4/
+
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 475ced827ec57..7747e4f20fee6 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
 
 [ ... ]
 
->  void rt_add_uncached_list(struct rtable *rt)
->  {
->  	struct uncached_list *ul = raw_cpu_ptr(&rt_uncached_list);
->  
-> +	/* Set once and never cleared: non-NULL marks an uncached route. */
+> @@ -143,7 +159,12 @@ void rt6_uncached_list_add(struct rt6_info *rt)
 >  	rt->dst.rt_uncached_list = ul;
 >  
 >  	spin_lock_bh(&ul->lock);
@@ -94,174 +92,136 @@ rt_flush_dev(dev) returns early once net_pre_exit_done() is true.
 > +	if (check_net(dst_dev_net_rcu(&rt->dst)))
 > +		list_add_tail(&rt->dst.rt_uncached, &ul->head);
 > +	else
-> +		rt_replace_uncached_list(rt);
+> +		rt6_uncached_list_replace(rt);
 > +
 >  	spin_unlock_bh(&ul->lock);
 >  }
-
-[Severity: Medium]
-Does this check_net() test keep new routes off the list after
-rt_flush_dev(NULL) has already run?
-
-The test runs under ul->lock. However, rt_flush_dev() still skips each
-per-CPU list with a check that does not take the lock:
-
-net/ipv4/route.c:rt_flush_dev() {
-    ...
-	for_each_possible_cpu(cpu) {
-		struct uncached_list *ul = &per_cpu(rt_uncached_list, cpu);
-
-		if (list_empty(&ul->head))
-			continue;
-
-		spin_lock_bh(&ul->lock);
-    ...
-}
-
-rt_flush_dev(NULL) now runs from ->pre_exit_batch(). In ops_undo_list(),
-that is before synchronize_rcu_expedited(). Could this interleaving happen?
-
-CPU1 (softirq RX on a device in netns N)
-rt_add_uncached_list()
-    spin_lock_bh(&ul->lock);
-    check_net(N) returns 1
-    <stalls before list_add_tail(), e.g. preempted on PREEMPT_RT
-     or a preempted vCPU>
-
-CPU0 (cleanup_net, after the last ns reference is dropped)
-ops_undo_list()
-    fib_net_pre_exit_batch()
-        rt_flush_dev(NULL)
-            list_empty(&ul->head) is true for CPU1's list, so continue
-
-CPU1
-    list_add_tail(&rt->dst.rt_uncached, &ul->head);
-    spin_unlock_bh(&ul->lock);
-
-CPU0
-    WRITE_ONCE(net->undo_state, NET_PRE_EXIT_DONE);
-
-After this, every rt_flush_dev(dev) call for a device in N returns at the
-new net_pre_exit_done() check. That includes the call from
-fib_netdev_event() and the NETDEV_UNREGISTER rebroadcast in
-netdev_wait_allrefs_any().
-
-Would the route then keep its dev_tracker reference on a device in N
-forever, so that unregister_netdevice waits for that device indefinitely?
-
-The race also needs CPU1's list to be otherwise empty. The window is narrow
-on non-RT kernels.
-
-On weakly ordered architectures, the READ_ONCE() in list_empty() is not
-ordered against a list_add_tail() that has already completed on another
-CPU.
-
-Before this patch, the flush that mattered ran from NETDEV_UNREGISTER after
-synchronize_net(), and the rebroadcast ran it again, so a late addition was
-still caught. The commit message says:
-
-  Since ->pre_exit_batch() is called before synchronize_rcu(),
-  we must prevent adding a new route for dying netns, so now
-  rt_add_uncached_list() checks !check_net() and swaps the device
-  with blackhole_netdev.
-
-Would taking ul->lock every time in the dev == NULL case close this gap?
-Then either the flush sees the route, or rt_add_uncached_list() sees
-check_net() return false. This code is unchanged at the end of the series.
-
-> @@ -1587,6 +1602,9 @@ void rt_flush_dev(struct net_device *dev)
->  	struct rtable *rt, *safe;
+>  
+> @@ -162,6 +183,9 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
+>  {
 >  	int cpu;
 >  
 > +	if (dev && net_pre_exit_done(dev_net(dev)))
 > +		return;
 > +
+>  	for_each_possible_cpu(cpu) {
+>  		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+>  		struct rt6_info *rt, *safe;
 
 [Severity: Medium]
-Can this early return skip routes that the rt_flush_dev(NULL) purge never
-removed?
+Because of this early return, the batch flush from ->pre_exit_batch() is
+the only flush for devices in a dying netns. Can it miss a route that is
+being added at the same time?
 
-The purge filter only picks routes whose netns has check_net() false:
+The dev == NULL path still skips a CPU's list with a lockless check,
+before it takes ul->lock:
 
-			if (rt->dst.dev != dev &&
-			    (dev || check_net(dev_net(rt->dst.dev))))
-				continue;
+		if (list_empty(&ul->head))
+			continue;
 
-The gate in rt_add_uncached_list() uses the same test. But
-net_pre_exit_done() reads undo_state, and ops_undo_list() sets undo_state
-for any undo on pernet_list:
+Here is the sequence I have in mind:
 
-net/core/net_namespace.c:ops_undo_list() {
-	bool dying = ops_list == &pernet_list;
-    ...
-	if (dying) {
-		list_for_each_entry(net, net_exit_list, exit_list)
-			WRITE_ONCE(net->undo_state, NET_PRE_EXIT_DONE);
-	}
-    ...
-}
+CPU A, rt6_uncached_list_add() (e.g. from ip6_pol_route() or
+icmp6_dst_alloc()):
+  spin_lock_bh(&ul->lock);        /* its own per-cpu list, empty */
+  check_net() returns true
+  <delayed by a hardirq, vCPU preemption or RT preemption>
 
-That includes the setup_net() failure path:
+CPU B, cleanup_net()->ops_undo_list():
+  ops_pre_exit_list()
+    ip6_route_net_pre_exit_batch()
+      rt6_uncached_list_flush_dev(NULL)
+        list_empty() on CPU A's list is true, so it is skipped
 
-net/core/net_namespace.c:setup_net() {
-    ...
-	list_add(&net->exit_list, &net_exit_list);
-	ops_undo_list(&pernet_list, ops, &net_exit_list, false);
-    ...
-}
+CPU A:
+  list_add_tail(&rt->dst.rt_uncached, &ul->head);
+  spin_unlock_bh(&ul->lock);
 
-On that path the netns still holds the initial ns reference that
-ns_common_init() takes in copy_net_ns(), so check_net() returns true. Is
-this sequence possible?
+CPU B:
+  synchronize_rcu();
+  WRITE_ONCE(net->undo_state, NET_PRE_EXIT_DONE);
+  ...
+  NETDEV_UNREGISTER: addrconf_ifdown()->rt6_disable_ip()->
+    rt6_uncached_list_flush_dev(dev) returns early
 
-copy_net_ns()
-  setup_net()
-    <a pernet init after fib_net_ops fails>
-    ops_undo_list(&pernet_list, ...)
-      fib_net_pre_exit_batch()
-        rt_flush_dev(NULL)      <- skips the netns, check_net() is true
-      undo_state = NET_PRE_EXIT_DONE
-      ops_exit_rtnl_list()
-        <unregister lo, fallback tunnels>
-          fib_netdev_event(NETDEV_UNREGISTER)
-            rt_flush_dev(dev)   <- returns early
+->pre_exit_batch() runs before the synchronize_rcu() in ops_undo_list(),
+so CPU A's RCU/BH section is not waited for before the scan.
 
-Until then, rt_add_uncached_list() also keeps adding this netns's routes to
-the list, since check_net() is still true.
+Would the late route then stay on the uncached list? It would still hold
+its dst.dev reference (dev_tracker) and its rt6i_idev reference, and it
+would never be moved to blackhole_netdev.
 
-If an IPv4 uncached route (an rt_uncached_list entry, an xfrm4 bundle, or a
-route replaced in rt_cache_route()) pins one of these devices, does
-anything move it to blackhole_netdev?
+Before this patch, the per-device flush always ran at NETDEV_UNREGISTER,
+after the synchronize_net() in unregister_netdevice_many().
 
-The NETDEV_UNREGISTER rebroadcast in netdev_wait_allrefs_any() used to
-rescue such routes through rt_flush_dev(dev), but it now hits the same
-early return. The rollback could then wait forever for the device inside
-setup_net() with pernet_ops_rwsem held.
+If something holds that dst for a long time, could netdev_wait_allrefs()
+hang and stall netns cleanup?
 
-It is not clear that any in-tree path can create an uncached route on a
-device of a netns that has not finished setup_net(), because those devices
-are down and the netns is not visible yet. Nothing seems to prevent it
-either.
-
-The commit message says:
-
-  When rt_flush_dev() is called with NULL from ->pre_exit_batch(),
-  it purges every entry in dying netns
-
-and:
-
-  When rt_flush_dev() is later called again from fib_netdev_event()
-  via NETDEV_UNREGISTER, it just returns.
-
-Both hold for cleanup_net(), but not for every path that sets
-NET_PRE_EXIT_DONE.
-
-Would it make sense to set NET_PRE_EXIT_DONE only from cleanup_net()? The
-other option would be for the NULL purge to pick nets by undo_state or by
-membership in net_exit_list instead of check_net(). The matching IPv6
-change later in the series appears to keep the same mismatch.
+One option is to drop the list_empty() shortcut when dev is NULL. Another
+is to run the batch flush after the grace period and before
+NET_PRE_EXIT_DONE is published. Would either of those work?
 
 [ ... ]
+
+> @@ -6801,6 +6819,11 @@ static int __net_init ip6_route_net_init(struct net *net)
+>  	goto out;
+>  }
+>  
+> +static void __net_exit ip6_route_net_pre_exit_batch(struct list_head *net_exit_list)
+> +{
+> +	rt6_uncached_list_flush_dev(NULL);
+> +}
+> +
+
+[Severity: Medium]
+Could this callback crash on the ip6_route_init() error path?
+
+ip6_route_init() registers ip6_route_net_ops before the per-cpu uncached
+lists are initialized. They are only set up at the very end of the
+function:
+
+	ret = register_pernet_subsys(&ip6_route_net_ops);
+	if (ret)
+		goto out_register_inetpeer;
+	...
+	for_each_possible_cpu(cpu) {
+		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+
+		INIT_LIST_HEAD(&ul->head);
+		spin_lock_init(&ul->lock);
+	}
+
+If a later step fails, the unwind calls
+unregister_pernet_subsys(&ip6_route_net_ops). Those steps are fib6_init(),
+xfrm6_init(), fib6_rules_init(), registering ip6_route_net_late_ops,
+rtnl_register_many(), register_netdevice_notifier() and
+bpf_iter_register().
+
+With CONFIG_NET_NS=y, the same undo also runs inside
+register_pernet_subsys() if ip6_route_net_init() fails for a netns. That
+path goes through __register_pernet_operations()->ops_undo_single().
+
+Both paths reach ops_pre_exit_list(). It calls ->pre_exit_batch() even
+when net_exit_list is empty:
+
+	if (ops->pre_exit_batch)
+		ops->pre_exit_batch(net_exit_list);
+
+which then calls:
+
+ip6_route_net_pre_exit_batch()
+  rt6_uncached_list_flush_dev(NULL)
+
+At this point the static per-cpu heads are still zeroed. With head.next
+== NULL, list_empty(&ul->head) returns false. spin_lock_bh() then takes a
+lock that was never initialized. list_for_each_entry_safe() also derives
+pos from the NULL next pointer and dereferences it.
+
+Before this patch, ip6_route_net_ops had no ->pre_exit_batch(), so this
+rollback did not touch the lists.
+
+Would it make sense to initialize the per-cpu uncached lists before
+registering ip6_route_net_ops?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927202429.2452589-1-kuniyu%40google.com
