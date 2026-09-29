@@ -1,143 +1,116 @@
-Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C23DE43F;
-	Tue, 29 Sep 2026 10:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E16D3D0BEC;
+	Tue, 29 Sep 2026 10:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790676023; cv=none; b=Odr5nLhzkbvxFGDv2jEnJ4eiZp+F/AW6JkrhWO0jYm3GL5YhcQFtvUnpv/5teigXQV2ROr5xFgD7iLIfQMemkas3XG/O17yuJLy5SmCuyHOKYnVXM6tZwcRepXu7iQxN/IDDoS5Mrvho7a/fLlumKoXEymql6zQKjvmuav6v6QA=
+	t=1790676204; cv=none; b=fGsQj8tNbw0ks0RR6pTPdoNn7BCv17+9/EKjtDSqZeemcazAGPsDizU4LY5RR1uw19xFDlXHVUjXlvPc6P0tbVH8esuNhTZKaCguqH6MimVlUaJYRjMsVr/F35h1kHiP3kzyOjSNtJ4LL5kwkNw9/xER6QeYWawibJQ5LnwG3FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790676023; c=relaxed/simple;
-	bh=JNmDqQEsqaS3LQl7YieCN8X6JrPQ2zp01edgGMu334g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ibw/5qJFSxZ3NCbz9ZB8YYp1LxFZM8Emmw4WjT9kSGUwQ4yXGtklTdHdq8xoXnWXmiK7GANjp5iAsw7y++JcZHY6T7kofKjvKAS02B2Wi38kZJMMk5mgabaVCIZpM1D6vPDsmWl53+qSOy/MxkcmBjk0aAqoVO0obDQxwb3t6y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0674362|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.316453-0.0542113-0.629336;FP=13581216796948058038|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jRJbyjk_1790675684;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jRJbyjk_1790675684 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 17:54:45 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	Frank.Sae@motor-comm.com,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com
-Subject: [PATCH net-next v22 2/3] net: phy: Add support for Template Control register for PMA
-Date: Tue, 29 Sep 2026 17:54:29 +0800
-Message-Id: <20260929095430.508657-3-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260929095430.508657-1-kyle.switch@motor-comm.com>
-References: <20260929095430.508657-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1790676204; c=relaxed/simple;
+	bh=5m8t+DqmOklJ09PVxKp0kK8/O8id53KIQfHN2u983ec=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ANOg4FKtyuXo9gShOl/Zrzt6cDRTa8JB4+rNd2tBzJc+XVKGhU6qBa/TWnovbObDKuKIwxzEeayHFYTIjvOBHFC5mHk2y6fq8n3ZyoTJ5HeB44XKCet8SM8NO6R5tJk7TlYCFQqPxfiWXNcmRE6mlDsL9sxGdub5YMr5FjBD5y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=g7y+dHa2; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="g7y+dHa2"
+X-UUID: f7c0bb22bbec11f18dc8c9802ae25ab1-20260929
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=dyYbTObh62hi+fWsCU7QOW9sp8JH41mugoLKDlkqq68=;
+	b=g7y+dHa2TSK84tqdvo6a8NdeubMdWavuWlXtN4l9lDYc3w6JIcTx90cDO/JlsF0DA6/ZV0betAf6mWfW3FjqyVQdRQZaEK+PFexVhics5U4xPRe+VHPsosO9S1xI6vChCDkgelnCj4SyHEboVRdEBf6sGpdsg0xB3ugIp2j81Bs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.20,REQID:2fe61261-c9d3-45a1-be16-804012babc49,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:291e20b,CLOUDID:b5431909-d10d-41b3-a8f1-bc707284d0ce,B
+	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
+	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f7c0bb22bbec11f18dc8c9802ae25ab1-20260929
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
+	(envelope-from <shiming.cheng@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1036863433; Tue, 29 Sep 2026 18:03:06 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 29 Sep 2026 18:03:05 +0800
+Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Tue, 29 Sep 2026 18:03:03 +0800
+From: Shiming Cheng <shiming.cheng@mediatek.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <matthias.bgg@gmail.com>,
+	<angelogioacchino.delregno@collabora.com>, <willemb@google.com>,
+	<daniel.zahka@gmail.com>, <alice@isovalent.com>, <sd@queasysnail.net>,
+	<eilaimemedsnaimel@gmail.com>, <imv4bel@gmail.com>, <nbd@nbd.name>,
+	<dsahern@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+CC: <stable@vger.kernel.org>, <steffen.klassert@secunet.com>,
+	<lena.wang@mediatek.com>, <shiming.cheng@mediatek.com>
+Subject: [PATCH] net: gro: mark frag_list GRO packets as SKB_GSO_DODGY when a list element exceeds gso_size
+Date: Tue, 29 Sep 2026 18:02:48 +0800
+Message-ID: <20260929100256.23192-1-shiming.cheng@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-MTK: N
 
-Add support for the 10GBASE-T PMA Template Test Mode register
-field, which allows selecting one of eight test modes (Normal and
-TestMode1..TestMode7) used for PHY validation.
+When RX LRO (or similar offload) is enabled, the TCP/IPv4 GRO path may
+aggregate traffic using frag_list. The resulting skb is later segmented
+via the frag_list segmentation path (skb_segment_list()).
 
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+However, some drivers can hand GRO/LRO-aggregated frames to the stack
+where individual frag_list elements are already larger than skb_shinfo(p)
+->gso_size (i.e., an element itself contains multiple MSS worth of
+payload) and may be non-linear (nr_frags > 0). This shape is not
+naturally produced by the software GRO aggregation logic for devices
+without LRO, and can lead to unexpected behavior in the frag_list
+segmentation path.
+
+Detect this condition during frag_list aggregation and mark the
+aggregated packet as SKB_GSO_DODGY when a list element’s length exceeds
+gso_size. This forces a more conservative segmentation/linearization
+behavior downstream and avoids relying on assumptions that do not hold
+for LRO-produced aggregates.
+
+No change for normal software GRO aggregation: the new check only
+triggers when skb_shinfo(p)->gso_size is set and a frag_list element
+length exceeds that size.
+
+Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
 ---
- drivers/net/phy/phy-c45.c | 23 +++++++++++++++++++++++
- include/linux/phy.h       |  1 +
- include/uapi/linux/mdio.h | 12 ++++++++++++
- 3 files changed, 36 insertions(+)
+ net/core/gro.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 870920311f9a..c5f5753f7194 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 29b4d02bf519..e70ecf19b0a7 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -259,6 +259,9 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+ 	skb_shinfo(p)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
+ 
+ 	NAPI_GRO_CB(skb)->same_flow = 1;
++	/* frag_list element larger than gso_size (already coalesced before list-append) */
++	if (skb_shinfo(p)->gso_size && skb->len > skb_shinfo(p)->gso_size)
++		skb_shinfo(p)->gso_type |= SKB_GSO_DODGY;
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
- 
-+/**
-+ * genphy_c45_template_testmode - configure template testmode registers
-+ * @phydev: target phy_device struct
-+ * @test_mode: testmode includes Normal to Test mode 7
-+ *
-+ * Description: Set template testmode include Normal to Test mode 7
-+ *
-+ * Return: 0 on success, or a negative error code on failure (e.g. register
-+ * read/write error).
-+ */
-+int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
-+{
-+	u16 ctrl;
-+
-+	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
-+		return -EOPNOTSUPP;
-+
-+	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
-+	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
-+			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
-+}
-+EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
-+
- /**
-  * genphy_c45_plca_get_cfg - get PLCA configuration from standard registers
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 7c5098a0dd6c..b9dee2655e6b 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2357,6 +2357,7 @@ int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
- int genphy_c45_pma_resume(struct phy_device *phydev);
- int genphy_c45_pma_suspend(struct phy_device *phydev);
- int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
-+int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode);
- int genphy_c45_plca_get_cfg(struct phy_device *phydev,
- 			    struct phy_plca_cfg *plca_cfg);
- int genphy_c45_plca_set_cfg(struct phy_device *phydev,
-diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-index 06f4bc3c20c7..353ca13c64fc 100644
---- a/include/uapi/linux/mdio.h
-+++ b/include/uapi/linux/mdio.h
-@@ -63,6 +63,7 @@
- /* Media-dependent registers. */
- #define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
- #define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
-+#define MDIO_PMA_10GBT_TESTMODE 132 /* Test mode control */
- #define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
- 					 * Lanes B-D are numbered 134-136. */
- #define MDIO_PMA_10GBR_FSRT_CSR	147	/* 10GBASE-R fast retrain status and control */
-@@ -320,6 +321,17 @@
- /* PMA 10GBASE-R Fast Retrain status and control register. */
- #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
- 
-+/* PMA 10GBASE-T Template Test Mode Register*/
-+#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
-+#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
-+#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
-+#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
-+#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
-+#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
-+#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
-+#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
-+#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
-+
- /* PCS 10GBASE-R/-T status register 1. */
- #define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
- 
 -- 
-2.25.1
+2.45.2
 
