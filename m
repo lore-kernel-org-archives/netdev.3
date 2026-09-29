@@ -1,92 +1,76 @@
-Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28003632;
-	Tue, 29 Sep 2026 00:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B45302753;
+	Tue, 29 Sep 2026 00:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790642830; cv=none; b=tg2xscBkNRS8nsADIz34NOj2JKGQCLwMpGSb/hdE/1cgxrZ6ZsC05ETCmCzSirN5DErf6OmknbjtaCzVgkIbLG9r2H8oE6ivWVc6FW3qLl9hCoj9Kw7xljDMHtTFquM0SWepWe8+ZZsY6KZ+1asjPPDLQzKtxf0Q2Z6AHq/x2Bc=
+	t=1790642860; cv=none; b=hpj6Ew54SinocAKR6xi91X4UAc8KNLKufUh+L6miPyNfuKVq/GCAlNIvbjdHjHrWQ/krOISNnJnOgUY0U8wQVULypMP0gH3dWrKLHSftdKRXrBa+JdTwPhU7O1Ff/2XfQcFqLipLXwL486aYqQaDuGdDqv9Ch8SxYYySgoh0Yqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790642830; c=relaxed/simple;
-	bh=yr7R0yAqqrRxcBqE3AxsER9xJKKPZMEBP1EWS2WVllQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s9kQGabayHQTU4GNXejB6O+pCN4PMpfNqEsnpFi28FLYNvgxIzaEeoJUTQvIxH04LUQ522hIrybpPRd2720I4wvZmXg8hjX7JnuMYwSaaBlMUd3djC8K5JjOJUrVcE33B8nQDn8ZP5DeMxQW6qvaqvpI3CUDN3M2E7LrgXEyX40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1717306|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.091997-0.0167288-0.891274;FP=16849052104064075120|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=20;RT=20;SR=0;TI=SMTPD_---.jQih9rx_1790642818;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jQih9rx_1790642818 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 08:47:03 +0800
-Message-ID: <b7065fa7-ffb9-4358-baa9-2aa48b0a2033@motor-comm.com>
-Date: Tue, 29 Sep 2026 08:46:58 +0800
+	s=arc-20240116; t=1790642860; c=relaxed/simple;
+	bh=yGCzTXNhVTF6dQEYp/nhwtpod9EeD/Bqtze4JHStqS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ph2jjb/xspAtBaz9kH2lL7bPEdG5RNY2lfH2UKPIfghyly702cGDbd6Ok7K5roFy2MsQJlOC8yVk3is+GYFdmurQ9fLy6QRUTF/P2qdgmPisMh3KTibB1c5Qwa+PdK2g8ttjneSshRO1DOSH0BWat+KYGNb5pKzwamoxSSSir6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8kYgsv+; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8kYgsv+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1351F000FF;
+	Tue, 29 Sep 2026 00:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790642859;
+	bh=yGCzTXNhVTF6dQEYp/nhwtpod9EeD/Bqtze4JHStqS4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=b8kYgsv+hy2sMpIDZnymeyzHCqUqRAY2ATooq4ak2IzmJwVLlMtucVa5Hcx3hQJf8
+	 Mzlr+6coFqxthyXwwDjE0U6AtLPNoJ0JQbFwpbEEAuoTQNFaz9qEMuULxIqbp25Dqr
+	 IR8AJKeZXamXsvjiUYJGECpjyTt0a9O8Emy/rx95vCNJzYO5JE8YmwoKDLfVOLzIAz
+	 oVHKFV/A4XzhlnZz77v6FpXlcHLWi9cviLLuERytIVrnhhzl1Sq8u954ZCF25jV49C
+	 NoIogg43joFl+AXFgWONG15Tq8qmLMC48q2KqqO9Fn3vUZwtraSEHwKcKj1bGaehi5
+	 CHyBI55Q4OMgQ==
+Date: Mon, 28 Sep 2026 17:47:38 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jamal Hadi Salim <hadi@mojatatu.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, Jiri Pirko
+ <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>,
+ stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, hybris
+ <hybris@mojatatu.ai>
+Subject: Re: [PATCH net] net/sched: cls_api: reclaim an empty proto on the
+ error path
+Message-ID: <20260928174738.139f1365@kernel.org>
+In-Reply-To: <CAAFAkD80zx12Cskdf8NaF1pkSbLUiYSeTEmvpSR8o6P2d-JEOg@mail.gmail.com>
+References: <QDISC-JCOT.v1.20260910090924@mojatatu.com>
+	<20260925171834.73b5b367@kernel.org>
+	<CAAFAkD80zx12Cskdf8NaF1pkSbLUiYSeTEmvpSR8o6P2d-JEOg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
- YT8824 PHY package
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Conor Dooley <conor@kernel.org>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- hkallweit1@gmail.com, linux@armlinux.org.uk, Frank.Sae@motor-comm.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
- xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
- jie.han@motor-comm.com
-References: <20260924075048.4060414-1-kyle.switch@motor-comm.com>
- <20260924075048.4060414-2-kyle.switch@motor-comm.com>
- <20260924-vowed-roulette-abda42cec444@spud>
- <c78999ec-82c5-4719-9358-5dbded43ccdf@lunn.ch>
- <415c6c1c-f59e-41c7-9045-22f20408a7f2@motor-comm.com>
- <34fc057d-17e2-4693-971a-63898708545a@motor-comm.com>
- <648ae914-e116-4417-87c7-5726e63fc6d9@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <648ae914-e116-4417-87c7-5726e63fc6d9@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, 26 Sep 2026 05:49:57 -0400 Jamal Hadi Salim wrote:
+> On Fri, Sep 25, 2026 at 8:18=E2=80=AFPM 'Jakub Kicinski' via Hyper-Yieldi=
+ng
+> Back-end Review & Insight System <hybris@mojatatu.com> wrote:
+> >
+> > On Thu, 24 Sep 2026 04:32:49 -0400 Jamal Hadi Salim wrote: =20
+> > > Tested-by: hybris <hybris@mojatatu.ai> =20
+> >
+> > Please stop adding these tags, they tell us absolutely nothing. =20
+>=20
+> This says that our _automated_ bot tested and it adds the tag before
+> we send the patch.
+> It does more than tdc for a specific patch set (e.g., PoCs for code
+> paths not reachable via tdc) and it does find issues sometimes before
+> we send out.
 
-On 9/29/26 00:54, Andrew Lunn wrote:
->> What we're trying to express here is simply whether it's a phy8824 built
->> into the switch or
->>
->> a standalone phy8824. In both scenarios, there is one 10G serdes outputting
->> four UTPs,
->>
->> and the only difference is that some operations are slightly different, such
->> as soft reset,
-> If it is a different PHY, it should have a different ID value in
-> registers 2 and 3.
+My main point is what I said - it tells us nothing upstream.
+It's like a gerrit change-id tag, internal to mojatatu.
 
-They are the same phy and have the same phyid, but for the phy built
+> If a human had done the same, wouldn't the protocol be for us to add this=
+ tag?
 
-into the switch, performance and issue fixes were made based on the phy8824.
-
->
->> power down, and power up. How should these two types be defined and
->> identified?
-> More details needed. Why does it need a different soft reset? Why is
-> power up/down different?
-
-For the standalone phy8824 scenario, performing a soft reset on the UTP
-
-requires an additional soft reset and isolation of the SerDes address space
-
-to prevent intermittent packet loss after link-up.
-
-However, the phy built into the switch does not require this step,
-
-and the same applies to power down and power up.
-
-In addition, there are differences in the initialization configuration,
-
-so the driver distinguishes between "internal" and "external" phy.
-
->
-> 	Andrew
+LLM !=3D human.
