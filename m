@@ -1,204 +1,233 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012055.outbound.protection.outlook.com [52.101.48.55])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480923E51E4;
-	Tue, 29 Sep 2026 16:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790699790; cv=fail; b=M4chsfR3WgpzUHObKS5RAmI0KGfN/WlqxehlKep+GOhrxXLV/dQbPo8tQDWV3jdI3cBEYPNtkukUm4QrXJOAUD4w+xIkQkOuaQzyKcqEqjJu2A5rF+xIsGg3n0mBtmcbscGGAteuaYSmNsLgbc2e3zfIl7SX7iuL6nyTg3MgZIE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790699790; c=relaxed/simple;
-	bh=TEEtM6X9M7bQN/WsmbE0dXvk0sAHCc/1AlnNpPv6TKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cB9pQs/2Sy7I3xeLFghU99/jAWWPLnTDreS3VLmIifGPzEOCPxwOEp5BRGZMXNcLEa7RzUn4mYEP0TlO8imHrMgAfR5LoFQtvE8727NvObt9VsexP7BsRurtCVZrC+h2i/3or4aCJQ2tbIjE6zqM59rE9H3mbbGvhHZHkVbYx6w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CTwfnz+7; arc=fail smtp.client-ip=52.101.48.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A36A3D565F
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 16:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790700375; cv=none; b=jHVX3Nz5wmOkq+Q/ctm1KWUse/lG1GjwAoCz9/8o1N0WmVk8izGKzO96uc2nsMrVnmGifWKYmdhHvyZuNMhvffR5+bf4v5Vplqs0/pua/+lxJ9cN+4m1Qxwoj30v9p8Aidafa73d20IjYvak//CUcPj/qKj90dZUQjC61w1K/vI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790700375; c=relaxed/simple;
+	bh=LiAihPoxkqZdV81WngRsOiNeAPyzqkFVESOlCfUvRLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IhIlAGDny70ElbIgxBcbt7QUlOrzq6iyM0rDkBUhm/n48TIjqccBKqAndyWni6vLwm7N5P+uZR+W8RtXy89gjYdSM+Fr/ruKEakb8VigDGqaBmliGrCwnMQVifKdAEQG46BLGOXMrrvxok3gW/wJaB9sqP3+H3t7eZgWzPwkvJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dEBN0i2t; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bl2pSz6y; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CTwfnz+7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZkKF2/Be6n2ccUk+Tp/eAihIO2NBgFyun61+th/5HzIphRjdYwPH0jGW7bgCNXBrHogeahaf7q/9u1n8WG172SaPd4lnzWuc57Ac6v7i0vYHaYt/mt/qwQsn1Qh7kQ2ZtQgzD8O+QrgSpqdmMEiL1Ww0x/teQTywhgT2RjaNumSWsEaCMPxsxTuUaSHMkGsY7LvbfkNTNvQZ67OwsfDJMwuaaYfhJA06nfI36hulGi/ucwPBDYqMqhZVua04a1fJkySMmpejIfJ01HPOEAwHKuINn/4c1NZyRdfa9DbJHup1QpTRBzs25f/feQ5KQhGZI6B7TsA4h31N7gpfqmDjOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1VWHZaqYM6zRruPUI51ZS0FKaFdS3Dkcq3Dk4RgjWt8=;
- b=VTb0c3chHNEdau6HrHdVHt4uY5MSHl6+Fx3B/BVumpczegtuxzlaqrDHLw/FWQ5iXdWGlP5MBU0+O0Rd7odpOOyFciZF0VGAsEu/oQuexO4Mp+UkZoybr9bvexKiFZyyJ6Zhqdbw9oacpTsIaJH242jGW37mE9aa8pQ8EiS0CMmSzPe+oNWC1XaWzCreWlB++Xyw80PUIYMcz/xlFByPj5NuiJFcfvb1/wDvQCFi0un8oKjrwSbsamRZ3fX8TPHCRqjNLV2UIW4JZ+ex2hZljxSzGkCcbx8jg34JaC04w0ADWYtqoYtku/a5mE3t70eebX9fLdN8MZ7GNeLNzo55zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1VWHZaqYM6zRruPUI51ZS0FKaFdS3Dkcq3Dk4RgjWt8=;
- b=CTwfnz+7k4Tj4L66e6Mmi0EUmekGM+tBHXDXQvUD7b1FF2oYvBkrA4WxN2t72yN6nQC2VmhXG/XpUq3tpYr3CRIUWcc3ka5EcToyxPynuj8NgqUYX9HyIRPWy3QNXjGozDvYqlsCCq/0S+pmiiwrjjLXKRNdaO1rs88pUSq8nKxRCtjQ1+9u4qOFPUCvAGtAGgGqgfdGHcIvayyvmLvw01WLZEXFvEsyVfT8yblnJfR1XCOwagYPmm5nsdEu3k5LqI4mPe2wqbz35daCR76/kfyhCnon11FBJR4DgPFo/pLWkMVrkmVvwqWZumH7OkQzPSCIj7sfQ6embB+NPPRhXQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH7PR12MB8177.namprd12.prod.outlook.com (2603:10b6:510:2b4::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 16:36:26 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Tue, 29 Sep 2026
- 16:36:25 +0000
-Date: Tue, 29 Sep 2026 19:36:14 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
-	Wei Wang <weiwan@google.com>, Hangbin Liu <hangbin.liu@linux.dev>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] ipv4: Fix device use-after-free in ip_mc_output()
-Message-ID: <20260929163614.GA905623@shredder>
-References: <20260928162534.2122207-1-nicoyip.dev@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260928162534.2122207-1-nicoyip.dev@gmail.com>
-X-ClientProxiedBy: FR0P281CA0007.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:15::12) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dEBN0i2t";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bl2pSz6y"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TCqeX11016868
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 16:46:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0skssNQvXHTm92GRJQRQsimYFU/uUs18xsPOZJ94ZoU=; b=dEBN0i2tek0zDky6
+	2xI8SRkTy6muUz4dBIrz5fe7jg4NsDeBcPu1fmFwmFPism/3Mve1tUgchm9vVWiy
+	rbGvcFEEKFcZj7H+hBGqfrNwUVs0WLk17xz4pfc/afWR25wAD6QjogN1PTTGx4zw
+	qeD7XSMnBp328oah9kwACp33yA6E075kQbHQPfJlHPBLA5JD9V2yTLZ/+QlDGCCv
+	g1GygBe2FclhSsPSm7KcP6DP/Yy584l0vcAVGOXzvdreTAF7Eado4xpA9w+2QJXH
+	/m8beGrThSCMXvlWsajxYKXc2ig1azBaBspMBFo7EgC+CbiLC61r5+ZhMM1aQtjs
+	yc1JSw==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h05yxk6a7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 16:46:13 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39d865b11b4so4987195a91.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790700372; x=1791305172; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0skssNQvXHTm92GRJQRQsimYFU/uUs18xsPOZJ94ZoU=;
+        b=Bl2pSz6ya2GNjjjeXJTauTZP1ZdPbAZSLWkEX08hFUEg/y2o/TuIQUuz1yl2sfabJo
+         ZagApknKBgb5oT05FOIagGA8+8oCJGOq571RwryE4ft5wV80aJlZBv8Aiz84U+BoPklb
+         uLPv2FWE9QImk7BU5DwCDcxwjxpscRHzUbgh/tx9mwsrJulykuxhCTjdQtmoa9wgfzze
+         ZlzxHQJHRZudYC24Y8pg2ySXSiyGUI23bpEjko7KIvGf3OEtSSvxPGIEyeXT1i8HrkuI
+         rWObMcJF0p4TRb4ui2lCP1+vaMCFO4nXc92Is1vcGDokeBQmaMPRWGR2tEyL7oYavOoj
+         xSRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790700372; x=1791305172;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0skssNQvXHTm92GRJQRQsimYFU/uUs18xsPOZJ94ZoU=;
+        b=p60s0l9zBMnbjT7dZXx1fhWcFB3Jvbhi45tPwu7lWRyNcjBf6IwsnazSlbRb5UvGPT
+         ctf7ollN7lH66MuYYswY8dKkiZyiQgfirgyIT2penqwpJTrBgAifBOAaPZUzu217URFu
+         8XJk084ArHT0V5eZihryfmn9jzxqP/5TN/OyuH1l7w6aKOwd9pUd9VpkRsAfe2uEWppR
+         Z6aGQseyp7CCM7+AMGKmMUDo43jrwkXOQ1ohlEyVaEjnycSF3BzW8wp3l4WWJgw+QNB9
+         Rb6B92fRn/yDPiCSNzDLKpo3p/AG5aFjm/9x1COlCjuns/tQPqh9wa80RIR5Pmqr16FD
+         hxiw==
+X-Forwarded-Encrypted: i=1; AKwUvBwFhNW3bV47VTDlLvaWYwEbIRPLRca3qmlLM8k8j3hsCuC0dsZTDP6P4U8iFO89vceJoQ/8nBE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJF+NAyEOIgjQgfVsRJp+vWl3d17ySY9H7aLRwyt6rXXC3JjtIN
+	lMI5t2vqTAulr5O/baePQh9q4cbuWClnr2bWImdWSImLTbdUZJCfWXsR/wTJtw90j0rvgRaqGTj
+	BjseN8wGYAJS4YAxEx8ImWzdcRKAcSOkB5HNK+Q4lBwQezbsSreqJbO8v6oQ=
+X-Gm-Gg: AYBFou2/b3p17iLIht319nQciBdeUAN9gvc8OgTTdefe3Hr5lJ3ZxC89HzV7teu1VZj
+	hUNzmeT6DUyEEpB4aMvLjdx3RrcLPGOWos63h9AMtjTkQ8Astxvh5Kl01ZSzK/A7H3nRSZmDRh4
+	Kv6sLPnCXbTCIFNxn8ora6ktXbCdj0gKOf05qWg+toW0jBQbXNQ8ZEDe+KXp1IEJiaXmLDaATYW
+	lDAONfF580O6XGrz/oV8O5l52MVAFf49ShpCI+rfuZrjrEd4xWKxv6iUjdVL+qFlCdpO4j+OX1Q
+	Ori6QM3nl6BrsDa8KP89IrddES0oCtmavrlJSFwRTnl250j2LeRXs1la2AHQS8lYCqVrM5bN8Uo
+	+HacU6n4aJEs7xvWY
+X-Received: by 2002:a17:90b:384d:b0:39d:fcbe:fe04 with SMTP id 98e67ed59e1d1-3a0986eb55amr14369939a91.2.1790700372113;
+        Tue, 29 Sep 2026 09:46:12 -0700 (PDT)
+X-Received: by 2002:a17:90b:384d:b0:39d:fcbe:fe04 with SMTP id 98e67ed59e1d1-3a0986eb55amr14369900a91.2.1790700371572;
+        Tue, 29 Sep 2026 09:46:11 -0700 (PDT)
+Received: from [10.216.29.115] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a49858bf27sm6367683a91.4.2026.09.29.09.46.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 09:46:10 -0700 (PDT)
+Message-ID: <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
+Date: Tue, 29 Sep 2026 22:15:52 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH7PR12MB8177:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30c7fdbf-b5ce-45c1-61a0-08df1e47cd8f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|11063799006|56012099006|3023799007|6133799003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	hQXBmDIfKNsc1lNrUxmU2UZ8fC3DtFhqH7sZi/e1tocGiNYzubsJpY3Py5IVafERwvtYZxwFDWtOcRgvyXjuQwkfwFRIDrUz/ugQYGdVOACefE8Z/0M3yGb6bTJ5HDd9w3aDHfQ8xYqTTd4nyC0x6UJMvbC/SP5Ua+qba57jMMsdQONmxxAxYr8n3oUqpBBbVKOAFUTmgF5fcl15trGicCWuthVoF+xE+SaY8BWoDc9fya5Owp5kJanO46mByCYPrSPf8kaH7zb7MWmxpNlDaLqhG5jmEF1J2ieXZ6q4AfK9nJut5Zvx7nZukZy9fLEyKRD5TRik+FYVzQAog774wICHul2Fw7amNipbqfGBHnVpVw/FGSE737r6WG01lGrBbS4Uyj2Jt+LU3UXDhWjZN6R3hGTg12CP0hhUOrrDihw9giyFxgCbjbYeacjt+4dHHlPcaRVth6/P8sSVIwOOACHvhaoktJlASixBJAFdGAapdmup44qBb7kE+anITkiPFUBHGBMy5NqH5bkcdlTHAnsnmSEElNejM5q+T0YCdJ9/etLDOTxPeaWZby5BkYDBmsKwSDmU219PJNINUgDbV/EIrYv1BBmJDro2WgIj7mOmI9+TXkjgByVtig1PNO1D+JtqgWjzaSRugz94aqPGfAY/BFcW24RFCxGSUDDrr7s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(3023799007)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zNZR01vbqMJX9M3oFQRoe8GitQ8B+GBXijjos8CJKuIwQ5kihn4ZXQw+NZPu?=
- =?us-ascii?Q?JZRCAa/0CDAOmPQHMIvve/MOgPDmwrm5KsDYArO+fZMN8HjGb/n95le9K7Jx?=
- =?us-ascii?Q?jwguFBH2hwrpho05dcLeHbl+Iu5F/EoX9rNHoLD0gn2LHRexm0tB04iMcv7w?=
- =?us-ascii?Q?fh35xs6w2SLuSZXIF15cuKY9lxjkMtE8wKXyKZVfRSunqd0GciJ8D2bYXJA+?=
- =?us-ascii?Q?BY8WL5+CDNvRtGXrWg3D2WecP5YAdXPuDw0qephv+qKoKM6y8hFleP8KP888?=
- =?us-ascii?Q?xCr3czxK4M8kCxNOGDb4UdFu16OgaeixQ5O7KLwFlfbEQKAFyUaT7Iq1jXc7?=
- =?us-ascii?Q?Rw8ZZSpf//2/fF0Zqd0wTImxtjyyABZtVlWpcY0YYyxB0XzPFrjt87NZLaE1?=
- =?us-ascii?Q?DfA9Sms9XkX4GknXYG9+3NlSriHmsupKfGdlLkkDaFUaWz2Kv8o2aPSSfw4c?=
- =?us-ascii?Q?5Fbvkhz9BXkE47joYF9K/cBYFV22pmOf1qM3RX1Fd77yFDoHcDrMV+fq0Y5y?=
- =?us-ascii?Q?f24iu3Qs6u4d0gZt6VTA9/5VZcdx88UfP37iWNnWIjmTmjIXyXLxeXl6BNOj?=
- =?us-ascii?Q?zNURXCwAhpBI6O6iyj8lojIVEAq6BUS3g6rWjnxrQUMUWRav+w7zddQvtUcp?=
- =?us-ascii?Q?0eM0YKTifut5TchtZflMAjE6a57MdqbI/zpt2Kc2NeDl0S5HfvBdwRvCn9n9?=
- =?us-ascii?Q?Spd3WL/HZ7tG377nIJkxSg3Rt7IK4BaJYkcmoTFbSHVbChnWrQg1ScvQ3gQJ?=
- =?us-ascii?Q?IcNPBjz2QESNh0iOL3EvAuhyk2fBcSJOvCFCIEskxc4pxc7jGMJG8+mylkdE?=
- =?us-ascii?Q?lA7m2Zj5iaoF6xg050ZryaQH9V1nrkHCYvyrK8h9d2pXBtYf336QkK0ouu6n?=
- =?us-ascii?Q?to1MOFb0oIthd1rtmwNqt1UDg2iC5Lu3om4dzkAZQnr/CqDvpQ6CfmjyIheT?=
- =?us-ascii?Q?eT9URFpm81aQLdl1a9wz1/cZsO7I7dUHv+VEgpDxAY2z0oy9YJCEgF/7B5gB?=
- =?us-ascii?Q?t0PAYRUUNVne7oWDgqY+Ia2YZL1UbqTj7kjbO+cD07TD2FrJUUUb8sG5hQD+?=
- =?us-ascii?Q?VrqncQzSkVeG3pu176uYk0OATXv0ec5rgWozGFhnIP55zPPOsqnd5mg8WQRB?=
- =?us-ascii?Q?8+jFx4QGs5VEM+b/dO7a/DbhzFTD7rU4xzPCat5Nw3mHn568xERJATAYoetM?=
- =?us-ascii?Q?pY6YFLPehdWpUtCeZ0/qt3sOHp2JaKSpvYfdfS2gXll0CTNxnGpRyOS0BLpK?=
- =?us-ascii?Q?PKfGdy56Y9D8dMqfzjmd4Luhr3RmMOClCiyfnZKNn67+LYJXRiZzzwo1FBzi?=
- =?us-ascii?Q?wrRAe2MBDLhab6QPzEwECQCuxHMSfhBynm0M4CNCx0kr4bBT2HVlysapQo4Q?=
- =?us-ascii?Q?gIGU4hr3Eo8bDing++KW2OeObmCV50lWYjznbtKtlN6SNjNzf95vX17HteXu?=
- =?us-ascii?Q?fFYCIzIqHlTZ6TBhKeK8qQ0qxXuvEbOoHywTk6tdMb27y1wr13BVJj2RfzIL?=
- =?us-ascii?Q?dIATBAZIawx6J+9CHJfnWBwOI7SC3kOm7ICVJ6/puWFaEhjOo2yEBf9ibPrf?=
- =?us-ascii?Q?289wTmly1/Ib+VTEnLTTVgNAIx177yti4zzQ41DuxH15W2fZwp1A2TtXKSAl?=
- =?us-ascii?Q?c01BqhHauGfHgKXJyxQp+rGz0TTYSu6dQOENfEraGZZmiPUTHrTfKNuVepbJ?=
- =?us-ascii?Q?5yV4ULCkc8oFkpqQLyflTrwsRh5ED5naElVQQr1FBUD9SivT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30c7fdbf-b5ce-45c1-61a0-08df1e47cd8f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 16:36:25.1930
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L3kqvOrRWbBdahPHDlRc6dGAJ/bTvcmRyrykT+Fy6VMrUDgiwgTvOQmIvZ7X9HJqkOR1MNpJjJjBmB5WA6SFIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8177
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
+To: manivannan.sadhasivam@oss.qualcomm.com,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Chris Lew <christopher.lew@oss.qualcomm.com>,
+        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+ <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+Content-Language: en-US
+From: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+In-Reply-To: <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA2NiBTYWx0ZWRfX1NMZn/ZDkHcx
+ AVgXXCq/32OjvOPYVGDUf7dbiAC2kov//poKR1/yQKu88uM9S1njygFEkZkHCzVf4mAu6hEyDks
+ eOrjQgqM1AIke8MES2XPq9J+Vs+9hNU=
+X-Proofpoint-GUID: IF3UIYMDs6REwxW1c8tYpPmBfmMuS_JS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA2NiBTYWx0ZWRfX/gBJwgQXtHyI
+ jVyah8oKDK1PxCCICtnXM/s3580QNHoysuT5dGoWqTuc+mG9cZu25XSRNwkdcM+Xf+/U9bTK/iT
+ PI7X4w2YPfClzYMyZ2lCimpCMX+KOQR1lgJNDd/Eu1qhVtnmDRNDLxegY+OqEg1pUPHKPsrXP+W
+ 1wFAZEVawB6H2LY+N23wx9Vhqaq5o237DMAUsAUfh2fPiUQcVKbCr0hSVf4zgYWzcvNSI3taQUJ
+ WAbqJkY+qcFe4/i2EEwzTif9ZRuyFKBF9yejPI7aTl7Aw3JV0MRmuoeitbj6vO3s5/0QvFOkZIa
+ 80yVpwEOmTRyQ58Vl13syzEKDgHSx2WzsqNKYeThJqtiMQ0rjGWBhUKnJjLxfrEJ0tU/s134icu
+ WpBToT3XkcYg2EYxKS26nnLJfiNB6IehtvKdmAj4XtyutF5DxyjGZfWBgLsatNO3N86iE7LA9Ig
+ vda+2U0wp93pF592ISw==
+X-Proofpoint-ORIG-GUID: IF3UIYMDs6REwxW1c8tYpPmBfmMuS_JS
+X-Authority-Analysis: v=2.4 cv=SaFi5fRu c=1 sm=1 tr=0 ts=6abbeb55 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=4CdhTua64AM6UaT4niYA:9 a=QEXdDO2ut3YA:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609290066
 
-On Tue, Sep 29, 2026 at 12:25:34AM +0800, Chengfeng Ye wrote:
-> ip_mc_output() reads rt->dst.dev and stores it in skb->dev without RCU
-> protection.  dst_dev_put() can concurrently replace the destination device
 
-It can also be rt_flush_dev(), if the dst entry is uncached.
-
-> and release the old device after an RCU grace period, leaving the multicast
-
-The reference release is immediate, only the free happens after a GP.
-
-> output path with a stale skb->dev.
-> 
-> The stale device can be dereferenced by the post-routing path.  In
-> particular, a socket using IP_PMTUDISC_PROBE reaches ip_skb_dst_mtu() from
-> ip_finish_output() and reads the freed device's MTU.
-
-ip_skb_dst_mtu() reads the device from the dst entry, not from skb->dev.
-
-> 
-> KASAN reported:
-> 
->   BUG: KASAN: slab-use-after-free in ip_skb_dst_mtu+0x634/0x740
->   Read of size 4 at addr ffff88810921c038 by task poc/98
->   Call Trace:
->    ip_skb_dst_mtu+0x634/0x740
->    __ip_finish_output.part.0+0x22/0x2c0
->    ip_mc_output+0x287/0x930
->    ip_send_skb+0x11d/0x150
->    udp_send_skb+0x63e/0xdf0
->    udp_sendmsg+0x1235/0x1da0
->    __sys_sendto+0x32c/0x3a0
-> 
->   Freed by task 99:
->    kfree+0x131/0x3c0
->    device_release+0xc8/0x240
->    kobject_put+0x14d/0x280
->    netdev_run_todo+0x4cb/0xc70
->    rtnl_dellink+0x362/0xa90
-> 
-> Protect the whole multicast output path with an RCU read-side critical
-> section, as ip_output() already does.  Load the destination device through
-> skb_dst_dev_rcu() and keep it protected through the post-routing hooks and
-> ip_finish_output().
-> 
-> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+On 9/22/2026 7:11 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+>
+> Now that the QRTR driver allows using the unique node id for each device,
+> which is different from the node id received from the remote node, compute
+> a unique node id using a new API, qrtr_host_node_id().
+>
+> This API takes the 'index' parameter and adds it to QRTR_NODE_HOST_BASE,
+> whose value is outside of the node id range used by the remote nodes (0 to
+> 0xffff).
+>
+> Finally, call the new API from MHI endpoint driver by passing the MHI
+> controller index as the parameter. The MHI controller index is unique for
+> each controller, thereby for each MHI endpoint device.
+>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 > ---
-> Changes in v2:
-> - Protect the whole ip_mc_output() path instead of only the MTU read.
-> - Load the destination device with skb_dst_dev_rcu(), matching ip_output().
-> - Use the commit that made dst device replacement RCU-protected as Fixes.
-> 
-> Link: https://lore.kernel.org/r/20260927071051.3693368-1-nicoyip.dev@gmail.com/ [v1]
-> 
->  net/ipv4/ip_output.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
+>   MAINTAINERS        |  1 +
+>   include/net/qrtr.h | 21 +++++++++++++++++++++
+>   net/qrtr/mhi.c     |  4 +++-
+>   3 files changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index df8ab9b82402..9c8bb086be28 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -22511,6 +22511,7 @@ QUALCOMM IPC ROUTER (QRTR) DRIVER
+>   M:	Manivannan Sadhasivam <mani@kernel.org>
+>   L:	linux-arm-msm@vger.kernel.org
+>   S:	Maintained
+> +F:	include/net/qrtr.h
+>   F:	include/trace/events/qrtr.h
+>   F:	include/uapi/linux/qrtr.h
+>   F:	net/qrtr/
+> diff --git a/include/net/qrtr.h b/include/net/qrtr.h
+> new file mode 100644
+> index 000000000000..745d51b4a6ba
+> --- /dev/null
+> +++ b/include/net/qrtr.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _NET_QRTR_H
+> +#define _NET_QRTR_H
+> +
+> +#include <linux/types.h>
+> +
+> +/* The offset is chosen carefully to not collide with the node ids allocated by
+> + * the remote nodes. All the remote nodes use node ids in range 0 to 0xffff.
+> + */
+> +#define QRTR_NODE_HOST_BASE 0x10000u
 
-The diff itself looks fine.
+Can it be exposed with include/uapi/linux/qrtr.h also. There are user space clients like modem manager
+which need to calculate modified node id to distinguish same service from multi modem over mhi.
+This is same as wlan use case.
 
-FTR, I'm aware of the discussion that wants an RCU critical section in
-ip_local_out(), but:
+- Deepak
 
-1. Adding one in ip_mc_output() is consistent with other output
-functions: ip_output(), ip6_output(), ip_mr_output(), ip6_mr_output(),
-etc.
-
-2. This patch doesn't affect the fast path, unlike an RCU critical
-section in ip_local_out() [1].
-
-3. Patching ip_local_out() doesn't cover all the process context callers
-of dst_output() either.
-
-And yes, I'm aware that more places suffer from this "problem". I opened
-an internal ticket after seeing [2]. I will get to it eventually and
-will target it at net-next since these UAFs are not very realistic as
-evident from [2].
-
-[1] https://lore.kernel.org/netdev/85c6016d-fb15-4c61-aab9-61448911f934@redhat.com/
-[2] https://lore.kernel.org/netdev/20260819164528.3761320-1-jjy600901@snu.ac.kr/
+> +
+> +/* Compute host node id from a per-device index. The index must be unique
+> + * among the host assigned endpoints and smaller than QRTR_NODE_HOST_BASE.
+> + */
+> +static inline unsigned int qrtr_host_node_id(unsigned int index)
+> +{
+> +	return QRTR_NODE_HOST_BASE + index;
+> +}
+> +
+> +#endif /* _NET_QRTR_H */
+> diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
+> index 3990da1a65dc..c920ab61f848 100644
+> --- a/net/qrtr/mhi.c
+> +++ b/net/qrtr/mhi.c
+> @@ -6,6 +6,7 @@
+>   #include <linux/mhi.h>
+>   #include <linux/module.h>
+>   #include <linux/skbuff.h>
+> +#include <net/qrtr.h>
+>   #include <net/sock.h>
+>   
+>   #include "qrtr.h"
+> @@ -127,7 +128,8 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+>   	if (rc)
+>   		return rc;
+>   
+> -	rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
+> +	rc = qrtr_endpoint_register(&qdev->ep,
+> +				    qrtr_host_node_id(mhi_dev->mhi_cntrl->index));
+>   	if (rc)
+>   		goto err_unprepare;
+>   
+>
