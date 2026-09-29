@@ -1,48 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3794393DF0
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5577B3AFCE3
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790709347; cv=none; b=LxKUzz5JIM/+nMeaYppgdHhTsnvbvPDU0gINBEFPdzeRj6VNaTuAzQnKBHuzrJRNs0cQSL+U5cX3nwaBF7+PcegAd7Y9hIPZ+7tJFrhnbcbJ9NVtbEtXxMvgKOg7HQHJrWV8n4J6pnSugvcMM5iFOyrUVeKij6B+w5Pd5H9rwRY=
+	t=1790709745; cv=none; b=swan+3TpqCYyEXKvxhd5a5qF0I4VgZk9XQ7SMQGrVV5Ha4lplUavlp/j1J7Ar50cvTxZON6kHHMf4/jKehmjmjMthtSiiPWoDQPUzMFm5Jy5qQpeXEs44bYgcfPN09G7k+8AyXcRUK27nhDF4+naUWbybXYME8EqyNhscfghbb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790709347; c=relaxed/simple;
-	bh=lP9sNv6go1mS9Hyd/+qyghLN4HwQv7O6R4HAFfMopIo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OMSRy/QNWfLZo1xs5BhrSO6N5Ag1iJzWlFTnu5iEBcBuvTOdBYl7wu4+6YgXTnVmTqmdQi4Gh+vF5h6n1Ct1ZGar2z6pqfikccGCQ9LPpKqXN4vHoa7/oyjL9NEECmNvvbcz4rk35MMvrS0jk3rhLEq3d4ME1U3uJF813i1U9Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPC0bGfq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790709745; c=relaxed/simple;
+	bh=soc1UdL6U29pn8AR+X3a5I0n2rxTg8pVScIUjai6HGo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=manGpVh24St4xpIa0hHL7pKvjBWbBY3KWXczbEWdzuVKzWKRIZKM6kg5hwtxC7SKOJZ7zaGQrWkWfW94AvIlTPi9mhqRsgwbbXp+vPrqkbdd6TgqpKXrIfdsSM+yxHPCQe8jdAwpZAxyvxm6QbZUZdx2mXloCkMApINQzq/LKlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DyLv/cvH; arc=none smtp.client-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPC0bGfq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C2D1F000FF;
-	Tue, 29 Sep 2026 19:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790709345;
-	bh=FPoIoO9Lv/92sMUQ+DCUGnVxdnO/wqqnmccb5Ac0jJI=;
-	h=From:To:Cc:Subject:Date;
-	b=VPC0bGfqd7IZPRrOI2/rYe7U367QKWKZ6AHlcrpzzGECXFe2f1Dye0mJE5ob11lNT
-	 K4gIERDCyVvVr8U+4F5TQFTE06IewygmO394tO7he306zisDQBeFOnZrltAxUaTpqU
-	 Aa4G9GYV1zm76BVYWv3Y2uRsCGhinSL4c27V/BnSzkJFo0X0PKNUgI7R87taDWrZQ4
-	 8gdJCHCa6dbL5ButFmLFFK0YAP03BqSN5J7Poa3T9euSZtVUpFfLcGhTZIYe9UMJjQ
-	 izE3fx7aDz03c9jORInWyx5VqR4Lq7ZON020CZj9tPJK9rgiSF6Nvgcd/aRUxgCUYo
-	 YOWzZGUlyjudw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DyLv/cvH"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-39b2ad862bdso1817966a91.2
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:22:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790709743; x=1791314543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UGlpLytsQuiePTVR4JYMni5yCyAEoJqxH+8EP5tQGiI=;
+        b=hvl0eX/QyzVUgFIRr02j1nF78PTSzx6bzdY86ljutCSYwijoMwx+ds///BFx+G1Zwg
+         OkxPtlNlu/yU3Y82d9wLzL+2pMbLzFs4TpcSQB+YwQk8KrqEUkaFqgDEuyYuEukk3+PV
+         3gi91tuZpqvKHT8VOhj/ApohL7h69rCopGYh4Pux8QS+XEIgHJuhQ03kBKhQ/k6tDXOK
+         uD+NSiO93DUw/y9PbO/MqpBfEWK2Ce8pe+dRrK99/znVqUvDpYul81+ozqIpYm0W2XUH
+         no9n/vv5V+XBANu5c3K4wh+u6EkASOMF5Z6IPTNzt2APoXRQSvM8N24rrIokSvO0uUwr
+         z0Yg==
+X-Gm-Message-State: AFq9FYLDnG77QPmiKwif3ieB1rsnaKIoLnYey0YZBBcvJYf6gKI18bLs
+	4oVsPf3wjqNqWIeteSUJdCNz37Tia50e1PxT9cpIPgZ2x8EbnKeskatbRM7CtVWShkV+kI8fyf0
+	gT14CaMkdZUNc5qiT7CYgDxi4QFKrZnCiwlrkXklkaTdNhPi3TQPldiEl8EbCx7vdy14gnSwZKk
+	y58fWDZl2CeW/4BpS3ijG5w9L0RRydqe0onNi8gwqD7+YiX2VDGLwt4lfbLdJF6MA8OusTMuIq0
+	xciDoT/GQ==
+X-Gm-Gg: AYBFou0cEAi/aj5Ws22i/Xc9J92Kng4WlfQqet/p01NmEJ7K7r4OhkGstr5r93iWh3/
+	oivC9sHqW2Pm2+LMg0jZ4TrT6oPMq7kCI2/AxThdZ1myDKcVAfegFqdH017QdyAuqFBzfJ6zTD8
+	LvcL/ZDvMfGGyBHHI8MSU0nhRrZYCqYYga1z/5Tz3+HdJhQRA8D9LTNwhc7US/wfwUr8ZC3pnhd
+	pBBtSVd2zFeY/6BFODytb/zh75chQug1N0SP4mnSHF3u7qU2rz2d+Jh9u6End849oT2AV4U8Zp7
+	V+wVRZoR2hgKbHE3kuizkSqyktt5XrV6a+ZJc6sgP+ucJo1pLBkMDvpqyAelgsDzYDiYE3c3LAW
+	KVn3w+BXl+7zugBymvgwzprIjpZFVf96YmdM6lpKByXDiRvNMQ05ght9v1kJmElze+oJrzuhVGC
+	oG3N3pd0vEayrD65rlu9Zi8I0oxRPiMxJ0DYaT
+X-Received: by 2002:a17:90b:288e:b0:3a0:9fe0:3aaf with SMTP id 98e67ed59e1d1-3a4bfe93a6fmr334986a91.48.1790709743145;
+        Tue, 29 Sep 2026 12:22:23 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-124.dlp.protect.broadcom.com. [144.49.247.124])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a4984078e1sm2233494a91.8.2026.09.29.12.22.22
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Sep 2026 12:22:23 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91431adf55eso80716176d6.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:22:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790709742; x=1791314542; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UGlpLytsQuiePTVR4JYMni5yCyAEoJqxH+8EP5tQGiI=;
+        b=DyLv/cvHQNvR/dMn/SNBDCTUoc62FVOa6aTgvAgdU98loPUP86t6g5xvl6l1K5uF2B
+         NQC26USCGYRRR0rEdUgYAIGZpe63McAZA64lbaG775A46AefCEya/5Yk2l1cXyTIJIuH
+         oyW4IVFLhxY00xtquR/6E7nLwC5CSI1i36WtM=
+X-Received: by 2002:ad4:5f0f:0:b0:8f0:afa3:594e with SMTP id 6a1803df08f44-917999f8837mr2763076d6.8.1790709741973;
+        Tue, 29 Sep 2026 12:22:21 -0700 (PDT)
+X-Received: by 2002:ad4:5f0f:0:b0:8f0:afa3:594e with SMTP id 6a1803df08f44-917999f8837mr2762496d6.8.1790709741420;
+        Tue, 29 Sep 2026 12:22:21 -0700 (PDT)
+Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9179880b6cesm2293976d6.34.2026.09.29.12.22.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 12:22:20 -0700 (PDT)
+From: Justin Chen <justin.chen@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@kernel.org,
+	davem@davemloft.net,
 	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	razor@blackwall.org,
-	dw@davidwei.uk
-Subject: [PATCH net-next] net: only give queue leasing devices a separate instance lock class
-Date: Tue, 29 Sep 2026 12:15:43 -0700
-Message-ID: <20260929191543.3295633-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	bcm-kernel-feedback-list@broadcom.com,
+	nb@tipi-net.de,
+	florian.fainelli@broadcom.com,
+	opendmb@gmail.com,
+	Justin Chen <justin.chen@broadcom.com>
+Subject: [PATCH net] net: bcmgenet: if UMAC was suspended in SW_RESET, restore it to SW_RESET
+Date: Tue, 29 Sep 2026 12:22:16 -0700
+Message-Id: <20260929192216.1490017-1-justin.chen@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,224 +91,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Commit b6f74dff6d26 ("net: use two lockdep classes for the netdev
-instance lock") put every device without a parent in the virtual class.
-It also restricted the locking order for the virtual class, because
-queue leasing has hard requirements on the exact order.
+When the revised suspend/resume sequence was introduced this led to an edge
+case where the TX is left disabled in the following sequence.
 
-This bites us back on bond, which is "virtual" and needs to be taken
-before taking the locks of the lowers. NIPA hit the following on the
-new test I recently posted for XDP+bond:
+1. phy link is down, so UMAC is held in reset and then network interface
+   is WoL enabled
+2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since MAC
+   is in SW_RESET
+4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
+   and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link up.
 
-  WARNING: possible circular locking dependency detected
-  ------------------------------------------------------
-  python3/18635 is trying to acquire lock:
-  ff11000120b8ce30 (&dev->lock){+.+.}-{4:4}, at:
-  netdev_put_lock+0x2d/0x1a0
-
-  but task is already holding lock:
-  ff110001ef77ae30 (&netdev_virt_instance_lock_key){+.+.}-{4:4}, at:
-  netdev_put_lock+0x2d/0x1a0
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (&netdev_virt_instance_lock_key){+.+.}-{4:4}:
-         __mutex_lock+0x1ae/0x1f10
-         xdp_set_features_flag+0x2b/0x50
-         bond_xdp_set_features+0x1eb/0x360
-         bond_netdev_event+0x13f/0x300
-         notifier_call_chain+0xae/0x300
-         call_netdevice_notifiers+0x70/0xa0
-         bnxt_xdp_set+0x2f6/0x620
-         netif_xdp_propagate+0x503/0xc60
-         dev_xdp_propagate+0xa1/0x230
-         bond_xdp_set+0x234/0x700
-         dev_xdp_install+0x592/0xd70
-         dev_xdp_attach+0x355/0xf50
-         dev_change_xdp_fd+0x176/0x210
-         do_setlink.isra.0+0x220d/0x2b20
-         rtnl_newlink+0x9f1/0x11b0
-
-  -> #0 (&dev->lock){+.+.}-{4:4}:
-         __mutex_lock+0x1ae/0x1f10
-         netdev_put_lock+0x2d/0x1a0
-         netdev_nl_queue_create_doit+0x801/0x1a70
-         genl_family_rcv_msg_doit+0x206/0x300
-
-   Possible unsafe locking scenario:
-
-         CPU0                    CPU1
-         ----                    ----
-    lock(&netdev_virt_instance_lock_key);
-                                 lock(&dev->lock);
-                                 lock(&netdev_virt_instance_lock_key);
-    lock(&dev->lock);
-
-Let's narrow down the "virtual" class to only the devices which
-can actually create a queue. More LoC and complexity, but that
-is what we actually care about here. The rest needs to nest
-under rtnl_lock, which bond does (famous last words?)
-
-Take the instance locks in two passes, first the netkits then
-the rest (matching the queue leasing order).
-An alternative would be to make sure the close list is sorted
-correctly from the start (queue head/tail appropriately in
-unregister_netdevice_queue()). I think it works but feels
-a little more fragile. Happy to change, tho.
-
-netdev_can_create_queue() will now be used on paths where we
-genuinely handle non-netkit, so we can't always set the extack.
-Unfortunately, the (recently) added tracepoint in extack fires
-even when extack is NULL.
-
-Fixes: b6f74dff6d26 ("net: use two lockdep classes for the netdev instance lock")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
+Fixes: 88f6c8bf1aae ("net: bcmgenet: keep MAC in reset until PHY is up")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
 ---
-CC: daniel@iogearbox.net
-CC: hawk@kernel.org
-CC: john.fastabend@gmail.com
-CC: sdf@fomichev.me
-CC: razor@blackwall.org
-CC: dw@davidwei.uk
----
- net/core/dev.c           | 48 ++++++++++++++++++++++------------------
- net/core/netdev_queues.c | 31 ++++++++++++++------------
- 2 files changed, 44 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a8eb382f40ca..f225906f7b6f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -575,7 +575,7 @@ static int netdev_lock_cmp_fn(const struct lockdep_map *a,
- 	if (a == b)
- 		return 0;
- 
--	/* @a and @b must be of same class - both virtual or physical.
-+	/* @a and @b are of same lock class.
- 	 * cmp_fn won't be called for devices of different classes.
- 	 *
- 	 * For the same class only allow nesting under the protection
-@@ -589,12 +589,13 @@ static int netdev_lock_cmp_fn(const struct lockdep_map *a,
-  * queues from, see netdev_nl_queue_create_doit(). Keep the two kinds
-  * in separate classes so the dependency graph enforces the order;
-  * netdev_lock_cmp_fn() then only has to rule on same-class nesting.
-+ * Other virtual devices stay in the default class.
-  */
- void netdev_set_instance_lock_class(struct net_device *dev)
- {
- 	static struct lock_class_key netdev_virt_instance_lock_key;
- 
--	if (dev->dev.parent)
-+	if (!netdev_can_create_queue(dev, NULL))
- 		return;
- 
- 	lockdep_set_class(&dev->lock, &netdev_virt_instance_lock_key);
-@@ -12465,19 +12466,31 @@ static void netif_close_many_and_unlock(struct list_head *close_head)
- 	}
- }
- 
--static void netif_close_many_and_unlock_cond(struct list_head *close_head)
-+/* Handle one class of ops-locked devices. Since close requires the lock
-+ * we need to be careful about which classes we allow to nest.
-+ */
-+static void netdev_lock_ops_close_many(struct list_head *head,
-+				       struct list_head *close_head,
-+				       bool leasing)
- {
--#ifdef CONFIG_LOCKDEP
--	/* We can only track up to MAX_LOCK_DEPTH locks per task.
--	 *
--	 * Reserve half the available slots for additional locks possibly
--	 * taken by notifiers and (soft)irqs.
--	 */
--	unsigned int limit = MAX_LOCK_DEPTH / 2;
-+	struct net_device *dev;
- 
--	if (lockdep_depth(current) > limit)
--		netif_close_many_and_unlock(close_head);
-+	list_for_each_entry(dev, head, unreg_list) {
-+		if (!(dev->flags & IFF_UP) || !netdev_need_ops_lock(dev) ||
-+		    netdev_can_create_queue(dev, NULL) != leasing)
-+			continue;
-+		list_add_tail(&dev->close_list, close_head);
-+		netdev_lock(dev);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+index 96d5d4f7f51f..984432952963 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -253,6 +253,17 @@ int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
 +
-+#ifdef CONFIG_LOCKDEP
-+		/* We can only track up to MAX_LOCK_DEPTH locks per task.
-+		 * Reserve half the available slots for additional locks
-+		 * possibly taken by notifiers and (soft)irqs.
-+		 */
-+		if (lockdep_depth(current) > MAX_LOCK_DEPTH / 2)
-+			netif_close_many_and_unlock(close_head);
- #endif
-+	}
- }
- 
- bool unregister_netdevice_queued(const struct net_device *dev)
-@@ -12517,15 +12530,8 @@ void unregister_netdevice_many_notify(struct list_head *head,
- 	}
- 
- 	/* If device is running, close it first. Start with ops locked... */
--	list_for_each_entry(dev, head, unreg_list) {
--		if (!(dev->flags & IFF_UP))
--			continue;
--		if (netdev_need_ops_lock(dev)) {
--			list_add_tail(&dev->close_list, &close_head);
--			netdev_lock(dev);
--		}
--		netif_close_many_and_unlock_cond(&close_head);
--	}
-+	netdev_lock_ops_close_many(head, &close_head, true); /* queue leasing */
-+	netdev_lock_ops_close_many(head, &close_head, false); /* the rest */
- 	netif_close_many_and_unlock(&close_head);
- 	/* ... now go over the rest. */
- 	list_for_each_entry(dev, head, unreg_list) {
-diff --git a/net/core/netdev_queues.c b/net/core/netdev_queues.c
-index f5558b12877c..27cb6397bdd4 100644
---- a/net/core/netdev_queues.c
-+++ b/net/core/netdev_queues.c
-@@ -61,21 +61,24 @@ struct device *netdev_queue_get_dma_dev(struct net_device *dev,
- bool netdev_can_create_queue(const struct net_device *dev,
- 			     struct netlink_ext_ack *extack)
- {
--	if (dev->dev.parent) {
--		NL_SET_ERR_MSG(extack, "Device is not a virtual device");
--		return false;
--	}
--	if (!dev->queue_mgmt_ops ||
--	    !dev->queue_mgmt_ops->ndo_queue_create) {
--		NL_SET_ERR_MSG(extack, "Device does not support queue creation");
--		return false;
--	}
-+	const char *msg = NULL;
-+
- 	if (dev->real_num_rx_queues < 1 ||
--	    dev->real_num_tx_queues < 1) {
--		NL_SET_ERR_MSG(extack, "Device must have at least one real queue");
--		return false;
--	}
--	return true;
-+	    dev->real_num_tx_queues < 1)
-+		msg = "Device must have at least one real queue";
-+	if (!dev->queue_mgmt_ops ||
-+	    !dev->queue_mgmt_ops->ndo_queue_create)
-+		msg = "Device does not support queue creation";
-+	if (dev->dev.parent)
-+		msg = "Device is not a virtual device";
-+
-+	/* callers with extack=NULL are not from uAPI and don't want to trigger
-+	 * the extack tracepoint.
++	/*
++	 * Mirror wol_power_down_cfg(). If only UMAC_RX
++	 * is enabled, then we must place the UMAC back
++	 * into SW_RESET.
 +	 */
-+	if (msg && extack)
-+		NL_SET_ERR_MSG_FMT(extack, "%s", msg);
-+
-+	return !msg;
- }
++	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
++	if ((reg & CMD_RX_EN) && !(reg & CMD_TX_EN)) {
++		reg |= CMD_SW_RESET;
++		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	}
+ 	spin_unlock_bh(&priv->reg_lock);
  
- bool netdev_can_lease_queue(const struct net_device *dev,
+ 	/* Resume link status tracking */
 -- 
-2.55.0
+2.34.1
 
