@@ -1,276 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FDF569F11
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFEA2AD1B;
+	Tue, 29 Sep 2026 19:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790710411; cv=none; b=JFECDJrrodBkQbjJz3cjJewpRoVdyQ2D+27woKoL0Kd93WDyQYi433cLHpwqE8pvYBgmMFGaJ5DBbitdKngtpSSkfrhbo1tlxpKAomdeNWwq1j0wMCzTVUlvAO89ExUxesTWOR/HkmJNBS1HsUeFDjPb887ud9y2vgOtNP4uDPA=
+	t=1790710484; cv=none; b=gLgPcyxJjlCuRCJAqptdkpVDUQ4wyfOYNXRI88yJ2WA9za3tk/jRQAi1ewNL/2C5tOQRlylftxvV+pt4ERlfAENyVL3w1YsUxYMX/0wuQRrSErpFc0Tra4HRLyg+c5e1C1gW+vNoJbDAZOp90Tpr+txk3u7Grzffc9u87RpRnIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790710411; c=relaxed/simple;
-	bh=cLXuWkfQspREolcF9pwrIPhHsMDCYsv1Ia5MiLlpW90=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b8ZI5yRSD0atrrtyeM93NiObktZsW1Zoo9W0yngCkc7/AYbllgRuQ/tIXUYuvWSn1G1vYkj72Ve/BHSLu6eV1IyKgjhg5EAcy6l0nk3o/a1CkJ0vgGjt2V+lZYb4cN3D486yGQb3OWFD1TmtAay2ZV4YsgNa/ECjtOyB3Ue0Upw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOY3UkUp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790710484; c=relaxed/simple;
+	bh=y7XfGMrBX+DxkMWrLuqn10YVEymOK7yb2ayLRmMp/O8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ih2qkobwOaXlopdyDIhPEaZriONQxpRHJL72GY2Y+HfbXwWbG5gNv6wftnFmj9u51ncXuw5xfE4CZFeCr3F4t35jTSzVpFKh+c9v7+9b73xnYMOI/kgJX7vM6H5+NJff0JkAdqA13wi1YX0q/NZdSEUy3p8nQGjRRhCgqZBs2fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSkAu2Sg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOY3UkUp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2294D1F000FF;
-	Tue, 29 Sep 2026 19:33:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSkAu2Sg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDEB1F000FF;
+	Tue, 29 Sep 2026 19:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790710410;
-	bh=7TcF8OYvio2OdQ3BeVyOuaJEH92AlMRSqt3tdA77Hak=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OOY3UkUpM9X6e+268hMjravwL+LlXkZaKxgF10Ef4LTUphuoDKyJUJp4G2sFLcG13
-	 NlH0AodMXLNunfOPZJKldlFjHD7cKd/xW1+vQNnAP0moDb+JoAHCR5UsauUGzT4Bv/
-	 lyGpLkhTk+RqzIuBEYcWr32BC0VHIIBv5y2zPIHW+fmgMSlv4QbcYnZmidOUUdKhXe
-	 8KWT0oKwztHlICLDEDdAvPU/ZkHw9+ykFtsqL0CKANiqhvQL9PAVavh1Xuma0paQ3n
-	 AffBTErPz/T3x2sef58JT0vw6EFSMUDopyshsNvTI9mjJDBhxoF2MdRii6cj01KB8A
-	 UzMlG4SIesj6g==
-Subject: Re: [PATCH net-next v7 15/15] ibmveth: Complete set_channels
- down-path and mq_fallback max_rx cap
-From: netdev-bot+sashiko@kernel.org
-To: mmc@linux.ibm.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
- ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
- shaik.abdulla1@ibm.com
-Date: Tue, 29 Sep 2026 19:33:28 +0000
-Message-ID: <179071040872.434549.12159663294832485086@kernel.org>
-In-Reply-To:
- <de05d82d2d02c021de1e215656d1302d2cd41c46.1790319558.git.mmc@linux.ibm.com>
-References:
- <de05d82d2d02c021de1e215656d1302d2cd41c46.1790319558.git.mmc@linux.ibm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1790710483;
+	bh=fG/J3vd/B9A0cwpUSTgiyouooSSQ2j/8aAKitxE1DSk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MSkAu2SgPxb5xXZWx9l7m0CIIvimRdJmk1aorgz+3V5URkU/bootHHdS4ashK/AMC
+	 aES4Z14XCg90aWTZWxF4nTE/QDAzxpXgwKDDD6loS4E4o4JUy76AbiXJ4WxfeOBL7k
+	 +XRocKkHgEH4wpQGohqSZQQx6pC0ElnIjdbSreC7hH8kTGIBC0pLicRRe1D0PIxwnp
+	 nc1KSErgpgcEbf93xW8LWEz/UCDFtaBEtu8kJbjOqANmDJ/6/QYcfT0LnjcVY7tNSF
+	 uZb57CLxJnGaYHrzBevh/YDXD8yBLwK5su/N0sTDw/shkZXR/bQV7DmQKnz4vMeUpC
+	 pmwTK4TPPbUyw==
+Date: Tue, 29 Sep 2026 21:34:34 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
+Cc: Marcel Holtmann <marcel@holtmann.org>, 
+	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, Bjorn Andersson <andersson@kernel.org>, 
+	Chris Lew <christopher.lew@oss.qualcomm.com>, Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
+Message-ID: <m657dtesuagn7vdajsuzjb4mfysf5xabsu3s6n6lujj7yb3z4p@m2e7e3n4zyev>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+ <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+ <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
+ <13BFC5B0-77E6-48F2-B857-37686EA1DB2C@holtmann.org>
+ <05e539f8-bb7c-4038-8a83-8ab0d1a5b917@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <05e539f8-bb7c-4038-8a83-8ab0d1a5b917@app.fastmail.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Tue, Sep 29, 2026 at 08:16:50PM +0300, Juha-Matti Tilli wrote:
+> On Tue, Sep 29, 2026, at 20:05, Marcel Holtmann wrote:
+> > >> +#define QRTR_NODE_HOST_BASE 0x10000u
+> > > 
+> > > Can it be exposed with include/uapi/linux/qrtr.h also. There are user space clients like modem manager
+> > > which need to calculate modified node id to distinguish same service from multi modem over mhi.
+> > > This is same as wlan use case.
+> > 
+> > did anybody actually looked at the proposal that Denis and I came up with. It was exactly addressing this properly.
+> > 
+> > It seems you guys came up with some hot fix and want to run with it. After month and month of silence and not bothering to review the proposal, you are trying to push your thing?
+> > 
+> > If you don’t support userspace, your proposal is broken. Plain and simple.
+> 
+> I'm still willing to submit a new version of that patchset originally by
+> Denis, if the kernel devs so decide that it's the way. For example, the
+> "radix tree of radix trees" approach could be replaced with a hash
+> table.
+> 
+> There was also some criticism about a layering violation in storing the
+> endpoint id to mhi controller. However, maybe that could be reduced by
+> providing a correct abstraction around it, so that other code doesn't
+> touch the mhi controller structure directly.
+> 
+> Other criticism for that patchset by Denis was its overt complexity.
+> Yes, it has more lines of code changed.
+> 
+> This dual-card setup needs to be handled somehow, either by Denis's
+> patchset or by Manivannan's patchset.
+> 
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+I wish to go ahead with my series as it is simple and tested across the
+multi-WLAN setups. For concern around exposing the nid to userspace, I'll
+implement it in next version, thanks!
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The new !opened branch of ibmveth_set_channels() raises
-  adapter->num_rx_queues with `ibmveth_publish_num_rx_queues(adapter,…
-- [Low] The commit log refers to other patches by series position: "Patch
-  14 wires live ethtool -L rx" and "replacing patch 14's temporary…
-- [Low] When mq_fallback is set and the live RX count N is greater than
-  1, ibmveth_get_channels() reports max_rx = rx_count = N.
-- [Low] ibmveth_poll_controller() now reads adapter->opened as a plain
-  bool from netpoll context, which runs without RTNL and concurrently…
-
---
-
-ibmveth: Complete set_channels down-path and mq_fallback max_rx cap
-
-This commit allows ethtool -L to change the RX count while the device is
-down. The new count is published without allocating anything, and on the
-live path RX is rolled back if TX fails. It also caps max_rx at the live
-count under mq_fallback, raises the max_tx ceiling to at least the live
-TX count, and guards ibmveth_poll_controller() with adapter->opened.
-
-> Patch 14 wires live ethtool -L rx. This patch completes the down-path
-> publish/rollback and get_channels() once mq_fallback is set, replacing
-> patch 14's temporary -EOPNOTSUPP for an RX count change while down.
-
-[Severity: Low]
-This isn't a bug, but "Patch 14" and "patch 14's temporary -EOPNOTSUPP"
-are series positions. They won't mean anything once this lands in git
-history. Could they refer to the earlier commit by its subject instead?
-
-The subject covers only the down path and the mq_fallback max_rx cap.
-The patch also carries two further independent changes:
-
-> max_tx is at least the live tx_count. After CPU offline,
-
-[ ... ]
-
-> Guard poll_controller() with adapter->opened so netpoll cannot walk
-> unallocated queue state while closed.
-
-After CPU offline, the max_tx change in ibmveth_get_channels() and
-ibmveth_set_channels() lets ethtool -l report a max_tx above the online
-CPU count. The ibmveth_poll_controller() guard is a separate netpoll
-change.
-
-Would splitting these out make bisecting and selective backporting
-easier?
-
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 1b1dd89dadf79..da14c69152110 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -3399,15 +3399,32 @@ static void ibmveth_get_channels(struct net_device *netdev,
->  				 struct ethtool_channels *channels)
->  {
->  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-> +	unsigned int rx_count = ibmveth_get_num_rx_queues(adapter);
-
-[ ... ]
-
-> +	channels->rx_count = rx_count;
-> +	if (adapter->multi_queue && !adapter->mq_fallback)
->  		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
->  	else
-> -		channels->max_rx = 1;
-> -	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
-> +		channels->max_rx = rx_count;
->  }
-
-[Severity: Low]
-When mq_fallback is set and the live RX count N is above 1, this reports
-max_rx = N. The ethtool core only compares rx_count against max_rx:
-
-net/ethtool/channels.c:ethnl_set_channels() {
-    ...
-	if (channels.rx_count > channels.max_rx)
-		err_attr = ETHTOOL_A_CHANNELS_RX_COUNT;
-    ...
-}
-
-A request for any value in 2..N-1 therefore reaches the driver.
-ibmveth_resize_rx_channels() then rejects it:
-
-	if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
-		...
-		return -EOPNOTSUPP;
-	}
-
-That leaves 1 and N as the only RX counts set_channels accepts, while
-get_channels advertises 1..N. For example, ethtool -l can show a max of
-8, but ethtool -L dev rx 4 fails with "Operation not supported".
-
-This state can be reached after ibmveth_replenish_task() or a scale-up
-register failure sets mq_fallback. It lasts until the next
-ibmveth_open() applies the fallback.
-
-The commit message says the cap "blocks growth". Doesn't it also block
-shrinking within the advertised range? Could get_channels and
-set_channels be made to agree on what is settable?
-
-[ ... ]
-
-> @@ -3482,28 +3493,90 @@ static int ibmveth_set_channels(struct net_device *netdev,
-
-[ ... ]
-
-> +	if (!adapter->opened) {
-> +		/* Apply TX first so a failure leaves the published RX
-> +		 * count unchanged.
-> +		 */
-> +		rc = netif_set_real_num_tx_queues(netdev, goal_tx);
-> +		if (rc)
-> +			return rc;
-> +
-> +		/* Publish desired RX count for next open() and refresh CMO;
-> +		 * do not allocate while down.
-> +		 */
-> +		if (goal_rx != ibmveth_get_num_rx_queues(adapter)) {
-> +			ibmveth_publish_num_rx_queues(adapter, goal_rx);
-> +			rc = netif_set_real_num_rx_queues(netdev, goal_rx);
-
-[Severity: Medium]
-Can raising num_rx_queues here leak a stranded subordinate RX queue?
-
-Stranded queues (queue_handle[i] still set above the live count) are
-reclaimed only in ibmveth_close(), and only if H_FREE_LOGICAL_LAN
-succeeds:
-
-	if (!ibmveth_free_all_queues(adapter))
-		ibmveth_free_stranded_rx_queues(adapter);
-
-That helper also only scans indices at or above the live count:
-
-	for (i = ibmveth_get_num_rx_queues(adapter);
-	     i < IBMVETH_MAX_RX_QUEUES; i++) {
-		if (!adapter->queue_handle[i])
-			continue;
-
-Consider a live scale-up where H_REG or IRQ setup fails and the
-per-queue H_FREE also fails. If the following close then fails
-H_FREE_LOGICAL_LAN, the strand survives with opened == false. This new
-down path can then lift num_rx_queues above that index, which moves it
-out of the scan range.
-
-On the next open, ibmveth_alloc_rx_queues() overwrites the pointers
-without checking them:
-
-	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++) {
-		adapter->buffer_list_addr[i] =
-			(void *)get_zeroed_page(GFP_KERNEL);
-
-The same applies to rx_queue[i].queue_addr/queue_dma and
-buffer_list_dma[i]. Wouldn't the old page, the coherent RX ring, the DMA
-mappings and the pool buffers for that index be leaked?
-
-The live path guards against this in ibmveth_scale_up_rx_queues():
-
-		if (adapter->queue_handle[i]) {
-			/* Left by a failed H_FREE; close frees it. */
-			netdev_err(netdev,
-				   "RX queue %d still held by PHYP, reset pending\n",
-				   i);
-			rc = -EBUSY;
-
-Should the down path apply the same queue_handle[] check before
-publishing a larger count? Before this patch, an RX count change while
-down returned -EOPNOTSUPP, so this path was not reachable.
-
-[ ... ]
-
-> @@ -4203,9 +4296,14 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
->  static void ibmveth_poll_controller(struct net_device *dev)
->  {
->  	struct ibmveth_adapter *adapter = netdev_priv(dev);
-> -	unsigned int num = ibmveth_get_num_rx_queues(adapter);
-> +	unsigned int num;
->  	int i;
->
-> +	if (!adapter->opened)
-> +		return;
-
-[Severity: Low]
-This reads adapter->opened as a plain bool from netpoll context. That
-context can run concurrently with direct ibmveth_close()/ibmveth_open()
-calls from ibmveth_change_mtu() and veth_pool_store(), which don't call
-netpoll_poll_disable().
-
-The writers are plain stores as well:
-
-ibmveth_open():
-	adapter->opened = true;
-
-ibmveth_close():
-	adapter->opened = false;
-
-Isn't this an unannotated data race that KCSAN would report? Could the
-accesses use READ_ONCE()/WRITE_ONCE(), or smp_store_release() and
-smp_load_acquire()?
-
-The close side looks fine, because opened is cleared before
-synchronize_net() and netpoll runs with IRQs disabled or under RCU-bh.
-
-On the open side, though, nothing explicitly orders the queue, pool and
-NAPI setup before opened = true. Today it relies on the replenish_lock
-unlock in open and on the acquire of num_rx_queues in the reader. Would
-it be worth making that pairing explicit, so that reordering open()
-later can't break the guard?
-
->  	for (i = 0; i < num; i++)
->  		ibmveth_replenish_task(adapter, i);
+- Mani
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790319558.git.mmc%40linux.ibm.com
+மணிவண்ணன் சதாசிவம்
