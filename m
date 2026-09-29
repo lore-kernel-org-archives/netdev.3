@@ -1,180 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975D6542EC4;
-	Tue, 29 Sep 2026 15:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AD538D71
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695357; cv=none; b=upMbZmL/8OBm8nxIyh86jB2HOQzkFOT5Fi4tBu/smLod2ZgXu3E3pFDS88NaoW+4HZM5v1MrKDSuhGIbPvUOqTmSqsUJX0D7bjuc38FiDkIigP8cL/5ZZh3Kw3rpTiqlLdgLkvu5abYNxM9qH7MxpXV0I4t7IZ+zEyt7+CuhFCI=
+	t=1790695498; cv=none; b=A0RwniiU/ZSm1LFgGP3W3fjL5PZqFnQ+F7Z4x9CTz6o4uV8w/M5wTsCiJr/B6JH0O4V6GeARN0g6omx3VPeIVI6Y7hdt9QEGbKcnpjbSH82mCepxuhvTV79phMwnDHwuTKsOGBTmVtWXjGKQgp72tSx+nL6a1GDTFhbw/cVt25M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790695357; c=relaxed/simple;
-	bh=XkkZPv8qL8cIATjpi2BapNjuxBGjOL3GtIaK5L9afqk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=YxnAETuZHAaQzxTPAxpeaYiTkq0tAMVITRLTdDhlNW/n6h7XvZQzOQ2TT7fkuxgY4Hlj15awW/othkhpw1JSJCG64xD5wGuG2lk1CErrSa5lWZbecAeFy1c5U9Ov3VS9nGUwm5jixfldCoL4jSgcVQXqlu4WaqrdSGovWq2BR4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anpnVCGK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790695498; c=relaxed/simple;
+	bh=IsUrqnbkBzqR9+V+q6y0qSUhzMpi5uygr2LDVgI+dKY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GgSh/+9tbUsx2S3gdR2oPxMPpkjkV4Sqjd1G9Z5JCThfdHFNJEGo1oGw8iju9eHfDf/t2k04fl/IfOByDBiIMmtjI0vmSne5hsgj8eC7UwPo66Xe2WKqSnVG/Rtv+7DAnUjNsCyXiVLAbAfl0lvREELKdnPKI5QQfWHz6AGdIvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pM2yYYNk; arc=none smtp.client-ip=74.125.227.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anpnVCGK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D171F00898;
-	Tue, 29 Sep 2026 15:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790695338;
-	bh=D/ibpmI5jg1a9kUxODZYU60ZnHvdobAWMypDGAeOo8U=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=anpnVCGKi06BDE9uCt53/px/V/Xclaq+d8LO4yKPPxUSJgf0wPpBbfQ0wAIHNm4vj
-	 8Vpn5/NxGqe11Gs10voadlisgh3IYeFXu3g+2SJ+7m3jil4LXAdac5/a4Xipc/L0uU
-	 uoM6DQpX+wkJM1Xtnp6/eELm3sKLoLKt7BKykQRKJe1I4BAVkcxtL+mbfq5coubEnd
-	 AY+5VfQvWQPP+hPh1TvjrAUVXIVRD2udsWqQvO1pm+PtRRNyRs2M8dIsyxgxYbw2fe
-	 VVLle+rliswZIrczTvPrFf+OJ3iwkeEU9REFJ1NId2+NyoFakGOZ6TSqsqwJWcI7hD
-	 VZ8XSrwjo6+2w==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 30CFCF40066;
-	Tue, 29 Sep 2026 11:22:16 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 29 Sep 2026 11:22:16 -0400
-X-ME-Sender: <xms:qNe7asNumxTZTAqOUMh5yjMfBOgOCMLTp1Im1fFQbesvZUO55nZ2oQ>
-    <xme:qNe7atwuBH0bTHFgDQgRZZI2gbAKYX8VhkuKJBPXxg_z5ueXA34isrO5kfjLkizmi
-    EFNvD4NKhvLofMkY7_rQhiAplvDhtlXfnLh2eIXdvSAvUoXwm8-jGE>
-X-ME-Proxy-Cause: dmFkZTGHwpvTWnenfdWwDpfZ0uSchfAvPs9YUs2fCTjyTe1/aaP/8o/CAtZEpuBnFlnr3l
-    qmTkjOPiHUmeNeOJhaD8lnKlk7EMaLK7X5jKQpwMypkRiS4dvAs3YrNT/c5V6Bk4Ga8MRb
-    xPq/javh4ijLGFfdkpos6GxlxyGT42Fwa0ltNIGopZ+Mq1Abfhj0eHx9Lz1wE2F5x+0msE
-    VuUjojmKduIXDgawsedlXFbIOAX2g6XJhtdhhvodBfsk+7R/r5zcjPGlwzTbqow/k0fhhB
-    KSkSmJEw1/zMzycRq5vhO53cykwQS/OPCRkkdIvcZDxPRXq49tm4EIS2v6w4wGkS37Tlih
-    UB9WCh5UmtBTKVoM5jZdVRPrR1i0Y/KGM6FHAXdqhHo3g4SwJzfP4kS1hl+kp6sqa3oe5B
-    09PI362u5aRRUNoro1OofwHkHSzL/FrFq/CJzhCpmp9MwcGwLzvwm0apSMBCms1xR1uIii
-    arKpKGXFmq7VC4eJ8+APDkopGyFyqzktnwewJR+EDrFxuv09iKewKqVtwVJeGBzDK6vRKq
-    muINJMxJgehj51nQY/hRISHFHFnxUA4qXxqSbYIxuozvMtbIXSmX4t9k0Hmo9w1FDElKMl
-    aRA8ntUnTlF314tfn5h0SudAXalF4N4JRAjlbU/knq2/TyidO7gi2AcylzGg
-X-ME-Proxy: <xmx:qNe7alTNQ8tP03wFnXG8YkXYzgfEyS3-F_ZZKA8_XLoQvUUQJAFCfg>
-    <xmx:qNe7ao_jrYdhgYHkVlRJV3PlHwP6Y0lqhmeeWnVQ7QeNozJaz2D9Iw>
-    <xmx:qNe7avd7MlJGAeGcMrOiqXfK2cDY7WCfVwKtuR1m2DAw7k5rWntO1A>
-    <xmx:qNe7atk68NlURP2riS5zADZafdyfWq3T06kwCJcHcbAilNf3Tw3wPA>
-    <xmx:qNe7aixKa69McjO_gKvG8A33X8ZmiyzjDY8l7fSWjGAQWfQLOOiD_yiI>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E740A780070; Tue, 29 Sep 2026 11:22:15 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pM2yYYNk"
+Received: by mail-pj2-f38.google.com with SMTP id d9443c01a7336-2e2d58a3b05so3496275ad.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790695486; x=1791300286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4HlWCQVM32D4igNgCi92CyfQ5gH0706BFceUvI6QYz0=;
+        b=pM2yYYNkhXD5wTImR6XmXHCoeXAMjdXO2hVtIQq9S6Vx7dg1UZvvHYqNQ7pO3AVCav
+         O3JT50G4fBj7tZMVRQpK1hbmR+GOnG7/v8eiEBE7hNqrkcq9ZbgUJCupR1p3j0qhgrHT
+         V+XMis0jHl99xUmYSHmbc7Ds68V3to0Zn1s4kChyHPWHrqaMDvAHxJdMcqv48WpOzdFc
+         51F4/RW9cwr42+NjM0uktWUeMh66xDhMJMLwgfa02k76i++fsgPUAb4GwNuBrAfp+3Rn
+         espGnphha/L1PS8buRw+CWfVInHxYbs7enGAlViSUFhtvxC2TEvwgBc48Uqze+CH4Qiw
+         f0cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790695486; x=1791300286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4HlWCQVM32D4igNgCi92CyfQ5gH0706BFceUvI6QYz0=;
+        b=Qgix3RP31Py5tU/0eMsA4qyF7oXCyBP2NHWI0R0ja93lmdPMzurbiLaUNW/onrqnCt
+         iVKUrQOB/dO/KXhMiSHZ/127fUn2jgedBI218aBpU8+X2EO7U40re4ivFbbJt/mMID10
+         dQ/d70Qs02WSBlGVUSqWZxztzWXObu/MR2Gzh+ya4oAJ5p0h6DYwo0Y30C4b5xg29a+h
+         QHXsUvFgvWxO8t0nicif/lLbCQRDYMkyPvk70V7U4AOyV9VrpeIYGdfuzz4vyUSk8/YS
+         0yqPoHFHyNDSr+cO7w8djNBCPy19smtB6QHdc7NYN5MFhfn20B1t8DOrNw6GZB9xw2gP
+         3HGQ==
+X-Forwarded-Encrypted: i=1; AKwUvByrXaC8kqUkx0e4GSa1pAk5oBk76g41GdjKTiLuZ37jtqLUpLfyoCMSn+RTOw2cE9wAo2ZU+vQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKZHc07kss0TG/4+Q0OlYKutmm7I0VVfZynZn5fS3ceL52MYlWd
+	7E4kjuG0IFfdc4d+4pqXpYgN0KafJYEazH0v6JOW3ziyMaVgy2li+OcC
+X-Gm-Gg: AYBFou3TBuwNHaWe1ci7xe0tzyCdO4jx2+86cqZYzIyaxDBMOCzQbZ3GcoEGCc/eZL/
+	zWpm2hEXElKimOoPZc+M1wHZ6eM12RjIsO7cffTbH71S0R3B7D2uGMzMw/bDHTe36LQT8JzfuJv
+	caFzxFAq99l0X9X8/Tw7QtMPNO+sCWY4iwmLp0vl6iQwUKOMkTmeiHqbXXAoyNuhEMRA1hEfLdH
+	1C6JYtjt8SutNwbOYAHhP7wkwMGjN1i+w9UR4PsbdmQKGh4LfwT5QAB488UmMKhzibgFGulbMRN
+	ISaHYZXdPDx2k2G26DoBt4jFdZlvo9nyQWHzJIHin2bIZLaMBWykLNKPFgpnvePnFqL2Qr5/lG3
+	Gk62U5Eyg8ZMUeK7x9vJ43/IYc614ZqXAZRKYhM8ao1V7ADOwN6ELvwYU7Lx5Qd44Nnv4JAxBtv
+	c/ElLfDe2rSy3uFKXIG09UdRCg5zHAco3QtBaiQ5NLXWA/WIZvhahtFpgd4x7hHt+HAWwDLlyQi
+	KOsushoU4EjjtNmjK2z+xhQqV2dIfu6nNIWoMyo5DxoAz2xDFEzjpPm1CEBsID4ZWfuCcxRaywf
+	biIskKD5nfhOhEEeLUq4
+X-Received: by 2002:a17:903:3c4e:b0:2e2:cc2d:b84a with SMTP id d9443c01a7336-2e2cc2dbb2cmr15210305ad.41.1790695486117;
+        Tue, 29 Sep 2026 08:24:46 -0700 (PDT)
+Received: from NV-9MNJ414.tailae2068.ts.net (2001-b011-2005-5b75-0412-f652-3152-53f1.dynamic-ip6.hinet.net. [2001:b011:2005:5b75:412:f652:3152:53f1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df91476bb4sm59762255ad.83.2026.09.29.08.24.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 08:24:45 -0700 (PDT)
+From: Yiwei Lin <s921975628@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: Yiwei Lin <s921975628@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jon Maloy <jmaloy@redhat.com>,
+	netdev@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] rbtree: declare augmented callbacks per field, fix rb_add_augmented_cached() descent
+Date: Tue, 29 Sep 2026 23:24:35 +0800
+Message-Id: <20260929152439.91443-1-s921975628@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AozynqqzZJs-
-Date: Tue, 29 Sep 2026 08:21:55 -0700
-From: "Chuck Lever" <cel@kernel.org>
-To: "Eric Dumazet" <edumazet@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Simon Horman" <horms@kernel.org>,
- "Neal Cardwell" <ncardwell@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, edumazet@google.com,
- netdev@vger.kernel.org, "Alexander Aring" <aahringo@redhat.com>,
- "David Teigland" <teigland@redhat.com>, gfs2@lists.linux.dev,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Jakub Sitnicki" <jakub@cloudflare.com>,
- "Sabrina Dubroca" <sd@queasysnail.net>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>,
- "Matthieu Baerts" <matttbe@kernel.org>,
- "Mat Martineau" <martineau@kernel.org>,
- "Geliang Tang" <geliang@kernel.org>, mptcp@lists.linux.dev,
- "Wen Gu" <guwen@linux.alibaba.com>,
- "Dust Li" <dust.li@linux.alibaba.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, linux-nfs@vger.kernel.org,
- "Allison Henderson" <achender@kernel.org>, rds-devel@oss.oracle.com,
- "Philipp Reisner" <philipp.reisner@linbit.com>,
- "Lars Ellenberg" <lars.ellenberg@linbit.com>,
- =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
- "Jens Axboe" <axboe@kernel.dk>, drbd-dev@lists.linux.dev,
- "Keith Busch" <kbusch@kernel.org>, "Christoph Hellwig" <hch@lst.de>,
- "Sagi Grimberg" <sagi@grimberg.me>,
- "Chaitanya Kulkarni" <kch@nvidia.com>, linux-nvme@lists.infradead.org,
- "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>, ceph-devel@vger.kernel.org
-Message-Id: <9a68f8a0-474c-44f4-97fa-bbf05b6de529@app.fastmail.com>
-In-Reply-To: <20260929071743.23624-4-edumazet@kernel.org>
-References: <20260929071743.23624-1-edumazet@kernel.org>
- <20260929071743.23624-4-edumazet@kernel.org>
-Subject: Re: [PATCH v3 net-next 3/9] sunrpc: use sk_set_nospace() and
- sk_clear_nospace()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+rbtree_test open-codes the insertion of every flavour of rbtree it
+exercises, while the generic rb_add*() helpers have been the way most
+users insert nodes for years now.  Patches 1 and 4 make the test use the
+helpers where the helper does exactly what the test did, so the helpers
+themselves get covered.
 
+Patch 2 is Peter's RB_AUG() rework from the v1 thread: each augmented
+field is described by its per-node value, its aggregate member and how
+two aggregates combine, and the template derives every callback from
+that, per field and in a local; RB_DECLARE_CALLBACKS_MULTI() goes
+away, RB_DECLARE_CALLBACKS_MAX() becomes a one-line wrapper and its
+RBCOMPUTE is renamed RBVALUE.  One change on top of what was posted:
+the third argument is a fold(a, b) rather than a "replace?" compare,
+which keeps the same register-local recompute, lets sums and counts be
+expressed, and replaces RB_MIN/RB_MAX with the existing min()/max().
 
-On Tue, Sep 29, 2026, at 12:17 AM, Eric Dumazet wrote:
-> Use the new helpers instead of open coding the SOCK_NOSPACE
-> manipulation, so that TCP can later maintain a cheaper private
-> copy of this bit.
->
-> No functional change intended.
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> ---
->  net/sunrpc/svcsock.c  | 4 ++--
->  net/sunrpc/xprtsock.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-> index 
-> 50e5e7f5b762de28c34d0f58cb0c6feb1e3ce79f..2d8cdee0798d540ba8eae589deaac5bd3ff889fa 
-> 100644
-> --- a/net/sunrpc/svcsock.c
-> +++ b/net/sunrpc/svcsock.c
-> @@ -792,11 +792,11 @@ static int svc_udp_has_wspace(struct svc_xprt 
-> *xprt)
->  	 * Set the SOCK_NOSPACE flag before checking the available
->  	 * sock space.
->  	 */
-> -	set_bit(SOCK_NOSPACE, &svsk->sk_sock->flags);
-> +	sk_set_nospace(svsk->sk_sk);
->  	required = atomic_read(&svsk->sk_xprt.xpt_reserved) + 
-> serv->sv_max_mesg;
->  	if (required*2 > sock_wspace(svsk->sk_sk))
->  		return 0;
-> -	clear_bit(SOCK_NOSPACE, &svsk->sk_sock->flags);
-> +	sk_clear_nospace(svsk->sk_sk);
->  	return 1;
->  }
-> 
-> diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-> index 
-> 7f60723fa64d84887e260e5e130e44cdbec6f850..b97c70c12f627630509510facfd3c3cf96ab6cb6 
-> 100644
-> --- a/net/sunrpc/xprtsock.c
-> +++ b/net/sunrpc/xprtsock.c
-> @@ -858,7 +858,7 @@ static int xs_nospace(struct rpc_rqst *req, struct 
-> sock_xprt *transport)
->  	if (xprt_connected(xprt)) {
->  		/* wait for more buffer space */
->  		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-> -		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +		sk_set_nospace(sk);
->  		sk->sk_write_pending++;
->  		xprt_wait_for_buffer_space(xprt);
->  	} else
-> @@ -1615,7 +1615,7 @@ static void xs_write_space(struct sock *sk)
-> 
->  	if (!sk->sk_socket)
->  		return;
-> -	clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +	sk_clear_nospace(sk);
-> 
->  	if (unlikely(!(xprt = xprt_from_sock(sk))))
->  		return;
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
+Converting the cached augmented test exposed the cost of the
+"suboptimal" propagate-from-parent path in rb_add_augmented_cached(),
+2-12% on the augmented insert+delete benchmark against the documented
+update-on-the-way-down pattern.  Patch 3 adds a ->merge() callback to
+struct rb_augment_callbacks, derived from the RB_AUG() list, and uses
+it during the descent, which gets the helper to parity before the test
+starts relying on it.
 
-For the svcsock.c hunks of this patch:
+checkpatch has plenty to say about the RB_FOR_EACH() machinery in
+patches 2 and 3 (unused macro arguments, values without parentheses);
+all of it is inherent to the token-pasting dispatch, as for __MAP() in
+linux/syscalls.h.  The tools/ copy of rbtree_augmented.h is left alone.
 
-Acked-by: Chuck Lever <cel@kernel.org>
+v1: https://lore.kernel.org/r/20260928122611.336351-1-s921975628@gmail.com
 
+Changes since v1:
+- New patch 2: Peter's per-field RB_AUG() templates, taking a fold
+- ->merge() is derived from the RB_AUG() list instead of being a new
+  template argument; the propagate-from-parent removal is now patch 3
+- Numbers re-measured on the final code, on the Pi and on x86
+
+Peter Zijlstra (Intel) (1):
+  rbtree: declare augmented callbacks per field with RB_AUG()
+
+Yiwei Lin (3):
+  rbtree_test: use rb_add() and rb_add_cached() for the basic tests
+  rbtree: update augmented data on the way down in
+    rb_add_augmented_cached()
+  rbtree_test: use rb_add_augmented_cached() for the cached augmented
+    test
+
+ Documentation/core-api/rbtree.rst |  27 ++++-
+ include/linux/rbtree_augmented.h  | 192 +++++++++++++++++++++---------
+ kernel/sched/fair.c               |  70 ++---------
+ lib/rbtree_test.c                 |  62 ++--------
+ net/tipc/name_table.c             |   7 +-
+ 5 files changed, 179 insertions(+), 179 deletions(-)
 
 -- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+2.34.1
+
