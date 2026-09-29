@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48390352027;
-	Tue, 29 Sep 2026 00:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0332DEA75;
+	Tue, 29 Sep 2026 00:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790640021; cv=none; b=Z6wKNgeKdGTi6ORLQOrvEydHRf69xfbSMVvgucL3c/OhMHDrRx+VooUGYNqmBrRDWYz6/j7okmpC59jiI8xcFFllFZqk8WtTBM+Zg4G6ySfeSnkr2OzAGIAMexWMXeczofDJG2a7jzOj+vy9OyOIWEvOLnN4KrlJsBvQ6Z4n48c=
+	t=1790640059; cv=none; b=J6t0Wq8KCDW3wxx3XWX0KI3msr0ax7OWAXEFTk4LKgB6tuUShadIvhwjVucwBuqQCgLt/mKph5Ch8QDhXfvJT1AMI0UI06uWIEhp6RI1LA/Ni4YW8Jdp08VwR1tmaT8VORYkALpJZbudA0VqhzfF2LgNGl13/Y9UkeUT5c1gmpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790640021; c=relaxed/simple;
-	bh=PFwaBBBPfoMpkuptS7RbPQwvS3l52IuuDZgn3oWyhB0=;
+	s=arc-20240116; t=1790640059; c=relaxed/simple;
+	bh=xMkNX6KhXJ1rcmQ6GQ3sV7tU41WHH9YSZaJDyux8Xgg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tfH5BNQcqQGeFXtb3E8wbj22NgBPr4Pwu6IbTVaUKoZKBLju4ISUJi3v6Ecpq23mtujjW4FRnvHj1SXVl8hAsQ42Cqm6wTis3/GQgTgTatQ7hnfpHegq3ldlR9Dq+Lydj2B6TXQNnH6ofmK1X2U9P4PxhCaykStd+8/S6uQgt5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxxPhfzX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bEtCtvULnsWE1EfOJLgnuEoCGDVbTYKlEuAdLbJKx8U0xlRS7PLRr2RoQYN0xfbuO5hk3xmMkB0l8rO4Q4gmmplgA4SQwppFWxXp44OnY5950/LoKIUW2XedC6IsdQMsXCH9V251NZtmuGJImBq2lI1xVrQDLdqtNCaP/oXmPxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtUuVAC7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxxPhfzX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338611F000FF;
-	Tue, 29 Sep 2026 00:00:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtUuVAC7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8801F000FF;
+	Tue, 29 Sep 2026 00:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790640019;
-	bh=PFwaBBBPfoMpkuptS7RbPQwvS3l52IuuDZgn3oWyhB0=;
+	s=k20260515; t=1790640057;
+	bh=4jXAS4oY5mgsnaydb1SE0LgAUGjvCpMjf9ZXzrPnafU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MxxPhfzXkEzgCroYWGwtMGd5hmW8mBwViX43g4kO00UnJ2ozgT+0nGrS2wLOR7tpq
-	 Wo6JcKu/ugwnRaHeAa9pAxISzy6ZMT3fWJcdqRquLfL0Rqma6XiDaGru/WGiszAzJT
-	 4dLK3/OPDP81as6ULvI3pglbSJf207xDPcRzNVABNbWCR9yWvrojvli/OxefNALitS
-	 B+xMXMaJ3P9xWoHBWo/xiLu+VW0q/agCgk+/jYspTKapZHr/wKmYGyQHcBgr4OjDWk
-	 jkCvLlMk6B6AMyFSwmzJypKyiPjrYg6TwISnVRocvS/0mQr5UUvGmW1irycd/v3Xlj
-	 5dNpfE4M6Wk+A==
-Date: Mon, 28 Sep 2026 17:00:18 -0700
+	b=WtUuVAC7GM3nBR79gn3Mwz2yj4pXOUju1VtFUsnLA41DjgBqXQ77W5+y1Z9v1qknL
+	 t6QRvjoyEwWScDZc0vOCvI2/bSBj1M2ZOHohuItC9Zcjn+6jLxiIuO4KYWVYl1Vhj2
+	 e260xAi0/ErovWDpOEKtWTDbQtgrpHBSUwTqwUR70zhPxBPrdC21ggUCaJhEIPrc7c
+	 9/S9t6pt9whl4ZZGKJH/OgDZrVyGh26yVfnr74SNqzAPZXkJ5dE6T2RwpcRVThghga
+	 YIUlE2Q5JwQUe1oVyyMyoCwTT6MoD+EhrsUyDfI0rCOWp6gW4oK++eQmuHDC7sUU3p
+	 DaMNMHmbdf5JQ==
+Date: Mon, 28 Sep 2026 17:00:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: netdev@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger
@@ -36,12 +36,12 @@ Cc: netdev@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger
  Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Zak Kemble
  <zakkemble@gmail.com>, Simon Horman <horms@kernel.org>, Ryo Takakura
  <ryotkkr98@gmail.com>, linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH net v2 01/10] net: systemport: Fix buffer overflow in
- bcm_sysport_get_stats()
-Message-ID: <20260928170018.5284b925@kernel.org>
-In-Reply-To: <20260922232440.598918-2-florian.fainelli@broadcom.com>
+Subject: Re: [PATCH net v2 02/10] net: systemport: Fix invalid dev_id
+ argument in bcm_sysport_poll_controller()
+Message-ID: <20260928170056.33dbd040@kernel.org>
+In-Reply-To: <20260922232440.598918-3-florian.fainelli@broadcom.com>
 References: <20260922232440.598918-1-florian.fainelli@broadcom.com>
-	<20260922232440.598918-2-florian.fainelli@broadcom.com>
+	<20260922232440.598918-3-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,10 +51,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 22 Sep 2026 16:24:31 -0700 Florian Fainelli wrote:
-> When running on SYSTEMPORT Lite, certain statistics are unsupported and
-> skipped during bcm_sysport_get_stats(). The variable 'j' tracks the
-> compacted index into the destination data buffer, whereas 'i' iterates
-> over all elements in bcm_sysport_gstrings_stats.
+On Tue, 22 Sep 2026 16:24:32 -0700 Florian Fainelli wrote:
+> Both bcm_sysport_rx_isr() and bcm_sysport_tx_isr() expect their second
+> argument (dev_id) to be a 'struct net_device *dev', as they call
+> netdev_priv(dev) to retrieve the private data structure.
+> 
+> bcm_sysport_poll_controller() was passing 'priv' instead of 'dev',
+> causing netdev_priv() inside the ISRs to treat 'priv' as a net_device,
+> leading to out-of-bounds pointer calculations and crashes when netconsole
+> or netpoll is triggered.
 
-looks legit
+Can we not delete this ndo_poll_controlle and let NAPI polling take
+care of netpoll?
