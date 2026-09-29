@@ -1,207 +1,170 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012022.outbound.protection.outlook.com [52.101.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA6152B1FB
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 13:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790689412; cv=none; b=Ke0UYHeG6t26KeaQ0UWiUkrdyn8Ye710e6jnk+RPgKoae71K/LHbLRrDVYPZyepLqYEorlQzRpCm0z4iwm3ycbxdWxLQOngijTIaWo5jXbnKcOEbweT1nZ7+FNrNRACAFGLtUXi0JrYAmEM3NHQckPZdUDZZAbcnG/Ej1CErE2w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790689412; c=relaxed/simple;
-	bh=pV/ZMk5J6GubE+E3E2CVe/RelLgGSPYJ2djHsRUzvuo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B8YusQRJIOfYPNyt8ECAD49DIfMkksZZLzPu/FG5lynAEkgC7Zx3qqnPrFKaqFENDhferD/4FG94sXUS17qJ5K0BsFL3Vd967DMcVxfV3bWs1TIHleI4tggskJJs/7H68AKACuiMdwrIMtt9mD608VgWwPdESBEZk+Vl1nqVUOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WGJiXzY6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QNOPUkD2; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9289652BE5F;
+	Tue, 29 Sep 2026 13:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790689533; cv=fail; b=ZvZ4zXjfBuHITvDMuXPrwfBkclqoVOO9OK7l3jitC6XBD6UvoK0N98RpLVV7dsgxmWv7h4Vh3Zo3CI5QEQBKKnA8I6x8NsC+mmL3Ie6OH47HJ2CrJET7QpwlfIDydv1QsNcmRG0zw/g4E+KeMByFFuTeeBmJbEcSB/O87QF6wKM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790689533; c=relaxed/simple;
+	bh=txwlHYzy+TU6bWP2xIriLNr/llMH0kxnhhSd/OnyJ8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dKWCTocsUazg/DlJs+ouQobgrOlIYt7N22687GO/v72Sro8xJOXLnz5uom5pPUf37RQfzGI1/snn1YQ1InGBMokjWTy3F1uXNH1+PCFkYABhbuwr3zfATyja6KfEbGWol2Hy/wRolmIpwCYbKDv/s1/Wt1djYgICs+vc/AOou4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hEYJcdZF; arc=fail smtp.client-ip=52.101.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WGJiXzY6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QNOPUkD2"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TCqhQt858094
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 13:43:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=yhRCxmzlZwX2jgGGGEOlYA
-	aVNuB7SIC5mbkw4tMhoJY=; b=WGJiXzY6t1QlpWtESXBb2nBQT2oG21GF8ZLG2e
-	UIcn/xOFSLoa2A868FOv2Ri+xbo+a/Eo0v6qaAriyPlhhPWrAUwALpK7E500MX9M
-	jldiniTHJdrwKXDepJB31GTUi2Ut4fW/14hPl1Qr784R8A7MC0hwQYEjQfjfpZz+
-	3paWVX2aWl5k/E/m6p27nTDZz6Ib2g6COH2a4q+FTr2Gq3rYCLBQ+oA9KyMY+Jjh
-	SC8KdAeNgJiGnzkM56C6y2Nm1AhPk8sinsXgbQlmeny3rbOd1yjZC4AOurmp7/qN
-	4BQ11twph6kjwyzltgMpNCgHGrMESUFJ+MmylXb+HtjSrZ7A==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h08e0hq1c-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 13:43:29 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93bf4c0af4eso144744185a.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 06:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790689409; x=1791294209; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yhRCxmzlZwX2jgGGGEOlYAaVNuB7SIC5mbkw4tMhoJY=;
-        b=QNOPUkD2r23ventZOI0S520h7ZAwDhkdj1owsGVwF3szE/tdULPFVdeOL41mcg1gZc
-         B1dHs38GkAVjhtxjNbxLDzKsdfu9w9FNTz3vuvNHIYu4srs6GXg/1rka+iQMMhoFsyzk
-         MqB6WXxGW6usYbjwcYfkIu/EQX6gV2Svzli8XPCvPvmxoaG0P/DxqY2LcI7tiJpjac48
-         3ufDkJ9SKCb2Sjl95ljIs9Ranweh6QjFK6BMdkoiZ0DGOD/Dv+SsGF4/wZjqCI+uZMy9
-         OhUYKUj1gYvjykmHuiR2AFmLsxCsseSrLdQAtgzlx6k2l5Mp2qMWg2kq3r6ORut8VmLZ
-         Nh8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790689409; x=1791294209;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=yhRCxmzlZwX2jgGGGEOlYAaVNuB7SIC5mbkw4tMhoJY=;
-        b=JRTJlgArbyQet35u3UPbbTPwT7Y8vrK7QX++f4Gd3FlEb+kEx0nu/EqH4HK2Gimx2t
-         RcyPQjOc8+xPqG79wyuN/OIzjM43ncorzmhZpAu/hdnXaGJ+Mepb7j7gauhevIktTsSH
-         W260YbYkpHRtMvZF+Br2eJUFLZYqBUhOve7+OcmGSTjZAN+40WNI/kc07wV8U9o95Xu8
-         /MBcvpbpaRcV1C4sRVLHNsoS075pQt7B1oovHT0oRBaOpH9Uy9sRclDB3MT4XTt5RdkN
-         JAhhnEbzTgZ+gV7eDGmEAja+PK7vTOPTaHJR83APSYUa9bmKDgWxDwpfRXRfjmXJ6wnN
-         0qrQ==
-X-Gm-Message-State: AFuF++mhJjhvDClXYoBkIOuNlorivuysruVB6KIj1N/i9A8iMhA6wdkG
-	UjpLksKqPoAkyQLtzmxZaou68y/Cjvfspa/CuT1OKQs6e+mRTqJqJG4LC3kjm+Q8/PDYYt8Owge
-	nGIBkyTwEBvhPpAWsDpYhFo5kNHTtLLJYEXhMj8/ujCw8TewmBHR4/WY521U=
-X-Gm-Gg: AYBFou3JTftW9f/S8BE7gHR/JPggSZwSQ63KqqjcwvOnQsco8Orgvr8WSkZQBZFMUfN
-	KSNiQApnBTXmYAaSRGGJoEr+whTNSVMXI6N3rTy/IX5Ms9ML+F+/TR3e2a9lAtSTyXHmrpjdK42
-	M1YycKVpGfGwTdynBl+NZwKdRukWzcVf8Z8pZKlZkcK8Q9gto7/BauxQEW9r1LxqH3pEDV67px4
-	BszWQeYq5JIvhtlAYX1Q75aEkwdJ4FncZLLmuzJk2RLUC88uA/AwJh6zW7hhGylRwK2qXN/S0cM
-	e9ioUVEMDkTxWK9qG2NhCwu6FzuA8eamEK2Tdjbp5P0jneSJBgkQU81HB2PYZUF7UH3A2fCzcr0
-	b6sLJs8UzPNbx9w==
-X-Received: by 2002:a05:620a:2b9b:b0:93b:c6fc:71e9 with SMTP id af79cd13be357-93c8bf447famr442075485a.25.1790689408543;
-        Tue, 29 Sep 2026 06:43:28 -0700 (PDT)
-X-Received: by 2002:a05:620a:2b9b:b0:93b:c6fc:71e9 with SMTP id af79cd13be357-93c8bf447famr442068585a.25.1790689407896;
-        Tue, 29 Sep 2026 06:43:27 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cfa66e5sm93045535e9.11.2026.09.29.06.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 06:43:26 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Tue, 29 Sep 2026 15:43:03 +0200
-Subject: [PATCH net v4] net: mvneta: clear XDP pfmemalloc flag between
- frames
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hEYJcdZF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OdmtHO058+NzeFNhF+b8i43CQ8UHR+j2hekn6OpzcW6XX8KFiFF5PJ2F7Orimc6eO1wuY3qu2OGPoNIu2M09fTggDHTwRkRYOqdY2sHARbFcDk8uhBqlo6VE05cndDreqlAKjlGMPGr4x3woUy0M19RxQSIRB0WveAu2+exmBd2qAbClE38wYvZ/VgbA3OGpxVrMuqiSrrkUj0gw1JAu0XujcQzkw8SMJDKNSjoJK0XFxdKnyXBDtps5WiG6vDqxy8TOxwGJTjT1ribm/K6qAlZqsg8sGEGPebn19KWKg8C8AzHrwCiKvP6lEyjJezBi6V6HW6pcJSD6tYsu6En7fQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cvwHYLqezIZgrNiiB8EAisAF0bZyvs5BKjT/S4sI804=;
+ b=A2zRtF5vZk9WTnvAYkdMYZJnTMy5Q1pc9fn5O52eL3YToSfpIABpcMWILzRJ0FAvbFWiXAIY4691SIqsYWrFa7ZewgsIH1/jjcJw6MntvJqqHtYEPzMc6xDqi8aTWbW9y+4PTpsGzlcxcIUxMCPWnRJ9xW5Qwo9M4dlkOvn1eLkGTSDDaX88LySxFaGq2UX03A75CPcxloyAXZ5BLAJTvZXzQY+4QAp1t8Y+TxhEbHKhhXUWQwqDrwGs58VgDyFsu45yc5cWuXP+T4xNL4YmjAwsCpQssSl9ap4hffkqcxqhltJ8DeGm6bUxZJypwF7iPOzsSDjHAP8T6LjgCpF4AQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cvwHYLqezIZgrNiiB8EAisAF0bZyvs5BKjT/S4sI804=;
+ b=hEYJcdZFvO7p6h4mqi3UfMFUH1sdcSvdQQNwHKN4LbJLM7a97UdalesR6zrxKVGNlsuXb14JUumEyDhu4nlca8srFZxvsVgyMNWNCuhN7S3jeXj9jB6dNQGkxb5ClhTF52w0wLCSSyZ+MNrcthw3SkY+c03ZEzQB11naBpbjgKMmeGyRIdI4umqXMpLfUIg4+RMsh9wKfAamoY7e+UIJa2nkXwNhYuMwVvcWdbt3gRPGi/jWqo89jnSAwVMS3lYdO7I1nOkjsqP+ewf5Nf4+ByjvjmCatkz7b2wEcEg8vKVC8rFqj5uW3jfOqWcLotive/EJa7dCVaBPL+KTrfQYIQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by MN2PR12MB4469.namprd12.prod.outlook.com (2603:10b6:208:268::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Tue, 29 Sep
+ 2026 13:45:27 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Tue, 29 Sep 2026
+ 13:45:27 +0000
+Date: Tue, 29 Sep 2026 16:45:17 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Ido Schimmel <idosch@mellanox.com>, David Ahern <dsahern@gmail.com>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>,
+	Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: Re: [PATCH net] selftests: fib_tests: use per-test return value in
+ subtests
+Message-ID: <20260929134517.GA832345@shredder>
+References: <20260929-self_fib_tests-v1-1-0eab6a3c3a3c@kylinos.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929-self_fib_tests-v1-1-0eab6a3c3a3c@kylinos.cn>
+X-ClientProxiedBy: FR0P281CA0261.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b5::15) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NMQ7CMAwF0KugzBg1aZtiJu6BGEzqQCTaQgIRC
- PXuWGVhgC6Wvq3//FKJY+CkNouXipxDCkMvoVoulDtRf2QIrWRlCmML1Ahd7vlG8Ggv4M5MEXy
- kI/jwgIacRc3a1nhQ0r9ElvVk75SU1F6Wp5BuQ3xO/7KeTh/aFDN01qChbdhTy85jjdshpdX1T
- mc3dN1KxoRn8w2Wc6AR0ODaYkkNkz38ActvcD0HlgKSr6jWFSKT/wGO4/gGSjNPq3ABAAA=
-X-Change-ID: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Toke Hoiland-Jorgensen <toke@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfX0UEgoJP2AA2b
- vp04mtmrzj5A7H9GZOdCNiyjFO78Asx5rOV6OZSkodh7jXIpJ0ZZAzWrt1cg4ds7Va7yoYgSWaE
- E+k3LnP7hFZQNt5b15FOxP1hLRYtHxE=
-X-Proofpoint-ORIG-GUID: XCPtTX6EDH-ZDFTOGi9ewvjNn_oQ7F4w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfX5XBp5gedCby0
- s0EWspD22ijTdUkTRMtyeCe6ZijnZS4acWvPiCgDyES6qK35EdD0Sb7q/zNLay39zbmEyQ/yHev
- 3KDrkshN1uzaAUPWz8L2L3hSuHAXwcWA+p3N5GAhoCFX8tdHXKSwJlfyFb+xE7tTG5YtOr/TU/H
- 6Ze5ElAt+vaR1LfgfONtcMmnNrg21E+coYbwy85II3ZWFJMzdbhRlpiGFgTfRMqi8w/EWmzcYuU
- J+qFPILBS1SfBe8GhVf6beEOzyfWAABgBEGctZNRJFyxN1pkB0+YZq210awg1l1LAk4RUvlENBN
- 9F7OgJrLC7Ysigq7QsuGfVpNKRQvyb37sy00AU2PHSionq/4DHMDOKSJU/J9EEa58AggAnqJ/ZP
- aDB2eNOpjrKutUq4+Itffn+UJvlWkBdGL8709tbiCFbrEOUXCi8EHXY+1mM2DdoAXUuvGzDo1Sx
- bDA32CazjMe3Ah/mWXw==
-X-Authority-Analysis: v=2.4 cv=WJ7qzXsR c=1 sm=1 tr=0 ts=6abbc081 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Bf4p-39G4bmrPmVIT4wA:9
- a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: XCPtTX6EDH-ZDFTOGi9ewvjNn_oQ7F4w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- adultscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609290054
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MN2PR12MB4469:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c7957ac-a2bd-4405-e485-08df1e2febba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|11063799006|6133799003|10067099003|5023799004|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	/vUCtoDKngO9rpfhuyayHKXvqvpNi2fX03krKVrp7ZmbXRDL+10qSL02CilXXPI0J9AopQ7H0WOUYA7rEjE6KK6bCLV1Nfdl03CooEeUm1bSmVNCxrsdCHKac4Y2bspF+LDGRoxZ+IcAcCTG96xlfxHFEBsDqvf4aji2SRDkCAPBBG1Djk9On5d1ZvQUeHfBlsWn2j9uPBGXqY0TZN9HTJAdRANO8+Pg1AMUn55MzrVlarWxIXDrh7LAA617usMPfFL3TgwKLMBR1rxb7pQ0IL4h2DuZLxP7mqXaKcoSyhg8BPek8oMUGgsPdLwWIFG7WaLTgafZS+KT7fyHfkYuoDuKy+u50Ztxj8EU5R0eXpo6AXwctwH1fz9qHA1aIhAB7jPJf6dbK/lYXR4GNHdreKq2Yh2kmeSJ91Mb6Xchfg7PT4G7DjpcqvDhOF1fioQsCngB7McW9/LDsZlhZDFSPd90PRUHN9aE48BiWiI5aDk71x4yZ4N+RsZ2wE5M9kFCdv/JG8oJPyPdN30HXUtHGDamolIskbd7PoObFirePkP65h/16nqX54dBCBkfF5pj212wiOQRb7CnxCXjMx8mh1EDfg2zx2JN+XjkDVCB2ZJwJtJJpeXRy0y7tynVOWL5Tmjavap2UHBS8ACVPBUIumCEImSykKkONE1Cb0V0SYo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(11063799006)(6133799003)(10067099003)(5023799004)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ThvKxoswdmrfyLvbtNQXegzAxnglr83gPKkp0CXLwc6DSIgOvaXSF8qsfZwV?=
+ =?us-ascii?Q?7r6lz3Zx+/xIDap11cALB2nzfgqfh7kSjft7J/TijpSsGjsCzd93qDX+VVIf?=
+ =?us-ascii?Q?XrXnoixUIw2a8ElQNG4Nwy7oEgVjYeQvNoR4sQDxCXNfMEcA7mE75KXyFFfj?=
+ =?us-ascii?Q?9GzYb0/ICiZ6cqesA41f003SvNspyjr23nqMSOOrJenjLwAkmfkdKHcH5p9U?=
+ =?us-ascii?Q?ijiPg+/CQsMomsYDeaGdSqw+FVYxtkfWexo1s154mBt7/u535EILbDAkGG6Q?=
+ =?us-ascii?Q?Z6OXxi8NwASLtlQgGxctnGLF6pvqLBVnLZcqK4mK7xgqVrbcsYqZwxIx4gaj?=
+ =?us-ascii?Q?QX1c7TUwddy2+ouuh1WCoPEv2LOaRZZrQHBtMSUfLoatQLjUM4gruNcZDpHb?=
+ =?us-ascii?Q?Zn9ElpssmdM6ZUEpHXA3+L2msPbiRyM3J5tW754TwdPAUiNlUxtAzhXAX25u?=
+ =?us-ascii?Q?ItQfC0o8TOmUqSuRGZUNa4bRIxSnA/OaWKep3YBUa0sFY561ozvn/Dw+AstG?=
+ =?us-ascii?Q?P/yR+IlY0vSHnqHg+FeNAr7Jc2JVGmat29E119Em/zPx/kTYmMMaBXI7B6IU?=
+ =?us-ascii?Q?DGwTS7zn6I1JdjQLZmM5mo/+0/GZqHGrk88hbnN3D62kLNRklizaRczQQAdN?=
+ =?us-ascii?Q?MK6IXvavPV2vo3/eqhXipmEkQWK2oOe0Qmx6jmQh7Q8xyvVIxKg/IKYdORXp?=
+ =?us-ascii?Q?b94dqw0duK0Ty8QTWkW7FrjqpIswn0xdNAkzfc/3FxzlMsh1pnODvS2BDVe1?=
+ =?us-ascii?Q?gAc8u+JxRDazr0CIYYcBrgfQ83ygxw2piz8GZWJwS1QHDITkiURsR/vcPH91?=
+ =?us-ascii?Q?iBCU1pdcDawpK1eNS1k46VIKd5kf6ds9dx7zUowKn+NvpJfwd6xNh/GNFKVD?=
+ =?us-ascii?Q?tEvJFsBcT7u0nzCGX8XGwpHHplTR0EcgYUZkcYt7+C8nZkJJfK+tcR4NaTOg?=
+ =?us-ascii?Q?b/v39ZPU2ajBHBStOMwVfo4vfaW0wEyVrqAA7kRmc5QJiRMiy0vDM2sJvyV/?=
+ =?us-ascii?Q?FtHisXy23MUsdqUFbxD2UV5O2ArC1wjwmdf2a+E4pTXc4sd/vajlzCepByNP?=
+ =?us-ascii?Q?xss6u0hp/jaRJTAMSrpXue8WZwdsYNDXIjWK+niM+ZfCXIoJYsy6VaWmKUzp?=
+ =?us-ascii?Q?2uAFbB2jtYbUPZxUsEUtYgNCwNEENgZ2TdhRz2SJG1r/in8xcD+lg4vANLzH?=
+ =?us-ascii?Q?faYx/iAY7wwgndcPET2fS1tqqdXVdaWi4UYz/rBpBQ52zK/fJH05d9aPBR/y?=
+ =?us-ascii?Q?Xf6UdRfTz2V7/3bOO6hgHQjYbSUD3/Mz+xQ0y0Lp+cmFzuRyDcTXL82GbQwR?=
+ =?us-ascii?Q?8Msy6QkH7U2EIY+4e+movv+68IBX7jjo5uPWhpPHAFP6wtcNONfhOMnmR/Ls?=
+ =?us-ascii?Q?EvwYmKjzUASIJVsCeiXl6+LCUmViz59ktOSNxPpFuoyk3xTSNi2Dw7f7KwFL?=
+ =?us-ascii?Q?78AqbNogqKoKePpeAYifsGpe3EHyRWo0Ct4ENA1+4LfH3EQApv1jcNCly+Ym?=
+ =?us-ascii?Q?AJUQfWJe+0JYH64tgr/aLqwBA9JcHd5E/OoE1mb57AGTx7MZzNquKCnv9zEA?=
+ =?us-ascii?Q?iB4hSiwmF2eyrm1fFHrvfm4F4gdpYmSOp2/lcjBU5Ni6dJQdrJasxsZWxVWN?=
+ =?us-ascii?Q?FiudYFTFmPF2aivUtqh2MImm8gmh4sipRiGYtdu0Wse8QEEiL6NZ8xG+f4vI?=
+ =?us-ascii?Q?5+nXuQlkx9FfEDhrzr79rRCveALvpqhS0S8GZpApXgrT2eHD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c7957ac-a2bd-4405-e485-08df1e2febba
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:45:27.8131
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ed6wVMvkNFcxX5aTMl/4H9xprU7vTvQ25bx/yh5lhac8hRb6UHUO0uKaqeiAsC8SZS64SU7jD8IyGy3zbqAf0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4469
 
-mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
-xdp_buff when a fragment page is a pfmemalloc one (page under memory
-pressure). The xdp_buff is reused for the next frame, but only the
-XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
-bit leaked from one frame into the following ones. mvneta_swbm_build_skb()
-propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_info(),
-so the skb of a subsequent fragmented frame could be wrongly marked as
-pfmemalloc even if none of its pages are under pressure.
+On Tue, Sep 29, 2026 at 09:57:01AM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> fib_tests mixes use of $ret for both per-test return value and global exit
+> code. If an earlier subtest fails and a later function sets ret=0, the
+> script will exit with status 0 even though [FAIL] lines were printed.
+> 
+> Use RET as the per-test return value, as already defined in lib.sh. The
+> exit code ret will only be set in log_test().
+> 
+> Fixes: 607bd2e502f5 ("selftests: fib_tests: Add test cases for IPv4/IPv6 FIB")
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> Closes: https://lore.kernel.org/all/178961184152.22033.9267194009793243294@kernel.org
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Clear all the xdp_buff flags in mvneta_swbm_rx_frame(), which is invoked
-for each new frame, instead of just the XDP_FLAGS_HAS_FRAGS bit.
+Please target the patch at net-next and drop the Fixes tag. The patch
+doesn't fix a regression, nothing is failing (or passing when it
+shouldn't) because of it and it cannot be backported cleanly to old
+kernels anyway. I targeted similar patches at net-next in the past. See
+[1], for example.
 
-Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info utility routine")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
-Changes in v4:
-- Rename xdp_reinit_buf() in xdp_reinit_buff().
-- Link to v3: https://lore.kernel.org/r/20260928-mvneta-xdp-clear-frag-fix-v3-1-af4a51499eaf@oss.qualcomm.com
+[1] https://lore.kernel.org/all/20250908073238.119240-5-idosch@nvidia.com/
 
-Changes in v3:
-- Rename xdp_buff_clear_flags() in xdp_reinit_buf().
-- Link to v2: https://lore.kernel.org/r/20260923-mvneta-xdp-clear-frag-fix-v2-1-298693a7ea6b@oss.qualcomm.com
+> ---
+>  tools/testing/selftests/net/fib_tests.sh | 40 ++++++++++++++++----------------
+>  1 file changed, 20 insertions(+), 20 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+> index b338bfb196a2..9ce5623b049c 100755
+> --- a/tools/testing/selftests/net/fib_tests.sh
+> +++ b/tools/testing/selftests/net/fib_tests.sh
+> @@ -369,7 +369,7 @@ fib_carrier_local_test()
+>  
+>  fib_carrier_unicast_test()
+>  {
+> -	ret=0
+> +	RET=0
 
-Changes in v2:
-- Introduce xdp_buff_clear_flags() utility routine.
-- Link to v1: https://lore.kernel.org/r/20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com
----
- drivers/net/ethernet/marvell/mvneta.c | 2 +-
- include/net/xdp.h                     | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Looks like this line can be removed (similar to fib_carrier_local_test()
+above it) given that RET is never used in this function
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 543e566425c1..4f479b6f731e 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -2340,7 +2340,7 @@ mvneta_swbm_rx_frame(struct mvneta_port *pp,
- 
- 	/* Prefetch header */
- 	prefetch(data);
--	xdp_buff_clear_frags_flag(xdp);
-+	xdp_reinit_buff(xdp);
- 	xdp_prepare_buff(xdp, data, pp->rx_offset_correction + MVNETA_MH_SIZE,
- 			 data_len, true);
- }
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index aa742f413c35..07231adfb5f8 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -106,6 +106,11 @@ struct xdp_buff {
- 	};
- };
- 
-+static __always_inline void xdp_reinit_buff(struct xdp_buff *xdp)
-+{
-+	xdp->flags = 0;
-+}
-+
- static __always_inline bool xdp_buff_has_frags(const struct xdp_buff *xdp)
- {
- 	return !!(xdp->flags & XDP_FLAGS_HAS_FRAGS);
-
----
-base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
-change-id: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
-
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-
+>  
+>  	echo
+>  	echo "Single path route carrier test"
