@@ -1,113 +1,109 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D3A4E66A1;
-	Tue, 29 Sep 2026 09:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D53C4F403B
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790674991; cv=none; b=hrZcFimRq5z+Pd1gJeRKmaxaaAGmin4nDZdg46WKrQGE1/fgo2r+JGf700ZgsfYzzFCG1MjnFiHEgqJIyIG98fmn8xwMQp2W9jIPoty4/BEyZzzM9io8p4cEHYNlDnKcymiYdXsyeRJYyr2KIFnf0H7IIgBbCVKamnT5O0dE73g=
+	t=1790675010; cv=none; b=SUo+9Qf4iGixQ+lVjDbLDROc8x93cHnqhVasRhxX/AfXhLnRki9dRiYB/lUybgjTVWv0n6TlRgdXBjpT+4OjHmUJCdHg03TazgUXVcAxM9+hsR76F8/nEipyQUPV/pdL9BZYW2dZVCOCKy9s5gTwNjjr7ZW5SiCdni65KcfKSHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790674991; c=relaxed/simple;
-	bh=FR04vb8vZ7yGo/R+Em3H86yxefQ/vSFAuFGINOTQAs0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UyEMMKHGbODbxyHzPn7N7auzocNNX7olUBIq7W0tMAKNRSTHrV3SqYiGuxFdJHgAEmgn2+jEVY385fZSht0/4LHrMfcPP8UY6LTxCFfUd6i/kUL+VKb+NcpHkRru0xLfgOtMXR2hRcJtLPgoTWIcKYg0g5GFP8mXRHmi9Dj46o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Cwk6rIxc; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1790675010; c=relaxed/simple;
+	bh=OdQgp1gL3QtlQrsCyzRykVIHp+LSRj6Wvz9fNOlGfq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NoEa50X6BlP0JdiFMlLAE+6SWaj1qdYhWTsmzJmf67Ge48S9VHyPO1GiA43LddELJthMHh4cPfppAn8gqE2wzfvGqekttqbZLesqIAwtOiKFIFnEvJFuHuMjcIpwoG3d2j+0CXAdZ2a8t6oDPkqyLSa1ilq83SpPyNOUcoY70EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nwiugqug; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Cwk6rIxc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1790674986;
-	bh=VBDi87v2GLxvQQ4svDlq2UlpLIBJkHt/1VL8QOI3SNg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cwk6rIxcaBZbOorXwU9hr9r/7XJEBGXZGxRltmNj2IJGkniEIr17arRzX58Tjt0Wi
-	 XGpn8z3S0fnRE9PPGwBkDZiDxhIUypdfG7JGrH/vPL+nC4AexshjQepSqHifzPSXGU
-	 gJyM72GaR59ncBzsMUf4dpofvwvvcjKyggeSEcg48yhxRLevnVL6BDChlZy0YeRJ7e
-	 38w1e3WSRAmPRWNoM9VEgDMdm3I4fccctB4Nl9WOMsyRsv+d0kuuPKpd5L3cVmgJqN
-	 d19Hjs1D8/6drAu0Ru39+hTzmRZ1PRA4hjPn0zX+F5h1OuIgrpe/N0tOC8b//TvgGd
-	 Nm/r62VBji4rw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 9779760262;
-	Tue, 29 Sep 2026 11:43:06 +0200 (CEST)
-Date: Tue, 29 Sep 2026 11:43:04 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Julian Anastasov <ja@ssi.bg>, netdev-bot+sashiko@kernel.org,
-	netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
-	horms@kernel.org, fw@strlen.de
-Subject: Re: [PATCH net 02/11] ipvs: fix buffer overflow when sending sync
- messages
-Message-ID: <aruIKBhVhp3KKvJp@chamomile>
-References: <20260927220816.268206-3-pablo@netfilter.org>
- <179063970014.3145.11099245705422825051@kernel.org>
- <2aa8af69-3843-3ffd-cfa4-2daf3c949127@ssi.bg>
- <634b26a1-cf1f-46c0-8026-c9c08f398169@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nwiugqug"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e46a156f4so2247111eec.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 02:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790675008; x=1791279808; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MMNDGpCcXlVn+K/qHQzmlZIK4VMU5usMdqSK6Jfjkss=;
+        b=nwiugqugEBxWXwJ1f6Cn10SKxcinGVJ9OPvnea2HzFntgMPpgfvr33JXiDSezYcdBL
+         MjNgwzuVOkt2VDMRsT7QLVM+6j4zmdIVgvb5/dLd9ObzWU6iEnC5vaMpPCR8gEp/11Gi
+         9yWy9dPgH/AWA7Mt239c3HbpRV+d+pTz2ip+i4CpqQBTl2GvCd7d9tgO6qupRsrJ/Bzd
+         unbba4Hctgj18nwCA5cqAazUKh/r44tpbiqS50BW4LijFanSu4bWQoOM0gR3cVEylvas
+         boiI8dUxcKKFY37xZhVNIvHjBR3q9hlnMy2dBfdtPiW58hV9WJ76BW596sFKSo7D8iMH
+         iTeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790675008; x=1791279808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MMNDGpCcXlVn+K/qHQzmlZIK4VMU5usMdqSK6Jfjkss=;
+        b=XTkQz1Bi+aCKCz6lOhXGm33MmeEdTDOmrzbw2w2l3G9xF72VgQRH7VsE7hX5QBVaqB
+         xpDavOlzRB+1E3uYIfCnhjm8RRmnkg3D3XlJ0mACYf7VfjDLviR78cCAvM8nF1W11tOW
+         JltotKbaO7S4KimrzaopsdWJFES+MN9wRJtV0/1pgOXCgvHyWW1xvuAGbf/LRH0lq6is
+         x7sf1hJIigVme49286Lhmb8JTi5IwBI75Hf0VZzVnNrmrpA0dCoVmxwOPdjPJPbwV1Yx
+         /JHxkZUNfm6eSJKGBAEpkE/UrRdkSdXA+erBNgwMNDQ2G+YnAjOBZVM8lW8ZtGhHZOy4
+         Yc6Q==
+X-Gm-Message-State: AFq9FYJJGBiFrdfGdGE0W7/bHpULH9pEyibs57CTwPznfHeDZ/u8TyGB
+	Ub99KCgn4i+kXNBNE0g6CuhOv6kbFhR8jL5jmfz51K1prL4WXoHy9qsT
+X-Gm-Gg: AYBFou0isJb3buXyC2qXZk/dxWliUmH30X1owoN1btXARGeERqQQTOOSn503qUE2ZfL
+	EstKG9V+vTdxEl8bB39pwsjZIj33mEBxlNhxXpQI01D2aDvkJ8NCECJq3vRCbdJl3RofQ8BQ1O0
+	RtHiDgNzaG9Cr+j4faurb520iIvD1J5SFJRidYV836JiX/QgBtDgqBR+t/xuptHwBE1NxfsWIki
+	jIze28jsi+R6rirVB9Zm6RA3fTRXOczSnlpUBp2ddvGn7JtZqEvHBR+uk0B2I5oTqINQVk+cR9L
+	4ZiNt/JKDPEwY356q9xZA4lB7X29Ft2vvCYxpv0Vczen+RAgB2JuD+9viS7ec1IvR8E/HAAomV0
+	8BWhTCXDrmMNYwIncH+4dk9xDums4rqTF2ryMtI2//Pcxowqal099smBVBt2PTRKHHkAfMQ3QXV
+	M2fq32Lert/Cy4tgH/DfSJLkrc+3biaYh2ubxY5zMLQkC54TBx/eZ+zxEhhQ==
+X-Received: by 2002:a05:7300:3e95:b0:33b:c29a:7c3b with SMTP id 5a478bee46e88-3426cddfb00mr11220105eec.0.1790675008092;
+        Tue, 29 Sep 2026 02:43:28 -0700 (PDT)
+Received: from evangelion-g ([2a09:bac5:40e4:11cd::1c6:2])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34141a4a5ecsm36247742eec.3.2026.09.29.02.43.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 02:43:27 -0700 (PDT)
+From: Ayush Yaduvanshi <ayush37735@gmail.com>
+To: Edward Cree <ecree.xilinx@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	linux-kernel-mentees@lists.linux.dev,
+	Ayush Yaduvanshi <ayush37735@gmail.com>
+Subject: [PATCH net-next] sfc: fix kernel-doc description for efx_ptp_timeset
+Date: Tue, 29 Sep 2026 15:12:11 +0530
+Message-ID: <20260929094211.48125-1-ayush37735@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <634b26a1-cf1f-46c0-8026-c9c08f398169@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Paolo,
+Remove excess @valid struct member description from
 
-On Tue, Sep 29, 2026 at 10:19:55AM +0200, Paolo Abeni wrote:
-> On 9/29/26 06:06, Julian Anastasov wrote:
-> > > > @@ -744,7 +749,7 @@ void ip_vs_sync_conn(struct netns_ipvs *ipvs, struct ip_vs_conn *cp, int pkts)
-> > > >   		s->v4.vaddr = cp->vaddr.ip;
-> > > >   		s->v4.daddr = cp->daddr.ip;
-> > > >   	}
-> > > > -	if (cp->flags & IP_VS_CONN_F_SEQ_MASK) {
-> > > > +	if (seq_mask) {
-> > > >   		*(p++) = IPVS_OPT_SEQ_DATA;
-> > > >   		*(p++) = sizeof(struct ip_vs_sync_conn_options);
-> > > >   		hton_seq(&cp->in_seq, (struct ip_vs_seq *)p);
-> > > 
-> > > [Severity: Medium]
-> > > This is a pre-existing issue, not one introduced by this patch. The flags
-> > > are now a consistent snapshot, but the sequence data is still read
-> > > without cp->lock. Nothing orders that read against READ_ONCE(cp->flags).
-> > > Can the master send stale or half-updated ip_vs_seq values here?
-> > > 
-> > > ip_vs_sync_conn() here only holds ipvs->sync_buff_lock. The same applies
-> > > to the memcpy() of cp->sync_conn_opt in ip_vs_sync_conn_v0().
-> > > 
-> > > On the backup side, ip_vs_proc_conn() sets the SEQ bits in cp->flags under
-> > > cp->lock and drops the lock. Only after that does it copy the sequence
-> > > data, with no lock held:
-> > > 
-> > > net/netfilter/ipvs/ip_vs_sync.c:ip_vs_proc_conn() {
-> > >      ...
-> > > 		cp->flags = flags;
-> > > 		spin_unlock_bh(&cp->lock);
-> > >      ...
-> > > 	if (opt) {
-> > > 		cp->in_seq = opt->in_seq;
-> > > 		cp->out_seq = opt->out_seq;
-> > > 	}
-> > >      ...
-> > > }
-> > > 
-> > > On a node running both the master and backup daemons, ip_vs_sync_conn()
-> > > could see seq_mask set and then send old or torn init_seq, delta and
-> > > previous_delta values. A peer with an app bound to that connection would
-> > > then apply the wrong TCP seq/ack adjustment after failover.
-> > 
-> > 	Agreed, this can be improved to take a snapshot of
-> > flags and seqs together under lock. I'll request to drop
-> > this version, it is not urgent to apply it.
->
-> It looks like a respin of the PR is needed, I'll drop the revision from PW.
+efx_ptp_timeset.
 
-Just wrote to Jakub with a summary on the LLM report.
+Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
+---
+ drivers/net/ethernet/sfc/ptp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I would take this PR as is if it is still possible.
+diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
+index 6ca9a75af01d..00cfd8d5b46e 100644
+--- a/drivers/net/ethernet/sfc/ptp.c
++++ b/drivers/net/ethernet/sfc/ptp.c
+@@ -193,7 +193,6 @@ struct efx_ptp_event_rx {
+  * @wait: Number of NIC clock ticks between hardware timestamp being read and
+  *          host end time being seen
+  * @window: Difference of host_end and host_start
+- * @valid: Whether this timeset is valid
+  */
+ struct efx_ptp_timeset {
+ 	u32 host_start;
+-- 
+2.53.0
 
-If you feel strong about to need to respin this PR, that's also fine
-with me, just let confirm where to go.
-
-Thanks.
