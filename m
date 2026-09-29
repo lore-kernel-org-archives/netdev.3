@@ -1,23 +1,23 @@
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+Received: from out28-195.mail.aliyun.com (out28-195.mail.aliyun.com [115.124.28.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE09C3CB544;
-	Tue, 29 Sep 2026 02:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117C4378D8C;
+	Tue, 29 Sep 2026 02:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790650481; cv=none; b=N58H8T/8m63WOBNwG3bV2FtwrW92Ygk53R1pdDEPuAELxiNYvEMe+zu513JOAFxUbrT/zzWxTOkwY2ec7sYS/09+ZTzeTLvjdQvz1QgX4X++p07QZWaqFJFLfqGKX8hzHJySHgVBlQZ6lefQavRBXW2WFphEGm+8webK/+HAUdw=
+	t=1790650487; cv=none; b=OwyGZaZVmq7Gtvv+j9joMJjPRfjekUa0zd0mIIlwOE+6ozTj3laJa5bo++/dcsSSlJ66hHGkdh8dBlnszTLjEoxcNaTMAVOL1vO3a2feVwyOzBR5rgX011QHNGXl++p21WBzSGrhO33vaNgIR6sfq8B+/xUjps9aarYk6e89h9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790650481; c=relaxed/simple;
-	bh=skYdvOLGQGoYeecM6YQoKVmb/gcvLXRIZoaa5JiKbIA=;
+	s=arc-20240116; t=1790650487; c=relaxed/simple;
+	bh=Or3xnQhquSLUrI4Vmnn9kRa9c2PML7hfcBy5kMF06do=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y8bnQqVxtQMYQc14tgkasigZR/AIY7L6BzUATuEOf/w6e3DByErJpechM6lOzXLPKXPNEofYpEYO3q5lXUDjoMBnj+n+rekLLvwiKVcD/eOtDiZNyARe43ZYESpjTsJkC0dN6LUUXsMKUUlbx0yiDVDi+0G8FDG0dKCX0mNFeOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.221
+	 MIME-Version; b=kZBZmr7c9dSuVaCCJpOr20qaEiqfvC/wsizmO+GmRXSh+83bho1HjgpaJ2KYApkoN1z1FE/egMoCcT1xjp2PjukdgtiKegmkcckSRAJDzoX3IM4HYNW46KZFIPrb93Gs0psWFk0IxuajM5vEVfCsAviR6szjn4aGESq9ijByEWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07465221|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0642012-0.000283312-0.935516;FP=13861984445566424980|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040074035;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jQghbpp_1790650466;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jQghbpp_1790650466 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1537959|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.204836-0.00141997-0.793744;FP=9472783458238115456|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jQghbv9_1790650470;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jQghbv9_1790650470 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 10:54:26 +0800
+          Tue, 29 Sep 2026 10:54:30 +0800
 From: Kyle Switch <kyle.switch@motor-comm.com>
 To: andrew@lunn.ch,
 	olteanv@gmail.com,
@@ -35,9 +35,9 @@ Cc: ming.xu@motor-comm.com,
 	jianmin.wang@motor-comm.com,
 	wei.zhang@gl-inet.com,
 	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v10 1/7] net: dsa: motorcomm: initialize dsa_switch based on chipid
-Date: Tue, 29 Sep 2026 10:54:07 +0800
-Message-Id: <20260929025414.313641-2-kyle.switch@motor-comm.com>
+Subject: [PATCH net-next v10 5/7] net: dsa: motorcomm: move mib stop from remove() to teardown()
+Date: Tue, 29 Sep 2026 10:54:12 +0800
+Message-Id: <20260929025414.313641-7-kyle.switch@motor-comm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260929025414.313641-1-kyle.switch@motor-comm.com>
 References: <20260929025414.313641-1-kyle.switch@motor-comm.com>
@@ -49,148 +49,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace the hardcoded chip handling in yt92xx_register_switch() with a
-data-driven loopup based on the chip ID.
+This change ensures symmetry with the MIB start operation,
+which is already invoked in the setup(). Additionally, it
+consolidates per-switch operation into the appropriate DSA ops,
+improving code organization and maintainability.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 73 ++++++++++++++++++++++++++++----
- drivers/net/dsa/motorcomm/chip.h | 19 +++++++++
- 2 files changed, 84 insertions(+), 8 deletions(-)
+ drivers/net/dsa/motorcomm/chip.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 3ff2de383157..79422def16ff 100644
+index c7cfaf244274..9380d74d79ba 100644
 --- a/drivers/net/dsa/motorcomm/chip.c
 +++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -4397,6 +4397,67 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
- 	.setup			= yt921x_dsa_setup,
- };
+@@ -3924,6 +3924,12 @@ static void yt921x_dsa_teardown(struct dsa_switch *ds)
  
-+static const struct yt92xx_series yt92xx_series_table[] = {
-+	[YT92XX_MODE_YT921X] = {
-+		.name = "YT921x",
-+		.max_ports = YT921X_PORT_NUM,
-+		.num_lag_ids = YT921X_LAG_NUM,
-+		.ageing_time_min = 1 * 5000,
-+		.ageing_time_max = U16_MAX * 5000,
-+		.dscp_prio_mapping_is_global = true,
-+		.assisted_learning_on_cpu_port = true,
-+		.switch_ops = &yt921x_dsa_switch_ops,
-+		.mac_ops = &yt921x_phylink_mac_ops
-+	},
-+};
+ 	yt921x_leds_remove(priv);
+ #endif
 +
-+static const struct yt92xx_series *yt92xx_series_lookup(u32 major)
-+{
-+	if (major == YT9215_MAJOR || major == YT9218_MAJOR)
-+		return &yt92xx_series_table[YT92XX_MODE_YT921X];
-+	else
-+		return NULL;
-+}
++	for (size_t i = ARRAY_SIZE(priv->ports); i-- > 0; ) {
++		struct yt921x_port *pp = &priv->ports[i];
 +
-+static int yt92xx_register_switch(struct dsa_switch *ds)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	struct device *dev = to_device(priv);
-+	const struct yt92xx_series *series;
-+	u32 chipid;
-+	u32 major;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
-+	mutex_unlock(&priv->reg_lock);
-+	if (res) {
-+		dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
-+		return res;
++		disable_delayed_work_sync(&pp->mib_read);
 +	}
-+
-+	major = FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
-+	series = yt92xx_series_lookup(major);
-+	if (!series) {
-+		dev_err(dev, "Undefined series info for the corresponding major\n");
-+		return -ENODEV;
-+	}
-+	priv->series = series;
-+
-+	ds->assisted_learning_on_cpu_port =
-+		priv->series->assisted_learning_on_cpu_port;
-+	ds->dscp_prio_mapping_is_global =
-+		priv->series->dscp_prio_mapping_is_global;
-+	ds->ageing_time_min = priv->series->ageing_time_min;
-+	ds->ageing_time_max = priv->series->ageing_time_max;
-+	ds->num_lag_ids = priv->series->num_lag_ids;
-+	ds->num_ports = priv->series->max_ports;
-+	ds->ops = priv->series->switch_ops;
-+	ds->phylink_mac_ops = priv->series->mac_ops;
-+
-+	return 0;
-+}
-+
- static void yt921x_mdio_shutdown(struct mdio_device *mdiodev)
- {
- 	struct yt921x_priv *priv = mdiodev_get_drvdata(mdiodev);
-@@ -4445,6 +4506,7 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- 	struct yt921x_reg_mdio *mdio;
- 	struct yt921x_priv *priv;
- 	struct dsa_switch *ds;
-+	int res;
+ }
  
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ static int yt921x_chip_detect(struct yt921x_priv *priv)
+@@ -4483,12 +4489,6 @@ static void yt921x_mdio_remove(struct mdio_device *mdiodev)
  	if (!priv)
-@@ -4472,15 +4534,10 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+ 		return;
  
- 	ds = &priv->ds;
- 	ds->dev = dev;
--	ds->assisted_learning_on_cpu_port = true;
--	ds->dscp_prio_mapping_is_global = true;
- 	ds->priv = priv;
--	ds->ops = &yt921x_dsa_switch_ops;
--	ds->ageing_time_min = 1 * 5000;
--	ds->ageing_time_max = U16_MAX * 5000;
--	ds->phylink_mac_ops = &yt921x_phylink_mac_ops;
--	ds->num_lag_ids = YT921X_LAG_NUM;
--	ds->num_ports = YT921X_PORT_NUM;
-+	res = yt92xx_register_switch(ds);
-+	if (res)
-+		return res;
+-	for (size_t i = ARRAY_SIZE(priv->ports); i-- > 0; ) {
+-		struct yt921x_port *pp = &priv->ports[i];
+-
+-		disable_delayed_work_sync(&pp->mib_read);
+-	}
+-
+ 	dsa_unregister_switch(&priv->ds);
  
- 	mdiodev_set_drvdata(mdiodev, priv);
- 
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 28e4f26f9cc4..69176995090a 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -955,9 +955,28 @@ struct yt921x_info {
- 	u16 serdes_mask;
- };
- 
-+enum yt92xx_mode {
-+	YT92XX_MODE_YT921X,
-+	YT92XX_MODE_YT922X,
-+	YT92XX_MODE_MAX,
-+};
-+
-+struct yt92xx_series {
-+	const char *name;
-+	unsigned int max_ports;
-+	unsigned int num_lag_ids;
-+	unsigned int ageing_time_min;
-+	unsigned int ageing_time_max;
-+	u32 dscp_prio_mapping_is_global;
-+	u32 assisted_learning_on_cpu_port;
-+	const struct dsa_switch_ops *switch_ops;
-+	const struct phylink_mac_ops *mac_ops;
-+};
-+
- struct yt921x_priv {
- 	struct dsa_switch ds;
- 
-+	const struct yt92xx_series *series;
- 	const struct yt921x_info *info;
- 	unsigned int meter_slot_ns;
- 	unsigned int port_shape_slot_ns;
+ 	for (unsigned int i = 0; i < ARRAY_SIZE(priv->acl_blks); i++) {
 -- 
 2.25.1
 
