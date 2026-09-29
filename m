@@ -1,266 +1,132 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C003DC856
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAA343C056;
+	Tue, 29 Sep 2026 03:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651137; cv=none; b=SANQ4AAwegVFFdFEasqfoZBEoSUVIn+lEmA77Sfk5J8GE6CguvnZHFA9uJM0ccUCB4mjjO146UCGmt9fsU9Ggzem7V9cFgtPUcCFjrXLYJom+hoI20XV00YqBrP4rS22v+GwYqdWUqmFP7nnfL/WaUDa583TQNhdYZKlQn4xL8c=
+	t=1790651958; cv=none; b=rwis+qdkIsdeYXlBXCZS+I+2/FzWwAqKqo0bQFjeUIYLMLVpxM7Ic+BF/dN0m50p+IYxdvQpcM6+fRa77QLjyKNz2S8dSvIIk/ziw2QdOS18XGUu4erkFbF4Ym5zeK4IaPWMkvzo9kcxOpjuJGVAh0dN/nk1R2MkLxhHCvziibU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651137; c=relaxed/simple;
-	bh=w8DOuZZGd2nm/gkt6BoLViQEfnm/YPVtC9gklxjn1mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYuuWqiMbRiuVL9IbxFkMjt4jWfCGhwAPnCUJbpP+u+XGjhj8IOiTCfnCNMqzcg3kXa/TeaWw+drZj5bWaAT1myXJ9o3hX/xiS4G09wgz2qX9WmbYiUY/mTA4V0Ei2EgT0wQj//vYHMtu8aSVM34Al176PHXzetk9i47zrn/pu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=ZVKh1sZY; arc=none smtp.client-ip=74.125.229.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790651958; c=relaxed/simple;
+	bh=eFFpSJGTY9H51+Ppr2ck9NUn017OEic632u7lr+XJFs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Vnw8pWxeIRAOSE6BBAWpyEhAF13EcxnNxfjyEmkSgWkDkNQfj5DZEFXQYQ4JwNEcbh6sKa8QN0S8mszOypeaJkWrv1bdRixu8iaWLnM0Ny7CcxFuNDoYhuctLtNr9HH3IwxILNbvK9YAth0Za8xCy40deVzrk528fXfeSaOsAVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=in7S4NcX; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=WyvbW2mr; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="ZVKh1sZY"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144d60be6b0so2157925c88.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:05:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790651130; x=1791255930; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xj/nT+s+vfeEgAANroYRGDSiPbdpYtnqapJFVXVuFHg=;
-        b=ZVKh1sZY41Ki2YuxgAD9wQzogZIwnkeFyrQSAKJ2TfNBCvVCRu1Zb5VpmeLhJOWuvv
-         Zmvt2dPHqnjBhjGwbcF5mob+V16UN0Ro5qW8xxfy0gVWUi4vDfA6l6sxF8aUKTkiZp3B
-         vdFtsPto1z/Pkr7xWR/u6RLYMaqOVB1/xZHt4ct/dtsfoLkLbXdzu1Z0ezlIQg64QjBd
-         xbpMP7isMvIiIuJdCbvM4B2/t6Ytixa5kzNzASfY1klyjLM4HTZQPg/5ZPKqZdycg492
-         fqlF5gqrJXxHjx4Kd/vKzAynCSJT28ImkBdZltoUdcJCYm0PG9NVgDheYOYPM1bP9hO6
-         xYJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790651130; x=1791255930;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xj/nT+s+vfeEgAANroYRGDSiPbdpYtnqapJFVXVuFHg=;
-        b=qDErBRsZ3MSVHHB+O1gNdf+llX1N9sPeHgAJrZTJqjK94+hwIJlh4exBYKMdCQBU0M
-         H6EMvtAjsF7L+z8/ZmckomdISWOE/w75zqU4pAcDjpkvu3FfKj/k1naXN++Oj2yV5+VP
-         nqpIQaEc0MsVjYh/HwGlMDwp2rRk+Pi7oL5P/E+1G0cZlSCR5KfLn7eSdYO7ShTIxSRT
-         2ER9gQPICUY2juLc+QobMfdlA1AkdIMLjZHX68e6XmQ4XUz34unFrjOj5iR3cQ4LC8Io
-         sMwErd6bs1nelNQotmsWotvebHN1tOqn5sCIggToyU3CFdnN2sxPUG/iSOoO0g2V1HlG
-         AKBA==
-X-Forwarded-Encrypted: i=1; AKwUvBwYxrppR+JrdVX64DuWr4KzLrq2AIZ7vpqSVhq9mkrYm44iMOiPIAneA9K0K2ftw92wBqeLOL4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXPvGli9dakEX9WQ8Ph9wSCSjuU6EV6unqHRAi3zFUwGt8s/BU
-	m1WMgltTFCXQLX0W/qERo0kza2S/XY5wLoUpDhtbFcI7//3OMuocbUJoGOREotzOgLk=
-X-Gm-Gg: AYBFou3b7LjRLfAPO5RqHNPplPKTPDTFyLBsZLPH5vatZaYcTi4T7FDmQ+e6xNDWlkX
-	b1G70+p4O4RkJRnirhfrZ9eEPzeGxP+WxBFO5PbJ1/BQsjCvLZ8PyEOOokdCsAzMm75A+5cvfIW
-	IztYxsprP+NETtFzQp3UTwgqV11wfC24KpJQTVQhCOh5mYwn1eY7yx7mcZqe+s6mynOOmmWH4L0
-	xwLdIxJMV+T5LXj9yegqllkal1LBaSLKc0yp2pFgwI9/lwT4pf8H8sdP0XjLJglfugKHNqosLnn
-	Ayb9x6yjLcn7SqAi5uN3VDG2BoPlYuEcIbX0xw99s8tsNbPBCyx/9J/4ApktXjZCP3U8TkdynaU
-	xDM8GH1H9GgbwI4VhpTyjkmJlsIHUynk3FpAYk09+CvlB1y9q4J/gQ/qm7cZGgb7Y5bv8Z23f0+
-	sx7+gYG1SoH173YXXLZzYLmPfUwz6cjNiqpT0jSFTOWkDTHSPrdgqZM/VaqxazvAPVrI/ndXFZb
-	sEaWaWzzCjsFlp85f/PjI7u8SE6Z39kjCfamfu3R8D2rdLNTKz+xLOeHet0QAnhlIZN7cA=
-X-Received: by 2002:a05:701b:2506:b0:141:4c37:a20a with SMTP id a92af1059eb24-146cdeb8d0fmr11289108c88.9.1790651130029;
-        Mon, 28 Sep 2026 20:05:30 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm20275279c88.9.2026.09.28.20.05.28
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 28 Sep 2026 20:05:29 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	netdev@vger.kernel.org,
-	sdf@google.com,
-	toke@redhat.com
-Subject: [PATCH 6.6.y] bpf: Defer work in bpf_timer_cancel_and_free
-Date: Mon, 28 Sep 2026 23:05:23 -0400
-Message-ID: <20260929030524.86560-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="in7S4NcX";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="WyvbW2mr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1790651942;
+	bh=eFFpSJGTY9H51+Ppr2ck9NUn017OEic632u7lr+XJFs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=in7S4NcXBLwGV5p8oRmrM10z69InSjoIUpBGR5fv/VOyV1PErN53DmVm202ou1yRo
+	 E6zIWmnEWEN3bxdz0+wxr1qAHEe2vQwvcHgSYJhCb0ex/svH6+z/c0t7HxfG+OTKuQ
+	 33zmuDGAf0vZ1gUeWspm4TBruR4ESv2uTR2ULxTTXdrwR8HBUkU2ToehDhPmyxJHlW
+	 wAMbP0/N0oRWqLDo8FE9dioqt3rbGFVAWsnzYoUdDEo5qkYDJzo1oNVFYX8LhV9/vH
+	 7mYu7ccDA1j86GLTPreGri6nrYympCy51A3KvinS0XWyUBUW7tB5KL6tYDKHHBiF8A
+	 zyiPYFdIqHbSQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 95F0B4228D; Tue, 29 Sep 2026 03:19:02 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1790651938;
+	bh=eFFpSJGTY9H51+Ppr2ck9NUn017OEic632u7lr+XJFs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=WyvbW2mrNFF4ph9PXQnGEQ/2+bgGxHZ3vVPILPYdDjMWruJeCn4qUP1OCQIkmeERC
+	 veee9AvQBfEFw/8d3wnV/EFiNUX/GUklqlBjWdDzVaP/LlCjUIdkZuGEkIslTQhkO5
+	 3mdFTjUWvwxd4rG7QtKhPR+jeoMQUXiJL9xVhk5zOJ+nHtM0gcknZa97dtcGPhIg82
+	 Dn53u7Au3HwxHAWadBAu/xkgzWXRfzvO6j+U/7aAA/Kggjc+9JqDiQVF62dZ4Oc3AN
+	 Zz9GZA7gfzQiEMAIK8UNMOmmyRInXc7QUvGlNSoGrx1UJeHbQDIwejx6QQtUCh2WGw
+	 kAOXLST7YhoTA==
+Received: from AMDDesktop.lan (p5dd1eaf2.dip0.t-ipconnect.de [93.209.234.242])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 12D6142255;
+	Tue, 29 Sep 2026 03:18:58 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Date: Tue, 29 Sep 2026 05:18:49 +0200
+Subject: [PATCH net-next v14 01/14] phylink: Add phylink_mac_interrupt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-ax88179a-v14-1-a1f2249e42ea@birger-koblitz.de>
+References: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
+In-Reply-To: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ WANG Xuerui <kernel@xen0n.name>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+ Jianhui Xu <neuromoments@gmail.com>, 
+ Birger Koblitz <mail@birger-koblitz.de>, Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.14.2
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Add the phylink_mac_interrupt() function to phylink, which
+passes a link-change interrupt received by the MAC to phylib.
+This function can be used by drivers which want to avoid
+polling the PHY and instead rely on an interrupt received by
+the MAC when a link-change happens.
 
-[ Upstream commit a6fcd19d7eac1335eb76bc16b6a66b7f574d1d69 ]
-
-Currently, the same case as previous patch (two timer callbacks trying
-to cancel each other) can be invoked through bpf_map_update_elem as
-well, or more precisely, freeing map elements containing timers. Since
-this relies on hrtimer_cancel as well, it is prone to the same deadlock
-situation as the previous patch.
-
-It would be sufficient to use hrtimer_try_to_cancel to fix this problem,
-as the timer cannot be enqueued after async_cancel_and_free. Once
-async_cancel_and_free has been done, the timer must be reinitialized
-before it can be armed again. The callback running in parallel trying to
-arm the timer will fail, and freeing bpf_hrtimer without waiting is
-sufficient (given kfree_rcu), and bpf_timer_cb will return
-HRTIMER_NORESTART, preventing the timer from being rearmed again.
-
-However, there exists a UAF scenario where the callback arms the timer
-before entering this function, such that if cancellation fails (due to
-timer callback invoking this routine, or the target timer callback
-running concurrently). In such a case, if the timer expiration is
-significantly far in the future, the RCU grace period expiration
-happening before it will free the bpf_hrtimer state and along with it
-the struct hrtimer, that is enqueued.
-
-Hence, it is clear cancellation needs to occur after
-async_cancel_and_free, and yet it cannot be done inline due to deadlock
-issues. We thus modify bpf_timer_cancel_and_free to defer work to the
-global workqueue, adding a work_struct alongside rcu_head (both used at
-_different_ points of time, so can share space).
-
-Update existing code comments to reflect the new state of affairs.
-
-[ Backport to 6.6.y: mapped deferred deletion to the older bpf_async_cb
-  layout while retaining the work and RCU lifetime ordering. ]
-
-Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20240709185440.1104957-3-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
-Hi Greg, Sasha, and bpf maintainers,
+ drivers/net/phy/phylink.c | 20 ++++++++++++++++++++
+ include/linux/phylink.h   |  1 +
+ 2 files changed, 21 insertions(+)
 
-I am working through the small CVE backports still missing from 6.6.y.
-This one addresses CVE-2024-41045. It defers timer destruction so callbacks
-cannot deadlock or leave an enqueued timer freed.
-
-The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
-This fix also affects 6.1.y, which will need a separate backport; this
-submission contains only the 6.6.y patch.
-The target-specific adjustment is recorded in the bracketed note above.
-
-Could you please queue it for 6.6.y?
-
-CVE: CVE-2024-41045
-Upstream: a6fcd19d7eac1335eb76bc16b6a66b7f574d1d69
-
-AI assistance: An LLM helped identify, adapt, and validate this backport; I
-reviewed the resulting code and validation evidence.
-
-Thanks,
-Artem Dinaburg
-
- kernel/bpf/helpers.c | 58 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 46 insertions(+), 12 deletions(-)
-
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 419e49946cbdb6..1fa140915b0c03 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1104,7 +1104,10 @@ struct bpf_async_cb {
- 	struct bpf_prog *prog;
- 	void __rcu *callback_fn;
- 	void *value;
--	struct rcu_head rcu;
-+	union {
-+		struct rcu_head rcu;
-+		struct work_struct delete_work;
-+	};
- 	u64 flags;
- };
- 
-@@ -1188,6 +1191,22 @@ static enum hrtimer_restart bpf_timer_cb(struct hrtimer *hrtimer)
- 	return HRTIMER_NORESTART;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 3ec3bb43910953f3d57a4601633d0c3be65e959d..2621d568dfa24c29d69def019e11427d5f355b01 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1612,6 +1612,26 @@ static bool phylink_link_is_up(struct phylink *pl)
+ 	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
  }
  
-+static void bpf_timer_delete_work(struct work_struct *work)
++/**
++ * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
++ * @pl: a pointer to a &struct phylink returned from phylink_create()
++ *
++ * Passes a link-change interrupt received by the MAC to phylib.
++ * This function may be called in interrupt context, and therefore cannot take
++ * a mutex. However, it is safe to assume that the reference to phy does not
++ * disappear during the call, as only an SFP module may be unplugged to make a
++ * PHY disappear. SFP modules however do not support interrupts.
++ */
++void phylink_mac_interrupt(struct phylink *pl)
 +{
-+	struct bpf_hrtimer *t = container_of(work, struct bpf_hrtimer,
-+					     cb.delete_work);
++	struct phy_device *phy;
 +
-+	/* Cancel the timer and wait for callback to complete if it was running.
-+	 * If hrtimer_cancel() can be safely called it's safe to call
-+	 * kfree_rcu(t) right after for both preallocated and non-preallocated
-+	 * maps. The timer->timer = NULL was already done and no code path can see
-+	 * address 't' anymore. A timer armed before bpf_timer_cancel_and_free()
-+	 * will have been cancelled.
-+	 */
-+	hrtimer_cancel(&t->timer);
-+	kfree_rcu(t, cb.rcu);
++	phy = pl->phydev;
++	if (phy)
++		phy_mac_interrupt(phy);
 +}
++EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
 +
- static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u64 flags,
- 			    enum bpf_async_type type)
+ static void phylink_resolve(struct work_struct *w)
  {
-@@ -1230,6 +1249,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
- 		t = (struct bpf_hrtimer *)cb;
+ 	struct phylink *pl = container_of(w, struct phylink, resolve);
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 1dda5c7ed5f146930d1acc6f06072e6755167af6..f6c1db837fb5062c6d42ffc6489ec06ae84e535b 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -768,6 +768,7 @@ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
+ int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
+ int phylink_speed_down(struct phylink *pl, bool sync);
+ int phylink_speed_up(struct phylink *pl);
++void phylink_mac_interrupt(struct phylink *pl);
  
- 		atomic_set(&t->cancelling, 0);
-+		INIT_WORK(&t->cb.delete_work, bpf_timer_delete_work);
- 		hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
- 		t->timer.function = bpf_timer_cb;
- 		cb->value = (void *)async - map->record->timer_off;
-@@ -1484,14 +1504,8 @@ void bpf_timer_cancel_and_free(void *val)
- 	__bpf_spin_unlock_irqrestore(&timer->lock);
- 	if (!t)
- 		return;
--	/* Cancel the timer and wait for callback to complete if it was running.
--	 * If hrtimer_cancel() can be safely called it's safe to call kfree(t)
--	 * right after for both preallocated and non-preallocated maps.
--	 * The timer->timer = NULL was already done and no code path can
--	 * see address 't' anymore.
--	 *
--	 * Check that bpf_map_delete/update_elem() wasn't called from timer
--	 * callback_fn. In such case don't call hrtimer_cancel() (since it will
-+	/* We check that bpf_map_delete/update_elem() was called from timer
-+	 * callback_fn. In such case we don't call hrtimer_cancel() (since it
- 	 * deadlock) and don't call hrtimer_try_to_cancel() (since it will just
- 	 * return -1). Though callback_fn is still running on this cpu it's
- 	 * safe to do kfree(t) because bpf_timer_cb() read everything it needed
-@@ -1499,10 +1513,30 @@ void bpf_timer_cancel_and_free(void *val)
- 	 * since timer->timer = NULL was already done. The timer will be
- 	 * effectively cancelled because bpf_timer_cb() will return
- 	 * HRTIMER_NORESTART.
-+	 *
-+	 * However, it is possible the timer callback_fn calling us armed the
-+	 * timer _before_ calling us, such that failing to cancel it here will
-+	 * cause it to possibly use struct hrtimer after freeing bpf_hrtimer.
-+	 * Therefore, we _need_ to cancel any outstanding timers before we do
-+	 * kfree_rcu, even though no more timers can be armed.
-+	 *
-+	 * Moreover, we need to schedule work even if timer does not belong to
-+	 * the calling callback_fn, as on two different CPUs, we can end up in a
-+	 * situation where both sides run in parallel, try to cancel one
-+	 * another, and we end up waiting on both sides in hrtimer_cancel
-+	 * without making forward progress, since timer1 depends on timer2
-+	 * callback to finish, and vice versa.
-+	 *
-+	 *  CPU 1 (timer1_cb)			CPU 2 (timer2_cb)
-+	 *  bpf_timer_cancel_and_free(timer2)	bpf_timer_cancel_and_free(timer1)
-+	 *
-+	 * To avoid these issues, punt to workqueue context when we are in a
-+	 * timer callback.
- 	 */
--	if (this_cpu_read(hrtimer_running) != t)
--		hrtimer_cancel(&t->timer);
--	kfree_rcu(t, cb.rcu);
-+	if (this_cpu_read(hrtimer_running))
-+		queue_work(system_unbound_wq, &t->cb.delete_work);
-+	else
-+		bpf_timer_delete_work(&t->cb.delete_work);
- }
- 
- BPF_CALL_2(bpf_kptr_xchg, void *, map_value, void *, ptr)
+ #define phylink_zero(bm) \
+ 	bitmap_zero(bm, __ETHTOOL_LINK_MODE_MASK_NBITS)
+
 -- 
-2.39.5
+2.47.3
 
