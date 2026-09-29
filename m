@@ -1,61 +1,47 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2160519934;
-	Tue, 29 Sep 2026 11:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D586451AFF1;
+	Tue, 29 Sep 2026 12:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790682893; cv=none; b=OoqMDnfS+7sljRRhlqvithOuPkVMLhPluEXeuN84/A4MoWCRgk9giTX9///v9WGF9j8S1KKdbnrRzwCRDGAXfuo8jtbW6jACKL+oDi9Py3aclUzhbhBGbo3Su2YCPBl2mevWsAh4ubzwAj2WSbUf/fHweS9Zk7Aw/86Rb5ksWvE=
+	t=1790683270; cv=none; b=G4EMxy/c7iXnNy46zoYEKLAXF7l5Y3RBLjrsIsV0i96wpT7P8b6gROfuynEBgj3kP9wlEY8uKi8R6tvoxiQ4Jp5yCRa1X+z1GbC6Dn1PDzH07P0u/lL53evuDvDHOKFPYoal1HL/IPAtY1odgMfQ028yPJOaFotcwqRGnCyH2fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790682893; c=relaxed/simple;
-	bh=DtqkbPUa81FQQrzsYaoaL1FIE2UdQgTyoycbJmy1bmA=;
+	s=arc-20240116; t=1790683270; c=relaxed/simple;
+	bh=nyMeU35+Ypi/1OQ+wUrl2Zx8F5lkP4PYlGngnE085Q4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDrB0/T7idW7NLpPX/NFrOwkwJqrCEKS6qfxDY5y842H7bxdkaCkWkyV4z5v292wkqgjpqQ3jo8Knzm3PzRxp9B41DCNnsqTzeop6vm9iJD6zs3WEqiAgpxL+7pj1kRfJqafaQk3HJeyGtbKjtoPytGfBWUZLTR7XMo5gjvxAuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B8GD4qiK; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=oPq4lvKNlkhKJJz2sP8WG/UBUtQjXmTNSDT04FjRGskBZ3WqE+4ursbCa+Pg/7jTDFuUWFD7fo9dlq9TRdmXuH2ZneUdTIX60kPQJGiTP357UqnNPqXHPXOek6tTE2OynJG1CnAobKuIg3RMlUm5V45D7TS0TlrHCuDXlf0uHlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=w2WbMj7V; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B8GD4qiK"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="w2WbMj7V"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=E5+DOXgoT9iAoCF5tpbNaYvfjMDSAHAT56qKN1IGRIM=; b=B8GD4qiKYcgBmoI6UBQO0tLNeF
-	exB4SQZ3F2yX8xK0wBIa1eLDjwMAWlebcegGhh/Wy2G+HJA4wvERgY9arbv7oXE5ub+4IbUQZcthl
-	gcM61MiyEKZWGIKNXy+qnm/riQL9Jirq6zJh0plkTGyvFbuX+LbGiPzLfONKcKYWAOCk=;
+	bh=+lZZYXDSu8XAzKlx2sutGalqGKpLcifjDDzGkb1+kCw=; b=w2WbMj7VgQXZ8PbygBwHK+K/yO
+	Icq/YgHYsEFAIgVYRhZJJggjvA2ADCLzghnHavmakWNBMJRjsTRZ0NZU7ZmTGrQP06Pj4qT80tgCu
+	ooXdw0mlDNxLN4TAApBhVWSWDRli1hrSz3W/vQoUNfCcK8afxadvdeihAd5gFEc38Otg=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xBWPk-007wQt-7x; Tue, 29 Sep 2026 13:54:28 +0200
-Date: Tue, 29 Sep 2026 13:54:28 +0200
+	id 1xBWW3-007wVm-Da; Tue, 29 Sep 2026 14:00:59 +0200
+Date: Tue, 29 Sep 2026 14:00:59 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Jerry Ray <jerry.ray@microchip.com>
-Subject: Re: [PATCH net-next v8 07/11] net: phy: ncn26000: Support for
- onsemi's S2500 internal phy
-Message-ID: <e8959c33-1b50-46e1-b9b1-029f5fec81f5@lunn.ch>
-References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
- <20260928-s2500-mac-phy-support-v8-7-7e011aacc309@onsemi.com>
- <CH0PR02MB78673D8A3CF809B016983DAC838D2@CH0PR02MB7867.namprd02.prod.outlook.com>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com
+Subject: Re: [PATCH net-next v22 2/3] net: phy: Add support for Template
+ Control register for PMA
+Message-ID: <f6844510-3fe6-45b3-85a4-8225be495f04@lunn.ch>
+References: <20260929095430.508657-1-kyle.switch@motor-comm.com>
+ <20260929095430.508657-3-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,17 +50,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CH0PR02MB78673D8A3CF809B016983DAC838D2@CH0PR02MB7867.namprd02.prod.outlook.com>
+In-Reply-To: <20260929095430.508657-3-kyle.switch@motor-comm.com>
 
-On Mon, Sep 28, 2026 at 10:50:00PM +0000, Selvamani Rajagopal wrote:
-> Andrew,
+On Tue, Sep 29, 2026 at 05:54:29PM +0800, Kyle Switch wrote:
+> Add support for the 10GBASE-T PMA Template Test Mode register
+> field, which allows selecting one of eight test modes (Normal and
+> TestMode1..TestMode7) used for PHY validation.
 > 
-> Thinking that I don't need to remove "Reviewed by" tag for minor changes, I kept it.
-> .read_mmd, and write_mmd callback was changed to use newer callsbacks
-> recently introduced in the in the kernel.
-> 
-> Let me know if you want me to remove "Reviewed by: tag for this change.
+> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 
-Minor changes like this are fine.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-      Andrew
+    Andrew
