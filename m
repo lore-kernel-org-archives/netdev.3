@@ -1,106 +1,72 @@
-Received: from mail-pz2-f38.google.com (mail-pz2-f38.google.com [74.125.228.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0B4E4319
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF60F4E3ED2
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790718528; cv=none; b=uR+4qw7K2ZlMYVPylvZ+qkoONA+Wohgt8cGNXg+qSiLk+Vey/ueLl8FobdKyb0xhRd8zt/PR5s7eAxTR8VJuRgHvXrCbHkqwmaSUgR/TFCotehbZ5arLG41/lGyAytVk4FzJS6tjtoflzAPsSe3dagf4XHztRbWhlVhiR8sQek8=
+	t=1790718569; cv=none; b=W9RQyA2YjEcrvPOe/uryMRh4r/A0P06ubb7kg3tj7JTLgaD8d6w9WV16qIq540qoQ6UUZ9PFA2fZrrDAlg+QR0bKw/fVy1UaTBYWDp7vYMQtvBB/1RwuOQ1YxNY7sEkvoE6azAli0IkIOoHmB2IDXZeqA0QuMyKTp9QVP09aIiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790718528; c=relaxed/simple;
-	bh=jEAlHCaf7HwrBMr2fEr3XlegkapBlO+MtAspedqTvo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o2pqkmdNYsuyLR3fFjQqiI29fPkmHzzaru060/AtDw1RhuZstsz8u+lo/U9PVMIo8D8azJpB4oHAe5ApMWxh8+So6rVHwapqwHF20cXSjEVEs1rRm3HzgGxeM/vlagJvwRiGdPdwncPISAuBEs+o0bdOzHyu1A4vEePeEkWg2GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=GqpdP/Gl; arc=none smtp.client-ip=74.125.228.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1790718569; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XV85BGF4oD0NSAtRiuakK5Lk+6UC+DtPQYVyFgCR+zRD42DlPqoiNgD8DoSGOX2PokxtVSW4tYFGAD9ASqcVsOWJFfCm5aQeWxJlI9QAt3pC35I8aG2xBAyOeCUseVlps6Z5wV8A8jPZMV66e2YkK96sKktf0Y9hSMmIUs1Ttls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AE5gE/hk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="GqpdP/Gl"
-Received: by mail-pz2-f38.google.com with SMTP id d2e1a72fcca58-881a3a28e72so1525006b3a.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:48:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790718524; x=1791323324; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GnGR8D9Ofu0keKVSYqoY+bfqxp7ik+ClHNVT61CMuqY=;
-        b=GqpdP/GlEJvVvytyTk4nqQJmNitdCQD0RMVjVLvTfBNan8AkB3HO9RwtZTdlOUKYZP
-         zjlceeV/o0uOKUpAcnuK44sBIWI0kkx4CrNICwDpLNjrbAJL8KjqwKkT71bTCjz3XDY1
-         0elXE5glbbzsRagBdQAZmV7L05J6zINy5f3Bc6CLvwu6Ntjoa2f+sTpOk2yotzvmjn62
-         Q1ZwSkpQbVzbmTjksZdGp2Ka5k1TyWRk3lw9XCGL85vCcTaR4J8GcwvERslRiGzrMHEV
-         AMmGIpjuHIIbkeQeIVEb44s36/M8Ur9DS7cSLkECGHxjGpfjUdQPeOy/9RbRjuOA1WXJ
-         z+qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790718524; x=1791323324;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=GnGR8D9Ofu0keKVSYqoY+bfqxp7ik+ClHNVT61CMuqY=;
-        b=kpJXs7lx4yR3U/j8H45u+yMiCjI63W/04+jo7fbY/ux7yj0NgSU1VB3nj9s0X4UkbG
-         ODqZSZHyRFRkrW+xFJRbJa458AV2/JNJa7re1zC6lqqW3kes7QWXuyAGD+mNL0yApC9Q
-         3475M2jt74QPBDjB3s1bZgBdyaVrxP8vOdSnhhIU5/LE2bwBeqFKxJ1LRopAxh0fd8n+
-         PszKBjJE/uEorODuKP1tv8aVR+CiO8J6SE0rUAU54dPI3ilyQvbyIRu5x+ZfkxMzJRc+
-         CsoS6VLmcSU3pYy+WMadTRbbtnhkgOW66mY2tFqtLQGYquGU45ElQMDJzOJZ7bfk1ojH
-         toOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw3HW3vQE7iBqmYVxz/YnXPjggJZEKEnTPFFA+ilhXCzbhnYqU/Q74BJRvfOyqbe5VT72FHIH0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mxmVek6is1Lj1Ss261+AkjDP2lU4xDihaq25D+jNf7bz+1igST
-	5BsG9R13KipB3nk1axbzOJEEBG4AExDoCWD5V5L0TVYTfi90sS380LNqQvBpB53j4Jw=
-X-Gm-Gg: AYBFou3cyo5CEbEW+ZW1Usku0EIt3Eq4eAdGYDuLn6jGI99JFAp/vBGGCAKcg6BFwLm
-	5H3P6k9JAvry6Ldj36gpjag275AjxTdg2Ad/Eb71BhS9sEFAafpm77P+d1xGiindyCNpEttaW1P
-	w0usvo7XZa8y2nKZIT9Rn3eHsGarRsp4zRGqkygtaQh9HDu9Qa9rg68ySXCgCiC9CEFx/lELNEL
-	N6Uy3uveT0z1t3Kmv4GDLlhQ3c9vXFJ1PbE5NBc89ISCxVuL9wBeniqCccybTy23qVWJNMo7Nko
-	QZ/6znr2WNAvW1VenXNfaaxhJuRnq+7zsDctJFzXkE17T8BsruEELgyc3hA9xxbbZvKanD9GGFh
-	SIB/HnjlD2zAhXJP7u+nVE5pRJN6rZRWIsvB9acKvaCvcAkUfKv6bLnXKC1K05oRFi0Hb+J+gU4
-	zaTY7/TWI3b70LsF3rLPMVJgKzeDvz/QxvtQvQmKsahuSOLW1YC9z1YnK0z8deP079Y5w4YZ5bS
-	dXytlmDiii3bNPP25BU3gI=
-X-Received: by 2002:a05:6a00:3005:b0:874:705d:f63e with SMTP id d2e1a72fcca58-886c48b3682mr475937b3a.32.1790718524401;
-        Tue, 29 Sep 2026 14:48:44 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:58::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8868ccc884csm451233b3a.50.2026.09.29.14.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 14:48:43 -0700 (PDT)
-Date: Tue, 29 Sep 2026 14:48:42 -0700
-From: Joe Damato <joe@dama.to>
-To: Ayush Yaduvanshi <ayush37735@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel-mentees@lists.linux.dev
-Subject: Re: [PATCH net-next] atlx: fix kernel-doc description for
- atlx_tx_timeout
-Message-ID: <arwyOuM3q36/q4RX@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Ayush Yaduvanshi <ayush37735@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel-mentees@lists.linux.dev
-References: <20260929101714.51579-1-ayush37735@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AE5gE/hk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9841F000FF;
+	Tue, 29 Sep 2026 21:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790718561;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AE5gE/hkxX+UGFPSe5nrodNHHZ0qErPD81wr6EdDBNXTwJSSmCfqFoag0MBQ2kNxs
+	 OVWYb38P1BkXrvkHxVR5dwKKuVZfhi1qf3eLgl7DI1XI/73GhiIY67lDgCEHX+gQ7Z
+	 Xwu3OowqaFlLJk4rrb9pMZx8TfWGHBLVLOhKF7rd4rdHoJ7iurXRNwfbEPwQWLd3ls
+	 6gi068TBLN5OLfak90fKPq3wDDYdQ+GNlHldwMaa/zg7FPjrnFP43tlabgre7MG4Yh
+	 wDWzSmP/4YRKD862oqfD+bGopsQDnCAVN7tLYF6JpINb4quc7CvBs0JqK3TkT5O75r
+	 JoEBNbU20BfvA==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ edumazet@google.com, netdev@vger.kernel.org,
+ Xinyang Ge <xinyang@anthropic.com>
+Subject: Re: [PATCH net] ipv4: free inet_opt after an RCU grace period
+Date: Tue, 29 Sep 2026 21:49:20 +0000
+Message-ID: <179071856014.31693.12785796665106437529@kernel.org>
+In-Reply-To: <20260929214351.856940-1-edumazet@kernel.org>
+References: <20260929214351.856940-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929101714.51579-1-ayush37735@gmail.com>
 
-On Tue, Sep 29, 2026 at 03:47:13PM +0530, Ayush Yaduvanshi wrote:
-> Add missing @txqueue parameter description to atlx_tx_timeout
-> 
-> to eliminate kernel-doc warning.
-> 
-> Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
-> ---
->  drivers/net/ethernet/atheros/atlx/atlx.c | 1 +
->  1 file changed, 1 insertion(+)
+Hi!
 
-Reviewed-by: Joe Damato <joe@dama.to>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
+
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
