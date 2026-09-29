@@ -1,181 +1,208 @@
-Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A758379C23
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A13C37A820
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695734; cv=none; b=Q7bBcy/201FYPtxh6i+FvdYwnJYaAbbyxVeVlrJe9tlQT+9e19mLxlBdHYYqCid1KHOfmzU3YaK2q/MRe736INQRxec97OfRn7FRJX51C5NvU2roHD5bgfBCiRuFiXZNbuF0XSHH0L89rJCsRGPO0e+38M4kIMu/fYDDddqHtXU=
+	t=1790695882; cv=none; b=bDjDoSbdjsZEXfKleqNFs7zjlQWJOET9xRIv8YrjmAMCxwGo/Nu3rEPQzI2701nLf1+TT4131+yQVpyQhyVEWsOYeXcdlCBExrKJNVNEMVbqZB0oJeICP4vx/Zde2BKraeUdd4qq6epp0FhnRHL+iorzsdaDbSDZJO8BWDD4F0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790695734; c=relaxed/simple;
-	bh=5I+PG1LJwpZfrorxHQ6vHavEcbMCTKjy9jPyw9xe4Vc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Fnw5QAwbwohCeE29OX9gI1pN/bIG2EPO9iw6YfRvjPydezsEJygiUJCiKsgjGdR80ST0UJx7b1h/YF1ITWPImF2qaLDWsW/LkyQP3Od/97MAVT4H4SSyXfZxwMVz6YaJMY7yIvDJ6sEsrE8miW35snK4RFTtzsmZimPRoNMPGFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4VnoWOc; arc=none smtp.client-ip=74.125.224.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790695882; c=relaxed/simple;
+	bh=V9lg38Vf7jZapxl1nX3JHinivXWDameN/IxWV3yotv8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=bYSvIZp6aLI0dDAyfioznzkcpIIEk5QP//Utd7ChIBtDTYOPV61cm1HlSBJ2GHYkh5+NpVJ2wnQroOXq3I8ugDY7NudQd4hDT1IjuSIpLg5+9lFU11yVuQKEMTSoc5EdXNygSAVze/qMD/TB6Lpvcw4rSgRTJlx0tPiN/7/AoNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=i+oa0SA1; arc=none smtp.client-ip=74.125.228.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4VnoWOc"
-Received: by mail-yx2-f41.google.com with SMTP id 00721157ae682-8a860e532bbso39060717b3.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:28:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="i+oa0SA1"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2dbdcb4f59so455378166b.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:31:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790695729; x=1791300529; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+        d=doyensec.com; s=google; t=1790695878; x=1791300678; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=hwlExALEuIqma+phYwZ53l5lEw6aiZrSHMRC6Erf8OA=;
-        b=W4VnoWOcHwdnGGvzV85AVV6fisuTNHcLwQOmz0zjjM4q3vSQLALNqOCC+5rl/84ZJJ
-         rdcL+qwFz7Fqd05uQMEbV+JeFk5V5FMIOIUQO7SUVFUi8qNwbLiswpG+ghM9VaeKoM0z
-         4MxMzq41lsEinlTFoLVPKBiEY1MQW5liMBpzFX6KhJ+BeDThpDr9QBSkbqS4jC1GgC4x
-         Xdz2qCOWwZC5soJfJ5wcrmx40WAJAJXSpplGYUXT031ixBlFssATn/1vZPzz7yMYJhge
-         7gIxdytnpxALkHbOmyUQDl3FQxoWbgkd69oc7z3CKdYpU2oMhIYpJqjpzZFHRtf+pu9w
-         R3Iw==
+        bh=KUokiXULiB5QsBWdM9hQZjEq8BVs/Diba1IyZLK0fCQ=;
+        b=i+oa0SA1I0ql0x913EiKlVthwnGVMwsg9W40HEl7RNvJoE6krGwXeVBRjO0apYZ3BK
+         Iks52N9H6DbTTyLWmfGvNy2C435s3p0Q+FuBH/mQgHK3bwTJARWTyNPCMD68v541deBD
+         MoEjUXaw97/m0DQj7bMH8Ci7OdnzUCriUlcRfIYKk2Yxv1F6ctF+BaTuz2HZQedW7GA8
+         SP/ovagLqDK+oj6iwtBadN4/UrKJ7Ikqao3V1bOCayYobPNZWspV257mnCgr6uD/M+rY
+         IgqCdIa4xNtToaOc8RAiqhwYJ5VB4O7Rcjz9+DVzKhTiIhNkIQihHSoJgKxtG43l1Noh
+         DpOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790695729; x=1791300529;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790695878; x=1791300678;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hwlExALEuIqma+phYwZ53l5lEw6aiZrSHMRC6Erf8OA=;
-        b=lu8OJ/gLt3TSyymJ3I7WKbFPmyBnau5fENVzPFXbHLQGl+FadAKOMVNaQ3dfuocZs9
-         Mh0mnCcqkHeMZH4fBKqDpYB5TnSD4tiehI8C6j4dUytOe+RDhpjISuCEDgQamsSBnUpj
-         JU5N8SEdAyBvib50vv52KOPFVBo2TV0RbxT4XAnUEVpEWHz93CJQ92td/OSk3xgGe/rZ
-         S2DDMaoOsQsQ4QteFnZJHt6/3XqcYxQsHVRhfxsHTiHTlItuS+VvVC3A3/2pXPgEFdI4
-         Aj0BvlBYDZ16PKHHSZqWnPp3ztpaGs0fC5FWChUXONqraVeDn4GuHIgPtT1d9MSSQSx5
-         KGHw==
-X-Forwarded-Encrypted: i=1; AKwUvBztm3npiv+K06uD0sKhr5e7KwgfAAyeb0qMiiM9wVlnpvYjM1gF0sLT40ltcA3ZtF074iIZXso=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLjqkZjKTyPPbd47230bKISdG5cVx/NRbYv2MYFEYSWWZ24mnYn
-	dHoqko2JNtNk+ZIjrVuGQMFVgfp3itJZy8ge7zJPQYjzJnSbp+OoTH+D
-X-Gm-Gg: AYBFou2SXscv5CS243mOMEvb+7SLodp8ElAvZTqRYqj/CfxEDTXJHfip6WtavbYX7p5
-	Pvj38jd+V3O64qKDS3IdGNO55dGIHf6e4VEqVHrZsCE1wgssLBveVqlLPOQOnltXcI4lu5KS/HA
-	bnoP6LmQnxg6iuhq7hqDyYn+DGqkgimKokk4l1G2INNHfTRDkggxQYYwx8V8amQWxVw9Dpoxdim
-	2NrmIz5BtR3NgKv+fiAv8ZPufbqeWq6WNAq3MswPNMIkLs3yDqK/Jz/PF6PZHXLUBAuUrTXBFMN
-	lnjAHU4g7qSc5X1B/rifTiJ1yJnJG6iBstATuwX1XPVWr1PrEzS5HPi3qlp+8B+grVYlAZKQFJj
-	MkMIGag445n5qOeE7r0/ECy90JmoVvddNxtufMK1ebiIKgse2Y25i/gTztfcOdcnJXgW5Xnx9xH
-	vYv4Hg6yhGKRRADFkf6zX3fqLUEvfBEv5W0slAsA/yLm9idwRSjbY/gD7yTykdVzbInmgepZZhF
-	vN6zHS6KlGxVR1tYUs/BvGRXy4HrZTaNWxEPiUixkhTmUgIsgft
-X-Received: by 2002:a05:690c:e3c3:b0:868:505e:b96d with SMTP id 00721157ae682-8a64c3432b4mr71353467b3.2.1790695728518;
-        Tue, 29 Sep 2026 08:28:48 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860f9cdb0sm60998327b3.24.2026.09.29.08.28.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 08:28:47 -0700 (PDT)
-Date: Tue, 29 Sep 2026 11:28:47 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Shiming Cheng <shiming.cheng@mediatek.com>, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- matthias.bgg@gmail.com, 
- angelogioacchino.delregno@collabora.com, 
- willemb@google.com, 
- daniel.zahka@gmail.com, 
- alice@isovalent.com, 
- sd@queasysnail.net, 
- eilaimemedsnaimel@gmail.com, 
- imv4bel@gmail.com, 
- nbd@nbd.name, 
- dsahern@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org
-Cc: stable@vger.kernel.org, 
- steffen.klassert@secunet.com, 
- lena.wang@mediatek.com, 
- shiming.cheng@mediatek.com
-Message-ID: <willemdebruijn.kernel.20906a8caa141@gmail.com>
-In-Reply-To: <20260929100256.23192-1-shiming.cheng@mediatek.com>
-References: <20260929100256.23192-1-shiming.cheng@mediatek.com>
-Subject: Re: [PATCH] net: gro: mark frag_list GRO packets as SKB_GSO_DODGY
- when a list element exceeds gso_size
+        bh=KUokiXULiB5QsBWdM9hQZjEq8BVs/Diba1IyZLK0fCQ=;
+        b=OzYhqexJXYoLIpix67JzPkFXOx86c0flQBo8hxkhZm1JWVhs6/tLAmu/llaKauDyaA
+         xny4S59fRSCq539ZBywvwUxoQTulS+gDYmPjBqIDg9h8sUpSgetWjlp+2jTgBbkkIKOt
+         AP5synl0+JMhRH56Pzz0kwVia+2WRgY12Au6AppDgPoVSckY0H+0aiOVuyMjiFrwbw3c
+         gVfhH1ThvLw+4vQKxNBUq4yREsAUmXfbeYUGFA77VD+0+5aHPVHrY8qtkTaN/23zYe5r
+         p5FhnYKogAyRF+v3G76JemwQmQMvWdZ6m+AjI57ZKO4AtAWacFaJMauQGTuYxNvoQ1ES
+         o4nw==
+X-Forwarded-Encrypted: i=1; AKwUvBwVKOucdEUyE1za3ZkTdWm5n4UjMzGwaZM3nGFf1SkC7EFhKKJqRy81PuRdBVgfWN2WBiRcMCU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kW5RbCq7A4TzeV0eF3FkR0vY1ynbl1aGy7NlShiRd1e6GA2YFI
+	8kjDjDNUx9pFJaWGB667eSvbUn7kfH60BscdX3R5niQxSwRT+mCwWq48vIqkCVywHYcRtfaBxFC
+	IofJroDobJQ==
+X-Gm-Gg: AYBFou3kdPeWGKrV1dksA+w5BFISn4MpwbmqLHrSR/82y2kia6DAjyubZ56Ng15Rrur
+	+V7rD+TVGcilipNdKJzjukwQ/NUC0zNKUitpTS6qeGHR6NTcIwVCj9FE71Fa17HGI61hH2nPdIw
+	JAiRjTt4QQV0KNiv5FCMWCvkFq/NP0gjWhIJwLN1PJKY/yRljGgEyaJ/cOVsK3EZE1JqOHsNfdj
+	oC/+oWSarxn1UgeHXJssKuPLpE8/ni6vh7OY+n5bR/RGmmf2pP8VxUk74DG0wSfnEBjcXrlN771
+	WBbYP1AhCiVXAi9+u7zs3cyCgcmNrFHGG4blI60XcCK61ZcE/fqJqbpouBKKiFdjTH89OJDjqFi
+	zmuGSin6nSpxpFbta6uSqTnu0BIPFcDvo31h0bf5VFcQSt2GQ5ZIiWi1eFDKWuwmtqN0oUm1cQG
+	yXsC+3xTMKEFNFwkXL7VS0cYz7WbYxUbCh6ybz4M+VSBXS/Nm7uHZ/v4XLW4o4roUa2soVXZT+F
+	scUb9UuufYdIyTTDaLU+0xoeZkHJOoVltgdqXN/TeexxLCAnEzDpm+FBQBMILbRD9MF7cNz
+X-Received: by 2002:a17:907:c8c8:b0:c25:62db:772b with SMTP id a640c23a62f3a-c2ac23858f0mr1428859766b.7.1790695878179;
+        Tue, 29 Sep 2026 08:31:18 -0700 (PDT)
+Received: from smtpclient.apple (80.49.145.194.ipv4.supernova.orange.pl. [80.49.145.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e11b9b22fsm1416666b.6.2026.09.29.08.31.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Sep 2026 08:31:16 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH net] soreuseport: Fix use-after-free when a socket is
+ added to socks[] twice
+From: Norbert Szetei <norbert@doyensec.com>
+In-Reply-To: <20260928174546.4022833-1-kuniyu@google.com>
+Date: Tue, 29 Sep 2026 17:30:57 +0200
+Cc: daniel@iogearbox.net,
+ davem@davemloft.net,
+ edumazet@kernel.org,
+ horms@kernel.org,
+ kuba@kernel.org,
+ linux-kernel@vger.kernel.org,
+ martin.lau@linux.dev,
+ netdev@vger.kernel.org,
+ pabeni@redhat.com,
+ willemb@google.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <E620A4AC-8FC3-437D-AE14-31D50C7E2007@doyensec.com>
+References: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
+ <20260928174546.4022833-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
 
-Shiming Cheng wrote:
-> When RX LRO (or similar offload) is enabled, the TCP/IPv4 GRO path may
-> aggregate traffic using frag_list. The resulting skb is later segmented=
+On Sep 28, 2026, at 19:45, Kuniyuki Iwashima <kuniyu@google.com> wrote:
+> This has long been a known problem, and I think it's time
+> to fix it instead of working around it:
+>=20
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 2948dffcc3e1..a33cdf99368d 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -1324,6 +1324,8 @@ int sk_setsockopt(struct sock *sk, int level, =
+int optname,
+> case SO_REUSEPORT:
+> if (valbool && !sk_is_inet(sk))
+> ret =3D -EOPNOTSUPP;
+> + else if (!valbool && rcu_access_pointer(sk->sk_reuseport_cb))
+> + ret =3D -EBUSY;
+> else
+> sk->sk_reuseport =3D valbool;
+> break;
 
-> via the frag_list segmentation path (skb_segment_list()).
-> =
+Thanks for the suggestion. I tested it with my sock_reuseport.c change =
+dropped
+and I was not able to reproduce the issue, and migration and resurrect =
+still
+work.
 
-> However, some drivers can hand GRO/LRO-aggregated frames to the stack
-> where individual frag_list elements are already larger than skb_shinfo(=
-p)
-> ->gso_size (i.e., an element itself contains multiple MSS worth of
-> payload) and may be non-linear (nr_frags > 0). This shape is not
-> naturally produced by the software GRO aggregation logic for devices
-> without LRO, and can lead to unexpected behavior in the frag_list
-> segmentation path.
+One question before I send it as v2 with Suggested-by: you, unless you
+would rather post it yourself.
 
-Did you observe this with a specific driver?
+Should the check be restricted to TCP?
 
-We don't want to have to support every crazy driver scheme. The right
-approach may be to fix the driver.
-
-To understand the geometry: the driver passes a GSO skb with frag_list,
-where frag_list members may be any size, not just gso_size? I.e., these
-do not conform to SKB_GSO_FRAGLIST rules?
-
-I don't recall immediately what the acceptable behavior for regular
-GSO skbs with frag_list is. But for starters such a driver should not
-advertiserr SKB_GSO_FRAGLIST.
-
-> =
-
-> Detect this condition during frag_list aggregation and mark the
-> aggregated packet as SKB_GSO_DODGY when a list element=E2=80=99s length=
- exceeds
-> gso_size. This forces a more conservative segmentation/linearization
-> behavior downstream and avoids relying on assumptions that do not hold
-> for LRO-produced aggregates.
-> =
-
-> No change for normal software GRO aggregation: the new check only
-> triggers when skb_shinfo(p)->gso_size is set and a frag_list element
-> length exceeds that size.
-> =
-
-> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
-> ---
->  net/core/gro.c | 3 +++
->  1 file changed, 3 insertions(+)
-> =
-
-> diff --git a/net/core/gro.c b/net/core/gro.c
-> index 29b4d02bf519..e70ecf19b0a7 100644
-> --- a/net/core/gro.c
-> +++ b/net/core/gro.c
-> @@ -259,6 +259,9 @@ int skb_gro_receive_list(struct sk_buff *p, struct =
-sk_buff *skb)
->  	skb_shinfo(p)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;=
-
->  =
-
->  	NAPI_GRO_CB(skb)->same_flow =3D 1;
-> +	/* frag_list element larger than gso_size (already coalesced before l=
-ist-append) */
-> +	if (skb_shinfo(p)->gso_size && skb->len > skb_shinfo(p)->gso_size)
-> +		skb_shinfo(p)->gso_type |=3D SKB_GSO_DODGY;
->  =
-
->  	return 0;
->  }
-> -- =
-
-> 2.45.2
-> =
+	else if (!valbool && sk->sk_protocol =3D=3D IPPROTO_TCP &&
+		 rcu_access_pointer(sk->sk_reuseport_cb))
+		ret =3D -EBUSY;
 
 
+The closed section only exists for TCP, so TCP is the only protocol =
+where
+clearing the flag leads to the double add. With the check as it is, a =
+bound
+UDP socket also starts getting EBUSY from setsockopt(SO_REUSEPORT, 0).
+
+N.
+
+>> Clearing it between shutdown() and listen() makes that listen() skip
+>> reuseport_add_sock(), and with it reuseport_resurrect(), so the =
+socket is
+>> hashed as a listener while it is still in the closed section. On the =
+next
+>> shutdown() __reuseport_detach_sock() does not find it in the =
+listening
+>> section, returns false, and __reuseport_add_closed_sock() adds a =
+second
+>> copy of it to socks[].
+>>=20
+>> sk_destruct() calls reuseport_detach_sock(), which removes one of the =
+two
+>> entries. reuseport_grow() then dereferences the other one, because =
+its
+>> loop runs over every slot up to reuse->max_socks:
+>>=20
+>>  BUG: KASAN: slab-use-after-free in reuseport_grow =
+(net/core/sock_reuseport.c:291)
+>>  Write of size 8 at addr ffff888132359988 by task poc/621
+>>=20
+>>   reuseport_grow (net/core/sock_reuseport.c:291)
+>>   reuseport_add_sock (net/core/sock_reuseport.c:350)
+>>   inet_hash (net/ipv4/inet_hashtables.c:810)
+>>   inet_csk_listen_start (net/ipv4/inet_connection_sock.c:1359)
+>>   __inet_listen_sk (net/ipv4/af_inet.c:225)
+>>   inet_listen (net/ipv4/af_inet.c:247)
+>>   __sys_listen (net/socket.c:2014)
+>>=20
+>>  Allocated by task 621:
+>>   sk_prot_alloc (net/core/sock.c:2246)
+>>   sk_alloc (net/core/sock.c:2308)
+>>   inet_create (net/ipv4/af_inet.c:333)
+>>=20
+>>  Freed by task 0:
+>>   slab_free_after_rcu_debug (mm/slub.c:6570)
+>>   rcu_core (kernel/rcu/tree.c:2919)
+>>=20
+>>  The buggy address is located 904 bytes inside of
+>>   freed 2624-byte region [ffff888132359600, ffff88813235a040)
+>>=20
+>> Only move the socket to the closed section when =
+__reuseport_detach_sock()
+>> reports that it was removed from the listening section.
+>>=20
+>> Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport =
+group.")
+>> Assisted-by: LLM
+>> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+>> ---
+>> net/core/sock_reuseport.c | 4 ++--
+>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+>> index 29948cb44b7d..031b641be317 100644
+>> --- a/net/core/sock_reuseport.c
+>> +++ b/net/core/sock_reuseport.c
+>> @@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
+>> */
+>> bpf_sk_reuseport_detach(sk);
+>>=20
+>> - __reuseport_detach_sock(sk, reuse);
+>> - __reuseport_add_closed_sock(sk, reuse);
+>> + if (__reuseport_detach_sock(sk, reuse))
+>> + __reuseport_add_closed_sock(sk, reuse);
+>>=20
+>> spin_unlock_bh(&reuseport_lock);
+>> return;
+>> --=20
+>> 2.55.0
+>>=20
 
