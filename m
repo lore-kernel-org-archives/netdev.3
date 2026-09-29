@@ -1,251 +1,192 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013016.outbound.protection.outlook.com [52.101.83.16])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011019.outbound.protection.outlook.com [40.93.194.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105893AF664;
-	Tue, 29 Sep 2026 07:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF1D3955D7;
+	Tue, 29 Sep 2026 08:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790668769; cv=fail; b=WZRw5edIorfBuiWnP4Upmp/SVqpl3lQ6yU3PCbbGVVi3j0ZDdcFwQbXZRWr5q0iexU5ZCsp3p30qDDmw/SDyiqbWAnsnGBa8ZLTQjz0Iz03U6bhoa2Y50j8hIXBdufUfh/ahxsf1TLM6D324hJKttBB4Z8H2aZ/UJJtZMJh2PrI=
+	t=1790669608; cv=fail; b=EzaqLVxTnhqz2Clnz1SoFA0oLbnuC+53bw9//3P5ct9THbolfGq7p93fhhAzn4zl3+5ScTSVfjeW0VawSB5hIIsW/kjECxqKcHjniR6JNVx8uOncnjJuEmhrlidHAZ/wENhhxjzZBMVlPvEk6RvmrMSi6dIF+ofkbvT01OiCrAo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790668769; c=relaxed/simple;
-	bh=w2SEC/1MS6TrmKgrOw3b9Zfi7TbSkmpSBO0hUsCFcg8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GUYIB+ZfoZKBtpvTJmcQQfe+10HfB+fxZzJvVfs8I8nAT0ttBf8s5u45j7EE18gPMTKCHbmmRmDe9Lb3XFEUCa+8NU/kdWD06F8KPEOlimEjF+7AAXnWCTGasxXYnos2/ZW3r9/b3DMy/K8kdKe08sgG879P3y/KcIOyyhTeL8M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SEQjWQkQ; arc=fail smtp.client-ip=52.101.83.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790669608; c=relaxed/simple;
+	bh=cBdHmnDtA5m1ChfCaicHEpgiS7Jokcs0Gu5+LDni/PY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AqcAahT2utJ8HrI75GrNmT5N1i3gGXcC4uDWPvtcODR39ps+BYdBAvjuPkEv6tgZr1ViZvcsszsuBI3ONAJcSnApCDhqOKcVsdN2ER9epMA+8OMCEPYrMbTGFWaZLrIZfGiWITRQjiCIk5KQBxQz+lI9Zg7puvQxryfr/H0HlPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fYgfhoRD; arc=fail smtp.client-ip=40.93.194.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SEQjWQkQ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fYgfhoRD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WFCOv99reytQk0X/6cR6G6PnIHiMmybYTm25yX6ykwTsmoIkAIkSH20VF+6d5Su9KeQYnJ1QZE2mY+5gjtM6GnTlQ6MVT8RFXa8E0iXvb1JOoOlh9AdYxYnS1yepzoW9DqfN5Bl/lr7vm5ECI+WxtWtEdvOrZccZ90L8aV8TiJp+jV2z3kiRCZjGCzqKYqryCy2mOb9mUruEYahbdJ2H9nmEST5b/CruPXAwFHcfCsB4Rc6hOQHAEtza+Pf+23CWcGarh3RswSW6GkniTmNaAfDuY9E7BqnI3uVPX01ABInvlIWYRBBx9C9pp0WENBpsyoC47mfheIyWnaJZ/Ody+Q==
+ b=tp3skyNJdsZ6dfMMdw+SnOcmBrqPaQ/AYL4y5rydoUG2m5NtkJOqxCQLhNbfEQ1PMQuiqgdMWNc0ng78z2Ib9EEDt6UDfGkYCqfdg6BMnbZYw4Lksj+UiyoF6+MVI88KrxTAioS/FWthOZuTKFXxqYxTVY1DOWtDGrFyPW6w7iGCiMpCN8L/ytapJ4UWMqONdUd5982mLtDm5t4re4mbqO9Ti0cBzUtBRZSIPseyhLR3HyQJGnnlOPvLNvs0cXdYimM9UKEQrU/KKwJDRToN4U0qESXQpEAmXlk2SNgh82sxj9zFDz6yxGGtrcK20qQv6k3LA7tXzLi4ZozBac4y2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IkwAQk9YsY56MBm2Z3EOmXm6U7EtZZxRw9p7TJk0ldk=;
- b=dHsHkO391vv8pUOQXepDXG7txFJtAuAwma5edSYkVKiQy5nNCx7hMhcU/fgl89y91bCmzDrjJ5I0nLrAaGaA+xkhzXIcV+EIdIYVxXFPOzQsZiKRI0VYssIzazhBSMC7OoS7Oo6qsHvBJW7dFQHwKDrRyD2w2s+6iiFWiZ7F0pgM32TBpxwOv6/lcu6aYiXIYNN3mx06ogOaCOUZeD3XcqxPIWDlBBBiOH4DIrPKdG7IWTDnm7fAJGBZIAzZ8FJUbiRdBitMy5Z7lMwxUEEgFSHg1RW2OROp+GWBQ7fBSw6sBtPu2k20oSSZJj4qX8SKhGp9vpyTIs1miTj+j4RgoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ bh=BxC2GKeQC6U3jF3oIqszM7CViaUnydRZfQeizQRYoeM=;
+ b=N80cxLkiQRxQFkCM3SbxXGdnXc8oSnbwIIq8xBG9VFPYVmMDTOVilwxP0yYRqXriZCZ8udCFmXI1ez66UgPb/NGsoxGIp9HJZ3kSmVJLIFfmsrYEksxmiucMkXGElDPexxMqpcY3bzAWoaf3zitZWcmB+pmhxPAB1xv8qA0RtOIrMH5Ay9xxF5WFxKcX6QPUjkvn4cvtHyeW/MvP8VfAUmKpQ9ImMUZw8EQqgKRIMhJae24o3ins73XBObXDrCZC2Sz/oRhVrVfQLfS7+WsAJZUt0GP6YqM/RzpZwRlqtjmXi8i8mG4lBRWhIsKrB9lU/aQkOI49nDzvJMP9v/mUCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IkwAQk9YsY56MBm2Z3EOmXm6U7EtZZxRw9p7TJk0ldk=;
- b=SEQjWQkQnuDJFFpTPeOh64RUOYCfAza4vMoLzrOucb/6fEMBRVoCZsNPh21qn8li7fVRsiEmLjQtouiNW9Q3+LFNLoOUvy0Vm7ZASU52+Aov9soJTb/NEzS+cVbgZB8K5+b92UXZu6DvMhEm0EpuWdLnpu8/n3ufNmtP1PlPUlg8M1Dx571JEfLA5vcNq+dMQhVg4ddLCbOhT+bfkpFffVKJaDriHR+0tz4p5Zro6XdT0bWoMgHnqUykVcpzo8moG7+55PmfG9XyFGcRvG3YDnFmETms2lmqPY2duUne7nXfiCeBLf4xPHHHYZ6U3XO7dmuzdXQI1HanU9RUn3I7mQ==
-Received: from AS8PR04MB8820.eurprd04.prod.outlook.com (2603:10a6:20b:42f::13)
- by ZR6PR04MB604709.eurprd04.prod.outlook.com (2603:10a6:910:e1::10) with
+ bh=BxC2GKeQC6U3jF3oIqszM7CViaUnydRZfQeizQRYoeM=;
+ b=fYgfhoRDEUo6JlGATSPT8QyPlZSD/Xyh66cM1Sxn0Kvrj3Ecavt4rqOB/RGRX4euPo1uUQ/3vpDbCVjhtFFeoNfqi2JSxAAcEea6HQl7faAWcM1iEF049a9YOGd7777+8fxZPNQjD4NmV/UW49/FmCGyE0Qsp0E6CnCG17PkTxY=
+Received: from SJ0PR13CA0068.namprd13.prod.outlook.com (2603:10b6:a03:2c4::13)
+ by SAWPR12MB999165.namprd12.prod.outlook.com (2603:10b6:806:4e1::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 07:59:22 +0000
-Received: from AS8PR04MB8820.eurprd04.prod.outlook.com
- ([fe80::35d2:bfbc:a06e:fcb]) by AS8PR04MB8820.eurprd04.prod.outlook.com
- ([fe80::35d2:bfbc:a06e:fcb%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 07:59:22 +0000
-From: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-	"mkl@pengutronix.de" <mkl@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH net v2] can: flexcan: fix synchronous external abort in
- flexcan_get_berr_counter()
-Thread-Topic: [PATCH net v2] can: flexcan: fix synchronous external abort in
- flexcan_get_berr_counter()
-Thread-Index: AQHdT+JbdK7V1PJOpU6KxdtPS7C817blMRgQ
-Date: Tue, 29 Sep 2026 07:59:22 +0000
-Message-ID:
- <AS8PR04MB88204F464FE0C190C8CD763C908C2@AS8PR04MB8820.eurprd04.prod.outlook.com>
-References: <20260929071236.185683-1-chunyuzhiqiang@yinhe.ht>
-In-Reply-To: <20260929071236.185683-1-chunyuzhiqiang@yinhe.ht>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8820:EE_|ZR6PR04MB604709:EE_
-x-ms-office365-filtering-correlation-id: b817648d-cecf-4bb9-8f0b-08df1dff92b8
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|23010399003|10067099003|56012099006|11063799006|6133799003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- 7kEMctvG8Q+7fyJaLhx4NYeCgvLIZW9B9mJ11xKaJNWMva0v3Rx/oO2KuOhkTBZDy1kUyUEeO2+iywPARYfwGJD/ezH51wN4Qxeozb4wL5oMQCZOInwdy0QV89P0Bp2flVixJrYlTYc6Zfx3mjvl9z4SLe15Qs84sCAxiO0jrlgTpLLprnBHdrvzkw9TACaGtNk7gyzJMYFKjaKsSxpiyNNd4LgI8dhUMCaBZc5JhJ3E83skijD00UKXDU19T4wblhZh1odJCkR/rP82Yrvjn/dvK1tKLsqoxzrMrfqkqkB5YXoHpAtX7Mwx06Dh1AQR0lU/QZjhK3I/0XkX4DE202Cz9L0KS8r1TLFGk3WCg7cesvHatHt2hvNhAPjGwPGOiMhl6YNu12XJNOMm8UAy55baN5s9GWd9zgVU+594xPomSoEEp2eHNX090HYGAYvTYhD6sslFOax5aSAEzlU2uFhWOh51Pb1brYecHGmYq/YDReKsLEgc2/p9y8mp/+0Sp3zBMPrVtj6LOFcUNxaywjCvdL8WbzKbPPX6E1kteRuLHdecykl+1EATWIDz7FDnEfBu3uZLyCwXvLX8MHVSKZy1btycgzXx8R+pdutJRgRL/rnnlKiFdFIrzSRPRIsbuKGlivS7uQD0Qr4kooGd2OYkDLdJsv64+Wj6FTKSFE0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8820.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(23010399003)(10067099003)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?OOgAzKBduSFE9Tuq2LmGYgu3meGrOQYwNmgBN7K1tcUiY/yXUW9bG2p1M1B7?=
- =?us-ascii?Q?YXIlJcW/HHdbWJvGYj1aTdftAjRRBjzDRv+7vbFiJ2f1pGg/tJs/OI1DDLCO?=
- =?us-ascii?Q?0WlyRSSxIudBaAPrEcYSsy6Ermj98BFWtAvYVkr3sqsFLjavAS2tQGf/cS9J?=
- =?us-ascii?Q?FTJ4PCJ3WKSAouNMOzcsJZTftce+rHbUdN+xIKnOP/MYFy+DOVzJjkoYYaSw?=
- =?us-ascii?Q?xvNweVJOPit8kS3kUxJbqJYeKbNxbCs0GdO6xEIEyH1y0gtY3iwQOUphPQOV?=
- =?us-ascii?Q?qHwIpcpMjDOPQHOAsdg3c3Uy9jpy/vm2pHmtAFIEQBJcX08T/Wk92Imu6Ymw?=
- =?us-ascii?Q?xJ+DYPjsjm2UnmlbU/eyD11yBGl2cNAY1jT51I1pMCZcUI+U1u9DxPl+FALg?=
- =?us-ascii?Q?QbfGwiSs3MiFIVBfqqmfk+PdMNvbOz8JxbUkDvzxHBCatVoT+/rW0PGlBaCy?=
- =?us-ascii?Q?CRPAZ7cvqwo5wUHC5dmN+jjjRSZFcvCp24iqMmMIh5aohy9yE584gUWgaaW+?=
- =?us-ascii?Q?CNMf3YcYTAlmdCCNoVsz5BBJSFYzucqRHppXbyzwf0Nbanabq6bcFiPgIbGz?=
- =?us-ascii?Q?X8zBG1gB3X5o5sv4jpF9C7xo3alsTxtQIldDS9glY25V8N10YeXD9EEj6KcS?=
- =?us-ascii?Q?/49tw+RWbpMSaAaC72n989m1wTaRhFwm+aXlFQKkVKs8vaqnYLzxTevEnxVL?=
- =?us-ascii?Q?nuclGI1b0Us/LlL3iQiEHu99vWJDPKo8cNLx+Hc59rBzD53wPeB4zlNLxW83?=
- =?us-ascii?Q?tQpiB4BBusmhLWldRe1CYvaU9yIfByWengvwM5SEM5EBMtSYu3nF/7s587PW?=
- =?us-ascii?Q?MAY7wbTw4a1y4ik5Q6+kiwwdfXJ6A8UxZ0GpOfNFIu83cF8jKRQqbGVZ7kZF?=
- =?us-ascii?Q?IjFY1oqpShlUMqTOS6O0TdfjMeX7ut0/9JdklI7IXDyGq/4D2j/wFzJ8oOqr?=
- =?us-ascii?Q?nNxx2qt1sN+mZiXB6innxyY8DPdolUZENqYTwoxxzVsCu7JwUbzOWU5KgeJj?=
- =?us-ascii?Q?vsqbbBwryieOyFqbi6QwrDbBWLfM1rpQasbPkoz3SKBVhQXdxVLZL5LKAS66?=
- =?us-ascii?Q?t2AFjkK9WyDVw9zrNVl+7K8F+nrXo6F5vYJnLCOAy1PVXuc2lUTo/NIl7XJg?=
- =?us-ascii?Q?eCw4ehKJaKQAowmW+y+udi7IYDET8sMGsgo02jlfTIPfWgmkTpAJHXSCLEgj?=
- =?us-ascii?Q?PLovTD5xPOrGYwtzNq43a/5XUa5Dr19nw3++Etv+Opk7fWkvAHBsRh12gn8l?=
- =?us-ascii?Q?cdlsr9vX/YlTtHuq4g2H9jHp3pYZ+i9tDBER1uPi1Wa0EA0YHNRQnOwHTpeF?=
- =?us-ascii?Q?aoIThjIsgg77gaafZChqKw7R0yr1UJWL+BZHpmD7WAcp8hJe9P73s7WmtIRK?=
- =?us-ascii?Q?mDsZTMwMqZOjiJq6barP7kjCQk8gvDBQ42ZL+MyRjxK/y+OdbE1cqntmagSG?=
- =?us-ascii?Q?maBw3SU7IbhHYChixO0di3kK3A4Fd11FuG68SooN2L0ZqZ3Hwzhhmfb9cGMy?=
- =?us-ascii?Q?NnJ4kbSchHyRn7PUYei5h/P/V2whNcGBN374JDDJcbzjl+AqoEl5vrdiBw4u?=
- =?us-ascii?Q?vNg1HT0zIISYnmaYlGALhBZulrCS9b/WAnozhVv9tX5po7so5kYU0nNmhHJ/?=
- =?us-ascii?Q?KU6zQ1ABlNc2iu1Y8llmHhl/FsCKx4TXbM3Y7pfh3mix3NIy+NBOj10l3uSc?=
- =?us-ascii?Q?+qIWbFwzkITZQafL0pFVCshzvscmwTH/gQX7waUqu3VoIwf3?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2026 08:13:22 +0000
+Received: from SJ1PEPF00001CE0.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c4:cafe::69) by SJ0PR13CA0068.outlook.office365.com
+ (2603:10b6:a03:2c4::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.14 via Frontend Transport; Tue,
+ 29 Sep 2026 08:13:22 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF00001CE0.mail.protection.outlook.com (10.167.242.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 08:13:21 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
+ 2026 03:13:21 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
+ 2026 03:13:20 -0500
+Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 29 Sep 2026 03:13:17 -0500
+From: Srinivas Neeli <srinivas.neeli@amd.com>
+To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <michal.simek@amd.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <git@amd.com>
+Subject: [PATCH net-next] net: xilinx: axienet: Derive RX frame length from residue in dmaengine path
+Date: Tue, 29 Sep 2026 13:43:16 +0530
+Message-ID: <20260929081316.803997-1-srinivas.neeli@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8820.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b817648d-cecf-4bb9-8f0b-08df1dff92b8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2026 07:59:22.5166
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE0:EE_|SAWPR12MB999165:EE_
+X-MS-Office365-Filtering-Correlation-Id: b51f4659-7920-4d8e-1d1d-08df1e0186eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|36860700016|82310400026|13003099007|6133799003|3023799007|10067099003|260925021311599003|260925021911599003|260925022911599003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	jpXcVaeISPjXHoXQ0OMaxyWQfR1gzQOXdLhD5knQTSriV+ePo223dGFkgczrrJzS20+8VfSd9HJGDdBNKjgxngQm1AXtXHmgWFPurnnzzOpl1GTiJ/o3KlSsfoly2qd3jO4VBZsWEsmEJCtXhE9kgBJQzcnP407gjg+Eoyo0Ipa2hVD0bmYJCdIhYk8d4GQDX1O7VsjF4sGwNpok4Arv7D2qOgfm+JjT5lqoQOmN2msP6OZOAwPx6yxIpNZquuG5KA+gV2CmCh8RUsEVCQSG8ymFKHs5S0qTNxD9ShCSSl70YYaYGqMgzS8PcgWnQ5i2b3ZcVbM0ZRug17Mrmj8T5bPSkbABzw1gYxcQNJiwBTJSyuVPv5RJKYeUX92X8Wd7F8JnY8rHSoPobKZyZAGOpj5A3wXvKr9AXgWCKpK8WXT3iPIn+OJAbO8tsizFXLbbRFz1etaxAbS+F9kFKrKiL69VMVFJfjbaALh0SKHU7cUch8O9V0jnJqCL+ss4pKsnu4tDL2KvbSK8xunh81Svq8GTNX+36lC4Z6QdVkI7dF+8qmaY7INKZ1uNODEivJ4LqCcsl6RvfmVTkSAjekZ350bpWP7f5ASH3NChfK+Fi1MxNGMqlp5fi4z8yuHXysEywXO/71OQ/SFzvHRb7vg/3ZqvGQT76l4dn2kiY0ovEud6fhMaattxtpTDOqqkvls3G1ZnT+4DCRp6m3AOnVPwug==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(13003099007)(6133799003)(3023799007)(10067099003)(260925021311599003)(260925021911599003)(260925022911599003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	cKPG7k79INzTs5xKKcFpgYXSwWxa8PzAmWZZ5UoET45yyt65FVBntFczT1xPwLF+jW6H3ULomJYh5aoYrwNM9qIHsNOkZzZredk4Y9G2rKQ61q9EZBQvxSuMlgF7hVoh9la+oP+sDS96eRHoyRKowDTDtUBqFbaqSZDq5wWir4DMLUMOF2zGpM6WNnc1uqWWR4Y22/poG67wMZOIQvmCvyjXOmQrAGmHiUdZwLJW7I6WDqKTTY/j6AywqtkC8dcYqFBvb0/FocuFyucScfWV5+1+A+0qtIAsO1mzdV9g25qdATNVQnQQ8AK02+ikZwsPPPRIBZF5Kf6G6m9cx/ynp2pT2Kv05ulwwt9fT2/Qz65lOJPcsuy8cLOU174mc7Yir4IsoOyoODMp/N3jcaiBIfwj71K0xxTzQ5SDbDM2NKTBf9f0CxhMgF7M6oXe2vES
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 08:13:21.5995
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sncTDIVTW7sdo8agdw5McrbWbaSx6x5t3WrMKJnFfCoCWeTqdulWwSMdJOVBxmQLS/h/ACjXt9bI20dMJcOmqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR6PR04MB604709
+X-MS-Exchange-CrossTenant-Network-Message-Id: b51f4659-7920-4d8e-1d1d-08df1e0186eb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CE0.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999165
 
-> -----Original Message-----
-> From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> Sent: Tuesday, September 29, 2026 3:13 PM
-> To: netdev@vger.kernel.org
-> Cc: linux-can@vger.kernel.org; mkl@pengutronix.de; kernel@pengutronix.de;
-> Bough Chen (OSS) <haibo.chen@oss.nxp.com>; shawnguo@kernel.org;
-> imx@lists.linux.dev; ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> Subject: [PATCH net v2] can: flexcan: fix synchronous external abort in
-> flexcan_get_berr_counter()
+The dmaengine RX path derived the received frame length from the descriptor
+APP metadata. That only works when the optional AXI4-Stream status/control
+interface is present, because the hardware populates the APP fields solely
+when that interface is enabled. On designs without it the length read back
+is invalid.
 
-Bad title.
+The AXI DMA engine already reports how many bytes it wrote into the buffer
+through the standard dmaengine residue mechanism. Compute the RX frame
+length as the posted buffer length minus result->residue, which is
+independent of the status/control interface and correct across all designs,
+including multi-descriptor frames where the residue is summed over the
+chain.
 
->=20
-> When the interface is down, can_fill_info() still calls
-> flexcan_get_berr_counter() to fill the error counters for a netlink dump.=
- On
-> some SoCs (e.g. i.MX8QXP) this can trigger a synchronous external abort.
->=20
-> The root cause is platform-specific clocking. On i.MX8QXP the CAN clocks =
-are
-> gated through the SCU LPCG and the whole subsystem shares the
-> IMX_SC_R_CAN_0 power domain. flexcan_runtime_resume() only calls
-> flexcan_clks_enable(); combined with the LPCG e10858 synchronization
-> erratum, there is a window where pm_runtime_resume_and_get() has
-> returned but the clock has not actually reached the module yet. The
-> immediate readl(&regs->ecr) in that window hits an un-clocked target and
-> faults with the external abort:
->=20
->     Internal error: synchronous external abort: 0000000096000210 [#1]
-> PREEMPT SMP
->     pc : flexcan_read_le+0x0/0x18
->     lr : flexcan_get_berr_counter+0x4c/0x8c
->     Call trace:
->      flexcan_read_le+0x0/0x18
->      can_fill_info+0x1f8/0x434
->      rtnl_fill_ifinfo+0x8fc/0xbb4
->      rtnl_dump_ifinfo+0x364/0x448
->      ...
->=20
-> This is the same class of problem that was already fixed for m_can:
->=20
->   commit 91a55c72a821d ("can: m_can: m_can_get_berr_counter(): don't
->   wake up controller if interface is down")
+Drop the descriptor metadata lookup, which was only used for this purpose.
+Detect a failed transfer from dmaengine_result.result instead of the
+metadata pointer return value, and remove the now unused LEN_APP macro.
 
-Remove this in commit log.
+The transmit path is unaffected. It still passes APP metadata for checksum
+offload and derives its length from the skb.
 
->=20
-> Fix this by returning early if the interface is not running.
->=20
-> Tested on i.MX8QXP: after the patch, `ip link show` no longer triggers th=
-e
-> abort.
->=20
-> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch o=
-n
-> clocks before accessing ecr register")
-> Link: https://lore.kernel.org/netdev/20260915063511.3010642-1-
-> chunyuzhiqiang@yinhe.ht/
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
+---
+This patch was originally posted as part of the MCDMA series.
+Since the required MCDMA changes have already been merged into the
+Linux branch, this patch no longer has any unresolved dependencies.
+As it only modifies the AXI Ethernet driver, it is being submitted
+separately to net-next.
 
-Please drop this link. It will be added by the maintainer when the patch is=
- merged.
+https://lore.kernel.org/lkml/20260818174151.1608971-4-srinivas.neeli@amd.com
+---
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-For the commit, I suggest you change like this:
-
-can: flexcan: flexcan_get_berr_counter: don't wakeup controller if interfac=
-e is down
-
-If the interface is down, the CAN controller might be powered down, the
- clock disabled, and/or it's external reset asserted.
-
-Don't wake up the controller to read the CAN bus error counters, if the
-interface is down.
-
-
-I don't think we need to mention the 8QXP dump in the commit log.=20
-The 8QXP-specific erratum only served as a trigger for uncovering this issu=
-e.
-The patch itself fixes a generic logic problem that exists independently of=
- the
- erratum. For example, even on i.MX95, which is not affected by the 8QXP=20
-erratum, the same logical fix is still needed.
-
-Regards
-Haibo Chen
-
-
-
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> ---
-> v1 -> v2:
->   - Reword the commit message to drop the MDIS reasoning and describe
->     the actual i.MX8QXP SCU/LPCG clocking window as the root cause.
->   - Reference the m_can precedent (91a55c72a821d).
->   - Add Fixes: tag pointing to ec56acfef2af1.
->   - Add Link: to v1.
->=20
->  drivers/net/can/flexcan/flexcan-core.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c
-> b/drivers/net/can/flexcan/flexcan-core.c
-> index 06d5d35fc1b5..b08779ee2a0a 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
-> @@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct
-> net_device *dev,
->  	const struct flexcan_priv *priv =3D netdev_priv(dev);
->  	int err;
->=20
-> +	if (!netif_running(dev))
-> +		return 0;
-> +
->  	err =3D pm_runtime_resume_and_get(priv->dev);
->  	if (err < 0)
->  		return err;
-> --
-> 2.47.3
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 782f903d318f..e7490650482b 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -53,7 +53,6 @@
+ #define TX_BD_NUM_MAX			4096
+ #define RX_BD_NUM_MAX			4096
+ #define DMA_NUM_APP_WORDS		5
+-#define LEN_APP				4
+ #define RX_BUF_NUM_DEFAULT		128
+ 
+ /* Must be shorter than length of ethtool_drvinfo.driver field to fit */
+@@ -1159,29 +1158,26 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ {
+ 	struct skbuf_dma_descriptor *skbuf_dma;
+-	size_t meta_len, meta_max_len, rx_len;
+ 	struct axienet_local *lp = data;
+ 	struct sk_buff *skb;
+-	u32 *app_metadata;
++	size_t rx_len;
+ 	int i;
+ 
+ 	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
+ 	skb = skbuf_dma->skb;
+-	app_metadata = dmaengine_desc_get_metadata_ptr(skbuf_dma->desc, &meta_len,
+-						       &meta_max_len);
+ 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
+ 			 DMA_FROM_DEVICE);
+ 
+-	if (IS_ERR(app_metadata)) {
++	if (result->result != DMA_TRANS_NOERROR) {
+ 		if (net_ratelimit())
+-			netdev_err(lp->ndev, "Failed to get RX metadata pointer\n");
++			netdev_err(lp->ndev, "RX DMA transfer failed\n");
+ 		dev_kfree_skb_any(skb);
+ 		lp->ndev->stats.rx_dropped++;
+ 		goto rx_submit;
+ 	}
+ 
+-	/* TODO: Derive app word index programmatically */
+-	rx_len = (app_metadata[LEN_APP] & 0xFFFF);
++	/* Actual length = posted buffer length - residue. */
++	rx_len = lp->max_frm_size - result->residue;
+ 	skb_put(skb, rx_len);
+ 	skb->protocol = eth_type_trans(skb, lp->ndev);
+ 	skb->ip_summed = CHECKSUM_NONE;
+-- 
+2.43.0
 
