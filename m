@@ -1,109 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415624F68D8;
-	Tue, 29 Sep 2026 16:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C694FDE4E
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 16:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790698263; cv=none; b=Er8RkGHtt4DbNlB2K41DEAmILU9YgQO7jXY5QaMJjJXXRIuKOmW1nrPoclSNdWkKuk4R8H7gse/zRI3kOA/6wm/qzpGoDQmgjRnRGG5GuR53GyJ3rtBR5ChIMQ2i0eOUNrLqr2kJQ0G9HIrGTEqMvo2OEELXF+rvmY7VyADIKDo=
+	t=1790698369; cv=none; b=f3JDluYQIM7AyAVm4DnV2KySxh47sADhyvwp0Fp5qynhu1ZgCjVfJ6l/SbgZUGsu4omboqKc7FB5l76QUKrP0OGM9U7rAxzk08+bmlaNA3wgxbLaqSBhRFdz7ip7JFOnv5wPruvNtXZU+JDcZb/66AmiN/4//UGIQ4zFSTO//No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790698263; c=relaxed/simple;
-	bh=84nDE9fBkBoKW9uNwTHmAnfF3kvZuT4RsbrntzXBEKU=;
+	s=arc-20240116; t=1790698369; c=relaxed/simple;
+	bh=sDLvc2MZgyvTyY9gx2R0XQ0znRHniSDnRe9KAJVNqTo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QGFWS/0Jbm+FSJGVeVm2XeHGD9ubsJQfgObFrEI59E9J7UnLefkxrikLD1SqsLms/duUcnpkQbS8T3szXuBYlUuQp7x3Eb6fbmzEm4zNFFghvdE9Xq58CPhdq5AnSaS3g7eH/cI2U8Na7SiDM4lJTf+5BNUi6pxRqErbLOU6z68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3+zr4eic; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=YhLhv1zBCKpkZuKLIQibAfee/rXX0eyKSlALNpqtPl8jXPFvIyEblV7RLO5p3I/ar47RB3L2CCKIZG/nhfRkZeZfqDp4n/eiIpYAkKoYVO7VnR+XXTUoilxovhDkFmrF37Z1xGF6AG+aYZ1SYhLOxb6VBDgtoloBTMbdNaYTvVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDmb5P8L; arc=none smtp.client-ip=74.125.227.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3+zr4eic"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wSDpv1cK4ROYQ8y4HkuXiu+aWSa+g6zObCto20zUYas=; b=3+zr4eicpBhwbJf1E88FQ1yQj6
-	vzpIVLyibo4vAI9bUfs/vIXeJt9eS8xMCmNB787frZMILX7i7xihJAwugT6bm6twt5NLalJ2/s+In
-	0J+aCSII/4YVrHH0XV6YrpKPuqTqHQB1NhdI5RAsOPYefMf6VTfOtaaf8N/9u67B6Fow=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xBaPd-007yxK-4d; Tue, 29 Sep 2026 18:10:37 +0200
-Date: Tue, 29 Sep 2026 18:10:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH net-next v3 0/5] net: stmmac: Add support for Allwinner
- A733 GMAC210
-Message-ID: <93870bce-b18e-4eed-a9ca-1d01313c61a7@lunn.ch>
-References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
- <9cc61625-47c9-4bdf-97f0-0528f661a399@lunn.ch>
- <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
- <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
- <1jv77u8yak.fsf@starbuckisacylon.baylibre.com>
- <491f043e-6dc6-4936-a490-31a3362c5b6e@lunn.ch>
- <1jse2x91oh.fsf@starbuckisacylon.baylibre.com>
- <b41e7fe4-2ec8-428e-81ff-47e1c75003b1@lunn.ch>
- <1jecec3xnd.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDmb5P8L"
+Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso12041605ad.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 09:12:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790698367; x=1791303167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=csl4wCkk0Zl0u/F6Ga5a9qQkHfeB6A6F99MGL0l19h0=;
+        b=eDmb5P8LMbXaDFWOA/d479mpZT5xgA0Av5MHX/Eaqg9e0wfVjs2NaNtKfPuPY34zWA
+         2BOjj2RNPKoyoaBjR42+Fdf26aNiCZy+sol3Z9m4KkMAGMQtCY9c7KyE9lq8g0R5eGUp
+         0Kr0cDM8dunIvwLJUCcxinLimCA4gTqiZVJxJ2BKI8v3mXnyHmu9RSsh1EhBU3YcnISn
+         L83lzm+gcTkwxeSA+HI7nKw6CxU+WbODzxhdq+bYwpt8Jye2JXhRZ6KJlt02SXJhCO1E
+         iO4YP2z33vdEron46GJhxEjHJMme5GQo8/zTX4jHM6q3OTZDMWsCaOevmclTD1tqoM07
+         KvAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790698367; x=1791303167;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=csl4wCkk0Zl0u/F6Ga5a9qQkHfeB6A6F99MGL0l19h0=;
+        b=JeF6JdNGAspItMDgF1i3j7V9AxodxxdoXz+Soeg8lspKXMjUHpp+lImi4mjkD4Pue2
+         PK1xXTH4MEP4tXrKRdtK9MhCrESPa3Xk3YcGfBxpKr5srgwpgkuN8hlkMTocvS626ed8
+         89wyQpOMJqSsL9O2UYfRIqgez5pmsYjyLhnnymihcOwXvoEuSUOs1G2XWuLvchpYyaeA
+         0bjR9j+Cc8l3oage7HhgPMtPy1Jsb4wSnM9EBWi/VHVbTRv6jhqfbHMNS7HXUI518miC
+         o8T5FIIX2mksUnozXl7hsvl4482FykYbr4+EfdTenNNLhFw0+t3PXDSfAJfLd6851nwQ
+         i8FA==
+X-Gm-Message-State: AFq9FYIrNt0wdY1DjaCR8EGVLNwrHEQjUqTsjqo/O6dqglHfpw2doBSS
+	oSVLSgu1FW3ppztRN9zvgsckvklwOIJMiLiYs7JTURbvLgsui5ED8q2j
+X-Gm-Gg: AYBFou1lpJDDxw7PCR8DrwLiSLWOatEdlIzBMpb3BJPWp/nuMr4uO+27fQ8MPuDncIA
+	/AXh1yUBWlGzta++dcRzum3WooNp0+gGTKendARBmSGY2LtPvoYjim3jZgb53inXbqg5bP+Wo34
+	Nbm/GxnCHorffV2t72oEwqRyQk8vKd5JsZhep4JF4g1io0/L33PdhTydSsgDkCHuYc3eSGGGAjA
+	HH5EoAZvWRTHMs6Rx2KERCidByGPTgEUz3qlXKouCRELGLO3jHk3SpaXhWE9OfELHh5g9w4QC8J
+	jayTAqRlHkBn9vMCaHHnWrlV/E+acejs2lUBgvjP5Kk1sDaoC0aESz0rZTiFOwml6eJEnzWWDuN
+	+XzsDGAbIJSt6IrDd5HwmBcvwJECOY8VXcGkPYqWBYKOcyTsxoUYisWYjaln3M0caapw0bWrctn
+	rbf37V9VClE+N7iRVKrn2cHDxFPsnurZ8lnTRnxGoeXJx/HmZkVNOW/ApATcG/Fu0=
+X-Received: by 2002:a17:902:cec9:b0:2df:9305:8909 with SMTP id d9443c01a7336-2df930592e6mr107246915ad.17.1790698367157;
+        Tue, 29 Sep 2026 09:12:47 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:6::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e2d8edc107sm3600445ad.4.2026.09.29.09.12.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 09:12:46 -0700 (PDT)
+Date: Tue, 29 Sep 2026 08:55:31 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, horms@kernel.org, hawk@kernel.org, ilias.apalodimas@linaro.org, 
+	sdf@fomichev.me, bobbyeshleman@meta.com, almasrymina@google.com, 
+	kaiyuanz@google.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/3] net: devmem: decode DMA addresses for TX
+Message-ID: <arvfYIx_0z6lU_Lq@devvm7509.cco0.facebook.com>
+References: <20260925201522.254717-1-sdf@fomichev.me>
+ <20260925201522.254717-4-sdf@fomichev.me>
+ <85ddcc36-7e31-42d7-8e78-a3e456e13944@redhat.com>
+ <97f2fdff-3954-4d53-aa55-156672658ee5@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1jecec3xnd.fsf@starbuckisacylon.baylibre.com>
+In-Reply-To: <97f2fdff-3954-4d53-aa55-156672658ee5@redhat.com>
 
-> Thanks for the heads up. So if I'm reading the doc correctly the PHY
-> adds 2ns
->  * on RX if there a 4.7k pull-up on RXD0
->  * on TX if there a 4.7k pull-up on RXD1
-> 
-> The schematics for the board are available here [1]
-> 
-> * 4.7k pull-up on RXD0: so we should have 2ns Rx from the PHY
-> * 4.7k pull-down on RXD1: no idea what this does. Presumably no delay ?
-> 
-> I've cross-checked the HW, the resistors are actually fitted as the
-> schematic says they are.
-> 
-> With the HW setup, the MAC setup that works for me remains
-> 
-> 	tx-internal-delay-ps = <1620>;
-> 	rx-internal-delay-ps = <1800>;
+On 09/29, Paolo Abeni wrote:
+> On 9/29/26 11:43, Paolo Abeni wrote:
+> > On 9/25/26 22:15, Stanislav Fomichev wrote:
+> > > On 32-bit architectures where dma_addr_t is wider than unsigned long,
+> > > page_pool_set_dma_addr_netmem() stores page-aligned DMA addresses shifted
+> > > by PAGE_SHIFT. The net_iov branch of __skb_frag_dma_map() adds byte offsets
+> > > to the encoded value, so the NIC is programmed with an invalid DMA address.
+> > > This can trigger an IOMMU fault or DMA from unintended memory.
+> > > 
+> > > Consolidate DMA address encoding, decoding, and representability checks in
+> > > netmem helpers. Use the common decoder from the page pool and net_iov TX
+> > > paths so both interpret stored addresses consistently.
+> > > 
+> > > Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> > > Reviewed-by: Mina Almasry <almasrymina@google.com>
+> > > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> > Fixes tag for net-next patches pointing to old code are highly discouraged.
+> > My understanding is that netem on 32 bits is mostly a theoretical thing,
+> > i.e. no actual usage.
+> > Would you be ok to strip the tag? No need to repost, just reply here.
+> Actually the above is more FYI than a real request. I'll apply the
+> series stripping the tag.
 
-These values suggests there are delays on both Rx an Tx.
-
-> 
-> I know it is not aligned with what it expected but still.
-
-I'm flexible, if in the end this is what is required, that is fine. It
-will need a comment explaining why it is needed, why the guidelines
-are not being followed.
-
-Where i have real problems is with developers who don't respect what
-the guidelines say, even when their hardware could do what is
-asked. They just do the minimum to make it work, and call it done.
-
-The comment is then important, because i don't want developers using
-this as an excuse not to do the correct thing.
-
-     Andrew
+Yes, agreed, this does not look like a real issue to me either. Thanks!
