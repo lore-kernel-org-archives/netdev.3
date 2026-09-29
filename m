@@ -1,138 +1,174 @@
-Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7107352CCDB
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5514A3B0591
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790694133; cv=none; b=CwHfazylxnUwt9YZ3Khj/Um4+7MzIgs6FoAickmAwc2dfJ0YKOYmEX7YQ4nqXxGlt2ApkTdD0fq94cChj98LpwA+s63gIWOZRHVEBHs+5pIeDLxtE5z3D3xgCQIXUvv56HkQNYX6dpifxpU3sBRk4+TjXBANaER7Y4kK6+DlOF0=
+	t=1790694397; cv=none; b=A4uTz9Tx+/1doBVoa8AJDpyQU9iD9RjsApAaqYjfa/33QYeHUdR+GrBDYLsUk1nQOtcVJbjdTCh3BsVSxN6JdXZRAN++4q10JSyq6zzTv1QOlv032Xjn1x6qgjYA6Fac+vnfQuyhMU44osYwsSiz/VNMurA6HAFgl3Fzwt2zSjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790694133; c=relaxed/simple;
-	bh=U8WJlmLvpLVPz1PhJ5Fa8xuXrb4x0AHUtwcNMW1YcOs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=GuH3+wY5NOR7RkXXh3hHdwnzeLb3MI2+S2G2lNFLMZIfwemWiTBERdJ1NwjqW4InqJWo+roK/xE4L4CLO0rV2G25kMizze4IzIRQvXhBPqlJ+80CnRukfiV2zpFdkpcMhzTRdl0Qwz5AurmlaIcb3NFyC0oYuyL78+0UYMcOMHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFndnbVj; arc=none smtp.client-ip=74.125.224.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790694397; c=relaxed/simple;
+	bh=8vcedn3CUP1Ygu4h0fKEORUNhcyZl/aYo2TO5TrUblA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SUPUHrRBMTs68VfDkwkIcXOCRwmI7DnZbgwg200e2os0UlQhLFnhZBIO93S+fC4+4DCNvivpEL59gnNKFzSxokPjNuQFqr7lvl/42C2qqRy5Iu5eNi4rI/WJckc6dZDPFjlepHLcsn8hcedFhnrk+h3pPyoWEkQRgVlGtuDQCAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=ff7feR11; arc=none smtp.client-ip=74.125.225.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFndnbVj"
-Received: by mail-yx2-f41.google.com with SMTP id 956f58d0204a3-6756acdc3a8so568359d50.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:02:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="ff7feR11"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-482f635552aso3392851f8f.2
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790694119; x=1791298919; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=2cAifA2cu1OXX4O6SEFB3mL1uRR1VgkoChYEZDiKjsA=;
-        b=XFndnbVj64/PHmvHOdCWnz2rEwVHj1Ic5hQCJ0nKynLQQxwbr5DuZwc9DBjgmXdMdI
-         2azUVeAi7sMGzmsfsH47ivqLu2PQb5sMQBpt9K61KtgsjbKsEgG9/N/AeawQlny37m0q
-         Yq7XLFjfMKOSS1B/VYIcSujPrmCV22yGhdrhvmY3q6zWGXPEUALId6Zq57W3cNOG7Ao3
-         lZVt0MSrh0DTyYfEnqNjajN3DioL6yk1V9dG0HfbJPgTMTUqRtyic92ON026/2j9unAY
-         WuaJhZWWxtRI4Z4uXkZoGsOFHz6vVHz9ms0imTAutYSxbzUbgKgVRnXH7KzPTUD+PvLu
-         gFuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790694119; x=1791298919;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=baylibre.com; s=google; t=1790694375; x=1791299175; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2cAifA2cu1OXX4O6SEFB3mL1uRR1VgkoChYEZDiKjsA=;
-        b=FQHdkfD+X7H761C7UprlwhD8eyF1Yg4FwW1iezYGCA5wTH6qPpxYrN2IKpAyM4fyO3
-         4Zpu//OERM56Uunn+xfnOjqVDNJL+UgePMNiFZnZqMs/c/0fcD5hePaEIZ9ZbwP6ow9z
-         jLjTAiq1g0wd9ZUGN+UpNaxgnXvCOAABsayJZ3rALne0b9PVxDOdJxFCdjjneqkLk6zh
-         hYgaRApZpWiV12wuNlY0yML4/ZvzARA6I/DoS4ZlBk/Tirt4dE3HO3/3SDhIaAJOHpQC
-         yw9vUstPaQdqSpxIGmkhAh16tT+tGxg/dR7i2yqGeEHdsiBQcBKQYsb/uFNGvxjtkTQQ
-         9mLg==
-X-Forwarded-Encrypted: i=1; AKwUvBznFI2oQA2ob/FdbMGR7ZXOJE4/OJjJstAGBQNyE16NNxY6nyB6X02Dq/3UJWaY2XqlkJjRjpE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ/yh9W/nfizwv8ITEm9pD9SHAm5bEfLTqEXJo9rF3cu2fZ5BZr
-	lhQNxaILuByKapURbwKr6gr2d3sUugEcUQtmffFFW+vH2EgTFgi+YiAj
-X-Gm-Gg: AYBFou3uPbNRqZ5BObfnErxAkXNgPus5wegERZMNYUR88LMIAqvgea7YbngeBUFXH5p
-	n0Iyci1/97KKLBQvOn4G7IEasB1kbH06J4XJjBk7oeaoRMJ6ImMJL2WC8z43HiSdhh+dw3gEsZH
-	jySskrK7nIPYjoXP/vWpYNDCQWxeHILF6exayKE8Dr0/Y4OghMTAHK1XGwOKoWeBEwIho89u1qZ
-	8ucIa4ziKvV082ggxxw8bIHy0Ku0Up/qwFNc+Yw7OVg2szMamUJy+WcZ/Pv4LfWdX3Y7TqTyYzz
-	VRts25isKwrf5ZhhR61HdaxQ+xWYu/MoO6VIMuYFH5fGA0H8duLB9tIfxoQcQIO9iuy1Lz2EPJC
-	bHopWyOnUVikwRi46QVAZIT1LvjHjThRWZVtHQgDPRNlTqCef+brTN0Qleqml9b4/2zPgEPNg/I
-	VBcE64vR1wvWo2JuAXhkBhVKnuxgvO2UNnIxqyM8PSYSWTL6SY3+FkqI6KuUlbCK4Alw2EodGJS
-	WdRXP3b6Dso4kgcA/WBC8PuMybGQntI12R9RxA9P3lRokzvNYOOeS2jz4xSlro=
-X-Received: by 2002:a05:690e:4852:10b0:66f:c24c:984f with SMTP id 956f58d0204a3-674111b2c88mr2774990d50.25.1790694117940;
-        Tue, 29 Sep 2026 08:01:57 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-675b76e44e5sm71312d50.15.2026.09.29.08.01.57
+        bh=YLptK7nHgocKDIIOZU1ThQFrj1CHU/IAWIcXLfeThzY=;
+        b=ff7feR11aSekwydcvym14NWKr0RFC1kE1CKVvHVryeaGzD633tzAO8T0mElTFaxhtu
+         Y56NLQzAGWRs0e3RhvpKEHAVelxx4nI2yaHdQdGuyFR72aEsEJ04oWPSvAW6kaQKTmpY
+         5lMMk0LAhXvZ2kGvZQI/NJHLl5BhgC6ZV+IgSfViffE3t9MysfoDPjrLtvrBZdqrS+ZJ
+         Ep0JvqhugV2Df+lNjIUP1mCyzZ/vWiT7ZqEouQH7ynYvgIrqRZPfhBDQYR+HH+RWsRxi
+         IzToElRdW4JpCUpCXHzMdL87b4/dZKs+npxUQs2uhqR4Cs03x3hm+ZjOhpGDkjAs5U48
+         lvQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790694375; x=1791299175;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YLptK7nHgocKDIIOZU1ThQFrj1CHU/IAWIcXLfeThzY=;
+        b=YTdlLFDJyw+VDhewfHIQD4BNNqnOhEehvNWDvTQzGhddGoE3ozLNYHdwaURaVF98zZ
+         0X0cZdJD5HyOPtA5x/k5jnlcn0XlyF3hw4Zqu5UnBIGxmHZcg4owAs1roBuapaIVfDE/
+         dM1wGuJ6La/4ONGM7FD5o7wC3Q409JhuHQGjuoyEmgA3AlkHGEcKR7t8/UkOBAOH4aTP
+         KCZ0nwi3UmHhTf4hnc2I3iQ8HN0EadS1HucupuZa7hyzHqA+5QAOktw6xMcrlx3PJgV3
+         RFW5L5oxaRJ4Qkr21vEUcMQtcjorxdCBLWzFs7iVFYwIhV2TruV+5lVxuHkYIa4WkgKO
+         c18A==
+X-Forwarded-Encrypted: i=1; AKwUvBxNz7bLuOcS9XFmoQUU8JR5n5Zyt9VG490t1NEVA9n65Dkzkv+FEPNm1TDWm0Cm4Rm49sOD030=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK/nlT20zyR/6GqZeM+d6Vmwdl0lCjah0BAGUG8w7jm5wgFXcB5
+	3f9GbuQssAj465ONrLU9U+rJy+6jebE5ja2dqmfp02g4HXJ8QZm1Q5gY/L+m/O+oxhw=
+X-Gm-Gg: AYBFou2NIrinaTnwv3XJEdjkme9hVvUwFDR+ihokAoeD+VIlKJ8Mb3OKsED8eUJtwZr
+	ckuF3ugNpfIjsu9HsddFtDYEapMGlb0pLiiiiTpS7jVwr/Ea/j5mqcpCqf+ixtkv3qi4WhQwxJp
+	0JBHUGkoqIrFNdCV832Aq6YBsOprykZoTaZZuKymzkuc/w7v8BDYHeVD9p0Fx1xJJHyA8qFMKii
+	KuiIdD8Xj5QpdXUnJbEFjeYZKuoU7mKPc1qdkc1pTNGA+fFwuml1ZcN2qBkxekysJhbxwuWfmN6
+	+ThxJz5TO4LXlGYO/CsED+7mIygpuVocx+L+AWO01qE9W26GpAeUYwgxXC08uzIv1fdiBaGxDrZ
+	jpvuUCD3ziRF1AspLv2Gq2NAfMAO9ynifCRm2iXkgJSAWgTqBwtcdX91Hly934zdKWRi5kquXgr
+	TFv5udQgaNKFW3AKWsSkb68T3sf6Xqo+VhuHQgZwwlWZ+LkQDhEHU96Mk1c95+3bW/E4BFDVUBV
+	6Nnwu5wcVPjs+04XfWWHQZQev6TEQ==
+X-Received: by 2002:adf:e19c:0:b0:487:799:c04a with SMTP id ffacd0b85a97d-48872a5c8dcmr29383832f8f.3.1790694375596;
+        Tue, 29 Sep 2026 08:06:15 -0700 (PDT)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48af4f8edebsm4909091f8f.2.2026.09.29.08.06.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 08:01:57 -0700 (PDT)
-Date: Tue, 29 Sep 2026 11:01:56 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Wang Zhan <wang.zhan@smartx.com>, 
- netdev@vger.kernel.org, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- keyong.sun@smartx.com, 
- Wang Zhan <wang.zhan@smartx.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Aaron Conole <aconole@redhat.com>, 
- Eelco Chaudron <echaudro@redhat.com>, 
- Ilya Maximets <i.maximets@ovn.org>, 
- dev@openvswitch.org, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Neal Cardwell <ncardwell@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Alice Mikityanska <alice@isovalent.com>, 
- David Laight <david.laight.linux@gmail.com>
-Message-ID: <willemdebruijn.kernel.3b6c39ab87f82@gmail.com>
-In-Reply-To: <20260929103008.2006188-1-wang.zhan@smartx.com>
-References: <20260928044102.1004310-1-wang.zhan@smartx.com>
- <20260928044102.1004310-6-wang.zhan@smartx.com>
- <willemdebruijn.kernel.3638f2d1c29b1@gmail.com>
- <20260929103008.2006188-1-wang.zhan@smartx.com>
-Subject: Re: [PATCH net-next v3 5/5] net: net_test: add tests for bounded GSO
- segmentation
+        Tue, 29 Sep 2026 08:06:14 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Richard
+ Cochran <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, Andre Przywara
+ <andre.przywara@arm.com>
+Subject: Re: [PATCH net-next v3 0/5] net: stmmac: Add support for Allwinner
+ A733 GMAC210
+In-Reply-To: <b41e7fe4-2ec8-428e-81ff-47e1c75003b1@lunn.ch>
+References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
+ <9cc61625-47c9-4bdf-97f0-0528f661a399@lunn.ch>
+ <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
+ <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
+ <1jv77u8yak.fsf@starbuckisacylon.baylibre.com>
+ <491f043e-6dc6-4936-a490-31a3362c5b6e@lunn.ch>
+ <1jse2x91oh.fsf@starbuckisacylon.baylibre.com>
+ <b41e7fe4-2ec8-428e-81ff-47e1c75003b1@lunn.ch>
+Date: Tue, 29 Sep 2026 17:06:14 +0200
+Message-ID: <1jecec3xnd.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Wang Zhan wrote:
-> On Mon, 28 Sep 2026 19:59:54 -0400 Willem de Bruijn wrote:
-> > > +	GSO_TEST_BOUNDED,
-> > > +	GSO_TEST_BOUNDED_MULTI,
-> > > +	GSO_TEST_BOUNDED_ONE_MSS,
-> >
-> > nit: bound is not a helpful name for this feature.
-> >
-> > The default segments to a stream of skbs of MSS 1, so segmenting to
-> > a stream of skbs larger MSS to me is not bounding. Quite the opposite.
-> >
-> > Not a comment only about this test patch.
-> >
-> > Perhaps partial or re-segmentation better captures it.
-> 
-> Agreed.  I think re-segmentation is descriptive enough.  Partial is
-> already for NETIF_F_GSO_PARTIAL.
+On ven. 25 sept. 2026 at 21:45, Andrew Lunn <andrew@lunn.ch> wrote:
 
-Come to think of it, that may have always been the intention of partial?
-Segment, but not yet fully.
+>> > You need to differentiate between small fine tuning delays, and the
+>> > 2ns delay required by the RGMII standard. If the MAC is just doing
+>> > fine tuning, you need to still pass PHY_INTERFACE_MODE_RGMII_ID so the
+>> > PHY adds the 2ns delay. If the MAC is adding a big delay, you need to
+>> > pass PHY_INTERFACE_MODE_RGMII to the PHY.
+>> 
+>> The PHY is one concern but the series here does not really address this
+>> topic. DTS and board specific concerns will come later.
+>
+> They are all interconnected. When phy-mode says 'rgmii-id', it is the
+> MAC/PHY pair which needs to decide who adds the delay. If the phy-mode
+> is 'na', how does the MAC know it needs to use RGMII, not MII, as you
+> said.
+>
+> We need to keep the big picture in mind, otherwise you could go down a
+> dead end, and a dead end which makes backwards compatibility really
+> messy.
 
-Technically this would more be pre-segment than resegment.
+I agree with you with on all this. I understand this particular MAC/PHY
+combo is sparking this discussion, Let's sort this out properly, no
+rush.
 
-Anyway, I don't mean to bikeshed this and don't have a better name.
-Either will do.
- 
-> > > +	{
-> > > +		/*
-> > > +		 * One MSS per skb is what the unbounded path produces, so a
-> > > +		 * bound of a single segment must not change the output.
-> > > +		 */
-> >
-> > so setting max_segs = 0 is equivalent to setting max_segs = 1.
-> 
-> Right.  The default is one MSS per skb, so 0 and 1 behave the same.
+I'm merely pointing out that the problem is not introduced by the code
+submited here. Other MAC can set delays, Other MACs would need to handle
+mis-behaving PHY too.
+
+>
+>> It is really just the MAC. So, how does the MAC is supposed to
+>> make the decision to amend the PHY mode ? is there a threshold you'd
+>> like to recommend for this differentiation ? 
+>
+> This is the first time we have had this condition. So it has not
+> really been thought about too much. Maybe 1ns. That is the middle of
+> the 2ns required by RGMII.
+>
+>> I'll try to reach out, just in case. I have the schematics but without
+>> the PHY doc, it does not help much.
+>
+> From that i assume you missed the other emails. Somebody from ARM give
+> a link to the data sheet. It documents the strapping. Search for the
+> patch adding the PHY driver, it is in that thread.
+>
+
+Thanks for the heads up. So if I'm reading the doc correctly the PHY
+adds 2ns
+ * on RX if there a 4.7k pull-up on RXD0
+ * on TX if there a 4.7k pull-up on RXD1
+
+The schematics for the board are available here [1]
+
+* 4.7k pull-up on RXD0: so we should have 2ns Rx from the PHY
+* 4.7k pull-down on RXD1: no idea what this does. Presumably no delay ?
+
+I've cross-checked the HW, the resistors are actually fitted as the
+schematic says they are.
+
+With the HW setup, the MAC setup that works for me remains
+
+	tx-internal-delay-ps = <1620>;
+	rx-internal-delay-ps = <1800>;
+
+I know it is not aligned with what it expected but still.
+
+I've tried with
+ * rx-internal-delay-ps = <0>. No Rx.
+ * tx-internal-delay-ps at 1800ps, it still works with some TCP retries here and
+   there on iperf3. 1980ps stalls after just a few packets.
+
+[1]: https://dl.radxa.com/cubie/a7a/docs/hw/radxa_cubie_a7a_v1.10_schematic.pdf
+
+> 	Andrew
+
+-- 
+Jerome
