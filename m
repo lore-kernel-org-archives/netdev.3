@@ -1,192 +1,348 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24514D7D5A;
-	Tue, 29 Sep 2026 03:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B11F3A759C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 03:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651978; cv=none; b=bRWzfav5cJqmwgzmWzYKrh0NU5SK7e5mgYXSD4X8iXLhMfl0CyqtSbNMf5l6b/c0o9r4cEooNyIsoF7XBZ5olQnNNJs/gNPysN2O8CflpxUTixcJ00vwB/WIKv8q6yrirhbvCTUi/jMheQKV/IzPq+/I67thxYb0gv5XWUYRKuY=
+	t=1790652203; cv=none; b=I9G3quj7Wp7KOufZEICQ4Wg2c9cs3IsWRlV7ORZYcVPFj4rl/BWrXJ84saVQxmt5Ozxn9OMr1RynPvIn6LGivZzKj4mYIDQdj6Ekk1bsqeNsUJJQ+OIGLKBb/yDpE/ge7QXJUCHIuT6rlGGs9wUJJ+vbBDhAvdxgl1cEs2/bRnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651978; c=relaxed/simple;
-	bh=/A0k3jiBFp19ADWTQBTkvBSWwOOpjiQM/X0B7jSqluA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W77gyah7Rwl+wHu0fo417cS9SXuVCqdxS54z35msHOGc7SBVCtrTmC2r5G9bYO9mqKEH2wxEt8cn+8oFB+Vms7jv8uVjqg0G7Db5CFNJdHtCjrxuS3SHhJsyHILTh+BjAICwCBIbOZRHAt/itQbXhgUoYNYKEBpCYjsyZ+FshlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=pK7OZfip; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=nT8xXVrD; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1790652203; c=relaxed/simple;
+	bh=uNQzoL0DkP7LC8m7rn7E+jvjV4AXcM8fLkMcrHglncc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ByNS1PzIHZ6Z/uuZ8W4YW0fUlO66lQRlCkE5L9aqrSPR9bh0dVQZEEE+db7GTWWV9zjsL+xwXRRmo6KLINSq3gqkOIF0OCjq9aB/1dzagy9TBVDxqg5h5+fRBh7iporGgmX7LrTkTQcGZ8iWX5Y9zcxtGZgu09nwJfUjCXA9flc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYnTnGdM; arc=none smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="pK7OZfip";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="nT8xXVrD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651963;
-	bh=/A0k3jiBFp19ADWTQBTkvBSWwOOpjiQM/X0B7jSqluA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=pK7OZfip5x638vZjWRtrthrg5UVB8M5IK3VEz6wDIP1O+YEf3hkgw23yng6+N37Ri
-	 hZxLMeOwiFa1uUFzA3US0xRof7BGxRKHPnwIgRkn3zGkkH7ls3DN6RQV/6DtiomstE
-	 Fz1qTvUCnUDgUQSualkVOXvQ/8M/VFZAXpnuhA8VLrBBTtWVhxi0om4+barB/zI+Dy
-	 z5L4e2T/SomU8iAIBBhxHLMyKqRT1Rr4cizA+Yck8Bn/ZpQBPOw8Dp3mX8FyYPi8XX
-	 EHQWtP2JpuqxLzaRi7DcqvfczTLrWwOxSvEVnaSfAtURB0dkKwpXx8dbB65yBI5PYo
-	 b3HtYZmFZcfww==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 0C89F422D7; Tue, 29 Sep 2026 03:19:23 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651941;
-	bh=/A0k3jiBFp19ADWTQBTkvBSWwOOpjiQM/X0B7jSqluA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nT8xXVrDbclYc0uAS7Dtphj8UOr2KLlHSNu15zu4S/jm70Y0/Rl+9tPHjNvdyiTxE
-	 21IQQK1TcKBQHsF/N/c+nN0DfBuFewI7n1VYNC44YIMgMSS7DNvsn50J3DvG/4DPBZ
-	 pZeisaiYugGk7s90tFwqZh+I7dG5GHxy7FDxfRTvUmMx2haE24fVwY5JzvGG21MOXd
-	 T2egzMYOkVBxqFNOpgw19PhW3aVJ5tTTVvIp91Wx5vNzRXxnobaHG+XuprPHjt9Sg0
-	 RYz6Glu3/8tCteETqibcxWRgoNZOXR+Ep+zfZAHyAE3pmc3XdrS8DCoRELeTRXJSwl
-	 dDsnp6GGFKm+Q==
-Received: from AMDDesktop.lan (p5dd1eaf2.dip0.t-ipconnect.de [93.209.234.242])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id F0F104226C;
-	Tue, 29 Sep 2026 03:19:00 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 29 Sep 2026 05:19:00 +0200
-Subject: [PATCH net-next v14 12/14] ax88179_178a: Update driver name and
- information
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYnTnGdM"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-671563fb8beso3565436d50.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 20:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790652200; x=1791257000; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WEn2fBY4eZ4Yetamg7UIqe5VCu7bhvysFxpD1bcP+Zs=;
+        b=cYnTnGdMORu79CJy2T9Iybxd46E/0PhYfjAjEiukHdgGW7Fd+bs/6oGvYra9UPGYBt
+         goyMwffmYg9l6P3uB7sweqV0r6x2hYrXGBuCFbYEdUNwdND09dMa3g4y/vof06jUBqvG
+         ZvJgVnnLvrEzrQPaRkHUVIuHiDs2iBLwuvYJx+OLboKaK8qXhew9vNrwVEbGVEzwqmbo
+         /xhzU9OlHWtYaf7qjSQQScqnXrh2EKZ5cJ4Pejlh/PnWLZNVf1/DM5qnKzZ1MUjGuY1k
+         O/RqAu0yjuN6rAzT9Ao+5WNZKGLSz45+9lXDAgTsnClJTCVv13U5g2OG3Nn8H6/qzJB7
+         1pWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790652200; x=1791257000;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WEn2fBY4eZ4Yetamg7UIqe5VCu7bhvysFxpD1bcP+Zs=;
+        b=nFQZAYggkDQvr076gd7aDn5G+slTHPfb2m0rPOtg3vCoPFt08VEAdO53P+zB6do8KF
+         nNZNRrvTbpXA+rmSlbZ9lidEabImxLWp3aSG1sXsrGKGk+Q1jsdYbcZYcmy4sfAkBzcS
+         E570EeIRxIzPlf9oxjk2thO1Z7V6ylNMCrUk3yI1eC62/84pTokiQG1eLVlhXpxDm6BE
+         +zOEOflLh3XB7WW/2wKtqha8+puKICd8n/8aECtymLmFB80H6yVyzQZvMmAV3JE2au7x
+         Zb8hrZWeLwwEoxPKic8I6Vup+kEV4ocPG0/m3XM5APsndJBfXBjYievFEu4e1Na0Ybsp
+         s39w==
+X-Gm-Message-State: AFq9FYLavlfHXJ/5NktObGUC8t8Kb1+gYFcViUxCMo7oLsXZ0jC0Onvo
+	ZqRf/p2VkQLDXau8fkMw8As1FM8lv9qDHEapZymkZh5mbfJAzQu8W3YG
+X-Gm-Gg: AYBFou11RhD4NcY1nDaOuGpvlQg119MqEw1ZEombF6PTDT9KCfMZXUasDkaxMiu4ofF
+	hh+wOfBbyhxNJVsSC4ThTMt4gjRGKTpnhSaudTlcs8Hhp1E9OmGA7OpZ++I7AcKiC7hk8dqwafK
+	M0NwSoug6mQZYyEiSj3lwTKuOk/9VylKSWjqU9nvDIas2k58UHmvfYbotXQ3CxLdOa/18EuRhvh
+	FqgdLnvyhbvna2/y1VayxUTXwdJTMxJlX5Vu5O0iPZQn9/HGzHnzC72YcXM0rrVtoDr4ISl0Rbe
+	7TJtjKW4MAgwpHjsIikLW8Iv8EuXai3HJvKW86h6F7323n4RoVaR6DOglerAKjSe+hvft3uusN+
+	p3WsKyiJQp/zc1ID+PjWMxux1Cjns2uravEaJs2ILMXmVToyOOIWiVwUywDld22QWyrSzhtUipk
+	0G2q4UMT4XWaW/eJzOkt6SPlJquoakiiqrLugzjYMkUh03WnUphAsFX6XQVpdca0c0xZIQQkmRM
+	nrlA8nyH5vnORCQzh+4sVZkVINA5qDJ1eLxCuytOnoXg/5Th5bu
+X-Received: by 2002:a05:690e:4851:b0:674:17ca:25dd with SMTP id 956f58d0204a3-6755f0bfde8mr512832d50.78.1790652199670;
+        Mon, 28 Sep 2026 20:23:19 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a860e5e9besm54705637b3.11.2026.09.28.20.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 20:23:18 -0700 (PDT)
+Date: Mon, 28 Sep 2026 23:23:18 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org, 
+ willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ xietangxin@yeah.net, 
+ willemb@google.com, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.1c50b2a7a6f39@gmail.com>
+In-Reply-To: <179064047393.3145.16303551892146530587@kernel.org>
+References: <20260926140506.2335137-1-willemdebruijn.kernel@gmail.com>
+ <179064047393.3145.16303551892146530587@kernel.org>
+Subject: Re: [PATCH net v2] net: extend IPv6 exthdr detection of tunneled
+ packets
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-ax88179a-v14-12-a1f2249e42ea@birger-koblitz.de>
-References: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
-In-Reply-To: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
- WANG Xuerui <kernel@xen0n.name>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
- Jianhui Xu <neuromoments@gmail.com>, 
- Birger Koblitz <mail@birger-koblitz.de>, Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Add additionally supported devices to Kconfig description, add
-further requirements such as PHYLINK.
+netdev-bot+sashiko@ wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> =
 
-Update driver name in usb_driver and update MODULE_DESCRIPTION
-to include the additionally supported chips.
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 2
+> =
 
-Change Kconfig symbol name from USB_NET_AX88179_178A to USB_NET_AX88179
-and update loongson32_defconfig/loongson64_defconfig to use that
-symbol.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> (one such reply per series is enough).
+> =
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- arch/loongarch/configs/loongson32_defconfig |  2 +-
- arch/loongarch/configs/loongson64_defconfig |  2 +-
- drivers/net/usb/Kconfig                     | 10 +++++++---
- drivers/net/usb/Makefile                    |  2 +-
- drivers/net/usb/ax88179_178a.c              |  8 ++++----
- 5 files changed, 14 insertions(+), 10 deletions(-)
+> - [Medium] net: unnecessary software checksum fallback for outer UDP
+>   tunnels
+> - [Low] The old non-encapsulated branch cleared features only for
+>   SKB_GSO_TCPV6, or for SKB_GSO_UDP_L4 over IPv6.
+> - [Low] The in-tree NETIF_F_IPV6_CSUM contract
+>   (include/linux/skbuff.h:77-86) still says the feature covers only=E2=80=
+=A6
+> =
 
-diff --git a/arch/loongarch/configs/loongson32_defconfig b/arch/loongarch/configs/loongson32_defconfig
-index e76ea9b629747a8d721d248be3ac1e8d504178fc..9ac643b1a68ec35f944bfec1821437c7e61e2d71 100644
---- a/arch/loongarch/configs/loongson32_defconfig
-+++ b/arch/loongarch/configs/loongson32_defconfig
-@@ -642,7 +642,7 @@ CONFIG_USB_RTL8150=m
- CONFIG_USB_RTL8152=m
- CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_AX8817X is not set
--# CONFIG_USB_NET_AX88179_178A is not set
-+# CONFIG_USB_NET_AX88179 is not set
- CONFIG_USB_NET_CDC_EEM=m
- CONFIG_USB_NET_HUAWEI_CDC_NCM=m
- CONFIG_USB_NET_CDC_MBIM=m
-diff --git a/arch/loongarch/configs/loongson64_defconfig b/arch/loongarch/configs/loongson64_defconfig
-index 976340d4d51445871274bfd558d217e1640a7756..882b6dadeeb7c998e15f6ba06ac48ada1b994dff 100644
---- a/arch/loongarch/configs/loongson64_defconfig
-+++ b/arch/loongarch/configs/loongson64_defconfig
-@@ -658,7 +658,7 @@ CONFIG_USB_RTL8150=m
- CONFIG_USB_RTL8152=m
- CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_AX8817X is not set
--# CONFIG_USB_NET_AX88179_178A is not set
-+# CONFIG_USB_NET_AX88179 is not set
- CONFIG_USB_NET_CDC_EEM=m
- CONFIG_USB_NET_HUAWEI_CDC_NCM=m
- CONFIG_USB_NET_CDC_MBIM=m
-diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
-index 115990b0d9537aea2776544c9768b034f32aa7a4..27862e380bdb4a54d184fa8618e4c9b348354e84 100644
---- a/drivers/net/usb/Kconfig
-+++ b/drivers/net/usb/Kconfig
-@@ -195,11 +195,12 @@ config USB_NET_AX8817X
- 	  This driver creates an interface named "ethX", where X depends on
- 	  what other networking devices you have in use.
- 
--config USB_NET_AX88179_178A
--	tristate "ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet"
-+config USB_NET_AX88179
-+	tristate "ASIX AX88179/179A/178A USB 2.0/3.0 to 100M/1G/2.5GbE Adapters"
- 	depends on USB_USBNET
--	select CRC32
- 	select PHYLINK
-+	select AX88796B_PHY
-+	select CRC32
- 	default y
- 	help
- 	  This option adds support for ASIX AX88179 based USB 3.0/2.0
-@@ -207,6 +208,9 @@ config USB_NET_AX88179_178A
- 
- 	  This driver should work with at least the following devices:
- 	    * ASIX AX88179
-+	    * ASIX AX88179A/B
-+	    * ASIX AX88279
-+	    * ASIX AX88772D/E
- 	    * ASIX AX88178A
- 	    * Sitcomm LN-032
- 
-diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
-index 2ecead0181eaf8d66fb6f5dbd6f2905b22b6eb57..4026f19ecb826a6465de38f1d9bb0e4c0af80421 100644
---- a/drivers/net/usb/Makefile
-+++ b/drivers/net/usb/Makefile
-@@ -12,7 +12,7 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
- obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
- obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
- asix-y := asix_devices.o asix_common.o ax88172a.o
--obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
-+obj-$(CONFIG_USB_NET_AX88179)      += ax88179.o
- ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o
- obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
- obj-$(CONFIG_USB_NET_CDC_EEM)	+= cdc_eem.o
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 245ccf6896033922adcef79bd395b347918f57e3..8b52994e2a604101b61ec9cc0d698a0ecb520a14 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1354,8 +1354,8 @@ static const struct usb_device_id products[] = {
- };
- MODULE_DEVICE_TABLE(usb, products);
- 
--static struct usb_driver ax88179_178a_driver = {
--	.name =		"ax88179_178a",
-+static struct usb_driver ax88179_driver = {
-+	.name =		"ax88179",
- 	.id_table =	products,
- 	.probe =	usbnet_probe,
- 	.suspend =	ax88179_suspend_wrapper,
-@@ -1366,8 +1366,8 @@ static struct usb_driver ax88179_178a_driver = {
- 	.disable_hub_initiated_lpm = 1,
- };
- 
--module_usb_driver(ax88179_178a_driver);
-+module_usb_driver(ax88179_driver);
- 
--MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
-+MODULE_DESCRIPTION("ASIX AX88179/179A/178A/279 based USB 3.0/2.0 100M/1G/2.5GbE Controllers");
- MODULE_LICENSE("GPL");
- MODULE_ALIAS("ax88179_178a");
+> --
+> =
 
--- 
-2.47.3
+> > +static bool skb_has_ipv6_extension_hdr(const struct sk_buff *skb)
+> > +{
+> > +	if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6)) {
+> > +		if (__skb_has_ipv6_ext_hdr(skb, skb_network_offset(skb)))
+> > +			return true;
+> =
+
+> [Severity: Low]
+> =
+
+> The removed non-encapsulated branch cleared features only for
+> SKB_GSO_TCPV6, or for SKB_GSO_UDP_L4 over IPv6. The new outer check has=
+ no
+> gso_type gate. Is it meant to apply to every IPv6 GSO type?
+> =
+
+> SKB_GSO_SCTP is one type whose behaviour changes. sctp_packet_pack()
+> always makes the GSO head CHECKSUM_PARTIAL:
+> =
+
+> net/sctp/output.c:sctp_packet_pack() {
+>     ...
+> 	if (gso) {
+> 		...
+> 		goto chksum;
+> 	}
+>     ...
+> chksum:
+> 		head->ip_summed =3D CHECKSUM_PARTIAL;
+> 		head->csum_not_inet =3D 1;
+>     ...
+> }
+> =
+
+> Take SCTP over IPv6 with IPV6_DSTOPTS or IPV6_RTHDR set.
+> gso_features_check() now clears NETIF_F_IPV6_CSUM. harmonize_features()=
+
+> then sees ip_summed !=3D CHECKSUM_NONE and
+> !can_checksum_protocol(features, ETH_P_IPV6). It strips all of
+> NETIF_F_CSUM_MASK, including NETIF_F_SCTP_CRC, plus NETIF_F_GSO_MASK:
+
+NETIF_F_SCTP_CRC is not part of NETIF_F_CSUM_MASK:
+
+#define NETIF_F_CSUM_MASK       (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | \
+                                 NETIF_F_HW_CSUM)
+
+ > validate_xmit_skb()
+>   netif_skb_features()
+>     gso_features_check()    /* clears NETIF_F_IPV6_CSUM */
+>     harmonize_features()    /* clears NETIF_F_CSUM_MASK, NETIF_F_GSO_MA=
+SK */
+>   skb_gso_segment()
+>     sctp_gso_segment()      /* CRC32c computed in software per segment =
+*/
+> =
+
+> Some devices have NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | NETIF_F_SCTP_CR=
+C
+> but no NETIF_F_HW_CSUM. One example is hns3 without
+> HNAE3_DEV_SUPPORT_HW_TX_CSUM_B. On such a device the CRC32c was offload=
+ed
+> before this patch and is computed in software after it. The output is
+> still correct, so only performance is affected.
+> =
+
+> Could the gso_type restriction be kept here? If not, could the commit
+> message say that the check now covers all IPv6 GSO types?
+> =
+
+> > +
+> > +		/* Catch tunnels without skb->encapsulation (e.g., virtio). */
+> > +		if (!skb->encapsulation &&
+> > +		    skb_transport_header_was_set(skb) &&
+> > +		    skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr))
+> > +			return true;
+> > +	}
+> =
+
+> [ ... ]
+> =
+
+> > @@ -3988,8 +4004,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb=
+,
+> >  		return 0;
+> >  =
+
+> >  	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
+> > -		if (vlan_get_protocol(skb) =3D=3D htons(ETH_P_IPV6) &&
+> > -		    skb_network_header_len(skb) !=3D sizeof(struct ipv6hdr))
+> > +		if (skb_has_ipv6_extension_hdr(skb))
+> >  			goto sw_checksum;
+> >  =
+
+> >  		switch (skb->csum_offset) {
+> =
+
+> [Severity: Medium]
+> skb_has_ipv6_extension_hdr() checks the inner IPv6 header whenever
+> skb->encapsulation and the inner network header are set. That is right
+> for gso_features_check(), where the device computes the inner checksum
+> of every segment. Here it is applied regardless of which checksum is
+> being offloaded.
+> =
+
+> The commit message describes the case where this matters: if the inner
+> packet is CHECKSUM_NONE, the device offloads the outer UDP checksum.
+> csum_start then points at the outer UDP header and the device does not
+> need to parse any further.
+> =
+
+> Suppose the inner packet is IPv6 with, say, a Destination Options
+> header. The inner check still returns true, and the outer checksum is
+> now computed in software:
+> =
+
+> validate_xmit_skb()
+>   skb_csum_hwoffload_help()
+>     skb_has_ipv6_extension_hdr()
+>       __skb_has_ipv6_ext_hdr(skb, skb_inner_network_offset(skb))
+>                           /* inner nexthdr =3D=3D NEXTHDR_DEST */
+>     skb_checksum_help()   /* outer UDP csum in software */
+> =
+
+> Before this patch, skb_csum_hwoffload_help() only compared the outer
+> network header length, so the outer checksum was offloaded.
+> =
+
+> The same regression affects an IPv4 outer header on a NETIF_F_IP_CSUM
+> device. The old test never looked at those packets, because
+> vlan_get_protocol() returned ETH_P_IP.
+> =
+
+> The output is still correct, so this is a performance issue. Whether
+> it triggers depends on the contents of the inner packet.
+> =
+
+> For non-GSO skbs that are not CHECKSUM_PARTIAL,
+> iptunnel_handle_offloads() clears skb->encapsulation. That likely hides=
+
+> this for the common in-tree tunnels, but the helper should not depend
+> on it.
+
+This is the key bit: tunnels disable skb->encapsulation when
+checksumming of outer packet is requested.
+
+This is not only something the "common in-tree tunnels" do, but
+required.
+
+For one, validate_xmit_skb sets either the inner or outer transport
+header to csum_start depending on skb->encapsulation just before
+calling this function.
+
+        if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) {
+                if (skb->encapsulation)
+                        skb_set_inner_transport_header(skb,
+                                                       skb_checksum_start=
+_offset(skb));
+                else
+                        skb_set_transport_header(skb,
+                                                 skb_checksum_start_offse=
+t(skb));
+                if (skb_csum_hwoffload_help(skb, features))
+                        goto out_kfree_skb;
+        }
+
+ =
+
+> Could the inner check be skipped here when the checksum being
+> offloaded is not the inner one? For example, it could be skipped when
+> skb_checksum_start_offset(skb) is below skb_inner_network_offset(skb).
+> =
+
+> Note that validate_xmit_skb() sets inner_transport_header to csum_start=
+
+> just before calling skb_csum_hwoffload_help(). That field therefore
+> cannot tell the two cases apart.
+> =
+
+> [Severity: Low]
+> =
+
+> The NETIF_F_IPV6_CSUM description in include/linux/skbuff.h still says:=
+
+> =
+
+>  *     - Driver (device) is only able to checksum plain
+>  *	 TCP or UDP packets over IPv6. These are specifically
+>  *	 unencapsulated packets of the form IPv6|TCP or
+>  *	 IPv6|UDP where the Next Header field in the IPv6
+>  *	 header is either TCP or UDP. IPv6 extension headers
+>  *	 are not supported with this feature.
+> =
+
+> skb_has_ipv6_extension_hdr() rejects only extension headers in the oute=
+r
+> and first inner IPv6 header. It also skips the length check when
+> skb->encapsulation is set. As a result, skb_csum_hwoffload_help() retur=
+ns
+> 0 for encapsulated packets whose outer nexthdr is GRE, UDP or IPv6.
+> =
+
+> Encapsulated GRE and UDP over IPv6 could already be offloaded before th=
+is
+> patch. The new case is IPv6|IPv6|TCP from ip6_tunnel with encaplimit
+> none. The old network-to-transport length check sent it to
+> skb_checksum_help(). Now it goes to the device.
+> =
+
+> The commit message says:
+> =
+
+>   A NETIF_F_IPV6_CSUM device must parse through the outer headers to
+>   reach the inner ones.
+> =
+
+> Should this requirement also go into the NETIF_F_IPV6_CSUM documentatio=
+n
+> in skbuff.h? Driver authors who set the bit in hw_enc_features would th=
+en
+> know about it.
+> =
+
+> -- =
+
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
+chset/20260926140506.2335137-1-willemdebruijn.kernel%40gmail.com
+
 
