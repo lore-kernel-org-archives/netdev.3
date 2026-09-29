@@ -1,98 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E8E530E0A
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3014718DD
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790718248; cv=none; b=kxiip+Ys/cxtplUe5T8MXvDqXQVATMuwblEbL+xO1nw3buWliUf1lr3TBFYldquILXae4UUwG2cEGoA+xQVy4d+Iu0TXCR51O14NzVfriGnlYMmIXJCMfdpq+Tt9h/VPn4sHykXvGPuj1Jvi870b/ZxIeJFS6JOz39w+DUWZfHI=
+	t=1790718271; cv=none; b=Em4bz4FFPAz98PBUK++qgO1fp1cHWuZvrVoFnIDjk4sZZWU1gN3SgDQiqlKNhUAwVN0S89dgcBk/Grvv8BckG9YrfFsGmh6+A/XmlHrHRXE/cQ5fis39LzEtLXZb6zbcPa5OHdRdfwIcUpNJ029fpd/i0P3UNWBKSAufW8VSmsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790718248; c=relaxed/simple;
-	bh=XDeRtUISJ43lgfcNFaPi04bh4VLlwOeklh4kE8uS8mI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TpDCvchK8ZkAC8Qi6iZtdSZFkPiZyIkGojzQcQnRn7NuIxh15PL/kOl+TVE/8bIyG1Lp1fDiRwSweGyi61h0buoQegvE2zp28c2coQedlWFmDgtq7N6N5YN7CW2GdCzK86Z0smk/bH3YtuVNpNV8dd3haRMOqAsY2W+mDXtfxxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPM7erxR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790718271; c=relaxed/simple;
+	bh=sSS5ujNqwDF2ukOfHcgyrFNo6NxMTwMpa3kXviLIz/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QWddSHnPlD02NxCS9oaVp4aDp6JPzvDVDDqtS/UziEFhb8r95uGG5vm8pb2cq2sgfYI1pfdrzkhBOOwmP1iT3WhNYSjwxPsnzBMgkI9ZShzKiXdX5PU88APBIBuuaMyixmihKEosWcrET20DaA/NhcdzSlNq1hUmvdvQnvvxbXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=H+lzIbEH; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPM7erxR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDCB1F000FF;
-	Tue, 29 Sep 2026 21:43:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790718237;
-	bh=s0ToCBzUiGcwiSV0Z5YBvbCZFWPhY/t1jX4YQk6dYnA=;
-	h=From:To:Cc:Subject:Date;
-	b=LPM7erxRuk0DTXz8D7HqDPy+KiYsQeu9nL4jE4N+u7BxKdnBbz03oSlrudf9urQpd
-	 fuf6qsu+LhDC5ikRxr7YuNUNYj61Z8ZOtzXBlq21nzS9EaKuDKsYgA7CYsQ2zMGaYz
-	 u5ziNTanF0lPxMmKhETQlQbbWZvj+uubtoQBucI+81oFBZ/AjKXu/1dTDium1EWiKK
-	 4qx1S+t6x8BPUipA2T8E97YrOCuXF8F6bHqbl39XiEH6YxNmBObosRYfTUPM1jnFy8
-	 dim4Svguor2X4YOVt38WNC0NLabmMM1hRYHX0i4gtGqz5EQSFMTpUP/l2GfEzz3tV/
-	 T7dCMj1+MmSKg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Xinyang Ge <xinyang@anthropic.com>
-Subject: [PATCH net] ipv4: free inet_opt after an RCU grace period
-Date: Tue, 29 Sep 2026 21:43:51 +0000
-Message-ID: <20260929214351.856940-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="H+lzIbEH"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccda24afso2439398a91.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790718257; x=1791323057; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9q+E3Xh65cY9+ofmYDsNL60Gz/7NdFCbD28qz8ceGUE=;
+        b=H+lzIbEH0CsH7v/l30swJkvpVn3XHKoSAo9HoKhEy2SEc7JlGBbqcFXxn7BUe5Ba+G
+         p2+UxujFXJCKVImMUOocgIYGEI2VoeEyY24BVzm2RM2xrqacJU1xn1mPyFv1uogeMLKy
+         UuItenqrVT3P2Yp8V2pLJvFfIxv9hTBeipU2Px8M11xBDIJzEK/dQCzQpUr1HMvj7sjW
+         ZNRYHZPcpMthHDYaIylnS75EspGe7iIK6CCTiN1jyaBOroeAYJNAKJPXarNHF2GudH4f
+         06+jJiOfvOP1yaxsEwqx1vUDRlM1cgEwhwzqfVGwRPZjXw814N954rjBAKVLL0F0XMhR
+         Gt3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790718257; x=1791323057;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9q+E3Xh65cY9+ofmYDsNL60Gz/7NdFCbD28qz8ceGUE=;
+        b=0EO1N+kItk4Pj3Xa/jMKm0oBwYCLIjxfhc0I0YyG0yD60kuIkJkUMnaJOf+huHsp3D
+         Ewu7Ist/Swo40axLLPU0d4PMinTyOj4tCMVJ+La1evgycWjH3gNdGOQvDJLaQKOzOnya
+         ro3Zplr/lXFhXwB5xt9tFlnYAl08SI1d9uoqfLhYJw0A30RVMcodc0dbIb92NMJrappd
+         l6PHaDISujT5QAJdbppahKXN4xUzHJi88fGa5WUXPXgfKZL5zoJ6U2z2Y7StvQ/7+bsP
+         IH67umd/QcU74fqVjHxYNboFqECV081xpIgwzA7n0E1kxpDVd84jcXKhEn91KOurkrss
+         w/qg==
+X-Forwarded-Encrypted: i=1; AKwUvBzy+j2aUv7TH3Mw0LBXtp9cIdjoi396JEIdEYhyTv/9Rq4q2d/cX0YUmnFV3qgWcnyuhMLhYgM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIO2xG/UogIEiRH//1N2kRvMym5+9EcWd1hATHIPJ71fiax2WjL
+	7TvpQXvpcYB6+Bi78m9aDt8Sj+mgZwtbmbqRjA3ZcV2LigahEgIrmOTV/fXRQUQDBUo=
+X-Gm-Gg: AYBFou3yOa6LQC6d/hssOm50SCLnB0mKZA3WJLKrqWiLadbKhuXuXB+TIt+a7XdgoZY
+	dtOy24OFtEOatxc9e87TmD/KVlA5DhMmVHD2Va6neW+4w7vDROJ07zErg4yo/7i/bXu3HZysdiv
+	vqHDZHuS3mu9x5hV9Ru521oKcCElCeRcrua3+kXDb49RPY7lnX9+U8axEGZ9WS/JtZVwL3vt1yu
+	2rZ0FdoFOTMF/MhPU8XlAWEam6d0aJgwfFzlgMffpoA+6dp70TbUrLZ/zTkkFNYEAGsqkj4C52F
+	s2fMsMmL/uIt+KFhUNRzv0oBCcwbztuCewcA3LaubI3XoboklCBfEpwUYnayiT+YZOMwuPts+D7
+	5QLwg7Ekvk6oPS3eRTSPiaqgUYKCCnhPO6SKoEPJ8mmlt8+AyFNRQqz3dIrL++/VDHGrE+MaBIp
+	CzxBAYBppbup50NYx74fUr+36F8WbfklqGtfSSluVud6fxJIcSQ8amydl229wlh5MaGHz0qGkPW
+	qohYK7zPvdk8VJ/jHApu7n2
+X-Received: by 2002:a17:90b:5109:b0:3a4:b8f3:8192 with SMTP id 98e67ed59e1d1-3a4bfeddacemr290081a91.52.1790718257035;
+        Tue, 29 Sep 2026 14:44:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4c6142209sm74299a91.0.2026.09.29.14.44.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 14:44:15 -0700 (PDT)
+Date: Tue, 29 Sep 2026 14:44:14 -0700
+From: Joe Damato <joe@dama.to>
+To: Ayush Yaduvanshi <ayush37735@gmail.com>
+Cc: Edward Cree <ecree.xilinx@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-net-drivers@amd.com, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH net-next] sfc: siena: fix kernel-doc description for
+ efx_ptp_timeset
+Message-ID: <arwxLnscbs05f84x@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Ayush Yaduvanshi <ayush37735@gmail.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-net-drivers@amd.com, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel-mentees@lists.linux.dev
+References: <20260929100625.50380-1-ayush37735@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929100625.50380-1-ayush37735@gmail.com>
 
-tcp_v4_syn_recv_sock() transfers ownership of ireq->ireq_opt to the
-child socket (newinet->inet_opt) without copying it.
+On Tue, Sep 29, 2026 at 03:36:24PM +0530, Ayush Yaduvanshi wrote:
+> Remove excess @valid struct member description from
+> 
+> efx_ptp_timeset.
+> 
+> Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
+> ---
+>  drivers/net/ethernet/sfc/siena/ptp.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Another cpu can concurrently retransmit a SYNACK for the same request
-socket (either from a retransmitted SYN, or from the SYNACK timer).
-tcp_v4_send_synack() and inet_csk_route_req() read ireq->ireq_opt
-under rcu_read_lock() only, and ip_build_and_send_pkt() and
-ip_options_build() then read opt->optlen twice.
-
-Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
-into ehash table"), request sockets are processed without holding
-the listener lock, so nothing prevents the child socket from being
-freed while the SYNACK is still being built. TCP child sockets do
-not have SOCK_RCU_FREE, and inet_sock_destruct() frees inet_opt
-with a plain kfree(), leading to a use-after-free in
-ip_options_build().
-
-Readers of inet_opt already use RCU, and other paths replacing
-inet_opt (do_ip_setsockopt(), cipso_v4_sock_setattr()...) already use
-kfree_rcu(). Use kfree_rcu() in inet_sock_destruct() as well.
-
-IPv6 is not affected, tcp_v6_syn_recv_sock() duplicates the options.
-
-Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-Reported-by: Xinyang Ge <xinyang@anthropic.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- net/ipv4/af_inet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 4ce38c99fef9ef2a24edff34cd5b110dddfec193..14ce01092fda65dbcf835662c03d78f4de0301f2 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -161,7 +161,7 @@ void inet_sock_destruct(struct sock *sk)
- 	WARN_ON_ONCE(sk->sk_wmem_queued);
- 	WARN_ON_ONCE(sk->sk_forward_alloc);
- 
--	kfree(rcu_dereference_protected(inet->inet_opt, 1));
-+	kfree_rcu(rcu_dereference_protected(inet->inet_opt, 1), rcu);
- 	dst_release(rcu_dereference_protected(sk->sk_dst_cache, 1));
- 	dst_release(rcu_dereference_protected(sk->sk_rx_dst, 1));
- 	psp_sk_assoc_free(sk);
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+Reviewed-by: Joe Damato <joe@dama.to>
