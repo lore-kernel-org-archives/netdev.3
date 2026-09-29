@@ -1,151 +1,123 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CEC2C11CF
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.233
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790658342; cv=pass; b=CZKlMVuKIgecM5dRE3ISVjKOmpJ2x/C9aMGYbCODFGQ0ehZebPogPtX1ub50vxl/Ap/+g+l203mC9EHrjf223JQzxn+rrO3mPLNBe6tx70FCh3JXdpTNgLrzGMiIk8AjaS3f7t+9PWoJQYkIz7diKYQ4zWchM9PGl1IUSlPK8O8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790658342; c=relaxed/simple;
-	bh=OZGwJxvXGlzvtcJC5LTGmTfsd1RyY3scQQJFUPKnA2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qM8W66KAj3LNDuEiMKH1O6AuvLLJyVtD0fJ6PAallaticC5LKI4eTuBQxLoPqvlKrXlzMVBT2rLDwZLA8xrXzIUb7nBMU4PxB+umAkGHImsYk2Iye3aNEyC8DDB9ZsHtBALEo29SDrk8CiWySrRJM0BcnjRGs6r6XEVXDf6TNFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aznSFZZg; arc=pass smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96632380FD3
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790660053; cv=none; b=sJFUdbZKRiJGkDfv4e/EC8YpXz27wxB7b/8DwT7mj8CTnY9rUkp1/AGMe2j51gPWsn/yOi04zCDqgB++F4gGI4qR0oHjmXb5gJ2RiPa6BWWVDKzM7f3yv7PraEMYOAkpG0cgY0Fl2ohKrcph84W8STwduqH9GARD6Yy3+uqvOYA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790660053; c=relaxed/simple;
+	bh=m2lqawFRROq7VOxJCYnJVdA4aB6TI0mUCVIlIeUuTzI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A+jfzQkRlF4J7BG+sop6pLWPKIVUBsrppswUyv/TVaRpwvaI6yZrFFYduKwyDj0sQcO8PqZHOZX7CBEYruipufNCQobfKi4PJP8nUILv2Fn6euh9kP2zpCRZ9Ng1Ub2TtPPvZPSU62JrR7GIVy88f+7AswDtgUcWaN8364aN8Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+zLSDTB; arc=none smtp.client-ip=74.125.225.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aznSFZZg"
-Received: by mail-qk2-f41.google.com with SMTP id d75a77b69052e-533245fd18dso21117941cf.0
-        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:05:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790658340; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WUrPIQ350ZPbYmFT1lqPYJztXrMUzXTOMqz1aT75mwmjQYrAFifSflNxNmxrCp1phF
-         BYf5tqJoki6/nP95IEvdVbnawPalRa3cdauJ7izwHKghFTUIC2XyCN8Q5K9We145As54
-         Yfs90Jtu5RGfdyMaFUNCjHRJ1ojLoCg8RNkApZRA1dP46ye4uyF3Tsj8QdkEbBylBzsh
-         bOmz4kcsmEIfX7+bNzlJR+RYJA7e0iGVazx/SlBxQWbVcfqqwY864GzEmmrFFpd1kKal
-         FfNj872/D4G7jm0RQvz2J3LOppXPjBLRy6iVduCQ38qFOapve4BeBiFetjgkcdvAZ/Bv
-         T4BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bc5OGVcjd1h34e4xLBzYwlsH1awYHKwjkeVOY24F3Sw=;
-        fh=hZMSDBH3AMsLydNLWIvzIqNWChfYg8yLsCmsQ+ec2c0=;
-        b=SHs5HArXagO8T5qgkfFEmH4JLiWVzh29OG3/JGdMS1ef9Xf5tWJ6aqk4Erf32ca17C
-         M4nva0lcQVS7W7dlchdNKua5z03HyMFmpIKez6t7YsQrF2mXUJVoDks6yBic5U0EMYIZ
-         HvAIVQX7eBX9V9IDca1FD4i+ybZPHfzDLdOmjnYh26CH7mJa/NYWB4wQGAYsD0j7TdCy
-         WL7i242sxvkRcDP8XIYs6bZhSruDUkHGt49u+AOJ7RgHiQ04c/c2iJ9GQsum0RA1bAVN
-         yMzLVi733ly1eIpwrpwXcu19y3EosvKNqgLlcsgY9mhZ0BWX7A8fmVc6ss81iyOhmUwV
-         LQYA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+zLSDTB"
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48884b926f0so2441092f8f.3
+        for <netdev@vger.kernel.org>; Mon, 28 Sep 2026 22:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790658340; x=1791263140; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1790660050; x=1791264850; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bc5OGVcjd1h34e4xLBzYwlsH1awYHKwjkeVOY24F3Sw=;
-        b=aznSFZZgB/2kcXVNA+Jcn7UHtCxb1cCzR42xzZSN7x6o+evCR44W1GCP3OKG/xUnMy
-         kDxHBdVHzQZ1r+zrrcuEwWlNUrsUjVdq/nPe/tDPTzD/iKz4TjVJWuAOykvcNVRxv/OS
-         SS7SRt2FmVHHYnQSlhehUbUf4mRj2Fqi350P6mKM8g7+7pscRX0PJzdZW/5m81XnT+Vr
-         7ebplkcC6/WVYSkeJhSPabAmGRRg6p+9IrgKuETjfC6DDuwANg/axzgOtlsG2S5DSBXj
-         CAvtBwA3sFlgKD7+GJP6Qmf56lTzVBOwDpYAWvgxGNpneUXT9lco5tnaNTr4654YoYUd
-         J/Tg==
+        bh=vDrRpA1W/7JjCEY/lfrVQceoo3M5nHbNKEhFmkg5umg=;
+        b=g+zLSDTBN5PBcQHF5j5AAGj8sobOayPMm/lPnpU7fFtjmd3yNMI9nSQHvybIYKg/n+
+         GnGtfnaSbNuUbTmkxDnLFRqu09paoQmpeHA9gNMpY/dnIiFV2aTWuyoV1ec/eekRx1+w
+         +cFWuPIJoHLHgXUoyu2mRuVcCvIFCsfVnszBEcOfx33IZmpH8ZPyNBUgz3kKmqunn1Tg
+         uKWjYgPIBuXLK+Cs/AqKE+2lqdLlelH0tOcKaTzbAFTopW7ebyce/4Sp1LnRuciwb8ov
+         zrfKTEZqkXuAiXYdLJdO1RPcMxP+iSEhL6TFXWJxtc9mGiJT6dynqKgOppieq46c7rex
+         nwaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790658340; x=1791263140;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790660050; x=1791264850;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bc5OGVcjd1h34e4xLBzYwlsH1awYHKwjkeVOY24F3Sw=;
-        b=1C840eJ1WnuCA/Bj/zo9xK3vunxH8LWlaMHU85lQaEv5cIZR4n5wN59sn3ZA8f00zk
-         oQosA5InkB5ooEsvemCrneRvz5lxOWIFtzQ1Xo7y2a+U/3A8mr5Eab7Vm+kQqamNI7h4
-         Dh7/1Y9VIMlNelDIsFtDaohURzLe6EDANxpS/OteJtdAEnhyBDbjKzCebPh3XaDfkDLz
-         6UQ6vO6xvwEseaaoOB6DrfFjePTtKb7gH180DFULivabw7yN5VtZIigImN/kt3rv9NY1
-         v98hZ1T9g0yyu+7Qaz/jBlby87h9oxYNGkY7y9JSbA4fTRgUQf+jO8Z844sRjNG3j5Ve
-         VhSw==
-X-Forwarded-Encrypted: i=1; AKwUvBxezpUmacZwdM7iyQxiy9Eh8GXHRhel9cU7wgWUo4muklm/rRyy145WO1up+Zry/6wqV+No/o8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mZtXcXeB3DjSb2Ln8CEIc4NrNqpT1ck+lVjb8uxHDi3dxUIdFi
-	QluyzMCamdd0vfY8vmkJnONdM6aOU6igRr/YFJy979fKANP71aVlHsAe/fqnaXLxlhs0H7eVt7S
-	KcdHqbDaHQKNIXCTr0Y+wt5gjikChH/RYGRd5b8s6
-X-Gm-Gg: AYBFou1LH90Td8/5VM6xaCVG9AWJoEO6hLv3j+shs60cLwIzE9L40SgCObpR2Ey8gcB
-	dXxP50taTt8vE81wVoKv2V4xfBmUAXr13oL3YvbMamI5ZyNGXBI13xy8riMo/ZNQ5MG3UdWMrIa
-	K3o06PdfPUjJoWPM6V+wp5ksEiibGQUEn3kRN5Z4hUK6NZS+27IuRmqzCkXY5+a1EzYkoMYRgZs
-	CfCetNS+aMsS/R5vxhRx5JkkjO8hv/qB3qxYEw7q8sKvomDNCA5G5GTX/ziJJetTBLgqlikVOFY
-	1vpDpGpYchK6HA/9Lm4yq1YrC/RevwFwqIXW4NubUhr1lyW8Aov7x0YP5QavPhGSe1fIrL148Xz
-	1oZVK3WjGiPWnli+x3k/DeEaGxCmpF2T8D7plpzz4eMl1hY2reQ8dObPkBiuEBxcf41frv7gp4R
-	YDtl0=
-X-Received: by 2002:a05:622a:156:b0:532:9eb6:8498 with SMTP id
- d75a77b69052e-5330b5f1b5dmr247699041cf.22.1790658336811; Mon, 28 Sep 2026
- 22:05:36 -0700 (PDT)
+        bh=vDrRpA1W/7JjCEY/lfrVQceoo3M5nHbNKEhFmkg5umg=;
+        b=cN/n3sz17P+Y9pgeBdGifTULQAJxtvjFrCitw++tDy7No+3fluyISE9ggCy0yR2yrW
+         051uXFqT5axSmEJB8qmOE89MnN5EO1aKS6QPG5L39xWJINp3KwddcLgOf02IVY/5Umk8
+         2DmLCpjvlaid0zCWgBcg+W1xApzgmnFlM4/fWCSWkjQtS9IVfmyNptk1/pn/YYoPnwxz
+         3VRfhXnScRs9N5V12WVYwnYtEO67LyfioNHysGNq2TFXXm7Vnqk8uZ7DAftjhuBMnK4i
+         bohZiOwg5gLdtZAADkgRtVoJC1qfv95cs5MEF4zExspZReTctGUmNwknBU5gRk/du/3L
+         YKLA==
+X-Forwarded-Encrypted: i=1; AKwUvBxbsdDBtnccHYgrybTzmfLbt9jKlfPgdh6T5Y54G3AAhRfqnLoKzhLIcO06m+uE234h8sE0R+0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLpjErroUHmriYoW4a9SPbQVQyD5lBiHebCZ79LPIiFcx2F0v3M
+	TR4v3oiA25gMaEmjPvtbhMH3VUpA3qf1/xJLwHUqOr8n1oVRkM02KaXA
+X-Gm-Gg: AYBFou0cTFyrMxkqI7voRH1o72fmJBaeU1eVGLrhZYiJPAae0ZwUjliGCGDYR6BDdQx
+	EpGAXt3oNTuKUrLdgbjILoA8Y/slUkkULNtyk9HsXRd5u5+Z+W4f3ojPL22sYu848HX56qLSwrc
+	2doJJKmZXZzzEpBBv8LG0is0T5jOQz4hqdRoeJxIcgbBSep1f/IDG69LMV64B7TAe9dPs1gVrgG
+	/fzK9CN9mPyo9poqyiReikXmWxiNoHDxGwQmM7hgOKUabmHBiRUyZpi/+1FLni2rIMIH5XvbiOl
+	LMAYq72YlTM0OZ1DysDi/GAmu75kZWyXUjzbJQNR+3qEq9OLgbLBTfJGLJh+1uHD1a7Q5sAtswj
+	rd1Dvqpyrox5wuCV9q/WWD4kT5w6Gfvc8WW9blte+lNJZDms1LRZFd2X0nn3p2KjH6FIRJZwOha
+	UWX8/iJbyxcXYgc/Kjqnn+Gz4z3L9BIGnd+BxuvOXcjT6sqbFf6Xr+mQKbuD0QZy75t9RPryW9y
+	R10SflDsF+yip359V7Xcx+1HhEC11SmVgITCoBBKkcJVblRBrkazSy6sPb0X/aBRWBzuObNs1a0
+	TCzlx9W75A3nhaghEi73JleFB8duyRVlrHluM1ZN0sklozmNMAkzUIhvzSNTwSjoS1sosyXtxIw
+	=
+X-Received: by 2002:a5d:5e83:0:b0:488:84bf:eedf with SMTP id ffacd0b85a97d-48884bff147mr15033151f8f.48.1790660049555;
+        Mon, 28 Sep 2026 22:34:09 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-9c32-f801-0451-cc94-d3ca-f56b.310.pool.telefonica.de. [2a02:3100:9c32:f801:451:cc94:d3ca:f56b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48af506fdc1sm1047634f8f.21.2026.09.28.22.34.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 22:34:08 -0700 (PDT)
+Date: Tue, 29 Sep 2026 07:34:06 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Matt Johnston <matt@codeconstruct.com.au>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: mctp: Make KUnit tests depend on flow
+ support
+Message-ID: <artKykZLgwngX5zs@gmail.com>
+References: <20260925192510.93840-1-kmehltretter@gmail.com>
+ <20260928205352.30502-1-kmehltretter@gmail.com>
+ <fb39875c7fa4131e565eebf8ffc9b3b19bb5ad87.camel@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928210508.2645800-1-kishorg@google.com>
-In-Reply-To: <20260928210508.2645800-1-kishorg@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 29 Sep 2026 07:05:24 +0200
-X-Gm-Features: AclHuK9rlweGa5LfZkECvSpI6VBx8IK8F4pmxelwJsp0a3K9tTEuA2Bo7ZpbcHg
-Message-ID: <CANn89iJG8jhgLV3e_tj9cBWaDAWVHL4mrEroT2FHse==OJwTSQ@mail.gmail.com>
-Subject: Re: [PATCH] ipvlan: no longer rely on RTNL in ipvlan_nl_fillinfo()
-To: Kishore Gummadidala <kishorg@google.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fb39875c7fa4131e565eebf8ffc9b3b19bb5ad87.camel@codeconstruct.com.au>
 
-On Mon, Sep 28, 2026 at 11:05=E2=80=AFPM Kishore Gummadidala <kishorg@googl=
-e.com> wrote:
->
-> ipvlan_nl_fillinfo() currently relies on RTNL being held because it
-> calls ipvlan_port_get_rtnl(ipvlan->phy_dev) to retrieve the ipvl_port,
-> forcing "ip link show" dumps to hold RTNL.
->
-> However, ipvlan->port is already initialized in ipvlan_init() with a
-> reference on port->count and remains valid until ipvlan_uninit(), after
-> the net_device has been unregistered. Both ipvlan_nl_fillinfo() and
-> ipvlan_nl_changelink() can therefore use ipvlan->port directly without
-> dereferencing phy_dev->rx_handler_data or checking for a NULL port.
->
-> In addition, port->mode and port->flags are updated under RTNL (via
-> ipvlan_link_new(), ipvlan_nl_changelink(), and ipvlan_set_port_mode()),
-> while being read locklessly from the data path and from
-> ipvlan_nl_fillinfo():
-> - ipvlan_queue_xmit(), ipvlan_handle_frame(), and ipvlan_skb_to_addr()
->   read port->mode,
-> - ipvlan_is_private() and ipvlan_is_vepa() read port->flags.
->
-> Furthermore, ipvlan_nl_changelink() previously updated port->flags via
-> separate read-modify-write calls for IPVLAN_F_PRIVATE and IPVLAN_F_VEPA,
-> which could publish an intermediate value to concurrent readers. Since
-> ipvlan_nl_validate() already validates that only those two flags exist
-> and are mutually exclusive, replace the bit-manipulation helpers with a
-> single WRITE_ONCE(port->flags, ...) in ipvlan_nl_changelink() (matching
-> ipvlan_link_new()) and remove the unused ipvlan_{mark,clear}_{private,
-> vepa}() helpers.
->
-> Annotate all remaining accesses to port->mode and port->flags with
-> READ_ONCE() and WRITE_ONCE(), caching READ_ONCE(port->mode) in a local
-> variable in ipvlan_queue_xmit() and ipvlan_handle_frame() so the switch
-> statement and fallback WARN_ONCE() observe a consistent value.
->
-> Finally, add const qualifiers to local pointers in ipvlan_nl_fillinfo().
->
-> Signed-off-by: Kishore Gummadidala <kishorg@google.com>
-> ---
+On Tue, Sep 29, 2026 at 09:02:23AM +0100, Jeremy Kerr wrote:
+> > This keeps the full flow-test coverage: the suite is available only
+> > when flow support is enabled, for example by the I2C transport.
+> 
+> Hardware transports are typically not enabled for kunit test kernels.
+> 
+> Are you attempting to fix an actual problem you're encountering? What's
+> the aim with this change?
+> 
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Hi Jeremy,
 
-Please include the target tree in the subject ([PATCH net-next]) as
-instructed in Documentation/process/maintainer-netdev.rst
+It's no real-world MCTP workload bug. This came from a similar issue in
+my 842 KUnit patch: the test selected the decompressor. Geert pointed
+out that tests should not silently enable otherwise-unused code:
 
-As a follow-up, ipvlan_xmit_mode_l2() and ipvlan_xmit_mode_l3() could
-read port->flags once, instead of calling ipvlan_is_vepa() then
-ipvlan_is_private(), so that a concurrent changelink cannot be observed
-half-way (vepa from the old value, private from the new one).
+https://lore.kernel.org/r/CAMuHMdVcZ5cV4-HrjLYfFKh6UshiVxq5eXCNyp0Z1k_SMAvF5g@mail.gmail.com/
 
-Thanks!
+My goal is to keep KUNIT_ALL_TESTS from pulling in otherwise-unused
+production code. An explicit opt-in could preserve the coverage,
+following CRC_ENABLE_ALL_FOR_KUNIT and CRYPTO_LIB_ENABLE_ALL_FOR_KUNIT:
+
+- MCTP_ENABLE_ALL_FOR_KUNIT depends on KUNIT=y and MCTP=y
+- it selects MCTP_FLOWS
+- all_tests.config enables it
+- MCTP_TEST depends on MCTP_FLOWS
+
+This keeps KUNIT_ALL_TESTS from enabling optional flow code, while the
+explicit kunit.py run --alltests profile opts into it and retains full
+flow coverage without requiring a hardware transport.
+
+Would that approach work for you?
+
+Karl
