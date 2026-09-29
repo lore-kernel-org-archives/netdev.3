@@ -1,74 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44BA3D1A81
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A494D2F7EE9;
+	Tue, 29 Sep 2026 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790690988; cv=none; b=CTsU38QXdJ5a6K9RYsXI3Z47rY+hlLGRg0TQl3BmlWaOtp+v7Me5vatsQmO83KM4kugrT7uSN2QI/K/jlR9ImFUTmi6jrYFkFGYDliC3/W2gkLXLdW/50HLdxZjRGcnhnGUMjnXnbIvoy3IyLYCX45CDUj7AS5osfflp4/KdUJ4=
+	t=1790691012; cv=none; b=XHAhVso+YVokUIz/jlplQ3U5Uf1qjjnoUDLgTCAJII7futHTlMTEfDrit8YVM9xHdEoLWEneOYDBb772/EpGjlFiWV1qkBsxft/RMewmuZ/xxdxSKRnH3gji0PneaRwLMr6fhSx/p45ZVFdyXLMbZjbAY6nNw0BcnsZeXbQSg5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790690988; c=relaxed/simple;
-	bh=+jw2GgeLuUCWWr6zhg2xGsu1IGJC3eYeJOInKJc7E+I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MEQFDkRiO0vvEM8dlZOjDZ4kbaedJywsKVxrjlAaws0mjBfuOams/7stNq/qamofWSPPabnY+3dfPqBf0w+W2zK6O8wCTcIy9trndi2RP70Kc+epiBVNWwADg8Wq1JqGQj/ErSaW0FZDuPA3MeTDL80Qgf2mtsJG/34st22H3+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ndqviar8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790691012; c=relaxed/simple;
+	bh=zn64/z74HrsgRqX1Znz6DNhUF1h6W0QfsND4r24wyMM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Y7K2InoqWXRWcO8apWZyCGBAxlpWJ8zdoxxmJJ5lUKcI1EpsnB/V92GmV+NKm5C0mlHTfchIHzHs98YlMjJd9bZNkGIio3P0iKjSCJlgU7PC2BowjFgSLQK/63gne9m2JYx1N8hGX+fbFwnwD/GhzXg3L2HfzmRTwgqQp7XNGCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdfsvbCs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ndqviar8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1021F000FF;
-	Tue, 29 Sep 2026 14:09:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdfsvbCs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C51F000FF;
+	Tue, 29 Sep 2026 14:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790690987;
-	bh=Rh9LOw3XmQCm59WLRd/7vmwlrmdkOXMGXB9CgtarJ7I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ndqviar81SP4sWqN/HKs3s0sxF1BQSbrx43WxBwjkWoDl5BMvCuUjqB5/dFEyS+sX
-	 MbSfaFJSANDGczHW+0hJ+ZcCMqmvIGTo6DHImtnSMHCL4BAz02KNvmpkFy/1/VgV3N
-	 scwZCV8OU08+RmvZ7fxPZRg0T35Totv3gnVDmY1M1vmatXDZYl+ZLuxys+dS65e9b9
-	 hVAjyyVwhUJ8a0hpmPXm4nctxzoLF7b0MKcArRK7S9BSW0m3CpNWrgT3irctquMOP7
-	 3SnetXqg5YkZp9sEl948dKJL0/tRAHREdQlcZckv2C0Ldhzemvi2VaQORPe5zJqwXj
-	 HE1yDQcsvwr+A==
-Message-ID: <0c6f073c-12c7-4843-846e-69c48c290107@kernel.org>
-Date: Tue, 29 Sep 2026 08:09:46 -0600
+	s=k20260515; t=1790691011;
+	bh=/r0KUDGrdjq78OEu0y9s4SfKp1pHV7dql8E1623aP5g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DdfsvbCsNlgh2OemIVy3BVtmKz+yJSFwJUQeuAwtWCiJWGnldqveKFZlBsUs0Cm/I
+	 GmmEgPK8vR2YgnnTM79Ezd6Alz3B2LohO1nvY2Pv29d3UuZEI4YZJN+p+PWqS533s3
+	 AqYB7zR4LqRN27ZIROWEX+pVk73akX6i+EdrHKpF3qfWsNlY2ZDK3HPKacyEQ+j6m8
+	 an68obO/rikZP81bUJoNRtOV6u00i1GH4+yAPFqRpl8EmMmjMOCIfBSXEudC7SZIhI
+	 5yYuXTXAVuTrr1IZBq/zT0RbD9t7ySePmLdhQlNVCksG+kFgSHIwIex4LI8XSK8hno
+	 1JteJhzgueqIg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3BA392666B;
+	Tue, 29 Sep 2026 14:10:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB
- changes
-Content-Language: en-US
-To: Ralf Lici <ralf@mandelbit.com>
-Cc: netdev@vger.kernel.org, Antonio Quartulli <antonio@openvpn.net>,
- Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-References: <20260918202718.36933-1-ralf@mandelbit.com>
- <20260928085639.151005-1-ralf@mandelbit.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260928085639.151005-1-ralf@mandelbit.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/3] net: consolidate devmem net_iov freelist
+ and
+ DMA handling
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179069101003.514198.11141004024864379168.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 14:10:10 +0000
+References: <20260925201522.254717-1-sdf@fomichev.me>
+In-Reply-To: <20260925201522.254717-1-sdf@fomichev.me>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, sdf@fomichev.me, bobbyeshleman@meta.com,
+ almasrymina@google.com, kaiyuanz@google.com, linux-kernel@vger.kernel.org
 
-On 9/28/26 3:56 AM, Ralf Lici wrote:
-> Hi David,
-> 
-> Just following up on this. Does my previous example clarify why storing
-> an old dst with a new cookie defeats reuse-time validation?
-> 
-> If so, would you prefer that I pursue the kernel-wide lookup-provenance
-> approach described in the RFC, or keep the fix self-contained in ovpn?
-> The same late-cookie-sampling pattern is used by several drivers and
-> callers in the networking core, so I think fixing it generically is the
-> better architectural choice.
-> 
-> If changing the generic interfaces is not acceptable, I can rework the
-> patch as an ovpn-local fix, although that would duplicate IPv6 routing
-> details in the driver and leave the equivalent pattern elsewhere
-> unchanged.
-> 
+Hello:
 
-dst's are cached in lots of places. Why does ovpn need internal routing
-details that the other places do not?
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 25 Sep 2026 13:15:19 -0700 you wrote:
+> Follow up on the recently merged devmem gen_pool removal by consolidating
+> devmem's net_iov freelist and DMA-address handling.
+> 
+> - move devmem freelist to index-based approach with push/pop helpers
+> - switch devmem to public memory-provider helpers and reject DMA
+>   addresses that cannot be represented
+> - decode stored DMA addresses for TX on 32-bit systems with 64-bit
+>   dma_addr_t
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/3] net: netmem: move to index based freelist
+    https://git.kernel.org/netdev/net-next/c/1cf2f913b3dd
+  - [net-next,v2,2/3] net: devmem: use memory provider helpers for net_iovs
+    https://git.kernel.org/netdev/net-next/c/5bdeb89ec5b0
+  - [net-next,v2,3/3] net: devmem: decode DMA addresses for TX
+    https://git.kernel.org/netdev/net-next/c/5c729e6c71f1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
