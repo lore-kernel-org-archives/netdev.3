@@ -1,105 +1,129 @@
-Received: from smtpdh19-2.aruba.it (smtpdh19-2.aruba.it [62.149.155.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A5517BCA
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41F350B43F
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790682517; cv=none; b=oZd4g9YIQSoI8UXQueB0DCvviTn0m00lP3fZpaQfNqfWJR/HdonCe9hUh+9323f0P/tDXtjhf/lXxPyW8zl0oxA//Adb2lAcgmoJFLJBY071yjjzSMKK4J3UwTQ70QL0P/zwd259vTVmRy+gvXn7Z7GpjqpbCJJmYrsvQNDMPN0=
+	t=1790682644; cv=none; b=NjqhZ7OdvgnPpsbDO08u9pTP/sZQ1K2weSzS5ouINDcjW5Iy5KBHwBRghxtJroetT9meWyqwNUt6NMk2NcKGcFzOFXxoS9nPC+Jwef9w4hf6kUOAtzv7aHsOsupUaS4erNf0QIN/Ii/G094YumNINgcNxRUbLDMgGe5FNlEj/yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790682517; c=relaxed/simple;
-	bh=ClJqhJuYYFJXOtWZBNSRYkjOnDQUjUrJcwaL8iAY8H8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KABJEAQFq3txqf8kWS+erELZKQCSocSVFVM351YQmioyjg0g6LAcpWAZnoUnwSdZntuIxT+CjP4OJeuXyGMfZJd++mtHeDOYDHHSLkldT176qOHGjS0t403vjUG8x/ih+mn9Z1ekwZ5hGLZ82SHVKyDTLoepheOyLt00pkB3Ii4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=RX66vsdH; arc=none smtp.client-ip=62.149.155.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+	s=arc-20240116; t=1790682644; c=relaxed/simple;
+	bh=s/0XDKChj3G/cqYADLMvz7qCruLjKQTe4fIV24BbGCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t1inmYxtojMSC2SNYQkLIpXye8vcWFFHSpHQgfzXCP2OPI+T5HAoNLa0xGIXyEKxz2YR9e2dUcM8YyTkCqjSD0yt9SoBjg/4izAzfw7ixOTtzn0r75++UMCk9P8oFyxJP7o6skK6R3GQblpIgdPeti7GK0GWtrtiEz+Jti1VHMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=PL+EveeZ; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="RX66vsdH"
-Received: from [192.168.0.186] ([101.57.122.26])
-	by Aruba SMTP with ESMTPSA
-	id BWJxxyTWW5bAIBWJyxBloq; Tue, 29 Sep 2026 13:48:31 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1790682511; bh=ClJqhJuYYFJXOtWZBNSRYkjOnDQUjUrJcwaL8iAY8H8=;
-	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=RX66vsdHQzu/w9QPE8cthOSXdhEfO4I+qBLsnkLKSainue+r42MS4i4TjLVKHF3et
-	 bbiLVPzqTtOds2IZIWLV/ITKMqddcK1O+//YoRVut8N/DFV8+VKThLK7B3gEjC88nE
-	 IQoTrrkkxg3Uw4d5K2l9PUnCO7OFdoblgmEk7cLQzxxN+a5koJ4OwRwd7bz/0XfsaZ
-	 91XfBCCwP+u/SaWSZz6XzFBvu8RlQi/YDplwX1q+qyjqCtLc7PKr8r7uwb07MTUP/k
-	 VwvZOL17LcaGBgPWgbUbxQppy1l0vtLYYt+BtZ6HjrE/KsY7gLj8l6peH/PakxGGlx
-	 OdZ/4ZmOhdziw==
-Message-ID: <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
-Date: Tue, 29 Sep 2026 13:48:29 +0200
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="PL+EveeZ"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34b223602d7so452679eec.2
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 04:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790682640; x=1791287440; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pxSUmylHrG/sfdm4UwKqO9ldN0EF/+2SLiwtNhPJqzs=;
+        b=PL+EveeZlSMuEU4WbsHmXY9ZCJZwk0LcJUjsY/+b5OhbWyCiSIXV5t4zZ53J0yFPmo
+         2feXv8QcLHgDVembGYqCi5ZMOiuKcT5d1qmuBDscKORZaCxZ/94V/Z/hcrpzoGx2drMK
+         7Jb5QYgWbZCJpmv40ek7uklBs/wXfwm0f4Ezl9jLiJVrTxBUFoV/aWkp9OQPilcthydj
+         BL9HuSQ1OJV36bmER4xG71RXLM6AzRvJs8mK8RX6C5ynP5iZkhYDHqmZJd4sKWb+tcPG
+         +6eZpymI5pLFkgNYJBK3wmUFO+ZU0Hp+z75Kx2nGTJn67C10mitFFlWxCqTUM88K3Q03
+         3iNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790682640; x=1791287440;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pxSUmylHrG/sfdm4UwKqO9ldN0EF/+2SLiwtNhPJqzs=;
+        b=klPkl4d8qhxdIuIS/aWpgNBShiFOJsr0wMPs1kCqPwp84gi7upUBIlVy6J6wvdLFDT
+         WU7xoTFeqa93XO1ArLEOcdOnqgH4aoeSW8S6BenIAzopQjYqT65ySAWB5l0GnKByBNV4
+         QkLJ+xAaXwoh69H94l5dSSTk88tY4/DVkwgcD1AK62aNBbd/SP060BXOqfJscXKMxvYU
+         +vK3KG8MKvCaVpX/IrJ8QMShQwzm5MqHvfbo9J4DI9I6RxBtkV8+GQcOMXy8rSE2zc8H
+         yqs1irOFQ40yPbKsXz29iMdbhLRKOvyg1O2srPe2+Wy6r9Biy+S4M2Yb1rr0sZ0OzOMU
+         CciA==
+X-Gm-Message-State: AFq9FYJoD57CBUSqquMUqwQOLC6N8BinW7p0Yp5YitSaYZjOovsz6L2z
+	Pd02FnBgZTAyssGg5mEK2l4CVZTh0NAoCbC1FkRNJeNMskex3W7rdsQVVaB3N3z1wiQahILHvtI
+	P3W0BsaGOvii3MMHaT9OHePHG5KmhW15kWOAhxLztLsm1I1vaVFT1BnfQMcy3RsE3QyP0VnxL
+X-Gm-Gg: AYBFou1B/6IvWmlFA5+QUG2oDlVNh8iKbS7oiQIPndaydbnc3PK2d1prirxmgz8i1vK
+	cm4ChB8LwE69JpwusSdRkY5LCvuegmZOds6rhO/jvF9NHZF2bMDnug9qS5QV7XHDsOrHEH/gqd1
+	Lvt4qURLIF8OHRDE1eBvZUDL1gI23CIrHT0fTGf5+/DJWNlroNMi7CtEKM30mJA5mOzxr/+tc3U
+	26rNXwsyqEqR56N42pppzRA/nvevjpw5pKl2Q/ybQ+8x55+I1AI5aY+3ceMHh+4FesbjovuJM8I
+	AUC8qciMPZENu2F7U6p/dNO+QLJapaA817yLZcJoio/6NbpybOp7K1BSQx4gTwb46/Orl7fprC2
+	29e9hpLYZMwmkmzhuZgiUXLTq5LdyUE95gU2jQC742Vd63TUMW6Ku2qgwzm26E/ETt6+RK90iMP
+	D4uDfKEV5SrYne9z1MHr40ljmsKBjRCQwKd9jyAjwtu126DHH/hp1GXaBECJz0Wha9Gh8bfMQ1L
+	LcOlBuhMkM=
+X-Received: by 2002:a05:7301:428b:b0:34b:c18d:c294 with SMTP id 5a478bee46e88-34bc18dc772mr738249eec.24.1790682640193;
+        Tue, 29 Sep 2026 04:50:40 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.240])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-343580930e2sm26228179eec.16.2026.09.29.04.50.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 04:50:39 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Wang Zhan <wang.zhan@smartx.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: Re: [PATCH net-next v3 0/5] net: resegment oversized TCP GSO skbs
+Date: Tue, 29 Sep 2026 19:50:28 +0800
+Message-ID: <20260929115028.2014285-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <willemdebruijn.kernel.39a32e51cb66d@gmail.com>
+References: <20260928044102.1004310-1-wang.zhan@smartx.com> <179057071651.31693.213200671694715782@kernel.org> <20260928054920.1434795-1-wang.zhan@smartx.com> <willemdebruijn.kernel.39a32e51cb66d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] pps: Drop the !NO_HZ_COMMON dependency from
- NTP_PPS
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
- <20260829210041.40649-3-dwmw2@infradead.org>
- <f6e90a49-8c68-42e6-bdff-ea9b3ecbaf7b@enneenne.com>
- <fc1ec38dbc3723f7aed73ebf3413e1d81c161228.camel@infradead.org>
- <7098f5d2-043d-464a-82d9-a105e4000c02@enneenne.com>
- <cb992b22907085c4ced8d9a35cd1c8836aad20ad.camel@infradead.org>
- <decd5d05-1373-4ddc-95bc-46b73d6f6b99@enneenne.com>
- <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
-From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfC4b7vUfyBZo67Hz7JM35nLEWhFO+/yJBxfYYYyxuLVPrDpIaSm8ipwm7yTxUZKV7iRgBPjYrDAa9vxiMlw+CIUPVy3nkAQ1O2NEmsEcclXOmPEKkK/A
- vhlse6xsaHwUblv11GlzOGSI90FDdF79lS+AyXEhYm70q6aKY/iSuUBsYPN+CG04q/oedi7AqCdf4IuCKtDdhzEh+kV+Lv8VchocKduSRhVIR/XtSe1I44Fs
- rSA0BlkmNuJq/QLWYnIfBmj+S720UU16GVA65RwqgGfoXeu3H3pHDPdZyCPSI+tn3OY3Hf21bbiMr89ZdcsqnKSWQccineNUgH/iV4xWWc2+JJsCFGEgNzo9
- 2Y/xwxdSyE7YcXYH1BpJo+Ia79+vAX0VwcRqEKWYZraFhS18nSHMLPkwZ8pYWD+7lQV+M4MLuqFOu5ozaoOd5PgPTnNOJqxjQQ6fchopVQdNOx6vc53YjSb+
- EzQM+8XwIeSh39pdpJT8SzcvaisfhTUk3Qc4tY68ZmeGzFggBrTuJUSdMqWS3eyq6j3vDtHepnL2PWE/pVXp+2USR/1M7OekQmRYpGp3Phw0/DeyVz8vNTZO
- H8cTc087JdA35xobHRrE8Q30
 
-Hi David,
+On Mon, 28 Sep 2026 19:34:21 -0400 Willem de Bruijn wrote:
+> If 1/5 fixes a bug that is reachable today (does it?) then it needs to
+> go to net on its own.
 
-On 29/09/2026 11:32, David Woodhouse wrote:
-> When second_overflow() is delivering skew, timekeeping_max_deferment()
-> should trigger a wakeup at the end of the second to ensure that the
-> skew gets recalculated — rather than leaving it active indefinitely.
+Before this series, it is reachable when the tag is already in the frame,
+for example a stacked VLAN device or an OVS QinQ path.  I reproduced it
+with the following script:
 
-Please put this fix in the series before 2/4, as for the tick_length
-one.
+  ip netns add g1; ip netns add g2
+  ip link add v0 type veth peer name v1
+  ip link set v0 netns g1; ip link set v1 netns g2
+  for n in g1 g2; do
+      r=v0; [ $n = g2 ] && r=v1
+      ip -n $n link add link $r name vlan200 type vlan id 200
+      ip -n $n link add link vlan200 name vlan100 type vlan id 100
+      for d in $r vlan200 vlan100; do
+          ip -n $n link set $d gso_max_size 524280
+      done
+      ip -n $n link set $r up; ip -n $n link set vlan200 up
+      ip -n $n link set vlan100 up
+  done
+  ip -n g1 addr add 2001:db8::1/64 dev vlan100
+  ip -n g2 addr add 2001:db8::2/64 dev vlan100
+  ip netns exec g2 iperf3 -s -D
+  ip -n g1 link set v0 gso_ipv4_max_size 65536
+  ip netns exec g1 iperf3 -c 2001:db8::2 -t 6
+  ip -n g1 link set v0 gso_ipv4_max_size 524280
+  ip netns exec g1 iperf3 -c 2001:db8::2 -t 6
 
-> So the results at https://david.woodhou.se/ntptest-r64/tickless/ need
-> to be redone, but you can take a look and shout if you want me to
-> change what I'm capturing or how I'm doing it.
+With gso_ipv4_max_size = 65536, iperf3 reports 442 Mbps; with 524280, it
+reports 39.4 Gbps.  So gso_ipv4_max_size clearly affects this IPv6 flow.
 
-What you capture is fine for me: the adjtimex state (offset, jitter,
-stabil, errcnt) plus the per-pulse phase are what I wanted to see.
-
-Two questions for the rerun:
-
-- wouldn't it be better to also have the tickful baseline with the same
-   board, the same GPS and the same pulse period, so the numbers can be
-   compared directly?
-
-- since typical PPS sources deliver 1 Hz, don't you think it would be
-   better to also do one run with the timepulse at 1 Hz?
-
-Ciao,
-
-Rodolfo
-
--- 
-GNU/Linux Solutions                  e-mail: giometti@enneenne.com
-Linux Device Driver                          giometti@linux.it
-Embedded Systems                     phone:  +39 349 2432127
-UNIX programming
+I will keep 1/5 in the series and drop the Fixes tag, as Paolo suggests.
