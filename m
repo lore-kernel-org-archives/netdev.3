@@ -1,137 +1,156 @@
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5577B3AFCE3
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8246E346ADB;
+	Tue, 29 Sep 2026 19:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790709745; cv=none; b=swan+3TpqCYyEXKvxhd5a5qF0I4VgZk9XQ7SMQGrVV5Ha4lplUavlp/j1J7Ar50cvTxZON6kHHMf4/jKehmjmjMthtSiiPWoDQPUzMFm5Jy5qQpeXEs44bYgcfPN09G7k+8AyXcRUK27nhDF4+naUWbybXYME8EqyNhscfghbb8=
+	t=1790709794; cv=none; b=f6OusgKsDkV4aJiuqhASQs7kN4cHJNo6oIXxMv+iHrN+qDYJMMj6SEZXjT7GyyyST6u4PkrB0Wmakzl30UKeUBhUOvNO9SOUHyc48dm+/qNonpuSD2i0va0iub9lOdb5KFHcTqCzdEkBXmn5KNzRroCEmWQ9WcvLO7zPKNRiIvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790709745; c=relaxed/simple;
-	bh=soc1UdL6U29pn8AR+X3a5I0n2rxTg8pVScIUjai6HGo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=manGpVh24St4xpIa0hHL7pKvjBWbBY3KWXczbEWdzuVKzWKRIZKM6kg5hwtxC7SKOJZ7zaGQrWkWfW94AvIlTPi9mhqRsgwbbXp+vPrqkbdd6TgqpKXrIfdsSM+yxHPCQe8jdAwpZAxyvxm6QbZUZdx2mXloCkMApINQzq/LKlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DyLv/cvH; arc=none smtp.client-ip=209.85.216.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DyLv/cvH"
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-39b2ad862bdso1817966a91.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:22:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790709743; x=1791314543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UGlpLytsQuiePTVR4JYMni5yCyAEoJqxH+8EP5tQGiI=;
-        b=hvl0eX/QyzVUgFIRr02j1nF78PTSzx6bzdY86ljutCSYwijoMwx+ds///BFx+G1Zwg
-         OkxPtlNlu/yU3Y82d9wLzL+2pMbLzFs4TpcSQB+YwQk8KrqEUkaFqgDEuyYuEukk3+PV
-         3gi91tuZpqvKHT8VOhj/ApohL7h69rCopGYh4Pux8QS+XEIgHJuhQ03kBKhQ/k6tDXOK
-         uD+NSiO93DUw/y9PbO/MqpBfEWK2Ce8pe+dRrK99/znVqUvDpYul81+ozqIpYm0W2XUH
-         no9n/vv5V+XBANu5c3K4wh+u6EkASOMF5Z6IPTNzt2APoXRQSvM8N24rrIokSvO0uUwr
-         z0Yg==
-X-Gm-Message-State: AFq9FYLDnG77QPmiKwif3ieB1rsnaKIoLnYey0YZBBcvJYf6gKI18bLs
-	4oVsPf3wjqNqWIeteSUJdCNz37Tia50e1PxT9cpIPgZ2x8EbnKeskatbRM7CtVWShkV+kI8fyf0
-	gT14CaMkdZUNc5qiT7CYgDxi4QFKrZnCiwlrkXklkaTdNhPi3TQPldiEl8EbCx7vdy14gnSwZKk
-	y58fWDZl2CeW/4BpS3ijG5w9L0RRydqe0onNi8gwqD7+YiX2VDGLwt4lfbLdJF6MA8OusTMuIq0
-	xciDoT/GQ==
-X-Gm-Gg: AYBFou0cEAi/aj5Ws22i/Xc9J92Kng4WlfQqet/p01NmEJ7K7r4OhkGstr5r93iWh3/
-	oivC9sHqW2Pm2+LMg0jZ4TrT6oPMq7kCI2/AxThdZ1myDKcVAfegFqdH017QdyAuqFBzfJ6zTD8
-	LvcL/ZDvMfGGyBHHI8MSU0nhRrZYCqYYga1z/5Tz3+HdJhQRA8D9LTNwhc7US/wfwUr8ZC3pnhd
-	pBBtSVd2zFeY/6BFODytb/zh75chQug1N0SP4mnSHF3u7qU2rz2d+Jh9u6End849oT2AV4U8Zp7
-	V+wVRZoR2hgKbHE3kuizkSqyktt5XrV6a+ZJc6sgP+ucJo1pLBkMDvpqyAelgsDzYDiYE3c3LAW
-	KVn3w+BXl+7zugBymvgwzprIjpZFVf96YmdM6lpKByXDiRvNMQ05ght9v1kJmElze+oJrzuhVGC
-	oG3N3pd0vEayrD65rlu9Zi8I0oxRPiMxJ0DYaT
-X-Received: by 2002:a17:90b:288e:b0:3a0:9fe0:3aaf with SMTP id 98e67ed59e1d1-3a4bfe93a6fmr334986a91.48.1790709743145;
-        Tue, 29 Sep 2026 12:22:23 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-124.dlp.protect.broadcom.com. [144.49.247.124])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a4984078e1sm2233494a91.8.2026.09.29.12.22.22
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Sep 2026 12:22:23 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91431adf55eso80716176d6.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790709742; x=1791314542; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UGlpLytsQuiePTVR4JYMni5yCyAEoJqxH+8EP5tQGiI=;
-        b=DyLv/cvHQNvR/dMn/SNBDCTUoc62FVOa6aTgvAgdU98loPUP86t6g5xvl6l1K5uF2B
-         NQC26USCGYRRR0rEdUgYAIGZpe63McAZA64lbaG775A46AefCEya/5Yk2l1cXyTIJIuH
-         oyW4IVFLhxY00xtquR/6E7nLwC5CSI1i36WtM=
-X-Received: by 2002:ad4:5f0f:0:b0:8f0:afa3:594e with SMTP id 6a1803df08f44-917999f8837mr2763076d6.8.1790709741973;
-        Tue, 29 Sep 2026 12:22:21 -0700 (PDT)
-X-Received: by 2002:ad4:5f0f:0:b0:8f0:afa3:594e with SMTP id 6a1803df08f44-917999f8837mr2762496d6.8.1790709741420;
-        Tue, 29 Sep 2026 12:22:21 -0700 (PDT)
-Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9179880b6cesm2293976d6.34.2026.09.29.12.22.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 12:22:20 -0700 (PDT)
-From: Justin Chen <justin.chen@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	bcm-kernel-feedback-list@broadcom.com,
-	nb@tipi-net.de,
-	florian.fainelli@broadcom.com,
-	opendmb@gmail.com,
-	Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH net] net: bcmgenet: if UMAC was suspended in SW_RESET, restore it to SW_RESET
-Date: Tue, 29 Sep 2026 12:22:16 -0700
-Message-Id: <20260929192216.1490017-1-justin.chen@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1790709794; c=relaxed/simple;
+	bh=cSQ7YCu+UoGfjz8hkxjPBkniKzoBGa1mW6bgEpORYvU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=oCVM6r93zTICVjnuXIXYvDqxdYFwU2Peom6S+hqYcPdpfc7eJFU4I1sB4OI/mcP1MDh4JZPkWw+ZGWY0Tg6uySEeYR+G4wwfigLY4R9znJhhcZjyp+SROSTYhrL7HaWEtrK35wULzgDePLDjPQkAtvawtj56hPBrfmnhMxn5WNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.2.104] (91.78.6.248) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 29 Sep
+ 2026 22:07:53 +0300
+Message-ID: <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
+Date: Tue, 29 Sep 2026 22:07:52 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
+To: Jiale Yao <yaojiale02@163.com>, =?UTF-8?Q?Niklas_S=C3=B6derlund?=
+	<niklas.soderlund@ragnatech.se>, Paul Barker <paul@pbarker.dev>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, <netdev@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
+ <20260927144741.1320558-7-yaojiale02@163.com>
+Content-Language: en-US
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+In-Reply-To: <20260927144741.1320558-7-yaojiale02@163.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/29/2026 18:54:33
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 206322 [Sep 29 2026]
+X-KSE-AntiSpam-Info: Version: 6.1.1.27
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 125 0.3.125
+ 408a76d0ab6a6a06c054d212c38932c1e9d7db86
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info:
+	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 91.78.6.248
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/29/2026 18:57:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/29/2026 5:22:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-When the revised suspend/resume sequence was introduced this led to an edge
-case where the TX is left disabled in the following sequence.
+Hello!
 
-1. phy link is down, so UMAC is held in reset and then network interface
-   is WoL enabled
-2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since MAC
-   is in SW_RESET
-4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
-   and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link up.
+   I guess you used scripts/get_maintainer.pl -- if so, I suggest that
+you add --no-git-fallback next time. Your current To: list is painfully
+long and contains some long defunct addresses (like mine)...
 
-Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
-Fixes: 88f6c8bf1aae ("net: bcmgenet: keep MAC in reset until PHY is up")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On 9/27/26 5:47 PM, Jiale Yao wrote:
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 96d5d4f7f51f..984432952963 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -253,6 +253,17 @@ int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~CMD_CRC_FWD;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+
-+	/*
-+	 * Mirror wol_power_down_cfg(). If only UMAC_RX
-+	 * is enabled, then we must place the UMAC back
-+	 * into SW_RESET.
-+	 */
-+	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
-+	if ((reg & CMD_RX_EN) && !(reg & CMD_TX_EN)) {
-+		reg |= CMD_SW_RESET;
-+		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	}
- 	spin_unlock_bh(&priv->reg_lock);
- 
- 	/* Resume link status tracking */
--- 
-2.34.1
+> ravb_remove() frees the netdev before devres releases the managed IRQs.
+> The handlers use the netdev as their data pointer, so an interrupt during
+> that window can access freed memory. Probe error paths have the same
+> ordering problem.
+> 
+> The remove callback also returns when runtime resume fails. That leaves
+> the netdev registered while the driver core still releases its managed
+> resources. A running interface already holds a runtime PM reference, so
+> the extra get cannot invoke a failing resume. A resume failure therefore
+> occurs while the interface is down and ndo_stop() will not be called.
+
+   Seems like a separate problem?
+
+> Place the IRQ resources in a dedicated devres group and release it before
+> freeing the netdev. Continue unregistering and freeing software resources
+> when runtime resume fails, but skip the unmatched runtime PM put.
+> 
+> Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+> Fixes: 48f894ab07c4 ("net: ravb: Add runtime PM support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+> ---
+>  drivers/net/ethernet/renesas/ravb_main.c | 23 +++++++++++++++++------
+>  1 file changed, 17 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> index ea1c7e536791..a25f5ac7062f 100644
+> --- a/drivers/net/ethernet/renesas/ravb_main.c
+> +++ b/drivers/net/ethernet/renesas/ravb_main.c
+[...]> @@ -3124,6 +3131,8 @@ static int ravb_probe(struct platform_device *pdev)
+>         pm_runtime_disable(&pdev->dev);
+>         pm_runtime_dont_use_autosuspend(&pdev->dev);
+>         clk_unprepare(priv->refclk);
+> +out_release_irqs:
+
+   Somewhat unobvious label name, given the following call...
+
+> +       devres_release_group(&pdev->dev, priv);
+>  out_reset_assert:
+>         reset_control_assert(rstc);
+>  out_free_netdev:
+> @@ -3141,9 +3150,10 @@ static void ravb_remove(struct platform_device *pdev)
+> 
+>         error = pm_runtime_resume_and_get(dev);
+>         if (error < 0)
+> -               return;
+> +               dev_warn(dev, "failed to resume device: %d\n", error);
+> 
+>         unregister_netdev(ndev);
+> +       devres_release_group(dev, priv);
+>         if (info->nc_queues)
+>                 netif_napi_del(&priv->napi[RAVB_NC]);
+>         netif_napi_del(&priv->napi[RAVB_BE]);
+> @@ -3153,7 +3163,8 @@ static void ravb_remove(struct platform_device *pdev)
+>         dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+>                           priv->desc_bat_dma);
+> 
+> -       pm_runtime_put_sync_suspend(&pdev->dev);
+> +       if (error >= 0)
+> +               pm_runtime_put_sync_suspend(&pdev->dev);
+
+   Hm, definitely seems like a material for a separate patch...
+
+[...]
+
+MBR, Sergey
 
