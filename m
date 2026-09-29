@@ -1,809 +1,215 @@
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31709514751;
-	Tue, 29 Sep 2026 16:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790698558; cv=none; b=QznAdq8F6KYj3mg8yqWrZn3tNPVGPuT293x7e4UHEyySl3afy5fQRypKKyTNibUkZP6UboKIC7eqqfn2XLUHk5Ns/BBjZOTM30cLo1A3pudWb7Vmynsbn07b/QwTyf2y8xJeblYCqD6hF/GCyC9nreeLIh2Sc187udd40ZiKB0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790698558; c=relaxed/simple;
-	bh=aJ3xEMMqDXYrQRthmwU6vu9RbEl06GtbP/sY6yxmzao=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=MgGWSz8d3zhW8sU59IAPaQB0TOkylPl/1/vB0XgvND9gYCoTePIA9/Jcj0jh+lZl9FBHruauJNjdVT3BXIIVTbbwJWrnNER3xj5KqF8IIUeS3GtxMoH/8UrzX2+BUCqY9ihGmqJphcIcJzC2QOdzHupn0iqnQ1+P+rx+VLJzBgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=BKnowrTQ; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146A63E5A08;
+	Tue, 29 Sep 2026 16:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790698742; cv=fail; b=iu4NB4hKddO2yHJGEoWKrreTtk1ANVqxw+F9J+Wmfx4J+A+1i447o9bf5se8R3cAFa1t9pB/F7u3X0izLGghiTNhZxgZTKRMDWryfouPreMlul2J5Q1sD7SZVEr4TJ1QC4TWNx2S5m3Zcbag9cn/NrmW7B9jdbzAzPm7y7Z9rwE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790698742; c=relaxed/simple;
+	bh=UmebSsfMUW+uEsUx20RopM9MunFn2pDZyqwkWixDw1o=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U1I3Aw1+qyYeCYML/Qi78dcKfebVQanRgkrnH6NhwZMr/0a747j4/fVJpmtF7Z/0+Kv3uLLdjbXIrKYpc37k4LBQO4ENK/Z6gO4OHSo42J4/GqVUtt1qXvCfmYNpppPE46Q/nS7brP6IPNP8pVAyjOMCe4a5b2uKqkpUkWlyksU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=npvkcX09; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="BKnowrTQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
-	To:From:Date:subject:date:message-id:reply-to;
-	bh=AXgOmn9ba4LrxI+qIIii2prjx3jjVaTnKJjnhOZ2+vk=; b=BKnowrTQ9oulNBGfP0oIiZiaYk
-	JDA46mE+z64i5iByuJKYYLV5W3i2VcXel9B32T63STfK2Smnek/gbgWQGRBTNOFACpPfy0AVzR1n0
-	377WzcLbmlyZv3+axFgCyS6lcDN8pBzB5aw45eukH3tMkOk2dtnqHfuvUpNOdSPUOMag=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.98.2)
-	(envelope-from <hugo@hugovil.com>)
-	id 1xBaUf-000000002Kp-3tIk;
-	Tue, 29 Sep 2026 12:15:51 -0400
-Date: Tue, 29 Sep 2026 12:15:49 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com, Stefano
- Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo
- <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke
- <ernest.vanhoecke@toradex.com>, Mehmet Fide
- <mehmet.fide@screeningeagle.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, Markus Niebel
- <Markus.Niebel@ew.tq-group.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v4 06/13] ARM: dts: imx6ul: Add Variscite SoM and DART
- base files
-Message-Id: <20260929121549.05f677bd86c4c10991f09c4d@hugovil.com>
-In-Reply-To: <150c7e64d34a12a4fb9cec1a5b2c805246590100.1790693249.git.stefano.r@variscite.com>
-References: <cover.1790693249.git.stefano.r@variscite.com>
-	<150c7e64d34a12a4fb9cec1a5b2c805246590100.1790693249.git.stefano.r@variscite.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="npvkcX09"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790698740; x=1822234740;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=UmebSsfMUW+uEsUx20RopM9MunFn2pDZyqwkWixDw1o=;
+  b=npvkcX09rmRZdi90HfX/eBRBZekRmSWFRlaPIhcft/uLd+NmVWh7qzvv
+   pRKLV9QVc2HYE96Fch53c3Ou3qP707VYU68HiWhYm/r/q2G8WfMsIVMXR
+   yNpUM0ZPvfrWNkvSER1bLRsJLw+8jbFVRkFHk0lGuvfe+zBl75HAwg6y0
+   7DTm/S2cfmxS+iFT1UcnJUuMRovXrUpeSAVwouwhS23qP17RU3L4S2hp0
+   TTwmQhx28eiDv2NBJogsNFNBorV7UBOo8lf1VN52Uw9wf4kIgUwEwwOie
+   s7Y8tTZK1kaTPJqse8EXM9flUm8l3HBawDdZcB+iKX33EnELP0mrCyoxV
+   w==;
+X-CSE-ConnectionGUID: ez3JpX2ySvmOPhgNIOa+eg==
+X-CSE-MsgGUID: NcUfb8+tS+ipORe4C9vsXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91443363"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="91443363"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 09:18:57 -0700
+X-CSE-ConnectionGUID: IGnjlwEaRH255NIHb5ZxCQ==
+X-CSE-MsgGUID: eug5DvsETV2+OgsvVDawrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="301680729"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 09:18:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 09:18:56 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 09:18:56 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.10) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 09:18:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qgUr5hV0C4ZX0KzmZJipfaEYXV/LItOrh06FKZ7+7BrGRCr0X/0w/dxVc0ob7JA+WM5fue5a41FxDXMo3HKAH3n3s1BAzrUY49yAqloaNA0YR6hMvfuZbK535CpNuyGVJx4N6Lu5EQD2jBWh8GZgBzVAwTJ7j1x1t2dvRz/f0Y6/Hi4CKHf6dHD0LvzDX1S43ZnRHOHpcZxx3H1GfGRnrRXLNtQJy7KkPG+Mx10bYFI/pwIU7DgUaMmFB7ECrOidWnF2CYd6mXEgS2nPFyVq6QjyUG95dakU6DLYv4HpDJSAvNBfcescvt+mL3I+kIHXLh6iOXyfbcYJTAECMylD5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jU+GMOfkUosapmqaQw/tP7eHdRa3pRKgDcxpJeHTcJw=;
+ b=Nas11f14V5Iya0/voN6UkkK0xfn7V+zcX94iF9vwoO85cxrplJpIZozDDjNpO8BfuLjj4D8GbbK+dddmrP1VcBk4qRW6KfayimH8IBVTdobm2OCasCrn8acgX1vm5McUlaFQbJ7Ws5krqpdIAoCUy4M53hE5MIselEy1Y/uQqOXKFVGLm66CHLjzu+f/hps3+KxBQzVwkzMvaAwJ80vszUsvhKJRJx1oXZthC0DH8r6uwn01yzBiLF8m9Pou6RIzaUlpPnIjBkHvbG6/+tDdgO+VIyrKIldI5M1wOoJYB9ZIZyXS24H2VHPCbpCSHaawEPZNNVy9/LmEa/yA0vzihA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by BL1PR11MB6004.namprd11.prod.outlook.com (2603:10b6:208:390::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Tue, 29 Sep
+ 2026 16:18:49 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0451.014; Tue, 29 Sep 2026
+ 16:18:48 +0000
+Message-ID: <ab87c498-b1c3-4d0d-b4ba-57e1826592a8@intel.com>
+Date: Tue, 29 Sep 2026 18:18:41 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 6/6] iavf: cap advertised max_pkt_size at the
+ single-buffer HW limit
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	Dave Butler <david.butler@appgate.com>, <emil.s.tantilov@intel.com>,
+	<luoxuanqiang@kylinos.cn>, <bryan.fraschetti@canonical.com>,
+	<tristan@talencesecurity.com>, <tomasz.lichwala@linux.intel.com>,
+	<horms@kernel.org>, <stable@vger.kernel.org>, Jacob Keller
+	<jacob.e.keller@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>
+References: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
+ <20260928230429.495442-7-anthony.l.nguyen@intel.com>
+Content-Language: en-US
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20260928230429.495442-7-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DB9PR02CA0005.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d9::10) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam_score: -2.0
-X-Spam_bar: --
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|BL1PR11MB6004:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23a0052a-612f-4930-6862-08df1e45579d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|22082099003|18002099003|10067099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info: OW0D4QFQVtwNrB7ZFiDaKYRPRZgnRTh3QiFyWzcPz+Hu96kGSSoojspQVOeCrtq4yfp/hurGnSFYE5C/FxEKN6jvYy5Lkz9UmSaZS5qyj/RAW5TbJIBqD9V2BbkamBcIjOjywrxrJgnxljUoXIXabGN3n9SsP9rnfsoTk3igDfk/K9PCUBsNfBHpIvyJUAjeZ3vQFOfmC7NvYSTaPWWAyES8xjqfw+Zxe2a8Ro18CzcViDHSv7TEhvLZ4Lx6iK32y/cbnVM4Muf8io7iuvmZMhmZqFk9wTCvPV3ndzzzbCZeBhTzf62xdFPUAoHBUkNODD/T+sdd2oOOSn4gZxKd55NiZuS+USoImyBEECh9tBPLvj4WH5a7MEz2KH9PO9q3HoKoj+IZVXLoOwZMo6IY6gcg32XTTUlYPdwXPbKScY520WlU8rfXh1mNWEtCvSleyYDzUbQ2+/hJ9ZguVbqaDt3+wb8BYlNQez8iQk0viV3HzkytxVr+raZW7/9pfiYVuCzpm6tb5R0A55vwlfnNO9w5l65UpZegbjJSgoIGfM5VNe4YMGUhbl6zXM3qS1acv1AG7M7SPAP7IcgaUv+7DM+zQ9neCybSE3025GdOEZMcrlZixpr2BfU+WJ1Hw8b69smbGdg4nddxFLscSLmT93WUWHKmuwnvpb2Hvg5UASo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dElrbHE0eHNXYU5FYTlDcVBSdW52cXd6Q2VGMkxuTFFvLzh1czVhSWFvdVBF?=
+ =?utf-8?B?d20yKzZmWE40aU82dXphL3BOVHFYb3VKeVZPeWNQcEt6cFdUTWdwdEJRWFZM?=
+ =?utf-8?B?YTZPNWxOVDRpNzJ5c3VDeTVuWTZQWjBaQlkxZHFoZTZwNEJTRTRwSkh2QzVq?=
+ =?utf-8?B?cVk0TzFOajJKaWk4VU13c3VIemdCZGlLOW0zcVc3bG43ejE1YXc0WDZOMTdp?=
+ =?utf-8?B?MDlxQUdnbWN6NzBqMDZ2WjMyR24rZE1NanYzeEtpMW0yekh5Z2J5ZVcyNG8z?=
+ =?utf-8?B?UVF4QlRONm9KL3M0aElUdzlYNGtXNGxiNkRPbjJIM2NMWnF6d0t6cjV4TU1K?=
+ =?utf-8?B?SmVpZ04wRFFhMzFMZHZqcjJ3M0tkTHBOYWtCenBxTWRTNlZ4YlJYeXY3anZa?=
+ =?utf-8?B?eDlqMUxYYitObkVyWEo3WStQekU2MGdXbFZrOGw2NGFlRktMQW9JV0hXb01N?=
+ =?utf-8?B?ait2ZGtyU0E5bnV4WlpJVUliTGV1OTFwb1h2MEZkVzlUQVBhclFHQWY0akZL?=
+ =?utf-8?B?bDR6OFlaOUpwR0FIQ0lyZmh0QUxtNGY3QUNkOUV0Y2g4S1MyTTA5TWZhWmpy?=
+ =?utf-8?B?eHhES1NadUxxdEE2K1VJL3JKOVN5SGxJbnVWVjBvWEVpZzNnaVVrazZLdmMw?=
+ =?utf-8?B?TU5QYklVbUNlZXhnQXdpWnljM1I0QnpaaXdPYUVyQnVvbGMwenBrTm9jQVdp?=
+ =?utf-8?B?Q3NDaU1BRTdOdlZFNmxoa0FESWJmcG5jTExDTm1xYVBtaStmbTFLV3d3WHlk?=
+ =?utf-8?B?QWhaVDNxSCtyU0V1WjFPc0ZRd0RNYnBuV0l2RDRITjZkRVJJeHpyakQ1OENB?=
+ =?utf-8?B?SVEyVjg4UlFhSTBMTmJnQXdOem1LMG5SUjVzejJzTS9hWmpyK1JLeERUSGJJ?=
+ =?utf-8?B?Q1NiUEZNSXpQTXpsRG83Uk9vZ0RlNWwwcnBPYnNscGdzYkpZQUh5blhheFlC?=
+ =?utf-8?B?bjB4aVoxcHhSY1NMVnF0Q0ltWG5hSXJ6SWUvako1eEpwTThGMGxkc3B3cVFQ?=
+ =?utf-8?B?U1l6WmVaM0lGcVFiblNWOVpwRTVGY3ovQUZhd0loRkpWL3U1bmxMeWtMa0VT?=
+ =?utf-8?B?VzJ0R3l5cDlUU0E0UVJkOE45SnJyOXhFSkNLaXRHd2NVckg0ZVVDVFFjRVpa?=
+ =?utf-8?B?a1hZTDNlbEt4TkRSaE96NGZLMGw2M0RnbytPbWNxbEI1TmxqTWZtQ0xxWU9v?=
+ =?utf-8?B?a1RxeXZhM1A5ZFdVQXNQcEJueDA4bmE0ZnQyZFhQOUNCbTQwUk9VdW5vbFNQ?=
+ =?utf-8?B?UTcvT1g1ZkZTbC9Qazh4UHZsZlhFZ1lhVE5RblRnNE10bFV0MkJudlBwQWEr?=
+ =?utf-8?B?YnVnVE1IRUhyR1NVL2hwUS9tb2cwejQ2WnBRL3UwU2t0SnhqbURQV0I5VHJT?=
+ =?utf-8?B?bmV5MDViMkw1NmZXK2pxT1BGUnlNWkNPU0dXU3B3N0xqc2t2cXlIc3hOLyti?=
+ =?utf-8?B?QU5kcFZnMWs2MjdLMW4yRHpmcW94bHN6bG9aUVZnOG1HdStxblMxdzRJelhy?=
+ =?utf-8?B?L2pGbnUreFBhK0FzR0I0eHphYi9VNkYyU3JQWUV2dmxBWjJSSDFtZEphV3Qx?=
+ =?utf-8?B?bGtrWVd6bEpQbWZ1OStwcURNR05YTWNOR0JBZEhTVUlNaXR1KzNIMFp5MXhU?=
+ =?utf-8?B?enBEYytFaHlKYVFhVTlnNlpzZ0pjdmFReGRnbjU3NVo2Q2JFVmVIUVc4NFUx?=
+ =?utf-8?B?ODNVdEltMVFJR2ZaN0JlMlpFQ25UdklzR2FLUDdZbHJTNTA4dWErK21WT1RF?=
+ =?utf-8?B?Znp0V256QVpDeElidkcvQ0FCTFZJVWlXdlNXUDBHcy9rZUgwUWRCSTkwcTZt?=
+ =?utf-8?B?aXpVdWNsZmVZNWRKYURhbk1SYXVBMlMvcVptSDkvUXdnNXYycDZBVG9vNngv?=
+ =?utf-8?B?ejRzTlhUaHR6SUVwTmlWK1RDUUg2MC9CYUpMNFE5ODNSOU1DOFlLN2RtRkkv?=
+ =?utf-8?B?U3JQcGZ3TUE4ZUFHbE5CRnZ0YjdnSVdtTzlTLzZORFJkUzkzSGxmNmN6aC9I?=
+ =?utf-8?B?OHk4c2RPTS9ONGp0Y25wWFY4eW0xeStJSi8zRDE0dG83RWtETFQza0J3M2xn?=
+ =?utf-8?B?VDBXWk10bWJsSjdjOXZ3WUFETDlvVkJBTDRsOHlWTlF4a3hIcUdhUTg3cXMw?=
+ =?utf-8?B?YzF6SVRpN3kzM3IvKzRlTloxOFh0bDFaYWVNREdVQ0VnbGx1SksyYVB4MFRU?=
+ =?utf-8?B?WHNPQlpzZ2dvbVovbytuSG5xV04yNzRhV0ZsVFNjMGRneTFXbFo0YWJXdjlz?=
+ =?utf-8?B?bWR0dTZGekthaGsydzZKSWl4LzgvNk9uUmVHclBrVHMzc1VpTmY1Q1dNVGw1?=
+ =?utf-8?B?d2xFeGlvZlBNbnhFL0M4SGUwT0hJVFQ1T0lJM1hVRk9zaUFhalZXUyttbURD?=
+ =?utf-8?Q?voDFa3jXPiHlkaPQ=3D?=
+X-Exchange-RoutingPolicyChecked: 2SoynH1wtyBzu2+zJ2AGboPuFBO1pwL7T7/ArI9QxzqFdtdjRqNfZXbnrir44TE7Bn+qAlr8va9Q9DSsYKXe177/mKbxaj0Dfe52abE50Zpsxs9BVuWbadWiwFMuOgVMtZTcOh0kQYVInQwmukp6Ayc9v03ikPlZah3kZTqi513lV7MaNA+6i0fMhlGdCUDQh2OUDQPq73MByMbP0WuYd5s7dQjYbv0fKe7emEWHFrEBasGIPAhhQUL/vLMXqqfnHPcVtFuniAnXc8Ej/Lc9+yD4PcOe5uJMVs/z1sV7VyIOEkAYA3Ih+vZQ0QqT2UX5+bSG7hjxgBQHA5POM0RGWQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23a0052a-612f-4930-6862-08df1e45579d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 16:18:48.6778
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tHg7qyKTogI1jf+yC/EmaG+QqINeutQiVZUz6ySkTXUnB/jvnQPpr5aYuvJ8lrHK4hk/Yqk47RC5hnJ2phiQgqpQ4IwHshZHiY352MXh5D0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6004
+X-OriginatorOrg: intel.com
 
-Hi Stefano,
-the title is confusing to me. Does "Variscite SoM" refers to
-VAR-SOM-6UL? And DART should be DART6UL?
+From: Anthony Nguyen <anthony.l.nguyen@intel.com>
+Date: Mon, 28 Sep 2026 16:04:27 -0700
 
-And again, VAR-SOM-6UL support did exist before...
-
-
-On Tue, 29 Sep 2026 17:17:33 +0200
-Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
-
-> From: Stefano Radaelli <stefano.r@variscite.com>
+> From: Dave Butler <david.butler@appgate.com>
 > 
-> Add shared DTSI files for the VAR-SOM-6UL and DART-6UL modules and
-> SoC-specific wrappers for i.MX6UL, i.MX6ULL and i.MX6ULZ.
+> Since commit 5fa4caff59f2 ("iavf: switch to Page Pool")
+> iavf_configure_queues() advertises max_pkt_size to the PF as:
 > 
-> Describe the touch and ADC reference supply as a fixed 3.3 V
-> regulator on both modules so the ADC can report the correct scale.
+> 	max_frame = LIBIE_MAX_RX_FRM_LEN(adapter->rx_rings->pp->p.offset);
+> 	max_frame = min_not_zero(adapter->vf_res->max_mtu, max_frame);
 > 
-> Keep storage, audio and carrier options in separate DTSI files so
-> board variants can include the hardware assembled on each board.
-> 
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-> ---
-> v2->v3:
->  - Constrain the fixed touch and ADC reference regulators to 3.3 V on
->    both modules so the ADC can report a valid scale.
-> 
->  .../dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi  | 207 ++++++++++++++++++
->  .../dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi   | 203 +++++++++++++++++
->  .../arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi |  31 +++
->  arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi |  31 +--
->  .../boot/dts/nxp/imx/imx6ull-var-dart.dtsi    |  31 +++
->  .../arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi |  31 ++-
->  .../boot/dts/nxp/imx/imx6ulz-var-dart.dtsi    |  38 ++++
->  .../arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi |  38 ++++
->  8 files changed, 573 insertions(+), 37 deletions(-)
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart.dtsi
->  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-> new file mode 100644
-> index 000000000000..f7190f6d50b5
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
-> @@ -0,0 +1,207 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	memory@80000000 {
-> +		device_type = "memory";
-> +		reg = <0x80000000 0x20000000>;
-> +	};
-> +
-> +	/* ref_clk for micrel ethernet phy */
-> +	rmii_ref_clk: clock-rmii-ref {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <25000000>;
-> +		clock-output-names = "rmii-ref";
-> +	};
-> +
-> +	reg_3p3v: regulator-3p3v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "3P3V";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_gpio_dvfs: regulator-gpio-dvfs {
-> +		compatible = "regulator-gpio";
-> +		regulator-name = "gpio_dvfs";
-> +		regulator-min-microvolt = <1300000>;
-> +		regulator-max-microvolt = <1400000>;
-> +		regulator-type = "voltage";
-> +		gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-> +		states = <1300000 0x1
-> +			  1400000 0x0>;
-> +	};
-> +
-> +	touch_3v3_regulator: regulator-touch-3v3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "touch_3v3_supply";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-always-on;
-> +	};
-> +};
-> +
-> +&clks {
-> +	assigned-clocks = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <786432000>;
-> +};
-> +
-> +&cpu0 {
-> +	arm-supply = <&reg_arm>;
-> +	soc-supply = <&reg_soc>;
-> +};
-> +
-> +&fec1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enet1>, <&pinctrl_enet1_gpio>, <&pinctrl_enet1_mdio>;
-> +	phy-mode = "rmii";
-> +	phy-handle = <&ethphy0>;
-> +	status = "okay";
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ethphy0: ethernet-phy@1 {
-> +			compatible = "ethernet-phy-ieee802.3-c22";
-> +			reg = <1>;
-> +			clocks = <&rmii_ref_clk>;
-> +			clock-names = "rmii-ref";
-> +			reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <10000>;
-> +			reset-deassert-us = <100000>;
-> +			micrel,rmii-reference-clock-select-25-mhz = <1>;
-> +			micrel,led-mode = <1>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&pinctrl_i2c2>;
-> +	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-> +	scl-gpios = <&gpio1 30 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios = <&gpio1 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	status = "okay";
-> +};
-> +
-> +&pxp {
-> +	status = "okay";
-> +};
-> +
-> +&snvs_poweroff {
-> +	status = "okay";
-> +};
-> +
-> +&snvs_pwrkey {
-> +	status = "okay";
-> +};
-> +
-> +&tsc {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_tsc>;
-> +	xnur-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
-> +	measure-delay-time = <0xffff>;
-> +	pre-charge-time = <0xfff>;
-> +	status = "okay";
-> +};
-> +
-> +/* Bluetooth UART */
-> +&uart2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_uart2>;
-> +	uart-has-rtscts;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_enet1: enet1-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_ER__ENET1_RX_ER	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b031
-> +		>;
-> +	};
-> +
-> +	pinctrl_enet1_mdio: enet1-mdio-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_GPIO1_IO06__ENET1_MDIO	0x1b0b0
-> +			MX6UL_PAD_GPIO1_IO07__ENET1_MDC		0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_i2c2: i2c2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_UART5_TX_DATA__I2C2_SCL	0x4001b8b0
-> +			MX6UL_PAD_UART5_RX_DATA__I2C2_SDA	0x4001b8b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_i2c2_gpio: i2c2-gpio-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_UART5_TX_DATA__GPIO1_IO30	0x1b0b0
-> +			MX6UL_PAD_UART5_RX_DATA__GPIO1_IO31	0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_tsc: tsc-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
-> +			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
-> +			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
-> +			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0
-> +		>;
-> +	};
-> +
-> +	pinctrl_uart2: uart2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
-> +			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
-> +			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
-> +			MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1: usdhc1-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x17059
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-> new file mode 100644
-> index 000000000000..cd93f618e907
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som.dtsi
-> @@ -0,0 +1,203 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
-> + */
-> +
-> +/ {
-> +	memory@80000000 {
-> +		device_type = "memory";
-> +		reg = <0x80000000 0x20000000>;
-> +	};
-> +
-> +	/* ref_clk for micrel ethernet phy */
-> +	rmii_ref_clk: clock-rmii-ref {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <25000000>;
-> +		clock-output-names = "rmii-ref";
-> +	};
-> +
-> +	reg_3p3v: regulator-3p3v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "3P3V";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_gpio_dvfs: regulator-gpio-dvfs {
-> +		compatible = "regulator-gpio";
-> +		regulator-name = "gpio_dvfs";
-> +		regulator-min-microvolt = <1300000>;
-> +		regulator-max-microvolt = <1400000>;
-> +		regulator-type = "voltage";
-> +		gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-> +		states = <1300000 0x1
-> +			  1400000 0x0>;
-> +	};
-> +
-> +	touch_3v3_regulator: regulator-touch-3v3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "touch_3v3_supply";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-always-on;
-> +	};
-> +};
-> +
-> +&clks {
-> +	assigned-clocks = <&clks IMX6UL_CLK_PLL4_AUDIO_DIV>;
-> +	assigned-clock-rates = <786432000>;
-> +};
-> +
-> +&cpu0 {
-> +	arm-supply = <&reg_arm>;
-> +	soc-supply = <&reg_soc>;
-> +};
-> +
-> +&fec1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enet1>, <&pinctrl_enet1_gpio>, <&pinctrl_enet1_mdio>;
-> +	phy-mode = "rmii";
-> +	phy-handle = <&ethphy0>;
-> +	status = "okay";
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ethphy0: ethernet-phy@1 {
-> +			compatible = "ethernet-phy-ieee802.3-c22";
-> +			reg = <1>;
-> +			clocks = <&rmii_ref_clk>;
-> +			clock-names = "rmii-ref";
-> +			reset-gpios = <&gpio5 0 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <10000>;
-> +			reset-deassert-us = <100000>;
-> +			micrel,rmii-reference-clock-select-25-mhz = <1>;
-> +			micrel,led-mode = <1>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&pinctrl_i2c2>;
-> +	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-> +	scl-gpios = <&gpio4 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios = <&gpio4 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	status = "okay";
-> +};
-> +
-> +&pxp {
-> +	status = "okay";
-> +};
-> +
-> +&snvs_poweroff {
-> +	status = "okay";
-> +};
-> +
-> +&tsc {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_tsc>;
-> +	xnur-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
-> +	measure-delay-time = <0xffff>;
-> +	pre-charge-time = <0xfff>;
-> +	status = "okay";
-> +};
-> +
-> +/* Bluetooth UART */
-> +&uart2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_uart2>;
-> +	uart-has-rtscts;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_enet1: enet1-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_ER__ENET1_RX_ER	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0
-> +			MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
-> +			MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b031
-> +		>;
-> +	};
-> +
-> +	pinctrl_enet1_mdio: enet1-mdio-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_GPIO1_IO06__ENET1_MDIO	0x1b0b0
-> +			MX6UL_PAD_GPIO1_IO07__ENET1_MDC		0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_i2c2: i2c2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_CSI_HSYNC__I2C2_SCL		0x4001b8b0
-> +			MX6UL_PAD_CSI_VSYNC__I2C2_SDA		0x4001b8b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_i2c2_gpio: i2c2-gpio-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_CSI_HSYNC__GPIO4_IO20		0x1b0b0
-> +			MX6UL_PAD_CSI_VSYNC__GPIO4_IO19		0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_tsc: tsc-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
-> +			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
-> +			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
-> +			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0xb0
-> +		>;
-> +	};
-> +
-> +	pinctrl_uart2: uart2-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
-> +			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
-> +			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
-> +			MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1: usdhc1-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x17059
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
-> +		>;
-> +	};
-> +
-> +	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
-> +			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
-> +			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
-> +			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
-> +			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
-> +			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi
-> new file mode 100644
-> index 000000000000..83da4f9c5588
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi
-> @@ -0,0 +1,31 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Common dtsi for Variscite DART-6UL
-> + *
-> + * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/dart-6ul/
-> + *
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> + *
-> + */
-> +
-> +#include "imx6ul-imx6ull-var-dart.dtsi"
-> +
-> +&adc1 {
-> +	vref-supply = <&touch_3v3_regulator>;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_wifi: wifi-grp {
-> +		fsl,pins = <
-> +			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> index feea24c0e068..8e3c2d72811f 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi
-> @@ -2,37 +2,30 @@
->  /*
->   * Support for Variscite VAR-SOM-6UL Module
->   *
-> - * Copyright 2019 Variscite Ltd.
-> + * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/var-som-6ul/
-> + *
->   * Copyright 2025 Bootlin
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
->   */
->  
-> -/dts-v1/;
-> -
-> -#include "imx6ul.dtsi"
-> -#include "imx6ul-var-som-common.dtsi"
-> +#include "imx6ul-imx6ull-var-som.dtsi"
->  
-> -/ {
-> -	model = "Variscite VAR-SOM-6UL module";
-> -	compatible = "variscite,var-som-imx6ul", "fsl,imx6ul";
-> +&adc1 {
-> +	vref-supply = <&touch_3v3_regulator>;
-> +	status = "okay";
->  };
->  
->  &iomuxc {
-> -	pinctrl_brcm_bt: brcm-bt-grp {
-> -		fsl,pins = <
-> -			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT_REG_ON (BT_EN) */
-> -		>;
-> -	};
-> -
-> -	pinctrl_brcm_wifi: brcm-wifi-grp {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
->  		fsl,pins = <
-> -			MX6UL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x1b0b0	/* WL_PWR (WIFI_PWR 5G) */
-> -			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x1b0b0	/* WL_REG_ON (WIFI_EN) */
-> +			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
->  		>;
->  	};
->  
-> -	pinctrl_enet1_gpio: enet1-gpiogrp {
-> +	pinctrl_wifi: wifi-grp {
->  		fsl,pins = <
-> -			MX6UL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0 /* fec1 reset */
-> +			MX6UL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
->  		>;
->  	};
->  };
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi
-> new file mode 100644
-> index 000000000000..bb8d392d8f54
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi
-> @@ -0,0 +1,31 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Common dtsi for Variscite DART-6ULL
-> + *
-> + * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/dart-6ul/
-> + *
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> + *
-> + */
-> +
-> +#include "imx6ul-imx6ull-var-dart.dtsi"
-> +
-> +&adc1 {
-> +	vref-supply = <&touch_3v3_regulator>;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc_snvs {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_wifi: wifi-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> index f120b1dca75c..0341c181ed8e 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi
-> @@ -2,35 +2,30 @@
->  /*
->   * Support for Variscite VAR-SOM-6UL module with imx6ull CPU
->   *
-> - * Copyright 2019-2024 Variscite Ltd.
-> + * https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/var-som-6ul/
-> + *
->   * Copyright 2026 Dimonoff
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com
->   */
->  
-> -#include "imx6ull.dtsi"
-> -#include "imx6ul-var-som-common.dtsi"
-> +#include "imx6ul-imx6ull-var-som.dtsi"
->  
-> -/ {
-> -	model = "Variscite VAR-SOM-6UL module";
-> -	compatible = "variscite,var-som-imx6ull", "fsl,imx6ull";
-> +&adc1 {
-> +	vref-supply = <&touch_3v3_regulator>;
-> +	status = "okay";
->  };
->  
-> -&iomuxc {
-> -	pinctrl_brcm_bt: brcm-bt-grp {
-> -		fsl,pins = <
-> -			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0	/* BT_REG_ON (BT_EN) */
-> -		>;
-> -	};
-> -
-> -	pinctrl_brcm_wifi: brcm-wifi-grp {
-> +&iomuxc_snvs {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
->  		fsl,pins = <
-> -			MX6ULL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x1b0b0	/* WL_PWR (WIFI_PWR 5G) */
-> -			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x1b0b0	/* WL_REG_ON (WIFI_EN) */
-> +			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
->  		>;
->  	};
->  
-> -	pinctrl_enet1_gpio: enet1-gpiogrp {
-> +	pinctrl_wifi: wifi-grp {
->  		fsl,pins = <
-> -			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0 /* fec1 reset */
-> +			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
->  		>;
->  	};
->  };
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart.dtsi
-> new file mode 100644
-> index 000000000000..a3fdfb92bb82
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart.dtsi
-> @@ -0,0 +1,38 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Common dtsi for Variscite DART-6ULZ
-> + *
-> + * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/dart-6ul/
-> + *
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> + *
-> + */
-> +
-> +#include "imx6ul-imx6ull-var-dart.dtsi"
-> +
-> +&fec1 {
-> +	status = "disabled";
-> +};
-> +
-> +&pxp {
-> +	status = "disabled";
-> +};
-> +
-> +&tsc {
-> +	status = "disabled";
-> +};
-> +
-> +&iomuxc_snvs {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_wifi: wifi-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi
-> new file mode 100644
-> index 000000000000..f37607fb207a
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi
-> @@ -0,0 +1,38 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Common dtsi for Variscite VAR-SOM-6ULZ
-> + *
-> + * Link: https://variscite.com/system-on-module-som/i-mx-6/i-mx-6ul/var-som-6ul/
-> + *
-> + * Copyright (C) 2026 Variscite Ltd. - https://www.variscite.com/
-> + *
-> + */
-> +
-> +#include "imx6ul-imx6ull-var-som.dtsi"
-> +
-> +&fec1 {
-> +	status = "disabled";
-> +};
-> +
-> +&pxp {
-> +	status = "disabled";
-> +};
-> +
-> +&tsc {
-> +	status = "disabled";
-> +};
-> +
-> +&iomuxc_snvs {
-> +	pinctrl_enet1_gpio: enet1-gpio-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x1b0b0
-> +		>;
-> +	};
-> +
-> +	pinctrl_wifi: wifi-grp {
-> +		fsl,pins = <
-> +			MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x1b0b0
-> +			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x03029
-> +		>;
-> +	};
-> +};
-> -- 
-> 2.47.3
+> LIBIE_MAX_RX_FRM_LEN (16382) is the multi-descriptor scatter/gather frame
+> ceiling, not a single-queue value, and it exceeds the E810 MAC frame size
+> maximum of 9728. Per the E810 datasheet (613875-009 section 13.2.2.17.1)
+> the Tx frame-size register PRTDCB_TDPUC.MAX_TXFRAME has a maximum of
+> 0x2600 (9728); larger frames are discarded. The in-tree ice driver encodes
+> the same value as ICE_AQ_SET_MAC_FRAME_SIZE_MAX (== LIBIE_MAX_RX_BUF_LEN ==
+> 9728), and the VF clamped max_frame to IAVF_MAX_RXBUFFER (9728) before this
+> commit.
 
+[...]
 
--- 
-Hugo Villeneuve
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> index ec234cc8bd9d..680a28a739bf 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> @@ -382,6 +382,14 @@ void iavf_configure_queues(struct iavf_adapter *adapter)
+>  
+>  	max_frame = LIBIE_MAX_RX_FRM_LEN(adapter->rx_rings->pp->p.offset);
+>  	max_frame = min_not_zero(adapter->vf_res->max_mtu, max_frame);
+> +	/* The PF programs max_pkt_size into the per-queue Rx context "rxmax".
+> +	 * LIBIE_MAX_RX_FRM_LEN is the multi-descriptor (S/G) frame ceiling
+> +	 * (16382), but that exceeds the E810 max MAC frame size (9728); some
+> +	 * PFs reject the out-of-range value with VIRTCHNL_STATUS_ERR_PARAM.
+> +	 * Cap it at the single-buffer HW limit (== the MAC frame max),
+> +	 * restoring the pre-Page-Pool behaviour.
+> +	 */
+> +	max_frame = min(max_frame, LIBIE_MAX_RX_BUF_LEN);
+
+Shouldn't we cap it to 9728 instead?>
+>  	if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
+>  		/* bail because we already have a command pending */
+
+Thanks,
+Olek
