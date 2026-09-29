@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF637F32C;
-	Tue, 29 Sep 2026 11:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D0E51598D
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790681461; cv=none; b=BjsLXsOM3UvaoZ90bZtXNK4KdC/Qab/veAxIdcQUiR62uVAg6sxDJVSBrwQ5HPz++yIHIPhDfJw4RcWoNhPEZKKLclDVqyqMf1tIUsmJt7Iute6MVD8kZ2gbkX248z9U2ZQd/+8X9ERSC9WjinyKaMYsoGWasI89gRLiHGpAyig=
+	t=1790681462; cv=none; b=pnWoweqjeWhuIwHmv266tubcq2B1/yXvtpI6L0yPMlYM19Lzy9rHGGkFi4Lck4k6O4ZRuNDcHg5duYupX1QzJ5MODKkc1bjC8X56I0h/RahMqpYj6CbT91grFG8yrKOgvJ9TCcWf9G1cM3hQrYkyYMRe85MbuUKBaHPeWraBNI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790681461; c=relaxed/simple;
-	bh=W+ZVgUliYhGGTsZisBO1nwgDL7JEz1m/m4fjsMirKi0=;
+	s=arc-20240116; t=1790681462; c=relaxed/simple;
+	bh=rGa4Yu9mr0HifvvD+vQvlZGqdcEfkQzxAoGZ5wTvD4o=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qP1FR83EKkC/3Or/cHroeR7+VVssuStj7IKI0RgvWK2RqEMObXduj1/NWKNrDU00I5doc3xRTUX/uSCDFcCDw9EeUPKbMWy41wlXx8vZZthaQjLycL8nrw5uH9FPLnEA5QNoob66mzKxObUrt6zCJPN2JweNNqKREAbw2rClP6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXTjp/nl; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=P3Rgqw/Q8QfJH4jG0eASqb8Q4UYD43xmoxmxvhKYLLMsg4v+xg87hyagnelDF41fMKJeJGsAYv3CBFpvB08mgpfMQIonXSq4XuTfFs+lIW0xMDxsfopo1uKyylSDORBAo/pD/xmITabMdxr37PbyjgjBHD2yk91k7pP603b/x7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lhoww8by; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXTjp/nl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8254E1F000FF;
-	Tue, 29 Sep 2026 11:30:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lhoww8by"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058CE1F00893;
+	Tue, 29 Sep 2026 11:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790681459;
-	bh=y9Nhf9RqGyne3G1VVo+zipSl/aAqSVN0tBKw4HZ6eW4=;
+	s=k20260515; t=1790681461;
+	bh=DgoyvaSfw1xKqYhfeRahhmtGg/8Waxcw079uj31iibY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SXTjp/nl6zOJRBUjVZi7rqrswDcMdlCGF+YRZznkl0tsu53IECPlMwOZpzkaR8PKx
-	 i1ZnC3xVEGclTYjxH7rSUAwrEqwHt4wDFX597uSsC8/PTaIiceMZcy76449+nFoye2
-	 OXRBF+zexwJ4Z3cq86JzK2G2z2yg5+vyzZ96tES2dcBY2hbHC39nsrL1oBV0cNJHNC
-	 8BAOLaVqSoZKOCshh4ecicR5THWnMqXIBnFEPLzTx353OCQ7FFgPxr1Koq9vjRs3w8
-	 9XH1I1s1cAKqODoWOmscnzEd+TZgQJD0DqhA6SuAbbZf/HiwWk4uj4eLFNX0uIGTDx
-	 zprRYBCGTUBwQ==
+	b=Lhoww8byqd0vLxOLtr09iJXOPdUspF8ce9J4hZjeY4jyIqwAShDocfS151W/2FgMe
+	 AoU+hnOUy4UNOkCR3m6CKq9O1C8ksGlp+yYxkXdwZID+I6xveWpJxhZnurtr4Ay66j
+	 eOed/pEaYOhYQ29rTQtT50R9wtqqwPfnAEA8KLyuUFqafPys5txvco0uqagN37aKgz
+	 +hrHK8dyLI6fvJhqDfptXBhWHIMuYhJD7n0GHTrRPdxU5sCJleDEXyVBuQO/I365qE
+	 BUR3ZuoTNJQpJA4xYRqihb3qD6ZE9iIzqkJO1KD91b9+79ffypSZyfEyxSS2XOnOBz
+	 XwP2ZCJte+30w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 775FE39263B1;
-	Tue, 29 Sep 2026 11:30:59 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F16F139263B1;
+	Tue, 29 Sep 2026 11:31:00 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,58 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/9] netlink: specs: enum alignment fixes
+Subject: Re: [PATCH net-next v2 1/2] net: use two lockdep classes for the
+ netdev
+ instance lock
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179068145828.441753.2003667630829452941.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 11:30:58 +0000
-References: <20260925213918.204767-1-ast@fiberby.net>
-In-Reply-To: <20260925213918.204767-1-ast@fiberby.net>
-To: =?utf-8?b?QXNiasO4cm4gU2xvdGggVMO4bm5lc2VuIDxhc3RAZmliZXJieS5uZXQ+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: netdev@vger.kernel.org, kuba@kernel.org, donald.hunter@gmail.com,
- danieller@nvidia.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, moshe@nvidia.com,
- kory.maincent@bootlin.com, toke@redhat.com, daniel@iogearbox.net,
- linux-kernel@vger.kernel.org
+ <179068145953.441753.11648229589931188230.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 11:30:59 +0000
+References: <20260926041832.1649675-1-kuba@kernel.org>
+In-Reply-To: <20260926041832.1649675-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ sdf.kernel@gmail.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Fri, 25 Sep 2026 21:39:03 +0000 you wrote:
-> This series fixes misalignment issues in YNL-defined enums or flags.
-> 
-> Changes:
-> v2: (got delayed due to conference activities)
->  - Add Reviewed-by's (thanks Jakub, Moshe, Kory and Toke)
->  - Patch 1: Add "fixes" in prose, as Clashiko guessed wrong.
->  - Patch 2: Mention renaming ect{0,1}-pkts in commit message (Clashiko).
->  - Drop old patch 4.
->  - Patch 4 (was patch 5): Remove redundant enum-as-flags (thanks Moshe).
-> v1: https://lore.kernel.org/20260911214148.1184806-1-ast@fiberby.net
+On Fri, 25 Sep 2026 21:18:31 -0700 you wrote:
+> netdev_lockdep_set_classes() puts dev->lock in a separate lockdep class,
+> by type (netkit vs dummy etc), with the intent of keeping the instance
+> locks of individual devices as independent from each other as possible.
+> In practice it does the opposite. lockdep only calls the cmp_fn for locks
+> of the same class, so netdev_lock_cmp_fn() never gets a say when devices
+> from different classes are nested. Instead lockdep records a dependency
+> between the classes, and reports a circular locking problem as soon as
+> the nesting happens the other way round, e.g. when devices are unregistered
+> in a batch.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/9] netlink: specs: rt-link: re-align IPv4 devconf
-    https://git.kernel.org/netdev/net-next/c/e769837e4e5c
-  - [net-next,v2,2/9] netlink: specs: rt-link: re-align ifla-inet6-stats
-    https://git.kernel.org/netdev/net-next/c/621524a737f1
-  - [net-next,v2,3/9] netlink: specs: rt-link: fix ifinfo-flags names
-    https://git.kernel.org/netdev/net-next/c/306df818cc64
-  - [net-next,v2,4/9] netlink: specs: devlink: fix resource-scope type
-    https://git.kernel.org/netdev/net-next/c/bef8442f5ffa
-  - [net-next,v2,5/9] netlink: specs: ethtool: re-align c33-pse-ext-state
-    https://git.kernel.org/netdev/net-next/c/fe6a71dc0fbe
-  - [net-next,v2,6/9] netlink: specs: ethtool: re-align module-fw-flash-status
-    https://git.kernel.org/netdev/net-next/c/a9a98457342a
-  - [net-next,v2,7/9] netlink: specs: nl80211: fix naming of enum members
-    https://git.kernel.org/netdev/net-next/c/479ecf856c21
-  - [net-next,v2,8/9] netlink: specs: tc: fix typo in cls-flags
-    https://git.kernel.org/netdev/net-next/c/5fd016f357f7
-  - [net-next,v2,9/9] netlink: specs: fix incorrect name-prefixes
-    https://git.kernel.org/netdev/net-next/c/8450becb88f8
+  - [net-next,v2,1/2] net: use two lockdep classes for the netdev instance lock
+    https://git.kernel.org/netdev/net-next/c/b6f74dff6d26
+  - [net-next,v2,2/2] selftests: net: add test for netdev instance lock ordering on unregister
+    https://git.kernel.org/netdev/net-next/c/e542bad8d52e
 
 You are awesome, thank you!
 -- 
