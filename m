@@ -1,61 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2B233722;
-	Tue, 29 Sep 2026 00:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77B23AC17;
+	Tue, 29 Sep 2026 00:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790640541; cv=none; b=ArKvtSSIiFKSPw+zEcsCZswSnFVZObAo+NaQCfTc96OaGnNlue1bUSXdFOL3pBIn53fd68z3Rg/qomk+naKGy0ZzKzGDI887T2TuxS+gUU5MCkwKIAK5q++gY4bNweRyMY4w2JbFG1vSg7qXHSzkyHrj0aYvFeIo983SPmKXaA0=
+	t=1790640604; cv=none; b=M1Hez4522vDVTcCY4abcxsIrALw2iTykc2CPMc4kXC0H3EfLH8Yjf9vOEGBX55RprepjMY2v0BU+i2VAWAKhFieSBa0ILGZZJRZ6UfNz/4hReynKK6hV8w4BtP4tsucAwBmlQv9LMBi1lOTVS50hjb1OOd/pnp28nxgMUZ4DkLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790640541; c=relaxed/simple;
-	bh=N/t7V+CyYFzGbigEWV+QtMUvKX9Fdy4EVU2uQ6+oipU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S6JR1L+22Dx+3R8BLeiW1lvl5jS8el4rdLcwkU8BZyva3nz2+wrtGUHtwm6mnz241xb7a1deCAeu96TUYbQ7DnmHdHM0nlXAQPzCbg8VdNf9z4hx1WTwxJ0i4M1WrgccL/M4bHCjjfOzE0O4W+eb98CMwwtyHLi4nkCLBiCzpnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTqdjXfj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790640604; c=relaxed/simple;
+	bh=ogWPXa3OmOemOIrdalpKhlp0GXjF8su/mbdf1pUG6gs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=aldKDuV9WIZQGo4cKvTjI7owEfK1K5QR57CFwcQtnn7JZtK5jvcxXPAouKYtMNdgr14XQ361yrtChnY+LhMdwu+Nqbb1AA26L8hjNnR0lrobYzAhC6P9lA59JlgiSIHerJtPndDxEnOF9FRqLvcwa3YkT2I4ZuaZNXqGbog46Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=w9puXF4L; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Rf09jPSn; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTqdjXfj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4D71F000FF;
-	Tue, 29 Sep 2026 00:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790640539;
-	bh=uwY8xZ0mTXjs2W04kvJnCd5innU5VsqqxcxbDedfPiU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kTqdjXfjFtL9/ZFhLKgr3jGpTn2ifkiExg/YZOP+F22K4whvDF7b+/wBH4eonL8a5
-	 ctS6Jtt3LjlmnOLX7TNZHQeXQDPLWuTIT8svFViJKR2ijTab3hUMEPphI9J9pnuVmH
-	 LZ/Lb4xswm+Bl0WLEnu0u7hGqd+yFdnqGudSQKcCkEpUkc1Oul1Tm4wy6XKIg5KoGL
-	 WZSfCqyUkemeJqaGHbC9db6NMFqMhVCQ4tSaJ0BMZRbOkj/VquAv5jP0M0M2ijQfMy
-	 Lj55zH19CV9FBAcUouWhL86x9B2KhRBxr4jZgNj43wMMbaGibQ/sthmlHH6oDc5NDY
-	 3XSEc/lC5jmzQ==
-Date: Mon, 28 Sep 2026 17:08:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Zak Kemble
- <zakkemble@gmail.com>, Simon Horman <horms@kernel.org>, Ryo Takakura
- <ryotkkr98@gmail.com>, linux-kernel@vger.kernel.org (open list), Nicolai
- Buchwitz <nb@tipi-net.de>
-Subject: Re: [PATCH net v2 00/10] net: systemport: Collection of fixes
-Message-ID: <20260928170858.5ee4ca9f@kernel.org>
-In-Reply-To: <20260922232440.598918-1-florian.fainelli@broadcom.com>
-References: <20260922232440.598918-1-florian.fainelli@broadcom.com>
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="w9puXF4L";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Rf09jPSn"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68T09Ejs016839;
+	Tue, 29 Sep 2026 02:09:20 +0200
+Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 0C5B81228DA;
+	Tue, 29 Sep 2026 02:09:09 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1790640550; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gNEBx0donm4onnrz2bLETUAax8MpsLPKRrw3g7K/vUs=;
+	b=w9puXF4LCcieu/DCxtfxSlv/xU60R0dC90OI4hEb4CTrYPgsghiYfs0NCgocMMecO4uY/5
+	mYIBv4rzzsidgADg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1790640550; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gNEBx0donm4onnrz2bLETUAax8MpsLPKRrw3g7K/vUs=;
+	b=Rf09jPSnWSduNJNf3R8s347YGjJIXFU7dbesS3uOeD/F1fJorxcRzz3KTxIEupeR+Xd4aX
+	lvHJLYdNwDjtGWVr16EwjUxq65SnyzWUa/TOVj+D209Pd3zQK7R0xF/gn8IF+ZAXm+fSzw
+	oG80B48JXaxgzf+b7/aMLWZtFc8PXWRc0pjPM9llVPC1gzQ/PfuyrwSPRw4MxB9vXnYi0D
+	k8G02NariijsJ1olkRIpvIX46KR4U5sLnEpjwTG6V8Lg8qt/2iVR8he5YPqX9uoLfIjnft
+	Ed2nmzX55BiG6WroLBoavRTe8gZF3TgOni34QUDf9x5f3/tE1+ggcOzekvO7rg==
+Date: Tue, 29 Sep 2026 02:09:08 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+        David Lebrun
+ <david.lebrun@uclouvain.be>,
+        Ahmed Abdelsalam <amsalam20@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v2] seg6: fix HMAC validation when an extension
+ header precedes the SRH
+Message-Id: <20260929020908.5b62f1d0e1fca1502ede735f@uniroma2.it>
+In-Reply-To: <20260926-b4-seg6-hmac-transport-header-v2-1-8087b76f6375@gmail.com>
+References: <20260926-b4-seg6-hmac-transport-header-v2-1-8087b76f6375@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On Tue, 22 Sep 2026 16:24:30 -0700 Florian Fainelli wrote:
-> - dropped patch 4 and target it at net-next
-> - dropped patch 11 which needs more thinking as to what is the
->   appropriate DMA teardown sequence wrt. topctrl_flush
-> - addressed Nicolai's feedback
-> - added Nicolai's Reviewed-by tags where provided
+On Sat, 26 Sep 2026 20:19:27 +0900
+Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
 
-Ima pick some stuff from here out for net and some for net-next,
-rest I lack clarity or AI asked about something that _seems_ like
-it will need an answer.
+> seg6_hmac_validate_skb() derived the SRH from skb_transport_header().
+> That only holds while the two coincide, which is not true on the
+> seg6_local input path.
+> 
+> ip6_rcv_core() leaves the transport header just past the IPv6 header.
+> A Hop-by-Hop options header is consumed before the route lookup and
+> advances it, but a Destination Options header is not: the seg6_local
+> lwtunnel is entered through an input redirect from the route lookup,
+> which bypasses the extension header handlers. The transport header
+> then still points at the Destination Options header while
+> seg6_get_srh() has located the real SRH further down the chain.
+> 
+> The HMAC is therefore computed over the Destination Options header,
+> and a packet carrying a valid HMAC TLV is dropped when
+> seg6_require_hmac is set. Such a packet is legitimate: RFC 8200 allows
+> Destination Options before a routing header, and get_srh() has walked
+> the header chain since commit 5829d70b0b6c ("ipv6: sr: fix get_srh() to
+> comply with IPv6 standard "RFC 8200"").
+> 
+> With a Fragment or an Authentication header in front of the SRH, the
+> same mistake also reads past the data pulled by seg6_get_srh(). This
+> happens before seg6_require_hmac is read, so the default configuration
+> is affected.
+> 
+> Reproduce by giving a node a seg6local End SID with
+> net.ipv6.conf.<dev>.seg6_require_hmac=1 and a key installed with
+> "ip sr hmac set <keyid> sha1", then sending
+> 
+>   IPv6 -> Destination Options -> SRH (carrying a valid HMAC TLV) -> payload
+> 
+> to that SID: it is dropped, while the same packet without the
+> Destination Options header passes.
+> 
+> Fixes: 5829d70b0b6c ("ipv6: sr: fix get_srh() to comply with IPv6 standard "RFC 8200"")
+> Assisted-by: LLM
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+> ---
+> Changes in v2:
+> - Describe the out-of-bounds read reachable with a Fragment or an
+>   Authentication header before the SRH (Andrea)
+> - Link to v1: https://patch.msgid.link/20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com
+> ---
+>  include/net/seg6_hmac.h | 3 ++-
+>  net/ipv6/exthdrs.c      | 2 +-
+>  net/ipv6/seg6_hmac.c    | 5 +----
+>  net/ipv6/seg6_local.c   | 6 +++---
+>  4 files changed, 7 insertions(+), 9 deletions(-)
+
+Thanks for the v2, and for addressing the v1 comment.
+
+The code looks good to me.
+
+For the record, the v1 Sashiko review noted another effect of the same
+bug. A captured HMAC can be reused in a Destination Options header in
+front of a forged SRH with no HMAC. With seg6_require_hmac=1 that forged
+SRH was accepted before this patch. After the patch the HMAC check runs
+on the SRH the behavior uses, not on the header in front of it.
+
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+
+Ciao,
+Andrea
