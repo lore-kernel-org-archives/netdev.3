@@ -1,78 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2260A3A71A8;
-	Tue, 29 Sep 2026 07:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1908C3A873C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 07:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790667516; cv=none; b=RM2UUD4AAU5XTzvbHsjbqAJNnJXhqYYWmkjxoW7h4bxjQPt3R8fRK3tpqlIrVJRgNKhlxLFZXGwr2hCICiSX+RcSWQ7+hzSaC90LXzt/PJpa13X1C0mVSvmISqNGxYNFLpwncnOHwDa1ZG4Q5FwSHrY+FVSsrsbSO618qJHGdHA=
+	t=1790667853; cv=none; b=d4gKNHdFr7Ea8tnS7VFJp+rLhiEB3aSxETRG/AP8KLD3Nh+kHyWlPOVhFNQaTxhX8VuYkx56QcQbUQlmnwAboz2H7rke6xwy/8UGSkqOfbi7qwUTLawm6BI4dw7Zu8XsgJlcwwgx39AakwEiXG3F76oSn/007rYDad5m3d2E9xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790667516; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EPx2MrvsAl0XHr04mZUk7FRwXtwDITJvIvPjqUP3BqluUP0ioVDJdhQo3nCaNQJWzWYEfV/j1le+bEQE4ehieZusHLEpcTxUyiDg3J6t1r3Ad1TyMM4gFlPitdBoBN8AI/OTP7IwA42am3cBUg88AI74nYJaMLJBCx1Pb8fesNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcSU90Ad; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790667853; c=relaxed/simple;
+	bh=Z4HLh6x3TXcq+IGnxeku780VsScevwodu7+asM0q/T0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pOrBJI02OX6jSe8hOjin85UpSIiOJr5/qRkOzYoVaK+/Ce8OyLc/GFHIveb0kNs/uNVTk3nbw4HgcagzD+gy0/ULfMz8LyV3mHGTPsgiMqnR09n1Sho5mvLJMPLfi/GAvaMdyIFsRhlyotGHcpzXjYj/wy/Nla2478QxkJm57WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=Kgrprt3x; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcSU90Ad"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD81F000FF;
-	Tue, 29 Sep 2026 07:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790667514;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fcSU90Adnp98yCJypomf3WB79+psLhtiUWYQ2ZPgHod2TnBC7PWDOGjmnQJakhUnA
-	 xehASfu9CifQ8FjnnBACDMXF5XgdZmQJ1pt1fH6lteSzXpnWCXHiW2wP0vQTahX0xA
-	 lOcWZksHU/+kw2grns45lRdWhootoyjgQ5KPVP1gxcd8+DXiSXtkR9fMWypZRUKOkO
-	 CRAco2xaK+0XYpkte8QBNJbdFlRizCSdtXC/qdPCNJGS2YoKoUiT9lN0E2FX9C0LDN
-	 eFYJSafWvy91n4hZBfMvTI/7CA1UQsxMh65Jl2PIvZwnPtRUrLulCb9KYuG96/g3MW
-	 RC03Gv2ud+eZA==
-From: netdev-bot+sinfo@kernel.org
-To: Zxyan Zhu <zxyan0222@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, richardcochran@gmail.com,
- maxime.chevallier@bootlin.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
- rohan.g.thomas@altera.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 0/3] net: stmmac: dwxgmac2: timestamp
- interrupt support + Agilex5 fix
-Date: Tue, 29 Sep 2026 07:38:32 +0000
-Message-ID: <179066751275.31693.16105226302048502437@kernel.org>
-In-Reply-To: <20260929073553.4136336-1-zxyan0222@gmail.com>
-References: <20260929073553.4136336-1-zxyan0222@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="Kgrprt3x"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so21721365e9.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 00:44:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1790667848; x=1791272648; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D1gEgNNUIuRxKLIUuOnRgjSxzo/gFqBNwHA7M+ft3uk=;
+        b=Kgrprt3xIEi88LSlwEl4bEeWiWqwhQcSDkO9yh/4czZ1Niy/r3CRXfku8tnjRYAybl
+         rxr2WMakOwvAymGqfJhnnLXdU2q1owhpyRi/wS1JKPMcuhPgSLSavmtsU47RGmEo2+O1
+         YYiVpWYaITkuytw45eqHt0f4+CHShiFHg8Av/uyCBzWzOrpUW8/50g/tbqLZNvEkybz9
+         8i475JTV2csBUs+DtHnEDbep6b+XFTeo6vHnx9aI87oUoAVIPd0HpzPyfSHCRtEkyebM
+         IOHJZkQbBV9UAagjq+IGaulX4uBgSdral00s+dlfNSDi3U1Itdd5JtaVevFQTbwPCPWK
+         eiPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790667848; x=1791272648;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D1gEgNNUIuRxKLIUuOnRgjSxzo/gFqBNwHA7M+ft3uk=;
+        b=oGOKqUf0lh/irmG/O4J9nsGu8SxJ3KLLphKNZ5Sz6LOq2pl5Gu66y4OMwBnCsmIf6j
+         vvyCQIHWP5U2LenzYbid6g5SzZDULl65aDmWr8dVVzTQFGUAqey8wzJnap4WaWcIEaTw
+         aj1D5PhtZrhqoLJqJF4Iu8bYRd1fvdCszTPprLf9Sc4WHLj1ka6eO1hUvLGVuYxVw0Cb
+         41sOvGRZgK557ey8Z913Dc28ONbIkOQwkaDgOYpl/HUHgPoOx8dQWhwwTQnbeAlA7hVf
+         OEArGovJ6jru62sG3d8jdgj5pDHCqbOFWHsMO/7afSFC8xrW0Ko5pFroP5QGp2dcr+IC
+         0vhQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy48R3ZuFk7WiY6ehZgHgaWnJt1Fxqu1Ba9ipjQy0mtfxQDs5BK18BrxmbYnkc62aI7XlDUd04=@vger.kernel.org
+X-Gm-Message-State: AFuF++nfpn3PNlDSM6BTp2yqE/SE1Mncsxu+4yKMbCdoVeJ9sjt/w+Kr
+	AB8038/1LsL9cnI40o+mksgfPrJiuP6A4RQoRXEfT1QnXGelt/eJCJQgUn5bPmf9Z1A=
+X-Gm-Gg: AYBFou2q3WbaC4lXR68OWusP6y3oJAPeDvxvPi1GGFKXDo3CvxtSviPwvMQkzqqABfI
+	mBFfO79Ya6fcOiRf+zqunC5ZhbTI33/cA/3AF+PoEly/6iwUOQYGHtyDSE6/z47RzsINehqihT1
+	tw//W/7eA6LTYWxONNuNvApAyQw353o1dLYjUficzHcY3nhmaf5oB8mWVuJ/m/mTRJmYuS7MoST
+	LcpRkAMC4L5aqtmurPo+phh0Z0KL2kGx3+pMvBhfy4DtN74QzeIaQnYzD3R26UPgr+jKIlyatAX
+	QxCfUcXOVxVECLu53J9uF2OXVTRKaMgPS1v/b7ChZYV5HFjxsGjI3uSa5Y2pXxKartM4FNTNSlW
+	OtXYby89HD82Z+Z+qPmJmHFgPCIU1MqrG+Z6aXckoktJOCmkiUUBxt3hfSD0msFArfHIjEhEYbA
+	N5k+y7/LIRkRgpETKrQ9KLb66rqsDjYSK4QgfAHXr19prPNiJmDq3rWYPcil39DYirygvVDHBMR
+	4HqQPkj+MSNtmGmbNCh0Z1TOpB/
+X-Received: by 2002:a05:600c:870c:b0:49e:6050:9fbe with SMTP id 5b1f17b1804b1-49fe66d76camr258621725e9.15.1790667847789;
+        Tue, 29 Sep 2026 00:44:07 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00d45ce1csm37147125e9.3.2026.09.29.00.44.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 00:44:06 -0700 (PDT)
+Message-ID: <b8ad269f-186a-4279-887d-60ef9968025f@blackwall.org>
+Date: Tue, 29 Sep 2026 10:44:05 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/1] net: bridge: avoid recursive multicast cleanup
+Content-Language: en-US, bg
+To: Zixuan Chai <petalzu987@gmail.com>, Andrew Lunn <andrew@lunn.ch>
+Cc: Ren Wei <weir@nebusec.ai>, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ vega@nebusec.ai
+References: <cover.1790323012.git.petalzu987@gmail.com>
+ <156c41b1-fc86-4ecf-8181-461944734be9@lunn.ch>
+ <CADTzadLbmd5E73RG16kQ1rFmwYESNuQqgc-JCX2RVhY0FRh8nw@mail.gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <CADTzadLbmd5E73RG16kQ1rFmwYESNuQqgc-JCX2RVhY0FRh8nw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On 27/09/2026 22:35, Zixuan Chai wrote:
+> On Mon, 28 Sept 2026 at 00:31, Andrew Lunn <andrew@lunn.ch> wrote:
+>>
+>> On Sun, Sep 27, 2026 at 01:04:38AM +0800, Ren Wei wrote:
+>>> From: Zixuan Chai <petalzu987@gmail.com>
+>>>
+>>> Hi Linux kernel maintainers,
+>>>
+>>> We found and validated an issue in net/bridge/br_multicast.c. The bug is
+>>> reachable by a non-root user via user and network namespaces. We've tested
+>>> it, and it should not affect any other bridge multicast functionality.
+>>>
+>>> This bug is tracked at: https://bugtracker.nebusec.ai/f/4342
+>>>
+>>> We will provide detailed information about the bug in this email, along
+>>> with a PoC to trigger it.
+>>>
+>>> ---- details below ----
+>>>
+>>> Bug details:
+>>>
+>>> When an EXCLUDE (*,G) port is deleted, br_multicast_star_g_handle_mode()
+>>> removes its corresponding temporary STAR_EXCL (S,G) port. For an (S,G)
+>>> entry, br_multicast_del_pg() then calls
+>>> br_multicast_sg_del_exclude_ports() to remove the remaining automatically
+>>> added ports. That helper also calls br_multicast_del_pg() for each port,
+>>> which re-enters the same cleanup and adds another stack frame per port.
+>>> With enough ports, the task hits the kernel stack guard page.
+>>
+>> What is the value of "enough"?
+> 
+> Thanks for your review.
+> By "enough", we mean 151 temporary EXCLUDE ports in our tested setup.
+> This is the smallest number of ports we have tested that triggers the
+> issue.
+> 
+>> We get lots of bug reports for theoretical issues which in practice
+>> will never happen. And we get some reports for real issues which can
+>> happen. You are more likely to get your reported looked at if you make
+>> it clear the issues really can happen, give todays systems.
+>>
+>>> The PoC uses unshare -Urn, creates 256 temporary EXCLUDE ports and a
+>>> permanent INCLUDE source entry with IGMPv3 enabled, then deletes one
+>>> EXCLUDE port.
+>>
+>> So a hardware switch with 256 ports is on the high side, but this
+>> could happen in an SDN setup.
+> 
+> We also believe this is realistic in SDN and container setups, where a
+> single bridge can have hundreds of virtual ports.
+> 
+> Thanks,
+> Zixuan Chai
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Noone will setup an mdb with 150 ports, sorry but it is not realistic at all,
+not even by a long shot. I'd send this for net-next.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Either way the fix is small and looks correct.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
