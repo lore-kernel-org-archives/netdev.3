@@ -1,89 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAF25218BA;
-	Tue, 29 Sep 2026 14:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E62751C04D;
+	Tue, 29 Sep 2026 14:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790692047; cv=none; b=h2eK24HYw0ioTVuiaiDHrED+7DGDonCT3nri4G9LZ3oWw1QWPb1ME4DupyhgNnvR5iisnYKtveWXq4EObS7490tBKRuR2Ta2VYBH2om5UknD7UbWG8EMpajapa6vUNfDKHTatID+FDnJ5FGJEYJ/bhWKPB/1fL7l7pGmIbeTITI=
+	t=1790692596; cv=none; b=dtYaUwyh43IifeBPpOO1SO1pif2AB9IyCISVGphFgRATiQ3fkQZWyS5Ig8/jXRZ5JPoZFfwprD/3KrHPQbjYArF7gxW8D16SfC831tg4uROPxJQO2m5dxPBGmJOqjPGFWq1mOqN9msgIPfJYMGA1o5ZlPhfF9IGetGjoEAA/GVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790692047; c=relaxed/simple;
-	bh=Bwk2Sbj+akQ3diAVdTcu04i0hLai1HH/u9GO5nLS0DE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=elsB5WDeDzawGvF5lLrOh3GIP4XZ52w433g5elVMZg+1ddbBEg1gHqknHsmdb/00/z2RCUyJp1UObwfl8hsJnSdfyvY0a83CVDPA1l6AVHUUrxqqsbA+S2K4/pgOAp00UE6n4hDMYLPghlXY1B6hB0cEq2FQu2eWiG3Z7LC9Lk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwQJzShy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790692596; c=relaxed/simple;
+	bh=41OyKo8AA7bmoCoxHe40VGXLS46yixBA+0eQ9aV4r94=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ceLpSGE9H3yj5f8kQWcQ+xrXT+bm3xbml6ouLFox59VS8R22PP4iaZx6NOTj8oU/qtESRo5jXy8S0L6IPowoe9NxZQBE7aLyuc64vOehego18fN+s8LSZXOy9Aksn9eat/A3HS2GtOFmFUru70pIshFJj5FW8h3ObCvq0VvbIhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=MytAsbfq; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwQJzShy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE151F00893;
-	Tue, 29 Sep 2026 14:27:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790692042;
-	bh=DnI00DpYKUiWrAQ2VQ34nPrOmLv5QkaMmD+3SRHPxEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WwQJzShyxEh5mqIFTtW6rwAdxkfKY0g16gmXemDmquxWmpkcrOrpXGj2QWtcJJQCe
-	 6YzFYe7CaJyl9nl+R7f2G10FSdSRGBNtMvug8Dtd7TrIfXrf/kDWY7yK+2OOYUMI1y
-	 EI05UNljuH5uC+piW1ZX66Qc9LrAx+9WqQXUoJF+HwaofIlD1ayuyl92cuTx6EgNeh
-	 0cjLccpMZuL1tbPWYh/rfzGZpLVdpDcghi9z6S9CU+4UGKFJZftmC2NccKbL0d0eYy
-	 lKPJOFLdad8MFhGFv7VL6983OmWkaBU6+FSDrUb40kfnvjKSVL1qafajRa4VMC6izt
-	 2dntYiTe8ZwFw==
-Date: Tue, 29 Sep 2026 15:27:17 +0100
-From: Simon Horman <horms@kernel.org>
-To: Matvey Valigura <valigurasm@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chas Williams <3chas3@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: atm: use request_firmware_direct() for firmware
- probing
-Message-ID: <20260929142717.GV13925@horms.kernel.org>
-References: <20260924050654.15347-1-valigurasm@gmail.com>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="MytAsbfq"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 6529F213E8;
+	Tue, 29 Sep 2026 17:36:23 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=EFJRJAmInJbL42OH66AUdL96HXKJcoSU80nlGp+WbKU=; b=MytAsbfqtEKX
+	w2/DaNrFpgcJTC5FIpsAQAd4/UvKx4RoSCTbUU2kZ6EJlVYPW3pgfuIrNL390jAQ
+	mKU1LIXqJrTp9QO0g4CA8CF2wwGQGbQsdV6/fZgWqLj5cxPYJj1HjYvAbWO1yiks
+	yOBfSu88alxbrD2SqlPuz1zI0jBa6U6ZZl1UhUaHnj3kP57BmJgQ1VAzxtCtn6sz
+	oxRF0w9ruNvg2vH1Yh/OlrY/QGyIowRHaG9U+R3cqUEcWSmo9kUUqp/H3wDgddX3
+	m6I8bkUxpF9Dlf6dWp4r6xXXd+YHYFD9ZNEw8j4Ma08Qx7DL/XwgNsXH/x5ChycE
+	ZSaqL/d7MeDmSsZWMYLdN0/5FmOwGz1gGJHv+fX2vDBZ8Y1MO3AW9ZzWjc3GZwcN
+	52eILAiBJCvyX7/LyzKI62VcotGPhyZodmf+8B8apnwrz2y5fas+3tqbxguSDnLl
+	U4kd3jZ3KGWjNyCwcKhZHAYo5yzYRS65IqgsERl0d5ePxzr4GIxfZ2lCiPsj4r1h
+	/MQaj4NSm3qRTfiocFxT7XkrLN1h/cpS3phlx7tjqSF/Uh0n1+6BY1emoZ6VFa/O
+	636YY4PnIcN/h+PfSopgBDa+mkIt7V/eNIHYv2/ZP/ajQ/LMFI7VdZa4Ril1k4GN
+	QpU9bJC7OGH5xiFx0gahXaFQ9d4+M5c=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 29 Sep 2026 17:36:23 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id B1510604D4;
+	Tue, 29 Sep 2026 17:36:25 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68TEaKQt060712;
+	Tue, 29 Sep 2026 17:36:21 +0300
+Date: Tue, 29 Sep 2026 17:36:20 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+cc: Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org,
+        davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com,
+        edumazet@google.com, horms@kernel.org, fw@strlen.de
+Subject: Re: [PATCH net 00/11] Netfilter/IPVS fixes for net
+In-Reply-To: <aruH1faUO3GEZvcM@chamomile>
+Message-ID: <5d761dbe-b74c-4ebc-116b-34f2b60a69c9@ssi.bg>
+References: <20260927220816.268206-1-pablo@netfilter.org> <20260928191120.28c28fdb@kernel.org> <aruH1faUO3GEZvcM@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924050654.15347-1-valigurasm@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Sep 24, 2026 at 08:06:54AM +0300, Matvey Valigura wrote:
-> When disconnecting a device while firmware is not present on the system,
-> usbatm_usb_disconnect() waits for the heavy_init thread to finish:
->     wait_for_completion(&instance->thread_exited);
-> 
-> If CONFIG_FW_LOADER_USER_HELPER_FALLBACK is enabled, missing firmware
-> causes request_firmware() to fall back to sysfs/udevd. This creates a
-> circular dependency during disconnect:
-> 1. usb_disconnect() holds device_lock(&udev->dev).
-> 2. usbatm_usb_disconnect() waits for instance->thread to exit.
-> 3. instance->thread waits for request_firmware() sysfs fallback.
-> 4. udevd receives the firmware uevent and attempts to read sysfs
->    attributes (e.g. serial), blocking on device_lock(&udev->dev).
-> 
-> Furthermore, the fallback wait uses wait_for_completion_killable_timeout(),
-> which ignores the non-fatal SIGTERM signal sent by usbatm_usb_disconnect().
-> Because speedtch and cxacru probe multiple candidate firmware files
-> sequentially, each file stalls for the 60-second fallback timeout,
-> triggering hung task timeouts (>120s) reported by syzbot.
-> 
-> Switch to request_firmware_direct() to probe firmware files directly from
-> the filesystem without falling back to user-mode helper.
-> 
-> Reported-by: syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=9ca2c9f85bd8b5e46516
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matvey Valigura <valigurasm@gmail.com>
-> ---
->  drivers/usb/atm/cxacru.c   | 2 +-
->  drivers/usb/atm/speedtch.c | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
 
-I am assuming that in practice users do not load firmware for these devices
-from user-space.
+	Hello,
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+On Tue, 29 Sep 2026, Pablo Neira Ayuso wrote:
+
+> Hi Jakub, Paolo,
+> 
+> On Mon, Sep 28, 2026 at 07:11:20PM -0700, Jakub Kicinski wrote:
+> > On Mon, 28 Sep 2026 00:08:05 +0200 Pablo Neira Ayuso wrote:
+> > > The following batch contains Netfilter fixes for net:
+> > 
+> > I didn't spot anything obviously needing a respin in the AI feedback,
+> > could you confirm that it's good as is? If you have to respin it'd be
+> > good to remove the claim that patch 2 is a nop, Linus is onto us for
+> > sending too many LLM-induced, low impact fixes.
+> 
+> I would say yes too. LLM comments say:
+> 
+> - Patch 2/11 (ipvs): commit description could be improved (yes, there
+>   is always room for improvement in that regard but I think description
+>   is fair fine enough). There is a report on a pre-existing issue, but
+>   I think that can be addressed as a follow up.
+
+	I already have v2 for 2/11, now as 2 patches:
+
+https://sashiko.dev/#/patchset/20260929113436.44306-1-ja%40ssi.bg
+
+	But better to leave it for next week, it is a low
+priority fix. As usually, if we stop 1 patch, it is replaced
+by 2 for the next round :)
+
+> - Patch 3/11 (netfilter): commit description could be improved again,
+>   but patch is good IMO.
+> 
+> - Patch 7/11 (ipvs): there's seem to be another path to abuse this
+>   code LLM found, I would address this as a follow up.
+> 
+> - Patch 8/11 (netfilter): refers to a pre-existing issue.
+>   It also refers to issues with reordering elements of the range,
+>   but this API really need elements in order to work fine, otherwise
+>   overlap detection will likely fire.
+> 
+> - Patch 10/11 (netfilter): refers to a pre-existing issues.
+>   nf_flow_offload_refresh() also needs to be disabled in pending
+>   work is enqueued. Also disable stats fetching for dying hw entries.
+> 
+> In particular, I am observing IPVS patches are getting stuck because
+> of reports of pre-existing issues. Sometimes you find two or three
+> things that need an adjustment, and you can start tackling one of the
+> aspects at a time (because addressing them all at once it not easy).
+> I think it will help Julian if he has a chance to address issues as
+> follow up, unless LLM reports something really sound and compelling
+> that can be classified as a blocker.
+
+	I don't find the LLM reviews wrong, so I don't
+complain :) I'll note if a followup is preferred but in
+most of the time the patches need to be corrected. I try
+to post different patches for the different problems but
+this is also a load for the other maintainers. I hope
+I'll improve with the time but it is true that we are
+overloaded. The only hope is that the bug-report rate will
+slowdown with the time...
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
