@@ -1,177 +1,286 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7BA51EE12
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 12:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0124EE874;
+	Tue, 29 Sep 2026 12:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790684560; cv=none; b=Iy3WlmM/3JGII0Ul5ebRCSQImPNQnPfCDsVba+B0YWbQL/nnx/mkEF8MdOXH+xX3qjrxxx5pfJ0aG0DfMODAbJxQl333SG8FkAKZwMVKHcxFafipEM9hOuLm5ShZ5S/M34hpSXgTi8hRbRv1B87WS/ms/eW85FuYeyINqXvv83Y=
+	t=1790684879; cv=none; b=ifyW/yh5Zdb87LLoFf1CmFqNwQyQQ7kuLGdmFPGGtCyo1+BYAFCByRgVIcblKBKX1wdh57DKnkSma2NKkCTf+eanIFentN4fEaPSJAS5VRJC91ejSyqG8uxbXvkBovo61ipjWTdjlmsiqDSN0Hx5sRZ6Oec1yHSnut2LxMKyFdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790684560; c=relaxed/simple;
-	bh=jyxZUwag4Snx6w7CS1Ff8QzWTwsdLnKCeNSRrAD6Qj4=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Cc:Content-Type; b=ky3YmEXhRwue4GDnQx6vWEmVl90oEQkGyAuuspmdofkGMoEL1LmnPFZSCPjmdTuvvJ5CU+45n7SVCLGG1EMNI8nUNPEHnZB2Dev7eqp9go0Y1FKBNO/2jBYHa7GHd/vuX+SbkNul+d3R/huAUfFe9QO200btos6Spb4HPDC00ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Emxv21Pk; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790684879; c=relaxed/simple;
+	bh=iI/y6G1rApeLXyhI5I/1YDctY/5ycSk2f8mMntIWxxU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q83ObXVAvn5ySpPC1eCNTMlomz6l8jO3esGVRt1sYUd4v7WRQsQqSJX3fd5wIFz1PS9yVuSdK6aojZs4leB7Xj5gDbdBVwsfOHHovlp+ndMs7q/PaQSMbD6DHYo4TfpUnP5v41VDcnf2MPT33BciACtVQs0GsParh1fh5XkgMI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALAUI7eN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Emxv21Pk"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e44so1308760a12.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 05:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790684556; x=1791289356; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:subject:to:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RJYJHIvticSjWb8jFlLhFo4kaOC5D+azks8bAAbUZag=;
-        b=Emxv21PkrZa3lhpD6lRfz9nHujhfKlWlhdqXh/MypGXQCYcG+iRkiMAahQFb8eZAH/
-         Fu632SpUAP8sprE/pP3Vp9VRAqdjn5+aNFopGgHpE24esBTkDx86UBn2ZdYU48fWwbPe
-         ME4CEru5T6KN+tYN4REuTq9AIN+xPREJ45ojfbkx+wYf2AyxxdB+4Gwn37MKC5PccMw0
-         Y1mWe1E38iQfxCnTRcynLsAZKnWNjHT+FrOShRnlnrChvlh331sYGJOdnUl7XypWQcBC
-         Agcf12btt0RB3EGD9ACf2ETutxuvWXQxt5DD7cOtqHHk4Di7rjFQUqqtjHEk4nUh7puE
-         a8Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790684556; x=1791289356;
-        h=content-transfer-encoding:content-type:cc:subject:to:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RJYJHIvticSjWb8jFlLhFo4kaOC5D+azks8bAAbUZag=;
-        b=diGT2GMPh6qj66furemHIeEvTe1qZuZP31g1amTbiCuGgGKaQpwaB4JrusKIAyR07J
-         NpSui6367hb1hZ/Upj8RZgLN8KRIlJpb+G7kVrhrcLm71Qb8Z1B5GB9xuDzyrI5lWNZH
-         jGS2h0CJCBPsg3zdZjpNzn+jmjL9E8hfAEn85QV0ZcRToU6ePlg0ZTtkHwGH/do+pqlZ
-         qf2SgthZ0hyeJk8ZghurSnvhl95ll9wik58jgHIlsH/Or/3/Un1f74QgnQd9ax3LfSIn
-         bE6DK/oqgfQJ9ytndA98+2rjHmVKyJfqcuozy5pGsYAH+NTLrVuXt/16Qv/hHia6Fpul
-         7kDw==
-X-Gm-Message-State: AFq9FYIT2Y524n3cMz+mzdamGIsLkNYynl8hApy3zL2UuhAK8O69rwTd
-	HmkMxE/7X9TDExL6SLH+GJMa7Dgps1iUdU/guG2uCJ044qCDkDi5hGkQb8zFdxQl6jJTCg==
-X-Gm-Gg: AYBFou1hh0nrL3WrBA3WJSU7PRK/YTrcT9+iDguswKVtk0blJDEBNfdbjlUsuM+5U+h
-	XEJvXwJxgiZhLn5DNXUjezkceeSvsSLFM/EAR9vl0iT2G+NxPjBiO1F/DWTBz5z+852mOKwtoE3
-	qh37Wc1br501OT7td/fLr+Mt+EY8dZWpa5j82490ZdkxjxF8NLVTFAuVZmbjWIYwLTY2HzPbu/6
-	V3hZ01JErGIli7DRriSfh1tF80nr19HS1gM/76OhZkPDTATnVMIM+As4gmFZ8YAhgGvHWhVld+/
-	THwDyFZFTAAzwpW8zyr4LEQK6qC4PVlfzQGTrL53baQWqFCcz+BiqUaCo6tWpAOa17eu4lHCDUY
-	uM8CzWAXDboJrgEhKYfrZzy8rdYHoQCEaBAYPsPpq/ZEYuW/kHTxMjwM/bVNvjkh/Gcg+tynj5K
-	eD6QlwWwtWQwEDEDU7TczggBvzOB1xUdKSyH+AEVMWOEnsW1g3Tw==
-X-Received: by 2002:a17:90b:4aca:b0:3a1:8b70:d46b with SMTP id 98e67ed59e1d1-3a18b70e64dmr6457041a91.42.1790684555551;
-        Tue, 29 Sep 2026 05:22:35 -0700 (PDT)
-Received: from [198.18.0.1] ([2407:cdc0:8003::1027])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a492da42a3sm2643075a91.2.2026.09.29.05.22.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2026 05:22:34 -0700 (PDT)
-Message-ID: <b397156b-c184-4061-a9d5-52cce5c4f07e@gmail.com>
-Date: Tue, 29 Sep 2026 20:22:28 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALAUI7eN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74BF1F000FF;
+	Tue, 29 Sep 2026 12:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790684877;
+	bh=ahpktiMn1T8hkxWyx8EQPyqeO9rIhlIhPJ106yERwgU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ALAUI7eNKd5dV0ya03MJV2G6lNlKNffUmqx2x2OkRB7pc6ahJouKjVDwVDJuAM4dG
+	 vYFenuOTnDs04ETYUTHWMse4wTEdddJ5PiYlrukI4huFE41J50LFoKYYLStWMbcjT3
+	 llJQ55M8n+CfQk2Ajy1V8HFAVtu/zLBPqf2VQB+w7/EqW+lsepGp4dquRnGcXM7LGF
+	 NM4inTYUPEacXtIOuuJVxdqg2vQXc/9YHFbezhWmU8id4wCJLuVezuWd0kMMtaZI4Z
+	 Yi1ulKYCCJuvZD5h2B54b1YgzBBZcA76tGcE6tGE6HdHnyYQMCHFdfYXjXkYWfbie5
+	 voYaEQjdsN4rw==
+Subject: Re: [PATCH net-next v4 01/11] net: dsa: microchip: fully save the
+ periodic output request
+From: netdev-bot+sashiko@kernel.org
+To: bastien.curutchet@bootlin.com
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, richardcochran@gmail.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 29 Sep 2026 12:27:56 +0000
+Message-ID: <179068487632.434549.12891294812675724957@kernel.org>
+In-Reply-To: <20260925-ksz-perout-v4-1-d675bd21ce49@bootlin.com>
+References: <20260925-ksz-perout-v4-1-d675bd21ce49@bootlin.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Wentao Luo <luowentao077@gmail.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net] vxlan: fix NULL deref when joining a group without a
- socket
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Edward Cree <ecree.xilinx@gmail.com>,
- Fernando Fernandez Mancera <fmancera@suse.de>,
- Antonio Quartulli <antonio@openvpn.net>, Jiri Benc <jbenc@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-vxlan_sock_add() ignores -EAFNOSUPPORT when creating the IPv6 socket
-of a metadata device, so the device can come up with vn6_sock NULL
-after ipv6.disable=1. A later IPv6 multicast join still uses that
-socket. vxlan_igmp_join() dereferences it and oopses.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-This was observed on an external vnifilter device by adding an IPv6
-group while the device was up:
+Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0 (1)
 
-   BUG: KASAN: null-ptr-deref in vxlan_igmp_join+0xb8/0x18c
-   Read of size 8 at addr 0000000000000010 by task bridge/729
-   Call trace:
-    show_stack+0x18/0x24 (C)
-    dump_stack_lvl+0x78/0x90
-    print_report+0x468/0x5cc
-    kasan_report+0xa4/0xf0
-    __asan_load8+0x7c/0xd0
-    vxlan_igmp_join+0xb8/0x18c
-    vxlan_vni_update_group+0x2b4/0x390
-    vxlan_process_vni_filter+0xfe0/0x1750
-    vxlan_vnifilter_process+0x218/0x270
-    rtnetlink_rcv_msg+0x1ec/0x514
-    netlink_rcv_skb+0xc0/0x1f0
-    rtnetlink_rcv+0x18/0x24
-    netlink_unicast+0x4b8/0x558
-    netlink_sendmsg+0x2b8/0x584
-    ...
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Return -EAFNOSUPPORT from vxlan_igmp_join() and vxlan_igmp_leave()
-when the address family has no socket. The same leave path runs while
-rolling back a failed join.
+- [High] The patch keeps one saved request (ptp_data->perout_request) and
+  one device-wide tou_mode, but the driver allows several trigger output…
+- [Medium] This patch fixes a user-visible bug that already exists on the
+  switches supported today (KSZ9477 family), but the commit message does…
 
-Fixes: d074bf960044 ("vxlan: correctly handle ipv6.disable module 
-parameter")
-Signed-off-by: Wentao Luo <luowentao077@gmail.com>
----
-Simplest reproducer. Build with CONFIG_IPV6=y and boot with
-ipv6.disable=1:
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is serious.
+- [Medium] This problem wasn't introduced by this patch, but the restart
+  path calls ptp_find_pin() without holding ptp_clock::pincfg_mux, which…
+- [Low] ksz_ptp_enable_perout() selects the TOU and resets it with
+  ksz_ptp_tou_reset(), which clears TRIG_ENABLE, before validation,…
 
-   ip link add vxlan0 type vxlan external group ff05::1 dev lo dstport 4789
-   ip link set vxlan0 up
+--
 
-The NULL pointer dereference is then reproduced.
+net: dsa: microchip: fully save the periodic output request
 
-  drivers/net/vxlan/vxlan_multicast.c | 12 ++++++++++++
-  1 file changed, 12 insertions(+)
+This commit replaces the saved start time and period in struct
+ksz_ptp_data with a full copy of the last successful struct
+ptp_perout_request. After settime/adjtime, ksz_ptp_restart_perout() now
+reuses that saved request, including its index and flags, instead of
+forcing both to zero.
 
-diff --git a/drivers/net/vxlan/vxlan_multicast.c 
-b/drivers/net/vxlan/vxlan_multicast.c
-index 3b75b48dc726d..33ec1fd59ca82 100644
---- a/drivers/net/vxlan/vxlan_multicast.c
-+++ b/drivers/net/vxlan/vxlan_multicast.c
-@@ -29,6 +29,9 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union 
-vxlan_addr *rip,
-  			.imr_ifindex		= ifindex,
-  		};
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+> index 39cc70d65900b..47cf397481d5e 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
 
-+		if (!sock4)
-+			return -EAFNOSUPPORT;
-+
-  		sk = sock4->sk;
-  		lock_sock(sk);
-  		ret = ip_mc_join_group(sk, &mreq);
-@@ -37,6 +40,9 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union 
-vxlan_addr *rip,
-  	} else {
-  		struct vxlan_sock *sock6 = rtnl_dereference(vxlan->vn6_sock);
+[ ... ]
 
-+		if (!sock6)
-+			return -EAFNOSUPPORT;
-+
-  		sk = sock6->sk;
-  		lock_sock(sk);
-  		ret = ipv6_sock_mc_join(sk, ifindex, &ip->sin6.sin6_addr);
-@@ -62,6 +68,9 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union 
-vxlan_addr *rip,
-  			.imr_ifindex		= ifindex,
-  		};
+> @@ -263,6 +261,8 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
+>  	if (ret)
+>  		return ret;
+>  
+> +	memcpy(&ptp_data->perout_request, request,
+> +	       sizeof(struct ptp_perout_request));
+>  	ptp_data->tou_mode = KSZ_PTP_TOU_PEROUT;
+>  
+>  	return 0;
 
-+		if (!sock4)
-+			return -EAFNOSUPPORT;
-+
-  		sk = sock4->sk;
-  		lock_sock(sk);
-  		ret = ip_mc_leave_group(sk, &mreq);
-@@ -70,6 +79,9 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union 
-vxlan_addr *rip,
-  	} else {
-  		struct vxlan_sock *sock6 = rtnl_dereference(vxlan->vn6_sock);
+[Severity: High]
+struct ksz_ptp_data has only one perout_request and one tou_mode. What
+happens when more than one periodic output is active?
 
-+		if (!sock6)
-+			return -EAFNOSUPPORT;
-+
-  		sk = sock6->sk;
-  		lock_sock(sk);
-  		ret = ipv6_sock_mc_drop(sk, ifindex, &ip->sin6.sin6_addr);
+The busy check at the top of ksz_ptp_enable_perout() lets a second
+channel start while another one is already in PEROUT mode:
+
+	if (ptp_data->tou_mode != KSZ_PTP_TOU_PEROUT &&
+	    ptp_data->tou_mode != KSZ_PTP_TOU_IDLE)
+		return -EBUSY;
+
+ksz_ptp_tou_reset() only touches the selected unit, so the earlier TOU
+keeps running in hardware. Each successful start then overwrites
+ptp_data->perout_request, whatever request->index is.
+
+KSZ9477 advertises 2 pins and n_per_out = 3. Suppose pin0 is assigned to
+PEROUT chan 0 and pin1 to PEROUT chan 1, and index 1 is started before
+index 0. Only index 0 is saved.
+
+On the next clock_settime or clock_adjtime, ksz_ptp_restart_perout()
+re-arms only TOU0. TOU1 keeps a target time that was computed against
+the clock before the step.
+
+Disabling any one channel also clears the mode for the whole device:
+
+	if (!on) {
+		ptp_data->tou_mode = KSZ_PTP_TOU_IDLE;
+		return 0;
+	}
+
+This path is also reached from ptp_set_pinfunc()->ptp_disable_pinfunc()
+when a pin is reassigned. After that, none of the outputs still running
+are restarted on clock steps.
+
+The KSZ8463 with its twelve outputs is the motivation here, and
+ksz8463_ptp_enable_perout() later in the series writes into the same
+slot. Would restart need a saved request and an active state per channel
+to work for outputs other than the first?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but ksz_ptp_enable_perout()
+calls ksz_ptp_tou_reset() on the selected TOU before it validates the
+request. None of the later error returns restore the hardware state or
+tou_mode.
+
+Now that the request is saved only on success, consider a reconfiguration
+of a running channel that fails after ksz_ptp_tou_reset(). Examples are a
+period that doesn't fit TRIG_CYCLE_WIDTH_M, a start time over 32 bits, or
+a failure in ksz_ptp_tou_start().
+
+The TOU is then left stopped. If the REG_PTP_TRIG_STATUS__4 read or the
+TRIG_ERROR check fails after TRIG_ENABLE was set, it is left armed with
+the failed parameters instead. Either way tou_mode stays
+KSZ_PTP_TOU_PEROUT and perout_request still holds the previous request,
+so the next clock step re-arms that TOU with the old parameters.
+
+This matches the "successfully started" wording in the commit message.
+It is also no worse than the old code, which saved start and period
+before validation. Is falling back to the last successful request the
+intended behaviour after a failed PTP_PEROUT_REQUEST?
+
+> @@ -763,6 +763,7 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  	struct ptp_perout_request request;
+>  	struct timespec64 next;
+>  	struct timespec64 now;
+> +	struct timespec64 tmp;
+>  	unsigned int count;
+>  	int ret;
+>  
+> @@ -773,10 +774,14 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  		return ret;
+>  
+>  	now_ns = timespec64_to_ns(&now);
+> -	first_ns = timespec64_to_ns(&ptp_data->perout_target_time_first);
+> +	tmp.tv_sec = ptp_data->perout_request.start.sec;
+> +	tmp.tv_nsec = ptp_data->perout_request.start.nsec;
+> +	first_ns = timespec64_to_ns(&tmp);
+>  
+>  	/* Calculate next perout event based on start time and period */
+> -	period_ns = timespec64_to_ns(&ptp_data->perout_period);
+> +	tmp.tv_sec = ptp_data->perout_request.period.sec;
+> +	tmp.tv_nsec = ptp_data->perout_request.period.nsec;
+> +	period_ns = timespec64_to_ns(&tmp);
+>  
+>  	if (first_ns < now_ns) {
+>  		count = div_u64(now_ns - first_ns, period_ns);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but this function is being
+reworked, so I'm raising it here. count is declared unsigned int, while
+div_u64() returns u64. Can the quotient get truncated here?
+
+Suppose 2^32 or more periods have passed since the last (re)start. Then
+next_ns = first_ns + count * period_ns lands far in the past, and the
+guard loop below has to catch up one period at a time, at least 2^32
+times:
+
+	/* Ensure 100 ms guard time prior next event */
+	while (next_ns < now_ns + 100000000)
+		next_ns += period_ns;
+
+The loop has no cond_resched(), and ptp_data->lock is held by
+ksz_ptp_settime() or ksz_ptp_adjtime() the whole time.
+
+That point is reached after about 49.7 days without a clock step at a
+1 ms period, about 71 minutes at 1 us, and about 34 seconds at 8 ns.
+
+Would making count a u64 avoid this? Later in the series, the KSZ8463
+restart path also uses the same code through
+ksz_ptp_prepare_restart_perout().
+
+> @@ -791,12 +796,10 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  
+>  	/* Restart periodic output signal */
+>  	next = ns_to_timespec64(next_ns);
+> +	memcpy(&request, &ptp_data->perout_request,
+> +	       sizeof(struct ptp_perout_request));
+>  	request.start.sec  = next.tv_sec;
+>  	request.start.nsec = next.tv_nsec;
+> -	request.period.sec  = ptp_data->perout_period.tv_sec;
+> -	request.period.nsec = ptp_data->perout_period.tv_nsec;
+> -	request.index = 0;
+> -	request.flags = 0;
+
+[Severity: Medium]
+The commit message says:
+
+  I don't know if other switches use non-zero indexes but the KSZ8463 has
+  twelve periodic outputs, so this index has to also be saved from now on.
+
+Doesn't the removed request.index = 0 already break restart on the
+KSZ9477-family switches supported today? ksz_ptp_clock_register()
+advertises:
+
+	ptp_data->caps.n_per_out	= 3;
+
+ptp_perout_request() in drivers/ptp/ptp_chardev.c only rejects
+perout->index >= n_per_out, so indexes 1 and 2 reach
+ksz_ptp_enable_perout().
+
+With the old code, a clock step through ksz_ptp_settime() or
+ksz_ptp_adjtime() while channel 1 or 2 is running goes one of two ways:
+
+- If no pin is assigned to PEROUT channel 0, ptp_find_pin() fails and
+  ksz_ptp_enable_perout() returns -EINVAL. settime/adjtime then returns
+  an error and the real channel is never re-armed.
+
+- If a pin is assigned to channel 0, TOU0 is re-armed on that pin with
+  the other channel's period.
+
+Could the commit message describe this? Should it also carry a Fixes: tag
+for 1f12ae5b67608f ("net: dsa: microchip: ptp: add periodic output
+signal") so it can be considered for stable?
+
+>  
+>  	return ksz_ptp_enable_perout(dev, &request, 1);
+
+[Severity: Medium]
+This is a pre-existing issue, but ksz_ptp_restart_perout() is called from
+ksz_ptp_settime() and ksz_ptp_adjtime(), which hold only ptp_data->lock.
+The PTP core takes ptp_clock::pincfg_mux around ops->enable(), but not
+around settime64 or adjtime.
+
+ksz_ptp_enable_perout() then does:
+
+	pin = ptp_find_pin(ptp_data->clock, PTP_PF_PEROUT, request->index);
+
+The documentation for ptp_find_pin() in include/linux/ptp_clock_kernel.h
+says "The caller must hold ptp_clock::pincfg_mux."
+
+Meanwhile, ptp_set_pinfunc() can update pin2->func and pin2->chan while
+holding only pincfg_mux. When the old function was PTP_PF_NONE it doesn't
+call into the driver, so ptp_data->lock is never taken.
+
+Can the restart see a half-updated pin descriptor and send the restarted
+output to the wrong pin? This is still present at the end of the series
+in ksz_ptp_get_pin().
+
+ptp_find_pin_unlocked() exists for callers that don't hold pincfg_mux.
+It would have to be called before ptp_data->lock is taken, though,
+because ksz_ptp_enable() already takes ptp_data->lock with pincfg_mux
+held.
+
 -- 
-2.43.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925-ksz-perout-v4-0-d675bd21ce49%40bootlin.com
