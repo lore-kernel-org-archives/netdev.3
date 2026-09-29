@@ -1,68 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBBC265621
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 01:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B12225788
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790644736; cv=none; b=ONUKmjy9eQUjQeAAOlnGWEFaAVltJXSjHKE0jXD0a3h9DtAEqR01putyeEOu5OA9d9A8r+gtTkyXnjUs5Nx8Pa8sbzcELngolIJ334U/PhnOn6xJfXIloM0Tzm0u0b02E5ZBFWu1BUa1HgLoF1lELERh1+Lj50mJC/BujqVQKBE=
+	t=1790645412; cv=none; b=Tr1bYwgr1PlJ4mWo4mJq3Iiwv6d5gPR4vwJC9WCwrn/RAtrKy1c11GlHaXDp6BVbRLWwe3D7I1Q/4S6Htlzbz1O6oI911rgyK65TsBswJrpH4m4x2F+Ldw5+lPBnsPmYK63eKAarcOjB1A5zjvirOHDR+ZsC2Q7TcvdgSCzQeVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790644736; c=relaxed/simple;
-	bh=5M0xIXhEvWP3kL75d0cEOdbsBIdYagM6gsnJA5+Zkig=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tfbVmT+zZGhOfVUXcIr8HpUgZFBkI++oqcd8l0JJVjU1X5VZgu0wUJ0zmOlyM+p92dsarxAPXApz/iVqjabmC7p4Q2P3hrsQDNK29Rd+yqJqJn886C7/mTNCb1OcvITb2avlxHnvJGi4FcA6dtTakteMUfmu4ZpbStSOr7OTFZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oa6672t5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790645412; c=relaxed/simple;
+	bh=mMscyOMm6MSP/kYeT1nr9NuLti+Fslnn9YoadJxp4tc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gd6p7RpJHZjYCwD0p6s3iVt/kEPHivkQEJXxp79C7tL2ZCJ+vzTllxlO9akOiyInksKkU56NjUoGieAVToyD8YUL4MumJc8esmqZqY29eZm3rh0hjPuNmdxGNZPBIjKxAF0vBM5fVLxnHmFqQ5T0k6y9D8Vb9VPcnQPqdld+B60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoLXYCYz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oa6672t5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73061F00899;
-	Tue, 29 Sep 2026 01:18:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoLXYCYz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF2F1F000FF;
+	Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790644735;
-	bh=IFNTTg6J1zQ2IzlB4vH1Uc9ety2ixf0jz9nORFvYBhs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=oa6672t5/BfBfTrC5Z8VDtlsKdDlwGVtU38lPvT8Atoja6PVLenquY5a2osVrLHDJ
-	 L6HR2ktqg/4ITKcgaNXseN55ms94N3vr9PjR9XRp2xE1h7yMC1ihHwgEHQgkqNovBj
-	 Yx9MBSPNkrbZ68cwZZVJKV7XbPqjDIXadYcOcS5tA5A7jbaxLa5aK8IMWqc0pwvzvS
-	 NoqSMKm5F+AqojQ76SJgoytTLZw96rspeFrPmE1mDeBZj+1hYD1pqYYMtTIGWR/HU+
-	 VfMG6ATS55Wz8XlZ//uaDVQ1n+ip3FD7qxGykDpSx7Mh8RAV9GIMr2iLAy2MIvNYfi
-	 X1l+t1GRspfnQ==
-Date: Mon, 28 Sep 2026 18:18:54 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, Willem de
- Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH v2 net-next 0/9] tcp: avoid struct socket cache line
- miss in tcp_check_space()
-Message-ID: <20260928181854.0b520fcf@kernel.org>
-In-Reply-To: <20260924134729.2047213-1-edumazet@google.com>
-References: <20260924134729.2047213-1-edumazet@google.com>
+	s=k20260515; t=1790645410;
+	bh=x6ZAD+MbR3ivS/hFW5FO3d6cy7ssNb3Mekh6/7/HhBU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=PoLXYCYzDxSM8PCbJgw24S0f8vrJw2HZRU97SFlH+RCN2XEpGFC5IxnX+hZLC12ff
+	 yFQ8oV6HVnK1QQ54s4mCEtaC7FGdNpefjmKJMYotqldHiESPrqXLzpr4rIzC/y+ODu
+	 DrvFRNSx7BWwzJKMgz7Vnao+3/O9p/Y3Cn9vFCHJ/Quj43WQEpTKCd5qOg69Pm+bDZ
+	 4rB4Tti39SstLA0CLDx94ObsOk3PE6xBlipDzpa1YHxtEbCNoI/kp+43GZwX7ehGac
+	 F2evxY5lGaHXpd8XAF/8S9UWjedFmQhqAfcW3ZPabiwLEygOqQ7By+UEm1AHY6ZMYh
+	 1ENhSP5t4omig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44703924FED;
+	Tue, 29 Sep 2026 01:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] tools: ynl-gen-c: keep the type values of a nest
+ in
+ spec order
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179064540953.207932.6619783602064306487.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Sep 2026 01:30:09 +0000
+References: <20260924223245.530132-1-kuba@kernel.org>
+In-Reply-To: <20260924223245.530132-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ donald.hunter@gmail.com
 
-On Thu, 24 Sep 2026 13:47:20 +0000 Eric Dumazet wrote:
-> tcp_check_space() is called on every incoming ACK and every transmitted
-> packet, and tests SOCK_NOSPACE in sk->sk_socket->flags.  Because struct
-> socket lives in its own cache line and the TCP fast paths do not touch
-> it for anything else, that test pulls in an extra cache line that is
-> cold when the working set of active sockets is large.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 24 Sep 2026 15:32:45 -0700 you wrote:
+> Family._load_nested_set_nest() collects the type-value names of a
+> nest-type-value attribute into a set and Struct.set_inherited() renders
+> them sorted, while TypeNestTypeValue._attr_get() passes them to the
+> parse helper in the order the spec lists them.  For nlctrl's
 > 
-> This series mirrors SOCK_NOSPACE into a new u8 field, tp->tcp_nospace,
-> placed right after tp->chrono_type in the tcp_sock_write_tx cache line
-> group (fitting in an existing 3-byte hole before chrono_start, so no
-> other field moves and sizeof(struct tcp_sock) is unchanged).  Both the
-> transmit and ACK fast paths already touch that cache line, making the
-> fast-path test in tcp_check_space() free of extra cache misses while
-> keeping __tcp_check_space() authoritative on SOCK_NOSPACE.
+>   type-value: [policy-id, attr-id]
+> 
+> [...]
 
-Please resend this and CC the maintainers of the code we're about 
-to change.
+Here is the summary with links:
+  - [net-next] tools: ynl-gen-c: keep the type values of a nest in spec order
+    https://git.kernel.org/netdev/net-next/c/c20d84c6dec8
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
