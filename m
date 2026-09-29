@@ -1,35 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775253B6370;
-	Tue, 29 Sep 2026 23:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC8A37AA9F;
+	Tue, 29 Sep 2026 23:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790725810; cv=none; b=p8uIhD1xAQN4kg6QPk3C81X4ju2gwieYOnhe1a+djDcSH9rHW+RCt58SydLtOlZXeKkYTzLOxkTkM9u9wgomLkTrfmpo7Epn/bE7TqTLJwtymFYltqb8ONgbYCfeWuIKX/y/woSxYz+X8I9PrKgCmGkEWVl2YdUUyCJiE3KMwc4=
+	t=1790725992; cv=none; b=B/OyNZeVgNnbcFPxsUVreeNEVz+zEjIdl4frmq6IjvQSJh0qz69kGh8soK72PiPUOTmB+8cLuL3njhnRDnGZt9E8q4xVvVIYUdzXWAHPosiu47h1sz4APlXlQiVpzHO6c7C3m5SJXayq9J9PLdQoVv8+yXUPGLGYBOHHU0nqlfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790725810; c=relaxed/simple;
-	bh=8w2HKW1hOCY/1LMK3e6/ZsRot11crplpjWA+dW+c0cM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UEOd5khoysm27m7A7W9m5A/zHNMjkPhhLnKuLAHvxlxF16ykj3cWkZgNWHatWIqeBRg0MTgU/W/cAWrA/8DNHDgbt9aqc74gOcOoeRfNZcOgqPP6ccaS08gg6ja+vR3MGTLJLWdbwVriZBQnx27+RM2jxY6TEwSRu9lA+f+eLWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPIqWhSG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790725992; c=relaxed/simple;
+	bh=6q/6KnWjsu69vYtu98mMDGpzBK6JpaRpFdcOvQuRvzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U46phU0oNrCwg8n5/urji3t57k7nCsCxJbpd8EzDsehb+mJ7wecYf0Md4dpwmAbiL74trDzTcfWDoDGWVeBTDYZSFD2c3xpuZVn5CXGx0Dt3nmtZPmaJwX2A8Yt0qNXbanasgTm5jKraNzhuoeNYvl6xrkgerh+8gElpjDv6SYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=el6Mko8m; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPIqWhSG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C411F000FF;
-	Tue, 29 Sep 2026 23:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790725809;
-	bh=xxUwmjfHxdPkhVzSMNKGk/NalI7DwH719XPdmccjABc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CPIqWhSGp0SiwyZQ2eEI3dQJgc5ebYaBrht90l5fxZ+UTQzXUJEeqL1DCrnkiIwGZ
-	 XWdqJcsZKqfploqJ1K3eZ5honEenojtiqtxhW8mnQzuxYxxwi646alzkegw9L4e/pB
-	 8ceVnMg5U2im3S3AL/8F5dT08QvQu8cMSkmnzCl4qn8165AcsL1FoR1PAX/c04lnzb
-	 GawtANFuCsjHLVqO9caH/TSZVT8UkfFW0rRPItCWjoYPxbqfDbIEA1WGC8Dk7PopL/
-	 YAyzzE9/lOTrQMitJKC8qq+5T7fNCafbMyN5jE4w+OBxJxMES265KF13+ySz3FJYfe
-	 M4ONOyKZhe0DA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15FC39D5FDD;
-	Tue, 29 Sep 2026 23:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="el6Mko8m"
+Received: from vm-dev.d0aziqou4eyuzblxqhi51nu2sc.xx.internal.cloudapp.net (unknown [4.246.87.102])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8ACD020B7166;
+	Tue, 29 Sep 2026 16:52:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8ACD020B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1790725938;
+	bh=uWh+FnnglfzJGtPzkZJzUV9NoEhwz6g37aVYhBgGsgI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=el6Mko8mXIsPUvM8NXQw+mc+f4Cttczggwq6Kvn5IgXeUdSLETeIhDeiRmoc3kRLp
+	 i1KSrfoZUDGjM1ppvGhAWaUK0G6GRU9sQ8FuUm2YBfY1EsCGIHcyOoEJR90zdvjPhH
+	 TrkoGJEJBvzseSg6o7TDzUpVMsHOlZhNf7/XME4w=
+From: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	raminwo0202@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	apais@linux.microsoft.com
+Subject: [PATCH v2] xfrm: prevent policy_hthresh.work from racing with netns teardown
+Date: Tue, 29 Sep 2026 16:52:56 -0700
+Message-ID: <20260929235256.1398309-1-taherafahimi@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,48 +47,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] usb: atm: use request_firmware_direct() for firmware
- probing
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179072580753.1169866.12044189359267660382.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Sep 2026 23:50:07 +0000
-References: <20260924050654.15347-1-valigurasm@gmail.com>
-In-Reply-To: <20260924050654.15347-1-valigurasm@gmail.com>
-To: Matvey Valigura <valigurasm@gmail.com>
-Cc: gregkh@linuxfoundation.org, 3chas3@gmail.com, duncan.sands@free.fr,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org,
- syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com, stable@vger.kernel.org
 
-Hello:
+An XFRM_MSG_NEWSPDINFO request can queue the per-net work item
+policy_hthresh.work onto the system workqueue. xfrm_hash_rebuild()
+retrieves the enclosing struct net from the work item, so the callback
+can dereference freed memory if it runs after net namespace teardown.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Mainline commit 29fe3a61bcdc ("xfrm: prevent policy_hthresh.work
+from racing with netns teardown") fixes this issue using
+disable_work_sync(). That API is not available in Linux 6.6, so the
+mainline change cannot be directly backported.
 
-On Thu, 24 Sep 2026 08:06:54 +0300 you wrote:
-> When disconnecting a device while firmware is not present on the system,
-> usbatm_usb_disconnect() waits for the heavy_init thread to finish:
->     wait_for_completion(&instance->thread_exited);
-> 
-> If CONFIG_FW_LOADER_USER_HELPER_FALLBACK is enabled, missing firmware
-> causes request_firmware() to fall back to sysfs/udevd. This creates a
-> circular dependency during disconnect:
-> 1. usb_disconnect() holds device_lock(&udev->dev).
-> 2. usbatm_usb_disconnect() waits for instance->thread to exit.
-> 3. instance->thread waits for request_firmware() sysfs fallback.
-> 4. udevd receives the firmware uevent and attempts to read sysfs
->    attributes (e.g. serial), blocking on device_lock(&udev->dev).
-> 
-> [...]
+Provide the same guarantee with an XFRM-local work_disabled flag. Protect
+the flag and schedule_work() with the existing policy_hthresh seqlock so
+teardown can atomically stop new queueing attempts. Then use
+cancel_work_sync() to synchronize work that was queued before the flag was
+set. This ensures policy_hthresh.work cannot outlive its struct net.
 
-Here is the summary with links:
-  - usb: atm: use request_firmware_direct() for firmware probing
-    https://git.kernel.org/netdev/net-next/c/f10883b37d9c
+Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
+Assisted-by: GitHub-Copilot:GPT-5.6 Sol
+Signed-off-by: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+Reviewed-by: Allen Pais <apais@linux.microsoft.com>
+---
+changes in v2:
+- removing incorrect upstream commit annotation from description
 
-You are awesome, thank you!
+ include/net/netns/xfrm.h |  1 +
+ net/xfrm/xfrm_policy.c   | 19 ++++++++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
+index 423b52eca908d..99eb5c2ff888b 100644
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -23,6 +23,7 @@ struct xfrm_policy_hash {
+ struct xfrm_policy_hthresh {
+ 	struct work_struct	work;
+ 	seqlock_t		lock;
++	bool			work_disabled;
+ 	u8			lbits4;
+ 	u8			rbits4;
+ 	u8			lbits6;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 00d9693c13ae7..cc8f4d4b70875 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1384,7 +1384,10 @@ static void xfrm_hash_rebuild(struct work_struct *work)
+ 
+ void xfrm_policy_hash_rebuild(struct net *net)
+ {
+-	schedule_work(&net->xfrm.policy_hthresh.work);
++	write_seqlock(&net->xfrm.policy_hthresh.lock);
++	if (!net->xfrm.policy_hthresh.work_disabled)
++		schedule_work(&net->xfrm.policy_hthresh.work);
++	write_sequnlock(&net->xfrm.policy_hthresh.lock);
+ }
+ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
+ 
+@@ -4181,6 +4184,7 @@ static int __net_init xfrm_policy_init(struct net *net)
+ 	net->xfrm.policy_hthresh.rbits6 = 128;
+ 
+ 	seqlock_init(&net->xfrm.policy_hthresh.lock);
++	net->xfrm.policy_hthresh.work_disabled = false;
+ 
+ 	INIT_LIST_HEAD(&net->xfrm.policy_all);
+ 	INIT_LIST_HEAD(&net->xfrm.inexact_bins);
+@@ -4206,6 +4210,19 @@ static void xfrm_policy_fini(struct net *net)
+ 	unsigned int sz;
+ 	int dir;
+ 
++	/* Prevent new policy hash rebuilds before draining the work item.
++	 *
++	 * The upstream fix uses disable_work_sync(), which is unavailable
++	 * in v6.6. Protecting work_disabled and schedule_work() with the
++	 * same seqlock closes the check-to-queue race, while the subsequent
++	 * cancel_work_sync() drains work that was queued or running before
++	 * teardown disabled it.
++	 */
++	write_seqlock(&net->xfrm.policy_hthresh.lock);
++	net->xfrm.policy_hthresh.work_disabled = true;
++	write_sequnlock(&net->xfrm.policy_hthresh.lock);
++	cancel_work_sync(&net->xfrm.policy_hthresh.work);
++
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
