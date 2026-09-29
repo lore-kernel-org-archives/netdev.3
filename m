@@ -1,24 +1,24 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED9E40912B;
-	Tue, 29 Sep 2026 21:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E2941A91B;
+	Tue, 29 Sep 2026 21:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790716040; cv=pass; b=LNNqO//sEbpcXHMG/iZwJWPPJVw8kwTtFhjVdDvZAj4tJEd9mhrXrrM+B/MmwMnJFEwvTUoSa2QCOfKgBYDaPJGfTceiM30xKKDU+OymMl0BG+u3WqLt3kRWmtnud1KQ+WA6VuGsES/M9nhBw8Lq2vvJNsJR9Pxsq4oXVD9rwXE=
+	t=1790716047; cv=pass; b=kvsHh3WUnH1iVg6eED9mr7q/8kKkoblDAVxsnFOJN13qGz2NZvhjQEL/xM8pQWPvpUMHQlgGHGUHkajze6TWUAd6PGjN2NJlt5sHe2tWP4KouiBR3LKqR9QoaWwVqqv55vQkx23b52TRKpbxyghnryN+tL0vEicGJMmnCFuC0dg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790716040; c=relaxed/simple;
-	bh=m0Ujkari4sHNBRPYYfk7wuwMpAimXpHWfCa0ywTM4rM=;
+	s=arc-20240116; t=1790716047; c=relaxed/simple;
+	bh=lskkQ2y6TVuLZagtt1NwF+1X3Jrat5Q7k/6SFd5rCok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8ZhbBAkuPD/RSMuqwcwkTDkS7XQkb0zYu3UaO+G3JL2yn1mtU7zs1P2eSL/OW/4KaDjrPlDm4ZRz32PrS8/ruNd1F8grsGPjX/jBK4RUo6DHE4/3S2/l9YgMLol67Da/MwwnYRqHOpqD0tPK2VjGNiz9muyY7emNrsQIyzVsbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=CORUXSi1; arc=pass smtp.client-ip=185.203.200.13
+	 MIME-Version; b=SCCDAgmd9+iYCIbFZ8RNYtQ9deB8UCZALfsemn3D/EmhbN7IjIhhJVDBxKt/5h9rphaiEALhS7a8i6THCDgP4XIz1haSmfW1nSNuK5xPU/1kCxKEe/n7MW0bfoZaWf7XVfqVljiSaL56Hl1xR/sbfj6AIc0hY3E1LjpF2aucnk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=f6921EvD; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="CORUXSi1"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="f6921EvD"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5007E2003F0;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D0B8A2017D1;
 	Tue, 29 Sep 2026 23:07:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790716023;
@@ -26,31 +26,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8qN3QRq+KoWc5cWDWUaZKIQuDDNDktHFb+lN5/8SgrA=;
-	b=CORUXSi1md9DBQ98FRv3kFgrruMfk2VD0efkQqIabuDwY9v4BCk9iCxNC8C4l7XfBzrTfS
-	2o6ncADmCXgXF3Aup/bdWklpeDNNOau9+QWh/oQWe1CxyTvGmrH8eN2/OXyjysFA/yD0E+
-	eENnkhcsXt+gT/L4iT7xsv7G0VgWvaXeqREx2vngak8B0zjQP8pVrm5y5uQjYRSlNt0d1b
-	YOOhDL7C+AS7op3LLCWhfJGUtt3iknGyEdGXBUvMlw9Jx8VPhKg78MB96uCgJSsewy6K92
-	kSb90e3IQK+pK23cLvHgrpeWGBfR44PbfNhTBJL1FxxAGuMlk+Zp7GL0FHz4Xg==
+	bh=rkFrMeI1K/9jtFaRQaSdoClE0EYXTjbrelviheLU/kk=;
+	b=f6921EvD7VEzeyIdifZTNsDFtpSJOtGbAVGUxIxEEXnHV24JU9Di5F0sW4+tGSf/5ez+zn
+	b2HpCki2QAoFYobeQvqo7KKoDox4fCY1vUdKIU7iuVm0WtWhS/ZVV1PDKUnfB3kIuMKwzf
+	nx6zwo5tOuPzZivMN+g9jW3FrtIBYZlsXu231IciK1/4jHnDpj0zu5nq0hgad/x/4fhEQV
+	iwptgcW2SIb1fAs7i+a3BNakkPOeRfXMutg9N1VZ+LzpIOPn+kn+wJWOKTXedU+2df/FYa
+	rsH6b3bQ2lx7YAAHuNbxoP5j2Pl5QM4kwPyrf1tYAtwwt3ZKRmsJrdoAbyfavg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790716023;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8qN3QRq+KoWc5cWDWUaZKIQuDDNDktHFb+lN5/8SgrA=;
-	b=ETrr9xDZxGdJpW4TGTAAzKqFE6TOdp+9+S1WSngcVTxdIRazsdxIBe3oJZhpsw82JnK9nd
-	1++ydDhcSAncZhMgp5/3F2+XMT8oT92ZMMMVdIisalxi6JbSULilcMYToqG6LcA0H/mB9I
-	/ux+ILM5WoWcGFk/OKIMFYAoXxIMsEA99WQ2TwXv5ZUBKLavg357h0V+hEeQCPgpiYa5Yq
-	n2q0IBDQ6WNQtz8iZMx2bCJvySPfWyQ65anDTPJxw1W9Z2LI9NpMxBMs2DOcfQDO3pizmr
-	1RgTneGBLgzXx5Ab8D6pm2E6IfQg4mzR6sqhT4ujg1zMvwTopfV2RSGI78Vd7A==
+	bh=rkFrMeI1K/9jtFaRQaSdoClE0EYXTjbrelviheLU/kk=;
+	b=GYrGniBWQtl0jBEC5DcxU65mdpGwFia9bXSaL3ZDSz8+S/aQtgb6zDQYT+ZDLLYrKCHFNk
+	l4bxyy4KjHy28p32M3tVIypr3Paf8TBuyDxEBdaq/q4UgS2ELNFvHKYwlM3jMvPAU8ZUYt
+	6vEwlu3pE81nzEyEqiIkf5MlI7N3Nsh3Or/JrzSO8BfvZrrb4pOQGx2FKsmyQLpj/vgi49
+	WpIAnLzAZDGuCc1mvitU7lsBjhcjPreoWCGzI57Q0uU4JXqaVBCcDQBaIAgKglZ2oaLrST
+	cJ4XWWuQaGwwFda+53RSLJRl/Vq3dYsZhc5Fn+WwOjhMqDNqzJ4zgOAOoeR+qA==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790716023; a=rsa-sha256;
 	cv=none;
-	b=f+pU07ZZY55SIFyb0dS0MX3ZFfRrYKk9TQS4OVUmVTknqiAdVH2iCaBhyg9Xlut7EX0uBO
-	s8DED+5aoqPoSNSS6iT/JmTPckfNpLq5Gt8KSdZ3jOa/HSWcNyKiZhG4tn53BCOwSMqwvx
-	fgkXe7ILuCXCoEpojR4ixAIhG5oMSIXyFpDquikKbg/h8m5e6HHH302O2KkKIDgo8bazHX
-	BZyoq10teVgF7uRv2tKBtDfvJ7N7BGQv9EQ8tW2ueBIs1xYqediCShOpCRm6L01J9vEIzs
-	INsAgjIQjPlKnET2kQbfu06doAvgS/R+VDHVwdeh5iUSwEbVsxt2LPGjmq9nQg==
+	b=L3QMWtzLCV16AIJC2cNZwXFe/kBhhAIcah90/TWBy4bQ2H28wmYwGei5gexvyv3yDNDGX2
+	aLdoPNPRU3yliHe7LKBtD4Q5itm8Z/q4+Fe+JXvrcUw+G1X7iuJLylIBlQLkPAvn7rihC0
+	HU2GTjazmcVt4sXrJeTGYTnao/gT54D4m+Ovpflio1A5798VvPKXgCVJRsUMnMTVe13YNh
+	VvvnGM2/bvl2BqZKUZ1+i5PbHsqRvUBD4+tAa6SsHMn2Sc9YwIvEjenGqnCXZkh+cQcj1Z
+	+N3BIJh8EsQxb2tGoPo3tavhfFl+uW+PbSHpgEg9ygPuwzIL12xWDQPlGTJO2Q==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
@@ -58,27 +58,26 @@ Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjor
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xBf2V-003S3Z-0e;
+	id 1xBf2V-003S3r-2C;
 	Tue, 29 Sep 2026 23:07:03 +0200
 Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id DF6495B4CD1;
-	Tue, 29 Sep 2026 21:07:02 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6E2825B4CD9;
+	Tue, 29 Sep 2026 21:07:03 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol@kernel.org>,
-	stable@kernel.org,
+	Jiale Yao <yaojiale02@163.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 01/16] can: dev: can_dropped_invalid_skb: drop CAN XL frames on non-CAN XL devices
-Date: Tue, 29 Sep 2026 22:43:51 +0200
-Message-ID: <20260929210700.1183036-2-mkl@pengutronix.de>
+Subject: [PATCH net 09/16] can: mcp251xfd: mcp251xfd_probe(): reject devices without match data
+Date: Tue, 29 Sep 2026 22:43:59 +0200
+Message-ID: <20260929210700.1183036-10-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260929210700.1183036-1-mkl@pengutronix.de>
 References: <20260929210700.1183036-1-mkl@pengutronix.de>
@@ -90,64 +89,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Jiale Yao <yaojiale02@163.com>
 
-Sending a PF_PACKET bypasses the CAN framework logic and can directly
-reach a CAN driver's xmit() function. The PF_PACKET framework only
-checks that skb->len does not exceed the net_device MTU.
+A device bound through driver_override need not match an entry in the
+driver tables. In that case spi_get_device_match_data() returns NULL, but
+mcp251xfd_probe() dereferences the result while copying the device type
+data.
 
-For a CAN device that is not CAN XL capable, anything above CANFD_MTU
-(72 bytes) is therefore dropped before it reaches the driver. However,
-CAN XL frames are variable length. can_is_canxl_skb() accepts lengths in
-the range CANXL_HDR_SIZE + CANXL_MIN_DLEN up to CANXL_MTU, i.e. 13 to
-2060 bytes.
+Reject devices without match data before continuing probe.
 
-As a result, an ETH_P_CANXL skb with a length between 13 and 72 bytes
-can pass both the MTU and the can_dropped_invalid_skb() checks.
-
-A driver that does not support CAN XL will interpret canxl_frame->flags
-as a length because of the overlap with can_frame->len. And because
-CANXL_XLF is set, the resulting length is between 128 and 255. For
-drivers that do not check can_frame->len before copying can_frame->data,
-as most drivers do, this results in a buffer overflow of up to 247
-bytes.
-
-Drop ETH_P_CANXL skbs if the device does not have the CAN_CAP_XL
-capability. Keep can_is_canxl_skb() for the validation of CAN XL skbs.
-
-Closes: https://sashiko.dev/#/patchset/20260731-master-v5-0-5b27029dee20@qq.com?part=1
-Fixes: fb08cba12b52 ("can: canxl: update CAN infrastructure for CAN XL frames")
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20260731-drop_canxl_frames-v1-1-7387b70353b3@kernel.org
-Cc: stable@kernel.org
+Fixes: 9cdae370c4ec ("can: mcp251xfd: simplify with spi_get_device_match_data()")
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+Link: https://patch.msgid.link/20260925133716.2230252-1-yaojiale02@163.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/skb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index 95fcdc1026f8..4f7a189de265 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2008-2009 Wolfgang Grandegger <wg@grandegger.com>
-  */
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index f441f2265299..8759bc05bd8f 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -2213,6 +2213,7 @@ MODULE_DEVICE_TABLE(spi, mcp251xfd_id_table);
  
-+#include <linux/can/can-ml.h>
- #include <linux/can/dev.h>
- #include <linux/module.h>
- #include <net/can.h>
-@@ -384,7 +385,7 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb)
- 		break;
+ static int mcp251xfd_probe(struct spi_device *spi)
+ {
++	const struct mcp251xfd_devtype_data *devtype_data;
+ 	struct net_device *ndev;
+ 	struct mcp251xfd_priv *priv;
+ 	struct gpio_desc *rx_int;
+@@ -2222,6 +2223,10 @@ static int mcp251xfd_probe(struct spi_device *spi)
+ 	u32 freq = 0;
+ 	int err;
  
- 	case ETH_P_CANXL:
--		if (!can_is_canxl_skb(skb))
-+		if (!can_cap_enabled(dev, CAN_CAP_XL) || !can_is_canxl_skb(skb))
- 			goto inval_skb;
- 		break;
++	devtype_data = spi_get_device_match_data(spi);
++	if (!devtype_data)
++		return -ENODATA;
++
+ 	if (!spi->irq)
+ 		return dev_err_probe(&spi->dev, -ENXIO,
+ 				     "No IRQ specified (maybe node \"interrupts-extended\" in DT missing)!\n");
+@@ -2307,7 +2312,7 @@ static int mcp251xfd_probe(struct spi_device *spi)
+ 	priv->reg_vdd = reg_vdd;
+ 	priv->reg_xceiver = reg_xceiver;
+ 	priv->xstbyen = device_property_present(&spi->dev, "microchip,xstbyen");
+-	priv->devtype_data = *(struct mcp251xfd_devtype_data *)spi_get_device_match_data(spi);
++	priv->devtype_data = *devtype_data;
  
-
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+ 	/* Errata Reference:
+ 	 * mcp2517fd: DS80000792C 5., mcp2518fd: DS80000789E 4.,
 -- 
 2.53.0
 
