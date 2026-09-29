@@ -1,162 +1,134 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AB4544D64
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 17:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790704147; cv=pass; b=qYyS7YM4qBuBSnqcHA4YK/DKJrldB+c7QUrs8pkwMso8TG0mrT4p39tWdr3Xq0PtLZzWtAkpprV6xnCTkPn1bJZupVqxdbilSmGvHmF6iYewVeSZp5riTkmk/Rhe9B4JIlUw15HxIVRvxAOSoUS6XfZImKEAFNLrT7voyzriBvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790704147; c=relaxed/simple;
-	bh=EgbFuS2Te6lm8qVRteJKBIzVGTmmynIix9CPN6Z3edM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67C3A257C
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790704913; cv=none; b=qoG9udP2DfyzDPpD9dIGQD6N3yTk+gESjBqsXD+wOuewaVFDFPpNt2KEz2Cr5tKfYG6AYxWLgEwXCLZNDUCxmRGNvuw7YQHXyGjM1mt43FHlBSxAe6MIpwGjWCLrEDiTv9q7rtkgmtPU5RcaII8qlYbXUrNQpo0PaZv6zLPkO4w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790704913; c=relaxed/simple;
+	bh=v47biJGyTwUO9XfglPqg0Q9AVwt+InUiI+FjvQHeaQw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kGZbqRVXSed+8D4wecygee/CmXK4y+CjEczBRmjkM/gflVJ82IVIFBKxjSizTNe2CY3Nc9YaUiPDwMcLpA9AzchvMxLCV34886FErI1Xcq39HMqtrfJM4w9xAfvS52QwhJHTBMTYwrHVxL6W6TG0dqU5kuo/nuZ+Coi7/iqHqOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BjJk/HSI; arc=pass smtp.client-ip=74.125.228.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=S0jsRVKG+QvXMuwVstMMivIKhRbBsRTBoUVvpseIyf50VT3zoKda0j+lEkdcxvEJScjgWZwaboZLWc2ulR0rX3uhwBFNRABkHmP6/WGGc/r0ry3Mn1WYD9vKl7r8U8jHbDDrrJ5BEBxb6M2WI5iw3RxMsMk+pbb+rOIsqGWQK6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxPYem6B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BjJk/HSI"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af43c5b0cso587155566b.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 10:49:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790704144; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lwxRCnLHqq4UEGAr+TELx3XARhdpg549hEtKLpq4E5VNN8RhVqr+B20Q06GeFcfeEA
-         i0e6fRefWzaAWPexRAlG39Xy9yq6Dy4Cm7SE8av6YtI9JPq8D4zVYAvHkyWvkzsPgEDu
-         4dDOmAdg9p3zsDjgoC4srFfUOCNctOmSHJTtu+ZvsoozkpRXJfwUSUxXUBNailCHLyD2
-         s9r2lmHgLsjCSTbHITdmda+Zc6ut+NeLZCwMWdVpV8Py7drxPMnLBQKKd/m7dzYEXi+/
-         CRxglyzoKW4+RPwFcgR8X/jJ1hmcVtliu5l0aOy85hPyeFa3+0lKv7/+9ubWQzj65jRF
-         c57A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
-        fh=NQoQ+BGStpXH7k7rq33CEdLVJRPdObqFqvXHmcDD5SE=;
-        b=e+CYe2ied52dlPEPsqdeqHCZCa76bWYsbor2h5UiJdQdnssDHpAHGkkrv//CSe/NNb
-         al2r9Yhl89OM1gXS/9svI0wFPS+MqzSpuc+6gBexwOCePRpjFP3f8rQBkdzLTqQeKbk+
-         WGryWXv2vHkBI+IXmL0bkyA9oAQ6zaJrfWbtFENkkuWpI5IuoLqU/yUxqU1Df/363kn0
-         844URexHZkCU5nGGJ79FZ9foth8cRX0jlxPOx37mpRihZGrx79Y5CpQR7jlpaONRzb65
-         AKD9bGwTb01v+Brhp5YNg89KLY6E+1tX6DNHBeShudUqpzCUgzPdvgWyYIicHDrBHGch
-         95oA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790704144; x=1791308944; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
-        b=BjJk/HSI+d90L8k+v3ogtsrpdBV9RBnS8n9GzfFAp2qbzia0SRN0MnUBBfbhTcD5bQ
-         SKlFbDp1k3y4hc1U+ArLcT/CdMPQw9rDNtPllSD+amC96TQqeF36EtM+zHn16BWbFGQo
-         v0YYl2anDZBgTxw2WKpOjBYmiZQkgZyjkQiW2hZC7677ZQaEhs1XMpoNUdlZ7pwRFczJ
-         PtTN2FTUT+dqknbyhByvt9rPvNZF4KTFNegi8e3DNcGfF20nLlIS3EHgQvm9GDvyX7s3
-         d7N+2F7wTDYiitczhVvx4FnL9GQe/QDPEqlpCEFIFWCOrSZlRyFZqvvnDXGwyei20/nw
-         uC7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790704144; x=1791308944;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ThdPZzLhMx2EO2ovYKz1eeb+03YA/YkkzTBKjXEislI=;
-        b=GeEZCJvwsM7CO7hZLfuQ06IWlR2mf7/PqJuryMDSrdOIU0ca7SftKVUznoqFuKYvID
-         5VG5pXyPyBuWXfxP1s2VrbhWtD6v9jLRbgEuYVzC+Kpnzmucz1z0fDlPQbRU2MRyWdDK
-         TjFfHQIKh/7mFjX4751sRrOX0Mx1dKJpG9uWguFG2Z+3P/lqAxAxiEOIde88MmRbymhF
-         LjipYCGe1KY/CBJWe28kjaKAsV5LHRUIgXfXeT+c/JawAKln7ar1zyxnSS/ecNTGipZ9
-         cKJGNLHdcgWoPc04/ed0HEqPZV7mXLFK2XXoJuIKVTDxBUHT3z3i4oMJe4Hzwiy/08DU
-         KOPg==
-X-Gm-Message-State: AFuF++kUQNy6479ArjzrsY9lTGcjXr1vCT9uHfIbxV9kHTUHirqvB1q8
-	yfZShAen2K0JbM+cdvCETNQbZdaG8Fi3W7TzOwlnsTgHykuVHg33hys9I8rC0fyBSq8VURSaJEl
-	CpWCIggZSqYaj3IShcI1x/gMUBNpMuN+aryyaay2DEjAGOHj5iEIJGSWj
-X-Gm-Gg: AYBFou0aTNs5x4kkw4da0STEhUOPC999ZOmky5+8hlWakjBQkCn471qMC8bf+TXjBij
-	seH5b2PqzOsTwSbk2QP8wAieZV0ty+Bca/p4UiPxyIvDCB09bPUQbs7W0b9+m6yonv2e2iOH87a
-	YHMKfHEXZ7lWRfI6dzHlBjVbW+b0FNjZ+X3ivdIVmu7J+4JBN1jahZIHeUFkZC/eOoFr3/8hrBJ
-	T6WMOOWo/D69NEcHT633Wg+FoeZIan6/ashs8hFLwhonURnSfyiEbiCXQ3ABZfnB23MabjZ2SwV
-	8qPHSwRDLYiPmY0nOnEozJl+x9+hbRbvWMXa2f/KdpivImKdsQZhYk01
-X-Received: by 2002:a17:907:7289:b0:c2d:e067:275d with SMTP id
- a640c23a62f3a-c2e15c0da9amr18432266b.2.1790704143373; Tue, 29 Sep 2026
- 10:49:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxPYem6B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6060A1F00898
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790704911;
+	bh=wA+/krenvKND0SGdUag51BtUkhIYeOVKdVDCo9ZLgfA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cxPYem6Bk3XVbfkpa31I3zey/VHrPC4VUUeHhHgYHnwjogGBpHcLnQJqLe2QOYrC/
+	 w23IZUODm2QracyrsZB6aLAXeKVUOv2pNmuj4yuwtOyir5O8wkStZi+KnCn2rtEBlm
+	 dIVCxi6Arrfcp/Xog8IsoIJhB7WO3kMvfjpGgd51rqjR6fsQ3cyCl1nQL+fcoCvkvb
+	 dfO7PQoDB/fcltcIwekIPmdw0jiYw02zJzMYLCWdHLOEnOJdsqXiGwB6t5NEvm4cm/
+	 Jfye8W1DWkI3OJlbZ8iHmMa1ynEygcZlhTE5scPi3+ChNDa8swa4GS6jLKaipIzxz5
+	 SS/Gzhrwl3iwA==
+Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6d797cfdd1fso982287eaf.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:01:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwnB5YyDeWmvw3pS3/YmL8KhmKIBh5JukIh30nuOLxB7/uBabfHd/m7EqfhZt8KyeWYLwjF/3I=@vger.kernel.org
+X-Gm-Message-State: AFuF++n57yt3s2Dy3nGUicvESwiLDYz9KDMQ/xHegvuiF6F2Iz5RMucL
+	DhJi1/6BdoSAfwARi0dxXIWQpY98JUWhTkjqHcfS4ckYink9WHyUOVoPOyv6Lg0Ox32XlrVi6zh
+	VEmx5GZNore9ouZo9ldbvdf3+6kMk5r4=
+X-Received: by 2002:a4a:ee14:0:b0:6b9:c226:ffca with SMTP id
+ 006d021491bc7-6dc72543b43mr97892eaf.6.1790704910709; Tue, 29 Sep 2026
+ 11:01:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922194533.631387-1-joshwash@google.com>
-In-Reply-To: <20260922194533.631387-1-joshwash@google.com>
-From: Joshua Washington <joshwash@google.com>
-Date: Tue, 29 Sep 2026 10:48:51 -0700
-X-Gm-Features: AclHuK-4Jen_xaBqivrTS2m8jiJGtwTSvDPOut6gW97lQXY41zUzIIPLnIv2r1s
-Message-ID: <CALuQH+VWjT2VZTOUjseLfcON4=Me6v99KyW=k=Uh2Y1dvpNkcw@mail.gmail.com>
-Subject: Re: [PATCH net v2 0/9] gve: various XDP fixes
-To: netdev@vger.kernel.org
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tim Hostetler <thostet@google.com>, Ankit Garg <nktgrg@google.com>, 
-	Eddie Phillips <eddiephillips@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260929170444.218093-1-parri.andrea@gmail.com>
+In-Reply-To: <20260929170444.218093-1-parri.andrea@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 29 Sep 2026 20:01:39 +0200
+X-Gmail-Original-Message-ID: <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
+X-Gm-Features: AclHuK8d3O29vRQFC3ZWh-9zIhRSdBaWP-QlEB2WBkOrMqu2AG_jOc393I2UFS4
+Message-ID: <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
+Subject: Re: [PATCH net] rtnetlink: wait for RCU readers in rtnl_link_unregister()
+To: Andrea Parri <parri.andrea@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 12:45=E2=80=AFPM Joshua Washington <joshwash@google=
-.com> wrote:
+On Tue, Sep 29, 2026 at 7:05=E2=80=AFPM Andrea Parri <parri.andrea@gmail.co=
+m> wrote:
 >
-> This patch series includes a number of XDP-related fixes, both in the
-> control plane and the dataplane.
+> rtnl_link_ops_get() finds ops on link_ops under rcu_read_lock() and only
+> then takes ops->srcu. rtnl_link_unregister() unlinks ops, then calls
+> synchronize_srcu() and cleanup_srcu_struct() without first waiting for
+> RCU readers. A reader that found ops before list_del_rcu() and has not ye=
+t
+> taken ops->srcu is not waited for.
 >
-> A summary of the changes:
-> 1) fix an issue where XDP packets weren't being counted against NAPI
->    budget
-> 2) fix an issue where XSK buffers that have not been processed are
->    leaked when disabling XSK pools
-> 3) fix an XSK buffer leak when an RX error descriptor comes back from
->    the hardware
-> 4) fix a NULL dereference due to incorrect registration of XSK pools on
->    queues not set up in XSK zero copy mode
-> 5) fix a deadlock introduced by attempting to acquire the netdev lock
->    after it has already been acquired
-> 6) fix a racy NULL dereference due to DMA umapping the XSK pool before
->    queues are fully stopped
-> 7) fix potential data race on priv->xsk_pool when the field is set while
->    NAPIs are enabled
-> 8) attempt to register memory model in all cases when disabling XSK
->    pools
-> 9) clean xdp frames when tearing down DQO queues
+> Such a reader then locks a cleaned-up srcu_struct and keeps using ops
+> after the module that owns it is gone. rtnl_newlink() and
+> rtnl_dump_ifinfo() both look up ops without RTNL, the latter for any
+> user that dumps links filtered by kind.
 >
+> With delays added between the lookup and srcu_read_lock() in
+> rtnl_link_ops_get(), and before rtnl_link_ops_put() in
+> rtnl_dump_ifinfo(), running "ip link show type dummy" alongside
+> "rmmod dummy" on a KASAN kernel gives:
+>
+>   BUG: KASAN: vmalloc-out-of-bounds in __srcu_read_unlock+0x57/0x70
+>   Read of size 8 at addr ffffffffc02ff318 by task ip/147
+>   Call Trace:
+>    __srcu_read_unlock+0x57/0x70
+>    rtnl_dump_ifinfo.cold+0x30/0x3b
+>    rtnl_dumpit+0x7a/0x1b0
+>    netlink_dump+0x486/0x11b0
+>    __netlink_dump_start+0x661/0x910
+>    rtnetlink_rcv_msg+0x611/0x9e0
+>    netlink_rcv_skb+0x126/0x380
+>    netlink_unicast+0x605/0x830
+>    netlink_sendmsg+0x6d0/0xbb0
+>    __sys_sendto+0x335/0x3a0
+>
+> Call synchronize_rcu() before synchronize_srcu(), as
+> rtnl_af_unregister() already does. This should be enough because
+> rtnl_link_ops_get() is the only RCU walker of link_ops, and it takes
+> ops->srcu before rcu_read_unlock(), so every reader that found ops is
+> covered by synchronize_srcu() once the RCU grace period ends. The extra
+> grace period only costs time at module unload.
+>
+> Readers and the writer were serialized by RTNL until link_ops got its
+> own mutex, which is why the missing RCU wait did not matter before.
+>
+> Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
 > ---
-> v2:
-> - introduce 3 new patches (7, 8, 9) based on Sashiko feedback
-> - corrected stat counting for packets according work_done behavioral
->   change (patch 1)
+>  net/core/rtnetlink.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> Eddie Phillips (1):
->   gve: prevent XDP frame leak and corruption during DQO TX cleanup
->
-> Joshua Washington (8):
->   gve: increment work_done for XDP and error packets
->   gve: fix XSK buffer leak when rings are stopped
->   gve: fix XSK buffer leak on error descriptor
->   gve: don't register xsk pool on pre-existing queues in RDA mode
->   gve: fix napi_disable deadlock when attempting to disable XSK pools
->   gve: fix NULL dereference from premature XSK pool DMA unmap
->   gve: disable NAPI when registering XSK pools in QPL mode
->   gve: ensure XDP mem model is registered when disabling XSK pools
->
->  drivers/net/ethernet/google/gve/gve_main.c   | 153 +++++++----
->  drivers/net/ethernet/google/gve/gve_rx_dqo.c |  31 ++-
->  drivers/net/ethernet/google/gve/gve_tx_dqo.c | 256 +++++++++++++------
->  3 files changed, 314 insertions(+), 126 deletions(-)
->
-> --
-> 2.55.0.1082.g2b9226bbc0-goog
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index be9d1625bac31..abcd2c4ea2178 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -707,6 +707,7 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
+>         list_del_rcu(&ops->list);
+>         mutex_unlock(&link_ops_mutex);
 >
 
-In the interest of getting some of the more trivial fixes merged, I
-will send out a v3 with only the very simple fixes, and continue
-working on the more problematic/invasive changes in the background.
-This will include patches 2, 3, and 5.
+Patch looks good, but I would probably add a comment here, because all
+these barriers without comments
+are a pain.
 
--- Josh
+/* Wait for rtnl_link_ops_get() readers that found ops but have not
+yet taken ops->srcu. */
+> +       synchronize_rcu();
+
+Adding comments for the other barriers in a future followup would be awesom=
+e.
+
+>         synchronize_srcu(&ops->srcu);
+>         cleanup_srcu_struct(&ops->srcu);
+
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
