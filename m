@@ -1,65 +1,63 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011061.outbound.protection.outlook.com [52.101.65.61])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011069.outbound.protection.outlook.com [52.101.65.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F066511196;
-	Tue, 29 Sep 2026 11:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B9C3DE43F;
+	Tue, 29 Sep 2026 11:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790680070; cv=fail; b=V700PR4ZRR8YId1tKpm7meUYZOta3MMb5Upwe6W46IxBc7ySSJFA9i3254dEvLSHfukOmd5pRd2AQ6yJW99SCTF6XDhe+Orw37qv5XcFH5SwsvB+lvmI78UMa8+/s7YBxOVUON7EYGNvGX9eEEw60MPReKORpw02+X+KRHr1G7c=
+	t=1790680478; cv=fail; b=O7ZCIaDskh9/XB/3HQSqyooAxAUDZZIi6MbndqnQO0boFKxreLxIffA9Upb0TunqVkP8uAKGCsFrNIAOBM2m+8PlGpZiINyAalUZ7mrnTdMW3u49XJFGrZEH1ZQvuui1yfhb0WO/X8EedE9uoN3uDn5E03UV0lU/5vKdV9fpfgY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790680070; c=relaxed/simple;
-	bh=yBNj51Fczefw3zf5TiGMiEfBPAuipC33h2fgrVwU4rU=;
+	s=arc-20240116; t=1790680478; c=relaxed/simple;
+	bh=+ksqdNFXadARLVVwSMS1jtoAGMqg2V0csdMyovpt0SI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GEAyJg6XqBYMwUJ1yV7yR8PQzYWKRsYADFZ/MbBae3vWpito5+oeLdmFa+lLVZQIz4MiSpLv315IpdLv2ewmvB78qn22+zwGZCqtLOUOniebi0cma6bAv/ESS6F+2kCS3DEkPJx9xzt73Yes5Ke/XyxGvKpO0d1URa8MSLDz7hA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=yhjBP9L/; arc=fail smtp.client-ip=52.101.65.61
+	 Content-Type:MIME-Version; b=c4OP50XsOB6vdxLUeXJ1L0peVHefFgaxY6j6Z0G8KBCyQ/QCvvKHA+IJbDGhYXYxlzFwx0j8dTCqhDNPiEfvbcJ7D51oBKtWoZEmYtfOiFBICyGuIjjRcyH6cDj1BTIWQDkKshFM8aBWMTfgcLiXZzC5vDpqBGwV4smoXTTHcO0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=C4NAmjQz; arc=fail smtp.client-ip=52.101.65.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="yhjBP9L/"
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="C4NAmjQz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kiMyKwQzwnxv+3o9tt9Mk0hflk60IjncjsgnvXy2EnDxaK3wPHuTWp/89TJJDzLUWkAoL/hCKuXuq4NhKWc4167rgtNFrJ4iNz7J/JICSKfFOy2pDMQI8AO0HE6o4cExQY5hSaGJ+GsCMpJs2sMMl/67cCgcvQQZggvJFj0JNA9GCxQHvLH1VtXZXsAolRRS9Ne6hb8+9MTZlivp/0eJBYDjNKhx6V3QlPz8QgubDEwQ64zVt8UWltQsvvnwU2nfqpgrjRkiTsZ4WlW8vDZrVlVR+6iuUVP73HiU4Ih8b4KWabXt5lO3UYMmi6CjWuu4TaHZNQka695sje4Dbg8UMA==
+ b=xFz/075NoP0qLSPKadTkyyytC3pztdkSsLAi7HA+AHgz8BbHhpxE2KQTyzc89apTqQfWAzzGy9u9mK3BEobOR/j3gOag3Oj9uDlViPjqVDpvcq5W1Dgz88dr3zyD6hSPp9dUNKsvzW9bhCMMgWNL1QM6xdjwMZpG7O/k4JWsOcRYo4+nl5o+LwVl1PhwQWe6BQJ3ATF+y8TJGG6yJNencEKupGSrz0yk3ktUHSsQZxfjjlCuYET20hctm4bxSqD57b33srw7/H1bxGeRIMMH0W72MrE8IOgXxJcyqpWp8lrIgFgiUr9OTHq6JMSis+ubD6oRtxr74OFGhAYYQbtRqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0kS+NhYpHiqrkTUi9ljLzzmDqss2MLQguKup2tWJoUY=;
- b=SuA7iBeCXtfb5JiUHGFn4+C5MxaX8c9S41MiBQlvlBwTBw2xt0I2e/Amnk4Rq1sQfk8xf36XC6CUAeA6GSqGLwXU0AK7ouyVW7z/0SDZOmuiZVPHYp+QEyz6XRNqIqXkgK5N33CTTY9GDerxJjtKizPBwQDcvgnIOz9hvRy/Pz9T37of9F7xcqbFQBNgZlF+2G/AeHk3TzTiVIqnN85stuLqdTcjoSw2307U0gw++znMBGjlxtzHTTYq7Wod7+RESa+HE1B5g6KbAlUmFAbsBhK1yWIa4mARusOoZ1DLkprsLWgYOHfgurK48M7TRJ72GHTIXUq8jMlQ43J8ipgrwQ==
+ bh=uqHz/4UlMFANtR+QgzPn/q/x3QAc7zZtFi5BiKxU+DY=;
+ b=FJmbJBS8DyBgti1Jk3mt6QFk45TtwJ3ll4ozSheLjovzk3W6sD9KMwUE4oi1HrTY8NV4DJ4DrgRj5Y1YJEOKfWOf6I6ErVUxISPR2gZrklg0xduNoixaKQZHZiykSQnf8y2gacpuyADmapKdxGNlqsWJwUYoz+sWWd9mMnj3acBNoPuQBSM64htGjZxbVe2MI1MbGT5GIxTPnkdXlDXSHbgiXJ0DUPQg4uDlPXkw+ya8/BRnjruVjCx2tXnDBbub4dHP57BuLv5IVjUO3aIn3ahLKEuDD5DEtCw7E+ePfJT1J/TuLZRK0rbsvCjk6dQM6yu3nw8b1r3ETMTdEHvOyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0kS+NhYpHiqrkTUi9ljLzzmDqss2MLQguKup2tWJoUY=;
- b=yhjBP9L/QDzmON7GZhP2W5TWEnd+3t0Rf/rn+N2BlUFMzdl7YrPG7pF+wMumTonpz5HvG3cJA41xsFg3TsK6IUO/vI6NqTCs/xcZn5y0WKo5sb2WPalv8kLX1r49DV/jGFGskKByixOqNT+p7E7B6Fi1XVODdJ2fqFlFXhbk+0mV7y+FAGraWU9F+qSrbEKADLGy28iGfDNqYRJrqGOeMvBzEcqKokX8t7zZXRRYkEKD5MtxbXztomq2Y9TkHfMPArQ2x2j0oUxv45t7AfecmTANtJ8kW1ZA0Z+kfxMCE6JdDvzXjIZ9YiwnNGDzQ9uBN/rrLaNgMld3ddFP8iE9Og==
+ bh=uqHz/4UlMFANtR+QgzPn/q/x3QAc7zZtFi5BiKxU+DY=;
+ b=C4NAmjQzeNC6Ta0pRbp9ld2lL91jSZmWMcMbLcmKS6c8uT2wukZkO4qqoURfTLO4EXDaz7qo4S+HvsVl1cSsoGDDJJuRV+tejA5Q/mDKBm8XnYttsYfhBOqC3gyR7ZazZWEZPzC9mosNlgf5a1HE19XUg+Ua41kdvE+zTK0ST6a8aBP6eATs3lM5Wl19DKQwJ38rMnGCmLv4Jq2SbwJF7krvaNLgz3Nnlt+TeshUeD/shQIE2/PqLqqcIGsWxO9PiCv7+rr2BaMRPuoKoitjgF68YwTX9/Rk9dVEhjrDi64CaDmCnuZ6qljNFfAhvOSDPIn+QdIq2ZUvHY9xWnVBSQ==
 Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:617::19)
- by DB5P189MB2552.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:4aa::10) with
+ by AM4P189MB3570.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:6e2::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 11:07:44 +0000
+ 2026 11:14:33 +0000
 Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
  ([fe80::d422:dd3a:7c1e:f4f3]) by DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
  ([fe80::d422:dd3a:7c1e:f4f3%3]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
- 11:07:44 +0000
+ 11:14:33 +0000
 From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Jun Yang <juny24602@gmail.com>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@kernel.org"
-	<edumazet@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
-	<horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "jmaloy@redhat.com"
-	<jmaloy@redhat.com>, Jun Yang <junvyyang@tencent.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, TencentOS Corvus AI
-	<corvus@tencent.com>
-Subject: RE: [PATCH net v2] tipc: reject name table updates with invalid
- origin node
-Thread-Topic: [PATCH net v2] tipc: reject name table updates with invalid
- origin node
-Thread-Index: AQHdTu+tMno0ctwlhkWgOedhKqzCq7blZt7Q
-Date: Tue, 29 Sep 2026 11:07:43 +0000
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>
+Subject: RE: [PATCH net] tipc: serialize publication purging with name table
+ updates
+Thread-Topic: [PATCH net] tipc: serialize publication purging with name table
+ updates
+Thread-Index: AQHdTqszaQ6K/XMP9ESvU4K/Zaba/LblaGUg
+Date: Tue, 29 Sep 2026 11:14:33 +0000
 Message-ID:
- <DU4P189MB375068F2321EB0762FD88906C68C2@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
-References: <20260928021807.7945-1-juny24602@gmail.com>
-In-Reply-To: <20260928021807.7945-1-juny24602@gmail.com>
+ <DU4P189MB375003EE2AE98DCE267919BCC68C2@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <20260927180806.1315902-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260927180806.1315902-1-nicoyip.dev@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -67,48 +65,48 @@ X-MS-TNEF-Correlator:
 authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=est.tech;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU4P189MB3750:EE_|DB5P189MB2552:EE_
-x-ms-office365-filtering-correlation-id: 7795ac59-f7e8-4de0-96b3-08df1e19e2f2
+x-ms-traffictypediagnostic: DU4P189MB3750:EE_|AM4P189MB3570:EE_
+x-ms-office365-filtering-correlation-id: 37d21a9e-c81f-481c-34a8-08df1e1ad705
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|366016|4022899009|1800799024|7416014|376014|22082099003|18002099003|38070700021|3023799007|6133799003|260925021311599003|260925022911599003|260925021911599003|10067099003|11063799006|56012099006;
+ BCL:0;ARA:13230040|7416014|376014|366016|23010399003|4022899009|1800799024|10067099003|11063799006|5023799004|56012099006|6133799003|22082099003|18002099003|38070700021;
 x-microsoft-antispam-message-info:
- nx6EaBUnHPwUPMTJqR8ke7BJLt5QPxI0OB4hEpzehTD78RNnM4VMo0EMjC+SxcOf/rJ2hhqb9og35OS8WccmoR/5cUDrScNECVr00HQtpHnnTpWlrpilzSmyj8lxQ+jy3TeHUQ85jpt/pie/HvpG66lt1SMzogFXhZLHzXDwn14tC2uvAUApU1HS04tosQWGDBNTeyPz6exNr+v+M/qyNbN30WrsCcNtBxr5qB+lHeW2cKFOVVa8GnVgJBU7yo7wJYfQk3ARcEn5YS1Op/CkkdqOboFczQmtc0Nudo08C1ic7tJepgVUewMqrmX9laVRIj51ooqeGZGwSkRVTn6vVpYXW75nVv6jfZcaYB5UF+BVKSWMutYNFlDZDt5oPBdg4yAf47RLvKy+fOsGwO/ZC0Dx/Jhd9fbcaeXEtjVEWLB8iVEsB/Lajs0Ms4NRidDL7gV0ZVetsBj7meQ3bsXByNseNawR+lUC9Iym5WzocrrJpuSKWmgmk/nqN+SlkimLulNP4MLSTKH61KJQ1V/woWJ7I8WC6YVmJPstSjKABOHlY/+w3C+GXM8FhM4ikjpmOrhZX7nJ1zgC5coJuGWvQxRtyVRdXfzgbW9bUvBdriKsFoNVGxyQJdUwrQuhpxSQofOsH2zdOsJKqa2M1MNzG78rtFtfa/EkpR0cNUSwpL8=
+ c+PKu+N9DPYJNNyDw6RRZGxwTfn9K8q4mZYufVRxQ2uIF3ZNbZIXMASd0pd4IpOP7utMRwUiqOMPo5JprSJRC8ftvFrGMmBLqMyjsF/j7rIzZyg5VNUxqvEsMrxvWqt5wqVJMgLD43Cu19yBXGki0k4IcTo9AoT+aFEbjnO8TAw1JDf94gJxQRKJPWOHd1ePFx5nnf+6sBrrDCyhZZGDctPNRyMF6RCg1kZ03ElDZQjtBJDiyNkl8lPIcOBkOf2/Qr0y2xXY+l8To2+vzUPDW2Bi/7T6hjMGuRHz6Mw8r8Tdbi8F+32fAhGISI5ijH4IDxo1lAts1VFOgusUtc1OMyY89ShwGo6ip9YVn2QrQR1Yqpfue/qISaiLTM3scJHtc+eFtwgCC3giuXtwLQAzLjmwhcP7zSdejC6Q9Za0QZ2+5pTPBjaiEweVqHQ1UBooWFmpfXZu0Cx+rdhjYhs9nFi+Aka1JIP5ttkQtHvmLBPfa8DpNA9tGAenP8ZNl5DzNpau4wUj2RpQdIvCiOKqOctQU1fZQ+e2MPuGh1B5QYSNLAERe8jrdcRdraZnnuy5FdtEnbboMTWO1WTwu4uibyDEOpFrR6IbU+5R7QqZJVHswB36DypIweLG0JHaLl7KkjhGSmjY8Dlprwpoyl2+5WmFOiG14eMLg2eV/iOm5DJGYhZvrU9DjgtVFkc1XerrdqkIUtyJOmTayu+7cTbzzsamAQcr/2rJrfrg87MTO2c=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4P189MB3750.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(4022899009)(1800799024)(7416014)(376014)(22082099003)(18002099003)(38070700021)(3023799007)(6133799003)(260925021311599003)(260925022911599003)(260925021911599003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4P189MB3750.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(4022899009)(1800799024)(10067099003)(11063799006)(5023799004)(56012099006)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?s28woIiHKc4Htpq0Fq4ZOUk2HO9/dfIU5/YliSmrS4MYMPM6WwPKXLQ2wIq4?=
- =?us-ascii?Q?dd1yMG3SarSeUUbr+TSnfYsq4cg6plp0u1tER6Zxoou///YA0sVoRMKFBZbN?=
- =?us-ascii?Q?pHkfkWRKhneoK7qqTn3cvazfYDMZeanSImbowubuQ4y9yDJ2+EwfJQshM+H8?=
- =?us-ascii?Q?DmBKgalMfDxIk0hVJL9DCT0gpK+BxFBa18ypubblM++l7UP9zOtDZ77N7oUL?=
- =?us-ascii?Q?LvmpWOpYTEr6ltq8/0M/CAT7mpQMTFre4Sx2IUNkKbJBVBhjPSbUpWq6zF+N?=
- =?us-ascii?Q?XSqGVRVjSdjr2nKZi1+MQSYcihvyoi/7eYgH3ou/svklk4dITV5BdYgyarFV?=
- =?us-ascii?Q?RGsXFKkoxs2pmXwVLNptkUjve0xJN1b09t0Izr5RLGIXWaZtuEBwqH3W2xdJ?=
- =?us-ascii?Q?RdFu2sKVHcvkLOdFllgBb0ZnP+ADUPDULYKPc8+EXIS2lrH9grSnqbTVKu/Z?=
- =?us-ascii?Q?0gftfgw+Y6+3lT5s4ALnIZNEaxE1HQuai2TUg+4Z9qH/cDl7oWC4xfZVZ/a8?=
- =?us-ascii?Q?821axjGXJjJtim8UEmR8jjDI4nEWwJJrwgiiVsPYm90Ce44IlYD+z1moNRuW?=
- =?us-ascii?Q?QcbJlewBk2gvwb0SR6ZecfDZ66q4rK4A76HAniICaRzhHRzfEJ6OS4Yy3mVr?=
- =?us-ascii?Q?djlIBzvCJAPD3WUt8AqDxIGOVoMCMRuVfp3HBfkfuAeLiBXx2irAVufxto1p?=
- =?us-ascii?Q?/JnFAB6Wj8Kt/dC6VMSlSuZF/kxg+/R79HZq/ENozviYiqXEpDSsjHwCh8UU?=
- =?us-ascii?Q?UdhEOy0LZqcmLU1OFqQxL5l5VbB3Va/zpvmCnZflGgGT5Q0cl5eyR2NY1my+?=
- =?us-ascii?Q?sojHN/JbjFo/EgA2jzSQKeCaKtZCJCXlxNdJwoWgw1XbTluc7wR0s3ouHFGu?=
- =?us-ascii?Q?K3VcxtYU5GJ+lYuZ+d7LIgXkNU9eiAemB1EcAMPqwlO29WAVxkFp+bAZWYJv?=
- =?us-ascii?Q?3aFR6Dl7s/ejADTgkOiRb0LEYpjcfvEdbBD6O2VVXHR7yPNwvDhOpehw3NcL?=
- =?us-ascii?Q?QJ6qBOO8VU/A8jRvRaD7ssjnjFuk8iZ/8l9kIP0XSgmai4XuTRZjUeOqNYK+?=
- =?us-ascii?Q?T+6G2nJyZFX3q9FFTAO9ot7lIYsrmL4tNz719RYscP6g5po2UL4E8P21IseN?=
- =?us-ascii?Q?UMhRnB9PnOB6w0FA2Le/K7oi+818konQreFS2yjcsMu7WVfzkkMSU4K0f1oO?=
- =?us-ascii?Q?kdipSGb9mtPI/tQ9LNP8APonC1m48IUsCPqHFlumw3k+jK5iM5X/AnJSRE/S?=
- =?us-ascii?Q?JOzIom9ZWqGAUsbu56Yy3Tk4749MfPctjYk96OISYOzRIuvAO9JbRS4egqm1?=
- =?us-ascii?Q?FPyg+GetJ21Suloa8P4enNZDB1Q3cCf0x7geR0Q7nmY/Mc90FLAsvB+3pqp6?=
- =?us-ascii?Q?eS339gJe4PxuxMduTbaUahBQMURNFaeasSasOZUCCfcXvCp9jMYQmTfEUxZw?=
- =?us-ascii?Q?Ha8us4JkuaRPE8Cx+labtOCExxfcR5EJ4KzYZmOCjwwM9GMzozz6OTvrl6RF?=
- =?us-ascii?Q?jzQ8n7z05hgVeuqwAegUg0DpRTlq98T9tpnLDLiR+rgZDUP22Xn17dsjOhbc?=
- =?us-ascii?Q?1Vc0gLbWz/BdcA5PBKV3e6Mwr1+n+YiffqYj7KW8trCc2tPxmtWzfhlmbZ20?=
- =?us-ascii?Q?itzGfmaopeqb+fiEMMyX7Xr25yP3M4Hyg2zcA0gOJOu4pOSUw2QFh2Z98lgL?=
- =?us-ascii?Q?ss7dQm2eL0rZTPlQL26JJpyrFoyWYhreRqSbMLOsPVziEn9S2XugIATsuhHi?=
- =?us-ascii?Q?w2T+OlM8HQ=3D=3D?=
+ =?us-ascii?Q?duzsL/xsBI/I5522B0QBpXhgreHXOk0Cug5lgJgSWjiTD2IEU2JzkVu1nYlX?=
+ =?us-ascii?Q?1WPzfnesQX+HoIJOiVpOURtcMfWC3PSNX++d1aE6cJR04EUuPZp/dFMU7P9u?=
+ =?us-ascii?Q?3RhwFDGdBnV2d4ltC0AbB6W2ijXbxD1cWZ4kQ2WryAwaPUKaQjO5XY9qXWhn?=
+ =?us-ascii?Q?JnMPMmF+e5Iyu08Q8mFCp3VVIdHrPMDEUnqT3Hz3i3NCVk9ZNqhjaCgvBtLQ?=
+ =?us-ascii?Q?0vCoAsbH+IP/4cIzG0oB1TGa7GpsmjBSEA1VHcfMs2bqr0TJ3yBaksHgKHHS?=
+ =?us-ascii?Q?DULT8iixzktfX8NOVimcZckjvPwSgMYCHKeVwtDjYNUFjILZoVUytk1Ma30/?=
+ =?us-ascii?Q?l7bYqG9sQuZPxyqpawbyMrlggqqJTTNESA1DmiSnWr0Nq13fxLi48fM+Yi7V?=
+ =?us-ascii?Q?XsYDmXMuxd1NGVKD8AonEahd1yfr8vQnEbwoo+LLYH+2MOkS/TnIoAXztH5y?=
+ =?us-ascii?Q?m7cbn8iyfUPmubC/wdkNwExUXnbcI+yldT4wwNrxvw+JyqDEury97yFq2+fo?=
+ =?us-ascii?Q?0cfvMitJv7E6qU/lvkRLUGn3nmuuS312UlMa3LK1HpVhBQpXKsvWYl6J9m3A?=
+ =?us-ascii?Q?y15DfxbkNYfEUWzge49hakBVW2iWD5FUZ3j5OMWLSz7VuhmgFS0T0a8P0Y26?=
+ =?us-ascii?Q?jjSbBvIz9LMdSW9HqctV0ZBkhH40q3e9N/3gDYeFqsA4SEDjML6X8grsuHXg?=
+ =?us-ascii?Q?1OBOcUdPfdU7N6Z3XrIztUTcXCeZkQce+fRVSRzi1TR36Hqd2339pgVyxNhJ?=
+ =?us-ascii?Q?mn8wZaL+1x/9u0+oaSqwHzT5708185ZBux+snTAjlBeZsmySD6THmBsR+2HS?=
+ =?us-ascii?Q?4Z52CHeV1xl8QW+XWeTgw0Bk9v/YdYdiSmiOwyAj8uziLoTkT0/6rXNb0HuC?=
+ =?us-ascii?Q?KnAax5tfz3s6f/6f0xBKsyruY/2Ddjm+YEuBtis5ci0vh0mZklq+8tmWQAyc?=
+ =?us-ascii?Q?30wO8VrgQTp4MXQv8JvJZcXOQxc1pa7mzfPkZdWXIdnDR8JXaAv07mAwhQPI?=
+ =?us-ascii?Q?HmG0DX96MIz+23DGuR6PkoQa7x21qyHAlvNhe+Hat/lFqpdWc/BHAcidJHZ7?=
+ =?us-ascii?Q?3hLMZKJ2hxgE34kmbSCzqy4ZQ6L21XWRnWhF6yvxjwVlHKWR5/m4/LQ/Nc52?=
+ =?us-ascii?Q?KCbqpOTKuw4tctvw+Kc7rNP1i0207B91RWrnN9+Jtz1HQhH9qmcIy7jGQ1Vu?=
+ =?us-ascii?Q?H+qT5MxyXBFaYv1bcL/3WSfLf0/ri37MgmnY+pZrsfXp/NRJgQzHPcD8rgiE?=
+ =?us-ascii?Q?KLbnHBQhsEcc0DU98vIeF/0D6ZPZFJVZAzlXp+Wloictl6r7+RK84y/4uagB?=
+ =?us-ascii?Q?VjZ3Nyjwl9TsMpU+60g6uU2cTiaMfEgZ8z6Xxvd1b0zaQfBDcwSrmhQSlNSN?=
+ =?us-ascii?Q?IdJ9cmk0BkxTu31Of8YwT9vKQIg5DjE86vRyK76U0vyN/fd07SEAaJctlxc2?=
+ =?us-ascii?Q?qB0bb3C5KzhNwOAZDsAlnl5Hh26AvQqGImtWYbpiGEogbAv7GWZMvstx/suO?=
+ =?us-ascii?Q?7JlJ+J6mRtrcfAWbOiv1tkhzVKBOfMRzWKa0Pissg+KL/ztSwh5/XuNjfBQZ?=
+ =?us-ascii?Q?C0iY+eu5UDf5/qFF3dz2hgK1Nzpuut2jErlyM4Ont6A4RaDTkosiIZnsdv5E?=
+ =?us-ascii?Q?CHAJYggp3U02QlHE+vSmKC1vt2Cg4s5bj6lChn23gX2i1ky1CycDo1dCLYJl?=
+ =?us-ascii?Q?rJWVg+dRA/ny5o3wuKVHoeCjTfLJOpQw4vqJeCXuYU85EO/VppYS+/NLuU3E?=
+ =?us-ascii?Q?KoZqe/JDtg=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -120,99 +118,183 @@ MIME-Version: 1.0
 X-OriginatorOrg: est.tech
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7795ac59-f7e8-4de0-96b3-08df1e19e2f2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2026 11:07:43.9914
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37d21a9e-c81f-481c-34a8-08df1e1ad705
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2026 11:14:33.5030
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0m/0sw8zxa2gvqHvfmc3pwjjpe9xDF/wb4nf5ZkHu9ALTQaPcVavPFSYW5c8C7Z2w4tn8pOe39LfWmkTD+tONyGE8tS2BKbXlRVY36QKUPo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5P189MB2552
+X-MS-Exchange-CrossTenant-userprincipalname: M8RlirTPk3ED3kKXhWEhMgO1dIlHaF9Gh85Ug6wave4xzFLaOM2k+4h8zyCMj16XRHQZZJLAnRLr1DXfclFCyS3gpHPx8Qz4P+5XO9TLEns=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4P189MB3570
 
->Subject: [PATCH net v2] tipc: reject name table updates with invalid origi=
-n node
+>Subject: [PATCH net] tipc: serialize publication purging with name table u=
+pdates
 >
->From: Jun Yang <junvyyang@tencent.com>
+>tipc_publ_notify() walks a failed node's publication list after the node l=
+ock has
+>been released. Its list iterator is not protected by the name table lock, =
+which is
+>only acquired inside tipc_publ_purge().
 >
->tipc_rcv() locates the sending peer using msg_prevnode(), while
->tipc_named_rcv() takes the node address for NAME_DISTRIBUTOR updates
->from msg_orignode(). These are separate fields in the message header, so
->finding a valid peer does not validate the origin node.
+>CPU A can save the next publication before entering tipc_publ_purge().
+>CPU B then takes nametbl_lock in tipc_named_rcv(), processes a
+>WITHDRAWAL for that publication, unlinks it with list_del_init(), and queu=
+es it
+>for freeing with kfree_rcu(). CPU A advances to the removed publication an=
+d
+>loops on its self-linked binding_node, stalling the CPU.
 >
->For a WITHDRAWAL with origin node 0, tipc_nametbl_remove_publ() treats
->the node as a wildcard and can remove a matching peer publication from the
->name table. tipc_node_unsubscribe() then returns without unlinking
->binding_node because in_own_node() treats node 0 as local.
->tipc_update_nametbl() subsequently calls kfree_rcu(), leaving its binding_=
-node
->linked on the peer's publ_list.
+>The kernel reported:
 >
->Once the publication has been freed, withdrawing an adjacent publication
->from the same peer can access the stale list entry in list_del_init().
->The following KASAN report shows this access in the list validation code:
->
->  BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report
->  Read of size 8 at addr ffff8880249c7120 by task a.out/9456
->
->  CPU: 0 UID: 0 PID: 9456 Comm: a.out Not tainted
->  7.3.0-rc4-00385-ga7bfaba4823e #81 PREEMPT(full)
->
+>  rcu: INFO: rcu_sched self-detected stall on CPU
 >  Call Trace:
->   <IRQ>
->   dump_stack_lvl lib/dump_stack.c:122
->   print_address_description mm/kasan/report.c:379 [inline]
->   print_report mm/kasan/report.c:482
->   kasan_report mm/kasan/report.c:597
->   __list_del_entry_valid_or_report lib/list_debug.c:62
->   __list_del_entry include/linux/list.h:261 [inline]
->   list_del_init include/linux/list.h:333 [inline]
->   tipc_node_unsubscribe net/tipc/node.c:687
->   tipc_update_nametbl net/tipc/name_distr.c:311 [inline]
->   tipc_named_rcv net/tipc/name_distr.c:389
->   tipc_rcv net/tipc/node.c:2202
->   tipc_udp_recv net/tipc/udp_media.c:390
->   udp_queue_rcv_one_skb net/ipv4/udp.c:2433
->   udp_queue_rcv_skb net/ipv4/udp.c:2472
->   udp_unicast_rcv_skb net/ipv4/udp.c:2625
->   udp_rcv net/ipv4/udp.c:2697
+>   tipc_publ_notify+0x3b5/0x650
+>   tipc_node_write_unlock+0x49d/0x5d0
+>   tipc_node_link_down+0x15c/0x4a0
+>   tipc_node_delete_links+0xfc/0x190
+>   bearer_disable+0x111/0x270
+>   __tipc_nl_bearer_disable+0x1db/0x2f0
+>   tipc_nl_bearer_disable+0x1c/0x30
 >
->Reject zero and own-node origin addresses at the start of
->tipc_update_nametbl(), before inserting or removing any publication.
->Neither value is a valid origin for a peer name-table update, and
->in_own_node() covers both cases.
+
+Please update your changelog with decoded stack trace.
+
+>Locking the entire traversal would also prevent the race, but would hold
+>nametbl_lock with bottom halves disabled while purging every publication.
+>A node with many publications could therefore cause excessive lock hold ti=
+mes
+>and delay other name-table operations.
 >
->Fixes: 218527fe27ad ("tipc: replace name table service range array with rb
->tree")
+>Move the failed node's publications to a private list under nametbl_lock, =
+then
+>select and unlink its first entry under the same lock before purging it.
+>Concurrent withdrawals can still unlink entries from this private list, wh=
+ile
+>publications arriving after node recovery stay on the node's live list. No
+>publication pointer is carried across an unlocked interval.
+>
+>Unlink before the table lookup to make progress even if the lookup fails, =
+and
+>acquire and release the lock for each publication. Check the private list =
+under
+>the lock on every iteration, since concurrent withdrawals can still remove
+>entries. Keep withdrawal notifications and the final rc_dests update in th=
+eir
+>existing order.
+>
+>Remove the failed-node address argument from tipc_publ_notify() and its
+>purge helper since unlinking no longer needs a node lookup.
+>
+>Fixes: 9db9fdd1983e ("tipc: avoid to asynchronously notify subscriptions")
 >Cc: stable@vger.kernel.org
->Reported-by: TencentOS Corvus AI <corvus@tencent.com>
->Assisted-by: tencentos-corvus-ai:hy4-preview
->Signed-off-by: Jun Yang <junvyyang@tencent.com>
+>Assisted-by: GPT-6-Astra
+>Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 >---
->v2:
->- Explain the distinction between the sending peer and the origin node.
->- Correct the Fixes tag to the commit introducing the node-zero wildcard.
->- Link to v1: https://lore.kernel.org/netdev/20260731101657.29119-1-
->juny24602@gmail.com/
->- Review:
->https://lore.kernel.org/netdev/GV1P189MB19887144315DA4A6AF16FE02C6D5
->2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM/
->
-> net/tipc/name_distr.c | 3 +++
-> 1 file changed, 3 insertions(+)
+> net/tipc/name_distr.c | 34 +++++++++++++++++++++++-----------
+> net/tipc/name_distr.h |  2 +-
+> net/tipc/node.c       |  2 +-
+> 3 files changed, 25 insertions(+), 13 deletions(-)
 >
 >diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c index
->ba4f4906e13b..a496e2e9ef62 100644
+>ba4f4906e13b..34867b69044c 100644
 >--- a/net/tipc/name_distr.c
 >+++ b/net/tipc/name_distr.c
->@@ -286,6 +286,9 @@ static bool tipc_update_nametbl(struct net *net, struc=
-t
->distr_item *i,
-> 	u32 key =3D ntohl(i->key);
+>@@ -227,38 +227,50 @@ void tipc_named_node_up(struct net *net, u32
+>dnode, u16 capabilities)
+>  * tipc_publ_purge - remove publication associated with a failed node
+>  * @net: the associated network namespace
+>  * @p: the publication to remove
+>- * @addr: failed node's address
+>  *
+>  * Invoked for each publication issued by a newly failed node.
+>  * Removes publication structure from name table & deletes it.
+>+ * The caller must hold nametbl_lock and unlink the node subscription.
+>  */
+>-static void tipc_publ_purge(struct net *net, struct publication *p, u32 a=
+ddr)
+>+static void tipc_publ_purge(struct net *net, struct publication *p)
+> {
+>-	struct tipc_net *tn =3D tipc_net(net);
+> 	struct publication *_p;
 > 	struct tipc_uaddr ua;
 >
->+	if (in_own_node(net, node))
+> 	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, p->scope, p->sr.type,
+> 		   p->sr.lower, p->sr.upper);
+>-	spin_lock_bh(&tn->nametbl_lock);
+> 	_p =3D tipc_nametbl_remove_publ(net, &ua, &p->sk, p->key);
+>-	if (_p)
+>-		tipc_node_unsubscribe(net, &_p->binding_node, addr);
+>-	spin_unlock_bh(&tn->nametbl_lock);
+> 	if (_p)
+> 		kfree_rcu(_p, rcu);
+> }
+>
+> void tipc_publ_notify(struct net *net, struct list_head *nsub_list,
+>-		      u32 addr, u16 capabilities)
+>+		      u16 capabilities)
+> {
+> 	struct name_table *nt =3D tipc_name_table(net);
+> 	struct tipc_net *tn =3D tipc_net(net);
+>
+>-	struct publication *publ, *tmp;
+>+	struct publication *publ;
+>+	LIST_HEAD(purge_list);
+>+
+>+	spin_lock_bh(&tn->nametbl_lock);
+>+	/* Leave new publications on the node's list during the purge. */
+>+	list_splice_init(nsub_list, &purge_list);
+>+	spin_unlock_bh(&tn->nametbl_lock);
 
-This cannot happen as I explained already.
-Please drop this patch.
+After this lock is released, new publications can be inserted into node->pu=
+bl_list. Does this defeat the purpose of current publication release ?
 
-pw-bot: rejected
+>+
+>+	for (;;) {
+>+		spin_lock_bh(&tn->nametbl_lock);
+>+		if (list_empty(&purge_list)) {
+>+			spin_unlock_bh(&tn->nametbl_lock);
+>+			break;
+>+		}
+>+		publ =3D list_first_entry(&purge_list, struct publication,
+>+					binding_node);
+>+		list_del_init(&publ->binding_node);
+>+		tipc_publ_purge(net, publ);
+>+		spin_unlock_bh(&tn->nametbl_lock);
+>+	}
+>
+>-	list_for_each_entry_safe(publ, tmp, nsub_list, binding_node)
+>-		tipc_publ_purge(net, publ, addr);
+> 	spin_lock_bh(&tn->nametbl_lock);
+> 	if (!(capabilities & TIPC_NAMED_BCAST))
+> 		nt->rc_dests--;
+>diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h index
+>c677f6f082df..8debe23469b2 100644
+>--- a/net/tipc/name_distr.h
+>+++ b/net/tipc/name_distr.h
+>@@ -74,6 +74,6 @@ void tipc_named_rcv(struct net *net, struct sk_buff_head
+>*namedq,
+> 		    u16 *rcv_nxt, bool *open);
+> void tipc_named_reinit(struct net *net);  void tipc_publ_notify(struct ne=
+t *net,
+>struct list_head *nsub_list,
+>-		      u32 addr, u16 capabilities);
+>+		      u16 capabilities);
+>
+> #endif
+>diff --git a/net/tipc/node.c b/net/tipc/node.c index
+>bd91378b7540..9a218d137c45 100644
+>--- a/net/tipc/node.c
+>+++ b/net/tipc/node.c
+>@@ -422,7 +422,7 @@ static void tipc_node_write_unlock(struct tipc_node
+>*n)
+> 	write_unlock_bh(&n->lock);
+>
+> 	if (flags & TIPC_NOTIFY_NODE_DOWN)
+>-		tipc_publ_notify(net, publ_list, node, n->capabilities);
+>+		tipc_publ_notify(net, publ_list, n->capabilities);
+>
+> 	if (flags & TIPC_NOTIFY_NODE_UP)
+> 		tipc_named_node_up(net, node, n->capabilities);
+>--
+>2.43.0
+
