@@ -1,134 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67C3A257C
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790704913; cv=none; b=qoG9udP2DfyzDPpD9dIGQD6N3yTk+gESjBqsXD+wOuewaVFDFPpNt2KEz2Cr5tKfYG6AYxWLgEwXCLZNDUCxmRGNvuw7YQHXyGjM1mt43FHlBSxAe6MIpwGjWCLrEDiTv9q7rtkgmtPU5RcaII8qlYbXUrNQpo0PaZv6zLPkO4w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790704913; c=relaxed/simple;
-	bh=v47biJGyTwUO9XfglPqg0Q9AVwt+InUiI+FjvQHeaQw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S0jsRVKG+QvXMuwVstMMivIKhRbBsRTBoUVvpseIyf50VT3zoKda0j+lEkdcxvEJScjgWZwaboZLWc2ulR0rX3uhwBFNRABkHmP6/WGGc/r0ry3Mn1WYD9vKl7r8U8jHbDDrrJ5BEBxb6M2WI5iw3RxMsMk+pbb+rOIsqGWQK6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxPYem6B; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2273783B0
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790704945; cv=fail; b=Zlhh/d4VhezuSHAOKA/yvuAVLJoCWq4v4MFdaatBJ/Tkk4kpU1y8oySbmmhAdlbWIF+eY2EE101tZtJOFzKjpyK1b3cfWOIGRsUFsHihqsAYqtuDDWFfM8fBL/5We2cs8xy2U5Ekbi0BTtyD8S0IcA123IdVXfCryRtmUwgmdug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790704945; c=relaxed/simple;
+	bh=wH9F7veBakvU3unaY3KoCohDNdQPHrosLMqHv4BJH3A=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TA1zERZ5+1aurEK//QDFpMR59b59MFPABZTGcrMTM98qMVwAdJlJW8wsw2FlGT8BSrpdTivFZhT1M5YfKgvRDzFnY85S9cDJxjtDqgnzfDS0VXEJgA5lHLOJQMNrWLiU7Sow2dvUUwIrHmbgoZrg2O8aPAV0Und9G8bobz0Hbp4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bqA2BnaM; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxPYem6B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6060A1F00898
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790704911;
-	bh=wA+/krenvKND0SGdUag51BtUkhIYeOVKdVDCo9ZLgfA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cxPYem6Bk3XVbfkpa31I3zey/VHrPC4VUUeHhHgYHnwjogGBpHcLnQJqLe2QOYrC/
-	 w23IZUODm2QracyrsZB6aLAXeKVUOv2pNmuj4yuwtOyir5O8wkStZi+KnCn2rtEBlm
-	 dIVCxi6Arrfcp/Xog8IsoIJhB7WO3kMvfjpGgd51rqjR6fsQ3cyCl1nQL+fcoCvkvb
-	 dfO7PQoDB/fcltcIwekIPmdw0jiYw02zJzMYLCWdHLOEnOJdsqXiGwB6t5NEvm4cm/
-	 Jfye8W1DWkI3OJlbZ8iHmMa1ynEygcZlhTE5scPi3+ChNDa8swa4GS6jLKaipIzxz5
-	 SS/Gzhrwl3iwA==
-Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6d797cfdd1fso982287eaf.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 11:01:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwnB5YyDeWmvw3pS3/YmL8KhmKIBh5JukIh30nuOLxB7/uBabfHd/m7EqfhZt8KyeWYLwjF/3I=@vger.kernel.org
-X-Gm-Message-State: AFuF++n57yt3s2Dy3nGUicvESwiLDYz9KDMQ/xHegvuiF6F2Iz5RMucL
-	DhJi1/6BdoSAfwARi0dxXIWQpY98JUWhTkjqHcfS4ckYink9WHyUOVoPOyv6Lg0Ox32XlrVi6zh
-	VEmx5GZNore9ouZo9ldbvdf3+6kMk5r4=
-X-Received: by 2002:a4a:ee14:0:b0:6b9:c226:ffca with SMTP id
- 006d021491bc7-6dc72543b43mr97892eaf.6.1790704910709; Tue, 29 Sep 2026
- 11:01:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bqA2BnaM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790704944; x=1822240944;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=wH9F7veBakvU3unaY3KoCohDNdQPHrosLMqHv4BJH3A=;
+  b=bqA2BnaMvy9I3Zand5YsFiuBC+Ai6Uwpu40M6U67HM+0PK++J+GrxOYZ
+   DOnzlTyh0QZvzmV/HePDxmeaCf3DMiCxtGhuJ647lmW/wh1i9wMJ8wTnZ
+   qjv9Oi6M4OW1bmi8DD/Gzo8lwuvxRSRdAEkdSrhUA2yDYk9h2De6mZ6E7
+   iFiaFyq8uBqJsPbU2QrAI3EIpw/we+pEzL5z24aBkSEn1dghfKmFN3495
+   M7Z2tj8JmvSqc57LnK4Rpg2c99CUCby5Re1Zc/qqJaM3v+e4cSmaUEZ3p
+   V4Lgq8woorahwQHIW+SxOG7WVt87vkbyBJ7WfntzrhDVs6evcI/9a3yto
+   Q==;
+X-CSE-ConnectionGUID: o0g9ONXWTHmAIt/k9xqAkg==
+X-CSE-MsgGUID: f1Qp1QgZS6O1vddchrxxdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91453730"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="91453730"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 11:02:23 -0700
+X-CSE-ConnectionGUID: Ul9ZuEKuQ6O7S2p9DDZL9A==
+X-CSE-MsgGUID: Q2CsY5JqRneOWCrDku5wng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="283530677"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 11:02:21 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 11:02:20 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 11:02:20 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.11) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 11:02:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vN9mnRKomWiHgpDBxYwcRnt8ZfH60y0NpMw9WZaXdfjK0Qg7I5qmtBkJDXlj8Yyi/S947yMYfge9339LIWNlXebTgLxz0zyW70Pmzmftp33Ypi7HY3HJubUW1hN/35CYwAhVpKqLQb37s6xa/Frn5MdaApZZXl9crRIuSgBz20yZFymWjFgpiulcP++xPANEcB0tABr7dl7eSp4MGQvi+IDr+/xwAXjw6cgNG91+bSFzAeIxXf5Z95GFIkYsgnm+QMF6IHTkECc2YnYBLW87jYtGUctQ0ZL+Yt4nhkRLOFLEdZMuioeAn4euG9nfEUV/TBbYpTr/tjhVlhmziHI9rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wH9F7veBakvU3unaY3KoCohDNdQPHrosLMqHv4BJH3A=;
+ b=JdUQ7HPCKld8fMCnyoCIq3SI2LV//mVWBnSyqfohvs+Gfak3+8r9eeA9NXOhAUKWEDFwnYYG+EXssybT8od6rO8pgeoBLGOhl9gQuw5YODmLSGsXmAWtYPGUmrJj07u3TnxxaemBWtJHGHd4cRm6yIlVxyypvPo6wbiIBvY0lsiTIDoRAnwzT2v8pm267s0WSho1//CzaPsg2r3oToYeGwmm4RwEhjhsxF+r9w22hffR7964Sz/IHoAtfTTJ2VPPa8jud5VYM4KiQASWc7qUa0uK08wbdu9wRmOtlgSApFJzWXoZ5pFhESBQVLCRYJnvfhh12FM++zXOfAHu3OQ+Mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by IA3PR11MB106965.namprd11.prod.outlook.com (2603:10b6:208:620::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 18:02:16 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 18:02:16 +0000
+Message-ID: <def6f18b-66dc-49dc-b07b-4d34b9924ca1@intel.com>
+Date: Tue, 29 Sep 2026 11:02:14 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/6] ice: skip stats handling for channel VSIs on
+ rebuild
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, <netdev@vger.kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, Michal Schmidt <mschmidt@redhat.com>,
+	<intel-wired-lan@lists.osuosl.org>, <edumazet@google.com>,
+	<horms@kernel.org>, <pabeni@redhat.com>, <davem@davemloft.net>
+References: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
+ <20260925132636.123300-2-przemyslaw.kitszel@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260925132636.123300-2-przemyslaw.kitszel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4P223CA0027.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:303:80::32) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929170444.218093-1-parri.andrea@gmail.com>
-In-Reply-To: <20260929170444.218093-1-parri.andrea@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 29 Sep 2026 20:01:39 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
-X-Gm-Features: AclHuK8d3O29vRQFC3ZWh-9zIhRSdBaWP-QlEB2WBkOrMqu2AG_jOc393I2UFS4
-Message-ID: <CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com>
-Subject: Re: [PATCH net] rtnetlink: wait for RCU readers in rtnl_link_unregister()
-To: Andrea Parri <parri.andrea@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|IA3PR11MB106965:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71670d3e-305f-4c6c-b0fb-08df1e53cbb2
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: H1EgO47cQqIZu/rbrKK4AG5u7hPgRvmOzUlrjuMYi3Pd7f2St+Zs34UAYWlBg/aDE7bTBZLyosLkxxMKxWDKPN3LHxvjy7w+NhXT5eBCJef9aex4/67DQvbxoepwiq/QWtGUQDuoR8aVfKTy40B2q8oxY20wjXPjUGr7ZQTquw01dvN4cPTyjkRzUIXrSVTsJ1UCSCKXPPi/GcaEf81lApo5vCHOu3L14wxW0KGboPBUuZ2A5bB3YhE0G9zIknIWk8Kwqgvk9MwLcIFwFYGgVxnSy9gNnpG9vNC6PDwtUViVwHT8SCvoZE0ZPwHl3QoakL1Rmu/cwRcwcSYy7RMNrQg8z0NVzl0n1rOG0WsmDiKtc0mAKPhwgzxiuT5tlCfrGxsLNEORD0NdQupS2cQGLDBsFidmvIv+aoyrxIyviiFHjticij8DKA3aZ7GWdKqZ1vWCw5Bfrd8A7TAA5iERRBhhdqpnD5yOVbDPWaJLyZu2lND1BmdWdVt6eg+77ROe1ftRRcwQJHZ3YHUA32WU7+AHqCu44NLfkF42KIZO9oXpmKGWKh6yiwE+1K9Hsqit1rxax/svelMpWx7YZGQk4St/J0/CiZEGzqcFUFrIXVRrB1AH61otU285l87GUn1kKxszV0vp0Lb/KcUj70KuxJMfwBQwx+dajFg68xUVrSA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZFBPNXM5N1R0eW9Id0ZEc1F6dURmamMyRWc1SWdybmFMOEhGTjg5QXg1NWxO?=
+ =?utf-8?B?Q0RUV1RMZVVheHE2VDNjdmxiODN6VjVYdkplV3RwTVJPSmttVUcwbXVQbjg4?=
+ =?utf-8?B?WUNBclVPMndDSENQTWMyQTM1MVhsUUJPSmx4Ylo5NEl2VC9wcVc2WHNsWWJR?=
+ =?utf-8?B?b2hYR2FjREtrcmg3ODdjVDg0VDF5M3RyTTlRdFRPSFB0RUxodk1mek5CQWR6?=
+ =?utf-8?B?d0FzY2RyOVBuU3F6U2hXWERNakh2aitxdTdIYnFTRUdTRHhiV0pDMHBqY0ky?=
+ =?utf-8?B?MXYvV2wzK2JQUzAyTFlMQ1MwVE5vWGZaY1Fsa05wSGN1ek1uMVRiY291ZWNh?=
+ =?utf-8?B?bC9vY01OY3gzWDRLQlBuNllGZllPb0NNbjh0NjRPZytRdFJubkcvYS9NMms0?=
+ =?utf-8?B?WmpZUmRPUk1DNk9KdTJ2QUlqcEhsRmlsY2FyMThaT2toTVMyOXpHamJlZktT?=
+ =?utf-8?B?ZjFzd2pRaFJXUDByVSt5TFRCSnd1UHI0czNVb0JqaEp1UnI0bm1FbzBhNlcy?=
+ =?utf-8?B?RHBqdHFnajhUcHU1dTBxakozNHNvUmNDZy8xcFhaSEkwdmJLUlRpK2pYYjQ5?=
+ =?utf-8?B?TVZBOFVhSWxOYzBydnozaTVVMlo2dFlROGw5bTVtekVxeXl2WkNhQVQrQUtO?=
+ =?utf-8?B?aVc0clJyUHd6T1NpLzV4bDUrUDhTaGRsV2ZmUS96dWl4YTdIZytUOGNpMzBs?=
+ =?utf-8?B?dE8vMmppbU44WGdScmVYM2M0R2QrWUlodkZkYVovVWNHdTUweC9iK005bGRr?=
+ =?utf-8?B?OEEwNWM0MldhSVRZREpLWWtTb2xoYXhvVk42aEpYcC8wTzBBWGdlTXJ2MUtG?=
+ =?utf-8?B?QmFNcHRVRXVkR0JrMStxU2hwcUZNbXZpVG5OTC8xejVIRmxiTllGMVJjNDdl?=
+ =?utf-8?B?MDB1cy9tS3lBV1k4TkZTUVhuOHJ0U0xYaTYyMWVVRlIxRE4vMUNoWlNJK2Nw?=
+ =?utf-8?B?NDNOcVlXUDFDbTVGaW9GZ25QVkpmVWxUSkI4d1F1YXM1NFcrVXRWZ1J3aGVm?=
+ =?utf-8?B?dmlGRDRnaGlHTzVCMW52U1hDVCs5NWpVNFRBNWVEbytDVnZSOUowNnRjWi9P?=
+ =?utf-8?B?VS9DeG16UUpPbjZmb3F4T0M0Y0lDbmx3V3hpOWdsTFVjM0FuSjMzRGRPR0oy?=
+ =?utf-8?B?TzV0SlNaVzhsUHZ6TEE3L1VDN0pSMloveE1qcitQaXVxZW53Z20rbHNRM0xs?=
+ =?utf-8?B?aGsyc1krbWR6UmlJTStqSGNNRTVkcUJ4K1ZLWHluaXdlZHpDbm0rU0w2Q0FB?=
+ =?utf-8?B?eEFDa3ZYOHEyenpsa0pIQWtKR1A2eGFQM05JV05NS3k5WlppampYWWFQaXdW?=
+ =?utf-8?B?azF4TGtQREFqZWQ5UFh2WDBIcE92ZGs4VWd3c3VaUENOeEVvcVNFeFdSN2U2?=
+ =?utf-8?B?Z0ZUQjRqUnEvcEVhWEhpTUNsaDVXZmdJSjQyQUJjSmxDN3plcUp5TC95MTlM?=
+ =?utf-8?B?U1pMSWZUS2pzMDMxYlA3cFpBcU5RN3dXYmswYUUvK3l0Z3pmeDlsSU80blRy?=
+ =?utf-8?B?RTd3V2JtN3YyUnBuejMxM0pkcytwWWNtU0RuVERxQjMyM2YzZmZPTWI2Tldk?=
+ =?utf-8?B?WW1pZC9TczdOSlova3pIMGxLYVF2NkFnY3V5NlZkOFhrK2QyejlYVlBYTXFE?=
+ =?utf-8?B?V0lvcGlJRTlLak5kQ2tlUlF0YjVWTTF5c3MyRmdpMTJ4R0FUaEZCV2R1bFEx?=
+ =?utf-8?B?OE00RDFHNEVrb01meDBZQmxnMVoyV3VZZGhKTEs1bXg4M2t4MllzZS93ejZs?=
+ =?utf-8?B?eVBHdHYvUTI0UTlRbzVIREljaldrcmJLWE9QSTFDVFBVYjd0VFZ2YVJHZU15?=
+ =?utf-8?B?QnpUcm1yWXdhS3dpWXNFY3F1UlVqUW42T3FtVmxyTDlMMUY5VXZGbWo2NTFy?=
+ =?utf-8?B?MUZHT1E2R2R4cSs3V2J3L0dHdzlmWXUxdjdVZ28zZ09Ra3NmRndGT3M3ZUw5?=
+ =?utf-8?B?VVgvSUp5NkxsSXFwU0tRMjhkL1FMaGdMb3JxTUNUdmVLOC94NFJjdE0yd1ho?=
+ =?utf-8?B?L3djTTRLb3F4UjhrOURtWVRxQU80SzQ2cjRocUJWbmNWOHp4NzBiL0pBY1Za?=
+ =?utf-8?B?NEdQRExndW4yVjdJS3JBUytVVDZ2MW5rRzNUNVBqS1FuZnBPeDhtZGFsT2JW?=
+ =?utf-8?B?b2tWZFllMElFQjMxLzk3MnNXWEIvNXVNV1h1U09QT3VtWlNGTGZnQnRnTTRk?=
+ =?utf-8?B?bEZPODF2eEtOd0hhS2FBQkZkbVZpR24vcHdYakErZ2pOUU0zMjArdU5xRGxR?=
+ =?utf-8?B?bDYra1VVTTFTa25FK1Jvd2NTNGZ6TWd1c0VoR3czSWd2WW9kMkREYTR0QzRu?=
+ =?utf-8?B?d2c2dnJ5QVQzNnVlRmxKSi9uOVJjZkFSSExHVUNseVo3Y1ZmM0xacEl0U0Jm?=
+ =?utf-8?Q?ompmlvQ+kbhoiPfw=3D?=
+X-Exchange-RoutingPolicyChecked: f+XPaftYLRt2y0wbbD/oJrP7qP6WJ20pcULnmBPNdR4ci2TwFHVpwcYR3MZthRQrUc7wVTzMUzATDwd1s2Ny2KWh4PKPO814+V3rghGcIZYKsmlclH+livCTPM0AUdPqAaEpVUS0pujtRyaWy6gfxjgEwKr9lhdncYz5gQ4JAl/VYiCLm9MaJETiQV0djG89RKMvJZCBr5XV3xw5m998aepSju+QuvBPVvVCcEEopsr3t8JMmp4dZaTR4xsiFJETZwxqwxv+/cHGxc/vCOwiGN/RAYSN603pN7FmBrVINhc+qoKwaTaUBgCh2xk/yiwFjQs++UClVRuOWVNUSl1zig==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71670d3e-305f-4c6c-b0fb-08df1e53cbb2
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 18:02:16.0671
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Lrn87UdkIHvXnLcESyHDweVU1ztlPCqfB8k+VIMTyGpYwASbx03jOgKJNU3y360lIEsml2gGNbTastgNtjOaqUlw0OjLlGhv3OP22mpH00s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB106965
+X-OriginatorOrg: intel.com
 
-On Tue, Sep 29, 2026 at 7:05=E2=80=AFPM Andrea Parri <parri.andrea@gmail.co=
-m> wrote:
->
-> rtnl_link_ops_get() finds ops on link_ops under rcu_read_lock() and only
-> then takes ops->srcu. rtnl_link_unregister() unlinks ops, then calls
-> synchronize_srcu() and cleanup_srcu_struct() without first waiting for
-> RCU readers. A reader that found ops before list_del_rcu() and has not ye=
-t
-> taken ops->srcu is not waited for.
->
-> Such a reader then locks a cleaned-up srcu_struct and keeps using ops
-> after the module that owns it is gone. rtnl_newlink() and
-> rtnl_dump_ifinfo() both look up ops without RTNL, the latter for any
-> user that dumps links filtered by kind.
->
-> With delays added between the lookup and srcu_read_lock() in
-> rtnl_link_ops_get(), and before rtnl_link_ops_put() in
-> rtnl_dump_ifinfo(), running "ip link show type dummy" alongside
-> "rmmod dummy" on a KASAN kernel gives:
->
->   BUG: KASAN: vmalloc-out-of-bounds in __srcu_read_unlock+0x57/0x70
->   Read of size 8 at addr ffffffffc02ff318 by task ip/147
->   Call Trace:
->    __srcu_read_unlock+0x57/0x70
->    rtnl_dump_ifinfo.cold+0x30/0x3b
->    rtnl_dumpit+0x7a/0x1b0
->    netlink_dump+0x486/0x11b0
->    __netlink_dump_start+0x661/0x910
->    rtnetlink_rcv_msg+0x611/0x9e0
->    netlink_rcv_skb+0x126/0x380
->    netlink_unicast+0x605/0x830
->    netlink_sendmsg+0x6d0/0xbb0
->    __sys_sendto+0x335/0x3a0
->
-> Call synchronize_rcu() before synchronize_srcu(), as
-> rtnl_af_unregister() already does. This should be enough because
-> rtnl_link_ops_get() is the only RCU walker of link_ops, and it takes
-> ops->srcu before rcu_read_unlock(), so every reader that found ops is
-> covered by synchronize_srcu() once the RCU grace period ends. The extra
-> grace period only costs time at module unload.
->
-> Readers and the writer were serialized by RTNL until link_ops got its
-> own mutex, which is why the missing RCU wait did not matter before.
->
-> Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
-> ---
->  net/core/rtnetlink.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> index be9d1625bac31..abcd2c4ea2178 100644
-> --- a/net/core/rtnetlink.c
-> +++ b/net/core/rtnetlink.c
-> @@ -707,6 +707,7 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
->         list_del_rcu(&ops->list);
->         mutex_unlock(&link_ops_mutex);
->
-
-Patch looks good, but I would probably add a comment here, because all
-these barriers without comments
-are a pain.
-
-/* Wait for rtnl_link_ops_get() readers that found ops but have not
-yet taken ops->srcu. */
-> +       synchronize_rcu();
-
-Adding comments for the other barriers in a future followup would be awesom=
-e.
-
->         synchronize_srcu(&ops->srcu);
->         cleanup_srcu_struct(&ops->srcu);
-
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+On 9/25/2026 6:15 AM, Przemek Kitszel wrote:
+> I'm leaning towards removing our limited (compared to OOT ADQ) support,
+> but it's outside of this series.
++1. I support removing it, but it is out of scope for this kind of series.
