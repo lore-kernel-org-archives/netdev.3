@@ -1,208 +1,165 @@
-Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A13C37A820
-	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FB43D47DA
+	for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 15:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790695882; cv=none; b=bDjDoSbdjsZEXfKleqNFs7zjlQWJOET9xRIv8YrjmAMCxwGo/Nu3rEPQzI2701nLf1+TT4131+yQVpyQhyVEWsOYeXcdlCBExrKJNVNEMVbqZB0oJeICP4vx/Zde2BKraeUdd4qq6epp0FhnRHL+iorzsdaDbSDZJO8BWDD4F0w=
+	t=1790695976; cv=none; b=lZ9Qyr9eZ30qQG84kGpqNvlE/3ejdgSmH8MFpjAahqZiOoza8rAToqbfQgmpo8scGmU3S+YsQvpI13E0MIhWplteRqX0m6ct5XSv2l9Qmu1ih+Nuqy1ge4m4Opi1EMv7LWOkrx8E/Z5dc6ajzKzkq0xcGKWJ2AWLYGFcbRa8ttM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790695882; c=relaxed/simple;
-	bh=V9lg38Vf7jZapxl1nX3JHinivXWDameN/IxWV3yotv8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bYSvIZp6aLI0dDAyfioznzkcpIIEk5QP//Utd7ChIBtDTYOPV61cm1HlSBJ2GHYkh5+NpVJ2wnQroOXq3I8ugDY7NudQd4hDT1IjuSIpLg5+9lFU11yVuQKEMTSoc5EdXNygSAVze/qMD/TB6Lpvcw4rSgRTJlx0tPiN/7/AoNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=i+oa0SA1; arc=none smtp.client-ip=74.125.228.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1790695976; c=relaxed/simple;
+	bh=sLeFLA8GyGIGzop0GUHDZ8IYvvEGGAEwQf2irwyUsL8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=RGObkz8+A7vZ3b3VA9l+pG1M3tLKbw8RtWMcGEoy8p2lnpwut77iIuhJgSLzYd4rQ6I1rMifc1QPMYIJ1NEO96OeLHtocdfWD6EfP4qmy/dikt29PrB4pfO88C98p5LZLFQK3mpLR0/VMtdhbvUSzIgV5lZv/ys4ZYdcNg7rM5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=igjh5/ye; arc=none smtp.client-ip=170.10.151.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="i+oa0SA1"
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2dbdcb4f59so455378166b.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 08:31:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1790695878; x=1791300678; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KUokiXULiB5QsBWdM9hQZjEq8BVs/Diba1IyZLK0fCQ=;
-        b=i+oa0SA1I0ql0x913EiKlVthwnGVMwsg9W40HEl7RNvJoE6krGwXeVBRjO0apYZ3BK
-         Iks52N9H6DbTTyLWmfGvNy2C435s3p0Q+FuBH/mQgHK3bwTJARWTyNPCMD68v541deBD
-         MoEjUXaw97/m0DQj7bMH8Ci7OdnzUCriUlcRfIYKk2Yxv1F6ctF+BaTuz2HZQedW7GA8
-         SP/ovagLqDK+oj6iwtBadN4/UrKJ7Ikqao3V1bOCayYobPNZWspV257mnCgr6uD/M+rY
-         IgqCdIa4xNtToaOc8RAiqhwYJ5VB4O7Rcjz9+DVzKhTiIhNkIQihHSoJgKxtG43l1Noh
-         DpOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790695878; x=1791300678;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KUokiXULiB5QsBWdM9hQZjEq8BVs/Diba1IyZLK0fCQ=;
-        b=OzYhqexJXYoLIpix67JzPkFXOx86c0flQBo8hxkhZm1JWVhs6/tLAmu/llaKauDyaA
-         xny4S59fRSCq539ZBywvwUxoQTulS+gDYmPjBqIDg9h8sUpSgetWjlp+2jTgBbkkIKOt
-         AP5synl0+JMhRH56Pzz0kwVia+2WRgY12Au6AppDgPoVSckY0H+0aiOVuyMjiFrwbw3c
-         gVfhH1ThvLw+4vQKxNBUq4yREsAUmXfbeYUGFA77VD+0+5aHPVHrY8qtkTaN/23zYe5r
-         p5FhnYKogAyRF+v3G76JemwQmQMvWdZ6m+AjI57ZKO4AtAWacFaJMauQGTuYxNvoQ1ES
-         o4nw==
-X-Forwarded-Encrypted: i=1; AKwUvBwVKOucdEUyE1za3ZkTdWm5n4UjMzGwaZM3nGFf1SkC7EFhKKJqRy81PuRdBVgfWN2WBiRcMCU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kW5RbCq7A4TzeV0eF3FkR0vY1ynbl1aGy7NlShiRd1e6GA2YFI
-	8kjDjDNUx9pFJaWGB667eSvbUn7kfH60BscdX3R5niQxSwRT+mCwWq48vIqkCVywHYcRtfaBxFC
-	IofJroDobJQ==
-X-Gm-Gg: AYBFou3kdPeWGKrV1dksA+w5BFISn4MpwbmqLHrSR/82y2kia6DAjyubZ56Ng15Rrur
-	+V7rD+TVGcilipNdKJzjukwQ/NUC0zNKUitpTS6qeGHR6NTcIwVCj9FE71Fa17HGI61hH2nPdIw
-	JAiRjTt4QQV0KNiv5FCMWCvkFq/NP0gjWhIJwLN1PJKY/yRljGgEyaJ/cOVsK3EZE1JqOHsNfdj
-	oC/+oWSarxn1UgeHXJssKuPLpE8/ni6vh7OY+n5bR/RGmmf2pP8VxUk74DG0wSfnEBjcXrlN771
-	WBbYP1AhCiVXAi9+u7zs3cyCgcmNrFHGG4blI60XcCK61ZcE/fqJqbpouBKKiFdjTH89OJDjqFi
-	zmuGSin6nSpxpFbta6uSqTnu0BIPFcDvo31h0bf5VFcQSt2GQ5ZIiWi1eFDKWuwmtqN0oUm1cQG
-	yXsC+3xTMKEFNFwkXL7VS0cYz7WbYxUbCh6ybz4M+VSBXS/Nm7uHZ/v4XLW4o4roUa2soVXZT+F
-	scUb9UuufYdIyTTDaLU+0xoeZkHJOoVltgdqXN/TeexxLCAnEzDpm+FBQBMILbRD9MF7cNz
-X-Received: by 2002:a17:907:c8c8:b0:c25:62db:772b with SMTP id a640c23a62f3a-c2ac23858f0mr1428859766b.7.1790695878179;
-        Tue, 29 Sep 2026 08:31:18 -0700 (PDT)
-Received: from smtpclient.apple (80.49.145.194.ipv4.supernova.orange.pl. [80.49.145.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e11b9b22fsm1416666b.6.2026.09.29.08.31.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Sep 2026 08:31:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="igjh5/ye"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1790695974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sLeFLA8GyGIGzop0GUHDZ8IYvvEGGAEwQf2irwyUsL8=;
+	b=igjh5/yetX5XXcV2q2n7sbzbkl0Bq/twkJVJqbgeWSTRkn6ivp/omkxkXFRqYJwBzd/JQn
+	6xKkqt53189eG7K9kA1lidG0aCkaO+XOglfZqmBfmOGsk0rfBx3Q3ksvI4E5uJIRsYnUsW
+	i5M47Q4mYavd/W6XmJOeEoPQ2WUG75x4yfTXLuQHKaM0Ccq0cM2FxCeXYyw6XnuSHaC1Xy
+	4oH8PRsvLbrVpwbgcPmM0d0zkujoOjkLZJW3qOAbPTaMeFgonPXiIiDj/MuR5q0LSN67Bq
+	3FSLRy2QFyHpTS4+x0bdvcmNGQlVpsqXjxHJ93Xs1nBZB6fxsgvMez58KRZr+Q==
+Received: from CH5PR02CU005.outbound.protection.outlook.com
+ (mail-northcentralusazon11012041.outbound.protection.outlook.com
+ [40.107.200.41]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ usb-mta-67-GWGPz-cfOp6KxYn4EEKe3Q-2; Tue, 29 Sep 2026 08:32:50 -0700
+X-MC-Unique: GWGPz-cfOp6KxYn4EEKe3Q-2
+X-Mimecast-MFC-AGG-ID: GWGPz-cfOp6KxYn4EEKe3Q_1790695967
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com (2603:10b6:610:110::22)
+ by EA8PPF6B62805CD.namprd02.prod.outlook.com (2603:10b6:30f:fff5::8cf) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Tue, 29 Sep
+ 2026 15:32:45 +0000
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e]) by CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e%4]) with mapi id 15.21.0451.026; Tue, 29 Sep 2026
+ 15:32:45 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Piergiorgio Beruto
+	<Pier.Beruto@onsemi.com>, Parthiban Veerasooran
+	<parthiban.veerasooran@microchip.com>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Richard Cochran
+	<richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Jerry Ray
+	<jerry.ray@microchip.com>, Ciprian Regus <ciprian.regus@analog.com>
+Subject: RE: [PATCH net-next v8 05/11] net: ethernet: oa_tc6: Support for
+ hardware timestamp
+Thread-Topic: [PATCH net-next v8 05/11] net: ethernet: oa_tc6: Support for
+ hardware timestamp
+Thread-Index: AQHdUCZLG/LHNk9dPU+RlNy7BUtXj7blrc2A
+Date: Tue, 29 Sep 2026 15:32:44 +0000
+Message-ID: <CH0PR02MB7867E70B791166AD5FA107A8838C2@CH0PR02MB7867.namprd02.prod.outlook.com>
+References: <20260928-s2500-mac-phy-support-v8-0-cade88cf61c2@onsemi.com>
+ <20260928-s2500-mac-phy-support-v8-5-cade88cf61c2@onsemi.com>
+In-Reply-To: <20260928-s2500-mac-phy-support-v8-5-cade88cf61c2@onsemi.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR02MB7867:EE_|EA8PPF6B62805CD:EE_
+x-ms-office365-filtering-correlation-id: 558f4a3a-8952-4a5f-7d08-08df1e3ee8b1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|38070700021|10067099003|11063799006|56012099006|4143699003|6133799003|921020|18002099003|22082099003
+x-microsoft-antispam-message-info: vMrBefLnMT4SHwZ6fC/IAggJ/Brr1yo6IX3o2jC/5r/BhKspJSKltIVZIAexwVTRjXbLfwZyv/TQOOthjzHneLWd/Z5pxsW2OxL/BNzSDODnChsM5A+Hy4QBTXTt8mgPO3BEl7nWloRTdCjfAG2a6l9PEZRXLxGSuJ8ls4u659081YIjIrToPnavseePUIBQ1VsmnXNKtwp6xMRBuEGeq8ynNyu82Eka5NHJzmH16X6DzEotjtM0BW7r70V9eoEZH5YlRxDnnTk2S/YNyZomEtYOCmDFzURIz3RKeWTi8aAJGx1HY0G+19xkCGH1/jYMN4Wxaf1K8MpIod/yjUts1U45b5yFrUc3M0xGfP9ObYLA/fk4sHIzDHEcMODzUdklH6GMkKWso4FRn4M5qET7AEHp68qxfPtgAoQMCqagSkzsIo9a9YMWptjsfyBPB9frz798/u3WQqpm10s77C0t+waFMl5xquOpp1ccA60kJpVzA79WshI5NsVNI1zLxmkBjdXCzwqSrg0bAEJct+J4gkFWVzAXKNeIIcFd10JDQbAREJ6JCtEoN5AGj49STAq+bWQzhT6ugDkde0jEiuhf0ynnIfaYLc1JCJS4mNEzCYsTiII5VAHovLqrj3XdiLJgRlR0o7MH8Y/7znB9GD7KwIgoN4x1rqYfgovfqVX1solnprl1JBIjugMx3X0+zOh2PQquV0g+SsNlIAVLedpEkuCEMNjcgh82bnJZp3P5iei8Dr4IBiJotmf8z2iJXNqI
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB7867.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(38070700021)(10067099003)(11063799006)(56012099006)(4143699003)(6133799003)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Zzlib1Q1M3g5TlBTRnd4akZmNjF5NTFhdlkwWWo4TjdNNDdWaW9mUmo2WnVC?=
+ =?utf-8?B?T2MxaENDeG0weVg5Zkg0bFE0TG9zNWpJVlllRmtjSU1reDJ3QkdHM2dxVnZw?=
+ =?utf-8?B?MnVZUE9NVWltWHgzQmx2M0hSSVFMRC83MlB3RGlIaU10di9ITjd0S1RtU1dv?=
+ =?utf-8?B?OU82UURtNEdjOEtxbnRQbVpHTmw3TlRpM1lBUDl4aVJhVXpWWENnZXRZR1Fx?=
+ =?utf-8?B?N0ZzcmJ5bytpbllDRXYzSDVOZWVnL2RZSis1Rm40alRST296RkVyTWdZbDhJ?=
+ =?utf-8?B?WWVvMmJKcmg1aitvbU5kWXMzeWFXUXdTU0pkTkhnU2VxRG9xZkJHTEE5Y0pX?=
+ =?utf-8?B?czcxbjZrL1RLSXVpUTh4ckVRNDFmayt1VHc2T1JlYXhiSnVZRnkzVFBSODhk?=
+ =?utf-8?B?aWxIeENwSW5zSTdTZTFpUWJzcldFYytCZWk2aFJZNzl2TWRLUTdUVlVWVmkz?=
+ =?utf-8?B?M2xJQ3dhQ3hiYzE2OUptRysyby9WZkdOWEdDT0xMV2xnaDBQalVaaWVUUWxO?=
+ =?utf-8?B?SjlDZTErWGo1dHdZVGk1c0lPUGlXanJaYWliOW14Z2pEcVpkOUVVTmFnMXht?=
+ =?utf-8?B?eTRmbllGM3hYZ24xVDJTYVRNUFNCZHhpdC9DMlFUTkU1MGVsUVNYditIK3Va?=
+ =?utf-8?B?Y1pIUzB3L2wydXBXdm81OEVLdUpZK1hRR0trbXFZN3V5d3BkcGZsRFE0TGdZ?=
+ =?utf-8?B?UkVsZW5ZMTZiaFBwNlpSSkJSWHVHa3dxS1A4MTZJSmZ3SEdxVE1FTkp1Tzcr?=
+ =?utf-8?B?TnB1K2N4K2FSL2JPTFBQQnhpZG5vbEN0aEMxMWdJNTBTdnpJTkZnR3QzS0ZJ?=
+ =?utf-8?B?SUtoOGpJWDZySGlVUnBhVFd6YUZHS2dTenVsZm5idEltd3lZNEhaZXQ0UVRR?=
+ =?utf-8?B?Ull0MDNQNGcvMTN3MExPdFhXSlNvcC9ROUh0VEpQYWhWaUxoVnhBRnE0MEY0?=
+ =?utf-8?B?NWp5N1FYS0t5M3Q2TEtZMmtOc0ozdVhMYXQ4WGRCNWdTYzQ5OXp5aUhPcmlj?=
+ =?utf-8?B?ei9UNmNmWUNyVmQ1QzZDU1F0eTZXNXNLNStqcGNEYlUxaWo3QlBuMWFHMXp0?=
+ =?utf-8?B?djErZ2JhSjg1RUQ3QUp5M1ZDdmtPN0VDcm5uV3ZhbUE4Z28wODBSNHltSXB0?=
+ =?utf-8?B?ZVB2aHpiNGJhWnd5MlZ4cXN3OHgyYmlCaS9qOU9UTFl5SjhqVG1FREJHbzln?=
+ =?utf-8?B?aWt3SVB6QWJIc0JlOUFacHA1QnJRSDFPOXgyci9wR1BYZUlaNGJBb015L29T?=
+ =?utf-8?B?YjZVdVlqcys5dWZoTTR1Sm5xa0ljU3Mxc3diSmQ0aE02S2lYYi9FT1diZDF2?=
+ =?utf-8?B?S0JlbW5IUTQybmZsNTRBR1VxaHBHOFlxK3hHYzRDYU5reHZpVmYzdnE4VVl0?=
+ =?utf-8?B?UWtGV2taYnZLNlk0T1RtS0taWmk0RmVNQy8vMnUxMmpieEc4RCtha3A0Mndt?=
+ =?utf-8?B?RG9BYzZWSXBlN2FtaGRoOGVNNzQ2SHpqSU5TMzByWGphMHZqUzJNaHU0eXFj?=
+ =?utf-8?B?QVh6bnhoRGpCbUxMaHFFVEhoWmNVQ2JjTm9QKzM5R0crNDVtYk9NeG1UbmJM?=
+ =?utf-8?B?UE92N05JaXZLaWNjUHpHWFpDN0wyeGVRZWN3UjRZOWNiSmhYcU9zcVg5bXVm?=
+ =?utf-8?B?OUxaaFRUOW5XR2I5TnlmMU96ek5odHZad1B5Y0prR3oxcXZkMmNmOXg1OFFI?=
+ =?utf-8?B?U09qRW82ODFtZjUzbVNUK0xSSVBQeEFiN01RQTIvMmlNUEZRdEJNbTlSMWRK?=
+ =?utf-8?B?dUJWcml3NzJ6WVdlcktoZ3ZXcTdHZ3ZHMDRDeUpETllhUnlQMld0bWNRVmhx?=
+ =?utf-8?B?cTNwazFGVFQ5M1NGYWFkaDZyMWFzY3R4N1l6U0dJTXlmNmN3alJucWQ1TEEx?=
+ =?utf-8?B?UU1JRlFCSnV5dkNxa2JLLzFLbFlWREFtRUJtVmhTb3h1UWdpSzMwVzFvaUE1?=
+ =?utf-8?B?cm1KanFpdlpHQlZpNVg0MkJWUFBCTGZWZ1dxK2NQdVJDeVBkWUIvVkJ0eVZ6?=
+ =?utf-8?B?bVJydE9JUXo3eWdyalV1Y3Q5dS9HaDNjMzF0UTNjQXE2bHVCQi9jcXYxL2ZT?=
+ =?utf-8?B?Z0grbi9YeEM1RDI2R2pqa2Npa3JRaVZsY2d0V0ZZSVZOZ2F3UWFreUhzQ1lL?=
+ =?utf-8?B?VDZpdlVTVUlvdFpYUDVhWkRlY1k0LzVMUndEaC9obW1aMmZWK21JampncGtG?=
+ =?utf-8?B?OVlLLzNnN21mSEo5WDZ6bm1WL3hTQ2JqMk4zSnNhL2JKbHpwNDRkbDUxY3RB?=
+ =?utf-8?B?UC9oMGZhaVN5NngxZEZralh0S3BiL1hyTWNEd1pVbnZKQ29Kd3Q0ZGhZcTBY?=
+ =?utf-8?B?RDFlczVUblBlUWkvdVFNakZvQzk3SjZ4MklyUlFiSG5rdWxkY1l2cXZMdUtJ?=
+ =?utf-8?Q?7DDsuqJ9BlcHbTyo=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH net] soreuseport: Fix use-after-free when a socket is
- added to socks[] twice
-From: Norbert Szetei <norbert@doyensec.com>
-In-Reply-To: <20260928174546.4022833-1-kuniyu@google.com>
-Date: Tue, 29 Sep 2026 17:30:57 +0200
-Cc: daniel@iogearbox.net,
- davem@davemloft.net,
- edumazet@kernel.org,
- horms@kernel.org,
- kuba@kernel.org,
- linux-kernel@vger.kernel.org,
- martin.lau@linux.dev,
- netdev@vger.kernel.org,
- pabeni@redhat.com,
- willemb@google.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E620A4AC-8FC3-437D-AE14-31D50C7E2007@doyensec.com>
-References: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
- <20260928174546.4022833-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: OTvxisO9MAxFs2Ocqw0drKEIBUmr+gy/NPcfQOksHLyksJ7zJmpR6X2wKysvQhsmMKe9jz6kM/C9KzzF7XIKQ25f0notovks2nKXHmSYkkA35irLg04b8Ix6ELz0/16jgjSENCtG1jv6q62I3B5JWYnLheop4eTmnwM7/ynLeV56eYo7bta3ITRIYHx4qNrbygvLiaYmuvT0tVX/ocsNPQtsAukqKKhn/th3H5jgkjm/BOZ3lge6+WCMRmpwVO20B7IKdMaubPIuNV6hZ1Gqxr+o+WcZTAI+wVjX7VAtlHvILIRIL+HcDKs5HKnnAQluRy4xjZ9OJliLjsR6qGw4EQ==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB7867.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 558f4a3a-8952-4a5f-7d08-08df1e3ee8b1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2026 15:32:45.0054
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kzNs+1IKz4CA0NwP2okAYiGvOl781J57GIzw50Adm98y2GhPfaYXDvPngDml9sPd7pUhP87Y8PA2Seeh0wkdTqZP7Z5sEJ+YiL6fLwDouOk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: EA8PPF6B62805CD
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IliBJuzXbPKHC2sM5sjTm6HCraM_Mu8vCeaUtZ2e9Ew_1790695967
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Sep 28, 2026, at 19:45, Kuniyuki Iwashima <kuniyu@google.com> wrote:
-> This has long been a known problem, and I think it's time
-> to fix it instead of working around it:
->=20
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 2948dffcc3e1..a33cdf99368d 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1324,6 +1324,8 @@ int sk_setsockopt(struct sock *sk, int level, =
-int optname,
-> case SO_REUSEPORT:
-> if (valbool && !sk_is_inet(sk))
-> ret =3D -EOPNOTSUPP;
-> + else if (!valbool && rcu_access_pointer(sk->sk_reuseport_cb))
-> + ret =3D -EBUSY;
-> else
-> sk->sk_reuseport =3D valbool;
-> break;
-
-Thanks for the suggestion. I tested it with my sock_reuseport.c change =
-dropped
-and I was not able to reproduce the issue, and migration and resurrect =
-still
-work.
-
-One question before I send it as v2 with Suggested-by: you, unless you
-would rather post it yourself.
-
-Should the check be restricted to TCP?
-
-	else if (!valbool && sk->sk_protocol =3D=3D IPPROTO_TCP &&
-		 rcu_access_pointer(sk->sk_reuseport_cb))
-		ret =3D -EBUSY;
-
-
-The closed section only exists for TCP, so TCP is the only protocol =
-where
-clearing the flag leads to the double add. With the check as it is, a =
-bound
-UDP socket also starts getting EBUSY from setsockopt(SO_REUSEPORT, 0).
-
-N.
-
->> Clearing it between shutdown() and listen() makes that listen() skip
->> reuseport_add_sock(), and with it reuseport_resurrect(), so the =
-socket is
->> hashed as a listener while it is still in the closed section. On the =
-next
->> shutdown() __reuseport_detach_sock() does not find it in the =
-listening
->> section, returns false, and __reuseport_add_closed_sock() adds a =
-second
->> copy of it to socks[].
->>=20
->> sk_destruct() calls reuseport_detach_sock(), which removes one of the =
-two
->> entries. reuseport_grow() then dereferences the other one, because =
-its
->> loop runs over every slot up to reuse->max_socks:
->>=20
->>  BUG: KASAN: slab-use-after-free in reuseport_grow =
-(net/core/sock_reuseport.c:291)
->>  Write of size 8 at addr ffff888132359988 by task poc/621
->>=20
->>   reuseport_grow (net/core/sock_reuseport.c:291)
->>   reuseport_add_sock (net/core/sock_reuseport.c:350)
->>   inet_hash (net/ipv4/inet_hashtables.c:810)
->>   inet_csk_listen_start (net/ipv4/inet_connection_sock.c:1359)
->>   __inet_listen_sk (net/ipv4/af_inet.c:225)
->>   inet_listen (net/ipv4/af_inet.c:247)
->>   __sys_listen (net/socket.c:2014)
->>=20
->>  Allocated by task 621:
->>   sk_prot_alloc (net/core/sock.c:2246)
->>   sk_alloc (net/core/sock.c:2308)
->>   inet_create (net/ipv4/af_inet.c:333)
->>=20
->>  Freed by task 0:
->>   slab_free_after_rcu_debug (mm/slub.c:6570)
->>   rcu_core (kernel/rcu/tree.c:2919)
->>=20
->>  The buggy address is located 904 bytes inside of
->>   freed 2624-byte region [ffff888132359600, ffff88813235a040)
->>=20
->> Only move the socket to the closed section when =
-__reuseport_detach_sock()
->> reports that it was removed from the listening section.
->>=20
->> Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport =
-group.")
->> Assisted-by: LLM
->> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
->> ---
->> net/core/sock_reuseport.c | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
->> index 29948cb44b7d..031b641be317 100644
->> --- a/net/core/sock_reuseport.c
->> +++ b/net/core/sock_reuseport.c
->> @@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
->> */
->> bpf_sk_reuseport_detach(sk);
->>=20
->> - __reuseport_detach_sock(sk, reuse);
->> - __reuseport_add_closed_sock(sk, reuse);
->> + if (__reuseport_detach_sock(sk, reuse))
->> + __reuseport_add_closed_sock(sk, reuse);
->>=20
->> spin_unlock_bh(&reuseport_lock);
->> return;
->> --=20
->> 2.55.0
->>=20
+QWRkaW5nIEFuYWxvZydzIGVuZ2luZWVyIHRvIHRoZSBjYyBsaXN0IGFzIGFkaS9LY29uZmlnIGlz
+IGNoYW5nZWQgYW5kIC0tYXV0by10by1jYyBvcHRpb24gbWlzc2VkIGl0LiANCg0KU2luY2VyZWx5
+DQpTZWx2YQ0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFNlbHZhbWFu
+aSBSYWphZ29wYWwgdmlhIEI0IFJlbGF5DQo+IDxkZXZudWxsK1NlbHZhbWFuaS5SYWphZ29wYWwu
+b25zZW1pLmNvbUBrZXJuZWwub3JnPg0KPiBTdWJqZWN0OiBbUEFUQ0ggbmV0LW5leHQgdjggMDUv
+MTFdIG5ldDogZXRoZXJuZXQ6IG9hX3RjNjogU3VwcG9ydCBmb3IgaGFyZHdhcmUNCj4gdGltZXN0
+YW1wDQo+IA0KPiAtLS0NCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9h
+ZGkvS2NvbmZpZyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2FkaS9LY29uZmlnDQo+IGluZGV4IGJk
+YjhmZjdkMTVkYS4uMTIwYTUyZTZiMjgzIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhl
+cm5ldC9hZGkvS2NvbmZpZw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9hZGkvS2NvbmZp
+Zw0KPiBAQCAtMjksNiArMjksNyBAQCBjb25maWcgQURJTjExMTANCj4gY29uZmlnIEFESU4xMTQw
+DQo+IHRyaXN0YXRlICJBbmFsb2cgRGV2aWNlcyBBRElOMTE0MCBNQUMtUEhZIg0KPiBkZXBlbmRz
+IG9uIFNQSQ0KPiArIGRlcGVuZHMgb24gUFRQXzE1ODhfQ0xPQ0tfT1BUSU9OQUwNCj4gc2VsZWN0
+IEFESU4xMTQwX1BIWQ0KPiBzZWxlY3QgT0FfVEM2DQo+IGhlbHANCg0K
 
