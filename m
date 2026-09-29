@@ -1,990 +1,338 @@
-Received: from out28-146.mail.aliyun.com (out28-146.mail.aliyun.com [115.124.28.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FF23921CE;
-	Tue, 29 Sep 2026 02:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5279131B80E;
+	Tue, 29 Sep 2026 02:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790650490; cv=none; b=R0ExY7676F8OowwNvBxRt3Wsgtt7qQHOtURw/f/QMgwBUYn0330cR6iCHsKfGx4uDsbnAsz+6dQPDd1INSghroSjB8U8CeBRAjPGVeW79i3Ypc1rXON6sde238OceSu9B80b/5mN/B1gIx7+Q7jGjQYRIxT02WI+Q97jEsCeNaU=
+	t=1790650570; cv=none; b=AuXX+KjAARTNG/5Zw7p7IhGF3zbsN2MTogmNntMqre2JIvV9WDXsEtPQ1duiA/s/7gdVXo2P/YIORKQnz320gg7wxyUldZ9FHcGWe9YJqlISmBr8tGKvmjDbOY9JnkkhZLs3Fc22g8AyTNoc8hvyjpfbjfpguXgIyl0oqD5cLAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790650490; c=relaxed/simple;
-	bh=thDYtSTOH8f5otSz4ytOfNCcUUs3ELBRF/OCp+tFRjE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=umODiEGaci5RDzjQx1l2idizzoRUELcuvBjbS8m9UNqITTtv1s8phN4m7xpcH1ZILwVoGxOcAfWx3kcThGsYC4DC2G9Yxgn7DFN+w5lByraWGb1TWvMaKDmGfJGLluUmIEZPG2xU7/wldAMPINu20wlOIQc22MPF7YqzWiWN/5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00656783-0.000155977-0.993276;FP=15149968790364177062|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jQghbxG_1790650471;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jQghbxG_1790650471 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 10:54:32 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mmyangfl@gmail.com,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com,
-	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v10 7/7] net: dsa: motorcomm: Add support for Motorcomm YT922x
-Date: Tue, 29 Sep 2026 10:54:14 +0800
-Message-Id: <20260929025414.313641-9-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260929025414.313641-1-kyle.switch@motor-comm.com>
-References: <20260929025414.313641-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1790650570; c=relaxed/simple;
+	bh=dmYJJdSoHJE3/XiWHK0jVWRPBLPPnX7KIaCceg1r/wM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u3WO+NtS5oOs4N2m/P01buhhfWEwi8zdRlL25gozMHhT3oSxQ2GhMx1tWav1CjBDd//9vFq5wVgoYplVWGE+C2/l03qswnK8udNCrOR3wG12X18xCSrhWEhzS8dK4N5UczHx5McBxToZYV/h5LVOTbWh63U1sBZX4iZM79t/ROA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzyaz6jk; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzyaz6jk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372751F000FF;
+	Tue, 29 Sep 2026 02:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790650568;
+	bh=SHNXDUXvSXm4T3Cq9+zcM3UyGNmTbskniHyZCxLC9Tw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lzyaz6jkZ3vDPqYK31OKYdtVyhoLHwgpOco7PX0T5SyqkPp2nxV8dobq7JOKi6LyG
+	 ViPqtiNZ+wa6rUbLtyuQV8cLXfa3DJHd8Z2GWZR7w4iCEuYjVfULJ5e1TGeLH5cZeJ
+	 CMEEgBhMc2AGkoarxY7TUOKa2F5KSJ87EQjdI5uPIeqqh7fYcaeJexHZCfFhFqbKc/
+	 jKbEg9vssuO3qSg8z90oC30+CUdNLqZyBKnJrDlt/KR8d7c+KQKke/1L/tg1cMwwaF
+	 OhBxr3XRxDSZ8R51DH2gMvrltxJbbw8kSIlqPqd/bHP3Wlt4eCd92VO3hbhMuOWJyW
+	 vK7uQsRrHf8eQ==
+Subject:
+ Re: [PATCH net] nfc: llcp: prevent resource leak on repeated connect after DM
+From: netdev-bot+sashiko@kernel.org
+To: qwe.aldo@gmail.com
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
+Date: Tue, 29 Sep 2026 02:56:07 +0000
+Message-ID: <179065056776.434549.8549444326582262010@kernel.org>
+In-Reply-To: <20260925023527.3065197-1-qwe.aldo@gmail.com>
+References: <20260925023527.3065197-1-qwe.aldo@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add support for Motorcomm YT922X, which is series of
-ethernet switches developed by Motorcomm Electronic
-Technology, includes YT9224 and YT9228.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-This patch only adds support for the YT9224 variant.
-YT9228 is not supported yet.
+Critical: 1 (1) · High: 2 (1) · Medium: 1 · Low: 0
 
-This patch adds basic support for a working DSA switch,
-includes .port_setup, .setup, .phylink_get_caps,
-.get_tag_protocol.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
----
- drivers/net/dsa/motorcomm/Kconfig    |   7 +-
- drivers/net/dsa/motorcomm/Makefile   |   1 +
- drivers/net/dsa/motorcomm/chip.c     | 453 ++++++++++++++++++++++++++-
- drivers/net/dsa/motorcomm/chip.h     |  91 ++++++
- drivers/net/dsa/motorcomm/mdio_bus.c |  39 +++
- drivers/net/dsa/motorcomm/mdio_bus.h |   2 +
- drivers/net/dsa/motorcomm/pcs-922x.c | 173 ++++++++++
- drivers/net/dsa/motorcomm/pcs.h      |   1 +
- 8 files changed, 762 insertions(+), 5 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/pcs-922x.c
+- [Critical] In llcp_sock_connect() (net/nfc/llcp_sock.c:718-733), the
+  new cleanup block calls nfc_put_device(llcp_sock->dev) whenever the…
+- [High] The fix releases the resources a DM-rejected connect leaves
+  behind only when userspace calls connect() again.
+- [High] The new cleanup block in llcp_sock_connect()
+  (llcp_sock.c:718-733) sets llcp_sock->local and llcp_sock->dev to NULL…
+- [Medium] The new cleanup block in llcp_sock_connect()
+  (llcp_sock.c:718-733) releases the SSAP, drops the local reference and…
 
-diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
-index 79cdd79a1fd2..648c49d6c527 100644
---- a/drivers/net/dsa/motorcomm/Kconfig
-+++ b/drivers/net/dsa/motorcomm/Kconfig
-@@ -1,11 +1,12 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config NET_DSA_YT921X
--	tristate "Motorcomm YT9215 ethernet switch chip support"
-+	tristate "Motorcomm YT9215 and YT9224 ethernet switch chip support"
- 	select NET_DSA_TAG_YT921X
-+	select NET_DSA_TAG_YT922X
- 	select NET_IEEE8021Q_HELPERS if DCB
- 	help
--	  This enables support for the Motorcomm YT9215 ethernet switch
--	  chip.
-+	  This enables support for the Motorcomm YT9215 and YT9224
-+	  ethernet switch chip.
- 
- config NET_DSA_YT921X_LEDS
- 	bool "LED support for Motorcomm YT9215"
-diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
-index 1d2c1b3064c4..d1cd7c8a3852 100644
---- a/drivers/net/dsa/motorcomm/Makefile
-+++ b/drivers/net/dsa/motorcomm/Makefile
-@@ -3,5 +3,6 @@ obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
- yt921x-objs := chip.o
- yt921x-$(CONFIG_NET_DSA_YT921X_LEDS) += leds.o
- yt921x-objs += mdio_bus.o
-+yt921x-objs += pcs-922x.o
- yt921x-objs += pcs-921x.o
- yt921x-objs += smi.o
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 9380d74d79ba..f7ba5ded4365 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-- * Driver for Motorcomm YT921x Switch
-+ * Driver for Motorcomm YT921x and YT922x Switch
-  *
-  * Should work on YT9213/YT9214/YT9215/YT9218, but only tested on YT9215+SGMII,
-  * be sure to do your own checks before porting to another chip.
-@@ -141,6 +141,18 @@ static const struct yt921x_info yt921x_infos[] = {
- 		BIT(8) | BIT(9),
- 		BIT(8) | BIT(9),
- 	},
-+	{
-+		"YT9224", YT9224_MAJOR, 0, 0,
-+		GENMASK_U16(7, 4),
-+		0,
-+		BIT(8) | BIT(9),
-+	},
-+	{
-+		"YT9228", YT9224_MAJOR, 0, 0,
-+		GENMASK_U16(7, 4),
-+		0,
-+		BIT(8) | GENMASK_U16(3, 0),
-+	},
- 	{}
- };
- 
-@@ -3932,6 +3944,11 @@ static void yt921x_dsa_teardown(struct dsa_switch *ds)
- 	}
- }
- 
-+static bool yt921x_needs_extmode_check(u32 major)
-+{
-+	return (major == YT9224_MAJOR) ? false : true;
-+}
-+
- static int yt921x_chip_detect(struct yt921x_priv *priv)
- {
- 	struct device *dev = to_device(priv);
-@@ -3957,6 +3974,9 @@ static int yt921x_chip_detect(struct yt921x_priv *priv)
- 		return -ENODEV;
- 	}
- 
-+	if (!yt921x_needs_extmode_check(major))
-+		goto skip_extmode_check;
-+
- 	res = yt921x_reg_read(priv, YT921X_CHIP_MODE, &mode);
- 	if (res)
- 		return res;
-@@ -3996,6 +4016,14 @@ static int yt921x_chip_detect(struct yt921x_priv *priv)
- 
- 	priv->info = info;
- 
-+	return 0;
-+
-+skip_extmode_check:
-+	dev_info(dev,
-+		 "Motorcomm %s ethernet switch, chipid: 0x%x\n",
-+		 info->name, chipid);
-+	priv->info = info;
-+
- 	return 0;
- }
- 
-@@ -4411,6 +4439,412 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
- 	.setup			= yt921x_dsa_setup,
- };
- 
-+static int yt922x_port_down(struct yt921x_priv *priv, int port)
-+{
-+	u32 mask;
-+	int res;
-+
-+	/* mac force down */
-+	mask = YT922X_PORT_LINK | YT922X_PORT_RX_MAC_EN |
-+	YT922X_PORT_TX_MAC_EN | YT922X_PORT_LINK_AN;
-+	res = yt921x_reg_clear_bits(priv, YT922X_PORTn_CTRL(port), mask);
-+	if (res)
-+		return res;
-+	/* Need force op to make soft configuration effective */
-+	mask = YT922X_PORT_FORCE_OP;
-+	res = yt921x_reg_set_bits(priv, YT922X_PORTn_CTRL(port), mask);
-+	if (res)
-+		return res;
-+
-+	/* disable en_phy */
-+	res = yt921x_reg_clear_bits(priv, YT922X_EN_PHY_VALUE, BIT(port));
-+	if (res)
-+		return res;
-+	res = yt921x_reg_set_bits(priv, YT922X_EN_PHY_OVERWRITE, BIT(port));
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+static void
-+yt922x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
-+			     phy_interface_t interface)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
-+	int port = dp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt922x_port_down(priv, port);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dp->ds->dev, "Failed to %s port %d: %i\n", "bring down",
-+			port, res);
-+}
-+
-+static int
-+yt922x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
-+	       phy_interface_t interface, int speed, int duplex,
-+	       bool tx_pause, bool rx_pause)
-+{
-+	int ps = ethtool_speed_to_yt921x(speed);
-+	u32 mask;
-+	u32 ctrl;
-+	int res;
-+
-+	if (ps == YT921X_SPEED_INVALID)
-+		return -EINVAL;
-+	ctrl |= ps;
-+
-+	if (duplex == DUPLEX_FULL)
-+		ctrl |= YT922X_PORT_DUPLEX_FULL;
-+	if (tx_pause)
-+		ctrl |= YT922X_PORT_TX_PAUSE;
-+	if (rx_pause)
-+		ctrl |= YT922X_PORT_RX_PAUSE;
-+	ctrl |= YT922X_PORT_RX_MAC_EN | YT922X_PORT_TX_MAC_EN |
-+			YT922X_PORT_CFG_TX_EN | YT922X_PORT_LINK |
-+			YT922X_PORT_CFG_RX_EN;
-+	ctrl &= ~(YT922X_PORT_FC_AN | YT922X_PORT_LINK_AN);
-+	res = yt921x_reg_write(priv, YT922X_PORTn_CTRL(port), ctrl);
-+	if (res)
-+		return res;
-+
-+	/* force op */
-+	mask = YT922X_PORT_FORCE_OP;
-+	res = yt921x_reg_set_bits(priv, YT922X_PORTn_CTRL(port), mask);
-+	if (res)
-+		return res;
-+
-+	/* enable en_phy */
-+	res = yt921x_reg_set_bits(priv, YT922X_EN_PHY_VALUE, BIT(port));
-+	if (res)
-+		return res;
-+	res = yt921x_reg_set_bits(priv, YT922X_EN_PHY_OVERWRITE, BIT(port));
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+static void
-+yt922x_phylink_mac_link_up(struct phylink_config *config,
-+			   struct phy_device *phydev, unsigned int mode,
-+			   phy_interface_t interface, int speed, int duplex,
-+			   bool tx_pause, bool rx_pause)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
-+	int port = dp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt922x_port_up(priv, port, mode, interface, speed, duplex,
-+			     tx_pause, rx_pause);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dp->ds->dev, "Failed to %s port %d: %i\n", "bring up",
-+			port, res);
-+}
-+
-+static void
-+yt922x_phylink_mac_config(struct phylink_config *config, unsigned int mode,
-+			  const struct phylink_link_state *state)
-+{
-+}
-+
-+static struct phylink_pcs *
-+yt922x_phylink_mac_select_pcs(struct phylink_config *config,
-+			      phy_interface_t interface)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+	case PHY_INTERFACE_MODE_USXGMII:
-+		return &priv->ports[dp->index].pcs;
-+
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+static const struct phylink_mac_ops yt922x_phylink_mac_ops = {
-+	.mac_select_pcs = yt922x_phylink_mac_select_pcs,
-+	.mac_link_down = yt922x_phylink_mac_link_down,
-+	.mac_link_up = yt922x_phylink_mac_link_up,
-+	.mac_config = yt922x_phylink_mac_config,
-+};
-+
-+static enum dsa_tag_protocol
-+yt922x_dsa_get_tag_protocol(struct dsa_switch *ds, int port,
-+			    enum dsa_tag_protocol m)
-+{
-+	return DSA_TAG_PROTO_YT922X;
-+}
-+
-+static void
-+yt922x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
-+			    struct phylink_config *config)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	const struct yt921x_info *info = priv->info;
-+
-+	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
-+				   MAC_10 | MAC_100 | MAC_1000;
-+
-+	if (info->internal_mask & BIT(port)) {
-+		/* port 4 to port 7, internal utp */
-+		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
-+			  config->supported_interfaces);
-+		config->mac_capabilities |= MAC_2500FD;
-+	}
-+	if (info->serdes_mask & BIT(port)) {
-+		/* serdes */
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  config->supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  config->supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  config->supported_interfaces);
-+		config->mac_capabilities |= MAC_2500FD;
-+		__set_bit(PHY_INTERFACE_MODE_USXGMII,
-+			  config->supported_interfaces);
-+		config->mac_capabilities |= MAC_5000FD;
-+		config->mac_capabilities |= MAC_10000FD;
-+	}
-+}
-+
-+static int yt922x_port_setup(struct yt921x_priv *priv, int port)
-+{
-+	struct dsa_switch *ds = &priv->ds;
-+	u32 mask;
-+	u32 ctrl;
-+	int res;
-+
-+	/* enable user port isolation and disable fdb learning */
-+	ctrl = ~priv->cpu_ports_mask;
-+	res = yt921x_reg_write(priv, YT922X_PORTn_ISOLATION(port), ctrl);
-+	if (res)
-+		return res;
-+
-+	mask = YT922X_PORT_LEARN_DIS;
-+	res = yt921x_reg_set_bits(priv, YT922X_PORTn_LEARN(port), mask);
-+	if (res)
-+		return res;
-+
-+	if (dsa_is_cpu_port(ds, port)) {
-+		ctrl = ~(u32)0;
-+		res = yt921x_reg_write(priv, YT922X_PORTn_ISOLATION(port),
-+				       ctrl);
-+		if (res)
-+			return res;
-+	}
-+
-+	return 0;
-+}
-+
-+static int yt922x_dsa_port_setup(struct dsa_switch *ds, int port)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt922x_port_setup(priv, port);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int yt922x_cpu_tag_mode_set_8b(struct yt921x_priv *priv)
-+{
-+	u32 val;
-+	u32 val1;
-+	int res;
-+
-+	/* cpu tag mode set to 8b */
-+	res = yt921x_reg_read(priv, YT922X_CPU_TAG_RX_CTRL, &val);
-+	if (res)
-+		return res;
-+	res = yt921x_reg_read(priv, YT922X_CPU_TAG_TX_CTRL, &val1);
-+	if (res)
-+		return res;
-+	val &= ~YT922X_CPU_TAG_RX_MODE;
-+	val1 &= ~YT922X_CPU_TAG_TX_MODE;
-+	val1 &= ~YT922X_CPU_TAG_TX_TYPE;
-+	res = yt921x_reg_write(priv, YT922X_CPU_TAG_RX_CTRL, val);
-+	if (res)
-+		return res;
-+	res = yt921x_reg_write(priv, YT922X_CPU_TAG_TX_CTRL, val1);
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+static int yt922x_cpu_port_set(struct yt921x_priv *priv)
-+{
-+	struct dsa_switch *ds = &priv->ds;
-+	u32 ctrl;
-+	int res;
-+
-+	/* cpu tag mode */
-+	res = yt922x_cpu_tag_mode_set_8b(priv);
-+	if (res)
-+		return res;
-+
-+	/* Enable DSA */
-+	priv->cpu_ports_mask = dsa_cpu_ports(ds);
-+	ctrl = YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN |
-+	       YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
-+	res = yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
-+	if (res)
-+		return res;
-+
-+	/* Setup software switch */
-+	ctrl = YT922X_CPU_COPY_TO_EXT_CPU;
-+	res = yt921x_reg_write(priv, YT922X_CPU_COPY, ctrl);
-+	if (res)
-+		return res;
-+
-+	return res;
-+}
-+
-+static int yt922x_chip_setup_dsa(struct yt921x_priv *priv)
-+{
-+	unsigned long cpu_ports_mask;
-+	u32 ctrl;
-+	int port;
-+	int res;
-+
-+	/* cpu port set */
-+	res = yt922x_cpu_port_set(priv);
-+	if (res)
-+		return res;
-+
-+	ctrl = GENMASK_U32(8, 0);
-+	res = yt921x_reg_write(priv, YT922X_FILTER_UNK_UCAST, ctrl);
-+	if (res)
-+		return res;
-+
-+	ctrl = 0;
-+	for (int i = 0; i < priv->series->max_ports; i++)
-+		ctrl |= YT922X_ACT_UNK_ACTn_TRAP(i);
-+	cpu_ports_mask = priv->cpu_ports_mask;
-+	for_each_set_bit(port, &cpu_ports_mask, priv->series->max_ports) {
-+		ctrl &= ~YT922X_ACT_UNK_ACTn_M(port);
-+		ctrl |= YT922X_ACT_UNK_ACTn_DROP(port);
-+	}
-+	res = yt921x_reg_write(priv, YT922X_ACT_UNK_UCAST, ctrl);
-+	if (res)
-+		return res;
-+	res = yt921x_reg_write(priv, YT922X_ACT_UNK_MCAST, ctrl);
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+static int yt922x_chip_setup(struct yt921x_priv *priv)
-+{
-+	u32 ctrl;
-+	int res;
-+
-+	ctrl = YT922X_FUNC_MIB | YT922X_FUNC_ACL;
-+	res = yt921x_reg_set_bits(priv, YT921X_FUNC, ctrl);
-+	if (res)
-+		return res;
-+
-+	res = yt922x_chip_setup_dsa(priv);
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+static void yt922x_pcs_setup(struct dsa_switch *ds)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	const struct yt921x_info *info = priv->info;
-+	unsigned long mask;
-+	int port;
-+
-+	mask = info->serdes_mask;
-+	for_each_set_bit(port, &mask, priv->series->max_ports) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+
-+		pp->pcs.ops = &yt922x_phylink_pcs_ops;
-+		pp->pcs.poll = true;
-+
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_USXGMII,
-+			  pp->pcs.supported_interfaces);
-+	}
-+}
-+
-+static int yt922x_dsa_setup(struct dsa_switch *ds)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	struct device *dev = to_device(priv);
-+	struct device_node *np = dev->of_node;
-+	struct device_node *child;
-+	int res;
-+
-+	/*  ports index init */
-+	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
-+		struct yt921x_port *pp = &priv->ports[i];
-+
-+		pp->index = i;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_chip_reset(priv);
-+	mutex_unlock(&priv->reg_lock);
-+	if (res)
-+		return res;
-+
-+	/* Register the internal mdio bus. */
-+	child = of_get_child_by_name(np, "mdio");
-+	if (child) {
-+		res = yt921x_mbus_int_init(priv, child);
-+		of_node_put(child);
-+		if (res)
-+			return res;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt922x_chip_setup(priv);
-+	mutex_unlock(&priv->reg_lock);
-+	if (res)
-+		return res;
-+
-+	/* switch sds pcs setup */
-+	yt922x_pcs_setup(ds);
-+
-+	return 0;
-+}
-+
-+static const struct dsa_switch_ops yt922x_dsa_switch_ops = {
-+	/* port */
-+	.get_tag_protocol = yt922x_dsa_get_tag_protocol,
-+	.phylink_get_caps = yt922x_dsa_phylink_get_caps,
-+	.port_setup  = yt922x_dsa_port_setup,
-+	/* chip */
-+	.setup   = yt922x_dsa_setup,
-+};
-+
- static const struct yt92xx_series yt92xx_series_table[] = {
- 	[YT92XX_MODE_YT921X] = {
- 		.name = "YT921x",
-@@ -4423,12 +4857,25 @@ static const struct yt92xx_series yt92xx_series_table[] = {
- 		.switch_ops = &yt921x_dsa_switch_ops,
- 		.mac_ops = &yt921x_phylink_mac_ops
- 	},
-+	[YT92XX_MODE_YT922X] = {
-+		.name = "YT922x",
-+		.max_ports = YT922X_PORT_NUM,
-+		.num_lag_ids = YT922X_LAG_NUM,
-+		.ageing_time_min = 1 * 6000,
-+		.ageing_time_max = U16_MAX * 6000,
-+		.dscp_prio_mapping_is_global = true,
-+		.assisted_learning_on_cpu_port = true,
-+		.switch_ops = &yt922x_dsa_switch_ops,
-+		.mac_ops = &yt922x_phylink_mac_ops,
-+	},
- };
- 
- static const struct yt92xx_series *yt92xx_series_lookup(u32 major)
- {
- 	if (major == YT9215_MAJOR || major == YT9218_MAJOR)
- 		return &yt92xx_series_table[YT92XX_MODE_YT921X];
-+	else if (major == YT9224_MAJOR)
-+		return &yt92xx_series_table[YT92XX_MODE_YT922X];
- 	else
- 		return NULL;
- }
-@@ -4547,6 +4994,7 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- 
- static const struct of_device_id yt921x_of_match[] = {
- 	{ .compatible = "motorcomm,yt9215" },
-+	{ .compatible = "motorcomm,yt9224" },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, yt921x_of_match);
-@@ -4564,5 +5012,6 @@ static struct mdio_driver yt921x_mdio_driver = {
- mdio_module_driver(yt921x_mdio_driver);
- 
- MODULE_AUTHOR("David Yang <mmyangfl@gmail.com>");
--MODULE_DESCRIPTION("Driver for Motorcomm YT921x Switch");
-+MODULE_AUTHOR("Kyle Switch <kyle.switch@motor-comm.com>");
-+MODULE_DESCRIPTION("Driver for Motorcomm YT921x and YT922x Switch");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 69176995090a..f11d19ba79b5 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -812,6 +812,7 @@ enum yt921x_fdb_entry_status {
- 
- #define YT9215_MAJOR	0x9002
- #define YT9218_MAJOR	0x9001
-+#define YT9224_MAJOR	0x9004
- 
- /* required for a hard reset */
- #define YT921X_RST_DELAY_US	10000
-@@ -833,6 +834,96 @@ enum yt921x_fdb_entry_status {
- 
- #define YT921X_NAME	"yt921x"
- 
-+/* yt922x register lists */
-+#define YT92XX_PAGE_SELECT	0x1e
-+#define YT92XX_PAGE		0x1f
-+#define YT922X_PORTn_STATUS(port)	(0x80200 + 4 * (port))
-+#define  YT922X_PORT_LINK_STATE			BIT(8)
-+#define  YT922X_PORT_LINK_DUPLEX		BIT(7)
-+#define  YT922X_PORT_RX_FC_EN			BIT(6)
-+#define  YT922X_PORT_TX_FC_EN			BIT(5)
-+#define YT922X_PORT_SPEED_10		0
-+#define YT922X_PORT_SPEED_100		1
-+#define YT922X_PORT_SPEED_1000		2
-+#define YT922X_PORT_SPEED_10000		3
-+#define YT922X_PORT_SPEED_2500		4
-+#define YT922X_PORT_SPEED_5000		5
-+#define YT922X_EN_PHY_OVERWRITE		(0x80040)
-+#define YT922X_EN_PHY_VALUE		(0x8003c)
-+/* CTRL: force op to make soft configuration effective */
-+#define YT922X_PORTn_CTRL(port)		(0x80080 + 4 * (port))
-+#define  YT922X_PORT_FORCE_OP			BIT(14)
-+#define  YT922X_PORT_CFG_TX_EN			BIT(13)
-+#define  YT922X_PORT_CFG_RX_EN			BIT(12)
-+#define  YT922X_PORT_FC_AN			BIT(11)
-+#define  YT922X_PORT_LINK_AN			BIT(10)  /* CTRL: auto negotiation */
-+#define  YT922X_PORT_LINK			BIT(9)  /* CTRL: link status */
-+#define  YT922X_PORT_HALF_PAUSE			BIT(8)  /* Half-duplex back pressure mode */
-+#define  YT922X_PORT_DUPLEX_FULL		BIT(7)
-+#define  YT922X_PORT_RX_PAUSE			BIT(6)
-+#define  YT922X_PORT_TX_PAUSE			BIT(5)
-+#define  YT922X_PORT_RX_MAC_EN			BIT(4)
-+#define  YT922X_PORT_TX_MAC_EN			BIT(3)
-+#define  YT922X_PORT_SPEED_M			GENMASK(2, 0)
-+#define YT922X_PORT_SDSn		0x400
-+#define  YT922X_SERDES_MODE_M			GENMASK(6, 4)
-+#define   YT922X_SERDES_MODE(x)				FIELD_PREP(YT922X_SERDES_MODE_M, (x))
-+#define YT922X_SERDES_MODE_SGMII	YT922X_SERDES_MODE(0)
-+#define YT922X_SERDES_MODE_REVSGMII	YT922X_SERDES_MODE(1)
-+#define YT922X_SERDES_MODE_1000BASEX	YT922X_SERDES_MODE(2)
-+#define YT922X_SERDES_MODE_100BASEX	YT922X_SERDES_MODE(3)
-+#define YT922X_SERDES_MODE_2500BASEX	YT922X_SERDES_MODE(4)
-+#define YT922X_SERDES_MODE_USXGMII	YT922X_SERDES_MODE(6)
-+#define YT922X_PORT_NUM			9
-+#define YT922X_PCS_LINK_CTRL		0x11
-+#define YT922X_PCS_LINK_STATUS		BIT(10)
-+#define YT922X_PCS_AN_COMPLETE		BIT(11)
-+
-+/* LAG */
-+#define YT922X_LAG_NUM			4
-+/* ISO */
-+#define YT922X_PORTn_ISOLATION(port)	(0x4 * (port) + 0x180d80)
-+/* FDB */
-+#define YT922X_PORTn_LEARN(port)	(0x180300 + 4 * (port))
-+#define  YT922X_PORT_LEARN_DIS			BIT(18)
-+/* GLOBAL CTRL */
-+#define  YT922X_FUNC_ACL			BIT(5)
-+#define  YT922X_FUNC_MIB			BIT(4)
-+/* CTRL PKT */
-+#define YT922X_FILTER_UNK_UCAST		0x180ec8
-+#define YT922X_ACT_UNK_UCAST		0x180ed8
-+#define YT922X_ACT_UNK_MCAST		0x180ee0
-+#define  YT922X_ACT_UNK_MCAST_BYPASS_DROP_PIM	BIT(22)
-+#define  YT922X_ACT_UNK_MCAST_BYPASS_DROP_MLD	BIT(21)
-+#define  YT922X_ACT_UNK_MCAST_BYPASS_DROP_IGMP	BIT(20)
-+#define  YT922X_ACT_UNK_ACTn_M(port)			GENMASK(2 * (port) + 1, 2 * (port))
-+#define  YT922X_ACT_UNK_ACTn(port, x)			((x) << (2 * (port)))
-+#define  YT922X_ACT_UNK_ACTn_FORWARD(port)		YT922X_ACT_UNK_ACTn(port, 0)  /* flood */
-+#define  YT922X_ACT_UNK_ACTn_DROP(port)			YT922X_ACT_UNK_ACTn(port, 1)  /* discard */
-+#define  YT922X_ACT_UNK_ACTn_TRAP(port)			YT922X_ACT_UNK_ACTn(port, 3)  /* steer to CPU */
-+
-+/* CPU PORT */
-+#define YT922X_CPU_COPY			0x181100
-+#define  YT922X_CPU_COPY_TO_INT_CPU		BIT(1)
-+#define  YT922X_CPU_COPY_TO_EXT_CPU		BIT(0)
-+#define YT922X_CPU_TAG_RX_CTRL		0x80504
-+#define  YT922X_CPU_TAG_RX_MODE			BIT(0)
-+#define YT922X_CPU_TAG_TX_CTRL		0x100710
-+#define  YT922X_CPU_TAG_TX_TYPE		BIT(0)
-+#define  YT922X_CPU_TAG_TX_MODE		BIT(1)
-+#define  YT922X_CPU_TAG_TX_CTAG_OP	BIT(2)
-+#define  YT922X_CPU_TAG_TX_STAG_OP	BIT(3)
-+/* Define top ext addr for yt922x */
-+#define YT922X_COMMON_EXT_PHYADDR 9
-+
-+enum yt922x_phy_reg_type {
-+	YT922X_PHY_REG_TYPE_COMMON_EXT,
-+	YT922X_PHY_REG_TYPE_SDS_COMMON_EXT,
-+	YT922X_PHY_REG_TYPE_MII,
-+	YT922X_PHY_REG_TYPE_EXT,
-+	YT922X_PHY_REG_TYPE_MAX
-+};
-+
- struct yt921x_mib {
- 	u64 rx_broadcast;
- 	u64 rx_pause;
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
-index 1ac6a94f4f9d..dd465ac338da 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.c
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.c
-@@ -301,3 +301,42 @@ int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp)
- 
- 	return 0;
- }
-+
-+/* intif extend register read/write api */
-+int
-+yt921x_intif_ext_write(struct yt921x_priv *priv, int port, int reg, u16 val)
-+{
-+	int res;
-+
-+	if (port > priv->series->max_ports)
-+		return -ENODEV;
-+
-+	res = yt921x_intif_write(priv, port, YT92XX_PAGE_SELECT, reg);
-+	if (res)
-+		return res;
-+
-+	res = yt921x_intif_write(priv, port, YT92XX_PAGE, val);
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-+
-+int
-+yt921x_intif_ext_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
-+{
-+	int res;
-+
-+	if (port > priv->series->max_ports)
-+		return -ENODEV;
-+
-+	res = yt921x_intif_write(priv, port, YT92XX_PAGE_SELECT, reg);
-+	if (res)
-+		return res;
-+
-+	res = yt921x_intif_read(priv, port, YT92XX_PAGE, valp);
-+	if (res)
-+		return res;
-+
-+	return 0;
-+}
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.h b/drivers/net/dsa/motorcomm/mdio_bus.h
-index e79b725d435b..513a8d2d7618 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.h
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.h
-@@ -50,5 +50,7 @@ yt921x_intif_modify(struct yt921x_priv *priv, int port, int reg, u16 mask,
- 
- int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp);
- int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp);
-+int yt921x_intif_ext_write(struct yt921x_priv *priv, int port, int reg, u16 val);
-+int yt921x_intif_ext_read(struct yt921x_priv *priv, int port, int reg, u16 *valp);
- 
- #endif
-diff --git a/drivers/net/dsa/motorcomm/pcs-922x.c b/drivers/net/dsa/motorcomm/pcs-922x.c
-new file mode 100644
-index 000000000000..98d403d01ba3
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs-922x.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2026 Kyle Switch
-+ */
-+
-+#include "chip.h"
-+#include "mdio_bus.h"
-+#include "pcs.h"
-+#include "smi.h"
-+
-+#define to_device(priv) ((priv)->ds.dev)
-+
-+static int yt922x_sds_phyaddr_get(int port,
-+				  enum yt922x_phy_reg_type reg_type)
-+{
-+	if (reg_type == YT922X_PHY_REG_TYPE_COMMON_EXT)
-+		return YT922X_COMMON_EXT_PHYADDR;
-+
-+	return port;
-+}
-+
-+static void yt922x_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-+				 struct phylink_link_state *state)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	int res = 0;
-+	u16 data;
-+	int addr;
-+	u16 lp;
-+
-+	addr = yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII);
-+	if (addr < 0) {
-+		state->link = false;
-+		return;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+	switch (state->interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		res = yt921x_intif_read(priv, addr, MII_BMSR, &data);
-+		if (res)
-+			goto err;
-+		res = yt921x_intif_read(priv, addr, MII_LPA, &lp);
-+		if (res)
-+			goto err;
-+		phylink_mii_c22_pcs_decode_state(state, neg_mode, data, lp);
-+		break;
-+	case PHY_INTERFACE_MODE_USXGMII:
-+		res = yt921x_intif_read(priv, addr, YT922X_PCS_LINK_CTRL,
-+					&data);
-+		if (res)
-+			goto err;
-+		state->link =  FIELD_GET(YT922X_PCS_LINK_STATUS, data);
-+		state->an_complete = FIELD_GET(YT922X_PCS_AN_COMPLETE, data);
-+		res = yt921x_intif_read(priv, addr, MII_LPA, &lp);
-+		if (res)
-+			goto err;
-+		if (state->link)
-+			phylink_decode_usxgmii_word(state, lp);
-+		break;
-+	default:
-+		state->link = false;
-+		break;
-+	}
-+	mutex_unlock(&priv->reg_lock);
-+	return;
-+
-+err:
-+	mutex_unlock(&priv->reg_lock);
-+	state->link = false;
-+}
-+
-+static void yt922x_pcs_an_restart(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 data;
-+	int addr;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	addr = yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII);
-+	if (addr < 0) {
-+		res = addr;
-+		goto err;
-+	}
-+	res = yt921x_intif_read(priv, addr, MII_BMCR, &data);
-+	if (res)
-+		goto err;
-+	data |= BMCR_ANRESTART;
-+	res = yt921x_intif_write(priv, addr, MII_BMCR, data);
-+	if (res)
-+		goto err;
-+	mutex_unlock(&priv->reg_lock);
-+	return;
-+
-+err:
-+	mutex_unlock(&priv->reg_lock);
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "an restart",
-+			port, res);
-+}
-+
-+static int yt922x_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			     phy_interface_t interface,
-+			     const unsigned long *advertising,
-+			     bool permit_pause_to_mac)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int res, port;
-+	u16 data;
-+	u16 ctrl;
-+	int addr;
-+
-+	port = pp->index;
-+	mutex_lock(&priv->reg_lock);
-+	addr = yt922x_sds_phyaddr_get
-+		(port, YT922X_PHY_REG_TYPE_SDS_COMMON_EXT);
-+	if (addr < 0) {
-+		res = addr;
-+		goto err;
-+	}
-+	/* write protect */
-+	res = yt921x_intif_ext_write(priv, addr, 0x4be, 0xd);
-+	if (res)
-+		goto err;
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+		ctrl = YT922X_SERDES_MODE_SGMII;
-+		break;
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+		ctrl = YT922X_SERDES_MODE_1000BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		ctrl = YT922X_SERDES_MODE_2500BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_USXGMII:
-+		ctrl = YT922X_SERDES_MODE_USXGMII;
-+		break;
-+	default:
-+		res = -EINVAL;
-+		goto err;
-+	}
-+	res = yt921x_intif_ext_read(priv, addr, YT922X_PORT_SDSn, &data);
-+	if (res)
-+		goto err;
-+	data &= ~YT922X_SERDES_MODE_M;
-+	data |= ctrl;
-+	res = yt921x_intif_ext_write(priv, addr, YT922X_PORT_SDSn, data);
-+	if (res)
-+		goto err;
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+
-+err:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+const struct phylink_pcs_ops yt922x_phylink_pcs_ops = {
-+	.pcs_get_state = yt922x_pcs_get_state,
-+	.pcs_config = yt922x_pcs_config,
-+	.pcs_an_restart = yt922x_pcs_an_restart,
-+};
-diff --git a/drivers/net/dsa/motorcomm/pcs.h b/drivers/net/dsa/motorcomm/pcs.h
-index 42426558086a..c85caa7bf212 100644
---- a/drivers/net/dsa/motorcomm/pcs.h
-+++ b/drivers/net/dsa/motorcomm/pcs.h
-@@ -9,5 +9,6 @@
- #include <linux/phylink.h>
- 
- extern const struct phylink_pcs_ops yt921x_phylink_pcs_ops;
-+extern const struct phylink_pcs_ops yt922x_phylink_pcs_ops;
- 
- #endif
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but it sits on
+  the exact 'reconnect from LLCP_CLOSED' path the patch is meant to make…
+- [High] This problem wasn't introduced by this patch, but the commit
+  message suggests it is handled.
+
+--
+
+nfc: llcp: prevent resource leak on repeated connect after DM
+
+Before llcp_sock_connect() takes new resources, this patch releases the
+local reference, SSAP, service name and device reference that an LLCP
+socket in LLCP_CLOSED state still holds. It fixes leaks when connect()
+is retried after the peer rejects the connection with a DM PDU.
+
+Link: https://lore.kernel.org/all/20260923133339.2518641-1-qwe.aldo@gmail.com/
+
+> Release any resources left on the socket before obtaining resources for a
+> new connection.  A closed socket can also retain the device reference held
+> by an asynchronous connect, so drop that reference as well.  Bound sockets
+> do not hold the device reference, so release it only when reconnecting from
+> LLCP_CLOSED.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but this wording reads as if
+bound sockets are handled and only the device put is limited to
+LLCP_CLOSED. In the code, the whole cleanup block is limited to
+LLCP_CLOSED.
+
+llcp_sock_connect() rejects only LLCP_CONNECTED and LLCP_CONNECTING.
+So connect() on a BOUND or LISTEN socket still overwrites
+llcp_sock->local, llcp_sock->ssap and reserved_ssap (the SDP SAP and its
+client count), and llcp_sock->service_name set up by llcp_sock_bind().
+None of these are released.
+
+It then calls:
+
+	nfc_llcp_sock_link(&local->connecting_sockets, sk);
+
+At that point sk->sk_node is still linked on local->sockets from
+llcp_sock_bind(). sk_add_node() rewrites sk_node.next/pprev. Can this
+corrupt local->sockets, leaving later entries unreachable or with pprev
+pointing into sk? nfc_llcp_sock_get() walks that list, and
+nfc_llcp_socket_release() pops from it.
+
+Could the commit message be made clearer? Also, should connect() reject
+BOUND/LISTEN sockets or tear them down properly?
+
+> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+> index 1e5ee4bcde684..9d76c12aee011 100644
+> --- a/net/nfc/llcp_sock.c
+> +++ b/net/nfc/llcp_sock.c
+> @@ -715,6 +715,23 @@ static int llcp_sock_connect(struct socket *sock, struct sockaddr_unsized *_addr
+>  		goto error;
+>  	}
+>  
+> +	if (sk->sk_state == LLCP_CLOSED) {
+
+[Severity: High]
+This cleanup only runs when connect() is called again. What happens to
+the leftover resources if the DM-rejected socket is closed or bound
+instead?
+
+For close(): nfc_llcp_recv_dm() sets LLCP_CLOSED without dropping the
+device reference taken at connect time. llcp_sock_destruct() puts the
+device only for LLCP_CONNECTED:
+
+	if (sk->sk_state == LLCP_CONNECTED)
+		nfc_put_device(llcp_sock->dev);
+
+So socket() -> nonblocking connect() -> peer DM(REJ) -> close() seems
+to leak one nfc_dev reference per iteration.
+
+For bind(): llcp_sock_bind() only checks:
+
+	if (sk->sk_state != LLCP_CLOSED) {
+		ret = -EBADFD;
+		goto error;
+	}
+
+It then overwrites llcp_sock->dev, llcp_sock->local,
+llcp_sock->service_name and llcp_sock->ssap. Doesn't that leak the old
+local reference, SSAP, service_name and device reference? That is the
+same leak the commit message describes.
+
+nfc_llcp_recv_dm() already holds the socket lock and unlinks the socket.
+Would releasing the connect-time device reference there fix connect(),
+bind() and close() together? It would also remove the doubt about who
+owns llcp_sock->dev, which comes up again below.
+
+> +		/* Release resources retained by a previous failed connection. */
+> +		if (llcp_sock->local) {
+> +			if (llcp_sock->reserved_ssap < LLCP_SAP_MAX)
+> +				nfc_llcp_put_ssap(llcp_sock->local, llcp_sock->ssap);
+> +			nfc_llcp_local_put(llcp_sock->local);
+> +		}
+> +		if (llcp_sock->dev)
+> +			nfc_put_device(llcp_sock->dev);
+
+[Severity: Critical]
+Does this drop an nfc_dev reference that the socket doesn't own?
+
+Only the DM(NOBOUND/REJ) path in nfc_llcp_recv_dm() moves a socket to
+LLCP_CLOSED while it still holds the reference taken by connect().
+Other paths leave llcp_sock->dev set on a CLOSED socket whose reference
+was already dropped or never taken.
+
+nfc_llcp_recv_disc() in net/nfc/llcp_core.c:
+
+	if (sk->sk_state == LLCP_CONNECTED) {
+		nfc_put_device(local->dev);
+		sk->sk_state = LLCP_CLOSED;
+		sk->sk_state_change(sk);
+	}
+
+nfc_llcp_socket_release() runs from nfc_llcp_mac_is_down() and
+local_cleanup(). It puts the device only for CONNECTED sockets, then
+sets every socket on local->sockets to LLCP_CLOSED, including BOUND and
+LISTEN ones.
+
+llcp_sock_bind() stores llcp_sock->dev and then drops the reference:
+
+	sk->sk_state = LLCP_BOUND;
+	nfc_put_device(dev);
+
+Accepted child sockets from nfc_llcp_recv_connect() lose their
+reference the same way, through either of the first two paths.
+
+In each case, a later connect() on that socket reaches this put again.
+This block runs before nfc_get_device(addr->dev_idx) is checked, so
+even a connect() with an invalid dev_idx triggers it. With N bound
+sockets and one link down, N connect() calls would drop N references
+the sockets never held.
+
+Could this bring the refcount of a still-registered nfc_dev to zero and
+free it while it is still in use?
+
+The existing code, for example llcp_sock_destruct(), decides ownership
+by sk_state, not by whether llcp_sock->dev is non-NULL. Would it be
+safer to drop the reference in nfc_llcp_recv_dm(), as
+nfc_llcp_recv_disc() does, or to track ownership explicitly?
+
+Before this patch, connect() on these sockets overwrote llcp_sock->dev
+without putting it, so the double put is new.
+
+> +		kfree(llcp_sock->service_name);
+> +		llcp_sock->local = NULL;
+
+[Severity: Medium]
+If llcp_sock->local is cleared here without unlinking the socket from
+local->sockets, can the sock be leaked?
+
+Some closed sockets are still hashed on local->sockets, and that link
+holds a sock reference. This covers sockets closed by
+nfc_llcp_recv_disc(). It also covers sockets closed by
+nfc_llcp_recv_dm() with a reason other than REJ/NOBOUND; its default
+branch does not unlink.
+
+Suppose the reconnect then fails early, for example because
+nfc_get_device() returns NULL for an invalid dev_idx. connect() returns
+-ENODEV with llcp_sock->local == NULL, and llcp_sock_release() skips
+the unlink:
+
+	local = llcp_sock->local;
+	if (local == NULL) {
+		err = -ENODEV;
+		goto out;
+	}
+
+The sock would then stay on local->sockets after close() until the next
+link teardown pops it. Its SSAP has already been given back by
+nfc_llcp_put_ssap().
+
+Before this patch, an early connect() failure left llcp_sock->local in
+place, so close() still unlinked the socket.
+
+> +		llcp_sock->dev = NULL;
+
+[Severity: High]
+Can this race with a concurrent sendmsg() on the same socket?
+
+llcp_sock_sendmsg() checks llcp_sock->local and LLCP_CONNECTED under
+lock_sock(), then drops the lock before sending:
+
+	release_sock(sk);
+
+	return nfc_llcp_send_i_frame(llcp_sock, msg, len);
+
+nfc_llcp_send_i_frame() checks sock->local once, then calls
+memcpy_from_msg(). That call can block on a user page fault, and
+userfaultfd or FUSE can make the stall as long as needed.
+
+thread A
+llcp_sock_sendmsg()->nfc_llcp_send_i_frame()
+    blocks in memcpy_from_msg()
+
+peer
+    sends DISC or DM, socket moves to LLCP_CLOSED
+
+thread B
+llcp_sock_connect() with an invalid dev_idx
+    this block sets llcp_sock->local and llcp_sock->dev to NULL
+    returns -ENODEV
+
+thread A
+    resumes, nfc_llcp_send_i_frame()->llcp_allocate_pdu()
+
+llcp_allocate_pdu() only checks sock->ssap. That still holds the old
+non-zero value, because this block resets only reserved_ssap:
+
+	if (sock->ssap == 0)
+		return NULL;
+
+	skb = nfc_alloc_send_skb(sock->dev, &sock->sk, MSG_DONTWAIT,
+				 size + LLCP_HEADER_SIZE, &err);
+
+Would nfc_alloc_send_skb() then dereference dev->tx_headroom with dev
+NULL?
+
+The older connect() failure paths (sock_llcp_nullify and sock_unlink)
+already clear these fields, for example after a connect() interrupted by
+a signal. This block adds a new place that clears them, and it runs
+before any argument validation.
+
+> +		llcp_sock->service_name = NULL;
+> +		llcp_sock->service_name_len = 0;
+> +		llcp_sock->reserved_ssap = LLCP_SAP_MAX;
+> +	}
+
+[Severity: Critical]
+This is a pre-existing issue, but it is on the reconnect from
+LLCP_CLOSED path that this patch is meant to make safe.
+
+Some CONNECTED sockets are set to LLCP_CLOSED but stay hashed on
+local->sockets: those closed by a peer DISC in nfc_llcp_recv_disc(),
+and those closed by a DM with a non-REJ/NOBOUND reason in the default
+branch of nfc_llcp_recv_dm().
+
+This block releases the SSAP and the local reference but does not
+unlink the socket. Later, llcp_sock_connect() does:
+
+	nfc_llcp_sock_link(&local->connecting_sockets, sk);
+
+and nfc_llcp_sock_link() is only:
+
+	write_lock(&l->lock);
+	sk_add_node(sk, &l->head);
+	write_unlock(&l->lock);
+
+Doesn't this rewrite sk_node.next/pprev while sk is still reachable
+from local->sockets.head? nfc_llcp_sock_get() walks that list under a
+different lock.
+
+The previous entry on local->sockets would still point at sk, and the
+entries after it would keep pprev pointers into sk. After that, the
+unlink in nfc_llcp_recv_cc(), the unlink in llcp_sock_release() or the
+pops in nfc_llcp_socket_release() could produce self-loops, writes
+through a dangling pprev, or a use-after-free once sk is freed.
+
+Does this cleanup block need an
+nfc_llcp_sock_unlink(&llcp_sock->local->sockets, sk)?
+
+> +
+>  	dev = nfc_get_device(addr->dev_idx);
+>  	if (dev == NULL) {
+>  		ret = -ENODEV;
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925023527.3065197-1-qwe.aldo%40gmail.com
