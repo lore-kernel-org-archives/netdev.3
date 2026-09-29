@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8834543F8C3;
-	Tue, 29 Sep 2026 03:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF234D0CD0;
+	Tue, 29 Sep 2026 03:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790651975; cv=none; b=QXtJpLNcbP0h3GF6clSFSPaYTUz2GMbUO96IN3BWs+iCJhUeDARxhDpdPw5gEzOILgmwOjezekVvRO1WawHpGAmcnkOUI3wFUupKwd1ePRAYWvLI64KxJ06xcYRdAv57pan0nuWO/EXq0pzteFCm9GHRr3jHWdAqZkAQp7PhjiI=
+	t=1790651974; cv=none; b=kyV3KgvWzklwSVhOqs77jVz4iGobmRos5UVjJhCMPGr00VHNMF6MhdzEYsgSBJFS9W7Td6zcguzmTPXhH8wn7uzV6Rv4C65iRuhVmO+TkQNuiGgSiDsQboarPtV9HU3sszdUgCqtGMSWtmvd5BJYI6C9UpkbHq6p5WnPTwGOSTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790651975; c=relaxed/simple;
-	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
+	s=arc-20240116; t=1790651974; c=relaxed/simple;
+	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c3q8NcSzTQ0U+TBHrlktrBvL8Q7ztDf5FTmSJnkfCnNQCkETPyJnsbYDrsPl3DwzdOaFTTeZHL9utiDMyNay0i3a6y876zwtwYKabXlo8hhOHpVuSYDkAm3dSc4poAXnOMP0HMc5imzEgMLVq1+zKo1M6fgnmLN0G6CXjFDaybg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=fFDKBiDx; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=lwRp+IvI; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=KdGBF1geK4EitBoKVYJ2hqKpWgHnNGPTsdXUY8r3+vrbvk61bBBBtQYK2PujODEW6qRZZmDeKEPiLAECfd34DHq8e4vLyu56R6oftQ4qDUAmu4dqK9/NIQgD2cfCi/9D9M1eJ9Uu0jFdHKIaj2BCag9IGyA1VhNs6NjHPGxjWZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=2Iw1ddAg; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=FnFyrZ9J; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="fFDKBiDx";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="lwRp+IvI"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="2Iw1ddAg";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="FnFyrZ9J"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651964;
-	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
+	s=default; t=1790651954;
+	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fFDKBiDx+lBnX+jV32MiC5KajO0TgZS68yyt7MRKf6yWdE51InVxRBHsrG7jOrwAX
-	 J2JWxGnvgnjLXro7QBKIGam4Kk4+5e/kEIxw/z9JJ5/Dh0Jg1JYrhv+CWs27HLx3nQ
-	 TAXv/S4ZmouOSFwJb3jc8sE4oCWF3yh0wxacrP6CHX7CPyoOIurdTeXjBDQVYewv/j
-	 y2HxlKp+oJUUZ3sCsIUHFMB48tcEQ6FKndTbgltDNnlozeG2CcMT8/V4y4GtbswXBF
-	 asxOc6nVVs3c8mVDguMBV+oYbVvjucQK+TwEo3o/JiOwywpQybT0U7yY6Ca+8zj6jN
-	 78k6vAKHMzGNA==
+	b=2Iw1ddAgzDDmPCo1HGeVv3l4fmKmaZqyta8wYqzxT6qtKouyBVNaF5rMmg1o3fLn7
+	 6wER0HcdgYPZT21VZb4NK50PpepKX85wKApQTUhtt8AogMCr2tHp87lDePB/oYjWrg
+	 cH0PK7bzdLYxapnWpma/GYtgMs/6kMlCGN8JloOLMo1bLDC3aGaTmMTNhOiArkc6iz
+	 7PGUGjZj5r8zUdfHJeXaWOucYs5GrJQ89lzsVl4QbTXQzBwB4ScXARWjm0Wghdkp0j
+	 s/bn6NBTbtR3WuKmj4nReBTUtkn2EfTcdiAKwRT3RNkmSy6xJ09mg2eZZ64R8z0zw2
+	 3Kxrry4tRDP9w==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 3D8F042263; Tue, 29 Sep 2026 03:19:24 +0000 (UTC)
+	id 33E5742285; Tue, 29 Sep 2026 03:19:14 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1790651941;
-	bh=dVNH8RvZnzc2jMzf7FrztAoqHjVZddddl6WmvLgB28Q=;
+	s=default; t=1790651939;
+	bh=kO/E0+66Aeswq0UC8BtggpSkLfEi2Vb5MPs3YzxqsDo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=lwRp+IvIp73LE3jk1ticl3vHa8T7Ode88zUZ96GX9TXVSFB7JTSDSlIJAxAcN959e
-	 devDqXYpZO9ybyLwJ/aCSoyDXfANio5Sn96rCVh4iaBnj41M7/whZq8Xfq8kFBb4JX
-	 BhD+ikSsnUsRtS1wLwIXdGVUNRI/OhyuZ6s9oXdchE9OyjUJceCXq8wmdvEmoXzlIP
-	 S/VY1nNpOyYIoNzUEJJMKUbp/uM4NYu01bXI6H7csSMsFudUwNg18LaoSjEme0vHbi
-	 R/aTjveRa0sz5BQppMXvNMZgSX4SEMvAyLffXj7TLQxuICblLhn2Oo+E/q+ha8VC1X
-	 +bFAzxJ4UhpWA==
+	b=FnFyrZ9JKvt8EW5ehPP8GWO5vBGB3lje0oacEoQa7Uw3PDi/76TuUv3GqH6DjD78F
+	 BSUJ6PgLmy+ov4R9X1pj8qyPEIDh62F9QmLLB2yvUyISPLP3JEgSAFrlzpek1C2Za4
+	 8WOyKPugvnXMKf9L4dl4dabhQQAnsM9ySnsAJK5MomYhA5niVxn6Sa32F1vJJ/Xh0g
+	 Q0eeJVjkQtQ/q1dYqVQyrhWmjETYHM2uTZNaNn5GNjpEw7aI7nzrg0E3VdL2s3HeXO
+	 mqTjl4itXWJwjSBHHPpgMFEqnmEW8ce5aQQnA9/5MmUczP8yKzyFvFntWU856J18HI
+	 /SE81CddUC68A==
 Received: from AMDDesktop.lan (p5dd1eaf2.dip0.t-ipconnect.de [93.209.234.242])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 7CBA842276;
-	Tue, 29 Sep 2026 03:19:01 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 6E0BD4225D;
+	Tue, 29 Sep 2026 03:18:59 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 29 Sep 2026 05:19:02 +0200
-Subject: [PATCH net-next v14 14/14] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
+Date: Tue, 29 Sep 2026 05:18:54 +0200
+Subject: [PATCH net-next v14 06/14] ax88179_178a: Add EEE configuration
+ support for AX88179A MACs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-ax88179a-v14-14-a1f2249e42ea@birger-koblitz.de>
+Message-Id: <20260929-ax88179a-v14-6-a1f2249e42ea@birger-koblitz.de>
 References: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 In-Reply-To: <20260929-ax88179a-v14-0-a1f2249e42ea@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -70,222 +70,49 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
-2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
-same name.
+The AX88179A uses a simple HW configuration for EEE
+via a single EEE configuration register without LPI timer support
+Add support for setting this EEE enable/disable register in implementations
+of mac_enable_tx_lpi/mac_disable_tx_lpi.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/phy/ax88796b.c | 167 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 167 insertions(+)
+ drivers/net/usb/ax88179a_devices.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-index f20ddf64914993f7097070d1f56c1103ec1e40e8..0f1437d1e3e9b4004bdd240df43c929caf31819c 100644
---- a/drivers/net/phy/ax88796b.c
-+++ b/drivers/net/phy/ax88796b.c
-@@ -13,6 +13,19 @@
- #define PHY_ID_ASIX_AX88772A		0x003b1861
- #define PHY_ID_ASIX_AX88772C		0x003b1881
- #define PHY_ID_ASIX_AX88796B		0x003b1841
-+#define PHY_ID_ASIX_AX88772D		0x003b772d
-+#define PHY_ID_ASIX_AX88179A		0x003b179a
-+#define PHY_ID_ASIX_AX88279		0x003b2790
-+
-+#define AX_ADVERTISE_2500		0x1000
-+
-+/* MII Vendor registers */
-+#define AX_CTRL_STATUS			0x1d
-+#define AX_CTRL_STATUS_SPEED_MASK	0x0c
-+#define   AX_CTRL_STATUS_SPEED_10	0x0
-+#define   AX_CTRL_STATUS_SPEED_100	0x4
-+#define   AX_CTRL_STATUS_SPEED_1000	0x8
-+#define   AX_CTRL_STATUS_SPEED_2500	0xc
- 
- MODULE_DESCRIPTION("Asix PHY driver");
- MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
-@@ -83,6 +96,110 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
- 	return 0;
+diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
+index b15eddb0ebe290fcd6da7653afec19918a47717a..96748ca49743dcaef71bbf649a543508be01b8e6 100644
+--- a/drivers/net/usb/ax88179a_devices.c
++++ b/drivers/net/usb/ax88179a_devices.c
+@@ -395,10 +395,27 @@ static void ax88179a_mac_link_up(struct phylink_config *config,
+ 			 AX_MAC_RX_PATH_READY | AX_MAC_TX_PATH_READY);
  }
  
-+static int asix_ax88279_read_status(struct phy_device *phydev)
++static void ax88179a_mac_disable_tx_lpi(struct phylink_config *config)
 +{
-+	int ret, val;
++	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
 +
-+	ret = genphy_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	if (!phydev->link)
-+		return 0;
-+
-+	/* Read actual speed from vendor register */
-+	val = phy_read(phydev, AX_CTRL_STATUS);
-+	if (val < 0)
-+		return val;
-+
-+	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
-+	case AX_CTRL_STATUS_SPEED_2500:
-+		phydev->speed = SPEED_2500;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_1000:
-+		phydev->speed = SPEED_1000;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_100:
-+		phydev->speed = SPEED_100;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_10:
-+		phydev->speed = SPEED_10;
-+	}
-+
-+	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
-+	 * the link-partner advertised 2500M if remotely AN succceded
-+	 * for link speed > 1000M and we locally have a link speed of
-+	 * 2500M
-+	 */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->lp_advertising);
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-+	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-+				 phydev->lp_advertising,
-+				 phydev->speed == SPEED_2500);
-+	}
-+	/* Only supports full duplex */
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	/* PHY switches interface between 2.5GBit and slower modes */
-+	if (phydev->speed == SPEED_2500)
-+		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
-+	else
-+		phydev->interface = PHY_INTERFACE_MODE_SGMII;
-+
-+	return 0;
++	ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, false, 0, NULL);
 +}
 +
-+static int asix_ax88279_config_aneg(struct phy_device *phydev)
++static int ax88179a_mac_enable_tx_lpi(struct phylink_config *config, u32 timer, bool tx_clk_stop)
 +{
-+	bool adv_2500;
-+	int ret;
++	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
 +
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	ret = genphy_config_aneg(phydev);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
-+	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
-+			 adv_2500 ? AX_ADVERTISE_2500 : 0);
-+
-+	return ret;
++	/* AX88179A does not provide LPI timer registers */
++	return ax88179_write_cmd(dev, AX_GPHY_CTL, AX_GPHY_EEE_CTRL, true, 0, NULL);
 +}
 +
-+static int asix_ax88279_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
-+			       phydev->supported);
-+
-+	ret = genphy_c45_pma_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88279 does not support reported 100baseT-half duplex mode */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_init(struct phy_device *phydev)
-+{
-+	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
-+
-+	return 0;
-+}
-+
- static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- {
- 	/* Reset PHY, otherwise MII_LPA will provide outdated information.
-@@ -94,6 +211,24 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- 	}
- }
- 
-+static int asix_ax88772D_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	ret = genphy_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88772D does not support reported 1000baseT mode */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
- static struct phy_driver asix_driver[] = {
- {
- 	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A),
-@@ -111,6 +246,35 @@ static struct phy_driver asix_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- 	.soft_reset	= asix_soft_reset,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D),
-+	.name		= "Asix Electronics AX88772D",
-+	.flags		= PHY_IS_INTERNAL,
-+	.get_features	= asix_ax88772D_get_features,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A),
-+	.name		= "Asix Electronics AX88179A",
-+	.flags		= PHY_IS_INTERNAL,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
-+	.name		= "Asix Electronics AX88279",
-+	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
-+	.get_features	= asix_ax88279_get_features,
-+	.read_status	= asix_ax88279_read_status,
-+	.config_aneg	= asix_ax88279_config_aneg,
-+	.config_init	= asix_ax88279_config_init,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
- }, {
- 	PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B),
- 	.name		= "Asix Electronics AX88796B",
-@@ -124,6 +288,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
- 	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
- 	{ }
+ static const struct phylink_mac_ops ax88179a_phylink_mac_ops = {
+ 	.mac_config = ax88179a_mac_config,
+ 	.mac_link_down = ax88179a_mac_link_down,
+ 	.mac_link_up = ax88179a_mac_link_up,
++	.mac_disable_tx_lpi = ax88179a_mac_disable_tx_lpi,
++	.mac_enable_tx_lpi = ax88179a_mac_enable_tx_lpi,
  };
  
+ static int ax88179a_phylink_setup(struct usbnet *dev)
 
 -- 
 2.47.3
