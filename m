@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE8935B125
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04D835200A;
+	Wed, 30 Sep 2026 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790729911; cv=none; b=Mm8OPD2pzk0RduaHZxG3j1CYPb/mgtUhZjnS7YSYSejPhJQrYfAW/hUHIbXTxBfcdomurv9V3nLObRm7+LL+3lQsdOhiSczj2bM3YLwadVUHE98wPukQa34ZDqV20HZxmzErHbXr6+LGvslwPDMpqOaqUG1rOvNA7CcBqkDvzHE=
+	t=1790729915; cv=none; b=pPpxH/xv7UDObBUq/TSVtwrGoABzEQcebLSOkMeOQ3/6ZQjCdTxV7LW5TpB3nJRlTUI0wUYCaTawLL8kll9dQD8KrNLG5eq3n2O3udAzuBsiA25iK2dw9cdfMd9L1hm3HleOCFJ1IQlNbKywNqzurJ14C+8E7NsJZUfspizgnF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790729911; c=relaxed/simple;
-	bh=g8uQKXvKj9aJwHGrU7uhwYNCgan36E6qtjnu7CyWNTE=;
+	s=arc-20240116; t=1790729915; c=relaxed/simple;
+	bh=TrxddI/Hgirj3yXqGfdAa8Kh6HR2WjWuQji1/UESvo8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dY9ehDuRVTM/ZXhV1Otfi7J7dHcEh2iDiTfhDt+tONNgc3uUjjkNqyqFi/6ZpY53D7CmFwU5F4PGCJqR7CltmN3t8vwu7YOTne3LNpSmoSUAQiTuJMVyb8CzOO/DqK9dzfXvm5pRPV18BWPjqzUF+tPSqgtE/Aq85LWVgXzNK2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwIzZe1Y; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=s+6assFn35tpCFMsI2nJLaSDPjF1hu4WfudfUoPNkma+fkGWw1nE4q1fdxFtRXybKYCpBUxn2WFVYFjMitj9A2xIv0z4RydDWttmn59WF/Enr7INyX6l9b3AuvIM00hm+DYwr8goYzFVpgggwPbewGvwHP8O11W4SZhCCVPPCj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbRo++ol; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwIzZe1Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C0A1F00898;
-	Wed, 30 Sep 2026 00:58:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbRo++ol"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C45E1F000FF;
+	Wed, 30 Sep 2026 00:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790729910;
-	bh=t2giTg3lC9xTj6IB4rCZXwhIAQTh4WM7iZopf6jYEPY=;
+	s=k20260515; t=1790729913;
+	bh=vMnelTKbkJpPqT9aJR9g10KIFEv0Jr+MqAQMgk4zQ34=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KwIzZe1YUmj7LQQqX3GR+K7J0mGiTnwFmxyJBhJzxiyojDYe6qFq4wxJyDI+jmzQq
-	 qJMV7wDffKhVF4yvBhAJ03q8eigZ5xld7OA6v7zMrI93Bw73ndAYdlObMEomLVZ4fC
-	 0WoJu0ww9kUOkjlDWr7FMwEqp3KGfAa1WRGV4YW83uScPJN2Gb3zgWHNhjlxGN7oT4
-	 W15kqZyOkGGRQMgdpgjhvZZYxznjdMxBlGN/D7DygbdLyn5kQAcLO8vfpog27Nityh
-	 jthWMCqkcOOAUTl28XB8+T6Pr5pEBxTJLjxuaJImEWBzQDePlndeQ2oe2mO/m6KAGn
-	 5DHWslhKSEmEA==
-Subject:
- Re: [PATCH net v2 3/3] ice: skip unnecessary VF reset when setting trust
+	b=dbRo++olxlYvcIBot/NK/V3tMpQTE8xYpeXbw1zoJRyi96z4+pPlAA19SrZHd1yh7
+	 9E9Zd/YOhNNC9u+hZ+RlfHTNNsIqK9DiXPJSJkrJ1z//I1YbhoEALr5p0YWPfbc/j5
+	 gS9YqrAqgP4FJSRtOt5r7WOX/Fj02ExnHD+y/3JOnk9D6ejOA1dQQtuqs0LrguGMhC
+	 HigG6oHk50BsMrK6Kwan47yg6MTAcVBU7kW2qAOMD7AmeMat8Ho+1kjYe3DrgITGp8
+	 gvBm+KFoHdMK5lyEw1TJ21cYxiyp3tUaislnRmI+rQnRbjj51CMsYnOld3rXr2JsRH
+	 C2KbyGhOhIy4w==
+Subject: Re: [PATCH net 1/6] idpf: fix possible race on remove during a reset
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- jtornosm@redhat.com, przemyslaw.kitszel@intel.com, jacob.e.keller@intel.com,
- aleksandr.loktionov@intel.com, horms@kernel.org, sdf@fomichev.me,
- rafal.romanowski@intel.com
-Date: Wed, 30 Sep 2026 00:58:28 +0000
-Message-ID: <179072990876.434549.9916192476144636876@kernel.org>
-In-Reply-To: <20260928224454.483072-4-anthony.l.nguyen@intel.com>
-References: <20260928224454.483072-4-anthony.l.nguyen@intel.com>
+ david.butler@appgate.com, emil.s.tantilov@intel.com, luoxuanqiang@kylinos.cn,
+ bryan.fraschetti@canonical.com, tristan@talencesecurity.com,
+ tomasz.lichwala@linux.intel.com, horms@kernel.org,
+ aleksander.lobakin@intel.com, stable@vger.kernel.org,
+ jacob.e.keller@intel.com, aleksandr.loktionov@intel.com
+Date: Wed, 30 Sep 2026 00:58:31 +0000
+Message-ID: <179072991189.434549.5989394906343796155@kernel.org>
+In-Reply-To: <20260928230429.495442-2-anthony.l.nguyen@intel.com>
+References: <20260928230429.495442-2-anthony.l.nguyen@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
+Critical: 0 · High: 1 (2) · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,192 +61,179 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new no-reset branch of ice_set_vf_trust()
-  (drivers/net/ethernet/intel/ice/ice_sriov.c:1427-1430) updates…
-- [Medium] The reset predicate in ice_set_vf_trust()
-  (ice_sriov.c:1419-1422) ignores unicast MAC filters that were only…
-- [Medium] The new no-reset path treats the software bits
-  ICE_VF_STATE_UC_PROMISC/ICE_VF_STATE_MC_PROMISC as the full record of…
+- [High] The patch removes the IDPF_REMOVE_IN_PROG early return from
+  idpf_stop(), which opens a double-teardown race between a userspace…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  ice_set_vf_trust() takes a VF kref through ice_get_vf_by_id()…
+- [High] This problem wasn't introduced by this patch, but the patch
+  relies on the loop that contains it.
+- [High] This problem wasn't introduced by this patch, but the patch now
+  sends the remove-racing-reset case through it.
 
 --
 
-ice: skip unnecessary VF reset when setting trust
+idpf: fix possible race on remove during a reset
 
-This patch makes ice_set_vf_trust() skip ice_reset_vf() in two cases. The
-first is granting trust. The second is revoking trust from a VF that has
-no LLDP MAC filters and no unicast or multicast promiscuous mode. In
-those cases only vf->trusted and the ICE_VIRTCHNL_VF_CAP_PRIVILEGE bit
-are updated.
+This patch drops the IDPF_REMOVE_IN_PROG early return from idpf_stop(),
+so idpf_vport_stop() always runs on close. The goal is to let a reset
+that races with remove tear down NAPI in idpf_detach_and_close(), which
+runs under RTNL.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-> index e04de02155966..f893dff39aac6 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-
-[ ... ]
-
-> @@ -1401,11 +1415,19 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> index 827c795afcb62..2c148377540cd 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -1033,12 +1033,8 @@ static void idpf_vport_stop(struct idpf_vport *vport, bool rtnl)
+>   */
+>  static int idpf_stop(struct net_device *netdev)
+>  {
+> -	struct idpf_netdev_priv *np = netdev_priv(netdev);
+>  	struct idpf_vport *vport;
 >  
->  	mutex_lock(&vf->cfg_lock);
->  
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the switchdev check
-earlier in ice_set_vf_trust() returns without dropping the reference
-that ice_get_vf_by_id() took:
-
-	vf = ice_get_vf_by_id(pf, vf_id);
-	if (!vf)
-		return -EINVAL;
-
-	if (ice_is_eswitch_mode_switchdev(pf)) {
-		dev_info(ice_pf_to_dev(pf), "Trusted VF is forbidden in switchdev mode\n");
-		return -EOPNOTSUPP;
-	}
-
-Does each ndo_set_vf_trust call in switchdev mode leak one VF kref? If
-so, ice_release_vf() never runs, and the struct ice_vf and its pci_dev
-reference are never released.
-
-The notes on this version already call this a pre-existing leak. Setting
-ret = -EOPNOTSUPP and jumping to out_put_vf would fix it.
-
-> -	while (!trusted && vf->num_mac_lldp)
-> -		ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
+> -	if (test_bit(IDPF_REMOVE_IN_PROG, np->adapter->flags))
+> -		return 0;
 > -
-> -	vf->trusted = trusted;
-> -	ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
-> +	/* Reset only if revoking trust and VF has advanced features configured */
-> +	if (!trusted &&
-> +	    (vf->num_mac_lldp > 0 ||
-> +	     test_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states) ||
-> +	     test_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states))) {
-
-[Severity: Medium]
-Is this predicate enough to decide that a VF is in a clean state? It
-does not cover unicast MAC filters that the VF could only add because it
-was trusted.
-
-While a VF is trusted, ice_can_vf_change_mac() lets it add unicast
-filters even when its MAC was set by the admin:
-
-	if (vf->pf_set_mac && !ice_is_vf_trusted(vf))
-		return false;
-
-ice_vc_handle_mac_addr_msg() also skips the per-VF quota for trusted
-VFs:
-
-	if (set && !ice_is_vf_trusted(vf) &&
-	    (vf->num_mac + al->num_elements) > ICE_MAX_MACADDR_PER_VF) {
-
-Before this patch, revoking trust always ran
-ice_reset_vf()->ice_vf_reconfig_vsi()->ice_fltr_remove_all(). The
-rebuild then re-added only the broadcast and hw_lan_addr filters.
-
-Now the else branch is taken for a VF with num_mac_lldp == 0 and no
-promisc bits. That VF keeps all its extra unicast filters in hardware,
-and vf->num_mac can stay above ICE_MAX_MACADDR_PER_VF.
-
-Would a pf_set_mac VF keep receiving traffic for MACs that an untrusted
-VF may not add, even though the log says "VF N is now untrusted"?
-
-The notes on this version point out that untrusted VFs can delete their
-own filters. A guest that does not delete them keeps them until some
-unrelated reset.
-
-[Severity: Medium]
-Can ICE_VF_STATE_UC_PROMISC and ICE_VF_STATE_MC_PROMISC both be clear
-while promiscuous-related hardware state is still programmed?
-
-ice_vc_cfg_promiscuous_mode_msg() disables VLAN pruning first:
-
-	else
-		ret = vlan_ops->dis_rx_filtering(vsi);
-
-In the path without true promisc, the multicast promisc rule can be
-installed, and then an ice_set_dflt_vsi() failure exits before either
-bit is set:
-
-		if (allmulti)
-			mcast_err = ice_vf_set_vsi_promisc(vf, vsi, mcast_m);
-		...
-		if (ret) {
-			...
-			goto error_param;
-		}
-
-In the true-promisc path, if ucast_err and mcast_err are both non-zero,
-neither bit is set. VLAN pruning is already disabled at that point, and
-some per-VLAN rules may be installed.
-
-Before this patch, the unconditional ice_reset_vf() rebuilt the VSI
-through ice_vsi_decfg() and ice_fltr_remove_all(), whatever the bits
-said. Now the else branch is taken. The VF cannot undo this state
-itself, because ice_vc_cfg_promiscuous_mode_msg() rejects untrusted VFs
-before it reaches ena_rx_filtering().
-
-Would the untrusted VF keep VLAN pruning disabled, and possibly an
-allmulti or VLAN promisc rule? Getting into this state needs an admin
-queue or firmware failure while the VF was trusted.
-
-> +		while (vf->num_mac_lldp)
-> +			ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
-> +		vf->trusted = trusted;
-> +		ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
-> +	} else {
-> +		vf->trusted = trusted;
-> +		ice_setup_vf_trust(vf, trusted);
-> +	}
 
 [Severity: High]
-What happens to the negotiated VLAN_V2 filter limit when this branch
-runs? The limit comes from vf->trusted, but it is only computed when the
-VF negotiates VIRTCHNL_OP_GET_OFFLOAD_VLAN_V2_CAPS. In
-ice_vc_get_max_vlan_fltrs():
+Without this check, can a userspace close that runs during idpf_remove()
+tear down the vport a second time?
 
-	if (vf->trusted)
-		return VLAN_N_VID;
-	else
-		return ICE_MAX_VLAN_PER_VF;
+The remove path is idpf_remove() -> idpf_vc_core_deinit() ->
+idpf_deinit_task() -> idpf_vport_dealloc() -> idpf_vport_stop(vport, true).
+It holds neither vport_ctrl_lock nor RTNL on entry. idpf_vport_stop() tests
+the UP bit before it takes RTNL and does not test it again afterwards:
 
-The result is then cached in ice_vc_get_offload_vlan_v2_caps():
+idpf_vport_stop() {
+	if (!test_bit(IDPF_VPORT_UP, np->state))
+		return;
 
-	/* store negotiated caps to prevent invalid VF messages */
-	memcpy(&vf->vlan_v2_caps, caps, sizeof(*caps));
+	if (rtnl)
+		rtnl_lock();
+    ...
+}
 
-Only ice_vf_set_initialized() clears this cache, and it runs on the
-reset path that this branch now skips. ice_vc_add_vlan_v2_msg() checks
-new filters against the cached value in
-ice_vc_validate_add_vlan_filter_list():
+This is the interleaving in question:
 
-	if (num_requested_filters > vfc->max_filters)
-		return false;
+CPU1 (rmmod)                         CPU2 (ip link set dev down)
+                                     __dev_close_many() holds RTNL
+idpf_vport_stop(vport, true)
+  IDPF_VPORT_UP is set
+  rtnl_lock() blocks
+                                     idpf_stop()
+                                       idpf_vport_stop(vport, false)
+                                         queues/vectors released
+                                         IDPF_VPORT_UP cleared
+                                     rtnl_unlock()
+  teardown continues on released state
 
-Granting trust always takes this branch. Does a VLAN_V2 VF then stay
-limited to ICE_MAX_VLAN_PER_VF on the PF side?
+idpf_vport_intr_rel() sets q_vectors to NULL but does not change
+num_q_vectors:
 
-iavf enforces its own cached copy through iavf_get_max_vlans_allowed(),
-so the VF will not try to add more VLANs until it renegotiates. That
-seems to contradict this line in the commit message: "we can just set
-the capability flag to allow privileged operations".
+	kfree(rsrc->q_vectors);
+	rsrc->q_vectors = NULL;
 
-Revoking trust from a clean VF also takes this branch. Does the
-untrusted VF keep the VLAN_N_VID quota? The legacy path in
-ice_vf_has_max_vlans() checks ice_is_vf_trusted() at the time of each
-request, so the V1 and V2 paths would disagree for the same VF.
+On the second pass, idpf_vport_intr_dis_irq_all() does:
 
-The notes on this version describe the cache invalidation as part of
-the existing reset/rebuild design. Before this patch, though, every
-trust change went through ice_reset_vf(), so the caps were always
-renegotiated. The new branch is what lets the cache go stale.
+	struct idpf_q_vector *q_vector = rsrc->q_vectors;
+	...
+	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++)
+		writel(0, q_vector[q_idx].intr_reg.dyn_ctl);
 
-iavf caches max_filters too. Would a VLAN_V2 VF need to renegotiate its
-caps (through a reset or something equivalent) whenever its trust
-setting changes?
+Won't that dereference a NULL q_vector? The virtchnl message builders
+that walk the NULLed rsrc->txq_grps/rxq_grps may also crash before that
+point.
+
+Before this patch, a close that reached idpf_stop() after remove had set
+IDPF_REMOVE_IN_PROG returned 0, so only one teardown ran.
+
+Would it help to re-check IDPF_VPORT_UP in idpf_vport_stop() after
+rtnl_lock() is taken, or to hold vport_ctrl_lock around the stop in the
+remove path?
+
+>  	idpf_vport_ctrl_lock(netdev);
+>  	vport = idpf_netdev_to_vport(netdev);
+>  
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch. It
+matters here because this fix now depends on the loop in
+idpf_detach_and_close():
+
+	for (int i = 0; i < max_vports; i++) {
+		struct net_device *netdev = adapter->netdevs[i];
+		...
+		if (!netif_device_present(netdev))
+			continue;
+
+idpf_vc_core_init() sizes adapter->netdevs by caps.max_vports. However,
+idpf_init_task() only creates netdevs up to default_num_vports. If the
+device reports max_vports > default_num_vports, can the first hard reset
+pass a NULL netdev to netif_device_present()?
+
+idpf_vc_event_task() -> idpf_init_hard_reset() -> idpf_detach_and_close()
+  -> netif_device_present(NULL)
+
+The other max_vports-bounded loops in the driver check for empty slots.
+idpf_remove() does "if (!adapter->netdevs[i]) continue;", idpf_init_task()
+checks !netdev, and idpf_decfg_netdev() stores NULL into the slot on
+purpose.
+
+It is not clear which shipping firmware reports max_vports larger than
+default_num_vports. virtchnl2 defines them as separate fields, though.
+This has been present since 2e281e1155fc, the commit named in Fixes:.
+
+[Severity: High]
+This is also a pre-existing issue and was not introduced by this patch.
+However, the remove-racing-reset case now goes through it as well.
+
+On a software-initiated function reset, the transaction manager is shut
+down before the close path runs:
+
+idpf_vc_event_task() {
+    ...
+func_reset:
+	if (adapter->xnm)
+		libie_ctlq_xn_shutdown(adapter->xnm);
+drv_load:
+	set_bit(IDPF_HR_RESET_IN_PROG, adapter->flags);
+	idpf_init_hard_reset(adapter);
+    ...
+}
+
+After that, libie_ctlq_xn_pop_free() refuses new transactions:
+
+	if (unlikely(xnm->shutdown))
+		return NULL;
+
+The call chain is idpf_init_hard_reset() -> idpf_detach_and_close() ->
+dev_close() -> idpf_stop() -> idpf_vport_stop(). The DISABLE_VPORT and
+DISABLE_QUEUES messages fail silently because their return values are
+ignored. Then the rings and buffers are freed:
+
+	idpf_vport_intr_deinit(vport, rsrc);
+	idpf_xdp_rxq_info_deinit_all(rsrc);
+	idpf_vport_queues_rel(vport, rsrc);
+	idpf_vport_intr_rel(rsrc);
+
+reg_ops->trigger_reset() is only called later, after
+idpf_vc_core_deinit(). Can the still-enabled Rx queues DMA into the freed
+descriptor rings or buffers during that window?
+
+On a VF, idpf_vf_trigger_reset() skips the reset entirely during remove:
+
+	if (trig_cause == IDPF_HR_FUNC_RESET &&
+	    !test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+		idpf_send_vf_reset_msg(adapter);
+
+In that case, no device reset follows the free at all.
+
+Before this patch, the remove-racing-reset case skipped idpf_vport_stop()
+in idpf_stop(). The rings leaked, but they were not freed while still in
+use.
+
+Would it help to shut down the transaction manager only after
+idpf_detach_and_close() has disabled the queues? Another option is to
+keep the DMA memory until the device has been reset.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928224454.483072-1-anthony.l.nguyen%40intel.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928230429.495442-1-anthony.l.nguyen%40intel.com
