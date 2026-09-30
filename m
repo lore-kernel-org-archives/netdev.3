@@ -1,111 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9647E4E2F05
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CA051A723
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790778286; cv=none; b=dGMuC167y457C/ftZ6SVLlz/aN9D7qMVV/nBhADUaFOlRLMq0Ri6mGDLyw9u2gQLn6+hluhTpXHih+9AqNkLWlnc+N/F8M/+8gjcxuQ0quYf6CZjHCrBAAOBY83s66W4DT4hkl3usHJV4GsrkkeELnyPAUvuunSp5WsSCZpgXmA=
+	t=1790778312; cv=none; b=k/pa2gWU1n8g3WHNx2U15JXdtCkQZAjoUJ9xX4bf2IvP0n7CuCsidQuc+GgmUUPUKJi67SARepKyt7LgvuUCsyaRX48pa+IugaTQs2uxN0hQ+D3J3AFkTEJuYnu5W98QCCeqUq+BKIEHNt+X4KO6a/KuPTlE5Qo5DDcUmrSQvFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790778286; c=relaxed/simple;
-	bh=Mj/HAe620sTBBS9VbfY21Om4vxRjayR5ElGpzBAzsTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UzZRl3POqouflr+9sqWVRSqhu3U6t5dOeEJpUHP5I1UPEAZpniu99YLoAFkhmdpMCMRFajGjB6imoY2A9MYCuGUAXVrxPqe65eTgHe8NrvRUSqA0upk2ujStoZ9GS42hWnx8ysRqmZOvzQdQUANtPdtO/RbYLLtBF7z/vUhJIeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vka8YpBJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790778312; c=relaxed/simple;
+	bh=6XX/mbi7gy8/2ofVApvgqfPc7bRQKgya0ZaSKKV+QfI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=JHHE36SzY4uGg7FlILHVuJebP29vmgwdD6bdrO/JK2iOcy9UPfS/IJ0jrggO4dvn2BriNx+o1gHugmUvNg8KTAL7JU/Octhnx1ywqwNXnAXRgwM2YyeRx1OyhObiMlSaJUC5wVLlXlabMj6r38rMhY/t2U0N1ZKyfbjLfTVRokA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aJcOLbL/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vka8YpBJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACB91F0089B
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790778273;
-	bh=NHAnP3G1nRnDaWyy9fYdEFL1izoF1oTFi/w1QTvF7+I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Vka8YpBJFYXw0o0npbLMeeqr8l0V6e4sSU1nb6bhimBAKNQdDmo18SNB7O3xOfZOq
-	 OkWPwH5TJeGc8xCqfhSR5CYDu8u45Q1M1nCVa2GxH8kqPl0lgrVOW9Du+Q75h8EZys
-	 cYhwF/Ky54068OpJsihhBxGIZVGYm53rX++k1HTlJxVCvkeCeC1uM0uF1l0yLgmaCe
-	 cdhUlckX8yoCAxjW2gbhe1/C7id9Lg7IqdrglBeNSJ5hGVNPMlNGGMPiud4il4rGWP
-	 nw3zep4sO+adespeu2c36ZT48iRCVE8Tv9/o+LAonv57fcZMsraFW7eL9Afwcf0pj9
-	 tLIKF6dfrbFHQ==
-Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-81be5042c56so2802644a34.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:24:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzFL8WkxKpbcBd4j/uwW2tGSaBskFPteb6X5DHuo91wLz/xLz5f4SCeKjQMxaiqkLdYfMYPGh0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mgwT/WgoTk4leFXiPXL9FI4WuSBst/6pQ2pdb465D0DMhT8inN
-	nu0RD/nDzIN5TadM/AmrsGopybjgimS2grx0yme/DMVl1fMS6vkiY4LKA3nAM1BQM3G8XDWrCq4
-	dnQMfeXfRizwn+O76kPd/kgoBtyUNp3c=
-X-Received: by 2002:a05:6808:23c2:b0:4b9:e5fa:8a1f with SMTP id
- 5614622812f47-4f1b688941fmr1530807b6e.36.1790778272437; Wed, 30 Sep 2026
- 07:24:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aJcOLbL/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790778291;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qrMOOS/D9EUBGZMO6OeW7Lw5PFy3M+31Pwt16QAA64Y=;
+	b=aJcOLbL/Fx/Xxef4X1tmUUZB42Win4jML7k+phrM2OiDfsg0q+X/xTVHX9MVqu8Vj1xnha
+	Dg6x7SlqZGffqznK7XTmDEac1z+j1ldxOcWuWE6uMhOEVuO7fZJRVdNege9Kg4qOckJdCr
+	sS+REOgURFQJTxd95bw8UX2ngqjKqzo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-380-zugMvPWqPcqTA-G4QDcUeA-1; Wed,
+ 30 Sep 2026 10:24:47 -0400
+X-MC-Unique: zugMvPWqPcqTA-G4QDcUeA-1
+X-Mimecast-MFC-AGG-ID: zugMvPWqPcqTA-G4QDcUeA_1790778285
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DF85C195399C;
+	Wed, 30 Sep 2026 14:24:44 +0000 (UTC)
+Received: from [100.90.87.156] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B674030000E7;
+	Wed, 30 Sep 2026 14:24:41 +0000 (UTC)
+Message-ID: <cd768cab-78b7-4269-9e86-2bd49d261e1c@redhat.com>
+Date: Wed, 30 Sep 2026 16:24:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929131247.401104-1-edumazet@kernel.org> <20260929131247.401104-3-edumazet@kernel.org>
- <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org> <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
- <16cb8491-c7d9-422a-b3cc-c0225f12b7ba@kernel.org>
-In-Reply-To: <16cb8491-c7d9-422a-b3cc-c0225f12b7ba@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 30 Sep 2026 16:24:20 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiiohuv5QjapmbaVo288kXjN3jZL9fJaha+Xs2kdWxz43Ng@mail.gmail.com>
-X-Gm-Features: AclHuK9l8Hi_DaJHQk9G7oM8tRrNfbY54mt86CqGG0xZyvcbTn3snxVbF8hmLes
-Message-ID: <CAL4Wiiohuv5QjapmbaVo288kXjN3jZL9fJaha+Xs2kdWxz43Ng@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] ipv4: reserve one IP ID per segment for UDP GSO packets
-To: David Ahern <dsahern@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/6] dpll: zl3073x: notify sibling pin when
+ shared output config changes
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev-bot+sashiko@kernel.org, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, min.li@microchip.com,
+ pabeni@redhat.com, poros@redhat.com, richardcochran@gmail.com,
+ vadim.fedorenko@linux.dev, linux-kernel@vger.kernel.org
+References: <20260928185552.1103515-2-ivecera@redhat.com>
+ <179075143120.434549.1576015918203645155@kernel.org>
+ <d631d2ed-63b5-4785-80ae-b16deb3edd1a@redhat.com>
+Content-Language: en-US
+In-Reply-To: <d631d2ed-63b5-4785-80ae-b16deb3edd1a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Wed, Sep 30, 2026 at 3:50=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 9/30/26 7:58 AM, Eric Dumazet wrote:
-> > On Wed, Sep 30, 2026 at 2:29=E2=80=AFPM David Ahern <dsahern@kernel.org=
-> wrote:
-> >>
-> >> On 9/29/26 8:12 AM, Eric Dumazet wrote:
-> >>> @@ -1464,7 +1465,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
-> >>>       iph->ttl =3D ttl;
-> >>>       iph->protocol =3D sk->sk_protocol;
-> >>>       ip_copy_addrs(iph, fl4);
-> >>> -     ip_select_ident(net, skb, sk);
-> >>> +
-> >>> +     /* UDP GSO packets are segmented later (see udp_send_skb()):
-> >>> +      * reserve one IP ID per segment.
-> >>> +      */
-> >>> +     segs =3D 1;
-> >>> +     if (cork->gso_size) {
-> >>> +             int datalen =3D skb->len - skb_transport_offset(skb) -
-> >>> +                           sizeof(struct udphdr);
-> >>
-> >> hard coding a specific transport header in L3 code is crossing layers.
-> >>
-> >
-> > Only UDP sets cork->gso_size, so this is UDP specific code in
-> > __ip_make_skb(), like the existing sk_is_tcp() case in the same
-> > function.
->
-> I went looking for other transport references in L3 code and missed this
-> one.
->
-> >
-> > I can make this explicit in v2 with:
-> >
-> > if (cork->gso_size && sk_is_udp(sk)) {
-> >
-> > Selecting the IP ID from udp_send_skb() instead would either burn
-> > one extra IP ID per packet (50 % more for 2-segment GSO packets,
-> > making wraparound faster), or require __ip_make_skb() to leave
-> > iph->id unset for UDP GSO packets, with a simlar kayer violation concer=
-n.
-> >
-> > Would this be acceptable, or do you have another suggestion?
->
-> sure. I went down the path of adding an input arg to __ip_make_skb, but
-> this is simpler.
+On 9/30/26 9:49 AM, Ivan Vecera wrote:
+>> [Severity: High]
+>> Can sibling->dpll_pin be NULL, or the sibling already freed, by the time
+>> it is dereferenced here?
+>>
+>> zl3073x_dpll_output_pin_sibling_get() returns any output pin on
+>> zldpll->pins with the matching id. It does not check that
+>> sibling->dpll_pin is still set. The lookup runs under zldpll->lock, but
+>> the dereference happens after mutex_unlock().
+>>
+>> The teardown path does not take zldpll->lock:
+>>
+>> drivers/dpll/zl3073x/dpll.c:zl3073x_dpll_pins_unregister() {
+>>     list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
+>>         zl3073x_dpll_pin_unregister(pin);
+>>         list_del(&pin->list);
+>>         zl3073x_dpll_pin_free(pin);
+>>     }
+>> }
+>>
+>> zl3073x_dpll_pin_unregister() ends with:
+>>
+>>     dpll_pin_put(pin->dpll_pin, &pin->tracker);
+>>     pin->dpll_pin = NULL;
+>>
+>> and dpll_pin_put() has already dropped dpll_lock at that point.
+>>
+>> zl3073x_dpll_pins_register() uses list_add(), so the N pin (2k+1) sits
+>> before its P pin (2k) on the list. That means N is torn down while P is
+>> still registered and reachable over netlink.
+>>
+>> One possible interleaving:
+>>
+>> CPU1 (devlink reload, flash_prepare or unbind)
+>> zl3073x_dev_stop()
+>>    zl3073x_dpll_unregister()
+>>      zl3073x_dpll_pins_unregister()
+>>        dpll_pin_put(N)          /* dpll_lock released */
+>>
+>> CPU0 (DPLL_CMD_PIN_SET on P, dpll_lock held)
+>> dpll_pin_freq_set()
+>>    zl3073x_dpll_output_pin_frequency_set(P)
+>>      mutex_lock(&zldpll->lock)
+>>      sibling = zl3073x_dpll_output_pin_sibling_get(P)  /* finds N */
+>>      mutex_unlock(&zldpll->lock)
+>>
+>> CPU1
+>>        N->dpll_pin = NULL
+>>        list_del(&N->list)
+>>        zl3073x_dpll_pin_free(N)
+>>
+>> CPU0
+>>      __dpll_pin_change_ntf(sibling->dpll_pin)
+>>
+>> In that case, would __dpll_pin_change_ntf() get NULL and oops on
+>> pin->id and pin->clock_id in dpll_pin_notify()? Or would CPU0 read the
+>> freed zl3073x_dpll_pin?
+>>
+>> The list walk in zl3073x_dpll_output_pin_sibling_get() can also run
+>> while list_del() is in progress, because the writer never takes
+>> zldpll->lock.
+>>
+>> zl3073x_dpll_output_pin_frequency_set() and
+>> zl3073x_dpll_output_pin_phase_adjust_set() have the same pattern.
+>>
+>> The later patch "dpll: zl3073x: add PTP periodic output support" also
+>> calls zl3073x_dpll_output_pin_sibling_get() from
+>> zl3073x_dpll_ptp_enable() without holding zldpll->lock at all.
+> 
+> This cannot happen; the notification is already serialized against pin
+> teardown.
+> 
+> The output setters (esync_set / frequency_set / phase_adjust_set) run
+> with dpll_lock held: the dpll core invokes the pin ops under dpll_lock,
+> and they use __dpll_pin_change_ntf(), whose contract is exactly "caller
+> must hold dpll_lock" (dpll_netlink.c: lockdep_assert_held(&dpll_lock),
+> "suitable for use inside pin callbacks which are already invoked under
+> dpll_lock"). So sibling_get() and the __dpll_pin_change_ntf() call - even
+> though it runs after mutex_unlock(&zldpll->lock) - are all covered by
+> dpll_lock.
+> 
+> Pin teardown frees the sibling via zl3073x_dpll_pin_unregister() ->
+> dpll_pin_unregister(), which takes dpll_lock. While a setter holds
+> dpll_lock for the whole callback, teardown cannot even reach
+> dpll_pin_unregister(N), let alone the following list_del()/kfree(). The
+> proposed interleaving (CPU1 freeing N while CPU0 notifies) is therefore
+> impossible: CPU0 holds dpll_lock throughout.
+> 
+> The PTP enable() path (zl3073x_dpll_ptp_enable(), added in patch 6) does
+> call sibling_get() outside dpll_lock, but it is serialized differently:
+> zl3073x_dpll_unregister() unregisters the PTP clock *before* the pins
+> (zl3073x_dpll_ptp_unregister() then zl3073x_dpll_pins_unregister()), and
+> ptp_clock_unregister() quiesces in-flight enable() callbacks. No
+> enable() can run while the pins are being freed.
+> 
 
-Great, thanks, I will send V2 shortly.
+More thinking about it... and yes this can happen :-(
+The pin removal from the list must be performed prior its unregistration
+and also the list management has to be protected by zldpll->lock.
 
-pw-bot: cr
+Will fix and send as bugfix to net branch with proper Fixes: tags.
+
+Thanks,
+Ivan
+
