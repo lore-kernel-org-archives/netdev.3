@@ -1,247 +1,162 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EAA374E74
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9B63264EA
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790736077; cv=none; b=bbP3s2ioLweA8vBz+inC4EiIpD6htkk/DjNG0sjryZbybm2zw4YeB6lIuL0akqPOnW5nU6XFoaRPIHMOwaez8YgCmHVWCgqnCpsIwG6h2VjTjVDe/67B3NaOiqvAb2wVZDF6xPclIr7VcQyAKDzO7it20OjIGFdF7IdfBlAOUDo=
+	t=1790736192; cv=none; b=sNSZX6zdhOeXNqBENLKFignhFOKfEAvRm/GVGDsloiMz+Egz7cevKVAzDVOTbJoMK51zCy5kgTglw6oVilY9Vy2yTdAFWgBM6X/nExPbRkRY3/7uZs7TiGfxX0dOZalImg6bj8iuZgp9nEfID1FwdCJLCxEiCIgghlSjRxAPnj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790736077; c=relaxed/simple;
-	bh=Jt2JBi0RJqk4LCWW046JFBKUD5SQpWrv093zrdv9SXY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A5futxf1TffK+qnvClLpncD1fq5VSSFHlzKGxxj6KpmkIb2MXUXOpTAgQB//VLgJxOTj3Ih5t5Uwz+2Yh8tA6YXuTGFuHW/UcPkl2zScHTwy+bA/snBDz2VamZOU//u9t9F15LIyZ7EzKGEtFjBcyH1Qxi2zKr5PkJl3hnlg9tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Fvfi9Oyh; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790736192; c=relaxed/simple;
+	bh=3GrxvB+2Da1BW6NdVv742j9kOFhkBxYY2NYsITumiK0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=EsvpCckFhnaOW7FiIYJ9dkvaeCS6JLeZz2Zjvg/5MRWDfFx88JYgnXxwuKTYcnlsAtkj+DSV9C5hdVE84kYeIfLMX57kMLpJNhXXydqOFse9pw6EhQPhb9QG0926erYePd719cMnhlOGdDAHjft2aeqYYN657InQnkxo6qtNB4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VTvVdwqD; arc=none smtp.client-ip=74.125.224.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Fvfi9Oyh"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c11ef641aso5113391eec.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:41:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VTvVdwqD"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-672ce86b21aso5343474d50.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790736072; x=1791340872; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MpO0PbCCP33XzAfj3p2w8X9uM0F+LRnUqAGN5bqrDzY=;
-        b=Fvfi9OyhTTM5K8EpKQDzb9djWFkTbBOE3zAVkpXseeYQyu6UTDjde2Jz8mSBkz5xDP
-         Xt0PCv9ULsOjowPB8HrKw3Zc5cq6AsM+1oZ/955vD8rA/7orQFMZB4Y2S8VcTkGXzza/
-         29At5OzDRkJ5nUxdnWd3PQtb2iuSDFewbTsVTjfAEkBAsReJPB0jhwrJmhiHXqXjGT+v
-         WtCUmWsJvxSN8veESFxxJ1L6j8red8sBbr650FcgU0JDT4tvi+sYHsSObXaubjK/C0zF
-         DN6MHDKQt5Od6i4TRku2sVrl5BThidNs2+CkKCyIp+4AsPvR6GhRuqsjor7qU6S1b4gK
-         53zA==
+        d=gmail.com; s=20251104; t=1790736190; x=1791340990; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CpXFwb4rKFini1iYGyGt9MYlm+r+Zxvo7U9L14tAwLw=;
+        b=VTvVdwqDNQTsLSeAmWz2DKVk5b3vVbDwQigIpIWxiqc7nkanmgLC7syIvpVghEMlgv
+         QCfS81/+b91YOzSEcwPjn+QCsCvcQj23baIFQVKLbdIKQnNCcDTJGkoTZb/YdlplYUnm
+         T8dQ0xaQFkzU8SqRaBPvkrvlKl2wgp8ANs3w7BbIJnSoKOOd6ddTEilqUvlVSBYqpjQp
+         zh3wC8IbIZyYmj3KpYqIBl7dRa/lfkcBXris8obz2aGAAvhtdnKUdJOiiicfiX1NrFsb
+         uatApSmF4Y184BFbqqOgXXmgWYiQu7sTrvTlfxyMxtpoV4nt1UvofxZRqi7oFq9Pf+rj
+         H5FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790736072; x=1791340872;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MpO0PbCCP33XzAfj3p2w8X9uM0F+LRnUqAGN5bqrDzY=;
-        b=f5q4W3Q/6O54dCB7Ntija9Noge+ocBIOpIgDMWLlv128Gq1BTVha+STvn9YBYDTwFd
-         8FU/4rA6rkHMVscDKbm0GbIa9W22A8zU8RD5sdybV35JH9UgH2NYRRQjJy/Hd6sXCFpD
-         o3WXr4F0MdC/P1yda1SPCo2N99rEsa5N+j1VsUtVxFUlm/VECNHtpjMiPBwfhirxyQvp
-         +2roIJN+rf3Feav/i7AQRx1Atm3LkS6V+NW9oY/B4ypJK86wUtlQYroeI9oMtuNfpKHw
-         J/kCw1bDUnqLnJwT9LhXe1FHHdPHrJtvdSUiXImru0NfnMNP5HOHK2Xi7TmuUIdv3RhL
-         jD/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwL8PXqc5R/Mmy/ok2FCxKnenhAcNLG4kw12T00SNC+pF/GhdVOcF2ol4qASLVrUiDHJXHqjOg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJYujQ7OW5C8jPOwypSnF4bkChst2bU5un6Dokqx5cL+k+cW3jA
-	9I5bsggRkW/v+qKp5whjULl2BaBx8C9wlgJLX9Kr14YcWfWOA/mwi9z94qbvtdoD1QE=
-X-Gm-Gg: AYBFou1GBD6jGEp9aYK9HU65wDs1RgeuwzZACA1UlllvnsMLqMosBZVLzD5bNSlRWZI
-	2aSv1KvcibFUQMf5Qjp4mes50bmEe9kYidFY9o8BkRZUyM2XHUTocbwQzGvyhtf++R11L5HJEfq
-	y1JAlA2UgwhesMzxoDQDHPwVX2V/3wT3PUysymOEDKbivsKvdnNxemheTmgT76KE5ZZCkMGO6AR
-	9cpc5X6q5TOd5aQ+IDf+Cqu4H2D6GrlkB0JGt8dzNVYSbNUurk1WAJvZXyYu/GkNXpzr58u/x1i
-	qirZDDPbvkcRF9e3BTviq4AJ9Lyol9WKh13ZddxGXpavcbKvrq2rZkR05ZagoQi1AcqbTV2i8jI
-	ly2+rex5BaaHncbBIm7BosC8ZxCfUnf4piVNNO0eW6IqLSTSMpD+KW52k3ZpYQkhUhL7PWKRKN7
-	9bGsOzrEChOfuUxTK3N5OnzPiQH7jEr06+Z+caaBo57JQD9kQvaJNViolSqcsI76NgaF+/Db+qP
-	l+ax6C2ZVX9WOoyqn3MRtbmFPlNYpWrneU3c/jyXN99tiPbXiU6KMdBrU5mqE+J82xbFC4=
-X-Received: by 2002:a05:693c:864e:10b0:347:8d01:164f with SMTP id 5a478bee46e88-34cdbadaa6cmr224445eec.19.1790736071471;
-        Tue, 29 Sep 2026 19:41:11 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34c388d0110sm2465555eec.20.2026.09.29.19.41.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 29 Sep 2026 19:41:10 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	David Arinzon <darinzon@amazon.com>,
-	Shahar Itzko <itzko@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shay Agroskin <shayagr@amazon.com>,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	Noam Dagan <ndagan@amazon.com>,
-	Saeed Bishara <saeedb@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: [PATCH 6.6.y] net: ena: Add validation for completion descriptors consistency
-Date: Tue, 29 Sep 2026 22:41:00 -0400
-Message-ID: <20260930024101.96014-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1790736190; x=1791340990;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CpXFwb4rKFini1iYGyGt9MYlm+r+Zxvo7U9L14tAwLw=;
+        b=UQTcPkJfMNdL4Z9wGjnTV87PM/2OwPvkLkIgq8jZFQCZDjsPbcdxuew/W5yhK0G24N
+         /oh8igsEEwCMH/ns3fQPUC2+U7XD9N6FHF/sBurPprUT9TY2GnExunJdl3ikp1u9zqvG
+         TmnpKNSFfppd2rIyDhqh1iVxnUEqOb/f5dTHB4e5p5SjYHq5CADdXNItZcIk4acqiOXS
+         QPq5vI1NUqsCfd94q3y9lypYKOAyefCUN881HSRdk0i4Gwytv3W2O0QB3ULEvPfJEvlV
+         Sg3MGjvjepOUzz8qQW9Rf+2G/Q43LPckGqIayFGT9zzhbORLihITqu3EEvdN5awvnB+Q
+         JOxg==
+X-Forwarded-Encrypted: i=1; AKwUvByG4TzUGJw0T4pHsRF3fCmFgNzybT/lQYwxeKUgMO3Il0Mehw9Qgki9Saln4txPP7Izbpuhob8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLMvkQu2fnsqpvGpuxB05NpOSDL37IoEvqcQJ/35C6Q07BF6BIB
+	cTphedr5vEIuVBm9yo59etklpCyYChtc8N0Kv5W9aNZTKyHZ4UITj3g+
+X-Gm-Gg: AYBFou3Xx3Vd66rCY4sWECMQaDwqF+kr2phr9jOjQ1IJPZ5auxkqez53/h4vA0TuSjd
+	CSJ6Y4P/VSBQbUaqbHXq5qHtRrWxW2NAxpaSyRTbyLEzk3nQT+WzHW6G5RwayEegZQnMEw9VyO7
+	sCJyXjgdHEk1BXFb/v05oQuXyE+c2knbR9FGaDCHfEc/k4vg75ICvBDPEaC1WemVMUM97TeUsgo
+	c+n58rfnd0qb/W+vl1ZSg52GPXZzb3LKX9dFtJm/SmTihZlCz1rdm5plJcUbPM92BjyeS5os6vO
+	M558NENHMlkZ1CUxDjJzNmPP1Z0NwaWfkAtl29nVtFLsPxQLg+/NaCqyX8xNF6Vg2p2OyWwNUYV
+	RWz4w7d8xY2rVUePLm3K7eBkmT1CWefj1Watu8mSo0HvbH6xeoG4XBDF9W0CfdKy9DGM53NVxP4
+	J34u5ekyTQB+0qwMHD9Z1Qy3xt21jp8zpgx2/VhpYPI0QmxQqeH/9MszjnfhRUlibmBVf7ESJHh
+	d3kOt0KdLcWxNAHjBgthS7gZgw8F5HCmI749WOQdKFY0J+oSf+P
+X-Received: by 2002:a05:690e:d53:b0:676:8313:bbce with SMTP id 956f58d0204a3-676834d6d01mr39130d50.122.1790736189062;
+        Tue, 29 Sep 2026 19:43:09 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ac53d9ece3sm1365467b3.34.2026.09.29.19.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 19:43:08 -0700 (PDT)
+Date: Tue, 29 Sep 2026 22:43:07 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Rongguang Wei <clementwei90@163.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ jasowangio@gmail.com, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ Rongguang Wei <weirongguang@kylinos.cn>
+Message-ID: <willemdebruijn.kernel.2d6146d195b1a@gmail.com>
+In-Reply-To: <20260929093712.131096-3-clementwei90@163.com>
+References: <20260929093712.131096-1-clementwei90@163.com>
+ <20260929093712.131096-3-clementwei90@163.com>
+Subject: Re: [PATCH v2 2/4] net: filter: add sk_attach_filter_kern() function
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: David Arinzon <darinzon@amazon.com>
+Rongguang Wei wrote:
+> From: Rongguang Wei <weirongguang@kylinos.cn>
+> 
+> sk_attach_filter() copies the program from user space and sk_attach_bpf()
+> takes it from a user file descriptor, so a program that the kernel keeps in
+> memory cannot be installed again later.
+> 
+> sk_attach_filter_kern() builds the program from a sock_fprog_kern, so no
+> user buffer is read, and attaches it like sk_attach_filter(). The caller
+> must hold the socket lock. Failing the attach releases it; so does the
+> socket when the filter is replaced, detached or the socket goes away.
+> 
+> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
 
-[ Upstream commit b37b98a3a0c1198bafe8c2d9ce0bc845b4e7a9a7 ]
+This should probably be squashed into the next commit, that first uses it.
 
-Validate that `first` flag is set only for the first
-descriptor in multi-buffer packets.
-In case of an invalid descriptor, a reset will occur.
-A new reset reason for RX data corruption has been added.
+> ---
+>  include/linux/filter.h |  1 +
+>  net/core/filter.c      | 22 ++++++++++++++++++++++
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/include/linux/filter.h b/include/linux/filter.h
+> index 39decde7fc73..0de5a738fb26 100644
+> --- a/include/linux/filter.h
+> +++ b/include/linux/filter.h
+> @@ -1218,6 +1218,7 @@ int bpf_prog_create_from_user(struct bpf_prog **pfp, struct sock_fprog *fprog,
+>  void bpf_prog_destroy(struct bpf_prog *fp);
+>  
+>  int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk);
+> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk);
+>  int sk_attach_bpf(u32 ufd, struct sock *sk);
+>  int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk);
+>  int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk);
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 70dc621672f2..64d6505a4ef2 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -1567,6 +1567,28 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
+>  }
+>  EXPORT_SYMBOL_GPL(sk_attach_filter);
+>  
+> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
+> +{
+> +	struct bpf_prog *prog;
+> +	int err;
+> +
+> +	if (sock_flag(sk, SOCK_FILTER_LOCKED))
+> +		return -EPERM;
+> +
+> +	err = bpf_prog_create(&prog, fprog);
+> +	if (err)
+> +		return err;
+> +
+> +	err = __sk_attach_prog(prog, sk);
+> +	if (err < 0) {
+> +		__bpf_prog_release(prog);
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(sk_attach_filter_kern);
+> +
+>  int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk)
+>  {
+>  	struct bpf_prog *prog = __get_filter(fprog, sk);
+> -- 
+> 2.25.1
+> 
+> 
+> No virus found
+> 		Checked by Hillstone Network AntiVirus
+> 
 
-Signed-off-by: Shahar Itzko <itzko@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240512134637.25299-4-darinzon@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi Greg, Sasha, and net maintainers,
-
-I am working through the small CVE backports still missing from 6.6.y.
-This one addresses CVE-2024-40999. It detects inconsistent ENA completion
-descriptors and resets instead of consuming them.
-
-The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
-This fix also affects 6.1.y, which will need a separate backport; this
-submission contains only the 6.6.y patch.
-The code change is identical to upstream.
-
-Could you please queue it for 6.6.y?
-
-CVE: CVE-2024-40999
-Upstream: b37b98a3a0c1198bafe8c2d9ce0bc845b4e7a9a7
-
-AI assistance: An LLM helped identify, adapt, and validate this backport; I
-reviewed the resulting code and validation evidence.
-
-Thanks,
-Artem Dinaburg
-
- drivers/net/ethernet/amazon/ena/ena_eth_com.c | 37 ++++++++++++++-----
- drivers/net/ethernet/amazon/ena/ena_netdev.c  |  2 +
- .../net/ethernet/amazon/ena/ena_regs_defs.h   |  1 +
- 3 files changed, 30 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/amazon/ena/ena_eth_com.c b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-index 933e619b3a3134..4c6e07aa4bbb55 100644
---- a/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-@@ -229,30 +229,43 @@ static struct ena_eth_io_rx_cdesc_base *
- 		idx * io_cq->cdesc_entry_size_in_bytes);
- }
- 
--static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
--					   u16 *first_cdesc_idx)
-+static int ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
-+				    u16 *first_cdesc_idx,
-+				    u16 *num_descs)
- {
-+	u16 count = io_cq->cur_rx_pkt_cdesc_count, head_masked;
- 	struct ena_eth_io_rx_cdesc_base *cdesc;
--	u16 count = 0, head_masked;
- 	u32 last = 0;
- 
- 	do {
-+		u32 status;
-+
- 		cdesc = ena_com_get_next_rx_cdesc(io_cq);
- 		if (!cdesc)
- 			break;
-+		status = READ_ONCE(cdesc->status);
- 
- 		ena_com_cq_inc_head(io_cq);
-+		if (unlikely((status & ENA_ETH_IO_RX_CDESC_BASE_FIRST_MASK) >>
-+		    ENA_ETH_IO_RX_CDESC_BASE_FIRST_SHIFT && count != 0)) {
-+			struct ena_com_dev *dev = ena_com_io_cq_to_ena_dev(io_cq);
-+
-+			netdev_err(dev->net_device,
-+				   "First bit is on in descriptor #%d on q_id: %d, req_id: %u\n",
-+				   count, io_cq->qid, cdesc->req_id);
-+			return -EFAULT;
-+		}
- 		count++;
--		last = (READ_ONCE(cdesc->status) & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
--		       ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
-+		last = (status & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
-+			ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
- 	} while (!last);
- 
- 	if (last) {
- 		*first_cdesc_idx = io_cq->cur_rx_pkt_cdesc_start_idx;
--		count += io_cq->cur_rx_pkt_cdesc_count;
- 
- 		head_masked = io_cq->head & (io_cq->q_depth - 1);
- 
-+		*num_descs = count;
- 		io_cq->cur_rx_pkt_cdesc_count = 0;
- 		io_cq->cur_rx_pkt_cdesc_start_idx = head_masked;
- 
-@@ -260,11 +273,11 @@ static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
- 			   "ENA q_id: %d packets were completed. first desc idx %u descs# %d\n",
- 			   io_cq->qid, *first_cdesc_idx, count);
- 	} else {
--		io_cq->cur_rx_pkt_cdesc_count += count;
--		count = 0;
-+		io_cq->cur_rx_pkt_cdesc_count = count;
-+		*num_descs = 0;
- 	}
- 
--	return count;
-+	return 0;
- }
- 
- static int ena_com_create_meta(struct ena_com_io_sq *io_sq,
-@@ -539,10 +552,14 @@ int ena_com_rx_pkt(struct ena_com_io_cq *io_cq,
- 	u16 cdesc_idx = 0;
- 	u16 nb_hw_desc;
- 	u16 i = 0;
-+	int rc;
- 
- 	WARN(io_cq->direction != ENA_COM_IO_QUEUE_DIRECTION_RX, "wrong Q type");
- 
--	nb_hw_desc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx);
-+	rc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx, &nb_hw_desc);
-+	if (unlikely(rc != 0))
-+		return -EFAULT;
-+
- 	if (nb_hw_desc == 0) {
- 		ena_rx_ctx->descs = nb_hw_desc;
- 		return 0;
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index 4d7446bb66b771..60d8d2d99af14d 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -1335,6 +1335,8 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
- 	if (rc == -ENOSPC) {
- 		ena_increase_stat(&rx_ring->rx_stats.bad_desc_num, 1, &rx_ring->syncp);
- 		ena_reset_device(adapter, ENA_REGS_RESET_TOO_MANY_RX_DESCS);
-+	} else if (rc == -EFAULT) {
-+		ena_reset_device(adapter, ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED);
- 	} else {
- 		ena_increase_stat(&rx_ring->rx_stats.bad_req_id, 1,
- 				  &rx_ring->syncp);
-diff --git a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-index 1e007a41a52564..23466d62fbc5c5 100644
---- a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-+++ b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-@@ -21,6 +21,7 @@ enum ena_regs_reset_reason_types {
- 	ENA_REGS_RESET_USER_TRIGGER                 = 12,
- 	ENA_REGS_RESET_GENERIC                      = 13,
- 	ENA_REGS_RESET_MISS_INTERRUPT               = 14,
-+	ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED	    = 16,
- };
- 
- /* ena_registers offsets */
--- 
-2.39.5
 
