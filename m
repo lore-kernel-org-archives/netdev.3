@@ -1,117 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBF04FD29A
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64E93CC337
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790780295; cv=none; b=kDh4GEwz/wfBsfiKdMtRIusHyNgWAggndwmkn0a1ndJ10iOu8NPht5qd2P519PROK6Q5cudiuDg+oRxw9lemwjP/uLdBuVDEoXkL2slCtWObLZmCfn+2H1F+mO4kreWS7a293PMGy1lbvNpRbPIy7OiBS5fyiOsuqkPPMPXadrU=
+	t=1790780545; cv=none; b=jhEcK+w30esvenVj60dKZ+gJSX+CZqyQvCau2AuHWjcez6kBEvUS4ewwlXGew+j7VjTX/CcparBtbVNml4CeYokwuBhW45JdWhfm/0b7kpUmRmJydPbiY6vV4WoMPGEXqT1mKRFZnHHoBpcNgqw9Jf9k+MJwcQohAXynFBYOsPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790780295; c=relaxed/simple;
-	bh=K4N18PNdaYA09EQLDiGOUKt3VW769gBapMHoCR2WZto=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=CGSP+u9Avn0swUtaPJW4NcYLi79mfPJOSag5DS7pwXLAHUywVw+9ekcw3DwL/TXfR04rPenovmA3C2k2PYow/cUiZgmPvaNI1aJteDOgXdVeTpknF4ZuYruoNfiXwx3Xxer9Klui9GTzLysViGicDDBpjXFvwwzmQ4Ofoq4QmvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUSVi+QY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790780545; c=relaxed/simple;
+	bh=et+Drx6YdkA0OmFZ8A5zPCscUG0WQh2QP4yccQGJySk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=hXFRkBEWlDgJYR8s+p7yZq1RXqI/kYKNa7HYtv1Geb8rUQsXVNpI9vFz4eVb+jBtN+qQTKnYqvlh1tW0pu4wKOsP1Gwu9j/UxW4L8ckRBMy5IM1s921mX/EghhfTvx0oiQr1WQShaxeJSxMxWgLCESrvSOn0A+FKVcvdhlCGzHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l1WuR4gz; arc=none smtp.client-ip=74.125.224.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUSVi+QY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B861F000FF;
-	Wed, 30 Sep 2026 14:58:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790780287;
-	bh=bWUFavhFTmoV0T/Pds8uUdRaIfNAmcKDKiMwYPhLUdw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=NUSVi+QYyqu71Pslpo88s/sHfkiqOCgcitPyh/VOuHM6qG8DmvNrOoIYKAbO2vOAU
-	 bMYdlSghXDI6ll9ZgGkdKhtVOrHqleRaUrvwb50Lm7e7roVq9Cdwj7QAzQslk1jXuX
-	 m0TTuhFeBPk1ccH9eP1G5LMSukrC/aZnUy7YLB1wRbSYtQplMrCoumokqxtPlVt+FQ
-	 L2wZW7Fr+cimxNWdfDhr6VHRmJeVouRtcXf5HVEPaDvqsA+trhhXvsRKMu/N43ps/Q
-	 +izjxmGRkIkmOG3jhgQ8dJ7YlB2LNqItOTEw0JQO748Z/P1Av3xU3Fedw+LuhbssVP
-	 CsLbjuuBsdK8A==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 51803F40066;
-	Wed, 30 Sep 2026 10:58:06 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Wed, 30 Sep 2026 10:58:06 -0400
-X-ME-Sender: <xms:fiO9ak2GFVh3cXwSVZLEV_IKSqEd2j-codHDgxzYPKqQzfvEMEuT4Q>
-    <xme:fiO9ap4wXkitlxTb2FDYHWOxkW5CzmfvHpatF5AU_yktWqtJvng97urFr3R1BXNUE
-    zXTyJHFw9mCjAUXz2JO-abgvBISG-e3Z89WCZ_L30LcJbw604kQyFqm>
-X-ME-Proxy-Cause: dmFkZTG3rOorLEW7fWx3LGh9BGZ7Sll2IaBt2V6RHp0GiRq00j/jI0lByaBOiLBb4IQ3lU
-    PEiuVBlRT98GfP7mCq9ioYgvO5TREyJ0KqTTPp2ScmPCfDoixTxYq25MBcjH1C5mydPQiM
-    MaRYNazaPG2xx9DpqO/6omN6P6V2B6qUOI+58wUdmpOLfnC8Ofz3tEMcOWBrwfL92Ebl3c
-    EV6Zfqzl0MWgfKAi7MiyXP1TeTeBGnBn60rCx5hrfq+PUrredKJn7kyYJ3MRNBsthm/VkJ
-    6jy+TpcjOG2BPgVgAfXi9fVah30PxCnVq5/kLKyRt+GTNxPh6sSeHvAqKVftsizeYSkYRm
-    8MG8LBe57PZDX4qAenznEh1GO3jBop23/EO82Neun68eQxeC/NWv3Nd12eGINM4fnD0s7w
-    Xhi3hS61QiYAbZKJBDqtPsmjL5PpeCNtysMysHmrBdO7keSJ+BqK31IB7fEVEf5zNPlaxW
-    DKdo5DyKQ6UI7KDuPZ9QIH8ci5VaNA6/38n2AsOpSafWLjNa0S0oXNE2U9yjRc/0VIuBkc
-    IjsM1fcyDHNvK0KiQyx707UwaUDRBXJnU1n5erTg+Y7DsuurHvQFlh7EwdLT1FAL927+aA
-    iyGEZMQ7I+r5B8vD105jvjNyZw9Glf1ptajNSv+tQpZ+J6E2DHIzDfOQJngQ
-X-ME-Proxy: <xmx:fiO9asYUYEYiko1VdiepsC0xWZKZv-nFvynu__J2t_PAjoho801v2A>
-    <xmx:fiO9ajSP_xppfbzt9VGFIMs24yUoKoCNT0rVu4oYQjc59t9722GKPA>
-    <xmx:fiO9aj_MMwWOvOdCr6krKWh8rCK9WnL3q2eK2P-LkfEKqLBJTsTTfQ>
-    <xmx:fiO9arj702mfMR_Cx8KqYryZOlQGLXveAb6P3IN8mWsI_68wOYd6BQ>
-    <xmx:fiO9asa2WumssGUeswhg6yQqvlxnhlD3TiglwKwJUsGU0gwtAUBDXOGR>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 30903780075; Wed, 30 Sep 2026 10:58:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l1WuR4gz"
+Received: by mail-yx2-f38.google.com with SMTP id 00721157ae682-8ab408a38bdso8979717b3.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790780535; x=1791385335; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e6/kYvub5z3tYxzJGmlTCicIu/qxHQ3oYOee00hBbq8=;
+        b=l1WuR4gzmgiQp30ee6KF8BYqyFF96ZmkB+3/3lWNwvvKcf0bxtmN6msaEKAf/7HYC3
+         858AbfaQWIDCpZprxRxQ6faNtyZvIt0Wn+F7gwz66AfHujgZSKYw/7RCophZmxjuE/34
+         G9GeYWl3KG+gAmDEfNm480qjJMMjVrsfQv83o+jLfaPG+KLL4KHkbNnGWlAPUXEE+OI1
+         reG+qXXArC8hf1GbPmzvoho7a9XXTJIFy0SGMhY3zFURHTN4C1ebnNn9zxY8HNtTsqN+
+         g28RKri9SxygDE2zbzXpTNJcqWT+Z3T8NBzW2F1P3cwwA1Vr1unlYMjdj3I74Fc6UByL
+         BZug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790780535; x=1791385335;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e6/kYvub5z3tYxzJGmlTCicIu/qxHQ3oYOee00hBbq8=;
+        b=duQgwtZVmbIChgO3L3DwEQdVD4hKyuXRyvnIMECg9cc98EyqM+nJbMqejhnhsND/dD
+         DE3ruLje/gdX9LciwRC6VO44vWoko0Y6JL+yFpZ/wZyFdX34UrLr47tHtpI2cSijWpV9
+         C2qYDa//AXZQNnMlgGLvY70difklW/5XAVpm+bT97Kur0OjEnMc9plpG3xj1dM2Ogmas
+         h/BThHcs74PdNzpwaLK8CjJeI3rDpnqcoe21/d88mhCdZevWDTbQO4ZBd4MaACxZDgH2
+         Il9jS7k99Zxf32S/TkvuXDyo7DaEPthTKgLqog+nN0SYJE7f3d3jaX0To8wZ/NCHYI1c
+         2Ruw==
+X-Gm-Message-State: AFq9FYLLF8ONq/rNvO8S0wv6RPAbCY5spw4U8cIlfm+8mil4oNDqmTxJ
+	A/icnnCpIaHCphfspxEHQHdliP5P/kZrAfXvBnlvp8N0YWspPbyOQSWd
+X-Gm-Gg: AYBFou0dgScwu8eRZKQDLII3nlNYFt/p3hQJkRE0xjvFj4xXWhry4TbIX+kGWnpIbrE
+	XvEYnrKFgA59nLydaTr9SUPFs8l2n5Y6CC21KzStGOgAyvyBGkH/Bls4a3XeDhLfqP+DKaysrG9
+	5Q3raNX2B1d46KH4tCkoDiQNBJGRPAPvQYp4BlV6jf9eyxCrcJ0gejY+ERuu+jTZyme1XvAHK7F
+	sqWm0yF5qQoBWIRhaYnpdTAq2i0GC+cYiTniqrlOUCkblvyucfjYSE1SkUlEpqH4VqAa5JJngrA
+	Dy6R8rDJutU2vLdQ4UKbdgqx2xWQ7nrojNGhiMHvow5LKgyOSryODuNytscuPtvoJLnelNdaGSj
+	a/aRnsZhECpNCROEqEKG8KEFl0DUWgb5pwQChfuJtBpQXmIT9Ix0vQcy1N5HtFViE/W38axSMRP
+	jp4HQ6qMT490NKSJWFKta2fvaCv5N0jH+q/S3b55rF/kSCR967uZFbYVWGi9YIYxfDlP5qJDxBB
+	f4263GEYPBOkWt5cZSbcAeIoBMK5VGY8GoW39xWyXN6s+H+m+k6gg==
+X-Received: by 2002:a05:690c:38b:b0:88a:99a:6ef7 with SMTP id 00721157ae682-8ac978ff21bmr5593247b3.29.1790780534647;
+        Wed, 30 Sep 2026 08:02:14 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ac5438bd45sm7210827b3.41.2026.09.30.08.02.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 08:02:14 -0700 (PDT)
+Date: Wed, 30 Sep 2026 11:02:13 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Umang Pokhriyal <umangpokhriyall@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.2082eadbd651@gmail.com>
+In-Reply-To: <20260929142238.41742-1-umangpokhriyall@gmail.com>
+References: <20260929142238.41742-1-umangpokhriyall@gmail.com>
+Subject: Re: [PATCH net-next] tap: report IFF_DETACH_QUEUE in TUNGETIFF
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ARQcub8KHhRJ
-Date: Wed, 30 Sep 2026 07:57:46 -0700
-From: "Chuck Lever" <cel@kernel.org>
-To: "Sabrina Dubroca" <sd@queasysnail.net>, "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Qingfang Deng" <qingfang.deng@linux.dev>,
- "John Fastabend" <john.fastabend@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Dave Watson" <davejwatson@fb.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <eb175a90-58d9-4cfc-898a-8083633451cc@app.fastmail.com>
-In-Reply-To: <ar0iBIUzHhZijRem@krikkit>
-References: <20260930052636.166007-1-qingfang.deng@linux.dev>
- <arzStIrdizPp_vbI@krikkit> <465aa0d9-b1b2-4c85-9cbf-e6ed296b7b12@linux.dev>
- <arzawlad0OQ9pnBQ@krikkit>
- <415fb6f4-7ecd-4d04-a3c2-56c186a5628b@app.fastmail.com>
- <ar0iBIUzHhZijRem@krikkit>
-Subject: Re: [PATCH net] tls: skip empty data records in tls_sw_splice_read()
-Content-Type: text/plain
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
+Umang Pokhriyal wrote:
+> tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
+> queue is detached, since commit 3d407a80b62f ("tun: Report whether the
+> queue is attached or not"). tap_ioctl() returns only q->flags, so a
+> detached macvtap or ipvtap queue is reported as attached.
+> 
+> Cloud Hypervisor ran into this when checking queue state on macvtap.
+> 
+> Report the flag from q->enabled, as tun does.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
 
-
-On Wed, Sep 30, 2026, at 7:51 AM, Sabrina Dubroca wrote:
-> 2026-09-30, 06:45:23 -0700, Chuck Lever wrote:
->> 
->> 
->> On Wed, Sep 30, 2026, at 2:47 AM, Sabrina Dubroca wrote:
-
->> > Let's see if he has the time/interest to continue work on this (since
->> > he didn't send a v2, I'm guessing not).
->> >
->> > Chuck, do you want to pick up that TLS fixes series again, or would
->> > you rather let Qingfang finish off the "splice vs empty record"
->> > patch+selftest based on what you had sent?
->> 
->> History: I stopped working on that since Jakub seemed to think the
->> fixes were not worth the trouble, and my objective is to get kTLS
->> and its kernel consumers in shape to support KeyUpdate.
->
-> I /think/ he meant that some patches in that series were ready to go
-> in and worthy of being merged quickly, while others were less urgent
-> and less ready, and could be finished later on (but not necessarily
-> that the issues shouldn't be fixed at all).
-
-I recall the use of the word "doubtful". I'm happy to continue to
-pursue them, but I don't want to waste reviewer/maintainer time.
-
-
-> But I guess we could just ask him.
-
-Agreed, I probably misread his comment.
-
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Reviewed-by: Willem de Bruijn <willemb@google.com>
