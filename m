@@ -1,61 +1,88 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998963B83F9;
-	Wed, 30 Sep 2026 09:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC553E3DBC
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790761689; cv=none; b=u1zCjnIPeM8SfMxzn53fs0BSeceowy7YZr76yCOQThwyhgQv1CmsAQdZtqmTRyItu1RTfkbIYRTOb/ixaztG8xH1g4UswA5BC66QyfKMx+gdfFaWLTPXYlDBM+HlNe1gq9KeuVEHSTBwtSHD4uV1m1LUs06ZGPqStgUY7x50Xqw=
+	t=1790761863; cv=none; b=tJr9qjjF1pKxBunOIarOoWjA0WLdxT0vUzJwR3yF4PRUBUz9zmxuj+O32bo/Qrp+ejh40wvVJ0ZOIo4J853ZU8BLzkUqUX/cGuyMHHmsBXS29D1kRP1PQrejKuH+CW0P8mkiPEqvdeF9SojmWwGMDsSMByfNvgsB2CGhFwEgDAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790761689; c=relaxed/simple;
-	bh=zm5VFrHmyz+/sNLaSW+Dt3U8QFai1/239D3Wu5zb/O0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TvWe0DbO845fLZzLP6sRSL5+dAJT3wgzLF01cDohh/iux8PVYv4XqAsmvVvPUwnvlZcrj2mrYyZ/yeZJsiL24qrFWcizWJ/jzt4AvTjT7sk0ggsf06sIz/uKM831qPYPryHylsBEHOWJXmfzHCdoQtmBJRadv+dqzD+hmuO6bjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 01a9e916bcb411f19a56ed5b684f684d-20260930
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:8edde7f8-6271-41aa-9eb6-c503825cf016,IP:0,U
-	RL:25,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:25
-X-CID-META: VersionHash:7db8b62,CLOUDID:dd6e600df21f98dd37a51a1cc52b3aa1,BulkI
-	D:nil,BulkQuantity:0,SF:81|82|102|136|850|865|898,TC:nil,Content:0|15|50|9
-	9,EDM:5|-100,IP:nil,URL:11|95|82|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil
-	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 01a9e916bcb411f19a56ed5b684f684d-20260930
-X-User: zhangyunfei1@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhangyunfei1@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1997194022; Wed, 30 Sep 2026 17:47:53 +0800
-From: Zhang Yunfei <zhangyunfei1@kylinos.cn>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	mengyuanlou@net-swift.com,
-	andrew+netdev@lunn.ch,
+	s=arc-20240116; t=1790761863; c=relaxed/simple;
+	bh=nsDZU6lH0ABxd2mkaqWWWwpJUUSibbd+Sb86MxXWU3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sPTYNZoLjERzEsmE3L0+fB0V/wPFTW6FxlQYtwaoQp1jZeifzI+o2QlSJFQsr5HudVjmRYn6i7gD3Qm2tr6FCux7zfsuca96uD47ZuqSls83drUlpv9Czx8glg6wYsNyU8Y6Z6eMJoP1FpTWaKuxNzH8ep898SxGEQ44uIp9jow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu; spf=pass smtp.mailfrom=cs.unc.edu; dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b=SK3nCRqU; arc=none smtp.client-ip=74.125.230.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b="SK3nCRqU"
+Received: by mail-qk2-f40.google.com with SMTP id d75a77b69052e-5332a80a731so44799601cf.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cs.unc.edu; s=google; t=1790761860; x=1791366660; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LCubAwWVijXqS4BHl9nvH1ievcAHTddydMzemiE8ous=;
+        b=SK3nCRqUOj+9Lbj4V4UWI9UMWoY3FMYUnnDsgkESvx3OTiquV0HrHlmwDJ/9qFZ+GY
+         oNQoD8nFJ00dQ7xf2txVWJgC2DMFWOs/6I0+aEl7E7cSWF1xFmc724obfassRunPN90n
+         C4PC7KVXQPvdisp4PGeTdkijC3VnRZk4AkNSQ3IQ6LfX4t2O3WrENUxugM8fqSMUOKSd
+         hpXRqonKqfbdEqoo9wB7CSj12fcrSNh49FWQaKY83AVSqk8xH14dS1WnnKNg2d1laivX
+         dQFQRyrAbtyQ+1NFKvrsl7CrAB7pm1L1IKpASwJygyf5ytkeJphyk4AHV8c1x95Eqp5Q
+         t30A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790761860; x=1791366660;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LCubAwWVijXqS4BHl9nvH1ievcAHTddydMzemiE8ous=;
+        b=EL93oWtXHy14nZDOiFA/lBB/NLAtKe0ZP0Y7HkbBXNyRlkdFSY9UwHNGFr8HYdvUL1
+         hltXoY5yQ3bC0eqW4ds14Ma3qKETrha8t94XZnkdJVd7t18e24gIsNuOZ2jm84nba4nh
+         6yLI9UxcixpTRq1r3PFhqJYjchBcFy/lspjCEOdkezt5BeqOE65fjaTfXBw7I9LvZlgu
+         r85yzMRYWBiKMqx7Msi71dK1iGd00v8YJx1CJ9yKCtRnjBG6jh8k6n6DO8TrxhXGAHds
+         9XszVPhO+a5O9dPj1ywC7OdJOSmHb0fsCdxXq8Mk6ulTgTGsfFzZUBvOIGU2V9QhOMYN
+         vFeg==
+X-Forwarded-Encrypted: i=1; AKwUvByc19dGxFWFy0L9kP5PUvlY59zHHras52sVpOPYb1qJyjCXh2WdJSbER45+RwZgfWB7n5Cm1Gg=@vger.kernel.org
+X-Gm-Message-State: AFuF++m3JUX84/KGZOsSqzlQzHf9Yj9IX/Gx42NsRF/590p8bDGXAKQr
+	gO070hG1Dp92L5yxQ62YRJynq76IkdeBQJeyfLph1m8pBqMVxbSFYRbRTv5EqLHEEA==
+X-Gm-Gg: AYBFou22qCavR4IcYGGmGYdDwkN1oOOW6v/ehdsOIM0NlIbeOjBw0OsaTTYHzg0z0vS
+	kaIrdTba6tXLS+KUIrfeehfA0xo5HvKNCBavgqJ3UjOyyHM4U1++CHf2ZtYB2ravoPuE0LBRyB8
+	e42uDW10Z9obZ70XdVZsla6HR3KI1LRpDOoZdTOBg1dwVmiDosyitLZS+bFo1fhjtWMNnq0jMJh
+	q0iihJU0XL/sFWAx8cT/Sq6VEN1Elj5jHkjMwqRlNBlRDj+QPKTxh/sqIdxpA54001pdDo1O9hy
+	jvsh8LADqVd/+iElB7AmYhg9CxAV4WhpYIh/1YPn5qeyBASxiZO6TlS4Mw8yfI9cmO6M/PvUviX
+	Mn/gxjeanlK7p5zvGFy/Pw8rxKo5Q8Z9rcFyQZP66e6QOi4VAu1AQXPsZfWRiZO/OYc7H8xCf2u
+	kjPVKexApT6GXQe2uH0f3sbc9tod0ZbGN/J9g5boWPpjAOmGUKYyoAJ8Md3fva+5m4oldorr0fw
+	GcCikqiitmnLEuDd+4Hkvrnv477c77b
+X-Received: by 2002:ac8:5a01:0:b0:532:be46:5b07 with SMTP id d75a77b69052e-53374abf22amr13892561cf.23.1790761859955;
+        Wed, 30 Sep 2026 02:50:59 -0700 (PDT)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53374118024sm7797121cf.26.2026.09.30.02.50.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 02:50:59 -0700 (PDT)
+From: Hengyu Liang <hengyul@cs.unc.edu>
+To: joe@dama.to
+Cc: brauner@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
+	hengyul@cs.unc.edu,
+	horms@kernel.org,
+	jack@suse.cz,
+	jirislaby@kernel.org,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	aleksandr.loktionov@intel.com,
-	u.kleine-koenig@baylibre.com,
-	weirongguang@kylinos.cn,
-	zhangyunfei1@kylinos.cn,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	leitao@debian.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net v3 1/2] net: ngbe: propagate resume errors to the PM core
-Date: Wed, 30 Sep 2026 17:47:47 +0800
-Message-Id: <20260930094748.1198085-2-zhangyunfei1@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260930094748.1198085-1-zhangyunfei1@kylinos.cn>
-References: <20260930094748.1198085-1-zhangyunfei1@kylinos.cn>
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sdf@fomichev.me,
+	shuah@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH] eventpoll: return -ENOIOCTLCMD for unknown ioctl commands
+Date: Wed, 30 Sep 2026 05:50:58 -0400
+Message-ID: <20260930095058.1062123-1-hengyul@cs.unc.edu>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
+References: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,109 +91,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After a failed resume from suspend, the device stays detached from
-the networking stack: every attempt to bring the interface up fails
-the netif_device_present() check in __dev_open() with -ENODEV,
-while the PM core is told that resume succeeded.
+On Fri, Sep 25, 2026 at 5:59 AM Joe Damato <joe@dama.to> wrote:
+>
+> On Thu, Sep 24, 2026 at 02:57:47PM -0400, hengyul@cs.unc.edu wrote:
 
-ngbe_resume() declares err as u32 and unconditionally returns 0:
-the return value of ngbe_reset_hw() is ignored entirely, and
-failures of wx_init_interrupt_scheme() and ngbe_open() are silently
-swallowed. The interrupt scheme torn down at suspend is never
-rebuilt, so the device cannot self-heal.
+[...]
 
-Fix the type to int and propagate the errors, making the whole tail
-of the resume path consistent with the pci_enable_device_mem()
-failure path at the top. If the hardware reset fails, return early:
-the remaining resume steps cannot succeed. The suspend path may
-already have torn the interface down (ngbe_close() and
-wx_clear_interrupt_scheme()), leaving freed rings and IRQs behind
-while netif_running() still reports true, so set WX_STATE_RES_FREED
-on every failing return, the same mark ngbe_down_suspend() uses for
-the PCI error recovery path: a later ngbe_close() skips the
-teardown of the already-freed state, and ngbe_up_complete() clears
-the bit again so later opens are unaffected. This is safe on the
-wx_init_interrupt_scheme() failure path too, as it cleans up after
-itself.
+> >       default:
+> > -             ret = -EINVAL;
+> > +             ret = -ENOIOCTLCMD;
+> >               break;
+> >       }
+>
+> I think based on the documentation this is probably right, but I am now
+> wondering why both ep_eventpoll_ioctl and ep_eventpoll_bp_ioctl need to
+> exist.
+>
+> Maybe when I first implemented this I thought it made sense to factor
+> out the busy poll ioctls into their own function, but in retrospect maybe
+> it's cleaner to just collapse the ioctl function into a single one
+> instead of having two layers?
+>
+> In other words, maybe:
+>   - delete ep_eventpoll_ioctl
+>   - add the is_file_epoll check to ep_eventpoll_bp_ioctl
+>   - rename ep_eventpoll_bp_ioctl to ep_eventpoll_ioctl
+>   - fix the test (as you did in this version of the patch)
+>
+> Would result in a cleaner fewer helpers / cleaner code ?
 
-Found by manual code inspection of the PM error paths; the missing
-ngbe_reset_hw() propagation was reported by Sashiko in its review
-of v1. The failure paths are unreachable without fault injection:
-a loadable test module injects failures into ngbe_reset_hw(),
-wx_init_interrupt_scheme() and ngbe_open(). In a QEMU VM the
-unfixed driver hits the kernel "Trying to free already-free IRQ"
-warning on the post-suspend close; with the fix, the error is
-reported and no warning appears. No physical ngbe device is
-involved.
+Thanks for taking a look. Agreed, a single handler would be cleaner.
+Two things I noticed while looking into it:
 
-Fixes: 6963e463256e ("net: ngbe: add Wake on Lan support")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917090050.1927999-1-zhangyunfei1%40kylinos.cn
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yunfei <zhangyunfei1@kylinos.cn>
----
-Changes in v3:
-- set WX_STATE_RES_FREED on every failing return of ngbe_resume()
-  (the pci_enable_device_mem() failure, the reset failure early return
-  and the wx_init_interrupt_scheme()/ngbe_open() failures), so that a
-  later ngbe_close() skips re-running the teardown on the already-freed
-  post-suspend state (Sashiko review of v2);
+1. With CONFIG_NET_RX_BUSY_POLL=n, ep_eventpoll_bp_ioctl() is the stub
+   that returns -EOPNOTSUPP for every command. If it became the
+   .unlocked_ioctl handler as is, every ioctl on an epoll fd would fail
+   with EOPNOTSUPP on those kernels, which is the same problem in a
+   different config. So the stub would need to keep a small switch:
 
-Changes in v2:
-- also propagate the ngbe_reset_hw() failure, so the whole tail of
-  ngbe_resume() reports errors to the PM core;
-- drop the inaccurate "device can be re-probed" claim: the PM core
-  records and logs the failure, there is no re-probe.
+    static long ep_eventpoll_ioctl(struct file *file, unsigned int cmd,
+                                   unsigned long arg)
+    {
+        switch (cmd) {
+        case EPIOCSPARAMS:
+        case EPIOCGPARAMS:
+            return -EOPNOTSUPP;
+        default:
+            return -ENOIOCTLCMD;
+        }
+    }
 
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+2. The is_file_epoll() check cannot fail there: the handler is only
+   reachable through eventpoll_fops, so file->f_op is always
+   &eventpoll_fops. Unless you would like to keep it as a defensive
+   check, I'd drop it rather than move it.
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 855dc963c610..8247f6c14be0 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -954,13 +954,14 @@ static int ngbe_resume(struct pci_dev *pdev)
- {
- 	struct net_device *netdev;
- 	struct wx *wx;
--	u32 err;
-+	int err;
- 
- 	wx = pci_get_drvdata(pdev);
- 	netdev = wx->netdev;
- 
- 	err = pci_enable_device_mem(pdev);
- 	if (err) {
-+		set_bit(WX_STATE_RES_FREED, wx->state);
- 		wx_err(wx, "Cannot enable PCI device from suspend\n");
- 		return err;
- 	}
-@@ -968,16 +969,23 @@ static int ngbe_resume(struct pci_dev *pdev)
- 	pci_set_master(pdev);
- 	device_wakeup_disable(&pdev->dev);
- 
--	ngbe_reset_hw(wx);
-+	err = ngbe_reset_hw(wx);
-+	if (err) {
-+		set_bit(WX_STATE_RES_FREED, wx->state);
-+		wx_err(wx, "Hardware reset failed: %d\n", err);
-+		return err;
-+	}
- 	rtnl_lock();
- 	err = wx_init_interrupt_scheme(wx);
- 	if (!err && netif_running(netdev))
- 		err = ngbe_open(netdev);
- 	if (!err)
- 		netif_device_attach(netdev);
-+	else
-+		set_bit(WX_STATE_RES_FREED, wx->state);
- 	rtnl_unlock();
- 
--	return 0;
-+	return err;
- }
- 
- static struct pci_driver ngbe_driver = {
--- 
-2.25.1
+Since this changes the errno userspace sees and 18e2bf0edf4d is in
+6.12 and 6.18, I'd like to keep the fix itself minimal so it backports
+cleanly. How about a two-patch v2:
 
+  1/2 this patch unchanged (Fixes: 18e2bf0edf4d)
+  2/2 fold ep_eventpoll_bp_ioctl() into ep_eventpoll_ioctl() as you
+      suggested, no functional change
+
+If you'd prefer a single patch, I'm happy to do that instead.
