@@ -1,98 +1,95 @@
-Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
+Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4347207F
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E33A3E3DB8
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790758922; cv=none; b=O4h/2Qdh7owunSlvih/D28rnJ+Kt0vRpJ0y+yV9L4oY8vmsHJ9oHBRj5cpGWLIw1KouwZBpVXTOVJmQiuSb9iTWBY9uXaQ/jFuv1cPCF7GJI4NK+LRVUAhCkpmWnoyg6+D15MkL6FZ4CTh1wVd1LCaYoHg9jdllp9ivLlLH6LZk=
+	t=1790759307; cv=none; b=FAO9jeIDo/WmSg47f2a3bZbwpcji3sy6Fkd3yOyfchKIoT52WEgujkEbpDYj1IFRzTi0bin5le/y/ZBZV84w9bznR72eWrEL4fmjCtHPoDzbTGAiNXjYBS+awkUPoE2V3YsuBvKkl1YT3S0QtTo2Ul24RUScoOqn/Qhtbiqhp6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790758922; c=relaxed/simple;
-	bh=vUgSmNgYb3xPR6GE41yrOSkOkZp4hMoyauJEOX0p9L8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=Nx2xtJQAMdjPWl+7cUzYFi/FrMgNLxWUkBuvUlNgY1x+TbdV+F9d24EJq12VPr34DKZYG3yhJg6COYvNIBz7NU5cT9CCFFwyycCKzTlm/rWjPl+Rd5kxWT/vq9dl0yqC/7V6oYxXVoDwL18tf1PxKLmdkkyJh2jMRliA7In1LMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qzZiQMh7; arc=none smtp.client-ip=74.125.227.166
+	s=arc-20240116; t=1790759307; c=relaxed/simple;
+	bh=O8B46aZeTmy6k5FEdCgodDcPNx2x+6ffGJZ1jHF02jw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UYn6guXpeJnImjuIT7JnO+wiHnR41acQVXGnEoHhxiuw2XJ+GZsyXT6DDWsL1PbWkC5ZvySrth8gzDuC5ei+r+DVR1wHvzmtkZ2XeP7h2JRGvDNMDRuJjSvohwgptlzuQ04W9JG069AhV6OEgtdnrMrve/jLyK6GSQhzB+BxWE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hEQ8c01t; arc=none smtp.client-ip=74.125.227.167
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qzZiQMh7"
-Received: by mail-pj2-f38.google.com with SMTP id d9443c01a7336-2e2da4743b0so2909615ad.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:02:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hEQ8c01t"
+Received: by mail-pj2-f39.google.com with SMTP id 98e67ed59e1d1-3a4a33ed59fso230136a91.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:08:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790758920; x=1791363720; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=valg39DdEk8sl2YI17Dx/FsaQPmRarO/oHzT/4W/5sE=;
-        b=qzZiQMh7DnKSeCHllSc/0Ox7SWd4gI7lAxYbJUEhIoq2XE7B0onLSFx/hPaemWbn+9
-         wm/I1t9l3ab3+zLXygBf40YYlJBLjlpPyLnuHc0TGup3ElwuGCqWfTX++9cw0oiWaWPy
-         BmoR7oIs+2hmS9pXmKZoexTAtVCYHc/akWHe30m9aHvCHuMgUCP36RjbwcYjZIP1bWp2
-         LrKckrmyElI2KKcmIKa9PUE8p16uOppwxoxptDoB/1KZbGbnNra53O1DZk+D+moOdgtd
-         DUf/DhJoGdp+ctuuwnPDZpj69AQiKIaOrtLhuzJqp7rs7/RqESVcCF7bGsABGnA4JuIB
-         lPFA==
+        d=gmail.com; s=20251104; t=1790759305; x=1791364105; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vaVic4qoDP2w2wGzJWUozbbrI5Ibrd1OOqs1hm+kxSQ=;
+        b=hEQ8c01tVl0DDqjjYQZRADg+zvqbQ4amNScOLES7lNuUtMJ4EaoAc9vX6PNMM1ceJo
+         F5NjB2AfVMVj1/c7gOcnvmytNHv+nQRE1Yplh4fnuXk96+Q2Z0migCQ1HXc/vLSnhNHf
+         GBRjYzQOsea8SBP98yclnwM9zBkbnfdYFbg/Oa/OMlSEuvgc7mKFL9+JYKBcVJCW9jrL
+         vkEHgDJlmhJvY53X9cN3FsWt0oVwjvEJdjW7NNvjcvxlvEcJjGPHShZuyBWkkdVe+lMg
+         hOC9qUHU4ttoyoaR8nRjSvQ4iEhtx+cIryzZhxXp3ZfNEBUUI0JwmiGIzTygxVwfjczg
+         au5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790758920; x=1791363720;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=valg39DdEk8sl2YI17Dx/FsaQPmRarO/oHzT/4W/5sE=;
-        b=FzH8VgGM3wK9iXkOk9ZmzFQzy4Smh7lEQElxBL4X9C4/McHkEyeoRutLhej/yjpNTp
-         GptzWf6OR93Fp5KwEMokkRFnaEsHgLrj66WG59mwPkVjqK8hPAFthXXYnjI4Fplx4Ky4
-         OqY66U+k8WhVTvwzDo8pkgPX+qvzk6UuKxteGM8SKnM3EKikm4c5udUqZVhL4YSRQ/+W
-         r0Ke9WOJsLliWiquWe2QFQ8TQ3Kmym9iwEJ01Oi9EA35ekWVsvc3IAH3jZjfseoio0Ox
-         ZTH6Ig8p3jMkHzTdg4znMUZrrV7SXpEaBjiRjNQzN/nEomTVeHhJ5Fgnrb7XXymQLEWe
-         j43A==
-X-Forwarded-Encrypted: i=1; AKwUvBycvigw2f70CNeyt2Ec0NjCiiUhC3zS1bsRLHPeIwJiq7YlEu55YTxcBhKdWQVMrk5h26s0ILI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIiDjeG6e+AWVC9IJVXmVjK4wigBYVRoCppNAWWnK6pJAiEbeqB
-	LX8c+dOAu4sAW1dsNEBe/KPSg+prLhDP6QZsNP9sTZZztZuKBuljLWb3
-X-Gm-Gg: AYBFou2/W/h4S8B1tc2xawJ3LvgP4/Xy+SoCIzIlZ7a41uw6WgpHZFGEITajrYDVB2a
-	HcYaQMM8O1xgfU9MYBv6kJ982xV1AK2gbq0TzHSZon2pFnInkLjyCevN3IYlY5lVSxONtbCca1M
-	UspdgF4hD4mX2nkm6gkR2ENHTi7DDFYrzcUUPX3+k7Bu4AxAICuRNnBfpQ+m6vMbspr/NkulLg9
-	Xai1UqeKkZtax8OSKd2Ztk/EFtKl/9Qp3KDsBksmXw291Fi5okZZYMflkTeG36MK4vpHKTKKA0/
-	jwEGftkmz+/+lwSECiaTKxBrtzIxt6t2jdduPSgSnhN6peOmtXO1/Iux6B8BLt9kgEHZo6fw+y0
-	VHhipPOUL+yQvqXci/WfYhzXO0HTn1YfylUpHjIldS46XIoE0KFb2WrUOxKtrGMW8i4Xvrlks1v
-	cFJFnrUqIncAJqo+nyD6mumawFEaIKK/J1H/GsmzvpGXOcjvadnnY67D8p6SuLaDWrziMsbk1is
-	9lNQA0/PArZAzrCz6lGKA0jd5hvBN/f4yPYxmDS3mgrHd1qZrLz3pgzJaQXX7yjf5/fPFRMzejA
-	xZ6xtUWqw1kL5Ew=
-X-Received: by 2002:a17:90b:2888:b0:3a0:f4ee:d2b2 with SMTP id 98e67ed59e1d1-3a4d2895ae0mr550843a91.32.1790758920501;
-        Wed, 30 Sep 2026 02:02:00 -0700 (PDT)
-Received: from localhost ([153.61.198.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4c9938fe0sm2567574a91.0.2026.09.30.02.01.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Sep 2026 02:02:00 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 09:01:59 +0000
-Message-Id: <DLSJ22P7T6BZ.FCF3J1JWCOET@gmail.com>
-Cc: <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
- <jiayuan.chen@linux.dev>, <daniel@iogearbox.net>,
- <cong.wang@bytedance.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf-next 1/2] bpf, sockmap: Fix udp_bpf_recvmsg()
- spinning on backlog-only ingress
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: <chenyuan_fl@163.com>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>
-In-Reply-To: <20260929083447.558818-2-chenyuan_fl@163.com>
-References: <20260929083447.558818-1-chenyuan_fl@163.com> <20260929083447.558818-2-chenyuan_fl@163.com>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20260707; t=1790759305; x=1791364105;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vaVic4qoDP2w2wGzJWUozbbrI5Ibrd1OOqs1hm+kxSQ=;
+        b=acJSfEui60EBh/5snezOwExEY3vaXGqHo/ehT2/om8cZ8hHQYTmfwi8CewjETurd4u
+         EGFDtVfNwVqeW72LJni4MDe/4lWbzX2qOZ/acESJVN5nXsW4C/A70GM+7v8OJHfF+lxZ
+         fhOyPFdiZAjO/ZPUqVvJCVrfzJOlt1vBk4shzz4Ucn5PImlGL+AveXLHTg9f27qykcFP
+         xSTOkCxz7ryEftCbzelcIf8I8iAItSf6K1SyKJZzCDrRqM1DyfDd74//bp84F+eM+DBt
+         5xdEMIsIWRH8d+ShiKv4sEQvykjejO636QdE3EsfTBfCaMuS+tRc3cGm0LXscpoV3Z8p
+         N7Tg==
+X-Gm-Message-State: AFq9FYLa9kGmMMI5txou2nkSW4xE/YqJheaw+uErYLGlK7bVNy8I6fiN
+	34t6AY+z+Usw7EUlMOkIu32QGRbNRSH5n4Sqt533gtzAZpGsOCbkaLKnUZ9uPRhSYY4=
+X-Gm-Gg: AYBFou1o+1Pwfz97eKbN0CnmCrN3g8cnpsJL+wQL7tjwZGn2GB6GNr0mSibDSZ5YZhb
+	BnTgzP0qopLBGwL5XxxyIZ8Z6XZtJ4Equ3VmZvN3g27YuPo6wikqU0nYjgpk3WtJUWRxOsP8hJj
+	G7SHhZ3cUDCCkCmKuqUS/rfUPTYOcVBJ7nHDF11Xa38advUv5875yJgVmjL56Ph6fZZYliwSz6H
+	chZrBCgFCgjQ2k1kna4vKiXAbCQuiWPA9v32QQ7tzKZHvaEC6Drcl0S13S2Jv/6ZPTZrWCpYSGu
+	JjygVC6VA6Gk2PaZ82xUFA/ifCxmS0K66RxOK5DDeDMC6/v46SVPXDSVTX4fAKP+ixkigV/cd9K
+	8xIOfBMsZJj3l1owZkTiYWLj9wawSrEpuAaR2zdNUFIeW79uYvp6lGi1tWtZ0Q7QzKpMJWewwOX
+	zicjUI5LcfGwPfeOcuwZtCdxtNYAWvnzuFc7XAvdKzdKSCAAIiok0ihd5izziw2CQWYmiR0n+d4
+	fzMIVnNVshdaK6V46i6PpLESItgIogCQtCjkL4dC4pjV5gMVp/P3lBFr1sZlQ==
+X-Received: by 2002:a17:90b:518e:b0:3a0:238b:db4d with SMTP id 98e67ed59e1d1-3a4d1b18399mr1082273a91.5.1790759305124;
+        Wed, 30 Sep 2026 02:08:25 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.82])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4cac328c6sm2578059a91.12.2026.09.30.02.08.20
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 30 Sep 2026 02:08:23 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au
+Subject: [PATCH net 0/2] vti: fix tunnel device use-after-free across async crypto resumption
+Date: Wed, 30 Sep 2026 17:08:10 +0800
+Message-ID: <20260930090813.73901-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 29, 2026 at 04:34 PM chenyuan_fl@163.com <chenyuan_fl@163.com> wrote:
-> @@ -91,7 +91,7 @@ static int udp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
->  		data = udp_msg_wait_data(sk, psock, timeo);
->  		if (data) {
-> -			if (psock_has_data(psock))
-> +			if (!sk_psock_queue_empty(psock))
->  				goto msg_bytes_ready;
->
->  			release_sock(sk);
+vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
+control buffer without taking a reference.  With async crypto the
+receive callback runs from the crypto completion, so a concurrent
+RTM_DELLINK can free the tunnel device before the callback uses the
+cached pointer.  The existing rcu_read_lock() around the callback does
+not protect it.
 
-sashiko is right. This replaces a spin with a hang.
+Patch 1 fixes the IPv4 side and carries the full description; patch 2
+applies the same fix to the IPv6 side.
 
-pw-bot: cr
+Qihang (2):
+  vti: fix tunnel device use-after-free across async crypto resumption
+  vti6: fix tunnel device use-after-free across async crypto resumption
+
+ net/ipv4/ip_vti.c  | 7 +++++++
+ net/ipv6/ip6_vti.c | 8 ++++++++
+ 2 files changed, 15 insertions(+)
+
+-- 
+2.54.0 (Apple Git-157)
+
