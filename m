@@ -1,166 +1,122 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC2C3A872B
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70EA42885A
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805701; cv=none; b=rt/+WKuCA/fj877pB1dkSGXA2Y+lE6tCqBdaMFnfdpt0SbHknL3adnOwrdZ83fupVwou5rhxwnj1L8q/vi65n9B21mos0DjCjiNFOYKSMCsaYBcf9xDpo5MOGZahVLmmpghKugcB4xt9dyeJpIzt0jHL4rH5/5s35b9MkIa+VDE=
+	t=1790806158; cv=none; b=CEC/7MnyYDVrCwSsgRsD68VeQ+n4LdkHa2po4YlSGBUFBOhD2wUQq3PwLGVaPCuDZ2kQ6FA+l2emlCpX20Lz5mg/NY5DfU4NVjQPb7S1XQ7n1ga54B6QyxGDVdjD/bj37hKr+5PickRt0TqJfcnSmDu5HipPPlaNG2MW75URZfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805701; c=relaxed/simple;
-	bh=iOsuH1/c4v6IEBcn0NU6MJSCX8mH34dIQhgiAvmhdCI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KmK/zbz9TTsZvORZWp3QdTTMdqKugzw22l6dxSsOp8V4NbjuJNHg7BgQ7nGrfM2Ha0GXQU+abFjM3mDXeXB2Ol7A6Ns5OUtl3t89OMj49E9zq3qMgDp3cntCi1ZnbpTpAIVOb6HpLT3c1B4HcQiNjDxh71Lgi2Cdb7YEYMt6Bno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iihxKP0A; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1790806158; c=relaxed/simple;
+	bh=2Vc91vVa95l1BF9P5E+Hu4oArbEH6p9nMPl42D5ahBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QjgH9HhMaQ/0jFY8YlOXsAkGsG4Hid+/Qvq+UoVS3RIEY1CHD6VRM3TEvUhmMCS5ZBR2mDkxbsU4mNrQ1Ci0Y4tt2n2DC5viZSQN5cNzZdKP7cQxVtFe5zTq5kkiv4csYlAuX7Gf9O+QNJ6Vi9hKq5qDp8n2JVRtQ26cePInNEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c40mGgxx; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iihxKP0A"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb48f41343aso109726a12.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c40mGgxx"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccf3ca626so36110925e9.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790805699; x=1791410499; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8lyfJow0PaL8KFG6SHLKrvSsgn1X1urCBZQieZuibTg=;
-        b=iihxKP0ApHBBQHZ7S6f54zQvAyhxqQVc2ReXyjAYJpuirBkhbQMNLlLWrWot8frhOp
-         nKf4qwWQ9u6qXVqYiY+FHJatFTfpVoxtRtEn5NWEFBPmiLmrNT15sEkcMYHZvDCIyWbG
-         KCeF+5ldUbGuwdH0JHksncyrvQQgHz+/BRVi2VQ+CAwMBA0uQ7V8Vptl8mPlf4nyP+uM
-         g3j3WkjIErIA44CMtKGRvG/iYcgxzgh9nH3TCUbbXLVEcw552j1fNRRB0efShAS8Q3U5
-         m1FvC6X+/x0r8K80tW7r8ZIZax4bV58qpNaDBn+tT7gKEEQ3b+z6aAPP87hp85gfXNkT
-         H0/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790805699; x=1791410499;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790806155; x=1791410955; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8lyfJow0PaL8KFG6SHLKrvSsgn1X1urCBZQieZuibTg=;
-        b=kmbe3pcsCQYJvyC+h/DUqCQtzMXxVHk8Il2g8reW75IjOPgLN5+g+5jXP1/1zfgE1A
-         G7IYCMJ7StZl67aeGc9zl6hYx1SYmZpcWPLRexFqkJa/IoF5KGnvPJnQ/4qPlvrbvL7Y
-         LeWkRmb5jhcEXNNwIbzbxD2LJ67TiwMyH57ZooYBDIDZhlwPh3ffT33aik53sKja9dMN
-         QSokiBZHpu7HcvSnrjI82KbAM8ZhlRRAhHaEdA2o8xHWDvWDGYWCJ07fj4wWvs0lHs9A
-         NP0rA32bS5qH+An7izSFB9ii3i4C2kqTjOALvW10LAfPT8vj/lzLHisiUNwuOxAv5Ly6
-         2fMg==
-X-Forwarded-Encrypted: i=1; AKwUvBwBXWa9m2I6s53p+3fhPaOlnuhO4PBx1CqPsGVSxHiQbId6lIhld8m+OY5AzGvhz1lhB9WweSk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kYwgiBq0Msq+zeQ3Hw1FCgGq60P7MVR8fPgJr7ETbXsR0uLP+m
-	Jbs1+CnxiRa5uVU1FhSJfMgoQG+090digUqTJUML20JFc7tPF2xZ7nCVpb4zXWsXnyMIo/voo9t
-	6L4QmFA==
-X-Received: from pgte12.prod.google.com ([2002:a65:688c:0:b0:cc7:d698:697e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9f86:b0:3dd:a196:ffd8
- with SMTP id adf61e73a8af0-3deacb82fd5mr610572637.40.1790805698958; Wed, 30
- Sep 2026 15:01:38 -0700 (PDT)
-Date: Wed, 30 Sep 2026 22:01:34 +0000
+        bh=GmeV4rEVAtHMh/0SUOgOEDlH2GalZPirUpnG/q/WPZk=;
+        b=c40mGgxxt+dnGTXQCAf/irMmTzOPa/1sg/nHfKa+Zv83Fa7h6YLH3nH3gbbHrzW/2I
+         2dH3Ynw6sjfAS/vilR+Xq9dJPdCcNmQHfmEJ5taHEgPTuW2ranBTR1Rv35Ohg+dbtCHn
+         bIeFzewEdbX/UKhrcKT6uG8k5Cp1PHJhFduAJ0Qth/vFA2QUAyHmGFmBfivszwCzng1N
+         KtIzsSFNMqUbJvhh+6ynbMsAn89fIB5Jg77Mnz13jETQWKunnTLc+0zV9+l0cvJQk0OF
+         jkCIpOlgYka9SXNyDMucFk4d48q94G5i4FX3/4/l0sZ0ZUJRZQmIk9eyliYfhFQHhNVd
+         0VBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790806155; x=1791410955;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GmeV4rEVAtHMh/0SUOgOEDlH2GalZPirUpnG/q/WPZk=;
+        b=B0xDwFXlzAPCVJQkGSFwqrHVnuf6iBXnUuwq+2lPrL1FNionJGy9NSqMO0L0dWToc9
+         3yOzAZiwCTbnXrEWLAa6jOJCyyTemZPbpEEahm3elc66+iL1ROhMrcqsvi7PjvNXMtlM
+         8Ej/9LRx2xnEwBdXKu38xAFTQzkENN8T/7I1c2OQC0vlvuhiSvXz10TJUYtr+VVG/5Lc
+         mMS6XgDCtk/8lMV4ypKMqled7PLP400lvWP3jQaaGse13t4eiUDIPyWZl48k+wsMJ54E
+         jKQ8z7d86agEkF3BHJA0X/Aj6SHJdX9h5q+e9P1tXCp8ApnGtIaLTX34jyyatp+F3BGh
+         1Wig==
+X-Forwarded-Encrypted: i=1; AKwUvBx9Wq+f4NlO/Nj0YGgvBDFSvs8l/HixkJQDm8Q3Zs3mt8+KyEse/Uvkx+aEfsz0M+REr/ztV2A=@vger.kernel.org
+X-Gm-Message-State: AFuF++kdeXSnPUjh3RCbBDhG94/kgXPy361I1hHPsorX8xoTQB/nR+Q8
+	25zt7m6Sh3TeG2ROtIyIKJjBpcKeS0mVghGAcEuLScEZ7Y8hHagUOG3y
+X-Gm-Gg: AYBFou2xw8vt28LJEMPIhmmY0MPcnDmMuuCCT076CpJlQ7s8S2Rat4E9Sq4bwjTuhws
+	mByqOmBFpXR1ll0kmfDN1lGkYIwS4pPEWSyx4J1Fl4Tf2Fp7C9W0oiTFkZ6nOJwb8fv/fRse8es
+	89RYFVvd5ODiDTWn/zoOWvbadWes7KIcvSbzKEEPS4jAOGHeHgRh/akrKrfBdTzUdxsJnFyH83h
+	QkEkvf/5I3I1Y75SGwnUu9XSuySxPig27xF2WvyxRef1erCSfFAJ+U8UZnW8NF4hDjXYdW5NAn2
+	LFaLVZhV/g7D2J6x2ncf73zx8qvivnT9JS1kS8XFLTz0i+jge1AhjrtlGkroq9O8/ZljVc9nnV9
+	7I0ZnnzOfyy14KvDBHjzBY++4EipwreZln0PpSHvRPAEN9VtSaMHumrpV0iowoimqyx/IWqZ6Oj
+	pw65KXRCMLuljbTr2xNcq1PtIVcCMfKZtE94uWVDEOVVsxpAjCraNgAuvgx/xNOpMSVpEn1AS4M
+	34VahA=
+X-Received: by 2002:a05:600c:19cb:b0:4a0:1c17:4fb2 with SMTP id 5b1f17b1804b1-4a01c175025mr37282775e9.31.1790806154525;
+        Wed, 30 Sep 2026 15:09:14 -0700 (PDT)
+Received: from metepc ([46.197.185.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f98f72fsm12679655e9.11.2026.09.30.15.09.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 15:09:13 -0700 (PDT)
+From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+To: oe-linux-nfc@lists.linux.dev
+Cc: david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+Subject: [PATCH net] nfc: digital: fix read of resp->data[0] before length check in sens_req
+Date: Thu,  1 Oct 2026 01:02:06 +0300
+Message-ID: <20260930220857.721985-1-omermetekaya0@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930220137.843785-1-kuniyu@google.com>
-Subject: [PATCH v1 net] ref_tracker: Don't use __GFP_NOFAIL for PF_MEMALLOC thread.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dmitry Vyukov <dvyukov@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-syzbot triggered a warning in __alloc_pages_slowpath(). [0]
+digital_tg_recv_sens_req() reads resp->data[0] into sens_req before
+checking !resp->len, so a zero-length response causes a out-of-bounds
+read before the guard that was meant to prevent it.
 
-ref_tracker_alloc() uses __GFP_NOFAIL if the passed gfp has
-__GFP_DIRECT_RECLAIM.
+Fix by checking resp->len first and returning -EINVAL early, then
+reading resp->data[0] only when the buffer is known non-empty.
 
-However, cifs_demultiplex_thread() calls memalloc_noreclaim_save()
-and its kthread has PF_MEMALLOC.
-
-As commented in __alloc_pages_slowpath(), __GFP_NOFAIL should
-not be used for PF_MEMALLOC thread.
-
-	if (unlikely(nofail)) {
-...
-		/*
-		 * PF_MEMALLOC request from this context is rather bizarre
-		 * because we cannot reclaim anything and only can loop waiting
-                 * for somebody to do a work for us.
-		 */
-		WARN_ON_ONCE(current->flags & PF_MEMALLOC);
-
-Let's avoid using __GFP_NOFAIL for PF_MEMALLOC thread.
-
-[0]:
-current->flags & PF_MEMALLOC
-WARNING: mm/page_alloc.c:4816 at __alloc_pages_slowpath mm/page_alloc.c:4816 [inline], CPU#0: cifsd/12032
-WARNING: mm/page_alloc.c:4816 at __alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449, CPU#0: cifsd/12032
-Modules linked in:
-CPU: 0 UID: 0 PID: 12032 Comm: cifsd Tainted: G             L      syzkaller #0 PREEMPT(full)
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__alloc_pages_slowpath mm/page_alloc.c:4816 [inline]
-RIP: 0010:__alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449
-Code: 38 d0 7c 08 84 d2 0f 85 de 12 00 00 65 48 8b 05 e2 a7 1c 12 c7 84 24 94 00 00 00 00 80 00 00 f6 40 2d 08 0f 84 ba e7 ff ff 90 <0f> 0b 90 e9 b1 e7 ff ff 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03
-RSP: 0000:ffffc90002e172d0 EFLAGS: 00010202
-RAX: ffff888029380000 RBX: 0000000000000000 RCX: 1ffff1100fffad29
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff88803fffd938
-RBP: ffff88802938002c R08: 0000000000008000 R09: 0000000000000001
-R10: 0000000000000002 R11: 0000000000000000 R12: 00000000000cac40
-R13: ffff88803fffb900 R14: 0000000000000000 R15: 1ffff920005c2e74
-FS:  0000000000000000(0000) GS:ffff888096955000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000008000a000 CR3: 00000000403b5000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- alloc_slab_page mm/slub.c:3347 [inline]
- allocate_slab mm/slub.c:3470 [inline]
- new_slab+0x1f6/0x6e0 mm/slub.c:3513
- refill_objects+0xe3/0x410 mm/slub.c:7417
- refill_sheaf mm/slub.c:2885 [inline]
- __pcs_replace_empty_main+0x35e/0x650 mm/slub.c:4774
- alloc_from_pcs mm/slub.c:4850 [inline]
- slab_alloc_node mm/slub.c:4984 [inline]
- __kmalloc_cache_noprof+0x4f4/0x6d0 mm/slub.c:5559
- _kmalloc_noprof include/linux/slab.h:991 [inline]
- _kzalloc_noprof include/linux/slab.h:1312 [inline]
- ref_tracker_alloc+0x190/0x590 lib/ref_tracker.c:270
- __netns_tracker_alloc include/net/net_namespace.h:370 [inline]
- sk_alloc+0xcfc/0xe80 net/core/sock.c:2329
- inet_create net/ipv4/af_inet.c:333 [inline]
- inet_create+0x3a0/0x1060 net/ipv4/af_inet.c:259
- __sock_create+0x339/0x860 net/socket.c:1676
- generic_ip_connect+0x826/0x1810 fs/smb/client/connect.c:3377
- __cifs_reconnect+0x348/0xa80 fs/smb/client/connect.c:420
- _cifs_reconnect fs/smb/client/connect.c:596 [inline]
- cifs_reconnect fs/smb/client/connect.c:610 [inline]
- cifs_readv_from_socket+0x7c1/0xa30 fs/smb/client/connect.c:749
- cifs_read_from_socket+0xb8/0x100 fs/smb/client/connect.c:804
- cifs_demultiplex_thread+0x2db/0x2ea0 fs/smb/client/connect.c:1295
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Fixes: 4e66934eaadc ("lib: add reference counting tracking infrastructure")
-Reported-by: syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6abd860c.9b478af7.e8d7a.0000.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Fixes: bf30a67c947e ("NFC: digital: Add tg_listen_md and tg_get_rf_tech driver hooks")
+Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
 ---
- lib/ref_tracker.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/digital_technology.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/lib/ref_tracker.c b/lib/ref_tracker.c
-index 30c999d57b10..5f63206357b2 100644
---- a/lib/ref_tracker.c
-+++ b/lib/ref_tracker.c
-@@ -265,7 +265,7 @@ int ref_tracker_alloc(struct ref_tracker_dir *dir,
- 		refcount_inc(&dir->no_tracker);
- 		return 0;
+diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+index ae6487c10..b27d45e05 100644
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -1097,10 +1097,15 @@ void digital_tg_recv_sens_req(struct nfc_digital_dev *ddev, void *arg,
+ 		goto exit;
  	}
--	if (gfp & __GFP_DIRECT_RECLAIM)
-+	if ((gfp & __GFP_DIRECT_RECLAIM) && !(current->flags & PF_MEMALLOC))
- 		gfp_mask |= __GFP_NOFAIL;
- 	*trackerp = tracker = kzalloc_obj(*tracker, gfp_mask);
- 	if (unlikely(!tracker)) {
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+
++	if (!resp->len) {
++		rc = -EINVAL;
++		goto exit;
++	}
++
+ 	sens_req = resp->data[0];
+
+-	if (!resp->len || (sens_req != DIGITAL_CMD_SENS_REQ &&
+-	    sens_req != DIGITAL_CMD_ALL_REQ)) {
++	if (sens_req != DIGITAL_CMD_SENS_REQ &&
++	    sens_req != DIGITAL_CMD_ALL_REQ) {
+ 		rc = -EINVAL;
+ 		goto exit;
+ 	}
+--
+2.55.0
 
