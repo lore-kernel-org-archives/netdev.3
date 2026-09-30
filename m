@@ -1,194 +1,186 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013041.outbound.protection.outlook.com [52.101.83.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB253914E0;
-	Wed, 30 Sep 2026 06:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790751285; cv=fail; b=lLKecynIEcEC3NFfYrASQ+vd8X51pbqu/cEnYYXOOB01dtDejh1aNMaf6j66mdBBGVBcwAVPO6dJYqKhkfVgsnGIzr1Yh29RYKiI6EgJmaOIY1BBzxIMq4/6aqBaUlkz930E6mHpqZpNMclMr8eEc9ySuoeg2551PwqIpJClTDI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790751285; c=relaxed/simple;
-	bh=eXm7tLC7YQXxDuB6R2TQu306CIEWU+j6z/TgjjIv5dw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=plPNx22umSj+I2hj+rl8rv6ek6BLXj1B/+y6zmG5VaysUpbQYV4vuyHCzy0nRdQ/bruvW0ei0A61zxJYr/MAl/EYwFy3ql7r48g0c2JoxtoHGUZjaMyjRr5TbJvJxS8laATJPhXrf6mhermVZZ5ryuHqlnQGYHj9EmklEt/vlbg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=td0jKMfz; arc=fail smtp.client-ip=52.101.83.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2865135DA53;
+	Wed, 30 Sep 2026 06:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790751444; cv=none; b=jhA9va3STvYIlUt00lD0jIqJYl7oUeLD5yLvLaCz/1wX7VBkYYgOLIXoe/Xqdv6DgQblmvD3iF+N/bEDfm8TrgCsLvbGgZMburAL7MOq52ymqFFenKN2aH+KK6vW6Hh1XNNqnBaypc0y329hT/y2DCz5dH5j9nN0WnTEtjrk0nY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790751444; c=relaxed/simple;
+	bh=5DjtQHnwEV0CIiB/q3HFjI5dn7fkGMSIfiTQ8C0m9jk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=awpVASaOOdDTMswkQR7HqSxHdlapKU9G0Pw66491sp38wMIZDF30s05JGZR/kSF5vl/DM1npN1jMBsFdnRcc5uTag9e4SXDro4obdwGxOMGDGe/hqZ3d4+y/8C9667+mI2Q+F06EVGdKX413DwMXK4tb5Oo+6RYBqRYhrRh2n1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7qHxssc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="td0jKMfz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tlYpKfWBmcsw7EglvbIyd8K3kk0g3CxOGuZUCmfxb9PFjtbnGnk93RcH8kCW31FYFJn3yrOryjl/TAgFMZJsrkGYpCZrsaFu8cICD63O50ivo+KQk9OGlMdBlnJ7lJ6ZGxayxOorc/uQAye//S0XTcJKy2CQM4ELxz67AeUgJ8AM2DShNxvDAGG/KkOW3bdKkc/wu5/V43VERbfvmcsABRhHEnwbSX66Jeqk0vTqtxz7mYhcSY0DNJopVQJF6jJDicY2BeCAK85HDtE4WVC/GJOEKIeaGZb8CWfDmDUPJb0nHqOsIdPhndWrduQF8hWlHLiH8R9YmpfT/lgB8d+pBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cgsncTSPWNqxZYhheW5IrObsrKywZlJYyA31wkiGSgQ=;
- b=pNRbMK7SztB8b3ammmZosUzdLFLf6LXTLpG2SGhA31x9O3OQ9eVlWqQ9WKKGB0c9NasEFUyiiMLhc2Ubm86lpWAjkapnKu4fri6GpYOQxG9kd+lBLSOzWfFMbUe7RNSIcviKG5sIVY/cLIkRk1HBW3wdwGJwJUPOH5RuYWNwkWRJQQki5Awib0PTM7XhMryuJcpwGNhFVa4PrfPbOFbl/RlLmfEPyBEQQj4V1mcjOqrGfEMKm3PAt2RUqmimy5hg97WhfT0jPPIypaArB86BIE4zzkdnMiPXKs+tfWs8puNLUH1NuOGXWME7JAKXs2CfFPbn1u9rrqMpHXUJMIjhZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cgsncTSPWNqxZYhheW5IrObsrKywZlJYyA31wkiGSgQ=;
- b=td0jKMfzUua/rzuIs8iSGHUPwXFtfiz3c8E4IJtkyTeva03ARrzrlzF+Hikb1sdoa4Hn265d2Br858BtrGLEN4aaHxUq3IdEY5HxvIan5TiQaAV0PstuYGFp3Cn64ukyxlXJXYh8eq6Zieo9fp5WtE0jglUX/5mpxQuu+M2AgA6HPnQj0eM6RhFf3Iz4zi8w+pp3hVMJhLuPrap2McjMLCR74wXKmKoUpfvMRSen1JX32LmsaY07twj4h1Z6HfpkmXdyOcWw3vuEsjjZY1B0+ZcsZPu6REylab49eUUfPIVw9zKqYzTBcPet9RfyTIlIMjXjUXWhuLLsrIH0TWxpTw==
-Received: from PAXPR04MB8831.eurprd04.prod.outlook.com (2603:10a6:102:20e::18)
- by VI1PR04MB6991.eurprd04.prod.outlook.com (2603:10a6:803:12d::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 06:54:35 +0000
-Received: from PAXPR04MB8831.eurprd04.prod.outlook.com
- ([fe80::f70e:8acd:d9e6:9102]) by PAXPR04MB8831.eurprd04.prod.outlook.com
- ([fe80::f70e:8acd:d9e6:9102%6]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 06:54:34 +0000
-From: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>
-To: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-	"mkl@pengutronix.de" <mkl@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH net v3] can: flexcan: flexcan_get_berr_counter: don't
- wakeup controller if interface is down
-Thread-Topic: [PATCH net v3] can: flexcan: flexcan_get_berr_counter: don't
- wakeup controller if interface is down
-Thread-Index: AQHdUKV51KMWOsffbUKA22oDooSzuLbmr8sw
-Date: Wed, 30 Sep 2026 06:54:34 +0000
-Message-ID:
- <PAXPR04MB88319D93FF0CBBE63E2C1194908B2@PAXPR04MB8831.eurprd04.prod.outlook.com>
-References: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
-In-Reply-To: <20260930062738.30145-1-chunyuzhiqiang@yinhe.ht>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8831:EE_|VI1PR04MB6991:EE_
-x-ms-office365-filtering-correlation-id: 3e337bb0-3a40-4929-31fc-08df1ebfafdd
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|19092799006|22082099003|18002099003|38070700021|6133799003|10067099003|56012099006|11063799006;
-x-microsoft-antispam-message-info:
- 6RjpevL31M6gNiWT67l6UrbnOlPOwlC4wuH2Apdv0VBS8eAjy/tobKmQ48VrrSsxyiTpSbuAKL55v5MtgDw439DFDdX5tkY6C+ndxSMO1gZIH6viMufLy9OVWD7EXgxKp5i2LB67LykPEtIK3cvHfcsgNbxXu8EiPuwkirW1qjHXVbuigtO5TaVqTsl/xgyUG13UufXj2vMpuYfgcBeVHfgb6PiNSJeB8QKlky1bFzcCmi7b1VzUX9EuENPNzCeEqHXpVJdeVw+1wpphhkUwu3fvsHzqA0/zHxdyWiZ18vxwkDnMsMhL9aA69XeR0eKOtbstcRXMwbbbs+wnwr+3kNBsHhgYjOE8rnf7fYyro/wzvF9SrkfKoQLGr5VlmAe/3Gxun9XcmWviK97CMLIu6j0II8RgddJTFZfcPz7aRJtnBokF5+9224tdPqTzaeb+0tson6vT+0NI1OikBQya1NXCCGxxFv2T+siMymXjDm/u7GjpbjMW+XNBveGByErhqLqzZcepUaLhNclpxqKyrsPy2ftqJy/XgUiuTkr2ajxG2LYuAxdexROJss4WrePCg2vu6PP+c356shlB4O6DaTJvpvC4W9UVelBNwtqGSuP24MyTPrI4vBSWQ4kHz9qv/BAt8dq63SGvEIgRxozLKTC8c0yUPsY9/s25oByVKAc6qoXS5PayhG8WSSxJr51Pnxthjc2m336LHNNz88sVx/WBZ5LaBARP+uTLIR+JKzw=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8831.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(19092799006)(22082099003)(18002099003)(38070700021)(6133799003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1U8+hh8sFzak8Z4zjpwbC9vQ2i4g+2CYTcocWeWm4Uey9IgyFqgFkXto21SY?=
- =?us-ascii?Q?lqxY6P9kUmfrsU0gG3PIFuGg0/I5EGvF4u0wWvj8L8QwT4ZgHO6BPc/mqE10?=
- =?us-ascii?Q?hmgW3uJr7w1Nr2FyomDD6q6yipFAqsGZ+xSXv5mUsBivS9zB7dQkMSwN/MGT?=
- =?us-ascii?Q?UhpO/6Mw07crFetr4V0QFI+LrYp2iMh8Hq6NfGh3kaA0ABRdH0C0DcSmQ3da?=
- =?us-ascii?Q?w/4prrBd8kUpY8+SJ9HplCQdOQ8uuJLRMcVhw0onjJ0NWLMzCZ5zBE6SGw87?=
- =?us-ascii?Q?4ryLc1LxpXJD9KML6vfKHm3ftVKE4S8ngN0P4RWH0JcOBQlaykb1u5UaqrUC?=
- =?us-ascii?Q?L9S07PHylBfEX6we7eFFbEORH4yjYz843tS4g+pdioasW0FOByElHlPo5mmx?=
- =?us-ascii?Q?1S8gNK9aXEcMkWnFbV+hZ6OWVuiiOkgfLFlLeQ+UEio/Oztj3Pns/7Pjtm6a?=
- =?us-ascii?Q?RWfkiMmBfpRxskqepQiDPVgxxMK6yy0B9Dp0oLd9UOMvypmtqutoadJS1Qre?=
- =?us-ascii?Q?v3BvU/B5x8XyjTSsXno4M+rKocBXqlmREipEeO5o5Fn9+cDl6ZGils7m8yZ7?=
- =?us-ascii?Q?sco0wpOWXB0POmWbgvJCtsDMV2ubHOKkEv1mfBc8dJx/i2gCDfEMftZ6RhMn?=
- =?us-ascii?Q?meNQdZZ9ooNPVr85gBJ9+XrhItsLubm97QuvaTY9AvvAnC/DDlQhpd/rZuKq?=
- =?us-ascii?Q?RCzFPdiMxjZoVoYmjjl5cnD/OGl3SUOR2/LFJa0U7Cv/N5/LDu7iO6vY95XD?=
- =?us-ascii?Q?CEcY5hz8GxrZVxb18rj5OKV9OWwMKtn8oSqvzfzMIaGuwOLlyuywGXBL8sYq?=
- =?us-ascii?Q?lBrVeiF06v4RjmWvkYlqhobV4YDK/b6TVI4z9XfvYC01kETTMlASdDOq47SL?=
- =?us-ascii?Q?ZJ4YVQ636sCrCquUJzrLz27ieIbupvSxaIZJU+rjK1Ae073RMdkClolYVM3h?=
- =?us-ascii?Q?YwiSISBSHjNK+k67+/myOe2T0i22Wyjomc8FjTBObZyYuZ2v8M7ayw/TufvW?=
- =?us-ascii?Q?C+YO7f6Bw+tOJgQ3NdaGSn+p+ZCU3U5y01Do5+uR+IDU7PVUZxFow9xckHNq?=
- =?us-ascii?Q?MWYiXKbvIoSAgvGke/JMq9KkX5xvoGO4qdZbQVpcNgc6vJjYEn/x/K79lHKZ?=
- =?us-ascii?Q?3c/DbIZEmnEEzeUc4SjXIjtS1ahxn3t2ZYuDR+1SvNYz7nfpUguS0XRhrJVJ?=
- =?us-ascii?Q?lUdPLmQkOnHg/GDHbEXzVqpOW+8iI47bLNViJbfeBcfsRzulBb7F78g3Z3ap?=
- =?us-ascii?Q?LZ+i/5M0XyLIz4h/UNcn1z79DDWOgnX8+mFDe9HL1LPabdQGL1N78qBBMUeA?=
- =?us-ascii?Q?xMLGObQ/kHEX85Wh9hTtJBXleZKNDffugxR9IVqiat2rwcdrI6VpsAJRTt5a?=
- =?us-ascii?Q?17NEMDEe27w8LFgy9605nL3FKnUa9oWmoU9EanNgva5CCmqLf2FhavjnZyTd?=
- =?us-ascii?Q?y2dLSawu+NYKtByU3TaWFBgNkIF/wwwuAUWMtr7owe7dAIi9RkwjLsHixdcD?=
- =?us-ascii?Q?kCqaHLy7mpw/t156SxMhaDTeeFUCU25HwkEFbtcYtzKonWmgdiOWxlacaMWM?=
- =?us-ascii?Q?ZLhJfzDlHanz+FYnnYLubv1FoMS2YfRcvsPozayMw//2Gp4NLiQD6IwLNbGP?=
- =?us-ascii?Q?XN2XrX8jCl/wd1vD9sp88G81IVvg7ousw4t9U1Fmw9SAVJaZsuMFScku+hSd?=
- =?us-ascii?Q?enzok9+7r2ZOVhANX4lLXSwW/Dl9YIjg40fgpVoLTZ+zEoar?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7qHxssc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0631F00893;
+	Wed, 30 Sep 2026 06:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790751433;
+	bh=vpVM261qTPodnqvjTNFhL++hxSudMNkypS0mdn4IpzU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=I7qHxsscUFpsy15gvpxtyxT0kOwJC/3fCzRH4JsmCjwaVCtHzebJg28+PNPGbd+mV
+	 w1L9g/8aX1Jce24ntO9/6jJ2UcrlKamkYYh5hx0YUqlIPXQZ47BjUjyEksT4bFrnir
+	 C8AkTJmiMlIseN+//xTklFkxPOB4JdIOQZVgz6eq82swZe+WZ7uKQ01kdLumha0NXJ
+	 P3r5LDRWMEhmWLKUjSyrfPUzNqCUZsAPnW81aysdnvSg8t7YBV2g37kcKOOatv3i9T
+	 saabY4b7sjUef6ftwE+FtIYTdVeb9CxldDrzohqFsF09ljvJ5UNjIohWU9ypTVwPJX
+	 vbX5E0D/4capQ==
+Subject:
+ Re: [PATCH net-next 2/6] dpll: zl3073x: add GPO support for output pins
+From: netdev-bot+sashiko@kernel.org
+To: ivecera@redhat.com
+Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
+ arkadiusz.kubalewski@intel.com, kuba@kernel.org, jiri@resnulli.us,
+ min.li@microchip.com, pabeni@redhat.com, poros@redhat.com,
+ richardcochran@gmail.com, vadim.fedorenko@linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Wed, 30 Sep 2026 06:57:12 +0000
+Message-ID: <179075143241.434549.4937444709313263420@kernel.org>
+In-Reply-To: <20260928185552.1103515-3-ivecera@redhat.com>
+References: <20260928185552.1103515-3-ivecera@redhat.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8831.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e337bb0-3a40-4929-31fc-08df1ebfafdd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2026 06:54:34.7495
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IewJmQhRbm0JPTQ/AWMIR2bKDu652YgN76qTUJ2BqZeZbVuZILPDObWhqnqSnEi4nnkg/eEghUYiehmQgv9Ung==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6991
 
-> -----Original Message-----
-> From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> Sent: Wednesday, September 30, 2026 2:28 PM
-> To: netdev@vger.kernel.org
-> Cc: linux-can@vger.kernel.org; mkl@pengutronix.de; kernel@pengutronix.de;
-> Bough Chen (OSS) <haibo.chen@oss.nxp.com>; shawnguo@kernel.org;
-> imx@lists.linux.dev; ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-> Subject: [PATCH net v3] can: flexcan: flexcan_get_berr_counter: don't wak=
-eup
-> controller if interface is down
->=20
-> If the interface is down, the CAN controller might be powered down, the c=
-lock
-> disabled, and/or it's external reset asserted.
->=20
-> Don't wake up the controller to read the CAN bus error counters, if the
-> interface is down.
->=20
-> Fixes: ec56acfef2af1 ("can: flexcan: flexcan_get_berr_counter(): switch o=
-n
-> clocks before accessing ecr register")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Regards
-Haibo Chen
-> ---
-> v1 -> v2:
->   - Reword the commit message to drop the MDIS reasoning.
->   - Add Fixes: tag.
->=20
-> v2 -> v3:
->   - Use the title and commit message suggested by Bough Chen.
->   - Drop the i.MX8QXP-specific crash dump and erratum explanation;
->     the fix addresses a generic logic problem that exists on all
->     platforms.
->   - Drop the m_can reference.
->   - Drop the Link: tag (added by the maintainer at merge time).
->=20
->  drivers/net/can/flexcan/flexcan-core.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/net/can/flexcan/flexcan-core.c
-> b/drivers/net/can/flexcan/flexcan-core.c
-> index 06d5d35fc1b5..b08779ee2a0a 100644
-> --- a/drivers/net/can/flexcan/flexcan-core.c
-> +++ b/drivers/net/can/flexcan/flexcan-core.c
-> @@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct
-> net_device *dev,
->  	const struct flexcan_priv *priv =3D netdev_priv(dev);
->  	int err;
->=20
-> +	if (!netif_running(dev))
-> +		return 0;
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Error-recovery path applies the output restart before the
+  pending GPO change.
+- [Low] The struct zl3073x_dev kernel-doc in drivers/dpll/zl3073x/core.h
+  (line 65, '@out: array of outs' invariants') and the inline '/*…
+
+--
+
+dpll: zl3073x: add GPO support for output pins
+
+This commit adds the GPO override mailbox fields and the direct gpo_out_x
+registers for CMOS output pins, along with helpers to read and set the pin
+function. It also adds the output_ctrl_x stop bits and stop/start helpers.
+ctrl moves into the cfg struct_group, and zl3073x_out_state_set() now
+writes it directly.
+
+> diff --git a/drivers/dpll/zl3073x/out.c b/drivers/dpll/zl3073x/out.c
+> index 410d15b96d0b..82564045890d 100644
+> --- a/drivers/dpll/zl3073x/out.c
+> +++ b/drivers/dpll/zl3073x/out.c
+
+[ ... ]
+
+> @@ -120,11 +135,17 @@ int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8 index,
+>  	struct zl3073x_out *dout = &zldev->out[index];
+>  	int rc;
+>  
+> -	/* Reject attempts to change invariant fields (set at fetch only) */
+> -	if (WARN_ON(memcmp(&dout->inv, &out->inv, sizeof(out->inv))))
+> -		return -EINVAL;
+> +	/* ctrl is a direct register, independent of the output mailbox */
+> +	if (dout->ctrl != out->ctrl) {
+> +		rc = zl3073x_write_u8(zldev, ZL_REG_OUTPUT_CTRL(index),
+> +				      out->ctrl);
+> +		if (rc)
+> +			return rc;
 > +
->  	err =3D pm_runtime_resume_and_get(priv->dev);
->  	if (err < 0)
->  		return err;
-> --
-> 2.47.3
+> +		dout->ctrl = out->ctrl;
+> +	}
 
+[Severity: Medium]
+
+zl3073x_out_state_set() now always writes output_ctrl_x before any mailbox
+field. It does not roll dout->ctrl back if the later zl3073x_mb_op() or a
+mailbox field write fails.
+
+Can this order apply a restart before a pending GPO change on an error
+recovery path?
+
+The follow-up patch "dpll: zl3073x: allow enabling/disabling output pins"
+adds zl3073x_dev_output_pin_state_set(). It puts a stop before the GPO
+change and a start after it. Its recovery path looks like this:
+
+	rc = zl3073x_out_state_set(zldev, out_id, &out);
+
+restart_output:
+	zl3073x_out_start(&out);
+	rc = zl3073x_out_state_set(zldev, out_id, &out) ? : rc;
+
+The second zl3073x_out_state_set() call only changes gpo_en/gpo_config.
+Suppose it fails in zl3073x_mb_op() or in one of the mailbox field writes.
+Then dout->cfg keeps the old GPO values, while out still holds the new
+ones.
+
+The recovery call then carries two changes: the cleared STOP/STOP_HZ bits
+and the uncommitted GPO change. Because ctrl is written first, would the
+clock restart, with the GPO override then changed on a running output?
+
+That looks like the toggle the stop/start pair is meant to avoid. The
+driver's own comment says the GPO toggle is not glitch-free. For
+enable=true, the override is released onto a clock that is already
+running, at an arbitrary phase. For enable=false, the override is engaged
+in the middle of a clock cycle.
+
+Also, if the retried commit succeeds, the "? : rc" still returns the
+earlier error. zl3073x_dpll_output_pin_state_on_dpll_set() would then
+report a failure even though the pin state changed.
+
+>  
+> -	/* Skip HW write if configuration hasn't changed */
+> +	/* Skip the mailbox commit if nothing else has changed */
+>  	if (!memcmp(&dout->cfg, &out->cfg, sizeof(out->cfg)))
+>  		return 0;
+
+[ ... ]
+
+> diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h
+> index 660889c57bff..66a8432c00df 100644
+> --- a/drivers/dpll/zl3073x/out.h
+> +++ b/drivers/dpll/zl3073x/out.h
+
+[ ... ]
+
+> @@ -29,8 +32,9 @@ struct zl3073x_out {
+>  		u32	esync_n_width;
+>  		s32	phase_comp;
+>  		u8	mode;
+> -	);
+> -	struct_group(inv, /* Invariants */
+> +		u8	gpo_en;
+> +		u8	gpo_config_p;
+> +		u8	gpo_config_n;
+>  		u8	ctrl;
+>  	);
+>  };
+
+[Severity: Low]
+
+This isn't a bug, but with the inv group removed, struct zl3073x_out has
+no invariant fields left. The struct zl3073x_dev comments in core.h still
+describe out[] as invariants:
+
+ * @out: array of outs' invariants
+...
+	/* Invariants */
+	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
+	struct zl3073x_out	out[ZL3073X_NUM_OUTS];
+
+These comments are still unchanged at the end of the series. Should they
+be updated along with this change?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928185552.1103515-1-ivecera%40redhat.com
