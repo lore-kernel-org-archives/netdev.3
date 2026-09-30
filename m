@@ -1,47 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46E74E1C76
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A044E4C57
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790774540; cv=none; b=aby6AS6skv68nUCAKMLKv9Al7dw532Oqyy7FQkx9rUADAdDWUwRcbRwubcuq1D8nVuLBROugsEHtPfuB2JfA0v0OFSLCFS/RlKDt/f1SwgfNCrez+jDg28U+J51w1BrYoxgyzTD1nrh/Fk5+FvTf/l7hCVb185I/6LuBzF0dOXw=
+	t=1790774551; cv=none; b=lPYjg/madeML0/07kOLwKNvR7Y8jWtTkXrODg46chy6kFFbsLeA9eFdHnhu/NnH6AcG+WyzGShR+qpns4Yegnrw9EzOij2qGWcQZs64ONvfjmUIoYhcp4GVrXPGpuOX+tDiRQ5iGmSV94pD1KkkAXN8H7h53GcGuIZvwxNnynUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790774540; c=relaxed/simple;
-	bh=8nuYhBckcXm3Lx1n2iltz9D9qVXsPaSk/WsfjDAw6cY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sF/rF9G0BwApEnojKNXcD6NP2Bj0X+4S7TJfXQAUbU2mKdxK6eQBT6VtxDs0nhchgu/c8guLfbusUhE2cEcL4ZkjhXRs1AMJjSVLoIKb6fycTTT4UlxmMBS4oDQwbQzYXqFFgkqtgnUAkfRALZjXpsZUfQxJQVC564wZhoMJPEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IL75oGad; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1790774551; c=relaxed/simple;
+	bh=0/+uONiYB3kuLfvtkWFWJy1GVBE1bVdASi1LyUA0R4M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NPou8WJsLYIQZ6UPqFIgaG/x9d59lbq/aJ7C22gnWgXo7BE7G34AiEHNhWM6aoBk0qpSvE05PnoAyPK0vwRgHwdZi5Gsh1P4HUS1MdGq//jnYckf/JgYIpcqdp2GcKNCSaxBjlcrIuDGNz7tfsFamL3N43fqosNI5JhtVkRTuXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HqUY4Ic/; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IL75oGad"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HqUY4Ic/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790774523; x=1822310523;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8nuYhBckcXm3Lx1n2iltz9D9qVXsPaSk/WsfjDAw6cY=;
-  b=IL75oGad5hhNU6yakfDRy+/iMv6Z9SSqCv6NXfqtX8xixfwVHdixVVeo
-   fPyeuRidlS/jX45xQJVT7qCVfVdetg3NEamUj4sniHn6v81PiJO0o9Cyh
-   yc+weAkRa7eEjgm8M0HdjYaSS5mvPGcYE55lai2elqzgSaXs3I5DhgZMt
-   a8Viy7Fc/WfoYTsBPZpHzQqacK7JDiDHanKo8lIYpho8TDe5sEXacSkPX
-   TCb4teIby/XVo3LR8jlxiKvTBl8wZ9Echl02RgShNKbVOkr0yIt+gXaw3
-   D+vVQnWUAhNEWk4ZMm7Rw7yN+WE06AQkKEJ1r50cXHF6nTkX4xVIo7lAd
-   A==;
-X-CSE-ConnectionGUID: yT3CV+OsSD6eDUBXsFMqfA==
-X-CSE-MsgGUID: pTun3YmmT5GPLscT9pj8vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91375414"
+  t=1790774538; x=1822310538;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0/+uONiYB3kuLfvtkWFWJy1GVBE1bVdASi1LyUA0R4M=;
+  b=HqUY4Ic/cp3jRSVZkk1R5mMdWcBST16mXYHOk47Z3MT72HBSBNJ0PnOA
+   CPL43scFGhdO3MigHQlPqBMrZP+84ZXlR7XXMzseFfizVv6UOZJztZJ9j
+   S2u/WjOIhnZQL2azh6WvEsuy1jnF57XDPmtRTivqYuCTxQKOju0N4GOZy
+   cijL/fDa/UOzAsdCMaKcTJDPMNeH/EpJUDeGaVeDXrBmBX7yHApO7ZFgx
+   z61FYQx8elTd5GxB7UqPC658INSQwoO/LALNxqc12T2nymuDHOWj5i+Ij
+   Euf+6ToyrohBCW2CFIRC/583Rf7pNvpN+LN9MgkrpIS3229gGxtnndlk9
+   w==;
+X-CSE-ConnectionGUID: GgqmnWLxSKqdf1JbXKFt/g==
+X-CSE-MsgGUID: NjS7g2iqRbqXFiljEYrZxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="102185780"
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="91375414"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:21:58 -0700
-X-CSE-ConnectionGUID: WlwF9JjpTnSbTXRd58NOgg==
-X-CSE-MsgGUID: gH6TBX33TAaEw5q/PUtp4g==
+   d="scan'208";a="102185780"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:22:11 -0700
+X-CSE-ConnectionGUID: 90c/avH/Q0mAfz9ZPRwFmQ==
+X-CSE-MsgGUID: V0BXS44AQ2iEuzlmZwE2XQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="275730763"
+   d="scan'208";a="275827207"
 Received: from txa-pn-adk06.an.intel.com ([10.123.72.220])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:21:58 -0700
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:22:10 -0700
 From: Shubham Das <shubham.das@intel.com>
 To: netdev@vger.kernel.org,
 	andrew@lunn.ch,
@@ -54,10 +55,12 @@ Cc: siddaraju.dh@intel.com,
 	magnus.k.lindberg@ericsson.com,
 	jonas.wirandi@ericsson.com,
 	Shubham Das <shubham.das@intel.com>
-Subject: [RFC net-next 0/2] ethtool: add interface caps and PHY tests
-Date: Wed, 30 Sep 2026 08:21:46 -0500
-Message-Id: <20260930132151.932792-1-shubham.das@intel.com>
+Subject: [RFC net-next 1/2] ethtool: add interface capabilities query (intf-caps-get)
+Date: Wed, 30 Sep 2026 08:21:47 -0500
+Message-Id: <20260930132151.932792-2-shubham.das@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260930132151.932792-1-shubham.das@intel.com>
+References: <20260930132151.932792-1-shubham.das@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,49 +69,536 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds two new ethtool netlink commands:
+Modern network interfaces contain multiple functional blocks along
+the data path (MAC, PHY, MODULE), each at different 802.3 sublayers
+(RS, PCS, FEC, PMA, PMD). Currently there is no standard way for
+userspace to discover this topology or query which blocks support
+loopback, pattern generation, or BERT.
 
-1. intf-caps-get: Discovers the functional block layout of a network
-   interface. Each block represents a hardware point (MAC/PHY/MODULE) at
-   a specific 802.3 sublayer (RS/PCS/FEC/PMA/PMD) with its supported
-   capabilities (loopback, test patterns, BERT, error injection).
+Add ETHTOOL_MSG_INTF_CAPS_GET so drivers can expose the block layout
+and per-block capabilities. This allows userspace to discover the
+interface topology and testing capabilities dynamically, rather than
+relying on device-specific knowledge.
 
-2. Add ETHTOOL_MSG_PHY_TEST_GET and ETHTOOL_MSG_PHY_TEST_SET for per-block,
-  per-lane PHY testing using test patterns, BERT (Bit Error Ratio Test),
-  and error injection. The block_id from intf-caps-get identifies which
-  hardware point to test.
+Each block reports:
+  - id: unique block identifier for per-block commands
+  - component: MAC, PHY, or MODULE
+  - sublayer: RS, PCS, FEC, PMA, PMD, or NONE
+  - instance: distinguishes multiple instances of the same component
+    (e.g., internal vs external PHY, host vs port MAC)
+  - name: driver-chosen label (e.g., host-pma, ext-phy-pma)
+  - depth: ordering within same (component, sublayer) tuple
+  - lanes: number of SerDes lanes at this block
+  - loopback_supported: bitmask of supported loopback directions
+  - supported_tx_patterns: bitmask of patterns block can generate
+  - supported_rx_patterns: bitmask of patterns block can check
+  - error_inject_supported: block supports bit error injection
+  - bert_supported: block supports BERT (Bit Error Ratio Test)
 
-The block model uses:
-  - component: identifies the hardware entity (MAC, PHY, or module).
-  - sublayer: identifies the 802.3 sublayer (RS, PCS, FEC, PMA, or PMD).
-  - instance: identifies multiple instances of the same component, such as
-    internal and external PHYs.
-  - depth: identifies the host-side or line-side block within the same
-    sublayer.
-
-Prior discussion on this proposal:
-https://lore.kernel.org/netdev/SN7PR11MB810923BBDEC398E860099150FF1B2
-
-Shubham Das (2):
-  ethtool: add interface capabilities query (intf-caps-get)
-  ethtool: add PHY test framework (phy-test-get, phy-test-set)
-
- Documentation/netlink/specs/ethtool.yaml      | 211 ++++++++++++++++++
- include/linux/ethtool.h                       |  94 ++++++++
- include/linux/phy.h                           |  16 ++
- include/linux/phylink.h                       |   7 +
- .../uapi/linux/ethtool_netlink_generated.h    | 106 +++++++++
+Signed-off-by: Shubham Das <shubham.das@intel.com>
+---
+ Documentation/netlink/specs/ethtool.yaml      |  99 +++++++++++++
+ include/linux/ethtool.h                       |  49 +++++++
+ include/linux/phy.h                           |   8 ++
+ include/linux/phylink.h                       |   3 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  48 +++++++
  net/ethtool/Makefile                          |   2 +-
- net/ethtool/intf_caps.c                       | 130 +++++++++++
- net/ethtool/netlink.c                         |  24 ++
- net/ethtool/netlink.h                         |  10 +
- net/ethtool/phytest.c                         | 183 +++++++++++++++
- 10 files changed, 782 insertions(+), 1 deletion(-)
+ net/ethtool/intf_caps.c                       | 130 ++++++++++++++++++
+ net/ethtool/netlink.c                         |  10 ++
+ net/ethtool/netlink.h                         |   3 +
+ 9 files changed, 351 insertions(+), 1 deletion(-)
  create mode 100644 net/ethtool/intf_caps.c
- create mode 100644 net/ethtool/phytest.c
 
-
-base-commit: 001b5d347d8ba39b2dccaefcc57967b18caec8fe
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 5dd4d1b5d94b..77d77a896fb0 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -210,6 +210,25 @@ definitions:
+       -
+         name: discard
+         value: 31
++  -
++    name: intf-component
++    type: enum
++    doc: Type of hardware component in the interface.
++    entries:
++      - mac
++      - phy
++      - module
++  -
++    name: intf-sublayer
++    type: enum
++    doc: 802.3 sublayer within a component.
++    entries:
++      - none
++      - rs
++      - pcs
++      - fec
++      - pma
++      - pmd
+ 
+ attribute-sets:
+   -
+@@ -1905,6 +1924,73 @@ attribute-sets:
+         name: link
+         type: nest
+         nested-attributes: mse-snapshot
++  -
++    name: intf-block
++    doc: A single functional block in the interface.
++    attributes:
++      -
++        name: id
++        type: u32
++      -
++        name: component
++        type: u32
++        enum: intf-component
++      -
++        name: sublayer
++        type: u32
++        enum: intf-sublayer
++      -
++        name: instance
++        type: u32
++        doc: |
++          Identifies the hardware entity when multiple instances of
++          the same component exist in the interface. The driver
++          assigns instance numbers sequentially based on position in
++          the physical path. Defaults to 0 when only one instance of
++          a given component exists.
++          For PHY: instance 0 is the internal/host-side PHY,
++          instance 1 is an external PHY further along the path
++          toward the line side.
++          For MAC: instance 0 is the host-facing MAC, instance 1 is
++          a secondary MAC further along the data path (e.g., behind
++          an embedded switch).
++      -
++        name: name
++        type: string
++      -
++        name: depth
++        type: u8
++      -
++        name: lanes
++        type: u32
++      -
++        name: loopback-supported
++        type: u32
++      -
++        name: supported-tx-patterns
++        type: u32
++      -
++        name: supported-rx-patterns
++        type: u32
++      -
++        name: error-inject-supported
++        type: flag
++      -
++        name: bert-supported
++        type: flag
++  -
++    name: intf-caps
++    doc: Interface capabilities message.
++    attributes:
++      -
++        name: header
++        type: nest
++        nested-attributes: header
++      -
++        name: blocks
++        type: nest
++        nested-attributes: intf-block
++        multi-attr: true
+ 
+ operations:
+   enum-model: directional
+@@ -2859,6 +2945,19 @@ operations:
+             - worst-channel
+             - link
+       dump: *mse-get-op
++    -
++      name: intf-caps-get
++      doc: Get interface capabilities (functional block layout).
++      attribute-set: intf-caps
++      do: &intf-caps-get-op
++        request:
++          attributes:
++            - header
++        reply:
++          attributes:
++            - header
++            - blocks
++      dump: *intf-caps-get-op
+ 
+ mcast-groups:
+   list:
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 12683b5d125e..61730c4500dc 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -1197,6 +1197,53 @@ struct kernel_ethtool_ts_info {
+  * See &struct net_device and &struct net_device_ops for documentation
+  * of the generic netdev features interface.
+  */
++
++#define INTF_CAPS_MAX_BLOCKS	16
++#define INTF_BLOCK_NAME_LEN	32
++
++#define LOOPBACK_SUPPORT_LOCAL	BIT(0)
++#define LOOPBACK_SUPPORT_REMOTE	BIT(1)
++
++/**
++ * struct ethtool_intf_block - Single functional block in the interface
++ * @id: Unique block identifier
++ * @component: Hardware component (MAC, PHY, MODULE)
++ * @sublayer: 802.3 sublayer (RS, PCS, FEC, PMA, PMD, or NONE)
++ * @instance: Index when multiple instances of same component exist
++ * @name: Driver-chosen label
++ * @depth: Ordering within same (component, sublayer) tuple
++ * @lanes: Number of lanes
++ * @loopback_supported: Bitmask of supported loopback directions
++ * @supported_tx_patterns: Bitmask of patterns this block can generate
++ * @supported_rx_patterns: Bitmask of patterns this block can check
++ * @error_inject_supported: Block supports bit error injection
++ * @bert_supported: Block supports BERT counters
++ */
++struct ethtool_intf_block {
++	u32 id;
++	enum intf_component component;
++	enum intf_sublayer sublayer;
++	u32 instance;
++	char name[INTF_BLOCK_NAME_LEN];
++	u8 depth;
++	u32 lanes;
++	u32 loopback_supported;
++	u32 supported_tx_patterns;
++	u32 supported_rx_patterns;
++	u8 error_inject_supported;
++	u8 bert_supported;
++};
++
++/**
++ * struct ethtool_intf_caps - Interface capabilities (all blocks)
++ * @num_blocks: Number of valid entries in blocks[]
++ * @blocks: Array of functional blocks
++ */
++struct ethtool_intf_caps {
++	u32 num_blocks;
++	struct ethtool_intf_block blocks[INTF_CAPS_MAX_BLOCKS];
++};
++
+ struct ethtool_ops {
+ 	u32     supported_input_xfrm:8;
+ 	u32     cap_link_lanes_supported:1;
+@@ -1354,6 +1401,8 @@ struct ethtool_ops {
+ 	int	(*set_mm)(struct net_device *dev, struct ethtool_mm_cfg *cfg,
+ 			  struct netlink_ext_ack *extack);
+ 	void	(*get_mm_stats)(struct net_device *dev, struct ethtool_mm_stats *stats);
++	int	(*get_intf_caps)(struct net_device *dev,
++				 struct ethtool_intf_caps *caps);
+ };
+ 
+ int ethtool_check_ops(const struct ethtool_ops *ops);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 5f8d65868e0f..f3c5bc976b4a 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1391,6 +1391,14 @@ struct phy_driver {
+ 	 * shall be returned if speed selection is not supported.
+ 	 */
+ 	int (*set_loopback)(struct phy_device *dev, bool enable, int speed);
++
++	/**
++	 * @get_intf_caps: Report functional blocks and capabilities of the PHY.
++	 */
++	int (*get_intf_caps)(struct phy_device *dev,
++			     struct ethtool_intf_block *blocks,
++			     u32 max_blocks);
++
+ 	/** @get_sqi: Get the signal quality indication */
+ 	int (*get_sqi)(struct phy_device *dev);
+ 	/** @get_sqi_max: Get the maximum signal quality indication */
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 2bc0db3d52ac..86a91a4436fe 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -765,6 +765,9 @@ int phylink_ethtool_set_pauseparam(struct phylink *,
+ int phylink_get_eee_err(struct phylink *);
+ int phylink_ethtool_get_eee(struct phylink *link, struct ethtool_keee *eee);
+ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
++int phylink_ethtool_get_intf_caps(struct phylink *pl,
++				  struct ethtool_intf_block *blocks,
++				  u32 max_blocks);
+ int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
+ int phylink_speed_down(struct phylink *pl, bool sync);
+ int phylink_speed_up(struct phylink *pl);
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+index 8134baf7860f..bd4cca1cc4fc 100644
+--- a/include/uapi/linux/ethtool_netlink_generated.h
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -893,6 +893,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_ACT,
+ 	ETHTOOL_MSG_RSS_DELETE_ACT,
+ 	ETHTOOL_MSG_MSE_GET,
++	ETHTOOL_MSG_INTF_CAPS_GET,
+ 
+ 	__ETHTOOL_MSG_USER_CNT,
+ 	ETHTOOL_MSG_USER_MAX = (__ETHTOOL_MSG_USER_CNT - 1)
+@@ -954,6 +955,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_NTF,
+ 	ETHTOOL_MSG_RSS_DELETE_NTF,
+ 	ETHTOOL_MSG_MSE_GET_REPLY,
++	ETHTOOL_MSG_INTF_CAPS_GET_REPLY,
+ 
+ 	__ETHTOOL_MSG_KERNEL_CNT,
+ 	ETHTOOL_MSG_KERNEL_MAX = (__ETHTOOL_MSG_KERNEL_CNT - 1)
+@@ -961,4 +963,50 @@ enum {
+ 
+ #define ETHTOOL_MCGRP_MONITOR_NAME	"monitor"
+ 
++/* Interface component types */
++enum intf_component {
++	INTF_COMPONENT_MAC,
++	INTF_COMPONENT_PHY,
++	INTF_COMPONENT_MODULE,
++};
++
++/* Interface sublayer types */
++enum intf_sublayer {
++	INTF_SUBLAYER_NONE,
++	INTF_SUBLAYER_RS,
++	INTF_SUBLAYER_PCS,
++	INTF_SUBLAYER_FEC,
++	INTF_SUBLAYER_PMA,
++	INTF_SUBLAYER_PMD,
++};
++
++/* Attributes of a single interface block */
++enum {
++	ETHTOOL_A_INTF_BLOCK_ID,
++	ETHTOOL_A_INTF_BLOCK_COMPONENT,
++	ETHTOOL_A_INTF_BLOCK_SUBLAYER,
++	ETHTOOL_A_INTF_BLOCK_INSTANCE,
++	ETHTOOL_A_INTF_BLOCK_NAME,
++	ETHTOOL_A_INTF_BLOCK_DEPTH,
++	ETHTOOL_A_INTF_BLOCK_LANES,
++	ETHTOOL_A_INTF_BLOCK_LOOPBACK_SUPPORTED,
++	ETHTOOL_A_INTF_BLOCK_TX_PATTERNS,
++	ETHTOOL_A_INTF_BLOCK_RX_PATTERNS,
++	ETHTOOL_A_INTF_BLOCK_ERROR_INJECT,
++	ETHTOOL_A_INTF_BLOCK_BERT,
++
++	__ETHTOOL_A_INTF_BLOCK_CNT,
++	ETHTOOL_A_INTF_BLOCK_MAX = (__ETHTOOL_A_INTF_BLOCK_CNT - 1)
++};
++
++/* Attributes of intf-caps-get message */
++enum {
++	ETHTOOL_A_INTF_CAPS_UNSPEC,
++	ETHTOOL_A_INTF_CAPS_HEADER,
++	ETHTOOL_A_INTF_CAPS_BLOCKS,
++
++	__ETHTOOL_A_INTF_CAPS_CNT,
++	ETHTOOL_A_INTF_CAPS_MAX = (__ETHTOOL_A_INTF_CAPS_CNT - 1)
++};
++
+ #endif /* _UAPI_LINUX_ETHTOOL_NETLINK_GENERATED_H */
+diff --git a/net/ethtool/Makefile b/net/ethtool/Makefile
+index 629c10916670..773b21c7ab7c 100644
+--- a/net/ethtool/Makefile
++++ b/net/ethtool/Makefile
+@@ -9,4 +9,4 @@ ethtool_nl-y	:= netlink.o bitset.o strset.o linkinfo.o linkmodes.o rss.o \
+ 		   channels.o coalesce.o pause.o eee.o tsinfo.o cabletest.o \
+ 		   tunnels.o fec.o eeprom.o stats.o phc_vclocks.o mm.o \
+ 		   module.o cmis_fw_update.o cmis_cdb.o pse-pd.o plca.o \
+-		   phy.o tsconfig.o mse.o
++		   phy.o tsconfig.o mse.o intf_caps.o
+diff --git a/net/ethtool/intf_caps.c b/net/ethtool/intf_caps.c
+new file mode 100644
+index 000000000000..4f4594e8cfdc
+--- /dev/null
++++ b/net/ethtool/intf_caps.c
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "netlink.h"
++#include "common.h"
++
++struct intf_caps_req_info {
++	struct ethnl_req_info base;
++};
++
++struct intf_caps_reply_data {
++	struct ethnl_reply_data base;
++	struct ethtool_intf_caps caps;
++};
++
++#define INTF_CAPS_REPDATA(__reply_base) \
++	container_of(__reply_base, struct intf_caps_reply_data, base)
++
++const struct nla_policy
++ethnl_intf_caps_get_policy[ETHTOOL_A_INTF_CAPS_HEADER + 1] = {
++	[ETHTOOL_A_INTF_CAPS_HEADER] =
++		NLA_POLICY_NESTED(ethnl_header_policy),
++};
++
++static int intf_caps_reply_size(const struct ethnl_req_info *req_base,
++				const struct ethnl_reply_data *reply_base)
++{
++	const struct intf_caps_reply_data *data = INTF_CAPS_REPDATA(reply_base);
++	int len = 0;
++	u32 i;
++
++	for (i = 0; i < data->caps.num_blocks; i++) {
++		len += nla_total_size(0);		/* nested block */
++		len += nla_total_size(sizeof(u32));	/* id */
++		len += nla_total_size(sizeof(u32));	/* component */
++		len += nla_total_size(sizeof(u32));	/* sublayer */
++		len += nla_total_size(sizeof(u32));	/* instance */
++		len += nla_total_size(INTF_BLOCK_NAME_LEN); /* name */
++		len += nla_total_size(sizeof(u8));	/* depth */
++		len += nla_total_size(sizeof(u32));	/* lanes */
++		len += nla_total_size(sizeof(u32));	/* loopback_supported */
++		len += nla_total_size(sizeof(u32));	/* tx_patterns */
++		len += nla_total_size(sizeof(u32));	/* rx_patterns */
++		len += nla_total_size(0);		/* error_inject flag */
++		len += nla_total_size(0);		/* bert (flag) */
++	}
++
++	/* outer BLOCKS nest */
++	len += nla_total_size(0);
++
++	return len;
++}
++
++static int intf_caps_prepare_data(const struct ethnl_req_info *req_base,
++				  struct ethnl_reply_data *reply_base,
++				  const struct genl_info *info)
++{
++	struct intf_caps_reply_data *data = INTF_CAPS_REPDATA(reply_base);
++	struct net_device *dev = reply_base->dev;
++
++	if (!dev->ethtool_ops->get_intf_caps)
++		return -EOPNOTSUPP;
++
++	return dev->ethtool_ops->get_intf_caps(dev, &data->caps);
++}
++
++static int intf_caps_fill_reply(struct sk_buff *skb,
++				const struct ethnl_req_info *req_base,
++				const struct ethnl_reply_data *reply_base)
++{
++	const struct intf_caps_reply_data *data = INTF_CAPS_REPDATA(reply_base);
++	struct nlattr *blocks_attr;
++	u32 i;
++
++	blocks_attr = nla_nest_start(skb, ETHTOOL_A_INTF_CAPS_BLOCKS);
++	if (!blocks_attr)
++		return -EMSGSIZE;
++
++	for (i = 0; i < data->caps.num_blocks; i++) {
++		const struct ethtool_intf_block *b = &data->caps.blocks[i];
++		struct nlattr *block_attr;
++
++		block_attr = nla_nest_start(skb, 0);
++		if (!block_attr)
++			goto nla_put_failure;
++
++		if (nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_ID, b->id) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_COMPONENT,
++				b->component) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_SUBLAYER,
++				b->sublayer) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_INSTANCE,
++				b->instance) ||
++		    nla_put_string(skb, ETHTOOL_A_INTF_BLOCK_NAME, b->name) ||
++		    nla_put_u8(skb, ETHTOOL_A_INTF_BLOCK_DEPTH, b->depth) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_LANES, b->lanes) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_LOOPBACK_SUPPORTED,
++				b->loopback_supported) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_TX_PATTERNS,
++				b->supported_tx_patterns) ||
++		    nla_put_u32(skb, ETHTOOL_A_INTF_BLOCK_RX_PATTERNS,
++				b->supported_rx_patterns))
++			goto nla_put_failure;
++		if (b->error_inject_supported &&
++		    nla_put_flag(skb, ETHTOOL_A_INTF_BLOCK_ERROR_INJECT))
++			goto nla_put_failure;
++		if (b->bert_supported &&
++		    nla_put_flag(skb, ETHTOOL_A_INTF_BLOCK_BERT))
++			goto nla_put_failure;
++
++		nla_nest_end(skb, block_attr);
++	}
++
++	nla_nest_end(skb, blocks_attr);
++	return 0;
++
++nla_put_failure:
++	nla_nest_cancel(skb, blocks_attr);
++	return -EMSGSIZE;
++}
++
++const struct ethnl_request_ops ethnl_intf_caps_request_ops = {
++	.request_cmd	= ETHTOOL_MSG_INTF_CAPS_GET,
++	.reply_cmd	= ETHTOOL_MSG_INTF_CAPS_GET_REPLY,
++	.hdr_attr	= ETHTOOL_A_INTF_CAPS_HEADER,
++	.req_info_size	= sizeof(struct intf_caps_req_info),
++	.reply_data_size = sizeof(struct intf_caps_reply_data),
++	.prepare_data	= intf_caps_prepare_data,
++	.reply_size	= intf_caps_reply_size,
++	.fill_reply	= intf_caps_fill_reply,
++};
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index 1af395b54330..bf0040a519fa 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -431,6 +431,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
+ 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
+ 	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
+ 	[ETHTOOL_MSG_MSE_GET]		= &ethnl_mse_request_ops,
++	[ETHTOOL_MSG_INTF_CAPS_GET]	= &ethnl_intf_caps_request_ops,
+ };
+ 
+ static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
+@@ -1572,6 +1573,15 @@ static const struct genl_ops ethtool_genl_ops[] = {
+ 		.policy = ethnl_mse_get_policy,
+ 		.maxattr = ARRAY_SIZE(ethnl_mse_get_policy) - 1,
+ 	},
++	{
++		.cmd	= ETHTOOL_MSG_INTF_CAPS_GET,
++		.doit	= ethnl_default_doit,
++		.start	= ethnl_default_start,
++		.dumpit	= ethnl_default_dumpit,
++		.done	= ethnl_default_done,
++		.policy = ethnl_intf_caps_get_policy,
++		.maxattr = ETHTOOL_A_INTF_CAPS_HEADER,
++	},
+ };
+ 
+ static const struct genl_multicast_group ethtool_nl_mcgrps[] = {
+diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
+index 3e969a070f9f..73fd23dbc1e3 100644
+--- a/net/ethtool/netlink.h
++++ b/net/ethtool/netlink.h
+@@ -474,6 +474,7 @@ extern const struct ethnl_request_ops ethnl_mm_request_ops;
+ extern const struct ethnl_request_ops ethnl_phy_request_ops;
+ extern const struct ethnl_request_ops ethnl_tsconfig_request_ops;
+ extern const struct ethnl_request_ops ethnl_mse_request_ops;
++extern const struct ethnl_request_ops ethnl_intf_caps_request_ops;
+ 
+ extern const struct nla_policy ethnl_header_policy[ETHTOOL_A_HEADER_FLAGS + 1];
+ extern const struct nla_policy ethnl_header_policy_stats[ETHTOOL_A_HEADER_FLAGS + 1];
+@@ -530,6 +531,8 @@ extern const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1];
+ extern const struct nla_policy ethnl_tsconfig_get_policy[ETHTOOL_A_TSCONFIG_HEADER + 1];
+ extern const struct nla_policy ethnl_tsconfig_set_policy[ETHTOOL_A_TSCONFIG_MAX + 1];
+ extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
++extern const struct nla_policy
++ethnl_intf_caps_get_policy[ETHTOOL_A_INTF_CAPS_HEADER + 1];
+ 
+ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info);
+ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info);
 -- 
 2.25.1
 
