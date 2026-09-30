@@ -1,109 +1,80 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B3D51616F;
-	Wed, 30 Sep 2026 20:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4559F4322EC
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790801860; cv=none; b=QPmYuRsLcuT/SNbokIdpDAs19L2Wt+zXU03Q+rL2gHBwsfJg3plyyrEykuo34kQvbEvUr9r56QCtcNFgyfAwKgUMBN/4wmjl2mLAzUNm/Q7g+6uy9McMqWWvtr6daObGa2fb1N2ftzi3+3Zv5hmmgTYYJOurxp4pEFPRGzUPtMY=
+	t=1790802008; cv=none; b=NBlRu/EL95bnEvGDBMcmMfiz++e0jflvWD40a9jzevOudFg3MAiXKqAzpLp3m4AfsghPwldbQWoEfPSH6WqMmlprPpzpT9SGGiBnrY8cEHtgepeiHlCwCeIskgxAWHxyzlcfbvgpbNdyQPBmZ/myJ9KyHuZOpc/SywCuaSlMGiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790801860; c=relaxed/simple;
-	bh=nmUsv0J5pUhQ3dpH/PXEA/rw7xaDEijL2dSc0anSXRk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JiyuA/Kr6eXurE/JpREtX3Cwawb0bW0dZVHAXeeP2uZTiD5ET22YMUopu9A+LaNJLjuj3z/tWPcrDxy7lCXkiJ1YGZRPdgjxUdrDhLPKxZlp5Su8VGVGpk/MmuzENk2Vmdc5agg/YfM8+BXzCSu4CMcOufcxtDX5GnE3DPSPIuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=o+GwCXRJ; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790802008; c=relaxed/simple;
+	bh=7wnXTL5oBnjKfeO41yiK0LC+yzruF9F3rjIgCpybGA4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=mO8lLp29z0aaGGwNvRftlbedtzRfA7W1MptqUoFgt+NsIX9HiUnLQ7cfFEK2lSqQlyLrTddAdpXbeg6r6YsuAEQPmn3J2vzJF50s4ettR2OJNcxynfyJgS3drqS9c942jVw4TXByKEcJqVMsw4oAdjpQFGLfmJxdTeElOEirVqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRtAmS0g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="o+GwCXRJ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C6CD54E410DC;
-	Wed, 30 Sep 2026 20:57:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7AE2160749;
-	Wed, 30 Sep 2026 20:57:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEA0C103284B8;
-	Wed, 30 Sep 2026 22:57:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790801852; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=TyaAbpuPiS5y6K2q3h0tQGdPcgfkiiLZd4EjA7XRNRg=;
-	b=o+GwCXRJ5P3nMMk5uq9+VDdeNGNKmjxFBB/NfW7tKT9LUocomZ/u+yCOSFvqxixlZW5RhC
-	jz6/mmQdkTbOv86Q/j3Ctlgl4/nn08j6bZbqmK9C7HFRBr1fnkshCw6oVj4A4YBh+HU6oy
-	KizH7yfjGCKXxEw9cwyeoxU9CDvXIT+27wwCizDuRLb12JgGQD0FHCR/w9RpZ+uP45sAjj
-	0oN+577vTvIjF9vLxpal1A2BzGYdyO+IK5n3bKgFrT+XNMQaK3hlxI63r1o7QG6WtdPowO
-	jYynfZgIuQQHXpUlj1bTMxfN+zxR8rY8ChggQEcPivTt/TLnS+OlA2besyPpFQ==
-Message-ID: <82cd7194-bc61-46b1-ae44-a78b33047017@bootlin.com>
-Date: Wed, 30 Sep 2026 22:57:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRtAmS0g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38611F000FF;
+	Wed, 30 Sep 2026 21:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790802006;
+	bh=bbJOH5MGo9TZz+i2RaD+GfBXQ3FxVajZ/B4vgwTYEWk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=fRtAmS0g5YqNaxQnhC4bxjGw7zZaHW0a83t8kWDIJYWRUWHh/hogtSdenfMWD1VOq
+	 +wk5KO0+aC50lnDboqFif5fbkWgfJU3wisOQ9/bj+c3ccbz/rPIw+B+9C26kdon+n8
+	 IVRvgY8e+FVHBr5134MD9/lp9KRZ/quu5+I8kTA+OMUMUHFzxiOqPyRi/vzihNnGy9
+	 b6A4/OIKs93LTkAX7LFlIvlAhAutgCkC9zV7ZekJRA4DhlDnPd5o+wKdL6yhLIyFEo
+	 eSIKufIj2wzDjBDqNTIX0kEr2fSxSIdFwMbCQD2u90p1uK3NKfNfUQW28RFg+Sr4R6
+	 qePHWl1Qnoj8w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44263A56772;
+	Wed, 30 Sep 2026 21:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: keep the NAPI_DISABLE flag while napi is
- disabled
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Stanislav Fomichev <sdf.kernel@gmail.com>, thomas.petazzoni@bootlin.com,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260926194714.648819-1-maxime.chevallier@bootlin.com>
- <20260927154142.656700c6@kernel.org>
- <189e048f-d04a-4440-bf65-166c747ed6cf@bootlin.com>
- <20260930134109.0fc3824a@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260930134109.0fc3824a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net] tcp: preserve timestamps across receive queue
+ collapse
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179080200526.2127741.7368137316557148808.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 21:00:05 +0000
+References: <20260924152529.5689-1-kerneljasonxing@gmail.com>
+In-Reply-To: <20260924152529.5689-1-kerneljasonxing@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com,
+ netdev@vger.kernel.org
 
-On 9/30/26 22:41, Jakub Kicinski wrote:
-> On Mon, 28 Sep 2026 09:08:29 +0200 Maxime Chevallier wrote:
->> On 9/28/26 00:41, Jakub Kicinski wrote:
->>> On Sat, 26 Sep 2026 21:47:13 +0200 Maxime Chevallier wrote:  
->>>> This seems to be more general than stmmac though, there are lots of
->>>> drivers that create the napi instances in .probe(), so they still live
->>>> outside of .open()/.close(). It was verified by running the following on
->>>> an mvneta board :  
->>>
->>> Not sure this works, you assume ownership if DISABLE is set but we set
->>> it to start the shutdown, not once we stopped the poller.
->>>
->>> We've been tempted to "fix" this multiple times. I'd prefer to fix
->>> drivers.  
->>
->> There's 2 classes of problems then
->>
->> - drivers that create a napi instance but don't use it even when
->> admin up (stmmac, I think it used to be the case for i40e looking
->> at the history). Fixing the driver makes sense then
->>
->> - drivers that add napi instances at .probe() time, in which
->> case setting threaded to 1 -> 0 when the interface is admin down
->> is always going to hang. There's quite a few of them :
->>
->> git grep -p netif_napi_add | grep probe | wc -l
->> 75
-> 
-> TIL git grep -p, nice!
-> 
->> So at least 75 drivers call netif_napi_add from their probe
->> functions.
-> 
-> Mostly old drivers, half of which we should probably delete :S
-> 
-> Can we not refuse disabling the threaded state if the device
-> is down and has NAPIs?
+Hello:
 
-I don't see why not :) TBH this is a bit outside of my comfort zone,
-I'll spin something and give it a test on as much HW as possible.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thanks,
+On Thu, 24 Sep 2026 23:25:29 +0800 you wrote:
+> When tcp_collapse() rebuilds skbs under memory pressure, the copy
+> process doesn't include the right tstamp and hwtstamp from the
+> old skb. And memcpy(nskb->cb, skb->cb, ...) copies has_rxtstamp,
+> but nskb->tstamp and hwtstamps are left at zero, so
+> tcp_recv_timestamp() ends up emitting no cmsg at all.
+> 
+> In net timestamping case, if such an skb happens to be the last
+> one consumed in a recvmsg() call, the application receives no RX
+> timestamp for that call.
+> 
+> [...]
 
-Maxime
+Here is the summary with links:
+  - [v3,net] tcp: preserve timestamps across receive queue collapse
+    https://git.kernel.org/netdev/net-next/c/1a924ab28fb5
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
