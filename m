@@ -1,269 +1,181 @@
-Received: from mail-dl2-f36.google.com (mail-dl2-f36.google.com [74.125.229.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71D34D915
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 01:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790731309; cv=none; b=EuShQsV36tYcoGWcIHk/e7W5+pzrp+NisEiA0x5Fu20slaNyMjOEAy66EN21+X8ZKJ1k752TQrm0UvVv5dMxcqIE6B4HhJh63VAP8G1mzBOLkSt08Ybw4AvSHoRrqxViaCxd/Nbyu/8xXgmAG0o5T+qnk3j5+Z/NNT56mKopw7A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790731309; c=relaxed/simple;
-	bh=8o4yDv5RQ+5JMyU0vbJZW45I+t4vGLfP47O8jop1ogU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UFXr53/bRDg0otfOdrCksdSrbDVLm4dsvA0FNe9M4DlAs3GleoeIcwdLIfHI5PO0bOwek4EmmBGx65UCu0HonenaDDiPF2eriARtgzoJ1BhnHlQwUqBp1o7u5mcW3U9vsC+pzN4Axz3daoJzLaNVa0HmlzPovXU5jxps1/1sWZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=e8upj1lX; arc=none smtp.client-ip=74.125.229.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE572352029;
+	Wed, 30 Sep 2026 01:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790731352; cv=fail; b=K3JEXvLyf88A2jWLSrTJ33xq/jq8b5lauKGqX76ITBAJdnlpyn7h5YaRRCVpA/9SR3zXUSp3Y9CSE5m38ilBY54IuY+2ka0U7ZWHV6ts30AjW26Tcj2AnNe6TqUr3rS2cMTuvVQ6HM7hPLfy8K9gXa57UJDyQ0liXO1r3WQRAv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790731352; c=relaxed/simple;
+	bh=trTry3xkH6rWUuqPhgeoz2K2rnysfF5oDlF5vUjm2xg=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LDjrIsxYFIZ8cyjli1Fj3hIsXKY+j7/7jFGW/tRe2Ugxx8EAICr4BRlo+Uzp3t8WGiBVE00msn9o1Z24HRCq4NOY2VwUTsLWMD06k5FMIgB+zalg8ZG2ED8KzoEIWsF6z+jpmPoVmXe3UGWHI3IoFWtYo/PO6X+nbc/QHsPgg7c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CGTHw86z; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="e8upj1lX"
-Received: by mail-dl2-f36.google.com with SMTP id a92af1059eb24-14373bcc010so4355599c88.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790731307; x=1791336107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lU5LfXchs/1FIbUOgbOr4A41Fr7KaZiMt7DIhG7bJWM=;
-        b=e8upj1lXrfAdF+D3qYl9gMxaaP4KbVxlM9R0f6XKSfQSSxw+ewZHnNdlzCjPUxsjss
-         /ct7rYYdoeLb5vv3uIpYAd0suplyoOTF6m97YbRQQfHcRko+rFwUHR9/R7wxZAWb/gBC
-         OU6oXn2vkMKihZKxPBPZI5XG8eiyUyg/qQVDOOc17vtE7iqSQ9rnUjceqq9CZr9EvU8v
-         aeF5zHx2eoRJSt03uyn0ENipsC4iczvmmcoG/FwWZ1NfkCdM4nQbmnMdnsJd30ofpoGm
-         DNKdGz8ZFCGntbQWLZE74OUI9l6P6gowQXTmMu+oRKDEcypMMit+91Z0F1E3vUDrD/Vu
-         AdyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790731307; x=1791336107;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lU5LfXchs/1FIbUOgbOr4A41Fr7KaZiMt7DIhG7bJWM=;
-        b=mT+val3O5HbfWAljJa5lz8VDWNpWCJiEbLfc1DDBEXeUXI5r/m3uo1ob/NrMfwsL6l
-         PDtnDVXpMiUtPqL0BQmfZkO2h0E0QIvH5X2LuzVaZE3MZWnjDMNeXRZIA+NRkJ+OtTEG
-         2GxpXfz9YQEHPNyiWUTjDFKPTzAgQMqkwC84js+7os3KnYSibQ8+C+gYsRR3++LmqCRW
-         l/HOwdvvtnfX9XDz+HpGzV7V4lTXQ1BxtfUSjzBMm+LjNTzOFCqiZW2JNN9PFatl9dg1
-         TmM1A5d9DBfxoZImvdvJFXqW7rdjy6D0ObPO9wibD9FgV1a8pBJxfO5kEfrexL2Ai0tH
-         HOqA==
-X-Forwarded-Encrypted: i=1; AKwUvByvhx89I7F0VOaxn/jAbk2Aa8XndJqOiXdgHa4nX+kZlBtbKtWKNPM4+uNwdslmhQZ6ulJQ3+k=@vger.kernel.org
-X-Gm-Message-State: AFuF++m9GXmMxiCD+QfQaP/SIjuR3fXPDCEk7HKrkylYH41U1bsAOXB7
-	v2tqyodSRV5BjKuoZL4KyusKzce75DRQ1YhqSslPVEB7vbf8Cg+vTqax3GO0W9bgzKE=
-X-Gm-Gg: AYBFou3GrPPuOsg3iJ2dy+hYtoz6nGeEk/Iacdu95cyRhTqItH9dxxZW3yv3VQwIeaF
-	uRruYLbshDShzCwjhJZck9mN/oHjRclc+DvumizUiJlTXLjciyqRhVp75rfhKeWtwOr0+PZTf5U
-	YJe4Xnzj57XEuefZhGw1o5ZEtuKFYnD9sn3hhSPV7jBNMLZlYv6evRt+6tnMLXsSAQdUpxsCgki
-	uDqmCEgvTJOx6pGKnw1FiFRfTgCblWWUK4fxWHT+8Fi5qUWM4858j7v9/9QcugmeKnWxCnjoPK9
-	FuuFXv65WulYjjBopUDPrUmbWKf0XBzItVB5+oP5p5NSck3YvYTdtdM6fCkUVFPF3OH13t9n4Gr
-	XCBMre7MJ5UubWcU/d+3F6E6pHY7nkVlCym5p+c7K4aVO9LEGOseqa0IrH7hZ1xJRXHDPIkZdQ5
-	2GQ+StqHe1o2TDTnPSErpmRAjXXT8QKWbP9PnFqDaiadJFspt5ozCyQwxmmeSnbpd1G4ByckZzs
-	cjDLYMslRr9TCu2mobJKl5ssZtlzCjtr6lL+wCp8Q8Nh4NooLo7BUF1ydVWKfUKCubKnas=
-X-Received: by 2002:a05:701a:c90a:b0:143:298e:459f with SMTP id a92af1059eb24-14c9e76fc1amr1287094c88.42.1790731306892;
-        Tue, 29 Sep 2026 18:21:46 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14c5dd65a45sm2334704c88.0.2026.09.29.18.21.45
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 29 Sep 2026 18:21:45 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Shay Drory <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	erezsh@mellanox.com
-Subject: [PATCH 6.6.y] net/mlx5e: Fix netif state handling
-Date: Tue, 29 Sep 2026 21:21:41 -0400
-Message-ID: <20260930012143.95721-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CGTHw86z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790731351; x=1822267351;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=trTry3xkH6rWUuqPhgeoz2K2rnysfF5oDlF5vUjm2xg=;
+  b=CGTHw86z7AdtKMWhyKrW3OY8CnFRJIeDYQTBaFmgF0TSakGLy6bnqK6q
+   KaC9k+ZjKBLdCXgVr5Su2s6U3jLBGxPy+7JGLZ8qnkm2WkyQFbPQ4+a9g
+   k/ZSeU4k1XX1pghiioneOjZSL3LopNiig4RLirfT+YQegCdNLVHBz56wG
+   Llv91grYK5mjUPgw5tjlHW1QIiGpZVodUhOgvRkTsr4IcDInH6gqsqshb
+   Y8zXH/LatFZcyiAtewmasTeIcVc2TVF2BKI7tleowLoQX9jULnjUCHIgT
+   n2DjjpdEZvQSdpBVGdaZEoaJ0yms82pE08NCfR0dHyaqqF7oP+8xtGuyM
+   A==;
+X-CSE-ConnectionGUID: T6NQz6RiRFmlxb0x/0bXKA==
+X-CSE-MsgGUID: B7EObzvfRNaQXs+IYF5rPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="108949189"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="108949189"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 18:22:30 -0700
+X-CSE-ConnectionGUID: rGZs86EyQjC1uwCf+T0rKQ==
+X-CSE-MsgGUID: eW5wklo2QkORm133yLi7uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="273315211"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 18:22:30 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 18:22:29 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 18:22:29 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.55) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 18:22:29 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kzj7A2cun0B4jKLeMBND639UnI3PjdwjkwKS0K4LjdzSVMcd1jzq5lIS0RjwHf2UzvcPnMSOBeCU176B87DG5xnnS5gMTyZ4w9XeODvYgFyjLS2yzWTK3qqztWAUVBOUVz6Z/z5jR5tifGtkmc9Y7uGGf5hVSeyc0r4hFNZ3/pMkSGMIgeEbVoOMcImzNTEwtNaHPP4ksSdKhsIIWmQooiGO30rsC1THp0UDzNP53aWVYFTlWZduPPqdiI7r0w5NyK0pjv0RkvHdi+X5hipbYnNjF2oGsxEWbJw65zAFXHUi+Ty9opJkOOoghVnWHzskTz2z55bK22V68SBEg/yVYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aFrkeY29yiCgHxDFrunK8FHxforhVLdZaeQIbVMbcbs=;
+ b=RUDkysHNQK+KxkwaASpw8azRR2D42a7jRCHVzL5yjlttERu5OUu9YMnhHM6Y9eXyRKsaBSIr1hy9J4MAyU/MLHZwf0etiPSy9RGEXvfgL+9RZT5YyiPmUYfwrR2YgetkctMSD13hU6WLJ8zSWHAOnKQI//M/YJxE3MTc5C+qtOMPwizzP6GiiHSLD55ZOCuSjI7slySwpuKxsLbMq5SzC/mi90c7bmn6wYmdekK13QZxsNhZadNnIqtfvdDSdRQyQAFgvFA7SVMDllf6jSfi4MeYYOAYpd6rFymO50DrJSxlOl3MXK7i2S5C3kHrVlSKSFXSYCQVC/PDjUTgyKyyPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from LV1PR11MB8790.namprd11.prod.outlook.com (2603:10b6:408:2b1::16)
+ by MW4PR11MB8291.namprd11.prod.outlook.com (2603:10b6:303:20d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
+ 2026 01:22:27 +0000
+Received: from LV1PR11MB8790.namprd11.prod.outlook.com
+ ([fe80::27cb:7a60:19bb:584a]) by LV1PR11MB8790.namprd11.prod.outlook.com
+ ([fe80::27cb:7a60:19bb:584a%5]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 01:22:27 +0000
+From: "Nowlin, Alexander" <alexander.nowlin@intel.com>
+To: Yury Norov <ynorov@nvidia.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 1/2] ice: simplify ice_pf_state_is_nominal()
+Thread-Topic: [PATCH 1/2] ice: simplify ice_pf_state_is_nominal()
+Thread-Index: AQHdO6ctIcOeK1LhK0GuPDylj5C+QbbmfN8g
+Date: Wed, 30 Sep 2026 01:22:26 +0000
+Message-ID: <LV1PR11MB879010209DCC2C3D2793C09A908B2@LV1PR11MB8790.namprd11.prod.outlook.com>
+References: <20260903132037.81346-1-ynorov@nvidia.com>
+ <20260903132037.81346-2-ynorov@nvidia.com>
+In-Reply-To: <20260903132037.81346-2-ynorov@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LV1PR11MB8790:EE_|MW4PR11MB8291:EE_
+x-ms-office365-filtering-correlation-id: c9ebcc53-6455-4349-5509-08df1e914a04
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|921020|38070700021|4143699003|10067099003|56012099006|11063799006|18002099003|22082099003;
+x-microsoft-antispam-message-info: +u6gOSuQhoV48ERY8SnMBRCH7n3hEx/+3zeUCW8yhzcvXVNpYLHEwVA0VhQvyJuXjobyzqkdCHOmFaGB5qw7vgRhRsHoFWIxOwgydaiJ3aZ+E7tPJ9b7ZYzvCRLQ/ktHYUL6lcVu7zXQABXzqG9FAKZQYDNmfNYYLzN/ahyjMDcHE8ZRxPMuJ4YPRfBtQ3uhfUvArRf8TlNklqDWqJny5JJPVg0GkPKiy8rw1PRjvWdf/b0VpTqX9+EWXky3ozE8ked324IP/TW/K8RynTLKAbgI0tKrKK5cY8bokJh+5OcmTZ9l4AgSfzj+L7p8kuETrZiPJFAMQGUcYlqW71R7rQeQn84lL1nBSNGh7hmvS1D/G7U8uLJvvNO4FH3dcVYjqrGZ05u12Hy2xhxHseRwP4o4r8yKemFG7k2V4s0N3HUB73C1IoWRK/nx+LuYoKgqrPnaKvOC3JlTYJzN+k9fFn1FKXMHuPnduIJYTY87S1sEUdLbHCk55LT1zyHzIVGDlu0zErpUu45D9V7pT+ZM1hTHd5Nph//FkjE2JFSCae6IiVjQ0cVLwpDgxgrCU5hJD2X+jB+ifN2WYRv4+miWF2TUSg9HrSRPZEZAicxnBpDNnwVkm/ti1o1O011tKx/KxBVx4ckYrFpEvpHfJLa9YsWkc9Z6tcwH/49JTRUFebptdro0uo0B5siVGezNVoY4s/5eU6UmuDd28uj9Jzx/Ul1n5shFMLltP+HfFTwEVFE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV1PR11MB8790.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(921020)(38070700021)(4143699003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VvwGQcaXzMvBpsVmfG7v5p+T+vSvgbD8kooF57nG8xdcf8xLYhqlarELqXwz?=
+ =?us-ascii?Q?VX32loRsU6+q3f6yUM/s+swp3bY8HbnUs1tH2JgQajXRZyAAoxs6R3wWp0Ba?=
+ =?us-ascii?Q?a8+LzZHHlGxeeL7onZvFzabwDYdTGdqAV9APrJ5BTitRxAdhvCMBHTdsAJOD?=
+ =?us-ascii?Q?nM0H1BeE77N870A238fuVK+OB1XhX9FsYNNkKuvqv4Kub+zy9SKyohJ2BBas?=
+ =?us-ascii?Q?paGRBS6hVMlxBFE1rGmtbgpTwPlstu1HUf8+QGvtIBethr42vc4F+h3zzn6w?=
+ =?us-ascii?Q?LSj4WDQhAOBRERAgvewsEZttr5dc6V15F1spNr/+lwQQiFDj3xEq+LSpsW5d?=
+ =?us-ascii?Q?PiMKZEpIIkmYf2OvOCGjEA3yGhnppJlM17VlmHZLhPzdTbQ3Dn7SyBhKRJss?=
+ =?us-ascii?Q?br5V3GvDdpq8VVSZVO/RLQ8orW5VE9/I+zzMApWEyy/qZTIZuGM+nQIdimln?=
+ =?us-ascii?Q?4p9yLmZdWQCNf6pb7sjb6zWY539Kpo6fbA1uAByxRv+wQAxH1yCK3Kg2lzjK?=
+ =?us-ascii?Q?cISTuMg5jpgEdH/7s4mSzsrAuBH1HciPUZPbRbn9DOpEIsfcvVE3zTH8GJ91?=
+ =?us-ascii?Q?Pe964cfJa3hcYDy12ty+ub8osKxgOcDCJzM4fKe9gLDazn/b9kYoLJbJdKPN?=
+ =?us-ascii?Q?DLBZkSZd4uWQkxq06LTT98d+BivR/4EHBxUU89O0bzI+ZYfZlTTsSc5e6XRw?=
+ =?us-ascii?Q?8qFStqoKJ51+A9J1jq/48MLQeu42O2UTPfZbGS/XK1rA64HTOS13DjXssQcO?=
+ =?us-ascii?Q?gUA9zMcLfKhaeVkBWITMGv9TYhukYOmFcmrbrI9HXH8xf/3pRQPSrKsdbCw6?=
+ =?us-ascii?Q?M77IYkglEJZdePC9ExnklvjwXdPQjecFKB2QzKOgoQk6VuHUa/Ng08YWuDRB?=
+ =?us-ascii?Q?9aOqhuaXZKI3XqhMhZq/n925oZRl6RQrD6xx2nNxmmyR3ld12dzISE3Gd6kM?=
+ =?us-ascii?Q?mKdyP3g1ZTk5iQPueiE+1f0cl6NuojQVNtW38w/OsIxgxYeRQRYOD1933/gl?=
+ =?us-ascii?Q?3/QIr9lxjc9XqeTD6crdvLOLZ9+As9+2V6XBH+HDeNNvKLsKgJ1xSptjnwcR?=
+ =?us-ascii?Q?dqMHElBPKt1mZKNNC38zOumMCGUOOa9TTAxNW2OJ4VsNjTZfiNTh7Ymf+hXI?=
+ =?us-ascii?Q?LTRXLtjjAubGArsezxU232c7cFZZ1F5B8rX6k0hoXCUr55ileJFqcYQn0Jsw?=
+ =?us-ascii?Q?YjHpkD7Ei9FHrjZF447r7+vkwLZy/hDph8jH8jlYSmDnd7Q5IY3F/KILFHAL?=
+ =?us-ascii?Q?2r/2wiCPwOxY+ujexMJ2nMF728S5YK41OdRB5WzljZeSK+llMDE1N8OhJk8i?=
+ =?us-ascii?Q?0GxGfvMkAvtIx3NkUDDw8sCMLp5LFrNb4tcOUIbCH5vV2k8g1ZIRd8+BXxmk?=
+ =?us-ascii?Q?k/mdDgdmOWWDf1YzVuLyrb80VVK0JBRdI3bTCTzm62xc/gHspxWfEUAku5bV?=
+ =?us-ascii?Q?K7Y5yKOKjbX3Cau7OUuVgFQYynMJRUBLMkRRpmvE24w5mCnGw9GC9UN39unw?=
+ =?us-ascii?Q?+QQHqX6Apx5qwx2q7zEzLVT+sTFnYvHAqNDOh87jxz1//rJVyXtudPkbfqcl?=
+ =?us-ascii?Q?mfb0KbNXYvIeuOJFF5QHkvrl2BnaoWEmpuqRViDRYuC9F9xaYqD81zV8JuxP?=
+ =?us-ascii?Q?wl5l83s0Set4N8dyMP+u/qA4XmmxJK25toa0G3EqCiewvWXFclaJzbG+Ektn?=
+ =?us-ascii?Q?tQN6GSFFRiv9ePfKwm2RIYqf2sBxOErIcnori3MzhMiib4Ygldp6l2+NPxEu?=
+ =?us-ascii?Q?A/1kVEyvAA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: HSf/dPVHf5uLguakR7sb0Xdn1dp5X4aPsyrSYMHhiwakI1fsO/n0YyUPun6EC9lTexXP+Z3T+M2+a5xX4YjVPB2iBFeUovHimTstlb/Y7nmMppPgBnhbt8JVFhr6iQJdyduejq/9iXdafX+KUeW9GMP2PGhYtqVfEjNyMoSHWr+hhcFRXVbUyJHq/RokC7Cd9UZNumvcLYB/JfaU06pVuMfqBaxO/kq6u6NAxgnTr1HCYIcpkVAWT2W1qr2Okybcg15QL7ImwObpQGzww/u4UEqlBITMb4kONZhQzgrehGZAb9cMoe9zescZOUWLhCOW5fA9zTPJKaY+OOQbJuuKNQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LV1PR11MB8790.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9ebcc53-6455-4349-5509-08df1e914a04
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2026 01:22:27.0215
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DOK7+/xVdowTnZAx3b6fjDocbMjbMcLuesdVQ3SUwM6O7j2a4iIkDYtzVjr5LGlhi8OiQe00VEWp7W/iGqcOdcRhHhQCeG9ZkeoNqyvcp1g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB8291
+X-OriginatorOrg: intel.com
 
-From: Shay Drory <shayd@nvidia.com>
-
-[ Upstream commit 3d5918477f94e4c2f064567875c475468e264644 ]
-
-mlx5e_suspend cleans resources only if netif_device_present() returns
-true. However, mlx5e_resume changes the state of netif, via
-mlx5e_nic_enable, only if reg_state == NETREG_REGISTERED.
-In the below case, the above leads to NULL-ptr Oops[1] and memory
-leaks:
-
-mlx5e_probe
- _mlx5e_resume
-  mlx5e_attach_netdev
-   mlx5e_nic_enable  <-- netdev not reg, not calling netif_device_attach()
-  register_netdev <-- failed for some reason.
-ERROR_FLOW:
- _mlx5e_suspend <-- netif_device_present return false, resources aren't freed :(
-
-Hence, clean resources in this case as well.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: 0010 [#1] SMP
-CPU: 2 PID: 9345 Comm: test-ovs-ct-gen Not tainted 6.5.0_for_upstream_min_debug_2023_09_05_16_01 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:0x0
-Code: Unable to access opcode bytes at0xffffffffffffffd6.
-RSP: 0018:ffff888178aaf758 EFLAGS: 00010246
-Call Trace:
- <TASK>
- ? __die+0x20/0x60
- ? page_fault_oops+0x14c/0x3c0
- ? exc_page_fault+0x75/0x140
- ? asm_exc_page_fault+0x22/0x30
- notifier_call_chain+0x35/0xb0
- blocking_notifier_call_chain+0x3d/0x60
- mlx5_blocking_notifier_call_chain+0x22/0x30 [mlx5_core]
- mlx5_core_uplink_netdev_event_replay+0x3e/0x60 [mlx5_core]
- mlx5_mdev_netdev_track+0x53/0x60 [mlx5_ib]
- mlx5_ib_roce_init+0xc3/0x340 [mlx5_ib]
- __mlx5_ib_add+0x34/0xd0 [mlx5_ib]
- mlx5r_probe+0xe1/0x210 [mlx5_ib]
- ? auxiliary_match_id+0x6a/0x90
- auxiliary_bus_probe+0x38/0x80
- ? driver_sysfs_add+0x51/0x80
- really_probe+0xc9/0x3e0
- ? driver_probe_device+0x90/0x90
- __driver_probe_device+0x80/0x160
- driver_probe_device+0x1e/0x90
- __device_attach_driver+0x7d/0x100
- bus_for_each_drv+0x80/0xd0
- __device_attach+0xbc/0x1f0
- bus_probe_device+0x86/0xa0
- device_add+0x637/0x840
- __auxiliary_device_add+0x3b/0xa0
- add_adev+0xc9/0x140 [mlx5_core]
- mlx5_rescan_drivers_locked+0x22a/0x310 [mlx5_core]
- mlx5_register_device+0x53/0xa0 [mlx5_core]
- mlx5_init_one_devl_locked+0x5c4/0x9c0 [mlx5_core]
- mlx5_init_one+0x3b/0x60 [mlx5_core]
- probe_one+0x44c/0x730 [mlx5_core]
- local_pci_probe+0x3e/0x90
- pci_device_probe+0xbf/0x210
- ? kernfs_create_link+0x5d/0xa0
- ? sysfs_do_create_link_sd+0x60/0xc0
- really_probe+0xc9/0x3e0
- ? driver_probe_device+0x90/0x90
- __driver_probe_device+0x80/0x160
- driver_probe_device+0x1e/0x90
- __device_attach_driver+0x7d/0x100
- bus_for_each_drv+0x80/0xd0
- __device_attach+0xbc/0x1f0
- pci_bus_add_device+0x54/0x80
- pci_iov_add_virtfn+0x2e6/0x320
- sriov_enable+0x208/0x420
- mlx5_core_sriov_configure+0x9e/0x200 [mlx5_core]
- sriov_numvfs_store+0xae/0x1a0
- kernfs_fop_write_iter+0x10c/0x1a0
- vfs_write+0x291/0x3c0
- ksys_write+0x5f/0xe0
- do_syscall_64+0x3d/0x90
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
- CR2: 0000000000000000
- ---[ end trace 0000000000000000  ]---
-
-[ Backport to 6.6.y: added an internal suspend helper so probe unwind
-  cleans resources without changing the registered-device suspend path. ]
-
-Fixes: 2c3b5beec46a ("net/mlx5e: More generic netdev management API")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509112951.590184-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi Greg, Sasha, and net maintainers,
-
-I am working through the small CVE backports still missing from 6.6.y.
-This one addresses CVE-2024-38608. It releases probe resources even when
-register_netdev() failed before device-present state.
-
-The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
-This fix also affects 6.1.y, which will need a separate backport; this
-submission contains only the 6.6.y patch.
-The target-specific adjustment is recorded in the bracketed note above.
-
-Could you please queue it for 6.6.y?
-
-CVE: CVE-2024-38608
-Upstream: 3d5918477f94e4c2f064567875c475468e264644
-
-AI assistance: An LLM helped identify, adapt, and validate this backport; I
-reviewed the resulting code and validation evidence.
-
-Thanks,
-Artem Dinaburg
-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 97fa2095498cc8..bfccdcd7928be0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -6018,14 +6018,15 @@ static int mlx5e_resume(struct auxiliary_device *adev)
- 	return 0;
- }
- 
--static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
-+static int mlx5e_suspend_common(struct auxiliary_device *adev,
-+				bool pre_netdev_reg)
- {
- 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
- 	struct mlx5e_priv *priv = mlx5e_dev->priv;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 
--	if (!netif_device_present(netdev)) {
-+	if (!pre_netdev_reg && !netif_device_present(netdev)) {
- 		if (test_bit(MLX5E_STATE_DESTROYING, &priv->state))
- 			mlx5e_destroy_mdev_resources(mdev);
- 		return -ENODEV;
-@@ -6036,6 +6037,11 @@ static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
- 	return 0;
- }
- 
-+static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
-+{
-+	return mlx5e_suspend_common(adev, false);
-+}
-+
- static int mlx5e_probe(struct auxiliary_device *adev,
- 		       const struct auxiliary_device_id *id)
- {
-@@ -6044,7 +6050,6 @@ static int mlx5e_probe(struct auxiliary_device *adev,
- 	struct mlx5_core_dev *mdev = edev->mdev;
- 	struct mlx5e_dev *mlx5e_dev;
- 	struct net_device *netdev;
--	pm_message_t state = {};
- 	struct mlx5e_priv *priv;
- 	int err;
- 
-@@ -6107,7 +6112,7 @@ static int mlx5e_probe(struct auxiliary_device *adev,
- 	return 0;
- 
- err_resume:
--	mlx5e_suspend(adev, state);
-+	mlx5e_suspend_common(adev, true);
- err_profile_cleanup:
- 	profile->cleanup(priv);
- err_destroy_netdev:
--- 
-2.39.5
-
+> -----Original Message-----
+> From: Yury Norov <ynorov@nvidia.com>=20
+> Sent: Thursday, September 3, 2026 6:21 AM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw <=
+przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>; David S=
+. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub K=
+icinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; intel-wired-lan=
+@lists.osuosl.org; netdev@vger.kernel.org; open list <linux-kernel@vger.ker=
+nel.org>
+> Cc: Yury Norov <ynorov@nvidia.com>
+> Subject: [PATCH 1/2] ice: simplify ice_pf_state_is_nominal()
+>=20
+> The function creates a temporary mask on stack just to check that first I=
+CE_STATE_NOMINAL_CHECK_BITS is empty. Simplify it by using the ice_pf_state=
+_is_nominal().
+>=20
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_lib.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+=20
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
