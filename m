@@ -1,124 +1,151 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E96D522F17
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A4E51AEF3
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804868; cv=none; b=srcXD0fHTqXhuGZbp6w/OUTNYM5CywEAMJ9E+OA/BK2h8ls87WgyqVUc709cvr2pJZ98KrU5E1ujdYYDS9Orl8aSztpqr2QLlb5o5vXMUrwYGtRC6zh8Z5S6Mub+cRoJfEImfqV9AgPh/DuVFuDYXuhHy0PoGAWf5j8kooaCgkE=
+	t=1790805067; cv=none; b=O2fy0G4GusI/pH6/9i5wFoJH/nq4ghPmZ8/4BojjCnDgb3UMrA3KFBqXBOJgBqAt2aOSu+LTuD7z/eeeoQW5peHH1Mc9IiU+1rQFCvaO8yNNUw/Wt0TThJLl78hYBrwje3FA4FXY24SYYKEeGh8Efxf8REjLuTCGI1FsOVn1Nz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804868; c=relaxed/simple;
-	bh=fmRUv0rgYENilBBqlQb0+ODvj/lHolbV7pwBrCOH7eY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i8wmbrO1zBY+k+hwoX+AMI8z293Tj27lplGrZ2k8wYCBuVKkdZd3NIZI8z+wbDInxvGDhHm8DFpABgbym576TECILS9Cvr/vky6ARVRBrz07bo+WU6aYh9uyJz/av8QBFS0vpwLOd8XFCaTYcuF0s2LExjVp0EDMfCKmVXDgXCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s0omM5Ys; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+	s=arc-20240116; t=1790805067; c=relaxed/simple;
+	bh=S22VfBD4pPls7UNG2NGxhpfRB45ROGORhMSqMHSQu6w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kem2bAsACwFzRUaDfCxJQ+KyapQWmlQJRAP5Vrd+XgW+tlO2V/mJCrgXkZnn5eMhsR9HetY/dY5OG8x+1FgDvJCPpurDNedTE9uJ/7q6mtMTX6i2Xy3Oks/lwyz4LuDZ+N6pbVwWHD9QIx5bzdSuf1IZbTYi1xHYlO1mcGUtojY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qts7upZX; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s0omM5Ys"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39d865b11b4so6326839a91.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:47:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qts7upZX"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso60316015e9.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:51:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790804866; x=1791409666; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790805064; x=1791409864; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sie3jAJkujJ1GxkZsQETdrfF4K98ZdkI7DVnUVfTI68=;
-        b=s0omM5Ysoeasn2f9ISMTlm/fgQPvQ/G+q8jiHwS+nbh1ALyjD4zedYiCQdi4ZxKZYC
-         tC1P49RyiI5Edq25KM5l+bQhJICuCcqQRdLbH+WG9zyXJMQtsCcMnBjtBX0V7HPSyd5O
-         OtbQXT1l9aDqHIvx3sItxiYP3y8OwWxSZ3QWMkjJ6Y3JyfSNntSLA1J21plGBlYLSiOJ
-         BOwtM6BPo+T2QrP+y7zaXwJ8Dy9GUuvuT1VgsvLMON0gsf5/7Zu1jJpDpFQ+VAeAkx5P
-         0Ugdf1IBxmtJTdyFjnQ069wsmi6FpPyKpYZrFoasXJz/yT7bto1fevOmH662znR1V6mO
-         I4Ig==
+        bh=8LP8CV7WHWqRDeEIDZ1+1JYJj+ocKrw1BORKdvPxNb8=;
+        b=Qts7upZXHfzDn7Iy13fsIBPnv9thUWdpaxbsjgvCS5XgctLBIyjXxyvi0hcj2oSZ+P
+         YD2DgPXYRxspt9bDXqkuByIjD4moULTqf7YOHHrh0NvhHIj+YabcuED2tbXoSw3CypvU
+         o/DiWuPZXeUi9q7Xuv9Gfyfvw0k2Npm6aXozgm/c4+ReWAz+rn9K86/bjXXJGq8j/kmd
+         m9S73z7np8+TQPkxxXUPzs8L8//ke1Y2Xp62bkRWye2wU0/WCi+zJHw1ag7qpAWiQo9n
+         efXrt8zMDfUth3lgcARbV3MqfNyTkUJponBpl33dQaav7jr2aPvPnSqOOpSN5/ELofEx
+         KqhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790804866; x=1791409666;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sie3jAJkujJ1GxkZsQETdrfF4K98ZdkI7DVnUVfTI68=;
-        b=F4dIGhEO4HHJMBSlZjfBhwvV5cCphsCR8+kDCg+OUYrcnoCUswaM2yNbn6HVf6B7hK
-         EC3kG91aSOhk5q5Vrl5+YzdwpQrefdVIzdtgfXQMQ30DNLSi+YVnZw+1+SngABhtAagn
-         DccCeL8dqad8U/9uGMJxE9MDcelg2nGBdpre7QD9ZRpbtsiFqK3woIojC8ydmD9QtNhU
-         6j5o7sYFeUGTXtdegOR51+nUE2MPDcsRRuzXEjbF8NDLMNvcgDaj0aJ0HTugL29EV6k1
-         8r0LQYusuFujSM2Qcz+sDBXUHRPqbKxccBQ1X9sDZsMx5RER7zTfy7f9YLWC5IJXgJSL
-         8qUA==
-X-Gm-Message-State: AFq9FYKU4X4+QU6gVdGqvDtTlxtLWSs218L8t+qNTA9BqxGXosuUw77n
-	pRfXHBLgRyG/+27/sDYrYuz6n1a1ZM4IzIQv+aRip4xKapXe5KRKqiK6Y3rHOHQhKmS6Juyc+Co
-	VFM0L0+eLHiIZwftcwnA/B9hm8vjPFRSv4MU2GSjYxKUTaAMbBOhSilMNMGnxQLH0ITDhstr6bq
-	V1ONRfP6gjWnUzpG7GQMr0TxbGK+C9TFWIt8t9Zp2ckVF0Qj0=
-X-Received: from pleb19.prod.google.com ([2002:a17:902:d413:b0:2dd:5303:f008])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e7c9:b0:3a4:85c4:68fc with SMTP id 98e67ed59e1d1-3a4d1545a03mr2457426a91.29.1790804865442;
- Wed, 30 Sep 2026 14:47:45 -0700 (PDT)
-Date: Wed, 30 Sep 2026 14:47:35 -0700
-In-Reply-To: <20260930214735.3288780-1-joshwash@google.com>
+        d=1e100.net; s=20260707; t=1790805064; x=1791409864;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8LP8CV7WHWqRDeEIDZ1+1JYJj+ocKrw1BORKdvPxNb8=;
+        b=20993fi89eiIXgAJMfx3Enf8pUnsWjoFM5g97Or2eTnilSNGDqWjn3WMCfatF0YzAm
+         GDRuomn8np0fuF7aBjcfH258EXfUGd/xgXxWEatPoWJ4+Xvc4qkZ1V7G98V2ndNGUP4t
+         kMJMD/pfNKYVr45t/txfVd91KGHeJ2/s8CkQpln8T1Q7uYLWVYbEhC8z7/clNG50Jpty
+         5g9ouhQZHp+kYb1VmIVJlEUKAnKBQlod4qFTmndL6qX+9zFL5dqgxR03I26uJ7SVofIw
+         XQPprMDaOeaIw+JS+1JIznA1KNDQ7wcahQOac3NtYMwxjlWHLvVjorXapMi9E6vdIR27
+         EECA==
+X-Gm-Message-State: AFuF++lnLEuRIGhR4O2bbh6nzBb8RZOR/CLjab4+MtNp8KQ8hSIf+g/5
+	ijupRVaMd8hdBCvPQk0aJ9xbdLAoDF+v4g+YV7+yfsvP4AcpwUZHyiv8x1GcehjLyeM=
+X-Gm-Gg: AYBFou14eE2EWUL+lxeuiIlVT4TxX9pIWc8tgHXL4kCwyd1Q0JGWwcj1NIBN6ekMZsW
+	n9gm49lJRhcSTfCQmP3sT+eJBLnMB91ROe9AMIgSwgC4cg6a+X0TD2Zl3KnGw1iACd1U/Vr09aJ
+	nLNvhXi0nP7B/ZxmR4JvCnllzqhOmdelO/U8cQ2c8P1kS6Rbe81rNlveRFerHSpFqgfHV2uIi0u
+	xoVqMTH+6YCWarOBPXBUxMN/cQCAByumpR9uEQewOTvKQtIRk+a0COpkSZladABLEsbN7pS4HRd
+	hCuekAB8rL22ODiFCmf/lqYfd4cCykwXci3o1sMm54V+9yrBkBVlEEDQ715WRrvLntkwU2LPTPi
+	tGTzv1p9sN1O6jeaI9hKIC5SWFoJtdnqTB9RYb1pD0A76y+1nMtCOTkPX96hsRl4k5ApDB+jMXk
+	AZ6TrPUELuMz9QSdJ+ccTyRjMX29qUFkx0f41i4s0hG2CurXi/B4UIFw8TEwC2aQzPQqKY
+X-Received: by 2002:a05:600c:638e:b0:49d:1fa8:b266 with SMTP id 5b1f17b1804b1-4a01aff908dmr42791025e9.26.1790805064167;
+        Wed, 30 Sep 2026 14:51:04 -0700 (PDT)
+Received: from metepc ([46.197.185.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f979bbcsm12937155e9.5.2026.09.30.14.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 14:51:03 -0700 (PDT)
+From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+To: netdev@vger.kernel.org
+Cc: oneukum@suse.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	david.laight.linux@gmail.com,
+	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com,
+	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+Subject: [PATCH net v5] usbnet: fix smp_processor_id() use in preemptible context
+Date: Thu,  1 Oct 2026 00:37:12 +0300
+Message-ID: <20260930215047.718270-1-omermetekaya0@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260930214735.3288780-1-joshwash@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930214735.3288780-4-joshwash@google.com>
-Subject: [PATCH net v3 3/3] gve: fix napi_disable deadlock when attempting to
- disable XSK pools
-From: Joshua Washington <joshwash@google.com>
-To: netdev@vger.kernel.org
-Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When disabling XSK pools, GVE calls the unlocked versions of
-napi_disable and napi_enable. However, the netdev lock has already been
-acquired before ndo_bpf is called because GVE supports queue management
-ops. Calling the unlocked versions of napi_disable/enable results in a
-deadlock when attempting to disable XSK pools, as the thread attempts to
-re-acquire a lock it already holds.
+usbnet_skb_return() and tx_complete() call this_cpu_ptr() before
+disabling preemption, which triggers a BUG when running with PREEMPT_FULL:
 
-Update the NAPI calls to use the locked versions.
+  BUG: using smp_processor_id() in preemptible code in tx_complete
 
-Fixes: 606048cbd834 ("net: designate XSK pool pointers in queues as "ops protected"")
-Cc: stable@vger.kernel.org
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
+Fix by using get_cpu_ptr()/put_cpu_ptr() which disable preemption
+and return the per-CPU pointer atomically.
+
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Suggested-by: David Laight <david.laight.linux@gmail.com>
+Reported-by: syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=04cd90bb99c6ef81a65d
+Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+v5: Keep _irqsave seqcount helpers, only change pointer acquisition
+    to get_cpu_ptr()/put_cpu_ptr() as suggested by David Laight.
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 9cc343a16271..a6c18e2431cc 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1708,17 +1708,17 @@ static int gve_xsk_pool_disable(struct net_device *dev,
- 	}
- 
- 	napi_rx = &priv->ntfy_blocks[priv->rx[qid].ntfy_id].napi;
--	napi_disable(napi_rx); /* make sure current rx poll is done */
-+	napi_disable_locked(napi_rx); /* make sure current rx poll is done */
- 
- 	tx_qid = gve_xdp_tx_queue_id(priv, qid);
- 	napi_tx = &priv->ntfy_blocks[priv->tx[tx_qid].ntfy_id].napi;
--	napi_disable(napi_tx); /* make sure current tx poll is done */
-+	napi_disable_locked(napi_tx); /* make sure current tx poll is done */
- 
- 	gve_unreg_xsk_pool(priv, qid);
- 	smp_mb(); /* Make sure it is visible to the workers on datapath */
- 
--	napi_enable(napi_rx);
--	napi_enable(napi_tx);
-+	napi_enable_locked(napi_rx);
-+	napi_enable_locked(napi_tx);
- 	if (gve_is_gqi(priv)) {
- 		if (gve_rx_work_pending(&priv->rx[qid]))
- 			napi_schedule(napi_rx);
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+ drivers/net/usb/usbnet.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index a19ecf718f36..84f97f448b2d 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -325,7 +325,7 @@ static void __usbnet_status_stop_force(struct usbnet *dev)
+  */
+ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+ {
+-	struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
++	struct pcpu_sw_netstats *stats64;
+ 	unsigned long flags;
+ 	int	status;
+
+@@ -338,10 +338,12 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+ 	if (skb->protocol == 0)
+ 		skb->protocol = eth_type_trans(skb, dev->net);
+
++	stats64 = get_cpu_ptr(dev->net->tstats);
+ 	flags = u64_stats_update_begin_irqsave(&stats64->syncp);
+ 	u64_stats_inc(&stats64->rx_packets);
+ 	u64_stats_add(&stats64->rx_bytes, skb->len);
+ 	u64_stats_update_end_irqrestore(&stats64->syncp, flags);
++	put_cpu_ptr(dev->net->tstats);
+
+ 	netif_dbg(dev, rx_status, dev->net, "< rx, len %zu, type 0x%x\n",
+ 		  skb->len + sizeof(struct ethhdr), skb->protocol);
+@@ -1298,13 +1300,15 @@ static void tx_complete(struct urb *urb)
+ 	struct usbnet		*dev = entry->dev;
+
+ 	if (urb->status == 0) {
+-		struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
++		struct pcpu_sw_netstats *stats64;
+ 		unsigned long flags;
+
++		stats64 = get_cpu_ptr(dev->net->tstats);
+ 		flags = u64_stats_update_begin_irqsave(&stats64->syncp);
+ 		u64_stats_add(&stats64->tx_packets, entry->packets);
+ 		u64_stats_add(&stats64->tx_bytes, entry->length);
+ 		u64_stats_update_end_irqrestore(&stats64->syncp, flags);
++		put_cpu_ptr(dev->net->tstats);
+ 	} else {
+ 		dev->net->stats.tx_errors++;
+
+--
+2.55.0
 
