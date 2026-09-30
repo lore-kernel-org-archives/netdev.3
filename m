@@ -1,110 +1,76 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8005A4749C1
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1185208C1;
+	Wed, 30 Sep 2026 21:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804859; cv=none; b=mYocRyrLGCUW2iFJULpcfqAU2cGivRc1A69NEVSGfHUkcuQk0aLNZ3UhSkEKfCKWXXqvxjaRF/bOwUq3DIvrwEbg0KZm1b5YZqP+5q8Aj/XH/emXZRth+eGi4cyDteLQ8vB3a7SolBFN2k0Vt84vaoCszOH9yvGmKvp6wtqpAhg=
+	t=1790804862; cv=none; b=UM7JlQODINGpJLNExd4pR9XUXPyjnEK1V0ua1cUOO49xdWgjEKrsVocLebFAInqMfDTDdismFf4/28T9NN+b6U2SjHj7DmIdtROSOpW5q0CsnInCC+TMsD7eCsr60flPgxCb+I+7PJ2olf+/b41v0iwfTCmfd2SOS/J/vW3tXXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804859; c=relaxed/simple;
-	bh=6ydAku9BAiQpEXGfpckD0JO/GBQObyMhMjDB+2Kpxsg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GYXg/SRtmQkdjkoU+oIBMh40E6RgwOQzRVtZxquHaykG5msqZxM80CzO2k62eC3JziTskiGJFhSaTdCAGaXfhZz186i8o7fvbOmDB9k5PYAHfSI6RkQg86lnNpS0bXY77ZsI67hRS+7bjPThNoGjZADxeDng75PA4KzjK9S5JoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dGtyZUOh; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+	s=arc-20240116; t=1790804862; c=relaxed/simple;
+	bh=bCf7ZNO2y8bqccvARZZRRweH5vkTmKrqmfVlT9305RY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c3U/H0PPgW43xnfON8VMb0EyYI2vUxsbdbFrJRslKEMYGLDTvhZMGRUO84xTA51tWk36YOBUup97F6LIkLuKwSZhjQM4+6nPOgIEtFGIi9pQIrNu54bGbQL9EMI5W40O0eAFfmNcGmvq97mGLFgyKHeMD5xTwbVGR5z6uKo6j9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NWehXtEf; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dGtyZUOh"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8884a02ee85so50211b3a.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790804858; x=1791409658; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mpS4Ij6gaLgbG+enJW/FVoPzOHJGjU08ieLP+6pYjbI=;
-        b=dGtyZUOhO+v4cZ2pIa93A6i4yebZruNbqVef8Z/Z5sOz9vgj8nfghtCexDh3iGMSQ1
-         h9EK+upRaw/BQYFvNAThvVzZVk6cmOFlXRunftphplkQC0FnksY8E5b2YnLp+xPoqQls
-         o6UYco9+qjDD5/BTKhTBQutNTLfLI02G6YkuQHGXk0V7RM3qdsLMuWPjx0vlOU0whrwf
-         25CesYxUyoFftnEAt0qxGQFQ1em0hQYllQ0r2pot/tmKk4XCra7U2JTVhpZuaQ/ZpnrM
-         cOaOT9Fv0f16CeGdP2LCMZYZxZV57ceeWCcw2Kpk5pQqFlJRlrssjZPb6EgXf+7/b3Cr
-         tSow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790804858; x=1791409658;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mpS4Ij6gaLgbG+enJW/FVoPzOHJGjU08ieLP+6pYjbI=;
-        b=DjVEZL+20h2mPJp5vJr05Ds7WC+qTVS6/AtBBge0kWetyltpNVc7JW8jrmMXwPdr0O
-         MNwHc2cmfMoWzvpSlkbl9LDRvxA2e3BnOBvnPTaO2WMZwmJG5Fy0MgRCT+s7q/z8nb1h
-         qiyXM7JBPMqe9+1YNI5dOFAE09X9ZyfxNhrPDN5lJ51gxbSQ4ar5AHXap3YFgZ0IuR58
-         pTiT0JcLKQ3XDYmH2K7tEH0iYjepficO8q6O+KQ/pgeIgaATa/ddxYrRsKDQO4bE3+DL
-         wet0jZ48CdR0z5PTj7ZsRKNRugVTBwdRV1hTygeVYCRs0w3N//1ioZav13KCHiqXVzMG
-         ASZg==
-X-Gm-Message-State: AFuF++mZIfmw8up7FZmhFuIonZll1I7RsSzwYzl2OYnBYdKmTvEez5ZA
-	JfEIPKSSWtM5Trl4q9RoJyhswJI6n6NojK63wxdl5feh/GNxLbWPqcJaWjEHw4Vc++be52pbptR
-	JPzlZH9zyDO93gvZgfpU394gygof76Cs6aYq5j1z5OHtII5uSvniTkGOc1Gm8PUgdEVR/Sgy/Ea
-	QdnpRZ67tai3vtMfvrBrFOav2Ccrp+UQov59heg2OjfamdXNw=
-X-Received: from pfbmu12.prod.google.com ([2002:a05:6a00:6e8c:b0:886:8875:ed09])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:9084:b0:878:34d7:697b with SMTP id d2e1a72fcca58-8874cebda9fmr1853968b3a.41.1790804857384;
- Wed, 30 Sep 2026 14:47:37 -0700 (PDT)
-Date: Wed, 30 Sep 2026 14:47:32 -0700
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NWehXtEf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=JrO/Q5uWPByzNMo9tdMpSb7dTKrD8QsmrdPHM5UmOnY=; b=NWehXtEfsrqzAAzLqOQnaM0zsB
+	XnqJOeIG8Fjfi4ciuU8OaNbrLlDFWrau/jH2OrEUtfaVVbtrhrzeNS8YZyClz/JMBITZRZsNubfXv
+	4ZgEZDjX66chJ4pdGBFvNzRkPl7xmB0TNvAavJJof/n1LVQAKKsgfFXyiLNWHrHVrAbs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xC29E-008FIW-1s; Wed, 30 Sep 2026 23:47:32 +0200
+Date: Wed, 30 Sep 2026 23:47:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Linmao Li <lilinmao@kylinos.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Xiangqian Zhang <zhangxiangqian@kylinos.cn>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mii: Fix unknown speed after link up
+Message-ID: <e31a9b2c-2f65-4767-b66a-85676d5a0d5c@lunn.ch>
+References: <20260930113842.2640928-1-lilinmao@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260930214735.3288780-1-joshwash@google.com>
-Subject: [PATCH net v3 0/3] gve: various XDP fixes
-From: Joshua Washington <joshwash@google.com>
-To: netdev@vger.kernel.org
-Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930113842.2640928-1-lilinmao@kylinos.cn>
 
-This patch series consists of a number of small XDP-related fixes.
+On Wed, Sep 30, 2026 at 07:38:42PM +0800, Linmao Li wrote:
+> mii_ethtool_get_link_ksettings() reads BMSR only once. Since
+> BMSR_LSTATUS is latched low, the first query after link up can
+> report SPEED_UNKNOWN even though the link is already up.
+> 
+> This is seen with r8152, which detects carrier using a MAC register
+> without clearing the BMSR latch. NetworkManager can then keep
+> reporting 0 Mb/s until the next carrier change.
+> 
+> Read BMSR twice to obtain the current link status, as mii_link_ok()
+> already does.
 
-These changes are split off from
-https://lore.kernel.org/netdev/20260922194533.631387-1-joshwash@google.com/
-in an effort to prevent blocking relatively simple fixes on more complex
-fixes that will need more feedback to merge.
+There is a reason for this latch behaviour, so you should not ignore
+it. It ensures a link down is reported, even if it is for a short
+period.
 
-A summary of the changes:
-1) fix an issue where XSK buffers that have not been processed are
-   leaked when disabling XSK pools
-2) fix an XSK buffer leak when an RX error descriptor comes back from
-   the hardware
-3) fix a deadlock introduced by attempting to acquire the netdev lock
-   after it has already been acquired
+I suggest you change the code to detect link based on BMSR, not a MAC
+register. Better still, throw away all the mii code and port it to
+phylink. A lot of code will go away because phylink/phylib and PHY
+drivers will implement it.
+
+    Andrew
 
 ---
-v3:
-- Remove the more controversial fixes so that simpler fixes, (the
-  deadlock fix in particular), are not blocked.
-- v2: https://lore.kernel.org/netdev/20260922194533.631387-1-joshwash@google.com/
-
-v2:
-- introduce 3 new patches (7, 8, 9) based on Sashiko feedback
-- corrected stat counting for packets according work_done behavioral
-  change (patch 1)
-- v1: https://lore.kernel.org/netdev/20260814234845.773189-1-joshwash@google.com/
-
-Joshua Washington (3):
-  gve: fix XSK buffer leak when rings are stopped
-  gve: fix XSK buffer leak on error descriptor
-  gve: fix napi_disable deadlock when attempting to disable XSK pools
-
- drivers/net/ethernet/google/gve/gve_main.c   |  8 ++++----
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 13 ++++++++++++-
- 2 files changed, 16 insertions(+), 5 deletions(-)
-
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+pw-bot: cr
