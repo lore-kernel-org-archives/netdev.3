@@ -1,191 +1,86 @@
-Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com [74.125.230.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5368362153
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734129; cv=pass; b=XBXStWwEkxGnDGVkrk/CXx34/8FJ5+V742Fk5IRN6y7ImMZ5j/cq8UnaQsMaAEyGw2KwE4ACJ5sr8rX6WHYoHa7wf2lNEIYNB7TRhu9iGLjcBw1fRpcVjGylyjPoGKYfOS4i82FoVb8v6QhOmFs1RZgRNaFhHkYEAnaqjzxxhhA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734129; c=relaxed/simple;
-	bh=cHLQbGT9PXI0kmTGgvdCK4575npp2vblOC3chIxwSP0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jj1tRPYVww7iQJmHOUEZUNAhw2nY4TTDNyn48ouUa7kgSiAzte+bkJTgNKKUGWPo1NPhkOByqr2iN4Yf3PDerrveTzz3atn2i4/DdymcIkYiVvRwFUM05tSxdDHlPGFxb00fp0yFwtlUIavJbGlQ9oJgZCY/t4H2ibFNX9j9VRg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n67kha2O; arc=pass smtp.client-ip=74.125.230.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AD43612ED;
+	Wed, 30 Sep 2026 02:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790734207; cv=none; b=CuAg77Oi27nAXguPyyEhVNcLdVP53ZHjWkw7uciOCnYQNR5heXwkZcKv3OvB+6sg6rEZQXsRMUFtVHMsBJLGvYoyUNhxk527pFpDnE8rtOqqVqrcT0PspPnRZPakQDDFmtp+UovqlXddtVV8LQKZqFwbHbMuJMWDdaczxHTD5wU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790734207; c=relaxed/simple;
+	bh=fSYgjVTvyzYvIfQP2CzMiOkP69W/LSNRq9Qgo8AWXmE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=DMXVVwXRsHORCYXPqHa7RDtJtac3dVJ8pnG55RiygSq5K/NS4sgiN9BsOl8a8mUf+dVtfKtmz3HTPePQzeHV1SnU1nQw1nlSTZXUHqB6RAg805TLTUwY8sTMTLihe4Vl3IbUD0ZMjQ/3RIXLnuDsps8tHJ04GJ/9+RtdTQMHn54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHZJ/4Es; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n67kha2O"
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a64d20990fso46503831fa.1
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:08:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790734126; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nDve88aav2eH9SvnrlTLbi57cIJtS0chENQZwp31pqAiBGu58IxxYOX706tMQPcoTi
-         1W/bEenhlAseXzhP8oSrlWsfh9sumqVev/BBHeJgGL5szJ6ukDz/Z9DNlmQlKCxr0US8
-         8+lmvXBE7PVYY68XSM6HJlKcRnhXn7019ewotbk4zPMUaUZcEyaLoDfyNq89MuhkN7g1
-         armyZuqdjBAzzHUT1LvK6rZ92BVkFNpHWOyHqShCBBzjnhTvjJY5f9VBUZP+1LfzT6Ag
-         cIdu9SM969LllVAZqlWRrFOjUlieNE9LCPGvGU/y8HHtFoaztDw2HFZyS/WfMfvLtw0l
-         +ecw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/XpGo+Qr9OCMDAzBQXslhcLH2BJM+ZWKFH/nT0r3qdg=;
-        fh=aS0R4AxlHBcRqpKtZHtHWfUxKEZRtkLhw2FbrY9B+XI=;
-        b=KDZ1kmnPE6N5zxImRN4l/QPf6n9XYazAT4IJ2l41PO8RaeC4TD1Jn/gWIips0BtuQZ
-         lurcoYXMjQ7Wx8gtQTxR26f5PM63Y6p77q6A4lVUfKRn3TFzCkBLr6Q8HrVY7RFfgYo6
-         5QFEuxsJYPlMdtPY6bcq88QVn2PsatM881RUDVaFVOwdI7fdGC+9PbZzFFtM2etW8SLb
-         zXwvOp19JPvsGs45UvZdUF6pXMSW6qFWaOAHgoIufzGzGY9urwweuIgFW5q7cUj88DbA
-         /fyLSblDirV8sfLECrsdOSPm6ZkOrsoXFETm75ndkX+EbGlOdlygc8HbIgAGD0ZSwsve
-         FQVw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790734126; x=1791338926; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/XpGo+Qr9OCMDAzBQXslhcLH2BJM+ZWKFH/nT0r3qdg=;
-        b=n67kha2O3eRTAu/+9aajfOHbrfd1Pswfutj9JWRNNeH7FuRlIB4YYhJqkzkI1ee4sm
-         WcApItTS+PrFM3Vf1eRBo4nGuRXMxnHOlIVIEuECOmFU28w3ImzedT1vbb6+L3oP5v2i
-         7SvlJjF7iX3t6lOGk70a3mTVpguQSqnDdmdbS9YxKeZnIggBOHHr1//7CMXT5h892B85
-         ouKOxmhMOEpb6HHVLV6VBss6G4YVVHUoy/IGS4Az5zvMczzVvGbZIVpTO0jDcetFxLLh
-         xLkNOh0AchftufNtBDO9s+umtZvs+Kgb62TE5Jt9Gz4P9FtfJtbFX3B7NXEbWwBA+P0i
-         Mo/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790734126; x=1791338926;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/XpGo+Qr9OCMDAzBQXslhcLH2BJM+ZWKFH/nT0r3qdg=;
-        b=PMTWfgPRahzrTFIQh1yoNkkmg1I9yMTZuWbsz7RtpF8dw9+K9+zt38YDsdSOYmx7W2
-         7HVcc4hexUsC9ybZyY0eb92jxiuzaPsxmonUOaa1IopZR2UIAZbt+6FFd7b8OEL1SYhq
-         ZVOZHpd4re9iE0Au6dtEn5me9XuaFYkKNTEnGscF3YUWDiLUjk7/KGA48rRLnMDE1XlB
-         oLb82U4unaolihEtVX9LO1dqyn641aUMCzdeE/7UmWMsuQNRaA5+keRYIYYz5OXm5Ifb
-         ld52pF/b4rOQ5/tNxqOlVw/72jTsA6vSRbmvyCvWdc8Sc2qatglXCs5Qs0ZhbUxUxwGu
-         xitg==
-X-Gm-Message-State: AFq9FYIrAM9XtZeTnEbXz5ENikxj4I5zf8MNSHKmWHVXewTBMl4fUY07
-	Eo5DN9NisSchYzOcj6fs3599n1pZ/bz+Pby6DRH+3epWnXLE25dpSDf6QdtcwCCQXNVmqUIrGJ6
-	idofKgX5ClHhxpy+sXe4QV9I0p8OPzJI=
-X-Gm-Gg: AYBFou0wR+cGCC1tVupUMq9j7NkqulhM+LvipwNUvITn7JgWgDwF9xlchhTAlBCRxuk
-	auggYgc2voCVeoLxgr97yFvljDcF3H0NYLLtS7jyjvQyhVJnN+WWdzt4t0mpNZ4DFyvuFQss9i0
-	Xj3O7WZDKd6LCRzbd/Gu2JOkCWO/MnQOkigaAt487Jy3FQkh6MMyk5eylBZLmcC04drYhKMlJeU
-	YzzkcMbU4+XntUIwSAI4Gkt4V/XZeyaaC+PriZ5fE292Rtv3T8DzoJXRQgJDq13hAXjhuUo3TaD
-	tc4KJVI+UQPvAWy1h1V4nWmj3Z5H7B1jMY5Qkj0i8Lxeo7wYQpkAid5ldpRrnaJ2IY3tGP9flkt
-	09GixLCI=
-X-Received: by 2002:a05:651c:b12:b0:3a3:749e:31a1 with SMTP id
- 38308e7fff4ca-3a77924b77amr186021fa.21.1790734125697; Tue, 29 Sep 2026
- 19:08:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHZJ/4Es"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8236A1F000FF;
+	Wed, 30 Sep 2026 02:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790734206;
+	bh=k37ydz3gmrzOGd3xCFKZBYx6bSsaaaFykfYFvycKz5I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=UHZJ/4Es0FgGH5CjBeSjh7lcOfz0A+Kwzhy6ChbbeKSTdcoyQMDJWpIPhlTItEvPO
+	 VnZO8XvUwlSQV3BflLNH2kpyhCbB/9Qeuy1qB1+JYOqU/4hpaB1gnmyBXeVxlpfzLb
+	 jT/QiF1A4mh0g2E7QZxKriW8rBJRKdhCYpqfVggP1LXh/10gL7vnftR9KhB1XQUawx
+	 mAq8sroiXgAZEYPYdrTAjrvaeVZ+BCWio9141smURObJ5tv4rXMw/VDz+UXIr/OR5N
+	 uay8baqvr/8qVzqgf8oNFmQVNA24QzOKaT/+tPe8XeWU9y3SibAXR+515/RgmgrMTV
+	 6VnIsNF2cd5yQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 775243924FEA;
+	Wed, 30 Sep 2026 02:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929064742.576651-1-liushike123@gmail.com>
- <179066487225.31693.13001631968601791232@kernel.org> <CAL9mPHsf_10zX4Z_2WFHNJob7Tkfnaw6sp03q2+ujnTygn1Ucg@mail.gmail.com>
-In-Reply-To: <CAL9mPHsf_10zX4Z_2WFHNJob7Tkfnaw6sp03q2+ujnTygn1Ucg@mail.gmail.com>
-From: shike liu <liushike123@gmail.com>
-Date: Wed, 30 Sep 2026 10:08:34 +0800
-X-Gm-Features: AclHuK-Qp4hFCJIT-_w2B4gFyJoXlAvyzEx2aVeUJ5RKp0h3YBXE-WkFgycO1fk
-Message-ID: <CAL9mPHuyOrK4WN4ZSWRFSYWpeTQBGjqXLDiy_Wr9AtEahL9KYw@mail.gmail.com>
-Subject: Re: [RFC net-next 0/2] tipc: notify pending connects of peer node loss
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, jmaloy@redhat.com, tung.quang.nguyen@est.tech, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, shuah@kernel.org, tipc-discussion@lists.sourceforge.net, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: sparx5: skip ptp deinit if init was skipped
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179073420528.1211220.17018666609894661061.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 02:10:05 +0000
+References: <20260928044542.29287-1-quentin@q-lab.dev>
+In-Reply-To: <20260928044542.29287-1-quentin@q-lab.dev>
+To: Quentin Freimanis <quentin@q-lab.dev>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ UNGLinuxDriver@microchip.com, richardcochran@gmail.com,
+ horatiu.vultur@microchip.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 
-The issue was first observed on actual network devices operating in a
-  cluster. The client was waiting in connect() for the server to accept the
-  connection. When contact with the peer node was lost, the pending
-  connect did not return promptly and instead continued waiting for its
-  connection timeout.
+Hello:
 
-  I subsequently investigated the TIPC connection setup and node-loss
-  paths with LLM assistance. The analysis showed that pending connects
-  were not registered in the peer node's conn_sks list, so
-  node_lost_contact() did not notify them. The initial report came from
-  the observed device failure, rather than an LLM or static-analysis scan.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-  I then reproduced the behavior using the same final selftest on the
-  unmodified base kernel and on that base with this series applied, in
-  x86_64 QEMU/KVM guests. The tests use two network namespaces connected
-  by veth pairs and disable TIPC Ethernet bearers to simulate loss of
-  connectivity.
+On Sun, 27 Sep 2026 21:45:42 -0700 you wrote:
+> sparx5_ptp_init() returns early on the base lan969x variants
+> because they do not have the SPX5_FEATURE_PTP flag. It also returns early
+> when no "ptp" interrupt is described. Unbinding the driver then causes a
+> NULL pointer dereference when cleaning up uninitialized tx_skbs queues:
+> 
+>     Unable to handle kernel NULL pointer dereference at virtual address
+>     0000000000000008
+>     Call trace:
+>     skb_queue_purge_reason+0x68/0x120 (P)
+>     sparx5_ptp_deinit+0x64/0xc0
+>     mchp_sparx5_remove+0x38/0x70
+>     platform_remove+0x20/0x30
+>     device_remove+0x4c/0x80
+> 
+> [...]
 
-  On the unmodified kernel, 8 tests passed and 10 failed. With the series
-  applied, all 18 tests passed, covering SOCK_STREAM and SOCK_SEQPACKET.
-  The node-loss cases check completion within two seconds and the
-  expected EHOSTUNREACH error.
+Here is the summary with links:
+  - [net] net: sparx5: skip ptp deinit if init was skipped
+    https://git.kernel.org/netdev/net/c/0d2c49915bc3
 
-  I will include this discovery background in the commit message if a
-  revised series is needed. I am not reposting the series solely for this
-  clarification.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-  Regards,
-  liushike
 
-shike liu <liushike123@gmail.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=E6=97=
-=A5=E5=91=A8=E4=B8=89 10:01=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi,
->
->   > - How the issue was discovered, e.g. hit in production, hit during
->   >   development, syzbot report, manual code inspection, LLM or static
->   >   analysis tool scan.
->
->   The issue was first observed on actual network devices operating in a
->   cluster. The client was waiting in connect() for the server to accept t=
-he
->   connection. When contact with the peer node was lost, the pending
->   connect did not return promptly and instead continued waiting for its
->   connection timeout.
->
->   I subsequently investigated the TIPC connection setup and node-loss
->   paths with LLM assistance. The analysis showed that pending connects
->   were not registered in the peer node's conn_sks list, so
->   node_lost_contact() did not notify them. The initial report came from
->   the observed device failure, rather than an LLM or static-analysis scan=
-.
->
->   I then reproduced the behavior using the same final selftest on the
->   unmodified base kernel and on that base with this series applied, in
->   x86_64 QEMU/KVM guests. The tests use two network namespaces connected
->   by veth pairs and disable TIPC Ethernet bearers to simulate loss of
->   connectivity.
->
->   On the unmodified kernel, 8 tests passed and 10 failed. With the series
->   applied, all 18 tests passed, covering SOCK_STREAM and SOCK_SEQPACKET.
->   The node-loss cases check completion within two seconds and the
->   expected EHOSTUNREACH error.
->
->   I will include this discovery background in the commit message if a
->   revised series is needed. I am not reposting the series solely for this
->   clarification.
->
->   Regards,
->   liushike
->
-> <netdev-bot+sinfo@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8829=E6=97=A5=
-=E5=91=A8=E4=BA=8C 14:54=E5=86=99=E9=81=93=EF=BC=9A
->>
->> Hi!
->>
->> This is an automated message. This series looks like a fix, but its
->> commit messages seem to be missing some information:
->>
->>  - How the issue was discovered, e.g. hit in production, hit during
->>    development, syzbot report, manual code inspection, LLM or static
->>    analysis tool scan.
->>
->> Please do not repost the series just to address the above. Instead,
->> reply to this email with the missing information, so that reviewers
->> can take it into account. If the series needs another revision for
->> other reasons, please include the information in the commit messages
->> then.
->>
->> The evaluation is done by an LLM so it may be wrong, if you think
->> that is the case please reply and explain.
