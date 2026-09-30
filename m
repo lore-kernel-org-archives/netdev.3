@@ -1,149 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA34C379C35;
-	Wed, 30 Sep 2026 19:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D1A36F905
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790796887; cv=none; b=PEYLsue1tErARrmP98WYVuFues1JjLPCVLQLtlXUSwxZvgT35CLuM5zWoSwZ/ntMlokqj7KfBhW/4U93+gvr8FMT85s4x469gbwH5xkDFp4qutWepO2H7HPqTs/Pw34NL3/2oBhzM8rTFaS1wEhCCCzodbTImcKTc/N80Ia7rag=
+	t=1790797249; cv=none; b=rri9/JtdmkXIdYSxzoQtByJ62RDePJVfAhScmgSW5wPBEP2NsAcnPd4Jk3KFdw5lOwfhBxf+SKBdb0tSnLjbyXsajFggkXVQgh56DBXLkbiTpjwX/ibzoTJ6hJG0xC6v9IXKvn1KZsHgAMGVlb5f1Tud5dL1ete5zHwBWeU6Kt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790796887; c=relaxed/simple;
-	bh=Gu/EkVwyQJgBD74XfphlWAlZsYmhDmD3C/OZgKSBQBc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pVSZYigMyWoTgPwgnNKZ9YV7EMpcNMuhR3qxFxBzyi+DpWfmdXc9X1grXVISUWsa5aDO3oMZ/7jFyz4ye8mH+1KnkL2ke1fZ+pbxEKK7jTybKY0XcTSJzsoaDtlayIgm2Jlw5WHIyFa005yC+vba2rHkeZSpYL4uoqKr+lSPsWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWfAJM5y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790797249; c=relaxed/simple;
+	bh=c9+cdIbmguF1QKIhrvWAWxypHMPuMHkHJU+LHWEfcnM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Pdm4K0YeZA8UbPDF3xO63/harjbA5rs5Ok29Vqo4L19hW5tm0w5xBqGS3vozGl8HLfVwEBV8SlwexJWAL4IYcMMkFUVkKkysZqsccQQRrGnYPdMZwKchsJWsLWs/YcOOOj+bZ2taWEiIl9I6+2hKxuwlgPs79lRUbKkkgLerHTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TMQA5V54; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWfAJM5y"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80568C2BCB9;
-	Wed, 30 Sep 2026 19:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790796887;
-	bh=Gu/EkVwyQJgBD74XfphlWAlZsYmhDmD3C/OZgKSBQBc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=tWfAJM5yLuZC6x0EfMQK/k3ydOvchipWQN7xO/1+ZyRwfPwLBMgXVQF6LuomhQ6Pu
-	 y8HtxeUS2ido0xMuz78q6WaW1Xc/7g2xW0Cgb1NJrfGiG6sUVuU5+UE4CVMkL4tCwF
-	 vGEYVls4UF8EnAEAtHVgc8/Y2cpjVdrGbsuA8sn1S+eXEFWwYpDWi8acZpHhZZRXns
-	 XYAOtied2p6M1SzknDM+5y23QF8DN9cVnVEmy2FOGeCa6fRRfCnhUoOf+zp4w67UrA
-	 D44qDt05z2GP6PYliJ0T0Jz5Dx4IvVPomWy4PCvSrXxCnyvD1zpnNouKvovG0IHd9B
-	 5yjb0aCJktsnQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AF8CCA5FC4;
-	Wed, 30 Sep 2026 19:34:47 +0000 (UTC)
-From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
-Date: Wed, 30 Sep 2026 19:34:45 +0000
-Subject: [PATCH net] net: stmmac: dwmac-rk: keep the GMAC powered when the
- PHY wakes the system
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TMQA5V54"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8aa75b338d6so34895237b3.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790797247; x=1791402047; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YGsPoFxXUhrYc8fuScloKU7y4IoA5xz/2/p0mwC9UHA=;
+        b=TMQA5V54bWoWERDnZZFh+jf3+UbVCKLGN9VLkWxcK/fmTDMxZ0lZhyUEEjroBiszUM
+         nE3Dl9132CAjbT6dTscTeX7u5kmu6+xvePitLa4jokbl3xLpZ4mfWFDI+Ia6IAzYok7z
+         UutHXasIeWXQ6LJbcxy5DgHkN15TWRNeRTZN/npb0+HoLlRHjIlAapmw66MWImGpDxsb
+         wPoLZ+rBCb9eyPCVyfOqXdYKXht2uU8yAPYkY6orFbnwmnPd4lJhz/ol+DLmAFjn44vc
+         eXQwP/AjVqQV9wm6l+bD87ljeaJ8QUucVFst82a04lhE4YrOkZusLicu7RAdJ6GGYBSo
+         P8+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790797247; x=1791402047;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YGsPoFxXUhrYc8fuScloKU7y4IoA5xz/2/p0mwC9UHA=;
+        b=fBmQfgvcpefPlnfr+P8hdQBpMKg0RG2I2oKPswS/mZsjgysU2ceJFwcx0VoPcL23Xq
+         /z8MLv2/UpDEaymsr2VIRp9aDILdcpRS5WiluAgeuWFM/22eZGwZxPGZ3SYYyYObZ7g5
+         mHCIxUJKOWkTe/H+LEtLFmTPoEx5q6cMF1vYHTAiA46FQLOBFkZI9TzD9bOdUT4r505a
+         Pm1aiLUms8EQRW8bESqDtnPGlOrBEvc4u7/BfzG08BxxDi9wPe2BbaHai3bAsmBYHah7
+         mY0btaoyZ99zNi32vlTEk+qjkxHSBcENth6BJzbmoo5unydHDVXHvgjqq6LHDP81MdO9
+         ivhA==
+X-Forwarded-Encrypted: i=1; AKwUvBwa4swXustXbW7zmpmWOA89RaNYUe2QufdY3RVuuulPP3Xyp70nze2j8kKlm3dWMSkt4BHtuEE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIJWSwapMlgBRvl+6sZZwjiuy+SPGblhCRHrsHgqb0IFq0GCkjY
+	385o5cJylVoVSERAFz42YM7C9+qj/eR4AmeUgnd9aY6jX1p2ANjbhTQd
+X-Gm-Gg: AYBFou2DQb/YPcwdJiOcuHQtOF3XEpPbZiGMV49BXR04i3SawseGMGNtbb1QgxkfmFY
+	kMRA9phT6634lt+9QND2N/NI+BBRYhcQ0KXMxFPhKLrh5CzD8oh85GPBYvqxaMtsLbpegmfMpbC
+	eEcvo/yFJnaqqmOlcJVMB3eoYmv8zd94V+6WQnDga0SXCl+2xdaw44ht9ND0r+RlKl8MM2BqAO+
+	mxbRBVmRWgKiLy/W+euoKijqv60+UCCQbO6wwKtZk2CfVwkjry+Prj2NZEP7FPfnJvEDVXXoHJZ
+	OyetKRuzFlnEsdJnr8JM/oU4VUbVJazo7uqKh2p65oHOOJMiyN4cd0IG1Jf4qgxUovKCZMUYsrc
+	3YW9CHtwJMAmTB98YAb/3nCZMRH43AgOvZbInf9iF+sr9dV32Dqx64lEECb0xE/UnGMbSUy/TLt
+	+jeBR+ZmBG+GH8v8v7SdU//AIP2AS37l60pdUI0Qpg8wa7iWzCWhHsuD7k9s+dZ0JIIY6LkstzS
+	Zq8VBIIE3yYag9n+MMlO4fK2R8szJNYDL8utfCH7yrGRZ5SNISd
+X-Received: by 2002:a05:690c:6d84:b0:8ab:3fe4:2e64 with SMTP id 00721157ae682-8ac90eb1f33mr13769627b3.8.1790797246692;
+        Wed, 30 Sep 2026 12:40:46 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8acdab52bb7sm3438327b3.4.2026.09.30.12.40.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 12:40:45 -0700 (PDT)
+Date: Wed, 30 Sep 2026 15:40:44 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Wang Zhan <wang.zhan@smartx.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ keyong.sun@smartx.com, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ dev@openvswitch.org, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Alice Mikityanska <alice@isovalent.com>, 
+ David Laight <david.laight.linux@gmail.com>, 
+ Wang Zhan <wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.3ae8d9ca86a49@gmail.com>
+In-Reply-To: <20260930111526.2183107-2-wang.zhan@smartx.com>
+References: <20260930111526.2183107-1-wang.zhan@smartx.com>
+ <20260930111526.2183107-2-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v4 1/5] net: core: use the packet's L3 protocol
+ for the GSO size limit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-dwmac-rk-phy-wol-v1-1-9fdc50bd9ae4@iav.lv>
-X-B4-Tracking: v=1; b=H4sIAFRkvWoC/x3MQQ5AMBBA0avIrE1SJJNwFbEohk5Q0oqSxt01l
- m/xfwTPTthDk0VwfImX3SYUeQaD0XZmlDEZSlWSqiuFY9j0gG7BwzwY9hV7LliTJkXUQ8oOx5P
- c/7IFyyd07/sBjY2M0WcAAAA=
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Heiko Stuebner <heiko@sntech.de>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
- linux-rockchip@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Igor Velkov <iav@iav.lv>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2718; i=iav@iav.lv;
- h=from:subject:message-id;
- bh=v2FMuWUABRc83FaiGNq51H6LZX+xOp9sURDtyb+WJCs=;
- b=owGbwMvMwCVmNH1q96v4SmbG02pJDFl7U8JcJqjtMr1SfGhbwq86VaVL/1MuRUq7PIqVaL2io
- GEjv0y3o5SFQYyLQVZMkWXCIY1bGUuu/vX3MH8AM4eVCWQIAxenAEzkTg8jwzmJwFPGq3ZeYFsS
- VPt7jdRjNfmM5R/j5KKmbAtOF7U142dkmPtLeZd1f+6e3RFn/2wsXTBTxan4v5GWQnXAL3sDvfP
- HOAE=
-X-Developer-Key: i=iav@iav.lv; a=openpgp;
- fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
-X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
-X-Original-From: Igor Velkov <iav@iav.lv>
-Reply-To: iav@iav.lv
 
-From: Igor Velkov <iav@iav.lv>
+Wang Zhan wrote:
+> gso_features_check() compares the frame length against
+> netif_get_gso_max_size(), which picks the IPv4 or the IPv6 limit from
+> skb->protocol.  A tag which is already inside the frame replaces that field
+> with the VLAN ethertype, as skb_vlan_push() does, and an IPv6 packet is
+> then measured against the IPv4 limit and segmented although the device
+> could send it as one TSO frame.
+> 
+> The lookup moves from netdevice.h into dev.c: vlan_get_protocol() reads the
+> L3 protocol from behind an in-frame tag, while if_vlan.h includes
+> netdevice.h, so an inline in that header cannot call it.  dev.c is the only
+> file which calls the lookup, so it becomes a static helper there.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+> 
+> ---
+> v4:
+> - drop the Fixes tag: not stable material
+> - move the limit lookup into dev.c, so it can use vlan_get_protocol()
+> v3: https://lore.kernel.org/20260928044102.1004310-2-wang.zhan@smartx.com/
+> v2: https://lore.kernel.org/20260918084651.3022878-4-wang.zhan@smartx.com/
+> v1: https://lore.kernel.org/20260917063854.2011613-4-wang.zhan@smartx.com/
 
-Since commit 6911308d7d11 ("net: stmmac: convert to phylink-managed
-Wake-on-Lan"), the MAC device gets its wakeup flag only when the MAC
-handles Wake-on-LAN itself. When the PHY handles it, device_may_wakeup()
-is false for the MAC, and rk_gmac_suspend() powers the GMAC down: its
-clocks stop and phy-supply is released.
-
-On Helios64 (RTL8211F, Wake-on-LAN in the PHY) the board then hangs on
-the first or second suspend with a magic-packet wake.
-
-Also keep the GMAC powered when phy_may_wakeup() is true, and remember
-the decision for resume.
-
-Fixes: 6911308d7d11 ("net: stmmac: convert to phylink-managed Wake-on-Lan")
-Assisted-by: LLM
-Signed-off-by: Igor Velkov <iav@iav.lv>
----
-Tested on Helios64 with 7.3-rc5: 20 of 20 suspends woke on a magic
-packet. The mainline Helios64 DT has no PHY node, so the test used a
-DT that describes the PHY with its interrupt and wakeup-source (a DT
-patch will follow), together with [1], which fixes an interrupt storm
-on resume.
-
-[1] https://lore.kernel.org/r/20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 72bdbcb5e863..06faeb156b97 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -98,6 +98,7 @@ struct rk_priv_data {
- 	bool integrated_phy;
- 	bool supports_rgmii;
- 	bool supports_rmii;
-+	bool suspend_powerdown;
- 
- 	struct clk_bulk_data *clks;
- 	int num_clks;
-@@ -1530,10 +1531,13 @@ static int rk_set_clk_tx_rate(void *bsp_priv_, struct clk *clk_tx_i,
- 
- static int rk_gmac_suspend(struct device *dev, void *bsp_priv_)
- {
-+	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct rk_priv_data *bsp_priv = bsp_priv_;
- 
--	/* Keep the PHY up if we use Wake-on-Lan. */
--	if (!device_may_wakeup(dev))
-+	/* Keep the MAC and PHY powered if either of them wakes the system. */
-+	bsp_priv->suspend_powerdown = !device_may_wakeup(dev) &&
-+		!(ndev->phydev && phy_may_wakeup(ndev->phydev));
-+	if (bsp_priv->suspend_powerdown)
- 		rk_gmac_powerdown(bsp_priv);
- 
- 	return 0;
-@@ -1543,8 +1547,7 @@ static int rk_gmac_resume(struct device *dev, void *bsp_priv_)
- {
- 	struct rk_priv_data *bsp_priv = bsp_priv_;
- 
--	/* The PHY was up for Wake-on-Lan. */
--	if (!device_may_wakeup(dev))
-+	if (bsp_priv->suspend_powerdown)
- 		rk_gmac_powerup(bsp_priv);
- 
- 	return 0;
-
----
-base-commit: 99b43ede9e355ba35244cc9470bf1819774ce39d
-change-id: 20260930-dwmac-rk-phy-wol-be1ea6a6066b
-
-Best regards,
--- 
-Igor Velkov <iav@iav.lv>
-
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
