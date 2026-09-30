@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B9936F419
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0CD36B91A
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790736645; cv=none; b=r5GI9dG7W3yGF9dN8VzvFAinLmvHQ0uYcd0kWrphG/7TjYj4/jB8i8qOEZQFVrwEnQGIJh01ap568/HEJljK/BgxM7W96ICzhW0UDGb9R2/TGvCZzvlxBmgqYb0wFhwO0YqJmuRH4k/sPIQPdWioOCC3N8lxonLQqQ9nP+ukrAM=
+	t=1790736647; cv=none; b=Z1xsm7zTX6FtNoFMc3LlfIK331CHzNQ55KNHM/WdBnEvcEw49/Q2hvtJw8Us4AsiiEgAIrQbCKJAJLNiJUzH7LkAeDBeGu/VWrAqCA5ut5TCjXh+pn7yoVoS8/S1dYPU86xnYAhNu5BVLw9DzUT/Qa6672xblA6FbGNMYlEScPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790736645; c=relaxed/simple;
-	bh=XAE4o5LQfog7NLH7ts6fQJj9+rG07i6zlweAZ3vepPM=;
+	s=arc-20240116; t=1790736647; c=relaxed/simple;
+	bh=fZVH+eY1XlpaIzm2kfiFbB/JlZ0/oabYFTQQ0bAKpCM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p/K4ASzi2vwmHIAqlcKTq6laciO+I4knftmLQ4VhATGW69fFSDtv3dquqYdA1B7LljjkTXTlPP+dekDhRL7DykydN7404DYgJ8+Lfd/RmqgqUH3/pqir9YvDnXDnsuExEvLNmTdsoRfdm0whWzse8gVWjN3DClig42I+r0LDtnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8EYsMQB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=NY7bX3hGuyPNpntWgk5a/3yXEWEzsC/qeOFPfu+1UOc0cv1rRjp/e1ZGBOUR7mw4NtFoyd7gDEee6ifkxcPIZhdC9/LLVirXCi5KhwXJ8kCIPA9C7YlFsBKv+qOrOIZaW/8bIUKE0BDlp+P7/8Ghc587IdF+27zivIGDtXGGRuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOnPyA12; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8EYsMQB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2011F00898;
-	Wed, 30 Sep 2026 02:50:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOnPyA12"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE9D1F000FF;
+	Wed, 30 Sep 2026 02:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790736644;
-	bh=roVljUNbhacUJ6B1MNCy9noHSzO1BTiRApUwVw0W8u0=;
+	s=k20260515; t=1790736645;
+	bh=qVtKP6CTv5yLnUDsf7M6oSmBtg6yOg2r7BToe3wYjH8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=A8EYsMQBj49bDLhE04cij2fG0kZPMUq+HSN1hs6Yam69mOWGElYM7tQcNydtfhShX
-	 6aZRE+ACVffg3p9bgsnNNnVmbB9Z3XUZZ4KdkKyXCkJ1F/VjrTS5Zl4Jy/AYd5p1mv
-	 tflJiohQsAHUwWLds9nUMvsP31AOzaNe4YyljrneKud/OtIU6TezEFKH0B1F3eswVq
-	 b+eP+FIaHzyRdTBRbCmaIjFC2Zt56E8LN5OibIcLKw3dpQo7J0rJV9XwK2JF/tS03e
-	 0I9aRSYy4+/90iBnofQADmXgfn4ChTTlngF4cbijECPE5eNJHrFlHIY1qRFiE6TT+1
-	 SAuLBQmdseNZQ==
-Subject: Re: [PATCH net-next v2 07/11] net: ethernet: cortina: Synchronize RX
- fragments for the CPU
+	b=BOnPyA12qlh6wlxxkReaDlvxesD/gPSixIFbX3eNiqVWIdKA2AjyLLywCFUuPGyfC
+	 TnwNlH84BAJ9T3PIyq2sqSKbkqoUK+r66BkxOvqYYMxzIQvdjF6xBuk1gZbj5xxPIS
+	 iJnwHuIt179gOlwHBhkqb8KrK1HFdbukxm6RrmF0Ep+c2WAHg3/RvXw4kcYAIKN+Hq
+	 S9to6LQXMEWOQzXPQ+VR74ddb9mozLfhl0ujyUSMfvJXmAxCoNYX7YsZ1C7PhChAx5
+	 RQkj1v4yZqTZTWeUiu6F3jUZAH7z5iaPMdvjx/9Au5mp1xm2MnGQoUN8jtcHfLlhO/
+	 huOoxD6Olt40A==
+Subject: Re: [PATCH net-next v2 08/11] net: ethernet: cortina: Validate RX
+ fragment lengths
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  mirq-linux@rere.qmqm.pl, mhun512@gmail.com, netdev@vger.kernel.org
-Date: Wed, 30 Sep 2026 02:50:43 +0000
-Message-ID: <179073664341.434549.3840534078071705576@kernel.org>
-In-Reply-To: <20260928-gemini-ethernet-fixes-3-v2-7-758a795d7a78@kernel.org>
-References: <20260928-gemini-ethernet-fixes-3-v2-7-758a795d7a78@kernel.org>
-X-sashiko-severity: Low
+Date: Wed, 30 Sep 2026 02:50:44 +0000
+Message-ID: <179073664449.434549.8311340298321388734@kernel.org>
+In-Reply-To: <20260928-gemini-ethernet-fixes-3-v2-8-758a795d7a78@kernel.org>
+References: <20260928-gemini-ethernet-fixes-3-v2-8-758a795d7a78@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,72 +47,144 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
-- [Low] The commit message for "net: ethernet: cortina: Synchronize RX
-  fragments for the CPU" presents the change as a bug fix.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new err_length label in gmac_rx() counts a frame as bad
+  (rx_errors++, rx_length_errors++) after gmac_skb_if_good_frame() has…
+- [Low] The commit "net: ethernet: cortina: Validate RX fragment lengths"
+  fixes real defects in gmac_rx()…
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but in
+  drivers/net/ethernet/cortina/gemini.h the comment on `union…
 
 --
 
-net: ethernet: cortina: Synchronize RX fragments for the CPU
+net: ethernet: cortina: Validate RX fragment lengths
 
-This commit adds a dma_sync_single_range_for_cpu() for each free queue
-fragment when geth_freeq_claim() claims it. It also changes the final
-full-page unmap to use DMA_ATTR_SKIP_CPU_SYNC. During teardown,
-geth_freeq_release_pages() now syncs only the fragments the hardware still
-owns before doing a skip-sync unmap.
+This patch adds bounds checks on RX descriptor lengths in gmac_rx(). It
+rejects a short first fragment, an EOF frame length underflow, fragments
+that run past the DMA fragment or the page, and zero-length fragments.
+These drops are counted as rx_errors and rx_length_errors.
 
-> Free queue pages use streaming DMA mappings with DMA_FROM_DEVICE. The RX
-> path reads packet data after the device has filled a fragment without
-> first transferring ownership of that range to the CPU.
+> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> index d677d7431ab2..258bb44d5570 100644
+> --- a/drivers/net/ethernet/cortina/gemini.c
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+
+[ ... ]
+
+> @@ -1667,6 +1668,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			if (!skb)
+>  				goto err_drop;
+>  
+> +			if (frag_len < NET_IP_ALIGN)
+> +				goto err_length;
+> +
+>  			page_offs += NET_IP_ALIGN;
+>  			frag_len -= NET_IP_ALIGN;
 
 [Severity: Low]
+This isn't a bug introduced by this patch, but the comment on
+buffer_size in union gmac_rxdesc_0 in gemini.h looks like it was copied
+from the field next to it:
 
-Could the commit message say which configurations are affected and what
-the user-visible symptom is? As written, it reads like a fix for RX data
-corruption, but there is no Fixes: tag.
+drivers/net/ethernet/cortina/gemini.h:
+		/* bit 15:0 number of descriptors used for the current frame */
+		unsigned int buffer_size:16;
+		/* bit 21:16 number of descriptors used for the current frame */
+		unsigned int desc_count:6;
 
-The missing sync_for_cpu seems to go back to the original driver, commit
-4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet").
-That commit added gmac_rx() and the claim/unmap logic.
+gmac_rx() treats word0.bits.buffer_size as a byte length. It subtracts
+NET_IP_ALIGN from it and, with this patch, compares it against the
+freeq fragment size and PAGE_SIZE.
 
-This IP only appears on the Gemini SoC (ARCH_GEMINI, ARCH_MULTI_V4, FA526
-core, no outer cache). On Gemini, arch_sync_dma_for_cpu() in
-arch/arm/mm/dma-mapping.c does:
+Could the comment be changed to describe a per-buffer byte count? This
+doesn't affect the new bounds arithmetic.
 
-	if (dir != DMA_TO_DEVICE) {
-		outer_inv_range(paddr, paddr + size);
+[ ... ]
 
-		dma_cache_maint_page(paddr, size, dir, dmac_unmap_area);
-	}
+> -		if (word3.bits32 & EOF_BIT)
+> +		if (word3.bits32 & EOF_BIT) {
+> +			if (frame_len < skb->len)
+> +				goto err_length;
+>  			frag_len = frame_len - skb->len;
+> +		}
 
-outer_inv_range() does nothing here. dmac_unmap_area resolves to
-fa_dma_unmap_area in arch/arm/mm/cache-fa.S:
+[Severity: Low]
+Should this commit have a Fixes: tag?
 
-SYM_TYPED_FUNC_START(fa_dma_unmap_area)
-	ret	lr
-SYM_FUNC_END(fa_dma_unmap_area)
+Without this check, frame_len < skb->len at EOF wraps frag_len to a huge
+unsigned value. That value then goes into skb_fill_page_desc(),
+skb->len and skb->data_len.
 
-So the new dma_sync_single_range_for_cpu() in geth_freeq_claim() does not
-seem to do any cache maintenance on this hardware. The old full-page
-dma_unmap_single() did none either.
+The EOF computation and the unchecked skb_fill_page_desc() and skb->len
+updates date back to the original driver:
 
-> Once all fragments have been claimed, tear down the full-page mapping with
-> DMA_ATTR_SKIP_CPU_SYNC. Each range has already moved to the CPU domain, and
-> another full-page synchronization could invalidate a sibling fragment
-> already being consumed by the network stack.
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 
-Given the above, can the sibling-invalidation case happen on FA526 at
-all?
+Earlier RX fixes to gmac_rx() carry that tag, for example 6520198c430c
+("net: ethernet: cortina: Count RX drops once per frame").
 
-If this fixes real RX corruption on some configuration, should it carry
-"Fixes: 4d5ae32f5e1e"? If it is a DMA API correctness change with no
-functional effect on Gemini, could the commit message say so? That would
-let stable backporters tell the two cases apart.
+The commit uses the Assisted-by workflow, and step 6 of
+Documentation/process/coding-assistants.rst also asks for a Fixes tag on
+such fixes. The trailers here only have Assisted-by and Signed-off-by.
+
+[ ... ]
+
+> @@ -1698,6 +1713,11 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  		}
+>  		goto next_desc;
+>  
+> +err_length:
+> +		if (!dropping) {
+> +			port->stats.rx_errors++;
+> +			port->stats.rx_length_errors++;
+> +		}
+
+[Severity: Medium]
+Does this count the same frame as both a good packet and a bad packet?
+
+Each new goto err_length runs after gmac_skb_if_good_frame() has already
+returned an skb for the SOF descriptor. By then that function has done:
+
+drivers/net/ethernet/cortina/gemini.c:gmac_skb_if_good_frame() {
+    ...
+update_exit:
+	port->stats.rx_bytes += frame_len;
+	port->stats.rx_packets++;
+	return skb;
+}
+
+So when a frame hits any of the new checks, it gets rx_packets and
+rx_bytes from the SOF path, then rx_errors and rx_length_errors here,
+then rx_dropped in err_drop. gmac_get_stats64() then reports it in both
+groups.
+
+In include/uapi/linux/if_link.h, rx_packets counts good packets and
+rx_errors counts bad ones. Before this patch the two never overlapped,
+because gmac_skb_if_good_frame() rejects error frames before it touches
+rx_packets.
+
+The same header defines rx_length_errors for 802.3 in terms of in-range
+length, out-of-range length field and frame-too-long errors. An
+inconsistent DMA descriptor length doesn't seem to fit any of those.
+
+Would it be better either to undo the good-packet accounting here, or
+to count these drops only in rx_dropped?
+
+>  err_drop:
+>  		if (skb) {
+>  			napi_free_frags(&port->napi);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78%40kernel.org
