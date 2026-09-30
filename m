@@ -1,68 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A90B373BE8;
-	Wed, 30 Sep 2026 07:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A190C373BE8;
+	Wed, 30 Sep 2026 07:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790752801; cv=none; b=IYDL1ypeEbt+2s3TQU6OHCOeLlm7BdVjR9k7ZeER/3+vjRhj3XECKcO27mkkGhNeODF7DPmB9PBis8DW7howDGkI+jhXFF3JiBmmcC6TIQHJeqtDzDg3dkt2zpcmqXO1L4+AX3XNDYQltHpMVmxuRwpoGpZsAFtZZi85b/+pfhM=
+	t=1790752808; cv=none; b=BZwhpNgyp1+oZ7jH/u1Ymw3bFyaISBjSbZTB/RPlgaaDO+/p5X1OYtzKOrNSq6OLFIOneXrvkaWjQOr3fzsVoQi4fZ013bUwF7mqFSAljaFVYKaRzixXPg2KBSLGKeEdx8hBwsNbYNa4wMWJry9N7OPAscnlX5fVTUW6AQ2dzQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790752801; c=relaxed/simple;
-	bh=Frc+ADQTxRwKDWaoqMQMlUJQ/gCXB8qyIs31/48aD70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I9huYP5ignUUMKOCy8Jx6wjnOyXRP2MSWkuY+cNLa6Wvyg6YFIibSbc9fodyvXBI8u1za+qhNb8q7c94qRvlGcXDHNgzLCVvz5mokN3/V1oWyhzDTpeG779hdCG1vhONFAOb5Hw/exqnGGiu4eVogRQKITU4SqoKsqM9JKYpK5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1ZeUbIf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790752808; c=relaxed/simple;
+	bh=sd6gkkeG8ZQWKcUfeNjAQn8Tdr2ocdh4K4IqKfSDGS4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fXa3BEykfyvO+qa+nkEq1W7jNICfka/QiUDvjBajQB5+SZFqeECjcHsI98L7zPx1duEaMcNb6z34c6kijTLZW81odTtleHFBGOOLMg0er4xP4v2yI2crOMDz2Q6e80HvhR85fa7O1ZlfwsBIx7Unxql90NlqCWD4pQmehk8nfDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1hsLw5T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1ZeUbIf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B391F000FF;
-	Wed, 30 Sep 2026 07:19:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1hsLw5T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8143F1F00893;
+	Wed, 30 Sep 2026 07:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790752800;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H1ZeUbIfZC5ycSUZAJzlMkNZj42855Q7MEIBZPwVCAPRX6gP3U9b+ELjNqab1/nlV
-	 nkcAdh26pSvyMw+ytLfbvScigRWMMG94yGy7x2DAHWfRHDsYesriMumsQ+yfda1ewe
-	 R+rc2h6i7o6PMOjI5MJhc2igLfJhR4O4yi081V7T05/Rp55rt/4gi3XBCCydvL5ncK
-	 vscTkSJJm7w3ckqhaLqCxSO1ggTD0Dq+KxMIa90Zm3JNzMdCrUq1996MJwLR+ToBgr
-	 kbGzoPFfw2M1wQdq58qixN19ypytkgDg0lsk5NN6tJ7/+2CGwl9ipELmjvwcOBA60g
-	 R6JW3BfhHjM3g==
-From: netdev-bot+sinfo@kernel.org
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, radhey.shyam.pandey@amd.com,
- michal.simek@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, robert.hancock@calian.com,
- sean.anderson@linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] net: axienet: cap the TX poll return value at the
- NAPI budget
-Date: Wed, 30 Sep 2026 07:19:59 +0000
-Message-ID: <179075279901.31693.4789169176025211757@kernel.org>
-In-Reply-To: <20260930071536.627964-1-maimon.sagi@gmail.com>
-References: <20260930071536.627964-1-maimon.sagi@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1790752807;
+	bh=u62Zgpb+i05Tt205oStPPNF9koBKiCrEtXPYzDKQ3Kc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=k1hsLw5TOoY/CLuJf77AQ1dO1bsIDTq/AhjYG6PGTIfv7ofgxXGGXA7h4JjAnHKzu
+	 THZs5YV0vHzS3BU9v7Xw7DekkbMtHVfk5+z2FGuJ8ZbJ3lTwjF5zqWc6Et247sawWA
+	 pB1wn8fmSjvno3o26CqBf6YgKeOlmG0oCEW8tYZ2OHckz1rkWMQbFCKiPH40LAvM1o
+	 ZmmEuYkJV3K5c3cJHJqB4GAojmIZtjwTlXyFcORcQRdVIJP+aF+2A7Gso9Ig4vuOv4
+	 t0nT23YTsRNp3echfI6ktcWF/LqjAgA1bQlbuH1FdFhZneW8JS+ryxTU6EMGJaRj/F
+	 qkpxXLRZqPkDA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7734939E37E8;
+	Wed, 30 Sep 2026 07:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/2] tcp: correct timestamp echo for accepted old
+ ACKs
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179075280628.1300549.5509783868207806215.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 07:20:06 +0000
+References: <20260924224456.55690-4-jeffjo@openai.com>
+In-Reply-To: <20260924224456.55690-4-jeffjo@openai.com>
+To: Jeff Jo <jeffjo@openai.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
-Hi!
+Hello:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This series was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+On Thu, 24 Sep 2026 15:44:57 -0700 you wrote:
+> Linux can acknowledge newly received data while echoing an outdated
+> TCP timestamp. This happens when a reordered packet fills a receive gap
+> but carries an older acknowledgment for traffic in the other direction.
+> If the sender uses this echo to measure round-trip time after a long idle
+> period, the stale timestamp can inflate its estimate and slow its sending.
+> 
+> Changes in v2, following Eric Dumazet's review:
+> - Remove the redundant SYN_RECV condition and unused flag accumulation.
+> - Replace the log-parsing wrapper with a plain packetdrill test that checks
+>   the timestamp echo directly, using the existing selftest runner.
+> - Rebase on net fc6d80eb5044.
+> 
+> [...]
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Here is the summary with links:
+  - [net,v2,1/2] tcp: refresh TS.Recent for accepted old ACKs
+    https://git.kernel.org/netdev/net/c/1b92780ae4fc
+  - [net,v2,2/2] selftests: net: check timestamp echo after an old ACK
+    https://git.kernel.org/netdev/net/c/81fe707ae58e
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
