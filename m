@@ -1,122 +1,159 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f34.google.com (mail-lr2-f34.google.com [74.125.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E74C78F3A;
-	Wed, 30 Sep 2026 01:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790733315; cv=none; b=UJYmogtzIJgOQPqmxtEvkLfLKgXARmHRy2sKrwO6yLzqWOVzVTuVxOhf0ucoG7cclWRdyvAUprQbm/TuKMLU6WlSXiZWPvv65QkIBGcwUhj3+0tUBTqQGlw0YG3Cb5L94PLA5Csy1XET7OJMfkEF9SVWgBkbQWZ4Z4m6WIMktw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790733315; c=relaxed/simple;
-	bh=ALEbsJltOkykfd6BXNzzWhlmAYuW9n9nkjjO2PKULX4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=oLF8ql8Ybt+hITpY2x93Spu9g4wPBHHATk1rdjJdxe04sq3GOEmArjp1QLSEkEClQc6FdPgF+rm6t6DX+RfYy1hDi3GB+KnpV944iEM3+iNcUXs43J+9NI7QTnOwV4hDOpYPWSnHcdRW/tUoljnnfhlrYYAS0MFlJkKNVgy3jHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JBPae0KO; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98152234964
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 01:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.98
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790733435; cv=pass; b=tffD7slZ/91TP4V4B1XXdlQql5N5bzp5YkuJC/+giEkhrHAvNJCFjUKcutVPvi30Q3XG97xi7bitWAd9l/uutlJOb0km/6NMavQMQDKUfsURcjWibasVqj0jNZRKiteM8RJw4H9HNQmMaPCT0ymh8n6WJZPIrLRjmVgTP7kiSME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790733435; c=relaxed/simple;
+	bh=EJBmLtlA9CbcZFNhGFhs+lZO9BwH5Y8mEKEymm64wHY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d7m70RaCqcA5ljZb6CSAxpQMXnvDVoOzxyKuWBxUGjCmFJJmIflg7KwhgJmOIxMzAI656tCn0b0hO6iuKbn8DL0M9USNlZhI6FmGZ8H56lKCLXJsyzKWBJajYoV7m1AWc6h9WH+izgMtEH85TrZsAC/c5jwmkzeu2hoQEoyJ2zg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b3xozSTN; arc=pass smtp.client-ip=74.125.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JBPae0KO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=ALEbsJltOkykfd6BXNzzWhlmAYuW9n9nkjjO2PKULX4=; b=J
-	BPae0KO32wEDNzRUqiM03x4zjHSqjEBAt988tx7zqrsYPViVc00kjIQslbiQfYgQ
-	m00MnPV3W36ZfVfB4h4ODHxJSEu04TvyWClpbj4fzgh6rHY3fV6SNsQgPo9QVwW4
-	MA1eVuhKzCRiJyV9tB3pV6convlQAUdIQ27fBPehrc=
-Date: Wed, 30 Sep 2026 09:53:59 +0800 (CST)
-From: "jiale yao" <19888972804@163.com>
-To: "Sergey Shtylyov" <s.shtylyov@omp.ru>
-Cc: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	"Paul Barker" <paul@pbarker.dev>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Mitsuhiro Kimura" <mitsuhiro.kimura.kc@renesas.com>,
-	"Claudiu Beznea" <claudiu.beznea.uj@bp.renesas.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re:Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
-References: <20260927144741.1320558-1-yaojiale02@163.com>
- <20260927144741.1320558-7-yaojiale02@163.com>
- <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
-X-NTES-SC: AL_Qu2SAvuYvEoo7yaYZOkdnEkQgO0/WsS1vfQu2Y5Wc+8GoB7n+ToEZnBvNlr04eWOBi+JjBKMXilN6cVecJZ2eEB1MuQwr0ubnaC2dOtXcA==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b3xozSTN"
+Received: by mail-lr2-f34.google.com with SMTP id 38308e7fff4ca-3a773960275so458391fa.1
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:57:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790733431; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EkLQq/zoE5Nzq7mh1v1Sm/iiGDGTSLfnE4Y0mqN47xDaBIExMMtI9HBCtR0DH0jtQn
+         tBuvclBssmdMPxIH7Q6J+MQS2HrEVpfnAC4F0u17DKrSgb0zkQV4Da9DQB1leYP5uSvY
+         HpVvIBG+G281BFy2JdTywB/JaZHcMQALH/BkrJX50ddlD3Be3GNCfiCjce3w5Nmvc1NS
+         CcMa5PHPXRe3h0ZwzmCFof0LzS6NhMaTmq3do0K4sUEErkVZdf2TeLZPei2N96xICnrv
+         keuddNRioML2QPD9LikpojzBKCih+WiOE5QMCldq8Z0CRn4o8JCv4AlbIMzs2rw8PaiG
+         OYOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/rjuboVBXDuh3R0bX/1CQ5MpKEZd6zdJiNiGF/rA1gE=;
+        fh=I38VmusOUaOQGvWoY084drwW4PjjuOMipnLwG65bu6I=;
+        b=b8EYt5Pgiijmt9zuPGys7ZjO96FPKY79vsnD6ySF9Jdyl1vHVzXljfpuB+MoX6P/gV
+         Xs9lwt8G6BIaRhCS8MPoTw1v9hjQINfxWOoPYBiBRDeJy+t6aE/GwjDAVqKafMgSU8u3
+         Of0hjW0Ey8ZduAWXcbGfqnyMoy6z9uslgk6p3p+DVFedhQuGly1c8iwWiVYw6jt76Ykz
+         dIp4htYYETNID2FMeNAy7kOO/QqnCShU+dUK7NVwvkmakC9iY0KnXcSUdVtH5/tJzrDj
+         c1uK7tAvy6yFGmhqLPzn7v4LlZZMszV53t+Ym4WAnKcxUh//Uy6wvAEwVkpUWBGNrL6P
+         iIBQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790733431; x=1791338231; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/rjuboVBXDuh3R0bX/1CQ5MpKEZd6zdJiNiGF/rA1gE=;
+        b=b3xozSTNt+7/uNuQ4mIPzto6LPs1bsaP6pyzz6L48ITpjqxuDYz+4FtRzuy3SKb4+F
+         GDJauUFk63Sk2FXqyjpWEsPHPWeGvXMeL4+4WtoQOx98cFzCzQWW57JoY5FcI3aIc5S7
+         T4cn89fDdKZsqAM06dynX2AQ/T5cNVvtrnIJIcQlXQKFk4srAtdxeAx3ygc1FeD0hOuv
+         5l12p6pbN8n1DCoOPZbVKKHcwFaL/s+lK0ioOmdlvYzHjf7gKY3rPcZ6d9KAXfuhVIeJ
+         W088YBrt719c/FaKjBgXx6j7pHTWkE8FpQ3sHTSvO1a168FlYZvOHHP5ALmI0iMe4mbB
+         rIHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790733431; x=1791338231;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/rjuboVBXDuh3R0bX/1CQ5MpKEZd6zdJiNiGF/rA1gE=;
+        b=BW6AuFTN5NiHXr8QwPssu/jPeZ8cOHZ38llmL8y+Ur3ohmPN3hp1K/zyy/v5jESuvh
+         dehlyO4ziiFZKZyH3f2+SEUHD5zC29jjNNrhBNlkt3XzjW+kQNlUinuc2lw2ezCwo+7D
+         3+c4dllpzdjJJfArJuHjT1lE1iJ43oztPruM4ya11hOUxjTtHyuOZfTpMkNnYAro7vTk
+         nR3xC0KZSisGVkv+f2mR75ixcAsibGwDUREm+LjFWpDIsMpub0/O56Povp8JCc+HW22I
+         PKL4yIji/ogEnPbfWUKQGr6wifzcsPBmwuK4euBHRH8nfrPOeQ9FW9HzIrhoep81tZ8a
+         gvBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBygdFAG8X9lNE72n8v9iRNls8e/zHcLkfL94QBCr0Yu2sxCSfFLCEHIZAuadm6T1pwcyXhdvx4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ2N1xVMrduX7X4HVssZKRilIWgG0cqNoUMEhFfxsZGBIe7BokU
+	gNmmDM0e6zGDjFJr3dD87H3ScnpYS3yUKaeefcdw2WOog7KUBhrVAVaPZWmQoZr+FIBbG0bKCIn
+	VX5S3BmaxFYEBL03HhOknALv6mH5dNvE=
+X-Gm-Gg: AYBFou2PUOO1NUP9vknWYIWy/PJS5m2BPDbYHe9igaJyAJjpqMR45AnaeLKbCTakKdj
+	yqPTFnp70bj/GdjlaT3SRF9JVBHba0+FXfnewY8TPQtMIQ1X2wKjDhG2/uA2N5y5QXq370QLXAn
+	xrio24iQf2he865uoVeLhmzqhBNDI6HM/R8jgNUX1nmQ36pvbsqx5D/u1uF3icX4buY29kLKkHY
+	TEJ3YyWlBwVo3356DFFiC7o6U0ttFKA/ciO1sFDMVQIMxmezcjwuBNdWRohNskHzsGmIiHFFWjr
+	FuOqU0hAcykUvrtMyA72EIItoLJpaX9YUG/IN1qIZH0UtnruEBGc5KU3d5DAmHshblfBTVkNWJ4
+	EeWCF/I/wgPg1YlndvyOnP8DkcyMoZ2oSJq3R6Z36VuhsETcyvr5/eKLcdjzOvpQtnwq1/QZmkJ
+	N9XRGx
+X-Received: by 2002:a05:651c:2214:b0:3a6:4739:2008 with SMTP id
+ 38308e7fff4ca-3a7791f4002mr77551fa.0.1790733431098; Tue, 29 Sep 2026 18:57:11
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <12190bf2.18c1.1a0f004c539.Coremail.19888972804@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:kygvCgD3FwK3a7xqAetQAA--.481W
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzRfRDGq8a7eSJAAA37
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+References: <20260924152529.5689-1-kerneljasonxing@gmail.com>
+ <20260929165318.6690d427@kernel.org> <20260929165425.53ee002c@kernel.org> <CAL+tcoD4MmRxD_5b06u5toAmBv=6HsbetEk3oZY337DjSS14sg@mail.gmail.com>
+In-Reply-To: <CAL+tcoD4MmRxD_5b06u5toAmBv=6HsbetEk3oZY337DjSS14sg@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 30 Sep 2026 09:56:33 +0800
+X-Gm-Features: AclHuK83VEgYUR4mcSUli3-Ys4F73gNWruxNlVglBapQadBustJfgP5Jf-sWNNg
+Message-ID: <CAL+tcoCsqeF92T_Kevucveg04qUV+YADescKfqJVTfZJOUT0Xg@mail.gmail.com>
+Subject: Re: [PATCH v3 net] tcp: preserve timestamps across receive queue collapse
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: edumazet@kernel.org, davem@davemloft.net, pabeni@redhat.com, 
+	horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGkgU2VyZ2V5LAoKVGhhbmtzIGZvciB5b3VyIHJldmlldy4KWW91J3JlIHJpZ2h0IOKAlCBJJ2xs
-IHNwbGl0IHRoaXMgaW50byB0d28gcGF0Y2hlczoKT25lIHBhdGNoIGZvciB0aGUgSVJRL25ldGRl
-diBvcmRlcmluZyBpc3N1ZS4KT25lIHBhdGNoIGZvciB0aGUgcnVudGltZSBQTSByZXN1bWUgZmFp
-bHVyZSBoYW5kbGluZy4KSSdsbCB1c2UgLS1uby1naXQtZmFsbGJhY2sgbmV4dCB0aW1lLCBzb3Jy
-eSBmb3IgdGhpcy4KCkF0IDIwMjYtMDktMzAgMDM6MDc6NTIsICJTZXJnZXkgU2h0eWx5b3YiIDxz
-LnNodHlseW92QG9tcC5ydT4gd3JvdGU6Cj5IZWxsbyEKPgo+ICAgSSBndWVzcyB5b3UgdXNlZCBz
-Y3JpcHRzL2dldF9tYWludGFpbmVyLnBsIC0tIGlmIHNvLCBJIHN1Z2dlc3QgdGhhdAo+eW91IGFk
-ZCAtLW5vLWdpdC1mYWxsYmFjayBuZXh0IHRpbWUuIFlvdXIgY3VycmVudCBUbzogbGlzdCBpcyBw
-YWluZnVsbHkKPmxvbmcgYW5kIGNvbnRhaW5zIHNvbWUgbG9uZyBkZWZ1bmN0IGFkZHJlc3NlcyAo
-bGlrZSBtaW5lKS4uLgo+Cj5PbiA5LzI3LzI2IDU6NDcgUE0sIEppYWxlIFlhbyB3cm90ZToKPgo+
-PiByYXZiX3JlbW92ZSgpIGZyZWVzIHRoZSBuZXRkZXYgYmVmb3JlIGRldnJlcyByZWxlYXNlcyB0
-aGUgbWFuYWdlZCBJUlFzLgo+PiBUaGUgaGFuZGxlcnMgdXNlIHRoZSBuZXRkZXYgYXMgdGhlaXIg
-ZGF0YSBwb2ludGVyLCBzbyBhbiBpbnRlcnJ1cHQgZHVyaW5nCj4+IHRoYXQgd2luZG93IGNhbiBh
-Y2Nlc3MgZnJlZWQgbWVtb3J5LiBQcm9iZSBlcnJvciBwYXRocyBoYXZlIHRoZSBzYW1lCj4+IG9y
-ZGVyaW5nIHByb2JsZW0uCj4+IAo+PiBUaGUgcmVtb3ZlIGNhbGxiYWNrIGFsc28gcmV0dXJucyB3
-aGVuIHJ1bnRpbWUgcmVzdW1lIGZhaWxzLiBUaGF0IGxlYXZlcwo+PiB0aGUgbmV0ZGV2IHJlZ2lz
-dGVyZWQgd2hpbGUgdGhlIGRyaXZlciBjb3JlIHN0aWxsIHJlbGVhc2VzIGl0cyBtYW5hZ2VkCj4+
-IHJlc291cmNlcy4gQSBydW5uaW5nIGludGVyZmFjZSBhbHJlYWR5IGhvbGRzIGEgcnVudGltZSBQ
-TSByZWZlcmVuY2UsIHNvCj4+IHRoZSBleHRyYSBnZXQgY2Fubm90IGludm9rZSBhIGZhaWxpbmcg
-cmVzdW1lLiBBIHJlc3VtZSBmYWlsdXJlIHRoZXJlZm9yZQo+PiBvY2N1cnMgd2hpbGUgdGhlIGlu
-dGVyZmFjZSBpcyBkb3duIGFuZCBuZG9fc3RvcCgpIHdpbGwgbm90IGJlIGNhbGxlZC4KPgo+ICAg
-U2VlbXMgbGlrZSBhIHNlcGFyYXRlIHByb2JsZW0/Cj4KPj4gUGxhY2UgdGhlIElSUSByZXNvdXJj
-ZXMgaW4gYSBkZWRpY2F0ZWQgZGV2cmVzIGdyb3VwIGFuZCByZWxlYXNlIGl0IGJlZm9yZQo+PiBm
-cmVlaW5nIHRoZSBuZXRkZXYuIENvbnRpbnVlIHVucmVnaXN0ZXJpbmcgYW5kIGZyZWVpbmcgc29m
-dHdhcmUgcmVzb3VyY2VzCj4+IHdoZW4gcnVudGltZSByZXN1bWUgZmFpbHMsIGJ1dCBza2lwIHRo
-ZSB1bm1hdGNoZWQgcnVudGltZSBQTSBwdXQuCj4+IAo+PiBGaXhlczogYzE1NjYzM2YxMzUzICgi
-UmVuZXNhcyBFdGhlcm5ldCBBVkIgZHJpdmVyIHByb3BlciIpCj4+IEZpeGVzOiA0OGY4OTRhYjA3
-YzQgKCJuZXQ6IHJhdmI6IEFkZCBydW50aW1lIFBNIHN1cHBvcnQiKQo+PiBDYzogc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZwo+PiBTaWduZWQtb2ZmLWJ5OiBKaWFsZSBZYW8gPHlhb2ppYWxlMDJAMTYz
-LmNvbT4KPj4gLS0tCj4+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9yZW5lc2FzL3JhdmJfbWFpbi5j
-IHwgMjMgKysrKysrKysrKysrKysrKystLS0tLS0KPj4gIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNl
-cnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQo+PiAKPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0
-L2V0aGVybmV0L3JlbmVzYXMvcmF2Yl9tYWluLmMgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZW5l
-c2FzL3JhdmJfbWFpbi5jCj4+IGluZGV4IGVhMWM3ZTUzNjc5MS4uYTI1ZjVhYzcwNjJmIDEwMDY0
-NAo+PiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZW5lc2FzL3JhdmJfbWFpbi5jCj4+ICsr
-KyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3JlbmVzYXMvcmF2Yl9tYWluLmMKPlsuLi5dPiBAQCAt
-MzEyNCw2ICszMTMxLDggQEAgc3RhdGljIGludCByYXZiX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9k
-ZXZpY2UgKnBkZXYpCj4+ICAgICAgICAgcG1fcnVudGltZV9kaXNhYmxlKCZwZGV2LT5kZXYpOwo+
-PiAgICAgICAgIHBtX3J1bnRpbWVfZG9udF91c2VfYXV0b3N1c3BlbmQoJnBkZXYtPmRldik7Cj4+
-ICAgICAgICAgY2xrX3VucHJlcGFyZShwcml2LT5yZWZjbGspOwo+PiArb3V0X3JlbGVhc2VfaXJx
-czoKPgo+ICAgU29tZXdoYXQgdW5vYnZpb3VzIGxhYmVsIG5hbWUsIGdpdmVuIHRoZSBmb2xsb3dp
-bmcgY2FsbC4uLgo+Cj4+ICsgICAgICAgZGV2cmVzX3JlbGVhc2VfZ3JvdXAoJnBkZXYtPmRldiwg
-cHJpdik7Cj4+ICBvdXRfcmVzZXRfYXNzZXJ0Ogo+PiAgICAgICAgIHJlc2V0X2NvbnRyb2xfYXNz
-ZXJ0KHJzdGMpOwo+PiAgb3V0X2ZyZWVfbmV0ZGV2Ogo+PiBAQCAtMzE0MSw5ICszMTUwLDEwIEBA
-IHN0YXRpYyB2b2lkIHJhdmJfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4+
-IAo+PiAgICAgICAgIGVycm9yID0gcG1fcnVudGltZV9yZXN1bWVfYW5kX2dldChkZXYpOwo+PiAg
-ICAgICAgIGlmIChlcnJvciA8IDApCj4+IC0gICAgICAgICAgICAgICByZXR1cm47Cj4+ICsgICAg
-ICAgICAgICAgICBkZXZfd2FybihkZXYsICJmYWlsZWQgdG8gcmVzdW1lIGRldmljZTogJWRcbiIs
-IGVycm9yKTsKPj4gCj4+ICAgICAgICAgdW5yZWdpc3Rlcl9uZXRkZXYobmRldik7Cj4+ICsgICAg
-ICAgZGV2cmVzX3JlbGVhc2VfZ3JvdXAoZGV2LCBwcml2KTsKPj4gICAgICAgICBpZiAoaW5mby0+
-bmNfcXVldWVzKQo+PiAgICAgICAgICAgICAgICAgbmV0aWZfbmFwaV9kZWwoJnByaXYtPm5hcGlb
-UkFWQl9OQ10pOwo+PiAgICAgICAgIG5ldGlmX25hcGlfZGVsKCZwcml2LT5uYXBpW1JBVkJfQkVd
-KTsKPj4gQEAgLTMxNTMsNyArMzE2Myw4IEBAIHN0YXRpYyB2b2lkIHJhdmJfcmVtb3ZlKHN0cnVj
-dCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4+ICAgICAgICAgZG1hX2ZyZWVfY29oZXJlbnQobmRl
-di0+ZGV2LnBhcmVudCwgcHJpdi0+ZGVzY19iYXRfc2l6ZSwgcHJpdi0+ZGVzY19iYXQsCj4+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgcHJpdi0+ZGVzY19iYXRfZG1hKTsKPj4gCj4+IC0gICAg
-ICAgcG1fcnVudGltZV9wdXRfc3luY19zdXNwZW5kKCZwZGV2LT5kZXYpOwo+PiArICAgICAgIGlm
-IChlcnJvciA+PSAwKQo+PiArICAgICAgICAgICAgICAgcG1fcnVudGltZV9wdXRfc3luY19zdXNw
-ZW5kKCZwZGV2LT5kZXYpOwo+Cj4gICBIbSwgZGVmaW5pdGVseSBzZWVtcyBsaWtlIGEgbWF0ZXJp
-YWwgZm9yIGEgc2VwYXJhdGUgcGF0Y2guLi4KPgo+Wy4uLl0KPgo+TUJSLCBTZXJnZXkKSmlhbGUK
+On Wed, Sep 30, 2026 at 9:53=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> On Wed, Sep 30, 2026 at 7:54=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Tue, 29 Sep 2026 16:53:18 -0700 Jakub Kicinski wrote:
+> > > On Thu, 24 Sep 2026 23:25:29 +0800 Jason Xing wrote:
+> > > > When tcp_collapse() rebuilds skbs under memory pressure, the copy
+> > > > process doesn't include the right tstamp and hwtstamp from the
+> > > > old skb. And memcpy(nskb->cb, skb->cb, ...) copies has_rxtstamp,
+> > > > but nskb->tstamp and hwtstamps are left at zero, so
+> > > > tcp_recv_timestamp() ends up emitting no cmsg at all.
+> > > >
+> > > > In net timestamping case, if such an skb happens to be the last
+> > > > one consumed in a recvmsg() call, the application receives no RX
+> > > > timestamp for that call.
+> > > >
+> > > > Fix this by copying both tstamp and hwtstamp of the last skb to
+> > > > the new skb, matching tcp_try_coalesce()/tcp_add_backlog().
+> > > >
+> > > > Note that the has_rxtstamp flag can still be inherited through
+> > > > the cb memcpy from an skb that contributes no bytes (fully covered
+> > > > skb left in the ofo tree by the tcp_ooo_try_coalesce() ->
+> > > > coalesce_done path), so set TCP_SKB_CB(nskb)->has_rxtstamp to false
+> > > > which makes the new block the only place setting it.
+> > > >
+> > > > Fixes: 98aaa913b4ed ("tcp: Extend SOF_TIMESTAMPING_RX_SOFTWARE to T=
+CP recvmsg")
+> > > > Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+> > > > ---
+> > > > V3
+> > > > Link: https://lore.kernel.org/all/20260917132742.87117-1-kerneljaso=
+nxing@gmail.com/
+> > > > 1. revise the commit message with more accurate description (Eric)
+> > > > 2. fix a corner case (where a skb can contribute no bytes if OOO ha=
+ppens)
+> > > >    spotted by AI and Eric
+> > >
+> > > Looks good now, Eric?
+> > > https://lore.kernel.org/all/20260924152529.5689-1-kerneljasonxing@gma=
+il.com/
+> > >
+> > > (Jason, please see net for the up-to-date email addr for Eric)
+>
+> Will do.
+>
+> >
+> > I meant to also say - I'm leaning towards net-next on this one.
+> > Please LMK if you disagree
+>
+> I'm okay with net-next. Seems like I need to repost.
 
+And it also seems unnecessary to carry the Fixes tag in V4, but I will
+mention this commit in the message.
+
+Thanks,
+Jason
