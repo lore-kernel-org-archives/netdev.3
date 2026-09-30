@@ -1,78 +1,37 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304A94E5322;
-	Wed, 30 Sep 2026 13:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8F74E0210;
+	Wed, 30 Sep 2026 13:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776473; cv=none; b=YpSZRxdEbpJk29THllGziPTMp7WEXgjhtWy/CXy+Z5+vkfuNxtq78FDVJ9zEMcH3QSOYvmpY0IGcZHhjtxLLoVn21xXA2qrK4lJjM5ovIxix/jwQWUF32N0ro8oHmTnlmMOrHMNKIvOmRVITB8t+alpl7P+H4LAwnDhkZDh4IwE=
+	t=1790776477; cv=none; b=l9iMccIlgyyjEaitNROA5AqlvBHZnqtJrLxO+Et9FwKHnISHXmGkP97clphyfKsu3hLj7p0o7uZeWPf9Q7AkI2vROL4sFmficd/CEvrSLJ6AExH6z7MqE03Qv/P3/vDCuJsALWDDWgSgV7zFvPLKtJ912dMmrg2TKzkzeAZRQOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776473; c=relaxed/simple;
-	bh=jNmuJCUQ6AV+uZkYgO4Rl+6zLRg4alhoFL9PUHqBETY=;
+	s=arc-20240116; t=1790776477; c=relaxed/simple;
+	bh=CdCyPq5YUUEeolexrMKuUXr2FFQELcT7q78XfNxvBdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pc9ZsAInDUPExBaKOiq+MMHhHrywrWS1hsteuBheybyDtIsg1MvOoiCSycT/YnpSJI0dg7MjZh1PnzcmZ+6G+mNrEQPyPxMdcidpSY7whoDmy1KZVU7a26y3aFrL1qZnZFhRdyYfPbUZAyuqLJv/uAdt7A5DtwXPoGzsKSwre4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RMlAQQh6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P936QFcu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gM3IYV04; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LLHlj2rw; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=iQ7pb2/JQERzwwlEWVHR999Z7qTv39SaFZtfHRVa4MyxomxYxy8muz3fyMAUcjuOHGlzpidWMr8NWjNN76DcoQxiVXjWHfr21K84NkAuK7KR0jr+tixeP5yzHJFPdd7LXfVrMtKmkRv869uARNIEb2d4m0FJVzgqULL/HSPwKyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RMlAQQh6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P936QFcu";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gM3IYV04";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LLHlj2rw"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9041B21D6E;
-	Wed, 30 Sep 2026 13:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790776441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/1IBlTX6vlcUFCjGWOjia0E+4yysJS/6lorCAPFPo2k=;
-	b=RMlAQQh6Ro2RDStq9a9Pi4hvvzfw/pA5YUeUecyAZ4aFYcJJWbS916DqfmwuxBem6zAStE
-	C2duED++f9sTtXDi5RcfVhz/dydQoUk6hTRuFnNUwIvvOEaqgeuxfOLiG1IcvI5IN19Ddp
-	eTpsISxoKWRqRrmuU4YCQHYleh6Z0RM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790776441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/1IBlTX6vlcUFCjGWOjia0E+4yysJS/6lorCAPFPo2k=;
-	b=P936QFcu0z8RG2dASK2K1h3d7//Tq0wpKPHKld1bjAzQAZLP7v0LTYDuzqVmweo99MLUAL
-	rPDE3NILpnxJ+GAw==
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 45DCE21D0F;
+	Wed, 30 Sep 2026 13:54:09 +0000 (UTC)
 Authentication-Results: smtp-out1.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790776437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/1IBlTX6vlcUFCjGWOjia0E+4yysJS/6lorCAPFPo2k=;
-	b=gM3IYV04c03WM7/KGb0tyF1pfVk1tn84pCcc2mA/mqFYqKxd777ODk16gGzzw4f2Hbg3Ll
-	4/pf7CEMbxB/HG8j2FsDpHv10PuPOLkaXzClmKHOuJHAlskz7TZtJnsAO1dXqjCfXyjby5
-	igQhfVatYTIbZbzb6s2oLOpRRBkeAAU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790776437;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/1IBlTX6vlcUFCjGWOjia0E+4yysJS/6lorCAPFPo2k=;
-	b=LLHlj2rwNW2vWZZWdFhrfd0aqpDv2Ka96milIukaY7nmcybc90aDipBEKI9am2til22yHn
-	C2ZKOgyP4QsQjNBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A512313ABC;
-	Wed, 30 Sep 2026 13:53:51 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 270DC13AC2;
+	Wed, 30 Sep 2026 13:54:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fJXpHGIUvWqUTwAAD6G6ig:T2
-	(envelope-from <fmancera@suse.de>); Wed, 30 Sep 2026 13:53:51 +0000
+	id fJXpHGIUvWqUTwAAD6G6ig:T5
+	(envelope-from <fmancera@suse.de>); Wed, 30 Sep 2026 13:54:08 +0000
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org,
@@ -81,116 +40,18 @@ Cc: horms@kernel.org,
 	edumazet@kernel.org,
 	davem@davemloft.net,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Chuck Lever <cel@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Zhu Yanjun <zyjzyj2000@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Varun Prakash <varun@chelsio.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Marek Lindner <marek.lindner@mailbox.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Allison Henderson <achender@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Julian Braha <julianbraha@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Neal Cardwell <ncardwell@google.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alyssa Ross <hi@alyssa.is>,
-	linux-rdma@vger.kernel.org,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Willem de Bruijn <willemb@google.com>,
 	linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-net-drivers@amd.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-nvme@lists.infradead.org,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	bridge@lists.linux.dev,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	mptcp@lists.linux.dev,
-	lvs-devel@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-sctp@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH 01/16 net-next v3] ipv4: introduce CONFIG_IPV4 to decouple the IPv4 stack
-Date: Wed, 30 Sep 2026 15:52:44 +0200
-Message-ID: <20260930135334.4739-2-fmancera@suse.de>
+	bpf@vger.kernel.org
+Subject: [PATCH 04/16 net-next v3] tcp: move protocol agnostic TCP functions out of tcp_ipv4.c
+Date: Wed, 30 Sep 2026 15:52:47 +0200
+Message-ID: <20260930135334.4739-5-fmancera@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260930135334.4739-1-fmancera@suse.de>
 References: <20260930135334.4739-1-fmancera@suse.de>
@@ -201,1215 +62,2995 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.30 / 50.00];
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.00 / 50.00];
 	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	FORGED_RECIPIENTS(2.00)[m:horms@kernel.org,m:kuba@kernel.org,m:pabeni@redhat.com,m:edumazet@kernel.org,m:davem@davemloft.net,m:fmancera@suse.de,m:cel@kernel.org,m:leon@kernel.org,m:zyjzyj2000@gmail.com,m:andrew+netdev@lunn.ch,m:edumazet@google.com,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:enachman@marvell.com,m:saeedm@nvidia.com,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:idosch@nvidia.com,m:petrm@nvidia.com,m:jiri@resnulli.us,m:ecree.xilinx@gmail.com,m:maxime.chevallier@bootlin.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:arend.vanspriel@broadcom.com,m:miriam.rachel.korenblit@intel.com,m:kbusch@kernel.org,m:axboe@kernel.dk,m:hch@lst.de,m:sagi@grimberg.me,m:kch@nvidia.com,m:varun@chelsio.com,m:James.Bottomley@HansenPartnership.com,m:mkp@kernel.org,m:brauner@kernel.org,m:jack@suse.cz,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:trondmy@kernel.org,m:anna@kernel.org,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle
- .com,m:tom@talpey.com,m:marek.lindner@mailbox.org,m:sw@simonwunderlich.de,m:antonio@mandelbit.com,m:sven@narfation.org,m:razor@blackwall.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:matttbe@kernel.org,m:martineau@kernel.org,m:geliang@kernel.org,m:ja@ssi.bg,m:achender@kernel.org,m:jhs@mojatatu.com,m:marcelo.leitner@gmail.com,m:lucien.xin@gmail.com,m:alibuda@linux.alibaba.com,m:dust.li@linux.alibaba.com,m:sidraya@linux.ibm.com,m:mjambigi@linux.ibm.com,m:tonylu@linux.alibaba.com,m:guwen@linux.alibaba.com,m:jmaloy@redhat.com,m:tung.quang.nguyen@est.tech,m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:casey@schaufler-ca.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:krzk@kernel.org,m:qingfang.deng@linux.dev,m:julianbraha@gmail.com,m:gregkh@linuxfoundation.org,m:enelsonmoore@gmail.com,m:ebiggers@kernel.org,m:ardb@kernel.org,m:ncardwell@google.com,m:kuniyu@google.com,m:hi@alyssa.is,m:intel-wired-lan@lists.osuosl.org,m:linux-net-drivers@amd.com
- ,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-arm-kernel@lists.infradead.org,m:brcm80211@lists.linux.dev,m:brcm80211-dev-list.pdl@broadcom.com,m:linux-nvme@lists.infradead.org,s:linux-nfs@vger.kernel.org,s:linux-s390@vger.kernel.org,s:linux-sctp@vger.kernel.org,s:linux-security-module@vger.kernel.org,s:lvs-devel@vger.kernel.org,s:netfilter-devel@vger.kernel.org,s:target-devel@vger.kernel.org];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.994];
-	MIME_GOOD(-0.10)[text/plain];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,davemloft.net,suse.de,ziepe.ca,gmail.com,lunn.ch,google.com,intel.com,marvell.com,nvidia.com,resnulli.us,bootlin.com,foss.st.com,broadcom.com,kernel.dk,lst.de,grimberg.me,chelsio.com,HansenPartnership.com,zeniv.linux.org.uk,suse.cz,auristor.com,brown.name,oracle.com,talpey.com,mailbox.org,simonwunderlich.de,mandelbit.com,narfation.org,blackwall.org,netfilter.org,strlen.de,nwl.cc,ssi.bg,mojatatu.com,linux.alibaba.com,linux.ibm.com,est.tech,secunet.com,gondor.apana.org.au,schaufler-ca.com,paul-moore.com,namei.org,hallyn.com,linux.dev,linuxfoundation.org,alyssa.is,vger.kernel.org,lists.osuosl.org,amd.com,st-md-mailman.stormreply.com,lists.infradead.org,lists.linux.dev,lists.open-mesh.org,oss.oracle.com,lists.sourceforge.net];
-	RCPT_COUNT_GT_50(0.00)[114];
-	TAGGED_RCPT(0.00)[netdev];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
+	TAGGED_RCPT(0.00)[]
+X-Spam-Score: -4.00
 X-Spam-Level: 
+X-Rspamd-Queue-Id: 45DCE21D0F
+X-Spam-Flag: NO
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-Historically, the IPv4 protocol has been linked to the core INET
-subsystem. Because shared infrastructure like the TCP/UDP engine,
-routing or INET hashtables live inside net/ipv4/, it has been impossible
-to compile a kernel with only IPv6 support.
+As the tcp_ipv4.c file isn't compile anymore with CONFIG_IPV4=n, the
+generic TCP function must be moved out of tcp_ipv4.c file and they
+should be placed in tcp.c file.
 
-This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
-'def_bool y' for now. This does not allow to completely disable the
-IPv4 stack yet but it lays the necessary build-system work for that
-goal.
+As part of this migration, rename tcp_v4_destroy_sock() to
+tcp_destroy_sock() to reflect its shared usage by IPv4 and IPv6.
 
-In addition, multiple subsystems Kconfig symbols across networking
-features like tunnels, drivers and filesystems have been adjusted to
-depend on IPv4. Keep on mind that follow-up work is required to convert
-the Kconfig symbol to bool and remove the dependency on IPv4 where it
-makes sense.
+In addition, guard IPv4 code around IPv6 TCP implementation. This
+ensures that IPv4-mapped IPv6 sockects are rejected with a proper error
+code when IPv4 stack is disabled.
 
-Acked-by: Chuck Lever <cel@kernel.org>
+Please note that this commit also addresses how /proc/net/sockstat
+output is handled for all protocols. The implementation now force the
+inuse attrtibute to be zero when CONFIG_IPV4=n but the shared stats are
+represented correctly.
+
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
-Sashiko: Marking the Kconfig symbols to depend on IPV4 is intentional,
-plenty of features won't work without IPv4 for now. Follow-up patches
-are required to support IPv4=n for those symbols.
----
- drivers/infiniband/Kconfig                    |  2 +-
- drivers/infiniband/sw/rxe/Kconfig             |  2 +-
- drivers/net/Kconfig                           | 23 ++++++++++---------
- drivers/net/ethernet/chelsio/Kconfig          |  2 +-
- drivers/net/ethernet/intel/Kconfig            |  2 ++
- drivers/net/ethernet/marvell/prestera/Kconfig |  1 +
- .../net/ethernet/mellanox/mlx5/core/Kconfig   |  3 ++-
- drivers/net/ethernet/mellanox/mlxsw/Kconfig   |  1 +
- drivers/net/ethernet/qlogic/Kconfig           |  2 ++
- drivers/net/ethernet/rocker/Kconfig           |  1 +
- drivers/net/ethernet/sfc/Kconfig              |  1 +
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  1 +
- drivers/net/ethernet/via/Kconfig              |  1 +
- drivers/net/ppp/Kconfig                       |  1 +
- .../broadcom/brcm80211/brcmfmac/Kconfig       |  1 +
- drivers/net/wireless/intel/iwlwifi/Kconfig    |  1 +
- drivers/nvme/host/Kconfig                     |  2 +-
- drivers/nvme/target/Kconfig                   |  2 +-
- drivers/scsi/cxgbi/cxgb3i/Kconfig             |  2 +-
- drivers/scsi/cxgbi/cxgb4i/Kconfig             |  2 +-
- drivers/target/iscsi/Kconfig                  |  2 +-
- drivers/target/iscsi/cxgbit/Kconfig           |  2 +-
- fs/Kconfig                                    |  1 +
- fs/afs/Kconfig                                |  2 +-
- fs/nfs/Kconfig                                |  2 +-
- fs/nfsd/Kconfig                               |  2 +-
- net/Kconfig                                   | 12 ++++++----
- net/batman-adv/Kconfig                        |  6 ++---
- net/bridge/Kconfig                            |  2 +-
- net/bridge/netfilter/Kconfig                  |  3 ++-
- net/ipv4/Kconfig                              | 21 ++++++++++++++---
- net/ipv4/Makefile                             | 21 ++++++++---------
- net/ipv4/netfilter/Kconfig                    |  2 +-
- net/ipv6/Kconfig                              | 17 ++++++++++----
- net/ipv6/netfilter/Kconfig                    |  2 +-
- net/l2tp/Kconfig                              |  2 +-
- net/mptcp/Kconfig                             |  2 +-
- net/netfilter/Kconfig                         |  2 +-
- net/netfilter/ipset/Kconfig                   |  2 +-
- net/netfilter/ipvs/Kconfig                    |  2 +-
- net/rds/Kconfig                               |  1 +
- net/rxrpc/Kconfig                             |  2 +-
- net/sched/Kconfig                             |  2 +-
- net/sctp/Kconfig                              |  2 +-
- net/smc/Kconfig                               |  2 +-
- net/sunrpc/Kconfig                            |  2 +-
- net/tipc/Kconfig                              |  1 +
- net/xfrm/Kconfig                              | 10 ++++++--
- security/smack/Kconfig                        |  1 +
- 49 files changed, 118 insertions(+), 65 deletions(-)
+ include/net/tcp.h               |   16 +-
+ net/ipv4/inet_connection_sock.c |    2 +-
+ net/ipv4/proc.c                 |   45 +-
+ net/ipv4/tcp.c                  | 1300 +++++++++++++++++++++++++++++-
+ net/ipv4/tcp_bpf.c              |    3 +-
+ net/ipv4/tcp_ipv4.c             | 1307 +------------------------------
+ net/ipv6/tcp_ipv6.c             |   23 +-
+ 7 files changed, 1363 insertions(+), 1333 deletions(-)
 
-diff --git a/drivers/infiniband/Kconfig b/drivers/infiniband/Kconfig
-index 086195758a8a..e9302002b6ea 100644
---- a/drivers/infiniband/Kconfig
-+++ b/drivers/infiniband/Kconfig
-@@ -3,7 +3,7 @@ menuconfig INFINIBAND
- 	tristate "InfiniBand support"
- 	depends on HAS_IOMEM && HAS_DMA
- 	depends on NET
--	depends on INET
-+	depends on INET && IPV4
- 	depends on !ALPHA
- 	select DMA_SHARED_BUFFER
- 	select IRQ_POLL
-diff --git a/drivers/infiniband/sw/rxe/Kconfig b/drivers/infiniband/sw/rxe/Kconfig
-index 1ed5b63f8afc..e4272f863944 100644
---- a/drivers/infiniband/sw/rxe/Kconfig
-+++ b/drivers/infiniband/sw/rxe/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config RDMA_RXE
- 	tristate "Software RDMA over Ethernet (RoCE) driver"
--	depends on INET && PCI && INFINIBAND && 64BIT
-+	depends on INET && IPV4 && PCI && INFINIBAND && 64BIT
- 	depends on INFINIBAND_VIRT_DMA
- 	select NET_UDP_TUNNEL
- 	select CRC32
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index ff79c466712d..5f60c3ff182b 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -40,7 +40,7 @@ if NET_CORE
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 96a1a23e47fa..04d487a19b17 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2437,7 +2437,7 @@ struct tcp_iter_state {
+ extern struct request_sock_ops tcp_request_sock_ops;
+ extern struct request_sock_ops tcp6_request_sock_ops;
  
- config BONDING
- 	tristate "Bonding driver support"
--	depends on INET
-+	depends on INET && IPV4
- 	depends on TLS || TLS_DEVICE=n
- 	help
- 	  Say 'Y' or 'M' if you wish to be able to 'bond' multiple Ethernet
-@@ -73,7 +73,7 @@ config DUMMY
+-void tcp_v4_destroy_sock(struct sock *sk);
++void tcp_destroy_sock(struct sock *sk);
  
- config WIREGUARD
- 	tristate "WireGuard secure network tunnel"
--	depends on NET && INET
-+	depends on NET && INET && IPV4
- 	select NET_UDP_TUNNEL
- 	select DST_CACHE
- 	select CRYPTO_LIB_CURVE25519
-@@ -102,7 +102,7 @@ config WIREGUARD_DEBUG
- 
- config OVPN
- 	tristate "OpenVPN data channel offload"
--	depends on NET && INET
-+	depends on NET && INET && IPV4
- 	select DST_CACHE
- 	select NET_UDP_TUNNEL
- 	select CRYPTO
-@@ -198,7 +198,7 @@ config IPVLAN_L3S
- 
- config IPVLAN
- 	tristate "IP-VLAN support"
--	depends on INET
-+	depends on INET && IPV4
- 	help
- 	  This allows one to create virtual devices off of a main interface
- 	  and packets will be delivered based on the dest L3 (IPv6/IPv4 addr)
-@@ -229,7 +229,7 @@ config IPVTAP
- 
- config VXLAN
- 	tristate "Virtual eXtensible Local Area Network (VXLAN)"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	select GRO_CELLS
- 	help
-@@ -244,7 +244,7 @@ config VXLAN
- 
- config GENEVE
- 	tristate "Generic Network Virtualization Encapsulation"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	select GRO_CELLS
- 	help
-@@ -259,7 +259,7 @@ config GENEVE
- 
- config BAREUDP
- 	tristate "Bare UDP Encapsulation"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	select GRO_CELLS
- 	help
-@@ -271,7 +271,7 @@ config BAREUDP
- 
- config GTP
- 	tristate "GPRS Tunneling Protocol datapath (GTP-U)"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	help
- 	  This allows one to create gtp virtual interfaces that provide
-@@ -288,7 +288,7 @@ config GTP
- 
- config PFCP
- 	tristate "Packet Forwarding Control Protocol (PFCP)"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	help
- 	  This allows one to create PFCP virtual interfaces that allows to
-@@ -301,7 +301,7 @@ config PFCP
- 
- config AMT
- 	tristate "Automatic Multicast Tunneling (AMT)"
--	depends on INET && IP_MULTICAST
-+	depends on INET && IP_MULTICAST && IPV4
- 	select NET_UDP_TUNNEL
- 	help
- 	  This allows one to create AMT(Automatic Multicast Tunneling)
-@@ -471,6 +471,7 @@ config NETKIT
- 
- config NET_VRF
- 	tristate "Virtual Routing and Forwarding (Lite)"
-+	depends on IPV4
- 	depends on IP_MULTIPLE_TABLES
- 	depends on NET_L3_MASTER_DEV
- 	depends on IPV6_MULTIPLE_TABLES || IPV6=n
-@@ -604,7 +605,7 @@ source "drivers/net/hyperv/Kconfig"
- config NETDEVSIM
- 	tristate "Simulated networking device"
- 	depends on DEBUG_FS
--	depends on INET
-+	depends on INET && IPV4
- 	depends on PSAMPLE || PSAMPLE=n
- 	depends on PTP_1588_CLOCK_MOCK || PTP_1588_CLOCK_MOCK=n
- 	select NET_DEVLINK
-diff --git a/drivers/net/ethernet/chelsio/Kconfig b/drivers/net/ethernet/chelsio/Kconfig
-index 96d7779cd2f0..c738820688e0 100644
---- a/drivers/net/ethernet/chelsio/Kconfig
-+++ b/drivers/net/ethernet/chelsio/Kconfig
-@@ -48,7 +48,7 @@ config CHELSIO_T1_1G
- 
- config CHELSIO_T3
- 	tristate "Chelsio Communications T3 10Gb Ethernet support"
--	depends on PCI && INET
-+	depends on PCI && INET && IPV4
- 	select FW_LOADER
- 	select MDIO
- 	help
-diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
-index 780f113986ea..ce1c68e9cdf6 100644
---- a/drivers/net/ethernet/intel/Kconfig
-+++ b/drivers/net/ethernet/intel/Kconfig
-@@ -195,6 +195,7 @@ config IXGBE_IPSEC
- 	bool "IPSec XFRM cryptography-offload acceleration"
- 	depends on IXGBE
- 	depends on XFRM_OFFLOAD
-+	depends on IPV4 || !INET
- 	default y
- 	select XFRM_ALGO
- 	help
-@@ -221,6 +222,7 @@ config IXGBEVF_IPSEC
- 	bool "IPSec XFRM cryptography-offload acceleration"
- 	depends on IXGBEVF
- 	depends on XFRM_OFFLOAD
-+	depends on IPV4 || !INET
- 	default y
- 	select XFRM_ALGO
- 	help
-diff --git a/drivers/net/ethernet/marvell/prestera/Kconfig b/drivers/net/ethernet/marvell/prestera/Kconfig
-index f2f7663c3d10..257afbb3c434 100644
---- a/drivers/net/ethernet/marvell/prestera/Kconfig
-+++ b/drivers/net/ethernet/marvell/prestera/Kconfig
-@@ -7,6 +7,7 @@ config PRESTERA
- 	tristate "Marvell Prestera Switch ASICs support"
- 	depends on NET_SWITCHDEV && VLAN_8021Q
- 	depends on BRIDGE || BRIDGE=n
-+	depends on IPV4 || !INET
- 	select NET_DEVLINK
- 	select PHYLINK
- 	help
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-index 925ee25d05b4..99d998aa7e9b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-@@ -12,6 +12,7 @@ config MLX5_CORE
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	depends on PCI_HYPERV_INTERFACE || !PCI_HYPERV_INTERFACE
- 	depends on HWMON || !HWMON
-+	depends on IPV4 || !INET
- 	help
- 	  Core driver for low level functionality of the ConnectX-4 and
- 	  Connect-IB cards by Mellanox Technologies.
-@@ -28,7 +29,7 @@ config MLX5_FPGA
- 
- config MLX5_CORE_EN
- 	bool "Mellanox 5th generation network adapters (ConnectX series) Ethernet support"
--	depends on NETDEVICES && ETHERNET && INET && PCI && MLX5_CORE
-+	depends on NETDEVICES && ETHERNET && INET && PCI && MLX5_CORE && IPV4
- 	select PAGE_POOL
- 	select PAGE_POOL_STATS
- 	select DIMLIB
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/Kconfig b/drivers/net/ethernet/mellanox/mlxsw/Kconfig
-index 2229a2694aa5..fb3028600724 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/Kconfig
-+++ b/drivers/net/ethernet/mellanox/mlxsw/Kconfig
-@@ -53,6 +53,7 @@ config MLXSW_I2C
- 
- config MLXSW_SPECTRUM
- 	tristate "Mellanox Technologies Spectrum family support"
-+	depends on IPV4 || !INET
- 	depends on MLXSW_CORE && MLXSW_PCI && NET_SWITCHDEV && VLAN_8021Q
- 	depends on PSAMPLE || PSAMPLE=n
- 	depends on BRIDGE || BRIDGE=n
-diff --git a/drivers/net/ethernet/qlogic/Kconfig b/drivers/net/ethernet/qlogic/Kconfig
-index 1203353238e5..aed78311ecaf 100644
---- a/drivers/net/ethernet/qlogic/Kconfig
-+++ b/drivers/net/ethernet/qlogic/Kconfig
-@@ -29,6 +29,7 @@ config QLA3XXX
- config QLCNIC
- 	tristate "QLOGIC QLCNIC 1/10Gb Converged Ethernet NIC Support"
- 	depends on PCI
-+	depends on IPV4 || !INET
- 	select FW_LOADER
- 	help
- 	  This driver supports QLogic QLE8240 and QLE8242 Converged Ethernet
-@@ -68,6 +69,7 @@ config QLCNIC_HWMON
- 
- config NETXEN_NIC
- 	tristate "NetXen Multi port (1/10) Gigabit Ethernet NIC"
-+	depends on IPV4 || !INET
- 	depends on PCI
- 	select FW_LOADER
- 	help
-diff --git a/drivers/net/ethernet/rocker/Kconfig b/drivers/net/ethernet/rocker/Kconfig
-index 2318811ff75a..2f994bd6f9bd 100644
---- a/drivers/net/ethernet/rocker/Kconfig
-+++ b/drivers/net/ethernet/rocker/Kconfig
-@@ -19,6 +19,7 @@ if NET_VENDOR_ROCKER
- config ROCKER
- 	tristate "Rocker switch driver (EXPERIMENTAL)"
- 	depends on PCI && NET_SWITCHDEV && BRIDGE
-+	depends on IPV4 || !INET
- 	select CRC32
- 	help
- 	  This driver supports Rocker switch device.
-diff --git a/drivers/net/ethernet/sfc/Kconfig b/drivers/net/ethernet/sfc/Kconfig
-index e2898ec2e6e9..2bf5c2a185d2 100644
---- a/drivers/net/ethernet/sfc/Kconfig
-+++ b/drivers/net/ethernet/sfc/Kconfig
-@@ -18,6 +18,7 @@ if NET_VENDOR_SOLARFLARE
- 
- config SFC
- 	tristate "Solarflare SFC9100/EF100-family support"
-+	depends on IPV4 || !INET
- 	depends on PCI
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	select MDIO
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index ab3c4cf96423..0b487786dad4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config STMMAC_ETH
- 	tristate "STMicroelectronics Multi-Gigabit Ethernet driver"
-+	depends on IPV4 || !INET
- 	depends on HAS_IOMEM && HAS_DMA
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	depends on ETHTOOL_NETLINK
-diff --git a/drivers/net/ethernet/via/Kconfig b/drivers/net/ethernet/via/Kconfig
-index 00773f5e4d7e..dbb24d35dfbd 100644
---- a/drivers/net/ethernet/via/Kconfig
-+++ b/drivers/net/ethernet/via/Kconfig
-@@ -45,6 +45,7 @@ config VIA_RHINE_MMIO
- 
- config VIA_VELOCITY
- 	tristate "VIA Velocity support"
-+	depends on IPV4 || !INET
- 	depends on (PCI || (OF_ADDRESS && OF_IRQ))
- 	depends on HAS_DMA
- 	select CRC32
-diff --git a/drivers/net/ppp/Kconfig b/drivers/net/ppp/Kconfig
-index 4047f13b83dc..c5200fae5e4a 100644
---- a/drivers/net/ppp/Kconfig
-+++ b/drivers/net/ppp/Kconfig
-@@ -160,6 +160,7 @@ config PPPOE_HASH_BITS
- 
- config PPTP
- 	tristate "PPP over IPv4 (PPTP)"
-+	depends on IPV4 || !INET
- 	depends on NET_IPGRE_DEMUX
- 	select PPPOX
- 	help
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
-index 32794c1eca23..01a5b3310e1e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig
-@@ -1,6 +1,7 @@
- config BRCMFMAC
- 	tristate "Broadcom FullMAC WLAN driver"
- 	depends on CFG80211
-+	depends on IPV4 || !INET
- 	select BRCMUTIL
- 	help
- 	  This module adds support for wireless adapters based on Broadcom
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index 153a8368b412..3719fa0727c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -2,6 +2,7 @@
- config IWLWIFI
- 	tristate "Intel Wireless WiFi Next Gen AGN - Wireless-N/Advanced-N/Ultimate-N (iwlwifi) "
- 	depends on PCI && HAS_IOMEM && CFG80211
-+	depends on IPV4 || !INET
- 	depends on IWLMEI || !IWLMEI
- 	select FW_LOADER
- 	help
-diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
-index 31974c7dd20c..6e119cf475de 100644
---- a/drivers/nvme/host/Kconfig
-+++ b/drivers/nvme/host/Kconfig
-@@ -82,7 +82,7 @@ config NVME_FC
- 
- config NVME_TCP
- 	tristate "NVM Express over Fabrics TCP host driver"
--	depends on INET
-+	depends on INET && IPV4
- 	depends on BLOCK
- 	select CRC32
- 	select NET_CRC32C
-diff --git a/drivers/nvme/target/Kconfig b/drivers/nvme/target/Kconfig
-index 69bde270115e..f731a043f6a9 100644
---- a/drivers/nvme/target/Kconfig
-+++ b/drivers/nvme/target/Kconfig
-@@ -86,7 +86,7 @@ config NVME_TARGET_FCLOOP
- 
- config NVME_TARGET_TCP
- 	tristate "NVMe over Fabrics TCP target support"
--	depends on INET
-+	depends on INET && IPV4
- 	depends on NVME_TARGET
- 	help
- 	  This enables the NVMe TCP target support, which allows exporting NVMe
-diff --git a/drivers/scsi/cxgbi/cxgb3i/Kconfig b/drivers/scsi/cxgbi/cxgb3i/Kconfig
-index 143e881ec77e..abb4a462cb37 100644
---- a/drivers/scsi/cxgbi/cxgb3i/Kconfig
-+++ b/drivers/scsi/cxgbi/cxgb3i/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config SCSI_CXGB3_ISCSI
- 	tristate "Chelsio T3 iSCSI support"
--	depends on PCI && INET
-+	depends on PCI && INET && IPV4
- 	select NETDEVICES
- 	select ETHERNET
- 	select NET_VENDOR_CHELSIO
-diff --git a/drivers/scsi/cxgbi/cxgb4i/Kconfig b/drivers/scsi/cxgbi/cxgb4i/Kconfig
-index dd1c8ff36b00..04b3e7b053dc 100644
---- a/drivers/scsi/cxgbi/cxgb4i/Kconfig
-+++ b/drivers/scsi/cxgbi/cxgb4i/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config SCSI_CXGB4_ISCSI
- 	tristate "Chelsio T4 iSCSI support"
--	depends on PCI && INET
-+	depends on PCI && INET && IPV4
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	depends on THERMAL || !THERMAL
- 	depends on ETHERNET
-diff --git a/drivers/target/iscsi/Kconfig b/drivers/target/iscsi/Kconfig
-index 70d76f3dd693..362edff80c15 100644
---- a/drivers/target/iscsi/Kconfig
-+++ b/drivers/target/iscsi/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config ISCSI_TARGET
- 	tristate "SCSI Target Mode Stack"
--	depends on INET
-+	depends on INET && IPV4
- 	select CRC32
- 	select CRYPTO
- 	select CRYPTO_HASH
-diff --git a/drivers/target/iscsi/cxgbit/Kconfig b/drivers/target/iscsi/cxgbit/Kconfig
-index bdeefa75f29e..7a2e585d76d7 100644
---- a/drivers/target/iscsi/cxgbit/Kconfig
-+++ b/drivers/target/iscsi/cxgbit/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config ISCSI_TARGET_CXGB4
- 	tristate "Chelsio iSCSI target offload driver"
--	depends on ISCSI_TARGET && CHELSIO_T4 && INET
-+	depends on ISCSI_TARGET && CHELSIO_T4 && INET && IPV4
- 	select CHELSIO_LIB
- 	help
- 	To compile this driver as module, choose M here: the module
-diff --git a/fs/Kconfig b/fs/Kconfig
-index e05917adcd60..2f492fa3a3fb 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -358,6 +358,7 @@ config GRACE_PERIOD
- 
- config LOCKD
- 	tristate
-+	depends on IPV4 || !INET
- 	depends on FILE_LOCKING
- 	select CRC32
- 	select GRACE_PERIOD
-diff --git a/fs/afs/Kconfig b/fs/afs/Kconfig
-index 682bd8ec2c10..e7ed46426f81 100644
---- a/fs/afs/Kconfig
-+++ b/fs/afs/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config AFS_FS
- 	tristate "Andrew File System support (AFS)"
--	depends on INET
-+	depends on INET && IPV4
- 	select AF_RXRPC
- 	select DNS_RESOLVER
- 	select NETFS_SUPPORT
-diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-index 6bb30543eff0..52efd3664d21 100644
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config NFS_FS
- 	tristate "NFS client support"
--	depends on INET && FILE_LOCKING && MULTIUSER
-+	depends on INET && FILE_LOCKING && MULTIUSER && IPV4
- 	select CRC32
- 	select LOCKD
- 	select SUNRPC
-diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
-index ffb76761d6a8..153a9918214d 100644
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config NFSD
- 	tristate "NFS server support"
--	depends on INET
-+	depends on INET && IPV4
- 	depends on FILE_LOCKING
- 	depends on FSNOTIFY
- 	select CRC32
-diff --git a/net/Kconfig b/net/Kconfig
-index 76ab44aa439a..ca86f20540dd 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -135,9 +135,12 @@ config INET
- if INET
- source "net/ipv4/Kconfig"
- source "net/ipv6/Kconfig"
--source "net/netlabel/Kconfig"
- source "net/mptcp/Kconfig"
- 
-+if IPV4
-+source "net/netlabel/Kconfig"
-+endif # if IPV4
+ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 				netdev_features_t features);
+@@ -2855,6 +2855,20 @@ struct sk_psock;
+ #ifdef CONFIG_BPF_SYSCALL
+ int tcp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
+ void tcp_bpf_clone(const struct sock *sk, struct sock *newsk);
 +
- endif # if INET
- 
- config NETWORK_SECMARK
-@@ -232,6 +235,7 @@ config BRIDGE_NETFILTER
- 	depends on BRIDGE
- 	depends on NETFILTER && INET
- 	depends on NETFILTER_ADVANCED
-+	depends on IPV4
- 	select NETFILTER_FAMILY_BRIDGE
- 	select SKB_EXTENSIONS
- 	help
-@@ -384,7 +388,7 @@ menu "Network testing"
- 
- config NET_PKTGEN
- 	tristate "Packet Generator (USE WITH CAUTION)"
--	depends on INET && PROC_FS
-+	depends on INET && IPV4 && PROC_FS
- 	help
- 	  This module will inject preconfigured packets, at a configurable
- 	  rate, out of a given interface.  It is used for network interface
-@@ -451,7 +455,7 @@ config LWTUNNEL
- 
- config LWTUNNEL_BPF
- 	bool "Execute BPF program as route nexthop action"
--	depends on LWTUNNEL && INET
-+	depends on LWTUNNEL && INET && IPV4
- 	default y if LWTUNNEL=y
- 	help
- 	  Allows to run BPF programs as a nexthop action following a route
-@@ -473,7 +477,7 @@ config NET_IEEE8021Q_HELPERS
- 
- config NET_SELFTESTS
- 	def_tristate PHYLIB
--	depends on PHYLIB && INET
-+	depends on PHYLIB && INET && IPV4
- 
- config NET_SOCK_MSG
- 	bool
-diff --git a/net/batman-adv/Kconfig b/net/batman-adv/Kconfig
-index 58c408b7a7d9..5c66122c137c 100644
---- a/net/batman-adv/Kconfig
-+++ b/net/batman-adv/Kconfig
-@@ -33,7 +33,7 @@ config BATMAN_ADV_BATMAN_V
- 
- config BATMAN_ADV_BLA
- 	bool "Bridge Loop Avoidance"
--	depends on BATMAN_ADV && INET
-+	depends on BATMAN_ADV && INET && IPV4
- 	select CRC16
- 	select NET_CRC32C
- 	default y
-@@ -46,7 +46,7 @@ config BATMAN_ADV_BLA
- 
- config BATMAN_ADV_DAT
- 	bool "Distributed ARP Table"
--	depends on BATMAN_ADV && INET
-+	depends on BATMAN_ADV && INET && IPV4
- 	default y
- 	help
- 	  This option enables DAT (Distributed ARP Table), a DHT based
-@@ -56,7 +56,7 @@ config BATMAN_ADV_DAT
- 
- config BATMAN_ADV_MCAST
- 	bool "Multicast optimisation"
--	depends on BATMAN_ADV && INET && !(BRIDGE=m && BATMAN_ADV=y)
-+	depends on BATMAN_ADV && INET && !(BRIDGE=m && BATMAN_ADV=y) && IPV4
- 	default y
- 	help
- 	  This option enables the multicast optimisation which aims to
-diff --git a/net/bridge/Kconfig b/net/bridge/Kconfig
-index 318715c8fc9b..c7737d3ebac8 100644
---- a/net/bridge/Kconfig
-+++ b/net/bridge/Kconfig
-@@ -36,7 +36,7 @@ config BRIDGE
- config BRIDGE_IGMP_SNOOPING
- 	bool "IGMP/MLD snooping"
- 	depends on BRIDGE
--	depends on INET
-+	depends on INET && IPV4
- 	default y
- 	help
- 	  If you say Y here, then the Ethernet bridge will be able selectively
-diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
-index 4fd5a6ea26b4..31e388ce503f 100644
---- a/net/bridge/netfilter/Kconfig
-+++ b/net/bridge/netfilter/Kconfig
-@@ -28,6 +28,7 @@ endif # NF_TABLES_BRIDGE
- config NF_CONNTRACK_BRIDGE
- 	tristate "IPv4/IPV6 bridge connection tracking support"
- 	depends on NF_CONNTRACK
-+	depends on IPV4 || !INET
- 	default n
- 	help
- 	  Connection tracking keeps a record of what packets have passed
-@@ -188,7 +189,7 @@ config BRIDGE_EBT_VLAN
- #
- config BRIDGE_EBT_ARPREPLY
- 	tristate "ebt: arp reply target support"
--	depends on BRIDGE_NF_EBTABLES && INET
-+	depends on BRIDGE_NF_EBTABLES && INET && IPV4
- 	help
- 	  This option adds the arp reply target, which allows
- 	  automatically sending arp replies to arp requests.
-diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
-index 301b47660305..51bf05d9770c 100644
---- a/net/ipv4/Kconfig
-+++ b/net/ipv4/Kconfig
-@@ -2,6 +2,9 @@
- #
- # IP configuration
- #
-+config IPV4
-+	def_bool y
++union bpf_tcp_iter_batch_item {
++	struct sock *sk;
++	__u64 cookie;
++};
 +
- config IP_MULTICAST
- 	bool "IP: multicasting"
- 	help
-@@ -62,7 +65,7 @@ config IP_FIB_TRIE_STATS
- 
- config IP_MULTIPLE_TABLES
- 	bool "IP: policy routing"
--	depends on IP_ADVANCED_ROUTER
-+	depends on IPV4 && IP_ADVANCED_ROUTER
- 	select FIB_RULES
- 	help
- 	  Normally, a router decides what to do with a received packet based
-@@ -105,6 +108,7 @@ config IP_ROUTE_CLASSID
- 
- config IP_PNP
- 	bool "IP: kernel level autoconfiguration"
-+	depends on IPV4
- 	help
- 	  This enables automatic configuration of IP addresses of devices and
- 	  of the routing table during kernel boot, based on either information
-@@ -161,6 +165,7 @@ config IP_PNP_RARP
- 
- config NET_IPIP
- 	tristate "IP: tunneling"
-+	depends on IPV4
- 	select INET_TUNNEL
- 	select NET_IP_TUNNEL
- 	help
-@@ -185,12 +190,14 @@ config NET_IPGRE_DEMUX
- 
- config NET_IP_TUNNEL
- 	tristate
-+	depends on IPV4
- 	select DST_CACHE
- 	select GRO_CELLS
- 	default n
- 
- config NET_IPGRE
- 	tristate "IP: GRE tunnels over IP"
-+	depends on IPV4
- 	depends on NET_IPGRE_DEMUX
- 	select NET_IP_TUNNEL
- 	help
-@@ -219,7 +226,7 @@ config IP_MROUTE_COMMON
- 
- config IP_MROUTE
- 	bool "IP: multicast routing"
--	depends on IP_MULTICAST
-+	depends on IP_MULTICAST && IPV4
- 	select IP_MROUTE_COMMON
- 	help
- 	  This is used if you want your machine to act as a router for IP
-@@ -267,6 +274,7 @@ config IP_PIMSM_V2
- 
- config SYN_COOKIES
- 	bool "IP: TCP syncookie support"
-+	depends on IPV4
- 	help
- 	  Normal TCP/IP networking is open to an attack known as "SYN
- 	  flooding". This denial-of-service attack prevents legitimate remote
-@@ -303,6 +311,7 @@ config SYN_COOKIES
- 
- config NET_IPVTI
- 	tristate "Virtual (secure) IP: tunneling"
-+	depends on IPV4
- 	select INET_TUNNEL
- 	select NET_IP_TUNNEL
- 	select XFRM
-@@ -315,11 +324,13 @@ config NET_IPVTI
- 
- config NET_UDP_TUNNEL
- 	tristate
-+	depends on IPV4
- 	select NET_IP_TUNNEL
- 	default n
- 
- config NET_FOU
- 	tristate "IP: Foo (IP protocols) over UDP"
-+	depends on IPV4
- 	select NET_UDP_TUNNEL
- 	help
- 	  Foo over UDP allows any IP protocol to be directly encapsulated
-@@ -338,6 +349,7 @@ config NET_FOU_IP_TUNNELS
- 
- config INET_AH
- 	tristate "IP: AH transformation"
-+	depends on IPV4
- 	select XFRM_AH
- 	help
- 	  Support for IPsec AH (Authentication Header).
-@@ -353,6 +365,7 @@ config INET_AH
- 
- config INET_ESP
- 	tristate "IP: ESP transformation"
-+	depends on IPV4
- 	select XFRM_ESP
- 	help
- 	  Support for IPsec ESP (Encapsulating Security Payload).
-@@ -393,6 +406,7 @@ config INET_ESPINTCP
- 
- config INET_IPCOMP
- 	tristate "IP: IPComp transformation"
-+	depends on IPV4
- 	select INET_XFRM_TUNNEL
- 	select XFRM_IPCOMP
- 	help
-@@ -747,7 +761,7 @@ config TCP_AO
- 	select CRYPTO_LIB_SHA1
- 	select CRYPTO_LIB_SHA256
- 	select CRYPTO_LIB_UTILS
--	depends on 64BIT # seq-number extension needs WRITE_ONCE(u64)
-+	depends on IPV4 && 64BIT # seq-number extension needs WRITE_ONCE(u64)
- 	help
- 	  TCP-AO specifies the use of stronger Message Authentication Codes (MACs),
- 	  protects against replays for long-lived TCP connections, and
-@@ -758,6 +772,7 @@ config TCP_AO
- 
- config TCP_MD5SIG
- 	bool "TCP: MD5 Signature Option support (RFC2385)"
-+	depends on IPV4
- 	select CRYPTO_LIB_MD5
- 	select CRYPTO_LIB_UTILS
- 	help
-diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
-index 06e21c26b76f..8b148be79fa4 100644
---- a/net/ipv4/Makefile
-+++ b/net/ipv4/Makefile
-@@ -3,18 +3,17 @@
- # Makefile for the Linux TCP/IP (INET) layer.
- #
- 
--obj-y     := route.o inetpeer.o protocol.o \
--	     ip_input.o ip_fragment.o ip_forward.o ip_options.o \
--	     ip_output.o ip_sockglue.o inet_hashtables.o \
--	     inet_timewait_sock.o inet_connection_sock.o \
--	     tcp.o tcp_input.o tcp_output.o tcp_timer.o tcp_ipv4.o \
-+obj-y     := inetpeer.o protocol.o inet_hashtables.o inet_timewait_sock.o \
-+	     inet_connection_sock.o tcp.o tcp_input.o tcp_output.o tcp_timer.o \
- 	     tcp_minisocks.o tcp_cong.o tcp_metrics.o tcp_fastopen.o \
--	     tcp_recovery.o tcp_ulp.o \
--	     tcp_offload.o tcp_plb.o datagram.o raw.o udp.o \
--	     udp_offload.o arp.o icmp.o devinet.o af_inet.o igmp.o \
--	     fib_frontend.o fib_semantics.o fib_trie.o fib_notifier.o \
--	     inet_fragment.o ping.o ip_tunnel_core.o gre_offload.o \
--	     metrics.o netlink.o nexthop.o udp_tunnel_stub.o
-+	     tcp_recovery.o tcp_ulp.o tcp_offload.o tcp_plb.o raw.o udp.o \
-+	     udp_offload.o af_inet.o inet_fragment.o ping.o ip_tunnel_core.o \
-+	     gre_offload.o metrics.o netlink.o nexthop.o udp_tunnel_stub.o
++struct bpf_tcp_iter_state {
++	struct tcp_iter_state state;
++	unsigned int cur_sk;
++	unsigned int end_sk;
++	unsigned int max_sk;
++	union bpf_tcp_iter_batch_item *batch;
++};
 +
-+obj-$(CONFIG_IPV4) += route.o ip_input.o ip_fragment.o ip_forward.o ip_options.o \
-+		      ip_sockglue.o tcp_ipv4.o datagram.o icmp.o arp.o devinet.o \
-+		      igmp.o fib_notifier.o ip_output.o fib_frontend.o \
-+		      fib_semantics.o fib_trie.o
+ #ifdef CONFIG_BPF_STREAM_PARSER
+ struct strparser;
+ int tcp_bpf_strp_read_sock(struct strparser *strp, read_descriptor_t *desc,
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index c688c454422a..94ade387ad81 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1384,7 +1384,7 @@ static void inet_child_forget(struct sock *sk, struct request_sock *req,
+ 		 * an inbound pkt destined for child is
+ 		 * blocked by sock lock in tcp_v4_rcv().
+ 		 * Also to satisfy an assertion in
+-		 * tcp_v4_destroy_sock().
++		 * tcp_destroy_sock().
+ 		 */
+ 		RCU_INIT_POINTER(tcp_sk(child)->fastopen_rsk, NULL);
+ 	}
+diff --git a/net/ipv4/proc.c b/net/ipv4/proc.c
+index bfc06d1713ec..169e0dd0d213 100644
+--- a/net/ipv4/proc.c
++++ b/net/ipv4/proc.c
+@@ -29,6 +29,7 @@
+  */
+ #include <linux/types.h>
+ #include <net/net_namespace.h>
++#include <net/aligned_data.h>
+ #include <net/icmp.h>
+ #include <net/protocol.h>
+ #include <net/tcp.h>
+@@ -50,25 +51,33 @@
+  */
+ static int sockstat_seq_show(struct seq_file *seq, void *v)
+ {
++	int tcp_inuse = 0, udp_inuse = 0, raw_inuse = 0;
+ 	struct net *net = seq->private;
++	long tcp_mem, udp_mem;
+ 	int orphans, sockets;
  
- obj-$(CONFIG_NET_IP_TUNNEL) += ip_tunnel.o
- obj-$(CONFIG_SYSCTL) += sysctl_net_ipv4.o
-diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
-index 7dc9772fe2d8..ab4fa6a6d453 100644
---- a/net/ipv4/netfilter/Kconfig
-+++ b/net/ipv4/netfilter/Kconfig
-@@ -4,7 +4,7 @@
- #
+ 	orphans = tcp_orphan_count_sum();
+-	sockets = proto_sockets_allocated_sum_positive(&tcp_prot);
++	sockets = percpu_counter_sum_positive(&tcp_sockets_allocated);
++	tcp_mem = max(0L, atomic_long_read(&net_aligned_data.tcp_memory_allocated));
++	udp_mem = max(0L, atomic_long_read(&net_aligned_data.udp_memory_allocated));
++
++	if (IS_ENABLED(CONFIG_IPV4)) {
++		tcp_inuse = sock_prot_inuse_get(net, &tcp_prot);
++		udp_inuse = sock_prot_inuse_get(net, &udp_prot);
++		raw_inuse = sock_prot_inuse_get(net, &raw_prot);
++	}
  
- menu "IP: Netfilter Configuration"
--	depends on INET && NETFILTER
-+	depends on INET && NETFILTER && IPV4
+ 	socket_seq_show(seq);
+ 	seq_printf(seq, "TCP: inuse %d orphan %d tw %d alloc %d mem %ld\n",
+-		   sock_prot_inuse_get(net, &tcp_prot), orphans,
++		   tcp_inuse, orphans,
+ 		   refcount_read(&net->ipv4.tcp_death_row.tw_refcount) - 1,
+-		   sockets, proto_memory_allocated(&tcp_prot));
+-	seq_printf(seq, "UDP: inuse %d mem %ld\n",
+-		   sock_prot_inuse_get(net, &udp_prot),
+-		   proto_memory_allocated(&udp_prot));
+-	seq_printf(seq, "RAW: inuse %d\n",
+-		   sock_prot_inuse_get(net, &raw_prot));
+-	seq_printf(seq,  "FRAG: inuse %u memory %lu\n",
+-		   atomic_read(&net->ipv4.fqdir->rhashtable.nelems),
+-		   frag_mem_limit(net->ipv4.fqdir));
++		   sockets, tcp_mem);
++	seq_printf(seq, "UDP: inuse %d mem %ld\n", udp_inuse, udp_mem);
++	seq_printf(seq, "RAW: inuse %d\n", raw_inuse);
++	if (IS_ENABLED(CONFIG_IPV4))
++		seq_printf(seq,  "FRAG: inuse %u memory %lu\n",
++			   atomic_read(&net->ipv4.fqdir->rhashtable.nelems),
++			   frag_mem_limit(net->ipv4.fqdir));
+ 	return 0;
+ }
  
- config NF_DEFRAG_IPV4
- 	tristate
-diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
-index c3806c6ac96f..f83efc1505cc 100644
---- a/net/ipv6/Kconfig
-+++ b/net/ipv6/Kconfig
-@@ -47,6 +47,7 @@ config IPV6_OPTIMISTIC_DAD
- config INET6_AH
- 	tristate "IPv6: AH transformation"
- 	select XFRM_AH
-+	depends on IPV4
- 	help
- 	  Support for IPsec AH (Authentication Header).
+@@ -406,7 +415,7 @@ static int snmp_seq_show_ipstats(struct seq_file *seq, void *v)
+ 	return 0;
+ }
  
-@@ -61,6 +62,7 @@ config INET6_AH
+-static int snmp_seq_show_tcp_udp(struct seq_file *seq, void *v)
++static int snmp_seq_show_tcp_udp(struct seq_file *seq, void *v, bool first)
+ {
+ 	const int udp_cnt = ARRAY_SIZE(snmp4_udp_list);
+ 	const int tcp_cnt = ARRAY_SIZE(snmp4_tcp_list);
+@@ -416,7 +425,7 @@ static int snmp_seq_show_tcp_udp(struct seq_file *seq, void *v)
  
- config INET6_ESP
- 	tristate "IPv6: ESP transformation"
-+	depends on IPV4
- 	select XFRM_ESP
- 	help
- 	  Support for IPsec ESP (Encapsulating Security Payload).
-@@ -101,6 +103,7 @@ config INET6_ESPINTCP
+ 	memset(buff, 0, tcp_cnt * sizeof(unsigned long));
  
- config INET6_IPCOMP
- 	tristate "IPv6: IPComp transformation"
-+	depends on IPV4
- 	select INET6_XFRM_TUNNEL
- 	select XFRM_IPCOMP
- 	help
-@@ -111,6 +114,7 @@ config INET6_IPCOMP
+-	seq_puts(seq, "\nTcp:");
++	seq_puts(seq, first ? "Tcp:" : "\nTcp:");
+ 	for (i = 0; i < tcp_cnt; i++)
+ 		seq_printf(seq, " %s", snmp4_tcp_list[i].name);
  
- config IPV6_MIP6
- 	tristate "IPv6: Mobility"
-+	depends on IPV4
- 	select XFRM
- 	help
- 	  Support for IPv6 Mobility described in RFC 3775.
-@@ -119,6 +123,7 @@ config IPV6_MIP6
+@@ -450,12 +459,14 @@ static int snmp_seq_show_tcp_udp(struct seq_file *seq, void *v)
  
- config IPV6_ILA
- 	tristate "IPv6: Identifier Locator Addressing (ILA)"
-+	depends on IPV4
- 	depends on NETFILTER
- 	select DST_CACHE
- 	select LWTUNNEL
-@@ -149,6 +154,7 @@ config INET6_TUNNEL
+ static int snmp_seq_show(struct seq_file *seq, void *v)
+ {
+-	snmp_seq_show_ipstats(seq, v);
++	if (IS_ENABLED(CONFIG_IPV4)) {
++		snmp_seq_show_ipstats(seq, v);
  
- config IPV6_VTI
- 	tristate "Virtual (secure) IPv6: tunneling"
-+	depends on IPV4
- 	select IPV6_TUNNEL
- 	select NET_IP_TUNNEL
- 	select XFRM
-@@ -161,6 +167,7 @@ config IPV6_VTI
+-	icmp_put(seq);	/* RFC 2011 compatibility */
+-	icmpmsg_put(seq);
++		icmp_put(seq);	/* RFC 2011 compatibility */
++		icmpmsg_put(seq);
++	}
  
- config IPV6_SIT
- 	tristate "IPv6: IPv6-in-IPv4 tunnel (SIT driver)"
-+	depends on IPV4
- 	select INET_TUNNEL
- 	select NET_IP_TUNNEL
- 	select IPV6_NDISC_NODETYPE
-@@ -198,6 +205,7 @@ config IPV6_NDISC_NODETYPE
+-	snmp_seq_show_tcp_udp(seq, v);
++	snmp_seq_show_tcp_udp(seq, v, !IS_ENABLED(CONFIG_IPV4));
  
- config IPV6_TUNNEL
- 	tristate "IPv6: IP-in-IPv6 tunnel (RFC2473)"
-+	depends on IPV4
- 	select INET6_TUNNEL
- 	select DST_CACHE
- 	select GRO_CELLS
-@@ -209,6 +217,7 @@ config IPV6_TUNNEL
+ 	return 0;
+ }
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 3ac485685279..1f0fc46136ea 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -267,6 +267,8 @@
+ #include <linux/errqueue.h>
+ #include <linux/static_key.h>
+ #include <linux/btf.h>
++#include <linux/proc_fs.h>
++#include <linux/skbuff_ref.h>
  
- config IPV6_GRE
- 	tristate "IPv6: GRE tunnel"
-+	depends on IPV4
- 	select IPV6_TUNNEL
- 	select NET_IP_TUNNEL
- 	depends on NET_IPGRE_DEMUX
-@@ -256,7 +265,7 @@ config IPV6_SUBTREES
+ #include <net/icmp.h>
+ #include <net/inet_common.h>
+@@ -308,6 +310,10 @@ DEFINE_STATIC_KEY_FALSE(tcp_have_smc);
+ EXPORT_SYMBOL(tcp_have_smc);
+ #endif
  
- config IPV6_MROUTE
- 	bool "IPv6: multicast routing"
--	depends on IPV6
-+	depends on IPV4 && IPV6
- 	select IP_MROUTE_COMMON
- 	help
- 	  Support for IPv6 multicast forwarding.
-@@ -285,7 +294,7 @@ config IPV6_PIMSM_V2
++struct inet_hashinfo tcp_hashinfo;
++
++static DEFINE_MUTEX(tcp_exit_batch_mutex);
++
+ /*
+  * Current number of TCP sockets.
+  */
+@@ -1458,6 +1464,1115 @@ int tcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ }
+ EXPORT_SYMBOL(tcp_sendmsg);
  
- config IPV6_SEG6_LWTUNNEL
- 	bool "IPv6: Segment Routing Header encapsulation support"
--	depends on IPV6
-+	depends on IPV4 && IPV6
- 	select LWTUNNEL
- 	select DST_CACHE
- 	select IPV6_MULTIPLE_TABLES
-@@ -316,7 +325,7 @@ config IPV6_SEG6_BPF
++#ifdef CONFIG_PROC_FS
++/* Proc filesystem TCP sock list dumping. */
++
++static unsigned short seq_file_family(const struct seq_file *seq);
++
++static bool seq_sk_match(struct seq_file *seq, const struct sock *sk)
++{
++	unsigned short family = seq_file_family(seq);
++
++	/* AF_UNSPEC is used as a match all */
++	return ((family == AF_UNSPEC || family == sk->sk_family) &&
++		net_eq(sock_net(sk), seq_file_net(seq)));
++}
++
++/* Find a non empty bucket (starting from st->bucket)
++ * and return the first sk from it.
++ */
++static void *listening_get_first(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct tcp_iter_state *st = seq->private;
++
++	st->offset = 0;
++	for (; st->bucket <= hinfo->lhash2_mask; st->bucket++) {
++		struct inet_listen_hashbucket *ilb2;
++		struct hlist_nulls_node *node;
++		struct sock *sk;
++
++		ilb2 = &hinfo->lhash2[st->bucket];
++		if (hlist_nulls_empty(&ilb2->nulls_head))
++			continue;
++
++		spin_lock(&ilb2->lock);
++		sk_nulls_for_each(sk, node, &ilb2->nulls_head) {
++			if (seq_sk_match(seq, sk))
++				return sk;
++		}
++		spin_unlock(&ilb2->lock);
++	}
++
++	return NULL;
++}
++
++/* Find the next sk of "cur" within the same bucket (i.e. st->bucket).
++ * If "cur" is the last one in the st->bucket,
++ * call listening_get_first() to return the first sk of the next
++ * non empty bucket.
++ */
++static void *listening_get_next(struct seq_file *seq, void *cur)
++{
++	struct tcp_iter_state *st = seq->private;
++	struct inet_listen_hashbucket *ilb2;
++	struct hlist_nulls_node *node;
++	struct inet_hashinfo *hinfo;
++	struct sock *sk = cur;
++
++	++st->num;
++	++st->offset;
++
++	sk = sk_nulls_next(sk);
++	sk_nulls_for_each_from(sk, node) {
++		if (seq_sk_match(seq, sk))
++			return sk;
++	}
++
++	hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	ilb2 = &hinfo->lhash2[st->bucket];
++	spin_unlock(&ilb2->lock);
++	++st->bucket;
++	return listening_get_first(seq);
++}
++
++static void *listening_get_idx(struct seq_file *seq, loff_t *pos)
++{
++	struct tcp_iter_state *st = seq->private;
++	void *rc;
++
++	st->bucket = 0;
++	st->offset = 0;
++	rc = listening_get_first(seq);
++
++	while (rc && *pos) {
++		rc = listening_get_next(seq, rc);
++		--*pos;
++	}
++	return rc;
++}
++
++static inline bool empty_bucket(struct inet_hashinfo *hinfo,
++				const struct tcp_iter_state *st)
++{
++	return hlist_nulls_empty(&hinfo->ehash[st->bucket].chain);
++}
++
++/*
++ * Get first established socket starting from bucket given in st->bucket.
++ * If st->bucket is zero, the very first socket in the hash is returned.
++ */
++static void *established_get_first(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct tcp_iter_state *st = seq->private;
++
++	st->offset = 0;
++	for (; st->bucket <= hinfo->ehash_mask; ++st->bucket) {
++		struct sock *sk;
++		struct hlist_nulls_node *node;
++		spinlock_t *lock = inet_ehash_lockp(hinfo, st->bucket);
++
++		cond_resched();
++
++		/* Lockless fast path for the common case of empty buckets */
++		if (empty_bucket(hinfo, st))
++			continue;
++
++		spin_lock_bh(lock);
++		sk_nulls_for_each(sk, node, &hinfo->ehash[st->bucket].chain) {
++			if (seq_sk_match(seq, sk))
++				return sk;
++		}
++		spin_unlock_bh(lock);
++	}
++
++	return NULL;
++}
++
++static void *established_get_next(struct seq_file *seq, void *cur)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct tcp_iter_state *st = seq->private;
++	struct hlist_nulls_node *node;
++	struct sock *sk = cur;
++
++	++st->num;
++	++st->offset;
++
++	sk = sk_nulls_next(sk);
++
++	sk_nulls_for_each_from(sk, node) {
++		if (seq_sk_match(seq, sk))
++			return sk;
++	}
++
++	spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
++	++st->bucket;
++	return established_get_first(seq);
++}
++
++static void *established_get_idx(struct seq_file *seq, loff_t pos)
++{
++	struct tcp_iter_state *st = seq->private;
++	void *rc;
++
++	st->bucket = 0;
++	rc = established_get_first(seq);
++
++	while (rc && pos) {
++		rc = established_get_next(seq, rc);
++		--pos;
++	}
++	return rc;
++}
++
++static void *tcp_get_idx(struct seq_file *seq, loff_t pos)
++{
++	void *rc;
++	struct tcp_iter_state *st = seq->private;
++
++	st->state = TCP_SEQ_STATE_LISTENING;
++	rc	  = listening_get_idx(seq, &pos);
++
++	if (!rc) {
++		st->state = TCP_SEQ_STATE_ESTABLISHED;
++		rc	  = established_get_idx(seq, pos);
++	}
++
++	return rc;
++}
++
++static void *tcp_seek_last_pos(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct tcp_iter_state *st = seq->private;
++	int bucket = st->bucket;
++	int offset = st->offset;
++	int orig_num = st->num;
++	void *rc = NULL;
++
++	switch (st->state) {
++	case TCP_SEQ_STATE_LISTENING:
++		if (st->bucket > hinfo->lhash2_mask)
++			break;
++		rc = listening_get_first(seq);
++		while (offset-- && rc && bucket == st->bucket)
++			rc = listening_get_next(seq, rc);
++		if (rc)
++			break;
++		st->bucket = 0;
++		st->state = TCP_SEQ_STATE_ESTABLISHED;
++		fallthrough;
++	case TCP_SEQ_STATE_ESTABLISHED:
++		if (st->bucket > hinfo->ehash_mask)
++			break;
++		rc = established_get_first(seq);
++		while (offset-- && rc && bucket == st->bucket)
++			rc = established_get_next(seq, rc);
++	}
++
++	st->num = orig_num;
++
++	return rc;
++}
++
++void *tcp_seq_start(struct seq_file *seq, loff_t *pos)
++{
++	struct tcp_iter_state *st = seq->private;
++	void *rc;
++
++	if (*pos && *pos == st->last_pos) {
++		rc = tcp_seek_last_pos(seq);
++		if (rc)
++			goto out;
++	}
++
++	st->state = TCP_SEQ_STATE_LISTENING;
++	st->num = 0;
++	st->bucket = 0;
++	st->offset = 0;
++	rc = *pos ? tcp_get_idx(seq, *pos - 1) : SEQ_START_TOKEN;
++
++out:
++	st->last_pos = *pos;
++	return rc;
++}
++
++void *tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
++{
++	struct tcp_iter_state *st = seq->private;
++	void *rc = NULL;
++
++	if (v == SEQ_START_TOKEN) {
++		rc = tcp_get_idx(seq, 0);
++		goto out;
++	}
++
++	switch (st->state) {
++	case TCP_SEQ_STATE_LISTENING:
++		rc = listening_get_next(seq, v);
++		if (!rc) {
++			st->state = TCP_SEQ_STATE_ESTABLISHED;
++			st->bucket = 0;
++			st->offset = 0;
++			rc	  = established_get_first(seq);
++		}
++		break;
++	case TCP_SEQ_STATE_ESTABLISHED:
++		rc = established_get_next(seq, v);
++		break;
++	}
++out:
++	++*pos;
++	st->last_pos = *pos;
++	return rc;
++}
++
++void tcp_seq_stop(struct seq_file *seq, void *v)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct tcp_iter_state *st = seq->private;
++
++	switch (st->state) {
++	case TCP_SEQ_STATE_LISTENING:
++		if (v != SEQ_START_TOKEN)
++			spin_unlock(&hinfo->lhash2[st->bucket].lock);
++		break;
++	case TCP_SEQ_STATE_ESTABLISHED:
++		if (v)
++			spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
++		break;
++	}
++}
++
++#ifdef CONFIG_BPF_SYSCALL
++struct bpf_iter__tcp {
++	__bpf_md_ptr(struct bpf_iter_meta *, meta);
++	__bpf_md_ptr(struct sock_common *, sk_common);
++	uid_t uid __aligned(8);
++};
++
++static int tcp_prog_seq_show(struct bpf_prog *prog, struct bpf_iter_meta *meta,
++			     struct sock_common *sk_common, uid_t uid)
++{
++	struct bpf_iter__tcp ctx;
++
++	meta->seq_num--;  /* skip SEQ_START_TOKEN */
++	ctx.meta = meta;
++	ctx.sk_common = sk_common;
++	ctx.uid = uid;
++	return bpf_iter_run_prog(prog, &ctx);
++}
++
++static void bpf_iter_tcp_put_batch(struct bpf_tcp_iter_state *iter)
++{
++	union bpf_tcp_iter_batch_item *item;
++	unsigned int cur_sk = iter->cur_sk;
++	__u64 cookie;
++
++	/* Remember the cookies of the sockets we haven't seen yet, so we can
++	 * pick up where we left off next time around.
++	 */
++	while (cur_sk < iter->end_sk) {
++		item = &iter->batch[cur_sk++];
++		cookie = sock_gen_cookie(item->sk);
++		sock_gen_put(item->sk);
++		item->cookie = cookie;
++	}
++}
++
++static int bpf_iter_tcp_realloc_batch(struct bpf_tcp_iter_state *iter,
++				      unsigned int new_batch_sz, gfp_t flags)
++{
++	union bpf_tcp_iter_batch_item *new_batch;
++
++	new_batch = kvmalloc_objs(*new_batch, new_batch_sz,
++				   flags | __GFP_NOWARN);
++	if (!new_batch)
++		return -ENOMEM;
++
++	memcpy(new_batch, iter->batch, sizeof(*iter->batch) * iter->end_sk);
++	kvfree(iter->batch);
++	iter->batch = new_batch;
++	iter->max_sk = new_batch_sz;
++
++	return 0;
++}
++
++static struct sock *bpf_iter_tcp_resume_bucket(struct sock *first_sk,
++					       union bpf_tcp_iter_batch_item *cookies,
++					       int n_cookies)
++{
++	struct hlist_nulls_node *node;
++	struct sock *sk;
++	int i;
++
++	for (i = 0; i < n_cookies; i++) {
++		sk = first_sk;
++		sk_nulls_for_each_from(sk, node)
++			if (cookies[i].cookie == atomic64_read(&sk->sk_cookie))
++				return sk;
++	}
++
++	return NULL;
++}
++
++static struct sock *bpf_iter_tcp_resume_listening(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++	unsigned int find_cookie = iter->cur_sk;
++	unsigned int end_cookie = iter->end_sk;
++	int resume_bucket = st->bucket;
++	struct sock *sk;
++
++	if (end_cookie && find_cookie == end_cookie)
++		++st->bucket;
++
++	sk = listening_get_first(seq);
++	iter->cur_sk = 0;
++	iter->end_sk = 0;
++
++	if (sk && st->bucket == resume_bucket && end_cookie) {
++		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
++						end_cookie - find_cookie);
++		if (!sk) {
++			spin_unlock(&hinfo->lhash2[st->bucket].lock);
++			++st->bucket;
++			sk = listening_get_first(seq);
++		}
++	}
++
++	return sk;
++}
++
++static struct sock *bpf_iter_tcp_resume_established(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++	unsigned int find_cookie = iter->cur_sk;
++	unsigned int end_cookie = iter->end_sk;
++	int resume_bucket = st->bucket;
++	struct sock *sk;
++
++	if (end_cookie && find_cookie == end_cookie)
++		++st->bucket;
++
++	sk = established_get_first(seq);
++	iter->cur_sk = 0;
++	iter->end_sk = 0;
++
++	if (sk && st->bucket == resume_bucket && end_cookie) {
++		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
++						end_cookie - find_cookie);
++		if (!sk) {
++			spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
++			++st->bucket;
++			sk = established_get_first(seq);
++		}
++	}
++
++	return sk;
++}
++
++static struct sock *bpf_iter_tcp_resume(struct seq_file *seq)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++	struct sock *sk = NULL;
++
++	switch (st->state) {
++	case TCP_SEQ_STATE_LISTENING:
++		sk = bpf_iter_tcp_resume_listening(seq);
++		if (sk)
++			break;
++		st->bucket = 0;
++		st->state = TCP_SEQ_STATE_ESTABLISHED;
++		fallthrough;
++	case TCP_SEQ_STATE_ESTABLISHED:
++		sk = bpf_iter_tcp_resume_established(seq);
++		break;
++	}
++
++	return sk;
++}
++
++static unsigned int bpf_iter_tcp_listening_batch(struct seq_file *seq,
++						 struct sock **start_sk)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct hlist_nulls_node *node;
++	unsigned int expected = 1;
++	struct sock *sk;
++
++	sock_hold(*start_sk);
++	iter->batch[iter->end_sk++].sk = *start_sk;
++
++	sk = sk_nulls_next(*start_sk);
++	*start_sk = NULL;
++	sk_nulls_for_each_from(sk, node) {
++		if (seq_sk_match(seq, sk)) {
++			if (iter->end_sk < iter->max_sk) {
++				sock_hold(sk);
++				iter->batch[iter->end_sk++].sk = sk;
++			} else if (!*start_sk) {
++				/* Remember where we left off. */
++				*start_sk = sk;
++			}
++			expected++;
++		}
++	}
++
++	return expected;
++}
++
++static unsigned int bpf_iter_tcp_established_batch(struct seq_file *seq,
++						   struct sock **start_sk)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct hlist_nulls_node *node;
++	struct sock *sk = *start_sk;
++	unsigned int expected = 0;
++
++	*start_sk = NULL;
++	sk_nulls_for_each_from(sk, node) {
++		if (!seq_sk_match(seq, sk))
++			continue;
++		expected++;
++		if (iter->end_sk < iter->max_sk) {
++			/* reqsk_queue_hash_req() inserts with sk_refcnt == 0
++			 * and refcount_set()s it after the bucket lock drops.
++			 */
++			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
++				continue;
++			iter->batch[iter->end_sk++].sk = sk;
++		} else if (!*start_sk) {
++			/* Remember where we left off. */
++			*start_sk = sk;
++		}
++	}
++
++	return expected;
++}
++
++static unsigned int bpf_iter_fill_batch(struct seq_file *seq,
++					struct sock **start_sk)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++
++	if (st->state == TCP_SEQ_STATE_LISTENING)
++		return bpf_iter_tcp_listening_batch(seq, start_sk);
++	else
++		return bpf_iter_tcp_established_batch(seq, start_sk);
++}
++
++static void bpf_iter_tcp_unlock_bucket(struct seq_file *seq)
++{
++	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++
++	if (st->state == TCP_SEQ_STATE_LISTENING)
++		spin_unlock(&hinfo->lhash2[st->bucket].lock);
++	else
++		spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
++}
++
++static struct sock *bpf_iter_tcp_batch(struct seq_file *seq)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	unsigned int expected;
++	struct sock *sk;
++	int err;
++
++again:
++	sk = bpf_iter_tcp_resume(seq);
++	if (!sk)
++		return NULL; /* Done */
++
++	expected = bpf_iter_fill_batch(seq, &sk);
++	if (likely(!sk))
++		goto done;
++
++	/* Batch size was too small. */
++	bpf_iter_tcp_unlock_bucket(seq);
++	bpf_iter_tcp_put_batch(iter);
++	err = bpf_iter_tcp_realloc_batch(iter, expected * 3 / 2,
++					 GFP_USER);
++	if (err) {
++		iter->cur_sk = 0;
++		iter->end_sk = 0;
++		return ERR_PTR(err);
++	}
++
++	sk = bpf_iter_tcp_resume(seq);
++	if (!sk)
++		return NULL; /* Done */
++
++	expected = bpf_iter_fill_batch(seq, &sk);
++	if (likely(!sk))
++		goto done;
++
++	/* Batch size was still too small. Hold onto the lock while we try
++	 * again with a larger batch to make sure the current bucket's size
++	 * does not change in the meantime.
++	 */
++	err = bpf_iter_tcp_realloc_batch(iter, expected, GFP_NOWAIT);
++	if (err) {
++		bpf_iter_tcp_unlock_bucket(seq);
++		return ERR_PTR(err);
++	}
++
++	bpf_iter_fill_batch(seq, &sk);
++	WARN_ON_ONCE(sk);
++done:
++	bpf_iter_tcp_unlock_bucket(seq);
++	if (unlikely(!iter->end_sk)) {
++		++iter->state.bucket;
++		goto again;
++	}
++	return iter->batch[0].sk;
++}
++
++static void *bpf_iter_tcp_seq_start(struct seq_file *seq, loff_t *pos)
++{
++	/* bpf iter does not support lseek, so it always
++	 * continue from where it was stop()-ped.
++	 */
++	if (*pos)
++		return bpf_iter_tcp_batch(seq);
++
++	return SEQ_START_TOKEN;
++}
++
++static void *bpf_iter_tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct tcp_iter_state *st = &iter->state;
++	struct sock *sk;
++
++	/* Whenever seq_next() is called, the iter->cur_sk is
++	 * done with seq_show(), so advance to the next sk in
++	 * the batch.
++	 */
++	if (iter->cur_sk < iter->end_sk) {
++		/* Keeping st->num consistent in tcp_iter_state.
++		 * bpf_iter_tcp does not use st->num.
++		 * meta.seq_num is used instead.
++		 */
++		st->num++;
++		sock_gen_put(iter->batch[iter->cur_sk++].sk);
++	}
++
++	if (iter->cur_sk < iter->end_sk)
++		sk = iter->batch[iter->cur_sk].sk;
++	else
++		sk = bpf_iter_tcp_batch(seq);
++
++	++*pos;
++	/* Keeping st->last_pos consistent in tcp_iter_state.
++	 * bpf iter does not do lseek, so st->last_pos always equals to *pos.
++	 */
++	st->last_pos = *pos;
++	return sk;
++}
++
++static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
++{
++	struct bpf_iter_meta meta;
++	struct bpf_prog *prog;
++	struct sock *sk = v;
++	uid_t uid;
++	int ret;
++
++	if (v == SEQ_START_TOKEN)
++		return 0;
++
++	if (sk_fullsock(sk))
++		lock_sock(sk);
++
++	if (unlikely(sk_unhashed(sk))) {
++		ret = SEQ_SKIP;
++		goto unlock;
++	}
++
++	if (sk->sk_state == TCP_TIME_WAIT) {
++		uid = 0;
++	} else if (sk->sk_state == TCP_NEW_SYN_RECV) {
++		const struct request_sock *req = v;
++
++		uid = from_kuid_munged(seq_user_ns(seq),
++				       sk_uid(req->rsk_listener));
++	} else {
++		uid = from_kuid_munged(seq_user_ns(seq), sk_uid(sk));
++	}
++
++	meta.seq = seq;
++	prog = bpf_iter_get_info(&meta, false);
++	ret = tcp_prog_seq_show(prog, &meta, v, uid);
++
++unlock:
++	if (sk_fullsock(sk))
++		release_sock(sk);
++	return ret;
++}
++
++static void bpf_iter_tcp_seq_stop(struct seq_file *seq, void *v)
++{
++	struct bpf_tcp_iter_state *iter = seq->private;
++	struct bpf_iter_meta meta;
++	struct bpf_prog *prog;
++
++	if (!v) {
++		meta.seq = seq;
++		prog = bpf_iter_get_info(&meta, true);
++		if (prog)
++			(void)tcp_prog_seq_show(prog, &meta, v, 0);
++	}
++
++	if (iter->cur_sk < iter->end_sk)
++		bpf_iter_tcp_put_batch(iter);
++}
++
++static const struct seq_operations bpf_iter_tcp_seq_ops = {
++	.show		= bpf_iter_tcp_seq_show,
++	.start		= bpf_iter_tcp_seq_start,
++	.next		= bpf_iter_tcp_seq_next,
++	.stop		= bpf_iter_tcp_seq_stop,
++};
++#endif /* CONFIG_BPF_SYSCALL */
++
++static unsigned short seq_file_family(const struct seq_file *seq)
++{
++	const struct tcp_seq_afinfo *afinfo;
++
++#ifdef CONFIG_BPF_SYSCALL
++	/* Iterated from bpf_iter.  Let the bpf prog to filter instead. */
++	if (seq->op == &bpf_iter_tcp_seq_ops)
++		return AF_UNSPEC;
++#endif
++
++	/* Iterated from proc fs */
++	afinfo = pde_data(file_inode(seq->file));
++	return afinfo->family;
++}
++#endif /* CONFIG_PROC_FS */
++
++#if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
++DEFINE_BPF_ITER_FUNC(tcp, struct bpf_iter_meta *meta,
++		     struct sock_common *sk_common, uid_t uid)
++
++#define INIT_BATCH_SZ 16
++
++static int bpf_iter_init_tcp(void *priv_data, struct bpf_iter_aux_info *aux)
++{
++	struct bpf_tcp_iter_state *iter = priv_data;
++	int err;
++
++	err = bpf_iter_init_seq_net(priv_data, aux);
++	if (err)
++		return err;
++
++	err = bpf_iter_tcp_realloc_batch(iter, INIT_BATCH_SZ, GFP_USER);
++	if (err) {
++		bpf_iter_fini_seq_net(priv_data);
++		return err;
++	}
++
++	return 0;
++}
++
++static void bpf_iter_fini_tcp(void *priv_data)
++{
++	struct bpf_tcp_iter_state *iter = priv_data;
++
++	bpf_iter_fini_seq_net(priv_data);
++	kvfree(iter->batch);
++}
++
++static const struct bpf_iter_seq_info tcp_seq_info = {
++	.seq_ops		= &bpf_iter_tcp_seq_ops,
++	.init_seq_private	= bpf_iter_init_tcp,
++	.fini_seq_private	= bpf_iter_fini_tcp,
++	.seq_priv_size		= sizeof(struct bpf_tcp_iter_state),
++};
++
++static const struct bpf_func_proto *
++bpf_iter_tcp_get_func_proto(enum bpf_func_id func_id,
++			    const struct bpf_prog *prog)
++{
++	switch (func_id) {
++	case BPF_FUNC_setsockopt:
++		return &bpf_sk_setsockopt_proto;
++	case BPF_FUNC_getsockopt:
++		return &bpf_sk_getsockopt_proto;
++	default:
++		return NULL;
++	}
++}
++
++static struct bpf_iter_reg tcp_reg_info = {
++	.target			= "tcp",
++	.ctx_arg_info_size	= 1,
++	.ctx_arg_info		= {
++		{ offsetof(struct bpf_iter__tcp, sk_common),
++		  PTR_TO_BTF_ID_OR_NULL | PTR_TRUSTED },
++	},
++	.get_func_proto		= bpf_iter_tcp_get_func_proto,
++	.seq_info		= &tcp_seq_info,
++};
++
++static void __init bpf_iter_register(void)
++{
++	tcp_reg_info.ctx_arg_info[0].btf_id = btf_sock_ids[BTF_SOCK_TYPE_SOCK_COMMON];
++	if (bpf_iter_reg_target(&tcp_reg_info))
++		pr_warn("Warning: could not register bpf iterator tcp\n");
++}
++
++#endif
++
++static void tcp_release_user_frags(struct sock *sk)
++{
++#ifdef CONFIG_PAGE_POOL
++	unsigned long index;
++	void *netmem;
++
++	xa_for_each(&sk->sk_user_frags, index, netmem)
++		WARN_ON_ONCE(!napi_pp_put_page((__force netmem_ref)netmem));
++#endif
++}
++
++void tcp_destroy_sock(struct sock *sk)
++{
++	struct tcp_sock *tp = tcp_sk(sk);
++
++	tcp_release_user_frags(sk);
++
++	xa_destroy(&sk->sk_user_frags);
++
++	trace_tcp_destroy_sock(sk);
++
++	tcp_clear_xmit_timers(sk);
++
++	tcp_cleanup_congestion_control(sk);
++
++	tcp_cleanup_ulp(sk);
++
++	/* Cleanup up the write buffer. */
++	tcp_write_queue_purge(sk);
++
++	/* Check if we want to disable active TFO */
++	tcp_fastopen_active_disable_ofo_check(sk);
++
++	/* Cleans up our, hopefully empty, out_of_order_queue. */
++	skb_rbtree_purge(&tp->out_of_order_queue);
++
++	/* Clean up a referenced TCP bind bucket. */
++	if (inet_csk(sk)->icsk_bind_hash)
++		inet_put_port(sk);
++
++	BUG_ON(rcu_access_pointer(tp->fastopen_rsk));
++
++	/* If socket is aborted during connect operation */
++	tcp_free_fastopen_req(tp);
++	tcp_fastopen_destroy_cipher(sk);
++	tcp_saved_syn_free(tp);
++
++	sk_sockets_allocated_dec(sk);
++}
++
++int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
++{
++	int reuse = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_tw_reuse);
++	const struct inet_timewait_sock *tw = inet_twsk(sktw);
++	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
++	struct tcp_sock *tp = tcp_sk(sk);
++	int ts_recent_stamp;
++	u32 reuse_thresh;
++
++	if (READ_ONCE(tw->tw_substate) == TCP_FIN_WAIT2)
++		reuse = 0;
++
++	if (reuse == 2) {
++		/* Still does not detect *everything* that goes through
++		 * lo, since we require a loopback src or dst address
++		 * or direct binding to 'lo' interface.
++		 */
++		bool loopback = false;
++
++		if (tw->tw_bound_dev_if == LOOPBACK_IFINDEX)
++			loopback = true;
++#if IS_ENABLED(CONFIG_IPV6)
++		if (tw->tw_family == AF_INET6) {
++			if (ipv6_addr_loopback(&tw->tw_v6_daddr) ||
++			    ipv6_addr_v4mapped_loopback(&tw->tw_v6_daddr) ||
++			    ipv6_addr_loopback(&tw->tw_v6_rcv_saddr) ||
++			    ipv6_addr_v4mapped_loopback(&tw->tw_v6_rcv_saddr))
++				loopback = true;
++		} else
++#endif
++		{
++			if (ipv4_is_loopback(tw->tw_daddr) ||
++			    ipv4_is_loopback(tw->tw_rcv_saddr))
++				loopback = true;
++		}
++		if (!loopback)
++			reuse = 0;
++	}
++
++	/* With PAWS, it is safe from the viewpoint
++	 * of data integrity. Even without PAWS it is safe provided sequence
++	 * spaces do not overlap i.e. at data rates <= 80Mbit/sec.
++	 *
++	 * Actually, the idea is close to VJ's one, only timestamp cache is
++	 * held not per host, but per port pair and TW bucket is used as state
++	 * holder.
++	 *
++	 * If TW bucket has been already destroyed we fall back to VJ's scheme
++	 * and use initial timestamp retrieved from peer table.
++	 */
++	ts_recent_stamp = READ_ONCE(tcptw->tw_ts_recent_stamp);
++	reuse_thresh = READ_ONCE(tw->tw_entry_stamp) +
++		       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_tw_reuse_delay);
++	if (ts_recent_stamp &&
++	    (!twp || (reuse && time_after32(tcp_clock_ms(), reuse_thresh)))) {
++		/* inet_twsk_hashdance_schedule() sets sk_refcnt after putting twsk
++		 * and releasing the bucket lock.
++		 */
++		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
++			return 0;
++
++		/* In case of repair and re-using TIME-WAIT sockets we still
++		 * want to be sure that it is safe as above but honor the
++		 * sequence numbers and time stamps set as part of the repair
++		 * process.
++		 *
++		 * Without this check re-using a TIME-WAIT socket with TCP
++		 * repair would accumulate a -1 on the repair assigned
++		 * sequence number. The first time it is reused the sequence
++		 * is -1, the second time -2, etc. This fixes that issue
++		 * without appearing to create any others.
++		 */
++		if (likely(!tp->repair)) {
++			u32 seq = tcptw->tw_snd_nxt + 65535 + 2;
++
++			if (!seq)
++				seq = 1;
++			WRITE_ONCE(tp->write_seq, seq);
++			tp->rx_opt.ts_recent	   = READ_ONCE(tcptw->tw_ts_recent);
++			tp->rx_opt.ts_recent_stamp = ts_recent_stamp;
++		}
++
++		return 1;
++	}
++
++	return 0;
++}
++
++enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
++{
++	u32 tail_gso_size, tail_gso_segs;
++	struct skb_shared_info *shinfo;
++	const struct tcphdr *th;
++	struct tcphdr *thtail;
++	struct sk_buff *tail;
++	unsigned int hdrlen;
++	bool fragstolen;
++	u32 gso_segs;
++	u32 gso_size;
++	u64 limit;
++	int delta;
++	int err;
++
++	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
++	 * we can fix skb->truesize to its real value to avoid future drops.
++	 * This is valid because skb is not yet charged to the socket.
++	 * It has been noticed pure SACK packets were sometimes dropped
++	 * (if cooked by drivers without copybreak feature).
++	 */
++	skb_condense(skb);
++
++	tcp_cleanup_skb(skb);
++
++	if (unlikely(tcp_checksum_complete(skb))) {
++		bh_unlock_sock(sk);
++		trace_tcp_bad_csum(skb);
++		__TCP_INC_STATS(sock_net(sk), TCP_MIB_CSUMERRORS);
++		__TCP_INC_STATS(sock_net(sk), TCP_MIB_INERRS);
++		return SKB_DROP_REASON_TCP_CSUM;
++	}
++
++	/* Attempt coalescing to last skb in backlog, even if we are
++	 * above the limits.
++	 * This is okay because skb capacity is limited to MAX_SKB_FRAGS.
++	 */
++	th = (const struct tcphdr *)skb->data;
++	hdrlen = th->doff * 4;
++
++	tail = sk->sk_backlog.tail;
++	if (!tail)
++		goto no_coalesce;
++	thtail = (struct tcphdr *)tail->data;
++
++	if (TCP_SKB_CB(tail)->end_seq != TCP_SKB_CB(skb)->seq ||
++	    TCP_SKB_CB(tail)->ip_dsfield != TCP_SKB_CB(skb)->ip_dsfield ||
++	    ((TCP_SKB_CB(tail)->tcp_flags |
++	      TCP_SKB_CB(skb)->tcp_flags) & (TCPHDR_SYN | TCPHDR_RST | TCPHDR_URG)) ||
++	    !((TCP_SKB_CB(tail)->tcp_flags &
++	      TCP_SKB_CB(skb)->tcp_flags) & TCPHDR_ACK) ||
++	    ((TCP_SKB_CB(tail)->tcp_flags ^
++	      TCP_SKB_CB(skb)->tcp_flags) &
++	     (TCPHDR_ECE | TCPHDR_CWR | TCPHDR_AE)) ||
++	    !tcp_skb_can_collapse_rx(tail, skb) ||
++	    thtail->doff != th->doff ||
++	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)) ||
++	    /* prior to PSP Rx policy check, retain exact PSP metadata */
++	    psp_skb_coalesce_diff(tail, skb))
++		goto no_coalesce;
++
++	__skb_pull(skb, hdrlen);
++
++	shinfo = skb_shinfo(skb);
++	gso_size = shinfo->gso_size ?: skb->len;
++	gso_segs = shinfo->gso_segs ?: 1;
++
++	shinfo = skb_shinfo(tail);
++	tail_gso_size = shinfo->gso_size ?: (tail->len - hdrlen);
++	tail_gso_segs = shinfo->gso_segs ?: 1;
++
++	if (skb_try_coalesce(tail, skb, &fragstolen, &delta)) {
++		TCP_SKB_CB(tail)->end_seq = TCP_SKB_CB(skb)->end_seq;
++
++		if (likely(!before(TCP_SKB_CB(skb)->ack_seq, TCP_SKB_CB(tail)->ack_seq))) {
++			TCP_SKB_CB(tail)->ack_seq = TCP_SKB_CB(skb)->ack_seq;
++			thtail->window = th->window;
++		}
++
++		/* We have to update both TCP_SKB_CB(tail)->tcp_flags and
++		 * thtail->fin, so that the fast path in tcp_rcv_established()
++		 * is not entered if we append a packet with a FIN.
++		 * SYN, RST, URG are not present.
++		 * ACK is set on both packets.
++		 * PSH : we do not really care in TCP stack,
++		 *       at least for 'GRO' packets.
++		 */
++		thtail->fin |= th->fin;
++		TCP_SKB_CB(tail)->tcp_flags |= TCP_SKB_CB(skb)->tcp_flags;
++
++		if (TCP_SKB_CB(skb)->has_rxtstamp) {
++			TCP_SKB_CB(tail)->has_rxtstamp = true;
++			tail->tstamp = skb->tstamp;
++			skb_hwtstamps(tail)->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
++		}
++
++		/* Not as strict as GRO. We only need to carry mss max value */
++		shinfo->gso_size = max(gso_size, tail_gso_size);
++		shinfo->gso_segs = min_t(u32, gso_segs + tail_gso_segs, 0xFFFF);
++
++		sk->sk_backlog.len += delta;
++		__NET_INC_STATS(sock_net(sk),
++				LINUX_MIB_TCPBACKLOGCOALESCE);
++		kfree_skb_partial(skb, fragstolen);
++		return SKB_NOT_DROPPED_YET;
++	}
++	__skb_push(skb, hdrlen);
++
++no_coalesce:
++	/* sk->sk_backlog.len is reset only at the end of __release_sock().
++	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
++	 * sk_rcvbuf in normal conditions.
++	 */
++	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
++
++	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
++
++	/* Only socket owner can try to collapse/prune rx queues
++	 * to reduce memory overhead, so add a little headroom here.
++	 * Few sockets backlog are possibly concurrently non empty.
++	 */
++	limit += 64 * 1024;
++
++	limit = min_t(u64, limit, UINT_MAX);
++
++	err = sk_add_backlog(sk, skb, limit);
++	if (unlikely(err)) {
++		bh_unlock_sock(sk);
++		if (err == -ENOMEM) {
++			__NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
++			return SKB_DROP_REASON_PFMEMALLOC;
++		}
++		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
++		return SKB_DROP_REASON_SOCKET_BACKLOG;
++	}
++	return SKB_NOT_DROPPED_YET;
++}
++
++/* TCP-LD (RFC 6069) logic */
++void tcp_ld_RTO_revert(struct sock *sk, u32 seq)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++	struct tcp_sock *tp = tcp_sk(sk);
++	struct sk_buff *skb;
++	s32 remaining;
++	u32 delta_us;
++
++	if (sock_owned_by_user(sk))
++		return;
++
++	if (seq != tp->snd_una  || !icsk->icsk_retransmits ||
++	    !icsk->icsk_backoff)
++		return;
++
++	skb = tcp_rtx_queue_head(sk);
++	if (WARN_ON_ONCE(!skb))
++		return;
++
++	icsk->icsk_backoff--;
++	icsk->icsk_rto = tp->srtt_us ? __tcp_set_rto(tp) : TCP_TIMEOUT_INIT;
++	icsk->icsk_rto = inet_csk_rto_backoff(icsk, tcp_rto_max(sk));
++
++	tcp_mstamp_refresh(tp);
++	delta_us = (u32)(tp->tcp_mstamp - tcp_skb_timestamp_us(skb));
++	remaining = icsk->icsk_rto - usecs_to_jiffies(delta_us);
++
++	if (remaining > 0) {
++		tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS, remaining, false);
++	} else {
++		/* RTO revert clocked out retransmission.
++		 * Will retransmit now.
++		 */
++		tcp_retransmit_timer(sk);
++	}
++}
++
++/* handle ICMP messages on TCP_NEW_SYN_RECV request sockets */
++void tcp_req_err(struct sock *sk, u32 seq, bool abort)
++{
++	struct request_sock *req = inet_reqsk(sk);
++	struct net *net = sock_net(sk);
++
++	/* ICMPs are not backlogged, hence we cannot get
++	 * an established socket here.
++	 */
++	if (seq != tcp_rsk(req)->snt_isn) {
++		__NET_INC_STATS(net, LINUX_MIB_OUTOFWINDOWICMPS);
++	} else if (abort) {
++		/*
++		 * Still in SYN_RECV, just remove it silently.
++		 * There is no good way to pass the error to the newly
++		 * created socket, and POSIX does not want network
++		 * errors returned from accept().
++		 */
++		inet_csk_reqsk_queue_drop(req->rsk_listener, req);
++		tcp_listendrop(req->rsk_listener);
++	}
++	reqsk_put(req);
++}
++
+ void tcp_splice_eof(struct socket *sock)
+ {
+ 	struct sock *sk = sock->sk;
+@@ -5291,6 +6406,182 @@ static void __init tcp_struct_check(void)
+ 	CACHELINE_ASSERT_GROUP_MEMBER(struct tcp_sock, tcp_sock_write_rx, rcvq_space);
+ }
  
- config IPV6_RPL_LWTUNNEL
- 	bool "IPv6: RPL Source Routing Header support"
--	depends on IPV6
-+	depends on IPV4 && IPV6
- 	select LWTUNNEL
- 	select DST_CACHE
- 	help
-@@ -327,7 +336,7 @@ config IPV6_RPL_LWTUNNEL
++static void __net_exit tcp_sk_exit(struct net *net)
++{
++	if (net->ipv4.tcp_congestion_control)
++		bpf_module_put(net->ipv4.tcp_congestion_control,
++			       net->ipv4.tcp_congestion_control->owner);
++}
++
++static void __net_init tcp_set_hashinfo(struct net *net)
++{
++	struct inet_hashinfo *hinfo;
++	unsigned int ehash_entries;
++	struct net *old_net;
++
++	if (net_eq(net, &init_net))
++		goto fallback;
++
++	old_net = current->nsproxy->net_ns;
++	ehash_entries = READ_ONCE(old_net->ipv4.sysctl_tcp_child_ehash_entries);
++	if (!ehash_entries)
++		goto fallback;
++
++	ehash_entries = roundup_pow_of_two(ehash_entries);
++	hinfo = inet_pernet_hashinfo_alloc(&tcp_hashinfo, ehash_entries);
++	if (!hinfo) {
++		pr_warn("Failed to allocate TCP ehash (entries: %u) "
++			"for a netns, fallback to the global one\n",
++			ehash_entries);
++fallback:
++		hinfo = &tcp_hashinfo;
++		ehash_entries = tcp_hashinfo.ehash_mask + 1;
++	}
++
++	net->ipv4.tcp_death_row.hashinfo = hinfo;
++	net->ipv4.tcp_death_row.sysctl_max_tw_buckets = ehash_entries / 2;
++	net->ipv4.sysctl_max_syn_backlog = max(128U, ehash_entries / 128);
++}
++
++static int __net_init tcp_sk_init(struct net *net)
++{
++	net->ipv4.sysctl_tcp_ecn = TCP_ECN_IN_ECN_OUT_NOECN;
++	net->ipv4.sysctl_tcp_ecn_option = TCP_ACCECN_OPTION_FULL;
++	net->ipv4.sysctl_tcp_ecn_option_beacon = TCP_ACCECN_OPTION_BEACON;
++	net->ipv4.sysctl_tcp_ecn_fallback = 1;
++
++	net->ipv4.sysctl_tcp_base_mss = TCP_BASE_MSS;
++	net->ipv4.sysctl_tcp_min_snd_mss = TCP_MIN_SND_MSS;
++	net->ipv4.sysctl_tcp_probe_threshold = TCP_PROBE_THRESHOLD;
++	net->ipv4.sysctl_tcp_probe_interval = TCP_PROBE_INTERVAL;
++	net->ipv4.sysctl_tcp_mtu_probe_floor = TCP_MIN_SND_MSS;
++
++	net->ipv4.sysctl_tcp_keepalive_time = TCP_KEEPALIVE_TIME;
++	net->ipv4.sysctl_tcp_keepalive_probes = TCP_KEEPALIVE_PROBES;
++	net->ipv4.sysctl_tcp_keepalive_intvl = TCP_KEEPALIVE_INTVL;
++
++	net->ipv4.sysctl_tcp_syn_retries = TCP_SYN_RETRIES;
++	net->ipv4.sysctl_tcp_synack_retries = TCP_SYNACK_RETRIES;
++	net->ipv4.sysctl_tcp_syncookies = 1;
++	net->ipv4.sysctl_tcp_reordering = TCP_FASTRETRANS_THRESH;
++	net->ipv4.sysctl_tcp_retries1 = TCP_RETR1;
++	net->ipv4.sysctl_tcp_retries2 = TCP_RETR2;
++	net->ipv4.sysctl_tcp_orphan_retries = 0;
++	net->ipv4.sysctl_tcp_fin_timeout = TCP_FIN_TIMEOUT;
++	net->ipv4.sysctl_tcp_notsent_lowat = UINT_MAX;
++	net->ipv4.sysctl_tcp_tw_reuse = 2;
++	net->ipv4.sysctl_tcp_tw_reuse_delay = 1 * MSEC_PER_SEC;
++	net->ipv4.sysctl_tcp_no_ssthresh_metrics_save = 1;
++
++	refcount_set(&net->ipv4.tcp_death_row.tw_refcount, 1);
++	tcp_set_hashinfo(net);
++
++	net->ipv4.sysctl_tcp_sack = 1;
++	net->ipv4.sysctl_tcp_window_scaling = 1;
++	net->ipv4.sysctl_tcp_timestamps = 1;
++	net->ipv4.sysctl_tcp_early_retrans = 3;
++	net->ipv4.sysctl_tcp_recovery = TCP_RACK_LOSS_DETECTION;
++	net->ipv4.sysctl_tcp_slow_start_after_idle = 1; /* By default, RFC2861 behavior.  */
++	net->ipv4.sysctl_tcp_retrans_collapse = 1;
++	net->ipv4.sysctl_tcp_max_reordering = 300;
++	net->ipv4.sysctl_tcp_dsack = 1;
++	net->ipv4.sysctl_tcp_app_win = 31;
++	net->ipv4.sysctl_tcp_adv_win_scale = 1;
++	net->ipv4.sysctl_tcp_frto = 2;
++	net->ipv4.sysctl_tcp_moderate_rcvbuf = 1;
++	net->ipv4.sysctl_tcp_rcvbuf_low_rtt = USEC_PER_MSEC;
++	/* This limits the percentage of the congestion window which we
++	 * will allow a single TSO frame to consume.  Building TSO frames
++	 * which are too large can cause TCP streams to be bursty.
++	 */
++	net->ipv4.sysctl_tcp_tso_win_divisor = 3;
++	/* Default TSQ limit of 4 MB */
++	net->ipv4.sysctl_tcp_limit_output_bytes = 4 << 20;
++
++	/* rfc5961 challenge ack rate limiting, per net-ns, disabled by default. */
++	net->ipv4.sysctl_tcp_challenge_ack_limit = INT_MAX;
++
++	net->ipv4.sysctl_tcp_min_tso_segs = 2;
++	net->ipv4.sysctl_tcp_tso_rtt_log = 9;  /* 2^9 = 512 usec */
++	net->ipv4.sysctl_tcp_min_rtt_wlen = 300;
++	net->ipv4.sysctl_tcp_autocorking = 1;
++	net->ipv4.sysctl_tcp_invalid_ratelimit = HZ / 2;
++	net->ipv4.sysctl_tcp_pacing_ss_ratio = 200;
++	net->ipv4.sysctl_tcp_pacing_ca_ratio = 120;
++	if (net != &init_net) {
++		memcpy(net->ipv4.sysctl_tcp_rmem,
++		       init_net.ipv4.sysctl_tcp_rmem,
++		       sizeof(init_net.ipv4.sysctl_tcp_rmem));
++		memcpy(net->ipv4.sysctl_tcp_wmem,
++		       init_net.ipv4.sysctl_tcp_wmem,
++		       sizeof(init_net.ipv4.sysctl_tcp_wmem));
++	}
++	net->ipv4.sysctl_tcp_comp_sack_delay_ns = NSEC_PER_MSEC;
++	net->ipv4.sysctl_tcp_comp_sack_slack_ns = 10 * NSEC_PER_USEC;
++	net->ipv4.sysctl_tcp_comp_sack_nr = 44;
++	net->ipv4.sysctl_tcp_comp_sack_rtt_percent = 33;
++	net->ipv4.sysctl_tcp_backlog_ack_defer = 1;
++	net->ipv4.sysctl_tcp_fastopen = TFO_CLIENT_ENABLE;
++	net->ipv4.sysctl_tcp_fastopen_blackhole_timeout = 0;
++	atomic_set(&net->ipv4.tfo_active_disable_times, 0);
++
++	/* Set default values for PLB */
++	net->ipv4.sysctl_tcp_plb_enabled = 0; /* Disabled by default */
++	net->ipv4.sysctl_tcp_plb_idle_rehash_rounds = 3;
++	net->ipv4.sysctl_tcp_plb_rehash_rounds = 12;
++	net->ipv4.sysctl_tcp_plb_suspend_rto_sec = 60;
++	/* Default congestion threshold for PLB to mark a round is 50% */
++	net->ipv4.sysctl_tcp_plb_cong_thresh = (1 << TCP_PLB_SCALE) / 2;
++
++	/* Reno is always built in */
++	if (!net_eq(net, &init_net) &&
++	    bpf_try_module_get(init_net.ipv4.tcp_congestion_control,
++			       init_net.ipv4.tcp_congestion_control->owner))
++		net->ipv4.tcp_congestion_control = init_net.ipv4.tcp_congestion_control;
++	else
++		net->ipv4.tcp_congestion_control = &tcp_reno;
++
++	net->ipv4.sysctl_tcp_syn_linear_timeouts = 4;
++	net->ipv4.sysctl_tcp_shrink_window = 0;
++
++	net->ipv4.sysctl_tcp_pingpong_thresh = 1;
++	net->ipv4.sysctl_tcp_rto_min_us = jiffies_to_usecs(TCP_RTO_MIN);
++	net->ipv4.sysctl_tcp_rto_max_ms = TCP_RTO_MAX_SEC * MSEC_PER_SEC;
++
++	return 0;
++}
++
++static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
++{
++	struct net *net;
++
++	/* make sure concurrent calls to tcp_sk_exit_batch from net_cleanup_work
++	 * and failed setup_net error unwinding path are serialized.
++	 *
++	 * tcp_twsk_purge() handles twsk in any dead netns, not just those in
++	 * net_exit_list, the thread that dismantles a particular twsk must
++	 * do so without other thread progressing to refcount_dec_and_test() of
++	 * tcp_death_row.tw_refcount.
++	 */
++	mutex_lock(&tcp_exit_batch_mutex);
++
++	tcp_twsk_purge(net_exit_list);
++
++	list_for_each_entry(net, net_exit_list, exit_list) {
++		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
++		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
++		tcp_fastopen_ctx_destroy(net);
++	}
++
++	mutex_unlock(&tcp_exit_batch_mutex);
++}
++
++static struct pernet_operations tcp_sk_ops __net_initdata =  {
++	.init		= tcp_sk_init,
++	.exit		= tcp_sk_exit,
++	.exit_batch	= tcp_sk_exit_batch,
++};
++
+ void __init tcp_init(void)
+ {
+ 	int max_rshare, max_wshare, cnt;
+@@ -5385,7 +6676,14 @@ void __init tcp_init(void)
+ 	pr_info("Hash tables configured (established %u bind %u)\n",
+ 		tcp_hashinfo.ehash_mask + 1, tcp_hashinfo.bhash_size);
  
- config IPV6_IOAM6_LWTUNNEL
- 	bool "IPv6: IOAM Pre-allocated Trace insertion support"
--	depends on IPV6
-+	depends on IPV4 && IPV6
- 	select LWTUNNEL
- 	select DST_CACHE
- 	help
-diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
-index 81daf82ddc2d..f99a2176bf3d 100644
---- a/net/ipv6/netfilter/Kconfig
-+++ b/net/ipv6/netfilter/Kconfig
-@@ -4,7 +4,7 @@
- #
+-	tcp_v4_init();
++	if (IS_ENABLED(CONFIG_IPV4))
++		tcp_v4_init();
++	if (register_pernet_subsys(&tcp_sk_ops))
++		panic("Failed to create the TCP control socket.\n");
++
++#if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
++	bpf_iter_register();
++#endif
+ 	tcp_metrics_init();
+ 	BUG_ON(tcp_register_congestion_control(&tcp_reno) != 0);
+ 	tcp_tsq_work_init();
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 2e234d155b5e..23748ec9cb9c 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -671,7 +671,8 @@ static void tcp_bpf_check_v6_needs_rebuild(struct proto *ops)
  
- menu "IPv6: Netfilter Configuration"
--	depends on INET && IPV6 && NETFILTER
-+	depends on INET && IPV6 && NETFILTER && IPV4
+ static int __init tcp_bpf_v4_build_proto(void)
+ {
+-	tcp_bpf_rebuild_protos(tcp_bpf_prots[TCP_BPF_IPV4], &tcp_prot);
++	if (IS_ENABLED(CONFIG_IPV4))
++		tcp_bpf_rebuild_protos(tcp_bpf_prots[TCP_BPF_IPV4], &tcp_prot);
+ 	return 0;
+ }
+ late_initcall(tcp_bpf_v4_build_proto);
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index c107b7e44e5b..366ed4df49d6 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -85,7 +85,6 @@
+ #include <linux/seq_file.h>
+ #include <linux/inetdevice.h>
+ #include <linux/btf_ids.h>
+-#include <linux/skbuff_ref.h>
  
- # old sockopt interface and eval loop
- config IP6_NF_IPTABLES_LEGACY
-diff --git a/net/l2tp/Kconfig b/net/l2tp/Kconfig
-index 0de178d5baba..e92cf6d94135 100644
---- a/net/l2tp/Kconfig
-+++ b/net/l2tp/Kconfig
-@@ -5,7 +5,7 @@
+ #include <crypto/md5.h>
+ #include <crypto/utils.h>
+@@ -97,14 +96,10 @@ static void tcp_v4_md5_hash_hdr(char *md5_hash, const struct tcp_md5sig_key *key
+ 				__be32 daddr, __be32 saddr, const struct tcphdr *th);
+ #endif
  
- menuconfig L2TP
- 	tristate "Layer Two Tunneling Protocol (L2TP)"
--	depends on INET
-+	depends on INET && IPV4
- 	select NET_UDP_TUNNEL
- 	help
- 	  Layer Two Tunneling Protocol
-diff --git a/net/mptcp/Kconfig b/net/mptcp/Kconfig
-index be71fc9b4638..c5b660fdda4c 100644
---- a/net/mptcp/Kconfig
-+++ b/net/mptcp/Kconfig
-@@ -1,7 +1,7 @@
+-struct inet_hashinfo tcp_hashinfo;
+-
+ static DEFINE_PER_CPU(struct sock_bh_locked, ipv4_tcp_sk) = {
+ 	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
+ };
  
- config MPTCP
- 	bool "MPTCP: Multipath TCP"
--	depends on INET
-+	depends on INET && IPV4
- 	select SKB_EXTENSIONS
- 	select CRYPTO_LIB_SHA256
- 	select CRYPTO_LIB_UTILS
-diff --git a/net/netfilter/Kconfig b/net/netfilter/Kconfig
-index 09874c26fd13..857af95fbb48 100644
---- a/net/netfilter/Kconfig
-+++ b/net/netfilter/Kconfig
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menu "Core Netfilter Configuration"
--	depends on INET && NETFILTER
-+	depends on INET && IPV4 && NETFILTER
+-static DEFINE_MUTEX(tcp_exit_batch_mutex);
+-
+ INDIRECT_CALLABLE_SCOPE union tcp_seq_and_ts_off
+ tcp_v4_init_seq_and_ts_off(const struct net *net, const struct sk_buff *skb)
+ {
+@@ -115,93 +110,6 @@ tcp_v4_init_seq_and_ts_off(const struct net *net, const struct sk_buff *skb)
+ 					 tcp_hdr(skb)->source);
+ }
  
- config NETFILTER_INGRESS
- 	bool "Netfilter ingress support"
-diff --git a/net/netfilter/ipset/Kconfig b/net/netfilter/ipset/Kconfig
-index 6c4d54758106..e6537c842a45 100644
---- a/net/netfilter/ipset/Kconfig
-+++ b/net/netfilter/ipset/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig IP_SET
- 	tristate "IP set support"
--	depends on INET && NETFILTER
-+	depends on INET && IPV4 && NETFILTER
- 	select NETFILTER_NETLINK
- 	help
- 	  This option adds IP set support to the kernel.
-diff --git a/net/netfilter/ipvs/Kconfig b/net/netfilter/ipvs/Kconfig
-index 7724cb44e6de..fb09218d84d0 100644
---- a/net/netfilter/ipvs/Kconfig
-+++ b/net/netfilter/ipvs/Kconfig
-@@ -4,7 +4,7 @@
- #
- menuconfig IP_VS
- 	tristate "IP virtual server support"
--	depends on INET && NETFILTER
-+	depends on INET && NETFILTER && IPV4
- 	depends on (NF_CONNTRACK || NF_CONNTRACK=n)
- 	help
- 	  IP Virtual Server support will let you build a high-performance
-diff --git a/net/rds/Kconfig b/net/rds/Kconfig
-index f007730aa2bb..af5632b37dd7 100644
---- a/net/rds/Kconfig
-+++ b/net/rds/Kconfig
-@@ -17,6 +17,7 @@ config RDS_RDMA
- config RDS_TCP
- 	tristate "RDS over TCP"
- 	depends on RDS
-+	depends on IPV4
- 	depends on IPV6 || !IPV6
- 	help
- 	  Allow RDS to use TCP as a transport.
-diff --git a/net/rxrpc/Kconfig b/net/rxrpc/Kconfig
-index 2cebb666dc07..2029d2d1065f 100644
---- a/net/rxrpc/Kconfig
-+++ b/net/rxrpc/Kconfig
-@@ -5,7 +5,7 @@
+-int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+-{
+-	int reuse = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_tw_reuse);
+-	const struct inet_timewait_sock *tw = inet_twsk(sktw);
+-	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
+-	struct tcp_sock *tp = tcp_sk(sk);
+-	int ts_recent_stamp;
+-	u32 reuse_thresh;
+-
+-	if (READ_ONCE(tw->tw_substate) == TCP_FIN_WAIT2)
+-		reuse = 0;
+-
+-	if (reuse == 2) {
+-		/* Still does not detect *everything* that goes through
+-		 * lo, since we require a loopback src or dst address
+-		 * or direct binding to 'lo' interface.
+-		 */
+-		bool loopback = false;
+-		if (tw->tw_bound_dev_if == LOOPBACK_IFINDEX)
+-			loopback = true;
+-#if IS_ENABLED(CONFIG_IPV6)
+-		if (tw->tw_family == AF_INET6) {
+-			if (ipv6_addr_loopback(&tw->tw_v6_daddr) ||
+-			    ipv6_addr_v4mapped_loopback(&tw->tw_v6_daddr) ||
+-			    ipv6_addr_loopback(&tw->tw_v6_rcv_saddr) ||
+-			    ipv6_addr_v4mapped_loopback(&tw->tw_v6_rcv_saddr))
+-				loopback = true;
+-		} else
+-#endif
+-		{
+-			if (ipv4_is_loopback(tw->tw_daddr) ||
+-			    ipv4_is_loopback(tw->tw_rcv_saddr))
+-				loopback = true;
+-		}
+-		if (!loopback)
+-			reuse = 0;
+-	}
+-
+-	/* With PAWS, it is safe from the viewpoint
+-	   of data integrity. Even without PAWS it is safe provided sequence
+-	   spaces do not overlap i.e. at data rates <= 80Mbit/sec.
+-
+-	   Actually, the idea is close to VJ's one, only timestamp cache is
+-	   held not per host, but per port pair and TW bucket is used as state
+-	   holder.
+-
+-	   If TW bucket has been already destroyed we fall back to VJ's scheme
+-	   and use initial timestamp retrieved from peer table.
+-	 */
+-	ts_recent_stamp = READ_ONCE(tcptw->tw_ts_recent_stamp);
+-	reuse_thresh = READ_ONCE(tw->tw_entry_stamp) +
+-		       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_tw_reuse_delay);
+-	if (ts_recent_stamp &&
+-	    (!twp || (reuse && time_after32(tcp_clock_ms(), reuse_thresh)))) {
+-		/* inet_twsk_hashdance_schedule() sets sk_refcnt after putting twsk
+-		 * and releasing the bucket lock.
+-		 */
+-		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
+-			return 0;
+-
+-		/* In case of repair and re-using TIME-WAIT sockets we still
+-		 * want to be sure that it is safe as above but honor the
+-		 * sequence numbers and time stamps set as part of the repair
+-		 * process.
+-		 *
+-		 * Without this check re-using a TIME-WAIT socket with TCP
+-		 * repair would accumulate a -1 on the repair assigned
+-		 * sequence number. The first time it is reused the sequence
+-		 * is -1, the second time -2, etc. This fixes that issue
+-		 * without appearing to create any others.
+-		 */
+-		if (likely(!tp->repair)) {
+-			u32 seq = tcptw->tw_snd_nxt + 65535 + 2;
+-
+-			if (!seq)
+-				seq = 1;
+-			WRITE_ONCE(tp->write_seq, seq);
+-			tp->rx_opt.ts_recent	   = READ_ONCE(tcptw->tw_ts_recent);
+-			tp->rx_opt.ts_recent_stamp = ts_recent_stamp;
+-		}
+-
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ static int tcp_v4_pre_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 			      int addr_len)
+ {
+@@ -409,69 +317,6 @@ static void do_redirect(struct sk_buff *skb, struct sock *sk)
+ 		dst->ops->redirect(dst, sk, skb);
+ }
  
- config AF_RXRPC
- 	tristate "RxRPC session sockets"
--	depends on INET
-+	depends on INET && IPV4
- 	select CRYPTO
- 	select CRYPTO_LIB_DES if RXKAD
- 	select KEYS
-diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index 6ddff028b81a..bb782822c3fb 100644
---- a/net/sched/Kconfig
-+++ b/net/sched/Kconfig
-@@ -807,7 +807,7 @@ config NET_ACT_SKBEDIT
+-
+-/* handle ICMP messages on TCP_NEW_SYN_RECV request sockets */
+-void tcp_req_err(struct sock *sk, u32 seq, bool abort)
+-{
+-	struct request_sock *req = inet_reqsk(sk);
+-	struct net *net = sock_net(sk);
+-
+-	/* ICMPs are not backlogged, hence we cannot get
+-	 * an established socket here.
+-	 */
+-	if (seq != tcp_rsk(req)->snt_isn) {
+-		__NET_INC_STATS(net, LINUX_MIB_OUTOFWINDOWICMPS);
+-	} else if (abort) {
+-		/*
+-		 * Still in SYN_RECV, just remove it silently.
+-		 * There is no good way to pass the error to the newly
+-		 * created socket, and POSIX does not want network
+-		 * errors returned from accept().
+-		 */
+-		inet_csk_reqsk_queue_drop(req->rsk_listener, req);
+-		tcp_listendrop(req->rsk_listener);
+-	}
+-	reqsk_put(req);
+-}
+-
+-/* TCP-LD (RFC 6069) logic */
+-void tcp_ld_RTO_revert(struct sock *sk, u32 seq)
+-{
+-	struct inet_connection_sock *icsk = inet_csk(sk);
+-	struct tcp_sock *tp = tcp_sk(sk);
+-	struct sk_buff *skb;
+-	s32 remaining;
+-	u32 delta_us;
+-
+-	if (sock_owned_by_user(sk))
+-		return;
+-
+-	if (seq != tp->snd_una  || !icsk->icsk_retransmits ||
+-	    !icsk->icsk_backoff)
+-		return;
+-
+-	skb = tcp_rtx_queue_head(sk);
+-	if (WARN_ON_ONCE(!skb))
+-		return;
+-
+-	icsk->icsk_backoff--;
+-	icsk->icsk_rto = tp->srtt_us ? __tcp_set_rto(tp) : TCP_TIMEOUT_INIT;
+-	icsk->icsk_rto = inet_csk_rto_backoff(icsk, tcp_rto_max(sk));
+-
+-	tcp_mstamp_refresh(tp);
+-	delta_us = (u32)(tp->tcp_mstamp - tcp_skb_timestamp_us(skb));
+-	remaining = icsk->icsk_rto - usecs_to_jiffies(delta_us);
+-
+-	if (remaining > 0) {
+-		tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS, remaining, false);
+-	} else {
+-		/* RTO revert clocked out retransmission.
+-		 * Will retransmit now.
+-		 */
+-		tcp_retransmit_timer(sk);
+-	}
+-}
+-
+ /*
+  * This routine is called by the ICMP module when it gets some
+  * sort of error condition.  If err < 0 then the socket should
+@@ -1898,144 +1743,6 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
+ 	goto discard;
+ }
  
- config NET_ACT_CSUM
- 	tristate "Checksum Updating"
--	depends on NET_CLS_ACT && INET
-+	depends on NET_CLS_ACT && INET && IPV4
- 	select NET_CRC32C
- 	help
- 	  Say Y here to update some common checksum after some direct
-diff --git a/net/sctp/Kconfig b/net/sctp/Kconfig
-index fc989a3791b3..eb3e2bf1ec3a 100644
---- a/net/sctp/Kconfig
-+++ b/net/sctp/Kconfig
-@@ -5,7 +5,7 @@
+-enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+-{
+-	u32 tail_gso_size, tail_gso_segs;
+-	struct skb_shared_info *shinfo;
+-	const struct tcphdr *th;
+-	struct tcphdr *thtail;
+-	struct sk_buff *tail;
+-	unsigned int hdrlen;
+-	bool fragstolen;
+-	u32 gso_segs;
+-	u32 gso_size;
+-	u64 limit;
+-	int delta;
+-	int err;
+-
+-	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
+-	 * we can fix skb->truesize to its real value to avoid future drops.
+-	 * This is valid because skb is not yet charged to the socket.
+-	 * It has been noticed pure SACK packets were sometimes dropped
+-	 * (if cooked by drivers without copybreak feature).
+-	 */
+-	skb_condense(skb);
+-
+-	tcp_cleanup_skb(skb);
+-
+-	if (unlikely(tcp_checksum_complete(skb))) {
+-		bh_unlock_sock(sk);
+-		trace_tcp_bad_csum(skb);
+-		__TCP_INC_STATS(sock_net(sk), TCP_MIB_CSUMERRORS);
+-		__TCP_INC_STATS(sock_net(sk), TCP_MIB_INERRS);
+-		return SKB_DROP_REASON_TCP_CSUM;
+-	}
+-
+-	/* Attempt coalescing to last skb in backlog, even if we are
+-	 * above the limits.
+-	 * This is okay because skb capacity is limited to MAX_SKB_FRAGS.
+-	 */
+-	th = (const struct tcphdr *)skb->data;
+-	hdrlen = th->doff * 4;
+-
+-	tail = sk->sk_backlog.tail;
+-	if (!tail)
+-		goto no_coalesce;
+-	thtail = (struct tcphdr *)tail->data;
+-
+-	if (TCP_SKB_CB(tail)->end_seq != TCP_SKB_CB(skb)->seq ||
+-	    TCP_SKB_CB(tail)->ip_dsfield != TCP_SKB_CB(skb)->ip_dsfield ||
+-	    ((TCP_SKB_CB(tail)->tcp_flags |
+-	      TCP_SKB_CB(skb)->tcp_flags) & (TCPHDR_SYN | TCPHDR_RST | TCPHDR_URG)) ||
+-	    !((TCP_SKB_CB(tail)->tcp_flags &
+-	      TCP_SKB_CB(skb)->tcp_flags) & TCPHDR_ACK) ||
+-	    ((TCP_SKB_CB(tail)->tcp_flags ^
+-	      TCP_SKB_CB(skb)->tcp_flags) &
+-	     (TCPHDR_ECE | TCPHDR_CWR | TCPHDR_AE)) ||
+-	    !tcp_skb_can_collapse_rx(tail, skb) ||
+-	    thtail->doff != th->doff ||
+-	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)) ||
+-	    /* prior to PSP Rx policy check, retain exact PSP metadata */
+-	    psp_skb_coalesce_diff(tail, skb))
+-		goto no_coalesce;
+-
+-	__skb_pull(skb, hdrlen);
+-
+-	shinfo = skb_shinfo(skb);
+-	gso_size = shinfo->gso_size ?: skb->len;
+-	gso_segs = shinfo->gso_segs ?: 1;
+-
+-	shinfo = skb_shinfo(tail);
+-	tail_gso_size = shinfo->gso_size ?: (tail->len - hdrlen);
+-	tail_gso_segs = shinfo->gso_segs ?: 1;
+-
+-	if (skb_try_coalesce(tail, skb, &fragstolen, &delta)) {
+-		TCP_SKB_CB(tail)->end_seq = TCP_SKB_CB(skb)->end_seq;
+-
+-		if (likely(!before(TCP_SKB_CB(skb)->ack_seq, TCP_SKB_CB(tail)->ack_seq))) {
+-			TCP_SKB_CB(tail)->ack_seq = TCP_SKB_CB(skb)->ack_seq;
+-			thtail->window = th->window;
+-		}
+-
+-		/* We have to update both TCP_SKB_CB(tail)->tcp_flags and
+-		 * thtail->fin, so that the fast path in tcp_rcv_established()
+-		 * is not entered if we append a packet with a FIN.
+-		 * SYN, RST, URG are not present.
+-		 * ACK is set on both packets.
+-		 * PSH : we do not really care in TCP stack,
+-		 *       at least for 'GRO' packets.
+-		 */
+-		thtail->fin |= th->fin;
+-		TCP_SKB_CB(tail)->tcp_flags |= TCP_SKB_CB(skb)->tcp_flags;
+-
+-		if (TCP_SKB_CB(skb)->has_rxtstamp) {
+-			TCP_SKB_CB(tail)->has_rxtstamp = true;
+-			tail->tstamp = skb->tstamp;
+-			skb_hwtstamps(tail)->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
+-		}
+-
+-		/* Not as strict as GRO. We only need to carry mss max value */
+-		shinfo->gso_size = max(gso_size, tail_gso_size);
+-		shinfo->gso_segs = min_t(u32, gso_segs + tail_gso_segs, 0xFFFF);
+-
+-		sk->sk_backlog.len += delta;
+-		__NET_INC_STATS(sock_net(sk),
+-				LINUX_MIB_TCPBACKLOGCOALESCE);
+-		kfree_skb_partial(skb, fragstolen);
+-		return SKB_NOT_DROPPED_YET;
+-	}
+-	__skb_push(skb, hdrlen);
+-
+-no_coalesce:
+-	/* sk->sk_backlog.len is reset only at the end of __release_sock().
+-	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
+-	 * sk_rcvbuf in normal conditions.
+-	 */
+-	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
+-
+-	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
+-
+-	/* Only socket owner can try to collapse/prune rx queues
+-	 * to reduce memory overhead, so add a little headroom here.
+-	 * Few sockets backlog are possibly concurrently non empty.
+-	 */
+-	limit += 64 * 1024;
+-
+-	limit = min_t(u64, limit, UINT_MAX);
+-
+-	err = sk_add_backlog(sk, skb, limit);
+-	if (unlikely(err)) {
+-		bh_unlock_sock(sk);
+-		if (err == -ENOMEM) {
+-			__NET_INC_STATS(sock_net(sk), LINUX_MIB_PFMEMALLOCDROP);
+-			return SKB_DROP_REASON_PFMEMALLOC;
+-		}
+-		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPBACKLOGDROP);
+-		return SKB_DROP_REASON_SOCKET_BACKLOG;
+-	}
+-	return SKB_NOT_DROPPED_YET;
+-}
+-
+ static void tcp_v4_restore_cb(struct sk_buff *skb)
+ {
+ 	memmove(IPCB(skb), &TCP_SKB_CB(skb)->header.h4,
+@@ -2409,338 +2116,9 @@ static int tcp_v4_init_sock(struct sock *sk)
+ 	return 0;
+ }
  
- menuconfig IP_SCTP
- 	tristate "The SCTP Protocol"
--	depends on INET
-+	depends on INET && IPV4
- 	select CRYPTO_LIB_SHA1
- 	select CRYPTO_LIB_SHA256
- 	select CRYPTO_LIB_UTILS
-diff --git a/net/smc/Kconfig b/net/smc/Kconfig
-index 277ef504bc26..faac6586b848 100644
---- a/net/smc/Kconfig
-+++ b/net/smc/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config SMC
- 	tristate "SMC socket protocol family"
--	depends on INET && INFINIBAND && DIBS
-+	depends on INET && IPV4 && INFINIBAND && DIBS
- 	help
- 	  SMC-R provides a "sockets over RDMA" solution making use of
- 	  RDMA over Converged Ethernet (RoCE) technology to upgrade
-diff --git a/net/sunrpc/Kconfig b/net/sunrpc/Kconfig
-index e7808e5714dc..58e6f6db3100 100644
---- a/net/sunrpc/Kconfig
-+++ b/net/sunrpc/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config SUNRPC
- 	tristate
--	depends on MULTIUSER
-+	depends on MULTIUSER && IPV4
+-static void tcp_release_user_frags(struct sock *sk)
+-{
+-#ifdef CONFIG_PAGE_POOL
+-	unsigned long index;
+-	void *netmem;
+-
+-	xa_for_each(&sk->sk_user_frags, index, netmem)
+-		WARN_ON_ONCE(!napi_pp_put_page((__force netmem_ref)netmem));
+-#endif
+-}
+-
+-void tcp_v4_destroy_sock(struct sock *sk)
+-{
+-	struct tcp_sock *tp = tcp_sk(sk);
+-
+-	tcp_release_user_frags(sk);
+-
+-	xa_destroy(&sk->sk_user_frags);
+-
+-	trace_tcp_destroy_sock(sk);
+-
+-	tcp_clear_xmit_timers(sk);
+-
+-	tcp_cleanup_congestion_control(sk);
+-
+-	tcp_cleanup_ulp(sk);
+-
+-	/* Cleanup up the write buffer. */
+-	tcp_write_queue_purge(sk);
+-
+-	/* Check if we want to disable active TFO */
+-	tcp_fastopen_active_disable_ofo_check(sk);
+-
+-	/* Cleans up our, hopefully empty, out_of_order_queue. */
+-	skb_rbtree_purge(&tp->out_of_order_queue);
+-
+-	/* Clean up a referenced TCP bind bucket. */
+-	if (inet_csk(sk)->icsk_bind_hash)
+-		inet_put_port(sk);
+-
+-	BUG_ON(rcu_access_pointer(tp->fastopen_rsk));
+-
+-	/* If socket is aborted during connect operation */
+-	tcp_free_fastopen_req(tp);
+-	tcp_fastopen_destroy_cipher(sk);
+-	tcp_saved_syn_free(tp);
+-
+-	sk_sockets_allocated_dec(sk);
+-}
+-
+ #ifdef CONFIG_PROC_FS
+ /* Proc filesystem TCP sock list dumping. */
  
- config SUNRPC_GSS
- 	tristate
-diff --git a/net/tipc/Kconfig b/net/tipc/Kconfig
-index 18f62135e47b..2db479597c79 100644
---- a/net/tipc/Kconfig
-+++ b/net/tipc/Kconfig
-@@ -30,6 +30,7 @@ config TIPC_MEDIA_IB
- config TIPC_MEDIA_UDP
- 	bool "IP/UDP media type support"
- 	depends on TIPC
-+	depends on IPV4
- 	select NET_UDP_TUNNEL
- 	default y
- 	help
-diff --git a/net/xfrm/Kconfig b/net/xfrm/Kconfig
-index 4a62817a88f8..203188b05be4 100644
---- a/net/xfrm/Kconfig
-+++ b/net/xfrm/Kconfig
-@@ -4,7 +4,7 @@
- #
- config XFRM
- 	bool
--	depends on INET
-+	depends on INET && IPV4
- 	select GRO_CELLS
- 	select SKB_EXTENSIONS
+-static unsigned short seq_file_family(const struct seq_file *seq);
+-
+-static bool seq_sk_match(struct seq_file *seq, const struct sock *sk)
+-{
+-	unsigned short family = seq_file_family(seq);
+-
+-	/* AF_UNSPEC is used as a match all */
+-	return ((family == AF_UNSPEC || family == sk->sk_family) &&
+-		net_eq(sock_net(sk), seq_file_net(seq)));
+-}
+-
+-/* Find a non empty bucket (starting from st->bucket)
+- * and return the first sk from it.
+- */
+-static void *listening_get_first(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct tcp_iter_state *st = seq->private;
+-
+-	st->offset = 0;
+-	for (; st->bucket <= hinfo->lhash2_mask; st->bucket++) {
+-		struct inet_listen_hashbucket *ilb2;
+-		struct hlist_nulls_node *node;
+-		struct sock *sk;
+-
+-		ilb2 = &hinfo->lhash2[st->bucket];
+-		if (hlist_nulls_empty(&ilb2->nulls_head))
+-			continue;
+-
+-		spin_lock(&ilb2->lock);
+-		sk_nulls_for_each(sk, node, &ilb2->nulls_head) {
+-			if (seq_sk_match(seq, sk))
+-				return sk;
+-		}
+-		spin_unlock(&ilb2->lock);
+-	}
+-
+-	return NULL;
+-}
+-
+-/* Find the next sk of "cur" within the same bucket (i.e. st->bucket).
+- * If "cur" is the last one in the st->bucket,
+- * call listening_get_first() to return the first sk of the next
+- * non empty bucket.
+- */
+-static void *listening_get_next(struct seq_file *seq, void *cur)
+-{
+-	struct tcp_iter_state *st = seq->private;
+-	struct inet_listen_hashbucket *ilb2;
+-	struct hlist_nulls_node *node;
+-	struct inet_hashinfo *hinfo;
+-	struct sock *sk = cur;
+-
+-	++st->num;
+-	++st->offset;
+-
+-	sk = sk_nulls_next(sk);
+-	sk_nulls_for_each_from(sk, node) {
+-		if (seq_sk_match(seq, sk))
+-			return sk;
+-	}
+-
+-	hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	ilb2 = &hinfo->lhash2[st->bucket];
+-	spin_unlock(&ilb2->lock);
+-	++st->bucket;
+-	return listening_get_first(seq);
+-}
+-
+-static void *listening_get_idx(struct seq_file *seq, loff_t *pos)
+-{
+-	struct tcp_iter_state *st = seq->private;
+-	void *rc;
+-
+-	st->bucket = 0;
+-	st->offset = 0;
+-	rc = listening_get_first(seq);
+-
+-	while (rc && *pos) {
+-		rc = listening_get_next(seq, rc);
+-		--*pos;
+-	}
+-	return rc;
+-}
+-
+-static inline bool empty_bucket(struct inet_hashinfo *hinfo,
+-				const struct tcp_iter_state *st)
+-{
+-	return hlist_nulls_empty(&hinfo->ehash[st->bucket].chain);
+-}
+-
+-/*
+- * Get first established socket starting from bucket given in st->bucket.
+- * If st->bucket is zero, the very first socket in the hash is returned.
+- */
+-static void *established_get_first(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct tcp_iter_state *st = seq->private;
+-
+-	st->offset = 0;
+-	for (; st->bucket <= hinfo->ehash_mask; ++st->bucket) {
+-		struct sock *sk;
+-		struct hlist_nulls_node *node;
+-		spinlock_t *lock = inet_ehash_lockp(hinfo, st->bucket);
+-
+-		cond_resched();
+-
+-		/* Lockless fast path for the common case of empty buckets */
+-		if (empty_bucket(hinfo, st))
+-			continue;
+-
+-		spin_lock_bh(lock);
+-		sk_nulls_for_each(sk, node, &hinfo->ehash[st->bucket].chain) {
+-			if (seq_sk_match(seq, sk))
+-				return sk;
+-		}
+-		spin_unlock_bh(lock);
+-	}
+-
+-	return NULL;
+-}
+-
+-static void *established_get_next(struct seq_file *seq, void *cur)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct tcp_iter_state *st = seq->private;
+-	struct hlist_nulls_node *node;
+-	struct sock *sk = cur;
+-
+-	++st->num;
+-	++st->offset;
+-
+-	sk = sk_nulls_next(sk);
+-
+-	sk_nulls_for_each_from(sk, node) {
+-		if (seq_sk_match(seq, sk))
+-			return sk;
+-	}
+-
+-	spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
+-	++st->bucket;
+-	return established_get_first(seq);
+-}
+-
+-static void *established_get_idx(struct seq_file *seq, loff_t pos)
+-{
+-	struct tcp_iter_state *st = seq->private;
+-	void *rc;
+-
+-	st->bucket = 0;
+-	rc = established_get_first(seq);
+-
+-	while (rc && pos) {
+-		rc = established_get_next(seq, rc);
+-		--pos;
+-	}
+-	return rc;
+-}
+-
+-static void *tcp_get_idx(struct seq_file *seq, loff_t pos)
+-{
+-	void *rc;
+-	struct tcp_iter_state *st = seq->private;
+-
+-	st->state = TCP_SEQ_STATE_LISTENING;
+-	rc	  = listening_get_idx(seq, &pos);
+-
+-	if (!rc) {
+-		st->state = TCP_SEQ_STATE_ESTABLISHED;
+-		rc	  = established_get_idx(seq, pos);
+-	}
+-
+-	return rc;
+-}
+-
+-static void *tcp_seek_last_pos(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct tcp_iter_state *st = seq->private;
+-	int bucket = st->bucket;
+-	int offset = st->offset;
+-	int orig_num = st->num;
+-	void *rc = NULL;
+-
+-	switch (st->state) {
+-	case TCP_SEQ_STATE_LISTENING:
+-		if (st->bucket > hinfo->lhash2_mask)
+-			break;
+-		rc = listening_get_first(seq);
+-		while (offset-- && rc && bucket == st->bucket)
+-			rc = listening_get_next(seq, rc);
+-		if (rc)
+-			break;
+-		st->bucket = 0;
+-		st->state = TCP_SEQ_STATE_ESTABLISHED;
+-		fallthrough;
+-	case TCP_SEQ_STATE_ESTABLISHED:
+-		if (st->bucket > hinfo->ehash_mask)
+-			break;
+-		rc = established_get_first(seq);
+-		while (offset-- && rc && bucket == st->bucket)
+-			rc = established_get_next(seq, rc);
+-	}
+-
+-	st->num = orig_num;
+-
+-	return rc;
+-}
+-
+-void *tcp_seq_start(struct seq_file *seq, loff_t *pos)
+-{
+-	struct tcp_iter_state *st = seq->private;
+-	void *rc;
+-
+-	if (*pos && *pos == st->last_pos) {
+-		rc = tcp_seek_last_pos(seq);
+-		if (rc)
+-			goto out;
+-	}
+-
+-	st->state = TCP_SEQ_STATE_LISTENING;
+-	st->num = 0;
+-	st->bucket = 0;
+-	st->offset = 0;
+-	rc = *pos ? tcp_get_idx(seq, *pos - 1) : SEQ_START_TOKEN;
+-
+-out:
+-	st->last_pos = *pos;
+-	return rc;
+-}
+-
+-void *tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+-{
+-	struct tcp_iter_state *st = seq->private;
+-	void *rc = NULL;
+-
+-	if (v == SEQ_START_TOKEN) {
+-		rc = tcp_get_idx(seq, 0);
+-		goto out;
+-	}
+-
+-	switch (st->state) {
+-	case TCP_SEQ_STATE_LISTENING:
+-		rc = listening_get_next(seq, v);
+-		if (!rc) {
+-			st->state = TCP_SEQ_STATE_ESTABLISHED;
+-			st->bucket = 0;
+-			st->offset = 0;
+-			rc	  = established_get_first(seq);
+-		}
+-		break;
+-	case TCP_SEQ_STATE_ESTABLISHED:
+-		rc = established_get_next(seq, v);
+-		break;
+-	}
+-out:
+-	++*pos;
+-	st->last_pos = *pos;
+-	return rc;
+-}
+-
+-void tcp_seq_stop(struct seq_file *seq, void *v)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct tcp_iter_state *st = seq->private;
+-
+-	switch (st->state) {
+-	case TCP_SEQ_STATE_LISTENING:
+-		if (v != SEQ_START_TOKEN)
+-			spin_unlock(&hinfo->lhash2[st->bucket].lock);
+-		break;
+-	case TCP_SEQ_STATE_ESTABLISHED:
+-		if (v)
+-			spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
+-		break;
+-	}
+-}
+-
+ static void get_openreq4(const struct request_sock *req,
+ 			 struct seq_file *f, int i)
+ {
+@@ -2876,434 +2254,6 @@ static int tcp4_seq_show(struct seq_file *seq, void *v)
+ 	return 0;
+ }
  
-@@ -13,6 +13,7 @@ config XFRM_OFFLOAD
+-#ifdef CONFIG_BPF_SYSCALL
+-union bpf_tcp_iter_batch_item {
+-	struct sock *sk;
+-	__u64 cookie;
+-};
+-
+-struct bpf_tcp_iter_state {
+-	struct tcp_iter_state state;
+-	unsigned int cur_sk;
+-	unsigned int end_sk;
+-	unsigned int max_sk;
+-	union bpf_tcp_iter_batch_item *batch;
+-};
+-
+-struct bpf_iter__tcp {
+-	__bpf_md_ptr(struct bpf_iter_meta *, meta);
+-	__bpf_md_ptr(struct sock_common *, sk_common);
+-	uid_t uid __aligned(8);
+-};
+-
+-static int tcp_prog_seq_show(struct bpf_prog *prog, struct bpf_iter_meta *meta,
+-			     struct sock_common *sk_common, uid_t uid)
+-{
+-	struct bpf_iter__tcp ctx;
+-
+-	meta->seq_num--;  /* skip SEQ_START_TOKEN */
+-	ctx.meta = meta;
+-	ctx.sk_common = sk_common;
+-	ctx.uid = uid;
+-	return bpf_iter_run_prog(prog, &ctx);
+-}
+-
+-static void bpf_iter_tcp_put_batch(struct bpf_tcp_iter_state *iter)
+-{
+-	union bpf_tcp_iter_batch_item *item;
+-	unsigned int cur_sk = iter->cur_sk;
+-	__u64 cookie;
+-
+-	/* Remember the cookies of the sockets we haven't seen yet, so we can
+-	 * pick up where we left off next time around.
+-	 */
+-	while (cur_sk < iter->end_sk) {
+-		item = &iter->batch[cur_sk++];
+-		cookie = sock_gen_cookie(item->sk);
+-		sock_gen_put(item->sk);
+-		item->cookie = cookie;
+-	}
+-}
+-
+-static int bpf_iter_tcp_realloc_batch(struct bpf_tcp_iter_state *iter,
+-				      unsigned int new_batch_sz, gfp_t flags)
+-{
+-	union bpf_tcp_iter_batch_item *new_batch;
+-
+-	new_batch = kvmalloc_objs(*new_batch, new_batch_sz,
+-				  flags | __GFP_NOWARN);
+-	if (!new_batch)
+-		return -ENOMEM;
+-
+-	memcpy(new_batch, iter->batch, sizeof(*iter->batch) * iter->end_sk);
+-	kvfree(iter->batch);
+-	iter->batch = new_batch;
+-	iter->max_sk = new_batch_sz;
+-
+-	return 0;
+-}
+-
+-static struct sock *bpf_iter_tcp_resume_bucket(struct sock *first_sk,
+-					       union bpf_tcp_iter_batch_item *cookies,
+-					       int n_cookies)
+-{
+-	struct hlist_nulls_node *node;
+-	struct sock *sk;
+-	int i;
+-
+-	for (i = 0; i < n_cookies; i++) {
+-		sk = first_sk;
+-		sk_nulls_for_each_from(sk, node)
+-			if (cookies[i].cookie == atomic64_read(&sk->sk_cookie))
+-				return sk;
+-	}
+-
+-	return NULL;
+-}
+-
+-static struct sock *bpf_iter_tcp_resume_listening(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-	unsigned int find_cookie = iter->cur_sk;
+-	unsigned int end_cookie = iter->end_sk;
+-	int resume_bucket = st->bucket;
+-	struct sock *sk;
+-
+-	if (end_cookie && find_cookie == end_cookie)
+-		++st->bucket;
+-
+-	sk = listening_get_first(seq);
+-	iter->cur_sk = 0;
+-	iter->end_sk = 0;
+-
+-	if (sk && st->bucket == resume_bucket && end_cookie) {
+-		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
+-						end_cookie - find_cookie);
+-		if (!sk) {
+-			spin_unlock(&hinfo->lhash2[st->bucket].lock);
+-			++st->bucket;
+-			sk = listening_get_first(seq);
+-		}
+-	}
+-
+-	return sk;
+-}
+-
+-static struct sock *bpf_iter_tcp_resume_established(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-	unsigned int find_cookie = iter->cur_sk;
+-	unsigned int end_cookie = iter->end_sk;
+-	int resume_bucket = st->bucket;
+-	struct sock *sk;
+-
+-	if (end_cookie && find_cookie == end_cookie)
+-		++st->bucket;
+-
+-	sk = established_get_first(seq);
+-	iter->cur_sk = 0;
+-	iter->end_sk = 0;
+-
+-	if (sk && st->bucket == resume_bucket && end_cookie) {
+-		sk = bpf_iter_tcp_resume_bucket(sk, &iter->batch[find_cookie],
+-						end_cookie - find_cookie);
+-		if (!sk) {
+-			spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
+-			++st->bucket;
+-			sk = established_get_first(seq);
+-		}
+-	}
+-
+-	return sk;
+-}
+-
+-static struct sock *bpf_iter_tcp_resume(struct seq_file *seq)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-	struct sock *sk = NULL;
+-
+-	switch (st->state) {
+-	case TCP_SEQ_STATE_LISTENING:
+-		sk = bpf_iter_tcp_resume_listening(seq);
+-		if (sk)
+-			break;
+-		st->bucket = 0;
+-		st->state = TCP_SEQ_STATE_ESTABLISHED;
+-		fallthrough;
+-	case TCP_SEQ_STATE_ESTABLISHED:
+-		sk = bpf_iter_tcp_resume_established(seq);
+-		break;
+-	}
+-
+-	return sk;
+-}
+-
+-static unsigned int bpf_iter_tcp_listening_batch(struct seq_file *seq,
+-						 struct sock **start_sk)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct hlist_nulls_node *node;
+-	unsigned int expected = 1;
+-	struct sock *sk;
+-
+-	sock_hold(*start_sk);
+-	iter->batch[iter->end_sk++].sk = *start_sk;
+-
+-	sk = sk_nulls_next(*start_sk);
+-	*start_sk = NULL;
+-	sk_nulls_for_each_from(sk, node) {
+-		if (seq_sk_match(seq, sk)) {
+-			if (iter->end_sk < iter->max_sk) {
+-				sock_hold(sk);
+-				iter->batch[iter->end_sk++].sk = sk;
+-			} else if (!*start_sk) {
+-				/* Remember where we left off. */
+-				*start_sk = sk;
+-			}
+-			expected++;
+-		}
+-	}
+-
+-	return expected;
+-}
+-
+-static unsigned int bpf_iter_tcp_established_batch(struct seq_file *seq,
+-						   struct sock **start_sk)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct hlist_nulls_node *node;
+-	struct sock *sk = *start_sk;
+-	unsigned int expected = 0;
+-
+-	*start_sk = NULL;
+-	sk_nulls_for_each_from(sk, node) {
+-		if (!seq_sk_match(seq, sk))
+-			continue;
+-		expected++;
+-		if (iter->end_sk < iter->max_sk) {
+-			/* reqsk_queue_hash_req() inserts with sk_refcnt == 0
+-			 * and refcount_set()s it after the bucket lock drops.
+-			 */
+-			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+-				continue;
+-			iter->batch[iter->end_sk++].sk = sk;
+-		} else if (!*start_sk) {
+-			/* Remember where we left off. */
+-			*start_sk = sk;
+-		}
+-	}
+-
+-	return expected;
+-}
+-
+-static unsigned int bpf_iter_fill_batch(struct seq_file *seq,
+-					struct sock **start_sk)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-
+-	if (st->state == TCP_SEQ_STATE_LISTENING)
+-		return bpf_iter_tcp_listening_batch(seq, start_sk);
+-	else
+-		return bpf_iter_tcp_established_batch(seq, start_sk);
+-}
+-
+-static void bpf_iter_tcp_unlock_bucket(struct seq_file *seq)
+-{
+-	struct inet_hashinfo *hinfo = seq_file_net(seq)->ipv4.tcp_death_row.hashinfo;
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-
+-	if (st->state == TCP_SEQ_STATE_LISTENING)
+-		spin_unlock(&hinfo->lhash2[st->bucket].lock);
+-	else
+-		spin_unlock_bh(inet_ehash_lockp(hinfo, st->bucket));
+-}
+-
+-static struct sock *bpf_iter_tcp_batch(struct seq_file *seq)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	unsigned int expected;
+-	struct sock *sk;
+-	int err;
+-
+-again:
+-	sk = bpf_iter_tcp_resume(seq);
+-	if (!sk)
+-		return NULL; /* Done */
+-
+-	expected = bpf_iter_fill_batch(seq, &sk);
+-	if (likely(!sk))
+-		goto done;
+-
+-	/* Batch size was too small. */
+-	bpf_iter_tcp_unlock_bucket(seq);
+-	bpf_iter_tcp_put_batch(iter);
+-	err = bpf_iter_tcp_realloc_batch(iter, expected * 3 / 2,
+-					 GFP_USER);
+-	if (err) {
+-		iter->cur_sk = 0;
+-		iter->end_sk = 0;
+-		return ERR_PTR(err);
+-	}
+-
+-	sk = bpf_iter_tcp_resume(seq);
+-	if (!sk)
+-		return NULL; /* Done */
+-
+-	expected = bpf_iter_fill_batch(seq, &sk);
+-	if (likely(!sk))
+-		goto done;
+-
+-	/* Batch size was still too small. Hold onto the lock while we try
+-	 * again with a larger batch to make sure the current bucket's size
+-	 * does not change in the meantime.
+-	 */
+-	err = bpf_iter_tcp_realloc_batch(iter, expected, GFP_NOWAIT);
+-	if (err) {
+-		bpf_iter_tcp_unlock_bucket(seq);
+-		return ERR_PTR(err);
+-	}
+-
+-	bpf_iter_fill_batch(seq, &sk);
+-	WARN_ON_ONCE(sk);
+-done:
+-	bpf_iter_tcp_unlock_bucket(seq);
+-	if (unlikely(!iter->end_sk)) {
+-		++iter->state.bucket;
+-		goto again;
+-	}
+-	return iter->batch[0].sk;
+-}
+-
+-static void *bpf_iter_tcp_seq_start(struct seq_file *seq, loff_t *pos)
+-{
+-	/* bpf iter does not support lseek, so it always
+-	 * continue from where it was stop()-ped.
+-	 */
+-	if (*pos)
+-		return bpf_iter_tcp_batch(seq);
+-
+-	return SEQ_START_TOKEN;
+-}
+-
+-static void *bpf_iter_tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct tcp_iter_state *st = &iter->state;
+-	struct sock *sk;
+-
+-	/* Whenever seq_next() is called, the iter->cur_sk is
+-	 * done with seq_show(), so advance to the next sk in
+-	 * the batch.
+-	 */
+-	if (iter->cur_sk < iter->end_sk) {
+-		/* Keeping st->num consistent in tcp_iter_state.
+-		 * bpf_iter_tcp does not use st->num.
+-		 * meta.seq_num is used instead.
+-		 */
+-		st->num++;
+-		sock_gen_put(iter->batch[iter->cur_sk++].sk);
+-	}
+-
+-	if (iter->cur_sk < iter->end_sk)
+-		sk = iter->batch[iter->cur_sk].sk;
+-	else
+-		sk = bpf_iter_tcp_batch(seq);
+-
+-	++*pos;
+-	/* Keeping st->last_pos consistent in tcp_iter_state.
+-	 * bpf iter does not do lseek, so st->last_pos always equals to *pos.
+-	 */
+-	st->last_pos = *pos;
+-	return sk;
+-}
+-
+-static int bpf_iter_tcp_seq_show(struct seq_file *seq, void *v)
+-{
+-	struct bpf_iter_meta meta;
+-	struct bpf_prog *prog;
+-	struct sock *sk = v;
+-	uid_t uid;
+-	int ret;
+-
+-	if (v == SEQ_START_TOKEN)
+-		return 0;
+-
+-	if (sk_fullsock(sk))
+-		lock_sock(sk);
+-
+-	if (unlikely(sk_unhashed(sk))) {
+-		ret = SEQ_SKIP;
+-		goto unlock;
+-	}
+-
+-	if (sk->sk_state == TCP_TIME_WAIT) {
+-		uid = 0;
+-	} else if (sk->sk_state == TCP_NEW_SYN_RECV) {
+-		const struct request_sock *req = v;
+-
+-		uid = from_kuid_munged(seq_user_ns(seq),
+-				       sk_uid(req->rsk_listener));
+-	} else {
+-		uid = from_kuid_munged(seq_user_ns(seq), sk_uid(sk));
+-	}
+-
+-	meta.seq = seq;
+-	prog = bpf_iter_get_info(&meta, false);
+-	ret = tcp_prog_seq_show(prog, &meta, v, uid);
+-
+-unlock:
+-	if (sk_fullsock(sk))
+-		release_sock(sk);
+-	return ret;
+-
+-}
+-
+-static void bpf_iter_tcp_seq_stop(struct seq_file *seq, void *v)
+-{
+-	struct bpf_tcp_iter_state *iter = seq->private;
+-	struct bpf_iter_meta meta;
+-	struct bpf_prog *prog;
+-
+-	if (!v) {
+-		meta.seq = seq;
+-		prog = bpf_iter_get_info(&meta, true);
+-		if (prog)
+-			(void)tcp_prog_seq_show(prog, &meta, v, 0);
+-	}
+-
+-	if (iter->cur_sk < iter->end_sk)
+-		bpf_iter_tcp_put_batch(iter);
+-}
+-
+-static const struct seq_operations bpf_iter_tcp_seq_ops = {
+-	.show		= bpf_iter_tcp_seq_show,
+-	.start		= bpf_iter_tcp_seq_start,
+-	.next		= bpf_iter_tcp_seq_next,
+-	.stop		= bpf_iter_tcp_seq_stop,
+-};
+-#endif
+-static unsigned short seq_file_family(const struct seq_file *seq)
+-{
+-	const struct tcp_seq_afinfo *afinfo;
+-
+-#ifdef CONFIG_BPF_SYSCALL
+-	/* Iterated from bpf_iter.  Let the bpf prog to filter instead. */
+-	if (seq->op == &bpf_iter_tcp_seq_ops)
+-		return AF_UNSPEC;
+-#endif
+-
+-	/* Iterated from proc fs */
+-	afinfo = pde_data(file_inode(seq->file));
+-	return afinfo->family;
+-}
+-
+ static const struct seq_operations tcp4_seq_ops = {
+ 	.show		= tcp4_seq_show,
+ 	.start		= tcp_seq_start,
+@@ -3354,7 +2304,7 @@ struct proto tcp_prot = {
+ 	.accept			= inet_csk_accept,
+ 	.ioctl			= tcp_ioctl,
+ 	.init			= tcp_v4_init_sock,
+-	.destroy		= tcp_v4_destroy_sock,
++	.destroy		= tcp_destroy_sock,
+ 	.shutdown		= tcp_shutdown,
+ 	.setsockopt		= tcp_setsockopt,
+ 	.getsockopt		= tcp_getsockopt,
+@@ -3397,255 +2347,6 @@ struct proto tcp_prot = {
+ };
+ EXPORT_SYMBOL(tcp_prot);
  
- config XFRM_ALGO
- 	tristate
-+	depends on IPV4
- 	select XFRM
- 	select CRYPTO
- 	select CRYPTO_AEAD
-@@ -23,6 +24,7 @@ if INET
- config XFRM_USER
- 	tristate "Transformation user configuration interface"
- 	select XFRM_ALGO
-+	depends on IPV4
- 	help
- 	  Support for Transformation(XFRM) user configuration interface
- 	  like IPsec used by native Linux tools.
-@@ -42,7 +44,7 @@ config XFRM_USER_COMPAT
+-static void __net_exit tcp_sk_exit(struct net *net)
+-{
+-	if (net->ipv4.tcp_congestion_control)
+-		bpf_module_put(net->ipv4.tcp_congestion_control,
+-			       net->ipv4.tcp_congestion_control->owner);
+-}
+-
+-static void __net_init tcp_set_hashinfo(struct net *net)
+-{
+-	struct inet_hashinfo *hinfo;
+-	unsigned int ehash_entries;
+-	struct net *old_net;
+-
+-	if (net_eq(net, &init_net))
+-		goto fallback;
+-
+-	old_net = current->nsproxy->net_ns;
+-	ehash_entries = READ_ONCE(old_net->ipv4.sysctl_tcp_child_ehash_entries);
+-	if (!ehash_entries)
+-		goto fallback;
+-
+-	ehash_entries = roundup_pow_of_two(ehash_entries);
+-	hinfo = inet_pernet_hashinfo_alloc(&tcp_hashinfo, ehash_entries);
+-	if (!hinfo) {
+-		pr_warn("Failed to allocate TCP ehash (entries: %u) "
+-			"for a netns, fallback to the global one\n",
+-			ehash_entries);
+-fallback:
+-		hinfo = &tcp_hashinfo;
+-		ehash_entries = tcp_hashinfo.ehash_mask + 1;
+-	}
+-
+-	net->ipv4.tcp_death_row.hashinfo = hinfo;
+-	net->ipv4.tcp_death_row.sysctl_max_tw_buckets = ehash_entries / 2;
+-	net->ipv4.sysctl_max_syn_backlog = max(128U, ehash_entries / 128);
+-}
+-
+-static int __net_init tcp_sk_init(struct net *net)
+-{
+-	net->ipv4.sysctl_tcp_ecn = TCP_ECN_IN_ECN_OUT_NOECN;
+-	net->ipv4.sysctl_tcp_ecn_option = TCP_ACCECN_OPTION_FULL;
+-	net->ipv4.sysctl_tcp_ecn_option_beacon = TCP_ACCECN_OPTION_BEACON;
+-	net->ipv4.sysctl_tcp_ecn_fallback = 1;
+-
+-	net->ipv4.sysctl_tcp_base_mss = TCP_BASE_MSS;
+-	net->ipv4.sysctl_tcp_min_snd_mss = TCP_MIN_SND_MSS;
+-	net->ipv4.sysctl_tcp_probe_threshold = TCP_PROBE_THRESHOLD;
+-	net->ipv4.sysctl_tcp_probe_interval = TCP_PROBE_INTERVAL;
+-	net->ipv4.sysctl_tcp_mtu_probe_floor = TCP_MIN_SND_MSS;
+-
+-	net->ipv4.sysctl_tcp_keepalive_time = TCP_KEEPALIVE_TIME;
+-	net->ipv4.sysctl_tcp_keepalive_probes = TCP_KEEPALIVE_PROBES;
+-	net->ipv4.sysctl_tcp_keepalive_intvl = TCP_KEEPALIVE_INTVL;
+-
+-	net->ipv4.sysctl_tcp_syn_retries = TCP_SYN_RETRIES;
+-	net->ipv4.sysctl_tcp_synack_retries = TCP_SYNACK_RETRIES;
+-	net->ipv4.sysctl_tcp_syncookies = 1;
+-	net->ipv4.sysctl_tcp_reordering = TCP_FASTRETRANS_THRESH;
+-	net->ipv4.sysctl_tcp_retries1 = TCP_RETR1;
+-	net->ipv4.sysctl_tcp_retries2 = TCP_RETR2;
+-	net->ipv4.sysctl_tcp_orphan_retries = 0;
+-	net->ipv4.sysctl_tcp_fin_timeout = TCP_FIN_TIMEOUT;
+-	net->ipv4.sysctl_tcp_notsent_lowat = UINT_MAX;
+-	net->ipv4.sysctl_tcp_tw_reuse = 2;
+-	net->ipv4.sysctl_tcp_tw_reuse_delay = 1 * MSEC_PER_SEC;
+-	net->ipv4.sysctl_tcp_no_ssthresh_metrics_save = 1;
+-
+-	refcount_set(&net->ipv4.tcp_death_row.tw_refcount, 1);
+-	tcp_set_hashinfo(net);
+-
+-	net->ipv4.sysctl_tcp_sack = 1;
+-	net->ipv4.sysctl_tcp_window_scaling = 1;
+-	net->ipv4.sysctl_tcp_timestamps = 1;
+-	net->ipv4.sysctl_tcp_early_retrans = 3;
+-	net->ipv4.sysctl_tcp_recovery = TCP_RACK_LOSS_DETECTION;
+-	net->ipv4.sysctl_tcp_slow_start_after_idle = 1; /* By default, RFC2861 behavior.  */
+-	net->ipv4.sysctl_tcp_retrans_collapse = 1;
+-	net->ipv4.sysctl_tcp_max_reordering = 300;
+-	net->ipv4.sysctl_tcp_dsack = 1;
+-	net->ipv4.sysctl_tcp_app_win = 31;
+-	net->ipv4.sysctl_tcp_adv_win_scale = 1;
+-	net->ipv4.sysctl_tcp_frto = 2;
+-	net->ipv4.sysctl_tcp_moderate_rcvbuf = 1;
+-	net->ipv4.sysctl_tcp_rcvbuf_low_rtt = USEC_PER_MSEC;
+-	/* This limits the percentage of the congestion window which we
+-	 * will allow a single TSO frame to consume.  Building TSO frames
+-	 * which are too large can cause TCP streams to be bursty.
+-	 */
+-	net->ipv4.sysctl_tcp_tso_win_divisor = 3;
+-	/* Default TSQ limit of 4 MB */
+-	net->ipv4.sysctl_tcp_limit_output_bytes = 4 << 20;
+-
+-	/* rfc5961 challenge ack rate limiting, per net-ns, disabled by default. */
+-	net->ipv4.sysctl_tcp_challenge_ack_limit = INT_MAX;
+-
+-	net->ipv4.sysctl_tcp_min_tso_segs = 2;
+-	net->ipv4.sysctl_tcp_tso_rtt_log = 9;  /* 2^9 = 512 usec */
+-	net->ipv4.sysctl_tcp_min_rtt_wlen = 300;
+-	net->ipv4.sysctl_tcp_autocorking = 1;
+-	net->ipv4.sysctl_tcp_invalid_ratelimit = HZ/2;
+-	net->ipv4.sysctl_tcp_pacing_ss_ratio = 200;
+-	net->ipv4.sysctl_tcp_pacing_ca_ratio = 120;
+-	if (net != &init_net) {
+-		memcpy(net->ipv4.sysctl_tcp_rmem,
+-		       init_net.ipv4.sysctl_tcp_rmem,
+-		       sizeof(init_net.ipv4.sysctl_tcp_rmem));
+-		memcpy(net->ipv4.sysctl_tcp_wmem,
+-		       init_net.ipv4.sysctl_tcp_wmem,
+-		       sizeof(init_net.ipv4.sysctl_tcp_wmem));
+-	}
+-	net->ipv4.sysctl_tcp_comp_sack_delay_ns = NSEC_PER_MSEC;
+-	net->ipv4.sysctl_tcp_comp_sack_slack_ns = 10 * NSEC_PER_USEC;
+-	net->ipv4.sysctl_tcp_comp_sack_nr = 44;
+-	net->ipv4.sysctl_tcp_comp_sack_rtt_percent = 33;
+-	net->ipv4.sysctl_tcp_backlog_ack_defer = 1;
+-	net->ipv4.sysctl_tcp_fastopen = TFO_CLIENT_ENABLE;
+-	net->ipv4.sysctl_tcp_fastopen_blackhole_timeout = 0;
+-	atomic_set(&net->ipv4.tfo_active_disable_times, 0);
+-
+-	/* Set default values for PLB */
+-	net->ipv4.sysctl_tcp_plb_enabled = 0; /* Disabled by default */
+-	net->ipv4.sysctl_tcp_plb_idle_rehash_rounds = 3;
+-	net->ipv4.sysctl_tcp_plb_rehash_rounds = 12;
+-	net->ipv4.sysctl_tcp_plb_suspend_rto_sec = 60;
+-	/* Default congestion threshold for PLB to mark a round is 50% */
+-	net->ipv4.sysctl_tcp_plb_cong_thresh = (1 << TCP_PLB_SCALE) / 2;
+-
+-	/* Reno is always built in */
+-	if (!net_eq(net, &init_net) &&
+-	    bpf_try_module_get(init_net.ipv4.tcp_congestion_control,
+-			       init_net.ipv4.tcp_congestion_control->owner))
+-		net->ipv4.tcp_congestion_control = init_net.ipv4.tcp_congestion_control;
+-	else
+-		net->ipv4.tcp_congestion_control = &tcp_reno;
+-
+-	net->ipv4.sysctl_tcp_syn_linear_timeouts = 4;
+-	net->ipv4.sysctl_tcp_shrink_window = 0;
+-
+-	net->ipv4.sysctl_tcp_pingpong_thresh = 1;
+-	net->ipv4.sysctl_tcp_rto_min_us = jiffies_to_usecs(TCP_RTO_MIN);
+-	net->ipv4.sysctl_tcp_rto_max_ms = TCP_RTO_MAX_SEC * MSEC_PER_SEC;
+-
+-	return 0;
+-}
+-
+-static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+-{
+-	struct net *net;
+-
+-	/* make sure concurrent calls to tcp_sk_exit_batch from net_cleanup_work
+-	 * and failed setup_net error unwinding path are serialized.
+-	 *
+-	 * tcp_twsk_purge() handles twsk in any dead netns, not just those in
+-	 * net_exit_list, the thread that dismantles a particular twsk must
+-	 * do so without other thread progressing to refcount_dec_and_test() of
+-	 * tcp_death_row.tw_refcount.
+-	 */
+-	mutex_lock(&tcp_exit_batch_mutex);
+-
+-	tcp_twsk_purge(net_exit_list);
+-
+-	list_for_each_entry(net, net_exit_list, exit_list) {
+-		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
+-		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
+-		tcp_fastopen_ctx_destroy(net);
+-	}
+-
+-	mutex_unlock(&tcp_exit_batch_mutex);
+-}
+-
+-static struct pernet_operations __net_initdata tcp_sk_ops = {
+-       .init	   = tcp_sk_init,
+-       .exit	   = tcp_sk_exit,
+-       .exit_batch = tcp_sk_exit_batch,
+-};
+-
+-#if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
+-DEFINE_BPF_ITER_FUNC(tcp, struct bpf_iter_meta *meta,
+-		     struct sock_common *sk_common, uid_t uid)
+-
+-#define INIT_BATCH_SZ 16
+-
+-static int bpf_iter_init_tcp(void *priv_data, struct bpf_iter_aux_info *aux)
+-{
+-	struct bpf_tcp_iter_state *iter = priv_data;
+-	int err;
+-
+-	err = bpf_iter_init_seq_net(priv_data, aux);
+-	if (err)
+-		return err;
+-
+-	err = bpf_iter_tcp_realloc_batch(iter, INIT_BATCH_SZ, GFP_USER);
+-	if (err) {
+-		bpf_iter_fini_seq_net(priv_data);
+-		return err;
+-	}
+-
+-	return 0;
+-}
+-
+-static void bpf_iter_fini_tcp(void *priv_data)
+-{
+-	struct bpf_tcp_iter_state *iter = priv_data;
+-
+-	bpf_iter_fini_seq_net(priv_data);
+-	kvfree(iter->batch);
+-}
+-
+-static const struct bpf_iter_seq_info tcp_seq_info = {
+-	.seq_ops		= &bpf_iter_tcp_seq_ops,
+-	.init_seq_private	= bpf_iter_init_tcp,
+-	.fini_seq_private	= bpf_iter_fini_tcp,
+-	.seq_priv_size		= sizeof(struct bpf_tcp_iter_state),
+-};
+-
+-static const struct bpf_func_proto *
+-bpf_iter_tcp_get_func_proto(enum bpf_func_id func_id,
+-			    const struct bpf_prog *prog)
+-{
+-	switch (func_id) {
+-	case BPF_FUNC_setsockopt:
+-		return &bpf_sk_setsockopt_proto;
+-	case BPF_FUNC_getsockopt:
+-		return &bpf_sk_getsockopt_proto;
+-	default:
+-		return NULL;
+-	}
+-}
+-
+-static struct bpf_iter_reg tcp_reg_info = {
+-	.target			= "tcp",
+-	.ctx_arg_info_size	= 1,
+-	.ctx_arg_info		= {
+-		{ offsetof(struct bpf_iter__tcp, sk_common),
+-		  PTR_TO_BTF_ID_OR_NULL | PTR_TRUSTED },
+-	},
+-	.get_func_proto		= bpf_iter_tcp_get_func_proto,
+-	.seq_info		= &tcp_seq_info,
+-};
+-
+-static void __init bpf_iter_register(void)
+-{
+-	tcp_reg_info.ctx_arg_info[0].btf_id = btf_sock_ids[BTF_SOCK_TYPE_SOCK_COMMON];
+-	if (bpf_iter_reg_target(&tcp_reg_info))
+-		pr_warn("Warning: could not register bpf iterator tcp\n");
+-}
+-
+-#endif
+-
+ void __init tcp_v4_init(void)
+ {
+ 	int cpu, res;
+@@ -3668,10 +2369,4 @@ void __init tcp_v4_init(void)
  
- config XFRM_INTERFACE
- 	tristate "Transformation virtual interface"
--	depends on XFRM && IPV6
-+	depends on XFRM && IPV4 && IPV6
- 	help
- 	  This provides a virtual interface to route IPsec traffic.
+ 		per_cpu(ipv4_tcp_sk.sock, cpu) = sk;
+ 	}
+-	if (register_pernet_subsys(&tcp_sk_ops))
+-		panic("Failed to create the TCP control socket.\n");
+-
+-#if defined(CONFIG_BPF_SYSCALL) && defined(CONFIG_PROC_FS)
+-	bpf_iter_register();
+-#endif
+ }
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index afb4d8e9fa67..07a4222e1712 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -220,7 +220,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 		u32 exthdrlen = icsk->icsk_ext_hdr_len;
+ 		struct sockaddr_in sin;
  
-@@ -83,6 +85,7 @@ config XFRM_STATISTICS
- # RFC 8221 lists as MUST be implemented.
- config XFRM_AH
- 	tristate
-+	depends on IPV4
- 	select XFRM_ALGO
- 	select CRYPTO
- 	select CRYPTO_HMAC
-@@ -92,6 +95,7 @@ config XFRM_AH
- # algorithms that RFC 8221 lists as MUST be implemented.
- config XFRM_ESP
- 	tristate
-+	depends on IPV4
- 	select XFRM_ALGO
- 	select CRYPTO
- 	select CRYPTO_AES
-@@ -105,12 +109,14 @@ config XFRM_ESP
+-		if (ipv6_only_sock(sk))
++		if (!IS_ENABLED(CONFIG_IPV4) || ipv6_only_sock(sk))
+ 			return -ENETUNREACH;
  
- config XFRM_IPCOMP
- 	tristate
-+	depends on IPV4
- 	select XFRM_ALGO
- 	select CRYPTO
- 	select CRYPTO_DEFLATE
+ 		sin.sin_family = AF_INET;
+@@ -1315,8 +1315,11 @@ u16 tcp_v6_get_syncookie(struct sock *sk, struct ipv6hdr *iph,
  
- config NET_KEY
- 	tristate "PF_KEY sockets (deprecated)"
-+	depends on IPV4
- 	select XFRM_ALGO
- 	help
- 	  PF_KEYv2 socket family, compatible to KAME ones.
-diff --git a/security/smack/Kconfig b/security/smack/Kconfig
-index 5a8dfad469c3..b4e6d0168bd1 100644
---- a/security/smack/Kconfig
-+++ b/security/smack/Kconfig
-@@ -3,6 +3,7 @@ config SECURITY_SMACK
- 	bool "Simplified Mandatory Access Control Kernel Support"
- 	depends on NET
- 	depends on INET
-+	depends on IPV4
- 	depends on SECURITY
- 	select NETLABEL
- 	select SECURITY_NETWORK
+ static int tcp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
+ {
+-	if (skb->protocol == htons(ETH_P_IP))
++	if (skb->protocol == htons(ETH_P_IP)) {
++		if (!IS_ENABLED(CONFIG_IPV4))
++			goto drop;
+ 		return tcp_v4_conn_request(sk, skb);
++	}
+ 
+ 	if (!ipv6_unicast_destination(skb))
+ 		goto drop;
+@@ -1401,10 +1404,14 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ #endif
+ 	struct flowi6 fl6;
+ 
+-	if (skb->protocol == htons(ETH_P_IP))
++	if (skb->protocol == htons(ETH_P_IP)) {
++		if (!IS_ENABLED(CONFIG_IPV4))
++			return NULL;
+ 		return tcp_v4_syn_recv_sock(sk, skb, req, dst,
+ 					    req_unhash, own_req,
+ 					    tcp_v6_mapped_child_init);
++	}
++
+ 	ireq = inet_rsk(req);
+ 
+ 	if (sk_acceptq_is_full(sk))
+@@ -1579,8 +1586,12 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+ 	   tcp_v6_hnd_req and tcp_v6_send_reset().   --ANK
+ 	 */
+ 
+-	if (skb->protocol == htons(ETH_P_IP))
+-		return tcp_v4_do_rcv(sk, skb);
++	if (skb->protocol == htons(ETH_P_IP)) {
++		if (IS_ENABLED(CONFIG_IPV4))
++			return tcp_v4_do_rcv(sk, skb);
++		kfree_skb(skb);
++		return 0;
++	}
+ 
+ 	reason = psp_sk_rx_policy_check(sk, skb);
+ 	if (reason)
+@@ -2284,7 +2295,7 @@ struct proto tcpv6_prot = {
+ 	.accept			= inet_csk_accept,
+ 	.ioctl			= tcp_ioctl,
+ 	.init			= tcp_v6_init_sock,
+-	.destroy		= tcp_v4_destroy_sock,
++	.destroy		= tcp_destroy_sock,
+ 	.shutdown		= tcp_shutdown,
+ 	.setsockopt		= tcp_setsockopt,
+ 	.getsockopt		= tcp_getsockopt,
 -- 
 2.55.0
 
