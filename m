@@ -1,228 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB2545D92C
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79EA4611CF;
+	Wed, 30 Sep 2026 08:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790756932; cv=none; b=qXjAWDd1rMzOOHK7/EvpUOfm60xhyB7P1jZ9GOpDr0AAgFmWqFRAM3gfNYAnZpyyvZ/G9wfMgUE1hTxcsfSlMaoBlPnEJa6hQtKYe6vhxgC7o3uKzAc6BTQpWnLhGxQ7zl1vtmBJFk3Yp7j2lkbvTpS4lxELaOYyCdA/klNoBIk=
+	t=1790756939; cv=none; b=a3XWDUWZW7I7srbdJQq4TINAslYycgJDUiRlt/YbCd7yBYpM4uogwEYjDjSpypzG2L1K2/pxeIkrPw6klMZkiDIhuUaKfC1AJK7VN9YqaOqBVSuzbzHKPXBcNw0CRwSqW6YjbQvjJ9POvVsT6ZpuvJfDyP+yJ1Q4pXrYV6+1azE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790756932; c=relaxed/simple;
-	bh=9xlGIBlEd4FEddkp9VZEIFSUa3iN/rNVQcUTrMnUx80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QKY8jVF01uULKJJbpCz/R36LCBGU7jarsnjAvK+wo2GP23Uebolqxf32mMXMOWzQD0QEwoLcOAQq2X2+np+1dWVLfKLRLuUlYJwVtu5Ol2sU3N9OZa/iMhSQywSmjdbUU8UgauVVKKPn5zF4nBqZ0lHh0k52NNCs3LMnRDWusUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RW3I8fFh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790756939; c=relaxed/simple;
+	bh=hrRo4iHvOFteEii1fLjsxxErXsDOCIAJEpbxHTHg1WQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jImoHqO7ZbOHJEACRCf1w1SFGTFKvmSQZ2+OGpSCSSc+pUt6DZ5qsLaz0jquzy5B/Pv125YkvL2Ow8R4TknXM4in8X4TmYD7GrMTOcs8v2AozDVdvywvzLToU5oivv0bs6RMN7MuyM70/gaglTTcf2K4+n8VT7s1xqveQgdLYNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=Zfr20NvS; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RW3I8fFh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790756928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X0Wj5TfmrFkoMQOOcM/66XQTRHLZfVyACEg8tosyf88=;
-	b=RW3I8fFhBzNd83RqERZmNPEQw13AJgwFVF1qBLaHHii4U7SQ9jxvnyPcVfYAqHdWMeBqqu
-	f6o27rUUwOaysRHScBweLY4vinpf0K3Jf6RLUIPO0oHhDPYmBB7zaDfPFH7iN73wMN5It0
-	ieuadQi53lvsV0Ek41dsmM+rm7nX4vk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-O_NCQGvZMOS64mKpR1goBw-1; Wed,
- 30 Sep 2026 04:28:44 -0400
-X-MC-Unique: O_NCQGvZMOS64mKpR1goBw-1
-X-Mimecast-MFC-AGG-ID: O_NCQGvZMOS64mKpR1goBw_1790756922
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CD3781800666;
-	Wed, 30 Sep 2026 08:28:41 +0000 (UTC)
-Received: from [100.90.87.156] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6373B180057F;
-	Wed, 30 Sep 2026 08:28:38 +0000 (UTC)
-Message-ID: <6347acf5-4372-48dc-aa2e-47e7e94e1f33@redhat.com>
-Date: Wed, 30 Sep 2026 10:28:37 +0200
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="Zfr20NvS"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D94DD3EB90;
+	Wed, 30 Sep 2026 08:28:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1790756929; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=EK6rK5UvTaistktgw1jCehgeAUAnCfSbI+UwNU2TkAU=;
+	b=Zfr20NvSRLXnBGaCzenxKaZYlNR1d6ggpbOaimoRTD6/WWohmBdNIKuN9tTVM2CH2sBLWJ
+	Yz365+o6obeYm11rghbCuSd7vYYun+fTi8bPBkCMW2vM0FBauza7SSECFWt830fj1aD31a
+	jrDpKUTrsDx93rcu+HtkHTMZexmDhotG0iD3tnRg8OtHUHZdFt8I8wRbwk3QqG/S3mxPBo
+	7h7YfJ+MEeXQabMU33WYIITVTB/ds6DPfiUeftQKgm8jOG1YWSU4X4thhy2MNm2X+T46IP
+	pKFdM0X2qx5Wti29YUdVr7xheI1rqVm1GV7jSpzOCV6E1K4UfOTTzz+WWjJIvQ==
+Date: Wed, 30 Sep 2026 10:28:45 +0200
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 3/3] w5100: detect carrier state using link
+ status bit and optional interrupt
+Message-ID: <20260930082845.GA84786@marmottus.net>
+Reply-To: arthur@marmottus.net
+References: <20260924-wiznet-link-gpio-v11-3-42a332517b30@marmottus.net>
+ <179059099826.3145.7654211997843249181@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/6] dpll: zl3073x: add GPO support for output
- pins
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
- arkadiusz.kubalewski@intel.com, kuba@kernel.org, jiri@resnulli.us,
- min.li@microchip.com, pabeni@redhat.com, poros@redhat.com,
- richardcochran@gmail.com, vadim.fedorenko@linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260928185552.1103515-3-ivecera@redhat.com>
- <179075143241.434549.4937444709313263420@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179075143241.434549.4937444709313263420@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <179059099826.3145.7654211997843249181@kernel.org>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Cause: dmFkZTEh1VmwNUjjxurnXkY/b4R7bZnpO/OS/5ckYwW7fxTbdm7aYf4fs5ZgRP9qBczC/tgOSi+GPb9IvnL7zBQuVh8xLo1VB7oD118U2kzNyZoBs38SBYbwKtnFA0WdU5luWYqfvegXMFG597iMFxwKu46vt9L9CqJO3uMVDJKjq/yHEQpZGkzPCxGtVHowrybZGsvzINQWxU0NVCj/WDbu33VBo/vVyq3+g1dA36kChOnAPgdYEe/JyyRUge+L0M68z5Zaza0SQaWicOyfFaKmOcBZ/FfNFRH+BectZD9Jxc0eE77tYIMn4iOqEAm8Lv9M9E0tZzE6VIuZN/40zMPNDkdnDXn3IETQHUM/yAiOEvV+jY7MX0JSAhwjYE8mEdvitQa5EqgRQc9rB/NI1WdTq6qHXFG2QU4fzAk0K4CO8mSgtE1mtMZ4W+w1YnTlwPRFEwDfzdy9VoSizDfMd8flah/uX5R9G1VteliHmxF2xKWzY+wdBh7SBn4dybK8T4zCsIr+/DHQCQLf+1xx+38YAwap6mr3OQz4/Yn/6jUwhWvc9k57Ho1tiDJmEPt4OO1oPT7oYnNLX1YZ+u4uzonBiuSM996WzMqBu1ULMi4+MIVymUHpw/xpws/vwxpt42QleZTg7WH9P66mfaAilN7EBQuVlPV/vki6JkUpviBXanyLSQ
+X-GND-State: clean
+X-GND-Score: 0
 
-On 9/30/26 8:57 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Error-recovery path applies the output restart before the
->    pending GPO change.
-> - [Low] The struct zl3073x_dev kernel-doc in drivers/dpll/zl3073x/core.h
->    (line 65, '@out: array of outs' invariants') and the inline '/*…
-> 
-> --
-> 
-> dpll: zl3073x: add GPO support for output pins
-> 
-> This commit adds the GPO override mailbox fields and the direct gpo_out_x
-> registers for CMOS output pins, along with helpers to read and set the pin
-> function. It also adds the output_ctrl_x stop bits and stop/start helpers.
-> ctrl moves into the cfg struct_group, and zl3073x_out_state_set() now
-> writes it directly.
-> 
->> diff --git a/drivers/dpll/zl3073x/out.c b/drivers/dpll/zl3073x/out.c
->> index 410d15b96d0b..82564045890d 100644
->> --- a/drivers/dpll/zl3073x/out.c
->> +++ b/drivers/dpll/zl3073x/out.c
-> 
-> [ ... ]
-> 
->> @@ -120,11 +135,17 @@ int zl3073x_out_state_set(struct zl3073x_dev *zldev, u8 index,
->>   	struct zl3073x_out *dout = &zldev->out[index];
->>   	int rc;
->>   
->> -	/* Reject attempts to change invariant fields (set at fetch only) */
->> -	if (WARN_ON(memcmp(&dout->inv, &out->inv, sizeof(out->inv))))
->> -		return -EINVAL;
->> +	/* ctrl is a direct register, independent of the output mailbox */
->> +	if (dout->ctrl != out->ctrl) {
->> +		rc = zl3073x_write_u8(zldev, ZL_REG_OUTPUT_CTRL(index),
->> +				      out->ctrl);
->> +		if (rc)
->> +			return rc;
+On Mon, Sep 28, 2026 at 10:23:18AM +0000, netdev-bot+sashiko@kernel.org wrote:
+>> +static irqreturn_t w5500_detect_link_interrupt(int irq, void *ndev_instance)
+>> +{
+>> +	struct net_device *ndev = ndev_instance;
 >> +
->> +		dout->ctrl = out->ctrl;
->> +	}
-> 
-> [Severity: Medium]
-> 
-> zl3073x_out_state_set() now always writes output_ctrl_x before any mailbox
-> field. It does not roll dout->ctrl back if the later zl3073x_mb_op() or a
-> mailbox field write fails.
-> 
-> Can this order apply a restart before a pending GPO change on an error
-> recovery path?
-> 
-> The follow-up patch "dpll: zl3073x: allow enabling/disabling output pins"
-> adds zl3073x_dev_output_pin_state_set(). It puts a stop before the GPO
-> change and a start after it. Its recovery path looks like this:
-> 
-> 	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> 
-> restart_output:
-> 	zl3073x_out_start(&out);
-> 	rc = zl3073x_out_state_set(zldev, out_id, &out) ? : rc;
-> 
-> The second zl3073x_out_state_set() call only changes gpo_en/gpo_config.
-> Suppose it fails in zl3073x_mb_op() or in one of the mailbox field writes.
-> Then dout->cfg keeps the old GPO values, while out still holds the new
-> ones.
-> 
-> The recovery call then carries two changes: the cleared STOP/STOP_HZ bits
-> and the uncommitted GPO change. Because ctrl is written first, would the
-> clock restart, with the GPO override then changed on a running output?
-> 
-> That looks like the toggle the stop/start pair is meant to avoid. The
-> driver's own comment says the GPO toggle is not glitch-free. For
-> enable=true, the override is released onto a clock that is already
-> running, at an arbitrary phase. For enable=false, the override is engaged
-> in the middle of a clock cycle.
-> 
-> Also, if the retried commit succeeds, the "? : rc" still returns the
-> earlier error. zl3073x_dpll_output_pin_state_on_dpll_set() would then
-> report a failure even though the pin state changed.
+>> +	if (netif_running(ndev))
+>> +		w5500_report_carrier_state(ndev);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>
+>[Severity: Low]
+>What happens if all three PHYCFGR reads in w5500_get_phycfgr_lnk() fail on
+>the link-up edge?
 
-Good catch. I will reorder zl3073x_out_state_set() to commit the mailbox
-fields first and write the direct output_ctrl_x register last.
+The driver will log the error but I do not think this patch can much
+more than that.
 
-That fixes the recovery path in zl3073x_dev_output_pin_state_set():
+>[ ... ]
+>
+>> @@ -448,12 +531,28 @@ static void w5100_restart(struct net_device *ndev)
+>>  {
+>>  	struct w5100_priv *priv = netdev_priv(ndev);
+>>
+>> +	if (!netif_running(ndev) || !netif_device_present(ndev))
+>> +		return;
+>> +
+>> +	disable_irq(priv->irq);
+>> +	if (priv->link_irq > 0)
+>> +		disable_irq(priv->link_irq);
+>> +
+>>  	netif_stop_queue(ndev);
+>> +	w5100_hw_close(priv);
+>> +	flush_work(&priv->rx_work);
+>> +	flush_work(&priv->tx_work);
+>>  	w5100_hw_reset(priv);
+>
+>[Severity: Low]
+>This isn't a bug introduced by this patch, but netif_stop_queue() doesn't
+>wait for an ndo_start_xmit that is already running. Can w5100_start_tx()
+>still queue tx_work after flush_work(&priv->tx_work) here?
+>
+>w5100_start_tx() {
+>	...
+>	if (priv->ops->may_sleep) {
+>		WARN_ON(priv->tx_skb);
+>		priv->tx_skb = skb;
+>		queue_work(priv->xfer_wq, &priv->tx_work);
+>	...
+>}
+>
+>If it can, tx_work could issue SPI transfers at the same time as
+>w5100_hw_reset() during tx timeout recovery. The baseline w5100_restart()
+>had no flush at all, so this patch narrows the window rather than opening
+>it.
 
-   - stop phase: only ctrl changes (STOP/STOP_HZ), there is no cfg diff, so
-     the mailbox commit is skipped and only ctrl is written - unchanged.
-   - restart phase: state_set() will write the GPO change through the
-     mailbox *while the output is still stopped* (ctrl not written yet),
-     and only then clears STOP via ctrl - a clean restart, no glitch on a
-     running output.
-   - on a mailbox failure ctrl is left untouched, so there is no premature
-     restart and dout->ctrl stays consistent with the hardware.
+True, the low risk still exists.
 
-The other callers (frequency_set / esync_set / phase_adjust_set) only
-change cfg fields with ctrl unchanged, so the ordering does not affect
-them.
+>[ ... ]
+>
+>> @@ -667,13 +772,40 @@ static int w5100_stop(struct net_device *ndev)
+>>  	struct w5100_priv *priv = netdev_priv(ndev);
+>>
+>>  	netif_info(priv, ifdown, ndev, "shutting down\n");
+>> -	w5100_hw_close(priv);
+>> -	netif_carrier_off(ndev);
+>> +
+>> +	disable_irq(priv->irq);
+>> +	if (priv->link_irq > 0)
+>> +		disable_irq(priv->link_irq);
+>> +
+>>  	netif_stop_queue(ndev);
+>>  	napi_disable(&priv->napi);
+>> +
+>> +	cancel_work_sync(&priv->restart_work);
+>
+>[Severity: Medium]
+>Can a restart_work that is already running wake the queue again after the
+>netif_stop_queue() above?
+>
 
-> 
->>   
->> -	/* Skip HW write if configuration hasn't changed */
->> +	/* Skip the mailbox commit if nothing else has changed */
->>   	if (!memcmp(&dout->cfg, &out->cfg, sizeof(out->cfg)))
->>   		return 0;
-> 
-> [ ... ]
-> 
->> diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h
->> index 660889c57bff..66a8432c00df 100644
->> --- a/drivers/dpll/zl3073x/out.h
->> +++ b/drivers/dpll/zl3073x/out.h
-> 
-> [ ... ]
-> 
->> @@ -29,8 +32,9 @@ struct zl3073x_out {
->>   		u32	esync_n_width;
->>   		s32	phase_comp;
->>   		u8	mode;
->> -	);
->> -	struct_group(inv, /* Invariants */
->> +		u8	gpo_en;
->> +		u8	gpo_config_p;
->> +		u8	gpo_config_n;
->>   		u8	ctrl;
->>   	);
->>   };
-> 
-> [Severity: Low]
-> 
-> This isn't a bug, but with the inv group removed, struct zl3073x_out has
-> no invariant fields left. The struct zl3073x_dev comments in core.h still
-> describe out[] as invariants:
-> 
->   * @out: array of outs' invariants
-> ...
-> 	/* Invariants */
-> 	struct zl3073x_ref	ref[ZL3073X_NUM_REFS];
-> 	struct zl3073x_out	out[ZL3073X_NUM_OUTS];
-> 
-> These comments are still unchanged at the end of the series. Should they
-> be updated along with this change?
+With the correct timing, technically yes it could.
 
-Yes, I will fix them in v2.
+>[ ... ]
+>
+>> @@ -839,10 +1011,11 @@ static int w5100_suspend(struct device *dev)
+>>  	struct w5100_priv *priv = netdev_priv(ndev);
+>>
+>>  	if (netif_running(ndev)) {
+>> -		netif_carrier_off(ndev);
+>> +		mutex_lock(&priv->link_lock);
+>>  		netif_device_detach(ndev);
+>> +		mutex_unlock(&priv->link_lock);
+>>
+>> -		w5100_hw_close(priv);
+>> +		w5100_stop(ndev);
+>>  	}
+>>  	return 0;
+>>  }
+>
+>[Severity: Medium]
+>What happens if the core calls ndo_stop between this suspend and the
+>matching resume?
+>
+>Here w5100_stop() disables both irqs and calls napi_disable(). However,
+>__LINK_STATE_START stays set, and suspend takes neither rtnl nor the netdev
+>lock.
+>
+>A kernel-initiated dev_close() can run during the suspend window, for
+>example from cleanup_net() on the non-freezable netns workqueue. In that
+>case w5100_stop() runs a second time:
+>
+>__dev_close_many()
+>  w5100_stop()
+>    disable_irq(priv->irq)          <- disable depth now 2
+>    napi_disable(&priv->napi)
+>      napi_disable_locked()         <- SCHED/NPSVC still set from the
+>                                       first napi_disable()
+>
+>napi_disable_locked() would then spin forever in usleep_range() while
+>holding rtnl.
+>
+>After that, netif_running() is false, so w5100_resume() skips w5100_open().
+>The irq disable depth stays raised, and a later ifup leaves both irqs
+>disabled.
+>
+>Before this patch, suspend only called w5100_hw_close(), which touched
+>neither NAPI nor the irq disable depth.
+>
 
-Thanks,
-Ivan
+Taking rtnl_lock/unlock in suspend/resume could close this gap
+but it is again probably something very unlikely to happen.
 
-pw-bot: cr
-
+Arthur
