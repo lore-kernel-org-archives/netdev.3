@@ -1,113 +1,74 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1150129F;
-	Wed, 30 Sep 2026 14:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369E14D2ED9
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790779608; cv=none; b=caxDaI0YdyWFgOIF2UWjyKvfGJZ0RGDalNZ+BfE0AY6AIN0On5hFLTQgWRvRYicVANEfFPF8kN4wfnKGMXwxPEr1ev1iFiZv2jhlOKI+FQ3QC70gXyzc5lIcCtzKFA6DTJTqFT6hO60w0zRfZZFcrHBKR3OaffTHPStUvrk82kM=
+	t=1790779710; cv=none; b=Vo3j6PjupCdosrvtVrSPMmLD9+JJ7dW5UaleVF1SzzI/9Asoa3Tx+4In9tO7Euqh6Wfspp0Nd0ZS8yLSSx8lFVuSgRRe4MP6z9rkrc5XoH87MkkWnbJMo03CM2GhtkMeRuZmFkcxW4VtT60QbSsGjSasDE+Qt+ACruWHGc6z3Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790779608; c=relaxed/simple;
-	bh=FDgM7Dxi7gSAkWXa+H3oOhI6dJR/gHP4kyJsqmyOs+E=;
+	s=arc-20240116; t=1790779710; c=relaxed/simple;
+	bh=zvpmhm+BAUlfIVJ/6Kp9ShG7pA3G2q65FWBMzuTisWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4L0glNaepBnBakhYn6VIiFZX769/2Ay/giGe2oQjUg9T+Ll7Q8cHHF5pMiwnkNv44hvg052keDJvANd5Ew+ZtuXqCYZySxyB6ToD/45zA1g7Ik3SlaljR1jqai0XOWJhqZYhdZ1VVGikJQGp7q3qOPaQOOMi2VRhHv2HM4txiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=cST+C6ZG; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	 Content-Type:MIME-Version; b=cZNOOMPnJY/pKtmAPC9Uxc0zr8znBFTSv7uz2xrHKO1wgXdDIDKwUQexW+GzeLsMnR2FDcQxgVD7/RGhyf8VEtSbNDzyZ3ziHJ2KUWpkh+JWpKclsrPGES9Ah1t4mLU6i7YSg9ZuZEBmHpo+Avx6Xbdut6xCwruamVCVbDK1UQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iL9k4fQO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="cST+C6ZG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=ChLmrLBujeNUTqt0qI7MPDUXAjIlECRrqpUYlCGDb84=; b=cST+C6ZGQhk6uiFI0jLVMozFK1
-	d7MIyOjkjhFH9ze+S0S+0M6UZX2BC+7QdFR21NBC6INA5MvWlqe8g3l3eoTHJkpAjW5hXFNgLFQaL
-	e6fVE4hn5Xsqig/nrING7MV0AUwfjFvKdnpsHF5XOvNicoz5ra/cM9wJnaoCdZJgVlnL7B/E5jAyH
-	Cprm0P29b1E7S5+YJ9h0tmF1tyPoG/Vo85dffZFpCAmid5BWcTFMYgMVmECOSMcKQINV5kjDdoD9m
-	L9budtDF/WsBviKpbHZOqLd9iFRodqnr6lipfpBqcq7tuZCkFTu+njsSCqz73Z5VbzRaFlrkC4sYg
-	Q2csWimQ==;
-Received: from [151.115.150.205] (port=44742 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xBvZs-00000005QLT-1olB;
-	Wed, 30 Sep 2026 16:46:34 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	netdev@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH ipsec 4/7] xfrm: prevent AES-GCM nonce reuse after early GSO
-Date: Wed, 30 Sep 2026 14:45:21 +0000
-Message-ID: <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iL9k4fQO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB71F000FF;
+	Wed, 30 Sep 2026 14:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790779699;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iL9k4fQOhfmKljn4f0z6liXv+moAfMR9dqTHIlMd3nUTlLNAvPE43R9N29l/s+jUk
+	 h9NswOlsVEZfkEjTq5mz7cdTM1vf+T5PGko1rkUZ4nwFWvisAZzmvP0JnWq8V5GL71
+	 l+vH8XWTTn2Jp55ygidsOpdjRSF09OKSKnLXod8Ge6Zp7WZovxZLxJgQBpLlArAuuc
+	 Oh4YrOBRKlDP+fRLBjYcN0XJmKtthMsCLF0sBZTXIGs7pakYftrovJIdEn5rRWM5lk
+	 2AgmxkBwBySvkJaxSwtMH92yrzahmJCp4G4i5/QYBkI5mN9McgDUXCxbZ0KA4rLW7Z
+	 tkcO75uHlOTwg==
+From: netdev-bot+sinfo@kernel.org
+To: =?utf-8?q?J=C3=A9r=C3=A9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S . Miller" <davem@davemloft.net>,
+ Sabrina Dubroca <sd@queasysnail.net>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+ netdev@vger.kernel.org
+Subject: 
+ Re: [PATCH ipsec 0/7] xfrm: fix ESP IV generation and ESN authentication
+Date: Wed, 30 Sep 2026 14:48:18 +0000
+Message-ID: <179077969803.31693.2040549647961576775@kernel.org>
 In-Reply-To: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
 References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-In the software ESP offload path, xfrm_output_gso() leaves its segments
-sharing a secpath extension. Each segment gets its own ESP sequence
-number, but stores it in the same xo->seq field for IV generation.
+Hi!
 
-If encryption is delayed, later segments overwrite the value needed by
-earlier ones: esp*_xmit() can then encrypt several packets with the same
-AES-GCM nonce, despite their distinct ESP sequence numbers.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Give each segment a private secpath before allocating its sequence
-number.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- net/xfrm/xfrm_output.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index e305ba32e356..f6644daa68ba 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -672,6 +672,13 @@ static int xfrm_output_gso(struct net *net, struct sock *sk, struct sk_buff *skb
- 	skb_list_walk_safe(segs, segs, nskb) {
- 		int err;
- 
-+		/* Each segment reserves its own sequence number below. */
-+		if (xfrm_offload(segs) && !secpath_set(segs)) {
-+			XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-+			kfree_skb_list(segs);
-+			return -ENOMEM;
-+		}
-+
- 		skb_mark_not_on_list(segs);
- 		err = xfrm_output2(net, sk, segs);
- 
--- 
-2.47.3
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
