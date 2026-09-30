@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663693612ED;
-	Wed, 30 Sep 2026 02:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78523630A5
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734211; cv=none; b=rbZmS14TckvWOmd9mhFCjFegyU/I5vfQ2h+boI/9tZF6SvKSJoMFllKGa3PK7kcHExGFTDlOFAkfhDMY2xPxCIM/GsVIaVTO2yJq09g/IvkC8PTHb+gi2WqgUL7gdykltKUDmZGrHBaae0bWzBYh6efP4QtLX1Y30qyz7aqwpyQ=
+	t=1790734212; cv=none; b=Xeo2pKdcS9vI5BkYgRM7n36G/yJdJXws6JNFjgHbEoqBIObMSPvcmqMKSAzU1gJgiFJyvJCRqeJ2PSPRSoCXdl6wjrxkP0b5oJjY6cJVrxv0SEe/BJt6XXL3WKCxHx+ubtxylwNES0DEtq17ZEY3iqPiWlzmACb6ehlxA3Hp63o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734211; c=relaxed/simple;
-	bh=OudPYF567QuqlLLnL/0kRpGRdZbYIr3iuxsNHfD2UJA=;
+	s=arc-20240116; t=1790734212; c=relaxed/simple;
+	bh=13Pwn7CJ+Fh1oJZkw5t0tYYQB5AgiKnCXCvg/5P/eKM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hgDQQcuy8Cq5v5T5S3WjlCXKp19sfDOas2M6+WQGku2RgIYF/u/jm45ObsGA+kVjYiXjoi2gpUugY9dNLXqOedcOQg2HCTseRYLB684iB+m5LyWybgmMFWHtJomH6x1DwLsrd/hkq1bzKzxKqRX2p6S9J9tQd1FYpgLkwoVzGTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyZD2SVk; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=O1vpfhTanNFVIY4STOTBkk6YLNTFLwYcp1ev1l12kYtcMZLtJ1RErnVZUZU2BM7gBxK//E2VfcPNAhV/k5RW5bjz0MAke42lEJv6Mp9BzXahJed+u9+1mCi8GE24mAZJ5LfFIRvedeW8Ac/q0lzeiufTIVLQ6v/8F9iVMLOPzGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRlXOifv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyZD2SVk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E9A1F00899;
-	Wed, 30 Sep 2026 02:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRlXOifv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825481F000FF;
+	Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790734210;
-	bh=rjM+1w0TrvdqguewNyTYKTaQBWb7xYk28dKvIBdPPGE=;
+	s=k20260515; t=1790734211;
+	bh=oFxvrrbUI0Htq1vIzuBtDOL56V3G3GmmgRLesVjXK3k=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OyZD2SVk/JRWXVL6hFK9dLQbvDLu1HYiZeqjoI7KYtvQXsSVSMk4pb8wp/Il57nA/
-	 R7fUPFlQztqIiyCMr9znuIQBBw6MEcwnCceCGHZAtTdWppahVQn1W/9kayg0wYhkqW
-	 TAn6puWEbbgu8XvPZxXPH4yFvcwkAGtrTQT8Wm3bNS5bGBg1p6M8P++54OsCKx/GhP
-	 n7Jyc7YeEt4YJfDTHbWUd0pVWEUue5+WjWuPoSZjmDbwbqKO2I+pdN+cDCmi49KD72
-	 CNIKoQaY030+iF7DHVerjt+pH7TgGHJTb37qIL5Vlykxfj9kwZbx0BLvyJAC1IDNd2
-	 Jb/4d57QiOOAQ==
+	b=BRlXOifvCO+RJhMIShkXR7pRCr8v0fhLxopTaZ50COf5x0tD0wW2L0e+hVnlg6vi/
+	 PRDwuuLmzE95mQCVRirpNiB6engjCM1CJTrVy81B3lewPSgHvL+mO6C8kX34prNrJe
+	 g4vaDnyrHqQL6MRO3wGnQWJp8jzsGORXm8NRM4qysjTerDFjcrLIBs37MONE5/dw8y
+	 ruv5/Hl4m90sMk1UMnxqpmSSg5PV9ed18X3KRHLMYjrmYd8icQIdhPt2RZMPQTJuXZ
+	 QpH4nQjnxHhKQewaaOcIG7x8c0ApQ5pnPtBx93loBVzAhnNSTebtREoTRKBOh9hxsG
+	 ftRLk1p2m2iLw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F152D3924FEA;
-	Wed, 30 Sep 2026 02:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774CE3924FEA;
+	Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+Subject: Re: [PATCH net-next] octeontx2: remove unneeded symbol exports
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 02:10:08 +0000
-References: <20260924180607.60932-1-marex@nabladev.com>
-In-Reply-To: <20260924180607.60932-1-marex@nabladev.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- xiaoning.wang@nxp.com, claudiu.manoil@nxp.com, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
- wei.fang@nxp.com, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+ <179073421002.1211220.909737522192697428.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 02:10:10 +0000
+References: <20260925201042.1174488-1-kuba@kernel.org>
+In-Reply-To: <20260925201042.1174488-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ hch@infradead.org, sgoutham@marvell.com, rkannoth@marvell.com,
+ gakula@marvell.com, sbhatta@marvell.com, bbhushan2@marvell.com,
+ lcherian@marvell.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 24 Sep 2026 20:05:19 +0200 you wrote:
-> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
-> but also very compatible. However, for example NXP TJA1120 PHY needs
-> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+On Fri, 25 Sep 2026 13:10:42 -0700 you wrote:
+> octeontx2 has a bunch of symbols not used outside the module which
+> defines them. Worse, still the macro which defines otx2_mbox_up_handler_*
+> adds exports for all the functions. Remove all the explicit exports
+> and the auto-export from that macro.
 > 
-> As a minimum change, increase the MDC clock to 2.5 MHz which matches
-> the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
-> DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
-> NXP TJA1120 as well. There is no known rationale for why the 558 kHz
-> was picked when the eMDIO driver was added.
+> otx2_mbox_up_handler_cgx_link_event was exported by the macro and
+> is genuienly called from the VF driver, so add an export.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-    https://git.kernel.org/netdev/net-next/c/587acb86d646
+  - [net-next] octeontx2: remove unneeded symbol exports
+    https://git.kernel.org/netdev/net-next/c/3e6a0e83c913
 
 You are awesome, thank you!
 -- 
