@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9626FDBF;
-	Wed, 30 Sep 2026 00:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486B0282F2A;
+	Wed, 30 Sep 2026 00:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790727589; cv=none; b=lgihIbt9O2Xi422KEq33vpc8qyL0p7Pt/RLh58X+reCLcR+qA6ltj7NctL7K7M4AZzNGMDgf0cX2989CrolVJ3NOb6kLIUCOqK4H0KoIAWwVXPb1/SOOxQzVfFrIiqB5Y4qWD9U50qmrz1M3xa2tTScGw4T3I+S4szDHSvulVS8=
+	t=1790727590; cv=none; b=o40G1jOJybYX61LjxbRgZO88FCky/M/vuZ0JNfluracqt/AeKm3KA//7PuCtc4O6j264lYL1Vt0AKQ+c6lmXAMD0dF3wTwJhOqGs7peoL0Ix7LOlveH5kQVZxaMjzSyMYGmS4S0fFnwyc6DjVx7KvQNR13IpkDQS+0es17AiHEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790727589; c=relaxed/simple;
-	bh=xDISW1HctfUZrFMPk0y+ZpklBqofAWPJbB2+Ng+xiPk=;
+	s=arc-20240116; t=1790727590; c=relaxed/simple;
+	bh=BD4bpbXMi2qw3IQ8UI4qzL8VUU7IgcBVZZBnfuGRQ2M=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TnJiwZ37EQ5Z32Zwbke3pTLySvDW6Kf+q6zc+HusBso+OcXKlaLUg+/xKr1Zq1AoI+H66cY0DMBsn9euplbAsen5k63McSTixNhZ9nNaN0HG5BVxkNPKPrN+5IBPIMNnOzVhSq5mbSQBdZzIQdTL/LvqXBamMjEb5HUYDWwvq3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FV0iikGF; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=XtVl3GhcinfAIs0shhdyDrgrrWK7IINg6EJEpnRmPzkcgJWk729z68pAWeLVWvYrFKP4CEDR+EZdpOe6nsgDTxTrafM3iubbiM8UuLneqWkR9KY1i6pS2eAnqqMgE2jC3Cq2iObgf1d6iPIGJTYK5qKTt1N5S8KAKd1UDB1LLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeAkN9Iy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FV0iikGF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8898B1F000FF;
-	Wed, 30 Sep 2026 00:19:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeAkN9Iy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4DB1F00893;
+	Wed, 30 Sep 2026 00:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790727587;
-	bh=9Gdyf+vQrLvZeIfpZq8IWNELAWuqnmrMlMkvWK3eCFQ=;
+	s=k20260515; t=1790727589;
+	bh=EUypl45H5PxTD0pKq0uykWNw38mhgBvscYisZO0BaNU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FV0iikGFXQ7NqDeQup8GZajl340TvaNAfcEVHj1VuALwB1Bm0qq6085r1WK7nODmA
-	 t0lopziBZjd7025zNIarBgZ2G6vczpgccrAQf5A184u0MxJZ8K4AssWYDSzCSPIWcx
-	 kZRt6rhQRaI/ZTTg5lUfcxybYXBrpkSyMBa0BRMoQnObTt4yVdbI9VQSuoumfEn008
-	 kQbAV2DDDaMvT3C+b2IzKpVT+zJMYuwKVk/awMebHc5l/YholvuSB6y4RQGsibUy47
-	 DgQxUhG+Oors07Noc9P8BsuXLCJZ/Yyq7Pw1zkuQfykOdp0FGT2ERKG97OYD9xOF4Q
-	 h9Dq4ZN1Nnkdw==
-Subject: Re: [PATCH net-next v7 4/5] net: pse-pd: check the PI vpwr supply
- before registering the controller
+	b=MeAkN9IytBtb4R+ReM9eCJsgjgO9lTBdRDBt4EmgJXnREMVXjaz9woOgpItZtgE/5
+	 paL9QJ+wqma2nx/oX4EzAXbQpsLSDWGy2NlB7E7fHW1tQh3aWNnxCqHbTXNFcv3s7C
+	 YE9RdmgfhClDHb9WUp3DSy5zl1s5ug1TfEVCN/uF5o4ubl+fnhh2994vvkPW+pHToa
+	 qzvaJcZl0eidtgzbHYiGfAfugwWV+NYQ6Uxbav+XXPv19WX58pVT4eFjbUdqdiCERh
+	 KuQ6K/lwa9ASDS/yJAKcy8Tv3KquREqBrBTzTCJbz6diqluDqxL1+fAa6jLsKzS8KN
+	 6FV6Ha2FphArg==
+Subject: Re: [PATCH net-next v7 5/5] net: phy: own phydev->psec via PSE
+ notifier and remove fwnode_mdio hook
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -36,11 +36,11 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  jelonek.jonas@gmail.com, horms@kernel.org, olek2@wp.pl, broonie@kernel.org,
  lgirdwood@gmail.com, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 00:19:46 +0000
-Message-ID: <179072758613.434549.2612517847459175334@kernel.org>
-In-Reply-To: <20260927191850.1370515-5-github@szelinsky.de>
-References: <20260927191850.1370515-5-github@szelinsky.de>
-X-sashiko-severity: High
+Date: Wed, 30 Sep 2026 00:19:47 +0000
+Message-ID: <179072758764.434549.7951104338764700396@kernel.org>
+In-Reply-To: <20260927191850.1370515-6-github@szelinsky.de>
+References: <20260927191850.1370515-6-github@szelinsky.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 (1) · Medium: 3 (1) · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,147 +61,126 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In pse_pi_check_supply() (drivers/net/pse-pd/pse_core.c), the
-  first lookup does not search the same places the regulator core…
-- [Medium] The new check loop in pse_controller_register()
-  (pse_core.c:1180-1183) runs after pcdev->ops->setup_pi_matrix().
-- [Medium] Between the check and the registration, nothing holds the
-  provider, and the second resolution applies a condition the check…
+- [Medium] phy_try_attach_pse() drops -EPROBE_DEFER silently on the
+  assumption that a later PSE_REGISTERED event will retry.
+- [Medium] PHY registration now succeeds before the PSE controller
+  exists, but fw_devlink still treats `pses` as a supplier (parse_pses…
+- [Medium] PHY attach now runs synchronously from PSE_REGISTERED inside
+  pse_controller_register(), which the PSE driver calls in the middle of…
+- [Low] The commit message says the patch fixes user-visible problems: a
+  deferred-probe retry storm, and PHYs or DSA switches that never…
+- [Low] The comment above phy_try_attach_pse() says 'Any other error
+  means a broken binding'.
+- [Low] pd692x0_i2c_probe() registers the PSE controller even when
+  fw_state is PD692X0_FW_BROKEN or PD692X0_FW_NEED_UPDATE.
+
+Pre-existing issues:
+- [High] struct pse_control stores a raw `attached_phydev` pointer and
+  holds no device reference on it.
+- [Medium] pse_control_get_internal() leaks a module reference.
 
 --
 
-net: pse-pd: check the PI vpwr supply before registering the controller
+net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio hook
 
-This commit adds pse_pi_check_supply(), which looks up each PI's vpwr
-supply before any PI regulator is registered. It checks the PI node
-first and then the controller device. If a lookup fails with
--EPROBE_DEFER or another error, pse_controller_register() fails, so the
-PSE driver's own probe defers instead of registering a controller whose
-PIs cannot be handed out.
+This patch moves ownership of phydev->psec from
+fwnode_mdiobus_register_phy() into phylib. The handle is attached from
+phy_device_register() and from the PSE_REGISTERED notifier walk. It is
+released from phy_device_remove() and from the PSE_UNREGISTERED walk.
 
-> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index 16d75b4babf34..457eef5784f8b 100644
-> --- a/drivers/net/pse-pd/pse_core.c
-> +++ b/drivers/net/pse-pd/pse_core.c
+A new pse_phy_mutex in pse_core serialises phydev->psec access in place of
+rtnl, and the ethtool PSE paths take it as well.
+
+Link: https://lore.kernel.org/netdev/20260703071025.100797-1-pabeni@redhat.com/
+
+> diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
+> index ba70915182654..7bd979b59f496 100644
+> --- a/drivers/net/mdio/fwnode_mdio.c
+> +++ b/drivers/net/mdio/fwnode_mdio.c
 
 [ ... ]
 
-> @@ -860,6 +861,67 @@ static const struct regulator_ops pse_pi_ops = {
->  	.set_current_limit = pse_pi_set_current_limit,
->  };
+> @@ -159,14 +136,6 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+>  			goto clean_phy;
+>  	}
 >  
-> +/* The regulator core treats an unresolved "vpwr" supply as non-fatal and
-> + * retries it on its own later, which would leave this controller able to
-> + * register while of_pse_control_get() still fails with -EPROBE_DEFER for
-> + * this PI, and nothing to retry the consumer's attach. Check the supply
-> + * up front so the PSE driver's own probe defers instead.
+> -	psec = fwnode_find_pse_control(child, phy);
+> -	if (IS_ERR(psec)) {
+> -		rc = PTR_ERR(psec);
+> -		goto unregister_phy;
+> -	}
+> -
+> -	phy->psec = psec;
+> -
+
+[Severity: Low]
+The commit message describes a user-visible deferred probe retry storm, and
+there are Reported-by and Closes tags, but no Fixes: tag. The -EPROBE_DEFER
+pass-through removed here came from commit 5e82147de1cb ("net: mdiobus:
+search for PSE nodes by parsing PHY nodes.").
+
+Should a Fixes: tag be added? Leaving it out may be intentional. The earlier
+patches in the series suggest it targets net-next. A Fixes: tag could also
+pull this patch into stable without the patches it depends on.
+
+[ ... ]
+
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 5b13a74e2fa92..971d9326d2265 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+
+[ ... ]
+
+> @@ -1012,9 +1013,111 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
+>  }
+>  EXPORT_SYMBOL(get_phy_device);
+>  
+> +/* Best-effort attach of phydev->psec from a DT `pses = <&...>` phandle.
+> + * Caller must hold pse_phy_lock(). A missing phandle (-ENOENT) or a
+> + * not-yet-registered controller (-EPROBE_DEFER) is silent; the notifier
+> + * retries the latter at PSE_REGISTERED time. Any other error means a broken
+> + * binding and is warned about, but left non-fatal so the phy still registers.
+
+[Severity: Low]
+This isn't a bug, but is "Any other error means a broken binding" accurate?
+
+of_pse_control_get() -> pse_control_get_internal() can also fail with:
+
+  - -ENOMEM from the allocation
+  - errors from pse_pi_is_hw_enabled() -> ops->pi_get_admin_state(), such
+    as i2c failures or a firmware-unavailable code
+  - regulator_get_exclusive() errors such as -EBUSY or -EPERM
+
+The commit message itself calls these transient failures.
+
 > + *
-> + * of_regulator_get_optional() reports a PI with no vpwr-supply described
-> + * as -ENODEV rather than falling back to the dummy regulator, and has a
-> + * stub for CONFIG_OF=n. Those PIs keep their existing behaviour: the
-> + * regulator core resolves them to the dummy when the PI regulator is
-> + * registered.
+> + * A phy with psec_detached set is skipped: it is either not registered yet
+> + * or on its way out, and nothing would release a handle attached now.
 > + */
-> +static int pse_pi_check_supply(struct pse_controller_dev *pcdev, int id)
+> +static void phy_try_attach_pse(struct phy_device *phydev)
 > +{
 
 [ ... ]
 
-> +	if (pcdev->pi[id].np) {
-> +		supply = of_regulator_get_optional(pcdev->dev,
-> +						   pcdev->pi[id].np, "vpwr");
-> +		if (!IS_ERR(supply)) {
-> +			regulator_put(supply);
-> +			return 0;
-> +		}
-
-[Severity: High]
-Can this stage-one lookup pick up a sibling PI's supply instead of this
-PI's?
-
-of_regulator_get_optional(pcdev->dev, pi_np, "vpwr") ends up in
-of_get_regulator(). When the node it is given has no match, it falls
-back to the device's node, not to that node:
-
-drivers/regulator/of_regulator.c:of_get_regulator() {
-    ...
-	regnode = of_parse_phandle(node, prop_name, 0);
-	if (regnode)
-		return regnode;
-
-	regnode = of_get_child_regulator(dev->of_node, prop_name);
-    ...
-}
-
-Here dev->of_node is the controller node. If pse-pi@N has no vpwr-supply
-of its own, the fallback walks pse-pis and every sibling pse-pi node and
-returns the first vpwr-supply it finds.
-
-The core resolves the PI regulator's supply in a different order. The
-PI rdev's of_node is the PI node. regulator_resolve_supply() first calls
-regulator_dt_lookup(&rdev->dev, ...), which searches only the PI
-subtree. It then calls regulator_dev_lookup(pcdev->dev, ...), which
-reads the controller node's own vpwr-supply first.
-
-Take a DT where the controller has vpwr-supply = <&main> and main has
-not probed yet, pse-pi@0 has vpwr-supply = <&aux> and aux is registered,
-and pse-pi@1 has no vpwr-supply:
-
-pse_pi_check_supply(pcdev, 1)
-  of_regulator_get_optional(pcdev->dev, pi1_np, "vpwr")
-    of_get_child_regulator(controller_np, ...) finds &aux via pse-pi@0
-  regulator_put(); return 0;
-
-devm_pse_pi_regulator_register(pcdev, ..., 1)
-  regulator_register()
-    regulator_resolve_supply()
-      resolves to &main -> -EPROBE_DEFER, ignored
-
-The controller then fires PSE_REGISTERED, but regulator_get_exclusive()
-in pse_control_get_internal() keeps returning -EPROBE_DEFER for PI 1.
-
-With the later phy patch in this series, phy_try_attach_pse() drops
--EPROBE_DEFER without a warning and retries only on PSE_REGISTERED. Does
-that port then never get its PSE control? This looks like the
-controller-level vpwr-supply case that the commit message says this
-patch closes.
-
-The comment above the function says that of_regulator_get_optional()
-"reports a PI with no vpwr-supply described as -ENODEV". That doesn't
-hold when any sibling PI has a vpwr-supply.
-
-Would it work to call of_regulator_get_optional() only when
-of_property_present(pcdev->pi[id].np, "vpwr-supply") is true, and
-otherwise go straight to the controller-level lookup? Doing the lookup
-through a device whose of_node is the PI node would also work.
-
-> +
-> +		ret = PTR_ERR(supply);
-> +		if (ret != -ENODEV)
-> +			return dev_err_probe(pcdev->dev, ret,
-> +					     "PI %d: failed to get vpwr supply\n",
-> +					     id);
-> +	}
-> +
-> +	/* A vpwr-supply on the controller node covers every PI, and is
-> +	 * where a PI without a node of its own resolves too.
-> +	 */
-> +	supply = regulator_get_optional(pcdev->dev, "vpwr");
-> +	if (!IS_ERR(supply)) {
-> +		regulator_put(supply);
-> +		return 0;
-> +	}
+> +	psec = of_pse_control_get(np, phydev);
+> +	if (IS_ERR(psec)) {
+> +		if (PTR_ERR(psec) != -EPROBE_DEFER && PTR_ERR(psec) != -ENOENT)
 
 [Severity: Medium]
-Is there still a window here where the check passes but PI registration
-defers?
+Can a controller that is already registered still return -EPROBE_DEFER
+here? The commit message says:
 
-regulator_put() drops the supply handle right away. Nothing holds the
-provider until devm_pse_pi_regulator_register() resolves the supply
-again.
+  -EPROBE_DEFER stays silent because the notifier retries it at
+  PSE_REGISTERED time, and the preceding patch makes sure an already
+  registered controller cannot keep returning it.
 
-That second resolution also runs a check that the consumer-get path used
-here skips:
+pse_control_get_internal() can still defer through the PI's vpwr supply:
+
+pse_control_get_internal()
+  regulator_get_exclusive()
+    _regulator_get_common()
+      regulator_resolve_supply()
 
 drivers/regulator/core.c:regulator_resolve_supply() {
     ...
@@ -211,106 +190,218 @@ drivers/regulator/core.c:regulator_resolve_supply() {
 			ret = -EPROBE_DEFER;
 			goto out;
 		}
+	}
     ...
 }
 
-regulator_register() then ignores the result:
+The preceding patch adds the pse_pi_check_supply() pre-check. That check
+only calls of_regulator_get_optional(), which does not look at
+device_is_bound(). That patch's message also says "a PSE probe
+interleaving with the provider's own probe can still pass the check and
+resolve late".
 
-		ret = regulator_resolve_supply(rdev);
-		if (ret)
-			rdev_dbg(rdev,
-				 "unable to resolve supply (ignoring): %pe\n",
-				 ERR_PTR(ret));
+In that case PSE_REGISTERED fires, the lookup defers, and the phy is
+skipped with no message. When the supply resolves later, nothing triggers
+another PSE_REGISTERED or phy registration.
 
-Two cases pass pse_pi_check_supply() here:
+Would the port then stay at "No PSE is attached" for the rest of the boot?
+Before this patch, deferred probe of the MDIO bus would have retried it.
 
-- a provider whose rdev is registered but whose probe has not finished,
-  for example with async probing or several regulators registered in a
-  loop
-- a provider that unregisters its rdev after this check, for example
-  because its own probe later defers
+> +			phydev_warn(phydev, "failed to get PSE control: %pe\n",
+> +				    psec);
+> +		return;
+> +	}
 
-In both cases pse_controller_register() adds the controller to the list
-and fires PSE_REGISTERED. of_pse_control_get() for that PI still returns
--EPROBE_DEFER.
+[Severity: Low]
+This isn't a regression, because the commit message documents it and the
+failure is logged. There is one case where no later retry ever comes,
+though.
 
-The commit message calls this a narrower, known window. However, the
-final phy patch in the series ("net: phy: own phydev->psec via PSE
-notifier and remove fwnode_mdio hook") ignores -EPROBE_DEFER and retries
-only on PSE_REGISTERED. Its commit message says "the preceding patch
-makes sure an already registered controller cannot keep returning it".
+pd692x0_i2c_probe() registers the controller while fw_state is still
+PD692X0_FW_BROKEN or PD692X0_FW_NEED_UPDATE, and firmware_upload_register()
+runs after that. The PSE_REGISTERED walk gets the pd692x0_fw_unavailable()
+error from pi_get_admin_state() and gives up here.
 
-Doesn't this window break that guarantee and leave the PHY without its
-PSE control when it is hit?
+After a successful firmware upload, pd692x0_fw_poll_complete() only does:
+
+	priv->fw_state = PD692X0_FW_OK;
+	return FW_UPLOAD_ERR_NONE;
+
+Nothing re-runs the attach, so the phys stay without PSE until the PSE or
+MAC driver is rebound. Is that the intended behaviour?
+
+> +
+> +	phydev->psec = psec;
+> +}
 
 [ ... ]
 
-> @@ -1111,6 +1173,16 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
->  	 */
->  	reg_name_len = strlen(dev_name(pcdev->dev)) + 18;
->  
-> +	/* Check every PI supply before registering any regulator: a provider
-> +	 * that has not probed yet is the ordinary -EPROBE_DEFER case, and
-> +	 * unwinding it must not leave PI regulators behind.
-> +	 */
-> +	for (i = 0; i < pcdev->nr_lines; i++) {
-> +		ret = pse_pi_check_supply(pcdev, i);
-> +		if (ret)
-> +			goto release_pis;
-> +	}
+> +static int phy_pse_detach_one(struct device *dev, void *data)
+> +{
+
+[ ... ]
+
+> +	phydev->psec = NULL;
+> +	pse_control_put(psec);
+> +	return 0;
+> +}
 
 [Severity: Medium]
-Does this new failure exit leak what setup_pi_matrix() has already done?
+Can this power down ports when a PSE driver fails later in its own probe?
 
-This loop runs after pcdev->ops->setup_pi_matrix() has succeeded.
-release_pis frees only the PI array, the OF node references and the
-kfifo.
+The PSE_REGISTERED walk now runs synchronously inside
+pse_controller_register(), partway through the PSE driver's probe. For a
+PI that the hardware already has powered, pse_control_get_internal() sets
+admin_state_enabled from pse_pi_is_hw_enabled(), and
+regulator_get_exclusive() sets use_count to 1.
 
-For pd692x0, pd692x0_setup_pi_matrix() has already done this by the time
-of the new deferral point:
+If a later probe step fails, devm unwinding calls
+pse_controller_unregister(), and this walk drops the last reference:
 
-pd692x0_register_managers_regulator()
-  devm_regulator_bulk_get_enable(&rdev->dev, ...)    /* aux rails on */
-pd692x0_req_managers_pw_budget()
-  regulator_request_power_budget(supply, pw_budget)  /* claim on vmain */
+phy_pse_detach_one()
+  pse_control_put()
+    __pse_control_release()
+      if (psec->pcdev->pi[psec->id].admin_state_enabled)
+          regulator_disable(psec->ps);
+            -> pse_pi_disable() -> ops->pi_disable()
 
-pw_requested_mW is lowered only by regulator_free_power_budget().
-regulator_put() and regulator_unregister() leave it alone.
+For example, tps23881_i2c_probe() calls tps23881_setup_irq() after
+devm_pse_controller_register(), and that returns -EINVAL when client->irq
+is 0:
 
-pd692x0_managers_free_pw_budget() is called only from
-setup_pi_matrix()'s own error labels and from pd692x0_i2c_remove(). When
-devm_pse_controller_register() fails, pd692x0_i2c_probe() just returns
-dev_err_probe().
+	if (!irq) {
+		dev_err(&client->dev, "interrupt is missing");
+		return -EINVAL;
+	}
 
-If pse_pi_check_supply() returns -EPROBE_DEFER here, does the vmain
-budget stay claimed by a probe instance that no longer exists?
+pd692x0 can fail the same way in firmware_upload_register().
 
-On the retry, regulator_get_unclaimed_power_budget() would return the
-reduced value, or 0. The new instance would then record
-manager_pw_budget[i] = 0 and skip SET_POWER_BANK in later
-pd692x0_hw_conf_init() calls, for example after a firmware upload.
+On a tps23881 board with no interrupt in DT, would every boot switch off
+ports that were delivering power before the probe began? Before this
+patch, a failed PSE probe left those ports alone. A normal unbind now also
+powers down every PI attached to a phy.
 
-Later budget requests through vmain, such as those from
-pse_pi_update_pw_budget(), could fail with -ERANGE. The aux rails are
-also turned on and off on every deferred retry.
+> +static int phy_pse_notifier_event(struct notifier_block *nb,
+> +				  unsigned long event, void *data)
+> +{
+> +	switch (event) {
+> +	case PSE_REGISTERED:
+> +		pse_phy_lock();
+> +		bus_for_each_dev(&mdio_bus_type, NULL, NULL,
+> +				 phy_pse_attach_one);
+> +		pse_phy_unlock();
+> +		return NOTIFY_OK;
 
-The same leak already existed for rarer failures after
-setup_pi_matrix(). This patch adds a failure point that can repeat on
-every deferred probe.
+[Severity: Medium]
+This is a pre-existing issue, but does this retry make a module reference
+leak in pse_control_get_internal() easier to hit?
 
-The commit message says "Doing all the checks before the registration
-loop also keeps the common deferral on the unwind path", but that
-doesn't cover setup_pi_matrix() side effects.
+After try_module_get(pcdev->owner) succeeds, two error paths jump past
+the module_put(): the !pcdev->ops->pi_get_admin_state branch and the
+pse_pi_is_hw_enabled() failure:
 
-Moving the check ahead of setup_pi_matrix() doesn't look possible,
-because pd692x0 PIs normally take vpwr from manager regulators
-registered inside it. Would this need a driver unwind hook, or a
-devm-managed release of the budget in pd692x0?
+	ret = pse_pi_is_hw_enabled(pcdev, index);
+	if (ret < 0)
+		goto free_psec;
 
+The put_module label sits above free_psec, so it is skipped.
+
+The lookup is now best effort. It is repeated for every unattached phy on
+each PSE_REGISTERED walk, and again in phy_device_register(). Each attach
+that hits a failing pi_get_admin_state() (an i2c error, or a pd692x0
+firmware-unavailable code) would leak one reference. The PSE driver
+module could then no longer be unloaded.
+
+Should those paths use goto put_module instead?
+
+[ ... ]
+
+> @@ -1034,12 +1137,25 @@ int phy_device_register(struct phy_device *phydev)
+
+[ ... ]
+
+> +	pse_phy_lock();
+> +	phydev->psec_detached = false;
+> +	phy_try_attach_pse(phydev);
+> +	pse_phy_unlock();
 > +
->  	/* Register PI regulators. Once one of these exists, pse_pi_ops index
->  	 * pcdev->pi[] and nothing here can unregister it again, so the array
->  	 * must outlive this function. Failures below therefore unwind to
+>  	return 0;
+
+[Severity: Medium]
+Could this leave the phy bound to the generic driver? Registration now
+succeeds before the PSE controller exists, but fw_devlink still treats
+pses as a supplier:
+
+drivers/of/property.c:of_supplier_bindings[] {
+	...
+	{ .parse_prop = parse_pses, },
+	...
+}
+
+With fw_devlink enforcing, device_links_check_suppliers() defers the phy's
+own driver probe until the PSE device binds. If the MAC or DSA switch
+connects to the phy in that window, phy_attach_direct() falls back to the
+generic driver:
+
+	if (!d->driver) {
+		if (phydev->is_c45)
+			d->driver = &genphy_c45_driver.mdiodrv.driver;
+		else
+			d->driver = &genphy_driver.mdiodrv.driver;
+		phydev->is_genphy_driven = 1;
+	}
+
+device_bind_driver() -> device_links_force_bind() then binds it despite
+the pending supplier link.
+
+When the PSE module loads later, the notifier only attaches phydev->psec.
+Would the phy then stay on genphy until a reboot or rebind?
+
+Before this patch, phy registration itself deferred until the PSE
+controller registered, so this window did not exist. The trigger is the
+modular PSE case this patch is aimed at.
+
+> @@ -1061,8 +1177,22 @@ EXPORT_SYMBOL(phy_device_register);
+
+[ ... ]
+
+> +	pse_phy_lock();
+> +	psec = phydev->psec;
+> +	phydev->psec = NULL;
+> +	phydev->psec_detached = true;
+> +	pse_control_put(psec);
+> +	pse_phy_unlock();
+> +
+>  	device_del(&phydev->mdio.dev);
+
+[Severity: High]
+This is a pre-existing issue, but psec->attached_phydev is a raw pointer
+that holds no device reference. Neither this path nor phy_pse_detach_one()
+clears it.
+
+Can pse_send_ntf_worker() still use it after the phy has been freed?
+
+pse_send_ntf_worker()
+  psec = pse_control_find_by_id(pcdev, ntf.id);
+      (takes a kref, then drops pse_list_mutex)
+  rtnl_lock();
+      (may block)
+  netdev = pse_control_get_netdev(psec);
+      return psec->attached_phydev->attached_dev;
+
+Suppose the netdev detaches the phy and the MDIO bus is torn down while
+the worker waits on rtnl. This put drops the count from 2 to 1, then
+device_del() and phy_device_free() free the phy_device. The worker then
+reads freed memory.
+
+There is a second route when two phys resolve the same PI id.
+pse_control_get_internal() returns the existing psec with a kref_get(),
+but it only sets attached_phydev when it creates a new psec. After the
+first phy is removed, the surviving phy's psec still points at the freed
+phy.
+
+The worker never takes pse_phy_lock(), so the new lock does not cover
+this.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927191850.1370515-1-github%40szelinsky.de
