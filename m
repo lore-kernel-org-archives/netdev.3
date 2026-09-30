@@ -1,135 +1,244 @@
-Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012064.outbound.protection.outlook.com [40.107.209.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283FA2E739C
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD69F4D7D4B;
+	Wed, 30 Sep 2026 12:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773120; cv=pass; b=l4bUAkjFZGAS+ccunVK8CRYaZv4NUMiH+b3si9fbjsS6KHMkQafaqo3eHQ3K6muAsF40pJHvkomYDWltL2Y+TELH9E1Rcv87h46lDJV2A7QqdoiUoislt3Ws1fzy1qTxo2JqUCpVv+smQPj7dQCTFBjmXMtYyvyxkijfcz5AtbI=
+	t=1790773124; cv=fail; b=CIyUeyCuxS3Eaj3PVYZlHWW647ZXdoXj5p9E5eheXs+j9BW9pAKf7Wm1sJKxMj1Y5FolrRz1Ehd8B1aIXflnRppUD1Pw3KSe27j1DcDyDG5I451bGBn7Lu4yGAoMPM9Un+kJppTBmBdBthshMt7WE0dvxWN1mPgAZSINLwhZGsc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773120; c=relaxed/simple;
-	bh=T9mM2MOrl1vYGVqgK2olZmdiNcgVUiSe/7K9bejIraM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LV+/dIkVCzusXXZ7/MviNKBAGHU6gEN8I4A3Jokear/y31H59lB6TKRDBGH7l6ebr42z65fYM2Xu90/SVmHaJkrxlBpyWwIZ7ILOgAawI4yqC/rNcVzghVbnZY17x6ntWdte4SNqB/RIsOvRnQV6u9GN41o2RnXMvcc+yL+Iou0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HNaVsBiU; arc=pass smtp.client-ip=74.125.230.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790773124; c=relaxed/simple;
+	bh=YnYbTW5ZI8zm0AEQemKa+l5FubpE/Zq2HSHyUKpTbuw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p0fsdg+43iwQgvkKO0wAAueec5MiZOiv3pvq1uO2Hk0kLHOVBUwc/kX/dAJLlVPFIxH5wWjA8i6/+xBULiJWPIF0V4tqktHI12J6sIP8UzmGhmwEvqC9ywacx1ZiDy+VIbTltOaWsl76HrFd25mjcoabeRx6PutwMRAQoXZRaPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gbv3gGpM; arc=fail smtp.client-ip=40.107.209.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HNaVsBiU"
-Received: by mail-qk2-f39.google.com with SMTP id d75a77b69052e-5332de6f6d4so16094231cf.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:58:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790773109; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mLkNBkKxoNJg2M68S2uocP9rec/7myb3mdAHu1wOW6B/BhiJFTVn9ze2Y41oiNWLXV
-         O2GcwM4uZk12cRfq7LxnljMQd47BXKUEhk56aMM1OuFBioy6IY92rg+U0SvCUdhwvkXP
-         n+LwEXxVWBk10SwSbhb3y3d9lPCWqGRkgaiBR5QHWOTE4n7aVivAvOwmBuGwZxuTFwNV
-         MnT9hrcFeaizyZQMW+MVEv1uyHMB4PapNXUswP+owpnABpKNJGVbgsb4Wq86RPl++p9C
-         eVjwx7NRsWmFBWRnl1gRSAIvhj0SQXeM3ecAVM5MpHtkDjR7NwXVXtqENbZ69APN2Bet
-         NJCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
-        fh=oPwbYhRrdgU1KQvaagjda+5NmB8FIf4BKRM1n4QRhMI=;
-        b=Iyxzj0ry6jx1u9M+SRfBIyM/Qk9J1HTdYxi1Mzh0Oyp6RSeP6tyZRVh3F7tyOGt5HR
-         aMiCsAd+fn+BdsNBg+PsDwEJAJila4JhLkOgx91pjNWgxuLxOvs30TRMGQbKkF8nBuwf
-         aODqIfICfI1FK/FcOQhpTX6tfn20l/1m4neRah/H1ZJMP5YVdhW8FJ1ftPVIb4EKe9ml
-         xuhyGxa2wbI5lVivscKiNW/RrQRiiWSRuJvHN7cipDKnaAGfLVdWM8cuZdakVfXJPd0p
-         cWqXFzd9c9hykRCpgwJHS+3UwKxpH8yaFVTfpMaW0Xhyfpn/LRHpwgcq5nEqDsmhuFkm
-         HxkQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790773109; x=1791377909; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
-        b=HNaVsBiUKa+G/RJkmY14U/TdFl2anS71RaEHC1+P++wYlN8qI9hcPgEnQB0+Q90FhY
-         Ft7962f0qxvMCqpi4/zXYzQm3MPZEy7ooPaY3EZhQbt6ZucNF5p/ZXhkVWDVkRUqFS/5
-         7HCF5NjKgQ05IO6nyJ5/v0vY85DISW/BaNDSNC9PjtHua77mVauBcT51qlfpbi1/EmJF
-         EO6BwaE+ry5ML9GhV4upf8kg4o2/mylxPOuDrPd1iCs+WARYxTMgCrjGOvjxv531gG5g
-         Hp5zPp4Lr4TK8k+8Ib/GpZb33cwdBPoKpj9KdcSUo8A+i2NmDpBavCBW/pLF70d3c8m7
-         k+tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790773109; x=1791377909;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
-        b=2e6h+s6XMZEYPXezM9KsXHTBZoZMwU+HLblQminS/2bnzVxxNSg+FVhQrwl/+Pdjvu
-         3L6OwYJeDKZ7+cWqItA5GFh6QaemYagdBZUW/5CgUZ7NvBANG3yX2bGQr5WOrjiTkBSP
-         5J6rDO4ZQ2ogzkTwLrg/3vbgf70CMkTw+vVs/jIFnqZ+gS6LLl68yLN/jhFLFVTa3K12
-         KfIQNnDpOifwYllb0U6YnSiVFKhh9kAlHAiqE5h48nXEay6ioLwuIdwsyrGe3f9JGncB
-         AxtsKsCk7WMPgwtQUNRL7HOHiHxFfyndtdWK/0LQvkg+BkMa7gJyS5+UJ4K0EklmEh3R
-         lIIA==
-X-Forwarded-Encrypted: i=1; AKwUvBzKTlWM+FyglAxTATy9CfiBBfqFa5GSgnqrxoZCZ1tSj64j+td6G85zNv/6+Gk9GX0LSVBEryE=@vger.kernel.org
-X-Gm-Message-State: AFuF++msmn6NmHpopZ3hzttf38KwuDZvpvIy1fiiEUTx13yLUxrMbl9P
-	pTu/JWaJM7JKNV7bOHexkLvaitAllOP/3FG7xOGKlqyPuJABdAk+AxDQQXyiruzD1II+UIclJsv
-	FdE0qWX5BztWG+XpVrTBQVMe7xGJ3Zr1TDneFOneZ
-X-Gm-Gg: AYBFou0YNGS6dgEp8y4Ix6htuGlR8tlswRvK+TREnBmdmmC+RDsOKaqtCmyyb/FTgT7
-	5xpoQD1p+5CRdfrDBXK5iDmY+IFzpuunJHobiKk1aj2eJ7QzbvpGzaCneFpQ2s3bLi9J5xv0Uim
-	m/NX5ao/6HlrTwKnMLH162qhuJXpL0R0Neyt1UzkG8iO4RpizNNgJ3qWPzjgQorwkUdcd96aqGn
-	+gen8pDUORwMjf6/okcGoeNNHAdl3kkKgp0KfOpFj6+/4eanSi6TdRuwik9s6ulvST5f9FIvFwf
-	TGYLSc0KEyRsB/t2scw6WULjo0p8D0vSQhSnHHgpS9Ok8prE3lADbYLOnAB08LYUxcp5Fd0XDa+
-	sDd6tKZ4m94w2PYbm1JImBpGhk7Nrov/d4HyekEAyd24X96hauASB4MVkd6H2japXBJLV
-X-Received: by 2002:a05:622a:4d09:b0:530:e5f8:7f5b with SMTP id
- d75a77b69052e-5337453fcf5mr21909201cf.3.1790773104745; Wed, 30 Sep 2026
- 05:58:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gbv3gGpM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tjbhh/bgS5Sm9d6FG8Cd18Wj1bIDm+z2ENXJJIgiN7XFUvvF9BO1w2iINim2SD71G4qsPsiVXMvd09Q8gm+DTGoJrhGjYrM++zYLl2+PXgeVC77pnmyUDe5CVJAjOmMehpv8Wmp6IUbjUFAUjLxUOgJJuXyuK1CxdGV20AYaKRXEYPv4nQb5xUBE0OF0voVWORW5vt9PbCb8yAwQRy+s5rNCbrU5a/ZixIHaO0VFgTt1+uMLr9XbpmHkI8h/Tb+ndcNOrkuPg9w1iKG2VRXBNH/E3cJUzEzigiPYQDGPVLAAaD6Z4kFS7RQsQVm5ItG6yoXoM7o7ABU/mqORWGiBXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZEYmRoTe3HrHBOESmTsSc7fC3olG9RU1KfzvUog3y8I=;
+ b=lirtnkZkf8xgxatkIMm6Pw+ZFrrlSmY1Q8XIjCPzEhpUQ9ZOsJvLzTEXmjjH+Gm3YLPMxT35/93B4mzIq+HVJW93AeD+b0NuGXZQzmI+6R2Es9OLaTRvsJjELiOWjeESmD2rhzV2ApaSnoZlWP3g0f64jyfrX1Rbz03X2xPWVawH8oBUTxVrc9syGEnJVUEHdy5Qn6ZTkw6ohTEpAh9terYCpSH91vjTtcdOfAKshQOpWdyzktiT8APw9dCSxiz510ZxFnmVaMswtnOl70w9+9i2d15A6LRspLl0/vQf0W76Y564kcwVX6GtakHMGvLAvV71HDSD3B537jP/ThyJfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZEYmRoTe3HrHBOESmTsSc7fC3olG9RU1KfzvUog3y8I=;
+ b=Gbv3gGpMYfsNHdZ0+JBADXZqwiW3rULZTb6EIXXJ3PPKTIO8d8pZOQAt3BBKhfIqm0BlaQKoKM5kPrDWexQvK0xu32X+T4lw/9dD4ocX39oI6oZ+cIOyic3UwPrMiWwCDthSytwjYNcRppxd6pz22wPgHMyg6X7v+Tt2ZjwF10oGJ4FKiRTz1hIeBknbJEfAraiynMR1QAvEB90/uvIxZ5PlkP987IjWXGASW8SVzRDZD3c68bquj7pqv3g6dyoWPchyphci8VZxRyRjUnNRRlCVg1Pyhzr0bMrICrt1h/S5pEr9ZYZH3Zm0dk/NEgS9tp7yC44qE0Ib4MMwvcz3qg==
+Received: from CH0PR03CA0244.namprd03.prod.outlook.com (2603:10b6:610:e5::9)
+ by LV3PR12MB9187.namprd12.prod.outlook.com (2603:10b6:408:194::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 12:58:24 +0000
+Received: from BN1PEPF00018072.namprd04.prod.outlook.com
+ (2603:10b6:610:e5:cafe::7c) by CH0PR03CA0244.outlook.office365.com
+ (2603:10b6:610:e5::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.15 via Frontend Transport; Wed,
+ 30 Sep 2026 12:58:24 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN1PEPF00018072.mail.protection.outlook.com (10.167.245.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 12:58:24 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 05:58:09 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 30 Sep 2026 05:58:09 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Wed, 30 Sep 2026 05:58:05 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Carolina Jubran <cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>, "open
+ list" <linux-kernel@vger.kernel.org>, Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "Mark
+ Bloch" <mbloch@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Dragos
+ Tatulea <dtatulea@nvidia.com>
+Subject: [PATCH net-next 3/5] net/mlx5: nodnic: Add TX/RX statistics
+Date: Wed, 30 Sep 2026 15:57:06 +0300
+Message-ID: <20260930125708.144767-4-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260930125708.144767-1-tariqt@nvidia.com>
+References: <20260930125708.144767-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929131247.401104-1-edumazet@kernel.org> <20260929131247.401104-3-edumazet@kernel.org>
- <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org>
-In-Reply-To: <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 30 Sep 2026 14:58:13 +0200
-X-Gm-Features: AclHuK8rBuh5PIDERxjyAl2jHeqyFg_MyQD2c05KOkjJVJZ9ucoR6668qTFE_M4
-Message-ID: <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] ipv4: reserve one IP ID per segment for UDP GSO packets
-To: David Ahern <dsahern@kernel.org>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018072:EE_|LV3PR12MB9187:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0a0ed9a-fecc-474b-b520-08df1ef2835c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700016|23010399003|10067099003|11063799006|6133799003|3023799007|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	whKRMCzlWkqGIjAJicj+6Kq6htvrgrMKP/GonAUBihymVWHvGOuwrcJjzPcSbpLypRN/w4YWMhtUzA4VdDts0uKW7INdtnyZ/QUyGKnqUd0sj+1JtLd639fDm/52ulqnUIi95fLvKYkZgZHV8roSUa9PThH/NBBRtSvM3R2ISsTfnB8VorPY2wRwkTorv8gMY+FDP92DDAlEP3/o/T78dbX8sKdH9jbO8m/25lEeXqFpyzCdmFEx7GWjZvVA8N0Gli3zIJUXquT4TrSXotKT/0KMiRvHc8wQCDJN3fJsKsxwQHnFUcjDx6w5Bm9tmrO7MKcxRTUxhd9uAf4Ma/DCq3SNCprcWs9a9gWhWHGVF7I/wSC+aAvmrFmIviiADzAgPhwEz4xtoCJo4aahr5OIHrKZFcX8RBoLJQ01OQli1Pkad1vC23TBW3Hl5var3kupMaxhBzmIyIKsZ59nuLH0N4zNmJ0VOk41jE93EbKgI3EdCOT5xBRNFZSQc7QBUuKr12EkwaOarvzF60gxqrdvUnF2oBZAi+6DwgWnSM4C9Qk3HBfJWxoeBbGBb9Ry2PbcmTbq4c7vwEWajfdlFA5nS/oL9GViMHzBXvvZAEBXBvoi/vVtj95dUN+6z4itty87/X4YWWqseKbT2Atd3Z0SUXLTPrI6rkyzduAc6rTbYqmVxkvU+x/tTZYWJfkztGhSBD3M1cPYEyht+5LdqFVSjA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700016)(23010399003)(10067099003)(11063799006)(6133799003)(3023799007)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	B1BKvUCnwl7jw+8Ah/pjvvNMR7PLmp8eRwIIscp3KuZmJq1pXLnLp8iSqA5tr6wnb9jOkj0d/jpCe8d2Tz9idzJ94goZDcQ/U67uolroKx6ewiop06FxNGIXBHvebinFYkiaM4Q7WnreopuDf8puyWmma8W2D3xj/NfqO8QW9XKQpc8o8vELIWoJjam4Bm8gE8paQwlhN3DbWJ7LZ6puhAcEQe6JmgCCeiePRSo5PirkU5EYWNoQe62RZlraBeyELbFzN7aVhwxy1Dis7Rcb6/Ff205ZQFf4mOYIXDVUBidwKBvBoUuVq7sQ+CqXf9UqCQmiLJs6xX/3OvRdJa+hGv4E9ur83f1keui+HeDMecD/OP3iYo3J4DDvOZqC+xzR6W64gVdRRKXfgKDDCJWrYPmA5GtV766gGTBRbeXDYgUJ55ZhJPzlyvDEjswdguAd
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 12:58:24.2913
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0a0ed9a-fecc-474b-b520-08df1ef2835c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00018072.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9187
 
-On Wed, Sep 30, 2026 at 2:29=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 9/29/26 8:12 AM, Eric Dumazet wrote:
-> > @@ -1464,7 +1465,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
-> >       iph->ttl =3D ttl;
-> >       iph->protocol =3D sk->sk_protocol;
-> >       ip_copy_addrs(iph, fl4);
-> > -     ip_select_ident(net, skb, sk);
-> > +
-> > +     /* UDP GSO packets are segmented later (see udp_send_skb()):
-> > +      * reserve one IP ID per segment.
-> > +      */
-> > +     segs =3D 1;
-> > +     if (cork->gso_size) {
-> > +             int datalen =3D skb->len - skb_transport_offset(skb) -
-> > +                           sizeof(struct udphdr);
->
-> hard coding a specific transport header in L3 code is crossing layers.
->
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-Only UDP sets cork->gso_size, so this is UDP specific code in
-__ip_make_skb(), like the existing sk_is_tcp() case in the same
-function.
+Add TX and RX packet and byte statistics, as well as TX drop
+accounting.
+Update the counters from the data path and expose them through
+ndo_get_stats64.
 
-I can make this explicit in v2 with:
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ .../net/ethernet/mellanox/mlx5/nodnic/en.h    | 14 +++++++++++
+ .../ethernet/mellanox/mlx5/nodnic/en_cfg.c    | 25 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/nodnic/rx.c    |  3 +++
+ .../net/ethernet/mellanox/mlx5/nodnic/tx.c    |  4 +++
+ 4 files changed, 46 insertions(+)
 
-if (cork->gso_size && sk_is_udp(sk)) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
+index 19858e9da064..d811bfe242ac 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
+@@ -44,6 +44,17 @@ enum mlx5_nodnic_cqe_opcode {
+ 	OPCODE_CQ_INVALID,
+ };
+ 
++struct mlx5_nodnic_sq_stats {
++	u64 packets;
++	u64 bytes;
++	u64 dropped;
++};
++
++struct mlx5_nodnic_rq_stats {
++	u64 packets;
++	u64 bytes;
++};
++
+ struct mlx5_nodnic_ring {
+ 	void *wq;
+ 	dma_addr_t dma_handle;
+@@ -109,6 +120,9 @@ struct mlx5_nodnic_priv {
+ 	struct mutex state_lock; /* protects Interface state */
+ 	unsigned long state;
+ 
++	struct mlx5_nodnic_sq_stats sq_stats;
++	struct mlx5_nodnic_rq_stats rq_stats;
++
+ 	struct mlx5_nodnic_sq	sq;
+ 	struct mlx5_nodnic_rq	rq;
+ 	struct mlx5_nodnic_dbr	dbr; /* one shared dbr for TX and RX */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+index d73e2ec1662b..9f3ec04e7a7b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
++++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+@@ -963,10 +963,35 @@ int mlx5_nodnic_close(struct net_device *netdev)
+ 	return err;
+ }
+ 
++static void mlx5_nodnic_update_sq_stats(const struct mlx5_nodnic_sq_stats *sq,
++					struct rtnl_link_stats64 *s)
++{
++	s->tx_packets = sq->packets;
++	s->tx_bytes = sq->bytes;
++	s->tx_dropped = sq->dropped;
++}
++
++static void mlx5_nodnic_update_rq_stats(const struct mlx5_nodnic_rq_stats *rq,
++					struct rtnl_link_stats64 *s)
++{
++	s->rx_packets = rq->packets;
++	s->rx_bytes = rq->bytes;
++}
++
++static void mlx5_nodnic_get_stats64(struct net_device *netdev,
++				    struct rtnl_link_stats64 *stats)
++{
++	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
++
++	mlx5_nodnic_update_sq_stats(&priv->sq_stats, stats);
++	mlx5_nodnic_update_rq_stats(&priv->rq_stats, stats);
++}
++
+ static const struct net_device_ops mlx5_nodnic_netdev_ops = {
+ 	.ndo_open		= mlx5_nodnic_open,
+ 	.ndo_stop		= mlx5_nodnic_close,
+ 	.ndo_start_xmit		= mlx5_nodnic_xmit,
++	.ndo_get_stats64	= mlx5_nodnic_get_stats64,
+ 	.ndo_features_check	= mlx5_nodnic_check_features,
+ };
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
+index 7736a1f24ea5..808740ec3910 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
+@@ -152,6 +152,9 @@ void mlx5_nodnic_handle_recv_cqe(struct mlx5_nodnic_cq *cq,
+ 	skb->protocol = eth_type_trans(skb, priv->netdev);
+ 	nodnic_handle_rx_csum(priv->netdev, cqe, skb);
+ 
++	priv->rq_stats.packets++;
++	priv->rq_stats.bytes += byte_count;
++
+ 	napi_gro_receive(&cq->napi, skb);
+ 	rq->cc++;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
+index fcde1a9086f7..b6f2368155ce 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
+@@ -143,6 +143,7 @@ netdev_tx_t mlx5_nodnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 
+ 	err = mlx5_nodnic_tx_write_wqe(sq, skb, wqe);
+ 	if (err) {
++		priv->sq_stats.dropped++;
+ 		dev_kfree_skb_any(skb);
+ 
+ 		return NETDEV_TX_OK;
+@@ -176,6 +177,9 @@ void mlx5_nodnic_handle_send_cqe(struct mlx5_nodnic_cq *cq,
+ 	wi = &sq->wqe_info[pi];
+ 
+ 	mlx5_nodnic_complete_send_wqe(sq, wi, napi_budget);
++
++	priv->sq_stats.packets++;
++	priv->sq_stats.bytes += wi->num_bytes;
+ }
+ 
+ void mlx5_nodnic_complete_send_wqe(struct mlx5_nodnic_sq *sq,
+-- 
+2.44.0
 
-Selecting the IP ID from udp_send_skb() instead would either burn
-one extra IP ID per packet (50 % more for 2-segment GSO packets,
-making wraparound faster), or require __ip_make_skb() to leave
-iph->id unset for UDP GSO packets, with a simlar kayer violation concern.
-
-Would this be acceptable, or do you have another suggestion?
