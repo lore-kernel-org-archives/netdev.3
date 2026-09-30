@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B600379C50;
-	Wed, 30 Sep 2026 03:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F1537E5EC;
+	Wed, 30 Sep 2026 03:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790738383; cv=none; b=pmEuHqoFXzNr4tFp/EZ5CdAWLsoe2NNGRuofey4nbtdyalF+p2BqpGZRL5cKWqbmhd8xieWWl5pEI2nz0Avjdae6NjOWYCgrThOn7bA4G6REdn45D1/vvOCErohoyBhBNej0WJeqjicogKjENxdtnMytL8+a3850nXQugIQ9Ehs=
+	t=1790738383; cv=none; b=JeL5tAPYmUvp6L8iy4ZvNgMvmtPXsK1gLCV10hwS5A+JvMHdQEv8BmIO1MPMCw+3DuNSxmGQT/2dk7O3026Jk35f2zXnNf//ojdMLEeHWyZVOgH8wZeDxGACx91cFKREiJen1qF867MK8g4I8JNGNX/yvS4qPwh8lewSwntIK5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790738383; c=relaxed/simple;
-	bh=7WqqcVhSuAoMzArz5mYEAXk0EKLMU8zi6cZzKPYhKJE=;
+	bh=VE+UwdQB1HMi8eRvhiMZwf/N0gBu9NchywSLaXL8H9M=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iLhZJ4UAwGTep7Dr/JiERJB6FKrkpNJdvAkF6t65Sw4eg8l2ntMV9wzBKCzfFBSigNL9Lq65MOjL98WrL+d/fqlkXMK8dHwAJpmDI9Hkjuk1ERUUZIJ0DW+oaH7eQTlDE+fStvxKJ0lTtpo3S55JUka5hp56vIeb+s349Ows3g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/ddrxcQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hZRdKgsvYt+w7TQlhX32NEBzJ2g0O8rb+5WlOzb7voDccEC5FSCiHe6b4lEj9vJD7uxDfw4gYCbDM0GWygCLsioHHkCTXaJ20cj+lYvYZtqN0zx0lZy/mZQgp8eQNMnNS5hzUKVwYSnoFOdLqUkPJrDZO+3GbuhIcfkpgRuawdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=osRm060L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/ddrxcQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF381F000FF;
-	Wed, 30 Sep 2026 03:19:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="osRm060L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCBA1F00893;
+	Wed, 30 Sep 2026 03:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790738381;
-	bh=iOINwDu40ZZ2qaGpo2z1OlZ4gODP7cITwaeqVb5CEis=;
+	s=k20260515; t=1790738382;
+	bh=DNuYL3APRDBCU29688kDrORwFGj4p3bHGS3SvDfi6EU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D/ddrxcQGLLATSLBseTeJFg4aHM2YZ8NEqgFqJkxUjcSWn2L8IRb+cJLY1U5bWD+0
-	 YiujfrpKpIYtyNeMkTTG47f7kRsDGmr34/Vi2Gn0iucw4ZnFeJPIiwOIpQo5E4+XFE
-	 LquH6qpZDUKmJ+HFiSmgqpIkELap+WFeJMB/6MjSIpJBdhhldHPZBFnr0CkU7jjRUR
-	 sPgtFXJ9NhI6VnBcUWX1lWBpzXHgSg4QRXrrKGye67ymWYhlGMRp+kxY3E3X9f1UvH
-	 fDJCCIujmh6QDMzI05XFgH57o9YCphS/WCW8ym7lnghH+wRjfbT3UjrGmAcACkhG8N
-	 jtoAhTrOoFpxA==
-Subject: Re: [PATCH net-next 5/6] net: dsa: motorcomm: Add limited ACL flow
- statistics support
+	b=osRm060Lz12mRzcXb6747m+gZvuZ/kQFLmKE5VH6gBlK5KSjX0l12EhnMhh/mZopM
+	 r18cjDM5XYKoNSuAwmJVxn1vkyFFkwJGBIsOKGNjeU8TwxvE1PZ6LEwnaK43B1Agxd
+	 AYLc11aV7PB/9IeYxBW0tL9D0xtifno+LeQgg5MLjp7NyNjejZJHtqgiV4gmBk8b55
+	 ikG5+vJJSqdDZwUHqYDQxT72QzS/mOS7ZFL12x1dHGZLb+nfFcAx/qKTIVOytLGuRE
+	 1F04q6vuL3klZKIRzR3Wk/s37elml1Y2Nt/JIBXJvJH6WM1WgIdGJdaVDwEy5O4OSP
+	 ub19+5vpelytA==
+Subject: Re: [PATCH net-next 6/6] net: dsa: motorcomm: Add broadcast/multicast
+ policers via tc police
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 03:19:40 +0000
-Message-ID: <179073838013.434549.10766466901438945717@kernel.org>
-In-Reply-To: <20260926211813.935723-6-mmyangfl@gmail.com>
-References: <20260926211813.935723-6-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
+Date: Wed, 30 Sep 2026 03:19:41 +0000
+Message-ID: <179073838123.434549.279584713987633269@kernel.org>
+In-Reply-To: <20260926211813.935723-7-mmyangfl@gmail.com>
+References: <20260926211813.935723-7-mmyangfl@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 10 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 1
+Critical: 0 · High: 1 · Medium: 6 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,278 +58,397 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] yt921x_acl_add() (drivers/net/dsa/motorcomm/tc.c:1355-1357) is
-  meant to detect whether a rule already has a trap action.
-- [Medium] yt921x_dsa_cls_flower_stats() (tc.c:1492) ignores its `port`
-  argument.
-- [Medium] The patch adds hardware flow statistics for flower rules but
-  ignores the per-action hw_stats type the user requested.
-- [Medium] yt921x_acl_stat() (tc.c:1177-1179) always passes `jiffies` as
-  `lastused` to flow_stats_update(), even when the counter did not…
-- [Low] Flow counter slots are released only in the software bitmap,
-  without regard to hardware state.
+- [High] net: dsa: motorcomm: cbs calculation erroneously scales burst
+  capacity by time
+- [Medium] A flower rule that matches a broadcast or multicast dst_mac
+  and also a src_mac is still sent to the per-port storm policer, and…
+- [Medium] Flower rules offloaded to a storm policer never report
+  hardware statistics.
+- [Medium] The storm policer bypasses tc priority, and the silent -ENOSPC
+  fallback means hardware can police the same frames twice.
+- [Medium] yt921x_chip_setup() now writes YT921X_STORM_UNK_MCAST with
+  every port bit set (YT921X_STORM_UNK_MCAST_PORTS_M) on every probe.
+- [Medium] yt921x_marker_tfm_storm() computes cir = div_u64(slot_ns *
+  rate, NSEC_PER_SEC) and cbs = div_u64(slot_ns * burst, NSEC_PER_SEC)…
+- [Medium] A non-skip_sw rule with two police actions and a plain
+  bcast/mcast dst_mac is installed as a single-rate storm policer, and…
+- [Low] yt921x_storm_add() takes a struct netlink_ext_ack *extack that it
+  never uses.
+- [Low] yt921x_chip_setup_tc() programs YT921X_STORM_SLOT with the
+  constant YT921X_STORM_SLOT_DEF (100) and interprets it as `ctrl * 10 *…
+- [Low] In yt921x_acl_rule_ext_parse_flow_entries(), `static const u8
+  mcast_addr[ETH_ALEN] = {0x01};` is passed to…
 
 --
 
-net: dsa: motorcomm: Add limited ACL flow statistics support
+net: dsa: motorcomm: Add broadcast/multicast policers via tc police
 
-This commit adds .cls_flower_stats() support to the yt921x driver using
-the switch's 64 hardware flow counters. At add time, each flower ACL rule
-gets a packet-mode counter, except software-assisted trap rules. The
-counter is read back and reported as a delta through flow_stats_update().
+This patch recognizes tc flower filters that match a broadcast or
+multicast destination MAC and carry a police action. It offloads them
+onto the per-port storm control blocks instead of an ACL rule with a
+meter. It also programs the storm slot register at setup and tracks the
+owning cookie per port and storm type.
+
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 0405f1441f2ba..fb2514e01f919 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -2676,6 +2676,12 @@ static int yt921x_chip_setup_tc(struct yt921x_priv *priv)
+>  		return res;
+>  	priv->port_shape_slot_ns = ctrl * op_ns;
+>  
+> +	ctrl = YT921X_STORM_SLOT_DEF;
+> +	res = yt921x_reg_write(priv, YT921X_STORM_SLOT, ctrl);
+> +	if (res)
+> +		return res;
+> +	priv->storm_slot_ns = ctrl * 10 * NSEC_PER_USEC;
+
+[Severity: Low]
+Is a 10 us tick the right unit for YT921X_STORM_SLOT?
+
+The other two slot registers set up earlier in yt921x_chip_setup_tc()
+are scaled by the core clock and clamped to a minimum:
+
+	op_ns = 8 * priv->cycle_ns;
+
+	ctrl = max(priv->meter_slot_ns / op_ns, YT921X_METER_SLOT_MIN);
+	res = yt921x_reg_write(priv, YT921X_METER_SLOT, ctrl);
+	...
+	priv->meter_slot_ns = ctrl * op_ns;
+
+YT921X_STORM_SLOT (0x220100) sits next to YT921X_METER_SLOT (0x220104)
+and has the same GENMASK(11, 0) field. Here, though, it gets a fixed,
+clock-independent time base and no minimum clamp.
+
+If the storm slot is clocked like the others, then with an 8 ns cycle
+storm_slot_ns would be 100 * 8 * 8 ns = 6.4 us, not 1 ms. Every CIR/CBS
+computed in yt921x_marker_tfm_storm() would then be off by about 150x.
+
+Could a comment or datasheet reference explain the different unit?
+
+> @@ -2781,6 +2787,11 @@ static int yt921x_chip_setup(struct yt921x_priv *priv)
+>  	if (res)
+>  		return res;
+>  
+> +	res = yt921x_reg_write(priv, YT921X_STORM_UNK_MCAST,
+> +			       YT921X_STORM_UNK_MCAST_PORTS_M);
+> +	if (res)
+> +		return res;
+
+[Severity: Medium]
+What does YT921X_STORM_UNK_MCAST select? This sets every port bit on
+each probe, and neither the commit message nor a comment says what that
+changes. The commit message also doesn't mention the YT921X_STORM_SLOT
+write in yt921x_chip_setup_tc().
+
+A related question is how the multicast storm class lines up with the
+software filter. yt921x_acl_rule_ext_parse_flow_entries() maps the
+group-bit match onto the MCAST class:
+
+	} else if (ether_addr_equal(match.mask->dst, mcast_addr) &&
+		   is_multicast_ether_addr(match.key->dst)) {
+		ruleext->storm_type = YT921X_STORM_MCAST;
+
+In software, dst_mac 01:00:00:00:00:00/01:00:00:00:00:00 also matches
+broadcast frames. In hardware, broadcast has its own storm block
+(YT921X_STORM_CTRLnm() type 0 vs type 1). Depending on UNK_MCAST, the
+multicast block may also cover only unknown multicast.
+
+Could the hardware MCAST policer then police a different set of frames
+than the software filter, for example leaving out broadcast or known
+multicast?
 
 > diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-> index d919743d89c17..05d4a5957af95 100644
+> index 05d4a5957af95..3a0c6e0fbc52e 100644
 > --- a/drivers/net/dsa/motorcomm/tc.c
 > +++ b/drivers/net/dsa/motorcomm/tc.c
-
-[ ... ]
-
-> @@ -1138,6 +1141,45 @@ yt921x_acl_reserve(struct yt921x_priv *priv, unsigned int entscnt,
->  	return UINT_MAX;
+> @@ -182,6 +182,41 @@ yt921x_marker_tfm_shape(struct yt921x_marker *marker, u64 rate, u64 burst,
+>  				 priv, port, extack);
 >  }
 >  
 > +static int
-> +yt921x_acl_stat(struct yt921x_priv *priv, enum tc_setup_type type,
-> +		unsigned long tag, struct flow_stats *stats)
+> +yt921x_marker_tfm_storm(struct yt921x_marker *marker,
+> +			const struct flow_action_police *police,
+> +			struct yt921x_priv *priv, int port)
 > +{
 
 [ ... ]
 
-> +	diff = stat - aclrule->laststat;
-> +	aclrule->laststat = stat;
-> +	flow_stats_update(stats, aclrule->stat_pkt_mode ? 0 : diff,
-> +			  !aclrule->stat_pkt_mode ? 0 : diff, 0,
-> +			  jiffies, FLOW_ACTION_HW_STATS_IMMEDIATE);
+> +	/* 1 token = 1 rate */
+> +	cir = div_u64(slot_ns * rate, NSEC_PER_SEC);
+> +	if (cir > YT921X_STORM_CIR_MAX)
+> +		return -ERANGE;
+> +	cbs = div_u64(slot_ns * burst, NSEC_PER_SEC);
+> +	if (cbs > YT921X_STORM_CBS_MAX)
+> +		return -ERANGE;
+
+[Severity: High]
+Why is the burst scaled by the slot length here?
+
+burst is a bucket capacity in bytes, or in packets in pkt_mode. It is
+not a rate. Multiplying it by slot_ns / NSEC_PER_SEC treats it as if
+it were bytes per second.
+
+With storm_slot_ns = 1 ms, this divides the configured burst by 1000.
+Take the example from the commit message:
+
+  police rate 8mbit burst 64k
+
+That gives cbs = 65. The cir calculation just above implies that one
+token is one byte. If so, the hardware bucket holds 65 bytes, which is
+smaller than a minimum-size Ethernet frame.
+
+Wouldn't that drop almost every broadcast or multicast frame on the
+port, instead of allowing the configured 64k burst? pkt_mode has the
+same problem, because the extra factor of 1024 is applied to both rate
+and burst.
+
+The meter path does not do this. In yt921x_marker_tfm(), only the rate
+goes through rate2token() with slot_ns. The burst is converted with
+burst2token(burst, unit, C) and no slot scaling.
+
+On the other hand, if CBS really is in bytes, YT921X_STORM_CBS_MAX
+limits the bucket to 1023 bytes. That cannot hold a full-size frame
+either. Dropping the slot scaling would then make the -ERANGE check
+reject most realistic bursts, so these filters would always fall back
+to the ACL meter.
+
+Could you say what unit the CBS field of YT921X_STORM_CTRLnm() uses,
+and how a byte or packet burst should map onto it?
 
 [Severity: Medium]
-Should lastused be set to jiffies even when diff is 0?
+What happens when cir or cbs rounds down to zero here?
 
-flow_stats_update() updates lastused whatever the packet and byte
-deltas are:
+With storm_slot_ns = 1 ms, a byte-mode rate under 1000 B/s (for example
+police rate 4kbit) gives cir = 0. A burst under 1000 bytes gives
+cbs = 0.
 
-include/net/flow_offload.h:flow_stats_update() {
-    ...
-	flow_stats->lastused	= max_t(u64, flow_stats->lastused, lastused);
-    ...
-}
+Only the upper bounds are checked, so marker_storm_set becomes true.
+yt921x_storm_add() then writes YT921X_STORM_CTRL_EN with a CIR or CBS of
+zero.
 
-tcf_gact_stats_update() then copies that into tm->lastuse. As a result,
-every offloaded rule with a counter looks just used on every stats
-poll, and tc -s filter show always reports it that way.
+Wouldn't that block nearly all broadcast or multicast traffic on the
+port? Software police with the same parameters still passes traffic at
+the configured rate.
 
-Userspace that ages out idle offloaded flows by tc lastuse, such as the
-OVS tc-offload revalidator, would never see these flows as idle.
-sja1105_vl.c has the same pattern. The "Align with sja1105" comment only
-covers stat_pkt_mode.
+The meter path in yt921x_marker_tfm() clamps these values:
 
-Could jiffies be passed only when diff is non-zero?
+	m.cir = rate2token(rate, slot_ns, m.unit, C);
+	if (!m.cir)
+		m.cir = 1;
+	...
+	m.cbs = burst2token(burst, m.unit, C);
+	if (!m.cbs)
+		m.cbs = 1;
 
-> +	return 0;
-> +}
+That path also warns when the burst is smaller than one frame. Should
+the storm path clamp, warn, or fall back to the ACL meter in the same
+way?
 
 [ ... ]
 
-> @@ -1270,9 +1312,13 @@ yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
->  	}
->  
->  	if (aclrule->action[0] & YT921X_ACL_ACTa_METER_EN)
-> -		clear_bit(FIELD_GET(YT921X_ACL_ACTa_METER_ID_M,
-> -				    aclrule->action[0]),
-> -			  priv->meters_map);
-> +		__clear_bit(FIELD_GET(YT921X_ACL_ACTa_METER_ID_M,
-> +				      aclrule->action[0]),
-> +			    priv->meters_map);
-> +	if (aclrule->action[0] & YT921X_ACL_ACTa_FLOWSTAT_EN)
-> +		__clear_bit(FIELD_GET(YT921X_ACL_ACTa_FLOWSTAT_ID_M,
-> +				      aclrule->action[0]),
-> +			    priv->flowstats_map);
+> @@ -684,21 +735,40 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+
+[ ... ]
+
+>  	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
+> +		static const u8 mcast_addr[ETH_ALEN] = {0x01};
 
 [Severity: Low]
-Can a statid be reused while the hardware still references it?
+This isn't a bug, but mcast_addr is later passed to ether_addr_equal().
+include/linux/etherdevice.h says both addresses must be u16 aligned, and
+a plain u8[6] only guarantees byte alignment.
 
-Earlier in yt921x_acl_del(), the commit result is saved, but a failure
-does not stop the resources from being released:
+Would static const u8 mcast_addr[ETH_ALEN] __aligned(2) work here? Or
+ether_addr_equal_unaligned()?
 
-	aclblk->rules[binid] = NULL;
-	ret = yt921x_acl_commit(priv, entid, aclrule->mask);
-	/* the kernel never rolls back on failure */
-
-Suppose the first write in yt921x_acl_commit(),
-yt921x_reg96_write(YT921X_ACLn_ACT(entid), zeros), fails on a bus error.
-The old ACT word with FLOWSTAT_EN | FLOWSTAT_ID(statid), plus the
-entry's key and mask, stay live in hardware.
-
-The statid is still cleared here. The next yt921x_acl_add() can then
-pick it with find_first_zero_bit(), zero the counter and set
-laststat = 0. Hits on the orphaned entry would then show up in the new
-rule's stats.
-
-Also, YT921X_FLOWSTATn_CTRL(statid) is never cleared, either here or on
-the yt921x_acl_add() error paths after the CTRL write. Those paths are
-a STAT zeroing failure, a kvzalloc_obj() or kvmemdup() failure, and a
-yt921x_acl_commit() failure. Is it intended to leave those counters
-armed while flowstats_map treats them as free?
-
-This needs a bus failure to trigger. The same pattern already exists
-for meters and ACL slots.
-
->  	priv->acl_masks[blkid] &= ~aclrule->mask;
->  	kvfree(aclrule);
-
-[ ... ]
-
-> @@ -1305,6 +1352,10 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  	if (entid == UINT_MAX)
->  		return -EOPNOTSUPP;
+>  		struct flow_match_eth_addrs match;
+>  		u32 mask;
 >  
-> +	use_trap = (ruleext->r.action[2] & YT921X_ACL_ACTc_FWD_EN) &&
-> +		   (FIELD_GET(YT921X_ACL_ACTc_FWD_M,
-> +			      ruleext->r.action[2]) == YT921X_ACL_ACTc_FWD_TRAP);
+>  		flow_rule_match_eth_addrs(rule, &match);
+>  
+> +		if (!ruleext->non_storm) {
+> +			if (is_broadcast_ether_addr(match.mask->dst) &&
+> +			    is_broadcast_ether_addr(match.key->dst)) {
+> +				ruleext->storm_type = YT921X_STORM_BCAST;
+> +				ruleext->storm_type_set = true;
+> +			} else if (ether_addr_equal(match.mask->dst, mcast_addr) &&
+> +				   is_multicast_ether_addr(match.key->dst)) {
+> +				ruleext->storm_type = YT921X_STORM_MCAST;
+> +				ruleext->storm_type_set = true;
+> +			} else {
+> +				ruleext->non_storm = true;
+> +			}
+> +		}
 
 [Severity: Medium]
-Can this comparison ever be true? The definitions are:
+What happens to a src_mac match here? Storm eligibility is decided from
+the dst MAC alone.
 
-drivers/net/dsa/motorcomm/tc.h:
-#define  YT921X_ACL_ACTc_FWD_M			GENMASK(22, 21)
-#define   YT921X_ACL_ACTc_FWD(x)			FIELD_PREP(YT921X_ACL_ACTc_FWD_M, (x))
-...
-#define   YT921X_ACL_ACTc_FWD_TRAP			YT921X_ACL_ACTc_FWD(3)
+The source MAC entries built just below never set non_storm, unlike
+every other match key in this function:
 
-FIELD_GET() returns a value in 0..3, but YT921X_ACL_ACTc_FWD_TRAP is
-the shifted value 0x600000.
+	mask = ethaddr_hi4_to_u32(match.mask->src);
+	if (mask) {
+		entry = yt921x_acl_entries_new(entries, &size,
+					       YT921X_ACL_TYPE_MAC_SA0);
+	...
 
-That would leave use_trap false for explicit FLOW_ACTION_TRAP rules. It
-would also be false for rules that fell back to trap in
-yt921x_acl_rule_ext_parse_flow_action(). Only the meter exhaustion path
-further down sets it.
+The MAC_DA1_SA1 entry works the same way.
 
-The new check below then goes to the else branch for software-assisted
-trap rules:
+Take this filter:
 
-	if (ruleext->r.sw_assisted && use_trap) {
-		statid = YT921X_FLOWSTAT_NUM;
-	} else {
-		statid = find_first_zero_bit(priv->flowstats_map,
+  flower skip_sw dst_mac ff:ff:ff:ff:ff:ff src_mac 00:11:22:33:44:55 \
+      action police rate 8mbit burst 64k
 
-So these rules get a hardware counter, which is the case the patch
-meant to exclude. The software flower filter also counts the trapped
-packets, so tc stats count them twice. The rules also use up counters
-from the 64-entry pool.
+non_storm stays false. yt921x_flower_add() then installs the rule
+through yt921x_storm_add(), and the ACL entries that carry the SA match
+are never installed.
 
-Would comparing the masked value work instead?
-
-	(ruleext->r.action[2] & YT921X_ACL_ACTc_FWD_M) == YT921X_ACL_ACTc_FWD_TRAP
-
-> +
->  	if (!(ruleext->r.action[0] & YT921X_ACL_ACTa_METER_EN)) {
->  		meterid = YT921X_METER_NUM;
->  	} else {
+Wouldn't that rate-limit broadcast from every source on the port, with
+no extack warning? For comparison, sja1105_flower_parse_key() rejects
+this case with "Matching on source MAC not supported".
 
 [ ... ]
 
-> @@ -1336,6 +1387,35 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  			return res;
->  	}
+> @@ -996,6 +1081,16 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
+>  			if (res)
+>  				return res;
 >  
-> +	if (ruleext->r.sw_assisted && use_trap) {
-> +		statid = YT921X_FLOWSTAT_NUM;
-> +	} else {
-> +		statid = find_first_zero_bit(priv->flowstats_map,
-> +					     YT921X_FLOWSTAT_NUM);
-> +		if (statid >= YT921X_FLOWSTAT_NUM) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "No more flowstats, HW stats disabled");
-> +		} else {
+> +			if (!ruleext->non_storm) {
+> +				res = yt921x_marker_tfm_storm(&ruleext->marker_storm,
+> +							      police, priv,
+> +							      port);
+> +				if (!res)
+> +					ruleext->marker_storm_set = true;
+> +				else
+> +					ruleext->non_storm = true;
+> +			}
 
 [Severity: Medium]
-Should the per-action hw_stats type be checked here?
+How does this work with a second police action? non_storm is set only
+for actions other than FLOW_ACTION_POLICE:
 
-tc_setup_action() copies the requested type into each action entry:
+	if (act->id != FLOW_ACTION_POLICE)
+		ruleext->non_storm = true;
 
-	entry[k].hw_stats = tc_act_hw_stats(act->hw_stats);
+Take a rule without skip_sw that has a plain broadcast or multicast
+dst_mac and two police actions. The first police action sets
+marker_storm_set. The second hits:
 
-Nothing under drivers/net/dsa/motorcomm/ reads act->hw_stats or calls
-flow_action_hw_stats_check() or flow_action_basic_hw_stats_check().
-Drivers such as ocelot, sparx5, lan966x, bnxt and mlx5 do. This has
-three effects.
+	if (seen_police) {
+		action[0] &= ~YT921X_ACL_ACTa_METER_EN;
 
-A rule added with "hw_stats disabled" still takes a counter from the
-64-entry flowstats_map. There are 384 ACL entries, so such rules can use
-up the pool and leave later rules that want stats with none.
+		reason = "Multiple police actions";
+		goto fallback;
+	}
 
-A rule that explicitly asks for "hw_stats immediate" is still accepted
-when the pool is empty. Only the extack message is set, and 0 is
-returned. Later stats queries get -EOPNOTSUPP from yt921x_acl_stat(),
-which the core ignores, so the user sees no stats and no error.
+It then falls through to FLOW_ACTION_TRAP so that software can apply
+both policers. But non_storm is still false.
 
-yt921x_acl_stat() always reports FLOW_ACTION_HW_STATS_IMMEDIATE, even
-for "hw_stats delayed" requests.
+yt921x_flower_add() therefore installs only the first policer via
+yt921x_storm_add() and returns 0. The trap action in ruleext->r.action
+is dropped.
 
-The commit message says:
-
-    As there is no interface for statistics preference for now, we pick
-    one on our own initiative.
-
-That covers byte vs packet mode. The enabled, disabled, immediate and
-delayed preference does exist in the uAPI.
-
-Could the driver reject unsupported hw_stats types and skip counter
-allocation when stats are disabled?
-
-> +			u32 zeros[2] = {};
+Doesn't that leave the second policer unenforced for frames forwarded
+in hardware?
 
 [ ... ]
 
-> @@ -1403,6 +1488,21 @@ yt921x_acl_add(struct yt921x_priv *priv,
+> @@ -1488,6 +1587,76 @@ yt921x_acl_add(struct yt921x_priv *priv,
 >  	return res;
 >  }
 >  
-> +int
-> +yt921x_dsa_cls_flower_stats(struct dsa_switch *ds, int port,
-> +			    struct flow_cls_offload *cls, bool ingress)
+
+[ ... ]
+
+> +static int
+> +yt921x_storm_add(struct yt921x_priv *priv, int port, unsigned long cookie,
+> +		 unsigned int type, const struct yt921x_marker *marker,
+> +		 struct netlink_ext_ack *extack)
+
+[Severity: Low]
+This isn't a bug, but yt921x_storm_add() never uses extack, and
+yt921x_marker_tfm_storm() doesn't take one. So the storm path never
+reports the rate and burst it programs or warns about truncation. It
+also says nothing when it falls back to an ACL on -ENOSPC.
+
+yt921x_marker_tfm_police() still runs during parsing and can emit its
+"Consider match rate X with burst at least Y" message. That value is
+computed for the meter slot, though, not for the storm policer that
+actually gets installed.
+
+[ ... ]
+
+> +static int
+> +yt921x_flower_add(struct yt921x_priv *priv, int port,
+> +		  const struct yt921x_acl_rule_ext *ruleext,
+> +		  struct netlink_ext_ack *extack)
 > +{
-> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
 > +	int res;
 > +
-> +	mutex_lock(&priv->reg_lock);
-> +	res = yt921x_acl_stat(priv, TC_SETUP_CLSFLOWER, cls->cookie,
-> +			      &cls->stats);
+> +	if (!ruleext->non_storm && ruleext->marker_storm_set &&
+> +	    ruleext->storm_type_set) {
+> +		res = yt921x_storm_add(priv, port, ruleext->r.tag,
+> +				       ruleext->storm_type,
+> +				       &ruleext->marker_storm, extack);
+> +		if (res != -ENOSPC)
+> +			return res;
+> +	}
+> +
+> +	return yt921x_acl_add(priv, ruleext, extack);
+> +}
 
 [Severity: Medium]
-What happens when a shared block offloads the same filter on several
-ports?
+Does this keep tc priority semantics?
 
-The port argument is dropped here. yt921x_acl_find() matches only on
-tag and type and returns the first match:
+The storm register is port-wide and ignores cls->common.prio and any
+installed ACL rules. In software, cls_flower stops at the first matching
+filter, because police with conform pipe/ok returns >= 0 from
+__tcf_classify().
 
-	if (aclblk->rules[i] && aclblk->rules[i]->tag == tag &&
-	    aclblk->rules[i]->type == type)
-		return YT921X_ACL_ENT_PER_BLK * blkid + i;
+Suppose two dst_mac ff:ff:ff:ff:ff:ff police filters are added on one
+port with different prios. The first takes the storm slot. For the
+second, yt921x_storm_add() returns -ENOSPC, and the filter is silently
+installed as an ACL meter.
 
-For example:
+Would hardware then apply both the storm policer and the ACL meter to
+the same broadcast frames? Software applies only the higher-priority
+filter.
 
-    tc qdisc add dev swpA ingress_block 1 clsact
-    tc qdisc add dev swpB ingress_block 1 clsact
-    tc filter add block 1 flower ... skip_sw
+The commit message says this follows "the sja1105 broadcast/multicast
+policer approach". sja1105 has only a broadcast policer, and
+sja1105_setup_bcast_policer() rejects a second one instead of falling
+back:
 
-yt921x_acl_rule_ext_parse_flow() creates one ACL rule per port, with
-SPORTS = BIT(port) and tag == (unsigned long)f. Each rule has its own
-flowstat counter. fl_hw_update_stats() -> tc_setup_cb_call() then calls
-each port's callback with the same cookie.
+	NL_SET_ERR_MSG_MOD(extack,
+			   "Port already has a broadcast policer");
+	rc = -EEXIST;
 
-Each of those calls finds the same first rule. The first call reports
-its delta and updates laststat, and the later calls report about zero.
-The other ports' counters are never read, so their hits never reach
-tc -s filter show.
-
-Would matching on the port avoid losing those hits? The port is already
-encoded in the SPORTS field of entries[0].key[1].
-
-> +	mutex_unlock(&priv->reg_lock);
 > +
-> +	return res;
-> +}
+>  int
+>  yt921x_dsa_cls_flower_stats(struct dsa_switch *ds, int port,
+>  			    struct flow_cls_offload *cls, bool ingress)
+
+[Severity: Medium]
+Should yt921x_dsa_cls_flower_stats() be storm-aware as well? Add and
+delete now go through yt921x_flower_add() and yt921x_flower_del(), but
+stats still calls yt921x_acl_stat() directly:
+
+	res = yt921x_acl_stat(priv, TC_SETUP_CLSFLOWER, cls->cookie,
+			      &cls->stats);
+
+A storm-offloaded cookie exists only in pp->storm_tags[] and has no ACL
+rule. So yt921x_acl_find() returns UINT_MAX and yt921x_acl_stat()
+returns -ENOENT.
+
+fl_hw_update_stats() ignores the error, so tc -s filter show never
+shows hardware counters for these filters.
+
+The patch also adds YT921X_STORM_STATnm() in tc.h, but nothing reads
+it. Was it meant to be used here?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926211813.935723-1-mmyangfl%40gmail.com
