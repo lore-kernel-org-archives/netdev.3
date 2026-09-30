@@ -1,229 +1,115 @@
-Received: from mail-pj2-f36.google.com (mail-pj2-f36.google.com [74.125.227.164])
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AF4521234
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777540; cv=none; b=ME9H1YQDR6RKvVf5w5KY2+MVHpbHSR5UV6X1wu7nXvpxlyZm3pptkhRrjD4rKPpd0BgaCcw5iIcFGsjT2q/pDsw1h1eNe4XgajuAmoIuSX564HQgcHXjCjSpuaiQCqIHNES1MSmKkA2ssYrIehXGh91qqLtkZ9T54ZeeSgC0lSo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777540; c=relaxed/simple;
-	bh=UI2XZTTAmMT6S6fO82VLI+DGctHWm6fuFI5NTz0VPh0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IpzxyE+7lM6DyDwIDoOQE8FMfcn8RQJgiOc8bnqScNnpsrHqTEj2QmmickmaHOGzThl+U631CbatntzwloCmQN4ehL4bt+BroOlosFrW3iWi4BxUWEsYaeL5W9ky4wbOAljz9ToOQdj4hAEklcMpg3g5AXKSvhTRuwv6tXgFpHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnoVKPoC; arc=none smtp.client-ip=74.125.227.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F149620
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790777634; cv=pass; b=r3xWK89zN6iYNunLFqqRMrSJVgIvInsqGF2Y6OyjHrzQWSgh1SXz6lrhFxKqiWid7C5pGAUyXPv1NvzOVY1QlTWKvbHtoSJOPhJhYdDzfwJ0HXy+mpyv2E1YITbDeaRjCDpRPKuXPG6EkTVtG4kN3YVWh8hvDLkHRXeV4xOKDTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790777634; c=relaxed/simple;
+	bh=ouiP/s84DTBB3CgCBBKgMRlCvmNQLtc3ruMbeozhkFE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I8dCIqu03PBniU7ml6NtLYCgFLwKc2bf8CVxu0U96h2It+jF37whhBayTAZ8HGe8GuB9lT4JEeujr5ZJFkXSb22SfYDfNJ+7WF3qS8HhxUmf3TfwtV/4jAtf4ObLrTt/YwKH0U5EIqVJcwwF9dhP5ofxI4G4NDNze4F7FRwgzKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HU3JuVoh; arc=pass smtp.client-ip=74.125.229.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnoVKPoC"
-Received: by mail-pj2-f36.google.com with SMTP id d9443c01a7336-2e2e35ee682so2620805ad.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:12:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HU3JuVoh"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76ff64d78so5291473e87.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:13:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790777623; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MaomlMjAKm2dGI01dtiVZf/AquglXadkQg1ZN0H2uB9KvGtQGQddrTHi5tV16HMZl8
+         cRa+7AiECfUHhoCXMTzxRF+NmTs0NaRVYxusO+wjViKZo36cV3yCVENZNOmmY467TzRO
+         Ue6u4EHPS2eG4Ywjkh6C9wsQhD5iV/zXA6Nw2NwBOT5aJkwrJL+4lZaCXVdHgSsc2eig
+         MLamsQH1Z+Cb0hl++lmM9bnFZl/rLyL6aKqy3fPQo6PjNhDBwZLKH7Sn+HGU4LMFt3yb
+         1t7t6ZBzvbcWuUntxNOx/gqDIrYVT6dB3LJUnGgifmFKf14sYDBUtepUC5rTQKbAI34f
+         tuFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ouiP/s84DTBB3CgCBBKgMRlCvmNQLtc3ruMbeozhkFE=;
+        fh=d8t0NBVIfnZkJYWUjO7oZJ2T0Z11rTaxKlTxHuClkMM=;
+        b=NAynZ6pdMZMLxV1S6QnITohCg5b14xOm4D1Sh1LV1Ie//ZjKVCNmZ862SrSQZWjYAj
+         9DtAhZpUGH9Hmvuexfr36uFuFU9OMcR7utNuPmxOCq0ZRUzqWNPRbSrl4CC39L0fM0cE
+         qshLk1srtY1xds2gCjlILVKAkfyJhRQMk+UMIvkDA5Hzz0z45lmL8GqjXivcX+y9J3SR
+         CIp98OP33Vv8IdnThe/mlvTodkjAR+ZcA2ELW2A2c+eZrycVQbwnJhSvqBdVxbyDckJC
+         gv24zka2iwNiGGCJXZ349x2+g60i6fFj70pMUKWOJMUvfOQKLU9IbJs5A427xCVUe/u9
+         avhg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790777526; x=1791382326; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3QS3HEpc4LkcdODNfPIRR2bjRGT+/U73u7f7QjEG+PU=;
-        b=OnoVKPoCLO97EXXagOYMRCy1bXkxniGeH5LOXz0pFNK2txiVq/85FPuL9ifEuoQyyW
-         KUY1xqY2raq46bXWIfsNDYShjQ1AkQPhHt70bimt2F6un4pxL8ayjTm8b1jFqC2WZdg0
-         S/jiXbHuxS+51/MhyLzOnM+g5b8fb8PWW+VMRo4C/64fkS7IaCom54JU1xpuk8BYc8QP
-         xIEJYckeVLncx4NjjLsKku0Wwx2IrXTv6BSelTbRLOmpTdQXDb9ZzJW+ErPu2b7hVBLV
-         /yXyEDcOfb9+ua4Qhq/CcthcZKZcuLwuSfDMGma/D5zuJfQ7OHdJ612PvtQN9yTjczZM
-         v6zw==
+        d=gmail.com; s=20251104; t=1790777623; x=1791382423; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ouiP/s84DTBB3CgCBBKgMRlCvmNQLtc3ruMbeozhkFE=;
+        b=HU3JuVohcapnkuT8TmF6+QOx52bOpVZAIps9S3IPbbRkpGnKxCBUKjQ5SbyfqArTOW
+         C3tBoIfVqFT/Zgk16U6c8b5ZL0PdV+DKRu03OKT53E4v3wwsuH+s99FpvD05bMUSMQWK
+         r1HS4HOk5yHhzYyqNRbXvHUzAKpAr76Jd+aOjvdcjzfvK+GogJC9lRbg5lmmEU5tWvcC
+         4g5bKAZP/3taB8vETUKvANeLgTnSf7S3LuSfWVqbTR/3OlYDZ0+UGhkOoK5S1JGyXaVb
+         gr4DU4amAbBsMRTFQcDr6truIB2LF7VRMohFAcHkSR8Cgbrdma5dDhj+HmILILEUiNCF
+         FVEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790777526; x=1791382326;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3QS3HEpc4LkcdODNfPIRR2bjRGT+/U73u7f7QjEG+PU=;
-        b=Sqv/AiDF5HDbSH/OZBNhrtmE0TrvhWhxRjzqfRo+MJfpcJoHFYaN6hXj4+htqlct5E
-         eoSpxBEoPZA43NBGfwTwSSU9ANYDA/EKQl0lgbo1XHcLyV3oqkmftdR/n8ksLrEIW577
-         S16yXYL1m+8YiaLqpB0Wa0dE7/SzWF00gMI1AEoFG2WOuv8fyuoXOKBX3bqS2GVANceK
-         GfLw4PXgjwNdn37lNUtf2D30B3zkeLy+iuttZxP9UTtA/Xgo1lQBrowf2F/0oxOatGW5
-         46JkLyXwq1T1I3KTuTU7MgHYt3G21WcVJ5HK4N+eqkyeD1lOE6hR5C5aeUr6KwPjnlIx
-         cUgw==
-X-Gm-Message-State: AFq9FYLkc6SwVTzFZbf+9xodxHTrfZ2OU0IYltOtYWgef+6ucGRbIxMm
-	ZFXQN60d70Un5+WQlhV88lYe+6P/aQex8Qb3gb2vMV/pJM+A1ZEeSlmtdGnlcg==
-X-Gm-Gg: AYBFou3xM707P6vl97gsOt4TcaqaAlNJdF7SRO8hkoqOWRf2i7gq8iFEwDZYxTQzyPG
-	uMCKvMHihG3A60eJCOcE8ZrAW9IQ0GLonI63RIeGODN6ZllKipHP7vHfAKEHk1H8GpnOPMMSBUf
-	SwQ6heAVoMNXQXRtyBqa40a7cX+XS6Co93Y3vnXGwKBPHSdKxkBo52rJi/ghU7agxxmO3wBip5l
-	2VfDMPuuBJwTrMoW7iNrQITQWbBRjvlmRJkhI1QO68Wo2bGpXKz9aT4DIqvPns6DM2jy1w7hPS7
-	DQNzJmrLgFVZA4jR5Ph0OxTPoDUnBt5/g90ANdF1WuSgz4gd444+tYYKdzJMbPw+5Iny7TvATNM
-	0NirfjO7ARFci8yvb5hWUv2BMeMsdWlug6TKLKtDYsO8K10g1cPmNKxEgncZCiG+YPEPpZLh9Xr
-	4CjNHVtxvjlNuiE+S/WzAj4afJdT2/X89Zh/58KhjS7wKsh2MXFJxBjojbPytmgCvhdDIGb1sYn
-	dVJ+LbLeAodPg+G6UIC1ciT
-X-Received: by 2002:a17:903:4b0d:b0:2dd:87c7:a907 with SMTP id d9443c01a7336-2e2e4a01156mr12465945ad.15.1790777526423;
-        Wed, 30 Sep 2026 07:12:06 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76c0:d30::4d0:61])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e2e5b897d8sm8307475ad.28.2026.09.30.07.12.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 07:12:05 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2] net: dsa: motorcomm: Fix register rollback in LED setup
-Date: Wed, 30 Sep 2026 22:11:48 +0800
-Message-ID: <20260930141151.3973221-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20260707; t=1790777623; x=1791382423;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ouiP/s84DTBB3CgCBBKgMRlCvmNQLtc3ruMbeozhkFE=;
+        b=EdTiDdmqjEINBybBOu2WLpmk+sbUUJJrHixIT+D0oG00aSrVwtwnKqITmP0xBlnVEg
+         8JOREe4E0t5MVw3z4GjNSs7iU/PIxGo+32MjdB6nXboLuDh2tlJj8QTyEECPWbM7SqDS
+         hFXqELgn1lPsUbcHj8DzQBzmZFNrJDtyuhZxWVMUK7rSXJLKE4oA+kd8oqu3vLOKGDQB
+         erT/SnAfje09rAX7UzeRIEb7ZPt+bv/10uSBzM/LcC6541SOhybzBY1epEi6JnSvcmaR
+         WBCI7w3wTic1jRTwt7d2ZC4TG+LubIIjqQ6gZzFjdFz6lUt+byL4RiBPlvVS/9NMrP6t
+         BFXw==
+X-Forwarded-Encrypted: i=1; AKwUvBxSnWr5ZA2IW8XI9FoV/BrInhxd+AiGD7rjJAmQS7bRJYrlkyFUfCGtEGySJRYmu3WvwENAykQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIH+3gOXHVyRSCtSiL9oKT/ed54AwZF+VQk0GYhTdZX9B9FcMez
+	5yqEmoMYrSGJ86plNBhUJmJaQMlBzvwZC2lIz7pzsBqV4yNBWCEzbVhgP+WZARy3TxHE+TiPrkl
+	gB6HBMRPE7Ms2yt7b2ikShMKYzbc/CtU=
+X-Gm-Gg: AYBFou1rS083uUI6mY0fVoGPiwQj5YAQOjemN8fxHidiAMtZyV57vmgUuOH1aD832RR
+	pE30Nx1XhxGPvHzaW5XWepKjcLnLPy7KbeiyGkle8O8kQnpvBXCCfSEWvzQklPw87A7Lo2KSNbX
+	9qME6S6ZoerTs7I7ABY6FL8VoXHZxPkgSk/m4H836m5U+aU+lcbpGRB+D8qzDBR3MegXolZuB3J
+	22SOQJbeIbcmk68npJ6/+6OT1XnzLQMnQSWrmfH/fSDNPLgvgWDyVmwhuDSinULovXu1mx6AFMR
+	nLAnXeTIWlF/yKPf9FikAQmr5iBugo1V5SStVe7oWBTB0z+2iuE4eKx0bs0oCAH3/I8eWbom5j+
+	kAsj0rCYLZ3ndfCB7blKPBzyO29E9Qeg5Wj5lklXiPRwx
+X-Received: by 2002:a05:6512:6884:10b0:5b8:f472:2e66 with SMTP id
+ 2adb3069b0e04-5ba405e9177mr509267e87.25.1790777623133; Wed, 30 Sep 2026
+ 07:13:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260930112842.21323-1-sigefriedhyy@gmail.com>
+ <20260930112842.21323-3-sigefriedhyy@gmail.com> <235a33c2-7138-4815-820d-793568757d95@6wind.com>
+ <CA+7S2v+VaVYksOpuUKzo+DoWZ97M_XKvnMr8cCcgwTkrOxsvEw@mail.gmail.com> <7d8f1378-d5a6-4a87-82cd-98eb794f85f2@6wind.com>
+In-Reply-To: <7d8f1378-d5a6-4a87-82cd-98eb794f85f2@6wind.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Wed, 30 Sep 2026 23:13:39 +0900
+X-Gm-Features: AclHuK-ds-pquglK1wdrfnVLrVe9lO-XLy96JgNFg8PNJqutvY6kezkk22pc8Pg
+Message-ID: <CA+7S2v+hEK09FDv4jLrp3yGLxeFMde0j3FJ-TBytLxQ1Uoq=dQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 2/6] net: change netdev_hw_addr_list count
+ through helpers
+To: nicolas.dichtel@6wind.com
+Cc: Ajay Singh <ajay.kathat@microchip.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>, 
+	Kory Maincent <kory.maincent@bootlin.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The LED error path writes back a stale snapshot of the whole words taken
-before the class device registration, silently reverting LED2 state of
-sibling LED groups already registered and reachable from sysfs. Although
-the odds are very small, fix it by reverting this group's fields only
-for correctness.
+> Thanks. FYI, please don't top post:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst#n336
 
-Fixes: 9af9a8168213 ("net: dsa: motorcomm: Add LED support")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
-v2:
-  - reword
-v1: https://lore.kernel.org/r/20260926202955.905761-1-mmyangfl@gmail.com
- drivers/net/dsa/motorcomm/leds.c | 69 +++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/net/dsa/motorcomm/leds.c b/drivers/net/dsa/motorcomm/leds.c
-index 6613fe3b0471..c97b560299d6 100644
---- a/drivers/net/dsa/motorcomm/leds.c
-+++ b/drivers/net/dsa/motorcomm/leds.c
-@@ -420,13 +420,15 @@ yt921x_led_setup(struct yt921x_priv *priv, int port,
- 	char name[LED_MAX_NAME_SIZE];
- 	enum led_default_state state;
- 	struct yt921x_led *led;
-+	int polarity_orig;
- 	bool force_high;
- 	bool force_low;
--	u32 led2_val;
--	u32 inv_val;
-+	u32 led2_orig;
-+	int polarity;
- 	u32 group;
- 	u32 mask;
- 	u32 ctrl;
-+	u32 val;
- 	bool on;
- 	int res;
- 	int ret;
-@@ -452,6 +454,7 @@ yt921x_led_setup(struct yt921x_priv *priv, int port,
- 			port, group);
- 		return -EINVAL;
- 	}
-+	polarity = force_high ? 1 : force_low ? -1 : 0;
- 
- 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
- 	if (!led) {
-@@ -470,23 +473,27 @@ yt921x_led_setup(struct yt921x_priv *priv, int port,
- 	/* Inversion is internal - force on will give low logic.
- 	 * In the rest of the file, treat LEDs as if active-low.
- 	 */
--	inv_val = U32_MAX;
--	if (force_high || force_low) {
--		res = yt921x_reg_read(priv, YT921X_LED_PAR_INV, &inv_val);
-+	polarity_orig = 0;
-+	if (polarity) {
-+		res = yt921x_reg_read(priv, YT921X_LED_PAR_INV, &val);
- 		if (res)
--			goto revoke_inv;
-+			goto err_inv;
- 
- 		mask = YT921X_LED_PAR_INV_INVnm(group, port);
--		ctrl = force_high ? inv_val | mask : inv_val & ~mask;
--		res = yt921x_reg_write(priv, YT921X_LED_PAR_INV, ctrl);
--		if (res)
--			goto revoke_inv;
-+		ctrl = polarity > 0 ? val | mask : val & ~mask;
-+		if (ctrl != val) {
-+			res = yt921x_reg_write(priv, YT921X_LED_PAR_INV, ctrl);
-+			if (res)
-+				goto err_inv;
-+
-+			polarity_orig = -polarity;
-+		}
- 	}
- 
--	led2_val = U32_MAX;
--	res = yt921x_reg_read(priv, YT921X_LED2_PORTn(port), &led2_val);
-+	led2_orig = U32_MAX;
-+	res = yt921x_reg_read(priv, YT921X_LED2_PORTn(port), &val);
- 	if (res)
--		goto revoke_led2;
-+		goto err_led2;
- 	mask = YT921X_LED2_PORT_FORCEn_M(group);
- 
- 	switch (state) {
-@@ -494,16 +501,20 @@ yt921x_led_setup(struct yt921x_priv *priv, int port,
- 	case LEDS_DEFSTATE_ON:
- 	default:
- 		on = state == LEDS_DEFSTATE_ON;
--		ctrl = on ? YT921X_LED2_PORT_FORCEn_ON(group) :
--		       YT921X_LED2_PORT_FORCEn_OFF(group);
--		res = yt921x_reg_write(priv, YT921X_LED2_PORTn(port),
--				       (led2_val & ~mask) | ctrl);
--		if (res)
--			goto revoke_led2;
-+		ctrl = (val & ~mask) |
-+		       (on ? YT921X_LED2_PORT_FORCEn_ON(group) :
-+			YT921X_LED2_PORT_FORCEn_OFF(group));
-+		if (ctrl != val) {
-+			res = yt921x_reg_write(priv, YT921X_LED2_PORTn(port),
-+					       ctrl);
-+			if (res)
-+				goto err_led2;
-+
-+			led2_orig = val & mask;
-+		}
- 		break;
- 	case LEDS_DEFSTATE_KEEP:
--		on = (led2_val & mask) == YT921X_LED2_PORT_FORCEn_ON(group);
--		led2_val = U32_MAX;
-+		on = (val & mask) == YT921X_LED2_PORT_FORCEn_ON(group);
- 		break;
- 	}
- 
-@@ -539,22 +550,26 @@ yt921x_led_setup(struct yt921x_priv *priv, int port,
- 
- revoke:
- 	mutex_lock(&priv->reg_lock);
--revoke_led2:
--	if (led2_val != U32_MAX) {
--		ret = yt921x_reg_write(priv, YT921X_LED2_PORTn(port), led2_val);
-+	if (led2_orig != U32_MAX) {
-+		ret = yt921x_reg_update_bits(priv, YT921X_LED2_PORTn(port),
-+					     YT921X_LED2_PORT_FORCEn_M(group),
-+					     led2_orig);
- 		if (ret)
- 			dev_err(dev,
- 				"Failed to restore %s for LED %02d:%02u: %d\n",
- 				"LED2_PORT", port, group, ret);
- 	}
--revoke_inv:
--	if (inv_val != U32_MAX) {
--		ret = yt921x_reg_write(priv, YT921X_LED_PAR_INV, inv_val);
-+err_led2:
-+	if (polarity_orig) {
-+		ret = yt921x_reg_toggle_bits(priv, YT921X_LED_PAR_INV,
-+					     YT921X_LED_PAR_INV_INVnm(group, port),
-+					     polarity_orig > 0);
- 		if (ret)
- 			dev_err(dev,
- 				"Failed to restore %s for LED %02d:%02u: %d\n",
- 				"LED_PAR_INV", port, group, ret);
- 	}
-+err_inv:
- 	mutex_unlock(&priv->reg_lock);
- 
- 	pp->leds[group] = NULL;
--- 
-2.53.0
-
+Thanks for the reminder, will be more careful next time.
