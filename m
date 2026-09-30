@@ -1,141 +1,123 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F74A4DEC2C
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775824; cv=pass; b=XTS+j1GKF6r+5tBZZNlOBRPK0VuHaSWlfW8sgDyEi/Wyq4hM89zdwFudeuJPWK9SexOkPYD+5HGSXhydMvWcNsHwRKll5clOYTLdxJVV8sncoAB0ullqDGLzg7nAYa/nf6wWuHWN5UrSX+2wEXmlquzU/eQdZH4sRtihn78X5w4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775824; c=relaxed/simple;
-	bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xbagyv1Tz+Lx6Lki67Aliy2v3COQzfHwh0AWbBS3mNYrf4picEXkHcrFSV6oxOlWSEEoBlTtloqQz8vRBUWQmF9yF4/KeBYyTJ2DbV/XkMo+GsAnRmTAAnN0ibSYnHBKFaXj1WBxKpTacxaBFDNgpBfHM444TUIw7VMclxbUpks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Abwb83fs; arc=pass smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2094F4D04
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790775957; cv=none; b=nJuBM3q5z8CZQQuxQN0eIag2qt4NUXUfoiECukU9apd3R4hd6nGsLX6xkhebE5Jvo9EioZx6RREdaU6HK7pGsXkY3qNt2Tgg08kypC8jLJlvlKwsEohzKXThfVDvpvFK5SxyKf454R4RHnBRyhD5NS6dyacr9CfdFFSmDY92UbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790775957; c=relaxed/simple;
+	bh=hcWjM85x8CPd7ME0/JQ+76R/DqIP+XLtBSXnzE/2Ocg=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=TxoXbkU9qzGJuoN8poyV34YVqKbCV0lOhI3bMpLhe9lZIqsv4LphHDffZh7+A0SiPh/3TSvvvXzCJYoWMa0xvD7FILIaavYIHS8vs7DPSzD1LdHVnqP4qwSt1iOwvc5DKvNFyNWWicrMoIrwDcLYSZNyQ9Oq8wEhiuqOFTQSRRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dp/TBzHn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Abwb83fs"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5ba3ce4795aso1096992e87.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:43:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790775811; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gmGda352zqAGxjTSqX/ehrG25FBMinxes4QxReEkgIIWmt6tVCDD+7DggZgnHSvSaS
-         jdnzQ8rSePxnxlHtZaKmStD6vrUj4NkiacYlPYC3gQ/DubXW/JJjzNBwkxVPQ/+VvaqM
-         vSvzc24/Zp/FmLE5MZ8IDRo26HM7vxkz76Ve7mAD692BK44U0Bc+uQL9Z7kyYcsg95Jf
-         9oj3XTGlN98bK7OTDD/+eVOD7V3w1nJEtvWXVIpRc5rXBpr18yO0YpDLWEoONW12tidz
-         1bxlHPK075qsn7W3DyqIM4B6pRU0/3MOLYm2spHRdI/CT/nXT8sd5Ps4g6JjqdzkZRyb
-         XAFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
-        fh=XdXDDHcqzSrON29VQzFojdg3AheEy9ElQF4VjNDyXNo=;
-        b=mFQDwrBQ42H8t9p5CfVDBvxxiLfgBPD6hK9A+3C4mQpD5dWTH90Wy+9+z67j+Y7OdC
-         r0Y1eVgRrL6JwP5FijfkIVCsOt7hDBf/fQ3Kh9GLUn10Z/peZowbqeZvZM96/4RJCvel
-         Fck8igMfff+9T9VEdSjVKMwER+xeVHGdv3fEWpI3hsK0NnoBEMDUTSuB0gkEvCwKQTTF
-         tt0ew6orqu0hAIp9+Vc0eH5sk71K3IueIYHM+7wCKWDbyDm05vupKK6EDQY+oXeklbeq
-         AxrJH5HLT3eGrcM6XQMcpQP6tvyq3gRG/gmLgr65Ezm2XGhDNtODeMDkKBrMk6+IUbz1
-         FikA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790775811; x=1791380611; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
-        b=Abwb83fsHbVpFom07AyBbpD8lFlxcGjmykARrOKp1fEkZ5oFgOMcOil6oA+XBjIA4u
-         VpHxhpr99eY0XrjQ0fH6vQj2WGP4SaUUkQbPZkV6eL0+Eh2K7xGmReydj100JWDeaA2m
-         Ejoy0YYjPwnLLA8Qva95dPsyhbZy/LE7x2OPGuRAf8bSsFJfjKIMEzixk/DfeL/Fv3RF
-         4QI1Yh3RBlRp2YPpWQI0aph0AsUN5ZcrBCMzRRZkvqgau45sRl92pAOYYeW6f+yjnCHQ
-         sWuLaMYhVV1MBs8lB3BGRT3u97pMMllnj4pmMtDtq19bRWSxI1U8dgz459H0yoRTlXuq
-         Tpug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790775811; x=1791380611;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
-        b=NetXhYgdkFdOOuq8DRj0moE1L3uhsEv5fDdit2goRlaOXpx3h68+AdrmDjShr6KSnc
-         TxEbEhwZiAkKU/N2rV5YFX68TPwf4tBZU0cmr++WDKxiL0vURjpHI1EQDv04rtXv2Cm6
-         Su8XWJPTt0uHc5JP0qQ/SGRSrNw9UIbEQPMqicdj0JB3qHSsvzB4co44W8y8UsFwhTDg
-         Eg9gKgrH3pttzlDefxXjAw6LN6RyK4wn/sWKobaHldOGh7cAywOiEe8cMdJHExeP3Ufh
-         OGj14yGfkVCc0yHJljBg2Bxnr+XHo5n9isV6vu8hHFyWVr25QNc549Ni4BcPGjU9hUGY
-         e0Eg==
-X-Forwarded-Encrypted: i=1; AKwUvBzOlOxtpgRjAlAe4DlsG7DN8676AfqVACa7O1yXP5IjtkrDv/UtM8fMuqJhUyEKNUl+IOgmOy4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI5p+ZywtlpE4wOotqdkORPp5GWar046NkqvWv8esDLJoMrzolE
-	utunMAtRlbZuuyfvOjtA/GgeAmG60XPqv7Vw7x0n3FCQb/CDZnD7bpIncG9iOLmVgMLx0SBQP1g
-	lNPZ21J+yoNsU4GKZCREC9URdu7HhAqk=
-X-Gm-Gg: AYBFou0Q1m8OsJm86XWMM/nu4Yyw3Z2dHLCe078dQk4MjZhh1rMRzqHb3bcD3abOzY5
-	WGYRpKlXTPJrIgQfuM1mTD4ljf6FoN2X6zdECkeQ7MetvvgZU6axy3BOdWmMunOFiepzOt84nJE
-	jEfEGL1m+s9b9zkFUXTKH1XmtFPZ2ELPCEukDL/FUGwBqozYu4SvHsmL0vwkUi5KLMWvGkeNZ7Z
-	RcK9EBRhC2PGnprXmieayrulCesNz+f/k/pm9eoFIgaTAKy72PT9PVIUDqbQ7newamgN/PykOqg
-	9JVBdDxTRUfSTmidSw1esgUUrkOPb/zStHJvrP5JZ33T/8QGjFO0Ul04xGRawln65FUQ7An8Hab
-	ZRuyYQd4SJYx90yXfeqO5dB7mZDRRpPloxBbgZ5IErQff
-X-Received: by 2002:a05:6512:3ca2:b0:5b8:f83b:30bf with SMTP id
- 2adb3069b0e04-5ba405f9b82mr609416e87.65.1790775810584; Wed, 30 Sep 2026
- 06:43:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dp/TBzHn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399161F00898;
+	Wed, 30 Sep 2026 13:45:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790775944;
+	bh=a53uR9AnILgC/n4mpY9Whmn3IblyUXb8/5JxQvKO4t0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=dp/TBzHn3FNMu0E+91vLuvusux4IpUd5M+b10+x9Qm9O5R9w9dZ9vNtjy8oPntKHi
+	 JltEY2j2zGZ3YfbC2hDCFdA7ArorQwKx7BQc/r0F18evITRPG0+lnrrZjJcarBL4zk
+	 MRjLkSSV+pODttQAt6SX2Mbb489UDGN1JMM63wtlPmXOZW33Prc6uYn0fHF0cdUbuf
+	 5RUoKvLbqPd7t07ynJPwibMJI9A0j75USe2i7aQ+e3tchnY+S0Kvd84lB7nackUK4X
+	 B7oX2N9QSQ61fzPq/juP6+MuSiqOxcBn6guTddjUTtvEjdv2TBtzd0E5zoH7A9bCMO
+	 ZlwruWtUz+VMg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 61B7AF40068;
+	Wed, 30 Sep 2026 09:45:43 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 30 Sep 2026 09:45:43 -0400
+X-ME-Sender: <xms:hxK9aoh5PhwyqRhDB812w0r9VRFMBeNd_349LAbf490EvqpgzkBUmw>
+    <xme:hxK9ar3CuPx_zIu5ENYbEVLLEKwljG2mLDYRH_9FU5fUU5MlLj39_WzI248yrbu9-
+    55hFtUhJA8zatkXBwPoyefGm2gl65_4Gd8Mf7Svq17Lw96ZCIjqoaTd>
+X-ME-Proxy-Cause: dmFkZTE8usJ4un66rRQn0aBQATQkD0km4he4e7n0YUe+34BC8X4IO8333xHOiLZwdn7+nw
+    7wrXYVwTgMiIfR5JPjtw2z7EwZKV8Vb93TCaRGzBOgC6wnfk+zfF2A6oHJIrsMqS6nT6wT
+    MZW2/MWK/tidN7qGXWGlHLyht3t/N7UQ3Y0VF3hqwIjgEeDqgWh7BgU3eKDl8SQUN4Igib
+    8UXnrKLXW8IpZyqMpGpjStKaHbxmFpnsV/wme/CZ+cHXumLl/4o2guN6z+Taq7qGTLVWuM
+    SRjAUphFpjq1BWs6SEA+dVygW4L1GPfyf1IRRumW8m4wtHJMgcLEhfAu6gEUspZELlYQs8
+    tk9hE0i6ABqEzeks0nAO7cghJVsJCpvVKUQTxNR3fHMsBMLAz8KHaikdNmjEirJBcVUQyC
+    RiUa2sCLh3bM10XI565HKkUVWpG+RmxN/5azO1JlSEPKQVHCWnV9aCRIYHNF0FzMXc5q6h
+    uLw+z8j8681YJNYACoSKI48rZSUXL9GKfYlm29Wn7TUV3AViOOmIXMXTiMbZRzOmDqhYqF
+    mmSw2WnGNmKKg2Rqdm9FxwxjQCe4XDOso5SpJ4usqAe3LbObjzu0+zmCKyDecHVfH3x08T
+    uuWN13FBYkjcPdubl8Ic6ck045ItZeluCBGwC19gxATQtvzv/d8bZR3wbg3A
+X-ME-Proxy: <xmx:hxK9amGnYD1OBN2B2l0j99RX7qpWnDFLwWdwfP6-ZmEJrHOXZ9wJrg>
+    <xmx:hxK9ajM92VpUVoHnJhhuxb3PPEmVfRSA5hxtn7WZAQM4hkdh1AF3Pg>
+    <xmx:hxK9atL7SVB9D7h7zoqNEwQ5plb6vDNA57oPTopJziO36euBYbk7zw>
+    <xmx:hxK9ak9PiKZ3INyvag6IHHJKhQNxvkL5waQcgxUw40AqM80SO3e6JQ>
+    <xmx:hxK9ahH4b8ZJmCCM-dTL5q_alQxuOyjMdy5kdanmYZmYzwQuN7p3aD_G>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3C264780070; Wed, 30 Sep 2026 09:45:43 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930112842.21323-1-sigefriedhyy@gmail.com>
- <20260930112842.21323-3-sigefriedhyy@gmail.com> <235a33c2-7138-4815-820d-793568757d95@6wind.com>
-In-Reply-To: <235a33c2-7138-4815-820d-793568757d95@6wind.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Wed, 30 Sep 2026 22:43:26 +0900
-X-Gm-Features: AclHuK-5JDzwUkEH5VWEa1bCvpw7pms_UcYcspNYWPTwaPuJPPDlw6Pn3dQKWJk
-Message-ID: <CA+7S2v+VaVYksOpuUKzo+DoWZ97M_XKvnMr8cCcgwTkrOxsvEw@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 2/6] net: change netdev_hw_addr_list count
- through helpers
-To: nicolas.dichtel@6wind.com
-Cc: Ajay Singh <ajay.kathat@microchip.com>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>, 
-	Kory Maincent <kory.maincent@bootlin.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: ARQcub8KHhRJ
+Date: Wed, 30 Sep 2026 06:45:23 -0700
+From: "Chuck Lever" <cel@kernel.org>
+To: "Sabrina Dubroca" <sd@queasysnail.net>,
+ "Qingfang Deng" <qingfang.deng@linux.dev>
+Cc: "John Fastabend" <john.fastabend@gmail.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Simon Horman" <horms@kernel.org>, "Dave Watson" <davejwatson@fb.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <415fb6f4-7ecd-4d04-a3c2-56c186a5628b@app.fastmail.com>
+In-Reply-To: <arzawlad0OQ9pnBQ@krikkit>
+References: <20260930052636.166007-1-qingfang.deng@linux.dev>
+ <arzStIrdizPp_vbI@krikkit> <465aa0d9-b1b2-4c85-9cbf-e6ed296b7b12@linux.dev>
+ <arzawlad0OQ9pnBQ@krikkit>
+Subject: Re: [PATCH net] tls: skip empty data records in tls_sw_splice_read()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-> If you respin a version, you can use netdev_hw_addr_list_count() in
-> __hw_addr_list_snapshot() also.
 
-Thanks, will do if there is a v10.
 
-On Wed, Sep 30, 2026 at 10:03=E2=80=AFPM Nicolas Dichtel
-<nicolas.dichtel@6wind.com> wrote:
+On Wed, Sep 30, 2026, at 2:47 AM, Sabrina Dubroca wrote:
+> 2026-09-30, 17:24:18 +0800, Qingfang Deng wrote:
+>> On 2026/9/30 17:13, Sabrina Dubroca wrote:
+>> > 2026-09-30, 13:26:36 +0800, Qingfang Deng wrote:
+>> > > tls_sw_splice_read() returns 0 after receiving an empty application
+>> > > record. This looks like EOF for splice(), even though the connection
+>> > > remains open and more data may be available.
+>> > > 
+>> > > Consume empty application records and retry the receive path instead,
+>> > > following the approach used in tls_sw_read_sock() since commit
+>> > > 3be28e2c9cd0 ("net/tls: Consume empty data records in tls_sw_read_sock()").
+>> > This is similar to what Chuck proposed in July:
+>> > https://lore.kernel.org/all/20260726-tls-follow-on-v1-2-99bf4cc1c729@kernel.org
+>> > 
+>> > but Chuck's patch had some extra bits (handling of the "released" flag
+>> > and of signal_pending).
+>> > 
+>> > His series also had a selftest which should be included too
+>> > https://lore.kernel.org/all/20260726-tls-follow-on-v1-6-99bf4cc1c729@kernel.org/
+>> 
+>> Thanks for the information. I prefer his series.
 >
-> Le 30/09/2026 =C3=A0 13:28, Yuyang Huang a =C3=A9crit :
-> > The count of a netdev_hw_addr_list is changed in several places of
-> > dev_addr_lists.c and a few drivers read it directly. The next patch
-> > needs to account every change of the count of dev->mc.
-> >
-> > Add __hw_addr_count_add(), __hw_addr_count_inc(), __hw_addr_count_dec()
-> > and __hw_addr_count_reset(), use them for every change of the count
-> > and rename the field to _count so that a direct write stands out.
-> > Readers keep using netdev_hw_addr_list_count() and the netdev_uc_count(=
-)
-> > and netdev_mc_count() helpers, the few that read the field directly
-> > are converted. No functional change.
-> >
-> > Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-> Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Let's see if he has the time/interest to continue work on this (since
+> he didn't send a v2, I'm guessing not).
 >
-> If you respin a version, you can use netdev_hw_addr_list_count() in
-> __hw_addr_list_snapshot() also.
->
-> Thanks,
-> Nicolas
+> Chuck, do you want to pick up that TLS fixes series again, or would
+> you rather let Qingfang finish off the "splice vs empty record"
+> patch+selftest based on what you had sent?
+
+History: I stopped working on that since Jakub seemed to think the
+fixes were not worth the trouble, and my objective is to get kTLS
+and its kernel consumers in shape to support KeyUpdate.
+
+If you think cleaning up and reposting an old series would be
+received well, I can take it up again. (And forgive me, but can
+you send along a lore URL so I'm sure I'm working on the correct
+one?)
+
+
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
