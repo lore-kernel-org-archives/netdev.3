@@ -1,92 +1,299 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6311545D5FE
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C44D45D933
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790755547; cv=none; b=aj/X/VZgP94JKi9HZoVv761MNbja6r86xg/cL6ZWHDFgcI3BrEDD21EawBxCOWN2AQOmAzasdKDZi09vGxvLpqRAA6gSSa3uW7+7v/l5fpwHwufAkbThH0x0CBqh2jkn48Kane75zL/OSMd289Mr9olJewsxGg0d71yfMnQSIYY=
+	t=1790755639; cv=none; b=bGMlOKEtEgwe/XTZBBGKYQLV8AdK8rPAGP06r6je6QkFlrwGdbHIWGwGzhXLBJhM5LMJzADPWUxU9uS1d0vStdWvLKpbyvmpqKVdFaxhjP0AfOr2gP3lclvVMg/8jGrb8WMn/M3V8nYnRTeC5a7ic9ts1ro+fofHhpoEGOyznTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790755547; c=relaxed/simple;
-	bh=DAA66x896W/BAcaHnM/Bw62XIqM9SguOpxhZxTjRhiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=daOEwhCgif8leeuOlj69QQt5V/vs6rvBbznP9XHVNACvw8AKkkHtqoyGKIr3RZRh+K/VhF51d8M4sgZTNAy3lo1sWQEGgqzPcVYgHZSrbd5b+7UAuKvh1M7dotcta6cgepmGi9XTGaFetok4v+CTH34rGrP8sYCxOjRGUhaJ4R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9fH1TTK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790755639; c=relaxed/simple;
+	bh=sgRHL4cRyFoz0iUc5GBtv9Nss+laGnmGI8TZWvOA21U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SQLfthGKj7D7rlIoYa+jePyoEFwDxs686iWUjnnzGrTod0D5nuHiXoDjrASZtw6lbSLkxSB7ZvJeMSr9QNG5TRJMjn7C563c8DR0m9at+I4Z6ZoD03eLAid7b74iDsRrCKQ2h7fPHOqIb8VF5Biu7XJmtYXzGxdxTC+aWv9x+8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=XiJ3FfuE; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9fH1TTK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1B81F0089D
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790755546;
-	bh=sVSy03xtWMDYRQ1TrBvKXaQv5pYck87L4jhpygpVIDg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=R9fH1TTKpLUrNQOJ9fccoN7kkSCVs2XlDjQklNwF7WqXvC1AHG0s7ZvNk4Zc7FZVn
-	 1KBwWevOmzOuu5QvJxAj54Ya5pViItnVBoxL9sJw7JGnJElsqMoVQk/9u1+3r1pfrk
-	 9PsOd3XnI1w+PEMUrbJkSbjzNA98mStpPHcssjAbxlRPVleeOdDoqrYnJ+4RQv57jN
-	 eVVCJVBTrwx8aITnOODHEqdPjTox/Qg+Lm9/+Guu072NBpWDLuKvYLbJv3mDa9pxJK
-	 DG7HznaIythzL/UyCrTSew62L9yuJCffPBYaDtLq8hH7ZKeXjUdi2EFExFfByfARjI
-	 Z+xcfIeacnnyA==
-Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-466ccde2a99so2703653fac.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 01:05:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw712Ghx+AlfoVrFnRC0e3gGNjm+8pMFL7Cl2ceoSHI8HCVgo6rxT2myZaP1Sq9ii4dMFJjt2Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++n5B/eUX3bYrpUBfCI4DeSbypC2UNpunAC6oRtz2dwIan60Qapu
-	K0bN6claa5bWKWg5/36bQRda5T5St861n5hMHtaNZE2e7fiwL1Y8rTPLhD0TTDi4H9Z0fOre2FF
-	MMRQEEtOJkNdZqMKi6cK1CwTb+iaVMoA=
-X-Received: by 2002:a05:6871:3a2c:b0:491:86d7:4ccf with SMTP id
- 586e51a60fabf-49ddd50ffdbmr781137fac.15.1790755545415; Wed, 30 Sep 2026
- 01:05:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="XiJ3FfuE"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e8185e037so28628965e9.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 01:07:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1790755634; x=1791360434; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R9Z12L+fXWCFDTbxFKxbwYJjVd8WMY/ksKqgATnsUOk=;
+        b=XiJ3FfuESS3alwck6UVTxa6SPofS0r91m/yp59B0e0ym/eH+0RR1uQm9FwO9atKelf
+         nqJKfOWY7Rqrru1/bF4o/s1EpXLD4YsD8b24wKMqqsIDTqOXoa2noR2grEe6N7IUX1Dn
+         vekPuCOe3rV2UhgzO/nD0wweg3h1XxzO+/0Bbx57e0moKqSXIfVVWY7FQ8xU3e3r+aZa
+         W327uMr3Qzlt+7oAqAxqKYdZimJQrnZ5xYKt6aR3tssY7aqze10hFs1MBJYRCGAkmZTp
+         Xf1VdVOQcrQ7WWrrsa7qmFLlURDG6rghTItgf5rb8cF/cUS15lFHX/5Iirpkc3fqwjr8
+         /JXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790755634; x=1791360434;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R9Z12L+fXWCFDTbxFKxbwYJjVd8WMY/ksKqgATnsUOk=;
+        b=lahejIkHQKJzCQUxEDgxghi19Rif73ZUtrBveACaHHYrLA5CJ4MY6qFw9cztU0cztE
+         bKEUp0nr/4V2NJ3KlGc4/DOwif2s5GBkL4S16Lv94UXEyf2OMcZQx6MP513rxdqcqDRW
+         WYt2WVTxTFjtXIEWUzos00VCL3POlFDiBmShaAlINNep9dZakw8Z5VziAQcLvOGhXFCr
+         JnCNLsFpura4k33DkUcmv2nvVc2IoF2Yn/R/JAU3mt/4B5iTDx4HzLNny7uc0XTh1hM7
+         f8DteDvbzNkNZbJFO/rbSl1kLyjrj4SkHTuWKwgZ/luzOZy61+4R7dZGXu9Fu/aiMB1W
+         FF3A==
+X-Forwarded-Encrypted: i=1; AKwUvBxLdU+oIgTGmt8c8i6r4EL4o+qOiObOyIoAxD3gqlF9dSGff+gQEKXA32UIJgLK2n+lgRmIXKA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKNqKnJH+aAlikx58nLNFGuJdp45YkuNQrPX+iMTarWTxL4elj
+	EaQcux5lHHbmnoKp9HoVfF1Qk86PSapvm0ZwYBTGcR4ATNSq1OfVeF+9jMRjh1zl8QlpXjxYJW3
+	j0Tgs
+X-Gm-Gg: AYBFou11NL2sGj/naD/UOIZevzPvIsJuKjUy4mCQyot+vn/ToKU/ip0JSLmTy0vYj5H
+	RrhnV1AbU/OMM7OnAiABJ2lewfSqBKNgAHqTgpM95/wcsezgad+bLyrQays4Q5aVLdG847rLjkD
+	CmJfQhwzk0ugjqBS4jEbfFr8C9iw50Rwt3GKu7beCcbxpMWi6JMWziG68a0Zh7YPBX4EVeMwp/F
+	p7xXO55LqrFIbAKmkx4jUYyzMWfR0IVvYH0e0fdVzqsQ8w8MuMF/Sq9A4DejsY+2fiLDjll4cnR
+	kScBGdqIwzbPjV7nUF6AufEZ6TpjineP4nMJTnXu+3DfQEReIHb6h5+fwsvzi19OrlXnhqM79Vr
+	DxN3e2NilOLV4VLQbYzWI7wfw9o4Ohu+3S0cd02QwRWTkGLkIl4gsnQvCzkLYOpaH/u0Bzs8jDv
+	PCs2NS/P8eQXSCXsoHnxAQM6fXJgA8QKx71VmhfLuGj0iT6dAvJbsBVlXVoXJOGbru5m4O5bXML
+	nfG6pEcjMa7ksq2Mj1vUr6W++AX
+X-Received: by 2002:a05:600c:3486:b0:49e:7c7e:274c with SMTP id 5b1f17b1804b1-4a01afec552mr8494615e9.14.1790755634409;
+        Wed, 30 Sep 2026 01:07:14 -0700 (PDT)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01751613dsm33464255e9.3.2026.09.30.01.07.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 01:07:13 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Changhuang Liang <changhuang.liang@starfivetech.com>, Michael Turquette
+ <mturquette@baylibre.com>, Brian Masney <bmasney@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Paul Walmsley
+ <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Emil Renner Berthing <kernel@esmil.dk>, Kees
+ Cook <kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ Richard
+ Cochran <richardcochran@gmail.com>
+Cc: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Hal Feng
+ <hal.feng@starfivetech.com>
+Subject: Re: [PATCH v4 03/22] clk: starfive: Rename file name "jh71x0" to
+ "common"
+In-Reply-To: <ZQ4PR01MB12022FD5940DAA1AC1279B8FF28D2@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
+References: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
+ <20260920120044.194901-4-changhuang.liang@starfivetech.com>
+ <1jqzih73ob.fsf@starbuckisacylon.baylibre.com>
+ <ZQ4PR01MB12022FD5940DAA1AC1279B8FF28D2@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
+Date: Wed, 30 Sep 2026 10:07:11 +0200
+Message-ID: <1jtsn72mds.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930075320.760328-1-4ncienth@gmail.com>
-In-Reply-To: <20260930075320.760328-1-4ncienth@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 30 Sep 2026 10:05:34 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioHAjQkZHj30NBcsHsN2omELZn7desAdhL73n0KFw409Q@mail.gmail.com>
-X-Gm-Features: AclHuK9eeOK43SrQI75VP0VZ1e1glwUL6o7gcuabNm6CvosLRXGGFHv9BAYcGyY
-Message-ID: <CAL4WiioHAjQkZHj30NBcsHsN2omELZn7desAdhL73n0KFw409Q@mail.gmail.com>
-Subject: Re: [PATCH net] ip6_gre: validate ERSPAN skb dst before PMTU update
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, William Tu <u9012063@gmail.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed, Sep 30, 2026 at 9:53=E2=80=AFAM Daehyeon Ko <4ncienth@gmail.com> wr=
-ote:
->
-> A tc tunnel_key action can attach a METADATA_IP_TUNNEL dst to an skb,
-> and mirred preserves it when redirecting the skb to a native ip6erspan
-> device. ip6erspan_tunnel_xmit() treats any non-NULL dst as a route for
-> PMTU updates. A metadata dst has no output device, so
-> dst_dev(dst)->mtu dereferences NULL.
->
-> On v7.2 with KASAN, an initial UID/GID 65534 process with CapEff 0
-> created user and network namespaces, used namespace-local CAP_NET_ADMIN,
-> and triggered:
->
->   KASAN: null-ptr-deref
->   RIP: 0010:ip6erspan_tunnel_xmit+0x10fc/0x2cc0
->   Kernel panic - not syncing: Fatal exception in interrupt
->
-> The collect-metadata path already skips this block because its metadata
-> describes the outer tunnel. Native mode must still propagate PMTU updates
-> for real route destinations. Use skb_valid_dst(), matching IPv4 tunnel
-> PMTU handling, to exclude DST_METADATA without suppressing valid routes.
->
-> With this change, the same trigger processed three packets without a
-> sanitizer report, oops, or panic.
->
-> Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:GPT-5
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+On lun. 28 sept. 2026 at 11:10, Changhuang Liang <changhuang.liang@starfivetech.com> wrote:
 
-SGTM, thanks.
+> Hi, Jerome
+>
+> Thanks for the review.
+>
+>> On dim. 20 sept. 2026 at 05:00, Changhuang Liang
+>> <changhuang.liang@starfivetech.com> wrote:
+>> 
+>> > From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+>> >
+>> > StarFive JHB100 shares a similar clock and reset design with JH7110.
+>> > To facilitate the reuse of the file and its functionalities, files
+>> > containing the "jh71x0" naming convention are renamed to use the
+>> > "common" wording.
+>> 
+>> Is this really necessary ? Rename are generally not recommended.
+>> Do we really care if your new soc use something named after the older one ?
+>> 
+>> You are naming it common now but how long is it going to stay "common" ?
+>> If your next SoC does not use this anymore it won't be common for long ...
+>> 
+>
+> Okay, I will drop the current PATCH 1/2/3/4 and directly reuse the current JH71x0-related interfaces.
+>
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Please make sure your series applies on clk-next next time around.
+This one failed to apply when it was sent.
+
+>> >
+>> > Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+>> > Reviewed-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+>> > Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+>> > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+>> > ---
+>> >  drivers/clk/starfive/Kconfig                              | 8
+>> ++++----
+>> >  drivers/clk/starfive/Makefile                             | 2 +-
+>> >  .../{clk-starfive-jh71x0.c => clk-starfive-common.c}      | 4 ++--
+>> >  .../{clk-starfive-jh71x0.h => clk-starfive-common.h}      | 4 ++--
+>> >  drivers/clk/starfive/clk-starfive-jh7100-audio.c          | 2 +-
+>> >  drivers/clk/starfive/clk-starfive-jh7100.c                | 2 +-
+>> >  drivers/clk/starfive/clk-starfive-jh7110.h                | 2 +-
+>> >  7 files changed, 12 insertions(+), 12 deletions(-)  rename
+>> > drivers/clk/starfive/{clk-starfive-jh71x0.c => clk-starfive-common.c}
+>> > (99%)  rename drivers/clk/starfive/{clk-starfive-jh71x0.h =>
+>> > clk-starfive-common.h} (98%)
+>> >
+>> > diff --git a/drivers/clk/starfive/Kconfig
+>> > b/drivers/clk/starfive/Kconfig index bd29358ffeec..ff8eace36e64 100644
+>> > --- a/drivers/clk/starfive/Kconfig
+>> > +++ b/drivers/clk/starfive/Kconfig
+>> > @@ -1,12 +1,12 @@
+>> >  # SPDX-License-Identifier: GPL-2.0
+>> >
+>> > -config CLK_STARFIVE_JH71X0
+>> > +config CLK_STARFIVE_COMMON
+>> >  	bool
+>> >
+>> >  config CLK_STARFIVE_JH7100
+>> >  	bool "StarFive JH7100 clock support"
+>> >  	depends on ARCH_STARFIVE || COMPILE_TEST
+>> > -	select CLK_STARFIVE_JH71X0
+>> > +	select CLK_STARFIVE_COMMON
+>> >  	default ARCH_STARFIVE
+>> >  	help
+>> >  	  Say yes here to support the clock controller on the StarFive
+>> > JH7100 @@ -15,7 +15,7 @@ config CLK_STARFIVE_JH7100  config
+>> > CLK_STARFIVE_JH7100_AUDIO
+>> >  	tristate "StarFive JH7100 audio clock support"
+>> >  	depends on CLK_STARFIVE_JH7100
+>> > -	select CLK_STARFIVE_JH71X0
+>> > +	select CLK_STARFIVE_COMMON
+>> >  	default m if ARCH_STARFIVE
+>> >  	help
+>> >  	  Say Y or M here to support the audio clocks on the StarFive JH7100
+>> > @@ -33,7 +33,7 @@ config CLK_STARFIVE_JH7110_SYS
+>> >  	bool "StarFive JH7110 system clock support"
+>> >  	depends on ARCH_STARFIVE || COMPILE_TEST
+>> >  	select AUXILIARY_BUS
+>> > -	select CLK_STARFIVE_JH71X0
+>> > +	select CLK_STARFIVE_COMMON
+>> >  	select RESET_STARFIVE_JH7110 if RESET_CONTROLLER
+>> >  	select CLK_STARFIVE_JH7110_PLL
+>> >  	default ARCH_STARFIVE
+>> > diff --git a/drivers/clk/starfive/Makefile
+>> > b/drivers/clk/starfive/Makefile index 199ac0f37a2f..012f7ee83f8e
+>> > 100644
+>> > --- a/drivers/clk/starfive/Makefile
+>> > +++ b/drivers/clk/starfive/Makefile
+>> > @@ -1,5 +1,5 @@
+>> >  # SPDX-License-Identifier: GPL-2.0
+>> > -obj-$(CONFIG_CLK_STARFIVE_JH71X0)	+= clk-starfive-jh71x0.o
+>> > +obj-$(CONFIG_CLK_STARFIVE_COMMON)	+= clk-starfive-common.o
+>> >
+>> >  obj-$(CONFIG_CLK_STARFIVE_JH7100)	+= clk-starfive-jh7100.o
+>> >  obj-$(CONFIG_CLK_STARFIVE_JH7100_AUDIO)	+=
+>> clk-starfive-jh7100-audio.o
+>> > diff --git a/drivers/clk/starfive/clk-starfive-jh71x0.c
+>> > b/drivers/clk/starfive/clk-starfive-common.c
+>> > similarity index 99%
+>> > rename from drivers/clk/starfive/clk-starfive-jh71x0.c
+>> > rename to drivers/clk/starfive/clk-starfive-common.c
+>> > index 80e9157347eb..4aecb65e9fd7 100644
+>> > --- a/drivers/clk/starfive/clk-starfive-jh71x0.c
+>> > +++ b/drivers/clk/starfive/clk-starfive-common.c
+>> > @@ -1,6 +1,6 @@
+>> >  // SPDX-License-Identifier: GPL-2.0
+>> >  /*
+>> > - * StarFive JH71X0 Clock Generator Driver
+>> > + * StarFive Clock Generator Driver
+>> >   *
+>> >   * Copyright (C) 2021-2022 Emil Renner Berthing <kernel@esmil.dk>
+>> >   */
+>> > @@ -10,7 +10,7 @@
+>> >  #include <linux/device.h>
+>> >  #include <linux/io.h>
+>> >
+>> > -#include "clk-starfive-jh71x0.h"
+>> > +#include "clk-starfive-common.h"
+>> >
+>> >  static struct jh71x0_clk *jh71x0_clk_from(struct clk_hw *hw)  { diff
+>> > --git a/drivers/clk/starfive/clk-starfive-jh71x0.h
+>> > b/drivers/clk/starfive/clk-starfive-common.h
+>> > similarity index 98%
+>> > rename from drivers/clk/starfive/clk-starfive-jh71x0.h
+>> > rename to drivers/clk/starfive/clk-starfive-common.h
+>> > index 9d5dec1d5cd1..f634c62c196a 100644
+>> > --- a/drivers/clk/starfive/clk-starfive-jh71x0.h
+>> > +++ b/drivers/clk/starfive/clk-starfive-common.h
+>> > @@ -1,6 +1,6 @@
+>> >  /* SPDX-License-Identifier: GPL-2.0 */ -#ifndef
+>> > __CLK_STARFIVE_JH71X0_H -#define __CLK_STARFIVE_JH71X0_H
+>> > +#ifndef __CLK_STARFIVE_COMMON_H
+>> > +#define __CLK_STARFIVE_COMMON_H
+>> >
+>> >  #include <linux/bits.h>
+>> >  #include <linux/clk-provider.h>
+>> > diff --git a/drivers/clk/starfive/clk-starfive-jh7100-audio.c
+>> > b/drivers/clk/starfive/clk-starfive-jh7100-audio.c
+>> > index de1cf717e391..0e363b971e9d 100644
+>> > --- a/drivers/clk/starfive/clk-starfive-jh7100-audio.c
+>> > +++ b/drivers/clk/starfive/clk-starfive-jh7100-audio.c
+>> > @@ -14,7 +14,7 @@
+>> >
+>> >  #include <dt-bindings/clock/starfive-jh7100-audio.h>
+>> >
+>> > -#include "clk-starfive-jh71x0.h"
+>> > +#include "clk-starfive-common.h"
+>> >
+>> >  /* external clocks */
+>> >  #define JH7100_AUDCLK_AUDIO_SRC			(JH7100_AUDCLK_END
+>> + 0)
+>> > diff --git a/drivers/clk/starfive/clk-starfive-jh7100.c
+>> > b/drivers/clk/starfive/clk-starfive-jh7100.c
+>> > index 761e46ed0ffd..ca81ccb5af94 100644
+>> > --- a/drivers/clk/starfive/clk-starfive-jh7100.c
+>> > +++ b/drivers/clk/starfive/clk-starfive-jh7100.c
+>> > @@ -14,7 +14,7 @@
+>> >
+>> >  #include <dt-bindings/clock/starfive-jh7100.h>
+>> >
+>> > -#include "clk-starfive-jh71x0.h"
+>> > +#include "clk-starfive-common.h"
+>> >
+>> >  /* external clocks */
+>> >  #define JH7100_CLK_OSC_SYS		(JH7100_CLK_END + 0)
+>> > diff --git a/drivers/clk/starfive/clk-starfive-jh7110.h
+>> > b/drivers/clk/starfive/clk-starfive-jh7110.h
+>> > index 0659adae4d76..6b1bdf860f00 100644
+>> > --- a/drivers/clk/starfive/clk-starfive-jh7110.h
+>> > +++ b/drivers/clk/starfive/clk-starfive-jh7110.h
+>> > @@ -2,7 +2,7 @@
+>> >  #ifndef __CLK_STARFIVE_JH7110_H
+>> >  #define __CLK_STARFIVE_JH7110_H
+>> >
+>> > -#include "clk-starfive-jh71x0.h"
+>> > +#include "clk-starfive-common.h"
+>> >
+>> >  /* top clocks of ISP/VOUT domain from JH7110 SYSCRG */  struct
+>> > jh7110_top_sysclk {
+>> > --
+>> > 2.25.1
+>> >
+>> >
+>> > _______________________________________________
+>> > linux-riscv mailing list
+>> > linux-riscv@lists.infradead.org
+>> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+>> 
+>> --
+>
+> Best Regards
+> Changhuang
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+-- 
+Jerome
