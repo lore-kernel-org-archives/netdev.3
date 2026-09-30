@@ -1,205 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DFB4CDDC6
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790769369; cv=fail; b=k1si1DmCGLyYa8GmGlZIMQYbGizLhDDj3DIhICug1TXg5gozkMJHzTaAZnqHTusJU/IxRDfDVnfoeDMKdHxqdgnMfnP5O17xwU69+FSozdbzbfM2nT5Sx6Y8NkUg6DT19V4bYUy4RbZpA2rRhZgXSVCHFzE/3/kz7XdmMN32czI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790769369; c=relaxed/simple;
-	bh=Crr59rbMiXP5OgYydWHhJ5Ese+OJqoIlrkv0dtHnxQU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OeYZCmLSBrm7NSfGZxBwnX9OBMToyjhQa3aIfNrCBXk90OHM05euFXz3rPUQvLiQ1ZlWYT2+BHMJgC6qxzLkVTBDGu+qx6JP7LoSF5frRGJVChg8fzDWUUGy8L7XLUN7oqkX1wfdhFr37o/CuiqfFD7T3N0dpgIJz/3735NC39w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NkKC4tPZ; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81F34C4F54;
+	Wed, 30 Sep 2026 11:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790769498; cv=none; b=H/hYSJd1l6ZNCfdSKFlOGkE/d02jY3cfYCh4cDbhFAc8c3AoDoBTRMtPgOow18S50TsxL6YazGcjhB9/lqmwE0XjrfOIX2AIBOngye3S2AG0m8jRp/Wlt1BEP2CBLn5GUAWAjuYxMcLHRLPbFLegqXKb1ImsjLJ9XQzIhLnyvMo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790769498; c=relaxed/simple;
+	bh=/GYVlqh/BLtFSwB+Na9jnR44kecPNLhhfZc2OHI3UfA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=APgAk7uzQIDa9Z52OXVCBsHFlyicSgw7udzdw4is8KDet9obWQg4nesNQc0dnjJNjQMC7OBaTXH0+EiMZiRYDbzvFXRH5bhThw/CiXP4BWlypH2z9hXEjLSkYiH2mYPmupMn+VI9T4t0imOPWEsf/bY2TSaJcMTu4OvSZEnkCrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=MBb/LkPT; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NkKC4tPZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790769368; x=1822305368;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Crr59rbMiXP5OgYydWHhJ5Ese+OJqoIlrkv0dtHnxQU=;
-  b=NkKC4tPZb8/YBnMwhdK90XGGGSNC6T5H3roRQXClCNb3U8N8iLUDX40x
-   6P+SWGt1CxK+ZzUors9qWmuqVtkkdVBnVxuuRdcqIoeurwUq9dJasLz91
-   5GxdlfGy6LXmMvSSiKrSGMi64hZDyqAzA/r3HkT7MPow5ZqkTWe0jwVXo
-   kk/JeN0idRypWo9ReC7RkPcXxWWtx24xHBnxb+P1dhpiU5kd9u+y0JLmi
-   Laxv6FI2UYgt95CGtDv8mrZF3jmfBSPTZ4cggi3TPWjHhWBlSAN5oTkXz
-   O4//mYWNPAOiFJolNlQTj6aw9stoiN2ZhHCNmyyIw8t733av1oIDILzyt
-   Q==;
-X-CSE-ConnectionGUID: VbrveB9LRNa53LFpPrGXog==
-X-CSE-MsgGUID: oVuU6SXBRtewwfFUW0KxbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90364591"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="90364591"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 04:56:08 -0700
-X-CSE-ConnectionGUID: NVcUaV5JR2uhzfbWs3VP/A==
-X-CSE-MsgGUID: HTp35B15ThmgncLGNMhYZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="273759251"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 04:56:08 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 04:56:07 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 04:56:07 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.10) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 30 Sep 2026 04:56:07 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bIeRRXnj6zC3FefHHzgpAsmEJHMQBcoCoMaFWPnozB4/DAqMfjQpGFXDoGfSXihwu6VTU2NxkoCYYN6TvX7+a85n/0tgZ6/MsG4wX/Y3tVbvLO2FAkHxdwduTo/YTAqHu+NJowwwcMlcfa8YNcTEQrU3lUfcyNSB1p+4cELIzwF1qR8ZPfZ+wYrukQcyhBTs+cvu4wLn9OmRxzLgrly9KVCMuaI5d7xA5bN92Hvkqpe398nwlE35ZJ0rDOzNqTOvafHWng55DJRTwgUe+dP9YtHYNEcrKPwz1FLVQud/tEniLAnlN036g7jD/HsPW8gPeYTH0sfzNmtrWqDRHEq/3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yETfNp+a6qIo6bomko2BdShJmEjkq8evIBIl2UQ+Lt8=;
- b=eXh3doCn7zRkVLYoL9zIM0NW1iC0TYe2wXeynJZS9jW0xF566sS8bD6mklnNgRy+Jo5cfxpUe2fXySNnyxhR0eI6Lc4N1AkDWjgMhN/j6uzHxCrIxlUMp/0T1WzsPLZXwMJxq7ytAmYpsJD6VDKolwA0w1D/k4bYzkd/uNTqhfaIt/X0XTS3OnR3ToIZMbagusPjzZ5oMSJmbRZsp1xqQV7ItaHsqKiY2uAGyOyFHQxigcwpwRm/iCHBLwLUyrf5iRwZUok4BK1njujw5mOGzmnNlXu6ae0Vtx0POhGpDS/kLqR5GgEy2BmpRjNUmJW0GotobFQV+Et/zUFSGohhLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
- by SN7PR11MB6704.namprd11.prod.outlook.com (2603:10b6:806:267::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 11:55:57 +0000
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0451.026; Wed, 30 Sep 2026
- 11:55:56 +0000
-Message-ID: <e917c70b-a0db-4c5d-8fa0-219ee77b49ea@intel.com>
-Date: Wed, 30 Sep 2026 13:55:51 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 0/6] ice: fix stats array overflow via proper
- realloc
-To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Aleksandr Loktionov
-	<aleksandr.loktionov@intel.com>, Michal Schmidt <mschmidt@redhat.com>,
-	<intel-wired-lan@lists.osuosl.org>, <edumazet@google.com>,
-	<horms@kernel.org>, <pabeni@redhat.com>, <davem@davemloft.net>
-References: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260925132636.123300-1-przemyslaw.kitszel@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU7P194CA0021.EURP194.PROD.OUTLOOK.COM
- (2603:10a6:10:553::27) To LV3PR11MB8508.namprd11.prod.outlook.com
- (2603:10b6:408:1b4::8)
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="MBb/LkPT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=AaETdzOchPFTc9odpS3treoP+eVUfbz1VlctESvybfE=; b=MBb/LkPTMkOECQoJh33EuX61Cd
+	EZzfuS3L9e7jtSjPy5BR2nIIU4dwRL+e3pCnGXoI+bQM72ad+bTtwV5PtlAqtbKNxq9xM6p4Avqpg
+	MukLYLoWgz3QyI27GEQkgXPUmUHoxzm9hQL1oki8ArSmwRG719iA9ecLiLt92U6vxNFu9MRh97dd7
+	MuQ0NuM7recJ5DLbKHih11HdUEhwRKGCzpmsDGH+AB42GwS9wZPkjoP+jNf6paIDPGOOwZzf6mocq
+	/sjYbRkoswnBCSEv/vM9dEt5EOKYkYgEHoogTdKNTHbLBvqUBJE4U+t/8r8kpdm+ExU9fBWO4G3kF
+	ODW5+EGw==;
+Received: from [151.115.150.205] (port=60644 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xBswt-000000022KL-0gMj;
+	Wed, 30 Sep 2026 13:58:08 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Jon Maloy <jmaloy@redhat.com>,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH net] tipc: protect received keys from concurrent flush
+Date: Wed, 30 Sep 2026 11:57:09 +0000
+Message-ID: <20260930115708.349540-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|SN7PR11MB6704:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7bb47dd-d110-48e5-3914-08df1ee9c952
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: QSsgN7lRqrAodiwlWx3e+y4H/pozMG7NOxHWhipSMRNOWKQ/n7QWOpRUoqErQCaM2UWm7U1E2xWvYQEOVLl2VcFp1HRNLjrvaIMOBIyEG6Rkj6Wc+MFI4Gu8rNgHTxPwIQXY/HftW9JKqsCDO+HX9Ukc76lnGodj3JAz8H2Ap8oiSaKxz753lea7EKx/OZIJscYLSErsxlvniVHBhbrInaYtm/0GcFnhgQqX3riJOTzn3sc3awMcVNQeur8dPiR3rqRpG7+MvQazFT8FDnPqCc8VaSBwfgPOX0uhC9gX6sWGutQDXTofsY9dqzaD4FAC0YTm0ZIVjQiWIx9pIm3BXR626MsBdEzg2lML6846Lgq98hvJnou8lamivPKbaePMrIUtrLDIvizECfyghDl4wjUeuGRujZMPqf3veD+2SYnWe1jHYd5OsizVRYnBwPVu/47dKCKmxME/XGmJPi3JlXHneshT9lI6uBX8+k7Bus80lznxbv+HstLqk/3YbCM0RdCIuiMWh57w4JF86w4/0KUoP2ej6EHuBx2AOiH9OZpJueax3InRdfUn9S4Sbc1Mlh6OospCFYafBN5kKIJm6mEEyFBZHz51oDgEWAu5URY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Zlc1bVE3VmxiVnJpUFoyaDViMmdIUmlXd3pMUlo1MEZDaTl3V01pYW44WVRQ?=
- =?utf-8?B?OG5xWGhFNTlvRXB3czlFMU9MdzRmaFE1bmphWEJ0RGpDT1d6QzZVLzVRbXpS?=
- =?utf-8?B?Nk1aSmIramMvYmo0TzBsN1FINzFuK0IwTVBZRGNUSDVERnFtVFFPUklENnpH?=
- =?utf-8?B?QlhLM2hQTHpVUGU4N0xBZUNyeGtyV21OZnJYVG9oRGlkSElHV1dna25EYzk2?=
- =?utf-8?B?OE5vNDViNG5LWkFNT25aU1ZiY3BHWGY0UzhvWGdUTHQvK0RFQ0w2cmRaVXd3?=
- =?utf-8?B?WW04cmFETkNhTGcyOGxuMVNHMnRBVWRoSWFpR3JTLzNPMmUxUXUvaS9ZWEtn?=
- =?utf-8?B?dGNZLzV2OWkwUHFXYmxmbVZyQ0hpdG9zMVZpMnpxcWpZRmoxK1dybjlUNHJ3?=
- =?utf-8?B?bXJBYVN1dks1VG9CeW5xNlk2ZGxPNUpnYlBic2dtcVJCS2hYdmJPSG9qbU9h?=
- =?utf-8?B?Q0l6aFh4cnkvQVhEMjBrQ244R3JWTm11aWl3cGxwNkkrQ1kvUi81MGppZHlh?=
- =?utf-8?B?TFpVYlVhM1ZNeDV5SitTK1JSak8yNmEyREpEM2NrWmlELy9VRmkvbkIrZUV5?=
- =?utf-8?B?cjBPczk0dE5seEZld3c3NG5zNjJRNG40UDBCaWQ5d0tySERlMERYUVhuVDhH?=
- =?utf-8?B?Mm5tS2ZkRmNUcU83cnRiUmJwcFc3a3pLZGo5VXJzekx0cjFaNmlLZHJ1djhW?=
- =?utf-8?B?eEdkSmtxczBqUFZSUUhzdGIyaFBybVA3bk9aQVZoSHVDbEFGYmZvN0IxWXky?=
- =?utf-8?B?cmpDZXMxc1JaTitXeW5vWThFczcwV3RXc2xDMG5LdTVlaHFBNkFOcTNuYU8w?=
- =?utf-8?B?NVVFaXZVazJheU1id09vUnNWU2hrMjVxUU1MVmk1TEd6QnFFN2lyYWxoODJH?=
- =?utf-8?B?TmlPOWMrRzVmSTJwc29vendsOEhaRUl6WkkxVytINEE5L1NzMVl6dVpyRnFm?=
- =?utf-8?B?TGF2Z29qdWJCYWRnWnZHdkpBaGQ5cld6ZHZuQTdBSy8raWJiRUVqTEVJVUov?=
- =?utf-8?B?OVdkSHRNc3lKblhVTnFFUnJSSUpRK1FleUIwaUtETk9SWTRzdWxabVpOWWVq?=
- =?utf-8?B?N3VZbkRrYUpvaElsa3JPMWQ1T3k2WVJWTldtby9Say8vWDhNOWtQUlRtM29F?=
- =?utf-8?B?V0lObHFydnB6TWVwaVhESVVKejVlTjkyd0owMFBZV2puNGlNQUxJWlc3YVJ0?=
- =?utf-8?B?NGJXS0owZmFJcnRmVkhVcTN4WURmYm9leU4rQUNOc2dGUWRFazFoenl5SDB1?=
- =?utf-8?B?Y0hRZ1dDMkd1eXloay9hVFg1czdKWWZxM3VpNDZ4akJqSy9jTXZvd2dWblp5?=
- =?utf-8?B?R1ZYSmc5amxQZi9YZ0dVNGN1citKM3ZMQ01vcjkvTTNpelU5QmpjaHBZVXBt?=
- =?utf-8?B?TC9XZzFsaHZlUUoyanZkaGI5ekI2SXNxME81UkhCUWo4TVFEejB1dTRLWUJ6?=
- =?utf-8?B?bS9qUFpxNjJYSkQxUHpTYlllQko5ZWkyQ0NRN01kUE1kZERZdHhHQmdxMWsw?=
- =?utf-8?B?SGJUUEx1d2tSQnM5NUZWdnRpb2tCaU1VYjErSFJSZjRCOExWeVduT2lXKzhl?=
- =?utf-8?B?SVZMTERCOGE4MUgrbEVsT0phekJkd2Z0ck5lYzNhOGhadEFRZVViVU0rQlVH?=
- =?utf-8?B?a1UwcFdnUVFzdWs3TW92SW1FSXpGT2YzT0xNRDNvSjhJRXlkL2l5WkY5d2hv?=
- =?utf-8?B?Q1VEL0IzSnprNmZySGRqZE9WZzlIQ1h0eVk4b1BpeHl4dlgyVzU5dHluSVFN?=
- =?utf-8?B?Z3NEcTJuNisxQTJSaWl3REx3UklFZVd2dEU0Q0dTRWJnUnMrTWNhS045V2gz?=
- =?utf-8?B?WFErSTVmVi9NUW5uQlhrSkhHaUhIbzVDdEV4UDRHY2d4UVhMRlZqOUJ2MStM?=
- =?utf-8?B?V0p2aHY1eEV5MzBnalQ2MHhSd2o0QkZHYWw1czQzbDdldlcwSi9YR1JNYWhu?=
- =?utf-8?B?ZG5UcTV0cXRTRk1acXo5Q3pzNTg0cHNrTzlzeUxFUVpXaFJOd3lYOE5uNkly?=
- =?utf-8?B?VDhYdTYzZTBTWkhva2ptb1dyMlFCbWlwTTllMlB4OEVoM1pUS0xPa0p1VWZp?=
- =?utf-8?B?cG1yRGVZM0dqd2dOSHVHdk9uT3ozRjJGWklvS0pCWGw5bEtPSW9zWmVENmRa?=
- =?utf-8?B?V2d5d2E4SDNsV3lQUm5lZjgvcDVEaXorKytWcVFuNGZzYnFEcVhyZjJiSVlz?=
- =?utf-8?B?WkFLMXVxKzA2NktFeFdGVjZYKzQ3b2d5eSsvdHkzLy9RNFJYRzh1bHBicU16?=
- =?utf-8?B?VGhBZGI0bzhJNXRtUTduMHp4TUxUTmlGL3VIc29YWmFGZU5IR1VlT0owdG8y?=
- =?utf-8?B?azQrSkdsMXgzU0dOaXZid2VhSldjTE02ZjNKTE42Rm1NMDlRYS9Kd09WSGRr?=
- =?utf-8?Q?SNoJYlkSyaKHDwyg=3D?=
-X-Exchange-RoutingPolicyChecked: BDKrY4rlWdRP44Kz8WYhDU0mapwX1vtycP6J5TM5iSz9q2RnFab7UY2y572WWjNBClrdBbJHrrKf51Ek6uMgbSUYur9DNmpz98kH3+5/Y5MjcQ+K5PLNbksVQ6qK6QC2V1I4Qd//PHBk0QpfNPCnsASIozyIT6iwtMNBfkU8f32E9QIrMtTMtAcjOcrxcRAQVlfeBDhTx18dqfufIOs0bOFxkXzzWSp7wQbU58K88WuUvNYUW4G02ZwpExMuDiQU1BICeRWWHq551E/5lg0h4xtprXHKNPJI+vmr7tFqN2ZyGV344rHNwRD/qzn62XcXlowM/3E4wE2nu8LBf3FrGg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7bb47dd-d110-48e5-3914-08df1ee9c952
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 11:55:56.4829
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KGJvzlAX2tO4zjce5pbpUEmgbs0GzPvFWNA8P9azohpLfw5I5FDa8M4BuzifYNrAgx6kVptiERzFQuaRelCtmzxSZRb1J75bpru7eC1M9yE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6704
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 9/25/26 3:15 PM, Przemek Kitszel wrote:
-> Fix OOB access to the stats arrays.
-> 
-> The first commit (new in v5) fixes stats code against VSI_CHNL case (ADQ).
-> 
-> Next three commits are simple refactors to make the rest smaller,
-> the fifth one untangles the logic/lifetime of the stats array entries,
-> then we have the final fix for OOB access to the stats array (combined
-> for both PF and VF VSIs.
-> 
-> v5 handles now also the PF VSI stats resizes better, fixing devlink reload
-> issue reported in v4 by Clashiko.
-> 
-> v0
-> https://lore.kernel.org/netdev/20260520183501.3360810-3-anthony.l.nguyen@intel.com
-> v2
-> https://sashiko.dev/#/message/20260812204619.32253-3-przemyslaw.kitszel%40intel.com
-> v4 (a resend of ~the same v3)
-> https://lore.kernel.org/netdev/20260921182106.1015019-1-anthony.l.nguyen@intel.com
-> 
-> Most notable changes in v5 already noted in the cover letter, individual patches
-> have much more notes.
-> ---
-> 
-> 
-> Przemek Kitszel (6):
->    ice: skip stats handling for channel VSIs on rebuild
->    ice: extract __ice_vsi_free_stats()
->    ice: extract ice_vsi_new_stat_arrays()
->    ice: extract ice_vsi_get_num_qs()
->    ice: rebuild ring stats arrays instead of reallocating them in place
->    ice: size ring stats arrays from the final queue count
-> 
->   drivers/net/ethernet/intel/ice/ice.h     |   8 +-
->   drivers/net/ethernet/intel/ice/ice_lib.c | 343 ++++++++++++++---------
->   2 files changed, 210 insertions(+), 141 deletions(-)
-> 
+tipc_crypto_key_synch() can queue the RX worker again while it is still
+using rx->skey. If tipc_crypto_key_flush() cancels that queued work, it
+frees the key without waiting for the running worker. The worker can
+then read freed memory or free the key a second time. Racing key
+exchange with key flush triggers KASAN:
 
-I've replied to all not pre-existing issues. My ask is to merge as-is.
+  [   12.986077] BUG: KASAN: double-free in tipc_crypto_key_flush+0x401/0x530
+  [   12.987937] Free of addr ff11000002268080 by task peer/112
+  ...
+  [   12.991938]  kfree+0x163/0x430
+  ...
+  [   12.991983]  tipc_crypto_key_flush+0x401/0x530
+  ...
+  [   12.992152]  tipc_nl_node_flush_key+0x174/0x210
+
+Mark the key as in use under rx->lock and make flush skip it while the
+worker is using it. Clear the flag under the same lock when the worker
+frees the key or leaves it for retry. Keep rx->skey set so the receive
+path cannot replace it during AEAD setup.
+
+Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ net/tipc/crypto.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 16f1ed1f6b1b..6eb9de458902 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -184,6 +184,7 @@ struct tipc_crypto_stats {
+  * @key: the key states
+  * @skey_mode: session key's mode
+  * @skey: received session key
++ * @skey_in_use: received session key is owned by the RX worker
+  * @wq: common workqueue on TX crypto
+  * @work: delayed work sched for TX/RX
+  * @key_distr: key distributing state
+@@ -208,6 +209,7 @@ struct tipc_crypto {
+ 	u16 key_gen;
+ 	struct tipc_key key;
+ 	u8 skey_mode;
++	bool skey_in_use;
+ 	struct tipc_aead_key *skey;
+ 	struct workqueue_struct *wq;
+ 	struct delayed_work work;
+@@ -1219,8 +1221,11 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
+ 		rx = c;
+ 		tx = tipc_net(rx->net)->crypto_tx;
+ 		if (cancel_delayed_work(&rx->work)) {
+-			kfree_sensitive(rx->skey);
+-			rx->skey = NULL;
++			/* A previous invocation may still be using the key. */
++			if (!rx->skey_in_use) {
++				kfree_sensitive(rx->skey);
++				rx->skey = NULL;
++			}
+ 			atomic_xchg(&rx->key_distr, 0);
+ 			tipc_node_put(rx->node);
+ 		}
+@@ -2381,7 +2386,10 @@ static void tipc_crypto_work_rx(struct work_struct *work)
+ 	}
+ 
+ 	/* Case 2: Attach a pending received session key from peer if any */
++	spin_lock_bh(&rx->lock);
+ 	if (rx->skey) {
++		rx->skey_in_use = true;
++		spin_unlock_bh(&rx->lock);
+ 		rc = tipc_crypto_key_init(rx, rx->skey, rx->skey_mode, false);
+ 		if (unlikely(rc < 0))
+ 			pr_warn("%s: unable to attach received skey, err %d\n",
+@@ -2391,14 +2399,18 @@ static void tipc_crypto_work_rx(struct work_struct *work)
+ 		case -ENOMEM:
+ 			/* Resched the key attaching */
+ 			resched = true;
++			spin_lock_bh(&rx->lock);
+ 			break;
+ 		default:
+ 			synchronize_rcu();
++			spin_lock_bh(&rx->lock);
+ 			kfree_sensitive(rx->skey);
+ 			rx->skey = NULL;
+ 			break;
+ 		}
++		rx->skey_in_use = false;
+ 	}
++	spin_unlock_bh(&rx->lock);
+ 
+ 	if (resched && queue_delayed_work(tx->wq, &rx->work, delay))
+ 		return;
+-- 
+2.47.3
+
