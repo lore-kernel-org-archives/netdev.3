@@ -1,68 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0D34E80C3;
-	Wed, 30 Sep 2026 12:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AD4EDCC5;
+	Wed, 30 Sep 2026 12:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790772626; cv=none; b=QkAXGoV6o56CAGW3rdWw7tEOORkHZ9Frlc+BoZiOgdn53UmhJIbZcVWYb7qctArlh00TZczjm1tx36PNYUpdrFiPECza44N8RZX23fI1Wa9PZZcJXf9dYE9jPHnt4KvneETP07Yy/mp1WdaRiMQdPtHnlgokuVK7PYYsJdW6LqQ=
+	t=1790772652; cv=none; b=uplZzE4I7Vlm75PQoqY/EW586YXoPtbO0sa2apUBFhP93zkd1A1w0silPy0tpXr/0gp5iQjm9tk3qCFE/9j9BALu/YSfDtRUmTZWW0ZsynkHO1FC2Cha60O2ehFWXH2M4IfKqJWqE967te6VntgrJwRvY/WPsJmf0Y+rYmszBPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790772626; c=relaxed/simple;
-	bh=Frc+ADQTxRwKDWaoqMQMlUJQ/gCXB8qyIs31/48aD70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I7tD4UMQfYAL1QjkJyuO0JqYE1nH07vaJazM5W1z/WuoFB0309cXQS8B5859pjS0CgbaVOKQQu8e1pREI05Akf9IT9lAcaNQb7HizuI985SgkIKoBwhgQKsQBzGrvwdr7DvSftfjn2y6r2mJWw1G+KpHmMLBDc5emNHm0cC4+FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBUI6Vpe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790772652; c=relaxed/simple;
+	bh=ceieZL7mqNYggJrWA2zKrmZBZ486lCIoMlzfH8UkVDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QCE6QKC6nh98Ck3cNmSJgjw+SUOY1FcbgMMlWtSVZR8uQ70kDFgoyzSI51+XLZhf1+yRgxW/QybbM0WAoNRTZuz9IHKTJinP75gylyVpDfchxIP9LeZ9/VaKnq5lTyA689lsJtbBRG8KbFQ0dmAhupM/bvRbP4NP95esP0vP2J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qeuwnvFr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBUI6Vpe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C0D1F000FF;
-	Wed, 30 Sep 2026 12:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790772613;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LBUI6Vpe7LkYZp0fRjgobvRt+inliDYtbviJuQv7tMs4DBHGRgDX4wjDbKAbH8xaD
-	 rLmQfSnzx1lVfEvjdxfReUO4ocBo7em0HMhqTsJXg1gQsIp5++1EhlEhnQuBjqUJm0
-	 sFyak7R8TtHR8c04yRiJZ88DUJ6Z2PdrnqZkc8jYlJGBPe3dWmFdsZw2Qjh0VMCGqP
-	 2m1sW+8eMCD3l9h+ODpb0cMfs/V3d9NktYi/9xYu3s1td/NYVtzEErTlI8l7Gtj037
-	 EM2e7ctLU497Pvd15yVtp6oe7CKgjh5vbbQWnVIKzDqzeqU7vUHCavwqu+m3pQF2Bd
-	 4gqa05D1/4mYg==
-From: netdev-bot+sinfo@kernel.org
-To: Meghana Malladi <m-malladi@ti.com>
-Cc: elfring@users.sourceforge.net, haokexin@gmail.com,
- vadim.fedorenko@linux.dev, jacob.e.keller@intel.com, pabeni@redhat.com,
- kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
- andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com, danishanwar@ti.com
-Subject: Re: [PATCH net] net: ti: icssg-prueth: Fix switch mode for offload
- and non-offload cases
-Date: Wed, 30 Sep 2026 12:50:12 +0000
-Message-ID: <179077261251.31693.1465174699926958543@kernel.org>
-In-Reply-To: <20260930124356.3083743-1-m-malladi@ti.com>
-References: <20260930124356.3083743-1-m-malladi@ti.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qeuwnvFr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=6KOXvpK/3cB/opsbROnxFM/mbV+G1vUglh78ETzwRb0=; b=qe
+	uwnvFrTF7A11FhiLE1B71C0lzOHjETkaD/GxMT9ZMcCJlIdg6jsyyVYNr4hRMFaNLjE7B5fwFvTxK
+	8c9mtrbsEqSSL1jROhfK8WFpgE/cnf0sXgrCMRarHURJQhxEpgkf3JR1F8Bm2PwhtgplJJ2oG9aU5
+	/WMPgtNK9G9ZO38=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBtlW-0089mZ-QV; Wed, 30 Sep 2026 14:50:30 +0200
+Date: Wed, 30 Sep 2026 14:50:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: netdev-bot+sashiko@kernel.org
+Cc: f@lex.la, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, olteanv@gmail.com, Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com, steve.glendinning@shawell.net,
+	f.fainelli@gmail.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v12 1/4] net: usb: lan78xx: register the PHY
+ interrupt with the MDIO bus
+Message-ID: <cc1778b0-838b-4bc6-914a-c436cde37938@lunn.ch>
+References: <20260927235733.2619081-2-f@lex.la>
+ <179072990024.434549.9815346887559663757@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179072990024.434549.9815346887559663757@kernel.org>
 
-Hi!
+On Wed, Sep 30, 2026 at 12:58:20AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] In lan78xx_mdio_init() (drivers/net/usb/lan78xx.c:2122-2124),
+>   the one mapped PHY interrupt (domain_data.phyirq, backed only by…
+> 
+> --
+> 
+> net: usb: lan78xx: register the PHY interrupt with the MDIO bus
+> 
+> This patch moves the lan78xx PHY interrupt out of lan78xx_phy_init(),
+> where it was written directly to phydev->irq. It now goes into the
+> mii_bus irq[] table before of_mdiobus_register() is called. Every entry
+> in the table is set to domain_data.phyirq, so the PHY created by the
+> scan picks it up through phy_device_create().
+> 
+> > diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+> > index 5655941f14783..522fb4daeb468 100644
+> > --- a/drivers/net/usb/lan78xx.c
+> > +++ b/drivers/net/usb/lan78xx.c
+> 
+> [ ... ]
+> 
+> > @@ -2118,6 +2119,10 @@ static int lan78xx_mdio_init(struct lan78xx_net *dev)
+> >  		break;
+> >  	}
+> >  
+> > +	if (dev->domain_data.phyirq > 0)
+> > +		for (i = 0; i < PHY_MAX_ADDR; i++)
+> > +			dev->mdiobus->irq[i] = dev->domain_data.phyirq;
+> > +
+> 
+> [Severity: Medium]
+> On LAN7801, could this mark PHYs that are not wired to the LAN7801 PHY_INT
+> input as interrupt driven?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Since this is a USB dongle, it is unlikely. However, i agree with the
+general principal. The code should only change the one entry the PHY
+is actually using. Please look at all the patches in this series.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+   Andrew
