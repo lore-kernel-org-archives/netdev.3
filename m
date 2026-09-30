@@ -1,134 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9611B808;
-	Wed, 30 Sep 2026 05:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A9E38E8B9;
+	Wed, 30 Sep 2026 05:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790746157; cv=none; b=dd6pa0GRBb7GXL8j2gOABth2fObnXRXq5lrMpz3kHnrPb9IIVZGY9Pi00vpyU+BvHIEWgtgF0JcjL8bposSxRYv1PCZPak6mfS7xezsPgKKxJNXyPBlTZz4pmtpqnYKljAq23B1Sg4WGGffpBAMW50OOp29VSLIBPIRgaL5P1Ak=
+	t=1790746189; cv=none; b=pGX+24vrhZkPvA+IL7kFleoYXbuIlVG/N3C3vzXBmYgcT3JRULzSORBcJAoKwfmL8lTGk4MAUUmIIojdqTH0Z7nnl/zQXoObME4EQaQA8+OVuoCBfPv5aBo7sCJ54HfPb6UcNg6UYirwrX9DVaDBZ7dCmeczd63FFb+Lxx04g/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790746157; c=relaxed/simple;
-	bh=UAUJYJhL21K586r7X081V+82GJfyyoddvHhQ8NLMO2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NKVohC+dK+1S32e8pwodQb8N7umxSSkV3PAqkKrmxoI6hfDFtw6qNHlHpdKo37y5Ts6maduKST4bMmxMvPlfeWMguhd2rvcN9at5Iv1led7QM9zDMKfaJHZCfWsiUMsldyqeiLGHkCV8EFQ+ctRuScPnfxMYyOGoqxjvM78e6rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpvG5HJL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790746189; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Mdkdl2BUslvAG24NX4SdEhMLG2LXKmBeGtvnyFJk+3fjtH+uRY+Khzb+cuw20mZdBv+VjTmsdjOjvzIBHAhQys0gbAqGZG+N0RMTkpUQefWygUxAe8iVQy4qhQEUiM8OWzgMsJtd1XFkQ1weA2j0Ru25lOyx0ZZuSYXhn5OsTNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOA6Z4XL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpvG5HJL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3101F000FF;
-	Wed, 30 Sep 2026 05:29:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOA6Z4XL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80301F000FF;
+	Wed, 30 Sep 2026 05:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790746155;
-	bh=yqnNYUoM7h7MLEw242PsJGeakhBAhuwtKwSzHeOyrl4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LpvG5HJLqchYVOAb7XwITd/1W7DoSKxsCRlPAyqER6lwHzRN2rK+GxSknS0uItFFe
-	 RNqEsxeVTW2TlFzVNnE0MZzz+OawG5VUUsg9kQBsr7hNiy1ughHllw2mUH9hL5BQbX
-	 8x344O9yhC6hj68Fo+YVXy8LrcvEui8nO95yJkKRSZqwthMApdILcR6rx0Ot1O1xpm
-	 OGBs1AsuBEJUjdvZr+wQ4BRvLgxCBjuTZVtgtVRJ9n+EGVFgJVi2yaLi2KGU0WUUE9
-	 ObPdRlw2283cTL4+sCO00gS6yTb4wfFyslRu+JHx3EqPs1+NrtN50Ui/NFa/XPiIsa
-	 0BKK/dXxSi0bw==
-Message-ID: <50a12135-b7c2-492e-aa8a-363715600e44@kernel.org>
-Date: Wed, 30 Sep 2026 07:29:09 +0200
+	s=k20260515; t=1790746188;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bOA6Z4XLo/6IA/I72fE+Kl+LGr09jw+BBPCh2Xv+aeVKemLzFEKnouMbFygPWqPL4
+	 ji7GmVBwTcKE07l8TtbMRI0uCcC01k5hPuwdVPvd37oktAMxkvyO3jqpy8W09A4ddK
+	 TFAX3rPDLSEgEhZQspiLiYghfzkxG1jRo1FLdGwHXmfgBg08RDljo4HjS4rK3w3Lcg
+	 VIsxvXVXVUijLf/jXhKdZU75tfbfMsZNPHikNA41j63n4cNRpc9DupgljBBIA3xYwp
+	 dnqfjN+K5pxUfhRiA05JsyB4+Ay2NRtm9gyZXRyq3DupTu1VS4SOwbPeCiJsBxE1kK
+	 t3t90P4ETk6bg==
+From: netdev-bot+sinfo@kernel.org
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Dave Watson <davejwatson@fb.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH net] tls: skip empty data records in tls_sw_splice_read()
+Date: Wed, 30 Sep 2026 05:29:47 +0000
+Message-ID: <179074618718.31693.10040628020266132112@kernel.org>
+In-Reply-To: <20260930052636.166007-1-qingfang.deng@linux.dev>
+References: <20260930052636.166007-1-qingfang.deng@linux.dev>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] ARM: dts: axis: artpec6: put inline comments on same
- line as entries
-To: Henrik Grimler <henrik.grimler@axis.com>,
- Jesper Nilsson <jesper.nilsson@axis.com>,
- Lars Persson <lars.persson@axis.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>
-Cc: linux-arm-kernel@axis.com, kernel@axis.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Henrik Grimler <henrik@grimler.se>
-References: <20260928-b4-artpec6-cleanup-v1-0-e3b75e10acc6@axis.com>
- <20260928-b4-artpec6-cleanup-v1-6-e3b75e10acc6@axis.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260928-b4-artpec6-cleanup-v1-6-e3b75e10acc6@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 28/09/2026 14:04, Henrik Grimler wrote:
-> By having the comments next to the data they describe it is easier to
-> read the property. This fixes indent-consistent and
-> continuation-alignment warnings from dt-check-style in strict mode,
-> e.g. warnings like:
-> 
->   axis/artpec6.dtsi:170: [indent-consistent] indent mismatch (expected depth 2 * '\t')
->   axis/artpec6.dtsi:172: [continuation-alignment] continuation should align to column 26 (to < or ")
-> 
-> Also shorten one of the comments a bit so that the entire line fits
-> under 100 chars.
-> 
-> Signed-off-by: Henrik Grimler <henrik.grimler@axis.com>
-> ---
->  arch/arm/boot/dts/axis/artpec6.dtsi | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/axis/artpec6.dtsi b/arch/arm/boot/dts/axis/artpec6.dtsi
-> index 146a5fd98528..c9f671fd685a 100644
-> --- a/arch/arm/boot/dts/axis/artpec6.dtsi
-> +++ b/arch/arm/boot/dts/axis/artpec6.dtsi
-> @@ -167,10 +167,8 @@ pcie: pcie@f8050000 {
->  		      <0xf8040000 0x1000>,
->  		      <0xc0000000 0x2000>;
->  		reg-names = "dbi", "phy", "config";
-> -			  /* downstream I/O */
-> -		ranges = <0x81000000 0 0 0xc0002000 0 0x00010000>,
-> -			  /* non-prefetchable memory */
-> -			 <0x82000000 0 0xc0012000 0xc0012000 0 0x1ffee000>;
-> +		ranges = <0x81000000 0 0 0xc0002000 0 0x00010000>,          /* downstream I/O */
-> +			 <0x82000000 0 0xc0012000 0xc0012000 0 0x1ffee000>; /* non-prefetchable */
+Hi!
 
-Squash with the #3 patch.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Best regards,
-Krzysztof
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
