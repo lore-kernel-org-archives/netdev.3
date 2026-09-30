@@ -1,138 +1,140 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732BA36492D
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754FB35202B
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790760641; cv=none; b=idCAA2X21KVIJWAvnNQo8llH+kDwO80JPvC2Qeg2FX9kyWhQfvRMzgzKXJ/kypCLWLzH/pqBzyy6laJ59g5RBF4DilEjOA05MhqYeZuv9Oobd4oM3U2xrpmA3JwYIwFHXqrr6omgdJLfXvfsQYGXJ8wxMInhDNWPUB0aJr2sXYI=
+	t=1790760710; cv=none; b=mzjEEKgFgPrunViYLmOqh2BIduDrM99Ik/uDqo1DLaCEZYNkmusk9yHBprsAbFNoQdW6qgkx9U3+yLigQiWC7HSgC4SsRzCXZmMttiWLDtkXYFzHNTt3ECgbNyfuWFtEKZ3V5WXnNAlLWUeqPV8cZfhedFBXGmDFUJ+u3zwesEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790760641; c=relaxed/simple;
-	bh=B6KQ7Q761wXAxkqO4A4KBxGTbhjvP4/JfP+EH6M3vPk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=IvC5qqAeEoURnnxkG2x9cTn+e/k2MY5cRW3+Ieztb0I6oW4Xuk+735V/vqTcCrwrdV5zRg19szjifU1BBiZwYbKKC2Pv6RKRokVNwpWXPfeh2q5llGcKCaO/9gopUM+LwvEeUDaE6lDDQWAJDy4IW7SGxdLy8aspQyrRpD03XGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4c55ba309c2so8813257b6e.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:30:39 -0700 (PDT)
+	s=arc-20240116; t=1790760710; c=relaxed/simple;
+	bh=p0gH6VhX6KjMP+FtjJ8plJhhVTCWn3ruBIwY/HkF3H8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BAgp5S9FTqS4MzA31kn7m8xbwSby3L5mahN5CV2fLJIjpIQ8nRCA3m0E9DRmJg7hV7ypk0nCoQqozXlFG5zv2RjKqMTyLhqaOwG24ayYYQ9YJEUwiUYYIOaQsrfRAZ2lV5k4fd3sV0JdFDl2aqK8RHvIXzz3yp4Ah4IkFZgyuSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=XaQQUDej; arc=none smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="XaQQUDej"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-3468ec309afso2304589eec.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=octane.security; s=google; t=1790760707; x=1791365507; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YQCbSgazPMjYU8lcAbB5w+2GY09p0ZB9zD7aYR/EAW4=;
+        b=XaQQUDej1lb+sE7thEnG9sluKhCdjZfOptgMX5Ny70IkfnKsB7XrWBht5YgGyFfE+q
+         6r10++Te31B6JOLogbSU/I9xBepikW8z9nc69tbKcuLt31oUfbfUwL9UlIIuDY9CRFT3
+         gZaJpe3KUHMEZanlS/j5GnMUmhkqbNnGTUo+hgUSrGvK+ev+h8A6S76rogqU4/AqHRRv
+         IAJuR73FbMOB4ZMSkMEYjNwzhIA34YFQ0qLYsgW3V9+p2Nwof14l2f+g58c3YNb49bBW
+         YKh52ccZlO6EhlPHje2VBSfhKeQj0GU63l0oAw4SagaFV8Yfy2pVecX8oNyEElofP54P
+         NsxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790760638; x=1791365438;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c432cRXYhw32OvJykm5cpBGmNcdCuznarNCnC6pKqWs=;
-        b=bxCxcxtmu6mc6EYZgjBHa/WrInmESrEonVJJ/k1YOFXEoBQIab7U76YBDumaS7Q6s5
-         CPHHooz5kGNziFnIyVizkbGU7NJOH7Tq9AfiTjQq+mK0J/gI5LsOeGHX9qDfsi5MlKb4
-         phV8lnuWwWe+oO7A7S+YQ8pAOC3xix5gs8Dp9de7EIumtrXkZ+vC6HXLgsirgiZXo/Eo
-         NcUhg+/xYToAbRGcoTbab+an1pLMV8u6ctgccegaUfKqJ2IVQrCCqQZ/pnMjhNfbe/FI
-         Rd1jTjFkhVKBJxxhVjYBZ6luiac+Vt6NaxE4NNfQHYdduhGVkfm7/tkp4H8t5QOdW1hJ
-         pXIw==
-X-Forwarded-Encrypted: i=1; AKwUvBzeQBhuTyfiQX1SkcAZGm9HuMvC9zXhgGPXqwDU+6+zmcy0JkdMm0HiMe4d8ri6+dvfCjHwQFE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWmn8TWM3jy+YpsaaqcgBdK1vjZjQx62M29hWBzCKHOEysH7d6
-	kjRf/XWKZX7hYp/L87zWZDELCmHxSTwBN3vKrtbyncFRzBhLmD7fiDRGFPInETxvJp0regrjHxD
-	0GO8J2R8YBzoZkG4AsXgtyUQ7BSxRhvhl1QdYocjinMbwtpk5Xf+tO3DYneU=
+        d=1e100.net; s=20260707; t=1790760707; x=1791365507;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YQCbSgazPMjYU8lcAbB5w+2GY09p0ZB9zD7aYR/EAW4=;
+        b=OhRTtahUAn1Vm45Xa5oMmsJEqESmQcfC1JtOgP7FGLi7PoIg7GDKEEvaKfL+tL11Dx
+         IqQgWnSIE4ilSPcLZ/3FQZP97WPkKtuc4g04zCgqR/cvj+OmVDeEo4TI5+W4RjPiwxJp
+         CtRcWYLP0wsoSnVyM7923XDiVEGFBiZ1eqh8kaIluv2JFSMYVH/jFF8+B3WBdxYT8nZe
+         eqid7r/Z2OmpfA4cRblJfx6+A/jnGAdyMtGYmExU7UxrH1MF8v1Ugv/vSPbt7UmbvzUu
+         DeOQ08cLC+TspEZAGErceNttM6l0zNo4nnA4NmVuR9w19vxZ636EdftYGh1SolmfXFpL
+         EJFw==
+X-Forwarded-Encrypted: i=1; AKwUvByOnZZCVXD983MtHzoWDFRr/n7u1Eq5TubwwWwcqLlJnAyudquTyD3JwUzvYpE+WLvNIg25u08=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLGvtcC/eIsBOkyMffKHZLriFJNT1CvjqiUZjZRAWQwT9LwrIHD
+	P3mD1EUPLqjkQN/0uZgbbovJIIgllJoBAh6KXdgK5KeGd/iwBhICSdFjTb4TtNCKLu0=
+X-Gm-Gg: AYBFou1zCsl15asgnOypp4lnNe5QgpeO4htxn8X7xW9qZgRUCX7ux3py31P1FrRFtqu
+	GB2g38xLGL3z9glqzG9cyamO9iEg9yKLrZMWgVezyXm3DO/Y4DQvKv2/5h08u6nxrdbgDFBiIN+
+	61Rl9k918KU5JEzRkBsMz0msjvjsCCBeR3N1JoJ5nMvC5zpwY7PdEqr/TGSCGmjyKj7TIgBkd80
+	VgYx5wkI8qPSE0DvJu7d4o3zr1sUso2QYTLfgZv4hVbnmXgAdhwfMPGKf4RCELPNCSnKPEAfkaD
+	qREcsGwvl1SX/qCC/cm2XLuoa+dZ7+HZ1Xn9/ZW3wy0KXfKb5tuB9+WViJqAnlZ70oVOC21i0/Y
+	J/tSBMEB/BwRrqtngSsMDszFL27uRXt9SI9G68TsMYWWETr0B0xpTziV0OFamE5CwXY3ZEER67Y
+	k0dMvx+QYHqC592nujRaFa7Oe0c1+a2rxms8iDIA6lLTqrOydOKqkac9qcw8WTyxeFmjxyRvIdp
+	NSGCRYB3uymbBqLD67dTYqNEi2d9u7lU/7eYxRR3z8fVxDk/hVxNSMajZ0TcicMNsS3kDdwHLJj
+	j7P8k7ApCA/RYDwh
+X-Received: by 2002:a05:693c:66c2:20b0:34c:7e54:65e6 with SMTP id 5a478bee46e88-34cd91735a2mr1060753eec.5.1790760707160;
+        Wed, 30 Sep 2026 02:31:47 -0700 (PDT)
+Received: from localhost.localdomain ([45.125.62.130])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf4a64113sm3727804eec.8.2026.09.30.02.31.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 30 Sep 2026 02:31:46 -0700 (PDT)
+From: Shubham Antil <shubham@octane.security>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shubham Antil <shubham@octane.security>,
+	Giovanni Vignone <gio@octane.security>
+Subject: [PATCH] xfrm: zero-initialise km_event in replay-notify to stop stack disclosure
+Date: Wed, 30 Sep 2026 15:01:37 +0530
+Message-ID: <20260930093137.7163-1-shubham@octane.security>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:6902:b0:4c2:13aa:fa13 with SMTP id
- 5614622812f47-4f1b0d0ce54mr927548b6e.1.1790760638380; Wed, 30 Sep 2026
- 02:30:38 -0700 (PDT)
-Date: Wed, 30 Sep 2026 02:30:38 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6abcd6be.80e1c6cc.1e8e5f.0086.GAE@google.com>
-Subject: [syzbot] [tipc?] INFO: task hung in tipc_net_finalize_work
-From: syzbot <syzbot+920b21f1eb9357bab704@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jmaloy@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	tipc-discussion@lists.sourceforge.net, tung.quang.nguyen@est.tech
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+xfrm_replay_notify(), xfrm_replay_notify_bmp() and
+xfrm_replay_notify_esn() declare a struct km_event on the stack and
+initialise only its .event and .data.aevent fields, leaving .seq and
+.portid uninitialised. build_aevent() copies those two fields into the
+XFRM_MSG_NEWAE netlink message header via
+nlmsg_put(skb, c->portid, c->seq, ...), and the message is multicast to
+the XFRMNLGRP_AEVENTS group, so two dwords of uninitialised kernel stack
+are sent to group listeners on each replay event.
 
-syzbot found the following issue on:
+The request-driven paths set these header fields from the requester
+(xfrm_get_ae() / xfrm_new_ae()); only the kernel-originated replay path
+leaves them uninitialised. Zero-initialise the event so the header
+fields are sent as 0, the correct value for a kernel-originated
+notification.
 
-HEAD commit:    c4e9f74da438 Merge tag 'v7.3-p5' of git://git.kernel.org/p..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16609405580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9d4242cb1c54cdf7
-dashboard link: https://syzkaller.appspot.com/bug?extid=920b21f1eb9357bab704
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2d84978a00bd/disk-c4e9f74d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f8ae6a5a134b/vmlinux-c4e9f74d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a81070fe6b69/bzImage-c4e9f74d.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+920b21f1eb9357bab704@syzkaller.appspotmail.com
-
-INFO: task kworker/1:2:1218 blocked for more than 145 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:2     state:D stack:21560 pid:1218  tgid:1218  ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: events tipc_net_finalize_work
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5533 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7284
- __schedule_loop kernel/sched/core.c:7361 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7376
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7433
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- tipc_net_finalize_work+0x1e/0x90 net/tipc/net.c:148
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: task kworker/u8:15:6369 blocked for more than 145 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u8:15   state:D stack:23624 pid:6369  tgid:6369  ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: events_unbound linkwatch_event
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5533 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7284
- __schedule_loop kernel/sched/core.c:7361 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7376
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7433
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- linkwatch_event+0xe/0x60 net/core/link_watch.c:313
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
- kthread+0x38b/0x480 kernel/kthread.c:436
-
-
+Reported-by: Giovanni Vignone <gio@octane.security>
+Assisted-by: LLM
+Signed-off-by: Shubham Antil <shubham@octane.security>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/xfrm/xfrm_replay.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
+index dbdf8a39df..9394953247 100644
+--- a/net/xfrm/xfrm_replay.c
++++ b/net/xfrm/xfrm_replay.c
+@@ -40,7 +40,7 @@ static void xfrm_replay_notify_esn(struct xfrm_state *x, int event);
+ 
+ void xfrm_replay_notify(struct xfrm_state *x, int event)
+ {
+-	struct km_event c;
++	struct km_event c = {};
+ 	/* we send notify messages in case
+ 	 *  1. we updated on of the sequence numbers, and the seqno difference
+ 	 *     is at least x->replay_maxdiff, in this case we also update the
+@@ -304,7 +304,7 @@ static void xfrm_replay_advance_bmp(struct xfrm_state *x, __be32 net_seq)
+ 
+ static void xfrm_replay_notify_bmp(struct xfrm_state *x, int event)
+ {
+-	struct km_event c;
++	struct km_event c = {};
+ 	struct xfrm_replay_state_esn *replay_esn = x->replay_esn;
+ 	struct xfrm_replay_state_esn *preplay_esn = x->preplay_esn;
+ 
+@@ -356,7 +356,7 @@ static void xfrm_replay_notify_bmp(struct xfrm_state *x, int event)
+ static void xfrm_replay_notify_esn(struct xfrm_state *x, int event)
+ {
+ 	u32 seq_diff, oseq_diff;
+-	struct km_event c;
++	struct km_event c = {};
+ 	struct xfrm_replay_state_esn *replay_esn = x->replay_esn;
+ 	struct xfrm_replay_state_esn *preplay_esn = x->preplay_esn;
+ 
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
