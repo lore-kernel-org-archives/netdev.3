@@ -1,118 +1,111 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7DB515982
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9647E4E2F05
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790778272; cv=none; b=RxRoOoOobDSmln6nEl6VZUY5VsXbscWEm/LvVj2Y1EEgvu02rbh8jxNqqbSFfD81VpTOgdwvabXrIno91sZad73gF/gj4vXqy0swe8bApcofMkGWOT0pH6nIk/0agByGuIJRi1OccH02GD8Mp+V8YpYIeQ2rq+AQp+wapY5GNTQ=
+	t=1790778286; cv=none; b=dGMuC167y457C/ftZ6SVLlz/aN9D7qMVV/nBhADUaFOlRLMq0Ri6mGDLyw9u2gQLn6+hluhTpXHih+9AqNkLWlnc+N/F8M/+8gjcxuQ0quYf6CZjHCrBAAOBY83s66W4DT4hkl3usHJV4GsrkkeELnyPAUvuunSp5WsSCZpgXmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790778272; c=relaxed/simple;
-	bh=IYJIMNtdJcCr4u6cOiHPBOmN0vaj7VFV7Qc18iDIhTc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=sBxbAb3H/BqunjEDZtRCgCaws0e9cSMXIpW6tc9tcXEMK/ARwFvU6GzwnSp23RqdMvixa81AX9WjuTsza1WloevBq1I/rvBSWSwkgBxsmiqZ7TFRi2gmvrYz1/L4h7MyGuI5439nn312aU3m1u4O8CEOM7iaHqkwou/wlOMeb6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gctlW0aB; arc=none smtp.client-ip=74.125.224.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790778286; c=relaxed/simple;
+	bh=Mj/HAe620sTBBS9VbfY21Om4vxRjayR5ElGpzBAzsTA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UzZRl3POqouflr+9sqWVRSqhu3U6t5dOeEJpUHP5I1UPEAZpniu99YLoAFkhmdpMCMRFajGjB6imoY2A9MYCuGUAXVrxPqe65eTgHe8NrvRUSqA0upk2ujStoZ9GS42hWnx8ysRqmZOvzQdQUANtPdtO/RbYLLtBF7z/vUhJIeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vka8YpBJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gctlW0aB"
-Received: by mail-yx2-f43.google.com with SMTP id 956f58d0204a3-66e4ab201ecso5055463d50.2
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:24:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790778253; x=1791383053; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=VSBcqx9koa8CG47lz1u32c2OePWRmcPOrAz/9TDxhs4=;
-        b=gctlW0aBm4DLTLgSxnEHcWgiUl429uuP6GkZ1zsXBUrorWGOk3IvMZLNoWLUCTmPe5
-         EHoxCT7Gri9p/hMd2O2WXit4LgM3E+bUJ3JiYNvuuZFKqG7DK6FwGLDP7kYhfGt85E4k
-         R7Fifqx9zWevLeyGv63jc6PR399/An8qleoVSrkdWAbaLwvsGjkiQaJG7i8V11GCzBED
-         9+LYHmDQEa3gbrg7mOohtHu+GgvzP1h6flB/0DTxyi4lVT9Ya0EETjTac7XbE7wjf/QV
-         zWds7vuSOafFahbeolJxAJMChIvxkMayHd8RJ2l6X7YyGY8p9WArV03uZy648Kr73aev
-         jiBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790778253; x=1791383053;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VSBcqx9koa8CG47lz1u32c2OePWRmcPOrAz/9TDxhs4=;
-        b=IVSFSlgMKEN3dKhrbynt3EGrZmp2AucoaeQD5HnvD9aFCawcUoNBCu8Hs4+oaDRROX
-         YSokl0awywnI5BtmdtvLBMWY0j9nsldnd/DBBV2+c8LkxOdSrDwmbvlvDtXPTkPSIg7h
-         1H9u+wztRdkJhGm3MHO4OhLyHoLiqjriot4WH5Oxs8nj/geEILQ2sLHZVbuK5qTuvyFj
-         lhhHlgcx5bsX4x1Hze03d7ia7V0hjLi6dmzc4yKfPy1YtlBVPlG3/oxgQiwDhHQUKj+E
-         BT80ZAtQFoglbhFbQwaEzVm5lyX6MfXySeyQEC/i8xZo0XUu/AgfiMEAMA2hztPi1xro
-         x+7g==
-X-Forwarded-Encrypted: i=1; AKwUvByyKxuJfm98UEOeFwg3cRVBfOeCaQcB/KpoGXZAOREwGYin+9sipIXHUNQmPtze9QNMIUtvufo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIn1ybtTGktQF5nCHSAHHfyKAs1EQRR4snGy3AIdsaSWeivlp3c
-	G5bTRq4orpvVApw0bxq7roUXwCIKQY7dLpyromBc8eo1sJ9wpm90W1At
-X-Gm-Gg: AYBFou3UdpBwEjRVTlPeb6r+I1almgPiAb8eF+V2UXk/d/ApAGzsxw/StGtEheIHM+0
-	6h0nsJeBlJ034osUwSs4T5q5m2KVYDS0uYTP+nqbtoJmwNwtf4SJpYGYt7M8/GCEeIAnaA7DF+i
-	GQpcAujaBWE793NND13tqVuHxcuuqcGIsjgLjLSOWea/FCd5R3xifXSQDvYA/r++SMtJ8DFVeNY
-	rZU8LH8F7LApFZCHefX9hx1Xp+9BfnTQ8EfnK+Z4gRlEPM6ZqjFiyflT6uGo9EgDfyJX42N2K18
-	K4l1UV/b0Zc+K46p67jqIZZ5N/iWqXOAvR48E7DiCj+ANn2jIPhmXlJhrEzcaLF2i4sbvRarzo4
-	k7hVa4NW36UT2iQCely9y4JYy0LwOQKtdU+GOk5/O8w87k0CFgGwguFFGj7QJgFtfEUPaNColkG
-	mhU6UijiMFpb0jp2PvCnB4y6zi11oAC9s1cWhwR/PY1mmPWj9QD2FvXc7cUkvwIGZBFXH6s5Hjv
-	IoVmhlSBUSFQD4S/94wBYLk2iFwGgBEFBtplK48iZCBbfThDgZj
-X-Received: by 2002:a53:d014:0:b0:66f:c1bc:880c with SMTP id 956f58d0204a3-6768349e783mr477179d50.101.1790778253013;
-        Wed, 30 Sep 2026 07:24:13 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6768152d0a8sm719338d50.14.2026.09.30.07.24.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 07:24:12 -0700 (PDT)
-Date: Wed, 30 Sep 2026 10:24:11 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: lollipopkit <a@lolli.tech>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>, 
- Pavel Begunkov <asml.silence@gmail.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- io-uring@vger.kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.276ffa719c8ac@gmail.com>
-In-Reply-To: <20260929153426.90278d054c98-a@lolli.tech>
-References: <20260929045433.59435-1-a@lolli.tech>
- <willemdebruijn.kernel.570e0a646f4@gmail.com>
- <20260929153426.90278d054c98-a@lolli.tech>
-Subject: Re: [PATCH] io_uring/cmd_net: drop unextractable TX_TIMESTAMP skbs
- instead of requeueing
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vka8YpBJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACB91F0089B
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790778273;
+	bh=NHAnP3G1nRnDaWyy9fYdEFL1izoF1oTFi/w1QTvF7+I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Vka8YpBJFYXw0o0npbLMeeqr8l0V6e4sSU1nb6bhimBAKNQdDmo18SNB7O3xOfZOq
+	 OkWPwH5TJeGc8xCqfhSR5CYDu8u45Q1M1nCVa2GxH8kqPl0lgrVOW9Du+Q75h8EZys
+	 cYhwF/Ky54068OpJsihhBxGIZVGYm53rX++k1HTlJxVCvkeCeC1uM0uF1l0yLgmaCe
+	 cdhUlckX8yoCAxjW2gbhe1/C7id9Lg7IqdrglBeNSJ5hGVNPMlNGGMPiud4il4rGWP
+	 nw3zep4sO+adespeu2c36ZT48iRCVE8Tv9/o+LAonv57fcZMsraFW7eL9Afwcf0pj9
+	 tLIKF6dfrbFHQ==
+Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-81be5042c56so2802644a34.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:24:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzFL8WkxKpbcBd4j/uwW2tGSaBskFPteb6X5DHuo91wLz/xLz5f4SCeKjQMxaiqkLdYfMYPGh0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mgwT/WgoTk4leFXiPXL9FI4WuSBst/6pQ2pdb465D0DMhT8inN
+	nu0RD/nDzIN5TadM/AmrsGopybjgimS2grx0yme/DMVl1fMS6vkiY4LKA3nAM1BQM3G8XDWrCq4
+	dnQMfeXfRizwn+O76kPd/kgoBtyUNp3c=
+X-Received: by 2002:a05:6808:23c2:b0:4b9:e5fa:8a1f with SMTP id
+ 5614622812f47-4f1b688941fmr1530807b6e.36.1790778272437; Wed, 30 Sep 2026
+ 07:24:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20260929131247.401104-1-edumazet@kernel.org> <20260929131247.401104-3-edumazet@kernel.org>
+ <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org> <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
+ <16cb8491-c7d9-422a-b3cc-c0225f12b7ba@kernel.org>
+In-Reply-To: <16cb8491-c7d9-422a-b3cc-c0225f12b7ba@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 30 Sep 2026 16:24:20 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiiohuv5QjapmbaVo288kXjN3jZL9fJaha+Xs2kdWxz43Ng@mail.gmail.com>
+X-Gm-Features: AclHuK9l8Hi_DaJHQk9G7oM8tRrNfbY54mt86CqGG0xZyvcbTn3snxVbF8hmLes
+Message-ID: <CAL4Wiiohuv5QjapmbaVo288kXjN3jZL9fJaha+Xs2kdWxz43Ng@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ipv4: reserve one IP ID per segment for UDP GSO packets
+To: David Ahern <dsahern@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-lollipopkit wrote:
-> On Tue, 29 Sep 2026 11:06:26 -0400, Willem de Bruijn wrote:
-> > lollipopkit wrote:
-> >> Assisted-by: Claude:claude-opus-5-5
-> >> Signed-off-by: lollipopkit <a@lolli.tech>
+On Wed, Sep 30, 2026 at 3:50=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 9/30/26 7:58 AM, Eric Dumazet wrote:
+> > On Wed, Sep 30, 2026 at 2:29=E2=80=AFPM David Ahern <dsahern@kernel.org=
+> wrote:
+> >>
+> >> On 9/29/26 8:12 AM, Eric Dumazet wrote:
+> >>> @@ -1464,7 +1465,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
+> >>>       iph->ttl =3D ttl;
+> >>>       iph->protocol =3D sk->sk_protocol;
+> >>>       ip_copy_addrs(iph, fl4);
+> >>> -     ip_select_ident(net, skb, sk);
+> >>> +
+> >>> +     /* UDP GSO packets are segmented later (see udp_send_skb()):
+> >>> +      * reserve one IP ID per segment.
+> >>> +      */
+> >>> +     segs =3D 1;
+> >>> +     if (cork->gso_size) {
+> >>> +             int datalen =3D skb->len - skb_transport_offset(skb) -
+> >>> +                           sizeof(struct udphdr);
+> >>
+> >> hard coding a specific transport header in L3 code is crossing layers.
+> >>
 > >
-> > Is this a real name?
+> > Only UDP sets cork->gso_size, so this is UDP specific code in
+> > __ip_make_skb(), like the existing sk_is_tcp() case in the same
+> > function.
+>
+> I went looking for other transport references in L3 code and missed this
+> one.
+>
 > >
-> > https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+> > I can make this explicit in v2 with:
 > >
-> > "a known identity (sorry, no anonymous contributions.)"
-> 
-> It is not my legal name. It is the handle I have used publicly for
-> years, including on GitHub (https://github.com/lollipopkit), and it is
-> the identity I sign all my kernel work with. My understanding is that
-> this is what d4563201f33a ("Documentation: simplify and clarify DCO
-> contribution example language") intended by "known identity".
-> The earlier CQ-full fix (3a3d93070c5e) went in under the same name.
-> 
-> If that is not sufficient for this tree, let me know what you need.
+> > if (cork->gso_size && sk_is_udp(sk)) {
+> >
+> > Selecting the IP ID from udp_send_skb() instead would either burn
+> > one extra IP ID per packet (50 % more for 2-segment GSO packets,
+> > making wraparound faster), or require __ip_make_skb() to leave
+> > iph->id unset for UDP GSO packets, with a simlar kayer violation concer=
+n.
+> >
+> > Would this be acceptable, or do you have another suggestion?
+>
+> sure. I went down the path of adding an input arg to __ip_make_skb, but
+> this is simpler.
 
-The commit you mention did remove the explicit reference to pseudonyms.
+Great, thanks, I will send V2 shortly.
 
-I don't know whether a github handle counts as "something we could check
-back with" or where exactly the line gets drawn.
-
-If anything, this does seem an outlier compared to other sign offs.
+pw-bot: cr
