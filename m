@@ -1,362 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDB14483BE
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B149228030E
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790754580; cv=none; b=gE8lq2tBPyM1yMklJ5jsq3TBk2V/+pc/jGFnJGcKPSAqLkA0Hztj+fwR+yTqiylFES9heLdqO8VamJP6IO1g+Av8t3tyrcBtNE9THDZcVD09cJvF9ouRvxMPSDYaNwzkSM6iVk67KIAGLHCsDK8rIzdNO8vMpCTbuj3vuHM+rwU=
+	t=1790754830; cv=none; b=q3AhPgJezwBSLZUkANe7HqZtaIkPBRnFESm/THzdd1QGdBuSb/LscyzxOLhMt0EyCoIqUU2Gcqv4qU6HbAeet3XlSogRMc2RxAqYYRFSu/AYZPQZHFbELfuJZ2Ca7mdw+kZBgU71ta6ArtiGcDjLH9Ezl5DWEnHZoeyuiwezKlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790754580; c=relaxed/simple;
-	bh=GM0fMTtibvMYSkQZnSNnnDOl3C8/olyP8Aap3fUgpqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pAWTi6tYBzqU2Ae+LRGbNBsh4EIVeyubz+V4A9RkQkhto5Y2pK6+k+Z2bmz35uvFxOql20VZpo49ng9E1WOz9DFenBWTiFK85bZEWXWmfQ+pFUmKwKw0q4Giby3WvIESXwo1Z9pdwHBvojVGD0wLOMO6RJBah6bQctMEDe28T/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T+o9c3wt; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790754830; c=relaxed/simple;
+	bh=hZ6EIw11xdTVgEdmGqQqYocVGyhW/vrmNhyxQ7jmjYs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IYwAZtDRposhU7hYTRGpUI260HuDaeClhgzNfRprUyem1w5Kh5HtMvZ9pLvHpIAf1p8aaLlvPEb8ra968+XgyK8Xo4gtnrwngbIn4i8YrD72cnvoU1nTJyXVPUEq56GaR9pX8lPATtnoHk4TZENzVLrZdHar/E5uI6QdGXfHX1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1yiXM1x; arc=none smtp.client-ip=74.125.227.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T+o9c3wt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790754573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBsxn8sPTYMpQMRwhykYmzuFeTHYzCaE09zTd/pe7uc=;
-	b=T+o9c3wtlNeL0qL2IxwWu6HEpU4gMZZTC1pSrne0kYX+YulYa/WsGkvsaRyqZYLzu3cd8x
-	LftrphKXXkDTUvZHI92b3lXdUovNhq1vBnyGaN95ZF1VYhgCeBQz73oI3qnzwWxNCjsBoD
-	9tvKTgGoqevZ1P68D2h4z8kP8xGjo0c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-DSqrtX7_NxGI0LZ9ryMl6Q-1; Wed,
- 30 Sep 2026 03:49:28 -0400
-X-MC-Unique: DSqrtX7_NxGI0LZ9ryMl6Q-1
-X-Mimecast-MFC-AGG-ID: DSqrtX7_NxGI0LZ9ryMl6Q_1790754566
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D44C41955F21;
-	Wed, 30 Sep 2026 07:49:25 +0000 (UTC)
-Received: from [100.90.87.156] (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5AEE2180057F;
-	Wed, 30 Sep 2026 07:49:22 +0000 (UTC)
-Message-ID: <d631d2ed-63b5-4785-80ae-b16deb3edd1a@redhat.com>
-Date: Wed, 30 Sep 2026 09:49:21 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1yiXM1x"
+Received: by mail-pj2-f38.google.com with SMTP id 98e67ed59e1d1-3a4bb1ed012so650992a91.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790754828; x=1791359628; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zfRoB0z9C62Zxfiw8Wn8D6Gbz3xcK/CP85S70GJlIsQ=;
+        b=H1yiXM1xntsX8sc+JkxqWsMV1txAJ+Yw8Qvqgd5WFze3FXMNiH4ml5ajqmz/TvPjVq
+         2XiQMIPNdsr3FDISXPFebtWQ052hN4X3CL9zVeiw0i5L/ZPlp7Q81NN81uqDA7/ypYPC
+         RcCNfh1q579sEVNCmiJ5ndwK3bT+lWyhdhV+xcGDtnZC4UMH3bEuhF09UX6kVAmsc9TC
+         shAgYhqKdGOvbZwCBVUxaXWeWW7XPyPJ3K8JFBK2RDWVe/bljIyjusXsdXHCJLGPHoGL
+         dTlFMXB9QUE4f2LzGMJaK3W+Y9jw9pj2eruFHbOggWIqEXzG2YtEotaa63wi46HhBvdR
+         j15A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790754828; x=1791359628;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zfRoB0z9C62Zxfiw8Wn8D6Gbz3xcK/CP85S70GJlIsQ=;
+        b=YNjRUg5G/JsZ2OS/T3t7H/Opy8MIXPwzU9whs3X0AQDUPvSpDQ/MTmJDST/O0ZlZgd
+         xP/zwbhL9g0thwKqWyOLrgmQ8VbcqQ8WyVfg0WMvav+NnE7MdJPtXhJLOUr8mS7nj6BM
+         bRY/79K2H1toZILNuK7+vwxGxTaMo0oAtAnkMKq6cxmn/u0p07+6te1EXNpiUCL2xdiZ
+         pSJbV++ZQOs1BLwa6UYVFmYqQPyMv5k+MUMe2q5mugzFZngpA/RFmOM+tl1GT9u6Efzx
+         apntNbyiJsDjAnAcwgENunVdhhaInEeZ/pt6VxKgwoMIAJMe8ldzYQHfJJCzY+a1MmcW
+         Tkjw==
+X-Forwarded-Encrypted: i=1; AKwUvBxYVWF+00DmcsravOJcYYwMOdHfWqjwBYkNg3CEnSzTDkQHdCkWUJJ1nvGNE2Zq+U9/TqmGy+Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYMrIoqRdtij3K4aYOYl1opFRtOFlu2hgwCAObcgrhyw4s3p1h
+	kbabZsIN/oZNI3TNvvyv21oKYOx1KFvcZpaxK03ulDqZGGlOpAl54ec4
+X-Gm-Gg: AYBFou39DRZCUDZlmEGAsCOs+tvEuKC4ZA2IAhihI1BEzBT8KkQvtMCEnICW/bNwg8p
+	dkJsgZFxAPYomA7dd+1jcdBUZotQjan7Jp1BEZ8OmH0Z34ZknV56w9kXVKFDKvCu/WYqimppW+y
+	zK/Ic6LI2yzx9vMyNR8F3o+ICL2qVgjR2TfOZrUEdWIafm14sExHHOjygOHQ2atlEsgC/CgysGn
+	xbIVfKZljY8CZebrgtv1dXpKQeLg1yln7aM6sSM7e7zuiXU7Iyi8R4OyB1jVi/5iV6SCVDLBj9i
+	IZfLTrE2ncF52M2v3IG3geYQHqiipV6Zb/A9bVSt1JsX8SDEGG0yh2Ib9FEUQqu1vICjenH6UCN
+	D5Uv146dPNehBz+lI8connwtFQv/ZDj72o1Vf5pXa+Re78BznRBvDdS3c0KoRrQkpGUih+6Xxzq
+	Y4hrA8bxSUki6lss4vh07W8Oy7/xbZBkyOfVJakCiwPvqGh2/hCRt++XeKr0IxGrSaRmIMVHsGk
+	SOKQQrzf9VY
+X-Received: by 2002:a17:90b:588e:b0:39e:6c69:9b90 with SMTP id 98e67ed59e1d1-3a4d19109demr619978a91.53.1790754827923;
+        Wed, 30 Sep 2026 00:53:47 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4ce419342sm1882128a91.16.2026.09.30.00.53.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 00:53:47 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	William Tu <u9012063@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: [PATCH net] ip6_gre: validate ERSPAN skb dst before PMTU update
+Date: Wed, 30 Sep 2026 16:53:20 +0900
+Message-ID: <20260930075320.760328-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/6] dpll: zl3073x: notify sibling pin when
- shared output config changes
-To: netdev-bot+sashiko@kernel.org, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, min.li@microchip.com,
- pabeni@redhat.com, poros@redhat.com, richardcochran@gmail.com,
- vadim.fedorenko@linux.dev, linux-kernel@vger.kernel.org
-References: <20260928185552.1103515-2-ivecera@redhat.com>
- <179075143120.434549.1576015918203645155@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179075143120.434549.1576015918203645155@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 9/30/26 8:57 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The patch adds zl3073x_dpll_output_pin_sibling_get()
->    (drivers/dpll/zl3073x/dpll.c:146).
-> - [Medium] The commit says it closes the case where the sibling pin's
->    frequency changes without a notification.
-> - [Low] The commit message presents the missing sibling notification as a
->    user-visible defect: userspace listening on the sibling pin "is never…
-> 
-> --
-> 
-> dpll: zl3073x: notify sibling pin when shared output config changes
-> 
-> This patch adds zl3073x_dpll_output_pin_sibling_get(), which finds the
-> other pin of a P/N output pair. The esync, frequency and phase adjust
-> setters use it to send a pin change notification for the sibling after
-> the shared output registers are written, and they now use explicit
-> mutex_lock()/mutex_unlock() so the notification goes out after
-> zldpll->lock is dropped.
-> 
->> Changing one of these settings through one pin's dpll_pin therefore
->> also changes the other (sibling) pin's effective configuration, but
->> only the pin the change was requested on gets a dpll_pin_change_ntf()
->> notification - userspace listening on the sibling pin is never told
->> its frequency, esync configuration or phase adjustment changed.
-> 
-> [Severity: Low]
-> This describes a user-visible defect, but the trailers only have
-> Tested-by: and Signed-off-by:.
-> 
-> The dpll core only calls __dpll_pin_change_ntf() for the pin in the
-> request (for example in dpll_pin_freq_set()). The sibling has not been
-> notified since the output setters were added.
-> 
-> Should this carry Fixes: tags such as these?
-> 
-> Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
-> Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-> Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
+A tc tunnel_key action can attach a METADATA_IP_TUNNEL dst to an skb,
+and mirred preserves it when redirecting the skb to a native ip6erspan
+device. ip6erspan_tunnel_xmit() treats any non-NULL dst as a route for
+PMTU updates. A metadata dst has no output device, so
+dst_dev(dst)->mtu dereferences NULL.
 
-Agreed, this is a pre-existing user-visible defect. I will add the three
-Fixes: tags in v2:
+On v7.2 with KASAN, an initial UID/GID 65534 process with CapEff 0
+created user and network namespaces, used namespace-local CAP_NET_ADMIN,
+and triggered:
 
-   Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
-   Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-   Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
+  KASAN: null-ptr-deref
+  RIP: 0010:ip6erspan_tunnel_xmit+0x10fc/0x2cc0
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Jakub, a process question: this patch is both the fix and a prerequisite
-for the rest of the series - it introduces
-zl3073x_dpll_output_pin_sibling_get() and the notify-outside-lock
-handling that the output enable/disable and PTP perout patches build on.
-The defect itself is only a missing change notification (no crash, no
-data corruption). Is it OK to keep it as patch 1 of this net-next series,
-or would you prefer it split out and sent to net first?
+The collect-metadata path already skips this block because its metadata
+describes the outer tunnel. Native mode must still propagate PMTU updates
+for real route destinations. Use skb_valid_dst(), matching IPv4 tunnel
+PMTU handling, to exclude DST_METADATA without suppressing valid routes.
 
->> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
->> index f2e137475b40..2c6de4dab8b4 100644
->> --- a/drivers/dpll/zl3073x/dpll.c
->> +++ b/drivers/dpll/zl3073x/dpll.c
->> @@ -132,6 +132,30 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
->>   	return NULL;
->>   }
->>   
->> +/**
->> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
->> + * @pin: output pin whose sibling is sought
->> + *
->> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
->> + * single HW output. Looks up the other pin of the pair, if it is
->> + * registered as a dpll_pin on this DPLL.
->> + *
->> + * Return: pointer to sibling pin, or NULL if it is not registered
->> + */
->> +static struct zl3073x_dpll_pin *
->> +zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
->> +{
->> +	struct zl3073x_dpll_pin *sibling;
->> +
->> +	list_for_each_entry(sibling, &pin->dpll->pins, list) {
->> +		if (!zl3073x_dpll_is_input_pin(sibling) &&
->> +		    sibling->id == (pin->id ^ 1))
->> +			return sibling;
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
-> 
-> [ ... ]
-> 
->> @@ -934,27 +962,44 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
-> 
-> [ ... ]
-> 
->> +	/* Commit output configuration */
->> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
->> +	if (rc)
->> +		goto unlock;
->> +
->> +	/* The clock type, esync period and esync width are all shared by
->> +	 * both pins of the output pair, so the sibling pin's esync
->> +	 * configuration changes too and userspace has to be notified.
->>   	 */
->> -	out.esync_n_width = out.div / 2;
->> +	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
->>   
->> -	/* Commit output configuration */
->> -	return zl3073x_out_state_set(zldev, out_id, &out);
->> +	mutex_unlock(&zldpll->lock);
->> +
->> +	if (sibling)
->> +		__dpll_pin_change_ntf(sibling->dpll_pin);
-> 
-> [Severity: High]
-> Can sibling->dpll_pin be NULL, or the sibling already freed, by the time
-> it is dereferenced here?
-> 
-> zl3073x_dpll_output_pin_sibling_get() returns any output pin on
-> zldpll->pins with the matching id. It does not check that
-> sibling->dpll_pin is still set. The lookup runs under zldpll->lock, but
-> the dereference happens after mutex_unlock().
-> 
-> The teardown path does not take zldpll->lock:
-> 
-> drivers/dpll/zl3073x/dpll.c:zl3073x_dpll_pins_unregister() {
-> 	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
-> 		zl3073x_dpll_pin_unregister(pin);
-> 		list_del(&pin->list);
-> 		zl3073x_dpll_pin_free(pin);
-> 	}
-> }
-> 
-> zl3073x_dpll_pin_unregister() ends with:
-> 
-> 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
-> 	pin->dpll_pin = NULL;
-> 
-> and dpll_pin_put() has already dropped dpll_lock at that point.
-> 
-> zl3073x_dpll_pins_register() uses list_add(), so the N pin (2k+1) sits
-> before its P pin (2k) on the list. That means N is torn down while P is
-> still registered and reachable over netlink.
-> 
-> One possible interleaving:
-> 
-> CPU1 (devlink reload, flash_prepare or unbind)
-> zl3073x_dev_stop()
->    zl3073x_dpll_unregister()
->      zl3073x_dpll_pins_unregister()
->        dpll_pin_put(N)          /* dpll_lock released */
-> 
-> CPU0 (DPLL_CMD_PIN_SET on P, dpll_lock held)
-> dpll_pin_freq_set()
->    zl3073x_dpll_output_pin_frequency_set(P)
->      mutex_lock(&zldpll->lock)
->      sibling = zl3073x_dpll_output_pin_sibling_get(P)  /* finds N */
->      mutex_unlock(&zldpll->lock)
-> 
-> CPU1
->        N->dpll_pin = NULL
->        list_del(&N->list)
->        zl3073x_dpll_pin_free(N)
-> 
-> CPU0
->      __dpll_pin_change_ntf(sibling->dpll_pin)
-> 
-> In that case, would __dpll_pin_change_ntf() get NULL and oops on
-> pin->id and pin->clock_id in dpll_pin_notify()? Or would CPU0 read the
-> freed zl3073x_dpll_pin?
-> 
-> The list walk in zl3073x_dpll_output_pin_sibling_get() can also run
-> while list_del() is in progress, because the writer never takes
-> zldpll->lock.
-> 
-> zl3073x_dpll_output_pin_frequency_set() and
-> zl3073x_dpll_output_pin_phase_adjust_set() have the same pattern.
-> 
-> The later patch "dpll: zl3073x: add PTP periodic output support" also
-> calls zl3073x_dpll_output_pin_sibling_get() from
-> zl3073x_dpll_ptp_enable() without holding zldpll->lock at all.
+With this change, the same trigger processed three packets without a
+sanitizer report, oops, or panic.
 
-This cannot happen; the notification is already serialized against pin
-teardown.
+Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:GPT-5
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+Affected since v4.16-rc1; present in v7.2 and all four pinned
+2026-09-30 upstream snapshots.
 
-The output setters (esync_set / frequency_set / phase_adjust_set) run
-with dpll_lock held: the dpll core invokes the pin ops under dpll_lock,
-and they use __dpll_pin_change_ntf(), whose contract is exactly "caller
-must hold dpll_lock" (dpll_netlink.c: lockdep_assert_held(&dpll_lock),
-"suitable for use inside pin callbacks which are already invoked under
-dpll_lock"). So sibling_get() and the __dpll_pin_change_ntf() call - even
-though it runs after mutex_unlock(&zldpll->lock) - are all covered by
-dpll_lock.
+Tested with CONFIG_USER_NS=y, CONFIG_NET_NS=y, CONFIG_IPV6_GRE=y,
+CONFIG_NET_CLS_ACT=y, CONFIG_NET_ACT_TUNNEL_KEY=y, and
+CONFIG_NET_ACT_MIRRED=y. Config SHA-256:
+f992c9fdb881ca95c467896791c52554719f6204cf06268cd92ac37c14c14f83
 
-Pin teardown frees the sibling via zl3073x_dpll_pin_unregister() ->
-dpll_pin_unregister(), which takes dpll_lock. While a setter holds
-dpll_lock for the whole callback, teardown cannot even reach
-dpll_pin_unregister(N), let alone the following list_del()/kfree(). The
-proposed interleaving (CPU1 freeing N while CPU0 notifies) is therefore
-impossible: CPU0 holds dpll_lock throughout.
+The reproducer is available privately on request and is omitted from this
+public AI-assisted report.
+---
+ net/ipv6/ip6_gre.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The PTP enable() path (zl3073x_dpll_ptp_enable(), added in patch 6) does
-call sibling_get() outside dpll_lock, but it is serialized differently:
-zl3073x_dpll_unregister() unregisters the PTP clock *before* the pins
-(zl3073x_dpll_ptp_unregister() then zl3073x_dpll_pins_unregister()), and
-ptp_clock_unregister() quiesces in-flight enable() callbacks. No
-enable() can run while the pins are being freed.
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index e61cb10b50dc..3ee7fad6089a 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1059,7 +1059,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 			 htonl(atomic_fetch_inc(&t->o_seqno)));
+ 
+ 	/* TooBig packet may have updated dst->dev's mtu */
+-	if (!t->parms.collect_md && dst) {
++	if (!t->parms.collect_md && skb_valid_dst(skb)) {
+ 		mtu = READ_ONCE(dst_dev(dst)->mtu);
+ 		if (dst_mtu(dst) > mtu)
+ 			dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
 
-> 
-> [ ... ]
-> 
->> @@ -1010,7 +1058,16 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->>   		out.width = new_div;
->>   
->>   		/* Commit output configuration */
->> -		return zl3073x_out_state_set(zldev, out_id, &out);
->> +		rc = zl3073x_out_state_set(zldev, out_id, &out);
->> +		if (rc)
->> +			goto unlock;
->> +
->> +		/* The other pin's frequency changed too - it has to be
->> +		 * notified about the change.
->> +		 */
->> +		sibling = zl3073x_dpll_output_pin_sibling_get(pin);
->> +
->> +		goto unlock;
->>   	}
->>   
->>   	if (zl3073x_dpll_is_p_pin(pin)) {
->> @@ -1022,8 +1079,10 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->>   		 * Update divisor for N-pin to keep N-pin frequency.
->>   		 */
->>   		out.esync_n_period = (out.esync_n_period * out.div) / new_div;
-> 
-> [Severity: Medium]
-> Does the N pin also need a notification on this path?
-> 
-> In the N-div formats OUTPUT_DIV is still shared. The N-pin frequency is
-> computed from both values:
-> 
-> drivers/dpll/zl3073x/core.h:zl3073x_dev_output_pin_freq_get() {
-> 	...
-> 	freq = zl3073x_synth_freq_get(synth) / out->div;
-> 
-> 	if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
-> 		freq /= out->esync_n_period;
-> 	...
-> }
-> 
-> The rescale above truncates and only rejects 0. zl3073x_pin_check_freq()
-> only requires the new P frequency to divide the synth frequency.
-> 
-> For example, take a 500 MHz synth with P = 10 MHz (div 50) and
-> N = 2 MHz (period 5). Setting P to 25 MHz gives new_div 20 and period
-> 250 / 20 = 12. N then becomes 500M / (20 * 12), about 2.083 MHz.
-> 
-> This path reaches the unlock label with sibling still NULL, so the N
-> pin gets no DPLL_CMD_PIN_CHANGE_NTF. The commit message says the sibling
-> is notified "whenever the shared HW state actually changes". Should this
-> case be covered too?
-> 
-> The later commit "dpll: zl3073x: factor out output pin frequency helper"
-> does not change this. The truncation moves into
-> zl3073x_dpll_output_pin_freq_set(), and frequency_set still calls
-> zl3073x_dpll_output_pin_sibling_get() only when
-> !zl3073x_out_is_ndiv(&out).
-
-By design the N-pin frequency is meant to be preserved when the P-pin
-frequency changes - that is the purpose of rescaling esync_n_period. With
-an exact rescale, div_new * period_new == div_old * period_old, so
-N = synth / (div * period) is unchanged and no sibling notification is
-needed.
-
-The only thing that can actually perturb N here is the truncation in that
-rescale, which is the separate issue Sashiko raised on patch 5 ("does this
-rescale really keep the N-pin frequency unchanged?"). I will fix it there
-by rejecting an inexact rescale with -EINVAL (i.e. when div_old * period_old
-is not divisible by div_new), so N is guaranteed to stay unchanged. With that
-fix there is nothing to notify on this path, so no sibling notification is added
-here.
-
-Thanks,
-Ivan
+base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
+-- 
+2.55.0
 
