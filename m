@@ -1,85 +1,79 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B7C44D6AC
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7402F8E93
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790752528; cv=none; b=IdgslwlgpSRPdB7lZaX3Q+dqsozlxnzr3OuU2sFdViUxXfhbgcGHSYA15CG2A+msupMqiaoW/PpzSJq4GeDtkkzvi5GdqvW8s8CF4EgdUmL0PmfTdnXtNK8ROYMDdiUlD+R0IiwvKoR0C7uVaWAIhCWtDZD0Dnm8HnwMT+fNnys=
+	t=1790752552; cv=none; b=NTFns2e0a+7FqVL5c7Klp5nXGyOkenR7vfEe82kIm0t8v5TA0Em+k/aJ1e6RJka8SZvenNgjrIvnIyrmF3h4HQqY9jHf9sXFu7ujrxzblg9gFLtT4djZJe/oJAqT0qtY5iP4F/igj27yKcAdnp9PWuuElY4GxadpNqDtsWK8a2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790752528; c=relaxed/simple;
-	bh=WIiBr5bXsxi0pX8HHboy6Z61IAOe1DKM67g84NTls3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/m9xvoGZ4kU6pwf0blFXMU60xzOJ3daz1z2Dy3Kz+CpuGZ2JlynO7Qdyy7oWJ+ShxmAptXgCXocAedIiaj4V+/S4OgzrUihvsbGmzATttUtqAWBVzSqUMXo0yrdkX3sTMaEF3YBkgEhXfP1jslG8EETtdca4Skk7m35zVsKRlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=htqSM99g; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1790752552; c=relaxed/simple;
+	bh=Tu0bSpWYgnkCJme/Bet6w3BTZWJdEOppQ0mo1x1nCzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qtvw7gTkUSNTOsTjsAXrJKHXqJKEI27GFLm85orC4W8n91BbWfwvoAE3xsUCHP9yn8VnKC4dn088O7AkdEHWufGXCgZpDdQnXk76uY2Uk4RTjbrZ4AtwDUZ2mWo73TrSp9ByBThmXtCEpP9M/5XJT5fPZwG4r2TiWgDSU7vVo8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nQiGt3y6; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="htqSM99g"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48434392b02so4316839f8f.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:15:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nQiGt3y6"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485ac898fa4so3976601f8f.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:15:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1790752517; x=1791357317; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lIXruVrGG+7vDbzLUe/m+K5H/JkVnzugw/hOkZ38lPA=;
-        b=htqSM99giKBwWlRz0gI/1Srb8jObSirmtwsaa+P8wajGEWYdk1LrpU1FXRclXoasMG
-         pMnQJpGFM5q1eUdSMMCfMWSaegMQ0MrhegJYpVpshcdgLNizdgj3U+QpyP0/6XK5i5GL
-         zBDHLyTlNjqKLhJ3BzF8ctRPUy1VEIYk+cS4d07QrJGLVh9htYn44Zu4gdyAKu65Oyg9
-         oH2M0/XevypsS4jNQWTh53IBSD9nIG+BZg9wGof0tZDV6VKIuIq7LdvEJqb83YLq+vB3
-         Ow2YMZvXXOX1BudUYcV4My/xCNyFB8qld4k7OGJYbOSUjnzbBox0kYh61WveLNqqPzKO
-         Wpkw==
+        d=gmail.com; s=20251104; t=1790752541; x=1791357341; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F/SbVhMvqYrGxK11cD/q4PA+nXETskb6eXmSE0ztKU4=;
+        b=nQiGt3y6dBMTNY8pIEVf8YZK2MVhqOkpVRe2jVhcSvkyx3phPa4dnJcAB2VMguhDWi
+         qwLJ3pAG4DvgnMZQteD0ZS1+4GQyBFkQTJomikukdFhJAHxK0WZHHVKaGEEfkWQ7Zqc2
+         g6VdwSnMO9HHMhvktukQWOOIdZJ7p9tAmz9IMgtC4VYt56MvbVQkjbo2vofSyq8avoC7
+         iI0FmBt0BK1P7RtXWh0ol72PoCMUgcN2gYo9ax+O7ojUih1R0uCrnZUn+4sTf/AAxX0W
+         50T7cUS33mc51YHa/DABV6L1TPX28syIfBVbTQrwa2DQWoLh/3gf06Ej8ufRAM8kmz1v
+         2bVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790752517; x=1791357317;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lIXruVrGG+7vDbzLUe/m+K5H/JkVnzugw/hOkZ38lPA=;
-        b=CpNMCg8bZm7lsB02sqmQkQSBbGEkdwKMKy44bSdkh9CuncRIjw4/i5WSGyfgTMRqel
-         StYObhsfnWxJVIqlJFfL9SLVoSU47TBW35yOZaziJLh8YWsAiErz9BvP7xaT74VVpbX7
-         CMLNyF1+EsHaIXmwzLoekey7fhJT9JccSMamTLZFlYGP1xwD6f9RGQPGEac66V73RCCy
-         t8+O9olHwTwxKENyT9ZLBxG0vKOd8nWKULlAwtN7PYzJdZKi5H8CuiRD0RlmxJvp/vFM
-         ggomjcY27Dpjrh2GJf48Orrku7k6igFSnUQsYGXP+J8yV5Uz2qsroNl1IexVz/Ig2zyM
-         Fazg==
-X-Gm-Message-State: AFq9FYKj/Hl9gzmJlECcOuTJUYNekTYrZToBzK3bZYazuY5A1yAs0ZxU
-	HsXkgYA3FyZNLintl8DxxD2G95GWPth+SI71ilhYcdfqhXdmK8EuFBhp+o6ucolQPHUCM+YCDTj
-	iLbke
-X-Gm-Gg: AYBFou1HmswHmUWQVPXO8TztitAyN2gCxtAOHCLRByjYjACzpeIhU9FXdH8S+GewLdX
-	Mf2eaS7OkOh0P7Y+nVzO6Xe8J+HDB0vHdvdhgEAQYm6fJBAiqYcgQDJ8iT4m3o6gi7agz8vnvv7
-	gp5fuZkiU9ZCGWTAoyeNNtQoXNCfAsBv7Q/FQaAmszaFokLA2qvYXvOHw3P2OzDJuukd2e/76VH
-	N1F/FPUKIidh4hv5X+/m8HttWe6oIAnsdL/getktpcERJubgaAeDS7vEcGKIqYVKW/6xeLGS0n6
-	cJd9qHi+Vb/bGnvWBpLaFWzuEBo31EH43t3riy8rn0WbWN1iorcoPWV/yHTaCViF7F3+0NOcKag
-	YZUBXnvTbV+Qtwupj6EJ/H2vimFfplrE0z/ZHxIScYgkg7CqX4gaFOT1C3B49WuUPH72N2uNEMF
-	UoolTEH4qSPvVeKA1aYkCKrGmh6SlFL/d1ZgDXM3jSx61Rm8ORUdcTEct6oCcUecKFm+ElcXWi6
-	l5nmQ==
-X-Received: by 2002:a05:6000:40ca:b0:48a:fcd6:f351 with SMTP id ffacd0b85a97d-48b024ea176mr960058f8f.20.1790752516653;
-        Wed, 30 Sep 2026 00:15:16 -0700 (PDT)
-Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48b02a0d237sm1089481f8f.37.2026.09.30.00.15.15
+        d=1e100.net; s=20260707; t=1790752541; x=1791357341;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F/SbVhMvqYrGxK11cD/q4PA+nXETskb6eXmSE0ztKU4=;
+        b=mlsjiatf8RnhsFMlPkjJflVe0437mwhUTgQTc8hreKIeuVLk2xVL3JKWOUe6f1heH4
+         wbHLGrg1aiQhaNoWDCuUdnSGzG0e+TfNeYiZAaPjT21VG/EC8U5QDth3x7WA1tt7FLKd
+         vw/ER/Azz6MKBkzoQpxk7DQ/4PTOCuXaqaKqvLI1GtWz0lPN4G8y4GUWBJp52hRGgEhH
+         MHxBuh5KKFl7ofJOWpehBeDBOSamdTJ7reqzq5TTZF3X3g5tt9lTaA/y5OPKcU5gfzVY
+         b+T5BgTkylJqOZBDZsZiIFJiZGdWiAKym8DtK1MIa3kD1ykMjc85J34Py+YWcFPugwa2
+         OS/A==
+X-Gm-Message-State: AFq9FYJOGnZA4cqCEbKrLRsgiJfM2K2jpALpUwPyfEhJ+1ZroHZJMy4U
+	qbIuOxCfSgbrct6Y99e6g8qjurOFhdZ+46FulmZITThROXASVbjigirl4EGYSpgl
+X-Gm-Gg: AYBFou0s9G5AhQl2ZD+mNRs/+lrHVKAZJLjCa2fUdMqljEgMV9pY0RPjAqwUCBp0syZ
+	AzY+Ea+8ZfyLDGqXvGbhRkjE4k7i47o9oM3+BW0nlwmWLzLLVOjCpDa03yTmXVXZIZwjTK215cU
+	Up7AMSQswG8owM+Jo1H2yR0Lx5Tx0Ls0L3qsKATIooxrlH089sC3Afv3DVvGGYsPDs8ovvRCzzy
+	uaIs82PmBtv0ikdzfH8tjfiE6JqdQ20TZwKxkvNGmo3SZ6YHQl9r4b+Ee3tJgbFQUH1bjbeS6VQ
+	0OohOcJCGaV9VQGEXHIw90W3T9L1jqv1LXyA93CNKUduYgRTwxvXR8DVP4v98Iv0s2ODeTjeLRw
+	KdjMtxh2+sAIRuJixUmukNyCt0Jhuhw6WBRjTcvR0eE1fv64znVJSQegIoHLJbU4ZsyQmhBBFUc
+	pjtLtZNBqFPW2IhsH/c7XlIj/3+yCXfDw8eigNMPbc5mrvWBAJe+w32Nd6kvBQ2igbrSEe9+kPc
+	0QUXKamFnLPPQe1Fy8nJ5M7k7Y+KJtm25OhbawY
+X-Received: by 2002:a5d:6f1c:0:b0:487:489:7af0 with SMTP id ffacd0b85a97d-48b024bd025mr1059857f8f.17.1790752540836;
+        Wed, 30 Sep 2026 00:15:40 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b02e7b0d0sm735890f8f.14.2026.09.30.00.15.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 00:15:15 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
+        Wed, 30 Sep 2026 00:15:40 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
 To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
+Cc: pabeni@redhat.com,
+	radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org
-Subject: [PATCH net-next 12/12] net: bridge: fdb: avoid VLAN lookups in unicast forwarding
-Date: Wed, 30 Sep 2026 10:14:11 +0300
-Message-ID: <20260930071411.2786201-13-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260930071411.2786201-1-razor@blackwall.org>
-References: <20260930071411.2786201-1-razor@blackwall.org>
+	robert.hancock@calian.com,
+	sean.anderson@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net v4] net: axienet: cap the TX poll return value at the NAPI budget
+Date: Wed, 30 Sep 2026 10:15:36 +0300
+Message-ID: <20260930071536.627964-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,212 +82,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Pass the complete fdb destination to br_forward(). The tagged value is
-decoded once into br_fwd_dst on entry so all subsequent forwarding checks
-use the decoded port and VLAN. A cached port-VLAN is then used to avoid two
-VLAN hash lookups in the standard unicast forwarding path. A backup-port
-redirect also uses a raw destination because the cached VLAN belongs to the
-original port.
+axienet_tx_poll() reclaims every completed TX descriptor in one pass:
+it passes lp->tx_bd_num to axienet_free_tx_chain() as the descriptor
+limit, and @budget is only used as the napi_consume_skb() bulk-free
+hint.  It then returns the number of packets reclaimed, which is bounded
+by the ring size rather than by the budget, so the poll can report more
+work than it was given.  This was seen after TX completion interrupts
+had not been taken for a while and a full ring was reclaimed at once:
 
-[1] 64 byte vlan packets, 4k randomized fdb hits with 4k fdbs, 5 million
-    packets passed 5 times for every case
- VIDs  Ports       Mpps                 Gbps             CPU1 cycles/input
-                before    after   gain  before   after   before   after  reduction
-   64    8/2  2.375486 2.635811  11.0%   1.216   1.350   1724.6  1553.7    9.9%
-   64    8/4  2.376731 2.636459  10.9%   1.217   1.350   1714.8  1554.7    9.3%
-   64    8/8  2.376621 2.635783  10.9%   1.217   1.350   1722.6  1553.2    9.8%
-   64   32/2  2.375876 2.637897  11.0%   1.216   1.351   1726.7  1552.3   10.1%
-   64  32/16  2.376442 2.636426  10.9%   1.217   1.350   1721.3  1554.2    9.7%
-   64  32/32  2.376763 2.636268  10.9%   1.217   1.350   1726.8  1553.5   10.0%
-   64   64/2  2.375678 2.638707  11.1%   1.216   1.351   1725.0  1552.1   10.0%
-   64  64/32  2.376681 2.637359  11.0%   1.217   1.350   1725.1  1555.9    9.8%
-   64  64/64  2.376787 2.638396  11.0%   1.217   1.351   1722.8  1550.9   10.0%
- 1024    8/2  2.263768 2.498881  10.4%   1.159   1.279   1808.5  1637.1    9.5%
- 1024    8/4  2.264519 2.499075  10.4%   1.159   1.280   1807.6  1638.8    9.3%
- 1024    8/8  2.263551 2.499231  10.4%   1.159   1.280   1812.0  1640.2    9.5%
- 1024   32/2  2.263841 2.499120  10.4%   1.159   1.280   1806.8  1639.6    9.3%
- 1024  32/16  2.263990 2.499562  10.4%   1.159   1.280   1806.1  1639.2    9.2%
- 1024  32/32  2.263719 2.498905  10.4%   1.159   1.279   1807.7  1639.3    9.3%
- 1024   64/2  2.263635 2.501889  10.5%   1.159   1.281   1809.4  1635.6    9.6%
- 1024  64/32  2.264467 2.500359  10.4%   1.159   1.280   1806.5  1633.0    9.6%
- 1024  64/64  2.240494 2.470246  10.3%   1.147   1.265   1810.0  1637.1    9.6%
+  eth0: NAPI poll function axienet_tx_poll+0x0/0x180 [xilinx_emac]
+        returned 96, exceeding its budget of 64.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+netpoll is affected as well.  poll_one_napi() polls with a budget of 0
+to reclaim the TX path only, and warns once if any work is reported.
+
+Keep reclaiming the whole ring and cap only the value returned.
+Documentation/networking/napi.rst allows a poll to process any number
+of TX completions; it is the reported work that must stay within the
+budget.  Stopping the reclaim at the budget instead would also leave
+completed descriptors for a later poll, which does not come when
+napi_disable() is pending.  When more than @budget packets were
+reclaimed, returning @budget keeps the poll scheduled, and the next poll
+completes NAPI and re-enables the interrupt as before.  A budget of 0
+now yields 0.
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5a6caa2cfabb ("net: xilinx: axienet: Fix packet counting")
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
-CC: Pablo Neira Ayuso <pablo@netfilter.org>
-CC: Florian Westphal <fw@strlen.de>
-CC: Phil Sutter <phil@nwl.cc>
-CC: netfilter-devel@vger.kernel.org
-CC: coreteam@netfilter.org
 
- net/bridge/br_device.c                   |  2 +-
- net/bridge/br_forward.c                  | 24 +++++++++++++-----------
- net/bridge/br_input.c                    |  2 +-
- net/bridge/br_mrp.c                      |  6 +++---
- net/bridge/br_private.h                  |  2 +-
- net/bridge/netfilter/nft_reject_bridge.c |  8 ++++----
- 6 files changed, 23 insertions(+), 21 deletions(-)
+Notes:
+    Changes in v4:
+    - Different approach, as Paolo Abeni and the review of v3 suggested:
+      keep reclaiming the whole ring and cap only the value returned,
+      instead of stopping the reclaim at the budget.  napi.rst allows any
+      number of TX completions per poll, and stopping early could leave
+      completed descriptors behind while napi_disable() is pending.
+    - Subject changed to match; v1-v3 were "net: axienet: bound TX
+      completion cleanup by the NAPI budget".
+    - Fixes: now names 5a6caa2cfabb, which made the return value unbounded
+      (review of v3).
+    - Only axienet_tx_poll() and its kernel-doc change now.
+    - Suggested-by: Paolo Abeni.
+    - Build-tested only so far; v3 was tested on hardware, v4 not yet.
+    - v3: https://lore.kernel.org/netdev/20260924135052.185129-1-maimon.sagi@gmail.com/
+    
+    Changes in v3:
+    - Report no work for a budget of 0, so netpoll cannot trip the
+      WARN_ONCE() in poll_one_napi().
+    - Add the Assisted-by: tag that v1 and v2 omitted.
+    - v2: https://lore.kernel.org/netdev/20260917115657.20697-1-maimon.sagi@gmail.com/
+    
+    Changes in v2:
+    - Treat a budget of 0 as no limit, so that netpoll still drains the TX
+      ring.
+    - v1: https://lore.kernel.org/netdev/20260914114821.55503-1-maimon.sagi@gmail.com/
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 2423d69f2498..0a1ce9e59a4d 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -108,7 +108,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		else
- 			br_flood(br, vlan, skb, BR_PKT_MULTICAST, false, true);
- 	} else if ((dst = br_fdb_find_rcu(br, dest, vid)) != NULL) {
--		br_forward(br_fdb_dst_port(dst), skb, false, true);
-+		br_forward(br_fdb_dst_read(dst), skb, false, true);
- 	} else {
- 		br_flood(br, vlan, skb, BR_PKT_UNICAST, false, true);
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 1722b7038f34..243b07fd5be8 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -984,9 +984,9 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+  * axienet_tx_poll - Invoked once a transmit is completed by the
+  * Axi DMA Tx channel.
+  * @napi:	Pointer to NAPI structure.
+- * @budget:	Max number of TX packets to process.
++ * @budget:	NAPI budget, or 0 when polled by netpoll.
+  *
+- * Return: Number of TX packets processed.
++ * Return: Number of TX packets processed, capped at @budget.
+  *
+  * This function is invoked from the NAPI processing to notify the completion
+  * of transmit operation. It clears fields in the corresponding Tx BDs and
+@@ -1027,7 +1027,12 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
+ 		axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET, lp->tx_dma_cr);
+ 		spin_unlock_irq(&lp->tx_cr_lock);
  	}
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index b5eece1ff9e8..82645db32efb 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -17,7 +17,7 @@
- #include "br_private.h"
- 
- struct br_fwd_dst {
--	const struct net_bridge_port *port;
-+	struct net_bridge_port *port;
- 	struct net_bridge_vlan *vlan;
- };
- 
-@@ -149,35 +149,37 @@ static int deliver_clone(const struct br_fwd_dst *fwd,
+-	return packets;
++
++	/* The whole ring was reclaimed above, which may be more than the
++	 * budget, but a poll must not report more work than it was given.
++	 * netpoll polls with a budget of 0 and expects no work reported.
++	 */
++	return min(packets, budget);
+ }
  
  /**
-  * br_forward - forward a packet to a specific port
-- * @to: destination port
-+ * @dst: bridge destination
-  * @skb: packet being forwarded
-  * @local_rcv: packet will be received locally after forwarding
-  * @local_orig: packet is locally originated
-  *
-  * Should be called with rcu_read_lock.
-  */
--void br_forward(const struct net_bridge_port *to,
-+void br_forward(struct net_bridge_dst dst,
- 		struct sk_buff *skb, bool local_rcv, bool local_orig)
- {
- 	struct br_fwd_dst fwd;
- 
--	if (unlikely(!to))
-+	br_dst_decode(dst, &fwd.port, &fwd.vlan);
-+
-+	if (unlikely(!fwd.port))
- 		goto out;
- 
- 	/* redirect to backup link if the destination port is down */
--	if (rcu_access_pointer(to->backup_port) &&
--	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
-+	if (rcu_access_pointer(fwd.port->backup_port) &&
-+	    (!netif_carrier_ok(fwd.port->dev) ||
-+	     !netif_running(fwd.port->dev))) {
- 		struct net_bridge_port *backup_port;
- 
--		backup_port = rcu_dereference(to->backup_port);
-+		backup_port = rcu_dereference(fwd.port->backup_port);
- 		if (unlikely(!backup_port))
- 			goto out;
--		BR_INPUT_SKB_CB(skb)->backup_nhid = READ_ONCE(to->backup_nhid);
--		to = backup_port;
-+		BR_INPUT_SKB_CB(skb)->backup_nhid = READ_ONCE(fwd.port->backup_nhid);
-+		fwd.port = backup_port;
-+		fwd.vlan = NULL;
- 	}
- 
--	fwd.port = to;
--	fwd.vlan = NULL;
- 	if (should_deliver(&fwd, skb)) {
- 		if (local_rcv)
- 			deliver_clone(&fwd, skb, local_orig);
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 44a217d65e7f..fc2e381c4fe0 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -225,7 +225,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 
- 		if (now != READ_ONCE(dst->used))
- 			WRITE_ONCE(dst->used, now);
--		br_forward(br_fdb_dst_port(dst), skb, local_rcv, false);
-+		br_forward(br_fdb_dst_read(dst), skb, local_rcv, false);
- 	} else {
- 		if (!mcast_hit)
- 			br_flood(br, vlan, skb, pkt_type, local_rcv, false);
-diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-index dce6efa96c4c..c8cd5b4f3af8 100644
---- a/net/bridge/br_mrp.c
-+++ b/net/bridge/br_mrp.c
-@@ -1219,11 +1219,11 @@ static int br_mrp_rcv(struct net_bridge_port *p,
- 
- forward:
- 	if (p_dst)
--		br_forward(p_dst, skb, true, false);
-+		br_forward(br_port_to_dst(p_dst), skb, true, false);
- 	if (s_dst)
--		br_forward(s_dst, skb, true, false);
-+		br_forward(br_port_to_dst(s_dst), skb, true, false);
- 	if (i_dst)
--		br_forward(i_dst, skb, true, false);
-+		br_forward(br_port_to_dst(i_dst), skb, true, false);
- 
- no_forward:
- 	return 1;
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index a1c5b1abc1ef..05921192ebda 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1045,7 +1045,7 @@ enum br_pkt_type {
- 	BR_PKT_BROADCAST
- };
- int br_dev_queue_push_xmit(struct net *net, struct sock *sk, struct sk_buff *skb);
--void br_forward(const struct net_bridge_port *to, struct sk_buff *skb,
-+void br_forward(struct net_bridge_dst dst, struct sk_buff *skb,
- 		bool local_rcv, bool local_orig);
- int br_forward_finish(struct net *net, struct sock *sk, struct sk_buff *skb);
- void br_flood(struct net_bridge *br, struct net_bridge_vlan *v,
-diff --git a/net/bridge/netfilter/nft_reject_bridge.c b/net/bridge/netfilter/nft_reject_bridge.c
-index cd2b04236a99..92b488793914 100644
---- a/net/bridge/netfilter/nft_reject_bridge.c
-+++ b/net/bridge/netfilter/nft_reject_bridge.c
-@@ -55,7 +55,7 @@ static void nft_reject_br_send_v4_tcp_reset(struct net *net,
- 
- 	nft_reject_br_push_etherhdr(oldskb, nskb);
- 
--	br_forward(br_port_get_rcu(dev), nskb, false, true);
-+	br_forward(br_port_to_dst(br_port_get_rcu(dev)), nskb, false, true);
- }
- 
- static void nft_reject_br_send_v4_unreach(struct net *net,
-@@ -71,7 +71,7 @@ static void nft_reject_br_send_v4_unreach(struct net *net,
- 
- 	nft_reject_br_push_etherhdr(oldskb, nskb);
- 
--	br_forward(br_port_get_rcu(dev), nskb, false, true);
-+	br_forward(br_port_to_dst(br_port_get_rcu(dev)), nskb, false, true);
- }
- 
- static void nft_reject_br_send_v6_tcp_reset(struct net *net,
-@@ -87,7 +87,7 @@ static void nft_reject_br_send_v6_tcp_reset(struct net *net,
- 
- 	nft_reject_br_push_etherhdr(oldskb, nskb);
- 
--	br_forward(br_port_get_rcu(dev), nskb, false, true);
-+	br_forward(br_port_to_dst(br_port_get_rcu(dev)), nskb, false, true);
- }
- 
- 
-@@ -104,7 +104,7 @@ static void nft_reject_br_send_v6_unreach(struct net *net,
- 
- 	nft_reject_br_push_etherhdr(oldskb, nskb);
- 
--	br_forward(br_port_get_rcu(dev), nskb, false, true);
-+	br_forward(br_port_to_dst(br_port_get_rcu(dev)), nskb, false, true);
- }
- 
- static void nft_reject_bridge_eval(const struct nft_expr *expr,
+
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
 -- 
-2.47.3
+2.47.0
 
