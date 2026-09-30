@@ -1,114 +1,66 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA233BE15F;
-	Wed, 30 Sep 2026 10:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756A93BE659;
+	Wed, 30 Sep 2026 10:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790762508; cv=none; b=WI2FR4DbsB3ourK+n59OYCcn/gU6Bt0RYYA2a/rPCO7yO3GN/JEIw0YQxdT5hLHeSnNXZ5sLeyIlKo2G5iqg22UpGKrRrVtm7C4J1jYAzSJyVakW8YP9MTHtrZc3ndIzuDb9Z+Z6YdiAXSj4Q/AxwXK264ubYgE6EkqkCuUV5is=
+	t=1790762813; cv=none; b=GEFxFCkKMnHZcxoAjB960cJIxyr33RwmJvEp17W7wium4WM6L8nVnApVAG7r2xFqbChYFGy9O+Mb1575vNnc+mJcDGqEM9iSBF3JGIIAI8+FS17P2JQoyOafKmY2XPmV8aSgw+TUWmCEnd+gyU/VsW9Ay1HWF64q03SV7jl0hVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790762508; c=relaxed/simple;
-	bh=7aT6bgcPtCW5oehmL96KGS4fT0bM4ebVvrP97MFYTVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Rtegxyq8b3xfyx2McxQGg9pM/36xygk41HYov5V7xnNiWMvFcBWxhFZ9XWOEALTyNToVhJcajGlpPwzVQsmUtofszFcciSYtIyA52px4XV9vd9WyLp6c7ZMSlLxAaxdMlKMJQv9Xc2YmeGsnsv7QzgSUOw4JIf9SQcEZNUY9+gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PCYs5c3S; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790762813; c=relaxed/simple;
+	bh=ubAvfkCp5vsdwUjCVnZQk0oMqZ99KBbjxOYN5RzNHz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdHeM9y6ktU3w9JyNic3OqDKRMad1WubJuxOaI48kX/fjuvutDyL8NGr5J+BLLAA6PW1JUvrAyd4BF8uHxUv1uZJLAh+OxSS8ocPjWpt0IXXWtPOYZdsa0VGri3zoQG7Q3t6HMaZov4LsG7CNnPfqjKwD4Aqe8xkav8VE0BivTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfJ/AmNx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PCYs5c3S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790762506; x=1822298506;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7aT6bgcPtCW5oehmL96KGS4fT0bM4ebVvrP97MFYTVs=;
-  b=PCYs5c3SGW3FOYYftqM8YH/0tMZAHUqejxSyhiW1PUkUVzyDTfMdEALU
-   X59/zhNSdctvvqxzJryUjYcuKgxvi0Z9mHwFvrLxOk/RbfIEaJIh0/bnt
-   fmBLEUCr4dnDJXmu+RS0HsbRGtj8DAJM8Mnq/p4qbQAJMAttzmfZNHe/T
-   B433/npNo1E7s1+6moFTQPMnR34VjMphtfSp9zZdB36RA4cXL9z/jwGD+
-   B8po4SIYnb2MzmJYxZk4ADQrt+VnDeSBA7KUPe+6OcnYKENctbZ/bQkDq
-   NuUMjS4u993v7OIuuI1hvVEFFbMbRFy+ZNOwvBQe9nA98EPGOApmDSlO4
-   w==;
-X-CSE-ConnectionGUID: l70GvazLT6CO1ji4/fGI7Q==
-X-CSE-MsgGUID: LVwpygnjTQOmfk5PeePuCg==
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="295774315"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Sep 2026 03:01:44 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 30 Sep 2026 03:01:44 -0700
-Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 30 Sep 2026 03:01:40 -0700
-Message-ID: <ffd9c6b8-1169-4fde-ad84-581aa27ec827@microchip.com>
-Date: Wed, 30 Sep 2026 15:31:39 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfJ/AmNx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F771F000FF;
+	Wed, 30 Sep 2026 10:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790762812;
+	bh=Q9yiKYavryXT+brJQyEy24mXi4JWCHIusIicf28HZnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WfJ/AmNxHbH3gx7b57FwObyYPWoGBd/CHHeB1e0Oun037vUW75D/Pc3kUrV44bqX1
+	 NsA82hecWQSdk8FkiS87UgBmOBrjES7EFAEG8Re4d3G9H1vS9ScnXBnndb09bkq8dr
+	 AoHBUun3DucjgsbpBBmiWGY1TmDjcpjF/8u6IglR+g9O7jjPbHhPqFz3omUSM3xsub
+	 yfgDgcvlI7M370/zdFArEUb1wgMBN9tiAXjSRh198fYyWb9BPpU5EzXr/fhoOgtryk
+	 SdghhvyApBY7mWcMDIcxIFUp2NbjaQutFkGVQugusvCUqE3bjuXWfs6AS6BH2jnkH3
+	 qSuiHvIXTmRLw==
+Date: Wed, 30 Sep 2026 12:06:48 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Po-Yu Chuang <ratbert@faraday-tech.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: net: ftgmac100: Add AST2700 compatible
+Message-ID: <20260930-rare-sarcastic-angelfish-21cfeb@quoll>
+References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
+ <20260927-support_ast2700-v1-1-9f03f29d2c82@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 0/4] net: microchip_t1s: fix collision
- detection on PLCA status change
-To: <netdev-bot+sinfo@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <UNGLinuxDriver@microchip.com>
-References: <20260929125928.611784-1-parthiban.veerasooran@microchip.com>
- <179068710834.31693.5197444123173344784@kernel.org>
-Content-Language: en-US
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-In-Reply-To: <179068710834.31693.5197444123173344784@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260927-support_ast2700-v1-1-9f03f29d2c82@aspeedtech.com>
 
-Hi,
+On Sun, Sep 27, 2026 at 03:16:20PM +0800, Jacky Chou wrote:
+> Add AST2700 to the FTGMAC100 compatible list and document that its
+> RMII RCLK gate matches the earlier Aspeed SoCs. Allow the reset line for
+> AST2700 as it follows the same reset requirements as AST2600.
+> 
+> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> ---
+>  Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks for the feedback.
-
-The issue was identified during production level testing of the
-LAN865X/LAN867X-based system. The issue was observed when the device
-transitioned between PLCA mode and CSMA/CD mode based on BEACON
-availability. The existing collision-detection handling did not
-correctly track these autonomous PLCA state transitions.
-
-The changes were tested on a Raspberry Pi 4 with the LAN865X/LAN867X
-devices.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
-Parthiban V
-
-On 29/09/26 6:35 pm, netdev-bot+sinfo@kernel.org wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> 
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
-> 
->   - Whether the issue was actually triggered, or is only theoretical
->     (e.g. found by code inspection). If it was triggered please include
->     the symptoms, like the stack trace or error messages.
-> 
->   - What hardware the change was tested on. For driver fixes please
->     mention the device (and if relevant firmware version) used for
->     testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Krzysztof
 
