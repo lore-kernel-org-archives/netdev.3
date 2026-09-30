@@ -1,101 +1,51 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E483D313545
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCDC331EAE
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790729526; cv=none; b=o8CnewLy2OplxVmqeMH40nEqCc+pknPIec1FXKrtxlTK6hAp6X99hKSA6ZsXQtdn1GnToySBLqTGgykSTKxsY/XM7b84ILNg10mG4DBbJWgkfvv4Cjf4sviHzPIdwRFy3g9pcw08SeoSeH/R/m61gGBa2HN9cvIahRaYZyPY2Go=
+	t=1790729666; cv=none; b=g+cSustaLmMb8unPd49ul7zEqKitl3nYlRQlBYsiL+bqiaP9lM30T30uWEnfM1QOsdcBWDe3TMdyXZh1UJ/bgnpyS5SsJi5e20JMu69XiMA/u+ksixA0ydvVdD/sTt0NxzKQFd3kleXOXbCaHKOWlFJws+IHJev08xO1TStOM28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790729526; c=relaxed/simple;
-	bh=fJS378DGchuor7MNCnATiG19ouASGxvH3cO7Me3U6to=;
+	s=arc-20240116; t=1790729666; c=relaxed/simple;
+	bh=Z+KFjxZ/7VN7LhoM4Ek2PNsW+mvz4O9ijB5/9/MmV7k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPbcbayJG2Hn16opKURqFXX4B9s7yEKAC7bLkVR3NWyorrYZWLvlkiyd5t7SAZyWzW87z6YlYIuzVJysLlKlVSyG+LA+ebvDdE/W0MZgmEof3mXr88/MCjk1kndzn+uLaWr5LxooCf7qsOVVfsO5AFuN05zVOF99rwMxkh733Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=yCqOphej; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 Content-Type:Content-Disposition:In-Reply-To; b=thzBdQ8Sbeol/NzDSXPVH5C20Q1/ZIIPn36pfY9ctAX3DjSNmCkK//cY483/kklivHOpOpMJcOGa+xAUDXFnv0hqUD3O4ajB5wxRf10y2dyzvap6CFtzNm9Xn7hzxFMWuEGOqce7P72Q3ZPPhtxu33ilBGSUn0I7LkztZlyd7Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xqmVVf6z; arc=none smtp.client-ip=91.218.175.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="yCqOphej"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398b3b189e0so2610453a91.2
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 17:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790729524; x=1791334324; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o5FicaOCCyfmXlLrOHDCaMPxUTYXMK90aVEmd41VETg=;
-        b=yCqOphejBI9LSDXmf8R7kvXmYJaCRiugXG4tYycw7Jpb1ScKxcIEbSLFRWjahYFr5/
-         Epha9cfrbJNcuKUCGdal4EqeEM05zKGJvZdIpZp1wKK8+6AWb43GWgwuNvoaTwGycWPr
-         M4I7jXb3nkbiEmR01RiPgkLL8r//ij+/NKFr5fBr/xJXkFDvcH5x6La6K02Ane9a9f9o
-         i22YigmUXKYbDmzu8kTfxxUdDItvj62pZ/5SyIua4PLOkHhDtyVthqlJ4cxdxVrRy8Pa
-         jiOv5n3ND//uwvvvC6SEo8+ozhHoIO3G9H0ZRaW5KxSVJ9SePyqdU0TNSb+DajFUIcpj
-         +lwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790729524; x=1791334324;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=o5FicaOCCyfmXlLrOHDCaMPxUTYXMK90aVEmd41VETg=;
-        b=lB7ZQ8qkgw2dWqCTYMr0QDYgb6dWVzajHHO0fdlkiWh4umd6HQa5jsHamq7W86vTOs
-         cfY4YBjDBouaVzUVCEOXlYMkXGI9s4NFs24r+DZgykSv7E/hBuDk9z+Cn2njsBy5DTOD
-         HG4AKJm4ccn77xKtSd9ZQO9rZBWpppZPUB8MyZE6bBKD/u4P0A6Lh/qhJo6Q5azEOhl/
-         aEHR6CwlJcRMgHU0jurmBuEARyoDNO5Mr9eR0uq9RnsMrqOe1akDdtMZMZjOqokCAtNm
-         PCIQXHlIi5gk8/KbVbqU+wzBeq7o84j80onuQ0dY2Uwk8p/f9XKj37WURMWRPifnAm+o
-         L4Qg==
-X-Forwarded-Encrypted: i=1; AKwUvBxyFFg7u4zDIiCDnE6EqUiYPUTNsNyIZQFgRXFXzE4JYFpOHO+KwMknoodTGy2NGIcfLuuRLsM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ21V0EC7hW5bEYN0ZE1hDUuoP2lNct6Yti5xZhU5iaL2l2if5d
-	wevaxIIlL3k71w6AegoVqy9eHGFTklY1EfQDr4ldc0GoZrtteRONuhEncraA9wvRlCI=
-X-Gm-Gg: AYBFou2U8TUMbLRsJCYGVjBLlfbv0YPQOq8OFJfOZqHA/HR9uCL5fUGKfDi9xTSsfGC
-	6BIX8R0+W9jKLFGhY3+wd3B9VnwBNdVpDM2geBU9LLQpr+WsK22qeH6M0W3xDoabdi8eK90xh8j
-	q//aZijye7ifuHfgxlQ9kUTHuey90LEvywkw1/6Ud+cRFKQfQCpp2oeFr+uUhVThLMiVMRbAM/1
-	HBD7RNoSFyAXY/97csJPNMcunKNXa3tiL7wi6wgViLvFgUddQH5vJUJ2H32amfQrDZSODrpyMc4
-	/ckPZ5Tn7/LWPZ+pjDy/u2ELINDXJkYYOYs7Pbrb8XDIezIS9ntm5bWD+YbrrrPRnSSsmB+f+B6
-	XssaT5ShotT7bfnZ4wRPbjWxv45TDEHOZqie9z4jlVzC/cuYUc2D2ausxoya7QPR0cMXPOKOFI6
-	WSp+yjqumrYktHeoWte15byzouyxYA9hnL9EFvMJ/Tauhs0uH5Y131UhPaxTQ173LcLvZv23GWT
-	nXFxLvvuPbfD5Svh5ZoyuU=
-X-Received: by 2002:a17:90b:2803:b0:3a0:c621:74a with SMTP id 98e67ed59e1d1-3a4bfe50b4emr880690a91.35.1790729518808;
-        Tue, 29 Sep 2026 17:51:58 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4cac328c6sm418676a91.12.2026.09.29.17.51.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 17:51:58 -0700 (PDT)
-Date: Tue, 29 Sep 2026 17:51:56 -0700
-From: Joe Damato <joe@dama.to>
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: Aswin Karuvally <aswin@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	David Miller <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xqmVVf6z"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Z+KFjxZ/7VN7LhoM4Ek2PNsW+mvz4O9ijB5/9/MmV7k=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790729662; v=1; x=1791334462;
+ b=xqmVVf6z8bFh06MlzcqtGRLUovfP9oYR2M/1ahZQRjT0rY9mpPrNw8YFydI1LZhv/lgn7kH5
+ QioWy5MYVpaYOnHV3HX2d8z3esVw4cJoo78NR6IS8PiyM9fz8HAPGMQqtR07Zfeq5eB6LYT2yjT
+ 6vGgEvVWobJlVndixJmLl7lg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 752e7d1f9e23d04f;
+	Wed, 30 Sep 2026 00:54:22 +0000
+X-Mizu-Trace-ID: 752e7d1f9e23d04f
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 30 Sep 2026 08:54:10 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Julian Ruess <julianr@linux.ibm.com>, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net] s390/ism: Zerorize dmb at allocation
-Message-ID: <arxdLDluRpwizKDC@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Julian Ruess <julianr@linux.ibm.com>, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>
-References: <20260928114741.4135978-1-wintera@linux.ibm.com>
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Ido Schimmel <idosch@mellanox.com>, David Ahern <dsahern@gmail.com>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>,
+	Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: Re: [PATCH net] selftests: fib_tests: use per-test return value in
+ subtests
+Message-ID: <arxdshcuvddlf5WP@fedora>
+References: <20260929-self_fib_tests-v1-1-0eab6a3c3a3c@kylinos.cn>
+ <20260929134517.GA832345@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,32 +54,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260928114741.4135978-1-wintera@linux.ibm.com>
+In-Reply-To: <20260929134517.GA832345@shredder>
 
-On Mon, Sep 28, 2026 at 01:47:41PM +0200, Alexandra Winter wrote:
-> Sashiko reported [1] that 'Missing __GFP_ZERO in folio_alloc() causes
-> uninitialized kernel memory to be exposed in the receive message buffer'.
-> An ism dmb is receive-only, so the data is not leaked to a remote peer. In
-> general the smc kernel module (dibs client) will only push newly received
-> data to userspace. We still should not have uninitialized data in a receive
-> buffer.
+On Tue, Sep 29, 2026 at 04:45:17PM +0300, Ido Schimmel wrote:
+> On Tue, Sep 29, 2026 at 09:57:01AM +0800, Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > fib_tests mixes use of $ret for both per-test return value and global exit
+> > code. If an earlier subtest fails and a later function sets ret=0, the
+> > script will exit with status 0 even though [FAIL] lines were printed.
+> > 
+> > Use RET as the per-test return value, as already defined in lib.sh. The
+> > exit code ret will only be set in log_test().
+> > 
+> > Fixes: 607bd2e502f5 ("selftests: fib_tests: Add test cases for IPv4/IPv6 FIB")
+> > Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> > Closes: https://lore.kernel.org/all/178961184152.22033.9267194009793243294@kernel.org
+> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 > 
-> Since
-> commit 750afb08ca71 ("cross-tree: phase out dma_zalloc_coherent()")
-> dma_alloc_coherent no longer required the __GFP_ZERO flag, but when
-> commit 83781384a96b ("s390/ism: Properly fix receive message buffer allocation")
-> switched to folio_alloc(), it should have added back the __GFP_ZERO flag.
+> Please target the patch at net-next and drop the Fixes tag. The patch
+> doesn't fix a regression, nothing is failing (or passing when it
+> shouldn't) because of it and it cannot be backported cleanly to old
+> kernels anyway. I targeted similar patches at net-next in the past. See
+> [1], for example.
 > 
-> Add __GFP_ZERO flag and state in dibs.h that register_dbm() provides
-> a zerorized buffer (dibs_lo already does).
-> 
-> Link: https://lore.kernel.org/linux-s390/20260903143746.A5CC41F00A3A@smtp.kernel.org/ [1]
-> Fixes: 83781384a96b ("s390/ism: Properly fix receive message buffer allocation")
-> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-> Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-> ---
->  drivers/s390/net/ism_drv.c | 3 ++-
->  include/linux/dibs.h       | 6 +++---
->  2 files changed, 5 insertions(+), 4 deletions(-)
+> [1] https://lore.kernel.org/all/20250908073238.119240-5-idosch@nvidia.com/
 
-Reviewed-by: Joe Damato <joe@dama.to>
+OK, got it.
+
+> 
+> > ---
+> >  tools/testing/selftests/net/fib_tests.sh | 40 ++++++++++++++++----------------
+> >  1 file changed, 20 insertions(+), 20 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+> > index b338bfb196a2..9ce5623b049c 100755
+> > --- a/tools/testing/selftests/net/fib_tests.sh
+> > +++ b/tools/testing/selftests/net/fib_tests.sh
+> > @@ -369,7 +369,7 @@ fib_carrier_local_test()
+> >  
+> >  fib_carrier_unicast_test()
+> >  {
+> > -	ret=0
+> > +	RET=0
+> 
+> Looks like this line can be removed (similar to fib_carrier_local_test()
+> above it) given that RET is never used in this function
+
+Right, I will remove it.
+
+Thanks
+Hangbin
