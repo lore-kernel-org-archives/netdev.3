@@ -1,70 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840E136B923;
-	Wed, 30 Sep 2026 15:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFFB50B8A1;
+	Wed, 30 Sep 2026 15:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790782108; cv=none; b=ZipAFOG5IfJqngv91E5kGn6ZyQR4Z/K7siA+9R4HO9+lJhXC7F3naZzMdwPpotMmCZIUoQAa1CnrguMla0H6HS+uH0MIoLr50FM/22YTlkCOVF0opzjo6qE8kQ/leLel18GqmpuSsn6oltif7uFMe9+ey+RUDCG7joD84Vw2oAA=
+	t=1790782523; cv=none; b=bvw6h5k9ObMizje3Sf7bhLrD4bveo/uzeH1slJEPVLRKu5aCafmssvaitpwtv9XuX9+lcizevuV0dHLAtrGcJsKKwh23YL2QkYNq6pGviMs8aQMGeU3bpCqDGDDnOEkwwEiKUc7Cr1RTRx0KoqoVaZ2hKCG2mgnsaOnO99SQjos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790782108; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AALks53c251IYb412ZQAihg+d+IsGu0QAhAMefcE+yYrrUxYbRnrFr0qm6kIWOG0STyWQoxWcssbktznTYDV7GOyUoY3V8eAN2Nm7FcTo5OqWgqteLP+iLuywBPb33zlBfIbuXopk7CCMxwzamwDSrHIlgAZp0egCN+1bp73lbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa1bpbQI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790782523; c=relaxed/simple;
+	bh=LQ9523PqMwp6asxSRjh88A7+vdB1cQFZ+NZk3IB6XRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HqcdlHPVi+fJCYvG7bDMCraRXJsh+bwZAC1KjTMipOf0u4LGkm9gVP6eCSK8n076lucilv+6EWPvFmExGTcqKqvyw7U/uQL/Lx0VRNfkOrQrJuzRRhwrcAJQLOyxdm0q6cnqUSohWPf4RzOiYs/kRY6YegTyyhQCm7nGKmyDw1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lPmI/koC; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa1bpbQI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BDC1F00893;
-	Wed, 30 Sep 2026 15:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790782100;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fa1bpbQIH70G4u6M1HJJzSMXQoZ+vwA7u9cqcitrKNYN0ABbSUoH+mkTDZpqo1/jw
-	 0ADERMambtAO9bF66DM/3sKoKCnZEaR7kSAlQF0EPH8mDXjD6HPCai/eBskFvNSEAZ
-	 wJxws6ohuig3/d0O/U33US2ymOexCQDZcZKQ+sjav0/NSwMv0W9wXJv+GjXFJzxdFi
-	 9MxkyojKJO2GhcDOuxcz9flF7aeEtBd1ra5ebE8MR9XTNoM9TGqoX86ApufxXb2kOX
-	 Cw43aarsggK833V+6h3NA4m29OZlFZDsnfs+zI3Q54sXRaksHHG0xNTtOfD62n2cmY
-	 oF8QXA6s25RPg==
-From: netdev-bot+sinfo@kernel.org
-To: hengyul@cs.unc.edu
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Jiayuan Chen <jiayuan.chen@shopee.com>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net 0/2] ipv6: route: fix adding routes via the loopback device
-Date: Wed, 30 Sep 2026 15:28:19 +0000
-Message-ID: <179078209931.31693.13427991224097707402@kernel.org>
-In-Reply-To: <20260930152229.1453929-1-hengyul@cs.unc.edu>
-References: <20260930152229.1453929-1-hengyul@cs.unc.edu>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lPmI/koC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=qVYFXys6e8hO1IMWu88kIXYiUK7hAuy8M6s6wk13ceM=; b=lPmI/koCnimrjtsKRJhvsE6xUh
+	YjvV7ede4D9/KzClZ/7ujfvU/0qCsYllIN51KKANhwteNSByrxh5GlvRNUf0t1uWxDRmR8y/gjp1O
+	u9vS/MExF0twQMxe5VKUuWJeVMCYh5xZ7gPHgLFc3jTxv0bT+qTAS5GoQjEF+t7K+WKE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBwKk-008BuX-Fm; Wed, 30 Sep 2026 17:35:02 +0200
+Date: Wed, 30 Sep 2026 17:35:02 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com,
+	lxu@maxlinear.com, michael@walle.cc, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	luka.perkov@sartura.hr
+Subject: Re: [PATCH 5/5] net: phy: mxl-gpy: support MxL86211C lane mapping
+Message-ID: <3fa11f0a-3b08-460f-9355-72011dcfa7b3@lunn.ch>
+References: <20260930122305.293686-1-robert.marko@sartura.hr>
+ <20260930122305.293686-5-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930122305.293686-5-robert.marko@sartura.hr>
 
-Hi!
+On Wed, Sep 30, 2026 at 02:22:17PM +0200, Robert Marko wrote:
+> Configure the MxL86211C physical TPI lane to ASP mapping when it is
+> described in DTS.
+> 
+> MxL86211C supports per lane configuration.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I assume you have a board which needs these features? Is the .dts file
+ready for posting?
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+      Andrew
