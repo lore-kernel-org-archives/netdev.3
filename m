@@ -1,79 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721B3448B8F;
-	Wed, 30 Sep 2026 23:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C0D416842
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 23:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790809662; cv=none; b=W0qETYkyIpnzB+JRm1r+9/RQYUlmTCAOfh7xiar70ijaeDpRTloz/Z4H1bUgYUq3RLRhi4o/dtSpQLTiTzSky/+9syQNwQiy5qOHBWrTGSaLYNI4ipA76gcjr/SfsRVaWj8UNZgzIGNc5SdD9JKVNQct6QW7RSmpRID1/L6pn3k=
+	t=1790809728; cv=none; b=WSe3roUA1makeT3IXmkcGBO/lOqe60xNUKgr3hQeqlIj0KprQD8OTb4BfGV26G93nLf2W0f/uwc85n9htVXWsmuDWqvkcYWEDCAU+dlYzfqxmE8E50AxaRB7EJkfaCvwXsjECb8HdnTGaOqB7DpdlsWpMk6MOAfTP8MYx4rF0j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790809662; c=relaxed/simple;
-	bh=vC9QORnlqZtBlA3M5N5zcCu38I8c/qWHaOEde7sc4JM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LgcLr8Lqz2h5nKIuRuH7ooRt74RyuTTDS3MUyMNTKg81gGscf/wqllB/an32rVfSGBLcdgTaftDznyF2UlSno9qxhRAbxp5cK4+qpayxfiNKGbVFMDPUrt0NYlT6NiA3UhXYdl1Va2SR7fKxOXutd4dqc+GyAnK6DRIE/ajN4T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXouvGwM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790809728; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ib3Ys1UtMH/6YZZ1M0BgMBnpggYzcnFMIM4rsTR287M/9tX0XIpjwXOeOvA7EAGAeijoydB287bI0F5zYd+sb9My8SwaqnXw184UJHnltdFvWLmQ8Do+w9JXi3VwhkNYpmtL/rkWzQIq/qazbvxoqKAAVcoSDVSxHZNja843BPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc99gnuW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXouvGwM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CBC1F000FF;
-	Wed, 30 Sep 2026 23:07:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc99gnuW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183781F000FF;
+	Wed, 30 Sep 2026 23:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790809657;
-	bh=cxuWnLXV4IcGawGVDsabPJlwEsh1Tm4Ci5cwQ1fImcI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YXouvGwMVudv3WL5xczaCCXJtJJV12bV5q3AUrZCwx9ng7+1/IFv7C8tm3yxlwy2R
-	 Qn4dELrg4RGH24aiLNLqSHaGDArYqCYyxcdzkGmjqNvsuKHI4bnxdZ7xI08yq2rt5Q
-	 x79YeUxWGLbL+2eY1IZbqsj2YFNNdUtDIWpZxQj8YFI+V504HAGDyP+ZTCThuiOOiZ
-	 aqLBcgZ3g2lvVnjM1VbJPuYIyYaaQc80IgtKv8AXgzG2pVeur8UmvwcbdahWIvQLqU
-	 lVAr6aO7ivV1KyCg4kI2PAXhfNCxgJ2WboAqv8dIBvjDZeq+7anGnZ8uyv1WAnMBBl
-	 Mw4ZIVi1dHwEQ==
-Date: Wed, 30 Sep 2026 16:07:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Florian Fainelli
- <f.fainelli@gmail.com>, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/3] selftests: drv-net: Introduce
- flow-control selftest
-Message-ID: <20260930160736.73243fe4@kernel.org>
-In-Reply-To: <20260925182628.214667-1-maxime.chevallier@bootlin.com>
-References: <20260925182628.214667-1-maxime.chevallier@bootlin.com>
+	s=k20260515; t=1790809724;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cc99gnuWtjf1CvHLldKIvkyx3+uQ0Vs1M4Al0rEkTPsdyOzeBfVBL/GIoARF/P+9F
+	 mQU0rO09zKMRObcAy3NuIe3vyCyA14XBZhC1qEsp1VM57Cf/NHWgpzlnuQKJzbrscM
+	 Bb5hOrTdcxlkOiSCak71ndrl3JlNyFGzXPbO3xTeSFk+MBCRE2A4XtQWqThlMec4iP
+	 rep0fgEpthDvAogIXYqFItvh2aPhPlLbTISUvXsfC8LTAIdL/Sj7lMZrRmq4VlEtz9
+	 As+oc/L/tX3r4zfK89fhU9M1zu3MmWC3hK1Lr4K4qW+kgYLiDMNZRGHDmCpOgHu9/a
+	 fmzpefBY2NHZA==
+From: netdev-bot+sinfo@kernel.org
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
+ florian.fainelli@broadcom.com, opendmb@gmail.com
+Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET,
+ restore it to SW_RESET
+Date: Wed, 30 Sep 2026 23:08:43 +0000
+Message-ID: <179080972360.31693.266631430009737406@kernel.org>
+In-Reply-To: <20260930230634.3132729-1-justin.chen@broadcom.com>
+References: <20260930230634.3132729-1-justin.chen@broadcom.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Sep 2026 20:26:24 +0200 Maxime Chevallier (Netdev
-Foundation) wrote:
-> This is V2 for the ethtool flow control test.
-> 
-> This test aims at validating the flow control implementation in drivers,
-> using the ethtool API.
+Hi!
 
-Still does not look like our other tests but good enough, I guess.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-One note on patch 1:
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-        wait_file(f"/sys/class/net/{self.dev['ifname']}/carrier",
-                  lambda x: x.strip() == "1")
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-is a shorter way of waiting for link.
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-Other than that looks like pylint has a couple of nit picks
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-tools/testing/selftests/drivers/net/hw/pause.py:1:0: C0302: Too many lines in module (1035/1000) (too-many-lines)
-
-tools/testing/selftests/drivers/net/hw/pause.py:1020:0: C0116: Missing function or method docstring (missing-function-docstring)
-
-.. and we'll need Andrew's review.
--- 
-pw-bot: cr
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
