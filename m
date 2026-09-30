@@ -1,35 +1,35 @@
 Received: from smtpcmd12131.aruba.it (smtpcmd12131.aruba.it [62.149.156.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9365A4E73B2
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D9A4EA368
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773063; cv=none; b=bqwVEMymkNqOuViJHI3heSCwlJiGrB8lGJU0mHhCBawCvnY3neOM1V3m2CIKa/cgzMQwNLUjhs8JC+MjEdum8es0SEixzWzMBe0CZwUiUk4BTxzHmWYArFsMhhx5XmqpbEPY3YXCqQb3bLrDqXuG+ZXIZo6Fa79UUBdTbxPi6Is=
+	t=1790773069; cv=none; b=EVvDwpq9zDFM9OZVOXpcUOpN5pfTyrLka8tYieBXlGENdoMMkSJKAp1rlzE8qOJ1Anumq9M8NRPtgWPRmU6c7R1cZyEvDbPOXNu8paYIMSBU5dbWyfEp38BR3iQ1U4oZICwQEZs+0qVvCUPpaFIlWxHkEe1l7B9w1XzOH6wC+n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773063; c=relaxed/simple;
-	bh=yJ+AMpqp+M649wqJ21a9igcmGHvNhmj3mxfY3dnvOVg=;
+	s=arc-20240116; t=1790773069; c=relaxed/simple;
+	bh=NLEFbG8BDC+qDCcLlMhXEiudTPwKaSSEY39srfy/RKc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=A527W+OPzpcUbdKMx8ZmGo+wnkrNMUDk8ZiMPIRc+VXcepqrG2uGHrBm4vGhw8R1pFDEQnaEhNfHTow2u5Gb8ILKFpvJppnvsDcQuiWsWvWwnUXea5wdNq1o6vJit5Mw6xCOYGvyreHBnnSFazzKrwfju3Y8a/n6lPjN+gbaglU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=SQ8cC3iI; arc=none smtp.client-ip=62.149.156.131
+	 In-Reply-To:Content-Type; b=aIu1fs2J4XkQT+OfpQ7f8QmLIvWImOrayDmGx7wWgVNQObOE3jt5G8Q9UCDl4ZskC51I0XzxpKyGtFdWx/jqsrm3tuEOi11TwRrjQM00+/i6xbBjOOy1tSTxjVvBKIHe0v+KmhPzCaqAWwy4ki5zd0x3MvEwDhdFTWyqrsF5Bgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=JHQGdjeB; arc=none smtp.client-ip=62.149.156.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="SQ8cC3iI"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="JHQGdjeB"
 Received: from [192.168.0.186] ([101.57.122.26])
 	by Aruba SMTP with ESMTPSA
-	id BtsLxxWBIxUh5BtsMxWDW9; Wed, 30 Sep 2026 14:57:35 +0200
+	id BtsUxxWMexUh5BtsUxWDdB; Wed, 30 Sep 2026 14:57:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1790773055; bh=yJ+AMpqp+M649wqJ21a9igcmGHvNhmj3mxfY3dnvOVg=;
+	t=1790773063; bh=NLEFbG8BDC+qDCcLlMhXEiudTPwKaSSEY39srfy/RKc=;
 	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=SQ8cC3iItzSoPptC+T0sbCuoEHs+aBv0zXHCKACRmbKtMjRGA/b8zxQdF0mO2CY1+
-	 5KGPbnHjXUYgYHajVnTtt5aHXq8hN23qLqqWzPnIa+IHXJiS/DOfkOoakov70C6y7w
-	 8E7TjxmLFaauLYNUysLoQ4KvIiAjoD5ckDAGReZJddyTNNv9dVe1UN5UpGbFLPn9im
-	 A6ckTnzdAoYZzSsMo9AzoY49azjPoiQF9z3qG6woFr+xJP0bc9SNMJunRdaiXDgnIk
-	 x1FfwdqnDGOQD4B7lPTkD6LzzWkyDYtPaJ+fmFjcGg5twD3WBglx9wZiPh3lsKCGfA
-	 xl2L74g9PoZjw==
-Message-ID: <a2db0e1b-0796-499d-ba9c-dff749f9dc1d@enneenne.com>
-Date: Wed, 30 Sep 2026 14:57:33 +0200
+	b=JHQGdjeB3T+ES/jctnM5l9P2xfPXlkfHlE5yyES/X4bPEsrW9Cfpc/3/vUYt+Ympu
+	 HxIak4VJBO5I2Dy353ZZ00TVPTOhZay3Vy+XxF8+sAKxwwJicPPAWKi0J3W6BCoDxq
+	 YJAQN7Mu7zZsiIBR5yyMwUlQNsUjOCJlven1Shq8kQbAPQaEvfcJZKK/uJKp0TrNkr
+	 DYM3HurSD1nZwWvBwiIOQWU4BdfoXCOrt91qUCHzAcF/eFTPXLiO22tRIHvICcbcHA
+	 FbsHTlT6bJy3JzeC0fSM5+u4KIZreQs/GP8sb+/OPLb8PQtQGnBYdZ7K4FrnWnPY/K
+	 ehkpXmugek9UQ==
+Message-ID: <fc473eab-c72e-4641-b617-8f22389c8f68@enneenne.com>
+Date: Wed, 30 Sep 2026 14:57:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,68 +58,56 @@ References: <20260829210041.40649-1-dwmw2@infradead.org>
  <decd5d05-1373-4ddc-95bc-46b73d6f6b99@enneenne.com>
  <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
  <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
- <3f15c68bce92c57821fba53c80aed7fce13cf8c0.camel@infradead.org>
+ <37ad7bb611c0e79840dfdb5c3706be3430c34bb4.camel@infradead.org>
 From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <3f15c68bce92c57821fba53c80aed7fce13cf8c0.camel@infradead.org>
+In-Reply-To: <37ad7bb611c0e79840dfdb5c3706be3430c34bb4.camel@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfGAFuaPf9QOYALJW9Pz217G1MMeWwLREY1Ih/k33cSMtm4xGekCoRi83TpX0gZ3kvem4CXGnzJ5FolHhIBm/JqFatmGKTLxFFiODQo0WE80Vwjem+oUZ
- 2ciZAvcs6PfRBAyc21nn9fRlRWFUyIMctafUojSV+QyMnds3yZB7siPtz1cs7+fyI2De0hOqlwZiox0F1ElkM5rq7RVdmb28Cn2wHVltRRzSx3Wc5Z+YakNw
- K321gEW97AdSHUUuQen/HQz6cIW15NWkQwZ0LvnFMHeFL4IV/dCl9U04sL9/T8+WbRY1I82sAr6jjPp2+VpKFtj4U1onkWLa5cQ/f3mBOpWoe0mYcma1bb0x
- sh2+j/b0U3ESV8v1J3iNVE+//huz45QpH8765xfZ9SxFod1ShBjNY4mjr4M2CAzw7gHzmlYwbuxbGJ9wssvs+sr03P5lp0rrz6ZbAKt8Zfr7JnEhbyLM6PJ6
- I6yO/pDCYIGZwuEzD6RVW7A4lyIg4Lglq6F+IyHSt/7lsy2PV/xwc4gE64DbGtZpa0umQT8WCzsgPXGkFf3oltrCY+u4z+6/0jmOgxGpzBhbdZCtEHxUtjYV
- O4FbvCPrQAu93azE/Lj7sUp1
+X-CMAE-Envelope: MS4xfOs606fkAnRViiT9dh9FtZlBosfsbRugn1aJbyQs2U5ai7KYznOah/2pJCkKCABXwJCmc+oCJ5ZrJWH4V5pB+tvsFzyIlB/xwdFpn0DiyuQpxTEJ8/7f
+ yyt32uZgk1QzuOSH6XoYObrP3znfOfDU1qL3aagP0di6FJ2dft3gNqZjaPJtE5zMgn6owZYzuglXfgblf9J6qed50bmTGilMCkB+Yla3jfGf/OfGmMpD3m4K
+ bDQwUDQbnw4e8/yOec9wPpGm4GWGDKM98WSCHCm7In2Bz0DUC4bwh0o3qnOcCxGTKvovxOWSH1JBiaTrhL4syPTrUw2cmVto4G+2AFscNXSDKlGEN78RzMHI
+ fNTyGD9/dCahRMXHTZPJGUYKTz5kGUtxx4965bJEFsIkIStEIcuQCUswZmzXwFtZ7PoUhnSF0oswWc4nEw9fpX+SZBY9yZm+OdTu4CHGctYMI0GxgfahkMxo
+ B+aYLUiSmD+WuOCcQLjtieEmpD+rwp1OqS2rgICDdIST6pkw1xa5eol+qCWxKVA87Dhy+YgFQUX+Junq9pDOykgE6wGTqJJ3scnarewmuUy5McMKDP2FdKc0
+ zcPzHR8tR8v6WvLt+wZien7U
 
 Hi David,
 
-On 30/09/2026 03:28, David Woodhouse wrote:
-> Ok, I have the series in the shape I want to test it now. I got caught
-> up in more side quests around minimising ntp_error, which aren't
-> *strictly* around hardpps or snapshots at all but it was annoying me.
+On 30/09/2026 12:37, David Woodhouse wrote:
+> Three parts of the 2x2 grid are now at
+>  • https://david.woodhou.se/ntptest-r64/tickful-1hz/
+>  • https://david.woodhou.se/ntptest-r64/tickless-1hz/
+>  • https://david.woodhou.se/ntptest-r64/tickless-5s/
 >
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/timekeeping
-> now has:
+> The fourth is running now, about 90 minutes in. After which I might
+> play with that IRQF_HWTIMESTAMP thing, because they're *all* seeing a
+> bunch of late pulses (and the tickless ones are doing all the
+> timekeeping catchup before they even capture the pulse timestamp, some
+> of which gets hidden as common mode latency):
 >
->  • timekeeping: Allow tick_length changes to apply mid-tick
->    (reduce a fairly gratuitous cause of ntp_error accumulation, when
->     we *account* for a rate change before it actually takes effect)
+>   ┌────────────────┬────────┬─────────┬─────────┬────────┐
+>   │      cell      │  p50   │   p95   │   p99   │ >3 µs  │
+>   ├────────────────┼────────┼─────────┼─────────┼────────┤
+>   │ tickless, 5 s  │ 728 ns │ 4188 ns │ 4847 ns │ 14.5 % │
+>   ├────────────────┼────────┼─────────┼─────────┼────────┤
+>   │ tickless, 1 Hz │ 294 ns │ 2258 ns │ 4837 ns │ 3.6 %  │
+>   ├────────────────┼────────┼─────────┼─────────┼────────┤
+>   │ tickful, 1 Hz  │ 84 ns  │ 1206 ns │ 4012 ns │ 2.0 %  │
+>   └────────────────┴────────┴─────────┴─────────┴────────┘
 >
->  • timekeeping: Apply extrapolated ntp_error to clock snapshots
->    (you know this one; as discussed maybe it'll shift to later)
->
->  • timekeeping: Bound idle sleep while a phase slew is in flight
->    (even standard adjtime() was hosed for tickless and would keep
->     applying 500µs/s skew the whole time the system slept)
->
->  • timekeeping: Reinstate proportional correction of ntp_error
->    (because once I fix the above, we *can*)
->
->  • ntp: Recalculate skew_delta when the phase offset changes
->    (another gratuitous cause of ntp_error accumulation. If time_offset
->     goes away *while* we're skewing towards it, the continued skew
->     for the rest of the second is unwanted and goes to ntp_error.
->     Just... stop skewing!)
->
->  • arm64: Support inlined clocksource reads for the arch counter
->    (this seems like an oversight)
->
->  • timekeeping: Read the counter as early as possible in ktime_get_snapshot_id()
->    (as I said, those 20ns are in the noise... but you can have them
->     back anyway)
->
->  • pps: Drop the !NO_HZ_COMMON dependency from NTP_PPS
->    (Really, it isn't needed. This is working)
->
->  • pps: Always use ktime_get_snapshot_id() for pps_get_ts()
->    (I think I mostly eliminated ntp_error as a significant source of
->     discrepancies now, but this is still the right thing to do for
->     precision)
+> But ultimately, the hardpps discipline appears to be working fine with
+> full nohz idle, even when we dial down the pulse *itself* to 0.2Hz to
+> actually let the box sleep for 5s at a time.
 
-As you suggested on the 28th, wouldn't it be better to move "pps: Always
-use ktime_get_snapshot_id() for pps_get_ts()" before "timekeeping: Apply
-extrapolated ntp_error to clock snapshots"? So the PPS patch has no
-visible effect on ts_real, and the change stays in the timekeeping
-patch, where the chrony and ntpd people can judge it.
+Thanks for running the whole grid.
+
+Could you put these numbers, with the fourth cell once it is done, in
+the commit message of 2/4? They show both that hardpps works on a
+tickless kernel and what it costs in timestamp latency, which is what
+someone enabling NTP_PPS there will want to know.
+
+At this point it could be fine for me, but before acking I'd like to
+hear from the userland side, Miroslav for chrony and the ntpd folks,
+since the change in ts_real is theirs to judge.
 
 Ciao,
 
