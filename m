@@ -1,89 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE4E547059;
-	Wed, 30 Sep 2026 02:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7658D2D5436;
+	Wed, 30 Sep 2026 02:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734809; cv=none; b=bECsmmSA18RKzNlQV5E9oevByho37qfqbwxySNgqi8SGrG8la/XAVqaAFDwa69o0LyCrwGhr2LuTFYHkmEpHT/FGoGZ37hUA/SPLo9Y0Dc1qb01i9XWYCHsWjb1AsmC83epHv3/efzcRmOqTS1Wqqc+AVl74UHTv40D7b9oM7QY=
+	t=1790734889; cv=none; b=Q3yqvAt+fRY6gQvRdoMmJi9pmeKXVrBD3IjX5q3EB5YQzNrtPKd8i5H9iawnwIzCPZWdY9OYAjNqHWqObaZuas1GcY1hdbgXQSUi2OWl9pTckuH+l9AyqoTKRH/BFcKiUpTP0nSuptW6I2SuDEyW1INw1tRPlIGZOkDJiphjs6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734809; c=relaxed/simple;
-	bh=8uGBMMioS5lDejFVuty7woie6iD1aexXTSEa2wGECLo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W5QwjEmx9V9yzQTf1VSKLxgu3YT3U9MYre2tWN0IGnjOnW9EYw/6gIIBFYALEKb0xIkltw/kh45hGUyb546XukmneKc8n0vS3WghxDdrP0xuZYAx6CyJUrl97ww8x5bRevPE3lz4UtSF14uoCih0u6ep1NK6hYjtSCHGEk8LjLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+VUn2Hw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790734889; c=relaxed/simple;
+	bh=LRNN6oFQJjirvRJJzGnN3zADb/iCHL7J5N5Wgqs4cnw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sujbYXXip+MyWq6UcAbz4D+cdwbAOWc9EI3tsrLacmHUtjkJNXlpWnfrrIji/yhHLaK+etY/DpyNBS1Gj7fPJBtuz90j52KxpPUyRw+l2I5WTrPXYykzoZvWMIceNZ229dgdMoSIpR6B8wFOIw4+UtyhzWcR0dXaw8oYB8dHmKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=OYHbJ6Nv; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+VUn2Hw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802451F000FF;
-	Wed, 30 Sep 2026 02:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790734807;
-	bh=Qk06ge0yUWOjB14r7PQI/pwqnAiKGPmdvuKcq6Teydo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=S+VUn2HwyKN7he3LoPBTa9mONGR3J9gz3IpTey2yt8H0fKXdX2cF5ogh8q+8Tx+ug
-	 JpKwO/4UFWl/MeoqcbjnjO0OF4ZocJeWmcXQ/4JSmImIkr7eAITDKWU+Xp0Vceqwqa
-	 jQmq2gn/f3AjyODChBKI+zRco6DH9DGfSNyJIO9o73rT22jdA9D6vGuxn/CKL9jjzl
-	 LcDmd+LpyG1y8tGCyhdSjW1WskdXH8iBWNpOyptHGK3vjPrYvaPCC1yMZwFCZx+0LS
-	 d2cz26fItwi3RpD3AVO0/X4iu+W+gcPydyCpsNiXTMShWBzYVEIfs1Ncn+/aL40ACS
-	 WnpXY3LvBiBzw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774843924FEA;
-	Wed, 30 Sep 2026 02:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="OYHbJ6Nv"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84625106D70;
+	Wed, 30 Sep 2026 04:21:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1790734884;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=GIBDucrk0eAQMkKja9ydff/0FXwdYj22k8e2eNF1trc=;
+	b=OYHbJ6NvRFZiDTw88Ktyf7QCDLeCX97Ho+dD9ZS9o8YUBJsDuz5uOM22tTpKG7zBTdHB7m
+	ZWw10llMzWSoPvOozhhcm55p8ELL0gEgTLugouH40Sl04dj0Qj+vyq6V5E1k8yqmz299RK
+	/k/mAWcn6Js9eypab2h/GTXDIJ8Fy9PtkTQVCONuz2jzNGazJDYCm9uv7rNelzy+H6jw5x
+	jScJ7t7/+h5OCR60O5KbFlyqLIPxB3cirisaCa3hpJP6MgIinpSdDs/EEpgMHYQSRcBq6E
+	A3UFLGzf+viXNc88tRQ9+qzSmOR5s4x+D7HTx7lCwVpyiaqjJKPp9wl9Cpp9Jg==
+Message-ID: <c3b7e841-5eea-4431-b231-44659e1605c3@nabladev.com>
+Date: Wed, 30 Sep 2026 04:21:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/5] mptcp: misc improvements for v7.4
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179073480628.1213686.7153370643683858452.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 02:20:06 +0000
-References: 
- <20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406@kernel.org>
-In-Reply-To: 
- <20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- quanyeyang@proton.me, liuhangbin@kylinos.cn, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+To: vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, wei.fang@nxp.com,
+ claudiu.manoil@nxp.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260924180607.60932-1-marex@nabladev.com>
+ <179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 26 Sep 2026 17:30:33 +0200 you wrote:
-> Here are some unrelated improvements for MPTCP and its selftests:
+On 9/30/26 4:10 AM, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
 > 
-> - Patch 1: reduce struct mptcp_subflow_context size: no need to store
->   the truncated HMAC for the whole connection.
+> This patch was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
 > 
-> - Patches 2-3: shrink struct mptcp_options_received used to parse
->   incoming MPTCP options, from 136 to 72 bytes on x86_64.
+> On Thu, 24 Sep 2026 20:05:19 +0200 you wrote:
+>> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+>> but also very compatible. However, for example NXP TJA1120 PHY needs
+>> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+>>
+>> As a minimum change, increase the MDC clock to 2.5 MHz which matches
+>> the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
+>> DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
+>> NXP TJA1120 as well. There is no known rationale for why the 558 kHz
+>> was picked when the eMDIO driver was added.
+>>
+>> [...]
 > 
-> [...]
-
-Here is the summary with links:
-  - [net-next,1/5] mptcp: remove thmac from subflow ctx
-    https://git.kernel.org/netdev/net-next/c/0cb6910130a3
-  - [net-next,2/5] mptcp: split FASTCLOSE key from rcvr_key
-    https://git.kernel.org/netdev/net-next/c/9f778b567817
-  - [net-next,3/5] mptcp: shrink struct mptcp_options_received
-    https://git.kernel.org/netdev/net-next/c/d16d54dac08f
-  - [net-next,4/5] selftests: mptcp: convert iptables to nftables for mptcp_sockopt.sh
-    (no matching commit)
-  - [net-next,5/5] selftests: mptcp: convert iptables to nftables for mptcp_join.sh
-    (no matching commit)
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> Here is the summary with links:
+>    - [net-next,v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+>      https://git.kernel.org/netdev/net-next/c/587acb86d646
+This should have likely been applied only after someone from NXP looked 
+at it.
