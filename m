@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D1939734E;
-	Wed, 30 Sep 2026 03:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21453644A0;
+	Wed, 30 Sep 2026 03:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790740142; cv=none; b=sG8ICf/hDjWJp9WMGWEW15ceoMx/Kt653GQpZR4a9sRYpbQVWNRWbua8t9B1FPIiC2vEogBWft+CrHgC003hknauQ5KSOHkZGDqwRrqE/a1t/Z/LqYIqT9jSj2wBv+Ea0AFoBxsf2Gf1oVQH2YN6ft9JGrSs3hxENSlPPzkSwtM=
+	t=1790740145; cv=none; b=NRBiDFgQkU0qK4qJj6JtH53VD2yCrSFGtrxLJVvRUgoC7bcqW1PVPKa8mljcK/W27yafgFFhz33EAzPXCGcE/gpoU6fwha/VkC4ROFqkGJe1/jzno82boCYBp4N5nuk0x0BHLxpeeT9gZqg+83AUq/YCSeIWdXec8rTY7IZXrjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790740142; c=relaxed/simple;
-	bh=IfNK/x300/g/dbN/6uhIWYcvxYKUBYnf0Lr1wvUYTeg=;
+	s=arc-20240116; t=1790740145; c=relaxed/simple;
+	bh=9Le2KxT+VYexq+vQhvruVkYFfqFerokDRKFjRMsICW4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q0w3Kn152vRySKcmsMSi2rHz0miH96EM7BnJWAfStvP1YBhDhsRAwmviO3fZ52RWBYwJZptq1XnfNWSr7htp5a76s/VunbrSOjE9hD2UYFGYrykivpmu0YjldUCSwmdKBZ8YsTOY2OB6RD79t0CIJXzzG3q8u88IJaI4anhaBVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzOXliEa; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=RRfk+VVDMZlfzU65bXnN0lZ4lMUQ89KYYuZfXVmqm7pHGO30kyyC3iWBF3OjmPJ3hHMRBrWknZS9MbpoJABOOvBZyJTvOj2ygDo7LIVSFg6/yUgXy4ecQnPJH08jqlANDhdQsbpaCrMUbPh2ab2pYEcEQzd3d0Bkz7ju9svLuMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHBKfITo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzOXliEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A41D1F00893;
-	Wed, 30 Sep 2026 03:48:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHBKfITo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982191F000FF;
+	Wed, 30 Sep 2026 03:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790740140;
-	bh=eajeywToKttcXIlo1Rjmibrw2w3e+m2Cm8BdSEkTeKE=;
+	s=k20260515; t=1790740142;
+	bh=uwYxOlYaRy0JawN8t68wZ184dVX51q25nN0Cl6SVY2E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AzOXliEaIQ8TDdxc0wEqsFTJEemK2a2HQ3Q+k+zDA8c988qbM8+AFmarqKWodFieu
-	 JFpgLdGr5T76xPQ72O7xY0iPQPPW9EOvrqTwryUpyCYoIyRIlct5RLI+BHaZltDbqh
-	 Qa8C/2cx8Fa9R/CvNua4E3E3bsR5vvh2ZdHL9gHHVqKpXyNsWU0pDTFLB7D2xw64+A
-	 LN7riYU1X6YbDEGR5W8EIGOmFv7oJq9yu1ii0LdQr8VvcosUcK8ZVtpqaUjLOu9sIQ
-	 yDoiTfgDhpH5E00cA+43j+qU9OUh8b1LEuXZ4BCheckEW0f3XvZ0crtpPopRQD/UWf
-	 zqWULOBbq5YBg==
-Subject: Re: [PATCH v2 3/7] net: hip04: manage the netdev lifetime with devres
+	b=XHBKfITo+bdKjw9RhxtbA/bqwGrKYv146YYiipyaXNssGbLVEb+GLwHxuZsewz3HH
+	 P8iLIbsI9zz8yc655fk0UmXog3pbgctG9/RdZ4kS2Q287DeuRKD0Rk8hFbDqNK3aUe
+	 zlpyrL27Qp/1nNs3JSKm9XjUZsAqMVy6lMbGmY5RhzF84f8gut0H1NbYpPT73Ldb6j
+	 3x+EHhyWUQ77Ukt28cYopj1DL4aO1WuGNHcZ0EffD4N9g2Scxfy5wOTfJj7pzJP+/N
+	 1ePozIC+N6ZTYcCc4Jb8S6L1Fcjgx3Rxfvv++K2CdqlRk2ybplPRR42GB2T/O2bPP5
+	 X2QWV3K4Upuxg==
+Subject: Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
 From: netdev-bot+sashiko@kernel.org
 To: yaojiale02@163.com
 Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
@@ -42,11 +42,11 @@ Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
  ks.giri@samsung.com, siva.kallam@samsung.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-renesas-soc@vger.kernel.org
-Date: Wed, 30 Sep 2026 03:48:57 +0000
-Message-ID: <179074013765.434549.10669415017995583528@kernel.org>
-In-Reply-To: <20260927144741.1320558-4-yaojiale02@163.com>
-References: <20260927144741.1320558-4-yaojiale02@163.com>
-X-sashiko-severity: Critical
+Date: Wed, 30 Sep 2026 03:49:00 +0000
+Message-ID: <179074014016.434549.12083516734545192816@kernel.org>
+In-Reply-To: <20260927144741.1320558-7-yaojiale02@163.com>
+References: <20260927144741.1320558-7-yaojiale02@163.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -56,10 +56,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 1 · High: 0 (2) · Medium: 0 (2) · Low: 0
+Critical: 0 · High: 1 · Medium: 2 (3) · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -67,236 +67,363 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] hip04_remove()
-  (drivers/net/ethernet/hisilicon/hip04_eth.c:1027-1040) still runs…
+- [High] The patch rests on the commit-message claim that "A running
+  interface already holds a runtime PM reference ... A resume failure…
+- [Medium] The commit says it fixes the probe error paths, but in the
+  early ones the IRQ handler can still make an invalid access.
+- [Medium] When pm_runtime_resume_and_get() fails in ravb_remove(), the
+  patched code now carries on to ravb_mdio_release() (line 3161) instead…
+- [Low] The first Fixes: tag is wrong.
 
 Pre-existing issues:
-- [High] In hip04_mac_probe(), of_phy_connect() at line 981 succeeds and
-  runs phy_attach_direct(), which sets phydev->attached_dev = ndev…
-- [High] hip04_timeout() queues priv->tx_timeout_task on system_wq.
-- [Medium] priv->tx_coalesce_timer is embedded in the netdev private
-  area.
-- [Medium] hip04_mac_probe() calls devm_request_irq() (line 972) before
-  it masks PPE_INTEN or acks PPE_RINT, and before netif_napi_add() (line…
+- [Medium] This problem wasn't introduced by this patch, but ravb_close()
+  returns early when ravb_set_opmode(ndev, CCC_OPC_RESET) fails (lines…
+- [Medium] This problem wasn't introduced by this patch, but if
+  ravb_set_opmode(ndev, CCC_OPC_CONFIG) fails in ravb_probe() (lines…
+- [Medium] This problem wasn't introduced by this patch, but
+  ravb_interrupt() (and the other ravb handlers) call…
+- [Low] This problem wasn't introduced by this patch, but the
+  ravb_probe() error path calls pm_runtime_put(&pdev->dev) (async, line…
 
 --
 
-net: hip04: manage the netdev lifetime with devres
+net: ravb: fix resource teardown ordering
 
-This patch switches hip04_mac_probe() to devm_alloc_etherdev(). It also
-drops the explicit free_netdev() calls from the probe error path and from
-hip04_remove(). The goal is for devres to release the IRQ taken with
-devm_request_irq() before it releases the netdev.
+This patch puts the ravb IRQs in a dedicated devres group. The group is
+released before free_netdev() in ravb_remove() and in the ravb_probe()
+error paths. ravb_remove() also keeps tearing down when
+pm_runtime_resume_and_get() fails, and skips only the matching runtime
+PM put.
 
-> diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-> index fc2c47dcfaabe..4a643dff22ab0 100644
-> --- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-> +++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-> @@ -905,7 +905,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
->  	int irq;
->  	int ret;
+> Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+
+[Severity: Low]
+Is c156633f1353 the right commit for the first Fixes: tag?
+
+In c156633f1353 the open path took the IRQ with request_irq(), and the
+close path released it with free_irq(ndev->irq, ndev). So
+unregister_netdev() had already freed it before free_netdev() ran.
+
+The window comes from the devm-managed IRQ that uses ndev as dev_id, in
+ravb_setup_irq():
+
+    error = devm_request_irq(dev, irq_num, handler, flags, devname, ndev);
+
+git blame points at 32f012b8c01c ("net: ravb: Move getting/requesting
+IRQs in the probe() method"). Should the tag be this instead?
+
+Fixes: 32f012b8c01c ("net: ravb: Move getting/requesting IRQs in the probe() method")
+
+The current tag selects stable trees back to v4.2. Those trees have no
+ravb_setup_irqs() and free the IRQs in ndo_stop. The second tag,
+48f894ab07c4, looks right for the early return in ravb_remove().
+
+> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> index ea1c7e536791e..a25f5ac7062fc 100644
+> --- a/drivers/net/ethernet/renesas/ravb_main.c
+> +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> @@ -2963,28 +2963,35 @@ static int ravb_probe(struct platform_device *pdev)
+>  		priv->num_rx_ring[RAVB_NC] = NC_RX_RING_SIZE;
+>  	}
 >  
-> -	ndev = alloc_etherdev(sizeof(struct hip04_priv));
-> +	ndev = devm_alloc_etherdev(d, sizeof(struct hip04_priv));
->  	if (!ndev)
->  		return -ENOMEM;
+> +	if (!devres_open_group(&pdev->dev, priv, GFP_KERNEL)) {
+> +		error = -ENOMEM;
+> +		goto out_reset_assert;
+> +	}
+> +
+>  	error = ravb_setup_irqs(priv);
+>  	if (error)
+> -		goto out_reset_assert;
+> +		goto out_release_irqs;
+> +
+> +	devres_close_group(&pdev->dev, priv);
 >  
+>  	priv->clk = devm_clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(priv->clk)) {
+>  		error = PTR_ERR(priv->clk);
+> -		goto out_reset_assert;
+> +		goto out_release_irqs;
+>  	}
 
 [Severity: Medium]
-This is a pre-existing issue, but can hip04_mac_interrupt() run before
-priv->napi is initialized?
+Can the IRQ handler still make an invalid access when this path reaches
+out_release_irqs?
 
-hip04_mac_probe() calls devm_request_irq() before netif_napi_add(), with
-of_phy_connect() (which can sleep) in between. Nothing in probe masks
-PPE_INTEN or acks PPE_RINT beforehand.
+The IRQs are live once devres_close_group() returns. ravb_probe() maps
+priv->addr and initialises priv->lock only later:
 
-The previous owner may have left the PPE interrupt enabled with RCV_INT
-pending. One example is kexec from a kernel with the port up, since the
-driver has no .shutdown. In that case:
+    priv->addr = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+    ...
+    spin_lock_init(&priv->lock);
 
-hip04_mac_interrupt()
-  napi_schedule_prep(&priv->napi)   <- zeroed state, returns true
-  __napi_schedule(&priv->napi)
-    net_rx_action()
-      __napi_poll()                 <- napi->poll is NULL
+These failures reach devres_release_group() while priv->addr is still
+NULL:
 
-Whether the PPE state survives that handoff depends on the hardware.
+- the clock lookup failures here, including -EPROBE_DEFER
+- the pm_runtime_resume_and_get() failure
+
+The ioremap failure also reaches it, with an ERR_PTR in priv->addr.
+
+On single-IRQ variants, ravb_setup_irq() requests the line with
+IRQF_SHARED. Under CONFIG_DEBUG_SHIRQ, __free_irq() calls the handler of
+a shared action:
+
+kernel/irq/manage.c:__free_irq() {
+    ...
+	if (action->flags & IRQF_SHARED) {
+		local_irq_save(flags);
+		action->handler(irq, dev_id);
+		local_irq_restore(flags);
+	}
+    ...
+}
+
+A real interrupt from another device on the same line would do the
+same.
+
+ravb_interrupt() only checks pm_runtime_active(). That returns true when
+runtime PM is not enabled yet, and also after out_rpm_disable has
+disabled it:
+
+ravb_interrupt() {
+    ...
+	pm_runtime_get_noresume(dev);
+
+	if (unlikely(!pm_runtime_active(dev)))
+		goto out_rpm_put;
+
+	spin_lock(&priv->lock);
+	/* Get interrupt status */
+	iss = ravb_read(ndev, ISS);
+    ...
+}
+
+The handler then takes an uninitialised spinlock and does ioread32()
+through a NULL or ERR_PTR base. Before this patch the same call hit a
+freed ndev.
+
+Would it be better to request the IRQs after the MMIO mapping and
+spin_lock_init()?
 
 [ ... ]
 
-> @@ -1021,7 +1021,6 @@ static int hip04_mac_probe(struct platform_device *pdev)
->  	hip04_free_ring(ndev, d);
->  init_fail:
->  	of_node_put(priv->phy_node);
-> -	free_netdev(ndev);
->  	return ret;
->  }
->  
+> @@ -3124,6 +3131,8 @@ static int ravb_probe(struct platform_device *pdev)
+>  	pm_runtime_disable(&pdev->dev);
 
-[Severity: High]
-This is a pre-existing issue, but does this error path leave the PHY
-attached to a netdev that is about to be freed?
+[Severity: Low]
+This isn't a bug introduced by this patch, but the out_rpm_put label just
+above calls the async put and then disables runtime PM right away:
 
-Suppose of_phy_connect() succeeds earlier in hip04_mac_probe(), and then
-hip04_alloc_ring() or register_netdev() fails. The alloc_fail and
-init_fail labels never call phy_disconnect(priv->phy).
+out_rpm_put:
+	pm_runtime_put(&pdev->dev);
+out_rpm_disable:
+	pm_runtime_disable(&pdev->dev);
 
-phy_attach_direct() set phydev->attached_dev = ndev, took device and
-module references, and resumed the PHY. Once devres frees ndev (or
-free_netdev() did, before this patch), attached_dev is left dangling.
+Can __pm_runtime_barrier() in pm_runtime_disable() cancel the queued
+idle request? If so, ravb_runtime_suspend() and the genpd callbacks
+never run before probe fails.
 
-On a later system suspend:
-
-mdio_bus_phy_suspend()
-  mdio_bus_phy_may_suspend()
-    netdev->ethtool->wol_enabled   <- netdev has been freed
-
-The MDIO bus and PHY driver module references also leak. A later bind
-of this MAC would then fail in phy_attach_direct() with -EBUSY, because
-the PHY is still attached.
-
-> @@ -1038,7 +1037,6 @@ static void hip04_remove(struct platform_device *pdev)
->  	unregister_netdev(ndev);
-
-[Severity: Critical]
-This fixes the order of the managed IRQ release and the netdev free. Can
-a late interrupt still reach freed memory in hip04_remove() through the
-rings, though? The start of the function is unchanged:
-
-hip04_remove() {
-	if (priv->phy)
-		phy_disconnect(priv->phy);
-
-	hip04_free_ring(ndev, d);
-	unregister_netdev(ndev);
-	...
-}
-
-When the interface is up, hip04_free_ring() frees every rx_buf[] frag,
-every pending tx_skb[] and the coherent tx_desc ring. It does not clear
-those pointers or unmap rx_phys[].
-
-At that point the MAC, PPE_INTEN, NAPI and the IRQ are all still live.
-They are only quiesced by ndo_stop inside unregister_netdev().
-
-In that window, an RX interrupt or the tx_coalesce_timer can still do:
-
-hip04_mac_interrupt()
-  napi_schedule_prep(&priv->napi)
-  __napi_schedule()
-    hip04_rx_poll()
-      hip04_tx_reclaim()     <- reads the freed tx_desc
-      build_skb(buf, ...)    <- buf is a freed rx_buf[] frag
-
-The hardware can also keep DMAing into the freed RX pages.
-
-After that, unregister_netdev()->dev_close()->hip04_mac_stop() calls
-hip04_tx_reclaim(ndev, true). Does this double free the skb for every
-TX slot that was not yet reclaimed?
-
-hip04_tx_reclaim() {
-	...
-		desc = &priv->tx_desc[tx_tail];
-		if (desc->send_addr != 0) {
-			if (force)
-				desc->send_addr = 0;
-	...
-		bytes_compl += priv->tx_skb[tx_tail]->len;
-		dev_kfree_skb(priv->tx_skb[tx_tail]);
-	...
-}
-
-By then tx_desc has already been released by dma_free_coherent(). The
-tx_skb[] entries have already been freed by dev_kfree_skb_any() in
-hip04_free_ring(), but they were left non-NULL.
-
-hip04_mac_stop() also calls dma_unmap_single(..., DMA_FROM_DEVICE) on
-all the freed RX buffers. On non-coherent ARM, that invalidates cache
-lines of pages that may already have been reused.
-
-hip04_mac_stop() also calls phy_stop() on a PHY that phy_disconnect()
-already halted, because priv->phy is not cleared. That triggers the
-"called from state HALTED" warning.
-
-This is tagged for stable as a fix for late interrupts reaching freed
-memory in hip04_remove(). Would it make sense to call unregister_netdev()
-first, so ndo_stop quiesces the hardware and NAPI, and only then do
-phy_disconnect(), hip04_free_ring() and the rest?
-
->  	of_node_put(priv->phy_node);
->  	cancel_work_sync(&priv->tx_timeout_task);
-> -	free_netdev(ndev);
->  }
->  
-
-[Severity: High]
-This is a pre-existing issue, but does the cancel_work_sync() here come
-too late to protect against hip04_tx_timeout_task()?
-
-hip04_tx_timeout_task() {
-	...
-	hip04_mac_stop(priv->ndev);
-	hip04_mac_open(priv->ndev);
-}
-
-The work runs the ndo_stop and ndo_open logic without rtnl_lock() and
-without a netif_running() check. Nothing in ndo_stop cancels it.
-
-Suppose a TX watchdog timeout queued the work, and the work reaches
-napi_disable() after ndo_stop has already disabled NAPI. That ndo_stop
-can come from unregister_netdev() or from a plain ifdown.
-napi_disable() takes netdev_lock(), and napi_disable_locked() then
-waits forever:
-
-napi_disable_locked() {
-	...
-		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
-			usleep_range(20, 200);
-			val = READ_ONCE(n->state);
-		}
-	...
-}
-
-Those bits stay set on a disabled NAPI until napi_enable() is called.
-The kworker then holds netdev->lock indefinitely. Either
-unregister_netdevice_many_notify() blocks on netdev_lock(dev) with RTNL
-held, or hip04_remove() blocks in cancel_work_sync().
-
-The same work can also run between hip04_free_ring() and
-unregister_netdev(). In that case hip04_mac_open() calls
-dma_map_single() on the freed rx_buf[] entries.
-
-Could the work be cancelled from ndo_stop, or serialized with
-rtnl_lock() and a netif_running() check?
+ravb_remove() already uses pm_runtime_put_sync_suspend() here. Should the
+probe error path use a synchronous put too?
 
 [Severity: Medium]
-This is a pre-existing issue, but should priv->tx_coalesce_timer be
-cancelled on this path as well?
+This is a pre-existing issue, but does ravb_probe() leak priv->desc_bat
+when ravb_set_opmode(ndev, CCC_OPC_CONFIG) fails?
 
-The timer is embedded in the netdev private area. It is armed from
-hip04_mac_start_xmit() and from the done: tail of hip04_rx_poll(), which
-can run after napi_complete_done():
+	error = ravb_set_opmode(ndev, CCC_OPC_CONFIG);
+	if (error)
+		goto out_rpm_put;
 
-hip04_rx_poll() {
-	...
-	napi_complete_done(napi, rx);
-done:
-	/* start a new timer if necessary */
-	if (rx < budget && tx_remaining)
-		hip04_start_tx_timer(priv);
-	...
-}
+In the error path, the only dma_free_coherent() of desc_bat is under
+out_reset_mode, which comes before out_rpm_put:
 
-Neither hip04_mac_stop() nor hip04_remove() calls hrtimer_cancel() on
-it.
+out_reset_mode:
+	ravb_set_opmode(ndev, CCC_OPC_RESET);
+	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+			  priv->desc_bat_dma);
+out_rpm_put:
 
-If the timer expires after devres frees the netdev, tx_done() does
-container_of() on priv and napi_schedule_prep(&priv->napi). Both of
-those touch freed memory.
+The allocation is not devres-managed and is not in the new IRQ group.
 
-The timer expires after 100-200us, and the netdev is freed well after
-that. So this only happens if the timer is delayed past the whole
-teardown.
+>  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+>  	clk_unprepare(priv->refclk);
+> +out_release_irqs:
+> +	devres_release_group(&pdev->dev, priv);
+>  out_reset_assert:
+>  	reset_control_assert(rstc);
+>  out_free_netdev:
+> @@ -3141,9 +3150,10 @@ static void ravb_remove(struct platform_device *pdev)
+>  
+>  	error = pm_runtime_resume_and_get(dev);
+>  	if (error < 0)
+> -		return;
+> +		dev_warn(dev, "failed to resume device: %d\n", error);
+>  
+>  	unregister_netdev(ndev);
+
+[Severity: High]
+Can unregister_netdev() call ravb_close() a second time when the resume
+above fails?
+
+The commit message says:
+
+  A running interface already holds a runtime PM reference, so the extra
+  get cannot invoke a failing resume. A resume failure therefore occurs
+  while the interface is down and ndo_stop() will not be called.
+
+A failed system resume seems to break that assumption. With WoL
+disabled, ravb_suspend() closes the interface directly and leaves
+IFF_UP set:
+
+ravb_suspend()
+    netif_device_detach(ndev);
+    ravb_close(ndev);
+        napi_disable(&priv->napi[RAVB_BE]);
+        pm_runtime_put_autosuspend(dev);
+    pm_runtime_force_suspend(&priv->pdev->dev);
+    reset_control_assert(priv->rstc);
+
+If ravb_resume() then fails in reset_control_deassert(), it returns
+before pm_runtime_force_resume() and ravb_open():
+
+	ret = reset_control_deassert(priv->rstc);
+	if (ret)
+		return ret;
+
+That leaves runtime PM disabled with RPM_SUSPENDED status. The
+interface is still IFF_UP but closed, NAPI is disabled, and no PM
+reference is held. A pm_runtime_force_resume() failure leaves a similar
+state.
+
+On a later unbind, pm_runtime_resume_and_get() here returns -EACCES
+every time. Before this patch ravb_remove() returned at that point. It
+now continues into unregister_netdev().
+
+__dev_close_many() calls ndo_stop for any IFF_UP device, even after
+netif_device_detach().
+
+The second ravb_close() then does the following on an IP that is
+clock-gated and held in reset:
+
+- writes RIC0/RIC2/TIC/ECSIPR
+- runs ravb_ptp_stop() and ravb_stop_dma()
+
+It then calls napi_disable() on a NAPI instance that was never
+re-enabled, and napi_disable_locked() loops forever:
+
+	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+		usleep_range(20, 200);
+		val = READ_ONCE(n->state);
+	}
+
+Wouldn't that hang removal with RTNL and the netdev instance lock held?
+
+Past that point, ravb_ring_free() would call page_pool_destroy() again
+on the stale priv->rx_pool[q]. pm_runtime_put_autosuspend() would also
+underflow the usage count.
+
+Also, with runtime PM disabled, pm_runtime_active() returns true. The
+shared-IRQ handlers are then no longer kept off the unpowered hardware
+until devres_release_group() runs.
+
+A similar double close could already happen when the resume here
+succeeds after a failed system resume. The failing-resume path is new
+with this patch. The if (error >= 0) check covers only ravb_remove()'s
+own put, not these other states.
+
+> +	devres_release_group(dev, priv);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is the runtime PM check in
+the ravb IRQ handlers safe against a concurrent runtime suspend?
+
+ravb_interrupt() and the other ravb handlers do this without holding
+dev->power.lock:
+
+	pm_runtime_get_noresume(dev);
+
+	if (unlikely(!pm_runtime_active(dev)))
+		goto out_rpm_put;
+
+rpm_suspend() checks usage_count and sets RPM_SUSPENDING within one
+dev->power.lock critical section. The handler's increment and status
+read can both fall in the window between those two steps.
+
+The handler then reads ISS and other registers while
+ravb_runtime_suspend() calls clk_disable(priv->refclk) and genpd gates
+the clocks.
+
+ravb_runtime_suspend() also has no synchronize_irq(), even though the
+main IRQ is IRQF_SHARED.
+
+Would using pm_runtime_get_if_active() in the handlers and adding
+synchronize_irq() to ravb_runtime_suspend() close this?
+
+>  	if (info->nc_queues)
+>  		netif_napi_del(&priv->napi[RAVB_NC]);
+>  	netif_napi_del(&priv->napi[RAVB_BE]);
+
+[Severity: Medium]
+When pm_runtime_resume_and_get() has failed, what happens to the MDIO
+accesses in the ravb_mdio_release() call that follows?
+
+ravb_mdio_release() calls mdiobus_unregister(), and PHY teardown issues
+MDIO transactions:
+
+ravb_mdio_release()
+  mdiobus_unregister()
+    phy_remove()
+      phy_leds_unregister()
+        led_classdev_unregister()
+          led_set_brightness(led_cdev, LED_OFF)
+      phydev->drv->remove(phydev)
+
+On ravb, MDIO is bit-banged through the AVB PIR register:
+
+ravb_mdio_ctrl()
+	ravb_modify(priv->ndev, PIR, mask, set ? mask : 0);
+
+ravb_get_mdio_data()
+	return (ravb_read(priv->ndev, PIR) & PIR_MDI) != 0;
+
+Because the resume failed, the module clock/refclk is still gated. After
+a failed system resume the reset may also still be asserted.
+
+In that state, writes to PIR would be lost. Reads would return garbage
+that mdio-bitbang treats as valid. On SoCs that fault on access to a
+stopped module, this could raise a bus error.
+
+The commit message only argues that ndo_stop() will not be called.
+Should this path skip or otherwise handle the register accesses made by
+MDIO teardown?
+
+> @@ -3153,7 +3163,8 @@ static void ravb_remove(struct platform_device *pdev)
+>  	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+>  			  priv->desc_bat_dma);
+>  
+> -	pm_runtime_put_sync_suspend(&pdev->dev);
+> +	if (error >= 0)
+> +		pm_runtime_put_sync_suspend(&pdev->dev);
+
+[Severity: Medium]
+This is a pre-existing issue, but ravb_close() returns early when the
+switch to reset opmode fails:
+
+	error = ravb_set_opmode(ndev, CCC_OPC_RESET);
+	if (error)
+		return error;
+
+	pm_runtime_put_autosuspend(dev);
+
+Does that leak the runtime PM reference taken by
+pm_runtime_resume_and_get() in ravb_open()?
+
+The core ignores the return value of ndo_stop. The interface goes down
+while the device stays RPM_ACTIVE.
+
+The get/put pair here in ravb_remove() only balances its own reference.
+The device would then never be runtime-suspended before
+pm_runtime_disable().
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927144741.1320558-1-yaojiale02%40163.com
