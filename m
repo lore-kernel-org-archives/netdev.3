@@ -1,136 +1,220 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5032472A6
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 04:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DAA38A73B;
+	Wed, 30 Sep 2026 04:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790743576; cv=none; b=mHu0m8fcb45qm1eeVFvLM7c+8nC4xgfKY7/EAE1sRq81iwMDxy7cvtFWdkJZ25Ej3r+N4N4IoW/UDYK8UAEqpQf/1ait4jet5Wszi1Sk+inQ7IgxbfRD1YxbXYv6ulih/wl5Jg5ae0XiZ3/4b9IQw//b2UWZ96nwYb3nKTj7KdE=
+	t=1790743891; cv=none; b=UdWW6jZaRp0ZDCQ3iB8w7Cl9NwmThj9rCmfm7xx0h1YYSsiQuqBR9gbLPy8gNXAJMSeOXygyHDHndb8pzaEyw5wUXgDIpy2n2OOuqDKHjJ18H6w9SJWpsdA7UXm0tr5M3D0i1jl8BGo5IjkEhXS/QnPbeD+VZ0HOP/unP4V/wzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790743576; c=relaxed/simple;
-	bh=OzkT4mDFP0XjS0I9QKkJ+r5c2Uq7+gyJ+CLMbViBigY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jWKkM5cPVRbqO2EHXI3tWWS/GX7o79Mxgs0fejt2htvy+KPibI5EwEypr7sldzMyQRG5L5SBNkcDzTF/kvdfwE5WaCAv0/UNpU5Ff1MzW73Id37EWLfjLydXxKuotaOeUFY4+/nCyShXOTE/1UpsYiuLrOQNB6gaVQg1t3HAGPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKu/Zx2r; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790743891; c=relaxed/simple;
+	bh=O4ZEI8E7/aLCYgTl8e7WVy6Vu+ylqm/hJe9IfZ9kY9c=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hhmdZNUzAQmastJzRURZW8zPncyyRN/uKqtC5DJryYksjBhCJFdqwdtDCFDHV0iNK93S56kM7tX+dFBY7iF6ZtABJBmcp211nxB667jAf8f1BO2XrW6r/7XaHepW9CWO99VSJoDSRTZTuXT+2WL1znxIdIpJ69mmL7ITagynMLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVmotk48; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKu/Zx2r"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd5cf02so2537123a91.3
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 21:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790743574; x=1791348374; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7wclsaoUk0/D0pdgXhYjwxz2clMPb6mstI/WhFlPdig=;
-        b=EKu/Zx2r0WfVav4+MaAFlD0cxn1Q/nHliNn5q/89ZXCKVNiLJLwURErin2/jeyYBO2
-         VOyYmhxNr43m+9c9BxmB2AH1mVPzmBWTKuBylko8jgPhEREoXKXY5GJaZ7jsm4D5jbY4
-         3s7Guxbv9qukXNlFXlpm59hWBvlITlnjOpn2Wp0oI/8IqmYdX5IXXkNCSZhszZM2MrAj
-         hDdc33Uo9NOv75kOG1ez1OPNMjIY3IuR9Ph8xQlQ7l6birpQfX96nC0WvoQbxccrN/WX
-         ZPiRN22cgoltAzZo8qt7u6ypAWuenaKXHkQmbDDZ1ptIosV0UtWCquNgxKjPTSYrWh5t
-         2sRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790743574; x=1791348374;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7wclsaoUk0/D0pdgXhYjwxz2clMPb6mstI/WhFlPdig=;
-        b=V/w/Tnew7YO2U1Imo48mnyxFiljiOTOKVs/KoqbudsVfYgikMJ0KZJ1xy26jj4PMmq
-         rXIlNsl7xYKstzJFsv+0AxBfJ/eessceyEJI38IkaKtmOfbjLEkeIHzCqxWwh3atUZ6q
-         Bwq972ielrrCZPXzK0+GhffXbe2+7dVwSfg/yR4sbKTe5QwFdfZjonAx4vdKDiChVs9g
-         cYYsA4tT+dn6naPh8qt+3G1RoxGNbx/c5KioBs9dsHAyPSQEn22hhrtvhnfkv2waD04G
-         OiEzScAmv3AmJYLYqgnhPVu67B+yt2wtAKb2Bt3X3+Kvq2UTYK1hc3eF+/FzM+vfxVvs
-         zXZw==
-X-Forwarded-Encrypted: i=1; AKwUvBwstsaOrYQQL6PyRgpL0/iZ847ZNU5srYB50BdgH6XPbIo2qBJZk2heG40fkDAs4WjHn0X30O8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGr2GJYSFAi76zAUAWFWIdKooXMOpToiaFV9A0Z7clJHiprLus
-	PHZf06QgXJANUjTmZ8qN8pTPGFQSQ/4u9Kb2Xq96DEQWItW/SKYCRxzm
-X-Gm-Gg: AYBFou2jK0deTBv2vXCpriKg5R9LP4dkuPg9IMC842PnPv2FNL4hwA+iomWdG2aJCSL
-	yehEHO66q0NOOTqXWg1fgOoktzL2CBzoE/QlsMFyf3HwfiA52NCCB/FubsKXS0w0+UdfroP3cyZ
-	bXdKoF99ZqNpz1/6pHA7WvrG6WVPMGxsim5y6OTltEgP5b0ySAHk2gT3lBcjA0eo83CwQlLYUWl
-	OgTSuh9B+sg250QunpSw3tRUaRdrRSIsifK2feC2TF60w7XPIyHJT0JQDamoT+AzAvXulrZUHIy
-	IgqGJ0dg2JbjLEoU9Pb2LDKLlydjQXaxsXUBAyxadgX9vMQamC2rekzBfrMWGRDHHUPZ6UQrPTB
-	S/ROfyXm2VXfy6EKE2vzm8Hi1hEvBCpJviW8wqSxAnJbsBDWXNVFMbLNUEeY0ZotGqIo3repFtA
-	r5AmLyE5b/2aoFNfcua4iR0+Np9K56jTKgO6dF5E9cZJyKtZ+VTUvJj8c8PaLJV/Hgot4hqZtN2
-	RA/F5ahY4ONdCBglAkIflhHxYfKWpS+BtINc7KGyhFHywCXINjfWwx56Hrcq/kl4ApIAw5vP6wK
-	ubIwKr8aUg==
-X-Received: by 2002:a17:90b:4f4a:b0:39e:4c80:f680 with SMTP id 98e67ed59e1d1-3a4d1544fcbmr259431a91.31.1790743573545;
-        Tue, 29 Sep 2026 21:46:13 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (25.187.82.34.bc.googleusercontent.com. [34.82.187.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4cae9ffaesm1339773a91.16.2026.09.29.21.46.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 21:46:13 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Xin Long <lucien.xin@gmail.com>,
-	Vlad Yasevich <vyasevich@gmail.com>,
-	Neil Horman <nhorman@tuxdriver.com>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hui Peng <benquike@gmail.com>
-Subject: [PATCH net-next v2] sctp: copy zeroed stats to user in sctp_getsockopt_pr_streamstatus() when !streamoute
-Date: Wed, 30 Sep 2026 04:46:11 +0000
-Message-ID: <20260930044611.204739-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVmotk48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622781F000FF;
+	Wed, 30 Sep 2026 04:51:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790743890;
+	bh=I6jkYFcTNthR5C+Hpfv06QjmgS8uSSJevl9gWXkvy/I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cVmotk48593ZILJB8/gEe7LYuTOWfrkzQF/exVikVuuuFa9zA/AAqfhd0BByUTffD
+	 /H+BVg9OGvBFTWmyev6HkAAoE858UtcJI8fL9W5TKWJ2YMZ9k69gDDC47LRlNZCw5C
+	 dn5WDmzhOWPVLpn9JrUQaNEHi9RxK/f23gxq3qD+iJvWv9yIjJ/X6UXUdM1ZohQIDf
+	 5PnpWJEFuXEtsEpzuvZc2bqUN71NOOXm6bnl2QKCARiAhEzIKFrsJI+kiU023wz0YW
+	 ZcOHRYdClFfyVcNrhSmJXd0cY7jYuEnZ/BAlCN1/mxx4b8oINjVFgOJm+hOAo71s8P
+	 +zyr/FaT+SYeA==
+Subject:
+ Re: [PATCH net v4 02/15] net: stmmac: reuse the MDIO reset GPIO on resume
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ qiangqing.zhang@nxp.com, rmk+kernel@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ansuelsmth@gmail.com,
+ yangtiezhu@loongson.cn, chenhuacai@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, fancer.lancer@gmail.com, quic_jsuraj@quicinc.com,
+ richardcochran@gmail.com, Joao.Pinto@synopsys.com, vladimir.oltean@nxp.com,
+ boon.leong.ong@intel.com, weifeng.voon@intel.com, yoong.siang.song@intel.com,
+ linusw@kernel.org, martin.blumenstingl@googlemail.com,
+ magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, horms@kernel.org,
+ bjorn@kernel.org, thierry.reding@kernel.org, jonathanh@nvidia.com,
+ wens@kernel.org, jernej.skrabec@gmail.com, samuel@sholland.org,
+ edumazet@kernel.org, richard.genoud@bootlin.com, alastair@d-silva.org,
+ mripard@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
+ zhaojinming@uniontech.com, lorenzo.bianconi@oss.qualcomm.com,
+ dinghui1111@163.com, linux-tegra@vger.kernel.org, linux-sunxi@lists.linux.dev
+Date: Wed, 30 Sep 2026 04:51:26 +0000
+Message-ID: <179074388691.434549.18241724837995094025@kernel.org>
+In-Reply-To:
+ <20260926-submit-stmmac-reset-fixes-v1-v4-2-ec1c0250b3c9@gmail.com>
+References:
+ <20260926-submit-stmmac-reset-fixes-v1-v4-2-ec1c0250b3c9@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When an SCTP stream output extension structure (streamoute) has not yet
-been allocated, sctp_getsockopt_pr_streamstatus() sets the local stack
-variables params.sprstat_abandoned_unsent = 0 and
-params.sprstat_abandoned_sent = 0, but then immediately jumps to 'out:',
-bypassing copy_to_user(). As a result, when an uninitialized user buffer
-is passed to getsockopt(SCTP_PR_STREAM_STATUS), the kernel returns
-success (0) without copying the zeroed stats back to user space, leaving
-uninitialized data in the user buffer.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Refactor the !streamoute check into an if-else chain so that when
-streamoute is NULL, params is zeroed and falls through to copy_to_user(),
-copying the zeroed stats to user space and setting retval = 0 once before
-returning.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-Tested in QEMU against Linux 7.3.0-rc3 using an uninitialized
-sctp_prstatus user struct passed to getsockopt(SCTP_PR_STREAM_STATUS) on a
-freshly created stream: on the unfixed kernel the user struct contains
-uninitialized stack garbage; whereas with this fix applied, getsockopt()
-copies zeroed stats into user space and returns 0.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 28b7eab0f910 ("sctp: add SCTP_PR_STREAM_STATUS getsockopt")
-Cc: stable@vger.kernel.org
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
----
-Changes in v2:
-- Re-target subject tag to [PATCH net-next v2].
-- Remove redundant retval = 0 assignment in !streamoute block and fall
-  through to copy_to_user() as suggested by Paolo Abeni and Xin Long.
+- [High] Once the cached descriptor is used, stmmac_mdio_reset() really
+  does pulse the snps,reset PHY reset line on every system resume…
+- [Low] The commit message explains the mechanism (the second exclusive
+  request of snps,reset returns -EBUSY) but not what users see.
 
- net/sctp/socket.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+--
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..1aa475d9dfdb 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -7569,11 +7569,7 @@ static int sctp_getsockopt_pr_streamstatus(struct sock *sk, int len,
- 		/* Not allocated yet, means all stats are 0 */
- 		params.sprstat_abandoned_unsent = 0;
- 		params.sprstat_abandoned_sent = 0;
--		retval = 0;
--		goto out;
--	}
--
--	if (policy == SCTP_PR_SCTP_ALL) {
-+	} else if (policy == SCTP_PR_SCTP_ALL) {
- 		params.sprstat_abandoned_unsent = 0;
- 		params.sprstat_abandoned_sent = 0;
- 		for (policy = 0; policy <= SCTP_PR_INDEX(MAX); policy++) {
+net: stmmac: reuse the MDIO reset GPIO on resume
+
+MDIO bus registration acquires the snps,reset GPIO. This commit caches
+that descriptor in priv->mdio_reset_gpio, so later calls to
+stmmac_mdio_reset(), such as the one on resume, reuse it. Without the
+cache, those calls request the exclusive line again and fail with
+-EBUSY.
+
+> MDIO bus registration acquires the optional snps,reset GPIO through
+> devres. A later bus reset must reuse that descriptor: requesting the
+> same exclusive GPIO again returns -EBUSY while devres still owns it.
+
+[Severity: Low]
+
+This isn't a bug, but could the commit message describe the effect that
+users see?
+
+stmmac_resume() ignores the return value of stmmac_mdio_reset(). Before
+this patch, on OF boards with a snps,reset GPIO, every resume without
+MAC WoL silently skipped two things: the PHY reset pulse and the
+STE101P dummy MDC write:
+
+    writel(0, priv->ioaddr + mii_address);
+
+Nothing was logged when this happened.
+
+The message also doesn't say that this change turns the PHY hard reset
+on resume back on. That reset has not run since 7c86f20d15b7. Without a
+symptom or behaviour change in the message, stable backporters
+following the Fixes: tag have nothing to match against bug reports.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> index afe98ff5bdcb0..07d5eab05996b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> @@ -386,14 +386,20 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>  
+>  #ifdef CONFIG_OF
+>  	if (priv->device->of_node) {
+> -		struct gpio_desc *reset_gpio;
+> +		struct gpio_desc *reset_gpio = priv->mdio_reset_gpio;
+>  		u32 delays[3] = { 0, 0, 0 };
+>  
+> -		reset_gpio = devm_gpiod_get_optional(priv->device,
+> -						     "snps,reset",
+> -						     GPIOD_OUT_LOW);
+> -		if (IS_ERR(reset_gpio))
+> -			return PTR_ERR(reset_gpio);
+> +		/* The bus reset also runs on resume. Devres retains the GPIO
+> +		 * until unbind, so do not request an already owned line again.
+> +		 */
+> +		if (!reset_gpio) {
+> +			reset_gpio = devm_gpiod_get_optional(priv->device,
+> +							     "snps,reset",
+> +							     GPIOD_OUT_LOW);
+> +			if (IS_ERR(reset_gpio))
+> +				return PTR_ERR(reset_gpio);
+> +			priv->mdio_reset_gpio = reset_gpio;
+> +		}
+
+[Severity: High]
+
+With the descriptor cached, stmmac_mdio_reset() now really pulses the
+snps,reset line on every system resume where MAC WoL is off. Does
+anything re-initialise the PHY after that?
+
+Before this patch, the second devm_gpiod_get_optional() on the
+exclusive line failed in gpiod_request_commit() with -EBUSY. The
+resume path ignores that error:
+
+stmmac_resume()
+    } else {
+        pinctrl_pm_select_default_state(priv->device);
+        /* reset the phy so that it's ready */
+        if (priv->mii)
+            stmmac_mdio_reset(priv->mii);
+    }
+
+So no PHY hard reset has run on resume since 7c86f20d15b7. Before that
+commit the reset did run, but mdio_bus_phy_resume()->phy_init_hw()
+followed it.
+
+Today stmmac_phylink_setup() sets config->mac_managed_pm = true, and
+phylink copies that into phydev->mac_managed_pm. As a result,
+mdio_bus_phy_resume() returns early:
+
+mdio_bus_phy_resume()
+    if (phydev->mac_managed_pm)
+        return 0;
+    ...
+    ret = phy_init_hw(phydev);
+
+The MAC-managed path only runs phylink_prepare_resume()->phy_resume()
+and phylink_resume()->phylink_start()->phy_start()->__phy_resume().
+Neither of these replays config_init() or config_intr().
+
+Wouldn't that leave the PHY at its power-on or strap defaults while
+phylib believes it is still configured? The config_init() settings
+would be lost: RGMII delays or skews, clock-out, LEDs, vendor quirks,
+and the autonomous EEE disable.
+
+For an interrupt-driven PHY, the reset also clears the interrupt
+enable register. phy_start() restarts aneg, sees link down and moves
+to PHY_NOLINK, and it does not poll after that. Could link-up then
+never be reported, so the interface stays down until the admin runs a
+down/up cycle?
+
+PHY-based WoL seems to be affected too. phylink_ethtool_set_wol()
+removes the modes the PHY handles from the MAC mask:
+
+    wolopts &= ~w.wolopts;
+
+With PHY WoL, priv->wolopts is therefore 0, so resume takes the reset
+branch. Won't the reset pulse erase the PHY's WoL enables, so the next
+suspend is not armed for wake?
+
+Resume now also blocks for the snps,reset-delays-us msleep() calls.
+When those delays are 0, the DMA reset in stmmac_hw_setup() needs the
+PHY RX clock, and it runs right after reset deassert.
+
+This also looks unresolved at the end of the series. After "net:
+stmmac: track datapath and power ownership across failed reopening",
+stmmac_resume_hw() still calls stmmac_mdio_reset(). stmmac_resume()
+still only calls phylink_prepare_resume() and phylink_resume() after
+it, and no phy_init_hw() call was added in stmmac or phylink.
+
+This patch carries a Fixes: tag, so it will reach stable. Should the
+resume path either re-initialise the PHY after the reset, or skip the
+reset pulse on resume?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926-submit-stmmac-reset-fixes-v1-v4-0-ec1c0250b3c9%40gmail.com
