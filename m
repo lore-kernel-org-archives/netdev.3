@@ -1,34 +1,34 @@
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAE644C64B;
-	Wed, 30 Sep 2026 07:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385E44F564;
+	Wed, 30 Sep 2026 07:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790754118; cv=none; b=ZEWrHG7vfU8JgkcJSfPypdA8jFboh5aZtTIoQGbk6w9t3u9nOR5lffkgI4/AGq3CroUH5MIgpWtI9foMUXj1/M/t1FQE0WK2kN2/xuenajMLre/t4l2ePJPay5i3WcQlKoiWJEeC0wKTKHATPFx5yY3mp0XpaZwv2V4pfVA1sWs=
+	t=1790754119; cv=none; b=SaSgZIOtcbXS1+K0+9ipvu2y/nYKw5aeTirncJ0AQPK+h9hrV93Ak2kqYhbLch6MKclsdpnkcAo2bylomfVf7pqVA0hCuGTTjgPzye7Xq5bniRlmfvb185olHsSws57kJnvOTv3z2nBYU7iMYyRk37+i2Yt7hOOx71m3uAOhySM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790754118; c=relaxed/simple;
-	bh=hvKl/MVOWB90vjhvMf6KtdrTPfMUV/fDGAwguKby5x8=;
+	s=arc-20240116; t=1790754119; c=relaxed/simple;
+	bh=IJ2lSkgAoqrtEVHGx1wKh9WVagoB22Pw/fZ07JuijQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hc2Q5EGG4Rwwt9BtLR3IU2dZOVPQsKmL1nwGoDygfu89iMk8xpYbcqxV0rfQZuS62Tn5YXQgiPOLCDbv7Sr2/szRUPrgSGKNsPEe0VBp2kORgIIlMBAQL/ugkNK0SJDzm6DGsQ/RtuNWhEUPai9wOMRjQRXZ6SWwIUj1E48+zYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ppQTMYIA; arc=none smtp.client-ip=217.70.190.124
+	 MIME-Version; b=YVJAx5Kaf2V1+v++klJj1xvHnm35skqhbS9I4phC/8KHtNh53DMC71rexXXDTc7doNwr8GFAcKnivky6iJh0xrNxOFfY5ATtTMfgWMHWFTyjsXpAvE+3kemG5J/JC5XmAn7An0D1CqPyX0dQXXR9aj7rYZNT3a/jrn0Ba99zrAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ZCjLxsyV; arc=none smtp.client-ip=217.70.190.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ppQTMYIA"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ZCjLxsyV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1790754108;
-	bh=obLcSQDIiPunVN8yOBpGpgQLMPs0/ghhehx7yiIyNlw=;
+	s=2025; t=1790754109;
+	bh=7HpG4ukDMle9PPbYZM0ZKGZcUZGDj7vCkJZ77axIiKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppQTMYIAzOoqzeYYpDidUXQ5bgPzubBzWBLEmgjEOqdcEU/6lCCpSSUKqDL+VeM4i
-	 mhw5K9xiKcoCZtv4qfpBxplgGhryOn4iDKGxAotCOL7essXVVB/uwzeVEaEtEQdIUZ
-	 ZS0ODASrjBotLWkwR1SkJupJbkVpyJk4E1RRRRbEAgtrH9cPqdEJhsMvorPsW3B3+8
-	 /AilwY6iHx9b3BtxA4312QVRGsBcS9LxalWSb2H6ayrlc3RfAAw85ybYNBb7KsdPrg
-	 jWN2mLl3sGrucyXB/oKOa/0VW+I68Zdc6Ebsga84c2hW27Ea5nP/yF1LR5OhP84rNB
-	 4s9oNEC1oPnjQ==
+	b=ZCjLxsyVL/cRFutotJkPs2UOP9mNNW5FNxjMFO2H45CJYnvlU/pZa+mVI2BI40Oo2
+	 J1z6QhCv0qtd60YasrG4dSKZCCRCw+Dki0JRZdvXtNSTMd2xK3vzRM08MNLwqpItNW
+	 2/VumKQKv+EMZcWzoMZ/PKkjIQFOdqxg3WfodiI0t+Z6Z+zc7R2qZDch+XBKvLeS/2
+	 vrtPKctvmGPOKSz8djTbuAs5wnpmedNkOmLjUejlanEKUE4QVukoNYDFFXEdBA1xZ0
+	 MQmgvJ/zyzePdXulmDWmGBBP1nDN3DupKd0TvrYBQwrBrf5RCJssaCyKosIkQe/cn2
+	 7Ev29dUgm3tbg==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 1348D60610;
-	Wed, 30 Sep 2026 09:41:48 +0200 (CEST)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 5263660680;
+	Wed, 30 Sep 2026 09:41:49 +0200 (CEST)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,9 +39,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 01/10] netfilter: ipset: do not update comments from kernel-side adds
-Date: Wed, 30 Sep 2026 09:41:32 +0200
-Message-ID: <20260930074142.298353-2-pablo@netfilter.org>
+Subject: [PATCH net 02/10] netfilter: nft_flow_offload: drop flowtable reference on init error path
+Date: Wed, 30 Sep 2026 09:41:33 +0200
+Message-ID: <20260930074142.298353-3-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260930074142.298353-1-pablo@netfilter.org>
 References: <20260930074142.298353-1-pablo@netfilter.org>
@@ -53,46 +53,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+From: Aohan Mei <henrymei@tencent.com>
 
-'Fixes' commit stopped calling ip_set_init_comment() for hash types
-from kernel-side-adds (xtables .. -j SET).  ip_set_init_comment() says:
+nft_flow_offload_init() bumps the flowtable use count with
+nft_use_inc() before calling nf_ct_netns_get().  When the latter
+fails, the error is returned as-is and the reference is leaked.
 
-   "The kadt functions don't use the comment extensions in any way."
+The upper layers do not balance it either: nf_tables_newexpr()
+clears expr->ops when the expression init callback fails, so the
+nft_expr_more() iteration in nft_rule_expr_deactivate() and
+nf_tables_rule_destroy() stops right before the failed expression
+and its ->destroy callback, which would drop the reference, never
+runs.
 
-But bitmap set type calls the function from kadt cb too.
+Each failed rule addition therefore leaks one flowtable reference
+and the flowtable can no longer be removed: NFT_MSG_DELFLOWTABLE
+keeps reporting -EBUSY even though no rule references it.
 
-While this appears to be safe (serialized via the set spinlock), it seems
-better to not call the init function either, least of all to keep
-behaviour consistent.
+Save the nf_ct_netns_get() return value and undo the nft_use_inc()
+when it fails, restoring the inc/dec pairing within
+nft_flow_offload_init() itself.
 
-ip_set_list calls ip_set_init_comment() only from uadt cb, it can be
-kept as-is.
-
-This was triggered by yet another LLM review, hinting that the existing
-rcu_dereference_protected() cannot be downgraded to only check if the
-nfnl mutex is held.
-
-Fixes: f30415929be8 ("netfilter: ipset: do not update comments from kernel-side hash adds")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipset/ip_set_bitmap_gen.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_flow_offload.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipset/ip_set_bitmap_gen.h b/net/netfilter/ipset/ip_set_bitmap_gen.h
-index d6a7e6604542..ae376fa3e7a3 100644
---- a/net/netfilter/ipset/ip_set_bitmap_gen.h
-+++ b/net/netfilter/ipset/ip_set_bitmap_gen.h
-@@ -159,7 +159,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index 32b4281038dd..d3c5651dd699 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -160,6 +160,7 @@ static int nft_flow_offload_init(const struct nft_ctx *ctx,
+ 	struct nft_flow_offload *priv = nft_expr_priv(expr);
+ 	u8 genmask = nft_genmask_next(ctx->net);
+ 	struct nft_flowtable *flowtable;
++	int err;
  
- 	if (SET_WITH_COUNTER(set))
- 		ip_set_init_counter(ext_counter(x, set), ext);
--	if (SET_WITH_COMMENT(set))
-+	if (SET_WITH_COMMENT(set) && !ext->target)
- 		ip_set_init_comment(set, ext_comment(x, set), ext);
- 	if (SET_WITH_SKBINFO(set))
- 		ip_set_init_skbinfo(ext_skbinfo(x, set), ext);
+ 	if (!tb[NFTA_FLOW_TABLE_NAME])
+ 		return -EINVAL;
+@@ -174,7 +175,11 @@ static int nft_flow_offload_init(const struct nft_ctx *ctx,
+ 
+ 	priv->flowtable = flowtable;
+ 
+-	return nf_ct_netns_get(ctx->net, ctx->family);
++	err = nf_ct_netns_get(ctx->net, ctx->family);
++	if (err < 0)
++		nft_use_dec(&flowtable->use);
++
++	return err;
+ }
+ 
+ static void nft_flow_offload_deactivate(const struct nft_ctx *ctx,
 -- 
 2.47.3
 
