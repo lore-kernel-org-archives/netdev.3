@@ -1,132 +1,111 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6BF3115BD
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F1E3BED44;
+	Wed, 30 Sep 2026 09:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790759316; cv=none; b=jDHwDEQXVAUyEo8LDaxQPQptpVIfCXepfqBmrHRpAMZrlgLbmT9Oe+OXxlDZvNmKsfT3y9IZfS1vu73aCxG+5nPHmMLGkP1dQSY2TeKBlsLQ8gA9xyrzgtOvGhFlIW0YCF7eUZbFmYoG5RvDof/nwqCdIbQMKnW9or49AuPVJBo=
+	t=1790759611; cv=none; b=qdu3UNo9LytNb8vOUyQmk4pRPK8yQro8GuFqAvarODNpyHzA+YN6O2RryhBO8GgKHgtOa1aHXQKXy7Kk2hJtRemHXLE2tVSTXH9K/dGNvCVmlOyic8gRC+nlXhyo4XB+16D2ICeFuM4BO0keRXwxIaUOWujGjXkyuv8VWidCn40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790759316; c=relaxed/simple;
-	bh=klHR3Nz1rOxOJcII8MzfQqNr3V+0jjXpVJhwXg0YAAU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dqx8IpY/LtavOEcX0zm80hTtkhGukv90DfDa1ZHP1G72Wy9VFNjv5UGXaojt8J/wXIyodJBMKozz2Mi61dwXzyEWJ1XhoVv5C0rfB6qZT90OGaArtsZ55UVsTsUgua2rlduRcq98MtbNL2876XYd+v9afTRgewiDMgNnkvO6RxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dLW+iix3; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790759611; c=relaxed/simple;
+	bh=IxlfuqDrkgSpiLNaVb0NlpWFcUkIkNjXAMrsnCOOLr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YeQn9tbFGI6r4+CfVmKxjqJbgxgyN44rG0r/nMEAchdU4HqfZYTAB7Xej6HTyE8NBRVFLAddK7dSju3HN9vR4UvIB9otAENksYqajGD0C22On8lUw6imeDfLS/dteocdEXtO55d7HDyG9koGgBj+GZLFvAoH5U7s/plTkcBMXjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=KJq4dS0o; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=h0o40mPs; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dLW+iix3"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc7661e6333so394436a12.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:08:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790759314; x=1791364114; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RauAE0NRM4GJcc7YyYfV5rJWUGqNP6yplYq/ttNj4yI=;
-        b=dLW+iix3OPMpUaNNChOOC7NqnjCA4eEndHm8Bhs3j7903UYNA4EwW8aC4cPeNMM/YS
-         yLopxAhKln6dgbF5XyccvjhAEZJWyuVgv4N2t1Swhg5GjvU5MiIydWw9JNLj7o/LFRXW
-         Inj/bWN+mu1YTt9VtRFhMUhVbp+wK+wZpe+zQF+3O1WYn/nepwuEXKyoQuc45GRdVBlg
-         JrqxGHlgn+akidbDAgzER4cEcodmxQFPFRn5+14dzpEaDPY2w7HKi4FcX5AfCvZ7zrEb
-         NiYptHgrq5dNqvrc67uKPXpBzCAq0emKWzTk2OQuyLswxkZtYPMztQT5QpxUxtxbGlkt
-         A8Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790759314; x=1791364114;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RauAE0NRM4GJcc7YyYfV5rJWUGqNP6yplYq/ttNj4yI=;
-        b=0lkfVcFnh15itZJp6WOz5IrScYYzWOuRFK2jYE8LxDArViHVr2BmrGKRt9aJaMIEWO
-         48sv+ZOZgrXPJ/RDHvs4PeT1xuHRrcdGpXhHUJhLtLe8ArZ3jYPVB1foy0EshnWY7fZo
-         n/J7v6jtoPsiQyDSswcW5adqWNrQHE1M33sh1K0NojT1FbKO1UM6iXq8QWJySBWp4kLj
-         BKXqRhkFve4R3XFPOdh0ODaSYeteTIuz44fLup2NEj6YVO7urvkK0uwO60VimR/elOIh
-         5H5r7h+03szRMT1aJ3bX7Rw9BxE587Pnn9CcONc9yzDEc/zMGJ6lK2B9HRhAxy2wrYII
-         xJTg==
-X-Gm-Message-State: AFq9FYI01WvLbueQXKS0I2X+OdTqHGqsYwM8tuUHjXh7iBXaV+XUrfGz
-	Dcj+LNpGL+DSnOvakGfkqGGzSCIIsGdcdZW1GIjrRod71Ek/nvg+mrqMlUzJV292dEw=
-X-Gm-Gg: AYBFou2fqEagliTgKnHhtNMuJJh43HykoNLOagXjAGmWNZ+ygkmc4IjBaBJIFCqmDgL
-	OK2hzVO5nShPlJh3UyW9tfL/z7NWhbFU32ODrve/vwLKEgOPocYs220sZLL/TJjI4HXaNCVsBhZ
-	LNqZyA883jS/OJD7lwhDmMttPlt5Cy334FByDcuWIOmeTP24dPVTpWxjp1wFYp3kq3q7SVc6fqx
-	jDMbB6vBIvZ9BacFhhw58Yp8h9zNWZJ6x5FaJlH9Je8/jgXD6BZa2dwvsXRDWWIeFOm8B+lOgRm
-	8hZpGQjI0iocSLCpdZqnq+KVCCs6nLCy6WCHlXXyH00s+R7ADWw+ko5pxfPCkJzSItSBo+4Xji/
-	dbuiourBd9V2rBAECQOrQNXTzTTHbIW36BlPAvia566+Hyf8XvregaUlIBZ9kYSAkWWjkk/zwPT
-	0rmJhRF3aRqjL1iLcOaFFVsBtYiJAmfKrT8QmV0h0h5g5cVqosZrmrbrB8TjlHCxYUOHkRdWVP3
-	1PBvXbbweQDi5CPSUi5jLI1gDY2MqNmSxjKvnekPEUcJLk8dPtCTu0+p9Mnz+iGVIC5mjyw
-X-Received: by 2002:a17:90b:3849:b0:398:bad2:c10 with SMTP id 98e67ed59e1d1-3a4d195e1b9mr1107369a91.6.1790759314478;
-        Wed, 30 Sep 2026 02:08:34 -0700 (PDT)
-Received: from localhost.localdomain ([139.159.170.82])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4cac328c6sm2578059a91.12.2026.09.30.02.08.30
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 30 Sep 2026 02:08:33 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au
-Subject: [PATCH net 2/2] vti6: fix tunnel device use-after-free across async crypto resumption
-Date: Wed, 30 Sep 2026 17:08:12 +0800
-Message-ID: <20260930090813.73901-3-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260930090813.73901-1-q.h.hack.winter@gmail.com>
-References: <20260930090813.73901-1-q.h.hack.winter@gmail.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="KJq4dS0o";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="h0o40mPs"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8C8417A0702;
+	Wed, 30 Sep 2026 05:13:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 30 Sep 2026 05:13:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1790759607; x=
+	1790846007; bh=1nC1UVy4t2WwVoRJhfMm2fOdz3wxL0myhdMxjHdg71w=; b=K
+	Jq4dS0oA1EIo3GmrqIzE+GJzmLXn40VB8b2e31jDH3s6PBs29kpTBmXPLjMPLBMf
+	IjSweryD/hhpOcE9G5Ayy28OIDTCKtd+kA0UzfwqKsyGYI7t0gD5tTnPwiCRXFID
+	kmsFSo4LgK+BoVvT4Tcf1e4k+i8+ilcuuTKP6+E7odcvVFTZTzwlAq5VXrLHVCBv
+	EcJA51PuAiufCHk8oWYp1RuPpmV5n3m64mgF1vEzXC1obr9JHDtKISJTGrSGUtt+
+	it7CXLGcrvmY7ky7KLbWw2rHWsi6B3ctCgEbTh7EvPM2mCLd/9MflBH8YbhYGFRG
+	6N5CrSjBa6cisfuSp8Z9g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790759607; x=1790846007; bh=1nC1UVy4t2WwVoRJhfMm2fOdz3wxL0myhdM
+	xjHdg71w=; b=h0o40mPsNvfTx9ZQtH+avoJIbB5S53rZ2oGRhZdTL/w+C7wBRZk
+	g+YzhaWPjV/NRuEGl8xEtY9XwnXdAS5kHg0OOWfshL40kggIvJFjEnTbtNwv/9Ah
+	vtm7V73am3iSDDgdQDwRlLNN9ncMY5l/i+S1xVU29v3Mr86jK4FMVqkuttsu/OpE
+	WiM4HYls5jEWOUDXpwyYYaYdeGyUyzPsLdquzABRnxr62vdfI53omZU8AHaOCRAm
+	/qBDjglzAop8z4SgfaeUbXNrDYEDSn5yVVdinup13WPpgFRLNUy6L2dd6UkDcEQN
+	46Oc6SgyR2sZh4aBzmzseKoj3FLPLIy+/Vg==
+X-ME-Sender: <xms:ttK8asI-c_XWs_9mb26glu9Vv-S-DDl3R79e6UmL6afH3ys-sBMRCg>
+    <xme:ttK8aqaKxIULdvo8ihbwoAfgcwdz1oTmNPdGeTV3_PdzR5oZGhsrfmqQLwHHmqs2K
+    -m4t-LwsReorIcYIW9F7ZTaITeqI5CgtYW-GDwZQbDAQCu2TxWgOzDZ>
+X-ME-Received: <xmr:ttK8amBwlkWgke1zcTJNi4XvKXNYYcCFOeaN4BY0hJoOIxQKWGHI4s8Noy2K>
+X-ME-Proxy-Cause: dmFkZTE4NMMjpg7Cs9y62M7IqXGDu6jAzbpUHpCYUBrJAN5E0Y/1vziUUl76agErQ2RhAK
+    xh2FNXbPgjXGsJuD0fT6Xtfn8n+sfe4P17fQi5lN2bRAEv7SKKO66ImIGHnuQEYIVZjSgX
+    gIohwNenoIvT7d2qnh7ubM95O0oYbNr8BmXHvvtSbAIyAckaMaJ0EwM0qAcK3Cq2VJn8vF
+    Lx1wOLelVcxcaVXVaWcfN2qFbMM7ATAsx8MIUXSbB9GyQ/zag6gYrKbwVhJLTCc7KHpzPL
+    JlKSHQkpLD5XH6wMp2LYFP2OQMMjZZcHlhyU4bMGHE52FKcKw7S06XGK57hPqMvvYbh8i+
+    wyjKojOwcVDkIompl2NgVWoZL3qVVuxTPIspqdAA4XeeC5RlFucZJaWrv1FcCC62J58ySv
+    Atu7ZyBzXviDD2gojpZtX6YMI8LevM2Qs1JKPYY7uM8lxX4EmuE2G6QorehaHcWfkbyk7n
+    NNSdXgm+phvr4SlfdK0oo1GOXweptKMp2XjwXDiwbuFV70/SEowE3XcOmA2bBfXtWIK/LX
+    faT827YEGkN34p6Rj0wQ1R4NpLKw/JcA6suhyNqHhJxn77Xz/MmOf5XudN/k1kbAZWidm0
+    pkZ0ZEjItx+csBRkUtbv0habmdc0q25YG4JeDGdFLLQ1qt9JzkWGEIdTAJYQ
+X-ME-Proxy: <xmx:ttK8asbraJnHLhTjWRknIrSM8-pW2oiq3aefkiowILbDqeTVnDYbog>
+    <xmx:ttK8amli03OL0DEakZB5djkDyhkWVLBgOyqdKykGFAmatM6AT5ar_Q>
+    <xmx:ttK8apqnaL-LgTRxYWa3nJ25e6iQg1khBvZUXm6FlR1PKJ_mEStpkQ>
+    <xmx:ttK8agDybFzou13gk2xfpNRSHOJDcj-PV7d8DFpfrkxLmLRZkZATqw>
+    <xmx:t9K8agY8er1rN2km4WSR0QrWfdGIxNJFpFlhWbxzNeJojRqoS1eA7-Rv>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 30 Sep 2026 05:13:26 -0400 (EDT)
+Date: Wed, 30 Sep 2026 11:13:24 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Qingfang Deng <qingfang.deng@linux.dev>, Chuck Lever <cel@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Dave Watson <davejwatson@fb.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] tls: skip empty data records in tls_sw_splice_read()
+Message-ID: <arzStIrdizPp_vbI@krikkit>
+References: <20260930052636.166007-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260930052636.166007-1-qingfang.deng@linux.dev>
 
-Same issue as on the IPv4 side: vti6_input_proto() caches the tunnel
-pointer without taking a device reference, and vti6_rcv_cb() runs from
-the async crypto completion, after a possible device teardown.
+2026-09-30, 13:26:36 +0800, Qingfang Deng wrote:
+> tls_sw_splice_read() returns 0 after receiving an empty application
+> record. This looks like EOF for splice(), even though the connection
+> remains open and more data may be available.
+> 
+> Consume empty application records and retry the receive path instead,
+> following the approach used in tls_sw_read_sock() since commit
+> 3be28e2c9cd0 ("net/tls: Consume empty data records in tls_sw_read_sock()").
 
-Take a device reference while the pointer is cached and drop it in
-vti6_rcv_cb() after the last use, like the IPv4 side.
+This is similar to what Chuck proposed in July:
+https://lore.kernel.org/all/20260726-tls-follow-on-v1-2-99bf4cc1c729@kernel.org
 
-Fixes: fa9ad96d4905 ("vti6: Update the ipv6 side to use its own receive hook.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
- net/ipv6/ip6_vti.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+but Chuck's patch had some extra bits (handling of the "released" flag
+and of signal_pending).
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ab94b3a4ba9c..b53830d5cf54 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -322,6 +322,9 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
- 		rcu_read_unlock();
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-+
-+		dev_hold(t->dev);
-+
- 		XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
- 		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
- 		return xfrm_input(skb, nexthdr, spi, encap_type);
-@@ -355,10 +358,14 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
- 
- 	dev = t->dev;
- 
-+	/* Drop the reference taken in vti6_input_proto().  -EINVAL/-EPERM
-+	 * make xfrm_input() re-invoke us with err = -1 and drop it then.
-+	 */
- 	if (err) {
- 		DEV_STATS_INC(dev, rx_errors);
- 		DEV_STATS_INC(dev, rx_dropped);
- 
-+		dev_put(dev);
- 		return 0;
- 	}
- 
-@@ -387,6 +394,7 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
- 	skb_scrub_packet(skb, !net_eq(t->net, dev_net(skb->dev)));
- 	skb->dev = dev;
- 	dev_sw_netstats_rx_add(dev, skb->len);
-+	dev_put(dev);
- 
- 	return 0;
- }
+His series also had a selftest which should be included too
+https://lore.kernel.org/all/20260726-tls-follow-on-v1-6-99bf4cc1c729@kernel.org/
+
 -- 
-2.54.0 (Apple Git-157)
-
+Sabrina
