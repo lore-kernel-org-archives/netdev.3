@@ -1,50 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2FD3ACEED;
-	Wed, 30 Sep 2026 23:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9AE4AAC4D;
+	Wed, 30 Sep 2026 23:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790811553; cv=none; b=gdoEzQw+ZRBxknEKI1yYCgyrgSZ1pnmix05zeHpgbhzdIiZuq+bOnR4mPM98f1aQNghzVHGuBlVa2+DRdEzna79h49qzUv9touRiJRd3X7HjlQUQRwNjc/bwXLyG+zOJWCEiVoQHuOYZv+nrjFzPRC+jLwuppS9z6vxKlTVgyHM=
+	t=1790811609; cv=none; b=QHsHQgbjxZMpzbKFjDbNdZGBQRj2LI2xGYOUmDCpl3ddPux/wUItwIC6f1LouE6mPhcWAtPVaJSTEziVLFtkkibrELu4AQ1yQxE4jrm+jub+Yn1W9ntg6EO8PP7ci5g/WYweI4uOk//zrJNzIp2wc8tcHnu1N/H8jzQk+mL5CBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790811553; c=relaxed/simple;
-	bh=mZTdRyAGM22fPpS5hrH9V1sgZRvbK+cWKUOQMPGgnjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQPgTeUUKyuetS8J40XEuA7GnK2ld5obYKyxP0+Ske5ysAkscNbFlkTgaZwuxEBwxcUc91WsHT54JIx465uYVFXEsiRgJ6+858I6OTB1fnFetkn8EWVORmpCuh3POhDchWni5v11b4V42U8B8hUkg9bvXL3HlJnXOcVDzuGwnYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPwU4PHE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790811609; c=relaxed/simple;
+	bh=MuJJzogIWf+b8hhSHabl/t2tZ67qmfqYX9MKSpRSRIA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=J4OWWIYEJ979HyTevaS2rzPB+bzgDrX6Ne1RkRIEGM8dI08BzP8Mzb+voQY+IFFvJEFXuVQcHEW2EzQ2Yw5zJ5jr1HqE551UCwQXarwP6lIXERlSx7HT2BTl3zTzTXQcREYyLqNPcqu1FTni1MigGOX72JuIVqC68bm2DaZlY1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLT364Aq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPwU4PHE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A501F000FF;
-	Wed, 30 Sep 2026 23:39:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLT364Aq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B496C1F000FF;
+	Wed, 30 Sep 2026 23:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790811551;
-	bh=DWqCFzLlFkOdVmvdd32OLOlMg9exXKWjSzyHvJXSslY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oPwU4PHEXb2NlyU9ZDadQPIycpemqmt7T6bEXLz1RlHMFhXbAhYHRKTIhadYY9ihr
-	 CBPBvsO+U0kTHp1UmGX37LMZ0rPfphoIFsyBpBNGoI3PVQ0h5ZqSEyRNS+fkoXeB8n
-	 ZdKXP6WOd/l8nZuVvLxLBnvEs7V50R+qNWrMOLHSG61ulUl1ky9YEH4Put6HHQZhlj
-	 QljcdWGZkcDFx84KeGy1wjqvdS7pCjcArEowZF0bbc46t4cFYuTgQtFAdWnleQrrWk
-	 BVY/dS8tyLWZ80G0MdDwDoY4YHA637PYUJ1NP9ucKjbzQBtKQNduzUPHpHuXIYoXjm
-	 szUX8DISBEu4A==
-From: Jakub Kicinski <kuba@kernel.org>
-To: bestswngs@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	jiri@resnulli.us,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xmei5@asu.edu,
-	co+2cf741c3005abc20@bugs.sh,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: team: stop reusing skb after queue override
-Date: Wed, 30 Sep 2026 16:39:10 -0700
-Message-ID: <20260930233910.146301-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260926090039.1714460-1-bestswngs@gmail.com>
-References: <20260926090039.1714460-1-bestswngs@gmail.com>
+	s=k20260515; t=1790811607;
+	bh=4snq0PtxiqOoej1Z7MUMqVQjAW3Bf/CxiJhsKpu6mNk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=OLT364Aq0g2Bav5DIbQYk5cQxdaocKIiQRJRGmnF594v5Vvks4uesOjfax2IlSrSE
+	 Rmlj0Or4xsyr0mm7JOqeLA+SbEvg5Uh7TXGTMtmqXxcDR0lpao5NGYXcQxzAVB+q/b
+	 n06oOBVYeFmSq8AOiC37vfzsc8YjnKIT6DRql7kwCQGhtObw2OuoDmQc5aB7CPDH2b
+	 NPcUoDx7j4vUfGirsCtfZYxut1dZQJ/GuoxxVoi257HulsjkwfM3WVOmDJtTgUlKD1
+	 aqNYXkK5x4Qo1brKSaf4nHc7tODFZLymaIiLyvufiHF0TNkUEHhNrMf5YUVC+L4QR3
+	 q+jie4Z/eWxuw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AA31139EAF51;
+	Wed, 30 Sep 2026 23:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,82 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] seg6: reallocate the skb head on L2
+ encapsulation only when needed
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179081160653.2175258.10702581891378114546.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 23:40:06 +0000
+References: <20260925-seg6-l2cow-v3-1-fc83821542a7@gmail.com>
+In-Reply-To: <20260925-seg6-l2cow-v3-1-fc83821542a7@gmail.com>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-This is an AI-generated review of your patch. The human sending this
-email says "Lets fix all the bugs in this area in one series"
----
-net: team: stop reusing skb after queue override
+Hello:
 
-This patch fixes a use-after-free in team_xmit(). Before it,
-team_queue_override_transmit() treated a non-zero dev_queue_xmit() return
-as "no handoff" and then reused the skb, which had already been consumed.
-The patch reports the handoff separately from transmit success and only
-tries the first override port.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-> index beffbe450612b..59dd94271ff19 100644
-> --- a/drivers/net/team/team_core.c
-> +++ b/drivers/net/team/team_core.c
+On Fri, 25 Sep 2026 23:49:53 +0900 you wrote:
+> The L2 encapsulation modes of the seg6 lwtunnel reallocate the skb head
+> on every packet, where the IPv6 encapsulation modes reallocate only when
+> they have to.  Ask for the whole encapsulation up front instead, so that
+> the reallocation happens at most once and only when the headroom really
+> is too small:
+> 
+>   skb->mac_len + sizeof(struct ipv6hdr) + ipv6_optlen(tinfo->srh)
+>   + dst_dev_overhead(cache_dst, skb)
+> 
+> [...]
 
-[ ... ]
+Here is the summary with links:
+  - [net-next,v3] seg6: reallocate the skb head on L2 encapsulation only when needed
+    https://git.kernel.org/netdev/net-next/c/bf515c9fae87
 
-> @@ -1864,8 +1865,7 @@ static netdev_tx_t team_xmit(struct sk_buff *skb, struct net_device *dev)
->  	bool tx_success;
->  	unsigned int len = skb->len;
->  
-> -	tx_success = team_queue_override_transmit(team, skb);
-> -	if (!tx_success)
-> +	if (!team_queue_override_transmit(team, skb, &tx_success))
->  		tx_success = READ_ONCE(team->ops.transmit)(team, skb);
-
-[Severity: High]
-This is a pre-existing issue, not one introduced by this patch. This fix
-relies on the transmit op always consuming the skb. Does broadcast mode
-break that rule?
-
-In bc_transmit() in drivers/net/team/team_mode_broadcast.c, the original
-skb is only handed off if a txable port was found:
-
-	if (last) {
-		ret = !team_dev_queue_xmit(team, last, skb);
-		if (!sum_ret)
-			sum_ret = ret;
-	}
-	return sum_ret;
-
-If no port passes team_port_txable(), last is NULL and the skb is neither
-sent nor freed. team_xmit() then only increments tx_dropped and returns
-NETDEV_TX_OK.
-
-Does this leak the skb and its sk_wmem_alloc charge, since sock_wfree()
-never runs?
-
-Can this state be reached? team_adjust_ops() picks the mode transmit op
-based only on tx_en_port_count:
-
-	if (!team->tx_en_port_count || !team_is_mode_set(team) ||
-	    !team->mode->ops->transmit)
-		WRITE_ONCE(team->ops.transmit, team_dummy_transmit);
-	else
-		WRITE_ONCE(team->ops.transmit, team->mode->ops->transmit);
-
-However, team_port_txable() also requires port->linkup.
-
-For example, say port A has link but its tx is disabled through the
-tx_enabled option. Port B is oper-down but tx-enabled, which is the default
-after team_port_add(). __team_carrier_check() keeps carrier on because port
-A has link, and tx_en_port_count == 1 keeps bc_transmit() installed. Every
-packet sent through the team device would then leak.
-
-The same could happen if all tx-enabled ports lose link while transmits
-are in flight. It could also happen if user_carrier_enabled keeps carrier
-up while all ports are down.
-
-The other transmit ops (roundrobin, random, loadbalance, activebackup and
-team_dummy_transmit()) all call dev_kfree_skb_any() when they find no port.
-
-Should bc_transmit() also call dev_kfree_skb_any(skb) when last is NULL?
-
-[ ... ]
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
