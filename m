@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693292DB789
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BB945DF6C
 	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790755695; cv=none; b=sjPUJVJ78Er45OEcjZHxoi5WwjWK2Lt5DwDIx/xThj/8VbDhb+75QhrnfocBPWyltXQCGmEfsxA26l1QJGMfh7h7NMsHOPCKEcC/MbzVVWxQe8J6zPXzDoCQrajbqoQse4LuniP8nkiaqa2lTXP2vjajm7oVF9vzqplfDWcZegs=
+	t=1790755696; cv=none; b=HysLoP+IkcNuV8BP9kmYhmsqP9TE7ECGLyFMbMRPIAW/uJJxFDc1huBtol+sdiFeT9Qz8CcnoT3auag0RlI919rgPJY7Kj5wsJXM0iIrFgt09uREyeeEh4hQzdTcQ/sPAhYZCLFnlQmbiR1LzXxXJwSWxnz4jyZlWz5PDgaExkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790755695; c=relaxed/simple;
-	bh=N2iopIczYmdLRsir/FxapApxrKkQCX/Eh1eRGThO2To=;
+	s=arc-20240116; t=1790755696; c=relaxed/simple;
+	bh=ypOyOY8DJxbZZx1YqhIY8z69H6+b09STEfEMYmscxqw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XPmdb5wDl89svf+9Num78RbbsZEUruqZfc7O9iyRyDMDgcVfjnChct6o5/c9x5Mc04Y1JHyVoUsPblYAsCXRodTkd8fPdDSeJfk6BTgAbmsmL15hje1x3Bo6+lsiCsUGk6DcWMYkzLA58vbwzP/LHhDN7BIW5zf1YyAPUM6z/ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WyBvWC/+; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=IqVH1UymFxFnafmtSdyKmE7Hy1iKUeU0AfXcupGd/mqBZ04jyRld4wrMUXmne2HSG3J09abs/qmaeXl5JP3U/QNsGJF6CcQ+bsjo4rq+SukFKEfy8ACCJQq9EXawn6z8n6VsNxhuC6PQO6V+TEa2Mcd//AP4y5lx+njkeJMwcNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MWzYgqPB; arc=none smtp.client-ip=117.135.210.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WyBvWC/+"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MWzYgqPB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Qk
-	bJMflO4AzyeDXhB1zRNlm8/EWazIgSHOT8idCTm8E=; b=WyBvWC/+iaOn8W4Yd0
-	2lL89vbs0X0XfkbQ3Xs2FZ4dU54GSE3GP3Q66OR4T7cAla8i1O+3xZIFxZhCWMHv
-	ysA2UsMFPenu99Qv72v5YNe4QckSIS5htHQ0DGGCRcih5LQaG6dx5PJBzGqkdb5B
-	8Z83/Y8uku0wXQa1ONpz1KMAo=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=tP
+	4AUfgsIVstGgqPRYNcy+cvae1nS7fjcMfU7aZleO4=; b=MWzYgqPB0UINHf1tyK
+	GV5CclOzoS1tn9kzFv7NxA4OU2cLr1C413GnfyZSJtXWwLuhyTVjuSyzemWpetfK
+	gZFAHvvf9ScJ5SK41kHKSeYGewOBTcbUPMOH9ZN4ceCc+xI95aowt7KpGLcdOgMm
+	JJ50EJzeONkm1V5V9BlQ48R70=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgBnNiBTw7xqRdh1Bw--.20247S3;
-	Wed, 30 Sep 2026 16:07:51 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgBnNiBTw7xqRdh1Bw--.20247S5;
+	Wed, 30 Sep 2026 16:07:53 +0800 (CST)
 From: Rongguang Wei <clementwei90@163.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -33,9 +33,9 @@ Cc: willemdebruijn.kernel@gmail.com,
 	davem@davemloft.net,
 	kuba@kernel.org,
 	Rongguang Wei <weirongguang@kylinos.cn>
-Subject: [PATCH net v3 1/3] tun: keep a kernel copy of the socket filter program
-Date: Wed, 30 Sep 2026 16:07:44 +0800
-Message-Id: <20260930080746.135017-2-clementwei90@163.com>
+Subject: [PATCH net v3 3/3] selftests: net: add TAP socket filter attach tests
+Date: Wed, 30 Sep 2026 16:07:46 +0800
+Message-Id: <20260930080746.135017-4-clementwei90@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260930080746.135017-1-clementwei90@163.com>
 References: <20260930080746.135017-1-clementwei90@163.com>
@@ -46,182 +46,206 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgBnNiBTw7xqRdh1Bw--.20247S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AFyrZr4fKr17JrykCr13CFg_yoWxGr47pF
-	W5W3W5try5WFW2gwnIyFW0yF1aq3W8WFy7ury8G34Y9F1qgr18u3y2gFyYywn8ArWUu3Wf
-	Zw1jgr9xWw1kWr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzlksUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4hfPO2q8w1cekgAA3P
+X-CM-TRANSID:PCgvCgBnNiBTw7xqRdh1Bw--.20247S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF45XF47Gr1rKw1fur4kZwb_yoW7uFWkpF
+	93WayDJr1UWFy7Xan7ArW8AFWfXw4DGr15Zrs5K3s8ZrsrJryrCanakFWYkr1Iyr48uwn0
+	kFyaya45uws8XFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jdxhLUUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4RnQPGq8w1k6dAAA3W
 
 From: Rongguang Wei <weirongguang@kylinos.cn>
 
-TUNATTACHFILTER copies only the sock_fprog header, so tun->fprog.filter
-stays a pointer into the address space of the process that issued the
-ioctl. tun_attach() reads it again whenever a queue is attached to the
-persistent device later on: unmapped there, the attach fails with -EFAULT;
-mapped, whatever bytes it holds become the filter of the new queue.
+reattach_filter_without_user_buffer() attaches a filter, makes the buffer
+the program was copied from unreadable and then attaches the queue again,
+which used to fail with -EFAULT.
 
-Keep the program in the kernel instead. tun->fprog_kern holds the
-instructions and each queue gets its own program, built with
-sk_attach_filter_kern().
+attach_filter_bad_len_keeps_program() checks that a rejected
+TUNATTACHFILTER leaves both the saved program and the installed filter
+alone.
 
-sk_attach_filter_kern() reads no user buffer and attaches the program like
-sk_attach_filter() does. The caller must hold the socket lock. Failing the
-attach releases it; so does the socket when the filter is replaced,
-detached or the socket goes away.
+attach_filter_nofilter_flag() and detach_filter_clears_reattach() cover the
+ways to attach a queue without a filter.
 
-The copy is freed when the filter is detached or replaced and with the
-device, and tun->fprog is left untouched so TUNGETFILTER keeps its uapi
-behaviour.
-
-Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
-Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
 Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
 ---
- drivers/net/tun.c      | 41 +++++++++++++++++++++++++++++++++++++----
- include/linux/filter.h |  1 +
- net/core/filter.c      | 22 ++++++++++++++++++++++
- 3 files changed, 60 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/tun.c | 155 ++++++++++++++++++++++++++++++
+ 1 file changed, 155 insertions(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 5a302709a68a..22fb34e745bd 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -197,6 +197,7 @@ struct tun_struct {
- 	int			sndbuf;
- 	struct tap_filter	txflt;
- 	struct sock_fprog	fprog;
-+	struct sock_fprog_kern	fprog_kern;
- 	/* protected by rtnl lock */
- 	bool			filter_attached;
- 	u32			msg_enable;
-@@ -722,6 +723,34 @@ static void tun_force_wake_queue(struct tun_struct *tun,
- 	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
+diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+index abe488bac50b..6f6023b16d1c 100644
+--- a/tools/testing/selftests/net/tun.c
++++ b/tools/testing/selftests/net/tun.c
+@@ -8,8 +8,10 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <linux/filter.h>
+ #include <linux/if_tun.h>
+ #include <sys/ioctl.h>
++#include <sys/mman.h>
+ #include <sys/socket.h>
+ 
+ #include "kselftest_harness.h"
+@@ -542,6 +544,159 @@ TEST_F(tun, reattach_close_delete)
+ 	EXPECT_EQ(tun_delete(self->ifname), 0);
  }
  
-+/* Copy the filter that @argp points at into the kernel, so that it can be
-+ * installed again later, from any context. tun->fprog and tun->fprog_kern
-+ * are updated only once the copy succeeded.
++/* accept: return skb->len */
++static const struct sock_filter filter_accept[] = {
++	BPF_STMT(BPF_LD | BPF_W | BPF_LEN, 0),
++	BPF_STMT(BPF_ALU | BPF_ADD | BPF_K, 0),
++	BPF_STMT(BPF_RET | BPF_A, 0),
++};
++
++/* Put the instructions in an anonymous mapping, so that the test can make the
++ * address unreadable afterwards.
 + */
-+static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
++static void *filter_alloc(const struct sock_filter *insns, unsigned int len)
 +{
-+	struct sock_fprog fprog;
-+	struct sock_filter *insns;
++	void *p;
 +
-+	if (copy_from_user(&fprog, argp, sizeof(fprog)))
-+		return -EFAULT;
++	p = mmap(NULL, getpagesize(), PROT_READ | PROT_WRITE,
++		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (p == MAP_FAILED)
++		return NULL;
 +
-+	if (!fprog.len || fprog.len > BPF_MAXINSNS)
-+		return -EINVAL;
++	memcpy(p, insns, len * sizeof(*insns));
 +
-+	insns = memdup_array_user(fprog.filter, fprog.len,
-+				  sizeof(struct sock_filter));
-+	if (IS_ERR(insns))
-+		return PTR_ERR(insns);
-+
-+	kfree(tun->fprog_kern.filter);
-+	tun->fprog_kern.len = fprog.len;
-+	tun->fprog_kern.filter = insns;
-+	tun->fprog = fprog;
-+
-+	return 0;
++	return p;
 +}
 +
- static int tun_attach(struct tun_struct *tun, struct file *file,
- 		      bool skip_filter, bool napi, bool napi_frags,
- 		      bool publish_tun)
-@@ -752,7 +781,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 	/* Re-attach the filter to persist device */
- 	if (!skip_filter && (tun->filter_attached == true)) {
- 		lock_sock(tfile->socket.sk);
--		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-+		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
- 		release_sock(tfile->socket.sk);
- 		if (!err)
- 			goto out;
-@@ -2397,6 +2426,7 @@ static void tun_free_netdev(struct net_device *dev)
- 	security_tun_dev_free_security(tun->security);
- 	__tun_set_ebpf(tun, &tun->steering_prog, NULL);
- 	__tun_set_ebpf(tun, &tun->filter_prog, NULL);
-+	kfree(tun->fprog_kern.filter);
- }
- 
- static void tun_setup(struct net_device *dev)
-@@ -3059,6 +3089,9 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
- 		release_sock(tfile->socket.sk);
- 	}
- 
-+	kfree(tun->fprog_kern.filter);
-+	tun->fprog_kern.filter = NULL;
-+	tun->fprog_kern.len = 0;
- 	tun->filter_attached = false;
- }
- 
-@@ -3070,7 +3103,7 @@ static int tun_attach_filter(struct tun_struct *tun)
- 	for (i = 0; i < tun->numqueues; i++) {
- 		tfile = rtnl_dereference(tun->tfiles[i]);
- 		lock_sock(tfile->socket.sk);
--		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-+		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
- 		release_sock(tfile->socket.sk);
- 		if (ret) {
- 			tun_detach_filter(tun, i);
-@@ -3418,8 +3451,8 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
- 		ret = -EINVAL;
- 		if ((tun->flags & TUN_TYPE_MASK) != IFF_TAP)
- 			break;
--		ret = -EFAULT;
--		if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
-+		ret = tun_copy_filter(tun, argp);
-+		if (ret)
- 			break;
- 
- 		ret = tun_attach_filter(tun);
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 39decde7fc73..0de5a738fb26 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1218,6 +1218,7 @@ int bpf_prog_create_from_user(struct bpf_prog **pfp, struct sock_fprog *fprog,
- void bpf_prog_destroy(struct bpf_prog *fp);
- 
- int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk);
-+int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk);
- int sk_attach_bpf(u32 ufd, struct sock *sk);
- int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk);
- int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk);
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 70dc621672f2..64d6505a4ef2 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1567,6 +1567,28 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(sk_attach_filter);
- 
-+int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
++static int filter_attach(int fd, const struct sock_filter *insns, unsigned int len)
 +{
-+	struct bpf_prog *prog;
-+	int err;
++	struct sock_fprog fp = {
++		.len = len,
++		.filter = (struct sock_filter *)insns,
++	};
 +
-+	if (sock_flag(sk, SOCK_FILTER_LOCKED))
-+		return -EPERM;
-+
-+	err = bpf_prog_create(&prog, fprog);
-+	if (err)
-+		return err;
-+
-+	err = __sk_attach_prog(prog, sk);
-+	if (err < 0) {
-+		__bpf_prog_release(prog);
-+		return err;
-+	}
-+
-+	return 0;
++	return ioctl(fd, TUNATTACHFILTER, (void *)&fp);
 +}
-+EXPORT_SYMBOL_GPL(sk_attach_filter_kern);
 +
- int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk)
++static int filter_get(int fd, struct sock_fprog *fp)
++{
++	return ioctl(fd, TUNGETFILTER, (void *)fp);
++}
++
++static int tun_get_iff_flags(int fd)
++{
++	struct ifreq ifr = { 0 };
++
++	if (ioctl(fd, TUNGETIFF, (void *)&ifr) < 0)
++		return -1;
++
++	return ifr.ifr_flags;
++}
++
++/*
++ * A queue can be attached long after the filter was configured, from a process
++ * that does not necessarily map the buffer the program was copied from, so
++ * the kernel has to keep its own copy of the program.  Here the mapping is
++ * made unreadable before the queue is attached again: re-reading the user
++ * address used to fail with -EFAULT.
++ */
++TEST_F(tun, reattach_filter_without_user_buffer)
++{
++	struct sock_fprog gf = { 0 };
++	short flags = 0;
++	void *prog;
++	int ret;
++
++	prog = filter_alloc(filter_accept, ARRAY_SIZE(filter_accept));
++	ASSERT_NE(prog, NULL);
++	ASSERT_EQ(filter_attach(self->fd, prog, ARRAY_SIZE(filter_accept)), 0);
++
++	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
++
++	/* The process that called TUNATTACHFILTER no longer maps this memory */
++	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_NONE), 0);
++
++	ret = tun_attach(self->fd, self->ifname);
++	EXPECT_EQ(ret, 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	EXPECT_EQ(filter_get(self->fd, &gf), 0);
++	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
++
++	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_READ | PROT_WRITE), 0);
++	ASSERT_EQ(munmap(prog, getpagesize()), 0);
++}
++
++/* A new queue attached with IFF_NOFILTER must not get the filter that is
++ * configured on the device.
++ */
++TEST_F(tun, attach_filter_nofilter_flag)
++{
++	struct ifreq ifr = { 0 };
++	short flags = 0;
++	int fd;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++
++	fd = open("/dev/net/tun", O_RDWR);
++	ASSERT_GE(fd, 0);
++
++	strcpy(ifr.ifr_name, self->ifname);
++	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE | IFF_NOFILTER;
++	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
++
++	flags = tun_get_iff_flags(fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++
++	close(fd);
++}
++
++/* After TUNDETACHFILTER a later attach must not install the filter again */
++TEST_F(tun, detach_filter_clears_reattach)
++{
++	short flags = 0;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++	EXPECT_EQ(ioctl(self->fd, TUNDETACHFILTER, 0), 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++
++	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
++	EXPECT_EQ(tun_attach(self->fd, self->ifname), 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++}
++
++/* A TUNATTACHFILTER with a bad length must leave the installed program and the
++ * filter state that TUNGETIFF reports alone.
++ */
++TEST_F(tun, attach_filter_bad_len_keeps_program)
++{
++	struct sock_fprog gf = { 0 };
++	short flags = 0;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++
++	errno = 0;
++	EXPECT_EQ(filter_attach(self->fd, filter_accept, 0), -1);
++	EXPECT_EQ(errno, EINVAL);
++
++	EXPECT_EQ(filter_get(self->fd, &gf), 0);
++	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++}
++
+ FIXTURE(tun_vnet_udptnl)
  {
- 	struct bpf_prog *prog = __get_filter(fprog, sk);
+ 	char ifname[IFNAMSIZ];
 -- 
 2.25.1
 
