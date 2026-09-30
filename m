@@ -1,123 +1,117 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250AD37FF7F;
-	Wed, 30 Sep 2026 09:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028123DDB0A;
+	Wed, 30 Sep 2026 09:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790761672; cv=none; b=ivfWhPQ8Op5MwpCIb5KUtRm9CR4rTx20XMkohi9uqFABADDKCB8QxQz6TYvaGhKK3F/JIAwuQilUhlwwfcAlg4qCkYqRDtS/nDGb7b/baKnLuYwm7+HEuZqyZFdSQKRfMtV4ktnPKujy8JB+ZvCeuTe5RSbYeHXgNEOKZGRDvfQ=
+	t=1790761680; cv=none; b=ovHUmopMjbeI0XbuVQlgKdfQfCqFCuDu5vO9xDgDF+n7U1rXGUMPPQDQWgnUNiokrfsloXW9naRib3SrevtkMJkCMnoKFQVugAHeMFEvM7ch8K3uYyOWRgBQMVLG/otZXSSOC+vVQs9rMx8lUDVP3LVC/pawZ7gLRCfWHq50eHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790761672; c=relaxed/simple;
-	bh=KHZo90IPU0FsiL8AARSQ0vX3VkeVlMDaXI/E06p+b7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DkDQxAM2/A4A9lRPga36upcPjbld1AXvSwO1g0OG/IA/VPJu7Z10e8K3qNx/7+qjn/vBfGnih2RJfKrqnbp+z9+MhysFLNH7jf+vj/gJA9LfVe6i6g+cKMTCOY/gm69DWMaEyCnL80gl1ciHXFm8Q7ROu5+dCYBqoGfz8ap0RV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=g6LzQakh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GYPxSAY0; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="g6LzQakh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GYPxSAY0"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id BD5D51D00722;
-	Wed, 30 Sep 2026 05:47:48 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 30 Sep 2026 05:47:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790761668; x=
-	1790848068; bh=74HIZbLLKuHgdGt8I2guVI931y4BufE4gPjSle/vjtg=; b=g
-	6LzQakhmZE9s5z1Cr3vmE4NjDEitFiVMrgcyqsnwmJgo2Bd/G37Wn9nrsXKkdns4
-	YyaGyI/iZCQfQdrXencVFqaq0oAz2e0ls8B7sKghsaDKSnC++SsWjIxjc8/SctIO
-	voNl9f7gLUWvvlPR5Pn9inALu8nWLwvsktQ8fhYWvAKCT1Q6lg2NUQQmRa4fokjU
-	XAxJ8bcRnuf/g5tebptNSqJ8hS6Z4fm0gllhKVV5wESwFGI7IHFeBSu3VFif3hu3
-	53Y42SMsj/TtEx+bLrPEwwKkitDfiKnaliEIyzfUHJRMxil7ty9R3y574Pt9K9bN
-	lCNgUOJfBbR8DS7Uj1vig==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790761668; x=1790848068; bh=74HIZbLLKuHgdGt8I2guVI931y4BufE4gPj
-	Sle/vjtg=; b=GYPxSAY0sXtLitwgg/QvpYYhkPnzq0IrfZWVCX7If/FRombrthd
-	rkSq7xfSqQCF4jbh9MWdWAYShQk4ah27TfAPXS8l+/kvUkcPvvn+lj6x4iCD/xkd
-	z1XIx6o+5Igf3n6yXy4sx1Pr5qb6ApBh1LNDWAbaec+ftW4cRgoY91L+saBFz1b6
-	Pwpil/EMSNmBDNFp8WzpFKP1qclDsMPxLo1XMHl2ttBmGG4YhJonrVQk5KvYA2G2
-	omm1Ms0cEVFhfYhTtHXhi+WJTLp1QzJOnXGQWXDxtLlPqimyyLIXGnvKDCxpPWQ+
-	/SN+/PajxumSkOAUfhhLdjrVkkqlDXF5zyA==
-X-ME-Sender: <xms:xNq8alp2MJNNLQ9GCsFapMeoPru8txaw6xXlmJR2F0bTBs_706JTEg>
-    <xme:xNq8al7GZ7_SkxUPJqZv1L9ZxTK3hjL7I4fnMzVsMzYwIt8Jki2MZfO7fv69ShK_N
-    HS3bOigVoRCHZsNEs1fXeLpyR1Q4FmV4VNTmtV_egykhwCyNcIU6Qw>
-X-ME-Received: <xmr:xNq8argtXhXNCypJuMA_OWf09B8itdiFsNc6TeWYbZVbhd3CwufQKBty4MDh>
-X-ME-Proxy-Cause: dmFkZTEzhxKWkqlGTUncuCmm+isrwbVU97iQsL3Q/y3wJHglNS5ymIL55/xjy++3OP7jdI
-    3lkOwJ5lWpFHzfvsXiysVzTZUDI4UAz+WADSxIy4Uu201vtKvTMeKGiw8nYnrh1gtrdQ9Y
-    /0xLVVvrNE7hV3YYinx0o49P+nrNHOyd3vwTEedn3mxYwTOhmQI9Qi/HOImlS1AVeVso5Z
-    f6X3XQ1qq1x1p6M2GOb0MuuU5XdBcACLDyPI5PYZwaJtAnichBMKuejFFAZr/oKbvPf24X
-    NB8xh7bq7YDilu9YYxaz9BYDpaXYUUpmGZ1iWkRf/v6U6YMWL7L4z8PZqJR5qBhJXLTEiT
-    pM2PvbbQCr6/7xuQKeDbuaAU0kWpPNz7wrJRaY6eKG1e+XQUbwJr2ASDSElJhZQ8Gz4Kyw
-    DdepKS9ehbA4a+L8jdcLAW4TSBaAtGJGg1r2x2+8kWkymhT+ULrH7D82FccyIYJt2ZRR5C
-    KklPbKtnmGtCOEUUcl1RR/nzDJnhlB+1ZVroD6HY5Z+a7rU9LvLHiD6KtRISDSZRWQskw+
-    vTG8elofy1/j9qTvu/T4XaT3EeQG3QHe64nQbmgD1IUI0bCyglk5m8ArbdSOdiDYFJLTmw
-    otW1IqzCr+i9oCn/PXtB+i5lKw5U+LoVnzRJvehPzJRS5GL6CqbNhp3D5Nzg
-X-ME-Proxy: <xmx:xNq8aj6asWIFuR1aPqBpJYpPUTRZPOpVQP6RnG4KLgxvJ1sCgID1hQ>
-    <xmx:xNq8aoF7JVvICKs7SRLz4q9DbgQiGOR-TV67lYAtcozzJe_4gJR4Ig>
-    <xmx:xNq8atLmCPJanvjl8HBI1XlYGJnRqzfKHJc1_MCbFXrwP3GSXa-rUQ>
-    <xmx:xNq8atgsFLv9JlnE9MQizQkCnXwETqvO0ApzZh6HcUz5Ja0SNRrd7Q>
-    <xmx:xNq8aj5nbj51KmE-AJVRc7rx7bTa70x6MI68zYyorc9yXCU7jQousacv>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Sep 2026 05:47:47 -0400 (EDT)
-Date: Wed, 30 Sep 2026 11:47:46 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Chuck Lever <cel@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Dave Watson <davejwatson@fb.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tls: skip empty data records in tls_sw_splice_read()
-Message-ID: <arzawlad0OQ9pnBQ@krikkit>
-References: <20260930052636.166007-1-qingfang.deng@linux.dev>
- <arzStIrdizPp_vbI@krikkit>
- <465aa0d9-b1b2-4c85-9cbf-e6ed296b7b12@linux.dev>
+	s=arc-20240116; t=1790761680; c=relaxed/simple;
+	bh=B7sU+JYKVX69Tn8BilhYZIlgBnfPnitcXAXiwOWYmds=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BXpwURqWPCFzTdaBvMosMGZbkZABGmX2/rBcTxCFlByCyxYijGWAM6JskNJKcMBSy2gHvp6eL7vMm2XoS2PRaLPXo0buz0qlUiunLCUg4WT4iVwKx5ggQZgtrl9FiWHMgKpaaL2hQlDXs3C0nYQwKHCwliStEstaPFocY6i5Fhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 010f6dbebcb411f19a56ed5b684f684d-20260930
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:4f68d59d-f336-4019-998e-c8b25ca05050,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:e81a37adf8bbab61fd4706f2095968cd,BulkI
+	D:nil,BulkQuantity:0,SF:102|136|850|865|898,TC:nil,Content:0|15|50|99,EDM:
+	5|-100,IP:nil,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 010f6dbebcb411f19a56ed5b684f684d-20260930
+X-User: zhangyunfei1@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhangyunfei1@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2083579561; Wed, 30 Sep 2026 17:47:52 +0800
+From: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+To: netdev@vger.kernel.org
+Cc: jiawenwu@trustnetic.com,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	aleksandr.loktionov@intel.com,
+	u.kleine-koenig@baylibre.com,
+	weirongguang@kylinos.cn,
+	zhangyunfei1@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	leitao@debian.org
+Subject: [PATCH net v3 0/2] net: ngbe: fix error handling in resume and open paths
+Date: Wed, 30 Sep 2026 17:47:46 +0800
+Message-Id: <20260930094748.1198085-1-zhangyunfei1@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <465aa0d9-b1b2-4c85-9cbf-e6ed296b7b12@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-2026-09-30, 17:24:18 +0800, Qingfang Deng wrote:
-> On 2026/9/30 17:13, Sabrina Dubroca wrote:
-> > 2026-09-30, 13:26:36 +0800, Qingfang Deng wrote:
-> > > tls_sw_splice_read() returns 0 after receiving an empty application
-> > > record. This looks like EOF for splice(), even though the connection
-> > > remains open and more data may be available.
-> > > 
-> > > Consume empty application records and retry the receive path instead,
-> > > following the approach used in tls_sw_read_sock() since commit
-> > > 3be28e2c9cd0 ("net/tls: Consume empty data records in tls_sw_read_sock()").
-> > This is similar to what Chuck proposed in July:
-> > https://lore.kernel.org/all/20260726-tls-follow-on-v1-2-99bf4cc1c729@kernel.org
-> > 
-> > but Chuck's patch had some extra bits (handling of the "released" flag
-> > and of signal_pending).
-> > 
-> > His series also had a selftest which should be included too
-> > https://lore.kernel.org/all/20260726-tls-follow-on-v1-6-99bf4cc1c729@kernel.org/
-> 
-> Thanks for the information. I prefer his series.
+Two error-handling fixes for the ngbe PM/open paths.
 
-Let's see if he has the time/interest to continue work on this (since
-he didn't send a v2, I'm guessing not).
+ngbe_resume() declared err as u32 and returned 0 unconditionally, so a
+failed ngbe_reset_hw(), wx_init_interrupt_scheme() or ngbe_open() left
+the device in netif_device_detach() state with a broken interrupt
+scheme while the PM core was told the resume succeeded; the reset task
+bails out on the missing netif_device_present() check, so the device
+cannot self-heal. Patch 1 fixes the type and propagates all of these
+errors, making the whole tail of the resume path consistent with the
+pci_enable_device_mem() failure path at the top, which already reports
+its error.
 
-Chuck, do you want to pick up that TLS fixes series again, or would
-you rather let Qingfang finish off the "splice vs empty record"
-patch+selftest based on what you had sent?
+ngbe_open() sets the WX_CFG_PORT_CTL_DRV_LOAD bit to tell the
+management firmware the host has taken over the port, but no error
+path cleared it, leaving the firmware owning a port whose rings and
+IRQs are gone. Patch 2 rolls the bit back on all open error paths,
+matching ngbe_close() and ngbe_dev_shutdown().
 
+---
+Changes in v3:
+- patch 1: set WX_STATE_RES_FREED on every failing return of
+  ngbe_resume() (the pci_enable_device_mem() failure, the hardware
+  reset failure early return and the wx_init_interrupt_scheme()/
+  ngbe_open() failures), so that a later ngbe_close() (ndo_stop or
+  unregister_netdev()) skips re-running the teardown on the
+  already-freed post-suspend state instead of freeing IRQs that are no
+  longer requested (Sashiko review of v2);
+- patch 2: correct the Fixes tag to a1cf597b99a7, the commit that
+  introduced the bug (the first ngbe_open() failure path after the
+  DRV_LOAD bit is set; v2 pointed at e7956139a6cf, which added more
+  failing returns but not the first one); no code change.
+
+Changes in v2:
+- also propagate the ngbe_reset_hw() failure, so the whole tail of
+  ngbe_resume() reports errors to the PM core (Sashiko review of v1);
+- drop the inaccurate "device can be re-probed" claim: the PM core
+  records and logs the failure, there is no re-probe (Sashiko review
+  of v1);
+- patch 2/2 unchanged.
+
+Link: https://lore.kernel.org/netdev/20260922100836.1147718-1-zhangyunfei1@kylinos.cn/T/#u/
+
+
+Zhang Yunfei (2):
+  net: ngbe: propagate resume errors to the PM core
+  net: ngbe: clear DRV_LOAD bit when ngbe_open() fails
+
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
 -- 
-Sabrina
+2.25.1
+
