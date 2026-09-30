@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA69233926;
-	Wed, 30 Sep 2026 00:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393B9282F20;
+	Wed, 30 Sep 2026 00:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790727609; cv=none; b=ewkX97izhyEzs7du+aZT954mVaheJpCBgh2RN5MKt+NRHQRmYLmMv9mspA1MwES6QVIMt1x2UWRD+qOPqOZYUZ7SBBL7OfdesttH1KYGjsRMgZQO4YP2NNBAKdhkOVN9l2mPAUHGl0crBGR2JPmcp6UtP+jWLIv97T0ZwdG+gV0=
+	t=1790728208; cv=none; b=sIeFZTQMFYtQZgRVW74UtKRsv1rLU/GAtuNaqtvRBOxJ63/au5O7/PBqMVBsIVsu21nq2/hallEjWJSHKrVyCQXbkb78t2RbUgOzghEEI/GvkZT4CrbrHrpcKOG1HBlsxSRtz+gDbK2q+dK7pvRHE2DVd32QZeOvoLbHdEsF408=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790727609; c=relaxed/simple;
-	bh=gdqff96V0Lqq0noPS8J3tfhaL+MaB4HNGkP61vpubVA=;
+	s=arc-20240116; t=1790728208; c=relaxed/simple;
+	bh=vNW8LuCKhtSIPOsqEAKz0G1ppn4MvMsYJk6CVvdhQtU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EzAw+pCDDBO598s+3PpOAujLadySaT4dUVYxhTvEywgslEEbVhrBjIzVWfeykvOSPo9alefRGyYHRD/K4oEO8bdrnzXcJHxuKkpHgnPy2QE7/tt4ZEsaQxp/EL1oN2yR1UtE7j2XNLHxlD/MJD6MYKQ+sRI4AN74Y1d/7s8wzV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oyODSXN/; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=AryubeAE+BOpJ+wjZfNT0F+nvY8m9amkwhPug264tDoDl/P15He+68RCNyXyR4OAc5zuH/2RycOgBqpjwqVegGJcde+7Nqm1ZnTPcisgDc7yh6IgF+cYjXUiO0PC9DwornhNshzUfkRFU3Uc89WZjhMyWmh9OjE2eIO//FazDVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLX9YqJ2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oyODSXN/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064F51F000FF;
-	Wed, 30 Sep 2026 00:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLX9YqJ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3931F000FF;
+	Wed, 30 Sep 2026 00:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790727608;
-	bh=Rtqmxon+F4y0asMCls4t+EYEy0M7dWEr4lyi913pz/w=;
+	s=k20260515; t=1790728206;
+	bh=nzrw1DJAxJrrbMgCNrigmRVtMubjrWWM9LSdykWzn54=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oyODSXN/hTOO0ekAQfwW15BmSeN2GQ0T0kUjn6x35M0FU1in9rWlgXKrWePEXv9Qt
-	 CLMGRd6D8+Jvm2XB+jc+KsijOu2l2ktdwxyojrKuNxOqMUAIKHUB1w2v3DC6I30hww
-	 RqqwjB3qnUchNvfufS2Nrjxd4vMAwaE2/pD8hi5/vpWOIYv9tcAWGgZIrJj/if+iMP
-	 XDoL5e9HFVDnnuAjTTKTFYapcsdWjqvOTtubaF7geUwizri58L1ZF0vnkPiLB0UleA
-	 /8Ol5LsJLAkM7LYcswrweNNB0vnQ1wTEx9RSeUm1PcXQVYac+zBgM6lxBD8dDiST2f
-	 WDdzAvIzTNMgQ==
+	b=SLX9YqJ20OOE1gTlypIfyEyf/i5KOEzOgbLR6kk9PWApnvxrpZ+1U9Qcoch9idgs8
+	 BTqQckV9aQwbZK/SpCRiZXp8mXNTan3vdIWo/I0NP17vMSlbZyxJd97Tc/0rNiVbA8
+	 QKrT4v7SpEkNvlgADMO3yC0XGATWglQqUywaF2XvqClcKs+qD9jmor8Ynaof6t5E1J
+	 jTd8iKjsx4sS+inLvBgMyUDX+7rn9hs9SnLHVsJKjWQ3q4JPH/MIxDn2RfisVPTjAK
+	 qV/b8bCDnZffce0l3HitpoZkyuiJQzfLDtxOPtBm6TOLMQPmvz/WyLiuosUktdSpaN
+	 mqTqi0gAm0mKg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F14F43808209;
-	Wed, 30 Sep 2026 00:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B43C93924FEA;
+	Wed, 30 Sep 2026 00:30:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] Fix UDP splice checksum alignment across
- fragments
+Subject: Re: [PATCH net v4] net: pcs: rzn1-miic: Clear MIIC protection state
+ before unprotect sequence
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179072760680.1177515.1580969654477785710.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 00:20:06 +0000
-References: <20260924-fix-udp-splice-checksum-v1-0-fe61d65447a8@asgari.net>
-In-Reply-To: <20260924-fix-udp-splice-checksum-v1-0-fe61d65447a8@asgari.net>
-To: Alireza Asgari <alireza@asgari.net>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, dhowells@redhat.com, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
+ <179072820554.1181068.4496571892719089196.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 00:30:05 +0000
+References: 
+ <TYCPR01MB74815955A10817B64BD6FB93A4812@TYCPR01MB7481.jpnprd01.prod.outlook.com>
+In-Reply-To: 
+ <TYCPR01MB74815955A10817B64BD6FB93A4812@TYCPR01MB7481.jpnprd01.prod.outlook.com>
+To: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
+Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 24 Sep 2026 13:00:23 +0000 you wrote:
-> When skb_splice_from_iter() appends several pipe fragments, it updates
-> skb->len only after the loop. The software-checksum helper nevertheless
-> uses that unchanged length as the checksum position for each fragment.
-> An odd number of bytes already appended during the call therefore gives
-> later fragments the wrong checksum alignment.
+On Thu, 24 Sep 2026 10:36:57 +0000 you wrote:
+> On RZ/T2H and RZ/N1D MIIC, writing 0x0000 to the MIIC protection
+> register clears the protection state machine.
 > 
-> A standalone reproducer primes a UDP socket with sendto(MSG_MORE), splices
-> distinct pipe buffers, then uncorks the datagram. The send succeeds, but
-> the receiver drops the packet and increments its checksum-error counter.
+> The initial protection state cannot be assumed to be constant,
+> as it may be influenced by previous activity before the driver
+> takes ownership of the hardware.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: fix checksum offsets in skb_splice_from_iter()
-    https://git.kernel.org/netdev/net/c/febec6a70764
-  - [net,2/2] selftests: net: cover UDP splice checksum fragment alignment
-    https://git.kernel.org/netdev/net/c/1221246d3bd0
+  - [net,v4] net: pcs: rzn1-miic: Clear MIIC protection state before unprotect sequence
+    https://git.kernel.org/netdev/net/c/8b9993437429
 
 You are awesome, thank you!
 -- 
