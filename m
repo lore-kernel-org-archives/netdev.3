@@ -1,347 +1,208 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F334B3515C0;
-	Wed, 30 Sep 2026 03:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4759224676D;
+	Wed, 30 Sep 2026 03:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790740211; cv=none; b=m+Aknc68ZvqGv0736v2JxMqzPJQIeryQkuV3UvAy5oMHR8WFk0hT8Q7xVH29MsNxOCHJO+Qzm8QusYm944cwyboqs+mJvapuRsPQwpZUmycv+dDWyukLpHHKC1zjXmQ7EQn7eprpAWp2YTREFCXyE8uMBe2g/yiTfgZuKBH0Rus=
+	t=1790740340; cv=none; b=PLuUH4iF9fk7e2j1oZoYz9xBe/Y9nZR6FKb/Dr830HGolEgeMSDr8QyeJElH357SUdbOK7CSATjR8Pn5/XlkryjGhYYcBFFKotc+8g1ttZ49xTjNhvguw4Es2pRfendAeb9S5A/KYSCdZEVnE9G+ZVInDn7QqmoNm2oNapqO7rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790740211; c=relaxed/simple;
-	bh=Bf+DsAW5nTvc9GPk9imvQwx9+H7YFzV78ffJrc0GbrY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JYOEWB9bAxlPGk93VAfycPlMsVw6tRbMn900G7vJEMUkAq+yniD2pEWZpRWelvwtGG+ROxQ93jhdeFBCbwIL9B9sBj832XcFG5OI54vL+kge5dzZ+3yf9Im/QulCP1fy5O6X0Bn5bF0Z8qopYokBbvuOUtyc++/JrHJk1cdxn1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRS4MPcU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790740340; c=relaxed/simple;
+	bh=sR1Z2Tu0TX4h7028aVqo9aEPtibcKb0vO2MekE8kzaw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jX0vqPzlr01U1hzYborplgixZA4oo9/Oer6zmP6l55ZCsftOe8nfFOR/Kk9Zdlp4wey4tKguAquqlFI98FAapdFcF6+0QGM0NT5AnHhQS/snA5FVyEu/p9kxaR5KKRtINgDOzbWa4XLV1mbWgWECRCTdJjBYxbCZYdsA56i91lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2YqnDlo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRS4MPcU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59151F000FF;
-	Wed, 30 Sep 2026 03:50:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2YqnDlo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9FB1F000FF;
+	Wed, 30 Sep 2026 03:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790740209;
-	bh=YIbSyCiOLeEUjjfXA44UKdojHNTuWRGoF01Fd+gF+Vo=;
+	s=k20260515; t=1790740338;
+	bh=9cNnFGoevFOeZWAWTmFPoocbC2E0QbIOFTTZj5dLcYc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gRS4MPcUabeFuR3C9i4klfpgJNpppqfTNOI3ByEj403YUelxdvjP8tP0FOlqhr9uM
-	 WFP4K8EdWYl6ZEXDEuec5SjtWPc14c4aRw7FBtJuApwzfJtGTV4M4AkM4oyTvHlTc/
-	 dozFazcACAuj8EotbA4zjvUc/q3OGkD3QeBy+f27NcjnZgXPYytHVUeM681jYWQAha
-	 MiDV9hyjl9LQJfLeD7SUBThIzKsRBzo6EyWASE2wMTRjYJDKnxejhJNDWhOXNQ30Ci
-	 qjC0NOhtS9+dFLjqVZeRamKemrT/esFnuwh2tHI1aFxkjEsliRYqjnZSEZueXblqNj
-	 44/OyrH/LspvQ==
-Message-ID: <07eee1c8cebf02f346b46ba55164f6dfc5f36e91.camel@kernel.org>
-Subject: Re: [PATCH 3/6] landlock: Add MPTCP bind and connect access rights
-From: Geliang Tang <geliang@kernel.org>
-To: =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>
-Cc: =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>, 
- =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?=	 <mic@digikod.net>, Matthieu Baerts
- <matttbe@kernel.org>, Mat Martineau	 <martineau@kernel.org>, Mikhail Ivanov
- <ivanov.mikhail1@huawei-partners.com>, 	mptcp@lists.linux.dev,
- netdev@vger.kernel.org, 	linux-security-module@vger.kernel.org
-Date: Wed, 30 Sep 2026 11:50:02 +0800
-In-Reply-To: <arPhu-qFxCgmfk87@google.com>
-References: <20260830201650.67050-1-gnoack3000@gmail.com>
-	 <20260830201650.67050-4-gnoack3000@gmail.com>
-	 <c0bf0918bd97105ee50f1436e6ff729e84cedf03.camel@kernel.org>
-	 <a5a2f4353d0c2a1b1f86ebf466838f5ef3de27ce.camel@kernel.org>
-	 <arPhu-qFxCgmfk87@google.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-9 
+	b=Q2YqnDlozdrcagf4UodP7SOEorFQH2mBPBEPyWDLjKKl8nrwD6pJUFL4d6xr7Pas/
+	 w0+tLGIrQ8dydFlofWU4+c11ikxAXMDjpWfLoS5ZLNbXswBwbRNWaZCNvCp5gyiVvi
+	 etjongacgsh5A2c7uY7ICzRy8aqJ40YEI4YEhHqa8j/60OyUCv9sWzBbOTnvFhmy1e
+	 1Zoulh8sGaZclQshVhsg9kcri8AjXVwiHdhbUpfyLtmjkmdWunn8eaBLIi3tkolazz
+	 ZGRudO+9zbM3k4jrixxZGZr8EQD7/78OvicUPNodeVTVlTQknqvqLjjuwk67PDeKKb
+	 ZDYH/7yaQb3OA==
+Subject: Re: [PATCH net-next v3 1/6] vxlan: vnifilter: validate the
+ VXLAN_VNIFILTER_ENTRY nest
+From: netdev-bot+sashiko@kernel.org
+To: alishmery18@gmail.com
+Cc: netdev@vger.kernel.org, idosch@nvidia.com, kuba@kernel.org,
+ pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, razor@blackwall.org,
+ roopa@nvidia.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 30 Sep 2026 03:52:17 +0000
+Message-ID: <179074033755.434549.2348132981395970201@kernel.org>
+In-Reply-To: <20260927215209.2581830-2-alishmery18@gmail.com>
+References: <20260927215209.2581830-2-alishmery18@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Günther,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On Wed, 2026-09-23 at 16:27 +0200, Günther Noack wrote:
-> On Wed, Sep 23, 2026 at 01:04:40PM +0800, Geliang Tang wrote:
-> > On Mon, 2026-08-31 at 12:09 +0800, Geliang Tang wrote:
-> > > On Sun, 2026-08-30 at 22:16 +0200, Günther Noack wrote:
-> > > > MPTCP sockets have equivalent bind(2) and connect(2) operations
-> > > > as
-> > > > TCP
-> > > > sockets, but can not currently be restricted with Landlock
-> > > > without
-> > > > explicit MPTCP access rights.  As MPTCP operates on the same
-> > > > TCP
-> > > > port
-> > > > number space as TCP, this is a gap in Landlock's policies.
-> > > > 
-> > > > Add access rights for MPTCP bind(2) and connect(2) operations
-> > > > and document them in the header.
-> > > > 
-> > > > Treat TCP Fast Open the same as done for plain TCP in
-> > > > commit 33cb713db016 ("landlock: Fix TCP Fast Open connection
-> > > > bypass")
-> > > > 
-> > > > The port numbers used in MPTCP subflows are negotiated by the
-> > > > kernel
-> > > > and therefore not subject to these access rights.
-> > > > 
-> > > > Bump the Landlock ABI version to 12.
-> > > > 
-> > > > Closes: https://github.com/landlock-lsm/linux/issues/54
-> > > > Signed-off-by: Günther Noack <gnoack3000@gmail.com>
-> > > > ---
-> > > >  include/linux/landlock.h                     |  5 +-
-> > > >  include/uapi/linux/landlock.h                | 24 +++++++
-> > > >  security/landlock/limits.h                   |  2 +-
-> > > >  security/landlock/net.c                      | 68
-> > > > ++++++++++++++--
-> > > > --
-> > > > --
-> > > >  security/landlock/syscalls.c                 |  2 +-
-> > > >  tools/testing/selftests/landlock/base_test.c |  2 +-
-> > > >  6 files changed, 79 insertions(+), 24 deletions(-)
-> > > > 
-> > > > diff --git a/include/linux/landlock.h
-> > > > b/include/linux/landlock.h
-> > > > index 004cbd0b9298..b04ffc7caa21 100644
-> > > > --- a/include/linux/landlock.h
-> > > > +++ b/include/linux/landlock.h
-> > > > @@ -46,7 +46,10 @@
-> > > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_TCP,
-> > > > "connect_tcp"), \
-> > > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_UDP,
-> > > > "bind_udp"), \
-> > > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_SEND_
-> > > > UDP,
-> > > > \
-> > > > -			     "connect_send_udp")
-> > > > +			     "connect_send_udp"), \
-> > > > +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_MPTCP,
-> > > > "bind_mptcp"), \
-> > > > +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_MPTCP
-> > > > , \
-> > > > +			     "connect_mptcp")
-> > > >  
-> > > >  #define _LANDLOCK_SCOPE_NAMES \
-> > > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCK
-> > > > ET,
-> > > > \
-> > > > diff --git a/include/uapi/linux/landlock.h
-> > > > b/include/uapi/linux/landlock.h
-> > > > index cceda3b3b961..2a953ba7ce25 100644
-> > > > --- a/include/uapi/linux/landlock.h
-> > > > +++ b/include/uapi/linux/landlock.h
-> > > > @@ -448,6 +448,9 @@ struct landlock_net_port_attr {
-> > > >   * - %LANDLOCK_ACCESS_NET_CONNECT_TCP: Connect TCP sockets to
-> > > > the
-> > > > given
-> > > >   *   remote port. Support added in Landlock ABI version 4.
-> > > >   *
-> > > > + * .. note:: These rights do not apply to MPTCP sockets, which
-> > > > have
-> > > > their own
-> > > > + *   access rights (see below).
-> > > > + *
-> > > >   * And similarly for UDP port numbers:
-> > > >   *
-> > > >   * - %LANDLOCK_ACCESS_NET_BIND_UDP: Bind UDP sockets to the
-> > > > given
-> > > > local
-> > > > @@ -474,12 +477,33 @@ struct landlock_net_port_attr {
-> > > >   * .. note:: Sending datagrams to an ``AF_UNSPEC`` destination
-> > > > address
-> > > >   *   family is not supported for IPv6 UDP sockets: you will
-> > > > need
-> > > > to
-> > > > use a
-> > > >   *   ``NULL`` address instead.
-> > > > + *
-> > > > + * MPTCP sockets (created with ``IPPROTO_MPTCP``) use TCP port
-> > > > numbers, but
-> > > > + * they are controlled by their own access rights:
-> > > > + *
-> > > > + * - %LANDLOCK_ACCESS_NET_BIND_MPTCP: Bind MPTCP sockets to
-> > > > the
-> > > > given local
-> > > > + *   port. Support added in Landlock ABI version 12.
-> > > > + * - %LANDLOCK_ACCESS_NET_CONNECT_MPTCP: Connect MPTCP sockets
-> > > > to
-> > > > the given
-> > > > + *   remote port. Support added in Landlock ABI version 12.
-> > > > + *
-> > > > + * .. note:: The TCP and the MPTCP access rights are
-> > > > independent,
-> > > > even though
-> > > > + *   they refer to the same port number space. Handling only
-> > > > + *   %LANDLOCK_ACCESS_NET_BIND_TCP and
-> > > > %LANDLOCK_ACCESS_NET_CONNECT_TCP leaves
-> > > > + *   MPTCP sockets unrestricted, and vice versa. A sandbox
-> > > > that
-> > > > wants to
-> > > > + *   control all TCP-based traffic needs to handle both sets.
-> > > > + *
-> > > > + * .. note:: These MPTCP access rights restrict the ports
-> > > > passed
-> > > > to
-> > > > + *   :manpage:`bind(2)` and :manpage:`connect(2)`. The ports
-> > > > used
-> > > > in
-> > > > MPTCP
-> > > > + *   subflows are negotiated in the MPTCP protocol by the
-> > > > kernel
-> > > > and
-> > > > are not
-> > > > + *   subject to these restrictions.
-> > > >   */
-> > > >  /* clang-format off */
-> > > >  #define LANDLOCK_ACCESS_NET_BIND_TCP			(1ULL
-> > > > <<
-> > > > 0)
-> > > >  #define
-> > > > LANDLOCK_ACCESS_NET_CONNECT_TCP			(1ULL << 1)
-> > > >  #define LANDLOCK_ACCESS_NET_BIND_UDP			(1ULL
-> > > > <<
-> > > > 2)
-> > > >  #define LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP		(1ULL
-> > > > <<
-> > > > 3)
-> > > > +#define LANDLOCK_ACCESS_NET_BIND_MPTCP			(1ULL
-> > > > <<
-> > > > 4)
-> > > > +#define LANDLOCK_ACCESS_NET_CONNECT_MPTCP		(1ULL
-> > > > <<
-> > > > 5)
-> > > >  /* clang-format on */
-> > > >  
-> > > >  /**
-> > > > diff --git a/security/landlock/limits.h
-> > > > b/security/landlock/limits.h
-> > > > index 1a7c5fb8f6fd..d25e056b7ca2 100644
-> > > > --- a/security/landlock/limits.h
-> > > > +++ b/security/landlock/limits.h
-> > > > @@ -23,7 +23,7 @@
-> > > >  #define
-> > > > LANDLOCK_MASK_ACCESS_FS		((LANDLOCK_LAST_ACCESS_FS <<
-> > > > 1) -
-> > > > 1)
-> > > >  #define
-> > > > LANDLOCK_NUM_ACCESS_FS		__const_hweight64(LANDLOCK_MAS
-> > > > K_AC
-> > > > CESS_FS)
-> > > >  
-> > > > -#define
-> > > > LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_SE
-> > > > ND_U
-> > > > DP
-> > > > +#define
-> > > > LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_MP
-> > > > TCP
-> > > >  #define
-> > > > LANDLOCK_MASK_ACCESS_NET	((LANDLOCK_LAST_ACCESS_NET
-> > > > << 1) - 1)
-> > > >  #define
-> > > > LANDLOCK_NUM_ACCESS_NET		__const_hweight64(LANDLOCK_MAS
-> > > > K_AC
-> > > > CESS_NET)
-> > > >  
-> > > > diff --git a/security/landlock/net.c b/security/landlock/net.c
-> > > > index 8f2aaac54b33..8541b0c07d64 100644
-> > > > --- a/security/landlock/net.c
-> > > > +++ b/security/landlock/net.c
-> > > > @@ -11,6 +11,7 @@
-> > > >  #include <linux/net.h>
-> > > >  #include <linux/socket.h>
-> > > >  #include <net/ipv6.h>
-> > > > +#include <net/mptcp.h>
-> > > >  
-> > > >  #include "common.h"
-> > > >  #include "cred.h"
-> > > > @@ -53,6 +54,26 @@ int landlock_append_net_rule(struct
-> > > > landlock_ruleset *const ruleset,
-> > > >  	return err;
-> > > >  }
-> > > >  
-> > > > +static bool sk_is_mptcp_socket(const struct sock *sk)
-> > > > +{
-> > > > +	return sk_is_inet(sk) && sk->sk_type == SOCK_STREAM &&
-> > > > +	       sk->sk_protocol == IPPROTO_MPTCP;
-> > > > +}
-> > > 
-> > > This helper should be placed in include/net/mptcp.h. I had
-> > > already
-> > > implemented one in [1], called sk_is_msk(), to differentiate it
-> > > from
-> > > sk_is_mptcp(). If you have no concerns with my implementation,
-> > > please
-> > > feel free to pick it up and use it in your series.
-> > 
-> > Sorry, let me correct myself. I thought about this more carefully,
-> > and
-> > the ideal place to define sk_is_msk() is in include/net/sock.h,
-> > between
-> > sk_is_tcp() and sk_is_udp():
-> > 
-> > static inline bool sk_is_tcp(const struct sock *sk) 
-> > {
-> >         return sk_is_inet(sk) &&
-> >                sk->sk_type == SOCK_STREAM &&
-> >                sk->sk_protocol == IPPROTO_TCP;
-> > }
-> > 
-> > static inline bool sk_is_msk(const struct sock *sk) 
-> > {
-> >         return sk_is_inet(sk) &&
-> >                sk->sk_type == SOCK_STREAM &&
-> >                sk->sk_protocol == IPPROTO_MPTCP;
-> > }
-> > 
-> > static inline bool sk_is_udp(const struct sock *sk) 
-> > {
-> >         return sk_is_inet(sk) &&
-> >                sk->sk_type == SOCK_DGRAM &&
-> >                sk->sk_protocol == IPPROTO_UDP;
-> > }
-> > 
-> > If possible, please fold this code into this patch.
-> 
-> Thank you for the review, Geliang!
-> 
-> I'll include something like this in the next review round.
-> (We are a bit bottlenecked on doing Landlock code reviews at the
-> moment,
-> so some delays are unfortunately expected.)
-> 
-> Small question about the function name sk_is_msk(): Is "msk" the
-> right
-> name for this?  It seems to be used as abbreviation for "MPTCP" in
-> net/mptcp, but it's also used in net/mctp as an abbreviation, and I
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
-Thanks for the heads-up! I hadn't considered that "msk" is also used as
-an abbreviation in net/mctp.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> could not find a function name in include/net/mptcp.h which used
-> "msk"
-> to mean "MPTCP".  Should that say sk_is_mptcp() instead?
+- [High] The commit message says more than the patch does.
 
-However, sk_is_mptcp() is already taken - it's defined in
-include/net/mptcp.h and used to check whether a socket is an MPTCP
-subflow (tcp_sk(sk)->is_mptcp).
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, and later patches
+  in the series fix it (baseline decision: discard).
 
+--
 
-So I'd like to propose the following rename scheme:
+vxlan: vnifilter: validate the VXLAN_VNIFILTER_ENTRY nest
 
-- Rename the existing sk_is_mptcp() (subflow check) to ssk_is_mptcp(),
-where "ssk" stands for "subflow socket".
+This patch links the VXLAN_VNIFILTER_ENTRY nest in vni_filter_policy to
+vni_filter_entry_policy with NLA_POLICY_NESTED(). The entry attributes are
+then checked by nlmsg_parse() in vxlan_vnifilter_process() before any entry
+is dispatched. The goal is to reject a message that carries an invalid
+entry as a whole.
 
-- Rename sk_is_msk() (the one I introduced here) to sk_is_mptcp(),
-which checks whether the socket is the MPTCP socket itself.
+Link: https://lore.kernel.org/netdev/20260921150904.65a704eb@kernel.org/
 
-This would give a consistent naming scheme:
+> Link the nest to vni_filter_entry_policy with NLA_POLICY_NESTED() so the
+> whole message is validated up front, before any entry is acted on. A
+> message carrying an invalid entry is now rejected as a unit and installs
+> nothing.
 
-  sk_is_mptcp()    - is this the MPTCP socket?
-  ssk_is_mptcp()   - is this an MPTCP subflow?
-  rsk_is_mptcp()   - is this an MPTCP request subflow?
+[Severity: High]
+Is this claim accurate? NLA_POLICY_NESTED() moves only the attribute
+policy checks (type, length, unknown attributes) ahead of dispatch. Two
+other checks that make an entry invalid still run one entry at a time in
+vxlan_process_vni_filter():
 
-We'll need to discuss this with the MPTCP maintainers before
-proceeding.
+drivers/net/vxlan/vxlan_vnifilter.c:vxlan_process_vni_filter() {
+    ...
+	if (!vni_start && !vni_end) {
+		NL_SET_ERR_MSG_ATTR(extack, nlvnifilter,
+				    "vni start nor end found in vni entry");
+		return -EINVAL;
+	}
+    ...
+	if (vxlan_addr_multicast(&group) && !vxlan->default_dst.remote_ifindex) {
+		NL_SET_ERR_MSG(extack,
+			       "Local interface required for multicast remote group");
 
-Thanks,
--Geliang
+		return -EINVAL;
+	}
+    ...
+}
 
-> 
-> Thanks,
-> —Günther
+An empty VXLAN_VNIFILTER_ENTRY nest gets through the new policy, because
+validate_nla() returns before it applies the nested policy:
+
+lib/nlattr.c:validate_nla() {
+    ...
+	case NLA_NESTED:
+		/* a nested attributes is allowed to be empty; if its not,
+		 * it must have a size of at least NLA_HDRLEN.
+		 */
+		if (attrlen == 0)
+			break;
+    ...
+}
+
+An entry with only START=0, or with only GROUP, also gets through.
+
+vxlan_vnifilter_process() applies entries in order, stops at the first
+error and does not roll anything back:
+
+	nlmsg_for_each_attr_type(attr, VXLAN_VNIFILTER_ENTRY, nlh,
+				 sizeof(*tmsg), rem) {
+		err = vxlan_process_vni_filter(vxlan, attr, nlh->nlmsg_type,
+					       extack);
+		vnis++;
+		if (err)
+			break;
+	}
+
+Take an RTM_NEWTUNNEL to a vnifilter device with entry1 {START=100} and
+entry2 {}. Entry2 could also be {START=0}, or {START=200, GROUP=239.1.1.1}
+on a device with no remote_ifindex. That message passes nlmsg_parse().
+Then:
+
+vxlan_vnifilter_process()
+  vxlan_process_vni_filter(entry1)
+    vxlan_vni_add_del()
+      vxlan_vni_add()
+        inserts VNI 100, vxlan_vnifilter_notify(..., RTM_NEWTUNNEL)
+  vxlan_process_vni_filter(entry2)
+    returns -EINVAL
+
+RTM_DELTUNNEL works the same way: earlier deletes are applied and notified.
+
+Isn't this the same "first entry valid, second invalid" case the commit
+message says is now fixed?
+
+Later in the series, the vxlan_vnifilter_check_msg() pre-pass from "vxlan:
+vnifilter: bound the number of VNIs one request may touch" counts an empty
+entry as one VNI. It does neither of these checks, so the case can still
+happen at the end of the series.
+
+Should the commit message say that only policy-level invalid entries are
+now all-or-nothing? The alternative is to run the START/END presence check
+and the multicast/remote_ifindex check over every entry before any entry is
+applied.
+
+> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+> index dd94085e08865..d391ec5796610 100644
+> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+> @@ -467,7 +467,7 @@ static const struct nla_policy vni_filter_entry_policy[VXLAN_VNIFILTER_ENTRY_MAX
+>  };
+>  
+>  static const struct nla_policy vni_filter_policy[VXLAN_VNIFILTER_MAX + 1] = {
+> -	[VXLAN_VNIFILTER_ENTRY] = { .type = NLA_NESTED },
+> +	[VXLAN_VNIFILTER_ENTRY] = NLA_POLICY_NESTED(vni_filter_entry_policy),
+>  };
+
+[Severity: High]
+This isn't a bug introduced by this patch, but at this commit the entry
+policy that is now linked still has no range check on START and END:
+
+	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
+	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
+
+vxlan_process_vni_filter() hands any values other than both-zero to
+vxlan_vni_add_del(). That function loops with a signed counter:
+
+	int v, err = 0;
+	...
+	for (v = start_vni; v <= end_vni; v++) {
+
+With START=0xffffffff and no END, v starts at -1. Compared with the __u32
+end_vni it becomes 0xffffffff, and v++ then climbs up from 0.
+
+Can this loop run for a very long time under RTNL? Each iteration allocates
+a vxlan_vni_node with per-CPU stats and sends a notification. The loop only
+stops on an error.
+
+VNIs >= VXLAN_N_VID are also accepted and stored, so they alias on the
+wire.
+
+Later patches in this series fix this. "vxlan: vnifilter: reject VNIs
+outside the 24-bit space" adds NLA_POLICY_FULL_RANGE(NLA_U32,
+&vni_filter_vni_range) to START and END, and makes the loop counter u32.
+"vxlan: vnifilter: bound the number of VNIs one request may touch" caps the
+total span at VXLAN_VNI_FILTER_MSG_MAX before dispatch.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927215209.2581830-1-alishmery18%40gmail.com
