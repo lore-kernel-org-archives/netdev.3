@@ -1,136 +1,179 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B403E0094
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B3E3E2777;
+	Wed, 30 Sep 2026 19:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790796091; cv=none; b=mDa1leXHff283g0n81arKScDs6aZTvwnByY3R13VkbgxGWGXuW6PcrJX2FK3uZTh0dNyML4FF108mnImy3FcxGubbhEyFFOOzD/uxpAcqtmREhzCgdZ0dMOVhzVy4dNXjPU1DAE6Plle+M9WpHy2oJAB1jM36IIBjA6yy2Z8QDk=
+	t=1790796496; cv=none; b=luYMLXEHmHepKkwDyaAGeRwjlR5xcfQIhQNrL90I7/cqAdv4MjqA151nlG6P1IqkY+HcfCaLIxuyTxTsIiCsR+sgOTqxEUSlGZiRATe6rFsNRRxuoa38+zJVvkPGACLtTXLohSz2utf3OEj/uxQROMQqtviYofUWriVeDw2jxDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790796091; c=relaxed/simple;
-	bh=uZKo3LvjIw/jQo2DcJhlrJtg2qwhUGJRKYHVpUos/Og=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rXfjEiNUJOtOB/ftyUhS7EmZB5PZBM2fdwGQaWaTwH0wCGOYQX+Pf32JL4q1HeMnWysiAJku+65ZpFaLXGvYxU6RgpaVeNjhSbvY6OVul/A+QN7rhwu4pshgEr+72INeZeWJ60ycO+y1fhrm3pFywyuiDH9NVTBR0Sid3AwCsPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hqnxm1dA; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790796496; c=relaxed/simple;
+	bh=TaTFv31TFr0nH5ITR1YGC5q118oXyreNuRrfQm31xwM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sRdwqw5NvcezzeWEsPzcNRfjqtzaziTZmEAjEx3J6xpzLb673HTNUxHhBhnJy2i8xc79B+gDen15WeSqZO3SK6kkaHEvtLZwW++OS/kNwk/8IteqUcSOLovGYvcLj5Ryn2o4udGLljOi/ES63DimHrhu/OosOY/GytD7X5kepR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeW3ygNb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hqnxm1dA"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49fff6f0f87so29636935e9.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790796088; x=1791400888; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SbYiN1Bd29zaEpgdDuLGxrhXKVFH4VSvfh3sFDNw4+w=;
-        b=Hqnxm1dAEAEa677uYh+YJ43K0Mn++1DKoDK4qXLcbbuWcS+jlZ/m34iUXIFccGiZjt
-         4j5yeLbpr66Aga2ReLQa/nI+9X/B26YpfT9z/Xn7C6NZ64HlzNmrl8S3rHC6X7Lc6cop
-         HGeOYc46AGQFIDS+2dmMz4pQ+r1T7jx+RSCfLLLvTN+Bgj4lbOON8xXqPTg1fxkrvpOg
-         7U8c2QAYD7eljHuCtkTfb/mqarM4XloSEt9uxNr4ctl0xYZ4Sn7orXfa/QIgFOnlbFCH
-         2TyrlOmmO4NWytRCCaS/dd4dAmhRGY7Vjker+yAxZ+lo6GQAdA96Yr1AxgfKd8Mbr3sU
-         e/DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790796088; x=1791400888;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SbYiN1Bd29zaEpgdDuLGxrhXKVFH4VSvfh3sFDNw4+w=;
-        b=VtUCDa0gGCYK+H0mFP/+c0LCmSXY7FEDVMHRTqCvVyhbNdjpw5rHNpcYOcSiNXcHCO
-         6rdEJys1bxZkUjOssb5wH1ngy83hUdjaL/CdiWT2zvL4Pu989bmXY48SOIG6Z/b8CafY
-         BL1NuWE2ScRAZGXIGHOgKaUVKm/NVC0GjGL0ndKQxo3qlnqnKxwlR+F8Mlgcis+dVTML
-         VtlNcbMwDcK1RAYYo8eSV3v09oH2AMnrQkMSRNBcMypI7JZMrY03k+N0LS7zZLreFKZl
-         G82Xxpdn2zE0fikbwFhDZHQa8VZmT1pBbOw6RSgvUU18/tW8HxQfdgvwGnSiyPREplGL
-         avzQ==
-X-Gm-Message-State: AFuF++mKCyb0POgvafWRPQ5UdExMqb5thB8Q9R4S14/cQG4srVief+jv
-	pZX9Sjyc9J+JbHudFy0wtq+lWVIhnA+8jfWD0TWQJ0higCiJ0pbn5BEsKWPtp2PE
-X-Gm-Gg: AYBFou2DnUSCwxegn3/IJ1Q22gFhsWfrwhb0gHlltSgwtGXVyFSESGZDVl7IMbG+z2p
-	yCOq5NBrXTLE2DJ1U3jfizu293VeaJQL8WYWbxSEykJkj+s01NBnkBo3gzR9VuYIzrsL5efKbjH
-	44s78ANCqcYjZU5TRCltq98RV9eQYTR1oPzwI5FbpF6V5rXFk2RzSA0IBcfIJfFRI79MqpI3SiM
-	3xyj/zIYODH60oW9DPEXqkdEoY4FVHjhfB139xy1e83x7V0foUB80qWh6hPj1gwN6O3bwJvi/h+
-	/xDMwmcXqZzgDq1Ck32FeMBab/oFXdqZnlCuam/3gbC2bFk2kzARfsfJV6fXtV+Lpd9+UnNjMBr
-	RIlPaN7aunZovpvG5H4qoMgCaL1wTl9AgLfw2DjK+EyVXhjS5r0fJiVc5KArGYuYj83OSkcUjVM
-	osbd6wF9caDio0BnIAVeeQiMqhRCsnOOpmoF59g/sr824HniluMMRCAbRSw6FT+xXIk48NF8u44
-	OZW+vpY+sdXc3Ptnb9UK9KXdxMNaHAA3mVvZMIJbOh+QnP1oBkNg/OOPpe+wHPIIlVG1BpcMXUh
-	1iRBCNEiNdw7PcX+bGviqWL1VS8qYlBazHZaEu+QzxkcThMtu0EMUbs5TZz2uEvWKjzqQkfX134
-	B
-X-Received: by 2002:a05:600c:4687:b0:4a0:3a3:33e2 with SMTP id 5b1f17b1804b1-4a01adde08dmr42117895e9.5.1790796087622;
-        Wed, 30 Sep 2026 12:21:27 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-b2b3-0101-b51c-a607-3dcc-3979.310.pool.telefonica.de. [2a02:3100:b2b3:101:b51c:a607:3dcc:3979])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f9248ccsm3513165e9.3.2026.09.30.12.21.26
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 30 Sep 2026 12:21:26 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 2/2] netpoll: avoid blocking on the transmit lock in queue_process
-Date: Wed, 30 Sep 2026 21:21:03 +0200
-Message-Id: <20260930192103.62973-3-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260928064239.32456-1-kmehltretter@gmail.com>
-References: <20260928064239.32456-1-kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeW3ygNb"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0E16AC4AF0B;
+	Wed, 30 Sep 2026 19:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790796496;
+	bh=TaTFv31TFr0nH5ITR1YGC5q118oXyreNuRrfQm31xwM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=LeW3ygNbY+duylUfcQanrxY2IJvmixBqTIMWEwRYLZSSb8IcimOt6tEoRp+sKE260
+	 UTxtWxO8lGavYhIEz4Bp8XzcZnmAQJPpsKE+/Yi5QeH0VcyjsUAvfOmpVroMnkn1RA
+	 TH1eYkKR39fEbFMQ+V0OsaIECOL8qF4gkfy0UJhNndkmpA8CQoXAQkeLM4+ncVbK1P
+	 fvrU9ZW+MbzoW+U1dgrkz/lWHyV3fops2GhukVcXIe3HROwEilVHquCQxxjCS25TnF
+	 y5bZTbpKedWtoLUb4DmuzDb60rXh6qjqPLzEF/QN8TBdi1NJ5XByepcHmm+qMN58MD
+	 w+gau6r9MrjsA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE94CA5FC1;
+	Wed, 30 Sep 2026 19:28:15 +0000 (UTC)
+From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
+Date: Wed, 30 Sep 2026 19:28:13 +0000
+Subject: [PATCH net-next] net: stmmac: mask the MAC interrupt while resume
+ resets the MAC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv>
+X-B4-Tracking: v=1; b=H4sIAMxivWoC/x3MQQqEMAxA0atI1gYyFkf0KuKirXHMwjo2VQTx7
+ haXb/H/BcpRWKErLoh8iMoaMj5lAX624ccoYzZUVH2pNYSalsV6lLihzntCMs76urFMzkGu/pE
+ nOd9jD4ETBj4TDPf9AOnjI59rAAAA
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Russell King <linux@armlinux.org.uk>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Igor Velkov <iav@iav.lv>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3397; i=iav@iav.lv;
+ h=from:subject:message-id;
+ bh=SA1F6OtzfhBrFw1324lwOQ8HhPxeVaEiK1QpSXhngao=;
+ b=owGbwMvMwCVmNH1q96v4SmbG02pJDFl7k849vZl5NLE0Q+mFXo3h9+WRRaGN8nOlfxrqrdCtm
+ PWyXMWvo5SFQYyLQVZMkWXCIY1bGUuu/vX3MH8AM4eVCWQIAxenAExEVYHhr7xEkcHDOV/viFfM
+ Pmo8dWlLooxw7szz+rNWp/QKHHEIjmBkeKsQ3GyfbRS3zyvFst5+suVGnrP/Dk+81JzKppkzf1U
+ zHwA=
+X-Developer-Key: i=iav@iav.lv; a=openpgp;
+ fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
+X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
+X-Original-From: Igor Velkov <iav@iav.lv>
+Reply-To: iav@iav.lv
 
-queue_process() disables interrupts before taking the device transmit
-lock with HARD_TX_LOCK(). The lock may sleep on PREEMPT_RT:
+From: Igor Velkov <iav@iav.lv>
 
-  BUG: sleeping function called from invalid context
-  in_atomic(): 0, irqs_disabled(): 1, non_block: 0
-  Workqueue: events queue_process
-  rt_spin_lock
-  queue_process
-  process_one_work
+stmmac_resume() resets the MAC in stmmac_hw_setup(). On dwmac1000 the
+reset clears the interrupt mask, and all core interrupts stay unmasked
+until dwmac1000_core_init() writes it again. A link change in that
+window raises an RGMII interrupt, and no handler clears it since
+commit 2e2c878a3141 ("net: stmmac: remove SGMII/RGMII/SMII interrupt handling").
+The line storms:
 
-Use HARD_TX_TRYLOCK() instead. If another CPU owns the lock, put the skb
-back at the head of the deferred queue, restore interrupts and retry on
-the next tick. Keep the longer HZ / 10 backoff for a stopped transmit
-queue or a driver which returns busy.
+  dwmac_dma_interrupt: unexpected status 04000000
 
-Fixes: 3640543df26f ("[PATCH] netpoll: fix netpoll lockup")
-Cc: stable@vger.kernel.org # 6.12+
+The message repeats every few milliseconds and the network stays down
+until a power cycle or a watchdog reset. A register dump at the first
+message on ODROID-HC4 showed the pending link change with a zero mask:
+
+  core int_status 00000001 int_mask 00000000 pmt 00000000 rgsmiiis 0000000d
+
+Disable the interrupt line for the whole resume and enable it again on
+every exit path. The line is IRQF_SHARED, so leave it enabled during
+suspend, where another user of the line may wake the system.
+
+Wake-on-LAN resume on two boards:
+- ODROID-HC4 (dwmac-meson8b, 7.2): the storm on resume, none in 5
+  resumes with this patch.
+- Helios64 (dwmac-rk, 7.3-rc5): the storm in 2 of 3 resumes, none in
+  26 resumes with this patch.
+
 Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Signed-off-by: Igor Velkov <iav@iav.lv>
 ---
- net/core/netpoll.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Ported to net-next, where stmmac_resume() gained error labels. Tested
+on hardware with 7.2 and 7.3-rc5; build-tested on net-next.
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 24 ++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index e0cfcb05468e2..8d8e3c33cfdfe 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -166,7 +166,13 @@ static void queue_process(struct work_struct *work)
- 			skb_set_queue_mapping(skb, q_index);
- 		}
- 		txq = netdev_get_tx_queue(dev, q_index);
--		HARD_TX_LOCK(dev, txq, smp_processor_id());
-+		if (!HARD_TX_TRYLOCK(dev, txq)) {
-+			netpoll_txq_queue_head(npinfo, skb);
-+			local_irq_restore(flags);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3ad9252bf6ae..6e0415538327 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8356,16 +8356,26 @@ int stmmac_resume(struct device *dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
++	bool irq_off;
+ 	int ret;
+ 
++	/* Resume resets the MAC, leaving every core interrupt unmasked until
++	 * the mask is written again: a link change in that window would storm.
++	 */
++	irq_off = netif_running(ndev);
++	if (irq_off)
++		disable_irq(ndev->irq);
 +
-+			schedule_delayed_work(&npinfo->tx_work, 1);
-+			return;
-+		}
- 		if (netif_xmit_frozen_or_stopped(txq) ||
- 		    !dev_xmit_complete(netpoll_start_xmit(skb, dev, txq))) {
- 			netpoll_txq_queue_head(npinfo, skb);
+ 	if (priv->plat->resume) {
+ 		ret = priv->plat->resume(dev, priv->plat->bsp_priv);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+ 
+-	if (!netif_running(ndev))
+-		return 0;
++	if (!netif_running(ndev)) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	/* Power Down bit, into the PM register, is cleared
+ 	 * automatically as soon as a magic packet or a Wake-up frame
+@@ -8388,7 +8398,7 @@ int stmmac_resume(struct device *dev)
+ 	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
+ 		ret = stmmac_legacy_serdes_power_up(priv);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 	}
+ 
+ 	rtnl_lock();
+@@ -8442,7 +8452,8 @@ int stmmac_resume(struct device *dev)
+ 
+ 	netif_device_attach(ndev);
+ 
+-	return 0;
++	ret = 0;
++	goto out;
+ 
+ error_stop_dma:
+ 	stmmac_stop_all_dma(priv);
+@@ -8451,6 +8462,9 @@ int stmmac_resume(struct device *dev)
+ 	stmmac_legacy_serdes_power_down(priv);
+ 	mutex_unlock(&priv->lock);
+ 	rtnl_unlock();
++out:
++	if (irq_off)
++		enable_irq(ndev->irq);
+ 
+ 	return ret;
+ }
+
+---
+base-commit: 47a1446725732cd3996edf607e8739334bbf4d78
+change-id: 20260930-stmmac-irq-shut-03bac57ae0bb
+
+Best regards,
 -- 
-2.53.0
+Igor Velkov <iav@iav.lv>
+
+
