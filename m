@@ -1,279 +1,151 @@
-Received: from mail-oo2-f35.google.com (mail-oo2-f35.google.com [74.125.231.163])
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA25C46A618
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.163
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790798194; cv=pass; b=okVa5TNUVdGb4CP9conO67iGRtWkYJapDkwHUuDFjJZmrPVNwzmsTBiypfyg+zus+m90i5ysvk/B80MtkG7vkMlb8IbVS7kQPhLzibRnMcYJT5vaFiNd5Pt2/yw6GZdDVHOAtY3/gKDwWKOHn2wQKrQZNV33cdFf2C9Lk72JlXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790798194; c=relaxed/simple;
-	bh=6qKTd/+Z/MIztcMAr1rNEuiJ3PiSEWXnW4vosW6VT+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BWgwiO1wju6apNCYmxSHe9iMa2FyZNz67lUfoc7MdamGehwKsdmj/sOr71osYIrQMhhEK7UwV7BX3MUZ+EZRk9a7c2XgxFHmRLvye467Or+SjujBXYOjbSAmpBangoN3H+dMcexUr+GSfsMOrlR46mSfkHTWcUSmJXXlAuHu2M0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=clFOX5B+; arc=pass smtp.client-ip=74.125.231.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="clFOX5B+"
-Received: by mail-oo2-f35.google.com with SMTP id 006d021491bc7-6ddafee649eso172145eaf.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:56:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790798191; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l2BCdsoMwzmrtKWQbcb2O6/Kjt1E/LkRqcRlKw7MpTiAVMFPBTXP0KUzh30KMFnapb
-         ypAasyFsDsE74Mh0OEV+/zv8OxsrtGxMba/Jz9GDcM6YC99V4G2q9dQ3OHw12ld7Zg0l
-         0xMVc5YShZ/P3uZNMfUSXcvAkBDzWVQpRubM5X2Od2r9fwPkwAaqrMQrK7iQ+ZbX7lt2
-         NV/ECSw0Po0jZ0VBtQ0eDeiCIxyqcJ9xVfULa14lidy49tPSQo8/9rcJtbqKvOlhIljf
-         pkyISk4jFSw0ebvBG9H4zZ2aL8KmB3Uc9aDwkTtLRS1bGBmjHpyNBF978jS5KoCeOp11
-         LIIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=w0F37B+tLOjIaslCd8r67I+DKgBg3+OILi1YY5eM99c=;
-        fh=J83EyxorLQ5GThX2SNc/X8M1GgmoC7cxw68ajRC6DUo=;
-        b=F0IRbtWfvWO2VE1pUq2kXNLZeADs94LNmm0C2XbvwtiSuBkOGevPUt2g++7qKsLr4g
-         0neOOJ3R+JFaUmqFXGSRhNaUGSol7PNZeevKleg1tee6BQ2X/JgttLPOUGSw6hX7zUjB
-         kvQegGC5zvETgph1FumUP9RraMDx0h+AFeRdn+JBXUgbekH4/mATlyY9QFSZp5P4dFyS
-         ChgiPvcP0+C4xFs9b6gKQy7GIjYo5npMs2CEyqvDhGvMgsbsi4aVgBaQP+y1EsBzgr90
-         F5+TCbK5dwEJ39/wqFpJz+I6NUeaQOFMjAWszBUNgwd1uObFfbhj63T7zKtporCjjI2u
-         W5sQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790798191; x=1791402991; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=w0F37B+tLOjIaslCd8r67I+DKgBg3+OILi1YY5eM99c=;
-        b=clFOX5B+49mG2+PYTWYlp89p2vZzGxQFDTpU/mbpeJGBvxvnMsOactlmswO8SXWpo3
-         L1cWYTpXjyUZyI6gDW3chb581+yrZYGuNOmJO01MjTvTO8CuHbgkBBUP2YKKG8SGoaq2
-         evfmwWXNjKoOztEAmh1PMmT6j+Ff12PVjvT25sEPzrQSEv4JeS9L8S2h74nJfbXfpgSV
-         K2EHUBNchOczSdsO1jmiis9wQ3YFkyLGadOmvGIjgLLv8+4GdGbk19Hf4j9vzmA8SXZR
-         VrTT8DOnItXcg4CPhqbi5XuK3sn5HItpV/nz61BA5jubEgN8Dqp9P/+Dj+ES3ZT/NkBN
-         6rzQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493C540B6D4
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790798251; cv=none; b=st5hEcTtizNeYcHpgA3dRwFc2PxwqXaSaCQSFasjCyzAcWBtaC+HUyBfhntihP1lfFh198bwPVJoFcx5u8OX7e9V7DrSrDce+xz80ms+dvuRt0VBTLND/+J0KIuBHA8ArdqXxf3+FdzVkrVRu0Ee6xRDCGWacOIY9XbxwDnaF14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790798251; c=relaxed/simple;
+	bh=0DOYA9j5LCHaMZwNHcC1j1dbo1T7ngDwNIKrikuaF/s=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=o7ITay4ak86wvvYhpjnlGR+u7i1a04KGsPtbawQC1Yq9Lbo/Wi7/FMu11/XpmIAf3eM0GGph7cKci7h5Nvk8y67eShS3FTR2asaJB81xryXWL15di09snmZAW2izucCctH79GUUDe9F8BsiGsYf5GimNyD26iA5jsK5Cvd5N+6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4db3db8687fso346089b6e.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:57:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790798191; x=1791402991;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790798249; x=1791403049;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=w0F37B+tLOjIaslCd8r67I+DKgBg3+OILi1YY5eM99c=;
-        b=aKkKixLxsU2L3NSQuS5YQyldtTN6eBpPmnMuAXUkxY0rtJmeOn4VE2xFBmKZ1Zss4p
-         9+tDp2PNrrCRGvgKCwAawQjURH/kaZ1JU4wDlS2wN75V+vEB1jLAu6y0G6IA/FFbwXV9
-         kMZv5Cvb+YJrrYZ88SluA3lrrzHIDtxx/2CYWFqltq/Za79UlpuyxWcZC9Ie+qj7AENh
-         bV+y4C7nrFIzx1DtunWyC+qyQTdpnEjLUy2eLHZuSnbA7xGKQ956m39mAtinoKFtr3md
-         dZlCwkX9Y5ZhJhvI4A+xaXuqSOOi6FoiTFkWZp97+OJdoWHs0v+g/+L95wzP1kiZEAmB
-         BpgA==
-X-Forwarded-Encrypted: i=1; AKwUvBxo3NcZWhLtAXM9l73cQyAIJVW80H9B3jCo/ZitqKdm+dCsB384I3RPtUxVsh4VaKKETMxPBog=@vger.kernel.org
-X-Gm-Message-State: AFuF++lTLS8MAWEvcHqEDOxxVoaqsRjT0BfX2GPlPuhwe8pd6GMJoK2X
-	xg1NVGENMqlu1YYBMLksSOTvYV4+xx+0KVV7L1GGv0vHEpt+TNUFKe5j/7Mbto+/ls4T7ML6615
-	82EwHV54X0CTEbmjgT48OqujR7Ulezhc=
-X-Gm-Gg: AYBFou1GHjvc/8+NoFDK2IgncKeE0jQPxsS/uCmO1DCnkuysHqFxA3KvLPAWng8DmLu
-	/+kfdvXsp0p2gfgRVGCjr2vnph3GihrGAuEd16PbzrcJuD/ZQaSUv+7MtbowQU79zDlO/5NuvAQ
-	dfCUgzMV52tcQXfeLgRamrbaNknkgwxO9ZCZnkg/WUpOiZEhxNuJkSKXKh4+hKSzYz2Rus/q4ib
-	Cl3Kap6Wt/HfUhxueYcpEuZgzDT+pMskoMHnJhakXWkf8Z9mvtfRk1JGp35JYsZ/+9b2JFPKXie
-	49ARPuH3bqmP5pmY6T1IQyR280a/gVV9T6Jd03cF51q997mnGKkggELtciO4zeZyVw==
-X-Received: by 2002:a05:6820:1985:b0:6b7:83c5:fde2 with SMTP id
- 006d021491bc7-6dcf5052d1cmr2596155eaf.35.1790798191384; Wed, 30 Sep 2026
- 12:56:31 -0700 (PDT)
+        bh=LuCztHNpAgV3X7BfgjOC6VVtGxHWH4J6xHbwAt48ZXA=;
+        b=Hp/Vj9nGbU6F4s1E4Fjym9tkWbIO9iZWSb43VdiwMpwOmQ9FHxdcHOS6VxFZQJsckr
+         3iVGHSMXJhCxFUErAzQoWplAsOzJ6T/nkhNQzemaZ8k9Qc2YoNqtqWHRACFqTgU+B/Rg
+         B0jS3l5mugfJ0NGL5MNymOmAoh7oLPjY2y/KqKjOe6bn9d6q31EXHf/1M4vPPsQbkU/M
+         Somkh3pvr1xDlfT65ciTjWCx4d/qW8in16/pbuQvDHe1qDdyHMA/479T9AYrLAKFouL1
+         qgb3SUiki/64i1FJKSDObCcQ49CracxxOvIRuhO28eLpDCl3FYp/4z3l6dljZftk+uGf
+         5DtA==
+X-Forwarded-Encrypted: i=1; AKwUvBzNxmMvkKn5TMVhzJrf7HGt8P1cTdcVu9afTFsfdHX5UyBmz5NKXjYXZ6pfQk7mhfQ0XRrQgVk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mwOYD5TTBvXziEyu80JZ/jIGkoMUS6tGYmWXHtt+aouOb2i6dK
+	JJcwNIHFlTMCoppoaF3wGmte0JDzJ6iQL1QaiL3ZXJJAl49Hj2VV7NCcYdIOY8/yI0aHQSG46iN
+	W+f3ILs0Q4V4CZC03jF9D1ibtAQVP4VpmlpUuCuw0SXFp6otKWqOjyUkQV7Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMB2axN93iJnrZAk6hWraSnz32FtRDdpz_UbzsVB4YU7gRK_3Q@mail.gmail.com>
- <20260927001921.604064-1-kuniyu@google.com>
-In-Reply-To: <20260927001921.604064-1-kuniyu@google.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Wed, 30 Sep 2026 12:56:19 -0700
-X-Gm-Features: AclHuK-j5DkZW6uMypd7HzN1Uf8VarzMnBABD-LSBVTFOv9w4EJ9zco0I2JQLao
-Message-ID: <CAMB2axMwBuz3X4Uwn5uzZUqm91EbiMnbQX832wUFOQ44fOwDnQ@mail.gmail.com>
-Subject: Re: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, bpf@vger.kernel.org, 
-	cleger@meta.com, daniel@iogearbox.net, eddyz87@gmail.com, edumazet@google.com, 
-	john.fastabend@gmail.com, kuni1840@gmail.com, martin.lau@linux.dev, 
-	memxor@gmail.com, ncardwell@google.com, netdev@vger.kernel.org, 
-	sdf@fomichev.me, ukyab@berkeley.edu, willemb@google.com, 
-	yonghong.song@linux.dev
+X-Received: by 2002:a05:6808:c194:b0:4ea:18f:649f with SMTP id
+ 5614622812f47-4f1b12ed99bmr2904918b6e.3.1790798249184; Wed, 30 Sep 2026
+ 12:57:29 -0700 (PDT)
+Date: Wed, 30 Sep 2026 12:57:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6abd69a9.80e1c6cc.22483f.0005.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in neigh_mark_dead
+From: syzbot <syzbot+5a8857f0b4a0a7b12c62@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 26, 2026 at 5:19=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> From: Amery Hung <ameryhung@gmail.com>
-> Date: Fri, 25 Sep 2026 10:33:50 -0700
-> > On Thu, Sep 24, 2026 at 6:41=E2=80=AFPM Alexei Starovoitov
-> > <alexei.starovoitov@gmail.com> wrote:
-> > >
-> > > On Thu, Sep 24, 2026 at 05:39 PM Kuniyuki Iwashima <kuniyu@google.com=
-> wrote:
-> > > >> can we drop the flag ?
-> > > >> hdr_opt_len() is called for every tx skb without per-socket opt-in=
-.
-> > > >
-> > > > Oh, I assumed bpf_tcp_ops keeps the same behaviour.
-> > >
-> > > bpf_tcp_ops were moved out of BPF_SOCK_OPS_TEST_FLAG() guards on
-> > > purpose. None of the existing members has per-socket opt-in.
-> > > hdr_opt_len() runs for every tx skb, rtt() for every rtt sample.
-> > > See the log of commit 3bb54768fe3e
-> > > ("bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_op=
-s"):
-> > > "A per-member/per-cgroup gate could be added later if the extra
-> > > fast-path work proves measurable."
-> > >
-> > > > We have a bpf prog to turn the hook on (from cgroup_skb/ingress),
-> > > > only when ingress rate exceeds the allocated capacity, to signal th=
-at
-> > > > via a custom TCP option and turn the hook off from the hook itself.
-> > > > (and I planned to post another patch for that)
-> > >
-> > > That should work today without another patch and without the flag.
-> > > cgroup_skb/ingress prog does
-> > >   bpf_sk_storage_get(&map, sk, 0, BPF_SK_STORAGE_GET_F_CREATE);
-> > > when the rate is exceeded. hdr_opt_len() and write_hdr_opt() do
-> > >   bpf_sk_storage_get(&map, sk, 0, 0);
-> > > and return when it's NULL. write_hdr_opt() calls
-> > > bpf_sk_storage_delete() after the option went out.
-> > > cg_skb_func_proto() has both helpers and get_func_proto() in
-> > > bpf_tcp_ops.c allows them in every member.
-> > > egress_read_sock_fields() in test_sock_fields.c does the cgroup_skb
-> > > part.
-> > >
-> > > > Anyway, is it because calling bpf prog is not very expensive
-> > > > or per-prog switch is preferable to per-socket flag ?
-> > >
-> > > The switch is still per socket. It's sk_storage instead of a bit in
-> > > tcp_sock, so every prog has its own.
-> > >
-> > > While such new flag is per socket, but it's one for all progs.
-> > >
-> > > And you want to take the last bit of u8 bpf_sock_ops_cb_flags...
-> > >
-> > > As far as the cost. A socket that didn't opt in pays for an indirect
-> > > call into the prog and for bpf_sk_storage_get() that finds nothing,
-> > > but only in cgroups where bpf_tcp_ops with enqueue_rcvq is attached.
-> > > The members that are not set are NULL and bpf_tcp_ops_call() skips
-> > > them. That's what hdr_opt_len() costs on tx.
-> > >
-> > > I don't remember what Amery measured, but worth benchmarking
-> > > for your case.
-> >
-> > I did not benchmark the initial bpf_tcp_ops patch set, so per-socket
-> > gating was deferred. Before deciding whether to add such a gate for
-> > AutoLOWAT, could we compare:
-> >
-> > 1. No bpf_tcp_ops attached.
-> > 2. No-op enqueue_rcvq() and dequeue_rcvq() callbacks attached.
-> > 3. The same callbacks performing an sk-local-storage lookup (or maybe
-> > rhashtable).
->
-> I used tcp_rr (128 threads, 20000 flows) and didn't see a big
-> perf diff between 1. and 2., but 3. showed some costs even when
-> only looking up sk_storage and returning immediately:
+Hello,
 
-Hey, sorry for the late reply.
+syzbot found the following issue on:
 
-Your result gave me some hope that we could implement the gate in the
-BPF program, since callback dispatch appeared cheap.
+HEAD commit:    014d795c7383 idpf: fix kernel-doc parameter descriptions
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15033315580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2f9be4b0ece4f44b
+dashboard link: https://syzkaller.appspot.com/bug?extid=5a8857f0b4a0a7b12c62
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-However, my experiment with several program-local gate implementations
-produced a different result. I ran the experiment using hdr_opt_len().
-Except for the baseline, every case else had bpf_tcp_ops attached, and
-only the hdr_opt_len member changed. I used loopback tcp_rr with 128
-threads and 20,000 flows. All lookups missed, modeling sockets that
-had not opted in.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-|.                     | Throughput (tx/s) | diff   | diff (abs)     |
-|-----------------------|-------------------|--------|----------------|
-| no tcp_ops            | 2,231,461         | --     | --             |
-| attached, NULL member | 2,200,750         | -1.38% | -30,711 tx/s   |
-| no-op                 | 2,172,596         | -2.64% | -58,865 tx/s   |
-| sk-storage            | 2,159,986         | -3.20% | -71,475 tx/s   |
-| RHASH                  | 2,156,491         | -3.36% | -74,970 tx/s   |
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ffe50eefb704/disk-014d795c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bbb13d8fe817/vmlinux-014d795c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/df8fdfbd7a2b/bzImage-014d795c.xz
 
-The NULL-member result measures the cgroup struct_ops dispatch and
-array scan. The difference from NULL member to no-op measures the
-indirect call and trampoline, while the remaining difference measures
-the program-local lookup.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5a8857f0b4a0a7b12c62@syzkaller.appspotmail.com
 
-Although hdr_opt_len() has a different signature and call frequency
-from the RCVQ hooks, all three layers have observable fast-path
-overhead. A program-local gate cannot avoid the dispatch and
-trampoline costs. Therefore, a per-socket gate before dispatch seems
-worthwhile for conditional hot-path callbacks.
+netlink: 'syz.0.857': attribute type 4 has an invalid length.
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&n->tbl->lock)->dep_map) != 0)
+WARNING: net/core/neighbour.c:154 at neigh_mark_dead+0x2fb/0x340 net/core/neighbour.c:154, CPU#0: syz.0.857/9765
+Modules linked in:
+CPU: 0 UID: 0 PID: 9765 Comm: syz.0.857 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:neigh_mark_dead+0x2fb/0x340 net/core/neighbour.c:154
+Code: e8 03 42 80 3c 28 00 74 08 48 89 df e8 ee 9a 80 f8 4c 89 33 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 86 95 10 f8 90 <0f> 0b 90 e9 8f fd ff ff 48 c7 c1 80 9a 7a 90 80 e1 07 80 c1 03 38
+RSP: 0018:ffffc90003726600 EFLAGS: 00010287
+RAX: ffffffff89b7467a RBX: ffff888022e86000 RCX: 0000000000080000
+RDX: ffffc900047fa000 RSI: 0000000000003e08 RDI: 0000000000003e09
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006e4cb8 R12: ffff888022e8613c
+R13: dffffc0000000000 R14: ffff888022e86020 R15: ffff888022e86000
+FS:  00007f9c30f046c0(0000) GS:ffff888124cc6000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000076c56000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ neigh_flush_one+0x27c/0x5a0 net/core/neighbour.c:388
+ neigh_flush_dev net/core/neighbour.c:432 [inline]
+ __neigh_ifdown+0x1fb/0xc70 net/core/neighbour.c:465
+ neigh_ifdown+0x1f/0x30 net/core/neighbour.c:487
+ rt6_disable_ip+0x751/0x7e0 net/ipv6/route.c:5058
+ addrconf_ifdown+0x155/0x1ad0 net/ipv6/addrconf.c:3892
+ addrconf_notify+0x1bc/0x1050 net/ipv6/addrconf.c:-1
+ notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+ call_netdevice_notifiers_mtu net/core/dev.c:2350 [inline]
+ netif_set_mtu_ext+0x5ac/0x830 net/core/dev.c:9963
+ do_setlink+0xa81/0x47a0 net/core/rtnetlink.c:3247
+ rtnl_setlink+0x578/0x820 net/core/rtnetlink.c:3623
+ rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7159
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ sock_write_iter+0x2de/0x3e0 net/socket.c:1266
+ do_iter_readv_writev+0x612/0x8c0 fs/read_write.c:-1
+ vfs_writev+0x343/0x990 fs/read_write.c:1058
+ do_writev+0x154/0x2e0 fs/read_write.c:1104
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9c2ff9e159
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f9c30f04028 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
+RAX: ffffffffffffffda RBX: 00007f9c30225fa0 RCX: 00007f9c2ff9e159
+RDX: 0000000000000001 RSI: 00002000000003c0 RDI: 0000000000000004
+RBP: 00007f9c3003506b R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f9c30226038 R14: 00007f9c30225fa0 R15: 00007ffed3c74808
+ </TASK>
 
->
->                     |    w/o bpf    |     w/ bpf    |  diff   |  diff (ab=
-s)
->  -------------------+---------------+---------------+---------+----------=
+
 ---
->  num_transactions   | 1,209,349,692 | 1,185,180,017 |  -2.00% | -24.17M t=
-x
->  throughput (tx/s)  | 20,318,689.83 | 19,953,668.49 |  -1.80% | -365.0K t=
-x/s
->  remote_throughput  |    19,472,629 |    19,135,463 |  -1.73% | -337.2K t=
-x/s
->  latency_min        |      50.83 us |      46.08 us |  -9.34% | -4.75 us
->  latency_p25        |     911.35 us |     911.35 us |   0.00% | 0.00 us
->  latency_p50        |     972.79 us |     983.03 us |  +1.05% | +10.24 us
->  latency_mean       |     983.64 us |   1,001.71 us |  +1.84% | +18.08 us
->  latency_p90        |   1,136.63 us |   1,187.83 us |  +4.50% | +51.20 us
->  latency_p95        |   1,208.31 us |   1,259.51 us |  +4.24% | +51.20 us
->  latency_p99        |   1,392.63 us |   1,454.07 us |  +4.41% | +61.44 us
->  latency_stddev     |     141.82 us |     158.53 us | +11.78% | +16.71 us
->  cpu time (u+s, 60s)|     8,165.91s |     8,312.57s |  +1.80% | +146.66s
->
->
-> Given the other hooks in the fast path (hdr_opt_len(),
-> parse_hdr(), etc) should add costs at the same level,
-> I think we should guard them with flags.
->
-> But u8 is too small, so I think we could add a new field
-> (maybe u32?) and a new kfunc for bpf_tcp_ops only.  Also,
-> I'd add CONFIG_BPF_SOCK_OPS_LEGACY to save some calls.
->
-> What do you think ?
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-A separate bpf_tcp_ops mask in tcp_sock seems reasonable.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-CONFIG_BPF_SOCK_OPS_LEGACY seems premature considering we don't have
-feature parity with sockops at this moment (not saying we need to
-fully duplicate though).
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
->
->
-> >
-> > >
-> > > >> The prog in patch 8 already returns when the socket has no
-> > > >> sk_storage.
-> > > >
-> > > > Yes, but this is only for bpf verifier.
-> > >
-> > > tcp_init_autolowat_cb() can be the only place that passes
-> > > BPF_SK_STORAGE_GET_F_CREATE.
-> > > So for a socket that didn't do setsockopt(BPF_TCP_AUTOLOWAT)
-> > > other cbs will return NULL on lookup.
-> > >
-> > > tcp_disable_autolowat() will do:
-> > >   bpf_sk_storage_delete(&tcp_autolowat_map, sk);
-> > >   bpf_tcp_ops_set_rcvlowat(sk, 1);
-> > >
-> > > > Just an idea, would it make sense to add a kfunc to move bpf_tcp_op=
-s
-> > > > callback to a shadow pointer by allocating sizeof(bpf_tcp_ops) * 2 =
-?
-> >
-> > A bpf_tcp_ops instance is shared by all sockets, so this would not
-> > provide per-socket gating. Making it per-socket would require copying
-> > the callback table for every tcp_sock, which seems more complex than
-> > adding a gate directly to tcp_sock.
-> >
-> > Am I understanding your idea correctly?
->
-> Yes, but this is overkill indeed.  I think most deployments
-> use just a single SOCK_OPS/bpf_tcp_ops, and per-scoket flag
-> would be enough.
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
