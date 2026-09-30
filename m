@@ -1,64 +1,64 @@
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6E44E675
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1B144BC94
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790752516; cv=none; b=G1Pm12VdhuWTRgWV0JUNSMwuhvkBI1HdHgrJDt3XMWiCUlwetSqTpkxrHcZDz8gH+B+mCBsZm89y3oszTFcSAZ3aid3gAgaL/0vl2Ld4tAW14ffm/4S2CMiiqK+esp52j5V/hnH555gLdzgakBZQIA+wC2gCWLarn84IB/vi/jI=
+	t=1790752515; cv=none; b=fyA0Oksie6x6VEyzCbEKSC81kMuR8bGefqj1c/0EH1IyR0g2Nbx7ItbmYiyuRP+p3L7QYdIIGqZcQwt1OYX09cfqh5ocHGFEWzXqIoJgTFwwNEUKAGLcx/sqPLV3xSYyAe7Y4drhHYUtXnN5cN2kenbM+GBY4r6WAkPQiyIufO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790752516; c=relaxed/simple;
-	bh=Y1qxWBeZsMfTJrDUxMtxtXHqC26bAWa8yrkGRtYTOFM=;
+	s=arc-20240116; t=1790752515; c=relaxed/simple;
+	bh=7BtmL/J/xqiZYFCYwVh4qlSlNr3nP7akGSHJE8asqxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpnRhs0NQTE0pEzcUiNFVFCuElN51ektIAHy5x2kXq68XOiynq3MPvYPXmsRFNzG/X5dtxEc34uQUbupFKs1H7x3YW1aJHF8K4S/P3feSYkXR4wgyKyyDCqhCZ+ObDEFwdPf5CwYDzti1CIgmnmd2KJHEMVZjc04JXEXyVnQA80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=TCSkDGvL; arc=none smtp.client-ip=74.125.225.98
+	 MIME-Version; b=UA/NmYUXQAM9YN/czn4+CnsnZiAgAOuH9l5wEFROaQBvy5Bz2Sqs15SzKcP8jjTwUuqWAqNGKDC+nBEt2bYSUEi3456yfe8d6pJTwlk3te6GaWfODBdDayCf/f7LQe3RJtW2ENv3/fH1/SrPATp9jquJMRTvtF0qCuY7abxEN4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=PkkJw6Fz; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="TCSkDGvL"
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48afe3b2383so406404f8f.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:15:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="PkkJw6Fz"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e66390995so28083315e9.2
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:15:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1790752507; x=1791357307; darn=vger.kernel.org;
+        d=blackwall.org; s=google; t=1790752505; x=1791357305; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aHa5GVMDBQS3tgSHpEswPAMXyZTffMhhlGqGIpxHauA=;
-        b=TCSkDGvLItNAYDu7UVdRN0M7qZ4EOSF1HecIn4uw09T+3G7SdhXdURKG0kpno9HJAV
-         s9WBA6AO6Cp6iOy5eLQFzShTprWq4I5WNUab5gEOBlucZF9GY+wvW/FTw50jnJHrzC8Y
-         C/HshcpH+sb2P4vA2Dnun6LABXNRsd4ExCWn2hj5M1VtX5xIdvCYCyEYudduPJC076bQ
-         mbS9xRJJQ1yrJZmgvkvz6KTEUuLF/GIl+F23AwUinQGXkbCkveh6QeUFsL2ilrgZkOCv
-         TymXHs/z05Pk+B/iLSsrooCXlNBfgXRNQ5O984H+2VjI78VuVCN5gei2rh/vtFSANeeR
-         F3Aw==
+        bh=TzGeIiBvK9svEo9nqmM7pKUiwQRA9WD5WaK0fC8sXGE=;
+        b=PkkJw6FzsCzoVKpHqILV62rZNF0cuH3vosqjqr26YT7drEqeBxdMXfcXHK5Dxkl/CR
+         pEpYpLXkKKz5K4gDFQ/95qXNgNoA8lDbucQaurnmVh3STZV5tMkDjCj9FVlyUcPrSWdL
+         GqaRpiifTdwnicg2LA/fs7caVCuCHh9KvkY7PfbkIfsNEB36fR9Vece5N0zFQ8ykmmb4
+         rU2viiSx16g8KNnVjZAtUAfWbniM3x0Jcqtn/3x5EpVegQgzCetpdfMYdRXb+DJwHTL2
+         997qp/JXNPioxBzSa6Dhsqhz/Y1ajchKmfixwCclwXrDOcNFEKb+oSZ3sH4qUHnkFGXg
+         IgKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790752507; x=1791357307;
+        d=1e100.net; s=20260707; t=1790752505; x=1791357305;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aHa5GVMDBQS3tgSHpEswPAMXyZTffMhhlGqGIpxHauA=;
-        b=qPh+7oxJmdMkPJjFRPJasjgNYusmus7tBLCGY5cN4tPwGa2dLD+BEhiqMVRJcywOqj
-         YF3bpKtVwApzkZF/kjCpLCR42SzxOWzRpvHhpYjIItjhRBFcMoKDVbB5kBgNgevf5j24
-         FuFuZlAN/u8yWPo/UVUfTeMgRxlOY13UrYcQBTRaIgrQI2x34oOXSCzj3bpQqoe4z2Uh
-         9CESOwlXw0us1PjHYgXpjen+lEQFraFTmJ2VHmwTswNEr4LKEMxG7UN5eRJEIk/WRb7z
-         Gutnb0WVPMmT55ju3elk8B1XP2eHu5eZHv8ifzahb/9Do4jc/VDzGIhblb8dIflC02Ui
-         zQcg==
-X-Gm-Message-State: AFq9FYL0uI6F1NHUWihA1WkgEU0kK9mwI/lvzGIridfS7ClkU6K/JZq3
-	aDBvtipX02NnwuoRb8Exqpi8keQ0+4DxQRB3cVKCtMtu4O0CxTitX/ze6eVP5+r0p11EE+RNm+O
-	w2VUv
-X-Gm-Gg: AYBFou09ffYxgm/88zBVPuBFrvjhqiCAOFJAomnQbykMe6TD+1kwJ51X89xB9LGctTz
-	/cYQhpaVnjYuaqYE5qPKDbmXVo6fJPSr5J6Sl8ZgVgUJ0Ga11cnpX8QgraLJTGl63T6GeAR7jdA
-	zWSIAejYRu091jPdnEeYdwbmyfPUEaz2AUcejfKpR9+QaVVYOv2jLc6Sq9iehSYFT5eHiEw5WVl
-	guDTFdjqC0UE42G6V/JkXNZf7620hWIwHM3hVLqsR4Oui+XqZORTbG6pGZzXXUzapMoWHzgsvOR
-	8bm+1nixRX+36yIALnNt9BLQzEOCJm70eEdzBRPJ42NG2/gKY+dS5vPD9H8tuIQYsTPpNZbsaZp
-	/LD8ugSO/o64zHcxdcYjSTn6etdKWSpmPUzTXQK3aDRdbLc8GSyQCg+f7IB2M8c0eKuQ8gzV8uX
-	TBFhiXkZkUudeYQUVQ17PTfP7BfIl5TKj7ZCRNmD5USlvVpz9y8iXaa9rZF3XVFTua/O71FDeR+
-	Qs4DHYwMb4eqy9bTyPH
-X-Received: by 2002:a05:6000:40ca:b0:48b:108:48cf with SMTP id ffacd0b85a97d-48b024d71acmr1012459f8f.25.1790752506765;
-        Wed, 30 Sep 2026 00:15:06 -0700 (PDT)
+        bh=TzGeIiBvK9svEo9nqmM7pKUiwQRA9WD5WaK0fC8sXGE=;
+        b=DO2M2sYYPOQ33GMrSQ/KX4gWEpNl7QMv1NFk5w1SQz4t1Um36waAQjIYx69Y+B9qlp
+         65NKbXPXOMTVCBbqYaBA+Ty8EObgSCWnDsReYVgWWb4gx2SXTBtVrcm8YTWTy33EfdvZ
+         ige2dbfOivKBGiOcxHiAc9O/nIwRO6RuNWSB9RGW7rRRXIHLzU+AgGza2ikYDVaY2wEM
+         +BcLGkJzmoplwGXMFLEWjZDyWeywqgHWsEkxMw6DbXTwcYWy8TmmXi7QJXnwi005VjzG
+         wSyA/25Lb9KAOXWqIxM3yRpP/3aZWJlWBV2z4QkgT4VU/zYDKGlJTu5n1l7mjuFOAMvl
+         7Oug==
+X-Gm-Message-State: AFuF++kezgeSFfau7wmgnKH00EsDbOK48DLD8hDUrTxfYOH27RkrO+Dh
+	PSHoe5vhZQx1X6ZysJyizRVDQU9BTkRv8yElV2CwmmSBYiQ/ioLo34E+BOswf05mMuOntvDK/LO
+	xVrmU
+X-Gm-Gg: AYBFou0+jzOodGm+O/DbFFrIyUbw9R6U1mQZHH/PTqwFywlTMpz291ebDMnMCX36ekY
+	3eITXfWpmWY3UcKbkNfvg/Zl4Nr36mYdFDGwf9DdC/lynU1P/Qppp4Bw5ZcPWnM9bK/HrUufmMc
+	CNMiXja4Rp4p/5M0PKl0lf2J0xX4zZTOhRlviGAFxdMSRPQZVe8GoDYs1I/yA1fSJrqgAERo9Qr
+	f03PlO6tEBoqk12iwTrXmaZgWaZ2TUbUizWgcQL6ep0nKhcGagpIlxkirGyKMGWE7gw9mX7VAwT
+	f73hCRQLoA3a7fmcPpzB+yVxePCYsrS7D5fjvYp3Eg63UTA4r0pDt8zd5IrXuOSTAJq40VuuDF3
+	wwvZP2WfZXTkis/8YPakblWp8CT1a8k1DVgsWhrBmS/1Gt34OfCd2Q8WN1lvf/TK7mL+zjP2gAI
+	rnei1oK0jrmm/B4nfldcqwMGK7w006UTUBoL94HLKcDXOusoEzhkiIhtzbPF9adl/PnnMVftikv
+	PtjM7ZaTKKOKKeuhOd05gs+OP1YeNI=
+X-Received: by 2002:a05:600c:354f:b0:49d:2536:402e with SMTP id 5b1f17b1804b1-4a01b11a05cmr5865365e9.30.1790752505252;
+        Wed, 30 Sep 2026 00:15:05 -0700 (PDT)
 Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48b029f2b0dsm1151871f8f.25.2026.09.30.00.15.05
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48b029be71csm1358855f8f.9.2026.09.30.00.15.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 00:15:06 -0700 (PDT)
+        Wed, 30 Sep 2026 00:15:04 -0700 (PDT)
 From: Nikolay Aleksandrov <razor@blackwall.org>
 To: netdev@vger.kernel.org
 Cc: idosch@nvidia.com,
@@ -69,9 +69,9 @@ Cc: idosch@nvidia.com,
 	horms@kernel.org,
 	bridge@lists.linux.dev,
 	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 06/12] net: bridge: fdb: consolidate port-VLAN cleanup
-Date: Wed, 30 Sep 2026 10:14:05 +0300
-Message-ID: <20260930071411.2786201-7-razor@blackwall.org>
+Subject: [PATCH net-next 05/12] net: bridge: fdb: pass VLAN entries to learning updates
+Date: Wed, 30 Sep 2026 10:14:04 +0300
+Message-ID: <20260930071411.2786201-6-razor@blackwall.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260930071411.2786201-1-razor@blackwall.org>
 References: <20260930071411.2786201-1-razor@blackwall.org>
@@ -83,188 +83,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Deleting a port-VLAN currently takes the hash_lock twice and performs two
-fdb ops. The first removes its automatically generated local entry and the
-second deletes dynamic entries associated with the port and vid. Rename
-br_fdb_delete_by_port() to br_fdb_cleanup_by_dst() and pass a bridge dst so
-it can distinguish a port-VLAN from a raw port. This allows both operations
-to be done during the same locked fdb walk.
+Pass the resolved VLAN entry through fdb learning paths and derive the vid
+inside br_fdb_update(). The fdb destination remains a port for now, this is
+a preparation for caching the VLAN.
 
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/bridge/br.c          |  2 +-
- net/bridge/br_fdb.c      | 17 +++++++++++++----
- net/bridge/br_if.c       |  6 +++---
- net/bridge/br_netlink.c  |  2 +-
- net/bridge/br_private.h  |  4 ++--
- net/bridge/br_stp_if.c   |  2 +-
- net/bridge/br_sysfs_if.c |  3 ++-
- net/bridge/br_vlan.c     |  5 ++---
- 8 files changed, 25 insertions(+), 16 deletions(-)
+ net/bridge/br_fdb.c     | 16 ++++++++++------
+ net/bridge/br_input.c   | 12 ++++++------
+ net/bridge/br_private.h |  3 ++-
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index 09a120b3b76c..b1abe1c5bbdd 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -202,7 +202,7 @@ static int br_switchdev_event(struct notifier_block *unused,
- 	case SWITCHDEV_FDB_FLUSH_TO_BRIDGE:
- 		fdb_info = ptr;
- 		/* Don't delete static entries */
--		br_fdb_delete_by_port(br, p, fdb_info->vid, 0);
-+		br_fdb_cleanup_by_dst(br, br_port_to_dst(p), fdb_info->vid, 0);
- 		break;
- 	}
- 
 diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 9cd6deae8635..7c68b540b358 100644
+index 0f5cf5615b56..9cd6deae8635 100644
 --- a/net/bridge/br_fdb.c
 +++ b/net/bridge/br_fdb.c
-@@ -868,15 +868,16 @@ int br_fdb_delete_bulk(struct nlmsghdr *nlh, struct net_device *dev,
- 	return 0;
+@@ -974,9 +974,11 @@ static bool __fdb_mark_active(struct net_bridge_fdb_entry *fdb)
  }
  
--/* Flush all entries referring to a specific port.
-+/* Clean up all entries referring to a specific destination.
-  * if do_all is set also flush static entries
-  * if vid is set delete all entries that match the vlan_id
-  */
--void br_fdb_delete_by_port(struct net_bridge *br,
--			   const struct net_bridge_port *p,
--			   u16 vid,
-+void br_fdb_cleanup_by_dst(struct net_bridge *br,
-+			   struct net_bridge_dst cleanup_dst, u16 vid,
- 			   int do_all)
+ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+-		   const unsigned char *addr, u16 vid, unsigned long flags)
++		   struct net_bridge_vlan *vlan, const unsigned char *addr,
++		   unsigned long flags)
  {
-+	const struct net_bridge_vlan *vlan = br_dst_vlan(cleanup_dst);
-+	const struct net_bridge_port *p = br_dst_port(cleanup_dst);
- 	struct net_bridge_fdb_entry *f;
- 	struct hlist_node *tmp;
+ 	struct net_bridge_fdb_entry *fdb;
++	u16 vid = vlan ? vlan->vid : 0;
  
-@@ -885,6 +886,14 @@ void br_fdb_delete_by_port(struct net_bridge *br,
- 		if (br_fdb_dst_port(f) != p)
- 			continue;
+ 	/* some users want to always flood. */
+ 	if (hold_time(br) == 0)
+@@ -1247,9 +1249,11 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
  
-+		if (vlan && f->key.vlan_id == vlan->vid &&
-+		    test_bit(BR_FDB_LOCAL, &f->flags) &&
-+		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) &&
-+		    ether_addr_equal(f->key.addr.addr, p->dev->dev_addr)) {
-+			fdb_delete_local(br, p, f);
-+			continue;
-+		}
-+
- 		if (!do_all)
- 			if (test_bit(BR_FDB_STATIC, &f->flags) ||
- 			    (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags) &&
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index c52613431f88..d94558a5e3e9 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -355,7 +355,7 @@ static void del_nbp(struct net_bridge_port *p)
- 	netdev_reset_rx_headroom(dev);
+ static int __br_fdb_add(struct ndmsg *ndm, struct net_bridge *br,
+ 			struct net_bridge_port *p, const unsigned char *addr,
+-			u16 nlh_flags, u16 vid, struct nlattr *nfea_tb[],
++			u16 nlh_flags, struct net_bridge_vlan *vlan,
++			struct nlattr *nfea_tb[],
+ 			bool *notified, struct netlink_ext_ack *extack)
+ {
++	u16 vid = vlan ? vlan->vid : 0;
+ 	int err = 0;
  
- 	nbp_vlan_flush(p);
--	br_fdb_delete_by_port(br, p, 0, 1);
-+	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
- 	switchdev_deferred_process();
- 	nbp_backup_clear(p);
+ 	if (ndm->ndm_flags & NTF_USE) {
+@@ -1263,7 +1267,7 @@ static int __br_fdb_add(struct ndmsg *ndm, struct net_bridge *br,
  
-@@ -390,7 +390,7 @@ void br_dev_delete(struct net_device *dev, struct list_head *head)
- 	br_mst_uninit(br);
- 	br_recalculate_neigh_suppress_enabled(br);
+ 		local_bh_disable();
+ 		rcu_read_lock();
+-		br_fdb_update(br, p, addr, vid, BIT(BR_FDB_ADDED_BY_USER));
++		br_fdb_update(br, p, vlan, addr, BIT(BR_FDB_ADDED_BY_USER));
+ 		rcu_read_unlock();
+ 		local_bh_enable();
+ 	} else if (ndm->ndm_flags & NTF_EXT_LEARNED) {
+@@ -1355,10 +1359,10 @@ int br_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 		}
  
--	br_fdb_delete_by_port(br, NULL, 0, 1);
-+	br_fdb_cleanup_by_dst(br, br_port_to_dst(NULL), 0, 1);
+ 		/* VID was specified, so use it. */
+-		err = __br_fdb_add(ndm, br, p, addr, nlh_flags, vid, nfea_tb,
++		err = __br_fdb_add(ndm, br, p, addr, nlh_flags, v, nfea_tb,
+ 				   notified, extack);
+ 	} else {
+-		err = __br_fdb_add(ndm, br, p, addr, nlh_flags, 0, nfea_tb,
++		err = __br_fdb_add(ndm, br, p, addr, nlh_flags, NULL, nfea_tb,
+ 				   notified, extack);
+ 		if (err || !vg || !vg->num_vlans)
+ 			goto out;
+@@ -1370,7 +1374,7 @@ int br_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 		list_for_each_entry(v, &vg->vlan_list, vlist) {
+ 			if (!br_vlan_should_use(v))
+ 				continue;
+-			err = __br_fdb_add(ndm, br, p, addr, nlh_flags, v->vid,
++			err = __br_fdb_add(ndm, br, p, addr, nlh_flags, v,
+ 					   nfea_tb, notified, extack);
+ 			if (err)
+ 				goto out;
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index d9a0e1f65ec9..44a217d65e7f 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -121,8 +121,9 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 			 * and drop the packet.
+ 			 */
+ 			if (test_bit(BR_PORT_MAB_BIT, &p->flags))
+-				br_fdb_update(br, p, eth_hdr(skb)->h_source,
+-					      vid, BIT(BR_FDB_LOCKED));
++				br_fdb_update(br, p, vlan,
++					      eth_hdr(skb)->h_source,
++					      BIT(BR_FDB_LOCKED));
+ 			goto drop;
+ 		} else if (br_fdb_dst_port(fdb_src) != p ||
+ 			   test_bit(BR_FDB_LOCAL, &fdb_src->flags)) {
+@@ -132,7 +133,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 			/* FDB match, but entry is locked. Refresh it and drop
+ 			 * the packet.
+ 			 */
+-			br_fdb_update(br, p, eth_hdr(skb)->h_source, vid,
++			br_fdb_update(br, p, vlan, eth_hdr(skb)->h_source,
+ 				      BIT(BR_FDB_LOCKED));
+ 			goto drop;
+ 		}
+@@ -142,7 +143,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
  
- 	timer_shutdown_sync(&br->hello_timer);
- 	timer_shutdown_sync(&br->topology_change_timer);
-@@ -696,7 +696,7 @@ int br_add_if(struct net_bridge *br, struct net_device *dev,
- 	if (fdb_synced)
- 		br_fdb_unsync_static(br, p);
- 	list_del_rcu(&p->list);
--	br_fdb_delete_by_port(br, p, 0, 1);
-+	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
- 	nbp_update_port_count(br);
- 	netdev_upper_dev_unlink(dev, br->dev);
- err5:
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index ae76df0de05a..f65b8b6ca97c 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1044,7 +1044,7 @@ static int br_setport(struct net_bridge_port *p, struct nlattr *tb[],
- 	}
+ 	/* insert into forwarding database after filtering to avoid spoofing */
+ 	if (test_bit(BR_LEARNING_BIT, &p->flags))
+-		br_fdb_update(br, p, eth_hdr(skb)->h_source, vid, 0);
++		br_fdb_update(br, p, vlan, eth_hdr(skb)->h_source, 0);
  
- 	if (tb[IFLA_BRPORT_FLUSH])
--		br_fdb_delete_by_port(p->br, p, 0, 0);
-+		br_fdb_cleanup_by_dst(p->br, br_port_to_dst(p), 0, 0);
+ 	promisc = !!(br->dev->flags & IFF_PROMISC);
+ 	local_rcv = promisc;
+@@ -253,8 +254,7 @@ static void __br_handle_local_finish(struct sk_buff *skb)
+ 	    nbp_state_should_learn(p) &&
+ 	    !br_opt_get(p->br, BROPT_NO_LL_LEARN) &&
+ 	    br_should_learn(p, skb, &vlan))
+-		br_fdb_update(p->br, p, eth_hdr(skb)->h_source,
+-			      vlan ? vlan->vid : 0, 0);
++		br_fdb_update(p->br, p, vlan, eth_hdr(skb)->h_source, 0);
+ }
  
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
- 	if (tb[IFLA_BRPORT_MULTICAST_ROUTER]) {
+ /* note: already called with rcu_read_lock */
 diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 058cc082311a..a790368b69e9 100644
+index 34e95741b940..058cc082311a 100644
 --- a/net/bridge/br_private.h
 +++ b/net/bridge/br_private.h
-@@ -983,8 +983,8 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr);
- void br_fdb_cleanup(struct work_struct *work);
- int br_fdb_toggle_local_vlan_0(struct net_bridge *br, bool on,
- 			       struct netlink_ext_ack *extack);
--void br_fdb_delete_by_port(struct net_bridge *br,
--			   const struct net_bridge_port *p, u16 vid, int do_all);
-+void br_fdb_cleanup_by_dst(struct net_bridge *br,
-+			   struct net_bridge_dst dst, u16 vid, int do_all);
- struct net_bridge_fdb_entry *br_fdb_find_rcu(struct net_bridge *br,
- 					     const unsigned char *addr,
- 					     __u16 vid);
-diff --git a/net/bridge/br_stp_if.c b/net/bridge/br_stp_if.c
-index a7e5422eb5d1..2e5190278c90 100644
---- a/net/bridge/br_stp_if.c
-+++ b/net/bridge/br_stp_if.c
-@@ -114,7 +114,7 @@ void br_stp_disable_port(struct net_bridge_port *p)
- 	timer_delete(&p->hold_timer);
+@@ -993,7 +993,8 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf, unsigned long count,
+ int br_fdb_add_local(struct net_bridge *br, struct net_bridge_port *source,
+ 		     const unsigned char *addr, u16 vid);
+ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+-		   const unsigned char *addr, u16 vid, unsigned long flags);
++		   struct net_bridge_vlan *vlan, const unsigned char *addr,
++		   unsigned long flags);
  
- 	if (!rcu_access_pointer(p->backup_port))
--		br_fdb_delete_by_port(br, p, 0, 0);
-+		br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 0);
- 	br_multicast_disable_port(p);
- 
- 	br_configuration_update(br);
-diff --git a/net/bridge/br_sysfs_if.c b/net/bridge/br_sysfs_if.c
-index b9bcafa7f034..621d62a063d9 100644
---- a/net/bridge/br_sysfs_if.c
-+++ b/net/bridge/br_sysfs_if.c
-@@ -191,7 +191,8 @@ static BRPORT_ATTR(hold_timer, 0444, show_hold_timer, NULL);
- 
- static int store_flush(struct net_bridge_port *p, unsigned long v)
- {
--	br_fdb_delete_by_port(p->br, p, 0, 0); // Don't delete local entry
-+	/* Don't delete local entry */
-+	br_fdb_cleanup_by_dst(p->br, br_port_to_dst(p), 0, 0);
- 	return 0;
- }
- static BRPORT_ATTR(flush, 0200, NULL, store_flush);
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 471b4e7f0571..7ba6e57b18fa 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -870,7 +870,7 @@ int br_vlan_delete(struct net_bridge *br, u16 vid)
- 		return -ENOENT;
- 
- 	br_fdb_find_delete_local(br, NULL, br->dev->dev_addr, vid);
--	br_fdb_delete_by_port(br, NULL, vid, 0);
-+	br_fdb_cleanup_by_dst(br, br_port_to_dst(NULL), vid, 0);
- 
- 	vlan_tunnel_info_del(vg, v);
- 	__vlan_del(v);
-@@ -1396,8 +1396,7 @@ int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
- 	v = br_vlan_find(nbp_vlan_group(port), vid);
- 	if (!v)
- 		return -ENOENT;
--	br_fdb_find_delete_local(port->br, port, port->dev->dev_addr, vid);
--	br_fdb_delete_by_port(port->br, port, vid, 0);
-+	br_fdb_cleanup_by_dst(port->br, br_vlan_to_dst(v), vid, 0);
- 	__vlan_del(v);
- 
- 	return 0;
+ int br_fdb_delete(struct ndmsg *ndm, struct nlattr *tb[],
+ 		  struct net_device *dev, const unsigned char *addr, u16 vid,
 -- 
 2.47.3
 
