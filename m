@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BF222E3F0;
-	Wed, 30 Sep 2026 05:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9611B808;
+	Wed, 30 Sep 2026 05:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790746054; cv=none; b=AjrQ7f8AJVxHjbCxEGl2+Xi2y+sayheYbW+YQRv+zPv1trEjFUkDYtKtsHoo67qdzb2HfznXGeCnlDX63G9ew9IcxbW0YuzMwgKX37uZcB8/SBXQaCQWc6DBWkoalY3klrbEZmVQTO8REVY/APshZfqo1ggClGxJKgB/ssxM4e0=
+	t=1790746157; cv=none; b=dd6pa0GRBb7GXL8j2gOABth2fObnXRXq5lrMpz3kHnrPb9IIVZGY9Pi00vpyU+BvHIEWgtgF0JcjL8bposSxRYv1PCZPak6mfS7xezsPgKKxJNXyPBlTZz4pmtpqnYKljAq23B1Sg4WGGffpBAMW50OOp29VSLIBPIRgaL5P1Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790746054; c=relaxed/simple;
-	bh=wND7dBpReFv6KpBHgO9ywvJe1k/pNitGAGbZ19ubVxc=;
+	s=arc-20240116; t=1790746157; c=relaxed/simple;
+	bh=UAUJYJhL21K586r7X081V+82GJfyyoddvHhQ8NLMO2E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P+M+O5svtJ8nLmHAZRS8AH46OiCVoF0xFQ2Knq75nBX8zG6fGG5dxR4E6N0v17H5GsJ8KST+X/IDejU0xCezhRb7mdBAjrxeqVbz0x/V6sDPFRjgL6tALWHzlRCvaI3A74szBS9ukCNKX3DqdpaBmO3atzxhQ1HpFVkUbHTA7e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4aVh3hA; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=NKVohC+dK+1S32e8pwodQb8N7umxSSkV3PAqkKrmxoI6hfDFtw6qNHlHpdKo37y5Ts6maduKST4bMmxMvPlfeWMguhd2rvcN9at5Iv1led7QM9zDMKfaJHZCfWsiUMsldyqeiLGHkCV8EFQ+ctRuScPnfxMYyOGoqxjvM78e6rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpvG5HJL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4aVh3hA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226181F000FF;
-	Wed, 30 Sep 2026 05:27:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpvG5HJL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3101F000FF;
+	Wed, 30 Sep 2026 05:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790746053;
-	bh=06Zuo4A9hhguG0l8uXgCmCW8TqV+AbJH3zCOvom+frM=;
+	s=k20260515; t=1790746155;
+	bh=yqnNYUoM7h7MLEw242PsJGeakhBAhuwtKwSzHeOyrl4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=M4aVh3hA8Qw1doRw0fSevenYoQSZxU4wCeUEmrNqof+MgS5gp5qxP2FfJdVTYnNXI
-	 HeDDTLOcNcrWwm+DdCUN8O5a3me2f4R1BLtQLIJFtYInW4SjYLjq/NoaqDl1OFQKVL
-	 c2vs3/LfTSXIsGX8Ic8oqStV9Cj7iKbuGUxfn6PKUMRgAFPH4NSml0QEK0lZGRBN3K
-	 dZ0srwkRMQB2iyDsJUOnAx05+f8sqiKiWnu52gHR/ZdvnBEUAfoa0lgu0EM3ZNWUx+
-	 2Z11rEISwA9yvl7li1/Sra8mZN8hM7k9wQisgdtWK2IEyNB+fQTn+G6EAOTTrHYyXG
-	 Sm4k3RcS1Vf4g==
-Message-ID: <7d15afea-f2b1-4d7b-8869-0762894f5f59@kernel.org>
-Date: Wed, 30 Sep 2026 07:27:25 +0200
+	b=LpvG5HJLqchYVOAb7XwITd/1W7DoSKxsCRlPAyqER6lwHzRN2rK+GxSknS0uItFFe
+	 RNqEsxeVTW2TlFzVNnE0MZzz+OawG5VUUsg9kQBsr7hNiy1ughHllw2mUH9hL5BQbX
+	 8x344O9yhC6hj68Fo+YVXy8LrcvEui8nO95yJkKRSZqwthMApdILcR6rx0Ot1O1xpm
+	 OGBs1AsuBEJUjdvZr+wQ4BRvLgxCBjuTZVtgtVRJ9n+EGVFgJVi2yaLi2KGU0WUUE9
+	 ObPdRlw2283cTL4+sCO00gS6yTb4wfFyslRu+JHx3EqPs1+NrtN50Ui/NFa/XPiIsa
+	 0BKK/dXxSi0bw==
+Message-ID: <50a12135-b7c2-492e-aa8a-363715600e44@kernel.org>
+Date: Wed, 30 Sep 2026 07:29:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] ARM: dts: axis: artpec6: add empty lines before empty
- queue nodes
+Subject: Re: [PATCH 6/7] ARM: dts: axis: artpec6: put inline comments on same
+ line as entries
 To: Henrik Grimler <henrik.grimler@axis.com>,
  Jesper Nilsson <jesper.nilsson@axis.com>,
  Lars Persson <lars.persson@axis.com>, Rob Herring <robh@kernel.org>,
@@ -46,7 +46,7 @@ Cc: linux-arm-kernel@axis.com, kernel@axis.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  Henrik Grimler <henrik@grimler.se>
 References: <20260928-b4-artpec6-cleanup-v1-0-e3b75e10acc6@axis.com>
- <20260928-b4-artpec6-cleanup-v1-7-e3b75e10acc6@axis.com>
+ <20260928-b4-artpec6-cleanup-v1-6-e3b75e10acc6@axis.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,22 +92,43 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260928-b4-artpec6-cleanup-v1-7-e3b75e10acc6@axis.com>
+In-Reply-To: <20260928-b4-artpec6-cleanup-v1-6-e3b75e10acc6@axis.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 28/09/2026 14:04, Henrik Grimler wrote:
-> For better readability child nodes should be preceded by an empty
-> line, and closing braces should be on their own line. Both issues are
-> reported by dt-check-style in strict mode, e.g.
+> By having the comments next to the data they describe it is easier to
+> read the property. This fixes indent-consistent and
+> continuation-alignment warnings from dt-check-style in strict mode,
+> e.g. warnings like:
 > 
->   axis/artpec6.dtsi:212: [required-blank-lines] child node must be preceded by a blank line
->   axis/artpec6.dtsi:321: [node-close-alone] closing brace must be on its own line
+>   axis/artpec6.dtsi:170: [indent-consistent] indent mismatch (expected depth 2 * '\t')
+>   axis/artpec6.dtsi:172: [continuation-alignment] continuation should align to column 26 (to < or ")
 > 
-> Updated the dts to use preferred style.
+> Also shorten one of the comments a bit so that the entire line fits
+> under 100 chars.
+> 
+> Signed-off-by: Henrik Grimler <henrik.grimler@axis.com>
+> ---
+>  arch/arm/boot/dts/axis/artpec6.dtsi | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/axis/artpec6.dtsi b/arch/arm/boot/dts/axis/artpec6.dtsi
+> index 146a5fd98528..c9f671fd685a 100644
+> --- a/arch/arm/boot/dts/axis/artpec6.dtsi
+> +++ b/arch/arm/boot/dts/axis/artpec6.dtsi
+> @@ -167,10 +167,8 @@ pcie: pcie@f8050000 {
+>  		      <0xf8040000 0x1000>,
+>  		      <0xc0000000 0x2000>;
+>  		reg-names = "dbi", "phy", "config";
+> -			  /* downstream I/O */
+> -		ranges = <0x81000000 0 0 0xc0002000 0 0x00010000>,
+> -			  /* non-prefetchable memory */
+> -			 <0x82000000 0 0xc0012000 0xc0012000 0 0x1ffee000>;
+> +		ranges = <0x81000000 0 0 0xc0002000 0 0x00010000>,          /* downstream I/O */
+> +			 <0x82000000 0 0xc0012000 0xc0012000 0 0x1ffee000>; /* non-prefetchable */
 
-These are false positives. Original code is readable.
-
+Squash with the #3 patch.
 
 Best regards,
 Krzysztof
