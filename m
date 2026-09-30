@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3F021E097;
-	Wed, 30 Sep 2026 03:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF9430DD2F;
+	Wed, 30 Sep 2026 03:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790738379; cv=none; b=Fgg5WdSNcNjL4BEG2O21O54p7C8tF7qtTA9l3JNOkeE2EeG25HFiE8fiwW3aYYVPvUOejZ0RV/bqdGBDrf2I++Q+mUin3eQW0UkQcUcUCN5WhD23w0KGZ9ul0Bly7IoIIGHb+pWmXumt8c1TqSG9o/eZcxbLJMNB4JNSfT7W3OU=
+	t=1790738380; cv=none; b=VBPqM9ZNItQrJ8Up8tXugyqmjmFIleqfU00Rf8ad1p5kfxjiJkYg5lW1IVANYoxHR2yL3gmoX6HzbOOQnZb8bB0Bk7zPiS8OKcXE9DMKKkgXLrHgZ4Sd91ZKNWRpKDQbpJyMb/5QGlkBYfTJ4ny7x+PuFM3f0HQ+lVP5JK/M2ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790738379; c=relaxed/simple;
-	bh=ThP12Tv7gwbyfTnvtFj5aN1T5Kx+E9g/MIGql2mX7d0=;
+	s=arc-20240116; t=1790738380; c=relaxed/simple;
+	bh=07Lnac7NloUDwkzGmRE2h44PillUh4mIH0xyUvof/XU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JLOHTmdC0N9qhAR1DJXeQG17qV/1fwfHM+vWPdMjXmbjqOJn3f7WcEvX2rtHi43rvC21z686MqSqQjMTT/gmYPwW1AWM2MYo9xilCDbB7i5H3oQoTIE28TSbar5lDbvXzxWe/DMM3OnRHt7gjGgCImwbjqv0dG+ELqQXbOazDHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7lTfrv9; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=AKHRqxOkJv5BwDNcj0s9IwHb5wY9OZyR8m1V2ZWM66n9QRAO80pQ/1TDiMTO/Qhyjl6kdnCADAgL/V/W4nhhm7J5Lpn2R6VkmE40sdBe+P9Tt2K36iMCAa5g0nF8Wc7oruqHSZB2wPFYjaJPy58f5YXPyKlvxjBu5NTK00RJfdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b6SEZL+1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7lTfrv9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664C91F000FF;
-	Wed, 30 Sep 2026 03:19:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b6SEZL+1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800851F00893;
+	Wed, 30 Sep 2026 03:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790738377;
-	bh=Nb4NqFdWYWfaWTFhpA/eJ8dsBAMYjbSrDg/2ufGZyH0=;
+	s=k20260515; t=1790738379;
+	bh=TF8Wvl9XYpoubaEd2TyKf7G96qPB9UtRTPH2re8V3/Y=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V7lTfrv9HMfMArc+kKB77PnJu1hyocRpcyZ6qFy+C7WwKJT3z3Vwfg/2+AQBRTGAj
-	 AjmE2cVhjQ0ZqdBYPzIp5qEhyFrWZl52/MSDKGZToIuQJoOj93exx1BnljtEaE1tL8
-	 gct/J2C3lfmt9uW8t0tHYoBIXi34kgYOzOZnBckjTy7zXd4sQE8ej9/vorXLjibfFh
-	 3USV6KrF3s+AaKuIQEDbmwl8aKxo6tcD3pkCF8dUi0D93r8RXkeMBkq0gg/+KbTXAD
-	 7FprIgC3uNwIsJyMix63mHsh7bpWbS4iPxa+LZMPbgDEQ0Fzn0mMdywRulf70daxxl
-	 KLUvZ453zTlEg==
-Subject: Re: [PATCH net-next 1/6] net: dsa: motorcomm: Split TC module
+	b=b6SEZL+1n9PmPFtsDbpy6USJZPrcuY87TuuoSnabWfLN+rbqDfunLGAZdjoxWi/j/
+	 yqJSkjoS8BLViFf6uWgapochQdhmrIjve8UdPBQJ1Q+cMs4FjptU9XfJsU4xoil2Y1
+	 f1dX/ZZymE2dSDhvlzeVrnxMDWiBxxLdoHV3TSPjiEYzqK2mVItycJnEAvutnWaNtJ
+	 FFvbkOqVswUP4KoR5OrkPT1LqW40sWW0nnhpJgl5p1RzVMUAH2j0A2v4u6kz2eeHwF
+	 G+dOT7+Rxhh/0IekRMIPKtOKED69cwCZECrta5FuQmOa1nqtZIdWLIitv+RmkZJqAq
+	 pJx8SKAE/gr9A==
+Subject: Re: [PATCH net-next 3/6] net: dsa: motorcomm: Enable ACL on demand
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 03:19:36 +0000
-Message-ID: <179073837688.434549.16725584220078648669@kernel.org>
-In-Reply-To: <20260926211813.935723-2-mmyangfl@gmail.com>
-References: <20260926211813.935723-2-mmyangfl@gmail.com>
-X-sashiko-severity: Low
+Date: Wed, 30 Sep 2026 03:19:38 +0000
+Message-ID: <179073837810.434549.17458326293756171392@kernel.org>
+In-Reply-To: <20260926211813.935723-4-mmyangfl@gmail.com>
+References: <20260926211813.935723-4-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,178 +46,102 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The patch moved the comment "/* Custom meters only, not including
-  dedicated port meters (11) */" away from the define it describes.
-- [Low] tc.h does not compile on its own.
-- [Low] yt921x_dsa_port_setup_tc_tbf_port() is declared in tc.h (line
-  361) and defined without `static` in tc.c (line 292).
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In yt921x_acl_add() (drivers/net/dsa/motorcomm/tc.c), ACL
+  lookup is switched on in hardware for every source port whose acl_cnt…
 
 --
 
-net: dsa: motorcomm: Split TC module
+net: dsa: motorcomm: Enable ACL on demand
 
-This commit moves the traffic control code (policers, TBF shaping, flower
-ACL offload and port mirroring) out of chip.c and into a new file, tc.c.
-The related register definitions and ACL structs move from chip.h into a
-new tc.h. The ethaddr helpers become static inline functions in chip.h.
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-> index 28e4f26f9cc49..02419bcde3f21 100644
-> --- a/drivers/net/dsa/motorcomm/chip.h
-> +++ b/drivers/net/dsa/motorcomm/chip.h
-
-[ ... ]
-
-> @@ -791,19 +484,7 @@ enum yt921x_fdb_entry_status {
->  
->  #define YT921X_MSTI_NUM		16
->  
-> -#define YT921X_TOKEN_BYTE_C	1	/* 1 token = 2^1 byte */
-> -#define YT921X_TOKEN_PKT_C	-6	/* 1 token = 2^-6 packets */
-> -#define YT921X_TOKEN_RATE_C	-15
-> -/* Custom meters only, not including dedicated port meters (11) */
->  #define YT921X_METER_NUM	64
-> -#define YT921X_METER_SLOT_MIN	80
-> -#define YT921X_METER_UNIT_MAX	((1 << 3) - 1)
-> -#define YT921X_METER_CIR_MAX	((1 << 18) - 1)
-> -#define YT921X_METER_CBS_MAX	((1 << 16) - 1)
-> -#define YT921X_PORT_SHAPE_SLOT_MIN	80
-> -#define YT921X_SHAPE_UNIT_MAX	((1 << 3) - 1)
-> -#define YT921X_SHAPE_CIR_MAX	((1 << 18) - 1)
-> -#define YT921X_SHAPE_CBS_MAX	((1 << 14) - 1)
-
-[Severity: Low]
-This isn't a bug, but the "Custom meters only" comment described
-YT921X_METER_NUM, and that define stays in chip.h. In tc.h the comment now
-sits above an unrelated define:
-
-tc.h:
-#define YT921X_TOKEN_RATE_C	-15
-/* Custom meters only, not including dedicated port meters (11) */
-#define YT921X_METER_SLOT_MIN	80
-
-Could the comment stay with YT921X_METER_NUM in chip.h? It explains why
-yt921x_dsa_port_policer_add() programs meter port + YT921X_METER_NUM. With
-the comment moved, YT921X_METER_NUM has no explanation.
-
-This still looks the same at the end of the series.
-
-[ ... ]
+This patch adds a per-port acl_cnt field to struct yt921x_port to count
+ACL rules. YT921X_ACL_PORT is now initialised to 0 in
+yt921x_chip_setup_acl(). yt921x_acl_add() and yt921x_acl_del() then turn
+the per-port enable bits on and off based on those counts.
 
 > diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-> new file mode 100644
-> index 0000000000000..38dd4ec60bbc1
-> --- /dev/null
+> index 7717f1e179235..0f6d7a4675fcd 100644
+> --- a/drivers/net/dsa/motorcomm/tc.c
 > +++ b/drivers/net/dsa/motorcomm/tc.c
-> @@ -0,0 +1,1457 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (c) 2026 David Yang
-> + */
-> +
-> +#include "chip.h"
-> +#include "smi.h"
-> +#include "tc.h"
-> +
-> +#define to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
-> +#define to_device(priv) ((priv)->ds.dev)
 
 [ ... ]
 
-> +int
-> +yt921x_dsa_port_setup_tc_tbf_port(struct dsa_switch *ds, int port,
-> +				  const struct tc_tbf_qopt_offload *qopt)
-> +{
-
-[ ... ]
-
-> +int
-> +yt921x_dsa_port_setup_tc(struct dsa_switch *ds, int port,
-> +			 enum tc_setup_type type, void *type_data)
-> +{
-> +	switch (type) {
-> +	case TC_SETUP_QDISC_TBF: {
-> +		const struct tc_tbf_qopt_offload *qopt = type_data;
-> +
-> +		return yt921x_dsa_port_setup_tc_tbf_port(ds, port, qopt);
+> @@ -1274,6 +1309,18 @@ yt921x_acl_add(struct yt921x_priv *priv,
+>  		}
+>  	}
+>  
+> +	ctrl = 0;
+> +	m = FIELD_GET(YT921X_ACL_KEYb_SPORTS_M, ruleext->r.entries[0].key[1]);
+> +	for_each_set_bit(o, &m, YT921X_PORT_NUM)
+> +		if (!priv->ports[o].acl_cnt)
+> +			ctrl |= YT921X_ACL_PORT_PORTn(o);
+> +	if (ctrl) {
+> +		ctrl |= yt921x_acl_activated_ports(priv);
+> +		res = yt921x_reg_write(priv, YT921X_ACL_PORT, ctrl);
+> +		if (res)
+> +			return res;
 > +	}
 
-[Severity: Low]
-This isn't a bug, but the only caller of
-yt921x_dsa_port_setup_tc_tbf_port() is yt921x_dsa_port_setup_tc(), here in
-the same file. Could it stay static and be left out of tc.h?
+[Severity: Medium]
 
-Also, the to_yt921x_priv() and to_device() macros at the top of tc.c are
-exact copies of the ones in chip.c:
+If yt921x_acl_add() fails after this write, can the switch and the driver
+end up disagreeing about YT921X_ACL_PORT?
 
-chip.c:
-#define to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
-#define to_device(priv) ((priv)->ds.dev)
+The register is written before several steps that can still fail.
+However, acl_cnt is only incremented after yt921x_acl_commit() succeeds.
+None of the later failure paths write YT921X_ACL_PORT again:
 
-Would it be better to define them once in chip.h, next to struct
-yt921x_priv, so the two copies can't drift apart?
+	aclblk = kvzalloc_obj(*aclblk);
+	if (!aclblk)
+		return -ENOMEM;
+	...
+	aclrule = kvmemdup(...);
+	if (!aclrule) {
+		res = -ENOMEM;
+		goto err;
+	}
+	...
+	res = yt921x_acl_commit(priv, entid, aclrule->mask);
+	if (res) {
+		aclblk->rules[binid] = NULL;
+		kvfree(aclrule);
+		goto err;
+	}
+
+On any of these paths, the newly enabled port bits stay set in the switch.
+Meanwhile, yt921x_acl_activated_ports() still reports those ports as
+inactive.
+
+Deleting a rule on the same port can't clear the stale bit, because the
+failed rule was never recorded. The bit is only cleared if a later
+yt921x_acl_del() drops some other port's acl_cnt to zero, sets
+refresh_en, and rewrites the register from the counts.
+
+A later patch in the series, "net: dsa: motorcomm: Add limited ACL flow
+statistics support", adds two more direct-return failure points after
+this write: the YT921X_FLOWSTATn_CTRL write and the YT921X_FLOWSTATn_STAT
+reg64 write. That makes the window wider.
+
+Would it work to write YT921X_ACL_PORT only after yt921x_acl_commit()
+succeeds? Another option is to write yt921x_acl_activated_ports(priv)
+back on each error path after this point. That value is still the one
+from before the add, because acl_cnt hasn't changed yet.
+
+>  	/* Prepare acl block ctrlblk */
+>  	blkid = entid / YT921X_ACL_ENT_PER_BLK;
+>  	binid = entid % YT921X_ACL_ENT_PER_BLK;
 
 [ ... ]
-
-> diff --git a/drivers/net/dsa/motorcomm/tc.h b/drivers/net/dsa/motorcomm/tc.h
-> new file mode 100644
-> index 0000000000000..3d4a8a24f8a85
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/tc.h
-> @@ -0,0 +1,380 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Copyright (c) 2026 David Yang
-> + */
-> +
-> +#ifndef _YT_TC_H
-> +#define _YT_TC_H
-> +
-> +#include <net/dsa.h>
-> +#include <net/pkt_cls.h>
-> +
-
-[ ... ]
-
-> +struct yt921x_acl_rule {
-> +	unsigned long tag;
-> +	enum tc_setup_type type;
-> +
-> +	u32 action[3];
-> +	bool sw_assisted;
-> +
-> +	u8 mask;
-> +	struct yt921x_acl_entry entries[YT921X_ACL_ENT_PER_BLK];
-> +};
-> +
-> +struct yt921x_acl_blk {
-> +	struct yt921x_acl_rule *rules[YT921X_ACL_ENT_PER_BLK];
-> +};
-
-[Severity: Low]
-Is tc.h meant to compile on its own? YT921X_ACL_ENT_PER_BLK is still
-defined only in chip.h, and tc.h includes only <net/dsa.h> and
-<net/pkt_cls.h>. These arrays build only because chip.c and tc.c both
-include "chip.h" before "tc.h".
-
-The dependency also runs the other way. struct yt921x_priv in chip.h still
-holds struct yt921x_acl_blk *acl_blks[], but that type is now defined only
-in tc.h. A pointer to an incomplete type is legal, but the split between
-the two headers is inconsistent.
-
-The other local headers (leds.h, mdio_bus.h, smi.h) include what they need
-and forward-declare struct yt921x_priv. Could tc.h do the same and include
-what it depends on, such as the header that defines YT921X_ACL_ENT_PER_BLK?
-As it stands, reordering the includes or adding a new user of tc.h would
-break the build.
-
-This also looks unchanged at the end of the series.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926211813.935723-1-mmyangfl%40gmail.com
