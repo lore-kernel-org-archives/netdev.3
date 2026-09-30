@@ -1,79 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78523630A5
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2943624AB;
+	Wed, 30 Sep 2026 02:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734212; cv=none; b=Xeo2pKdcS9vI5BkYgRM7n36G/yJdJXws6JNFjgHbEoqBIObMSPvcmqMKSAzU1gJgiFJyvJCRqeJ2PSPRSoCXdl6wjrxkP0b5oJjY6cJVrxv0SEe/BJt6XXL3WKCxHx+ubtxylwNES0DEtq17ZEY3iqPiWlzmACb6ehlxA3Hp63o=
+	t=1790734259; cv=none; b=FLBeuFiff1nhclnl/pMLp24nSLGi5rl0dd+5NQMf9EcfZRcK0K3V+5RNqteZCWIQyH5ZP+66WJuPlbdR+iWQp+TZtREqbhcGrBxSrhNa5E6hO2/BnYP6vBmK+emUp7AmHbnE/eQukN9+syNUXuOG1GgyKRhW9a97QTOWbeIdUjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734212; c=relaxed/simple;
-	bh=13Pwn7CJ+Fh1oJZkw5t0tYYQB5AgiKnCXCvg/5P/eKM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=O1vpfhTanNFVIY4STOTBkk6YLNTFLwYcp1ev1l12kYtcMZLtJ1RErnVZUZU2BM7gBxK//E2VfcPNAhV/k5RW5bjz0MAke42lEJv6Mp9BzXahJed+u9+1mCi8GE24mAZJ5LfFIRvedeW8Ac/q0lzeiufTIVLQ6v/8F9iVMLOPzGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRlXOifv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790734259; c=relaxed/simple;
+	bh=W32nvCISOv+QAJ7rEbXFq6CPdoKleRQ4nNHOcgg+XXo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pyuwasbRgYR3RRJP2F08IJKE2Eg95PqmINIkpzKNyRsD7zuEvCiH920815mPxxgX27Ef0ooq+kjyBLfgQphK0MdP/CeEfQw4l4N2efjxG/FRxVMsDivGzheWMAH/plFSCg5uILWZ6YgLI013t/dyuPZJ8A42jo9R2uzxM6z0KtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKWTL9o6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRlXOifv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825481F000FF;
-	Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKWTL9o6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0951F000FF;
+	Wed, 30 Sep 2026 02:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790734211;
-	bh=oFxvrrbUI0Htq1vIzuBtDOL56V3G3GmmgRLesVjXK3k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BRlXOifvCO+RJhMIShkXR7pRCr8v0fhLxopTaZ50COf5x0tD0wW2L0e+hVnlg6vi/
-	 PRDwuuLmzE95mQCVRirpNiB6engjCM1CJTrVy81B3lewPSgHvL+mO6C8kX34prNrJe
-	 g4vaDnyrHqQL6MRO3wGnQWJp8jzsGORXm8NRM4qysjTerDFjcrLIBs37MONE5/dw8y
-	 ruv5/Hl4m90sMk1UMnxqpmSSg5PV9ed18X3KRHLMYjrmYd8icQIdhPt2RZMPQTJuXZ
-	 QpH4nQjnxHhKQewaaOcIG7x8c0ApQ5pnPtBx93loBVzAhnNSTebtREoTRKBOh9hxsG
-	 ftRLk1p2m2iLw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774CE3924FEA;
-	Wed, 30 Sep 2026 02:10:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790734258;
+	bh=T8EKNXYenlstFgfxKWv/tz4x7AnSYkrIn/LqQvDI5R0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mKWTL9o6nKJlBF66yGNpF33GCCUPS3gjhqk8KAxXS0RzpyPDEXZkseniftYAVpMBl
+	 Ctp1RuNf4O/2UqJssJxYkInE2TDKBPhMQF27bNe9mf1BQGWTmHaGB7Qdi6n37sW8XI
+	 em04GNqYeOJV5XRZAOyDT6aqRGZOrIWwSVe4GOaKTvKFsC8mv0Mpav6WbCy/8ACCJB
+	 aQVtXms+1jEv4RLnTaKy7kVULL6LLwxEkuIpygYnijEhgPCcYBh2dizarij+7dXaIS
+	 T9nfnWa7fl1wVquHTRgU6FZCQGCSKdvc5mkQL0/CLDOUEHBGiMOex/8rtkqZQDgnUT
+	 F0GlirUPeZGNA==
+Date: Tue, 29 Sep 2026 19:10:57 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>,
+ martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, quanyeyang@proton.me
+Subject: Re: [PATCH net-next 5/5] selftests: mptcp: convert iptables to
+ nftables for mptcp_join.sh
+Message-ID: <20260929191057.45ff98e4@kernel.org>
+In-Reply-To: <4278a970-2957-4387-8f20-604ae4ae97e9@kernel.org>
+References: <20260926-net-next-mptcp-misc-feat-7-4-v1-5-67af4ab37406@kernel.org>
+	<179058242453.3145.1450534124183352369@kernel.org>
+	<deb5e3b3-d1d7-4d1e-8bb6-95050769d656@kernel.org>
+	<4278a970-2957-4387-8f20-604ae4ae97e9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] octeontx2: remove unneeded symbol exports
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179073421002.1211220.909737522192697428.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 02:10:10 +0000
-References: <20260925201042.1174488-1-kuba@kernel.org>
-In-Reply-To: <20260925201042.1174488-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- hch@infradead.org, sgoutham@marvell.com, rkannoth@marvell.com,
- gakula@marvell.com, sbhatta@marvell.com, bbhushan2@marvell.com,
- lcherian@marvell.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 25 Sep 2026 13:10:42 -0700 you wrote:
-> octeontx2 has a bunch of symbols not used outside the module which
-> defines them. Worse, still the macro which defines otx2_mbox_up_handler_*
-> adds exports for all the functions. Remove all the explicit exports
-> and the auto-export from that macro.
+On Mon, 28 Sep 2026 23:17:59 +0200 Matthieu Baerts wrote:
+> > Indeed, the RM_ADDR will be added in a second MPTCP option. It looks
+> > like Netfilter doesn't handle that case. But that seems to be an issue
+> > on the Netfilter side, rather than with the command that should work. I
+> > will follow up with Netfilter devs. If a fix cannot be added on their
+> > side, I will change the nft command to look at a specific offset.
+> > 
+> > Note that the command here is just to check there is no RM_ADDR sent on
+> > the wrong side: it shouldn't catch any packets here anyway.  
 > 
-> otx2_mbox_up_handler_cgx_link_event was exported by the macro and
-> is genuienly called from the VF driver, so add an export.
+> After a discussion with Netfilter devs, it looks like a fix will not be
+> easy to have. Yet, I wonder if it wouldn't be better to apply this patch
+> like that (it doesn't break things), and have an explicit follow-up/fix
+> to document this issue somehow.
 > 
-> [...]
+> @Hangbin: do you plan to look at a fix for that? I guess a raw payload
+> looking at the same fields as what the previous cBPF rule was doing
+> would be enough.
+> 
+> Don't hesitate to fix the "low" priority comments as well.
+> 
+> https://lore.kernel.org/all/20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406@kernel.org/T/#u
 
-Here is the summary with links:
-  - [net-next] octeontx2: remove unneeded symbol exports
-    https://git.kernel.org/netdev/net-next/c/3e6a0e83c913
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+-110, let me take the kernel patches for now, repost the selftests
+please, in whatever form you decide to have them.
