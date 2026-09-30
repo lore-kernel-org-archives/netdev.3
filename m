@@ -1,105 +1,98 @@
-Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+Received: from mail-pj2-f38.google.com (mail-pj2-f38.google.com [74.125.227.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A183A248F57
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4347207F
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790758826; cv=none; b=qTyMyEghtwZD6B+n8Mg2ngapWQzNoD081S0aON8+KDTdLS5EpkPO/JJ5UQEh2mfg01pGdW62+Fz/ZQeZV7a6FdOrjY4yUZw4Hi072gjPiVChT/tHTPTEwMDhhuEwNOnIEykzZocSuuQ5sdvlOmpcLVIjr7x3RwoGCd3szZkTrUY=
+	t=1790758922; cv=none; b=O4h/2Qdh7owunSlvih/D28rnJ+Kt0vRpJ0y+yV9L4oY8vmsHJ9oHBRj5cpGWLIw1KouwZBpVXTOVJmQiuSb9iTWBY9uXaQ/jFuv1cPCF7GJI4NK+LRVUAhCkpmWnoyg6+D15MkL6FZ4CTh1wVd1LCaYoHg9jdllp9ivLlLH6LZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790758826; c=relaxed/simple;
-	bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=Tlmzr7mQeoKCRwlJ0goZRaZ5pbt5qjA8EqWJth/mimAKnSWyffduc9ohjQDrh2V8Tw+TEEfXZ9JmFLOQiWuTzXdAjqeeQiUu6mB6laGSkbzCdQQpFjGR2ZEvIVxNiOGvG7powJQqQOk+UczQFCqcHtQRqXwCTxgq3m8RamQHJHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sR1IdwwV; arc=none smtp.client-ip=74.125.228.37
+	s=arc-20240116; t=1790758922; c=relaxed/simple;
+	bh=vUgSmNgYb3xPR6GE41yrOSkOkZp4hMoyauJEOX0p9L8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:MIME-Version; b=Nx2xtJQAMdjPWl+7cUzYFi/FrMgNLxWUkBuvUlNgY1x+TbdV+F9d24EJq12VPr34DKZYG3yhJg6COYvNIBz7NU5cT9CCFFwyycCKzTlm/rWjPl+Rd5kxWT/vq9dl0yqC/7V6oYxXVoDwL18tf1PxKLmdkkyJh2jMRliA7In1LMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qzZiQMh7; arc=none smtp.client-ip=74.125.227.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sR1IdwwV"
-Received: by mail-pz2-f37.google.com with SMTP id 41be03b00d2f7-cc7d1403bbaso556750a12.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:00:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qzZiQMh7"
+Received: by mail-pj2-f38.google.com with SMTP id d9443c01a7336-2e2da4743b0so2909615ad.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:02:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790758825; x=1791363625; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
-        b=sR1IdwwVgduFIv7qpHpwmu1NFvO0x7IDDr0QfkZ8/xYXZI1+crJiGrRgwqxCiFUx1e
-         +40IlZ2oTgXuFWqusG4Azk233/zi0rIRjJT72udcQakiVKeCH9DHz3wmQNaEkB67OcRd
-         y/yxcbmxKKBPS5TFmEv3TlygkG1HYCZmnXwP7fcSWPXZLOvLzuT6iS+eVS4j0CWmxAQB
-         OybMfKIrQiaUhHz1LMuxnOVItnveRYWKfcyE7tHdRzpkYIpDy7rcMWJJDsv9b14u9S6P
-         vNJQ6jl536g1u8eA3ub8NTOwrIwj7wOReV+3TtV/lxpyRKt35MdpkLU4kcNrDnG2WCvl
-         RtyQ==
+        d=gmail.com; s=20251104; t=1790758920; x=1791363720; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=valg39DdEk8sl2YI17Dx/FsaQPmRarO/oHzT/4W/5sE=;
+        b=qzZiQMh7DnKSeCHllSc/0Ox7SWd4gI7lAxYbJUEhIoq2XE7B0onLSFx/hPaemWbn+9
+         wm/I1t9l3ab3+zLXygBf40YYlJBLjlpPyLnuHc0TGup3ElwuGCqWfTX++9cw0oiWaWPy
+         BmoR7oIs+2hmS9pXmKZoexTAtVCYHc/akWHe30m9aHvCHuMgUCP36RjbwcYjZIP1bWp2
+         LrKckrmyElI2KKcmIKa9PUE8p16uOppwxoxptDoB/1KZbGbnNra53O1DZk+D+moOdgtd
+         DUf/DhJoGdp+ctuuwnPDZpj69AQiKIaOrtLhuzJqp7rs7/RqESVcCF7bGsABGnA4JuIB
+         lPFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790758825; x=1791363625;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790758920; x=1791363720;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
-        b=102f21WjVOrHhvk1UG4LZdEwFl1cBjkyZRzdnJmVUFx48F3Rx36o4A19sIg9xi2XTk
-         np0JEEi53eD6AOWrwFD2wMxd/86UP6elPCJbrFIqAQhssKadup26vBBFWDEBcQAS5B4B
-         MH4/VPXqxTVx2fEruA3AM3eblV1mTBPI26YkvAnK/tdlMkJ8ZVpN+X81d3WHqiCw3Xd3
-         tEh4e8ZYE/rLVjdH/4cffeFl+shvhgH77bPcplGFxGl5oMTZ1q+uKJUosevQbjQqNnMI
-         0XVDJPwcP1ufCdFX4I5696vbHx3eGfG5nHXSxzYyUutjV44t9labtpYJ8wzmloNl3VMC
-         Wzzw==
-X-Forwarded-Encrypted: i=1; AKwUvBxw/qK5B5Pfz50UETtHp1mw+Umz14kySGJr/fXApGgvDK6o9+R8GOs2l/Zz366mVE5OfF156kg=@vger.kernel.org
-X-Gm-Message-State: AFuF++l8xJ62icToeguquqVA3OqYl5XROnQjnbbERJGBkY01vuv+ywu8
-	P+5vD7/aNF8rT17BAgi0/Ot3STzHaomNW/rXP/aGlPrwk1ylJKqkgOVv
-X-Gm-Gg: AYBFou1KkQ8x6pa4nMaDRsIjvTCYr5tj/tEGXfX9HEkA6kOU/PuVWJNB1/AeQwW3yY+
-	jz6EKsx3JNS9itrQsEkE1wc+BA20JVxxKRAO1Uqefy1lSNdwaxITuUwhXS4Ap0ii77NbUpYwI9a
-	GDBCiFuWGTCBeP7X2LnDyXIC7Nrk8GSOAu9TA/QnHegkDJ5B7bXVc9gnzaheuC+doYDAaVQfI8I
-	pGl2t2Jo+ilIYDCKqsIl4uuw/u3A5pngBteUEkEGp3qRvieUPONA9tmaERRWDW5bAB29xYu8p9d
-	oqdtoYqiMhSooodphykBOYq870Qtv3mHqFWfrL3wQnYqznaS5ITSAj2p6gGfr+jPTGXAXCnTmk3
-	Qg0mJHlaSe5M89rUAY2LgBTNSAZCrEDAPRiVUnGHZTfpieiXGpheqmgzTiNZmMKSv5dib/4Nv0A
-	kxqZuESi0DB2lmHKuZ7I/xU2Wx4O+J3D6qJ+VAS1cnzTd2fdG1LU2/29c4eLoJNGw2I6MXeRqca
-	RTsh/lFVQyppbzUveCPlWRGyugkgoYX/XsSlzQjpBKzLSJcNDEotqYQp5X1nLnB0PpxilbdpS7c
-	bNQt1YOo4704KBU=
-X-Received: by 2002:a05:6a20:e290:b0:3dd:85a8:4c5a with SMTP id adf61e73a8af0-3de9e6ef037mr777228637.33.1790758824705;
-        Wed, 30 Sep 2026 02:00:24 -0700 (PDT)
-Received: from localhost ([153.61.198.247])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7dab424e8sm492238a12.32.2026.09.30.02.00.23
+        bh=valg39DdEk8sl2YI17Dx/FsaQPmRarO/oHzT/4W/5sE=;
+        b=FzH8VgGM3wK9iXkOk9ZmzFQzy4Smh7lEQElxBL4X9C4/McHkEyeoRutLhej/yjpNTp
+         GptzWf6OR93Fp5KwEMokkRFnaEsHgLrj66WG59mwPkVjqK8hPAFthXXYnjI4Fplx4Ky4
+         OqY66U+k8WhVTvwzDo8pkgPX+qvzk6UuKxteGM8SKnM3EKikm4c5udUqZVhL4YSRQ/+W
+         r0Ke9WOJsLliWiquWe2QFQ8TQ3Kmym9iwEJ01Oi9EA35ekWVsvc3IAH3jZjfseoio0Ox
+         ZTH6Ig8p3jMkHzTdg4znMUZrrV7SXpEaBjiRjNQzN/nEomTVeHhJ5Fgnrb7XXymQLEWe
+         j43A==
+X-Forwarded-Encrypted: i=1; AKwUvBycvigw2f70CNeyt2Ec0NjCiiUhC3zS1bsRLHPeIwJiq7YlEu55YTxcBhKdWQVMrk5h26s0ILI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIiDjeG6e+AWVC9IJVXmVjK4wigBYVRoCppNAWWnK6pJAiEbeqB
+	LX8c+dOAu4sAW1dsNEBe/KPSg+prLhDP6QZsNP9sTZZztZuKBuljLWb3
+X-Gm-Gg: AYBFou2/W/h4S8B1tc2xawJ3LvgP4/Xy+SoCIzIlZ7a41uw6WgpHZFGEITajrYDVB2a
+	HcYaQMM8O1xgfU9MYBv6kJ982xV1AK2gbq0TzHSZon2pFnInkLjyCevN3IYlY5lVSxONtbCca1M
+	UspdgF4hD4mX2nkm6gkR2ENHTi7DDFYrzcUUPX3+k7Bu4AxAICuRNnBfpQ+m6vMbspr/NkulLg9
+	Xai1UqeKkZtax8OSKd2Ztk/EFtKl/9Qp3KDsBksmXw291Fi5okZZYMflkTeG36MK4vpHKTKKA0/
+	jwEGftkmz+/+lwSECiaTKxBrtzIxt6t2jdduPSgSnhN6peOmtXO1/Iux6B8BLt9kgEHZo6fw+y0
+	VHhipPOUL+yQvqXci/WfYhzXO0HTn1YfylUpHjIldS46XIoE0KFb2WrUOxKtrGMW8i4Xvrlks1v
+	cFJFnrUqIncAJqo+nyD6mumawFEaIKK/J1H/GsmzvpGXOcjvadnnY67D8p6SuLaDWrziMsbk1is
+	9lNQA0/PArZAzrCz6lGKA0jd5hvBN/f4yPYxmDS3mgrHd1qZrLz3pgzJaQXX7yjf5/fPFRMzejA
+	xZ6xtUWqw1kL5Ew=
+X-Received: by 2002:a17:90b:2888:b0:3a0:f4ee:d2b2 with SMTP id 98e67ed59e1d1-3a4d2895ae0mr550843a91.32.1790758920501;
+        Wed, 30 Sep 2026 02:02:00 -0700 (PDT)
+Received: from localhost ([153.61.198.254])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4c9938fe0sm2567574a91.0.2026.09.30.02.01.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Sep 2026 02:00:24 -0700 (PDT)
+        Wed, 30 Sep 2026 02:02:00 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 09:01:59 +0000
+Message-Id: <DLSJ22P7T6BZ.FCF3J1JWCOET@gmail.com>
+Cc: <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
+ <jiayuan.chen@linux.dev>, <daniel@iogearbox.net>,
+ <cong.wang@bytedance.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH bpf-next 1/2] bpf, sockmap: Fix udp_bpf_recvmsg()
+ spinning on backlog-only ingress
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: <chenyuan_fl@163.com>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>
+In-Reply-To: <20260929083447.558818-2-chenyuan_fl@163.com>
+References: <20260929083447.558818-1-chenyuan_fl@163.com> <20260929083447.558818-2-chenyuan_fl@163.com>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 09:00:23 +0000
-Message-Id: <DLSJ0UIY3DSY.3JWS6CS3TX0IP@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jakub Sitnicki" <jakub@cloudflare.com>
-Cc: "Jakub Kicinski" <kuba@kernel.org>, "Daniel Zahka"
- <daniel.zahka@gmail.com>, <netdev@vger.kernel.org>, "Kuniyuki Iwashima"
- <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Stanislav
- Fomichev" <sdf@fomichev.me>, <bpf@vger.kernel.org>,
- <kernel-team@cloudflare.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "John Fastabend" <john.fastabend@gmail.com>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
- <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
- <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
- packet scrubbing
-X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com> <DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com> <20260925121849.2ac5150b@kernel.org> <DLONQQN0RB03.1NVWVFHGRRWV4@gmail.com> <20260925132004.171b751e@kernel.org> <DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com> <87jyo5bcgs.fsf@cloudflare.com> <DLR2ZT65RKF3.3KZ8O8P4VKTI2@gmail.com> <87ecebbxy5.fsf@cloudflare.com>
-In-Reply-To: <87ecebbxy5.fsf@cloudflare.com>
+MIME-Version: 1.0
 
-On Tue Sep 29, 2026 at 8:32 PM UTC, Jakub Sitnicki wrote:
-> Everything pushed to:
+On Tue, Sep 29, 2026 at 04:34 PM chenyuan_fl@163.com <chenyuan_fl@163.com> wrote:
+> @@ -91,7 +91,7 @@ static int udp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+>  		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+>  		data = udp_msg_wait_data(sk, psock, timeo);
+>  		if (data) {
+> -			if (psock_has_data(psock))
+> +			if (!sk_psock_queue_empty(psock))
+>  				goto msg_bytes_ready;
 >
-> https://github.com/jsitnicki/skb-metadata-bench/tree/main/profile
+>  			release_sock(sk);
 
-looks like you had lockdep on, so all the data and conclusions
-likely do not correlate to production.
-Pls fix and remeasure everything.
+sashiko is right. This replaces a spin with a hang.
 
+pw-bot: cr
