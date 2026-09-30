@@ -1,62 +1,62 @@
 Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76F38E8B9
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A73AFAE2
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790744611; cv=none; b=f0eiMkd/vsS4+hmBRTqEoYfaZi5ekSNXjCFapheKSYN6W2K1htX+GBPMSWIU0A/J06wAlicyY4Pqm4zUH5yom4sGC9Z7ekS5LDhlRzB4s8+Xrg7UOBICw/M09Sh7Y0HKayLJdXcAGjVS0AFEyCDB7VbCFAaSRT53qhmPiOz0kGY=
+	t=1790744619; cv=none; b=X02oLDSjIzxxNjydbJJi1ktndKovBL+Kq5WaDTpOcKe4Dw4PlaS1iv9nXyDq+uiZdftfBMFuGxnhpbM/I3PyTR8euek9K8HxPc+C+3TZEi1e3i+l4zWjUd6C3KCJzb56k9rnyL2zqO7k46KgawdSdqS8wwK+oe7rokOpNlPas8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790744611; c=relaxed/simple;
-	bh=cz7Y88W1/MR7TOjVwtNAZwqRv3ta4ZweRoDB77wkbwU=;
+	s=arc-20240116; t=1790744619; c=relaxed/simple;
+	bh=3Mnwu+sXhtFGtRdUmy7tiXnD6j70etZr5mAabjbPe3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feLc3xt7TnPV3ji9h9zoT9jxugZhYN3qyAE3VatQu9q8PbfahxhpyiJRLz+WuJxqZy4LkPzI4qlOla3exijhesmE21UkqzqnhwKfcxzWzbB2Wlp+izoiQ2fdzLF+HB9rS9j0Oz/R9yH49caHui9B/v8J98TEp2LZnZGJFUUnokc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZPw6IMA; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=Dnm6hJjeNOUavhZPB6uugua/1cZDEohXmwm5X/oZfp6bfoz7ix32uwITELMKWIud+HDstCvs/BlQjwE1xWmkuF2lOHh5nvnBllbJ8b/0YsfyP3NjJDTwzqmV5vQeQVBHUktqnQ5nr87cTG21wZVNw+RdNKamoSdaFvXbx5ffTQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDmB4Dae; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZPw6IMA"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e46a15703so4709590eec.0
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:03:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDmB4Dae"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e62211987so4970568eec.2
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790744608; x=1791349408; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790744617; x=1791349417; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p812JoT9Qpf/qzrDI26kiElznMM0AcMiAysZGcluPEo=;
-        b=TZPw6IMAXb2rUwGv2ko6bI6GEop1jS66s7rmQ1CZZqble+iJy2VUo2jRD7a786ZwMY
-         Mpdvu1VOkmaqtr8X+p10S4TtCJM9EgRm8SWiMZj1Vn4WMHQuRNoQppBMt4I+CqAz2KAV
-         VRbXztFmUVzhxIpiQw9vV+mZqwUjdv00x5NeV5FGwj0Jl95xWdSSnYfTz1pOSSREOLE+
-         9/sGLvCag0ftfiNLRC+k/3KUdSwZGsEmSudkdPvgpP+sXdaRqWCUt800tw+NHbOVX3u1
-         vqPydA/NyhebMNxOCgLa+IeFsrgZ7DN1ure8kkmRxrhpmUerGYhJCrSiAkNh/6W7krvm
-         NK9w==
+        bh=/Qm/coeDYCF1I+H9ShbgCFI1m/XnrbNwtw1uuQcdh38=;
+        b=ZDmB4DaeViwm3BleGBjxPolZJmi7PuvETR/peqDAcFddepfOws+79mP5Z9O0JMr14r
+         DOYm8XkMBDQ17+FQjQJZuaRla3cdisHAmhWzC9K0C/uinXidxUKIjYBEA33Fsp6D3JqU
+         AxF2XmCv5GLoWTj79Gfvr3PeS2GpKwpdbqfXXQ4K0f5gRtw+Tbyn33wGApxp7sJb7i+M
+         9wZn9OK1oREKxquGLU1b9V8p6OiLbiXljunTCai7hY94yjHl6Z0/KC0jMletg3rjOQ9w
+         NOPPtcAvrOwr+udumEcigUmgvOWJ6P0DzOywi4V2+KZb/kaq4QHm0ECE7ROUS9PLFsPY
+         1idg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790744608; x=1791349408;
+        d=1e100.net; s=20260707; t=1790744617; x=1791349417;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p812JoT9Qpf/qzrDI26kiElznMM0AcMiAysZGcluPEo=;
-        b=vkT9eA7b+XYLfd5wyQ2pWf1/imWSTJg6MOa6VyRS/T+k8YWj4S9G0ssNsAYyOECF8T
-         Z9V+BRN70gV4fHb5Kt9FZbGOPzcBMX5bhQ9zhSZZaGv3fAYkfa7/m5Hx1QvbYWrJNEGQ
-         24+OqD5CLB7EhIarI/vpwT3aSq09pQz8xp0eura7+tzeYsGpxAOS2vajsm63efTzj+Ks
-         ByYhAK1j4isv9YA1EQsiNgIg/mU4DCh0dX17eLIsCdWb/hG5uBdyJc2yD9LIY7wAxWCY
-         stJh/crH8ZTn9dibF3c4mAob4/JCan4Qp3dXUDoBDbYgedBXz2xoyH3575/5P2qRUIX1
-         SVhg==
-X-Gm-Message-State: AFq9FYJWTg4hkDgRTzbXUnPwC233c1iU5TPzGbz5nMiJrh1lrEPB2w1b
-	mQWrkhVr+zCyvTp6LrPbwUE3ECV+NhH/hYebgidF1GvX5o2dgyXXJFpv0kxaIqh7
-X-Gm-Gg: AYBFou0qBoIu3E1MFz70uayLQPxDgaQZwJ+vD4o4XqBzRN17iD9cW4F782Melud4jcK
-	HZrPQSvlpIqkQJM2Ntu0CPWsCRcYZpMb1vZbQgYxUV4HBOBy80tJiX2PAv/YsxT0B9cDR+WLJLy
-	TsHJfjjBeWUDVCU7LmZpWjFc1XcGGgs6uc6oCxDPcBLy2DJ2OcfaHkinMzM0RB6Q1c2s1SbbETw
-	h+h0fjHxBf+2sJVdQsJMee7fTCI5rWM7GTDbJdU10bxZlniFrEZGQ1TsDQTTGr/jCv5YKcQbNFe
-	8V8ehg6G1BpUrKwyq0hHVEfElGJ431S0NE2ZQ8OLjRCFADlCb5053jMhYjy97qikCBobqVnPTci
-	70vLDgZ12olIV8MAHdaRXfYRthzD/lUzkK31o/tR5A6yBbyKKXVtJt8IoQK7ZOVjr9ByN4t168y
-	6cDDcBE/7tkwbHJ5U8SVV+/chmR09XuqVJwRQHpzHzqcgCN+gwH2PPgNpo2QZeNlb+LQ5Apb4=
-X-Received: by 2002:a05:693c:2808:b0:34c:e77c:f92b with SMTP id 5a478bee46e88-34ce77cfa16mr437889eec.38.1790744608003;
-        Tue, 29 Sep 2026 22:03:28 -0700 (PDT)
+        bh=/Qm/coeDYCF1I+H9ShbgCFI1m/XnrbNwtw1uuQcdh38=;
+        b=0Yolc323GsCFONplecI/lEi4sE2/HMOVMuWaICYt8Sc7ahtK4dmCSWRitCctUhkP1D
+         PbS+cVx5h7Bg8vpJSFiqzCSpWadfUgq92vycM1Zfwlbqd+6OGSYb4nWq4H37t6vrSheB
+         xUGl3FJwRMS+Z1+EH6/fEULeSD4TQbmODv391339t8m60V6sGCugITzzlFK8C229l24N
+         HPDNJF1c6dEPdeCMPvmDxn/JSub+GhKOm09nqmP7pG4WihSEvhw/mDpWEXYESRTRSPCd
+         PW9eYutuLsan8I+5uv0HfsfK4tPcC9NlPwFqUa6z2Ow8VVHvJobTjHgPPC4rrekvg1Iz
+         zBTA==
+X-Gm-Message-State: AFq9FYL/0Totf8SDpduJ3kf4lcAkv4Ot9reN+bHakEsJjBudBUYPKne7
+	8m8PjADA3O+1N6Bv0hqQsXvQtIWpKgqp7UtLXJhmJzUjECsls0lHA6RyLQeASYDa
+X-Gm-Gg: AYBFou0xVAfKvSAf1rwBHnpgE4VlkwWdddjHe/v0T38YMPIQZbT3ZOqDoZDr0mwHUOm
+	jh3raP0GJiRA9tC1RCp42nUj7nXSyxrOacbXHoiouqiQ3tppPLEvGrHw9E76fgneRvinZdE2uy9
+	R0CmBV8/xer9L1iUYqkOnL2T7JmqF4S0iDfCYK3J2N/roUWoP8CCdV4KSP0wtcVP9dgvWB4xYDn
+	SnW3LL4L2rW///E8n7nptLenEzuSkqzOMEkGvPW21EgoeLOHUMhLzIgweV0npj3SEFXJzZLA5JL
+	KJp0hZkefXvYbXWr6bz5NQQhyhR3r6OXc8h/Yby/lhO+kT7fej1srinAaQNDPSJYmDI8PGsHbVz
+	jfGV+32ASk4seH9eDWY+HQTEaTD0i9KlrPcKf/mUrc+LvjWVOppMt+o322sL9QbUPPnx44bx0nv
+	QPAS/fTBdw8ZylhhcFhidBOPINVUBih2nkMBOCSYOPUqcCWjR0Mnhi/KVGZhHuHg==
+X-Received: by 2002:a05:7300:d210:b0:33b:db21:9877 with SMTP id 5a478bee46e88-34cdbbd12camr563634eec.20.1790744616850;
+        Tue, 29 Sep 2026 22:03:36 -0700 (PDT)
 Received: from fox.. ([43.242.224.196])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf4a63ac9sm772160eec.10.2026.09.29.22.03.22
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf4a63ac9sm772160eec.10.2026.09.29.22.03.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 22:03:27 -0700 (PDT)
+        Tue, 29 Sep 2026 22:03:35 -0700 (PDT)
 From: Roshan Kumar <roshaen09@gmail.com>
 To: netdev@vger.kernel.org
 Cc: steffen.klassert@secunet.com,
@@ -75,9 +75,9 @@ Cc: steffen.klassert@secunet.com,
 	paolo@octane.security,
 	Roshan Kumar <roshaen09@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v3 1/2] xfrm: iptfs: track independent drop deadlines
-Date: Wed, 30 Sep 2026 10:33:06 +0530
-Message-ID: <20260930050307.1978654-2-roshaen09@gmail.com>
+Subject: [PATCH net v3 2/2] xfrm: iptfs: hold a device reference while packets are queued
+Date: Wed, 30 Sep 2026 10:33:07 +0530
+Message-ID: <20260930050307.1978654-3-roshaen09@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260930050307.1978654-1-roshaen09@gmail.com>
 References: <20260930050307.1978654-1-roshaen09@gmail.com>
@@ -89,218 +89,261 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IP-TFS uses one hrtimer for two independently queued states: an
-incomplete inner packet and the receive reorder window. Completing or
-aborting reassembly cancels that shared timer unconditionally, so packets
-in the reorder window can remain queued indefinitely.
+IP-TFS can retain received skbs after the input call that owns their
+skb->dev reference returns. Out-of-order outer packets are stored in the
+reorder window, and an incomplete inner packet is kept for reassembly.
+Unregistering the ingress device while either skb is queued leaves a stale
+device pointer for later timer or receive-path processing.
 
-Merely leaving the timer armed is insufficient. If it was armed for a
-completed reassembly, its old deadline can expire a subsequent reassembly
-before that packet's own drop interval has elapsed. A reassembly created
-from a runt also does not arm the timer at all.
+Take a device reference when an skb enters the reorder window or becomes
+the in-progress reassembly packet. Transfer ownership of that reference
+with the skb when the reorder window releases it, and put it only after
+ordered processing has finished. In particular, keep the reassembly
+reference through xfrm_input(), which reads skb->dev. Release references
+on all completion, timeout, abort, and state-destruction paths.
 
-Record an absolute deadline for an in-progress reassembly. Whenever either
-kind of queued state changes, arm the shared timer for the earliest active
-deadline. On expiry, drop only state whose own deadline has passed and
-rearm the timer for anything that remains.
+An in-order packet also takes this reference before drop_lock is released,
+even when it was never stored in the window, because device unregistration
+can race with its subsequent ordered processing. Freelist entries are freed
+within the input call and do not own a reference.
 
-Reported-by: Lilly Aronleigh <lilly@aronleigh.au>
-Link: https://lore.kernel.org/netdev/20260824072851.301644-3-lilly@aronleigh.au/
-Link: https://lore.kernel.org/netdev/apaRiWQn54Pr9hpm@secunet.com/
-Fixes: 075694765446 ("xfrm: iptfs: handle received fragmented inner packets")
+A KASAN kernel reproduces the stale access by queuing an out-of-order
+packet through a TUN device, closing the device, and allowing the drop
+timer to process the packet. With unprivileged user namespaces enabled,
+an unprivileged process can create the required TUN and XFRM state in a
+private user and network namespace and trigger the same KASAN report.
+
+Reported-by: Shubham Antil <shubham@octane.security>
+Link: https://lore.kernel.org/netdev/20260921084743.817859-1-roshaen09@gmail.com/
+Reported-by: Giovanni Vignone <gio@octane.security>
+Link: https://lore.kernel.org/netdev/20260921084743.817859-1-roshaen09@gmail.com/
+Reported-by: Robert van Eijk <robert@octane.security>
+Link: https://lore.kernel.org/netdev/20260921084743.817859-1-roshaen09@gmail.com/
+Reported-by: Paolo Gentry <paolo@octane.security>
+Link: https://lore.kernel.org/netdev/20260921084743.817859-1-roshaen09@gmail.com/
+Link: https://lore.kernel.org/netdev/179023970333.2160803.2776986020964028023@kernel.org/
+Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
 ---
- net/xfrm/xfrm_iptfs.c | 81 +++++++++++++++++++++++++++----------------
- 1 file changed, 52 insertions(+), 29 deletions(-)
+ net/xfrm/xfrm_iptfs.c | 70 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 56 insertions(+), 14 deletions(-)
 
 diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 6920940a35b4..e538cc98e257 100644
+index e538cc98e257..954d28e7ec2e 100644
 --- a/net/xfrm/xfrm_iptfs.c
 +++ b/net/xfrm/xfrm_iptfs.c
-@@ -143,6 +143,7 @@ struct skb_wseq {
-  * @drop_time_ns: timer intervan in nanoseconds.
-  * @ra_newskb: new pkt being reassembled.
-  * @ra_wantseq: expected next sequence for reassembly.
-+ * @ra_drop_time: deadline for dropping @ra_newskb.
-  * @ra_runt: last pkt bytes from very end of last skb.
-  * @ra_runtlen: size of ra_runt.
-  */
-@@ -172,6 +173,7 @@ struct xfrm_iptfs_data {
- 	/* Tunnel input reassembly */
- 	struct sk_buff *ra_newskb; /* new pkt being reassembled */
- 	u64 ra_wantseq;		   /* expected next sequence */
-+	u64 ra_drop_time;	   /* reassembly drop deadline */
- 	u8 ra_runt[6];		   /* last pkt bytes from last skb */
- 	u8 ra_runtlen;		   /* count of ra_runt */
- };
-@@ -703,15 +705,38 @@ static void iptfs_complete_inner_skb(struct xfrm_state *x, struct sk_buff *skb)
- 	}
- }
+@@ -730,10 +730,16 @@ static void iptfs_reset_drop_timer(struct xfrm_iptfs_data *xtfs)
  
-+/* Arm the shared timer for the earliest reassembly or reorder deadline. */
-+static void iptfs_reset_drop_timer(struct xfrm_iptfs_data *xtfs)
-+{
-+	u64 expires = 0;
-+	u64 now;
-+
-+	assert_spin_locked(&xtfs->drop_lock);
-+
-+	if (xtfs->ra_newskb)
-+		expires = xtfs->ra_drop_time;
-+	if (xtfs->w_savedlen &&
-+	    (!expires || xtfs->w_saved[0].drop_time < expires))
-+		expires = xtfs->w_saved[0].drop_time;
-+	if (!expires) {
-+		hrtimer_try_to_cancel(&xtfs->drop_timer);
-+		return;
-+	}
-+
-+	now = ktime_get_raw_fast_ns();
-+	hrtimer_start(&xtfs->drop_timer, expires > now ? expires - now : 0,
-+		      IPTFS_HRTIMER_MODE);
-+}
-+
  static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
  {
++	struct sk_buff *skb = xtfs->ra_newskb;
++
  	assert_spin_locked(&xtfs->drop_lock);
  
--	/* We don't care if it works locking takes care of things */
--	hrtimer_try_to_cancel(&xtfs->drop_timer);
- 	if (free)
- 		kfree_skb(xtfs->ra_newskb);
+-	if (free)
+-		kfree_skb(xtfs->ra_newskb);
++	if (free && skb) {
++		struct net_device *dev = skb->dev;
++
++		kfree_skb(skb);
++		netdev_put(dev, NULL);
++	}
  	xtfs->ra_newskb = NULL;
-+	xtfs->ra_drop_time = 0;
-+	iptfs_reset_drop_timer(xtfs);
+ 	xtfs->ra_drop_time = 0;
+ 	iptfs_reset_drop_timer(xtfs);
+@@ -751,10 +757,15 @@ static void iptfs_reassem_abort(struct xfrm_iptfs_data *xtfs)
+ /**
+  * iptfs_reassem_done() - In-progress packet is complete, clear the state.
+  * @xtfs: xtfs state
++ *
++ * Return: device with the reassembly reference still held.
+  */
+-static void iptfs_reassem_done(struct xfrm_iptfs_data *xtfs)
++static struct net_device *iptfs_reassem_done(struct xfrm_iptfs_data *xtfs)
+ {
++	struct net_device *dev = xtfs->ra_newskb->dev;
++
+ 	__iptfs_reassem_done(xtfs, false);
++	return dev;
  }
  
  /**
-@@ -845,6 +870,9 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
+@@ -766,6 +777,7 @@ static void iptfs_reassem_done(struct xfrm_iptfs_data *xtfs)
+  * @data: offset into sequential packet data
+  * @blkoff: packet blkoff value
+  * @list: list of skbs to enqueue completed packet on
++ * @dev_to_put: device reference to release after processing @list
+  *
+  * Process an IPTFS payload that has a non-zero `blkoff` or when we are
+  * expecting the continuation b/c we have a runt or in-progress packet.
+@@ -774,7 +786,8 @@ static void iptfs_reassem_done(struct xfrm_iptfs_data *xtfs)
+  */
+ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
+ 			      struct skb_seq_state *st, struct sk_buff *skb,
+-			      u32 data, u32 blkoff, struct list_head *list)
++			      u32 data, u32 blkoff, struct list_head *list,
++			      struct net_device **dev_to_put)
+ {
+ 	struct iptfs_skb_frag_walk _fragwalk;
+ 	struct iptfs_skb_frag_walk *fragwalk = NULL;
+@@ -870,6 +883,7 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
  			goto abandon;
  		}
  		xtfs->ra_newskb = newskb;
-+		xtfs->ra_drop_time = ktime_get_raw_fast_ns() +
-+				     xtfs->drop_time_ns;
-+		iptfs_reset_drop_timer(xtfs);
- 
- 		/* Copy the runt data into the buffer, but leave data
- 		 * pointers the same as normal non-runt case. The extra `rrem`
-@@ -1162,12 +1190,9 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
++		netdev_hold(newskb->dev, NULL, GFP_ATOMIC);
+ 		xtfs->ra_drop_time = ktime_get_raw_fast_ns() +
+ 				     xtfs->drop_time_ns;
+ 		iptfs_reset_drop_timer(xtfs);
+@@ -957,7 +971,7 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
+ 		xtfs->ra_wantseq++;
+ 	} else {
+ 		/* We are done with packet reassembly! */
+-		iptfs_reassem_done(xtfs);
++		*dev_to_put = iptfs_reassem_done(xtfs);
+ 		iptfs_complete_inner_skb(xtfs->x, newskb);
+ 		list_add_tail(&newskb->list, list);
+ 	}
+@@ -1189,6 +1203,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+ 			spin_lock(&xtfs->drop_lock);
  
  			xtfs->ra_newskb = skb;
++			netdev_hold(skb->dev, NULL, GFP_ATOMIC);
  			xtfs->ra_wantseq = seq + 1;
--			if (!hrtimer_is_queued(&xtfs->drop_timer)) {
--				/* softirq blocked lest the timer fire and interrupt us */
--				hrtimer_start(&xtfs->drop_timer,
--					      xtfs->drop_time_ns,
--					      IPTFS_HRTIMER_MODE);
--			}
-+			xtfs->ra_drop_time = ktime_get_raw_fast_ns() +
-+					     xtfs->drop_time_ns;
-+			iptfs_reset_drop_timer(xtfs);
+ 			xtfs->ra_drop_time = ktime_get_raw_fast_ns() +
+ 					     xtfs->drop_time_ns;
+@@ -1250,6 +1265,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+  */
+ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
+ {
++	struct net_device *dev_to_put = NULL;
+ 	struct ip_iptfs_cc_hdr iptcch;
+ 	struct skb_seq_state skbseq;
+ 	struct list_head sublist; /* rename this it's just a list */
+@@ -1311,7 +1327,8 @@ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
+ 		/* check again after lock */
+ 		if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
+ 			data = iptfs_reassem_cont(xtfs, seq, &skbseq, skb, data,
+-						  blkoff, &sublist);
++						  blkoff, &sublist,
++						  &dev_to_put);
+ 		}
  
- 			spin_unlock(&xtfs->drop_lock);
+ 		spin_unlock(&xtfs->drop_lock);
+@@ -1325,6 +1342,8 @@ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
+ 		skb_abort_seq_read(&skbseq);
+ 		kfree_skb(skb);
+ 	}
++	if (dev_to_put)
++		netdev_put(dev_to_put, NULL);
+ }
  
-@@ -1336,7 +1361,7 @@ static u32 __reorder_drop(struct xfrm_iptfs_data *xtfs, struct list_head *list)
- 	u32 scount = 0;
- 
- 	if (xtfs->w_saved[0].drop_time > now)
--		goto set_timer;
-+		return 0;
- 
- 	++xtfs->w_wantseq;
- 
-@@ -1363,13 +1388,6 @@ static u32 __reorder_drop(struct xfrm_iptfs_data *xtfs, struct list_head *list)
- 		__vec_shift(xtfs, count);
+ /* ------------------------------- */
+@@ -1490,6 +1509,7 @@ static void __reorder_future_fits(struct xfrm_iptfs_data *xtfs,
  	}
  
--	if (xtfs->w_savedlen) {
--set_timer:
--		/* Drifting is OK */
--		hrtimer_start(&xtfs->drop_timer,
--			      xtfs->w_saved[0].drop_time - now,
--			      IPTFS_HRTIMER_MODE);
--	}
- 	return scount;
+ 	xtfs->w_saved[index].skb = inskb;
++	netdev_hold(inskb->dev, NULL, GFP_ATOMIC);
+ 	xtfs->w_savedlen = max(savedlen, index + 1);
+ 	iptfs_set_window_drop_times(xtfs, index);
+ }
+@@ -1625,6 +1645,7 @@ static void __reorder_future_shifts(struct xfrm_iptfs_data *xtfs,
+ 	/* We've shifted. plug the packet in at the end. */
+ 	xtfs->w_savedlen = nslots - 1;
+ 	xtfs->w_saved[xtfs->w_savedlen - 1].skb = inskb;
++	netdev_hold(inskb->dev, NULL, GFP_ATOMIC);
+ 	iptfs_set_window_drop_times(xtfs, xtfs->w_savedlen - 1);
+ 
+ 	/* if we don't have a slot0 then we must wait for it */
+@@ -1638,7 +1659,8 @@ static void __reorder_future_shifts(struct xfrm_iptfs_data *xtfs,
  }
  
-@@ -1423,10 +1441,7 @@ static void iptfs_set_window_drop_times(struct xfrm_iptfs_data *xtfs, int index)
- 	while (index-- > 0 && !s[index].skb)
- 		s[index].drop_time = drop_time;
- 
--	/* If we walked all the way back, schedule the drop timer if needed */
--	if (index == -1 && !hrtimer_is_queued(&xtfs->drop_timer))
--		hrtimer_start(&xtfs->drop_timer, xtfs->drop_time_ns,
--			      IPTFS_HRTIMER_MODE);
-+	iptfs_reset_drop_timer(xtfs);
- }
- 
- static void __reorder_future_fits(struct xfrm_iptfs_data *xtfs,
-@@ -1660,16 +1675,15 @@ static void iptfs_input_reorder(struct xfrm_iptfs_data *xtfs,
-  * The drop timer is set when we start an in progress reassembly, and also when
-  * we save a future packet in the window saved array.
-  *
-- * NOTE packets in the save window are always newer WRT drop times as
-- * they get further in the future. i.e. for:
-+ * Packets in the save window are always newer WRT drop times as they get
-+ * further in the future. i.e. for:
-  *
-  *    if slots (S0, S1, ... Sn) and `Dn` is the drop time for slot `Sn`,
-  *    then D(n-1) <= D(n).
-  *
-- * So, regardless of why the timer is firing we can always discard any inprogress
-- * fragment; either it's the reassembly timer, or slot 0 is going to be
-- * dropped as S0 must have the most recent drop time, and slot 0 holds the
-- * continuation fragment of the in progress packet.
-+ * Reassembly and slot 0 keep independent deadlines. The shared timer is armed
-+ * for the earlier one, and this callback expires only the state whose deadline
-+ * has passed before rearming for any state that remains.
-  *
-  * Returns HRTIMER_NORESTART.
+ /* Receive a new packet into the reorder window. Return a list of ordered
+- * packets from the window.
++ * packets from the window. Packets on @list or in w_saved own a device
++ * reference; packets on @freelist do not.
   */
-@@ -1679,6 +1693,7 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
- 	struct list_head list;
- 	struct xfrm_iptfs_data *xtfs;
- 	struct xfrm_state *x;
-+	u64 now;
- 	u32 count;
+ static void iptfs_input_reorder(struct xfrm_iptfs_data *xtfs,
+ 				struct sk_buff *inskb, struct list_head *list,
+@@ -1656,14 +1678,16 @@ static void iptfs_input_reorder(struct xfrm_iptfs_data *xtfs,
+ 	}
+ 	wantseq = xtfs->w_wantseq;
  
- 	xtfs = container_of(me, typeof(*xtfs), drop_timer);
-@@ -1687,15 +1702,22 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
- 	INIT_LIST_HEAD(&list);
- 
- 	spin_lock(&xtfs->drop_lock);
-+	now = ktime_get_raw_fast_ns();
- 
--	/* Drop any in progress packet */
--	skb = xtfs->ra_newskb;
--	xtfs->ra_newskb = NULL;
-+	/* Drop an in-progress packet only after its own deadline. */
-+	if (xtfs->ra_newskb && xtfs->ra_drop_time <= now) {
-+		skb = xtfs->ra_newskb;
-+		xtfs->ra_newskb = NULL;
-+		xtfs->ra_drop_time = 0;
+-	if (likely(inseq == wantseq))
++	if (likely(inseq == wantseq)) {
++		netdev_hold(inskb->dev, NULL, GFP_ATOMIC);
+ 		__reorder_this(xtfs, inskb, list);
+-	else if (inseq < wantseq)
++	} else if (inseq < wantseq) {
+ 		__reorder_past(xtfs, inskb, freelist);
+-	else if ((inseq - wantseq) < nslots)
++	} else if ((inseq - wantseq) < nslots) {
+ 		__reorder_future_fits(xtfs, inskb, freelist);
+-	else
 +	} else {
-+		skb = NULL;
+ 		__reorder_future_shifts(xtfs, inskb, list);
 +	}
+ }
  
- 	/* Now drop as many packets as we should from the reordering window
- 	 * saved array
- 	 */
- 	count = xtfs->w_savedlen ? __reorder_drop(xtfs, &list) : 0;
-+	iptfs_reset_drop_timer(xtfs);
+ /**
+@@ -1721,13 +1745,20 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
  
  	spin_unlock(&xtfs->drop_lock);
  
-@@ -2702,6 +2724,7 @@ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
- 	xtfs->w_savedlen = 0;
- 	xtfs->ra_newskb = NULL;
- 	xtfs->ra_wantseq = 0;
-+	xtfs->ra_drop_time = 0;
- 	xtfs->ra_runtlen = 0;
+-	if (skb)
++	if (skb) {
++		struct net_device *dev = skb->dev;
++
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
++		netdev_put(dev, NULL);
++	}
  
- 	__module_get(x->mode_cbs->owner);
+ 	if (count) {
+ 		list_for_each_entry_safe(skb, next, &list, list) {
++			struct net_device *dev = skb->dev;
++
+ 			skb_list_del_init(skb);
+ 			iptfs_input_ordered(x, skb);
++			netdev_put(dev, NULL);
+ 		}
+ 	}
+ 
+@@ -1767,8 +1798,11 @@ static int iptfs_input(struct xfrm_state *x, struct sk_buff *skb)
+ 	spin_unlock(&xtfs->drop_lock);
+ 
+ 	list_for_each_entry_safe(skb, next, &list, list) {
++		struct net_device *dev = skb->dev;
++
+ 		skb_list_del_init(skb);
+ 		iptfs_input_ordered(x, skb);
++		netdev_put(dev, NULL);
+ 	}
+ 
+ 	list_for_each_entry_safe(skb, next, &freelist, list) {
+@@ -2774,12 +2808,20 @@ static void iptfs_destroy_state(struct xfrm_state *x)
+ 
+ 	hrtimer_cancel(&xtfs->drop_timer);
+ 
+-	if (xtfs->ra_newskb)
++	if (xtfs->ra_newskb) {
++		struct net_device *dev = xtfs->ra_newskb->dev;
++
+ 		kfree_skb(xtfs->ra_newskb);
++		netdev_put(dev, NULL);
++	}
+ 
+ 	for (s = xtfs->w_saved, se = s + xtfs->w_savedlen; s < se; s++) {
+-		if (s->skb)
++		if (s->skb) {
++			struct net_device *dev = s->skb->dev;
++
+ 			kfree_skb(s->skb);
++			netdev_put(dev, NULL);
++		}
+ 	}
+ 
+ 	kfree_sensitive(xtfs->w_saved);
 -- 
 2.43.0
 
