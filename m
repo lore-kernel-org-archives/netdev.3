@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A4A155757;
-	Wed, 30 Sep 2026 00:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812F1643B;
+	Wed, 30 Sep 2026 00:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790727010; cv=none; b=lHdmyQqufLrpyBDA+m40lHkgGJ99jhPGDZWP7wToPyI3HUwsGXW/Niw+PEVxHgrWcWISPT6GOehQX6iA4tjxuh52Jrk8h4/oMg7WczWiaTWWfKn8DsFkzzOXTlc3WugLCu2MOu5SGk7gqZkprH3OHT77U+E5BTXkED3irdZGn7M=
+	t=1790727586; cv=none; b=qT+YvIQACBfSYci7Dq2Qv9tAujAt/uhg92tzl4Z6O6TDq/OsGlpQzYJm1saRjRqRyCAliTgxCcxzakObjOOiLYtQ/zrYmG7w4TpUxEouPYrWpUlLqjn8rrpf2QzTGpkcYq8+F0wtUb3jX9BHj0wo3qaJJyGUUOof2RlP0Z1t2Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790727010; c=relaxed/simple;
-	bh=urY5D1HirS61bTqNbWq1zzLFEJqBSnKxu9gGCuOOFao=;
+	s=arc-20240116; t=1790727586; c=relaxed/simple;
+	bh=YK2IrupaJk8bHNuItxnKE3scpi3GNjoXud5YvwtPtTg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IYG+QlYjQ70ON25HLX6sY+uKJ7voTQJ4QHaVZJ/LRHqxLrtQsYDv/ZV0qxn9KohNsMIF66UPWzb74v8qJEbRe1CeG+0U0BwzU/CknG/bUqGxmuSm7v3Xj/zhNqRDjTi9UgOwAhmqlhOfBs8QmRPpuMlyhjdIA+taA1qK1HugAw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QignthsM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=jEdD/3PtJ8IQzEC9AyEWplW5aPvvGRMrYpIUUZeEEdpbMT9TC0oEtpmNNrIbZvosV1Tn4/ULLnge5Eu59zOBY7LwEd2GIDuPTi8m+uQ5AhTf59Co6kOweE4446SgZO9wgl8p1NfylJJYB+fZWR5LwgEYrLdeCFqNCXx84UhkYgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGlRmDTv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QignthsM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E207B1F00898;
-	Wed, 30 Sep 2026 00:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGlRmDTv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8238A1F000FF;
+	Wed, 30 Sep 2026 00:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790727008;
-	bh=KCXS6h+NhVE7z+sy2gU3aqTsRZPsF2DtMF11cLtX3b0=;
+	s=k20260515; t=1790727584;
+	bh=mRiwsDTvkFSIUogPdhuoSeAsEjGOFaCIiAcMvtHyH40=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QignthsMheH93/gtuFt2IkBKsVlTUACEPA8cx6vbFa3akYwSxQd4dIBTRWBOYTlch
-	 XwMjGNoteeMU5WsV6ncbYsG6z11Mo5grW1fJguZSCUtUmwCK2jo6ISLtRq8eNygzzO
-	 mkIPL3Y9COYWjvRmzxf8P630aIXPTdRANqkG34mKw58zcMrFxL5XHjr/Vlv7oMqC3i
-	 D2lm5cDKRUD0/S1HXPpVCIYZAxZ5UHAMvPQZMItrMxSMs6fjMoVAjBvl0tary6IeKz
-	 Evhcg3a+B+DCk/vA4RFl/syXcW9wsxC4Ao3nlzfz2Y9N4rH6rWxM/o1blo8nE2CAOp
-	 JiX5cuBeDL5rw==
-Subject:
- Re: [PATCH net] tipc: serialize publication purging with name table updates
+	b=XGlRmDTvxc1GX+MEA3t1HV8ws9CY4eX+cU59g079kH31izRu3hlFGs4X1tiweTaRZ
+	 +QVarM86govavjziIoktgYXy3nSDsKOCdPYFOV2qvecvLciDEvsj3vIHjU0CB8wzAY
+	 HpZxFgYjJjXS4jPYnYVFiv4ltlWiYJqEz8acckUQAVg/b/9fTQeqZlTWG+RIlNGvZk
+	 2E7BG97Ac4VRu5uM50UYmj91xZYkunp4BLW0auMsk3uNtfKKgGR37GNji5alc7r2h9
+	 Meku0P2ua7It+XYSmzH29XCbYP26yMU+O+WVCogI0924LMrYbqhNuzM9pnDkNC51GE
+	 Hw2HWlG/b+mqQ==
+Subject: Re: [PATCH net-next v7 2/5] net: pse-pd: fire lifecycle events on
+ controller register/unregister
 From: netdev-bot+sashiko@kernel.org
-To: nicoyip.dev@gmail.com
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+To: github@szelinsky.de
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, corey@leavitt.info,
+ jelonek.jonas@gmail.com, horms@kernel.org, olek2@wp.pl, broonie@kernel.org,
+ lgirdwood@gmail.com, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 00:10:07 +0000
-Message-ID: <179072700746.434549.6689367628938134483@kernel.org>
-In-Reply-To: <20260927180806.1315902-1-nicoyip.dev@gmail.com>
-References: <20260927180806.1315902-1-nicoyip.dev@gmail.com>
-X-sashiko-severity: Critical
+Date: Wed, 30 Sep 2026 00:19:43 +0000
+Message-ID: <179072758307.434549.741841617381833627@kernel.org>
+In-Reply-To: <20260927191850.1370515-3-github@szelinsky.de>
+References: <20260927191850.1370515-3-github@szelinsky.de>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 1 · High: 0 · Medium: 0 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,160 +61,229 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] In tipc_update_nametbl() (net/tipc/name_distr.c), the
-  WITHDRAWAL branch frees a publication with kfree_rcu(p, rcu) whether…
+- [High] At this commit, pse_controller_unregister() unlinks the
+  controller, fires PSE_UNREGISTERED (which has no subscriber yet),…
+- [Low] The patch fixes a teardown use-after-free that exists today, but
+  it is presented as a feature patch.
+- [Low] The new comment above disable_irq() in
+  pse_controller_unregister(), and the commit message's claim that…
+
+Pre-existing issues:
+- [High] pse_controller_unregister() frees pcdev->pi (pse_release_pis()
+  -> kfree) while the per-PI regulators that index that array are still…
 
 --
 
-tipc: serialize publication purging with name table updates
+net: pse-pd: fire lifecycle events on controller register/unregister
 
-This patch changes tipc_publ_notify() so that it moves a failed node's
-publications onto a private on-stack list while holding nametbl_lock. It
-then unlinks and purges them one at a time, taking and releasing the lock
-for each entry. The addr argument is dropped from tipc_publ_notify() and
-tipc_publ_purge() because the unlink no longer needs a node lookup.
+This commit fires PSE_REGISTERED and PSE_UNREGISTERED on the
+pse_controller_notifier chain from pse_controller_register() and
+pse_controller_unregister(). It also reorders pse_controller_unregister()
+so that the IRQ is disabled and the controller unlinked first. The event
+fires next, then the notification worker is drained, and pw_ds,
+pcdev->pi and the kfifo are freed last.
 
-> diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-> index ba4f4906e13b7..34867b69044c0 100644
-> --- a/net/tipc/name_distr.c
-> +++ b/net/tipc/name_distr.c
-> @@ -227,38 +227,50 @@ void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 84c734ed4553e..56cecf60c5c4c 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
 
 [ ... ]
 
->  void tipc_publ_notify(struct net *net, struct list_head *nsub_list,
-> -		      u32 addr, u16 capabilities)
-> +		      u16 capabilities)
+> @@ -1148,15 +1151,36 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+>   */
+>  void pse_controller_unregister(struct pse_controller_dev *pcdev)
 >  {
->  	struct name_table *nt = tipc_name_table(net);
->  	struct tipc_net *tn = tipc_net(net);
->  
-> -	struct publication *publ, *tmp;
-> +	struct publication *publ;
-> +	LIST_HEAD(purge_list);
-> +
-> +	spin_lock_bh(&tn->nametbl_lock);
-> +	/* Leave new publications on the node's list during the purge. */
-> +	list_splice_init(nsub_list, &purge_list);
-> +	spin_unlock_bh(&tn->nametbl_lock);
-> +
-> +	for (;;) {
-> +		spin_lock_bh(&tn->nametbl_lock);
-> +		if (list_empty(&purge_list)) {
-> +			spin_unlock_bh(&tn->nametbl_lock);
-> +			break;
-> +		}
-> +		publ = list_first_entry(&purge_list, struct publication,
-> +					binding_node);
-> +		list_del_init(&publ->binding_node);
-> +		tipc_publ_purge(net, publ);
-> +		spin_unlock_bh(&tn->nametbl_lock);
-> +	}
+> -	pse_flush_pw_ds(pcdev);
+> -	pse_release_pis(pcdev);
+> +	/* Stop the interrupt first: pse_isr() queues notifications and
+> +	 * reaches pcdev->pi, and nothing below re-enables it.
+> +	 */
+>  	if (pcdev->irq)
+>  		disable_irq(pcdev->irq);
 
-[Severity: Critical]
+[Severity: Low]
+Is this comment accurate for the in-tree users of devm_pse_irq_helper()?
+The same question applies to the commit message claim that "until now
+pse_isr() and the worker could both reach pcdev->pi[] after
+pse_release_pis() had freed it".
 
-The commit message says "Concurrent withdrawals can still unlink entries
-from this private list". Is that always the case?
+tps23881_i2c_probe() registers the controller before it requests the IRQ:
 
-The WITHDRAWAL branch in tipc_update_nametbl() frees the publication even
-when binding_node was never unlinked:
-
-net/tipc/name_distr.c:tipc_update_nametbl() {
+drivers/net/pse-pd/tps23881.c:tps23881_i2c_probe() {
     ...
-	} else if (dtype == WITHDRAWAL) {
-		p = tipc_nametbl_remove_publ(net, &ua, &sk, key);
-		if (p) {
-			tipc_node_unsubscribe(net, &p->binding_node, node);
-			kfree_rcu(p, rcu);
-			return true;
-		}
+	ret = devm_pse_controller_register(dev, &priv->pcdev);
     ...
+	return tps23881_setup_irq(priv, client->irq);
 }
 
-tipc_node_unsubscribe() returns without calling list_del_init() in two
-cases:
+The call chain tps23881_setup_irq() -> devm_pse_irq_helper() ->
+devm_request_threaded_irq() therefore adds the IRQ devres after the
+controller's devres.
 
-net/tipc/node.c:tipc_node_unsubscribe() {
-	if (in_own_node(net, addr))
-		return;
+Devres unwinds in LIFO order, so free_irq() runs first and waits for any
+threaded pse_isr(). Only then does devm_pse_controller_release() call
+pse_controller_unregister(). By the time this disable_irq() runs, the
+line has no handler, and the call only raises the disable depth.
 
-	n = tipc_node_find(net, addr);
-	if (!n) {
-		pr_warn("Node unsubscribe rejected, unknown node 0x%x\n", addr);
-		return;
-	}
-    ...
-}
+So devres ordering, not disable_irq(), is what keeps pse_isr() away from
+the frees here. Could the comment say so, so that a later change doesn't
+rely on disable_irq() as the guard?
 
-In both cases the freed publication stays linked on n->publ_list. This
-loop then splices it into purge_list, writes to it with list_del_init(),
-and reads p->scope, p->sr, p->sk and p->key in tipc_publ_purge().
+Separately, and not introduced by this patch, devm_pse_irq_helper() sets
+pcdev->irq even when devm_request_threaded_irq() fails:
 
-The lock is dropped and BH is re-enabled between iterations, so a grace
-period can end in the middle of the loop. Can a later iteration then touch
-a publication that kfree_rcu() has already freed?
+	if (ret)
+		dev_err(pcdev->dev, "Failed to request IRQ %d\n", irq);
 
-One way to make tipc_node_find() fail while the purge is running:
+	pcdev->irq = irq;
+	return ret;
 
-CPU B: tipc_named_rcv() holds nametbl_lock and has already dequeued a
-       WITHDRAWAL from node N (node_lost_contact() only purges what is
-       still left in bc_entry.namedq)
-CPU A: tipc_node_write_unlock()->tipc_publ_notify() waits on
-       nametbl_lock
-CPU C: tipc_nl_peer_rm()->tipc_node_delete() removes N from the hash
-       once N is SELF_DOWN_PEER_LEAVING or SELF_DOWN_PEER_DOWN
-CPU B: tipc_update_nametbl()->tipc_node_unsubscribe() fails the lookup,
-       then kfree_rcu(p) runs with p still on N->publ_list
-CPU A: list_splice_init() moves p onto purge_list, and a later iteration
-       accesses p
+> -	cancel_work_sync(&pcdev->ntf_work);
+> -	kfifo_free(&pcdev->ntf_fifo);
+> +
+> +	/* Unlink before the event: of_pse_control_get() walks
+> +	 * pse_controller_list and dereferences pcdev->pi[] through
+> +	 * of_pse_match_pi(), so no lookup may still reach this controller
+> +	 * once its teardown starts. Subscribers are handed pcdev as the
+> +	 * event data, so the notifier does not need it on the list.
+> +	 */
+>  	mutex_lock(&pse_list_mutex);
+>  	list_del(&pcdev->list);
+>  	mutex_unlock(&pse_list_mutex);
 
-A second path does not depend on the purge race. tipc_named_rcv() takes
-the node from the header the peer sends, and nothing validates it:
+[Severity: Low]
+This reorder fixes a use-after-free that already exists before this
+patch. It comes under a feature subject, though, with no Fixes: or
+Cc: stable tags.
 
-		node = msg_orignode(hdr);
+Before this patch, pse_controller_unregister() called pse_release_pis()
+first, which does kfree(pcdev->pi), and called list_del(&pcdev->list)
+last. Meanwhile of_pse_control_get() holds pse_list_mutex, walks
+pse_controller_list and reads r->pi[i].np through of_pse_match_pi():
 
-tipc_service_remove_publ() treats node == 0 as a wildcard:
+	ret = of_pse_match_pi(r, args.np);
 
-		if (p->key != key || p->sk.ref != sk->ref ||
-		    (node && node != p->sk.node))
-			continue;
+A PSE lookup that races a controller unbind could therefore read the
+freed pcdev->pi[]. One example is a PHY registered through
+fwnode_mdiobus_register_phy().
 
-A peer with a link could send a WITHDRAWAL with orignode 0 that matches a
-publication from node X. That publication is removed and freed. Because
-in_own_node(net, 0) is true, tipc_node_unsubscribe() skips the unlink, and
-the freed entry stays on X->publ_list.
+The commit message says the reordering "closes a teardown race that is
+reachable today, with no subscriber involved". It points to the net
+series at
 
->From then on, list_add_tail() in tipc_node_subscribe(), list_del_init()
-on neighbouring entries, and the splice and walk here when X goes down
-would all operate on freed memory. The spoofing itself predates this
-patch, but it produces the same state that this loop assumes cannot
-happen.
+  https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
 
-Could the WITHDRAWAL branch always do list_del_init(&p->binding_node)
-under nametbl_lock? Every writer of binding_node for remote publications
-already holds that lock.
+but also says the order there "leaves the unlink below cancel_work_sync()
+and pse_flush_pw_ds()".
 
-Separately, could tipc_named_rcv() reject an orignode of 0 or our own
-address, or require it to match the owner of the removed publication?
-Without that check, a spoofed withdrawal can also free local publications
-that are still on the socket and cluster_scope lists.
+Does that net series also close the lookup-vs-free race? If it doesn't,
+should the reorder go into a separate net patch with Fixes: tags for
+9be9567a7c59 ("net: pse-pd: Add support for PSE PIs") and ffef61d6d273
+("net: pse-pd: Add support for reporting events")? If it does, could the
+commit message say that the referenced series covers the lookup race?
 
-The kernel-doc for struct publication in net/tipc/name_table.h also still
-says:
+> +
+> +	blocking_notifier_call_chain(&pse_controller_notifier,
+> +				     PSE_UNREGISTERED, pcdev);
+> +
+> +	/* After the event, not before. A subscriber dropping the last
+> +	 * pse_control reference reaches __pse_control_release() ->
+> +	 * regulator_disable() -> _pse_pi_disable(), which can end up in
+> +	 * pse_disable_pi_pol() and queue a notification of its own, so a
+> +	 * cancel_work_sync() placed above the walk would not stay drained.
+> +	 */
+> +	cancel_work_sync(&pcdev->ntf_work);
 
- * - Remote publications: in node->publ_list;
+[Severity: High]
+Can the work be queued again after this cancel_work_sync() at this point
+in the series?
 
-While a purge is running, binding_node is on the on-stack purge_list.
-Should that comment be updated too?
+PSE_UNREGISTERED has no subscriber yet, so nothing stops the existing
+pse_control holders. phydev->psec is taken in fwnode_mdio.c and only put
+in phy_device_remove(), so it outlives the unregister.
 
->  
-> -	list_for_each_entry_safe(publ, tmp, nsub_list, binding_node)
-> -		tipc_publ_purge(net, publ, addr);
->  	spin_lock_bh(&tn->nametbl_lock);
->  	if (!(capabilities & TIPC_NAMED_BCAST))
->  		nt->rc_dests--;
+The ethtool PSE paths run under rtnl only, and
+pse_controller_unregister() never takes rtnl or pcdev->lock. That seems
+to allow this sequence:
 
-[ ... ]
+CPU1 (ethtool)                         CPU2 (unbind)
+pse_ethtool_set_prio()
+                                       pse_controller_unregister()
+                                         cancel_work_sync()
+  pse_pw_d_retry_power_delivery()
+    pse_disable_pi_pol()
+      kfifo_in_spinlocked(&pcdev->ntf_fifo, ...)
+      schedule_work(&pcdev->ntf_work)
+                                         pse_release_pis()
+                                         kfifo_free(&pcdev->ntf_fifo)
+
+pse_ethtool_set_prio() also reads pcdev->pi[psec->id].pw_d, and
+pse_ethtool_get_status() reads pcdev->pi[] as well. A late
+pse_control_put() -> __pse_control_release() reads the freed array too:
+
+	if (psec->pcdev->pi[psec->id].admin_state_enabled)
+		regulator_disable(psec->ps);
+
+Before this patch the same stale-holder problem existed, and pi[] was
+freed even earlier, so this is not a new regression. Still, the commit
+message describes the worker-vs-free race as closed, and it looks
+reachable at this commit.
+
+The last patch in the series, "net: phy: own phydev->psec via PSE
+notifier and remove fwnode_mdio hook", appears to resolve this. Its
+PSE_UNREGISTERED handler (phy_pse_detach_one) releases every phydev->psec
+under pse_phy_lock(), and the ethtool PSE paths take the same lock. With
+that in place, cancel_work_sync() drains everything queued before the
+walk completes.
+
+Could this commit message say that the worker race is only fully closed
+once that patch is applied?
+
+> +
+> +	pse_flush_pw_ds(pcdev);
+> +	pse_release_pis(pcdev);
+
+[Severity: High]
+This is a pre-existing issue, but can the PI regulators still reach
+pcdev->pi[] after it is freed here?
+
+devm_pse_pi_regulator_register() registers the PI regulators during
+pse_controller_register():
+
+	rdev = devm_regulator_register(pcdev->dev, rdesc, &rconfig);
+
+devm_pse_controller_register() only adds its own release after
+pse_controller_register() returns:
+
+	*pcdevp = pcdev;
+	devres_add(dev, pcdevp);
+
+Every in-tree driver passes dev == pcdev->dev. On unbind, devres
+therefore runs devm_pse_controller_release() ->
+pse_controller_unregister() -> pse_release_pis() -> kfree(pcdev->pi)
+before the regulator devres entries unregister the PI regulators.
+
+In that window, reading /sys/class/regulator/*/state goes through
+state_show() -> _regulator_is_enabled() -> pse_pi_is_enabled():
+
+	mutex_lock(&pcdev->lock);
+	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
+
+This reads pcdev->pi[id].pw_d from freed memory and then dereferences
+it. pcdev->lock does not exclude pse_release_pis(), and pcdev->pi is not
+set to NULL on this path.
+
+The commit message says the frees "end up last". That is true inside
+pse_controller_unregister(), but not across the full devres teardown.
+
+The next patch in the series, "net: pse-pd: unwind allocations when
+controller registration fails", acknowledges this read of freed memory
+but does not fix it.
+
+> +	kfifo_free(&pcdev->ntf_fifo);
+>  }
+>  EXPORT_SYMBOL_GPL(pse_controller_unregister);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927180806.1315902-1-nicoyip.dev%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927191850.1370515-1-github%40szelinsky.de
