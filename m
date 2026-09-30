@@ -1,184 +1,187 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010041.outbound.protection.outlook.com [52.101.193.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A752F4A05
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790768545; cv=none; b=QFWxqcZNzI/mhVBWPQ2boHPkIWqryxnrjuCSWHAuY7nEFTvAj0lbDvkhWjFkZkYCL24EzKaIV4vhCK9n3CA+lOZ4kWWHrXlvU25mk7hXVOUe+ZMHh8X+FJmysZKL5fBqQGC3Z/2xz/OLPcPc5SExp7EILsFNiTOBV6GJVrvzFaI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790768545; c=relaxed/simple;
-	bh=iGDF1AsD2KJpuWxO+fbz1RvdVuHCSmIG/cZ/UDE0V38=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mMfibS+fOC0MbRMsQD9bQgiOlzZqJCG3HMWtKSfPUz6ASz7/LQmbVMBtRpnZx6re1FpF1cEyvO8T1rBoBsyNdF5zEzV3Kh/P/HDbVHL0Y1fw6Eb1q1DVxX2DMoIMPobTBv6zzq8YJyqSaNzwGXm/U49wvg4IUKRnoWMnQq1huEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=i3gHzfEH; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1174BEE27;
+	Wed, 30 Sep 2026 11:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790768630; cv=fail; b=QQ0kLbavqtZgTIfVzWNuTRxh0MY/UNQRr4HjllV0tIPtdn9ux1BPK7n/ajufE9oH72Sb+6tclRtz4EDn+3u5qaHEemRbGzMA/lJZXsv5rYA/HWZJo/dvZHynvfbdX2pHSAIJpFrr8H05TFcsyT3rGRG9brm7t2OW5jEbbK5B+Ec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790768630; c=relaxed/simple;
+	bh=r9Wm60sc9tMnd22VSZ6B+pnrNURjmPa6IniaxgPNdJk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=koimDnx6q5Vi0BsLp+nfy0ggNES+7XtuC8EzAE9Js4b6/u98K6k7M2Aw5XqDz6Yo28v/9NlT9tnMQhgFUo6V9cbSHg9nuGv0a4FowxBw6dvreglxOsQpDDTCfZSqc8kntTGGsZ7Ogw36/uIwe4+Nw1yPIFrUuK4YUkYGnUYck9Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WivASdpP; arc=fail smtp.client-ip=52.101.193.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="i3gHzfEH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mFhEEXMGfM/+f6moC5+h/DpbPtYeaZXpVs2fuqpnrbo=; b=i3gHzfEHZJzgBMuPngvxIpJZgw
-	Z77QeJEtOJ51LbG+t2tGla0ZV3IaL3NlRYDv3uIj/CVr97g4nuWeSGjnWWd6k80mXTA5Nera/S3YK
-	MVaHvUicCsc+8NxxX6bjUZqTayzQFwurqr0bAy5r3UDiBulHyiwSG4ySgV/DNaJKEmG60MFRunxFH
-	RnrfptCxDamXU/VcEsa10ToICWh6qPA5MBn1y0oVr7/EC3ophlj6aSvKgy/kuvpCgYl939KfcWXOw
-	/zj5GU2HvdI98YzSBfAJo4OflUoAns/eMEZRIjDTpn/0rIiAb06O5Vxp0RpxGcoE28qcOpD6eri2p
-	nCykBiiA==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xBshK-0004fb-0f;
-	Wed, 30 Sep 2026 13:42:06 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1xBshJ-0005Hd-0R;
-	Wed, 30 Sep 2026 13:42:05 +0200
-Message-ID: <cd08320c-1c82-4af9-ba54-20b62c8e1a26@iogearbox.net>
-Date: Wed, 30 Sep 2026 13:42:02 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WivASdpP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oEpCJQ2CxBflNyKdF87xDJcnVzFr73TP0Lw7i7RqcokkbkvSwRRxo/gg2R25mtngl84yOhzYiy/MUNtM8CWaoZQRxI7spiRacYKn2b0JFLiARyo7Zjnaksidrx04nBhYoA8tEKT3KUCobl5NaTIkcIRIXl7Iobby3nqjoCOGGAEyLinBr6Q54mi6WfUP72SDWAaK45DJQCXzq+YDzIAFjjtrmZHiYBfU3eE6nlS66jL0+hznUge3L9wJATYDmMyig0ShmbJ0C2cwZNIffmrKvmPSzpk6suzoixcFlW234FQtOjU19Vtn2wYtgvYnJFkXGosh04RKmg6AxAFiSwJB8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yn7FqyQybb6HdN/63D7v7WVMTTJktwooWDRcTLI3kIQ=;
+ b=awTyDgobKSO3UCj7Ey3NenzPMjsP/XdO+mcfKNP322+7k30yS4TV9SYA5WpkfQU69cuI1lXlx6qLU4FOEnOc6qZgWL2PdyCpelJshUNmR7slOOo0pZi8LY4bc+/QJ9yOpMGEL5duxQFUxASJVQnb5yeMkMJEeE0TYpokHMKrZTuBWEuogB/2gQfBWOL1v8+8ojqMZczJS0/XN84Vy594SAM9wAtO9nXMv7SQZTemgT+FFMfqrGWhJho3Sv/RV4qvG7omrMTJLSjmH1n32wS6FZdxFqLL6h+G4WpbYqFBi5VV41sWN8z36ogfWqxAXbXOnfx346MmjRhdSCX62TV/Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yn7FqyQybb6HdN/63D7v7WVMTTJktwooWDRcTLI3kIQ=;
+ b=WivASdpPUFNN7Y18u8i5DAOEQLs7uuh97u90d+602wYHABN4aMVcZv71D0TmWdA6kudMapXiej1Im82U1w67ObnYDIZKkWXqGjMNn9lK5oGHETJ3XWn/sxmfQdqL3b6Lr2LNMh8Q/9LSloyYf2TUbJQyVLoAnMQnV2D3aZy/v0t29PCg0FYpaiH2niteAusLmHcHd+cvlrwD3JI1kYDbGZ7tXQjKVoi4PXmz59WxtxiH8J/vBU3UPhilw8fbl02G3w8zTtixvLFie4wrUt8HsV0Afm9TnIRdcXx8vfIYvIKpibIg/q2QJg+yjbDW+WevRIT6fyxMxIWBQZg9OIiwjw==
+Received: from BN9PR03CA0380.namprd03.prod.outlook.com (2603:10b6:408:f7::25)
+ by SJ5PPF6375781D1.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::995) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 11:43:41 +0000
+Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
+ (2603:10b6:408:f7:cafe::4c) by BN9PR03CA0380.outlook.office365.com
+ (2603:10b6:408:f7::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.14 via Frontend Transport; Wed,
+ 30 Sep 2026 11:43:41 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 11:43:41 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 04:43:25 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 04:43:24 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 30
+ Sep 2026 04:43:20 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>, <linux-rdma@vger.kernel.org>, "Mark
+ Bloch" <mbloch@nvidia.com>, <netdev@vger.kernel.org>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Cosmin Ratiu <cratiu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>, Gal Pressman
+	<gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Leon Romanovsky <leonro@nvidia.com>, open list
+	<linux-kernel@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH mlx5-next V2 00/10] mlx5: Move data direct infrastructure to mlx5_core
+Date: Wed, 30 Sep 2026 14:42:17 +0300
+Message-ID: <20260930114227.139274-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: only give queue leasing devices a separate
- instance lock class
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, razor@blackwall.org,
- dw@davidwei.uk
-References: <20260929191543.3295633-1-kuba@kernel.org>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20260929191543.3295633-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28139/Wed Sep 30 08:24:18 2026)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|SJ5PPF6375781D1:EE_
+X-MS-Office365-Filtering-Correlation-Id: a49479f3-98d6-43a0-1e59-08df1ee8132c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|36860700016|82310400026|11063799006|10067099003|56012099006|6133799003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	6Tj9AEk6oK9oe18ZP5wpzAi/rQa/V5dp96UmzirjVXJZitq5a6zwIEwscFErcRENhKvqrK0O6cgUn6eb5VXRbUd5e1MaNKYOni67MzPxYFASJzlwJsX8hI5tnriQaUElWcd9fBSuVdkdDBtGFQ/a5O3RNRMzADxUAgrOiGLva+6FyoDYSVa/5cIzOsf/ZFWhazYk5msnL6KTZkKre5f2hqMUk4T/BpW+tyUFmiIUW1yWUCKjYhScSpnvQfRikRdcuJAyVtK31YOaF/6KDF0PYQf+CHGOe3PKZtdcqHjOtxKpOnPnmqmkOyf4pqR6COUE8y4eo6snkSu86hjING520KW6utztvygd2obcTzEtkyegm/JvQRTLvvRpqYQdKGm34dcvVCyecSA1hNwgQtCAZh2v4UIJ9FiHVGVaDNCPaAsieFy2C2YWiPD1Etto58MwssuFdC8g7eMRGmxvm6qLNnNWwE4pp+FmA1Zi/3lH9nqAYkfBGyIvAog8bzLFEOPP9LgYR9rYQwTqxl2wXg9ey1CtsbmZ0QGmSxeqJgbpUHbgcOzU0XOvhstIlUuRhvBU7AmHTe6gxqbERFx9Wc9fXjYdFEzjUvGl+Wam8VdwJHHLNxRHW8OQR2FqtzvAiu1TGk26S8Dl9AiLpJlDH2vR/XDQ2oq8MU60JnXDe5fyDLHTyUZb8T86x1wIogsOAxjR3edJ1sw5Xjke5yGjPYttTw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(36860700016)(82310400026)(11063799006)(10067099003)(56012099006)(6133799003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ixqzQ8PQvqQiceK7t0hEDeI7Y++xL/Wsf//eZ1YDl+9Ys7r4BEP8gvBCj/fePu/wLk48YLnnd/CuZPogG3rYeC/VEttwWH5Q/+W1gyWcuA0mKZUW+0j3+HsTRVrue1qfj2iyhFMB3JyqwqWosDEDqlzOl1Q8ZQCS/WflHL7y7kw4A4Db8v7BmcHK4Hlnq86RIgTw2QNVzHtMXwKR63GBXu9dq9Furg6ryn/tQWa5zuf/XMd47gJWWVPQbQkkFTvwcxIfNGzBsrWwmxd1I1Q57kYlUNsxbg/0QXp4q01b4oEopDDGOn4whN+h8AlOzOJL2bUyEgTE4pwLizJYKJCvbc4vED37+HBiWjiOjOuvlN2iiCMJJvChxyThzxvmu004e6bLK2at5HT0qnVuMn8n7eWmrR/EyiyD3gt2ls7WyVRL8Lcmk9gbPplpOHzh2wD+
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 11:43:41.1034
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a49479f3-98d6-43a0-1e59-08df1ee8132c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E64.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6375781D1
 
-On 9/29/26 9:15 PM, Jakub Kicinski wrote:
-> Commit b6f74dff6d26 ("net: use two lockdep classes for the netdev
-> instance lock") put every device without a parent in the virtual class.
-> It also restricted the locking order for the virtual class, because
-> queue leasing has hard requirements on the exact order.
-> 
-> This bites us back on bond, which is "virtual" and needs to be taken
-> before taking the locks of the lowers. NIPA hit the following on the
-> new test I recently posted for XDP+bond:
-> 
->    WARNING: possible circular locking dependency detected
->    ------------------------------------------------------
->    python3/18635 is trying to acquire lock:
->    ff11000120b8ce30 (&dev->lock){+.+.}-{4:4}, at:
->    netdev_put_lock+0x2d/0x1a0
-> 
->    but task is already holding lock:
->    ff110001ef77ae30 (&netdev_virt_instance_lock_key){+.+.}-{4:4}, at:
->    netdev_put_lock+0x2d/0x1a0
-> 
->    which lock already depends on the new lock.
-> 
->    the existing dependency chain (in reverse order) is:
-> 
->    -> #1 (&netdev_virt_instance_lock_key){+.+.}-{4:4}:
->           __mutex_lock+0x1ae/0x1f10
->           xdp_set_features_flag+0x2b/0x50
->           bond_xdp_set_features+0x1eb/0x360
->           bond_netdev_event+0x13f/0x300
->           notifier_call_chain+0xae/0x300
->           call_netdevice_notifiers+0x70/0xa0
->           bnxt_xdp_set+0x2f6/0x620
->           netif_xdp_propagate+0x503/0xc60
->           dev_xdp_propagate+0xa1/0x230
->           bond_xdp_set+0x234/0x700
->           dev_xdp_install+0x592/0xd70
->           dev_xdp_attach+0x355/0xf50
->           dev_change_xdp_fd+0x176/0x210
->           do_setlink.isra.0+0x220d/0x2b20
->           rtnl_newlink+0x9f1/0x11b0
-> 
->    -> #0 (&dev->lock){+.+.}-{4:4}:
->           __mutex_lock+0x1ae/0x1f10
->           netdev_put_lock+0x2d/0x1a0
->           netdev_nl_queue_create_doit+0x801/0x1a70
->           genl_family_rcv_msg_doit+0x206/0x300
-> 
->     Possible unsafe locking scenario:
-> 
->           CPU0                    CPU1
->           ----                    ----
->      lock(&netdev_virt_instance_lock_key);
->                                   lock(&dev->lock);
->                                   lock(&netdev_virt_instance_lock_key);
->      lock(&dev->lock);
-> 
-> Let's narrow down the "virtual" class to only the devices which
-> can actually create a queue. More LoC and complexity, but that
-> is what we actually care about here. The rest needs to nest
-> under rtnl_lock, which bond does (famous last words?)
-> 
-> Take the instance locks in two passes, first the netkits then
-> the rest (matching the queue leasing order).
-> An alternative would be to make sure the close list is sorted
-> correctly from the start (queue head/tail appropriately in
-> unregister_netdevice_queue()). I think it works but feels
-> a little more fragile. Happy to change, tho.
-> 
-> netdev_can_create_queue() will now be used on paths where we
-> genuinely handle non-netkit, so we can't always set the extack.
-> Unfortunately, the (recently) added tracepoint in extack fires
-> even when extack is NULL.
-> 
-> Fixes: b6f74dff6d26 ("net: use two lockdep classes for the netdev instance lock")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Hi,
+
+Data direct support currently lives in mlx5_ib, which owns the data
+direct PCI driver, device matching and resource management. To prepare
+for data direct support in netdev, move this infrastructure to mlx5_core
+and provide a common interface for its consumers.
+
+The series first replaces the direct IB unbind callback with a blocking
+notifier chain, allowing multiple consumers to receive unbind events.
+It then separates consumer registration from initialization,
+consolidates the per-device state and resources, and keeps IB-specific
+locking and MR teardown in mlx5_ib.
+
+With these preparations in place, the final patch moves the shared
+implementation and PCI driver to mlx5_core. Data direct initialization
+and resource creation run during core load, before consumers attach;
+cleanup runs during core unload, after consumers detach.
+
+The data direct PCI driver is also explicitly named "mlx5_dd", replacing
+the previous "mlx5_ib" name derived from KBUILD_MODNAME.
+
+This series by Dragos prepares the shared infrastructure for netdev
+support.  The netdev consumer will follow in a separate series.
+
+Regards,
+Tariq
+
+V2:
+- Changed error message on VUID query failure (Leon)
+
+V1:
+https://lore.kernel.org/all/20260917111422.4054862-1-tariqt@nvidia.com/
+
+Dragos Tatulea (10):
+  RDMA/mlx5: Notify data direct users via a notifier chain on unbind
+  RDMA/mlx5: Add mlx5_data_direct_supported() helper
+  RDMA/mlx5: Make the data direct VUID query self-contained
+  RDMA/mlx5: Give the data direct PCI driver a proper name
+  RDMA/mlx5: Move and rename data direct resource functions
+  RDMA/mlx5: Add new registration stage for data direct users
+  RDMA/mlx5: Extract IB specific lock out of data direct
+  RDMA/mlx5: Consolidate data direct state into one object
+  RDMA/mlx5: Pull data_direct resource creation in init phase
+  mlx5: Move data direct implementation to mlx5_core
+
+ drivers/infiniband/hw/mlx5/Makefile           |   1 -
+ drivers/infiniband/hw/mlx5/cmd.c              |  21 -
+ drivers/infiniband/hw/mlx5/cmd.h              |   2 -
+ drivers/infiniband/hw/mlx5/data_direct.c      | 227 ----------
+ drivers/infiniband/hw/mlx5/data_direct.h      |  23 -
+ drivers/infiniband/hw/mlx5/main.c             | 144 +------
+ drivers/infiniband/hw/mlx5/mlx5_ib.h          |  18 +-
+ drivers/infiniband/hw/mlx5/mr.c               |   7 +-
+ drivers/infiniband/hw/mlx5/odp.c              |   2 +-
+ drivers/infiniband/hw/mlx5/std_types.c        |   3 +-
+ drivers/infiniband/hw/mlx5/umr.c              |  11 +-
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
+ .../ethernet/mellanox/mlx5/core/data_direct.c | 400 ++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  15 +
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |   5 +
+ include/linux/mlx5/data_direct.h              |  47 ++
+ include/linux/mlx5/driver.h                   |   8 +
+ 17 files changed, 515 insertions(+), 421 deletions(-)
+ delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.c
+ delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.h
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
+ create mode 100644 include/linux/mlx5/data_direct.h
+
+
+base-commit: 36b1d3299d0b6aa51485cc9a79b8d94948d5f3d4
+-- 
+2.44.0
+
