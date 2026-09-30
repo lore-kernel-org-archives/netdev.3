@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6238127F4F5
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32E9366052;
+	Wed, 30 Sep 2026 15:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790780826; cv=none; b=WB7BU000G1g58XcAuW90NXOQ6rC4lbAiIhd8IPev1VmsgiIPuxUGF+djCXBy3tA8+nwq2AcyJi7sz3arc20iPsjcHtecL8NhpCHAcRBz0g4mt0yM5OUKWM4GaagqGASxkMm4PiGBQLFKe9NrzOkJEKMY18BELIrf94OWbfmPhNc=
+	t=1790780885; cv=none; b=C+zlEKnO+7AEKQwZv/ImLrMo2ss2frcw9iaaAkk7Bz4ANXDeibSDJ646fT0ASS+yXjHItqJXtTChmVQaIrn8GYMqqs+KNEw7zLT6Qk3nPRGqLFZGKpfgEPNOe23fSBcKF/eef+2ce5YT0OKctApI+pdJ2U5Wo+0YmUpsA1STWDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790780826; c=relaxed/simple;
-	bh=tOYfJ7mtvd9YngIC3BTmSIfaaGsFsKLEkUz2G4IsgjA=;
+	s=arc-20240116; t=1790780885; c=relaxed/simple;
+	bh=X5Ql4a/fq1dL+u/9J5iIsgt0eJC8ZfXYkoxyqfuHkRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CJGASivim6ET6k92VsJ1Y8G3y3h4+99Wp18I8bGEawq9dkvkAycgDwNHQbfXFufKk/6XCg0m1Bt7Vb+kjNt1ylU3P+unA5zDCAf5JLpYNWIues5zvcgOnWG8nuVAHnacMcxJPMGO4zv5WlX8+u3M0liQC14Ybt1SnyZAHCV+md0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcknPrUD; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=OPmXclB6yFasPAeWXysASV8LcS7kCmJlx+nNpIfL4TSOgQys/WFRemgowygLS2uy8viWWREufkx9dBAaFNRKeFnT9VEAHMAyoZaS9KbOX7sCS4OxSYMxC2Y79+R4HVRz2cAhyqJ2WbMu6/he08BdN7ht1zd4KFH3YbTrUl6PhmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JGz41rV7; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcknPrUD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JGz41rV7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790780819; x=1822316819;
+  t=1790780879; x=1822316879;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=tOYfJ7mtvd9YngIC3BTmSIfaaGsFsKLEkUz2G4IsgjA=;
-  b=gcknPrUDHMLfJYddxfS6VEJu9CXPUyhgitWCMsRB8SHnNUsIq5Lru93J
-   8yG6ezdqo7C7IUT9CTuJ6liqm1b+CQvbb5pvKZMSWE6RmohmO5+MCdwLo
-   lk5iTtYZy8ZjNj0qSuAhhzrZAnJ9YIo1827TKbCG1RL7iKF/bRgEjNS0R
-   gyg0KpwHFgM1kh1qq7X8alAugvSml1fmJ4Db1dtP9BJ1bSkQNWDs/Ivv/
-   0ThZVYWiqwfyowereOZVYM/D3sWBBJ5ONG6H4PxnQHSYw0zKusizm3wpQ
-   CI3kSQRHwRpbefVej9yj7TVnvEh8yBKf2zZHGBaLksqyhF+s+vkZG40zV
-   g==;
-X-CSE-ConnectionGUID: qyW8HsBNR5ukKZmRMB8Ybg==
-X-CSE-MsgGUID: Co6S336EQo+62jyrm6CE2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="90651028"
+  bh=X5Ql4a/fq1dL+u/9J5iIsgt0eJC8ZfXYkoxyqfuHkRM=;
+  b=JGz41rV76qIEmcS1WjEMEK59vLfErMiipB7BJ6O2PO41gvcRJHEPEDYB
+   nofOz0b9V9FXGJtDtP/jGwPsCqLbgnDTxOoopWBVQQhRQQ/L0xaMGGJTy
+   Zs5apRKmlCgPRlMN72uZSCSgcom7/O6p7b2RZOtgKA7NeZLasRVQR+PFF
+   6m8iUgHl97q8j4Y27DS3FU3ZsbcZJN4IAwg+rE0ITPrAtE3eF1fwt80ks
+   3TmvjbdgtzmLDPI3zqdsINmqHaKeokt1xwipF6acmmgkN6QoQWugNz+nM
+   seWKadpEgi2tEr7fvC13S7iTvmLqCi5uK8+EVPdkNCpn1VU07X7le0afH
+   Q==;
+X-CSE-ConnectionGUID: MYBS5gCvT1iJgGvrSJVt6Q==
+X-CSE-MsgGUID: V11qUP4OR4Cl+xkLXOEzXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="100849912"
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="90651028"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 08:06:51 -0700
-X-CSE-ConnectionGUID: 1a98pPD9T/GjyayjhN95Uw==
-X-CSE-MsgGUID: 5HrXzimbQVK1UZ2M82HTvg==
+   d="scan'208";a="100849912"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 08:07:52 -0700
+X-CSE-ConnectionGUID: KmMFwIWsSEq98WDzhnXgYQ==
+X-CSE-MsgGUID: Cr65BJqRSZa5eKpBDiSHpg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="279042724"
+   d="scan'208";a="313641619"
 Received: from linux.intel.com ([10.54.29.200])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 08:06:51 -0700
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 08:07:52 -0700
 Received: from [10.102.89.17] (soc-5CG4396XFD.clients.intel.com [10.102.89.17])
-	by linux.intel.com (Postfix) with ESMTP id 475AE20B5708;
-	Wed, 30 Sep 2026 08:06:48 -0700 (PDT)
-Message-ID: <f8b8d444-da7b-4a9f-8706-ed7ff5286995@linux.intel.com>
-Date: Wed, 30 Sep 2026 17:06:47 +0200
+	by linux.intel.com (Postfix) with ESMTP id E34AB20B5708;
+	Wed, 30 Sep 2026 08:07:47 -0700 (PDT)
+Message-ID: <f569d934-e468-4750-a75a-242f87ba6c97@linux.intel.com>
+Date: Wed, 30 Sep 2026 17:07:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,59 +55,153 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
- 2026-09-28 (idpf, ice, iavf)
-To: netdev-bot+sinfo@kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: Re: [PATCH net 5/6] iavf: fix VF stats not updating due to PTP
+ command preemption
+To: netdev-bot+sashiko@kernel.org, anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- emil.s.tantilov@intel.com, luoxuanqiang@kylinos.cn,
- bryan.fraschetti@canonical.com, tristan@talencesecurity.com,
- david.butler@appgate.com, horms@kernel.org
-References: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
- <179063700944.31693.1912265472568249345@kernel.org>
+ david.butler@appgate.com, emil.s.tantilov@intel.com,
+ luoxuanqiang@kylinos.cn, bryan.fraschetti@canonical.com,
+ tristan@talencesecurity.com, horms@kernel.org, aleksander.lobakin@intel.com,
+ stable@vger.kernel.org, jacob.e.keller@intel.com,
+ aleksandr.loktionov@intel.com
+References: <20260928230429.495442-6-anthony.l.nguyen@intel.com>
+ <179072991532.434549.7383166792791708818@kernel.org>
 Content-Language: pl
 From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-In-Reply-To: <179063700944.31693.1912265472568249345@kernel.org>
+In-Reply-To: <179072991532.434549.7383166792791708818@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 
-On 29.09.2026 01:10, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On 30.09.2026 02:58, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> - [Medium] iavf_watchdog_step()
+>   (drivers/net/ethernet/intel/iavf/iavf_main.c) now calls…
 > 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
+> --
 > 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+> iavf: fix VF stats not updating due to PTP command preemption
 > 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> With this commit, iavf_watchdog_step() requests VF stats on every pass
+> while the adapter is in __IAVF_RUNNING. Before, it only did so when
+> iavf_process_aq_command() found nothing to do. The periodic PHC caching
+> task keeps a PTP command pending, so the old stats fallback never ran.
+> 
+>> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+>> index 29b8403a066bc..c0686ad5c4116 100644
+>> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+>> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+>> @@ -2932,18 +2932,12 @@ static int iavf_watchdog_step(struct iavf_adapter *adapter)
+>>  				iavf_send_api_ver(adapter);
+>>  			}
+>>  		} else {
+>> -			int ret = iavf_process_aq_command(adapter);
+>> -
+>> -			/* An error will be returned if no commands were
+>> -			 * processed; use this opportunity to update stats
+>> -			 * if the error isn't -ENOTSUPP
+>> -			 */
+>> -			if (ret && ret != -EOPNOTSUPP &&
+>> -			    adapter->state == __IAVF_RUNNING)
+>> -				iavf_request_stats(adapter);
+>> +			iavf_process_aq_command(adapter);
+>>  		}
+>> -		if (adapter->state == __IAVF_RUNNING)
+>> +		if (adapter->state == __IAVF_RUNNING) {
+>> +			iavf_request_stats(adapter);
+> 
+> [Severity: Medium]
+> Can this put two virtchnl messages in flight during one watchdog pass?
+> 
+> Suppose iavf_process_aq_command() has just taken the
+> IAVF_FLAG_AQ_SEND_PTP_CMD branch. In that case
+> iavf_virtchnl_send_ptp_cmd() has sent VIRTCHNL_OP_1588_PTP_GET_TIME
+> without setting adapter->current_op:
+> 
+> iavf_virtchnl.c:iavf_virtchnl_send_ptp_cmd() {
+>     ...
+> 	err = iavf_send_pf_msg(adapter, cmd->v_opcode, cmd->msg, cmd->msglen);
+> 	if (!err) {
+> 		list_del(&cmd->list);
+> 		kfree(cmd);
+>     ...
+> }
+> 
+> The only guard in iavf_request_stats() then still sees an idle channel,
+> so VIRTCHNL_OP_GET_STATS goes out right behind GET_TIME:
+> 
+> 	if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
+> 		/* no error message, this isn't crucial */
+> 		return;
+> 	}
+> 	...
+> 	adapter->current_op = VIRTCHNL_OP_GET_STATS;
+> 
+> When the GET_TIME reply arrives, iavf_virtchnl_completion() breaks out
+> of the switch and reaches the unconditional reset at the end:
+> 
+> 	} /* switch v_opcode */
+> 	adapter->current_op = VIRTCHNL_OP_UNKNOWN;
+> 
+> That clears the GET_STATS tracking while the GET_STATS reply is still
+> outstanding.
+> 
+> iavf_adminq_task() may drop the netdev lock before the GET_STATS reply
+> arrives. A watchdog pass can then send another tracked command. The
+> watchdog can be kicked by iavf_schedule_aq_request(), by the 20ms re-arm
+> while aq_required is set, or by gettimex64() queuing another PTP read
+> with mod_delayed_work(..., 0). The late GET_STATS reply would then clear
+> that command's current_op as well.
+> 
+> Flow Director is one place where this could do real damage.
+> iavf_add_fdir_filter() relies on current_op to keep only one
+> ADD_PENDING filter in flight. If two adds overlap, the first successful
+> VIRTCHNL_OP_ADD_FDIR_FILTER reply does this for every pending filter:
+> 
+> 			if (fdir->state == IAVF_FDIR_FLTR_ADD_PENDING) {
+> 				if (add_fltr->status == VIRTCHNL_FDIR_SUCCESS) {
+> 					...
+> 					fdir->state = IAVF_FDIR_FLTR_ACTIVE;
+> 					fdir->flow_id = add_fltr->flow_id;
+> 
+> Would the second filter then get the wrong PF flow_id? If so, a later
+> delete of that filter could remove the wrong PF rule and leak the real
+> one.
+> 
+> The missing current_op tracking in the PTP sender predates this patch.
+> Before this change, though, GET_STATS was only sent in a pass where
+> iavf_process_aq_command() returned an error, so it never followed a PTP
+> message back to back. Now every PTP send is followed by a GET_STATS in
+> the same pass. That covers the roughly once-per-second PHC cache update
+> and every gettimex64() read.
+> 
+> This also adds one GET_STATS mailbox message per PHC read, which the
+> commit message doesn't mention.
+> 
+>>  			iavf_detect_recover_hung(&adapter->vsi);
+>> +		}
+>>  		break;
+> 
+> [ ... ]
+> 
 
 
-This information will be included in patch 5/6 iavf: fix VF stats not updating due to PTP command preemption:
 
-How discovered: found while investigating a bug report where VF statistics in sysfs stayed at zero despite working traffic.
+Thank you, this is a valid finding. iavf_virtchnl_send_ptp_cmd() does not set adapter->current_op before sending VIRTCHNL_OP_1588_PTP_GET_TIME, unlike every other virtchnl sender, and iavf_virtchnl_completion() unconditionally clears current_op on any reply. This gap predates this patch, but making the stats request unconditional every watchdog pass makes it trivially reachable, since GET_STATS can now follow a PTP send back-to-back in the same pass - something the old fallback design structurally prevented.
 
-Triggered: yes, actually reproduced — ping/iperf succeeded while rx_packets/tx_packets stayed at 0 in both sysfs and ethtool -S.
-
-Hardware tested: Intel E810-C (ice PF) with an iavf VF passed through to a KVM guest. The fix was validated on the same setup by swapping an unpatched vs. patched iavf.ko in the same guest kernel.
+This will be fixed.
 
 Thanks,
 Tomasz
