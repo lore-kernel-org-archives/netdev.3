@@ -1,150 +1,161 @@
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3304C9E11
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78A33E410D
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790770726; cv=none; b=k3tVYzp8jWJnAsw07ZqpUaEurkqLHbwYqZ8eocUAOQHYE45FvwJ5b3t7Qn3q9kOvmBW7t91K3vY5ORySl2/vrQdcQkUK9378Ya7F4Jg45pt1aZ5eqIm7iQN580o1vAaIAzw+qAmKADz69LwtDkI7B7AKGJG9CHtKuIPGQEaxiYc=
+	t=1790770996; cv=none; b=p2+wJPg7LJDo0CLteFSDqhTX/cc/Xe99iNluICShECi+hgkb5lPICmhfyKuIkAwBT5qKBdCV+JAabUVeUFTEQyjRYSB9Z06tJYDAtr2G/EKNifdaOchl1O1WkVPAg1NK3Gw4/v4xHDCVamcqHIgVELaXUoPRp7vyXqKuIW/DmW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790770726; c=relaxed/simple;
-	bh=bSEktm9jrxFnvovCxVG8QToeJjkRVOM4SyexKupCay0=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=inZgAVtA9ro17rJtIrGnAllMhbeeiNInYI7Jllv1iWARxouqysTssR7+9xwYrmKVvrApvBLZKUZvPM2YL1r7vBTicQb5dX2rkRqwj3w+oABLizBKcxEdb3GPleIJCjP2F+FJ0fTa2F5MNAuhAb3M0fTKiS/48yWqFxYSW8ZF1No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WRq3mKw3; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1790770996; c=relaxed/simple;
+	bh=hd66VCJ3K0RoXkl/bUrVexrnvv/K041uRHih0HcPJLA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q9ozv3jjZndW2orgpmNdCbIAFgFhVKOWmM7V+UNyLqS6t2wGb+rLu2bvsUiQ2H2He/peN/YjKEQosl9FYeqCREKYPFmRXDFWBc7cbCl25p8EVyMIzJcK4XqUW9sgJUIjQ7WStwBZxa6UomSvN+JRkDx7ZMtFf/ZoPMt4Dy688s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=AR7Kjy4h; arc=none smtp.client-ip=74.125.228.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WRq3mKw3"
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260930121839epoutp032b0779353725ed4da9501107ded29158~aGHtHlF3l2876228762epoutp034
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:18:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260930121839epoutp032b0779353725ed4da9501107ded29158~aGHtHlF3l2876228762epoutp034
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1790770719;
-	bh=pUP5VujhcG2YSUsnNskbW51OmDiU/TOQKq6NE0AKOTs=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=WRq3mKw33bPWZMwayh25XLkcS34PXYGIisX6ql7NW6HzSmUGiN5flmozxm38NrxZb
-	 n9/d1ySKdVGFNphwJa9c0kro+oMOhhCn1nZjGOeuWy5pxrax+uPzlvuS7NUwOd0JW5
-	 efbazk/e2WOH/LCgDgRrX/XB8H2h36RLLWXCfivI=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20260930121838epcas5p282173e5c9e5baf54a9943d92bbc43abd~aGHsUkvob1539215392epcas5p26;
-	Wed, 30 Sep 2026 12:18:38 +0000 (GMT)
-Received: from epcas5p1.samsung.com (unknown [182.195.38.93]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4hvvGP6phGz6B9m4; Wed, 30 Sep
-	2026 12:18:37 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260930121837epcas5p1e327cedf1172cb31e1f216806540d994~aGHqwpRZU2078520785epcas5p1O;
-	Wed, 30 Sep 2026 12:18:37 +0000 (GMT)
-Received: from SRIB8EG28RUQ1R (unknown [107.108.208.92]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260930121833epsmtip1a1ffe8e45fe58bfde6d8584a5b045a8b~aGHnrx-Lu1608216082epsmtip1I;
-	Wed, 30 Sep 2026 12:18:33 +0000 (GMT)
-From: "Irlanki Sandeep" <irlanki.s@samsung.com>
-To: "'Eric Dumazet'" <edumazet@google.com>, "'Jakub Kicinski'"
-	<kuba@kernel.org>
-Cc: <ncardwell@google.com>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<davem@davemloft.net>, <pabeni@redhat.com>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <andrii@kernel.org>, <corbet@lwn.net>,
-	<linux-kernel@vger.kernel.org>, <lorenzo@google.com>, <maze@google.com>,
-	<sporeba@google.com>, <motomuman@google.com>, <srihari.k@samsung.com>,
-	<g.pokhra@samsung.com>, <r.kumawat@samsung.com>, <raj.kumars@samsung.com>,
-	<ts413.lee@samsung.com>, <ramyashree.s@samsung.com>,
-	<daeil2.hwang@samsung.com>, <cpgs@samsung.com>, <irlanki.s@samsung.com>
-In-Reply-To: <CANn89iJgAXaoepX1uvUbYhnutjvOPknPFheThf-gRWV-PbZZxw@mail.gmail.com>
-Subject: RE: [PATCH net-next v4] tcp: add TCP_ECN and TCP_ECN_OPTION socket
- options
-Date: Wed, 30 Sep 2026 17:48:32 +0530
-Message-ID: <000001dd50d5$d1c1fb70$7545f250$@samsung.com>
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="AR7Kjy4h"
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acb6b726b5so2894187a12.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura; t=1790770993; x=1791375793; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uTmXsnC8RxOPoTRudDkJpI91DV2+W3uFeKU9KvirJ9Q=;
+        b=AR7Kjy4hQnaTlj9ensLiGt5clD38S8VlpsFB7IJErtO77C5cjJHEOnMSMSOC9C++d7
+         BJpfRYlwt+RcW37w8I7uwQh3EFVCiQiE6hL+oZk5bgL2eAZzprPebRFSTYv1xMX6VH8Y
+         zs3do4A4lQf6ij6ZkGnVT6Nwwswg5nF6adcKdiGivpgLXKLb93kCkY7xZS0IsdHSA67C
+         yewrMpJJl7BixUSB2Dqkb+QkQxRmYLx5BzRdeXUBocGZF2aD/Lz5BpB1oq8altRT6o7w
+         91UnZey9R2nZwBU+HNZBuldEbm2M74l5rfhn46RvBF4AAjGHo7kV5oNEvDhcCQO3zhsA
+         3ALQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790770993; x=1791375793;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uTmXsnC8RxOPoTRudDkJpI91DV2+W3uFeKU9KvirJ9Q=;
+        b=bdUvrVVM33NO+DO3DF0HK2LWHiBas/6CuGPC+R/SgYCsd1oyi7UTj3gv4HtQ7hV7LC
+         YDUEHGmhpwbrj1QiGEUJ/QjezBxVsN5h8IIKfjkMYLzg0t/zFM9wo/qlwt8/daj7HzKD
+         lt0179LrUhOZTPBcD+xDBAiQsBErwzhjRv73e7jv8hOlAf4UJmlqAeNY8l1vJ7b4qhDN
+         MXeBPDPMhIv1zgZfsJnS99WLF3KZUjM599JNHkWbnAw4/UksYvt5aWWzQYNPW9tbDAam
+         qiLqU03hS8CGCJkfLRKSMF3S6nSabI3RUj43oq/q9ztYUmi6XDLMltZv6Iv1QM86n0jA
+         uCpA==
+X-Forwarded-Encrypted: i=1; AKwUvBxseW3jWeekn4/gSlhAJ7OwR2rfStm/b5+s88Zry844Ef8GKSmzSZ3iF3UqF0gXp2wf3mDjRFE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLjTCxIG/i0DtjQGdWfxxDBuYr3T+Xp+eJ4ZIYkxlnd7a6ch515
+	PxmDmVoOxK/a2esk7W1RV9LsR5KytDRz/GpkaZdxOKTefssnbGuicRrxod7NDcq9UBw=
+X-Gm-Gg: AYBFou2VMiklCrHNRgm+owhhMVGfdgSDcAY2THqK9WFJl7r8b0s7rps0XqKiVhcymXC
+	fhysMJRWwRe64la1Dl+hJ+2fPB5a18vjDLGaxJPXVTtxq40/tfBi0uBPN3bLJOgqgiMQyuPRaie
+	uKFDrVclMSaOXw/4n1ZfQutDtUBgiwoT7vUEQKT0tt+YLqIV/qvr4VB5xUbKz51SJGMlorz12jX
+	XZ6jh9hxzYmJPcqBANKe6loheitUnLWF61jtEvKMvPusUylyS2+wVDtbIyhSYezlFx2dPPSIHX6
+	/DUVVgBxvfednY26gDdHqiUJ5itXUkb2ADQJXXfMGTbtmXZOpGNtfVKQaX0gKqJW5fG4xflhS18
+	2PmVjqGEb9h1QHlj0U1f9dmF+RtBYFrt527cumLAeHvGHN7CddyEqjDR9AvYZQt/UwaxEkHROgk
+	mB1QfZyoHCZ3qEf9t5l/CT6wHS1q5jPcRpquQ0XfDiP66MnQXSfGPRKtDyHUF+5Nxxfirweq/QE
+	3n/hNEA8xKAR8jsWBKaBuuSQVh7JxVcrK3eA/J76nUlvl1dQTEqFjcw12ygSeJbX/75JfvjDLlW
+	FV3tYQ7Xs3ejGBIzvWx/nywMiB+8IA==
+X-Received: by 2002:a05:6402:23cf:b0:6ab:373:54fd with SMTP id 4fb4d7f45d1cf-6ae1993bc30mr808003a12.44.1790770992881;
+        Wed, 30 Sep 2026 05:23:12 -0700 (PDT)
+Received: from threadripper-fedora-workstation (dh207-15-187.xnet.hr. [88.207.15.187])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ae1568e5a3sm744042a12.20.2026.09.30.05.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 05:23:12 -0700 (PDT)
+From: Robert Marko <robert.marko@sartura.hr>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	hkallweit1@gmail.com,
+	lxu@maxlinear.com,
+	michael@walle.cc,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: luka.perkov@sartura.hr,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH 1/5] dt-bindings: net: maxlinear: add MxL86211C MDIO I/O regulator
+Date: Wed, 30 Sep 2026 14:22:13 +0200
+Message-ID: <20260930122305.293686-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJPEydXpeq+l5NzzjE296FzF95UZwKOft8YAodpJUkCC+fQo7XKWfjw
-Content-Language: en-in
-X-CMS-MailID: 20260930121837epcas5p1e327cedf1172cb31e1f216806540d994
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-cpgsPolicy: CPGSC10-065,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260916050144epcas5p3f7d6a44556baabd24027af8f4bce7893
-References: <CGME20260916050144epcas5p3f7d6a44556baabd24027af8f4bce7893@epcas5p3.samsung.com>
-	<20260916050255.1379192-1-irlanki.s@samsung.com>
-	<20260921152604.2df7daaf@kernel.org>
-	<CANn89iJgAXaoepX1uvUbYhnutjvOPknPFheThf-gRWV-PbZZxw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> On Mon, 21 Sep 2026 15:26:04 -0700, Jakub Kicinski <kuba=40kernel.org> wr=
-ote:
-> > My gut reaction is that we shouldn't be adding a setsockopt here.
-> > This is a routing property, really, IIUC you're adding the setsockopt
-> > because you want to use BPF, in which case isn't it better to add
-> > a kfunc for this? Why go thru all the sockopt plumbing?
-> >
-> > TCP maintainers, WDYT?
+Document the MDIO I/O voltage regulator exposed by the MxL86211C PHY.
 
-Hi Jakub,
+The regulator configures the MDIO, MDC, and MDINT pad voltage
+between 1.8 V and 3.3 V.
 
-Agreed. Moving to BPF kfuncs avoids UAPI clutter while giving us the exact =
-per-connection granularity we need.
+Restrict the regulator subnode to the MxL86211C PHY ID and document
+the board requirement for VDDP to use the selected voltage.
 
-I adopted your suggestion and transitioned the implementation to two kfuncs=
-:
-- bpf_sock_ops_set_ecn_mode()
-- bpf_sock_ops_set_accecn_option()
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+---
+ .../bindings/net/maxlinear,gpy2xx.yaml        | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-v5 with the kfuncs and selftests has been submitted:
-https://lore.kernel.org/all/20260930102308.197808-1-irlanki.s=40samsung.com=
-/
-
-> On Tue, 22 Sep 2026 02:48:10 +0200, Eric Dumazet <edumazet=40google.com> =
-wrote:
-> Speaking for myself, I also cannot see why we need to support so much
-> flexibility.
-
-Hi Eric,
-
-Regarding the need for this flexibility:
-
-In our testing on real-world networks across multiple interfaces (cellular,=
- Wi-Fi):
-1. Certain legacy middleboxes blackhole ECN flags or drop data packets carr=
-ying AccECN option headers. A global sysctl is all-or-nothing: disabling it=
- loses L4S benefits on compliant paths, while enabling it globally causes c=
-onnection failures on broken paths.
-2. Under heavy CE markings, we observed throughput drops when comparing Pra=
-gue (out-of-tree) against Cubic/BIC. We need the ability to selectively ena=
-ble AccECN for latency-sensitive applications while avoiding it for bulk th=
-roughput-oriented traffic on paths showing throughput regressions.
-
-This patch gives us this per-connection control dynamically without changin=
-g global sysctls.
-
-> BTW:
->=20
-> I have on my plate a complete walk through of recent fields additions
-> in tcp_sock, mostly from the AccECN support.
->=20
-> ecn_mode and ecn_options have nothing to do in tcp_sock_write_tx group
-> in any case.
-> This patch  would hurt performance.
-
-Thanks for pointing this out.
-
-In v5, ecn_mode and ecn_option have been moved out of tcp_sock_write_tx and=
- placed into the cold section of struct tcp_sock (immediately after accecn_=
-fail_mode, outside hot fastpath cachelines). We have also updated Documenta=
-tion/networking/net_cachelines/tcp_sock.rst accordingly.
-
-Please review v5 when you get a chance.
-
-Thanks,
-Sandeep
+diff --git a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
+index 8a3713abd1ca9..0645e885f1747 100644
+--- a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
++++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
+@@ -12,6 +12,29 @@ maintainers:
+ 
+ allOf:
+   - $ref: ethernet-phy.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: ethernet-phy-idc133.5400
++      required:
++        - compatible
++
++    then:
++      properties:
++        mdio-regulator:
++          type: object
++          description: |
++            Initial data for the MxL86211C MDIO I/O voltage regulator. Set
++            this to 1.8 V or 3.3 V to configure the MDIO, MDC, and MDINT
++            pad voltage. The board must supply the VDDP pin at the selected
++            voltage.
++          $ref: /schemas/regulator/regulator.yaml#
++          unevaluatedProperties: false
++
++    else:
++      properties:
++        mdio-regulator: false
+ 
+ properties:
+   maxlinear,use-broken-interrupts:
+@@ -45,4 +68,21 @@ examples:
+         };
+     };
+ 
++  - |
++    ethernet {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy@0 {
++            compatible = "ethernet-phy-idc133.5400",
++                         "ethernet-phy-ieee802.3-c45";
++            reg = <0>;
++
++            mdio: mdio-regulator {
++                regulator-min-microvolt = <1800000>;
++                regulator-max-microvolt = <1800000>;
++            };
++        };
++    };
++
+ ...
+-- 
+2.55.0
 
