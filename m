@@ -1,78 +1,77 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBAA46D095
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699AA44E046
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790807159; cv=none; b=cNR+0doD9LVShPMRFtAcp7Hclnl400h5bjHDyFHlKIu18JTNo9Ar2YPOwLV6tlJ80vfXc0qiYokADWccKUm5gBCsXcoP8p6zaQnxqgmaDbAEB3eU/Ykw8lZiaI28LMX2r6FuY8A9rUGAuN1JZwEfCTrDt89K2pweKPPmVJvM74k=
+	t=1790807162; cv=none; b=R6j4OwjG8oA3M4sLEVgO1BH7Na350OrWJ57Mmd6kBLaFYq7u921XyCLMT0kaayYdt0nrc0OaNnjsrAtaSND7Si+mPwtxoCuqjLzeZKxkO0US+qslGD2V8kxNxzOM1wNaz+Ki9UMQIrskePBM1yhYQ2JZFYSfLlvjy5vg54v4BFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790807159; c=relaxed/simple;
-	bh=56V6nsIOZeWnT9HU++ArhhiamILEQEL/mOIjWEC0yGk=;
+	s=arc-20240116; t=1790807162; c=relaxed/simple;
+	bh=jyr6lDgNOJ4Jnsu4OOCO8e8oUEiSkA/dEsG/3suN1w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbrkFzu6am4RYwlPPo2m0Gd6/2XYlaFuND4/0slnWDPRX4fGeL9SAB+eRoyGJTfPokSkmJz/uAzvoUmwl3bkL9Us1OuXMhuPL5ErIpeR2KdCm4cWvFfuoVqvgja5vRS00jtK+5ZkZQPJlkmcV130OjlcPEbDLFD6ePavmUfDzUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=QVL5alO/; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=OO+rwTAWHi44cQInOdOPOsazLWmeiIoKzgeXdaARgxGBfvKDzlGLAYn0Be5BhjHlpm7JdIT0zNj+XuaM/9SNPRxOs0UjRtRuGYx8oYhTaVQigHCyuWn+0r1DFOtG2NlqDl9gJa8rO7OIFwPlLYeGsVlwP9NsVu5av60F9xAM2D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=bZEb/OQh; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="QVL5alO/"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6b885ef8so34756765e9.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:25:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="bZEb/OQh"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso60528415e9.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1790807155; x=1791411955; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1790807158; x=1791411958; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PvCr0KW1XMvGSZfvlcy7YAwrTWE/tQeQZtQA2Y6abNM=;
-        b=QVL5alO/gWuJeaalBvH67ZEEoxIsNaLskxtohl0gI4bUFPz4Ab3uLYzF3Uny5V9bms
-         pU7OUsfLSJP7buoOoF1jaT+ag29Kg/mBZ1jl0Dq64nMrXSvbdz2YmTYVlDvlT6K/iiL3
-         lfDc4tDEyl6I3B08ugkG1C4NmhLWyTtxluHJi7r9LxzeOeMHfQG/MAbAF22kUjp97UKf
-         7d5193f7LycGpCU+Fig0HxejO7tqiUdrO+n8ZvtkELggktXChK9rEU4U8mFEUW07XZiq
-         td12WX7Q2Z3g/hPW19VfyBvgeHw5U934AM3wlQwgLWp9KdDb8B2yXPXiUoiJqMN6fb11
-         iSLQ==
+        bh=an0vUs4hK6pCIjIep2sFxJmPmB2s7bPib4hJ3LbZrck=;
+        b=bZEb/OQh2gQSi8wbY6ZLfA9ywcab8Za4l/VrCdlcpXO9zhZkrf4Q0XMawEdVzLcOdS
+         ja4OcJq3irG3ewbzwsBX1Lh2WjWH5Rg7FK1GHOuXDBmH75NRvc5QzJC02WyIUWl0WxwQ
+         N1zY+0Dwxg17p4PLhEVQIzgsEZ50OrXCvh22ar0qnLLdWeZ7pEKm596mB30cnv9yYqXz
+         QzaChOSLAR6TgkVPMq5F9jmDQPsUa5btLq5eGjhXX8g0lqmK1nEgSI7TNlG0EjpgTcGE
+         HvmN8lcgL1MJbCoUxQxgpzPSH9FwvCdeX15QOqD4bMlvPReP6R/5vXAO2A3G2dlAV9PN
+         wlhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790807155; x=1791411955;
+        d=1e100.net; s=20260707; t=1790807158; x=1791411958;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PvCr0KW1XMvGSZfvlcy7YAwrTWE/tQeQZtQA2Y6abNM=;
-        b=mRz6GnK7C6QV5Qtygj1WeFULpcqLTvzgQ580ft+XGAZ/CePoyGnTOw355Y2Mfh5Hiw
-         dJArY0kTa9I9cHvtzWJYPdx07oizICWo8b6yCk4Xl0H5eYTUEHCZXV+qcp/4/1dvGdBk
-         mo/XQpybUx+mU9X1yqpqFQySNFupJ56KBrBFIJdDIv3cw02735HMmPENphfzQDAp/KNg
-         jSco9OKnuGhKVPNkpOcxYoodKDk5OoFV4Iv7XL3Fx0hhjMUOyHzs7b/sUaPHcKBgJVN2
-         TTP+O6buEWWTSR4IlgoN3t3CQXncZItKlbUCcJBtkJ9F+wvUgB0j4Wh6+I6WMZLWvmBc
-         3R3w==
-X-Gm-Message-State: AFuF++mr1PX6ryyNk3c2ZAUvJrSXk9HvY+J9LSiKwGAS4Rzk1Dazlkoq
-	AdwhXGX4TJifmoI/YcEEGTp2dTfDzNiqW0RVA0CR2jSOIoUhwJfcSSnJcIEmTt8Asio6zsEkoPd
-	jkAPy4EV3+Mh/yxGn9QYbGWaxcmjiZZn6L1R9whjOqVd+eqpbivFqkcamnhx6SiJPgLc=
-X-Gm-Gg: AYBFou3fvt1BgfH7kLWMhTrVkThgHqS3tN4af/IHixohoZsSnN0cjBRJjlQSXwtj5uF
-	T6oTqCM7W2h2yULhU+OdwwGltQ8bCTOK0CBBYd0NXycKIdfWeUS1YuBgEIRflfGVNUYpFHdNGFA
-	fCYIYZ7w1w9OB2uHxvAEsiQMhAO/2ozwFzGCGPciVLj/Y5Cf8dtr8OMkjYeNPHaE2vOdXFe5ChU
-	VXe4mzu62ZsZJAkRrPsSkCVo0vsU/ba/xfBsFKBH3O75JZiwFtVp/QK2BaUqY+fOqE9o/3EM1ED
-	Ziz5gZOoBIifkAM0Mv2uZpNGNDbbXO4ZspHwaIjPG/e8b8u5JlzOqETq/fGul8VOE09/TYEaN/S
-	rV2pFBfhLPZQmxLUicJwJ+FGTRfovg1iYr+uh1+q60wNUTzoTIPd8FX+oeYFrgfbSpuXEDwp9QU
-	FsZkRKyNRrik8c6Js1TWiPd3qLhYULMm57edVRK0fqrbgkXLlSu6xKixDTeMcQ8nhBuByZOjo+y
-	6+pzf5LKYfXEArT2TEbfA==
-X-Received: by 2002:a05:600c:c162:b0:4a0:18bc:3b94 with SMTP id 5b1f17b1804b1-4a01affb798mr42323765e9.18.1790807155480;
-        Wed, 30 Sep 2026 15:25:55 -0700 (PDT)
+        bh=an0vUs4hK6pCIjIep2sFxJmPmB2s7bPib4hJ3LbZrck=;
+        b=nJKyX5k+59c+0JPX271WUKuujdb8h9KcdWm5Yr3L131K+cEFIXBdOoYYgqA/0SolCB
+         6YjNPC5Y1TbonII7r5iZ1/kjw3tVnhrMvKp53YfSK9wMSaVDiiEi7pqBl+bIx1AuqS9u
+         PiKF16Oxf10wbaKFEBjhTZK2T7bVNx5enzcDr78UC6ZbUecrs+RVaWsxoHWgDuCAxPbI
+         9WVkwqAuJeE1z9pp6uVzHkP1TvoiHsbD7o7Y/GQ6IMPAx/VeOlPS0tU5s3gwaiDXlREw
+         h0TRSgvj9Dlup/kf+E8o+Is0V6G9NVS+90a5Yo+r3qnNbBsRe/op/4H8UEUxZjLSMshP
+         T4gg==
+X-Gm-Message-State: AFuF++lwmRdN0dZdFGnQ422eTArKLhNjM0Q0Sd/dntwDp0qGmknijjDM
+	92VjhrPELX6RwNRhoGHlZ+l9QnxPeUiHobB/5w5Kv12/uu8f/PvQqmthQysKbz8OSi2AwCKYUMz
+	3hArWWgMiip4YNsoQ7ptlpRGxMWo02P+dkjMYhNoXJ9YyZzu2clwkoWUND6s0n2YsF0s=
+X-Gm-Gg: AYBFou0iuDuVykTMmq5I8X2y2GDHXwly6if59bK/5bF4pGZfUsxXdvtmZdSPq0S+rvv
+	nocNw9jiz6XxckxC6FfF5cPmTxmWrVrYroBlyZLyrjcVT1PUzzUofvGrm43C7todUXRtRVES8mF
+	+fWazifpxWujR7gd1M1hQFCo+42kTKbqL6PLJjKeC1BEMalWyaxOGTvRgsNpNOb08+oZ6z2f+jA
+	+654q/Quu2hIA6v6ecIvbxfj8yx7Eg/DaFfBdrOxRa+J9wHlmGHRXOtY9euiV+MiJAjHOyAIZiE
+	vcD8FgW6yalXKMp6ocAFa0slNJ9lp6xxqnhny1gMno4QP6xbblT5tk02jINTcbyVS9NRhq1zAKZ
+	UtsJIXRuLX+3PcC6DogyiA/eSZ+EQXOzWNo8aeqd0Kz/B5bqYL1at6Ql0Nz1Lkm66UKpTEJjf9q
+	jzNJ5kZAg919nWVS7pMXKfYOZHzbT2goS+fpnuG8Cz+hNxVF5uyHClAlB8AV39sguv9Zr1zu5OD
+	bD5rJuKM/W3
+X-Received: by 2002:a05:600c:4f8b:b0:4a0:1f58:1772 with SMTP id 5b1f17b1804b1-4a01f581948mr7771785e9.21.1790807158376;
+        Wed, 30 Sep 2026 15:25:58 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:5892:feba:7b41:58fb])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f979c05sm24433095e9.3.2026.09.30.15.25.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f979c05sm24433095e9.3.2026.09.30.15.25.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 15:25:54 -0700 (PDT)
+        Wed, 30 Sep 2026 15:25:56 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
-Cc: Marco Baffo <marco@mandelbit.com>,
+Cc: Antonio Quartulli <antonio@openvpn.net>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Ralf Lici <ralf@mandelbit.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net-next 4/7] selftests: ovpn: enable TCP_NODELAY on TCP sockets
-Date: Thu,  1 Oct 2026 00:25:38 +0200
-Message-ID: <20260930222542.3839327-5-antonio@openvpn.net>
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net-next 5/7] selftests: ovpn: wait for the TCP server key setup before traffic
+Date: Thu,  1 Oct 2026 00:25:39 +0200
+Message-ID: <20260930222542.3839327-6-antonio@openvpn.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260930222542.3839327-1-antonio@openvpn.net>
 References: <20260930222542.3839327-1-antonio@openvpn.net>
@@ -84,187 +83,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marco Baffo <marco@mandelbit.com>
+In TCP mode ovpn_add_peer() starts the server side from a background
+subshell that first listens for the incoming connections and then
+installs the data key of every peer. The subshell PID is discarded, so
+nothing synchronizes the test against the key installation.
 
-Userspace now enables TCP_NODELAY by default. Enable it for
-ovpn-cli's TCP sockets too.
+The sleep 5 that follows does not cover it: it elapses while "listen" is
+still waiting for connections, and the peers only connect in the
+subsequent ovpn_add_peer() iterations, so the key loop starts well after
+that sleep has expired. Until now the test happened to work because of
+the unrelated delays that ran in between.
 
-The TCP peer ID capture assumes that every TCP segment starts with an
-ovpn length prefix followed by a data header. TCP does not preserve
-record boundaries, and enabling TCP_NODELAY makes this check unreliable.
-Restrict the capture-based peer ID check to UDP.
+Record the PID of the background subshell and wait for it once all the
+peers have been registered, which is the earliest point at which
+"listen" can have returned. A peer that was not given a key yet would
+otherwise drop the server-to-client packets and make the first ping
+fail.
 
-Signed-off-by: Marco Baffo <marco@mandelbit.com>
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 ---
- tools/testing/selftests/net/ovpn/common.sh  | 20 +++-----
- tools/testing/selftests/net/ovpn/ovpn-cli.c | 23 +++++++++
- tools/testing/selftests/net/ovpn/test.sh    | 54 ++++++++++-----------
- 3 files changed, 57 insertions(+), 40 deletions(-)
+ tools/testing/selftests/net/ovpn/common.sh          | 13 +++++++++++++
+ .../testing/selftests/net/ovpn/test-close-socket.sh |  2 ++
+ tools/testing/selftests/net/ovpn/test.sh            |  2 ++
+ 3 files changed, 17 insertions(+)
 
 diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
-index 5e9c81e885e6..2f7851b82343 100644
+index 2f7851b82343..96b40742eddf 100644
 --- a/tools/testing/selftests/net/ovpn/common.sh
 +++ b/tools/testing/selftests/net/ovpn/common.sh
-@@ -191,20 +191,14 @@ ovpn_setup_ns() {
- 
- ovpn_build_capture_filter() {
- 	# match the first four bytes of the openvpn data payload
--	if [ "${OVPN_PROTO}" == "UDP" ]; then
--		# For UDP, libpcap transport indexing only works for IPv4, so
--		# use an explicit IPv4 or IPv6 expression based on the peer
--		# address. The IPv6 branch assumes there are no extension
--		# headers in the outer packet.
--		if [[ "${2}" == *:* ]]; then
--			printf "ip6 and ip6[6] = 17 and ip6[48:4] = %s" "${1}"
--		else
--			printf "ip and udp[8:4] = %s" "${1}"
--		fi
-+	# For UDP, libpcap transport indexing only works for IPv4, so
-+	# use an explicit IPv4 or IPv6 expression based on the peer
-+	# address. The IPv6 branch assumes there are no extension
-+	# headers in the outer packet.
-+	if [[ "${2}" == *:* ]]; then
-+		printf "ip6 and ip6[6] = 17 and ip6[48:4] = %s" "${1}"
- 	else
--		# openvpn over TCP prepends a 2-byte packet length ahead of the
--		# DATA_V2 opcode, so skip it before matching the payload header
--		printf "ip and tcp[(((tcp[12] & 0xf0) >> 2) + 2):4] = %s" "${1}"
-+		printf "ip and udp[8:4] = %s" "${1}"
+@@ -264,6 +264,7 @@ ovpn_add_peer() {
+ 						1 0 ${OVPN_ALG} 0 data64.key
+ 				done
+ 			}) &
++			OVPN_TCP_KEYS_PID=$!
+ 			sleep 5
+ 		else
+ 			peer_ns="ovpn_peer${1}"
+@@ -281,6 +282,18 @@ ovpn_add_peer() {
  	fi
  }
  
-diff --git a/tools/testing/selftests/net/ovpn/ovpn-cli.c b/tools/testing/selftests/net/ovpn/ovpn-cli.c
-index 3b612a8a18fe..33f623d6b242 100644
---- a/tools/testing/selftests/net/ovpn/ovpn-cli.c
-+++ b/tools/testing/selftests/net/ovpn/ovpn-cli.c
-@@ -16,6 +16,7 @@
- #include <arpa/inet.h>
- #include <net/if.h>
- #include <netinet/in.h>
-+#include <netinet/tcp.h>
- #include <time.h>
- 
- #include <linux/ovpn.h>
-@@ -470,6 +471,18 @@ static int ovpn_parse_key_direction(const char *dir, struct ovpn_ctx *ctx)
- 	return 0;
- }
- 
-+static int ovpn_tcp_nodelay(int socket)
-+{
-+	int opt = 1;
-+	int ret;
++# In TCP mode the server accepts the peers and installs their data keys from a
++# background subshell. "listen" only returns once every peer has connected, so
++# the key installation necessarily runs after ovpn_add_peer() has been called
++# for the last peer. Wait for that subshell to finish before generating any
++# traffic, otherwise the first packets may race the key installation and get
++# dropped for lack of a key.
++ovpn_wait_tcp_keys() {
++	[ -n "${OVPN_TCP_KEYS_PID:-}" ] || return 0
 +
-+	ret = setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, &opt, sizeof(opt));
-+	if (ret < 0)
-+		perror("setsockopt for TCP_NODELAY");
-+
-+	return ret;
++	wait "${OVPN_TCP_KEYS_PID}"
 +}
 +
- static int ovpn_socket(struct ovpn_ctx *ctx, sa_family_t family, int proto)
- {
- 	struct sockaddr_storage local_sock = { 0 };
-@@ -606,6 +619,12 @@ static int ovpn_accept(struct ovpn_ctx *ctx)
- 		goto err;
- 	}
+ ovpn_compare_ntfs() {
+ 	local diff_rc=0
+ 	local diff_file
+diff --git a/tools/testing/selftests/net/ovpn/test-close-socket.sh b/tools/testing/selftests/net/ovpn/test-close-socket.sh
+index ec9a51bbf3c9..142dc14e2606 100755
+--- a/tools/testing/selftests/net/ovpn/test-close-socket.sh
++++ b/tools/testing/selftests/net/ovpn/test-close-socket.sh
+@@ -37,6 +37,8 @@ ovpn_prepare_network() {
+ 		ovpn_cmd_ok "register peer${p} in overlay" ovpn_add_peer "${p}"
+ 	done
  
-+	if (ovpn_tcp_nodelay(ret) < 0) {
-+		close(ret);
-+		ret = -1;
-+		goto err;
-+	}
++	ovpn_cmd_ok "wait for server-side key setup" ovpn_wait_tcp_keys
 +
- 	return ret;
- err:
- 	close(ctx->socket);
-@@ -623,6 +642,10 @@ static int ovpn_connect(struct ovpn_ctx *ovpn)
- 		return -1;
- 	}
- 
-+	ret = ovpn_tcp_nodelay(s);
-+	if (ret < 0)
-+		goto err;
-+
- 	switch (ovpn->remote.in4.sin_family) {
- 	case AF_INET:
- 		socklen = sizeof(struct sockaddr_in);
+ 	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
+ 		peer_ns="ovpn_peer${p}"
+ 		ovpn_cmd_ok "set peer0 timeout for peer ${p}" \
 diff --git a/tools/testing/selftests/net/ovpn/test.sh b/tools/testing/selftests/net/ovpn/test.sh
-index 392109d5e14e..e2e6ffdd29bb 100755
+index e2e6ffdd29bb..0762fa83e4b5 100755
 --- a/tools/testing/selftests/net/ovpn/test.sh
 +++ b/tools/testing/selftests/net/ovpn/test.sh
-@@ -137,35 +137,33 @@ ovpn_run_basic_traffic() {
- 	local tcpdump_timeout="1.5s"
- 
- 	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
--		# The first part of the data packet header consists of:
--		# - TCP only: 2 bytes for the packet length
--		# - 5 bits for opcode ("9" for DATA_V2)
--		# - 3 bits for key-id ("0" at this point)
--		# - 12 bytes for peer-id:
--		#     - with asymmetric ID: "${p}" one way and "${p} + 9" the
--		#	other way
--		#     - with symmetric ID: "${p}" both ways
--		header1=$(printf "0x4800000%x" ${p})
--		header2=$(printf "0x4800000%x" $((p + OVPN_ID_OFFSET)))
--		raddr=""
- 		if [ "${OVPN_PROTO}" == "UDP" ]; then
-+			# The first part of the data packet header consists of:
-+			# - 5 bits for opcode ("9" for DATA_V2)
-+			# - 3 bits for key-id ("0" at this point)
-+			# - 3 bytes for peer-id:
-+			#     - with asymmetric ID: "${p}" one way and "${p} + 9" the
-+			#	other way
-+			#     - with symmetric ID: "${p}" both ways
-+			header1=$(printf "0x4800000%x" ${p})
-+			header2=$(printf "0x4800000%x" $((p + OVPN_ID_OFFSET)))
- 			raddr=$(awk "NR == ${p} {print \$3}" \
- 				"${OVPN_UDP_PEERS_FILE}")
-+			peer_ns="ovpn_peer${p}"
-+
-+			timeout ${tcpdump_timeout} ip netns exec "${peer_ns}" \
-+				tcpdump --immediate-mode -p -ni veth${p} -c 1 \
-+				"$(ovpn_build_capture_filter "${header1}" "${raddr}")" \
-+				>/dev/null 2>&1 &
-+			tcpdump_pid1=$!
-+			timeout ${tcpdump_timeout} ip netns exec "${peer_ns}" \
-+				tcpdump --immediate-mode -p -ni veth${p} -c 1 \
-+				"$(ovpn_build_capture_filter "${header2}" "${raddr}")" \
-+				>/dev/null 2>&1 &
-+			tcpdump_pid2=$!
-+
-+			sleep 0.3
- 		fi
--		peer_ns="ovpn_peer${p}"
--
--		timeout ${tcpdump_timeout} ip netns exec "${peer_ns}" \
--			tcpdump --immediate-mode -p -ni veth${p} -c 1 \
--			"$(ovpn_build_capture_filter "${header1}" "${raddr}")" \
--			>/dev/null 2>&1 &
--		tcpdump_pid1=$!
--		timeout ${tcpdump_timeout} ip netns exec "${peer_ns}" \
--			tcpdump --immediate-mode -p -ni veth${p} -c 1 \
--			"$(ovpn_build_capture_filter "${header2}" "${raddr}")" \
--			>/dev/null 2>&1 &
--		tcpdump_pid2=$!
--
--		sleep 0.3
- 		ovpn_cmd_ok "send baseline traffic to peer ${p}" \
- 			ip netns exec ovpn_peer0 \
- 			ping -qfc 100 -w 3 5.5.5.$((p + 1))
-@@ -173,8 +171,10 @@ ovpn_run_basic_traffic() {
- 			ip netns exec ovpn_peer0 \
- 			ping -qfc 100 -s 3000 -w 3 5.5.5.$((p + 1))
- 
--		wait "${tcpdump_pid1}" || return 1
--		wait "${tcpdump_pid2}" || return 1
-+		if [ "${OVPN_PROTO}" == "UDP" ]; then
-+			wait "${tcpdump_pid1}" || return 1
-+			wait "${tcpdump_pid2}" || return 1
-+		fi
+@@ -45,6 +45,8 @@ ovpn_prepare_network() {
+ 		ovpn_cmd_ok "register peer${p} in overlay" ovpn_add_peer "${p}"
  	done
- }
  
++	ovpn_cmd_ok "wait for server-side key setup" ovpn_wait_tcp_keys
++
+ 	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
+ 		peer_ns="ovpn_peer${p}"
+ 		ovpn_cmd_ok "set peer0 timeout for peer ${p}" \
 -- 
 2.55.0
 
