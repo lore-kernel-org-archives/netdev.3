@@ -1,107 +1,107 @@
-Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692453921CE
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 04:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DE13921CE;
+	Wed, 30 Sep 2026 04:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790741828; cv=none; b=c6GytRqkX0fKDPRL+JcgpTzEWhrbtUCXYMLG9iBZkZuCf2LF/5IARoTjvSPL6G40IZ28mcgKHk/5LmoTPFud+ZToJFru9iMxdC+So4IOVYUonQWN36ZROo83jqsvE32ajGSgFBd+y7bFcJlp0PhULXgGqPgYcX7jap6QYlczQlA=
+	t=1790741964; cv=none; b=EKMFOyvsaLmuYE5hAwyMQUNdTJSmg535cQ4X6hJQzGUGWiUooVCnkmo9O7RgtKKhIqhhV8X6TRpPrK/QXbli6mk5EDnGs9yU9RCYY+NpwARHENAxHROhX4LzJTn9uujIjaULMvbwx8dMQeZ6FatddwefUPa5RYodgK827an2KOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790741828; c=relaxed/simple;
-	bh=U4OcXGoojx2ID1wJfjC4BcxW1I60X26jy9zm93+y0mo=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=JYEZm+niX+IrdIRwPQqEUEmWV6e7gTDbi8BX71+uHt23JUWj2CskVq4/6lccJqFxeQd74qgLpxIUAfHXCLDc3wCE8+OmS0ptNKZz8+1yWR+ZL20YCY1IymtXkSkJaUo5Cll+ebSWvbrRWpyGA4JWMfFxuoHo8Pxmurw9xPY7Hmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=VP0FGu7w; arc=none smtp.client-ip=185.70.43.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1790741964; c=relaxed/simple;
+	bh=W6oTjCqB7b/JzMZQ5GPKFWJ3siqJQajSbxgWS5eQuwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eei7oJmRlHbmugtRtRM1jBn9ucqvTNmp4umMrsXd8VZyZh5wh3Wow+Tnsfjd60+dZUOz0llyDQUYqarYcSY3mNq7vLaLY/ALJBOsFisCDAJXDg/vpqcXMrTSctKKB0VdqcM0Ux9Kp8RfBH6lqeO8D+kYEomyid3BVs2l9AjbebM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=bZkj6nfp; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="VP0FGu7w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1790741817; x=1791001017;
-	bh=U4OcXGoojx2ID1wJfjC4BcxW1I60X26jy9zm93+y0mo=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=VP0FGu7wJF1DLGObsUgWv8rKUHZTYyeq3ADpjhAmkgOyXiP/D0BT/VuJQdjWruPhR
-	 AAmfB/i5gmoE4NKcJvhQdTf25WdT1iifmSG/KiBJeKDBSEGyRJmv5/fXFGpKYvoCYV
-	 oJgHWhpDEakv573xQ7g3WpReIDd5f+4x8CqvP6mvpibtnOPfY1PbIBSSR+GMzW9odT
-	 4hVWOAkBjRaCtLUlFT5+MSnoNbf0Ty5FK7/NMQxzR9gY00Q1UPVbpk/SMndx+oHzW/
-	 tLnK+Gu4QFjIbsbmb0/elVwX5Gn2sGOPpuKB/H4U8agpEMHV+XhIjEKykYzFkH2777
-	 sdKja0pq9UEGQ==
-Date: Wed, 30 Sep 2026 04:16:54 +0000
-To: Linux Networking <netdev@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: Received email alert from pfSense firewall + Snort Intrusion Prevention System (IPS) suggesting that my Linux Server in Germany was hacked by APT hackers and it was used to port scan my home pfsense firewall in Singapore
-Message-ID: <2KMJMzx0-TM1B10EWoRD2gKw1M5XU6k7UF8NgrlsNRbnJPXp098h0-f5Bwd03YeUNEJjeIwKr5Tb5kS3RTp8cyGqsYGTvo_rxcbkSBtSbZw=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: 46bcc452ac7c8099f6c344c2f3653ac1123a43c1
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="bZkj6nfp"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 60DEA106E14;
+	Wed, 30 Sep 2026 06:19:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1790741949;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gqTJHUz7tHNAEycDuNrzBNgDUuLLCrtcBiT40+X0peM=;
+	b=bZkj6nfp8TaAHjFmXc+7PiYudfAKcHMYPf14BM93GeSkydWtQ+ULnDv2MsK/zPswhrMYuI
+	DXyy99PIxruV3/vu7bTmCj72DnLZt/LIuZlyaOt3HutDZqHBw/oY2P0k4x36ExRHS4UUoQ
+	M+RAGzxJYQE2Zl4gRymvlObp5hzMqzkgxzEWI4G5OGnKrhnrKt456fNVeU+QEvXOzsYxtl
+	Ue5pbjNbJK8GG2IfQUGX/3UuKpcWDqcVM5dqnkDFztwxksJhpdBSeEMkl9HWobvVhOisb2
+	IFvYLULOwFHOSAizMNXOPxbkxDxwx3faZGz93CSlh6KtxqxjpMMJyQJieW8W6g==
+Message-ID: <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
+Date: Wed, 30 Sep 2026 06:19:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
+To: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260924180607.60932-1-marex@nabladev.com>
+ <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Subject: Received email alert from pfSense firewall + Snort Intrusion Preve=
-ntion System (IPS) suggesting that my Linux Server in Germany was hacked by=
- APT hackers and it was used to port scan my home pfsense firewall in Singa=
-pore
+On 9/30/26 5:40 AM, Wei Fang wrote:
+> Sorry, this email was missed because it did not match the filtering rules I set.
 
-Good day from Singapore,
+No worries.
 
-At approximately 6:48 PM (Singapore time) on 29 September 2026 Tuesday, I r=
-eceived a security alert generated by the Snort Intrusion Prevention System=
- (IPS) running on my home pfSense firewall in Singapore.
+> Hi Valdimir and Claudiu,
+> 
+> Please take a look at this patch, it may affect LS1028A and S32N7 platforms.
+> 
+>> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+> 
+> The system clock of i.MX95 NETC is 333MHz, AFAIU, the MDC rate should be
+> 333/(2*258+1) = 644KHz. I'm confused that why you said the rate is 558KHz.
 
-The alert indicates that traffic originating from the public IP address 217=
-.a.b.74, which is assigned to my Contabo VPS hosting my Virtualmin master s=
-erver in Germany, was detected by Snort as a UDP Filtered Decoy Portscan=20
-against my home Internet connection in Singapore.
+That is what I observe on a scope on local MX95 board (not the EVK).
 
-I am concerned about this activity because I am not aware of any legitimate=
- reason why my Linux VPS in Germany should be generating traffic that Snort=
- identifies as a port scan against my home Internet connection in Singapore=
-.
+>> but also very compatible. However, for example NXP TJA1120 PHY needs
+>> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+> 
+> We previously used the TJA1120-SDBR daughter card to connect to the ENETC
+> interface (RGMII) of the i.MX95 19x19 EVK board. However, we did not encounter
+> any issues with MDIO access.
 
-I suspect Advanced Persistent Threats (APT) hackers had hacked into and tak=
-en control over my Linux VPS in Germany and used it to perform port scan ag=
-ainst my home pfSense firewall in Singapore.
+Most PHYs are fine with the low frequency.
 
-The Snort alert is reproduced below:
+> Furthermore, I did not see a minimum MDC
+> frequency rate of 1MHz on the TJA1120 datasheet. I'm not sure if this is an errata
+> of TJA1120.
 
-pfSense/Snort Security Alert
+The TJA1120 RM is not public, but look at its predecessor:
 
-Alert Type:
-PORT SCAN
+https://www.nxp.com/docs/en/data-sheet/TJA1101B.pdf
 
-Time:
-2026-09-29 18:48:05
+Page 46 bottom
+Table 37. Dynamic characteristics...continued
+Tclk(MDC) MDC ... clock period ... Min 400 ns
 
-Original Syslog Message:
-2026-09-29 18:48:03 Auth.Alert 192.168.88.1 Sep 29 18:48:03 snort[52837]: [=
-122:22:1] (portscan) UDP Filtered Decoy Portscan [Classification: Attempted=
- Information Leak] [Priority: 2] {PROTO:255} 217.a.b.74 -> 49.x.y.89
+400ns ~= 2.5 MHz .
 
-Source IP: 217.a.b.74 =E2=80=94 my Contabo VPS / Virtualmin server in Germa=
-ny
-Destination IP: 49.x.y.89 =E2=80=94 my home pfSense firewall in Singapore
+>> As a minimum change, increase the MDC clock to 2.5 MHz which matches
+> 
+> The prerequisite is that NETC system clock is 333MHz, so that you can get a
+> MDC clock rate of 2.5MHz (333/(2*66 + 1)). But unfortunately, not all NETC
+> versions have a 333MHz system clock. For example, LS1028A is 400MHz, so
+> the MDC rate will be 3MHz, which will be a problem.
+Yes, this is my concern.
 
-Subsequent hacking incident forensic investigation carried out by ChatGPT a=
-rtificial intelligence (AI) more or less confirmed that my Snort IPS had li=
-kely produced a false positive / false alarm.
-The forensic investigation started around 11.30 PM late at night on 29 Sep =
-2026 Tuesday and paused around 2.00 AM in the morning on 30 Sep 2026 Wednes=
-day (Singapore Time).
-
-As there is still an unexplained phenomenon, forensic investigation will co=
-ntinue once I have the free time.
-
-Regards,
-
-Mr. Turritopsis Dohrnii Teo En Ming
-Republic of Singapore
-30 Sep 2026 Wednesday 12.08 pm Singapore Time
-
-
-
+Are those clock which feed MDC clock available via clock framework on LS 
+? If so, we could calculate the divider based on those clock.
