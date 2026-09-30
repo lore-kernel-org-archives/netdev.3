@@ -1,133 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD6A4E324D;
-	Wed, 30 Sep 2026 14:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2651D3B634E;
+	Wed, 30 Sep 2026 14:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776817; cv=none; b=jJeMhGH2wt1BW2udMSuGWCMvWSXfqwGT7Et1PDkwGb2zN/7qygM1hijSs5ymT25lFDVtwaqvslusIkps+cgOj9hIfkY/2BkhjKMPlxUj2FXzH/J3v2dbrAp237ZMOSp6OHaAfoLWjRZ+L5KD9jPFm3vD7vNnq2bGlAJhKhCNEO0=
+	t=1790776874; cv=none; b=dtTGy59m0r3PFZNjQJVz3bBw9U6jP01toPezXzL7Vh1LMo/jpLsSNeH4N+Zf8wD+duZwpTDX10Dzz19MxuiPdyXpf0R+CdrJkao+E6Id70opVWpUOrCEr5fny+TWuhAQPn8Pl2J6Ye55irODnrT4PqWJikSS4JezASwjIbz/zMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776817; c=relaxed/simple;
-	bh=0Rt3eulJluPPJ1sHyYiqw+zHySZy2IsYUyUxc1GJm7w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SqgFT5QFVGRTT2H0tJPdI9JaiMXahoeovXq3ueWT0NtR1IoEUtt8cXFKzwkIcOSCkVtl9Jgsrz2WIOI1SHnbDBbDsKwGHFBQQW0RuxQIAVF6dLqJdt+QYM5ygJbVOpfOgLVJUaoE1y8pZU/YiBxd/ysc9TvP6Z8nk46CEcIbZBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5k68cvM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790776874; c=relaxed/simple;
+	bh=Nj9rD/39m04hvIh2+54l5897uaQ7OedDuJymjYcq4uE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mtkL+kU/X1cGr2CDuL8YozUzGwGSPqeAh4OQdu5U7FJ81k0MxSmIKJ9BUHHtf7zT+V0hxt9jI+wGGRRFlzRu88O4Evp3uPxESdeRpcNemPvS01U3iYy9sp0DhDy/8AVEbApnW+sFW/sRGJvvQRBI2vpVFIF0EL7Z9l2aQLZM/Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WHlNUV/R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Xbllk66O; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5k68cvM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97C71F00898;
-	Wed, 30 Sep 2026 14:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790776802;
-	bh=ZbA0QkGzOozlt+78D8aHv1h3LYCa9yiegRCU5V+Vb+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c5k68cvMq3NX1y0ReHV2Obsc6iZ9Qdnp1m7aLqp4+OAmLwPb9YCEWiaeXSyYBzmcP
-	 qy03zFMcqOOi7jICgtNqzrFvtSSbgGbseCWVGjyJ+teQEFMDdOsx2rnn4udtR1zLoM
-	 PPpVyYuKne965FEI5OSMlLXDLp9sPNvHWyAnhMO5YndWYOWhcwbEJWLNlII80E0wm1
-	 6L99RrOBQfx+H0RMXJKbjmN3bV2AVS6f2NE4u9kV4xR1Hs+DQ37IbfJZQ5biWRWyB4
-	 GqtYYnnmkMKiHdM5Jm5rqok/MZ2Xzc4g+/z1Rp2bXmTRyJK7IOTV26tzhywW9AKL3l
-	 RzGX3Mt1NexAg==
-Date: Wed, 30 Sep 2026 16:59:57 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: shashank Jain <jain.sm@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Tal Gilboa <talgi@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] lib/dim: fix 32-bit overflow in dim_calc_stats()
- rates
-Message-ID: <20260930135957.GH3401365@unreal>
-References: <20260927051743.71460-1-jain.sm@gmail.com>
- <20260927051743.71460-2-jain.sm@gmail.com>
- <20260930084943.GB3401365@unreal>
- <CA+FWx=k7LbhYcA7CMDcQ1Wq5ysjKqc1R=9HT=Q9Z0CQLVp6NUQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WHlNUV/R";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Xbllk66O"
+Message-ID: <218d4c1cf5f05cd6cc648c01f8a20ec66b95362c.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1790776857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=laEGmVJZvNVKahu8x3VIGJAJ2ykpNiay6kRgzzv/wCo=;
+	b=WHlNUV/R4hXsWOPE2js82WnoXS8tbZaYSBz1c+SIeADxtatESIGSuNowqfShomYDWuSQ40
+	wge/0fK/vHDtR2/8PHgMjvBJQe+toRvo1FssGk6MTjvMy5CJ0Qv+iPRMuori2k+3Dj3GOi
+	MFr4gWSl4PyKIcA1o/3FiqQoK0jGWlB4dDFS2tsMvjjQdHonA8RW2u52yNZEHlFD2Tuvgv
+	pHBp+6pUVEnCSKKZCjnLb/YQb3q/HSVC6axLmdbo4XnfGUPJAOm8LnlAr1MfxtafYkIEPr
+	xawKGwMp+w+dXhNtB04edeF2TAioxiscDg6h0zWUwlu4ZwKcYMCwfogsG67bqw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1790776857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=laEGmVJZvNVKahu8x3VIGJAJ2ykpNiay6kRgzzv/wCo=;
+	b=Xbllk66OjXN0ePb3Tc6Nrmq71RrjAosY+2PGeEx6KBo59ORu9b/39X+lfyqf6wMgrbTtAF
+	vLC+VAkgOXEpz8CQ==
+Subject: Re: [PATCH net-next v3 2/8] dt-bindings: net: Add SoC-e SWIP MDIO
+ controller
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Wed, 30 Sep 2026 16:00:56 +0200
+In-Reply-To: <e5aa5cd8-e805-47d3-a105-07bf1b9eb9b8@lunn.ch>
+References: 
+	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-2-ddebafcb9ba7@linutronix.de>
+	 <e5aa5cd8-e805-47d3-a105-07bf1b9eb9b8@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+FWx=k7LbhYcA7CMDcQ1Wq5ysjKqc1R=9HT=Q9Z0CQLVp6NUQ@mail.gmail.com>
 
-On Wed, Sep 30, 2026 at 02:58:37PM +0530, shashank Jain wrote:
-> > How does this 32-bit overflow differ from the overflow that can also occur on
-> > 64-bit systems in `nbytes * USEC_PER_MSEC`?
-> 
-> On 64-bit the multiplication itself cannot overflow. nbytes (like npkts
-> and ncomps) is a u32, and USEC_PER_MSEC is 1000L, so the product is
-> computed in a 64-bit long and is at most (2^32 - 1) * 1000, about
-> 4.3 * 10^12 (42 bits). DIV_ROUND_UP() adds at most delta_us - 1 to that,
-> which also fits. So on 64-bit the product is always exact.
-> 
-> On 32-bit the same product is computed in a 32-bit long and wraps once
-> nbytes exceeds 4294967, i.e. about 4.3 MB in one DIM window. That is
-> reached at normal line rates, which is what the patch fixes. With the
-> u64 cast and DIV_ROUND_UP_ULL() the 32-bit results are the same as on
-> 64-bit.
-> 
-> There are two other limits, but they apply to 32-bit and 64-bit alike
-> and the patch does not change them:
-> 
-> - The counters in struct dim_sample are u32 and BIT_GAP() takes the
->   difference modulo 2^32, so a window that carries 4 GiB or more is
->   already undercounted before the multiplication. With 64 events per
->   window that needs a very long window at very high rates (for example
->   about 86 ms at 400 Gbit/s).
-> 
-> - The rates are stored in int fields of struct dim_stats. bpms is bytes
->   per millisecond, so it only exceeds INT_MAX above 2^31 bytes/ms,
->   about 17 Tbit/s.
-> 
-> I can add a sentence to the changelog saying that the 64-bit product
-> cannot overflow, if you think that helps.
+On Sat, 2026-09-26 at 00:55 +0200, Andrew Lunn wrote:
+> > The controller exposes separate register regions for transaction data
+> > and for the shared transaction control and external bus selector
+> > register.
+>=20
+> > +examples:
+> > +  - |
+> > +    mdio@204 {
+> > +        compatible =3D "soce,swip-mdio-23-02";
+> > +        reg =3D <0x204 0xc>, <0x200 0x4>;
+>=20
+> At least in the example, they are not separate?
 
-There is no need.
+Not separate regions but registers...
+I'm obviously bad at documenting things.
 
-Thanks
+The current information in the commit message is misleading and
+irrelevant. Looking at the bot's feedback, it's at the same time not
+clear enough yet that the mdio controller part is mapped within the
+switch memory and can't be used separately from it.
 
-> 
-> Thanks,
-> Shashank
-> 
-> On Wed, Sep 30, 2026 at 2:19 PM Leon Romanovsky <leon@kernel.org> wrote:
-> >
-> > On Sun, Sep 27, 2026 at 10:47:42AM +0530, Shashank Mohan Jain wrote:
-> > > dim_calc_stats() computes the per-millisecond rates as
-> > >
-> > >       DIV_ROUND_UP(nbytes * USEC_PER_MSEC, delta_us)
-> > >
-> > > where nbytes is a u32 and USEC_PER_MSEC is 1000L. On 64-bit the product
-> > > is done in 64-bit long arithmetic, but on 32-bit architectures long is
-> > > 32 bits wide and the product wraps as soon as a measurement window
-> > > carries more than 4294967 bytes (about 4.3 MB). The same applies to the
-> > > packet and completion counts, although those need more than 4.29
-> > > million packets or completions per window.
-> > >
-> > > A DIM window spans DIM_NEVENTS (64) events. Drivers count events per
-> > > interrupt or per NAPI poll, so under sustained load a window can easily
-> > > carry more than 4.3 MB: 64 full NAPI polls of 64 MTU-sized frames are
-> > > already 6.2 MB, and drivers such as mtk_eth_soc count one event per
-> > > interrupt while NAPI keeps polling with the interrupt masked. On 32-bit
-> > > users of the library (for example mtk_eth_soc on MT7621, bcmgenet and
-> > > bcmsysport on 32-bit ARM, or virtio_net in a 32-bit guest) bpms then
-> > > becomes the product modulo 2^32 divided by the window length, and
-> > > net_dim_stats_compare() makes its BETTER/WORSE decisions on a value
-> > > that has little to do with the real throughput.
-> > >
-> > > For example, a 1 Gbit/s link at line rate that moves 5 MB in a 40 ms
-> > > window gives bpms = 125000 on 64-bit but 17626 on 32-bit, and 5 million
-> > > packets in 2 s gives ppms = 353 instead of 2500.
-> > >
-> > > Widen the products to 64 bits and divide with DIV_ROUND_UP_ULL(). The
-> > > results are unchanged on 64-bit.
-> >
-> > How does this 32-bit overflow differ from the overflow that can also occur on
-> > 64-bit systems in `nbytes * USEC_PER_MSEC`?
-> >
-> > Thanks
+I will update the commit message to something like this:
+Add a binding for the MDIO controller integrated into SoC-e SWIP
+Ethernet switch IP cores.
+The controller shares the memory of the synthesized switch IP core and
+cannot be used independently.
+
+>=20
+> =C2=A0=C2=A0=C2=A0Andrew
+
+Thanks,
+Vasilij
