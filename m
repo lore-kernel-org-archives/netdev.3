@@ -1,37 +1,38 @@
 Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C185B4E9C24
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC44C4FD26F;
+	Wed, 30 Sep 2026 14:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790779603; cv=none; b=t9i23oz2na26TCQKyudYgPwlFadvUDSkj+3ey+IRmrCeWsmYX/cQ1OWMYXw9ZssuDKzD0O5vIAafAyw1jyiCsO/xi/rLHzxYq5/GLFzVB2tRElwO6bWETKderPdPprfGCT2NhaXt2akv/jqBE6bmAYAvCuoVPdW37gkvdqn7l4s=
+	t=1790779606; cv=none; b=eTKIvwBgabH6RkNTyMwVFqtEdq0szD/rkxLv1Cz+U7ALl3UoC6ZGSTVtssiPrlbgVFL82vPMFP3Vf3BSfITDvMbkPAHl13KmglwFZUV3EPgV4G3LlGdxBBpB/7FIIGsEKHP3eNyzmLSHGTxm/2eogO3om2wiewshhjLk6gbiDkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790779603; c=relaxed/simple;
-	bh=DCAHREkaN7ATO33xggTvPkRc+Lqr0UcH/w7mai3dQHE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rdHDK2LU65dDjUmcCtRbmLrasdTnkEtUYOrQfwopRJkIw/VgTCz1Dr5K4YRRHJvPZKn7l5q5GLJg9hHAPrwJd7PiJ9nV1c2273c1dbdcSEjk+LalnJ1/FCMp0IHbcaKadnHhFuaFbI9xQZAaWq1SWvEuf5WFQvArt+9yoMK+ST0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=Al+E7FRX; arc=none smtp.client-ip=51.159.188.251
+	s=arc-20240116; t=1790779606; c=relaxed/simple;
+	bh=Gk2KmIM5HVHotjadVdw6XjNAUVYMQ7BHMns73y9zOcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Va1jr+yXgLx2l6SH9QTrVacfty74V1xWKd61yCelKEG+NWCWkleNrrAhvQCQ7TkdfmgIuuy5V7NwQifdTRLhSAHjXFc4pRuFORR56ACbBYO4PHnHi62UTQfGwAG/IrXSpG1x2pMgwUAi5ZH2QB5aweLCSFvl1j/cm8bgkOoBVSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=SxT29RnQ; arc=none smtp.client-ip=51.159.188.251
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="Al+E7FRX"
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="SxT29RnQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=6KQ80bAqdkgYRgyc1g8ERSxxYHxzJvPYa7a68Tuq18E=; b=Al+E7FRXlxkAS8ZbN70HELBt1I
-	FbE/pf8qbyzpk63XYosR5dZqxjD7FhT5TEiEzjKgkkG7Wu6EnGgPkjzNqOq7mAx06K/SFXAoRn8NP
-	50uBRUMytHMKpSNrlQ81hK1UrGftS6WjtOsIeE/nGI17N3SI2CmrZmLTvIVY5EDewDApTPPvZH7QT
-	qln7kyN/5bPT3xnbr2jNWiJHN82WXOQxkWfHJ2SdSA8qFyl18y/9cxnw8Ze1/amKUhvU6JyoVYalp
-	fUN9zMVQ1Kv77V9OyPyqkar0Jt9AhHeuak+CpMyWByWOcEgiSch+jtDo/mZIWVDh7mfREyMQiiL/b
-	b+WfOr9Q==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=5S00ri3B76HtSzx2LYGc3AjujUsHHk4tkIRT7/LJzYc=; b=SxT29RnQ12aMAPY5sG2wohNgFD
+	i6PdamqxD990671MEr8GbvDJGyP8W0ygnmecjb/eoJemDwYqAGU8Zg/ro0CGOAB6MIjn1RvcIJwxs
+	RVhmuvHKEmat/+QTU/EEuLQPcnNirT++prcPgjiG4EBja8V7N7sAjFUWq84gmsSoyd+qyyX+8UKLH
+	yzeR+PwMOofSugs3i9MksrYWOnpcjBBV0WE5Dqstf7aE9vMUgCCBcMt/hbDfQb+U8shGxo73NO4hx
+	hqegwGnTOLzkYS+9jy4vj4hBGX1m5y+xOlNeR4qe0KZmCqVqVQ7PCT5jn+OvdY7+TyV2avKoAGm1C
+	H3X5nlBg==;
 Received: from [151.115.150.205] (port=44742 helo=gepetto..)
 	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xBvZp-00000005QLT-0s7y;
-	Wed, 30 Sep 2026 16:46:30 +0200
+	id 1xBvZr-00000005QLT-0aLP;
+	Wed, 30 Sep 2026 16:46:32 +0200
 From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
 To: Steffen Klassert <steffen.klassert@secunet.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>
@@ -43,11 +44,14 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Mark Bloch <mbloch@nvidia.com>,
 	Boris Pismenny <borisp@nvidia.com>,
 	netdev@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH ipsec 0/7] xfrm: fix ESP IV generation and ESN authentication
-Date: Wed, 30 Sep 2026 14:45:17 +0000
-Message-ID: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH ipsec 2/7] xfrm: esp4: use the current sequence number for the IV
+Date: Wed, 30 Sep 2026 14:45:19 +0000
+Message-ID: <20260930144523.435271-4-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,59 +71,55 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Hello,
+When a GSO packet is split in software for IPv4 ESP,
+validate_xmit_xfrm() calls esp_xmit() for each segment. These
+segments have XFRM_GSO_SEGMENT set, but after the split, skb_is_gso()
+returns false for each skb, so each call increments xo->seq.low by one
+after writing the ESP sequence number.
 
-This series fixes nonce reuse in AES-GCM and ESN authentication errors
-in the IPv4 and IPv6 ESP offload paths:
-* 1/7 and 2/7: Save the current sequence number before incrementing it,
-               so that GCM IV construction prevents nonce reuse,
-* 3/7: Use the current sequence for software AAD and hardware offload,
-* 4/7: Give each early GSO segment a private secpath,
-* 5/7: Use the packet sequence directly for mlx5 IV generation,
-* 6/7: Segment untrusted GSO packets before allocating sequence numbers,
-* 7/7: Keep the sequence counter unchanged after full ESN overflow.
+The low bits are saved in seq before the increment, but esp.seqno is
+set afterwards, using the saved low bits and the high bits from
+xo->seq.hi.
 
-Note that triggering the bug fixed by 7/7 is impractical: it requires
-processing about 2^64 packets under a single key. Yet, I still believe
-it's cleaner to fix it.
+When encryption is done in software with ESN enabled, the segment at
+(H, 0xffffffff) uses (H+1, 0xffffffff) to generate the AES-GCM IV
+because xo->seq.hi has already been incremented when the low bits
+wrapped. One full 32-bit cycle later, if the packet at
+(H+1, 0xffffffff) on the same SA is non-GSO, it generates the same IV.
 
-On the crypto side, as a reminder, reusing a nonce under the same GCM
-key is catastrophic for security: it exposes the XOR of the plaintexts
-and can reveal GCM authentication key, which opens the possibilty for
-an adversary to forge ciphertexts without recovering the AES key.
+Move the assignment to esp.seqno before xo->seq is advanced. This
+saves H before the wrap increments xo->seq.hi to H+1, so the segment
+at (H, 0xffffffff) generates its IV from (H, 0xffffffff).
 
-This series combines and extends these two individual reports:
-* https://lore.kernel.org/all/20260925095105.446269-2-Jeremy.Jean@oss.cyber.gouv.fr/
-* https://lore.kernel.org/all/20260925095128.446450-2-Jeremy.Jean@oss.cyber.gouv.fr/
-
-Recent discussion with Sabrina Dubroca may also be of interest:
-https://lore.kernel.org/all/c443bad568f4e03d05b848b1b245707d@oss.cyber.gouv.fr/T/#u
-
-Regards,
-Jérémy
-
+Fixes: 4b549ccce941 ("xfrm: replay: Fix ESN wrap around for GSO")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 ---
+ net/ipv4/esp4_offload.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Jérémy Jean (7):
-  xfrm: esp6: use the current sequence number for the IV
-  xfrm: esp4: use the current sequence number for the IV
-  xfrm: esp: use the current sequence number for AAD and offload
-  xfrm: prevent AES-GCM nonce reuse after early GSO
-  net/mlx5e: Use the packet sequence number for the IPsec IV
-  xfrm: segment untrusted GSO packets before sequence allocation
-  xfrm: leave the sequence counter unchanged on ESN overflow
-
- .../mellanox/mlx5/core/en_accel/ipsec_rxtx.c       | 12 +-----------
- net/ipv4/esp4.c                                    | 13 ++++---------
- net/ipv4/esp4_offload.c                            |  7 +++++--
- net/ipv6/esp6.c                                    | 13 ++++---------
- net/ipv6/esp6_offload.c                            |  7 +++++--
- net/xfrm/xfrm_output.c                             | 14 ++++++++++++--
- net/xfrm/xfrm_replay.c                             |  1 -
- 7 files changed, 31 insertions(+), 36 deletions(-)
-
-
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index abd77162f5e7..3a0aafe991f4 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -316,6 +316,7 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
+ 	}
+ 
+ 	seq = xo->seq.low;
++	esp.seqno = cpu_to_be64(seq + ((u64)xo->seq.hi << 32));
+ 
+ 	esph = esp.esph;
+ 	esph->spi = x->id.spi;
+@@ -334,8 +335,6 @@ static int esp_xmit(struct xfrm_state *x, struct sk_buff *skb,  netdev_features_
+ 	if (xo->seq.low < seq)
+ 		xo->seq.hi++;
+ 
+-	esp.seqno = cpu_to_be64(seq + ((u64)xo->seq.hi << 32));
+-
+ 	if (hw_offload && encap_type == UDP_ENCAP_ESPINUDP) {
+ 		/* In the XFRM stack, the encapsulation protocol is set to iphdr->protocol by
+ 		 * setting *skb_mac_header(skb) (see esp_output_udp_encap()) where skb->mac_header
 -- 
 2.47.3
 
