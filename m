@@ -1,213 +1,135 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010030.outbound.protection.outlook.com [40.93.198.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8C53F12E1;
-	Wed, 30 Sep 2026 12:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283FA2E739C
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.231
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773107; cv=fail; b=XA0hmiteWWt/jbv4qOaa8wDoETF+q81UGWDi9NRXlVp6OAQxPBla7sRI5UPXBQvHefq+PGje0JP5Lui3084Cpu5ML5I9sEB6IobhpdmkvIi0sTbiUdCbtuHNp2i0RheHRK4vYueXAO/HOYyOaPHeR2vk+n1yNZN5WLPVp0d5P1Q=
+	t=1790773120; cv=pass; b=l4bUAkjFZGAS+ccunVK8CRYaZv4NUMiH+b3si9fbjsS6KHMkQafaqo3eHQ3K6muAsF40pJHvkomYDWltL2Y+TELH9E1Rcv87h46lDJV2A7QqdoiUoislt3Ws1fzy1qTxo2JqUCpVv+smQPj7dQCTFBjmXMtYyvyxkijfcz5AtbI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773107; c=relaxed/simple;
-	bh=nmdvAW475QOFj41fXBS9WHD28ffywjbwqhGKNPX0BMY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DBe25SZR5nUhuC9aFgFHorFhSRwUW1Zsxpf1YsUDGkATwvQUdAUF2EqnlnHcy82DqRBVOgs8EN0IXVS6d/Au4Upg+7Fh5agjCI57gVA6ihD8UPCS0vJT1lS3YjPTwhl7TmmKL12QoPx0zi9EHyOq6IGEhdOYYxN1EPHulRBNkxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lKJAF/0D; arc=fail smtp.client-ip=40.93.198.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1790773120; c=relaxed/simple;
+	bh=T9mM2MOrl1vYGVqgK2olZmdiNcgVUiSe/7K9bejIraM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LV+/dIkVCzusXXZ7/MviNKBAGHU6gEN8I4A3Jokear/y31H59lB6TKRDBGH7l6ebr42z65fYM2Xu90/SVmHaJkrxlBpyWwIZ7ILOgAawI4yqC/rNcVzghVbnZY17x6ntWdte4SNqB/RIsOvRnQV6u9GN41o2RnXMvcc+yL+Iou0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HNaVsBiU; arc=pass smtp.client-ip=74.125.230.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lKJAF/0D"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wCMu0dbCygLZd3fGJdX/ZvODSQf/35U0MPuRaNEdxDwzdHhpzFhIkgbCoclgkiHxCYdXkegkKwkT7d62Pxgm7ljWfc5Ha/ii0tEYeHpg5LrGm6njliyhXVBj5e0WxYPu2EaleA8hv4rGrTa1f8c7b91k4zTO+HomGXEAPflAusLI7u87W8zcWPIEdSEWLyfc37m41thidLcWhkzMc4Cc6hNwb3aTWcLfJG6yCYM+fRZqKcIX/pqKOdQIHyUCB5VDb2ASUkevITOuu4FmxShdHunDOhp0zBsb0yjjDBjai5WTy9miHalODYiXZuwB3FTiY/aTLgxH0JQJtzWpbmbUEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nM732EWyXjY1uo4zR8fT9qobuujQOwzWvrmdqYRngvk=;
- b=tozH92KTgUvSf+YHc6UJBKA8ngFimIo9uvJnoSAE2PIWiVWoxJdkqn/Z3vS3hrZTKH/UT4YLy1Vses/MnVSTuNGMY+Hkt+sON6sjxn1dnAXSjALrTiJbtjjn3DDVwzb6HDGG6IWbpGOs4g4yoxnCz0Md9nRgpjxlIhZgmhzwTXgvW2EPampk0F/T8u7ZFBL8xWlXxZr1/mHP5ghMofzI24+kQxHCDisGt76F+zDNnSSFPoFwOSPd4fLINB69d3SE23g8tawMCa96TaJ0C3G8rktMw81g761Fb1uCoxIijWoy+Fy8cLxMt3eMtLHJnB9izbNqfLRCGh+GyZErZphdUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nM732EWyXjY1uo4zR8fT9qobuujQOwzWvrmdqYRngvk=;
- b=lKJAF/0DLwJAivE9S0NGS6pb6+a8uLSze5/qwXDtyIzaUAaHRfN+6cdV2Geqoe+wjY0WNO61Lr2caKfXrWT0ael5iwYNZXBkiJaplyEPgPvEulYWQFCLHh8y7T379vipxL527OoEe5AbLcMBnzjLDL1HJWA99szYfjWqyqFlUjzjmYFbNa6f5pAnCfCRPDG7pTguG785dcSQuHKutGkeAq893xkoSD8CTPHQRmwMFEd8Md0orpl/me5RRdJ0I/fyoh6YNY0770NvDNMOWcKm/gFF/a9wgOGoMGgl7e4JCnuth1EvpYSOFrJYymHXoUrFANPlqsr/QXKhvPBfZv/ryg==
-Received: from IA1P220CA0018.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:464::9)
- by LV0PR12MB259608.namprd12.prod.outlook.com (2603:10b6:408:3ef::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
- 2026 12:58:15 +0000
-Received: from BN1PEPF0001806E.namprd04.prod.outlook.com
- (2603:10b6:208:464:cafe::77) by IA1P220CA0018.outlook.office365.com
- (2603:10b6:208:464::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.16 via Frontend Transport; Wed,
- 30 Sep 2026 12:58:15 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN1PEPF0001806E.mail.protection.outlook.com (10.167.245.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 12:58:14 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
- 2026 05:57:57 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 05:57:56 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Wed, 30 Sep 2026 05:57:53 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Carolina Jubran <cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>, "open
- list" <linux-kernel@vger.kernel.org>, Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "Mark
- Bloch" <mbloch@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Dragos
- Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH net-next 0/5] net/mlx5: Introduce mlx5_nodnic, a driver for DRAM-less NVIDIA Mellanox NIC functions
-Date: Wed, 30 Sep 2026 15:57:03 +0300
-Message-ID: <20260930125708.144767-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HNaVsBiU"
+Received: by mail-qk2-f39.google.com with SMTP id d75a77b69052e-5332de6f6d4so16094231cf.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:58:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790773109; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mLkNBkKxoNJg2M68S2uocP9rec/7myb3mdAHu1wOW6B/BhiJFTVn9ze2Y41oiNWLXV
+         O2GcwM4uZk12cRfq7LxnljMQd47BXKUEhk56aMM1OuFBioy6IY92rg+U0SvCUdhwvkXP
+         n+LwEXxVWBk10SwSbhb3y3d9lPCWqGRkgaiBR5QHWOTE4n7aVivAvOwmBuGwZxuTFwNV
+         MnT9hrcFeaizyZQMW+MVEv1uyHMB4PapNXUswP+owpnABpKNJGVbgsb4Wq86RPl++p9C
+         eVjwx7NRsWmFBWRnl1gRSAIvhj0SQXeM3ecAVM5MpHtkDjR7NwXVXtqENbZ69APN2Bet
+         NJCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
+        fh=oPwbYhRrdgU1KQvaagjda+5NmB8FIf4BKRM1n4QRhMI=;
+        b=Iyxzj0ry6jx1u9M+SRfBIyM/Qk9J1HTdYxi1Mzh0Oyp6RSeP6tyZRVh3F7tyOGt5HR
+         aMiCsAd+fn+BdsNBg+PsDwEJAJila4JhLkOgx91pjNWgxuLxOvs30TRMGQbKkF8nBuwf
+         aODqIfICfI1FK/FcOQhpTX6tfn20l/1m4neRah/H1ZJMP5YVdhW8FJ1ftPVIb4EKe9ml
+         xuhyGxa2wbI5lVivscKiNW/RrQRiiWSRuJvHN7cipDKnaAGfLVdWM8cuZdakVfXJPd0p
+         cWqXFzd9c9hykRCpgwJHS+3UwKxpH8yaFVTfpMaW0Xhyfpn/LRHpwgcq5nEqDsmhuFkm
+         HxkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790773109; x=1791377909; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
+        b=HNaVsBiUKa+G/RJkmY14U/TdFl2anS71RaEHC1+P++wYlN8qI9hcPgEnQB0+Q90FhY
+         Ft7962f0qxvMCqpi4/zXYzQm3MPZEy7ooPaY3EZhQbt6ZucNF5p/ZXhkVWDVkRUqFS/5
+         7HCF5NjKgQ05IO6nyJ5/v0vY85DISW/BaNDSNC9PjtHua77mVauBcT51qlfpbi1/EmJF
+         EO6BwaE+ry5ML9GhV4upf8kg4o2/mylxPOuDrPd1iCs+WARYxTMgCrjGOvjxv531gG5g
+         Hp5zPp4Lr4TK8k+8Ib/GpZb33cwdBPoKpj9KdcSUo8A+i2NmDpBavCBW/pLF70d3c8m7
+         k+tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790773109; x=1791377909;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qPOuFroTrtWpw6MUmzkNEUwgYkUHCYkGSZvYe8PwGd4=;
+        b=2e6h+s6XMZEYPXezM9KsXHTBZoZMwU+HLblQminS/2bnzVxxNSg+FVhQrwl/+Pdjvu
+         3L6OwYJeDKZ7+cWqItA5GFh6QaemYagdBZUW/5CgUZ7NvBANG3yX2bGQr5WOrjiTkBSP
+         5J6rDO4ZQ2ogzkTwLrg/3vbgf70CMkTw+vVs/jIFnqZ+gS6LLl68yLN/jhFLFVTa3K12
+         KfIQNnDpOifwYllb0U6YnSiVFKhh9kAlHAiqE5h48nXEay6ioLwuIdwsyrGe3f9JGncB
+         AxtsKsCk7WMPgwtQUNRL7HOHiHxFfyndtdWK/0LQvkg+BkMa7gJyS5+UJ4K0EklmEh3R
+         lIIA==
+X-Forwarded-Encrypted: i=1; AKwUvBzKTlWM+FyglAxTATy9CfiBBfqFa5GSgnqrxoZCZ1tSj64j+td6G85zNv/6+Gk9GX0LSVBEryE=@vger.kernel.org
+X-Gm-Message-State: AFuF++msmn6NmHpopZ3hzttf38KwuDZvpvIy1fiiEUTx13yLUxrMbl9P
+	pTu/JWaJM7JKNV7bOHexkLvaitAllOP/3FG7xOGKlqyPuJABdAk+AxDQQXyiruzD1II+UIclJsv
+	FdE0qWX5BztWG+XpVrTBQVMe7xGJ3Zr1TDneFOneZ
+X-Gm-Gg: AYBFou0YNGS6dgEp8y4Ix6htuGlR8tlswRvK+TREnBmdmmC+RDsOKaqtCmyyb/FTgT7
+	5xpoQD1p+5CRdfrDBXK5iDmY+IFzpuunJHobiKk1aj2eJ7QzbvpGzaCneFpQ2s3bLi9J5xv0Uim
+	m/NX5ao/6HlrTwKnMLH162qhuJXpL0R0Neyt1UzkG8iO4RpizNNgJ3qWPzjgQorwkUdcd96aqGn
+	+gen8pDUORwMjf6/okcGoeNNHAdl3kkKgp0KfOpFj6+/4eanSi6TdRuwik9s6ulvST5f9FIvFwf
+	TGYLSc0KEyRsB/t2scw6WULjo0p8D0vSQhSnHHgpS9Ok8prE3lADbYLOnAB08LYUxcp5Fd0XDa+
+	sDd6tKZ4m94w2PYbm1JImBpGhk7Nrov/d4HyekEAyd24X96hauASB4MVkd6H2japXBJLV
+X-Received: by 2002:a05:622a:4d09:b0:530:e5f8:7f5b with SMTP id
+ d75a77b69052e-5337453fcf5mr21909201cf.3.1790773104745; Wed, 30 Sep 2026
+ 05:58:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0001806E:EE_|LV0PR12MB259608:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58d2e7ad-eadf-492f-e8cd-08df1ef27db5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|30052699003|1800799024|82310400026|376014|36860700016|18002099003|3023799007|6133799003|10067099003|260925022911599003|260925021911599003|5023799004|260925021311599003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	FF7sLsJ1v5J8x6ST4DR6Xpb5n1r8IQZ1OS4DlP/WbqTJwqFi1L4tM/rm7OKInov90vz2hhJhVsVD6AXFbmm6Kz08WU8apyJWUz4DJ2bzheSqnf5wtLviCPDkvVsV7qbaBBiYgLxFRZNHfwRgYRS2Myjx/WpLvTBc93BRg4hns7ZeYcBAcyiGjeicZNQqH0ZZj1tzMBsYu/35DS23WaZnIXL2S2mguBSrr5yPAjUaogbQBsQj3AyIFh4HaFQJcyaC/otqv4Q/m80PJLDbhlUQ6HdrCoECNYUHIiEmi50dii9PXf3ul8S6jeFcS1MYXTzXm+AdWfipzB1VmuZQn6BqQZ8V+K4QcCHQiVYxBeqDb7NRFljkqc8T521asB4OjUNndl7L71r6THD+SiWnEZ4WyxpWHFAC80G/zNwQLFVndnXkhk5rRd284l8oJiP8NNFjPJd4hDQx2qvJvtLl90CLXo/5R94YW880d2fKm6wrgpF9GDYy4MNgR92KZZoldSDwRDmb7kwQNyBTXfFO5Dn9yx+plepsL35/RYxtsQfE+gPn8m6PvV+WHJWgbGhmnX8yIRTZ9lj4X8y5mNINXWGY0XDO+UTmTCraB+BhmwM411ScKskoWlfnjooWvB8x6/cuhIQbJxWuLjajqBLOHNAHmxrJKyuT5sx4A+PiRPqFurcWBuHukVs68m0KgoUw7YjZj2x4a5cw6fJlKt3OgdMZQg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(30052699003)(1800799024)(82310400026)(376014)(36860700016)(18002099003)(3023799007)(6133799003)(10067099003)(260925022911599003)(260925021911599003)(5023799004)(260925021311599003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	biJUGrfmVU6TdEr+cES0rHqjTosDTLkp2XGbAFKDLDmdkKFETAxBi2LFp7neIX+G2m7RvEeWSkPOSVHYwddlcvYsZWFDYpkNeh16oUhirYU29nOveuH51zKcpFTFRHiTqvHspurB6fUMG85FCGdmz/ZNQVNoN3k8jODz8OX9mDvMO8Nafn6FobEXnQfhXQQOGzsih7OtNSXIkAQVhvcPDEbXdfGlloi2HoHP1gleFjzKH+8gA3o9GXGUUyJ4Cg7LxlG9aZ8foPJ3eWWZgmm5dou75zzWfssTZoZADhNZtOR4WYTWUl7m/u7e9oe7tV1KKPp+f19UzeR3W8mhL2sLeFovFxTP5bKFYTx7+viDf+6ocj7cYfRwtulBPNpFZ7LwqKgB0SAIa9FMEVJ5m+3zogOt7GXz5ZHqJq1vUt+bZ1WMQ5eEkX1gyBcqcY2K9w/7
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 12:58:14.8057
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58d2e7ad-eadf-492f-e8cd-08df1ef27db5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0001806E.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR12MB259608
+References: <20260929131247.401104-1-edumazet@kernel.org> <20260929131247.401104-3-edumazet@kernel.org>
+ <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org>
+In-Reply-To: <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 30 Sep 2026 14:58:13 +0200
+X-Gm-Features: AclHuK8rBuh5PIDERxjyAl2jHeqyFg_MyQD2c05KOkjJVJZ9ucoR6668qTFE_M4
+Message-ID: <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ipv4: reserve one IP ID per segment for UDP GSO packets
+To: David Ahern <dsahern@kernel.org>
+Cc: Eric Dumazet <edumazet@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Sep 30, 2026 at 2:29=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 9/29/26 8:12 AM, Eric Dumazet wrote:
+> > @@ -1464,7 +1465,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
+> >       iph->ttl =3D ttl;
+> >       iph->protocol =3D sk->sk_protocol;
+> >       ip_copy_addrs(iph, fl4);
+> > -     ip_select_ident(net, skb, sk);
+> > +
+> > +     /* UDP GSO packets are segmented later (see udp_send_skb()):
+> > +      * reserve one IP ID per segment.
+> > +      */
+> > +     segs =3D 1;
+> > +     if (cork->gso_size) {
+> > +             int datalen =3D skb->len - skb_transport_offset(skb) -
+> > +                           sizeof(struct udphdr);
+>
+> hard coding a specific transport header in L3 code is crossing layers.
+>
 
-This series by Shahar introduces mlx5_nodnic, a Linux driver for the
-NODNIC (No-DRAM NIC) hardware interface present in Mellanox/NVIDIA
-ConnectX-family ASICs since 2015.
+Only UDP sets cork->gso_size, so this is UDP specific code in
+__ip_make_skb(), like the existing sk_is_tcp() case in the same
+function.
 
-NODNIC is a first-class hardware capability.
-It defines a lightweight NIC function intended for contexts where local
-DRAM is unavailable or too costly: embedded controllers, management
-planes, pre-boot environments, or any resource-constrained instantiation
-of a ConnectX NIC. The hardware sends and receives ordinary Ethernet
-frames via SQs, RQs and CQs. There is no encapsulation, no private
-protocol, and no FW interposition: packets are forwarded as standard
-Ethernet between whatever peers are connected to the function. The
-interface is documented in the HW spec and has been in production in
-non-Linux OS drivers for over a decade.
+I can make this explicit in v2 with:
 
-Where it is used today:
-- Embedded management controllers on ConnectX-class ASICs that need a
-  network path to the host without consuming a data-path PF.
-- Resource-constrained SoC integrations (no local DRAM) where a
-  minimal-footprint driver is required.
-- Pre-boot / early-OS environments (PXE, iSCSI boot) that need a NIC
-  without a full mlx5e stack.
-- BF4 management PFs (one concrete deployment): on BlueField-4 the
-  firmware exposes a NODNIC PF on the host side and a peer PF on the ARM
-  side, using standard vport forwarding to connect them. This provides
-  in-band Ethernet connectivity between the host and the DPU OS - SSH,
-  PXE, and any standard networking application work over it without any
-  special handling.
+if (cork->gso_size && sk_is_udp(sk)) {
 
-Design notes:
-- The driver is separate from mlx5e rather than a mode within it.
-  NODNIC uses PCI Vendor Specific Capability (VSC) for command
-  operations - reads and writes over PCI config space - instead of the
-  DMA-based command interface used by mlx5_core. This is what makes
-  NODNIC usable in environments without reliable DMA access, and it
-  makes the two command paths fundamentally incompatible. Folding this
-  into mlx5e would mean carrying a second command transport and a second
-  resource model through code that is already dense.
-- A single SQ, RQ and shared CQ are exposed per function, with two MSI-X
-  vectors: the data vector fires on CQEs and drives both TX and RX
-  completions, and the event vector notifies on port state changes.
-  This is the hardware's model, not a driver simplification.
-- The driver exposes a plain netdev with no private uAPI, no ioctls and
-  no vendor-specific configuration surface. Everything is driven through
-  standard netdev, ethtool and devlink interfaces.
-- The code lives under drivers/net/ethernet/mellanox/mlx5/nodnic/ and
-  shares no paths with mlx5e, keeping the footprint small and the blast
-  radius of changes contained.
+Selecting the IP ID from udp_send_skb() instead would either burn
+one extra IP ID per packet (50 % more for 2-segment GSO packets,
+making wraparound faster), or require __ip_make_skb() to leave
+iph->id unset for UDP GSO packets, with a simlar kayer violation concern.
 
-Regards,
-Tariq
-
-Shahar Shitrit (5):
-  net/mlx5: nodnic: Introduce the mlx5_nodnic driver
-  net/mlx5: nodnic: Implement data path
-  net/mlx5: nodnic: Add TX/RX statistics
-  net/mlx5: nodnic: Add ethtool driver info
-  net/mlx5: nodnic: Add health monitoring
-
- drivers/net/ethernet/mellanox/Kconfig         |    1 +
- drivers/net/ethernet/mellanox/Makefile        |    1 +
- .../net/ethernet/mellanox/mlx5/nodnic/Kconfig |   18 +
- .../ethernet/mellanox/mlx5/nodnic/Makefile    |    8 +
- .../net/ethernet/mellanox/mlx5/nodnic/en.c    |  263 ++++
- .../net/ethernet/mellanox/mlx5/nodnic/en.h    |  158 +++
- .../ethernet/mellanox/mlx5/nodnic/en_cfg.c    | 1107 +++++++++++++++++
- .../ethernet/mellanox/mlx5/nodnic/health.c    |  315 +++++
- .../net/ethernet/mellanox/mlx5/nodnic/main.c  |  876 +++++++++++++
- .../ethernet/mellanox/mlx5/nodnic/nodnic.h    |  105 ++
- .../mellanox/mlx5/nodnic/nodnic_ifc.h         |  318 +++++
- .../mellanox/mlx5/nodnic/nodnic_pci_vsc.c     |  418 +++++++
- .../mellanox/mlx5/nodnic/nodnic_pci_vsc.h     |   45 +
- .../net/ethernet/mellanox/mlx5/nodnic/rx.c    |  172 +++
- .../net/ethernet/mellanox/mlx5/nodnic/rx.h    |   25 +
- .../net/ethernet/mellanox/mlx5/nodnic/tx.c    |  230 ++++
- .../net/ethernet/mellanox/mlx5/nodnic/tx.h    |   61 +
- 17 files changed, 4121 insertions(+)
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/Kconfig
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/Makefile
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/en.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/health.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_ifc.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_pci_vsc.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_pci_vsc.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/rx.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/tx.h
-
-
-base-commit: 47a1446725732cd3996edf607e8739334bbf4d78
--- 
-2.44.0
-
+Would this be acceptable, or do you have another suggestion?
