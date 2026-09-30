@@ -1,66 +1,66 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D1A36F905
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FA446EF89
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790797249; cv=none; b=rri9/JtdmkXIdYSxzoQtByJ62RDePJVfAhScmgSW5wPBEP2NsAcnPd4Jk3KFdw5lOwfhBxf+SKBdb0tSnLjbyXsajFggkXVQgh56DBXLkbiTpjwX/ibzoTJ6hJG0xC6v9IXKvn1KZsHgAMGVlb5f1Tud5dL1ete5zHwBWeU6Kt0=
+	t=1790797259; cv=none; b=PxWV8QCZYpO/WYUFuq1v7eSm+92goUZNSvLsAhTV6WZQ2kxMITZzP1WKmh/FUo0hBI51t2jsO/D3ixSZ0ROSe0vAlR9aSD4h7qjCNd0NqzGvZS1XiKL8g3XhPJqpjJdl36OtwjGJexuO6JrMGixO2Xb7/QzCma/a3iX9su33Ru4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790797249; c=relaxed/simple;
-	bh=c9+cdIbmguF1QKIhrvWAWxypHMPuMHkHJU+LHWEfcnM=;
+	s=arc-20240116; t=1790797259; c=relaxed/simple;
+	bh=O53avsybSqLCUVS3wR7ALQAXf0BsK0Ds6tWuecZwmPQ=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Pdm4K0YeZA8UbPDF3xO63/harjbA5rs5Ok29Vqo4L19hW5tm0w5xBqGS3vozGl8HLfVwEBV8SlwexJWAL4IYcMMkFUVkKkysZqsccQQRrGnYPdMZwKchsJWsLWs/YcOOOj+bZ2taWEiIl9I6+2hKxuwlgPs79lRUbKkkgLerHTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TMQA5V54; arc=none smtp.client-ip=74.125.224.167
+	 MIME-Version:Content-Type; b=I066IU+neI5UvC9QxxiT7uFpQvn1kiCN1mU6lGlGOxVakdQTSCtYsgo75y5tjIh4jKysJWs80D5EW5pluRq56wX9RhyJnOaT+Ix6NjuVohfErHJccTzXcbDTEqiVTo9myDWm9MVPiJhl5JMAZ/+dGVdPUlzmmBGLPKdIe/gLOAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDeO1vb+; arc=none smtp.client-ip=74.125.224.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TMQA5V54"
-Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8aa75b338d6so34895237b3.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:40:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDeO1vb+"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-672ce86b21aso6493061d50.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:40:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790797247; x=1791402047; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790797257; x=1791402057; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=YGsPoFxXUhrYc8fuScloKU7y4IoA5xz/2/p0mwC9UHA=;
-        b=TMQA5V54bWoWERDnZZFh+jf3+UbVCKLGN9VLkWxcK/fmTDMxZ0lZhyUEEjroBiszUM
-         nE3Dl9132CAjbT6dTscTeX7u5kmu6+xvePitLa4jokbl3xLpZ4mfWFDI+Ia6IAzYok7z
-         UutHXasIeWXQ6LJbcxy5DgHkN15TWRNeRTZN/npb0+HoLlRHjIlAapmw66MWImGpDxsb
-         wPoLZ+rBCb9eyPCVyfOqXdYKXht2uU8yAPYkY6orFbnwmnPd4lJhz/ol+DLmAFjn44vc
-         eXQwP/AjVqQV9wm6l+bD87ljeaJ8QUucVFst82a04lhE4YrOkZusLicu7RAdJ6GGYBSo
-         P8+w==
+        bh=zysOGux/W9k28xJOl+6oo5Y9jPZ0WOdxDwCyuGbfiRo=;
+        b=lDeO1vb+ryIILDiwc1PPbR8H9LdV7RosHZmSqW6GA6MsT79SRyt0mVBj6tZOqM1sHQ
+         F8+OJu/1Zj1DaUlNNHeSpYsB8CYICmj9PmvpFzEZeiIm29p9Z2I/y1CxmC0z7X6f3Gh9
+         kZpKzNS3h22pxO1CMqi/jirrco4YA0L4VHEixPqC2Zqphe9a1U4R3DegEzaiZzhVhEWd
+         mu74QPuF13eD3bVqUnuG35SJlNd9c5tS5RFENWSY9CfF2r9eb7rNHJUpZo1kDC/PlOVp
+         C1K7RtHlWey9qtwou4RrpglKYN3DDpBN/mjTGKha252S5VC0MWN7AoNXIne2RaF5/rmK
+         95xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790797247; x=1791402047;
+        d=1e100.net; s=20260707; t=1790797257; x=1791402057;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YGsPoFxXUhrYc8fuScloKU7y4IoA5xz/2/p0mwC9UHA=;
-        b=fBmQfgvcpefPlnfr+P8hdQBpMKg0RG2I2oKPswS/mZsjgysU2ceJFwcx0VoPcL23Xq
-         /z8MLv2/UpDEaymsr2VIRp9aDILdcpRS5WiluAgeuWFM/22eZGwZxPGZ3SYYyYObZ7g5
-         mHCIxUJKOWkTe/H+LEtLFmTPoEx5q6cMF1vYHTAiA46FQLOBFkZI9TzD9bOdUT4r505a
-         Pm1aiLUms8EQRW8bESqDtnPGlOrBEvc4u7/BfzG08BxxDi9wPe2BbaHai3bAsmBYHah7
-         mY0btaoyZ99zNi32vlTEk+qjkxHSBcENth6BJzbmoo5unydHDVXHvgjqq6LHDP81MdO9
-         ivhA==
-X-Forwarded-Encrypted: i=1; AKwUvBwa4swXustXbW7zmpmWOA89RaNYUe2QufdY3RVuuulPP3Xyp70nze2j8kKlm3dWMSkt4BHtuEE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIJWSwapMlgBRvl+6sZZwjiuy+SPGblhCRHrsHgqb0IFq0GCkjY
-	385o5cJylVoVSERAFz42YM7C9+qj/eR4AmeUgnd9aY6jX1p2ANjbhTQd
-X-Gm-Gg: AYBFou2DQb/YPcwdJiOcuHQtOF3XEpPbZiGMV49BXR04i3SawseGMGNtbb1QgxkfmFY
-	kMRA9phT6634lt+9QND2N/NI+BBRYhcQ0KXMxFPhKLrh5CzD8oh85GPBYvqxaMtsLbpegmfMpbC
-	eEcvo/yFJnaqqmOlcJVMB3eoYmv8zd94V+6WQnDga0SXCl+2xdaw44ht9ND0r+RlKl8MM2BqAO+
-	mxbRBVmRWgKiLy/W+euoKijqv60+UCCQbO6wwKtZk2CfVwkjry+Prj2NZEP7FPfnJvEDVXXoHJZ
-	OyetKRuzFlnEsdJnr8JM/oU4VUbVJazo7uqKh2p65oHOOJMiyN4cd0IG1Jf4qgxUovKCZMUYsrc
-	3YW9CHtwJMAmTB98YAb/3nCZMRH43AgOvZbInf9iF+sr9dV32Dqx64lEECb0xE/UnGMbSUy/TLt
-	+jeBR+ZmBG+GH8v8v7SdU//AIP2AS37l60pdUI0Qpg8wa7iWzCWhHsuD7k9s+dZ0JIIY6LkstzS
-	Zq8VBIIE3yYag9n+MMlO4fK2R8szJNYDL8utfCH7yrGRZ5SNISd
-X-Received: by 2002:a05:690c:6d84:b0:8ab:3fe4:2e64 with SMTP id 00721157ae682-8ac90eb1f33mr13769627b3.8.1790797246692;
-        Wed, 30 Sep 2026 12:40:46 -0700 (PDT)
+        bh=zysOGux/W9k28xJOl+6oo5Y9jPZ0WOdxDwCyuGbfiRo=;
+        b=pypARWodcbe039SxWmJVDzJSHjOF8vM3GG64RpLU0CdnfyREubNMLIXWdc7uYIJEiJ
+         g0vjMuIEjfTW+0s1tXLp4zSmB7babPRz5uwOpBe6Ll95wescm2L8ekvZ3lFMgY4Ul44g
+         JKfqzUQgIZRROx50TD1A5B3DzumkcY2oPlntlPyUKK9Kr96OI7a4AKK3O9PkMCF7MNG7
+         bABGchtpBGi2zR7LXvFmFOOaunXnI+P/OKCEscYtWnz6cFh/EjiV0D6yteezFXxR7iKD
+         Ny1g99t49U/B7ho31ea28YoLjc2grdf70A4m/rVnF2X7vFVQUZDXs+vjlMwALNgg8cqD
+         8M/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBy/YKziB60B2PTBafU1MTbankXVg+Pn/HonRRRycBsUYPIHmVbvtqKlD32IikyI8JoSOL5+llw=@vger.kernel.org
+X-Gm-Message-State: AFuF++m7wrBSakP39v542r9oLEYvf/uT22lI73r2OVKy9USq08i1lLM5
+	EWoSfeL4VIwSismuAjvBQsxrq3yuaGa4I44NkiKm65HMyuU2Dmy8Kvrp
+X-Gm-Gg: AYBFou0oAxnA+rwdyNnDw8IDFKT5p1ttjkGw6iviMpf/GT2wxc/GcZtuYXI6u4wrZb0
+	HBGhENJRKN3TVNd6XgYKe3k0BnIR/8RL80oshvFsE3gUFfJtqmJkuDfoWAhHHxaWPyJIBfVjIhp
+	w2jFzyZaDepgabZ23aLxd97V+QiBmMR881WQr/kQrrrRAyK8IJJKkUQwqObCLgZhXveXpF94IAh
+	GR/UN9gptk3Fl9k/s7Mtm5l/feIwlLYuLpr+Wxzu0ve5fGtxpZa87kP6PWMOM2U1GXSrP0u79I2
+	VXk0Fj7J6shU8Z1glBQ1aqHAt8MbX3895LqQjyWZMQdy/scVk/OfR7o4pAmjAkzHyyXSl398MgV
+	8MqhdBcwYx3JNfH8AXJ7Wk7th/YuPRuVQuhiHSBO/3fKSnP3X8yVBPu4u6w+1MTK9qodOa9Oogy
+	tMe8wdV3TvcmzQdL2kHr29cvDVudbIJPSswEgyENiogLoUxFBmbFbi5SHZ5OCMeJDFzNsHAk9QK
+	edeNiZEpjYJkN3DLEZ6WYiwoYGQomgGTxNH3PHq+ADliH4lMcmM
+X-Received: by 2002:a05:690e:13cf:b0:675:49cf:9b4 with SMTP id 956f58d0204a3-676834ddcbcmr1156400d50.124.1790797257124;
+        Wed, 30 Sep 2026 12:40:57 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8acdab52bb7sm3438327b3.4.2026.09.30.12.40.45
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6769191d488sm192778d50.16.2026.09.30.12.40.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 12:40:45 -0700 (PDT)
-Date: Wed, 30 Sep 2026 15:40:44 -0400
+        Wed, 30 Sep 2026 12:40:56 -0700 (PDT)
+Date: Wed, 30 Sep 2026 15:40:55 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Wang Zhan <wang.zhan@smartx.com>, 
  netdev@vger.kernel.org
@@ -83,12 +83,12 @@ Cc: davem@davemloft.net,
  Alice Mikityanska <alice@isovalent.com>, 
  David Laight <david.laight.linux@gmail.com>, 
  Wang Zhan <wang.zhan@smartx.com>
-Message-ID: <willemdebruijn.kernel.3ae8d9ca86a49@gmail.com>
-In-Reply-To: <20260930111526.2183107-2-wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.36a2d78c80f64@gmail.com>
+In-Reply-To: <20260930111526.2183107-3-wang.zhan@smartx.com>
 References: <20260930111526.2183107-1-wang.zhan@smartx.com>
- <20260930111526.2183107-2-wang.zhan@smartx.com>
-Subject: Re: [PATCH net-next v4 1/5] net: core: use the packet's L3 protocol
- for the GSO size limit
+ <20260930111526.2183107-3-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v4 2/5] net: core: factor out the GSO device
+ limit check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,27 +100,29 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Wang Zhan wrote:
-> gso_features_check() compares the frame length against
-> netif_get_gso_max_size(), which picks the IPv4 or the IPv6 limit from
-> skb->protocol.  A tag which is already inside the frame replaces that field
-> with the VLAN ethertype, as skb_vlan_push() does, and an IPv6 packet is
-> then measured against the IPv4 limit and segmented although the device
-> could send it as one TSO frame.
+> gso_features_check() decides whether an egress device can offload a GSO
+> skb as a single TSO frame by comparing the segment count and the frame
+> length against the device limits.  The resegmentation path added by a
+> later patch caps the MSS segments per output skb and needs the same
+> features computed without those limits, so put the two tests in a helper
+> and gate them with one flag.
 > 
-> The lookup moves from netdevice.h into dev.c: vlan_get_protocol() reads the
-> L3 protocol from behind an in-frame tag, while if_vlan.h includes
-> netdevice.h, so an inline in that header cannot call it.  dev.c is the only
-> file which calls the lookup, so it becomes a static helper there.
+> __netif_skb_features() takes that flag and takes the place of
+> netif_skb_features(), which becomes an inline wrapper in netdevice.h and
+> passes the flag set.  Existing callers keep their call, and the
+> resegmentation path asks for the features without the limit checks.
+> 
+> No functional changes.
 > 
 > Assisted-by: LLM
 > Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
 > 
 > ---
 > v4:
-> - drop the Fixes tag: not stable material
-> - move the limit lookup into dev.c, so it can use vlan_get_protocol()
-> v3: https://lore.kernel.org/20260928044102.1004310-2-wang.zhan@smartx.com/
-> v2: https://lore.kernel.org/20260918084651.3022878-4-wang.zhan@smartx.com/
-> v1: https://lore.kernel.org/20260917063854.2011613-4-wang.zhan@smartx.com/
+> - keep the two limit tests as separate returns
+> - move the wrapper into netdevice.h, export __netif_skb_features()
+> v3: https://lore.kernel.org/20260928044102.1004310-3-wang.zhan@smartx.com/
+> v2: https://lore.kernel.org/20260918084651.3022878-2-wang.zhan@smartx.com/
+> v1: https://lore.kernel.org/20260917063854.2011613-2-wang.zhan@smartx.com/
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
