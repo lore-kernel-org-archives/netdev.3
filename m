@@ -1,85 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7927B4F0558;
-	Wed, 30 Sep 2026 00:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAA20ED
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790726408; cv=none; b=pZHGRWNOupioJlopAuhhBHajj1HM0OY64huMcDFKm1IF+nvqmygXz8iEX5LvPmMh/pdmkDNpPk8MBzxlAig71nk21oo06KOrxGvwVI7cfmLyJRdZV6U2Wn/vIDbusMrSvRywBQqZ+awar+5Xnr1yRi1VF9fz+FXWD1/MLt3oek4=
+	t=1790726582; cv=none; b=OG4JiyTk3bemRh2cq92pXJ1Ndwm53QGDKbDjAf5Uev5Ko7CXHXrhs0A2Ys0ysJ36xQBYOgSbW+cSWzgePhCjmqdQS1zDCVNNByFiwdU3s4t8sPOYayjh5oeelpsY/jFazPpt+kAnZHp93V1iI/c0Q3diOz4Ci3yHkMOhzNOjCOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790726408; c=relaxed/simple;
-	bh=TZeSj+fHNAiwPHF9/XwUVCs9Y+cih8HuKWjhCp7w9YY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=g8wYz6OonrRPs3hmB5pIyTw9USHJV75fvvB+c6XILzM7Z0+J6qN5tFkVB0riZpmD2RhR9s9AmASd3nvgLAgN/EsBEEoZXhiYW68S1oL07QEmYuXwYPHCtBDgspBdHfAPNIr871tVGjs2MXmOi6gywwu8HtvRO1mSSYIHS6a8rXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5owVWuG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790726582; c=relaxed/simple;
+	bh=0yjg6jnnQDBM+0BKF4jXyVY+t9ZWhl1NrPDMZoRKXBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fj5qwUD2Yjl6yF2mNyut3q34Lz6jzJnCSGyN3zh/TAvqZhvjPB+aE7BbVKC6zLeu1BYCLZ9IvzEnLbDox/eLMCYoD9080N+ZP8uCDMD0y/Md4bN3A0cgZpK7z1UZc01hsHrzxbcRKAP+SABF2jaOsGt2Q62Drq0flaRkz0tSlSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJDMtot6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5owVWuG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A60F1F00893;
-	Wed, 30 Sep 2026 00:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJDMtot6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5D01F000FF;
+	Wed, 30 Sep 2026 00:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790726407;
-	bh=B5RRyMKFDlig0DPrO6Mnd0x4gvEt+2HEpUuDZ5zC5C4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Z5owVWuGAqxYHTPm8CFjqTkSNcJDSMkCgloIeTqsMdHCu6MKxI0EarHU+gJQVMZ2q
-	 YbUjO9NHGVvnG9q5ONarYfh5JuH3rgk3vvZOp20EsEByKt4K8SbN8qeNG3oafMVEzR
-	 6TyhgBUsa9M25z+8BllJHWsobywgY6LIehVAS2O9tCMHL+7nqg1lw0Enippfn9MADK
-	 YeFHb5y8lqntdpITft0Vy28kRX+PEBzeACrmvLe15ve4YqxOtHXYqC+cGfNlnP6u0/
-	 4I6HJOjfzt4ms185G4Cm8j5rKEgmx7XqK2JpmxwNYJRIvBOEKqKwQ+klUCyaTsA+5+
-	 hWAw70ItstANA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F161A39D5FDD;
-	Wed, 30 Sep 2026 00:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790726581;
+	bh=TmBsp48q9FtMutirtkoRM3AJOyO4/4gTHufHBeZKsgU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LJDMtot61c+fCT1FO72cgEYpvsjp4HIO1NhGdST5dOx2RmsNdAhQszEvxrZbV69eB
+	 qSDQdb+pSxrZoT9MtxWE70/ucPZ98is02/ryP5Vc3hV495MpGSekD1dcfLlip4R541
+	 6cDFqKjK6NHl9WOTzoIqIWwHnqJIqx4Fo8R9w/qncb7xJbO1Ajk1X4VJACeX6B8F41
+	 BoyQ61IUGzsC4yPm03MsEcFikiZceYwHNwkuw8eP/WIV3+21sqkA0WebEv05GlYbVz
+	 pK3z+XqFB9WdqE5f+uQ9wNiwVrl+CHXUvCoE1AoCsu2nzh5zaY3T9xiyF5uDrxe4qk
+	 VvsA3d23j9KqQ==
+Date: Tue, 29 Sep 2026 17:03:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>,
+ syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
+Subject: Re: [PATCH net-next v3] net: phy: make the hwtstamp provider
+ lifetime symmetric with the PHY
+Message-ID: <20260929170300.39a8cb63@kernel.org>
+In-Reply-To: <20260923071132.908826-1-chenguang.zhao@linux.dev>
+References: <20260923071132.908826-1-chenguang.zhao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 1/2] udp: fix auto-selected port colliding
- with an
- existing SO_REUSEPORT socket
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179072640545.1172483.6005581645683359247.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 00:00:05 +0000
-References: <20260928023145.301855-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20260928023145.301855-1-jiayuan.chen@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, stable+noautosel@kernel.org,
- willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- therbert@google.com, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 28 Sep 2026 10:31:41 +0800 you wrote:
-> Observed with two independent servers in the same process:
+On Wed, 23 Sep 2026 15:11:32 +0800 Chenguang Zhao wrote:
+> phy_detach() removes dev->hwprov when it points at the PHY being
+> detached, but phy_attach() does not install anything: the setup and
+> teardown are not symmetric. The teardown path is also reached from
+> the probe error path with no RTNL and an unregistered netdev, making
+> rtnl_dereference() of dev->hwprov trigger a lockdep splat.
 > 
->   fd1 = socket(AF_INET, SOCK_DGRAM, 0);
->   setsockopt(fd1, SOL_SOCKET, SO_REUSEPORT, ...);
->   bind(fd1, port 0);          /* got 40000 */
-> 
->   fd2 = socket(AF_INET, SOCK_DGRAM, 0);
->   setsockopt(fd2, SOL_SOCKET, SO_REUSEPORT, ...);
->   bind(fd2, port 0);          /* got 40000 as well */
-> 
-> [...]
+> Track the provider with the PHY instead: dev_attach_hwtstamp_phylib()
+> installs a default provider in phy_attach_direct(), and
+> dev_clear_hwtstamp_phylib() removes it in phy_detach(). Both sit
+> next to dev_set_hwtstamp_phylib() so the locking is obviously the
+> same, relaxed for unregistered netdevs via
+> netdev_ops_lock_dereference_or_invisible(). No driver callback is
+> invoked; installation is skipped when the PHY is not the default
+> hwtstamp provider or when ethtool already set one.
 
-Here is the summary with links:
-  - [net-next,v2,1/2] udp: fix auto-selected port colliding with an existing SO_REUSEPORT socket
-    https://git.kernel.org/netdev/net-next/c/20d020a07536
-  - [net-next,v2,2/2] selftests/net: check auto-selected port with reuse options
-    https://git.kernel.org/netdev/net-next/c/883c308be425
+This is pure slop, you added this incredibly ugly
+netdev_ops_lock_dereference_or_invisible()
+instead of just taking the RCU lock.
 
-You are awesome, thank you!
+Please don't send send any patches to networking for the next 2 months
+and use this time to learn kernel programming basics.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: reject
+pv-ban: 2mo
