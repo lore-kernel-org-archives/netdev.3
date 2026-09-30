@@ -1,80 +1,35 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0019F136672
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 01:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BCB32E68D;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790731213; cv=none; b=Wt9htIzRyveSEs88TSU7eRKdO7GvGkc4ix/zztAKCemnDqZeasn5sfi+oxT/5mj4O9oEqvllP3cq9sSxFglZJdz9V4p9QKQDLSv2wVzs6Gt+LKyHVsxpxaQCgd6BXDqRjCadQug/TQbHHRGy364pz62jlwYadlMPmfrw5q6yGrI=
+	t=1790731214; cv=none; b=MHEzvbz+Eg4z2hJoUX5dquoSarPqRNh5zTEs9ESEUSs+yCqbeJdTM11suEWWG5YVHdo4ZJwN2mKtxmyQU7ZFT8LofboBb+xbMz8GsEZCVJNgVgXDOcRbNHkMGzuS5HoIHuSwfMAU27wp9Kjpory6nT86kl6YsFo4xrUiKdFE39I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790731213; c=relaxed/simple;
-	bh=6O0/gQWr8CMM6YC3EtCb31ij+2zDA8f+Giwd84OPrI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EQZGQOE10748VNFh9JK4PF0fHzxFvUPH6Mpsbrk9EXg6THScZEVrQ7NaThWklVPQJu+8ip8tRmC5Fk2t0MtNSKBkevXX3gfcSvR9NCFpETqW3V2qyDMsN5pLAgm8tgG8aKysEfTSzYhLCOw0xiIDpVH4bCp5GyIDy8cmkO0q028=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=BPhwQNzA; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790731214; c=relaxed/simple;
+	bh=zoW64vxMeb/Lb5apKSU/imQicVcCqEsTmMb87Ss3pEU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=P9rkYg4uiJ+39SJPg+6x1n8mFa7b5aMw31tuCDjYCQPeJQE3IBmMc1xuyBwEPGF4oKoECYRMvERAdKBqbRQ1Fzh8Oc1QVjDgSjLkFpt6enjz6EHS7pX/16WmcgtjXiLx4YgveB6MEluuXFc16H+zoO5ZPhAWvKeMq1CCa8pZVEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVenMHhA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="BPhwQNzA"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34bb8b31660so682719eec.3
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 18:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790731210; x=1791336010; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vx4TXLQ87S+/MzmZk1xLXQn49g2Rf+shwH4S2Wt8hiU=;
-        b=BPhwQNzADGcApQXigmKT7FqZeRSr7J/5Kqbd8daOkV4hT8cgYTQ31t8JvdUl+uIda5
-         /Jv6p91n9brW0WCbTE8vq920afvXtPa7XeJW1/nQbBpaWwz+mQGTbmtPAj3Nqq04eQI6
-         Zr87kCGi5VsDYMtZ4p03X06ckQlT00koQN6Tq7ycbn+OX9RkbPEia9++uh7UWZXwwmBv
-         1qxFsY2SOsf+hxU7Zvq+967H6WJ80lXpB97R2hPdvBOcjAyQ0zVt+NwnVi9fL9MfiKv7
-         yyADQywKHtHrto3SljiFLlqqW02wf6oTj+tzA9ZBaT21SCqsV0E43/uqVtdnCCyjccHD
-         5oqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790731210; x=1791336010;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vx4TXLQ87S+/MzmZk1xLXQn49g2Rf+shwH4S2Wt8hiU=;
-        b=Ap0hL7wbAeuP/ivWyd0j+c7dDHoifunxB8S3Zuio5Y5kYIuIpNbHRfgCpLRuXoWqiI
-         QONud6vTeVDHIiNZ/dWLPGuQenzlkuy83/esw8liwit3na6WIJiw7IkNLO/Lte0jFw4u
-         5T2fwdKbFjkhsYFcRBgPIUM3UjNjGwJjrP2SFKSrJQji/U5DcsgBfB2SQ4nwDuySXftx
-         OkyNmJtnZbied6toXrR62yLVdsezhsQI90hKtAFkonZBU2IE6Cg3gDU86jP5QgZj/nxI
-         H/LqT7b9oM4OUG7dmvV+ly26SzQ9DsBd0qipNRaJv9ianXDzNNY132jyai5+J859w1vx
-         6MgQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxSVCGDgLOPThWPgyh4jE/M/gmTdLde9hvSqof7zv9bfpzvfIVPpK4mmfOa1guyQ2IHV/vhT3U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLht4PFkM7nRTlROMmImci4nIKPd2palC9uxV3E/ne2CNJzCmVj
-	e11lOxnlNQc58PGsaqGNIcYyq7GelF/WUsSGhFagFna5nXbugjN2hC9tYuUTOygwyJk=
-X-Gm-Gg: AYBFou2mx1zsrv0R1rWNPpcMxhpJLzlIOXKT3UtjuRUG0jcETntokioKlRfXoMBgErp
-	jySna+pALkL0HyAobLw05/CgDTdLdC5EQZ8JgFcRzh57M0ITUcVGCMiUhgkljwnb6AHiN8c9P0S
-	G6jXQmuoUq6YO/iPt+q1qDe9+zOmgCWoe8+mbZVpVz/8ofPxswFBMJ6rvZUOP5EcMbeDaaPuYZi
-	SKOfkWK3yHrsAoFKwyTw4TgMAMT7Yj+q1b7KDG6lOQ1fyjE280Zzrzy0BOQRzOFUe1pWs+r9OXZ
-	5lORyJQ5TVIBzTzTiXIKNDqCuq89664q+ZMrhDVtS490y06tY4MVGMjOkaBZfJnrrM4tFPf6uG9
-	kqRlQf46jEGrS6yimsGwpe6PXFoS8mSxYf2zj7aCoqjMiFJ7dNSLopwmxceCr/PbCZxxv0N9gMt
-	i1Hd+7AFS09cBUOwkydtgCLGKJnp/pLJlgF7XITgf/T6NvDr7FL/Qe12WtsVgDLgM58+lGupt4a
-	HTBNpA3n++WlifXqSrRn3TM8JNbYzZZhxKG0XQ1kwtcZrb4MEtUImMzoXllftQPIwn/UDs=
-X-Received: by 2002:a05:693c:6392:20b0:33b:fc17:e786 with SMTP id 5a478bee46e88-34cdc6bb167mr13827eec.16.1790731209392;
-        Tue, 29 Sep 2026 18:20:09 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:3481:cbb6:f339:9e4e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34c350c0d63sm2498855eec.3.2026.09.29.18.20.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 29 Sep 2026 18:20:08 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.6.y] ethtool: fail closed if we can't get max channel used in indirection tables
-Date: Tue, 29 Sep 2026 21:20:01 -0400
-Message-ID: <20260930012003.95556-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVenMHhA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4506C1F00898;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790731211;
+	bh=c4qXAkRkFH2BrM9ich78uiUxUASD+HAZoTxvNl/Jrfc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=BVenMHhArH7UpyU20V/MTkqiwpKUFqX+i+XhopAQ4wV2P4rGs/kRBdEVxKS3jqTSG
+	 CA7UllMHePCu315J7TyWlZQBSmZVEH/8PXkHoRcc9kBl50LUfOOzw/pHqEOhmU+ud7
+	 mR3KRV1gv3g2z7EUyelGboizxilEW4h21d2tCQq3PciUqw8LbrE5ofR2n4M0ejQeL3
+	 RN1nyh5xlGKMx+OFNxdLt70QdG2JFwv4LvIk1AXzGHrnOkLJM7ohk6D7MuWC/aJt/U
+	 lm4WjaOcLqiRGlc6u64tdZ5jEfHccvm8deVwO6tevwvMs8mpg//TwBPZB6+ASGT2Eb
+	 +tqsjkYUJcvQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4C43924FEA;
+	Wed, 30 Sep 2026 01:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,155 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: enetc: document enetc_msg_vsi_send() return values
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179073120977.1194536.6526680014561695847.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 01:20:09 +0000
+References: 
+ <09f24cefc214455305543a0528ceae6349c77419.1790357822.git.error27@gmail.com>
+In-Reply-To: 
+ <09f24cefc214455305543a0528ceae6349c77419.1790357822.git.error27@gmail.com>
+To: Dan Carpenter <error27@gmail.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+Hello:
 
-[ Upstream commit 2899d58462ba868287d6ff3acad3675e7adf934f ]
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Commit 0d1b7d6c9274 ("bnxt: fix crashes when reducing ring count with
-active RSS contexts") proves that allowing indirection table to contain
-channels with out of bounds IDs may lead to crashes. Currently the
-max channel check in the core gets skipped if driver can't fetch
-the indirection table or when we can't allocate memory.
+On Sat, 26 Sep 2026 14:56:13 +0300 you wrote:
+> Smatch combines the return values together and wants all the callers
+> to handle the positive values so it leads to static checker warnings.
+> Add a comment explaining the return values.
+> 
+> Generally functions which return non-standard values should have a
+> comment.
+> 
+> [...]
 
-Both of those conditions should be extremely rare but if they do
-happen we should try to be safe and fail the channel change.
+Here is the summary with links:
+  - net: enetc: document enetc_msg_vsi_send() return values
+    https://git.kernel.org/netdev/net-next/c/549f5f48f10e
 
-[ Backport to 6.6.y: mapped the newer rxfh-parameter callback to the
-  older raw indirection-table callback. ]
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240710174043.754664-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi Greg, Sasha, and net maintainers,
-
-I am working through the small CVE backports still missing from 6.6.y.
-This one addresses CVE-2024-46834. It aborts a channel reduction when the
-core cannot prove RSS table entries remain valid.
-
-The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not in 6.6.y.
-This fix also affects 6.1.y, which will need a separate backport; this
-submission contains only the 6.6.y patch.
-The target-specific adjustment is recorded in the bracketed note above.
-
-Could you please queue it for 6.6.y?
-
-CVE: CVE-2024-46834
-Upstream: 2899d58462ba868287d6ff3acad3675e7adf934f
-
-AI assistance: An LLM helped identify, adapt, and validate this backport; I
-reviewed the resulting code and validation evidence.
-
-Thanks,
-Artem Dinaburg
-
- net/ethtool/channels.c |  6 ++----
- net/ethtool/common.c   | 22 +++++++++++++---------
- net/ethtool/common.h   |  2 +-
- net/ethtool/ioctl.c    |  4 +---
- 4 files changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
-index 7b4bbd674bae77..cee188da54f85f 100644
---- a/net/ethtool/channels.c
-+++ b/net/ethtool/channels.c
-@@ -171,11 +171,9 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
- 	 */
- 	if (ethtool_get_max_rxnfc_channel(dev, &max_rxnfc_in_use))
- 		max_rxnfc_in_use = 0;
--	if (!netif_is_rxfh_configured(dev) ||
--	    ethtool_get_max_rxfh_channel(dev, &max_rxfh_in_use))
--		max_rxfh_in_use = 0;
-+	max_rxfh_in_use = ethtool_get_max_rxfh_channel(dev);
- 	if (channels.combined_count + channels.rx_count <= max_rxfh_in_use) {
--		GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing indirection table settings");
-+		GENL_SET_ERR_MSG_FMT(info, "requested channel counts are too low for existing indirection table (%d)", max_rxfh_in_use);
- 		return -EINVAL;
- 	}
- 	if (channels.combined_count + channels.rx_count <= max_rxnfc_in_use) {
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index f5598c5f50de9b..30fa329fec05d6 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -587,35 +587,39 @@ int ethtool_get_max_rxnfc_channel(struct net_device *dev, u64 *max)
- 	return err;
- }
- 
--int ethtool_get_max_rxfh_channel(struct net_device *dev, u32 *max)
-+u32 ethtool_get_max_rxfh_channel(struct net_device *dev)
- {
--	u32 dev_size, current_max = 0;
-+	u32 dev_size, current_max;
- 	u32 *indir;
- 	int ret;
- 
-+	if (!netif_is_rxfh_configured(dev))
-+		return 0;
-+
- 	if (!dev->ethtool_ops->get_rxfh_indir_size ||
- 	    !dev->ethtool_ops->get_rxfh)
--		return -EOPNOTSUPP;
-+		return 0;
- 	dev_size = dev->ethtool_ops->get_rxfh_indir_size(dev);
- 	if (dev_size == 0)
--		return -EOPNOTSUPP;
-+		return 0;
- 
- 	indir = kcalloc(dev_size, sizeof(indir[0]), GFP_USER);
- 	if (!indir)
--		return -ENOMEM;
-+		return U32_MAX;
- 
- 	ret = dev->ethtool_ops->get_rxfh(dev, indir, NULL, NULL);
--	if (ret)
-+	if (ret) {
-+		current_max = U32_MAX;
- 		goto out;
-+	}
- 
-+	current_max = 0;
- 	while (dev_size--)
- 		current_max = max(current_max, indir[dev_size]);
- 
--	*max = current_max;
--
- out:
- 	kfree(indir);
--	return ret;
-+	return current_max;
- }
- 
- int ethtool_check_ops(const struct ethtool_ops *ops)
-diff --git a/net/ethtool/common.h b/net/ethtool/common.h
-index 28b8aaaf9bcb3c..b55705a9ad5aa0 100644
---- a/net/ethtool/common.h
-+++ b/net/ethtool/common.h
-@@ -42,7 +42,7 @@ int __ethtool_get_link(struct net_device *dev);
- bool convert_legacy_settings_to_link_ksettings(
- 	struct ethtool_link_ksettings *link_ksettings,
- 	const struct ethtool_cmd *legacy_settings);
--int ethtool_get_max_rxfh_channel(struct net_device *dev, u32 *max);
-+u32 ethtool_get_max_rxfh_channel(struct net_device *dev);
- int ethtool_get_max_rxnfc_channel(struct net_device *dev, u64 *max);
- int __ethtool_get_ts_info(struct net_device *dev, struct ethtool_ts_info *info);
- 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index eaeb514b7e5f6b..8eaf786eb0c7fd 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1847,9 +1847,7 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
- 	 * indirection table/rxnfc settings */
- 	if (ethtool_get_max_rxnfc_channel(dev, &max_rxnfc_in_use))
- 		max_rxnfc_in_use = 0;
--	if (!netif_is_rxfh_configured(dev) ||
--	    ethtool_get_max_rxfh_channel(dev, &max_rxfh_in_use))
--		max_rxfh_in_use = 0;
-+	max_rxfh_in_use = ethtool_get_max_rxfh_channel(dev);
- 	if (channels.combined_count + channels.rx_count <=
- 	    max_t(u64, max_rxnfc_in_use, max_rxfh_in_use))
- 		return -EINVAL;
+You are awesome, thank you!
 -- 
-2.39.5
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
