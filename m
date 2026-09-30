@@ -1,68 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2AB4FB9B5;
-	Tue, 29 Sep 2026 23:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7927B4F0558;
+	Wed, 30 Sep 2026 00:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790726372; cv=none; b=AonofyTzRH3FriiaNiQnKai7fblAHEpzU0P5pkC9E889ZR3N39AxalH4BAGvkVCa/Mh4sX+sKS2/YT7WWor7OWGtEz4EiA3Ve3YBFMcfBGP4gk8PUar1SXha3ILTQ2O8L4PGTNjzjigDIPoU0UpgO2mQ9FBjg2QxZcUkZwtco9w=
+	t=1790726408; cv=none; b=pZHGRWNOupioJlopAuhhBHajj1HM0OY64huMcDFKm1IF+nvqmygXz8iEX5LvPmMh/pdmkDNpPk8MBzxlAig71nk21oo06KOrxGvwVI7cfmLyJRdZV6U2Wn/vIDbusMrSvRywBQqZ+awar+5Xnr1yRi1VF9fz+FXWD1/MLt3oek4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790726372; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MdgP/OyUTbsJc9Z9XCIWrBmzdZ2UNSqgOsOvnloxmevDHSx8oy3BqG/sTBWKrdvWh2M3225hQMCUNxQMFAKBJStLjhiq9/dB/pEGs1IEqWzSGCPfBA2TonaA+ju1O+CFcHOKzmOgNrDwXIbz5ZCSoh24b9CIscwWvU+waduEf7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+p1iLMf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790726408; c=relaxed/simple;
+	bh=TZeSj+fHNAiwPHF9/XwUVCs9Y+cih8HuKWjhCp7w9YY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=g8wYz6OonrRPs3hmB5pIyTw9USHJV75fvvB+c6XILzM7Z0+J6qN5tFkVB0riZpmD2RhR9s9AmASd3nvgLAgN/EsBEEoZXhiYW68S1oL07QEmYuXwYPHCtBDgspBdHfAPNIr871tVGjs2MXmOi6gywwu8HtvRO1mSSYIHS6a8rXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5owVWuG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+p1iLMf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0351F000FF;
-	Tue, 29 Sep 2026 23:59:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5owVWuG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A60F1F00893;
+	Wed, 30 Sep 2026 00:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790726371;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E+p1iLMfPyb8pnNtkgs3GyRkSkJ5imuEi+odC6Nz7Yi5L1KSEW84tkza6mueTEJAA
-	 jIzj+LbnQ3Tes3ZrqdVuM1NCt21Lqubd0KeZFKeZUxGF8U/zlxcFszwKa6xbrcT053
-	 Vsd6E46e5lJ/PBI9tyzwfVEwVEVDoD+hSd5eoMubIZAmJuY8OEYOHDQSk6iUnf4smg
-	 egVIrRwilK9yZqf60mCskGnFYmrsXbLxyZo3KFI0N6xb752QqJx+KmFL75GUSu1ax/
-	 cblljF67kqWEghudpN8o0LC8wuizZ2/Q8tZPr9fnvBWD0jQSUbVsBGh94ErdznOwLr
-	 S4XDZvrSWu7Ag==
-From: netdev-bot+sinfo@kernel.org
-To: Tahera Fahimi <taherafahimi@linux.microsoft.com>
-Cc: stable@vger.kernel.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, raminwo0202@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- apais@linux.microsoft.com
-Subject: Re: [PATCH v2] xfrm: prevent policy_hthresh.work from racing with
- netns teardown
-Date: Tue, 29 Sep 2026 23:59:29 +0000
-Message-ID: <179072636987.31693.5661820738342019367@kernel.org>
-In-Reply-To: <20260929235256.1398309-1-taherafahimi@linux.microsoft.com>
-References: <20260929235256.1398309-1-taherafahimi@linux.microsoft.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1790726407;
+	bh=B5RRyMKFDlig0DPrO6Mnd0x4gvEt+2HEpUuDZ5zC5C4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Z5owVWuGAqxYHTPm8CFjqTkSNcJDSMkCgloIeTqsMdHCu6MKxI0EarHU+gJQVMZ2q
+	 YbUjO9NHGVvnG9q5ONarYfh5JuH3rgk3vvZOp20EsEByKt4K8SbN8qeNG3oafMVEzR
+	 6TyhgBUsa9M25z+8BllJHWsobywgY6LIehVAS2O9tCMHL+7nqg1lw0Enippfn9MADK
+	 YeFHb5y8lqntdpITft0Vy28kRX+PEBzeACrmvLe15ve4YqxOtHXYqC+cGfNlnP6u0/
+	 4I6HJOjfzt4ms185G4Cm8j5rKEgmx7XqK2JpmxwNYJRIvBOEKqKwQ+klUCyaTsA+5+
+	 hWAw70ItstANA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F161A39D5FDD;
+	Wed, 30 Sep 2026 00:00:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 1/2] udp: fix auto-selected port colliding
+ with an
+ existing SO_REUSEPORT socket
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179072640545.1172483.6005581645683359247.git-patchwork-notify@kernel.org>
+Date: Wed, 30 Sep 2026 00:00:05 +0000
+References: <20260928023145.301855-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260928023145.301855-1-jiayuan.chen@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, stable+noautosel@kernel.org,
+ willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ therbert@google.com, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
-Hi!
+Hello:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+On Mon, 28 Sep 2026 10:31:41 +0800 you wrote:
+> Observed with two independent servers in the same process:
+> 
+>   fd1 = socket(AF_INET, SOCK_DGRAM, 0);
+>   setsockopt(fd1, SOL_SOCKET, SO_REUSEPORT, ...);
+>   bind(fd1, port 0);          /* got 40000 */
+> 
+>   fd2 = socket(AF_INET, SOCK_DGRAM, 0);
+>   setsockopt(fd2, SOL_SOCKET, SO_REUSEPORT, ...);
+>   bind(fd2, port 0);          /* got 40000 as well */
+> 
+> [...]
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Here is the summary with links:
+  - [net-next,v2,1/2] udp: fix auto-selected port colliding with an existing SO_REUSEPORT socket
+    https://git.kernel.org/netdev/net-next/c/20d020a07536
+  - [net-next,v2,2/2] selftests/net: check auto-selected port with reuse options
+    https://git.kernel.org/netdev/net-next/c/883c308be425
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
