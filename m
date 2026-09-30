@@ -1,35 +1,40 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7658D2D5436;
-	Wed, 30 Sep 2026 02:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFB2D5436
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734889; cv=none; b=Q3yqvAt+fRY6gQvRdoMmJi9pmeKXVrBD3IjX5q3EB5YQzNrtPKd8i5H9iawnwIzCPZWdY9OYAjNqHWqObaZuas1GcY1hdbgXQSUi2OWl9pTckuH+l9AyqoTKRH/BFcKiUpTP0nSuptW6I2SuDEyW1INw1tRPlIGZOkDJiphjs6U=
+	t=1790735004; cv=none; b=eI0D/oDoQRRJHTDTVR+baThyJyIFkFnUryoLRJHor+iW+Rf+TtnX28rAdy0ZkrIXQy1Hddj+GeMyWspejtMHyW3BKMxNob08sU0/UWgkFBBw4ry/N6oUkkXXZnyZRznMVy0SoPYwLjvZahybfsi06vgtg351aBDCjFU+LgEaYeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734889; c=relaxed/simple;
-	bh=LRNN6oFQJjirvRJJzGnN3zADb/iCHL7J5N5Wgqs4cnw=;
+	s=arc-20240116; t=1790735004; c=relaxed/simple;
+	bh=vWyNH9j23nzvJaETMr7OjRmjc97OuoI7lCAuDMBP1wU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sujbYXXip+MyWq6UcAbz4D+cdwbAOWc9EI3tsrLacmHUtjkJNXlpWnfrrIji/yhHLaK+etY/DpyNBS1Gj7fPJBtuz90j52KxpPUyRw+l2I5WTrPXYykzoZvWMIceNZ229dgdMoSIpR6B8wFOIw4+UtyhzWcR0dXaw8oYB8dHmKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=OYHbJ6Nv; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="OYHbJ6Nv"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84625106D70;
-	Wed, 30 Sep 2026 04:21:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790734884;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=GIBDucrk0eAQMkKja9ydff/0FXwdYj22k8e2eNF1trc=;
-	b=OYHbJ6NvRFZiDTw88Ktyf7QCDLeCX97Ho+dD9ZS9o8YUBJsDuz5uOM22tTpKG7zBTdHB7m
-	ZWw10llMzWSoPvOozhhcm55p8ELL0gEgTLugouH40Sl04dj0Qj+vyq6V5E1k8yqmz299RK
-	/k/mAWcn6Js9eypab2h/GTXDIJ8Fy9PtkTQVCONuz2jzNGazJDYCm9uv7rNelzy+H6jw5x
-	jScJ7t7/+h5OCR60O5KbFlyqLIPxB3cirisaCa3hpJP6MgIinpSdDs/EEpgMHYQSRcBq6E
-	A3UFLGzf+viXNc88tRQ9+qzSmOR5s4x+D7HTx7lCwVpyiaqjJKPp9wl9Cpp9Jg==
-Message-ID: <c3b7e841-5eea-4431-b231-44659e1605c3@nabladev.com>
-Date: Wed, 30 Sep 2026 04:21:19 +0200
+	 In-Reply-To:Content-Type; b=KCKXBaXP3g7BBwA/YC58dxU7ssley33xaZ59xaGo7zVi01wBtkXkhhLOT5gFZ4y1MUbRQz9oYk8Mk2uBejPXRlbGmLkvN6dZ77N3A6wQDpAF52koNeyfp53oFPHxkLF6twYNUPEvrrJq/Fk+7qp7/il8OtQUEIlEa9qQs9Qnb9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: e45bc048bc7511f19a56ed5b684f684d-20260930
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:0003a13d-6830-49f5-a6da-d48e2fb16e8f,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:78f5e5b0af24b8e267b8e7e274b84f5f,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|136|865|898,TC:nil,Content:0|15|50
+	|99,EDM:-3|-100,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
+	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e45bc048bc7511f19a56ed5b684f684d-20260930
+X-User: weirongguang@kylinos.cn
+Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <weirongguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 1957401688; Wed, 30 Sep 2026 10:23:15 +0800
+Message-ID: <515454c7-9c85-44a9-9937-7944b2395246@kylinos.cn>
+Date: Wed, 30 Sep 2026 10:23:12 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +42,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-To: vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, wei.fang@nxp.com,
- claudiu.manoil@nxp.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260924180607.60932-1-marex@nabladev.com>
- <179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
+Subject: Re: [PATCH v2 1/4] tun: fix inverted error check when re-attaching
+ the filter
+To: bot+bpf-ci@kernel.org, clementwei90@163.com, netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, ast@kernel.org,
+ andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
+ eddyz87@gmail.com, yonghong.song@linux.dev, mason@kernel.org,
+ ihor.solodrai@linux.dev
+References: <20260929093712.131096-2-clementwei90@163.com>
+ <8edfca6d5f5f89f19158fb9b1595f565f550beee37dd874026baf17c936226a8@mail.kernel.org>
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <179073420852.1211220.2021094445984738152.git-patchwork-notify@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: weirongguang <weirongguang@kylinos.cn>
+In-Reply-To: <8edfca6d5f5f89f19158fb9b1595f565f550beee37dd874026baf17c936226a8@mail.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/30/26 4:10 AM, patchwork-bot+netdevbpf@kernel.org wrote:
-> Hello:
-> 
-> This patch was applied to netdev/net-next.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
-> 
-> On Thu, 24 Sep 2026 20:05:19 +0200 you wrote:
->> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
->> but also very compatible. However, for example NXP TJA1120 PHY needs
->> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+
+
+on 2026/9/29 18:34, bot+bpf-ci@kernel.org wrote:
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index 5a302709a68a..a2fffef3735f 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -728,6 +728,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  {
+>>  	struct tun_file *tfile = file->private_data;
+>>  	struct net_device *dev = tun->dev;
+>> +	bool rollback_filter = false;
+>>  	int err;
 >>
->> As a minimum change, increase the MDC clock to 2.5 MHz which matches
->> the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
->> DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
->> NXP TJA1120 as well. There is no known rationale for why the 558 kHz
->> was picked when the eMDIO driver was added.
->>
->> [...]
+>>  	err = security_tun_dev_attach(tfile->socket.sk, tun->security);
+>> @@ -754,8 +755,9 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  		lock_sock(tfile->socket.sk);
+>>  		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+>>  		release_sock(tfile->socket.sk);
+>> -		if (!err)
+>> +		if (err)
+>>  			goto out;
+>> +		rollback_filter = true;
+>>  	}
 > 
-> Here is the summary with links:
->    - [net-next,v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
->      https://git.kernel.org/netdev/net-next/c/587acb86d646
-This should have likely been applied only after someone from NXP looked 
-at it.
+> Does this change the behavior for cases where tun->fprog.filter holds a
+> __user pointer from a different process?
+> 
+> When TUNATTACHFILTER runs, it copies only the sock_fprog header:
+> 
+>     case TUNATTACHFILTER:
+>         ...
+>         if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
+> 
+> This means tun->fprog.filter still points into the address space of the
+> process that issued that ioctl. When sk_attach_filter() runs here, it
+> calls __get_filter() which does:
+> 
+>     copy_from_user(prog->insns, fprog->filter, fsize)
+> 
+> in the context of the current process.
+> 
+> For a persistent TAP, if process A creates it and runs TUNATTACHFILTER
+> with a filter array on its stack or heap, then closes the fd, and process
+> B later opens /dev/net/tun and runs TUNSETIFF on the same name without
+> IFF_NOFILTER, the fprog.filter pointer may not be valid in process B's
+> address space.
+> 
+> Before this patch, when sk_attach_filter() failed (which was actually the
+> success case due to the inverted check), the err value was overwritten by
+> later operations (xdp_rxq_info_reg() followed by 'err = 0'), so the queue
+> was published and TUNSETIFF succeeded, just without a filter installed.
+> 
+> After this patch, if the pointer is unmapped, __get_filter() returns
+> -EFAULT and TUNSETIFF now fails. If it happens to be mapped but holds
+> other data, bpf_prepare_filter() usually returns -EINVAL and TUNSETIFF
+> fails. When the bytes happen to pass validation, they become the filter of
+> a queue that actually gets published.
+> 
+> This affects both the persistent TAP case described above and multi-queue
+> setups where another queue is opened after the buffer holding the original
+> filter has been freed or reused.
+> 
+> The next patch in the series, 508f529200c5 ("tun: keep a kernel copy of
+> the socket filter program"), addresses this by storing a kernel copy of
+> the filter program. That commit's changelog describes exactly this
+> behavior: "unmapped there, the attach fails with -EFAULT; mapped,
+> whatever bytes it holds become the filter of the new queue". It relies on
+> 8c6a2cf8bd0a ("net: filter: add sk_attach_filter_kern() function").
+> 
+> Until that commit is applied, this patch changes the re-attach behavior
+> from succeeding (without filter) to failing (with -EFAULT or -EINVAL).
+> Both commits carry the same Fixes: tag, so a stable backport or bisect
+> that includes only this commit would encounter the problem.
+> 
+> Would it make sense to reorder these commits, putting the kernel-copy
+> change before the inverted-check fix, so every step of the series works?
+> 
+Yes, thank you.  
+
+I have reordered the series as you suggest, it now is:
+
+  1/4 net: filter: add sk_attach_filter_kern() function
+  2/4 tun: keep a kernel copy of the socket filter program
+  3/4 tun: fix inverted error check when re-attaching the filter
+  4/4 selftests: net: add TAP socket filter attach tests
+
+I will send it as v3.
+>> @@ -817,6 +819,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
+>>  	tun_set_real_num_queues(tun);
+>>  out:
+>> +	if (err && rollback_filter) {
+>> +		lock_sock(tfile->socket.sk);
+>> +		sk_detach_filter(tfile->socket.sk);
+>> +		release_sock(tfile->socket.sk);
+>> +	}
+>>  	return err;
+>>  }
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/36552651982
