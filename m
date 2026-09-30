@@ -1,88 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FB343C7DF;
-	Wed, 30 Sep 2026 08:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A183A248F57
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790758189; cv=none; b=qrAZh/WAKZuVdW2/qhL1Djtv4TRL1qmmAHbz5AbiGXxaUB1ixYeHi+Bl3TKfuN3qjrtDMBEcYJ3iCOqclTPBN1MvFpx5S9gEcSL4z4jvT1asnCPNPSdmBtFPU3yIkWwNFD1MrEX3ARH6ySW54g3dmkzy0Kl+K7D8Gdgp8CaU2Qk=
+	t=1790758826; cv=none; b=qTyMyEghtwZD6B+n8Mg2ngapWQzNoD081S0aON8+KDTdLS5EpkPO/JJ5UQEh2mfg01pGdW62+Fz/ZQeZV7a6FdOrjY4yUZw4Hi072gjPiVChT/tHTPTEwMDhhuEwNOnIEykzZocSuuQ5sdvlOmpcLVIjr7x3RwoGCd3szZkTrUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790758189; c=relaxed/simple;
-	bh=WYP7JetXzosPTpQivXohzgWfi9AKUBQN6yUvyHrLU7w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJ0dPDB2pimfKAfsuCXtKXqWxuy0706/iRpCPQ6J9rniPuXGtJqTEs5ZkeegsbSp8QfT0GwU4NgdGJUBoilr3W/nZIr1gDSvF4OvrszIDGTU9ZCHZeP9u8+dshMXww7U4Z6soJ2L1aq8yL3v3rk7y08DgTQGCgMvVWEX02cQJCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4szDhpq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790758826; c=relaxed/simple;
+	bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=Tlmzr7mQeoKCRwlJ0goZRaZ5pbt5qjA8EqWJth/mimAKnSWyffduc9ohjQDrh2V8Tw+TEEfXZ9JmFLOQiWuTzXdAjqeeQiUu6mB6laGSkbzCdQQpFjGR2ZEvIVxNiOGvG7powJQqQOk+UczQFCqcHtQRqXwCTxgq3m8RamQHJHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sR1IdwwV; arc=none smtp.client-ip=74.125.228.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4szDhpq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C0D1F000FF;
-	Wed, 30 Sep 2026 08:49:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790758188;
-	bh=FmNn5Xvock/3VZ/k07jBRCEfS09WM6dksfYZtNA0GME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T4szDhpqW2IyY3aed64r0YME9X4Wl/YfcbIhpPtkd0Llku5EgNoKmCsHe5l9EZf03
-	 Z4hNgoTxKS6khyREF0OgFrP6EcBgfn/F6YWM9hel8r9vvwL/mntzr2HjcpIlcZP7sl
-	 XPkli+OeVuDowNnOs0DYEEvpJ9guXJBWVarTq5R1GJkKn9fFIrI8nzlg5E7fMcCKaT
-	 kfFv4+9oM2yyFnISq9YFnmAbODpF4VABCjkmER99fKxTE9z1CCSWVImBxzAybQ+jSU
-	 zC7h7pCFND1srocero8v1/vQzuUIe7yEoAk/Wc4xqZ2leGoIIHU6aQtV+33cxK4hlf
-	 tdrLOt1tJkcfQ==
-Date: Wed, 30 Sep 2026 11:49:43 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Shashank Mohan Jain <jain.sm@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Tal Gilboa <talgi@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] lib/dim: fix 32-bit overflow in dim_calc_stats()
- rates
-Message-ID: <20260930084943.GB3401365@unreal>
-References: <20260927051743.71460-1-jain.sm@gmail.com>
- <20260927051743.71460-2-jain.sm@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sR1IdwwV"
+Received: by mail-pz2-f37.google.com with SMTP id 41be03b00d2f7-cc7d1403bbaso556750a12.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:00:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790758825; x=1791363625; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
+        b=sR1IdwwVgduFIv7qpHpwmu1NFvO0x7IDDr0QfkZ8/xYXZI1+crJiGrRgwqxCiFUx1e
+         +40IlZ2oTgXuFWqusG4Azk233/zi0rIRjJT72udcQakiVKeCH9DHz3wmQNaEkB67OcRd
+         y/yxcbmxKKBPS5TFmEv3TlygkG1HYCZmnXwP7fcSWPXZLOvLzuT6iS+eVS4j0CWmxAQB
+         OybMfKIrQiaUhHz1LMuxnOVItnveRYWKfcyE7tHdRzpkYIpDy7rcMWJJDsv9b14u9S6P
+         vNJQ6jl536g1u8eA3ub8NTOwrIwj7wOReV+3TtV/lxpyRKt35MdpkLU4kcNrDnG2WCvl
+         RtyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790758825; x=1791363625;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sSFfq8V5j1UFF+Q6OTJv1JVOc53BRRub9YqpWkEgZVc=;
+        b=102f21WjVOrHhvk1UG4LZdEwFl1cBjkyZRzdnJmVUFx48F3Rx36o4A19sIg9xi2XTk
+         np0JEEi53eD6AOWrwFD2wMxd/86UP6elPCJbrFIqAQhssKadup26vBBFWDEBcQAS5B4B
+         MH4/VPXqxTVx2fEruA3AM3eblV1mTBPI26YkvAnK/tdlMkJ8ZVpN+X81d3WHqiCw3Xd3
+         tEh4e8ZYE/rLVjdH/4cffeFl+shvhgH77bPcplGFxGl5oMTZ1q+uKJUosevQbjQqNnMI
+         0XVDJPwcP1ufCdFX4I5696vbHx3eGfG5nHXSxzYyUutjV44t9labtpYJ8wzmloNl3VMC
+         Wzzw==
+X-Forwarded-Encrypted: i=1; AKwUvBxw/qK5B5Pfz50UETtHp1mw+Umz14kySGJr/fXApGgvDK6o9+R8GOs2l/Zz366mVE5OfF156kg=@vger.kernel.org
+X-Gm-Message-State: AFuF++l8xJ62icToeguquqVA3OqYl5XROnQjnbbERJGBkY01vuv+ywu8
+	P+5vD7/aNF8rT17BAgi0/Ot3STzHaomNW/rXP/aGlPrwk1ylJKqkgOVv
+X-Gm-Gg: AYBFou1KkQ8x6pa4nMaDRsIjvTCYr5tj/tEGXfX9HEkA6kOU/PuVWJNB1/AeQwW3yY+
+	jz6EKsx3JNS9itrQsEkE1wc+BA20JVxxKRAO1Uqefy1lSNdwaxITuUwhXS4Ap0ii77NbUpYwI9a
+	GDBCiFuWGTCBeP7X2LnDyXIC7Nrk8GSOAu9TA/QnHegkDJ5B7bXVc9gnzaheuC+doYDAaVQfI8I
+	pGl2t2Jo+ilIYDCKqsIl4uuw/u3A5pngBteUEkEGp3qRvieUPONA9tmaERRWDW5bAB29xYu8p9d
+	oqdtoYqiMhSooodphykBOYq870Qtv3mHqFWfrL3wQnYqznaS5ITSAj2p6gGfr+jPTGXAXCnTmk3
+	Qg0mJHlaSe5M89rUAY2LgBTNSAZCrEDAPRiVUnGHZTfpieiXGpheqmgzTiNZmMKSv5dib/4Nv0A
+	kxqZuESi0DB2lmHKuZ7I/xU2Wx4O+J3D6qJ+VAS1cnzTd2fdG1LU2/29c4eLoJNGw2I6MXeRqca
+	RTsh/lFVQyppbzUveCPlWRGyugkgoYX/XsSlzQjpBKzLSJcNDEotqYQp5X1nLnB0PpxilbdpS7c
+	bNQt1YOo4704KBU=
+X-Received: by 2002:a05:6a20:e290:b0:3dd:85a8:4c5a with SMTP id adf61e73a8af0-3de9e6ef037mr777228637.33.1790758824705;
+        Wed, 30 Sep 2026 02:00:24 -0700 (PDT)
+Received: from localhost ([153.61.198.247])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7dab424e8sm492238a12.32.2026.09.30.02.00.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Sep 2026 02:00:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260927051743.71460-2-jain.sm@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 09:00:23 +0000
+Message-Id: <DLSJ0UIY3DSY.3JWS6CS3TX0IP@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Sitnicki" <jakub@cloudflare.com>
+Cc: "Jakub Kicinski" <kuba@kernel.org>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>, <netdev@vger.kernel.org>, "Kuniyuki Iwashima"
+ <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, <bpf@vger.kernel.org>,
+ <kernel-team@cloudflare.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
+ <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
+ Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
+ <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+X-Mailer: aerc 0.20.1-349-gb940a4174a3e-dirty
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com> <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> <87fqyypp67.fsf@cloudflare.com> <DLNZU9RYL0GW.CHHAJ4R62R9M@gmail.com> <20260925121849.2ac5150b@kernel.org> <DLONQQN0RB03.1NVWVFHGRRWV4@gmail.com> <20260925132004.171b751e@kernel.org> <DLOOI89GKM5B.W4XPBNJUXRV1@gmail.com> <87jyo5bcgs.fsf@cloudflare.com> <DLR2ZT65RKF3.3KZ8O8P4VKTI2@gmail.com> <87ecebbxy5.fsf@cloudflare.com>
+In-Reply-To: <87ecebbxy5.fsf@cloudflare.com>
 
-On Sun, Sep 27, 2026 at 10:47:42AM +0530, Shashank Mohan Jain wrote:
-> dim_calc_stats() computes the per-millisecond rates as
-> 
-> 	DIV_ROUND_UP(nbytes * USEC_PER_MSEC, delta_us)
-> 
-> where nbytes is a u32 and USEC_PER_MSEC is 1000L. On 64-bit the product
-> is done in 64-bit long arithmetic, but on 32-bit architectures long is
-> 32 bits wide and the product wraps as soon as a measurement window
-> carries more than 4294967 bytes (about 4.3 MB). The same applies to the
-> packet and completion counts, although those need more than 4.29
-> million packets or completions per window.
-> 
-> A DIM window spans DIM_NEVENTS (64) events. Drivers count events per
-> interrupt or per NAPI poll, so under sustained load a window can easily
-> carry more than 4.3 MB: 64 full NAPI polls of 64 MTU-sized frames are
-> already 6.2 MB, and drivers such as mtk_eth_soc count one event per
-> interrupt while NAPI keeps polling with the interrupt masked. On 32-bit
-> users of the library (for example mtk_eth_soc on MT7621, bcmgenet and
-> bcmsysport on 32-bit ARM, or virtio_net in a 32-bit guest) bpms then
-> becomes the product modulo 2^32 divided by the window length, and
-> net_dim_stats_compare() makes its BETTER/WORSE decisions on a value
-> that has little to do with the real throughput.
-> 
-> For example, a 1 Gbit/s link at line rate that moves 5 MB in a 40 ms
-> window gives bpms = 125000 on 64-bit but 17626 on 32-bit, and 5 million
-> packets in 2 s gives ppms = 353 instead of 2500.
-> 
-> Widen the products to 64 bits and divide with DIV_ROUND_UP_ULL(). The
-> results are unchanged on 64-bit.
+On Tue Sep 29, 2026 at 8:32 PM UTC, Jakub Sitnicki wrote:
+> Everything pushed to:
+>
+> https://github.com/jsitnicki/skb-metadata-bench/tree/main/profile
 
-How does this 32-bit overflow differ from the overflow that can also occur on
-64-bit systems in `nbytes * USEC_PER_MSEC`?
+looks like you had lockdep on, so all the data and conclusions
+likely do not correlate to production.
+Pls fix and remeasure everything.
 
-Thanks
