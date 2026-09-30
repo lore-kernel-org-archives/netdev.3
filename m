@@ -1,82 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8EC29992B;
-	Wed, 30 Sep 2026 01:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EE91E1A3D;
+	Wed, 30 Sep 2026 01:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790730008; cv=none; b=Pi4JLLbe6saFhcoPQXNrno2rybwADAjHBN0ltAPyXs3bz02U+dTnEJb/QWhVyDZfJwXH22AaCuQGthpvAXFvh89zv0KueOxu1ct9IyRXmaSjlrvRsaSGVkUUBQfHtmroMmM3IHyC30aBOM7qxHKPuBY8luAYAlTpusoS6zjbNtg=
+	t=1790730571; cv=none; b=LpS4/LckW3SfG1uycPu/BWET2w9TDIV/QCQmlZ7mNKZzB8PMSH6m+/3TEh4j0cFgxYIV3l4Fi3AdynhvZ7ikAFX/Qu2uMsKkK9VrVLafOXGi/6JVM3cVtYkmJBhP0PGa9BPVfBkr94uNG2TQA/qTPDxrcjjgisQLn/hVwJ/tNlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790730008; c=relaxed/simple;
-	bh=g4lqI+UlLP2jTMRtKnIafFUzmgTUXqRcHQxt3HYYiyQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=njN5aBVPfIYcH3YtCP/e6PDON7kjZP/ecvuJPrRE3kZkTEgcklbknFnFZTTA1EbD7VfwCO1fy07DA2kjr2eb7IgMK8QKJkEDVM6GOE+dYkgQKx4Ytvss4QsbXeUQLPrfsKs8dKOHnc10qjLG9bn1S0Atki7GyUcgKbYGaf6OPPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXlQilXt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790730571; c=relaxed/simple;
+	bh=fWQtMqQtZ8CuGK4opxBxrzBeDCvijwDYNaKWzT5HhCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EpynZnmstj8EMd6SIfjFWRe7oL+AiwY03NugnIHLi+rsZ1DQIhqLjLxL2M3lemFZsBTVFjDCgrExeUIkEySfwS53i0tpiKqdcsSCEmHo1QG+b844v8DYJ/vcy5gi4jG1/i8A98DEmbzUy58irAooxzcxlMjtYXe2+i3VBHIvtf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSOCQkQ8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXlQilXt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C5A1F000FF;
-	Wed, 30 Sep 2026 01:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSOCQkQ8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAFC1F000FF;
+	Wed, 30 Sep 2026 01:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790730006;
-	bh=gBwoenYYaanfEUjFb75TeKF849XqV21SDq/Ipm1oCOo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kXlQilXt/jQ6C/PpMmxLhS1r8ATYgeozIzySOVxGgikqMGTMKm8+h+7s9NtLAW39c
-	 OZ9if6LIzi4LTLKWJCPtxS+/6aYKgcw2yNKrMDTJsaS+msNRbx9HqSRi5BgpVeVvlZ
-	 2H5MD/4aNFNqrvwDkKGNScjbPnB5LXdDByA/4niw6qgmudNgykF8qhtAsqK4ZpOCNv
-	 Ea75DcxjmwvWzr3hKGOMZDObHIVpKQ9MbIA0RFDfXowvLuGd/99wfr6Ue4z5jnLm0i
-	 mRhBE0ptvzJPKHB9zaXfE0ifUzfbV+Wtd0HD9gp1VZykDOhtd3ZiZO2hER9n4U/VdD
-	 5MEDqbZ1SIGxQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44C83924FEA;
-	Wed, 30 Sep 2026 01:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790730569;
+	bh=u4G3sKWZIlCfo2hjBMDIfRgFkOo3aOxVZX09z7zcj3o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fSOCQkQ8n6pZPkXZDoHF8wcQke84pv6gMjBzBCiLHDy/HlPQ2W+vniU8herUwFNWw
+	 CHhSK0y28CdCLm4ik3KSQ4mNZcUQ0RY4hFihRosnnttXsJ6MNXm6fY3tSdcP7r5rmK
+	 +2YzxFo0IwJFNYSQfsSMeEOpekooL5wY6D/5moaPR3voISvDqPDVL3UUWXUlj72OLE
+	 9xlO7SF0SOhGcuEgROBaipK4VF3Wi2Id3nh4597MEpT9rYEYl7TF4twvm/8dFtpR7W
+	 H8DETQggxKwciqIqAcjE9yPQ0W1LbP9H338mwHIhzeZPncnQWblTD5dj6rXq0xTwRj
+	 0aQYnQbomFf1Q==
+Date: Tue, 29 Sep 2026 18:09:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux@armlinux.org.uk, nb@tipi-net.de, jitendra.vegiraju@broadcom.com,
+ thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, pbrobinson@gmail.com
+Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Don't set or get RSS
+ parameters when not supported
+Message-ID: <20260929180928.546f23af@kernel.org>
+In-Reply-To: <71adb267-2dd9-4225-91e5-19848a87eb49@bootlin.com>
+References: <20260928145043.1228968-3-maxime.chevallier@bootlin.com>
+	<179067171307.434549.1093187286398187440@kernel.org>
+	<71adb267-2dd9-4225-91e5-19848a87eb49@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: cap skb->queue_mapping when the tx queue is
- picked
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179073000531.1189496.11934598043526371680.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 01:00:05 +0000
-References: <QDISC-9R8V.v4.20260928081529@mojatatu.com>
-In-Reply-To: <QDISC-9R8V.v4.20260928081529@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- jiri@resnulli.us, vinicius.gomes@intel.com, horms@kernel.org,
- xiangxia.m.yue@gmail.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, victor@mojatatu.com, zdi-disclosures@trendmicro.com,
- hybris@mojatatu.ai, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, edumazet@google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 28 Sep 2026 08:46:16 -0400 you wrote:
-> skbedit can set skb->queue_mapping and raise the per-CPU skip_txqueue
-> flag so __dev_queue_xmit() honours the mapping. __dev_queue_xmit()
-> cleared the flag before sch_handle_egress() and only read it afterwards,
-> so the flag was not confined to the xmit that set it: a nested xmit
-> (mirred redirect or mirror, or a drop after skbedit) could set the flag
-> and the outer xmit would consume it for an skb that never went through
-> skbedit.
+On Tue, 29 Sep 2026 10:57:10 +0200 Maxime Chevallier wrote:
+> >> @@ -943,6 +949,9 @@ static int stmmac_get_rxfh(struct net_device *dev,
+> >>  	struct stmmac_priv *priv = netdev_priv(dev);
+> >>  	int i;
+> >>  
+> >> +	if (!stmmac_rss_is_supported(priv))
+> >> +		return -EOPNOTSUPP;
+> >> +  
+> > 
+> > [Severity: Medium]
+> > Does this -EOPNOTSUPP break namespace-wide ETHTOOL_MSG_RSS_GET dumps?  
 > 
-> [...]
+> This was reported by Nicolai already, and other drivers report -EOPNOTSUPP
+> here.
+> 
+> If we address that, I'd say we do that in the RSS ethnl code.
 
-Here is the summary with links:
-  - [net,v4] net: cap skb->queue_mapping when the tx queue is picked
-    https://git.kernel.org/netdev/net/c/ea4d4b5dddb5
-
-You are awesome, thank you!
+Let's get this in the same series, cause I'm not 100% convinced.
+My instinct is that returning 0 size for indir table and key
+would be correct and less hairy for the core to handle.
+All pieces of RSS are optional so returning 0 size for everything
+should be equivalent to having no RSS.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
