@@ -1,74 +1,79 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500F93B05A9;
-	Wed, 30 Sep 2026 21:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3499951121F;
+	Wed, 30 Sep 2026 21:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805127; cv=none; b=osQJBaogIqliMSgiawOlnqVCy7IA/neBz8Ywu3DROJaij7dT/1gqWdARj0H460RMeqhAokiG9kzHwynqSQVsfyPQ41XLv+P6JIOjCNv285FK13GjJeYv9yTLV19/2D/L+wwuvI3rI/pCLqvh8RoeTlcc68EDqc+Qjql3PiTC4bE=
+	t=1790805290; cv=none; b=WYe9nBueMoAF93ygAdBd1evVKOHupLTOohOOAVWrNiLo3/6W43Ga9WjK6Frr840KAPpIys4enSWF2mj0TEeRMaMK6qslml8KVYoCH1pDW4Y7G8C4fUX8DfvXQDX8PAzffsoISZSt4IHlZvlLVMOaS4HPxgRyRz2YbKmTsMJk84o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805127; c=relaxed/simple;
-	bh=fKjO1mQT5keV3NYzoqBVtHaHPDn8lKrOJsLQwgjOOOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d7+c2UgEp8CfKnyAs7rE5RWD/vmMIiYc2EVDGtQFC4j+nobrRr4ImC0lyXlYUCGeIEK3UJr4MEHYp6dHaopQ/uy6JbwKQ1vQR8Qgkqfv97hIdk9XxwTqfBQbAiVRNlsfErRtwl5U5vi2J4MRqvdVDw+VUdPZVh7pk0DWWBInXQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4CCUkl9I; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790805290; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JSwcBq3rHVDeaMoejBh/LWEh2ZdgaPUzWuG6Jg17Kog2iVM1yzPiLUMjc4DkXfn9V1w+tRqaxqok4O5Hrz1938Zo08YObQ4aJytSmK+y/MT0wyrLLzAIVCmjqKCvllLDy3h5bIh1t7rWsQYdC0k0nHMH0LUs70jZL01k2zPUctQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+6VrlJh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4CCUkl9I"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FD05RHOFRGfYmVLDxBq8IkkAKhJy/zrMPVkcJKQGgug=; b=4CCUkl9IfkEKMKG8R7waFOW7Zo
-	sx5Jids8oyB/TLZO5vpfgAqsaJbVlAPBjWEcT1l715xC/SlHu94aUEQgVrm2TxsRknWwBWJrNjF4M
-	iLyXmjKvlsGc8qHDfXaHcA6uTTXTF0uYdDOqw0e2JwNxaJSuJy1F24YagV0Q3BYiv1yY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xC2DJ-008FQg-Nn; Wed, 30 Sep 2026 23:51:45 +0200
-Date: Wed, 30 Sep 2026 23:51:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: iav@iav.lv
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Eric Dumazet <edumazet@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: dwmac-rk: keep the GMAC powered when
- the PHY wakes the system
-Message-ID: <1799630a-945e-49ca-b9d5-9e068c482cea@lunn.ch>
-References: <20260930-dwmac-rk-phy-wol-v1-1-9fdc50bd9ae4@iav.lv>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+6VrlJh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D271F000FF;
+	Wed, 30 Sep 2026 21:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790805288;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=S+6VrlJhleKk/D23qXCGHjQRBlzgzVEjaeTEzwZSxyQPbKY4X23mGzknudLaguk7a
+	 orFNCIi8+tzm3Er9qVWS436J8dyEEJHvQV8PtJ6+hofwDK668H1wfwK5zJmOB1OAHH
+	 XBDr8J2lRL7eGTW5WMHmc6IMftagAux1SM6JYMHqXJpjZIyze1Ss2JMuhs2byDox2l
+	 1pxxA2A0WqI0c+9XpP3S8v07du0Vz2bQ88BT4NYVWxqiCSjs036Yrlphnr2LHn+LM9
+	 ooUwg6WXqvbij1ro0Veo2bLH0Vgb9f684wrlZF9hD8y4oxeyXKfy9BbDaqkIl7Yx4k
+	 ivw3fByqWvCwg==
+From: netdev-bot+sinfo@kernel.org
+To: Joshua Washington <joshwash@google.com>
+Cc: netdev@vger.kernel.org, Harshitha Ramamurthy <hramamurthy@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ Jordan Rhee <jordanrhee@google.com>, Ankit Garg <nktgrg@google.com>,
+ Tim Hostetler <thostet@google.com>, Jeroen de Borst <jeroendb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: Re: [PATCH net v3 0/3] gve: various XDP fixes
+Date: Wed, 30 Sep 2026 21:54:47 +0000
+Message-ID: <179080528731.31693.11268580346361726174@kernel.org>
+In-Reply-To: <20260930214735.3288780-1-joshwash@google.com>
+References: <20260930214735.3288780-1-joshwash@google.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930-dwmac-rk-phy-wol-v1-1-9fdc50bd9ae4@iav.lv>
 
-On Wed, Sep 30, 2026 at 07:34:45PM +0000, Igor Velkov via B4 Relay wrote:
-> From: Igor Velkov <iav@iav.lv>
-> 
-> Since commit 6911308d7d11 ("net: stmmac: convert to phylink-managed
-> Wake-on-Lan"), the MAC device gets its wakeup flag only when the MAC
-> handles Wake-on-LAN itself. When the PHY handles it, device_may_wakeup()
-> is false for the MAC, and rk_gmac_suspend() powers the GMAC down: its
-> clocks stop and phy-supply is released.
-> 
-> On Helios64 (RTL8211F, Wake-on-LAN in the PHY) the board then hangs on
-> the first or second suspend with a magic-packet wake.
+Hi!
 
-You have not answered the question why is hangs? Given the current
-description, this just sounds like a workaround, not a fix.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-	Andrew
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
