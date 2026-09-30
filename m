@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D036998C
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3F021E097;
+	Wed, 30 Sep 2026 03:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790736652; cv=none; b=Pf+ILMd8r3MjTkJfdK4CfoY3FpmaptceJz4OXlUnsrAbyTasiPH6EJmq7Y+zAJVN9vlTNKg1IqJGDxk1eUHmPQlqOx0irossDZjZz1kQzwE6CSokjyqOeg5lZP2s6s+i5SxTUKhrXpKiPQpxGrguTivL4H9Ji1gDdWOJvtqrYY8=
+	t=1790738379; cv=none; b=Fgg5WdSNcNjL4BEG2O21O54p7C8tF7qtTA9l3JNOkeE2EeG25HFiE8fiwW3aYYVPvUOejZ0RV/bqdGBDrf2I++Q+mUin3eQW0UkQcUcUCN5WhD23w0KGZ9ul0Bly7IoIIGHb+pWmXumt8c1TqSG9o/eZcxbLJMNB4JNSfT7W3OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790736652; c=relaxed/simple;
-	bh=yoOJ8vWPOpq54rWmqYMnqXl8rODACNnUVU+dLhAzVUQ=;
+	s=arc-20240116; t=1790738379; c=relaxed/simple;
+	bh=ThP12Tv7gwbyfTnvtFj5aN1T5Kx+E9g/MIGql2mX7d0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EDyOLSw5EvBOfhaHBxnfbsZxKoWKAS4WCwBeAiMyIrvKb4zzaGjMaMRXt8EFmD/N6mra3TmFpg5w3NrWiC3AE0soxwsSosb38Pbrrux3YR3eDOHRk9BpyZUs2RIrSlXl7I3s5WHN5J3trTHD9hMgFPI/HQEJgFcWmGE5PpISYBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jO9p5WNg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JLOHTmdC0N9qhAR1DJXeQG17qV/1fwfHM+vWPdMjXmbjqOJn3f7WcEvX2rtHi43rvC21z686MqSqQjMTT/gmYPwW1AWM2MYo9xilCDbB7i5H3oQoTIE28TSbar5lDbvXzxWe/DMM3OnRHt7gjGgCImwbjqv0dG+ELqQXbOazDHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7lTfrv9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jO9p5WNg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F1E1F00898;
-	Wed, 30 Sep 2026 02:50:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7lTfrv9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664C91F000FF;
+	Wed, 30 Sep 2026 03:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790736647;
-	bh=M5gaPISJz/YDKYlwS9SDruvkmSzz1aLWxoSb/Ho2iPU=;
+	s=k20260515; t=1790738377;
+	bh=Nb4NqFdWYWfaWTFhpA/eJ8dsBAMYjbSrDg/2ufGZyH0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jO9p5WNgS9NoD7ko/6Yt/QBvisRrcBtbp07IWnoud1h3VqtDgvAB1Gj09+Zilhn3u
-	 8OsVBEEsTC4PNHRtPIDthY4db+4gMgaYeWHlVn9j5eJfTRqwJ/A6n60QpnhF+cfQYP
-	 1wm9ZjEz1CgcbLjnChBREgg2qHad8a0G3Xa2ueS/kt0LsF98wMhTZIFVK7/ED++2tP
-	 rEDU0bglut0yw2p5XfDqqn3BXxAwPqHQx3XNqlITELX70wV0HdKrkCSAc0wxecjKpr
-	 bnZ8Wn5on0XC4t8MCWJ/94DzhZvM71hHro3IpiaoO9/9QgNJMRomnYKXuSxgT7+nxh
-	 Aiqj1D4+bn/4Q==
-Subject: Re: [PATCH net-next v2 11/11] net: ethernet: cortina: Use guard
- helpers for locking
+	b=V7lTfrv9HMfMArc+kKB77PnJu1hyocRpcyZ6qFy+C7WwKJT3z3Vwfg/2+AQBRTGAj
+	 AjmE2cVhjQ0ZqdBYPzIp5qEhyFrWZl52/MSDKGZToIuQJoOj93exx1BnljtEaE1tL8
+	 gct/J2C3lfmt9uW8t0tHYoBIXi34kgYOzOZnBckjTy7zXd4sQE8ej9/vorXLjibfFh
+	 3USV6KrF3s+AaKuIQEDbmwl8aKxo6tcD3pkCF8dUi0D93r8RXkeMBkq0gg/+KbTXAD
+	 7FprIgC3uNwIsJyMix63mHsh7bpWbS4iPxa+LZMPbgDEQ0Fzn0mMdywRulf70daxxl
+	 KLUvZ453zTlEg==
+Subject: Re: [PATCH net-next 1/6] net: dsa: motorcomm: Split TC module
 From: netdev-bot+sashiko@kernel.org
-To: linusw@kernel.org
-Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mirq-linux@rere.qmqm.pl, mhun512@gmail.com, netdev@vger.kernel.org
-Date: Wed, 30 Sep 2026 02:50:46 +0000
-Message-ID: <179073664681.434549.10297325133888163725@kernel.org>
-In-Reply-To: <20260928-gemini-ethernet-fixes-3-v2-11-758a795d7a78@kernel.org>
-References: <20260928-gemini-ethernet-fixes-3-v2-11-758a795d7a78@kernel.org>
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Wed, 30 Sep 2026 03:19:36 +0000
+Message-ID: <179073837688.434549.16725584220078648669@kernel.org>
+In-Reply-To: <20260926211813.935723-2-mmyangfl@gmail.com>
+References: <20260926211813.935723-2-mmyangfl@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,124 +52,172 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The patch goes against netdev's documented policy on cleanup.h
-  and on standalone clean-ups.
-- [Low] gmac_rx() now mixes goto-based cleanup with a cleanup.h helper,
-  which subsystem/cleanup.md and include/linux/cleanup.h (lines 148-153)…
+- [Low] The patch moved the comment "/* Custom meters only, not including
+  dedicated port meters (11) */" away from the define it describes.
+- [Low] tc.h does not compile on its own.
+- [Low] yt921x_dsa_port_setup_tc_tbf_port() is declared in tc.h (line
+  361) and defined without `static` in tc.c (line 292).
 
 --
 
-net: ethernet: cortina: Use guard helpers for locking
+net: dsa: motorcomm: Split TC module
 
-This commit converts the spinlock lock and unlock pairs in the Gemini
-ethernet driver to guard() and scoped_guard() from linux/cleanup.h. The
-goto based unlock path in geth_freeq_claim() is replaced with early
-returns. No functional change is intended.
+This commit moves the traffic control code (policers, TBF shaping, flower
+ACL offload and port mirroring) out of chip.c and into a new file, tc.c.
+The related register definitions and ACL structs move from chip.h into a
+new tc.h. The ethaddr helpers become static inline functions in chip.h.
 
-> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index 910de9925949..4fdd7478601f 100644
-> --- a/drivers/net/ethernet/cortina/gemini.c
-> +++ b/drivers/net/ethernet/cortina/gemini.c
+> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+> index 28e4f26f9cc49..02419bcde3f21 100644
+> --- a/drivers/net/dsa/motorcomm/chip.h
+> +++ b/drivers/net/dsa/motorcomm/chip.h
 
 [ ... ]
 
-> @@ -790,10 +778,11 @@ static struct page *geth_freeq_claim(struct gemini_ethernet *geth,
+> @@ -791,19 +484,7 @@ enum yt921x_fdb_entry_status {
 >  
->  	index = geth_freeq_mapping_index(geth, mapping);
+>  #define YT921X_MSTI_NUM		16
 >  
-> -	spin_lock_irqsave(&geth->freeq_lock, flags);
-> +	guard(spinlock_irqsave)(&geth->freeq_lock);
+> -#define YT921X_TOKEN_BYTE_C	1	/* 1 token = 2^1 byte */
+> -#define YT921X_TOKEN_PKT_C	-6	/* 1 token = 2^-6 packets */
+> -#define YT921X_TOKEN_RATE_C	-15
+> -/* Custom meters only, not including dedicated port meters (11) */
+>  #define YT921X_METER_NUM	64
+> -#define YT921X_METER_SLOT_MIN	80
+> -#define YT921X_METER_UNIT_MAX	((1 << 3) - 1)
+> -#define YT921X_METER_CIR_MAX	((1 << 18) - 1)
+> -#define YT921X_METER_CBS_MAX	((1 << 16) - 1)
+> -#define YT921X_PORT_SHAPE_SLOT_MIN	80
+> -#define YT921X_SHAPE_UNIT_MAX	((1 << 3) - 1)
+> -#define YT921X_SHAPE_CIR_MAX	((1 << 18) - 1)
+> -#define YT921X_SHAPE_CBS_MAX	((1 << 14) - 1)
+
+[Severity: Low]
+This isn't a bug, but the "Custom meters only" comment described
+YT921X_METER_NUM, and that define stays in chip.h. In tc.h the comment now
+sits above an unrelated define:
+
+tc.h:
+#define YT921X_TOKEN_RATE_C	-15
+/* Custom meters only, not including dedicated port meters (11) */
+#define YT921X_METER_SLOT_MIN	80
+
+Could the comment stay with YT921X_METER_NUM in chip.h? It explains why
+yt921x_dsa_port_policer_add() programs meter port + YT921X_METER_NUM. With
+the comment moved, YT921X_METER_NUM has no explanation.
+
+This still looks the same at the end of the series.
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+> new file mode 100644
+> index 0000000000000..38dd4ec60bbc1
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/tc.c
+> @@ -0,0 +1,1457 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (c) 2026 David Yang
+> + */
 > +
->  	gpage = xa_load(&geth->freeq_mappings, index);
->  	if (!gpage || !gpage->page || !gpage->fragments)
-> -		goto err_unlock;
-> +		return NULL;
-
-[Severity: Low]
-Does this conversion fit the netdev guidance on cleanup.h?
-Documentation/process/maintainer-netdev.rst says:
-
-  Use of guard() is discouraged within any function longer than 20 lines,
-  scoped_guard() is considered more readable. Using normal lock/unlock is
-  still (weakly) preferred.
-
-geth_freeq_claim() is about 46 lines long. Its function-scope guard()
-covers xa_load(), xa_erase(), dma_unmap_single_attrs() and put_page().
-There are also two early return NULL exits, which now release freeq_lock
-implicitly.
-
-gmac_update_hw_stats(), gmac_enable_irq() and the gemini_port_irq()
-hardirq handler are also longer than 20 lines and now use a
-function-scope guard().
-
-The same document also says:
-
-  Netdev discourages patches which perform simple clean-ups, which are not
-  in the context of other work.
-
-The commit message only says "Use cleanup guard helpers to scope the
-driver's spinlocks automatically". The patch has no functional change, and
-it touches the RX and IRQ paths in gmac_rx(), gmac_irq() and
-gemini_port_irq(). That may make stable backports harder.
-
-Would it be better to keep the explicit spin_lock_irqsave() and
-spin_unlock_irqrestore() calls in the longer functions? Or use
-scoped_guard() there, or fold this into other work on the driver?
+> +#include "chip.h"
+> +#include "smi.h"
+> +#include "tc.h"
+> +
+> +#define to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
+> +#define to_device(priv) ((priv)->ds.dev)
 
 [ ... ]
 
-> @@ -1622,17 +1593,16 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+> +int
+> +yt921x_dsa_port_setup_tc_tbf_port(struct dsa_switch *ds, int port,
+> +				  const struct tc_tbf_qopt_offload *qopt)
+> +{
 
 [ ... ]
 
-> -	spin_lock_irqsave(&geth->irq_lock, flags);
-> -	rw.bits32 = readl(ptr_reg);
-> -	/* Reset interrupt as all packages until here are taken into account */
-> -	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
-> -	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-> -	spin_unlock_irqrestore(&geth->irq_lock, flags);
-> +	scoped_guard(spinlock_irqsave, &geth->irq_lock) {
-> +		rw.bits32 = readl(ptr_reg);
-> +		/* Reset interrupt as all packages until here are taken into account */
-> +		writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
-> +		       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
+> +int
+> +yt921x_dsa_port_setup_tc(struct dsa_switch *ds, int port,
+> +			 enum tc_setup_type type, void *type_data)
+> +{
+> +	switch (type) {
+> +	case TC_SETUP_QDISC_TBF: {
+> +		const struct tc_tbf_qopt_offload *qopt = type_data;
+> +
+> +		return yt921x_dsa_port_setup_tc_tbf_port(ds, port, qopt);
 > +	}
->  
->  	r = rw.bits.rptr;
->  	w = rw.bits.wptr;
 
 [Severity: Low]
-Does this mix goto based cleanup with a cleanup.h helper in gmac_rx()?
+This isn't a bug, but the only caller of
+yt921x_dsa_port_setup_tc_tbf_port() is yt921x_dsa_port_setup_tc(), here in
+the same file. Could it stay static and be left out of tc.h?
 
-Before this patch gmac_rx() used only gotos. Its RX loop already relies on
-goto based cleanup through the err_length, err_drop and next_desc labels:
+Also, the to_yt921x_priv() and to_device() macros at the top of tc.c are
+exact copies of the ones in chip.c:
 
-err_drop:
-		if (skb) {
-			napi_free_frags(&port->napi);
-			skb = NULL;
-			frag_nr = 0;
-		}
+chip.c:
+#define to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
+#define to_device(priv) ((priv)->ds.dev)
 
-		if (page)
-			put_page(page);
+Would it be better to define them once in chip.h, next to struct
+yt921x_priv, so the two copies can't drift apart?
 
-include/linux/cleanup.h says:
+[ ... ]
 
-  the expectation is that usage of "goto" and cleanup helpers is never
-  mixed in the same function. I.e. for a given routine, convert all
-  resources that need a "goto" cleanup to scope-based cleanup, or
-  convert none of them.
+> diff --git a/drivers/net/dsa/motorcomm/tc.h b/drivers/net/dsa/motorcomm/tc.h
+> new file mode 100644
+> index 0000000000000..3d4a8a24f8a85
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/tc.h
+> @@ -0,0 +1,380 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Copyright (c) 2026 David Yang
+> + */
+> +
+> +#ifndef _YT_TC_H
+> +#define _YT_TC_H
+> +
+> +#include <net/dsa.h>
+> +#include <net/pkt_cls.h>
+> +
 
-Nothing goes wrong today. The scoped_guard() block closes before the while
-loop, and none of the gotos cross its scope.
+[ ... ]
 
-If the locked section were later moved into the loop, or changed to
-guard(), those gotos would jump across a cleanup scope.
+> +struct yt921x_acl_rule {
+> +	unsigned long tag;
+> +	enum tc_setup_type type;
+> +
+> +	u32 action[3];
+> +	bool sw_assisted;
+> +
+> +	u8 mask;
+> +	struct yt921x_acl_entry entries[YT921X_ACL_ENT_PER_BLK];
+> +};
+> +
+> +struct yt921x_acl_blk {
+> +	struct yt921x_acl_rule *rules[YT921X_ACL_ENT_PER_BLK];
+> +};
 
-Could gmac_rx() keep the explicit spin_lock_irqsave() and
-spin_unlock_irqrestore() pair? Another option is to move the locked rwptr
-read and interrupt ack into a small helper.
+[Severity: Low]
+Is tc.h meant to compile on its own? YT921X_ACL_ENT_PER_BLK is still
+defined only in chip.h, and tc.h includes only <net/dsa.h> and
+<net/pkt_cls.h>. These arrays build only because chip.c and tc.c both
+include "chip.h" before "tc.h".
+
+The dependency also runs the other way. struct yt921x_priv in chip.h still
+holds struct yt921x_acl_blk *acl_blks[], but that type is now defined only
+in tc.h. A pointer to an incomplete type is legal, but the split between
+the two headers is inconsistent.
+
+The other local headers (leds.h, mdio_bus.h, smi.h) include what they need
+and forward-declare struct yt921x_priv. Could tc.h do the same and include
+what it depends on, such as the header that defines YT921X_ACL_ENT_PER_BLK?
+As it stands, reordering the includes or adding a new user of tc.h would
+break the build.
+
+This also looks unchanged at the end of the series.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-gemini-ethernet-fixes-3-v2-0-758a795d7a78%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926211813.935723-1-mmyangfl%40gmail.com
