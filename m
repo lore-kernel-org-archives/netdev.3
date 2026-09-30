@@ -1,294 +1,166 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE66B3EC812
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 20:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21151479881
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 20:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790800189; cv=pass; b=qaIMH+NbauoaWXCrJd/999lhk9jJKQ5m2VpS9v+pQHssPkFZBLzsKint3cFBibFQjLRcVQ7wtkZpxAnx7JCIPNNXxEGdCxTxzOFTDwted/vFUqW8qUS+jCghwF6ebRLEl0bQUSO9r3jKc8vBT1dYL9bCNrXgkRmN+y4DvwKd5yM=
+	t=1790800232; cv=pass; b=HnNgsunOlFH6WlKUX5/WE6vDjRPmN09szRpnuT6hphzq7cuq5LbGhuXySK2qjxaR0opNnAI0pAEjRwP4RMjCC1djnCgvyWi7R45uuQYxZKhEBCQH1cCf9jr+vGE6kZJDQ/66RamXlQwPn/gZjEp+BEXlnDK2HdJjNeckMoAfdVU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790800189; c=relaxed/simple;
-	bh=BcHVFv0/2CTiuZtCyRliAm86ePsh0uPI4rajTwd6Axk=;
+	s=arc-20240116; t=1790800232; c=relaxed/simple;
+	bh=G8k5XV1SWWAdy+RGfAj3dXa4DNUX8KUBtzKy/T8o1zs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XMHC4a2/fIdAaxAViu51ML6MCQi5Fu3Liyu4wYul12gJ+A1e6+IfgRTtNhNGT4DGM+cT2c2263bN8+lieE0XfBWXkJHu+/12t766uHElOpCVYtmXuJjKXsdD7/pELbhH+8HCTUY72A1r9coj48Saooh7S6qi7kG2IMC1KOYn+KQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vv1XN1+q; arc=pass smtp.client-ip=74.125.228.39
+	 To:Cc:Content-Type; b=jtZnDZmAlzcP7RXTJr3O6r70SijGP58G5m4NhcbaNASI88Wy0ZmQq7AHhSszcwnixWLLWEeHefkafkB0IldF4SDO4blaKyoV1XnDgQUebr/wAOV7THzca6sYmxtXGvv+UzigDPEpbUOtbdfP3QsgFs7nIH15C0zbBEFooQQHvmc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H18oGY2r; arc=pass smtp.client-ip=74.125.228.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vv1XN1+q"
-Received: by mail-pz2-f39.google.com with SMTP id d2e1a72fcca58-880fcd3790bso2082434b3a.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:29:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790800187; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H18oGY2r"
+Received: by mail-pz2-f40.google.com with SMTP id d2e1a72fcca58-8805988a200so3795827b3a.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:30:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790800230; cv=none;
         d=google.com; s=arc-20260327;
-        b=pK3ZPHFegXm/+XJkUwVaj/ooiyQDvLFsatiAAAnBgubEUt2Voyew18qYJ0e36Vh48S
-         NeY6SQS/EsHr8uiVWLxBYhR8CgAjAJ/MzSCkj+bgYfIpu3oL+8XkrePALQ+KzINpZ1y7
-         XZAIlCyQQw5wwCP/MgQ+t7p3Rpz99p4jjpw3LQAEUxNOCso/VUM2+WGIfciqGOmG59N0
-         M7i3Drpc/Q3doUz6vhKrrgTziLF+Lqa9BIysS/fmYckqcW/dnN9kKBW6iRAcrMUHlKi4
-         c9M/4PmfftJ9vMGOiO4k2mE1X1hE/2AaZbwI/v1z0GzTNpM70zMM+4WEd7nCgiJSH20e
-         1ruQ==
+        b=HxhOgj23Sq0uW4/g68d2g9l8xQkYkIs+W+NGRVkrsXt1iwHsp5VAai5hCjKcUvO9xw
+         5mzYaMCz6bLLPd/jY8YIyY9uD3hf2d0ClDnTRU2E12S+rNtcpsJ2QXzSHcJLwNZV+WuK
+         cTQX2EJH6wskRlzQgp74H/1xqjlPRpVW1BGMX41wBkO22BAN7HCbTUGSUDAa5oI3OryK
+         kNAVlymqYko6FP2KI4dPPU9rThpbRmlO6U8qONI+MFzEbFut9pDlrWvlnUGzm09FWMlB
+         LvlCFxr38IjHpDh4b4malCMJ7xxo9dCzd6ozGvueblz3Jxlm2ep0zmA/DZizRsbIEA6D
+         vAhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0qWiEREHyYEPUY00hgC8r7GMRIjMsgsKZRL/BAv6jKU=;
-        fh=Wq+KKCXeTnC719x/3xRr6hQq9VNNQW9gCbQv8Y8dsAc=;
-        b=p8utP3hPrL/FO5ClkExQDUWc1alOnRXoLgfaJtvaT59Y9oz25g35vklTSvCrrwcHRn
-         UFcd7u965o2aRlPiOzrWkFHtFzFhphNVyyUXEpNmjRlUkUxHX1Os5NFyxncW67x/xx4T
-         judNy4totYCBBEst4Gz7z25gspywYP0MPJKwsuHbjEmiAMXVgcLWI3TEkEocYc5l7zMR
-         0CzQgm8z2mXNMnN+IG81nuCNtsaVLtIDExCWrTWRuQzIz4Pe0nFWlLD3MMB5HGtPMbfp
-         2E0fswyzakHkchMMQYHy7nBwSZI2pdbaRWhJ1eFyCIPs/b/JDjxXKkSNvByF7O1mBD9U
-         Zd7Q==;
+        bh=CjbSFyqOnw6JPYqmCBCI/LQ67eLhGfYCrMua/TXCkJg=;
+        fh=MQ2GFJrnECiPHr7pLI51UPvP3dVDdYhQqhSFsZDJt5o=;
+        b=Y7FsuZprth9tLhRLDsU/3wq4iY23U+lWjmDsE0pvOqBL8NLjKK19YhGoTMNGRetzZ0
+         oM3QxP4cG+JuR6dN3FDo0mFJOtO+gW8kLXsE3ZI+FkjATt2p7bqaL1TrmH3qi8l5KX1L
+         HnyHVKpO1xu6hyKXxuppKO2yI44hxmNXonExHGbanrJFn5y3gZ5wOsXneOSZtwFYvPTY
+         17B9runN65lL+wCxKhiHyr8uiZwyehP8VREmN0mLGnTXW2Y4tfHyrpQ0UQ0k/K4SW0OK
+         92cD18Py6xGZl5gdywu5aBHYHzOUg1FeMxxH91Dbcdqnd0zpOb2o3D0D1Dp1fdUt0Xli
+         I3VQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790800187; x=1791404987; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790800230; x=1791405030; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0qWiEREHyYEPUY00hgC8r7GMRIjMsgsKZRL/BAv6jKU=;
-        b=Vv1XN1+qiISnGjHnmWGq2UxuFGQwS635Xjkvr55K2ZFdWHbkkElc8ivlC6NVMmT/0D
-         VbYAOZOdhc/QFztL+oDmly6T2nJiD8Q0y9cqtH1li4sif8pGsAZw/ILhbtLuDlSjWj18
-         FxQHxyJUOxeyuSmTABTW4KCPTy0NF8He190CNj6ursK36y6AEGsZIkkI3lD/NSs0ErVu
-         nok0K0dNghMDshMM9gXEZUjrN9/GD9cbq1KRRpXeO5eGCv3hs1K1wVrUPBJDJfY3fyUz
-         0sCJnibRj5wM0Br8MN8Yba/slOJhd52ss73dyvhqTJAz0YcIxOGSB4WS3DfxNYn1Gpnq
-         Jzmg==
+        bh=CjbSFyqOnw6JPYqmCBCI/LQ67eLhGfYCrMua/TXCkJg=;
+        b=H18oGY2rxPaodBLCo9ETzXF3R2XFiNFXK98UaHZfb0IKrJYX1zkxKMjVHJbQg+emd6
+         0YJf442E3GigFVZMI3MT5D34zVNRRsUpWo9B7KNi017F2dYP1e/QnKfWiG9AGLeYf8sZ
+         zIIGb6CfQ5FsYiXdPCy1K0JLK9rsZWrx3t0sPE7Tyc7Bjps3I7aSCjBaYhyMCMMQs58f
+         j/xST5BdqXp5kghHqS9xwPZp8V5CsUD7lJzq3mzA7xK1oQ+FpVmo326jqhgCMeyWpprM
+         ErgnI81MOLSaiZ/OvEI0hg6TrLLK1jG+3dlb/XQJiz6pzyvRnLrk6kl5wUNukTyApxkP
+         r5Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790800187; x=1791404987;
+        d=1e100.net; s=20260707; t=1790800230; x=1791405030;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0qWiEREHyYEPUY00hgC8r7GMRIjMsgsKZRL/BAv6jKU=;
-        b=KtwPOYSRh2kmw2NEclvx7Fcr3snFY0bqGdIQrVTGOumyhMG/ZpKmfR++d1pfcGEk8B
-         5EIP6kXJzGgi7oXf/G+hcyRkJa3Wr6jSOfk4gbPpCyoykfMu2MzqqXCkb66QiN94H5s5
-         f8Tp8kPLVuVKuj7rpuyEx+Zqiu00gU8bIH/xChjh4nWbx2V4jRzW2xdSSevYZEvcHDNj
-         Yb5iH2fNW3FLJpUQziYjl/9aNlhtYEzMio3UGUVvesQgHNmO41giDYQWzHNH6yHdYZ8S
-         NwLnZN1UM0qJbGBHks4A/jXZSgx4FZgO9/7IZAcYWd/wlOIVZ70HvojiBAWTajDusW3b
-         OtxQ==
-X-Forwarded-Encrypted: i=1; AKwUvByrFgJPdaO7j4QpWXFS0nKD8Lbkq/AABKkitUU48IlAvfKJ+zHHANC/sALBEuiGn1fEboWlilE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mdBVet5rCYP3GZ9dVvXG60jzA962vjf3WEvYehbMvI6ID/PlzS
-	Qbwe1XMvDkbD0v6oxfpkRIvH3E61DlJh6WinRaFHW2XndbfrY4b1Lk4ytz68dtMysFsF3rAAQfk
-	qn7kukuSlATrV7R6bNViUrV5Aw9O/QOc=
-X-Gm-Gg: AYBFou1/p+/qIViNn7bHAjQJTP7po6IlJc9EOZJKNLcf1QSOywtaJvxttaejOA3HZ3L
-	rLnTU9RYsiPrKEl6iVcE4EoRfTBlLL0yBpZchtJHY6vpWNvgRlOcDMu4VWHke9eRUMfClxeHu+8
-	9YMcjaO3m7OmHDNOL8ndJilciN7tu/tucF226Rr2UuzmLe48csGM+H5AY+iWafiedpkRTDyGc2r
-	NuC5R57+NH6LtCBwGnCwo1G+0g6NJ7Qt5fRVxoD/IikTVx/HAwz5w/MBq/yVP4UDycs/HnE4Kan
-	qMuNdjMLIg/l41utp+7vqXXQ+NdQzFxBCrNGvcipYqC2tQ6qUi83cgb6eg6YH9IJRE3WytNEt4V
-	rwEtnA0jtFg0JRI+16HlF0dZs4LqMOZP4XSSsauJc1XKNQxCmNWPpmg==
-X-Received: by 2002:a05:6a00:b81:b0:881:e626:74a0 with SMTP id
- d2e1a72fcca58-8874c4dcd27mr1741017b3a.47.1790800187111; Wed, 30 Sep 2026
- 13:29:47 -0700 (PDT)
+        bh=CjbSFyqOnw6JPYqmCBCI/LQ67eLhGfYCrMua/TXCkJg=;
+        b=RZDof3WJpXfLlQqm8T0An9vCcNwUukLtfGH6esTUtsS5J9tq9vM530H+heO2Ngq69D
+         647+6394qWonrLFfhCS5GxYLS20uAiISExAS7na6ynsdQzzY6XO9iG3Ipy0YO9aPRR+v
+         LuAqcejspQvvumhgYycLOAyKqIn/jGpmv0Vp1ThIptQ6XHw6TID0HgIEhi37Kx1dWkFb
+         BtKrtbZi7UyBr1PY7UlU+m7snK7JtZZOUYK8PVZLh/gL5413fxI522LgTisr43rwrYg/
+         3KytasVtef1p617/tDkjkmARL8xOvvWI1MGbDKcYYtbT+vQxZmDm7cjvjsdNv49Eyh3x
+         Nxlw==
+X-Forwarded-Encrypted: i=1; AKwUvBweh+ljKDlY/e8CcKQWTBj6RlF4ZHrwQ01V9yjqy3LUxCEQ6mdYVAl7FSC7U/qasnnWiWko354=@vger.kernel.org
+X-Gm-Message-State: AFuF++mhvw/FU2Lvpe9SH9pWl6UuEPPjOo6TO5MDC1mRhawD/41D97ri
+	67WNndSB4CQPeWxzERs6Dqg8dlwW/fTIijVRJk9HokAPRnULSaBo5OaTPQmAOyE7DtJEudySzjd
+	Z9EFGPQ4ed/xURqWAjwsgk1sdasKqmi4=
+X-Gm-Gg: AYBFou1HrhYIy+3l3x+ONiNIYQrWY2AT7rP7srLUaQWTAR8f9Gil8Ds7TY2gnBrHSZq
+	1dbxxj7XZgJUMkQ/J/JdNiAOMgrDbV4u99bxFmJVj8/0TTGE7ZcWVjDFs1X+BQ7lJ2gSPz46Lbu
+	fsxvagT0atHCmn11d8Mhi8Gm4YxcMdw0hvH0wUphm6ONi3Jzr+Tp4LnJEU55y7ckQNA6PhiBR7w
+	MKAhI2b9M5yjkfQWpLTxdw/Cwfk1Gtz+AFeRRe3SNNJQ9xhE9jm/bq6AI1OB1ZPL9BXKEM1OBLv
+	ewjMXHkoOZle2V+FMUxelXyQSoIiXg0bvIwMeJD1fLIkxEvCVzod7gWW+7hNd6K8K6X6VlMkYbt
+	Br8IbHh9BkP3GyohrKahvQbJsy53/ly9ddcQCMmlIFOZ0sfl6tRGTWV29N8deiPSL
+X-Received: by 2002:a05:6a00:14c2:b0:880:8fe8:a3ea with SMTP id
+ d2e1a72fcca58-8874be0d724mr2061194b3a.45.1790800230179; Wed, 30 Sep 2026
+ 13:30:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926095606.68601-1-juny24602@gmail.com> <179072989710.434549.611689946552220471@kernel.org>
-In-Reply-To: <179072989710.434549.611689946552220471@kernel.org>
+References: <20260926095606.68601-1-juny24602@gmail.com>
+In-Reply-To: <20260926095606.68601-1-juny24602@gmail.com>
 From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 30 Sep 2026 16:29:34 -0400
-X-Gm-Features: AclHuK9rgle9CfYF9HG4o2DzoqMTbtzE58FML_p4_AtH4ltOARTYvFuLeb8C-Gs
-Message-ID: <CADvbK_d1reO=rbAg9ND9d68LXHtTtnqKuPa51RtVqPOG8KTHNg@mail.gmail.com>
+Date: Wed, 30 Sep 2026 16:30:18 -0400
+X-Gm-Features: AclHuK_OSjgLkfBVMNxA26PGQ3HWO34j9O67roB4yluK7AQb7eV-UK8ZIUS6bCo
+Message-ID: <CADvbK_fU6+=ea87yFXk5HxT4-MQLuejH38Bq4wruP+2KfqY-vw@mail.gmail.com>
 Subject: Re: [PATCH net v3] sctp: check RCV_SHUTDOWN after the sendmsg connect wait
-To: netdev-bot+sashiko@kernel.org
-Cc: juny24602@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, junvyyang@tencent.com, 
-	stable@vger.kernel.org, corvus@tencent.com
+To: Jun Yang <juny24602@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	Jun Yang <junvyyang@tencent.com>, stable@vger.kernel.org, 
+	TencentOS Corvus AI <corvus@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026 at 8:58=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On Sat, Sep 26, 2026 at 5:56=E2=80=AFAM Jun Yang <juny24602@gmail.com> wrot=
+e:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
+> From: Jun Yang <junvyyang@tencent.com>
 >
-> Critical: 0 (1) =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+> sctp_wait_for_connect() drops the socket lock while it sleeps. An
+> out-of-the-blue ABORT can then be processed from the socket backlog and
+> unlink the association. If a concurrent shutdown(fd, SHUT_RD) sets
+> RCV_SHUTDOWN, the waiter breaks with err =3D=3D 0 before checking
+> asoc->base.dead. Its final sctp_association_put() can then free the
+> association, leaving sctp_sendmsg_to_asoc() to continue with a dangling
+> pointer.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> Check RCV_SHUTDOWN along with the wait error in sctp_sendmsg_to_asoc()
+> before using the association again. The check only accesses the socket,
+> so it needs no additional association reference. Return the existing
+> -ESRCH so that sctp_sendmsg() skips freeing a new association that may
+> already have been destroyed.
 >
-> - [Medium] In sctp_sendmsg_to_asoc() (net/sctp/socket.c:1847), the new
->   condition `if (err || sk->sk_shutdown & RCV_SHUTDOWN)` returns -ESRCH=
-=E2=80=A6
+> Keep sctp_wait_for_connect() unchanged to preserve its behavior for the
+> connect() caller.
 >
-> Pre-existing issues:
-> - [Critical] This problem wasn't introduced by this patch, but it sits on
->   the same post-wait path the patch hardens.
+> Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_inter=
+leave")
+> Cc: stable@vger.kernel.org
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Assisted-by: tencentos-corvus-ai:hy4-preview
+> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> ---
+> v3:
+> - Check RCV_SHUTDOWN after the sendmsg connect wait, as suggested by
+>   Xin Long, instead of taking an extra association reference and checking
+>   asoc->base.dead.
+> - Keep the shared wait helper unchanged and retain the -ESRCH error path.
+> - Link to v2: https://lore.kernel.org/all/20260911090039.75646-1-juny2460=
+2@gmail.com/
+> - Review: https://lore.kernel.org/all/CADvbK_f=3DS-2waid_92PbOCh-LWjU5oiZ=
+T+__xWfttVeTHEPQTg@mail.gmail.com/
 >
+> v2:
+> - Leave sctp_wait_for_connect() unchanged to preserve connect() semantics=
+.
+> - Hold and validate the association in the sendmsg-only caller.
+>
+>  net/sctp/socket.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index c7b9e325ec1c..4652fd90d9a6 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -1844,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_associa=
+tion *asoc,
+>                 if (asoc->ep->intl_enable) {
+>                         timeo =3D sock_sndtimeo(sk, 0);
+>                         err =3D sctp_wait_for_connect(asoc, &timeo);
+> -                       if (err) {
+> +                       if (err || sk->sk_shutdown & RCV_SHUTDOWN) {
+>                                 err =3D -ESRCH;
+>                                 goto err;
+>                         }
 > --
->
-> sctp: check RCV_SHUTDOWN after the sendmsg connect wait
->
-> On the intl_enable path of sctp_sendmsg_to_asoc(), this patch checks
-> sk->sk_shutdown & RCV_SHUTDOWN after sctp_wait_for_connect() and returns
-> -ESRCH if the bit is set. The aim is to stop the send from continuing wit=
-h
-> an association that was freed while the socket lock was dropped. That can
-> happen when a concurrent SHUT_RD makes the wait break with err =3D=3D 0.
->
-> > diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> > index c7b9e325ec1cd..4652fd90d9a6c 100644
-> > --- a/net/sctp/socket.c
-> > +++ b/net/sctp/socket.c
-> > @@ -1844,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_assoc=
-iation *asoc,
-> >               if (asoc->ep->intl_enable) {
-> >                       timeo =3D sock_sndtimeo(sk, 0);
-> >                       err =3D sctp_wait_for_connect(asoc, &timeo);
-> > -                     if (err) {
-> > +                     if (err || sk->sk_shutdown & RCV_SHUTDOWN) {
-> >                               err =3D -ESRCH;
-> >                               goto err;
-> >                       }
->
-> [Severity: Medium]
-> Can this reject sends where the association is still alive and no race
-> happened?
->
-> The new condition only looks at the socket-wide RCV_SHUTDOWN bit. It does
-> not check whether the asoc actually died.
->
-> One case needs no race: shutdown(fd, SHUT_RD) on an unconnected socket.
-> inet_shutdown() falls through from TCP_CLOSE and sets the bit permanently=
-,
-> even though it returns -ENOTCONN:
->
-> net/ipv4/af_inet.c:inet_shutdown() {
->     ...
->         case TCP_CLOSE:
->                 err =3D -ENOTCONN;
->                 fallthrough;
->         default:
->                 WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | how);
->     ...
-> }
->
-> sctp_shutdown() does nothing for SHUT_RD alone. A later sendmsg() to a
-> new peer then goes through sctp_primitive_ASSOCIATE(). On its first
-> iteration, sctp_wait_for_connect() breaks with err =3D=3D 0 without sleep=
-ing:
->
->                 if (sk->sk_shutdown & RCV_SHUTDOWN)
->                         break;
->
-> A concurrent SHUT_RD that arrives after the handshake, on a healthy
-> ESTABLISHED asoc, would also hit this check.
->
-> Before this patch, both cases went on to sctp_primitive_SEND() and return=
-ed
-> msg_len. Now the data is dropped and userspace gets ESRCH. sctp_sendmsg()
-> reads -ESRCH as "the asoc may be gone":
->
->         if (err < 0 && err !=3D -ESRCH && new)
->                 sctp_association_free(asoc);
->
-> So the new asoc stays on ep->asocs with its INIT already sent. A retry th=
-en
-> succeeds because the asoc is no longer CLOSED.
->
-> This also looks inconsistent with how other code handles the same wait
-> result:
->
-> - __sctp_connect() returns it as connect() success.
-> - The non-intl wait_connect branch in this function sends and returns
->   msg_len.
-> - The comment above sctp_shutdown() says SHUT_RD "Disables further
->   receive operations. No SCTP protocol action is taken". Disabling sends
->   is left to SHUT_WR and SHUT_RDWR.
->
-> The commit message only describes closing the concurrent SHUT_RD + ABORT
-> race. It doesn't mention the new errno from sendmsg() or the association
-> left behind.
->
-> Would a narrower check work here? One option is to hold the asoc across
-> the wait and test asoc->base.dead. Another is to treat RCV_SHUTDOWN as an
-> error only when the asoc is actually dead.
->
-intl_enable case differs from the common case: chunks must not be enqueued
-until the connection is established in sctp_sendmsg(). Therefore, we must
-ensure the connection is established before continuing the send.
+> 2.54.0 (Apple Git-157)
 
-If shutdown(SHUT_RD) is called during the handshake in such a case.
-sctp_wait_for_connect() may return 0 after seeing RCV_SHUTDOWN, without
-confirming that the association reached ESTABLISHED. In this rare case,
-it's safer to fail the send rather than enqueueing chunks based only on
-!asoc->base.dead check.
-
-So I would prefer the fix in this patch.
-
-> [Severity: Critical]
-> This is a pre-existing issue, but it sits on the same post-wait path this
-> patch hardens. Can the transport pointer also be stale after this wait?
->
-> sctp_wait_for_connect() drops the socket lock but only pins the asoc. It
-> takes no reference on the caller's transport and never checks
-> transport->dead afterwards. sctp_wait_for_sndbuf() does both.
->
-> When the wait returns 0 because the asoc reached ESTABLISHED,
-> sctp_sendmsg_to_asoc() goes on to:
->
->         list_for_each_entry(chunk, &datamsg->chunks, frag_list) {
->                 sctp_chunk_hold(chunk);
->                 sctp_set_owner_w(chunk);
->                 chunk->transport =3D transport;
->         }
->
->         err =3D sctp_primitive_SEND(net, asoc, datamsg);
->
-> This sequence appears to free the transport while the lock is dropped:
->
-> 1. sctp_sendmsg_new_asoc() adds the primary daddr as SCTP_UNKNOWN through
->    sctp_connect_new_asoc(). Extra SCTP_DSTADDRV4/V6 cmsg addresses are
->    added the same way through sctp_connect_add_peer().
->
-> 2. sctp_sendmsg() keeps the transport for TCP-style sockets, or when
->    SCTP_ADDR_OVER is set.
->
-> 3. An INIT-ACK arrives from one of the extra addresses with the correct
->    vtag. Its address parameters do not list the primary.
->
-> 4. sctp_process_init() removes every transport still in SCTP_UNKNOWN:
->
->         list_for_each_safe(pos, temp, &asoc->peer.transport_addr_list) {
->                 transport =3D list_entry(pos, struct sctp_transport, tran=
-sports);
->                 if (transport->state =3D=3D SCTP_UNKNOWN) {
->                         sctp_assoc_rm_peer(asoc, transport);
->                 }
->         }
->
->    In COOKIE_WAIT nothing else pins the primary transport. So
->    sctp_transport_free() drops the last reference, and the transport is
->    freed after an RCU grace period.
->
-> 5. COOKIE-ACK moves the asoc to ESTABLISHED. The waiter returns 0 with
->    RCV_SHUTDOWN clear, so the new check passes.
->
-> 6. The flush that sctp_primitive_SEND() triggers reaches
->    sctp_outq_select_transport(). That function reads new_transport->state=
-,
->    then does list_add_tail() on ctx->transport->send_ready and calls
->    sctp_packet_config() on the freed transport.
->
-> A local socket needs net.sctp.intl_enable, SCTP_FRAGMENT_INTERLEAVE and
-> SCTP_INTERLEAVING_SUPPORTED for this path. The INIT-ACK contents and sour=
-ce
-> address are controlled by the remote peer. The problem seems to date back
-> to when the intl path started waiting for the connection before sending.
->
-> Does this path need a sctp_transport_hold() and a transport->dead check
-> across the wait, as in sctp_wait_for_sndbuf()? Re-deriving the transport
-> after the wait would be another option.
->
-Seung already posted a patch for this pre-existing issue:
-https://lore.kernel.org/netdev/20260928152132.3705137-1-guncraft2000@naver.=
-com/
-
-Thanks.
+Acked-by: Xin Long <lucien.xin@gmail.com>
