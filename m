@@ -1,314 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9AA3ACEFE;
-	Wed, 30 Sep 2026 04:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AAE298CAF
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 05:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790743935; cv=none; b=uExPbebt7tW+xF1Ryyo9kXpRjusK8+Uz1d4xDzxXM8TMHi2BDB/LCfcqTt1R9HVzlQ58Wk2eNSw1dB8KxSszGjBY5vkiJWLtkEYwceFJOe8ubDU3cWqvPMeq9f14lYWrsKUggrwRI6GntKRxp6/Pkl9lGvukmvzKzKybwYEoNOY=
+	t=1790744601; cv=none; b=gtEvqtcqwbPZvZ4qELIpOqLuSfbJXy6G9zqlERwKS6JLizeQJmk4pV+GWkG3sNyvVRKhAO66eK35ftjtO9IjY4Ca6uXaVTTMDn9A+HfKU7KXwJBrMk2WEgS+FseDL8iF3lGevqiNYvn9g/kpCUXM1cUZNihQ+yeFViTVA9uTPag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790743935; c=relaxed/simple;
-	bh=8ywhAYWoPbgS+Gbsxai8A6lph1XhhnXID54X3n2FXb4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LeumhdAkuyvi4MLo4IIyx8LtnmTB4g9W5G5ND1NP0yXlnmbzpRi4+Z+loxRl+Y35muhe/QqLOqqpSBRG8r3GpY3hbjDkpXLl8IORM62DrQyjtRgOBQn6JNMiFsWpwClk8L+vToqFj7aa/HZqvt7dvz/6gYaV/B+jZVRVUFbsSZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNejObcC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790744601; c=relaxed/simple;
+	bh=OMwLDiOjOB1/H5Qk3yiRuT93np3VlMrQ39SNlvAqQeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dvlny5+hUgQDBMiCFaPaykO+dYhk6qlDgp7RUp5Y0aj7izxB/qlkRUWB1uTrFFawL+NuTM4eS/WE/DwfJyG+AJQCP6Sqe2eVI6PNJq0nc+WFm3phOsPZPruRyATzpSRiqRlvmQkfI0GiJzFesZrfcFBaVSRnR2jAA2+wzjnwYYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCpLfXte; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNejObcC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9A21F000FF;
-	Wed, 30 Sep 2026 04:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790743928;
-	bh=igtVl4jmPv/GxYhXWE0vCTn4PzBIYTexddEIEcvNIbI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DNejObcCs7NshfvN5OW0lISSTMy8XWLv0DCXfQZGQKXI7SUay+G0avPo7qTTDnYwk
-	 RuJySsbOj2uupimKSG+qU6F3UW+rLi6NA1cYfN1cGMJqrhNP1Vf2oNGVb73XPLO/wR
-	 N/wJubOZJAB/8YfyJNKIMMJ3oqF8NjeEpTL+dVI2T6hr2mCZyTAsZs64QZGwTuUz9H
-	 myhqJLkUTgi51qA/3VT2+EmN+l+fSFotUn1Ql8YGOwFWtdURZvH/vGKusUvNwtankt
-	 mzM8G7tXmWJLSqFIAOgbOpMm6p0Yl6QncmsQSBFUMcX17BgeDbM7uwXCtjAs58tru/
-	 YoLnY88h4d82w==
-Subject:
- Re: [PATCH net v4 15/15] net: stmmac: retain DMA resources across MTU changes
-From: netdev-bot+sashiko@kernel.org
-To: james.hilliard1@gmail.com
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- qiangqing.zhang@nxp.com, rmk+kernel@armlinux.org.uk,
- maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ansuelsmth@gmail.com,
- yangtiezhu@loongson.cn, chenhuacai@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, fancer.lancer@gmail.com, quic_jsuraj@quicinc.com,
- richardcochran@gmail.com, Joao.Pinto@synopsys.com, vladimir.oltean@nxp.com,
- boon.leong.ong@intel.com, weifeng.voon@intel.com, yoong.siang.song@intel.com,
- linusw@kernel.org, martin.blumenstingl@googlemail.com,
- magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, horms@kernel.org,
- bjorn@kernel.org, thierry.reding@kernel.org, jonathanh@nvidia.com,
- wens@kernel.org, jernej.skrabec@gmail.com, samuel@sholland.org,
- edumazet@kernel.org, richard.genoud@bootlin.com, alastair@d-silva.org,
- mripard@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
- zhaojinming@uniontech.com, lorenzo.bianconi@oss.qualcomm.com,
- dinghui1111@163.com, linux-tegra@vger.kernel.org, linux-sunxi@lists.linux.dev
-Date: Wed, 30 Sep 2026 04:52:04 +0000
-Message-ID: <179074392485.434549.10940493400361936935@kernel.org>
-In-Reply-To:
- <20260926-submit-stmmac-reset-fixes-v1-v4-15-ec1c0250b3c9@gmail.com>
-References:
- <20260926-submit-stmmac-reset-fixes-v1-v4-15-ec1c0250b3c9@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCpLfXte"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e46a15703so4709520eec.0
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 22:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790744599; x=1791349399; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XAeiNx8SHTxJ8mZniOpzlgJX9x6mLwpi/G4jTr7vIVg=;
+        b=TCpLfXtesUADRzKkuDktG83CaMdD43Ay+f9y15/0MLEONsePcyyUkPyQNeJiLSU8xM
+         M83JlBecWgN3tycUrH49vSm6KYdp8Y8UsX+s/VjePapvrj9x5gHjwkZ8CkVQoshk7YAz
+         c6VmKJ2OcpNOOIhOnjA4fbhTyNyKKrGizyrqowRJW0GzPHSHn9CvR/zNPvPYu6msFnhz
+         VKsYYRcvdGoK1BgYU/VoY4pHE06FY2W3M5gqr4K3aIVkeKryh2XrIKRc8AJuArFhwxAk
+         aIEeSfyQWwQ0glVa4wLfrJFK5jxfz2RqhzLEGCFEjrXtDdV/hn8MMBnA1xr+0TluqVne
+         1Ixw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790744599; x=1791349399;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XAeiNx8SHTxJ8mZniOpzlgJX9x6mLwpi/G4jTr7vIVg=;
+        b=IJxBG0dna0idHjikL+1JrfBoE8uTK0eg3/qX4xr/q1lXWkkgtt7jkf9XPclHXFc4Ac
+         QnYeurQrTRFAx3BabxDBY0xL9B3BEsXf2zZI4CqNA0pcHzCItMNSRFDocf2s/5z+/wHa
+         wjhOC5uiBwOuA7AOV4XIeuj9tbUD3sGQ0XLF+FJKXkoXckcA/b+IL/Bo46vxZx7wO+sU
+         7VX7m+Avb2XA84F0OKYiFTADHXYo6IyFXDzW5EYyuG/jkV7gyCWONqDi8pVqkknoJcgW
+         FUTluZmd4wgfvFJFpKlUGgOhRIDw6rYf+2HU/xipnCBB2Jd+7X8Hn3ygupIUoPm2fyN8
+         XD5g==
+X-Gm-Message-State: AFuF++k5KpMEbfbONT6mMeLxW95Q4bC8/3ql2hhcE896AOvH4Z1mIkBg
+	cXMau7gZM+DmVNYn/O9MyLyJCYVvitKaw+EZceKZM6Zz0Crsh1GpQnU5ECRGsTsV
+X-Gm-Gg: AYBFou05JEAd8n75fZyYGnI/Borsc60Ry3ICXwgmAMVIQyz2SqW1UPeiqSZejwqVa5/
+	31LV/AIgY5AKEV4J7la+iNALDV5BVjRWUTTAbrCP8ydzH3fFrcRjHRHQnds8rbWsYbpkIG/91HR
+	AmzkdeY47w/Z1T4WJMOKTxO9F8PrP6niaiITlYj8Pe/QwFzG8Fb5skCJsXGsNuvQZVW9bLj8uhO
+	f1VHb93F2X5QLIVRrVCV4wX7I5MA4RYIj/dJBOJ9F5DAoLCworGWu9S6eZAXgrw5RzSYx/1cCK2
+	fYpZYT64KSW99DyWVMUoXklwaac/CRSQ0gEwOs8CI7GKi4g/EutQORd6IzLubiu5KbiTq/73o5d
+	MR7dGwiTS4OpxdgfpMxjeAs608oJAkuxzvfm9rui4lmPTpnMtbef5UWi/zGjhxJwRJXvoukpo3E
+	CPRiAgL78x4gwb7tQDuNuusQacYDDJ9kJabhN3Y1YnnOW5CMZGLXNnuKlHTd00
+X-Received: by 2002:a05:7301:540e:b0:34b:34cc:bcf9 with SMTP id 5a478bee46e88-34cd90763ddmr495416eec.3.1790744598988;
+        Tue, 29 Sep 2026 22:03:18 -0700 (PDT)
+Received: from fox.. ([43.242.224.196])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf4a63ac9sm772160eec.10.2026.09.29.22.03.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 22:03:18 -0700 (PDT)
+From: Roshan Kumar <roshaen09@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	chopps@labn.net,
+	linux-kernel@vger.kernel.org,
+	lilly@aronleigh.au,
+	shubham@octane.security,
+	gio@octane.security,
+	robert@octane.security,
+	paolo@octane.security,
+	Roshan Kumar <roshaen09@gmail.com>
+Subject: [PATCH net v3 0/2] xfrm: iptfs: fix queued receive state lifetime
+Date: Wed, 30 Sep 2026 10:33:05 +0530
+Message-ID: <20260930050307.1978654-1-roshaen09@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+IP-TFS can retain received skbs in its reorder window and reassembly state.
+Two lifetime problems interact in these paths: the shared drop timer
+does not track the two states independently, and retained skbs do not
+keep their input net_device alive.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0
+Patch 1 gives reassembly and reorder state separate deadlines and
+always arms their shared timer for the earliest one. Patch 2 holds a
+device reference for every retained skb until ordered processing or
+destruction is complete.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The unpatched base reproduces the device use-after-free under KASAN.
+The final series passes the reorder, reassembly, SA deletion/expiry,
+clean teardown, and unprivileged user-namespace regression cases,
+including a timer-overlap test for stale deadlines.
 
-- [Medium] stmmac_reconfigure_mtu()
-  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c) calls…
-- [Medium] stmmac_reconfigure_mtu() takes priv->ptp_mutex
-  (stmmac_main.c:6668) before it calls phylink_stop().
-- [Medium] stmmac_reconfigure_mtu() masks only the per-channel DMA
-  interrupt enables (stmmac_set_dma_irq_state -> set_irq_mask).
-- [Medium] Before the first stmmac_hw_setup(), stmmac_reconfigure_mtu()
-  calls phylink_prepare_resume().
+Testing on x86-64 at the base commit plus this series:
+- KASAN + NET_DEV_REFCNT_TRACKER: the 10-case lifecycle matrix passed on
+  both the regular and lockdep/RCU-debug kernels;
+- stale-deadline overlap regression: 5.155 second close delay (minimum 4s);
+- runt-created reassembly regression: 5.152 second close delay
+  (minimum 4s);
+- PREEMPT=full, lockdep, RCU, atomic-sleep, debug-object, and ref-tracker
+  scans were clean;
+- GCC 13.3 and Clang 18.1 W=1 object builds passed;
+- x86-32 and arm64 cross-compiled W=1 object builds passed;
+- allnoconfig W=1 full build passed;
+- allmodconfig and allyesconfig W=1 xfrm_iptfs.o builds passed. The
+  full builds stop on the same unrelated lockdep_proc.c and callthunks.c
+  GCC diagnostics reproduced on the unpatched base.
 
---
+Changes in v3:
+- split the shared-timer correction into a prerequisite patch;
+- keep the reassembly reference through xfrm_input();
+- track reassembly and reorder deadlines independently and arm runt-created
+  reassembly;
+- cover all reorder, completion, abort, timeout, and destruction paths;
+- use netdev_hold()/netdev_put() and document reference ownership;
+- remove the incorrect bounded-lifetime claim and self Reported-by trailer;
+- add the required AI-assistance disclosure.
 
-net: stmmac: retain DMA resources across MTU changes
+Changes in v2:
+- add reassembly queue coverage and state-destruction cleanup;
+- add the Fixes tag and independent reporting team credit.
 
-This patch replaces the release/reopen sequence for live jumbo MTU
-changes with a new function, stmmac_reconfigure_mtu(). The new function
-keeps the old rings and IRQ registrations so a failed setup can be rolled
-back. If the rollback also fails, the interface is left detached in a new
-STMMAC_DATAPATH_HALTED state that close or a later down/up can clean up.
+Roshan Kumar (2):
+  xfrm: iptfs: track independent drop deadlines
+  xfrm: iptfs: hold a device reference while packets are queued
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 08049c05ffc48..8964f52c26bae 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+ net/xfrm/xfrm_iptfs.c | 151 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 108 insertions(+), 43 deletions(-)
 
-[ ... ]
 
-> @@ -6601,6 +6651,109 @@ static void stmmac_set_rx_mode(struct net_device *dev)
->  	stmmac_set_filter(priv, priv->hw, dev);
->  }
->  
-> +static int stmmac_reconfigure_mtu(struct net_device *dev, int mtu)
-> +{
-
-[ ... ]
-
-> +	mutex_lock(&priv->ptp_mutex);
-> +	stmmac_block_ptp(priv, true);
-> +	netif_device_detach(dev);
-> +	phylink_stop(priv->phylink);
-
-[Severity: Medium]
-Can holding ptp_mutex across phylink_stop() create a lock ordering cycle?
-
-phylink_stop()->phylink_run_resolve_and_disable() does:
-
-    queue_work(system_power_efficient_wq, &pl->resolve);
-    flush_work(&pl->resolve);
-
-so lockdep records a ptp_mutex -> resolve work dependency.
-
-On link down, the resolve worker runs
-phylink_resolve()->phylink_link_down()->phylink_deactivate_lpi()->
-stmmac_mac_disable_tx_lpi(), and that takes priv->lock. With MAC WoL,
-phylink_stop() also calls phylink_link_down() directly under state_mutex.
-
-stmmac_resume() takes the two locks in the opposite order:
-
-    mutex_lock(&priv->lock);
-    ...
-    mutex_lock(&priv->ptp_mutex);
-
-Together these form ptp_mutex -> resolve work -> priv->lock -> ptp_mutex.
-Both the MTU path and the resume path hold RTNL today, so this may not
-deadlock in practice. The resolve worker does not hold RTNL, though.
-
-Once an MTU change, an LPI link-down and a resume have all run, won't
-lockdep report a circular dependency? Before this patch, nothing called
-phylink_stop() with ptp_mutex held.
-
-Could ptp_mutex be taken after phylink_stop() and stmmac_quiesce()
-instead?
-
-> +	stmmac_quiesce(priv);
-> +	if (stmmac_fpe_supported(priv))
-> +		ethtool_mmsv_stop(&priv->fpe_cfg.mmsv);
-> +
-> +	/* Drain handlers before the final TX stop and configuration swap,
-> +	 * and keep the registrations for rollback.
-> +	 */
-> +	stmmac_set_dma_irq_state(priv, false, irq_mask);
-> +	stmmac_synchronize_irq(priv);
-
-[Severity: Medium]
-Only the per-channel DMA interrupt enables are masked here. What happens
-to the MAC core interrupt sources? On dwmac4, dwmac4_core_init() writes
-GMAC_INT_DEFAULT_ENABLE (PMT, LPI and TSIE) to GMAC_INT_EN, and none of
-those are masked.
-
-While ptp_blocked is set, stmmac_common_interrupt() skips the timestamp
-acknowledgement:
-
-    if (!READ_ONCE(priv->ptp_blocked))
-        stmmac_timestamp_interrupt(priv, priv);
-
-The only place that clears the TS interrupt is timestamp_interrupt(),
-which reads GMAC_TIMESTAMP_STATUS.
-
-Suppose an extts snapshot or a PPS target time event arrives between
-stmmac_block_ptp(priv, true) and the unblock at the restart label. Can a
-level-triggered line then keep firing, with stmmac_interrupt() returning
-IRQ_HANDLED every time? That window includes the sleeping
-phylink_stop()/flush_work() and synchronize_net(). It also covers the
-time after stmmac_ptp_restore() re-arms extts/PPS inside
-stmmac_hw_setup().
-
-On a single-CPU system, could this stop the thread that performs the
-reset from ever running?
-
-The failed rollback branch further down has a related problem:
-
-    stmmac_set_dma_irq_state(priv, false, irq_mask);
-    stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
-    ...
-    priv->datapath = STMMAC_DATAPATH_HALTED;
-
-The failed stmmac_hw_setup() has already run stmmac_core_init(), which
-re-enables the MAC interrupts, before its later fallible steps
-(stmmac_rxp_config(), stmmac_tc_restore_filters(),
-stmmac_restore_timestamping(), stmmac_tc_restore_est()).
-stmmac_mac_set(false) only clears RE/TE.
-
-stmmac_request_irq_single() registers dev->irq with IRQF_SHARED. If the
-MAC raises LPI, TS, PMT or safety status after the handler is freed,
-could the shared line storm until the IRQ core disables it? That would
-break the unrelated devices that the commit message says this design
-keeps working. The old failed-reopen path behaved similarly for this
-second case, but the ptp_blocked window above is new.
-
-> +	stmmac_stop_tx_queues(priv);
-> +
-> +	ret = stmmac_prepare_rx_buffers(priv);
-> +	if (ret)
-> +		goto restart;
-> +
-> +	stmmac_stop_all_dma(priv);
-> +	phylink_prepare_resume(priv->phylink);
-> +
-> +	/* MAC receive limits must be programmed for the prospective MTU. */
-> +	WRITE_ONCE(dev->mtu, mtu);
-> +	priv->dma_conf = new_conf;
-> +	stmmac_reset_queues_param(priv);
-> +	ret = stmmac_hw_setup(dev, false, true);
-
-[Severity: Medium]
-Does passing keep_ptp=true here still work if the PTP reference clock
-was never enabled at open?
-
-stmmac_setup_ptp() only warns when the clock fails to enable:
-
-    ret = clk_prepare_enable(priv->plat->clk_ptp_ref);
-    priv->ptp_clock_enabled = !ret;
-    ...
-    if (ret < 0) {
-        netdev_warn(...);
-        return;
-    }
-
-However, stmmac_restore_timestamping() checks only dma_cap and
-clk_ptp_rate before it programs the counter. It does not look at
-priv->ptp_clock_enabled:
-
-    if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp) ||
-        !priv->plat->clk_ptp_rate)
-        return 0;
-
-    ret = stmmac_init_tstamp_counter(priv, priv->systime_flags);
-
-Further down,
-stmmac_hw_setup()->stmmac_restore_timestamping()->stmmac_ptp_restore()->
-config_addend() polls TSADDREG for up to 100ms:
-
-    return readl_poll_timeout_atomic(ioaddr + PTP_TCR, value,
-                                     !(value & PTP_TCR_TSADDREG),
-                                     10, 100000);
-
-On hardware where this handshake cannot complete while the reference
-clock is gated, the rollback stmmac_hw_setup(dev, true, true) would fail
-the same way. Wouldn't that leave the interface in
-STMMAC_DATAPATH_HALTED?
-
-Before this patch, the MTU path went through __stmmac_open(). That called
-stmmac_hw_setup() with keep_ptp=false and then stmmac_setup_ptp(), which
-tolerates this failure. Should stmmac_restore_timestamping() also check
-priv->ptp_clock_enabled?
-
-> +	if (ret) {
-> +		stmmac_stop_all_dma(priv);
-> +		stmmac_mac_set(priv, priv->ioaddr, false);
-> +		priv->dma_conf = old_conf;
-> +		WRITE_ONCE(dev->mtu, old_mtu);
-> +
-> +		/* Reuse the retained rings. Reinitialize them only after reset
-> +		 * has completed, not merely after clearing the DMA enable bits.
-> +		 */
-> +		restore_ret = stmmac_hw_setup(dev, true, true);
-> +		if (restore_ret) {
-> +			stmmac_stop_all_dma(priv);
-> +			stmmac_mac_set(priv, priv->ioaddr, false);
-> +			/* Setup may have restored DMA interrupt enables. */
-> +			stmmac_set_dma_irq_state(priv, false, irq_mask);
-> +			stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
-> +			stmmac_stop_tx_queues(priv);
-> +			stmmac_stop_all_dma(priv);
-> +			memset(irq_mask, 0, sizeof(irq_mask));
-> +			stmmac_set_dma_irq_state(priv, true, irq_mask);
-> +			priv->datapath = STMMAC_DATAPATH_HALTED;
-> +			netdev_err(dev, "MTU rollback failed: %pe; interface remains detached\n",
-> +				   ERR_PTR(restore_ret));
-> +			goto free_new;
-
-[Severity: Medium]
-Does anything undo the earlier phylink_prepare_resume() on this path?
-
-On mac_requires_rxc platforms, phylink_prepare_resume() calls
-phy_resume() on the PHY that phylink_stop() has just suspended. The
-HALTED branch never calls phylink_stop() or phy_suspend(). The PHY stays
-powered and can present link to the partner while the interface is
-detached. That lasts until close, when __stmmac_release() calls
-phylink_stop().
-
-The init_error path in __stmmac_open() does undo it:
-
-init_error:
-	phylink_stop(priv->phylink);
-	stmmac_drain_dma(priv);
-	phylink_stop(priv->phylink);
-
-Should the HALTED branch also call phylink_stop() before it returns?
-
-> +		}
-
-[ ... ]
-
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260926-submit-stmmac-reset-fixes-v1-v4-0-ec1c0250b3c9%40gmail.com
+2.43.0
