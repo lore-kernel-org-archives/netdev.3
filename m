@@ -1,213 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789C2175A89;
-	Wed, 30 Sep 2026 18:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF11514753
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 18:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790793247; cv=none; b=K/n8v0LH7NDyEVHto+QZ02CI8cSv4oyO1ozQW/ZWtsbLqxS7D96q/KGDnARqHKhGnF+qo/KWoptK8z09h0T9vk02PJz033UapgZ4hSF3xcOxBMUPwXleH47cyUSYqd1Yr7C/qhed6aXHuI+KBV4lyxovPXl1vEI02y8ocNNLQ4c=
+	t=1790793299; cv=none; b=KOV5zPihpnVFM84j5hWxWAzuyvMYJs2UvajSAsaVDueb2dSk0OCcPqrqYh+s+dayLnHuTSiwnsm9bRdDYHYrpMR/Y8Ps90DRRPEfkhn5q47J/b7bPaDAMcBGqD0LKXVXyN0/Ho9EiTeN2ho5XlUBqbc8cu8RETxf2Canf2J+fk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790793247; c=relaxed/simple;
-	bh=jgOz9keS3tRgSl0JmDjgntvXeVQ2gnZuHJr1aH5f42w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eHbdcU8H7K7bcyYXyEkQKWMc7QFMyJj7HUX8stRudjOVRdP/S23I1eybRGJ/ihXKoKMfiP+QJgmBi7gnx82KG8sY3iJ/UFsSe4XJy3b2Fbdg66Cc5Le6q5rtAoeO/U1PjFkLAQ4q06PhkuK33vBGsNDYN9Ijs0jTQzN3Ku/GvZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNRD1+yK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790793299; c=relaxed/simple;
+	bh=wmloewVcpcHaPW+zXjFWvchitKypkQUPUD54iPC2nrw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=U7uKi+JSz9P+bn23NEe8THFJ7Q7RzxF1zhDNcvEs/WKd3qs6lVw78tg+hevc0AcfsQnmuNHXWpWXF4XAfrHXVMvEe8E4Mvf33cX5PwUiqI/I7oi9lIzxsxSFiJ8Ve39bYin1hBs24HEBD72xoLQj3i+5HHD0aJ/f5sF5PaN5a/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pFZc7I74; arc=none smtp.client-ip=74.125.224.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNRD1+yK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F061F000FF;
-	Wed, 30 Sep 2026 18:34:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790793246;
-	bh=Q+YKqfQ3/s8F1tcHSL05pBU5RCUSKJAtNCNMVSPjlCc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YNRD1+yKqXjQvM/W1AjvE4o86Pl+C2aSyPxA0Ao4ThE4Z3zOVOnwOu/NOsbCLTAon
-	 esbMu0iC6VafxLeceo92SEb0LfLwFbZsnVu5QdmkNTf7/dLKGuVG6h+hlIwRkrMhQB
-	 mFU0HzV0CNHU0nezmtLEgJLnKy17BUtZL+JDGv4AX9iKMpYkmgF8vZPfxgfCpuEsEt
-	 Cxe4UaQVBGxR948+oX27SM5G4+73eKYaRqMXXZnQxk5/oKoIOz7bG3GZJdOMsJH1t0
-	 qjcs/ep2iJCONHvOxmK7GKvpcdH7LrFsPAPR9qJc5DV+hzxOwmu1oxIKjbtxm3sC/r
-	 V2E1390lNCKNQ==
-Subject:
- Re: [PATCH 1/2] net: gso: validate TCP headers before segment length checks
-From: netdev-bot+sashiko@kernel.org
-To: bestswngs@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, xmei5@asu.edu, co+1fe9b56e2c61be5e@bugs.sh
-Date: Wed, 30 Sep 2026 18:34:04 +0000
-Message-ID: <179079324479.434549.5810038850478297945@kernel.org>
-In-Reply-To: <20260927163117.746432-2-bestswngs@gmail.com>
-References: <20260927163117.746432-2-bestswngs@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pFZc7I74"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6729ca45e37so6132478d50.2
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790793296; x=1791398096; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Txr2uH6VLruyLwaJ0ui9FYVNDJPa2Ryyi4B8kwS78z8=;
+        b=pFZc7I74DdQgoo0zOB3BauBb8c+pd0FQjvqiDUgKBYM9yIupWgaYjudN9xf53YogJ5
+         TtUqm1az/OMi5KWW2QxgAQvi/pXwRFG3Bp3lhlOBGJKYqZJffaodF6bw5f28f50XdsP+
+         wUmun/GIWDbb6MdxUuS28YkZ3MjkGHd8l9x4mRbpVY7nOqqrsmNH9+C+prUk0HjwimR7
+         kgKIyATouPKHpvKHcFR2AbWVasthYB8GKbYe/X/RIF5eOwhGHokz2n5skrlMIU3mLOnP
+         6z6ZWqZ9ZJYYyNHCPDi7WPnEXJUAeylO77rHbKbKEWr7ah1Kv8jDK/4aLehV0A+IyxDr
+         +dfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790793296; x=1791398096;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Txr2uH6VLruyLwaJ0ui9FYVNDJPa2Ryyi4B8kwS78z8=;
+        b=yK/wsrAZOOhbqKxzc1Ct5FcZahxPqKH2XIO22yu2Q0yy+2ZbSSk6vJ/0nmP6a6Rl7j
+         6lZENVhDdo5LKFI9gYJ2pdoVOOh4ADmJbyf+3KUxnNL+k08WSicBJdGrOvLO4VgFpb83
+         tCC687h4/YKwgTnMhTUCB1bStFdaKv4nIDMEaNEW634kfNOIpOSMxVrgHyQBs1xQ6m3p
+         UC+KnuhFitYrxfBdFKeyir8FAO+MUwHwU3t48ZJCtYM2Hek4NBo6tu0Dly3YT6W/Z2e5
+         AQEcZVnsyRNY3o+p2pvsrWxxPtEVrkz3+UA1nHINA/72HzClZaENd+XoLiTHDB9ni/m+
+         /9hQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxwnDqehMTzhiIViCikAYFHpbWMjYXu9OmpxblJPG74YzJz9buZE9qjOmIRNt9eXvVHQHMqXnI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIJ/PIt/pGQ1MqJEr5Q9yaBwUNaMiOJI3xS27lwZkATxVj8dnG6
+	8cd+o3drE6RuYpIoOb/xHkr2pjX5XWePfSbZKu0fcUjL+USjB+HqFXs7
+X-Gm-Gg: AYBFou1uvWWscT8ERvmkhWPxhDThloJZvmp13GsSRzZDOHgpdCHqofdn2hIHp/Qnojg
+	vNIPX8Af4Q3JB/16ZKKxmyDWpAmpo6yhRaepKxPDbkn+5X68FA1oBJrhJi08RwV6+PkBteqP2sr
+	ssqhIquv7DYrLOMiNChSj9RmquqVGbK370jlfdUeIuoMX4z5SWE4Y+sk7lYIYkCkxVCANDjhzg8
+	IPL1Fdfeq6/vNS1XkH5mteluylxcfDbRuLums+BUdNXLQ6Fl9uz4pt/e6zjpToHXdfKV0IFgx6g
+	zE3e5dfwYB6BC/Dda14vRSJgdLuW386CRBKMhQ1oHEnciR/TUdpNtL+soWOazEHO4QpKGJTKwFB
+	zW/27QLEe/ok48UVMAViBarZ6uiVlQ63Wh/2UqufOcVvTu4apI2uDLrCoua9YH37aaX2gXGYMRD
+	A0sFqTfBWCRJrc45wbRPxOCjSr5Ajbig4iKgKoLnY+Eyib0XLcqNkG8/6WxsQ6vURHx7i7tQuUj
+	CPhZsAqwtuBjCWrs3pBK8z71zTttCnvcDRxvxfL8/Yy/aNpVgiA
+X-Received: by 2002:a05:690e:169f:b0:674:c0b:346b with SMTP id 956f58d0204a3-676832e1ea3mr1161182d50.4.1790793296478;
+        Wed, 30 Sep 2026 11:34:56 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-676918703bbsm148648d50.13.2026.09.30.11.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 11:34:55 -0700 (PDT)
+Date: Wed, 30 Sep 2026 14:34:55 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Rongguang Wei <clementwei90@163.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ jasowangio@gmail.com, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ Rongguang Wei <weirongguang@kylinos.cn>
+Message-ID: <willemdebruijn.kernel.23ebf894fb51a@gmail.com>
+In-Reply-To: <20260930080746.135017-3-clementwei90@163.com>
+References: <20260930080746.135017-1-clementwei90@163.com>
+ <20260930080746.135017-3-clementwei90@163.com>
+Subject: Re: [PATCH net v3 2/3] tun: fix inverted error check when
+ re-attaching the filter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Rongguang Wei wrote:
+> From: Rongguang Wei <weirongguang@kylinos.cn>
+> 
+> tun_attach() returns early when sk_attach_filter_kern() succeeds instead of
+> when it fails, so a queue attached to a persistent TAP is never published
+> in tun->tfiles[] while TUNSETIFF still reported success.
+> 
+> Fix the check, so that a failed re-attach aborts the attach, and detach the
+> filter again if a later step of tun_attach() fails.
+> 
+> This has to come after the patch that keeps a kernel copy of the program:
+> with the check fixed but the program still read from the caller's address
+> space, a re-attach that used to succeed without installing any filter would
+> fail with -EFAULT or -EINVAL.
+> 
+> Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
+> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
+> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Over-strict ordering check rejects valid decapsulated TCP GSO
-  traffic.
-- [Medium] skb_gso_tcp_header_valid() ends with `return sizeof(struct
-  tcphdr) <= tail - transport;`, where tail is the linear tail.
-
---
-
-net: gso: validate TCP headers before segment length checks
-
-This adds skb_gso_tcp_header_valid(). The helper checks TCP transport
-header ordering, linear bounds and fixed header presence before
-skb_gso_validate_network_len() and skb_gso_validate_mac_len() compute
-segment lengths. It targets a KASAN out-of-bounds read of tcp->doff when
-malformed TUN-supplied TCP GSO skbs reach TBF or police.
-
-> diff --git a/net/core/gso.c b/net/core/gso.c
-> index bcd156372f4df..7c76f721fe24e 100644
-> --- a/net/core/gso.c
-> +++ b/net/core/gso.c
-> @@ -240,6 +240,29 @@ static inline bool skb_gso_size_check(const struct sk_buff *skb,
->  	return true;
->  }
->  
-> +/* TCP segment length reads doff, so validate its header offsets first. */
-> +static bool skb_gso_tcp_header_valid(const struct sk_buff *skb)
-> +{
-> +	unsigned int transport = skb->transport_header;
-> +	unsigned int tail = skb_tail_pointer(skb) - skb->head;
-> +
-> +	if (!skb_is_gso_tcp(skb))
-> +		return true;
-> +
-> +	if (!skb_transport_header_was_set(skb) ||
-> +	    transport <= skb->network_header || transport > tail)
-> +		return false;
-
-[Severity: High]
-Can this ordering check reject valid decapsulated TCP GSO skbs on the RX
-path?
-
-After UDP tunnel decapsulation, a valid TCP GSO skb can keep a stale
-transport_header. This happens when the tunnel device skips GRO, either
-because NETIF_F_GRO is off or because an XDP program is attached, so
-netif_elide_gro() is true:
-
-ip_rcv_core()
-    skb->transport_header = skb->network_header + iph->ihl*4;  <- outer UDP
-
-vxlan_rcv()->__iptunnel_pull_header()->iptunnel_pull_offloads()
-    clears the encap GSO bits and encapsulation,
-    leaves transport_header alone
-
-gro_cells_receive()
-    if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
-        res = netif_rx(skb);
-    so inet_gro_receive() never refreshes the transport header
-
-__netif_receive_skb_core()
-    skb_reset_network_header(skb);
-    ...
-    if (!skb_transport_header_was_set(skb))
-        skb_reset_transport_header(skb);
-
-That leaves gso_type=TCPV4 and encapsulation=0, with transport_header still
-pointing at the outer UDP header. That offset comes before both the inner
-mac header and the inner network header.
-
-In that case transport <= skb->network_header is true. The extra
-skb->transport_header <= skb->mac_header test in skb_gso_validate_mac_len()
-is also true. So both validators return false.
-
-Callers read false as "segments do not fit". tcf_police_mtu_check() runs
-this for every policed GSO packet:
-
-    if (skb_is_gso(skb))
-        return skb_gso_validate_mac_len(skb, limit);
-
-tcfp_mtu defaults to ~0 when no mtu is given. Before this patch, the
-unsigned wrapped arithmetic happened to fit and these packets passed.
-
-Would a police action on the tunnel device's ingress now send every such
-GSO packet to the exceed action?
-
-tbf_enqueue() would likewise drop the packet with qdisc_drop() instead of
-calling tbf_segment(). skb_tunnel_check_pmtu() would treat it as a PMTU
-violation, which produces ICMP FRAG_NEEDED on bridge ports.
-
-This patch is tagged for stable. Would it be safer to reject only an unset
-transport header or offsets outside the linear head, or to read doff with
-skb_header_pointer(), rather than rely on header ordering?
-
-> +
-> +	if (skb->encapsulation) {
-> +		transport = skb->inner_transport_header;
-> +		if (transport <= skb->inner_network_header ||
-> +		    transport < skb->transport_header || transport > tail)
-> +			return false;
-> +	}
-> +
-> +	return sizeof(struct tcphdr) <= tail - transport;
-
-[Severity: Medium]
-Does this reject TCP GSO skbs whose headers are valid but whose fixed TCP
-header is partly in paged frags?
-
-tail here is the linear tail, so the whole 20-byte tcphdr has to be in the
-linear area.
-
-Take the IFF_TAP path of tun_get_user() without
-VIRTIO_NET_HDR_F_NEEDS_CSUM, which is the producer the commit message
-describes. __virtio_net_hdr_to_skb() has no network header yet, so it takes
-this branch:
-
-    } else if (gso_type) {
-        p_off = nh_min_len + thlen;
-        if (!pskb_may_pull(skb, p_off))
-            return -EINVAL;
-    }
-
-That pulls only 40 bytes counted from the MAC header. With a small hdr_len
-and a packet larger than a page, tun_alloc_skb() leaves the rest in frags.
-After eth_type_trans(), skb_probe_transport_header() sets transport to
-network + 20 for a valid IPv4 header. Only 6 TCP bytes are then linear.
-
-Before this patch, such a packet was forwarded, or segmented by
-skb_gso_segment(), which pulls headers properly. tcp_hdrlen() did read
-stale tailroom bytes on that path.
-
-Now both validators report the packet as too big. For example, in
-ip_exceeds_mtu():
-
-    if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
-        return false;
-
-the packet gets ICMP_FRAG_NEEDED and is dropped. ip6_pkt_too_big(),
-skb_tunnel_check_pmtu(), tbf_enqueue(), execute_check_pkt_len() and
-tcf_police_act() get the same false result.
-
-The commit message doesn't mention that header linearity failures are now
-reported as MTU violations.
-
-The validators take a const skb and cannot pull. Would reading doff through
-skb_header_pointer() avoid the out-of-bounds read without rejecting
-non-linear but valid headers?
-
-> +}
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927163117.746432-2-bestswngs%40gmail.com
+Reviewed-by: Willem de Bruijn <willemb@google.com>
