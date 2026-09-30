@@ -1,121 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-77.mta1.migadu.com [95.215.58.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFCB3921ED
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7E12E888A
 	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790748295; cv=none; b=Em9MGPaKHuOCGOfTMOUDpl/GlcuaajnOSREWb0y6JDBOD24/RcCXa05XVP1rX4rvl+95haotAFYZrBAyoIvyNnJw0Li+orWfeRvgZxSwp0ewNn+04m9BPIyqerfu2ZBLQO+4W3a87Aiv78mbOS4Tnyhb6U8MbEjpxl55sgdbuhc=
+	t=1790748296; cv=none; b=D+8bzwgBp+neyFcaQEBvWmujcziq41CJshnWWfGldLOttd1CAQ7LMiJAXHLB1nyP7Qh+ZVrxxzPec6mMUHBKLqNML4uNrsBpxqP/CuHE3hwZKrSsySiOj+d5VEWXDvQ6UMlWS0gSKvn+3KwlzCbEJnsX/TgcSbzGsOUmibYiKq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790748295; c=relaxed/simple;
-	bh=0rY9FSpHuGg4ujkeEySndZRMqiZFzZdzqwZ0kxIdBI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QSnWHVj6v8eumMKBxDxfuRz86e44myj5SSfwKzBTewTveHVB6YvncQd74akktgtBfLqE3DLmq0VdJTf5OkQgl9/TiZALUYShzhyrJ98bdP09vscG+1bhT0XbbkdsIbckknbIqbMH+Hq7T2sHxPh66qfRpxckD/Vydw6w8qQjLdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KpLGgPKN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790748296; c=relaxed/simple;
+	bh=HeK8ZDCCOt1Xu9LSP0fGs8eVYgK1CGaMuUWO4rHDwzI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pkKq50N1XNOT5z2AkG/XGhulFc3n9MOXmPcT3yWsx3TGI1gA+DSfQJ3JXxYN5slidfPqgarOrYYsrJJ4Gef5Dct1nijtRh1V7sEzeDPH5tvtcQb6DSQtRtop0algUOGQQoQ303cFzlgthZjTC+GMxZUP3ProDZZTlVYPUisIm0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iCLeFu5N; arc=none smtp.client-ip=95.215.58.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KpLGgPKN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790748292;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ogrKXzfldwajrdorFdbIi+uGh9p6QqICcURCvwNSeTI=;
-	b=KpLGgPKNhR35FUhRsBWQkIWxJZmXoCWSKY/wPHxPTEczEQ2Yo8KHbvbKKYH3sGM3Ic7z3J
-	xt+OeLw69B4KeuhhbbFEx10JTRN2FQXtsvAnbLxTUykuEywJIScvVpqwXiComDMGj8/VU2
-	4WItixELDYonrzpflKhyNO1n2OUJkdA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-338-TyKBdVBrN6y6yT4pMf3x8A-1; Wed,
- 30 Sep 2026 02:04:49 -0400
-X-MC-Unique: TyKBdVBrN6y6yT4pMf3x8A-1
-X-Mimecast-MFC-AGG-ID: TyKBdVBrN6y6yT4pMf3x8A_1790748287
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95341182A120;
-	Wed, 30 Sep 2026 06:03:59 +0000 (UTC)
-Received: from griffin (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B8B51956042;
-	Wed, 30 Sep 2026 06:03:56 +0000 (UTC)
-Date: Wed, 30 Sep 2026 08:03:53 +0200
-From: Jiri Benc <jbenc@redhat.com>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Wentao Luo <luowentao077@gmail.com>, netdev@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, Edward
- Cree <ecree.xilinx@gmail.com>, Antonio Quartulli <antonio@openvpn.net>
-Subject: Re: [PATCH net] vxlan: fix NULL deref when joining a group without
- a socket
-Message-ID: <20260930080353.0ccae75b@griffin>
-In-Reply-To: <b3682f3b-f895-4843-815f-7f8a09530ba3@suse.de>
-References: <b397156b-c184-4061-a9d5-52cce5c4f07e@gmail.com>
-	<b3682f3b-f895-4843-815f-7f8a09530ba3@suse.de>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iCLeFu5N"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HeK8ZDCCOt1Xu9LSP0fGs8eVYgK1CGaMuUWO4rHDwzI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790748291; v=1; x=1791353091;
+ b=iCLeFu5N2qgauBEAYUt/w+FTwp6p1pHIa4swSrTtGwVSzr7aHxiP1cDgvt9TXThdajxBnNWQ
+ WVtxtFZtp8AcS5Up7o4Vo+F/C0t33VaVrSsdbZ/FqlbhyS0Isxf+AUYMB7YR+oaoxAoiYl8vaHD
+ uT/OzzybloZHu6ajKDqeee9M=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id e486eb0ba4f1d327;
+	Wed, 30 Sep 2026 06:04:51 +0000
+X-Mizu-Trace-ID: e486eb0ba4f1d327
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 30 Sep 2026 14:04:35 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>, co+2cf741c3005abc20@bugs.sh,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: team: stop reusing skb after queue override
+Message-ID: <arymc6JbQN5GDBaF@fedora>
+References: <20260926090039.1714460-1-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260926090039.1714460-1-bestswngs@gmail.com>
 
-On Tue, 29 Sep 2026 17:27:01 +0200, Fernando Fernandez Mancera wrote:
-> On 9/29/26 2:22 PM, Wentao Luo wrote:
-> > vxlan_sock_add() ignores -EAFNOSUPPORT when creating the IPv6 socket
-> > of a metadata device, so the device can come up with vn6_sock NULL
-> > after ipv6.disable=3D1. A later IPv6 multicast join still uses that
-> > socket. vxlan_igmp_join() dereferences it and oopses.
-> >=20
-> > This was observed on an external vnifilter device by adding an IPv6
-> > group while the device was up:
-> >=20
-> >  =C2=A0 BUG: KASAN: null-ptr-deref in vxlan_igmp_join+0xb8/0x18c
-> >  =C2=A0 Read of size 8 at addr 0000000000000010 by task bridge/729
-> >  =C2=A0 Call trace:
-> >  =C2=A0=C2=A0 show_stack+0x18/0x24 (C)
-> >  =C2=A0=C2=A0 dump_stack_lvl+0x78/0x90
-> >  =C2=A0=C2=A0 print_report+0x468/0x5cc
-> >  =C2=A0=C2=A0 kasan_report+0xa4/0xf0
-> >  =C2=A0=C2=A0 __asan_load8+0x7c/0xd0
-> >  =C2=A0=C2=A0 vxlan_igmp_join+0xb8/0x18c
-> >  =C2=A0=C2=A0 vxlan_vni_update_group+0x2b4/0x390
-> >  =C2=A0=C2=A0 vxlan_process_vni_filter+0xfe0/0x1750
-> >  =C2=A0=C2=A0 vxlan_vnifilter_process+0x218/0x270
-> >  =C2=A0=C2=A0 rtnetlink_rcv_msg+0x1ec/0x514
-> >  =C2=A0=C2=A0 netlink_rcv_skb+0xc0/0x1f0
-> >  =C2=A0=C2=A0 rtnetlink_rcv+0x18/0x24
-> >  =C2=A0=C2=A0 netlink_unicast+0x4b8/0x558
-> >  =C2=A0=C2=A0 netlink_sendmsg+0x2b8/0x584
-> >  =C2=A0=C2=A0 ...
-> >=20
-> > Return -EAFNOSUPPORT from vxlan_igmp_join() and vxlan_igmp_leave()
-> > when the address family has no socket. The same leave path runs while
-> > rolling back a failed join.
-> >=20
-> > Fixes: d074bf960044 ("vxlan: correctly handle ipv6.disable module=20
-> > parameter")
+Hi Weiming,
+On Sat, Sep 26, 2026 at 05:00:39PM +0800, Weiming Shi wrote:
+> dev_queue_xmit() consumes the skb regardless of its return value, but
+> team_queue_override_transmit() treats a non-zero result as if no handoff
+> occurred.  An AF_PACKET sendto() can therefore make team_xmit() pass a
+> freed skb to another override port or the mode fallback when the port qdisc
+> drops the packet.
+> 
+> Report the handoff decision separately from transmit success and stop after
+> the first override port.  This preserves the existing success and drop
+> accounting.
+> 
+>   BUG: KASAN: slab-use-after-free in sk_skb_reason_drop
+>   Read of size 4 at addr ffff88800d5e979c by task poc/131
+>   Call Trace:
+>   ...
+>   sk_skb_reason_drop (net/core/skbuff.c:1220 net/core/skbuff.c:1249)
+>   team_dummy_transmit (drivers/net/team/team_core.c:502)
+>   team_xmit (drivers/net/team/team_core.c:1869)
+>   __dev_direct_xmit (net/core/dev.c:4990)
+>   packet_xmit (net/packet/af_packet.c:286)
+>   packet_sendmsg (net/packet/af_packet.c:3140,3172)
+>   __sys_sendto (net/socket.c:800,815,2281)
+>   __x64_sys_sendto (net/socket.c:2288,2284)
+>   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>   Freed by task 131:
+>   ...
+>   __tcf_kfree_skb_list (net/sched/sch_generic.c:59)
+>   __dev_queue_xmit (net/core/dev.c:4353,4884)
+>   team_xmit (drivers/net/team/team_core.c:832,1867)
+>   __dev_direct_xmit (net/core/dev.c:4990)
+>   packet_xmit (net/packet/af_packet.c:286)
+>   packet_sendmsg (net/packet/af_packet.c:3140,3172)
+>   __sys_sendto (net/socket.c:800,815,2281)
+>   __x64_sys_sendto (net/socket.c:2288,2284)
+>   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>   Kernel panic - not syncing: KASAN: panic_on_warn set ...
+> 
+> Fixes: 8ff5105a2b9d ("team: add support for queue override by setting queue_id for port")
+> Reported-by: <co+2cf741c3005abc20@bugs.sh>
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> ---
+>  drivers/net/team/team_core.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+> index beffbe450612..59dd94271ff1 100644
+> --- a/drivers/net/team/team_core.c
+> +++ b/drivers/net/team/team_core.c
+> @@ -820,7 +820,8 @@ static struct list_head *__team_get_qom_list(struct team *team, u16 queue_id)
+>  /*
+>   * note: already called with rcu_read_lock
+>   */
+> -static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb)
+> +static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb,
+> +					 bool *tx_success)
+>  {
+>  	struct list_head *qom_list;
+>  	struct team_port *port;
+> @@ -829,8 +830,8 @@ static bool team_queue_override_transmit(struct team *team, struct sk_buff *skb)
+>  		return false;
+>  	qom_list = __team_get_qom_list(team, skb->queue_mapping);
+>  	list_for_each_entry_rcu(port, qom_list, qom_list) {
+> -		if (!team_dev_queue_xmit(team, port, skb))
+> -			return true;
+> +		*tx_success = !team_dev_queue_xmit(team, port, skb);
+> +		return true;
+>  	}
 
-While I've introduced my share of bugs over the years, this one is not
-introduced by my commit. Commit d074bf960044 specifically checks for
-the metadata mode and leaves the ipv6 socket as NULL only in the
-metadata mode. In the metadata mode, there's no multicast and the
-vxlan_igmp_* functions are never reached. This was introduced by a
-different commit.
 
-With the current commit message:
+Since dev_queue_xmit() consumes the skb and we should not loop for all
+the ports. Is there still a need to using list_for_each_entry_rcu()?
 
-Nacked-by: Jiri Benc <jbenc@redhat.com>
+Thanks
+Hangbin
 
-Please find the real cause, fix the Fixes header and resubmit.
-
-Thanks,
-
- Jiri
-
+>  	return false;
+>  }
+> @@ -1864,8 +1865,7 @@ static netdev_tx_t team_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	bool tx_success;
+>  	unsigned int len = skb->len;
+>  
+> -	tx_success = team_queue_override_transmit(team, skb);
+> -	if (!tx_success)
+> +	if (!team_queue_override_transmit(team, skb, &tx_success))
+>  		tx_success = READ_ONCE(team->ops.transmit)(team, skb);
+>  	if (tx_success) {
+>  		struct team_pcpu_stats *pcpu_stats;
+> -- 
+> 2.55.0
+> 
