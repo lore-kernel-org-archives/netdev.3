@@ -1,204 +1,274 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013045.outbound.protection.outlook.com [40.107.159.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F061E367B8C;
-	Wed, 30 Sep 2026 03:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790739662; cv=fail; b=Ho9NS2Mf/Dg/il1eLtQxmiLvv2QFwBg4AUJurVGiVd06ZCM0kGc7tktERIsIfswZEtp8eiHqabSocX3C2VRSGBSVWyKxCpP1rq5VI94/u40AzQzwLUWKjJwYCKpeQaU1a5I/8Y5/+8OvtvBlJh8lXiphV6s9pj1vovthl7LhOBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790739662; c=relaxed/simple;
-	bh=sE/1Vt0OKhH47iXsZUwwbgoNdcszfGPuaw9SKGMV2Aw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gcC0bokbu3go86OJpwBTiYwWoKBVsIzzBnZhCnt7z0dcnV2QzShcyGovwI0h4P8FOAs3yfikJJxFtyhYkJCrFI4Oim2GAou3BITh2Ff3EzcD4zaxEjHgUdOTf43acqweS34wM3draRw63MM4aY43nzlbpZ60ERmKKXv/zqMr5p0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QrQbso+o; arc=fail smtp.client-ip=40.107.159.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465AA3515C0;
+	Wed, 30 Sep 2026 03:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790740132; cv=none; b=kT4pxz6AMHm595FD40BE6tQwc17hn/VX9JoU3auxvGrVzRttyHIJEHMAPHxl6GDK1VVifh9b10GZ/2dFMOC5WkWCud/yEv+DixbqWfBgVxQH+nan3BZGhgWRQryl3F+jCohaWM6o2OJ66dGLd/ugHZrig18+uxqOnoSi3XfMOlg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790740132; c=relaxed/simple;
+	bh=lp5xPjq8zX7LuOkfHkwlpaeHU/dF2qbKn6hWPgeY8ME=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=blVkL6BvWTQnrbRr1mquZwQ9T04kWx58RKwPvbTkoXPsVXAZH9tF8R0qSXYJa4s12nD8GvYc79FHGQeFRelXHICaprxlcYo1c2Vl690cSKMnfGkuSFQqB4dNUl4Sn8Oqo24qnTyGRqvws1yJ80xOHxBVkucnnMRTjiDU11zXdcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su0j72H4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QrQbso+o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cgYp5Hw7tZqAkxbvFp8Ugw9ucXy5CYY7SnaFDQrj7Ad0Mt+VePZshKXOKeJ+sUxhOI1aQkzKAwJollWFhcydbJBtdHmqt9n6EJtMVwuX4KoGLVFCULaVgNGUdD09cSKBXDki0x+OvAMkUGEkaW/Lbxm4w+/lUz88Cs/IwjZooyx6ePdqperraVqPg2i6OYdHILj7OVa0BMHjOPYPy19JpnPNLy1og3jRGvFCuIN7UpzkHyaaY1Dots0uCJMWkp6LIhYJPxfooY3pEQGuy+VNQB8KX0LUEvaQbBSu1CH2sQ/knFntiNHt4n/Xt6TuenicORlPMDplKqfRIRdvYtuTpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FooK3/iMVtgeKe+RI4+rQd/4WBKXOByYRWb0U+e+wG4=;
- b=vIXzdj5m56fMeySVp/bx89UPl0HegWOHuBMcvmKadvgj0ly6cHgICapF6ey987XUXSoVmzPuyTsT9fnYXu4nLuz1Ef5A8ijnmkC5GecS4YmR2jflHxS9mhLle1z87Ont6b83NBkkMliTvGnq9XyiN3CeBpxKN7wUw4SS8gQ+zrkpNetxQRbTz4bGLVT38qQnmXMDEj2OaLuyUkhIDSkTCUmep1qvuQlWzW+rp0XF8bbRjKJTnijrTmuQmKHEw4Exj3jaQbi2G/8iS37tRkWL6v9FCIm+Kel1xUVZOKYFlnDub3Pu4+75wMeMjYDHoDh0gSdH5QNwh8NKT57giPp+nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FooK3/iMVtgeKe+RI4+rQd/4WBKXOByYRWb0U+e+wG4=;
- b=QrQbso+oQ5ZL4D4rcjEobDV1xks85kRkIRga3V2ATUdtbzSyw1chuLYSmKFJJwxTf7TGfV+R6paD54BYMYJhrDGCjVgbl4zOZr7SisppZMHkRKyxxURxXyQIp3ln4QBDUcpqJF87FiZU9EOJT8j6jyYNF0HXDr3B+ez6sjrYuKqlV+f84eny10Nhs3ygcZzsXxNR/jc9O+IR7v+Qa6x15dfYvNrJEdz2ZzSn2bl9SDoF/Ft8fEsZOz/dOpxQA4U0jVJw0ZVYO7wt8S2qHPM0mf4nR4IUkJ7di+XSx+lwdB7JX/ReRpiRAt+/FzL+tLZEZFVtZ1LTgu/UIGSuyQKRuw==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by AS8PR04MB9141.eurprd04.prod.outlook.com (2603:10a6:20b:448::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 03:40:57 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 03:40:56 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Marek Vasut <marex@nabladev.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>
-CC: "David S. Miller" <davem@davemloft.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Thread-Topic: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Thread-Index: AQHdTE9m1hutRzwLFUKmfktoRBJfE7bmds5A
-Date: Wed, 30 Sep 2026 03:40:56 +0000
-Message-ID:
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20260924180607.60932-1-marex@nabladev.com>
-In-Reply-To: <20260924180607.60932-1-marex@nabladev.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|AS8PR04MB9141:EE_
-x-ms-office365-filtering-correlation-id: 084bbf6a-24b2-4e9a-7c52-08df1ea4a304
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|19092799006|23010399003|11063799006|10067099003|56012099006|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info:
- jmh3HfFk5Fn3EwNWAmA51efwnhGm+ifhWJ1R7e53mXWNGJxl8K8nQSSBXWyqsz0L8RloRMKPQc1X9ih1JQ3Q3cLCADDq6v6QQ1k2/XfgejJ6hAdf78Kdy52WObdhtsnQfp84tpQgqaQs3y407csTxjfxdmZ5XqFtgYCmJesv9vb7QfAa7n11nii0X5TneQfAW61IovNTrKS7Gg7O+8qQAeJaByhothz3kZOEjTwF3HE3wHyi5jgOoT9cpHMOlfyug67gqZRySNgY7CJluF/VHTiJ2DIdcwPi8o9xEeZlEa5o9Now5EuQJyZkEfGiCChHeIOTlNFIeyKQm92tNex4ZMvxJfxLFqKzYtI8aEYBN2qCfmrLW1X0XbMcRVNF3Hw38DJNrSqZJrZ7S+ew5hr9BtlphdioidZ+nzehn3rTnnor68EgZ4GDqVfVVTu7adP2jj0MAonptFFS+y4puxECPX++LydjoYbNzC1Quf61GGA0bstL34nkBEwXcKRf+Z6Eahc+XH6PwdCYq1W1hAMCykxtkXdLg++EaKI7aPrcSGstOxf5pWtpYcqBYeKDoPlHnf7k5o1NpdQ2hht9u6q0ybUfkSkuZO1EAJaBccysy3QZL05212gtUd4y4lXf43to0n1BnyRnoUH/0jMusg9WzOp7sAFGTzRSSgJYV9RYAIG5HrAKNep4qIoAmcVYnuBvVdq6J9u8Peo688C2JLsw9oiKBh6/NOJ+2abMeL5VIcQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(19092799006)(23010399003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?WCtDvc57U4xSKvfINQVop4tqxVSBKX+WAEeNUY2p+s/aN+7GO7BkGfQLp4V1?=
- =?us-ascii?Q?4OCaShOYanWECU6Q0Z6NynH2qojidRHPq+1+v5cK0RMG1z0lnuLZgndBm8I7?=
- =?us-ascii?Q?HyaBstDxtWS4gapJUiE12PMM3bOaOis9oD46uHBQvN7FjKwahXSC5coeOXKZ?=
- =?us-ascii?Q?9X3R1PXpHYlcJO1svfHgCYRp+sWAYeX/id/F/Jxy5KHptYAwu+3QehICG6NC?=
- =?us-ascii?Q?Gvf6s/8zw2guau1aGEPNWsCZiMgF4p31p52FqLcWnFXH0zt0E3dvfKHjdhXu?=
- =?us-ascii?Q?wPjb3sH+1mcqiB+ymLPvEMBDmirXo0tKgfmGarOn7Wpbr1zc3KTU+KJ2qkp2?=
- =?us-ascii?Q?gz/hF4NnpYpRiKUW99q50oJq/c4/r1bxaSZnqzdtZGpvnNIv9TuptAQxptQu?=
- =?us-ascii?Q?w+tlSz8JAX91wPL42gjjZFsly5GvbdbyiMgV88IqjbVqUDFIykNvbwDlOKX0?=
- =?us-ascii?Q?F2NAZUqznEL3uDv5Z0sTdxNV1SmE6BH8tGxwzEj5e5HJkRjynm526WmeQIkp?=
- =?us-ascii?Q?kyLs4CTyYwVEHhNY1LtqvTXSB+2SytDm1Q6/RwiZMp0GIjKIdRWoh85951ot?=
- =?us-ascii?Q?REMV7TI2m4O5EQpRHCUH4GCYu5na30wEx8mAU50dz+4qfad2rMR2X3Ppccim?=
- =?us-ascii?Q?v+2vJVVig21Y+Uusuhi3X3BWE5OUckC4ao49RecJx75lijOHKz0N2lzWdRQA?=
- =?us-ascii?Q?ypMF4BpkydrXTlvtMDZV5qeObCOjSz/msu7w2UoIafVjikx1gGILDyqXFD1f?=
- =?us-ascii?Q?LNsy+ibWzKDKRFia0nWmtbnMKoAiMbPe/2nPjXA/H9sRc9xuO2EDvJWouAWA?=
- =?us-ascii?Q?pRQ6dW5Ybp5mCvZiZBB1/dNzMdi7XQTRSYIpkAtwJyXOYcinWKdP13pqJ01O?=
- =?us-ascii?Q?KC20m9QtKKo3UJMWEs+zuvlUsxyqIYHXwQk4wXv7Ntqer/b6OjogHN6bj8rV?=
- =?us-ascii?Q?Xc0W1UqSv1csqu03mr2aD7wi/5KIW0lYBLQoaaYtpsAEs1LdyU3RA7Th7A4z?=
- =?us-ascii?Q?BWckwRKOKlPDAZoKjPSKqTa46+aG3Qtq5qMvL+4vVSS6PH3dmaNsLf6JbqNp?=
- =?us-ascii?Q?q0P3wOAzUvKKQsUgQ/k/HcUD3GHUg+xOIDgKnFGRAUePVQ1bkymBUhz1+RIp?=
- =?us-ascii?Q?N53T8L03ZKXNzSLfsAjN+nF+QEbo30f3nExng0/1RnG9Kope11CBqY6Obzx1?=
- =?us-ascii?Q?/1CLM2M33p75/7TYhLsZlvXAjr2OHJ3/p0na42GBnh/JrSFD2rlwer/t0XQ9?=
- =?us-ascii?Q?EsE46oUaHUqeCCw8StuMY2Oas/219MlANgKbr2pQDAWIItux7q4SkorAX7mB?=
- =?us-ascii?Q?LQmNjIL6pdP5ketYAAKdQBvTzIqppBZUJg7hPTK/CqWIo8DMV6SHdZt0asu1?=
- =?us-ascii?Q?eSSM28F8PeoKeSKQKdYr13cONvXA2UrQQwu60OYogex0X3DlWZPejl90zYLp?=
- =?us-ascii?Q?BIJXxHi+d/AlE9F5+6ehg/eF3ASnNJGoDVxcN/hACZK17vuwVJULTMySUtsq?=
- =?us-ascii?Q?gIMJJlLZDb5DQEnrqbsLCMDQediQ3g2owR6VVRSMQLzIAgWNn8m71+ElqVkQ?=
- =?us-ascii?Q?eIHdoZiBAT8Z0iG1smJ0Gx50WlIPOU4q1L2soMAP8xhnwgGPXByzmxgvyM/P?=
- =?us-ascii?Q?YDM0toIyczh7lngh0Lpl/xrqnJAeeQxdS8+d48fYCWjw6Z/nAnz25rxFvwjV?=
- =?us-ascii?Q?+FTw0Jo621kvyR6BLMgYFhlPk8tZSdggAGuSrOcRG1cKualP?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Su0j72H4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABC01F000FF;
+	Wed, 30 Sep 2026 03:48:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790740130;
+	bh=KZHe/FVnfiE45qptdO4PNrZd1FsDbQ5ylcnvWq1RbyU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Su0j72H48UWQx0TELtMc1BpCk5Q2dO4T72aqrb1gWkrvf1xT+PPuvkSUpWWZGqALR
+	 4z4NRo9dUDFcBGEWk+GnXYJCIkfp1PFomoTrt4gEXMA56rcHbaMdrvaWHeKc3rkHiK
+	 s/lxcfp03ke+w4xeG5q5qZ/Fje75rCNjqkFBQVqr9fJq+TkaCNezzPECMgbDO5uCRj
+	 C5fynlJfaRPMCo8ehkf8GMw07emQVFR7Dg0ZtzCrKA27qppiT+RRH6W/t/iejIC4gO
+	 g4Z0DF1iF9e7k/l40cb/2BfD8BnHxjIDKCSiUJ3cmOaVenuCfz7DWuf5OXbcKJWgUa
+	 wS3QRhW4nZF4g==
+Subject:
+ Re: [PATCH net-next v18 3/6] driver core: add device_schedule_reprobe()
+From: netdev-bot+sashiko@kernel.org
+To: daniel@makrotopia.org
+Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org,
+ rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
+Date: Wed, 30 Sep 2026 03:48:49 +0000
+Message-ID: <179074012933.434549.4644127327520055010@kernel.org>
+In-Reply-To: =?utf-8?q?=3Ce70f147857d21b792de81c7d39c2f74c6e0ec3f5=2E1790426?=
+ =?utf-8?q?599=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
+References: =?utf-8?q?=3Ce70f147857d21b792de81c7d39c2f74c6e0ec3f5=2E17904265?=
+ =?utf-8?q?99=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 084bbf6a-24b2-4e9a-7c52-08df1ea4a304
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2026 03:40:56.7949
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +Temrx0LSt0vINPRIqRAbb+nsbzfMCEvPHyMeX8LElkm7PMmXW+JwvR1eEeh3hs1kPqXIAYhKfL/B4SZ+Nc1EQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9141
 
-Sorry, this email was missed because it did not match the filtering rules I=
- set.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Hi Valdimir and Claudiu,
+Critical: 0 · High: 0 · Medium: 4 · Low: 0
 
-Please take a look at this patch, it may affect LS1028A and S32N7 platforms=
-.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
+- [Medium] In device_reprobe_work_fn() (drivers/base/dd.c), the check `if
+  (ret <= 0 && ret != -EPROBE_DEFER) dev_err(dev, "re-probe left the…
+- [Medium] When probing is blocked, device_reprobe_work_fn() re-queues
+  itself with `queue_delayed_work(system_freezable_wq, &rp->work,…
+- [Medium] The shutdown/suspend gate in device_reprobe_work_fn() is a
+  check-then-act.
+- [Medium] device_schedule_reprobe() pins @dev with get_device() in a
+  delayed work that nothing can cancel or flush: the rp handle is never…
 
-The system clock of i.MX95 NETC is 333MHz, AFAIU, the MDC rate should be
-333/(2*258+1) =3D 644KHz. I'm confused that why you said the rate is 558KHz=
-.
+--
 
-> but also very compatible. However, for example NXP TJA1120 PHY needs
-> at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
+driver core: add device_schedule_reprobe()
 
-We previously used the TJA1120-SDBR daughter card to connect to the ENETC
-interface (RGMII) of the i.MX95 19x19 EVK board. However, we did not encoun=
-ter
-any issues with MDIO access. Furthermore, I did not see a minimum MDC
-frequency rate of 1MHz on the TJA1120 datasheet. I'm not sure if this is an=
- errata
-of TJA1120.
+This adds device_schedule_reprobe(). It detaches and re-probes a device
+from a driver-core delayed work after a delay the caller chooses. Under
+the device lock, the work checks that the device is still bound to the
+same driver, and it re-arms itself while suspend or shutdown blocks
+probing.
 
->=20
-> As a minimum change, increase the MDC clock to 2.5 MHz which matches
+> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> index f6525a7ee8c54..823a25f9c0895 100644
+> --- a/drivers/base/dd.c
+> +++ b/drivers/base/dd.c
+> @@ -1436,3 +1436,129 @@ void driver_detach(const struct device_driver *drv)
 
-The prerequisite is that NETC system clock is 333MHz, so that you can get a
-MDC clock rate of 2.5MHz (333/(2*66 + 1)). But unfortunately, not all NETC
-versions have a 333MHz system clock. For example, LS1028A is 400MHz, so
-the MDC rate will be 3MHz, which will be a problem.
+[ ... ]
 
-> the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
-> DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
-> NXP TJA1120 as well. There is no known rationale for why the 558 kHz
-> was picked when the eMDIO driver was added.
->=20
+> +static void device_reprobe_work_fn(struct work_struct *work)
+> +{
+> +	struct device_reprobe *rp = container_of(work, struct device_reprobe,
+> +						 work.work);
+> +	struct device *dev = rp->dev;
+> +	bool detached = false;
+> +	int ret;
+> +
+> +	device_lock(dev);
+> +	/*
+> +	 * rp->drv is only compared, never dereferenced: the driver it points
+> +	 * to may have been unregistered and freed. The saved name rejects a
+> +	 * freed address the allocator has since handed to another driver.
+> +	 */
+> +	if (!dev->p->dead && dev->driver == rp->drv &&
+> +	    !strcmp(dev->driver->name, rp->drv_name)) {
+> +		if (defer_all_probes) {
+> +			device_unlock(dev);
+> +			queue_delayed_work(system_freezable_wq, &rp->work,
+> +					   rp->delay);
+> +			return;
+> +		}
 
-> Signed-off-by: Marek Vasut <marex@nabladev.com>
-> ---
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-> Cc: Clark Wang <xiaoning.wang@nxp.com>
-> Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Cc: Wei Fang <wei.fang@nxp.com>
-> Cc: imx@lists.linux.dev
-> Cc: linux-kernel@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> ---
-> V2: Use 2.5 MHz per 802.3 spec, update commit message
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> index 998aaa394e9c4..a90a04a47befd 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-> @@ -24,7 +24,7 @@
->=20
->  #define ENETC_EMDIO_CFG \
->  	(MDIO_CFG_HOLD(2) | \
-> -	 MDIO_CFG_CLKDIV(258) | \
-> +	 MDIO_CFG_CLKDIV(66) | \
->  	 MDIO_CFG_NEG)
->=20
->  #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
-> --
-> 2.53.0
+[Severity: Medium]
+What stops this re-arm once shutdown has started? device_shutdown() does:
 
+	wait_for_device_probe();
+	device_block_probing();
+
+device_unblock_probing() is only called from dpm_complete(). Once a reboot
+starts, defer_all_probes stays true, so a pending request keeps
+re-queueing itself until power-off.
+
+device_schedule_reprobe() also accepts delay_ms == 0, which makes
+rp->delay 0:
+
+	rp->delay = msecs_to_jiffies(delay_ms);
+
+With a zero delay, queue_delayed_work() queues the work at once. The work
+then runs back to back and takes and drops dev->mutex on every pass,
+while device_shutdown() walks the device list and takes the same
+per-device locks.
+
+The same applies to the dpm_prepare()..dpm_complete() window when
+system_freezable_wq is not frozen, such as the kexec jump case mentioned
+in the v18 changelog. The in-series mxl862xx caller uses 500 ms, so it
+only gets a periodic re-arm. The exported API still allows the zero-delay
+case.
+
+Should there be a minimum re-arm interval? Or could the shutdown case drop
+the request instead of re-arming? The kernel-doc only says the work
+"re-arms itself after @delay_ms".
+
+> +		__device_release_driver(dev, NULL);
+> +		detached = true;
+> +	}
+
+[Severity: Medium]
+Can defer_all_probes become true right after the check above?
+device_block_probing() sets it with a plain store and takes no device
+lock:
+
+void device_block_probing(void)
+{
+	defer_all_probes = true;
+	/* sync with probes to avoid races. */
+	wait_for_device_probe();
+}
+
+wait_for_device_probe() flushes deferred_probe_work and waits for
+probe_count and async probes. It does not wait for this work item on
+system_freezable_wq.
+
+Suppose the work reads false and calls __device_release_driver(), and dev
+has managed consumers. The device lock is then dropped inside the
+device_links_busy() loop:
+
+	while (device_links_busy(dev)) {
+		__device_driver_unlock(dev, parent);
+
+		device_links_unbind_consumers(dev);
+
+		__device_driver_lock(dev, parent);
+		...
+		if (dev->driver != drv) {
+
+In that gap, device_shutdown() can take device_lock(dev) and call
+dev->driver->shutdown(dev). When the work gets the lock back, dev->driver
+is unchanged, so it continues to device_remove(). That runs ->remove()
+after ->shutdown() on hardware that is already shut down. Consumers that
+the backward walk has already shut down could see the same order.
+
+The kernel-doc says a request "that fires during a shutdown detaches
+nothing" and that the overlap "may run ->remove() in place of
+->shutdown()". Isn't the actual result that both callbacks run, with
+->remove() second?
+
+The lock-dropping loop predates this patch. This helper adds a
+timer-driven unbind that is likely to fire around a reboot that follows a
+flash.
+
+> +	device_unlock(dev);
+> +
+> +	if (detached) {
+> +		ret = device_attach(dev);
+> +		/* 0 is unbound too: a failed probe is folded into "no match" */
+> +		if (ret <= 0 && ret != -EPROBE_DEFER)
+> +			dev_err(dev, "re-probe left the device unbound\n");
+> +	}
+
+[Severity: Medium]
+Will this ever see -EPROBE_DEFER coming from the driver's own ->probe()?
+really_probe() makes ->probe() errors positive:
+
+drivers/base/dd.c:really_probe() {
+    ...
+		ret = -ret;
+		goto probe_failed;
+    ...
+}
+
+driver_probe_device() adds the device to the deferred list when it sees
+EPROBE_DEFER, and it returns the positive value. __device_attach_driver()
+then folds any positive value into 0:
+
+	ret = driver_probe_device(drv, dev);
+	if (ret < 0)
+		return ret;
+	return ret == 0;
+
+So device_attach() returns 0 for a probe-time deferral, and this
+dev_err() fires even though the deferred-probe machinery will retry the
+probe. The ret != -EPROBE_DEFER test seems to cover only the negative
+deferrals, such as bus match deferral, device_links_check_suppliers() and
+the defer_all_probes path in really_probe().
+
+The commit message says:
+
+  so the message is a plain dev_err() that skips only -EPROBE_DEFER, which
+  the deferred-probe machinery retries on its own.
+
+Does the code match this for the common case?
+
+The same message is also printed if dev is unregistered between the
+detach and device_attach(). In that case __device_attach() returns 0 early
+because dev->p->dead is set.
+
+> +
+> +	put_device(dev);
+> +	kfree(rp->drv_name);
+> +	kfree(rp);
+> +}
+
+[Severity: Medium]
+Could this put_device() drop the last reference and call into module
+text that has already been unloaded?
+
+rp is never returned to the caller, and there is no way to cancel or
+flush it. The reference taken by get_device() in device_schedule_reprobe()
+is therefore held for the whole delay.
+
+For example, the mdio bus under the in-series mxl862xx user could be torn
+down within that window through mdiobus_unregister() -> device_unregister().
+If the module that provides dev->release, dev->type->release or
+dev->class->dev_release is then unloaded, the work sees dev->p->dead and
+skips the detach. This put_device() then drops the last reference:
+
+device_reprobe_work_fn()
+  put_device()
+    kobject_put()
+      device_release()
+        dev->release(dev)    <- lives in the unloaded module
+
+The commit message gives "a concurrent rmmod can free the module text the
+epilogue is still executing" as the motivation, and says "The work
+function is built-in text, so a caller needs no module reference". Does
+that still hold for the module that owns the device's release callback?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790426599.git.daniel%40makrotopia.org
