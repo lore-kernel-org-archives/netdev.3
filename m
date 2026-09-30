@@ -1,126 +1,242 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FF04E80BC
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EA3345EDD
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773497; cv=none; b=Rxnig4TbL9GNtczZMPdHNEaJ2qG8sCgfJ01Ekt3trnvIf/j6b3crYsqK4bW6MGbofbrEE01nrPnQl3MBlotcx8ZbeiBiCMfyufPtrCF7YOuCAXonNAe9NjP/gB71CMOX5c/+eEiNTCUI2NnI2NgAgIDFj3fuKyXsFKBYQXUtvOM=
+	t=1790773681; cv=none; b=M3Bb8uXRy3vhiy+vWTovbX9D3GB9e99+ajndajbx0HQizwYIGEp3wi7oxSELj3EgRIYZfjrvO64bte0A0MPXuhVSiGeEvh40B/OLrOgYWAZQxXxSRXejSfmP1DJe+6L5rn+t6wC2H54TpLjKepStszvjUX4VuriM+6hOYFaerIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773497; c=relaxed/simple;
-	bh=oxZiTuR2Id+eSkbVoP8hkGx6rui7jsikVu42ZGlSRFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RMM5bwHuOM4B+EGWL8f8dCz8ZSLehzVZ08g7K+ls0Vypn7cL+kbiCjpDO3xxQ6CvasLHE3K57Zj/8rNC3d1xXNgExdZGPKIcaVcPb+fEvThruKJYbBc3SV3kjf3cKSO5xhLiidgDcefE2DWGNAb25EHvdGIdUvJW6cHEX+lp4bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=AwFW2UVF; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1790773681; c=relaxed/simple;
+	bh=8TLf8PVLz2YIjRF7AQY3b4rMaQPPA1wLFLlUcikbSFk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mQUZZZVY5rr/FWrhs9bq/df0NYLTsQt7FCqMy0f8r6c87FEFabhfUf2wQQgC/zEWyYLlzyZJx/MA/6U0KIMM+NU9dqRrG1YSmajRPCc3CQ40X8jvNQFkLxplcaOcwxR4FIa23DpeTdwC87IUsCVvh9d8my4/FmJAZa20Zocj2a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HirIkXps; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="AwFW2UVF"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b03ecc019so48758f8f.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:04:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1790773482; x=1791378282; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cdMdvjWVLIDEVS1UUHPgTOR23ut4C2R+qU5zRynN6ZE=;
-        b=AwFW2UVFDut0KXcQby5r755V4y+wkBed/xWk8s+Cmq1sIBMuJ88qlBDia90lktIt4m
-         Cb5Lno14zl2pcc9//aY1+Q0sBoBrXTOIlSG/qVHo6NUyzR604zuemIJz8XjrqogvmHLf
-         zV/gcQdpRTiGj6BnfzdWIps4wFphkDBQzMAL5aVAOsfuDJYGx8P4/cwypOsL2oY3vAL2
-         qTkPcibOojxkncb0cSphmUSFLyeFAfarGwUcQnN0z3vcUsh3ntILlgS5bzQFBszq6ZLp
-         3dJsCbggGUzDgqAkJ2PM8NIdt09mexIQuCzPGg9CJALW5QrvP5ypLuw18MWczKxiAM96
-         PdIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790773482; x=1791378282;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cdMdvjWVLIDEVS1UUHPgTOR23ut4C2R+qU5zRynN6ZE=;
-        b=xZb8ZQSpQC1rR0/BMOBRvnTrIk7n9K+n/iLGvWr/EWytxc2QiO6b8C8mDPdF+zkD9O
-         yH46ORilW4yUWPEGOvwmUuz/Nt2D0YSnXzG5yiNYF5/qJyTgRTGMmI3lWNjvvJiy4U9o
-         AC9q20baD3UZ18mImsixdVV8i2s6f2fD08ghGEndmms+KP7+voAUx8wUP6pG3o2bLtoF
-         Lbkjoo8ySxvzpUtSXZXcdj148ZTBmpIQIZPxSgN7NCGtztzRTsirZ0JcuUYzAZdP0hu0
-         sr2DtuMrO0n4GjCQXMV4OtreJ//ptbutmYV8QhmJa0exq8Yjn1i3BvRJeKe84CQLDNiP
-         ykzA==
-X-Forwarded-Encrypted: i=1; AKwUvBzAL4gAZvDX7UjvBLSXQitYyD/SQ/aaN1eXW7m6g00IBBG5Qe5ABjGU/fHt80bStnlFvLWCy3s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJg8I2FymVBB8Gzcf9DEsGrPsUtbkqe7XA9PLuF5LpnJQo4/uyP
-	9rTpLEhpu/5DiusPjWtM2TVrCvzwLzDhmARbdWOs7LytazxLy1JvqpbGQiFYc+cHPzk=
-X-Gm-Gg: AYBFou30zpaZ3CpKxJ1/2gmsKSZobn7DBXS76i3HEjkr7AWkWln0oHL0poSkllouuE9
-	mrMBx/iJkkc+YKYBbmbRfY/IvlNnbd+NDovwPz8SKVWAL9Ya7OADScpjVWkEAW/AoFycHXfrSRW
-	650GGb/xtxHz1JbPxAcekX31eun1TT9sa4rcCc1wJE1D2EZUZ4lUp4O0e3ayGRITNJ/FzU2Qmpq
-	r2OlcQohYtPhNF2TCZMRFNq3p1y2m3N1RSMDGUf76AcW0U5aOYvvzqB3fcSJPZERjBHQdNMG2o8
-	E1GUc+B191nd/2oNdqfTYnmhfHqnMsw0ewFM2wMy5LlkLHNvhLneoDBeuobjYWXlzOeL/f2d5Ou
-	NO5mMKFxXJItqi1sp4qTYx3/rt/5oWEzeAtQN+3br/GGeIkwGvyOcTLs4RBUp7NciGNEvAzijaT
-	gjNa2td+270fHsen7PWkRuvOEZIAH6wQ1nDJm2msKUujpmBfHDyDYdN1Rd5H1UBi+ayJA35a2r1
-	DVLgMmcwQEKOHlB0wPP5emYsusX5BtX5kc9ioEm+utorna6I/A=
-X-Received: by 2002:a5d:5d85:0:b0:487:8ba:8b4c with SMTP id ffacd0b85a97d-48b024297b0mr3902212f8f.1.1790773482052;
-        Wed, 30 Sep 2026 06:04:42 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b029be7cesm3805401f8f.8.2026.09.30.06.04.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Sep 2026 06:04:41 -0700 (PDT)
-Message-ID: <3019f327-1ea1-42f6-b133-597ca1cc524a@6wind.com>
-Date: Wed, 30 Sep 2026 15:04:40 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HirIkXps"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4DE1F000FF;
+	Wed, 30 Sep 2026 13:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790773670;
+	bh=pW1lh1qNyurFASvrfcUUVr7aN8GTGNpjHlUqyZ7gqu0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HirIkXpsw8IQpDabtT9tJ8/oGR3obZfcFMdIajVW5AGY+h2U/KdNd7YUrTl0R5I1+
+	 itovuHytyNk5N0M7isLzM7UOeI63d3f8bm7kDZlIhpx7fGNGdbn+xoUUMt1xFnCe9A
+	 BPA+UiI14PiA9Nvrk/bYO8ozqzO1lC2OLdsTyXJS8WX8X6mHJjaAQuYYPEimPWU1VA
+	 16C5t3Y743aTTdBBEKOcMRa4X1x5p9Ui5l02Q1KKi1KrMyXOvpiSeuvkApVy3TFTri
+	 ZJkZN6Ml8LDOa+qBm4nXtuOGtFtLcBt8Ve/zGrQRfqLnp9q2VmJBbckSJgNkxTcCye
+	 +kyd9pYfiIQ/g==
+Subject: Re: [PATCH net 1/2] net/sched: sch_teql: fix shared headroom and
+ header strip on slave retry
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, hybris@mojatatu.ai, sashiko-bot@kernel.org
+Date: Wed, 30 Sep 2026 13:07:49 +0000
+Message-ID: <179077366943.434549.8458923511073715827@kernel.org>
+In-Reply-To: <QDISC-6HS9.v1.20260928064754@mojatatu.com.1>
+References: <QDISC-6HS9.v1.20260928064754@mojatatu.com.1>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next v9 3/6] net: add a generation counter for dev->mc
- changes
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
- Kees Cook <kees@kernel.org>, Kory Maincent <kory.maincent@bootlin.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260930112842.21323-1-sigefriedhyy@gmail.com>
- <20260930112842.21323-4-sigefriedhyy@gmail.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20260930112842.21323-4-sigefriedhyy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Le 30/09/2026 à 13:28, Yuyang Huang a écrit :
-> A multi-part RTM_GETMULTICAST dump of dev->mc resumes by position, so
-> entries added or removed between two dump rounds can be skipped or
-> repeated. The IPv4 and IPv6 dumps report that with NLM_F_DUMP_INTR by
-> stamping cb->seq from a per netns generation counter combined with
-> dev_base_seq, see inet_base_seq().
-> 
-> Add the equivalent for the device multicast lists: a per netns counter
-> bumped whenever an entry is added to or removed from any dev->mc. The
-> list helpers do not know which device a list belongs to, so give
-> netdev_hw_addr_list an owner, set for the lists of a device and NULL
-> for snapshots and other standalone lists, and bump the counter of
-> dev_net(owner) from the count helpers when the list is dev->mc. That
-> covers the dev_mc_* helpers, both lists of a sync, the hardware sync
-> helpers drivers call from their rx mode callbacks or their own workers
-> and the reconciliation after an asynchronous rx mode update. It is
-> atomic since the writers only hold the address lock of their own
-> device.
-> 
-> Used by the following patch for the AF_PACKET multicast dump.
-> 
-> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Critical: 0 (1) · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message and the new code comment give the wrong
+  reason for problem 1 and the wrong way to reproduce it.
+
+Pre-existing issues:
+- [Critical] teql_master_xmit() in net/sched/sch_teql.c treats a slave
+  transmit as successful only when `netdev_start_xmit(skb, slave,…
+
+--
+
+net/sched: sch_teql: fix shared headroom and header strip on slave retry
+
+The patch adds a skb_cow_head() call before dev_hard_header() in
+__teql_resolve(). It also changes teql_master_xmit() so that, when a
+slave attempt fails, it pulls back only the header length that
+teql_resolve() pushed for that slave. It no longer pulls
+skb_network_offset() bytes.
+
+Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
+Closes: https://sashiko.dev/#/patchset/20260824115928.4099988-1-victor@mojatatu.com
+
+> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> index 409ce50cc0dbc..acd03f9afc6b8 100644
+> --- a/net/sched/sch_teql.c
+> +++ b/net/sched/sch_teql.c
+
+[ ... ]
+
+> @@ -265,15 +265,28 @@ __teql_resolve(struct sk_buff *skb, struct sk_buff *skb_res,
+>  	}
+>  
+>  	if (neigh_event_send(n, skb_res) == 0) {
+> +		int off = skb_network_offset(skb);
+>  		char haddr[MAX_ADDR_LEN];
+>  
+>  		neigh_ha_snapshot(haddr, n, dev);
+> +		/* The skb may be shared (e.g. a packet tap clone); make the
+> +		 * headroom private before dev_hard_header() writes into it.
+> +		 */
+> +		if (skb_cow_head(skb, LL_RESERVED_SPACE(dev)) < 0) {
+
+[Severity: Medium]
+
+The skb_cow_head() call looks right. Are this comment and the commit
+message accurate about why it is needed?
+
+The commit message says:
+
+    1. When the skb is shared (for example a packet tap installed on the
+       master makes xmit_one() clone it before teql_master_xmit()),
+
+and later:
+
+    and a shared skb is unshared before it is modified.
+
+skb_cow_head() only handles skb_header_cloned(). It does nothing when
+skb_shared() is true (users > 1). If it has to expand the head,
+pskb_expand_head() has:
+
+    BUG_ON(skb_shared(skb));
+
+Would "header-cloned" be a more accurate term than "shared" in both
+places?
+
+Can the packet tap reproducer actually show corruption?
+teql_master_setup() never sets header_ops and uses ARPHRD_VOID, so
+dev_has_header() is false for the master. packet_rcv() and tpacket_rcv()
+only push back to the mac header when it is true:
+
+    if (dev_has_header(dev)) {
+        if (sk->sk_type != SOCK_DGRAM)
+            skb_push(skb, skb->data - skb_mac_header(skb));
+
+So the tap only sees bytes from skb->data onward. __teql_resolve()
+writes the slave header into [data - hlen, data), which the tap never
+reads.
+
+A trigger that does seem to cause visible corruption is a tc mirred
+mirror on a physical device's clsact egress, with the teql master as
+the target.
+
+sch_handle_egress() runs before skb_dst_drop(), so the clone keeps its
+dst. ARPHRD_VOID is not a mac-header-xmit type, so tcf_mirred_to_dev()
+pulls mac_len off the clone:
+
+    expects_nh = want_ingress || !m_mac_header_xmit;
+    at_nh = skb->data == skb_network_header(skb);
+    if (at_nh != expects_nh) {
+        ...
+            skb_pull_rcsum(skb_to_send, mac_len);
+
+The original skb's Ethernet header then sits in the clone's shared
+headroom, and dev_hard_header() in teql overwrites it.
+
+Should the reproduction steps in the commit message describe this case
+instead?
+
+The subject and body also say both problems happen "on slave retry".
+The header write, and now the COW, happens on every slave attempt,
+including a first attempt that succeeds. Could the wording reflect
+that?
+
+[ ... ]
+
+> @@ -374,8 +390,14 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+>  			nores = 1;
+>  			break;
+>  		}
+> +		/* Undo only the header teql_resolve() pushed for this slave.
+> +		 * Pulling skb_network_offset() instead would strip a
+> +		 * userspace-supplied header when the slave added none, e.g.
+> +		 * an AF_PACKET/SOCK_RAW frame with no dst entry.
+> +		 */
+> +		if (hlen > 0)
+> +			__skb_pull(skb, hlen);
+>  		skb->dev = dev;
+
+[Severity: Critical]
+
+This isn't a bug introduced by this patch, but can this __skb_pull()
+and the skb->dev write touch an skb that the slave has already
+consumed?
+
+teql_master_xmit() counts a slave transmit as successful only when it
+returns NETDEV_TX_OK:
+
+    if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+        netdev_start_xmit(skb, slave, slave_txq, false) ==
+        NETDEV_TX_OK) {
+
+Stacked slaves such as 8021q, and macvlan through macvlan_start_xmit(),
+return the lower device's dev_queue_xmit() result unchanged:
+
+net/8021q/vlan_dev.c:vlan_dev_hard_start_xmit() {
+    ...
+    ret = dev_queue_xmit(skb);
+    ...
+    return ret;
+}
+
+That result can be NET_XMIT_DROP, NET_XMIT_CN or a negative errno.
+dev_xmit_complete() treats all of these as consumed:
+
+    if (likely(rc < NET_XMIT_MASK))
+        return true;
+
+For NET_XMIT_DROP the skb is already freed, for example in
+__dev_xmit_skb():
+
+    kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_BURST_DROP);
+    return NET_XMIT_DROP;
+
+For NET_XMIT_CN it may still be queued on the lower qdisc.
+
+In both cases teql falls through to this block. For a VLAN slave with a
+resolved neighbour, hlen is ETH_HLEN + VLAN_HLEN, so __skb_pull() and
+skb->dev = dev write to the consumed skb.
+
+The loop then calls teql_resolve(), skb_cow_head(), dev_hard_header()
+and netdev_start_xmit() again on it, or it reaches the drop label:
+
+    master->tx_dropped++;
+    rcu_read_unlock();
+    dev_kfree_skb(skb);
+
+Would that be a double free? The function can also return
+NETDEV_TX_BUSY, and the core would then requeue a freed skb.
+
+The setup needs CAP_NET_ADMIN to attach teql as root on a VLAN or
+macvlan device. After that, ordinary congestion on the lower device is
+enough to hit this path. The rest of the series does not seem to fix it
+either; the final state still compares against NETDEV_TX_OK.
+
+Since this patch already reworks the post-failure skb handling on this
+path, would it make sense to check dev_xmit_complete() on the return
+value instead of comparing it with NETDEV_TX_OK?
+
+>  	} while ((q = rcu_dereference(NEXT_SLAVE(q))) != start);
+>  
+>  	if (nores && skb_res == NULL) {
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com
