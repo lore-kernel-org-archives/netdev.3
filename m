@@ -1,148 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010039.outbound.protection.outlook.com [52.101.46.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C264CCDC1;
-	Wed, 30 Sep 2026 12:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790769965; cv=none; b=Z2PcUkBlbP55AXsWUfTsdvfHk9g8qgReBv6y4dKIPyRGX4CuPKiJjJ+DTGHbxwRlprDoAhA5Al2hwBIqBR1z3aH5DQuUGA0LbmsNj+Uvk4fjrX67zc8W4O8SU9AidXIUBt04mmh2RFyC4D0sOfIGIKZuIWbZ7tjBX6IKb9fW2FI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790769965; c=relaxed/simple;
-	bh=buBf7t9Hn6EBP0vAciAAVetVActYmbebNI7mVh5g4oo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nwyTHOUBm6tVgZJMQPJe2wTLMsDBl/jTXNqe5B3nDe12vXCrMnyrg3mr4HzMWZNbHSZy5oZDoHeBj95z/Rs/X+FMrzNSF42dLG5HXsJaZlCMqAeAKt8TOIh6FKph4XoZoSXWlSZcByrdlXfseeuUgrWJGUfbeAR+/VtKxgyNjXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aytuilX+; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F57547074;
+	Wed, 30 Sep 2026 12:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790770338; cv=fail; b=lKwSt92HHKfDCp3rYnYTctF5lcssiLXwR045G3j+0dtc77DifesVH3JgGQHACxKzA01SXl95knZUA98E+2o/X4y6JrcMG/8opDu+pQRp6QzAoPeEH4+u7DIBs1UlHzETr2zuYzBCTrQxleIKgfl6S07A1znmhxq6il0ElZcORfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790770338; c=relaxed/simple;
+	bh=tL/ERNROutxdrQFWtvHxzAJX/jC787HZEzrMsaXbjtE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZXYLRaLq7JQQphdo8tYKzborAqLZa3cGfCT8YeadqdiJOpW1PAPZPU85rdLOUmYZz3YkfEohyY8uTOWdngrmJwraYqGbOE23tYBI6pvIe/EUzgARjf0pLwCGCE6vjqhbyBGszpcCrcv6/+w0+FKf+cmzGaCiTqgkrerWLNTSuhk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B3GWHKrY; arc=fail smtp.client-ip=52.101.46.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aytuilX+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4901F000FF;
-	Wed, 30 Sep 2026 12:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790769963;
-	bh=8nNtuJZdcWbpoaJYlOZyiCIkleDqMmN5g1ivBvMT0rQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aytuilX+0FO6M/0ru752d7Xv7MoofxyAiHYqkWFI64N/XgsFoC92jl7+LYapkyYgx
-	 txtXm2t7odGuKhdKSoBCzJVeb2oAzyiu2b5pC3RGqWd5xV7lsLbap+dIATZz8nDa02
-	 HGN/7PHSzxJ1WkZkxWy9WFBRzZvGfu/n3ylKVO+3EQQonrVpkzyDC7CW/+6sH1EXkS
-	 WAPX8TGN/WyxLZTYeRS+Px4JgFO1swoCggUVGaxaU7Ruyy9JXJwrWxafuB3E7OFr8m
-	 rNS9WqrGnzwsxpTgNKIfIWkgbeaZWMCO/CJoSUGpKnHZ4v1rKLf9XoAwdAgfmh/kLT
-	 Slf6Zl/nODSMA==
-Subject: Re: [PATCH net] macsec: check the resolved SCI for duplicates
-From: netdev-bot+sashiko@kernel.org
-To: haseebulhaq55@gmail.com
-Cc: sd@queasysnail.net, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- shuah@kernel.org, hannes@stressinduktion.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 12:06:02 +0000
-Message-ID: <179076996248.434549.3813789807508446133@kernel.org>
-In-Reply-To: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
-References: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B3GWHKrY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kPd8zKGK/J04TdagqAhPAeNXCH/tYNj6ABRf4mcYRxf+C8OTQb6YsSO53F2TGMRVU8pSOCpk/c16Xx1rdlbnfTLv57dvytcGWA459yae2xj/kb0g+GcNMdje5Dzrthz+G2qNrR2o6fqgqgt24K46eYaIwtXd/VURdZVzQ3qGrs02md3XQLKcuZtjIBRROHr5rgYDiNgvFULnbpZ6srgeY1HVCPa+mhQYvoe3r/vZYJ+/s883vRs4Kks6Y8BP6VFcy14ZFJwWW+Z0F+pKR/dYhs4UNfHICIT+1iMoJUOeOMrq3HzH8FCTbDGeHDJkh0ttxhwg0DH61jygBdklqdYrAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cod3Ec2HOPAmAYVkMFeOo+L+zc/EJAstr/lNMa4xZY8=;
+ b=vGxNkIq3qEkxfy8teawQ3fH7Rl36WKis/WumRwHmdgMW4R2Z73pEm9eLgCuD3aiC+ytjGngOi9J6ORPldxxsOP9NPBj1VP79LSuAFlxLTOq9gmUjbuQAE4VAhcJmnXCG4v8gSlN7ZWywzFwfc1Vxi0xoQjOO5eNhagvYpXtoXKh2SElwwSr8TKCywOtzRxHA3GkWm3IO9EZ4fY72X6Uj3mNQzTmsAX0T7pf3ws+vy4Sl9P6iV9DSKmFbTPmfy/CY1ZyRzqjKW/CNd+IILydYno44FCztmoBdQEzY0SlHOsZ9sYazkTwEVTGIrSmDmkBYLfRPcO8y5A2osSup7pnSEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cod3Ec2HOPAmAYVkMFeOo+L+zc/EJAstr/lNMa4xZY8=;
+ b=B3GWHKrYAeVOEz30k9QULflqaIQ6ECEXpjDsMp3KsWEN1jSjH0PPD49vE+vn4UNUzkyuXgxyXWLLYVic0+LGqpmc7a7vS8LiL9BE5vROcX5iqyr1kBEARlHKeN423lCkrB8DXnNm5xDYbVzhlxVRaRJHoy2vHkM6ezfR0rN/knIqZkXjDjC9ipqcPwL4MVfzZzVvK3+waGyf2ZZcGMK85RZPIqcetTEGLl4Q8cJnskYBATJ+1Xm2P6poZcjQb2nnqMvOL2DVxNEZgYa9dIKuHCzF6m6qPAIGBP+xHmPJCX5g+FbxrkIB1X7PnuVvE0Gq6G8NlRIxdJVGrcpVI29IMQ==
+Received: from CH5PR03CA0011.namprd03.prod.outlook.com (2603:10b6:610:1f1::23)
+ by BN7PPF9507C739C.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6da) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
+ 2026 12:12:11 +0000
+Received: from CH3PEPF0000000F.namprd04.prod.outlook.com
+ (2603:10b6:610:1f1:cafe::9d) by CH5PR03CA0011.outlook.office365.com
+ (2603:10b6:610:1f1::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.16 via Frontend Transport; Wed,
+ 30 Sep 2026 12:12:11 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CH3PEPF0000000F.mail.protection.outlook.com (10.167.244.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 12:12:11 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 05:11:49 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 30 Sep 2026 05:11:48 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Wed, 30 Sep 2026 05:11:43 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Andrea Parri <parri.andrea@gmail.com>, Boris Pismenny <borisp@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, Fernando Fernandez Mancera
+	<fmancera@suse.de>, Gal Pressman <gal@nvidia.com>, Jianbo Liu
+	<jianbol@nvidia.com>, Kees Cook <kees@kernel.org>, Leon Romanovsky
+	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Parav Pandit
+	<parav@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>, Raed Salem
+	<raeds@nvidia.com>, Roi Dayan <roid@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Steffen Klassert <steffen.klassert@secunet.com>, "Tariq
+ Toukan" <tariqt@nvidia.com>
+Subject: [PATCH net V2 0/4] net/mlx5e: Fix offload lifetime and exclusion bugs
+Date: Wed, 30 Sep 2026 15:11:15 +0300
+Message-ID: <20260930121119.141953-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000F:EE_|BN7PPF9507C739C:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4d9b70d-6611-4b59-a5d8-08df1eec0e66
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|82310400026|1800799024|376014|36860700016|13003099007|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	9HD43n1Dq8vzV7MKpmkKgIKYZHBHEk5gKTMwxeq6WF8BVMHLgtFR1b+6YNwRFunTMA0gqGl2To4Bk5JDL8WP/dervN/gCOeb7D3/kC4RfHmf5ihUC/fOSnoewDFRKbuaXR+JScqADXYypP8EIcJZ4mn/tK2fHVq6qX7GZwRLzwTSIAG1D0nAwJaUIcD47+Rl/m/36UOr6jBFWolv9l+07gzi6iRF87+1z9U3tWLQTU9p49Ut/iKxQtOEazLBZJaw8F5wz3nDlDCE6yAUmaaOO/0nqMMnsQEMayGeBjU0y39ZwLLy3P4DkL/ywB25MugM5IFcdWABM+1bGKOM47KXX7ufXRGuSrqBo/ClldDvGs7DTUhk7323ILHKno0td34O8POKKPPFW3fGOdV2DMEtA+PmS/zMgoroHQ0R0HBJF1LaeJXyPZOk3Ac5R3iXoUBEOYkt2AizmRBvOG88+R7Ua38bE8INZIiokV76mXBirHJFMGmXJg+bb0dr//P9jQYKQKf8Js6If5GDpyEqljRHeZgZUnKGoIwZx2p7dg64elMZNRydgr5lFyldVoboRweCVIUcfH+qvXDhNaKDmnVrbh0/7SvFTWyJGPwyzrAgFXEVUH95yqPoJ8rTrfw4oLkNc99r7w+7YR0J7+AFhgYMj94TuNSUJYVpDulfadTfreTUcw2yoayQGUpVgtAnEdJdfHcLNh7n2UjKkOadPmpdSg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(82310400026)(1800799024)(376014)(36860700016)(13003099007)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	m8ly3k/W53GLJsb81XXn+6G8q1OhpfhkO0fxuYd/IdILOY9AIUkZ7U2yvZUrWJoW7+Coa4v3tBIP5166hLHq2ogXvCJf7d8fFyrPaKCrqjS6CEBYll4h3gcmXbTRGxdN6YEZsgmI+E+r6L/YuOcQ4avp3Lwd8tIUISzUYyp7cHm6kctZDDc5S646abco+xhYAs78R740EKIjUJE0ihZcmDOcc0nYRlTzpqYUabeCz8wFaTYR4QWQRv+V5HZzF00nLobEHGBjlORyaeqolLi7tH/nIAvTB3DNnZ9FJJuTxqr8JD8xz9EU/qORtVFzGK+aAdESAsVL75FwLWarcWvSyWRY15gLaZwfai0lJk1DgH3kMGEeGW5lqMpT5PlX0r4ISKmTeKTvAD3yiLY5vJ73fhJwRnI4ZCsVtufRVsGzIFDEQun5kX5+F7rhr5WoWwrY
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 12:12:11.0936
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4d9b70d-6611-4b59-a5d8-08df1eec0e66
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0000000F.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF9507C739C
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+This series by Cosmin fixes several mlx5e offload issues:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- Block eswitch mode changes before accessing the IPsec context during
+  policy and SA creation.
+- Tie TC eswitch and IPsec-blocking references to flow destruction,
+  covering bulk cleanup and flows with outstanding references.
+- Serialize TC/IPsec exclusion counters with a dedicated mutex.
 
-- [Medium] The two new tests, test_duplicate_sci() and
-  test_undefined_sci() in tools/testing/selftests/drivers/net/macsec.py,…
+Regards,
+Tariq
 
---
+V2:
+- Use mlx5_esw_lock() in mlx5_eswitch_block_mode() (Sashiko)
+- Clarified the fix split across first two patches (Sashiko)
+- More careful dereferencing priv->mdev in mlx5e_xfrm_add_state() (Sashiko)
+- Avoided spurious error message during IPsec SW fallback (Sashiko)
+- Harmonized check_users arg for policy & state add (Sashiko)
+- Clarified the scope of the "tc: tie..." fix (Sashiko)
+- Moved macsec patches into a separate series.
 
-macsec: check the resolved SCI for duplicates
+V1:
+https://lore.kernel.org/netdev/20260917175433.4090878-1-tariqt@nvidia.com/
 
-macsec_newlink() now passes macsec->secy.sci to sci_exists() when checking
-for duplicates, instead of the unresolved local sci. Before this change, an
-all-ones IFLA_MACSEC_SCI request could create a second MACsec device with
-the same transmit SCI on the same lower device. The commit also adds
-selftests for duplicate rejection and for the all-ones fallback.
+Cosmin Ratiu (4):
+  net/mlx5e: ipsec: Block eswitch mode changes during policy creation
+  net/mlx5e: ipsec: Block eswitch mode changes before accessing
+    priv->ipsec
+  net/mlx5e: Serialize TC and IPsec offload exclusion counters
+  net/mlx5e: tc: Tie esw & accel blocking refs to the flow's lifetime
 
-Link: https://lists.openwall.net/netdev/2026/09/16/11
+ .../mellanox/mlx5/core/en_accel/ipsec.c       | 65 +++++++++++++-----
+ .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 47 ++++---------
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 66 ++++++++++++-------
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 11 ++--
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h | 10 ++-
+ .../mellanox/mlx5/core/eswitch_offloads.c     |  7 +-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  3 +
+ include/linux/mlx5/driver.h                   |  7 +-
+ 8 files changed, 128 insertions(+), 88 deletions(-)
 
-> diff --git a/tools/testing/selftests/drivers/net/macsec.py b/tools/testing/selftests/drivers/net/macsec.py
-> index 9a83d9542e04a..72ee1c6e146ee 100755
-> --- a/tools/testing/selftests/drivers/net/macsec.py
-> +++ b/tools/testing/selftests/drivers/net/macsec.py
-> @@ -263,6 +263,52 @@ def test_offload_state(cfg) -> None:
->              "features should match first offload-on snapshot")
->  
->  
-> +@ksft_variants([
-> +    KsftNamedVariant("default", "", ""),
-> +    KsftNamedVariant("explicit", "", "sci {sci}"),
-> +    KsftNamedVariant("undefined", "", "sci ffffffffffffffff"),
-> +    KsftNamedVariant("undefined_default", "sci ffffffffffffffff", ""),
-> +    KsftNamedVariant("undefined_explicit", "sci ffffffffffffffff", "sci {sci}"),
-> +    KsftNamedVariant("undefined_twice", "sci ffffffffffffffff",
-> +                     "sci ffffffffffffffff"),
-> +])
-> +def test_duplicate_sci(cfg, first, second) -> None:
-> +    """Reject duplicate transmit SCIs, including the undefined-SCI fallback."""
-> +
-> +    ms0 = _macsec_name(0)
-> +    ms1 = _macsec_name(1)
-> +    sci = _get_mac(cfg.ifname).replace(":", "") + "0001"
-> +
-> +    ip(f"link add link {cfg.ifname} {ms0} type macsec {first}")
 
-[Severity: Medium]
-Should test_duplicate_sci() and test_undefined_sci() check that the local
-iproute2 supports MACsec before they create links?
-
-Every other test in this file calls a _require_* helper first:
-
-  test_offload_api, test_offload_state -> _require_macsec_offload(cfg)
-  test_max_secy, test_max_sc           -> _require_ip_macsec_offload()
-  test_vlan, test_vlan_toggle          -> _require_ip_macsec(cfg)
-
-Each of these helpers raises KsftSkipEx when "ip macsec help" shows that
-support is missing.
-
-In test_duplicate_sci(), this first ip link add runs outside ksft_raises().
-With an iproute2 that lacks MACsec, it raises CmdExitFailure and the case
-is reported as a failure instead of a skip.
-
-test_undefined_sci() has the same problem:
-
-    ip(f"link add link {cfg.ifname} {ms0} type macsec port 2")
-    ...
-    info = ip(f"-d link show dev {ms1}", json=True)[0]
-    ksft_eq(info["linkinfo"]["info_data"]["sci"], sci)
-
-If info_data is not in the JSON output, indexing it directly raises
-KeyError, which also counts as a failure.
-
-In that environment, all seven new cases (the six test_duplicate_sci
-variants plus test_undefined_sci) would FAIL, while the rest of the file
-would SKIP.
-
-Both tests use only the local host. Would a local-only check be enough
-here, such as _require_ip_macsec_offload() or a local variant of
-_require_ip_macsec()? The existing _require_ip_macsec(cfg) also checks
-cfg.remote, which these tests don't use.
-
-> +    defer(ip, f"link del {ms0}")
-> +    with ksft_raises(CmdExitFailure):
-> +        ip(f"link add link {cfg.ifname} {ms1} type macsec "
-> +           f"{second.format(sci=sci)}")
-> +        # Clean up if the kernel incorrectly accepted the duplicate.
-> +        defer(ip, f"link del {ms1}")
-
-[ ... ]
-
+base-commit: 99b43ede9e355ba35244cc9470bf1819774ce39d
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9%40gmail.com
+2.44.0
+
