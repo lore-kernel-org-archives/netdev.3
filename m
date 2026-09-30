@@ -1,436 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA548820E
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775273; cv=fail; b=Gd3g+NnTKT2PtQZedLXqRQtvzZJZsHxzuV2Nar+lgAYR+hp/Xnq7xwH42ZoMl2GTRW6G//lk/xLF+erDMu9Zg1Nr9rmllNw+bwmschbKiZnAkHO8oX+13gDfZGWdpzT5ZksY3asmDtawJQAqVsU5uQ2aKhkYzvPeJWtGU3E0tSg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775273; c=relaxed/simple;
-	bh=nFoRjWavtmb4FYNShmCUwuZ4lKV8mF5Sv0xe6ULw3Ds=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=T+pL4PmLQq+6xkCkM+Stmsy80lfsLNLkPH7frMRoZKXETwxtUG6hnqfPJyZPzpYewe2S0CVYFhLBNE4pR9Cj3bYsfbXbNgJiEb6oFCNzKoS7EzaYUd6XxoGiBBM8e/vMmNyJhVEDDjvLmFTqv+ueOK/1wEz2eDXiC53voLm0rOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/6u8ssk; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F604DDB58
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790775552; cv=none; b=LyLf0XkIs5uclQ404hN/SbELEnweE4kQrZhuXAPzjRDurbFKai4jUangbZL+WN8YtjyfqrA1/LaKajAztolCMjq6kJAIiqPLafPyLC/Ktt8VhU4XPv5XnbdrjE4/tbmPKCm6jbBUWJ+h48yUUy9Gys3nDgvdnl0YR3VrxtGzN2U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790775552; c=relaxed/simple;
+	bh=A4FkOd1rsHBO9TbAATH42i8t6LdywS4oKcOnDIsJL6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RHd0KRVZod9re2+T656vLVJZRDGPLYi4e4mksSyEEU4s7w/d5u6Lf3xVyK6DdcCkyE39c1XWbPxI8fDr74Ce+iW+Jr7b5Od5PaM94XXDzH14Qt1sAOlqXztJlDDGEzf8Uy35qa5oFQhbHVstmsk3jLv9VGmhzg6VFtREBt3xBhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDFEAdnq; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/6u8ssk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790775268; x=1822311268;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=nFoRjWavtmb4FYNShmCUwuZ4lKV8mF5Sv0xe6ULw3Ds=;
-  b=U/6u8ssk5hmcr2aZA8jvaQLqDlc3HszEFA51hyLroYko8eX6WmVQJps1
-   RLLOf0ErWtG+10ITRTYJOapgX8ZbB9R+1RKOuIH3k1JE4em4j0f1xQWPi
-   1Qd1DLUrImyVjFCc+URonOt8cqU3dM90GwJZaH3HT74e/kHYRyHDnF2/Q
-   +/dze2x+Jg4zK4uxWzIBLIcIJMNOuYM9SV8ajQJUA2iHs67shNEDagMSb
-   8QGdbf3QZmkOfrI4iPDdro9qx0kpA/OFrxepaONGyBtb2vD2bvg3GGIAw
-   pYLeJLgOwZyd0DiZSHcXVyeRKeAMKgXIr+cIru0QFuFYpaQrcdwPNhVj5
-   g==;
-X-CSE-ConnectionGUID: PBfuFWtJQ/KtpkLolULoBg==
-X-CSE-MsgGUID: fG9MpLJ/T62bxlMB8Vwbjw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91610424"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="91610424"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:34:21 -0700
-X-CSE-ConnectionGUID: jzelRSdKRKWwIRaZ8sJJTQ==
-X-CSE-MsgGUID: UWRIawXZT5ed/prVd+wIdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="273492272"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:34:20 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 06:34:19 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 06:34:19 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.23) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 30 Sep 2026 06:34:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n3KgMD0ssqdKxyYVLXvt92rymbXtRKRCj0knflIFvjIkOwF3qcnizdw9xqL3k50CrVII09sFTeT6w1CcE2UAu69F/dlRwqhBYbhQhh/U/DvwPMqy7hf3TqJ1nbUS+fLX6PDRk3ukTJJ62QMK4CapGRvpAul9VJyEYeqIuX1/n9keC89SCuY0klmWwhAs4xwW6S9Kqtqge60IRnbAD31F21K7x2snUqLNiM3HE6gtvepHFU/ydXaP4wXbu6DdfhAcd9CVyPP4gBV2mbVUwzNw4QhXnkSNUTvAlHDDW8lRFKUW4vdzyox2kU9OfuvSpUkm4X8aGMf1LTQ6pXEkA/KuIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PWeyBWU7v7V7rtu3Ifwc2x/SAdiZqtjKTxh7xnpaKnU=;
- b=o7m40I9WTA1cYWLFHcPK1apqKm+vr0Mq7iMdap1Uvg1dcV91Soys99afbAxyh4BXNabQkxOVx72Z0VtClhqIx7pmn5FnB1KIjoUyDROq4BPxceOStakrpFuylSteZo9TIT+ZHsjWJc2blDeG+nj6TlHzytdsicQmKLTESlqBnOZiEWluEyR4Mt/Vh6iZvBMFsS32U0anKWKAht8fyE9V424+1Acs9WXAJxeDixQCD6FMj1TUG2F0+n8jDRd6dgmVBm95/d92qs7dZIB0Hx4X69iZRHeT3ZSY2Oj0DAztuTYzB2IQOWcLOEI/ApHE6OFxyoEEtw1hTM51GMIIDGrSyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9301.namprd11.prod.outlook.com (2603:10b6:208:573::20)
- by SA2PR11MB5018.namprd11.prod.outlook.com (2603:10b6:806:11a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 13:34:07 +0000
-Received: from IA3PR11MB9301.namprd11.prod.outlook.com
- ([fe80::714b:7d3e:aa0:104c]) by IA3PR11MB9301.namprd11.prod.outlook.com
- ([fe80::714b:7d3e:aa0:104c%5]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
- 13:34:07 +0000
-From: "Holda, Patryk" <patryk.holda@intel.com>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"kerneljasonxing@gmail.com" <kerneljasonxing@gmail.com>, Chenguang Zhao
-	<zhaochenguang@kylinos.cn>, Mohsin Bashir <hmohsin@meta.com>, "Loktionov,
- Aleksandr" <aleksandr.loktionov@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
- xdp_build_skb_from_zc() for XDP_PASS
-Thread-Topic: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
- xdp_build_skb_from_zc() for XDP_PASS
-Thread-Index: AQHdIykNFPsZlxO0Z0K5sZrc5BrK4Lbnelpw
-Date: Wed, 30 Sep 2026 13:34:06 +0000
-Message-ID: <IA3PR11MB93016E5AA9C2716B99927BC58A8B2@IA3PR11MB9301.namprd11.prod.outlook.com>
-References: <20260803091750.1084506-1-chenguang.zhao@linux.dev>
-In-Reply-To: <20260803091750.1084506-1-chenguang.zhao@linux.dev>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9301:EE_|SA2PR11MB5018:EE_
-x-ms-office365-filtering-correlation-id: de9e3144-2c53-4017-f534-08df1ef78067
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10067099003|56012099006|3023799007|6133799003|22082099003|18002099003|11063799006|38070700021|921020;
-x-microsoft-antispam-message-info: oIWWf83T9X1f9p6lkCri8Bpu5R2TvMR4qEpRGwYASRaQanZcbdhLzQq9nv/m9KP9VDqeV6WKifCvxH9ugDehLkpIbo3JmN8rvEg17QZdSHCYtC59D8+r7a34G6dTCA0sxD086w1DioMAYJQ3eZXMjCWk8Tf6bWqM8XeZWuD8+9usreZl4tZi2ASeBGnL39X23Ph2Fix6p/JLx/6F8dYSJFWui3S1Lr1vOfKcRpt6DM3j+YK1/Bdbdh2XBeBQjlk/OwtE5ucFbeXGQ5vlVUAkKnqn50IJwvQcdbLN91z6UgsPtnGZ5IPPSm9oxKiyK3JBQnast5IJ4dm4wFv5zO2cRzd2z4vM4B7Yj3U6yV3iqwh3kcG40C7ZGoLJ3VINSFxhpS6rRJ09j0BRLdDT0SOzWRKmmFTJDBHg5CO2bsAJEmtfiMiX5MOKuuCU1ToZvsfbpPQ/61sqoaPljukycMjcAbQYtdbhR71k2pBDS73h2iIfeDWBHHs6xUapUr9W2/TRL3opDJwCaeXH1haH45AdNWjJuQcI2soPYW5Pu4BSMfWkTpO9yndhjaqwwMaZ4hS0v01cCkrT/aenh87qF3GzsXcQd6WSwlGPdp7AFbzalJPBC7Lu2kVl7TeADEXU2Wn6CY+ArA3p4t0+K8oZjnrqd6+FncATcy5v8fwU1flVglYQIzj/wEqxGnpO4qtWzANR+NSLYTxuUY/YQs6hKXs1FE7ziZxyCb0/krof54UGa4k=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9301.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10067099003)(56012099006)(3023799007)(6133799003)(22082099003)(18002099003)(11063799006)(38070700021)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fIywnOA3CswWg+poGXX7tnkLkBaToGE7kCAG24gyKmwiCWT6Jgq1JgCvpH?=
- =?iso-8859-1?Q?B44+HotkoJi03YuDRMTPzv0SZ/IimOY91H/yI/S5E+Fp1aPEIKbh5Xgkuy?=
- =?iso-8859-1?Q?SutjwCeAuZ16RuO2R1Qg4p0IFB5g8EcxKNAu46M2C1HDPG6dC/lSoqI67a?=
- =?iso-8859-1?Q?ii3VNTim74DWIbEDatXtM/nkzFMM/usE1T2lfM6X4qVzY1K4l3ZhpTqX/8?=
- =?iso-8859-1?Q?pqd6OuWaKMw1WKWkTl0i9Dmje7hL6eqUEr5vxR6bX6GvyXw2As6UADySS5?=
- =?iso-8859-1?Q?fm1lcriXQBrdKQq9qsk3HYFnpejx+F2rl5q0/X56IZu4y7X/dY+JT1LW8M?=
- =?iso-8859-1?Q?RnA7a4LLjNiItNAQ9jmCmHWRXKrZTE+bN7EbwiLD4BKx4omMz2mwy5Gflt?=
- =?iso-8859-1?Q?N2ykh7QXMaoBBr/IJPcxyN4tGtWe5Ey+/1Xx0MdGC+aXO0O8ZxiB4JmN4X?=
- =?iso-8859-1?Q?CvYnzLKUYIRvfHxlILunrBEZcM3+sEXuxfHeWlCnZYtc0Dkha53eBHW9f1?=
- =?iso-8859-1?Q?+sbKsVqWKXEg/i8Q6GXQ7G5kvD/+0B+E4+uem7Bvb7AwQmm0kbjX5C8lVl?=
- =?iso-8859-1?Q?l7TKieJO90nk31WBIcG0+KC/o9SNSsi8n6VEibRVjaj+CpvKcK0MLBMwJ8?=
- =?iso-8859-1?Q?QbbEf4CY+HbV06ffX5Efvn5EJOi265HLAwtnX/GoV+LtWSIr2Cj4QKU4je?=
- =?iso-8859-1?Q?VPBPJkEl10SKzoT23QJMJIux0EyX2558eo9ae3IxaISb7epXn1hhSsNSRl?=
- =?iso-8859-1?Q?4ML0Di+m0p+UFthhMayJ0zrmkmTx7jkYz5YYygB8HmbizTGyQZn6h/79Xf?=
- =?iso-8859-1?Q?NlC6ZVF3ipALRw2d8T0CT06WDA5LWNbI8kgXtU9z1s2h2KGcjC+kUPInHi?=
- =?iso-8859-1?Q?a3v/MnZdDFsuHS0N4SWk1xgMPAJc/eHFf8+QVMYw34bbND9CJrdknBX42P?=
- =?iso-8859-1?Q?xaTCvWDcH4fDBzXLY4lPaKNphVeIOmk29WSpJMO6v5M9e1Sev9ZQhUjUkT?=
- =?iso-8859-1?Q?+fKNGH8c/aPz4H2woWnTTL6vjQMzRtRB4Nd804jYcR+0RScsbO69Xrih9Z?=
- =?iso-8859-1?Q?WR0nWxoFrgubsC+n/W2ZRygwncvrZSDdh4WP8qVKZgGa/Eo2lpMbIsHQM6?=
- =?iso-8859-1?Q?t1h2HE85zIWyty3aBTA5GpSdqfHAKS/CtYLCaJolCL5C3ihp/wFskP/LIx?=
- =?iso-8859-1?Q?YzjoqQKXqwKz3mo3LIInVTA7xsnqIYOuebkpPXXJv7zTz2Y+XrFKD2nLpS?=
- =?iso-8859-1?Q?gfMUM8rP4vcOPjECBBVfBxz05gns9O6s7HHztBwQ25ESb7NP0V5PMRrfgw?=
- =?iso-8859-1?Q?XBeDCuCyx4RKshC142ZjUKA3TMJ33mo7k6kj6H/28tSqQ8LaIVrcc+Ir2k?=
- =?iso-8859-1?Q?yOH8dirGRop47/lx5N0j4GnCJNbtHyo914ykqJPN4bOHevLjQEJGahJxs3?=
- =?iso-8859-1?Q?i27D9B21joIPn9KoGjNJrnvrFZgccmt5tjQMmc66JBIJnxONLY6bLC9IsU?=
- =?iso-8859-1?Q?eBib0vssX7YsL6+/xlBC95BkyyWZGTDnkcTelcNL5HMQXYJiF4DOZM4ziv?=
- =?iso-8859-1?Q?8jxoXWXiWgcnb1Z4wylLbS08NKYivQvvGvwoilPYsymws88rpokpFN2Brs?=
- =?iso-8859-1?Q?z7EACWrmnXbb6rX5I+JCV6Np2OxDdeg/jUyVlBHdNvUKeF53AhehPLu8Sw?=
- =?iso-8859-1?Q?0kHXk4KBE3foeZVtuDOPKU//fyrlwxdm6IPFd9y0XMN3OTCvPvNeMDHVsa?=
- =?iso-8859-1?Q?UychAINwV3xZh69QXb0kM0ROcNKhZN+hMXnPPdBf2hO0CHhNYrOHVV7vzD?=
- =?iso-8859-1?Q?8Sqbk6NvBw=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDFEAdnq"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so33526235e9.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790775536; x=1791380336; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vqNw45I5i0A+TvN7Yvp1p4lxx6mkgXUC3KRKlj0F9r4=;
+        b=jDFEAdnqQQfoyp8qvfvoTdx4GHvMSrU14HM1MkbuVJocHbuNw/6oskblOn40/H/1tN
+         yXvxfBFYrMTgLczVFwmzqr5s/FdqBZi/Eh4gIsfaVWLDts1IOvapNhTbXteMzZWhP+xp
+         Po1N7NZoZlj6GM4LuFTYZdK6VT1fv40Kp25axbajQ7Z+f54HSO7mc6dvBc2Kh9+AkkEQ
+         nP8YBvtaDd6NpTPAt/a2QCXpTZRd/k2WJmWWm8l72cXH2ahRciOAbx4TlEyIF5Qg3y2H
+         2emYh4uQBU7X4YZj/hVVXpy32LjDypbtusFkpLkaETdTnJ4p8aWQC50SiGbUlf6gvi67
+         aI0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790775536; x=1791380336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vqNw45I5i0A+TvN7Yvp1p4lxx6mkgXUC3KRKlj0F9r4=;
+        b=U9X3faiTvtAgKodxvssOxV64FK2/dYAI8KaBjRjKtiSySz0XGCuiVuVtjrH3P+13Re
+         PkalXWB6Pk0VsdeJ6MKb5Naal6E5P+to16NcPPcmZLw6Lm7JdFH6Y6m7ZoQvKSzW1T1F
+         yWrvK0etRBcbwf+zhkuLBdjmnBKIO16KqynrYW0Gecu8lnMMu4/ue0w2oW6GpU9XmsoL
+         5Uszw7LgGavrcMg1LRv2y94Oi/dtg5sCcJ4aT1leN7SobLMPy2Icyl8ZiX64/nXq+wP+
+         HUIk8MsxibL2BGPphjtypLwu9XwfhhukzNAr+k+qZn9EMIKi+wHSi63TTpB0bBD2w8lX
+         9pTA==
+X-Gm-Message-State: AFuF++nRMj0+142C6NXA2B+jTmdOPdgoBx9Eyi3lLuRWmTgUG1dZBXEE
+	EhfxSkmPwuIYvVtw7CmTg16GpMAOtVvJUhzVmkdpxCPEtq+p8RSx3hjEdoUAqVik
+X-Gm-Gg: AYBFou3ktvnBRMjh6aVCvFtSrqoA6eXrKV+VzqIxKPMFFyAuqaWUreSk28BfLSGj6Qz
+	Mq4Aj29SYJHcwYw4lsdenHKKN2JwYXbPYVPFHxNNbjKTvcSDg/x/dqWYO5kszkOfsMAjsWK2fJc
+	/qezYC6WOYBLBh1+3zlHB7KlAu/Kv3B9Gbyr1aXosoy5hCpNg8+ulXgpZj6Na/12ucMcaUK6ju5
+	xfekddthxFB8jewAoBAiPNg/knFp7SB3t0M53FvX57p/OgHlyrHjLPS47a3n9d4DZFmF50ZRmND
+	dIiRZe2xO6XolEdUjxDjUYQQ6uPoTzzN6cs+Ge6AwxzKhOAbHqoyN2fc138yG63klS00R0PpCAp
+	iorCxP8tGtDV4nxuufgrCrJAsT+l7IYa8mYVTl+g1mVT9QXhNQ34OakqSirONpCt5lWb7rieeZE
+	b8LLuv/QF4rhxvyFIrzPvEChUvdE/ai7pv5M+jrbRK0ScU37NL6x+jRtrjrmlXjXwicMydw+dmy
+	JlA1+sD4cQU90Px9g2rXNYGtrW5dK4LgcueML1p
+X-Received: by 2002:a05:600c:3145:b0:49f:bd3c:bc1a with SMTP id 5b1f17b1804b1-4a01b00d9bamr25280835e9.21.1790775535365;
+        Wed, 30 Sep 2026 06:38:55 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b029d61e4sm3504730f8f.15.2026.09.30.06.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 06:38:54 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	daniel@iogearbox.net,
+	jacob.e.keller@intel.com,
+	joe@dama.to,
+	suraj.gupta2@amd.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net v2] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
+Date: Wed, 30 Sep 2026 16:38:51 +0300
+Message-ID: <20260930133851.663023-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: LdCwDZI3CJjBO1LpnVCC3pvtf1KF887132n04zBBm7Fe/pRuvmNgE1e4aT9fvSfhk6vR7j/Jv+S2fTJZZRABThEexNgle6SJCRxLSsNzRM51A1JYBhmUbvyt3yzJwsJqqg6Y4e11xD8X4p5skdyUZnDjMxbolhgU9H3eIxhG28ry6xuvgKUSxm03ZxSFl67ic62tgkaPBfXyaNj5lSCItSVmSkDYLB5iqDJG1ftbow38MFnNWTPWizeekk/Kl7pUgf7BE+di5F0i6B89V2fPiAdPaHSW5hqcdMMOoxIBw8bLuAd7YrNvHXv/Ee728PlDIermdDwf7plzFlGRN+U0gQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9301.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de9e3144-2c53-4017-f534-08df1ef78067
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2026 13:34:06.9418
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mpHB1lJ9M3GI04S5bjLZM8/GUh/6uhAjfJ2iGuZ1p8GWScZdaBW8ZCl440vgRO1ooyMQNbvi5jiTEbawTxVUHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5018
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
+axienet_dma_bd_release() walks the RX ring to unmap and free every
+receive buffer before releasing it, but frees the TX descriptor ring
+with dma_free_coherent() alone.  Any descriptor that
+axienet_free_tx_chain() had not yet reclaimed still holds its skb and
+its streaming DMA mapping, and both are lost.
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Chenguang Zhao
-> Sent: Monday, August 3, 2026 11:18 AM
-> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch;
-> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> pabeni@redhat.com
-> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org;
-> chenguang.zhao@linux.dev; kerneljasonxing@gmail.com; Chenguang Zhao
-> <zhaochenguang@kylinos.cn>; Mohsin Bashir <hmohsin@meta.com>;
-> Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
-> Subject: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
-> xdp_build_skb_from_zc() for XDP_PASS
-> Importance: High
->=20
-> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
->=20
-> Replace the driver-local i40e_construct_skb_zc() with the common helper
-> xdp_build_skb_from_zc(). On failure, free the xdp buff in the caller.
->=20
-> xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
-> eth_type_trans(), so pull the remaining descriptor field setup into
-> __i40e_process_skb_fields() and use that on the XDP_PASS path.
->=20
-> Select PAGE_POOL in Kconfig, since xdp_build_skb_from_zc() returns NULL
-> when page pool support is disabled.
->=20
-> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-> ---
-> v4:
-> - As suggested by Mohsin:
->   Select PAGE_POOL in I40E Kconfig so xdp_build_skb_from_zc() cannot
->   return NULL due to CONFIG_PAGE_POOL=3Dn and drop XDP_PASS packets.
->=20
-> v3:
->  - https://lore.kernel.org/all/20260731020736.170485-1-
-> chenguang.zhao@linux.dev/
->=20
-> v2:
->  - https://lore.kernel.org/all/20260729054916.720750-1-
-> chenguang.zhao@linux.dev/
->=20
-> v1:
->  - https://lore.kernel.org/all/20260724020125.246333-1-
-> chenguang.zhao@linux.dev/
-> ---
->  drivers/net/ethernet/intel/Kconfig            |  1 +
->  drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
->  .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
->  drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 79 ++-----------------
->  4 files changed, 34 insertions(+), 80 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/Kconfig
-> b/drivers/net/ethernet/intel/Kconfig
-> index 288fa8ce53af..75d1ad6e361d 100644
-> --- a/drivers/net/ethernet/intel/Kconfig
-> +++ b/drivers/net/ethernet/intel/Kconfig
-> @@ -234,6 +234,7 @@ config I40E
->  	select LIBIE
->  	select LIBIE_ADMINQ
->  	select NET_DEVLINK
-> +	select PAGE_POOL
->  	help
->  	  This driver supports Intel(R) Ethernet Controller XL710 Family of
->  	  devices.  For more information on how to identify your adapter, go
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> index ef5e657816f0..87553b14d34a 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> @@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring
-> *ring,  }
->=20
->  /**
-> - * i40e_process_skb_fields - Populate skb header fields from Rx descript=
-or
-> + * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
->   * @rx_ring: rx descriptor ring packet is being transacted on
->   * @rx_desc: pointer to the EOP Rx descriptor
->   * @skb: pointer to current skb being populated
->   *
-> - * This function checks the ring, descriptor, and packet information in
-> - * order to populate the hash, checksum, VLAN, protocol, and
-> - * other fields within the skb.
-> + * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does
-> + not
-> + * call skb_record_rx_queue() or eth_type_trans(); callers that already
-> + got
-> + * those from xdp_build_skb_from_zc() should use this helper.
->   **/
-> -void i40e_process_skb_fields(struct i40e_ring *rx_ring,
-> -			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
-> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
-> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
->  {
->  	u64 qword =3D le64_to_cpu(rx_desc->wb.qword1.status_error_len);
->  	u32 rx_status =3D FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
-> @@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring
-> *rx_ring,
->=20
->  	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
->=20
-> -	skb_record_rx_queue(skb, rx_ring->queue_index);
-> -
->  	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
->  		__le16 vlan_tag =3D rx_desc->wb.qword0.lo_dword.l2tag1;
->=20
->  		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
->  				       le16_to_cpu(vlan_tag));
->  	}
-> +}
-> +
-> +/**
-> + * i40e_process_skb_fields - Populate skb header fields from Rx
-> +descriptor
-> + * @rx_ring: rx descriptor ring packet is being transacted on
-> + * @rx_desc: pointer to the EOP Rx descriptor
-> + * @skb: pointer to current skb being populated
-> + *
-> + * This function checks the ring, descriptor, and packet information in
-> + * order to populate the hash, checksum, VLAN, protocol, and
-> + * other fields within the skb.
-> + **/
-> +void i40e_process_skb_fields(struct i40e_ring *rx_ring,
-> +			     union i40e_rx_desc *rx_desc, struct sk_buff *skb) {
-> +	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
-> +
-> +	skb_record_rx_queue(skb, rx_ring->queue_index);
->=20
->  	/* modifies the skb - consumes the enet header */
->  	skb->protocol =3D eth_type_trans(skb, rx_ring->netdev); diff --git
-> a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-> b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-> index e26807fd2123..3c52e0e60487 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
-> @@ -9,6 +9,8 @@
->  int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ri=
-ng);
-> void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64
-> qword0_raw,
->  				   u64 qword1);
-> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
-> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
->  void i40e_process_skb_fields(struct i40e_ring *rx_ring,
->  			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
-> void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring); diff --git
-> a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> index 9f47388eaba5..dfa519c30a0d 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> @@ -3,6 +3,7 @@
->=20
->  #include <linux/bpf_trace.h>
->  #include <linux/unroll.h>
-> +#include <net/xdp.h>
->  #include <net/xdp_sock_drv.h>
->  #include "i40e_txrx_common.h"
->  #include "i40e_xsk.h"
-> @@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring
-> *rx_ring, u16 count)
->  	return count =3D=3D nb_buffs;
->  }
->=20
-> -/**
-> - * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
-> - * @rx_ring: Rx ring
-> - * @xdp: xdp_buff
-> - *
-> - * This functions allocates a new skb from a zero-copy Rx buffer.
-> - *
-> - * Returns the skb, or NULL on failure.
-> - **/
-> -static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
-> -					     struct xdp_buff *xdp)
-> -{
-> -	unsigned int totalsize =3D xdp->data_end - xdp->data_meta;
-> -	unsigned int metasize =3D xdp->data - xdp->data_meta;
-> -	struct skb_shared_info *sinfo =3D NULL;
-> -	struct sk_buff *skb;
-> -	u32 nr_frags =3D 0;
-> -
-> -	if (unlikely(xdp_buff_has_frags(xdp))) {
-> -		sinfo =3D xdp_get_shared_info_from_buff(xdp);
-> -		nr_frags =3D sinfo->nr_frags;
-> -	}
-> -	net_prefetch(xdp->data_meta);
-> -
-> -	/* allocate a skb to store the frags */
-> -	skb =3D napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
-> -	if (unlikely(!skb))
-> -		goto out;
-> -
-> -	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
-> -	       ALIGN(totalsize, sizeof(long)));
-> -
-> -	if (metasize) {
-> -		skb_metadata_set(skb, metasize);
-> -		__skb_pull(skb, metasize);
-> -	}
-> -
-> -	if (likely(!xdp_buff_has_frags(xdp)))
-> -		goto out;
-> -
-> -	for (int i =3D 0; i < nr_frags; i++) {
-> -		struct skb_shared_info *skinfo =3D skb_shinfo(skb);
-> -		skb_frag_t *frag =3D &sinfo->frags[i];
-> -		struct page *page;
-> -		void *addr;
-> -
-> -		page =3D dev_alloc_page();
-> -		if (!page) {
-> -			dev_kfree_skb(skb);
-> -			return NULL;
-> -		}
-> -		addr =3D page_to_virt(page);
-> -
-> -		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
-> -
-> -		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
-> -					   addr, 0, skb_frag_size(frag));
-> -	}
-> -
-> -out:
-> -	xsk_buff_free(xdp);
-> -	return skb;
-> -}
-> -
->  static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
->  				      struct xdp_buff *xdp_buff,
->  				      union i40e_rx_desc *rx_desc,
-> @@ -372,21 +309,19 @@ static void i40e_handle_xdp_result_zc(struct
-> i40e_ring *rx_ring,
->  		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
->  		 * SBP is *not* set in PRT_SBPVSI (default not set).
->  		 */
-> -		skb =3D i40e_construct_skb_zc(rx_ring, xdp_buff);
-> +		skb =3D xdp_build_skb_from_zc(xdp_buff);
->  		if (!skb) {
-> +			xsk_buff_free(xdp_buff);
->  			rx_ring->rx_stats.alloc_buff_failed++;
->  			*rx_packets =3D 0;
->  			*rx_bytes =3D 0;
->  			return;
->  		}
->=20
-> -		if (eth_skb_pad(skb)) {
-> -			*rx_packets =3D 0;
-> -			*rx_bytes =3D 0;
-> -			return;
-> -		}
-> -
-> -		i40e_process_skb_fields(rx_ring, rx_desc, skb);
-> +		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
-> +		 * skb_record_rx_queue().
-> +		 */
-> +		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
->  		napi_gro_receive(&rx_ring->q_vector->napi, skb);
->  		return;
->  	}
-> --
-> 2.25.1
+axienet_stop() disables TX NAPI and stops the DMA engine before calling
+it, so nothing reclaims those descriptors afterwards.  Bringing the
+interface down while frames are in flight therefore leaks up to
+lp->tx_bd_num skbs and mappings each time.
 
-Tested-by: Patryk Holda <patryk.holda@intel.com>=A0
+Walk the TX ring the way axienet_dma_err_handler() already does: unmap
+every descriptor whose cntrl is still set - axienet_free_tx_chain()
+clears it on reclaim - and free any skb still attached, as a drop since
+it was never transmitted.  This relies on axienet_stop() having stopped
+the DMA engine first, as the RX walk in the same function already does.
 
+tx_bd_v is NULL when axienet_dma_bd_init() did not get as far as
+allocating it: axienet_open() does not check the result of the reset
+that runs it.  dma_free_coherent() accepts that, so skip the walk then
+too, and drop the comment claiming the ring is always allocated.  On
+the axienet_dma_bd_init() error path the TX ring has just been
+allocated zeroed, so the walk does nothing.
+
+This was reported by the Sashiko AI review bot.
+
+Tested on an AXI Ethernet MAC behind a PCIe endpoint: traffic passes,
+and after each of ten down/up cycles and five module reloads, all made
+with traffic running and each running axienet_dma_bd_release(), traffic
+resumes and nothing is logged.  The leak itself was not measured.
+
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+---
+
+Notes:
+    Changes in v2:
+    - Skip the TX walk when tx_bd_v is NULL, which axienet_open() allows
+      when the reset fails; v1 would have dereferenced it where the old
+      dma_free_coherent() did not (Sashiko).  Drop the comment that claimed
+      the ring is always allocated.
+    - Free the skbs with dev_kfree_skb_any(), so they count as drops as in
+      axienet_dma_err_handler(), rather than as consumed (Sashiko).
+    - Say that the walk relies on axienet_stop() stopping the DMA engine
+      first, rather than stating it as a guarantee (Sashiko).
+    - Kept Jacob's Reviewed-by, as the changes are small; please say if
+      that is not OK.
+    - The hardware test is v1's.  The changes do not touch the path it
+      exercised other than how the freed skbs are accounted.
+    - v1: https://lore.kernel.org/netdev/20260927081034.350422-1-maimon.sagi@gmail.com/
+
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 23 ++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 1722b7038f34..8bf27e20e103 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -186,7 +186,28 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+ 	int i;
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 
+-	/* If we end up here, tx_bd_v must have been DMA allocated. */
++	/* tx_bd_v is NULL if axienet_dma_bd_init() did not get as far as
++	 * allocating it; dma_free_coherent() below accepts that.
++	 */
++	for (i = 0; lp->tx_bd_v && i < lp->tx_bd_num; i++) {
++		struct axidma_bd *cur_p = &lp->tx_bd_v[i];
++
++		/* axienet_free_tx_chain() clears cntrl when it reclaims a
++		 * descriptor, so a non-zero value means the mapping is live.
++		 */
++		if (cur_p->cntrl) {
++			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
++
++			dma_unmap_single(lp->dev, addr,
++					 (cur_p->cntrl &
++					  XAXIDMA_BD_CTRL_LENGTH_MASK),
++					 DMA_TO_DEVICE);
++		}
++		/* never transmitted, so account it as a drop */
++		if (cur_p->skb)
++			dev_kfree_skb_any(cur_p->skb);
++	}
++
+ 	dma_free_coherent(lp->dev,
+ 			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+ 			  lp->tx_bd_v,
+
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+-- 
+2.47.0
 
