@@ -1,80 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-140.mta0.migadu.com [91.218.175.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BCE34CFA1;
-	Wed, 30 Sep 2026 02:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6762222D0
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790736223; cv=none; b=jaIrTABhDKcUuCwcOEi4JDO/1kNhNgojjDRH7sk7vtTNXJCVB0PgwP+n795Qx1VGf35nZaApuElNP+skJTkzMWCIvR3+obzQWbtkLU0DDg3BLDn3S82JPZaCufUwcsJflRMIatnflP3La6iH34gsf/8crj+KUsVbhM3MGn2cXxY=
+	t=1790736522; cv=none; b=Mwhp4D4CPy2sXbzcVeT3xtC9GAc0LSO1L3qnmETutF1sMGkkEa/K5dEGI7LjuolRGZp5YmH5kELIHyb2Nv6rLu/f6GLFC5YcIvActtMqeVzFGY3BmJBYJQqHgqBKFosdt/QoWbit9xR/Purn0DBl23cu+xXRH7mW8U6qUXoZt5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790736223; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bF3mFGsszd73mc5XQK1wGFc8eZSZpIxs2IzN1TmSCuIY+KBPuEcocBzpn4msymZLANbEIj6eIeinBWcCdGn0OdUlgns3Llfh2pemI4dm01AK3AROkdmPxdwvJafb6e9X5dV/P7RXAxUF1sfQ3wHCsoR/8SudmCK5Er1YETbmOQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OC/v4rUn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790736522; c=relaxed/simple;
+	bh=hsZwqTFeJz2g9lzDoXRrDPkpsxLhsmA9bGRCfMIBE7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sUlBgCm5uvSAbbnLHH09x/J+eIfe0cuxFL/ryJfiRDezv/uAh4GlLjmN1eSWG9wE+fEJKy2X1uzHWGPusTXQvka3xl5MfCRhs8QHeO1eQwBDITJlIrb7QIalvypr1Ee2si1dOE7RYeYsy5fIsNwaMvNhiU/gEe9qj3fzNPu0CMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b0nVwRIn; arc=none smtp.client-ip=91.218.175.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OC/v4rUn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435811F000FF;
-	Wed, 30 Sep 2026 02:43:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790736222;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OC/v4rUnu5Wr6qTsyc1amFMhkOm+UK9iJH5EozcoBH09EkDNG+aRk33wn8qyThwrx
-	 ktVnjIeBGyd2ZtGzuZp9TkOq8LKmWclI6oS1Rjf6PLrkLorih2qpNOt7aIN6tZUx0P
-	 LMT9XnL0WjNmFlz1jsvZjg18wdBP5IgvVv/K/NTvm0OHWOO4eSxTXIHGMl1Ql09WBY
-	 YWSXGv56+fRe/JCJIOy0j+zpVA5rIhVOeuWlx0cT8MA9tuF1ljIqg4dUBKE4xuqXfR
-	 oK1wWSI/nWcKsXbrHIfVrLyAFDDNuWBWnRQ36qJrk0eOrw0gVRfywXdBXqmnssL1J8
-	 qKdk+AZq6ei9g==
-From: netdev-bot+sinfo@kernel.org
-To: Artem Dinaburg <artem@trailofbits.com>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, David Arinzon <darinzon@amazon.com>,
- Shahar Itzko <itzko@amazon.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Shay Agroskin <shayagr@amazon.com>,
- Arthur Kiyanovski <akiyano@amazon.com>, Noam Dagan <ndagan@amazon.com>,
- Saeed Bishara <saeedb@amazon.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH 6.6.y] net: ena: Add validation for completion descriptors
- consistency
-Date: Wed, 30 Sep 2026 02:43:40 +0000
-Message-ID: <179073622069.31693.3189368668972123840@kernel.org>
-In-Reply-To: <20260930024101.96014-1-artem@trailofbits.com>
-References: <20260930024101.96014-1-artem@trailofbits.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b0nVwRIn"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hsZwqTFeJz2g9lzDoXRrDPkpsxLhsmA9bGRCfMIBE7g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790736517; v=1; x=1791341317;
+ b=b0nVwRIntDBm1odY6bAn1U2duT+HTVE8fQkuW0GsQuxV5Ei2fYvLVrprjckshVC/MQCY3jga
+ 2qBBp+oDr+X1EOfKPZ/gOYFbusTacEerf+s9jw7ZgLzj8yaEmRhy1jPhY5ShM5UZVuFsAGyTpuY
+ HdHxK+CBTivXz4J/3mJ0GkrY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 8804b216241e0b16;
+	Wed, 30 Sep 2026 02:48:27 +0000
+X-Mizu-Trace-ID: 8804b216241e0b16
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 30 Sep 2026 10:48:18 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>,
+	martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org, quanyeyang@proton.me
+Subject: Re: [PATCH net-next 5/5] selftests: mptcp: convert iptables to
+ nftables for mptcp_join.sh
+Message-ID: <arx4cn3ZPDtuUNBM@fedora>
+References: <20260926-net-next-mptcp-misc-feat-7-4-v1-5-67af4ab37406@kernel.org>
+ <179058242453.3145.1450534124183352369@kernel.org>
+ <deb5e3b3-d1d7-4d1e-8bb6-95050769d656@kernel.org>
+ <4278a970-2957-4387-8f20-604ae4ae97e9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4278a970-2957-4387-8f20-604ae4ae97e9@kernel.org>
 
-Hi!
+On Mon, Sep 28, 2026 at 11:17:59PM +0200, Matthieu Baerts wrote:
+> On 28/09/2026 13:24, Matthieu Baerts wrote:
+> >>> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+> >>> index 18ce7136a2b0e..b16e24418e737 100755
+> >>> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
+> >>> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+> >>
+> >> [ ... ]
+> >>
+> >>> @@ -4402,12 +4372,10 @@ endpoint_tests()
+> >>>  
+> >>>  		# To make sure RM_ADDR are sent over a different subflow, but
+> >>>  		# allow the rest to quickly and cleanly close the subflow
+> >>> -		local ipt=1
+> >>> -		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
+> >>> -			-p tcp -m tcp --tcp-option 30 \
+> >>> -			-m bpf --bytecode \
+> >>> -			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
+> >>> -			-j DROP || ipt=0
+> >>> +		local nft=1
+> >>> +		ip netns exec "${ns2}" nft insert rule ip filter OUTPUT \
+> >>> +			ip saddr 10.0.1.2 meta l4proto tcp \
+> >>> +			tcp option mptcp subtype remove-addr drop || nft=0
+> >>
+> >> [Severity: Medium]
+> >> Can this rule ever match an RM_ADDR packet on an established connection?
+> >>
+> >> nft_exthdr_tcp_eval() stops at the first TCP option whose kind matches
+> >> (30 for MPTCP). The subtype check therefore only ever sees the first
+> >> MPTCP suboption:
+> >>
+> >> net/netfilter/nft_exthdr.c:nft_exthdr_tcp_eval() {
+> >>     ...
+> >> 	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
+> >> 		optl = optlen(opt, i);
+> >>
+> >> 		if (priv->type != opt[i])
+> >> 			continue;
+> >> 		...
+> >> 		return;
+> >> 	}
+> >>     ...
+> >> }
+> > 
+> > Indeed, the RM_ADDR will be added in a second MPTCP option. It looks
+> > like Netfilter doesn't handle that case. But that seems to be an issue
+> > on the Netfilter side, rather than with the command that should work. I
+> > will follow up with Netfilter devs. If a fix cannot be added on their
+> > side, I will change the nft command to look at a specific offset.
+> > 
+> > Note that the command here is just to check there is no RM_ADDR sent on
+> > the wrong side: it shouldn't catch any packets here anyway.
+> 
+> After a discussion with Netfilter devs, it looks like a fix will not be
+> easy to have. Yet, I wonder if it wouldn't be better to apply this patch
+> like that (it doesn't break things), and have an explicit follow-up/fix
+> to document this issue somehow.
+> 
+> @Hangbin: do you plan to look at a fix for that? I guess a raw payload
+> looking at the same fields as what the previous cBPF rule was doing
+> would be enough.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Yes, I will add this on my todo list and fix it after holiday.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+> 
+> Don't hesitate to fix the "low" priority comments as well.
+> 
+> https://lore.kernel.org/all/20260926-net-next-mptcp-misc-feat-7-4-v1-0-67af4ab37406@kernel.org/T/#u
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Sure, I will.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks
+Hangbin
