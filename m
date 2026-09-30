@@ -1,166 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196F84C9E02
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32E04562B0;
+	Wed, 30 Sep 2026 13:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773690; cv=none; b=lA7HxTOiCXjalzzU9S/nJPHxvaOBxs2S9QGBvyW+Viu6t4RGXYFV9uellvHxuw89I95vNwKTnCHPDTyscVsByYoc0aE/4jZQODScpFhKU74rWMJPEJlssag3cJCxtLOHBgiPwttC+PTYcAkD/MHBmTS6Z1zkImT1Zf+aHBu2AXY=
+	t=1790773783; cv=none; b=dp63O/BVf09wBmv9Pouu6LPyLoxT/jQY5aeEtAGBBQa2XBh9VTdJR9Nwvdb7Awr+f3BfmBryrhNK2m5iGqLpGV6M6uXtzxDyf9g13UWjO6UPoGDm8Mev2aI77JBTQriDULz0W4msG4qEJfxmICsPfjMoyl0v8OBDOrhp163c6FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773690; c=relaxed/simple;
-	bh=/iY3Wx2p0Yd3R73QyRWv8/Sai+X0eAoAjyFYiisdRqw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tplCEQV1qWGbaRY4kaLxkNaXMWo22oytF3f3rq9RfcPLumTEZXM8EPX0ov3U9gDclZ2qUv5ct9QGibrycKKBK1ePE9REf7vwXdD09OkssAxdy6PBTCZ3ZUeAM3nBP7Mm8kPAhtQfMojO6ASVBCz/AqTe1ff4A67wrUppbJ8Mvf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mAadq3kM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790773783; c=relaxed/simple;
+	bh=ll2LPvIKpEkwZ77h4B19yw/2rk8FFkU9LL8yKpswNyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jrfPqHDb4bZhE2VUo02mtGXM+R9JftL4Tov/QzPp44rr4sMT//tpyNQ8J7ddK7ReyHqed3/uC/X0SapqvZgZvVoM0prA0+tg75Fm3AEBxhfx5uNxO71UBXfF53xuLpAg5eJSeggI0CW12CbJP+3EJe6t5OhckdDRZFL1neKt0Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rllCC+fK; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mAadq3kM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438401F00893;
-	Wed, 30 Sep 2026 13:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790773671;
-	bh=YAsymrkqiMJjcxb2DPzNHgGRjjv5pUDL6LDL5vSCvKs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mAadq3kMOlJ9Ost/fx9cV/sppMb999FJq8QfCRA16gbKXgqJ9ULtL9C5Q66TJRttf
-	 DOWMtDZsjU/cxxj0RRH7Uxe21V4HX70A8hOHJKthkWgySefjv6ip3GR4OaxU8OsLC7
-	 LMNd5tJHV9StZH7ILwld+W4Op4ZzZOv/EWB3Oja9uvW14ChIpD5AARQZvDp6Blnuee
-	 t21lfP6ahA4Sv60ry9DyFKOJMDq02tw/tHuLC6GPoCAml+0dH/1d3M9SmZ8QH39PIT
-	 gNDeUpT2rLDFPvR6caFqjnV6N0lkP9H6roJNqIXmrIyNNZdUsg14LwM7vX5IRWnH7v
-	 m0+bPweblJ2zA==
-Subject: Re: [PATCH net 2/2] net/sched: sch_teql: keep skb->dev consistent on
- the arp-queue path
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, hybris@mojatatu.ai, sashiko-bot@kernel.org
-Date: Wed, 30 Sep 2026 13:07:50 +0000
-Message-ID: <179077367081.434549.3367341827161501919@kernel.org>
-In-Reply-To: <QDISC-6HS9.v1.20260928064754@mojatatu.com.2>
-References: <QDISC-6HS9.v1.20260928064754@mojatatu.com.2>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rllCC+fK"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AF7E21A1074;
+	Wed, 30 Sep 2026 13:09:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7FA1560749;
+	Wed, 30 Sep 2026 13:09:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8685110328C6D;
+	Wed, 30 Sep 2026 15:09:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790773760; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=LclRS6GiAqzpJ+OFOtJcaTT8MvnLFW6hByRdlzKJ/3c=;
+	b=rllCC+fKRbDgQq4uVuZXlMEAXyLuvu58maz0mxCqZe38hn+XDf60Ke0NqIwvp43VWXttdQ
+	HnVr47dtfsVdu+uN0q+/LkrSY0cRKkdzR7tZd2NrRyj0YZZOnjxX5/3mJTITUee24WHKNl
+	8y6MA7a9uN2IgKaT7e4J3qZblrB2G9fW+psPO6fPvlIezIjZeFN1EOCGcO6I5LC4kfrFNi
+	wFGGR3jLpCC1DuXBFwpBra8nanmowfMmLeRr0yZFJiVQFXV+20syWN8EDaPHlMndO425FX
+	9w1Nn1vp9GuPlkKTP1IlkEXFMTKOYT0MgTlm8WoxqId9/gtyA8BKAz53m0dGJg==
+Message-ID: <4115d11a-20bd-4d8b-91db-a995b69dc989@bootlin.com>
+Date: Wed, 30 Sep 2026 15:09:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v18 07/10] net: phy: phy_link_topology: Add a
+ helper to retrieve ports
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk,
+ hkallweit1@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, christophe.leroy@csgroup.eu,
+ herve.codina@bootlin.com, f.fainelli@gmail.com, vladimir.oltean@nxp.com,
+ kory.maincent@bootlin.com, kabel@kernel.org, o.rempel@pengutronix.de,
+ nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
+ romain.gantois@bootlin.com, daniel@makrotopia.org,
+ dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
+ f@lex.la
+References: <20260927133619.955236-8-maxime.chevallier@bootlin.com>
+ <179064232141.3145.9140453636997333793@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <179064232141.3145.9140453636997333793@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 9/29/26 02:38, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> 
 
-- [Medium] The new line `skb->dev = n1->dev;` in
-  neigh_update_process_arp_queue() (net/core/neighbour.c:1339) runs for…
+> 
+> [Severity: High]
+> No reference is taken on the returned port. The only thing keeping it
+> alive is RTNL, and ASSERT_RTNL() only warns. The commit message states the
+> rule as "the caller must hold rtnl until it's done with it".
+> 
+> Do all the paths that erase and free ports hold RTNL?
 
---
+Nope, but really this isn't that simple, unbinding a MAC/HY with an SFP
+module that itself has a PHY isn't straightforward, we deadlock if we
+grab rtnl as the SFP cleanup path also acquires it.
 
-net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+unbinding is a blind spot for the PHY-in-SFP case it would make sense to address
+that as a separate work :(
 
-This moves the skb->dev = slave assignment in teql_master_xmit() to before
-teql_resolve(), so an skb parked on the slave's arp_queue names the slave.
-It also makes neigh_update_process_arp_queue() set skb->dev = n1->dev
-before reinjecting each queued skb through n1->output().
+Maxime
 
-Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
 
-> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index 7448320f7ad52..5823f5007812b 100644
-> --- a/net/core/neighbour.c
-> +++ b/net/core/neighbour.c
-> @@ -1336,6 +1336,7 @@ static void neigh_update_process_arp_queue(struct neighbour *neigh)
->  			if (n2)
->  				n1 = n2;
->  		}
-> +		skb->dev = n1->dev;
->  		READ_ONCE(n1->output)(n1, skb);
 
-[Severity: Medium]
-Is the "identity for every other parker" claim in the commit message
-accurate?
-
-The commit message says:
-
-  Restore skb->dev = n1->dev at the reinjection point; this is the
-  identity for every other parker (neigh_resolve_output() parks with
-  skb->dev == neigh->dev, ndisc probes carry no skb)
-
-When a dst is attached, n1 is replaced by n2 = dst_neigh_lookup_skb(dst,
-skb). For IPv4 that is ipv4_neigh_lookup(), which picks the neighbour on
-the dst's device and not on the device the skb was parked on:
-
-net/ipv4/route.c:ipv4_neigh_lookup() {
-    ...
-	dev = dst_dev_rcu(dst);
-	if (likely(rt->rt_gw_family == AF_INET)) {
-		n = ip_neigh_gw4(dev, rt->rt_gw4);
-    ...
-}
-
-So this new line runs for every neighbour table, and it can change the
-egress device for parkers other than teql.
-
-One case is bpf_redirect_neigh() with BPF_F_NEXTHOP from tc egress. The
-tc egress hook runs in __dev_queue_xmit() before the IFF_XMIT_DST_RELEASE
-drop. __bpf_redirect_neigh_v4() replaces the dst only in the !nh branch:
-
-net/core/filter.c:__bpf_redirect_neigh_v4() {
-    ...
-		skb_dst_drop(skb);
-		skb_dst_set(skb, &rt->dst);
-	}
-    ...
-}
-
-With an explicit nexthop, the original route dst (say on eth0) stays
-attached. bpf_out_neigh_v4() then sets skb->dev to the BPF target (say
-eth1) and calls neigh_output() on ip_neigh_gw4(eth1, nh). If that
-neighbour is unresolved, the skb is parked on eth1's neighbour.
-
-When it resolves, n2 is the neighbour on eth0, and this line sets
-skb->dev = eth0. Do the queued packets now leave through the route device
-instead of the device the BPF program chose?
-
-Before this patch they went out eth1 with eth0's L2 header, which was
-also wrong, but the behaviour was different.
-
-A second case is bridged DNAT in br_netfilter with pass_vlan_indev set.
-br_nf_pre_routing_finish() only calls br_nf_pre_routing_finish_bridge()
-when skb_dst(skb)->dev is the VLAN upper device (br0.VID), and that
-function does:
-
-net/bridge/br_netfilter_hooks.c:br_nf_pre_routing_finish_bridge() {
-    ...
-	skb->dev = bridge_parent(skb->dev);
-    ...
-	neigh = dst_neigh_lookup_skb(dst, skb);
-    ...
-			ret = READ_ONCE(neigh->output)(neigh, skb);
-    ...
-}
-
-Here skb->dev is br0 while the neighbour is on br0.VID, so skb->dev ==
-neigh->dev does not hold. Before this patch, parked skbs left through br0,
-the same as skbs that were not parked.
-
-With this change, won't parked skbs go through dev_queue_xmit(br0.VID)
-and vlan_dev_hard_start_xmit()? That path can rewrite the hwaccel VLAN
-TCI/PCP from the egress QoS map and bumps the VLAN device stats. Parked
-and non-parked packets would then take different paths.
-
-Could the fix be kept inside teql instead? Another option is to limit it
-to the teql master/slave case, where n2 differs from the parking
-neighbour, so other neighbour users keep their current skb->dev.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com
