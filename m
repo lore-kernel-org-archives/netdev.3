@@ -1,146 +1,175 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100FB3939A5;
-	Wed, 30 Sep 2026 22:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6603F5BE4
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790806691; cv=none; b=EvgX7Pf736EG/V+BRS5HXkFRwMLSLK8Zv8S+YAb6+1dwXXaUhBhIxJgzNPk0hIEw/cIC7a2XeGq1N4jx1RHppyX1ahbI2QJ1JzmmYqe/0uKhTqDSVzryfJ+OFBnIfRsyUXBC/udHrRapFMkjG4fEzaXr+nkxNWgIpOrJeNPk7oE=
+	t=1790807151; cv=none; b=TYjUMkMc4ixLq+6+FlntWHphsTCwH7uYL74Kw0+ZcTyoO7OBUBBCb8ncMO7KtibnA/+A505MUH8x92GH3jiprCWC8h91TA3hcfvnKQLroMWY0hR6Cqx/3tm6cxIi4zVdzapVGjSh+FMWNfM+o4RImR6k5OzEZxN75OD9fMsFu80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790806691; c=relaxed/simple;
-	bh=ea5Nu3/2HzNpjPXyyMZpFZcaB1I+CCJvXSlR27T1GOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKKBM0gDS8Xja0vSKqn+cftIvHAsrL2Oh/C8oqZI4/PLIPgxBDp/Y6UIA5pz+YRa/VhbmM3QRL3d9bDfQpu2TrdOvotWy/SbauZxWx1ooUJNl/xI+DIox3zT6+XjMQx3NRHxgeFFMnJxJF9ohk7oeLsM1yjgclBS+OHBV9pS1bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=PUZraXCV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YwxI+pRr; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790807151; c=relaxed/simple;
+	bh=VU7m8GYnZ10miuX5BmeuKnC9I3tw6ckgMbkRq9mC6vs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iJTmpG5vRmx5YisdZyLMKZQ4Os0dAtzgDt8/JNloJgqMCk96Ui9Xx2lDerJpfdKP+FKOxjB3O+ekhyyARHkW3HBQaRHD6eYa+gnQaEY5r1c+SiNz9MBjRARoLazdWEzvYvUmASgbQIeSgAG+9iC570cG0mATETmKSDG1N1PS4CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=SpXtY+jk; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="PUZraXCV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YwxI+pRr"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id C782DEC0273;
-	Wed, 30 Sep 2026 18:18:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Wed, 30 Sep 2026 18:18:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790806686; x=
-	1790893086; bh=MKguRLAXrycjCdciKcU7X0Eioz8/jvQvQYy1COZgCNg=; b=P
-	UZraXCVUxW7RidU2rzilDgDzCPnNxJ0GCkAsPAl92y210WussivyMVXK8yUzm7HG
-	KQQnI14yQBn6vUtuM3i42OYkb/BdW4l9NChhSsTxdDar67kWPZKBvWsu9cdH8+NH
-	xGPXo4I5BBMO6MikOroe4NPnZWKFqWSSvUrc/rBmgx9DjB1zbPeqvs0pkX0PPC75
-	c3/hp60ZgqObr6FBNgL+thrj4lXvF3pmQ6EYnAmcXnQgK2G6/01y5/ehOzn97WSQ
-	aJkcm5kNfm7CwD5aUl9WdaK2NpD0odeISiPnj7f62JB56yeX4J5wjNVgtVaHXuz8
-	LrXxI3qSvA3GvSNf8LXvg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790806686; x=1790893086; bh=MKguRLAXrycjCdciKcU7X0Eioz8/jvQvQYy
-	1COZgCNg=; b=YwxI+pRrDDPRajUCw8DvzAtjnw6Umqe/DDHYGNVKfZgsBHEI6j7
-	zoppPsHTApXiP37bS01x5TF4O2vene2gvXB9e0Y8yqxr/i0HboRJU00f1CReB/cI
-	+sb4ZNFEFX1wT0i6xvP8C62WK/RdBghI72e130KImK/Olpexg4AaLoVwcYMBe9vo
-	ix/EkkWugydqjiX5dUz7vxnE3uA1TUDuYYXyW0JEfd8tNCSob2o0x0OyrgWpuG+m
-	yQmQxXoUukCTRkjGXRCwlUGVzr27hH1yKqVn3ZSze15PdFrDW63MpgV05t9Mismz
-	dtSppHn+MBiNFCMMlgCQdgdew9Qmhl47TyA==
-X-ME-Sender: <xms:noq9apbprYm649MG3hb51xbOZ2oi0zZbANSbppHz6j-iFef8PN1-6g>
-    <xme:noq9aogKMHTKCSxerCF1gqy7X09IrdDk6oS3-wz9ZUDhfiiAKR3jtB9TLXnTZqg-V
-    ycUccqbmsugHMt4W5M7GXFNUt3JODU0Lae8Us_7O7f_n3FJyru-F40>
-X-ME-Received: <xmr:noq9are54xCJq4nesZj9dg8MVdJjLHxmdfJAqqM9CtltPsIHI567n3W16qML>
-X-ME-Proxy-Cause: dmFkZTGT3M6Y2KKr6yBk6H5S10BdfD2Jhi7rpJfos52VRC2C6tx2sy/uzW87KGQFn2PCz8
-    tLBJoJ/683Ctj7TNzXLKG6adDn6+MjhKveVZwce0ApDfnaBQJ+Hv4MlJPVB15vEuCS2UpH
-    RnLudo2NdbbtdMDEcn48P0ztnM/iLdYYW20LJNcF2aOOOFcxfs+T9jZykIG2iQ8yvP239y
-    Vpkp8BlaAZhcy0sXweHad1kh6kTjv0IRv4ijQO/YHSFxNzr5wtVyDJpRSb3PgFZpNaxdRv
-    fNueavSHGmGPFNHKkpyv3f/ZXErfSqg97nj5bXZ4cil5ilBaCUFkwI9fvet78lzo9sCJn6
-    Q+526XPzrrG2xfpDasFu7zQhTX6fCssDOnTqNW24l6p/0wlhAs7T/3loYhcMI59a0zzaxc
-    xxdmIIG+GmC55kRMdnvWyKSaPYiPdZZ6kAWHZBRWQgnGHv+PqQyoXuV1Hwgbdpf4aYR1/4
-    Hh4csgchn2//TOfbc9Niif/SN2SOYwzKbjZ9QGNNimiIxgkzz8fgybqV1ikREgrfoJMYBI
-    zm5JRvA4o8x1YspdmFStykuOwrI74cwcbMDcWANpfUGkATqt6/kZKA+lxGV2YtGiHe4bHc
-    /eN4IT7+n4MlpcPxupqr0H2UBx/SuZRKc+Q/c+os1JYM+CBalbvK0c/ILqSA
-X-ME-Proxy: <xmx:noq9ann77gKkTodxg0jbgIxN7np1t-gOeXfFHIUVOO1XCkiUwFR1Tw>
-    <xmx:noq9agzqKzTTqD0_kjtF0UGRICTUY5R3OieZYc3WGY0cOWJCfzTejw>
-    <xmx:noq9aqwOdzsEZlU82NzSzDO4Azi7uNSd3zJRyVlN6XdsyXpbCnMoBA>
-    <xmx:noq9agXSWZCy_pGxdPUHdmVeZvZ8g1SriN1kp_NBH4wQEie3j180mg>
-    <xmx:noq9avagRWg_1Sz6DvJvkAKFJERLHjXgGssgvqge4VhpLqLij9pmSUy0>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Sep 2026 18:18:05 -0400 (EDT)
-Date: Thu, 1 Oct 2026 00:18:03 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="SpXtY+jk"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so37607105e9.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:25:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1790807147; x=1791411947; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EB2d1nuWm+QTGla6T2zQWX0k93c8cXCwr+XI5V2gkfk=;
+        b=SpXtY+jkG6Wn11ClRQ0v5WtJjChUEjuaAmAcQRlWGatY6cu/bWKM563LXejLuHfMO1
+         Pd+8GUuNZDKQhfiIaz6QsidgGvv2tMr05jZVe2NejYQk7hwaDky9lb22H4ZoqS2dQG5X
+         NtNfypDAuLRh9AZUrSKMGNNcgwOBJSBS1NUlHdp7SQdU487s5WN1Hmo96uckF1wUIPsu
+         IlcN8wh6rgMdKQRM8mYAJjtPsrn+udlsTN9LWyFLC0P2+ox6EJ0yOagNWJrjvEQo+ESM
+         tt4TvdtQeqiwMKKi2YhOxOyh/X+9WlhgH/JJysyDPRJu34cwhtSVWfrHC9iM3XNuiQr2
+         8kXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790807147; x=1791411947;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EB2d1nuWm+QTGla6T2zQWX0k93c8cXCwr+XI5V2gkfk=;
+        b=LA74Zziw6sm/3UDEQxa8EJgR2gPHoF7z2Mpfo7wMsTrtzLaKm2Wx/P4NkujkQNdoao
+         /rwQxwv+UCRJabfWCj8yWGlJ2MvOaJ9iHJsK8hAwaJyCpD0oISiE4u2U20quEKoY8FAl
+         Df5EPqRmvpCaOAf9QxAXxl+UTQt/SE02z0yJDgRm7ch7HDTV64Owc9ywMg66vo5xaUHu
+         iTk6TzJNp3V3KD05y0g6b02UWBH1u40jS+0voOLr2NfSm5XB0x2AcF0hWoYDVS7Jv5YT
+         7VM/d2GhEIyieqG+QahzHJMzUop+gAjAteg6X+I/YoBkVaE4NHW/DJmJXlIM5mHfU5sI
+         ENcg==
+X-Gm-Message-State: AFuF++kBDecL73giqDDjjZNw/qW9T6NJB2/9TBAmuDv6PV0aIt4F6bDU
+	cIgnB4H6g5YK4Zqn1SdJyKjlxJYcpex1Zv7uUCX1SSQpv+hkBGH+WX5vKkjrRvlrSkC3OCix1lw
+	cCKCc1IDlx9k7PIOUjVXBEyozLGz4e7QAzSuxortQaVSN3X5JjcosfUZrI9hG3SqyDm8=
+X-Gm-Gg: AYBFou3dkelrmAoFQJ+6exWq8VocDZdqhZiI1ZaDZwFoN+8rIx893meV42I1OQ6zq3J
+	g2bGCCQIMZ2VDoeum8qphutpkaSgrIi3IVqgTeDVzTKBm8TvLb9z9iXKgMk+qMwsBXAZE44n80m
+	UJF1iiYzQRgaywbPaWHTqY8IY0vkYdpLVc7GTqYT9DJYaxQg/50YhDI5ke3a5AjK5kZrch4zfny
+	LRBbUGQlvBG478oopg7dMkXIwRgPrZ0r3bMFBMNYdaWLhVNkebrCIwxS5elPPVxoOG+Rn/6uagK
+	iIhu2syafwetl4y1qHLo7O3X9i6zV28MoMRz3QZ1MchoqrH7a8RnwKBcIa9cS0Ti0VCsu5OGv2h
+	lySOHhI9iSTvDTo6Rq9hgOjTnhgnROiZ1k30EC7wp67FVcYPsyiPKhxH0880iJ/Yp3XSupDZmfc
+	y44TnKuuHITG00rXKazMzKx+MpXd4yPD0nUo9Ykp7P2/U4DkFZ2zT9jFtdjCP7+C1UPuWLeeXxF
+	Ri768jhgpal
+X-Received: by 2002:a05:600c:4f8e:b0:49f:bd3c:bc18 with SMTP id 5b1f17b1804b1-4a01b00541bmr44345295e9.19.1790807147363;
+        Wed, 30 Sep 2026 15:25:47 -0700 (PDT)
+Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:5892:feba:7b41:58fb])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f979c05sm24433095e9.3.2026.09.30.15.25.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 15:25:46 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Haseeb Malik <haseebulhaq55@gmail.com>
-Subject: Re: [PATCH net] macsec: check the resolved SCI for duplicates
-Message-ID: <ar2KmwhtCMbOKLsG@krikkit>
-References: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net-next 0/7] pull request: ovpn 2026-09-30
+Date: Thu,  1 Oct 2026 00:25:34 +0200
+Message-ID: <20260930222542.3839327-1-antonio@openvpn.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-2026-09-27, 01:03:24 -0400, Haseeb Malik via B4 Relay wrote:
-> From: Haseeb Malik <haseebulhaq55@gmail.com>
-> 
-> An all-ones IFLA_MACSEC_SCI selects the default SCI derived from the
-> MACsec device's MAC address and port 1. macsec_init_secy() resolves this
-> value and stores the result in secy.sci, but macsec_newlink() checks for
-> duplicates using the unchanged local sci argument.
-> 
-> Consequently, an all-ones request can create a second MACsec device with
-> the same transmit SCI on the same lower device, while requesting that
-> SCI explicitly returns -EBUSY.
-> 
-> Check the initialized SecY's SCI so that duplicate detection uses the
-> value that the new device will actually use. Preserve the all-ones
-> fallback when the resulting SCI is available.
+Hi all!
 
-Or move that fallback from macsec_init_secy to macsec_newlink? That'd
-be a bit cleaner than hiding a rewrite of the value in some other
-function, and then having to go fetch it.
+Here is v2 of the ovpn batch for net-next I sent on Sep 22nd, rebased on
+current net-next.
 
-Something like:
+It is mostly cleanup. The one functional change is that PEER_DEL_NTF now
+carries the same peer object returned by PEER_GET: a disconnecting
+peer's final counters were not reachable before, because
+ovpn_peer_remove() unlinks the peer before emitting the notification.
 
-macsec_newlink()
-{
-	sci_t sci = MACSEC_UNDEF_SCI;
+The selftests get TCP_NODELAY on ovpn-cli's TCP sockets and proper
+synchronization against the server-side key setup.
 
-...
-	if (data && data[IFLA_MACSEC_SCI])
-		sci = nla_get_sci(data[IFLA_MACSEC_SCI]);
-	else if (data && data[IFLA_MACSEC_PORT])
-		sci = dev_to_sci(dev, nla_get_be16(data[IFLA_MACSEC_PORT]));
+Most notably, Ralf is added to MAINTAINERS as ovpn reviewer.
 
-	if (sci == MACSEC_UNDEF_SCI)
-		sci = dev_to_sci(dev, MACSEC_PORT_ES);
-...
-}
+Changes since v1:
+* rebased on current net-next
+* added the MAINTAINERS and TCP selftest synchronization patches
+* selftests: include <netinet/tcp.h> explicitly for TCP_NODELAY
+* 6/7: reworded the commit message, the PEER_GET workflow it described
+  cannot work
 
+Please pull or let me know of any issue!
 
+Thanks a lot,
+	Antonio
 
-And after your previous patch, we could also move the sci_exists
-check up after determining the sci, there's no reason to do it after
-registering anymore. since I didn't notice that while reviewing your
-previous patch, that should be done in net-next once net and this new
-fix gets merged into it.
+The following changes since commit 6e23f90f2b8c3ea3bf904f86f3ed06bf2844b4bc:
 
-> Add regression tests for duplicate rejection using default, explicit and
-> all-ones SCI requests, and for valid fallback and reuse after deletion.
-> The same tests reproduce two failures before the fix and pass afterward.
+  Merge branch 'net-consolidate-devmem-net_iov-freelist-and-dma-handling' (2026-09-29 15:41:35 +0200)
 
-Nice.
+are available in the Git repository at:
 
--- 
-Sabrina
+  https://github.com/OpenVPN/ovpn-net-next.git tags/ovpn-net-next-20260930
+
+for you to fetch changes up to 1bff3c5c1ca993f00c4459d7daede7959bc2fb40:
+
+  MAINTAINERS: ovpn: add Ralf Lici as reviewer (2026-09-30 15:56:50 +0200)
+
+----------------------------------------------------------------
+Included changes:
+* add Ralf Lici as ovpn reviewer
+* include the peer object in the PEER_DEL notification
+* wait for the server-side key setup before generating TCP traffic in
+  selftests
+* enable TCP_NODELAY on TCP sockets in selftests
+* drop redundant peer NULL checks in the crypto post functions
+* remove the unused work field from struct ovpn_socket
+* fix the documented return value of ovpn_bind_from_sockaddr()
+
+----------------------------------------------------------------
+Antonio Quartulli (2):
+      selftests: ovpn: wait for the TCP server key setup before traffic
+      MAINTAINERS: ovpn: add Ralf Lici as reviewer
+
+Karl Mehltretter (1):
+      ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
+
+Marco Baffo (2):
+      ovpn: remove redundant peer NULL checks in crypto post functions
+      selftests: ovpn: enable TCP_NODELAY on TCP sockets
+
+Ralf Lici (2):
+      ovpn: remove unused work field from struct ovpn_socket
+      ovpn: send peer object along with PEER_DEL_NTF
+
+ MAINTAINERS                                        |  1 +
+ drivers/net/ovpn/bind.c                            |  2 +-
+ drivers/net/ovpn/io.c                              |  6 +-
+ drivers/net/ovpn/netlink.c                         | 60 +++++++++++-------
+ drivers/net/ovpn/socket.h                          |  2 -
+ tools/testing/selftests/net/ovpn/common.sh         | 72 +++++++++++++++++-----
+ .../selftests/net/ovpn/json/peer0-float.json       | 12 ++--
+ .../selftests/net/ovpn/json/peer0-symm-float.json  | 10 ++-
+ .../selftests/net/ovpn/json/peer0-symm.json        |  7 ++-
+ tools/testing/selftests/net/ovpn/json/peer0.json   | 12 ++--
+ .../selftests/net/ovpn/json/peer1-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer1.json   |  2 +-
+ .../selftests/net/ovpn/json/peer2-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer2.json   |  2 +-
+ .../selftests/net/ovpn/json/peer3-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer3.json   |  2 +-
+ .../selftests/net/ovpn/json/peer4-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer4.json   |  2 +-
+ .../selftests/net/ovpn/json/peer5-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer5.json   |  2 +-
+ .../selftests/net/ovpn/json/peer6-symm.json        |  2 +-
+ tools/testing/selftests/net/ovpn/json/peer6.json   |  2 +-
+ tools/testing/selftests/net/ovpn/ovpn-cli.c        | 23 +++++++
+ .../selftests/net/ovpn/test-close-socket.sh        |  2 +
+ tools/testing/selftests/net/ovpn/test.sh           | 56 +++++++++--------
+ 25 files changed, 190 insertions(+), 99 deletions(-)
+ mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
+ mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm.json
