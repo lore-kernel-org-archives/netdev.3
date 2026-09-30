@@ -1,160 +1,148 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81F34C4F54;
-	Wed, 30 Sep 2026 11:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C264CCDC1;
+	Wed, 30 Sep 2026 12:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790769498; cv=none; b=H/hYSJd1l6ZNCfdSKFlOGkE/d02jY3cfYCh4cDbhFAc8c3AoDoBTRMtPgOow18S50TsxL6YazGcjhB9/lqmwE0XjrfOIX2AIBOngye3S2AG0m8jRp/Wlt1BEP2CBLn5GUAWAjuYxMcLHRLPbFLegqXKb1ImsjLJ9XQzIhLnyvMo=
+	t=1790769965; cv=none; b=Z2PcUkBlbP55AXsWUfTsdvfHk9g8qgReBv6y4dKIPyRGX4CuPKiJjJ+DTGHbxwRlprDoAhA5Al2hwBIqBR1z3aH5DQuUGA0LbmsNj+Uvk4fjrX67zc8W4O8SU9AidXIUBt04mmh2RFyC4D0sOfIGIKZuIWbZ7tjBX6IKb9fW2FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790769498; c=relaxed/simple;
-	bh=/GYVlqh/BLtFSwB+Na9jnR44kecPNLhhfZc2OHI3UfA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=APgAk7uzQIDa9Z52OXVCBsHFlyicSgw7udzdw4is8KDet9obWQg4nesNQc0dnjJNjQMC7OBaTXH0+EiMZiRYDbzvFXRH5bhThw/CiXP4BWlypH2z9hXEjLSkYiH2mYPmupMn+VI9T4t0imOPWEsf/bY2TSaJcMTu4OvSZEnkCrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=MBb/LkPT; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1790769965; c=relaxed/simple;
+	bh=buBf7t9Hn6EBP0vAciAAVetVActYmbebNI7mVh5g4oo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nwyTHOUBm6tVgZJMQPJe2wTLMsDBl/jTXNqe5B3nDe12vXCrMnyrg3mr4HzMWZNbHSZy5oZDoHeBj95z/Rs/X+FMrzNSF42dLG5HXsJaZlCMqAeAKt8TOIh6FKph4XoZoSXWlSZcByrdlXfseeuUgrWJGUfbeAR+/VtKxgyNjXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aytuilX+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="MBb/LkPT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=AaETdzOchPFTc9odpS3treoP+eVUfbz1VlctESvybfE=; b=MBb/LkPTMkOECQoJh33EuX61Cd
-	EZzfuS3L9e7jtSjPy5BR2nIIU4dwRL+e3pCnGXoI+bQM72ad+bTtwV5PtlAqtbKNxq9xM6p4Avqpg
-	MukLYLoWgz3QyI27GEQkgXPUmUHoxzm9hQL1oki8ArSmwRG719iA9ecLiLt92U6vxNFu9MRh97dd7
-	MuQ0NuM7recJ5DLbKHih11HdUEhwRKGCzpmsDGH+AB42GwS9wZPkjoP+jNf6paIDPGOOwZzf6mocq
-	/sjYbRkoswnBCSEv/vM9dEt5EOKYkYgEHoogTdKNTHbLBvqUBJE4U+t/8r8kpdm+ExU9fBWO4G3kF
-	ODW5+EGw==;
-Received: from [151.115.150.205] (port=60644 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xBswt-000000022KL-0gMj;
-	Wed, 30 Sep 2026 13:58:08 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH net] tipc: protect received keys from concurrent flush
-Date: Wed, 30 Sep 2026 11:57:09 +0000
-Message-ID: <20260930115708.349540-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aytuilX+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4901F000FF;
+	Wed, 30 Sep 2026 12:06:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790769963;
+	bh=8nNtuJZdcWbpoaJYlOZyiCIkleDqMmN5g1ivBvMT0rQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aytuilX+0FO6M/0ru752d7Xv7MoofxyAiHYqkWFI64N/XgsFoC92jl7+LYapkyYgx
+	 txtXm2t7odGuKhdKSoBCzJVeb2oAzyiu2b5pC3RGqWd5xV7lsLbap+dIATZz8nDa02
+	 HGN/7PHSzxJ1WkZkxWy9WFBRzZvGfu/n3ylKVO+3EQQonrVpkzyDC7CW/+6sH1EXkS
+	 WAPX8TGN/WyxLZTYeRS+Px4JgFO1swoCggUVGaxaU7Ruyy9JXJwrWxafuB3E7OFr8m
+	 rNS9WqrGnzwsxpTgNKIfIWkgbeaZWMCO/CJoSUGpKnHZ4v1rKLf9XoAwdAgfmh/kLT
+	 Slf6Zl/nODSMA==
+Subject: Re: [PATCH net] macsec: check the resolved SCI for duplicates
+From: netdev-bot+sashiko@kernel.org
+To: haseebulhaq55@gmail.com
+Cc: sd@queasysnail.net, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, hannes@stressinduktion.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 30 Sep 2026 12:06:02 +0000
+Message-ID: <179076996248.434549.3813789807508446133@kernel.org>
+In-Reply-To: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
+References: <20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-tipc_crypto_key_synch() can queue the RX worker again while it is still
-using rx->skey. If tipc_crypto_key_flush() cancels that queued work, it
-frees the key without waiting for the running worker. The worker can
-then read freed memory or free the key a second time. Racing key
-exchange with key flush triggers KASAN:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-  [   12.986077] BUG: KASAN: double-free in tipc_crypto_key_flush+0x401/0x530
-  [   12.987937] Free of addr ff11000002268080 by task peer/112
-  ...
-  [   12.991938]  kfree+0x163/0x430
-  ...
-  [   12.991983]  tipc_crypto_key_flush+0x401/0x530
-  ...
-  [   12.992152]  tipc_nl_node_flush_key+0x174/0x210
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Mark the key as in use under rx->lock and make flush skip it while the
-worker is using it. Clear the flag under the same lock when the worker
-frees the key or leaves it for retry. Keep rx->skey set so the receive
-path cannot replace it during AEAD setup.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- net/tipc/crypto.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+- [Medium] The two new tests, test_duplicate_sci() and
+  test_undefined_sci() in tools/testing/selftests/drivers/net/macsec.py,…
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 16f1ed1f6b1b..6eb9de458902 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -184,6 +184,7 @@ struct tipc_crypto_stats {
-  * @key: the key states
-  * @skey_mode: session key's mode
-  * @skey: received session key
-+ * @skey_in_use: received session key is owned by the RX worker
-  * @wq: common workqueue on TX crypto
-  * @work: delayed work sched for TX/RX
-  * @key_distr: key distributing state
-@@ -208,6 +209,7 @@ struct tipc_crypto {
- 	u16 key_gen;
- 	struct tipc_key key;
- 	u8 skey_mode;
-+	bool skey_in_use;
- 	struct tipc_aead_key *skey;
- 	struct workqueue_struct *wq;
- 	struct delayed_work work;
-@@ -1219,8 +1221,11 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
- 		rx = c;
- 		tx = tipc_net(rx->net)->crypto_tx;
- 		if (cancel_delayed_work(&rx->work)) {
--			kfree_sensitive(rx->skey);
--			rx->skey = NULL;
-+			/* A previous invocation may still be using the key. */
-+			if (!rx->skey_in_use) {
-+				kfree_sensitive(rx->skey);
-+				rx->skey = NULL;
-+			}
- 			atomic_xchg(&rx->key_distr, 0);
- 			tipc_node_put(rx->node);
- 		}
-@@ -2381,7 +2386,10 @@ static void tipc_crypto_work_rx(struct work_struct *work)
- 	}
- 
- 	/* Case 2: Attach a pending received session key from peer if any */
-+	spin_lock_bh(&rx->lock);
- 	if (rx->skey) {
-+		rx->skey_in_use = true;
-+		spin_unlock_bh(&rx->lock);
- 		rc = tipc_crypto_key_init(rx, rx->skey, rx->skey_mode, false);
- 		if (unlikely(rc < 0))
- 			pr_warn("%s: unable to attach received skey, err %d\n",
-@@ -2391,14 +2399,18 @@ static void tipc_crypto_work_rx(struct work_struct *work)
- 		case -ENOMEM:
- 			/* Resched the key attaching */
- 			resched = true;
-+			spin_lock_bh(&rx->lock);
- 			break;
- 		default:
- 			synchronize_rcu();
-+			spin_lock_bh(&rx->lock);
- 			kfree_sensitive(rx->skey);
- 			rx->skey = NULL;
- 			break;
- 		}
-+		rx->skey_in_use = false;
- 	}
-+	spin_unlock_bh(&rx->lock);
- 
- 	if (resched && queue_delayed_work(tx->wq, &rx->work, delay))
- 		return;
+--
+
+macsec: check the resolved SCI for duplicates
+
+macsec_newlink() now passes macsec->secy.sci to sci_exists() when checking
+for duplicates, instead of the unresolved local sci. Before this change, an
+all-ones IFLA_MACSEC_SCI request could create a second MACsec device with
+the same transmit SCI on the same lower device. The commit also adds
+selftests for duplicate rejection and for the all-ones fallback.
+
+Link: https://lists.openwall.net/netdev/2026/09/16/11
+
+> diff --git a/tools/testing/selftests/drivers/net/macsec.py b/tools/testing/selftests/drivers/net/macsec.py
+> index 9a83d9542e04a..72ee1c6e146ee 100755
+> --- a/tools/testing/selftests/drivers/net/macsec.py
+> +++ b/tools/testing/selftests/drivers/net/macsec.py
+> @@ -263,6 +263,52 @@ def test_offload_state(cfg) -> None:
+>              "features should match first offload-on snapshot")
+>  
+>  
+> +@ksft_variants([
+> +    KsftNamedVariant("default", "", ""),
+> +    KsftNamedVariant("explicit", "", "sci {sci}"),
+> +    KsftNamedVariant("undefined", "", "sci ffffffffffffffff"),
+> +    KsftNamedVariant("undefined_default", "sci ffffffffffffffff", ""),
+> +    KsftNamedVariant("undefined_explicit", "sci ffffffffffffffff", "sci {sci}"),
+> +    KsftNamedVariant("undefined_twice", "sci ffffffffffffffff",
+> +                     "sci ffffffffffffffff"),
+> +])
+> +def test_duplicate_sci(cfg, first, second) -> None:
+> +    """Reject duplicate transmit SCIs, including the undefined-SCI fallback."""
+> +
+> +    ms0 = _macsec_name(0)
+> +    ms1 = _macsec_name(1)
+> +    sci = _get_mac(cfg.ifname).replace(":", "") + "0001"
+> +
+> +    ip(f"link add link {cfg.ifname} {ms0} type macsec {first}")
+
+[Severity: Medium]
+Should test_duplicate_sci() and test_undefined_sci() check that the local
+iproute2 supports MACsec before they create links?
+
+Every other test in this file calls a _require_* helper first:
+
+  test_offload_api, test_offload_state -> _require_macsec_offload(cfg)
+  test_max_secy, test_max_sc           -> _require_ip_macsec_offload()
+  test_vlan, test_vlan_toggle          -> _require_ip_macsec(cfg)
+
+Each of these helpers raises KsftSkipEx when "ip macsec help" shows that
+support is missing.
+
+In test_duplicate_sci(), this first ip link add runs outside ksft_raises().
+With an iproute2 that lacks MACsec, it raises CmdExitFailure and the case
+is reported as a failure instead of a skip.
+
+test_undefined_sci() has the same problem:
+
+    ip(f"link add link {cfg.ifname} {ms0} type macsec port 2")
+    ...
+    info = ip(f"-d link show dev {ms1}", json=True)[0]
+    ksft_eq(info["linkinfo"]["info_data"]["sci"], sci)
+
+If info_data is not in the JSON output, indexing it directly raises
+KeyError, which also counts as a failure.
+
+In that environment, all seven new cases (the six test_duplicate_sci
+variants plus test_undefined_sci) would FAIL, while the rest of the file
+would SKIP.
+
+Both tests use only the local host. Would a local-only check be enough
+here, such as _require_ip_macsec_offload() or a local variant of
+_require_ip_macsec()? The existing _require_ip_macsec(cfg) also checks
+cfg.remote, which these tests don't use.
+
+> +    defer(ip, f"link del {ms0}")
+> +    with ksft_raises(CmdExitFailure):
+> +        ip(f"link add link {cfg.ifname} {ms1} type macsec "
+> +           f"{second.format(sci=sci)}")
+> +        # Clean up if the kernel incorrectly accepted the duplicate.
+> +        defer(ip, f"link del {ms1}")
+
+[ ... ]
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927-fix-macsec-duplicate-sci-v1-1-085bd742c8e9%40gmail.com
