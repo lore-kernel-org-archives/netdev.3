@@ -1,357 +1,436 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0BA4F68CD
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775029; cv=none; b=UCW7UcOvV2n+ifG+8T2GDP4B18c1zPytCmLfVlDQ6dMvlLM7XcV/2ac5ddubf0GO8eOBGokbEIdWZK0oJNml0QVayDds+bm3/q4BIwBB7MonSrBZy956y67gbao+j+2LbQu9ezU/UXXGlP1rpLB3PKG7HXTRvyuKJcm/O+5qzRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775029; c=relaxed/simple;
-	bh=T9uCK0y8QAOBACI7VVq+gB3nzE5/ChdLbJbdFeCk5co=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hipme3mz4oAZCoHSncGGKtXH5DWoQLc7ihQ1jv14xISlfABDzQUO3M0HOPtWc+IPPcrnZNQGZlF+zHq6tl8g8keJ42DdSyyOsVx9Llun49h+pf6ylZK2NM+8Crvbut1wmNSa+dBgZP6pS5PiMfob+cTReEKTzwQEWlFR5BjrQY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=uWlcZWkh; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA548820E
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790775273; cv=fail; b=Gd3g+NnTKT2PtQZedLXqRQtvzZJZsHxzuV2Nar+lgAYR+hp/Xnq7xwH42ZoMl2GTRW6G//lk/xLF+erDMu9Zg1Nr9rmllNw+bwmschbKiZnAkHO8oX+13gDfZGWdpzT5ZksY3asmDtawJQAqVsU5uQ2aKhkYzvPeJWtGU3E0tSg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790775273; c=relaxed/simple;
+	bh=nFoRjWavtmb4FYNShmCUwuZ4lKV8mF5Sv0xe6ULw3Ds=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=T+pL4PmLQq+6xkCkM+Stmsy80lfsLNLkPH7frMRoZKXETwxtUG6hnqfPJyZPzpYewe2S0CVYFhLBNE4pR9Cj3bYsfbXbNgJiEb6oFCNzKoS7EzaYUd6XxoGiBBM8e/vMmNyJhVEDDjvLmFTqv+ueOK/1wEz2eDXiC53voLm0rOU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/6u8ssk; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="uWlcZWkh"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e44so1831050a12.2
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:30:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790775012; x=1791379812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xOljSjRffzsaoZkJhjEVtsEfoDUExcLQ0UCmRio28/0=;
-        b=uWlcZWkhv4m0u85oW2Uk5ua1IVPqyADJyQ+R6eK2+0OPfyEOr/qqTVAYSEni850Wy9
-         yrUsykvPpFH52zTgVWW9Enznm9aZDIvNc6nJq3tksl+MRvJ5TBfrM+jW1NlHPDvw0+mM
-         UWpOeI/oC8DsMBNFRbejSal/hlJi7Gh5RDHmns1wA252XpktPfg6naF4gNP1Eaxp5IBm
-         MYqR2V3bfXdDbwO/XNG3eKD2xYG9ZUg+wO+opUFXnVRGBXvDnlCFTNU0rsjkokED3bSD
-         guEMvd9NaEHtFtXB0NOn9OY9ore+RQiY9dTSgCGwJjteinIWv4cfbuW8ovrykMklXS8r
-         q2aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790775012; x=1791379812;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xOljSjRffzsaoZkJhjEVtsEfoDUExcLQ0UCmRio28/0=;
-        b=kHltabPiZsJZTF7kVGczcqOiOc0W7+h76VSlOJ4rR4k6SIK5PcAnXNF3D3Ik2G7Svx
-         j5VFbFH7+vyjkJcYA9jJOTy3tPJBqHIf9L699hjhXNlrqti8i0edNKsPkMOYjiOJEjXg
-         NgP3I1V5DBiv8AVTa3y6nu8FDhQ16sSy7yPkAfqQ+GMMXoGEeZRzoqPrzcMkraCyRGJD
-         crDyyMaulSe/rIX1N+i0B2JrVqNO5/3+Pk/QGa5eaeXaQvi5nGxcdXk6V1KBeeqQSDFi
-         6c00LDOQ+YDos2PFB0VQ82IivmqFk71Css2lBJQrvVPNd84jH+o9J3/dLGi3NZK5AkpV
-         Dw5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBykQrFo8Eh/BjQO4jLEhBBpjE4Nkq4ypcAoKDuTFMmsUxG4DrOmtFa6DNuCsYlULAslV5GJOOo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mnzeaHTJyGjY0Wc87nSiOeNojsBwrT+jlBaxQoTydGuB1/r3oM
-	EIwe2hqtmTqaXHOwBIN6kAdR4jRoC1SpHqUE1cpwsaQ604JRdp/Qv4KnRQkCk3FsJW72
-X-Gm-Gg: AYBFou1dqGYhrWsyCT3X09VaowQPmN6jr2WIXIJ9ynGj+sbH21m2FSXkvdjvJSn3dzQ
-	M2yTPl/zRmOSp941atByJtvItYOTZh+W/EDCgISfRcDlIqXcraKm6dsRgwd5yxrlyvyyQmY7MQV
-	b9C5FOHqhe3qh+UBJfhhZfPiIM8XXD2rlf78Cp3Av7weZP+iWhIFcToSwSyEqZsZrj8Q00P37R1
-	HHkmKnvq1Z9u0eu7ntKKQWRkqMKvsRn//BclJvtaG8oHLPYTq9I+27LwienBPhbi2VFjgl7wTd0
-	bf/dZZbmhqSeJGv+xJBWHmiRej/P4orPr+qhh1nAI53n1gI5S3IIBitGm+s2sN7mezV7GpTlkPh
-	kZUGLb4ikq+rDKdMdPvGmhKBECTKfxGGpUQmwKvJeMN6L+7qkbB2wR5r4fYBrUKIUfxeorYPPpw
-	ybOjliSGt2P0fj7LLfA0+EfmyeDS0Wgu7bV5sBnZvfhC+LvCnwL2DERpLD0DIUI8TSYSwzBEWEo
-	001OrYKXikJ87POtqkTw2oBnhIYIQ==
-X-Received: by 2002:a05:6a21:e90:b0:3de:5868:d3bd with SMTP id adf61e73a8af0-3de9e93ea82mr1527387637.58.1790775012165;
-        Wed, 30 Sep 2026 06:30:12 -0700 (PDT)
-Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7d9f1574esm913931a12.2.2026.09.30.06.30.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 06:30:11 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: zihanx@nebusec.ai,
-	horms@kernel.org,
-	kees@kernel.org,
-	ernestas.k@iconn-networks.com,
-	leitao@debian.org,
-	tim.bird@sony.com,
-	shuangpeng.kernel@gmail.com,
-	luoxuanqiang@kylinos.cn,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net v13 2/2] llc: create listener children only for SABME
-Date: Wed, 30 Sep 2026 13:29:42 +0000
-Message-ID: <6d816ade8765b81d69d06af0d1970f3f09504a48.1790688018.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1790688018.git.zihanx@nebusec.ai>
-References: <cover.1790688018.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/6u8ssk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790775268; x=1822311268;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=nFoRjWavtmb4FYNShmCUwuZ4lKV8mF5Sv0xe6ULw3Ds=;
+  b=U/6u8ssk5hmcr2aZA8jvaQLqDlc3HszEFA51hyLroYko8eX6WmVQJps1
+   RLLOf0ErWtG+10ITRTYJOapgX8ZbB9R+1RKOuIH3k1JE4em4j0f1xQWPi
+   1Qd1DLUrImyVjFCc+URonOt8cqU3dM90GwJZaH3HT74e/kHYRyHDnF2/Q
+   +/dze2x+Jg4zK4uxWzIBLIcIJMNOuYM9SV8ajQJUA2iHs67shNEDagMSb
+   8QGdbf3QZmkOfrI4iPDdro9qx0kpA/OFrxepaONGyBtb2vD2bvg3GGIAw
+   pYLeJLgOwZyd0DiZSHcXVyeRKeAMKgXIr+cIru0QFuFYpaQrcdwPNhVj5
+   g==;
+X-CSE-ConnectionGUID: PBfuFWtJQ/KtpkLolULoBg==
+X-CSE-MsgGUID: fG9MpLJ/T62bxlMB8Vwbjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91610424"
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="91610424"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:34:21 -0700
+X-CSE-ConnectionGUID: jzelRSdKRKWwIRaZ8sJJTQ==
+X-CSE-MsgGUID: UWRIawXZT5ed/prVd+wIdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="273492272"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 06:34:20 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 30 Sep 2026 06:34:19 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 06:34:19 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.23) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 30 Sep 2026 06:34:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n3KgMD0ssqdKxyYVLXvt92rymbXtRKRCj0knflIFvjIkOwF3qcnizdw9xqL3k50CrVII09sFTeT6w1CcE2UAu69F/dlRwqhBYbhQhh/U/DvwPMqy7hf3TqJ1nbUS+fLX6PDRk3ukTJJ62QMK4CapGRvpAul9VJyEYeqIuX1/n9keC89SCuY0klmWwhAs4xwW6S9Kqtqge60IRnbAD31F21K7x2snUqLNiM3HE6gtvepHFU/ydXaP4wXbu6DdfhAcd9CVyPP4gBV2mbVUwzNw4QhXnkSNUTvAlHDDW8lRFKUW4vdzyox2kU9OfuvSpUkm4X8aGMf1LTQ6pXEkA/KuIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PWeyBWU7v7V7rtu3Ifwc2x/SAdiZqtjKTxh7xnpaKnU=;
+ b=o7m40I9WTA1cYWLFHcPK1apqKm+vr0Mq7iMdap1Uvg1dcV91Soys99afbAxyh4BXNabQkxOVx72Z0VtClhqIx7pmn5FnB1KIjoUyDROq4BPxceOStakrpFuylSteZo9TIT+ZHsjWJc2blDeG+nj6TlHzytdsicQmKLTESlqBnOZiEWluEyR4Mt/Vh6iZvBMFsS32U0anKWKAht8fyE9V424+1Acs9WXAJxeDixQCD6FMj1TUG2F0+n8jDRd6dgmVBm95/d92qs7dZIB0Hx4X69iZRHeT3ZSY2Oj0DAztuTYzB2IQOWcLOEI/ApHE6OFxyoEEtw1hTM51GMIIDGrSyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB9301.namprd11.prod.outlook.com (2603:10b6:208:573::20)
+ by SA2PR11MB5018.namprd11.prod.outlook.com (2603:10b6:806:11a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 13:34:07 +0000
+Received: from IA3PR11MB9301.namprd11.prod.outlook.com
+ ([fe80::714b:7d3e:aa0:104c]) by IA3PR11MB9301.namprd11.prod.outlook.com
+ ([fe80::714b:7d3e:aa0:104c%5]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
+ 13:34:07 +0000
+From: "Holda, Patryk" <patryk.holda@intel.com>
+To: Chenguang Zhao <chenguang.zhao@linux.dev>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"kerneljasonxing@gmail.com" <kerneljasonxing@gmail.com>, Chenguang Zhao
+	<zhaochenguang@kylinos.cn>, Mohsin Bashir <hmohsin@meta.com>, "Loktionov,
+ Aleksandr" <aleksandr.loktionov@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
+ xdp_build_skb_from_zc() for XDP_PASS
+Thread-Topic: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
+ xdp_build_skb_from_zc() for XDP_PASS
+Thread-Index: AQHdIykNFPsZlxO0Z0K5sZrc5BrK4Lbnelpw
+Date: Wed, 30 Sep 2026 13:34:06 +0000
+Message-ID: <IA3PR11MB93016E5AA9C2716B99927BC58A8B2@IA3PR11MB9301.namprd11.prod.outlook.com>
+References: <20260803091750.1084506-1-chenguang.zhao@linux.dev>
+In-Reply-To: <20260803091750.1084506-1-chenguang.zhao@linux.dev>
+Accept-Language: en-US, pl-PL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB9301:EE_|SA2PR11MB5018:EE_
+x-ms-office365-filtering-correlation-id: de9e3144-2c53-4017-f534-08df1ef78067
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10067099003|56012099006|3023799007|6133799003|22082099003|18002099003|11063799006|38070700021|921020;
+x-microsoft-antispam-message-info: oIWWf83T9X1f9p6lkCri8Bpu5R2TvMR4qEpRGwYASRaQanZcbdhLzQq9nv/m9KP9VDqeV6WKifCvxH9ugDehLkpIbo3JmN8rvEg17QZdSHCYtC59D8+r7a34G6dTCA0sxD086w1DioMAYJQ3eZXMjCWk8Tf6bWqM8XeZWuD8+9usreZl4tZi2ASeBGnL39X23Ph2Fix6p/JLx/6F8dYSJFWui3S1Lr1vOfKcRpt6DM3j+YK1/Bdbdh2XBeBQjlk/OwtE5ucFbeXGQ5vlVUAkKnqn50IJwvQcdbLN91z6UgsPtnGZ5IPPSm9oxKiyK3JBQnast5IJ4dm4wFv5zO2cRzd2z4vM4B7Yj3U6yV3iqwh3kcG40C7ZGoLJ3VINSFxhpS6rRJ09j0BRLdDT0SOzWRKmmFTJDBHg5CO2bsAJEmtfiMiX5MOKuuCU1ToZvsfbpPQ/61sqoaPljukycMjcAbQYtdbhR71k2pBDS73h2iIfeDWBHHs6xUapUr9W2/TRL3opDJwCaeXH1haH45AdNWjJuQcI2soPYW5Pu4BSMfWkTpO9yndhjaqwwMaZ4hS0v01cCkrT/aenh87qF3GzsXcQd6WSwlGPdp7AFbzalJPBC7Lu2kVl7TeADEXU2Wn6CY+ArA3p4t0+K8oZjnrqd6+FncATcy5v8fwU1flVglYQIzj/wEqxGnpO4qtWzANR+NSLYTxuUY/YQs6hKXs1FE7ziZxyCb0/krof54UGa4k=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9301.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10067099003)(56012099006)(3023799007)(6133799003)(22082099003)(18002099003)(11063799006)(38070700021)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fIywnOA3CswWg+poGXX7tnkLkBaToGE7kCAG24gyKmwiCWT6Jgq1JgCvpH?=
+ =?iso-8859-1?Q?B44+HotkoJi03YuDRMTPzv0SZ/IimOY91H/yI/S5E+Fp1aPEIKbh5Xgkuy?=
+ =?iso-8859-1?Q?SutjwCeAuZ16RuO2R1Qg4p0IFB5g8EcxKNAu46M2C1HDPG6dC/lSoqI67a?=
+ =?iso-8859-1?Q?ii3VNTim74DWIbEDatXtM/nkzFMM/usE1T2lfM6X4qVzY1K4l3ZhpTqX/8?=
+ =?iso-8859-1?Q?pqd6OuWaKMw1WKWkTl0i9Dmje7hL6eqUEr5vxR6bX6GvyXw2As6UADySS5?=
+ =?iso-8859-1?Q?fm1lcriXQBrdKQq9qsk3HYFnpejx+F2rl5q0/X56IZu4y7X/dY+JT1LW8M?=
+ =?iso-8859-1?Q?RnA7a4LLjNiItNAQ9jmCmHWRXKrZTE+bN7EbwiLD4BKx4omMz2mwy5Gflt?=
+ =?iso-8859-1?Q?N2ykh7QXMaoBBr/IJPcxyN4tGtWe5Ey+/1Xx0MdGC+aXO0O8ZxiB4JmN4X?=
+ =?iso-8859-1?Q?CvYnzLKUYIRvfHxlILunrBEZcM3+sEXuxfHeWlCnZYtc0Dkha53eBHW9f1?=
+ =?iso-8859-1?Q?+sbKsVqWKXEg/i8Q6GXQ7G5kvD/+0B+E4+uem7Bvb7AwQmm0kbjX5C8lVl?=
+ =?iso-8859-1?Q?l7TKieJO90nk31WBIcG0+KC/o9SNSsi8n6VEibRVjaj+CpvKcK0MLBMwJ8?=
+ =?iso-8859-1?Q?QbbEf4CY+HbV06ffX5Efvn5EJOi265HLAwtnX/GoV+LtWSIr2Cj4QKU4je?=
+ =?iso-8859-1?Q?VPBPJkEl10SKzoT23QJMJIux0EyX2558eo9ae3IxaISb7epXn1hhSsNSRl?=
+ =?iso-8859-1?Q?4ML0Di+m0p+UFthhMayJ0zrmkmTx7jkYz5YYygB8HmbizTGyQZn6h/79Xf?=
+ =?iso-8859-1?Q?NlC6ZVF3ipALRw2d8T0CT06WDA5LWNbI8kgXtU9z1s2h2KGcjC+kUPInHi?=
+ =?iso-8859-1?Q?a3v/MnZdDFsuHS0N4SWk1xgMPAJc/eHFf8+QVMYw34bbND9CJrdknBX42P?=
+ =?iso-8859-1?Q?xaTCvWDcH4fDBzXLY4lPaKNphVeIOmk29WSpJMO6v5M9e1Sev9ZQhUjUkT?=
+ =?iso-8859-1?Q?+fKNGH8c/aPz4H2woWnTTL6vjQMzRtRB4Nd804jYcR+0RScsbO69Xrih9Z?=
+ =?iso-8859-1?Q?WR0nWxoFrgubsC+n/W2ZRygwncvrZSDdh4WP8qVKZgGa/Eo2lpMbIsHQM6?=
+ =?iso-8859-1?Q?t1h2HE85zIWyty3aBTA5GpSdqfHAKS/CtYLCaJolCL5C3ihp/wFskP/LIx?=
+ =?iso-8859-1?Q?YzjoqQKXqwKz3mo3LIInVTA7xsnqIYOuebkpPXXJv7zTz2Y+XrFKD2nLpS?=
+ =?iso-8859-1?Q?gfMUM8rP4vcOPjECBBVfBxz05gns9O6s7HHztBwQ25ESb7NP0V5PMRrfgw?=
+ =?iso-8859-1?Q?XBeDCuCyx4RKshC142ZjUKA3TMJ33mo7k6kj6H/28tSqQ8LaIVrcc+Ir2k?=
+ =?iso-8859-1?Q?yOH8dirGRop47/lx5N0j4GnCJNbtHyo914ykqJPN4bOHevLjQEJGahJxs3?=
+ =?iso-8859-1?Q?i27D9B21joIPn9KoGjNJrnvrFZgccmt5tjQMmc66JBIJnxONLY6bLC9IsU?=
+ =?iso-8859-1?Q?eBib0vssX7YsL6+/xlBC95BkyyWZGTDnkcTelcNL5HMQXYJiF4DOZM4ziv?=
+ =?iso-8859-1?Q?8jxoXWXiWgcnb1Z4wylLbS08NKYivQvvGvwoilPYsymws88rpokpFN2Brs?=
+ =?iso-8859-1?Q?z7EACWrmnXbb6rX5I+JCV6Np2OxDdeg/jUyVlBHdNvUKeF53AhehPLu8Sw?=
+ =?iso-8859-1?Q?0kHXk4KBE3foeZVtuDOPKU//fyrlwxdm6IPFd9y0XMN3OTCvPvNeMDHVsa?=
+ =?iso-8859-1?Q?UychAINwV3xZh69QXb0kM0ROcNKhZN+hMXnPPdBf2hO0CHhNYrOHVV7vzD?=
+ =?iso-8859-1?Q?8Sqbk6NvBw=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: LdCwDZI3CJjBO1LpnVCC3pvtf1KF887132n04zBBm7Fe/pRuvmNgE1e4aT9fvSfhk6vR7j/Jv+S2fTJZZRABThEexNgle6SJCRxLSsNzRM51A1JYBhmUbvyt3yzJwsJqqg6Y4e11xD8X4p5skdyUZnDjMxbolhgU9H3eIxhG28ry6xuvgKUSxm03ZxSFl67ic62tgkaPBfXyaNj5lSCItSVmSkDYLB5iqDJG1ftbow38MFnNWTPWizeekk/Kl7pUgf7BE+di5F0i6B89V2fPiAdPaHSW5hqcdMMOoxIBw8bLuAd7YrNvHXv/Ee728PlDIermdDwf7plzFlGRN+U0gQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9301.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de9e3144-2c53-4017-f534-08df1ef78067
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2026 13:34:06.9418
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mpHB1lJ9M3GI04S5bjLZM8/GUh/6uhAjfJ2iGuZ1p8GWScZdaBW8ZCl440vgRO1ooyMQNbvi5jiTEbawTxVUHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5018
+X-OriginatorOrg: intel.com
 
-The listener receive path should not allocate a passive-open child for
-frames that cannot establish a connection. Create children only for SABME
-commands, answer DISC and other P=1 commands with DM from the listener, and
-drop other non-SABME frames.
 
-Classify frames before backlog admission, and send deferred duplicate SABMEs
-to the existing child. If that child is user-owned, defer the retransmission
-on its backlog while holding the receive device. This prevents one peer
-connection from creating multiple children and preserves SABME retry
-handling.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Chenguang Zhao
+> Sent: Monday, August 3, 2026 11:18 AM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com
+> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org;
+> chenguang.zhao@linux.dev; kerneljasonxing@gmail.com; Chenguang Zhao
+> <zhaochenguang@kylinos.cn>; Mohsin Bashir <hmohsin@meta.com>;
+> Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Subject: [Intel-wired-lan] [PATCH net-next v4] i40e: xsk: use
+> xdp_build_skb_from_zc() for XDP_PASS
+> Importance: High
+>=20
+> From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+>=20
+> Replace the driver-local i40e_construct_skb_zc() with the common helper
+> xdp_build_skb_from_zc(). On failure, free the xdp buff in the caller.
+>=20
+> xdp_build_skb_from_zc() already calls skb_record_rx_queue() and
+> eth_type_trans(), so pull the remaining descriptor field setup into
+> __i40e_process_skb_fields() and use that on the XDP_PASS path.
+>=20
+> Select PAGE_POOL in Kconfig, since xdp_build_skb_from_zc() returns NULL
+> when page pool support is disabled.
+>=20
+> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+> ---
+> v4:
+> - As suggested by Mohsin:
+>   Select PAGE_POOL in I40E Kconfig so xdp_build_skb_from_zc() cannot
+>   return NULL due to CONFIG_PAGE_POOL=3Dn and drop XDP_PASS packets.
+>=20
+> v3:
+>  - https://lore.kernel.org/all/20260731020736.170485-1-
+> chenguang.zhao@linux.dev/
+>=20
+> v2:
+>  - https://lore.kernel.org/all/20260729054916.720750-1-
+> chenguang.zhao@linux.dev/
+>=20
+> v1:
+>  - https://lore.kernel.org/all/20260724020125.246333-1-
+> chenguang.zhao@linux.dev/
+> ---
+>  drivers/net/ethernet/intel/Kconfig            |  1 +
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 32 ++++++--
+>  .../ethernet/intel/i40e/i40e_txrx_common.h    |  2 +
+>  drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 79 ++-----------------
+>  4 files changed, 34 insertions(+), 80 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/Kconfig
+> b/drivers/net/ethernet/intel/Kconfig
+> index 288fa8ce53af..75d1ad6e361d 100644
+> --- a/drivers/net/ethernet/intel/Kconfig
+> +++ b/drivers/net/ethernet/intel/Kconfig
+> @@ -234,6 +234,7 @@ config I40E
+>  	select LIBIE
+>  	select LIBIE_ADMINQ
+>  	select NET_DEVLINK
+> +	select PAGE_POOL
+>  	help
+>  	  This driver supports Intel(R) Ethernet Controller XL710 Family of
+>  	  devices.  For more information on how to identify your adapter, go
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> index ef5e657816f0..87553b14d34a 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> @@ -1833,17 +1833,17 @@ static inline void i40e_rx_hash(struct i40e_ring
+> *ring,  }
+>=20
+>  /**
+> - * i40e_process_skb_fields - Populate skb header fields from Rx descript=
+or
+> + * __i40e_process_skb_fields - Populate skb fields from Rx descriptor
+>   * @rx_ring: rx descriptor ring packet is being transacted on
+>   * @rx_desc: pointer to the EOP Rx descriptor
+>   * @skb: pointer to current skb being populated
+>   *
+> - * This function checks the ring, descriptor, and packet information in
+> - * order to populate the hash, checksum, VLAN, protocol, and
+> - * other fields within the skb.
+> + * Populate hash, checksum, PTP timestamp and VLAN from @rx_desc. Does
+> + not
+> + * call skb_record_rx_queue() or eth_type_trans(); callers that already
+> + got
+> + * those from xdp_build_skb_from_zc() should use this helper.
+>   **/
+> -void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> -			     union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb)
+>  {
+>  	u64 qword =3D le64_to_cpu(rx_desc->wb.qword1.status_error_len);
+>  	u32 rx_status =3D FIELD_GET(I40E_RXD_QW1_STATUS_MASK, qword);
+> @@ -1858,14 +1858,30 @@ void i40e_process_skb_fields(struct i40e_ring
+> *rx_ring,
+>=20
+>  	i40e_rx_checksum(rx_ring->vsi, skb, rx_desc);
+>=20
+> -	skb_record_rx_queue(skb, rx_ring->queue_index);
+> -
+>  	if (qword & BIT(I40E_RX_DESC_STATUS_L2TAG1P_SHIFT)) {
+>  		__le16 vlan_tag =3D rx_desc->wb.qword0.lo_dword.l2tag1;
+>=20
+>  		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
+>  				       le16_to_cpu(vlan_tag));
+>  	}
+> +}
+> +
+> +/**
+> + * i40e_process_skb_fields - Populate skb header fields from Rx
+> +descriptor
+> + * @rx_ring: rx descriptor ring packet is being transacted on
+> + * @rx_desc: pointer to the EOP Rx descriptor
+> + * @skb: pointer to current skb being populated
+> + *
+> + * This function checks the ring, descriptor, and packet information in
+> + * order to populate the hash, checksum, VLAN, protocol, and
+> + * other fields within the skb.
+> + **/
+> +void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			     union i40e_rx_desc *rx_desc, struct sk_buff *skb) {
+> +	__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+> +
+> +	skb_record_rx_queue(skb, rx_ring->queue_index);
+>=20
+>  	/* modifies the skb - consumes the enet header */
+>  	skb->protocol =3D eth_type_trans(skb, rx_ring->netdev); diff --git
+> a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> index e26807fd2123..3c52e0e60487 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx_common.h
+> @@ -9,6 +9,8 @@
+>  int i40e_xmit_xdp_tx_ring(struct xdp_buff *xdp, struct i40e_ring *xdp_ri=
+ng);
+> void i40e_clean_programming_status(struct i40e_ring *rx_ring, u64
+> qword0_raw,
+>  				   u64 qword1);
+> +void __i40e_process_skb_fields(struct i40e_ring *rx_ring,
+> +			       union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+>  void i40e_process_skb_fields(struct i40e_ring *rx_ring,
+>  			     union i40e_rx_desc *rx_desc, struct sk_buff *skb);
+> void i40e_xdp_ring_update_tail(struct i40e_ring *xdp_ring); diff --git
+> a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> index 9f47388eaba5..dfa519c30a0d 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+> @@ -3,6 +3,7 @@
+>=20
+>  #include <linux/bpf_trace.h>
+>  #include <linux/unroll.h>
+> +#include <net/xdp.h>
+>  #include <net/xdp_sock_drv.h>
+>  #include "i40e_txrx_common.h"
+>  #include "i40e_xsk.h"
+> @@ -277,70 +278,6 @@ bool i40e_alloc_rx_buffers_zc(struct i40e_ring
+> *rx_ring, u16 count)
+>  	return count =3D=3D nb_buffs;
+>  }
+>=20
+> -/**
+> - * i40e_construct_skb_zc - Create skbuff from zero-copy Rx buffer
+> - * @rx_ring: Rx ring
+> - * @xdp: xdp_buff
+> - *
+> - * This functions allocates a new skb from a zero-copy Rx buffer.
+> - *
+> - * Returns the skb, or NULL on failure.
+> - **/
+> -static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
+> -					     struct xdp_buff *xdp)
+> -{
+> -	unsigned int totalsize =3D xdp->data_end - xdp->data_meta;
+> -	unsigned int metasize =3D xdp->data - xdp->data_meta;
+> -	struct skb_shared_info *sinfo =3D NULL;
+> -	struct sk_buff *skb;
+> -	u32 nr_frags =3D 0;
+> -
+> -	if (unlikely(xdp_buff_has_frags(xdp))) {
+> -		sinfo =3D xdp_get_shared_info_from_buff(xdp);
+> -		nr_frags =3D sinfo->nr_frags;
+> -	}
+> -	net_prefetch(xdp->data_meta);
+> -
+> -	/* allocate a skb to store the frags */
+> -	skb =3D napi_alloc_skb(&rx_ring->q_vector->napi, totalsize);
+> -	if (unlikely(!skb))
+> -		goto out;
+> -
+> -	memcpy(__skb_put(skb, totalsize), xdp->data_meta,
+> -	       ALIGN(totalsize, sizeof(long)));
+> -
+> -	if (metasize) {
+> -		skb_metadata_set(skb, metasize);
+> -		__skb_pull(skb, metasize);
+> -	}
+> -
+> -	if (likely(!xdp_buff_has_frags(xdp)))
+> -		goto out;
+> -
+> -	for (int i =3D 0; i < nr_frags; i++) {
+> -		struct skb_shared_info *skinfo =3D skb_shinfo(skb);
+> -		skb_frag_t *frag =3D &sinfo->frags[i];
+> -		struct page *page;
+> -		void *addr;
+> -
+> -		page =3D dev_alloc_page();
+> -		if (!page) {
+> -			dev_kfree_skb(skb);
+> -			return NULL;
+> -		}
+> -		addr =3D page_to_virt(page);
+> -
+> -		memcpy(addr, skb_frag_page(frag), skb_frag_size(frag));
+> -
+> -		__skb_fill_page_desc_noacc(skinfo, skinfo->nr_frags++,
+> -					   addr, 0, skb_frag_size(frag));
+> -	}
+> -
+> -out:
+> -	xsk_buff_free(xdp);
+> -	return skb;
+> -}
+> -
+>  static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+>  				      struct xdp_buff *xdp_buff,
+>  				      union i40e_rx_desc *rx_desc,
+> @@ -372,21 +309,19 @@ static void i40e_handle_xdp_result_zc(struct
+> i40e_ring *rx_ring,
+>  		 * BIT(I40E_RXD_QW1_ERROR_SHIFT). This is due to that
+>  		 * SBP is *not* set in PRT_SBPVSI (default not set).
+>  		 */
+> -		skb =3D i40e_construct_skb_zc(rx_ring, xdp_buff);
+> +		skb =3D xdp_build_skb_from_zc(xdp_buff);
+>  		if (!skb) {
+> +			xsk_buff_free(xdp_buff);
+>  			rx_ring->rx_stats.alloc_buff_failed++;
+>  			*rx_packets =3D 0;
+>  			*rx_bytes =3D 0;
+>  			return;
+>  		}
+>=20
+> -		if (eth_skb_pad(skb)) {
+> -			*rx_packets =3D 0;
+> -			*rx_bytes =3D 0;
+> -			return;
+> -		}
+> -
+> -		i40e_process_skb_fields(rx_ring, rx_desc, skb);
+> +		/* xdp_build_skb_from_zc() already ran eth_type_trans() and
+> +		 * skb_record_rx_queue().
+> +		 */
+> +		__i40e_process_skb_fields(rx_ring, rx_desc, skb);
+>  		napi_gro_receive(&rx_ring->q_vector->napi, skb);
+>  		return;
+>  	}
+> --
+> 2.25.1
 
-Reject backlog packets without a valid LLC socket owner before dispatching
-them to the state machine.
+Tested-by: Patryk Holda <patryk.holda@intel.com>=A0
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-
----
-changes in v13:
-  - Keep listener SABME classification separate from child lifecycle
-    handling, including duplicate-SABME delivery to an existing child.
-  - Keep deferred listener SABMEs device-accounted until backlog drain.
-  - Keep touched local declarations in reverse Xmas tree order and retain
-    the v12 link.
-  - v12 Link: https://lore.kernel.org/all/cover.1790255682.git.zihanx@nebusec.ai/
----
- include/net/llc_conn.h |   2 +-
- net/llc/llc_conn.c     | 131 ++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 117 insertions(+), 16 deletions(-)
-
-diff --git a/include/net/llc_conn.h b/include/net/llc_conn.h
-index 778e5e6c0..dc4828336 100644
---- a/include/net/llc_conn.h
-+++ b/include/net/llc_conn.h
-@@ -13,7 +13,7 @@
- 
- #define LLC_EVENT                1
- #define LLC_PACKET               2
--#define LLC_LISTENER_FRAME       3
-+#define LLC_LISTENER_SABME       3
- 
- #define LLC_INCOMING_NONE        0
- #define LLC_INCOMING_PENDING     1
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 349a7c5b9..79c29c57c 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -95,8 +95,8 @@ int llc_conn_state_process(struct sock *sk, struct sk_buff *skb)
- 	case LLC_CONN_PRIM:
- 		/*
- 		 * Can't be sock_queue_rcv_skb, because we have to leave the
--		 * skb->sk pointing to the newly created struct sock in
--		 * llc_conn_handler. -acme
-+		 * skb->sk pointing to the child socket created in
-+		 * llc_conn_rcv_sabme(). -acme
- 		 *
- 		 * A connection indication belongs on the listener. If sk and
- 		 * skb->sk are the same socket, queueing it would later make
-@@ -801,7 +801,64 @@ static struct sock *llc_create_incoming_sock(struct sock *sk,
- 	return newsk;
- }
- 
--static int llc_conn_rcv_listener(struct sock *sk, struct sk_buff *skb,
-+/* The listener is locked and bottom halves are disabled. */
-+static int llc_conn_rcv_existing_sabme(struct sock *listener,
-+				       struct sock *newsk,
-+				       struct sk_buff *skb)
-+{
-+	struct llc_sock *llc = llc_sk(newsk);
-+	int incoming_state;
-+	int rc = 0;
-+
-+	bh_lock_sock_nested(newsk);
-+	if (sock_owned_by_user(newsk)) {
-+		if (!skb_set_owner_sk_safe(skb, newsk))
-+			goto drop_unlock;
-+		netdev_hold(skb->dev, NULL, GFP_ATOMIC);
-+		llc_set_backlog_type(skb, LLC_PACKET);
-+		if (sk_add_backlog(newsk, skb, READ_ONCE(newsk->sk_rcvbuf))) {
-+			netdev_put(skb->dev, NULL);
-+			goto drop_unlock;
-+		}
-+		goto unlock;
-+	}
-+
-+	incoming_state = atomic_read(&llc->incoming_state);
-+	if (READ_ONCE(llc->state) == LLC_CONN_OUT_OF_SVC) {
-+		if (incoming_state == LLC_INCOMING_PENDING)
-+			llc_release_incoming_sock(newsk);
-+		goto drop_unlock;
-+	}
-+	if ((incoming_state == LLC_INCOMING_PENDING ||
-+	     incoming_state == LLC_INCOMING_QUEUED) &&
-+	    READ_ONCE(llc->incoming_listener) != listener)
-+		goto drop_unlock;
-+	if (incoming_state != LLC_INCOMING_NONE &&
-+	    incoming_state != LLC_INCOMING_PENDING &&
-+	    incoming_state != LLC_INCOMING_QUEUED)
-+		goto drop_unlock;
-+	if (!skb_set_owner_sk_safe(skb, newsk)) {
-+		if (incoming_state == LLC_INCOMING_PENDING)
-+			llc_release_incoming_sock(newsk);
-+		goto drop_unlock;
-+	}
-+
-+	rc = llc_conn_rcv(incoming_state == LLC_INCOMING_PENDING ? listener :
-+			  newsk, skb);
-+	if (incoming_state == LLC_INCOMING_PENDING &&
-+	    atomic_read(&llc->incoming_state) == LLC_INCOMING_PENDING)
-+		llc_release_incoming_sock(newsk);
-+	goto unlock;
-+
-+drop_unlock:
-+	kfree_skb(skb);
-+unlock:
-+	bh_unlock_sock(newsk);
-+	sock_put(newsk);
-+	return rc;
-+}
-+
-+static int llc_conn_rcv_sabme(struct sock *sk, struct sk_buff *skb,
- 			       struct llc_addr *saddr,
- 			       struct llc_addr *daddr)
- {
-@@ -812,8 +869,9 @@ static int llc_conn_rcv_listener(struct sock *sk, struct sk_buff *skb,
- 	newsk = __llc_lookup_established(llc_sk(sk)->sap, saddr, daddr,
- 					 dev_net(skb->dev));
- 	if (newsk) {
--		sock_put(newsk);
--		goto drop;
-+		rc = llc_conn_rcv_existing_sabme(sk, newsk, skb);
-+		local_bh_enable();
-+		return rc;
- 	}
- 	if (sk_acceptq_is_full(sk))
- 		goto drop;
-@@ -960,13 +1018,37 @@ void llc_release_incoming_children(struct sock *sk)
- 	local_bh_enable();
- }
- 
-+/*
-+ * This mirrors the ADM-state DM actions, but a listener has no peer
-+ * address in llc->daddr yet.
-+ */
-+static void llc_conn_send_dm_rsp(struct llc_sap *sap, struct sk_buff *skb,
-+				 struct llc_addr *saddr, u8 f_bit)
-+{
-+	struct sk_buff *nskb;
-+	int rc;
-+
-+	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U, 0);
-+	if (!nskb)
-+		return;
-+
-+	llc_pdu_header_init(nskb, LLC_PDU_TYPE_U, sap->laddr.lsap,
-+			    saddr->lsap, LLC_PDU_RSP);
-+	llc_pdu_init_as_dm_rsp(nskb, f_bit);
-+	rc = llc_mac_hdr_init(nskb, skb->dev->dev_addr, saddr->mac);
-+	if (unlikely(rc))
-+		kfree_skb(nskb);
-+	else
-+		dev_queue_xmit(nskb);
-+}
-+
- void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct net_device *backlog_dev = NULL;
- 	struct sock *newsk = NULL, *sk;
- 	bool newsk_lookup_ref = false;
- 	struct llc_addr saddr, daddr;
--	bool listener_frame = false;
-+	bool listener_sabme = false;
- 	bool newsk_locked = false;
- 
- 	llc_pdu_decode_sa(skb, saddr.mac);
-@@ -1033,17 +1115,29 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 	 * it needs to set several state variables (see, for instance,
- 	 * llc_adm_actions_2 in net/llc/llc_c_st.c) and send a packet to
- 	 * the originator of the new connection, and this state has to be
--	 * in the newly created struct sock private area. -acme
-+	 * in the private area of the child created by
-+	 * llc_conn_rcv_sabme(). -acme
- 	 */
- 	if (unlikely(sk->sk_state == TCP_LISTEN)) {
- 		if (!newsk) {
-+			if (llc_conn_ev_rx_sabme_cmd_pbit_set_x(sk, skb)) {
-+				if (!llc_conn_ev_rx_disc_cmd_pbit_set_x(sk, skb)) {
-+					u8 f_bit;
-+
-+					llc_pdu_decode_pf_bit(skb, &f_bit);
-+					llc_conn_send_dm_rsp(sap, skb, &saddr, f_bit);
-+				} else if (!llc_conn_ev_rx_xxx_cmd_pbit_set_1(sk, skb)) {
-+					llc_conn_send_dm_rsp(sap, skb, &saddr, 1);
-+				}
-+				goto drop_unlock;
-+			}
- 			if (sock_owned_by_user(sk)) {
- 				skb_orphan(skb);
--				llc_set_backlog_type(skb, LLC_LISTENER_FRAME);
--				listener_frame = true;
-+				llc_set_backlog_type(skb, LLC_LISTENER_SABME);
-+				listener_sabme = true;
- 				goto enqueue;
- 			}
--			llc_conn_rcv_listener(sk, skb, &saddr, &daddr);
-+			llc_conn_rcv_sabme(sk, skb, &saddr, &daddr);
- 			goto out;
- 		}
- 		if (!skb_set_owner_sk_safe(skb, newsk)) {
-@@ -1074,7 +1168,7 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 			llc_release_incoming_sock(newsk);
- 	} else {
- 		dprintk("%s: adding to backlog...\n", __func__);
--		if (!listener_frame)
-+		if (!listener_sabme)
- 			llc_set_backlog_type(skb, LLC_PACKET);
- 		backlog_dev = skb->dev;
- 		netdev_hold(backlog_dev, NULL, GFP_ATOMIC);
-@@ -1138,7 +1232,7 @@ static int llc_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 	int incoming_state;
- 	int rc = 0;
- 
--	if (llc_backlog_type(skb) == LLC_LISTENER_FRAME) {
-+	if (llc_backlog_type(skb) == LLC_LISTENER_SABME) {
- 		backlog_dev = skb->dev;
- 		if (unlikely(child || sk->sk_state != TCP_LISTEN ||
- 			     sock_flag(sk, SOCK_DEAD)))
-@@ -1147,18 +1241,25 @@ static int llc_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 		llc_pdu_decode_ssap(skb, &saddr.lsap);
- 		llc_pdu_decode_da(skb, daddr.mac);
- 		llc_pdu_decode_dsap(skb, &daddr.lsap);
--		rc = llc_conn_rcv_listener(sk, skb, &saddr, &daddr);
-+		rc = llc_conn_rcv_sabme(sk, skb, &saddr, &daddr);
- 		goto out;
- 	} else if (likely(llc_backlog_type(skb) == LLC_PACKET)) {
- 		backlog_dev = skb->dev;
--		if (child && child != sk) {
-+		if (unlikely(!child))
-+			goto drop;
-+		if (child != sk) {
-+			if (unlikely(child->sk_family != PF_LLC))
-+				goto drop;
- 			local_bh_disable();
- 			bh_lock_sock_nested(child);
- 			child_locked = true;
- 		}
--		if (child && child != sk) {
-+		if (child != sk) {
- 			childllc = llc_sk(child);
- 			incoming_state = atomic_read(&childllc->incoming_state);
-+			if (incoming_state == LLC_INCOMING_NONE ||
-+			    READ_ONCE(childllc->incoming_listener) != sk)
-+				goto drop;
- 
- 			if (incoming_state == LLC_INCOMING_PENDING) {
- 				if (sock_flag(sk, SOCK_DEAD) ||
--- 
-2.43.0
 
