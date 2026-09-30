@@ -1,111 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7D282F2A;
-	Wed, 30 Sep 2026 01:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C79836167E;
+	Wed, 30 Sep 2026 02:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790733594; cv=none; b=ZkvpXrQeofqXryqhWibGLPcsO7ZLWG1pHsOLPoFQEDgBeJzLIhrFIwdWXOmJ9vTSnKPubP9QPCuG7gwhxGepJM4TpTyC3Tt1r2pRd61tfS5eMf2ZDnJ6H8Z/w2AR1qAW2rJv7yi9ogWARYxr9DsEaynuwMpeic0kP6PKAsVJFW8=
+	t=1790733790; cv=none; b=G7ZI2B1Q638Eu7zbdbvNZcaZFs3cCmwbnnJt7agSaD5Eqkbz4vv2cnCqr6g16HtFmFAj0U88pJKfxLFwf+YPcgY80nqXI1BmQgJ41xXnB69HrJZZmOd7hmH5gqOEsMyjlJuGVh44ERhilgw+SAVt/qRbDrFkwrH17kvK1jqtyGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790733594; c=relaxed/simple;
-	bh=1XZfKocU/lN5GfPuRrDk1+Frer+DxmS5rdeBz68W3/4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M8iRlLN4SbH19AbPui6B/x7sCHntBq1/a1v6Ue8lFquWiEN4T0faOO2zjy60TpQB+avn1bnG63o3ZpUz4DnuCPq4qZWHgVa1t/39gapGq1sSlaGvC5Wc6Gwlq2qJXHmz8MHVnd1JAiYMlVN+4AgI/CbBjixYynOMz3sCizcF5G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1welR2X; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790733790; c=relaxed/simple;
+	bh=vgH/OsbI2sIw+4O8+rlHKr38Hc76+fR31GpB2FIVYIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=koGeiAWucxhDHlYWA4u0VOx9hKQK8aU7ZDgVS0r/eRVqmMMzmhH7r9ocMIoRVd5IIHuJldM6rNm2QTi3IPCSsnMl/esCRVAhO6mJeUmi1Wk/eC8jdFpSOOx9AgbU9ZkL8eknMDr5oQQVSetBqqvbMBEN4lH+C+6ildTm49d+9pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hb4aA5pI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1welR2X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530171F000FF;
-	Wed, 30 Sep 2026 01:59:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hb4aA5pI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED1B1F0089B;
+	Wed, 30 Sep 2026 02:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790733593;
-	bh=DX9g4ivFVPNTKG/kBEx/zUz96+yiO19hM2X9UAqzp0o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=O1welR2XYxDBYcQMymrp8H6LU8yzVjVEsXTqj+hE3Y6d384E20FR9whrky/Hlyvq8
-	 PJBgrnmt0uwt8QYwPmssrtdWFnj9TlvpkUOcLju5O3FJ9+ZO1qq4A3RQp9kbPSJ3JI
-	 AQvB1zRp2pyQRux8QZ6NS1/NHs7TRz8Ec101/R5TwolVHbJdIOa6AehLEpMX9RzcYp
-	 0/12MShIxqBagJhTZ5n1HD9WpixNqk7ruvokk+tWP/ZJLFstOnlRPsEKrX2BtUpdlO
-	 JsTn+twh2/J6S5QCngwhB61nx+6Ifhk+jqBTPr//Obogdmns5GmWCsQY5R9XKfbPgj
-	 PklpO8bvU1b8g==
-Message-ID: <3453cad85b6ec1d3b36398ba7565d053163a5929.camel@kernel.org>
-Subject: Re: [PATCH v3 net-next 4/9] rds: use sk_set_nospace()
-From: Allison Henderson <achender@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, edumazet@google.com,
- netdev@vger.kernel.org, Alexander Aring <aahringo@redhat.com>, David
- Teigland <teigland@redhat.com>,  gfs2@lists.linux.dev, John Fastabend
- <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, Sabrina
- Dubroca <sd@queasysnail.net>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>,  mptcp@lists.linux.dev, Wen Gu
- <guwen@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, "D. Wythe"
- <alibuda@linux.alibaba.com>, Chuck Lever <cel@kernel.org>, Jeff Layton
- <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Olga Kornievskaia
- <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
- <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
- <anna@kernel.org>, linux-nfs@vger.kernel.org,  rds-devel@oss.oracle.com,
- Philipp Reisner <philipp.reisner@linbit.com>, Lars Ellenberg
- <lars.ellenberg@linbit.com>, Christoph =?ISO-8859-1?Q?B=F6hmwalder?=
- <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>, 
- drbd-dev@lists.linux.dev, Keith Busch <kbusch@kernel.org>, Christoph
- Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni
- <kch@nvidia.com>, linux-nvme@lists.infradead.org, Ilya Dryomov
- <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, Viacheslav
- Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org
-Date: Tue, 29 Sep 2026 18:59:50 -0700
-In-Reply-To: <20260929071743.23624-5-edumazet@kernel.org>
-References: <20260929071743.23624-1-edumazet@kernel.org>
-	 <20260929071743.23624-5-edumazet@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=k20260515; t=1790733788;
+	bh=fKkGfb4xgkC7xPIKlQ2uK92hzU29CD+84MVKZ8G0J6I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hb4aA5pIe3cJE1ca4mZE75IgOhwK1ckDbGrse5TLhFPfTFOR+95BTg7xO/hh1kybw
+	 cu/VrfNiCEaBok+JvrbE8ExK3MWp+++A35dXlX7l/9Ks2H0t1Dz1XHL0NgH3Rap/u4
+	 hpefYxCtI5WKcUhSlCU+iFb7iqsz0XGKha+CZaO8X2ZnYZegbmyoUkHOakOZQbj4s6
+	 7bbjIPMWqKL1kWduSCscLMz9Yz0Qvx3DqA+Y+laV0n/RGiAu04P0lmjveUP065K84q
+	 Sc4S4aBNyt1J4NajcjIYLfzkfzMbVLRmzTg+xYuL5g+ZMty5zVosYaC6J1hKed1JLJ
+	 TW2kksll0HR3w==
+Date: Tue, 29 Sep 2026 19:03:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston
+ <matt@codeconstruct.com.au>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, netdev@vger.kernel.org, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Brendan Higgins <brendan.higgins@linux.dev>, David
+ Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mctp: Stop selecting flow support for
+ KUnit tests
+Message-ID: <20260929190307.4d121561@kernel.org>
+In-Reply-To: <20260925192510.93840-1-kmehltretter@gmail.com>
+References: <20260925192510.93840-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-09-29 at 07:17 +0000, Eric Dumazet wrote:
-> Use the new helpers instead of open coding the SOCK_NOSPACE
-> manipulation, so that TCP can later maintain a cheaper private
-> copy of this bit.
->=20
-> No functional change intended.
->=20
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+On Fri, 25 Sep 2026 21:25:10 +0200 Karl Mehltretter wrote:
+> MCTP_TEST selects MCTP_FLOWS, which also enables SKB_EXTENSIONS when no
+> transport requires them. Remove the selection to follow the dependency
+> rule in Documentation/dev-tools/kunit/style.rst.
+> 
+> The two flow-specific tests already skip when MCTP_FLOWS is disabled.
+> The remaining tests can run in either configuration.
 
-Thank you!
-Acked-by: Allison Henderson <achender@kernel.org>
+This patch causes the CI's "kunit-all/alltests" job to fail at the build
+configuration step, before any KUnit test actually runs:
 
-> ---
->  net/rds/tcp_send.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->=20
-> diff --git a/net/rds/tcp_send.c b/net/rds/tcp_send.c
-> index 7c52acc749cf4d4003c749a2646c2b4f87f207fe..824222c475119d91e333123c5=
-afc9291005a8696 100644
-> --- a/net/rds/tcp_send.c
-> +++ b/net/rds/tcp_send.c
-> @@ -100,7 +100,7 @@ int rds_tcp_xmit(struct rds_connection *conn, struct =
-rds_message *rm,
-> =20
->  	if (hdr_off < sizeof(struct rds_header)) {
->  		/* see rds_tcp_write_space() */
-> -		set_bit(SOCK_NOSPACE, &tc->t_sock->sk->sk_socket->flags);
-> +		sk_set_nospace(tc->t_sock->sk);
-> =20
->  		ret =3D rds_tcp_sendmsg(tc->t_sock,
->  				      (void *)&rm->m_inc.i_hdr + hdr_off,
-> @@ -221,6 +221,5 @@ void rds_tcp_write_space(struct sock *sk)
->  	 */
->  	write_space(sk);
-> =20
-> -	if (sk->sk_socket)
-> -		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-> +	sk_set_nospace(sk);
->  }
+  ERROR:root:Not all Kconfig options selected in kunitconfig were in the
+  generated .config. This is probably due to unsatisfied dependencies.
+  Missing: CONFIG_MCTP_FLOWS=y
 
+tools/testing/kunit/configs/all_tests.config (used by this job) lists
+CONFIG_MCTP_FLOWS=y explicitly. However, MCTP_FLOWS in
+net/mctp/Kconfig has no user-visible prompt:
+
+  config MCTP_FLOWS
+          bool
+          depends on MCTP
+          select SKB_EXTENSIONS
+
+so it can only be turned on by another symbol's "select". Previously
+MCTP_TEST selected it, which is what let all_tests.config's explicit
+"CONFIG_MCTP_FLOWS=y" line take effect. After this patch removes that
+select, nothing enables MCTP_FLOWS anymore, so olddefconfig silently
+drops it and the kunit tooling treats the mismatch as fatal, aborting
+the whole "alltests" run.
+
+Since MCTP_FLOWS is a prompt-less symbol, simply listing it in a
+kunitconfig fragment isn't enough on its own - it still needs to be
+selected by something. Could you either:
+
+ - keep a select of MCTP_FLOWS from an appropriate config (e.g. from
+   MCTP_TEST guarded to only the flow-specific tests, if that's
+   expressible), or
+ - update tools/testing/kunit/configs/all_tests.config to select the
+   flow tests explicitly (e.g. via a symbol that can select
+   MCTP_FLOWS), or
+ - give MCTP_FLOWS a real prompt so it can be enabled directly from a
+   config fragment.
+
+Let me know if you'd like the exact CI log for the failure.
