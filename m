@@ -1,193 +1,276 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB2D3C4577
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2C53B42C5;
+	Wed, 30 Sep 2026 07:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790753744; cv=none; b=XklVO1U3Fi8q4gqkWFFwmeAlueh86Lq2h7wTdPhXpge8TYnWmYqpQZgKAgs+Q7FH3WlDDfASA05fSgeFvBXY+PX7n4rxIfkawP0bgiuAuwf/yThp06zviNO88mHjBxYWNyKq30c1zA07cojWwTB5xj7APaSG6xctzVDlrMEKNx8=
+	t=1790753958; cv=none; b=qMklpTxtUvr1qTQ/Kh+g7T8ryfMCIKUIEu0/4J/c6lXvGaSmQ5aYFeI2DorcWE83NyFDX5Z6Qzcsaz4pfW2S0HmrsKXAV/q6B0F9cJUgReX+gQdHNizyEYxTiQy5lWLOfU5Rcj1JeGuGI2ejWhmY/HVXHoydca5bxTSfyjAQ6P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790753744; c=relaxed/simple;
-	bh=VWBd5CplSC+1wa20471jJKLYXciPOZAapL6xAGX/9eQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aEwNZ6QiAo5P2L5UWxSbnAZK+KDYDC967BKtn7WNKaOvgZJqAJSXZmy+nqE+2fA/I+tF0aG2LstEOoQXhxBY8n4N1cZ/i50gJ7hVMyDo7QwjUbN7iJeLwp71nlFL9JpC49/yXHqmYMCTmOCKF35Wxk8yS54q72fUeWtYQaU/uQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=MiR5MXq1; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1790753958; c=relaxed/simple;
+	bh=/4KiCWLH+o8fxrrhBQAB7Wsx93BHLb9+XPn4yW1wY+s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=esYX70F66mN8H3oSf7LoS7vvncPkRLpIn4Qe1G2s94lkmZUUiMTjnOW1Lm0zGOd9pCIuypsyREAlml8zae7kjX+JwvQIxEuZDp45fetZBj3YCC4eqiAqHpxij7wq7cvs44zl9JXnjT3Wm2PWIOKPz4gzv1he+RsgCQsVhKAlSqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=CUKoqtaQ; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="MiR5MXq1"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 792CC20520;
-	Wed, 30 Sep 2026 09:35:38 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id uYkw1Dg1JQTF; Wed, 30 Sep 2026 09:35:37 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id AC4BA20184;
-	Wed, 30 Sep 2026 09:35:37 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com AC4BA20184
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1790753737;
-	bh=1+5ZQUaub5/QGnJiyEsRA5/K+amkbXuxDLjETtx7lIU=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=MiR5MXq1RChJQu4zhdRaNd+3kQMc7Wi0eK9XqUFCDSii0RKeqx5L5UxYCNOZkKlcN
-	 XiIWxwSUQwV+rwErNUsc0+2XnpR4KxHan2zT3PMKKR2AtT65mlR/FZDEw4YFtwzUNE
-	 2yPco7mcFfjmmyR03GwMITEdy5i1ZX31gT58sS7sluT/vcmeLkN9Apc9EMytwIsUmC
-	 5WWVSbNVxAVKBBel/VKQIT1747vdxBd4noo8bYF9KQtS7SKuvskRlDQUjHmNPawiOG
-	 /KKZTgox/UdfZ15ryMtak/uXbdoWSvnBEpRRRQd5mZxE9wJDJuosuHjZc9MjoyuTnR
-	 Hw1MCa2glAYWg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
- 2026 09:35:37 +0200
-Received: (nullmailer pid 3835312 invoked by uid 1000);
-	Wed, 30 Sep 2026 07:35:36 -0000
-Date: Wed, 30 Sep 2026 09:35:36 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Dawson Kraai <dawson@getanp.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-	"davem@davemloft.net" <davem@davemloft.net>
-Subject: Re: [BUG] xfrm6_tunnel: failed module init flushes every XFRM state
- in every netns when IPv6 is disabled
-Message-ID: <ary7yDhqYVD9Rpu4@secunet.com>
-References: <DS0PR13MB7311F1363647131E596CBECFBC802@DS0PR13MB7311.namprd13.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="CUKoqtaQ"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=x8xmPNLop5MFL0VSwJns1DfWSQ+a6UAGPh5kJmJ5lQE=;
+	b=CUKoqtaQbHZtOkYVBtCwfrXKhx6RfMfiO+FTBZgrOLfkBmnVMixIMGGUBt0glLmn4A7ko8VXV
+	NtETXU70MePgOvUrBSsYzQQ+G5nMpgI7WpbVCFHPF9QH2XGsXepgvK74F17Kb3k4124AglJdg+b
+	9iUn8QHzrzEdbHurIZckT+0=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hvmny6mx3znTVd;
+	Wed, 30 Sep 2026 15:27:02 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5DE1540578;
+	Wed, 30 Sep 2026 15:39:03 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 30 Sep 2026 15:39:02 +0800
+Message-ID: <fa84ace1-f28e-406c-8c1f-8dd2c600ac40@h-partners.com>
+Date: Wed, 30 Sep 2026 15:39:01 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <DS0PR13MB7311F1363647131E596CBECFBC802@DS0PR13MB7311.namprd13.prod.outlook.com>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: tun: fix race condition between tun_attach
+ and tun_get_user with XDP
+To: <netdev-bot+sashiko@kernel.org>
+CC: <willemdebruijn.kernel@gmail.com>, <jasowangio@gmail.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <huyizhen2@huawei.com>,
+	<gaoxingwang1@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260920030240.443223-1-xietangxin@h-partners.com>
+ <178995923435.2160803.18166174326002943726@kernel.org>
+Content-Language: en-US
+From: xietangxin <xietangxin@h-partners.com>
+In-Reply-To: <178995923435.2160803.18166174326002943726@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-On Fri, Sep 25, 2026 at 05:27:34PM +0000, Dawson Kraai wrote:
-> Summary
-> -------
-> On a kernel booted with ipv6.disable=1, loading xfrm6_tunnel fails (as expected,
-> IPv6 is off) - but the failure path deletes ALL IPsec SAs (IPv4 ESP included) in
-> EVERY network namespace on the host. The module never loads, so the flush
-> repeats on every load attempt. Load attempts are triggered indirectly and
-> routinely: any "ip link add ... type xfrm" makes rtnetlink request_module
-> "rtnl-link-xfrm" -> xfrm_interface, which depends on xfrm6_tunnel. strongSwan's
-> kernel-netlink plugin does exactly that at every daemon start to probe XFRM
-> interface support.
-> 
-> Observed on 6.12.107 (Debian 6.12.107-1). The code path is unchanged in current
-> mainline (net/ipv6/xfrm6_tunnel.c as of this report).
-> 
-> Environment
-> -----------
-> Kernel:      Linux 6.12.107+deb13-amd64 (Debian linux-image 6.12.107-1), x86_64
-> Cmdline:     ... ipv6.disable=1
-> Config:      CONFIG_IPV6=y  CONFIG_INET6_XFRM_TUNNEL=m  CONFIG_XFRM_INTERFACE=m
-> Workload:    ~60 network namespaces (containers), each running its own IKEv2 daemon
->              (strongSwan 6.0.1) with IPv4 ESP tunnel-mode SAs.
-> 
-> Symptom
-> -------
-> Every time any strongSwan daemon started anywhere on the host, all IPsec tunnels in
-> all other namespaces went dark within ~1s (kernel SAs gone, SPD policies intact,
-> XfrmOutNoStates climbing). Nothing was logged by the kernel. Recovery required each
-> IKE daemon to re-establish its CHILD_SAs.
-> 
-> Root cause (kernel function trace)
-> ----------------------------------
-> ftrace on __xfrm_state_delete / xfrm_state_flush during one daemon start:
-> 
->   modprobe-4042214 [000] ..... 1654071.342931: xfrm_state_flush <-xfrm6_tunnel_net_exit
->    => xfrm_state_flush
->    => xfrm6_tunnel_net_exit          (module text, resolved by address)
->    => ops_exit_list
->    => free_exit_list
->    => unregister_pernet_operations
->    => unregister_pernet_subsys
->    => xfrm6_tunnel_init              (module text, resolved by address)
->    => do_one_initcall
->    => do_init_module
->    => init_module_from_file
->    => idempotent_init_module
->    => __x64_sys_finit_module
-> 
->   66 xfrm_state_flush calls (one per netns), 267 __xfrm_state_delete calls,
->   all within 1.08s, all from the modprobe task.
-> 
-> The sequence in xfrm6_tunnel_init():
-> 
->     rv = register_pernet_subsys(&xfrm6_tunnel_net_ops);      /* succeeds */
->     if (rv < 0) goto out_pernet;
->     rv = xfrm_register_type(&xfrm6_tunnel_type, AF_INET6);   /* fails */
->     if (rv < 0) goto out_type;
->     ...
->   out_type:
->     unregister_pernet_subsys(&xfrm6_tunnel_net_ops);
-> 
-> With ipv6.disable=1, inet6_init() returns before xfrm6_init(), so no AF_INET6
-> xfrm_state_afinfo is registered and xfrm_register_type() returns -EAFNOSUPPORT
-> (xfrm_state_get_afinfo(AF_INET6) == NULL). The init then unregisters the pernet
-> subsystem it had just registered, which runs the exit op for every existing netns:
-> 
->   static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
->   {
->         ...
->         xfrm_state_flush(net, 0, false);
->         xfrm_flush_gc();
->         ...
->   }
-> 
-> xfrm_state_flush(net, 0 /* IPSEC_PROTO_ANY */, ...) removes every SA of the
-> namespace, regardless of protocol, family or type - including IPv4 ESP SAs that
-> have nothing to do with xfrm6_tunnel. Run for every netns from the init-failure
-> path, this is a host-wide IPsec wipe as a side effect of a module that never loaded.
-> 
-> (The flush in xfrm6_tunnel_net_exit was added to avoid a panic when unloading the
-> module with SAs still referencing it. That is reasonable for a module that was
-> loaded; it is not for the init-failure path, where the module owned no SA.)
-> 
-> Reproducer
-> ----------
-> Boot with ipv6.disable=1, xfrm6_tunnel not loaded. Then:
-> 
->   # any SA in any netns, e.g. in init_net:
->   ip xfrm state add src 192.0.2.1 dst 192.0.2.2 proto esp spi 0x1000 reqid 1 \
->         mode tunnel enc 'cbc(aes)' 0x<32 hex bytes> auth-trunc 'hmac(sha256)' 0x<32 hex bytes> 128
->   ip xfrm state | grep -c spi        # 1
->   modprobe xfrm6_tunnel              # fails (EAFNOSUPPORT expected)
->   ip xfrm state | grep -c spi        # 0  <- unrelated IPv4 SA is gone
-> 
->   # or, without root in the init netns: create an xfrm link from an
->   # unprivileged user+net namespace; rtnl_newlink() auto-loads rtnl-link-xfrm,
->   # which pulls in xfrm6_tunnel:
->   unshare -Urn sh -c 'ip link add x0 type xfrm dev lo if_id 1'
-> 
-> Note: the stand-alone steps above are the distilled form of what we traced in
-> production (strongSwan's XFRM-interface probe as the load trigger); I have not
-> re-run them on a scratch machine.
-> 
-> Impact
-> ------
-> - Any host that runs IPsec with ipv6.disable=1 loses all SAs whenever anything
->   requests xfrm_interface or xfrm6_tunnel. With IKE daemons in containers this
->   happens on every container start; we saw it several times a day for weeks.
-> - Because rtnl_newlink() calls request_module() for unknown link kinds on behalf
->   of any netns owner with CAP_NET_ADMIN in that netns, a user namespace appears
->   sufficient to trigger it. On an affected host that makes it a local denial of
->   service against all IPsec traffic. You may want to treat that aspect via
->   security@kernel.org<mailto:security@kernel.org>; I have not verified the unprivileged path myself.
-> 
-> Suggested fix (any of)
-> ----------------------
-> 1. Fail early: at the top of xfrm6_tunnel_init(),
->         if (!ipv6_mod_enabled())
->                 return -EOPNOTSUPP;
->    as other IPv6-dependent modules do, so nothing is registered before the check.
 
-I think this is the way to go. Do you want to submit a fix?
 
-Thanks!
+On 9/21/2026 10:53 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 (2) · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] Incomplete fix: the new "publish tfile->tun last" ordering is a
+>   no-op on the TUNSETQUEUE/IFF_ATTACH_QUEUE re-attach path, so the…
+> 
+> Pre-existing issues:
+> - [Medium] Mirror-image ordering problem on the detach path is untouched
+>   and reproduces the same netif_get_rxqueue() WARN_ONCE.
+> - [Medium] tun_set_real_num_queues() (drivers/net/tun.c:526-530) is void
+>   and discards the documented error returns of…
+> 
+> --
+> 
+> net: tun: fix race condition between tun_attach and tun_get_user with XDP
+> 
+> This moves the rcu_assign_pointer(tfile->tun, tun) publication in
+> tun_attach() to after tun_set_real_num_queues(), so that
+> dev->real_num_rx_queues is raised before a concurrent writer can observe
+> the newly attached tun_file.  The intent is to stop the WARN_ONCE in
+> netif_get_rxqueue() that fires when a recorded rx queue index is not
+> below dev->real_num_rx_queues.
+> 
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index 5a302709a68a..2dfca25b86e9 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -811,11 +811,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  	 * initialized tfile; otherwise we risk using half-initialized
+>>  	 * object.
+>>  	 */
+>> -	if (publish_tun)
+>> -		rcu_assign_pointer(tfile->tun, tun);
+>>  	rcu_assign_pointer(tun->tfiles[tun->numqueues], tfile);
+>>  	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
+>>  	tun_set_real_num_queues(tun);
+> 
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the new ordering guarantee
+> now rests on tun_set_real_num_queues() having actually taken effect, and
+> that function drops both return values:
+This is a pre-existing issue unrelated to the race being fixed.
+Maybe address it in a separate follow-up patch.
+> 
+> drivers/net/tun.c:
+> static void tun_set_real_num_queues(struct tun_struct *tun)
+> {
+> 	netif_set_real_num_tx_queues(tun->dev, tun->numqueues);
+> 	netif_set_real_num_rx_queues(tun->dev, tun->numqueues);
+> }
+> 
+> For an already registered device, netif_set_real_num_rx_queues() returns
+> early without assigning dev->real_num_rx_queues:
+> 
+> net/core/dev.c:netif_set_real_num_rx_queues() {
+> 		rc = net_rx_queue_update_kobjects(dev, dev->real_num_rx_queues,
+> 						  rxq);
+> 		if (rc)
+> 			return rc;
+> 	}
+> 
+> 	dev->real_num_rx_queues = rxq;
+> }
+> 
+> and net_rx_queue_update_kobjects() can fail on rx_queue_add_kobject():
+> 
+> net/core/net-sysfs.c:net_rx_queue_update_kobjects() {
+> 		error = rx_queue_add_kobject(dev, i);
+> 		if (error) {
+> 			new_num = old_num;
+> 			break;
+> 		}
+> }
+> 
+> In that case tun_attach() has already published tun->tfiles[] and bumped
+> tun->numqueues, and then publishes tfile->tun and returns 0.  Does that
+> leave tfile->queue_index == dev->real_num_rx_queues permanently, so that
+> every write() on that queue going through the generic XDP path hits the
+> same netif_get_rxqueue() warning the commit message is trying to remove?
+> Should the error be propagated and the numqueues/tfiles publication
+> unwound instead?
+> 
+> [Severity: Medium]
+> This is a pre-existing issue and the patch does not touch __tun_detach(),
+> but the decreasing direction looks like the same mismatch.  In
+> __tun_detach() the surviving queue's index is lowered and numqueues is
+> decremented well before the real queue count is reduced:
+>
+This is a deterministic bug (no race needed).
+The XDP path in tun_get_user() lacks a tfile->detached check,
+Write on a detached fd records a stale queue_index via
+skb_record_rx_queue(), then enters do_xdp_generic() which calls
+netif_get_rxqueue() with a stale index and trigger same WARN_ONCE.
+
+> drivers/net/tun.c:__tun_detach() {
+> 		spin_lock(&ntfile->tx_ring.consumer_lock);
+> 		ntfile->queue_index = index;
+> 		ntfile->xdp_rxq.queue_index = index;
+> 		...
+> 		WRITE_ONCE(tun->numqueues, tun->numqueues - 1);
+> 		...
+> 		synchronize_net();
+> 		...
+> 		tun_set_real_num_queues(tun);
+> }
+> 
+> The moved tfile keeps its ->tun published, and the queue_index sample in
+> tun_get_user() happens before the rcu_read_lock() around the XDP call:
+> 
+> 	skb_record_rx_queue(skb, tfile->queue_index);
+> 
+> 	if (skb_xdp) {
+> 		...
+> 		local_bh_disable();
+> 		rcu_read_lock();
+> 
+> so the synchronize_net() above does not fence a writer that already
+> sampled the old, higher index.  Can a write() racing with
+> TUNSETQUEUE|IFF_DETACH_QUEUE reach do_xdp_generic() after
+> dev->real_num_rx_queues has shrunk and hit the same WARN_ONCE?  Also, for
+> the clean == false case, tun_disable_queue() never clears tfile->tun and
+> the stale queue_index stays in place while the fd is still writable.
+> Should the commit message scope its claim to the attach path, or should
+> the detach direction be handled too?
+> 
+>> +	if (publish_tun)
+>> +		rcu_assign_pointer(tfile->tun, tun);
+>>  out:
+>>  	return err;
+>>  }
+> 
+> [Severity: High]
+> Is this reordering effective on the TUNSETQUEUE re-attach path?  A queue
+> detached with IFF_DETACH_QUEUE goes through __tun_detach(tfile, false),
+> where clearing tfile->tun only happens in the clean case:
+> 
+Correct. __tun_detach(clean=false) does not clear tfile->tun,
+so rcu_assign_pointer(tfile->tun, tun) writes the same pointer value that
+readers already observe -- the v2 publish ordering has no effect.
+Another reattach and tun_get_user race issue:
+  CPU 0 (re-attach)             CPU 1 (tun_get_user)
+  // tfile->tun isn't null
+  tfile->queue_index = 2
+  tun_enable_queue(tfile)
+    tfile->detached = NULL
+                                skb_record_rx_queue(skb, 2)
+                                do_xdp_generic()
+                                  netif_get_rxqueue()
+                                  // index(2) >= real(2) -> WARN
+  tun_set_real_num_queues()
+    real_num_rx_queues = 3
+
+pw-bot: cr
+> drivers/net/tun.c:__tun_detach() {
+> 		if (clean) {
+> 			RCU_INIT_POINTER(tfile->tun, NULL);
+> 			sock_put(&tfile->sk);
+> 		} else {
+> 			tun_disable_queue(tun, tfile);
+> 			tun_napi_disable(tfile);
+> 		}
+> }
+> 
+> So on that fd tfile->tun stays non-NULL and visible.  tun_set_queue()
+> then re-attaches with publish_tun = true:
+> 
+> 		ret = tun_attach(tun, file, false, tun->flags & IFF_NAPI,
+> 				 tun->flags & IFF_NAPI_FRAGS, true);
+> 
+> and tun_attach() writes the new, higher index long before the queue count
+> is raised:
+> 
+> 	spin_lock(&tfile->tx_ring.consumer_lock);
+> 	tfile->queue_index = tun->numqueues;
+> 	spin_unlock(&tfile->tx_ring.consumer_lock);
+> 
+> Since the moved rcu_assign_pointer(tfile->tun, tun) stores a value that
+> readers can already see, does it order anything for them on this path?  A
+> concurrent write() on the same fd still passes tun_get(), records the new
+> index and calls into XDP:
+> 
+> 	skb_record_rx_queue(skb, tfile->queue_index);
+> 
+> 	if (skb_xdp) {
+> 
+> reaching net/core/dev.c:netif_get_rxqueue():
+> 
+> 		if (unlikely(index >= dev->real_num_rx_queues)) {
+> 			WARN_ONCE(dev->real_num_rx_queues > 1,
+> 
+> which is the warning quoted in the commit message, plus the silent
+> fallback to dev->_rx[0] so the program runs against the wrong
+> netdev_rx_queue.  The window is not small either, because
+> netif_set_real_num_rx_queues() does GFP_KERNEL sysfs work.  Would either
+> clearing tfile->tun on the non-clean detach, or publishing
+> tfile->queue_index only after tun_set_real_num_queues(), close the attach
+> path in all cases rather than only when tfile->tun transitions from NULL?
+> 
+
+-- 
+Best regards,
+Tangxin Xie
+
