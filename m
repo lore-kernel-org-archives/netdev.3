@@ -1,97 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F354CCDEB
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ADA403EA1
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776252; cv=none; b=m3NayLkdMAKpVy+7J1a2co594GhbBryVV8d7HyYjSnlHTFDnG4U7cbLXlAboJH1F2yc6Enr6XQXKvNK8UUDMAzeKgXd2FG+ZHyNiRjuvgW5aUxc4BpwYFD3oksF+iMd5O8EMm706CPAA0yFkn/S7XtF4nGAjtPkoPdFhO/w8z5s=
+	t=1790776404; cv=none; b=TiX490ngmXK2xMLWlIgjBsEFyw0eVfpP4AvlCeD8HlR8pN8fM5fHZoYDp6t6T4dZ1iFfzIVkU/OkQ/V0XP3cp8VNFwbdynjMVhUqZLsBYhHaKAdhd2OXkfJVeHd/qRg3sjihYkILlLKXME8JIsvmyPFb+hixeJP4BWI7XmrAG1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776252; c=relaxed/simple;
-	bh=0EUSX+ziol7csngDV3y0PTG7YQiaDbEjmp8He8nG/ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tp5VA3fsgDqiv35Do/qQTnCD66foTVKWwABMLcPNMdpuYHXTcuSGMpF48SZLS6oblFOizXaEzk4kGfghQJ8v+HlQT2nBV8quiZjihL85/ixr1T0XGqvqozaoW789MdXWUqyp0K1IzcGFY6eC9dJJozzypLra5+1CErw7jhyaKuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+ty7jri; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790776404; c=relaxed/simple;
+	bh=zfZK92Vu7VT+WTnYUy0MR+k9vXoZ6JRZirF9jzPnXlc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkUBc4bzkjSJQbw+tDwmTsqld0Ku5IlwMG3Ttid7leE05xiECtbt9ow7i4N3zb2ZwtshdKdt/noaLhVbP7GFuGP05/mybHlp8uG2G3bU8g0fiNKpvtAQ5OvwzNq//AMGAIDmWu0PUkx3Jsye9xL3zcpXEBNHogEHfMsYF68FEco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0+095rEV; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+ty7jri"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF1B1F000FF;
-	Wed, 30 Sep 2026 13:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790776230;
-	bh=dU/XDKG10LV8ewA9yJraf9DgWPH9zHX66m1WdRcexoU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V+ty7jriAnyNmrTZyJl07qnZHbgftTukannZrNL9hdBn2MMFXEnHD0e1iGCNzB5IU
-	 P5UhuKMZDatOnPGCPCEo+Bmnu3tORlMrL07Cz7ace9OjAkwtHAeisuLkPzu25IvXW0
-	 fi0flE7ZeHleH9daeJ17sHjUa6YtLTAUTPytwN2b6t7o2OcsMQYG0jCb768TEx+/tW
-	 wc1RJNSwdKMYbhjdmJ0UafLxHpIEiDQkIM/b1fB6at6WSI2LfcwGXcu6nm10Bq6hdS
-	 jbZfxtQxQBJv1QIMRNpIbxyua0OL/O15RCCSvta7GqarYrV+acLWYEkVMnalOv0Jqf
-	 +tDUtYJa5cOhA==
-Message-ID: <16cb8491-c7d9-422a-b3cc-c0225f12b7ba@kernel.org>
-Date: Wed, 30 Sep 2026 07:50:29 -0600
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0+095rEV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Ur5sCb2/zPUnxSAqHFSK91EKL2zToDV9kiX5/Wiq76c=; b=0+095rEV/8SQ9eolCTSgRQ0lHp
+	4mGLpaKMGw29zzHIOyut0SC6DWDWELNsqj4aMJKa+MFDAuEJ7XeBIREMTiZfJPgW9esvQdSUS8zo/
+	dFU4X4qqDhapeBZFzQZAAXv8SuDI5urS64nPsD1HAIjxsJKfhnuRj2pun8XYuivM8CQ0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xBuk3-008AnH-Eu; Wed, 30 Sep 2026 15:53:03 +0200
+Date: Wed, 30 Sep 2026 15:53:03 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shubham Das <shubham.das@intel.com>
+Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com,
+	alexander.duyck@gmail.com, lee@trager.us, siddaraju.dh@intel.com,
+	balaji.chintalapalle@intel.com, dasshubhamk@gmail.com,
+	magnus.k.lindberg@ericsson.com, jonas.wirandi@ericsson.com
+Subject: Re: [RFC net-next 1/2] ethtool: add interface capabilities query
+ (intf-caps-get)
+Message-ID: <8d44e2b3-532a-4c82-9458-40ddae333593@lunn.ch>
+References: <20260930132151.932792-1-shubham.das@intel.com>
+ <20260930132151.932792-2-shubham.das@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] ipv4: reserve one IP ID per segment for UDP GSO
- packets
-Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Willem de Bruijn <willemb@google.com>, Ido Schimmel <idosch@nvidia.com>,
- netdev@vger.kernel.org
-References: <20260929131247.401104-1-edumazet@kernel.org>
- <20260929131247.401104-3-edumazet@kernel.org>
- <a6f0e657-8674-4216-a1aa-88045c19643b@kernel.org>
- <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <CANn89iJ3KgVOYKD-dT0M=ZOpCJzuOcrG8BWvSKrX0eO1VN7Tpw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930132151.932792-2-shubham.das@intel.com>
 
-On 9/30/26 7:58 AM, Eric Dumazet wrote:
-> On Wed, Sep 30, 2026 at 2:29 PM David Ahern <dsahern@kernel.org> wrote:
->>
->> On 9/29/26 8:12 AM, Eric Dumazet wrote:
->>> @@ -1464,7 +1465,19 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
->>>       iph->ttl = ttl;
->>>       iph->protocol = sk->sk_protocol;
->>>       ip_copy_addrs(iph, fl4);
->>> -     ip_select_ident(net, skb, sk);
->>> +
->>> +     /* UDP GSO packets are segmented later (see udp_send_skb()):
->>> +      * reserve one IP ID per segment.
->>> +      */
->>> +     segs = 1;
->>> +     if (cork->gso_size) {
->>> +             int datalen = skb->len - skb_transport_offset(skb) -
->>> +                           sizeof(struct udphdr);
->>
->> hard coding a specific transport header in L3 code is crossing layers.
->>
-> 
-> Only UDP sets cork->gso_size, so this is UDP specific code in
-> __ip_make_skb(), like the existing sk_is_tcp() case in the same
-> function.
+>  extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
+> +extern const struct nla_policy
+> +ethnl_intf_caps_get_policy[ETHTOOL_A_INTF_CAPS_HEADER + 1];
 
-I went looking for other transport references in L3 code and missed this
-one.
+That is odd wrapping. As far as i can see, no other declaration is
+wrapped like this. Is this because of the 80 character rules? It is
+better to keep with the existing coding style.
 
-> 
-> I can make this explicit in v2 with:
-> 
-> if (cork->gso_size && sk_is_udp(sk)) {
-> 
-> Selecting the IP ID from udp_send_skb() instead would either burn
-> one extra IP ID per packet (50 % more for 2-segment GSO packets,
-> making wraparound faster), or require __ip_make_skb() to leave
-> iph->id unset for UDP GSO packets, with a simlar kayer violation concern.
-> 
-> Would this be acceptable, or do you have another suggestion?
+    Andrew
 
-sure. I went down the path of adding an input arg to __ip_make_skb, but
-this is simpler.
+---
+pw-bot: cr
