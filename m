@@ -1,172 +1,119 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CEF30C147;
-	Wed, 30 Sep 2026 05:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC933B3C1D;
+	Wed, 30 Sep 2026 05:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790746862; cv=none; b=SkZpgAuj6YVHZCdIuyhDVTVZURkdSY+2d7RG9GlWTVblzu8JYov+VlfTe+Zk5s+XdVYpsc7x54gepoBAeS395aaDtHLbYlArdJgq14XQb7fDVATClnXrAPyn/V27ukHeOWdJ1d6RQrl2gsvu5kOQIcnMgzOqdn638+tLdYppoSk=
+	t=1790747104; cv=none; b=K/D370RlnB8+hvzfWXouSxax/7aHCWPOvYwN7l/edfcF3rgpz935TJVp+/xwUxYK1dgEtqVJh3sWemelal3T7Sv8CH9QTmUebD/uN95UFZtZ4ZBy3bqaFWj4Y8P5S62kQUrEqZJbQlZu2/QSJwH1ESjbvW3wZcqzVyEKnRzespg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790746862; c=relaxed/simple;
-	bh=wxe/DM7r2GKzQHbMz5VnZ0DQNy8nUUAohTi8urqGk9E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lmYIZRXME5Trg6EGt9wIVHsQWd/Vp9sg4Q8oi0Zs7HijlZ4u4vW9NSRzpN+lIWA6mZoGR1uUTw5K2vLN5ytRQxMfOL4Fu5b+yjY5QveTxsf7XKDeQyMKEUbrzqm645e4pur8HCTaNfzBUfiHki/dIAHD9cOEwFHACApGKuEIIAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=LZnmuAk1; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790747104; c=relaxed/simple;
+	bh=uElt3Ok62PszBQUaZDkViu/o9w6BhPQfp95NOBN4SrY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=d3DbY0CY0JXodvMVb1HPwLI/Lp50AfObF7DYwKF5zBlKyeYPNPYULULUoaq3zgHzF/k4FUr92tQU69p3/PXJv6PCA9ZdnfhgKZaE7u99Bm3qt2WmWdQHxE1M0ElPzuzlLa6yhAGuTGbLXzhbF55iMvD4VyQgJp20qfBzyZvC5LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ix4KRmjl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="LZnmuAk1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790746861; x=1822282861;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wxe/DM7r2GKzQHbMz5VnZ0DQNy8nUUAohTi8urqGk9E=;
-  b=LZnmuAk1f4qn6UIohD/IUj4OZgkrfCsBNE8sU0cJjfJve7t3HWI/7M5O
-   DzrWZmexYVKMCVAGcmWAIDInj9dEBw+NiMP8dFA3nOjag9XLDLOrNhodl
-   QquUDSvbH97RybjxTuIwX8ja5DzX5jZvAvAAIQVvs4/71SAlRELxbH6xj
-   RNujuXExe47trGVNGfsODONPsv6Ncg2/4cFg0080f4t7Wr2a81PpMRd3L
-   xVhY4AGBU6PPb1Hm6h2mVbJngb84w9ZbsHIV9CbDFsaB+D6z19vyWCZSS
-   b1gKGii0osQvFXrlnzT1Iwk+NHm/729KoKiiYrHTrwY3tuJzZKRNuK3xP
-   w==;
-X-CSE-ConnectionGUID: r6MIbcMDTVezUi7qzOnxbQ==
-X-CSE-MsgGUID: RjhBc48MSSqW9sF5CWAFqg==
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="64358277"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Sep 2026 22:40:54 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 29 Sep 2026 22:40:53 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 29 Sep 2026 22:40:51 -0700
-Date: Wed, 30 Sep 2026 07:40:50 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Quentin Freimanis <quentin@q-lab.dev>
-CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
- Cochran" <richardcochran@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: sparx5: start the domain 0 TOD counter on
- non-PTP lan969x variants
-Message-ID: <20260930054050.hrvaydgdczkizuqt@DEN-DL-M70577.microsemi.net>
-References: <20260928044955.29647-1-quentin@q-lab.dev>
- <20260928151453.fzch356vrp3ergy7@DEN-DL-M70577>
- <4e1ef527-e843-4f1b-9f7f-cf2400fa443e@q-lab.dev>
- <20260929120900.zld2c3h4keqcnmcj@DEN-DL-M70577.microsemi.net>
- <09daa7d0-16a8-40be-999b-9cc608e700db@q-lab.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ix4KRmjl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33D11F000FF;
+	Wed, 30 Sep 2026 05:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790747102;
+	bh=2UJ8s3pj9393LiD9ywCmm2MgNwUeaGY4TUu3kOYIEu0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=ix4KRmjla3s+19pS6IOdZ3GAdTtHES/dqTR7WGAjq1nimJg7nUGiQmPu9U7ZlyRCG
+	 Zjfmv/FBH+7icLaC1+2UBm1gh2vrcKEijvs3q2KoOu5FQb4w8VmrfIJYIuy+G7PhBA
+	 kw/JUtTWWpWb6sYICQ7yFUOJPpOo8pm4vgE5ydLDH59F7cbE8FwX5QJsCOfoFiuX5a
+	 MJ6gFs7bJhFN/SSS86I3tQM5wgDEOF247HymEOMLsnImixnxnqN7m6n2KMvWi8o2HP
+	 kIO1E3YJnXSnvvOujr5PmRwrg/HjlZtyTiHvAwSvNJW9Msn+vziY65gApxc5kAmrvb
+	 MMVV7yQr092AQ==
+Message-ID: <a7d26f7a-a7ef-46da-ae9b-82363c7493f6@kernel.org>
+Date: Wed, 30 Sep 2026 07:44:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <09daa7d0-16a8-40be-999b-9cc608e700db@q-lab.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH 2/7] ARM: dts: axis: artpec6: align all continued
+ lines
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jesper Nilsson <jesper.nilsson@axis.com>,
+ Lars Persson <lars.persson@axis.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ Henrik Grimler <henrik.grimler@axis.com>
+Cc: linux-arm-kernel@axis.com, kernel@axis.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Henrik Grimler <henrik@grimler.se>
+References: <20260928-b4-artpec6-cleanup-v1-2-e3b75e10acc6@axis.com>
+ <179074623976.18076.8809897213040972245.b4-ty@b4>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <179074623976.18076.8809897213040972245.b4-ty@b4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> > > > Ack. Not initializing the TOD domains on certain variants is a problem.
-> > > > 
-> > > > However, TOD domains shouldn't affect basic forwarding. I tried it on my board
-> > > > with PTP forced off - no forwarding issues.
-> > > > 
-> > > > Certain TSN features do require TOD domains to be configured, though. How did
-> > > > you test this, and what exactly did you see fail?
-> > > 
- > > > > Fix by moving the TOD counter start code into a helper and calling it in
-> > > > > sparx5_ptp_init(). Non-PTP capable lan969x parts now start the domain 0
-> > > > > counter, and PTP-capable parts start all three, as they used to. A similar
-> > > > > workaround that starts all three and registers the PHC clocks is
-> > > > > implemented in the vendor BSP 6.18 kernel [1].
-> > > > 
-> > > > What we do downstream, is to ensure that all domains and PHC's are configured
-> > > > and registered on all variants, with a very simple is_sparx5() check.
-> > > 
-> > > My reasoning for only enabling the first counter and not registering the
-> > > clocks is that the part does not have SPX5_FEATURE_PTP, so it should not
-> > > expose any PTP features to userspace.
-> > > 
-> > 
-> > I acknowledge the problem, and I agree that the PHCs should not be registered.
-> > As for the solution, downstream we always start all three TOD domains, including
-> > on sparx5. If you take the same approach here, you don't need the new helper.
-> > Just move the existing TOD start sequence above the if (!sparx5->ptp) early
-> > return, so the counters are always started, while the PHC registration below it
-> > is still skipped on the non-PTP variants.
-> > 
+On 30/09/2026 07:30, Krzysztof Kozlowski wrote:
 > 
-> ok, in v2 I'll drop the helper and always enable all 3 counters.
+> On Mon, 28 Sep 2026 14:04:48 +0200, Henrik Grimler wrote:
+>> dt-check-style in strict mode reports that there are a bunch of
+>> multiline properties that are not aligned, fix them to make the dts
+>> easier to follow. Fixes dt-check-style warnings like:
+>>
+>>   axis/artpec6.dtsi:290: [continuation-alignment] continuation should align to column 34 (to < or ")
+>>
+>>
+>> [...]
 > 
-> pw-bot: cr
+> Applied, thanks!
+> 
+> [2/7] ARM: dts: axis: artpec6: align all continued lines
+>       https://git.kernel.org/krzk/linux/c/60c916de7b3bf0ff2a4d1d31753a29765941ab89
 
-Thanks. Please also fix the small nit below:
+... and dropped, that's not my subsystem. Why am I Cc-ed on this?
 
-> > > > >    int sparx5_ptp_init(struct sparx5 *sparx5)
-> > > > >    {
-> > > > > -       u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
-> > > > >           const struct sparx5_ops *ops = sparx5->data->ops;
-> > > > >           struct sparx5_port *port;
-> > > > >           int err, i;
-> > > > > @@ -622,8 +657,17 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
-> > > > >                   sparx5->ptp = 1;
-> > > > >           }
-> > > > > 
-> > > > > -       if (!sparx5->ptp)
-> > > > > +       if (!sparx5->ptp) {
-> > > > > +               if (!is_sparx5(sparx5)) {
-> > > > > +                       /* the base, non-ptp-capable lan969x variants need the first tod counter
-> > > > 
-> > > > Nit: s/the/The
-> > > > 
-> > > > > +                        * running to forward frames.
-> > > > > +                        */
-> > > > > +                       err = sparx5_ptp_tod_start(sparx5, BIT(0));
-> > > > > +                       if (err)
-> > > > > +                               return err;
-> > > > > +               }
-> > > > >                   return 0;
-> > > > > +       }
-> > > > > 
-> > > > >           for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
-> > > > >                   err = sparx5_ptp_phc_init(sparx5, i, &sparx5_ptp_clock_info);
-> > > > > @@ -635,27 +679,9 @@ int sparx5_ptp_init(struct sparx5 *sparx5)
-> > > > >           spin_lock_init(&sparx5->ptp_ts_id_lock);
-> > > > >           mutex_init(&sparx5->ptp_lock);
-> > > > > 
-> > > > > -       /* Disable master counters */
-> > > > > -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0), sparx5, PTP_PTP_DOM_CFG);
-> > > > > -
-> > > > > -       /* Configure the nominal TOD increment per clock cycle */
-> > > > > -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0x7),
-> > > > > -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > > > -                sparx5, PTP_PTP_DOM_CFG);
-> > > > > -
-> > > > > -       for (i = 0; i < SPARX5_PHC_COUNT; ++i) {
-> > > > > -               spx5_wr((u32)tod_adj & 0xFFFFFFFF, sparx5,
-> > > > > -                       PTP_CLK_PER_CFG(i, 0));
-> > > > > -               spx5_wr((u32)(tod_adj >> 32), sparx5,
-> > > > > -                       PTP_CLK_PER_CFG(i, 1));
-> > > > > -       }
-> > > > > -
-> > > > > -       spx5_rmw(PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS_SET(0),
-> > > > > -                PTP_PTP_DOM_CFG_PTP_CLKCFG_DIS,
-> > > > > -                sparx5, PTP_PTP_DOM_CFG);
-> > > > > -
-> > > > > -       /* Enable master counters */
-> > > > > -       spx5_wr(PTP_PTP_DOM_CFG_PTP_ENA_SET(0x7), sparx5, PTP_PTP_DOM_CFG);
-> > > > > +       err = sparx5_ptp_tod_start(sparx5, GENMASK(SPARX5_PHC_COUNT - 1, 0));
-> > > > > +       if (err)
-> > > > > +               return err;
-> > > > > 
-> > > > >           for (i = 0; i < sparx5->data->consts->n_ports; i++) {
-> > > > >                   port = sparx5->ports[i];
-> > > > > --
-> > > > > 2.55.0
-
-/Daniel
-
+Best regards,
+Krzysztof
