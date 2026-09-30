@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E6B3FE37A;
-	Wed, 30 Sep 2026 06:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A66C449B26;
+	Wed, 30 Sep 2026 06:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790751446; cv=none; b=lVDbzGKLFMvo31zltTZ+lxUb2wr+U9fAXd4fUAMwvqy04fy6v9b2+Igvud1Uk/P3pjoOH9xRwWgEpoXnRPUO5wJWenUprOE6dObUahsF1YRzYT+rJ9n85IVxQaqcdyTHVx1Z2KbXbVh7w+xHmOEzC5pk1glu0Hd+iQqqVvAig5g=
+	t=1790751447; cv=none; b=LWLhJm6fQKOAu8C6fY/nFubz+FeDNxXa/qmC72y646iOV6u62nm4JVeq6Yoxou2eKrIDlXjhi8o8TMesfOYu6mPdmoeJ+gQY25CamtTBt/E/QmTuVcYvCUf8NmUS2JvymtbFe8SMMiwOEsfSFvgc18Gd2wDQZ/HV2oASCJm0EoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790751446; c=relaxed/simple;
-	bh=UYoH5BQVrBn/CZBX7cLBtMuuAAiXPMl23lm4OTlUzac=;
+	s=arc-20240116; t=1790751447; c=relaxed/simple;
+	bh=7rf6poE9JRRqaXxdef6UYxtzI4ptFTdwXjDk6N62Q8w=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o3hk7rcKh4L7oecGftbUimqYI1A5KprhU3u04BBtVkmuMQ0tsFBTJrcw5jrWAxZIZ6EGzjdFCPLcj3P5XiHghjIOcTvl0Oeox5I3iliSM7IfC9oaVqEkhWEFg89Wv2SubaHKcPHUeHTz0Gcos1ip81wcb1PGZPnbVvEFtXa3hQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7FkyUIh; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gW8Ipge5PIrgeXMnzVPbM9XEOQJrgER6jRLX6GU9W7sUM1UbCDaXtzQ6jArqM7PjpD3EpjR9bVA5Jl4wYKTyDEz5nFd99O5kQMr4osW4h6+8VEcHg8inHfXe4rXaqgdddmyxJ9Qu0cwRir9rdOj6xvrq2fTFs6C7SqQR/ObPDFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HhIMrxw1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7FkyUIh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29861F00898;
-	Wed, 30 Sep 2026 06:57:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HhIMrxw1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0E41F0089A;
+	Wed, 30 Sep 2026 06:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790751434;
-	bh=HmAXF1quhJ4EUgDx4TN1SB8pgNKFb2UGFX8jY2PzUq0=;
+	s=k20260515; t=1790751436;
+	bh=yAq7aPHs7ijEhYz/lAfzl4lkZubSQIrVP3ZaHnN5y0U=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=m7FkyUIh3cn+i8kf43/JyExB5VCNQhJYi4gNtqW/1MVjUoQyqXXkJC6qrMTmI3MNU
-	 jOZcwj3uRWAToOjDBq69xrtjb23nO+xsFCKT2LhP7a23exlgY54VhMcqxbg2ejO++n
-	 R1Wg+flWXiNbkjcSlh01qIYxlINbY0MdcKlPEWWpHpRcPF3Bu5+KcjTH2AWWoETByL
-	 EREmoMPjmGG4s5iVkALyxSqtgHxr4N/nWY1zUSgAruaT1SQIsQceo6/M3yJJnVp8sc
-	 P1HgrKj1pCryd1NW50J4eyfNfLx2DAL/FkwpyyPOSGS4ABif5o+MRoG3v9JbNBL1t1
-	 T91FcyFXTr8QQ==
+	b=HhIMrxw1yjJr0Ik3Z+cCfVKJ+pw2mleFdbe+jFaEZHGZlSFFRyjDSsClbPqVTym0V
+	 L1IbnkLIw+HLVOJ2PZhsNqkSIFqeC8IWrJY8Jp3pnpgdkGvcGdt6Jp98dL0D/TG4lq
+	 7ZQuaHRxuDKlt5nBdSw1tGLE6Pz4mb8UPHMUl8q2fWqi/a4sr/nffauGMHBjOLy5Uv
+	 Cb8x5NhOt82Cc+IGl+4CzPMUU4LDYomh8fR3TS6s6lclsYuDwbr60JPnvOGDPlJBFU
+	 LaGqEHvBmV+zH7EVVelKK7jpPowIx6fpjj+Bd0ytd9jqBgA7gknNhlhkfUmNSoHaMg
+	 owDx9B8pGoeZw==
 Subject:
- Re: [PATCH net-next 3/6] dpll: zl3073x: allow enabling/disabling output pins
+ Re: [PATCH net-next 6/6] dpll: zl3073x: add PTP periodic output support
 From: netdev-bot+sashiko@kernel.org
 To: ivecera@redhat.com
 Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
@@ -35,10 +35,10 @@ Cc: netdev@vger.kernel.org, Chris.duQuesnay@microchip.com,
  min.li@microchip.com, pabeni@redhat.com, poros@redhat.com,
  richardcochran@gmail.com, vadim.fedorenko@linux.dev,
  linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 06:57:13 +0000
-Message-ID: <179075143358.434549.273733940449539275@kernel.org>
-In-Reply-To: <20260928185552.1103515-4-ivecera@redhat.com>
-References: <20260928185552.1103515-4-ivecera@redhat.com>
+Date: Wed, 30 Sep 2026 06:57:15 +0000
+Message-ID: <179075143589.434549.11966375891495900992@kernel.org>
+In-Reply-To: <20260928185552.1103515-7-ivecera@redhat.com>
+References: <20260928185552.1103515-7-ivecera@redhat.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0
+Critical: 0 · High: 0 · Medium: 4 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,250 +60,268 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] On CMOS outputs, the output-wide STOP bit is mixed up with the
-  per-pin GPO state.
-- [Medium] CMOS output pins that firmware or board configuration set up
-  as GPO status, IRQ or unknown-mode outputs…
-- [Medium] The error path of zl3073x_dev_output_pin_state_set() does not
-  close the stop/restart bracket symmetrically, for either CMOS pin.
-- [Medium] The settle delay before the non-glitch-free GPO toggle in
-  zl3073x_dev_output_pin_state_set() may be too short.
+- [Medium] In zl3073x_dpll_ptp_register()
+  (drivers/dpll/zl3073x/dpll.c:3045-3054), any perout-capable output pin…
+- [Medium] zl3073x_dpll_perout_enable()
+  (drivers/dpll/zl3073x/dpll.c:2887-2904) checks only perout->period ==…
+- [Medium] For single-ended outputs that are not N-divided, both pins of
+  the pair (OUTxP/OUTxN) share the div and width registers.
+- [Medium] zl3073x_dpll_ptp_enable() passes zldpll->ptp_clock to
+  ptp_find_pin() (dpll.c:2959).
+- [Low] zl3073x_dpll_perout_enable() writes the new 1 Hz divider to
+  hardware first (zl3073x_out_state_set() at dpll.c:2897, which also…
+- [Low] zl3073x_dpll_ptp_register() reads the zldev->out[] cache through
+  zl3073x_dev_output_pin_state_get() (dpll.c:3049) without zldpll->lock,…
+- [Low] On a non-N-divided output, zl3073x_dpll_perout_enable() relies on
+  zl3073x_dpll_output_pin_freq_set(), which only rewrites div and width…
 
 --
 
-dpll: zl3073x: allow enabling/disabling output pins
+dpll: zl3073x: add PTP periodic output support
 
-This commit adds state_on_dpll_set support for zl3073x output pins.
-Differential pins are toggled through the output_ctrl_x::stop bit. CMOS
-pins are muted/unmuted through a GPO override, bracketed by a stop/restart
-of the whole output. Output pins now advertise
-DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE.
-
-> diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-> index 7386932df032..89cf46111dcb 100644
-> --- a/drivers/dpll/zl3073x/core.c
-> +++ b/drivers/dpll/zl3073x/core.c
-
-[ ... ]
-
-> @@ -667,6 +669,82 @@ int zl3073x_dev_gpo_set(struct zl3073x_dev *zldev, u8 gpo, bool value)
-
-[ ... ]
-
-> +int zl3073x_dev_output_pin_state_set(struct zl3073x_dev *zldev, u8 id,
-> +				     bool enable)
-> +{
-
-[ ... ]
-
-> +	/* Bracket the GPO override toggle below with a clean stop/restart,
-> +	 * since the toggle itself is not glitch-free.
-> +	 */
-> +	zl3073x_out_stop(&out);
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* output_ctrl_x::stop is edge-aligned, so the device can take up
-> +	 * to half a period to actually reach the stopped state. Wait for
-> +	 * that long plus 25 ms, to make sure it is really stopped before
-> +	 * touching the GPO override below.
-> +	 */
-> +	delay = 25 * USEC_PER_MSEC;
-> +	freq = zl3073x_dev_output_pin_freq_get(zldev, id);
-> +	if (freq)
-> +		delay += USEC_PER_SEC / 2 / freq;
-> +	fsleep(delay);
-
-[Severity: Medium]
-Is this delay always long enough? zl3073x_dev_output_pin_freq_get() returns
-an integer Hz value:
-
-drivers/dpll/zl3073x/core.h:zl3073x_dev_output_pin_freq_get() {
-    ...
-	freq = zl3073x_synth_freq_get(synth) / out->div;
-
-	if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
-		freq /= out->esync_n_period;
-    ...
-}
-
-Sub-Hz rates truncate to 0. Take an N-div N pin with P at 1 Hz and
-esync_n_period = 2, which runs at 0.5 Hz. freq becomes 0, so the half-period
-term is skipped. The code then waits only 25 ms, while the real half period
-is about 1 s.
-
-Also, only the requested pin's frequency is used. On an N-div output, the
-P pin's delay comes from the fast P rate. If the device aligns the stop of
-the whole output to the slower N edge, could the P pin still be running
-when its GPO override is toggled? This second case depends on how the
-hardware aligns the stop, so it is less certain.
-
-In either case, can the GPO mux switch while the clock is still active and
-produce the runt pulse that the stop/restart bracket is meant to prevent?
-This code is still the same at the end of the series.
-
-> +
-> +	if (enable) {
-> +		zl3073x_out_pin_func_set(&out, id, ZL3073X_OUT_PIN_F_CLOCK);
-
-[Severity: Medium]
-What happens here to a CMOS pin that firmware or the board set up as a GPO
-status, IRQ or unknown-mode output (ZL3073X_OUT_PIN_F_GPO_STATUS,
-ZL3073X_OUT_PIN_F_GPO_IRQ or ZL3073X_OUT_PIN_F_GPO_UNKNOWN)?
-
-zl3073x_dpll_pin_is_registrable() only checks synth/output enablement and
-signal format, so these pins are still registered.
-
-Before this patch, every registered output pin reported connected. Now
-zl3073x_dev_output_pin_state_get() reports these pins as disconnected,
-because their function is not CLOCK:
-
-	return zl3073x_out_is_diff(out) ||
-	       zl3073x_out_pin_func_get(out, id) == ZL3073X_OUT_PIN_F_CLOCK;
-
-zl3073x_pin_props_get() also now sets DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE
-on every output pin.
-
-A connect request then reaches this zl3073x_out_pin_func_set() call. It
-clears gpo_en and throws away the status/IRQ function. A clock is then
-driven onto a line the board may have wired as a lock-status or interrupt
-signal.
-
-A later disconnect writes GPO_CONST low, so the DPLL API can never restore
-the original function.
-
-Should pins with a GPO status/IRQ function be excluded from state changes,
-or at least not advertise STATE_CAN_CHANGE? Neither the commit message nor
-the rest of the series covers these pins.
-
-> +	} else {
-> +		rc = zl3073x_dev_gpo_set(zldev, id, false);
-> +		if (rc)
-> +			goto restart_output;
-> +		zl3073x_out_pin_func_set(&out, id, ZL3073X_OUT_PIN_F_GPO_CONST);
-> +	}
-> +
-> +	/* Restart the output regardless of the result below: on failure,
-> +	 * don't leave the whole output, including the unrelated sibling
-> +	 * pin, stopped indefinitely.
-> +	 */
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +
-> +restart_output:
-> +	zl3073x_out_start(&out);
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out) ? : rc;
-
-[Severity: Medium]
-What does this restart do if the zl3073x_out_state_set() call just above
-fails?
-
-zl3073x_out_state_set() writes ctrl first. It stores dout->cfg only after
-a successful mailbox commit:
-
-drivers/dpll/zl3073x/out.c:zl3073x_out_state_set() {
-    ...
-	if (dout->ctrl != out->ctrl) {
-		rc = zl3073x_write_u8(zldev, ZL_REG_OUTPUT_CTRL(index),
-				      out->ctrl);
-		...
-		dout->ctrl = out->ctrl;
-	}
-
-	/* Skip the mailbox commit if nothing else has changed */
-	if (!memcmp(&dout->cfg, &out->cfg, sizeof(out->cfg)))
-		return 0;
-    ...
-	/* After successful commit store new state */
-	dout->cfg = out->cfg;
-    ...
-}
-
-After a failed GPO commit, the local out holds the new gpo_en/gpo_config
-values and the cache still holds the old ones.
-
-The restart call writes ctrl first, which clears STOP and starts the output
-again. It then sees the cfg difference and retries the same GPO mailbox
-commit while the output is running. Isn't that the non-glitch-free toggle
-the bracket is supposed to prevent?
-
-If the retry succeeds, the restart call returns 0 and "? : rc" keeps the
-earlier error.
-
-zl3073x_dpll_output_pin_state_on_dpll_set() then reports "Failed to change
-output pin state". dpll_pin_state_set() also skips __dpll_pin_change_ntf(),
-even though the hardware and zldev->out[] now hold the new pin state.
+This commit registers a PTP periodic output pin for each zl3073x DPLL
+output pin that supports step-time and declares 1 Hz support in firmware.
+Enabling a perout channel programs the assigned pin for 1 PPS and
+connects it. Disabling the channel disconnects the pin.
 
 > diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 2c6de4dab8b4..426974b0b5dc 100644
+> index 0a36a2acf15b..f406d1e72530 100644
 > --- a/drivers/dpll/zl3073x/dpll.c
 > +++ b/drivers/dpll/zl3073x/dpll.c
 
 [ ... ]
 
-> +static int
-> +zl3073x_dpll_output_pin_state_on_dpll_set(const struct dpll_pin *dpll_pin,
+> @@ -2823,6 +2840,159 @@ zl3073x_dpll_ptp_getmaxphase(struct ptp_clock_info *info __always_unused)
 
 [ ... ]
 
-> +	guard(mutex)(&zldpll->lock);
+> +static int
+> +zl3073x_dpll_perout_enable(struct zl3073x_dpll_pin *pin,
+> +			   struct ptp_perout_request *perout)
+> +{
+> +	u8 out_id = zl3073x_output_pin_out_get(pin->id);
+> +	struct zl3073x_dev *zldev = pin->dpll->dev;
+> +	struct zl3073x_out out;
+> +	int rc;
 > +
-> +	enable = state == DPLL_PIN_STATE_CONNECTED;
-> +	if (zl3073x_dev_output_pin_state_get(zldev, pin->id) != enable) {
-> +		rc = zl3073x_dev_output_pin_state_set(zldev, pin->id, enable);
+> +	/* Only 1 PPS (1 Hz) periodic output is supported */
+> +	if (perout->period.sec != 1 || perout->period.nsec)
+> +		return -EINVAL;
 
 [Severity: Medium]
-Can a disconnect request on a CMOS pin be silently dropped here?
-zl3073x_dev_output_pin_state_get() returns false for both P and N whenever
-the output-wide STOP bit is set, whatever each pin's GPO function is:
+Should perout->start be checked here too?
 
-	if (zl3073x_out_is_stopped(out))
-		return false;
+supported_perout_flags is left at 0, so ptp_perout_request() rejects
+PTP_PEROUT_PHASE. That means every request reaching this driver uses the
+absolute start time semantics from include/uapi/linux/ptp_clock.h:
 
-A CMOS output can be stopped in two ways:
+	/*
+	 * Absolute start time.
+	 * Valid only if (flags & PTP_PEROUT_PHASE) is unset.
+	 */
+	struct ptp_clock_time start;
 
-- At probe. zl3073x_dpll_pin_is_registrable() does not reject stopped
-  outputs, so an output that firmware left stopped is still registered.
-- After the final restart write in zl3073x_dev_output_pin_state_set()
-  fails.
+start is never read. The divider is programmed, the pin is connected
+right away, and success is returned. A request with a future start time
+or a non-zero start.nsec is accepted, but the edge is not aligned to it.
+If the pin is already connected, the only hardware change is a divider
+rewrite on the running output.
 
-Take a stopped CMOS output where N is still in CLOCK function:
+Could requests whose start time cannot be honoured be rejected? At a
+minimum, could the commit message mention this limitation?
 
-  disconnect N
-    zl3073x_dev_output_pin_state_get(N) returns false, same as enable
-    -> returns 0, N stays in CLOCK function
+> +
+> +	out = *zl3073x_out_state_get(zldev, out_id);
+> +
+> +	rc = zl3073x_dpll_output_pin_freq_set(pin, &out, 1);
 
-  connect P
-    zl3073x_dev_output_pin_state_set(P, true)
-      zl3073x_out_start(&out)    <- restarts the whole output
+[Severity: Medium]
+On single-ended outputs that are not N-divided, both pins of the pair
+share div and width. zl3073x_dpll_output_pin_freq_set() just overwrites
+them in that case:
 
-Wouldn't N then drive its clock again, even though userspace was told N is
-disconnected?
+	if (!zl3073x_out_is_ndiv(out)) {
+		...
+		out->div = new_div;
+		...
+		out->width = new_div;
 
-Changing one pin can also change the sibling's state:
+		return 0;
+	}
 
-- Restarting a stopped output moves the sibling from disconnected to
-  connected.
-- A failed final restart moves the sibling from connected to disconnected.
+OUTxP and OUTxN can both be advertised as independent PTP perout pins.
+Enabling a channel on OUT5P would therefore also retune OUT5N to 1 Hz,
+even if OUT5N is connected and driving something like 10 MHz. The
+sibling dpll_pin_change_ntf() only reports this after the fact.
 
-dpll_pin_state_set() only calls __dpll_pin_change_ntf() for the pin that
-was requested.
+Should this path refuse when the sibling is connected at a different
+frequency?
 
-Should this follow the pattern that the earlier patch in this series, "dpll:
-zl3073x: notify sibling pin when shared output config changes", added to
-zl3073x_dpll_output_pin_phase_adjust_set()?
+zl3073x_dpll_perout_disable() also only disconnects the pin. It does not
+restore the previous divider, so a sibling that is still connected stays
+at 1 Hz after the PTP channel is turned off. Is that intended?
 
-	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
+[Severity: Low]
+On a non-N-divided output, the same helper leaves the output mode clock
+type and esync_n_period/esync_n_width unchanged. If the output was in
+ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC, does it stay in ESYNC mode after the
+switch to 1 Hz? esync_n_period and esync_n_width would still be the
+values computed for the old carrier.
 
-	mutex_unlock(&zldpll->lock);
+Once out_freq is 1, zl3073x_dpll_output_pin_esync_get() hides this
+state:
 
-	if (sibling)
-		__dpll_pin_change_ntf(sibling->dpll_pin);
+	if (!(pin->caps & ZL3073X_DPLL_PIN_CAP_ESYNC) || out_freq <= 1)
+		return -EOPNOTSUPP;
 
-This is still present at the end of the series. The PTP perout
-enable/disable helpers added in "dpll: zl3073x: add PTP periodic output
-support" call the same zl3073x_dev_output_pin_state_get() and
-zl3073x_dev_output_pin_state_set() pair.
+Userspace can then no longer see or clear the ESYNC mode that is still
+set in hardware.
+
+Should the perout path force CLOCK_TYPE_NORMAL, or reject outputs that
+are in ESYNC mode? The existing DPLL frequency_set path appears to have
+the same gap.
+
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (zl3073x_dev_output_pin_state_get(zldev, pin->id))
+> +		return 0;
+> +
+> +	return zl3073x_dev_output_pin_state_set(zldev, pin->id, true);
+
+[Severity: Low]
+What happens if zl3073x_dev_output_pin_state_set() fails here? By then
+the new 1 Hz divider has already been committed by the
+zl3073x_out_state_set() call above, and the cache has been updated.
+
+The connect sequence can fail early. For example, the first stop write
+in zl3073x_dev_output_pin_state_set() returns immediately:
+
+	zl3073x_out_stop(&out);
+	rc = zl3073x_out_state_set(zldev, out_id, &out);
+	if (rc)
+		return rc;
+
+The old div/width and esync_n_period/width are not restored. The output
+is left at 1 Hz and disconnected, and so is the sibling for non-N-div
+formats.
+
+zl3073x_dpll_ptp_enable() then returns before either notification:
+
+	if (rc)
+		return rc;
+
+zl3073x_dpll_changes_check() only sends notifications for input pins.
+Would DPLL userspace ever learn that the frequency of this pin or its
+sibling changed?
+
+> +}
+
+[ ... ]
+
+> +static int zl3073x_dpll_ptp_enable(struct ptp_clock_info *info,
+> +				   struct ptp_clock_request *rq, int on)
+> +{
+
+[ ... ]
+
+> +	pin_idx = ptp_find_pin(zldpll->ptp_clock, PTP_PF_PEROUT,
+> +			       rq->perout.index);
+
+[Severity: Medium]
+Can zldpll->ptp_clock still be NULL here? zl3073x_dpll_ptp_register()
+only assigns it after ptp_clock_register() returns:
+
+	ptp_clock = ptp_clock_register(&zldpll->ptp_info, zldev->dev);
+	...
+	zldpll->ptp_clock = ptp_clock;
+
+Inside ptp_clock_register(), posix_clock_register() has already made
+/dev/ptpN and the sysfs pin and period attributes live. Any of these,
+issued in that window, would reach this call with a NULL clock:
+
+  - PTP_PEROUT_REQUEST
+  - PTP_PIN_SETFUNC, via ptp_set_pinfunc()->ptp_disable_pinfunc()->
+    enable(on=0), which is reachable because pins can be seeded as
+    PEROUT at probe
+  - a write to the sysfs period attribute
+
+ptp_find_pin() dereferences ptp->info->n_pins without a NULL check.
+
+The callback already receives info. Could it scan info->pin_config
+directly rather than depend on the pointer that is published later?
+
+> +	if (pin_idx < 0)
+> +		return -EINVAL;
+
+[ ... ]
+
+> @@ -2843,16 +3015,53 @@ static const struct ptp_clock_info zl3073x_dpll_ptp_clock_info = {
+>  static int zl3073x_dpll_ptp_register(struct zl3073x_dpll *zldpll)
+>  {
+
+[ ... ]
+
+> +	i = 0;
+> +	for_each_set_bit(id, zldpll->perout_map, ZL3073X_NUM_OUTPUT_PINS) {
+> +		pin = zl3073x_dpll_output_pin_get_by_id(zldpll, id);
+> +		strscpy(pin_config[i].name, pin->label);
+> +		pin_config[i].index = i;
+> +		if (zl3073x_dev_output_pin_state_get(zldev, id)) {
+> +			pin_config[i].func = PTP_PF_PEROUT;
+> +			pin_config[i].chan = i;
+> +		}
+
+[Severity: Medium]
+Should this also check that the output runs at 1 Hz? Any perout-capable
+pin that is connected at probe is reported as holding PEROUT channel i.
+That includes a pin that firmware or DPLL netlink set up as, say, a
+10 MHz clock.
+
+Normal PTP pin management would then turn that output off. Each of
+these triggers it:
+
+  - PTP_PIN_SETFUNC moving channel i to another pin
+  - setting the pin to PTP_PF_NONE
+  - PTP_PEROUT_REQUEST with period 0 on channel i
+
+They all end up in:
+
+ptp_set_pinfunc() or ptp_perout_request()
+  zl3073x_dpll_ptp_enable(on = 0)
+    zl3073x_dpll_perout_disable()
+      zl3073x_dev_output_pin_state_set(zldev, pin->id, false)
+
+This disconnects an output that was never enabled through PTP. The
+commit message does not mention that existing outputs are adopted this
+way.
+
+Would it be better to seed only pins that are connected and running at
+1 Hz as PTP_PF_PEROUT, and leave the rest as PTP_PF_NONE?
+
+[Severity: Low]
+This reads the zldev->out[] cache through
+zl3073x_dev_output_pin_state_get() without holding zldpll->lock.
+
+zl3073x_dpll_register() has already registered the DPLL device and pins
+before zl3073x_dpll_ptp_register() runs. DPLL netlink ops such as
+zl3073x_dpll_output_pin_state_on_dpll_set() can therefore update the
+same cache concurrently under zldpll->lock.
+
+zl3073x_dev_output_pin_state_set() also briefly stops the whole output
+pair around an fsleep(). An unlocked read in that window could see a
+connected pin as stopped and seed it as PTP_PF_NONE.
+
+Would holding zldpll->lock around this seeding loop fix it?
+
+> +		i++;
+> +	}
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928185552.1103515-1-ivecera%40redhat.com
