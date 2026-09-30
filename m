@@ -1,767 +1,197 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012011.outbound.protection.outlook.com [52.101.43.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7960D4C9E02;
-	Wed, 30 Sep 2026 11:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3CA3F54AE
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790768682; cv=fail; b=k4DQgTeJer0V1ZgeEcOD3kU9XipHsKtPhCVdyosLtvvt4Ex2AIH624vtygNXtPNmmVVtHnoNo2/RQMQL3gpZrKQCtkFtCAYU+F1cxkEp3i42vpakmS2M1PUVYCqW7EggeSNYcbAl06z05FGXJ3ZQ376itaoMVfXX+If0PSyQTE0=
+	t=1790769263; cv=fail; b=Dfv9UyTDYHwRAnm894UcTf6EWGk0L5gLNQcCTpt2MRpIpERxEejvJDAgvDKRrog7J3NX0dWfppYfNfZu/8U30uBTkVbXi5V4W4TfEkbxynp578T+I8mA0Hae+im1OgfU9dnx+NKzVKe6w01HIgGolMnywIEmWsr6XD4pQK76Lzc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790768682; c=relaxed/simple;
-	bh=xDt7VBwEHJ8sVyow+xHHNralQh4ik/bfoaZW2It6MGU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PsfuRFa54YAM7HbeT6qgvYzC1ywNlbjFVXQ6+UV0VEOqgKKFiK6+1/UNNzZlc9naQLl5cgZaCovIvI93jqjPqXFZAciofoRPwNALXlBQRIPCRWSo0T2Uxc0zPShjGuTbgPxFL62VCAwGk3b/fL8A/imvXy8aDCvdz44152Whg0E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=brvEI7SX; arc=fail smtp.client-ip=52.101.43.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1790769263; c=relaxed/simple;
+	bh=GeY0Og00Ctc2rectWz0SBzcKZ1C5DCc+vmawRY1YOCU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=o8+7Yn1OBKu0YWYah207Ooiyrv9Yb3j2sFpmZpzZjN7BsgF17N7mrAFSfWiF1OabrePPpZan2GoACGqMzglIyJsyJSYmmZw81lPxKC8FoqvEWjBPyFW9a9ooHbxaMqUiA6G9rKeeKRat/j5DT3aklElNY49o4uXG8RE5l7yKjeY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HevhGj92; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="brvEI7SX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HevhGj92"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790769260; x=1822305260;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GeY0Og00Ctc2rectWz0SBzcKZ1C5DCc+vmawRY1YOCU=;
+  b=HevhGj92lqNQxF3NXaNvz6M81G8s4PTSa7/eflLcwCfbMOnkqb4/n0Ek
+   vgwI1ySirw9F2xgtYDE+1gUNlIivKwoYNPg9jiiFSG+4cJGyW2YWm83di
+   hXnHOJjR77Gf/8QGBBmxNqnlop/5/svzsgV3CDjWERHQB8L+d+AJpjcpr
+   kBmKJsLikre1CIswKIsHfPd0pdNZwV9wvnHdI7N5NqIVMpkXBN7WHQtmm
+   fPbf+shk5nW+W7t4GBcFdjliZQxI5on4KLlUU+OyS7VCc8KHwcWHvnj4Y
+   Jxq7ABgOwZUdDGdlREHzC2o3fEKRvAOL4TDIXxwRDggvfSSzRnvW1ZLW7
+   A==;
+X-CSE-ConnectionGUID: CP4zyD6uSLSkw9B+0nFK9Q==
+X-CSE-MsgGUID: j4OOHcAFTDeWl4xA/y4Awg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90364184"
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="90364184"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 04:54:18 -0700
+X-CSE-ConnectionGUID: 9uUAB6n8SNueDPfM/eQ2Gg==
+X-CSE-MsgGUID: FjUoATyGRkej7kD1/wqcgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="279469128"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 04:54:18 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 30 Sep 2026 04:54:17 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 04:54:17 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.49) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 30 Sep 2026 04:54:16 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rpttzu5xZUOOzG4etSdAK/kDX/XHNlnMbeZFcP4c4cnRXrYuzb3bsa34aUino9vxZzP1UOQ+SZMmYPdUGhMJjDl1WLUO/aJQvc/z8tuXmtJgIwXFFI0TehtgtEfnP+L7+jR/N1Zu49MZGg5X/FHAYaNQcT0p6Th0S4Aa8Y//AtXu4HvSBgHcmZcwNsCVn9TYS5mboEWeoaXF1SonLpiR2JJj+UkIseirx07p+xcDI+5KtIeDxxeAetFg5cKxSw86utAQEf4VCttILe4B5N1yQhaQyTJIktaBoBVyvIuFgekbCmJCsXdjbVk8nZsPJwQzUL/Lkf6lZJbaZEwdi7ipOg==
+ b=EaP+cJqH7867nAq/eVQqlLMyebUq8oPOzK8zJvNhxV3sOqVMtHjhxJA6i0uNH5OqQ5cq2eSObElj/S8/IG80xmM0fBzadI0usoCfeYnS1WDzBlatK/9QiP5yc7BmnIoxO/BMteaXAU6ejumvlPQEAG2NrTf5VoCwcMHbJDZn57/gS99Wxg0EWOO4QEqh2YFmiFfu5UNDgYCp8/ttqrEW+/v7GmpqAXeI1SqHhVy1qoNn2xPpzhQlmI75fpdm6lcUGf2BWkwBHjEJa2PuNi4yyyFTeXfhiXga532WFZMmVtOAt7iUG64nv/CsrZZh8SorBoACqUd9JXVGpB3KTpe38Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n8wRkIx7cFZfDhF6CDtQn2+44SAQ/jasRo9G7D/p0Gg=;
- b=Yf3Sblyo0IGMVEy4HolGGjWuOe8FJKb292HAdf2K1+bkmAh7f4Bbto40rMolVdoDl2cZfvTsuONwfTf6BDuE1cii6kjP2gtIxOz84m3+Cq4mL0rhhJimM3Ya+NU9md7MVjbtb+dF94Cb/o8jORZ0RDnmfzk6d9+vnNGq0JownnUiqZUH7AhEpOQlnBrhSCBfPXkE3HjJhm6C5oq//t2R5ZLQbEPO1SNEsiBivAqm6qixhwOUM+E6ZEMixAHlLewLmB1NJKxHUWAh3FJn5R2YtPBjwO24GnUHnqi302B8DbiEdOGhafLdaze9tQ4l80SXBE+yoCcurpvyluJYifUpHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n8wRkIx7cFZfDhF6CDtQn2+44SAQ/jasRo9G7D/p0Gg=;
- b=brvEI7SXRcbTwvqczbXGhfOxSUnEF3m74a6Zo8YnQdzOx4vGs1eY3nZBY4Q7NAL2gZG0f8nKSKqmOugTUYMFAlKOOb1AjEFdLFp1WcsRbcWydq0nSQJjIDrwTV1jzT92y/jvEr7CxUIfEPpdPV9SUm80ysz8n7CJD6vW0wXlLDmgNx3xerlbmZn14TP7HkmyTi6TO1uDLAWsq3uA+/qAJAkcu3ahJQv9NGFkZ2Z7tFmQ3wTvLLhL8IBg4IRG4u2OUK8FasDqoA2G4xp6ykJImH8R3f0hwTp5UPEjSt6QfahTiWL0XffgIu8dsFTcu4hB79J0sdqd3Noby4z6OL+f9w==
-Received: from BN9PR03CA0363.namprd03.prod.outlook.com (2603:10b6:408:f7::8)
- by DSSPR12MB999237.namprd12.prod.outlook.com (2603:10b6:8:377::6) with
+ bh=y9Yn7+vvHO9pWvd6Yo5GVMjOVJetm0opeXw6H4KVQXQ=;
+ b=P6AjlVIIL3kNCS91fIMcMNRRPzQpsJiILtzGk44Icm+B1wK9tsiC/aVFPx6z4iYMgq8oBAfrjUzglsDbhtCTKFKTrLLzOFlVAyXPFuKJzjH23UWUotFfb3ku6XgxjB6yLHadWLEHMsjC8btfZLLhMLA876FG4+VKaq8gRhPvEshnSZ7oftf/OJUcIWmZbU8dcfIX6snj5/1HIvlso4Wf2zzlkaPeB8Kx4LLbdLST1R4+nLGLChXc0WKOuXy3EiaJgjYVInhuOCk56kLujj07dh/ZpYtGI7+6vWoIsQU+NZUCUsSEdnmmgY8nA0LH4shoLUsaBANk58i0osvXhUq3vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by SN7PR11MB6704.namprd11.prod.outlook.com (2603:10b6:806:267::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 30 Sep
- 2026 11:44:32 +0000
-Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
- (2603:10b6:408:f7:cafe::2) by BN9PR03CA0363.outlook.office365.com
- (2603:10b6:408:f7::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.23 via Frontend Transport; Wed,
- 30 Sep 2026 11:44:31 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 11:44:30 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
- 2026 04:44:12 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
- 2026 04:44:11 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 30
- Sep 2026 04:44:07 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>, <linux-rdma@vger.kernel.org>, "Mark
- Bloch" <mbloch@nvidia.com>, <netdev@vger.kernel.org>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Cosmin Ratiu <cratiu@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>, Dragos Tatulea
-	<dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>, Gal Pressman
-	<gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Leon Romanovsky <leonro@nvidia.com>, open list
-	<linux-kernel@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH mlx5-next V2 10/10] mlx5: Move data direct implementation to mlx5_core
-Date: Wed, 30 Sep 2026 14:42:27 +0300
-Message-ID: <20260930114227.139274-11-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260930114227.139274-1-tariqt@nvidia.com>
-References: <20260930114227.139274-1-tariqt@nvidia.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 11:54:11 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0451.026; Wed, 30 Sep 2026
+ 11:54:11 +0000
+Message-ID: <a273aa18-511d-4ed8-9c3a-a7eac49b9338@intel.com>
+Date: Wed, 30 Sep 2026 13:54:04 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/6] ice: skip stats handling for channel VSIs on
+ rebuild
+To: <netdev-bot+sashiko@kernel.org>
+CC: <netdev@vger.kernel.org>, <kuba@kernel.org>, <anthony.l.nguyen@intel.com>,
+	<aleksandr.loktionov@intel.com>, <mschmidt@redhat.com>,
+	<intel-wired-lan@lists.osuosl.org>, <edumazet@google.com>,
+	<horms@kernel.org>, <pabeni@redhat.com>, <davem@davemloft.net>
+References: <20260925132636.123300-2-przemyslaw.kitszel@intel.com>
+ <179069064725.434549.10623558636835220604@kernel.org>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <179069064725.434549.10623558636835220604@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DU7P194CA0002.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:10:553::33) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|DSSPR12MB999237:EE_
-X-MS-Office365-Filtering-Correlation-Id: ace6140b-f820-421f-2580-08df1ee830eb
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|SN7PR11MB6704:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac0adf6b-5ba1-4e6b-c7b9-08df1ee98aba
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|23010399003|36860700016|18002099003|22082099003|6133799003|10067099003|260925022911599003|260925021311599003|260925021911599003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Q6tDmwWRy72Bn2H8WhFsOhSCFA+au+HlajbmxcVl3PRfn8825dFT/qWeiu+Ei51kakKRdHSZlTdR57mbe2zxyuf14bePhjzmGm8VLSlmDYUb/6PjuhsOkXHssfsUqHM0lSZrmAiAbCHTvpDDMYt+BqMtDp0tlBSPnRVBkDBOJk+ctgBXyktEW+w1dGubHhvi0uGhJ/X1ZprK2+w5VMx7fnkbkXmlABZ8aCfqHOZeYsgeHQs6o8QvtUaqkcPbZsyUitgMNKK46NCYv6LOEXMz2gOZ8IBLGCTCwAVey3xZPB2CYFe7PwkG6a3Tl5EHXd2KcV5s9HYZvg2lxG0UgPTfci7M//YbrcJ6REH+i07yeLD0avuT0yC4cbv9BsPcOVCQrF2z86SZYNhmf4iZe3tbKPkE5p94rN4lMSc+PTL7QdwbI03OgNPm50z9HE9B9fDrEZGjWwi2hPp5FxL9p+UQzQ91hYTjuUF+AeFTim+Va0GknyepnAyuhH8ExcfwvKdpSiE/8sAN306JZaYHip+UYZdxPQ4c4/PiEn+YU2kVBHG1EXWyY/XhrN0soCcTOguYwiTxMjJPbo2K3d1H3c93txMROU93rHGx6aX65nBCX8IoLI9XIaKnUL+BWDQYhUj32uHuNcDHsyR8z5HFCdUHm4P5tsX2oZUfF2v9VyIeZAwgDdeF/PI8UGlArokkWQ6jue4shWVoiWIrYwU/aqr3CA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(23010399003)(36860700016)(18002099003)(22082099003)(6133799003)(10067099003)(260925022911599003)(260925021311599003)(260925021911599003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|11063799006|56012099006|10067099003|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: crfoX8JmcrPQeViX4HB5ooYeWy7HIDQ0x3u3Ur0ku+7g5OG4EgX/Ajv5eNHU/GNL2uleMWVtup3k590cQ6yGRpV7+QYRlSAMzqvTpb90livYQPcjPE8URaqAPcSwQSlB4QaIMYEgzZMTDl+SEcH2i9APao7Oe9gGVU8g0u6MWScKKyvrUCpa6Yv8gw/CVT1oy9otM6nMTcVanA+7SiDvCBL/FjolPh+psGZc3s//PVDHNgyfxUlObfGIoX8Pla60CIKLmSmw9TmFJPFk+pSwF4TqoFWHGaFwMtvLcMlldd3eUZaaVPKgvsxbafLjzHdTQ2FPkDBxjhv/PoXA1Xv8qf7YzVbNyVyzmzTcaky7D8cpNuacXkn5UfS9zmvZ9oBqoyTxrTyozIy9MXIYW5EtRv0o+G5SfyqqAx41vqjBfZLoWOYvfUfIKyi/r6cg/rdsmTowsCjYJIm2AxBs8gw/CC+z7Pdcz3AM3/orIVU7gAvs/rHAodSOzhHOLqu5we0FwinM/G16IhjhT6z41AF7O9Y8L+0WSVk2PKgvporsMxWR0Acob+Byg4VyixtQKIdAr2BQ1drEc8kVPadJ50EGnQE85GutYLRCDMs5bHQgk/0xsIHTsoAfZ+WLSiveQi/W
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Zxayp6gk0ECjEGHGrxebJoB/6vt9aeqDVPkLOxFivSN6qkRswX5bjG4fSrhi3FIIkI5Qm9NdOrF+G7hlpYbb6/ktcm8O75THNJR/AQ1GWZPcIfpBxDcV1HTQoe6nFr0ezso8buFjG1SY1w2fGOV2TL9WjkBVzwWN3RAGW/a5Xo6Kw7rl5g+yrQUqJVSpvGRWFEcU+tShiBPMvm89KnKFiDF5NeTs5xaTFqPyrysEOtWeDkkdLuyzGZBXIMIJPtRjNnkUd4aXVzCulsZZlrRHidiJB/+jp+m02dPc1IqxYvY/XuaJvbka7ZiYYIj/0lfdnTaIEtdwa2vVswhfXAetJ8ywICGodKR/eEcwcCB4XsMn+0T7K928yKH3YZrauHsMXO5O2I0aUUvBv8qwSlQos4ZSAEifftjF6LxOKXNQN9D1+Q0C87mI9mHcO1SVw+D9
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 11:44:30.9991
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3ludklwK1BhNi9KNi9RT0N6Q1pSbXAwNGtzdzJmKzI0Q1Q2d1M3b2RtUkdu?=
+ =?utf-8?B?MGJqbXQxRXBOV0RzVGdHWEFQZlFJWnR4ZE9BZzE0SHJKNU9MU01FaE9kdXZB?=
+ =?utf-8?B?VWJCT3VVUUQrVE91eXBNMmxKYThGOVZ3N3VLNGhVQkg5dGMveHo0bVRoUFV5?=
+ =?utf-8?B?a21XRjVVM1lERUptWjhJMzBOampHbkpXazV4VEYyWXVOcUFTT3NJK2hZd2Zi?=
+ =?utf-8?B?RklLME9Oa2Zra0xBNDlNK3NlYTVyY2lzUzJnTEJnMDllWkZlQU4wNmRnT1I3?=
+ =?utf-8?B?b1R3R1NqM2hqRlhFRVdTVlNSVzNTbFlOb3VXS2tHamorOEJnUkQ2VmFLNEp6?=
+ =?utf-8?B?Vmhvbkdhazg4VnkvRHpvaS84SUF0NVRPU0RwM3ZKeXEvSmlDUm50aUMrZ2ht?=
+ =?utf-8?B?SUk2ZytoUloxMUpSbDFLSkw2SDIwM1hSbXBuRHNYekVlS2xqbThxaTV3cDRM?=
+ =?utf-8?B?TjAxVVdwTWpZRU40dSs2T0t1dDNiMzhGeVRPNlo3L1NBUjZ1cXNvREg1aEg2?=
+ =?utf-8?B?ZmM1YXFKUWt6MkFHczB5NWhMT2FBbTV1Sk1rVVRZZ2ZITE16dTBlWFBrbUs5?=
+ =?utf-8?B?QlRmNzd3eWpoL2Jjb000a1h4K2o5VzA2UEt6QkhZeGg4SFljK2N0eUhmTENm?=
+ =?utf-8?B?NlZhOGZCSTV4RHdqQjlXTU11cE4wK2Fqa3BOUFNlUFRWTEk2WWo1ZjhyWXVt?=
+ =?utf-8?B?ckdaWU9CUm1EVWplaUpCNEFRdUoxZktwUlVLczAyUGxRMVZWbmdkdnAva1FX?=
+ =?utf-8?B?SitxbDFRYkNvL1JTR0MvUllVcE56cUFBbk9tQmFQZkNka0NQSXBIL2VBSVJ2?=
+ =?utf-8?B?MHB3bDJ4VmVSR2wrM0l3cFpOUWxESnZZUEtCUklXWllPSDJRbHZYbEtvVnMx?=
+ =?utf-8?B?ZXRLbERYUEVKTWx2TDA4Qi9zUEV4dmxMLzFSZmJRTURRMnFUT0JqMHpoSTUw?=
+ =?utf-8?B?eVdTWm1oUnA3MTZiU2k1MFgwTEhwUzcxdkxrdEZvcUlCcGNINjhUTjd6ZWc5?=
+ =?utf-8?B?dWNadlE5TU13My9kSHVwTzVXY3VLMngycVlkTUl6T1dIZ0tIWWViQ1hvRmRG?=
+ =?utf-8?B?TDhsT004UTdrZVVpdTRxZ3NMRTVJcFFGY2g4UGFLQ1NKd1BwVUNFK1I0RWkz?=
+ =?utf-8?B?cmFVNitpSTVQUmc3RXpvbVBUdkx6TGtKc1hHMm9sUG00OHFiWmRUYkMxMHVL?=
+ =?utf-8?B?MzNlcm1nZVlKR1hJbGtPWFB6QysxcXpvcmlmVzJGaFVaamFIendIb3E0bkdO?=
+ =?utf-8?B?ckVQUllHM043S0xxMEJiaTUzZjQ4Nk9DT3pWYVJtQ1A4SytTbzVkRHFQVWNu?=
+ =?utf-8?B?dGYwSUgwUzhud25DWEdZUG51R1d4TW1IV3JyeXg5bklHVEFRRVVZNTNQVkxX?=
+ =?utf-8?B?Z3d4VGhxbDlHbitCZEtBZmNlV25GeW5DNUFRNjlhQVkvNUlGUmdZNGU5OUkw?=
+ =?utf-8?B?eXAvL0VUd2Y1dEJuSXF5YXZsQ3FsZUFFeXVVSGk0dFB1NnRqRlF1VjVuc0pX?=
+ =?utf-8?B?WWcwempIRVFneWEwcDkvMk83ZENudys3T2YvaEJjTWhremJTeTdNMS81VC8z?=
+ =?utf-8?B?THNUQXhqR0RMcTdhU0lhMDlzdEhSWHNZVTQvUk1FblJVV1VsSGMrc3hRMExj?=
+ =?utf-8?B?M1U4TWZNRTNMQTNzbkpMRFRzNXJnVkRMK29TMXFGTlRQVmhmR1Z5dElkRGRt?=
+ =?utf-8?B?ZDA3UDM5aTIxMkYrRGVHbEJ2ZnJUSDR4U0FNV2hGSmpjWE5oektDcGJWTkVT?=
+ =?utf-8?B?OVZwVkRZN1JXaGJCK3pwTmhJaVU1TGhNR2x2TjZLaWw3Vm5OcjNwM0Jaa29l?=
+ =?utf-8?B?bk5LUGRnMlI2bHVucGY5S0liaUVxem5aMCsrM1J2akg1RzhuVyt2N3g3R1lm?=
+ =?utf-8?B?cnBnV0R0UzNyRmdSWkp5eFVvRGZtTyticFBpZVpVY1JGUFluTFVLNkdjMmM5?=
+ =?utf-8?B?a2tvTG9kSFhDSUhEQmxwTEhKTFZGUkU0OGx3NlE3a3dEZ1dPZDFRNFRON3hE?=
+ =?utf-8?B?Y0hjbk9VMXNyOXBGSk1hWVA0WjlBRzVtRXR6cUI0dU9OMkpiQkNqUnNWalNq?=
+ =?utf-8?B?bVpoUWM1Z0ZwbWFYd3JPYjROUTZSVWJVTzI4ZU5pVndFR1MxNmE2Vyt6djVz?=
+ =?utf-8?B?OWlieE5adXFNTFNMbkN3OVUvNjB3WkQ4a2NKL3Y3UGdVT1MwS09DYWVROGU3?=
+ =?utf-8?B?VEkyUmRoelpUYm41bk9nZTJ2bXlKamExdXJ3Qnl2TzNZV1FLWGVVNXNrVHkz?=
+ =?utf-8?B?dHVpSlpOeE9iZFkrelVCMjJ2MjZNUngyM25GblMrNWJjNnpQM21xbXlyVHJj?=
+ =?utf-8?B?VVZIT294ZTg3Y091Y2dsVmhmUmFrQWRPcHJRNlArVFlNTy9FUW9iWFRobE0w?=
+ =?utf-8?Q?G0unw2b8DVHyOXjM=3D?=
+X-Exchange-RoutingPolicyChecked: ysafF0L4G8zfJtjRgyz/SAF0Y9nWuJngl7rR3D0yfNBxU4WK5wNx5kxP1V/dVRQrgS5xqt0JrUmGmClHtqvpjZ9f/ULgZVqyUeTFbXgjxSYJu2rit80N46cQGQgMUPIwou8SdS7P8iECUkPRpZW3GQboQ11HnzTNUL1G3s+xIZn61rUEfcwOJhNnuTBVt34FruFKqrmlfMa1DSHrl+lo58DJPooXc2WvAPAQHuNmoYU1qJLa1HIEQEiN75xUlEh2rZ/g9dzdk5wBTjIVeJxbaYkfZG8vLMZoj762oWAvpiDjgl0iKtWFTdia6cIzNn59P+cq6sK9KNwNrZ1jrGv6rA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac0adf6b-5ba1-4e6b-c7b9-08df1ee98aba
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 11:54:11.5802
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ace6140b-f820-421f-2580-08df1ee830eb
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E64.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR12MB999237
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c68O/kLqlMtEB63j+es+s3m3nFpGh8ughpr3VeZnpbhUL1dzdVvJaXR+P0WCkwMdrhcC0VKRrCgMMTIcEjvCS0IXN7ex2fZZ3y9xE9YqKC0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6704
+X-OriginatorOrg: intel.com
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
 
-As data direct will also be used by netdev devices, move the data direct
-code to mlx5_core. Now mlx5_core is responsible for data direct
-initialization and resource creation.
+Summary: Ignore.
 
-Now data_direct is initialized in mlx5_load() before attaching consumers
-and clean it up in mlx5_unload() after detaching them. The data direct
-PCI driver is moved and registered in mlx5_core.
+> [Severity: Medium]
+> 
+> This guard only checks the VSI type. 
 
-IB specific work stays in mlx5_ib: notifier registration, mutex
-initialization and MR list initialization.
+yes, this is a fix for a scenario reachable w/o memory failures
+added with hope that bots will complain less on other patches
 
-Failure to query the VUID is now fatal because this is done only on
-devices that support data direct. Other than this, this patch has no
-additional functional changes.
+> Can pf->vsi_stats[vsi->idx] also be
+> NULL here for a PF, VF or other non-channel VSI?
+ > [...]
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- drivers/infiniband/hw/mlx5/Makefile           |  1 -
- drivers/infiniband/hw/mlx5/data_direct.h      | 29 ------
- drivers/infiniband/hw/mlx5/main.c             | 23 +----
- drivers/infiniband/hw/mlx5/mlx5_ib.h          |  3 +-
- drivers/infiniband/hw/mlx5/mr.c               |  7 +-
- drivers/infiniband/hw/mlx5/odp.c              |  2 +-
- drivers/infiniband/hw/mlx5/std_types.c        |  3 +-
- drivers/infiniband/hw/mlx5/umr.c              |  4 +-
- .../net/ethernet/mellanox/mlx5/core/Makefile  |  2 +-
- .../mellanox/mlx5/core}/data_direct.c         | 89 ++++++++++---------
- .../net/ethernet/mellanox/mlx5/core/main.c    | 15 ++++
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  5 ++
- include/linux/mlx5/data_direct.h              | 23 +++--
- include/linux/mlx5/driver.h                   |  2 +
- 14 files changed, 95 insertions(+), 113 deletions(-)
- delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.h
- rename drivers/{infiniband/hw/mlx5 => net/ethernet/mellanox/mlx5/core}/data_direct.c (80%)
+TLDR: preexising issue for low memory conditions
 
-diff --git a/drivers/infiniband/hw/mlx5/Makefile b/drivers/infiniband/hw/mlx5/Makefile
-index dd7bb377f491..35afc7bc57d2 100644
---- a/drivers/infiniband/hw/mlx5/Makefile
-+++ b/drivers/infiniband/hw/mlx5/Makefile
-@@ -6,7 +6,6 @@ mlx5_ib-y := ah.o \
- 	     cong.o \
- 	     counters.o \
- 	     cq.o \
--	     data_direct.o \
- 	     dm.o \
- 	     dmah.o \
- 	     doorbell.o \
-diff --git a/drivers/infiniband/hw/mlx5/data_direct.h b/drivers/infiniband/hw/mlx5/data_direct.h
-deleted file mode 100644
-index 49cdd407018a..000000000000
---- a/drivers/infiniband/hw/mlx5/data_direct.h
-+++ /dev/null
-@@ -1,29 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
--/*
-- * Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved
-- */
--
--#ifndef _MLX5_IB_DATA_DIRECT_H
--#define _MLX5_IB_DATA_DIRECT_H
--
--#include <linux/notifier.h>
--#include <linux/mlx5/data_direct.h>
--
--struct mlx5_core_dev;
--struct mlx5_ib_dev;
--
--enum mlx5_data_direct_event {
--	MLX5_DATA_DIRECT_UNBIND,
--};
--
--struct mlx5_data_direct_dev {
--	struct device *device;
--	struct pci_dev *pdev;
--	char *vuid;
--	struct list_head list;
--};
--
--int mlx5_data_direct_driver_register(void);
--void mlx5_data_direct_driver_unregister(void);
--
--#endif
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 941928a782bd..dd2a3996b14e 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -52,7 +52,6 @@
- #include <rdma/mlx5_user_ioctl_cmds.h>
- #include <rdma/ib_ucaps.h>
- #include "macsec.h"
--#include "data_direct.h"
- #include "dmah.h"
- 
- #define UVERBS_MODULE_NAME mlx5_ib
-@@ -3962,20 +3961,9 @@ static int mlx5_ib_data_direct_init(struct mlx5_ib_dev *dev)
- 	if (!mlx5_data_direct_supported(dev->mdev))
- 		return 0;
- 
--	ret = mlx5_data_direct_init(dev);
--	if (ret)
--		return ret;
--
- 	INIT_LIST_HEAD(&dev->data_direct_mr_list);
- 	dev->data_direct_nb.notifier_call = mlx5_ib_data_direct_event;
--	ret = mlx5_data_direct_register(dev, &dev->data_direct_nb);
--	if (ret)
--		goto err_register;
--
--	return ret;
--
--err_register:
--	mlx5_data_direct_cleanup(dev);
-+	ret = mlx5_data_direct_register(dev->mdev, &dev->data_direct_nb);
- 
- 	return ret;
- }
-@@ -3985,8 +3973,7 @@ static void mlx5_ib_data_direct_cleanup(struct mlx5_ib_dev *dev)
- 	if (!mlx5_data_direct_supported(dev->mdev))
- 		return;
- 
--	mlx5_data_direct_unregister(dev, &dev->data_direct_nb);
--	mlx5_data_direct_cleanup(dev);
-+	mlx5_data_direct_unregister(dev->mdev, &dev->data_direct_nb);
- }
- 
- static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
-@@ -5438,9 +5425,6 @@ static int __init mlx5_ib_init(void)
- 	ret = mlx5r_rep_init();
- 	if (ret)
- 		goto rep_err;
--	ret = mlx5_data_direct_driver_register();
--	if (ret)
--		goto dd_err;
- 	ret = auxiliary_driver_register(&mlx5r_mp_driver);
- 	if (ret)
- 		goto mp_err;
-@@ -5453,8 +5437,6 @@ static int __init mlx5_ib_init(void)
- drv_err:
- 	auxiliary_driver_unregister(&mlx5r_mp_driver);
- mp_err:
--	mlx5_data_direct_driver_unregister();
--dd_err:
- 	mlx5r_rep_cleanup();
- rep_err:
- 	mlx5_ib_qp_event_cleanup();
-@@ -5466,7 +5448,6 @@ static int __init mlx5_ib_init(void)
- 
- static void __exit mlx5_ib_cleanup(void)
- {
--	mlx5_data_direct_driver_unregister();
- 	auxiliary_driver_unregister(&mlx5r_driver);
- 	auxiliary_driver_unregister(&mlx5r_mp_driver);
- 	mlx5r_rep_cleanup();
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 6952170f472b..1a3b9cb79184 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -24,7 +24,7 @@
- #include <rdma/mlx5_user_ioctl_cmds.h>
- #include <rdma/mlx5_user_ioctl_verbs.h>
- 
--#include "data_direct.h"
-+#include <linux/mlx5/data_direct.h>
- #include "srq.h"
- #include "qp.h"
- #include "macsec.h"
-@@ -1091,7 +1091,6 @@ struct mlx5_macsec {
- struct mlx5_ib_dev {
- 	struct ib_device		ib_dev;
- 	struct mlx5_core_dev		*mdev;
--	struct mlx5_data_direct		*data_direct;
- 	/* Protects data_direct_mr_list and serializes mr
- 	 * registration/deregistration with data direct device unbind.
- 	 */
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 5efe78cb34c1..7463b36a36b6 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -44,7 +44,6 @@
- #include "dm.h"
- #include "mlx5_ib.h"
- #include "umr.h"
--#include "data_direct.h"
- #include "dmah.h"
- 
- static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
-@@ -587,7 +586,7 @@ static struct mlx5_ib_mr *reg_create(struct ib_pd *pd, struct ib_umem *umem,
- 				      populate ? pd : dev->umrc.pd);
- 	/* In case a data direct flow, overwrite the pdn field by its internal kernel PD */
- 	if (umem->is_dmabuf && ksm_mode)
--		MLX5_SET(mkc, mkc, pd, dev->data_direct->pdn);
-+		MLX5_SET(mkc, mkc, pd, dev->mdev->data_direct->pdn);
- 
- 	MLX5_SET(mkc, mkc, free, !populate);
- 	MLX5_SET(mkc, mkc, access_mode_1_0, access_mode);
-@@ -997,7 +996,7 @@ reg_user_mr_dmabuf_by_data_direct(struct ib_pd *pd, u64 offset,
- 		return ERR_PTR(-EOPNOTSUPP);
- 
- 	mutex_lock(&dev->data_direct_lock);
--	data_direct_dev = mlx5_data_direct_get_dev(dev->data_direct);
-+	data_direct_dev = mlx5_data_direct_get_dev(dev->mdev->data_direct);
- 	if (!data_direct_dev) {
- 		ret = -EINVAL;
- 		goto end;
-@@ -1006,7 +1005,7 @@ reg_user_mr_dmabuf_by_data_direct(struct ib_pd *pd, u64 offset,
- 	/* If no device's 'data direct mkey' with RO flags exists
- 	 * mask it out accordingly.
- 	 */
--	if (!dev->data_direct->mkey_ro_valid)
-+	if (!dev->mdev->data_direct->mkey_ro_valid)
- 		access_flags &= ~IB_ACCESS_RELAXED_ORDERING;
- 	crossed_mr = reg_user_mr_dmabuf(pd, &data_direct_dev->pdev->dev,
- 					offset, length, virt_addr, fd,
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 7b9f73b76d0d..2e9a704acc44 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -952,7 +952,7 @@ int mlx5_ib_init_dmabuf_mr(struct mlx5_ib_mr *mr, struct ib_pd *pd)
- 	int ret;
- 
- 	if (mr->data_direct)
--		pdn = dev->data_direct->pdn;
-+		pdn = dev->mdev->data_direct->pdn;
- 	else
- 		pdn = to_mpd(pd)->pdn;
- 
-diff --git a/drivers/infiniband/hw/mlx5/std_types.c b/drivers/infiniband/hw/mlx5/std_types.c
-index 3828100fdc6c..b705b88dc917 100644
---- a/drivers/infiniband/hw/mlx5/std_types.c
-+++ b/drivers/infiniband/hw/mlx5/std_types.c
-@@ -10,7 +10,6 @@
- #include <linux/mlx5/eswitch.h>
- #include <linux/mlx5/vport.h>
- #include "mlx5_ib.h"
--#include "data_direct.h"
- 
- #define UVERBS_MODULE_NAME mlx5_ib
- #include <rdma/uverbs_named_ioctl.h>
-@@ -203,7 +202,7 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_GET_DATA_DIRECT_SYSFS_PATH)(
- 		return PTR_ERR(c);
- 	dev = to_mdev(c->ibucontext.device);
- 	mutex_lock(&dev->data_direct_lock);
--	data_direct_dev = mlx5_data_direct_get_dev(dev->data_direct);
-+	data_direct_dev = mlx5_data_direct_get_dev(dev->mdev->data_direct);
- 	if (!data_direct_dev) {
- 		ret = -ENODEV;
- 		goto end;
-diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
-index 1ca83d2d8a0b..a3bb8d03fd35 100644
---- a/drivers/infiniband/hw/mlx5/umr.c
-+++ b/drivers/infiniband/hw/mlx5/umr.c
-@@ -760,7 +760,7 @@ static int _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags,
- 		}
- 
- 		if (dd) {
--			struct mlx5_data_direct *mdd = dev->data_direct;
-+			struct mlx5_data_direct *mdd = dev->mdev->data_direct;
- 
- 			cur_ksm->va = cpu_to_be64(rdma_block_iter_dma_address(&biter));
- 			if (mr->access_flags & IB_ACCESS_RELAXED_ORDERING &&
-@@ -813,7 +813,7 @@ int mlx5r_umr_update_data_direct_ksm_pas_range(struct mlx5_ib_mr *mr,
- 		return -EINVAL;
- 
- 	return _mlx5r_umr_update_mr_pas(mr, flags,
--					mr_to_mdev(mr)->data_direct->pdn,
-+					mr_to_mdev(mr)->mdev->data_direct->pdn,
- 					true, start_block, nblocks);
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Makefile b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-index 19e50f0d55af..a1871259210d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
-@@ -18,7 +18,7 @@ mlx5_core-y :=	main.o cmd.o debugfs.o fw.o eq.o uar.o pagealloc.o \
- 		lib/devcom.o lib/pci_vsc.o lib/dm.o lib/fs_ttc.o diag/fs_tracepoint.o \
- 		diag/fw_tracer.o diag/crdump.o devlink.o sh_devlink.o diag/rsc_dump.o \
- 		diag/reporter_vnic.o fw_reset.o qos.o lib/tout.o lib/aso.o wc.o fs_pool.o \
--		lib/nv_param.o
-+		lib/nv_param.o data_direct.o
- 
- #
- # Netdev basic
-diff --git a/drivers/infiniband/hw/mlx5/data_direct.c b/drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
-similarity index 80%
-rename from drivers/infiniband/hw/mlx5/data_direct.c
-rename to drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
-index 3878c4aebb2c..5afb11a2a9f0 100644
---- a/drivers/infiniband/hw/mlx5/data_direct.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
-@@ -3,11 +3,14 @@
-  * Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved
-  */
- 
--#include "mlx5_ib.h"
-+#include <linux/list.h>
-+#include <linux/mlx5/driver.h>
-+#include <linux/mlx5/data_direct.h>
-+#include <linux/mlx5/mlx5_ifc.h>
-+#include <linux/pci.h>
-+#include <linux/slab.h>
- 
--#include <linux/notifier.h>
--
--#include "data_direct.h"
-+#include "mlx5_core.h"
- 
- static LIST_HEAD(mlx5_data_direct_dev_list);
- static LIST_HEAD(mlx5_data_direct_reg_list);
-@@ -103,10 +106,9 @@ static int mlx5_data_direct_set_dma_caps(struct pci_dev *pdev)
- 	return 0;
- }
- 
--static int mlx5_data_direct_create_resources(struct mlx5_ib_dev *dev)
-+static int mlx5_data_direct_create_resources(struct mlx5_core_dev *mdev)
- {
- 	int inlen = MLX5_ST_SZ_BYTES(create_mkey_in);
--	struct mlx5_core_dev *mdev = dev->mdev;
- 	bool ro_supp = false;
- 	void *mkc;
- 	u32 mkey;
-@@ -139,16 +141,16 @@ static int mlx5_data_direct_create_resources(struct mlx5_ib_dev *dev)
- 	if (err)
- 		goto err_mkey;
- 
--	dev->data_direct->mkey = mkey;
--	dev->data_direct->pdn = pdn;
-+	mdev->data_direct->mkey = mkey;
-+	mdev->data_direct->pdn = pdn;
- 
- 	/* create another mkey with RO support */
--	if (MLX5_CAP_GEN(dev->mdev, relaxed_ordering_write)) {
-+	if (MLX5_CAP_GEN(mdev, relaxed_ordering_write)) {
- 		MLX5_SET(mkc, mkc, relaxed_ordering_write, 1);
- 		ro_supp = true;
- 	}
- 
--	if (MLX5_CAP_GEN(dev->mdev, relaxed_ordering_read)) {
-+	if (MLX5_CAP_GEN(mdev, relaxed_ordering_read)) {
- 		MLX5_SET(mkc, mkc, relaxed_ordering_read, 1);
- 		ro_supp = true;
- 	}
-@@ -157,8 +159,8 @@ static int mlx5_data_direct_create_resources(struct mlx5_ib_dev *dev)
- 		err = mlx5_core_create_mkey(mdev, &mkey, in, inlen);
- 		/* RO is defined as best effort */
- 		if (!err) {
--			dev->data_direct->mkey_ro = mkey;
--			dev->data_direct->mkey_ro_valid = true;
-+			mdev->data_direct->mkey_ro = mkey;
-+			mdev->data_direct->mkey_ro_valid = true;
- 		}
- 	}
- 
-@@ -172,13 +174,15 @@ static int mlx5_data_direct_create_resources(struct mlx5_ib_dev *dev)
- 	return err;
- }
- 
--static void mlx5_data_direct_free_resources(struct mlx5_ib_dev *dev)
-+static void mlx5_data_direct_free_resources(struct mlx5_core_dev *mdev)
- {
--	if (dev->data_direct->mkey_ro_valid)
--		mlx5_core_destroy_mkey(dev->mdev, dev->data_direct->mkey_ro);
-+	struct mlx5_data_direct *data_direct = mdev->data_direct;
-+
-+	if (data_direct->mkey_ro_valid)
-+		mlx5_core_destroy_mkey(mdev, data_direct->mkey_ro);
- 
--	mlx5_core_destroy_mkey(dev->mdev, dev->data_direct->mkey);
--	mlx5_core_dealloc_pd(dev->mdev, dev->data_direct->pdn);
-+	mlx5_core_destroy_mkey(mdev, data_direct->mkey);
-+	mlx5_core_dealloc_pd(mdev, data_direct->pdn);
- }
- 
- static void mlx5_data_direct_bind(struct mlx5_data_direct_registration *reg,
-@@ -195,13 +199,13 @@ mlx5_data_direct_do_unbind(struct mlx5_data_direct_registration *reg)
- 				     NULL);
- }
- 
--int mlx5_data_direct_init(struct mlx5_ib_dev *ibdev)
-+int mlx5_data_direct_init(struct mlx5_core_dev *mdev)
- {
- 	struct mlx5_data_direct_registration *reg;
- 	struct mlx5_data_direct_dev *dev;
- 	int err;
- 
--	if (!mlx5_data_direct_supported(ibdev->mdev))
-+	if (!mlx5_data_direct_supported(mdev))
- 		return 0;
- 
- 	reg = kzalloc_obj(*reg);
-@@ -210,17 +214,16 @@ int mlx5_data_direct_init(struct mlx5_ib_dev *ibdev)
- 
- 	BLOCKING_INIT_NOTIFIER_HEAD(&reg->users);
- 
--	err = mlx5_data_direct_query_vuid(ibdev->mdev, reg->vuid);
-+	err = mlx5_data_direct_query_vuid(mdev, reg->vuid);
- 	if (err) {
--		mlx5_ib_warn(ibdev, "Failed to query VUID, disabling data direct, err=%d\n",
--			     err);
-+		mlx5_core_warn(mdev, "Failed to query VUID, err=%d\n", err);
- 		kfree(reg);
--		return err;
-+		return -EINVAL;
- 	}
- 
--	ibdev->data_direct = &reg->dd;
-+	mdev->data_direct = &reg->dd;
- 
--	err = mlx5_data_direct_create_resources(ibdev);
-+	err = mlx5_data_direct_create_resources(mdev);
- 	if (err)
- 		goto err_resources;
- 
-@@ -233,63 +236,63 @@ int mlx5_data_direct_init(struct mlx5_ib_dev *ibdev)
- 	}
- 
- 	/* Add the registration to its global list, to be used upon bind/unbind
--	 * of its affiliated data direct device
-+	 * of its affiliated data direct device.
- 	 */
- 	list_add_tail(&reg->list, &mlx5_data_direct_reg_list);
- 	mutex_unlock(&mlx5_data_direct_mutex);
- 	return 0;
- 
- err_resources:
--	ibdev->data_direct = NULL;
-+	mdev->data_direct = NULL;
- 	kfree(reg);
- 	return err;
- }
- 
--void mlx5_data_direct_cleanup(struct mlx5_ib_dev *ibdev)
-+void mlx5_data_direct_cleanup(struct mlx5_core_dev *mdev)
- {
- 	struct mlx5_data_direct_registration *reg;
- 
--	if (!mlx5_data_direct_supported(ibdev->mdev))
-+	if (!mlx5_data_direct_supported(mdev))
- 		return;
- 
--	reg = container_of(ibdev->data_direct,
--			    struct mlx5_data_direct_registration, dd);
-+	reg = container_of(mdev->data_direct,
-+			   struct mlx5_data_direct_registration, dd);
- 	mutex_lock(&mlx5_data_direct_mutex);
- 	list_del(&reg->list);
- 	mlx5_data_direct_do_unbind(reg);
- 	mutex_unlock(&mlx5_data_direct_mutex);
- 
--	mlx5_data_direct_free_resources(ibdev);
--	ibdev->data_direct = NULL;
-+	mlx5_data_direct_free_resources(mdev);
-+	mdev->data_direct = NULL;
- 	kfree(reg);
- }
- 
--int mlx5_data_direct_register(struct mlx5_ib_dev *ibdev,
-+int mlx5_data_direct_register(struct mlx5_core_dev *mdev,
- 			      struct notifier_block *nb)
- {
- 	struct mlx5_data_direct_registration *reg;
- 
--	if (!mlx5_data_direct_supported(ibdev->mdev))
-+	if (!mlx5_data_direct_supported(mdev))
- 		return 0;
- 
--	reg = container_of(ibdev->data_direct,
--			    struct mlx5_data_direct_registration, dd);
-+	reg = container_of(mdev->data_direct,
-+			   struct mlx5_data_direct_registration, dd);
- 	blocking_notifier_chain_register(&reg->users, nb);
- 
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mlx5_data_direct_register);
- 
--void mlx5_data_direct_unregister(struct mlx5_ib_dev *ibdev,
-+void mlx5_data_direct_unregister(struct mlx5_core_dev *mdev,
- 				 struct notifier_block *nb)
- {
- 	struct mlx5_data_direct_registration *reg;
- 
--	if (!mlx5_data_direct_supported(ibdev->mdev))
-+	if (!mlx5_data_direct_supported(mdev))
- 		return;
- 
--	reg = container_of(ibdev->data_direct,
--			    struct mlx5_data_direct_registration, dd);
-+	reg = container_of(mdev->data_direct,
-+			   struct mlx5_data_direct_registration, dd);
- 	blocking_notifier_chain_unregister(&reg->users, nb);
- }
- EXPORT_SYMBOL_GPL(mlx5_data_direct_unregister);
-@@ -304,8 +307,8 @@ static void mlx5_data_direct_dev_reg(struct mlx5_data_direct_dev *dev)
- 			mlx5_data_direct_bind(reg, dev);
- 	}
- 
--	/* Add the data direct device to the global list, further IB devices may
--	 * use it later as well
-+	/* Add the data direct device to the global list, further mlx5 devices
-+	 * may use it later as well.
- 	 */
- 	list_add_tail(&dev->list, &mlx5_data_direct_dev_list);
- 	mutex_unlock(&mlx5_data_direct_mutex);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 643b4aac2033..34f0375b6851 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -40,6 +40,7 @@
- #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/mlx5/driver.h>
-+#include <linux/mlx5/data_direct.h>
- #include <linux/mlx5/cq.h>
- #include <linux/mlx5/qp.h>
- #include <linux/debugfs.h>
-@@ -1339,8 +1340,14 @@ static int mlx5_load(struct mlx5_core_dev *dev)
- 	if (err)
- 		goto err_traps_reg;
- 
-+	err = mlx5_data_direct_init(dev);
-+	if (err)
-+		goto err_data_direct;
-+
- 	return 0;
- 
-+err_data_direct:
-+	mlx5_devlink_traps_unregister(priv_to_devlink(dev));
- err_traps_reg:
- 	mlx5_sf_dev_table_destroy(dev);
- 	mlx5_sriov_detach(dev);
-@@ -1371,6 +1378,7 @@ static int mlx5_load(struct mlx5_core_dev *dev)
- 
- static void mlx5_unload(struct mlx5_core_dev *dev)
- {
-+	mlx5_data_direct_cleanup(dev);
- 	mlx5_devlink_traps_unregister(priv_to_devlink(dev));
- 	mlx5_vhca_event_stop(dev);
- 	mlx5_sf_dev_table_destroy(dev);
-@@ -2360,6 +2368,10 @@ static int __init mlx5_init(void)
- 	if (err)
- 		goto err_sf;
- 
-+	err = mlx5_data_direct_driver_register();
-+	if (err)
-+		goto err_dd;
-+
- 	err = pci_register_driver(&mlx5_core_driver);
- 	if (err)
- 		goto err_pci;
-@@ -2367,6 +2379,8 @@ static int __init mlx5_init(void)
- 	return 0;
- 
- err_pci:
-+	mlx5_data_direct_driver_unregister();
-+err_dd:
- 	mlx5_sf_driver_unregister();
- err_sf:
- 	mlx5e_cleanup();
-@@ -2378,6 +2392,7 @@ static int __init mlx5_init(void)
- static void __exit mlx5_cleanup(void)
- {
- 	pci_unregister_driver(&mlx5_core_driver);
-+	mlx5_data_direct_driver_unregister();
- 	mlx5_sf_driver_unregister();
- 	mlx5e_cleanup();
- 	mlx5_unregister_debugfs();
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 09e669f83dba..fd93530a3938 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -530,4 +530,9 @@ static inline bool mlx5_pcie_cong_event_supported(struct mlx5_core_dev *dev)
- 
- 	return true;
- }
-+
-+int mlx5_data_direct_init(struct mlx5_core_dev *mdev);
-+void mlx5_data_direct_cleanup(struct mlx5_core_dev *mdev);
-+int mlx5_data_direct_driver_register(void);
-+void mlx5_data_direct_driver_unregister(void);
- #endif /* __MLX5_CORE_H__ */
-diff --git a/include/linux/mlx5/data_direct.h b/include/linux/mlx5/data_direct.h
-index eaa2dc6bc607..4cff5ff5489d 100644
---- a/include/linux/mlx5/data_direct.h
-+++ b/include/linux/mlx5/data_direct.h
-@@ -7,11 +7,23 @@
- #define _MLX5_DATA_DIRECT_H
- 
- #include <linux/compiler.h>
-+#include <linux/list.h>
- 
-+struct device;
- struct mlx5_core_dev;
--struct mlx5_data_direct_dev;
--struct mlx5_ib_dev;
- struct notifier_block;
-+struct pci_dev;
-+
-+enum mlx5_data_direct_event {
-+	MLX5_DATA_DIRECT_UNBIND,
-+};
-+
-+struct mlx5_data_direct_dev {
-+	struct device *device;
-+	struct pci_dev *pdev;
-+	char *vuid;
-+	struct list_head list;
-+};
- 
- struct mlx5_data_direct {
- 	struct mlx5_data_direct_dev *dev;
-@@ -27,12 +39,9 @@ mlx5_data_direct_get_dev(struct mlx5_data_direct *dd)
- 	return dd ? READ_ONCE(dd->dev) : NULL;
- }
- 
--int mlx5_data_direct_init(struct mlx5_ib_dev *ibdev);
--void mlx5_data_direct_cleanup(struct mlx5_ib_dev *ibdev);
--
--int mlx5_data_direct_register(struct mlx5_ib_dev *ibdev,
-+int mlx5_data_direct_register(struct mlx5_core_dev *mdev,
- 			      struct notifier_block *nb);
--void mlx5_data_direct_unregister(struct mlx5_ib_dev *ibdev,
-+void mlx5_data_direct_unregister(struct mlx5_core_dev *mdev,
- 				 struct notifier_block *nb);
- 
- #endif
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index ee29f95ead18..ed348a82576e 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -707,6 +707,7 @@ struct mlx5_rsvd_gids {
- 
- struct mlx5_clock;
- struct mlx5_clock_dev_state;
-+struct mlx5_data_direct;
- struct mlx5_dm;
- struct mlx5_fw_tracer;
- struct mlx5_vxlan;
-@@ -801,6 +802,7 @@ struct mlx5_core_dev {
- 	/* sync write combining state */
- 	struct mutex wc_state_lock;
- 	struct devlink *shd;
-+	struct mlx5_data_direct *data_direct;
- };
- 
- struct mlx5_db {
--- 
-2.44.0
+> 
+> A later patch in this series, "ice: rebuild ring stats arrays instead of
+> reallocating them in place", appears to fix this
 
+Then please simply ignore the comment now.
+Anyway, patch 1 has fixes tag for newer commit than the last.
+
+side comment:
+This was (a screenful...) report to suggest minor change in a very small
+patch, normally I would do that, but with our current "new world" it
+would simply mean delaying me by 3+ days.
+
+ > Sashiko AI review · 
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925132636.123300-1-przemyslaw.kitszel%40intel.com
