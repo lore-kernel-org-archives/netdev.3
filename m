@@ -1,151 +1,146 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A4E51AEF3
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FE85221DC;
+	Wed, 30 Sep 2026 21:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805067; cv=none; b=O2fy0G4GusI/pH6/9i5wFoJH/nq4ghPmZ8/4BojjCnDgb3UMrA3KFBqXBOJgBqAt2aOSu+LTuD7z/eeeoQW5peHH1Mc9IiU+1rQFCvaO8yNNUw/Wt0TThJLl78hYBrwje3FA4FXY24SYYKEeGh8Efxf8REjLuTCGI1FsOVn1Nz0=
+	t=1790805097; cv=none; b=CvbEPT6yN6r7hEiAmAaMCP1LCk6FkDIjp38CfE1/7qgdYOyXJ8+Wbum/2C+rhsA1M021OUNe5YR9x01HeH3zWsjV0mzo6v4nZzyyA/wv64j0b03wgPz9bNrjO+EI3tMQIbi1RhXB96NyTSJSx64H8HVhUqATblCX2/TVIv3UhZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805067; c=relaxed/simple;
-	bh=S22VfBD4pPls7UNG2NGxhpfRB45ROGORhMSqMHSQu6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kem2bAsACwFzRUaDfCxJQ+KyapQWmlQJRAP5Vrd+XgW+tlO2V/mJCrgXkZnn5eMhsR9HetY/dY5OG8x+1FgDvJCPpurDNedTE9uJ/7q6mtMTX6i2Xy3Oks/lwyz4LuDZ+N6pbVwWHD9QIx5bzdSuf1IZbTYi1xHYlO1mcGUtojY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qts7upZX; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790805097; c=relaxed/simple;
+	bh=exmeiMuuq+vo1S+JtVvCfGPRaAN3bi+jqUDLwbtc2NU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NTePOPYCoNovbbkkYkybfaztS09iqhhAiOOl0IxLfcmrYofzLIVS7WS2dwmIWLGeMkJjfpzmbueDFZO8TaJYpB7fyDkZ5PT/XTGJYYzWDJljXGdOdscyr5Dz20SehQt7P9XtqrULi066g+l2TlUcwofkq9Okq9HAnOLgkODmHIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WYNB4EVj; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qts7upZX"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso60316015e9.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790805064; x=1791409864; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8LP8CV7WHWqRDeEIDZ1+1JYJj+ocKrw1BORKdvPxNb8=;
-        b=Qts7upZXHfzDn7Iy13fsIBPnv9thUWdpaxbsjgvCS5XgctLBIyjXxyvi0hcj2oSZ+P
-         YD2DgPXYRxspt9bDXqkuByIjD4moULTqf7YOHHrh0NvhHIj+YabcuED2tbXoSw3CypvU
-         o/DiWuPZXeUi9q7Xuv9Gfyfvw0k2Npm6aXozgm/c4+ReWAz+rn9K86/bjXXJGq8j/kmd
-         m9S73z7np8+TQPkxxXUPzs8L8//ke1Y2Xp62bkRWye2wU0/WCi+zJHw1ag7qpAWiQo9n
-         efXrt8zMDfUth3lgcARbV3MqfNyTkUJponBpl33dQaav7jr2aPvPnSqOOpSN5/ELofEx
-         KqhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790805064; x=1791409864;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8LP8CV7WHWqRDeEIDZ1+1JYJj+ocKrw1BORKdvPxNb8=;
-        b=20993fi89eiIXgAJMfx3Enf8pUnsWjoFM5g97Or2eTnilSNGDqWjn3WMCfatF0YzAm
-         GDRuomn8np0fuF7aBjcfH258EXfUGd/xgXxWEatPoWJ4+Xvc4qkZ1V7G98V2ndNGUP4t
-         kMJMD/pfNKYVr45t/txfVd91KGHeJ2/s8CkQpln8T1Q7uYLWVYbEhC8z7/clNG50Jpty
-         5g9ouhQZHp+kYb1VmIVJlEUKAnKBQlod4qFTmndL6qX+9zFL5dqgxR03I26uJ7SVofIw
-         XQPprMDaOeaIw+JS+1JIznA1KNDQ7wcahQOac3NtYMwxjlWHLvVjorXapMi9E6vdIR27
-         EECA==
-X-Gm-Message-State: AFuF++lnLEuRIGhR4O2bbh6nzBb8RZOR/CLjab4+MtNp8KQ8hSIf+g/5
-	ijupRVaMd8hdBCvPQk0aJ9xbdLAoDF+v4g+YV7+yfsvP4AcpwUZHyiv8x1GcehjLyeM=
-X-Gm-Gg: AYBFou14eE2EWUL+lxeuiIlVT4TxX9pIWc8tgHXL4kCwyd1Q0JGWwcj1NIBN6ekMZsW
-	n9gm49lJRhcSTfCQmP3sT+eJBLnMB91ROe9AMIgSwgC4cg6a+X0TD2Zl3KnGw1iACd1U/Vr09aJ
-	nLNvhXi0nP7B/ZxmR4JvCnllzqhOmdelO/U8cQ2c8P1kS6Rbe81rNlveRFerHSpFqgfHV2uIi0u
-	xoVqMTH+6YCWarOBPXBUxMN/cQCAByumpR9uEQewOTvKQtIRk+a0COpkSZladABLEsbN7pS4HRd
-	hCuekAB8rL22ODiFCmf/lqYfd4cCykwXci3o1sMm54V+9yrBkBVlEEDQ715WRrvLntkwU2LPTPi
-	tGTzv1p9sN1O6jeaI9hKIC5SWFoJtdnqTB9RYb1pD0A76y+1nMtCOTkPX96hsRl4k5ApDB+jMXk
-	AZ6TrPUELuMz9QSdJ+ccTyRjMX29qUFkx0f41i4s0hG2CurXi/B4UIFw8TEwC2aQzPQqKY
-X-Received: by 2002:a05:600c:638e:b0:49d:1fa8:b266 with SMTP id 5b1f17b1804b1-4a01aff908dmr42791025e9.26.1790805064167;
-        Wed, 30 Sep 2026 14:51:04 -0700 (PDT)
-Received: from metepc ([46.197.185.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f979bbcsm12937155e9.5.2026.09.30.14.51.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 14:51:03 -0700 (PDT)
-From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-To: netdev@vger.kernel.org
-Cc: oneukum@suse.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com,
-	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com,
-	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-Subject: [PATCH net v5] usbnet: fix smp_processor_id() use in preemptible context
-Date: Thu,  1 Oct 2026 00:37:12 +0300
-Message-ID: <20260930215047.718270-1-omermetekaya0@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WYNB4EVj"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A16441A1088;
+	Wed, 30 Sep 2026 21:51:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6248160749;
+	Wed, 30 Sep 2026 21:51:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0101A103298BA;
+	Wed, 30 Sep 2026 23:51:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790805089; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=vzOGn7kFlOHjQR1OKolnS+9aTa51YUymd+DOFjdZtfU=;
+	b=WYNB4EVjUV26HzXoImOdERlNMCi/1F9FbbLdz0J/n2iIQHFWJkLmVhws7pZFdkoirpeMeE
+	WHtF1qJ5uvZFz1Kd/bEIUbw2wsw1ccZIe6g9UfGBMwSW6L4T4Caj1jEyHxUWd8Oc02Mrqh
+	NGa//iMhbHpvs0aMbrwvmBMrfjKsO/fDcFmdBI8dhYo54rNcY3NoZbl9Nt3zfFzwONIW7f
+	ESdHMirkK90aVAJo+ssgPAb+VNSYYyNjIbgc3KGTKRwT+4ixZiflaXi0UXzGo2IzgiSMW2
+	Cms65QhZENJcWqxNEz61EDnq/Wlzlcdv18z9/Th+haP4PFQyB9eb7ZH0FL9XAQ==
+Message-ID: <f99b6e1c-c37e-4356-b6cb-e13a4eab059d@bootlin.com>
+Date: Wed, 30 Sep 2026 23:51:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v6 5/5] net: stmmac: Disable S-Tag processing on
+ dwmac4
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, recv.jo@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, joabreu@synopsys.com, jun.ann.lai@intel.com,
+ yi.fang.gan@intel.com
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260928203441.34876-1-ovidiu.panait.rb@renesas.com>
+ <20260928203441.34876-6-ovidiu.panait.rb@renesas.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260928203441.34876-6-ovidiu.panait.rb@renesas.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-usbnet_skb_return() and tx_complete() call this_cpu_ptr() before
-disabling preemption, which triggers a BUG when running with PREEMPT_FULL:
+Hi,
 
-  BUG: using smp_processor_id() in preemptible code in tx_complete
+On 9/28/26 22:34, Ovidiu Panait wrote:
+> Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
+> hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
+> than using the actual protocol from the packet. Because of this, packets
+> that contain a 802.1ad outer tag are incorrectly passed up the stack as
+> having an 802.1Q tag. This causes QinQ ping between two hosts to fail.
+> 
+> vlan_rx_hw() is shared by dwxgmac2 and dwmac4: on dwxgmac2 the tag type
+> is available in the RDES3 write-back descriptor (the ET_LT field), so the
+> outer tag type can be determined based on that info. However, dwmac4
+> doesn't seem to provide the tag type. The Length/Type field in RDES3 only
+> indicates whether the packet is single or double-tagged, not which tag
+> type was stripped.
+> 
+> Since dwmac4 cannot report the stripped tag type, it cannot support
+> hardware S-Tag stripping correctly. Therefore, restrict the
+> NETIF_F_HW_VLAN_STAG_RX and NETIF_F_HW_VLAN_STAG_FILTER advertisement
+> to dwxgmac2 only.
+> 
+> With this, 802.1ad tags are left in place and handled by the software
+> VLAN path.
+> 
+> Fixes: 750011e239a5 ("net: stmmac: Add support for HW-accelerated VLAN stripping")
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Fix by using get_cpu_ptr()/put_cpu_ptr() which disable preemption
-and return the per-CPU pointer atomically.
+I ran your proposed QinQ selftests on stm32mp157a (dwmac4), and it correctly
+fixes the problem on that core.
 
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Suggested-by: David Laight <david.laight.linux@gmail.com>
-Reported-by: syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=04cd90bb99c6ef81a65d
-Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
----
-v5: Keep _irqsave seqcount helpers, only change pointer acquisition
-    to get_cpu_ptr()/put_cpu_ptr() as suggested by David Laight.
+Maxime
 
- drivers/net/usb/usbnet.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index a19ecf718f36..84f97f448b2d 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -325,7 +325,7 @@ static void __usbnet_status_stop_force(struct usbnet *dev)
-  */
- void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
- {
--	struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
-+	struct pcpu_sw_netstats *stats64;
- 	unsigned long flags;
- 	int	status;
-
-@@ -338,10 +338,12 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
- 	if (skb->protocol == 0)
- 		skb->protocol = eth_type_trans(skb, dev->net);
-
-+	stats64 = get_cpu_ptr(dev->net->tstats);
- 	flags = u64_stats_update_begin_irqsave(&stats64->syncp);
- 	u64_stats_inc(&stats64->rx_packets);
- 	u64_stats_add(&stats64->rx_bytes, skb->len);
- 	u64_stats_update_end_irqrestore(&stats64->syncp, flags);
-+	put_cpu_ptr(dev->net->tstats);
-
- 	netif_dbg(dev, rx_status, dev->net, "< rx, len %zu, type 0x%x\n",
- 		  skb->len + sizeof(struct ethhdr), skb->protocol);
-@@ -1298,13 +1300,15 @@ static void tx_complete(struct urb *urb)
- 	struct usbnet		*dev = entry->dev;
-
- 	if (urb->status == 0) {
--		struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
-+		struct pcpu_sw_netstats *stats64;
- 		unsigned long flags;
-
-+		stats64 = get_cpu_ptr(dev->net->tstats);
- 		flags = u64_stats_update_begin_irqsave(&stats64->syncp);
- 		u64_stats_add(&stats64->tx_packets, entry->packets);
- 		u64_stats_add(&stats64->tx_bytes, entry->length);
- 		u64_stats_update_end_irqrestore(&stats64->syncp, flags);
-+		put_cpu_ptr(dev->net->tstats);
- 	} else {
- 		dev->net->stats.tx_errors++;
-
---
-2.55.0
+> ---
+> v6 changes: None.
+> 
+> v5 changes:
+> - Rebased on top of latest changes.
+> - Added Reviewed-by tag from Maxime.
+> 
+> v4 changes:
+> - Dropped all "double VLAN" references from the commit title/message.
+> - Rebased on top of the S-VLAN rework.
+> 
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b007ff120471..5af245fd9ba0 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -6211,7 +6211,7 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
+>  	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
+>  		features &= ~NETIF_F_CSUM_MASK;
+>  
+> -	if (dwmac_is_xmac(priv->plat->core_type)) {
+> +	if (priv->plat->core_type == DWMAC_CORE_XGMAC) {
+>  		if (features & NETIF_F_HW_VLAN_CTAG_RX)
+>  			features |= NETIF_F_HW_VLAN_STAG_RX;
+>  		else
+> @@ -7990,14 +7990,18 @@ static int __stmmac_dvr_probe(struct device *device,
+>  	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
+>  #ifdef STMMAC_VLAN_TAG_USED
+>  	/* Both mac100 and gmac support receive VLAN tag detection */
+> -	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
+> +	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
+> +	if (priv->plat->core_type == DWMAC_CORE_XGMAC)
+> +		ndev->features |= NETIF_F_HW_VLAN_STAG_RX;
+> +
+>  	if (dwmac_is_xmac(priv->plat->core_type)) {
+>  		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
+>  		priv->hw->hw_vlan_en = true;
+>  	}
+>  	if (priv->dma_cap.vlhash) {
+>  		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+> -		ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
+> +		if (priv->plat->core_type == DWMAC_CORE_XGMAC)
+> +			ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
+>  	}
+>  	if (priv->dma_cap.vlins)
+>  		ndev->features |= NETIF_F_HW_VLAN_CTAG_TX;
 
