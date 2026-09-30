@@ -1,148 +1,268 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623404BD7A4
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F064F96D4;
+	Wed, 30 Sep 2026 14:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777073; cv=none; b=dYMS0+X0FjsZKMADZvJiN4ngJVPfP4vtcpA7cotD79DJrFIrI8gTsJRBUe2ayVXrXyCBLA5s5TrNrNUABb1MaHK6oe3iMp2XdoG+C27OAuaKMawuNyWXO9LKEkZDuN1/k9EUPZVQGdai+M4A3YwEBAYiHUIZqazbMyCGncZyUsc=
+	t=1790777143; cv=none; b=KbfRF0zRUs6ak+quYZTGSHkjh3IUZAyp9NWsNg0NGqhIKiLUgttrvg+Z4ool/Mv+q2rDuhWgv/qn4QKefPom78NNyk7a5Dbp5BIwNhY0+LOFs3/HVM7hvEVg5yUe4khXEVIh/mxv6Qqh7Lhs7Qe2r+PG4yScaPbQ9bPemnqyQog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777073; c=relaxed/simple;
-	bh=dDRtbqYPrbcSZk8XTIR1mhxTewKaoQ7Hl8OVK4zyccw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bqEU4BTOXp6G9NJoTtxj6HFdU6Nu5gM84W0VMZpkO/7gdDeXHka8N8UKZ46CyxZ7AgkO7lwaYtteRE7gkguwsZi9h68BeBfe+U+ez3OKhaSIIeNW8/JFzxIN/pczQU+sKTe20I2oUFkj4AGaBiea1sXJ47uiAavHp0CivitukLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5xr+1lP; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790777143; c=relaxed/simple;
+	bh=u87DClCOI4fyZJ1FRdU1pHuFHjd+AUGhOPdCecR9W8U=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q/gzw3U8G8nEqFz0qi9Z+nacbmZb4P5IcsAbz5h1xMCrQR5HViEprrggNdsPurakk78LTYYIXktR6oKETg6JCe8MpzdJnoo/zxv4AbMyqknhvNpeIg+nQxL6/a9pTI14KpX9g37QtpmFxIVXub8U7aBfR80/4ZqQe+e2goupngw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HPtHSBb1; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5xr+1lP"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e5eso2624647a12.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 07:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790777053; x=1791381853; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0/hVX4C+yQqwsDE4LgI16fX3ANft9SjFARlaoadqqlc=;
-        b=W5xr+1lPy4kXFvznJdBdMZA81GHwJDOEyvkLvK1qXGzVdR54+Y1w/jnsnEsyR6XdYT
-         73zya3usx/nxhX0b4L2cime9dP1bqlLPQ3STEAxH+8S2npascYUrAgmZi/6/u5HF95Co
-         ke3PoUrv3CyQNK0D6VHRIw+WBIjiY6TWTFnwmdKqXwgfBEki7b4ovfMebRI2n0VdI3gy
-         XDrEkkZguSzZ+18kiqVU/g9HsiQwo97wvz/JQTZBk2PZrz7pXPHEVcsUiNLx4ZTijRH8
-         lpKBYou6V3WBUnRxDNbqbHiWO6Ll+JOMCKQY4B40EHHo+5GWEWC2PZFOQdHFda7/4iEs
-         uJvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790777053; x=1791381853;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0/hVX4C+yQqwsDE4LgI16fX3ANft9SjFARlaoadqqlc=;
-        b=I+u/llxeX6d4zKXU/nOOCdTbTvtPnXjYrwRT6upvz6VQDsDo88luVM8WRnthJJIwR6
-         x7LkY3QRRlI7kLrzS5R8o4dfCnf32w4ac6uKLpoXlk4jqswkTjn542am1xcjfqvw+vaP
-         eCJuxic+hzSdH2NJXZtBJUhvRKK4OGqvJVr1Z/Q8UCB5MhnNEv7jcNVMpHGEmpuRs8ps
-         KPLtSVqtCFT+67LroSU7EEXWCu8ry2jtiOGC64Jy/ptxfjHMIumXWUas2PyNoykxQJ6b
-         zWMNugtsY1YrklzonHiEIo8zS/h7LTZnN4/rDyQTx0Md5svuMViKPJ5viAGzOjhpK8SV
-         fI5w==
-X-Forwarded-Encrypted: i=1; AKwUvBxr1/CvTuV9zfXhvsX5tvWRtdcOsxGhlFEEWAbYGF5QV9iAzC9EpQ9nXvA6n8vqcTF7LTU6KjY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKFajJGqIAjMwwn1jhHgrxTm7IEFNX8/kfn0FedCitLS5Le1d07
-	7xFwvYlWXb5D8LB474QSeVz6Idj4lQlCo59FRtSWNPXHIwNbAtzJ0bJb
-X-Gm-Gg: AYBFou0BqqSBaJFMfXKG8Jnr4bIhQvtIxVu1vAZaAE0M1CO6/YTOpcQrcF8Q98PNZOV
-	145UQKa8pl6RJOxNwTHHPV/fgCcbyw+tbrhpggkp1Mj+H3jSTjA3OTDuCsUv9JgTYvSpzwOmJku
-	VdOAoUQm8cd+z2ga6e/gI+SiVQT3MCjNbqCHMrbIvyxAYwO4oAjBCYvlvSHJ3L+fDJ/sSHMa9NE
-	4CmFqR+VktqBSr8deinSzgdc8xxhmSMmjZo69TA+/y8/HofjlmGtRKw3brh04yvFRxD6RjhbPCE
-	/HHyYoMPiYJEbaqM7VsinHGA2f+hzxzPGJ6YY/UBdgUySF/r0YXT3k/iWZ9hPwEOdDJY07cFg7G
-	ArdIMChtFzR9OnJkd4yZNtRW8q53FqZdX8UTB923fFTprjU1AUi2c6dWTmvWNmJlBLG6PjOVMOI
-	awEB+dXMKuh7NgTwte3ODwQ7EEthBYdX0zRM//bZ+stujRA43WzYxHV7kDvXmRIYyKHgHQsMUNX
-	4Hq6OdlfX8=
-X-Received: by 2002:a17:90b:564e:b0:3a0:d9ee:a2e9 with SMTP id 98e67ed59e1d1-3a4d18c09b8mr1192177a91.45.1790777052463;
-        Wed, 30 Sep 2026 07:04:12 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7dab202f1sm1031140a12.27.2026.09.30.07.04.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 07:04:11 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: Paul Moore <paul@paul-moore.com>,
-	=?UTF-8?q?Ondrej=20Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net] cipso: adjust cached option offsets when removing CIPSO
-Date: Wed, 30 Sep 2026 23:04:00 +0900
-Message-ID: <20260930140400.2955466-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HPtHSBb1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=u87DClCOI4fyZJ1FRdU1pHuFHjd+AUGhOPdCecR9W8U=; b=HPtHSBb1GbZxlMiVbXZeWSlKE+
+	tSeH8ngkH1ftqEoZ/hPFMTBv2eHK/vWzHCFqSHgqm/6+ueBLRfCmomHLdcneM2bwM4VRsxaXyR9cQ
+	g8kwVyGhNx7NgZ1glnbGF72vrwepCuB1KafvKcy3oOnN3cg7+QSZj+WbTVbIcd3fTH5/LJdi/crcb
+	UcyhX7BfXuVt4PQCaiN9OHKrYZ5tvYzNqI3UuOnALoFvkjJ+W3qdzaZDzOQ8yQWjTTNakboW+xG15
+	vVuaabNsCKZlbHDT/VehYC/RUWz4dpvbQUl7eK9/6r8tpb4tyDndgtqZ5H4oVSlmzObZzFuxu4TzX
+	KHg/zyvg==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBuvp-0000000DYAC-3m0t;
+	Wed, 30 Sep 2026 14:05:14 +0000
+Message-ID: <6a529b5fe8c5bbb664748b85be011f5cf2e6c44d.camel@infradead.org>
+Subject: Re: [PATCH v4 2/4] pps: Drop the !NO_HZ_COMMON dependency from
+ NTP_PPS
+From: David Woodhouse <dwmw2@infradead.org>
+To: Rodolfo Giometti <giometti@enneenne.com>, Richard Cochran	
+ <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, John Stultz
+ <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,  Stephen Boyd
+ <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ linux-kernel@vger.kernel.org, 	netdev@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>
+Date: Wed, 30 Sep 2026 15:05:23 +0100
+In-Reply-To: <fc473eab-c72e-4641-b617-8f22389c8f68@enneenne.com>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+	 <20260829210041.40649-3-dwmw2@infradead.org>
+	 <f6e90a49-8c68-42e6-bdff-ea9b3ecbaf7b@enneenne.com>
+	 <fc1ec38dbc3723f7aed73ebf3413e1d81c161228.camel@infradead.org>
+	 <7098f5d2-043d-464a-82d9-a105e4000c02@enneenne.com>
+	 <cb992b22907085c4ced8d9a35cd1c8836aad20ad.camel@infradead.org>
+	 <decd5d05-1373-4ddc-95bc-46b73d6f6b99@enneenne.com>
+	 <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
+	 <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
+	 <37ad7bb611c0e79840dfdb5c3706be3430c34bb4.camel@infradead.org>
+	 <fc473eab-c72e-4641-b617-8f22389c8f68@enneenne.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-X+0pETyMZ6nEVb0ONjxZ"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-cipso_v4_skbuff_delattr() shifts every IPv4 option after CIPSO left by
-cipso_len, but leaves the cached srr, rr, ts and router_alert offsets at
-their old locations.
 
-With a valid eight-byte CIPSO option followed by a seven-byte RR option,
-RR moves from offset 28 to 20 while opt->rr remains 28.  The stale offset
-then points into packet payload, letting the sender control both the
-length and bytes copied by __ip_options_echo().  Setting the length to
-255 produced this condensed KASAN result:
+--=-X+0pETyMZ6nEVb0ONjxZ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-  BUG: KASAN: stack-out-of-bounds in __ip_options_echo
-  Write of size 255
-  Call Trace:
-   __ip_options_echo
-   run_cipso_stale_offset [net_candidate_probe]
+T24gV2VkLCAyMDI2LTA5LTMwIGF0IDE0OjU3ICswMjAwLCBSb2RvbGZvIEdpb21ldHRpIHdyb3Rl
+Ogo+IEhpIERhdmlkLAo+IAo+IE9uIDMwLzA5LzIwMjYgMTI6MzcsIERhdmlkIFdvb2Rob3VzZSB3
+cm90ZToKPiA+IFRocmVlIHBhcnRzIG9mIHRoZSAyeDIgZ3JpZCBhcmUgbm93IGF0Cj4gPiDCoOKA
+oiBodHRwczovL2RhdmlkLndvb2Rob3Uuc2UvbnRwdGVzdC1yNjQvdGlja2Z1bC0xaHovCj4gPiDC
+oOKAoiBodHRwczovL2RhdmlkLndvb2Rob3Uuc2UvbnRwdGVzdC1yNjQvdGlja2xlc3MtMWh6Lwo+
+ID4gwqDigKIgaHR0cHM6Ly9kYXZpZC53b29kaG91LnNlL250cHRlc3QtcjY0L3RpY2tsZXNzLTVz
+Lwo+ID4gCj4gPiBUaGUgZm91cnRoIGlzIHJ1bm5pbmcgbm93LCBhYm91dCA5MCBtaW51dGVzIGlu
+LiBBZnRlciB3aGljaCBJIG1pZ2h0Cj4gPiBwbGF5IHdpdGggdGhhdCBJUlFGX0hXVElNRVNUQU1Q
+IHRoaW5nLCBiZWNhdXNlIHRoZXkncmUgKmFsbCogc2VlaW5nIGEKPiA+IGJ1bmNoIG9mIGxhdGUg
+cHVsc2VzIChhbmQgdGhlIHRpY2tsZXNzIG9uZXMgYXJlIGRvaW5nIGFsbCB0aGUKPiA+IHRpbWVr
+ZWVwaW5nIGNhdGNodXAgYmVmb3JlIHRoZXkgZXZlbiBjYXB0dXJlIHRoZSBwdWxzZSB0aW1lc3Rh
+bXAsIHNvbWUKPiA+IG9mIHdoaWNoIGdldHMgaGlkZGVuIGFzIGNvbW1vbiBtb2RlIGxhdGVuY3kp
+Ogo+ID4gCj4gPiDCoCDilIzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDi
+lIDilIDilIDilJAKPiA+IMKgIOKUgsKgwqDCoMKgwqAgY2VsbMKgwqDCoMKgwqAg4pSCwqAgcDUw
+wqDCoCDilILCoMKgIHA5NcKgwqAg4pSCwqDCoCBwOTnCoMKgIOKUgiA+MyDCtXPCoCDilIIKPiA+
+IMKgIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+vOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+vOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+pAo+ID4gwqAg4pSCIHRpY2tsZXNzLCA1IHPCoCDilIIgNzI4IG5zIOKUgiA0MTg4IG5zIOKUgiA0
+ODQ3IG5zIOKUgiAxNC41ICUg4pSCCj4gPiDCoCDilJzilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzi
+lIDilIDilIDilIDilIDilIDilIDilIDilKQKPiA+IMKgIOKUgiB0aWNrbGVzcywgMSBIeiDilIIg
+Mjk0IG5zIOKUgiAyMjU4IG5zIOKUgiA0ODM3IG5zIOKUgiAzLjYgJcKgIOKUggo+ID4gwqAg4pSc
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSkCj4gPiDC
+oCDilIIgdGlja2Z1bCwgMSBIesKgIOKUgiA4NCBuc8KgIOKUgiAxMjA2IG5zIOKUgiA0MDEyIG5z
+IOKUgiAyLjAgJcKgIOKUggo+ID4gwqAg4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSYCj4gPiAKPiA+IEJ1dCB1bHRpbWF0ZWx5LCB0aGUgaGFyZHBw
+cyBkaXNjaXBsaW5lIGFwcGVhcnMgdG8gYmUgd29ya2luZyBmaW5lIHdpdGgKPiA+IGZ1bGwgbm9o
+eiBpZGxlLCBldmVuIHdoZW4gd2UgZGlhbCBkb3duIHRoZSBwdWxzZSAqaXRzZWxmKiB0byAwLjJI
+eiB0bwo+ID4gYWN0dWFsbHkgbGV0IHRoZSBib3ggc2xlZXAgZm9yIDVzIGF0IGEgdGltZS4KPiAK
+PiBUaGFua3MgZm9yIHJ1bm5pbmcgdGhlIHdob2xlIGdyaWQuCj4gCj4gQ291bGQgeW91IHB1dCB0
+aGVzZSBudW1iZXJzLCB3aXRoIHRoZSBmb3VydGggY2VsbCBvbmNlIGl0IGlzIGRvbmUsIGluCj4g
+dGhlIGNvbW1pdCBtZXNzYWdlIG9mIDIvND8gVGhleSBzaG93IGJvdGggdGhhdCBoYXJkcHBzIHdv
+cmtzIG9uIGEKPiB0aWNrbGVzcyBrZXJuZWwgYW5kIHdoYXQgaXQgY29zdHMgaW4gdGltZXN0YW1w
+IGxhdGVuY3ksIHdoaWNoIGlzIHdoYXQKPiBzb21lb25lIGVuYWJsaW5nIE5UUF9QUFMgdGhlcmUg
+d2lsbCB3YW50IHRvIGtub3cuCgpBY2suIEkndmUgc3RpbGwgZ290IGEgZmV3IG1vcmUgcGFzc2Vz
+IHRvIGRvIGZvciBjb3NtZXRpY3MsIGFuZCB3b3JraW5nCm91dCBwcmVjaXNlbHkgaG93IHRvIG9y
+ZGVyIHRoaW5ncyAoaW5jbHVkaW5nIHB1dHRpbmcgJ3VzZQprdGltZV9nZXRfc25hcHNob3RfaWQo
+KSBmb3IgcHBzX2dldF90cygpJyBiZWZvcmUgJ0FwcGx5IGV4dHJhcG9sYXRlZApudHBfZXJyb3In
+LCBxdikuCgpJIHRoaW5rIGl0IGVuZHMgdXAgYXMgYSB0aW1la2VlcGluZyBzZXJpZXMgd2hpY2gg
+Y2FuIGJlIHBvc3RlZAppbW1lZGlhdGVseSwgYW5kIHRoZSByZXN0IGlzIGhlbGQgYmFjayBmb3Ig
+YSBmdXR1cmUgcG9zdGluZyB3aGVuIGl0IGNhbgppZGVudGlmeSBzcGVjaWZpYyBjb21taXQgSURz
+IGZvciB0aGUgZGVwZW5kZW5jaWVzLgoKSSBhbHNvIHJlYWxpc2VkIHRoYXQgYWxsIGZvdXIgcnVu
+cyB3ZXJlIGNhcHR1cmluZyB0aGUgYWN0dWFsIElSUQpoYW5kbGVyIGxhdGVuY3kg4oCUIGZyb20g
+ZW50cnkuUyB0byBwcHNfZ3Bpb19pcnFfaGFyZGlycSgpLiBXaXRoIHRoZQpzdGFuZGFyZCAxSHog
+UFBTIGl0J3MgMi0zwrVzIGluIHRoZSB0aWNrZnVsIGtlcm5lbHMsIDQtNcK1cyBpbiB0aWNrbGVz
+cy4KSSd2ZSBhZGRlZCB0aGUgZGlzdHJpYnV0aW9uIGNoYXJ0IGFuZCBDREYgdG8gYWxsIGZvdXIg
+cmVzdWx0IHBhZ2VzLgoKU286IFdpdGggdGhlIG50cF9lcnJvciBmaXhlcyBpbiB0aGUgZWFybGll
+ciBwYXJ0IG9mIHRoZSBzZXJpZXMgd2hpY2gKY291bGQgYmUgcG9zdGVkIGFzIGJ1Z2ZpeGVzIHRv
+ZGF5LCBudHBfZXJyb3IgaXRzZWxmIGlzIGNvbXBsZXRlbHkgaW4KdGhlICpub2lzZSogZm9yIFBQ
+UyBieSBzb21lIG9yZGVycyBvZiBtYWduaXR1ZGUsIGNvbXBhcmVkIHdpdGggdGhlCmxhdGVuY3kg
+b2YgdGhlIElSUSBoYW5kbGluZyBwYXRoIGl0c2VsZi4gV2hpY2ggbWVhbnMgSSB0aGluayB3ZSBj
+YW4KYWN0dWFsbHkgZW5hYmxlIFBQUyBmb3IgdGlja2xlc3Mga2VybmVscyB3aXRob3V0IGRlcGVu
+ZGluZyBvbiB0aGUKJ0FwcGx5IGV4dHJhcG9sYXRlZCBudHBfZXJyb3InIHBhdGNoIGF0IGFsbC4K
+Ckp1c3QgZm9yIGZ1biwgSSd2ZSBhbHNvIGltcGxlbWVudGVkIHRoZSBjb2RlIHRvIHVzZSB0aGUg
+ZW50cnkuUwp0aW1lc3RhbXAgaW4gcHBzX2dwaW9faXJxX2hhcmRpcnEoKSAod2hlbiBpdCBldmVu
+dHVhbGx5IGdldHMgdG8gcnVuLCA0LQo2wrVzIGxhdGVyKS4gSXQncyBiZWVuIHJ1bm5pbmcgZm9y
+IGFuIGhvdXIgbm93IG9uIHRoZSB0aGUgcHJldmlvdXMgd29yc3QKY2FzZSAoNXMsIHRpY2tsZXNz
+KS4gVGhlIHBlci1taW51dGUgYXZlcmFnZSBwaGFzZSBvZmZzZXQgaXMgYXJvdW5kIDEwLQoyMG5z
+LCBtYXggbW9zdGx5IGFyb3VuZCAxMDAtMjAwbnMuIFNvIHRoZSBqaXR0ZXIgaXMgYmFzaWNhbGx5
+IGdvbmUuIEJ1dApJIGRvbid0IHRoaW5rIHdlJ3JlIGV2ZXIgZ29pbmcgdG8gYmUgYWxsb3dlZCB0
+byBkbyBpdCB0aGF0IHdheSBpbgplbnRyeS5TIGJ1dCB0aGUgKmhhcmR3YXJlLWNhcHR1cmVkKiBz
+dGFtcHMgd2lsbCB3YW50IHRoZSBzYW1lIGhhbmRsaW5nLApzbyBJIHdhbnRlZCB0byBwcm90b3R5
+cGUgaXQgYW55d2F5LgoKPiBBdCB0aGlzIHBvaW50IGl0IGNvdWxkIGJlIGZpbmUgZm9yIG1lLCBi
+dXQgYmVmb3JlIGFja2luZyBJJ2QgbGlrZSB0bwo+IGhlYXIgZnJvbSB0aGUgdXNlcmxhbmQgc2lk
+ZSwgTWlyb3NsYXYgZm9yIGNocm9ueSBhbmQgdGhlIG50cGQgZm9sa3MsCj4gc2luY2UgdGhlIGNo
+YW5nZSBpbiB0c19yZWFsIGlzIHRoZWlycyB0byBqdWRnZS4KClllcC4gSSB0aGluayB0aGF0IG9u
+ZSB3YW50cyB0byBnbyB1bmRlciBzZXBhcmF0ZSBjb3ZlciBhbmQgYmUgcHJvcGVybHkKY29uc2lk
+ZXJlZCwgYWZ0ZXIgdGhlIHByaW9yIHRpbWVrZWVwaW5nICpmaXhlcyouCg==
 
-The destination holds 40 bytes of option data.  In an existing
-uninstrumented x86-64 v7.2 build, __icmp_send() places that buffer
-immediately before its stack canary, and the 255-byte copy also crosses
-the saved return address.  A canary mismatch unconditionally panics;
-no canary disclosure or control-flow exploit was demonstrated.
 
-Mirror cipso_v4_delopt() and subtract cipso_len from each cached offset
-that follows CIPSO.  cipso_len is the logical distance moved by the first
-memmove(); hdr_len_delta includes padding, while the later header move and
-network-header reset relocate the bytes and their base together.
+--=-X+0pETyMZ6nEVb0ONjxZ
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-The adjusted input leaves rr at 20 with length 7 and completes without a
-sanitizer report.  Natural remote reachability requires a configured
-SELinux/NetLabel gateway and a later option consumer; the retained test
-invokes the real mutation and echo consumer directly because the available
-rootfs has no SELinux policy or netlabelctl.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+VUSYkhkk2LFQgLmm9LQpIXcAAAAAAAA=
 
-Fixes: 89aa3619d141 ("cipso: make cipso_v4_skbuff_delattr() fully remove the CIPSO options")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- net/ipv4/cipso_ipv4.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-index a05aa075de1a5..135b57c2c4f9e 100644
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -2272,6 +2272,14 @@ int cipso_v4_skbuff_delattr(struct sk_buff *skb)
- 	new_hdr_len_actual = hdr_len_actual - cipso_len;
- 	new_hdr_len = (new_hdr_len_actual + 3) & ~3;
- 	hdr_len_delta = (iph->ihl << 2) - new_hdr_len;
-+	if (opt->srr > opt->cipso)
-+		opt->srr -= cipso_len;
-+	if (opt->rr > opt->cipso)
-+		opt->rr -= cipso_len;
-+	if (opt->ts > opt->cipso)
-+		opt->ts -= cipso_len;
-+	if (opt->router_alert > opt->cipso)
-+		opt->router_alert -= cipso_len;
- 
- 	/* 1. shift any options after CIPSO to the left */
- 	memmove(cipso_ptr, cipso_ptr + cipso_len,
-
-base-commit: 99b43ede9e355ba35244cc9470bf1819774ce39d
--- 
-2.55.0
-
+--=-X+0pETyMZ6nEVb0ONjxZ--
