@@ -1,243 +1,350 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B607489FAD;
-	Wed, 30 Sep 2026 10:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE32F490C01
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 10:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790764660; cv=none; b=tX1XAjjyeTMWxLcQ1k3TDdpSaSZHMx4ESb+QrCUh8W5Qc9O0+RG6jU0ZhFYijLzUohAv6dEnWAdIq5Puf2WiPSTMjadyrURuNIc4OJVv+VYh3f6SKt3Wt7dySlL9fk1KH2AA8XcWUC2Jd02gGgcRSgYZhPN/rIFCIjQQIOv1mxQ=
+	t=1790764826; cv=none; b=meJnzaWWhXV8zcbO+TqTzKUo5eU99caKswof8VpYuhvtJpLQ7Rq4mGSTjatzoH6F7FTEYJlcwTyMXg7nQPoKJqnVfdH+r7k/7dlJ+gUCf0mpnsxzWyAkTbo8FhpREIGoRIPeA11FgiE0jWPiT1aUlDfMivXZxMuM11G3bhVRt9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790764660; c=relaxed/simple;
-	bh=7W9QG+7fC9vHMTyJZ5lCndkjuUr9fIS81pLHgQuFf6k=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LKCP3jjzNcO6tHPZAC3HuYw5yqEgbiAioxDmqrfKIJDJDWbG8N1qO8dSaF9ekna7twSzB4dTDTAV4w6Qlg0zSFJNqsnq++2drjWDyS+2BrTPfeC0+AjmRp8yEbD85kwDxJRKaGE+wA/IcYyHqNvQtbC1ZNZErvndWFBmRvQHG0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BzFXrpeL; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1790764826; c=relaxed/simple;
+	bh=Qq6zlYdZJ0Ypt1ifIS0OVhvhgDsFm4PDEY+Pkn6dIm8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fdcJ0bCFOsbSwUoS6LkWOnPQih/WGTq56bySQOLgi5zU/tK4MJS3nwk/V1R3wsrlJmnNV3yLzKQG49G22LQGJvdW1kmApOfTD6sVt7qrY1+Od9ZKbDLNzQq0eCCXf3cnYCGBX9W1TugexRc2A7QdjzGnKV/eLonf68N4sC1ra4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HwCECjqe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BzFXrpeL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7W9QG+7fC9vHMTyJZ5lCndkjuUr9fIS81pLHgQuFf6k=; b=BzFXrpeLo0gVrSTYywqL7+vbGS
-	vudhtMD4u20LYBssx9zQzaotF4WouZvBP83iKdkqiYWEI5aX7C9W0bQHcolGs5UadFGGUuMHuAR6V
-	kV2aduTMeER2D36ts7rHinqx1yQmmzuongsb48loqgvUKMQxJhYyr7IWlzRWHhd2K73bcFq98mvp2
-	sOiw/O1Jfu41ehECIdi8fXvlTv+MwoqZqT7Y9m6LFdaryKqdgVmTo2i76SxG4anmzoo6IFqtZn7RO
-	0aaJTlizNdHoNmg/Uel7V7YwwW4JGoFKyVoAqj1Lu8Za3Wf0vkdebwlGY97DBAokS8uoGGL4G+TqB
-	MqMieMjQ==;
-Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBrgn-0000000Ca9x-2ReV;
-	Wed, 30 Sep 2026 10:37:29 +0000
-Message-ID: <37ad7bb611c0e79840dfdb5c3706be3430c34bb4.camel@infradead.org>
-Subject: Re: [PATCH v4 2/4] pps: Drop the !NO_HZ_COMMON dependency from
- NTP_PPS
-From: David Woodhouse <dwmw2@infradead.org>
-To: Rodolfo Giometti <giometti@enneenne.com>, Richard Cochran	
- <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, John Stultz
- <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,  Stephen Boyd
- <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
- linux-kernel@vger.kernel.org, 	netdev@vger.kernel.org, Alexander Gordeev
- <agordeev@linux.ibm.com>
-Date: Wed, 30 Sep 2026 11:37:36 +0100
-In-Reply-To: <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
-	 <20260829210041.40649-3-dwmw2@infradead.org>
-	 <f6e90a49-8c68-42e6-bdff-ea9b3ecbaf7b@enneenne.com>
-	 <fc1ec38dbc3723f7aed73ebf3413e1d81c161228.camel@infradead.org>
-	 <7098f5d2-043d-464a-82d9-a105e4000c02@enneenne.com>
-	 <cb992b22907085c4ced8d9a35cd1c8836aad20ad.camel@infradead.org>
-	 <decd5d05-1373-4ddc-95bc-46b73d6f6b99@enneenne.com>
-	 <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
-	 <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-CAvhbew61FI761KP/T0l"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HwCECjqe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790764806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nsVJB2LJEh2mKZk2wZt7PB+h2LlvtCc9j8GQjyoAM2s=;
+	b=HwCECjqeQEjVKyvRyEX134IV6tUd1rNN35Iv9Kyfr0mFjLTVwkwuKBogKsmImHsFAKi8rT
+	qjzRCgrGftfK9+JC4IJ6d7gBmsycoYOKaMaKBDxua1uscP8oZDBr2ULFlM43O0tR+ZpZwQ
+	e5+/fDkLs9oI5ME+8CBB7pvvtia+4zY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-kgNzJqALML2H686yCqVGFw-1; Wed,
+ 30 Sep 2026 06:40:01 -0400
+X-MC-Unique: kgNzJqALML2H686yCqVGFw-1
+X-Mimecast-MFC-AGG-ID: kgNzJqALML2H686yCqVGFw_1790764799
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F4A11944EBE;
+	Wed, 30 Sep 2026 10:39:59 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2341119560AB;
+	Wed, 30 Sep 2026 10:39:54 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me
+Subject: Re: [PATCH net v2 1/3] i40e: skip unnecessary VF reset when setting trust
+Date: Wed, 30 Sep 2026 12:39:53 +0200
+Message-ID: <20260930103953.76497-1-jtornosm@redhat.com>
+In-Reply-To: <179072990609.434549.1214110562725821109@kernel.org>
+References: <179072990609.434549.1214110562725821109@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
+All the comments below fall into pre-existing issues, concerns already
+addressed in previous versions and comments, out-of-scope items, or extreme
+edge cases. The key fix in this series is patch 2/3. This patch improves
+the overall behavior by eliminating unnecessary VF resets that could add
+~10 second delay during bonding setup. The no-reset path is narrowly
+scoped to VFs with no ADQ, no cloud filters, and no promiscuous mode, a
+basic configuration where the edge cases below are extremely difficult to
+reproduce. No code changes are considered necessary for a new version.
+Details for each comment:
 
---=-CAvhbew61FI761KP/T0l
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+> [Severity: Medium]
+> Can a VF reset running at the same time in the service task undo this
+> write?
+>
+> A reset from a VFLR (i40e_vc_process_vflr_event()), from
+> VIRTCHNL_OP_RESET_VF or from a request for more queues runs
+> i40e_alloc_vf_res(). That function reads vf->trusted and then writes the
+> same bit:
+>
+>     if (vf->trusted)
+>         set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+>     else
+>         clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+>
+> Suppose i40e_ndo_set_vf_trust() sets vf->trusted = false and calls
+> i40e_setup_vf_trust() after that read but before the set_bit(). The bit
+> then stays set while vf->trusted is false. On the grant path the result
+> can be the reverse.
+>
+> Before this patch, the ndo always called i40e_vc_reset_vf(), and
+> i40e_reset_vf() returns false while the other reset holds the flag:
+>
+>     if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+>         return false;
+>
+> So the ndo retried and ran a new reset, which recomputed the bit from the
+> final value of vf->trusted.
+>
+> The notes on this version call this race pre-existing, but that
+> follow-up reset used to fix it up. Now that the reset is skipped, does
+> anything bring vf->trusted and vf_caps back in line?
 
-T24gVHVlLCAyMDI2LTA5LTI5IGF0IDEzOjQ4ICswMjAwLCBSb2RvbGZvIEdpb21ldHRpIHdyb3Rl
-Ogo+IEhpIERhdmlkLAo+IAo+IE9uIDI5LzA5LzIwMjYgMTE6MzIsIERhdmlkIFdvb2Rob3VzZSB3
-cm90ZToKPiA+IFdoZW4gc2Vjb25kX292ZXJmbG93KCkgaXMgZGVsaXZlcmluZyBza2V3LCB0aW1l
-a2VlcGluZ19tYXhfZGVmZXJtZW50KCkKPiA+IHNob3VsZCB0cmlnZ2VyIGEgd2FrZXVwIGF0IHRo
-ZSBlbmQgb2YgdGhlIHNlY29uZCB0byBlbnN1cmUgdGhhdCB0aGUKPiA+IHNrZXcgZ2V0cyByZWNh
-bGN1bGF0ZWQg4oCUIHJhdGhlciB0aGFuIGxlYXZpbmcgaXQgYWN0aXZlIGluZGVmaW5pdGVseS4K
-PiAKPiBQbGVhc2UgcHV0IHRoaXMgZml4IGluIHRoZSBzZXJpZXMgYmVmb3JlIDIvNCwgYXMgZm9y
-IHRoZSB0aWNrX2xlbmd0aAo+IG9uZS4KPiAKPiA+IFNvIHRoZSByZXN1bHRzIGF0IGh0dHBzOi8v
-ZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC90aWNrbGVzcy/CoG5lZWQKPiA+IHRvIGJlIHJl
-ZG9uZSwgYnV0IHlvdSBjYW4gdGFrZSBhIGxvb2sgYW5kIHNob3V0IGlmIHlvdSB3YW50IG1lIHRv
-Cj4gPiBjaGFuZ2Ugd2hhdCBJJ20gY2FwdHVyaW5nIG9yIGhvdyBJJ20gZG9pbmcgaXQuCj4gCj4g
-V2hhdCB5b3UgY2FwdHVyZSBpcyBmaW5lIGZvciBtZTogdGhlIGFkanRpbWV4IHN0YXRlIChvZmZz
-ZXQsIGppdHRlciwKPiBzdGFiaWwsIGVycmNudCkgcGx1cyB0aGUgcGVyLXB1bHNlIHBoYXNlIGFy
-ZSB3aGF0IEkgd2FudGVkIHRvIHNlZS4KPiAKPiBUd28gcXVlc3Rpb25zIGZvciB0aGUgcmVydW46
-Cj4gCj4gLSB3b3VsZG4ndCBpdCBiZSBiZXR0ZXIgdG8gYWxzbyBoYXZlIHRoZSB0aWNrZnVsIGJh
-c2VsaW5lIHdpdGggdGhlIHNhbWUKPiDCoMKgIGJvYXJkLCB0aGUgc2FtZSBHUFMgYW5kIHRoZSBz
-YW1lIHB1bHNlIHBlcmlvZCwgc28gdGhlIG51bWJlcnMgY2FuIGJlCj4gwqDCoCBjb21wYXJlZCBk
-aXJlY3RseT8KPiAKPiAtIHNpbmNlIHR5cGljYWwgUFBTIHNvdXJjZXMgZGVsaXZlciAxIEh6LCBk
-b24ndCB5b3UgdGhpbmsgaXQgd291bGQgYmUKPiDCoMKgIGJldHRlciB0byBhbHNvIGRvIG9uZSBy
-dW4gd2l0aCB0aGUgdGltZXB1bHNlIGF0IDEgSHo/CgpUaHJlZSBwYXJ0cyBvZiB0aGUgMngyIGdy
-aWQgYXJlIG5vdyBhdAog4oCiIGh0dHBzOi8vZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC90
-aWNrZnVsLTFoei8KIOKAoiBodHRwczovL2RhdmlkLndvb2Rob3Uuc2UvbnRwdGVzdC1yNjQvdGlj
-a2xlc3MtMWh6Lwog4oCiIGh0dHBzOi8vZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC90aWNr
-bGVzcy01cy8KClRoZSBmb3VydGggaXMgcnVubmluZyBub3csIGFib3V0IDkwIG1pbnV0ZXMgaW4u
-IEFmdGVyIHdoaWNoIEkgbWlnaHQKcGxheSB3aXRoIHRoYXQgSVJRRl9IV1RJTUVTVEFNUCB0aGlu
-ZywgYmVjYXVzZSB0aGV5J3JlICphbGwqIHNlZWluZyBhCmJ1bmNoIG9mIGxhdGUgcHVsc2VzIChh
-bmQgdGhlIHRpY2tsZXNzIG9uZXMgYXJlIGRvaW5nIGFsbCB0aGUKdGltZWtlZXBpbmcgY2F0Y2h1
-cCBiZWZvcmUgdGhleSBldmVuIGNhcHR1cmUgdGhlIHB1bHNlIHRpbWVzdGFtcCwgc29tZQpvZiB3
-aGljaCBnZXRzIGhpZGRlbiBhcyBjb21tb24gbW9kZSBsYXRlbmN5KToKCiAg4pSM4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQCiAg4pSCICAgICAgY2Vs
-bCAgICAgIOKUgiAgcDUwICAg4pSCICAgcDk1ICAg4pSCICAgcDk5ICAg4pSCID4zIMK1cyAg4pSC
-CiAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS8
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS8
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSk
-CiAg4pSCIHRpY2tsZXNzLCA1IHMgIOKUgiA3MjggbnMg4pSCIDQxODggbnMg4pSCIDQ4NDcgbnMg
-4pSCIDE0LjUgJSDilIIKICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDi
-lIDilIDilIDilIDilKQKICDilIIgdGlja2xlc3MsIDEgSHog4pSCIDI5NCBucyDilIIgMjI1OCBu
-cyDilIIgNDgzNyBucyDilIIgMy42ICUgIOKUggogIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-vOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUpAogIOKUgiB0aWNrZnVsLCAxIEh6ICDilIIgODQg
-bnMgIOKUgiAxMjA2IG5zIOKUgiA0MDEyIG5zIOKUgiAyLjAgJSAg4pSCCiAg4pSU4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYCgpCdXQgdWx0aW1hdGVs
-eSwgdGhlIGhhcmRwcHMgZGlzY2lwbGluZSBhcHBlYXJzIHRvIGJlIHdvcmtpbmcgZmluZSB3aXRo
-CmZ1bGwgbm9oeiBpZGxlLCBldmVuIHdoZW4gd2UgZGlhbCBkb3duIHRoZSBwdWxzZSAqaXRzZWxm
-KiB0byAwLjJIeiB0bwphY3R1YWxseSBsZXQgdGhlIGJveCBzbGVlcCBmb3IgNXMgYXQgYSB0aW1l
-Lgo=
+The race requires a VFLR-initiated reset to read vf->trusted and be
+preempted between the read and the assign_bit, while the ndo changes
+trust in that exact window. The follow-up reset in the old code was not
+a deliberate synchronization mechanism, it was a side effect of always
+resetting. The window is extremely small and difficult to reproduce in
+practice: it requires an admin trust change and a VFLR reset on the
+same VF at the same instant, with preemption between two consecutive
+instructions in i40e_alloc_vf_res(). The admin would be performing a
+very unusual operation, and even if the mismatch occurred, it is not
+breaking anything and can be corrected by toggling trust again.
 
+> [Severity: High]
+> Should this condition also cover MAC and VLAN filters that the VF could
+> only add because it was trusted?
+>
+> Trust is only checked when a filter is added. In
+> i40e_check_vf_permission(), a trusted VF skips the admin MAC restriction
+> and gets a higher limit:
+>
+>     if (!vf_trusted && !is_multicast_ether_addr(addr) &&
+>         vf->pf_set_mac && !ether_addr_equal(addr,
+>         vf->default_lan_addr.addr)) {
+>     ...
+>     if (!vf_trusted)
+>         mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
+>     else
+>         mac_add_max =
+>         I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs,
+>         hw->num_ports);
+>
+> i40e_vc_add_vlan_msg() only applies the VLAN limit when the bit is
+> clear:
+>
+>     if ((vf->num_vlan >= I40E_VC_MAX_VLAN_PER_VF) &&
+>         !test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
+>
+> Before this patch, the reset went through
+> i40e_reset_vf()->i40e_cleanup_reset_vf()->i40e_free_vf_res()->
+> i40e_vsi_release(). That removed every filter on the VSI and set
+> vf->num_vlan = 0, so the VF had to add its filters again under the
+> untrusted limits.
+>
+> Now a VF with no ADQ, no cloud filters and no promisc bits takes the
+> else branch, which only clears the bit. These filters stay in hardware:
+>
+>   - extra unicast MACs that differ from the admin-set MAC
+>   - MAC filters beyond I40E_VC_MAX_MAC_ADDR_PER_VF (18)
+>   - VLANs beyond I40E_VC_MAX_VLAN_PER_VF (16)
+>
+> The VF keeps receiving on them. With spoofchk on, it can also still send
+> from those MACs.
+>
+> The __I40E_MACVLAN_SYNC_PENDING work only reaches
+> i40e_correct_vf_mac_vlan_filters(). That function rewrites the VLAN ids
+> of existing entries and never deletes a MAC filter.
+>
+> There is also a functional side effect. When mac_add_max drops back to
+> 18 while i40e_count_active_filters(vsi) is still above 18, this check
+> fails even when mac_add_cnt is 0:
+>
+>     if ((i40e_count_active_filters(vsi) + mac_add_cnt) > mac_add_max ||
+>
+> Does every later VIRTCHNL_OP_ADD_ETH_ADDR from the VF then fail with
+> -EPERM, for example a new multicast subscription, until the guest
+> deletes filters itself?
+>
+> The notes on this version say this is fine because an untrusted VF can
+> delete its own filters. Doesn't that rely on the guest cooperating, which
+> can't be assumed when the admin revokes trust?
+>
+> The bonding case this patch targets is also a typical case for extra MACs
+> being installed. Are the "clean state" wording in the commit message and
+> the "no advanced features configured that need cleanup" wording in the
+> i40e_setup_vf_trust() kernel-doc accurate for that case?
 
---=-CAvhbew61FI761KP/T0l
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+The no-reset path is only reached for VFs with no ADQ, no cloud filters,
+and no promiscuous mode, a basic configuration where having excess
+MAC/VLAN filters beyond untrusted limits is extremely unlikely. In the
+bonding use case targeted by this fix, trust changes happen during setup
+and VFs typically have 1-2 MAC filters, well within the untrusted limit
+of 18.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-I7coYtqFVICH1JhQ6HrTxj0AAAAAAAA=
+Even in this rare scenario, the consequence is minor: the VF cannot add
+more filters until it deletes some. No crash, no data corruption, no
+security breach. Existing filters keep working. This does not rely on
+guest cooperation, the PF enforces the limit at the virtchnl level. The
+VF simply cannot add more filters beyond the untrusted limit, regardless
+of its behavior.
 
+For the functional side effect (later ADD_ETH_ADDR failing with -EPERM):
+untrusted VFs can delete their own excess filters without trust checks
+(i40e_vc_del_mac_addr_msg() and i40e_vc_remove_vlan_msg() have no trust
+checks in the deletion path). Deletions reduce the count via
+i40e_count_active_filters() immediately.
 
---=-CAvhbew61FI761KP/T0l--
+> [Severity: Medium]
+> Can this unlocked check race with a promisc request that is still in
+> progress?
+>
+> i40e_vc_config_promiscuous_mode_msg() runs from the service task through
+> i40e_clean_adminq_subtask()->i40e_vc_process_vf_msg(). It takes neither
+> rtnl nor __I40E_VIRTCHNL_OP_PENDING. It checks the privilege bit first,
+> then sends AdminQ commands, and only sets the state bits at the end:
+>
+>     if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
+>     ...
+>     aq_ret = i40e_config_vf_promiscuous_mode(vf, info->vsi_id, allmulti,
+>                          alluni);
+>     ...
+>         if (!test_and_set_bit(I40E_VF_STATE_UC_PROMISC,
+>                       &vf->vf_states))
+>
+> A possible interleaving:
+>
+> service task                          i40e_ndo_set_vf_trust()
+> privilege test_bit() passes
+> i40e_config_vf_promiscuous_mode()
+>   (AdminQ round trip)                 vf->trusted = false
+>                                       UC/MC_PROMISC still clear,
+>                                       reset skipped
+>                                       i40e_setup_vf_trust() clears
+>                                       the privilege bit
+> test_and_set_bit(UC_PROMISC)
+>
+> Would the VF then stay promiscuous while untrusted, with nothing left to
+> undo it? The window spans a sleeping AdminQ round trip, and the guest can
+> send promisc requests over and over.
+>
+> The notes on this version call this race pre-existing. Before this patch,
+> though, the reset always ran after the vf->trusted write, and
+> i40e_cleanup_reset_vf() turned promisc off and released the VSI:
+>
+>     /* disable promisc modes in case they were enabled */
+>     i40e_config_vf_promiscuous_mode(vf, vf->lan_vsi_id, false, false);
+>
+> That undid anything set up during the window. The no-reset path has no
+> such fallback.
+
+The same race exists in the original code, the promisc setup can
+complete after vf->trusted is set to false but before the reset runs.
+During the entire reset duration (~10 seconds), the VF was promiscuous
+while untrusted. The race window itself is the same (an AdminQ round
+trip) and requires the VF to be actively sending promisc requests at
+the exact moment trust is revoked.
+
+If this race does occur, the VF ends up with the UC/MC_PROMISC bits
+set. Any subsequent trust operation that observes those bits takes the
+reset path with full promisc cleanup via
+i40e_config_vf_promiscuous_mode().
+
+> [Severity: Medium]
+> This is a pre-existing issue and not introduced by this patch, but
+> i40e_vc_reset_vf() returns void and can return without doing a reset:
+>
+>   - it returns early if __I40E_VFS_RELEASING is set
+>   - i40e_reset_vf() returns true without resetting if
+>     __I40E_VF_RESETS_DISABLED or __I40E_VF_DISABLE is set
+>   - the loop gives up after 20 tries while I40E_VF_STATE_RESETTING is
+>     held
+>
+> In this branch, only i40e_alloc_vf_res() clears the privilege bit and
+> only i40e_cleanup_reset_vf() turns promisc off. Both run only if the
+> reset happens.
+>
+> When the reset doesn't happen, can the VF stay privileged and promiscuous
+> while vf->trusted is false, with "VF %u is now untrusted" still logged?
+>
+> A review of an earlier version suggested calling
+> i40e_setup_vf_trust(vf, setting) unconditionally, before the branch.
+> Would that make the bit correct whether or not the reset runs?
+
+Pre-existing issue, not introduced by this patch. Calling
+i40e_setup_vf_trust() unconditionally before the branch would change
+the behavior for the reset path, setting the bit before reset, then
+having the reset recompute it from vf->trusted. A reasonable
+improvement but a separate change from this fix.
+
+> [Severity: Medium]
+> This is a pre-existing issue (the old code also deleted the cloud filters
+> after the reset), but does this ordering leak the struct
+> i40e_cloud_filter entries?
+>
+> i40e_vc_reset_vf() releases the ADQ channel VSIs in i40e_free_vf_res()
+> and creates them again in i40e_alloc_vf_res(). cloud_filter_list is kept,
+> and each cfilter->seid still holds the old seid. When
+> i40e_find_vsi_from_seid() finds no match, i40e_del_all_cloud_filters()
+> does this:
+>
+>         if (!vsi) {
+>             dev_err(&pf->pdev->dev, "VF %d: no VSI found for matching
+>             %u seid, can't delete cloud filter\n",
+>                 vf->vf_id, cfilter->seid);
+>             continue;
+>         }
+>
+> That skips the hlist_del(), the kfree(cfilter) and the
+> vf->num_cloud_filters decrement.
+>
+> i40e_vc_del_qch_msg() deletes the filters before tearing down the
+> channels:
+>
+>     if (vf->adq_enabled) {
+>         i40e_del_all_cloud_filters(vf);
+>         i40e_del_qch(vf);
+>
+> Would that same order work here?
+
+Pre-existing ordering issue. The same sequence (reset before cloud
+filter deletion) existed in the original code. This patch restructures
+the control flow but preserves the same sequence.
+
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but granting trust only sets
+> the capability bit. i40e_vc_config_promiscuous_mode_msg() deliberately
+> reports success to an unprivileged VF without applying the mode:
+>
+>         /* Lie to the VF on purpose, because this is an error we can
+>          * ignore. Unprivileged VF is not a virtual channel error.
+>          */
+>         aq_ret = 0;
+>         goto err_out;
+>
+> iavf_set_promiscuous() caches current_netdev_promisc_flags and skips
+> duplicate requests. Is a promisc or allmulti request made while the VF
+> was untrusted then never applied after trust is granted, until the guest
+> toggles its flags?
+>
+> The old unconditional reset on grant didn't make iavf resend the request
+> either, because current_netdev_promisc_flags isn't cleared on reset.
+
+Pre-existing issue. The old unconditional reset on grant did not fix
+this either, because current_netdev_promisc_flags is not cleared on
+reset.
+
