@@ -1,72 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f227.google.com (mail-oi1-f227.google.com [209.85.167.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D640D47CA8D;
-	Wed, 30 Sep 2026 22:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D4B2C21F7
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 23:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790808968; cv=none; b=pljuQAJBE1rdf4SccH0krEkCf8GJSlk1+YkaQqxOi9SEO2JsIZl+QvP+mATg+qHtrorGVsFsql0ugXH5NiYq5YitsNk3utgKC30qeTelfCH5cpuj0x+q3P/6oDtL/HQ5c8JJJBSbO5Us2Dliwe+HcC6wGHASzpTW6o5DbYBPeNY=
+	t=1790809605; cv=none; b=S6iRPcdEF48bw9hKoO4TUnxRphYW8VaRSY118b0nwnDjUPwlxrJRRI+Ht4AAfR9beAOm1wRnvDzu7CXGWpSO7ciGemY7ujYqd/6RAGWkcmHFSF+JPb5b9XqA0Q0oDUaRflsfJsHZmIvQCovKH2mj5IyNe6KH2xIdj0HYejFG59M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790808968; c=relaxed/simple;
-	bh=yb1aTZJBy950Ab7G7REhwM+t57XIvDPW1JXAWHDGtYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qiC5rX6g875AB1x43zkJQ15WxeJZa085nR4cKd8XSMK+trEqtPufI6QlX+ODYOQfXK2uxHVYi4yNbzZrDxd3pUnNZHdrgOZizTd+VoCXZtfYBTTCONu6jVfswfDVjTgqs8wIB1+8cZV/Tc82UJuvjwfBkRiCYwsJsoa++j1oW5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOsZNIYE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790809605; c=relaxed/simple;
+	bh=88UOfwXpNmj9wwRS6KYQI9yaVytNZ07nI2IWMjyRFmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AY60Vs1L2TT/EoeBI4MHWJzaCfFbasQf60VSkh9IUjkfwezFe7LACT1EPGV+kC8QTeMHgD355w74oyme3JS80HdF/PhMhK8aARNHvOW7aTtTy7rAcuku0F2pC+q8rQJEvgtUrlHFyT8FGLz7r20uxkCRSQ9L+/Qeql0iGAiFWZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NjrATCE8; arc=none smtp.client-ip=209.85.167.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOsZNIYE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A1B1F000FF;
-	Wed, 30 Sep 2026 22:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790808961;
-	bh=qHHYqPRV+m8v2VUfLotNTzVtXMK4YB35bky+6A4Adok=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BOsZNIYEYq+B3SiahprMOm7UpEKfeV5cc87jwH2t3qYsZ/W6tcqIglvFTrP4drChL
-	 0TK0sgQ7XxOJYmEjDkBZ3pBXPjeLVJrClpGRY+WDzIbNFsoeNLvbK6lSS8lIFcQUcz
-	 fJ6CNRDx6VmzW+XLkxMzYKQMG+ewzM2vfRUJMWbbpgYlMgmaxhuMyVqdpw2D7uYcCh
-	 2HEdOLrbGzen+7epyiZSSOa4Req08bs6dEEi0OwbpT3k/evRWr6bVC+o5viKsq6hAP
-	 DJ6zixHo7H2Pq5GInPWSDQigEgxn1DCr+9X7NY5yh+qKEuGT4QL5x/KL6IF+oSTFRh
-	 nQIotRmVVF0Dw==
-Date: Wed, 30 Sep 2026 15:56:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
- <kory.maincent@bootlin.com>, Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
- <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
- mwojtas@chromium.org, Romain Gantois <romain.gantois@bootlin.com>, Daniel
- Golle <daniel@makrotopia.org>, Dimitri Fedrau
- <dimitri.fedrau@liebherr.com>, Frank Wunderlich
- <frank.wunderlich@linux.dev>, Pietro Ameruoso <p.ameruoso@live.it>, Aleksei
- Sviridkin <f@lex.la>
-Subject: Re: [PATCH net-next v18 00/10] net: phy_port: SFP modules
- representation and phy_port listing
-Message-ID: <20260930155600.3b18c7c7@kernel.org>
-In-Reply-To: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
-References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NjrATCE8"
+Received: by mail-oi1-f227.google.com with SMTP id 5614622812f47-4eb444ae5ceso1022887b6e.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:06:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790809600; x=1791414400;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2A1aoZJPSg31t9WTQ/Sn8rXwGssFb/8lsgDEw3ydqR4=;
+        b=BF6S8JR3y+AGdKjp9OOVOZrtxApQJSTbTzcvng9KkpNYiNbR5AVIXjuA49mFTGuOaE
+         MrAF0yZBOogQQuU1VyZNAVfHV3RW8AzQAt8n+ew49oVfzRNe2ixF100dLzS1rr2XK/1H
+         fYUg+zE3LnBkTMmt+zFEeh5NlWnkgC0PjMPjkD+bcZiGLt28hKhahsEu4j1cWsjCMeQm
+         rmKscgJ/cYmpWuMHlixppOTAcMlZ6nki+s/GiMcl0VCuQCfB9tSx1gFNRzMV07CSetIS
+         xQzC9TnzmH5XVC82JRxxz8jnaHHnk1YEGPIx85hP4ySjuyCb45dWqiXbULiP1a1Hcbya
+         hChQ==
+X-Gm-Message-State: AFq9FYItybNIwzbOy4o5CrlIfkA3T69Umhv211FW8ZTMoah8VgZZrzJB
+	n0CrzrJu7wyrUYgjFHcIqZ6q8EgAzIyPwoD4/L8/KA2bArO7fDafsgJgrXWerWIBleRg8fUBSt5
+	FduzmpQWOPb+lo+sHAiwgu+iI/VjAraFqwghoJyrM+9CuTyIFbCML0BEGWpfIjRkq9E4SQBrh5/
+	Vrh3q7bEdX2ONI/aYW5lIjxIPyrnmPWP8CHUbsvsqJX9BzK0wiI47va3m3cx/C92W5I/OjJD+Id
+	az/Eip1fQ==
+X-Gm-Gg: AYBFou1j4LbhgUvuzeF4XeYNOaYKglCrLSku2a8D+1BfS0e7PV3yLP/THIS61GTvnx5
+	dkPOo+c0ep/6AqefiGKjz25TbcAUtyz4dbgc8fb/m9ckrxZBAu7xE2uF8etOPqpsSjwzBeKN030
+	PrUnB1uf7D4O8ZEPoMvCMc5r2s3d2KsSXfcdfO7Z5J4ElmqG51jrdyraKlB+ZZa0j/NwIolEEdn
+	WOh6k+XMbIbetgFaUOwEOgyWTatU+P8OnS/yzcaHcBa7MTn1HXOt+VEBqvWJx8znOnTheNZN3mt
+	U0uHoqDQSeXevSR/p2L2PWNkKAwPzxGt2TQ5vrM/GT2PCtPPjhKemm2bRllvM8GSLYNAu9ChMzg
+	04l0YXaNf31dyGXY8eYv7JcVVUCbK/ijk9+Eh9Dstofpf+HiNPhhIfjI6PgUVZdanXu5HQQ++YE
+	DFGmelt2rhajw8Ic+Lx6FTGJjp50t+kwHWnhug
+X-Received: by 2002:a05:6870:89a9:b0:48f:e0e5:a1fe with SMTP id 586e51a60fabf-49ddd604b65mr3254684fac.50.1790809600024;
+        Wed, 30 Sep 2026 16:06:40 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-49ded3342bdsm287901fac.20.2026.09.30.16.06.39
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 30 Sep 2026 16:06:40 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-34d84114044so2268386eec.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790809598; x=1791414398; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2A1aoZJPSg31t9WTQ/Sn8rXwGssFb/8lsgDEw3ydqR4=;
+        b=NjrATCE8nQIHAWFRXb7Wl40x3WkVXYXJOtR7rHeFQl36uYZzTCOARzA9Q9W3AIWhFz
+         csvdneiykAb6VdxNLf0ogTFtc4mdRiTI3XTiFk8odDR2hWa2H43uGdAZi807h4HVjeRP
+         lChM4fAG7mXc0+g/esaZjVTGFYTAo/BcRPi3k=
+X-Received: by 2002:a05:7300:bd03:b0:33b:e842:d272 with SMTP id 5a478bee46e88-34cd937558dmr4029525eec.5.1790809598020;
+        Wed, 30 Sep 2026 16:06:38 -0700 (PDT)
+X-Received: by 2002:a05:7300:bd03:b0:33b:e842:d272 with SMTP id 5a478bee46e88-34cd937558dmr4029479eec.5.1790809597312;
+        Wed, 30 Sep 2026 16:06:37 -0700 (PDT)
+Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34db0c8e913sm1888206eec.3.2026.09.30.16.06.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 16:06:36 -0700 (PDT)
+From: Justin Chen <justin.chen@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@kernel.org,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	bcm-kernel-feedback-list@broadcom.com,
+	nb@tipi-net.de,
+	florian.fainelli@broadcom.com,
+	opendmb@gmail.com,
+	Justin Chen <justin.chen@broadcom.com>
+Subject: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET, restore it to SW_RESET
+Date: Wed, 30 Sep 2026 16:06:34 -0700
+Message-Id: <20260930230634.3132729-1-justin.chen@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Sun, 27 Sep 2026 15:36:09 +0200 Maxime Chevallier wrote:
-> What this series doesn't do :
->  - We don't support selecting which port is active. This is the next step.
->  - We only support PHY-driven combo ports. The end-goal of this whole
->    journey that started with phy_link_topology is to get support for MII
->    muxes, such as the one we have on the Turris Omnia. This will eventually
->    be upstreamed as well.
+When the revised suspend/resume sequence was introduced this led to an edge
+case where the TX is left disabled in the following sequence.
 
-Any plans for representing a few "complex but expected to work" cases
-with netdevsim? Or are you thinking of trying to cover this with NIPA
-HW tests?
+1. phy link is down, so UMAC is held in reset and then network interface
+   is WoL enabled
+2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since MAC
+   is in SW_RESET
+4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
+   and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link up.
+
+Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+v2
+	- Dropped fixes tag that did not introduce the bug
+
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+index 96d5d4f7f51f..984432952963 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -253,6 +253,17 @@ int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++
++	/*
++	 * Mirror wol_power_down_cfg(). If only UMAC_RX
++	 * is enabled, then we must place the UMAC back
++	 * into SW_RESET.
++	 */
++	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
++	if ((reg & CMD_RX_EN) && !(reg & CMD_TX_EN)) {
++		reg |= CMD_SW_RESET;
++		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	}
+ 	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	/* Resume link status tracking */
+-- 
+2.34.1
+
