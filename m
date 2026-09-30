@@ -1,69 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1398F4ABBA9;
-	Wed, 30 Sep 2026 20:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44F950B43C;
+	Wed, 30 Sep 2026 20:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790800719; cv=none; b=JcZJrKjKu3Oyxg/35SB+AEzOYT5Fhr5ODuVQ8d4hOoeNhJ/3EDwJJjc4S0jQVfYOgdgreQaTZaaPf6aZgTAQcEXR5BaP26QBOyXtA4YJaHfiZhnlE3OkPEtEC1X1CyuWE9JkhEyBROJi59MQcDBdgKu6vYDQ4UanVSoCGtGm4us=
+	t=1790800871; cv=none; b=jj8RWVfdoY3o5k54CZwlsucG35+jtsT7iqo0SEC8Vhk2004C0jF3w04FEujhf+A/T2WL84AF1RCH4gyvE9uAuPyrr0LWIDPMQ9fscc93BC1wA+gWIseXssraHZ9pQWs7dzEDUryH0sfmGEg5VHnL9/BxxgO5j+s3NdPZ7WFwHtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790800719; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tbwf6rMPbYTGaJ2OPSsx9qmTiQfLbjMZkq8S6J/DyrIs0tXh9X+4RMgrw6V2nqFUYBmG1e69qFeMRUa6XfiH51EeBQcIpHoSYmItUUIn4vAjcGkZL/H+51r9R8x1UCZV0mBXKgkw3dE/qa5fC4nlo93aq4Y98zBMDKAP4OgICP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHXzwrQ6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790800871; c=relaxed/simple;
+	bh=qftue8LAVCfe9/Ww//SW39c0xQdEsRs0r4tpmWpCCJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jkY6Y117gY3CW+9TPc/E2AVZn7M1LCBUSZcIiU/SK8xNNPHjNQ42s2zKW7qxribFxRBwiNfCFs8hUJJn9GYfqaIZvZEnrxbP+y5o9TjTCGhWNOkpc56zNtTV+/GCRgnxgknBNu2Lo3QhkKTRUZ0JnX46snLgQuTkRDhk82rP4G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHScRGBr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHXzwrQ6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572B71F000FF;
-	Wed, 30 Sep 2026 20:38:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHScRGBr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECCE1F000FF;
+	Wed, 30 Sep 2026 20:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790800717;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GHXzwrQ6e6Fln8ttaqH8dB/tcFXCGOQxwxNYh8L6GCFgD1jjwSxHriUmm2CBXqgA5
-	 0ya/34oTotZDVLoH0T14d0z7Zq1Qez+yvHJ82cXqRPEbhxpuvoltjjI7Ibx2VyTB44
-	 +DIjrz+rryOvSU8MunfFsS+jj9FMSaIyEWpflGX/UWxroaJhA8TWLwHRLS5yxcpNsu
-	 ZmRAUKpIk/ERpY/9Ae2zy9PCkzNstDMNcSmOIM5gk6el1RVVS5wKX72whyzX8sfqKB
-	 fKAXUaAegIjBhT2jl7uZ/Slog4vRVUbuf8n5bdEwQaLvgw9sj7LOAGG59AO+Mnt0DZ
-	 9hVTb3gCEBMKg==
-From: netdev-bot+sinfo@kernel.org
-To: =?utf-8?q?J=C3=A9r=C3=A9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 
- Re: [PATCH net] macsec: prevent AES-GCM nonce reuse after packet number wrap
-Date: Wed, 30 Sep 2026 20:38:36 +0000
-Message-ID: <179080071686.31693.6630251274230925732@kernel.org>
-In-Reply-To: <20260930203333.598733-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260930203333.598733-2-Jeremy.Jean@oss.cyber.gouv.fr>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1790800870;
+	bh=fiTSotZVNzG3RYwFvfm7nlfh2PC3f5RVrwIlh50qYgk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bHScRGBr0j6KA1GmiT1QSu8JzEc6tE15aDZ0LKjyMWQdymbE7130yQYqxBZtCYSwD
+	 wdhgl7kEd1drczvOTCzWXCjxtk1wIIpNR0baojalXjCkn+tq7PxtcYsBA8j7u3x2u7
+	 SpH2ferBZErFj/Z4rsUEKykoePAq0MmFduVkGJr+T7enmiTfugS8mwSD1G5Xa2rpM/
+	 Sen+NGRstfyalSdpuYHa2INA7t2E+B1O1bqR1eLlCV350sshorJ7oQ6seux2gRh4wa
+	 a6ouksgq86/Si0zXkhcZx6UbRrBJk0it+LKvUqWZIVYPTxDZPmt6ib4b+XXhc5kL7d
+	 btQZ1+NbQHi0w==
+Date: Wed, 30 Sep 2026 13:41:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Stanislav Fomichev <sdf.kernel@gmail.com>,
+ thomas.petazzoni@bootlin.com, Alexis =?UTF-8?B?TG90aG9yw6k=?=
+ <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: keep the NAPI_DISABLE flag while napi is
+ disabled
+Message-ID: <20260930134109.0fc3824a@kernel.org>
+In-Reply-To: <189e048f-d04a-4440-bf65-166c747ed6cf@bootlin.com>
+References: <20260926194714.648819-1-maxime.chevallier@bootlin.com>
+	<20260927154142.656700c6@kernel.org>
+	<189e048f-d04a-4440-bf65-166c747ed6cf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Mon, 28 Sep 2026 09:08:29 +0200 Maxime Chevallier wrote:
+> On 9/28/26 00:41, Jakub Kicinski wrote:
+> > On Sat, 26 Sep 2026 21:47:13 +0200 Maxime Chevallier wrote:  
+> >> This seems to be more general than stmmac though, there are lots of
+> >> drivers that create the napi instances in .probe(), so they still live
+> >> outside of .open()/.close(). It was verified by running the following on
+> >> an mvneta board :  
+> > 
+> > Not sure this works, you assume ownership if DISABLE is set but we set
+> > it to start the shutdown, not once we stopped the poller.
+> > 
+> > We've been tempted to "fix" this multiple times. I'd prefer to fix
+> > drivers.  
+> 
+> There's 2 classes of problems then
+> 
+> - drivers that create a napi instance but don't use it even when
+> admin up (stmmac, I think it used to be the case for i40e looking
+> at the history). Fixing the driver makes sense then
+> 
+> - drivers that add napi instances at .probe() time, in which
+> case setting threaded to 1 -> 0 when the interface is admin down
+> is always going to hang. There's quite a few of them :
+> 
+> git grep -p netif_napi_add | grep probe | wc -l
+> 75
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+TIL git grep -p, nice!
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+> So at least 75 drivers call netif_napi_add from their probe
+> functions.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Mostly old drivers, half of which we should probably delete :S
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Can we not refuse disabling the threaded state if the device
+is down and has NAPIs?
