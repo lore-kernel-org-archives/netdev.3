@@ -1,121 +1,167 @@
-Received: from mail-lr2-f34.google.com (mail-lr2-f34.google.com [74.125.230.98])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723114D2EFE
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A5A51E424
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790784426; cv=pass; b=Avj9CVqSPFjmtOZlTN7S4mrelWbVRqgxeFOgZPCelD+klE/ag3DRxyfN5Ye6s5CcaG/MdZ2vr0/LMtPb90nmefX4LqDGk2ts4a+qR6vY1EomHuYa8ReMQCQuDrgcrWYr0+6aoovqnp1JCPUOBHtWmuQTBl86fl8f/lXETCfxLoU=
+	t=1790784762; cv=pass; b=Yjz/9Pzx8En0HpqnASolbHC8QcU3Z425NRnJ/lTNKn6C5Fg/rHXIH59bmDc9dueyNIKckOlhy0148feudU/rL9GmBVY12pO6v4MuA0GGGJcaKqh2Qhq3sxL8DH7Ag/vupDIn5SCiuAKzH5wrZUSCyYW0vNlzZg88jFbPnZqVAEE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790784426; c=relaxed/simple;
-	bh=Mr1y+u1OF3mjJvkZyDof7OV8WyZGPL7d/VHEFCAfkdI=;
+	s=arc-20240116; t=1790784762; c=relaxed/simple;
+	bh=7gqiQOM1qisNlj8JQPYTsymhakjhh1OHGQP9wdS9nLw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PEl+R3c0BLkZ7F9h4IaMFLnRBtrX7ATRCxhr3TTVXqpbNww+mpjSjcU4Q/SIzeq9d2vLvL6ErSicUWmkplJ+o22gXf3d4g3Y/07g2iZriDJ4KPYR8iVzDAIFY9/6VUF4XjI9fDJz7iRtJXGrQlMaprR8k1dG4wDcphKYmNsCwis=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3e6jQTp; arc=pass smtp.client-ip=74.125.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=N573hR0gdPcC65ZDOA9CQr+ZSCrjLXDtGcx1avlVaasSCC5uNu3g9gwHHZSSMULp/TCw/IYa96I5M8qh5+7SBlwRqpjUABdByGIEAY2kjy23CmH+mW4m6u5IQM7pCpTbeX5XyxN1jdQUHwh9kOiNVa7oIw0ARIjUhgQmXugSf2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEjRPpal; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3e6jQTp"
-Received: by mail-lr2-f34.google.com with SMTP id 38308e7fff4ca-3a76a5a5d4cso16006251fa.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:07:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790784420; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEjRPpal"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso9124a12.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:12:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790784754; cv=none;
         d=google.com; s=arc-20260327;
-        b=XwzqgVd9qIXNyQFzFzQUlOHhKwQjWMXmBliPuSt6LTZBcGpKrFb0ud0guxM5s4cHlw
-         A6qz48sB9zd1fTalhyTP0T3I1hlf852oRaWo7GmqK+w1X3M1xl8I45bwQ7q3tJClx6oD
-         +WArJ6EZXNZDY5ubiD/Q8kkBnEttW/yPdXDdjc+FR4HBlTv2yBZdq3lnfjRVssMNO9kQ
-         jiE/AsdYX/OJ7YklZkEyft+ES/BqXDjExLRmvb4T1JYb6Ud0c5R/MKO6tdxeEXL3ehXB
-         pHaNvPKSbxc8zyxja8n9q+NO836rx5cjRKRDONz6yOYrbBlrz+4IQChbc/8OowqA3Ree
-         UnOA==
+        b=AnTjXXw6yAVvPm9Ny/n+px1TZ9DE7cHeUbzWD0dT3ZA6r5vzESWnju2zvKiivqZ98l
+         V0m1nWd8cNHZvoayMnoDVKPRo+E7E3+y4oVPd0CN9tq7lt1ly+5q6Lxr5D5Ab+oesckk
+         GmruSKrhbsupv2/MoK6G3fye9WW60eaAYw5e6uqmeQZgtnv4EOXTC02VBzQEUil/kSYS
+         9BUlAqE8tt5uIqbH9kb/Q9Le5BgtDnoWX7SK47GNocK6nXry/r0Jw0Nig3E9ga9g/9j8
+         Lkhbc1kF2qavBEhvPeBTor5pDTlF80Bw918zTMQe36vYcJo++eObLHVjCZsdKpBrneef
+         F0Jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Mr1y+u1OF3mjJvkZyDof7OV8WyZGPL7d/VHEFCAfkdI=;
-        fh=9MODGmwqQXiu51e72eTpOkTvDOXW7k1cS4lho4NmORA=;
-        b=IY79TFW5G6gQMGrA3eMxzzBfxifAbt9RZrh1VjA5jrN1scxxaRVDcoF0Iu2ysK7u4a
-         sBp0z0qofI0dNmaImSOX17YcstacqOR0tMSkB6jvWmR+e8ua6hkHeWFilq8nzTLLhhKV
-         y/CdT68dphmKicCylerFyBi8Y05lWbYXDOo2PC9axxZDVEhyClCXgxYuWlXT+uRai2oT
-         11n3+agXoRMEXwvuB3SjLi5zZNy34dpaGege7H+tqBGMpNXLhFAxkeZ97cntDS0AEhJ5
-         8qwdzHvmZ4uFeqK1CjBgMxzlE1LglPi/q549fWDv6x/PLFxJ+n0S67D4Iepq+a7EphI/
-         2LEQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
+        fh=yHLT0tegnZVpBBUchfuZhVWvB1VAjHqhJm8pg0+ognU=;
+        b=j+NbsWWlTTvP2tCSQtI2kfv1/u17myA7nooRObqI6c2gAAZJOdUoW3DrWMu+8Rz1PL
+         rEOsId/DyQHw0eK8lZUx1f+ALDcmjGqMt+8YmEabJGgtFD1PDM5RVaQzrS6iJznIIkfn
+         9RXmqpqu6CIt49AXUM+t4vTJUJKGyms+HFaPSF/dGq3VhSElJyu99VNl1wJzatCjeBiQ
+         ggT+qlMToiiEHYd8Lv/mgtP+U4uaWnuMumUGBwpFcDFxNmUf9VpbBYAstGy+JLTWbPRO
+         +WNgmygP28yirTvo/HDn0tYLpQ0FBdI0Gqd0QhAaaA999CHSENyy9UYK2LkC2sil1xWf
+         kjvQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790784420; x=1791389220; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mr1y+u1OF3mjJvkZyDof7OV8WyZGPL7d/VHEFCAfkdI=;
-        b=i3e6jQTpk9MFny+zRI9ShvLMAzlRUcpA+oB6Rj/87c6z/Ycuj/O3hBMFm6AhN4VmEe
-         Ap72V6o6OUVJwerxwdxyCltDppotx2h3NY9WaFRWSiTxltHj3swblyxki/CFv0E6+l2H
-         mgQ8SERM/Ew7RixtLQoT2tPKuiEHjoeX8cjankMgp5mlR3CpuHYsvcKE2Mcu2A3NS9fH
-         itaOBK/7LH2PYR4bqiE8D+oPoZvstewlKtayfZT/CM+XTB0TWUOR+dpnzNWLPNHdZ/tv
-         ROU1Vhb+k49BrY/fDs170g4kw+peWKckXMLD30kqXWeRHy2KylhmIogDRH/WoMg4HabO
-         5z+w==
+        d=google.com; s=20251104; t=1790784754; x=1791389554; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
+        b=bEjRPpalTxdDdMgHibqpAaNbPNBRJDrE73BGcSE29kN6dxT+muafGlzGVqWqMlWwUE
+         FN4/f3/cNmb6O6jJWREkvRQUr4n6jT/MLK3JVzGORHPFt/ZYI2FsSv7UJn9CvLVod1M1
+         weB2ifeAgLhGV5yFe1IGAFlxo9dPBDWMtLAviUZDsEN1IKMhOBWcMrWVQPvnY65etVI+
+         YuC/fWPNBd2BK4oWH93ZDFd+HZ/MFOikJSMs0ISi1cZtmX3np4IHeClwKjMR7Uxw6Gqf
+         if35Pt0LkbY7I32S1AKmZ2uhpsVVW5L9CTlpODNASMKpreDmcrEbUoUk/FDiXmNpqG/H
+         b/AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790784420; x=1791389220;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Mr1y+u1OF3mjJvkZyDof7OV8WyZGPL7d/VHEFCAfkdI=;
-        b=v7SPL8wgDGH2ktlbhhXnQWFVJrt4ygKOvy/zJ2QS42FNy0ozYjfMtwA3pW5jDqc79a
-         BnUEWBy8qzMqVSmeU98+pJwwOyXGgsElVfDVWBG/CFh2Uh3rGBPu7i9h+rgBBAPzjjAL
-         UU4Z9vtgd0EoILP/FTtS4lPkGrUjmqhroZn7OomtpySQWktzI/cveX0Aehdoy6GJ+bhh
-         BtEIKT86JtSI/d2hd8flvC+IJrN+q6xJqzcO3Ntzv1HhAX8vmHFF+EmCXeQ15iWpzRMV
-         wZaY4/NrVPqyYlNgEz8dRJ2zstZDsWr4jU2ZnvV0gaQ4ZcOR8gq6jo9zlEY6dqgm+amW
-         +2Vg==
-X-Forwarded-Encrypted: i=1; AKwUvBy4W5JHKzmviT2+LK9fbYGJTX8k7CciyKkQU8ktZ4y6KOMzV8oVkR/yp3Vokxw8hanBITxg0yk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKKAbqx+keZx9fAf5ZuZAVIFJ03R2On4T1L3wzPfsbWkLMrHbjQ
-	2bN/uv090+r6Rsvok8gmOobXH38FhQKtUPSDW8JRbdKvM4zg8CX8Jw8HHiWv+6ZBOo0oWv3Z4Qv
-	QtgiHSLvtqjish0EhUP0fmwwJ5VhjNyU=
-X-Gm-Gg: AYBFou1kBWafv8py8QMpY85/Hf5i4uQZwuvFFnXNL3d+DB/tecG1Vh1NFh+VVB9DZgc
-	l7u2k0M6VhKf/G9pqFGdA2a+rroA6+pF7k8YO9ZEcxZXICtUMaU98JS85lXorcnyH0rq43gRktB
-	BI/prJWzi0JAfvW4VyK1bPicths/UrcmQY2z/4fZpw5L5/7asT/G3IYQE+4XInYNQRNPYNI2ulI
-	cy2RiT68HJdviLbDM8d6Wlv0aFd5rJimMZB3SfMnNysC/fC5ttgszVp2m9l9g9wArOj9LICXoK/
-	1yMRpLR9kSmwN7PbqbAWwQyNTqPXBlFmRBLt/i3DX7v5rBi+urr1ybZXkg==
-X-Received: by 2002:a2e:ae07:0:b0:3a7:6d4a:1c9e with SMTP id
- 38308e7fff4ca-3a77920702bmr5335761fa.11.1790784419801; Wed, 30 Sep 2026
- 09:06:59 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790784754; x=1791389554;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
+        b=YKO9eHNVwfkq5F4WD+wQH6fU0mcpyYHI0T5Q11sCnNj0IC5KZJtt1KXFnOX7LG84s1
+         iNpIKVWTQOWQqkp2tPyzkCiIQlmO78f0TAkAjTMqq7Xd1wIa9Dj3dWCtmAXFXgD7Zm/a
+         eN+23Rk964JpnTtCyolt7dkE/h0dTK0PTg81xs1MuTr9lUCQr2kwWYX7LgIXnIOW9oDk
+         rt2MyVHmeWSM6Lqx8dSwu29Y85eIpybp9ZkAUrTpED3twsqZ24CnTllNZeU21mCith2E
+         jna+yYS+3/pqRzxDab+I5bcDfBGuTXWJNw21l9LU5KRqlm0CsQWo+ptTpPnkIMKHE3U0
+         YNjg==
+X-Forwarded-Encrypted: i=1; AKwUvBwTm1aPwU8u4ix3EN9I1tMQxC0cyweNfJmYLdjTU7/AoC3kDXSGcS8/yQY0nSkWzW1ADmmYgXE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKRmyfV1wcdQfQFbAoL6Jc4rbOKsIRebD5HR0FjMgWOCjVGT2j/
+	Li8udH8nMJrzGJEeQXIvAq3oa47Xgkm7rpxdJAldjm25WfDo9w3y+k8LNcCt05+XSsAztemPgen
+	SllWFYUmunXK679GRjhVmgqD6/xh010eS5rpVhU6j
+X-Gm-Gg: AYBFou2V+2ByCbQlgZLp7GHmqz0d6LH+5pcpvJaQarA1B9dm4y6VW/8GLpo6g6qvMn5
+	+xLQ9dJuxZdOxOI2hT3ttyi+26s2o92HRbapp/LDR043aZW/SeQh5rrModj64pBDaPJkqBaMYub
+	84foAbTo7MxhkEK1L2IVJYYM9S8MkzE8EKb0b3Wc4ZBQtzIT0f8woGlIgxqgKYtZqFttF5dW85R
+	ysGNUZuTguNRBmnp8ZiOCYPa+MIZzT67QRrqF4pMXFENGmQ7T2eMGtlJXlUnE9CLfMy03zg0goB
+	wXKBqtdGd8ijfiDUCDfa9suIFMi6TmVdeVPwzR3UzvCd3S88piwYVK/mN3VU13yA3Ty/5sJNrzE
+	XcYYY5kIs5A==
+X-Received: by 2002:a05:6402:a4ed:b0:6a1:4eba:f09e with SMTP id
+ 4fb4d7f45d1cf-6ad59eff06amr46096a12.7.1790784753356; Wed, 30 Sep 2026
+ 09:12:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923234819.702327-1-oss.patchbox@gmail.com> <20260928091551.GK13925@horms.kernel.org>
-In-Reply-To: <20260928091551.GK13925@horms.kernel.org>
-From: Yuho Choi <oss.patchbox@gmail.com>
-Date: Wed, 30 Sep 2026 12:06:48 -0400
-X-Gm-Features: AclHuK_HJEwr8rDcX7-6pNmp93VhndPAHBA6EzKYzl5-IOAv0A5_y9agapxl7BU
-Message-ID: <CAGG=RgBNpQLy3s7Zqf1=TpN_grUOha8Cu_UVmjou=qPe0RBqiw@mail.gmail.com>
-Subject: Re: [PATCH net v1] idpf: Fix vport IRQ name leak on request failure
-To: Simon Horman <horms@kernel.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, intel-wired-lan@lists.osuosl.org, 
+References: <20260930102524.1659847-1-4ncienth@gmail.com>
+In-Reply-To: <20260930102524.1659847-1-4ncienth@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 30 Sep 2026 09:12:21 -0700
+X-Gm-Features: AclHuK8sXEfV_wKW4FGBJSbi9it2y76uzkVZaA-s7FwS1OnJPEJwdDQqQ9SxoiU
+Message-ID: <CAHS8izPpY0F4nnvOdq-ijsa27oiLxNViBXXyS54HJuHOO8rkGQ@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: reject net_iov in zerocopy receive mapping hints
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I appreciate your time to review this.
-
-On Mon, 28 Sept 2026 at 05:15, Simon Horman <horms@kernel.org> wrote:
+On Wed, Sep 30, 2026 at 3:25=E2=80=AFAM Daehyeon Ko <4ncienth@gmail.com> wr=
+ote:
 >
-> > Fixes: bf9bf7042a38 ("idpf: avoid bloating &idpf_q_vector with big %NR_CPUS")
+> After copying a readable prefix, receive_fallback_to_copy() asks
+> tcp_zerocopy_set_hint_for_skb() where page mapping can resume. If the
+> next skb is unreadable, find_next_mappable_frag() passes its net_iov
+> fragment to can_map_frag().
 >
-> I don't believe that commit introduced this problem.
-
-Thanks for catching this. I'll fix this tag.
-
-> name is allocated by kasprintf() which is a wrapper around kvasprintf_const().
-> And kvasprintf_const() documents that it's return value should be freed
-> using kfree_const(). I don't think it will make any run-time difference
-> here, but perhaps it would be best to follow that convention.
-
-kasprintf() uses kvasprintf(), not kvasprintf_const(), so the name is
-always kmalloc'ed and kfree() matches the kfree(free_irq()) used on the
-normal path. Please correct me if I'm wrong.
-
-> Also, for completeness, shouldn't there be error handling for the case
-> where the allocation of name fails?
+> skb_frag_page() returns NULL for a net_iov, but can_map_frag()
+> dereferences it in PageCompound(). A v7.2 KASAN run on a connected TCP
+> socket with 64 readable bytes followed by a 4096-byte NET_IOV_DMABUF
+> fragment reported:
 >
+>   BUG: KASAN: null-ptr-deref in can_map_frag
+>   tcp_zerocopy_receive -> can_map_frag
+>   Kernel panic - not syncing: KASAN: panic_on_warn set
+>
+> The diagnostic inserted the net_iov directly because the test host has
+> no devmem-capable NIC. Hardware end-to-end reachability remains untested
+> and requires CONFIG_NET_DEVMEM plus a supported DMA-buf-bound RX queue.
+>
+> Reject all net_iov fragments before skb_frag_page(). This covers both
+> DMABUF and IOURING net_iov types while leaving page-backed checks
+> unchanged. With the guard, the same queue copied the readable prefix,
+> returned a 4096-byte skip hint, and completed without a fault.
+>
+> Fixes: 9f6b619edf2e ("net: support non paged skb frags")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+> ---
+> Affected since v6.12-rc1; present in v7.2 and the pinned 2026-09-30
+> Torvalds, net, net-next and linux-next snapshots.
+>
+> The existing combined fixed v7.2 build was warning-free. No isolated
+> kernel build was run. Tested config SHA-256:
+> f992c9fdb881ca95c467896791c52554719f6204cf06268cd92ac37c14c14f83
+>
+> The reproducer is available privately on request and is omitted from
+> this public AI-assisted report.
+> ---
+>  net/ipv4/tcp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index 562752352afe..87ef6d5cbfeb 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -1908,6 +1908,8 @@ static bool can_map_frag(const skb_frag_t *frag)
+>
+>         if (skb_frag_size(frag) !=3D PAGE_SIZE || skb_frag_off(frag))
+>                 return false;
+> +       if (skb_frag_is_net_iov(frag))
+> +               return false;
 
-Agreed, I'll add it in v2
+I think this should use skb_is_readable(). But you don't need this
+helper for frags. I wonder if we should add a readable helper for
+frags? I'm still holding out that in the future someone will add a
+net_iov type that is actually kmappable and readable.
+
+But this is good enough.
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+--=20
+Thanks,
+Mina
