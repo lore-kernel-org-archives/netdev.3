@@ -1,92 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68B23451A6;
-	Wed, 30 Sep 2026 01:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582123EAA6;
+	Wed, 30 Sep 2026 01:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790732409; cv=none; b=m3vmNF1SyQCyw3NdPL0SeuF1DmdNeuecp0EGnaRmPbUz4B9fPJnPs31qTfLgpy+5h4x2JE1NlsEEL4zW+FEa7kVdgfXr0fyAAHJskrHq7zJxjAjvKMA0z5iqS/Jc7N9NErMSlyJHnDydaxoStLxzn4aY6lHjQLB9YACEavsEd1E=
+	t=1790732733; cv=none; b=fcF2sGVNxVfVEDWQ+/mfTSXaU46yf3sl+JGwaXo5kFbuYcdI4oqR+b65xACA9K18xDp6qZ5ZO9msVJsoqi0XfrxAR8DUAQaflOQPN95Tb+8EIcrIxgpK2j/2BkyLtRgtcZEAnPHd4I9AUJZGzxWJo5B0ifocpHu+wrFTnjHuNwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790732409; c=relaxed/simple;
-	bh=rTwaGF6Si9doGtbQ2xytNlzHM5QXDTRl5HHqbST1/L8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cCcczqsusvjXoEDKRNNP/IKG7j33wGtuiHxOloRzk7WJFzdqXJidW0Kv4YdkidbtyZAxE8s4rXQsWOZqkfbAkVDq0k93FwXHGbyZixTsNPmaeyR3XC+uDkEIPfXFo6LAmNSgKanzMbVVDCbk9u1ZtpliKmmhY/vG3wDkYoQ46Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lf+pYSps; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790732733; c=relaxed/simple;
+	bh=oYqIi495rAMQhi6h+vSrjdhsHcTJptJcAwm3flZqXZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ogQkOj7h0mCiYmewsigOtd8KUuszDX0U91LLEXKhPveZ4oPETM2faTqoDL0euEjroQ/nwuTVOpNLa5E466v8auyNE6PL/z9a1I/nChw6BbuDe16wMYpAdt6oVpuSCTUul7vyX6EQm64GXBy0JQ3I6XyFWrBk3m3Z3U5RaWbkBvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmkH4gja; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lf+pYSps"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476541F000FF;
-	Wed, 30 Sep 2026 01:40:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmkH4gja"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20541F000FF;
+	Wed, 30 Sep 2026 01:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790732408;
-	bh=FJR6AKUyGSUOsMk5lSKuZJ2Wvblf/S3YNFdN/AvpJ1s=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Lf+pYSps/lAIbsWOY9uCo8t96C99/0ySQjrRaxJMx8pWPe43vQ+b1uorWaQTJHp9h
-	 ex2yoxw/HZuOiY9fHJShbg7VbysThdY9FP86ZUMeAnRjaZguFjxJEe2Phiuhte/1bZ
-	 DVKJSpiDUhdXGe7AfPrJTgbU6gGINUCT/Tq24LcRn96rqWlkcgGNiKYgT2mxRG9Oa1
-	 19A4uhuNU/1xiHjw1bNMCSJ/QAr+qid/CwPh43bBj6X8ewI1I1g7YFY3MnGiclVTLQ
-	 MEaCsC7VGjaLdU01gvoGksieuXGPpjqcbYqquiU1hR+XzD+jjK0YUFdU+SekEFVL6p
-	 qcnOj0IYatqzQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3AA3924FEA;
-	Wed, 30 Sep 2026 01:40:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790732732;
+	bh=oYqIi495rAMQhi6h+vSrjdhsHcTJptJcAwm3flZqXZA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VmkH4gjaufsJUd9+6IjlXAO7CaFOF3EAlX8oknO7ARzt0NdIp8Jef/dMt7+2DUJKA
+	 WNHkrN08omaicHE7AUbTGJTL2McPBXfIJpBmr+c+JTDuifEOTeZV3ik3gwdKpyH3s6
+	 Syu7eYqfWQQt6SPBmx+5tWTc52KBR+a2BX2WHDn3zHKrlHxpRmSkW3m6nx5PyDLOSW
+	 oqL/TxulXHBgOddDMXs+4dQSKu2RfZd3JA0siG42rbFB6IPbBDytQOlI6LMhBPl1/P
+	 9PQ68tdDEfJTiD4bL09txrYM4w6rNF8qFCmMLaC0z3GankmeUWB5ka65PAaQg8Plne
+	 imqf7ZiwZc+XA==
+Date: Tue, 29 Sep 2026 18:45:31 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Sean Anderson
+ <sean.anderson@linux.dev>, Antoine Tenart <atenart@kernel.org>, Eric
+ Dumazet <edumazet@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, Vladimir
+ Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/3] net: macb: never give hardware a NULL RX
+ buffer
+Message-ID: <20260929184531.36ac3dc3@kernel.org>
+In-Reply-To: <20260925-macb-close-v2-1-360efa565914@bootlin.com>
+References: <20260925-macb-close-v2-0-360efa565914@bootlin.com>
+	<20260925-macb-close-v2-1-360efa565914@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v6 0/3] net: stmmac: add Allwinner H616 EMAC1
- support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179073240703.1199722.17774874033053476727.git-patchwork-notify@kernel.org>
-Date: Wed, 30 Sep 2026 01:40:07 +0000
-References: <20260927-submit-h616-emac1-v1-v6-0-e64971f4e414@gmail.com>
-In-Reply-To: <20260927-submit-h616-emac1-v1-v6-0-e64971f4e414@gmail.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: richard.genoud@bootlin.com, maxime.chevallier@bootlin.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, wens@kernel.org,
- jernej.skrabec@gmail.com, samuel@sholland.org, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, clabbe.montjoie@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, peppe.cavallaro@st.com,
- joabreu@synopsys.com, alastair@d-silva.org, mripard@kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- andre.przywara@arm.com, krzysztof.kozlowski@oss.qualcomm.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Fri, 25 Sep 2026 15:59:34 +0200 Th=C3=A9o Lebrun wrote:
+> Theoretical bugfix, never encountered in practice. To reproduce,
+> introduce memory pressure (less than 512 SKBs of free memory) and open
+> the interface.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 27 Sep 2026 12:52:18 -0600 you wrote:
-> The H616 secondary EMAC supports RMII at 10/100 Mbps and uses a separate
-> system-control clock register at offset 0x34. Add its binding and a
-> sun8i stmmac variant using that register. A distinct compatible without
-> an older fallback prevents the driver from using EMAC0's clock register.
-> 
-> EMAC1 connects internally to the co-packaged AC200 or AC300 EPHY and has
-> no external PHY pins. Leave PHY initialization to the PHY driver instead
-> of using the H3 internal-PHY controls. The RMII-only variant does not
-> expose the RGMII clock-delay properties.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v6,1/3] net: stmmac: sun8i: reset the MAC after PHY initialization
-    https://git.kernel.org/netdev/net-next/c/fee9c17671b6
-  - [net-next,v6,2/3] dt-bindings: net: allwinner: add H616 EMAC1
-    https://git.kernel.org/netdev/net-next/c/1cf9c2ac57fd
-  - [net-next,v6,3/3] net: stmmac: sun8i: add support for Allwinner H616 EMAC1
-    https://git.kernel.org/netdev/net-next/c/61240e48a67d
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Since Linus is pushing back on our number of Fixes let's go for
+net-next with similar fixes until the merge window
