@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3435A3537F1;
-	Wed, 30 Sep 2026 00:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D16357D11
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 00:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790729906; cv=none; b=MzKdGI/gdOY4jF3pb3Ctlj5DifthF34aWDD9zSgBlUO0c79VO8B37Qy1AEkE/wKLIafZzxxY90MVSyodKKqzOpRDk/EEnVwWcnRcSqGzuJppz67dFN6uezkuVWrrhsBboV0vGvdoTkfbnQDoRru1flbT7CgBhpFE0VIqwW/GiIM=
+	t=1790729909; cv=none; b=SmbEv+M7bQhTcQow0nPVYia8bv4WheMEhzBWs+dvKsnyh97LR6X81JVl2Fq/isn6Fsh0zMOiBshEY1cxIzks7x0/aXr/XIYhY0aXDXID6g7Go851KyyHcROVY43BP43nkCXsqY2Ddw/+hdW5XMmkwzjzRVZKn0+reAtWbatedvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790729906; c=relaxed/simple;
-	bh=tzZCDoSxNKsQPCDrjUSkAuDBMzxAe8ChtoLNkGU8Mtg=;
+	s=arc-20240116; t=1790729909; c=relaxed/simple;
+	bh=Sb+nL/vmZhesJdgKQfRg78V0R8wIeYMsrUthohV5OLw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n9H1M4fq1bmFOokKBRYjYgBWSi6cg9J10PFxwaQnBRA49cLv/HRhRZc8ne1HN/SgE0A9S3SXJ373I6S+rzBz+9edaGT5h2bgR/j9wHLVrvPGxuNS1NCgtUfzT4BAdSFwHf0Le4Qfvduh4vtfiTU3M3zBd3JT4WMJCoFrbtkM4mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gE3VYECM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=mGtclxH19akEUiVPJyFm1mQqsKE9/kO6rlctTxrdnColffIFiCd4dnK/IunLDY5zv8lAQZ/eGKiZW+HAM0La/D1/koZUkC7n5S2N/5mzTXlAv4/rDQEMe80XZhrwyA+K56nnRvasn4g3l9Sd8lKsLDLqE6oEqesT27jAgyaDBuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuEzmgvl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gE3VYECM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62BB1F000FF;
-	Wed, 30 Sep 2026 00:58:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuEzmgvl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839B11F00893;
+	Wed, 30 Sep 2026 00:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790729904;
-	bh=eIYlOld1RD45fGXjoohuDFPVyi9fhKWU3CLt0C5e65E=;
+	s=k20260515; t=1790729907;
+	bh=DH7qzWtMiIToRXgiDRYyX7L2iWfDYSH7GqE2o7uGoFo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gE3VYECM8FoW0npKH5xKpuwdggOyGLn6hFRw8CfwAWzmsssRbISeUcniXQQcvdzig
-	 2qPYvMhkET/pJ4c4LIwBRm90zURRvqu18Euj1VmxG6i/YPfydGQIZnsm+gjoQkk6YU
-	 neTqXMzRq2+RgZHZpnbijYaP7zV0m7o56L6qcqhozYQWDRlCV/9QS/T40sldD3HrxL
-	 rT1htXwl1SrMqvM6usvF0YqU7pmMYEVQN/HNgaQE6GAQGnDN93fJHHAVjHSLLNDl2u
-	 9sVuvzoY1ZQ+5dFg4oG72uWsp0ntt9SouhKlRfsXmG1F+swdFvFqIKpwlKa0YEL3r3
-	 w3+3Ljgkx/1GQ==
-Subject: Re: [PATCH net v12 4/4] net: phy: restore the interrupt when the
- generic bind cycle fails
+	b=DuEzmgvlKxqJ4+PJDJPJX5ejzqHt/hwwY0or+h8OLukB3b9B1F+gUDV5QIARQuQe5
+	 VAdFt3fcgI/FFgjd0dWfhJDeX3q0jSt1Q49oVHFe2g9gELOy8wGOMi2x0eeLHiuY3P
+	 nQzNayDUBAbBCMQeFN6J4hLLtErAQEhfHKaHeqUgLyw6D0a5ORKVhWWMgCyMFiWjkp
+	 rqimNPRzsCdq7WyzpQhT6/ZZkANaXaTCDToAiEsYhCRlknuovvHZg2y5IFnzWJko5Y
+	 NRiug0EOxV82QS8rFesBJGINUPcrygceF2cLitJlpIkI8dczh22QY4LPZId60e+9U7
+	 EUDml0KCX6dBg==
+Subject:
+ Re: [PATCH net v2 1/3] i40e: skip unnecessary VF reset when setting trust
 From: netdev-bot+sashiko@kernel.org
-To: f@lex.la
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- olteanv@gmail.com, Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- steve.glendinning@shawell.net, f.fainelli@gmail.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 30 Sep 2026 00:58:23 +0000
-Message-ID: <179072990329.434549.4676052812956856566@kernel.org>
-In-Reply-To: <20260927235733.2619081-5-f@lex.la>
-References: <20260927235733.2619081-5-f@lex.la>
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ jtornosm@redhat.com, przemyslaw.kitszel@intel.com, jacob.e.keller@intel.com,
+ aleksandr.loktionov@intel.com, horms@kernel.org, sdf@fomichev.me,
+ rafal.romanowski@intel.com
+Date: Wed, 30 Sep 2026 00:58:26 +0000
+Message-ID: <179072990609.434549.1214110562725821109@kernel.org>
+In-Reply-To: <20260928224454.483072-2-anthony.l.nguyen@intel.com>
+References: <20260928224454.483072-2-anthony.l.nguyen@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Critical: 0 · High: 1 · Medium: 2 (2) · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,145 +60,286 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] When a genphy-driven PHY is attached a second time, the
-  error_module_put unwind clears the state of the live first attachment.
+- [High] When trust is revoked, filters the VF could only install while
+  trusted are no longer removed.
+- [Medium] The revoke path has a race (time-of-check/time-of-use) with
+  virtchnl handlers and no longer has the reset to clean up after it.
+- [Medium] The privilege bit can be lost to a concurrent service-task VF
+  reset.
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the
-  error_module_put unwind in phy_attach_direct() does not undo a…
+- [Medium] In the revoke-with-reset branch, CAP_PRIVILEGE is cleared (by
+  i40e_alloc_vf_res()) and hardware promisc is dropped (by…
+- [Medium] In the revoke reset branch, i40e_del_all_cloud_filters() runs
+  after i40e_vc_reset_vf() has released the ADQ channel VSIs…
+- [Low] Granting trust does not apply a promiscuous-mode request the PF
+  earlier acknowledged but ignored.
 
 --
 
-net: phy: restore the interrupt when the generic bind cycle fails
+i40e: skip unnecessary VF reset when setting trust
 
-This commit saves phydev->irq on entry to phy_attach_direct() and writes it
-back on the error_module_put path. The goal is that a failed genphy
-probe/bind no longer leaves the PHY in PHY_POLL.
+This commit makes i40e_ndo_set_vf_trust() skip the VF reset in two cases:
+when granting trust, and when revoking trust from a VF that has no ADQ,
+cloud filters or promiscuous mode configured. In those cases a new
+helper, i40e_setup_vf_trust(), only updates I40E_VIRTCHNL_VF_CAP_PRIVILEGE.
+The goal is to avoid the ~10 second reset delay during bonding setup.
 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index a9c71a2861186..8bfb154402adc 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1755,6 +1755,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  	struct mii_bus *bus = phydev->mdio.bus;
->  	struct device *d = &phydev->mdio.dev;
->  	struct module *ndev_owner = NULL;
-> +	int irq = phydev->irq;
->  	int err;
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> index a26c3d47ec156..c6732a24b6400 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+> @@ -4943,6 +4943,20 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable)
+>  	return ret;
+>  }
 >  
->  	/* For Ethernet device drivers that register their own MDIO bus, we
+> +/**
+> + * i40e_setup_vf_trust - Enable/disable VF trust mode without reset
+> + * @vf: VF to configure
+> + * @setting: trust setting
+> + *
+> + * Update VF flags when changing trust without performing a VF reset.
+> + * This is only called when it's safe to skip the reset (VF has no advanced
+> + * features configured that need cleanup).
+> + */
+> +static void i40e_setup_vf_trust(struct i40e_vf *vf, bool setting)
+> +{
+> +	assign_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps, setting);
+
+[Severity: Medium]
+Can a VF reset running at the same time in the service task undo this
+write?
+
+A reset from a VFLR (i40e_vc_process_vflr_event()), from
+VIRTCHNL_OP_RESET_VF or from a request for more queues runs
+i40e_alloc_vf_res(). That function reads vf->trusted and then writes the
+same bit:
+
+	if (vf->trusted)
+		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+	else
+		clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+
+Suppose i40e_ndo_set_vf_trust() sets vf->trusted = false and calls
+i40e_setup_vf_trust() after that read but before the set_bit(). The bit
+then stays set while vf->trusted is false. On the grant path the result
+can be the reverse.
+
+Before this patch, the ndo always called i40e_vc_reset_vf(), and
+i40e_reset_vf() returns false while the other reset holds the flag:
+
+	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+		return false;
+
+So the ndo retried and ran a new reset, which recomputed the bit from the
+final value of vf->trusted.
+
+The notes on this version call this race pre-existing, but that
+follow-up reset used to fix it up. Now that the reset is skipped, does
+anything bring vf->trusted and vf_caps back in line?
+
+> +}
+> +
+>  /**
+>   * i40e_ndo_set_vf_trust
+>   * @netdev: network interface device structure of the pf
 
 [ ... ]
 
-> @@ -1896,6 +1897,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+> @@ -4987,19 +5001,20 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
+>  	set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
+>  	pf->vsi[vf->lan_vsi_idx]->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
 >  
->  error_module_put:
->  	module_put(d->driver->owner);
-> +	phydev->irq = irq;
->  	phydev->is_genphy_driven = 0;
->  	d->driver = NULL;
+> -	i40e_vc_reset_vf(vf, true);
+> +	/* Reset only if revoking trust and VF has advanced features configured */
+> +	if (!setting &&
+> +	    (vf->adq_enabled || vf->num_cloud_filters > 0 ||
+> +	     test_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states) ||
+> +	     test_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states))) {
 
 [Severity: High]
-The commit message says irq is saved because "the same label is reached
-when a second attach of an already attached PHY fails, and there the field
-is live". Writing irq back on that path does no harm. What about the other
-two writes under this label?
+Should this condition also cover MAC and VLAN filters that the VF could
+only add because it was trusted?
 
-Take a second phy_attach_direct() on a genphy-driven PHY that is still
-attached. d->driver is non-NULL, but is_genphy_driven is still 1 from the
-first attach. So this block runs again, before the attached_dev check:
+Trust is only checked when a filter is added. In
+i40e_check_vf_permission(), a trusted VF skips the admin MAC restriction
+and gets a higher limit:
 
-    if (phydev->is_genphy_driven) {
-        err = d->driver->probe(d);
-        if (err >= 0)
-            err = device_bind_driver(d);
+	if (!vf_trusted && !is_multicast_ether_addr(addr) &&
+	    vf->pf_set_mac && !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+	...
+	if (!vf_trusted)
+		mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
+	else
+		mac_add_max = I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs, hw->num_ports);
 
-        if (err)
-            goto error_module_put;
-    }
+i40e_vc_add_vlan_msg() only applies the VLAN limit when the bit is
+clear:
 
-phy_probe() runs again on the live PHY. device_bind_driver() then fails
-with -EEXIST in driver_sysfs_add(), because the sysfs links from the first
-bind are still there.
+	if ((vf->num_vlan >= I40E_VC_MAX_VLAN_PER_VF) &&
+	    !test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
 
-That sends control to error_module_put. It clears is_genphy_driven and
-d->driver on a PHY that is still bound in the driver core and still
-attached to the first net_device.
+Before this patch, the reset went through
+i40e_reset_vf()->i40e_cleanup_reset_vf()->i40e_free_vf_res()->
+i40e_vsi_release(). That removed every filter on the VSI and set
+vf->num_vlan = 0, so the VF had to add its filters again under the
+untrusted limits.
 
-Later the first owner calls phy_detach(), and both of these branches are
-skipped:
+Now a VF with no ADQ, no cloud filters and no promisc bits takes the
+else branch, which only clears the bit. These filters stay in hardware:
 
-    if (phydev->mdio.dev.driver)
-        module_put(phydev->mdio.dev.driver->owner);
-    ...
-    if (phydev->is_genphy_driven) {
-        /* The release below lets phy_probe() write this field. */
-        phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-        device_release_driver(&phydev->mdio.dev);
-        phydev->is_genphy_driven = 0;
-    }
+  - extra unicast MACs that differ from the admin-set MAC
+  - MAC filters beyond I40E_VC_MAX_MAC_ADDR_PER_VF (18)
+  - VLANs beyond I40E_VC_MAX_VLAN_PER_VF (16)
 
-As a result:
+The VF keeps receiving on them. With spoofchk on, it can also still send
+from those MACs.
 
-  - The first attach's driver module reference leaks.
-  - device_release_driver() and phy_remove() never run.
-  - irq is never restored from the bus table.
+The __I40E_MACVLAN_SYNC_PENDING work only reaches
+i40e_correct_vf_mac_vlan_filters(). That function rewrites the VLAN ids
+of existing entries and never deletes a MAC filter.
 
-Would every later attach then fail with -EEXIST, in device_bind_driver()
-for genphy or in really_probe() for a real PHY driver? phydev->irq would
-stay at PHY_POLL for good, and the phy_device would leak through its klist
-reference.
+There is also a functional side effect. When mac_add_max drops back to
+18 while i40e_count_active_filters(vsi) is still above 18, this check
+fails even when mac_add_cnt is 0:
 
-That is the end state this patch tries to prevent, reached through the
-path the commit message names.
+	if ((i40e_count_active_filters(vsi) + mac_add_cnt) > mac_add_max ||
 
-The clearing itself is older than this patch. It comes from 6d9f66ac7fec
-and from the persistent is_genphy_driven flag added in 2796ff1e3dcae7.
-Since this patch depends on that path, could genphy be probed, bound and
-unwound only when this call assigned d->driver (for example with a local
-flag)? Another option would be to check attached_dev before the genphy
-probe/bind.
+Does every later VIRTCHNL_OP_ADD_ETH_ADDR from the VF then fail with
+-EPERM, for example a new multicast subscription, until the guest
+deletes filters itself?
+
+The notes on this version say this is fine because an untrusted VF can
+delete its own filters. Doesn't that rely on the guest cooperating, which
+can't be assumed when the admin revokes trust?
+
+The bonding case this patch targets is also a typical case for extra MACs
+being installed. Are the "clean state" wording in the commit message and
+the "no advanced features configured that need cleanup" wording in the
+i40e_setup_vf_trust() kernel-doc accurate for that case?
 
 [Severity: Medium]
-This is a pre-existing issue, not one this patch introduces. When
-phy_probe() succeeds and device_bind_driver() then fails, does
-error_module_put leak what phy_probe() set up?
+Can this unlocked check race with a promisc request that is still in
+progress?
 
-A successful phy_probe() leaves behind:
+i40e_vc_config_promiscuous_mode_msg() runs from the service task through
+i40e_clean_adminq_subtask()->i40e_vc_process_vf_msg(). It takes neither
+rtnl nor __I40E_VIRTCHNL_OP_PENDING. It checks the privilege bit first,
+then sends AdminQ commands, and only sets the state bits at the end:
 
-  - phydev->drv set
-  - the reset line released by phy_device_reset(phydev, 0)
-  - ports allocated by phy_setup_ports()
-  - LED triggers allocated and registered by phy_led_triggers_register()
+	if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps)) {
+	...
+	aq_ret = i40e_config_vf_promiscuous_mode(vf, info->vsi_id, allmulti,
+						 alluni);
+	...
+		if (!test_and_set_bit(I40E_VF_STATE_UC_PROMISC,
+				      &vf->vf_states))
 
-device_bind_driver() does not call the driver's remove callback when it
-fails:
+A possible interleaving:
 
-    ret = driver_sysfs_add(dev);
-    if (!ret) {
-        device_links_force_bind(dev);
-        driver_bound(dev);
-    }
-    else
-        bus_notify(dev, BUS_NOTIFY_DRIVER_NOT_BOUND);
+service task                          i40e_ndo_set_vf_trust()
+privilege test_bit() passes
+i40e_config_vf_promiscuous_mode()
+  (AdminQ round trip)                 vf->trusted = false
+                                      UC/MC_PROMISC still clear,
+                                      reset skipped
+                                      i40e_setup_vf_trust() clears
+                                      the privilege bit
+test_and_set_bit(UC_PROMISC)
 
-error_module_put only restores irq, is_genphy_driven and d->driver. The
-teardown that phy_remove() would do never happens:
+Would the VF then stay promiscuous while untrusted, with nothing left to
+undo it? The window spans a sleeping AdminQ round trip, and the guest can
+send promisc requests over and over.
 
-  - phy_led_triggers_unregister() is not called
-  - phy_cleanup_ports() is not called
-  - phy_device_reset(phydev, 1) is not called
-  - phydev->drv is not cleared
+The notes on this version call this race pre-existing. Before this patch,
+though, the reset always ran after the vf->trusted write, and
+i40e_cleanup_reset_vf() turned promisc off and released the VSI:
 
-On a retried attach, phy_led_triggers_register() overwrites
-phydev->led_link_trigger and phydev->phy_led_triggers. The duplicate
-registrations fail with -EEXIST, so the original triggers stay registered
-and leak. The PHY is also left out of reset with no driver bound.
+	/* disable promisc modes in case they were enabled */
+	i40e_config_vf_promiscuous_mode(vf, vf->lan_vsi_id, false, false);
 
-This path is reached when driver_sysfs_add() fails on a first attach. It
-is also reached on every attach after the second-attach case above.
+That undid anything set up during the window. The no-reset path has no
+such fallback.
 
->  error_put_device:
+> +		i40e_vc_reset_vf(vf, true);
+
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but
+i40e_vc_reset_vf() returns void and can return without doing a reset:
+
+  - it returns early if __I40E_VFS_RELEASING is set
+  - i40e_reset_vf() returns true without resetting if
+    __I40E_VF_RESETS_DISABLED or __I40E_VF_DISABLE is set
+  - the loop gives up after 20 tries while I40E_VF_STATE_RESETTING is
+    held
+
+In this branch, only i40e_alloc_vf_res() clears the privilege bit and
+only i40e_cleanup_reset_vf() turns promisc off. Both run only if the
+reset happens.
+
+When the reset doesn't happen, can the VF stay privileged and promiscuous
+while vf->trusted is false, with "VF %u is now untrusted" still logged?
+
+A review of an earlier version suggested calling
+i40e_setup_vf_trust(vf, setting) unconditionally, before the branch.
+Would that make the bit correct whether or not the reset runs?
+
+> +		i40e_del_all_cloud_filters(vf);
+
+[Severity: Medium]
+This is a pre-existing issue (the old code also deleted the cloud filters
+after the reset), but does this ordering leak the struct
+i40e_cloud_filter entries?
+
+i40e_vc_reset_vf() releases the ADQ channel VSIs in i40e_free_vf_res()
+and creates them again in i40e_alloc_vf_res(). cloud_filter_list is kept,
+and each cfilter->seid still holds the old seid. When
+i40e_find_vsi_from_seid() finds no match, i40e_del_all_cloud_filters()
+does this:
+
+		if (!vsi) {
+			dev_err(&pf->pdev->dev, "VF %d: no VSI found for matching %u seid, can't delete cloud filter\n",
+				vf->vf_id, cfilter->seid);
+			continue;
+		}
+
+That skips the hlist_del(), the kfree(cfilter) and the
+vf->num_cloud_filters decrement.
+
+i40e_vc_del_qch_msg() deletes the filters before tearing down the
+channels:
+
+	if (vf->adq_enabled) {
+		i40e_del_all_cloud_filters(vf);
+		i40e_del_qch(vf);
+
+Would that same order work here?
+
+> +	} else {
+> +		i40e_setup_vf_trust(vf, setting);
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but granting trust only sets
+the capability bit. i40e_vc_config_promiscuous_mode_msg() deliberately
+reports success to an unprivileged VF without applying the mode:
+
+		/* Lie to the VF on purpose, because this is an error we can
+		 * ignore. Unprivileged VF is not a virtual channel error.
+		 */
+		aq_ret = 0;
+		goto err_out;
+
+iavf_set_promiscuous() caches current_netdev_promisc_flags and skips
+duplicate requests. Is a promisc or allmulti request made while the VF
+was untrusted then never applied after trust is granted, until the guest
+toggles its flags?
+
+The old unconditional reset on grant didn't make iavf resend the request
+either, because current_netdev_promisc_flags isn't cleared on reset.
+
+> +	}
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927235733.2619081-1-f%40lex.la
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928224454.483072-1-anthony.l.nguyen%40intel.com
