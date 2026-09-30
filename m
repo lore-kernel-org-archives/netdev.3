@@ -1,66 +1,66 @@
-Received: from mail-yx2-f41.google.com (mail-yx2-f41.google.com [74.125.224.169])
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4363D3498
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E48A420480
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790797928; cv=none; b=jswGfSn4F1jKwvLu4rCBCxOWT92zv7SbCwnk55kjCGtosmFNJAZtiCw7y3cH7LBjTj8TSdMLBJtcAlCwofIpqoPVSNScmM6rprOzPQ1kcEWC7QTnK3ASxgH86Jz6XnKxgfgJ786DPyv1iM1T/kLPGumam5540igP60hAajP3AyU=
+	t=1790797936; cv=none; b=m6PvjmhL8MF4hGx0XIYi2Hrh2MRe9Otj42czOgfFEqTUtdVUpSQSSY5hNhfE7T9d8DUBOqkdzjEdjIrR9M7qWitbsCl521BXBpdRbvAb6YH0VdgXy0jU3D8ZKPDdVryBUReh+kogOtpHWOW/tnOGk892yMRu8yypQYIiI6akqdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790797928; c=relaxed/simple;
-	bh=nJ89Sy3OIv2fjeX4A5ZdXyY+RDPM3pl8eMeJhtFGHEo=;
+	s=arc-20240116; t=1790797936; c=relaxed/simple;
+	bh=RG9HiQy6J4QcwSsTtYxFAG820wshgofatVnI0DLLVSo=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=FDJwRgJUZR9r/LXNDzFOhUmdjGh8J5W3fFo9+zdKnvxNR7FFWws0Ecp7jp/lsdxW1UcNTyH0j3t69p4LtLlKM1bErO/8aisuh93YdFyo7IDZlKYcAVV9n5jkv/8CFCYSsogtHHex6OvPY+zu3zRLozs8Wg4/1O6ZLGgvGNxRS8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PwSE4h+y; arc=none smtp.client-ip=74.125.224.169
+	 MIME-Version:Content-Type; b=kPKwfi7eDEt/zeegA1juA6LjD735StsFOvunKnNEBAUvQPASrz/YCNmUbxcRjiD5N1y7sIMkNQOziIYnSetwOPRE9lVNgbmYFrH9sGL8b4zjMtsOZzsl6XeOTsiPvXM/AZYBYHnpk8WwJWlVI88eRZFy57HmZWIOyqiEX9l7PBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aseM7p8m; arc=none smtp.client-ip=74.125.224.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PwSE4h+y"
-Received: by mail-yx2-f41.google.com with SMTP id 956f58d0204a3-6756acdc3a8so2242168d50.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:52:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aseM7p8m"
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66f7f72a284so5914658d50.2
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790797923; x=1791402723; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790797931; x=1791402731; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=7UswZ1kfk2nEf1n36gb9N0khFHCB4Tmf/Ok6wJ369P8=;
-        b=PwSE4h+yUblwOI8d4cSAy77P5mOz4GgaP+16wWvj5aOmYdWxuBsQxlSq+ENHefdCsF
-         arJrfHIxxkvJnuLDTlNn7oSL9YD8jx9qLAK7mz2+oPtf+FEHnlK0iI0wOf6e8boVqCL/
-         uKGbWotMRx7hYElJ9VNuPAtV0/rrrh/6++vytyJLRpdgOLQmfgqyXpjD48naYCn8jXax
-         ePo1keCltiYDuQcPpmXX19Kd+J/yqV0DqQXFhBhFDcg3jcUMkvVR421LnIALbs0j3HoG
-         TndegiMMrqmWPJIfdJMLDTt1MDDDtVEXUB0HQ5UVypL6+XaROfgdMETse3Zzaunxl/6J
-         jdbg==
+        bh=Auk5W/wWOy9B17as+NabkL4cK70QCRU36zeViRJLAww=;
+        b=aseM7p8mm/Nb+JERVCtks1R5aiObUlUMalvcUJDcI8lhvsomNUWSo0iIxX1zbU4ZPq
+         tL5uGM4egK0SWghXj/FpkuW9zktSItGGO6fwloEHaTAI70t88ZUqUeISh8nSzeYYNSwT
+         IMzzcQFZomimgrwzjx+Gx4eJdwhLWO/1H2LTSvT+aDw/R15URN1QRAgL0X1y4R1GhnS3
+         mTW7kLG/AWJI1vtIppQ/qZw7kl9uPHRRTWxqXixoBtIXSQPt6AE2lGqqSOxwBuhav9dE
+         FbIBSq3WkyGWPj/CQZC/rHnk6tK1EPhHoXNkEMjI+LK+1Sg7tTs8yR8xy6F6XrwYsj/Z
+         sLRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790797923; x=1791402723;
+        d=1e100.net; s=20260707; t=1790797931; x=1791402731;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7UswZ1kfk2nEf1n36gb9N0khFHCB4Tmf/Ok6wJ369P8=;
-        b=yLHH5wg7iVZmOUTG43aFExcKVPHfgLhjMIUwFyp3kB1NUaz4PD3WgrwehNrN6tHycp
-         5qIRHwRkgWvwx6R9NXcWTnCojLG6jgVf87fZG4o6/Q33n5lYg27kg6yqMgNd9/Y2O72e
-         3OpAMEF16UXaqtj6zGnWrVINdSjGLY4Dlo65tNZ+2/SExZIiubsaxzV7sRN5tqAhVFwF
-         Pg1I0/UlYk2Do2a8UzFi1iGp207SwdX0VSvy0I8YxzsNIHsF+mCQJePWrKsmB3J8mowQ
-         9lNw4vysP3YNEBL+4x2dLUVG+PRe51myw8mN4nDFqmvo2fdX5C5GPQYzWAc0QB1nkVRt
-         t9dA==
-X-Forwarded-Encrypted: i=1; AKwUvByMs7Ff5eVuKqzjdSBLKf4UKPuB4qZppDcID2Ql8d2bDDHYfeGgnAxWpYm922oX1QNuIzmmBEU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJtA8AuEa3L6VYEspZNdAfX6YAQeqsW6RJHda/Zr2DSaJvDnbIX
-	pSGiDs/SGw2NsuIW646ywChnWqjzBmFVyqieq0ZAphcr8/e8IfnfT1d5
-X-Gm-Gg: AYBFou1+/Af3wWVVoLgrRUeubAD269jyiVMkLh+8zhsRiZ7qsPUbnKssW+tBSr+ge9O
-	TZXrgtiaB7rwYZOEXTUm3Y4X830X1mTr1GoHnuTZD9/OPo5nr8ZmMZcBnWhNQPAbGBtoKSPImgP
-	SXc7PaUGzTxggLdK80Xvjus+aBzkaUWwPG5lxzKzjFs9a1pskRIs8NdMtGW4kLlv4NyVCI9M1VU
-	AYgcaa0wIjaIGvWvB4upi9OsIzoDg/MMqg6zG/e6QoHndjdkB0qXwCj9NsElZz8flPLNUddsR+x
-	6JcxNzORn7YDHXyGeC3KyKQSjWw//Hk1WBm2hglGQZDjYObjetTo79vvV/PPiO9GXtU94brdXQ/
-	RUKGw6xpujPhd4aM788zMNZqB7o673lSjqqgj8F8RdWqA/sv8iNTBEodifWfkbnbtjAdbv4dZqp
-	/dIMirPQ/Np/8jytPxe7dUtdgx+lyBIIpNKgSBVPJiqhW+sMTnJT4artQalOS6SYFbcxb3cGm+h
-	qAgRtIpUVJ/w2IrFvFHX9eb1gLxsyu4yHfJLpZGv+UqWmdVGJ7d
-X-Received: by 2002:a05:690e:b4f:b0:675:39f6:9bbe with SMTP id 956f58d0204a3-67683446df8mr1125080d50.56.1790797922734;
-        Wed, 30 Sep 2026 12:52:02 -0700 (PDT)
+        bh=Auk5W/wWOy9B17as+NabkL4cK70QCRU36zeViRJLAww=;
+        b=Jop1r8SY55Ox4/+6NVTexacqlVKlOIdDUFsWAzTPBWHvVOk6b8rr2eSTFiptgDC49F
+         wTQD4Evn7rEFanU9zJXUYlBl5Dz5goG8/L4S7a+wvfSIR40vZHBZjRJIvoyKdG/rOepS
+         2HGuHFtigw7s8b8sfv5ZuV8XO3Uh9UAw58S/knz5bGQAwpYjKvyDv/8L5cMlof/jqYF7
+         Itnj5jF2smZIT/kqVmgVEBy9bPD/pDka/9EMCnMSskHjewTfVU2WJZq+cx+q8L5mxdN6
+         Lwpi+nYVVbAwv7vDDZEcw0RFNeTOAwrD1mEfBWOxENf4qHE7SQHFbpibrToddkNo0KRa
+         Fi1w==
+X-Forwarded-Encrypted: i=1; AKwUvBzlk8pekolDT3b0ev7J3hJoZo7X8GXHEdeLkrQWGwHtqJBoyR5G7NtKHi2FliAyOfLNz9GyqkY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLSVNc95F258Ab9x+9PuRxgzp7PIkEEbW3bNIWJvBeJJYYvqxu5
+	r9/yVYEIZHn8L7vfq2Cz+x2uw5YkUbxhn8xRtCGDP8MVFOFTS6p9vxrU
+X-Gm-Gg: AYBFou0Eo5o5xVOBcttWERH3bIKXUtngSgaUayr/CQlyybanKRT18yev3/kTH8IYwuG
+	1vqNMX/S1BNVlaquPVO0sQ+3OZGGF5+Jvmh4bNDViE8TW/GDQHhTkYp7mMPMfKtPU3WCPfiyj43
+	4U8w+wvzCRwXkgGpsQtPZUW1Pkd7+kXP3B5YL0LNqVzVWKI4PgbtGX7o0anhLDFa8lC94oXCO+B
+	ZZdU2SKivPLbE+l9GL12aGCGV55OhzULzu0kvgsYr/Ptv/k9eGkqcACoWaLgu0hGf5Nn6S5G2Ri
+	U6GYCawCWzc0m//1+jNwvd1Ze2hkrWSVUnDpsuFSVrkcelcenx1WxnePbuTK7tJb3NYqKl4B6Ju
+	7uW1q7e4i3lZnLenxPAwrcLxePGCamLayl/qAznS3MlTJmzyEfPB6BAbyPuGzqypwL6sRl5P3Wf
+	Shjj9WHN9iCtC/kTsjy2RWnDCrGNGjvcuNyuOIm8JKU2y0DGgpLwby7k8nh8eMEUFGmkAeTiM32
+	W8gHdjyxSnLodiBOwbvK6hGPbPnUflvBS1SeR1s0g/YrelctJ01T0z+yzqyqys=
+X-Received: by 2002:a05:690e:1502:b0:66e:61c8:33f2 with SMTP id 956f58d0204a3-67683481ba7mr1350879d50.18.1790797930464;
+        Wed, 30 Sep 2026 12:52:10 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67691a15e97sm188948d50.20.2026.09.30.12.52.02
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8acdacd0a2asm3031207b3.21.2026.09.30.12.52.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 12:52:02 -0700 (PDT)
-Date: Wed, 30 Sep 2026 15:52:01 -0400
+        Wed, 30 Sep 2026 12:52:09 -0700 (PDT)
+Date: Wed, 30 Sep 2026 15:52:09 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Wang Zhan <wang.zhan@smartx.com>, 
  netdev@vger.kernel.org
@@ -83,12 +83,12 @@ Cc: davem@davemloft.net,
  Alice Mikityanska <alice@isovalent.com>, 
  David Laight <david.laight.linux@gmail.com>, 
  Wang Zhan <wang.zhan@smartx.com>
-Message-ID: <willemdebruijn.kernel.30c9628e9a7f6@gmail.com>
-In-Reply-To: <20260930111526.2183107-4-wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.66e7c7b6f68b@gmail.com>
+In-Reply-To: <20260930111526.2183107-5-wang.zhan@smartx.com>
 References: <20260930111526.2183107-1-wang.zhan@smartx.com>
- <20260930111526.2183107-4-wang.zhan@smartx.com>
-Subject: Re: [PATCH net-next v4 3/5] net: gso: support re-segmentation of TCP
- GSO skbs
+ <20260930111526.2183107-5-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v4 4/5] net: core: re-segment oversized TCP GSO
+ skbs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,91 +100,65 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Wang Zhan wrote:
-> The re-segmentation added by the next patch splits an oversized TCP GSO skb
-> into several GSO skbs which fit the device limits.  That needs the GSO
-> engine to group several MSS segments into one output skb, so let callers
-> set the number of MSS segments each output skb may carry and pass it
-> through the existing __skb_gso_segment() entry point.  Ordinary callers
-> pass zero for no limit.
+> A GSO skb which exceeds an egress device limit loses its GSO feature mask
+> and is segmented into individual packets.  This is unnecessarily expensive
+> when the device can still offload smaller TCP GSO skbs, which is easy to
+> hit once one hop of a BIG TCP path raises gso_max_size and the next one
+> does not.
 > 
-> Without max_segs, skb_segment() groups several MSS into one output skb only
-> for a device which advertises NETIF_F_GSO_PARTIAL or for a skb with a
-> frag_list which can be split into uniform pieces, and falls back to one
-> segment per skb otherwise.  A caller which sets max_segs asks for the
-> grouping regardless, so the block which makes that decision is skipped.
-> Callers which pass zero keep it, and the re-segmentation path only runs for
-> an unencapsulated TCP skb without a frag_list.
+> For an unencapsulated TCP GSO skb which exceeds gso_max_size or
+> gso_max_segs, work out how many MSS segments each output skb may carry and
+> re-segment the skb with that max_segs instead.  The bound is measured from
+> the transport header, so an skb whose transport header is unset or stale
+> keeps today's segmentation.
 > 
-> The output stays a GSO skb: gso_size is the original MSS and gso_segs is
-> the number of MSS it holds, so a downstream device can still perform
-> ordinary TSO.  Store max_segs in the existing skb_gso_cb scratch context,
-> alongside the call-local data_offset and mac_offset fields, so that the
-> segmentation methods keep their signature.  A zero max_segs value means
-> that no limit is active; it is not a persistent skb flag.
+> An encapsulated or frag-list skb, a GSO type the device cannot offload and
+> a max_segs which leaves room for a single MSS all keep today's segmentation
+> as well.  The GSO type test runs on the features without the limit checks,
+> because gso_features_check() has already cleared the GSO bits of an skb
+> which exceeds them.
+> 
+> This path emits a plain GSO skb, not a BIG TCP one: inet_gso_segment() and
+> ipv6_gso_segment() write the whole length of each output into the 16-bit L3
+> length field.  An egress limit above 64 KiB would give outputs whose length
+> truncates, so the size limit is also capped at what that field can express.
+> 
+> The helper runs on the skb which is handed to the driver, after
+> validate_xmit_vlan() and sk_validate_xmit_skb(), and only from the
+> netif_needs_gso() branch: an skb which the device takes as it is pays
+> nothing.  A skb which reaches that branch pays one device limit test, and
+> an over-limit one pays the TCP header read and the features recomputation
+> for max_segs, in exchange for keeping the output a GSO skb.
+> 
+> Measured on a veth -> bridge -> TAP -> guest virtio-net path, with BIG TCP
+> enabled on the veth endpoints and left off in the guest, so the skbs which
+> the veth hop accepts have to be segmented before the TAP device.  A single
+> iperf3 TCP flow, six alternating runs per state (`-t 15 -O 5`, fixed CPU
+> affinity and port tuple).  The middle column is the same tree with the
+> re-segmentation disabled:
+> 
+>   protocol  no BIG TCP   mixed, no reseg  mixed, resegmented
+>   TCP/IPv4  51.550 Gbps  15.850 Gbps      52.617 Gbps
+>   TCP/IPv6  52.050 Gbps  15.783 Gbps      51.933 Gbps
+> 
+> Coefficient of variation for the two mixed columns was 0.48% and 0.82% for
+> IPv4 and 0.44% and 0.44% for IPv6.  A BIG TCP hop which feeds a 64 KiB hop
+> loses 69% of the throughput of a path which never enables BIG TCP at all;
+> re-segmentation recovers it, 3.3x over the existing segmentation path and
+> within noise of the no BIG TCP baseline.
 > 
 > Assisted-by: LLM
+> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+> 
+> ---
+> v4:
+> - drop the comment above the frag_list check
+> - drop the mac header test, it is always set on this path
+> - take the TCP header from the checksum start the GSO engine uses
+> - test the transport header first, skb_transport_header() warns when unset
+> - shorten the comment above the features lookup
+> v3: https://lore.kernel.org/20260928044102.1004310-5-wang.zhan@smartx.com/
+> v2: https://lore.kernel.org/20260918084651.3022878-4-wang.zhan@smartx.com/
+> v1: https://lore.kernel.org/20260917063854.2011613-4-wang.zhan@smartx.com/
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-If respinning, consider asking the LLM to rewrite commit messages to be
-more concise.
-
-> @@ -4839,7 +4840,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
->  	csum = !!can_checksum_protocol(features, proto);
->  
->  	if (sg && csum && !gso_by_frags)  {
-> -		if (!(features & NETIF_F_GSO_PARTIAL)) {
-> +		if (!max_segs && !(features & NETIF_F_GSO_PARTIAL)) {
->  			struct sk_buff *iter;
->  			unsigned int frag_len;
->  
-> @@ -4874,7 +4875,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
->  		 * now.
->  		 */
->  		DEBUG_NET_WARN_ON_ONCE(len / mss > GSO_MAX_SEGS);
-> -		partial_segs = min(len / mss, GSO_MAX_SEGS);
-> +		if (max_segs)
-> +			partial_segs = min(len / mss, max_segs);
-> +		else
-> +			partial_segs = min(len / mss, GSO_MAX_SEGS);
->  		if (partial_segs > 1)
->  			mss *= partial_segs;
->  		else
-
-Not new with this series, nor high priority, so only if respinning:
-
-Consider adding
-
-@@ -5121,7 +5121,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
-                }
- 
-                if (tail->len - doffset <= gso_size)
--                       skb_shinfo(tail)->gso_size = 0;
-+                       skb_gso_reset(tail);
-                else if (tail != segs)
-
-Because packets looped into the Rx path will sometimes have their
-gso_segs used without first checking gso_size /  skb_is_gso. For instance
-in ip_rcv_core __IP_ADD_STATS.
-
-Additionally for patch 5/5, consider one testcase that resegments, but for
-which the last skb is not a GSO skb.
-
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index 21870341432552..e793aead68372d 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -375,7 +375,7 @@ static int queue_gso_packets(struct datapath *dp, struct sk_buff *skb,
->  	int err;
->  
->  	BUILD_BUG_ON(sizeof(*OVS_CB(skb)) > SKB_GSO_CB_OFFSET);
-> -	segs = __skb_gso_segment(skb, NETIF_F_SG, false);
-> +	segs = __skb_gso_segment(skb, NETIF_F_SG, false, 0);
->  	if (IS_ERR(segs))
->  		return PTR_ERR(segs);
->  	if (segs == NULL)
-> -- 
-> 2.47.3
-> 
-
-
