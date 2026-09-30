@@ -1,181 +1,141 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F604DDB58
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790775552; cv=none; b=LyLf0XkIs5uclQ404hN/SbELEnweE4kQrZhuXAPzjRDurbFKai4jUangbZL+WN8YtjyfqrA1/LaKajAztolCMjq6kJAIiqPLafPyLC/Ktt8VhU4XPv5XnbdrjE4/tbmPKCm6jbBUWJ+h48yUUy9Gys3nDgvdnl0YR3VrxtGzN2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790775552; c=relaxed/simple;
-	bh=A4FkOd1rsHBO9TbAATH42i8t6LdywS4oKcOnDIsJL6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RHd0KRVZod9re2+T656vLVJZRDGPLYi4e4mksSyEEU4s7w/d5u6Lf3xVyK6DdcCkyE39c1XWbPxI8fDr74Ce+iW+Jr7b5Od5PaM94XXDzH14Qt1sAOlqXztJlDDGEzf8Uy35qa5oFQhbHVstmsk3jLv9VGmhzg6VFtREBt3xBhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDFEAdnq; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F74A4DEC2C
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 13:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790775824; cv=pass; b=XTS+j1GKF6r+5tBZZNlOBRPK0VuHaSWlfW8sgDyEi/Wyq4hM89zdwFudeuJPWK9SexOkPYD+5HGSXhydMvWcNsHwRKll5clOYTLdxJVV8sncoAB0ullqDGLzg7nAYa/nf6wWuHWN5UrSX+2wEXmlquzU/eQdZH4sRtihn78X5w4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790775824; c=relaxed/simple;
+	bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xbagyv1Tz+Lx6Lki67Aliy2v3COQzfHwh0AWbBS3mNYrf4picEXkHcrFSV6oxOlWSEEoBlTtloqQz8vRBUWQmF9yF4/KeBYyTJ2DbV/XkMo+GsAnRmTAAnN0ibSYnHBKFaXj1WBxKpTacxaBFDNgpBfHM444TUIw7VMclxbUpks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Abwb83fs; arc=pass smtp.client-ip=74.125.229.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDFEAdnq"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so33526235e9.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:38:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Abwb83fs"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5ba3ce4795aso1096992e87.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 06:43:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790775811; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gmGda352zqAGxjTSqX/ehrG25FBMinxes4QxReEkgIIWmt6tVCDD+7DggZgnHSvSaS
+         jdnzQ8rSePxnxlHtZaKmStD6vrUj4NkiacYlPYC3gQ/DubXW/JJjzNBwkxVPQ/+VvaqM
+         vSvzc24/Zp/FmLE5MZ8IDRo26HM7vxkz76Ve7mAD692BK44U0Bc+uQL9Z7kyYcsg95Jf
+         9oj3XTGlN98bK7OTDD/+eVOD7V3w1nJEtvWXVIpRc5rXBpr18yO0YpDLWEoONW12tidz
+         1bxlHPK075qsn7W3DyqIM4B6pRU0/3MOLYm2spHRdI/CT/nXT8sd5Ps4g6JjqdzkZRyb
+         XAFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
+        fh=XdXDDHcqzSrON29VQzFojdg3AheEy9ElQF4VjNDyXNo=;
+        b=mFQDwrBQ42H8t9p5CfVDBvxxiLfgBPD6hK9A+3C4mQpD5dWTH90Wy+9+z67j+Y7OdC
+         r0Y1eVgRrL6JwP5FijfkIVCsOt7hDBf/fQ3Kh9GLUn10Z/peZowbqeZvZM96/4RJCvel
+         Fck8igMfff+9T9VEdSjVKMwER+xeVHGdv3fEWpI3hsK0NnoBEMDUTSuB0gkEvCwKQTTF
+         tt0ew6orqu0hAIp9+Vc0eH5sk71K3IueIYHM+7wCKWDbyDm05vupKK6EDQY+oXeklbeq
+         AxrJH5HLT3eGrcM6XQMcpQP6tvyq3gRG/gmLgr65Ezm2XGhDNtODeMDkKBrMk6+IUbz1
+         FikA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790775536; x=1791380336; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vqNw45I5i0A+TvN7Yvp1p4lxx6mkgXUC3KRKlj0F9r4=;
-        b=jDFEAdnqQQfoyp8qvfvoTdx4GHvMSrU14HM1MkbuVJocHbuNw/6oskblOn40/H/1tN
-         yXvxfBFYrMTgLczVFwmzqr5s/FdqBZi/Eh4gIsfaVWLDts1IOvapNhTbXteMzZWhP+xp
-         Po1N7NZoZlj6GM4LuFTYZdK6VT1fv40Kp25axbajQ7Z+f54HSO7mc6dvBc2Kh9+AkkEQ
-         nP8YBvtaDd6NpTPAt/a2QCXpTZRd/k2WJmWWm8l72cXH2ahRciOAbx4TlEyIF5Qg3y2H
-         2emYh4uQBU7X4YZj/hVVXpy32LjDypbtusFkpLkaETdTnJ4p8aWQC50SiGbUlf6gvi67
-         aI0w==
+        d=gmail.com; s=20251104; t=1790775811; x=1791380611; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
+        b=Abwb83fsHbVpFom07AyBbpD8lFlxcGjmykARrOKp1fEkZ5oFgOMcOil6oA+XBjIA4u
+         VpHxhpr99eY0XrjQ0fH6vQj2WGP4SaUUkQbPZkV6eL0+Eh2K7xGmReydj100JWDeaA2m
+         Ejoy0YYjPwnLLA8Qva95dPsyhbZy/LE7x2OPGuRAf8bSsFJfjKIMEzixk/DfeL/Fv3RF
+         4QI1Yh3RBlRp2YPpWQI0aph0AsUN5ZcrBCMzRRZkvqgau45sRl92pAOYYeW6f+yjnCHQ
+         sWuLaMYhVV1MBs8lB3BGRT3u97pMMllnj4pmMtDtq19bRWSxI1U8dgz459H0yoRTlXuq
+         Tpug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790775536; x=1791380336;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vqNw45I5i0A+TvN7Yvp1p4lxx6mkgXUC3KRKlj0F9r4=;
-        b=U9X3faiTvtAgKodxvssOxV64FK2/dYAI8KaBjRjKtiSySz0XGCuiVuVtjrH3P+13Re
-         PkalXWB6Pk0VsdeJ6MKb5Naal6E5P+to16NcPPcmZLw6Lm7JdFH6Y6m7ZoQvKSzW1T1F
-         yWrvK0etRBcbwf+zhkuLBdjmnBKIO16KqynrYW0Gecu8lnMMu4/ue0w2oW6GpU9XmsoL
-         5Uszw7LgGavrcMg1LRv2y94Oi/dtg5sCcJ4aT1leN7SobLMPy2Icyl8ZiX64/nXq+wP+
-         HUIk8MsxibL2BGPphjtypLwu9XwfhhukzNAr+k+qZn9EMIKi+wHSi63TTpB0bBD2w8lX
-         9pTA==
-X-Gm-Message-State: AFuF++nRMj0+142C6NXA2B+jTmdOPdgoBx9Eyi3lLuRWmTgUG1dZBXEE
-	EhfxSkmPwuIYvVtw7CmTg16GpMAOtVvJUhzVmkdpxCPEtq+p8RSx3hjEdoUAqVik
-X-Gm-Gg: AYBFou3ktvnBRMjh6aVCvFtSrqoA6eXrKV+VzqIxKPMFFyAuqaWUreSk28BfLSGj6Qz
-	Mq4Aj29SYJHcwYw4lsdenHKKN2JwYXbPYVPFHxNNbjKTvcSDg/x/dqWYO5kszkOfsMAjsWK2fJc
-	/qezYC6WOYBLBh1+3zlHB7KlAu/Kv3B9Gbyr1aXosoy5hCpNg8+ulXgpZj6Na/12ucMcaUK6ju5
-	xfekddthxFB8jewAoBAiPNg/knFp7SB3t0M53FvX57p/OgHlyrHjLPS47a3n9d4DZFmF50ZRmND
-	dIiRZe2xO6XolEdUjxDjUYQQ6uPoTzzN6cs+Ge6AwxzKhOAbHqoyN2fc138yG63klS00R0PpCAp
-	iorCxP8tGtDV4nxuufgrCrJAsT+l7IYa8mYVTl+g1mVT9QXhNQ34OakqSirONpCt5lWb7rieeZE
-	b8LLuv/QF4rhxvyFIrzPvEChUvdE/ai7pv5M+jrbRK0ScU37NL6x+jRtrjrmlXjXwicMydw+dmy
-	JlA1+sD4cQU90Px9g2rXNYGtrW5dK4LgcueML1p
-X-Received: by 2002:a05:600c:3145:b0:49f:bd3c:bc1a with SMTP id 5b1f17b1804b1-4a01b00d9bamr25280835e9.21.1790775535365;
-        Wed, 30 Sep 2026 06:38:55 -0700 (PDT)
-Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b029d61e4sm3504730f8f.15.2026.09.30.06.38.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 06:38:54 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: radhey.shyam.pandey@amd.com,
-	michal.simek@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	daniel@iogearbox.net,
-	jacob.e.keller@intel.com,
-	joe@dama.to,
-	suraj.gupta2@amd.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net v2] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
-Date: Wed, 30 Sep 2026 16:38:51 +0300
-Message-ID: <20260930133851.663023-1-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
+        d=1e100.net; s=20260707; t=1790775811; x=1791380611;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cCtGCKJIdKETCLLrblWPIJiV47ko5Aowu8J0xSZcZvA=;
+        b=NetXhYgdkFdOOuq8DRj0moE1L3uhsEv5fDdit2goRlaOXpx3h68+AdrmDjShr6KSnc
+         TxEbEhwZiAkKU/N2rV5YFX68TPwf4tBZU0cmr++WDKxiL0vURjpHI1EQDv04rtXv2Cm6
+         Su8XWJPTt0uHc5JP0qQ/SGRSrNw9UIbEQPMqicdj0JB3qHSsvzB4co44W8y8UsFwhTDg
+         Eg9gKgrH3pttzlDefxXjAw6LN6RyK4wn/sWKobaHldOGh7cAywOiEe8cMdJHExeP3Ufh
+         OGj14yGfkVCc0yHJljBg2Bxnr+XHo5n9isV6vu8hHFyWVr25QNc549Ni4BcPGjU9hUGY
+         e0Eg==
+X-Forwarded-Encrypted: i=1; AKwUvBzOlOxtpgRjAlAe4DlsG7DN8676AfqVACa7O1yXP5IjtkrDv/UtM8fMuqJhUyEKNUl+IOgmOy4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI5p+ZywtlpE4wOotqdkORPp5GWar046NkqvWv8esDLJoMrzolE
+	utunMAtRlbZuuyfvOjtA/GgeAmG60XPqv7Vw7x0n3FCQb/CDZnD7bpIncG9iOLmVgMLx0SBQP1g
+	lNPZ21J+yoNsU4GKZCREC9URdu7HhAqk=
+X-Gm-Gg: AYBFou0Q1m8OsJm86XWMM/nu4Yyw3Z2dHLCe078dQk4MjZhh1rMRzqHb3bcD3abOzY5
+	WGYRpKlXTPJrIgQfuM1mTD4ljf6FoN2X6zdECkeQ7MetvvgZU6axy3BOdWmMunOFiepzOt84nJE
+	jEfEGL1m+s9b9zkFUXTKH1XmtFPZ2ELPCEukDL/FUGwBqozYu4SvHsmL0vwkUi5KLMWvGkeNZ7Z
+	RcK9EBRhC2PGnprXmieayrulCesNz+f/k/pm9eoFIgaTAKy72PT9PVIUDqbQ7newamgN/PykOqg
+	9JVBdDxTRUfSTmidSw1esgUUrkOPb/zStHJvrP5JZ33T/8QGjFO0Ul04xGRawln65FUQ7An8Hab
+	ZRuyYQd4SJYx90yXfeqO5dB7mZDRRpPloxBbgZ5IErQff
+X-Received: by 2002:a05:6512:3ca2:b0:5b8:f83b:30bf with SMTP id
+ 2adb3069b0e04-5ba405f9b82mr609416e87.65.1790775810584; Wed, 30 Sep 2026
+ 06:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260930112842.21323-1-sigefriedhyy@gmail.com>
+ <20260930112842.21323-3-sigefriedhyy@gmail.com> <235a33c2-7138-4815-820d-793568757d95@6wind.com>
+In-Reply-To: <235a33c2-7138-4815-820d-793568757d95@6wind.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Wed, 30 Sep 2026 22:43:26 +0900
+X-Gm-Features: AclHuK-5JDzwUkEH5VWEa1bCvpw7pms_UcYcspNYWPTwaPuJPPDlw6Pn3dQKWJk
+Message-ID: <CA+7S2v+VaVYksOpuUKzo+DoWZ97M_XKvnMr8cCcgwTkrOxsvEw@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 2/6] net: change netdev_hw_addr_list count
+ through helpers
+To: nicolas.dichtel@6wind.com
+Cc: Ajay Singh <ajay.kathat@microchip.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>, 
+	Kory Maincent <kory.maincent@bootlin.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-axienet_dma_bd_release() walks the RX ring to unmap and free every
-receive buffer before releasing it, but frees the TX descriptor ring
-with dma_free_coherent() alone.  Any descriptor that
-axienet_free_tx_chain() had not yet reclaimed still holds its skb and
-its streaming DMA mapping, and both are lost.
+> If you respin a version, you can use netdev_hw_addr_list_count() in
+> __hw_addr_list_snapshot() also.
 
-axienet_stop() disables TX NAPI and stops the DMA engine before calling
-it, so nothing reclaims those descriptors afterwards.  Bringing the
-interface down while frames are in flight therefore leaks up to
-lp->tx_bd_num skbs and mappings each time.
+Thanks, will do if there is a v10.
 
-Walk the TX ring the way axienet_dma_err_handler() already does: unmap
-every descriptor whose cntrl is still set - axienet_free_tx_chain()
-clears it on reclaim - and free any skb still attached, as a drop since
-it was never transmitted.  This relies on axienet_stop() having stopped
-the DMA engine first, as the RX walk in the same function already does.
-
-tx_bd_v is NULL when axienet_dma_bd_init() did not get as far as
-allocating it: axienet_open() does not check the result of the reset
-that runs it.  dma_free_coherent() accepts that, so skip the walk then
-too, and drop the comment claiming the ring is always allocated.  On
-the axienet_dma_bd_init() error path the TX ring has just been
-allocated zeroed, so the walk does nothing.
-
-This was reported by the Sashiko AI review bot.
-
-Tested on an AXI Ethernet MAC behind a PCIe endpoint: traffic passes,
-and after each of ten down/up cycles and five module reloads, all made
-with traffic running and each running axienet_dma_bd_release(), traffic
-resumes and nothing is logged.  The leak itself was not measured.
-
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Assisted-by: LLM sparse
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
----
-
-Notes:
-    Changes in v2:
-    - Skip the TX walk when tx_bd_v is NULL, which axienet_open() allows
-      when the reset fails; v1 would have dereferenced it where the old
-      dma_free_coherent() did not (Sashiko).  Drop the comment that claimed
-      the ring is always allocated.
-    - Free the skbs with dev_kfree_skb_any(), so they count as drops as in
-      axienet_dma_err_handler(), rather than as consumed (Sashiko).
-    - Say that the walk relies on axienet_stop() stopping the DMA engine
-      first, rather than stating it as a guarantee (Sashiko).
-    - Kept Jacob's Reviewed-by, as the changes are small; please say if
-      that is not OK.
-    - The hardware test is v1's.  The changes do not touch the path it
-      exercised other than how the freed skbs are accounted.
-    - v1: https://lore.kernel.org/netdev/20260927081034.350422-1-maimon.sagi@gmail.com/
-
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 23 ++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 1722b7038f34..8bf27e20e103 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -186,7 +186,28 @@ static void axienet_dma_bd_release(struct net_device *ndev)
- 	int i;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
--	/* If we end up here, tx_bd_v must have been DMA allocated. */
-+	/* tx_bd_v is NULL if axienet_dma_bd_init() did not get as far as
-+	 * allocating it; dma_free_coherent() below accepts that.
-+	 */
-+	for (i = 0; lp->tx_bd_v && i < lp->tx_bd_num; i++) {
-+		struct axidma_bd *cur_p = &lp->tx_bd_v[i];
-+
-+		/* axienet_free_tx_chain() clears cntrl when it reclaims a
-+		 * descriptor, so a non-zero value means the mapping is live.
-+		 */
-+		if (cur_p->cntrl) {
-+			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
-+
-+			dma_unmap_single(lp->dev, addr,
-+					 (cur_p->cntrl &
-+					  XAXIDMA_BD_CTRL_LENGTH_MASK),
-+					 DMA_TO_DEVICE);
-+		}
-+		/* never transmitted, so account it as a drop */
-+		if (cur_p->skb)
-+			dev_kfree_skb_any(cur_p->skb);
-+	}
-+
- 	dma_free_coherent(lp->dev,
- 			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
- 			  lp->tx_bd_v,
-
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
--- 
-2.47.0
-
+On Wed, Sep 30, 2026 at 10:03=E2=80=AFPM Nicolas Dichtel
+<nicolas.dichtel@6wind.com> wrote:
+>
+> Le 30/09/2026 =C3=A0 13:28, Yuyang Huang a =C3=A9crit :
+> > The count of a netdev_hw_addr_list is changed in several places of
+> > dev_addr_lists.c and a few drivers read it directly. The next patch
+> > needs to account every change of the count of dev->mc.
+> >
+> > Add __hw_addr_count_add(), __hw_addr_count_inc(), __hw_addr_count_dec()
+> > and __hw_addr_count_reset(), use them for every change of the count
+> > and rename the field to _count so that a direct write stands out.
+> > Readers keep using netdev_hw_addr_list_count() and the netdev_uc_count(=
+)
+> > and netdev_mc_count() helpers, the few that read the field directly
+> > are converted. No functional change.
+> >
+> > Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+> Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+>
+> If you respin a version, you can use netdev_hw_addr_list_count() in
+> __hw_addr_list_snapshot() also.
+>
+> Thanks,
+> Nicolas
