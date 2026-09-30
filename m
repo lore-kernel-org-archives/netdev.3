@@ -1,138 +1,167 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D86147532B
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2DB3CF210;
+	Wed, 30 Sep 2026 22:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790808601; cv=none; b=fnxxZch9jy0sS7HkIcX9Bs74DiFnzWJo+FhM4jyAelLScCkEHFC2PYyiMxLV/u3eqokNTm6Uuutotw7NO/ABJBQnMi1j0qf2ebjbtwBcgWBkZAfYrZ7gzjZmnJfVBlzEgkKB4185QS8KZTyAxoMtpM2W7j8xyNnimcrJRjdXzYg=
+	t=1790808796; cv=none; b=eHc9uGgNw2oUmcqMZrOFzul8q0PWeXBIHlidrH7rG5V+3bSXgZuvgRQLxtXSbMtensOr3gmjY2ui4rCmP1znFQbWBFMFajSugyvMDwcCPg2S1yXDcLir0y7nPdGhyHI4kZ0ugBncw2qW/z4lo0b6UEqgeRLRWoAMrVwo2P74h+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790808601; c=relaxed/simple;
-	bh=j0LEvXObH71hDZRY5WG5+a5o+/RerOV7SsoqXWSbysk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aODTVM5RjtErWnwDR7AG2ACr6UTD2vrg7CtHYNv9RfL90rZybV/XBMn315nBGHpGmvntImwUKNrWd/ZQvg+AmvL8Nbfk776JCes29JCJGIQ4S5TODcKpO5aOzJBeUIY31R+Zz0/JTp6KyDwaXcZoBffrcv/5lU9TOYVkl3yxumY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cLgTa7ep; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790808796; c=relaxed/simple;
+	bh=UhfM0G+kTLgyxZZAX2wlZvUt+48Vvwcr5UvtCZH+oFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bCCSCf4qBFAZnh3fKB9lZUYNPTuEn54WHVVw92B5LsZAKIPBEY2Ee2nMdCohE7BjDzj3mFNclZLV6Pnoy/67suCNsmLch8e4zm6flDgqoI7kSQCddZE1XlsFIKqWGDRRBf41g5s4TLsZH64jzgimPQs6woE9mGB3OGyES5XvoSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6f3c24e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cLgTa7ep"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b6so32898755e9.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790808597; x=1791413397; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CEXFn4CcqNXZi8Xfb1/9aMVRytKizyJNcxUrexiVgfE=;
-        b=cLgTa7epjb6cSTbAthL7Ts7lWnO69zW40AfOvkUANNziOFStot20ukiEpb5rdyxdAG
-         OkuysLpJHS82sAqYTo7duZgmngZiZlKJxvrcE7Oznwf9fo5us57jlCmULmTujLjsXeFR
-         uCOijRNI0b3zA/lnGRi1lXD3U/WEVFkrwc+kbdjd8tX/2hdL6wo+njdjthOAdiK2u6An
-         JcXbjegnEQnI2i3fbjiszf5qKQjXndj6bu6nqCRWSQ43BRG6lciOf8QK6ntRT/JjvOc6
-         W4H/VrgEo5clf5jkRFSy8puABVjNFkAWRecXGQIhWgNUaoc+imf3kD5qj18vOwdiGU3t
-         yVVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790808597; x=1791413397;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CEXFn4CcqNXZi8Xfb1/9aMVRytKizyJNcxUrexiVgfE=;
-        b=qD7kn63Me12+GXEwjFuoxsyNdAr8QMpaPb5yjb43mUrFS+vVL04idZLIlIA47nWpm+
-         z5a7O5gW6CZ9HmgxC9LU/HJyMnmOUtt1izhXxcgmUEie6/CyNjup3WyWwlb66cdm0rYh
-         +9fK1BoM4GVfsBHfuP6r2XLPTGKorhfKKaaOvobrDSnthk5uaPsxmkAhcjPAvT/PqTY2
-         Z7w8b5q8NL2COuk+ZobCcg6VPu3jeVJmZ4QgkpjVrzbkd+CvPKGtkfSwJOh1XQxXQhWR
-         vb/Ll/SaLT4alsRnPtqOHx6fAZzh/XWpKvEAP5PGvRNTVZ8Ypsz2mnJ5OF9mzpgOneW/
-         F5Bg==
-X-Forwarded-Encrypted: i=1; AKwUvBzxMo2x81pcfoYRioIHPNcYDl1JBr7rGNmBFYfKGmRzGStnSqxKjJpGLnDg+COfiGmM7L39eFQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nVDTJZSsaJ7hB6yruYlP8lbB62Du1Wlxwb7CXaMiZVIWNlriFQ
-	bIPzdWE1XrEbcAzdHgyNKMkJRPVtX5a4b7GqjY16uA8bw9QA42OqvgyS
-X-Gm-Gg: AYBFou1EBYmQOrtackRsvTej0+dFl1A9orRA3OT0s9syF93j1/Kz0gZ/zx4TrWeOVRK
-	WmwA6s362pZLW8JcckTdBJRYisxLpndDsvTgIzVi2a5E3qOrjE3W+LVb1nT5e7c7h5FisihzW8F
-	A7qa+UG4QWfV3mXOjHmBWnqR/uleVR64+Ycippiv2ii2H8ufAPtuysb9KyzDtE26uSpY2U8TSDU
-	+91stfPC5eHqR+VHXWX/A4h6EZwYYNbaL0iIvLqC2x/XhGtZXOxBtUn2D8KCh9Elbr9Q6McGuyy
-	z2dmlWqJ5m8lRHX2Tbz0ZKBANbjMY8fW+Alxu8yX37SPpRT4jXdYrDH0P6INfYpkxAhlSsp4/zs
-	Cf9lV5gxLy+4CJ2mqdv3uKR7np/FUwrmVAbo6e11epn8TQvwbaPUgv21zKLwl4+nNAaTZOTuKYc
-	UsGv4mwjWtOfys7fKARa72iTbMyCVBaGo2eFK81jckBb+2Aa5x5MKxBWbTppEhXSm7bKlv
-X-Received: by 2002:a05:600d:4448:10b0:49f:ce78:3564 with SMTP id 5b1f17b1804b1-4a01b11bedcmr35960895e9.21.1790808597033;
-        Wed, 30 Sep 2026 15:49:57 -0700 (PDT)
-Received: from metepc ([46.197.185.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f99a332sm31602845e9.12.2026.09.30.15.49.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 15:49:56 -0700 (PDT)
-From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-To: oe-linux-nfc@lists.linux.dev
-Cc: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
-Subject: [PATCH net] nfc: nci: fix out-of-bounds read in nci_core_reset_rsp_packet()
-Date: Thu,  1 Oct 2026 01:47:06 +0300
-Message-ID: <20260930224940.725976-1-omermetekaya0@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6f3c24e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A4C1F000FF;
+	Wed, 30 Sep 2026 22:53:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790808792;
+	bh=S5YQQHsyLdAZTatqcMV/D8SWkHaopLEYGQzEyksxTkE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=T6f3c24ecTDBif2RR7B33lPWGhRWrUzcBRcya6D1HLJt5bKuP7C6H+b3oao5YlofY
+	 x/Px162+GPfxnGcqQfYCLQdt0kwIXudRcTqaaJOy4bPe7iNa33B8O1hYLs82TPW0sF
+	 1M4I9FOdKoFQklFxiarScdi3H2zpKdgCwfItXuvxplhreFlfhaG8nv4/lUUyHgGtJf
+	 +K3ZVvSj4qu5rpZyKovgRZTEBXxr8Y/EJDLYqxTNBfylqOTyO7ftLcvbZKHIz6+eXn
+	 3Ggc/m/Kk7z/bAa+I7cVbApuBs6Lw6uSi3RWGCbZfl3yEvDXLTklh03UE1bL6RpHeV
+	 eNadpr992Q4qw==
+Date: Wed, 30 Sep 2026 15:53:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Romain Gantois <romain.gantois@bootlin.com>, Daniel
+ Golle <daniel@makrotopia.org>, Dimitri Fedrau
+ <dimitri.fedrau@liebherr.com>, Frank Wunderlich
+ <frank.wunderlich@linux.dev>, Pietro Ameruoso <p.ameruoso@live.it>, Aleksei
+ Sviridkin <f@lex.la>
+Subject: Re: [PATCH net-next v18 09/10] net: ethtool: Introduce ethtool
+ command to list ports
+Message-ID: <20260930155310.775843d4@kernel.org>
+In-Reply-To: <20260927133619.955236-10-maxime.chevallier@bootlin.com>
+References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+	<20260927133619.955236-10-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-nci_core_reset_rsp_packet() guards with skb->len != 1 before reading
-rsp->nci_ver (offset 1) and rsp->config_status (offset 2), but this
-admits a 2-byte payload where config_status lies one byte past skb->len.
+On Sun, 27 Sep 2026 15:36:18 +0200 Maxime Chevallier wrote:
+> Expose the phy_port information to userspace, so that we can know how
+> many ports are available on a given interface, as well as their
+> capabilities. For MDI ports, we report the list of supported linkmodes
+> based on what the PHY that drives this port says.
+> For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
+> can output on this port.
+> 
+> Tested-by: Aleksei Sviridkin <f@lex.la>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Fix by replacing the != 1 guard with an explicit >= 3 check before
-accessing those fields. The 1-byte (NCI 1.x status-only) case is
-handled first with an early return so nci_req_complete() is always
-called regardless of payload length. nci_valid_size() in the caller
-guarantees skb->len >= 1, so a zero-length payload never reaches this
-handler.
+> +static void __init ethnl_phy_names_populate(void)
+> +{
+> +	const char *name;
+> +	int i;
+> +
+> +	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
+> +		name = phy_modes(i);
+> +		strscpy(phy_interface_names[i], name, ETH_GSTRING_LEN);
 
-Fixes: bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
-Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
----
- net/nfc/nci/rsp.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+Feels a bit backward, we run thru a switch statement to dump it down
+to an array.. Why not convert to an array and then make phy_modes()
+also use it?
 
-diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
-index b0ab4f5ac..e52956bf3 100644
---- a/net/nfc/nci/rsp.c
-+++ b/net/nfc/nci/rsp.c
-@@ -32,16 +32,22 @@ static void nci_core_reset_rsp_packet(struct nci_dev *ndev,
+> +	}
+> +}
 
- 	pr_debug("status 0x%x\n", rsp->status);
+> +static int port_fill_reply(struct sk_buff *skb,
+> +			   const struct ethnl_req_info *req_info,
+> +			   const struct ethnl_reply_data *reply_data)
+> +{
+> +	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
+> +	struct port_reply_data *reply = PORT_REPDATA(reply_data);
+> +	int ret, port_type = ETHTOOL_PORT_TYPE_MDI;
+> +
+> +	if (nla_put_u32(skb, ETHTOOL_A_PORT_ID, reply->port_id))
+> +		return -EMSGSIZE;
+> +
+> +	if (!reply->mii) {
+> +		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_MODES,
+> +				       reply->supported, NULL,
+> +				       __ETHTOOL_LINK_MODE_MASK_NBITS,
+> +				       link_mode_names, compact);
+> +		if (ret < 0)
+> +			return ret;
+> +	} else {
+> +		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
+> +				       reply->interfaces, NULL,
+> +				       PHY_INTERFACE_MODE_MAX,
+> +				       phy_interface_names, compact);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
 
--	/* Handle NCI 1.x ver */
--	if (skb->len != 1) {
--		if (rsp->status == NCI_STATUS_OK) {
--			ndev->nci_ver = rsp->nci_ver;
--			pr_debug("nci_ver 0x%x, config_status 0x%x\n",
--				 rsp->nci_ver, rsp->config_status);
--		}
--
-+	/* NCI 2.x reset response carries nci_ver and config_status;
-+	 * a 1-byte response is the NCI 1.x status-only form.
-+	 * Require at least 3 bytes before reading those fields.
-+	 */
-+	if (skb->len == 1) {
- 		nci_req_complete(ndev, rsp->status);
-+		return;
- 	}
-+
-+	if (skb->len >= 3 && rsp->status == NCI_STATUS_OK) {
-+		ndev->nci_ver = rsp->nci_ver;
-+		pr_debug("nci_ver 0x%x, config_status 0x%x\n",
-+			 rsp->nci_ver, rsp->config_status);
-+	}
-+
-+	nci_req_complete(ndev, rsp->status);
- }
+please move the port_type init from inline up to to here.
+initializing things inline often lowers readability
 
- static u8 nci_core_init_rsp_packet_v1(struct nci_dev *ndev,
---
-2.55.0
+> +	if (reply->mii || reply->sfp)
+> +		port_type = ETHTOOL_PORT_TYPE_SFP;
+> +
+> +	if (nla_put_u32(skb, ETHTOOL_A_PORT_TYPE, port_type))
+> +		return -EMSGSIZE;
+> +
+> +	if (reply->upstream_port &&
+> +	    nla_put_u32(skb, ETHTOOL_A_PORT_UPSTREAM_PORT,
+> +			reply->upstream_port))
+> +		return -EMSGSIZE;
+> +
+> +	return 0;
+> +}
+
+> +static int port_dump_all_dev(struct sk_buff *skb, struct netlink_callback *cb)
+> +{
+> +	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
+> +	struct net *net = sock_net(skb->sk);
+> +	netdevice_tracker dev_tracker;
+> +	struct net_device *dev;
+> +	int ret = 0;
+> +
+> +	rcu_read_lock();
+> +	for_each_netdev_dump(net, dev, ctx->pos_ifindex) {
+> +		netdev_hold(dev, &dev_tracker, GFP_ATOMIC);
+> +		rcu_read_unlock();
+> +
+> +		ctx->req_info->base.dev = dev;
+> +		ret = port_dump_one_dev(skb, cb);
+> +
+> +		rcu_read_lock();
+> +		netdev_put(dev, &dev_tracker);
+> +		ctx->req_info->base.dev = NULL;
+> +
+> +		if (ret < 0 && ret != -EOPNOTSUPP) {
+> +			if (likely(skb->len))
+> +				ret = skb->len;
+
+smells of pre-commit b5a899154 netlink
+Can we delete the skb->len check and override here?
+There's one more such construct below
+
+> +			break;
+> +		}
+> +
+> +		ret = 0;
 
