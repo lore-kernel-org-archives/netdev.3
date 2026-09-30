@@ -1,84 +1,100 @@
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B5751FCA5
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC2C3A872B
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805519; cv=none; b=dJfV/hAZHDGylT1rb3eZZqEnMqtwrnZ1dm3Rg+Jc/43po6PmEZsArRnIKMy9ESVjUX+ZzDzMJrm6RoSnnrPev9QDoiR2p6uqqkOc6gB8AXmKRrvdoYKNbMsnMGwbCc6bMrpyOEXmPf/MPQGTGEFArL05DwfOQ4iBpbWZxyOlg08=
+	t=1790805701; cv=none; b=rt/+WKuCA/fj877pB1dkSGXA2Y+lE6tCqBdaMFnfdpt0SbHknL3adnOwrdZ83fupVwou5rhxwnj1L8q/vi65n9B21mos0DjCjiNFOYKSMCsaYBcf9xDpo5MOGZahVLmmpghKugcB4xt9dyeJpIzt0jHL4rH5/5s35b9MkIa+VDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805519; c=relaxed/simple;
-	bh=zUk+kXfcT81eZAHS44EsoY17GzM/VsmPHONlY579Id4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ct7HtnSvFYBOvolYXak1ppFUF/n7O5sxcSyPyZBOXM92X2ekiVCKuwHa5vg4DsNZKPLss8aheDfZ89rpqLDvR719cVdUyjZB/d0oNLlm1FuKhuIfU4ugzdADmN2rs3wa8rPahVKmrDze2LXPA1CIOCWMIQpTk1Ia1tnt39J+/A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-482966c4f4fso633343fac.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 14:58:37 -0700 (PDT)
+	s=arc-20240116; t=1790805701; c=relaxed/simple;
+	bh=iOsuH1/c4v6IEBcn0NU6MJSCX8mH34dIQhgiAvmhdCI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KmK/zbz9TTsZvORZWp3QdTTMdqKugzw22l6dxSsOp8V4NbjuJNHg7BgQ7nGrfM2Ha0GXQU+abFjM3mDXeXB2Ol7A6Ns5OUtl3t89OMj49E9zq3qMgDp3cntCi1ZnbpTpAIVOb6HpLT3c1B4HcQiNjDxh71Lgi2Cdb7YEYMt6Bno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iihxKP0A; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iihxKP0A"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb48f41343aso109726a12.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:01:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790805699; x=1791410499; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8lyfJow0PaL8KFG6SHLKrvSsgn1X1urCBZQieZuibTg=;
+        b=iihxKP0ApHBBQHZ7S6f54zQvAyhxqQVc2ReXyjAYJpuirBkhbQMNLlLWrWot8frhOp
+         nKf4qwWQ9u6qXVqYiY+FHJatFTfpVoxtRtEn5NWEFBPmiLmrNT15sEkcMYHZvDCIyWbG
+         KCeF+5ldUbGuwdH0JHksncyrvQQgHz+/BRVi2VQ+CAwMBA0uQ7V8Vptl8mPlf4nyP+uM
+         g3j3WkjIErIA44CMtKGRvG/iYcgxzgh9nH3TCUbbXLVEcw552j1fNRRB0efShAS8Q3U5
+         m1FvC6X+/x0r8K80tW7r8ZIZax4bV58qpNaDBn+tT7gKEEQ3b+z6aAPP87hp85gfXNkT
+         H0/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790805517; x=1791410317;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20260707; t=1790805699; x=1791410499;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vc4z7VeRQbe+d36pN2/ovHjhE5bdtXnnqRukeZJMg+0=;
-        b=NViq39GUtGwh70bNRhG9BWH+Z4kw9pGHnd9exk3Gf5dgo3YhkOW8UqAAkK3EhJlDv7
-         CVCGP7BhtkoB7FDskeA2iRyw/EcqgbEqHnV99sNj3yS8xLJI7sF+CNyzTO+VgvopOZQY
-         Y7BxctjDLhYGuRCcq+sZtGrfUdFUEENSqiLKBCx0N1XY3qfhZncNfzFweIRf5TK0J2mK
-         MUVpQyf0Oly0QHDstK13g4uLc+SHb3GCyGQ0HovIePcMkjajYTTEz87F6zZJyR6X0H7Z
-         6kW95oD37xpk4e0oQrEC4bAQ+C1wxDESrwCoa9k+fSW8AF2ipOPaKWPMVbA0bRNJBiDK
-         tCig==
-X-Forwarded-Encrypted: i=1; AKwUvBzwb+VNf2lpnmcj86EXAz1VPPJjweXQKjooQN/HIFnOwwEa7vvX3S0sJQ9HK6MUkzkql92rB3A=@vger.kernel.org
-X-Gm-Message-State: AFuF++lkfTIw8gvZI0LSG915GrkmvMV0arRmn2tQV1Mf+I89jXtElY0v
-	lsetYO+hyqRns9EZ/Ruf7litZzbG1Yl+1Q2+wA57b3OcM7a7Yr5atGtRGCHn5ERTt3//BvNQUxt
-	4ZJbSL1wGmFVW7/JIbwGyQUxl2pCRQpDidQtQkH2InQOOf0qZEThjCWnx+YA=
+        bh=8lyfJow0PaL8KFG6SHLKrvSsgn1X1urCBZQieZuibTg=;
+        b=kmbe3pcsCQYJvyC+h/DUqCQtzMXxVHk8Il2g8reW75IjOPgLN5+g+5jXP1/1zfgE1A
+         G7IYCMJ7StZl67aeGc9zl6hYx1SYmZpcWPLRexFqkJa/IoF5KGnvPJnQ/4qPlvrbvL7Y
+         LeWkRmb5jhcEXNNwIbzbxD2LJ67TiwMyH57ZooYBDIDZhlwPh3ffT33aik53sKja9dMN
+         QSokiBZHpu7HcvSnrjI82KbAM8ZhlRRAhHaEdA2o8xHWDvWDGYWCJ07fj4wWvs0lHs9A
+         NP0rA32bS5qH+An7izSFB9ii3i4C2kqTjOALvW10LAfPT8vj/lzLHisiUNwuOxAv5Ly6
+         2fMg==
+X-Forwarded-Encrypted: i=1; AKwUvBwBXWa9m2I6s53p+3fhPaOlnuhO4PBx1CqPsGVSxHiQbId6lIhld8m+OY5AzGvhz1lhB9WweSk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYwgiBq0Msq+zeQ3Hw1FCgGq60P7MVR8fPgJr7ETbXsR0uLP+m
+	Jbs1+CnxiRa5uVU1FhSJfMgoQG+090digUqTJUML20JFc7tPF2xZ7nCVpb4zXWsXnyMIo/voo9t
+	6L4QmFA==
+X-Received: from pgte12.prod.google.com ([2002:a65:688c:0:b0:cc7:d698:697e])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9f86:b0:3dd:a196:ffd8
+ with SMTP id adf61e73a8af0-3deacb82fd5mr610572637.40.1790805698958; Wed, 30
+ Sep 2026 15:01:38 -0700 (PDT)
+Date: Wed, 30 Sep 2026 22:01:34 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1a0f:b0:4f1:5068:b93b with SMTP id
- 5614622812f47-4f307f06067mr1244503b6e.14.1790805516878; Wed, 30 Sep 2026
- 14:58:36 -0700 (PDT)
-Date: Wed, 30 Sep 2026 14:58:36 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6abd860c.9b478af7.e8d7a.0000.GAE@google.com>
-Subject: [syzbot] [net?] WARNING in new_slab (3)
-From: syzbot <syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260930220137.843785-1-kuniyu@google.com>
+Subject: [PATCH v1 net] ref_tracker: Don't use __GFP_NOFAIL for PF_MEMALLOC thread.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dmitry Vyukov <dvyukov@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+syzbot triggered a warning in __alloc_pages_slowpath(). [0]
 
-syzbot found the following issue on:
+ref_tracker_alloc() uses __GFP_NOFAIL if the passed gfp has
+__GFP_DIRECT_RECLAIM.
 
-HEAD commit:    6f8319e3e9a4 Merge tag 'mm-hotfixes-stable-2026-09-27-19-1..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13af7df5580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2a820d8842c77560
-dashboard link: https://syzkaller.appspot.com/bug?extid=f95c2f0a71a98cef50eb
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: i386
+However, cifs_demultiplex_thread() calls memalloc_noreclaim_save()
+and its kthread has PF_MEMALLOC.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+As commented in __alloc_pages_slowpath(), __GFP_NOFAIL should
+not be used for PF_MEMALLOC thread.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-6f8319e3.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/91b951779fc3/vmlinux-6f8319e3.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/18319ae672c1/bzImage-6f8319e3.xz
+	if (unlikely(nofail)) {
+...
+		/*
+		 * PF_MEMALLOC request from this context is rather bizarre
+		 * because we cannot reclaim anything and only can loop waiting
+                 * for somebody to do a work for us.
+		 */
+		WARN_ON_ONCE(current->flags & PF_MEMALLOC);
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com
+Let's avoid using __GFP_NOFAIL for PF_MEMALLOC thread.
 
-------------[ cut here ]------------
+[0]:
 current->flags & PF_MEMALLOC
 WARNING: mm/page_alloc.c:4816 at __alloc_pages_slowpath mm/page_alloc.c:4816 [inline], CPU#0: cifsd/12032
 WARNING: mm/page_alloc.c:4816 at __alloc_frozen_pages_noprof+0x1eac/0x3300 mm/page_alloc.c:5449, CPU#0: cifsd/12032
 Modules linked in:
-CPU: 0 UID: 0 PID: 12032 Comm: cifsd Tainted: G             L      syzkaller #0 PREEMPT(full) 
+CPU: 0 UID: 0 PID: 12032 Comm: cifsd Tainted: G             L      syzkaller #0 PREEMPT(full)
 Tainted: [L]=SOFTLOCKUP
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
 RIP: 0010:__alloc_pages_slowpath mm/page_alloc.c:4816 [inline]
@@ -124,24 +140,27 @@ Call Trace:
  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
  </TASK>
 
-
+Fixes: 4e66934eaadc ("lib: add reference counting tracking infrastructure")
+Reported-by: syzbot+f95c2f0a71a98cef50eb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6abd860c.9b478af7.e8d7a.0000.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ lib/ref_tracker.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/lib/ref_tracker.c b/lib/ref_tracker.c
+index 30c999d57b10..5f63206357b2 100644
+--- a/lib/ref_tracker.c
++++ b/lib/ref_tracker.c
+@@ -265,7 +265,7 @@ int ref_tracker_alloc(struct ref_tracker_dir *dir,
+ 		refcount_inc(&dir->no_tracker);
+ 		return 0;
+ 	}
+-	if (gfp & __GFP_DIRECT_RECLAIM)
++	if ((gfp & __GFP_DIRECT_RECLAIM) && !(current->flags & PF_MEMALLOC))
+ 		gfp_mask |= __GFP_NOFAIL;
+ 	*trackerp = tracker = kzalloc_obj(*tracker, gfp_mask);
+ 	if (unlikely(!tracker)) {
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
