@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F113164B4;
-	Wed, 30 Sep 2026 09:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A411331EC3;
+	Wed, 30 Sep 2026 09:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790760841; cv=none; b=cbRdEoG4TWkjw0+pSVYxULVlAoWlslrvou2VJ7+xUev6IUofRlHPCtLqvpIGh9YGyNvUdTuc1batM4nmV9dDVaw9LJ3BvEps/3Ml0TkP1bzwoBmTa6EVJjTz93hODKVebxRtaH64y/lyZJjGKEs1nTbBYJQnlwtpk4R74kQOJAE=
+	t=1790760854; cv=none; b=So3zFILPSiFMoIirEmbqOEYPcAb2qNgqJ1Id/1YcGUL7nHyIwbtMr1GGtc5hTL4BBnHjGVqSAIF0qUwywuaogYltxaIekoCJqeH4SGXFm87ugSRnUdDgEZwu8l5v+OD6lWFEGj5D1BNHiJOZJ7v/p8SGtQSJ5TSxcqqSZoajLeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790760841; c=relaxed/simple;
-	bh=zvpmhm+BAUlfIVJ/6Kp9ShG7pA3G2q65FWBMzuTisWM=;
+	s=arc-20240116; t=1790760854; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eo5F0jT/r+J5hVwv/mZXBj10pkNh0Nxoygk0d8Q8E9HEu6yiudQzKbcUbV0lgr46rUSlQPZoDnVf8Ody9Xd3ET25eP6N00Pe3o9aqpmIVSxqQxRVu58h4cldnobXKPa/ExG2YICieGJ9p3Br1xAKGkD9CncU9LZ0plw5k+FQpu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWxG3nCD; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Ex02UMAT/RcMIgFk51LoOG7sMcvePI1QOXeJGDOLM7b+wSeqIOKGHaDOVtkeXDW7hvVRMMr5htq5A70ppkEOs86zdalV2oA0lJQggYRbJTgjg4L9VLoAhoAXCfe/6qbZYyhjjUxaJ7PrP8Xhc6VwB+VTLMwTiAYraANm6Bnhnp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bylQy7L4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWxG3nCD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0AA1F00893;
-	Wed, 30 Sep 2026 09:33:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bylQy7L4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965931F000FF;
+	Wed, 30 Sep 2026 09:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790760840;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	s=k20260515; t=1790760853;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hWxG3nCDZrWLmetbhbBgNsmr0c8/yZNTV7HdNINYkSC8C4rOdnSEXmuhJgTNWh4id
-	 96O+6zZPMPuRRpsebP+D0kt+QYTp7Us/ohmUS5C5zaw2iogWKhp9+xCC1tg+etCR5P
-	 9glXbuCP9rVqk/hOfhg5Pjv4lzeM58/i85HSr4KBbdl9FsnwKPwIbVPsKUGybMsGfg
-	 1d2Tej8E3m8XDDv1S0yts9DAcU525XcqkYg8qFLt30uYruhHu7R45rpxE8D88zgLfm
-	 ZKGJdGsitDzpn+pqTuy22Q8+HQ78c6OzqB62CQXuMjcvjQ+7ogsyeSUHSpg7+25DGt
-	 0h4Ya/NHSbQng==
+	b=bylQy7L4yaqxnXTN6Gm+mkuTs9JHEI+zqWf5WZhJfepvLDp40RLh6zEtrHY3IOF+d
+	 UMytG5RMM2qdhllVJZF64bN0HAmvU7OspDmqoc3SttlHWWtSY/R0IdSElMiTtNrmaT
+	 +0kuJkAbpGl+Zs2KX2PMVVmdL0xfoKlxKjlMRBwZ01r/WbJs4ZtzjyBroFaxyqelVs
+	 uW52KmSE9VRlMMeJx+gPL60Tm+p+WdNl5E/gNbBf56ZZefIhcliQqwoUBUXDFVo5bu
+	 vPk3rJIWosU6eX34p76VYnezA2ybY0GKFCn7t1ZlCXbJYWMDjkt4DpQA56cHo3Jp8b
+	 UyeR7Sq0t3ErA==
 From: netdev-bot+sinfo@kernel.org
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Shubham Antil <shubham@octane.security>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
  "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jeffrey Huang <huangjw@broadcom.com>, Eddie Wai <eddie.wai@broadcom.com>,
- Prashant Sreedharan <prashant@broadcom.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: Re: [PATCH] bnxt: prevent timer rearming during teardown
-Date: Wed, 30 Sep 2026 09:33:59 +0000
-Message-ID: <179076083948.31693.5116207941809657090@kernel.org>
-In-Reply-To: <20260930092806.2977763-1-runyu.xiao@seu.edu.cn>
-References: <20260930092806.2977763-1-runyu.xiao@seu.edu.cn>
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Giovanni Vignone <gio@octane.security>
+Subject: Re: [PATCH] xfrm: zero-initialise km_event in replay-notify to stop
+ stack disclosure
+Date: Wed, 30 Sep 2026 09:34:12 +0000
+Message-ID: <179076085219.31693.12550494226015833851@kernel.org>
+In-Reply-To: <20260930093137.7163-1-shubham@octane.security>
+References: <20260930093137.7163-1-shubham@octane.security>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -59,10 +58,6 @@ commit messages seem to be missing some information:
  - Whether the issue was actually triggered, or is only theoretical
    (e.g. found by code inspection). If it was triggered please include
    the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
