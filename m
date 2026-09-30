@@ -1,106 +1,91 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AD4EDCC5;
-	Wed, 30 Sep 2026 12:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2EB4E1C93;
+	Wed, 30 Sep 2026 12:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790772652; cv=none; b=uplZzE4I7Vlm75PQoqY/EW586YXoPtbO0sa2apUBFhP93zkd1A1w0silPy0tpXr/0gp5iQjm9tk3qCFE/9j9BALu/YSfDtRUmTZWW0ZsynkHO1FC2Cha60O2ehFWXH2M4IfKqJWqE967te6VntgrJwRvY/WPsJmf0Y+rYmszBPw=
+	t=1790772922; cv=none; b=HTuuH9eL2JiPqvJWN3vSjjcVpfpG2k/dU736ENjODwpdJPTgTKCPvgT4PZrHCbJ6TOUnRceKpsuUPtYYPkLpLTAK/YQ0jiJ0lYEy9qnReHFrDRkNnVqRPCR4WXsp9tswRas31bCXJt17oeVSe+ZniHYS0KXHcdykr0AqArFy4nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790772652; c=relaxed/simple;
-	bh=ceieZL7mqNYggJrWA2zKrmZBZ486lCIoMlzfH8UkVDk=;
+	s=arc-20240116; t=1790772922; c=relaxed/simple;
+	bh=lacdbLI3xUd4daF6VsncABGp6gJ0RYBthB9GXAssU2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QCE6QKC6nh98Ck3cNmSJgjw+SUOY1FcbgMMlWtSVZR8uQ70kDFgoyzSI51+XLZhf1+yRgxW/QybbM0WAoNRTZuz9IHKTJinP75gylyVpDfchxIP9LeZ9/VaKnq5lTyA689lsJtbBRG8KbFQ0dmAhupM/bvRbP4NP95esP0vP2J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qeuwnvFr; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=vETa7D23RZhtqtLU7oxpjzNWSQ4tOtLNiMtJYuBKRryHZ2CAOWgLjg3e3+0VXG3koodo68Bg972P6YTEeAGQnkkG7Uhu2mT+3km1HzNVsPBM10VgfKOSrXmBYrknGrfJ4yUc/r1NOF/l7ht6V7gwi87hLT1EgQ9k2jYdzVHO6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zHI5M8EF; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qeuwnvFr"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zHI5M8EF"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=6KOXvpK/3cB/opsbROnxFM/mbV+G1vUglh78ETzwRb0=; b=qe
-	uwnvFrTF7A11FhiLE1B71C0lzOHjETkaD/GxMT9ZMcCJlIdg6jsyyVYNr4hRMFaNLjE7B5fwFvTxK
-	8c9mtrbsEqSSL1jROhfK8WFpgE/cnf0sXgrCMRarHURJQhxEpgkf3JR1F8Bm2PwhtgplJJ2oG9aU5
-	/WMPgtNK9G9ZO38=;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=T7694IwjMt0iGn1o9+SSySBxVpdM/FekLloodgNQ8zs=; b=zHI5M8EFUBiNvzxbQwbmsZajUs
+	wIS8Dre30/yWvGJ0P8eFzgpnDKfAkC0Q75SYSRmF2hScKI7oKciMrSItqlTyTWRhvBPnvCYPcZkZ1
+	6YNqe5F93oHXc0VM++LeEv0L1v1W4fW7ORmfCX/cKApMi5WqjOBnDuB1n85YRULCGkUg=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xBtlW-0089mZ-QV; Wed, 30 Sep 2026 14:50:30 +0200
-Date: Wed, 30 Sep 2026 14:50:30 +0200
+	id 1xBtpv-0089pJ-O9; Wed, 30 Sep 2026 14:55:03 +0200
+Date: Wed, 30 Sep 2026 14:55:03 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: netdev-bot+sashiko@kernel.org
-Cc: f@lex.la, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, olteanv@gmail.com, Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com, steve.glendinning@shawell.net,
-	f.fainelli@gmail.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v12 1/4] net: usb: lan78xx: register the PHY
- interrupt with the MDIO bus
-Message-ID: <cc1778b0-838b-4bc6-914a-c436cde37938@lunn.ch>
-References: <20260927235733.2619081-2-f@lex.la>
- <179072990024.434549.9815346887559663757@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Po-Yu Chuang <ratbert@faraday-tech.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue6KaGOiDlm57opoY=?= =?utf-8?Q?=3A?= [PATCH 0/5]
+ net: ftgmac100: Add AST2700 support
+Message-ID: <e8a8de24-4f6d-4645-9022-36995d8fd770@lunn.ch>
+References: <20260927-support_ast2700-v1-0-9f03f29d2c82@aspeedtech.com>
+ <14a281e2-c88e-42e3-acd3-b20f111a4c28@lunn.ch>
+ <SEYPR06MB5134D5AEAD86D3E4C97D1DB99D8C2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+ <36d6dac0-30ab-440a-bf35-81b33ecd8e8b@lunn.ch>
+ <SEYPR06MB5134FA89E6754F168E94C1B29D8B2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179072990024.434549.9815346887559663757@kernel.org>
+In-Reply-To: <SEYPR06MB5134FA89E6754F168E94C1B29D8B2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 
-On Wed, Sep 30, 2026 at 12:58:20AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
+> > Does your AST2700 bootloader also have the delays off by default?
+> > 
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] In lan78xx_mdio_init() (drivers/net/usb/lan78xx.c:2122-2124),
->   the one mapped PHY interrupt (domain_data.phyirq, backed only by…
-> 
-> --
-> 
-> net: usb: lan78xx: register the PHY interrupt with the MDIO bus
-> 
-> This patch moves the lan78xx PHY interrupt out of lan78xx_phy_init(),
-> where it was written directly to phydev->irq. It now goes into the
-> mii_bus irq[] table before of_mdiobus_register() is called. Every entry
-> in the table is set to domain_data.phyirq, so the PHY created by the
-> scan picks it up through phy_device_create().
-> 
-> > diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-> > index 5655941f14783..522fb4daeb468 100644
-> > --- a/drivers/net/usb/lan78xx.c
-> > +++ b/drivers/net/usb/lan78xx.c
-> 
-> [ ... ]
-> 
-> > @@ -2118,6 +2119,10 @@ static int lan78xx_mdio_init(struct lan78xx_net *dev)
-> >  		break;
-> >  	}
-> >  
-> > +	if (dev->domain_data.phyirq > 0)
-> > +		for (i = 0; i < PHY_MAX_ADDR; i++)
-> > +			dev->mdiobus->irq[i] = dev->domain_data.phyirq;
-> > +
-> 
-> [Severity: Medium]
-> On LAN7801, could this mark PHYs that are not wired to the LAN7801 PHY_INT
-> input as interrupt driven?
+> Yes. All of MACs in AST2700 are configured to disable RGMII delay with "rgmii-id".
 
-Since this is a USB dongle, it is unlikely. However, i agree with the
-general principal. The code should only change the one entry the PHY
-is actually using. Please look at all the patches in this series.
+static int ftgmac100_mii_probe(struct net_device *netdev)
+{
+        struct ftgmac100 *priv = netdev_priv(netdev);
+        struct platform_device *pdev = to_platform_device(priv->dev);
+        struct device_node *np = pdev->dev.of_node;
+        struct phy_device *phydev;
+        phy_interface_t phy_intf;
+        int err;
 
-   Andrew
+        if (!priv->mii_bus) {
+                dev_err(priv->dev, "No MDIO bus available\n");
+                return -ENODEV;
+        }
+
+        /* Default to RGMII. It's a gigabit part after all */
+        err = of_get_phy_mode(np, &phy_intf);
+        if (err)
+                phy_intf = PHY_INTERFACE_MODE_RGMII;
+
+This default is now incorrect for the 2700.
+
+I would suggest that for the 2700 you make phy-mode a required DT
+property, and fail the probe if it is missing.
+
+	  Andrew
