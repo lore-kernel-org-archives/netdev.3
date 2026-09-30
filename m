@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465AA3515C0;
-	Wed, 30 Sep 2026 03:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF8B1E1A17;
+	Wed, 30 Sep 2026 03:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790740132; cv=none; b=kT4pxz6AMHm595FD40BE6tQwc17hn/VX9JoU3auxvGrVzRttyHIJEHMAPHxl6GDK1VVifh9b10GZ/2dFMOC5WkWCud/yEv+DixbqWfBgVxQH+nan3BZGhgWRQryl3F+jCohaWM6o2OJ66dGLd/ugHZrig18+uxqOnoSi3XfMOlg=
+	t=1790740134; cv=none; b=jIgr9EjMHbNRPfoOu41Sct5KaDK06aoAg7O5FUxPL242l8GzzKKLtL8Vm9npfpX9wuz2GRHErEY4ziq9dwv73UTivigwmDloHHcvWkYIOEz5FJi4qaxuGYtL/zZxa1ecyqYB/S/CSJDdGp5BAry/J4OnVWEjzHwdeHMbqJzZ7e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790740132; c=relaxed/simple;
-	bh=lp5xPjq8zX7LuOkfHkwlpaeHU/dF2qbKn6hWPgeY8ME=;
+	s=arc-20240116; t=1790740134; c=relaxed/simple;
+	bh=8JZwbjv91jqlsS9qpQnJRE2DV4rrThjzxoeKEE6SjwA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=blVkL6BvWTQnrbRr1mquZwQ9T04kWx58RKwPvbTkoXPsVXAZH9tF8R0qSXYJa4s12nD8GvYc79FHGQeFRelXHICaprxlcYo1c2Vl690cSKMnfGkuSFQqB4dNUl4Sn8Oqo24qnTyGRqvws1yJ80xOHxBVkucnnMRTjiDU11zXdcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su0j72H4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bUL+uwMLQKTYKS8uMhxA7HCSjXg2AJjFTpnclGMBvPVl2rmLV3jbjIrUJq+tvzdoFm4vz0FPSsVJ/s77YUmJuZU97dYZB9xmaSxaq3XJZkaq/MD0Fn+Eyc7qxcErTL4es0Todyjy+XLS/K4gziB5HMrX0lWIlNPK+aXlNSt1O8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsscoRXG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Su0j72H4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABC01F000FF;
-	Wed, 30 Sep 2026 03:48:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsscoRXG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F5A1F00893;
+	Wed, 30 Sep 2026 03:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790740130;
-	bh=KZHe/FVnfiE45qptdO4PNrZd1FsDbQ5ylcnvWq1RbyU=;
+	s=k20260515; t=1790740132;
+	bh=Ng7i4XylB6J7RJhrKqfoNFJDNRJ0Q11yxaqr5w+NnJM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Su0j72H48UWQx0TELtMc1BpCk5Q2dO4T72aqrb1gWkrvf1xT+PPuvkSUpWWZGqALR
-	 4z4NRo9dUDFcBGEWk+GnXYJCIkfp1PFomoTrt4gEXMA56rcHbaMdrvaWHeKc3rkHiK
-	 s/lxcfp03ke+w4xeG5q5qZ/Fje75rCNjqkFBQVqr9fJq+TkaCNezzPECMgbDO5uCRj
-	 C5fynlJfaRPMCo8ehkf8GMw07emQVFR7Dg0ZtzCrKA27qppiT+RRH6W/t/iejIC4gO
-	 g4Z0DF1iF9e7k/l40cb/2BfD8BnHxjIDKCSiUJ3cmOaVenuCfz7DWuf5OXbcKJWgUa
-	 wS3QRhW4nZF4g==
-Subject:
- Re: [PATCH net-next v18 3/6] driver core: add device_schedule_reprobe()
+	b=SsscoRXGz1txH0PhRSZp2L1wso7jiyEPCWVAy6zjwCC1drGGto/zB28PXBMdy93P3
+	 CQLz5ZzKBMrCnupyo+nOcyZqa6cvnI57wxud9UJ1LRVnhW8QWQ5EUnZReDTMwKNdJM
+	 mv2VhqqGuzY5tZTMqXpTs7kIROYrl6GP/hfrj88A06w9vQPv0EmDNBZQaxNpxNQo7D
+	 FpDUAB2u7jd5QROGgZJftIr+BMHDPlbPomeQN/RMm9D8PpQHkrkmRvIipjqQeAfJgT
+	 YKW+KSoTkVJ87xXj+k4w3LglnwglHGxc6ObLbPzV+leIVvM0664nKcLkL0Fa7FqmRF
+	 /8ptu1WJyWbKA==
+Subject: Re: [PATCH net-next v18 4/6] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
 From: netdev-bot+sashiko@kernel.org
 To: daniel@makrotopia.org
 Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
@@ -36,13 +36,13 @@ Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
  rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Wed, 30 Sep 2026 03:48:49 +0000
-Message-ID: <179074012933.434549.4644127327520055010@kernel.org>
-In-Reply-To: =?utf-8?q?=3Ce70f147857d21b792de81c7d39c2f74c6e0ec3f5=2E1790426?=
+Date: Wed, 30 Sep 2026 03:48:50 +0000
+Message-ID: <179074013097.434549.1744229509250899109@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cb65b7f33ed757e57ed99bdf4ebeac841f2abdeb7=2E1790426?=
  =?utf-8?q?599=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3Ce70f147857d21b792de81c7d39c2f74c6e0ec3f5=2E17904265?=
+References: =?utf-8?q?=3Cb65b7f33ed757e57ed99bdf4ebeac841f2abdeb7=2E17904265?=
  =?utf-8?q?99=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-X-sashiko-severity: Medium
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -55,7 +55,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,210 +63,212 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In device_reprobe_work_fn() (drivers/base/dd.c), the check `if
-  (ret <= 0 && ret != -EPROBE_DEFER) dev_err(dev, "re-probe left the…
-- [Medium] When probing is blocked, device_reprobe_work_fn() re-queues
-  itself with `queue_delayed_work(system_freezable_wq, &rp->work,…
-- [Medium] The shutdown/suspend gate in device_reprobe_work_fn() is a
-  check-then-act.
-- [Medium] device_schedule_reprobe() pins @dev with get_device() in a
-  delayed work that nothing can cancel or flush: the rp handle is never…
+- [High] mxl862xx_devlink_flash_update() can run while
+  dsa_register_switch() is still creating the user ports, and then touch…
+- [Low] mxl862xx_port_mdb_add() and mxl862xx_port_mdb_del() test
+  '(priv->block_host || priv->skip_teardown)' with plain loads after…
+- [Low] The comment in mxl862xx_devlink_flash_update() says 'The core
+  skips the re-probe if the device is unbound or shut down before it…
+- [Low] Every devlink flash ends in a full driver re-probe:
+  mxl862xx_remove(), then dsa_unregister_switch(), then a fresh probe.
 
 --
 
-driver core: add device_schedule_reprobe()
+net: dsa: mxl862xx: add devlink flash_update and info_get
 
-This adds device_schedule_reprobe(). It detaches and re-probes a device
-from a driver-core delayed work after a delay the caller chooses. Under
-the device lock, the work checks that the device is still bound to the
-same driver, and it re-arms itself while suspend or shutdown blocks
-probing.
+This adds "devlink dev flash" and "devlink dev info" support to the
+mxl862xx DSA driver. A flash validates the image and reboots the switch
+into its MCUboot loader. It then streams the image over the SB PDI SMDIO
+interface and reinitialises the driver through a deferred re-probe;
+.remove() and ->shutdown() take the devlink instance lock first so they
+wait for a flash that is already running.
 
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index f6525a7ee8c54..823a25f9c0895 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -1436,3 +1436,129 @@ void driver_detach(const struct device_driver *drv)
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> new file mode 100644
+> index 0000000000000..9a3db7d43c733
+> --- /dev/null
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> @@ -0,0 +1,689 @@
 
 [ ... ]
 
-> +static void device_reprobe_work_fn(struct work_struct *work)
+> +int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+> +				  struct devlink_flash_update_params *params,
+> +				  struct netlink_ext_ack *extack)
 > +{
-> +	struct device_reprobe *rp = container_of(work, struct device_reprobe,
-> +						 work.work);
-> +	struct device *dev = rp->dev;
-> +	bool detached = false;
-> +	int ret;
-> +
-> +	device_lock(dev);
-> +	/*
-> +	 * rp->drv is only compared, never dereferenced: the driver it points
-> +	 * to may have been unregistered and freed. The saved name rejects a
-> +	 * freed address the allocator has since handed to another driver.
-> +	 */
-> +	if (!dev->p->dead && dev->driver == rp->drv &&
-> +	    !strcmp(dev->driver->name, rp->drv_name)) {
-> +		if (defer_all_probes) {
-> +			device_unlock(dev);
-> +			queue_delayed_work(system_freezable_wq, &rp->work,
-> +					   rp->delay);
-> +			return;
+
+[ ... ]
+
+> +	rtnl_lock();
+> +	dsa_switch_for_each_user_port(dp, ds) {
+> +		if (dp->user) {
+> +			dev_close(dp->user);
+> +			netif_device_detach(dp->user);
 > +		}
-
-[Severity: Medium]
-What stops this re-arm once shutdown has started? device_shutdown() does:
-
-	wait_for_device_probe();
-	device_block_probing();
-
-device_unblock_probing() is only called from dpm_complete(). Once a reboot
-starts, defer_all_probes stays true, so a pending request keeps
-re-queueing itself until power-off.
-
-device_schedule_reprobe() also accepts delay_ms == 0, which makes
-rp->delay 0:
-
-	rp->delay = msecs_to_jiffies(delay_ms);
-
-With a zero delay, queue_delayed_work() queues the work at once. The work
-then runs back to back and takes and drops dev->mutex on every pass,
-while device_shutdown() walks the device list and takes the same
-per-device locks.
-
-The same applies to the dpm_prepare()..dpm_complete() window when
-system_freezable_wq is not frozen, such as the kexec jump case mentioned
-in the v18 changelog. The in-series mxl862xx caller uses 500 ms, so it
-only gets a periodic re-arm. The exported API still allows the zero-delay
-case.
-
-Should there be a minimum re-arm interval? Or could the shutdown case drop
-the request instead of re-arming? The kernel-doc only says the work
-"re-arms itself after @delay_ms".
-
-> +		__device_release_driver(dev, NULL);
-> +		detached = true;
 > +	}
 
-[Severity: Medium]
-Can defer_all_probes become true right after the check above?
-device_block_probing() sets it with a plain store and takes no device
-lock:
+[Severity: High]
+Can this loop run while dsa_register_switch() is still creating the user
+ports?
 
-void device_block_probing(void)
-{
-	defer_all_probes = true;
-	/* sync with probes to avoid races. */
-	wait_for_device_probe();
+dsa_switch_setup() calls dsa_switch_devlink_register() before
+dsa_tree_setup() reaches dsa_tree_setup_ports() and
+dsa_tree_setup_conduit(). DEVLINK_CMD_FLASH_UPDATE can therefore reach
+this function at probe time. dsa_devlink_flash_update() does not check
+ds->setup or dst->setup.
+
+dsa_port_setup() only takes devl_lock inside dsa_port_devlink_setup(). A
+port that has already passed that call can be in dsa_user_create() at
+the same time as this function, and dsa_user_create() sets and clears
+port->user without holding rtnl:
+
+net/dsa/user.c:dsa_user_create() {
+    ...
+	port->user = user_dev;
+    ...
+	ret = dsa_user_phy_setup(user_dev);
+    ...
+out_free:
+	free_netdev(user_dev);
+	port->user = NULL;
 }
 
-wait_for_device_probe() flushes deferred_probe_work and waits for
-probe_count and async probes. It does not wait for this work item on
-system_freezable_wq.
+This loop holds only rtnl. Could it detach a netdev that is not
+registered yet? register_netdevice() would then set __LINK_STATE_PRESENT
+again, and the port could be reopened during the flash.
 
-Suppose the work reads false and calls __device_release_driver(), and dev
-has managed consumers. The device lock is then dropped inside the
-device_links_busy() loop:
+Could it also call dev_close() or netif_device_detach() on a user_dev
+that the error path above is freeing? The flash itself can drive that
+error path: with block_host set, the PHY reads in dsa_user_phy_setup()
+return -EBUSY.
 
-	while (device_links_busy(dev)) {
-		__device_driver_unlock(dev, parent);
+The commit message says .remove() and ->shutdown() take the devlink
+instance lock first because dsa_unregister_switch() frees the user
+netdevs before devlink_unregister(). The dsa_register_switch() failure
+unwind in mxl862xx_probe() frees them in the same order, but it has no
+such guard:
 
-		device_links_unbind_consumers(dev);
-
-		__device_driver_lock(dev, parent);
+	err = dsa_register_switch(ds);
+	if (err) {
+		set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
 		...
-		if (dev->driver != drv) {
 
-In that gap, device_shutdown() can take device_lock(dev) and call
-dev->driver->shutdown(dev). When the work gets the lock back, dev->driver
-is unchanged, so it continues to device_remove(). That runs ->remove()
-after ->shutdown() on hardware that is already shut down. Consumers that
-the backward walk has already shut down could see the same order.
+Every flash ends in a re-probe, so this probe-time window opens again
+after each flash. This looks unchanged at the end of the series.
 
-The kernel-doc says a request "that fires during a shutdown detaches
-nothing" and that the overlap "may run ->remove() in place of
-->shutdown()". Isn't the actual result that both callbacks run, with
-->remove() second?
+> +	dsa_switch_for_each_cpu_port(dp, ds)
+> +		dev_close(dp->conduit);
 
-The lock-dropping loop predates this patch. This helper adds a
-timer-driven unbind that is likely to fire around a reboot that follows a
-flash.
+[ ... ]
 
-> +	device_unlock(dev);
+> +	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
+> +	priv->flash_owner = NULL;
+> +	priv->block_host = false;
+> +	priv->skip_teardown = true;
+> +	mutex_unlock(&priv->mdiodev->bus->mdio_lock);
 > +
-> +	if (detached) {
-> +		ret = device_attach(dev);
-> +		/* 0 is unbound too: a failed probe is folded into "no match" */
-> +		if (ret <= 0 && ret != -EPROBE_DEFER)
-> +			dev_err(dev, "re-probe left the device unbound\n");
-> +	}
+> +	/* Reinitialise through a deferred re-probe: remove() runs with
+> +	 * skip_teardown set, then a fresh probe() starts against whatever
+> +	 * the switch now runs. The core skips the re-probe if the device
+> +	 * is unbound or shut down before it fires.
+> +	 */
+> +	err = device_schedule_reprobe(ds->dev, MXL862XX_FW_REPROBE_DELAY_MS);
 
-[Severity: Medium]
-Will this ever see -EPROBE_DEFER coming from the driver's own ->probe()?
-really_probe() makes ->probe() errors positive:
+[Severity: Low]
+Is the comment accurate when an unbind is followed by a rebind?
 
-drivers/base/dd.c:really_probe() {
-    ...
-		ret = -ret;
-		goto probe_failed;
-    ...
-}
+device_reprobe_work_fn() only checks:
 
-driver_probe_device() adds the device to the deferred list when it sees
-EPROBE_DEFER, and it returns the positive value. __device_attach_driver()
-then folds any positive value into 0:
+	if (!dev->p->dead && dev->driver == rp->drv &&
+	    !strcmp(dev->driver->name, rp->drv_name)) {
 
-	ret = driver_probe_device(drv, dev);
-	if (ret < 0)
-		return ret;
-	return ret == 0;
+The device_schedule_reprobe() kernel-doc also says that an unbind
+followed by a rebind of the same driver within the delay still gets
+the re-probe.
 
-So device_attach() returns 0 for a probe-time deferral, and this
-dev_err() fires even though the deferred-probe machinery will retry the
-probe. The ret != -EPROBE_DEFER test seems to cover only the negative
-deferrals, such as bus match deferral, device_links_check_suppliers() and
-the defer_all_probes path in really_probe().
+Suppose mxl862xx_remove() is blocked on devl_lock() in
+mxl862xx_flash_shutdown() while a flash runs. dev->driver is still set
+and shutting_down has not been set yet, so device_schedule_reprobe()
+succeeds here.
 
-The commit message says:
+Now suppose the device is rebound to mxl862xx before the work takes the
+device lock, for example by a scripted sysfs unbind/bind. Would the
+stale work then detach and re-probe the newly bound instance?
 
-  so the message is a plain dev_err() that skips only -EPROBE_DEFER, which
-  the deferred-probe machinery retries on its own.
+That costs one extra teardown and reset of a healthy switch rather than
+corruption, but the comment promises more than the core provides.
 
-Does the code match this for the common case?
+> +	if (err)
+> +		dev_err(ds->dev,
+> +			"flash: re-probe could not be scheduled (%pe); unbind and rebind to reinitialise\n",
+> +			ERR_PTR(err));
 
-The same message is also printed if dev is unregistered between the
-detach and device_attach(). In that case __device_attach() returns 0 early
-because dev->p->dead is set.
+[ ... ]
 
-> +
-> +	put_device(dev);
-> +	kfree(rp->drv_name);
-> +	kfree(rp);
-> +}
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+> index e05ad52cd297e..8f8bd519de987 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
 
-[Severity: Medium]
-Could this put_device() drop the last reference and call into module
-text that has already been unloaded?
+[ ... ]
 
-rp is never returned to the caller, and there is no way to cancel or
-flush it. The reference taken by get_device() in device_schedule_reprobe()
-is therefore held for the whole delay.
+> @@ -1547,6 +1598,15 @@ static int mxl862xx_port_mdb_add(struct dsa_switch *ds, int port,
+>  	qparam.tci = cpu_to_le16(FIELD_PREP(MXL862XX_TCI_VLAN_ID, mdb->vid));
+>  
+>  	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
+> +	/* A flash blocks the API (-EBUSY) and its teardown drops the MAC
+> +	 * table (-ENODEV); there is then nothing to program, and the reprobe
+> +	 * rebuilds the configuration. The flash moves from block_host to
+> +	 * skip_teardown outside this call, so either errno counts under
+> +	 * either flag. See mxl862xx_port_mdb_del().
+> +	 */
 
-For example, the mdio bus under the in-series mxl862xx user could be torn
-down within that window through mdiobus_unregister() -> device_unregister().
-If the module that provides dev->release, dev->type->release or
-dev->class->dev_release is then unloaded, the work sees dev->p->dead and
-skips the detach. This put_device() then drops the last reference:
+[Severity: Low]
+The comment says "the reprobe rebuilds the configuration". Does it?
 
-device_reprobe_work_fn()
-  put_device()
-    kobject_put()
-      device_release()
-        dev->release(dev)    <- lives in the unloaded module
+The re-probe runs mxl862xx_remove() -> dsa_unregister_switch() and then
+a fresh probe, which destroys and recreates every user netdev. Anything
+userspace configured on those netdevs is lost: bridge membership, VLANs,
+addresses and MDB/FDB entries. The new probe only programs defaults for
+new, unconfigured ports.
 
-The commit message gives "a concurrent rmmod can free the module text the
-epilogue is still executing" as the motivation, and says "The work
-function is built-in text, so a caller needs no module reference". Does
-that still hold for the module that owns the device's release callback?
+A flash that fails at step 1 goes through the same full teardown. That
+is the case where SYS_MISC_FW_UPDATE returns an error and the old
+firmware is still running.
+
+The documentation at the end of the series only says the ports "come
+back registered but down, so userspace brings them up again". Could the
+comment and the documentation say that per-port configuration is lost?
+
+> +	if ((ret == -EBUSY || ret == -ENODEV) &&
+> +	    (priv->block_host || priv->skip_teardown))
+> +		return 0;
+
+[Severity: Low]
+These flag loads run after mxl862xx_api_wrap() has released mdio_lock.
+The flash path writes the flags as separate stores:
+
+	priv->flash_owner = NULL;
+	priv->block_host = false;
+	priv->skip_teardown = true;
+
+The mutex orders those stores only for readers that take the lock.
+
+On a weakly ordered CPU such as arm64, a reader that got -EBUSY from the
+block_host gate might see the new block_host == false together with the
+old skip_teardown == false. Would it then return -EBUSY to switchdev
+anyway?
+
+That is the transition this check is meant to cover.
+mxl862xx_port_mdb_del() has the same test. On error,
+dsa_port_do_mdb_del() keeps the tracked entry.
+
+These are also plain unannotated racy reads that KCSAN would report. The
+next patch in the series uses READ_ONCE() for rescue_mode in the same
+expression. This also looks unchanged at the end of the series.
+
+>  	if (ret)
+>  		return ret;
 
 [ ... ]
 
