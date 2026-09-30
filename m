@@ -1,166 +1,127 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f37.google.com (mail-oo2-f37.google.com [74.125.231.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFB2D5436
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9792370AFC
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790735004; cv=none; b=eI0D/oDoQRRJHTDTVR+baThyJyIFkFnUryoLRJHor+iW+Rf+TtnX28rAdy0ZkrIXQy1Hddj+GeMyWspejtMHyW3BKMxNob08sU0/UWgkFBBw4ry/N6oUkkXXZnyZRznMVy0SoPYwLjvZahybfsi06vgtg351aBDCjFU+LgEaYeY=
+	t=1790735640; cv=none; b=pixqbXiSArdhcZ6QgsJsZyBu0u1wSokyzXel628HjzcU5D2Y6u8EcsAvXzE08OkeCQSOqczpuhpe0ICyGDcjC8PwGFM8mWpPqSPGIeTB9WGvzWegMuUTMHR8pUt/p+0s3pftlWrqc4wOQDjFwtToDl9jSXv0jMtvKMqMzWmZ2lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790735004; c=relaxed/simple;
-	bh=vWyNH9j23nzvJaETMr7OjRmjc97OuoI7lCAuDMBP1wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KCKXBaXP3g7BBwA/YC58dxU7ssley33xaZ59xaGo7zVi01wBtkXkhhLOT5gFZ4y1MUbRQz9oYk8Mk2uBejPXRlbGmLkvN6dZ77N3A6wQDpAF52koNeyfp53oFPHxkLF6twYNUPEvrrJq/Fk+7qp7/il8OtQUEIlEa9qQs9Qnb9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: e45bc048bc7511f19a56ed5b684f684d-20260930
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:0003a13d-6830-49f5-a6da-d48e2fb16e8f,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:78f5e5b0af24b8e267b8e7e274b84f5f,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|136|865|898,TC:nil,Content:0|15|50
-	|99,EDM:-3|-100,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e45bc048bc7511f19a56ed5b684f684d-20260930
-X-User: weirongguang@kylinos.cn
-Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <weirongguang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1957401688; Wed, 30 Sep 2026 10:23:15 +0800
-Message-ID: <515454c7-9c85-44a9-9937-7944b2395246@kylinos.cn>
-Date: Wed, 30 Sep 2026 10:23:12 +0800
+	s=arc-20240116; t=1790735640; c=relaxed/simple;
+	bh=NHTef/IaCOVMoJ5oO2lol0WxJCz6IyfIJhQo6Bu98xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mVJ2UaTLhvmLbgFPHOhtM76KmssZNCd2Ltb6nMuBgdInwAc30HVdgBHB+C8Y7edl0hwoLca5aqHt44rOmNVOMShaOQnLl1ehC2tpeCGKPJZ41ZeNRc+Jbkmt7k0I+J/NKUP0soMUS7N44xwEh1jB7/N7rV907C22yLvrnaEiTFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=UrelUeGb; arc=none smtp.client-ip=74.125.231.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="UrelUeGb"
+Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-7fcb425fc2bso3040394a34.3
+        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1790735631; x=1791340431; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WimeQAmU72TV3I87w1mthEkhUyR0hLF8H4rHCIJsrKo=;
+        b=UrelUeGbogPMxZgLuNVIy1Qyra2DiWWG0S1YAALwZA+X+M+veXDrJ13Ld3iFP91BfY
+         ncooSU6NyYkBQp1qA4ZS1UNbB/uoGERLOwJDdLV0PuR1QWYgRpC5NIVqk1R00gGpTlve
+         CF5a0OLkGNiHzLuqWRxqzGcoVsa/eVlOmHLXwxwlHluA4PTa4YylwFJ7pQSDh1fhIRUC
+         ZcliyM96oQKrCMx+edrpT8xhasE1yG6OuzHU5PWii0LZBvxdZJNlaVXbRBQrEYtznEek
+         4OtGfDpECqhgeERJSrjlRIjf0Kf8Rqa5hUkijaUpWiSYcCwmtFr8kR0RWTGTZLjurNy0
+         GxQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790735631; x=1791340431;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WimeQAmU72TV3I87w1mthEkhUyR0hLF8H4rHCIJsrKo=;
+        b=kBClxvljG4dQNGpW+/qf+OZJElor/uALHx20oghXlNt2kQ7WEHcIw731kLiPHc6ENr
+         g6j8EA5/u41qI2LNyKHEn2cCA/iQE4OazS6w2Hq0y3RRVQv4rGAzEpE+TFxPR2mMipFY
+         0fNitWy0koUhJWkOzf1Oc71m+tPpdfCsJ/WbwhCYgIHQ4uduBVRsWGPas/ftdJ280Ual
+         knP7kB9HpWdiDpt2VpHq8QDxnAcbA5bmUDKdmUMvdXvm4IhmL7UbXJG1rUTk0FBsAvqD
+         4r2quYLX1FxiHR7O7/tF/z8H4AKNWmDx5Y7MSnJl5ZWYKgeLMrhO9Q2YsgdbRnv+b8uM
+         bhcg==
+X-Forwarded-Encrypted: i=1; AKwUvBx9pMFFlHxvR0nsRrCK/KuTY0pJOd2DKMcuarXS207ujGfJsHkVDGVvKMCROuBZjhlf5Bg+6SY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lhP5NLoUaA+dyufE3ullWPytGtdPk6xpQXsoi1wpN6mX+XyBic
+	aqAGZve7ibb8IjCMAJjIht2e9X9nPLRjBh5FIFygbG2h0FTioghm7xCZMxQZaDBaGww=
+X-Gm-Gg: AYBFou0rCwEKjckENhUAL4gBgnzwrhS8hMZOqpFnHa1Z94rfJExjaQcWiZ7JWQ6Wxl6
+	v6tOiR81i5V7bObBed1MTVcZBWws/CpVtnqRz/cbMl61bQgJTgKpBCxbPEd4wStRq6X4yYsa+h9
+	GiiA98wWxBPjhtXFkb4BINYgqV6o1ZYKeNsr2LMJ9l5ugsuF4/OJ14Ghy+d0IHMEs1XLE5JyYF0
+	MHn1kFQdtLbDNaXUVBrMCJhrLex4DoEAG2e/b8UoCA/V3vVphhuKKlAohhmslA+nbBSCvRgMw7Y
+	IJh0qYbyiTU7CWjKR+l1qzfwkYaNVBRGy+jb8SYhqKsu2o/UBoBr4tsSc5ubG9ROnaaM8/+EAxT
+	JZ/mjIE4lFJ6CW142pioqmq2AsTRuH40t8cQuHrOYSSl7YRak6/9xElZg9NS0h+0vQTE9c/WrCV
+	stmpTXVjsFQn2kMQ0iWGHNFcR0h0TcqUNaZXUH5Lz0qMLYO8k04eQZ
+X-Received: by 2002:a05:6830:6a8d:b0:81a:cc8a:ff8a with SMTP id 46e09a7af769-8204a75d1e7mr152408a34.21.1790735631284;
+        Tue, 29 Sep 2026 19:33:51 -0700 (PDT)
+Received: from 20HS2G4 ([2a09:bac6:bf21:3064::4d2:8])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81fafce0ad8sm1630636a34.22.2026.09.29.19.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 19:33:49 -0700 (PDT)
+Date: Tue, 29 Sep 2026 21:33:46 -0500
+From: Chris Arges <carges@cloudflare.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 0/2] ip: Batch flushing uncached routes per
+ batched device unregistration.
+Message-ID: <arx1CqxoGGRdxv5-@20HS2G4>
+References: <20260929201546.1533268-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] tun: fix inverted error check when re-attaching
- the filter
-To: bot+bpf-ci@kernel.org, clementwei90@163.com, netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, ast@kernel.org,
- andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
- eddyz87@gmail.com, yonghong.song@linux.dev, mason@kernel.org,
- ihor.solodrai@linux.dev
-References: <20260929093712.131096-2-clementwei90@163.com>
- <8edfca6d5f5f89f19158fb9b1595f565f550beee37dd874026baf17c936226a8@mail.kernel.org>
-Content-Language: en-US
-From: weirongguang <weirongguang@kylinos.cn>
-In-Reply-To: <8edfca6d5f5f89f19158fb9b1595f565f550beee37dd874026baf17c936226a8@mail.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929201546.1533268-1-kuniyu@google.com>
 
+On 2026-09-29 20:15:06, Kuniyuki Iwashima wrote:
+> Chris J Arges reported high RTNL contention during cleanup_net()
+> caused by rt_flush_dev() and rt6_uncached_list_flush_dev() iterating
+> over the global per-cpu uncached route lists for every netdev in
+> dying netns [0].
+> 
+> This series resolves the issue by batching the uncached route
+> cleanup after __rtnl_unlock() in netdev_run_todo().
+> 
+> [0]: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com/
+> 
+> 
+> Changelog:
+>   v2:
+>     * Drop ->pre_exit_batch()
+>     * Do batching after setting NETDEV_UNREGISTERED in netdev_run_todo()
+> 
+>   v1: https://lore.kernel.org/netdev/20260927202429.2452589-1-kuniyu@google.com/
+> 
+> 
+> Kuniyuki Iwashima (2):
+>   ipv4: Batch rt_flush_dev() in netdev_run_todo().
+>   ipv6: Batch rt6_uncached_list_flush_dev() in netdev_run_todo().
+> 
+>  include/net/ip6_route.h |  7 +++++++
+>  include/net/route.h     |  6 ++++++
+>  net/core/dev.c          |  5 +++++
+>  net/ipv4/route.c        | 11 +++++++++--
+>  net/ipv6/route.c        | 18 ++++++++++++++----
+>  5 files changed, 41 insertions(+), 6 deletions(-)
+> 
+> -- 
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+> 
+I was able to test and confirm that this patchset reduces RTNL lock contention
+with my test case. Please add:
+Tested-by: Chris J Arges <carges@cloudflare.com>
 
+Also for "ipv4: Batch rt_flush_dev() in netdev_run_todo()" please include:
+Reported-by: Chris J Arges <carges@cloudflare.com>.
 
-on 2026/9/29 18:34, bot+bpf-ci@kernel.org wrote:
->> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->> index 5a302709a68a..a2fffef3735f 100644
->> --- a/drivers/net/tun.c
->> +++ b/drivers/net/tun.c
->> @@ -728,6 +728,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
->>  {
->>  	struct tun_file *tfile = file->private_data;
->>  	struct net_device *dev = tun->dev;
->> +	bool rollback_filter = false;
->>  	int err;
->>
->>  	err = security_tun_dev_attach(tfile->socket.sk, tun->security);
->> @@ -754,8 +755,9 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
->>  		lock_sock(tfile->socket.sk);
->>  		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
->>  		release_sock(tfile->socket.sk);
->> -		if (!err)
->> +		if (err)
->>  			goto out;
->> +		rollback_filter = true;
->>  	}
-> 
-> Does this change the behavior for cases where tun->fprog.filter holds a
-> __user pointer from a different process?
-> 
-> When TUNATTACHFILTER runs, it copies only the sock_fprog header:
-> 
->     case TUNATTACHFILTER:
->         ...
->         if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
-> 
-> This means tun->fprog.filter still points into the address space of the
-> process that issued that ioctl. When sk_attach_filter() runs here, it
-> calls __get_filter() which does:
-> 
->     copy_from_user(prog->insns, fprog->filter, fsize)
-> 
-> in the context of the current process.
-> 
-> For a persistent TAP, if process A creates it and runs TUNATTACHFILTER
-> with a filter array on its stack or heap, then closes the fd, and process
-> B later opens /dev/net/tun and runs TUNSETIFF on the same name without
-> IFF_NOFILTER, the fprog.filter pointer may not be valid in process B's
-> address space.
-> 
-> Before this patch, when sk_attach_filter() failed (which was actually the
-> success case due to the inverted check), the err value was overwritten by
-> later operations (xdp_rxq_info_reg() followed by 'err = 0'), so the queue
-> was published and TUNSETIFF succeeded, just without a filter installed.
-> 
-> After this patch, if the pointer is unmapped, __get_filter() returns
-> -EFAULT and TUNSETIFF now fails. If it happens to be mapped but holds
-> other data, bpf_prepare_filter() usually returns -EINVAL and TUNSETIFF
-> fails. When the bytes happen to pass validation, they become the filter of
-> a queue that actually gets published.
-> 
-> This affects both the persistent TAP case described above and multi-queue
-> setups where another queue is opened after the buffer holding the original
-> filter has been freed or reused.
-> 
-> The next patch in the series, 508f529200c5 ("tun: keep a kernel copy of
-> the socket filter program"), addresses this by storing a kernel copy of
-> the filter program. That commit's changelog describes exactly this
-> behavior: "unmapped there, the attach fails with -EFAULT; mapped,
-> whatever bytes it holds become the filter of the new queue". It relies on
-> 8c6a2cf8bd0a ("net: filter: add sk_attach_filter_kern() function").
-> 
-> Until that commit is applied, this patch changes the re-attach behavior
-> from succeeding (without filter) to failing (with -EFAULT or -EINVAL).
-> Both commits carry the same Fixes: tag, so a stable backport or bisect
-> that includes only this commit would encounter the problem.
-> 
-> Would it make sense to reorder these commits, putting the kernel-copy
-> change before the inverted-check fix, so every step of the series works?
-> 
-Yes, thank you.  
-
-I have reordered the series as you suggest, it now is:
-
-  1/4 net: filter: add sk_attach_filter_kern() function
-  2/4 tun: keep a kernel copy of the socket filter program
-  3/4 tun: fix inverted error check when re-attaching the filter
-  4/4 selftests: net: add TAP socket filter attach tests
-
-I will send it as v3.
->> @@ -817,6 +819,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
->>  	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
->>  	tun_set_real_num_queues(tun);
->>  out:
->> +	if (err && rollback_filter) {
->> +		lock_sock(tfile->socket.sk);
->> +		sk_detach_filter(tfile->socket.sk);
->> +		release_sock(tfile->socket.sk);
->> +	}
->>  	return err;
->>  }
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/36552651982
+Thanks,
+--chris
