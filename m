@@ -1,167 +1,320 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A5A51E424
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4768234D916
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 16:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790784762; cv=pass; b=Yjz/9Pzx8En0HpqnASolbHC8QcU3Z425NRnJ/lTNKn6C5Fg/rHXIH59bmDc9dueyNIKckOlhy0148feudU/rL9GmBVY12pO6v4MuA0GGGJcaKqh2Qhq3sxL8DH7Ag/vupDIn5SCiuAKzH5wrZUSCyYW0vNlzZg88jFbPnZqVAEE=
+	t=1790785192; cv=pass; b=p4uLik96+kkpFMCqIXWxc8DdqMOIrJGjIo15S7SZpHIeouOoItulrek554FI6QpImjlmm2MtARtf2kZRGD4eVo2WIXQpyeqblLmge2CSnP/MDkuVYiUQ1iGCFFegNexcEy1ny6cU4kpOob3gh94UB4CVy93AtoBynjN6OjHYzYc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790784762; c=relaxed/simple;
-	bh=7gqiQOM1qisNlj8JQPYTsymhakjhh1OHGQP9wdS9nLw=;
+	s=arc-20240116; t=1790785192; c=relaxed/simple;
+	bh=xbtri7KQhu+zwuSa6E8DT3Zb5oL69TJr8mD7f5rtmL4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N573hR0gdPcC65ZDOA9CQr+ZSCrjLXDtGcx1avlVaasSCC5uNu3g9gwHHZSSMULp/TCw/IYa96I5M8qh5+7SBlwRqpjUABdByGIEAY2kjy23CmH+mW4m6u5IQM7pCpTbeX5XyxN1jdQUHwh9kOiNVa7oIw0ARIjUhgQmXugSf2U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEjRPpal; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=daSQoaFlkzX2ecuUsXo/mK8JH5XLY7KCrUayL0wKvxbqGYoAtgYz3wEJ3mO7QVfZ61eODaiWJdzDf6FSAQXN0CkA77sPMbpNQOfbDHnfT/T9g4ki5BEbpL1u2X04nb/kcHMUfeL4t4wAvqm3Wg+ieAuoFXbf3KE16zSxHKCqWl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qmew/MLy; arc=pass smtp.client-ip=74.125.228.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEjRPpal"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso9124a12.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:12:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790784754; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qmew/MLy"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af7721e4aso838148166b.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:19:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790785184; cv=none;
         d=google.com; s=arc-20260327;
-        b=AnTjXXw6yAVvPm9Ny/n+px1TZ9DE7cHeUbzWD0dT3ZA6r5vzESWnju2zvKiivqZ98l
-         V0m1nWd8cNHZvoayMnoDVKPRo+E7E3+y4oVPd0CN9tq7lt1ly+5q6Lxr5D5Ab+oesckk
-         GmruSKrhbsupv2/MoK6G3fye9WW60eaAYw5e6uqmeQZgtnv4EOXTC02VBzQEUil/kSYS
-         9BUlAqE8tt5uIqbH9kb/Q9Le5BgtDnoWX7SK47GNocK6nXry/r0Jw0Nig3E9ga9g/9j8
-         Lkhbc1kF2qavBEhvPeBTor5pDTlF80Bw918zTMQe36vYcJo++eObLHVjCZsdKpBrneef
-         F0Jg==
+        b=JYBiXVmPSJZh8VsdmNFx8KXDbThPGyqND4gFNuKFeQg8sp7fb/Qkoib4rD5pdBlgYb
+         xSvxIMN30De1ADYioi/FdSRL337SyEIXNJtaRBtJ49wczZUZ8MQcdcVlhJ9svjuRE0r1
+         7r74vxQWIDoeLqlt9AeM+nqiazH1ChIECeul/RG6mgX3+KnTQcP3N1/BKIZ/ByusfDGF
+         puPvKoCmHK+VVnOJvF3gSn9vt4yTthLenySXhMhY07CvJxu5tmsMf74lJGiAOC5qfu6L
+         PdJEaTETJg/sdKoEArRe82ZuhPV0wilz53EWVdWduMoEWz61H33ZBJKK2rJFWXgV9ZW5
+         DjNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
-        fh=yHLT0tegnZVpBBUchfuZhVWvB1VAjHqhJm8pg0+ognU=;
-        b=j+NbsWWlTTvP2tCSQtI2kfv1/u17myA7nooRObqI6c2gAAZJOdUoW3DrWMu+8Rz1PL
-         rEOsId/DyQHw0eK8lZUx1f+ALDcmjGqMt+8YmEabJGgtFD1PDM5RVaQzrS6iJznIIkfn
-         9RXmqpqu6CIt49AXUM+t4vTJUJKGyms+HFaPSF/dGq3VhSElJyu99VNl1wJzatCjeBiQ
-         ggT+qlMToiiEHYd8Lv/mgtP+U4uaWnuMumUGBwpFcDFxNmUf9VpbBYAstGy+JLTWbPRO
-         +WNgmygP28yirTvo/HDn0tYLpQ0FBdI0Gqd0QhAaaA999CHSENyy9UYK2LkC2sil1xWf
-         kjvQ==;
+        bh=nG2T2Alp7V7AR4zEW4H2cF7/r2rfzmYJ1/XwqhpbHio=;
+        fh=vZ9dS23zNWweCniIMdg5FTA0DwE3HUxjZwEunL+J8wI=;
+        b=N1ckvA8UHd4Yt/W72uw0XIjfMShRGuKMsxqSo2aqmy5ztBZuVazEJbsgm6uod3HlDu
+         a3X8vIHGpi35sdlx7R0TB5+1qcIXxRyCakUcPu79sJR7KwmcZYs2cX0IhK6KQRPtpTTt
+         u+2Btv/AYyrLnVsmVRO8VKBA64TqbumNYaUpzZPjhicz3/yl3UrOyWo7qMu+ifSRDSTR
+         sgpal+3VGY50IhzK6kK6UGHsUsc8hbb6JcmStZb3lJurhHtVhRIZYS64bq1fHf8Fs6gN
+         ReLrgiJL/B/78DZxNg5ti0Tgc9dZwaWEbGcrAYdFjLNCuBpT6BC52CpY37SJUhKDfTNm
+         GwnA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790784754; x=1791389554; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790785184; x=1791389984; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
-        b=bEjRPpalTxdDdMgHibqpAaNbPNBRJDrE73BGcSE29kN6dxT+muafGlzGVqWqMlWwUE
-         FN4/f3/cNmb6O6jJWREkvRQUr4n6jT/MLK3JVzGORHPFt/ZYI2FsSv7UJn9CvLVod1M1
-         weB2ifeAgLhGV5yFe1IGAFlxo9dPBDWMtLAviUZDsEN1IKMhOBWcMrWVQPvnY65etVI+
-         YuC/fWPNBd2BK4oWH93ZDFd+HZ/MFOikJSMs0ISi1cZtmX3np4IHeClwKjMR7Uxw6Gqf
-         if35Pt0LkbY7I32S1AKmZ2uhpsVVW5L9CTlpODNASMKpreDmcrEbUoUk/FDiXmNpqG/H
-         b/AA==
+        bh=nG2T2Alp7V7AR4zEW4H2cF7/r2rfzmYJ1/XwqhpbHio=;
+        b=qmew/MLy19s99PQrRuGDmnTXHCCSORCtzrDtVbqeM7CXQaUJ7HJCfZ8U9QpQcucFLT
+         L2+3eJS15xvcFuZbXRDTSSGeiaAzrfpz5i2RjgGWkbwHyRRknDPhZUPosenNAxsFfYyA
+         dUnDvMbsqvC2KIlWzxqm2RpNcPMZI3ShyaQ6zQpgqzuhFV5fg7Y4hIvTCSca9wY4wMkI
+         +V6UYm4QdwixPrLNAjD4o98YaQYzUgqqqaLqqwpX0B5k700CN7o8D2PURBZn7Q1wGLAN
+         3LkTic8DAoOwz73tF6hKBujIyDZZX9wpMW9XkM8ahRyYlEgRILNVm3GUtVnv/q2pLIWn
+         /BfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790784754; x=1791389554;
+        d=1e100.net; s=20260707; t=1790785184; x=1791389984;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sKCqFzFBYqTrIG82wyOVYeMg1E+Z4esSyVmGkXm0A98=;
-        b=YKO9eHNVwfkq5F4WD+wQH6fU0mcpyYHI0T5Q11sCnNj0IC5KZJtt1KXFnOX7LG84s1
-         iNpIKVWTQOWQqkp2tPyzkCiIQlmO78f0TAkAjTMqq7Xd1wIa9Dj3dWCtmAXFXgD7Zm/a
-         eN+23Rk964JpnTtCyolt7dkE/h0dTK0PTg81xs1MuTr9lUCQr2kwWYX7LgIXnIOW9oDk
-         rt2MyVHmeWSM6Lqx8dSwu29Y85eIpybp9ZkAUrTpED3twsqZ24CnTllNZeU21mCith2E
-         jna+yYS+3/pqRzxDab+I5bcDfBGuTXWJNw21l9LU5KRqlm0CsQWo+ptTpPnkIMKHE3U0
-         YNjg==
-X-Forwarded-Encrypted: i=1; AKwUvBwTm1aPwU8u4ix3EN9I1tMQxC0cyweNfJmYLdjTU7/AoC3kDXSGcS8/yQY0nSkWzW1ADmmYgXE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRmyfV1wcdQfQFbAoL6Jc4rbOKsIRebD5HR0FjMgWOCjVGT2j/
-	Li8udH8nMJrzGJEeQXIvAq3oa47Xgkm7rpxdJAldjm25WfDo9w3y+k8LNcCt05+XSsAztemPgen
-	SllWFYUmunXK679GRjhVmgqD6/xh010eS5rpVhU6j
-X-Gm-Gg: AYBFou2V+2ByCbQlgZLp7GHmqz0d6LH+5pcpvJaQarA1B9dm4y6VW/8GLpo6g6qvMn5
-	+xLQ9dJuxZdOxOI2hT3ttyi+26s2o92HRbapp/LDR043aZW/SeQh5rrModj64pBDaPJkqBaMYub
-	84foAbTo7MxhkEK1L2IVJYYM9S8MkzE8EKb0b3Wc4ZBQtzIT0f8woGlIgxqgKYtZqFttF5dW85R
-	ysGNUZuTguNRBmnp8ZiOCYPa+MIZzT67QRrqF4pMXFENGmQ7T2eMGtlJXlUnE9CLfMy03zg0goB
-	wXKBqtdGd8ijfiDUCDfa9suIFMi6TmVdeVPwzR3UzvCd3S88piwYVK/mN3VU13yA3Ty/5sJNrzE
-	XcYYY5kIs5A==
-X-Received: by 2002:a05:6402:a4ed:b0:6a1:4eba:f09e with SMTP id
- 4fb4d7f45d1cf-6ad59eff06amr46096a12.7.1790784753356; Wed, 30 Sep 2026
- 09:12:33 -0700 (PDT)
+        bh=nG2T2Alp7V7AR4zEW4H2cF7/r2rfzmYJ1/XwqhpbHio=;
+        b=PMGNABQwHxgU5BwTInVKw7kpQwqjKTGCJNOCvRkOK5KSKMYDIGH3b5ySnY9MRRW8YI
+         drtmrNSo26vOwH0WwD92n7T3Hcrt/8c2Hsxr+wxGj/Q+S9b3/PdKrtTUm97k9Rz1UCra
+         gqO+nq8QJ7DbDDjRLq4FVNA/xKiJWNERoPNqUpSE+zRvQj/5u8E/s5PT86e6NFhVhpMs
+         NfqknUOK0I4hVe4PV/flAy8EpDzgmL78jbgt8fxn5SM9bxbNlSSmJ2stsndVf7Fx/XpK
+         c7Ld6P5vCO2r53cUp1aDwdf2vgBipzcuq20sbs2+hv4sw6xsgmWRpe7jnDhLI8Wpy2T3
+         4fQg==
+X-Gm-Message-State: AFq9FYJ1LrDatYpHjbk0ooMV+j3wDYBNs2hmAh/T7aVfhs9x9yTID97x
+	Hgeir+cFMgEmwIPSHa/CHWkT1ptZtpGKncvSnJRly9gBR79dt1taZsGkq6gcAVfCxdcf0ZPWVWX
+	KZvEyZV/SCO2Qea6AUGrpQno8kKJR4nrVkmCK+CwfeA==
+X-Gm-Gg: AYBFou1yhBndv+Z1uaOUrRcrH0AHcjiJmxuLAwISr7yOBw+PLNnBOto3nq3xBDwMHIY
+	hWMiLCwXaqSVW5S/jzFrY5/TfbY62j98HLMWwXUdBh6EZ3wBz4EKwohVUd/pFA0YF6iA1XkCxqs
+	RHQtAaEkCPnbClZyiRMIH3yhQoZVyxi1U/PdlGiGIEScOb9ahegrY2/dO5p9jlyhZHf09Om//tH
+	C4EOBqMSyIoSRmjsEs6q6q4cPVh1GQ9iMIRex8G9qOy+tGMmQUV+guqAfm++ozsfY1R+WEZ63JD
+	n52oci3NjipgzJ3x8XHWOI529vlNSmEwuwrV13t3sZQrGo+eMmPmJwAsUVfFwvyKICnSWw9WwLX
+	alrLs0s6B4fgnV/WxsmQJph1WwLNeY4MTqvIBF6QLHw==
+X-Received: by 2002:a17:906:478d:b0:c2b:ca9c:1379 with SMTP id
+ a640c23a62f3a-c2e23d80235mr174035666b.28.1790785184054; Wed, 30 Sep 2026
+ 09:19:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930102524.1659847-1-4ncienth@gmail.com>
-In-Reply-To: <20260930102524.1659847-1-4ncienth@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 30 Sep 2026 09:12:21 -0700
-X-Gm-Features: AclHuK8sXEfV_wKW4FGBJSbi9it2y76uzkVZaA-s7FwS1OnJPEJwdDQqQ9SxoiU
-Message-ID: <CAHS8izPpY0F4nnvOdq-ijsa27oiLxNViBXXyS54HJuHOO8rkGQ@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: reject net_iov in zerocopy receive mapping hints
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260820085941.380401-1-pawlik.dan@gmail.com> <20260820085941.380401-2-pawlik.dan@gmail.com>
+In-Reply-To: <20260820085941.380401-2-pawlik.dan@gmail.com>
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+Date: Wed, 30 Sep 2026 18:19:31 +0200
+X-Gm-Features: AclHuK9VCY3Sjvtv8H3qKyzm85-MwnmIxc92I19Mmm-MRvCk9MqeBH9bmWUgmek
+Message-ID: <CALC2AphzQ=dHOk2Yjtaw=i2euCLxo+Lk0kO50ixtYydO0yzBHA@mail.gmail.com>
+Subject: Re: [PATCH v10 2/2] net: airoha: npu: use cacheline-sized buffers for
+ mailbox DMA
+To: netdev@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	kuba@kernel.org, lorenzo@kernel.org, nbd@nbd.name, sean.wang@mediatek.com, 
+	Mark-MC.Lee@mediatek.com, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, yangshiji66@outlook.com, 
+	upstream@airoha.com, szymon.datko@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 3:25=E2=80=AFAM Daehyeon Ko <4ncienth@gmail.com> wr=
-ote:
+Hi Kuba, Lorenzo, Airoha team,
+
+I found a concrete lead for the unresolved cacheline patch in the vendor
+firmware. The installed en7581_MT7996_npu_rv32.bin matches the blob in
+linux-firmware commit 1043c0303910 by SHA-256.
+
+At file offset 0x3a9c, the Wi-Fi mailbox handler converts the supplied
+buffer address before reading the command:
+
+  lui   a5,0x40000
+  addi  a4,a5,-1
+  and   a4,a4,a0
+  or    a4,a4,a5
+  lw    a1,0(a4)
+
+This implements (address & 0x3fffffff) | 0x40000000. Both 0xbf6cf000
+and 0xff6cf000 produce 0x7f6cf000. W1700K has 2 GiB of RAM starting
+at 0x80000000; its current SWIOTLB pool starts at 0xff6cf000.
+
+The handler also returns 1 (success) for an unsupported operation type
+at file offset 0x3b4a. My earlier claim that mailbox success proved a
+correct command read was therefore unjustified. The traces do not
+establish a read-succeeds/write-fails limitation.
+
+This suggests an address-window problem, but the NPU-side bus mapping
+still needs confirmation. The cacheline patch avoids the observed bounce
+path without constraining the address of future direct allocations.
+
+Can Airoha confirm which host DRAM range this alias covers, and whether
+mailbox buffers above 0xbfffffff are supported?
+
+I have prepared, but not yet run, a test retaining all 2 GiB of RAM and
+the 12-byte DMA_BIDIRECTIONAL mapping, with the SWIOTLB boot pool below
+0xc0000000. A successful version response through a verified bounced
+mapping there would help distinguish the address limitation from a
+SWIOTLB copy/cache issue.
+
+Thanks,
+Dan
+
+czw., 20 sie 2026 o 11:00 Daniel Pawlik <pawlik.dan@gmail.com> napisa=C5=82=
+(a):
 >
-> After copying a readable prefix, receive_fallback_to_copy() asks
-> tcp_zerocopy_set_hint_for_skb() where page mapping can resume. If the
-> next skb is unreadable, find_next_mappable_frag() passes its net_iov
-> fragment to can_map_frag().
+> On non-coherent ARM64 (EN7581), the kernel's dma_direct_map_page()
+> forces swiotlb bounce buffering when:
 >
-> skb_frag_page() returns NULL for a net_iov, but can_map_frag()
-> dereferences it in PageCompound(). A v7.2 KASAN run on a connected TCP
-> socket with 64 readable bytes followed by a 4096-byte NET_IOV_DMABUF
-> fragment reported:
+>   !IS_ALIGNED(phys | size, dma_get_cache_alignment())
 >
->   BUG: KASAN: null-ptr-deref in can_map_frag
->   tcp_zerocopy_receive -> can_map_frag
->   Kernel panic - not syncing: KASAN: panic_on_warn set
+> The NPU mailbox buffers are 12-24 bytes, well below the 64-byte cache
+> line size, so this check always fails regardless of physical address
+> alignment. The swiotlb sync path itself works correctly, but the
+> EN7581 NPU cannot DMA-write to the swiotlb bounce buffer address
+> range =E2=80=94 it reads commands fine (mbox_status=3D0x7 success) but ne=
+ver
+> writes responses back, leaving response fields as zeros.
 >
-> The diagnostic inserted the net_iov directly because the test host has
-> no devmem-capable NIC. Hardware end-to-end reachability remains untested
-> and requires CONFIG_NET_DEVMEM plus a supported DMA-buf-bound RX queue.
+> This was confirmed through five boot traces on a Gemtek W1700K:
 >
-> Reject all net_iov fragments before skb_frag_page(). This covers both
-> DMABUF and IOURING net_iov types while leaving page-backed checks
-> unchanged. With the guard, the same queue copied the readable prefix,
-> returned a 4096-byte skip hint, and completed without a fault.
+>   - Boots 1-4: all streaming DMA through swiotlb (is_swiotlb=3D1),
+>     bounce buffer byte-identical to pre-map after NPU completion,
+>     even after explicit CPU cache invalidation (dcache_inval_poc).
+>     NPU version reads 0.0.
 >
-> Fixes: 9f6b619edf2e ("net: support non paged skb frags")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>   - Boot 5: kmalloc'd cache-line-aligned buffer bypasses swiotlb
+>     (is_swiotlb=3D0 on all 169 mappings), NPU writes response data
+>     directly, version reads 0.1111, WiFi fully functional.
+>
+> Fix by rounding mailbox buffer allocations up to
+> dma_get_cache_alignment() and mapping the rounded length. The original
+> payload size is still programmed into the mailbox length register.
+> kmalloc returns cache-line-aligned pointers on ARM64 for allocations
+> >=3D ARCH_KMALLOC_MINALIGN, so the IS_ALIGNED check passes and swiotlb
+> is not triggered.
+>
+> Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buff=
+er")
+> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608141=
+10017.2795022-1-pawlik.dan@gmail.com/
+> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608091=
+52813.585797-1-pawlik.dan@gmail.com/
+> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608050=
+70851.2885888-1-pawlik.dan@gmail.com/
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
 > ---
-> Affected since v6.12-rc1; present in v7.2 and the pinned 2026-09-30
-> Torvalds, net, net-next and linux-next snapshots.
+>  drivers/net/ethernet/airoha/airoha_npu.c | 25 +++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
 >
-> The existing combined fixed v7.2 build was warning-free. No isolated
-> kernel build was run. Tested config SHA-256:
-> f992c9fdb881ca95c467896791c52554719f6204cf06268cd92ac37c14c14f83
+> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
+net/airoha/airoha_npu.c
+> index 4045d1eb93ea..3416f921f961 100644
+> --- a/drivers/net/ethernet/airoha/airoha_npu.c
+> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> @@ -5,6 +5,7 @@
+>   */
 >
-> The reproducer is available privately on request and is omitted from
-> this public AI-assisted report.
-> ---
->  net/ipv4/tcp.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  #include <linux/devcoredump.h>
+> +#include <linux/dma-mapping.h>
+>  #include <linux/firmware.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/of_net.h>
+> @@ -160,15 +161,21 @@ struct wlan_mbox_data {
+>         DECLARE_FLEX_ARRAY(u8, d);
+>  };
 >
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 562752352afe..87ef6d5cbfeb 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -1908,6 +1908,8 @@ static bool can_map_frag(const skb_frag_t *frag)
+> +static size_t airoha_npu_mbox_size(size_t len)
+> +{
+> +       return ALIGN(len, dma_get_cache_alignment());
+> +}
+> +
+>  static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+>                                void *p, int size)
+>  {
+>         u16 core =3D 0; /* FIXME */
+>         u32 val, offset =3D core << 4;
+>         dma_addr_t dma_addr;
+> +       size_t map_len =3D airoha_npu_mbox_size(size);
+>         int ret;
 >
->         if (skb_frag_size(frag) !=3D PAGE_SIZE || skb_frag_off(frag))
->                 return false;
-> +       if (skb_frag_is_net_iov(frag))
-> +               return false;
+> -       dma_addr =3D dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL)=
+;
+> +       dma_addr =3D dma_map_single(npu->dev, p, map_len, DMA_BIDIRECTION=
+AL);
+>         ret =3D dma_mapping_error(npu->dev, dma_addr);
+>         if (ret)
+>                 return ret;
+> @@ -191,7 +198,7 @@ static int airoha_npu_send_msg(struct airoha_npu *npu=
+, int func_id,
+>
+>         spin_unlock_bh(&npu->cores[core].lock);
+>
+> -       dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
+> +       dma_unmap_single(npu->dev, dma_addr, map_len, DMA_BIDIRECTIONAL);
+>
+>         return ret;
+>  }
+> @@ -333,7 +340,7 @@ static int airoha_npu_ppe_init(struct airoha_npu *npu=
+)
+>         struct ppe_mbox_data *ppe_data;
+>         int err;
+>
+> -       ppe_data =3D kzalloc_obj(*ppe_data);
+> +       ppe_data =3D kzalloc(airoha_npu_mbox_size(sizeof(*ppe_data)), GFP=
+_KERNEL);
+>         if (!ppe_data)
+>                 return -ENOMEM;
+>
+> @@ -354,7 +361,7 @@ static int airoha_npu_ppe_deinit(struct airoha_npu *n=
+pu)
+>         struct ppe_mbox_data *ppe_data;
+>         int err;
+>
+> -       ppe_data =3D kzalloc_obj(*ppe_data);
+> +       ppe_data =3D kzalloc(airoha_npu_mbox_size(sizeof(*ppe_data)), GFP=
+_KERNEL);
+>         if (!ppe_data)
+>                 return -ENOMEM;
+>
+> @@ -375,7 +382,7 @@ static int airoha_npu_ppe_flush_sram_entries(struct a=
+iroha_npu *npu,
+>         struct ppe_mbox_data *ppe_data;
+>         int err;
+>
+> -       ppe_data =3D kzalloc_obj(*ppe_data);
+> +       ppe_data =3D kzalloc(airoha_npu_mbox_size(sizeof(*ppe_data)), GFP=
+_KERNEL);
+>         if (!ppe_data)
+>                 return -ENOMEM;
+>
+> @@ -399,7 +406,7 @@ static int airoha_npu_foe_commit_entry(struct airoha_=
+npu *npu,
+>         struct ppe_mbox_data *ppe_data;
+>         int err;
+>
+> -       ppe_data =3D kzalloc_obj(*ppe_data, GFP_ATOMIC);
+> +       ppe_data =3D kzalloc(airoha_npu_mbox_size(sizeof(*ppe_data)), GFP=
+_ATOMIC);
+>         if (!ppe_data)
+>                 return -ENOMEM;
+>
+> @@ -434,7 +441,7 @@ static int airoha_npu_ppe_stats_setup(struct airoha_n=
+pu *npu,
+>         int err, size =3D num_stats_entries * sizeof(*npu->stats);
+>         struct ppe_mbox_data *ppe_data;
+>
+> -       ppe_data =3D kzalloc_obj(*ppe_data, GFP_ATOMIC);
+> +       ppe_data =3D kzalloc(airoha_npu_mbox_size(sizeof(*ppe_data)), GFP=
+_ATOMIC);
+>         if (!ppe_data)
+>                 return -ENOMEM;
+>
+> @@ -466,7 +473,7 @@ static int airoha_npu_wlan_msg_send(struct airoha_npu=
+ *npu, int ifindex,
+>         int err, len;
+>
+>         len =3D sizeof(*wlan_data) + data_len;
+> -       wlan_data =3D kzalloc(len, gfp);
+> +       wlan_data =3D kzalloc(airoha_npu_mbox_size(len), gfp);
+>         if (!wlan_data)
+>                 return -ENOMEM;
+>
+> @@ -489,7 +496,7 @@ static int airoha_npu_wlan_msg_get(struct airoha_npu =
+*npu, int ifindex,
+>         int err, len;
+>
+>         len =3D sizeof(*wlan_data) + data_len;
+> -       wlan_data =3D kzalloc(len, gfp);
+> +       wlan_data =3D kzalloc(airoha_npu_mbox_size(len), gfp);
+>         if (!wlan_data)
+>                 return -ENOMEM;
+>
+> --
+> 2.55.0
+>
 
-I think this should use skb_is_readable(). But you don't need this
-helper for frags. I wonder if we should add a readable helper for
-frags? I'm still holding out that in the future someone will add a
-net_iov type that is actually kmappable and readable.
-
-But this is good enough.
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
 
 --=20
-Thanks,
-Mina
+Z powa=C5=BCaniem,
+Daniel Pawlik
