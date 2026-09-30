@@ -1,66 +1,46 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5672650AC0E;
-	Wed, 30 Sep 2026 17:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A9F51AEEE;
+	Wed, 30 Sep 2026 17:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789022; cv=none; b=ieeIZlNwL846ccgOLR+PVN/dcG7x2VReAGmcWMgTCpbfWRS/ZVooo/fRZnq22k5bwMYs710uiN+CMXhX1EXbPV9t2VtE06hPAUmuR7nsdcwjDltg/5D7QRru+VHCg7frCp6Aln6WQWOY7bEnh7O8tryk+8g782T9eF5K6j8q/9Y=
+	t=1790789055; cv=none; b=Aq55KWsFnjOocQgwMv3RteqAlsFOdV+3GES6BlTDHpktO+b9ZDgpNIMmH55NLAQ6oUm7saHLcsBpQdw2vveWJGwMdxrX1hflvI/nCEmEpami1tsqTF6ZqlkUvA9WcEJjnpO697+hXMoQREUiWib7EpJ6JLV3jobX9RLgizGMak4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789022; c=relaxed/simple;
-	bh=R5LanrnPNGM9adp6GAp2YNkPnKVEeuPfLVmOUuhLk5k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l/iyXaTjFhRbKnCtnA93S9SGV6ahVqkJpK/6p02gw9jbbUpuroLaHN776O0PKuxjh229Ylxq6on+wM6T9a9/HiJv4sh58I/sfDbuScKljmpKHyhidW5z6YRAJ3HkFz/BkqZwBeZdYavRWcIPLKOeWt+iswThE6Tr9JxiViwhbSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TM3It2xb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aOPkZgaR; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1790789055; c=relaxed/simple;
+	bh=4OKMzORgpVYpyxZKu8D/i6mokK71Gx8Qcm0T6kxyE1I=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hVJIyS04Bo1OLlHv3c9AGpigoJvIRB8cDF6jSNuDPlzSEAiAkPwMufGl5/9cHdCJux9CVovJnA9Ci2LAzLTKuC1zJaqQ6Fm8dM2bUiN31cBdaAyzOvYBonpLDmtkUuLf8SbgQ6L0KGGunl1EvW+O0z80TLLdWUv13S8CyKRpGls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQt/vyhN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TM3It2xb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aOPkZgaR"
-Message-ID: <2c0a9d5f183cb9537b3f89016800247bb7b673c3.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790789019;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6W8wYUuNF+9KH8wiriFXCa8qGDy8H8gBzB8t+V9+Dc=;
-	b=TM3It2xb8wd64B0E8QNfdisnTvhiC0zMBQ9dVYTw/CmcvvndOW+dVJd5OOh6yuha08O+rB
-	P3R86zYifRls6wQR7drgP8d24hJ4swWofUnCGul2IJwjtppymysiyHnh1nS33TD7/1PFDd
-	vI01pTmqqJARSJPyjurhCoEMoktUCzp2f4oDSlXvBRBLY1Ns+Dj6Wfgz5M/GD/o1bVbURy
-	BTUc2HF6t1HrlIWZeyZ2GnvM/JOqmhgHjJ+JE1HXVu+voUrhKbGk4S5x7/ebUQQJkC6WD9
-	EbSridqwxuQayUD/TuTmvcYL6yfCUqX39V4aOAXEMe+kq16newGGftXYtMuOGQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790789019;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6W8wYUuNF+9KH8wiriFXCa8qGDy8H8gBzB8t+V9+Dc=;
-	b=aOPkZgaRgqA2lTa7KLLEOMuRQnFMhkO9KO2Wt3Jt4TgMMDT3SXjs5ecsWO/WNVdLe6uKkI
-	BRBjgP9sxyETsiDA==
-Subject: Re: [PATCH net-next v3 5/8] net: mdio: Add SoC-e SWIP MDIO
- controller driver
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Wed, 30 Sep 2026 19:23:38 +0200
-In-Reply-To: <e4440c27-5551-482c-95ae-9b75481bcf7b@lunn.ch>
-References: 
-	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
-	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-5-ddebafcb9ba7@linutronix.de>
-	 <e4440c27-5551-482c-95ae-9b75481bcf7b@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQt/vyhN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29061F000FF;
+	Wed, 30 Sep 2026 17:24:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790789053;
+	bh=lQb9tfrlvMaxDUpVxJmUvBlC4Dx9mV1GDM9q8BWJFQA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UQt/vyhNT6WD4j99wIDXjBihWrr1G8iEvbjKjPIvv0Ac/GXM4JLNlODrRzSpcITL4
+	 j0fwLq5gcbrpchSfohZS9qDwB9PHgRhQjW52pXzaK3fVO8eJG5QZYOa0kEZFKHXXI0
+	 gFDcrh5GPSrtkvkxwkcvmdfrrlrHoixl4HNcfI9whs3tgDuKfbafSOprnHlSwGf/mK
+	 lVZgS4eWBedw1Cgf07ZLfjWugH+L5AvZHJ96w4YK1GeL3O5L4l/zKcPDFXrH3xCPQJ
+	 btdTb4VFCkW4DuhX/oZnoQgDnHVkNRqqkAPtD+GllXCT1s1l6XIvYEUjTBiHSXixPM
+	 EhCVII22ikCtg==
+Subject: Re: [PATCH net] soreuseport: Fix use-after-free when a socket is
+ added to socks[] twice
+From: netdev-bot+sashiko@kernel.org
+To: norbert@doyensec.com
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, kuniyu@google.com,
+ pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, martin.lau@linux.dev, daniel@iogearbox.net,
+ linux-kernel@vger.kernel.org
+Date: Wed, 30 Sep 2026 17:24:12 +0000
+Message-ID: <179078905251.434549.285280757670269533@kernel.org>
+In-Reply-To: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
+References: <6E4F8645-9453-45F1-B068-52E1B14E8B0C@doyensec.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,31 +48,198 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2026-09-26 at 01:10 +0200, Andrew Lunn wrote:
-> > diff --git a/drivers/net/mdio/Makefile b/drivers/net/mdio/Makefile
-> > index 048586746026..079b46dea25f 100644
-> > --- a/drivers/net/mdio/Makefile
-> > +++ b/drivers/net/mdio/Makefile
-> > @@ -23,6 +23,7 @@ obj-$(CONFIG_MDIO_OCTEON)		+=3D mdio-octeon.o
-> > =C2=A0obj-$(CONFIG_MDIO_PIC64HPSC)		+=3D mdio-pic64hpsc.o
-> > =C2=A0obj-$(CONFIG_MDIO_REALTEK_RTL9300)	+=3D mdio-realtek-rtl9300.o
-> > =C2=A0obj-$(CONFIG_MDIO_REGMAP)		+=3D mdio-regmap.o
-> > +obj-$(CONFIG_MDIO_SOCE)			+=3D mdio-soce.o
-> > =C2=A0obj-$(CONFIG_MDIO_SUN4I)		+=3D mdio-sun4i.o
->=20
-> Maybe the indentation is wrong here?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This looks fine in code.
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0 (1)
 
->=20
-> Otherwise:
->=20
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks, but I can not use it yet. Need to fix an issue with
-devm_ioremap() return value check in the next version.
+- [High] The patch stops the duplicate socks[] entry but leaves the root
+  cause that its own commit message names.
 
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0Andrew
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is still
+  reachable from the state the patch leaves in place.
+- [Low] This problem wasn't introduced by this patch, but a listener that
+  is hashed yet sits in the closed section (the state described above)…
 
-Vasilij
+--
+
+soreuseport: Fix use-after-free when a socket is added to socks[] twice
+
+This patch makes reuseport_stop_listen_sock() move a socket to the closed
+section of reuse->socks[] only when __reuseport_detach_sock() actually
+removed it from the listening section. This stops a second copy of the
+socket from being added to socks[], which led to a use-after-free in
+reuseport_grow().
+
+> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+> index 29948cb44b7d..031b641be317 100644
+> --- a/net/core/sock_reuseport.c
+> +++ b/net/core/sock_reuseport.c
+> @@ -479,8 +479,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
+>  			 */
+>  			bpf_sk_reuseport_detach(sk);
+>  
+> -			__reuseport_detach_sock(sk, reuse);
+> -			__reuseport_add_closed_sock(sk, reuse);
+> +			if (__reuseport_detach_sock(sk, reuse))
+> +				__reuseport_add_closed_sock(sk, reuse);
+
+[Severity: High]
+
+This removes the duplicate socks[] entry. Does it still leave in place the
+membership mismatch that the commit message names as the root cause?
+
+inet_hash() only enters the reuseport path when sk->sk_reuseport is set:
+
+net/ipv4/inet_hashtables.c:inet_hash() {
+    ...
+	if (sk->sk_reuseport) {
+		err = inet_reuseport_add_sock(sk, ilb2);
+    ...
+}
+
+inet_unhash() instead checks sk_reuseport_cb:
+
+	if (rcu_access_pointer(sk->sk_reuseport_cb))
+		reuseport_stop_listen_sock(sk);
+
+Take this sequence: listen() with tcp_migrate_req or a MIGRATE prog,
+shutdown(), setsockopt(SO_REUSEPORT, 0), then listen() again. The socket
+is now a hashed TCP_LISTEN socket, but it is still in the closed section
+of the old group G, and sk_reuseport_cb still points at G.
+
+With this patch, the next reuseport_stop_listen_sock() on that socket does
+nothing. The socket is never detached or resurrected, so this state lasts
+until sk_destruct().
+
+If the socket was autobound, __inet_put_port() released its port on the
+first shutdown(). The second listen() can then pick a different port P2,
+while G's live members stay on P1.
+
+Could that lead to the following?
+
+  - After SO_REUSEPORT is set again, inet_lookup_reuseport() ->
+    reuseport_select_sock() uses the stale G. SYNs sent to P2 are then
+    handed to a listener on P1.
+
+  - A new SO_REUSEPORT listener on P2 matches this socket as sk2 in
+    reuseport_add_sock() and joins G through the stale cb. One group then
+    spans two ports.
+
+  - On a later shutdown(), inet_csk_listen_stop() ->
+    reuseport_migrate_sock() moves this socket's children to G's
+    listeners on P1.
+
+The comment in reuseport_grow() ("Only reqsk left at this point.") also
+assumes that sockets in the closed section are not live listeners. This
+state also keeps the NULL dereference described below reachable.
+
+Would a fix at the source work better? For example, inet_hash() could
+detach a stale sk_reuseport_cb when !sk->sk_reuseport, or the cb could be
+detached when SO_REUSEPORT is cleared. That would make the new conditional
+here unnecessary.
+
+The commit message doesn't mention that this state remains after the fix.
+
+[Severity: High]
+
+This is a pre-existing issue, but the hashed-but-closed state above seems
+to make a NULL dereference reachable earlier in the same function:
+
+net/core/sock_reuseport.c:reuseport_stop_listen_sock() {
+    ...
+		reuse = rcu_dereference_protected(sk->sk_reuseport_cb,
+						  lockdep_is_held(&reuseport_lock));
+		prog = rcu_dereference_protected(reuse->prog,
+						 lockdep_is_held(&reuseport_lock));
+    ...
+}
+
+inet_unhash() checked sk_reuseport_cb earlier, but it held only the
+socket's own ilb2->lock at that point.
+
+reuseport_grow() can clear a closed-section socket's cb under
+reuseport_lock when the group cannot grow any further:
+
+	sk = reuse->socks[reuse->max_socks - reuse->num_closed_socks];
+	RCU_INIT_POINTER(sk->sk_reuseport_cb, NULL);
+	__reuseport_detach_closed_sock(sk, reuse);
+
+reuseport_detach_sock() and reuseport_update_incoming_cpu() already guard
+against this case:
+
+	/* reuseport_grow() has detached a closed sk */
+	if (!reuse)
+		goto out;
+
+Normally a socket in the closed section is unhashed, so inet_unhash()
+returns early. Here, though, the re-listened socket S is on P2 and G's
+members are on P1, so they sit in different lhash2 buckets. Is this
+interleaving possible?
+
+CPU0                                 CPU1
+shutdown(S)                          listen(T) on P1
+inet_unhash(S) under B2->lock        inet_hash(T) under B1->lock
+  sees S->sk_reuseport_cb == G         reuseport_add_sock()
+  reuseport_stop_listen_sock(S)          spin_lock_bh(&reuseport_lock)
+    spin_lock_bh(&reuseport_lock)        reuseport_grow()
+    (waits)                                (max_socks * 2 > U16_MAX)
+                                           S->sk_reuseport_cb = NULL
+                                         spin_unlock_bh(&reuseport_lock)
+    reuse = NULL
+    reuse->prog  <- NULL dereference
+
+If it is, the oops happens with reuseport_lock held and BH disabled, and
+any later reuseport operation would then spin on that lock.
+
+Triggering it needs about 32K same-uid sockets in G and migration enabled.
+tcp_migrate_req is per-netns and can be set from an unprivileged user
+namespace.
+
+Should reuseport_stop_listen_sock() have the same !reuse check as its
+sibling functions?
+
+>  
+>  			spin_unlock_bh(&reuseport_lock);
+>  			return;
+
+[Severity: Low]
+
+This isn't a bug introduced by this patch, but the same socket (hashed as
+a listener while still in G's closed section) also gets past the guards
+in reuseport_attach_prog() and reuseport_detach_prog().
+
+For a hashed socket, reuseport_attach_prog() only checks that the cb is
+non-NULL before it overwrites reuse->prog:
+
+	} else if (!rcu_access_pointer(sk->sk_reuseport_cb)) {
+		/* The socket wasn't bound with SO_REUSEPORT */
+		return -EINVAL;
+	}
+
+reuseport_detach_prog() only refuses unhashed sockets:
+
+	if (sk_unhashed(sk) && reuse->num_closed_socks) {
+
+So a socket that G treats as shutdown()ed can replace or clear the
+steering prog for all of G's live listeners, through
+SO_ATTACH_REUSEPORT_CBPF or SO_DETACH_REUSEPORT_BPF.
+
+The comment in reuseport_resurrect() says this should not happen:
+
+	 * ... In setsockopt() path, we should
+	 * not change the eBPF prog of listening sockets by attaching a
+	 * prog to the shutdown()ed socket.
+
+All members of G share sk_uid, so no privilege boundary is crossed. Is
+this behavior intended, though?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/6E4F8645-9453-45F1-B068-52E1B14E8B0C%40doyensec.com
