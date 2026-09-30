@@ -1,127 +1,103 @@
-Received: from mail-oo2-f37.google.com (mail-oo2-f37.google.com [74.125.231.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9792370AFC
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41D62F8EA3
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790735640; cv=none; b=pixqbXiSArdhcZ6QgsJsZyBu0u1wSokyzXel628HjzcU5D2Y6u8EcsAvXzE08OkeCQSOqczpuhpe0ICyGDcjC8PwGFM8mWpPqSPGIeTB9WGvzWegMuUTMHR8pUt/p+0s3pftlWrqc4wOQDjFwtToDl9jSXv0jMtvKMqMzWmZ2lw=
+	t=1790736000; cv=none; b=Dsy9iN0DcZFHT9uv2PCbdti/ZgbOGhbFW0aJwC7/ksUbJIHLVscXpKeUlnZLlr8o3M100qTv4HLdJO9G5gu84JJ25Vkwbn2d59HJIleCipAHaETpp6LG1L6uTRfghATwy01Uc3odCuCv0Z7gdmklOwjwSDQO8Y9aKjr5dJl6Mfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790735640; c=relaxed/simple;
-	bh=NHTef/IaCOVMoJ5oO2lol0WxJCz6IyfIJhQo6Bu98xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mVJ2UaTLhvmLbgFPHOhtM76KmssZNCd2Ltb6nMuBgdInwAc30HVdgBHB+C8Y7edl0hwoLca5aqHt44rOmNVOMShaOQnLl1ehC2tpeCGKPJZ41ZeNRc+Jbkmt7k0I+J/NKUP0soMUS7N44xwEh1jB7/N7rV907C22yLvrnaEiTFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=UrelUeGb; arc=none smtp.client-ip=74.125.231.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="UrelUeGb"
-Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-7fcb425fc2bso3040394a34.3
-        for <netdev@vger.kernel.org>; Tue, 29 Sep 2026 19:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1790735631; x=1791340431; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WimeQAmU72TV3I87w1mthEkhUyR0hLF8H4rHCIJsrKo=;
-        b=UrelUeGbogPMxZgLuNVIy1Qyra2DiWWG0S1YAALwZA+X+M+veXDrJ13Ld3iFP91BfY
-         ncooSU6NyYkBQp1qA4ZS1UNbB/uoGERLOwJDdLV0PuR1QWYgRpC5NIVqk1R00gGpTlve
-         CF5a0OLkGNiHzLuqWRxqzGcoVsa/eVlOmHLXwxwlHluA4PTa4YylwFJ7pQSDh1fhIRUC
-         ZcliyM96oQKrCMx+edrpT8xhasE1yG6OuzHU5PWii0LZBvxdZJNlaVXbRBQrEYtznEek
-         4OtGfDpECqhgeERJSrjlRIjf0Kf8Rqa5hUkijaUpWiSYcCwmtFr8kR0RWTGTZLjurNy0
-         GxQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790735631; x=1791340431;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WimeQAmU72TV3I87w1mthEkhUyR0hLF8H4rHCIJsrKo=;
-        b=kBClxvljG4dQNGpW+/qf+OZJElor/uALHx20oghXlNt2kQ7WEHcIw731kLiPHc6ENr
-         g6j8EA5/u41qI2LNyKHEn2cCA/iQE4OazS6w2Hq0y3RRVQv4rGAzEpE+TFxPR2mMipFY
-         0fNitWy0koUhJWkOzf1Oc71m+tPpdfCsJ/WbwhCYgIHQ4uduBVRsWGPas/ftdJ280Ual
-         knP7kB9HpWdiDpt2VpHq8QDxnAcbA5bmUDKdmUMvdXvm4IhmL7UbXJG1rUTk0FBsAvqD
-         4r2quYLX1FxiHR7O7/tF/z8H4AKNWmDx5Y7MSnJl5ZWYKgeLMrhO9Q2YsgdbRnv+b8uM
-         bhcg==
-X-Forwarded-Encrypted: i=1; AKwUvBx9pMFFlHxvR0nsRrCK/KuTY0pJOd2DKMcuarXS207ujGfJsHkVDGVvKMCROuBZjhlf5Bg+6SY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lhP5NLoUaA+dyufE3ullWPytGtdPk6xpQXsoi1wpN6mX+XyBic
-	aqAGZve7ibb8IjCMAJjIht2e9X9nPLRjBh5FIFygbG2h0FTioghm7xCZMxQZaDBaGww=
-X-Gm-Gg: AYBFou0rCwEKjckENhUAL4gBgnzwrhS8hMZOqpFnHa1Z94rfJExjaQcWiZ7JWQ6Wxl6
-	v6tOiR81i5V7bObBed1MTVcZBWws/CpVtnqRz/cbMl61bQgJTgKpBCxbPEd4wStRq6X4yYsa+h9
-	GiiA98wWxBPjhtXFkb4BINYgqV6o1ZYKeNsr2LMJ9l5ugsuF4/OJ14Ghy+d0IHMEs1XLE5JyYF0
-	MHn1kFQdtLbDNaXUVBrMCJhrLex4DoEAG2e/b8UoCA/V3vVphhuKKlAohhmslA+nbBSCvRgMw7Y
-	IJh0qYbyiTU7CWjKR+l1qzfwkYaNVBRGy+jb8SYhqKsu2o/UBoBr4tsSc5ubG9ROnaaM8/+EAxT
-	JZ/mjIE4lFJ6CW142pioqmq2AsTRuH40t8cQuHrOYSSl7YRak6/9xElZg9NS0h+0vQTE9c/WrCV
-	stmpTXVjsFQn2kMQ0iWGHNFcR0h0TcqUNaZXUH5Lz0qMLYO8k04eQZ
-X-Received: by 2002:a05:6830:6a8d:b0:81a:cc8a:ff8a with SMTP id 46e09a7af769-8204a75d1e7mr152408a34.21.1790735631284;
-        Tue, 29 Sep 2026 19:33:51 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:3064::4d2:8])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81fafce0ad8sm1630636a34.22.2026.09.29.19.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 19:33:49 -0700 (PDT)
-Date: Tue, 29 Sep 2026 21:33:46 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 0/2] ip: Batch flushing uncached routes per
- batched device unregistration.
-Message-ID: <arx1CqxoGGRdxv5-@20HS2G4>
-References: <20260929201546.1533268-1-kuniyu@google.com>
+	s=arc-20240116; t=1790736000; c=relaxed/simple;
+	bh=CEdoNyKQuBDBkZDP3UXuiDezKbVw40CdhAMAHoAtbaM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TiYeAhcpGvEcRyjMymgbuLhedHKa8hgth8sCKLU9b42lLjWkcv3wTZpiSWdOrov0dr49Dcwuizx/3VKyzRxTnpjPD22TsRn3ISWfO4EnRmJmK0xGJuwnBsLaeCr9z+fhZqMA5Hhc5+QsJkXr5xZhqOzzjaKLZe8rRmRGswv1MDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 32b7057abc7811f19a56ed5b684f684d-20260930
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:e588c88f-367b-4a10-a16a-91d09993f2b4,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:07d400e52f8fe9660bd7a249e35e36de,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0|15|50|99,
+	EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 32b7057abc7811f19a56ed5b684f684d-20260930
+X-User: weirongguang@kylinos.cn
+Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <weirongguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 789462195; Wed, 30 Sep 2026 10:39:45 +0800
+Message-ID: <a859aa22-10e5-43da-9496-112439f62aed@kylinos.cn>
+Date: Wed, 30 Sep 2026 10:39:42 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929201546.1533268-1-kuniyu@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] selftests: net: add TAP socket filter attach tests
+Content-Language: en-US
+To: bot+bpf-ci@kernel.org, clementwei90@163.com, netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, ast@kernel.org,
+ andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
+ eddyz87@gmail.com, yonghong.song@linux.dev, mason@kernel.org,
+ ihor.solodrai@linux.dev
+References: <20260929093712.131096-5-clementwei90@163.com>
+ <e92415377895ae97294773add38549484b30c54f4b3e1e968fcfe89348ff6696@mail.kernel.org>
+From: weirongguang <weirongguang@kylinos.cn>
+In-Reply-To: <e92415377895ae97294773add38549484b30c54f4b3e1e968fcfe89348ff6696@mail.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2026-09-29 20:15:06, Kuniyuki Iwashima wrote:
-> Chris J Arges reported high RTNL contention during cleanup_net()
-> caused by rt_flush_dev() and rt6_uncached_list_flush_dev() iterating
-> over the global per-cpu uncached route lists for every netdev in
-> dying netns [0].
-> 
-> This series resolves the issue by batching the uncached route
-> cleanup after __rtnl_unlock() in netdev_run_todo().
-> 
-> [0]: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com/
-> 
-> 
-> Changelog:
->   v2:
->     * Drop ->pre_exit_batch()
->     * Do batching after setting NETDEV_UNREGISTERED in netdev_run_todo()
-> 
->   v1: https://lore.kernel.org/netdev/20260927202429.2452589-1-kuniyu@google.com/
-> 
-> 
-> Kuniyuki Iwashima (2):
->   ipv4: Batch rt_flush_dev() in netdev_run_todo().
->   ipv6: Batch rt6_uncached_list_flush_dev() in netdev_run_todo().
-> 
->  include/net/ip6_route.h |  7 +++++++
->  include/net/route.h     |  6 ++++++
->  net/core/dev.c          |  5 +++++
->  net/ipv4/route.c        | 11 +++++++++--
->  net/ipv6/route.c        | 18 ++++++++++++++----
->  5 files changed, 41 insertions(+), 6 deletions(-)
-> 
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
-> 
-I was able to test and confirm that this patchset reduces RTNL lock contention
-with my test case. Please add:
-Tested-by: Chris J Arges <carges@cloudflare.com>
 
-Also for "ipv4: Batch rt_flush_dev() in netdev_run_todo()" please include:
-Reported-by: Chris J Arges <carges@cloudflare.com>.
 
-Thanks,
---chris
+on 2026/9/29 18:34, bot+bpf-ci@kernel.org wrote:
+>> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+>> index abe488bac50b..bf8d4d6f21f7 100644
+>> --- a/tools/testing/selftests/net/tun.c
+>> +++ b/tools/testing/selftests/net/tun.c
+>> @@ -8,13 +8,19 @@
+>>  #include <stdlib.h>
+>>  #include <string.h>
+>>  #include <unistd.h>
+>> +#include <linux/filter.h>
+>>  #include <linux/if_tun.h>
+>>  #include <sys/ioctl.h>
+>> +#include <sys/mman.h>
+>>  #include <sys/socket.h>
+>>
+>>  #include "kselftest_harness.h"
+>>  #include "tuntap_helpers.h"
+>>
+>> +#ifndef ARRAY_SIZE
+>> +#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+>> +#endif
+> 
+> This isn't a bug, but kselftest.h already provides ARRAY_SIZE through
+> kselftest_harness.h. Is this #ifndef block needed, or can it be dropped?
+> 
+> Looking at the include chain: kselftest_harness.h includes kselftest.h,
+> and kselftest.h defines ARRAY_SIZE at line 63-65. kselftest_harness.h also
+> defines it again at line 749. Other harness-based tests in the same
+> directory (tls.c, ip_local_port_range.c) use ARRAY_SIZE without defining
+> it themselves.
+> 
+Yes, thank you.
+
+I will drop it in v3.
+> [ ... ]
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/36552651982
