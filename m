@@ -1,65 +1,65 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B83A4FDA5F
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C188B4D796E
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781805; cv=none; b=Ew1CuQuPUzBzK1wt0l2YFiF06+NrP29ygdWLklRqd4sGaCxKqMK7ZqjiCUXcgmuLj/coGbDea6z0TDJdK8J+jpOpIu7f4lLw4bk9sHplix3rqMUfoVzEpDHsy8/yzyzVJBioNlFcxDA3yP6V+/VPACqq6Gux7znRfngkyzjPQ4c=
+	t=1790781802; cv=none; b=GgCRcZ//s6cv3+FPqhIyLpWf9urCaxsPrnotAJyNYynst249zgoyNWtGd1EQuIqlOorKkg2afzJYWlCzzlt1RapzlbeJR4XD6pJjOAWQQ8FctM6XE92k5TIBPUngW9WTP+aw6Ookdd+XcQ3pKHQ474IBJSrkv0aL81w+mdgUXpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781805; c=relaxed/simple;
-	bh=b9y4NXkgYg8B4pqDswquuydxBE3Tjnq/EUwfuU2Enwk=;
+	s=arc-20240116; t=1790781802; c=relaxed/simple;
+	bh=sdM5OqfoRJtAgwFkFqSFmLUbG2Nc3dHxv4AAkg6BVbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWLrNT+1i8+2FBaiChSi4SGlqdnsZSU/ZLwTVQDSrhH0wXkvVmezdClM4Oq0wwQNiu32LFMavKcriUhWDTZ86T4t0BAG4LFM4C7LgyLmSBYHFn6e+mMnhaoQF1CII+Fi8EkNCOQzHSLGSk2CZ6ZMc05POArU0PbZjSmHLH9CR4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu; spf=pass smtp.mailfrom=cs.unc.edu; dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b=TGT+Thhp; arc=none smtp.client-ip=74.125.228.169
+	 MIME-Version; b=m/IuK9Pl4nlQCfVQlaCvztlCLxFnt7U9r4arixTvDAnRvZ/p4zzqj709uiHPvg3o68jzua2dFCXFFFbdvfafXu4LZU158oevRvBuW/nY+wT6huuB8ZnJX1AQs4ngVGUi7feAGL1s+ONHNVqXbUvg/Sj3rZax5FBXfenSsoD41s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu; spf=pass smtp.mailfrom=cs.unc.edu; dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b=kn6Vmu0c; arc=none smtp.client-ip=74.125.228.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b="TGT+Thhp"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e320322edso21804866b.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:23:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b="kn6Vmu0c"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c264788fd58so791723966b.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1790781797; x=1791386597; darn=vger.kernel.org;
+        d=cs.unc.edu; s=google; t=1790781792; x=1791386592; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xKz38TwNtR/kCvzhvPBXJpWiMyE9q1ag9Gm3OPI54Dw=;
-        b=TGT+Thhpg0Ome/58A2npn/9DZHfV2RSvXLQdydNKZwVHgXJFKU4sxgIwaegEwh/RSK
-         44jrC0I6HQcO10IRe1BhsuNFYaxsP+Lu5P4VFYn9Whp1P0f80fmmjyFRm/H05FbxmyLO
-         +T62Cp4TlM/AxwFk1hnQuG06ptzNVnLHt2HvbqLfv+6P76fVZqk73SXfnfeRICUFjw6J
-         P+n/1VI2ZHUl7P8jPVqiALdJzG4abHjkOsXVCS0lDRJ1gny86iZ+P4sczwu7EyxtEpLk
-         3y/FMgjCf7U+NOYWyngLfLIs+MXf6Kl5NwbLiyk7AL1DyX/z+jxUNDJpkBuHz3NHNmi0
-         +mlg==
+        bh=dZiN99RMvoVLUY5C2k2n+LK4gqTaVAVijYhxlYv7sT8=;
+        b=kn6Vmu0cWpKlboHA8mjFZfz8pzCN5pDEARsBWZ2BAvk1R5r4VwGkExL1o5nHNHX8kR
+         LF1iWeKDT28Oc+ekMQJ5eqbb9LvuZJCMDVJA5j2Rms/qy40Ntx3v+VZgM5/uMUfOHWCQ
+         xBWlSY/mNygvXevb+qw/Hi8WN+ECLD6yV4mPD6YEV+kbQgx/JVimZrfJ+376+E5Ng3kB
+         cGhA0tzPjLv9YuE1CMSRClFEWsu3pfC+PC1hQD2xaFx8yvmaheH7cgSEWkgNcVWP4z8W
+         Dz7jVNEUqdievka/P9MUgnccQJPpe92gR7Z395qjt2LWaNiRmRlPGk9jKF6K4laB9YtY
+         0dzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790781797; x=1791386597;
+        d=1e100.net; s=20260707; t=1790781792; x=1791386592;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xKz38TwNtR/kCvzhvPBXJpWiMyE9q1ag9Gm3OPI54Dw=;
-        b=radog8Td3IBjh3VS2atxD8N1QeDPwjf7pLAUGkml1XLYrPGvpo9s+wqe10+Bzy5K2O
-         +/quXWDR+FeutXa/IZBrbQJf16uhFpND+MpcjEvZOeqIy8wdZKYrIOivkekhOs40rIYO
-         3oJhpLJJXvryGulvIBw+s5sVU8GS58UY5iHJJkjZkMVgitUB5sMW5ylVNERaxKnDRZke
-         k8uA3ZXuWGjkIkOVHhw3AnfOf7Qa5tPWeQpqQcFMbQPqfLd0vG0DSWj3rw43PzqJdhqQ
-         07LO8m6RHty9+d7uH/Ej7u1lh33Iz+5av9neknqCotAYZSt5bEcCnhYvJ4wXWWApxh7o
-         skRg==
-X-Gm-Message-State: AFq9FYJ2Qn3pmYOWmV3DpOw/5hrzIQNUchi6Wcl6IXzpGXcqtAI2Fnos
-	a4cf8UZvgNiK7qC338s5W+yazek2N/biNNUUYYATvwV/B8TEGmAcMveK2TcNbrDcbC4YkcY8PT5
-	Jn3ZejeaTbuIsDsILgqCgGW6MSpIeoxUq9Ps27KFyqSZ0VlkaM+dI2Wed+q4mhioHgvL00ja0mY
-	FgbINt9GBQEQVNqSXJikDzvhYBkRTXEXqERhu3IsOzooo=
-X-Gm-Gg: AYBFou1W5Z+6BfogFvLiSqxjZPKPPX/pBTkqh2cCqjgUkpB9o9bBRQQF2baOD1bMl38
-	0EZxvnvx2e7BSkWfABG1rwuhyOaC7/2o4xft55jt6s49Vh4Ncpay+1KK8upr02R+Tpqqmb7qiKA
-	isWP7Iub0dO5x8R6Qv439FQX1l+tI0axfGrRwCJYihtRJ8cD3QQuNHlpUIgnTrEL6q6yhHuP8ON
-	ZJNEQ7a53fbsPmeHf5agU8uYNvT5fjGnwYkNq3tUXw0ycV0qVI53CkENfWMBEOofua5Yzs9q2Ly
-	f1Y+u/W3AUs//GQvKCzUt2QcDkUhtwdGdp3dyQsMVj+s6QWIhuq6XkYUo0qVJ8nM5+BXQvKOTEn
-	U7XXeKlJybLc2Q3nZkZBTKESzOGz+3Uy/qd/fjRlGDUzu1mU05fKsoReSa6LzuelFBvQcGkN78n
-	v9SCavYL0K1kLULK/Cpz9u0+SbgJbsi0Rj8VJXlLLn00nl4h38WNsYjuXLPqecpEdX/wDw9/EC+
-	Xg+uAWT8OkvscAAzcTX3A==
-X-Received: by 2002:a17:906:478d:b0:c29:f0a4:a4f8 with SMTP id a640c23a62f3a-c2e233cd0bbmr149280466b.0.1790781797242;
-        Wed, 30 Sep 2026 08:23:17 -0700 (PDT)
+        bh=dZiN99RMvoVLUY5C2k2n+LK4gqTaVAVijYhxlYv7sT8=;
+        b=WlFzELlHizxCyJXqkCJOBIDX2KURnrIMX0MYiU0d2SbGJ5ZMC9zLlAKjbDwLDz3Oyf
+         vRXqmIbXmasEIc5sQdbNWddFO7yOQqteEgvUVxMTYk/wBQEvTj4aZbCGj/W7B2Uoq6CL
+         ymmLv3LGArvei19e0XRhWAFlj+4mc/6yOYchjAbNHtr6TPkE5cz/iA6nR41W2k4H26YU
+         p7qheoD8+i2f9EIPpikJHCSmmvZ/9uHvu5DMgnLVrs6x1k94/T3n3282e7GgxNnWUl9H
+         IMVU6666weqTdIEH+PCKHQwN/SdLsJQJg9aUf2scWhBDy5KTUCAyoAQ/gkN+FiOdmQQU
+         LXmw==
+X-Gm-Message-State: AFuF++l6FPlsD2/L5u7ax/qIAEOMg6ySq+LlfC7IoswTC52DpYQpoee1
+	ATc1feVzLn9NAjlrOm5GszbC8km8GSUWbQKo0XkcBEhQl5rQcxzUjAh5Q62+ciTDBbfW21NnIVN
+	GSEwmCO8bIePWUwRBOLnzRI2b3G805G2lq4kNdAc6Hk+zjHgfu9E0v1hWUYA+VVw8im0x9OniY2
+	zeXYFm4kqeeMjk8FIUO5TeX35JZ5exVFH/tLJ4A8QspGQ=
+X-Gm-Gg: AYBFou33X0siS12FJi47ZqqrPPMDcbA/Ka5JCsIXteE8YpIqpCXTSir2Q+mI+mqFY8h
+	e++FUjqOleQmQGkLmiIS+ra63iTvQyqU2JLjHLXjy6TNdgXFP4Y6zzGAZ6vSDRrpqDVw3wGFrSe
+	8X/zgMhQEFCyKJp60+uAzkGxzFnZ0AGi7zeJhcDgIiz4J0DihZh0XSYT+2ikEjcJ0CK0Zlqy3K8
+	Uuusmwm83vfOmMJeMvTRe14ksNpvEms1ZL+zHr7Yrn0+4eT7dcWFQtnBFeoVLwsgmGTjRt0Pteo
+	VdHzP8/04Ye0srnyaSuHcUSbtbKzhrdksexgKMbqqYZ8uESEWdxVKScX4ZmwZn8aJ+OabHGBuHj
+	nu9nRKUXAy/Ol72c+34prC6IIcRFBquhVl5OWNmQsNcKO/cVoh5Z+ej67BKC2emgslxcNHUGBEb
+	Qur7c69CHJtJw1VwPMk4CBU3EWLLlBGLGLQVWGpGW9fkolhwXz5RO7OrZdP4aiA9Bsyo/l94rEo
+	wAPjmJEznyaSCLLchEh0g==
+X-Received: by 2002:a17:907:9688:b0:c29:5151:16b8 with SMTP id a640c23a62f3a-c2e23763c99mr142129866b.2.1790781791769;
+        Wed, 30 Sep 2026 08:23:11 -0700 (PDT)
 Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31ce6499sm23874966b.33.2026.09.30.08.23.13
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31ce6499sm23874966b.33.2026.09.30.08.23.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 08:23:16 -0700 (PDT)
+        Wed, 30 Sep 2026 08:23:10 -0700 (PDT)
 From: hengyul@cs.unc.edu
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -74,10 +74,11 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Hengyu Liang <hengyul@cs.unc.edu>
-Subject: [PATCH net 2/2] selftests: net: fib_tests: add tests for IPv6 routes via loopback device
-Date: Wed, 30 Sep 2026 11:22:29 -0400
-Message-ID: <20260930152229.1453929-3-hengyul@cs.unc.edu>
+	Hengyu Liang <hengyul@cs.unc.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] ipv6: route: do not validate nexthop of routes promoted to reject routes
+Date: Wed, 30 Sep 2026 11:22:28 -0400
+Message-ID: <20260930152229.1453929-2-hengyul@cs.unc.edu>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260930152229.1453929-1-hengyul@cs.unc.edu>
 References: <20260930152229.1453929-1-hengyul@cs.unc.edu>
@@ -91,98 +92,116 @@ Content-Transfer-Encoding: 8bit
 
 From: Hengyu Liang <hengyul@cs.unc.edu>
 
-Check that an IPv6 route via the loopback device can be added when the
-loopback device is down, when a gateway is specified, including an
-IPv4-mapped one, and when IPv6 is disabled on the loopback device. Such
-routes are promoted to reject routes, so their nexthop is not validated.
+ip6_route_info_create_nh() promotes routes that use the loopback device
+as their nexthop device to reject routes, except for local and anycast
+routes and routes to the loopback address, as true routes via the
+loopback device would result in kernel looping.
 
-Without the previous patch:
+Before commit 21ec92774d15 ("net: ipv6: fix panic when IPv4 route
+references loopback IPv6 nexthop"), fib6_nh_init() also treated these
+routes as reject routes, so it neither validated their gateway nor
+checked the state of the loopback device. That commit restricted the
+check in fib6_nh_init() to explicit reject routes to fix IPv6 nexthop
+objects that use the loopback device. As a side effect, the nexthop of a
+route via the loopback device is now validated like the nexthop of a
+regular route before the route is promoted to a reject route, and adding
+such a route fails in cases that used to work:
 
-  # ./fib_tests.sh -t ipv6_route_lo
+  # ip link set dev lo down
+  # ip -6 route add 2001:db8::/32 dev lo
+  Error: Nexthop device is not up.
+  # ip link set dev lo up
+  # ip -6 route add 2001:db8::/32 via 2001:db8:1::1 dev lo
+  RTNETLINK answers: No route to host
+  # ip -6 route add default via ::ffff:192.0.2.1 dev lo
+  RTNETLINK answers: No route to host
+  # sysctl -qw net.ipv6.conf.lo.disable_ipv6=1
+  # ip -6 route add 2001:db8::/32 dev lo
+  Error: IPv6 is disabled on nexthop device.
 
-  IPv6 routes via loopback device tests
-      TEST: Route via loopback device that is down              [FAIL]
-      TEST: Route via loopback device with gateway              [FAIL]
-      TEST: Route via loopback device with IPv4-mapped gateway  [FAIL]
-      TEST: Route via loopback device with IPv6 disabled        [FAIL]
+As the loopback device is down in a new network namespace, the first
+case affects routes added before the loopback device is brought up. The
+SIOCADDRT ioctl fails in the same way.
 
-  Tests passed:   0
-  Tests failed:   4
+Restore the previous check in fib6_nh_init() for routes created by
+ip6_route_info_create_nh(). IPv6 nexthop objects and IPv4 routes with an
+IPv6 gateway are never promoted to reject routes, so they keep the
+current check and the panic fixed by the above commit does not come
+back.
 
-With the previous patch:
-
-  # ./fib_tests.sh -t ipv6_route_lo
-
-  IPv6 routes via loopback device tests
-      TEST: Route via loopback device that is down              [ OK ]
-      TEST: Route via loopback device with gateway              [ OK ]
-      TEST: Route via loopback device with IPv4-mapped gateway  [ OK ]
-      TEST: Route via loopback device with IPv6 disabled        [ OK ]
-
-  Tests passed:   4
-  Tests failed:   0
-
+Fixes: 21ec92774d15 ("net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop")
+Cc: stable@vger.kernel.org
 Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
 ---
- tools/testing/selftests/net/fib_tests.sh | 31 +++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ net/ipv6/route.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
-index b338bfb196a2..19e55a8630a2 100755
---- a/tools/testing/selftests/net/fib_tests.sh
-+++ b/tools/testing/selftests/net/fib_tests.sh
-@@ -14,7 +14,7 @@ TESTS="unregister down carrier nexthop suppress ipv6_notify ipv4_notify \
-        ipv4_mpath_list ipv6_mpath_list ipv4_mpath_balance ipv6_mpath_balance \
-        ipv4_mpath_balance_preferred ipv4_mpath_oif ipv4_mpath_oif_nh \
-        ipv4_mpath_oif_vrf ipv6_mpath_oif ipv6_mpath_oif_nh ipv6_mpath_oif_vrf \
--       fib6_ra_to_static fib6_temp_addr_renewal"
-+       fib6_ra_to_static fib6_temp_addr_renewal ipv6_route_lo"
- 
- VERBOSE=0
- PAUSE_ON_FAIL=no
-@@ -2466,6 +2466,34 @@ ipv4_route_v6_gw_test()
- 	route_cleanup
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 153ce16628c1..49ff87aa3756 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3592,13 +3592,14 @@ static bool fib6_is_reject(u32 flags, struct net_device *dev, int addr_type)
+ 	return false;
  }
  
-+ipv6_route_lo_test()
+-int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+-		 struct fib6_config *cfg, gfp_t gfp_flags,
+-		 struct netlink_ext_ack *extack)
++static int __fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
++			  struct fib6_config *cfg, bool lo_reject,
++			  gfp_t gfp_flags, struct netlink_ext_ack *extack)
+ {
+ 	netdevice_tracker *dev_tracker = &fib6_nh->fib_nh_dev_tracker;
+ 	struct net_device *dev = NULL;
+ 	struct inet6_dev *idev = NULL;
++	bool reject;
+ 	int err;
+ 
+ 	if (!ipv6_mod_enabled()) {
+@@ -3646,9 +3647,17 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 	fib6_nh->fib_nh_weight = 1;
+ 
+ 	/* Reset the nexthop device to the loopback device in case of reject
+-	 * routes.
++	 * routes. If requested, also treat routes via the loopback device as
++	 * reject routes, as ip6_route_info_create_nh() promotes them to reject
++	 * routes and their nexthop does not need to be validated.
+ 	 */
+-	if (cfg->fc_flags & RTF_REJECT) {
++	if (lo_reject)
++		reject = fib6_is_reject(cfg->fc_flags, dev,
++					ipv6_addr_type(&cfg->fc_dst));
++	else
++		reject = cfg->fc_flags & RTF_REJECT;
++
++	if (reject) {
+ 		/* hold loopback dev/idev if we haven't done so. */
+ 		if (dev != net->loopback_dev) {
+ 			if (dev) {
+@@ -3725,6 +3734,13 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 	return err;
+ }
+ 
++int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
++		 struct fib6_config *cfg, gfp_t gfp_flags,
++		 struct netlink_ext_ack *extack)
 +{
-+	echo
-+	echo "IPv6 routes via loopback device tests"
-+
-+	setup_ns ns1
-+	IP="$(which ip) -netns $ns1"
-+
-+	# Routes via the loopback device are promoted to reject routes, so
-+	# their nexthop is not validated.
-+	run_cmd "$IP link set dev lo down"
-+	run_cmd "$IP -6 ro add 2001:db8:101::/64 dev lo"
-+	log_test $? 0 "Route via loopback device that is down"
-+
-+	run_cmd "$IP link set dev lo up"
-+	run_cmd "$IP -6 ro add 2001:db8:102::/64 via 2001:db8:1::2 dev lo"
-+	log_test $? 0 "Route via loopback device with gateway"
-+
-+	run_cmd "$IP -6 ro add 2001:db8:103::/64 via ::ffff:192.0.2.2 dev lo"
-+	log_test $? 0 "Route via loopback device with IPv4-mapped gateway"
-+
-+	run_cmd "ip netns exec $ns1 sysctl -qw net.ipv6.conf.lo.disable_ipv6=1"
-+	run_cmd "$IP -6 ro add 2001:db8:104::/64 dev lo"
-+	log_test $? 0 "Route via loopback device with IPv6 disabled"
-+
-+	cleanup_ns "$ns1"
++	return __fib6_nh_init(net, fib6_nh, cfg, false, gfp_flags, extack);
 +}
 +
- socat_check()
+ void fib6_nh_release(struct fib6_nh *fib6_nh)
  {
- 	if [ ! -x "$(command -v socat)" ]; then
-@@ -3291,6 +3319,7 @@ do
- 	ipv6_route_metrics)		ipv6_route_metrics_test;;
- 	ipv4_route_metrics)		ipv4_route_metrics_test;;
- 	ipv4_route_v6_gw)		ipv4_route_v6_gw_test;;
-+	ipv6_route_lo)			ipv6_route_lo_test;;
- 	ipv4_mangle)			ipv4_mangle_test;;
- 	ipv6_mangle)			ipv6_mangle_test;;
- 	ipv4_bcast_neigh)		ipv4_bcast_neigh_test;;
+ 	struct rt6_exception_bucket *bucket;
+@@ -3917,7 +3933,8 @@ static int ip6_route_info_create_nh(struct fib6_info *rt,
+ 	} else {
+ 		int addr_type;
+ 
+-		err = fib6_nh_init(net, rt->fib6_nh, cfg, gfp_flags, extack);
++		err = __fib6_nh_init(net, rt->fib6_nh, cfg, true, gfp_flags,
++				     extack);
+ 		if (err)
+ 			goto out_release;
+ 
 -- 
 2.53.0
 
