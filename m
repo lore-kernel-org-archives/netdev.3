@@ -1,109 +1,215 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A7C4F68CB
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 15:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B844FDE55;
+	Wed, 30 Sep 2026 15:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781163; cv=none; b=FDr95lTmhywz1bnCTmHCZ3ygGD50D9IDr52OtsOmgPggWn+WxYv6ZhMySl+nwRGxEeP4RUPpt0E1HhGPM8CPNmY6pq4u9WwLo3PJP9lRM3Uu+/rFDSzvlZaSDa2jaA3TydWhvElXFduZxoDCCq2vZ6PdDOAS7ytLSOgnwcJ3qyU=
+	t=1790781173; cv=none; b=nEEvLyett9pP4O4uu6PaM9gM9mINONh1O5vBJIlUctH2DxUI5N+D7GbE9KDzG5z98G9R8wk0BOmOo3e58wgabLmVQCTBg2lL4txjnXobIEzY9nj9mjXplmIqyVkOISV+lO4/xmd9qYRs9QWHQRXVxqkDios/tZ8XOYxbSPSFjC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781163; c=relaxed/simple;
-	bh=esQugYG3kbo87OmB6Tc4orWNxtCP0RZuSh8EyOmodCg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=MP5z+vHsWm+1D0qhKbbDDaOvXlIjh9Q1+FVV8K+P/8G291BaBEqroQv9oHMPm1VcAVSy7cN9e+JeP6N4SYxJZmRSqPPrFOiTMRXXZl8HkIX54Bpbf3zm+MbdEi4oqz0M+n3gSvkbk+R+pRtDbKrnl5gK2JxjExIU+gn8VqTPvlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FO4YKqbT; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790781173; c=relaxed/simple;
+	bh=n3nEcG8Xkpjf9XyaMwaGgC3wx6M3LnojIGWNk/zxd5A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=h0q+LYBLcH6w5rD+uGjg/uvDbtFjo1WjwhEiCWWkF7AHYT08qQOGYpJkupVydEwT4+jdoRTVM62nmWNwGH6hpwLZaJMj0S5gp7XDXrwOdEheuMoE/+dDR5jCrD723j+E+ZTBN+W9BjkiCt5PtGaqsn68Do0GbfixV3kZ0PDBp7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbzfmZWT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FO4YKqbT"
-Received: by mail-yx2-f39.google.com with SMTP id 956f58d0204a3-6768ac36eb6so420682d50.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 08:12:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790781151; x=1791385951; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=B0KRYG+7S2yJakekYnI3HO544a4gjtX4aS+08z2eEeM=;
-        b=FO4YKqbTBgc/05sV+1beIdsxIJs4z9Ev+9AsOXAGritjOKkqgPcvvGs4f5ZGKicnIJ
-         0iFI6H8Yu/x0cEDkmpi7gHm+4sjTBnU9aX23XcE5VEOFbW7GaUfkm3gI1Hh7Q2jS5if0
-         H2kKIw1yWt3PYlkt1OxigTutqrQt3/XNfDYibx8TrJFK5l1YxnB/N7ZnJZjgsUoevlJR
-         ETLPwWn98adNG3mERRfFy8GTcLMh7OErk8cBKWIllXjDuaBbk341PjwQrR/mHVFUhMnO
-         +dqYJwd51yf6UVYapD8kFy2G/KOI/NbCvAZTFswl73A1L9Y37oXN7gVkjsM3R12SX3OW
-         jmJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790781151; x=1791385951;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B0KRYG+7S2yJakekYnI3HO544a4gjtX4aS+08z2eEeM=;
-        b=cjQl+utJIOjacolrGk7tKiiEUi++F7dkvXMMAy5VksagTTXKo44eLjwuPPeEPXi8hE
-         v3ZNQ0ETJk6eEXYg7QyxYr3dHNcHxlz+t5kjdsK+oK0J/IzQdHTILM4c8/KECn4tJzWX
-         gxz0M0afAshwAyL7HnQ/ji/PqFpzBQjBrCnDni1ACO4gbxEkFgFEqTpLA3mAsc+F4TXN
-         oLHuzLRaVAUvaZZKrBojjifMUTZ0r/3ZW/EtQO6vzSyvlbKNoFa7RWL4cppnj/Sgo4MF
-         j3662k0a8SIsZc4cHJJqd0E8eKv+glzvJCLVoWadyhf5+oheabqXLrTO381mEanH14+b
-         QgNg==
-X-Forwarded-Encrypted: i=1; AKwUvBwTsiZrI0pbgf/04mpLWZ483vwDeRLI9+1cujzOHOhiCKKPzB5o/43qsXnZlVqS4Ls8ZtwJO1A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJauhzKD59+i2e1Vb6C6vXpCQvNwAu5viB97leCNShgYZ4YPrU1
-	oRFc5z+54sQjgzwgkwcI/bHleH4wVLnjfoaWbvxTGGEpElhGQ2DjGqHv3NRP6w==
-X-Gm-Gg: AYBFou01nMO9r6La3RQ4ZS1FRDEOgDKJaZvxxWQDoLVsIdSLG0SD1lgEeHZtvH4O3eG
-	LrzGca4eon9N1uNnmsNJACP662uBG2ShKQaG7Q+VkWtPLeWJVaLm/UFSjGW0o4AallE4KlzFm3J
-	rYjJwhzudfQoGaHvtHhm5MlW0GOO7EclCGjbOxImvmM8qPzBS86eizkdgcMv/ccmOjqg5leFH2L
-	3hL8LHnMC4i+pFKIq+ZOxnLk06c5Fr/BanTffeK5aDIZr4LGWxS0XgNvp+n9QvZnRnMnPTwfHHG
-	Ty6E6LkDn4qq9TEa2KaGBiUaG2U2V1iSnyekfIhz/s4lvjU1P4az/h6n2KaitBg8k/e7AAEqwBj
-	6cMa8Far699BgioWj/ttl8LOcYedB2BS9XVHf49TcAgAy+iBZ44ORB0vG5ARGmwQmYKh1WJc6Yv
-	w8HyotBvsxHeOf0Cob1SYRQmBsq0r69Fb5yN8e+L3tqX9bfqPYN3UGOOMZIAhKhJQU+Qq/aGqY0
-	nf70r7FJ8u4je4Jfv7SyWVEYW04C6LwVQePbQn6IbZMg96VQnOgpD76I0jYEqI=
-X-Received: by 2002:a05:690c:e3c6:b0:89a:63da:fa8f with SMTP id 00721157ae682-8ac932204e7mr7427907b3.74.1790781150925;
-        Wed, 30 Sep 2026 08:12:30 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ac53e96182sm7395337b3.35.2026.09.30.08.12.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 08:12:29 -0700 (PDT)
-Date: Wed, 30 Sep 2026 11:12:29 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- netdev@vger.kernel.org, 
- edumazet@google.com, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.1713efd699025@gmail.com>
-In-Reply-To: <20260930144018.1174068-3-edumazet@kernel.org>
-References: <20260930144018.1174068-1-edumazet@kernel.org>
- <20260930144018.1174068-3-edumazet@kernel.org>
-Subject: Re: [PATCH v2 net 2/2] ipv4: reserve one IP ID per segment for UDP
- GSO packets
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbzfmZWT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9451F000FF;
+	Wed, 30 Sep 2026 15:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790781167;
+	bh=RvDEi6ityygBQBBR7ccbCoh0xjOCMqbPQDqOFa9LS4s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=BbzfmZWTDGzNmQSevrMImht7PMQu8fEDeXRTyoS/uvkr7BmibZJ1mqKJ1VWm4CzaE
+	 EYgm8P0kiSnhd5BQxE/dGzK9kielLKzHY9LnbpP45v+K9ui0aXT3f4lu8byzlqM5x5
+	 t7rj5tmiuyjJRS4dSiS2TCsS44WlFeKIEbMCo+uAwwNVFhMST9XvafD9Rxilu4P0Wr
+	 dyQCqrp9YXZaKB82MSgjrFC0ZJah0hY4jRGkiRViANRiiKjvkgB2uBS1DXKz87k1dG
+	 u564OCgLrfe/CHyazhNIGOUarqmmK8bwlTuBUCVASkZuRLl4OaG9yMxYQUvo66qNLF
+	 2U2dPMaMM/5Ug==
+Subject: Re: [PATCH net v3 1/2] net/sched: sch_cake: fix shaper stall on segs
+ == 0 in cake_overhead()
+From: netdev-bot+sashiko@kernel.org
+To: ndaugoing@gmail.com
+Cc: toke@toke.dk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ cake@lists.bufferbloat.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 30 Sep 2026 15:12:46 +0000
+Message-ID: <179078116605.434549.16229112833347396709@kernel.org>
+In-Reply-To: <20260927131009.24250-2-ndaugoing@gmail.com>
+References: <20260927131009.24250-2-ndaugoing@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Eric Dumazet wrote:
-> __ip_make_skb() reserves a single IP ID for UDP GSO packets, but GSO
-> assigns one IP ID per segment. Following packets then reuse these IDs,
-> either from inet->inet_id or from the shared generator.
-> 
-> Unless IP_PMTUDISC_DO/PROBE is used, DF is not set on UDP GSO packets,
-> so segments can be fragmented on the path and IP ID reuse can lead to
-> incorrect reassembly.
-> 
-> Reserve one IP ID per segment, using the same test as udp_send_skb().
-> 
-> Fixes: bec1f6f69736 ("udp: generate gso with UDP_SEGMENT")
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Cc: Willem de Bruijn <willemb@google.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message gets the mechanism and impact of the segs
+  == 0 bug wrong.
+- [Low] The commit message never says how an skb with qdisc_pkt_segs(skb)
+  == 0 reaches the multi-segment arithmetic in cake_overhead().
+
+Pre-existing issues:
+- [Low] cake_overhead() says its header-length logic is "borrowed from
+  qdisc_pkt_len_segs_init()", but it lacks that function's checks.
+
+--
+
+net/sched: sch_cake: fix shaper stall on segs == 0 in cake_overhead()
+
+This patch changes the single-segment early return in cake_overhead() from
+segs == 1 to segs <= 1. The goal is to stop skbs with a cached segment count
+of 0 from reaching the multi-segment overhead arithmetic.
+
+> Because segs is an unsigned 16-bit integer, (segs - 1) underflows to
+> 65535 (and is promoted to 4294967295 in the 32-bit unsigned arithmetic
+> above). This multiplies the per-segment overhead by UINT32_MAX, so
+> cake_overhead() returns a length close to 4.29 GB.
+
+[Severity: Medium]
+Is this description of the arithmetic accurate? segs is a u16, but it is
+promoted to int before the subtraction, so segs - 1 is -1 rather than 65535.
+
+The last-segment term also wraps when segs == 0:
+
+    last_len = skb->len - shinfo->gso_size * (segs - 1);
+
+This gives skb->len + gso_size. Writing F() for cake_calc_overhead(), the
+old return value reduces to:
+
+    F(skb->len + gso_size) - F(gso_size + hdr_len)    (mod 2^32)
+
+F() never decreases as its argument grows. So when hdr_len <= skb->len,
+wouldn't the old code charge roughly skb->len - hdr_len rather than
+something close to 4.29 GB?
+
+The large wrap seems to need hdr_len > skb->len. At this SHA that looks
+possible only when the transport header is unset. In that case
+qdisc_pkt_len_segs_init() returns early and leaves pkt_segs == gso_segs:
+
+net/core/dev.c:qdisc_pkt_len_segs_init() {
+    ...
+	if (!skb->encapsulation) {
+		if (unlikely(!skb_transport_header_was_set(skb)))
+			return SKB_NOT_DROPPED_YET;
+    ...
+}
+
+cake_overhead() then computes hdr_len from the unset transport offset,
+which is around 0xFFFF. The next patch in the series, "net/sched: sch_cake:
+validate transport header offset in cake_overhead()", targets that same
+condition.
+
+The 4.29 GB figure is used to justify Cc: stable. Could the commit message
+describe the arithmetic correctly and state the condition needed for the
+stall?
+
+> Commit c5d34f4583ea ("net_sched: cake: use qdisc_pkt_segs()") switched
+> cake to retrieve the cached segmentation count via qdisc_pkt_segs(skb)
+> instead of calculating it locally for dodgy GSO packets. If an skb with
+> segs == 0 reaches cake_overhead(), it skips the segs == 1 early return
+> and enters the multi-segment arithmetic:
+
+[Severity: Low]
+How does an skb with qdisc_pkt_segs(skb) == 0 get here? For every
+SKB_GSO_DODGY skb that has a transport header, qdisc_pkt_len_segs_init()
+already recomputes pkt_segs, and it drops the skb when payload <= 0:
+
+net/core/dev.c:qdisc_pkt_len_segs_init() {
+    ...
+	if (unlikely(shinfo->gso_type & SKB_GSO_DODGY)) {
+		int payload = skb->len - hdr_len;
+
+		/* Malicious packet. */
+		if (payload <= 0)
+			return SKB_DROP_REASON_SKB_BAD_GSO;
+		gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
+		shinfo->gso_segs = gso_segs;
+		qdisc_skb_cb(skb)->pkt_segs = gso_segs;
+	}
+    ...
+}
+
+pkt_segs == 0 seems to survive in only two cases:
+
+  - the early return for a non-encapsulated GSO skb with no transport
+    header set
+  - a non-DODGY GSO skb whose gso_segs was left at 0
+
+The in-tree virtio_net_hdr producers set DODGY. On af_packet they also set
+a transport header.
+
+In the second case, with a valid transport header, the new early return
+charges F(qdisc_pkt_len()), which is F(skb->len - hdr_len). That is about
+what the old wrapped path charged.
+
+Could the commit message name the producer or path that leads here? That
+would let the reproducer and the "tens of seconds" stall be checked, and
+would help stable maintainers judge exposure.
+
+> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> index dc93267029e70..b0d604a7052a9 100644
+> --- a/net/sched/sch_cake.c
+> +++ b/net/sched/sch_cake.c
+> @@ -1420,7 +1420,7 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
+>  
+>  	WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8));
+>  
+> -	if (segs == 1)
+> +	if (segs <= 1)
+>  		return cake_calc_overhead(q, len, off);
+>  
+>  	/* borrowed from qdisc_pkt_len_segs_init() */
+
+[Severity: Low]
+This is a pre-existing issue, not one introduced by this patch. The code
+after this comment in cake_overhead() lacks several of the checks in
+qdisc_pkt_len_segs_init():
+
+net/sched/sch_cake.c:cake_overhead() {
+    ...
+	/* borrowed from qdisc_pkt_len_segs_init() */
+	if (!skb->encapsulation)
+		hdr_len = skb_transport_offset(skb);
+	else
+		hdr_len = skb_inner_transport_offset(skb);
+    ...
+}
+
+Compared with qdisc_pkt_len_segs_init(), it is missing:
+
+  - a skb_transport_header_was_set() guard
+  - a check that __tcp_hdrlen(th) >= sizeof(struct tcphdr)
+  - a pskb_may_pull() of the full header
+
+It also adds sizeof(struct udphdr) for every non-TCP GSO type, not just
+SKB_GSO_UDP_L4.
+
+Of these, only the missing transport header guard can cause a large
+overcharge. With an unset header, hdr_len is around 64 KiB, and each
+segment is charged tens of KB when segs >= 2. The follow-up patch
+"net/sched: sch_cake: validate transport header offset in cake_overhead()"
+adds that guard and a hdr_len < 0 check.
+
+After the full series, is the remaining difference from the core helper
+intended? What is left is small misaccounting: the TCP header length term is
+bounded at 60 bytes, and the extra UDP header is 8 bytes. This code dates
+back to a729b7f0bd5b.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927131009.24250-1-ndaugoing%40gmail.com
