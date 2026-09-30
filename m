@@ -1,88 +1,56 @@
-Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC553E3DBC
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5660F3EB7E9
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 09:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790761863; cv=none; b=tJr9qjjF1pKxBunOIarOoWjA0WLdxT0vUzJwR3yF4PRUBUz9zmxuj+O32bo/Qrp+ejh40wvVJ0ZOIo4J853ZU8BLzkUqUX/cGuyMHHmsBXS29D1kRP1PQrejKuH+CW0P8mkiPEqvdeF9SojmWwGMDsSMByfNvgsB2CGhFwEgDAw=
+	t=1790762108; cv=none; b=ijIRYYdZe0ll5czb9c8Uy2zsAV0QbXUFbpMQ8/Og2IoMC6NjNqgQxF+jxAP4LulpUzBtEVixluugBCHHIONkqxPpIVRrfa7JnKvm/q5MmKEx5GvwCXNSSMQCVStLNSt8Sqoq9rXTxIpfKSE/DqMbX2pX2iGTmAxz7ulJeZ6nE1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790761863; c=relaxed/simple;
-	bh=nsDZU6lH0ABxd2mkaqWWWwpJUUSibbd+Sb86MxXWU3g=;
+	s=arc-20240116; t=1790762108; c=relaxed/simple;
+	bh=/7I/VCnq5pZaIr72EkAMGkNNmPWsNzI/7TN/Xfw32is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPTYNZoLjERzEsmE3L0+fB0V/wPFTW6FxlQYtwaoQp1jZeifzI+o2QlSJFQsr5HudVjmRYn6i7gD3Qm2tr6FCux7zfsuca96uD47ZuqSls83drUlpv9Czx8glg6wYsNyU8Y6Z6eMJoP1FpTWaKuxNzH8ep898SxGEQ44uIp9jow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu; spf=pass smtp.mailfrom=cs.unc.edu; dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b=SK3nCRqU; arc=none smtp.client-ip=74.125.230.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+	 MIME-Version; b=fMxJpbN8gM0HCjwReT/qmMUbYb/jkntWv/wZm9q6Ehd7cph4yytRyYweoaHaTZz0kojODDjfS4d05mAATmpwkyIRdDt8nMR+xP/EMUwlnpbA/U3qrvt7bqAlNkYATvLHShhJjHKi6PspPuBl6mpez14eIr8wqdM2AVYdBhhDvD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=e4KWLpEr; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b="SK3nCRqU"
-Received: by mail-qk2-f40.google.com with SMTP id d75a77b69052e-5332a80a731so44799601cf.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 02:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1790761860; x=1791366660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LCubAwWVijXqS4BHl9nvH1ievcAHTddydMzemiE8ous=;
-        b=SK3nCRqUOj+9Lbj4V4UWI9UMWoY3FMYUnnDsgkESvx3OTiquV0HrHlmwDJ/9qFZ+GY
-         oNQoD8nFJ00dQ7xf2txVWJgC2DMFWOs/6I0+aEl7E7cSWF1xFmc724obfassRunPN90n
-         C4PC7KVXQPvdisp4PGeTdkijC3VnRZk4AkNSQ3IQ6LfX4t2O3WrENUxugM8fqSMUOKSd
-         hpXRqonKqfbdEqoo9wB7CSj12fcrSNh49FWQaKY83AVSqk8xH14dS1WnnKNg2d1laivX
-         dQFQRyrAbtyQ+1NFKvrsl7CrAB7pm1L1IKpASwJygyf5ytkeJphyk4AHV8c1x95Eqp5Q
-         t30A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790761860; x=1791366660;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LCubAwWVijXqS4BHl9nvH1ievcAHTddydMzemiE8ous=;
-        b=EL93oWtXHy14nZDOiFA/lBB/NLAtKe0ZP0Y7HkbBXNyRlkdFSY9UwHNGFr8HYdvUL1
-         hltXoY5yQ3bC0eqW4ds14Ma3qKETrha8t94XZnkdJVd7t18e24gIsNuOZ2jm84nba4nh
-         6yLI9UxcixpTRq1r3PFhqJYjchBcFy/lspjCEOdkezt5BeqOE65fjaTfXBw7I9LvZlgu
-         r85yzMRYWBiKMqx7Msi71dK1iGd00v8YJx1CJ9yKCtRnjBG6jh8k6n6DO8TrxhXGAHds
-         9XszVPhO+a5O9dPj1ywC7OdJOSmHb0fsCdxXq8Mk6ulTgTGsfFzZUBvOIGU2V9QhOMYN
-         vFeg==
-X-Forwarded-Encrypted: i=1; AKwUvByc19dGxFWFy0L9kP5PUvlY59zHHras52sVpOPYb1qJyjCXh2WdJSbER45+RwZgfWB7n5Cm1Gg=@vger.kernel.org
-X-Gm-Message-State: AFuF++m3JUX84/KGZOsSqzlQzHf9Yj9IX/Gx42NsRF/590p8bDGXAKQr
-	gO070hG1Dp92L5yxQ62YRJynq76IkdeBQJeyfLph1m8pBqMVxbSFYRbRTv5EqLHEEA==
-X-Gm-Gg: AYBFou22qCavR4IcYGGmGYdDwkN1oOOW6v/ehdsOIM0NlIbeOjBw0OsaTTYHzg0z0vS
-	kaIrdTba6tXLS+KUIrfeehfA0xo5HvKNCBavgqJ3UjOyyHM4U1++CHf2ZtYB2ravoPuE0LBRyB8
-	e42uDW10Z9obZ70XdVZsla6HR3KI1LRpDOoZdTOBg1dwVmiDosyitLZS+bFo1fhjtWMNnq0jMJh
-	q0iihJU0XL/sFWAx8cT/Sq6VEN1Elj5jHkjMwqRlNBlRDj+QPKTxh/sqIdxpA54001pdDo1O9hy
-	jvsh8LADqVd/+iElB7AmYhg9CxAV4WhpYIh/1YPn5qeyBASxiZO6TlS4Mw8yfI9cmO6M/PvUviX
-	Mn/gxjeanlK7p5zvGFy/Pw8rxKo5Q8Z9rcFyQZP66e6QOi4VAu1AQXPsZfWRiZO/OYc7H8xCf2u
-	kjPVKexApT6GXQe2uH0f3sbc9tod0ZbGN/J9g5boWPpjAOmGUKYyoAJ8Md3fva+5m4oldorr0fw
-	GcCikqiitmnLEuDd+4Hkvrnv477c77b
-X-Received: by 2002:ac8:5a01:0:b0:532:be46:5b07 with SMTP id d75a77b69052e-53374abf22amr13892561cf.23.1790761859955;
-        Wed, 30 Sep 2026 02:50:59 -0700 (PDT)
-Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53374118024sm7797121cf.26.2026.09.30.02.50.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 02:50:59 -0700 (PDT)
-From: Hengyu Liang <hengyul@cs.unc.edu>
-To: joe@dama.to
-Cc: brauner@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hengyul@cs.unc.edu,
-	horms@kernel.org,
-	jack@suse.cz,
-	jirislaby@kernel.org,
-	kuba@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	shuah@kernel.org,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH] eventpoll: return -ENOIOCTLCMD for unknown ioctl commands
-Date: Wed, 30 Sep 2026 05:50:58 -0400
-Message-ID: <20260930095058.1062123-1-hengyul@cs.unc.edu>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
-References: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="e4KWLpEr"
+Received: from kero.packetmixer.de (p200300C5970e81d8CF20e45A7328d917.dip0.t-ipconnect.de [IPv6:2003:c5:970e:81d8:cf20:e45a:7328:d917])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 5E3F6FA1B1;
+	Wed, 30 Sep 2026 11:46:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1790761563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5s65kUEIQ6lts0wP4b/pMJdL00+yeUg9JgdP+cJ2r+E=;
+	b=e4KWLpErfZYR/+NkF+SFWZab7WqucmE9TZeA/3WQVN2ePjceeZXLuryDHaFTETg/IMSoUi
+	hCrhPU23qL1VO+kubijT2OhFLpVlO27V4doIMwibnCqxIdrYb5lqAcQzCI/Qd0xS6/mRMH
+	R83SQsE2dWB2MFsQloLIgjL9GrI1dIoIpZH8V5NlFl26DFAmNRWzYOpKut/Fagee5iZdl0
+	SeETHjy+f+T0EOJf1H409fXp6IvYzx2Hasl8N9HJ8Mo8jCEreSqIWCiZQRePqgYTCgJvkC
+	wBF6gD7zdUr0lC/nsMX1wS44F52o9ksBORX5NK2OvBqdwPhrKHeDMC0SURYXZQ==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 4/9] batman-adv: tt: soften kernel-doc for batadv_tt_local_remove_now()
+Date: Wed, 30 Sep 2026 11:45:53 +0200
+Message-ID: <20260930094558.3723766-5-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260930094558.3723766-1-sw@simonwunderlich.de>
+References: <20260930094558.3723766-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,67 +59,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 25, 2026 at 5:59 AM Joe Damato <joe@dama.to> wrote:
->
-> On Thu, Sep 24, 2026 at 02:57:47PM -0400, hengyul@cs.unc.edu wrote:
+From: Sven Eckelmann <sven@narfation.org>
 
-[...]
+The "never announced" statement is too harsh for an entry which could have
+been actually be announced by a different context while the
+batadv_tt_local_remove_now() is in the process of being called. "not yet"
+might be more appropriate.
 
-> >       default:
-> > -             ret = -EINVAL;
-> > +             ret = -ENOIOCTLCMD;
-> >               break;
-> >       }
->
-> I think based on the documentation this is probably right, but I am now
-> wondering why both ep_eventpoll_ioctl and ep_eventpoll_bp_ioctl need to
-> exist.
->
-> Maybe when I first implemented this I thought it made sense to factor
-> out the busy poll ioctls into their own function, but in retrospect maybe
-> it's cleaner to just collapse the ioctl function into a single one
-> instead of having two layers?
->
-> In other words, maybe:
->   - delete ep_eventpoll_ioctl
->   - add the is_file_epoll check to ep_eventpoll_bp_ioctl
->   - rename ep_eventpoll_bp_ioctl to ep_eventpoll_ioctl
->   - fix the test (as you did in this version of the patch)
->
-> Would result in a cleaner fewer helpers / cleaner code ?
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907081824.2474040-1-sw%40simonwunderlich.de?part=11
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/translation-table.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Thanks for taking a look. Agreed, a single handler would be cleaner.
-Two things I noticed while looking into it:
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 78f032c9ad65c..354d9416c1b75 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -1478,13 +1478,16 @@ batadv_tt_local_mark_removed(struct batadv_tt_local_entry *tt_local_entry,
+ }
+ 
+ /**
+- * batadv_tt_local_remove_now() - purge a local entry which was never announced
++ * batadv_tt_local_remove_now() - purge a local entry which was not (yet) announced
+  * @bat_priv: the bat priv with all the mesh interface information
+  * @tt_local_entry: local TT entry to purge
+  *
+- * A client which was added right after the last ttvn increment was never sent
+- * to the other nodes. It can therefore be dropped from the local table without
+- * waiting for the next ttvn increment.
++ * A client which was added right after the last ttvn increment was not (yet)
++ * sent to the other nodes. It can therefore be dropped from the local table
++ * without waiting for the next ttvn increment.
++ *
++ * If it was still announced by a parallel context before it was removed from
++ * the hash, then the local TT size adjustment will be handled automatically.
+  */
+ static void
+ batadv_tt_local_remove_now(struct batadv_priv *bat_priv,
+-- 
+2.47.3
 
-1. With CONFIG_NET_RX_BUSY_POLL=n, ep_eventpoll_bp_ioctl() is the stub
-   that returns -EOPNOTSUPP for every command. If it became the
-   .unlocked_ioctl handler as is, every ioctl on an epoll fd would fail
-   with EOPNOTSUPP on those kernels, which is the same problem in a
-   different config. So the stub would need to keep a small switch:
-
-    static long ep_eventpoll_ioctl(struct file *file, unsigned int cmd,
-                                   unsigned long arg)
-    {
-        switch (cmd) {
-        case EPIOCSPARAMS:
-        case EPIOCGPARAMS:
-            return -EOPNOTSUPP;
-        default:
-            return -ENOIOCTLCMD;
-        }
-    }
-
-2. The is_file_epoll() check cannot fail there: the handler is only
-   reachable through eventpoll_fops, so file->f_op is always
-   &eventpoll_fops. Unless you would like to keep it as a defensive
-   check, I'd drop it rather than move it.
-
-Since this changes the errno userspace sees and 18e2bf0edf4d is in
-6.12 and 6.18, I'd like to keep the fix itself minimal so it backports
-cleanly. How about a two-patch v2:
-
-  1/2 this patch unchanged (Fixes: 18e2bf0edf4d)
-  2/2 fold ep_eventpoll_bp_ioctl() into ep_eventpoll_ioctl() as you
-      suggested, no functional change
-
-If you'd prefer a single patch, I'm happy to do that instead.
