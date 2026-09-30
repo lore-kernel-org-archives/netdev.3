@@ -1,344 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FFE4EC671;
-	Wed, 30 Sep 2026 20:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10B24E1C88;
+	Wed, 30 Sep 2026 20:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790799587; cv=none; b=Ym99xoa1Uy98acyhHVaab1DLOid4ifV3ivbZWFA+mv+0OSx2xZiXw0JG0nUdB/90DEGKfKOkH5SLns2ObE2Scz2huq+Ke3Pw9faQ/4TFKPyM6P/3LOucAn1GAudw5YS0rgV4uy2ZBmSwzkBde9nDnnxWjl83U6UOd+blHnb9R6Q=
+	t=1790800022; cv=none; b=rR3ifjlX7hnwVK639RyFG9oP2e+EEY4K7iEBwfAXg0ID2OTk5gZPiIDcsfqBgCPFxOgP7DfC9LNdpPO6LQqQz8D0n1W7Grnk+UEo9ApNoK/ZnUj9Ab9LuEJTuEpGDZQq9MMkDOsIiNBCTHzqkRzvF9ENbKL8NdsNlm6Uesov+fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790799587; c=relaxed/simple;
-	bh=iH868cJXqfJ0POxX06K8vT+UTj8vPEczaTNj+haBY1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SnkdJRgyB7HZzmX0jVpeFYUFke+W4NnncFp6Ad1zzWE4qvaZupph+iE5+cgU/5yEYVxsM18Cf2Eg4HX0j8STlGJv0UB4Tf39DujXF60Df/xZntBxDJxH5NxD/tiC0Ug6o+VS3ncse/Jy0pJk2F/ZbgtR51K+HT8TgQ55gojobpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gy9WfES6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790800022; c=relaxed/simple;
+	bh=gBxbbz8+38Y+s40Za87dlwU4FYsCKhVptdzqeBxOssw=;
+	h=MIME-Version:Content-Type:Subject:From:To:CC:In-Reply-To:
+	 References:Date:Message-ID; b=XXAonpSlMeNIIrdZ8C89I4kljSRqUy6PNCm0ye5UTgVpJE+fTuiBhJyphQIG6EH47Fe1BH1X0WNwEYAPzlzIT0iBQcACD7bhtIskKvtfCqePdLTbiDOZEoo5QTzGQXC0bejMuWaZdBIlfuBbxGEBTH64XeBHN8nU64/9fSZ+Vq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=rQ8NtPMt; arc=none smtp.client-ip=35.83.148.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gy9WfES6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082641F000FF;
-	Wed, 30 Sep 2026 20:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790799585;
-	bh=JhYrQoYA+3DQZw3ZMJsSkxfqSx3HxBtyUlcUCS5Db5g=;
-	h=From:To:Cc:Subject:Date;
-	b=gy9WfES66pcBMDiEpcsRgLvq6B79jjFBZi4o/+69rayGg0Cfc5hInCJAt+fpcPd03
-	 bJtdoP8Kqz7K+/ptNR9KOgoVw1ylm0oCSHm0Y3fUMN3RRqyQ42vn0XEGX0mUQQv/zk
-	 S/iyKSZ7itZlbqF4ItuVJBW2/GQ0gRTr8l4Rl7ivGQPHqKHRdxvXpsz4aGyQhNEaZI
-	 vZJISo5Gw/GdXJ82aX0L/StwMJ9KClZiu/zaaw1TNABYYScDI1PkI1KuMvUrbwvuVW
-	 Bt3FG8GAiVD/1AGqaOwcqPCLZnJQCI/EpqKYpeaQgOfhofO8rlF9cNsBZaCHkRelux
-	 XsfsfYh42CxWw==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2] dt-bindings: net: Convert HiSilicon hns-dsaf to DT schema
-Date: Wed, 30 Sep 2026 15:19:19 -0500
-Message-ID: <20260930201919.76465-2-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="rQ8NtPMt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1790800020; x=1822336020;
+  h=mime-version:content-transfer-encoding:subject:from:to:
+   cc:in-reply-to:references:date:message-id;
+  bh=Pv29v2l3ni5xtNbu+pW0MmRMAzR9cn9ltBlcm3SKBcY=;
+  b=rQ8NtPMtChraEeiH1NTgZGrfDxbbgekm7hDsmp0Ex8g6LLO0k3xLlqYs
+   twkMhKnqPAdfp2LCCb62REnHXy7HEs7IyCvHAQ3ku+/d2w7iIlopPkWG0
+   ggTRGTI8NdrzyxzF6db+3f0poCerj9FTgc7K0Iit0M9B/4OIQnCBHhW4l
+   UlTrtu8DkgniXFUiqZv6bmjKDRalmmOwqz8NnxS8AaKi7ujLKvtkD4H9v
+   hYcMAj4hBz7TjS8q5Y9vv/RSR/F3WmwePdot2/1XR/9p9SGjICAlVjaiD
+   T83oKMmC1irsOSLHp8JRNZ3cs5Co4YvYOcMXkOJr7GKiO5VlayhXkAYW9
+   w==;
+X-CSE-ConnectionGUID: 2EzWEmH8R6iGbrHniBJoiw==
+X-CSE-MsgGUID: 4/5r+YDDSu2VXhf35/sWKg==
+X-IronPort-AV: E=Sophos;i="6.27,133,1787011200"; 
+   d="scan'208";a="29865497"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 20:26:58 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:24754]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.208:2525] with esmtp (Farcaster)
+ id f3afff18-fd90-4d02-847a-62fbc03cd098; Wed, 30 Sep 2026 20:26:58 +0000 (UTC)
+X-Farcaster-Flow-ID: f3afff18-fd90-4d02-847a-62fbc03cd098
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Wed, 30 Sep 2026 20:26:57 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Wed, 30 Sep 2026 20:26:55 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 6.6.y] net: ena: Add validation for completion
+ descriptors consistency
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: <netdev-bot+sinfo@kernel.org>
+CC: Artem Dinaburg <artem@trailofbits.com>, <stable@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+	David Arinzon <darinzon@amazon.com>, Shahar Itzko <itzko@amazon.com>, "Simon
+ Horman" <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Shay Agroskin
+	<shayagr@amazon.com>, Arthur Kiyanovski <akiyano@amazon.com>, Noam Dagan
+	<ndagan@amazon.com>, Saeed Bishara <saeedb@amazon.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
+In-Reply-To: <179073622069.31693.3189368668972123840@kernel.org>
+References: <20260930024101.96014-1-artem@trailofbits.com>
+ <179073622069.31693.3189368668972123840@kernel.org>
+Date: Wed, 30 Sep 2026 20:26:50 +0000
+Message-ID: <179080001006.18939.13526551078215165644.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: EX19D039UWB004.ant.amazon.com (10.13.138.57) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Convert the HiSilicon hns-dsaf binding to DT schema format.
+On 2026-09-30 02:43:40+00:00, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+> 
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-Drop 'phy-handle' at top level as there are no users. Add undocumented
-'media-type' property.
-
-Assisted-by: LLM
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
-v2:
- - Add constraints for buf-size and desc-num
- - Drop erroneous 1st 2 'reg' entries
- - Fix example 'reg' cell sizes
- - Add 'backplane' to 'media-type' property
----
- .../bindings/net/hisilicon,hns-dsaf-v1.yaml   | 167 ++++++++++++++++++
- .../bindings/net/hisilicon-hns-dsaf.txt       |  90 ----------
- 2 files changed, 167 insertions(+), 90 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
-
-diff --git a/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
-new file mode 100644
-index 000000000000..36251b45abeb
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
-@@ -0,0 +1,167 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright 2025 Hisilicon Ltd.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/hisilicon,hns-dsaf-v1.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Hisilicon DSA Fabric device controller
-+
-+maintainers:
-+  - Jian Shen <shenjian15@huawei.com>
-+  - Jijie Shao <shaojijie@huawei.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - hisilicon,hns-dsaf-v1
-+          - hisilicon,hns-dsaf-v2
-+
-+  reg:
-+    minItems: 1
-+    items:
-+      - description:
-+          PPE register base and size
-+      - description:
-+          DSA Fabric base register and size (not required for single-port mode)
-+
-+  reg-names:
-+    minItems: 1
-+    items:
-+      - const: ppe-base
-+      - const: dsaf-base
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 409
-+
-+  dma-coherent: true
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  mode:
-+    description: DSA Fabric mode string
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - 2port-64vf
-+      - 6port-16rss
-+      - 6port-16vf
-+      - single-port
-+
-+  subctrl-syscon:
-+    description: syscon handle for external interface control register
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+
-+  reset-field-offset:
-+    description: offset of reset field in the control register
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  buf-size:
-+    description: RX buffer size (bytes)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [512, 1024, 2048, 4096]
-+
-+  desc-num:
-+    description: number of descriptors in TX and RX queue
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 16
-+    maximum: 1024
-+
-+patternProperties:
-+  "^port@[0-5]$":
-+    description: DSA Fabric port node
-+    $ref: ethernet-switch-port.yaml#
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        maximum: 5
-+
-+      phy-handle: true
-+
-+      serdes-syscon:
-+        description: syscon handle for SerDes register
-+        $ref: /schemas/types.yaml#/definitions/phandle
-+
-+      cpld-syscon:
-+        description: syscon handle plus register offset for CPLD register
-+        $ref: /schemas/types.yaml#/definitions/phandle-array
-+        items:
-+          - items:
-+              - description: CPLD phandle
-+              - description: offset
-+
-+      port-rst-offset:
-+        description: reset field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      port-mode-offset:
-+        description: port mode field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      mc-mac-mask:
-+        description: multicast MAC address mask
-+        $ref: /schemas/types.yaml#/definitions/uint8-array
-+        maxItems: 6
-+
-+      media-type:
-+        $ref: /schemas/types.yaml#/definitions/string
-+        enum:
-+          - backplane
-+          - copper
-+          - fiber
-+
-+    required:
-+      - reg
-+      - serdes-syscon
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - interrupts
-+  - mode
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    dsa@c5000000 {
-+        compatible = "hisilicon,hns-dsaf-v1";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        mode = "6port-16rss";
-+        reg = <0xc5000000 0x890000
-+               0xc7000000 0x60000>;
-+        reg-names = "ppe-base", "dsaf-base";
-+        subctrl-syscon = <&subctrl>;
-+        reset-field-offset = <0>;
-+        interrupts = <131 4>, <132 4>, <133 4>, <134 4>,
-+                     <135 4>, <136 4>, <137 4>, <138 4>,
-+                     <139 4>, <140 4>, <141 4>, <142 4>,
-+                     <143 4>, <144 4>, <145 4>, <146 4>,
-+                     <147 4>, <148 4>, <384 1>, <385 1>,
-+                     <386 1>, <387 1>, <388 1>, <389 1>,
-+                     <390 1>, <391 1>;
-+        buf-size = <4096>;
-+        desc-num = <1024>;
-+        dma-coherent;
-+
-+        port@0 {
-+            reg = <0>;
-+            phy-handle = <&phy0>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
-+        };
-+
-+        port@1 {
-+            reg = <1>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt b/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
-deleted file mode 100644
-index 8ee4b1cedae8..000000000000
---- a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
-+++ /dev/null
-@@ -1,90 +0,0 @@
--Hisilicon DSA Fabric device controller
--
--Required properties:
--- compatible: should be "hisilicon,hns-dsaf-v1" or "hisilicon,hns-dsaf-v2".
--  "hisilicon,hns-dsaf-v1" is for hip05.
--  "hisilicon,hns-dsaf-v2" is for Hi1610 and Hi1612.
--- mode: dsa fabric mode string. only support one of dsaf modes like these:
--		"2port-64vf",
--		"6port-16rss",
--		"6port-16vf",
--		"single-port".
--- interrupts: should contain the DSA Fabric and rcb interrupt.
--- reg: specifies base physical address(es) and size of the device registers.
--  The first region is external interface control register base and size(optional,
--  only used when subctrl-syscon does not exist). It is recommended using
--  subctrl-syscon rather than this address.
--  The second region is SerDes base register and size(optional, only used when
--  serdes-syscon in port node does not exist). It is recommended using
--  serdes-syscon rather than this address.
--  The third region is the PPE register base and size.
--  The fourth region is dsa fabric base register and size. It is not required for
--  single-port mode.
--- reg-names: may be ppe-base and(or) dsaf-base. It is used to find the
--  corresponding reg's index.
--
--- phy-handle: phy handle of physical port, 0 if not any phy device. It is optional
--  attribute. If port node exists, phy-handle in each port node will be used.
--  see ethernet.txt [1].
--- subctrl-syscon: is syscon handle for external interface control register.
--- reset-field-offset: is offset of reset field. Its value depends on the hardware
--  user manual.
--- buf-size: rx buffer size, should be 16-1024.
--- desc-num: number of description in TX and RX queue, should be 512, 1024, 2048 or 4096.
--
--- port: subnodes of dsaf. A dsaf node may contain several port nodes(Depending
--  on mode of dsaf). Port node contain some attributes listed below:
--- reg: is physical port index in one dsaf.
--- phy-handle: phy handle of physical port. It is not required if there isn't
--  phy device. see ethernet.txt [1].
--- serdes-syscon: is syscon handle for SerDes register.
--- cpld-syscon: is syscon handle + register offset pair for cpld register. It is
--  not required if there isn't cpld device.
--- port-rst-offset: is offset of reset field for each port in dsaf. Its value
--  depends on the hardware user manual.
--- port-mode-offset: is offset of port mode field for each port in dsaf. Its
--  value depends on the hardware user manual.
--- mc-mac-mask: mask of multicast address, determines bit in multicast address
--  to set:
--  1 stands for this bit will be precisely matched, TCAM will check this bit of
--    MAC address.
--  0 stands for this bit will be fuzzy matched, TCAM won't care about this bit
--    of MAC address.
--
--[1] Documentation/devicetree/bindings/net/phy.txt
--
--Example:
--
--dsaf0: dsa@c7000000 {
--	compatible = "hisilicon,hns-dsaf-v1";
--	mode = "6port-16rss";
--	interrupt-parent = <&mbigen_dsa>;
--	reg = <0x0 0xc5000000 0x0 0x890000
--	       0x0 0xc7000000 0x0 0x60000>;
--	reg-names = "ppe-base", "dsaf-base";
--	subctrl-syscon = <&subctrl>;
--	reset-field-offset = 0;
--	interrupts = <131 4>,<132 4>, <133 4>,<134 4>,
--		     <135 4>,<136 4>, <137 4>,<138 4>,
--		     <139 4>,<140 4>, <141 4>,<142 4>,
--		     <143 4>,<144 4>, <145 4>,<146 4>,
--		     <147 4>,<148 4>, <384 1>,<385 1>,
--		     <386 1>,<387 1>, <388 1>,<389 1>,
--		     <390 1>,<391 1>,
--	buf-size = <4096>;
--	desc-num = <1024>;
--	dma-coherent;
--
--	port@0 {
--		reg = 0;
--		phy-handle = <&phy0>;
--		serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--	};
--
--	port@1 {
--                reg = 1;
--                serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--        };
--};
--- 
-2.53.0
+Issue was real, and was hit in production. When a faulty device creates
+corrupted descriptors this commit stops the corruption from propagating
+further, and reset to driver either fixes the issue, or if it continues,
+helps AWS detect it and replace faulty devices
 
