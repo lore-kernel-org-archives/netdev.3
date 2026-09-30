@@ -1,557 +1,179 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+Received: from mail-qk2-f39.google.com (mail-qk2-f39.google.com [74.125.230.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8804CDA2E
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790766972; cv=none; b=i2vZPS8+ikz5NsBhGdwmSdB8B4pzPwJ1MdRPjqTI7uY/eMKeoPZMOe6cgMgxZNhjfK3CCyy3hrkd/hcy2zF/zYFqIxcfDT11ESbKzOuDfn7lE88M6kF9kYasPgMfVK0NND5GGTuEvDZ8N4bMTJFG1PBMH5GKAvTMjC+05nzM+vg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790766972; c=relaxed/simple;
-	bh=03vJUToSjcWnuAmHQBdVqMhsuaA9Q1lY9fG7yuUhumU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMv87GiC2PA0fwgilpRfvbo47YScAKUO576RkVt2KmuU870cJos94raie5R3vkD+5zvy5QGVRPUIvwWwAQEnAZae+k0aTXpGIrDMNnzF+dck3Wb8v+vs2+CRrtSS8Br4AAYp/sn9b6VsgWy9DClHbQzxWd8XuFBA86SP7YoeUQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=wQJQKviL; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DA5450412
+	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 11:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.231
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790767314; cv=pass; b=dYBwwuH9tqP+aoHr+l8I+wb5QDKpCVBd8VA0ZwFiiU0YKnC2jOOIAiJzIrfAUHKnA7GUOPzQbcvTM1f/sEZtpKa6Jdqu89vNtzLFICFiw34tNvg7wPHUZ3E5GvGk9nquB/+UIYyxx68fS+W8xUgl2PZzT0xjQtuN4qG3/wIlrjw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790767314; c=relaxed/simple;
+	bh=nDG4cmfEbSlkfCKB3UpP5C6IJQLVyHZ+Tm6WTD0xZDU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qsDBda37aMCCdU4zqu1UAQSmpgQz7w3HKDEFggh1odIPVwH2VH1JhwzeaQPrhrwJe/9odIVdxr+jT33qpZ9EDAGci8b11zfkQMAmYg+DxoUyT4bTZn3RajYMHw75LybsAkYlicGsmu7GYjO12NSOmck8xfXoELEG5rqPU8N2nqY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wb6SqNIN; arc=pass smtp.client-ip=74.125.230.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="wQJQKviL"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34cde269e1bso321209eec.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 04:16:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wb6SqNIN"
+Received: by mail-qk2-f39.google.com with SMTP id d75a77b69052e-5332bdd8296so69944501cf.2
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 04:21:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790767311; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QGmH0xYk4mT9eSZQvgQYwd77WeeRmi5IW72cTO1ZwQGvfWmHKhfFI0uDDDterYFKhK
+         XALfRmiLCt6CUcTb/wP6ea5taICgCZPe9KT+95wWv/LRGceP0S7qbYHOyKfEiaNC1fOn
+         yXgdliOVYMUkrCJ4/rNQaf757hlkjpxviY5A2GZIoBPX06t0/ElvNfVXUpBG6yW1y1SW
+         P8SWLNVQ0Ss77tMEqaZ0GZrQ82n0uIyLzM0+fqPZxKWqD6CJitrJJzuvzJrIgDoQzlao
+         EdZaDcIxpczxDKuoSrkSgQR3v3Yxo5nJ2TFqbc7WHD9o8vNPOrNrIJFS/Kmief93A/XS
+         UyWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZfpGJXYUt+pqZqeEvkxMBx7LIO0yq5hTEhvmFChh8bc=;
+        fh=4jjzYlKDPz7dkCfNo3/QrN+rtsCJU28STic+UxJMowo=;
+        b=FChISril04lwZn7UQnP408eFgcb4ADGjruSkvm4XqtTQ7RNy17cvI5T38W1LOpf9LA
+         BOM/7O70APCeaXnZbHJO0LuwWKTZVogNOwctUxOb0jSIv7PExWiHP/3lytPXnWZb5Y7F
+         JGtXyJ2xjIUAtXB6+YTD5dr1WVjKRja5omqoAbbxC4zZywF8kMldbtlnw0868gnXmEv9
+         Q2ytmWYg4Hsz+CKEN6WG9v4Oci/muu9I7jpJdAg/rMcaIOcpuFhhxFpeaEctqKuayeh7
+         F/N/wKLDYEYxvhHOJ2lTA0dOOjQBa445PxEafti/zVUqv8LhuTBtaTcZ7ur8gmnZA3ch
+         eF+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790766970; x=1791371770; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ihc3rDciqBJTTsa4OlV3U6BPyTwhLMYi+S06H8B/dVk=;
-        b=wQJQKviLCuRrBBNdeI5mNwk2+GBhRk+w6YOTKxBwCqtc+D/llH8UF6G6zJ4sVh4Yia
-         94JQ6Vpc85hL9w0IEleQSeaq9WhlDrbIdJQEnpAiFnl8Cqb1ap6kbUJ/qfFWbF7VHEYd
-         WYWQDgRfP6bnhBV6N2TUW5ciEZYCEW2VZ6+c9AehpAzFcT/qJmkc9rgiU7FvQJ9p0H4X
-         MIqPzbYnrMajy6BcWubfjDZmCUHkzQXZ/AEYUOYxw91+I4hKVngtvlKcPVwjNt6AtBJ3
-         lheJR5bQGUFDkpj6xz1m6+yvsilabDVj/ybkIN/W7i+pBjZ+JBH1Lea43Rzy7Iu282Qt
-         o2nQ==
+        d=google.com; s=20251104; t=1790767311; x=1791372111; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZfpGJXYUt+pqZqeEvkxMBx7LIO0yq5hTEhvmFChh8bc=;
+        b=Wb6SqNINtqLZ8SBCO1EFhtCGRmjq83Qqs4k4VOB/55N3pFqah9bOxrYRMwnImUmskG
+         KCpE2vzmcduVXdZ6wkmPQ/c/32fA+/lZe8fmJc8uER1Djf4VoFwbB5j4b+ycnBEWdTC1
+         nsofptYgx/RQsbjpD/Qm6JK/8hPU/2RmdjvUSuVwottldGc4lY4hJLbCSKWkNyfob2W8
+         JuEABsXW/B34D5LvcWFzTEUCVXAORe44vgF/i+IV4EnPQtAUTN9wsYQj2CAFOcxsdMHa
+         lwcpK1z6ymXpapgDBeGVADrtEwQ9xr/3rQm8JMV2XmS572xVfq5NMz705lZVdKNba7uQ
+         OABQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790766970; x=1791371770;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ihc3rDciqBJTTsa4OlV3U6BPyTwhLMYi+S06H8B/dVk=;
-        b=t8Itnt6QjqqDbIjst19RTDI+iHKF7fVXMRiSrR1sr7raTLV+NIM/0XwoSs6iJF5phZ
-         GuuwAXWzuSdFV7jRgHG0b+/v7zR2fGB2iCpWlLmU4SuJp4C+I13N/m8hcps+3sMMZ3jb
-         SSdYDeYZAX+0Lexto81Tm0ejqKYy5h5BJLTpFKVIRqv5t6YUezhO9aGUfleEhc9Cq8CB
-         Sy2JbdO4nfqbbYg8DU3WlsJOGC1zK6Az1MAaDkGvI6dDbpApR1DTLPvZO0ez3dUJ7Kdv
-         pR4RmyLKKPieAohOOJ6fSflbkZffbmM8vMbfYsSuRCnYmMqYqKFqsuJby/rklXz8P4ua
-         jyhg==
-X-Gm-Message-State: AFq9FYK6qDo5+uGPqVoo4wk2/hP1eg1+LoO/R7UdMsX9UmBaHr75UVv/
-	8W/2OpQpFk+6EJR+CR3ldyQbBOWqQi38oD+0H7lYjhDMTblJEwG+cEIMNydGA+lmk1/I7r9dXya
-	rOC7z85ckXNBslNTggc7V/W9L3JYbdzm2sn2+hIyBdSZpxphad0nnMVL022x8yrYlTxKPeBW2
-X-Gm-Gg: AYBFou1ZTeBNxznM1J1muY5CuLCiDvTo80mYVXIMVRCDVCGWuv1KAx9i5P2bjqZWEEW
-	UX4My8OVKf7Cd+2CsThNAwtzkD4nTDap7TRS3F4Ydvo2Q4A+srOsWygRiNjVdyln0JXQUHXZ6dv
-	xzGpfevZ6zFatYrCphqoPdHBbNcd1xGachig02cB142mkc/fvsvnJVYd433dlb6pL9NhAxEmfNl
-	blSsU/orvZ+0onh0pqYADKzdItVcs9cLb/7yfSQgakJM6CXa0SbPjWtWbbRm2vbaFuYvWtvbZqC
-	AF3cMH2zOVtG6y0lLYHzYemtW8njaJnJmfm6qN4DN9FxCn+X8SzTA9KuWiY5vuEYTA2H5uQPd8k
-	BJtiOhYbNEyLY05raoQZMNrMEnybY9/kJLYwdAuQqHBVyxiQDqYx5NNAc+BW3ZiKEMxxhHIVaG3
-	Fq60Fg5mZ9CfcrVmBnZ51Kjp9SxV6dGl5W6M2bX31GM1H6A/XvvePdfbRskov64/Rlp6wU9g98g
-	VvE9o83kvk=
-X-Received: by 2002:a05:7300:d211:b0:34b:5ab2:e200 with SMTP id 5a478bee46e88-34cdc0cd8c7mr1477552eec.14.1790766968556;
-        Wed, 30 Sep 2026 04:16:08 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.240])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34cf5a2c6f9sm3520320eec.21.2026.09.30.04.16.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 04:16:08 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alice Mikityanska <alice@isovalent.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Wang Zhan <wang.zhan@smartx.com>
-Subject: [PATCH net-next v4 5/5] net: net_test: add tests for TCP re-segmentation
-Date: Wed, 30 Sep 2026 19:15:26 +0800
-Message-ID: <20260930111526.2183107-6-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260930111526.2183107-1-wang.zhan@smartx.com>
-References: <20260930111526.2183107-1-wang.zhan@smartx.com>
+        d=1e100.net; s=20260707; t=1790767311; x=1791372111;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZfpGJXYUt+pqZqeEvkxMBx7LIO0yq5hTEhvmFChh8bc=;
+        b=d39CY3sf3M8e8XlDWcd8DbLr7zB2RIsqo6Sbczs50by8cUdYfQRwRYvhw3umIh9PCg
+         33vim+CjhPPgPS165Y5ZYI8tJx6x+9SVnJdHEXxs/QwisdP/2e1PeL5Uwrptf/FuNJWK
+         B5FQzQS2ResTwAria0K43RNl7RevG+FwH5wTUKc1fmgRF5inpZ1l3XFfa18otYcbwUi4
+         CnJCu3kphz2KqMokRaGoIptdx51oPN/hFaACfiQBv072cpHLEZZLgZE7Q64fdmV7Jwae
+         UZgpn5wDfj8H/SbHvcon5FBcLpqiJfmuoAZpuKAnm4APXK1a6GIHCfjKHmdTlsqoe/Xs
+         lkQA==
+X-Gm-Message-State: AFuF++miIBwjw/ZloNFArm28IgWstetrzlNri36+lj7cwT5PRQdCxoPT
+	m55H1rpIXx4ymcdspltsu3/lM6eC9Ni7KWLYv4NGvEWj+B3Oo28OaUBtSgU3AZdUEYpT2SK7nhV
+	plLGzoocz2wZaWEs9xPPw8zrkTebTIGRADAjIFrkr
+X-Gm-Gg: AYBFou2B/31HUskPiBiEFPQAObudRa/ZBuL/oGs9pW2FBZXjiO0ZZ+DZWuWVWdzXybZ
+	dVTxhYtvbov1rrp2BKSEjZvnMaTnPHwBiEDCVvIrZd40AH+9Ni5HF+eUSqIcAto9pPZuiN1BhTq
+	dBgWU/tR66uxjmK3Gk+0fdNnrRaeL0maOuV+gnBSvw2AMBM6avT4Tm+w+efezv6drT4JbLFtfEr
+	bzoSIrX8Ip7HYY2FTFTjNZ2sLIBBm3COeoTVaawk4G0IyjgWCJR1ycxIbdu/DijdZujaWCjEWUr
+	FfxJ5gB2BenTLWIhSazVtLqqEpQH6s1s+u74e7HzTunWe53zrik5n5b4eGGQh4yQ+DIT1DUiLyc
+	3PBS2Tg48K4GHYFha19b+NdlRu36UcDiKUNNDGgYh2jIKxwjsYyoGyvCbbXQSUaZrFs8+
+X-Received: by 2002:a05:622a:1443:b0:533:4b39:4e28 with SMTP id
+ d75a77b69052e-53374d85b1emr19082141cf.33.1790767310634; Wed, 30 Sep 2026
+ 04:21:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260930100937.206377-1-jiayuan.chen@linux.dev> <20260930100937.206377-4-jiayuan.chen@linux.dev>
+In-Reply-To: <20260930100937.206377-4-jiayuan.chen@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 30 Sep 2026 13:21:39 +0200
+X-Gm-Features: AclHuK8zNCR_V-ToSw-vF65D2n_UEp7o3edqp2vCKW91KoxifKRbepto8X6oeW4
+Message-ID: <CANn89iLwivMvNWC0oDgmQgTcKjrj_Ar8deh7Bc2jqyRXwv52tQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/3] tcp_cubic: fix divide by zero and endless
+ loop on bad module params
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stephen Hemminger <stephen@networkplumber.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The GSO engine can now be asked to group several MSS segments into one
-output skb, which is what re-segmentation needs.  Add KUnit coverage for
-the max_segs parameter.
+On Wed, Sep 30, 2026 at 12:10=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.d=
+ev> wrote:
+>
+> beta_scale and cube_factor are computed once at module init, and they
+> need 1024 - beta and bic_scale * 10 to be positive: beta =3D=3D 1024 or
+> bic_scale =3D=3D 0 crash right there, beta > 1024 or a negative bic_scale
+> gives garbage or wraps to 0. Negative beta can also make beta_scale 0.
+> Reject them.
+>
+> A small beta also gives a small beta_scale, and (cwnd * scale) >> 3
+> truncates to 0 for a tiny cwnd (e.g. 2), so the TCP friendliness loop
+> never ends. Clamp delta to 1.
+>
+> Fixes: df3271f3361b ("[TCP] BIC: CUBIC window growth (2.0)")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+> Target net-next since it is not a big problem.
+> ---
+>  net/ipv4/tcp_cubic.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
+> index 119bf8cbb007c..2f04dca5be095 100644
+> --- a/net/ipv4/tcp_cubic.c
+> +++ b/net/ipv4/tcp_cubic.c
+> @@ -298,7 +298,7 @@ static inline void bictcp_update(struct bictcp *ca, u=
+32 cwnd, u32 acked)
+>         if (tcp_friendliness) {
+>                 u32 scale =3D beta_scale;
+>
+> -               delta =3D (cwnd * scale) >> 3;
 
-The parameterized GSO test gains a max_segs input and three cases: two
-limits which cut the input into two and three output skbs, and a max_segs
-of one MSS, which must leave the output unchanged.  It drives
-skb_segment() directly, because the synthetic protocol it uses has no
-gso_segment callback, and stores max_segs in the GSO control block itself.
+I would prefer not adding a test in the fast path to work around
+silly module parameters.
 
-The TCP test drives __skb_gso_segment() with a max_segs of two MSS and
-checks that every output skb stays GSO, keeps its gso_size, and stays
-within the limit.  The length test runs a 200 KiB TCP skb through
-validate_xmit_skb_list(), the caller which sets max_segs, and checks that
-the length declared by every output matches the L3 length of that output.
-The limit test checks that the GSO size limit which netif_skb_features()
-applies follows the packet's L3 protocol, for an IPv4 and an IPv6 skb,
-also with the tag inside the frame.
+beta_scale is computed once at module init, we can make sure it is >=3D 8
+there. tcp_snd_cwnd() is >=3D 1, so delta would be >=3D 1.
 
-Assisted-by: LLM
-Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+With the integer divisions, beta_scale >=3D 8 iff beta >=3D 512,
+so the default beta (717 -> beta_scale =3D 15) is not affected.
 
----
-v4:
-- name the cases and the descriptions after re-segmentation
-- reserve the headroom the VLAN step needs in both builders
-- check the exact gso_segs of each output
-- free the segments when a bounded case does not match
-v3: https://lore.kernel.org/20260928044102.1004310-6-wang.zhan@smartx.com/
-v2: https://lore.kernel.org/20260918084651.3022878-5-wang.zhan@smartx.com/
-v1: https://lore.kernel.org/20260917063854.2011613-5-wang.zhan@smartx.com/
----
- net/core/net_test.c | 351 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 351 insertions(+)
 
-diff --git a/net/core/net_test.c b/net/core/net_test.c
-index 9c3a590865d269..6a91db83e53017 100644
---- a/net/core/net_test.c
-+++ b/net/core/net_test.c
-@@ -4,7 +4,14 @@
- 
- /* GSO */
- 
-+#include <linux/if_ether.h>
-+#include <linux/if_vlan.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <linux/netdevice.h>
- #include <linux/skbuff.h>
-+#include <linux/tcp.h>
-+#include <net/gso.h>
- 
- static const char hdr[] = "abcdefgh";
- #define GSO_TEST_SIZE 1000
-@@ -34,6 +41,9 @@ enum gso_test_nr {
- 	GSO_TEST_FRAG_LIST_PURE,
- 	GSO_TEST_FRAG_LIST_NON_UNIFORM,
- 	GSO_TEST_GSO_BY_FRAGS,
-+	GSO_TEST_RESEGMENT,
-+	GSO_TEST_RESEGMENT_MULTI,
-+	GSO_TEST_RESEGMENT_ONE_MSS,
- };
- 
- struct gso_test_case {
-@@ -46,10 +56,12 @@ struct gso_test_case {
- 	const unsigned int *frags;
- 	unsigned int nr_frag_skbs;
- 	const unsigned int *frag_skbs;
-+	unsigned int max_segs;
- 
- 	/* output as expected */
- 	unsigned int nr_segs;
- 	const unsigned int *segs;
-+	bool segs_are_gso;
- };
- 
- static struct gso_test_case cases[] = {
-@@ -135,6 +147,51 @@ static struct gso_test_case cases[] = {
- 		.nr_segs = 4,
- 		.segs = (const unsigned int[]) { 100, 200, 300, 400 },
- 	},
-+	{
-+		.id = GSO_TEST_RESEGMENT,
-+		.name = "resegment",
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frags = 3,
-+		.frags = (const unsigned int[]) {
-+			GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
-+		},
-+		.max_segs = 2,
-+		.nr_segs = 2,
-+		.segs = (const unsigned int[]) {
-+			2 * GSO_TEST_SIZE, GSO_TEST_SIZE + 3,
-+		},
-+		.segs_are_gso = true,
-+	},
-+	{
-+		.id = GSO_TEST_RESEGMENT_MULTI,
-+		.name = "resegment_multi",
-+		.linear_len = 2 * GSO_TEST_SIZE,
-+		.nr_frags = 4,
-+		.frags = (const unsigned int[]) {
-+			GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
-+		},
-+		.max_segs = 2,
-+		.nr_segs = 3,
-+		.segs = (const unsigned int[]) {
-+			2 * GSO_TEST_SIZE, 2 * GSO_TEST_SIZE, GSO_TEST_SIZE + 3,
-+		},
-+		.segs_are_gso = true,
-+	},
-+	{
-+		/* A max_segs of one leaves one MSS per skb, like no limit. */
-+		.id = GSO_TEST_RESEGMENT_ONE_MSS,
-+		.name = "resegment_one_mss",
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frags = 3,
-+		.frags = (const unsigned int[]) {
-+			GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
-+		},
-+		.max_segs = 1,
-+		.nr_segs = 4,
-+		.segs = (const unsigned int[]) {
-+			GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
-+		},
-+	},
- };
- 
- static void gso_test_case_to_desc(struct gso_test_case *t, char *desc)
-@@ -226,6 +283,7 @@ static void gso_test_func(struct kunit *test)
- 	if (tcase->id == GSO_TEST_FRAG_LIST_NON_UNIFORM)
- 		features &= ~NETIF_F_SG;
- 
-+	SKB_GSO_CB(skb)->max_segs = tcase->max_segs;
- 	segs = skb_segment(skb, features);
- 	if (IS_ERR(segs)) {
- 		KUNIT_FAIL(test, "segs error %pe", segs);
-@@ -239,6 +297,7 @@ static void gso_test_func(struct kunit *test)
- 	for (cur = segs, i = 0; cur; cur = next, i++) {
- 		next = cur->next;
- 
-+		KUNIT_ASSERT_LT(test, i, tcase->nr_segs);
- 		KUNIT_ASSERT_EQ(test, cur->len, sizeof(hdr) + tcase->segs[i]);
- 
- 		/* segs have skb->data pointing to the mac header */
-@@ -247,6 +306,18 @@ static void gso_test_func(struct kunit *test)
- 
- 		/* header was copied to all segs */
- 		KUNIT_ASSERT_EQ(test, memcmp(skb_mac_header(cur), hdr, sizeof(hdr)), 0);
-+		if (tcase->segs_are_gso) {
-+			KUNIT_EXPECT_TRUE(test, skb_is_gso(cur));
-+			KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_size,
-+					GSO_TEST_SIZE);
-+			KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_segs,
-+					DIV_ROUND_UP(tcase->segs[i],
-+						     GSO_TEST_SIZE));
-+			KUNIT_EXPECT_FALSE(test, skb_shinfo(cur)->gso_type &
-+					 SKB_GSO_PARTIAL);
-+		} else if (tcase->max_segs) {
-+			KUNIT_EXPECT_FALSE(test, skb_is_gso(cur));
-+		}
- 
- 		/* last seg can be found through segs->prev pointer */
- 		if (!next)
-@@ -261,6 +332,283 @@ static void gso_test_func(struct kunit *test)
- 	consume_skb(skb);
- }
- 
-+#define GSO_TCP_HDR_LEN \
-+	(ETH_HLEN + sizeof(struct iphdr) + sizeof(struct tcphdr))
-+
-+static struct sk_buff *gso_tcp_skb_new(unsigned int payload_len)
-+{
-+	struct sk_buff *skb;
-+	struct ethhdr *eth;
-+	struct tcphdr *th;
-+	struct iphdr *iph;
-+
-+	skb = alloc_skb(NET_SKB_PAD + GSO_TCP_HDR_LEN + payload_len,
-+			GFP_KERNEL);
-+	if (!skb)
-+		return NULL;
-+	skb_reserve(skb, NET_SKB_PAD);
-+	skb_put_zero(skb, GSO_TCP_HDR_LEN + payload_len);
-+
-+	skb_reset_mac_header(skb);
-+	eth = eth_hdr(skb);
-+	eth->h_proto = htons(ETH_P_IP);
-+	skb->protocol = eth->h_proto;
-+
-+	skb_set_network_header(skb, ETH_HLEN);
-+	iph = ip_hdr(skb);
-+	iph->version = 4;
-+	iph->ihl = sizeof(*iph) / 4;
-+	iph->protocol = IPPROTO_TCP;
-+	iph->tot_len = htons(sizeof(*iph) + sizeof(*th) + payload_len);
-+
-+	skb_set_transport_header(skb, ETH_HLEN + sizeof(*iph));
-+	th = tcp_hdr(skb);
-+	th->doff = sizeof(*th) / 4;
-+
-+	skb->ip_summed = CHECKSUM_PARTIAL;
-+	skb->csum_start = skb_transport_header(skb) - skb->head;
-+	skb->csum_offset = offsetof(struct tcphdr, check);
-+	skb_shinfo(skb)->gso_type = SKB_GSO_TCPV4;
-+	skb_shinfo(skb)->gso_size = GSO_TEST_SIZE;
-+	skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(payload_len, GSO_TEST_SIZE);
-+
-+	return skb;
-+}
-+
-+/*
-+ * The transmit path passes the features of the device which rejects this
-+ * skb, with the GSO bits cleared, so the engine segments it.
-+ */
-+static void gso_test_tcp_resegment(struct kunit *test)
-+{
-+	netdev_features_t features = NETIF_F_SG | NETIF_F_HW_CSUM;
-+	const unsigned int payload_len = 3 * GSO_TEST_SIZE + 3;
-+	struct sk_buff *skb, *segs, *cur, *next;
-+	const unsigned int expected[] = {
-+		2 * GSO_TEST_SIZE, GSO_TEST_SIZE + 3,
-+	};
-+	const unsigned int max_segs = 2;
-+	int i = 0;
-+
-+	if (!IS_ENABLED(CONFIG_INET))
-+		kunit_skip(test, "requires CONFIG_INET");
-+
-+	skb = gso_tcp_skb_new(payload_len);
-+	if (!skb) {
-+		KUNIT_FAIL(test, "no skb");
-+		return;
-+	}
-+
-+	segs = __skb_gso_segment(skb, features, true, max_segs);
-+	if (IS_ERR_OR_NULL(segs)) {
-+		KUNIT_FAIL(test, "segs error %pe", segs);
-+		consume_skb(skb);
-+		return;
-+	}
-+
-+	for (cur = segs; cur; cur = next, i++) {
-+		next = cur->next;
-+
-+		if (i < ARRAY_SIZE(expected)) {
-+			KUNIT_EXPECT_EQ(test, cur->len,
-+					GSO_TCP_HDR_LEN + expected[i]);
-+			KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_segs,
-+					DIV_ROUND_UP(expected[i],
-+						     GSO_TEST_SIZE));
-+		}
-+		KUNIT_EXPECT_TRUE(test, skb_is_gso(cur));
-+		KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_size,
-+				GSO_TEST_SIZE);
-+
-+		consume_skb(cur);
-+	}
-+
-+	KUNIT_EXPECT_EQ(test, i, ARRAY_SIZE(expected));
-+	consume_skb(skb);
-+}
-+
-+#define GSO_TCP6_HDR_LEN \
-+	(ETH_HLEN + sizeof(struct ipv6hdr) + sizeof(struct tcphdr))
-+
-+static struct sk_buff *gso_tcp6_skb_new(unsigned int payload_len)
-+{
-+	struct ipv6hdr *ip6h;
-+	struct sk_buff *skb;
-+	struct ethhdr *eth;
-+	struct tcphdr *th;
-+
-+	skb = alloc_skb(NET_SKB_PAD + GSO_TCP6_HDR_LEN + payload_len,
-+			GFP_KERNEL);
-+	if (!skb)
-+		return NULL;
-+	skb_reserve(skb, NET_SKB_PAD);
-+	skb_put_zero(skb, GSO_TCP6_HDR_LEN + payload_len);
-+
-+	skb_reset_mac_header(skb);
-+	eth = eth_hdr(skb);
-+	eth->h_proto = htons(ETH_P_IPV6);
-+	skb->protocol = eth->h_proto;
-+
-+	skb_set_network_header(skb, ETH_HLEN);
-+	ip6h = ipv6_hdr(skb);
-+	ip6h->version = 6;
-+	ip6h->nexthdr = IPPROTO_TCP;
-+	ip6h->payload_len = htons(sizeof(*th) + payload_len);
-+
-+	skb_set_transport_header(skb, ETH_HLEN + sizeof(*ip6h));
-+	th = tcp_hdr(skb);
-+	th->doff = sizeof(*th) / 4;
-+
-+	skb->ip_summed = CHECKSUM_PARTIAL;
-+	skb->csum_start = skb_transport_header(skb) - skb->head;
-+	skb->csum_offset = offsetof(struct tcphdr, check);
-+	skb_shinfo(skb)->gso_type = SKB_GSO_TCPV6;
-+	skb_shinfo(skb)->gso_size = GSO_TEST_SIZE;
-+	skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(payload_len, GSO_TEST_SIZE);
-+
-+	return skb;
-+}
-+
-+/*
-+ * The device GSO size limit is per L3 protocol, so only a lowered limit of
-+ * the packet's own protocol may cost it the TSO bit, and a tag inside the
-+ * frame, which replaces skb->protocol with the ethertype, must not change
-+ * which limit applies.  Takes ownership of @skb.
-+ */
-+static void gso_test_tcp_l3_limit(struct kunit *test, struct net_device *dev,
-+				  struct sk_buff *skb, netdev_features_t tso,
-+				  bool ipv6)
-+{
-+	unsigned int other = GSO_LEGACY_MAX_SIZE;
-+	unsigned int own = GSO_MAX_SIZE;
-+
-+	/* The skb fits the limit of its own L3 protocol, not the other's. */
-+	dev->gso_max_size = ipv6 ? own : other;
-+	dev->gso_ipv4_max_size = ipv6 ? other : own;
-+	KUNIT_EXPECT_TRUE(test, netif_skb_features(skb) & tso);
-+
-+	/* ...and the other way around. */
-+	swap(own, other);
-+	dev->gso_max_size = ipv6 ? own : other;
-+	dev->gso_ipv4_max_size = ipv6 ? other : own;
-+	KUNIT_EXPECT_FALSE(test, netif_skb_features(skb) & tso);
-+
-+	skb = vlan_insert_tag_set_proto(skb, htons(ETH_P_8021Q), 0);
-+	if (!skb) {
-+		KUNIT_FAIL(test, "no tagged skb");
-+		return;
-+	}
-+	KUNIT_EXPECT_TRUE(test, skb->protocol == htons(ETH_P_8021Q));
-+
-+	swap(own, other);
-+	dev->gso_max_size = ipv6 ? own : other;
-+	dev->gso_ipv4_max_size = ipv6 ? other : own;
-+	KUNIT_EXPECT_TRUE(test, netif_skb_features(skb) & tso);
-+
-+	swap(own, other);
-+	dev->gso_max_size = ipv6 ? own : other;
-+	dev->gso_ipv4_max_size = ipv6 ? other : own;
-+	KUNIT_EXPECT_FALSE(test, netif_skb_features(skb) & tso);
-+
-+	consume_skb(skb);
-+}
-+
-+static void gso_test_tcp_limit_l3_proto(struct kunit *test)
-+{
-+	static const struct net_device_ops dummy_netdev_ops = { };
-+	const unsigned int payload_len = 100 * 1024;
-+	struct net_device *dev;
-+	struct sk_buff *skb;
-+
-+	dev = alloc_etherdev(0);
-+	if (!dev) {
-+		KUNIT_FAIL(test, "no net_device");
-+		return;
-+	}
-+	dev->netdev_ops = &dummy_netdev_ops;
-+	dev->hw_features = NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_TSO |
-+			   NETIF_F_TSO6;
-+	dev->features = dev->hw_features;
-+	dev->vlan_features = dev->hw_features;
-+
-+	skb = gso_tcp6_skb_new(payload_len);
-+	if (!skb) {
-+		KUNIT_FAIL(test, "no IPv6 skb");
-+		goto free_dev;
-+	}
-+	skb->dev = dev;
-+	gso_test_tcp_l3_limit(test, dev, skb, NETIF_F_TSO6, true);
-+
-+	skb = gso_tcp_skb_new(payload_len);
-+	if (!skb) {
-+		KUNIT_FAIL(test, "no IPv4 skb");
-+		goto free_dev;
-+	}
-+	skb->dev = dev;
-+	gso_test_tcp_l3_limit(test, dev, skb, NETIF_F_TSO, false);
-+
-+free_dev:
-+	free_netdev(dev);
-+}
-+
-+/*
-+ * A re-segmented output is a plain GSO skb, so the whole length lands in the
-+ * 16-bit L3 length field.  A device which accepts GSO skbs above 64 KiB would
-+ * otherwise be handed outputs whose length field truncates.
-+ */
-+static void gso_test_tcp_resegment_l3_len(struct kunit *test)
-+{
-+	static const struct net_device_ops dummy_netdev_ops = { };
-+	const unsigned int payload_len = 200 * 1024;
-+	struct sk_buff *skb, *segs, *cur, *next;
-+	unsigned int nr_segs = 0;
-+	struct net_device *dev;
-+	bool again = false;
-+
-+	if (!IS_ENABLED(CONFIG_INET))
-+		kunit_skip(test, "requires CONFIG_INET");
-+
-+	dev = alloc_etherdev(0);
-+	if (!dev) {
-+		KUNIT_FAIL(test, "no net_device");
-+		return;
-+	}
-+	dev->netdev_ops = &dummy_netdev_ops;
-+	dev->hw_features = NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_TSO;
-+	dev->features = dev->hw_features;
-+	dev->vlan_features = dev->hw_features;
-+	dev->gso_ipv4_max_size = 120 * 1024;
-+
-+	skb = gso_tcp_skb_new(payload_len);
-+	if (!skb) {
-+		KUNIT_FAIL(test, "no skb");
-+		goto free_dev;
-+	}
-+	skb->dev = dev;
-+
-+	segs = validate_xmit_skb_list(skb, dev, &again);
-+	if (IS_ERR_OR_NULL(segs)) {
-+		KUNIT_FAIL(test, "segs error %pe", segs);
-+		goto free_dev;
-+	}
-+
-+	for (cur = segs; cur; cur = next, nr_segs++) {
-+		next = cur->next;
-+		cur->next = NULL;
-+
-+		KUNIT_EXPECT_TRUE(test, skb_is_gso(cur));
-+		KUNIT_EXPECT_EQ(test, ntohs(ip_hdr(cur)->tot_len),
-+				cur->len - (skb_network_header(cur) -
-+					    skb_mac_header(cur)));
-+		consume_skb(cur);
-+	}
-+
-+	KUNIT_EXPECT_EQ(test, nr_segs, 4);
-+
-+free_dev:
-+	free_netdev(dev);
-+}
-+
- /* IP tunnel flags */
- 
- #include <net/ip_tunnels.h>
-@@ -372,6 +720,9 @@ static void ip_tunnel_flags_test_run(struct kunit *test)
- 
- static struct kunit_case net_test_cases[] = {
- 	KUNIT_CASE_PARAM(gso_test_func, gso_test_gen_params),
-+	KUNIT_CASE(gso_test_tcp_resegment),
-+	KUNIT_CASE(gso_test_tcp_limit_l3_proto),
-+	KUNIT_CASE(gso_test_tcp_resegment_l3_len),
- 	KUNIT_CASE_PARAM(ip_tunnel_flags_test_run,
- 			 ip_tunnel_flags_test_gen_params),
- 	{ },
--- 
-2.47.3
+> +               delta =3D max((cwnd * scale) >> 3, 1U);
+>                 while (ca->ack_cnt > delta) {           /* update tcp cwn=
+d */
+>                         ca->ack_cnt -=3D delta;
+>                         ca->tcp_cwnd++;
+> @@ -504,6 +504,11 @@ static int __init cubictcp_register(void)
+>
+>         BUILD_BUG_ON(sizeof(struct bictcp) > ICSK_CA_PRIV_SIZE);
+>
+> +       if (beta < 0 || beta >=3D BICTCP_BETA_SCALE || bic_scale <=3D 0) =
+{
 
+bic_scale * 10 can overflow if bic_scale > INT_MAX / 10
+
+> +               pr_err("tcp_cubic: invalid beta %d or bic_scale %d\n", be=
+ta, bic_scale);
+> +               return -EINVAL;
+> +       }
+> +
+
+Something like this (untested) :
+
+if (beta < 0 || beta >=3D BICTCP_BETA_SCALE ||
+   bic_scale <=3D 0 || bic_scale > INT_MAX / 10) {
+    pr_err("tcp_cubic: invalid beta %d or bic_scale %d\n",
+      beta, bic_scale);
+    return -EINVAL;
+}
+/* Precompute a bunch of the scaling factors that are used per-packet
+* based on SRTT of 100ms
+*/
+beta_scale =3D 8*(BICTCP_BETA_SCALE+beta) / 3
+/ (BICTCP_BETA_SCALE - beta);
+/* bictcp_update() needs (cwnd * beta_scale) >> 3 to be >=3D 1 */
+beta_scale =3D max(beta_scale, 8U);
+
+Thanks.
