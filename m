@@ -1,99 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D14BFE79;
-	Wed, 30 Sep 2026 11:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D0F318146;
+	Wed, 30 Sep 2026 11:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790768190; cv=none; b=SK1RV1kxd+3hLqvzFJoANpB+DiNdBYqrGSY35Rj4T/+N8HxfY9CioeNXGPwlE89lZx996c6ylm6yWPFOGSzhShkagGkIu5R/OamR0+5bnmssOMI8Cio3wzHEnknzd3C2wY8RLwmFLtN7SPm2jFmDakLD7YYAZAJVSJxhlzWB9SQ=
+	t=1790768262; cv=none; b=H5djOMHFaH3O0pWg3qt+ROxajg+YEfH/J275TaFtD1/DwyNEcUlqkPzZPzCXynD5erMr4GuktfIOXDR4Gv/DujPeHOC/GyJz2VRsNGSM4sjeatEUJ3loaOC07aaV4aeytVfk8ly50qMWekAuMbhcGFIKt7h4eosjWv1sRvonvpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790768190; c=relaxed/simple;
-	bh=Alp02oUhOmw2FInfj3F0v5vxxPMfM7u9OWYEL20KVU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XASwCMknb++hJA6jVmyqKlteR5vk4QXq9e00cJEp5JJJTfbjZ9yX4Jgm0MbduRRsP2lJkHBcv9vCJKDNu2CybDDLIwlNkP5zjw9RS+A+CT6AxDoYdSwutMsGwrRUtqcmrWVMwuZXoxFQm9BWRHUbw6UMjOEhgvofK6bPz/ngVUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGHxBz10; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790768262; c=relaxed/simple;
+	bh=WPUmm4x0j6sthZegG14XFdkTt4ANCL74A0r6femNKjE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IF+sJwIaWKaGQ/3YMK1GTpKFux0c1C+qZyjxDCJ8q4e1epTnwdXJ1SrTnYqrniivSCXciDD5RpJHbFnuuvCYiyBoEgYv47AyhXncY41k9NhYv0VX1cN0wpHDZ2gSqqb7aTbv96+gKy9AG4EFVAu/RseciN3LJwKSW/x4QdgFcCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oKIrs53u; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGHxBz10"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3481F000FF;
-	Wed, 30 Sep 2026 11:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790768186;
-	bh=HsAD/Bv80VEFgq6hj/7zVyZdaBGnNkrcGt8fEOFmmXI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aGHxBz10TBr0qtWPrThz/UPsLSdPaO8WJaF4c3+ezfF4Hx8KWckU6VGFUl0C7/yeB
-	 nOr+CbPHFe8N2UboQLQqPdyoahRdF5ZGaA7nkrHMd71GMSD+JerJLf6F5yy5Phhi7Z
-	 RR3DFa8o1m9SQiAioGz67LdZd0Gv7hOa6HfHHJ//LL9/0XkBHt9QEBe+DaHJm9sVKU
-	 ne1FtXsYofF4jqrHdeIhneqoDiqSFVUKqG9cYjQL4Tt5nNBd3NDDpmWhj2e8QtEPzc
-	 7J+aMDQq0SIbRN+buVU+wCkUL7CLAXl5pBCkLkY/QlFsnSAXf0YbPdQJFwJHPkkzx9
-	 oOuOCLirNjTLg==
-Date: Wed, 30 Sep 2026 12:36:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oKIrs53u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=TS
+	hkSJ3EKVJ+nT+YZSx3ZP/36ZacHpx0Z8A5KjGt3WI=; b=oKIrs53un0fYOrSZfZ
+	QzoJQseUe+CplqQS0WsJ/4//yhj/SRQ/z5Zv/vupEQg+Ygn/1GN5BLB2gFlW2NZk
+	QI/EfmdNrmj2VPvMhTVQbsFwi+VmX9GtFLvDxARyKRw/XkYb+XQrddSHTxc8+3W4
+	qCXPjP1T8nDUCxkF+p0IbsWvI=
+Received: from u2.. (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCHVcgu9Lxqu8AVCA--.1276S2;
+	Wed, 30 Sep 2026 19:36:15 +0800 (CST)
+From: taozj888@163.com
+To: theo.lebrun@bootlin.com
+Cc: taozijin <taozj888@163.com>,
+	stable@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Dimitri Daskalakis <daskald@meta.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Breno Leitao <leitao@debian.org>, Tao Cui <cuitao@kylinos.cn>,
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>
-Subject: Re: [PATCH net-next v4 0/5] fbnic: Support larger RX pages
-Message-ID: <20260930113619.GX13925@horms.kernel.org>
-References: <20260925104417.2325213-1-bjorn@kernel.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Haavard Skinnemoen <hskinnemoen@atmel.com>,
+	Jeff Garzik <jeff@garzik.org>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v2] net: macb: rate limit netdev error info print in the data path
+Date: Wed, 30 Sep 2026 11:35:20 +0000
+Message-Id: <20260930113520.392025-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260925104417.2325213-1-bjorn@kernel.org>
+X-CM-TRANSID:PSgvCgCHVcgu9Lxqu8AVCA--.1276S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWrAry3tw18ZF1rGr1xXwb_yoW5AF4Upa
+	yUA398Ww4kJr47A3Z7try8Ar1rAr98Kry5WrWkK3W3Xw15Ar90gFyagryYkFW8Ga9xAw1S
+	yw1UZayqkan3ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zES_MDUUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3g8S2Wq89C9-gAAA3o
 
-On Fri, Sep 25, 2026 at 12:44:07PM +0200, Björn Töpel wrote:
-> Hi!
-> 
-> This series adds support for large io_uring zero-copy RX buffers to
-> fbnic.
-> 
-> fbnic hardware consumes receive memory in 4 KiB device pages, while
-> io_uring may expose a larger software buffer, such as 256 KiB. Track
-> the device-page geometry per BDQ, represent each large buffer with
-> consecutive descriptors, and decode completions to the corresponding
-> offset within the buffer. HPQ keeps its existing PAGE_SIZE geometry.
-> 
-> Larger buffers also reduce pressure on the memory provider. One
-> provider allocation supplies multiple 4 KiB device pages, so the same
-> amount of receive memory needs fewer net_iov objects and fewer
-> allocation, refill, and recycle operations. Hardware descriptor use
-> remains unchanged.
-> 
-> Ring depth and buffer size must be validated together. An ethtool ring
-> change can otherwise make an active memory-provider configuration
-> invalid. Store RX ring depths in netdev_config, stage proposed values
-> in cfg_pending, and validate the default and each RX queue before
-> committing the change. Both netlink and ioctl use the same transaction
-> helpers.
-> 
-> The selftest requests a power-of-two buffer larger than twice the MTU,
-> checks the reported buffer length, and verifies received data. It does
-> not assume how packets are placed within the buffer.
-> 
-> This series depends on the fbnic real-queue synchronization fix:
-> https://lore.kernel.org/netdev/20260924191817.1843726-1-bjorn@kernel.org/
+From: taozijin <taozj888@163.com>
 
-For the series:
+Now the MACB ethernet driver print the netdev error information
+directly by netdev_err(), which would lead to a large number of
+error information print if there was a significant number of
+error or just jumbo packets exceeding the MTU received when booting.
+For example, it would print a large number of:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+...
+
+in gem_rx() by received a large number of packets without
+RX_EOF flag set, especially with unknown packet
+type that would penetrate the hardware offload for the IP packets.
+
+The unlimited prints here would greatly bother and delay
+the system booting process unless the source stop sending
+packets since they occupy the console output bandwidth and
+other processes have to wait for the completion of printing those
+messages.
+
+So rate limit the netdev error information print in the receive
+and transmit data path.
+
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Zijin Tao <taozj888@163.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 8e5c034dc3a4..ca60960bec36 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		count++;
+ 
+ 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
+-			netdev_err(bp->netdev,
+-				   "not whole frame pointed by descriptor\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+ 		}
+ 		skb = queue->rx_skbuff[entry];
+ 		if (unlikely(!skb)) {
+-			netdev_err(bp->netdev,
+-				   "inconsistent Rx descriptor chain\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+@@ -1829,7 +1829,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		unsigned long flags;
+ 		u32 ctrl;
+ 
+-		netdev_err(bp->netdev, "RX queue corruption: reset it\n");
++		if (net_ratelimit())
++			netdev_err(bp->netdev, "RX queue corruption: reset it\n");
+ 
+ 		spin_lock_irqsave(&bp->lock, flags);
+ 
+@@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+ 
+ 	if (status & MACB_BIT(HRESP)) {
+ 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+-		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
++		if (net_ratelimit())
++			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+ 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
+ 	}
+ 
+-- 
+2.34.1
 
