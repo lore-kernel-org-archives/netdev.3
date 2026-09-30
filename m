@@ -1,128 +1,199 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-73.mail.aliyun.com (out28-73.mail.aliyun.com [115.124.28.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FA446EF89
-	for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 19:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E54397E89;
+	Wed, 30 Sep 2026 19:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790797259; cv=none; b=PxWV8QCZYpO/WYUFuq1v7eSm+92goUZNSvLsAhTV6WZQ2kxMITZzP1WKmh/FUo0hBI51t2jsO/D3ixSZ0ROSe0vAlR9aSD4h7qjCNd0NqzGvZS1XiKL8g3XhPJqpjJdl36OtwjGJexuO6JrMGixO2Xb7/QzCma/a3iX9su33Ru4=
+	t=1790797532; cv=none; b=fdhXSH3p/M8tQVQSMF5HqevsE7hOWFhUZ7SVjJa6OO9V5JxflkWQBpggLodcwrZ6nNRLEdLLGrWNcPMxReXVht+3X0106wR6sYYFXe+Yb5UiukILAiyQTRCf2Ozfq3Rmi+HXwAxQ6yc1vh9hfhf+540Mv5aEr9GaTAOXqQGNeLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790797259; c=relaxed/simple;
-	bh=O53avsybSqLCUVS3wR7ALQAXf0BsK0Ds6tWuecZwmPQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=I066IU+neI5UvC9QxxiT7uFpQvn1kiCN1mU6lGlGOxVakdQTSCtYsgo75y5tjIh4jKysJWs80D5EW5pluRq56wX9RhyJnOaT+Ix6NjuVohfErHJccTzXcbDTEqiVTo9myDWm9MVPiJhl5JMAZ/+dGVdPUlzmmBGLPKdIe/gLOAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDeO1vb+; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDeO1vb+"
-Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-672ce86b21aso6493061d50.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 12:40:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790797257; x=1791402057; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zysOGux/W9k28xJOl+6oo5Y9jPZ0WOdxDwCyuGbfiRo=;
-        b=lDeO1vb+ryIILDiwc1PPbR8H9LdV7RosHZmSqW6GA6MsT79SRyt0mVBj6tZOqM1sHQ
-         F8+OJu/1Zj1DaUlNNHeSpYsB8CYICmj9PmvpFzEZeiIm29p9Z2I/y1CxmC0z7X6f3Gh9
-         kZpKzNS3h22pxO1CMqi/jirrco4YA0L4VHEixPqC2Zqphe9a1U4R3DegEzaiZzhVhEWd
-         mu74QPuF13eD3bVqUnuG35SJlNd9c5tS5RFENWSY9CfF2r9eb7rNHJUpZo1kDC/PlOVp
-         C1K7RtHlWey9qtwou4RrpglKYN3DDpBN/mjTGKha252S5VC0MWN7AoNXIne2RaF5/rmK
-         95xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790797257; x=1791402057;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zysOGux/W9k28xJOl+6oo5Y9jPZ0WOdxDwCyuGbfiRo=;
-        b=pypARWodcbe039SxWmJVDzJSHjOF8vM3GG64RpLU0CdnfyREubNMLIXWdc7uYIJEiJ
-         g0vjMuIEjfTW+0s1tXLp4zSmB7babPRz5uwOpBe6Ll95wescm2L8ekvZ3lFMgY4Ul44g
-         JKfqzUQgIZRROx50TD1A5B3DzumkcY2oPlntlPyUKK9Kr96OI7a4AKK3O9PkMCF7MNG7
-         bABGchtpBGi2zR7LXvFmFOOaunXnI+P/OKCEscYtWnz6cFh/EjiV0D6yteezFXxR7iKD
-         Ny1g99t49U/B7ho31ea28YoLjc2grdf70A4m/rVnF2X7vFVQUZDXs+vjlMwALNgg8cqD
-         8M/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy/YKziB60B2PTBafU1MTbankXVg+Pn/HonRRRycBsUYPIHmVbvtqKlD32IikyI8JoSOL5+llw=@vger.kernel.org
-X-Gm-Message-State: AFuF++m7wrBSakP39v542r9oLEYvf/uT22lI73r2OVKy9USq08i1lLM5
-	EWoSfeL4VIwSismuAjvBQsxrq3yuaGa4I44NkiKm65HMyuU2Dmy8Kvrp
-X-Gm-Gg: AYBFou0oAxnA+rwdyNnDw8IDFKT5p1ttjkGw6iviMpf/GT2wxc/GcZtuYXI6u4wrZb0
-	HBGhENJRKN3TVNd6XgYKe3k0BnIR/8RL80oshvFsE3gUFfJtqmJkuDfoWAhHHxaWPyJIBfVjIhp
-	w2jFzyZaDepgabZ23aLxd97V+QiBmMR881WQr/kQrrrRAyK8IJJKkUQwqObCLgZhXveXpF94IAh
-	GR/UN9gptk3Fl9k/s7Mtm5l/feIwlLYuLpr+Wxzu0ve5fGtxpZa87kP6PWMOM2U1GXSrP0u79I2
-	VXk0Fj7J6shU8Z1glBQ1aqHAt8MbX3895LqQjyWZMQdy/scVk/OfR7o4pAmjAkzHyyXSl398MgV
-	8MqhdBcwYx3JNfH8AXJ7Wk7th/YuPRuVQuhiHSBO/3fKSnP3X8yVBPu4u6w+1MTK9qodOa9Oogy
-	tMe8wdV3TvcmzQdL2kHr29cvDVudbIJPSswEgyENiogLoUxFBmbFbi5SHZ5OCMeJDFzNsHAk9QK
-	edeNiZEpjYJkN3DLEZ6WYiwoYGQomgGTxNH3PHq+ADliH4lMcmM
-X-Received: by 2002:a05:690e:13cf:b0:675:49cf:9b4 with SMTP id 956f58d0204a3-676834ddcbcmr1156400d50.124.1790797257124;
-        Wed, 30 Sep 2026 12:40:57 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6769191d488sm192778d50.16.2026.09.30.12.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 12:40:56 -0700 (PDT)
-Date: Wed, 30 Sep 2026 15:40:55 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Wang Zhan <wang.zhan@smartx.com>, 
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- keyong.sun@smartx.com, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Aaron Conole <aconole@redhat.com>, 
- Eelco Chaudron <echaudro@redhat.com>, 
- Ilya Maximets <i.maximets@ovn.org>, 
- dev@openvswitch.org, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Neal Cardwell <ncardwell@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Alice Mikityanska <alice@isovalent.com>, 
- David Laight <david.laight.linux@gmail.com>, 
- Wang Zhan <wang.zhan@smartx.com>
-Message-ID: <willemdebruijn.kernel.36a2d78c80f64@gmail.com>
-In-Reply-To: <20260930111526.2183107-3-wang.zhan@smartx.com>
-References: <20260930111526.2183107-1-wang.zhan@smartx.com>
- <20260930111526.2183107-3-wang.zhan@smartx.com>
-Subject: Re: [PATCH net-next v4 2/5] net: core: factor out the GSO device
- limit check
+	s=arc-20240116; t=1790797532; c=relaxed/simple;
+	bh=Ap7gjptWSBx2aSITXfZEAci+z47z7ruonMtULLZKu54=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JpNKz6Zor04BedYEPgX3W9DBffx6Y7lB1UKBpC2oUWyWl0Qd+gSwvtpXVqVOfu3/Ij1LZ8tKylQbCYsJEPXWAnOFo5deTHCgtMNxPof0yIWlwB72MIpZppNkjv2L8epo3tQtDp/3MKvpKTnWQYhOVOgtC90SjMnyo56BFA89nOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06715415|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0175374-0.00032872-0.982134;FP=16785222267020860626|14|2|17|0|-1|-1|-1;HT=maildocker-contentspam033040074035;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jSgVdPP_1790797513;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jSgVdPP_1790797513 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 01 Oct 2026 03:45:19 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH net-next v23 0/3] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+Date: Thu,  1 Oct 2026 03:45:10 +0800
+Message-Id: <20260930194513.663575-1-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Wang Zhan wrote:
-> gso_features_check() decides whether an egress device can offload a GSO
-> skb as a single TSO frame by comparing the segment count and the frame
-> length against the device limits.  The resegmentation path added by a
-> later patch caps the MSS segments per output skb and needs the same
-> features computed without those limits, so put the two tests in a helper
-> and gate them with one flag.
-> 
-> __netif_skb_features() takes that flag and takes the place of
-> netif_skb_features(), which becomes an inline wrapper in netdevice.h and
-> passes the flag set.  Existing callers keep their call, and the
-> resegmentation path asks for the features without the limit checks.
-> 
-> No functional changes.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
-> 
-> ---
-> v4:
-> - keep the two limit tests as separate returns
-> - move the wrapper into netdevice.h, export __netif_skb_features()
-> v3: https://lore.kernel.org/20260928044102.1004310-3-wang.zhan@smartx.com/
-> v2: https://lore.kernel.org/20260918084651.3022878-2-wang.zhan@smartx.com/
-> v1: https://lore.kernel.org/20260917063854.2011613-2-wang.zhan@smartx.com/
+This patchset mainly implements the phy8824 driver. The phy8824 is
+an Ethernet PHY that provides one 10G SerDes output to four 2.5G ports.
+The driver mainly covers two application scenarios:
+ 1. external PHY8824
+ 2. PHY8824 embedded in a switch.
+The patchset mainly consists of three parts:
+ 1. the DTS for the phy8824
+ 2. a generic template testmode configuration api.
+ 3. the phy8824 functional functions.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+changes in v23:
+1) Remove meaningless comments in driver.
+2) Using #define to replace magic numbers during PHY8824 init.
+
+changes in v22:
+1) Using motorcomm,package-mode to replace phy-mode in DTS.
+2) The corresponding parsing has also been updated, using
+   "motorcomm,package-mode".
+
+changes in v21:
+patch 1: 1) Add maintainer for motorcomm,yt8824.yaml.
+    2) Using 10g-qxgmii instead of usxgmii.
+patch 3: 1) Change the usxgmii space to serdes space.
+         2) Add lock operation during phy-package init in probe()
+         3) Add check for whether auto-negotiation is enabled
+         when updating the link status in read_status().
+
+changes in v20:
+patch 1: Add phy-mode description in properties in motorcomm,yt8824.yaml
+
+changes in v19:
+patch 2: Replace the int type with the u16 type for test_mode.
+patch 3: 1) Merge yt8824_utp_normal_test_mode_paged() and
+         yt8824_utp_invalid_test_mode_paged() into 
+         yt8824_utp_set_template_test_mode().
+  2) Add a fatal error return when phy-mode is missing in
+         the DTS.
+
+changes in v18:
+1. Split the template_testmode() into a small patch 
+   and optimize the implementation.
+2. Optimize the definition and initialization of 
+   interface_mode by adopting the existing approach.
+
+changes in v17:
+patch 1: Remove redundant description.
+         Use phy-mode instead of motorcomm,interface to describe the
+         interface.
+         Add the required checks.
+patch 2: Use phy-mode to get interface mode.
+         Need return after init configuration is done to avoid falling
+         into the error path.
+
+changes in v16:
+1. Add DTS documentation.
+2. Fix redundant initialization.
+
+changes in v14:
+1. Refactor the error return path to preserve and return the initial error,
+   rather than letting later errors mask it.
+
+changes in v13:
+1. Fix the lock release issue on the error path to prevent potential
+   deadlock or resource leak.
+2. Add a func yt8824_restore_defaults() to restore configuration on
+   the error path,ensuring the hardware/device is left in a known
+   good state upon failure.
+
+changes in v12:
+1. Refactor the yt8824_read_status() function to ensure proper state
+   synchronization between hardware registers and the phy_device structure.
+
+changes in v11:
+1. Clean build_clang warning.
+
+changes in v10:
+1. Within the interface that swaps to the USXGMII reg space,the lock
+   include shared_lock and mdio mutex must remain held throughout 
+   the entire operation and should only be released after all steps
+   have completed.
+2. Improve the template interface in phy-c45.c
+3. Fix the handling of some failure paths.
+
+changes in v9:
+1. Add shared_lock mutex prevents UTPs from interfering with each other 
+   due to swapping reg space.
+
+change in v8:
+1. Clean up format warning.
+2. Fix exception handling code logic based on Sashiko/Gemini.
+3. Remove interrupt/handle function
+
+changes in v7:
+1. Refactor the using of mdio lock
+  In all cases of swapping to the USXGMII side interface, lock the MDIO bus
+  at the beginning, switch to the UTP address space after the operation is
+  completed, and then release the lock.The purpose of doing this is to
+  ensure that it will not affect other UTPs operating in the UTP address
+  space.
+2. Rename YT8824_RSSR_FIBER_SPACE to YT8824_RSSR_USXGMII_SPACE.
+
+changes in v6:
+1. Add  test mode helper in phy-c45.c
+2. Refactor the using of swapping paged for utp and fiber
+
+changes in v5:
+1. Fix diffs issue which caused by unexpected whitespace.
+2. Fix "exceeding 80 columns" warning.
+
+changes in v4:
+1. Remove motorcomm,yt8xxx.yaml, will update in other patch thread
+2. Fix locking issue. Since every interface requires switching of space, 
+   the bus is already locked during the space switching process in
+   phy_select_page(), other operations within the interface cannot 
+   be locked again before unlock in phy_restore_page().
+3. Fix warning log identified during the inspection process using
+   checkpatch.pl.
+4. Fix the way of using common api in phy_package.c
+
+
+changes in v3:
+1. Using common apis defined in phy_package.c to handle shared top
+extend register space.
+2. Add dts demo in motorcomm,yt8xxx.yaml.
+3. Fix unnecessary redundant judgments.
+4. Fix BMCR registers operation using magic number.
+5. Rename function based on its approximate functionality.
+
+changes in v2:
+1. Remove duplicate code and replace it with existing api.
+
+Kyle Switch (3):
+  dt-bindings: net: Document Motorcomm YT8824 PHY package
+  net: phy: Add support for Template Control register for PMA
+  net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+
+ .../bindings/net/motorcomm,yt8824.yaml        |   78 +
+ MAINTAINERS                                   |    2 +
+ drivers/net/phy/Kconfig                       |    3 +-
+ drivers/net/phy/motorcomm.c                   | 1887 ++++++++++++++++-
+ drivers/net/phy/phy-c45.c                     |   23 +
+ include/linux/phy.h                           |    1 +
+ include/uapi/linux/mdio.h                     |   12 +
+ 7 files changed, 2003 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+
+-- 
+2.25.1
+
