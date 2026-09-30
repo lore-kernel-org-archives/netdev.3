@@ -1,95 +1,110 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916953B52EF;
-	Wed, 30 Sep 2026 15:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE0750AC16;
+	Wed, 30 Sep 2026 15:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781325; cv=none; b=Z/aoZKGd4QSdBriSYoM80KeNUAiOrTkbi4SQc5/XJYrB3DZAVRoE+UTum92ArqNId4RMXVl3+TozYEJWX0a0FbqzmJwD0Co1c8dc1mJfv1ju0qHQk3J/cEBOl4B/fMWYIIvC8U9A4T+aiBP3M/DScoeGk87irr2UpBAYuklME80=
+	t=1790781366; cv=none; b=S+6sIWxMS6oAn1i99HwesqWbN3Bp4wlVoISoDqKy+M74ikpvU8s1dL2N3JknnHTZy3MLq3Z7P7kWmaEWRpvx3rqRzqEsZQM0cbWQAH9YmDojpiH3QrkSToegUs6UpuOJluZH7t0tcEKZV2RqkXGM4L2IQzZWcFZ1PQncM3goam8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781325; c=relaxed/simple;
-	bh=qz4Fg/NZMFtt5917sEIV3AYeWWMbkgLWb/OXlGiNprs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o35z8vM5FcfxC2t4SDBDN/hNUmtoKQbRybq7Pzzzux93TUXh1T3myomCne9OaqcXOWzgE3s67vp1+/fMbgN8ylxtMpBB+WFbIx7GrphKdqxYDhVDW3GDuwwwmRFtUfBCJkpj0b5cQcEl1RWwrlgNLxbBPqhhKyGMWSfT04B9C9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cxo4EFjX; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790781366; c=relaxed/simple;
+	bh=+9YhUs4gd9WkwJ1XkkjNLrzfkJog6zSHDcF7kM7NVOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gBI19EHv58BQh5fLB/XWBlLRLWeiLnMAJK1MxgF9G8J6V7DyfV9MjE3il8NJMes2xugZYAkce97+E+xl34goZMccQ8WMYWUdXD0PpyHRPa6NJemRkYyCiK9u8ISD1wQdVX9fJEFamEcIGnknjsAPjFqeOrxahDijO2mSRjRYPNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=vqs2Njeg; arc=none smtp.client-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cxo4EFjX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=W5+GFw8PoAhUib0JdEYgzsHo9FUQvwW3oG2G/RwOtA4=; b=cxo4EFjXrOpjd6NOsdsxEmjzcx
-	A7XtcDPkTIZTP4wAvWHu2cEm8875JLtVIh/tLwFANyBIGDHPpH1im3SGF5L5tAwj3puzWeyne3moA
-	3cuMNJHxYFZ17RhOn/5gI2uJWH4kdzoxd6u5J4q6Hn2r15VcSOEGpbgU3XPmVDWtlnaw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xBw1J-008Bft-Lw; Wed, 30 Sep 2026 17:14:57 +0200
-Date: Wed, 30 Sep 2026 17:14:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="vqs2Njeg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=vqs2NjegrNNppy1HDGmtzQ7Qo//Dfx3+TmaUF2x4KFTPqCJMsGKWnJjUXfN/M3T3BrJhDL7FX9zr3
+	 oIr/eD2fPPkAXJBDQW3Q8KjDX4GA0nEhqBjR8etacGZMBoeHMNxSza/hyTKPQUyEVpIPEa9xXuOdtn
+	 HAAfNqtGj7H+4Lno=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66abd2799321-5ae56;
+	Wed, 30 Sep 2026 23:15:41 +0800 (CST)
+X-RM-TRANSID:2ee66abd2799321-5ae56
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from  (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86abd2783ebf-02a5a;
+	Wed, 30 Sep 2026 23:15:41 +0800 (CST)
+X-RM-TRANSID:2ee86abd2783ebf-02a5a
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v3 2/8] dt-bindings: net: Add SoC-e SWIP MDIO
- controller
-Message-ID: <6416b34a-83ce-4aca-8adf-c8894ca7b3c3@lunn.ch>
-References: <20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
- <20260923-devel-vstrassheim-soce-dsa-ml-v3-2-ddebafcb9ba7@linutronix.de>
- <e5aa5cd8-e805-47d3-a105-07bf1b9eb9b8@lunn.ch>
- <218d4c1cf5f05cd6cc648c01f8a20ec66b95362c.camel@linutronix.de>
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Subject: [PATCH net 2/2] pfcp: make sure the SEID is linear before reading it
+Date: Wed, 30 Sep 2026 20:48:18 +0800
+Message-ID: <20260930124818.114224-3-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
+References: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <218d4c1cf5f05cd6cc648c01f8a20ec66b95362c.camel@linutronix.de>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 30, 2026 at 04:00:56PM +0200, Vasilij Strassheim wrote:
-> On Sat, 2026-09-26 at 00:55 +0200, Andrew Lunn wrote:
-> > > The controller exposes separate register regions for transaction data
-> > > and for the shared transaction control and external bus selector
-> > > register.
-> > 
-> > > +examples:
-> > > +  - |
-> > > +    mdio@204 {
-> > > +        compatible = "soce,swip-mdio-23-02";
-> > > +        reg = <0x204 0xc>, <0x200 0x4>;
-> > 
-> > At least in the example, they are not separate?
-> 
-> Not separate regions but registers...
-> I'm obviously bad at documenting things.
-> 
-> The current information in the commit message is misleading and
-> irrelevant. Looking at the bot's feedback, it's at the same time not
-> clear enough yet that the mdio controller part is mapped within the
-> switch memory and can't be used separately from it.
-> 
-> I will update the commit message to something like this:
-> Add a binding for the MDIO controller integrated into SoC-e SWIP
-> Ethernet switch IP cores.
-> The controller shares the memory of the synthesized switch IP core and
-> cannot be used independently.
+pfcp_encap_recv() only makes sure that the UDP header and the 4 byte
+PFCP header are in the linear area. When the S flag is set,
+pfcp_session_recv() then reads the 8 byte SEID that follows, which is
+not covered by the pskb_may_pull() check.
 
-I think part of the issue is the compatible. That suggests it is a
-separate device, with its own driver. But it is actually driven by the
-switch driver.
+A short PFCP packet with the S flag set, or one whose session header
+lies in a fragment, therefore makes pfcp_session_recv() read beyond the
+end of the packet data, and whatever it finds there is stored in the
+tunnel metadata that flower later classifies on.
 
-       Andrew
+Pull up to the end of the SEID before reading it, and drop packets
+that are too short to contain it. Reload the header pointer afterwards
+since pskb_may_pull() may reallocate the skb head.
+
+Use offsetofend() rather than sizeof(struct pfcphdr_session): the
+structure is not packed, so its size is 16 bytes because of the
+alignment of the __be64 member, while the header on the wire is only 12
+bytes, and valid session messages would be dropped.
+
+Fixes: 6dd514f48110 ("pfcp: always set pfcp metadata")
+Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+---
+ drivers/net/pfcp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
+index 1d14baf27c64..b5ebe6871cd9 100644
+--- a/drivers/net/pfcp.c
++++ b/drivers/net/pfcp.c
+@@ -65,6 +65,13 @@ static int pfcp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 		goto drop;
+ 
+ 	unparsed = pfcp_hdr(skb);
++	if (unparsed->flags & PFCP_SEID_FLAG) {
++		if (unlikely(!pskb_may_pull(skb, PFCP_HLEN +
++					    offsetofend(struct pfcphdr_session,
++							seid))))
++			goto drop;
++		unparsed = pfcp_hdr(skb);
++	}
+ 
+ 	ip_tunnel_flags_zero(flags);
+ 	tun_dst = udp_tun_rx_dst(skb, sk->sk_family, flags, 0,
+-- 
+2.43.0
+
+
+
