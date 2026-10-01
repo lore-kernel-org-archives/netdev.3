@@ -1,121 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642D749893F;
-	Thu,  1 Oct 2026 20:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E6F39FCAE
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 20:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790885127; cv=none; b=WwJwEJEgpaJ0NnkS3wU0+IsgLTXvLX3bWRh/7Lb9dHCGStg0oBrHhbRGYBjhkQoaQSIsc48iGeyjy+FdejR6KlvbUzvzk4KfqoCh0RybgLc4mYTXNfeEJSIHXtUaPGFHf+FCXtVP3yXwbvKF7c9BDgXPDKtftlZrPSQo5v3PEdg=
+	t=1790885154; cv=none; b=lNSz1qCmpMZxYa1yJpejgpW+a1kEg7i9GwermFiWQS9DXiTQdFXGB24mRdogh38EkKXhEBr9D0rz7RqRun8bWMAUjKIFQh99yzDVkKdBBpau2dxz/Bu52ii7sTMMNnGyTRuIximjXUf9LhJyXiNCSfVeSAEmDi+aRyXB2RhS3pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790885127; c=relaxed/simple;
-	bh=DbgtQTxtoi4dbtoGQjZXokyB0YP78CbS6kNqpYZ50L4=;
+	s=arc-20240116; t=1790885154; c=relaxed/simple;
+	bh=lvERhqWFIzeR9CSOt0wp6SobFqysALAzzfrhXiUWo9s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLjPdyhn3ybRqa6TfTkao67LQb7Wh+3xBrdY4PZ+y4j+OMH0eWQVH/Y0grWQl/YSHzIIgpDbTFxlOrICukhj9H5WJ94rWu2l2yUDzq8B49CsVSN3tv7jqacB2wRpqxcYv2OY6UjZ87e1B60KtyCZVnOzZmE8IBh7h4mJmN9llVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oFkvLWac; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=o3NO+FvpdD/zFJFEmH3vW/WpzgyBMbsAF4D8FY/Qw1LfxA4qArsaSYVWybrDV6BbILx3N/cKwB/2o1gW07mM5es3wNGKTqXYsyNSeVxKiKNaIWu45tAMJ2PGvVCry+iWPczk3P3eEXoHHO+qDJVmacexo45t4GEbhdZ2T0ZslBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=OK+Urmy4; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oFkvLWac"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D974B1F00893;
-	Thu,  1 Oct 2026 20:05:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790885123;
-	bh=gFa6HvAarHDlIrjmTAUOJ7RLBY11icZwWxARmx5iXy8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oFkvLWac2KsZh3NfUjCP/h7/HaiDSvHH7LZO0D+Iifpk/isoYSSxhI2v3BWzn3FE3
-	 ezPWKN5dBMirfln9QwBABBts0lU4yCJGluJ9V/VhUTd+ZBBRDwsyzZLXDcKCmbvuHn
-	 weSfehPmwqdfc0w/3m30Pxs66Mivq+g5gBaMq+pOoNTzFy0lYhkbSwj3FX6Qk5MyiN
-	 SQLtwwBKnaT1X8J1Z1sMhAHSdQsrac6gpvJIlWjBeFXj4V7HwE7EL6+tumL9iaeWb/
-	 cViDa1SdbWNXvATKsmMJmiE7FSMKp018IxkjR135SkAFeLIVLA08eFdCVezKskDigm
-	 WfgD1TkfwukMw==
-Date: Thu, 1 Oct 2026 22:05:15 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Marcel Holtmann <marcel@holtmann.org>
-Cc: Juha-Matti Tilli <juha-matti.tilli@iki.fi>, 
-	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, Bjorn Andersson <andersson@kernel.org>, 
-	Chris Lew <christopher.lew@oss.qualcomm.com>, Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
-Message-ID: <6isrx67suid5qcha47ihlphxmmeiiapdl57h57hejkwchwtfdb@i3g2cwz6oavn>
-References: <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
- <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
- <13BFC5B0-77E6-48F2-B857-37686EA1DB2C@holtmann.org>
- <05e539f8-bb7c-4038-8a83-8ab0d1a5b917@app.fastmail.com>
- <m657dtesuagn7vdajsuzjb4mfysf5xabsu3s6n6lujj7yb3z4p@m2e7e3n4zyev>
- <10091679-7567-42C2-B77E-EFD95CEDD649@holtmann.org>
- <6e0ed085-07d0-46f0-97dd-b8d942842e1f@app.fastmail.com>
- <0A4EB216-06E0-4A7D-A0FD-821DD371773B@holtmann.org>
- <19433f85-4cf1-4ec1-a26f-0eab7df062df@app.fastmail.com>
- <A709172A-40F7-4986-B7D3-02A422F6584A@holtmann.org>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="OK+Urmy4"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e36so2487313a12.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 13:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790885152; x=1791489952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EcGZBgVs6V7xRRG4AyNekMmCdFec/IScmb1jciCnZPs=;
+        b=OK+Urmy43tNyTAwdubfgQQQJ7uxBhIenyxSpYdcMcejCrJV0PkCgiMF2JKqjq8T4y8
+         TYMxu9+NJcixCVwdE+cyFvqGLm4ROuDvlXjOxpYuDuIAvcSj0Qzq+lnadc/XuFDR7qN/
+         GnbTl3Wfur9HEENZeOeXDXCVgDXaguM0XWetTNH6aLoJVZsFcufu6ZzY/sl+0qJnmRdP
+         Z5HJnbiOHgypIxBr62moDWZ4IkArfLZVnyMiHDI+bMpfnMEpz0d9QmC16F4KiV8Jqj/f
+         X7nCLe1DbYMEt11smZ45fy+PAseJRdtUb1NG6Pz5hbWigFm1Krq3+8xA6AoQwhHSrrVM
+         5twA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790885152; x=1791489952;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=EcGZBgVs6V7xRRG4AyNekMmCdFec/IScmb1jciCnZPs=;
+        b=AQ/9t0PtKIBV5HXD5qeztC3jUMbAavJ12xU3r1MCaf7JcfTjB+KcXK0SVS5rjjUjw9
+         oEVQJL/aNsU8CPj3+bCdvn4AxPicaNGvCj6PLr2w6bBVCd5OmMs+1SYMV2/snnj0+M8m
+         zMj3yCJisZ9IFjs56VGo+fgvgAcoF1IJa6pqZ7mQKXD5/hjvzb3jRHS63bJsKa1KFebB
+         VcxVspcZtPsOzcESn8LtDU4xcjIoLXWK7hQneO9b2zE/NxHv9uUDyzB0/73hDxXFDzoq
+         CvHchV8XnRXbJW9/wc97Atqd6i8XgkiqCzaaecUJ94WrtikYlrT9nssQzeuu1CCjkOyO
+         HDeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwWQ9cfarxD4cVRlj4Fjd40HFuIgmajTHxKFJQpguTAZAiZVHDCHo3RLRSvTJHzhxWr2MiWa+8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJo4iEh1cgRkPiVxYAcykJXnYKVVjcrPtP+ngphWXMFnZf02X1L
+	4gfEoDQJNjYdPpUoaOWGVF8vW0HZ6v21BQ6wCO7Zw0kimcuhSld2RxbMoP8A2igmKCE=
+X-Gm-Gg: AYBFou1BoQ7/4BmcbYjU+oIdhEkiHDtNmEA4AIWVnl6TC76C55AZ/Q5+pJBypn95Ofm
+	z0EGbt//r9XaTDwLWZhpQboTOcJI74TzHxTb/+gfIsrxyurWUgKWY066FRMv9Zm1JEa2JYgH2vT
+	SDWzG+wOTG6Aytn1bVtt360K650VtH+RjgujJ2o/rHSIL4fltkwHRPS2QQ6fhaTYrVb2dihOoh2
+	dnuHn6Uhfso2lCZ5iPlKYhe9gZoNEudcWL3BjNQT/utJns59AvipbwrDk8rdnGfk97Q/hI/34Gi
+	jIXL/ZuyY6tC1Ta8X3FQLG074ODwsGBv7MNp4dt8E9YkOssOkpqjY1Gcs6ewrXMvjMfhVyYHuW+
+	Ysxejz2qrUK+dYIMyWwvdfoT6pWbs41y6K0wgb4c+CA/w2htpC4eFkPUUqomD9pyY0rmeNfMN0N
+	2BdAL5sDXEbLiFe2HjtBlkEyrWwP8F3X1NAg3zdAM6azKX1bQe/gNDAJX/UEorknP+/89r+fwr4
+	onD6aX3mK3+
+X-Received: by 2002:a17:90b:3846:b0:3a0:c717:2db with SMTP id 98e67ed59e1d1-3a6ce7913eamr293093a91.27.1790885152227;
+        Thu, 01 Oct 2026 13:05:52 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:51::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd456214sm19602a91.4.2026.10.01.13.05.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 13:05:51 -0700 (PDT)
+Date: Thu, 1 Oct 2026 13:05:50 -0700
+From: Joe Damato <joe@dama.to>
+To: Hengyu Liang <hengyul@cs.unc.edu>
+Cc: brauner@kernel.org, davem@davemloft.net, edumazet@google.com,
+	horms@kernel.org, jack@suse.cz, jirislaby@kernel.org,
+	kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me,
+	shuah@kernel.org, viro@zeniv.linux.org.uk
+Subject: Re: [PATCH] eventpoll: return -ENOIOCTLCMD for unknown ioctl commands
+Message-ID: <ar69Hgsx6+PEYYCY@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Hengyu Liang <hengyul@cs.unc.edu>, brauner@kernel.org,
+	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	jack@suse.cz, jirislaby@kernel.org, kuba@kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, sdf@fomichev.me, shuah@kernel.org,
+	viro@zeniv.linux.org.uk
+References: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
+ <20260930095058.1062123-1-hengyul@cs.unc.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <A709172A-40F7-4986-B7D3-02A422F6584A@holtmann.org>
+In-Reply-To: <20260930095058.1062123-1-hengyul@cs.unc.edu>
 
-On Thu, Oct 01, 2026 at 05:39:47PM +0200, Marcel Holtmann wrote:
-> Hi Juha-Matti,
+On Wed, Sep 30, 2026 at 05:50:58AM -0400, Hengyu Liang wrote:
+> On Fri, Sep 25, 2026 at 5:59 AM Joe Damato <joe@dama.to> wrote:
+> >
+> > On Thu, Sep 24, 2026 at 02:57:47PM -0400, hengyul@cs.unc.edu wrote:
 > 
-> >>> Well, in defense of Manivannan's patchset it currently works for PCI+AHB
-> >>> setups better than the last version of that by Denis/Mihai/me (although 
-> >>> I could easily fix that), and it may be simpler for userspace to
-> >>> continue using nid than having to bind to an endpoint, which requires
-> >>> more changes in userspace code.
-> >>> 
-> >>> The userspace just needs to know the nid.
-> >> 
-> >> and existing userspace? You can _NOT_ break existing userspace.
-> >> 
-> >> Don’t you need to re-write all existing QRTRIPC packets to actually even make this work?
-> > 
-> > Well, from what I understand this rewriting is the plan.
-> > 
-> > It is true that if someone has a single card, the nid changes, thus
-> > maybe breaking userspace if the userspace has hardcoded nid.
-> > 
-> > But if someone has multiple cards, the breakage to userspace is less
-> > with this patch, since userspace can keep on using the same code and
-> > just change the nid, whereas with the endpoint_id patch, the userspace
-> > needs code changes to bind to an endpoint.
+> [...]
 > 
-> the general rule for Linux is to _not_ break existing userspace.
+> > >       default:
+> > > -             ret = -EINVAL;
+> > > +             ret = -ENOIOCTLCMD;
+> > >               break;
+> > >       }
+> >
+> > I think based on the documentation this is probably right, but I am now
+> > wondering why both ep_eventpoll_ioctl and ep_eventpoll_bp_ioctl need to
+> > exist.
+> >
+> > Maybe when I first implemented this I thought it made sense to factor
+> > out the busy poll ioctls into their own function, but in retrospect maybe
+> > it's cleaner to just collapse the ioctl function into a single one
+> > instead of having two layers?
+> >
+> > In other words, maybe:
+> >   - delete ep_eventpoll_ioctl
+> >   - add the is_file_epoll check to ep_eventpoll_bp_ioctl
+> >   - rename ep_eventpoll_bp_ioctl to ep_eventpoll_ioctl
+> >   - fix the test (as you did in this version of the patch)
+> >
+> > Would result in a cleaner fewer helpers / cleaner code ?
 > 
+> Thanks for taking a look. Agreed, a single handler would be cleaner.
+> Two things I noticed while looking into it:
+> 
+> 1. With CONFIG_NET_RX_BUSY_POLL=n, ep_eventpoll_bp_ioctl() is the stub
+>    that returns -EOPNOTSUPP for every command. If it became the
+>    .unlocked_ioctl handler as is, every ioctl on an epoll fd would fail
+>    with EOPNOTSUPP on those kernels, which is the same problem in a
+>    different config. So the stub would need to keep a small switch:
+> 
+>     static long ep_eventpoll_ioctl(struct file *file, unsigned int cmd,
+>                                    unsigned long arg)
+>     {
+>         switch (cmd) {
+>         case EPIOCSPARAMS:
+>         case EPIOCGPARAMS:
+>             return -EOPNOTSUPP;
+>         default:
+>             return -ENOIOCTLCMD;
+>         }
+>     }
 
-The rule is that the kernel must not break ABI and the node id is not ABI.
+Yea, I see. I read it more closely this time. I suspect when I wrote this
+originally, I had factored the code this way that way the stub could take care
+of the CONFIG_NET_RX_BUSY_POLL=n case. So, now I'm not sure it make sense to
+fold them into a single handler becauase we'd end up duplicating the switch
+logic in two places for each CONFIG_NET_RX_BUSY_POLL setting.
 
-Node ids are assigned dynamically and discovered at runtime through qrtr lookup.
-They are not a fixed property of a device. For an AUTO endpoint, the id is
-simply whatever the firmware advertised and nothing guarantees it stays
-constant.
-
-I internally checked with the other uses of QRTR, ModemManager and QAIC teams:
-
-- ModemManager never computes or hardcodes node ids. It discovers them live over
-AF_QIPCRTR (via libqrtr-glib) and groups ports into modems by physdev_uid, not
-by node id. It is not affected by this series.
-
-- The QAIC userspace queries the device's serial number over its own control
-channel and then assumes that BHI serial number is same as node id. That
-assumption is what breaks. The kernel never guaranteed it. QAIC devices just
-happened to advertise the serial as the node id, so only QAIC userspace had this
-assumption.
-
-So I don't agree this is an ABI break.
-
-To give QAIC a proper interface to migrate to, I will expose the assigned node
-id via sysfs entry in next version, and the QAIC team has agreed to update their
-userspace to read it from there. That sysfs attribute will become the documented
-stable ABI, the specific node id value never was.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+So, in retrospect, I think probably the original patch you proposed might be
+the best option. Sorry if I misread it the first time. 
