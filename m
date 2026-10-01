@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D95D2BE65B
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86054370AF3
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790830138; cv=none; b=PYOUJzgFSLBITSs0ujnjHOXx3vOO8CJ8zQ5251aM1Xp9ZfXFW7zSFpHgH4IBcLY/f3eQLIkklY5880o4lpSPi+JjmpquJh3O10qAWoy1fPygZSWwgZgiVL7QtAAiSDo/TZGWgSrAw86vle1dFT/ZdFq1VUb3s0ANveZcbbnvZi0=
+	t=1790830140; cv=none; b=lbk1GpfMv58+JCJPwqLpaGW+oSRoWSWFn25R0X3J58FEje7rtn2CTXDxuYBX7emwK8i0HYstoWbWnhuwt27rWJRt6zPAoYiOFRJK1XRID/ULTlddjJ1L+eI+hb0itGqJzqa207hhphSySZlno8KhmCerqAx8y5iT+pg/lbCvUC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790830138; c=relaxed/simple;
-	bh=e5MihVsVvFe4tw/eL2DZQE1XUPpMnp6e9llrzl9igiQ=;
+	s=arc-20240116; t=1790830140; c=relaxed/simple;
+	bh=6f8IW/rqQlByM91DeX36lrShEkY3bX/mo9CVl4qVf/A=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m2dn1/FA03meZgIs+yuAcAXgI6GhwJW86aIoFAM2vUaX+6VLHSa1ifftyJjPeuoW5iBNkqdmk2o6ZY33D/zSPVKoYf7OiaV4vB+kDYiDULzeS6Zd5PaFGdAEfLqOz0UqCEBlQ3pft2kP8vPrOOHuiPVctjrun8FJAPw7NlJlNSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJa3fxBP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=H3tBElDD8wbou+RPaSvl1VPGynEJGyr8KhWIUfgUu8f95QwqRVV0H4a9KG3ghZhZvpiOvsoyp+N035AqfJ53VEmtHmt6upEGhMJKRw885SPIf/Sn4O0P+Sg9O3Ew9ZRRQNB+kr2aTdoBJmLqOxBc+s6xb7u4cVBxDS+KO+mQjQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffBse+Mg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJa3fxBP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CCD1F000FF;
-	Thu,  1 Oct 2026 04:48:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffBse+Mg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639F01F00898;
+	Thu,  1 Oct 2026 04:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790830136;
-	bh=eMdFBuKhoKS1uaMwcf5rSALI4bUeBraeA2XPiEFBTBw=;
+	s=k20260515; t=1790830138;
+	bh=+DkSaRksPctjXLY66uQzr4FJ5P5R5gD4v5VRG5Ua6/4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GJa3fxBP6d4WKEbyGlU+rLzju1G7GcJnNTvorRwvPhb8d1Hwqwcp1pxaap2x1R+aC
-	 oT4qMmhooYppBcS9eEiNwosR2NgS+0/b9rSFy06JA3ZEc6Lrs4htLTEdOIKILKSfwI
-	 OT/r3iYFT7ApX/nj9Td1BtS3REmoSvUv7guqr1xwp/aIoGYfqailwOhKGC8WSzosk4
-	 Uh7J2Fboj8ELj/5U5FeYzeheA+2Be773Y7BjjBPrQiEJIlSFmphDZEeVedtXc6k8hd
-	 D3/LHJZvfbUU9vDEhN0qx0EWjDdi+P8PNuPu0IhqmxLAvUkVVv2tnSYalk2yCO8X/O
-	 Sw4Tsv/sniGlg==
-Subject: Re: [PATCH net-next v3 1/2] net: stmmac: add tc mqprio hw queue
- priority offload
+	b=ffBse+MgvYCzgPDKjt6Wl/ZNW+vsC8XCd777IJ/skDZNt/V676zXRyXCmiL80AR2s
+	 Z0W4rp0LAxM3TefGSCSk9j6cTX22UfWQwrCl1pNhJt/w0NLmWY93VuHQhy7LxvM6wo
+	 c7Or/uEcDkW6rjiPwMoP0aBCxh0GJwjJi/n31P+2DRAQFQ0i+Ng1X/IHywCVPFdQZs
+	 4Zj7+f9vjfOElaw2fnBmzKV46YPBX/o1bls5MoHGxcw3vDpVAUZGEjd4ZDsG8YT8k4
+	 AAY/lqwKrfBslM1e7l/30oKeFLCZmtAmzB7Axu4ZbVQbQu581TqXwaryXfVeVLPdhg
+	 pHnhfqrujKMuQ==
+Subject: Re: [PATCH net-next v3 2/2] net: stmmac: align real_num_tx_queues to
+ mqprio configuration
 From: netdev-bot+sashiko@kernel.org
 To: lorenzo.bianconi@oss.qualcomm.com
 Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -36,12 +36,12 @@ Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  0x1207@gmail.com, daniel@riscstar.com, netdev@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Thu, 01 Oct 2026 04:48:55 +0000
-Message-ID: <179083013550.434549.16460704020189061203@kernel.org>
+Date: Thu, 01 Oct 2026 04:48:56 +0000
+Message-ID: <179083013698.434549.12585855850118896867@kernel.org>
 In-Reply-To:
- <20260928-stmmac-mqprio-prio-offload-v3-1-abbe181f5024@oss.qualcomm.com>
+ <20260928-stmmac-mqprio-prio-offload-v3-2-abbe181f5024@oss.qualcomm.com>
 References:
- <20260928-stmmac-mqprio-prio-offload-v3-1-abbe181f5024@oss.qualcomm.com>
+ <20260928-stmmac-mqprio-prio-offload-v3-2-abbe181f5024@oss.qualcomm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (3) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,276 +63,183 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Stale shadow priorities in xmit_qdisc.prio[] get written back
-  to hardware.
-- [Medium] net: stmmac: state corruption when switching mqprio mode from
-  CHANNEL to DCB
-
-Pre-existing issues:
-- [Medium] Channel-mode shaper and rate requests are accepted but never
-  applied.
-- [Medium] DCB mappings with queue gaps quietly disable TC
-  classification.
-- [Medium] The mqprio path accesses MAC/MTL registers without a runtime-
-  PM reference.
+- [Medium] The value this patch stores as "the count required by the
+  active mqprio offload" (`priv->xmit_qdisc.num_tx_queues`) is…
+- [Low] This patch carries `Fixes: 195e4f409a40` ("net: stmmac: support
+  fp parameter of tc-mqprio", Sep 2024), but it depends on the commit…
+- [Low] The hardware TX queue priority map (PSTQx on dwmac4/5, PSTC on
+  XGMAC) becomes stale or inconsistent after `ethtool -L` while a…
 
 --
 
-net: stmmac: add tc mqprio hw queue priority offload
+net: stmmac: align real_num_tx_queues to mqprio configuration
 
-This patch adds mqprio channel mode offload to stmmac. In that mode the
-MTL TX scheduler is switched to strict priority and the per-queue
-PSTQx/PSTC priority bitmasks are programmed from prio_tc_map. The patch
-also adds a shadow copy of the TX algorithm and the per-queue priorities
-in priv->xmit_qdisc, which is programmed into the hardware on open.
+This patch stores the TX queue count used by the active mqprio offload
+in priv->xmit_qdisc.num_tx_queues. stmmac_hw_setup() now uses that value
+instead of plat->tx_queues_to_use for real_num_tx_queues. The patch also
+makes stmmac_reinit_queues() reject TX counts below the count the
+offload needs.
+
+> Fixes: 195e4f409a40 ("net: stmmac: support fp parameter of tc-mqprio")
+
+[Severity: Low]
+Can this patch be applied to a tree that only has 195e4f409a40?
+
+It depends on the earlier commit in this series, "net: stmmac: add tc
+mqprio hw queue priority offload", which is a new feature. That commit
+added the xmit_qdisc struct in struct stmmac_priv, which this patch
+extends.
+
+It also added the hunk context used here. That context is the
+"if (priv->xmit_qdisc.prio_offload) {" restore block in
+stmmac_reset_tc_mqprio() and the tc_mqprio_config_queue_prio() call in
+tc_setup_dwmac510_mqprio().
+
+The bug being fixed already exists at 195e4f409a40. In that tree,
+stmmac_hw_setup() calls
+netif_set_real_num_tx_queues(dev, priv->plat->tx_queues_to_use), and
+tc_setup_dwmac510_mqprio() lowers real_num_tx_queues to the offloaded
+count.
+
+Stable tooling that uses the Fixes: tag will not be able to apply this
+patch unless it also takes the feature commit. Could the fix be reworked
+to apply to net on its own? If not, could the commit message mention
+the dependency?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 27e4e86e3c8b..1c25d1c129d4 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -7676,6 +7676,10 @@ int stmmac_reinit_queues(struct net_device *dev, u8 rx_cnt, u8 tx_cnt)
+>  	struct stmmac_priv *priv = netdev_priv(dev);
+>  	int ret = 0, i;
+>  
+> +	if (priv->xmit_qdisc.enabled &&
+> +	    tx_cnt < priv->xmit_qdisc.num_tx_queues)
+> +		return -EINVAL;
+> +
+
+[Severity: Low]
+While a channel-mode mqprio offload is active, this check still lets
+tx_cnt grow, or shrink as far as num_tx_queues. Does xmit_qdisc.prio[]
+stay in sync with the new queue count?
+
+At install time, tc_mqprio_config_queue_prio() fills prio[i] only for
+i < tx_queues_to_use. After ethtool -L raises the TX count, the path
+stmmac_open()->stmmac_hw_setup()->stmmac_mtl_configuration()->
+stmmac_mac_config_tx_queues_prio() programs every queue from prio[]:
+
+	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+		stmmac_tx_queue_prio(priv, priv->hw,
+				     priv->xmit_qdisc.prio[i], i);
+
+For the new queues, this writes the probe-time DT priority
+(plat->tx_queues_cfg[i].prio). Channel mode would give those queues 0,
+since they are outside every TC.
+
+dwmac4_tx_queue_priority() clears only the target queue's field:
+
+	value &= ~GMAC_TXQCTRL_PSTQX_MASK(queue);
+	value |= (prio << GMAC_TXQCTRL_PSTQX_SHIFT(queue)) &
+					GMAC_TXQCTRL_PSTQX_MASK(queue);
+
+As a result, one 802.1p priority can be mapped to both a mqprio TC
+queue and a newly added queue.
+
+The reverse sequence looks possible too: shrink tx_cnt while mqprio is
+active, delete the qdisc, then grow again. stmmac_reset_tc_mqprio()
+restores defaults only up to the reduced count:
+
+	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
+
+That leaves the mqprio-era 0 values in prio[] for the upper queues. The
+later increase writes those values while prio_offload is false, so the
+DT-configured priorities for those queues are lost.
+
+The prio[] state was added by the earlier "net: stmmac: add tc mqprio
+hw queue priority offload" commit in this series. Before that commit,
+stmmac_mac_config_tx_queues_prio() read plat->tx_queues_cfg directly.
+
+The runtime impact may be small. These fields mostly select which
+queues a received PFC frame pauses, and stmmac does not enable PFC
+reception.
+
+Should stmmac_reinit_queues() recompute prio[] for the new count? The
+alternative would be to refuse any tx_cnt change while prio_offload is
+set.
+
+[ ... ]
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index 42a00446e9b4..07cf4582ed76 100644
+> index 07cf4582ed76..8bdc411e902f 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
 
 [ ... ]
 
-> @@ -1266,12 +1269,109 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
->  {
->  	struct stmmac_priv *priv = netdev_priv(ndev);
+> @@ -1438,6 +1441,9 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
+>  	if (mode == TC_MQPRIO_MODE_CHANNEL)
+>  		tc_mqprio_config_queue_prio(priv, qopt);
 >  
-> +	if (priv->xmit_qdisc.prio_offload) {
-> +		int i;
+> +	priv->xmit_qdisc.num_tx_queues = num_tx_queues;
+> +	priv->xmit_qdisc.enabled = true;
 > +
-> +		for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
-> +			u32 prio;
-> +
-> +			if (priv->plat->tx_queues_cfg[i].use_prio)
-> +				prio = priv->plat->tx_queues_cfg[i].prio;
-> +			else
-> +				prio = 0;
-> +
-> +			stmmac_tx_queue_prio(priv, priv->hw, prio, i);
-> +			priv->xmit_qdisc.prio[i] = prio;
-> +		}
 
 [Severity: Medium]
-Can stale entries in priv->xmit_qdisc.prio[] get written back to the
-hardware?
+Is num_tx_queues the right value to store here? Earlier in
+tc_setup_dwmac510_mqprio(), it is computed as the sum of the counts,
+but the validation checks offset + count:
 
-This loop, and the one in tc_mqprio_config_queue_prio(), only update
-prio[i] for i below the tx_queues_to_use value at that moment. With this
-patch, stmmac_mac_config_tx_queues_prio() programs PSTQx/PSTC from the
-shadow array on every open, where it used to read tx_queues_cfg[]:
+	if (qopt->offset[i] + qopt->count[i] >
+	    priv->plat->tx_queues_to_use) {
+	...
+	num_tx_queues += qopt->count[i];
 
-stmmac_main.c:stmmac_mac_config_tx_queues_prio() {
-	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
-		stmmac_tx_queue_prio(priv, priv->hw,
-				     priv->xmit_qdisc.prio[i], i);
-}
+mqprio_validate_queue_counts() rejects ranges that are out of bounds or
+overlap. It still allows gaps and a non-zero first offset.
+tc_mqprio_validate_chan_mode() requires offset[i] == i only in channel
+mode, so DCB-mode layouts like "queues 1@0 1@2" or "queues 2@1" are
+accepted.
 
-With 8 TX queues from DT, each with snps,priority, this sequence looks
-possible:
-
-1) tc qdisc add ... mqprio num_tc 4 queues 1@0 1@1 1@2 1@3 hw 1 mode channel
-   tc_mqprio_config_queue_prio() sets prio[4..7] = 0
-2) ethtool -L <dev> tx 4
-   tx_queues_to_use becomes 4
-3) tc qdisc del ...
-   stmmac_reset_tc_mqprio() restores only prio[0..3]
-4) ethtool -L <dev> tx 8
-   stmmac_open()->stmmac_hw_setup()->stmmac_mtl_configuration()->
-   stmmac_mac_config_tx_queues_prio() writes 0 for queues 4..7
-
-After that, queues 4..7 keep a zero priority map in place of their DT
-values until the driver is re-probed.
-
-The follow-up commit "net: stmmac: align real_num_tx_queues to mqprio
-configuration" makes stmmac_reinit_queues() reject tx_cnt below
-xmit_qdisc.num_tx_queues while mqprio is enabled. That covers shrinking
-below the TC queues. Shrinking to exactly num_tx_queues is still allowed,
-though, so step 2 still works at the end of the series.
-
-Should the restore loop here cover all MTL_MAX_TX_QUEUES entries?
-
-> +
-> +		stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-> +					      priv->plat->tx_sched_algorithm);
-> +		priv->xmit_qdisc.algo = priv->plat->tx_sched_algorithm;
-> +		priv->xmit_qdisc.prio_offload = false;
-> +	}
-> +
->  	netdev_reset_tc(ndev);
->  	netif_set_real_num_tx_queues(ndev, priv->plat->tx_queues_to_use);
->  
->  	return stmmac_fpe_map_preemption_class(priv, ndev, extack, 0);
->  }
->  
-> +static void tc_mqprio_config_queue_prio(struct stmmac_priv *priv,
-> +					struct tc_mqprio_qopt *qopt)
-> +{
-
-[ ... ]
-
-> +		stmmac_tx_queue_prio(priv, priv->hw, prio, i);
-> +		priv->xmit_qdisc.prio[i] = prio;
-> +	}
-> +
-> +	stmmac_prog_mtl_tx_algorithms(priv, priv->hw, MTL_TX_ALGORITHM_SP);
-> +	priv->xmit_qdisc.algo = MTL_TX_ALGORITHM_SP;
-> +	priv->xmit_qdisc.prio_offload = true;
-> +}
-
-[Severity: Medium]
-This is a pre-existing issue, but is it safe to access the MTL registers
-here without a runtime PM reference?
-
-stmmac_setup_tc() passes TC_SETUP_QDISC_MQPRIO to
-stmmac_tc_setup_mqprio() without calling pm_runtime_resume_and_get().
-While the interface is down, stmmac_runtime_suspend() can gate
-stmmac_clk and pclk through stmmac_bus_clks_config(priv, false).
-
-A tc qdisc add or del on a down interface would then reach
-stmmac_tx_queue_prio() and stmmac_prog_mtl_tx_algorithms() here, and in
-the prio_offload block of stmmac_reset_tc_mqprio(), with those clocks
-off.
-
-This path already did unguarded MMIO before this patch, through
-dwmac5_fpe_map_preemption_class():
-
-	val = readl(priv->ioaddr + GMAC5_MTL_FPE_CTRL_STS);
-
-Other register-touching ndos in this driver, such as set_mac_address and
-the VLAN add/kill ops, call pm_runtime_resume_and_get() first.
-
-The xmit_qdisc shadow is reapplied on open. Could the register writes be
-skipped when !netif_running(), or could a PM reference be taken around
-them?
-
-> +
-> +static int tc_mqprio_validate_chan_mode(struct stmmac_priv *priv,
-> +					struct tc_mqprio_qopt_offload *mqprio)
-> +{
-> +	struct plat_stmmacenet_data *pdata = priv->plat;
-> +	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-> +	int i;
-> +
-> +	if (!priv->dma_cap.dcben) {
-> +		NL_SET_ERR_MSG_MOD(mqprio->extack,
-> +				   "hw DCB is required to offload mqprio");
-> +		return -EOPNOTSUPP;
-> +	}
-
-[ ... ]
-
-> +	for (i = 0; i < qopt->num_tc; i++) {
-> +		/* The offload switches the MTL scheduler to strict
-> +		 * priority, which only supports a 1:1 TC to TX queue
-> +		 * mapping.
-> +		 */
-> +		if (qopt->count[i] > 1 || qopt->offset[i] != i) {
-> +			NL_SET_ERR_MSG_MOD(mqprio->extack,
-> +					   "SP requires 1:1 TXQ map");
-> +			return -EOPNOTSUPP;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-This is a pre-existing issue, but should channel mode reject shaper and
-rate requests?
-
-In channel mode, mqprio_enable_offload() in net/sched/sch_mqprio.c
-copies the flags, shaper, min_rate[] and max_rate[] into struct
-tc_mqprio_qopt_offload. If the driver returns 0, it sets hw_offload and
-later dumps TCA_MQPRIO_SHAPER.
-
-tc_setup_dwmac510_mqprio() only checks TC_MQPRIO_F_MODE, and this
-validator does not check TC_MQPRIO_F_SHAPER, TC_MQPRIO_F_MIN_RATE or
-TC_MQPRIO_F_MAX_RATE.
-
-So a request like "mqprio ... hw 1 mode channel shaper bw_rlimit
-max_rate ..." with a 1:1 mapping succeeds. Only SP and PSTQ get
-programmed, and the qdisc reports rate limiting the hardware isn't
-doing.
-
-The baseline handler ignored mode and flags entirely. Would this new
-validator be a good place to return -EOPNOTSUPP for those flags?
-
-[ ... ]
-
-> @@ -1306,6 +1405,22 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
->  		num_tx_queues += qopt->count[i];
->  	}
-
-[Severity: Medium]
-This is a pre-existing issue, but is num_tx_queues too small when the
-queue ranges have gaps?
-
-mqprio_validate_queue_counts() does not require the ranges to be
-contiguous from queue 0. Here num_tx_queues is the sum of the counts,
-not the highest offset + count.
-
-On a 4 queue device, a DCB request with a single TC at 1@2 passes both
-that check and the new offset + count check in this function. It then
-calls netif_set_real_num_tx_queues(ndev, 1), and netif_setup_tc() does:
+For those layouts, netif_set_real_num_tx_queues(ndev, num_tx_queues)
+reaches netif_setup_tc():
 
 	/* If TC0 is invalidated disable TC mapping */
 	if (res.offset + res.count > txq) {
-		netdev_warn(dev, "Number of in use tx queues changed invalidating tc mappings. Priority traffic classification disabled!\n");
+		...
 		WRITE_ONCE(dev->num_tc, 0);
 		return;
 	}
+	...
+		if (res.offset + res.count > txq) {
+			...
+			netdev_set_prio_tc_map(dev, i, 0);
 
-The driver still returns 0, so mqprio reports a working offload while
-the device runs on one queue with no TC mapping. With 1@0 1@2, the
-priorities for TC1 are quietly remapped to TC0 instead.
+With "1@0 1@2" the sum is 2, so every priority mapped to TC1 moves to
+TC0. With "2@1", TC0 needs 3 queues but only 2 are real, so num_tc is
+set to 0.
 
-The baseline code computed num_tx_queues the same way. Should this use
-the highest offset + count, or reject non-contiguous ranges?
+In both cases the function still returns success, with enabled = true
+and num_tx_queues = 2.
 
->  
-> +	mode = mqprio->flags & TC_MQPRIO_F_MODE ? mqprio->mode
-> +						: TC_MQPRIO_MODE_DCB;
-> +	if (mode == TC_MQPRIO_MODE_CHANNEL) {
-> +		err = tc_mqprio_validate_chan_mode(priv, mqprio);
-> +		if (err)
-> +			return err;
-> +	}
+This patch now keeps that value. stmmac_hw_setup() reapplies it on
+every open and resume, and the new check in stmmac_reinit_queues()
+compares tx_cnt against it.
 
-[Severity: Medium]
-Does a DCB mode request clean up after a previous channel mode
-offload?
+That check allows sum <= tx_cnt < max(offset + count), which leaves
+tx_cnt below queues that tc_to_txq[] still references. For "2@1", it
+rejects tx_cnt values below 2 even though num_tc is already 0.
 
-The xmit_qdisc state is only restored in stmmac_reset_tc_mqprio(),
-which runs only when num_tc is 0. When tc_setup_dwmac510_mqprio() is
-called with num_tc > 0 and mode resolves to TC_MQPRIO_MODE_DCB, nothing
-touches priv->xmit_qdisc. A prior channel mode configuration therefore
-leaves three things behind: xmit_qdisc.algo stays at
-MTL_TX_ALGORITHM_SP, xmit_qdisc.prio_offload stays set, and the channel
-mode PSTQx/PSTC maps stay programmed in the hardware.
+The sum-of-counts calculation predates this patch. Here it becomes the
+"count required by the active mqprio offload" that the commit message
+depends on.
 
-One way to get here is replacing a channel mode mqprio with a DCB one
-under a new handle. qdisc_graft() runs mqprio_init() for the new qdisc,
-and so the driver offload, before mqprio_destroy() of the old qdisc
-calls back with num_tc 0.
-
-With this patch, dwmac5_fpe_map_preemption_class() tests
-xmit_qdisc.algo instead of plat->tx_sched_algorithm. So on that path, a
-valid DCB request with a TC spanning more than one queue is rejected
-with ALG_ERR_MSG, even when DT selected a non-SP algorithm.
-
-Any DCB request that arrives without an intervening reset has the same
-problem. The MTL scheduler stays in SP with the old priority maps, and
-tc_setup_cbs() keeps refusing CBS because prio_offload is still true.
-That contradicts the commit message, which says DCB mode leaves the
-scheduler and per-queue priorities to the device-tree configuration.
-
-Could the prio_offload restore block in stmmac_reset_tc_mqprio() be
-moved into a helper and also called on the DCB path, before
-stmmac_fpe_map_preemption_class() runs? If so, the error unwind in
-tc_setup_dwmac510_mqprio() would need to put the channel mode state
-back when the FPE mapping fails. How would you prefer to handle that?
-
-[ ... ]
+Would storing max(offset[i] + count[i]) make the saved value, the
+stmmac_reinit_queues() check and the stmmac_hw_setup() restore agree
+with the validation?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-stmmac-mqprio-prio-offload-v3-0-abbe181f5024%40oss.qualcomm.com
