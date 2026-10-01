@@ -1,168 +1,260 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011053.outbound.protection.outlook.com [40.93.194.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66823815DE;
-	Thu,  1 Oct 2026 16:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA52C3815DE
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 16:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790871064; cv=fail; b=Oi0BVPyINtjPpRLrl+UF4S2izvCuAC9fhRLKVCYKsiq64NZgiK1vqNZPbxgG4KOmOtANAaI1RsHu8fXcFayMxdXO4VQnFs5Llsa1moYDzYy+g41GpbFnE9b1P+cEcIM1oaOqRKgjqHIBjls4ACZT5myMoNmkEE35lIy3YeLvHco=
+	t=1790871120; cv=pass; b=erTMp6HgNA114kJpUnBxflknkUkgJS9XIuRdWIEeu+ruu7duaw/vXWtOBp4UjPc3/epqdndky3a2vGnYGt9G6eOk37bM0kxdmhXt0hUjaQrqUP0el+XRTyZydrIcdCuADB4ejPBBKdLIvQtOW+0O3P6Ci0iAzLeq4b8sF+yyyMM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790871064; c=relaxed/simple;
-	bh=cpHaIV9fMtH2LWs9vezDR6+j1tgkNFAWiZMe1gUtOEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=q6fpZxIQB8vLo4btQOcPw2R1xPzURJ0IoRnFEX0xEtFDqDcbtgZ9EmwjAXXUTbmukRi4+jI9D0OkuazQMD/8B5nWzeL+FFs+RhLa/W4BxsMzJYgvAPo0wgecOxqKIeqrMobmtSrFN/RSYsZpRunBNZ2pWrq9o5gAh8lsAIjpmOI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lMYHehXD; arc=fail smtp.client-ip=40.93.194.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1790871120; c=relaxed/simple;
+	bh=S0r0cGZ7NaesTXmp6HeI9s5W1vfRGs1p6GRplXqhx5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZEw/QNZIGMlDg2odJ4xeG7Ovz9+7kOEVAg4Tt6HY8G8zBfl46qtRHiP6do/GLFmUEMqP0NyP//Kf/g0niBmmQN72ZiErjr53Fa4s91nvHkoK2s2sOSPBTzpm7mcYJmtEpXJ797qwlRDdgTKVN/Wrx0cF1Erml38jtNTPIjYRTM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D7ehH5yj; arc=pass smtp.client-ip=74.125.228.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lMYHehXD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e2XNBrRKt4XGLwscRWkZ3nJZBhzO6bEda6EG71IEuZz3V06HQ1yD6nfwm9efZqDloKfA1Geacnlf14eTpQ9KEmCkItLjEh9Az5ZfDouwAmsmWLUaxMcU4HYzxUyuI+Ew7J+4IH+rsh7BFJg/gvhle5VjHPLDQgl23PFLIGBdJPTTl1V4vNHoadayBn58fV1S254bhUIP25V/fCKkwaWp0d7im+CQVMuY1v5qNb7BPr9AeGvwqUJIbvb8G5MiZ5d08TA/cntzCpxkCb+2tgti2JN48Q8I/aQcdAcuVrUCuMne2O4sf5lnB3IKmTJyFQj18MKKi11RuqDpyEGauNPWag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1avhGSQtlOfyZJfx4JUppdMkXBfcp4OXejpuDlxkMOE=;
- b=wrLMB2uFcfIf8W0Qx+QWPwb8aUFtCJRQQbFmwEAxI/1QXd681VsTtwzgTSPvvNCLDE2mHe6WcWJilBhUy/lZXu44st3+3j9udKkOPM220SItv3E4gIUUbXDBe591Ne7tMls5sc6ec0kUIGDNUMUbrbFdeqJA3gdpl5+tJRpF2NbCUGcp7O5aZXFzPISpLqKprltCD1KhJdACwkEA9XHk2ZVmdXjxeJNokdhtJcpaBFBshrAdGW7bLvHjv4gowEVnbjV7T8MM/k2EhX4LJawKLivP+n1Dvte49wPEBMq3rGK1IQcGlnpisFrF7v3CB6k9PpdJJvuGc589EMY25mZzjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1avhGSQtlOfyZJfx4JUppdMkXBfcp4OXejpuDlxkMOE=;
- b=lMYHehXDn+9lA5dQcQ3ahqSTNC3oBH+dgh5MFEzZ+7uWVKgzDhkcvmUtYgdLndjynUzPOHpxryIsCKxdxxC5PMYGRYUDlef1eN73tPrq79oT/UkPd0JXuWA0q1UAifZNLSVkh85IuvoQlSTVKsD3NG1Dipn7SusRBbYayEiUa4D5ENpO4rTb3VG6Ovyy+Hmi9T7iMrs5raNrj6FMIyVID1bpOSWJXgU0HgcizKaBTzGT0/FJpowg02V/UMAY9iYtDRcHUk7WdMdRH8NLUBgGfBPZzF1C/kD5k+9O9nkFkwYqWA/MEtM6XL/loo0yPBNTBkqXFONbR05/s/Dq/unATA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MN2PR12MB4343.namprd12.prod.outlook.com (2603:10b6:208:26f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
- 2026 16:10:58 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Thu, 1 Oct 2026
- 16:10:57 +0000
-Date: Thu, 1 Oct 2026 19:10:47 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Julian Anastasov <ja@ssi.bg>
-Cc: Axel Mierczuk <axel.mierczuk@1password.com>,
-	Simon Horman <horms@verge.net.au>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, netfilter-devel@vger.kernel.org,
-	lvs-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, Willy Tarreau <w@1wt.eu>,
-	Keith Hoodlet <keith.hoodlet@1password.com>
-Subject: Re: [PATCH nf 0/2] ipvs: fix OOB write when NATing ICMPv6 errors
- quoting non-first fragments
-Message-ID: <20261001161047.GA1631784@shredder>
-References: <20260925141155.17603-1-axel.mierczuk@1password.com>
- <0458880e-5e0f-1f11-7ce2-e0490796c832@ssi.bg>
- <20260928111538.GA389451@shredder>
- <faecbb5a-01bc-ccc3-95e1-03579ba98a4e@ssi.bg>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <faecbb5a-01bc-ccc3-95e1-03579ba98a4e@ssi.bg>
-X-ClientProxiedBy: FR0P281CA0091.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a9::11) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D7ehH5yj"
+Received: by mail-pz2-f37.google.com with SMTP id d2e1a72fcca58-887ba76d5afso944812b3a.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 09:11:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790871118; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RkdMvdC7PKjW8lEnjzTdz/J3ModeEhfVsPj/vKExqtvEVvrTyd9dX4zK1wTbLztjpA
+         qrK8McDP526V7rIKJmnbIIEjuuu1h6UyxhpZ7ABDP544lTwvOf6pBJuKpr0BdH+rlCCw
+         dRzBqCSXNEPi/9lAdm3A4UMRyNjt9nTqPc14SHBVI/+xkzZb36Cui9QhSfOi3ZCJodb8
+         qbALLjUSiPu5nAw1O+pNw6hLQhfBRrXqu1h0EE+7+rWeyuffg4Uz8tutb2IhYyleYnXN
+         hGEhSCYiMtwoC+ujGkikJTlowq5ehdG0b/DHR3ZMsrhydosoSwKoZoprOBSQN2rUyygk
+         PPaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5hKfE8YeFUB2v4D0quTu6qsZ47v3trhdTivuK/VDgPs=;
+        fh=P6XLisPIm4GoyAKpM4/xO5f8XtTSP+iBeTkn6g9ctTY=;
+        b=M+98qCNOngFBSuaqeLLaw7R3KKtERPTSnt1YTdM4gGORgK+5uuqrrOw6sK9gEb3F1M
+         VHjaW16MoKUn2bDnolGXf1btzkbOC2I/+sls1UJRP1eKOv+i4tl4pt1jiKhFcjRs7RPh
+         6A+RcNmBaVvBkbRaZTc85rA8b5zqb5F6vAQRE5CPJ9w1OOmEHkocYpvCFCVXIC2f1DFg
+         IMbd/aLPhPoOwDDtieHrQlP3QHA8N52Tn0ixhueRsRkb6UbqMkifB76SAhtKK7LzwbRo
+         EMayM7iJ47FbVjDp4P+dqjzFoRtHAOH9NsYZ7nMXyOZ0naz9fJd1UihXYwsD4SoY68zL
+         SRVg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790871118; x=1791475918; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5hKfE8YeFUB2v4D0quTu6qsZ47v3trhdTivuK/VDgPs=;
+        b=D7ehH5yjaPP3+GLQjDa8spEsW8WBXQIs3PK2wUXyhskiEZH9pmBCXR1ayOe+J8lyrw
+         dVyfUCygNN26Bs/BS1USW1LbVAKA60KCGrc+25C2ykiiePW7I79PDUlsdT6xT/ZuI7rA
+         JpZfPthI+A0RVFK5xjAnZG252fbVh33DUeIH6y9096aZ9YNsxQXDrpAS5VW8k1BU08KW
+         9aGdhwTBk/bZ4zgiO4F4DB3YcunNmHrsVYqfD4diK7TWxX/3JuorZfPmY3xoSFGy+zKJ
+         XS1oi0peDkE9lfGAd8jK3sjdydikU06p4+iU00aAqSJOSbDiQ4UMjy6uet2tAZsrjMtT
+         liDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790871118; x=1791475918;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5hKfE8YeFUB2v4D0quTu6qsZ47v3trhdTivuK/VDgPs=;
+        b=XPZZXz0hdzI+ID0RP+pquirQ2LrIXPXHN+haCvQHkTBMPNPedK9w9xNa/svaJXf7Rr
+         6tOAK3WraP71sw3NlCdvTPEN0ONjufXRwXWxMZSVWlhPx1KT7BGmTJKGJfYwLkLNuixm
+         5etuPXtBCEPS/nRguOPSyeZ5gw+eXh2Wche5IRoTYXg0irkb4nGQcJD+lMswF3tExTI4
+         a1IX9a4WbGXS+scstXB5aeXMCUCJnYDK+yzalh6PWt5HfuCaFRjbYEGL/XHU9lluJUfj
+         xdWpyOY0Mh7nmrUsWtBd4rZdjYWXCMilDjvMUWmGm3yvc8i0M4LBpylILq/ykr4w/+cD
+         u99Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzS3mEY8xk45HRQ6eeIaUrXGCDkqWm22Oi4tCr0bXHLI2hiSlCbl1cmOluvdPfzG/P4HrvzQJ4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZxCQfkcNnXHaCOqTGXcmPix0VN8InsqlpufA8HEfuH0vh+EPB
+	owurdOP/EcPjQdH4doM7ByDL8A069Sffta+OyInFTzDW9mnXjRMdwRVuMm/12pqK4EmUyA4Y1Bb
+	rpHT4ff7llVZqXNqpYr1fabpyBDUXYOPfzdCpVYU=
+X-Gm-Gg: AYBFou0UXW3v04dbYut/zOqobhMjREUxdKPuwm947O8KJn3dgQY6sl17UzC0jkWB7vI
+	4pJj8lkStJTQK76m0yxBynclZZQ9IOTMv8ak6QJkXuBmoMRC2dNN91CK9Aad7/K9nXSifa1ZuJf
+	aTA/L5HiByI4WEBpKosk44qfMN8iLkUW3YTX7gkRyir29obAJElIJs75vLxnP2AuCj5F0xPhDjR
+	VZwI3NEwUp788fAUcIffTZZWpRbd645S+yMefUe84FYJrWhXDyiw5BIUCNlLm5seFMw7vccl1zh
+	a6nxhOYrnTn8E6PushwGEBvAnbSMqP5JmoSH13Nvc/mW1FsgeuBO+ri1xVVWeQHHX2mroPRMAAQ
+	I8hfjh6WhOEv1DP/THz8FYOCTe1PkMUVxIqAm2EsHsb/o11t0yssCgw==
+X-Received: by 2002:a05:6a00:2451:b0:878:1aee:fa43 with SMTP id
+ d2e1a72fcca58-88af5e9e0b8mr66237b3a.33.1790871117648; Thu, 01 Oct 2026
+ 09:11:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MN2PR12MB4343:EE_
-X-MS-Office365-Filtering-Correlation-Id: de1b806c-45f0-4518-29fa-08df1fd693d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|22082099003|18002099003|4143699003|3023799007|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	iObRYCfQmcR2ROy+lok08PAEH+pH5ZLOumWGDpZEMFCM+v/YKuWAvG64B1r5MmZbk4Oicb2PypWgqHCogt92CZ+uoTVaen9OGhX81BT7cemPVYOyH4cy35jhvZ03kVpi4bKSPaRq/MhQF+3e7rVoP9c5d3KHRnXHvpmBxhOsFqGaiR/zAXnluU4bWHNj5iI/HXZjXpXm1+ENM+rgrEpY7Ap2g6LKYCxQUxDKCBwrn81Ah/QlQ4xa2cfEKlOldZpjNvJY7k1vS+ahKTBh1he2mQWvkJCpyJb59H5yClIeEBpsRGrgqKC5FF2r8d4SrDaglqtrarT//VUm/OfZGZXTmsKOfIBR1QSD0oqBr4gukjKmxFrwPKTbdvbX0Zz6jCvxI3h7rgF6mOjFPCRVh0sO1RwmCpz5SnmNWH0wK+IsBKohZLcUS1dzFb+A9NHdu1IQsw0jsaLEkcg1XVxmyu1WHTUAC7cTZFpl01yj+CCF7Rbs6VQxyPTTn6KliuPp1PLnCM88EP9klNpjzyIJ26NeC/tEBZ1NLfOM2s1vbt/6j3Eynco+QkNuBIFWxAnZiKyPnpjEr3cWsVPDcXrDNJyIWp3pTXBR0WaesZwekOpgv5zNy0+NoVT1YezOvMzJxrc+WLbZHfK7dj40XtnzXb0oqfW84JNPf9XJXg1xxrRGG3I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(22082099003)(18002099003)(4143699003)(3023799007)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U5PbuwygNCRlT6hn/A6wNkH5WQPZ6EiPJrP99+eeHbGIGzaOEf/zLxpq+IpZ?=
- =?us-ascii?Q?hxaMgiGNbOzYfIdy57S88iPgReHfalGYY71irjHA9+GHzk3fkwHFs+AJjFNg?=
- =?us-ascii?Q?t8H9CHlvjp4Rl0gdtzeBYeD2kYR1B9Ye/amH9pgjUv/aNSlZ/84P8GTw6IbQ?=
- =?us-ascii?Q?VkoSdp0HGNdWW0m+B9vycznve690OQd7e1MHTPRdOPVtbzF93DjbxC2hGm1A?=
- =?us-ascii?Q?zlbqOudk5UBzrDlXhDxYkPlhStCpXfBKEqaUQvU30c4iABya7Xb8FymPAYbS?=
- =?us-ascii?Q?lBOLu4gN9Z9RKpkgajIp55ANoVCyA+QHQ2z0CYAp4XuewIRNej96Fb23XRjt?=
- =?us-ascii?Q?3BIHYdEcNZYBtdYAn3Yz81v6YVvhbz7/aCveTqKoEgkdEdqf8P0U8wR86CnM?=
- =?us-ascii?Q?d4FohbIKob6HasK74E2+nJ5XFBsQQ4plHLoKN/jb1oNoB4Kjyj8IRcWYeUSl?=
- =?us-ascii?Q?W23hXjY//7z5XAlFUSw4yQTd9uKAEDjzU3arFBaKOpDvzT6ygIXlUgCoaqnD?=
- =?us-ascii?Q?CqVUy397a7rDdQbPd3fnEM3BEPtfvFKss5ZU8JOV4JJQB6zKQWyL1z6bwMum?=
- =?us-ascii?Q?h6QqC7hWvzgVX4njMIuKJTsQZR1vAOlDm1Aj37stiZl989nQllecpj2cH7ar?=
- =?us-ascii?Q?OfI0cPnv4dQ0R23Er1+AYRbqyWdxgQH3ukqsAc6GJz8hA2uU2I2szfVOkNMf?=
- =?us-ascii?Q?ih3LoKmsKi3lVhoPkeooKEoX0s+M6qH1XteD72nHNPJMT/r9bjt9D/CCBBB/?=
- =?us-ascii?Q?IYS/xG2LenOI9rL7icdDrly1DNX0A+FXHhDXvXRWtHW2b5cDBPno79PBcOOj?=
- =?us-ascii?Q?L3CEeaxK3sk6zzc4B7v2hbm0mRrsyrdS9YP3gi/rkM5ZkXaOXmK3CUCoRDfo?=
- =?us-ascii?Q?1YKtzTI+HT7jmLemAX1k/hodWr5RXLKD1Z2a8AEBABSFO/KuwUB/CWlrlpmO?=
- =?us-ascii?Q?VjnPpg6nlummQIFHwlVBuApS+VBgfbaIx3TY/TN769QewGuAxtxJNBfYrUWi?=
- =?us-ascii?Q?8AoooTFdxYBn3OtOuUNyE0UiG9q8/hgwRaqrI78DlWo7TWLOCzAtJs4NDJis?=
- =?us-ascii?Q?466FlwSMaeeH2aj3ShappYhe/GlgnynNMY37LQCAxZKfC5JRSNArNCJOGSb2?=
- =?us-ascii?Q?Oo13PvLzKtjj9jBBUxR5dR1DCoss8U56ZnSJbjesOl0evaFRWOygbhrJqSDy?=
- =?us-ascii?Q?EIk3lLRXleMKY/Fg1bj1V8CgD+UW+yQ2nQJYUSiFhewboVUo4T6gIwDU41ts?=
- =?us-ascii?Q?Zf2iUKVOyWbTNCCILLBa2kw8UA2cBo/i2NkJPj8kXVZPATmwwc99FQ22Pxpq?=
- =?us-ascii?Q?tDDPwwPIgN7plzfrdpWVkInXp+kotFZHpYAE0O6LsO9mFC+iCqE2avnkdzD4?=
- =?us-ascii?Q?JJOAmjWm074wMBA2aMDqKrTOJ4i3qz/HcqtE3/Oycgukc04RkFQx38yg0tLf?=
- =?us-ascii?Q?L+Qkw4q8CW+FG8d/E6FEjjIoUFqqLZejhvLS8NGxv7AMu68DC1/gFInSxYLQ?=
- =?us-ascii?Q?3dmVuFdjwXPV+u6s0Iij4+KnMByiDxXNekIr1Xd93PNG87BgnLCrpW4bK9YQ?=
- =?us-ascii?Q?mBsm4ljfYVeNZKM5jOZZRqG66j15EVPbeUgeOZ1eiMSPDZdcZCgjK+phrL4o?=
- =?us-ascii?Q?nNlu8e5I5539gw488o31tsDyLyqmNuZXibjshRb1pHU++joFWxSxpS6wAOU7?=
- =?us-ascii?Q?1HO3m1sDg15wLLx6/x003AHCW6+ku6HJw7qoqCs6EHbhaXOdsvSo/L3pnpCm?=
- =?us-ascii?Q?4e7iWxOWTw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de1b806c-45f0-4518-29fa-08df1fd693d8
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 16:10:57.5298
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LbZrFPew3VgDa8EmOgsIGPejmnNt0ysRIM+onUBDoxceS/ibCqDyefox3H8AZPFbXtCi76Su6bA0edGZY5+DsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4343
+References: <20260928190401.1641260-1-wbriggs@cellusys.com> <179083835206.434549.7959555054670908229@kernel.org>
+In-Reply-To: <179083835206.434549.7959555054670908229@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 1 Oct 2026 12:11:46 -0400
+X-Gm-Features: AclHuK-SE6KAyYVWH0zHyC1WoWJwVISfzWpNwt0v8Yvh6tmXfkow1wJu9vjLJXM
+Message-ID: <CADvbK_fps4LrNX36j-MBpFmc-S5bQXhqkBgz+HC2RRuCvhdBXg@mail.gmail.com>
+Subject: Re: [PATCH net v4] sctp: carry peer capabilities across an INIT collision
+To: netdev-bot+sashiko@kernel.org
+Cc: wbriggs@cellusys.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 08:34:57PM +0300, Julian Anastasov wrote:
-> 
-> 	Hello,
-> 
-> On Mon, 28 Sep 2026, Ido Schimmel wrote:
-> 
-> > On Fri, Sep 25, 2026 at 08:50:58PM +0300, Julian Anastasov wrote:
-> > > 
-> > > > Axel Mierczuk (2):
-> > > >   ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
-> > > >   ipv6: update *offset for non-first fragments in ipv6_find_hdr()
-> > > > 
-> > > >  net/ipv6/exthdrs_core.c         |  6 +++++-
-> > > >  net/netfilter/ipvs/ip_vs_core.c | 14 ++++++++++++++
-> > > >  2 files changed, 19 insertions(+), 1 deletion(-)
-> > > 
-> > > 	Both patches look good to me, thanks!
-> > > 
-> > > Acked-by: Julian Anastasov <ja@ssi.bg>
-> > > 
-> > > 	The ipv6 patch needs review from the net team and
-> > > may need some Fixes line:
-> > > 
-> > > Fixes: b777e0ce7437 ("[NETFILTER]: make ipv6_find_hdr() find transport protocol header")
-> > 
-> > Doesn't patch 2 make patch 1 redundant? It seems that the comments added
-> > by patch 1 become stale with patch 2, no?
-> > 
-> > If so, why do we need both? Why not send only patch 2 and blame
-> > 63dca2c0b0e7a?
-> 
-> 	The idea was to have IPVS fix that can be backported
-> alone, if needed.
+On Thu, Oct 1, 2026 at 3:05=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] On a peer restart (sctp_sf_do_dupcook_a -> sctp_assoc_update,
+>   ESTABLISHED branch), the patch re-derives only the inbound counters=E2=
+=80=A6
+> - [Low] The commit message says the change only affects INIT collisions
+>   (Table 2 action B), but it also changes behaviour when the peer=E2=80=
+=A6
+>
+> --
+>
+> sctp: carry peer capabilities across an INIT collision
+>
+> When an INIT collision is resolved, this patch makes sctp_assoc_update()
+> also copy the peer's prsctp, ecn, asconf and reconf capability bits, the
+> ipv4/ipv6 address flags and adaptation_ind from the temporary
+> association. It also re-derives the inbound ASCONF and RE-CONFIG sequence
+> counters (peer.addip_serial and strreset_inseq) from the copied
+> peer.i.initial_tsn.
+>
+> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> > index 4521be3bd85a..77ac155fdb70 100644
+> > --- a/net/sctp/associola.c
+> > +++ b/net/sctp/associola.c
+> > @@ -1107,8 +1107,19 @@ int sctp_assoc_update(struct sctp_association *a=
+soc,
+> >       asoc->peer.rwnd =3D new->peer.rwnd;
+> >       asoc->peer.sack_needed =3D new->peer.sack_needed;
+> >       asoc->peer.auth_capable =3D new->peer.auth_capable;
+> > +     asoc->peer.prsctp_capable =3D new->peer.prsctp_capable;
+> > +     asoc->peer.ecn_capable =3D new->peer.ecn_capable;
+> > +     asoc->peer.asconf_capable =3D new->peer.asconf_capable;
+> > +     asoc->peer.reconf_capable =3D new->peer.reconf_capable;
+> > +     asoc->peer.ipv4_address =3D new->peer.ipv4_address;
+> > +     asoc->peer.ipv6_address =3D new->peer.ipv6_address;
+> > +     asoc->peer.adaptation_ind =3D new->peer.adaptation_ind;
+> >       asoc->peer.i =3D new->peer.i;
+>
+> [Severity: Low]
+> The commit message describes this as an INIT collision fix, but doesn't
+> the same code also run on a peer restart?
+>
+> sctp_assoc_update() has one caller, sctp_sf_do_assoc_update(). That is
+> called from sctp_sf_do_dupcook_b() for the collision case, and also from
+> sctp_sf_do_dupcook_a() for the peer restart case:
+>
+> net/sctp/sm_statefuns.c:sctp_sf_do_dupcook_a() {
+>     ...
+>         /* Update the content of current association. */
+>         if (sctp_sf_do_assoc_update((struct sctp_association *)asoc, new_=
+asoc, commands))
+>                 goto nomem;
+>     ...
+> }
+>
+> These new assignments, and the counter resets below, have no state
+> check. On every peer restart, a live association in ESTABLISHED,
+> SHUTDOWN_PENDING or a similar state will now:
+>
+>   - replace its prsctp, ecn, asconf and reconf capabilities
+>   - replace its ipv4_address and ipv6_address flags
+>   - replace peer.adaptation_ind
+>   - reset peer.addip_serial and strreset_inseq
+>
+> The restart behaviour may well be correct, but the commit message doesn't
+> mention it, and the testing only covers a COOKIE_WAIT collision. With
+> Fixes: 1da177e4c3f4, this goes to all stable trees.
+>
+> Could the commit message describe the restart path too, and could that
+> path be tested?
+>
+> >
+> > +     /* Re-derive sequence counters from the peer's Initial TSN */
+> > +     asoc->peer.addip_serial =3D asoc->peer.i.initial_tsn - 1;
+> > +     asoc->strreset_inseq =3D asoc->peer.i.initial_tsn;
+> > +
+>
+> [Severity: Medium]
+> On the peer restart path (sctp_sf_do_dupcook_a()->sctp_assoc_update(),
+> state >=3D SCTP_STATE_ESTABLISHED), only the inbound counters are
+> re-derived here. Shouldn't the outbound counters asoc->addip_serial and
+> asoc->strreset_outseq be updated as well?
+>
+> On restart, sctp_tietags_populate() reuses our Initial TSN:
+>
+>         new_asoc->c.initial_tsn         =3D asoc->c.initial_tsn;
+>
+> and sctp_unpack_cookie() bases the temporary association's outbound
+> counters on it:
+>
+>         retval->next_tsn =3D retval->c.initial_tsn;
+>         retval->ctsn_ack_point =3D retval->next_tsn - 1;
+>         retval->addip_serial =3D retval->c.initial_tsn;
+>         retval->strreset_outseq =3D retval->c.initial_tsn;
+>
+> The restarted peer runs sctp_process_init() on our INIT-ACK, so it now
+> expects serials starting from our initial_tsn. The ESTABLISHED branch of
+> sctp_assoc_update() copies next_tsn, ctsn_ack_point and
+> adv_peer_ack_point from new. It does not copy new->addip_serial or
+> new->strreset_outseq.
+>
+> If N ASCONFs were sent before the restart, sctp_make_asconf() builds the
+> next one with:
+>
+>         asconf.serial =3D htonl(asoc->addip_serial++);
+>
+> and that serial is initial_tsn + N. The peer's sctp_sf_do_asconf() then
+> discards it silently, because it is above peer.addip_serial + 1:
+>
+>         } else {
+>                 return SCTP_DISPOSITION_DISCARD;
+>
+> Would T4 then keep retransmitting this ASCONF, with every later ASCONF
+> queued behind it, until sctp_sf_t4_timer_expire() aborts the association
+> at max_retrans? RE-CONFIG requests would carry a stale strreset_outseq in
+> the same way, and the peer would answer SCTP_STRRESET_ERR_BAD_SEQNO.
+>
+> Most of this mismatch predates the patch for associations that already
+> had asconf_capable or reconf_capable set. However, the patch adds a new
+> trigger. sctp_cmd_process_operr() clears asconf_capable after an ASCONF
+> has already used a serial:
+>
+>         asoc->peer.asconf_capable =3D 0;
+>
+> The copy above now sets it back to 1 when the restarted peer advertises
+> ASCONF. Before this patch, such an association never sent another ASCONF.
+> Now it sends one with a stale serial.
+>
+> The COOKIE_WAIT collision case doesn't appear to be affected, because the
+> local outbound counters have not moved yet at that point.
+>
+> Should the ESTABLISHED branch take addip_serial and strreset_outseq from
+> new, next to next_tsn?
+>
+This looks a legit one.
 
-I assumed this was the case and it's your call, but then the appropriate
-thing to do would be to wait with patch 2 until patch 1 is in net-next
-and change it so that it removes the now dead code. At least that's how
-I handle similar cases with my submissions.
+Since asoc->peer.asconf_capable and asoc->peer.reconf_capable are updated,
+we should address it in the same patch.
+
+So please follow the report above to update addip_serial and strreset_outse=
+q in
+the ESTABLISHED branch.
+
+Thanks.
+
+pw-bot: cr
