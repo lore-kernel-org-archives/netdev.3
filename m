@@ -1,134 +1,107 @@
-Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8253BFAD9
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.166
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829567; cv=none; b=NC+8XOyeKLvWt8S0vWyPek8sjZpkjDeOWziShYwv9XF/jjsVAuoSryYt6Uv7rGLsNt4hEv/fVc9vK8Jjjrb9iDSvjNilady5KclL0lmNv5pPJZKHoorTWWtffoqryeWTcmBHWx/WyQKFF4JYBPUHYykBDqiaTbO3pcbd3U976z0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829567; c=relaxed/simple;
-	bh=SxL7aIselSeVkJQgx98etKVzBZMns7vJQbD/l7L+jFI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Xsp0RUXHUi6n8K8qKQb0Gd99zrxbxMTmSppTQmwii+s+dlJTKejUuUmpt8tYdfK1hO54qdn56PTlvBVttK76T/yeXaSSk/JIDjtm7bapg5m95goifK/p9SpjBfa/E2NL8TaErmLM5XTlnK0WNqRFCL7U3Zvh71exzOcwaQm/Tl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PEFLDcfn; arc=none smtp.client-ip=74.125.231.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3356388E74
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.96
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790829600; cv=pass; b=mS72B5xd018CABV0KA49COtb8nTlSuKMLil/OGCFHhjSX5BhowGtiYeMYVcNEx94OVTe9CgiVZmmHYAuoe3YflAVyKZjSlQGT602Dsrp5o7C+lrfCen9QpBdu3ridriSzTCmOWBe9lXYAco6UgpggqyuJjqWUShBhUAmrWXeWvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790829600; c=relaxed/simple;
+	bh=nDas30tPSxRmkTZarnFIxktE9WqOwZyfqBZjaJOotF8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A409VG6wGD9UPpo6e9Ck/RF4Xrz0Kt/hb9FCrzN1+1BgEJ3hGQxk9XlIbLUhKUWIgHT++OgS0TGPqLVzTXe8XfGE1eqY0Gngzdo/8lAWijN5UW5q8CF2qP1Zjm8k7TN6tLGGaVI6Wiwfz6V+bVy6ZerTcY6aBXWGinkyqK5yjRY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UiEcbkyV; arc=pass smtp.client-ip=74.125.228.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PEFLDcfn"
-Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-7f4f0c89e34so4316222a34.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:39:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UiEcbkyV"
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6ad186afdf4so3175570a12.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:39:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790829597; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iovseSlR/FS/NMooiUNrMbJpWQGN03x5yi0hIKQx/jTo8uFxlzrDn3gPM8mtYCEE40
+         F1tfLNnrCu8DVSG+WhRpkHXhMt7/IgNedGwcEr1OcOFhNe77EDV+UDe62ebMGX1FN+D+
+         Twa2BEOdLBjo76GgdP0MnW6JWWnpUiTUDF84zCJs/j7t/QZZlPIp7GYavZzJyffdPUZI
+         QiAUTLR9fCb/Xbj/6+3c7O/OWrf/0YvqV828Mmg+N5Vvi1PGrz9hNBQs/syGLIuUAoCT
+         ZKgeKcgpiCSRpdY01QMSh8tbmKfhIRnswNYBoKHoj0To0ck5hY/fGPabtVy8Wn33/9Gs
+         3xOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=nDas30tPSxRmkTZarnFIxktE9WqOwZyfqBZjaJOotF8=;
+        fh=AFQDwqaihsI3Wxr7Ao/9bzNeQ7fJcGQxB7JTqi0pKIM=;
+        b=AQYM7VqcCo12K/qooLTQ5y5fbRJvhol8U0ckV2uRWERIesSPreEWYlrX8cxxy5C+ep
+         Fk6o1PlbnsD/KENYb6hMM9inU/JnCeFpCDkYeMtYUbkfpsJjtdoqWuK4ili4A6PqjSmU
+         iFf/mfRRNeZzEeIpT1swqBn0x6yh8QaTTPVoJpYHw3z9sFI32kWgmODY/+/AVoE0eibe
+         5HqJLm63YHVhricgGT5d/wgjdE+MjpedBrpBp/JLz9HKSwzzb4ISFdpEBXOKORornF4c
+         fl3Y3FpB+QkgkRxAHZQJsGvSguFXaSpmswwbWDOe3Ab8SB/cILAdN+yZfy2Gy5pXMX8c
+         MZ6g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790829565; x=1791434365; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3lo2Y0hgRgiPSnYGSDe7Yf1GMCBIGPwRSlX2+EmhVtc=;
-        b=PEFLDcfnsnAGhyfEZkE0rRag3W7PX3qCUnYBZpWp1sbyF6GwWfd5rStaLfpztuwo4t
-         LsDl/l+WrZKjBZ5mk+Z5sY/GFUBNQTx7L5jC+NFj3RibT1u3nkvhxkRJeNSn6pdhgzmT
-         DPKgvF7Ma4Rbn+U73H35H9/cc02SK5F2SLDEi+NclZ2bOkZrkbFzOPTguz5jOrCNCEx7
-         mX2m7a+5OTsOd45v5AOiGx29IcSrui9bt5BLUInviJwsP9gchTblNLqqlDziDpFsznsq
-         tMnTI0BLWBTD51eUT9E7AotMxNUAOYPGajA2w98t8uixq8wK1mJFVeiuY1AFt4vXZtJC
-         v7lA==
+        d=gmail.com; s=20251104; t=1790829597; x=1791434397; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nDas30tPSxRmkTZarnFIxktE9WqOwZyfqBZjaJOotF8=;
+        b=UiEcbkyVNIUMhWJVyn+9JG0V7GlKzWDUqST50o7uZbjD2aP3yc1bGkMz3mv3rlWMri
+         ddG01q47E5ZAaz0GjpeO4mkwku5DtuP1CCndIEf3hNB8ix2tQZFtJsYk7Q5zEDB5pNso
+         nILZBHRjr8bB1vieZEe9QiHf4qDwCUdrfD5CKuvNXEOH+WXjqwqYGtYx9J+ImxAcgn3l
+         AUzMFApvIVTiZ5zpZF7hcqWrgrMyorV0WxntmOvWrKoKCuzWkAwmR3nQHEBA/cYwOGcA
+         /yFQP25txJiyYT28rPGPYqnzpt5BmfexCyC4lPWwgG/WQ4l+pPHoJAJ+aelDJbdP9hWs
+         OgQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790829565; x=1791434365;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=3lo2Y0hgRgiPSnYGSDe7Yf1GMCBIGPwRSlX2+EmhVtc=;
-        b=w3KyeWhR7W9HS3f2FXa0ZMYnPlMw7yAQK6aZem4EUQkOAFYYlZ50r5id0lCxUhlYEI
-         NQiGAMZbZzLRriBsAbG3kviOv/cHT5To+KZPPclJJGUN8xqxNbxXL4StfGw8YxLtpc1G
-         FnB+q4piurWy4NhS7i2R4oNyqXUoWfMsnNahlJP8qxgJnKbSVEpDk94BuJ5awyDIxu2Z
-         o9QCSVWX+OTEUQghyQOxgX/ePlWtT1nQOq+fIcutQxIASMpy/erZdleC58MvLKEBtNUq
-         l9o5KelR+5S8xzLiU04xWiLI1p/UV7YLhwtXQM08KE3iWX5OQurshpsVIinxwCGxKhN8
-         rdRA==
-X-Gm-Message-State: AFuF++micVA8JnmAJn+bWrIhDvpkUXSjh1Zz45CdgmrrYCatijd6Zrew
-	yHFlBtObhgbQTCJRbteFgS3nPaMHrdXLQaZjIiPMmcGtqCb4rhLnneDL
-X-Gm-Gg: AYBFou0FA1uee12IVub3PFQCoJnwS1ZEdLuVxgSlkbNt06Kwy78Xfqlnv0mkrMyFcxU
-	YHPImFaUPNbCRbts+cSkCTDtwD/s1lWxz/fD4g4xWSMFmNlrPYEIqNcyOnvhuvdnjc2KqpAWFw2
-	0iV8quWwdLV+KzaJ47O9mC19TQXYRclH/lTxbVNHAvzsIfE0+qNgiJ5IqFK5bLgE1lw6846Nvqy
-	cQZK90y9osCcNrEEu52aaCJ7c8XGwo8nex5yGWBKH7TbBvB1m+bQUuAgIqo+uvpOPcnwNwmT0Xj
-	fSN8W0wp2ZHZWLb6ppbOTF/+BDe2dZ0ohhus0e5Xwb22ULNpHKlS7q/BfW/dT923b1eDJEtPmU4
-	nEz8vf8WNlg/SZfMI3bRetaBL/afSKGA8nKgEVFtURhv3NeNvNGreGKr8Q3AU/dT63FCXQAxXtC
-	85HMA7ialj2RF7MUq8zpPIUij9NGIhgGzp6ztpROeY+FQ/6tt5IQe/f1mFwJLNfQssnBvYB7BZC
-	9vQR1aFLHJpWWo+GUwUFGlV/HSZlvzW+a1Q0g40HXYTezqcxrr4N1guvCRKA1ddRsLHxVbD4rV4
-	WRJBuy72yF9pIKbLMsOU7pGev/SXh4+nE3vi7oYj1yDDlquweRJrj/VAAxJRtCPQuIgkee8IQtW
-	voov/AAWldErFv+fUxsBBAWsGEitnKlSV
-X-Received: by 2002:a05:6830:6d4e:b0:7f4:eb76:881d with SMTP id 46e09a7af769-82049119577mr4659618a34.5.1790829565141;
-        Wed, 30 Sep 2026 21:39:25 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8212aa1a2b8sm1792815a34.13.2026.09.30.21.39.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 21:39:24 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Wed, 30 Sep 2026 22:39:22 -0600
-Subject: [PATCH net] net: stmmac: leave the datapath running for
- normal-size MTU changes
+        d=1e100.net; s=20260707; t=1790829597; x=1791434397;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=nDas30tPSxRmkTZarnFIxktE9WqOwZyfqBZjaJOotF8=;
+        b=yna5uvo+qlBZYIy28POD8Ahns1e6L6jC+4jyalPkOp+Nsu9kFYTqsLW+Ii1+nc64cn
+         qZdmHlEPZltYOKUZGJyCiwFFOaNybn/BaxDEGLuK9VQjyENrEkvqPHtse94Eujzkm8Lr
+         W6DC8+LOCa4cMDtK8QkRKaQ9jxc5C7mJWDu3FbHquL9MVGl70eM5jwofw/Rpc0TRXuxe
+         +EaB7IfEkJlbEbfcFv4gA/CsltY+J2wUPrcWNJSFgoyZ+SRcBXsYv0Jl2CmZedFz65W8
+         j8wjqPlZvaBJiSCXOJDDhH3Oz1NaQoE7SQcHwkWcTP1zZRza3O0t8OWw8qYXb5xMeNTf
+         NpPg==
+X-Forwarded-Encrypted: i=1; AKwUvBxjnFM7NF8snNdKmXJ25Q8+Mx5I7Td95erh8ArCrgj0cd9DgmlK57G6Mx9v2ICTNr2V1p64pME=@vger.kernel.org
+X-Gm-Message-State: AFuF++lgLYgZiEpYv65wcwwtWU0RW2LgQacJlSfQn6EzZNf6bi0HUoGu
+	dXgkfbaKUSmSttG8caTUlVkIzTWtTsw/r9bsURlAlWohVMOBeYOnf86lb4w93TBba8S78oJ6ryZ
+	f7Tf0W2wOkd+W9kHhQFenszIbgQMeGTk=
+X-Gm-Gg: AYBFou2DRPs6D+mKwYOV+rntr07xth0mGVah8L77b1ijItykNc3II0TYSvJ4AHgCKIk
+	PLTvj6zHjynzfXYYXCnaZVy7xKLwqVngmcFLjA9lIrZ4eZcvYRDWJaU5inN23Nv/YX3nB4CqmKK
+	DCIxBMDkB1Xc0OY2s5fHqy2jl+RdKaXsDgr5CC3O4chNK1lgVOrNsTmF32HQ0w12SZcC5RrCIIJ
+	KajT0jERBe18eA4RCtcXLrkzJbYjsc6bQCBW+zb7PqPO6Km4AsgEhKLUzhzs1ru1IVf7q69WhuK
+	FXYofUymavIaZ3kfCYjH5fpAL4bx1RvVe1yclCgwF3IbByieUr+vZdTk
+X-Received: by 2002:a17:907:6d25:b0:c2d:c739:30e0 with SMTP id
+ a640c23a62f3a-c2e23e24b86mr265473566b.38.1790829596884; Wed, 30 Sep 2026
+ 21:39:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-stmmac-mtu-fastpath-v1-1-fd73f378c071@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NwQ6DIBBEf8XsuSQIFrS/0njYxaVyQC1g08T47
- yVtj28mb+aAzClwhltzQOJXyGFdKrSXBtyMy4NFmCqDksrIQUuRS4zoRCy78JjLhmUWpu9bzTh
- pGiRUc0vsw/u7eoeFC4y/MPFzrw/l3xBmFm6NMZRbg5Y8Ena90qxda65ESsrO2Y69t04OxlhFz
- sJ4nh/Y9ncutgAAAA==
-X-Change-ID: 20260930-stmmac-mtu-fastpath-68813ead3b90
-To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Christian Marangi <ansuelsmth@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Eric Dumazet <edumazet@kernel.org>, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+References: <CAHeizqHDqx3ue1=0QL92ef+6C63Ur+v1Z=d93smgdD5zTj_-Pw@mail.gmail.com>
+ <arORyXjxvZUoEAIw@chamomile> <CAHeizqF--yGMCLGBEv9f7Gs=dmbZO6+DwSh7KZjpDgbNonCotA@mail.gmail.com>
+In-Reply-To: <CAHeizqF--yGMCLGBEv9f7Gs=dmbZO6+DwSh7KZjpDgbNonCotA@mail.gmail.com>
+From: Subham Pal <subhampal789@gmail.com>
+Date: Thu, 1 Oct 2026 10:09:45 +0530
+X-Gm-Features: AclHuK-y1tLB80ZNINzXQ6UtPI8XoZSzzsSAP0Y8v4QLKDC9gVJNA8sSucY42gE
+Message-ID: <CAHeizqEqOx_bTJdNaUYGc1Mc_dcWbY6ybJNmo9uKMcyBPVLS1g@mail.gmail.com>
+Subject: Re: [PATCH net 0/2] netfilter: nf_conntrack_h323: fixes for NAT
+ bypass and ASN.1 decode
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: fw@strlen.de, phil@nwl.cc, kaber@trash.net, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netfilter-devel@vger.kernel.org, netdev@vger.kernel.org, 
+	stable@vger.kernel.org, Subham Pal <subhampal789@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-When both MTUs are at most ETH_DATA_LEN, the receive buffer size and MAC
-receive limit do not change. Update the MTU without restarting the
-datapath.
+Hi Pablo,
 
-This also avoids rebinding a live AF_XDP pool to a temporary RXQ. XDP
-rejects jumbo MTUs, so all supported XDP MTU changes take this path.
-Jumbo transitions remain on the reopen path until the rollback change.
+Just following up to check if there are any remaining questions or queries,
+regarding the multi-vendor testbed I described, or if the series is
+ready to be applied.
 
-Fixes: 3470079687448 ("net: ethernet: stmicro: stmmac: permit MTU change with interface up")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 3f34d491c959..03cd14d10356 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6161,7 +6161,12 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- 	if ((txfifosz < new_mtu) || (new_mtu > BUF_SIZE_16KiB))
- 		return -EINVAL;
- 
--	if (netif_running(dev)) {
-+	/* Normal-size frames use the same buffers and MAC receive limits.
-+	 * In particular, do not disturb a live AF_XDP pool: XDP does not
-+	 * support jumbo frames, so it never needs the ring replacement below.
-+	 */
-+	if (netif_running(dev) &&
-+	    (dev->mtu > ETH_DATA_LEN || mtu > ETH_DATA_LEN)) {
- 		netdev_dbg(priv->dev, "restarting interface to change its MTU\n");
- 		/* Try to allocate the new DMA conf with the new mtu */
- 		dma_conf = stmmac_setup_dma_desc(priv, mtu);
-
----
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
-change-id: 20260930-stmmac-mtu-fastpath-68813ead3b90
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
-
+Thanks,
+Subham Pal
