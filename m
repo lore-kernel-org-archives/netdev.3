@@ -1,196 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C142D4477E7
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF452F8E95
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790855167; cv=none; b=nH1ApCyKsuewXEPqMN9AZzC6UYf3E2RdHVCThQMGp3t/dFS/a5YmcKL0S3mopgTlJq85mqjsFOXt+OYG/3yk1i7cyXgUHecxlr1j/Zqm/GDLOuec2CEzIUu33pvdFRwBi8Yn73TUj1CDBmV4V3VaYypB9O3JYc6/8Nn/L1w3ofo=
+	t=1790855173; cv=none; b=kZYD3+mactGwWvSPhed4GRrOzt+/TIBWvNaDz0h4P+ud/Rau2in141TWziqhNUkr4AVFSESD8CIAjXwlSMbNNYVc9o3/4beuyIjIKs8g3AZf6Kkk46h8jMDfsOtqnlXJzbGIyfLFaqfIP7m+edlf2mbzaVGEkvKhlPfR6ka2fb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790855167; c=relaxed/simple;
-	bh=BFT937ZpdM34J9PwVju7/yLS28Bo5/2Q+X4eLCQB59c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l69tFWLbn61CXDzELBbDNBP5EZlxD14qyi6j2ieVniI37HQfaUZk/9X+RXc1HYm7CJ5AWIgIzF0b/Tog9Ay8ptj8HMnVwpFx+bp9CGO5VUfU3kUSpSPhXromBpxpsG0ei6aoxPL29TLQWhAqDTQ29W7TLG262CODOG5JKjKFFS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImStY7tK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WikupiJf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790855173; c=relaxed/simple;
+	bh=uCaFXrRSWgBbNuRZ+FS6WZ69wowC+4yvUu2mcdgzmpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IymfgTOn4iB4ClZMRw5wFPeri5y4GwnhD7GnDOirrd9gNYDPiOR8cW20xGBOA9oVaB52czNSJLKpLBSIsaYTLG7e/qICusocpIpU3ybzHoGGfy357/76XCrfX/uBvP8sDpvkCRnGFDss8f9AOZtxQVcU0RxDBI/OEF0D8dHB24E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=hg2ra3c6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U8cGB6MV; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImStY7tK";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WikupiJf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790855139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
-	b=ImStY7tK+v2OSMjxemHyEBM/0UTI36Qya1sF1tX3BkuHL8t5RzYzjEP7D4IrN3t/k2paVI
-	CRgrC07F15A30dvHjRlCxKOLx03WWtu8LKp33gCVlBiOHcQsS7Jq+rgTtaoz/F60dyc9Ts
-	rjkQJ6Tk6qFx8v18eTl79eG+iaZwB54=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-87v5niFmOXuX3fMQzLndZA-1; Thu, 01 Oct 2026 07:45:37 -0400
-X-MC-Unique: 87v5niFmOXuX3fMQzLndZA-1
-X-Mimecast-MFC-AGG-ID: 87v5niFmOXuX3fMQzLndZA_1790855137
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2dd399f761so430066166b.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 04:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790855136; x=1791459936; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
-        b=WikupiJfNETO5TXgTLBqyUR7APbuZ8iITJ71HpgcG6qZXdZP6dYVmbrZaThGnFsXMb
-         +VJ4SY80DVAuGqSsXtVdU+ivK9GjPy/Y/fM9IDEHDiHLHmiDkY2u/SwQh9++Jlc/ledR
-         1ccSYBe/RVa8hEyUn7jNcgdtJhINFBuwdQJV0ouI9DRHamJwPA9GuHrFk8rD5K/7l3UZ
-         R0Q8OsKPExkD+DOEncr4Qk+0JdGbYHlFKfC8kXPcKV2VcQywm+hG1KsuwZrx2OZ3gWAa
-         1Dj0zIHQE/Khr3eC4Fbs5jM6in8gTC48xpu0I5ktsHUMXDZDngdx+x2FK+tO6+9otF20
-         XjQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790855136; x=1791459936;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
-        b=PiOmOsXKyi8dvS3JdWyUQdqkepFTHepXm3JpQJGjFawBuY6K37ahQnfunaQMNzDQmM
-         azaooFyQxSXNXt1VASV44EG3nnKiwaiq0XYvcGehdp0WIccR7LVrpo2vgW5fx0j6gI77
-         j0wbM8p3a843d+nG0m72iYJGP0neejyyTCOwNnxe6MOHVqP7wpeyi7hWdEUE+83lU0V4
-         d+5BChWnPO17WIho3CvA4VLeD4Du0JLrRvL30ybf96fgMC1zSLJ9WGUhXYWBIY3Db2UN
-         wJWHIEgFR73D22jzhy/1Ym8Dlh3rJsFzfWlFau7+xt4D/blXWgR2U0/rP52mb8MkvK3d
-         1bmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzi351I1DTLQihQ1leKn8xxXZALHa1QEEeGP3Dw/MaaB5wvatS82g4EuSK+9YO2ctIqdLAAsVs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nxLFIPyR3BzQpziw9UrE/9zbEtxm0BZm3cMTqj4t+kNZk0NI0/
-	d40/z8POEP033c2nXxEplltDDEXWJXLGOiy400yrA3BEZFZ4qSLT/4XaSH0XZ82XMtkeHugnR8O
-	yUmLq10X9ccqGVRo4Zrcou/Aka5me3Ty+dktL5Td5pyHJbtQt/eOe1s2Tlg==
-X-Gm-Gg: AYBFou089ZhrJ4NHYdpPuN+RBwfeGaySn2Kx4TiITX86C7du2DWqjzgmr6auv1WpgDE
-	5XpcERSspJYJV+gXfs06QkIQhB+SDvzVURRvmLoTdPDRb3XUQzpcE78xBSGAJ8ltXzaxg8MTEi/
-	a0IVxUgNUcf/hgsWLbqqGE9foKnog7vvYIFIjI0LuEAlv07eirRyxopdjGHhhWknnL07GWcaDkg
-	L3DMDAN9E8txSJfsORdoFDTkmbiuGpyRSMySBG3DPUVU7lBLl5PjEGVOkNRFqigKWxYfQ37i+QY
-	3fYMhCJj/XDdXmtusFI0/ISkN0HkUkf2xDyFq5p98QZUeUSACd6yYR9eCoOM9wOR69cB3lo7dcW
-	PEp8M9uBPEu0XaoYbTP90WnPAT3AiRihNHCJuqH7a4HUPmVvTJ7RaWqTx60Q7DsGsvaK767gupw
-	==
-X-Received: by 2002:a17:906:478e:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2e2376115emr403162466b.6.1790855136682;
-        Thu, 01 Oct 2026 04:45:36 -0700 (PDT)
-X-Received: by 2002:a17:906:478e:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2e2376115emr403159266b.6.1790855136230;
-        Thu, 01 Oct 2026 04:45:36 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31dd955bsm139895666b.70.2026.10.01.04.45.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 04:45:35 -0700 (PDT)
-Message-ID: <7913b40f-f7d2-41ec-acb2-1edc7f2b833c@redhat.com>
-Date: Thu, 1 Oct 2026 13:45:34 +0200
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="hg2ra3c6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U8cGB6MV"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2B1977A012F
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:45:59 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Thu, 01 Oct 2026 07:45:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1790855157; x=1790941557; bh=MH80e3dRRo9fMz59NK1445PV26W0qmPi
+	n5V8PiCsTMU=; b=hg2ra3c6lw5E/DDwg9JaAbAujIXc2+0hinQDPO8ticdlgIDB
+	C/vG16sMc448yvxceEgXpiDPoXBHNJRhq4Xz9sLyY4Kt2J+NZecHVCylsQ4KzCmy
+	i7LSLcxMLG6jf/Ux/q8+4LWMlYCAi+RwEPI1AuPDmjp60VRRn9/p599tYRuXlftc
+	Nmb3ng6YgZshrzc5TQzMHRNw7ORocYYwrJ1zN2cVQgzpD7d8hdzLD3K4XePoFiri
+	NCz2pj37gwG536ktKxqUxf8Eq8zH4t7lcvTQA+/4ldHKLDjNMxw4q91af3YAGuBd
+	7zsQpx9HaP3JyfQ4+J14zWZzQ5zI4qoBpMEKew==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790855157; x=
+	1790941557; bh=MH80e3dRRo9fMz59NK1445PV26W0qmPin5V8PiCsTMU=; b=U
+	8cGB6MVY3+jBY3eils2F5bLn3csHNEndvt0WuJrpwO7ETu/ShbB0udUGauvbH3Ra
+	Q4vWq0PHCpH1mjQS0x9NrxzLjcX5w+6EqO8h1mP/2/HY9dcem46Xe6wDNB9b5amc
+	/G52Qj8/CeHpWHKXO8PnaXzI6+tiRKfgt/8vZkDTjenmDz0H2ZIg3+QrD6W2rENG
+	y3JJsP1Sa3UDPOZvweauf9FFsn9pOjwZS6+v8eHS2wOnT1P+++ecAby27ugU1Oy8
+	KWQfDgAl9n4N66/PDT3o054IcSw0OuoUWQVJWs0e+HtuSl07A48iroIT6V6+OrPA
+	Y4WGZFbnBiFS5/uGT2w6A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790855157; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:Xpzp/0i7fb790SePRZHcInoloo4P4ani8GxUlhRVjaFLQ34
+	zkQB+ezgm2B06rQKOWyFuQRpOmlghBkpspqDvEjCMPO88F0q8tDYfkivYnPSJ/nE
+	9BYmXqlwilsAcq3/Gt6d9G/0i9ItMsBhZciyYlw6V3Ggmb9GdiVt14ZFmmNuc8pr
+	PcqfXo5kbNZxbq5wtd2blabZmZT7CvfqyKIyjkYjDVTocArcwkso5QJOLMMxBx5I
+	y+SjRCdcdDtjXibX5RcIZsU/Z0KWApt/rwBS2lLrdGngcs1EZb9h07xA050U6jxA
+	RBmDYtorM2mAMAytzIHELtK5q0LfDvkv94Uth9A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:AErVP2vqZsLPTtmzuijl9PJjlvoKjKp4izsN9E4Tj48=:uCaFXrRSWgBbNuRZ+FS6WZ69wowC+4yvUu2mcdgzmpY=;
+X-ME-Sender: <xms:9Ue-anzJy5nSSoSxFasVOvviOmg3Tl7I1WwRU7VMHp4R5nkAN28YjA>
+    <xme:9Ue-anYDGQQ2_w7o_ZLVIyertGQaO14TIEXRihjRgT0t2zgJc4UNeE0iHpXMzAwOE
+    U0SM0X0t9pLbAylwUfzILI6AFZuypaAEnR0eh1dflW_PkVshQQk5GGs>
+X-ME-Received: <xmr:9Ue-ag2LI4bRVzqq7TLrz6UtBD5PxTszOQybvKxtuyT4PhjoAYbNR5-x-pak>
+X-ME-Proxy-Cause: dmFkZTEpKCh++LvY+MGXEOeao6y8uB+iXc9Br0/SigM05yLe0MBdGyCxR44UiCOoRnPcsA
+    5WBFlF2RrrF5GpiPaEArN8SOk2/e+TWB+ueEEbgvSBV4IQrBLsWzjiAAA/N9SwRdSCAQGY
+    gpoflFmQLKAzfh/Y4A9i0SXw4dyXamwXnB2o7XvApfYrHZtDfAvr2KD5SCA6PsfYbew4MS
+    +Cb7mvR9MUZseP1rdElNWbVZJHMXKNGy2+ZW9DRToNMEbnOQw1/9g/pkwyYHXul76T3q4H
+    35Lrh9tGfDO4f1KzTfCqYUB8uTkyt/cbXM6CKmKDsmYX4Ci/M+u5LsR1LH+d4gN8Xc8dNl
+    Ju4tcYBcPvgEOXfmBRNZODrrIJ5fBii5R13+tJCRzqcG6oA4rMEbAzD+gom2ofQcLrI2mv
+    7xewxY+uDJKvLy6YRmb4TGH7jyvirNVNWq8GYB5zRrzlr6L0bbMMgsdjOpNkDv2nbZcE5I
+    SvsdncLt6NPZBqpDok9kQXBrSq/21sObbERaPE/DV4lJ35hB/IJhi7m/vsYYLpcHvaS58b
+    LRW5JVgWLxR7Jq1DqKHsy1022tgAD+eBISuR36TsURHtNORa/Kk+aij/0Lbkt5oTUYphqy
+    2eU0ra8KQ6JTl3WZulfPCo0Ho6hAVebxwIYOMyvz7H6+cP/TTabzbacMa/hg
+X-ME-Proxy: <xmx:9Ue-ahdhdtQ1TUSUPNSCuJQpmprvXghGf4icJxepDJBxqtQEj8gwoA>
+    <xmx:9Ue-alIixsGb-Auy3eJ8F7ac51xe6Q_EZGaED8MGi1Og9rsZyEkoRw>
+    <xmx:9Ue-anroN6l7WGcGSVc9u4OIMRZmtyfp9qK6nbWnKLf7-rH3EPPuVQ>
+    <xmx:9Ue-aruiDf3M825bzHgKgGEykGtQFW-Bma7lzO5deERLnv7DJicg5A>
+    <xmx:9Ue-asgkvXT0MsegyGUghN9bVNh356wr8MJaAcGeiQXbpZVhAAEcAxIO>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 07:45:56 -0400 (EDT)
+Date: Thu, 1 Oct 2026 13:45:55 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <jeremy.jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH ipsec 7/7] xfrm: leave the sequence counter unchanged on
+ ESN overflow
+Message-ID: <ar5H87hRaIpERAZ4@krikkit>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20260930144523.435271-9-Jeremy.Jean@oss.cyber.gouv.fr>
+ <ar5C8DDMwWn-30iV@krikkit>
+ <69f80ed58e34f787305f85b12eb3ecdb@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 0/6] vxlan: vnifilter: bound a single request
- and account per-VNI memory
-To: Ali Firas <alishmery18@gmail.com>, netdev@vger.kernel.org,
- idosch@nvidia.com
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- andrew+netdev@lunn.ch, horms@kernel.org, razor@blackwall.org,
- roopa@nvidia.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260927215209.2581830-1-alishmery18@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260927215209.2581830-1-alishmery18@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <69f80ed58e34f787305f85b12eb3ecdb@oss.cyber.gouv.fr>
 
-On 9/27/26 23:52, Ali Firas wrote:
-> The VNI filter interface accepts a START/END range with no bound on
-> either endpoint and no bound on how many VNIs one message may ask for,
-> and the memory it allocates per VNI is not charged to the caller's
-> cgroup.
+2026-10-01, 13:37:54 +0200, Jérémy Jean wrote:
+> Hello Sabrina,
 > 
-> Since v2, Jakub asked that the VXLAN_VNIFILTER_ENTRY nest be linked to
-> its policy with NLA_POLICY_NESTED() as patch 1:
+> On 2026-10-01 13:24, Sabrina Dubroca wrote:
+> > 2026-09-30, 14:45:24 +0000, Jérémy Jean wrote:
+> > > When the 64-bit ESN counter overflows,
+> > > xfrm_replay_overflow_offload_esn()
+> > > rejects the packet and rolls back the stored counter. It decrements
+> > > replay_esn->oseq even though only the local oseq has advanced, which
+> > > can later induce a reuse of the last sequence number and the
+> > > corresponding AES-GCM nonce. Both IPv4 and IPv6 are affected, yet,
+> > > processing about 2^64 packets under a single key is required to
+> > > trigger this bug, which is highly unlikely in regular use cases.
+> > > 
+> > > Leave the stored low word unchanged on overflow. The high word still
+> > > needs to be restored because it was already incremented.
+> > 
+> > nit: using "low word" and "high word" instead of the actual variable
+> > names doesn't help the readability of your commit messages
 > 
->    https://lore.kernel.org/netdev/20260921150904.65a704eb@kernel.org/
-> 
-> Patch 1 does that. Without it the entry attributes were validated only
-> as each entry was dispatched, so a multi-entry message whose later
-> entry was invalid had the earlier entries applied and notified before
-> the message was rejected. With the nest linked the whole message is
-> validated up front and a bad entry rejects the message as a unit and
-> installs nothing.
-> 
-> Patches 2 and 3 bound a single request: patch 2 range-validates both
-> endpoints to the 24-bit VNI space, and patch 3 caps the number of VNIs
-> one request may add or delete, summed over its entries, at 4096. Both
-> add and delete walk the span one VNI at a time under rtnl_lock, so both
-> are bounded; that walk is the cost, not the memory.
-> 
-> Patch 4 clamps the dump. vxlan_vnifilter_dump_dev() coalesces a
-> contiguous run with no bound, so a device populated by several requests
-> could dump a single entry that patch 3 then refuses on replay. Patch 4
-> clamps the merged run to the same limit, so dump output is always
-> re-enterable; the selftest installs more than the limit, dumps it, and
-> replays what the dump reported.
-> 
-> Patch 5 charges the per-VNI node and its per-CPU stats block to the
-> cgroup of the task that created the VNI, so the memory a device grows one
-> VNI at a time is accounted the way the device's own queues, ethtool
-> state and NAPI config already are (commit c948f51c1654 ("memcg: enable
-> accounting for net_device and Tx/Rx queues")).
-> 
-> Patch 6 adds the selftests.
-> 
-> The cap is symmetric, applied to add and delete alike, which is what
-> Ido asked for when he agreed to a 4k limit. Patch 4 is what makes that
-> safe: because the dump is clamped to the same constant, the kernel never
-> reports a contiguous run that its own input path would reject, so a
-> device holding more than 4096 VNIs can still be torn down by replaying
-> what "bridge vni show" reports. Device teardown itself
-> (vxlan_vnigroup_uninit()) is not a netlink message and is not subject to
-> the cap.
-> 
-> uAPI changes, all of them:
-> 
->    - a VNI at or above 2^24, previously accepted and stored (and
->      truncated on the wire), is now rejected with -ERANGE;
->    - a single request asking to add or delete more than 4096 VNIs, summed
->      over its entries, is now rejected with -EINVAL -- "bridge vni add
->      dev X vni 1-10000" used to be accepted;
->    - a request rejected by the entry policy, aimed at a missing or
->      non-vnifilter device, now returns that policy error rather than
->      -ENODEV or -EOPNOTSUPP, because the nest is validated before the
->      device is resolved (patch 1);
->    - "bridge vni show" now splits a contiguous run longer than the limit
->      into several entries instead of one (patch 4); the set of VNIs it
->      reports is unchanged.
-> 
-> This is a policy and hardening change, not a fix for a crash or
-> corruption; it targets net-next and should not be backported.
-> 
-> One pre-existing semantic is worth review: an entry that carries only
-> END and no START is treated as the range [0, END], so a lone END near
-> the top of the space is a whole-space request that the cap now rejects;
-> whether END-without-START should mean that is left as an open question.
-> 
-> Not addressed here:
-> 
->    - vxlan_vni_add_del() still leaves the earlier VNIs of a range
->      installed if an allocation fails partway through it; with the cap
->      that is now bounded to fewer than 4096 VNIs. A fix needs a
->      transaction and overlaps a separate rollback change, so it is left
->      out.
->    - a lone VNI 0 dumps as a START-only entry the input path refuses
->      ("vni start nor end found"), and a stats dump carries per-entry
->      stats the input path refuses; both predate this series and are
->      unrelated to the limit.
+> Right, I could specify that. How do you suggest I do that? Should I send
+> a v2 for this single 7/7 patch, resend a v2 for the full 7-patch series
+> (possibly in a couple of days in case there are some other public
+> comments), or another option? Thanks.
 
-Sashiko complain WRT partial accounting of patch 5/6 looks legit.
+Unless there are other reasons to send a v2 (ie some more important
+issues in a patch/in the series), or if someone requests it, then no,
+it's not necessary. That's just a preference in wording (and possibly
+just mine, maybe it doesn't bother anyone else).
 
-Also it would make sense to reword a bit the commit message of patch 1 and
-2 to reflect the above.
+In general, do not resend a single patch, always the full series.
 
-/P
-
+-- 
+Sabrina
