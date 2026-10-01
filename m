@@ -1,68 +1,288 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134F318EC5;
-	Thu,  1 Oct 2026 13:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE56457E71
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861016; cv=none; b=l6gqcfwlGL6L48aXnh6ew3YKLYJhdh0kxq3l2DYte6e1kDUnto3BT4YToat6eCi6meL+AZNHO0q60lr29VKx60+9ouvow4WtZ24T2erI9fezQDtbedaFmtRRxbMgZvbe+RzeFw3E3U7BMz5huc7yWI+3ZpFcqbOQD3BS+ZkqWdQ=
+	t=1790861105; cv=none; b=O7awzHXrz7SKKC+xbrpHjCd7OmEu7lBPqzu06fywfrZKXzVpRvOAR4o/m5QzjidRNQN/y+if4aLhZ6DayOTxteQZJvEqblZU0RZ3P8S9Lp7Sy18ME0bqLOlZKDp1waNo2Qc2jkND+DZFKeOkSq4rS3oYK+GHp99SiErUXtUfUX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861016; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=raivRcametrNPEfThIaJw9YOiX8JbFbTo1JkEnoEwYjaIzDzSsad0Jvc6os+P7DqrNiflbtAI9hiPG/gZmXwL1GBZDLQjX1x8aI8EnCTyfk5lA17B4TJVYc4TEvrJxmkyOwXU/iYcSfh6rw5vPy6zOJDm9KzUg9bbwlCqHkaOHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtK1U6tj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790861105; c=relaxed/simple;
+	bh=bKEhngSTdOWAobD8kbcSFYfPW7ASIUTEtOnuAzsok04=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZCfPrGpyYQwygRFSjvwluYTjEgjMjBXkWxMpTkqqcgPWhjujOdOlqslLs7Pk7zO3JG+Kf/wkU2gJtcIdGwJDohzw336zEldRd+iT4M1qRbjOxDCqvRKH4tR6Wf9RmZixhTehMGUnteqz/WPRMaCqsAHag1TDtOIAj5uUwEdY2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=LaJcbJA+; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=OWRHD/pP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtK1U6tj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CBF1F00898;
-	Thu,  1 Oct 2026 13:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790861015;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CtK1U6tjipayBbhRqxMgCOx6DgloCpvFJGooNT5Isle/1fwyo9kd1/OmaD8WPqGlc
-	 DJkrQkqcEPg4EzcxruWMhFiSOCYbIVZiHiD/s8dqhzDmjED7OrJbLjwAoL9ZIOf7at
-	 DgG2ycro1euKXPF/V0diWX1KCgTVlzCuLiw083INBB4pe2I3duAe8EWaQju6VYeIQ4
-	 VCuiSuR384SK30Y3XHE6E+Bvsj0zYifboDqMJyb2qeH11Cz4KOM8dbvBvKQysWZ7qb
-	 NeNP1W6xrzZFdyQCesKb57XGnLOjs7bpBYZ2IzthadZTnACdXOpO6c7Rr3pv3epiXf
-	 f++3qFiqGd+Fg==
-From: netdev-bot+sinfo@kernel.org
-To: Artem Novikov <naa@amicon.ru>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, lvc-project@linuxtesting.org, rrv@amicon.ru,
- pchelkin@ispras.ru, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.10] vxlan: Fix potential null-ptr-deref in
- vxlan_gro_prepare_receive().
-Date: Thu, 01 Oct 2026 13:23:34 +0000
-Message-ID: <179086101460.31693.11225223420004934540@kernel.org>
-In-Reply-To: <20261001132038.21173-1-naa@amicon.ru>
-References: <20261001132038.21173-1-naa@amicon.ru>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="LaJcbJA+";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="OWRHD/pP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C40E1FCDE;
+	Thu,  1 Oct 2026 13:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1790861090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EkdAt2tjeG0DVsSkb60vrOBbXzl07n/nww2722sVb4g=;
+	b=LaJcbJA+CBsTFZaZw6f3fALOEfb1PqbcnpKmUzI/oCWAV3OC9AMRHfLUjZODNNYk5EDOEc
+	FXMXlIdd96z3CcsakzgPzWjzQq3FkcotngnNiBI5u/wH7XxNqdLaH3ObpvPawJ31GRUAmu
+	1aJreIiHBLbtFwgegCFFBpUhovbjsZ8=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1790861086; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EkdAt2tjeG0DVsSkb60vrOBbXzl07n/nww2722sVb4g=;
+	b=OWRHD/pP0Tie6nkyCNXsf/Lg2sTGBeaXkss6f2Dk/kG4QNDN8ulouf3/PoJKWoL9Z7ASj0
+	NCSGqvEGRngB+G+b+36LJg27fN44GNH0AG82sJypB4PMs3TqR3Wzmrm4OXyMbj3HcocojV
+	QveVwalyygwWgAfjy8Y1b4tX3VIQh7Q=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 224FB13B76;
+	Thu,  1 Oct 2026 13:24:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aVouNR1fvmq9LAAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Thu, 01 Oct 2026 13:24:46 +0000
+From: Oliver Neukum <oneukum@suse.com>
+To: pkshih@realtek.com,
+	netdev@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>
+Subject: [RFT] net: wireless: rtl8xxxu: do not embed URBs
+Date: Thu,  1 Oct 2026 15:24:26 +0200
+Message-ID: <20261001132443.553875-1-oneukum@suse.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.991];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-Hi!
+The USB layer is deprecating the embedment of URBs into
+other data structures. Allocate them separately.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/core.c  | 67 ++++++++++++-------
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  6 +-
+ 2 files changed, 45 insertions(+), 28 deletions(-)
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index bddbd0990de7..4d4e56830ae6 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -5097,7 +5097,7 @@ static void rtl8xxxu_free_tx_resources(struct rtl8xxxu_priv *priv)
+ 	list_for_each_entry_safe(tx_urb, tmp, &priv->tx_urb_free_list, list) {
+ 		list_del(&tx_urb->list);
+ 		priv->tx_urb_free_count--;
+-		usb_free_urb(&tx_urb->urb);
++		usb_free_urb(tx_urb->urb);
+ 	}
+ 	spin_unlock_irqrestore(&priv->tx_urb_lock, flags);
+ }
+@@ -5148,12 +5148,11 @@ static void rtl8xxxu_free_tx_urb(struct rtl8xxxu_priv *priv,
+ 
+ static void rtl8xxxu_tx_complete(struct urb *urb)
+ {
+-	struct sk_buff *skb = (struct sk_buff *)urb->context;
++	struct rtl8xxxu_tx_urb *tx_urb = urb->context;
++	struct sk_buff *skb = tx_urb->skb;
+ 	struct ieee80211_tx_info *tx_info;
+ 	struct ieee80211_hw *hw;
+ 	struct rtl8xxxu_priv *priv;
+-	struct rtl8xxxu_tx_urb *tx_urb =
+-		container_of(urb, struct rtl8xxxu_tx_urb, urb);
+ 
+ 	tx_info = IEEE80211_SKB_CB(skb);
+ 	hw = tx_info->rate_driver_data[0];
+@@ -5592,13 +5591,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ 	if (priv->rtl_chip == RTL8710B || priv->rtl_chip == RTL8192F)
+ 		tx_desc->csum = ~tx_desc->csum;
+ 
+-	usb_fill_bulk_urb(&tx_urb->urb, priv->udev, priv->pipe_out[queue],
+-			  skb->data, skb->len, rtl8xxxu_tx_complete, skb);
++	tx_urb->skb = skb;
++	usb_fill_bulk_urb(tx_urb->urb, priv->udev, priv->pipe_out[queue],
++			  skb->data, skb->len, rtl8xxxu_tx_complete, tx_urb);
+ 
+-	usb_anchor_urb(&tx_urb->urb, &priv->tx_anchor);
+-	ret = usb_submit_urb(&tx_urb->urb, GFP_ATOMIC);
++	usb_anchor_urb(tx_urb->urb, &priv->tx_anchor);
++	ret = usb_submit_urb(tx_urb->urb, GFP_ATOMIC);
+ 	if (ret) {
+-		usb_unanchor_urb(&tx_urb->urb);
++		usb_unanchor_urb(tx_urb->urb);
+ 		rtl8xxxu_free_tx_urb(priv, tx_urb);
+ 		goto error;
+ 	}
+@@ -5826,7 +5826,7 @@ static void rtl8xxxu_free_rx_resources(struct rtl8xxxu_priv *priv)
+ 				 &priv->rx_urb_pending_list, list) {
+ 		list_del(&rx_urb->list);
+ 		priv->rx_urb_pending_count--;
+-		usb_free_urb(&rx_urb->urb);
++		usb_free_urb(rx_urb->urb);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&priv->rx_urb_lock, flags);
+@@ -5851,9 +5851,9 @@ static void rtl8xxxu_queue_rx_urb(struct rtl8xxxu_priv *priv,
+ 		if (priv->rx_urb_pending_count > RTL8XXXU_RX_URB_PENDING_WATER)
+ 			schedule_work(&priv->rx_urb_wq);
+ 	} else {
+-		skb = (struct sk_buff *)rx_urb->urb.context;
++		skb = (struct sk_buff *)rx_urb->urb->context;
+ 		dev_kfree_skb_irq(skb);
+-		usb_free_urb(&rx_urb->urb);
++		usb_free_urb(rx_urb->urb);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&priv->rx_urb_lock, flags);
+@@ -5896,9 +5896,9 @@ static void rtl8xxxu_rx_urb_work(struct work_struct *work)
+ 		default:
+ 			dev_warn(&priv->udev->dev,
+ 				 "failed to requeue urb with error %i\n", ret);
+-			skb = (struct sk_buff *)rx_urb->urb.context;
++			skb = (struct sk_buff *)rx_urb->urb->context;
+ 			dev_kfree_skb(skb);
+-			usb_free_urb(&rx_urb->urb);
++			usb_free_urb(rx_urb->urb);
+ 		}
+ 	}
+ }
+@@ -6544,11 +6544,10 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 
+ static void rtl8xxxu_rx_complete(struct urb *urb)
+ {
+-	struct rtl8xxxu_rx_urb *rx_urb =
+-		container_of(urb, struct rtl8xxxu_rx_urb, urb);
++	struct rtl8xxxu_rx_urb *rx_urb = urb->context;
+ 	struct ieee80211_hw *hw = rx_urb->hw;
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+-	struct sk_buff *skb = (struct sk_buff *)urb->context;
++	struct sk_buff *skb = rx_urb->skb;
+ 	struct device *dev = &priv->udev->dev;
+ 
+ 	skb_put(skb, urb->actual_length);
+@@ -6557,7 +6556,7 @@ static void rtl8xxxu_rx_complete(struct urb *urb)
+ 		priv->fops->parse_rx_desc(priv, skb);
+ 
+ 		skb = NULL;
+-		rx_urb->urb.context = NULL;
++		rx_urb->urb->context = NULL;
+ 		rtl8xxxu_queue_rx_urb(priv, rx_urb);
+ 	} else {
+ 		dev_dbg(dev, "%s: status %i\n",	__func__, urb->status);
+@@ -6592,12 +6591,13 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
+ 		return -ENOMEM;
+ 
+ 	memset(skb->data, 0, rx_desc_sz);
+-	usb_fill_bulk_urb(&rx_urb->urb, priv->udev, priv->pipe_in, skb->data,
+-			  skb_size, rtl8xxxu_rx_complete, skb);
+-	usb_anchor_urb(&rx_urb->urb, &priv->rx_anchor);
+-	ret = usb_submit_urb(&rx_urb->urb, GFP_ATOMIC);
++	rx_urb->skb = skb;
++	usb_fill_bulk_urb(rx_urb->urb, priv->udev, priv->pipe_in, skb->data,
++			  skb_size, rtl8xxxu_rx_complete, rx_urb);
++	usb_anchor_urb(rx_urb->urb, &priv->rx_anchor);
++	ret = usb_submit_urb(rx_urb->urb, GFP_ATOMIC);
+ 	if (ret)
+-		usb_unanchor_urb(&rx_urb->urb);
++		usb_unanchor_urb(rx_urb->urb);
+ 	return ret;
+ }
+ 
+@@ -7435,7 +7435,14 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
+ 
+ 			goto error_out;
+ 		}
+-		usb_init_urb(&tx_urb->urb);
++		tx_urb->urb = usb_alloc_urb(0, GFP_KERNEL);
++		if (!tx_urb->urb) {
++			kfree(tx_urb);
++			if (!i)
++				ret = -ENOMEM;
++
++			goto error_out;
++		}
+ 		INIT_LIST_HEAD(&tx_urb->list);
+ 		tx_urb->hw = hw;
+ 		list_add(&tx_urb->list, &priv->tx_urb_free_list);
+@@ -7456,14 +7463,22 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
+ 
+ 			goto error_out;
+ 		}
+-		usb_init_urb(&rx_urb->urb);
++		rx_urb->urb = usb_alloc_urb(0, GFP_KERNEL);
++		if (!rx_urb->urb) {
++			kfree(rx_urb);
++			if (!i)
++				ret = -ENOMEM;
++
++			goto error_out;
++		}
+ 		INIT_LIST_HEAD(&rx_urb->list);
+ 		rx_urb->hw = hw;
+ 
+ 		ret = rtl8xxxu_submit_rx_urb(priv, rx_urb);
+ 		if (ret) {
+ 			if (ret != -ENOMEM) {
+-				skb = (struct sk_buff *)rx_urb->urb.context;
++				struct rtl8xxxu_rx_urb *u = rx_urb->urb->context;
++				skb = u->skb;
+ 				dev_kfree_skb(skb);
+ 			}
+ 			rtl8xxxu_queue_rx_urb(priv, rx_urb);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index eeb18eb0e4c0..06cf743605c2 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1948,15 +1948,17 @@ struct rtl8xxxu_vif {
+ };
+ 
+ struct rtl8xxxu_rx_urb {
+-	struct urb urb;
++	struct urb *urb;
+ 	struct ieee80211_hw *hw;
+ 	struct list_head list;
++	struct sk_buff *skb;
+ };
+ 
+ struct rtl8xxxu_tx_urb {
+-	struct urb urb;
++	struct urb *urb;
+ 	struct ieee80211_hw *hw;
+ 	struct list_head list;
++	struct sk_buff *skb;
+ };
+ 
+ struct rtl8xxxu_fileops {
+-- 
+2.55.0
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
