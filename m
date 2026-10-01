@@ -1,186 +1,186 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BE346F494
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4AD4E4333
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790848872; cv=none; b=SHDujX7GHx9DM+8CEsx9g+d7UrzEniuDRoK0uT1mkXe7fhpreP+ftDMA7U0nEurgAPr7x6QQ1+PyJC5LpyFeqQ1zWiM81JkCfXFG2yKdTeefOrSs/sThEZ2zoyWm69/NRK4TugfpCA8qe6O0+dSXqQ9rm1O4KZEVIkI2XuJVYrg=
+	t=1790849445; cv=none; b=snmwVu7aGctIYnROzXwii34f5rEH9TtcKghImFl9aYU+7ThlTUQIjQcbm1uN4aHiNenSduVlfZRXWhZXb37I+hdTtH2ojz1RDcQLOu7+x92dNzZkmStd2e79IpbD2AgY6HsBq/MOMJZkh7GZoR5Qx28ii2bJ040n7gEKp9yHQUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790848872; c=relaxed/simple;
-	bh=ipiq9H8XzNQS+o0+COYIT39cFbKB4Awtyn7z3MAMDvI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c/iUCI4AZTY671BUVL7Ltu4zPKD1NqJkoZ8MpcK63ExxCLoqCRlFrO/DlcVOj96oa8UGLIRppJizroL/BKoa9jFjbNIIHI+68d510AuanblEV5j09it3FPm5/PKp8OVys7TPg1BGVW3INznhpyzGv7rdadeWZwwOlMxhx6PUdy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bmzJnsBD; arc=none smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790849445; c=relaxed/simple;
+	bh=9YK4hCnYv8I6A3yvfWPHNJTQ59B0MN5L7s7SJTGrPkA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=V2QjZHlnlY5d280Pr5eUaN1WCvfOb0MHpC9E/M4eNx174EXweyreZULEy1ETsHZiWR+KUiZGsDG2J0NYDq84qJj9Emd7bk6zCUu0tgRU0c8aRWo44kxB6iE0oUq+9Gs7pNE9JUDKyLIkwCR+acKzT6m+fjbxy32nWJQLO/M3NG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLRlIm8r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bmzJnsBD"
-Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93c5818c4a4so430882685a.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 03:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790848869; x=1791453669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=esnKie285mrgRlYsWWtvumiQ8ekXK64tqRDiZaGoaeo=;
-        b=bmzJnsBDt5N1w9D/imk8FNrWCye+R8KYUXb9Ld1Fa9C4zOyx1KbqnswcGz0YZEar4q
-         pdaegERJk4xbwqbTJzjisXfaSbJyuQf+bhEWFUMK6sw9wrDJClKKTrVTdPWPL5Qmf2hf
-         Gois91/QodIa8DmginwSnaHlv2hMIihuz75PA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790848869; x=1791453669;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=esnKie285mrgRlYsWWtvumiQ8ekXK64tqRDiZaGoaeo=;
-        b=gQA0YzyWhhV7XeZFPQZp2i1hHMpY3dFP3inU+4olS5RcyEVcPkEY6VZJX7+D6RS7pY
-         vTuk7L/U128/gqqbvzNdXbUcl3TUxk259FncU6jeItron6sdvNsdD8tFYXDS5Sjc3/dy
-         Our4gWb5Iolgs1lKMrlKUhlWJtAQ+uf0/NaPPWeg5fC4kuvZOCwwuFZKMMMJdht9rdtz
-         evKo5Y7y8d3eX0nje+KY+zI+OkneK2w6JztJqu8r6nLUC534+kbt/ECzeyG7RhCVt5Xr
-         vGYMjAEp5/Mp5Hf7EyKGceWNUYoz3kxx8kByIaa7geakRMjOsbVOoyGagq4JHK6i/naF
-         Yxxg==
-X-Gm-Message-State: AFuF++m4QyaWQfWMNCkmkYLGtislZp2MsWSAAY+R16IMvBcU3q7hDxfq
-	nr4lxsuSFeXxzAfkZFf2yLhrskRDRkGQEqUdT0ys+hE+TlAAzEmulXoV8aRd2nY4nYm9gELzgA5
-	dUp52Mw==
-X-Gm-Gg: AYBFou2URMDLc5j2ZQLNAfTJ9Ei6w2JTBOmPspY1WkIDKC3YlKd/Qo3Kf+qnBPkSS+L
-	8pm7xjmr10tRJzghARpqXYjPC3jqd+q4+1ez7MYvfrZAx8uiQEvkxsWxde9N2RuI1wi1P4sI8qh
-	5JvcwHdsjKleTB4OgmE9fH4XeXHOYRASd079G8JkiYsVAWoedMM2GpV/RvrhLAikUUgwEcjKbrm
-	K5uA+juiK7NC3i34Nob3cn1h6L6kXE/t/5WZiEHL/EtMBbkosCKyETcWb2bPwJ8ACQ9D8EUEiiS
-	pz3Cs/XjrOiiMT02UIE94TGZf5uu1dULiXuwRlaIV7AVDx+Bc8O8Ogw8JoizTrPvNYbwOPAtQWo
-	5pLKW7WK/KO2sw+h4mGs7K4SMTIwogrAZ9rILYYH1iIo2jDOaHF+OSfhN1ZqpJ96W4ts1kRQ7Ky
-	iXMsS/G7QPunVRyEOGdDlSRsjydclAwX2Iqi3byiqReU9FhSdnwCbk9kxQDn95tkTbNcOz6p+gp
-	CcF+zLnfZE47ogd8nyBSd5/EfR5VGSJidybqHuxJhdp2cJJSwgKdnclYPjc
-X-Received: by 2002:a05:620a:2253:10b0:93c:bb75:d8f0 with SMTP id af79cd13be357-93cbb75f281mr147814085a.27.1790848868695;
-        Thu, 01 Oct 2026 03:01:08 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cb657a11csm176651085a.35.2026.10.01.03.01.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 03:01:07 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	sashiko-bot@kernel.org,
-	hybris <hybris@mojatatu.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/sched: act_gate: reject oversized dumps instead of wrapping them
-Date: Thu,  1 Oct 2026 06:00:54 -0400
-Message-Id: <QDISC-H19Z.v1.20261001053234@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLRlIm8r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52EA1F00899;
+	Thu,  1 Oct 2026 10:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790849429;
+	bh=WJorM2EtzzH95Xd1l8U0gNldIVFjJeiAV6lkiYM15bo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cLRlIm8rKqRPygqyuL900K/75GEZNZ16SeFyIY7LR7fpE7OU8q2eJFkkpZ7vHlYZI
+	 vsOBSANx7s3Z1WqjA3pn3ePqhUlCQCsUMt1BdigBlW2iv+5hegzODi3+xVu+EZWIZ6
+	 kJP70Etu9zMVFvkVSSmGBXpvqlafWEy+6B1cvuhzhGxnJv77ksUWe+2ZWQcHuzVqsT
+	 fuGJ/Qyf6XbGr1yB8WJqAXOUTf24WBzITOKFkIs7w99r5dBoHY2VaBZJfYeRy6H6pn
+	 svsvR9+RnuP8E7nVYYO/6ohq1pZfwQ9sjlGL0ClDJY+gJCNGqQKxfqrTagj8MNMDPY
+	 xPvXCfF5oEA5g==
+Subject: Re: [PATCH net-next 5/9] batman-adv: tt: only queue local del event
+ after successful unlink
+From: netdev-bot+sashiko@kernel.org
+To: sw@simonwunderlich.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org
+Date: Thu, 01 Oct 2026 10:10:28 +0000
+Message-ID: <179084942832.434549.10138352246210429649@kernel.org>
+In-Reply-To: <20260930094558.3723766-6-sw@simonwunderlich.de>
+References: <20260930094558.3723766-6-sw@simonwunderlich.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This is a follow-up to commit cfa165cbfbed ("net/sched: act_gate: budget
-the per-entry list in get_fill_size") caught by Sashiko.
-cfa165cbfbed sized the add/get reply from the action's real dump but did
-not bound the entry count. An oversized gate therefore installs and its
-dump emits a structurally corrupt message instead of failing cleanly.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Sashiko also flagged the enlarged reply as potentially something that
-will crash the kernel with a memory-amplification / OOM vector.
-We were able to recreate this using panic_on_oom=1 (128 concurent
-threads GET on a VM sized at 1024M). In the past we have used
-panic_on_oom=1; however,  I am weighing-in that: if i have to
-create a crash using panic_on_oom=1 then that is a "hardening" issue
-and therefore left to net-next. See the discussion with Jakub
-(https://lore.kernel.org/netdev/20260914191108.55a1a4f1@kernel.org/).
-Note: The issue is resolvable using an entry-count cap, but:
-an entry-count cap would also reject gate configurations that work today,
-so it cannot justify a stable backport - so policy cap is for net-next;
-this patch closes only the malformed uAPI the sizing fix introduced.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-parse_gate_list() accepts any number of TCA_GATE_ONE_ENTRY elements; the
-only bound is the nlattr header, whose u16 nla_len caps the request at
-~5460 minimal 12-byte entries. That is fine for the request, but
-tcf_gate_dump() emits ~36 bytes per entry, so past ~1820 entries the
-TCA_GATE_ENTRY_LIST nest exceeds U16_MAX and nla_nest_end() writes a
-wrapped length. The enclosing TCA_ACT_OPTIONS and per-action nests wrap
-the same way, and the outermost TCA_ACT_TAB wraps first, at ~1815
-entries, so an oversized reply is already corrupt from there on.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Close those four wrap-capable nests with nla_nest_end_safe(). It returns
--EMSGSIZE instead of writing a wrapped length, and each site already has
-an error label that trims and fails the dump. The output is byte
-identical for every message that serializes; a message that would wrap
-now fails through the same path that returned a clean error before
-cfa165cbfbed, so no configuration that works today changes behavior.
+- [High] The fix is incomplete, and the reordering opens a new window.
+- [Low] The commit fixes a TT announcement bug but has no Fixes: tag.
 
-Conditions to recreate the bug: CONFIG_NET_SCH_ACT_GATE=y; install a gate
-with 1815 or more minimal TCA_GATE_ONE_ENTRY elements (12 bytes each on
-the wire, only TCA_GATE_ENTRY_INTERVAL set) and dump it with
-RTM_GETACTION. Up to 1814 entries the reply is well formed; from 1815 the
-outermost TCA_ACT_TAB nest length wraps (1821 for the innermost
-TCA_GATE_ENTRY_LIST). CONFIG_DEBUG_NET=y (default n) additionally trips a
-WARN in nla_nest_end(). Installing the gate needs CAP_NET_ADMIN in a user
-namespace; the RTM_GETACTION trigger needs no capability once the gate
-exists.
+--
 
-Fixes: cfa165cbfbed ("net/sched: act_gate: budget the per-entry list in get_fill_size")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.4143642-1-victor@mojatatu.com
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/act_api.c  | 9 ++++++---
- net/sched/act_gate.c | 3 ++-
- 2 files changed, 8 insertions(+), 4 deletions(-)
+batman-adv: tt: only queue local del event after successful unlink
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index e45a63be397c..c7e87491a9fc 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -549,7 +549,8 @@ tcf_action_dump_1(struct sk_buff *skb, struct tc_action *a, int bind, int ref)
- 		goto nla_put_failure;
- 	err = tcf_action_dump_old(skb, a, bind, ref);
- 	if (err > 0) {
--		nla_nest_end(skb, nest);
-+		if (nla_nest_end_safe(skb, nest) < 0)
-+			goto nla_put_failure;
- 		return err;
- 	}
- 
-@@ -1270,7 +1271,8 @@ int tcf_action_dump(struct sk_buff *skb, struct tc_action *actions[],
- 			tcf_action_dump_1(skb, a, bind, ref);
- 		if (err < 0)
- 			goto errout;
--		nla_nest_end(skb, nest);
-+		if (nla_nest_end_safe(skb, nest) < 0)
-+			goto nla_put_failure;
- 	}
- 
- 	return 0;
-@@ -1684,7 +1686,8 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
- 	if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
- 		goto out_nlmsg_trim;
- 
--	nla_nest_end(skb, nest);
-+	if (nla_nest_end_safe(skb, nest) < 0)
-+		goto out_nlmsg_trim;
- 
- 	nlh->nlmsg_len = skb_tail_pointer(skb) - b;
- 
-diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-index 6d6d45e03c07..14801c604bd9 100644
---- a/net/sched/act_gate.c
-+++ b/net/sched/act_gate.c
-@@ -654,7 +654,8 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
- 			goto nla_put_failure;
- 	}
- 
--	nla_nest_end(skb, entry_list);
-+	if (nla_nest_end_safe(skb, entry_list) < 0)
-+		goto nla_put_failure;
- 
- 	tcf_tm_dump(&t, &gact->tcf_tm);
- 	if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
+This commit moves the BATADV_TT_CLIENT_DEL event in
+batadv_tt_local_remove_now() so it runs after batadv_hash_remove(). A
+delete event is now only queued when this exact entry was unlinked. The
+goal is to stop cancelling the pending add event of another local entry
+with the same MAC and VLAN.
+
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1-sw%40simonwunderlich.de?part=8
+
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1-sw%40simonwunderlich.de?part=8
+> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+
+[Severity: Low]
+
+This isn't a runtime bug, but should this have a Fixes: tag?
+
+The problem seems to come from bbfb0d2cf035 ("batman-adv: tt: remove only
+the entry which was looked up from the hash"). That commit changed the
+unlink in batadv_tt_local_remove() from batadv_compare_tt to
+batadv_compare_tt_entry. It kept the unconditional delete event in front
+of the unlink.
+
+931de98d3960 ("batman-adv: tt: extract immediate purge of a local entry")
+only moved that code into batadv_tt_local_remove_now().
+
+Other fixes in the same series have Fixes: tags, for example "batman-adv:
+tt: queue local DEL event under bucket lock". Perhaps something like:
+
+Fixes: bbfb0d2cf035 ("batman-adv: tt: remove only the entry which was looked up from the hash")
+
+> diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> index 354d9416c1b75..c904d67791f8f 100644
+> --- a/net/batman-adv/translation-table.c
+> +++ b/net/batman-adv/translation-table.c
+> @@ -1496,8 +1496,6 @@ batadv_tt_local_remove_now(struct batadv_priv *bat_priv,
+>  	struct batadv_tt_common_entry *common = &tt_local_entry->common;
+>  	struct hlist_node *tt_removed_node;
+>  
+> -	batadv_tt_local_event(bat_priv, tt_local_entry, BATADV_TT_CLIENT_DEL);
+> -
+>  	/* remove exactly this object when still present in hash */
+>  	tt_removed_node = batadv_hash_remove(bat_priv->tt.local_hash,
+>  					     batadv_compare_tt_entry,
+> @@ -1505,6 +1503,8 @@ batadv_tt_local_remove_now(struct batadv_priv *bat_priv,
+>  	if (!tt_removed_node)
+>  		return;
+>  
+> +	batadv_tt_local_event(bat_priv, tt_local_entry, BATADV_TT_CLIENT_DEL);
+> +
+
+[Severity: High]
+
+Does this reordering open a new window in which a replacement entry's add
+event gets dropped?
+
+batadv_hash_remove() takes and releases the bucket list_lock before it
+returns. batadv_tt_local_event() only takes tt.changes_list_lock after
+that. Nothing seems to serialize this gap against batadv_tt_local_add()
+called from batadv_interface_tx() for the same MAC and VID.
+
+The remove side can be reached from a remote TT announcement:
+
+batadv_tt_global_add()
+  batadv_tt_global_purge_local()
+    batadv_tt_local_remove()
+      batadv_tt_local_remove_now()
+
+Consider entry E, which is still NEW and has a queued add event:
+
+CPU0 (remove path)
+batadv_hash_remove(E)
+  /* E unlinked, its add event still queued */
+
+CPU1 (batadv_tt_local_add())
+batadv_tt_local_hash_find()      /* misses E */
+batadv_tt_local_create()         /* new entry E' */
+batadv_hash_add(E')
+batadv_tt_local_event(E', BATADV_NO_FLAGS)
+  /* same addr/vid as E's pending add, so only flags are updated */
+
+CPU0
+batadv_tt_local_event(E, BATADV_TT_CLIENT_DEL)
+  /* matches the remaining add by addr/vid only */
+  if (del_op_requested != del_op_entry) {
+      list_del(&entry->list);
+      kmem_cache_free(batadv_tt_change_cache, entry);
+      changes--;
+
+E' is then in tt.local_hash with BATADV_TT_CLIENT_NEW set and no add
+event queued. The commit message says this should be prevented.
+
+Later packets from the client do not queue it again, because
+batadv_tt_local_add_existing() returns false for a NEW entry that is not
+PENDING.
+
+If local_changes drops to 0, batadv_tt_local_commit_changes_nolock()
+returns early and E' stays unannounced. A later unrelated commit would
+move E' into the CRC through batadv_tt_local_transition_new() without an
+add diff. Neighbours would then see a CRC mismatch and fall back to full
+table requests.
+
+Before this patch the delete event was queued while E was still in the
+hash. An add that ran after the unlink would then get a fresh add event
+that nothing cancels.
+
+The later patches in the series don't seem to change this part of
+batadv_tt_local_remove_now().
+
+Could the delete event instead be queued inside the same bucket list_lock
+critical section as the unlink, and only when this exact object was
+found? batadv_tt_local_set_pending() in "batman-adv: tt: queue local DEL
+event under bucket lock" already takes list_lock and then
+changes_list_lock in that order.
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930094558.3723766-2-sw%40simonwunderlich.de
