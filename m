@@ -1,161 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF723CEB99
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 17:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195193E2ADF;
+	Thu,  1 Oct 2026 17:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790874664; cv=none; b=WGWjPr7IdvrSrjMQHB3gQ+x5tA5xv8pX/6+skukkCvAUP09PLfC7XE9bpTbXtxDWoMHoc/Bjhd7YKb6FbYjJEdcxGg+e0R1VcJkxaaDBGU191Fa0gtKt4iQZr03/T+nkCU0+57XAl3anbr5DmU7HTRveCPq/WJrkfUSODW+yexg=
+	t=1790874826; cv=none; b=hI7tqh+NWTZBTSxtBY1KNkQqZOQtmiq4wrOIzjobU9/G3aRhm7k/s+I76CkoklqH2qofEjyf9bRg1U4LYw/EtN303qnliked8khsgc+ewiPFnn+nAHp6Pzkh3e7gE4ZBzgc2hEz0yZLROZvJfJ2WQROMVPlLueCuW1iTGbOSkvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790874664; c=relaxed/simple;
-	bh=oUETVrVJExWdhW13tm5MBBnCnu7Z5z65PJsfBBSuQfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f900pM+ZPBbQK3WRe9oxFSqsPRaqkSZeypKGlRmtFPz/DQ99cuE1bcUBI9gqdqd2j75ojvSn6pd1Z1x2rzNAsuZIA7nfF4ldZUR3MvFpbXxHIQ85HBcc86LxUA3vf5FipS4lECX6I99DPGfg6QLpqbys/ZIo9KXt30xRnNWPIi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSmCohpT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790874826; c=relaxed/simple;
+	bh=lhq8JKa61aTi2bOedB2Rr/BQnnWBa3OKYCB3YEzC3dc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HyPXwG5VkKkughA55khicV8K6VfMLJeXZa0KbRRSkUj/TiyJsTtiK7ScUckzZ3fWg/XiNEsFwcH/FcjRv3/qk9nLjc/LyIaDGl21M+ilh4cYEYPZ4L/cMby/IEuQcvxQoa0dEKRPCpLKMI0MSxG69J/FthSfaMiBrLeb1EMJXFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pu4Nr4N0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSmCohpT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CE11F00899
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 17:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790874658;
-	bh=IA/am7YNVkxu5vpwQaw1YqVXm2VnBSzLpG9L9GfghwA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iSmCohpTxQYBwU1lBDXrCLI+n88ZM9RdfJ9c1ux+hgEORDqJFicuBjfJp8hv3yNbD
-	 UQFKDfF+4EboJGsWygV3nWRhmr2uEKcOLB2XJ9xsfEqCczFIcX8MAi+pd1uAq0DaG8
-	 n/5h5wxEmg2D5BXDKASsKPNjKK8FkX9wmXQeAk2GRTFCTDOwYfk5Ihl758hnkOFs31
-	 pszsv0WX/VSPP1yUlmWw1OKf1/AhTap3P1y+VPqhWE1mS2m5EgvZwaNtfp3wbsW0kP
-	 fn9YBL9mpgl/xcDa2EUE0RE7c4cBWU7iX3MAKPM89MdnwuT6bUjw+IGXeVPCchFR4T
-	 SjSzaLm/yDQ+w==
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-47b5043f191so3497091fac.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 10:10:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxHt2VWV29FRkWRqWuuQuvYCnUN2VNurj1vgLxke02X6u5fSeiTH/ds9/0UASeZbF9MRF3AZ7M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI8h6IzgYZeC2Q8KDG9r9Q52tZHOTl20BXfYmBSZ0Z26codmsLi
-	33nlDBOFUcABIabEJA6SQ9upWwszodBYnTME9i1g46ZshVJGBUbWTjN+piwmX1uIFcXxtRQ3Hlx
-	Wq+4375k/LYBmePjS6WcQq5Xil+neNRo=
-X-Received: by 2002:a05:6870:9a06:b0:457:494b:1548 with SMTP id
- 586e51a60fabf-49e15a22f16mr168481fac.5.1790874657391; Thu, 01 Oct 2026
- 10:10:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pu4Nr4N0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 146D6C2BCC7;
+	Thu,  1 Oct 2026 17:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790874825;
+	bh=lhq8JKa61aTi2bOedB2Rr/BQnnWBa3OKYCB3YEzC3dc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Pu4Nr4N0SCi9iwuahSsPUdyfOR56ompJLH+Bhfm1/eFG/ix/XPZD6JJArSmt0gYPx
+	 0OSN1c5VQh4CiC1ZWcR7USgV4SGLLH/P1LvrvfMEQ2lnmbP3C40b697yUI2/NAA7k0
+	 DKWoDz7giesPUpqTnzO9lgEoArUVlUVuq+9wECDdnWbju7PrLr9yyJLS76GQxVOqH8
+	 fxmwqMuiXmQ/grX6JecJF0x3kAdTLSS9s2St5jL7az3Z4jnghisaxDFhFe8c99Cxym
+	 5w7/z/8G0DTvp+IjcXyAACjmQiKrXA7nl9hdghlwUujCbxWUK7BAt/d8orpNDPxepI
+	 4ax8ZceHlJ6Ww==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E308BCA5FD4;
+	Thu,  1 Oct 2026 17:13:44 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Thu, 01 Oct 2026 19:13:29 +0200
+Subject: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
+ PM restore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930172957.897342-1-edumazet@kernel.org> <d6170c1d-d8cf-4fd5-b0f2-361b89902fe7@intel.com>
-In-Reply-To: <d6170c1d-d8cf-4fd5-b0f2-361b89902fe7@intel.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 1 Oct 2026 19:10:46 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiipep_WhfWBGov3vbOCLNKd0oQzFkX413AMU6V5DNN5Pmw@mail.gmail.com>
-X-Gm-Features: AclHuK9iM7NCupkbSfyKzxtwHTuNZNzk8CuZvISYHDcZ2p5_y7TUsi_mQ-WN1pY
-Message-ID: <CAL4Wiipep_WhfWBGov3vbOCLNKd0oQzFkX413AMU6V5DNN5Pmw@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: inline eth_type_trans() fast path
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	edumazet@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMAwAf2Xk2UAzYaK/Ij50bapRaCXpxmDs3
+ +3c4x3crWCswga3bgXlWUxKbkCnDsLL5yejxMbQu34g5whnK+GDylaLMk4+oXGOSClcztcheRo
+ jtPirnGT5j++QucLjkDaNbw51X8K2/QCBE6SYfwAAAA==
+X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790874824; l=4969;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=OzDITxghnCYWCrZYjn50doFti2WNlSPFkziXexLwJqE=;
+ b=gJV0ZugB4Fep9rZp+kEVHlD38YYd8UmQENkr+fukRe8g1yhWWzWG6WECTSs6uOS/yFvZZY7R9
+ ORFIua46Ha4Aa1Cz94X/RmyKurU7eskGPowCKDtVwxCAjCLjlIM8ofH
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
 
-On Thu, Oct 1, 2026 at 5:58=E2=80=AFPM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Edumazet@kernel.org <edumazet@kernel.org>
-> Date: Wed, 30 Sep 2026 19:29:57 +0200
->
-> > eth_type_trans() is called once per received packet by most
-> > Ethernet drivers, and by core helpers (napi_gro_frags(),
-> > xdp_build_skb_from_*(), veth, tun, tunnels, loopback...).
-> >
-> > With CONFIG_MITIGATION_RETHUNK / SRSO, the call and return
-> > are not free anymore.
-> >
-> > Add eth_type_trans_inline(), handling the common case inline:
-> > unicast frame sent to dev->dev_addr, with a real ethertype,
-> > on a device which is not a DSA conduit. All other frames
-> > (multicast, broadcast, otherhost, 802.2, runts, DSA)
-> > are handled by the out-of-line eth_type_trans().
-> >
-> > eth_type_trans() is now a macro calling eth_type_trans_inline(),
-> > so that all existing callers get the fast path. The out-of-line
-> > version remains exported, and can be called with
-> > (eth_type_trans)(skb, dev). bpf_prog_test_run_skb() uses this
->
-> Shouldn't it get renamed to e.g. eth_type_trans_slow() to avoid this
-> confusion?
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-This was my initial idea, but this would make the patch a bit more
-invasive and touch bpf selftests, something like:
+virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
+clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
+reallocate them (its error path is a bare "goto out" that only unlocks
+and returns), the driver is left bound with a dangling vqs[]. The next
+virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
+passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
+use-after-free. KASAN on a guest with a virtio-vsock device, after a
+restore made to fail by fault injection:
 
-Let me know if I should send a V2 and CC bpf maintainers, thanks!
+  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+  Read of size 4 at addr ... by task repro
+   virtqueue_detach_unused_buf
+   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+   virtio_vsock_remove
+   virtio_dev_remove
+   ... unbind_store
+  Freed by task ...:
+   kfree
+   vp_del_vqs
+   virtio_vsock_freeze          <- the preceding freeze freed the vq
+  Allocated by task 1:
+   vring_create_virtqueue
+   virtio_vsock_vqs_init
+   virtio_vsock_probe           <- original allocation at probe
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 513354e928cb58f837fdc93a77f2e896de1ef916..8f4e9dd18001a4c32455fefd74f=
-e38db270756d1
-100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1165,7 +1165,8 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog,
-const union bpf_attr *kattr,
-                        goto out;
-                }
-        }
--       skb->protocol =3D eth_type_trans(skb, dev);
-+       /* Always call the out-of-line version, for fentry/fexit selftests.=
- */
-+       skb->protocol =3D eth_type_trans_slow(skb, dev);
-        skb_reset_network_header(skb);
+The object is the RX vring_virtqueue freed during the freeze;
+vsock->vqs[RX] still points at it. virtqueue_detach_unused_buf() does
+not guard a NULL vq, so a bare NULL-out is not enough on its own.
 
-        switch (skb->protocol) {
-diff --git a/tools/testing/selftests/bpf/progs/core_kern.c
-b/tools/testing/selftests/bpf/progs/core_kern.c
-index 004f2acef2eb0b0d80184423a3e8ba399feee1f3..fca26af98a7b92898a4adfde19f=
-63b342f29db74
-100644
---- a/tools/testing/selftests/bpf/progs/core_kern.c
-+++ b/tools/testing/selftests/bpf/progs/core_kern.c
-@@ -47,14 +47,14 @@ int BPF_PROG(tp_xdp_devmap_xmit_multi, const
-struct net_device
-        return randmap(from_dev->ifindex, from_dev);
+Clear vsock->vqs[] after del_vqs() in virtio_vsock_vqs_del(), skip the
+detach loops when a vq pointer is NULL, and also clear the array when
+virtio_find_vqs() fails partway in virtio_vsock_vqs_init() (which can
+leave freed pointers behind). This mirrors virtio_blk
+commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
+failed resume") and virtio_rtc commit 548d2208455f ("virtio: rtc: tear
+down old virtqueues before restore"); virtio_console carries the same
+stale-pointers-after-failed-restore fix.
+
+Testing: reproduced on a private VM with a KASAN fuzz kernel based on
+v7.3-rc5. The restore allocation failure was forced with CONFIG_FAILSLAB
+steered by the fault-injection stacktrace filter to the virtio-vsock
+restore path only; a guest-root program drives a pm_test=devices
+freeze/restore cycle (so .restore returns -ENOMEM) and then unbinds the
+device. The unfixed kernel reports the slab-use-after-free above; with
+this patch the same run makes restore fail identically yet produces no
+KASAN report. checkpatch.pl --strict is clean and the build is
+warning-free. The reproducer is available on request.
+
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+ net/vmw_vsock/virtio_transport.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..0553c0641fd2 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -714,8 +714,15 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
++		/*
++		 * On a partial failure virtio_find_vqs() can leave freed
++		 * virtqueue pointers in vsock->vqs[]; clear them so a later
++		 * virtio_vsock_vqs_del() does not detach a freed virtqueue.
++		 */
++		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ 		return ret;
++	}
+ 
+ 	virtio_vsock_update_guest_cid(vsock);
+ 
+@@ -782,19 +789,30 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 	virtio_reset_device(vdev);
+ 
+ 	mutex_lock(&vsock->rx_lock);
+-	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+-		kfree_skb(skb);
++	if (vsock->vqs[VSOCK_VQ_RX])
++		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
++			kfree_skb(skb);
+ 	mutex_unlock(&vsock->rx_lock);
+ 
+ 	mutex_lock(&vsock->tx_lock);
+-	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
+-		kfree_skb(skb);
++	if (vsock->vqs[VSOCK_VQ_TX])
++		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
++			kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
+ 
+ 	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+ 
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
++
++	/*
++	 * del_vqs() has freed the virtqueues. Clear the stale pointers: if a
++	 * later virtio_vsock_restore() fails to allocate new ones, the driver
++	 * stays bound with a dangling vqs[] and the next virtio_vsock_vqs_del()
++	 * would detach a freed virtqueue (use-after-free). Mirrors virtio_blk
++	 * commit 0739c2c6a015.
++	 */
++	memset(vsock->vqs, 0, sizeof(vsock->vqs));
  }
+ 
+ static int virtio_vsock_probe(struct virtio_device *vdev)
 
--SEC("fentry/eth_type_trans")
-+SEC("fentry/eth_type_trans_slow")
- int BPF_PROG(fentry_eth_type_trans, struct sk_buff *skb,
-             struct net_device *dev, unsigned short protocol)
- {
-        return randmap(dev->ifindex + skb->len, dev);
- }
+---
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
 
--SEC("fexit/eth_type_trans")
-+SEC("fexit/eth_type_trans_slow")
- int BPF_PROG(fexit_eth_type_trans, struct sk_buff *skb,
-             struct net_device *dev, unsigned short protocol)
- {
-diff --git a/tools/testing/selftests/bpf/progs/kfree_skb.c
-b/tools/testing/selftests/bpf/progs/kfree_skb.c
-index 7236da72ce8055f9a0165d3b4334a04d17d110b8..678c15c151944b44e276cf1280c=
-77cb436ff7b10
-100644
---- a/tools/testing/selftests/bpf/progs/kfree_skb.c
-+++ b/tools/testing/selftests/bpf/progs/kfree_skb.c
-@@ -114,7 +114,7 @@ struct {
-        bool fexit_test_ok;
- } result =3D {};
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
 
--SEC("fentry/eth_type_trans")
-+SEC("fentry/eth_type_trans_slow")
- int BPF_PROG(fentry_eth_type_trans, struct sk_buff *skb, struct
-net_device *dev,
-             unsigned short protocol)
- {
-@@ -132,7 +132,7 @@ int BPF_PROG(fentry_eth_type_trans, struct sk_buff
-*skb, struct net_device *dev,
-        return 0;
- }
 
--SEC("fexit/eth_type_trans")
-+SEC("fexit/eth_type_trans_slow")
- int BPF_PROG(fexit_eth_type_trans, struct sk_buff *skb, struct net_device =
-*dev,
-             unsigned short protocol)
- {
