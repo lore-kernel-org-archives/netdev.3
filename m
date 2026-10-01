@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDF4EF14B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9E4D2ED7;
 	Thu,  1 Oct 2026 09:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790846018; cv=none; b=WzjauIg67UZ2biZZoE5mRJ2rBPT5woty1oasawXdhZECmuHQbWpO5pNRxovt62R9OBt31SZ7lZVeeXPj44I/hdGIfOj2QPCzeA+FF0K4euLPLTAtPo9tfZ4tXYU7ETBGmqei0GY5wMGENJ4Mu000alKeKnJlEsXBA1kyhjD1PH4=
+	t=1790846018; cv=none; b=qWS05930ebTA/aRllvImXlORQqzIuYMlJ4/VkXgAoL/o0EZpLNvFs/0ZWomYR5g7P3UjjHwm9aixdBTsCNDUOs9PgGR2DSmfkNQzsVfsAZ4uvoChK81NHrqlRZm7e4adcY6+cTUm+LWQHm+RGHiQcZxcFU/9gacOCLx150Mt8I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790846018; c=relaxed/simple;
-	bh=tsPZb/Jor7Mv2MoJ0siSZBZKbbmPFn61DWoKEQwfu0g=;
+	bh=4pZyqCJ5YhsQIyVSiYBsOGWYzPqKgYa4HiND+uLIDtU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hyLeeFpsmg0r96uKY0K7jkFnZ2xYtW1VUNzkmyCubFSc3Vrs65TZj+vIOyqecGgFcyL0cqiZMn0V5egTpjyGuxmtRSGODwsOv1GYv7Y54TSK/3rS4xW4D0VDigM+GkWlxlfymwiGFKiXBR1j065duEdVF1xoNJOkwGpshz5iRsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPzNAIRw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=eHGukXfmW+ELJIvUWQIvB0pChYkbz8oEcgr42tLgZY2F1dcuVWhzN2bxcSdGQFe0v5vJBeIReAeEIWRRyFMTi2sldKYrERzXZ0B2CQB7GiwmCnG0ZsDvOxB+zwxT1rFqsRjzbqpRYlyuuNtdeGDa2Y0Bli/9LPubB3oaTEA2odk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HreUikyP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPzNAIRw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EBE1F00898;
-	Thu,  1 Oct 2026 09:13:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HreUikyP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69B01F000FF;
+	Thu,  1 Oct 2026 09:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790846014;
-	bh=dCdcbtPrUPPEA62rE4AhM2/O/gSL+NYG2hz9IXm35BQ=;
+	s=k20260515; t=1790846012;
+	bh=MqS1QtIJieQo69+yO6R1p5ROhvTTvH62rYXwYuKa3TU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UPzNAIRwMBJrGutCBFZG+Tlke2HnvcmQs6z+O6Fh5PqNzUBkJa+SSnF+dDsLJlfRN
-	 m2fSmZz7mWKVdBt/JbOuaq8ZBv31ShEb9FGsluuGIJsqKx+JfIW0b4lWymm0+FknYy
-	 SuaoOoqd7LFyLr1E1cbPq1sdhCaWLIfGOfIl/7b/CpjoecMWu/u0sK4oW6hfSxRHv0
-	 QovQ9PLtzcymCweW5MYx+DBzvh9i6kf028W1WQO4SZUJwKfnZsmchAfHDjenjztATc
-	 QGnizKLyGFIyWnC+G+OVVM9GnpqAnD9EkcLRDig1TvMar9Pn6OOUUXEz9QkpbXSk+2
-	 1mzPVWF8XQXpw==
-Subject: Re: [net-next, v4 02/10] bnge: add NTUPLE/ARFS VNIC
+	b=HreUikyPOcfKbhSlFiDEScvPOiu1g7PNaeBWsK8CJGfYYG1oO3guRXSzSVS3pErXG
+	 cNv1X40h9gMif9oCDCqWHqDrWzl4ovM6mIMZxUliEjXjNpCwFg3V9VF2X7IQ2GDJEQ
+	 7GnFJf1qmBhY/fqQLnwvENlBKxHLLcS0YvgenyLiBY/rytWooEgqOlmd1wb47zwlX0
+	 eM8gaYO8IpnpefBeGLcuGfmNtyaPKFgYCdJZvTUMwJeXSoa5DH9Q1LELyoCOazi0Xb
+	 F9GdTl5K2kXsHhsHDVCl7hZTXH7mnDroKlusIyKHiefqYhhP9gb4yoi1Vk+wlZqNt3
+	 15HUuo+D3l7bg==
+Subject: Re: [net-next, v4 01/10] bnge: restructure VNIC and filter code
 From: netdev-bot+sashiko@kernel.org
 To: vikas.gupta@broadcom.com
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
@@ -35,11 +35,11 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
  vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
  dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
-Date: Thu, 01 Oct 2026 09:13:32 +0000
-Message-ID: <179084601290.434549.17111390596408514056@kernel.org>
-In-Reply-To: <20260928061307.1172344-3-vikas.gupta@broadcom.com>
-References: <20260928061307.1172344-3-vikas.gupta@broadcom.com>
-X-sashiko-severity: Medium
+Date: Thu, 01 Oct 2026 09:13:31 +0000
+Message-ID: <179084601149.434549.2509756647246460199@kernel.org>
+In-Reply-To: <20260928061307.1172344-2-vikas.gupta@broadcom.com>
+References: <20260928061307.1172344-2-vikas.gupta@broadcom.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,318 +49,236 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 5
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The commit message does not describe everything the patch
+  changes.
 
-- [Medium] bnge_alloc_and_setup_vnic() (bnge_vnic.c) allocates the NTUPLE
-  VNIC in firmware with bnge_hwrm_vnic_alloc() and then calls…
-- [Medium] Any bnge_alloc_rfs_vnic() failure during open, including a
-  transient HWRM or firmware error, makes bnge_init_chip() clear…
-- [Low] At this commit, bnge_set_dflt_rfs() adds NETIF_F_NTUPLE to
-  hw_features and features, and ndo_fix_features/ndo_set_features let…
-- [Low] The reservation side and the allocation side use different
-  conditions.
-- [Low] On aRFS VNIC allocation failure, bnge_init_chip() writes directly
-  to bn->netdev->features (&= ~NETIF_F_NTUPLE) from the ndo_open path.
-- [Low] The patch adds the first runtime read-modify-write of bd->flags
-  on the ndo_open path: 'bd->flags &= ~BNGE_EN_ARFS_CAP' in…
-- [Low] bnge_arfs_capable() (bnge_resc.c) sends HWRM_FUNC_CFG through
-  bnge_hwrm_reserve_rings() with only vnic and rss_ctx set, so…
+Pre-existing issues:
+- [Medium] The RSS arrays are sized for at most 8 contexts, but the
+  context count that indexes them has no upper bound.
+- [Medium] bnge_cal_nr_rss_ctxs() returns too few RSS contexts for some
+  ring counts, so some receive queues never appear in the default…
+- [Medium] At this commit, a duplicate unicast MAC shares one refcounted
+  filter, which causes a firmware filter leak and a double firmware free.
 
 --
 
-bnge: add NTUPLE/ARFS VNIC
+bnge: restructure VNIC and filter code
 
-This commit adds a second VNIC for NTUPLE/aRFS. On aRFS-capable devices
-it reserves the extra VNIC and RSS contexts and turns NETIF_F_NTUPLE on
-by default. It also adds ndo_fix_features and ndo_set_features, so
-NTUPLE can be changed only while the interface is down.
+This patch moves the VNIC and L2 filter code out of bnge_netdev.c, and the
+default RSS indirection table helper out of bnge_resc.c, into new
+bnge_vnic.c/h and bnge_filter.c/h files. The commit message describes it
+as a reorganization with no functional change, in preparation for
+multi-VNIC, RSS context and NTUPLE filter support.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index 9e64b1933c023..c6b9048586b36 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> Move VNIC and L2 filter code out of bnge_netdev.c into dedicated
+> bnge_vnic.c/h and bnge_filter.c/h files in preparation for multi-VNIC,
+> RSS context, and NTUPLE filter support.
+>
+> This is a code reorganization with no functional change, which helps
+> centralize the functions into their respective modules.
+
+[Severity: Low]
+This isn't a bug, but does this description cover everything the patch
+changes? Besides moving code out of bnge_netdev.c, the patch also:
+
+- renumbers constants while turning them into enums: BNGE_FLTR_TYPE_L2
+  goes from 2 to 1, BNGE_FLTR_FW_DELETED from 2 to 1,
+  BNGE_VNIC_MCAST_FLAG from 4 to BIT(1) and BNGE_VNIC_UCAST_FLAG from 8
+  to BIT(2)
+
+- renames the struct bnge_filter_base members hash and list to hlist and
+  list_node
+
+- renames bnge_rss_ctxs_in_use() to bnge_get_total_rss_ctxs() and drops
+  the rx_rings argument of bnge_get_total_vnics()
+
+- narrows types: j in bnge_fill_hw_rss_tbl() goes from u32 to u16, the
+  ring ids now go through a u16 temporary, and the loop counter in
+  bnge_set_dflt_rss_indir_tbl() goes from int to u16
+
+- makes bnge_set_dflt_rss_indir_tbl() and bnge_hwrm_vnic_rss_cfg()
+  non-static, and moves bnge_set_dflt_rss_indir_tbl() out of
+  bnge_resc.c, not bnge_netdev.c
+
+All of these values seem to stay inside the driver, so runtime behaviour
+looks unchanged. Even so, the removed and added lines can't be checked
+against each other as a pure move.
+
+Could the commit message list these changes? Another option is to split
+the patch into a pure move followed by a cleanup.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_filter.c b/drivers/net/ethernet/broadcom/bnge/bnge_filter.c
+> new file mode 100644
+> index 0000000000000..a8bb441ebef9a
+> --- /dev/null
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_filter.c
+> @@ -0,0 +1,113 @@
 
 [ ... ]
 
-> @@ -2546,6 +2548,18 @@ static int bnge_init_chip(struct bnge_net *bn)
->  	if (rc)
->  		goto err_out;
->  
-> +	if ((bn->priv_flags & BNGE_NET_EN_NTUPLE) && bnge_is_arfs_cap(bd)) {
-> +		rc = bnge_alloc_rfs_vnic(bn);
-> +		if (rc) {
-> +			netdev_warn(bn->netdev,
-> +				    "Failed to allocate aRFS VNIC (%d), disabling ARFS\n",
-> +				    rc);
-> +			bd->flags &= ~BNGE_EN_ARFS_CAP;
+> +static struct bnge_l2_filter *bnge_lookup_l2_filter(struct bnge_net *bn,
+> +						    struct bnge_l2_key *key,
+> +						    u32 idx)
+> +{
+> +	struct bnge_l2_filter *fltr;
+> +
+> +	rcu_read_lock();
+> +	fltr = __bnge_lookup_l2_filter(bn, key, idx);
+> +	if (fltr)
+> +		refcount_inc(&fltr->refcnt);
+> +	rcu_read_unlock();
+> +	return fltr;
+> +}
+
+[ ... ]
+
+> +int bnge_hwrm_set_vnic_filter(struct bnge_net *bn, u16 vnic_id, u16 idx,
+> +			      const u8 *mac_addr)
+> +{
+> +	struct bnge_l2_filter *fltr;
+> +	struct bnge_l2_key key;
+> +	int rc;
+> +
+> +	ether_addr_copy(key.dst_mac_addr, mac_addr);
+> +	key.vlan = 0;
+> +	fltr = bnge_alloc_l2_filter(bn, &key, GFP_KERNEL);
+> +	if (IS_ERR(fltr))
+> +		return PTR_ERR(fltr);
+> +
+> +	fltr->base.fw_vnic_id = bn->vnic_info[vnic_id].fw_vnic_id;
+> +	rc = bnge_hwrm_l2_filter_alloc(bn->bd, fltr);
 
 [Severity: Medium]
-Does clearing BNGE_EN_ARFS_CAP here turn a transient firmware error into
-a permanent loss of the feature?
+This is a pre-existing issue that this patch only moves. What happens when
+a unicast address matches a filter already in bn->l2_fltr_hash_tbl?
 
-The only code that sets this bit is in bnge_net_init_dflt_config(), and
-that function is only reached from bnge_probe_one():
+For example, "bridge fdb add <own-mac> dev X self" ends up in
+dev_uc_add_excl(). At this commit, bnge_cfg_rx_mode() copies every uc
+entry and does not skip dev_addr.
 
-    if (bnge_arfs_capable(bd, false))
-        bd->flags |= BNGE_EN_ARFS_CAP;
+In that case bnge_alloc_l2_filter() returns the existing object, with an
+extra reference taken in bnge_lookup_l2_filter().
+bnge_hwrm_set_vnic_filter() still calls bnge_hwrm_l2_filter_alloc() on
+that object, and this overwrites its only firmware handle:
 
-After one failed open, bnge_fix_features() drops NTUPLE from every later
-request:
+bnge_hwrm_l2_filter_alloc() {
+    ...
+    fltr->base.filter_id = resp->l2_filter_id;
+    ...
+}
 
-    } else if ((features & NETIF_F_NTUPLE) && !bnge_is_arfs_cap(bn->bd)) {
-        features &= ~NETIF_F_NTUPLE;
+l2_filters[0] and l2_filters[i] then point to the same object. On
+teardown, is the same filter_id freed twice in firmware while the first
+firmware filter leaks?
 
-hw_features still advertises NETIF_F_NTUPLE. So "ethtool -K <dev> ntuple
-on" silently does nothing until the driver is reloaded.
-
-This fallback also leaves bn->nr_vnics at 2, and vnic_info[1] may be only
-half configured. Later in bnge_init_chip(), bnge_set_tpa() still walks
-that VNIC. If HWRM_VNIC_TPA_CFG fails there, the code takes goto err_out.
-
-Could that fail the same open this fallback is meant to save? That part
-depends on how the firmware treats the half-configured VNIC.
-
-[Severity: Low]
-Can this read-modify-write of bd->flags race with
-bnge_rdma_aux_device_add()?
-
-bnge_probe_one() registers the netdev in bnge_netdev_alloc() before it
-calls bnge_rdma_aux_device_add(). If auxiliary_device_add() fails, that
-path does this with no lock held:
-
-    auxiliary_device_uninit(aux_dev);
-    bd->flags &= ~BNGE_EN_ROCE;
-
-The update here runs under rtnl and the netdev instance lock, so the two
-writers share no lock. Userspace can open the new netdev at the same
-time. If both paths fail together, one of the two plain u64 updates can
-be lost. For example, BNGE_EN_ARFS_CAP could reappear after open decided
-to disable aRFS.
-
-Before this patch, bd->flags was only written during probe or on that aux
-path, so this race is new. The window is small and needs two failures at
-the same time.
-
-> +			bn->priv_flags &= ~BNGE_NET_EN_NTUPLE;
-> +			bn->netdev->features &= ~NETIF_F_NTUPLE;
-
-[Severity: Low]
-Is it fine to write netdev->features directly from the ndo_open path?
-
-Documentation/networking/netdev-features.rst says netdev->features
-"should be changed only by network core or in error paths of
-ndo_set_features callback".
-
-The direct write skips the feature recalculation and the
-NETDEV_FEAT_CHANGE notification. The netdev_update_features() call added
-to bnge_close() then computes the same set, which is already cleared. So
-no notification is ever sent for this on-to-off change.
-
-Would calling netdev_update_features() here work instead? ndo_open
-already holds rtnl and the instance lock.
-
-> +		}
-> +	}
-> +
-
-[ ... ]
-
-> @@ -3233,6 +3285,18 @@ static void bnge_init_ring_params(struct bnge_net *bn)
->  	bn->netdev->cfg->hds_thresh = max(BNGE_DEFAULT_RX_COPYBREAK, rx_size);
->  }
->  
-> +static void bnge_set_dflt_rfs(struct bnge_net *bn)
-> +{
-> +	bn->netdev->hw_features &= ~NETIF_F_NTUPLE;
-> +	bn->netdev->features &= ~NETIF_F_NTUPLE;
-> +	bn->priv_flags &= ~BNGE_NET_EN_NTUPLE;
-> +	if (bnge_is_arfs_cap(bn->bd)) {
-> +		bn->netdev->hw_features |= NETIF_F_NTUPLE;
-> +		bn->netdev->features |= NETIF_F_NTUPLE;
-> +		bn->priv_flags |= BNGE_NET_EN_NTUPLE;
-> +	}
-> +}
-
-[Severity: Low]
-With this patch, NETIF_F_NTUPLE is advertised and on by default, and it
-can be toggled through ndo_fix_features and ndo_set_features. Is the code
-behind the feature there yet?
-
-At this commit:
-
-- bnge_netdev_ops has no ndo_rx_flow_steer.
-- rx_cpu_rmap is never allocated.
-- bnge_ethtool_ops has no get_rxnfc or set_rxnfc.
-
-So "ntuple-filters: on" is reported and "ethtool -N" returns -EOPNOTSUPP.
-An extra firmware VNIC and extra RSS contexts are also reserved for a
-feature that does nothing yet.
-
-Later patches in the series fill this in:
-
-- "bnge: add NTUPLE filter support in ethtool" adds get_rxnfc and
-  set_rxnfc.
-- "bnge: add aRFS flow steering ndo support" adds ndo_rx_flow_steer.
-- "bnge: add cpu_rmap support for IRQ affinity" allocates rx_cpu_rmap
-  after that.
-
-Since rx_cpu_rmap only shows up after ndo_rx_flow_steer exists, nothing
-can crash in the meantime. Would it make sense to advertise
-NETIF_F_NTUPLE only once that code is in place?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> index 69a894b52485e..c7024e75f9257 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-
-[ ... ]
-
-> @@ -190,11 +200,18 @@ int bnge_cal_nr_rss_ctxs(u16 rx_rings)
->  static u16 bnge_get_total_rss_ctxs(struct bnge_dev *bd,
->  				   struct bnge_hw_rings *hwr)
->  {
-> -	return bnge_cal_nr_rss_ctxs(hwr->grp);
-> +	u16 rss_ctx = bnge_cal_nr_rss_ctxs(hwr->grp);
-> +
-> +	rss_ctx *= hwr->vnic;
-> +
-> +	return rss_ctx;
->  }
->  
->  static u16 bnge_get_total_vnics(struct bnge_dev *bd)
->  {
-> +	if (bnge_is_arfs_cap(bd))
-> +		return 2;
-> +
->  	return 1;
->  }
-
-[Severity: Low]
-Should this check BNGE_NET_EN_NTUPLE rather than BNGE_EN_ARFS_CAP?
-
-The reservation side keys on the capability. On capable devices,
-bnge_reserve_rings() and bnge_need_reserve_rings() always ask for 2
-VNICs, and bnge_get_total_rss_ctxs() doubles the RSS context count.
-
-The allocation side keys on the flag the user controls:
-
-bnge_alloc_vnics():
-    if (bn->priv_flags & BNGE_NET_EN_NTUPLE)
-        num_vnics++;
-
-After "ethtool -K <dev> ntuple off" with the interface down, the next
-open still reserves 2 VNICs and twice the RSS contexts in firmware, but
-uses only one VNIC. For comparison, bnxt_get_total_vnics() keys on the
-enabled flag BNXT_FLAG_RFS.
-
-[ ... ]
-
-> @@ -563,6 +580,44 @@ static int bnge_alloc_rss_indir_tbl(struct bnge_dev *bd)
->  	return 0;
->  }
->  
-> +/* If runtime conditions support RFS */
-> +bool bnge_arfs_capable(struct bnge_dev *bd, bool new_rss_ctx)
-> +{
-
-[ ... ]
-
-> +	if (hwr.vnic <= bd->hw_resc.resv_vnics &&
-> +	    hwr.rss_ctx <= bd->hw_resc.resv_rsscos_ctxs)
-> +		return true;
-> +
-> +	bnge_hwrm_reserve_rings(bd, &hwr);
-> +	if (hwr.vnic <= bd->hw_resc.resv_vnics &&
-> +	    hwr.rss_ctx <= bd->hw_resc.resv_rsscos_ctxs)
-> +		return true;
-> +
-> +	dev_warn(bd->dev, "Unable to reserve resources to support NTUPLE filters\n");
-> +	return false;
-> +}
-
-[Severity: Low]
-If firmware grants only part of this request, does anything release the
-extra resources?
-
-bnge_hwrm_reserve_rings() is called with only vnic and rss_ctx set, and
-its return value is ignored. Suppose firmware grants fewer than 2 VNICs
-but all the RSS contexts. This function then warns and returns false,
-and the partial grant stays in place.
-
-bnxt_rfs_capable() re-reserves with vnic = 1 on this path. Here,
-bnge_need_reserve_rings() checks resv_vnics but never resv_rsscos_ctxs:
-
-    if (hw_resc->resv_rx_rings != rx || hw_resc->resv_cp_rings != cprs ||
-        hw_resc->resv_vnics != vnic || hw_resc->resv_stat_ctxs != stat)
-
-So the extra RSS contexts seem to stay reserved to this function
-indefinitely.
+This appears to be fixed later in the series by "bnge: remove refcount
+from L2 filter". That commit makes bnge_alloc_l2_filter() return
+ERR_PTR(-EEXIST) on a lookup hit. The final bnge_cfg_rx_mode() also
+skips entries equal to dev->dev_addr.
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c b/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
-> index 3a6c8f0a59541..d98a6196c859c 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
+> new file mode 100644
+> index 0000000000000..3a6c8f0a59541
+> --- /dev/null
 > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
+> @@ -0,0 +1,100 @@
 
 [ ... ]
 
-> +static int bnge_alloc_and_setup_vnic(struct bnge_net *bn,
-> +				     struct bnge_vnic_info *vnic,
-> +				     u16 rx_rings)
+> +void bnge_set_dflt_rss_indir_tbl(struct bnge_dev *bd)
 > +{
-> +	int rc;
+> +	u16 max_entries, pad;
+> +	u32 *rss_indir_tbl;
+> +	u16 i;
 > +
-> +	rc = bnge_hwrm_vnic_alloc(bn->bd, vnic, rx_rings);
-> +	if (rc) {
-> +		netdev_err(bn->netdev, "hwrm vnic %u alloc failure rc: %d\n",
-> +			   vnic->vnic_id, rc);
-> +		return rc;
-> +	}
+> +	max_entries = bnge_get_rxfh_indir_size(bd);
+> +	rss_indir_tbl = &bd->rss_indir_tbl[0];
 > +
-> +	/* If bnge_setup_vnic() fails, the VNIC allocated above is not freed
-> +	 * here; the caller (bnge_init_chip) unwinds via its err_out path.
-> +	 */
-> +	return bnge_setup_vnic(bn, vnic);
-> +}
+> +	for (i = 0; i < max_entries; i++)
+> +		rss_indir_tbl[i] = ethtool_rxfh_indir_default(i,
+> +							      bd->rx_nr_rings);
 
 [Severity: Medium]
-Is this comment accurate? In the bnge_init_chip() hunk above, a failure
-from bnge_alloc_rfs_vnic() only logs a warning and clears
-BNGE_EN_ARFS_CAP, BNGE_NET_EN_NTUPLE and NETIF_F_NTUPLE. Then it carries
-on without jumping to err_out.
+This isn't a bug introduced by this patch, since the logic is unchanged.
+Still, can max_entries be too small for some ring counts?
 
-Suppose bnge_hwrm_vnic_alloc() succeeds and bnge_setup_vnic() fails
-partway. The firmware VNIC and any RSS contexts already allocated by
-bnge_hwrm_vnic_ctx_alloc() then stay in firmware while the interface is
-up.
+bnge_get_rxfh_indir_size() returns bnge_cal_nr_rss_ctxs(rx_nr_rings) * 64.
+bnge_cal_nr_rss_ctxs() calls bnge_adjust_pow_two(rx_rings - 1, 64):
 
-bn->nr_vnics stays 2, so bnge_set_tpa() still sends HWRM_VNIC_TPA_CFG to
-the half-configured vnic_info[1]:
+bnge_resc.h:bnge_adjust_pow_two() {
+	u32 blks = total_ent / ent_per_blk;
 
-    for (i = 0; i < bn->nr_vnics; i++) {
-        rc = bnge_hwrm_vnic_set_tpa(bn->bd, &bn->vnic_info[i], tpa_flags);
+	if (blks == 0 || blks == 1)
+		return ++blks;
 
-bnge_hwrm_vnic_set_tpa() skips a VNIC only when its fw_vnic_id is
-INVALID_HW_RING_ID, and this VNIC has a valid ID.
+	if (!is_power_of_2(blks))
+		blks = roundup_pow_of_two(blks);
 
-Meanwhile, bnge_get_total_vnics() now returns 1, while firmware holds 2
-VNICs and their contexts. bnge_clear_vnic() frees them at close, so they
-are not held forever.
+	return blks;
+}
 
-Should this function free the VNIC when setup fails, or should
-bnge_init_chip() unwind it?
+The extra block is added only when blks is 0 or 1. With 129..192 rings,
+blks is 2 and comes back unchanged, which gives a 128-entry table. The
+same thing happens for 257..320 rings (256 entries) and 513..576 rings
+(512 entries).
+
+With 160 RX rings, would queues 128..159 never get default RSS traffic,
+both here and in bnge_fill_hw_rss_tbl()? For comparison, the bnxt helper
+bnxt_calc_nr_ring_pages() always adds one before rounding up.
+
+bnge_net_init_dflt_rings() sets rx_nr_rings to the minimum of
+netif_get_num_default_rss_queues() and the firmware limits, so it does
+not have to be a power of two.
+
+> +
+> +	pad = bd->rss_indir_tbl_entries - max_entries;
+> +	if (pad)
+> +		memset(&rss_indir_tbl[i], 0, pad * sizeof(*rss_indir_tbl));
+> +}
+
+[ ... ]
+
+> +int bnge_setup_vnic(struct bnge_net *bn, struct bnge_vnic_info *vnic)
+> +{
+> +	struct bnge_dev *bd = bn->bd;
+> +	int rc, i, nr_ctxs;
+> +
+> +	nr_ctxs = bnge_cal_nr_rss_ctxs(bd->rx_nr_rings);
+> +	for (i = 0; i < nr_ctxs; i++) {
+> +		rc = bnge_hwrm_vnic_ctx_alloc(bd, vnic, i);
+
+[Severity: Medium]
+This is a pre-existing issue, but is nr_ctxs checked against
+BNGE_MAX_CTX_PER_VNIC anywhere?
+
+bnge_hwrm_vnic_ctx_alloc() writes vnic->fw_rss_cos_lb_ctx[ctx_idx], and
+that array has BNGE_MAX_CTX_PER_VNIC (8) entries. bd->rss_indir_tbl is
+always allocated with BNGE_MAX_RSS_TABLE_ENTRIES (512) entries, and
+vnic->rss_table is sized by BNGE_MAX_RSS_TABLE_SIZE.
+
+With 577 or more RX rings, bnge_cal_nr_rss_ctxs() returns 16. Then:
+
+- this loop writes past fw_rss_cos_lb_ctx[] for i >= 8
+
+- bnge_set_dflt_rss_indir_tbl() writes 1024 entries into the 512-entry
+  rss_indir_tbl, and the u16 pad subtraction wraps
+
+- bnge_fill_hw_rss_tbl() overruns vnic->rss_table
+
+The only limit on rx_nr_rings seems to be in bnge_net_init_dflt_rings().
+It comes from netif_get_num_default_rss_queues() and the firmware ring
+limits, not from BNGE_MAX_RSS_TABLE_ENTRIES. Triggering this needs a very
+large host and matching firmware limits.
+
+Should rx_nr_rings be capped to what these arrays can hold?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928061307.1172344-1-vikas.gupta%40broadcom.com
