@@ -1,165 +1,91 @@
-Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43D5349CC1
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790818751; cv=pass; b=p0Vwn1YqsHP4h20MN7NTtHYT9HYaXfPh/JzJwp8LKL1BYgoYvOmNbcEH+SyGrjRjY1vgIxrKRLzBqhC6ZVgWlwJGPu5GE1HMbUCiKZg6L/isQn1EFjeeFARogC5y1ztOAWP5cugLra7ygGR8/3sjEzM6Aq194w3bDvt7CNYqFdw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790818751; c=relaxed/simple;
-	bh=s4uh/gNbpaY1xwR/EMAvi6OUprbAp7HHnPGYKuWDVIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZvwezQegy8Bl74SG9E0NrAs1Cj2QHqZeZntAEwKnswN5CJMN/B+v7fFjiSmrEv9/ayIMMm3M8zJi/tH6MgHsJRR4eB1nsXwB9EDt7lU4wln921/wv7W1BM2QACxsF2SzChZslJWhoiRTWwXOC3KuZ0UGcZxRXtj2TZZC5FRkZrY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hBBwJtcL; arc=pass smtp.client-ip=74.125.228.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF4E314B73;
+	Thu,  1 Oct 2026 01:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790818894; cv=none; b=ZciuRWWiWZCDFgl6ZHe68nILLV2BTEkZasBjDeb03qPi4wJlavMA5jyv9UM5Ay83nChWk7VrErFMjD2k9T4gBf8SK+TRQJLm6LwUouQwKUOmzZdBPZ/9/w4ysBQW/ITn4hwWdymC9FXq4b6AFGbWLuK2GaxoZgu7QYjTQysSJUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790818894; c=relaxed/simple;
+	bh=AMu5aylNXr2vffBZHRwSA5Tq0PF0yPy+hna7yQ5D0/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HK8XbVid5XyJbjHU5EAczJZaIa6wNOTrAxmf/EBr3O7e2XHgTcSsNBX8tocIF8V/zK3s7WK3xZuwOWDmedKkrIWYWlI/3ocap9oPgztGpLKqoVqF+/uZtP7Wmf8ThJ96D3Y6/LLMhIREFDr1Scd+1uCpGJe1MJSBk8xDy+SncOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZm91a0c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hBBwJtcL"
-Received: by mail-pz2-f37.google.com with SMTP id d2e1a72fcca58-8867466563eso357354b3a.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 18:39:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790818749; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z47J/1hHBWJVwzJ//CJqRtW+jYnTffWj2L9qQPGeZdUS35MRRUE1gVV+/8BXIxv2iG
-         Qyzpg9AunL7d/uFwwglaTbCHJRSDuxp5SmAL6mfHvuAOzfWMlDUbKN21hLLKAwJRNDul
-         fLiwhyvCNybzi0DutiFkK+3RIti4Vnv2UomIZhczrjbHuSjhxTQbT1E2uZJn+VUW93gS
-         mTICaVVmo7phs0m8Rb+QgjR5K5Ahc+thMo72CGtOhp58tJKzp6cixxm2N69Emjc9jiwf
-         YvBkpfm4CNbJUQX1MjywiCWsX00ecCdoWrxqUakg0JmRqVoRR5xbWkbGpS3DaZFpW5e6
-         dTnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=COtjRv2U/Chi0BEOZyecEHUtcNDqgHXnui5nuMUUDpo=;
-        fh=APnD8n8woj62+M2KPxhRRmjRNTgd7khgE6A0Xl+0MVs=;
-        b=IxGkbeyilsuchqe8NskUXYdcFdsgatFFw7l4X3bH2r+9KRH2/rBYfHacdINCnxHdxx
-         nG4mY3xD8dSUKYErwLMOlCHtxX5UsFmojU+CBSakkcIB8lqkDbNZSXp1e1yg4X7nAFHx
-         7FyNZ9Sg2u3CuPXWbUHvvcgL6ijg4a7Xmt6z9zU7J2WZe+bpql66poO6oJWGUKv+d9Va
-         yibQWAhg/6kilmGc2IA+HwNzvkPnWFUkZzIquHMCiE5ObFZ7zbiZpog0vqtM7s8/bgGg
-         2mnG+0amylFJB3BGp3CFEo0TVAvprCkRe3miyZ3DHhPGeSonIJ/wja91HCbeBS4KppeK
-         digA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790818749; x=1791423549; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=COtjRv2U/Chi0BEOZyecEHUtcNDqgHXnui5nuMUUDpo=;
-        b=hBBwJtcL2v4ct99hNSth1kgHpIu2ZYP25MBUuBMhLhXybX/NbA+mgHX7MbaTu6FwLy
-         uhWXERAyMyuBgf0cEiSJTRc8TnRgsIrdef/ABKJ2k/CELEDFHOqPk4nPypjbRs1Uzlsn
-         YmVUJLXDwiBe6IbwRnY/DyFMSK3XzqBjZa9Mle5KY+rzc8K925yXDb7XTYnzZI+9btpI
-         bT07DeJSPwp1IL2DFlgcB6QnPcAtnOX40kSuVnDxY4u2GprbtMaYFs7/mSDWj1p73Aav
-         qWdT9deitLQvi8hL5pHkYvO/qQy2eQR6WCx0Fdx/OLuVt0s5MsWp0vcNF9O/p0GcO3WZ
-         BIgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790818749; x=1791423549;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=COtjRv2U/Chi0BEOZyecEHUtcNDqgHXnui5nuMUUDpo=;
-        b=nqt22KNxHTMNryGuZXA4rg30PT8MiXFbiaZDS7H3OYMV61ljgZUsnAkfHzEP0HSsy5
-         9GhiRmzDcAjusR5vR+GqMaw4MyZAHMbxDqW2y1iYsDztzuO/0jl3ib8klwekGFzEFrZM
-         9cHrFyNUr2gjCVcxUvFO7YnnHtpsZM/2A0C+okejzX38LY3/vG1znJ+EI2ICSIsG+afr
-         qxrw3GNgIsWaT2FM5tMYS/8CdK55nSbYNL+XwY9Rd92hU+/OCMuxLDwH8NlPDwvTKGqR
-         WKP9h6lhU7ExbJgfvg7lt0uEX7JmBXzF7tgQKXVu3PxE5zY9gVtKeRrGUESPqBRmc2qq
-         R8/w==
-X-Forwarded-Encrypted: i=1; AKwUvBy62THEd6LyLV2lacxgNtWVg+9wKLSeSeyB6JsqunCR3RiqnnG39u3b/cPmU+nfxuVrbzxH8Ks=@vger.kernel.org
-X-Gm-Message-State: AFuF++nb/LHQYEDDJIQQeBHHAeE8OsPXNKiPowBa8XMBamUo/VZENYWM
-	6MNHj78lBNDKyba7b1ZKcI/5optYcfq7+O1d4eyVGo4fkDDcr8VMrVcuh4speqiCVg3Nvbo37MQ
-	ARQubbV270PPSY1nmny2t8JsQIpvH1Ns=
-X-Gm-Gg: AYBFou35nQUKQvDKeYIXTb1LMAhuUz9jhWQDbVggmy2grpxG2/HU92UwTVPT8u5BZd6
-	y3n1T42V5zfjnVcSUUKEkOArJnmqWoMfVMKkbpAxseRkZQeJuWPoJwrBp4eYTwrfUBtEKYJVSOW
-	9mF9qvx6FbPhjW83ehfpHgZ0/qBACVP82lnZPp03f5U/6dI4UjMzd6ZrPK0G9X6UWYq9KsfejfC
-	MyE1jRN25Iy3iEtyqZ9NhB10s5097kB/pUmMyjCFFJHH515z4ZuAWAQ7It4/hIykYYscuNXr6GJ
-	67+6HLBDlWsGPVljvUxW1tMz/tVkKtYkgrYpd+UrBm3KnEQIN8DTLCNX6jpdYGXirx6BSYWd9vJ
-	k08r8FCCZKozrLaSqVCM9e+MlnKuFn1xHeTbWm/vafQnPw0bCdsDN
-X-Received: by 2002:a05:6a00:8f0a:b0:872:a4fa:381a with SMTP id
- d2e1a72fcca58-887fc19880fmr904286b3a.2.1790818749064; Wed, 30 Sep 2026
- 18:39:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZm91a0c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67FE1F000FF;
+	Thu,  1 Oct 2026 01:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790818893;
+	bh=ipbRv8s/02qmR1TzPlsaXI2CUDRopggPwiBGwcHPXfw=;
+	h=From:To:Cc:Subject:Date;
+	b=JZm91a0cVP/VNmg6s9Vow8wv8g0O7Hl3byEQkNd+AIMnI93+dbEisiA0caUqSQQnb
+	 zdznyNrbdMc9zcx3dOwIxpzkCKkSV8q8QUuCX9Rw1bjJk1Gk30ydOM/MI3LlEqPTF2
+	 zvm6bleRDWFlmPNEbqUzvKs57nhbOVYGrk8lrSVEVci75m4Ut1qii6qB5xyvhrYMJe
+	 BbA0Erc6KaEvzCVU9oZZ6vaIozT+Pdss6yf8nbrrWArVsiMlVvDqq8zcEABR1ZjYJH
+	 XOBo1b7xL0mhCCbsXJk+hdQVqj+NLbwVsBRu6RE8MmN925CuhtvRXHSMOi8n0d7nuY
+	 ua9bxaoAtw/Gg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	hawk@kernel.org,
+	andriin@fb.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 0/5] hv_netvsc: make XDP propagation act more like bonding
+Date: Wed, 30 Sep 2026 18:41:26 -0700
+Message-ID: <20261001014131.310771-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926100359.78731-2-juny24602@gmail.com> <179072681379.434549.16278864761662817865@kernel.org>
-In-Reply-To: <179072681379.434549.16278864761662817865@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 30 Sep 2026 21:38:57 -0400
-X-Gm-Features: AclHuK_efZJOdyuA_i8_5CE0jNPJyWD2XYVuhOmF_mYEVX21bU5_QCRlfQWvRK0
-Message-ID: <CADvbK_d3uZKMbLTCbMC=S=M6Pmt0n+bt=Pdkq2vh21vzgg0VOw@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/2] sctp: hold shkey across socket migration
-To: netdev-bot+sashiko@kernel.org
-Cc: juny24602@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, david.lee@trailofbits.com, 
-	kylebot@openai.com, junvyyang@tencent.com, stable@kernel.org, 
-	corvus@tencent.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 29, 2026 at 8:06=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] The commit author, David Lee <david.lee@trailofbits.com>, has no
->   Signed-off-by line.
->
-> --
->
-> sctp: hold shkey across socket migration
->
-> sctp_sock_migrate() orphans queued tx chunks before moving the associatio=
-n
-> to the new socket. skb_orphan() calls sctp_wfree(), which can drop the la=
-st
-> reference on chunk->shkey before sctp_set_owner_w() uses it again. This
-> patch takes a temporary shkey reference in sctp_clear_owner_w() and drops
-> it in a new sctp_set_owner_w_migrate() helper, after the new owner has
-> taken its own reference.
->
-> > Fixes: 1b1e0bc99474 ("sctp: add refcnt support for sh_key")
-> > Assisted-by: Codex:gpt-5.6-sol gpt-5.5-cyber
-> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> > Acked-by: Xin Long <lucien.xin@gmail.com>
->
-> [Severity: Low]
-> This isn't a bug, but is there a Signed-off-by missing for the patch
-> author?
->
-> The Author: line is David Lee <david.lee@trailofbits.com>. The only
-> Signed-off-by is from Kyle Zeng <kylebot@openai.com>, and there is no
-> Co-developed-by tag.
->
-> The original submission for this patch seems to have come from
-> david.lee@trailofbits.com. That means the submitter has not signed off
-> either.
->
-> Documentation/process/submitting-patches.rst requires a DCO sign-off
-> from the author. checkpatch.pl reports this case as "Missing
-> Signed-off-by: line by nominal patch author".
->
-> Which of these is the intended attribution?
->
->   - Kyle Zeng is the author. The patch would then need a From: Kyle Zeng
->     line and a sign-off from the submitter.
->
->   - David Lee is the author. He would then need to add his own
->     Signed-off-by, plus a Co-developed-by for Kyle Zeng if he co-wrote
->     the patch.
->
-> The next patch in the series, "sctp: re-point retained control chunks
-> on association migration", has the same trailers.
->
-Please add Signed-off-by for the author as well:
+Currently XDP programs propagated from uppers are invisible
+to safety checks. I'm trying to fix that, but AI reviewer
+threw up a bunch of complaints about hv_netvsc. See previous
+series here:
 
-Signed-off-by: David Lee <david.lee@trailofbits.com>
+https://lore.kernel.org/20260928223648.2739371-1-kuba@kernel.org
 
-Thanks.
+That series is now on hold, let's try to sanitize the hv_netvsc
+behavior. AFAIU the main use case is to catch the VF as it appears,
+and attach it to the netvsc SW interface. If we catch the VF
+as soon as it appears we shouldn't have to worry about the VF
+already having XDP attached. Let's do what bonding does and
+refuse to attach if VF already has XDP, also refuse to attach
+if nv_netvsc has XDP but the VF refuses the propagation.
+
+All patches are from LLM reviews and LLM generated. I do not
+have access to Hyper-V. I did 6 cycles of reviews and back
+and forth with the LLM over these, so I think they should
+be okay-ish. Let's be clear tho, that I do not care one bit
+about this driver and it's brokenness is blocking core work.
+
+Jakub Kicinski (5):
+  hv_netvsc: fix the program refcount when the VF refuses XDP
+  hv_netvsc: hold the VF's instance lock when installing XDP on it
+  hv_netvsc: treat the VF's XDP program the way bonding treats a slave's
+  hv_netvsc: move a new VF to netvsc's netns from a work item
+  hv_netvsc: let the core take XDP off a netvsc device that is going
+    away
+
+ drivers/net/hyperv/hyperv_net.h |  3 +
+ drivers/net/hyperv/netvsc_bpf.c | 27 ++++++++-
+ drivers/net/hyperv/netvsc_drv.c | 98 +++++++++++++++++++++++++--------
+ 3 files changed, 103 insertions(+), 25 deletions(-)
+
+-- 
+2.55.0
+
