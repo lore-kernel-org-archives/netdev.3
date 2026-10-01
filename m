@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032BE388E74
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6EB4052CD
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829552; cv=none; b=VQgy9FxWMNC52+v8J0F2LDT+EK9pe6V/iHO/0iTQS/PhYKvJmv3xv0gCZjoTubH2ONLx8fvvHLP+0MrDOEWE5rWvp5BBjMHZqMW65KGkPoRYQIH8DRf3o4XywItORNhZvGFdDIHG6KGAdkf/xUf6Ibi3Z8zOHRftLff5R9cUP5s=
+	t=1790829553; cv=none; b=k9V4zgQFBqQEBJECOBb5qL6NGbBQB1nhm9Yo2a6v1F+P9VDky9pXNnRXYE1bYw8BhAKlK/dwtZzsjRiqdTudYET5NNkmEZbKYA2C3BJa9vtFcmGzxmlQVGs1KzX1U1MhOqHcQtfxFBLVUOmCXbBLetH01lC/HEHGI0PQTDaKs/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829552; c=relaxed/simple;
-	bh=y42vVJwbBynRKKIw+qvvvkuIGs7bK9KcXB7bsPwpJlw=;
+	s=arc-20240116; t=1790829553; c=relaxed/simple;
+	bh=jKgrBxH6DXcu2jfCOW9aTNEICOAfUJeHF6laxuNsPFc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VwqwkLV1NJMVEl8/cV/dFHt6WWo9Mxg/Uw5CDh7e+wHxmOzosi7aRQkPraVHy+T44osbOkK0GxvmTpK1Q+o/iEY4Y8flLUmMH+FvDLaiFsKhFxGTaKGlUricTPtFVL9gb4XnxbZCNHvSgqhzIbNXE+wtJSPEF9aBS2JXH3NDx2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDsUEBmY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=dSf0qgypant/+jb1dYz+Tj9FCiQxATUaamO73am8Pnxi5Pfv/Y8a9bUNN1I677vI6IKLAv4DX59rnUvWHRpoKWkLzTdCy0GYfpoRT9TJSpA0sByaHpyAeFZEv1jovmTmW7CcawzvyoKDzaeyu3qACvMZx/LnnYcsjhJ8+UputTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haUOrmEr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDsUEBmY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC711F00898;
-	Thu,  1 Oct 2026 04:39:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haUOrmEr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D394E1F00899;
+	Thu,  1 Oct 2026 04:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790829550;
-	bh=IfPpFg7lEgiITPF69cytqxfsc72Z9HgXXYym3OV7PJc=;
+	s=k20260515; t=1790829551;
+	bh=wPrlepsxyYJdmyq52bBxMikkJCo8QXmt26rjFP0HtXk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TDsUEBmYyOOXQNW0qJj/7HaghP3VWS9eF+8pvrNDZYn8gC4cWWnI5YGvx4n0O7Qeh
-	 dRWx/yj/kMyo1N/pvs8OeRpWfoSDPD9036MwTUdhrXVqfpgKJjAWl4UgJK4TiVLMsk
-	 r3P60ajcS/NCGo+pKu3N6lgKEHMUQHOsdD7qyywXmmJ/KdYySafD8cfzqFquPdYGc/
-	 Kxdk8g0lJw994jljhNWbvImhYTqpSQs32Ps4DJeAVA0REaHw9skcQc4NmT00X7um8F
-	 QJuTJuZeKxVTUDY8Ar5sui98ugPpa759qRecw8/Qmandpg29Dc3xjo9pmU7r0BhbLx
-	 Md6UatXNlQ3+Q==
-Subject: Re: [PATCH v2 2/4] net: filter: add sk_attach_filter_kern() function
+	b=haUOrmErW296dKQ7NvZkWICcic29l1P2mnDLPrL64J9wdXtAPmlffoSQccP23V3nw
+	 /D5GYAJJBa6Iby2xYkbwQGdmk8J/bYIPARrzmIDWsb3VwiBzehWQYVb3GllmBnB2BP
+	 nDrYPyabl205/Jd5IXscViftVR5ERvZOd9UWy2fHNM9P3JFWNnaKfTjDneBBzlfnDY
+	 dMeXaNsnbbdns8e23pWQmQSbbBUT60fBng0EJ0rJkiHjxD80F+1CTZR48co+HnKZOU
+	 mQ+6TA2g4YvG5fsv5nccE3xuka0w7bUJta+XTsZ3FmwohVGtXMQiIFRicgGgCkp46h
+	 pYRxJSOBo5Ntw==
+Subject:
+ Re: [PATCH v2 3/4] tun: keep a kernel copy of the socket filter program
 From: netdev-bot+sashiko@kernel.org
 To: clementwei90@163.com
 Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
  jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, weirongguang@kylinos.cn
-Date: Thu, 01 Oct 2026 04:39:09 +0000
-Message-ID: <179082954929.434549.2514967196571467185@kernel.org>
-In-Reply-To: <20260929093712.131096-3-clementwei90@163.com>
-References: <20260929093712.131096-3-clementwei90@163.com>
-X-sashiko-severity: Medium
+Date: Thu, 01 Oct 2026 04:39:10 +0000
+Message-ID: <179082955043.434549.13216236090430920832@kernel.org>
+In-Reply-To: <20260929093712.131096-4-clementwei90@163.com>
+References: <20260929093712.131096-4-clementwei90@163.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,144 +47,218 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] This commit carries `Fixes: 54f968d6efdb`, so it will be picked
+  for stable.
+- [Low] For TUNATTACHFILTER, tun_copy_filter() replaces the core
+  bpf_check_basics_ok() validation with its own checks, and the two…
 
-- [Medium] sk_attach_filter_kern() compiles stored classic BPF
-  instructions in whatever task happens to call it.
-- [Low] sk_attach_filter_kern() (net/core/filter.c:1570-1590) builds its
-  program with bpf_prog_create() and publishes it in sk->sk_filter…
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but a failed
+  filter replacement leaves the queues in mixed states.
+- [Medium] This problem wasn't introduced by this patch, but
+  TUNDETACHFILTER only detaches the filter from the tun->numqueues…
+- [Low] This problem wasn't introduced by this patch, but when every
+  queue of a multiqueue TAP is disabled with IFF_DETACH_QUEUE,…
 
 --
 
-net: filter: add sk_attach_filter_kern() function
+tun: keep a kernel copy of the socket filter program
 
-This adds sk_attach_filter_kern(). It builds a classic BPF socket filter
-from a kernel-resident sock_fprog_kern using bpf_prog_create(), then
-attaches it with __sk_attach_prog(). The kernel can then reinstall a
-stored filter without reading a user buffer or file descriptor again.
+With this commit, TUNATTACHFILTER copies the classic BPF instructions
+into tun->fprog_kern instead of keeping only the user pointer in
+tun->fprog. tun_attach() and tun_attach_filter() then build each queue's
+filter from that kernel copy through sk_attach_filter_kern(). The copy
+is freed on detach, when it is replaced, and in tun_free_netdev().
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 70dc621672f2e..64d6505a4ef23 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -1567,6 +1567,28 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
->  }
->  EXPORT_SYMBOL_GPL(sk_attach_filter);
->  
-> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
-> +{
-> +	struct bpf_prog *prog;
-> +	int err;
-> +
-> +	if (sock_flag(sk, SOCK_FILTER_LOCKED))
-> +		return -EPERM;
-> +
-> +	err = bpf_prog_create(&prog, fprog);
+Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
 
-[Severity: Low]
-
-bpf_prog_create() is documented as creating an unattached filter. It
-drops the original program on purpose:
-
-net/core/filter.c:bpf_prog_create() {
-    ...
-	/* Since unattached filters are not copied back to user
-	 * space through sk_get_filter(), we do not need to hold
-	 * a copy here, and can spare us the work.
-	 */
-	fp->orig_prog = NULL;
-    ...
-}
-
-With this new export, that program ends up in sk->sk_filter. Can a
-filter attached this way still be read back?
-
-When orig_prog is NULL, sk_get_filter() returns -EACCES. Its comment
-says this only happens for eBPF programs:
-
-net/core/filter.c:sk_get_filter() {
-    ...
-	/* We're copying the filter that has been originally attached,
-	 * so no conversion/decode needed anymore. eBPF programs that
-	 * have no original program cannot be dumped through this.
-	 */
-	ret = -EACCES;
-	fprog = filter->prog->orig_prog;
-	if (!fprog)
-		goto out;
-    ...
-}
-
-In the same case, sock_diag_put_filterinfo() leaves out the filter
-attribute without any error.
-
-sk_attach_filter() goes through __get_filter()->bpf_prog_store_orig_filter()
-and keeps the original program. So for classic filters, the two exported
-attach APIs now behave differently for SO_GET_FILTER and sock_diag.
-
-The tun consumer later in this series does not seem to be affected in a
-way userspace can see. SO_GET_FILTER and sock_diag cannot reach its
-sockets, and TUNGETFILTER returns tun->fprog.
-
-Could this store orig_prog, the way bpf_prog_create_from_user() does
-with save_orig? If not, could the limitation be documented and the
-comments in bpf_prog_create() and sk_get_filter() updated?
-
-[Severity: Medium]
-
-Does this change whose credentials decide JIT hardening?
-
-bpf_prog_create() calls bpf_prog_alloc(), and bpf_prog_alloc_no_stats()
-sets:
-
-	fp->blinding_requested = bpf_jit_blinding_enabled(fp);
-
-When bpf_jit_harden is 1, bpf_jit_blinding_enabled() decides based on
-current:
-
-	if (bpf_jit_harden == 1 && bpf_token_capable(prog->aux->token, CAP_BPF))
-		return false;
-
-The instructions come from whoever stored them in the sock_fprog_kern.
-Blinding, however, depends on whichever task calls
-sk_attach_filter_kern() later.
-
-With the tun consumer later in this series, this sequence looks possible:
-
-1. An unprivileged owner of a persistent multi-queue TAP passes
-   tun_not_capable() and issues TUNATTACHFILTER. The instructions are
-   stored in tun->fprog_kern. The programs built for the queues attached
-   at that point are blinded.
-
-2. Later, a process with CAP_BPF or CAP_SYS_ADMIN attaches another queue
-   using TUNSETIFF or TUNSETQUEUE.
-
-3. tun_attach() calls sk_attach_filter_kern(&tun->fprog_kern, ...) with
-   the privileged credentials. The unprivileged user's filter goes
-   through bpf_prepare_filter()->bpf_migrate_filter()->
-   bpf_prog_select_runtime() and is JIT-compiled without constant
-   blinding.
-
-Before this change, sk_attach_filter(&tun->fprog, ...) read the
-instructions again from the attaching process's own address space. The
-unprivileged user did not control the bytes compiled in the privileged
-context.
-
-With bpf_jit_harden=1, does this let constants chosen by the user into
-JIT memory that is not blinded? Could the blinding decision be recorded
-when the instructions are supplied, or be tied to where the program came
-from rather than to current at attach time?
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index a2fffef3735fe..c796048742f9b 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
 
 [ ... ]
+
+> @@ -722,6 +723,34 @@ static void tun_force_wake_queue(struct tun_struct *tun,
+>  	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
+>  }
+>  
+> +/* Copy the filter that @argp points at into the kernel, so that it can be
+> + * installed again later, from any context. tun->fprog and tun->fprog_kern
+> + * are updated only once the copy succeeded.
+> + */
+> +static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
+> +{
+> +	struct sock_fprog fprog;
+> +	struct sock_filter *insns;
+> +
+> +	if (copy_from_user(&fprog, argp, sizeof(fprog)))
+> +		return -EFAULT;
+> +
+> +	if (!fprog.len || fprog.len > BPF_MAXINSNS)
+> +		return -EINVAL;
+> +
+> +	insns = memdup_array_user(fprog.filter, fprog.len,
+> +				  sizeof(struct sock_filter));
+
+[Severity: Low]
+Does this change the errno TUNATTACHFILTER returns when fprog.filter is
+NULL and fprog.len is nonzero?
+
+Before this patch, sk_attach_filter()->__get_filter()->bpf_check_basics_ok()
+rejected a NULL filter with -EINVAL, the same errno SO_ATTACH_FILTER
+returns. Here only the length is checked. memdup_array_user(NULL, ...)
+then fails in copy_from_user(), and the ioctl returns -EFAULT.
+
+The bpf_check_basics_ok() call inside bpf_prog_create() only sees the
+kernel copy, which is never NULL, so it can't catch this case.
+
+Would adding a !fprog.filter test to the length check keep the old
+-EINVAL?
+
+> +	if (IS_ERR(insns))
+> +		return PTR_ERR(insns);
+> +
+> +	kfree(tun->fprog_kern.filter);
+> +	tun->fprog_kern.len = fprog.len;
+> +	tun->fprog_kern.filter = insns;
+> +	tun->fprog = fprog;
+> +
+> +	return 0;
+> +}
+> +
+>  static int tun_attach(struct tun_struct *tun, struct file *file,
+>  		      bool skip_filter, bool napi, bool napi_frags,
+>  		      bool publish_tun)
+> @@ -753,7 +782,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>  	/* Re-attach the filter to persist device */
+>  	if (!skip_filter && (tun->filter_attached == true)) {
+>  		lock_sock(tfile->socket.sk);
+> -		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+> +		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+
+[Severity: Low]
+Should this commit record that it depends on the helper commit? It
+carries Fixes: 54f968d6efdb, so it will be picked for stable.
+
+sk_attach_filter_kern() is only added by the previous commit in the
+series, "net: filter: add sk_attach_filter_kern() function". That commit
+has no Fixes: tag, no Cc: stable and no stable dependency annotation.
+
+This commit's message doesn't say it depends on that commit, or on "tun:
+fix inverted error check when re-attaching the filter".
+
+If it is backported by itself, tun_attach() and tun_attach_filter() won't
+build. sk_attach_filter_kern is implicitly declared, and the symbol is
+undefined when tun is built as a module.
+
+Would a Cc: stable tag with a dependency note on the helper commit
+prevent that?
+
+>  		release_sock(tfile->socket.sk);
+>  		if (err)
+>  			goto out;
+
+[ ... ]
+
+> @@ -3066,6 +3096,9 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
+>  		release_sock(tfile->socket.sk);
+>  	}
+>  
+> +	kfree(tun->fprog_kern.filter);
+> +	tun->fprog_kern.filter = NULL;
+> +	tun->fprog_kern.len = 0;
+>  	tun->filter_attached = false;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but does TUNDETACHFILTER leave
+the filter on queues that are disabled at that point?
+
+tun_detach_filter() only walks the first n == tun->numqueues entries:
+
+	for (i = 0; i < n; i++) {
+		tfile = rtnl_dereference(tun->tfiles[i]);
+		lock_sock(tfile->socket.sk);
+		sk_detach_filter(tfile->socket.sk);
+		...
+
+A queue disabled through TUNSETQUEUE with IFF_DETACH_QUEUE
+(tun_set_queue()->__tun_detach(tfile, false)) keeps its sk_filter.
+
+When that queue is re-enabled with IFF_ATTACH_QUEUE, tun_attach() skips
+the filter block because filter_attached is false. It doesn't clear the
+leftover filter either.
+
+tun_net_xmit() checks tfile->socket.sk->sk_filter directly. So after
+TUNDETACHFILTER succeeds, the re-enabled queue still applies the old
+filter.
+
+>  }
+>  
+> @@ -3077,7 +3110,7 @@ static int tun_attach_filter(struct tun_struct *tun)
+>  	for (i = 0; i < tun->numqueues; i++) {
+>  		tfile = rtnl_dereference(tun->tfiles[i]);
+>  		lock_sock(tfile->socket.sk);
+> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+> +		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+>  		release_sock(tfile->socket.sk);
+>  		if (ret) {
+>  			tun_detach_filter(tun, i);
+
+[Severity: Medium]
+This is a pre-existing issue, but can a failed filter replacement leave
+the queues in mixed states?
+
+Say filter A is attached and TUNATTACHFILTER is issued with program B.
+tun_copy_filter() frees A's kernel copy and stores B. tun_attach_filter()
+then fails on queue i. That happens if bpf_check_classic() rejects B
+(i == 0), or if bpf_prog_alloc() or __sk_filter_charge() fails at any i.
+
+tun_detach_filter(tun, i) detaches only queues [0, i). It also frees B's
+copy and sets filter_attached = false.
+
+Queues [i, numqueues) keep running filter A, but the device-level state
+says no filter is attached. Queues attached later through tun_attach()
+get no filter at all.
+
+The code behaved the same way before this patch.
+
+> @@ -3425,8 +3458,8 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+>  		ret = -EINVAL;
+>  		if ((tun->flags & TUN_TYPE_MASK) != IFF_TAP)
+>  			break;
+> -		ret = -EFAULT;
+> -		if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
+> +		ret = tun_copy_filter(tun, argp);
+> +		if (ret)
+>  			break;
+>  
+>  		ret = tun_attach_filter(tun);
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but what happens when every
+queue of a multiqueue TAP has been disabled with IFF_DETACH_QUEUE?
+
+tun->numqueues is 0 then, but tfile->tun is still set, so tun_get() still
+reaches TUNATTACHFILTER.
+
+tun_copy_filter() checks only the length and copies the instructions.
+The loop in tun_attach_filter() runs zero times, so filter_attached is
+set to true and 0 is returned. bpf_check_classic() never runs.
+
+A later IFF_ATTACH_QUEUE calls sk_attach_filter_kern() from tun_attach().
+bpf_prepare_filter() then rejects the saved program with -EINVAL. The
+queue can't be re-enabled until the owner issues TUNDETACHFILTER or a
+valid TUNATTACHFILTER.
+
+This patch narrows the problem a little: before its length check, this
+path accepted even len == 0.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929093712.131096-1-clementwei90%40163.com
