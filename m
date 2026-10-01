@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA9041443E;
-	Thu,  1 Oct 2026 03:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5584078E9;
+	Thu,  1 Oct 2026 03:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790825998; cv=none; b=tcsWqUPuH1iIm7D/e7DfDykkIUaYPIOf4bfXktww9DbtoSpZ/AH+vgVcb0ffT5Smpvwv1pIEvgVMoxGSgsyZuMH57+hb8ValJnOQZ78RuvqDWjLWA5ERaJJxPAxC9I0p7J/N9w98UHUbA+p5f9YqxycN/v6J4AEJ/wCaMAWT+wY=
+	t=1790826001; cv=none; b=MSrGHz+Y+Eqi95H4PBkNbToGpXIPtFkmcfyd3G0scyv3MsVlD0QfOWX0pW2dFSXPatyn2no8aD9Yncq8IJwqBuVILrywHLQxFIF7csFy/I4tGW4uwafMG1uHmSdCdGbp9paF5fGWI9QYyNVuiokLkJJvNv7PEtONjEL3fvPOJF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790825998; c=relaxed/simple;
-	bh=Av1Q5hxxEYWgt6Kv3s9rN3LbLRqg6EllL3wM/7EjA20=;
+	s=arc-20240116; t=1790826001; c=relaxed/simple;
+	bh=01+4fmSwjiHfTcnuakU+4vU7kUPpjwIVsnsddCnDyZ8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FxnnbSis+nwX9zVC/OPHTLNe9iKwZjQ3L90ocYIrPj6F4rEaadwdLiFyOPsM2lq5TdRkyHPNXGSNc8xDXA0eU9MIHkW7rWNoD0pLkVKNggTu51BHF87YAdBOzC4QtKUtBns67hHBzbrmFIvnBw7Pscv9BJiYo++4dgMFcN1y9mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmzJO30J; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=PdMXX0PPcHmFTS+1QKVA5nhF9j3Bm4tR5rYUei/bPddJe8tzw46nfVE1y5kYDyyi4fN9zVVqycbQ+PBCBBKSEv9gDu2YjYicf6RqgYVL7ttic/7RLE+lyY0WnPYmyotwpz1WA6WUsEPqgXNMShLK1L3IA2M0jY+dSD9hTUmmuhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5f3U1QA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmzJO30J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD731F00898;
-	Thu,  1 Oct 2026 03:39:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5f3U1QA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4A1F0089B;
+	Thu,  1 Oct 2026 03:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790825988;
-	bh=iOGvhpuW87r2saw8Tns0/0BNAiXUeWLRpemaGlj2j50=;
+	s=k20260515; t=1790825991;
+	bh=55hUHVyQxrMBSQaFXCQSTL1MQe0g0OYwGbHfTVS754E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cmzJO30Jt63C8AMgxg/01K5waaYeQDajfZt1i52em+0XoZu5/mjrtMizw1kyrggwy
-	 Nk5UmFoB17gYOHhiEWcoKivloD/VRIr7wftRlNmr7FaU9QPzjIk1Gp8KQg49Zq9jLO
-	 DfouKA3ygDzrcVhePn4JXL15JsDiaFVwj5gxFr8/Aq1B/WO0FJpDkuSllM+BWvwkWf
-	 OVaWQuKcjLZTiuk9z4132QfUWFFXNdhfyuHXb8xrcZCiN/7/ZQAYKDkBM0RYCnxz+x
-	 qIow86cNZZ8Fx5QSwVPSegLeI8hMEopDba7Y+mCYAf+KP9Gt4RTWHQETo6DQGQQwjU
-	 fB140eCnAT0xg==
-Subject: Re: [PATCH net-next v14 2/5] net: rnpgbe: Add basic TX packet
- transmission support
+	b=l5f3U1QAviegITJecYEx13Ggx3Ic57Lo6/zYmjD/fEtbgsUtv5090/CEUH70vFVnL
+	 5RfP/un0vRuIoYizliEOr2hHqy+oJAGtVIw7dgGiG14XIe8WnM/3PstvAlhnUY7TQG
+	 1sL4rq5PcvJXEM4nNetvMgULji27+/FsMAwJkF9hVxDq9v8WzImam6wGE3VHZlgb92
+	 tkWlG2qdrf+RvAzmERcZGjsJ6QEfcAr5OroSbM+aqbGyRHCQLp6uMLRwm9ozuxtPkr
+	 0gOyd8sd33VcnD7c9a9cs4i0EyGmar9Q60kEfs8OdyIZlPJQ/QZ6KjYS4vJLdJaGDY
+	 ZBsEjIBd1AzWw==
+Subject:
+ Re: [PATCH net-next v14 5/5] net: rnpgbe: Add link status handling support
 From: netdev-bot+sashiko@kernel.org
 To: dong100@mucse.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
  u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, yaojun@mucse.com
-Date: Thu, 01 Oct 2026 03:39:47 +0000
-Message-ID: <179082598736.434549.1345359582954090530@kernel.org>
-In-Reply-To: <B8B7AE6BED38AD9F+20260928033834.1033357-1-dong100@mucse.com>
-References: <B8B7AE6BED38AD9F+20260928033834.1033357-1-dong100@mucse.com>
-X-sashiko-severity: Low
+Date: Thu, 01 Oct 2026 03:39:50 +0000
+Message-ID: <179082599095.434549.1820595149953223551@kernel.org>
+In-Reply-To: <FCCBC00DC4182F5F+20260928033910.1033461-1-dong100@mucse.com>
+References: <FCCBC00DC4182F5F+20260928033910.1033461-1-dong100@mucse.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,75 +48,183 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] rnpgbe_add_adapter() now calls netif_carrier_off() before
-  register_netdev() (rnpgbe_main.c:264), and nothing at this commit…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] This patch sets a mailbox protocol: a pending firmware event
+  holds the shared FW<->PF window until the PF acks it.
+- [Low] rnpgbe_down() calls rnpgbe_set_link(hw, false) when no link event
+  is being handled.
 
 --
 
-net: rnpgbe: Add basic TX packet transmission support
+net: rnpgbe: Add link status handling support
 
-This commit adds the basic TX path for the rnpgbe driver: TX descriptors,
-buffer management, ring setup and teardown, and TX completion handling
-from NAPI. It also keeps per-queue TX statistics in adapter-owned storage
-and sets 56-bit streaming and coherent DMA masks.
+This commit adds link status handling to the rnpgbe driver. Firmware link
+change events arrive over the mailbox, and a service task updates the
+carrier state from them. Firmware is also notified of port up/down and
+link report enable/disable, and the default link is set up at probe.
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> index 6022a1a2ddf1e..265a3fcb07beb 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> index 7beec27991d35..6f7bf4ca5b927 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
 
 [ ... ]
 
-> @@ -206,6 +254,14 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
->  		goto err_clear_interrupt;
->  	}
->  
-> +	netdev->features |= NETIF_F_SG;
-> +	netdev->hw_features |= NETIF_F_SG;
-> +	if (dma_get_mask(&pdev->dev) > DMA_BIT_MASK(32)) {
-> +		netdev->features |= NETIF_F_HIGHDMA;
-> +		netdev->hw_features |= NETIF_F_HIGHDMA;
+> @@ -1448,22 +1470,77 @@ void rnpgbe_down(struct mucse *mucse)
+>  	rnpgbe_stop_all_rx_rings(mucse);
+>  	rnpgbe_cancel_rx_retry_timers(mucse);
+>  	rnpgbe_clean_all_tx_rings(mucse);
+> +
+> +	err = rnpgbe_send_notify(hw, false, mucse_fw_link_report_en);
+> +	if (err) {
+> +		dev_warn(&hw->pdev->dev, "Send link report to hw failed %d\n",
+> +			 err);
+> +		dev_warn(&hw->pdev->dev, "Fw will still report link event\n");
 > +	}
 > +
-> +	netif_carrier_off(netdev);
->  	err = register_netdev(netdev);
->  	if (err)
->  		goto err_remove_mbx;
+> +	err = rnpgbe_send_notify(hw, false, mucse_fw_portup);
+> +	if (err) {
+> +		dev_warn(&hw->pdev->dev, "Send port down to hw failed %d\n",
+> +			 err);
+> +		dev_warn(&hw->pdev->dev, "Port is not truly down\n");
+> +	}
+> +	/* Disable the receiver after RX DMA is quiesced and firmware
+> +	 * has handled port-down, but before releasing the RX buffers.
+> +	 */
+> +	spin_lock_irqsave(&mucse->link_lock, flags);
+> +	rnpgbe_set_link(hw, false);
+> +	spin_unlock_irqrestore(&mucse->link_lock, flags);
 
 [Severity: Low]
-rnpgbe_add_adapter() now calls netif_carrier_off(). At this commit, does
-anything turn the carrier back on? I couldn't find a netif_carrier_on()
-call anywhere in the driver. On a successful open, rnpgbe_up_complete()
-only starts the TX queues:
+Is the read-modify-write of GMAC_CONTROL in rnpgbe_set_link() safe
+against firmware at this call site?
 
-rnpgbe_up_complete()
-    rnpgbe_configure_msix(mucse);
-    rnpgbe_napi_enable_all(mucse);
-    rnpgbe_irq_enable(mucse);
-    netif_tx_start_all_queues(netdev);
+The kernel-doc for rnpgbe_set_link() in rnpgbe_chip.c gives this reason
+for why the RMW is safe:
 
-While the carrier is off, dev_activate() defers qdisc activation. So the
-interface shows NO-CARRIER after open, and the new TX path looks
-unreachable at this commit:
+    Firmware updates the speed and duplex fields before posting a link event
+    and waits for the PF acknowledgment, so event handling completes this
+    read-modify-write before firmware accesses GMAC_CONTROL again.
 
-rnpgbe_xmit_frame()->rnpgbe_xmit_frame_ring()->rnpgbe_tx_map()
+That reasoning covers the call from mucse_mbx_fw_req_handler(), which runs
+before mucse_mbx_event_end() acks the event.
 
-The commit message also doesn't mention the carrier change.
+In rnpgbe_down(), however, LINK_REPORT_EN=0 and SET_PHY_UP(0) have
+already been acked, or they failed and only produced a warning. So no
+LINK_CHANGE_EVT is outstanding here, and firmware is not waiting for the
+PF. link_lock is a driver-only spinlock, so it cannot order the host
+against firmware.
 
-The later patch "net: rnpgbe: Add link status handling support" appears
-to add netif_carrier_on() through rnpgbe_link_is_up(), so this is fixed
-later in the series. Before this patch, rnpgbe_xmit_frame() dropped every
-skb anyway, so TX doesn't get any worse.
+Taking the PHY down is the kind of link change on which firmware writes
+speed/duplex into GMAC_CONTROL. Could an interleaving like this happen?
 
-Could netif_carrier_off() move into the link handling patch? Or could this
-commit message mention it, so the intermediate state is clear when
-bisecting?
+driver                            firmware
+value = rd32(GMAC_CONTROL) (RE=1)
+                                  reads GMAC_CONTROL
+wr32(GMAC_CONTROL, RE=0)
+                                  writes speed/duplex back (RE=1)
+
+That would leave the receiver enabled after ifdown. In the opposite
+order, the driver's stale write-back would drop firmware's speed/duplex
+update.
+
+rnpgbe_stop_all_rx_rings() has already stopped RX DMA at this point, and
+the next ifup sets RE again through the event handler. So the effect seems
+limited to wrong GMAC state while the interface is down. The driver code
+alone doesn't show whether firmware writes GMAC_CONTROL after acking
+port-down with reporting disabled.
+
+Should the kernel-doc be updated for this call site, or does some other
+handshake cover it?
+
+>  	rnpgbe_clean_all_rx_rings(mucse);
+>  }
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> index e28f3193aa854..683e0ea741136 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+
+[ ... ]
+
+> +int mucse_mbx_set_link(struct mucse_hw *hw, u32 advertising, bool autoneg,
+> +		       u32 speed, u32 duplex, u32 mdix_ctrl)
+> +{
+
+[ ... ]
+
+> +	int len, err;
+> +
+> +	len = le16_to_cpu(req.r.datalen);
+> +	mutex_lock(&hw->mbx.lock);
+> +	err = mucse_write_and_wait_ack_mbx(hw, req.dwords, len);
+
+[Severity: Medium]
+Should this use mucse_write_mbx_coalesce_event(), as mucse_mbx_phyup()
+and mucse_mbx_link_report() do?
+
+The kernel-doc for mucse_mbx_event_begin() in this patch describes the
+mailbox protocol:
+
+    Firmware releases the hardware mailbox lock before raising the event
+    interrupt and does not access the shared window again until the PF
+    acknowledges the event.
+
+The patch also adds mucse_ack_pending_event(), so that a PF command acks
+any pending event before it writes the shared window.
+
+PHY_LINK_SET does not do this. It goes through
+mucse_write_and_wait_ack_mbx()->mucse_write_mbx_pf(), which writes
+MUCSE_MBX_FWPF_SHM directly and never checks for a pending event.
+
+Firmware link reporting can still be enabled at probe. rnpgbe_down() only
+warns "Fw will still report link event" when LINK_REPORT_EN=0 fails. A
+crashed or kdump'd previous kernel never runs close() at all.
+
+Suppose firmware posts a LINK_CHANGE_EVT after mucse_mbx_reset() has
+taken its fw_req snapshot, for example because RESET_HW bounced the link.
+Would PHY_LINK_SET then overwrite the unacked event?
+
+Under the protocol above, firmware would not process the command, and
+mucse_poll_for_ack() would time out. Probe now treats that as fatal:
+
+rnpgbe_add_adapter()
+    err = rnpgbe_setup_default_link(hw);
+    if (err) {
+        dev_err(&pdev->dev, "Setup link failed %d\n", err);
+        goto err_powerdown;
+    }
+
+If firmware does ack the command, the stale FW2PF count would seem to make
+the following GET_MAC_ADDRESS in mucse_fw_send_cmd_wait_resp() read the
+window straight away. It would then recover only through the opcode retry
+loop.
+
+The existing mucse_mbx_powerup() uses the same non-coalescing path. It
+runs on remove/shutdown after close, where a failed LINK_REPORT_EN=0 could
+leave an event pending.
+
+The driver code doesn't show whether firmware keeps link_report_en set
+across RESET_HW or a driver reload.
+
+> +	mutex_unlock(&hw->mbx.lock);
+> +
+> +	return err;
+> +}
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0A4D45AD9F6A0F14%2B20260928033701.1033196-1-dong100%40mucse.com
