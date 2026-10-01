@@ -1,131 +1,150 @@
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8384E01F6
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 22:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B4D3264F7;
+	Thu,  1 Oct 2026 22:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790894462; cv=none; b=rQOUaLGKR7mwFofCV6FALA9n0YtZ+xg97JP/9O0LYTRGVpt+rbsaKX8xcpXeUYedVWBx6OXBWpH83mNb+S0Pw5j4TpOzaxCrrrcMYKViZaRhwEQMfP+a97R5FrHGfwxYnkPBwPrFjDLX4UpITNphYTP7HXCrmH9KjPm3M9kBM8E=
+	t=1790894508; cv=none; b=GbWnbw4C2HsmAJh73yEFffvB3UCxykEB71SK9+wy5GdhGxyvEsE1JLf+V9OXc1GNaF30IblUt6up0hF7SU3ODX+8S3vwuZ3TMelUlyAngDJEH5hNe06lCrl+sAn5clzDGch4ao08dd0vrX3WkzAGrTBuzwuCvGDfAyMH8Wlczao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790894462; c=relaxed/simple;
-	bh=fjDLJXf1aBRrmidaC6jhH7WSJg2DvCL/+cPSF0ggzWc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eDiZvM5ZrxLkgzlPJYSNJ5q4Ah4BhXej4Qquvd38+fH4JpBHAJBkJzQCTppP2S3JdogiE0n/R2kD6uxFnHklYj72fX52R0sFJZS44SWkBWV9ca/QB34q5Ept6bjvCbI0SOZi27kI1Dw71kX3VIvVBcsZB9V5XMXFkDrr4P2V+/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WtVw6cwf; arc=none smtp.client-ip=74.125.82.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com
+	s=arc-20240116; t=1790894508; c=relaxed/simple;
+	bh=7OdB3at4l/uaJGeAVT6iVc64VMioIueFKBHiMskvDms=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tdzJThid8I8acqRV4e3tqmUt0pjKG1pjVA5ZqYyqDpXCNZdLifKNiAulXE5UAfW8vPUNpF6xNsWWGdLZx+oHCuFgOqTSmkmGA3f0fd2R6QzZ/oX+mkwP6p36Lj8DP7FEuq3/GW/UZYn2DVkCzygLybuVNwZlIEfS82DB+vUv1P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYM/abvt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WtVw6cwf"
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso5464187eec.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 15:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790894460; x=1791499260; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9IdYN9g8a9lzzHIhtoJFBJ2axTedpkyHbETAT+gfXfQ=;
-        b=WtVw6cwfE/NJY0c742R84MAG/+OZxR0GVUPV9BIEUTfLtdT4jZHV7Ai5+3I+BNKcAe
-         CpCLWLNG8369PsoUfDap5C2N0tQu6Za/WvM+itMioycF2y6Pf7H5nO43YzVPQdJmVwYD
-         Ycf7YCsKAMjqc9f/rOuRoJfrrz/LBOJ7bgjNHUOXDmj7gS+2c4wIweR+XjazUFKWyS/Z
-         qrKswlcMOeG+RbgnwdCyKqg8W0j5FRg+i4fFmIB2a3iqRf4s9ZzmubxMpsSvUYT1t6kv
-         /7Ev5Dcmq0KN/wWG7muMVHsSFGnzZTbhTAS4HqgbRECYM/bqok9QG8g7oLn8uxiGVcIA
-         619g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790894460; x=1791499260;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9IdYN9g8a9lzzHIhtoJFBJ2axTedpkyHbETAT+gfXfQ=;
-        b=H5zUsVlLOp3I5r3AkM4zaBFacxhHHud+PcA5OaTTiZPGHDGwylu0YbyaGq7yOxlZtf
-         jA6BNumeKw6h0h5s2jdjDR2BBeE6PlQ4dSzp+gQbwOe7NU/37qptpyWUYtk0F5WpPpGD
-         nxWxrErJrQ6beXIcw4pfPrz0b9iJRFjRqufb3YKa72+sE/W1P8rOBcAovh/eN3n9ZGsf
-         ydc3KzAc42sxZbv6T854sElGQ1TE5fxzlJnEpzqYuwPI7fEzc/t6OrCejHo0pEmW2C/X
-         ss9bnH3Y9QVDUFpZEIFRSw+/GZXO5Zs7pqrhZixCeOtpV0igQVlmCsp4cIFFT2IvAFb9
-         sYIQ==
-X-Gm-Message-State: AFuF++nwziIPljFIxS91wND92/6HYIEcjqh6kkaWNenwG1jlj7UJ2nLI
-	0YGLpMrKmH2RdwN4G6e2/DAQxGQEC5IYkj9duPJe1d+kfXtRuw1fy6lOUCipXU0X0LUW1368ne+
-	GlFijlrzZg4N4te+kgj98AcPlL0q/ViDcC24BiW9CMdgIlAMK1egDf29TcRegx2bbaQYx4+5zb+
-	HxigXqIhDHmJ6OJsBk87tabc/jO3tMphi9pko1OcwWH/lN90c=
-X-Received: from dlev27.prod.google.com ([2002:a05:701b:465b:b0:14f:4bfa:b7da])
- (user=kaifengw job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7023:88d:b0:144:e246:a0b2 with SMTP id a92af1059eb24-14f5d6b6427mr805233c88.44.1790894459517;
- Thu, 01 Oct 2026 15:40:59 -0700 (PDT)
-Date: Thu,  1 Oct 2026 22:40:54 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYM/abvt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CE51F000FF;
+	Thu,  1 Oct 2026 22:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790894506;
+	bh=oQ28QrTWscMr/hQrAIdiYPr43eWZ9H50WAaCOGuwT0w=;
+	h=From:Subject:Date:To:Cc;
+	b=ZYM/abvt0cgSphmYWOtn6brqab73mzz6hMm+ZH4nS4+bAMVSsWC8XaUmVDUQS6bye
+	 ROVwgdGugm0yAtY3KCApYAf5aAsFs4uwe7+WZg4W2Uj7Lw3xuPYd7CjUzy2CNDxhbA
+	 8G1RYpd2PC3j61tTGm5hEcILoksIzT7OttUaTZCKBtMcuhjryLRIbeV4rrkB51Ea/z
+	 V9j/rUH4yAzOHDb9uZzO0vGypgkehXTELuewYhNvuv+3Hfox2xIeb09q0s37HY2CZJ
+	 FufeUpsKP5cS4koiJpwMABjql4ALy88TKKrfwNekKg1WsASIjwrPUbRmlJ422NOC5i
+	 WIePC2sgsHyYA==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH net-next v2 0/8] net/tls: Receive-path fixes for
+ zero-length data records
+Date: Thu, 01 Oct 2026 18:41:32 -0400
+Message-Id: <20261001-tls-follow-on-v2-0-2dd1947bb642@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001224054.1525365-1-kaifengw@google.com>
-Subject: [PATCH net-next v2] net: devmem: use page_pool_put_netmem_bulk
-From: Kaifeng Wang <kaifengw@google.com>
-To: netdev@vger.kernel.org
-Cc: almasrymina@google.com, edumazet@google.com, kuniyu@google.com, 
-	pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org, 
-	horms@kernel.org, sdf@fomichev.me, linux-kernel@vger.kernel.org, 
-	Kaifeng Wang <kaifengw@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOyw6CMBBFf4XM2tG2ITxc+R+GRVsHqNbWtBUxh
+ H8XMC5d3tfJnSBSMBThmE0QaDDReLcIsctA99J1hOayaBBMFKwUBSYbsfXW+hd6h3lVtFzJSin
+ FYNk8ArVm3HhncJTQ0Zig+Sbxqa6k04pbu0pGQhWk0/1q/dqHuzRuzXsTkw/v7drAN+KfFwNHh
+ nWt2lxrrktRn24UHNm9Dx008zx/AIbvxcXnAAAA
+X-Change-ID: 20260726-tls-follow-on-486f1ba8bbb0
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ Dave Watson <davejwatson@fb.com>, Shuah Khan <shuah@kernel.org>, 
+ Qingfang Deng <qingfang.deng@linux.dev>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.16-dev-da966
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3979; i=cel@kernel.org;
+ h=from:subject:message-id; bh=7OdB3at4l/uaJGeAVT6iVc64VMioIueFKBHiMskvDms=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqvuGfeKh+Xrhnr3IEabGS59oHMsjxuVTPlrCYx
+ qoyZEclPumJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCar7hnwAKCRAzarMzb2Z/
+ l4AIEACp7Euc+5mtQwi4IZxYtEMD8WU6cOTdBUSDUSBJeegrGzQM/Qe6MRTXO0Sa/LwigF4jmMp
+ VYfIU+UrWvD5g/UsK1TWF6yESdak7F4/9H+t/Wlg7eyLQCyNjS64T+a/DrWVWvD/o0s/cHjRSzq
+ eIEmpgZBHUocnLWq4EnR/917UI9LIDW9UFaU7NC5ekymWfD5r4blYfzNVg1lPIkwk1hKk3cg2G3
+ OMHCNdytzaiiG4koVSnGxv5mlLPLWf7hQc7L8SLsDojEQfKu1EVqR1s1aLuiVMMLdq1QpYPrFUs
+ iEkmdB5VGLXyDalOvIYqEGdCYyEKJUovHO0CLvS3y2ial3z9Kle8Yql4JxMd4KQ1FT5LdUCSmFv
+ 8J9SySeYWA5Bt5KW6Z/re3nHb9RImzXsE1Ur6ze0Q60fuXeZoAnpbblgUQIy6CE5Z/tscmjArNe
+ hHI68oUPg/YhCBhQZkgbLZX/XExyyepPqRDGBVarpHKZpb5NVZSS/cZDsbbWUXZGY4jTu5HfPbF
+ YRmM8K/EhD74CCZhM03PlAt+jeRSAIWaJMPXMSflub13BimvucW5LwEvKa2gBsP1iSERmUv194p
+ uJBS8MuIcpaIcMxdT8cr3Q8grine4WdQdqQGtjHJuKu6fBICdEVWBFKXBYCuQ3hkUjRUKsDobDO
+ gTWO0acyBGYPoJA==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-Instead of looping over napi_pp_put_page() and repeatedly acquiring the
-page_pool producer lock in sock_devmem_dontneed(), use
-page_pool_put_netmem_bulk() to return the netmem references in batches.
+Commit 3be28e2c9cd0 ("net/tls: Consume empty data records in
+tls_sw_read_sock()") fixed one reader. TLS 1.2 and TLS 1.3 both
+permit a zero-length application_data record as a traffic-analysis
+countermeasure (RFC 5246, Section 6.2.1; RFC 8446, Section 5.1), so
+a peer that pads its stream emits them by design. The other two
+software readers still mishandle them. splice(2) reports an empty
+record as EOF, and the caller tears down a connection that is still
+live. recvmsg(2) makes no progress on one, so a peer that streams
+them holds the caller in the kernel past SIGKILL. With MSG_PEEK or
+async decryption, each record is also queued on rx_list, which
+grows without bound.
 
-This reduces the number of lock acquisitions on the page pool ring
-producer lock when releasing user tokens.
+This series supersedes "[PATCH net] tls: skip empty data records in
+tls_sw_splice_read()", which fixes the splice case alone:
+https://lore.kernel.org/netdev/20260930052636.166007-1-qingfang.deng@linux.dev/
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+Which fix a reader gets depends on its caller. splice(2) and
+recvmsg(2) are system calls, so consuming the record and testing
+signal_pending() is enough. A signal ends the call. Only
+tls_sw_read_sock() needs a bound of its own. Its callers hold the
+socket lock across the whole call and cannot act on a signal, so
+nothing else can stop the loop. A count of consecutive records that
+deliver no bytes supplies the bound (patch 1). The count is scoped
+to read_sock deliberately. A flood on the other two paths costs the
+caller CPU time and nothing else.
+
+The series changes user-visible behavior. splice(2) on a
+nonblocking socket, and sendfile(2) from one, now return -EAGAIN
+where they used to block, as they do on a plain TCP socket. A
+splice that reaches a control record behind an empty one now
+returns -EINVAL rather than the zero that was the false EOF. A
+nonblocking recvmsg(2) or splice(2) that has copied nothing and
+finds a signal pending after an empty record returns -EINTR.
+
+SO_RCVTIMEO does not bound these calls. It is applied at the
+reader lock and again on each call to tls_rx_rec_wait(), so a call
+that keeps retrying can wait past it. recvmsg(2) behaves this way
+today. The retry added to splice(2) extends the same behavior to
+that path.
+
+Tested on x86_64. The tls selftest suite passes, 935 tests with
+no skips.
+
 ---
-v1 -> v2:
-- Rebased on net-next after commit bdea4980182e ("net: page_pool: fix
-  use-after-free in page_pool_recycle_ring_bulk()") was merged.
-- Collected Acked-by: Stanislav Fomichev.
+Changes in v2:
+- Bound no-data records by count, not elapsed time (Jakub).
+- Drop the tls_rx_empty_data_rec() helper (Sabrina).
+- Keep the strparser anchor out of tls_sw.c comments (Sabrina).
+- Split the recvmsg signal test into its own patch.
+- Drop tls_rx_intr_errno(); a nonblocking reader now gets -EINTR.
+- Say why do_splice() misses the socket's O_NONBLOCK (Sabrina).
+- Point the recvmsg patch's Fixes: at the commit that added rx_list.
+- Reuse the new zero_len helpers in the existing fixture (Sabrina).
+- Check errno unconditionally in the zero_len tests (Sabrina).
+- Split the splice crypto-error fix and its test out (Jakub):
+  https://patch.msgid.link/20260806-tls-splice-crypto-fix-v1-0-a2624005a286@kernel.org
+- Link to v1: https://patch.msgid.link/20260726-tls-follow-on-v1-0-99bf4cc1c729@kernel.org
 
- net/core/sock.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+---
+Chuck Lever (8):
+      tls: bound consecutive no-data records in tls_sw_read_sock()
+      tls: check for a pending signal after an empty record
+      tls: consume empty data records in tls_sw_splice_read()
+      tls: honor O_NONBLOCK in tls_sw_splice_read()
+      tls: consume empty data records in tls_sw_recvmsg()
+      selftests: tls: add peek and splice coverage for zero-length records
+      selftests: tls: skip the zero_len tests when TLS is unavailable
+      selftests: tls: cover splice on a nonblocking socket
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 972c72c5bcc6..157759e7e362 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -129,6 +129,7 @@
- #include <net/request_sock.h>
- #include <net/sock.h>
- #include <net/proto_memory.h>
-+#include <net/page_pool/types.h>
- #include <linux/net_tstamp.h>
- #include <net/xfrm.h>
- #include <linux/ipsec.h>
-@@ -1086,7 +1087,7 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
- static noinline_for_stack int
- sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- {
--	unsigned int num_tokens, i, j, k, netmem_num = 0;
-+	unsigned int num_tokens, i, j, netmem_num = 0;
- 	struct dmabuf_token *tokens;
- 	int ret = 0, num_frags = 0;
- 	netmem_ref netmems[16];
-@@ -1123,8 +1124,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- 			netmems[netmem_num++] = netmem;
- 			if (netmem_num == ARRAY_SIZE(netmems)) {
- 				xa_unlock_bh(&sk->sk_user_frags);
--				for (k = 0; k < netmem_num; k++)
--					WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
-+				page_pool_put_netmem_bulk(netmems, ARRAY_SIZE(netmems));
- 				netmem_num = 0;
- 				xa_lock_bh(&sk->sk_user_frags);
- 			}
-@@ -1134,8 +1134,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- 
- frag_limit_reached:
- 	xa_unlock_bh(&sk->sk_user_frags);
--	for (k = 0; k < netmem_num; k++)
--		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
-+	page_pool_put_netmem_bulk(netmems, netmem_num);
- 
- 	kvfree(tokens);
- 	return ret;
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+ net/tls/tls_sw.c                  |  78 ++++++++++--
+ tools/testing/selftests/net/tls.c | 255 +++++++++++++++++++++++++++++++++++---
+ 2 files changed, 306 insertions(+), 27 deletions(-)
+---
+base-commit: f49defea7668d8c68ec19fa085ef3da6075561c7
+change-id: 20260726-tls-follow-on-486f1ba8bbb0
+
+Best regards,
+--  
+Chuck Lever <cel@kernel.org>
 
