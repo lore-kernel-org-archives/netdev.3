@@ -1,75 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8825438655D;
-	Thu,  1 Oct 2026 16:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D565F51C071
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 17:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790873131; cv=none; b=fIa+LEH+9QHkGswfiRNo1LBVm9eoLvoXUjrkfVuT1aMYlMXy9zxlagFB/N0i7PzdeviCLAPI3KTSdJw9nkNbEO712tsGv7WXlsfmI9gyDzAE1DHBniluySHCfc0rUpjHx9ce6x3gwiaSaYiWCrVTXibsS2pFdJ19nvEs8jo0c4I=
+	t=1790874307; cv=none; b=HFwOcJe2Ykysi92DOH7u0GrcgH+SrrqZUSv9kGcBVLJKTEyLnmVp6SDkBzsWxTVWU/wD6E9t+Lh+271Jle7Gj7ebKCzikXUQRvSTCJ57gQ0TSlfIrDlA9R5c2Cmk/+OyC1+ro66YWKLUhhlfDyZHtY9cwm/3JZk9oswPf+8t1Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790873131; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ddLG62zmiJwKjRnnLZcbLiKxJCsZJn2ksZ7NXELY9qE6z6jQnikn9gRAUJDqPBmIuGHttqaRsGKrhlUh8O0rsv0FGob7rj/8gUq3ZnG+xqPlYTjuwfRJz5FBWdCrzWwrNj3JOUn0VmOjemAbu/XqjrPuq9AXO8ARAy21uGKc9Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk7neMj8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790874307; c=relaxed/simple;
+	bh=YcQDuTEhiIHLPGehWyOnNgYb4N2LsAYjJvT2wrN5O+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IysCjubTGeQYIlcTI1NY0bBSOl/DjCUZ28yUgZL9sMR6BuMb/H0bMs6jWHvl2dDHtlffgTkawRFySb1wPRGVUwcHmSG2qlx7zxlwvx4kG6dwC9m2dqje/WRoNyEFS9xteJLnKz4G8DX4LwybYh1YBhMkINebwu13iaQaH/mu/P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oK36QDXw; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk7neMj8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA881F000FF;
-	Thu,  1 Oct 2026 16:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790873129;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zk7neMj8PgVCs6SNfY1nofCAiC8ammsGgiRbkAOQT6ZOndWrFNeE/sEgmqY2Yq8Ag
-	 HUHESZs2nS6m3JMiRbRtIHxA9ip1udShxeiUfir2lwGLRh2CG0HTwjuif7CnKW4AuQ
-	 QVndPoQR0JugWpmNmsDTlHiJPwWFUKTPzO93Jr33veFrrVUky+35wV+0M7hPYFVVLF
-	 jI0PLCG170jodORpXxbay7CJcs7lbM8E29EqZ8oFkTsbRHO0DyyOpmJLQFLF8a1Efe
-	 zU6S23j91RFCq2ArneOyuWDLDpNYzb4QWtMq1CAMatn3GFWzFNjkZ95HYMPhUwIaol
-	 hT7cTG2ztv6nQ==
-From: netdev-bot+sinfo@kernel.org
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, Jakub Kicinski <kuba@kernel.org>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/4] mpnic: add NAPI buffer depletion check
-Date: Thu, 01 Oct 2026 16:45:28 +0000
-Message-ID: <179087312824.1402591.13891424496391739284@kernel.org>
-In-Reply-To: <20261001-linux-mpnic-v1-0-6422ee74233a@gmail.com>
-References: <20261001-linux-mpnic-v1-0-6422ee74233a@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oK36QDXw"
+Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2df834eb96fso36390355ad.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 10:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790874299; x=1791479099; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=stLdMF1HFFKlJP7EW7qqWefqncCa7xTHqwJgtpV2KKY=;
+        b=oK36QDXwlyYFp3GbVh4y8K3gebagaXmINoLaZQ3FWKrfZ+gk4OFlMB7lqqqa7dAz3D
+         yT7EVtHcIfWZtb0cMoz6eVm5u/Hs4mzIQboiprjSEMGflLbrFqwxqeTNMvHRKFVZBZLz
+         L/+QcVf43Kcth4wZ5bL3Uk5pvKKt+CskaL8ObhU0xv3x0Nb7A0hk8cqgMnHff40hncaz
+         Za+tlVKn53xZ02LcfuACUgq3urwZnWi0CeoQJ0UV3RQvrTwULja2laXKbwb8iX9EIgHS
+         +9ROdi5/P/OXl+c7qcR+ujBgQVx6Lnxnfi+43o+CGho+6WPDADWbRqTmtTUb6JzrTWz2
+         u4bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790874299; x=1791479099;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=stLdMF1HFFKlJP7EW7qqWefqncCa7xTHqwJgtpV2KKY=;
+        b=R7o1L688jeZSPT2OcVwVsu0QXPVKv/boV+z82W1r1DjZbCgpHDn4JamnfhrB6xTmXc
+         RDok4LhRw0nnJ3Ng8qDjGYFa6vzvqaJq/U0NqCdmkXx9UD8BDkYn6iqInJJNyv9xu5aU
+         /3cFidX02pLimLYEtXlv3gZH7fAglS/BW4aJb4mM5gTuFmIK5XQv6atSEw+l4BJXObRJ
+         +lTyr3sZrBJCPC/qJwaSixKk8QyVf43pyFJDDKx7vhtTct6plvtDlF5MkASlQvat4xkf
+         LpJ2nwzZLZiHMLck27mAD8TTTyDzNEDu9uqg6zUJXhdWO5GRJ7b0yTfvfTFbIGTffBMF
+         xFRw==
+X-Forwarded-Encrypted: i=1; AKwUvBwX9xBlkojQUVxauuIN3p8CEB+EF+6CaisJqCny7S86mq9L0sJEOmg0ksCIVzNlKHbv81kLMxc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJrs7KzUoviXsg7fYBj7HWgRABNavQnHpkK/d9LkGsOI3Pg7pit
+	iXpAtqjhEZE//l5d5iB23Fi1Ll8MjWuRdvUNkpDp4BNWM3VaIcQOOwZt
+X-Gm-Gg: AYBFou0HTDAKvzsdfhoY7a2L6GJUz/QQLgvE3bsQeJpO610jBaZnLjyFvFeu0rAj+Aa
+	gvCC+4XDox1Il/jh5gh2N4aAKqKEF1bfjyI8HlqIQyR7G7g2+9c1MPded3/QL45beo730JFYeoF
+	+aHJlKIUO/It+r94cUCDDo8gfRTXg0omvYoajXi9R9V2KMXeuBGGeZyPEviWz0RQ5zHnHT6TW5r
+	eAS8ljfTP2xqUq5FVRVLjq/332JRsI0kTlcaskVXtwQQyLoID7fsAEKOItU1IyCQ0j0aYppHU5X
+	dXtdwVQnIxoR0nIWBb7xYoQcJUjEN6vVSVgr484G0h628XQArxkzP7C+2c0CGei7xYxf8uqSUAC
+	NN0QKjEBPC2sk+XnAqgRGKC/hl2PeBdkKldjkZvpyZMzyJVzONdceOSn8CABdHjKfbSd0zlDj15
+	VuJCyk5Jrurc6g5yeWXHDaRjdYgxYuFF3/H9GBv1AZk7p4oKzOPlgaF4k4+6auZCThxl3JX5Kce
+	Q==
+X-Received: by 2002:a17:902:da87:b0:2df:7fe1:72b8 with SMTP id d9443c01a7336-2e49b64e34bmr641665ad.16.1790874298566;
+        Thu, 01 Oct 2026 10:04:58 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:8::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e300b06afasm13879785ad.49.2026.10.01.10.04.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 10:04:58 -0700 (PDT)
+Date: Thu, 1 Oct 2026 10:04:53 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, ap420073@gmail.com, 
+	bpf@vger.kernel.org
+Subject: Re: [PATCH net] net: make dev_xdp_sb_prog_count() see programs
+ attached through a link
+Message-ID: <ar6SryEPDgA25zKA@devvm7509.cco0.facebook.com>
+References: <20261001012559.297751-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261001012559.297751-1-kuba@kernel.org>
 
-Hi!
+On 09/30, Jakub Kicinski wrote:
+> ethtool refuses to enable tcp-data-split on a device running
+> a single-buffer XDP program (which can't deal with the payload
+> landing in a separate buffer). dev_xdp_sb_prog_count() only looks
+> at xdp_state[].prog though, ignoring bpf_link integration.
+> Get the prog pointer from dev_xdp_prog(), which will consult both.
+> 
+> bpf_xdp_link_update() needs a bit of a touch-up, too, since
+> ethtool calls dev_xdp_sb_prog_count() with just the instance
+> lock (for ops-locked devices) - we now have to make sure the
+> link updates happen under that lock.
+> 
+> Spotted by AI while reviewing the XDP propagation series,
+> verified and tested on netdevsim with a C test along these lines:
+> 
+>   link = bpf_program__attach_xdp(prog, ifindex);
+>   system("ethtool -G eth0 tcp-data-split on")
+> 
+> Fixes: 197258f0ef68 ("net: ethtool: add hds_config member in ethtool_netdev_state")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
