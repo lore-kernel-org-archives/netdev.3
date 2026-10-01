@@ -1,154 +1,195 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3B34A7CB7
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D1649A3D6
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861354; cv=none; b=KHKuCOc8gorNzLBxzFzV7T9QeSEK2BGhDLpnQabr7NN5ULWNNpATvveu0gHHJDFcp4/XlY0uSuIh+UImPv9uw87i4XIzteu/6T1kjR+n5WpNIWvyODSxRyS1RF+C7+SPR38xMW6oOMS8+q4zvKCqhBsnM38S50f7e06CBZwjYL4=
+	t=1790861472; cv=none; b=RZSQ8aYiaa2VI15mCV/ssFsVcGFfFaTmkCsk1ImyVXrgqALX0+Gd1XmRpI+XNB8pXAVbyHhh5B0eY6xFVqfSszt+NTA9TjoTmEsEfnal1ePHqen0z5LVIYqDJ4ohoIqg1P1EwvO/QV8tXjzhw+5nRiggBnSM2pz+1lpBr1tM/TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861354; c=relaxed/simple;
-	bh=KpBvRv68yxx08EXLWVK3x95sBLwi6SLW+GcKR0oqMNI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKqrGvObkO2CxDNLDcqM8+yODNbnjdZncOVFUqd0H0ra2SvLVCwVAAqw6/s9Qam0llirRv3IYi1sPKSqsvoXvSEyAO83DCrmykzOyheAa1BY0xE7sQyH/O6vwaqCYgDKkk7gTCoBMEM0KbIIBXH7S5Ku+tJpuBemNOcl8+cdfSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ktLGTwcK; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790861472; c=relaxed/simple;
+	bh=Vi6choS33FKFjxPKipH3DUPu7N1HLZ5hjd9r6msAcCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c74oYKTi9+DmTE4xywdXWaO3Hy3VQBtXiQxEAGPMUQ90SCWcNlcD75p0zE8F3EapXXsz6bfgaelCrClOEeoZWY5jX1Ba211BZuUBOFcBXFOA6tT22nTqzYEqvnDjUivlzwR4uPdBjtKv8jNJVshrWGnx72Pl7QeyzJiGTB+jgbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dtG7N4ei; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3U0Su78Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mwvjDzif; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/3wvYVVf; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ktLGTwcK"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d3920so49096695e9.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 06:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790861351; x=1791466151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6AEptEgQP2inlUl9eYZ6E1q3HveZU/W7oAG+SS9vXAs=;
-        b=ktLGTwcKcXFC+2GES/V38K/QtGDPb3guUR+TX9CgSWMh8fUTepHqVEdZJiclOl/S9q
-         +4cIGWqVonwPhJ9cMZ+0pPo03fUPmr91STvpH4ilpfezhazsA2mKVJqLx8TEGZYtX/RA
-         WDVM16gwbggP48JnMiLWL1w1aKUrP923bx7/EsiPB/md9lnTqdZWKLbFPSGj44WPJmxp
-         8qYef3zMxk4HnMqQGRAhxvvvQpDmGqPNjeQglwzW98G7xB1xDo67dvO7UjcfGHYqDG86
-         kBcn33dRiSN1fcqUebuFon1ufLSehLODg2tOrlq2L1ZbrILydn+H1gEyKKvsUk3QrUEA
-         kKkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790861351; x=1791466151;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6AEptEgQP2inlUl9eYZ6E1q3HveZU/W7oAG+SS9vXAs=;
-        b=VrLIHzSB7R8tFjgotW0OV48m75hlT/20nAi7CdUWCXwTU7C6YVR4y1sFmjmQ/4wuwM
-         vQb3Qi1ChQRFNmeNvRevqg9j3tY+gEHBSTnOpfXk3aRjd0cbm0ScVFvKuq3Vo/CrPAhX
-         UQZ9Qh+ZRLePAk1c1scCZdTfzZgwMxwlWfSYp1QzbPPF2yAr/PlVQE3YKeAFMqy5PkhW
-         y+4o7fpYYN/aEdlHB8kLrYc4DW/tWP3H9r7wHPqV639Ti6ZvyzHzSw+oXa8XFyK1qEKo
-         HvRccO4BU5MVjuUkY7eHotTsweRPcypnCE8bIvbNsFuTYscZOwLnonL4u0Vw3rmqCUOA
-         ItvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxXcezNf0HbQGAt2DUoqi7+FQt8OkF7XxzJMUnFmsobBobpVarpXOZ0nW/N89cRQ0mQuRrNaiQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nS2u3NsA7bTId1meO8Tg3YU+Vur13OEwkaH2p4TYbkIRwqE+RM
-	WlOHZ89XNjG++74NRfVQoyW16LjAqnmRt/cHikvKeEVvUt9jek1lk6Zh
-X-Gm-Gg: AYBFou0gHVdbPuXttMfritdK2iAgFCnvf8yiCWc42kSe/N3XfyK1+ztrxlHuqaBOCmX
-	Jiu9TKS7dGfMvL3PRzbCAvNfDFh0mFj1rWQrABOSTIRu5FaHn6xsV1kgPUhNo8OMarEXCuzRJsV
-	YAt38kt/5I7qE4ah4DtireSsvpJmf97BSOTff9ZUgpeM/r+A4axmISgzWXk+oMfAQoDVGG4s0C1
-	3zCuh8h7yUbURExr6EZaIKckiV6/6yzu9WxFZkEDfb6eSzeWIEpEYeVJs4QiMkj8r+JdpsN4nyk
-	Mh0R++EHrCgCmNxkLFyX5kJZt+b7xuAd6l8eDtDyR5nZvv0jtZ8WHRNjU/UKB7uqLxqPFplgvcS
-	qWWQlLEOfQbROMiHHEitC8drLk3fonDJ0sqgYvpgdm0RT8OVVTbeBWJxLouch3qebTZfhPaMvi1
-	6mwLc8HGlxHbNfd+8PpWXwiXnVHu82n5Devm+CAG4L329iVO/nbyuoUQnnke9GkA==
-X-Received: by 2002:a05:600c:3b93:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4a01b126e77mr98473445e9.32.1790861350760;
-        Thu, 01 Oct 2026 06:29:10 -0700 (PDT)
-Received: from beelink.. ([187.40.42.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0691c4c4sm7249850f8f.22.2026.10.01.06.29.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:29:10 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: horms@kernel.org,
-	david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+ci3c472c63e196fe9e@syzkaller.appspotmail.com,
-	sashiko-bot@kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Subject: Re: [PATCH net v2] nfc: llcp: prevent resource leak on repeated connect after DM
-Date: Thu,  1 Oct 2026 10:28:53 -0300
-Message-ID: <20261001132853.1468565-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179058922656.3145.17540746696102333949@kernel.org>
-References: <179058922656.3145.17540746696102333949@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dtG7N4ei";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3U0Su78Q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mwvjDzif";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/3wvYVVf"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C17441FCE1;
+	Thu,  1 Oct 2026 13:30:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790861461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv41mYhh05ohbW2u6CfMOA6S2qcR8TtPnvVYNkhF7oc=;
+	b=dtG7N4eiC8M+oeB0Rc0VS63iSeAdBwYGe+ICwINqVmTrP0NREBj7cb/fkMzDmsuuz4JNDQ
+	I1Ggiq9txQBNvvdWB/ayzef0/CD35xNLPN/3zQgm1AYmMO3D0rTwitHdydbCLkXzyN/rqz
+	jAzIKb+U8u729V28N3BycXaCvFs4tc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790861461;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv41mYhh05ohbW2u6CfMOA6S2qcR8TtPnvVYNkhF7oc=;
+	b=3U0Su78QYNErhMX+qHPoGD6qgA7j9UTwXS3uHjjexO7aoPeh3lopjOh9v2JTNFcGx9EU8T
+	JYaHk4nsghbOmVDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790861457; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv41mYhh05ohbW2u6CfMOA6S2qcR8TtPnvVYNkhF7oc=;
+	b=mwvjDzif/pWDRoRPwy9vKJRQBVYhSTB847YEsSk7BWEvSCAtkcmiyaSe3dmqq+uUWEsoIO
+	UVsfDPLDOMH1gjkp2SRyTdfyWc6tGVea3B3AOQCnuyMVTQ9M128jUXnWRriwouyQtXvX+5
+	zHq7beO8W5EiwGdPd6ULMH62g16bpVs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790861457;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv41mYhh05ohbW2u6CfMOA6S2qcR8TtPnvVYNkhF7oc=;
+	b=/3wvYVVfcYAbAJZ8o46ppKnb8PBe2XUYXAmWMC1PLm4BwtUdA0ns33QgphX3/pcdwouop8
+	N0ouZV/Tq/WAX8Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F0F34134B3;
+	Thu,  1 Oct 2026 13:30:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KwjZMZBgvmotMwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 01 Oct 2026 13:30:56 +0000
+Message-ID: <25e03da1-d25c-4206-97c9-6d0fee4e9758@suse.de>
+Date: Thu, 1 Oct 2026 15:29:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [ovs-dev] [PATCH net] net: openvswitch: validate transport header
+ presence in set_ipv6_addr
+To: Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org
+Cc: dev@openvswitch.org, jesse@nicira.com, horms@kernel.org,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@kernel.org,
+ davem@davemloft.net, echaudro@redhat.com, aconole@redhat.com,
+ syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+References: <20261001085205.3822-1-fmancera@suse.de>
+ <50b0db80-7d42-44fc-81eb-d0fed8047871@ovn.org>
+ <7590af05-e95a-4b34-9216-26e770bdfaaa@suse.de>
+ <a9480ea8-314f-478f-ae9d-b8262600e2ad@ovn.org>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <a9480ea8-314f-478f-ae9d-b8262600e2ad@ovn.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.75 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.15)[-0.740];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[4cc63fcfb3845e149969];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.75
+X-Spam-Level: 
 
-Thanks for the detailed review.  v3 addresses the device reference
-issues; the remaining points are either pre-existing or need a
-follow-up.  Responding to each finding below.
+On 10/1/26 2:00 PM, Ilya Maximets wrote:
+> On 10/1/26 1:20 PM, Fernando Fernandez Mancera via dev wrote:
+>> On 10/1/26 1:15 PM, Ilya Maximets wrote:
+>>> On 10/1/26 10:52 AM, Fernando Fernandez Mancera wrote:
+>>>> When executing IPv6 address rewrite actions on IPv6 fragments,
+>>>> set_ipv6_addr() might attempt to recalculate the L4 header checksum
+>>>> calling skb_transport_header() with an uninitialized transport header.
+>>>> This can potentially lead to a OOB write.
+>>>
+>>> Not really.  later fragments have l4_proto set to NEXTHDR_FRAGMENT
+>>> and so no writes will be performed.  See parse_ipv6hdr().
+>>>
+>>
+>> Oh, I didn't notice that. In that case, this is harmless. I will update
+>> the commit message, thanks!
+>>
+> 
+> [...]
+> 
+>>>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+>>>> index dc5ff859f114..a14668565ec4 100644
+>>>> --- a/net/openvswitch/actions.c
+>>>> +++ b/net/openvswitch/actions.c
+>>>> @@ -395,7 +395,7 @@ static void set_ipv6_addr(struct sk_buff *skb, u8 l4_proto,
+>>>>    			  __be32 addr[4], const __be32 new_addr[4],
+>>>>    			  bool recalculate_csum)
+>>>>    {
+>>>> -	if (recalculate_csum)
+>>>> +	if (recalculate_csum && skb_transport_header_was_set(skb))
+>>>>    		update_ipv6_checksum(skb, l4_proto, addr, new_addr);
+>>> I'd suggest moving the check into update_ipv6_checksum() and maybe add
+>>> a small comment that the check is only to avoid warning on reading the
+>>> offset that wasn't set, offset must always be set for any l4_proto for
+>>> which the checksum is actually getting updated.
+>>>
+>>
+>> Will do that. Thanks Ilya.
+> Actually, it might be better to check for NEXTHDR_FRAGMENT and return
+> early only in this case.  This way if we ever have the offset missing
+> for any l4_ptoto that needs it, we'll still get a warning instead of
+> silently not updating the checksum.  This will be close to what the
+> update_ip_l4_checksum() is doing.
+> 
+> At the same time, update_ip_l4_checksum() is able to get the transport
+> offset without a warning, so another alternative is to actually set the
+> transport offset in parse_ipv6hdr() to something like frag_off, which
+> would closer match the behavior of ipv4 where check_iphdr() sets the
+> transport header unconditionally to the next byte after the network header.
+> This is fine because transport headers are never accessed when they are
+> not set in the key.  The network checksum update cases are the only ones
+> where the actions are even allowed to execute and touch higher level
+> headers that may not be present in the packet.  At the same time the
+> frag_off is kind of an arbitrary value, so I'm not sure.
+> 
+> WDYT?
 
-> [Critical] Can this release resources that a blocking connect() on the
-> same socket still owns?  (Thread A in sock_wait_state, Thread B wins
-> lock_sock and runs cleanup, Thread A unwinds with stale local/dev)
+I noticed this but IMHO it is a worse pattern. In the sense that one 
+persone in the future might use the transport header without noticing 
+this and the warning won't show up because the transport header will be 
+set incorrectly. This could cause an actual OOB.
 
-This is a real concern but pre-existing: the socket lock is dropped
-inside sock_wait_state() and a second connect() on the same fd from
-another thread can race regardless of this patch.  The cleanup does
-not make the window wider -- without it, Thread B's connect() would
-overwrite the fields without releasing anything (the original leak).
-A proper fix for concurrent connect() on the same socket would need
-serialization beyond the socket lock, which is a separate change.
+I will trust your taste in this matter since I am not that familiar with 
+the code.
 
-> [Critical] Does a CLOSED socket with non-NULL llcp_sock->dev always
-> own a reference?  bind() keeps dev without a reference;
-> socket_release() drops the connected ref without clearing dev.
+Thanks,
+Fernando.
 
-This is what syzbot confirmed and v3 fixes.  v3 clears llcp_sock->dev
-in nfc_llcp_socket_release() after the connected put, and for
-bound/listening sockets that never owned a device reference.  It also
-clears dev in nfc_llcp_recv_dm() for bound/listening sockets before
-setting LLCP_CLOSED.  After v3, the cleanup's if (llcp_sock->dev)
-guard only fires when the socket genuinely owns the reference (the
-rejected async connect case).
+> Eelco, Aaron, do you maybe have a preference?
+> 
+> Best regards, Ilya Maximets.
 
-The syzbot reproducer for the v2 double-put passes cleanly with v3
-applied (tested with KASAN, 0 reports).
-
-> [High] Is the socket always off local->sockets at this point?
-> Cleanup sets local = NULL without unlinking; socket stays hashed.
-
-Valid concern.  The cleanup should unlink the socket from whichever
-list it is on before clearing ->local.  This is not addressed in v3
-and needs a follow-up patch.  I will send one.
-
-> [High] Can the same leak happen through bind()?
-
-Yes.  bind() also accepts CLOSED sockets and overwrites the fields.
-The cleanup helper should be called from bind() as well.  Not
-addressed in v3; will include in the follow-up.
-
-> [High, pre-existing] Stale sk_err = ENXIO from recv_dm not cleared
-> on retry; if recv_cc() races in, connect() unwinds and leaves dev
-> NULL, then destruct dereferences NULL.
-
-Pre-existing and not introduced by this patch.  Clearing sk_err in
-the LLCP_CLOSED cleanup is the right thing to do.  Will include in
-the follow-up.
-
-Summary of what is addressed and what remains:
-
-  v3 fixes:
-  - Device reference underflow (syzbot confirmed, KASAN verified)
-
-  Follow-up needed:
-  - Unlink socket from local->sockets/connecting_sockets in cleanup
-  - Call cleanup from bind() as well
-  - Clear stale sk_err on reconnect
-
-I will send the follow-up as a separate patch once v3 is reviewed.
-
-thanks,
-Aldo
