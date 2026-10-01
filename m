@@ -1,144 +1,196 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223A377EBA
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C142D4477E7
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790854966; cv=none; b=pHi+Obyj9RPr17mBNZRa7JVU1OxyF8xOoZ6OIOTQ2tPQ3g03OQsRgBTvLPRbo8sIhgtu3R3gKOvnNqITkBwEnBhIA+5shOXDOdIPp6nTZ53uhex0Iomyoe04h26k5TppIh7gyQih1TumXj3FyLlsnQ1ymrN6qWoXxbsdSRydeVM=
+	t=1790855167; cv=none; b=nH1ApCyKsuewXEPqMN9AZzC6UYf3E2RdHVCThQMGp3t/dFS/a5YmcKL0S3mopgTlJq85mqjsFOXt+OYG/3yk1i7cyXgUHecxlr1j/Zqm/GDLOuec2CEzIUu33pvdFRwBi8Yn73TUj1CDBmV4V3VaYypB9O3JYc6/8Nn/L1w3ofo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790854966; c=relaxed/simple;
-	bh=IDWlGcILCgeTfh64c3wWvrJ1SZ20s1bbqET00o/9NcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EwN4ebPoyI00ZH2+NBOUEUfLC92DDoExR9i82UdV6cPx36FYKscf4xvnKPuK3ZPKkmw3qjHvfVwjEanivXaTxckOPHnOQpmxBs60zzp1IWXarNlOGXLOFjSfuTd26GoA2M3GGA5ovYnSnjip67Jz9XlhcEOcscPem3a0JlaeU20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=D9Y1eKKa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qnwOLbSR; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790855167; c=relaxed/simple;
+	bh=BFT937ZpdM34J9PwVju7/yLS28Bo5/2Q+X4eLCQB59c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l69tFWLbn61CXDzELBbDNBP5EZlxD14qyi6j2ieVniI37HQfaUZk/9X+RXc1HYm7CJ5AWIgIzF0b/Tog9Ay8ptj8HMnVwpFx+bp9CGO5VUfU3kUSpSPhXromBpxpsG0ei6aoxPL29TLQWhAqDTQ29W7TLG262CODOG5JKjKFFS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImStY7tK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WikupiJf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="D9Y1eKKa";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qnwOLbSR"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 2A17A7A012E
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:42:43 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 07:42:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1790854961; x=1790941361; bh=wiR7GHYhM8M440AYDtUUo2wDPugwTGMs
-	7bdBVyUJwQU=; b=D9Y1eKKa4jL7dXqHWADDBgFMqyirU77x8DVPs13pGNb0SHXH
-	IoaikWlkbK1yWktiSTDrnN+/Ghqlt+BsIAQCm4KWzl5UAE8AYbs2QWOp1t1U9/S/
-	jqBkHhvEu0u8y7ZxjKCH1buhIgCXcd9uaUejO1PbH7tICo5cby/wPo06RLg3xon/
-	6IH1moUunrRGFu2cPpwz9TtY3OssPaNObsUXPUY4lE1EZeFGF06Kj+g/GA1juNHc
-	k5GdlE/TlA4HDSo5gB9JCjsBrljJWHlAxQLPF7B/a0KsCdj2N5SqM4OGf0G1i871
-	7IEp/k8B7c2l7NKRZsKEIJzFP02SjGIgwH40Ng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790854961; x=
-	1790941361; bh=wiR7GHYhM8M440AYDtUUo2wDPugwTGMs7bdBVyUJwQU=; b=q
-	nwOLbSRe3u/VZ2/X1M1HGIL0Qie0nfNzKoolHpayLgf3DXK12vC2sKyHbqMqx9A/
-	j/NTh9wTRhB8TxtVpm42pqejWJ3wzDUmGFCoDb16yDglVnCuwaOmUTn5/wfvEmG1
-	FA0236sJFVeh0+iG9/Bj67VprbqbNAXrmkUaxjO5naq4EGoiPYe+nFFIgwG4sGsZ
-	+CPpdPdxYIDB8taKcFjvfTsBqQION5FXdlZFdtzI6V6Yu3r6ZHbvcAo5vUOBU38X
-	YOawh5nou6A37+a0nsTIUkXbaDFF6SojLmvfvucM/CQxDaoHGhPWV+v/1u6kVuHZ
-	vRfTGSkpvCGU3VtUXfLlg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=queasysnail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790854961; d=queasysnail.net;
-	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:p/08exWPId/z82mUswSZbMQ9e0+2QgHFUZuS/BxvhRNRktS
-	yAbBhgmFOkukL6njVWQ8wK0CHNvIKI9TlOhmr8oPIcsXsVteuSBYVkXAtlmmOnyC
-	l7EdlFmhotIp3ikY7ALr+x0DSRyNkugABOBuMWM525CBxzeyAkfp9pJa2+9gDvWe
-	NrO6rTts/4OVu+SlAUdEzfQXu0zQgz2CEpGivrDxDhTZGrnKTDS1xIc+0nIIelig
-	hF+/R/OJy9XFOutRSNCSZ/XmcLyYiHXlGsk0BSwSxQ55v2gWM1f3oS005agb1NrN
-	xfX+8/FSINCRalpcg3Yp0NZ5AIOfNK02wAiEMuQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:w3cFYu05+oNdK9LY4Pnh9vLjVY07V07d8LU0Yb5CTMU=:IDWlGcILCgeTfh64c3wWvrJ1SZ20s1bbqET00o/9NcE=;
-X-ME-Sender: <xms:MUe-atFphlcj_GDw7yKZ7peGb5YxZr0-xzv0swbYsc_V9SAiLMip5A>
-    <xme:MUe-aqel9_yP2GgIketUbJanWWBzcAFtNXNg5TziAXkIAS04ePxbAzVg__Qjm2qyl
-    FQjZVKmFCtfaI5Qwe2EqGehmB8unVkIzzII8A88vkiC-4hI02uriMVg>
-X-ME-Received: <xmr:MUe-auqf0oUZRtEhnAFGVW8ezww5PzjDORyqJfyzNkisYHmW1p5TTcC11qm5>
-X-ME-Proxy-Cause: dmFkZTFq5Qn6nRJgUzJ8A0Lp07mGWxrMuWgqUOpjryDkcR5C7nDrmlxdUGB+1dHAHFMzCZ
-    PM1Z7KAur5Q3p/pZj989+OOezFlAGikDMYI0syQqkku5V7O6AyfYNE3xdLQ47AdCMk7yOY
-    fr2oPMfK85VfhF2E4E3TK0mxMfhHWjUHt6p8IxxgwFU0Crk0cggTLz61N3LEkyQPZTpZMK
-    6Cq4VghPibym913wVLVgrzDxcOtld/RbqJzg3CNbLigF/LyjiZGcygsu79bmcvIn88VCNQ
-    f4yEYoWC4OOr9RMjNNNnNAvmGtKcAqf1fV3M21z345jEEcMu+JROHXip1bwF+vyUJgcZK3
-    QiNyi4F1OXt/Ihz/H5ARUs9Gm/c+cdh6cXi/pwjIdgE9LvMsv9gUA7yZO3AA6WWMdAYgt6
-    F5xZM3WTGgT+J36AhWwuca87/MSmcgzh1l3OfNf0jQ4V9w64JCJp//hjsvkb09rMhd53cP
-    3GAVd8O1E0oaT3TCRDveNmDx0uewuh2+lvOUZpWxMusrMI4GWz0jTcAhbKxhggTVIXO+MY
-    uKnO/4C+0GGa1ROJFDJKgOGh31ZEdXHqV68KBm6uWkomyklfW3QExRCg+P3eZIGrNN/B7s
-    hkWioeDplcNjSyHddgMSfLOCVl2AUxwPbWStYrJAfgyO8Cv/PMDHUNu55pKw
-X-ME-Proxy: <xmx:MUe-ajDRfOCE88ukX4VW32ntYmeSriSXoLwyIF3ixlQrjROisc2D8Q>
-    <xmx:MUe-avdSRq7dzQkO3g8s1LqStuIayv7p7veoHYM_FIi0De8Dcc9GNQ>
-    <xmx:MUe-arvcnHV34CRoCs0eErqL8HXO0PsxYs9XxgNwNCzoi1ppzAeU5A>
-    <xmx:MUe-amgIaEF6hJIE32G_bwWlw7hq7p2INVsW9wX_gQUrLtH2EMfSaA>
-    <xmx:MUe-agybIW5Q2aqix3A8yM8o7-27DrhHEG6dcvMVTzzKs_A1csJNZz9g>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 07:42:40 -0400 (EDT)
-Date: Thu, 1 Oct 2026 13:42:38 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
-	netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH ipsec 5/7] net/mlx5e: Use the packet sequence number for
- the IPsec IV
-Message-ID: <ar5HLrGSiwbmr-pR@krikkit>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <20260930144523.435271-7-Jeremy.Jean@oss.cyber.gouv.fr>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImStY7tK";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WikupiJf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790855139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
+	b=ImStY7tK+v2OSMjxemHyEBM/0UTI36Qya1sF1tX3BkuHL8t5RzYzjEP7D4IrN3t/k2paVI
+	CRgrC07F15A30dvHjRlCxKOLx03WWtu8LKp33gCVlBiOHcQsS7Jq+rgTtaoz/F60dyc9Ts
+	rjkQJ6Tk6qFx8v18eTl79eG+iaZwB54=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-1-87v5niFmOXuX3fMQzLndZA-1; Thu, 01 Oct 2026 07:45:37 -0400
+X-MC-Unique: 87v5niFmOXuX3fMQzLndZA-1
+X-Mimecast-MFC-AGG-ID: 87v5niFmOXuX3fMQzLndZA_1790855137
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2dd399f761so430066166b.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 04:45:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790855136; x=1791459936; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
+        b=WikupiJfNETO5TXgTLBqyUR7APbuZ8iITJ71HpgcG6qZXdZP6dYVmbrZaThGnFsXMb
+         +VJ4SY80DVAuGqSsXtVdU+ivK9GjPy/Y/fM9IDEHDiHLHmiDkY2u/SwQh9++Jlc/ledR
+         1ccSYBe/RVa8hEyUn7jNcgdtJhINFBuwdQJV0ouI9DRHamJwPA9GuHrFk8rD5K/7l3UZ
+         R0Q8OsKPExkD+DOEncr4Qk+0JdGbYHlFKfC8kXPcKV2VcQywm+hG1KsuwZrx2OZ3gWAa
+         1Dj0zIHQE/Khr3eC4Fbs5jM6in8gTC48xpu0I5ktsHUMXDZDngdx+x2FK+tO6+9otF20
+         XjQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790855136; x=1791459936;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DXvxeQkPqG5Nev8eHBMp9agYe789sbTvcF7+Hpom1i4=;
+        b=PiOmOsXKyi8dvS3JdWyUQdqkepFTHepXm3JpQJGjFawBuY6K37ahQnfunaQMNzDQmM
+         azaooFyQxSXNXt1VASV44EG3nnKiwaiq0XYvcGehdp0WIccR7LVrpo2vgW5fx0j6gI77
+         j0wbM8p3a843d+nG0m72iYJGP0neejyyTCOwNnxe6MOHVqP7wpeyi7hWdEUE+83lU0V4
+         d+5BChWnPO17WIho3CvA4VLeD4Du0JLrRvL30ybf96fgMC1zSLJ9WGUhXYWBIY3Db2UN
+         wJWHIEgFR73D22jzhy/1Ym8Dlh3rJsFzfWlFau7+xt4D/blXWgR2U0/rP52mb8MkvK3d
+         1bmQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzi351I1DTLQihQ1leKn8xxXZALHa1QEEeGP3Dw/MaaB5wvatS82g4EuSK+9YO2ctIqdLAAsVs=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxLFIPyR3BzQpziw9UrE/9zbEtxm0BZm3cMTqj4t+kNZk0NI0/
+	d40/z8POEP033c2nXxEplltDDEXWJXLGOiy400yrA3BEZFZ4qSLT/4XaSH0XZ82XMtkeHugnR8O
+	yUmLq10X9ccqGVRo4Zrcou/Aka5me3Ty+dktL5Td5pyHJbtQt/eOe1s2Tlg==
+X-Gm-Gg: AYBFou089ZhrJ4NHYdpPuN+RBwfeGaySn2Kx4TiITX86C7du2DWqjzgmr6auv1WpgDE
+	5XpcERSspJYJV+gXfs06QkIQhB+SDvzVURRvmLoTdPDRb3XUQzpcE78xBSGAJ8ltXzaxg8MTEi/
+	a0IVxUgNUcf/hgsWLbqqGE9foKnog7vvYIFIjI0LuEAlv07eirRyxopdjGHhhWknnL07GWcaDkg
+	L3DMDAN9E8txSJfsORdoFDTkmbiuGpyRSMySBG3DPUVU7lBLl5PjEGVOkNRFqigKWxYfQ37i+QY
+	3fYMhCJj/XDdXmtusFI0/ISkN0HkUkf2xDyFq5p98QZUeUSACd6yYR9eCoOM9wOR69cB3lo7dcW
+	PEp8M9uBPEu0XaoYbTP90WnPAT3AiRihNHCJuqH7a4HUPmVvTJ7RaWqTx60Q7DsGsvaK767gupw
+	==
+X-Received: by 2002:a17:906:478e:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2e2376115emr403162466b.6.1790855136682;
+        Thu, 01 Oct 2026 04:45:36 -0700 (PDT)
+X-Received: by 2002:a17:906:478e:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2e2376115emr403159266b.6.1790855136230;
+        Thu, 01 Oct 2026 04:45:36 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31dd955bsm139895666b.70.2026.10.01.04.45.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 04:45:35 -0700 (PDT)
+Message-ID: <7913b40f-f7d2-41ec-acb2-1edc7f2b833c@redhat.com>
+Date: Thu, 1 Oct 2026 13:45:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260930144523.435271-7-Jeremy.Jean@oss.cyber.gouv.fr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/6] vxlan: vnifilter: bound a single request
+ and account per-VNI memory
+To: Ali Firas <alishmery18@gmail.com>, netdev@vger.kernel.org,
+ idosch@nvidia.com
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, razor@blackwall.org,
+ roopa@nvidia.com, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260927215209.2581830-1-alishmery18@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260927215209.2581830-1-alishmery18@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-2026-09-30, 14:45:22 +0000, Jérémy Jean wrote:
-> mlx5e_ipsec_set_iv_esn() may decrement xo->seq.hi for a GSO skb based
-> on the SA's current output counter. The metadata already contains the
+On 9/27/26 23:52, Ali Firas wrote:
+> The VNI filter interface accepts a START/END range with no bound on
+> either endpoint and no bound on how many VNIs one message may ask for,
+> and the memory it allocates per VNI is not charged to the caller's
+> cgroup.
+> 
+> Since v2, Jakub asked that the VXLAN_VNIFILTER_ENTRY nest be linked to
+> its policy with NLA_POLICY_NESTED() as patch 1:
+> 
+>    https://lore.kernel.org/netdev/20260921150904.65a704eb@kernel.org/
+> 
+> Patch 1 does that. Without it the entry attributes were validated only
+> as each entry was dispatched, so a multi-entry message whose later
+> entry was invalid had the earlier entries applied and notified before
+> the message was rejected. With the nest linked the whole message is
+> validated up front and a bad entry rejects the message as a unit and
+> installs nothing.
+> 
+> Patches 2 and 3 bound a single request: patch 2 range-validates both
+> endpoints to the 24-bit VNI space, and patch 3 caps the number of VNIs
+> one request may add or delete, summed over its entries, at 4096. Both
+> add and delete walk the span one VNI at a time under rtnl_lock, so both
+> are bounded; that walk is the cost, not the memory.
+> 
+> Patch 4 clamps the dump. vxlan_vnifilter_dump_dev() coalesces a
+> contiguous run with no bound, so a device populated by several requests
+> could dump a single entry that patch 3 then refuses on replay. Patch 4
+> clamps the merged run to the same limit, so dump output is always
+> re-enterable; the selftest installs more than the limit, dumps it, and
+> replays what the dump reported.
+> 
+> Patch 5 charges the per-VNI node and its per-CPU stats block to the
+> cgroup of the task that created the VNI, so the memory a device grows one
+> VNI at a time is accounted the way the device's own queues, ethtool
+> state and NAPI config already are (commit c948f51c1654 ("memcg: enable
+> accounting for net_device and Tx/Rx queues")).
+> 
+> Patch 6 adds the selftests.
+> 
+> The cap is symmetric, applied to add and delete alike, which is what
+> Ido asked for when he agreed to a 4k limit. Patch 4 is what makes that
+> safe: because the dump is clamped to the same constant, the kernel never
+> reports a contiguous run that its own input path would reject, so a
+> device holding more than 4096 VNIs can still be torn down by replaying
+> what "bridge vni show" reports. Device teardown itself
+> (vxlan_vnigroup_uninit()) is not a netlink message and is not subject to
+> the cap.
+> 
+> uAPI changes, all of them:
+> 
+>    - a VNI at or above 2^24, previously accepted and stored (and
+>      truncated on the wire), is now rejected with -ERANGE;
+>    - a single request asking to add or delete more than 4096 VNIs, summed
+>      over its entries, is now rejected with -EINVAL -- "bridge vni add
+>      dev X vni 1-10000" used to be accepted;
+>    - a request rejected by the entry policy, aimed at a missing or
+>      non-vnifilter device, now returns that policy error rather than
+>      -ENODEV or -EOPNOTSUPP, because the nest is validated before the
+>      device is resolved (patch 1);
+>    - "bridge vni show" now splits a contiguous run longer than the limit
+>      into several entries instead of one (patch 4); the set of VNIs it
+>      reports is unchanged.
+> 
+> This is a policy and hardening change, not a fix for a crash or
+> corruption; it targets net-next and should not be backported.
+> 
+> One pre-existing semantic is worth review: an entry that carries only
+> END and no START is treated as the range [0, END], so a lone END near
+> the top of the space is a whole-space request that the cap now rejects;
+> whether END-without-START should mean that is left as an open question.
+> 
+> Not addressed here:
+> 
+>    - vxlan_vni_add_del() still leaves the earlier VNIs of a range
+>      installed if an allocation fails partway through it; with the cap
+>      that is now bounded to fewer than 4096 VNIs. A fix needs a
+>      transaction and overlaps a separate rollback change, so it is left
+>      out.
+>    - a lone VNI 0 dumps as a START-only entry the input path refuses
+>      ("vni start nor end found"), and a stats dump carries per-entry
+>      stats the input path refuses; both predate this series and are
+>      unrelated to the limit.
 
-And doing a check based on x->replay_esn->oseq, which may not match
-the value for this packet, seems really weird.
+Sashiko complain WRT partial accounting of patch 5/6 looks legit.
 
+Also it would make sense to reword a bit the commit message of patch 1 and
+2 to reflect the above.
 
-> -	if (unlikely(skb_is_gso(skb) && oseq < MLX5E_IPSEC_ESN_SCOPE_MID &&
-> -		     MLX5E_IPSEC_ESN_SCOPE_MID < (oseq - skb_shinfo(skb)->gso_segs))) {
-> -		seq_hi = xo->seq.hi - 1;
-> -	} else {
-> -		seq_hi = xo->seq.hi;
-> -	}
+/P
 
-I guess this is trying to solve the same thing as 4b549ccce941 ("xfrm:
-replay: Fix ESN wrap around for GSO")?
-
-
->  	/* Place the SN in the IV field */
-> -	seqno = cpu_to_be64(xo->seq.low + ((u64)seq_hi << 32));
-> +	seqno = cpu_to_be64(xo->seq.low + ((u64)xo->seq.hi << 32));
-
-This is starting to feel like we should have a helper to compose the
-64b PN, and maybe give a name to the (low,hi) pair struct to pass it
-to that helper.
-
--- 
-Sabrina
