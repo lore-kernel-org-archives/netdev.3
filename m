@@ -1,119 +1,154 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215CD366541
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829513; cv=pass; b=ey3NyxhOWCMO+OU9x81XBnnCg+IHY9ACtovhSXHxmn8ETfpHpT6VD/jkG0z02dhUCY1n915o6m26vgMqyHLb09zxZ2ldO36aBF8YQeob1R4x8JSJF1p22KpwOh6qQgYf8ktMbB6ZDhlJctj3dv+S8jVu6P9Zh1QPhaa0e4JU1lM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829513; c=relaxed/simple;
-	bh=RzZXfiD796BISLE4d54SM7rERI/SYqzCPtyXD48JKMw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hlwgfJGe3ujDw6kRF3W4748It1rAOCfC0yUAb4snt04Se2iBPB1/E38WYrYp9zzyph6MGt1cYKhGdzfX4oTtBOv5YY2ydLTBlwGGV+wqktVV+9qhN6dUgTy5K/PQBHmQNOIEPbTWbwC07Dj5CsefpFtqVY5/vBFY6+8OCjNihdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oxm4Q/aH; arc=pass smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A87357CE8
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790829550; cv=none; b=UOFWjM4msCjq2V2VYMoCsmw41HSPTW7xO21ShKg2rmbN8/DU/G8YiXeL7+cGYq8K7RaOKTaGZt/eC2n608Q5zgKJ9NIcDliY3B8kplO3O7rmTeoSstYcnem1qbCIniK35Zuh7I/yQ10TFriOsgQkIpWmsQM0Q5sV2OFTbf5k5WU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790829550; c=relaxed/simple;
+	bh=RmmTiNdiyo0qF2Ob8dmnOOKxLKvQl92aoOppj6L2Tqk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=K3eJHosLeeOigoT8ltEZ8KePVa6ECryI9w5CEUNu4SiTVflipLh86h0ec1RrDjFh0ftvcKqlrnPaoUHxoHSqralKaSZY1rBs6OTcdoKgrrnvIYdGEkGB8KpbSDWND5L/MP3ynvP8ecae8DyaCoJJAspEpfGhvdtOHny3NWbRh7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBhcZxlq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oxm4Q/aH"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34b590a5b5eso2922030eec.2
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:38:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790829510; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hpNQcr0vhOjrm/ii/MkvHlsfX/3qzGk7kMaaa6G0Qnjkil3u6Pc6KF5j1crAbMpSch
-         ZgzYXm+VXcNW/1wXXHwicpqXKHfyFcto0lwSMec9OkgulpjYKRufoXF7hZX8EXATjpDe
-         6KZ8z2hwkdg0Y3u4xrnqrv9gXR8cJSQa1HHHNQrzlQ2BFgLD5KHE4uDi8D3hpl8s3j4C
-         ENjQ+OLPOmaQF79IHZSgV++Mir9iMhlRihHqoDP8JIrtwnlnPTBJ3HqzwIBVepT1XqG4
-         FZYF3knk6cPni/QOCeqD+L52gNmmASyqW08Dlu4QJZs/8IG8ZWzhah47Q3mJPLsJ/E5L
-         lJxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RzZXfiD796BISLE4d54SM7rERI/SYqzCPtyXD48JKMw=;
-        fh=zHEOjLhZ1a+UvdtQOklMe2Kh/ptQF9JxJNbZJ2yo7k8=;
-        b=ZJjqwS5dhmT/YrS++UHlDK6QlOHDPgHjiC/0C0kzJPusUHRpBkaCIRlVjxc1fi5ht0
-         zIO6R73GiWABjH7+rv9+9azyBLr7zVPP+lkoDhUagwp96d1uPKYi8uwDb/jcPOlIZNT1
-         4ko1iEF5UBx3guXfIiZSzrjnrmNBMl+Cw1NokmIGTdLsNxGbk38NWZqx+oOKGU0Z63KZ
-         jYbjgX6im9KiUZlxUjyk6R8Fr2/JpN9+t+gxPaSOr2aBF4bwQGwp1vWCxOAjMNvCZYHa
-         SzNuSFG/DB/QU9zlyZ0K5RnMwatDL0dnJuCw8KTAqwD2nb7kGVI6kaZS76fTu2kB6Sfi
-         7kxw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790829510; x=1791434310; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RzZXfiD796BISLE4d54SM7rERI/SYqzCPtyXD48JKMw=;
-        b=oxm4Q/aHHtjIckSdR1pLOKeqyLX0OMGyF2aYHj1zgxq1jAcax71VpqLs+cMVqb+zlB
-         0xh9jybedlrK5jDsC33dlXfJjsnISRuGwi6Z0Se8ls49+Xj/m0JgcDr964LDMpPTXBQX
-         /yDcUbmn9obEkfzCmSF1bFIzzr8/XJxZNiEo/9AA0lsRLMG6UFZXeMOdIhG6GwUOJa7f
-         +jcIyYQjzVIvWQOlAKme0sopXTi0zPJ+cyojivzQfKdilJAbLHBkVu4yZIKjhvb7nC0i
-         5rBiV5hjbTIHFlCyF/wBe4CoGL7F6ATXg/utTBLWr1S/ph2PGaxQL/HHA9UYse+bwyeC
-         QevA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790829510; x=1791434310;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RzZXfiD796BISLE4d54SM7rERI/SYqzCPtyXD48JKMw=;
-        b=0rkyV0PIkw5SJfO0JfnRvWi3AhGI/QVKQO80ZZQgysD90RQs/PUIS8JHRAtBHsO6SI
-         pzLgfG0fVsh84s230CmU54nXwV34wG77OyOuXcVOV6eIPjiflpeMZrZpfSw/fnNVsuhN
-         VHrwqId4QqxH5lBW/nOQWfkleIk6g/LnXZf6cX7ngo6L6M1/fCVn3589+qkTxTecOj+1
-         7hvAdX++9losTI3epG7YmB+I3Hgdzp7qYYyRhZGbp0DgXXTyV0n4u0L0t5MCqnTJIKXI
-         3+Cs6NotvgKel5G9Er8puSvRdoAi0jgeqKap31zOPnJKrqd9YwMRvV6Z4JLOeQ0VPk9Y
-         4fCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxWf1YlEqGj9hfEUQklNl2BasZ5zWYF1w5WkAxZPzN/UpZuAA4soblH3lDwgVbPqPzgKd0cWUM=@vger.kernel.org
-X-Gm-Message-State: AFuF++l7Nm35+oIHhJOe99hQmJKEZMnyG1c3jwPokG/2WigSWG2YN15s
-	mTTutotlPTyv/Pv6ZVFrKLfN70hCKdZgfR26x+xAKfDGTlrNLOC3dJwtwUXmCqiaAOAM2MSICmN
-	+MGSVjemj6Z62oCRWLC/8s7B94vkHsZTxEM6MzxU7
-X-Gm-Gg: AYBFou2rrjnbVX2706dTZi4tsSSu8Iz+UsncdH9vCqWTul7EobyTBVyjsFu9p5gzcxD
-	cg+xL+A/F891PQQlApvkJ5hTz0lhyo1ITuqk8HghsQyyjJYWF1GtftuUvtio28lmJYj7y1JNpdB
-	2qTWq9I8lYN2VRugr9S/3sZ1oA6A3BSx3LtLPJwzuKgpot2CTCsWUOs8QOtlktx6xmlkciHYXZ1
-	tZ7vkl4kO+HbumyAfGNXPvFWnKSRBywznFK8mVtTYnmaGjpvcWb8ts5j+es/Aepp1Q5xnhfRzlv
-	IpXLqH17BZXAKWikvtlg6SCSXZX2dDIlfjQRlTFkx1G4Y807hoV//FmWJkEiciQqiTBsBu4GiCL
-	eBcEh5CF8f8W1rdF0Xv2ARraKzqxeUAcLB6GzZLTLR9HaYgsSqsQqeYIER7vKwKGR3Oc=
-X-Received: by 2002:a05:701b:42c1:20b0:143:2984:6517 with SMTP id
- a92af1059eb24-14d33399ab2mr3673486c88.38.1790829509400; Wed, 30 Sep 2026
- 21:38:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBhcZxlq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD301F000FF;
+	Thu,  1 Oct 2026 04:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790829549;
+	bh=ktGm7RGm3ZRTOdVwurZD9HJS3dt8ff7ayAaZjDU1FAY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dBhcZxlqabB4luw/d9dLvXL0VTp7aYpSCJbjXrhPlp9sQLR/0XRhPYJ63tryR+F7n
+	 3xF+aFJn3LLazKYv6FJPrqchK1p4WJzc5nOAiv7T37pqofp82M2MBFrxtztHITkWbp
+	 2o5V2G0OvmQWtjAhORsX+GF4/QV/sPPidilOW0hhUFPz6awLC2Nhf2esvJ8S5WjkPc
+	 gSLWHnfk/HK3PoG2UMj1KFQYqHtb6s4U7W9v3uCUrvEX0YFtZvv5ujJiNN2tTSlOT5
+	 8dirJ35vO4r8UGpEVhUev7AmUP6Y4xCtk7BXlMUwljfgfaq9Jq75jVbBZ6LteomiZk
+	 qmdQaSaQJdctg==
+Subject:
+ Re: [PATCH v2 1/4] tun: fix inverted error check when re-attaching the filter
+From: netdev-bot+sashiko@kernel.org
+To: clementwei90@163.com
+Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+ jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, weirongguang@kylinos.cn
+Date: Thu, 01 Oct 2026 04:39:08 +0000
+Message-ID: <179082954820.434549.8088576077074233607@kernel.org>
+In-Reply-To: <20260929093712.131096-2-clementwei90@163.com>
+References: <20260929093712.131096-2-clementwei90@163.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928-work-unix-passpidfd-v3-0-532018a91b21@amutable.com> <20260928-work-unix-passpidfd-v3-7-532018a91b21@amutable.com>
-In-Reply-To: <20260928-work-unix-passpidfd-v3-7-532018a91b21@amutable.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 30 Sep 2026 21:38:17 -0700
-X-Gm-Features: AclHuK9QRXzI8_0z1Op0JTA9GMdarUQ2An_aAKGGaGQjZXyZBTeygagsSXiYtsM
-Message-ID: <CAAVpQUCf9+shzzU_sar=GG=E=FGvGpvQaY3ErTgQatmB=kSZsg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/10] net: add SO_PEERPIDFD_THREAD to get a
- thread-specific pidfd
-To: Andrew Halaney <andrew@amutable.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 2:27=E2=80=AFAM Andrew Halaney <andrew@amutable.com=
-> wrote:
->
-> From: Christian Brauner <brauner@kernel.org>
->
-> SO_PEERPIDFD hands out a pidfd for the thread-group that called
-> connect() or socketpair(). Enable workloads such as the coredump server
-> or a broker to get a pidfd of the specific thread that connected to the
-> socket.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-> Signed-off-by: Andrew Halaney <andrew@amutable.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] This patch un-inverts the check in tun_attach()
+  (drivers/net/tun.c), so a failed filter re-attach now aborts TUNSETIFF…
+
+--
+
+tun: fix inverted error check when re-attaching the filter
+
+This patch fixes the inverted sk_attach_filter() error check in
+tun_attach(). Before, a successful filter re-attach returned early and the
+queue was never published in tun->tfiles[]. Now a failed re-attach aborts
+the attach, and the filter is detached again if a later step of
+tun_attach() fails.
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68aa..a2fffef3735fe 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+
+[ ... ]
+
+> @@ -754,8 +755,9 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>  		lock_sock(tfile->socket.sk);
+>  		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+>  		release_sock(tfile->socket.sk);
+> -		if (!err)
+> +		if (err)
+>  			goto out;
+> +		rollback_filter = true;
+>  	}
+
+[Severity: Medium]
+A failed re-attach is now fatal. Can that make TUNSETIFF, or TUNSETQUEUE
+with IFF_ATTACH_QUEUE, fail on a persistent TAP that has a filter
+attached?
+
+tun->fprog only holds the {len, filter} header saved at TUNATTACHFILTER
+time, and filter is still a __user pointer:
+
+drivers/net/tun.c:__tun_chr_ioctl() {
+    ...
+		ret = -EFAULT;
+		if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
+			break;
+    ...
+}
+
+sk_attach_filter() then reads the instructions again, from the address
+space of whichever task is doing the attach:
+
+net/core/filter.c:__get_filter() {
+    ...
+	if (copy_from_user(prog->insns, fprog->filter, fsize))
+    ...
+}
+
+Consider this sequence:
+
+1. Process A issues TUNATTACHFILTER.
+2. A exits or frees the buffer.
+3. Process B issues TUNSETIFF (without IFF_NOFILTER) or IFF_ATTACH_QUEUE.
+
+The copy in step 3 fails with -EFAULT, or the program fails validation
+with -EINVAL, and the attach is aborted. Before this patch the attach went
+ahead without a filter. If the stale address happens to be mapped in B,
+the filter is built from whatever bytes are at that address.
+
+tun_set_queue() always passes skip_filter=false, so IFF_ATTACH_QUEUE has
+no way to opt out:
+
+		ret = tun_attach(tun, file, false, tun->flags & IFF_NAPI,
+				 tun->flags & IFF_NAPI_FRAGS, true);
+
+A later patch in this series, "tun: keep a kernel copy of the socket
+filter program", seems to fix this:
+
+- At TUNATTACHFILTER time, tun_copy_filter() copies the instructions into
+  tun->fprog_kern.
+- tun_attach() and tun_attach_filter() switch to
+  sk_attach_filter_kern(&tun->fprog_kern, ...).
+- The selftest reattach_filter_without_user_buffer() covers this case.
+
+Would it make sense to put that patch before this one? That way the
+stale user pointer read is never fatal at any point in the series.
+
+A smaller gap is still there at the end of the series. It predates this
+patch. If TUNATTACHFILTER is issued from a detached queue fd while
+numqueues is 0, tun_attach_filter() loops zero times. It then sets
+filter_attached = true without running bpf_check_classic(). Later
+attaches fail with -EINVAL until TUNDETACHFILTER is issued.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929093712.131096-1-clementwei90%40163.com
