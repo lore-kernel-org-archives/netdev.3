@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B7441D10A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81862418340;
 	Thu,  1 Oct 2026 03:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790826004; cv=none; b=qeLUPX9ZSNTtCf7FjdsB7RKUcbC58ONPo8QeivdR16EHK6vitlnKu8aMlq35M+iRB2Ac6prQ765y6wm/Twoym2Iaw8a0Z29Ptx3ZJaciVXEtJOXtcYnzv/13/gIRFtHXX636atmTIu7mSDuvF3m5NbD75lqQOw1Xwet51gKq/Jg=
+	t=1790826006; cv=none; b=EBMD0LZYTEKWT8wdh/jR2y23zJHx+cOxx6uUrXfyIwXfO5I0mIalbFQih8cCw95Q7oK/L01W0gGYI0uFAyW0Htpcs4JAOo4fKfoBlSiKH0/8l44++0Lhvyv5riNbHQ6UC6jYILIpf6BW2xwZRlW3VY+foGVPyvEqMmQ4HjxL8q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790826004; c=relaxed/simple;
-	bh=kfbEixb+6/HWRYVF46zc61zgBIN05rYNJ5YbFd1iovo=;
+	s=arc-20240116; t=1790826006; c=relaxed/simple;
+	bh=C81l+ZldJyuxoaxDB7qf5qOQb/sW2lZBjDwfI7P3Gws=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RlHp6Oys5qXG5iMlGRQu/fC7CzwWElh8yRBWotbu2rYNZi9Plp3FJ2X3Z3V/qizXsc8k27xQ/nN45R9Cl20r0upJaLPKjF6iZuwsBR4hOFQQCDfg5Ah8QlH97/M0t2g/bQ257lySW1IvIyFvdRyVjGVahsd3q5YF88GNt9HRjKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrT0BAG/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fFnEz1Lk+0CQzPfPIr4puzV5j/a9zWt20SAv7LWozQtBaoE8BeZgkJnX3Gggg+kuAjk+AAhSOTSVPLbo9tlUfgWLI+vi1aLHoeOSeXgxlueVqNWUKcRUX+PZory3dQvvfizGWMrWI8FDD7R8/D+pVhljGqcLbEgpstxwZcmRm9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOw6B3oi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrT0BAG/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45501F00899;
-	Thu,  1 Oct 2026 03:39:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOw6B3oi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C821F0089A;
+	Thu,  1 Oct 2026 03:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790825989;
-	bh=eQYSHN6h4pOKlP73L9niPXkCw9f+UyRWeK/Tb62Gq8Y=;
+	s=k20260515; t=1790825990;
+	bh=b+xmzdMuRxuEsQgE+wnQt7S7eRYbYqHz6e/Q5CMj6AI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YrT0BAG/XCP0YavjHokR/7P9HS8Ki95jaj5mnIWQpX7lXEizPyV0dohMkne1ZPev2
-	 SAbkYcvBtUmkGc6it72gmeIs4g7Vpm7YVOJrXLlrG/Z0BGtULuRIs1/gJLeGFfB0FH
-	 crRerNgcyDzCbcWe87Q6EQcAaK67ufyL02C/x/tR3zt69SbcPBj8Q/mXynIFHpepEG
-	 wzj0L1N38dvugryB1rSjTNq0uSEUkykZTXr/duzT6i5YNZ5q/lmnFLakYqyOAudYbL
-	 N5X9N5wQnIVU2zvgxcWHhXg9E9Vw2+CoXuOf15FXRajhNik/+KiYrNZH9rEFw4juI9
-	 GC7cf9xyRU6NQ==
-Subject:
- Re: [PATCH net-next v14 3/5] net: rnpgbe: Add basic RX data path support
+	b=JOw6B3oi0y2NvIqK78bnVvpoYbTtOlX9CvMREstH1qBkiKC8unJYjM+IXAgFYVVCV
+	 a4Q6+4ar0TwhqI+EBRTi1LJrZGGlaBUtn81lbcO487zBeQ0BJYsWMouydNQWxMpfvv
+	 rcLMCvIrp6PBKs4tyCLRxQC0/yvlznzk7tBnij6u7eTTwyETYhiwE81tmDsRNlH1vJ
+	 PcnkfBG5L8WXGLzdK174n4QV28zKsKEKV3aKUTz+WZ/uaKy9EGA1bGlOhe8SGW931O
+	 lVo6rDqs7OG7krPnSU4PkX9OwPb021hHKdB0XTRW6QT8pPHuTHXHZ4wnBSJHOCsEYE
+	 ypp5zPCGH9lWw==
+Subject: Re: [PATCH net-next v14 4/5] net: rnpgbe: Add receive mode support
 From: netdev-bot+sashiko@kernel.org
 To: dong100@mucse.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
  u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, yaojun@mucse.com
-Date: Thu, 01 Oct 2026 03:39:48 +0000
-Message-ID: <179082598848.434549.11433031150914059146@kernel.org>
-In-Reply-To: <62EC8866E79CFC61+20260928033847.1033393-1-dong100@mucse.com>
-References: <62EC8866E79CFC61+20260928033847.1033393-1-dong100@mucse.com>
-X-sashiko-severity: Low
+Date: Thu, 01 Oct 2026 03:39:49 +0000
+Message-ID: <179082598968.434549.661297948869820884@kernel.org>
+In-Reply-To: <6E780505C6AAB4EB+20260928033859.1033428-1-dong100@mucse.com>
+References: <6E780505C6AAB4EB+20260928033859.1033428-1-dong100@mucse.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,245 +47,159 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] rnpgbe_clean_rx_irq() counts descriptors with an invalid hardware
-  length (`!size || size > RNPGBE_RX_DESC_DATA_LEN`) only in the per-…
-- [Low] mucse_alloc_page_pool() creates the pool with
-  PP_FLAG_DMA_SYNC_DEV, .offset = 0 and .max_len = PAGE_SIZE.
-- [Low] The comment in rnpgbe_configure_rx_ring() says 'Any allocation
-  shortfall is retried after NAPI is enabled by rnpgbe_up_complete()'.
-- [Low] The rnpgbe_is_non_eop() kernel-doc says that for a non-EOP buffer
-  the function 'will place the sk_buff in the next buffer to be chained…
-- [Low] When rnpgbe_alloc_rx_buffers() fails inside
-  rnpgbe_clean_rx_irq(), cleaned_count is set again from…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Every call to `rnpgbe_set_rx_mode()` in
+  `drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c` briefly disables the…
+- [Low] This new driver adds its receive filtering on `.ndo_set_rx_mode`,
+  which the in-tree API docs mark as deprecated.
 
 --
 
-net: rnpgbe: Add basic RX data path support
+net: rnpgbe: Add receive mode support
 
-This commit adds the RX DMA data path for the rnpgbe driver. RX buffers come
-from page_pool at one page per descriptor, and the commit adds a NAPI poll
-callback and RX ring setup and teardown. It keeps a 16-descriptor gap in the
-512-entry ring, retries failed page allocations with a per q_vector timer,
-and treats an RX DMA quiesce timeout as a terminal AXI fault.
+This adds chip-level receive filtering for rnpgbe through ndo_set_rx_mode.
+Unicast addresses go into RAR entries and multicast addresses into a
+4096-bit hash table. IFF_UNICAST_FLT is advertised, with a fallback to
+accept-all unicast when the RAR table is full, and IFF_PROMISC and
+IFF_ALLMULTI are handled through the filter control register.
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> index e23fc2db1aab8..7beec27991d35 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-
-[ ... ]
-
-> +/**
-> + * rnpgbe_is_non_eop - Process handling of non-EOP buffers
-> + * @rx_ring: rx ring being processed
-> + * @rx_desc: rx descriptor for current buffer
-> + * @skb: current socket buffer containing buffer in progress
-> + *
-> + * This function updates next to clean.  If the buffer is an EOP buffer
-> + * this function exits returning false, otherwise it will place the
-> + * sk_buff in the next buffer to be chained and return true indicating
-> + * that this is in fact a non-EOP buffer.
-> + *
-> + * Return: true for not end of packet
-> + **/
-> +static bool rnpgbe_is_non_eop(struct mucse_ring *rx_ring,
-> +			      union rnpgbe_rx_desc *rx_desc,
-> +			      struct sk_buff *skb)
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> index 291e77d573fe6..4e2835b71f322 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> @@ -149,3 +149,78 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type)
+>  
+>  	return 0;
+>  }
+> +
+> +static void rnpgbe_set_rar(struct mucse_hw *hw, u32 index, const u8 *addr)
 > +{
-
-[ ... ]
-
-> +	if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
-> +		/* place skb in next buffer to be received */
-> +		rx_ring->rx_buffer_info[ntc].skb = skb;
-> +	} else {
-> +		atomic64_inc(&rx_ring->stats->dropped);
-> +		rx_ring->drop_bytes = skb->len;
-> +		/* too much frags, force free */
-> +		dev_kfree_skb_any(skb);
-> +		rx_ring->drop_status = true;
-> +	}
-
-[Severity: Low]
-This isn't a bug, but the kernel-doc for rnpgbe_is_non_eop() says that for a
-non-EOP buffer the skb is placed in the next buffer. When nr_frags has
-reached MAX_SKB_FRAGS, the skb is freed here instead, and the function still
-returns true.
-
-Could the kernel-doc say that the caller's skb may already be freed when the
-function returns true? The only caller, rnpgbe_clean_rx_irq(), just does
-continue, so nothing is affected at runtime today.
-
-[ ... ]
-
-> +static int rnpgbe_clean_rx_irq(struct mucse_q_vector *q_vector,
-> +			       struct mucse_ring *rx_ring,
-> +			       int budget)
-> +{
-> +	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
-> +	u16 cleaned_count = mucse_desc_unused_rx(rx_ring);
-> +	unsigned int work_done = 0;
+> +	u32 rar_low, rar_high;
 > +
-> +	while (likely(work_done < budget)) {
-> +		struct mucse_rx_buffer *rx_buffer;
-> +		union rnpgbe_rx_desc *rx_desc;
-> +		struct sk_buff *skb;
-> +		unsigned int size;
-> +
-> +		if (cleaned_count >= M_RX_BUFFER_WRITE) {
-> +			if (rnpgbe_alloc_rx_buffers(rx_ring, cleaned_count)) {
-> +				mod_timer(&q_vector->rx_alloc_timer,
-> +					  jiffies + msecs_to_jiffies(500));
-> +				cleaned_count = mucse_desc_unused_rx(rx_ring);
-> +			} else {
-> +				cleaned_count = 0;
-> +			}
-> +		}
-
-[Severity: Low]
-After a failed refill in rnpgbe_clean_rx_irq(), cleaned_count is recomputed
-with mucse_desc_unused_rx(). If the first page allocation failed,
-next_to_use has not moved. The value is then still >= M_RX_BUFFER_WRITE, and
-it grows as more descriptors are consumed.
-
-Does every later iteration of the same poll then retry the full refill? Each
-retry calls page_pool_dev_alloc_pages(), which will likely fail again under
-memory pressure. It then does a dma_wmb() and a writel() of the unchanged
-tail in rnpgbe_alloc_rx_buffers():
-
-	dma_wmb();
-	mucse_update_rx_tail(rx_ring, i);
-
-and calls mod_timer() again, even though the retry timer is already armed.
-
-ixgbe-style drivers reset cleaned_count to 0 after one attempt. Would that
-be enough here, since the retry timer is already armed?
-
-> +		rx_desc = M_RX_DESC(rx_ring, rx_ring->next_to_clean);
-> +
-
-[ ... ]
-
-> +		size = le16_to_cpu(rx_desc->wb.len);
-> +
-> +		if (unlikely(!size || size > RNPGBE_RX_DESC_DATA_LEN)) {
-> +			struct mucse_rx_buffer *err_rx_buffer;
-> +			bool dropping = rx_ring->drop_status;
-> +			u16 idx = rx_ring->next_to_clean;
-> +
-> +			cleaned_count++;
-> +			if (!dropping)
-> +				atomic64_inc(&rx_ring->stats->dropped);
-
-[Severity: Low]
-Should descriptors with an invalid hardware length be counted as length
-errors rather than drops?
-
-This branch only increments the per-queue dropped counter, and
-rnpgbe_get_stats64() reports that counter as rx_dropped:
-
-	stats->rx_packets += packets;
-	stats->rx_dropped += dropped;
-	stats->rx_bytes += bytes;
-
-rx_errors and rx_length_errors are never set.
-
-include/uapi/linux/if_link.h describes rx_length_errors as "Number of
-packets dropped due to invalid length". It also says rx_errors must include
-the events counted by rx_length_errors. rx_dropped is meant for packets that
-were received but not processed, for example due to lack of resources.
-
-As written, malformed-length completions show up as resource drops, and
-rx_errors always reads 0. struct mucse_queue_stats also has no error counter
-to hold these events.
-
-[ ... ]
-
-> @@ -1263,4 +1863,223 @@ void rnpgbe_get_stats64(struct net_device *netdev,
-
-[ ... ]
-
-> +static int mucse_alloc_page_pool(struct mucse_ring *rx_ring)
-> +{
-> +	struct page_pool_params pp_params = {
-> +		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
-> +		.order = 0,
-> +		.pool_size = rx_ring->count,
-> +		.nid = dev_to_node(rx_ring->dev),
-> +		.dev = rx_ring->dev,
-> +		.napi = &rx_ring->q_vector->napi,
-> +		.dma_dir = DMA_FROM_DEVICE,
-> +		.offset = 0,
-> +		.max_len = PAGE_SIZE,
-
-[Severity: Low]
-This isn't a bug, but does this sync window in mucse_alloc_page_pool() match
-the buffer layout? mucse_alloc_mapped_page() posts buffers at an offset:
-
-	bi->page_offset = RNPGBE_SKB_PAD;
-
-The hardware writes at most RNPGBE_RX_DESC_DATA_LEN (1536) bytes per
-descriptor.
-
-With .offset = 0 and .max_len = PAGE_SIZE, every recycled page is synced for
-the device across the whole page. That includes the headroom and the
-skb_shared_info area, which the device never writes.
-
-The reuse path in mucse_alloc_mapped_page() uses a third window:
-
-	dma_sync_single_range_for_device(rx_ring->dev, bi->dma,
-					 bi->page_offset,
-					 PAGE_SIZE - bi->page_offset,
-					 DMA_FROM_DEVICE);
-
-On non-coherent or swiotlb platforms, this adds unnecessary cache
-maintenance to the hot path. Would .offset = RNPGBE_SKB_PAD and
-.max_len = RNPGBE_RX_DESC_DATA_LEN match what the device actually writes?
-
-[ ... ]
-
-> +static void rnpgbe_configure_rx_ring(struct mucse *mucse,
-> +				     struct mucse_ring *ring)
-> +{
-
-[ ... ]
-
-> +	/* Fill the ring before RX DMA is enabled. Any allocation shortfall is
-> +	 * retried after NAPI is enabled by rnpgbe_up_complete().
-> +	 */
-> +	rnpgbe_alloc_rx_buffers(ring, mucse_desc_unused_rx(ring));
+> +	/* The RAR stores the Ethernet address in reverse byte order. */
+> +	rar_low = (u32)addr[5] | ((u32)addr[4] << 8) |
+> +		  ((u32)addr[3] << 16) | ((u32)addr[2] << 24);
+> +	rar_high = (u32)addr[1] | ((u32)addr[0] << 8) |
+> +		   RNPGBE_RX_RAR_VALID;
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index),
+> +		      rar_high & ~RNPGBE_RX_RAR_VALID);
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_LOW(index), rar_low);
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index), rar_high);
 > +}
 
+[ ... ]
+
+> +void rnpgbe_set_rx_mode(struct net_device *netdev)
+> +{
+
+[ ... ]
+
+> +	/* RAR 0 always holds the interface's primary unicast address. */
+> +	rnpgbe_set_rar(hw, 0, netdev->dev_addr);
+
+[Severity: Medium]
+Can this drop unicast frames sent to the station's own MAC on every
+rx_mode update?
+
+rnpgbe_set_rx_mode() always calls rnpgbe_set_rar() for RAR 0, and
+rnpgbe_set_rar() writes RAR_HIGH with RNPGBE_RX_RAR_VALID cleared before it
+rewrites the entry. RNPGBE_RX_UCAST_TABLE_EN is set in mcast_ctrl, and
+filter_ctrl normally does not have RNPGBE_RX_FILTER_UCAST_ALL. So a frame
+that is filtered while RAR 0 is invalid would not match. The same applies
+to each secondary unicast entry in the netdev_for_each_uc_addr() loop.
+
+This runs for every rx_mode change, including multicast join and leave,
+which don't change the unicast table. IP_ADD_MEMBERSHIP and
+IP_DROP_MEMBERSHIP need no capability and get here through:
+
+  dev_mc_add() / dev_mc_del()
+    -> __dev_set_rx_mode()
+      -> rnpgbe_set_rx_mode()
+        -> rnpgbe_set_rar(hw, 0, ...)
+
+So an unprivileged user can open this window over and over. Could entries
+whose contents have not changed be skipped, or updated without clearing the
+valid bit first?
+
+There also seems to be a similar window when the device enters
+IFF_ALLMULTI or IFF_PROMISC. The end of the function does:
+
+	for (i = 0; i < RNPGBE_RX_MCAST_HASH_ENTRIES; i++)
+		mucse_hw_wr32(hw, RNPGBE_RX_MCAST_HASH(i), mcast_hash[i]);
+
+	mucse_hw_wr32(hw, RNPGBE_RX_MCAST_CTRL, mcast_ctrl);
+	mucse_hw_wr32(hw, RNPGBE_RX_FILTER_CTRL, filter_ctrl);
+
+All 128 hash words are zeroed, and RNPGBE_RX_MCAST_HASH_EN is cleared,
+before FILTER_CTRL gets RNPGBE_RX_FILTER_MCAST_ALL. Can traffic for
+multicast groups that are already subscribed be dropped during those
+writes? Writing FILTER_CTRL first for this transition might avoid that.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> index 21fa78c59e5b0..73ee81f8b516b 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> @@ -43,6 +43,10 @@ static int rnpgbe_configure(struct mucse *mucse)
+>  	if (err)
+>  		return err;
+>  
+> +	netif_addr_lock_bh(mucse->netdev);
+> +	rnpgbe_set_rx_mode(mucse->netdev);
+> +	netif_addr_unlock_bh(mucse->netdev);
+> +
+>  	return rnpgbe_configure_rx(mucse);
+>  }
+>  
+> @@ -140,9 +144,10 @@ static netdev_tx_t rnpgbe_xmit_frame(struct sk_buff *skb,
+>  }
+>  
+>  static const struct net_device_ops rnpgbe_netdev_ops = {
+> -	.ndo_open       = rnpgbe_open,
+> -	.ndo_stop       = rnpgbe_close,
+> -	.ndo_start_xmit = rnpgbe_xmit_frame,
+> +	.ndo_open        = rnpgbe_open,
+> +	.ndo_stop        = rnpgbe_close,
+> +	.ndo_start_xmit  = rnpgbe_xmit_frame,
+> +	.ndo_set_rx_mode = rnpgbe_set_rx_mode,
+
 [Severity: Low]
-Is this comment in rnpgbe_configure_rx_ring() accurate for small shortfalls?
-rnpgbe_schedule_rx_retry() arms rx_alloc_timer whenever
-mucse_desc_unused_rx() is non-zero:
+This isn't a bug, but the ndo_set_rx_mode documentation in
+include/linux/netdevice.h marks this callback as deprecated:
 
-	if (mucse_desc_unused_rx(ring)) {
-		mod_timer(&q_vector->rx_alloc_timer,
-			  jiffies + msecs_to_jiffies(500));
+ *	Cannot sleep, called with netif_addr_lock_bh held.
+ *	Deprecated in favor of ndo_set_rx_mode_async.
 
-The NAPI poll that the timer schedules only refills when this holds in
-rnpgbe_clean_rx_irq():
+Should a new driver use ndo_set_rx_mode_async instead? Several drivers
+already use it, for example bnxt, mlx5, fbnic and iavf.
 
-	if (cleaned_count >= M_RX_BUFFER_WRITE) {
+Nothing breaks today. rnpgbe is not ops-locked, so __dev_set_rx_mode()
+still takes the legacy path, and the check in register_netdevice() for
+ops-locked drivers that lack ndo_set_rx_mode_async does not warn.
 
-rnpgbe_alloc_rx_buffers() stops at the first page_pool failure, so a
-shortfall of 1 to 15 descriptors can happen. In that case the timer fires,
-rnpgbe_clean_rx_irq() skips the refill, and the timer is not re-armed. The
-retry the comment promises never happens.
+Converting later would take more than a one-line change, though (for
+example, if request_ops_lock or queue_mgmt_ops is added):
 
-The ring still has at least 481 descriptors posted, and refill resumes once
-traffic frees 16 slots. So the practical effect is a misleading comment and
-a timer that does nothing. The comment on mucse_desc_unused_rx() in
-rnpgbe.h ("Refill is attempted once at least this many descriptors are
-available") matches what the code does.
+- rnpgbe_set_rx_mode() returns void and walks the live dev->uc and dev->mc
+  lists instead of the lists passed to the async callback.
+- rnpgbe_configure() calls it directly under netif_addr_lock_bh().
+
+The commit message only says it adds "the ndo_set_rx_mode callback" and
+does not mention the deprecation. The later patch in this series, "net:
+rnpgbe: Add link status handling support", keeps this design.
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0A4D45AD9F6A0F14%2B20260928033701.1033196-1-dong100%40mucse.com
