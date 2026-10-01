@@ -1,79 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2084B443C3B
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC3A47C110;
+	Thu,  1 Oct 2026 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790879694; cv=none; b=BPTJLQjXWv7S2Qb3iGkDDIG0s8d/d7CNC/9gnC56eRTWG1OsfpXprJBRcIi4RWka53/71FyWT4AHzv546u5rPE/J6G6MTrW95UfJ2XHvbV0KN3/6LLnRHJkLDTaktnFAgaMOz5UQpZ+27LPnpR/1JPZgoZ3lGEt9huURDgIEhKM=
+	t=1790879696; cv=none; b=oKJozCjgrYYuqdWNfUWTChuvJ/JKDqzW9uBZe5mlDVFdPbYFpwzvwTi30zXY3qs8q24bYegO6/+BsJeZHBrA73IkkCtuYvGkImf1vplpNr2senEdZVYqwcfgHa2OOMkcp6gLuCyVvOU9JZAPNF1ddklqfK7VQJCFIGcU87Hzo5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790879694; c=relaxed/simple;
-	bh=HOUb15N1qJm/O9C4sSKpbJxURWaI/1QGA2jspzXH6tQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GObrV3oT6uLv/KVsA3BT0kZL4C6lpX5c9Rb+jgebEGmjilFAKhR2WC5cQ3VIc6i2xY7+Dlw4hkJ8vpi3JcN7fpP8xRJAAK8w2C1INHL9Y06UbHh9SUFT+SW7Cvdi1KFrbGlzf2lwI+CxuLJd8trWGksktxYRXtNfj++fVscgb5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba2vxY0r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790879696; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LHFSu4aqk6Cl0B6LeyQ5SHDHab3N7zabfIEfxDZPECRH3ixStFlM2XaLvtqQdsKD6I7Y945D/J1JGT+auWqt5re40mGdla1lrKj/vrZZ6T8lIE2Q+6DL544tJSzWqPN/3SgviyyAfhDFb4E+Ah51Cz2x/H39k63UbYlf4YBADxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsS8MI5M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba2vxY0r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9ACF1F00898
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 18:34:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsS8MI5M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623E11F000FF;
+	Thu,  1 Oct 2026 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790879692;
-	bh=zo6B0ADNEIRm7se1vRwOte6tO+idRNIvyVrxyssAbvg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ba2vxY0rm75u23eS1nrjZmO5b3c9HsfQv4e8Eu607pR3Ld8H66AtZpHo1w+FutLPb
-	 Q8LzLnwSiGmMeOgceHHGZL6GvQ7VBbJrV40jdAPJ40skO+dUOvF0ynXb5CaKhAgRWR
-	 DIz1QKpK+YT7LFrcEjXs4tn7aNoi2ukJPaUBp9pjpV5F7Z9YRnJ7X+drFzxJ0IAawV
-	 M0XlOnubMH8YcODFTHKtSXm+f7qS8Xp5RE+dRs4UOkrdH9lezmWKYxRUsoou+sQMC+
-	 kCoHAzVVhIHMqXQRiwqvj5kJZqP9go3imYANtRiY/OaZkNuhXio/hy1QPQyOXs56e9
-	 DZmBWu8DTvNDw==
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-466cc9ab667so5720090fac.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 11:34:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzFHdlQvLiH2QIe2lfc7TRl9lN4/O+6xolhmWSa4M39ivlSdJh/pykuuNE+ve3M9/ceN1t0gCw=@vger.kernel.org
-X-Gm-Message-State: AFuF++miwiSsHYZSvQiLdjA3Dq1OoFPcjLnRb5v5q8VYr2XGVZH9ML8x
-	e4SAi0Pi1YVD+vpWYtyRbKldF4q/B38tI2wndmBsB04YauBINI2snaBnq+9daXPk/p3vqZw1aZC
-	B8Yr4FDXhDkTE7h65QPXiz1uU358vIck=
-X-Received: by 2002:a05:6870:b48f:b0:49d:c502:5e2c with SMTP id
- 586e51a60fabf-49e15ee8a14mr384544fac.48.1790879692094; Thu, 01 Oct 2026
- 11:34:52 -0700 (PDT)
+	s=k20260515; t=1790879695;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IsS8MI5Mog6rk7bBE18k10Tip1Q2UELKC1W2Us7l+soXXGf2iGBy4meqnv/xmkkbc
+	 PwhkzZc4tXCdLPy0AUyavTQ6ZFPYXEPR+lXlSztkbpZwyqmE4RuHIyvviP1t9K1YUx
+	 R8lw91O2UNtdlmiz0U+AMW2sc/mr6pSSJVqOvHBTdXKOfveu1QrIr8vn0vure7GXZO
+	 cMS7fbSA2FSn0Qpso4Uc21SBzWs9799MLT1ixkdI84XPS4UaMhJHcK1jedxIwMk9/o
+	 eYmmv8SKxmfHjUAzGKzXPytYD3KT8BJ9RiOZLBvzwTBMDtYsPU+22BixUJu4y/FBUD
+	 c8CvBbdodgGzw==
+From: netdev-bot+sinfo@kernel.org
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: Jon Maloy <jmaloy@redhat.com>,
+ Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 0/2] tipc: fix publication lifetime races
+Date: Thu, 01 Oct 2026 18:34:53 +0000
+Message-ID: <179087969393.1402591.2584174490574228427@kernel.org>
+In-Reply-To: <20261001182924.3928331-1-nicoyip.dev@gmail.com>
+References: <20260927180806.1315902-1-nicoyip.dev@gmail.com>
+ <20261001182924.3928331-1-nicoyip.dev@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928144254.3361044-2-edumazet@kernel.org> <179087712222.434549.10051297010561024620@kernel.org>
-In-Reply-To: <179087712222.434549.10051297010561024620@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 1 Oct 2026 20:34:40 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiioejp=DdtbxQN6wEAfzpaO10ABJepBVbHKoPLVuetfiDQ@mail.gmail.com>
-X-Gm-Features: AclHuK-SAsBRofYU7yooGylmOW6vU5asxW5s_idOhujtga6oYSPc1BLXEUH2eEM
-Message-ID: <CAL4Wiioejp=DdtbxQN6wEAfzpaO10ABJepBVbHKoPLVuetfiDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net 1/2] net: always dissect GSO packets in __virtio_net_hdr_to_skb()
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	willemb@google.com, mst@redhat.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 1, 2026 at 7:52=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 0 (1)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] `__skb_flow_dissect()` sets `key_control->thoff =3D min_t(u16,
->   nhoff, skb ?
+Hi!
 
-Allright. I will fix __skb_flow_dissect() in a separate patch.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-pw-bot: cr
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
