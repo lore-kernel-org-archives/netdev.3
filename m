@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D022FD696;
-	Thu,  1 Oct 2026 22:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0B835E956
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 22:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790893665; cv=none; b=NnWEFJmNxHxbGzOwaWKEZA0vHpZw7H+A2J/Fg5GnFeCEuNyaYOnd+WEJ7PeFC8RUWlqYNErRk8psNEXgpL1IAe1v4E6hcyR3k0zklBfuUp5XRWCMQPdXpN6ClKUC6VeGZty9ZzL6UXoEIs0Wy82FOvYrjkLGx1Y/894nl5HCf7I=
+	t=1790893673; cv=none; b=YnT1IKe/C07vbidck+jouFAxx6Qf4VGe7eqVjy3bOLL4IfYvEcf2dOl7BTtZa7dldRQ+ISmZjN34QBIV1Hu5AyJwldRO1BWpPInZMIrD5c/EBQaoDIGABvAsxw+APOKmPyKrmo3vH1B20nS9rkEqnqG8GKCXPv3sLQT7DPDk84M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790893665; c=relaxed/simple;
-	bh=dc8klTJ2e9NSHPmnNcYIK7Rnuku66KpHNkUpgClzaWg=;
+	s=arc-20240116; t=1790893673; c=relaxed/simple;
+	bh=fA81x/tknEodkESk5deyQ7EtllPeBDtdXhI+i+uLBWQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GnCc9W2pf72uzVv6YnZGyz1fEfug0Q3DAryUKJYOpweeRBCtjVwTgPXZ/ZWqJ3Bi+ZWn3swugCSV8wN0GinaUeM2CQ+QmlrYCJ2Jhm28pbo1b5mYAut+/lm/sFGJ60yQ03BDA7VM9dcU9uSkfVDFk9BXRbpnzmgbDYt9jgL5cP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CHJbij1Q; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=TEW64hoDFYzs4pM62EbuOzrgR4JXNEp/tP5niM2zdWs4HAuXVG2DhWW4jTU7/2FQhWwl2qqRoaFbLd0RnhS0hNkfyKUE6cKSiUyjbZH+ibtqR91kBg6ZJTlWz90NJt6YlYbLPLcEU30QhYELBi//eBvDJrhapFhnnIGZbsFlb3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqPm+at3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHJbij1Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077EC1F000FF;
-	Thu,  1 Oct 2026 22:27:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqPm+at3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819D61F000FF;
+	Thu,  1 Oct 2026 22:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790893663;
-	bh=P43Ypbud5VdnU1jIetJx+ByMyWZKFBVfi4v1I7f21yc=;
+	s=k20260515; t=1790893672;
+	bh=UaQ0AyPHGXNRQK7Nlm6qeoI3KL3U1CQ+Uag9BgHgWvE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CHJbij1QRC6raLztwWuppFPGpkDIs9wr1uvRERSlrfYUBy037JuR5TcZ0+kGnz5VJ
-	 8b49+RNRvAbu7qCNdKh4Txj1JbyB2ko34XxzFg1dqeeJO+6z6p9z+PakMxnsXY0uu5
-	 liZzrHCK19q/qzXVrrhpWM+NXSSxGdvf42U/9s1zAod6fst64E/jLdtXMU5LG/OLbZ
-	 1+UlIGlcHMcEzhwBYEwhGupgXglquUeLlYwI2KlTfptPzhZ53jxLmKZeiNzLZ+JbTt
-	 q+wZSR+6VXRTXtqTMIVX/nKFk7NyzblvqIo4D+NfqXQs5E3QfhvHFWqGqI5y8qVX2a
-	 OgJ7sZb5kgXTg==
-Subject:
- Re: [PATCH net v3] openvswitch: fix soft lockup in the netlink flow dump
+	b=gqPm+at3NYHGpxBDr9bXsYQk921Q065ta3iRhT8gdKvIkHaBzsmZkVWBmC2H1MJox
+	 nO0HCQdGU6of6cuw38WAavaMbB7rCWaQ1Txb8GAKTHmE8A4o4qqcvVx/qZCOEdJKk3
+	 9e9fORqa+GesO2TmVnO+0BndAycXwq28lrGdoWW9DqWSoDHztWJAKqVdeWDUJAJ6if
+	 bUiK2uminPbq6YfFhu9r6E5NEGL4mwp+uRmqVGvoH41C6wMAha+G7WL3QLAjqKSMlQ
+	 2PHOFme/jFZ6ncvgHbGAt8deO4e0B61JUFtUpZqmj5n+TT4BlWp1iR8M/9rZ9JH9rV
+	 pcrSXCyvYiiYw==
+Subject: Re: [PATCH net-next 5/7] selftests: ovpn: wait for the TCP server key
+ setup before traffic
 From: netdev-bot+sashiko@kernel.org
-To: den@openvz.org
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
- echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stable@vger.kernel.org
-Date: Thu, 01 Oct 2026 22:27:42 +0000
-Message-ID: <179089366251.434549.18021554028626523205@kernel.org>
-In-Reply-To: <20260929072519.2803304-2-den@openvz.org>
-References: <20260929072519.2803304-2-den@openvz.org>
+To: antonio@openvpn.net
+Cc: netdev@vger.kernel.org, ralf@mandelbit.com, sd@queasysnail.net,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com
+Date: Thu, 01 Oct 2026 22:27:51 +0000
+Message-ID: <179089367106.434549.3098615866508622379@kernel.org>
+In-Reply-To: <20260930222542.3839327-6-antonio@openvpn.net>
+References: <20260930222542.3839327-6-antonio@openvpn.net>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,145 +58,137 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] ovs_flow_cmd_dump() (net/openvswitch/datapath.c) now holds BH
-  disabled across the whole dump callback.
+- [Medium] ovpn_wait_tcp_keys() (common.sh) runs a bare `wait
+  "${OVPN_TCP_KEYS_PID}"` with no timeout.
+- [Low] The new 'wait for server-side key setup' check passes even when
+  the server key install fails for any peer except the last one.
 
 --
 
-openvswitch: fix soft lockup in the netlink flow dump
+selftests: ovpn: wait for the TCP server key setup before traffic
 
-This patch disables BH across the whole table walk in ovs_flow_cmd_dump().
-The goal is to stop the per-CPU spin_unlock_bh() calls in
-ovs_flow_stats_get() from running the softirq backlog in the dumping
-thread's context. That backlog processing led to a soft lockup on a
-heavily loaded compute node.
+In TCP mode, this patch saves the PID of the background subshell that
+runs "ovpn-cli listen" and installs the server-side data keys. It also
+adds ovpn_wait_tcp_keys(), which waits on that PID. test.sh and
+test-close-socket.sh call it after all peers are registered and before
+any traffic is sent.
 
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index 631a03136fa14..4fc5d0bebd85e 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -1532,6 +1532,12 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
->  		return -ENODEV;
->  	}
+> diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
+> index 2f7851b823436..96b40742eddfe 100644
+> --- a/tools/testing/selftests/net/ovpn/common.sh
+> +++ b/tools/testing/selftests/net/ovpn/common.sh
+> @@ -264,6 +264,7 @@ ovpn_add_peer() {
+>  						1 0 ${OVPN_ALG} 0 data64.key
+>  				done
+>  			}) &
+> +			OVPN_TCP_KEYS_PID=$!
+
+[Severity: Low]
+Does this subshell's exit status report a new_key failure for any peer
+other than the last one? The subshell in ovpn_add_peer() is:
+
+	(ip netns exec "${server_ns}" ${OVPN_CLI} listen tun0 \
+		1 ${M_ID} ${OVPN_TCP_PEERS_FILE} && {
+		for p in $(seq 1 ${OVPN_NUM_PEERS}); do
+			ip netns exec "${server_ns}" \
+				${OVPN_CLI} new_key tun0 ${p} \
+				1 0 ${OVPN_ALG} 0 data64.key
+		done
+	}) &
+
+ovpn_cmd_run() calls ovpn_add_peer 0 as an if condition:
+
+	if "$@" >"${output_file}" 2>&1; then
+
+That ignores errexit for the whole function body, including this forked
+subshell. So the loop keeps going after a failed new_key, and the
+subshell exits with the status of the last new_key only.
+
+If new_key fails for any of peers 1..N-1, wait "${OVPN_TCP_KEYS_PID}"
+in ovpn_wait_tcp_keys() still returns 0. The "wait for server-side key
+setup" step then reports success.
+
+The error output also seems to be lost. The subshell's stdout and
+stderr still point at the mktemp file from the "register peer0 in
+overlay" call. ovpn_cmd_run() deletes that file with rm -f as soon as
+ovpn_add_peer 0 returns. If the wait does fail, ovpn_cmd_run() prints
+the wait step's own output file, which is empty.
+
+In both cases the missing key only shows up later, as a ping failure
+for that peer.
+
+Could the subshell record a failure from any new_key and exit non-zero,
+and write its output somewhere that still exists when
+ovpn_wait_tcp_keys() runs?
+
+>  			sleep 5
+>  		else
+>  			peer_ns="ovpn_peer${1}"
+> @@ -281,6 +282,18 @@ ovpn_add_peer() {
+>  	fi
+>  }
 >  
-> +	/*
-> +	 * Not needed for safety. Stops every spin_unlock_bh() in
-> +	 * ovs_flow_stats_get() from running the softirq backlog.
-> +	 */
-> +	local_bh_disable();
+> +# In TCP mode the server accepts the peers and installs their data keys from a
+> +# background subshell. "listen" only returns once every peer has connected, so
+> +# the key installation necessarily runs after ovpn_add_peer() has been called
+> +# for the last peer. Wait for that subshell to finish before generating any
+> +# traffic, otherwise the first packets may race the key installation and get
+> +# dropped for lack of a key.
+> +ovpn_wait_tcp_keys() {
+> +	[ -n "${OVPN_TCP_KEYS_PID:-}" ] || return 0
 > +
->  	ti = rcu_dereference(dp->table.ti);
->  	for (;;) {
->  		struct sw_flow *flow;
+> +	wait "${OVPN_TCP_KEYS_PID}"
+
+[Severity: Medium]
+Can this wait block forever?
+
+The subshell exits only after ovpn-cli listen returns. In the
+CMD_LISTEN case of ovpn_run_cmd() in ovpn-cli.c, listen does three
+things in order:
+
+  - a blocking ovpn_accept() for every line of the peers file
+  - a blocking ovpn_recv_tcp_data() on each accepted socket
+  - ovpn_waitbg(), which lets the parent exit
+
+The two blocking calls have no timeout.
+
+Before this patch nothing waited on that PID, so a stuck listen made
+the test fail at the ping stage. With this patch the network setup
+stage hangs instead. Under the kselftest runner it would be killed by
+the timeout and reported as TIMEOUT.
+
+I can see two ways to reach this.
+
+First, the new comment says that "listen" only returns once every peer
+has connected. But listen counts lines in the peers file, not
+OVPN_NUM_PEERS, and OVPN_NUM_PEERS can be set from the environment:
+
+	OVPN_NUM_PEERS=${OVPN_NUM_PEERS:-$(wc -l ${OVPN_TCP_PEERS_FILE} | \
+		awk '{print $1}')}
+
+For example, OVPN_NUM_PEERS=3 ./test-tcp.sh creates only 3 clients.
+listen then blocks in accept() waiting for the 4th entry in
+tcp_peers.txt.
+
+Second, CMD_CONNECT ignores the result of ovpn_send_tcp_data():
+
+		ret = ovpn_send_tcp_data(ovpn->socket);
+		ovpn_waitbg();
+
+The client's parent still exits 0 through daemon(), so "register peerN
+in overlay" passes. The daemonized client keeps the socket open in
+pause(), so the server's recv() on that socket can block forever. A
+kernel regression in the ovpn TCP path that stops the payload from
+reaching recv() would cause the same hang.
+
+Would it make sense to bound this wait, for example with timeout on
+listen or a polling loop around kill -0, so these cases fail with an
+error message instead of hanging?
+
+> +}
+> +
 
 [ ... ]
 
-> @@ -1552,6 +1558,8 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
->  		cb->args[0] = bucket;
->  		cb->args[1] = obj;
->  	}
-> +
-> +	local_bh_enable();
->  	rcu_read_unlock();
->  	return skb->len;
->  }
-
-[Severity: Medium]
-Can a namespace user control how long this BH-off region lasts?
-
-The region now covers the whole walk in ovs_flow_tbl_dump_next(). When
-buckets are empty, that loop has no exit that depends on skb space:
-
-net/openvswitch/flow_table.c:ovs_flow_tbl_dump_next() {
-    ...
-	while (*bucket < ti->n_buckets) {
-		i = 0;
-		head = &ti->buckets[*bucket];
-		hlist_for_each_entry_rcu(flow, head, flow_table.node[ver]) {
-		...
-		}
-		(*bucket)++;
-		*last = 0;
-	}
-    ...
-}
-
-This means one callback can scan the entire bucket array with softirqs held
-off.
-
-The only cap on n_buckets is the kvmalloc limit, which allows about 2^27
-buckets:
-
-net/openvswitch/flow_table.c:flow_key_insert() {
-    ...
-	if (table->count > ti->n_buckets)
-		new_ti = table_instance_expand(ti, false);
-	else if (time_after(jiffies, table->last_rehash + REHASH_INTERVAL))
-		new_ti = table_instance_rehash(ti, ti->n_buckets, false);
-    ...
-}
-
-The table never gets smaller in normal use:
-
-  - ovs_flow_tbl_remove() never shrinks it.
-  - The periodic rehash keeps the same size.
-  - Only ovs_flow_tbl_flush() goes back to TBL_MIN_BUCKETS.
-
-OVS_DP_CMD_NEW and OVS_FLOW_CMD_NEW/DEL only need GENL_UNS_ADMIN_PERM. The
-dump needs no privilege at all:
-
-net/openvswitch/datapath.c:dp_flow_genl_ops[] {
-    ...
-	{ .cmd = OVS_FLOW_CMD_GET,
-	  .validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-	  .flags = 0,		    /* OK for unprivileged users. */
-	  .doit = ovs_flow_cmd_get,
-	  .dumpit = ovs_flow_cmd_dump
-	},
-    ...
-}
-
-Root in an unprivileged user+net namespace could do the following:
-
-  1. Create a datapath.
-  2. Insert N flows so that n_buckets grows to between N and 2N.
-  3. Delete every flow except one in a high bucket.
-  4. Run the dump repeatedly from threads pinned to each CPU.
-
-Each dump could then walk up to 1 GB of hlist_heads. During that walk,
-NET_RX, timers, tasklets and RCU callbacks are all deferred on that CPU. On
-CONFIG_PREEMPT (non-RT) kernels, the walk also can't be preempted.
-
-Before this patch, softirqs could still run on hardirq exit during the walk,
-and PREEMPT_RCU kernels could preempt it. On PREEMPT_NONE/VOLUNTARY kernels
-the walk was already non-preemptible under rcu_read_lock(), so the only new
-cost there is the softirq deferral.
-
-Container memcg limits don't cap how far the table can grow:
-
-  - The sw_flow kmem_cache is created in ovs_flow_init() without
-    SLAB_ACCOUNT.
-  - The bucket array from table_instance_alloc() comes from unaccounted
-    kvmalloc memory.
-
-The commit message says:
-
-    The region stays short: the skb caps the flows one callback emits, and
-    empty buckets cost no skb space but are each visited once per dump, as
-    the cursor only moves forward. The table grows on insert and shrinks
-    only on flush, so the walk is bounded by the largest flow count the
-    datapath has held.
-
-That bound is real, but a namespace user chooses it. Is "stays short"
-accurate here?
-
-Two ways to keep the soft lockup fix without an unbounded BH-off window:
-
-  - Stop after a fixed number of buckets per callback and resume from
-    cb->args.
-  - Re-enable and disable BH after each batch of buckets.
-
-Would either of these work?
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929072519.2803304-2-den%40openvz.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930222542.3839327-2-antonio%40openvpn.net
