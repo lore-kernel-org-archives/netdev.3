@@ -1,171 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.67.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA13DDB0E
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4737B3E49D8;
+	Thu,  1 Oct 2026 10:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.67.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790851068; cv=none; b=Y3tJhPk9bzKU2vXOe0hyg+7OLF/XIKXOvrLPtJbsbKF0/OmrkztblLW1Vu5sH9/T7tfG8LurlsvTgVWVjEDEDY2JhM4iuRlXCFitWKqjd+hSrBTKqDnMr8yGWVeYestQ6mcwZt8Lwo4WLhX2ssRy6TmeUkzkdNfnIaRCop88GR4=
+	t=1790851305; cv=none; b=jDYxZFTEXB3A34f8j08joWZe4ZM47V4dGC/ezitwXvLfOUUW+p9r78+h0Eot36sq3LRMsDjVyTSDXcBOnp+1mjnnfdbiIaV6AyorcTySanw4bWhM2wThRjHno2/PaTr7DbnZAcbZK3Jq2SkLZF7HEke4R/xaCozc8JouKo0c8LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790851068; c=relaxed/simple;
-	bh=bGDpIiXLA7xVBN438J19YhtYOJZSCafu7Il54gf0Zp8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tnCVI53b7FgJKaHdaygRCRGc2BdjJdpo7q/faBi6SrQcCj3/WPtT+fMcl8BlsiE5VzUtJSWnzjlH/ZIG+K1JUW2Z1ilK4APtN/MhsoJJWwHE+Npc9qqEYEqgRLiDzGupVMsHfTt1RTDKR2rN2/LPjxpv5Qx4jEN3rDsc9r8mHWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c099WXg5; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c099WXg5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6966F1F000FF;
-	Thu,  1 Oct 2026 10:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790851061;
-	bh=R9I7vM6gcFwOUQIozXAs7hTB9gJBPhSJrbUmDRpPSiI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c099WXg5bUu1G3cbZoEYm/mhWGOOHwC/YfcLfbGcQUCrJjsRY1ExaCbIZa2hbCJRp
-	 LtHs39V0hHOI5eavcIHh1Xx+qzcCqRKnBL6sdqtJhrOD/JSOIr4rHmL+5/tu+evjgq
-	 ug+PoWtb6QS7cvOGIh3tU13P4wJZAzC2Ur7wMET7g+Nymww1be38X/mKdGBXWXrEXS
-	 GIDeL5OWSX0qCZ3BDLGlWOf8+DD8C/NUvrZMqs5ipBymrr0iTEYKj0vxkyIH7KH1uk
-	 /phDIbqs71Rj9NReZ9LhwjifVp7UXUFubY9oeJQbYGbC3O+dsQ9eBzazsOLLH4vDF1
-	 7EMHzlauESZfw==
-Message-ID: <aff0a6c6-ab34-4578-850b-86e7d94deb7a@kernel.org>
-Date: Thu, 1 Oct 2026 12:37:37 +0200
+	s=arc-20240116; t=1790851305; c=relaxed/simple;
+	bh=2RomKtHye+dRYy79m3S6M53Ixw2KnmsBmPZIvoPkSb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j+WLHM0STZYxgDvFWqsxVlIk7JcJMaP17YiCBrg5p7keACqZ7N2ayC5KHtg45Tk5yQdKaevVPP2G1/sjV9sLYLIFfxoa8k3J9MJ4H24sTTm6GVHiNEYqV7T1qq07oVCN1Upy3c+pSfU5MqeQ4R/VurzAMYh4Eic9QLCq5m+SErI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=114.132.67.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpsz18t1790851213te9571575
+X-QQ-Originating-IP: MnVgG6vRFgIA4u0yy461TlXQhBV9IFkAyy3J+YxNQhQ=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 01 Oct 2026 18:40:10 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 55640319989593978
+EX-QQ-RecipientCnt: 11
+Date: Thu, 1 Oct 2026 18:40:10 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yaojun@mucse.com
+Subject: Re: [PATCH net-next v14 5/5] net: rnpgbe: Add link status handling
+ support
+Message-ID: <451DA167F36F0CCC+20261001104010.GB53018@nic-Precision-5820-Tower>
+References: <FCCBC00DC4182F5F+20260928033910.1033461-1-dong100@mucse.com>
+ <179082599095.434549.1820595149953223551@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: adopt SLUB sheaves for skbuff_small_head
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>
-References: <20260228141252.435509-1-edumazet@google.com>
- <31a14f1c-7d20-4b0f-a039-9e034762ed98@suse.com>
- <CANn89iKH92jjRDD_jDNeioSy9U5mxKAYeyBJ3hHAFR_z4+wccA@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <CANn89iKH92jjRDD_jDNeioSy9U5mxKAYeyBJ3hHAFR_z4+wccA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <179082599095.434549.1820595149953223551@kernel.org>
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: NUecTGMI9wOoqdjZb8aXtOJJFU6r25sVWGU8X2yWKafSBIAkX0XFqRkO
+	+f7j/xtlWZVIwv6ASJqFfp/0RXeAwSLjeCXyEyov+3GtPm66Q8KaOMNsaGn1LmKn+U9lLCC
+	kbb9KN4IoKMl5hMDopSXezqQy1ApBeDmMgZEfF8HjuVY4G7ywXdeXMXsbwoWsMlsHiKJ8uv
+	wd//+MttlWPhMuY8Js5nmfBKrjk77GTKbQHkDCmD/3hQ51oaQVB60Rqhl2Qcjg20YdHWzGK
+	wk0NzvdbEEMIRtCYeJ8X4nQVeEoXAkZ/UvnxktnMI29XjK+Oem/8s2V5wn1RLLfFW+NAt5H
+	Wgywsray5teKjhvd2QZH/rf8ZcXgBy5QX2W7YB+rpRPi8tMl07Mesx1DjfA73G6Y/c21luS
+	Dh+OGctCf1xAVHm37TgYz4ELeitgQKWmUT4yptHIlDJXQTNblg/CmMnkdGx7hdt/QVVizDw
+	YerS35lbNLYatBkLGS87sX2ZC5kuYhkx+ptVlH21mBwPO94/0SftKBQ2wVBNWj2EbKt/uPR
+	7NyhHQt3jrqjn3YbrQCxKNWgzYAEyqNymjc0zZ4Jr6G7zO0j7MMMBxh9kG+dptOrcC0SH50
+	SqEpFYY+Yumz+FCMXFjj3XUhtZaYJOgjYhtkiY8l4DWPELRdYfyfqLngYykKBB9jRRYkS1u
+	raQiCyal/cDBneE8ThHnJdVOQVi/rMJJMnxd5VhnvHdh0K50u0HjBEJN+Zi1FeeQnLfIaVW
+	unjq9+Ip6wdK2dCOqQ+0bHP13SrlaeSvlgH7XFf+1YdaC945yOnCMgSKvIn0rxKCstMKtGB
+	jNieXhVLLlBkcONo71JLoz/FEps7JrZ03QvjaptH8zTcSVSefyG26VF1efhZ6TcMgQCCIS5
+	hMYSj6pMCXd0gtuT66sSvGRW57Qcfkc/Kur7HB2ABd3JJ/+NNlxn6772VBQyyP1f/w8gRIH
+	8NldJIlzOLipqJBmmi5AjokFleIKP1/OSgvggIlutOtwFTkhR8xXZztp6gOQThe1zDUQdVu
+	RtHb/FJ8BjKS14f0Ik7U0YCJqapY/Zv/VAJwb/CeCaK4lTW6fjHcMg94X50HKgfVjbvjYgC
+	rjUp99+c0Bo3V2u65dfUv5lvfQOvm1XzVhP9B9D/JjNC8zZyibbiEIdKPGKHfFqVYr2tzb2
+	2a/X
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-On 3/1/26 17:30, Eric Dumazet wrote:
-> On Sun, Mar 1, 2026 at 12:24â€¯PM Vlastimil Babka <vbabka@suse.com> wrote:
->>
->> On 2/28/26 15:12, Eric Dumazet wrote:
->> > skbuff_small_head is used both on receive and send paths,
->> > serving potentially 80 million allocations and frees per second.
->> >
->> > Tuning it on large servers has been problematic, especially
->> > on AMD Turins platforms, where "lock cmpxch16b" latency can
->> > be over 30,000 cycles.
->>
->> Huh, really? That sounds insane. Any pointers about that?
+On Thu, Oct 01, 2026 at 03:39:50AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
 > 
-> Yes, obviously on semi-contended cache lines.
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
 > 
->>
->> > Switching to SLUB sheaves fixes the issue nicely.
->> >
->> > tcp_rr benchmark with 10,000 flows goes from 25 Mpps to 40 Mpps
->> > on AMD Turin.
->> >
->> > Other platforms show benefits with tcp_rr with more than 30,000
->> > flows.
->>
->> That's nice, thanks!
->>
->> However I must point out some caveates. I assume you did this on 6.19, where
->> sheaves are still opt-in. But also, when you opt-in, the pre-existing
->> per-cpu caching layer of percpu slab and percpu partial slabs is also still
->> there, so effectively the amount of percpu cached slab objects increase,
->> which can be the main performance difference for some workloads, and not the
->> difference between sheaves and percpu (partial) slabs implementation.
->>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> Tests are on 6.18 LTS kernel, on which our latest production kernel is based.
+> - [Medium] This patch sets a mailbox protocol: a pending firmware event
+>   holds the shared FW<->PF window until the PF acks it.
+> - [Low] rnpgbe_down() calls rnpgbe_set_link(hw, false) when no link event
+>   is being handled.
 > 
->> Note: but hopefully for your workload it's really the implementation.
->> "(lock) cmpxch16b" should be avoided, until you start freeing NUMA-remote
->> (to the freeing cpu) objects in significant volumes.
+> --
 > 
-> Right, __slab_free() is absolutely not 'slow path' when we have
-> ~80,000 in-flight objects
-> on a 512 cpu host.
+> net: rnpgbe: Add link status handling support
 > 
->>
->> In 7.0-rc1 sheaves are enabled for every cache automatically, and cpu
->> (partial) caches are gone completely. Their size is calculated to roughly
->> match the average amount of percpu caching the old scheme achieved (but that
->> effectively depended on the workload too, so can't be exactly translated)
->> and the result is visible in /sys/kernel/slab/$cache/sheaf_capacity
->> the args.sheaf_capacity can override that automatic sizing, if the specified
->> one is larger.
->>
+> This commit adds link status handling to the rnpgbe driver. Firmware link
+> change events arrive over the mailbox, and a service task updates the
+> carrier state from them. Firmware is also notified of port up/down and
+> link report enable/disable, and the default link is set up at probe.
 > 
-> Nice, I did not know that (I am not following lkml traffic)
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> > index 7beec27991d35..6f7bf4ca5b927 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
 > 
->> So what I would suggest is checking the performance betwen 6.19 and 7.0-rc1
->> without this patch (hope there won't be any other factors in the upgrade
->> influencing this much), noting the auto-calculated capacity. If it still
->> looks good, you don't need to do anything, otherwise you can try making the
->> capacity larger and see what happens.
+> [ ... ]
 > 
-> I can not test this yet using 7.0-rc1.
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> > index e28f3193aa854..683e0ea741136 100644
+> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
 > 
-> I guess we will carry this patch privately, and will come back in a
-> few months when
-> I can get our infra ready.
-
-Hi, just wondering if since then you were able to test a 7.0+ kernel and
-thus see if the refactoring of all caches to use sheaves had the same
-benefit as your patch on top of 6.18?
-
-Thanks,
-Vlastimil
-
-> Thanks.
-
+> [ ... ]
+> 
+> > +int mucse_mbx_set_link(struct mucse_hw *hw, u32 advertising, bool autoneg,
+> > +		       u32 speed, u32 duplex, u32 mdix_ctrl)
+> > +{
+> 
+> [ ... ]
+> 
+> > +	int len, err;
+> > +
+> > +	len = le16_to_cpu(req.r.datalen);
+> > +	mutex_lock(&hw->mbx.lock);
+> > +	err = mucse_write_and_wait_ack_mbx(hw, req.dwords, len);
+> 
+> [Severity: Medium]
+> Should this use mucse_write_mbx_coalesce_event(), as mucse_mbx_phyup()
+> and mucse_mbx_link_report() do?
+> 
+> The kernel-doc for mucse_mbx_event_begin() in this patch describes the
+> mailbox protocol:
+> 
+>     Firmware releases the hardware mailbox lock before raising the event
+>     interrupt and does not access the shared window again until the PF
+>     acknowledges the event.
+> 
+> The patch also adds mucse_ack_pending_event(), so that a PF command acks
+> any pending event before it writes the shared window.
+> 
+> PHY_LINK_SET does not do this. It goes through
+> mucse_write_and_wait_ack_mbx()->mucse_write_mbx_pf(), which writes
+> MUCSE_MBX_FWPF_SHM directly and never checks for a pending event.
+> 
+> Firmware link reporting can still be enabled at probe. rnpgbe_down() only
+> warns "Fw will still report link event" when LINK_REPORT_EN=0 fails. A
+> crashed or kdump'd previous kernel never runs close() at all.
+> 
+> Suppose firmware posts a LINK_CHANGE_EVT after mucse_mbx_reset() has
+> taken its fw_req snapshot, for example because RESET_HW bounced the link.
+> Would PHY_LINK_SET then overwrite the unacked event?
+> 
+> Under the protocol above, firmware would not process the command, and
+> mucse_poll_for_ack() would time out. Probe now treats that as fatal:
+> 
+> rnpgbe_add_adapter()
+>     err = rnpgbe_setup_default_link(hw);
+>     if (err) {
+>         dev_err(&pdev->dev, "Setup link failed %d\n", err);
+>         goto err_powerdown;
+>     }
+> 
+> If firmware does ack the command, the stale FW2PF count would seem to make
+> the following GET_MAC_ADDRESS in mucse_fw_send_cmd_wait_resp() read the
+> window straight away. It would then recover only through the opcode retry
+> loop.
+> 
+> The existing mucse_mbx_powerup() uses the same non-coalescing path. It
+> runs on remove/shutdown after close, where a failed LINK_REPORT_EN=0 could
+> leave an event pending.
+> 
+> The driver code doesn't show whether firmware keeps link_report_en set
+> across RESET_HW or a driver reload.
+> 
+> > +	mutex_unlock(&hw->mbx.lock);
+> > +
+> > +	return err;
+> > +}
+I think no need to handle this. rnpgbe_down only warns is because driver
+should release memory for tx/rx even with a mailbox error.
+After a system crash, the PCIe reset performed during system
+initialization causes firmware to clear the driver-loaded, port-up and
+link-event-enable states.
+During a normal driver probe, mailbox synchronization is performed before
+RESET_HW and PHY_LINK_SET. If an unexpected pending event prevents
+mailbox synchronization, probe fails rather than continuing with an
+ambiguous mailbox state. The driver does not need to distinguish whether
+that failure was caused by firmware or by stale mailbox state.
+Therefore, after successful synchronization and reset, no asynchronous
+event can be pending when mucse_mbx_set_link() is called.
+so I plan to keep the current implementation.
+> 
+> [ ... ]
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0A4D45AD9F6A0F14%2B20260928033701.1033196-1-dong100%40mucse.com
+> 
