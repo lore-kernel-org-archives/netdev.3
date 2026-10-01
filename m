@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1204F0538;
-	Thu,  1 Oct 2026 09:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C26C4EE877;
+	Thu,  1 Oct 2026 09:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790846021; cv=none; b=HhRpQBax209XnkNZgDot32v2tpqHaceJeol2ouVF9St7BdHmrJbe25V09Xz6UMtd+L8uBL4BuIgK+4NGXNfOp+vAqPDU8zlRJvCeVOPhiPVdXzE4XCng7O4j8zHTv/cV/9Y7sbzn0hWIhNBPTxOYtsHZchR1hBUZV6tj2Vo0Hn8=
+	t=1790846022; cv=none; b=m7CWmZsSasp17Lm9i/VhNCtlW/SZotDtkGNRoJhixaaKAr6waPtbsVyPrd/RO38QlcnbrkZENxuFdNAX6LU+HzME2wMLx6TcZ8TQvWkIVvwEYhn/g6GgROGMhjm9msIMnU8EygXjIfe5pyR1nOcL8ebhBK+mJvEIzLe9yHeoh9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790846021; c=relaxed/simple;
-	bh=LUS1MqanMPwRDZPaUs1q7Y4qTGN4Jg8HUwIGVCJF4Ok=;
+	s=arc-20240116; t=1790846022; c=relaxed/simple;
+	bh=uu7zgoJX7qRQk8D9PCJmTRA6KlTAKv33xSNF5oKRgoM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zpa1SQJ/T/RnO+aICjILEcDtnddt1TZX+QhtRDBROx/gdD7WCHszrzjh+KyArS+iB0Qw6aBNlwUsvwn2Steu7rH8pQOfpErp2cEmwUZRfK3Q+8XNxxOlk10D/qh6c7lNlKUSr3nUuD3SLdTXlkYCFSzfHeKrLV4ZqeYuA9RObQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3Zc2nK6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LuLKSPQCcn8i5MMV3kGYsOC5UfAmjF7GFz0xQ+RprgZTMunhQw//ny7/xn2H2TR1CtLZRtn/fST+8lR9woWd4gt2Aix/xUIThOIiMJ11Y1j13iwQwuVW4aVCITdVQHZSrQfGlEf3LYKhTTkyswEYCBaZXldaZs/ayW1MqigVEDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIjuy9BD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3Zc2nK6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AA01F00899;
-	Thu,  1 Oct 2026 09:13:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIjuy9BD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5911E1F0089A;
+	Thu,  1 Oct 2026 09:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790846015;
-	bh=k96p3lu4PSO/loHaVjE2TR0yZO2Dp0AphTiytdENBx0=;
+	s=k20260515; t=1790846018;
+	bh=czgUX850NsmUzn+FwMs4LYpA8kmRhyL15bRDxtty1Yg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=R3Zc2nK6e6Bh9sKbispEJ0QIa/OXbjVpYY+NqYK9UswiRFN9GfnSEAaDsDhaeuvge
-	 CgzBZ3Yhe7abeobj0e0MuuBkpQSQH4A6ao2cTAVhvXhJvl1haLmAK1HPqqBt0Xoj/e
-	 lPQhX+IoUQyw9DZlZyFP4RrJgy1pNtPYiAf3mAy3Uoj6WgwtGLVqjGYq9Ppicl5bG7
-	 KQLFOYYLby8VDpMrwLnmyfKmni1o+my+9gvCRZUCcnEfLKa+9WUq4lvXFjceWtWVXq
-	 rMcnnWr7WsFPfmQ1bLYiYky6feSOr/aRcJ6hj9qfmf4LDcHGcVQlMhom71hBxa2XTJ
-	 IG3uvhW+Q+0jA==
+	b=LIjuy9BDRdrRg2dIn1dumd/M3AlbuR+Odl0uW8g3okCgqhNPxJ+UN9S3MNhbdQqik
+	 h7O6poCYljBNk5SAz1jLj10loszHkClWlTE/BNtJOTR9UOpAbYdvye+edYugmgGAOp
+	 y/jIB3Q64FvG6Wq38hmzxmhXIG9CWiKHTQ+mRHJBIuI2EZrI4Kfze7XAgOe5ZtajAX
+	 95poQgh0ravOfW1fyx4FvvZwxtwJZXoiuMyk7rp/OArhZYFgGBmuF3CYogxxsIARNe
+	 tBdHhOKz0cYqM4IuZQ7rUgt0+T+sf+W4NFxckXioP1tg3y3POJ1jyp8uCNvAhPhhD3
+	 dW6JHUu6vAIsw==
 Subject:
- Re: [net-next, v4 03/10] bnge: add helper functions for multi RSS contexts
+ Re: [net-next, v4 05/10] bnge: add ethtool support to manage RSS contexts
 From: netdev-bot+sashiko@kernel.org
 To: vikas.gupta@broadcom.com
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
@@ -36,10 +36,10 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
  vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
  dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
-Date: Thu, 01 Oct 2026 09:13:34 +0000
-Message-ID: <179084601433.434549.5967913046506071040@kernel.org>
-In-Reply-To: <20260928061307.1172344-4-vikas.gupta@broadcom.com>
-References: <20260928061307.1172344-4-vikas.gupta@broadcom.com>
+Date: Thu, 01 Oct 2026 09:13:36 +0000
+Message-ID: <179084601694.434549.444699842806684896@kernel.org>
+In-Reply-To: <20260928061307.1172344-6-vikas.gupta@broadcom.com>
+References: <20260928061307.1172344-6-vikas.gupta@broadcom.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 0 · Medium: 4 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,54 +61,148 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] bnge_get_total_vnics()
-  (drivers/net/ethernet/broadcom/bnge/bnge_resc.c) adds bn->num_rss_ctx…
-- [Medium] At this commit, bnge_modify_rss() writes a user context's
-  indirection table into ethtool_rxfh_context_indir(ctx), but…
-- [Medium] For a user context, bnge_modify_rss() copies tbl_size entries
-  and then zero-pads up to bd->rss_indir_tbl_entries (512) into…
+- [Medium] When bnge_reserve_rings() gets fewer usable RX rings at open
+  (it logs 'RX rings resv reduced to %d than earlier %d requested'), it…
+- [Medium] RSS contexts survive a forced NTUPLE/aRFS disable in
+  bnge_init_chip(), which breaks the rule this patch adds in…
+- [Medium] In bnge_reserve_rings(), marking the default table lost and
+  resetting it use different conditions.
+- [Medium] When bnge_hwrm_vnic_rss_cfg() fails,
+  bnge_modify_rxfh_context() restores only the software state: the old…
+- [Low] The commit message says only that ethtool callbacks for RSS
+  contexts are added.
 
 --
 
-bnge: add helper functions for multi RSS contexts
+bnge: add ethtool support to manage RSS contexts
 
-This commit adds helpers to create, modify, restore and delete
-user-defined RSS contexts in the bnge driver, with one VNIC per context.
-It also adds a num_rss_ctx counter to struct bnge_net and includes it in
-the VNIC count that bnge_get_total_vnics() returns.
+This commit adds the create/modify/remove_rxfh_context ethtool callbacks
+to bnge. Each RSS context gets its own VNIC with its own indirection
+table and hash key. Contexts are torn down on close and rebuilt on open.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> index c7024e75f9257..e0744e59c6aea 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> @@ -209,8 +209,16 @@ static u16 bnge_get_total_rss_ctxs(struct bnge_dev *bd,
->  
->  static u16 bnge_get_total_vnics(struct bnge_dev *bd)
->  {
-> -	if (bnge_is_arfs_cap(bd))
-> -		return 2;
-> +	if (bnge_is_arfs_cap(bd)) {
-> +		u16 vnics = 2;
+> Introduce ethtool callbacks to manage RSS contexts.
+
+[Severity: Low]
+The patch also makes several behaviour changes that the commit message
+does not mention. Some of them affect the default (context 0) table:
+
+- When resv_rx_rings changes, bnge_reserve_rings() used to always reset
+  the default indirection table. It now keeps a user-configured table,
+  or calls ethtool_rxfh_indir_lost(). That call logs "device error, RSS
+  indirection table lost" and sends ETHTOOL_MSG_RSS_NTF.
+
+- bnge_fill_hw_rss_tbl() now silently replaces any out-of-range ring
+  index with ethtool_rxfh_indir_default(). This applies to every VNIC,
+  including the default one.
+
+- bnge_set_features() now returns -EBUSY if NTUPLE is cleared while RSS
+  contexts exist.
+
+- Contexts are torn down on close and rebuilt on open. If the rebuild
+  fails, the context is destroyed.
+
+Could these changes be described in the commit message, or split into
+separate patches?
+
+The changes to bnge_del_one_rss_ctx() (rsscos_nr_ctxs accounting) and
+to bnge_hwrm_realloc_rss_ctx_vnic() (taking rss_lock) only touch helpers
+that had no callers before this patch. So they don't fix reachable bugs
+in the earlier patches.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
+> index 6fbda4fc1a0c4..85dbe64d4c129 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
+
+[ ... ]
+
+> +static int bnge_modify_rxfh_context(struct net_device *dev,
+> +				    struct ethtool_rxfh_context *ctx,
+> +				    const struct ethtool_rxfh_param *rxfh,
+> +				    struct netlink_ext_ack *extack)
+> +{
+
+[ ... ]
+
+> +	rss_ctx = ethtool_rxfh_context_priv(ctx);
+> +	tbl_size = bnge_get_rxfh_indir_size(bn->bd);
 > +
-> +		if (bd->netdev) {
-> +			struct bnge_net *bn = netdev_priv(bd->netdev);
+> +	/* Snapshot the software state so it can be restored if the hardware
+> +	 * update fails, keeping the reported config consistent with the
+> +	 * hardware.
+> +	 */
+
+[ ... ]
+
+> +	bnge_modify_rss(bn, ctx, rss_ctx, rxfh);
 > +
-> +			vnics += bn->num_rss_ctx;
-> +		}
-> +		return vnics;
+> +	rc = bnge_hwrm_vnic_rss_cfg(bn, &rss_ctx->vnic);
+> +	if (rc) {
+> +		if (rxfh->key)
+> +			memcpy(rss_ctx->vnic.rss_hash_key, old_key,
+> +			       HW_HASH_KEY_SIZE);
+> +		if (rxfh->indir)
+> +			memcpy(ethtool_rxfh_context_indir(ctx), old_indir,
+> +			       tbl_size * sizeof(*old_indir));
 > +	}
->  
->  	return 1;
->  }
 
 [Severity: Medium]
-bn->num_rss_ctx is only counted while bnge_is_arfs_cap(bd) is true. Can
-that flag be cleared while user RSS contexts still exist?
+Does this rollback really keep the reported config consistent with the
+hardware, as the comment above says?
 
-bnge_init_chip() clears it when the aRFS VNIC allocation fails, and it
-does not check netdev->ethtool->rss_ctx first:
+bnge_hwrm_vnic_rss_cfg() is not atomic. First, bnge_hwrm_vnic_set_rss()
+uses bnge_fill_hw_rss_tbl() to write the new ring IDs into
+vnic->rss_table. It then sends one HWRM_VNIC_RSS_CFG per 64-entry
+segment and stops at the first failure:
 
-drivers/net/ethernet/broadcom/bnge/bnge_netdev.c:bnge_init_chip() {
+bnge_hwrm_vnic_set_rss() {
+    ...
+	for (i = 0; i < nr_ctxs; ring_tbl_map += BNGE_RSS_TABLE_SIZE, i++) {
+		...
+		rc = bnge_hwrm_req_send(bd, req);
+		if (rc)
+			goto exit;
+	}
+    ...
+}
+
+After that, bnge_hwrm_vnic_rss_cfg() sends a separate HWRM_VNIC_CFG.
+
+A later segment can fail, or HWRM_VNIC_CFG can fail after all the
+RSS_CFG commands succeeded. In either case the device is already using
+the new (or partly new) key and table.
+
+Only the software copies are restored here. So "ethtool -x ... context
+N" would report the old config, while the DMA buffer vnic->rss_table
+still holds the new ring IDs.
+
+Should the error path program the restored state back into the
+hardware?
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> index ef5d13337e60b..ac77ba813f01c 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> @@ -2784,6 +2784,8 @@ static int bnge_open_core(struct bnge_net *bn)
+>  	/* Poll link status and check for SFP+ module status */
+>  	bnge_get_port_module_status(bn);
+>  
+> +	bnge_hwrm_realloc_rss_ctx_vnic(bn);
+> +
+>  	return 0;
+
+[Severity: Medium]
+What happens to existing RSS contexts if bnge_init_chip() force-disables
+NTUPLE on reopen?
+
+Contexts survive close, because bnge_clear_rss_ctxs() calls
+bnge_del_one_rss_ctx(..., false), so num_rss_ctx stays non-zero.
+
+On reopen, bnge_open_core()->bnge_init_nic()->bnge_init_chip() calls
+bnge_alloc_rfs_vnic(). If that fails, the fallback clears the flags
+without checking num_rss_ctx:
+
+bnge_init_chip() {
     ...
 	if ((bn->priv_flags & BNGE_NET_EN_NTUPLE) && bnge_is_arfs_cap(bd)) {
 		rc = bnge_alloc_rfs_vnic(bn);
@@ -122,102 +216,147 @@ drivers/net/ethernet/broadcom/bnge/bnge_netdev.c:bnge_init_chip() {
     ...
 }
 
-After this, bnge_get_total_vnics() returns 1. bnge_need_reserve_rings()
-and bnge_reserve_rings() then ask firmware for one VNIC and one VNIC's
-worth of RSS contexts. Each remaining user context still needs its own
-VNIC.
+bnge_hwrm_realloc_rss_ctx_vnic() is then called unconditionally here and
+re-creates every context VNIC. This breaks the rule this patch adds to
+bnge_set_features(): NTUPLE can't be turned off while num_rss_ctx is
+non-zero.
 
-On the next bnge_open_core(), bnge_reserve_rings() runs before
-bnge_hwrm_realloc_rss_ctx_vnic(). Could the context VNIC allocations
-fail at that point? Each context would then be torn down through
-bnge_del_one_rss_ctx() and ethtool_rxfh_context_lost(). I haven't
-confirmed that firmware enforces the lower reservation on later VNIC
-allocs, so this step is partly speculative.
+After that:
 
-Also, bnge_init_chip() clears BNGE_NET_EN_NTUPLE directly. That bypasses
-the -EBUSY check that later patches in the series add to
-bnge_set_features(). That check stops NTUPLE from being disabled while
-bn->num_rss_ctx is non-zero.
+- bnge_modify_rxfh_context() always fails in bnge_rxfh_context_check()
+  with "Enable ntuple filtering before adding RSS contexts".
 
-The capability is only set again in bnge_net_init_dflt_config(). While
-it is clear, bnge_fix_features() strips NETIF_F_NTUPLE. So the remaining
-contexts can't be modified, because bnge_rxfh_context_check() requires
-BNGE_NET_EN_NTUPLE. Their VNICs also drop out of resource accounting.
-This is still the case at the end of the series.
+- bnge_fix_features() strips NETIF_F_NTUPLE whenever
+  !bnge_is_arfs_cap(), so NTUPLE can't be turned back on.
 
-Should num_rss_ctx be counted whether or not aRFS is available? Or
-should the aRFS fallback in bnge_init_chip() take existing contexts into
-account?
+- bnge_get_total_vnics() returns 1 and no longer counts num_rss_ctx.
+  Later ring reservations therefore don't cover the VNIC and RSS COS
+  resources of the live contexts. A later realloc can then fail and
+  destroy the contexts via ethtool_rxfh_context_lost().
 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c b/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
-> index d98a6196c859c..a44971a7c74d3 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
-> @@ -129,3 +129,116 @@ int bnge_alloc_rfs_vnic(struct bnge_net *bn)
->  	vnic = &bn->vnic_info[BNGE_VNIC_NTUPLE];
->  	return bnge_alloc_and_setup_vnic(bn, vnic, bn->bd->rx_nr_rings);
->  }
-> +
-> +void bnge_modify_rss(struct bnge_net *bn, struct ethtool_rxfh_context *ctx,
-> +		     struct bnge_rss_ctx *rss_ctx,
-> +		     const struct ethtool_rxfh_param *rxfh)
-> +{
+By the end of the series, bnge_srxclsrlins() also requires NTUPLE
+(-EPERM), so no filter can target these contexts. Only
+bnge_remove_rxfh_context() still works on them.
+
+Should the contexts be dropped when this fallback runs, or should the
+fallback be skipped when contexts exist?
 
 [ ... ]
 
-> +	if (rxfh->indir) {
-> +		u32 i, pad, tbl_size = bnge_get_rxfh_indir_size(bd);
-> +		u32 *indir_tbl = bd->rss_indir_tbl;
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+> index e0744e59c6aea..8f1b0f42773a2 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+> @@ -229,6 +229,19 @@ u32 bnge_get_rxfh_indir_size(struct bnge_dev *bd)
+>  	       BNGE_RSS_TABLE_ENTRIES;
+>  }
+>  
+> +static u16 bnge_get_max_rss_ring(struct bnge_dev *bd)
+> +{
+> +	u32 i, tbl_size, max_ring = 0;
 > +
-> +		if (rss_ctx)
-> +			indir_tbl = ethtool_rxfh_context_indir(ctx);
-
-[Severity: Medium]
-At this commit, is anything reading the per-context table written here?
-
-For non-NTUPLE VNICs, bnge_fill_hw_rss_tbl() only reads the default
-table:
-
-    j = bd->rss_indir_tbl[i];
-
-struct bnge_vnic_info also has no link back to the ctx. Used as they are
-in this patch, wouldn't bnge_hwrm_realloc_rss_ctx_vnic()->bnge_setup_vnic()
-program the default table into a context VNIC?
-
-The helpers have no callers yet. The next patch, "bnge: add ethtool
-support to manage RSS contexts", adds BNGE_VNIC_RSSCTX_FLAG and a
-vnic->rss_ctx back-pointer. It also changes bnge_fill_hw_rss_tbl() to
-read ethtool_rxfh_context_indir(vnic->rss_ctx). Could the reader side
-move into this patch so these helpers are consistent on their own?
-
-> +		for (i = 0; i < tbl_size; i++)
-> +			indir_tbl[i] = rxfh->indir[i];
-> +		pad = bd->rss_indir_tbl_entries - tbl_size;
-> +		if (pad)
-> +			memset(&indir_tbl[i], 0, pad * sizeof(*indir_tbl));
-
-[Severity: Medium]
-Can this memset() overflow the ctx indirection table when rss_ctx is
-non-NULL?
-
-The pad runs up to bd->rss_indir_tbl_entries, which
-bnge_alloc_rss_indir_tbl() sets to BNGE_MAX_RSS_TABLE_ENTRIES. That is
-the device-wide capacity, not the size of the ctx allocation.
-
-ethtool_rxfh_ctx_alloc() sizes the ctx indirection area as
-max(indir_size, ops->rxfh_indir_space). bnge doesn't set rxfh_indir_space
-at this commit. The pad would then write past the indirection table,
-into the key area and beyond the end of the kzalloc'd ctx.
-
-This can't be reached yet because bnge_modify_rss() has no caller. Later
-in the series the pad is guarded with "if (pad && !rss_ctx)", and
-bnge_ethtool_ops sets .rxfh_indir_space = BNGE_MAX_RSS_TABLE_ENTRIES.
-Could those changes be folded into this patch?
-
-> +	}
+> +	if (!bd->rss_indir_tbl)
+> +		return 0;
+> +
+> +	tbl_size = bnge_get_rxfh_indir_size(bd);
+> +	for (i = 0; i < tbl_size; i++)
+> +		max_ring = max_t(u32, max_ring, bd->rss_indir_tbl[i]);
+> +	return max_ring;
 > +}
 
 [ ... ]
+
+> @@ -344,9 +357,15 @@ int bnge_reserve_rings(struct bnge_dev *bd)
+>  	hwr.nq = sh ? max_t(u16, tx_cp, rx_rings) : tx_cp + rx_rings;
+>  	bd->tx_nr_rings = hwr.tx;
+>  
+> -	if (rx_rings != bd->rx_nr_rings)
+> +	if (rx_rings != bd->rx_nr_rings) {
+>  		dev_warn(bd->dev, "RX rings resv reduced to %d than earlier %d requested\n",
+>  			 rx_rings, bd->rx_nr_rings);
+> +		if (bd->netdev && netif_is_rxfh_configured(bd->netdev) &&
+> +		    (bnge_cal_nr_rss_ctxs(bd->rx_nr_rings) !=
+> +		     bnge_cal_nr_rss_ctxs(rx_rings) ||
+> +		     bnge_get_max_rss_ring(bd) >= rx_rings))
+> +			ethtool_rxfh_indir_lost(bd->netdev);
+> +	}
+
+[Severity: Medium]
+This only checks the default table. What about the non-default RSS
+contexts?
+
+bnge_get_max_rss_ring() scans only bd->rss_indir_tbl, and
+ethtool_rxfh_indir_lost() only affects context 0.
+
+The other contexts survive close/open and are programmed again through
+this chain:
+
+bnge_open_core()->bnge_hwrm_realloc_rss_ctx_vnic()->bnge_setup_vnic()->
+bnge_hwrm_vnic_rss_cfg()->bnge_hwrm_vnic_set_rss()->bnge_fill_hw_rss_tbl()
+
+At the end of that chain, bnge_fill_hw_rss_tbl() reads
+ethtool_rxfh_context_indir(vnic->rss_ctx)[i].
+
+The new clamp in bnge_fill_hw_rss_tbl() fixes stale entries only in the
+hardware DMA table. Also, tbl_size there follows the new ring count, not
+ctx->indir_size.
+
+If the number of segments drops (for example 72 -> 60 rings, so 128 ->
+64 entries), only the first part of the stored context table reaches the
+hardware.
+
+bnge_modify_rxfh_context() has the same issue: it snapshots and restores
+bnge_get_rxfh_indir_size() entries, not ctx->indir_size entries.
+
+Programming succeeds, so ethtool_rxfh_context_lost() is never called.
+The driver also never uses ethtool_rxfh_ctxs_can_resize() or
+ethtool_rxfh_ctxs_resize().
+
+Wouldn't the hardware then send the context's flows to queues the user
+never configured? Meanwhile ETHTOOL_MSG_RSS_GET would keep reporting the
+old table and indir_size, and userspace would get no notification.
+
+>  	bd->rx_nr_rings = rx_rings;
+>  	bd->nq_nr_rings = hwr.nq;
+> @@ -354,8 +373,9 @@ int bnge_reserve_rings(struct bnge_dev *bd)
+>  	if (!bnge_rings_ok(&hwr))
+>  		return -ENOMEM;
+>  
+> -	if (old_rx_rings != bd->hw_resc.resv_rx_rings)
+> -		bnge_set_dflt_rss_indir_tbl(bd);
+> +	if (old_rx_rings != bd->hw_resc.resv_rx_rings &&
+> +	    (!bd->netdev || !netif_is_rxfh_configured(bd->netdev)))
+> +		bnge_set_dflt_rss_indir_tbl(bd, NULL);
+
+[Severity: Medium]
+Can the default table end up marked lost but never reset?
+
+The ethtool_rxfh_indir_lost() call above depends on the usable ring
+count (rx_rings != bd->rx_nr_rings). This reset depends on the reserved
+count (old_rx_rings != bd->hw_resc.resv_rx_rings).
+
+The usable count can shrink while resv_rx_rings stays the same. One way
+is these two steps earlier in bnge_reserve_rings():
+
+	rx_rings = min_t(u16, rx_rings, hwr.grp);
+	...
+	rc = bnge_adjust_rings(bd, &rx_rings, &hwr.tx, hwr.nq, sh);
+
+Another way is when aggregation doubles the requested hwr.rx and
+firmware grants the same number of rings as before. For example: the
+old reservation is 8 without agg, the new request is 16 with agg, and
+firmware grants 8, leaving 4 usable.
+
+In that case ethtool_rxfh_indir_lost() clears rss_indir_user_size. But
+resv_rx_rings didn't change, so bd->rss_indir_tbl keeps the stale user
+entries, which may point at queues >= the new rx_nr_rings.
+
+get_rxfh would then report a non-default table with nonexistent queues,
+while the core treats the table as unconfigured. At the same time,
+bnge_fill_hw_rss_tbl() programs different, clamped values.
+
+Should the default table also be reset whenever
+ethtool_rxfh_indir_lost() is called here?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928061307.1172344-1-vikas.gupta%40broadcom.com
