@@ -1,241 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46D314D13;
-	Thu,  1 Oct 2026 22:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5725424679
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 22:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790892688; cv=none; b=gaDGvndH/171B60k/ruwEGDu/055kARox2w+1FS6zIWZkcVtP9yemvpwj3rPRDTAmWs8+2tIeNwjbRfPnGZrsJY4kckXxcy+/7Gzsc4g279RAzzhPSsHVuG+OTEfUw0seXaLUjFV9hhioPcW10N9KCf6xL1i6rOa/gob0y2RwXk=
+	t=1790892779; cv=none; b=IJkgxa9FLZ6c8qZ+2asNCfTxPNjWRId9Y7E93oXd9dHbPj+gFfMZoUl98WLa7p9ZYHQOrSP0DvA0/uOLYtvFx6vjhFL+ptW/I/83ZIRtfZ07fnlsnZKf7A3xLAVXbv0S1bfzI3Y04W76ifcmaoZx9H2cF0g1bMztY8DxSleqYiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790892688; c=relaxed/simple;
-	bh=0koZ/OdakwdRQfNzYvVvdOX16dMsPnSTT45Brw5V45A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lnigXTnc10amzDFlaZNHL7R3lcr7VSdyuthiov9UCwH563V1sF/W5rTDnvJLCi/H4JSeN1nDiYI7P+w1awoL3MW5/Tqx4G/KCGBFq65CYdK5iNOYuWjlw1xmpfhlROfeIU4ocrL0YSC+QCBmaZd4vLXksdAy3Ogi1YMRzwE+Tt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TMU9xOra; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790892779; c=relaxed/simple;
+	bh=bHeGRw5E38tnXB0hRsl/2AteekIVL3rf9jA0rB/OR1k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgQDDesI6dIq5fCEQXsmiN/UlggUsN+ESbHHFugYls90VAGZVYpj/00JHUlFnFq/5zMqlIx3izcfizGxkHzcAzM6AD6wUPAxFZUZIvf61OG7pxTx547v3dZC1i4LcoI4UnJbr7TFDbLoKxQv9QSdK8aIpSRn4p6RnbTuNuqloNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb45c3Bq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TMU9xOra"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790892687; x=1822428687;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0koZ/OdakwdRQfNzYvVvdOX16dMsPnSTT45Brw5V45A=;
-  b=TMU9xOraRdiBLYN+76fIT5DF3xDfL2Hu8nTE9r5DbB9hv7sDUHR9gPRC
-   +vVIRp7dihdjqHLMTySd25e6Tvej5pD6PiRWQdR/IIx+bshSWMJH55def
-   pxdAMAiWYeuNnrAPZfSgCAJJstNDESAwxNpMNDa2r4xj9hBlZiFxU0Lqw
-   f4/8LGMXQ+qkcwQN9Q3vay79rsqpJSBq0r3b1Iz2pY+7J9ifHpcvAAwhh
-   s14LphxS5C2MkuXALq4X/neRLLXzzlkuGd6zXDGzrtIBkPg8zva8PM5Y4
-   uMBqnXd8yIeS54nuFxp41aJCt13nwrJg4H2QxT24SnSxtFmcnhqRaZ4/u
-   Q==;
-X-CSE-ConnectionGUID: RJjM8IhXQ4uI2VcLkDdieA==
-X-CSE-MsgGUID: m0c6W5ggQlKMzuDmrH9kJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="94376131"
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="94376131"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:11:26 -0700
-X-CSE-ConnectionGUID: Xx025VsMTPuPFglBA9dKJw==
-X-CSE-MsgGUID: fUT9oETlQ4KJusg7EZhykg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
-   d="scan'208";a="273927514"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.241]) ([10.125.111.241])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:11:25 -0700
-Message-ID: <13d92409-727b-43e7-a027-086c9a332f44@intel.com>
-Date: Thu, 1 Oct 2026 15:11:22 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb45c3Bq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3A61F000FF;
+	Thu,  1 Oct 2026 22:12:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790892778;
+	bh=iGZcMs0mAl3dFxKbJfI9LrbWdHh+/AGCiuXvKlxOz2w=;
+	h=From:To:Cc:Subject:Date;
+	b=Qb45c3BqYdsxR+98Zhe2H8WdwwAscFQE9HYK80+x1S1i5foi417sVR+MdSmqwLqBf
+	 yn3w/bugkFWufsjdll9hXcILpLG57No5PJz4kEo5B+OW5UiFYuVr3t/45iy915px9m
+	 yFevIvbU1GSDrkN+PZsf8r/6i7HcZ3VAkdiK9nyFuvp1oDMl8/1vu7DO5Km2QPbgpq
+	 DUdUO5JcKifB0X+NPkxN/d0qCsKA0Feu0tBXtA6pFdpWZDZkQB/EcZlMVEFajGAuUu
+	 riI4HdjjyAV65udfABf96BUfyUz33jgAyF/IYenwRzo/0to79/RVR0Uw36pHgl148o
+	 qAboOXL4CXXGw==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Xinyang Ge <xinyang@anthropic.com>
+Subject: [PATCH v2 net] ipv4: free inet_opt and ireq_opt after an RCU grace period
+Date: Thu,  1 Oct 2026 22:12:53 +0000
+Message-ID: <20261001221253.2964024-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] cxl/memdev: Add support for multi PF devices
-To: alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org
-References: <20261001132023.17032-1-alucerop@amd.com>
- <20261001132023.17032-4-alucerop@amd.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20261001132023.17032-4-alucerop@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+tcp_v4_syn_recv_sock() transfers ownership of ireq->ireq_opt to the
+child socket (newinet->inet_opt) without copying it.
 
+Another cpu can concurrently process a retransmitted SYN for the same
+request socket, and send a SYNACK from tcp_check_req().
+tcp_v4_send_synack() and inet_csk_route_req() read ireq->ireq_opt
+under rcu_read_lock() only, and ip_build_and_send_pkt() and
+ip_options_build() then read opt->optlen twice.
 
-On 10/1/26 6:20 AM, alucerop@amd.com wrote:
-> From: Alejandro Lucero <alucerop@amd.com>
-> 
-> A PCI device can present multiple Physical Functions(PFs) but the CXL
-> specs restrict to the first one, PF0, the discovery and management of
-> CXL capabilities accessed through a PF0 BAR. Other non-PF0 PFs need to
-> obtain the CXL.mem range to work with somehow.
-> 
-> Add a device link between the cxl region a PF0 memdev is attached to and
-> the non-PF0 wanting to use the CXL region. A CXL region release will
-> trigger such a PF to be released from its driver first.
-> 
-> PF0 being unbound from its driver triggers memdev and region release
-> leading to non-PF0s being unbound first keeping the CXL memory use safe.
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> ---
->  drivers/cxl/core/memdev.c | 92 +++++++++++++++++++++++++++++++++++++++
->  include/cxl/cxl.h         |  2 +
->  2 files changed, 94 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-> index b3419df586b9..799cb6e75639 100644
-> --- a/drivers/cxl/core/memdev.c
-> +++ b/drivers/cxl/core/memdev.c
-> @@ -802,6 +802,98 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
->  	return ERR_PTR(rc);
->  }
->  
-> +static int match_memdev_by_parent_device(struct device *dev, const void *data)
-> +{
-> +	const struct device *pf_dev = data;
-> +	struct cxl_memdev *cxlmd;
-> +
-> +	if (!is_cxl_memdev(dev))
-> +		return 0;
-> +
-> +	cxlmd = to_cxl_memdev(dev);
-> +	return (cxlmd->cxlds->dev == pf_dev);
+Note that the SYNACK timer itself is not an issue: it holds a
+reference on its request socket, and inet_csk_reqsk_queue_drop()
+calls timer_delete_sync() before the child can be freed.
 
-cxlmd->cxlds can be NULL? How about just do dev->parent == pf_dev instead?
+Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
+into ehash table"), request sockets are processed without holding
+the listener lock, so nothing prevents the child socket from being
+freed while the SYNACK is still being built. TCP child sockets do
+not have SOCK_RCU_FREE, and inet_sock_destruct() frees inet_opt
+with a plain kfree(), leading to a use-after-free in
+ip_options_build().
 
-> +}
-> +
-> +static int __cxl_get_range_and_link(struct device *pf0, struct device *pfx,
-> +				    struct range *range)
-> +{
-> +	struct device *mem_dev __free(put_device) =
-> +		bus_find_device(&cxl_bus_type, NULL, pf0,
-> +				match_memdev_by_parent_device);
-> +	struct cxl_attach_region *attach;
-> +	struct cxl_memdev *cxlmd;
-> +
-> +	if (!mem_dev)
-> +		return -ENODEV;
-> +
-> +	cxlmd = to_cxl_memdev(mem_dev);
-> +	attach = container_of(cxlmd->attach, struct cxl_attach_region, attach);
+A similar issue exists with request socket migration
+(net.ipv4.tcp_migrate_req=1, or a BPF_SK_REUSEPORT_SELECT_OR_MIGRATE
+program). reqsk_timer_handler() clones the request socket with
+inet_reqsk_clone(), so that the old request socket and its clone
+share the same ireq_opt, then reqsk_migrate_reset() clears the
+pointer in the old one. Another cpu holding a reference on the old
+request socket can still be using these options (sending a SYNACK,
+or creating a child in tcp_v4_syn_recv_sock()) when the clone is
+freed, and tcp_v4_reqsk_destructor() also uses a plain kfree().
 
-Probably not likely for a type2 device, but is there any possibility that attach == NULL?
+Readers already use RCU, and other paths replacing inet_opt
+(do_ip_setsockopt(), cipso_v4_sock_setattr()...) already use
+kfree_rcu(). Use kfree_rcu() in inet_sock_destruct() and
+tcp_v4_reqsk_destructor() as well.
 
-> +
-> +	/*
-> +	 * The cxlmd object does exist and it can be found in the cxl bus after
-> +	 * creation but before attach probe setting the proper HPA range. If so,
-> +	 * the caller will need to try later.
-> +	 */
-> +	if (attach->hpa_range.end == CXL_RESOURCE_NONE)
-> +		return -EPROBE_DEFER;
+IPv6 is not affected by the first issue, because tcp_v6_syn_recv_sock()
+duplicates the options. tcp_v6_reqsk_destructor() has the same
+migration issue with ipv6_opt, which is only set by CALIPSO. This
+will be addressed in a separate patch.
 
+Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+Reported-by: Xinyang Ge <xinyang@anthropic.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+v2: also use kfree_rcu() in tcp_v4_reqsk_destructor() (Sashiko)
+    SYNACK timer is not affected, clarify changelog (Jiayuan Chen)
+v1: https://lore.kernel.org/netdev/20260929214351.856940-1-edumazet@kernel.org/
+---
+ net/ipv4/af_inet.c  | 2 +-
+ net/ipv4/tcp_ipv4.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Maybe you'll need something like this below to ensure that the region is valid still. And you can drop the above with the below code.
-
-      scoped_guard(rwsem_read, &cxl_rwsem.region) {
-              cxlr = READ_ONCE(attach->cxlr);
-              if (!cxlr)
-                      return -EPROBE_DEFER;
-              get_device(&cxlr->dev);
-      }
-      struct device *region_dev __free(put_device) = &cxlr->dev;
-
-      /*
-       * Region deletion holds regions_lock across xa_erase() and device_del().
-       * Being in the xarray under regions_lock means the region is still
-       * registered, and a link added now is torn down by its deletion. Drop
-       * cxl_rwsem.region above first: regions_lock nests outside it.
-       */
-      cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
-      guard(mutex)(&cxlrd->regions_lock);
-      if (xa_load(&cxlrd->regions, cxlr->id) != cxlr)
-              return -ENODEV;
-
-      /* A decommit releases the region driver after dropping the rwsem */
-      guard(rwsem_read)(&cxl_rwsem.region);
-      if (cxlr->params.state != CXL_CONFIG_COMMIT)
-              return -ENODEV;
-
-DJ
-
-> +
-> +	/*
-> +	 * Create the device link between the region and the consumer device.
-> +	 * AUTOREMOVE_CONSUMER means the link implicitly to be removed if the
-> +	 * consumer unbinds first with no consequences for the supplier.
-> +	 */
-> +	if (!device_link_add(pfx, &attach->cxlr->dev,
-> +			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
-> +		dev_err(pfx, "device link creation failed\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	range->start = attach->hpa_range.start;
-> +	range->end = attach->hpa_range.end;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * cxl_get_range_and_link - register a device link with the region PF0 memdev
-> + * is attached to. The region release will imply the link consumer to be unbound
-> + * from its driver first. Return the cxl region range to work with related to
-> + * PF0 memdev initialization.
-> + *
-> + * @pf0: device to use for finding target memdev and supplier for the link
-> + * @pfx: device to link to PF0's memdev region, the link consumer.
-> + * @range: to be set with the PF0's memdev attach region range.
-> + *
-> + * Return: 0 or error.
-> + */
-> +int cxl_get_range_and_link(struct device *pf0, struct device *pfx,
-> +			   struct range *range)
-> +{
-> +	int rc;
-> +
-> +	if (!pf0 || !pfx)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * PF0 cxl memdev once created and region attached can only be removed
-> +	 * when PF0 unbinds from its driver which implies to obtain the device
-> +	 * lock before the unwinding starts. If this call from other PF races
-> +	 * with such unbinding:
-> +	 *
-> +	 * 1) if this next lock is obtained first, the device link is
-> +	 *    created and the later unwinding will trigger consumer (PF
-> +	 *    calling here) unbinding first.
-> +	 *
-> +	 *  2) if it is the unbinding the one getting the lock first, the
-> +	 *    memdev will not be there aymore.
-> +	 */
-> +	device_lock(pf0);
-> +	rc = __cxl_get_range_and_link(pf0, pfx, range);
-> +	device_unlock(pf0);
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_get_range_and_link, "CXL");
-> +
->  static long __cxl_memdev_ioctl(struct cxl_memdev *cxlmd, unsigned int cmd,
->  			       unsigned long arg)
->  {
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index 802b143de83d..b28dce1f6f76 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -228,4 +228,6 @@ struct cxl_memdev *devm_cxl_probe_mem(struct cxl_dev_state *cxlds,
->  				      struct range *range);
->  
->  int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
-> +int cxl_get_range_and_link(struct device *pf0, struct device *pfx,
-> +			   struct range *range);
->  #endif /* __CXL_CXL_H__ */
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 4ce38c99fef9ef2a24edff34cd5b110dddfec193..14ce01092fda65dbcf835662c03d78f4de0301f2 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -161,7 +161,7 @@ void inet_sock_destruct(struct sock *sk)
+ 	WARN_ON_ONCE(sk->sk_wmem_queued);
+ 	WARN_ON_ONCE(sk->sk_forward_alloc);
+ 
+-	kfree(rcu_dereference_protected(inet->inet_opt, 1));
++	kfree_rcu(rcu_dereference_protected(inet->inet_opt, 1), rcu);
+ 	dst_release(rcu_dereference_protected(sk->sk_dst_cache, 1));
+ 	dst_release(rcu_dereference_protected(sk->sk_rx_dst, 1));
+ 	psp_sk_assoc_free(sk);
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 04dbb2babbcdc11f84d0d394daa439b1797750c1..bebc5a8d1ab69fe94e51958431d28e8f009c94fc 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1209,7 +1209,7 @@ static int tcp_v4_send_synack(const struct sock *sk, struct dst_entry *dst,
+  */
+ static void tcp_v4_reqsk_destructor(struct request_sock *req)
+ {
+-	kfree(rcu_dereference_protected(inet_rsk(req)->ireq_opt, 1));
++	kfree_rcu(rcu_dereference_protected(inet_rsk(req)->ireq_opt, 1), rcu);
+ }
+ 
+ #ifdef CONFIG_TCP_MD5SIG
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
