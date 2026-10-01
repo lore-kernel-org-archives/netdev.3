@@ -1,69 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A994751DE0B;
-	Thu,  1 Oct 2026 14:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790864997; cv=none; b=baIXXuyaWE9G7DuG9u3Sj1z0SmNrRchGro5zBb4QQFIQ4u6EZNCWjM1D+M2hrXxxl7DZA9OY8WJIv1aS3tQFvKRccfFtOct5yJ7wBMuR4cGZuNQMayn7JIwheUT20S+KMiVmQ7VxaF4tsz+Dn0BWEeaSUnkf/i7HcJIqR4hwmAE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790864997; c=relaxed/simple;
-	bh=Frc+ADQTxRwKDWaoqMQMlUJQ/gCXB8qyIs31/48aD70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LqeZ86c23o7k3/GlxLIZcOmil1R9dCuEZ3nHbCu6k/h7jWB3Ainf8cwj/bt6psZy2ru80wlDLBW8dr2i62T5LvTcAILmi4gBQOycIbV7OHqX0T1p2ccl1P2XWxzJYQUzpDL/ewsndx5J67wqah03+TherMr7yZbnjFRCZUCeM2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUBlXWVF; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF455218BC;
+	Thu,  1 Oct 2026 14:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790865052; cv=pass; b=rjDBt11HT3gv/m604IGjAcmw8ai1Mc8gU+Q4qff/00KcJJE7v0na6Gqa3J/oMWrRYus3I1osg90LuB8nhxf4i9Y8JLLWv6pq+b5UpPvjIK4BBrRKRFXIEKasT2mOH5EKJQnnn7gpUF61vx3pk4U3B/gjfilalhVZUFqn8NaVLf0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790865052; c=relaxed/simple;
+	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=bBtkjbRPHy91rVwl9l+Mo/b23XqNtnD6YjZByu055b3zl5oVTCixMC4QvGn9F69R+3nN2l7Y1SGTIj9FV9YjRC5CSRadEhpsHQSBs4f4NCWmSbO0CTAk7mBTAei75RnA7JUpDXJYcRi5ohkEdA3nHIphB0lxDlQtw6Kqigm6eZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=NvuTh+S3; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUBlXWVF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00B21F000FF;
-	Thu,  1 Oct 2026 14:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790864988;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oUBlXWVFUnIx2HW1hDZ0zIvSaolZ46UIbJBWeI7bUCyAkCBKYdyb/uUsG4Gfs0PAK
-	 SMq40164ELEO+huMmldqrANnHTuOWqOxrb5l4nuiG/eB5xZVQVm9Rs/OB8XXWgEnZE
-	 jUkld9bczAB09Gy1ANeu1J/RckV04fPY3VYr4OtDzEAJsjh9Zi5HhTEo3xp26RaU/1
-	 PSyNLcxQO/VWBTI3E7XzWvlZH47VuQLSa3L9aAoYvq2vmdgp0WJZCSQXwn1/56a+m6
-	 Nky10fCx7zDZmD9/A3lfhRCrw4zDACKf+vm/5Ey7OIVYZUqZctndE4uZKROrtrRJk+
-	 10jw89dCE5Gng==
-From: netdev-bot+sinfo@kernel.org
-To: Vaibhav Nagare <vnagare@redhat.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- nagarevaibhav@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v3] bnxt_en: don't leave an XDP program installed when
- the open fails
-Date: Thu, 01 Oct 2026 14:29:47 +0000
-Message-ID: <179086498718.31693.17965489169136588903@kernel.org>
-In-Reply-To: <20261001142516.1386525-1-vnagare@redhat.com>
-References: <20261001142516.1386525-1-vnagare@redhat.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="NvuTh+S3"
+Received: from fauth-c2-smtp.messagingengine.com (fauth-c2-smtp.messagingengine.com [204.75.18.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: jmtilli)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hwYwz3cJKz49PxK;
+	Thu, 01 Oct 2026 17:20:51 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1790864451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
+	b=NvuTh+S3YGCUHb+4Wo3bxFnyGFFa1xfjBNQiXHS886DnRmR+xll8iZkVvFQTuUsqguvJaI
+	7Z1iTWxnLeXG35RjfrRFBTzQGdYPPQc7GTDaVEmX3pOWTH8RfcaGMpJC8H0l20eBspI/uR
+	0aDdBi864XMh/fSFimDeVreeDMF9kH/ujibVpocM3UdR4VahGQBSi5mxjnhI4HbGgkjD/M
+	rEnnjo894nc62U/sDBoJHZo5D75y1UX627lrrMmObG3CkDq0K4vKERgckHHQ2Hrcb7hdJ+
+	e0YB2gPdu2cXV7AaSsqLEXKRPvqS/K2ep9qWdrGLvNFbSSnfqRVkZacMPy9j9A==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1790864451;
+	b=EvKyBKjflPtmo2JuDNh4EXOgHkAV3JQo1c5IVSRAC88PgC6c0y+geSaMwd6d0Xe4sg5w2R
+	yzgjrPSZjduQKwX9fnq7oTCII52FBTT2JDXG4QcZyqSNcDvpa+Hw8kuD72lnKzn7+4fGsy
+	82WRc5xjS66sDcwEWIypG+ZfLy76MtDiqclilYzf2HCCSjn0JdlLL1TYFeV0/o4Cz0YOfM
+	zpDYMtizdvoGDjUfXDLrsD14SECGlGqZR3pxc2WBVCXR8PasC1TXHZf19X1psCKJZo3CSQ
+	elqiUeEePosPoTW5mhFCmhX1HzuleuTOzgf/8iU30sISm9JXw/O5zia3e2dJbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1790864451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
+	b=gf7WRUHKgtGuIFUaL8SvsftioKspdPBbGrI0i+MQMScY3RTZMx93n8xiqeiVLOGaaR2cMR
+	EX1Q3j7UR82H/RffroUN30otBnBtN/Vopbr6C+dEenZLYpPrmC6KXNzdaGdY6obkPuWej1
+	rBu7cd45fqGTSuhD6wawpmyhuhdTuEsxreCux4V2eRn8GTokk6uld3KsA3gTVt/E8GqUR4
+	YQLAkxhIi+knWHNv954uc8O5g3KzPTggcfCgwIyspYWDl1EynlEcM0WGCgs8kgnK3UtvfM
+	pO9igQGlGLHFQpOIZED0UUnQq/IehEBZvSDoWJyjeab5fcvD0MnZSjRAlMfPJg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id C25A9198003A;
+	Thu,  1 Oct 2026 10:20:49 -0400 (EDT)
+Received: from ams-imap-13 ([10.64.2.33])
+  by ams-compute-02.internal (MEProxy); Thu, 01 Oct 2026 10:20:49 -0400
+X-ME-Sender: <xms:P2y-at5Sq2K2YBXmoamxP3_aegmdBY88kcXAEm3CjsS37unnNGaOlA>
+    <xme:P2y-av1xmuX4fZgneKrDgZobXyMcQT5ZiuMNAFLouu1tO96A7GKWAXw-67NYUQPk9
+    7F0sk3hc8OKxye5MB_nEWthdVolyvKtGtY2D9nN_o37r6Ag0fIBN68s>
+X-ME-Proxy-Cause: dmFkZTEalv8rOj2Uj3+4YFCUjdY/jYEb/+9gtNNrCuYEzSg/QJULIbYWKJ1VzCB/eCjHp6
+    kfyShI04ct/CIcgZMVclZs6vAFYUtJQiVdI09AQwptSTRrOuR88rxCE6cQxvjs8rTz/v+T
+    mnEMYXmbDqWqQNsxamR7ByALCwVQ780Vapo8pwgxZ38PmYyLc/lkFKJ9hMnlJ+grHwGGHI
+    FGMvYeL/D0s8RH/kvjcilPzTiLhDB4XxarKa/426kQ2ek9K5MLJXPouMuiX8WK8RZu+l9I
+    GVTWdqZaq0T/2A1/yYQGikTFvz3vyNJ2LkT3mXtTThp5+4jMPTjGl2Q2OOx9oeQN3ud0uA
+    wUxl1jw6ut4i+cic/zrSufGHZGBkHi2d9Dkh0/uqVzLdUPhnqYOh+Hpg0XDwmdthr4Qtwz
+    o2JyQsQ7mGssAQLe/XweruY/GYqcDOqxIz4kIjmPOaO5ARMZEi4k8iuo/QjQphqW3PxiAZ
+    7kXs/OxmDe4kWuMGzzRC2a780ta6UscrViCOcspVNUy5w2TEEvXxzoCiDS/PVSIQ863PUR
+    nIh/zqdLtXjXi6Cc2+BkfNUUn1xj7tpCxsrGPGc8CdvsCi1uWBRgDgWsiy+OJHn8at3/a7
+    iZWEvMJhoVtyDiuYQhhot+otiBduMBtyee/dtPcCz4ISZHtCjNOusIxmy0+w
+X-ME-Proxy: <xmx:QWy-aiFkC4gpk_Pl-MUOTzG8-khCCwSXOcQgAdbxIqi0EEoxEs_Vfw>
+    <xmx:QWy-ajze2VroZWdrYm6Q8u3cYVzfql40lsa5gJbClFHuNVwDYRePmA>
+    <xmx:QWy-ajDKjy4Vko2m8TDkF3lF7_3ridpKXSC8Bu5OLUkS4BH6n6vOeQ>
+    <xmx:QWy-aiWmM15F7kbqvcJIIMJqfzwy0MNDozQSvEHpWU2AH2GfZuBgyg>
+    <xmx:QWy-ali2M8V1ecKfKNxSBx0bQieQpAQS6KVM3mqmPcZiKMRdz2NblIfr>
+Feedback-ID: i02414972:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 2DCD6F80094; Thu,  1 Oct 2026 10:20:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: A0G5p0OZ_htJ
+Date: Thu, 01 Oct 2026 17:20:27 +0300
+From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
+To: "Marcel Holtmann" <marcel@holtmann.org>
+Cc: "Manivannan Sadhasivam" <mani@kernel.org>,
+ "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Jeff Johnson" <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ ath12k@lists.infradead.org, "Bjorn Andersson" <andersson@kernel.org>,
+ "Chris Lew" <christopher.lew@oss.qualcomm.com>,
+ "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
+ "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
+Message-Id: <19433f85-4cf1-4ec1-a26f-0eab7df062df@app.fastmail.com>
+In-Reply-To: <0A4EB216-06E0-4A7D-A0FD-821DD371773B@holtmann.org>
+References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
+ <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
+ <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
+ <13BFC5B0-77E6-48F2-B857-37686EA1DB2C@holtmann.org>
+ <05e539f8-bb7c-4038-8a83-8ab0d1a5b917@app.fastmail.com>
+ <m657dtesuagn7vdajsuzjb4mfysf5xabsu3s6n6lujj7yb3z4p@m2e7e3n4zyev>
+ <10091679-7567-42C2-B77E-EFD95CEDD649@holtmann.org>
+ <6e0ed085-07d0-46f0-97dd-b8d942842e1f@app.fastmail.com>
+ <0A4EB216-06E0-4A7D-A0FD-821DD371773B@holtmann.org>
+Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Wed, Sep 30, 2026, at 17:33, Marcel Holtmann wrote:
+> > Well, in defense of Manivannan's patchset it currently works for PCI=
++AHB
+> > setups better than the last version of that by Denis/Mihai/me (altho=
+ugh=20
+> > I could easily fix that), and it may be simpler for userspace to
+> > continue using nid than having to bind to an endpoint, which requires
+> > more changes in userspace code.
+> >=20
+> > The userspace just needs to know the nid.
+>=20
+> and existing userspace? You can _NOT_ break existing userspace.
+>=20
+> Don=E2=80=99t you need to re-write all existing QRTRIPC packets to act=
+ually even make this work?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Well, from what I understand this rewriting is the plan.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+It is true that if someone has a single card, the nid changes, thus
+maybe breaking userspace if the userspace has hardcoded nid.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+But if someone has multiple cards, the breakage to userspace is less
+with this patch, since userspace can keep on using the same code and
+just change the nid, whereas with the endpoint_id patch, the userspace
+needs code changes to bind to an endpoint.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+BR, Juha-Matti
