@@ -1,100 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3863BE163
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1E8494838
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:24:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790838992; cv=none; b=OAzZ1QP7blZMU6ATtbC8IkmJxi8d46em84vzzl4BnhNW96QxUOnuGBrKLkd8sBy9Y4Yo+8uasgN9IPMJpEz6QRFSYZIElQDOmIbtZXfiQJ6li7xr8Dthk6pX/X15RqMSmFL7oHjcDYEAxSIDskUIAeHm8MtCstpxGXN5bsNmX+Y=
+	t=1790839466; cv=none; b=X0EI/fk2VUDeL6Hn3tpEoZl+nqB2WLts6vxXDmdy4qv3Puqt+FFU9tsHgD0BkhoV8uCOUDCcf3FAUx+aj4UWmbPCY1AQUAYRSbnNac0gncr3WyrIYPwDHZj2G9/+0yIMxKWnavOU2CRHmiApsktq3DTzKfh95AXH7J1C5s5GBW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790838992; c=relaxed/simple;
-	bh=Pc4G3dOZrc4gtia9HfeDdf03/kdnNOxdtkGl342iPbo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TJfQ0Qfm6JX/wc7osKlBS/pjxpuRCXHFdFUP46pO/5Ya/1+TXkZzNz/pQTbSatAG/fcdxFKHXbI6u/sMKngx1/oma45aFWXVQMMYsTaSpYgl4VgDXmfZ8YR0QG1VlH/VNTHzET/hcF0UWDdjyGVQ1JDfLAqIhRG7TaEFE6j9aYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUDHIJCx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790839466; c=relaxed/simple;
+	bh=+kzzhS5v66EKTlw3lUPtyrJFzB9cfI2ObH/53846yGY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P5nV7eCgBOn1+HGgEc55KvF6gtWuxSeM4ATXpSnhxQIjzDT0OsqFn75vTMS3Egdj2Zb7eZ3mhwdCl0QwXd9cxvIRMNHwiWEDUnCk2/Xp12CsXGwS/rvRYkUo/nB8hBKRiJIjTGKYZOq3qZrGu7PhD/M0WIkb/reDfd9s3pAEIcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=W5eoCsaU; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUDHIJCx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA691F0089C
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:16:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790838985;
-	bh=Pc4G3dOZrc4gtia9HfeDdf03/kdnNOxdtkGl342iPbo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NUDHIJCxBOLRU3ANfcGDlJ7FYpLEopSaYdlQzmmSeOhG3o4qykTC4LVOdqs02t4tG
-	 6ptStaq3AW/+iqnLMNrjMr6W0rDz4I+U0kCbScCPLCTueaAeqc54UavWI78KB9QsHK
-	 1abHrv/hcudBW2XvKeRVkETgDd1c1QErOSVV1XozK+8F2jqcflkPcEE785d/KEsJCO
-	 qw2TAmfltS+uoInrcUeYKshEWEAvgBGyQqKi2xwKfdZq/3v6MSuJLXYjYKavipu8Lu
-	 2O2WK+nvsIA8MTFIsAE9Y9y9mAl9qwX+veLxCs4tW/U0WHEpRWhkx0UD9xjUdyBm5w
-	 P7rFj9fSdCXCQ==
-Received: by mail-oa2-f34.google.com with SMTP id 586e51a60fabf-49dcb61589bso908126fac.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:16:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzoXHkvq32EHjeJ80+iTSBV9bIPESaUx1lg4wd8oO/08jPhkfv2DYNQKTtEJW726zfByz6skpI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nL+kqaGLIFsj2FsI6Cv3Nh36Eq/IeJ3mW58OzPqBp4OucOFqso
-	06NEnCHMy3TYdMMsmcHclzGyMGfWrZJby1BulK8+yisUmPAhU0X45MlUKxL3YkILz066teLqEOF
-	fA5LWADJ9oVqp1KZ7h6emcP7my6xj3v8=
-X-Received: by 2002:a05:6871:2b25:b0:48f:e0f6:c036 with SMTP id
- 586e51a60fabf-49dddb7bad1mr4057749fac.52.1790838984306; Thu, 01 Oct 2026
- 00:16:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="W5eoCsaU"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso45694295e9.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:24:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1790839458; x=1791444258; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mQWMGiVWN/VMdfjyxv3PjkOZ115osD80NYmANMAtXcY=;
+        b=W5eoCsaUdoH5mcgKR3w9JHCbRYmE0r19Bkpfm5v4ysGvkP0EDu4taDF25k9qwOjp9I
+         XGlUOAQCqD7NJK0x8GYeFJ7KT7eBZgi86jZru/3ctUq6zyzINU/Ym4QJos4W3Kx+jSs/
+         0OqNGvW/n7s/gSlPmgnc31QvcsQRTGUQs6bmkjkPKtx3V8jcav1r0REQ2kWXqF3uvp76
+         tUSEY1XC18im8IKy6i7XEotfVoLYL+sgoTzRymqJHFhgh0O3AoOFc9vKA/90xZUic+E9
+         kmzSxsk0xnPpBerQDmU9oncjl090bJefuo6yR1lRpvfDKkYgt82gGuLS38rRUms0kWYu
+         Lc5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790839458; x=1791444258;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mQWMGiVWN/VMdfjyxv3PjkOZ115osD80NYmANMAtXcY=;
+        b=jtNbQaC1gf8M3fUpHs+LyblCwaYLt3h3gnTMHmHNDwfz4/wtowbjCC1WVJi5BVl1ow
+         Dn1DFBG9WMXcn6p9KsEQbcqc1GrjiJ7DiKE+Yok4612VzOR0UCkzCZM+qWJZi68nNztZ
+         DSZpHT/5ZeAbxB+Rzd4KiQBb8nbtGS/y8ELveSLriKJGkZmigRmyxDMT3xim0eJJyZWE
+         IQRDPKYcY0vMzN6VKpGkRvkha3U0k6iX1/5w48ivzWp6OM7FcZCmN03SMGumStyiyaxQ
+         dV3vZji7Hy0ZB/JdjQVDJaZvYZq45XrNC68jfmtiMsmWT312srirUYV8Q8+ZKxsLE70M
+         AJdA==
+X-Gm-Message-State: AFuF++kY4CCLe0C61p2J+D/NSHQbKc1bVpaznnKMZqr6QRisVTH9o6zA
+	mC8wApZ+tIasb3BNqPPjHw3728AZQkIPyN5I6+mjQcq1OYtORC6qN4AAkDhEWWVxy60XnlIpOdK
+	64gMyFq0=
+X-Gm-Gg: AYBFou3xwpb7iWus6Jdes9i7/L5qh5c2YGm2mWTdDTuliUJymzPbr6VADcs+Nx0h0Sb
+	WlB6XsnULc1hroc86nBNe4+wYuu9XJJsE+/pInXbDaHa8Xxf6B0c9TmXSzTvteePc/PdKzvsOw7
+	I0LHPdw9lFS5++M2fq1BtVYOVSdI2R2dxDJDsUanmrzSXmeyMXW8VcPTXFiCqGBI04m7dzQvhNA
+	37s59RiRY2kCZlbo5GJcGz97wfEbY/O6Rxvdeeb4gHMPMEF235qIJSIt+VfEptXCOEUa1PYobiN
+	+k1gXZuuPxH4Z1ctzfQYddADoZuwCpftGmV+zMMmYGgjMfla/EwB0XGQwh2XLYyuHAqzRxEXu4m
+	QzHMnVoBoTKRjUVzGmck7JB6vopcCy+jhXDqIohHRzifUDvQw1cp2itzJbxWTA8zv/RSAIS6Q9X
+	raY16SH7YcnHf8UPYDzpK9aATKpz9AO9IBmEseiIqqf1C92vYeC+brVB5XfX6bWPUzbj69YtRcZ
+	zgGE/pE3S0H4iY3M1OdoiFeTWAF
+X-Received: by 2002:a05:600c:1c0d:b0:49c:fa21:1c81 with SMTP id 5b1f17b1804b1-4a01aff36b2mr71267215e9.22.1790839457379;
+        Thu, 01 Oct 2026 00:24:17 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f90cd4esm62840435e9.1.2026.10.01.00.24.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 00:24:16 -0700 (PDT)
+Message-ID: <e930a549-9b26-4e5d-bdac-ec80537b6306@blackwall.org>
+Date: Thu, 1 Oct 2026 10:24:15 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928181557.85796-1-omar@blockcast.net> <CAL4WiirokTFzOqFNr0eOWucpqkJoGR_4s19cBAEN3O7E7ydm5Q@mail.gmail.com>
-In-Reply-To: <CAL4WiirokTFzOqFNr0eOWucpqkJoGR_4s19cBAEN3O7E7ydm5Q@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 1 Oct 2026 09:16:12 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiio2oJr_z-2AMHnu200eYjrjBcLUKvsqvx04O+J4_z1tfQ@mail.gmail.com>
-X-Gm-Features: AclHuK-gU8aHmcLRBscoSTSuBISnGa9yJikzoAiWbEj471LriSP7CUyzVaVF7xU
-Message-ID: <CAL4Wiio2oJr_z-2AMHnu200eYjrjBcLUKvsqvx04O+J4_z1tfQ@mail.gmail.com>
-Subject: Re: [PATCH net] amt: pull the AMT header behind the transport header
- in amt_parse_type()
-To: Omar Ramadan <omar@blockcast.net>
-Cc: Taehee Yoo <ap420073@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 01/12] net: bridge: introduce a bridge
+ destination type
+Content-Language: en-US, bg
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
+References: <20260930071411.2786201-1-razor@blackwall.org>
+ <20260930071411.2786201-2-razor@blackwall.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260930071411.2786201-2-razor@blackwall.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 1, 2026 at 9:15=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> w=
-rote:
->
-> On Mon, Sep 28, 2026 at 8:16=E2=80=AFPM Omar Ramadan <omar@blockcast.net>=
- wrote:
-> >
-> > A gateway's encap socket passes ICMP errors to amt_err_lookup(), which
-> > calls amt_parse_type() on the quoted datagram to see which AMT message
-> > failed. On that path skb->data points at the quoted IP header and the
-> > transport header at the quoted UDP header, and icmp_socket_deliver()
-> > only guarantees the quoted IP header plus 8 bytes, that is, up to the
-> > end of the UDP header.
-> >
-> > amt_parse_type() pulls sizeof(struct udphdr) + sizeof(struct amt_header=
-)
-> > bytes from skb->data, which on this path stays inside the quoted IP
-> > header, and then reads the AMT header behind udp_hdr(skb). An ICMP erro=
-r
-> > that quotes only the IP and UDP headers of a Request, the minimum RFC 7=
-92
-> > asks for, therefore makes it read past the pulled data, and past the en=
-d
-> > of the packet when nothing follows.
-> >
-> > Pull up to the transport header plus the UDP and AMT headers, as
-> > vxlan_err_lookup() does. amt_rcv() is called with the transport header
-> > at skb->data, so the pull on the receive path does not change.
-> >
-> > Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
-> > Signed-off-by: Omar Ramadan <omar@blockcast.net>
-> > ---
->
-> Reviewed-by: Eric Dumazet <edumazet@@google.com>
+On 30/09/2026 10:14, Nikolay Aleksandrov wrote:
+> Add an opaque destination type and helpers for representing bridge port
+> destinations. Using a separate structure makes raw pointer assignments and
+> comparisons fail at build time while marking its value member __private
+> makes sparse warn about accesses that bypass the helpers.
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+> ---
+>   net/bridge/br_private.h | 38 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 38 insertions(+)
+> 
+> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+> index 67117fb3dc88..1146187aa2ba 100644
+> --- a/net/bridge/br_private.h
+> +++ b/net/bridge/br_private.h
+> @@ -306,6 +306,10 @@ struct net_bridge_fdb_key {
+>   	u16 vlan_id;
+>   };
+>   
+> +struct net_bridge_dst {
+> +	unsigned long __private value;
+> +};
+> +
+>   struct net_bridge_fdb_entry {
+>   	struct rhash_head		rhnode;
+>   	struct net_bridge_port		*dst;
+> @@ -670,6 +674,40 @@ struct br_input_skb_cb {
+>   #define br_debug(br, format, args...)			\
+>   	pr_debug("%s: " format,  (br)->dev->name, ##args)
+>   
+> +static inline struct net_bridge_dst
+> +br_dst_read(const struct net_bridge_dst *src)
+> +{
+> +	struct net_bridge_dst dst;
+> +
+> +	ACCESS_PRIVATE(&dst, value) =
+> +		READ_ONCE(ACCESS_PRIVATE(src, value));
+> +
+> +	return dst;
+> +}
+> +
+> +static inline void br_dst_write(struct net_bridge_dst *dst,
+> +				struct net_bridge_dst src)
+> +{
+> +	WRITE_ONCE(ACCESS_PRIVATE(dst, value),
+> +		   ACCESS_PRIVATE(&src, value));
+> +}
+> +
+> +static inline struct net_bridge_dst
+> +br_port_to_dst(const struct net_bridge_port *p)
+> +{
+> +	struct net_bridge_dst dst;
+> +
+> +	ACCESS_PRIVATE(&dst, value) = (unsigned long)p;
+> +
 
-This was meant to be:
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Sashiko says:
+  Does casting this const-qualified struct net_bridge_port pointer to an
+  unsigned long drop the const restriction?
 
->
-> Please read https://lore.kernel.org/netdev/20260928181557.85796-1-omar@bl=
-ockcast.net/
+  - Yes, it does but that is expected.
+
+> +	return dst;
+> +}
+> +
+> +static inline struct net_bridge_port *
+> +br_dst_port(struct net_bridge_dst dst)
+> +{
+> +	return (struct net_bridge_port *)ACCESS_PRIVATE(&dst, value);
+> +}
+
+Sashiko says:
+  When the opaque token from br_port_to_dst() is resolved here in
+  br_dst_port(), is it unconditionally cast back to a mutable
+  struct net_bridge_port pointer?
+  Could this provide a silent mechanism to cast away const, bypassing C type
+  safety constraints in the API design?
+
+  - That is again expected and wanted behaviour, we're extracting the dst.
+
+
+> +
+>   /* called under bridge lock */
+>   static inline int br_is_root_bridge(const struct net_bridge *br)
+>   {
+
