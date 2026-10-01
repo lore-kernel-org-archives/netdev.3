@@ -1,179 +1,214 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB584EA361
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68F13B4E9E
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790849629; cv=none; b=CvUrnChHZaiF4KPwN/7xKRlb2HMZ4TNdOIACUeajHNlFuKySF31Z94vqyua3BSOQf5lhRa6rniWOGcd6M/r1gaKTgGo+xTJBzNOqnycmqJrX+FGiVN38pndvSLGTozftYbegROcKWVOAynbkwa6omuxBVf24790V6jvbpXN6NqA=
+	t=1790849876; cv=none; b=b1Fu71zxT+Nwh2EDi1EqQ42f0+4yxS4+yWrY4QvqJ+gAIoewQXjmA7hphaedDDBSEqutZsXcPwYrQuq/0FLRFXXT14qetgVePrwH1RTSsiI83r8xsR0LQ66wZ72V08XVLUT2LNeMzgXImlAO6BAMx06CnKEA5Y/ha7PEQo1IDZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790849629; c=relaxed/simple;
-	bh=50JGTUVDiZ54RyunCgZ0biiNlTO/Fu2dABj0kp0XMDY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dTxvrJSAl9SYDq4mygyNAPZNssHucWR6IJ+/aFlpgyQnD2jAv/HnJLWATwiA2/2aEAHC1StEusxNYMSalGd6jBAygXy7h7t0c2oIWnj34yUfTY/Tu8Pzj27E/6KmB1t9uNMzvU0hvtjkq+1sRkFiIvy49FBnhUxRsHd9GqM483w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XYCRSut+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tblD1jkS; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1790849876; c=relaxed/simple;
+	bh=dUdFDVqTzQDPNI8dPEkhLuVWoA942/H4IpUUxhUFDEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BXBxG68p56mpMhZleFUX4FSJpotsqPn7bQv12mfrXsc/40xFbul04DnyisBlj+qOrlXCAWMPiLTLGFx/nHcve1U+YMqAA2zX+gcwBM0T1UlG2+15dq+mK27pZXn5BE4sk0hLAtSnheviSX6PnOp2c2P5wlSlkjkHBrDn6palsOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FpJdj8BT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pkeXGRvO; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XYCRSut+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tblD1jkS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FpJdj8BT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pkeXGRvO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790849616;
+	s=mimecast20190719; t=1790849873;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=87PF7S19ZaWbmkdk+plN0/ccRIDfLs5yUwiFur7F70o=;
-	b=XYCRSut+b4kYwmIDBbAE0QsDfIgO6FBjB8uy1pBq+gjS+zFmOhGtBKaHiinGJeRP7rPmPX
-	oBvs86dfVaU0C+uujx3y2ykVegaIthZ5Ljty/Tu78IldnB0b1fDWvbYZ0gXnBRH0q1DzbQ
-	EV8UMejftQfEmD5Or8m4MuT/4aUm6Fg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
+	b=FpJdj8BTpgcLMKiQ6s9hUY3IRkV2A/hrOJIQ9NG72aInLkViwQws7sh5Dzrzsg7x7ODNKC
+	gghqzJ2UFQ379uQVKDpydcgf18xyql0g/H97a0kkMYsNIQ2G61yPZlV0mx8LVGWQg14+be
+	NpoGtBOCR9Gqdk18TmBS9iHxNZAcSWk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-DsvROjVRMN2Eop6bG3XuQw-1; Thu, 01 Oct 2026 06:13:35 -0400
-X-MC-Unique: DsvROjVRMN2Eop6bG3XuQw-1
-X-Mimecast-MFC-AGG-ID: DsvROjVRMN2Eop6bG3XuQw_1790849614
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a0228f4a1bso2991145e9.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 03:13:34 -0700 (PDT)
+ us-mta-199-_fDyJ5_zP5e85BMmNE8stg-1; Thu, 01 Oct 2026 06:17:52 -0400
+X-MC-Unique: _fDyJ5_zP5e85BMmNE8stg-1
+X-Mimecast-MFC-AGG-ID: _fDyJ5_zP5e85BMmNE8stg_1790849871
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a020cf06c3so2987465e9.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 03:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790849614; x=1791454414; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=87PF7S19ZaWbmkdk+plN0/ccRIDfLs5yUwiFur7F70o=;
-        b=tblD1jkSdzEsgHKEgAZBdvUw5rlF5B3HDo0H4jNbuJcIYhw5Kt7RhWkAmzPdIjlrJ7
-         6Os7mq1ldEoN62HrLmtuDg3vmD/i9WBCEgMXTbqTaUYL4HZlaUi/Gwo3ctzD0oREERIy
-         Myhgp3DNfcc6wzS7gVnr/o1bVCFnn+Xo6ItA+56dT+IOAPedkb4pl1TwBgt3w3EOmNMO
-         yiyebE92cvv3qMacBU2jvLkiy+KGh2TXV9l9cR98zXMMrktoQ3KqPwLDHtsdFRlFD/Rr
-         /uTbo3DN2GksqRlsMx+4h+HPk3xgyhkucAo+xhZ2kRN7CNM8XzNID7XUL56ZoLzVAkyK
-         LG3g==
+        d=redhat.com; s=google; t=1790849871; x=1791454671; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
+        b=pkeXGRvOJ/5Db9ngRqFP3f0baQ0cPIghCFQf8L6ioEwixv0BTrHQ5M/70OdpPuJ/LL
+         Vc3UeYN+NcupvuMXV9QODKr0IBCwj9k4khWWVufESQNie10HLVZlQheWNx8zHpVKW3Uq
+         Ep8ezQO3GwyTEUcQq+aDoXXIWXIiKZnVux2HG16wCrbo4P0sT352rUZXJVCRzQ3wPbUM
+         c/gd4jue60FMMOdJjiFwRqJyX1dww1pBTMGTIJTDpu7PxQajrPhO1141YYJHrGLXbj8M
+         pPo9551vcWtc1Rbs9sTD9ykuI1EMNxFtqLpNI6Lea6JuwpUArMFu5T98HkWu7DEioPDS
+         b71A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790849614; x=1791454414;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=87PF7S19ZaWbmkdk+plN0/ccRIDfLs5yUwiFur7F70o=;
-        b=bpfPSrga7HjfRZj3QVLgVJmTvqd89jFI3+YENIm+tgb1XRflGGPidFVJEfr/w9TlLB
-         bTI8az1tpoDESDGk8sjFOnd2Mc0b4fAuA02T8fszjs1XVi2baUCurBbs8VoLI4+M6uOr
-         eQf2t9n0Gd0SaFwgWpJDd5TSqeHSUlfO3mGlYFzhMlAuur4yw7wAV+TONcMsSE2pphZx
-         H1HGTJqfK6Bn+gAbSHGC4YFp2z1Rp1uk+ESCrS+yvTTgy/2rQfq7EUxGJHJP2pd5x4FB
-         A8GAGGAJxb1MQ7F/9olcj6rpSEdrDjqqQeiUkrHexBu2mMmYtk6TFGXcP87Mg0CBOQWC
-         dBdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzojN65Ap/U7MSRLXCEbHQ13JtcaZCysSdaroQClkvzXtlNotFjBchFmNyEsF0RUVoA7AdK+2Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++mrgHzbygvTFmasg809DIQxhSCGAupOCGu67dUlFIV6aJUh1bl0
-	lOgk9uJXq0W+LM43hZTV8XP7RP8rTkAwHqFplrMBWN2CP4P43/0otxZh1pAC9SenUsXT46TO/0A
-	RJVD92rmqo2Amd1Sgb2EkI/h6sohA/Qbz7tF5AFjRFJIIAb4Y2aefKIUM+A==
-X-Gm-Gg: AYBFou0/lWguLsbuGzVAPeGJZ3ixxKCJgJlnoQqXkNxopf6dm7ymQYd3UsDpH3rguUJ
-	WivbNG8Fv5r3Ht7sQqZrPv6JU32kPwa0YRePL8zc6qvAuB18kq5B16hMvZJvNv3uZYhWg4dCHLT
-	2eTZ/3t1Cma1laUX5W7rqm0HAiXxR+jmD4488zWSGdnTfRhaP8yXfFXUEltS2L/xfZNHI3LXB8p
-	FOYWvL3LD0WbXkyFSrjzfXpkJkSZL2dWi7lG9GW0KBOHz/jgotvC3lVRzledFWL7Ah4tWQloLEs
-	pw9w9EsyZ6hsQ26JvK4lUCDH4vsL9hzOq1eOqrBj145QjoGI4QdSJHMsJmMR2cABghBAjeM+uEf
-	qZfdXSk3MO7cr9RNx4cEGs21vWgkdGa9b85N8hG/7Ijx/rPFh6jhXq7XZgk0XTxaPl1lniYF/0Q
-	==
-X-Received: by 2002:a05:600c:c3cd:10b0:49f:bd3c:bc24 with SMTP id 5b1f17b1804b1-4a01b131337mr52101105e9.31.1790849613849;
-        Thu, 01 Oct 2026 03:13:33 -0700 (PDT)
-X-Received: by 2002:a05:600c:c3cd:10b0:49f:bd3c:bc24 with SMTP id 5b1f17b1804b1-4a01b131337mr52100675e9.31.1790849613350;
-        Thu, 01 Oct 2026 03:13:33 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f949709sm86352365e9.12.2026.10.01.03.13.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 03:13:32 -0700 (PDT)
-Message-ID: <19ab3d46-f326-4f08-a161-d31ae272a9d8@redhat.com>
-Date: Thu, 1 Oct 2026 12:13:31 +0200
+        d=1e100.net; s=20260707; t=1790849871; x=1791454671;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
+        b=cgRUhw1mOyVrHDDRR831ktAd+ywtyFvuEbHPX8qimj9gUFZIxaYXAi9re8vYGzwykq
+         BrhQWXgHWSJ/LwZxnKYUrMgECsTj/oVrcwuigbkVp9oogKTftMWbA3ylUhQvmw3alpIz
+         Fi6KTp2RlswtZxiih07U7WMxNAOTnO12su3WNrDOuH3ShZqJesWnWaIbJVmzUf7RDvRo
+         cdfviTJs3CtYXPa5om2n/oWruf5qZEpfhsLnrBvuB6oWcsnE/eUJ6/EcKqi5YPFQ4QHp
+         oNlbS37pN0IY7xqgei51k8mywF4pPvV3RwHBVxWkkKK42PoKvsQ3N9xMeQnH7D/piyZf
+         /P5Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwFF/1agwhF9waHH7bjh3PNKrhUjXPkuIu8FVPPdAYKQ5uj9m+tyNCDT1r+Gbr77tr/fsaqU04=@vger.kernel.org
+X-Gm-Message-State: AFuF++lknbdxFPLGVaF6E3BpXiRkMICmxTzqJhjwcOc7gbiexfoy9s0d
+	hOWMzr+SUupeohBxM+oPfYV60pz7H0oM310aon4PKIiznTtg/nnbYPpiHu7k59iqikfvJxYWBIe
+	rXn/4lLhlcSe3OnwJNIed2ps/7vNu7TTBCDuTNuMh8MOyvtdvESSVMgNr/g==
+X-Gm-Gg: AYBFou107IU6dA4w8ovMJsXlu/0/Oo/ZbA+4FVTTAuq5MXQGqXiv2acYA/T3Km1p6q7
+	92c/fw2gx5acurp5IbL3N33iaKke2EdIWQP1nuveoTIjMgtLOkfkS/ym9qxqw/j6zF7DGUFfujX
+	QyPtckSwd7xzomTitPy3i+/xOv6SgJGA7PJoiabs20uCp5LaaxLNtMBEPtJ70/frDDJpf1qE9Tz
+	wfBgt9QDYNDYfHyl8Xk9f09GezOEewTUWHqqY6EoehMoZkGpjkjpSzJEbw7ituaIrLWoHb6tp46
+	G7GWpLPxggrZtrs0gh691LSfDa9sfnepwY3jM7reOoj8HfF4qENg0M9f3UIWLq9AXwHnxMsVAcx
+	N
+X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64730805e9.27.1790849871438;
+        Thu, 01 Oct 2026 03:17:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64730455e9.27.1790849870881;
+        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.112.40])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0690e721sm5651491f8f.20.2026.10.01.03.17.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
+Date: Thu, 1 Oct 2026 12:17:45 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared payload
+ length
+Message-ID: <ar4xDQliGcCQEfSA@sgarzare-redhat>
+References: <20260930044147.3818241-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/16] pull-request: can 2026-09-29
-To: Oliver Hartkopp <socketcan@hartkopp.net>,
- Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de
-References: <20260929210700.1183036-1-mkl@pengutronix.de>
- <9956662e-6001-413d-864d-d8d048a93819@redhat.com>
- <cb83d0dc-58a4-4262-99a0-1e4478630ba0@hartkopp.net>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <cb83d0dc-58a4-4262-99a0-1e4478630ba0@hartkopp.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260930044147.3818241-1-4ncienth@gmail.com>
 
-On 10/1/26 11:23, Oliver Hartkopp wrote:
-> On 01.10.26 10:40, Paolo Abeni wrote:
->> On 9/29/26 22:43, Marc Kleine-Budde wrote:
->>> this is a pull request of 16 patches for net/main.
->>>
->>> The first patch is by Vincent Mailhol and drops CAN-XL frames on non
->>> CAN-XL devices.
->>>
->>> A patch by zjamg restores the skb header initialization lost during
->>> the v7.0 release cycle.
->>>
->>> Oliver Hartkopp contributes 3 patches for the CAN net layer, the first
->>> one fixes the net namespace integration for BCM, ISOTP and the CAN RAW
->>> protocols. The second one converts the unreliable ARPHRD_CAN type
->>> check to the robust can_get_ml_priv(). The third one fixes the unique
->>> skb identifier regression under RPS, introduced in the v7.0 release
->>> cycle, which causes lost packets.
->>>
->>> A patch by Joshua Crofts adds a missing
->>> pm_runtime_dont_use_autosuspend() to the m_can_pci driver.
->>>
->>> Maximilian Zimmermann's patch for the xilinx CAN driver adds the
->>> setting the ESI and BSR flags in the receive path if they are active.
->>>
->>> Jiale Yao's patch for the mcp251xfd driver rejects devices without
->>> match data.
->>>
->>> Ji-Ze Hong fixes a struct size mismatch in the f81604 CAN driver.
->>>
->>> The next patch is by me, targets the gs_usb driver and adds
->>> workarounds for the HScanT USB to CAN adapter.
->>>
->>> Cen Zhang fixes a slab-out-of-bounds read access in the kvaser_usb
->>> driver.
->>>
->>> A patch by Stefan Günther targets the peak_usb driver and fixes the
->>> CAN-ID when reporting CAN errors.
->>>
->>> Chris Strong contributes 2 patches, to fix an out of memory and packet
->>> loss problem in the mcp251xfd CAN driver under sustained receive
->>> traffic.
->> Linus has started pushing back on the ever-increasing net RC PRs:
->>
->> https://lore.kernel.org/netdev/CAHk- =wiSnTE9vBZ=5_v+3EEkdazCCbBM5YABRzRHUAeRdyd4Xw@mail.gmail.com/
->>
->> We are trying to defer things to 'next', especially this late
->> in the cycle.
->>
->> I think there are a few patches here eligible for that. i.e.
->>
->> can: gs_usb: add workarounds for HScanT USB to CAN adapter
-> 
-> 
->> can: remove CAN filters independent from namespace
->> can: convert unreliable ARPHRD_CAN type checks to robust can_get_ml_priv()
-> 
-> I would be fine with those two patches.
-> There was unfortunately some new(!) feedback by sashiko-bot on the 
- > namespace patch and the ml_priv patch is not that urgent.
-FTR I mentioned the HScanT patch because if feels more additional H/W
-enablement than a fix and is also quite largish/invasive. Feel free to
-disagree!
++Cc Will that touched this code recently
 
-Also, not sure if it's already clear, but the main/more relevant sashiko
-instance for netdev is the nipa one:
+On Wed, Sep 30, 2026 at 01:41:45PM +0900, Daehyeon Ko wrote:
+>vhost_vsock_alloc_skb() sizes its skb from the total guest descriptor
+>length, while virtio_vsock_hdr.len independently declares the payload
+>length.  Since commit ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs
+>for handling large receive buffers"), large descriptors use skb fragments.
+>
+>virtio_vsock_skb_put() currently changes only skb->len for a nonlinear
+>skb, leaving skb->data_len and all fragments attached.  The zero-payload
+>fast path skips the helper entirely.  A guest can therefore retain the
+>full descriptor allocation while receive credit accounts no payload.
+>
+>On Linux v7.2, 455 zero-payload skbs retained 30,255,680 bytes on a
+>256 KiB receive buffer while rx_bytes and buf_used remained zero.  A
+>full-payload control retained 265,984 bytes in four skbs.  The existing
+>SKB_TRUESIZE(0) queue budget caps skb count but does not account for these
+>descriptor-sized fragments.
+>
+>Set skb->len to the fragment length before calling pskb_trim(), then trim
+>to the declared payload length.  This releases unused fragments and lets
+>skb_condense() reduce truesize.  Move the zero-payload return after the
+>helper so zero-length packets are trimmed too.
+>
+>These skbs are newly allocated, unique, and have no frag_list, so the trim
+>does not enter an allocation-bearing path.  Keep a warning for a violated
+>caller contract.
+>
+>The fixed v7.2 image left a one-byte skb with no fragments and reduced
+>the zero-payload queue to one 960-byte skb.  The build had no compiler
+>warnings, and the run had no sanitizer, WARN, oops, or panic findings.
 
-https://netdev-ai.bots.linux.dev/sashiko/#
+I think this is a requirement for every patch sent, no?
+Why putting in the commit message?
 
-It uses more models, and cross-correlates among them and sashiko.dev
-feedback.
+>
+>Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
+>Cc: stable@vger.kernel.org
+>Assisted-by: LLM
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+>Required configuration is CONFIG_VSOCKETS, CONFIG_VIRTIO_VSOCKETS_COMMON,
+>and CONFIG_VHOST_VSOCK.
+>
+>The source reproducer is available privately to maintainers and is
+>omitted from this public AI-assisted report. It exercises the real
+>allocation helper and VSOCK receive queue from an in-kernel module, not
+>a live guest virtqueue. Guest control is source-confirmed, but live guest
+>end-to-end validation and deliberate host OOM were not performed. No KASAN
+>splat is expected or claimed; the oracle is retained truesize and receive
+>credit state above.
+>
+> drivers/vhost/vsock.c        | 6 ++----
+> include/linux/virtio_vsock.h | 9 ++++++---
+> 2 files changed, 8 insertions(+), 7 deletions(-)
+>
+>diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+>index abed1fbcf66c..fa59456abda9 100644
+>--- a/drivers/vhost/vsock.c
+>+++ b/drivers/vhost/vsock.c
+>@@ -400,10 +400,6 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>
+> 	payload_len = le32_to_cpu(hdr->len);
+>
+>-	/* No payload */
+>-	if (!payload_len)
+>-		return skb;
+>-
+> 	/* The pkt is too big or the length in the header is invalid */
+> 	if (payload_len + sizeof(*hdr) > len) {
+> 		kfree_skb(skb);
+>@@ -411,6 +407,8 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+> 	}
+>
+> 	virtio_vsock_skb_put(skb, payload_len);
+>+	if (!payload_len)
+>+		return skb;
+>
+> 	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
+> 		vq_err(vq, "Failed to copy %zu byte payload\n", payload_len);
+>diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>index f91704731057..31358683e23e 100644
+>--- a/include/linux/virtio_vsock.h
+>+++ b/include/linux/virtio_vsock.h
+>@@ -51,10 +51,13 @@ static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
+> {
+> 	DEBUG_NET_WARN_ON_ONCE(skb->len);
+>
+>-	if (skb_is_nonlinear(skb))
+>-		skb->len = len;
+>-	else
+>+	if (skb_is_nonlinear(skb)) {
 
-/P
-for
+Would be nice to have a comment here to explain better the reason we are 
+doing this.
+
+Thanks,
+Stefano
+
+>+		skb->len = skb->data_len;
+>+		if (WARN_ON_ONCE(pskb_trim(skb, len)))
+>+			return;
+>+	} else {
+> 		skb_put(skb, len);
+>+	}
+> }
+>
+> static inline struct sk_buff *
+>
+>base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
+>-- 
+>2.55.0
+>
 
