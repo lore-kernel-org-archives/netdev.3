@@ -1,96 +1,82 @@
-Received: from sender-op-o15.zoho.eu (sender-op-o15.zoho.eu [136.143.169.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB9C3911DC
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 03:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790824333; cv=pass; b=KSZOiHVufborrbaPKpT+hBUzfT/QXddTEN2Zo2M10BpDUETGop8jXqUUVsHwEHa/k5jIth569PxAGU7qn67f8OmuELb5kPEC3QKlp3NSwTSbCqNLcXV3sCBMdwFaifVEekgbgEDQrqKD0cpBY4TMsL1rSxCZIiYyp23oewPrDQU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790824333; c=relaxed/simple;
-	bh=SYd2eZNTTjbXE4pCMExkA3U+Sr74a01zLGfHC1ZABrU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nHqmoA9mCQUda8M/UDHsJoXJUtC0r0p+FSIwb7XimroSv9nUsvHFZIwajOlAvGVjxuhYoSmM24ir18BT9yje3EV232wjDiObLHxmavr95k5mf8O7OGVepB96C/Mnq9JaSNT+Fgvb78og62OyvV2teEjJf3p0cn+VR3/1MOpwCdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=RN+2+W7w; arc=pass smtp.client-ip=136.143.169.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="RN+2+W7w"
-ARC-Seal: i=1; a=rsa-sha256; t=1790824275; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=TA98rY7jTz2jj7alFAwPg1bklk78328w21pi6qQAyFcve7JVLpa6vDve2UHWF2KXEIseb/cnKMuRm9+cbm2O3nBBvdHMdAC7tieAFh++j4b+dmx7zBpMWLxsKEVJ+lpQWAgNRjTgSiT8lMhPuIuQAsP0cc8P9/tq4LXsjKwroAs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1790824275; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SYd2eZNTTjbXE4pCMExkA3U+Sr74a01zLGfHC1ZABrU=; 
-	b=Ts4aE4gcocfsQ3oshOOYSOxDCcIWH3nFTzsDIObiVKNVX+RWr/NiQ9Z5gfMEzwFsDgc8EUADaAa5rZDTOS+DlQ8rCzbCYhojP7MDKgvvWmdjRO42h4xIsHQdQpXhNA0D/oUsRmtP1U0Rk8ia25wkPO44jsut9iUv7k4SX7cgoT8=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iav.lv;
-	spf=pass  smtp.mailfrom=iav@iav.lv;
-	dmarc=pass header.from=<iav@iav.lv>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790824275;
-	s=zoho; d=iav.lv; i=iav@iav.lv;
-	h=Date:Date:Message-ID:From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=SYd2eZNTTjbXE4pCMExkA3U+Sr74a01zLGfHC1ZABrU=;
-	b=RN+2+W7w+CfQBqJmePn5t6EBN2gvfJdzdhKxJpw6IKvYDYsJiPa35YWkj7tg1qv8
-	XN1VZqovdOVRcoAyhnZD/NZdBnl4GOqKlIoV06+W9MQoZ9SpdmViouOmL9P0G9Aa5+1
-	TP/Kf7Z4fA683oO6LXiWllHR1AEh+P71hX2SBl5M=
-Received: by smtp.zoho.eu with SMTPS id 1790824271591284.1136497752825;
-	Thu, 1 Oct 2026 05:11:11 +0200 (CEST)
-Date: Thu, 01 Oct 2026 06:11:09 +0300
-Message-ID: <ab67bccd76b55d7252c5380a37809656.iav@iav.lv>
-From: Igor Velkov <iav@iav.lv>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Eric Dumazet <edumazet@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: dwmac-rk: keep the GMAC powered when
- the PHY wakes the system
-In-Reply-To: <1799630a-945e-49ca-b9d5-9e068c482cea@lunn.ch>
-References: <20260930-dwmac-rk-phy-wol-v1-1-9fdc50bd9ae4@iav.lv>
- <1799630a-945e-49ca-b9d5-9e068c482cea@lunn.ch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1933DEAD6
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 03:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790825767; cv=none; b=h+y/zFd+LDO80qrTYgB8X/VsWnnADlDzDdjyVranyYfU3FaJN3iTmyxIzgCVHi63TY5xa6bVGb2fyoc2TALv1XQIvc+PrP/WbEepbX8TqhJD2HF5rZI5LTJ5eWsK3C2zmk2pObUUJYFiJLPhY5yaCfnsHaGihmC8lZqDksWJ90o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790825767; c=relaxed/simple;
+	bh=F+cE99e/IoZcBiqybvdTBRrrEvhUAZGIkEo/uvhm6uA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=mJQcJgnKUlsr4FCIJgAJ9ldSVdM+A/LGRsUheOUll3U30WCphJWRNetsfr7QS1yJ7HoIba/0nX283l8XYdylPT1NuNmMocvKJdTZPEzLKRMBEsI9HcWOL/0fMGgJmwoAvU3u0I6SlnuYi1pFYQWcwTa5JGfTJ3iRolDBVe9ZNnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b2d1eb484aso9512096b6e.2
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 20:36:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790825763; x=1791430563;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ArUdhkCHBvqLujlWUFMyF2icv5EZv9kWUaouQO4XIP8=;
+        b=tR9GXRQ70cYBvvcV+HBPK4CTf0CDnU6cbrDUuLJAaTVt4M+74QSbcIzjbf2RSfOq+4
+         4QAAtX3YhADL7Vd9Y+7c5FrfTnq7cg1IJGeNR+Q0w9GyCDNYoaDCMUkH8TqzRf8ZJ/H/
+         rhofC7MLwOuy6eMfZqSCZpPjjjXzHJuq+lYCWReUF+DaVjelvG1O3kJMVqJY93g9tY/N
+         Khz/RdLdl4U1AqZQk0K2evVHZKOphcZf94B2sgm7fjh8fnGWanBmp8ZF28wIaRsN/kqV
+         fEh3uB1Ia9HbYrqFvdoHVZuPbq/Mu4CYYINc9pZEfbekGg3vJpU7VhQIFyWh7odC8qLy
+         4V2A==
+X-Forwarded-Encrypted: i=1; AKwUvBw+XMN6w/2I9AMDh30z7wxzF1WmzcP/Rix7MyFCQPg0Qgt6P8ME4+8sK7Z8G/mCxdWsyIFBtH8=@vger.kernel.org
+X-Gm-Message-State: AFuF++n81bvUvQ0aNbAOnnTTzDSY5fDMQwc9HEYuxAAwOx8r4A9L19wK
+	QE5S2gfCfFUGYCmeyUXz3d7DgsZwtK9ux1acgsT/htFSLBGsPXb6kiCtn8ubYICJubsPlpPoovy
+	2Mi/qeDGjMajIpMr37dyUriLuZhFOW6I44mD+C0BDY4p4SEF+mAYUoQ3d9wk=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:221c:b0:4c3:4e34:c69e with SMTP id
+ 5614622812f47-4f1b2e33ccbmr4286287b6e.8.1790825762867; Wed, 30 Sep 2026
+ 20:36:02 -0700 (PDT)
+Date: Wed, 30 Sep 2026 20:36:02 -0700
+In-Reply-To: <6abd40af.fac9d4e5.17396.0008.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6abdd522.f32479dd.202a09.0001.GAE@google.com>
+Subject: Re: [syzbot] [openvswitch?] WARNING in set_ipv6_addr
+From: syzbot <syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com>
+To: Dai.Ngo@oracle.com, aconole@redhat.com, anna@kernel.org, 
+	chuck.lever@oracle.com, davem@davemloft.net, dev@openvswitch.org, 
+	donald.hunter@gmail.com, echaudro@redhat.com, edumazet@google.com, 
+	fmancera@suse.de, horms@kernel.org, i.maximets@ovn.org, jlayton@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	neil@brown.name, netdev@vger.kernel.org, okorniev@redhat.com, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	trondmy@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 30, 2026 at 11:51:45PM +0200, Andrew Lunn wrote:
-> You have not answered the question why is hangs? Given the current
-> description, this just sounds like a workaround, not a fix.
+syzbot has bisected this issue to:
 
-It hangs because the PHY interrupt handler accesses the powered-down MAC.
+commit af81cb247ca94e4bcfea31ea862cf3aaf955a503
+Author: Jeff Layton <jlayton@kernel.org>
+Date:   Wed Mar 25 14:40:28 2026 +0000
 
-stmmac sets mac_managed_pm, so mdio_bus_phy_suspend() returns before
-setting irq_suspended and phy_interrupt() runs the handler at once.
-rtl8211f_handle_interrupt() reads INSR over this GMAC's MDIO bus.
-From rk_gmac_suspend() to suspend_late, and from resume_early to
-rk_gmac_resume(), runtime PM is still enabled and that read reaches
-the MAC with aclk_mac/pclk_mac gated.
+    sunrpc: add a generic netlink family for cache upcalls
 
-On RK3399 such a read never completes: a test readl() right after
-rk_gmac_powerdown() hung the board with no soft-lockup panic until
-the hardware watchdog reset it (>5 min with the watchdog off).
-Refusing MDIO access to the powered-down MAC: 10/10 suspends without
-a hang; the same cycle script without it hung in 4 of 5 runs, each
-time within three cycles. With the GMAC kept powered (v1): 45/45.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=120ae3f5580000
+start commit:   47a144672573 Merge branch 'mptcp-misc-improvements-for-v7-4'
+git tree:       net-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=110ae3f5580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=160ae3f5580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=88147dd7e4cb6a0f
+dashboard link: https://syzkaller.appspot.com/bug?extid=4cc63fcfb3845e149969
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c35e05580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11908035580000
 
-v2 will use device_wakeup_path(), and its Fixes tag will be
-d65cb2e27e6e: that commit, not 6911308d7d11, stopped setting the MAC
-wakeup flag.
+Reported-by: syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+Fixes: af81cb247ca9 ("sunrpc: add a generic netlink family for cache upcalls")
 
-pw-bot: cr
-
---
-Igor Velkov
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
