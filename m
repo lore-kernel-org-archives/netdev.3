@@ -1,314 +1,135 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8A34A4828
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2A1327C08;
+	Thu,  1 Oct 2026 08:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790841484; cv=none; b=uivrizcFgG88I5ey5pguaGqMHpoHnOZcy5U9xxXLbOKbxucEAOun10jw15KzPu6XKcfPOoI/E0PNeopUnhOip9+gCg9Aqhg3X2nOrb/8kG9iHXf9CYnW0q0jsl+25m+S3Tst4w45Ac/dkpUs14PMOvK+DrGN5+wcd92T21XHVvY=
+	t=1790841992; cv=none; b=Bn3r0FBYalWRTv9XRNMCyxDtVBFJEsyNXaCXw3OpnaylQlId5yNjho5jKAP/ZdMDfQaLIzVCeBMOJzhi4qcFFuY9975X/7F2imWbRT7QMmiQPYHf8f0QbvpGtSKpP7s1oqGd+Kch6FQIjGo+BjIL4R03QEHaM+e4i0nf7T++bsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790841484; c=relaxed/simple;
-	bh=ov1UsvgqnGP99ZlV0po8t6D8z04tML2PYCHslCttodI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOZ4VOGIHKI5YEXpUmq6BEjSZpBIy7Bf3ZvKDRTuUDU50kDOqKXhZy3n+zyQWDG8sinP8jjMU0siIIyOOK+Ge7qlQOdBYXCaop1LD6gCS4IhXPSj0i4FIkWnqez4srnJrQtHufP/gx9Ms5uvLZEgNAjZWmNHOJ6bZ0UUC4iJftI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=G/CZsVU5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m+cBUrjW; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790841992; c=relaxed/simple;
+	bh=FbcwJTHY0e4prfQK9e51s23CbDVnvKyJff3VHTaqr80=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M/9mQxxsci0PW7hJufoDunCDerC5O64QMA7mpk8C4PgxxUMr/WAAsK52pYUvYiLSPRke3OTevv02JfA7DgTl3xDftbW7+N2e8gFPnqXtN4/duGyh0U9UqE/XOdE2UBvPEVF8e0BYJxPW8Rk5S18xHg45CNeum56YNHLyhXqSsb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qdXCR37X; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="G/CZsVU5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m+cBUrjW"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 024A71D00113;
-	Thu,  1 Oct 2026 03:58:00 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 01 Oct 2026 03:58:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790841480; x=
-	1790927880; bh=PY/o21IhUS0fzBW3cqrn1HrNwN+W+8gbpBSP5c9/yQo=; b=G
-	/CZsVU5RM0DbDfIoaFwIANE8ZaYf1HEQ3yyBQwbJdtzOA34VSAC3ZBtO7mqaHrw/
-	ScsXa1rwyouzSVW8Y+O8abPEMMhx9vPuVxYQ1gsA+YLxotkqejWT7V8ePbQfDX3Q
-	7bJNON8k93d+HGrP3zevfcipjOOyhIsVcaLcHxIFCniNIQhadba5t51/TxGnQ1tv
-	Jj6/XMZaDUxvH1M6LOORAQZK7EBSblCLV2+7o4LWB+TC5SbbP1evxXhTCuIIPuVU
-	9NEbFbEZeNnH7G6KZ2gNy30CEsu9ZaUeg1utgk5D7p1FWPlpDpBrT0oD57HrZW8k
-	u40WSPRjtD+aW2eIevg+g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790841480; x=1790927880; bh=P
-	Y/o21IhUS0fzBW3cqrn1HrNwN+W+8gbpBSP5c9/yQo=; b=m+cBUrjWKbzeJjWQy
-	Zh/fVNFYYeXKPOEJZ8PHzrKt6U/YZ56Ml12y04QMt0VkU7tkNFBkW8I3CBfPr4a+
-	KV4qmDQOyxkYXpHZ6uLTtnW1OAlQYdwJhAYxWfKz163iM2hbxsDKEKODiPa1xBkM
-	Kbdl/8ORF680y06XByRYv6QjlibBzDaaY77Ah/U6RRK9HFd8r77yNmHyynRCayzI
-	sQLlB7D5uNis9b/Lh0e2hWeJWYD3JNBa4zaLwD+a5OyhyIPUTtqWFh3q0xhAFs7b
-	5on19EFNYCa9uyIqgX/ECts80I+6OlzzPXYYMVji1Lq29LPqejIhR8gz7Atb9SJs
-	ppn5g==
-X-ME-Sender: <xms:iBK-auFh0f-yCgiOI4m57QsY_n0v0PgpIwZ3Ct11Nh_myJ5hElsGew>
-    <xme:iBK-alVyFjwp8qD-fa0RyomeMe-Z8hHpJ8-vVFhMAypLCy3P_QTEGDWnAJdHPgj7y
-    vyOGwE5DfesOCRfLyXe5UyZoRUqPuIuOGJBo6htwNVqQe_Sgmx4wcbh>
-X-ME-Received: <xmr:iBK-alwC7BCdEfg5KeBX_tMEI7uNkPydSHcVjmTR3pQOq-9qIvbCDB112lXI>
-X-ME-Proxy-Cause: dmFkZTGA/oXDmtyuaJ03IsPgZQeRlS3NjW8epWdBScf6nCzEY2mbZqv2ZjIMukknW64/dT
-    FVbgtfCcUrd6FlB44rQNfqzZkAsTz7yM3qSnJC/AUotm4uvUQ5XW2kB7VTtplnbv33IcmR
-    APrgFEPxWNMh10FVKM1e6PDSL9lbq+OjRG1DDUNesQtUT/97G01G2rU89A0Q3kdHPmsMSw
-    nynIoH82FSZGrBTKeUfmB/EJwQJTeMwFHp9SZ4eqVLsfXi3RmJ6XzKv6CJlLw4J7oG67wg
-    M2wJeJDkfuRrjRnge4oQb1QoCApu/aR8nuPvmIJgmL+CGh5S+yHnxGR3jFPn1UupRCZLhe
-    AwN/39Tc/uU8JXKwbWN/DWw1t1YMn6UoYVxpz/G1bVgEuh+DMlvahI+Lf2uMtGvdGMD9ct
-    zbZcYE0fmonrhk4wluZNgIZeBtjK/UqZz5YrEOq7FYg53LsW10piTAdwCb/gOaZrygCha/
-    l+hRbXySQ1PZcWKfhSP/uwMYqvx/iLwVZZQ2lu8ai9Q0BClQZLUlUreYU2UASYYHVpDCmP
-    zNiiyodBVzrOWZcXg9bee2g4WrwU9O/cL7nFeIByhlPFG4AFfXK/SoCB5y9j2YV4mDCx3Y
-    iOk/vpiKIrelu2C49icR9Tv1wPDVFsHx9f/yAWIZtbj+Wd4Ck7R5mv4Dlfug
-X-ME-Proxy: <xmx:iBK-ajPyRVvKyIQVwnCrbDndo4OD0husP6dyBhA9EMueF8SOc_F0DQ>
-    <xmx:iBK-am5vLB8wg1zCIjSNH9sSUe99OpqIKbfPnvwO5rJg6CvgnFMWOw>
-    <xmx:iBK-akMxCO365gH6iJ0874im_U7cpEWTRmTu9xIu9i67A34DyqupRg>
-    <xmx:iBK-akneF6hTtnBLg4XTJx3-gf6uUgwg80rPRBbSWQD2x9kXBY3zgg>
-    <xmx:iBK-apf0yREQBb1sLCZYw3qb3sEVdTEou2UCrt1pEvrGpim4x2ruLHhJ>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 03:58:00 -0400 (EDT)
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: netdev@vger.kernel.org
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Subject: [PATCH net-next 5/5] docs: networking: strparser: remove general mode
-Date: Thu,  1 Oct 2026 09:57:29 +0200
-Message-ID: <0a31a783d4c9c38594da338c49bf085fe6336c92.1790702233.git.sd@queasysnail.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1790702233.git.sd@queasysnail.net>
-References: <cover.1790702233.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qdXCR37X"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69175XFu907358;
+	Thu, 1 Oct 2026 08:06:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Thg/qz
+	Yqeu1lpk1hqfrCpFCMVZeUO2HAEDQm5a2yUIc=; b=qdXCR37XlpuObnciG312dF
+	5aeNG+IAHNfFIKisaVnmb1AKgyJFSbIGKV7b+vmykl99A+VrhMmP2OvUXYwl7GaW
+	6trDJ/AEX83Pgyxl0UrTaElCfXM3FHQ6SPAsz0UZbE/yD4zBKAB4qVT5zI+2c3q8
+	PHBUnpbValwoogXobcwFGCLzpUPhHWl8Ct9VQQT+vdo5UC60OJxiL1OqOOrx1E/X
+	eGZUGDcMNFwXaaQT2tRbqE7TwC4Fa8Q5Fszy/8Ja7j6Rv812FIx0yJ8CLRDvJtSf
+	tbSYvhwUGOfog8bsrm6qFXCKAOJrTPCCeDNwHZkYxKJ7slDaIL+6z04HIgA1oSiQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx3fkh5sv-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 08:06:21 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69172Vjt520696;
+	Thu, 1 Oct 2026 08:06:20 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h0hfpfsqx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Oct 2026 08:06:20 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69186GO053084474
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Oct 2026 08:06:16 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CEF112004B;
+	Thu,  1 Oct 2026 08:06:16 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1177A20040;
+	Thu,  1 Oct 2026 08:06:14 +0000 (GMT)
+Received: from [9.123.15.93] (unknown [9.123.15.93])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Oct 2026 08:06:13 +0000 (GMT)
+Message-ID: <8737cb76-a399-4443-9ef6-f251cd23670a@linux.ibm.com>
+Date: Thu, 1 Oct 2026 13:36:13 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 0/2] s390/ctcm: Fix timer corruption and
+ use-after-free
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
+        aswin@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        kees@kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org
+References: <20260930070234.569500-1-nagamani@linux.ibm.com>
+ <179075218956.31693.13833464260090345125@kernel.org>
+Content-Language: en-US
+From: Nagamani PV <nagamani@linux.ibm.com>
+In-Reply-To: <179075218956.31693.13833464260090345125@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: UCx0HP0mPee-m2TZdjQ3p96uYK-3scYW
+X-Proofpoint-GUID: 8yD2cODHGK2AWanJUQoQny89lpsPs3AS
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzMiBTYWx0ZWRfX1A5gPl8KV5qG
+ zuO5y4vjPygMIw9uINTLpTVCus6XFoLn8mHH3ENgO64DsFcFujRtRMWLmuViAFlX578Op7d0iox
+ qm+Ye3n3+tDBFx2uMRAWJv88L3diln8=
+X-Authority-Analysis: v=2.4 cv=Vv62kO2n c=1 sm=1 tr=0 ts=6abe147d cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=xiR1IYxcKOTdaxYgfMsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzMiBTYWx0ZWRfX8jHF6RKZ/h/o
+ bvaB1+AgAkeWWxSFVPTGNwNn6ikfkWzuo9oBBhQXg2Q8HIk50lS6PcdGFia6C1YFuXnRAiHFGsL
+ Hre6uNgAmbpZWfVryDniKFb1/IuXuYtURdYuQIZ8RruKu9s5Q/i0zMBl3FDcuHZVbZewLyHJIdk
+ NU2+72ED9LygZpW4JcqLdejAEEj8ygUcfA5ffKlpfJd8yfCrW8Qq0ibo9VDcw3Lo0Ej6fMDX+bf
+ 4pdHZB1eLlf0lSDXBVxnj9zFrAQMeRQlCK8zF1ukSYWkMpdZgnUzKHUVLu0kvXeQotyjq6yN4av
+ Jw+hfyhVqvGpZgAHdPEpQ19z7zSJtzWVMXggSAsw7e9ygdaY/Ye0ZnV6orZzWlu3B+C6lqBjx7c
+ nBNSz3UMI6XmGjmk7ms9UaaRHySHTwmLKFHmEd5uwXYAyI5EFI7LjFt97GTDtdVs5n8T0FgOcMz
+ APJHFQqaDY74+xZROjA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2610010032
 
-Now that the general mode of strp has been removed from the code,
-update the documentation.
 
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
----
- Documentation/networking/strparser.rst | 120 ++++++++-----------------
- 1 file changed, 36 insertions(+), 84 deletions(-)
 
-diff --git a/Documentation/networking/strparser.rst b/Documentation/networking/strparser.rst
-index 372106b61e65..9a21bbe93691 100644
---- a/Documentation/networking/strparser.rst
-+++ b/Documentation/networking/strparser.rst
-@@ -8,32 +8,24 @@ Introduction
- ============
- 
- The stream parser (strparser) is a utility that parses messages of an
--application layer protocol running over a data stream. The stream
-+application layer protocol running over a TCP connection. The stream
- parser works in conjunction with an upper layer in the kernel to provide
- kernel support for application layer messages. For instance, Kernel
- Connection Multiplexor (KCM) uses the Stream Parser to parse messages
- using a BPF program.
- 
--The strparser works in one of two modes: receive callback or general
--mode.
--
--In receive callback mode, the strparser is called from the data_ready
--callback of a TCP socket. Messages are parsed and delivered as they are
--received on the socket.
--
--In general mode, a sequence of skbs are fed to strparser from an
--outside source. Message are parsed and delivered as the sequence is
--processed. This modes allows strparser to be applied to arbitrary
--streams of data.
-+The strparser is called from the data_ready callback of a TCP
-+socket. Messages are parsed and delivered as they are received on the
-+socket.
- 
- Interface
- =========
- 
- The API includes a context structure, a set of callbacks, utility
--functions, and a data_ready function for receive callback mode. The
--callbacks include a parse_msg function that is called to perform
--parsing (e.g.  BPF parsing in case of KCM), and a rcv_msg function
--that is called when a full message has been completed.
-+functions, and a data_ready function. The callbacks include a
-+parse_msg function that is called to perform parsing (e.g. BPF parsing
-+in case of KCM), and a rcv_msg function that is called when a full
-+message has been completed.
- 
- Functions
- =========
-@@ -45,9 +37,8 @@ Functions
- 
-      Called to initialize a stream parser. strp is a struct of type
-      strparser that is allocated by the upper layer. sk is the TCP
--     socket associated with the stream parser for use with receive
--     callback mode; in general mode this is set to NULL. Callbacks
--     are called by the stream parser (the callbacks are listed below).
-+     socket associated with the stream parser. Callbacks are called by
-+     the stream parser (the callbacks are listed below).
- 
-      ::
- 
-@@ -79,18 +70,6 @@ Functions
-      parser instance. This must be called after the stream processor
-      has been stopped.
- 
--     ::
--
--	int strp_process(struct strparser *strp, struct sk_buff *orig_skb,
--			 unsigned int orig_offset, size_t orig_len,
--			 size_t max_msg_size, long timeo)
--
--    strp_process is called in general mode for a stream parser to
--    parse an sk_buff. The number of bytes processed or a negative
--    error number is returned. Note that strp_process does not
--    consume the sk_buff. max_msg_size is maximum size the stream
--    parser will parse. timeo is timeout for completing a message.
--
-     ::
- 
- 	void strp_data_ready(struct strparser *strp);
-@@ -112,16 +91,15 @@ Functions
- Callbacks
- =========
- 
--There are seven callbacks:
-+There are four callbacks:
- 
-     ::
- 
- 	int (*parse_msg)(struct strparser *strp, struct sk_buff *skb);
- 
--    parse_msg is called to determine the length of the next message
--    in the stream. The upper layer must implement this function. It
--    should parse the sk_buff as containing the headers for the
--    next application layer message in the stream.
-+    parse_msg is called to determine the length of the next message in
-+    the stream. It should parse the sk_buff as containing the headers
-+    for the next application layer message in the stream.
- 
-     The strparser metadata in the input skb can be accessed with
-     strp_msg(skb). Only the offset field is relevant in parse_msg and
-@@ -141,30 +119,13 @@ There are seven callbacks:
-     =========    ===========================================================
- 
-     In the case that an error is returned (return value is less than
--    zero) and the parser is in receive callback mode, then it will set
--    the error on TCP socket and wake it up. If parse_msg returned
--    -ESTRPIPE and the stream parser had previously read some bytes for
--    the current message, then the error set on the attached socket is
--    ENODATA since the stream is unrecoverable in that case.
--
--    ::
--
--	void (*lock)(struct strparser *strp)
--
--    The lock callback is called to lock the strp structure when
--    the strparser is performing an asynchronous operation (such as
--    processing a timeout). In receive callback mode the default
--    function is to lock_sock for the associated socket. In general
--    mode the callback must be set appropriately.
-+    zero), it will set the error on TCP socket and wake it up. If
-+    parse_msg returned -ESTRPIPE and the stream parser had previously
-+    read some bytes for the current message, then the error set on the
-+    attached socket is ENODATA since the stream is unrecoverable in
-+    that case.
- 
--    ::
--
--	void (*unlock)(struct strparser *strp)
--
--    The unlock callback is called to release the lock obtained
--    by the lock callback. In receive callback mode the default
--    function is release_sock for the associated socket. In general
--    mode the callback must be set appropriately.
-+    This callback must be set.
- 
-     ::
- 
-@@ -173,8 +134,7 @@ There are seven callbacks:
-     rcv_msg is called when a full message has been received and
-     is queued. The callee must consume the sk_buff; it can
-     call strp_pause to prevent any further messages from being
--    received in rcv_msg (see strp_pause above). This callback
--    must be set.
-+    received in rcv_msg (see strp_pause above).
- 
-     The strparser metadata in the input skb can be accessed with
-     strp_msg(skb). This struct contains two fields: offset and full_len.
-@@ -182,6 +142,8 @@ There are seven callbacks:
-     the length of the message. skb->len - offset may be greater than
-     full_len since strparser does not trim the skb.
- 
-+    This callback must be set.
-+
-     ::
- 
- 	int (*read_sock)(struct strparser *strp, read_descriptor_t *desc,
-@@ -189,25 +151,20 @@ There are seven callbacks:
- 
-     The read_sock callback is used by strparser instead of
-     sock->ops->read_sock, if provided.
-+
-+    This callback is optional.
-+
-     ::
- 
- 	int (*read_sock_done)(struct strparser *strp, int err);
- 
-      read_sock_done is called when the stream parser is done reading
--     the TCP socket in receive callback mode. The stream parser may
--     read multiple messages in a loop and this function allows cleanup
--     to occur when exiting the loop. If the callback is not set (NULL
--     in strp_init) a default function is used.
--
--     ::
-+     the TCP socket. The stream parser may read multiple messages in a
-+     loop and this function allows cleanup to occur when exiting the
-+     loop. If the callback is not set (NULL in strp_init) a default
-+     function is used.
- 
--	void (*abort_parser)(struct strparser *strp, int err);
--
--     This function is called when stream parser encounters an error
--     in parsing. The default function stops the stream parser and
--     sets the error in the socket if the parser is in receive callback
--     mode. The default function can be changed by setting the callback
--     to non-NULL in strp_init.
-+    This callback is optional.
- 
- Statistics
- ==========
-@@ -224,23 +181,18 @@ Message assembly limits
- The stream parser provide mechanisms to limit the resources consumed by
- message assembly.
- 
--A timer is set when assembly starts for a new message. In receive
--callback mode the message timeout is taken from rcvtime for the
--associated TCP socket. In general mode, the timeout is passed as an
--argument in strp_process. If the timer fires before assembly completes
--the stream parser is aborted and the ETIMEDOUT error is set on the TCP
--socket if in receive callback mode.
-+A timer is set when assembly starts for a new message. The message
-+timeout is taken from rcvtime for the associated TCP socket. If the
-+timer fires before assembly completes the stream parser is aborted and
-+the ETIMEDOUT error is set on the TCP socket.
- 
--In receive callback mode, message length is limited to the receive
-+Message length is limited to the receive
- buffer size of the associated TCP socket. If the length returned by
- parse_msg is greater than the socket buffer size then the stream parser
- is aborted with EMSGSIZE error set on the TCP socket. Note that this
- makes the maximum size of receive skbuffs for a socket with a stream
- parser to be 2*sk_rcvbuf of the TCP socket.
- 
--In general mode the message length limit is passed in as an argument
--to strp_process.
--
- Author
- ======
- 
--- 
-2.55.0
+On 30/09/26 12:39 PM, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
+Both issues were identified through static code inspection / automated
+analysis (Sashiko code review) and confirmed by manual code review.
+They have not been triggered in production with an observed stack trace.
+
+Nagamani
