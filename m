@@ -1,82 +1,188 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1933DEAD6
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 03:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0159A40F74B;
+	Thu,  1 Oct 2026 03:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790825767; cv=none; b=h+y/zFd+LDO80qrTYgB8X/VsWnnADlDzDdjyVranyYfU3FaJN3iTmyxIzgCVHi63TY5xa6bVGb2fyoc2TALv1XQIvc+PrP/WbEepbX8TqhJD2HF5rZI5LTJ5eWsK3C2zmk2pObUUJYFiJLPhY5yaCfnsHaGihmC8lZqDksWJ90o=
+	t=1790825994; cv=none; b=CUvg8pRcQoksINuqjQjlMQ3U4S5RNacIYSIKXqzskrnXD1JUTW3nBK9q2ciwChiw6hhZMOWYTCa8SZielIVLK8BEpQAc9UzYQi1YdISWlpnmpuyZ/zksgJKsD3QPJKSVeBAbgbz4yn62oCYPAF8gXSzRmN+PyxdOn8MvGQyY8Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790825767; c=relaxed/simple;
-	bh=F+cE99e/IoZcBiqybvdTBRrrEvhUAZGIkEo/uvhm6uA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=mJQcJgnKUlsr4FCIJgAJ9ldSVdM+A/LGRsUheOUll3U30WCphJWRNetsfr7QS1yJ7HoIba/0nX283l8XYdylPT1NuNmMocvKJdTZPEzLKRMBEsI9HcWOL/0fMGgJmwoAvU3u0I6SlnuYi1pFYQWcwTa5JGfTJ3iRolDBVe9ZNnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b2d1eb484aso9512096b6e.2
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 20:36:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790825763; x=1791430563;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ArUdhkCHBvqLujlWUFMyF2icv5EZv9kWUaouQO4XIP8=;
-        b=tR9GXRQ70cYBvvcV+HBPK4CTf0CDnU6cbrDUuLJAaTVt4M+74QSbcIzjbf2RSfOq+4
-         4QAAtX3YhADL7Vd9Y+7c5FrfTnq7cg1IJGeNR+Q0w9GyCDNYoaDCMUkH8TqzRf8ZJ/H/
-         rhofC7MLwOuy6eMfZqSCZpPjjjXzHJuq+lYCWReUF+DaVjelvG1O3kJMVqJY93g9tY/N
-         Khz/RdLdl4U1AqZQk0K2evVHZKOphcZf94B2sgm7fjh8fnGWanBmp8ZF28wIaRsN/kqV
-         fEh3uB1Ia9HbYrqFvdoHVZuPbq/Mu4CYYINc9pZEfbekGg3vJpU7VhQIFyWh7odC8qLy
-         4V2A==
-X-Forwarded-Encrypted: i=1; AKwUvBw+XMN6w/2I9AMDh30z7wxzF1WmzcP/Rix7MyFCQPg0Qgt6P8ME4+8sK7Z8G/mCxdWsyIFBtH8=@vger.kernel.org
-X-Gm-Message-State: AFuF++n81bvUvQ0aNbAOnnTTzDSY5fDMQwc9HEYuxAAwOx8r4A9L19wK
-	QE5S2gfCfFUGYCmeyUXz3d7DgsZwtK9ux1acgsT/htFSLBGsPXb6kiCtn8ubYICJubsPlpPoovy
-	2Mi/qeDGjMajIpMr37dyUriLuZhFOW6I44mD+C0BDY4p4SEF+mAYUoQ3d9wk=
+	s=arc-20240116; t=1790825994; c=relaxed/simple;
+	bh=PXtpxArzyY8DZBn1hAMwq3C0nFBP6i8Nu5Ht54jOAPg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EOAhXzzjXUxwktsBH57tWcxqaWNFo4bHc3wdk5qqAk4AM29/5PO2BkGZriXoDDiyvPhaUgn7L4FiTvE47bgU6VwvpQ96vE2U4i7S7vmoxkRyCzO8eN4W2eRkvGU4booo8zRdztRuKaJcYtZZmluMLMs2TJxq39udiBeM/dWo43s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebk56fWY; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebk56fWY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24D11F000FF;
+	Thu,  1 Oct 2026 03:39:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790825987;
+	bh=wzFUULoIC8+Lw//RdPJvnNwi9E7VG6sYWNzjrEnFdz0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ebk56fWYEBaJpAweBnVfhkO+omfJ8zRnvJ/XH/Z6IsIpvzjCWMJF2fvcfnpLCAwse
+	 YDvVdUVTQYL9sG0lEEOQhlnRfUYT3Pf2zHhRU/kZOXxXrwzS8vaON8o+YSRG1r8lPB
+	 85eevkVwYK3eWZOgv1mfayq1KnZZYo2uVIKAfqmu32/yqjAuDzA/Sm2s23rA7LRqDy
+	 yHKy/pKsZM7jKfR3LurexQYtxtpzZTgXEv6N4JTIXkan9XOn3n9Qhlsxvg6iwgnbmy
+	 fxRlebrXonsVKEsUSLOA79DLEupylS+x7DLLz+J7W+us0H0uzsnGPAa3P2dtXvguQT
+	 0SyedGnRkycEA==
+Subject: Re: [PATCH net-next v14 1/5] net: rnpgbe: Add interrupt handling
+From: netdev-bot+sashiko@kernel.org
+To: dong100@mucse.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+ u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yaojun@mucse.com
+Date: Thu, 01 Oct 2026 03:39:46 +0000
+Message-ID: <179082598618.434549.4975166661631840324@kernel.org>
+In-Reply-To: <6DBF52290D020D66+20260928033821.1033325-1-dong100@mucse.com>
+References: <6DBF52290D020D66+20260928033821.1033325-1-dong100@mucse.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:221c:b0:4c3:4e34:c69e with SMTP id
- 5614622812f47-4f1b2e33ccbmr4286287b6e.8.1790825762867; Wed, 30 Sep 2026
- 20:36:02 -0700 (PDT)
-Date: Wed, 30 Sep 2026 20:36:02 -0700
-In-Reply-To: <6abd40af.fac9d4e5.17396.0008.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6abdd522.f32479dd.202a09.0001.GAE@google.com>
-Subject: Re: [syzbot] [openvswitch?] WARNING in set_ipv6_addr
-From: syzbot <syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com>
-To: Dai.Ngo@oracle.com, aconole@redhat.com, anna@kernel.org, 
-	chuck.lever@oracle.com, davem@davemloft.net, dev@openvswitch.org, 
-	donald.hunter@gmail.com, echaudro@redhat.com, edumazet@google.com, 
-	fmancera@suse.de, horms@kernel.org, i.maximets@ovn.org, jlayton@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	neil@brown.name, netdev@vger.kernel.org, okorniev@redhat.com, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
-	trondmy@kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot has bisected this issue to:
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-commit af81cb247ca94e4bcfea31ea862cf3aaf955a503
-Author: Jeff Layton <jlayton@kernel.org>
-Date:   Wed Mar 25 14:40:28 2026 +0000
+Low priority / nit picks for your consideration:
 
-    sunrpc: add a generic netlink family for cache upcalls
+- [Low] The patch changes how mucse_obtain_mbx_lock_pf()
+  (drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c) waits for the mailbox…
+- [Low] Three kernel-doc comments in
+  drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c promise more than the…
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=120ae3f5580000
-start commit:   47a144672573 Merge branch 'mptcp-misc-improvements-for-v7-4'
-git tree:       net-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=110ae3f5580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=160ae3f5580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=88147dd7e4cb6a0f
-dashboard link: https://syzkaller.appspot.com/bug?extid=4cc63fcfb3845e149969
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c35e05580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11908035580000
+--
 
-Reported-by: syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
-Fixes: af81cb247ca9 ("sunrpc: add a generic netlink family for cache upcalls")
+net: rnpgbe: Add interrupt handling
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+This commit adds MSI-X interrupt setup and teardown for the rnpgbe
+driver. Vector 0 is reserved for the mailbox and the remaining vectors
+drive NAPI for the data path. It also adds mailbox workqueue plumbing
+and sends the firmware powerdown notification from both remove and
+shutdown.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> new file mode 100644
+> index 0000000000000..97f7aef8e3c2d
+> --- /dev/null
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> @@ -0,0 +1,579 @@
+
+[ ... ]
+
+> +/**
+> + * rnpgbe_set_interrupt_capability - Set MSI-X interrupt capability
+> + * @mucse: pointer to private structure
+> + *
+> + * Attempt to configure the interrupts using the best available
+> + * capabilities of the hardware.
+> + *
+> + * Return: 0 on success, negative on failure
+> + **/
+> +static int rnpgbe_set_interrupt_capability(struct mucse *mucse)
+> +{
+
+[ ... ]
+
+> +	/* Vector 0 is reserved for mailbox events and must not share NAPI. */
+> +	v_budget = pci_alloc_irq_vectors(mucse->pdev, 2, v_budget,
+> +					 PCI_IRQ_MSIX);
+> +	if (v_budget < 0)
+> +		return v_budget;
+
+[ ... ]
+
+> +/**
+> + * rnpgbe_request_irq - Initialize interrupts
+> + * @mucse: pointer to private structure
+> + *
+> + * Attempts to configure interrupts using the best available
+> + * capabilities of the hardware and kernel.
+> + *
+> + * Return: 0 on success, negative value on failure
+> + **/
+
+[ ... ]
+
+> +/**
+> + * rnpgbe_free_irq - Free interrupts
+> + * @mucse: pointer to private structure
+> + *
+> + * Attempts to free interrupts according initialized type.
+> + **/
+
+[Severity: Low]
+This isn't a bug, but do these kernel-doc comments match what the code
+does?
+
+rnpgbe_set_interrupt_capability() says it uses "the best available
+capabilities of the hardware". It only asks for MSI-X with a minimum of
+two vectors, and it returns the error if that fails. There is no MSI or
+INTx fallback.
+
+rnpgbe_request_irq() makes the same claim. It only calls request_irq()
+on MSI-X vectors 1..N, which are already allocated.
+
+rnpgbe_free_irq() refers to the "initialized type", but only one
+interrupt type exists.
+
+MSI-X only looks intentional: the Kconfig change adds a PCI_MSI
+dependency, and the commit message says "Require at least two MSI-X
+vectors". Could these comments be updated to say MSI-X only?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> index c464086982632..2310f01df1f50 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> @@ -84,7 +84,7 @@ static u32 mucse_mbx_get_lock_pf(struct mucse_hw *hw)
+>   * @hw: pointer to the HW structure
+>   *
+>   * Pair with mucse_release_mbx_lock_pf()
+> - * This function maybe used in an irq handler.
+> + * All mailbox access runs in process context.
+>   *
+>   * Return: 0 on success, negative errno on failure
+>   **/
+> @@ -93,11 +93,11 @@ static int mucse_obtain_mbx_lock_pf(struct mucse_hw *hw)
+>  	struct mucse_mbx_info *mbx = &hw->mbx;
+>  	u32 val;
+>  
+> -	return read_poll_timeout_atomic(mucse_mbx_get_lock_pf,
+> -					val, val & MUCSE_MBX_PFU,
+> -					mbx->delay_us,
+> -					mbx->timeout_us,
+> -					false, hw);
+> +	return read_poll_timeout(mucse_mbx_get_lock_pf,
+> +				 val, val & MUCSE_MBX_PFU,
+> +				 mbx->delay_us,
+> +				 mbx->timeout_us,
+> +				 false, hw);
+>  }
+
+[Severity: Low]
+This isn't a bug, but should the commit message mention this change?
+
+mucse_obtain_mbx_lock_pf() moves from read_poll_timeout_atomic() to
+read_poll_timeout(), which sleeps. Its documented contract also changes
+from "maybe used in an irq handler" to process context only.
+mucse_read_mbx_pf() and mucse_write_mbx_pf() both use this helper, so
+every mailbox transaction is affected.
+
+The callers seem to take mutex_lock(&hw->mbx.lock) first, so sleeping
+looks safe. The commit message, though, only covers the interrupt setup,
+the vector layout, the mailbox work and the powerdown notification.
+
+Could this be called out in the changelog, or split into a separate
+patch?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0A4D45AD9F6A0F14%2B20260928033701.1033196-1-dong100%40mucse.com
