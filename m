@@ -1,72 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9F39CCFE;
-	Thu,  1 Oct 2026 12:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5584E2F8EA3
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 12:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790857171; cv=none; b=HnSkyu062NPx0kzFXbHgjRpJqrxvqtaUankSzJSiVWMsAKf/xrsnYm7qY4dNHYVsQLfktAuC7F0+2ewDtxhJ+fo1We+MY1qNepOG1wUEnr/Gq+7tRZ7wkcRnkcuNwSyHcPG8v9bS/+p9RnMl4RQgQRYckiztzSMeScxeOq12/10=
+	t=1790857196; cv=none; b=N3R/ocZn/+SwcLmpu7vDpnEJxA7OLZqwtAN/Ej/OZz6JYl4sk4yAh0tWkvSCzYYpzmHnsCZzKBFnoFtsA5bzUU50Haa8yYQeGqB4ejLIvt0mX55zWZsHZn4nuspw1HPdVFgqZqttQ0SH2J9305derzyKz1JbHm9O8YMX4SLGGSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790857171; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	s=arc-20240116; t=1790857196; c=relaxed/simple;
+	bh=nRbfMwngHUKsiqlMccbHxJzWFiHdULg4qLygabHKz1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n8mbcjUDH4WM9+SD2NAQI/8h20n04kbzWRRjVBYvaSvqNIyuOBXvnisi8vD4xa6sNB0rEfR5hU/9ZLpTziiXsYZcg3TNPB8u09WHKLILtxgWy/F7Ptr0MZ3dNZBmWHMziZr7J6GyBuQ9THXBSCqVDWWgSpvergMBKZjqqZVKsK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyFSZjTM; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Yr7ce1a+w0Zu0sKOOb85LkwqwiWa38HfJli1kOfat/Dm+Zx1DnKGVj3gGbjBTaXQFdFrhI/cHOytagVWVPOPNhb4nVFjzyMp38e0LaBfwC4mQF2+HR1OjZaSWKd9z2QyR/X4p6J1YnjxSaIizXKue16IUcaGG0amxjIrP+kDwTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FssrDfft; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyFSZjTM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4881F000FF;
-	Thu,  1 Oct 2026 12:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790857169;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EyFSZjTMaC4BT02n5Chn+UwLM3nWI0PM/4h/DxrmAjas47bjROfw4LLbZhDMkZS8W
-	 YXUJVR5iICzEqg3+EwbVuLvM5/UbJTfCbfgOtTI82zTOQVX5zTkNo7ljg3ptgR187i
-	 fErz8t10wHMvc1dV0rCpvId22sawD88c6sZIfBppa/9WIbUVArJM7O0GuYP0vCUXoF
-	 tlmwqEDXtc+8QeI1ZXhgQ1pHRe72tQ8a7Fom4ke2FfB8ZCwIAp7deI6qU2Qj8h6rUZ
-	 dHSofLcDMBnQoxhg2oA1FCYwgabhA5i68cNIlypPXZBwDZhpyzV9n1fBAJ3xtBkFSX
-	 8TpCW743gm+tQ==
-From: netdev-bot+sinfo@kernel.org
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Eugenio =?utf-8?q?P=C3=A9rez?= <eperezma@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev,
- kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
-Date: Thu, 01 Oct 2026 12:19:28 +0000
-Message-ID: <179085716831.31693.13222203434770065965@kernel.org>
-In-Reply-To: <20261001121541.2983379-1-4ncienth@gmail.com>
-References: <20261001121541.2983379-1-4ncienth@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FssrDfft"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffed768deso17020295e9.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 05:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790857194; x=1791461994; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VqJs1lu9yYEnrWjWAn/NSnJmVPwl6cd9S/MSijAAG84=;
+        b=FssrDfftmVycbPoCtmvGbdHXG4hyJu2I936FwJ47OhkXC2ycAYG9xb10wsp5Nukbde
+         s9vbGWSId7hNsjJs09tbC433CZy94XpDmXJWJW+qm3nY+h+/b2OdxJNFtrvOKeHdaPrl
+         3bekCkKDkUimH9GalBB4DzZnjEeC702R1LalEob7bgm0z3PhtxRpM4DRXsVoCrb4BRH1
+         sQI3jMlOzuUnvMl9ni7uU2xGv8PmXPIc0XeMwNwAZveMgyWCViejB7kLMeBNjh23sV0W
+         ztf7qkM4sFbAAJvGHc80S7GfqLa/f5FAmaJ+FHkgbgLhMGy3NHa1e+ePRfAXCibPRwvP
+         XkDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790857194; x=1791461994;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VqJs1lu9yYEnrWjWAn/NSnJmVPwl6cd9S/MSijAAG84=;
+        b=jIdQAHJu6x9CR6UdqHLdq0qEIrp7rvVrcja9saEGcAhKvFuhD30VrPNRwROIkq3zbl
+         Elf3xQ4Vup3e14lIKEAyxZm7BgV0uMHczuLUr71HeGad7EmgfcIULsNfMVRHtnKRwfJu
+         foz3k8rZY6VZ1t7Ur6eNQY8bC0lNdIUEmemS75QC21TnWeSS9ajMbdvkjCXkWp2UZRj/
+         PLvXhVMqJ11oNq/KeKQjEtgykyVwBJjf9g2fTo0cHnnNjukYvpMfrlpnPbmd5wnXXyrs
+         syzp2bTRbr29DY3rM8YVxJu2zZBLXqzpo4ufAEys5I/XLSfKyUD4xvcePKLBm/hFvb1i
+         V8Lg==
+X-Forwarded-Encrypted: i=1; AKwUvBwVVUCcfuudSi2sHnbS/luJPH5wyfsQ1tgUrnAuPUpm06NokittnS/68RGThftsUtfB66QTANw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mV76q6EFpmDROpaNPz+NtfFPwcLGmfcrRwP+PH4nORczAG5kLI
+	j/DBmyUtwAlRBapiT30kacsU5Q+0oTk+L/J7vSDECh1KbpEnLJUr9ln0
+X-Gm-Gg: AYBFou1ExUiPA9i8Vy1Id+fH4A65dv+QYwZ/ziMLmaIKT0DDNj4antVLMX/oIL8mUwA
+	XUnExOTOKsFfjNxsufckrC5iN4bz6v0wGy4p7w5jZ+3UxfpE+8/2bBu1XaAp++0qDeZki4aM8cX
+	m2lFdwnQTxEpRyJwv6etH/IcRGXQ3DLDFvMh/hTbw0yXUcS0q0feWXKmGmXd/P3Pr2ptjg9gZXs
+	Q/OiY2FyVXLKI+9XK3BTfSv+KfNGMsMyre+5giyMctj3z0IzewYE13Yim6rcvA3xYh1Nar8HmM8
+	e04rhEsWiaPHbV76UwkimZ1dZS8JwR1I9Lj0kp8FAVd3s78iOUgisxw92cCWUP0rKL/HG8tblxn
+	xOlNCFHqydtdudkLiw2c27uzz7tx+CMpAW5jh2XWzRLXBRv1XnxuKMSch5xR9myh4NzcjlLDlzW
+	RnDQjVKXwtQUq5yZyhB7Gx2J8z7QKCY2hwDlDEGaDnbgv4AwI/SPHS0Nw6wtPRLYUNwP4Pd6frV
+	bXd83bJgaZ+BMb4mZzvPJtkQgMtF0I18GuzAEWmS0LLtigw
+X-Received: by 2002:a05:600c:859c:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-4a01eaf5b37mr37503985e9.4.1790857193367;
+        Thu, 01 Oct 2026 05:19:53 -0700 (PDT)
+Received: from andreayoga.localdomain ([151.43.138.29])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f923320sm69506935e9.7.2026.10.01.05.19.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 05:19:52 -0700 (PDT)
+From: Andrea Parri <parri.andrea@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Andrea Parri <parri.andrea@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	netfilter-devel@vger.kernel.org,
+	Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH nf] netfilter: br_netfilter: restore VLAN tag on refragmented IPv6 packets
+Date: Thu,  1 Oct 2026 14:19:34 +0200
+Message-ID: <20261001121941.31364-1-parri.andrea@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <179084999520.434549.4764913674478855382@kernel.org>
+References: <20260928161830.351199-1-parri.andrea@gmail.com> <179084999520.434549.4764913674478855382@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+On Thu, Oct 01, 2026 at 10:19:55AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> For an untagged packet this helper saves vlan_proto = 0. The consumer only
+> ever sets a tag and never clears one:
+[...]
+> So would fragments 2..N reach br_nf_push_frag_xmit()->br_dev_queue_push_xmit()
+> with their ingress 802.1Q/802.1ad tag still set, while the first fragment
+> goes out untagged?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Yes. Conntrack defrag keeps the original fragments on frag_list for both
+IPv6 and IPv4 here (ip_frag_coalesce_ok() is true only for local
+delivery), each with its ingress tag, and br_handle_vlan() clears the
+tag of the head skb only. On the fast path those skbs are sent as the
+fragments.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I extended my reproducer with a port that is untagged in VLAN 10 and a
+static FDB entry, so the packet is not cloned. With this patch applied,
+6/9 IPv6 and 6/9 IPv4 fragments left that port with "vlan 10"; only the
+first fragment of each packet was untagged. This is not introduced by
+this patch, but it means the changelog claim was too broad.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+v2 will add a second patch that clears the tag in br_nf_push_frag_xmit()
+when none was saved, as nf_ct_bridge_frag_restore() does, and narrow the
+changelog of this one to the fragments ip6_fragment() builds.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+The BR_VLAN_TUNNEL case does not reach the refragmentation code:
+br_handle_egress_vlan_tunnel() attaches a metadata dst, so
+br_nf_dev_queue_xmit() drops the packet at the !skb_valid_dst() check.
+
+> Also, the comment "Fragments may not inherit the MAC header or VLAN tag"
+> does not seem accurate for reused frag_list skbs, which keep their own tag.
+
+Agreed, v2 rewords it.
+
+pw-bot: cr
+
+Thanks,
+  Andrea
