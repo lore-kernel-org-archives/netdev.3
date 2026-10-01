@@ -1,127 +1,174 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5584E2F8EA3
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 12:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6835F60A;
+	Thu,  1 Oct 2026 12:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790857196; cv=none; b=N3R/ocZn/+SwcLmpu7vDpnEJxA7OLZqwtAN/Ej/OZz6JYl4sk4yAh0tWkvSCzYYpzmHnsCZzKBFnoFtsA5bzUU50Haa8yYQeGqB4ejLIvt0mX55zWZsHZn4nuspw1HPdVFgqZqttQ0SH2J9305derzyKz1JbHm9O8YMX4SLGGSI=
+	t=1790857262; cv=none; b=dZppWiftBd2jsEmQghwr/e79sv1NK17aaJ57UCWeDLhEAI0+AThKEzwhqBnFY/0oSOQdmQCXH+GRf9PhDn3trNijkz8Jkt8XoU4c89MjoRE70a/RtTMTdjSjPCgjrewBP4qJEZzILiwH0UU6jq1iXmAGj3dEiBt6V6HhMP9WynM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790857196; c=relaxed/simple;
-	bh=nRbfMwngHUKsiqlMccbHxJzWFiHdULg4qLygabHKz1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yr7ce1a+w0Zu0sKOOb85LkwqwiWa38HfJli1kOfat/Dm+Zx1DnKGVj3gGbjBTaXQFdFrhI/cHOytagVWVPOPNhb4nVFjzyMp38e0LaBfwC4mQF2+HR1OjZaSWKd9z2QyR/X4p6J1YnjxSaIizXKue16IUcaGG0amxjIrP+kDwTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FssrDfft; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790857262; c=relaxed/simple;
+	bh=Q7jzvmO3u3jfv/qIC2dCDpMmEzLO/rCpNK6IdLXWJkM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uqDqiJ0uwJhJ0CXfRe9RPITQpYZP15EqkCOjIboRZcQtga4aeUpuHwuKHsBJI3hZbR3aLYvMx9+YfvnO93a8ksMLYTZZjSZRMBgOxp1GsCaMK6cDrvlcCw9r7HAWtSAgnl8pNnTjr+Fl5vrYp+CI96zFzaYNJqx7PVrgUj40SSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eeJjcL0E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FssrDfft"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffed768deso17020295e9.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 05:19:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790857194; x=1791461994; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VqJs1lu9yYEnrWjWAn/NSnJmVPwl6cd9S/MSijAAG84=;
-        b=FssrDfftmVycbPoCtmvGbdHXG4hyJu2I936FwJ47OhkXC2ycAYG9xb10wsp5Nukbde
-         s9vbGWSId7hNsjJs09tbC433CZy94XpDmXJWJW+qm3nY+h+/b2OdxJNFtrvOKeHdaPrl
-         3bekCkKDkUimH9GalBB4DzZnjEeC702R1LalEob7bgm0z3PhtxRpM4DRXsVoCrb4BRH1
-         sQI3jMlOzuUnvMl9ni7uU2xGv8PmXPIc0XeMwNwAZveMgyWCViejB7kLMeBNjh23sV0W
-         ztf7qkM4sFbAAJvGHc80S7GfqLa/f5FAmaJ+FHkgbgLhMGy3NHa1e+ePRfAXCibPRwvP
-         XkDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790857194; x=1791461994;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VqJs1lu9yYEnrWjWAn/NSnJmVPwl6cd9S/MSijAAG84=;
-        b=jIdQAHJu6x9CR6UdqHLdq0qEIrp7rvVrcja9saEGcAhKvFuhD30VrPNRwROIkq3zbl
-         Elf3xQ4Vup3e14lIKEAyxZm7BgV0uMHczuLUr71HeGad7EmgfcIULsNfMVRHtnKRwfJu
-         foz3k8rZY6VZ1t7Ur6eNQY8bC0lNdIUEmemS75QC21TnWeSS9ajMbdvkjCXkWp2UZRj/
-         PLvXhVMqJ11oNq/KeKQjEtgykyVwBJjf9g2fTo0cHnnNjukYvpMfrlpnPbmd5wnXXyrs
-         syzp2bTRbr29DY3rM8YVxJu2zZBLXqzpo4ufAEys5I/XLSfKyUD4xvcePKLBm/hFvb1i
-         V8Lg==
-X-Forwarded-Encrypted: i=1; AKwUvBwVVUCcfuudSi2sHnbS/luJPH5wyfsQ1tgUrnAuPUpm06NokittnS/68RGThftsUtfB66QTANw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mV76q6EFpmDROpaNPz+NtfFPwcLGmfcrRwP+PH4nORczAG5kLI
-	j/DBmyUtwAlRBapiT30kacsU5Q+0oTk+L/J7vSDECh1KbpEnLJUr9ln0
-X-Gm-Gg: AYBFou1ExUiPA9i8Vy1Id+fH4A65dv+QYwZ/ziMLmaIKT0DDNj4antVLMX/oIL8mUwA
-	XUnExOTOKsFfjNxsufckrC5iN4bz6v0wGy4p7w5jZ+3UxfpE+8/2bBu1XaAp++0qDeZki4aM8cX
-	m2lFdwnQTxEpRyJwv6etH/IcRGXQ3DLDFvMh/hTbw0yXUcS0q0feWXKmGmXd/P3Pr2ptjg9gZXs
-	Q/OiY2FyVXLKI+9XK3BTfSv+KfNGMsMyre+5giyMctj3z0IzewYE13Yim6rcvA3xYh1Nar8HmM8
-	e04rhEsWiaPHbV76UwkimZ1dZS8JwR1I9Lj0kp8FAVd3s78iOUgisxw92cCWUP0rKL/HG8tblxn
-	xOlNCFHqydtdudkLiw2c27uzz7tx+CMpAW5jh2XWzRLXBRv1XnxuKMSch5xR9myh4NzcjlLDlzW
-	RnDQjVKXwtQUq5yZyhB7Gx2J8z7QKCY2hwDlDEGaDnbgv4AwI/SPHS0Nw6wtPRLYUNwP4Pd6frV
-	bXd83bJgaZ+BMb4mZzvPJtkQgMtF0I18GuzAEWmS0LLtigw
-X-Received: by 2002:a05:600c:859c:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-4a01eaf5b37mr37503985e9.4.1790857193367;
-        Thu, 01 Oct 2026 05:19:53 -0700 (PDT)
-Received: from andreayoga.localdomain ([151.43.138.29])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f923320sm69506935e9.7.2026.10.01.05.19.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 05:19:52 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	netfilter-devel@vger.kernel.org,
-	Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH nf] netfilter: br_netfilter: restore VLAN tag on refragmented IPv6 packets
-Date: Thu,  1 Oct 2026 14:19:34 +0200
-Message-ID: <20261001121941.31364-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179084999520.434549.4764913674478855382@kernel.org>
-References: <20260928161830.351199-1-parri.andrea@gmail.com> <179084999520.434549.4764913674478855382@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eeJjcL0E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A5E1F000FF;
+	Thu,  1 Oct 2026 12:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790857261;
+	bh=MVTra0NODk2ukfHSv4EropBInomf+hUpsPIFCCjdQNY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=eeJjcL0Eh3wbg0QsYh8LPr+52zDsk8iXP0lCLkCvWFynD4wJ06ep3YWFIJkjBeQL8
+	 Wa1qXCX2emzQZu8t+PmG7txasXUi+DbMlgLoF/vDod8SAs2ePR4GReIp4trYAr/vtt
+	 XiN1yyQRyJ4pazZ8zA/ZyFq6kiNdeGB/0KAgY7fyQB8K4WRMMYrYt6XSa78GCfYQUk
+	 s5/kwbbaJfLmLdQcqgFMWRe9BeF0+nZRVWhRz60wcmkxv87p1qnYZBwes/EdQOdO1j
+	 i/jvuQ8b0oCbWQh7EEKD2zxSEoBZMk7i9ri1lEbwmqdBpg1HkEHykkoKmD9ONYSC3E
+	 kRFRtqYudl06w==
+Subject:
+ Re: [PATCH net-next v2 1/3] net: pcs: rzn1-miic: Fix port numbering on RZ/T2H
+From: netdev-bot+sashiko@kernel.org
+To: khendry@reliablecontrols.com
+Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 01 Oct 2026 12:20:59 +0000
+Message-ID: <179085725981.434549.8679017357220612418@kernel.org>
+In-Reply-To:
+ <20260928-miic-validate-dtb-v2-1-1ee3d33748e9@reliablecontrols.com>
+References:
+ <20260928-miic-validate-dtb-v2-1-1ee3d33748e9@reliablecontrols.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 01, 2026 at 10:19:55AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> For an untagged packet this helper saves vlan_proto = 0. The consumer only
-> ever sets a tag and never clears one:
-[...]
-> So would fragments 2..N reach br_nf_push_frag_xmit()->br_dev_queue_push_xmit()
-> with their ingress 802.1Q/802.1ad tag still set, while the first fragment
-> goes out untagged?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Yes. Conntrack defrag keeps the original fragments on frag_list for both
-IPv6 and IPv4 here (ip_frag_coalesce_ok() is true only for local
-delivery), each with its ingress tag, and br_handle_vlan() clears the
-tag of the head skb only. On the fast path those skbs are sent as the
-fragments.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-I extended my reproducer with a port that is untagged in VLAN 10 and a
-static FDB entry, so the packet is not cloned. With this patch applied,
-6/9 IPv6 and 6/9 IPv4 fragments left that port with "vlan 10"; only the
-first fragment of each packet was untagged. This is not introduced by
-this patch, but it means the changelog claim was too broad.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-v2 will add a second patch that clears the tag in br_nf_push_frag_xmit()
-when none was saved, as nf_ct_bridge_frag_restore() does, and narrow the
-changelog of this one to the fragments ip6_fragment() builds.
+- [Medium] `miic_port_max` means two different things in
+  drivers/net/pcs/pcs-rzn1-miic.c: - `miic_create()` (line 485) treats…
 
-The BR_VLAN_TUNNEL case does not reach the refragmentation code:
-br_handle_egress_vlan_tunnel() attaches a metadata dst, so
-br_nf_dev_queue_xmit() drops the packet at the !skb_valid_dst() check.
+Pre-existing issues:
+- [Medium] In `miic_parse_dt()` (drivers/net/pcs/pcs-rzn1-miic.c), the
+  child node's DT "reg" value is used unchecked in two places: - It…
 
-> Also, the comment "Fragments may not inherit the MAC header or VLAN tag"
-> does not seem accurate for reused frag_list skbs, which keep their own tag.
+--
 
-Agreed, v2 rewords it.
+net: pcs: rzn1-miic: Fix port numbering on RZ/T2H
 
-pw-bot: cr
+This commit changes miic_port_max in rzt2h_miic_of_data from 4 to 3. The
+RZ/T2H ports are documented as 0 to 3.
 
-Thanks,
-  Andrea
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
+> index cb74861e823c8..df70309c2d970 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -838,7 +838,7 @@ static struct miic_of_data rzt2h_miic_of_data = {
+>  	.index_to_string = rzt2h_index_to_string,
+>  	.index_to_string_count = ARRAY_SIZE(rzt2h_index_to_string),
+>  	.miic_port_start = 0,
+> -	.miic_port_max = 4,
+> +	.miic_port_max = 3,
+
+[Severity: Medium]
+Does this leave converter 3 out of miic_init_hw() on RZ/T2H?
+
+This file uses miic_port_max in two ways. miic_create() treats it as the
+highest valid port, inclusive:
+
+drivers/net/pcs/pcs-rzn1-miic.c:miic_create() {
+    ...
+	if (port > of_data->miic_port_max || port < of_data->miic_port_start) {
+    ...
+}
+
+miic_init_hw() treats it as a converter count, exclusive:
+
+drivers/net/pcs/pcs-rzn1-miic.c:miic_init_hw() {
+    ...
+	for (port = 0; port < miic->of_data->miic_port_max; port++) {
+		miic_converter_enable(miic, port, 0);
+    ...
+}
+
+With miic_port_max = 3 and miic_port_start = 0, the loop now covers only
+ports 0 to 2. miic_converter_enable() changes only the CONVRST bit for the
+port it is given. So CONVRST bit 3 (MIIC_CONVRST_PHYIF_RST(3)) is no longer
+cleared at probe.
+
+CONV3 then stays in whatever reset state the bootloader left it in while
+MODCTRL is reprogrammed.
+
+A later patch in this series, "net: pcs: rzn1-miic: Fix miic register
+initialization loop", changes the loop bound to
+miic_port_max - miic_port_start + 1. After that change both uses agree
+again.
+
+This patch has a Fixes: tag, so it could be backported on its own. Could
+the two patches be squashed or reordered, so that neither bisect nor stable
+ever sees this in-between state?
+
+>  	.sw_mode_mask = GENMASK(2, 0),
+>  	.reset_ids = rzt2h_reset_ids,
+>  	.reset_count = ARRAY_SIZE(rzt2h_reset_ids),
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can miic_parse_dt() write
+past the end of dt_val[]?
+
+The DT "reg" value of each converter child is used as an index with no
+bounds check:
+
+drivers/net/pcs/pcs-rzn1-miic.c:miic_parse_dt() {
+    ...
+	dt_val = kmalloc_objs(*dt_val, miic->of_data->conf_conv_count);
+    ...
+		/* Adjust for 0 based index */
+		dt_val[port + !miic->of_data->miic_port_start] = conf;
+    ...
+		miic_configure_phy_link(miic, conf, port, active_low);
+    ...
+}
+
+On RZ/T2H conf_conv_count is 5. A child with reg >= 4 therefore writes at
+index 5 or higher.
+
+The same port value also reaches BIT(port + shift) in
+miic_configure_phy_link(). A large value there would be an undefined shift.
+
+The "renesas,miic-input" value is not range checked either. When no match
+table entry matches, miic_dump_conf() uses it as
+of_data->conf_to_string[conf[i]].
+
+A later patch in this series, "net: pcs: rzn1-miic: Validate dtb
+configuration values", adds port and conf range checks before the dt_val[]
+write. That covers the converter child path.
+
+The top-level "renesas,miic-switch-portin" value still looks unchecked
+after that patch:
+
+	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
+		dt_val[0] = conf;
+
+Could an out-of-range value there still reach conf_to_string[conf[0]] in
+miic_dump_conf()?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-miic-validate-dtb-v2-0-1ee3d33748e9%40reliablecontrols.com
