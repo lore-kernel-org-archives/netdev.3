@@ -1,97 +1,144 @@
-Received: from mta0.migadu.com (out-232.mta0.migadu.com [91.218.175.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16723BD17
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F223A377EBA
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790854852; cv=none; b=sSttUioz6izjgq3jWmvoJDjL16wRzPJ/mYdtj9ycsT0rwef7N8ysRwC50DLrLxPzC5ojrMQXUbdmERnxcAvTXBR11uqQt61PHVKL9jXFu7Nn4/qO5oB8zJy0E8OqnDSTIylaKy6cZ3Nn3PcVI2G80WnVpckLKdFfNzNzDJ5TOfI=
+	t=1790854966; cv=none; b=pHi+Obyj9RPr17mBNZRa7JVU1OxyF8xOoZ6OIOTQ2tPQ3g03OQsRgBTvLPRbo8sIhgtu3R3gKOvnNqITkBwEnBhIA+5shOXDOdIPp6nTZ53uhex0Iomyoe04h26k5TppIh7gyQih1TumXj3FyLlsnQ1ymrN6qWoXxbsdSRydeVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790854852; c=relaxed/simple;
-	bh=TdrxPeocDCcL7nOQDC314woy+U7ILdOxkwXK94uv0QQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kGKLJbkfsUyRWL3sN23x6h32vT7Es3g5qXYDYa1LpeBhYJweR8lqCYvYWZsPFMgSbP9CWYBOUlmLmq4x9N8uefZic2vtyyTExk7ciw1udDm4kGTvjXirfErk2BdcDjbAuWMy5BXUcwnN5u76TqTSGSOaaMCeJ6fzY15Lwt0YLxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ibsJxtcf; arc=none smtp.client-ip=91.218.175.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790854966; c=relaxed/simple;
+	bh=IDWlGcILCgeTfh64c3wWvrJ1SZ20s1bbqET00o/9NcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EwN4ebPoyI00ZH2+NBOUEUfLC92DDoExR9i82UdV6cPx36FYKscf4xvnKPuK3ZPKkmw3qjHvfVwjEanivXaTxckOPHnOQpmxBs60zzp1IWXarNlOGXLOFjSfuTd26GoA2M3GGA5ovYnSnjip67Jz9XlhcEOcscPem3a0JlaeU20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=D9Y1eKKa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qnwOLbSR; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ibsJxtcf"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=TdrxPeocDCcL7nOQDC314woy+U7ILdOxkwXK94uv0QQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790854847; v=1; x=1791459647;
- b=ibsJxtcftBOqOPUtt10M7Wohs4/1g4A8KX4OTYFh/HxAJLYF7msyBE9ScYTpG18Z0fIyoB2m
- 4/Z0ROICJZyyNuXou6xPyX6s19+WsX0QgOCxyrNlBXCk6BzOBVFvQ94tKiBXKiI3enEJNhv7Jdc
- OLbmmKwlbb/UHUvSqy2BhmxQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 58d18caaa2fd1b83;
-	Thu, 01 Oct 2026 11:40:47 +0000
-X-Mizu-Trace-ID: 58d18caaa2fd1b83
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ddd0a7d0-3aae-4847-a592-4b429762bdc7@linux.dev>
-Date: Thu, 1 Oct 2026 19:40:38 +0800
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="D9Y1eKKa";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qnwOLbSR"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2A17A7A012E
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:42:43 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 07:42:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1790854961; x=1790941361; bh=wiR7GHYhM8M440AYDtUUo2wDPugwTGMs
+	7bdBVyUJwQU=; b=D9Y1eKKa4jL7dXqHWADDBgFMqyirU77x8DVPs13pGNb0SHXH
+	IoaikWlkbK1yWktiSTDrnN+/Ghqlt+BsIAQCm4KWzl5UAE8AYbs2QWOp1t1U9/S/
+	jqBkHhvEu0u8y7ZxjKCH1buhIgCXcd9uaUejO1PbH7tICo5cby/wPo06RLg3xon/
+	6IH1moUunrRGFu2cPpwz9TtY3OssPaNObsUXPUY4lE1EZeFGF06Kj+g/GA1juNHc
+	k5GdlE/TlA4HDSo5gB9JCjsBrljJWHlAxQLPF7B/a0KsCdj2N5SqM4OGf0G1i871
+	7IEp/k8B7c2l7NKRZsKEIJzFP02SjGIgwH40Ng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790854961; x=
+	1790941361; bh=wiR7GHYhM8M440AYDtUUo2wDPugwTGMs7bdBVyUJwQU=; b=q
+	nwOLbSRe3u/VZ2/X1M1HGIL0Qie0nfNzKoolHpayLgf3DXK12vC2sKyHbqMqx9A/
+	j/NTh9wTRhB8TxtVpm42pqejWJ3wzDUmGFCoDb16yDglVnCuwaOmUTn5/wfvEmG1
+	FA0236sJFVeh0+iG9/Bj67VprbqbNAXrmkUaxjO5naq4EGoiPYe+nFFIgwG4sGsZ
+	+CPpdPdxYIDB8taKcFjvfTsBqQION5FXdlZFdtzI6V6Yu3r6ZHbvcAo5vUOBU38X
+	YOawh5nou6A37+a0nsTIUkXbaDFF6SojLmvfvucM/CQxDaoHGhPWV+v/1u6kVuHZ
+	vRfTGSkpvCGU3VtUXfLlg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790854961; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:p/08exWPId/z82mUswSZbMQ9e0+2QgHFUZuS/BxvhRNRktS
+	yAbBhgmFOkukL6njVWQ8wK0CHNvIKI9TlOhmr8oPIcsXsVteuSBYVkXAtlmmOnyC
+	l7EdlFmhotIp3ikY7ALr+x0DSRyNkugABOBuMWM525CBxzeyAkfp9pJa2+9gDvWe
+	NrO6rTts/4OVu+SlAUdEzfQXu0zQgz2CEpGivrDxDhTZGrnKTDS1xIc+0nIIelig
+	hF+/R/OJy9XFOutRSNCSZ/XmcLyYiHXlGsk0BSwSxQ55v2gWM1f3oS005agb1NrN
+	xfX+8/FSINCRalpcg3Yp0NZ5AIOfNK02wAiEMuQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:w3cFYu05+oNdK9LY4Pnh9vLjVY07V07d8LU0Yb5CTMU=:IDWlGcILCgeTfh64c3wWvrJ1SZ20s1bbqET00o/9NcE=;
+X-ME-Sender: <xms:MUe-atFphlcj_GDw7yKZ7peGb5YxZr0-xzv0swbYsc_V9SAiLMip5A>
+    <xme:MUe-aqel9_yP2GgIketUbJanWWBzcAFtNXNg5TziAXkIAS04ePxbAzVg__Qjm2qyl
+    FQjZVKmFCtfaI5Qwe2EqGehmB8unVkIzzII8A88vkiC-4hI02uriMVg>
+X-ME-Received: <xmr:MUe-auqf0oUZRtEhnAFGVW8ezww5PzjDORyqJfyzNkisYHmW1p5TTcC11qm5>
+X-ME-Proxy-Cause: dmFkZTFq5Qn6nRJgUzJ8A0Lp07mGWxrMuWgqUOpjryDkcR5C7nDrmlxdUGB+1dHAHFMzCZ
+    PM1Z7KAur5Q3p/pZj989+OOezFlAGikDMYI0syQqkku5V7O6AyfYNE3xdLQ47AdCMk7yOY
+    fr2oPMfK85VfhF2E4E3TK0mxMfhHWjUHt6p8IxxgwFU0Crk0cggTLz61N3LEkyQPZTpZMK
+    6Cq4VghPibym913wVLVgrzDxcOtld/RbqJzg3CNbLigF/LyjiZGcygsu79bmcvIn88VCNQ
+    f4yEYoWC4OOr9RMjNNNnNAvmGtKcAqf1fV3M21z345jEEcMu+JROHXip1bwF+vyUJgcZK3
+    QiNyi4F1OXt/Ihz/H5ARUs9Gm/c+cdh6cXi/pwjIdgE9LvMsv9gUA7yZO3AA6WWMdAYgt6
+    F5xZM3WTGgT+J36AhWwuca87/MSmcgzh1l3OfNf0jQ4V9w64JCJp//hjsvkb09rMhd53cP
+    3GAVd8O1E0oaT3TCRDveNmDx0uewuh2+lvOUZpWxMusrMI4GWz0jTcAhbKxhggTVIXO+MY
+    uKnO/4C+0GGa1ROJFDJKgOGh31ZEdXHqV68KBm6uWkomyklfW3QExRCg+P3eZIGrNN/B7s
+    hkWioeDplcNjSyHddgMSfLOCVl2AUxwPbWStYrJAfgyO8Cv/PMDHUNu55pKw
+X-ME-Proxy: <xmx:MUe-ajDRfOCE88ukX4VW32ntYmeSriSXoLwyIF3ixlQrjROisc2D8Q>
+    <xmx:MUe-avdSRq7dzQkO3g8s1LqStuIayv7p7veoHYM_FIi0De8Dcc9GNQ>
+    <xmx:MUe-arvcnHV34CRoCs0eErqL8HXO0PsxYs9XxgNwNCzoi1ppzAeU5A>
+    <xmx:MUe-amgIaEF6hJIE32G_bwWlw7hq7p2INVsW9wX_gQUrLtH2EMfSaA>
+    <xmx:MUe-agybIW5Q2aqix3A8yM8o7-27DrhHEG6dcvMVTzzKs_A1csJNZz9g>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 07:42:40 -0400 (EDT)
+Date: Thu, 1 Oct 2026 13:42:38 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH ipsec 5/7] net/mlx5e: Use the packet sequence number for
+ the IPsec IV
+Message-ID: <ar5HLrGSiwbmr-pR@krikkit>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20260930144523.435271-7-Jeremy.Jean@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: fix the program leak when XDP is replaced
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, jv@jvosburgh.net,
- joamaki@gmail.com, daniel@iogearbox.net
-References: <20261001012639.298690-1-kuba@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261001012639.298690-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260930144523.435271-7-Jeremy.Jean@oss.cyber.gouv.fr>
+
+2026-09-30, 14:45:22 +0000, Jérémy Jean wrote:
+> mlx5e_ipsec_set_iv_esn() may decrement xo->seq.hi for a GSO skb based
+> on the SA's current output counter. The metadata already contains the
+
+And doing a check based on x->replay_esn->oseq, which may not match
+the value for this packet, seems really weird.
 
 
-On 10/1/26 9:26 AM, Jakub Kicinski wrote:
-> We need to release the reference on the old BPF prog, whether
-> we are going to no-prog, or replacing the prog with another.
->
-> Spotted by AI while running tests for the propagation series
-> (leaked programs were accumulating). Selftest will come in
-> the net-next series to avoid conflicts.
->
-> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-> Fixes: 6d5f1ef83868 ("bonding: Fix negative jump label count on nested bonding")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-
-> ---
-> CC: jv@jvosburgh.net
-> CC: joamaki@gmail.com
-> CC: daniel@iogearbox.net
-> ---
->   drivers/net/bonding/bond_main.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index de2489c3d9bf..09aa45d71fab 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -5732,12 +5732,12 @@ static int bond_xdp_set(struct net_device *dev, struct bpf_prog *prog,
->   			bpf_prog_inc(prog);
->   	}
->   
-> -	if (prog) {
-> +	if (prog && !old_prog)
->   		static_branch_inc(&bpf_master_redirect_enabled_key);
-> -	} else if (old_prog) {
-> -		bpf_prog_put(old_prog);
-> +	else if (!prog && old_prog)
->   		static_branch_dec(&bpf_master_redirect_enabled_key);
+> -	if (unlikely(skb_is_gso(skb) && oseq < MLX5E_IPSEC_ESN_SCOPE_MID &&
+> -		     MLX5E_IPSEC_ESN_SCOPE_MID < (oseq - skb_shinfo(skb)->gso_segs))) {
+> -		seq_hi = xo->seq.hi - 1;
+> -	} else {
+> -		seq_hi = xo->seq.hi;
 > -	}
-> +	if (old_prog)
-> +		bpf_prog_put(old_prog);
->   
->   	return 0;
->   
+
+I guess this is trying to solve the same thing as 4b549ccce941 ("xfrm:
+replay: Fix ESN wrap around for GSO")?
+
+
+>  	/* Place the SN in the IV field */
+> -	seqno = cpu_to_be64(xo->seq.low + ((u64)seq_hi << 32));
+> +	seqno = cpu_to_be64(xo->seq.low + ((u64)xo->seq.hi << 32));
+
+This is starting to feel like we should have a helper to compose the
+64b PN, and maybe give a name to the (low,hi) pair struct to pass it
+to that helper.
+
+-- 
+Sabrina
