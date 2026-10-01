@@ -1,149 +1,157 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF455218BC;
-	Thu,  1 Oct 2026 14:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865052; cv=pass; b=rjDBt11HT3gv/m604IGjAcmw8ai1Mc8gU+Q4qff/00KcJJE7v0na6Gqa3J/oMWrRYus3I1osg90LuB8nhxf4i9Y8JLLWv6pq+b5UpPvjIK4BBrRKRFXIEKasT2mOH5EKJQnnn7gpUF61vx3pk4U3B/gjfilalhVZUFqn8NaVLf0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865052; c=relaxed/simple;
-	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=bBtkjbRPHy91rVwl9l+Mo/b23XqNtnD6YjZByu055b3zl5oVTCixMC4QvGn9F69R+3nN2l7Y1SGTIj9FV9YjRC5CSRadEhpsHQSBs4f4NCWmSbO0CTAk7mBTAei75RnA7JUpDXJYcRi5ohkEdA3nHIphB0lxDlQtw6Kqigm6eZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=NvuTh+S3; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2CB51E42C
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 14:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790865057; cv=none; b=ZWUutcoGwS9LiY9fj83cYhQ9w77/TQ4dTK4GlzvdoT5iDfufxluJndDzhDZ4OmLBWo1ZLvUBJuHTxRD9ePJzApHK7eY3R/1Nxs9KU5ajhkjs+pXLPO58UsdxCzEHqFaFtXxpPACYsD/UDu9YcJ9ip7qmZJCiaCdaFnHEODTWqJA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790865057; c=relaxed/simple;
+	bh=3RzvX1xwFMFMNAEqMuJeEGt+6r6CRUg6jWWr1XoulkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fTe+3GtXFeXZjKbFJyQWwFCAd72b7J4P/bCgMxVa9wmGM5xoqRloVeEgqSSCPMoJGsA72RjG+3ZL66Z9W/XdQz8Gu8/XT+9ZkLwYO8eB5UfCrTtiGtNHklhABPLu8AEizEiap7nsL6uOGycoKViigMEH91IC2ryLl2szvrOP7Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qI+u7BWs; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="NvuTh+S3"
-Received: from fauth-c2-smtp.messagingengine.com (fauth-c2-smtp.messagingengine.com [204.75.18.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hwYwz3cJKz49PxK;
-	Thu, 01 Oct 2026 17:20:51 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1790864451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
-	b=NvuTh+S3YGCUHb+4Wo3bxFnyGFFa1xfjBNQiXHS886DnRmR+xll8iZkVvFQTuUsqguvJaI
-	7Z1iTWxnLeXG35RjfrRFBTzQGdYPPQc7GTDaVEmX3pOWTH8RfcaGMpJC8H0l20eBspI/uR
-	0aDdBi864XMh/fSFimDeVreeDMF9kH/ujibVpocM3UdR4VahGQBSi5mxjnhI4HbGgkjD/M
-	rEnnjo894nc62U/sDBoJHZo5D75y1UX627lrrMmObG3CkDq0K4vKERgckHHQ2Hrcb7hdJ+
-	e0YB2gPdu2cXV7AaSsqLEXKRPvqS/K2ep9qWdrGLvNFbSSnfqRVkZacMPy9j9A==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1790864451;
-	b=EvKyBKjflPtmo2JuDNh4EXOgHkAV3JQo1c5IVSRAC88PgC6c0y+geSaMwd6d0Xe4sg5w2R
-	yzgjrPSZjduQKwX9fnq7oTCII52FBTT2JDXG4QcZyqSNcDvpa+Hw8kuD72lnKzn7+4fGsy
-	82WRc5xjS66sDcwEWIypG+ZfLy76MtDiqclilYzf2HCCSjn0JdlLL1TYFeV0/o4Cz0YOfM
-	zpDYMtizdvoGDjUfXDLrsD14SECGlGqZR3pxc2WBVCXR8PasC1TXHZf19X1psCKJZo3CSQ
-	elqiUeEePosPoTW5mhFCmhX1HzuleuTOzgf/8iU30sISm9JXw/O5zia3e2dJbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1790864451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fh3mHGVp2bOdCQOsMBmhI2ZiToofIndaNbGggmqwne0=;
-	b=gf7WRUHKgtGuIFUaL8SvsftioKspdPBbGrI0i+MQMScY3RTZMx93n8xiqeiVLOGaaR2cMR
-	EX1Q3j7UR82H/RffroUN30otBnBtN/Vopbr6C+dEenZLYpPrmC6KXNzdaGdY6obkPuWej1
-	rBu7cd45fqGTSuhD6wawpmyhuhdTuEsxreCux4V2eRn8GTokk6uld3KsA3gTVt/E8GqUR4
-	YQLAkxhIi+knWHNv954uc8O5g3KzPTggcfCgwIyspYWDl1EynlEcM0WGCgs8kgnK3UtvfM
-	pO9igQGlGLHFQpOIZED0UUnQq/IehEBZvSDoWJyjeab5fcvD0MnZSjRAlMfPJg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id C25A9198003A;
-	Thu,  1 Oct 2026 10:20:49 -0400 (EDT)
-Received: from ams-imap-13 ([10.64.2.33])
-  by ams-compute-02.internal (MEProxy); Thu, 01 Oct 2026 10:20:49 -0400
-X-ME-Sender: <xms:P2y-at5Sq2K2YBXmoamxP3_aegmdBY88kcXAEm3CjsS37unnNGaOlA>
-    <xme:P2y-av1xmuX4fZgneKrDgZobXyMcQT5ZiuMNAFLouu1tO96A7GKWAXw-67NYUQPk9
-    7F0sk3hc8OKxye5MB_nEWthdVolyvKtGtY2D9nN_o37r6Ag0fIBN68s>
-X-ME-Proxy-Cause: dmFkZTEalv8rOj2Uj3+4YFCUjdY/jYEb/+9gtNNrCuYEzSg/QJULIbYWKJ1VzCB/eCjHp6
-    kfyShI04ct/CIcgZMVclZs6vAFYUtJQiVdI09AQwptSTRrOuR88rxCE6cQxvjs8rTz/v+T
-    mnEMYXmbDqWqQNsxamR7ByALCwVQ780Vapo8pwgxZ38PmYyLc/lkFKJ9hMnlJ+grHwGGHI
-    FGMvYeL/D0s8RH/kvjcilPzTiLhDB4XxarKa/426kQ2ek9K5MLJXPouMuiX8WK8RZu+l9I
-    GVTWdqZaq0T/2A1/yYQGikTFvz3vyNJ2LkT3mXtTThp5+4jMPTjGl2Q2OOx9oeQN3ud0uA
-    wUxl1jw6ut4i+cic/zrSufGHZGBkHi2d9Dkh0/uqVzLdUPhnqYOh+Hpg0XDwmdthr4Qtwz
-    o2JyQsQ7mGssAQLe/XweruY/GYqcDOqxIz4kIjmPOaO5ARMZEi4k8iuo/QjQphqW3PxiAZ
-    7kXs/OxmDe4kWuMGzzRC2a780ta6UscrViCOcspVNUy5w2TEEvXxzoCiDS/PVSIQ863PUR
-    nIh/zqdLtXjXi6Cc2+BkfNUUn1xj7tpCxsrGPGc8CdvsCi1uWBRgDgWsiy+OJHn8at3/a7
-    iZWEvMJhoVtyDiuYQhhot+otiBduMBtyee/dtPcCz4ISZHtCjNOusIxmy0+w
-X-ME-Proxy: <xmx:QWy-aiFkC4gpk_Pl-MUOTzG8-khCCwSXOcQgAdbxIqi0EEoxEs_Vfw>
-    <xmx:QWy-ajze2VroZWdrYm6Q8u3cYVzfql40lsa5gJbClFHuNVwDYRePmA>
-    <xmx:QWy-ajDKjy4Vko2m8TDkF3lF7_3ridpKXSC8Bu5OLUkS4BH6n6vOeQ>
-    <xmx:QWy-aiWmM15F7kbqvcJIIMJqfzwy0MNDozQSvEHpWU2AH2GfZuBgyg>
-    <xmx:QWy-ali2M8V1ecKfKNxSBx0bQieQpAQS6KVM3mqmPcZiKMRdz2NblIfr>
-Feedback-ID: i02414972:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 2DCD6F80094; Thu,  1 Oct 2026 10:20:47 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qI+u7BWs"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a003bd18e5so25414855e9.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 07:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790865050; x=1791469850; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vQ/xYcU6XZ5xLlPB/q/5AjykoyECyGBCjj320diGJdI=;
+        b=qI+u7BWsEGJ2y8R5917LB6Ws+LRvDTkmWGROE2Zsn1eN2TLKlbZDyVBStYurxE9+lK
+         IA1tEACvGR+jHccnZnqmuFhg8qtzMwiPcslK06xd05ZVXSZezM2v3gqkwWUBbyOQ/Sf2
+         4j42pD+iHuC1/gYdmV3PkfEg9MEERpm5HO73GQ/gSKw/wZhGei6DqLL7xyibrPZ+GrFY
+         svscmlsBEUb9eK1G7vQo48eEH8LPWUMcPj0Fkf4kH+O19QB+y0fqt2NfX24x2ixyKRUp
+         kyHMckzwbFo03vITHChL/9b7hL7UjVhkYDs49WYAVE0NODEvCAqom80iMOd3tNaBn445
+         tcNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790865050; x=1791469850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vQ/xYcU6XZ5xLlPB/q/5AjykoyECyGBCjj320diGJdI=;
+        b=DCvmYi3CkZySqCNMq44X2on0vG6uchyT1jihHZ8rr2+s6kCVZILtjBP1a9/YSojSLO
+         IrT9QI+Z2tShilt2+6I0DpaZfbwo+uc7DXKg0UVqLDSFzSv6lGXwLf5Knz+1V+XGz0jp
+         S4UwvtM/em9etSe4TBNgp45/oBNf9Ho+/u0pnRXzlDE+pPW+koZbVBSE2PUtLKT57v1/
+         VMUfiIg8OJr+aujVz6LtVrA/oLpWnXKh14/LOSHL6ojIFKl8VLF7v6JyMnRu7R8kieKq
+         9B/KuX8/pGVl57JFuJn7cXunvMiEOmOZfOuKX+uGusbZnYWVqyQq0XmJ7eOJccge+v8I
+         ORcw==
+X-Forwarded-Encrypted: i=1; AKwUvBzQVf/yid3L3T6lVmUhOVKxfZs3vbo74iot/7euuVj2thL+PN/rjuBQgJIQkj7UmYzU5hntqgA=@vger.kernel.org
+X-Gm-Message-State: AFuF++m7sDwCRUU1yuEslqet6K+I4uhISRVDJRHRSgXLqtx+pJvr1Oo8
+	ESox+EgBu66zoucTsr05cUFY17nstyXx2ILTUKXr3qL67tMaEtXlOvttcq7/F2Xh
+X-Gm-Gg: AYBFou0ejhSqw/jueHsYCIIUKM/hVLBA3RELemEBOW1WblxSyra3U75nY3J3YsvxVsK
+	WLr8hTmRrGv2uY4nObWl4LQZtot40trhvjh14MDInaZg8MIGXeZHmS1tUu2mV5hnSyarLiWCG9s
+	tC0jSuepvCmQchu4wNFQdgm7vo2IellNBiaKmVDzwrWosyIege/0KPVJIw9U4REXXjVf9sDLsVI
+	o0PsjEgikvI4UCPWccOZePO2EZvCJjI+Z4hLXyi9QO4/Sm1/yx2QNt3K2Lnt/R/nVFEJK1/zxUi
+	B2XEvssDvhqYLu+ZZ+0Q7Q2AiM0RRcCHqTgNT7MwalxKCdCdiMGGkGdkHZmTPwcrhjp1ijmWzPR
+	Tl982ip1r8pkqBU7B2bWmrHU6zuqYTWhvrk4cxgGmVwpBtmg4J7tSjrg9JhIlCCYKhkIVacYo4I
+	A8zY6MkFERJx3h6ZsCA3QaUpWkvHH4TieNapndF3dnpOGevCVVKt7+0RA7B2raVjngQRpVpEaR8
+	twPfir7Q42+AYmGA+jTMp/57gNVXE5tC47HsSZBWgo=
+X-Received: by 2002:a05:600c:46d0:b0:4a0:1a18:b742 with SMTP id 5b1f17b1804b1-4a01ad909e9mr86412115e9.2.1790865049941;
+        Thu, 01 Oct 2026 07:30:49 -0700 (PDT)
+Received: from andreayoga.wind3.hub ([31.189.27.30])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b06a360c2sm6035921f8f.36.2026.10.01.07.30.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 07:30:49 -0700 (PDT)
+From: Andrea Parri <parri.andrea@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Andrea Parri <parri.andrea@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] rtnetlink: wait for RCU readers in rtnl_link_unregister()
+Date: Thu,  1 Oct 2026 16:30:39 +0200
+Message-ID: <20261001143040.28467-1-parri.andrea@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A0G5p0OZ_htJ
-Date: Thu, 01 Oct 2026 17:20:27 +0300
-From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
-To: "Marcel Holtmann" <marcel@holtmann.org>
-Cc: "Manivannan Sadhasivam" <mani@kernel.org>,
- "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jeff Johnson" <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, "Bjorn Andersson" <andersson@kernel.org>,
- "Chris Lew" <christopher.lew@oss.qualcomm.com>,
- "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
- "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
-Message-Id: <19433f85-4cf1-4ec1-a26f-0eab7df062df@app.fastmail.com>
-In-Reply-To: <0A4EB216-06E0-4A7D-A0FD-821DD371773B@holtmann.org>
-References: <20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com>
- <20260922-qrtr-multi-ep-v3-2-c00831e88957@oss.qualcomm.com>
- <7aed969d-0868-4c9c-967e-7766dbba427e@oss.qualcomm.com>
- <13BFC5B0-77E6-48F2-B857-37686EA1DB2C@holtmann.org>
- <05e539f8-bb7c-4038-8a83-8ab0d1a5b917@app.fastmail.com>
- <m657dtesuagn7vdajsuzjb4mfysf5xabsu3s6n6lujj7yb3z4p@m2e7e3n4zyev>
- <10091679-7567-42C2-B77E-EFD95CEDD649@holtmann.org>
- <6e0ed085-07d0-46f0-97dd-b8d942842e1f@app.fastmail.com>
- <0A4EB216-06E0-4A7D-A0FD-821DD371773B@holtmann.org>
-Subject: Re: [PATCH v3 2/4] net: qrtr: Assign unique node id for MHI endpoints
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 30, 2026, at 17:33, Marcel Holtmann wrote:
-> > Well, in defense of Manivannan's patchset it currently works for PCI=
-+AHB
-> > setups better than the last version of that by Denis/Mihai/me (altho=
-ugh=20
-> > I could easily fix that), and it may be simpler for userspace to
-> > continue using nid than having to bind to an endpoint, which requires
-> > more changes in userspace code.
-> >=20
-> > The userspace just needs to know the nid.
->=20
-> and existing userspace? You can _NOT_ break existing userspace.
->=20
-> Don=E2=80=99t you need to re-write all existing QRTRIPC packets to act=
-ually even make this work?
+rtnl_link_ops_get() finds ops on link_ops under rcu_read_lock() and only
+then takes ops->srcu. rtnl_link_unregister() unlinks ops, then calls
+synchronize_srcu() and cleanup_srcu_struct() without first waiting for
+RCU readers. A reader that found ops before list_del_rcu() and has not yet
+taken ops->srcu is not waited for.
 
-Well, from what I understand this rewriting is the plan.
+Such a reader then locks a cleaned-up srcu_struct and keeps using ops
+after the module that owns it is gone. rtnl_newlink() and
+rtnl_dump_ifinfo() both look up ops without RTNL, the latter for any
+user that dumps links filtered by kind.
 
-It is true that if someone has a single card, the nid changes, thus
-maybe breaking userspace if the userspace has hardcoded nid.
+With delays added between the lookup and srcu_read_lock() in
+rtnl_link_ops_get(), and before rtnl_link_ops_put() in
+rtnl_dump_ifinfo(), running "ip link show type dummy" alongside
+"rmmod dummy" on a KASAN kernel gives:
 
-But if someone has multiple cards, the breakage to userspace is less
-with this patch, since userspace can keep on using the same code and
-just change the nid, whereas with the endpoint_id patch, the userspace
-needs code changes to bind to an endpoint.
+  BUG: KASAN: vmalloc-out-of-bounds in __srcu_read_unlock+0x57/0x70
+  Read of size 8 at addr ffffffffc02ff318 by task ip/147
+  Call Trace:
+   __srcu_read_unlock+0x57/0x70
+   rtnl_dump_ifinfo.cold+0x30/0x3b
+   rtnl_dumpit+0x7a/0x1b0
+   netlink_dump+0x486/0x11b0
+   __netlink_dump_start+0x661/0x910
+   rtnetlink_rcv_msg+0x611/0x9e0
+   netlink_rcv_skb+0x126/0x380
+   netlink_unicast+0x605/0x830
+   netlink_sendmsg+0x6d0/0xbb0
+   __sys_sendto+0x335/0x3a0
 
-BR, Juha-Matti
+Call synchronize_rcu() before synchronize_srcu(), as
+rtnl_af_unregister() already does. This should be enough because
+rtnl_link_ops_get() is the only RCU walker of link_ops, and it takes
+ops->srcu before rcu_read_unlock(), so every reader that found ops is
+covered by synchronize_srcu() once the RCU grace period ends. The extra
+grace period only costs time at module unload.
+
+Readers and the writer were serialized by RTNL until link_ops got its
+own mutex, which is why the missing RCU wait did not matter before.
+
+Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
+Cc: stable@vger.kernel.org
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Assisted-by: LLM
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+---
+v2:
+- Add a comment above synchronize_rcu() (Eric)
+- Add Eric's Reviewed-by
+
+v1: https://lore.kernel.org/netdev/20260929170444.218093-1-parri.andrea@gmail.com/
+
+ net/core/rtnetlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index be9d1625bac31..580101b5ab585 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -707,6 +707,10 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
+ 	list_del_rcu(&ops->list);
+ 	mutex_unlock(&link_ops_mutex);
+ 
++	/* Wait for rtnl_link_ops_get() readers that found ops but have
++	 * not yet taken ops->srcu.
++	 */
++	synchronize_rcu();
+ 	synchronize_srcu(&ops->srcu);
+ 	cleanup_srcu_struct(&ops->srcu);
+ 
+
+base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
+-- 
+2.53.0
+
