@@ -1,95 +1,96 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
+Received: from mail-dl2-f41.google.com (mail-dl2-f41.google.com [74.125.229.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE323ED3CE
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 03:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F6331F996
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790827199; cv=pass; b=uYp1d2Jq64+g3lLun04yTj6Kvj6Fs0I6XgTqIiLpl4TDMLy5w6fK6OB2X0sr82XuwHL1SE0N4nfe5PwwVV5vMY7AA66Dud86hAe9o+vfvtpuYEiboxRCAVCmNlbDo/ZoUBmIAueqWaMb0nv7/2+H0T00owyv1COp0zVsxV6TPWo=
+	t=1790827654; cv=pass; b=O8xZN2WoQbFovdqn4E1Nj9GW4aqgKKtpiXC7FyzTInCz5kA0gX8FoeGAMmS7Mt+oKExnVDDuRvWGA+dkMS5nC3u0QMK+9Z8h14pw+GrxBDxbER2sCRAaw1IG1I4C8XY15x1odFf1UA4JjL78s2aslmpIq4N04W8Mn9WPrsGmUqE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790827199; c=relaxed/simple;
-	bh=JfjhtWAX/5PoHBlGE27TqtOtdtC4PuPBWAxjmTiuq7Y=;
+	s=arc-20240116; t=1790827654; c=relaxed/simple;
+	bh=YkjwWReI3QCWe09zXhFij7zBQpgeEk4qxmf2p0+9+QI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lbLaNNjegkf+uRE5QGFqxmQtjWwF2KYHVSRm+m/E6E2GJoLRNviOPPdUIhpKnvFPEwLXQzofSzGbK21/pi1bkFmxKA88zseb7BcTQurvxB+n4syB9Wl51WfWFl+n+/b1u8z99vpAMkxD9wQnh/D0Ec3JGCUj1bCcZGvpXwnI+Y8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cwtaXyA8; arc=pass smtp.client-ip=74.125.229.171
+	 To:Cc:Content-Type; b=NlZF2/3rAUE+vXbAkks974GqGetSAkQrucSoSXSUzC4zMXKdF3J1+6ID58l3AUg8U6v9KfFjyKzsCy5VPUfyanPtGp1tLU5MfpvX/ajSPFigLnB4qIzds43GfuCHPN31TjM0qZoPYJmtgWAV0TTBsk/jrGX5F24NK2oQCrzirrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JV3Z05GU; arc=pass smtp.client-ip=74.125.229.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cwtaXyA8"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-1450541ab18so6657717c88.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 20:59:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790827195; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JV3Z05GU"
+Received: by mail-dl2-f41.google.com with SMTP id a92af1059eb24-1480aba0484so725786c88.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:07:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790827652; cv=none;
         d=google.com; s=arc-20260327;
-        b=MVZHQoyJAMr/GYx/HQAQpFYnkriJ2tyonI+SaB44nfD88OqaBs1z/Sd2TTpVBcJVEe
-         WXwRUNQDyrigpi3EED7TeIRIwjCjaAoZxpK6jQBqiRZ46BFdmgQXXnXzOsT08qgZmxjL
-         UUDYmILBpsjly0pTD+y4a1tm5O1/aiAIfxduB6WZIEa0mZqAnDZ0pTlhjv6bQ+G4tmu0
-         p1V9KU1yJ+Nz5b3ZK7ECZawrzsjgj2xTdhwq1mXo1x12O+6sAvjh6637PACDKvotJdKx
-         YPeWfcjXYlbSBAQttqR3bqd0VO2k4Lf9PvqBnLGz/kQ8JYr7yrvkuaURFyTC7udYY0i/
-         Ro2g==
+        b=o1nLO9BCQMdWoM0sdVrwSxMq48glSlZwQH7lludjaF7o6vHjQndJYMIcDZzR1n0+iu
+         7MbB8DYn2ShzWV+XDaVWgo9bAjbmal7SJNIs2awyUupuH8GBgxZxuUB3kjDmPgamgkwp
+         5yejqFckk7jQRa+EDkqEcZtN7/QxhSSwJYBI9FDm1pbt37JAzPtelRJUqUS61sPRCCTA
+         b38DdjupNdr3WnuZJOKhoY9iiMVenRCJnPnM9G2qyhNGVaPFN0KnhSVL1HipehkhHkmT
+         mx2KmZL9EcDJX+3TzPt8Uod//8tMiUAhI6h3qPTsl6y8I+l1F+d5OPQTEkh0sjcVVIML
+         e+/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ywwb2zJHaIFNjSQOhqCmHZmRwQwtwKhmlrvLgQ+t+Tg=;
-        fh=Xw/eskD8H0hPe+1nArgvzdjkQW9xa77jTaWHX86inec=;
-        b=LcPu8rrwHXhb1+PP9EQ2S4zV+bZ1yl42cV/msoYT2md87i+WRBybOZqBcpN5yOAw9r
-         SzfPfquNw1xbOY9JQixZ8+gSKDLuO5UkXIaX8hv/X0lU631Eq3QES4NEenbYMVjbQic9
-         aggCYcrIMjtpEqroNsgga0iXLSgaq0ChYC4JCnEXTv1/HANd9JXKJaBpvqctlnZNuLUu
-         A7Hmpgk06+pp8Sw2Zl9O4CyiMb9Z4kxJPNWUGKmSxfH67CJ10DXmv6CBmsMJxW8y/wog
-         OD/AwZEcBVz6xeuMHQ9jOfP4KNTuJCdMPOCWsAcptRZ/dEYY2XjP84u2NLYeRFyUtVel
-         JgYg==;
+        bh=l3eHEQ2bOwj9/vcLYd/rAmE7Mn4xynnjMzE65jNbwTA=;
+        fh=phVGZhvEuQ+la5vzQLNEDFEnXBkBaoHjdnbWdEM59aM=;
+        b=AVEJyUAeSebbbqTTVViHqNfeB6mVDUflX9wi1hrUur8mHBWwBLtb6ROUZNlsya5/HL
+         nT5cHb0M/vZT3p7B/l0SVBdlo3MrVIS6E3Ch1wfr45Scyiq/lVp2elAaGiLTm4cgHkeI
+         IHfgNFRMhwjrrLIZwmgiAka9oDOwjFZNueWUc9f+kZRMXkVVzigGKC3HEmb24zvV3CZ+
+         BqF9s5Canjv+K6pjIQKGxYZ2KECSFZj/EzpLCCJVOlItll6Aey9UwTThL/ZYf2zoTRZ9
+         4XSPBE4SNAmyRiXJq0F72ytuOrCCS9P2ReDhWG/rNB182uafWmmOlh8CHzmA1qCN3UaQ
+         BBkQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790827195; x=1791431995; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790827652; x=1791432452; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ywwb2zJHaIFNjSQOhqCmHZmRwQwtwKhmlrvLgQ+t+Tg=;
-        b=cwtaXyA8+DEpkP3kx8faRD87R2av2SFFcHmzcAihOwIC4826BafRF0YWeM23RUv+t3
-         R1BJgFJrogeHKrG+ctyAS762llUZCEVUokwkOn8k/R1D0iqZ4Z2IQBVEm6bUYtOtBXqv
-         nlux+OEJOIvjP/E6FKO8H2RBrShnWXLiz3CDqruvXgagFFN06GlplMsCmiEf8SeE4576
-         SYGkB1fVhPEuHTo8AJAPjVsUFApK1/FnJopsmEqULz0pWV50u60mHuhVqgqIc9lgcRUz
-         Y6b8vJlMnTGaj5Damldl7h88xpBABJ7C/TAmjC4WfrMhYSpBNVy6mt4HkjHzmI0lUjTo
-         w1zQ==
+        bh=l3eHEQ2bOwj9/vcLYd/rAmE7Mn4xynnjMzE65jNbwTA=;
+        b=JV3Z05GUW+Y36/wF26IbWgxoD9CNE4bYeY+nw7YMNBKhaowZWnugmdsGUve768KqrJ
+         5EeA3T+IvwublPwJxLHD3cJ5I61d45TXmdH1j5kEjgRi+MEkn3vIabiM/RW1lCipWSN1
+         vKo2EeCoTrGWYw/1Qe1DkG+pLwvbcC3cCxELCedU3qERXC9Y2oJtgS/vvAPVgCba8s5z
+         RhjASzQ61lTPUhAkr2ounEn0X8pGvggeQMIpC96Vy2ydgpMsWPg/nb7u3wvHOD4S4GnX
+         Sw4scku6dr6nhQv3RqnGYxK8m8LsW/OH48Q0slDQSvAOnQ+53jINtnr7mCSKBwrQuBCP
+         WY6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790827195; x=1791431995;
+        d=1e100.net; s=20260707; t=1790827652; x=1791432452;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ywwb2zJHaIFNjSQOhqCmHZmRwQwtwKhmlrvLgQ+t+Tg=;
-        b=vzory5Xh31RJ9u7BAtTDyQcSJQ9D9mCQxW/klsj3wd/OPqU+YDzTtSSZimfxIsf7yL
-         Xum22FiZpPUPOwZwaKAsWrt8s4dmrNwAixxowzj4x6TSpwORIY8NvhkcvNJiP8xFfQe8
-         gRAQCikpbIjmMgc/L+NL+wDyKppmpVM6Y5BlNz5lpu490ctc4pSiIvTg/vmjAvYpwJ1b
-         A66VY2LHJzu/Ini1Hn4Zk8R5faMHmyDhLfiLDxsdMd0JFiYpWMDQ6QdFEEH8b4s86I0H
-         cwWtmuUeK7mu4y8dNMm0FBYZypFPtX9aE1j+LfhBQVhvQSx85wP0oFO8LG5B8crqall8
-         e2Zg==
-X-Forwarded-Encrypted: i=1; AKwUvBwYBDvQePpORV2QanvRmE9aDBReqgwLbMThqkJDfQDF1SCR6DDXbSdF2R/nMT1LKr3NW5IZER4=@vger.kernel.org
-X-Gm-Message-State: AFuF++njPF54PgiRowY6zki+6Wg7lgfhEhVi81eRRughHzeP2xqe7+cs
-	vOINF9eRR8s4d7KlolqVExLmMhlQ/r3xY5uPz8pajVPZ+/w6tuEjDsM9AuJodmuL9eKRzi9YaKR
-	yTgFxhjRaXbARju7qjUMS0Ayq72ZQDDoOmowPfush
-X-Gm-Gg: AYBFou3DcKKo4aaB0BPo3jd9zoyPMCxJrehQEr9qvT+Zs7veyZse85Vw3h4Cwc31GKc
-	ZQQwjcFd3sSy5GexrykX5WwaAmoboUosUlCYblbxpBXCLdHjs5F5JPuryE2M7nm17v/CCKbB5Cp
-	9g49HoLtbpaSXPwJ8SuX8ufGGl2ZbBUqfA+NHl2wZlock6tOWIc8hFHF+qiSfgWp1oLE8yHqod3
-	my2rtbawbsQgB5fQkLD8h23iwvgaHmghaYzbvaIYwB36BgjiDXNTff0JM6Q7+crG8PpYLs91mWU
-	GXCSnFzAFmwp8ng85HPLcYCv5nMJaJnqu+CuvTVDk+oSi/+h+H91AFugedk3zoBSYUhLa2NI/Ln
-	Oz7nu+1/OAn47jLX/H9wBHcQAsVuNU24nYzZnwXTTRUBRU8F3VQIC9KGoVutI1EEfsDg=
-X-Received: by 2002:a05:701b:4511:10b0:149:f2b3:ef78 with SMTP id
- a92af1059eb24-14d3348e2femr3016102c88.32.1790827194314; Wed, 30 Sep 2026
- 20:59:54 -0700 (PDT)
+        bh=l3eHEQ2bOwj9/vcLYd/rAmE7Mn4xynnjMzE65jNbwTA=;
+        b=pW0AozO//iyonXfHhBlKqI4YDLsVwQmkllOTO4GpT4sVq/r4tHlZZrEZ114OccZ1bo
+         tFiauQUJ4hceUcrCCr2XD5nXzo6jFbt3A1VjQq9fk2NZxwUdSit9iX3SXr0PRWruq4w4
+         hueJKbAjQBrABsEDxc/J3+wNlQdJU/GRE915Ru9RIbugU1DdUGHHkH4ZApwfi4JV1Ewf
+         DphrVw4jx6JM1YKNKjpS2LAC+2KxLw6q5yVzVO7/wBkej9BZqRX0uZAL4G4Ldw3G1XED
+         p4+uBcQ5zFWVTRdmKYKPBKzk6ijncN2Ysdw+oD27GjnCokPbGj0lX/El8cQY0nZBMYzT
+         OGKg==
+X-Forwarded-Encrypted: i=1; AKwUvBw/xVsdW+0HpcPyDR74c6YQX4LzdV1mcTybGajQfsW+QHskFLpzh1aTR35aco3fIP26VUpJ6vo=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3YDhzxm78YEMqywxM4X0OrGdONYfPMnBhT8Ndlh+mLkEc1zXm
+	7b9k/CtiEsTQgANVsB+AerbsxnRPw23G3w96ySwZEiF8uw8msRRaes1zb77LOl4dFV8EuNn5+ZF
+	O5J6zNcA8SRBUhyv8C69Qc8QmMWH8hqRDhPkE9JSM
+X-Gm-Gg: AYBFou3o6hPDaZ6tQI7n17AMiaN77Xwo+tjVG084UgZcLxwQNJ5KfZAFG6WL5pgWHr1
+	zbV1a3QfekZoIta5P6d2q8L6H12K78E/9YSzW+bMxaTmv8/PgUSGUTsqdlIvOQ9aYItZ4Yjb9VU
+	CSM+wc+pFTq775rjlGBn8FR0jFquRsrVErkRRT0XfaNzIvtu7fgEzvyF2HzLPj8qBBzQk72MNDv
+	bNTSuYtQepjifGg0H+leHM4ETlCx2/NwfVlsaamOGSnmQUXY8Sf/rWZiNJeyxtW58E/uIWUslHf
+	30Yoy3d/TK9H1suwSfGFhiUGhy06GDD5fH+B0RDIcs0of1Bx1VcQKqSdfkYWna1l4dSZkhTKF1r
+	HlpX8QaI7nDpi6Dn1gnYj0AN2M0ovNnnu6uXmYys6fe9NHyeBgH0E1SLoMNJdOPhaVDr/
+X-Received: by 2002:a05:701a:ca84:b0:14c:c588:ac21 with SMTP id
+ a92af1059eb24-14dce417c07mr1975649c88.9.1790827650908; Wed, 30 Sep 2026
+ 21:07:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928-work-unix-passpidfd-v3-0-532018a91b21@amutable.com> <20260928-work-unix-passpidfd-v3-2-532018a91b21@amutable.com>
-In-Reply-To: <20260928-work-unix-passpidfd-v3-2-532018a91b21@amutable.com>
+References: <20260928-work-unix-passpidfd-v3-0-532018a91b21@amutable.com> <20260928-work-unix-passpidfd-v3-3-532018a91b21@amutable.com>
+In-Reply-To: <20260928-work-unix-passpidfd-v3-3-532018a91b21@amutable.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 30 Sep 2026 20:59:42 -0700
-X-Gm-Features: AclHuK-Ya3wsqs8meD2kLmWdhIUvmp-Bq6013K1cUrm-VFKKFzhmNEX86QW6AHM
-Message-ID: <CAAVpQUD3XomEde8kR2m1776rPwkJwp_qHraAiWbdrWk6Y+=RaQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] af_unix: record the pid of the sending thread
+Date: Wed, 30 Sep 2026 21:07:19 -0700
+X-Gm-Features: AclHuK8CKaHPn8rIHrieWjCFAbNwMyqoXGSxvwRgSsHDQA6Esio0zaSdSQcr7pA
+Message-ID: <CAAVpQUDJ=vBuXUSTyURa6-dYbpV8+ZshXW0vcVAgmLsri2A17g@mail.gmail.com>
+Subject: Re: [PATCH v3 03/10] net: add SO_PASSPIDFD_THREAD to get a
+ thread-specific SCM_PIDFD
 To: Andrew Halaney <andrew@amutable.com>
 Cc: Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -106,229 +107,336 @@ On Mon, Sep 28, 2026 at 2:27=E2=80=AFAM Andrew Halaney <andrew@amutable.com=
 >
 > From: Christian Brauner <brauner@kernel.org>
 >
-> Currently only the struct pid of the thread-group leader is recorded.
-> The identity of the actual thread that sent the message or is connected
-> to a given socket cannot be retrieved.
+> Currently, SCM_PIDFD carries a pidfd for the thread-group leader. A
+> broker or the coredump server cannot learn the identity of the specific
+> thread that sent a given message. Now that both struct pids are recorded
+> a receiver can ask for the specific identity it needs.
 >
-> Add the plumbing to make it possible to retrieve a pidfd for the sender.
-> Nothing uses the thread-specific struct pid yet. No functional changes.
+> So add SO_PASSPIDFD_THREAD as a sibling of SO_PASSPIDFD.
+> SO_PASSPIDFD_THREAD delivers an SCM_PIDFD_THREAD, i.e. scoped
+> to the specific thread sending. This is completely independent of
+> SO_PASSPIDFD, meaning you can use both options and get both cmsgs.
+>
+> On SOCK_STREAM sockets recvmsg() only stops merging data at a thread
+> boundary when the receiver asked for a thread pidfd. For SO_PASSCRED and
+> SO_PASSPIDFD receivers all threads of one process remain a single
+> writer.
 >
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+> Co-developed-by: Andrew Halaney <andrew@amutable.com>
 > Signed-off-by: Andrew Halaney <andrew@amutable.com>
 > ---
->  include/net/scm.h  |  7 +++----
->  net/core/scm.c     | 21 +++++++++++++++++----
->  net/unix/af_unix.c | 23 +++++++++++++----------
->  net/unix/af_unix.h |  3 ++-
->  4 files changed, 35 insertions(+), 19 deletions(-)
+>  arch/alpha/include/uapi/asm/socket.h  |  2 ++
+>  arch/mips/include/uapi/asm/socket.h   |  2 ++
+>  arch/parisc/include/uapi/asm/socket.h |  2 ++
+>  arch/sparc/include/uapi/asm/socket.h  |  2 ++
+>  include/linux/socket.h                |  9 +++++----
+>  include/net/sock.h                    | 14 +++++++++++++-
+>  include/uapi/asm-generic/socket.h     |  2 ++
+>  net/core/scm.c                        | 27 +++++++++++++++++++--------
+>  net/core/sock.c                       | 14 ++++++++++++++
+>  net/unix/af_unix.c                    | 12 +++++++++---
+>  10 files changed, 70 insertions(+), 16 deletions(-)
 >
-> diff --git a/include/net/scm.h b/include/net/scm.h
-> index 86ae6bc109ec..aa7d15c5fc27 100644
-> --- a/include/net/scm.h
-> +++ b/include/net/scm.h
-> @@ -42,7 +42,7 @@ struct scm_fp_list {
->  };
+> diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/ua=
+pi/asm/socket.h
+> index 946a5fad2691..bb3d534826bb 100644
+> --- a/arch/alpha/include/uapi/asm/socket.h
+> +++ b/arch/alpha/include/uapi/asm/socket.h
+> @@ -157,6 +157,8 @@
 >
->  struct scm_cookie {
-> -       struct pid              *pid;           /* Skb credentials */
-> +       DECLARE_PIDS(pid, PIDTYPE_TGID);        /* Skb credentials by pid=
- type */
->         struct scm_fp_list      *fp;            /* Passed files         *=
+>  #define SO_RIGHTS_NOTRUNC      85
+>
+> +#define SO_PASSPIDFD_THREAD    86
+> +
+>  #if !defined(__KERNEL__)
+>
+>  #if __BITS_PER_LONG =3D=3D 64
+> diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi=
+/asm/socket.h
+> index f1641dde135f..269badcaa086 100644
+> --- a/arch/mips/include/uapi/asm/socket.h
+> +++ b/arch/mips/include/uapi/asm/socket.h
+> @@ -168,6 +168,8 @@
+>
+>  #define SO_RIGHTS_NOTRUNC      85
+>
+> +#define SO_PASSPIDFD_THREAD    86
+> +
+>  #if !defined(__KERNEL__)
+>
+>  #if __BITS_PER_LONG =3D=3D 64
+> diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/=
+uapi/asm/socket.h
+> index f3a3815c7dc2..313aee10a52c 100644
+> --- a/arch/parisc/include/uapi/asm/socket.h
+> +++ b/arch/parisc/include/uapi/asm/socket.h
+> @@ -149,6 +149,8 @@
+>
+>  #define SO_RIGHTS_NOTRUNC      0x4053
+>
+> +#define SO_PASSPIDFD_THREAD    0x4054
+> +
+>  #if !defined(__KERNEL__)
+>
+>  #if __BITS_PER_LONG =3D=3D 64
+> diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/ua=
+pi/asm/socket.h
+> index 7907f3b1f0ee..bd3e69bcce7a 100644
+> --- a/arch/sparc/include/uapi/asm/socket.h
+> +++ b/arch/sparc/include/uapi/asm/socket.h
+> @@ -150,6 +150,8 @@
+>
+>  #define SO_RIGHTS_NOTRUNC        0x005e
+>
+> +#define SO_PASSPIDFD_THREAD      0x005f
+> +
+>  #if !defined(__KERNEL__)
+>
+>
+> diff --git a/include/linux/socket.h b/include/linux/socket.h
+> index 5a5eb1250103..b17fdb7d38a7 100644
+> --- a/include/linux/socket.h
+> +++ b/include/linux/socket.h
+> @@ -189,10 +189,11 @@ static inline size_t msg_data_left(const struct msg=
+hdr *msg)
+>
+>  /* "Socket"-level control message types: */
+>
+> -#define        SCM_RIGHTS      0x01            /* rw: access rights (arr=
+ay of int) */
+> -#define SCM_CREDENTIALS 0x02           /* rw: struct ucred             *=
 /
->         struct scm_creds        creds;          /* Skb credentials      *=
+> -#define SCM_SECURITY   0x03            /* rw: security label           *=
 /
->  #ifdef CONFIG_SECURITY_NETWORK
-> @@ -69,7 +69,7 @@ static __inline__ void unix_get_peersec_dgram(struct so=
-cket *sock, struct scm_co
->  static __inline__ void scm_set_cred(struct scm_cookie *scm,
->                                     struct pid *pid, kuid_t uid, kgid_t g=
-id)
->  {
-> -       scm->pid =3D get_pid(pid);
-> +       scm->pid[PIDTYPE_TGID] =3D get_pid(pid);
->         scm->creds.pid =3D pid_vnr(pid);
->         scm->creds.uid =3D uid;
->         scm->creds.gid =3D gid;
-> @@ -77,8 +77,7 @@ static __inline__ void scm_set_cred(struct scm_cookie *=
-scm,
+> -#define SCM_PIDFD      0x04            /* ro: pidfd (int)              *=
+/
+> +#define        SCM_RIGHTS              0x01    /* rw: access rights (arr=
+ay of int) */
+> +#define SCM_CREDENTIALS                0x02    /* rw: struct ucred      =
+       */
+> +#define SCM_SECURITY           0x03    /* rw: security label           *=
+/
+> +#define SCM_PIDFD              0x04    /* ro: pidfd (int)              *=
+/
+> +#define SCM_PIDFD_THREAD       0x05    /* ro: thread pidfd (int)       *=
+/
 >
->  static __inline__ void scm_destroy_cred(struct scm_cookie *scm)
->  {
-> -       put_pid(scm->pid);
-> -       scm->pid =3D NULL;
-> +       put_pids(scm->pid);
+>  struct ucred {
+>         __u32   pid;
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 60ea55dc1885..14df0fb68259 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -356,6 +356,7 @@ struct sk_filter;
+>    *    @sk_scm_security: flagged by SO_PASSSEC to recv SCM_SECURITY
+>    *    @sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
+>    *    @sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
+> +  *    @sk_scm_pidfd_thread: flagged by SO_PASSPIDFD_THREAD to recv a th=
+read SCM_PIDFD
+>    *    @sk_scm_unused: unused flags for scm_recv()
+>    *    @ns_tracker: tracker for netns reference
+>    *    @sk_user_frags: xarray of pages the user is holding a reference o=
+n.
+> @@ -562,7 +563,8 @@ struct sock {
+>                                 sk_scm_security : 1,
+>                                 sk_scm_pidfd : 1,
+>                                 sk_scm_rights : 1,
+> -                               sk_scm_unused : 4;
+> +                               sk_scm_pidfd_thread : 1,
+> +                               sk_scm_unused : 3;
+>                 };
+>         };
+>         u8                      sk_clockid;
+> @@ -2988,6 +2990,16 @@ static inline bool sk_is_stream_unix(const struct =
+sock *sk)
+>         return sk_is_unix(sk) && sk->sk_type =3D=3D SOCK_STREAM;
 >  }
 >
->  static __inline__ void scm_destroy(struct scm_cookie *scm)
+> +static inline bool sk_scm_pidfd_wanted(const struct sock *sk)
+> +{
+> +       return sk->sk_scm_pidfd;
+> +}
+> +
+> +static inline bool sk_scm_pidfd_thread_wanted(const struct sock *sk)
+> +{
+> +       return sk->sk_scm_pidfd_thread;
+> +}
+
+nit: remove these helpers and use the values directly.
+
+Unlike scm_has_secdata(), the fields do not depend on any config.
+
+
+> +
+>  static inline bool sk_is_vsock(const struct sock *sk)
+>  {
+>         return sk->sk_family =3D=3D AF_VSOCK;
+> diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic=
+/socket.h
+> index 84ea7b92936e..d1e5c6de146d 100644
+> --- a/include/uapi/asm-generic/socket.h
+> +++ b/include/uapi/asm-generic/socket.h
+> @@ -152,6 +152,8 @@
+>
+>  #define SO_RIGHTS_NOTRUNC      85
+>
+> +#define SO_PASSPIDFD_THREAD    86
+> +
+>  #if !defined(__KERNEL__)
+>
+>  #if __BITS_PER_LONG =3D=3D 64 || (defined(__x86_64__) && defined(__ILP32=
+__))
 > diff --git a/net/core/scm.c b/net/core/scm.c
-> index f0d44ecdb11f..9b9e119c353a 100644
+> index 9b9e119c353a..ba43d76027af 100644
 > --- a/net/core/scm.c
 > +++ b/net/core/scm.c
-> @@ -149,6 +149,7 @@ EXPORT_SYMBOL(__scm_destroy);
->
->  static inline int scm_replace_pid(struct scm_cookie *scm, struct pid *pi=
-d)
->  {
-> +       struct pid *thread_pid;
->         int err;
->
->         /* drop all previous references */
-> @@ -158,7 +159,18 @@ static inline int scm_replace_pid(struct scm_cookie =
-*scm, struct pid *pid)
->         if (unlikely(err))
->                 return err;
->
-> -       scm->pid =3D pid;
-> +       /* A sender naming its own thread-group sends from the current th=
-read. */
-> +       if (pid =3D=3D task_tgid(current))
-> +               thread_pid =3D task_pid(current);
-> +       else
-> +               thread_pid =3D pid;
-> +
-> +       err =3D pidfs_register_pid(thread_pid);
-> +       if (unlikely(err))
-> +               return err;
-> +
-> +       scm->pid[PIDTYPE_TGID] =3D pid;
-> +       scm->pid[PIDTYPE_PID] =3D get_pid(thread_pid);
->         scm->creds.pid =3D pid_vnr(pid);
->         return 0;
+> @@ -499,11 +499,16 @@ static bool scm_has_secdata(struct sock *sk)
 >  }
-> @@ -207,7 +219,8 @@ int __scm_send(struct socket *sock, struct msghdr *ms=
-g, struct scm_cookie *p)
->                         if (err)
->                                 goto error;
+>  #endif
 >
-> -                       if (!p->pid || pid_vnr(p->pid) !=3D creds.pid) {
-> +                       if (!p->pid[PIDTYPE_TGID] ||
-> +                           pid_vnr(p->pid[PIDTYPE_TGID]) !=3D creds.pid)=
- {
->                                 struct pid *pid;
->                                 err =3D -ESRCH;
->                                 pid =3D find_get_pid(creds.pid);
-> @@ -504,10 +517,10 @@ static void scm_pidfd_recv(struct msghdr *msg, stru=
+> -static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+> +static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm,
+> +                          enum pid_type type, int cmsg_type)
+>  {
+> +       unsigned int flags =3D PIDFD_STALE;
+>         struct file *pidfd_file =3D NULL;
+> +       struct pid *pid;
+>         int len, pidfd;
+>
+> +       pid =3D scm->pid[type];
+> +
+>         /* put_cmsg() doesn't return an error if CMSG is truncated,
+>          * that's why we need to opencode these checks here.
+>          */
+> @@ -517,12 +522,15 @@ static void scm_pidfd_recv(struct msghdr *msg, stru=
 ct scm_cookie *scm)
 >                 return;
 >         }
 >
-> -       if (!scm->pid)
-> +       if (!scm->pid[PIDTYPE_TGID])
+> -       if (!scm->pid[PIDTYPE_TGID])
+> +       if (!pid)
 >                 return;
 >
-> -       pidfd =3D pidfd_prepare(scm->pid, PIDFD_STALE, &pidfd_file);
-> +       pidfd =3D pidfd_prepare(scm->pid[PIDTYPE_TGID], PIDFD_STALE, &pid=
+> -       pidfd =3D pidfd_prepare(scm->pid[PIDTYPE_TGID], PIDFD_STALE, &pid=
 fd_file);
+> +       if (type =3D=3D PIDTYPE_PID)
+> +               flags |=3D PIDFD_THREAD;
 >
->         if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
+> -       if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
+> +       pidfd =3D pidfd_prepare(pid, flags, &pidfd_file);
+> +
+> +       if (put_cmsg(msg, SOL_SOCKET, cmsg_type, sizeof(int), &pidfd)) {
 >                 if (pidfd_file) {
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 42cffeafc8c1..c7d423465859 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -1973,7 +1973,7 @@ static void unix_destruct_scm(struct sk_buff *skb)
+>                         put_unused_fd(pidfd);
+>                         fput(pidfd_file);
+> @@ -539,8 +547,8 @@ static bool __scm_recv_common(struct sock *sk, struct=
+ msghdr *msg,
+>                               struct scm_cookie *scm, int flags)
 >  {
->         struct scm_cookie scm =3D {};
+>         if (!msg->msg_control) {
+> -               if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
+> -                   scm->fp || scm_has_secdata(sk))
+> +               if (sk->sk_scm_credentials || sk_scm_pidfd_wanted(sk) ||
+> +                   sk_scm_pidfd_thread_wanted(sk) || scm->fp || scm_has_=
+secdata(sk))
+>                         msg->msg_flags |=3D MSG_CTRUNC;
 >
-> -       swap(scm.pid, UNIXCB(skb).pid);
-> +       swap_pids(scm.pid, UNIXCB(skb).pid);
->
->         if (UNIXCB(skb).fp)
->                 unix_detach_fds(&scm, skb);
-> @@ -1991,7 +1991,7 @@ static int unix_scm_to_skb(struct scm_cookie *scm, =
-struct sk_buff *skb, bool sen
->  {
->         int err =3D 0;
->
-> -       UNIXCB(skb).pid =3D get_pid(scm->pid);
-> +       get_pids(UNIXCB(skb).pid, scm->pid);
->         UNIXCB(skb).uid =3D scm->creds.uid;
->         UNIXCB(skb).gid =3D scm->creds.gid;
->         UNIXCB(skb).fp =3D NULL;
-> @@ -2005,7 +2005,10 @@ static int unix_scm_to_skb(struct scm_cookie *scm,=
- struct sk_buff *skb, bool sen
->
->  static void unix_skb_to_scm(struct sk_buff *skb, struct scm_cookie *scm)
->  {
-> -       scm_set_cred(scm, UNIXCB(skb).pid, UNIXCB(skb).uid, UNIXCB(skb).g=
-id);
-> +       get_pids(scm->pid, UNIXCB(skb).pid);
-
-nit: keep scm_set_cred() here and rather move get_pid()
-from scm_set_cred() to scm_send().
-
-
-> +       scm->creds.pid =3D pid_vnr(scm->pid[PIDTYPE_TGID]);
-> +       scm->creds.uid =3D UNIXCB(skb).uid;
-> +       scm->creds.gid =3D UNIXCB(skb).gid;
->         unix_set_secdata(scm, skb);
->  }
->
-> @@ -2025,20 +2028,20 @@ static void unix_skb_to_scm(struct sk_buff *skb, =
-struct scm_cookie *scm)
->  static int unix_maybe_add_creds(struct sk_buff *skb, const struct sock *=
-sk,
->                                 const struct sock *other)
->  {
-> -       if (UNIXCB(skb).pid)
-> +       if (UNIXCB(skb).pid[PIDTYPE_TGID])
->                 return 0;
->
->         if (unix_may_passcred(sk) || unix_may_passcred(other) ||
->             !other->sk_socket) {
-> -               struct pid *pid;
->                 int err;
->
-> -               pid =3D task_tgid(current);
-> -               err =3D pidfs_register_pid(pid);
-> -               if (unlikely(err))
-> +               get_task_pids(UNIXCB(skb).pid, current);
-> +               err =3D pidfs_register_pids(UNIXCB(skb).pid);
-> +               if (unlikely(err)) {
-> +                       put_pids(UNIXCB(skb).pid);
->                         return err;
-> +               }
->
-> -               UNIXCB(skb).pid =3D get_pid(pid);
->                 current_uid_gid(&UNIXCB(skb).uid, &UNIXCB(skb).gid);
+>                 scm_destroy(scm);
+> @@ -586,8 +594,11 @@ void scm_recv_unix(struct socket *sock, struct msghd=
+r *msg,
+>                 scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notrunc)=
+);
 >         }
 >
-> @@ -2048,7 +2051,7 @@ static int unix_maybe_add_creds(struct sk_buff *skb=
-, const struct sock *sk,
->  static bool unix_skb_scm_eq(struct sk_buff *skb,
+> -       if (sock->sk->sk_scm_pidfd)
+> -               scm_pidfd_recv(msg, scm);
+> +       if (sk_scm_pidfd_wanted(sock->sk))
+> +               scm_pidfd_recv(msg, scm, PIDTYPE_TGID, SCM_PIDFD);
+> +
+> +       if (sk_scm_pidfd_thread_wanted(sock->sk))
+> +               scm_pidfd_recv(msg, scm, PIDTYPE_PID, SCM_PIDFD_THREAD);
+>
+>         scm_destroy_cred(scm);
+>  }
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index d23333bb4f3f..3b5f28573752 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -1578,6 +1578,13 @@ int sk_setsockopt(struct sock *sk, int level, int =
+optname,
+>                         ret =3D -EOPNOTSUPP;
+>                 break;
+>
+> +       case SO_PASSPIDFD_THREAD:
+> +               if (sk_is_unix(sk))
+> +                       sk->sk_scm_pidfd_thread =3D valbool;
+> +               else
+> +                       ret =3D -EOPNOTSUPP;
+> +               break;
+> +
+>         case SO_PASSRIGHTS:
+>                 if (sk_is_unix(sk))
+>                         sk->sk_scm_rights =3D valbool;
+> @@ -1893,6 +1900,13 @@ int sk_getsockopt(struct sock *sk, int level, int =
+optname,
+>                 v.val =3D sk->sk_scm_pidfd;
+>                 break;
+>
+> +       case SO_PASSPIDFD_THREAD:
+> +               if (!sk_is_unix(sk))
+> +                       return -EOPNOTSUPP;
+> +
+> +               v.val =3D sk->sk_scm_pidfd_thread;
+> +               break;
+> +
+>         case SO_PASSRIGHTS:
+>                 if (!sk_is_unix(sk))
+>                         return -EOPNOTSUPP;
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index c7d423465859..6cc2873d9a4f 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -803,7 +803,8 @@ static void copy_peercred(struct sock *sk, struct soc=
+k *peersk)
+>
+>  static bool unix_may_passcred(const struct sock *sk)
+>  {
+> -       return sk->sk_scm_credentials || sk->sk_scm_pidfd;
+> +       return sk->sk_scm_credentials || sk_scm_pidfd_wanted(sk) ||
+> +               sk_scm_pidfd_thread_wanted(sk);
+>  }
+>
+>  static int unix_listen(struct socket *sock, int backlog)
+> @@ -2048,9 +2049,14 @@ static int unix_maybe_add_creds(struct sk_buff *sk=
+b, const struct sock *sk,
+>         return 0;
+>  }
+>
+> -static bool unix_skb_scm_eq(struct sk_buff *skb,
+> +static bool unix_skb_scm_eq(const struct sock *sk, struct sk_buff *skb,
 >                             struct scm_cookie *scm)
 >  {
-> -       return UNIXCB(skb).pid =3D=3D scm->pid &&
-> +       return UNIXCB(skb).pid[PIDTYPE_TGID] =3D=3D scm->pid[PIDTYPE_TGID=
+> +       /* Only a thread pidfd receiver can tell threads of one process a=
+part. */
+> +       if (sk->sk_scm_pidfd_thread &&
+> +           UNIXCB(skb).pid[PIDTYPE_PID] !=3D scm->pid[PIDTYPE_PID])
+> +               return false;
+> +
+>         return UNIXCB(skb).pid[PIDTYPE_TGID] =3D=3D scm->pid[PIDTYPE_TGID=
 ] &&
 >                uid_eq(UNIXCB(skb).uid, scm->creds.uid) &&
 >                gid_eq(UNIXCB(skb).gid, scm->creds.gid) &&
->                unix_secdata_eq(scm, skb);
-> diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-> index 8119dbeef3a3..402742895acc 100644
-> --- a/net/unix/af_unix.h
-> +++ b/net/unix/af_unix.h
-> @@ -2,6 +2,7 @@
->  #ifndef __AF_UNIX_H
->  #define __AF_UNIX_H
+> @@ -3033,7 +3039,7 @@ static int unix_stream_read_generic(struct unix_str=
+eam_read_state *state,
 >
-> +#include <linux/pid_types.h>
->  #include <linux/uidgid.h>
->
->  #define UNIX_HASH_MOD  (256 - 1)
-> @@ -11,7 +12,7 @@
->  struct sock *unix_peer_get(struct sock *sk);
->
->  struct unix_skb_parms {
-> -       struct pid              *pid;           /* skb credentials      *=
-/
-> +       DECLARE_PIDS(pid, PIDTYPE_TGID);        /* skb credentials by pid=
- type */
->         kuid_t                  uid;
->         kgid_t                  gid;
->         struct scm_fp_list      *fp;            /* Passed files         *=
-/
+>                 if (check_creds) {
+>                         /* Never glue messages from different writers */
+> -                       if (!unix_skb_scm_eq(skb, &scm))
+> +                       if (!unix_skb_scm_eq(sk, skb, &scm))
+>                                 break;
+>                 } else if (unix_may_passcred(sk)) {
+>                         /* Copy credentials */
 >
 > --
 > 2.55.0
