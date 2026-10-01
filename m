@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3631831280D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC611A3160
 	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790816522; cv=none; b=IbBGzB+0l1s561QDvIoRYf3sZ24LQ3WWeMet/w1HmeP4ZSt7SyNoepQpFLiqJXr1TeLeYS05qUiSJWMoDADE6q+c6WkDWPj0XBBAh6ow7FAjZ3IyoGKbR25teM9asV/eAd8y+Ml1ZDKeZuZFOs9T975RrNgdXxXT1tySS2EkKpA=
+	t=1790816523; cv=none; b=p1Ihy+pbBoPMnlvrMVqJdjBoZ9Fiuck4N/sCA8+I2regmxPMQFJbj7gVKuv1TYpUcAz474U6WAQ1CYXzxn31vI572f6EezwMKBxVmp/TTv9XltwGCI3DuRvJama0iEj2KG1F2xH91hgXTMigpLa2TOqN7zaicYLgba5U2gp5JqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790816522; c=relaxed/simple;
-	bh=fiPZ99+9NTlAMydtpJmCxAojICNGMx/XbSXYcgCQjt0=;
+	s=arc-20240116; t=1790816523; c=relaxed/simple;
+	bh=lZLr6424H/K1fXi72Gzy9hfKlfypfkJ5nge1lI5gCrY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ujWWpAivN9OU+WvISd80VFf4B8/+NGjTz2N454Yg6/kgDy1o/7bwofi/YhJd3yyddsnL2mhiF0iR7t9xArNEoSACUzhfrj3CngKklQ3I0RK2rKm2DTSNAT5nIeJ+6EyC+OEti7Ovow25/lsUPNrEc/xk45O7mc5k9g48j22cJIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYXggEj1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=OgZ1h8rCvguIF5mpczHHMdFSokhsLGqJg7tuioQtwZqMI9LWOyzsmUCoC0C8dGrjdQrOkJCuCOCkaQIHn3vUh4hxm83HeQtkcn2RkKiwzgQcB3/WKqjLtpxRhKt5AnXDd8RFrc1Z4dRSQqULTN9fBkuD++pgLBG8aKfX0fVjoMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdL5K9mt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYXggEj1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116C31F0089A;
-	Thu,  1 Oct 2026 01:01:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdL5K9mt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3211F00898;
+	Thu,  1 Oct 2026 01:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790816519;
-	bh=e2PDw4aTGLo7/DW7mZv2ue7CqFXJm6H9pI41Il6kcuU=;
+	s=k20260515; t=1790816518;
+	bh=WgIbUfWcsckCB5dhnQ9L1cA/IL2ZEVajIzxljmQXUjI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bYXggEj1dKX0SLIp+JT8f2Gl/zj8f5O9i5SJFOI5/ALQzpl1dwG9UqU6dlbav6cft
-	 h8+5XFo8xCxJppv0tYSsSlVzNv6RRqPH4Deee4dfgRHJ1NP+ylFgXVLRfBGq1u0+nx
-	 EkaMNjBdYTAFQpCFwAsfi30gyHfi7bp0KJvLIhuwGoHN3Y1NKMiKUn7+Mwmud6hXpg
-	 u3Wiu0+3HYzBnHXxu5dZ0NtFPPtx8QP8G7Y51RzD8gwgwyCC3+5lJJyzHf6oPED/pY
-	 vzAWO7uw2wVMura2vsxnCxMnMB34SWSeoegqtIM4ddlvw0o1GZ/Pc2oeHIt/ZvoMSt
-	 qvnzteX3sxhSQ==
-Subject: Re: [PATCH net v2 9/9] bnxt_en: Re-write the BARs following any type
- of PCIe errors
+	b=TdL5K9mtGCACRAhuvQI2DOUg28Pq/cGu/vJ/Wj7rBdnVjhZVvV7Et4ctRZ9n2ND8J
+	 I1xcGmbUHOSvZxOrwYQ05eWhK47vXAPACyOciJiuAUBc/bZ8NkY5PcM6EjoITsCKcD
+	 zOGNzKvleNTdPp67fiAJSdulonjmczIjjkgVCqt4+XV5FI7kzz0z0BW+FtEB8D2uRp
+	 wPK4a3rvH+lJmN59CZZCU/TkWWwLUhuPk1qowrFRFAZTMW4pDU5mNcYY514KPhiqK4
+	 Dmsitq27TQFaaRuu1MYrFdywKgouPURI09JxPANCTglfa9Izkfs5VXcBcZqi6COnsD
+	 BrEYQa8FVdfyA==
+Subject: Re: [PATCH net v2 8/9] bnxt_en: Fix driver init in kdump kernel
 From: netdev-bot+sashiko@kernel.org
 To: michael.chan@broadcom.com
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
  pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, joe@dama.to,
  kalesh-anakkur.purayil@broadcom.com, scott.branden@broadcom.com
-Date: Thu, 01 Oct 2026 01:01:58 +0000
-Message-ID: <179081651865.434549.15031496035757252020@kernel.org>
-In-Reply-To: <20260928041712.3467803-10-michael.chan@broadcom.com>
-References: <20260928041712.3467803-10-michael.chan@broadcom.com>
-X-sashiko-severity: High
+Date: Thu, 01 Oct 2026 01:01:57 +0000
+Message-ID: <179081651750.434549.17674422326504505764@kernel.org>
+In-Reply-To: <20260928041712.3467803-9-michael.chan@broadcom.com>
+References: <20260928041712.3467803-9-michael.chan@broadcom.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,178 +58,141 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In bnxt_io_slot_reset()
-  (drivers/net/ethernet/broadcom/bnxt/bnxt.c), the new sequence of…
-- [Low] In bnxt_io_slot_reset()
-  (drivers/net/ethernet/broadcom/bnxt/bnxt.c), only the first…
+- [Medium] In bnxt_kdump_reset(), the path the patch adds for an
+  'unresponsive after FLR' device cannot re-program the BARs.
+- [Low] Two new comments in bnxt_kdump_reset()
+  (drivers/net/ethernet/broadcom/bnxt/bnxt.c) promise more than…
 
 --
 
-bnxt_en: Re-write the BARs following any type of PCIe errors
+bnxt_en: Fix driver init in kdump kernel
 
-This patch makes bnxt_io_slot_reset() zero and restore the BARs after
-any PCIe error, not only fatal ones, and makes the 5 second post-reset
-wait unconditional. It turns off bus mastering and memory decode before
-the BAR rewrite. It also moves pci_enable_device() to after
-pci_restore_state(), and skips it if the device is already enabled.
+This commit adds bnxt_kdump_reset() to do a longer FLR sequence in the
+kdump kernel. The sequence disables bus master and memory, saves PCI
+state, does the FLR, clears the BARs and restores PCI state. It also moves
+bnxt_get_max_irq() ahead of the FLR so the MSI-X capability is not read
+as 0xffff afterwards.
 
 > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index e4530b091d3b..810219d9cae2 100644
+> index 8c6bf10aba8a..e4530b091d3b 100644
 > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -17229,6 +17229,42 @@ static void bnxt_clear_bars(struct pci_dev *pdev)
+>  		pci_write_config_dword(pdev, off, 0);
+>  }
+>  
+> +/* Clear any pending DMA transactions from crash kernel while loading driver in
+> + * capture kernel.
+> + */
+> +static void bnxt_kdump_reset(struct pci_dev *pdev)
+> +{
 
 [ ... ]
 
-> @@ -17743,65 +17741,80 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
-
-[ ... ]
-
-> +	/* Upon PCIe error, our device internal logic that latches to
-> +	 * BAR value is getting reset and will restore only upon
-> +	 * rewriting the BARs.
-> +	 *
-> +	 * As pci_restore_state() does not re-write the BARs if the
-> +	 * value is same as saved value earlier, driver needs to
-> +	 * write the BARs to 0 to force restore.
+> +	rc = pcie_flr(pdev);
+> +	if (rc)
+> +		dev_warn(&pdev->dev, "pcie_flr() failed (rc: %d), trying to continue\n",
+> +			 rc);
+> +
+> +	/* A complete or partial reset has been done.  Clear the BARs
+> +	 * if the device is responsive.
 > +	 */
-> +	pci_clear_master(pdev);
-> +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-> +	cmd &= ~PCI_COMMAND_MEMORY;
-> +	pci_write_config_word(pdev, PCI_COMMAND, cmd);
 
 [Severity: Low]
-Should this second PCI_COMMAND read also be checked with
-PCI_POSSIBLE_ERROR()?
+Is this comment accurate for every non-zero return from pcie_flr()?
 
-If this read returns 0xFFFF, cmd becomes 0xFFFD. The write then sets
-PCI_COMMAND_MASTER, PCI_COMMAND_IO, SERR and parity right before
-bnxt_clear_bars().
+pcie_flr() has two error returns that happen before it sets
+PCI_EXP_DEVCTL_BCR_FLR:
 
-pci_clear_master() goes through __pci_set_master(), which does not check
-its own read either. So nothing confirms that mastering and decode are
-off before the BARs are zeroed.
-
-pci_restore_state() restores the saved Command register afterwards, so
-the bad value would only be transient. However, the same read-modify-write
-on the re-enable failure path below is guarded with
-!PCI_POSSIBLE_ERROR(cmd).
-
-[ ... ]
-
-> +	bnxt_clear_bars(pdev);
-> +	pci_restore_state(pdev);
->  
-> -		if (err) {
-> -			dev_err(&pdev->dev, "Firmware not ready\n");
-> -			goto reset_exit;
-> +	if (!pci_is_enabled(pdev) && pci_enable_device(pdev)) {
-
-[Severity: High]
-Can enable_cnt still go unbalanced when bnxt_io_error_detected() took
-its abort path?
-
-Every path in bnxt_io_error_detected() that returns NEED_RESET disables
-the device. So the only way to reach bnxt_io_slot_reset() with the
-device still enabled seems to be the abort path, where a firmware reset
-is already in progress:
-
-bnxt_io_error_detected() {
-    ...
-	if (test_and_set_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
-		netdev_err(bp->dev, "Firmware reset already in progress\n");
-		abort = true;
+drivers/pci/pci.c:pcie_flr() {
+	if (!pci_dev_config_accessible(dev, "FLR"))
+		return -ENOTTY;
+	...
+	ret = pci_dev_reset_iommu_prepare(dev);
+	if (ret) {
+		pci_err(dev, "failed to stop IOMMU for a PCI reset: %d\n", ret);
+		return ret;
 	}
 
-	if (abort || state == pci_channel_io_perm_failure) {
-		netdev_unlock(netdev);
-		return PCI_ERS_RESULT_DISCONNECT;
-	}
-    ...
+	pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_DEVCTL_BCR_FLR);
+	...
 }
 
-A sibling under the same bridge might vote NEED_RESET. That could be the
-other PF, a VF, or any device below the same root port or switch. In
-that case merge_result() in drivers/pci/pcie/err.c promotes the
-DISCONNECT vote to NEED_RESET:
+Take an ATS-capable device where __iommu_group_alloc_blocking_domain() or
+__iommu_attach_device() fails. The IOMMU prepare step fails but the device
+still responds. The PCI_COMMAND read below succeeds, so
+bnxt_clear_bars() and pci_restore_state() run and probe continues. No
+reset was ever issued, and the "pcie_flr() failed" warning is the only
+sign of it.
 
-	case PCI_ERS_RESULT_DISCONNECT:
-		if (new == PCI_ERS_RESULT_NEED_RESET)
-			orig = PCI_ERS_RESULT_NEED_RESET;
+The old code ignored the return value of pcie_flr() completely, so
+continuing without a reset is not new behaviour. Still, this comment and
+the function header ("Clear any pending DMA transactions from crash
+kernel") both suggest the pending DMA has been handled.
 
-report_slot_reset() then calls ->slot_reset() on this function too. At
-that point bnxt_fw_reset_task() is still active, and nothing tells
-slot_reset that it does not own recovery.
+Could the comments or the warning tell "reset not attempted" apart from
+"reset attempted but device slow to respond"? Only the pci_dev_wait()
+timeout fits the second case.
 
-In the common case bnxt_fw_reset()->bnxt_fw_reset_close() has already
-called pci_disable_device(), so enable_cnt is 0. The following sequence
-then looks possible:
+> +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+> +	if (PCI_POSSIBLE_ERROR(cmd))
+> +		dev_warn(&pdev->dev, "PCI config space inaccessible after FLR, not clearing BARs\n");
+> +	else
+> +		bnxt_clear_bars(pdev);
+> +
+> +	pci_restore_state(pdev);
 
-bnxt_io_slot_reset()
-    pci_enable_device()              enable_cnt = 1
-    bnxt_try_recover_fw() retry loop ...
+[Severity: Medium]
+If config space cannot be accessed here, does calling pci_restore_state()
+on the same device have any effect?
 
-bnxt_fw_reset_task(), ENABLE_DEV state, no netdev_lock
-    pci_enable_device()              enable_cnt = 2
-    pci_set_master()
+Suppose pcie_flr() fails because pci_dev_wait() gives up after
+PCIE_RESET_READY_POLL_MS:
 
-bnxt_io_slot_reset()
-    reset_exit:
-    clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state)
+drivers/pci/pci.c:pci_dev_wait() {
+	...
+		if (delay > timeout) {
+			pci_err(dev, "not ready %dms after %s; giving up\n",
+				delay - 1, reset_type);
+			return -ENOTTY;
+		}
+	...
+}
 
-pci_enable_device_flags() increments enable_cnt every time:
+PCI_COMMAND then reads back as 0xffff, so bnxt_clear_bars() is skipped
+because the device is unresponsive.
 
-	if (atomic_inc_return(&dev->enable_cnt) > 1)
-		return 0;		/* already enabled */
+pci_restore_state() still runs, though. pci_restore_config_dword() writes
+each saved BAR, COMMAND and DEVCTL value once, with no retry or read-back:
 
-The commit message says:
+drivers/pci/pci.c:pci_restore_config_dword() {
+	pci_read_config_dword(pdev, offset, &val);
+	if (!force && val == saved_val)
+		return;
+	...
+	pci_write_config_dword(pdev, offset, saved_val);
+}
 
-  "Skip re-enabling the device in bnxt_io_slot_reset() if it is already
-  enabled, so enable_cnt does not go unbalanced."
+A function that is still in reset would drop those writes.
 
-Does the pci_is_enabled() check cover this case?
+Nothing later in probe writes the BARs again. bnxt_init_board() only calls
+pci_enable_device(), pci_set_master() and pci_ioremap_bar() with the
+stored resource addresses.
 
-Before this patch, the BARs were never touched on this path, because
-BNXT_STATE_PCI_CHANNEL_IO_FROZEN was only set after the abort check. Now
-the decode-off, bnxt_clear_bars() and pci_restore_state() sequence also
-runs here. bnxt_fw_reset_task() may be doing bar0 MMIO at the same time
-in POLL_FW_DOWN, RESET_FW or POLL_FW (bnxt_fw_health_readl(),
-bnxt_reset_all(), bnxt_hwrm_poll()).
+The new comment above pcie_flr() says "The device may eventually respond
+to HWRM_VER_GET later in the init sequence". If the device does recover
+later, it has not seen its BARs programmed since the reset. Neither has a
+synthetic-mode switch in front of it. Wouldn't HWRM_VER_GET over BAR0
+still fail in that case?
 
-Could those accesses get all-ones or UR responses, and confuse the
-health status checks or raise a new AER event?
+DEVCTL MPS/MRRS would also stay at their post-reset defaults, while the
+PCI core believes they were restored.
 
-The worker's pci_enable_device() might also land between clearing
-PCI_COMMAND_MEMORY and pci_restore_state(). If so, do_pci_enable_device()
-would turn memory decode back on while the BARs are zero, which is the
-case the commit message says this avoids:
-
-  "Disable memory decode and bus mastering before rewriting the BARs so
-  the device doesn't decode a half-updated address"
-
-The worker's unlocked pci_set_master() read-modify-write of PCI_COMMAND
-could also overwrite the update made here.
-
-Some of this is not new with this patch. On this path slot_reset already
-sent HWRM_FUNC_RESET, called bnxt_clear_int_mode(), and cleared
-BNXT_STATE_IN_FW_RESET even though it never acquired that bit.
-
-Would it be better to record the abort in bnxt_io_error_detected()?
-bnxt_io_slot_reset() could then return PCI_ERS_RESULT_DISCONNECT in that
-case, or serialize with or cancel bnxt_fw_reset_task(), instead of
-relying on the pci_is_enabled() check.
-
-> +		dev_err(&pdev->dev,
-> +			"Cannot re-enable PCI device after reset.\n");
-> +		pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-> +		if (!PCI_POSSIBLE_ERROR(cmd)) {
-> +			cmd &= ~(PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-> +			pci_write_config_word(pdev, PCI_COMMAND, cmd);
->  		}
-> +		goto reset_exit;
-> +	}
-> +	pci_set_master(pdev);
-
-[ ... ]
+Would it make sense to fail the probe in this case? Another option is to
+poll until config space is reachable and then do the clear and restore
+again. The later patch in this series ("Re-write the BARs following any
+type of PCIe errors") only changes bnxt_io_slot_reset(), so it does not
+cover this path.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928041712.3467803-1-michael.chan%40broadcom.com
