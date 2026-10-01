@@ -1,125 +1,135 @@
-Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C10238D54
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790828387; cv=pass; b=Kj/GAy9hG4jTxNG/j1zXcMKav3AHSiPxk8j9dWrpVbpOpSUN2looksDHFLcH9tBm7GCz9J6YiwpucIpdcRYwIM5T3U5MlltGZACEGxrg2mI5rkXbI4b43Oc/9w3637xs2hBZ74TGAOh789FkPE3ZfHXIxUBH+kpmZHAWGgZOTZY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790828387; c=relaxed/simple;
-	bh=NlwyKjfoR7VaJB7r+rozJPFGwYih64AWsVmx8RjDE44=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vc3tx+9htd7ZG90pL5uZ5r0czOS63z+FJjhqylbs5oWK/l7aqaXB4M6QT2j2/He7rQfJAvB1HGmyrV8syCJ/xvbjwcBgGSLAhHK02083pplNizd7mDe+XAJoRg2m+BVj113tIg4j0LlpuZSkZoYBF4C2GcGTkXF9eSgBZaTUYiU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nosstv6I; arc=pass smtp.client-ip=74.125.229.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nosstv6I"
-Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd025d06so4492339c88.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:19:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790828385; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SItSONak12Tcgh/fsjJoUvywzlDJViZCIuOQWB7ANYL6yDZSrY8O3y2Ekguc1SDrt0
-         FbxKAx8En2F+uX4tPP3oARKOf24eGA3pDVhDlaQSFb08BGifEH6Bw94lWCZ3L5FxvlID
-         2lTvSWMNbtzDuFnHqBlix9R6INNm0YvJGgcmziVpkIE4UF19YdR3Hltv2NM97x6GHcIh
-         Vn/kxf78lmc+ecfbHdYWVWXi3mrFMz8Eth65Lxiy8+W2NkQF27I25xJ+nXdJ8NfdLVao
-         8/zGb90V4xmfrGjpWk/ut7pX/hTXlKvijY2nQOc0f0e0DLllyeIv9O9QbSgHLLnxThTx
-         ptOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NlwyKjfoR7VaJB7r+rozJPFGwYih64AWsVmx8RjDE44=;
-        fh=ZjWB5q//eliunTuXq1GOsxllSC+MtoIuB7mGhYuwS68=;
-        b=eya6kGIoFOwZC84Vvfd1y8AjWDX5Vw3SeIKZErLRRGBF/8kR/WEpSAUT/RuQ7Ke5ym
-         nQURHk4FUCwSjGinB27dPxx5aloANPbjJb6rWnKp9ZZ3jB2QZB4HlfBd2cLSdqSoPISf
-         Kbcu/lW7NkWwSC0rjL3NC43E67viFmqs8cFa8OzkT+mVGs972NPA3oohEfush9ujdWku
-         GYeGyXTN2RIVr9MIgmoseHwSU1b2RxCbaziHAGTQ5ELl7Hslt6L4LVFGhGVvg9Rreupd
-         tMbiLXBtVAZ+r2MG4al7G/kPGyVP3zvS53SCT6YAbgO3tC/pGf+QxM2yRnlbyandpfOr
-         SE+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790828385; x=1791433185; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NlwyKjfoR7VaJB7r+rozJPFGwYih64AWsVmx8RjDE44=;
-        b=Nosstv6IC2Cx2DPWSXy3kFMcJ0YGWTOTGNANPlu7ZTtISnj2FzwVrvM+0nicYypziu
-         eLcbvTG2EuFXNi3HQzC3XORitoJxTF4QO4RU8VM6pB75tQwPRehBxRJhacu3+NHBd7xL
-         Dz8OzmnVWiq+/B6vDO1Ub8Z6UDwkVegCHvEuNxP2CuskbiR0QI4sDrXSuo5vTepyKvG6
-         aj86sqI3VsJ9ocYjpQ1voGVdH1N8gGP47OrtLqesvAzHuXbQroPPwm3lk6bbzc26EhtY
-         TjTB4EnzK1keHYuprM8xODc3RF645oxTn7oKKMw0rrvjKLxEvy+k2EMUhiueGw8DPZmK
-         YNVw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC4328CF4A
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790828614; cv=none; b=J6mWlMTxECvKNRiNJ91bPgol2ds5NYd/ae78Jdac2kVlon1UfGFzJwK8YMk7dmW6XAxSNyb3JtXm0PfUPw9P2Cqvkko7QH8Nlmnjg5CyBo22QLrCTPU0yQH5s82laRI+xYWa1eEZOoZZG90N4BfOWBwoqpDIgAzJY/Mvrn07rXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790828614; c=relaxed/simple;
+	bh=sKDXKqSk3bvFauLVZvF0WaTTUVosGhjPrmjm4n0Sy1A=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=RUumu+gVCbhKzeCqRHe5zj8VAqaFb09xvIL1OYHkg+SzM7FEr73t7HyhinLLi7wgolD+ujw5FvZe1V9b20JhQxUdq955ceAw6YGu4WarRbxZCdz8J8oU2X0htxWnOBBUK0mFwICZR+7rcHPUB4vUGLQOgdduRDl9LvcuG+HTO4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b1bc2e44e0so9457022b6e.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790828385; x=1791433185;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790828611; x=1791433411;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NlwyKjfoR7VaJB7r+rozJPFGwYih64AWsVmx8RjDE44=;
-        b=rtljj4dHjcQndLBOOjj6MIPP/fo7JzmBaUUm8M8gi+UyivAMPG2c1Q2PpnyRbtZE5Z
-         Trbj6MmAcI3p4J+FEfHp6g0LKpB0Kdlf87q34t1grsNCCRC6HzUcwstdXcc+EDFllVSA
-         fHHpnkp/AtPNGHjLMPxYUKYqcvLI/3wSf9eLHv54veXcQ5pRQAM3KIV7tmq2Mv7XwU3s
-         70yOvSc1oY29V9AutTQKdAYG4rGneoKArAPeZc+Qjys5Ec9PA1NEshfja7DRIz9lwdLg
-         uY/Ye132hSL9CLpT3yglR8L3dyMEwps/PCJeygEX1v0VAKYNJ8oiX18q77eZHAzP6cus
-         Kx9A==
-X-Forwarded-Encrypted: i=1; AKwUvBxXeueRSIIc0yLM2gAG0O4t40gjhw1PgkvuqJLBJ8+jVi15aPbn9SQ4z89H5E2ou1KoQ/XTOhk=@vger.kernel.org
-X-Gm-Message-State: AFuF++muHn8AURzM9aeEqQKlu9hAOLjTeHR4NmKB6g0WFqSBcWaRufwt
-	cxsMO2qN3jiYc5nFsZ/NqD1vIequjVos8vOnU8ygv2XeT/V/ODyykhR3pcQmG4NU/Gpw2pUSz4Q
-	dkNEVg5aNyy2KsXJNOu15Wyei9sSDh4zMgkg8V5aL
-X-Gm-Gg: AYBFou2vgwNTVxYvT+h9q9loOOw4MBWbzSwa+TC/4sLtAoDp1n3y8Nl1hK3L/zWTHXE
-	yJmYpVqO455FeHC8gwRiwzyd5i8ro40PDxN8vhD+KCnz3d03pb2NYZk4MNR9c3wTmV5ddvG8z71
-	yb3uqEq4hu8fc1AvS5F//tfy/1B8ClwSEmHOKGUSABLW1OjgCd5IWjJm4F2gakmbuOU+xswDUR+
-	BTEVbsJ+KZUyRSXr5SMvE9N/x1RVxkni2D2aYhztcBksYuJWeXOwRYHkNyyngcjiPOM4h/ek51C
-	3nBKi96+XbmI8BgMaashPKjdZT6OMtUGdltnSZXOdu5iLuQsAdUkO4SVlGJ5Oi+fNCO5VzoCKEo
-	9+lPdDa7pizX7Fd291SJWv6CJKAPD6h/N8W4Miq2KSQTVz4+wgz1vX+rj3bgBJ+yp9R4=
-X-Received: by 2002:a05:701b:2406:b0:149:1feb:6da4 with SMTP id
- a92af1059eb24-14d332a2be7mr3924860c88.32.1790828383999; Wed, 30 Sep 2026
- 21:19:43 -0700 (PDT)
+        bh=JVrqKTfGYUejmOU+41XO88Q8ARfTs1jAkBPA+fh3krU=;
+        b=MnyLIwXK8ysLAS9Y65udw/++r7WnQ6rod++gEXszS6Zi8esHVrjX6ZQYMr1hAFH7Lk
+         uERcnJelwjFTuNTInhrC6rV1jNobOGB6wvD+3dUXG8J1ZCj3qQqXBdYKYovNJNr3k4uk
+         y0AHbD7rLP3mrP7uSFzpNr3jaI9Xi/1SAVHJWukSW91xiK+nTHmKW1IBJAyEBzN6vCfw
+         YAOIhKK2vbMYo2E2yxTigKjnyo+1Oeh3BzKPBrFrY+Tp6ZOlTlZz0qzOzQaKEItHAXOW
+         eoRpmTPSWoUjgsOdqXinVwN1IDbSiYiL5fWGrUmkfXAHZcx0d0BGhbzqJ+Nbxoki4QfY
+         f+zw==
+X-Forwarded-Encrypted: i=1; AKwUvBzEDY4DAt8Ob3PHOL2HadFYDLNDSP/ChPB4ovt0HHJJXdFJfsUUr3GHPst3dbkymE8wOExUkvE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nCj6Y2OP2hNL4R+5abtQ+pa7NFp9r8fjeiaNRShXIZJ7LCMlQK
+	b0iTrJa1igv91Sx0eYgM4PggI6ip8M8Ug18dZVg9jzj+uXTQiNyETpblfksHrUeQosn9UHR19pq
+	tcg5h4aylimRh9KjldXSOPl9kz6f2n5XiEOxvEc+wakh/pOs1BKkrhRFJS+c=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928-work-unix-passpidfd-v3-0-532018a91b21@amutable.com> <20260928-work-unix-passpidfd-v3-5-532018a91b21@amutable.com>
-In-Reply-To: <20260928-work-unix-passpidfd-v3-5-532018a91b21@amutable.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 30 Sep 2026 21:19:32 -0700
-X-Gm-Features: AclHuK9j8Y3QqvxsWyBt02R9nnTt-bXIq_uC7eCGDMAC8dhm7oM4Sg6AFvi_bSE
-Message-ID: <CAAVpQUD69=MBzg7QcE_9rhzjm=QO_Jp=WU+z=ihFYGPoawrR+w@mail.gmail.com>
-Subject: Re: [PATCH v3 05/10] net: turn sk_peer_pid into an array indexed by
- pid type
-To: Andrew Halaney <andrew@amutable.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Received: by 2002:a05:6808:e8b:b0:4e6:db9c:9a7c with SMTP id
+ 5614622812f47-4f1b9f26838mr3798525b6e.63.1790828611486; Wed, 30 Sep 2026
+ 21:23:31 -0700 (PDT)
+Date: Wed, 30 Sep 2026 21:23:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6abde043.092aa46d.14d54.0001.GAE@google.com>
+Subject: [syzbot] [net?] WARNING: still has locks held in devl_lock
+From: syzbot <syzbot+35ccc77ab91141b6cf3a@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, mcgrof@kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 2:27=E2=80=AFAM Andrew Halaney <andrew@amutable.com=
-> wrote:
->
-> From: Christian Brauner <brauner@kernel.org>
->
-> Currently only the struct pid of the thread-group leader is recorded
-> for a socket's peer. To make room for the struct pid of the thread that
-> called connect(), listen() or socketpair() turn sk_peer_pid into an
-> array indexed by pid type. All users, including bluetooth and the
-> coredump socket, keep using the PIDTYPE_TGID slot.
->
-> Nothing fills the PIDTYPE_PID slot yet. No functional changes.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-> Signed-off-by: Andrew Halaney <andrew@amutable.com>
+Hello,
 
-Technically, sk_peer_pid/lock do not need to be in struct sock and
-can avoid bloating it just for a single user, but I can follow up on it.
+syzbot found the following issue on:
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+HEAD commit:    e8e60d3ddd25 Merge branch 'for-next/core' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=17310725580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=375776a45e10c065
+dashboard link: https://syzkaller.appspot.com/bug?extid=35ccc77ab91141b6cf3a
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ca9fd6dc9b6c/disk-e8e60d3d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/690b32d87cdf/vmlinux-e8e60d3d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/35db39da550c/Image-e8e60d3d.gz.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+35ccc77ab91141b6cf3a@syzkaller.appspotmail.com
+
+====================================
+WARNING: syz.3.129/5297 still has locks held!
+syzkaller #0 Not tainted
+------------------------------------
+locks held by syz.3.129/5297: 1, last CPU#1:
+ #0: ffff0000d6879258 (&devlink->lock_key#5){+.+.}-{4:4}, at: devl_lock+0x24/0x34 net/devlink/core.c:308
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5297 Comm: syz.3.129 Not tainted syzkaller #0 PREEMPT 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/14/2026
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+ dump_stack+0x1c/0x28 lib/dump_stack.c:129
+ print_held_locks_bug+0x90/0x98 kernel/locking/lockdep.c:6848
+ debug_check_no_locks_held+0x24/0x30 kernel/locking/lockdep.c:6856
+ try_to_freeze include/linux/freezer.h:62 [inline]
+ usermodehelper_read_trylock+0x1d8/0x294 kernel/umh.c:228
+ fw_load_from_user_helper drivers/base/firmware_loader/fallback.c:157 [inline]
+ firmware_fallback_sysfs+0x158/0x930 drivers/base/firmware_loader/fallback.c:248
+ _request_firmware+0xb34/0xf5c drivers/base/firmware_loader/main.c:898
+ request_firmware+0x4c/0x70 drivers/base/firmware_loader/main.c:948
+ devlink_compat_flash_update+0x134/0x27c net/devlink/dev.c:1248
+ dev_ethtool+0x63c/0x1a78 net/ethtool/ioctl.c:3676
+ dev_ioctl+0x284/0xc88 net/core/dev_ioctl.c:751
+ sock_do_ioctl+0x198/0x254 net/socket.c:1339
+ sock_ioctl+0x55c/0x7ec net/socket.c:1446
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __arm64_sys_ioctl+0x154/0x1cc fs/ioctl.c:583
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
+ el0_svc+0x60/0x1d8 arch/arm64/kernel/entry-common.c:796
+ el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:815
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:606
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
