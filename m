@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6EB4052CD
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E6241D104
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829553; cv=none; b=k9V4zgQFBqQEBJECOBb5qL6NGbBQB1nhm9Yo2a6v1F+P9VDky9pXNnRXYE1bYw8BhAKlK/dwtZzsjRiqdTudYET5NNkmEZbKYA2C3BJa9vtFcmGzxmlQVGs1KzX1U1MhOqHcQtfxFBLVUOmCXbBLetH01lC/HEHGI0PQTDaKs/M=
+	t=1790829554; cv=none; b=J2Vbw0nsUvT8luPHd0UvKCm++Wr66G71kMKjNoRYHqz37FmcN7/Ts4ngRFFK2g9ehHM8AD3zRwHYQWAu6hYRgoMsfVv/YE9Gs+DW2pxzo5ViTH12NbtE9EWWrzIJQ2HhEEUXtWp/5HWrKQyyRO4/IqS2FazTZ52eupvx53d+OaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829553; c=relaxed/simple;
-	bh=jKgrBxH6DXcu2jfCOW9aTNEICOAfUJeHF6laxuNsPFc=;
+	s=arc-20240116; t=1790829554; c=relaxed/simple;
+	bh=hpHNjBrAqkX22wdQinvM8DxgwcUcdoy7Sy9fQMrzGjk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dSf0qgypant/+jb1dYz+Tj9FCiQxATUaamO73am8Pnxi5Pfv/Y8a9bUNN1I677vI6IKLAv4DX59rnUvWHRpoKWkLzTdCy0GYfpoRT9TJSpA0sByaHpyAeFZEv1jovmTmW7CcawzvyoKDzaeyu3qACvMZx/LnnYcsjhJ8+UputTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haUOrmEr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=E/Tq5NfqySx4kDVpf8JiVtzT0a4hl0Et9ihWMPyCrwqiRCr3+Xqmap3bCnXoYd4YVYodezvewQy9PoOgJevAkaqA7RNYNY/JTzozk4CVmHo+1yalsPHnppctvdQTXX1Jof7zbnXGpcglNGzhQNWpIVlKuTkaiTqBoLsEea0V9Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFN+f+Q2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haUOrmEr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D394E1F00899;
-	Thu,  1 Oct 2026 04:39:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFN+f+Q2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89401F000FF;
+	Thu,  1 Oct 2026 04:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790829551;
-	bh=wPrlepsxyYJdmyq52bBxMikkJCo8QXmt26rjFP0HtXk=;
+	s=k20260515; t=1790829552;
+	bh=uJJq6bJzJhtNafeYK+CkhJ6HffmO4GluoeRIzK7g87c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=haUOrmErW296dKQ7NvZkWICcic29l1P2mnDLPrL64J9wdXtAPmlffoSQccP23V3nw
-	 /D5GYAJJBa6Iby2xYkbwQGdmk8J/bYIPARrzmIDWsb3VwiBzehWQYVb3GllmBnB2BP
-	 nDrYPyabl205/Jd5IXscViftVR5ERvZOd9UWy2fHNM9P3JFWNnaKfTjDneBBzlfnDY
-	 dMeXaNsnbbdns8e23pWQmQSbbBUT60fBng0EJ0rJkiHjxD80F+1CTZR48co+HnKZOU
-	 mQ+6TA2g4YvG5fsv5nccE3xuka0w7bUJta+XTsZ3FmwohVGtXMQiIFRicgGgCkp46h
-	 pYRxJSOBo5Ntw==
-Subject:
- Re: [PATCH v2 3/4] tun: keep a kernel copy of the socket filter program
+	b=JFN+f+Q2YkMaCuFjaZjT2w+5/iK4lSQq1Mn+cE5UE0fJr3i2NCPFAboh8L6O/upa8
+	 Q11vOBf6zuUMnHmsmJs4bgxPsy/TbNAyCXeQACYd0wSkKxQGwLbQC9NOJQjcexmUzw
+	 6zenfgRNTOG5Dee0NQAn7GKh5WOl+U81N7bak1VUbF432SpVpNHIwTb5Zew3et5BI7
+	 XlqV6TZENXlJWMgzmWSDWyiIUEQQ9lAM+DToE5GEfnm8Ah0/iT24dIrIgx1sENT4xB
+	 5VzBd5//8rRuf4DxADrczQWEE4KUteLhtudMFt1nX6FWS2ivW5D9eTqe2oInfV+13y
+	 NQ+pFlTofxWLg==
+Subject: Re: [PATCH v2 4/4] selftests: net: add TAP socket filter attach tests
 From: netdev-bot+sashiko@kernel.org
 To: clementwei90@163.com
 Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
  jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, weirongguang@kylinos.cn
-Date: Thu, 01 Oct 2026 04:39:10 +0000
-Message-ID: <179082955043.434549.13216236090430920832@kernel.org>
-In-Reply-To: <20260929093712.131096-4-clementwei90@163.com>
-References: <20260929093712.131096-4-clementwei90@163.com>
+Date: Thu, 01 Oct 2026 04:39:11 +0000
+Message-ID: <179082955141.434549.14113436592858907489@kernel.org>
+In-Reply-To: <20260929093712.131096-5-clementwei90@163.com>
+References: <20260929093712.131096-5-clementwei90@163.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,212 +52,248 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] This commit carries `Fixes: 54f968d6efdb`, so it will be picked
-  for stable.
-- [Low] For TUNATTACHFILTER, tun_copy_filter() replaces the core
-  bpf_check_basics_ok() validation with its own checks, and the two…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but a failed
-  filter replacement leaves the queues in mixed states.
-- [Medium] This problem wasn't introduced by this patch, but
-  TUNDETACHFILTER only detaches the filter from the tun->numqueues…
-- [Low] This problem wasn't introduced by this patch, but when every
-  queue of a multiqueue TAP is disabled with IFF_DETACH_QUEUE,…
+- [Low] In reattach_filter_without_user_buffer()
+  (tools/testing/selftests/net/tun.c:614-641), only the tun_attach()…
+- [Low] attach_filter_bad_len_keeps_descriptor() only checks "the
+  installed filter" through IFF_NOFILTER on self->fd…
+- [Low] attach_filter_nofilter_flag()
+  (tools/testing/selftests/net/tun.c:646-665) only checks that a queue…
+- [Low] In reattach_filter_without_user_buffer() the inline comment at
+  tools/testing/selftests/net/tun.c:627 says "The process that called…
 
 --
 
-tun: keep a kernel copy of the socket filter program
+selftests: net: add TAP socket filter attach tests
 
-With this commit, TUNATTACHFILTER copies the classic BPF instructions
-into tun->fprog_kern instead of keeping only the user pointer in
-tun->fprog. tun_attach() and tun_attach_filter() then build each queue's
-filter from that kernel copy through sk_attach_filter_kern(). The copy
-is freed on detach, when it is replaced, and in tun_free_netdev().
+This adds four TAP selftests to tools/testing/selftests/net/tun.c for
+TUNATTACHFILTER handling. They cover four cases:
 
-Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
+- re-attaching a queue after the user buffer that held the filter is
+  made unreadable
+- attaching a queue with IFF_NOFILTER
+- attaching a queue after TUNDETACHFILTER
+- rejecting a zero-length filter
 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index a2fffef3735fe..c796048742f9b 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
+> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+> index abe488bac50bb..bf8d4d6f21f77 100644
+> --- a/tools/testing/selftests/net/tun.c
+> +++ b/tools/testing/selftests/net/tun.c
 
 [ ... ]
 
-> @@ -722,6 +723,34 @@ static void tun_force_wake_queue(struct tun_struct *tun,
->  	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
->  }
->  
-> +/* Copy the filter that @argp points at into the kernel, so that it can be
-> + * installed again later, from any context. tun->fprog and tun->fprog_kern
-> + * are updated only once the copy succeeded.
-> + */
-> +static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
+> @@ -542,6 +548,159 @@ TEST_F(tun, reattach_close_delete)
+
+[ ... ]
+
+> +TEST_F(tun, reattach_filter_without_user_buffer)
 > +{
-> +	struct sock_fprog fprog;
-> +	struct sock_filter *insns;
+> +	struct sock_fprog gf = { 0 };
+> +	short flags = 0;
+> +	void *prog;
+> +	int ret;
 > +
-> +	if (copy_from_user(&fprog, argp, sizeof(fprog)))
-> +		return -EFAULT;
+> +	prog = filter_alloc(filter_accept, ARRAY_SIZE(filter_accept));
+> +	ASSERT_NE(prog, NULL);
+> +	ASSERT_EQ(filter_attach(self->fd, prog, ARRAY_SIZE(filter_accept)), 0);
 > +
-> +	if (!fprog.len || fprog.len > BPF_MAXINSNS)
-> +		return -EINVAL;
+> +	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
 > +
-> +	insns = memdup_array_user(fprog.filter, fprog.len,
-> +				  sizeof(struct sock_filter));
+> +	/* The process that called TUNATTACHFILTER no longer maps this memory */
+> +	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_NONE), 0);
 
 [Severity: Low]
-Does this change the errno TUNATTACHFILTER returns when fprog.filter is
-NULL and fprog.len is nonzero?
+This isn't a bug, but is this comment accurate? mprotect(PROT_NONE) makes
+the page unreadable, but it stays mapped. It is only unmapped at the end of
+the test by munmap().
 
-Before this patch, sk_attach_filter()->__get_filter()->bpf_check_basics_ok()
-rejected a NULL filter with -EINVAL, the same errno SO_ATTACH_FILTER
-returns. Here only the length is checked. memdup_array_user(NULL, ...)
-then fails in copy_from_user(), and the ioctl returns -EFAULT.
+The header comment above the test says the mapping is "made unreadable",
+which matches the code.
 
-The bpf_check_basics_ok() call inside bpf_prog_create() only sees the
-kernel copy, which is never NULL, so it can't catch this case.
+copy_from_user() faults the same way in both cases, so the test still works.
 
-Would adding a !fprog.filter test to the length check keep the old
--EINVAL?
-
-> +	if (IS_ERR(insns))
-> +		return PTR_ERR(insns);
 > +
-> +	kfree(tun->fprog_kern.filter);
-> +	tun->fprog_kern.len = fprog.len;
-> +	tun->fprog_kern.filter = insns;
-> +	tun->fprog = fprog;
+> +	ret = tun_attach(self->fd, self->ifname);
+> +	EXPECT_EQ(ret, 0);
 > +
-> +	return 0;
+> +	EXPECT_EQ(tap_get_iff(self->fd, &flags), 0);
+> +	EXPECT_EQ(flags & IFF_NOFILTER, 0);
+> +
+> +	EXPECT_EQ(filter_get(self->fd, &gf), 0);
+> +	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
+
+[Severity: Low]
+Can these last two checks tell whether tun_attach() actually re-installed
+the filter?
+
+The tun_detach() helper uses TUNSETQUEUE with IFF_DETACH_QUEUE, which ends
+up in __tun_detach(tfile, false). That path disables the queue but never
+calls sk_detach_filter(). The socket therefore keeps the filter from the
+first TUNATTACHFILTER:
+
+drivers/net/tun.c:__tun_detach() {
+    ...
+		} else {
+			tun_disable_queue(tun, tfile);
+			tun_napi_disable(tfile);
+		}
+    ...
+}
+
+TUNGETIFF reports IFF_NOFILTER only when sk_filter is NULL:
+
+drivers/net/tun.c:__tun_chr_ioctl() {
+    ...
+		if (!tfile->socket.sk->sk_filter)
+			ifr.ifr_flags |= IFF_NOFILTER;
+    ...
+}
+
+So the IFF_NOFILTER check passes whether or not this block in tun_attach()
+ran:
+
+drivers/net/tun.c:tun_attach() {
+    ...
+	if (!skip_filter && (tun->filter_attached == true)) {
+		lock_sock(tfile->socket.sk);
+		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+    ...
+}
+
+TUNGETFILTER returns tun->fprog, which is the saved user descriptor, not
+fprog_kern:
+
+drivers/net/tun.c:__tun_chr_ioctl() {
+    ...
+	case TUNGETFILTER:
+    ...
+		if (copy_to_user(argp, &tun->fprog, sizeof(tun->fprog)))
+    ...
+}
+
+So gf.len == 3 doesn't show which instructions the queue is running.
+
+Only the ret == 0 check can tell a fixed kernel from a broken one. If the
+re-install block were skipped, or filter_attached were wrongly false, the
+rest of the test would still pass.
+
+The comment describes a queue "attached long after the filter was
+configured". The test, however, reuses a queue that already has a filter.
+
+Could the test also attach a new queue with TUNSETIFF and without
+IFF_NOFILTER? On that queue, fprog_kern is the only source of the filter.
+
+It could also overwrite the still-readable buffer, for example with
+filter_drop. That would cover the other hazard described in "tun: keep a
+kernel copy of the socket filter program".
+
+> +
+> +	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_READ | PROT_WRITE), 0);
+> +	ASSERT_EQ(munmap(prog, getpagesize()), 0);
 > +}
 > +
->  static int tun_attach(struct tun_struct *tun, struct file *file,
->  		      bool skip_filter, bool napi, bool napi_frags,
->  		      bool publish_tun)
-> @@ -753,7 +782,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
->  	/* Re-attach the filter to persist device */
->  	if (!skip_filter && (tun->filter_attached == true)) {
->  		lock_sock(tfile->socket.sk);
-> -		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-> +		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+> +/* A new queue attached with IFF_NOFILTER must not get the filter that is
+> + * configured on the device.
+> + */
+> +TEST_F(tun, attach_filter_nofilter_flag)
+> +{
+> +	struct ifreq ifr = { 0 };
+> +	short flags = 0;
+> +	int fd;
+> +
+> +	ASSERT_EQ(filter_attach(self->fd, filter_drop, ARRAY_SIZE(filter_drop)), 0);
+> +
+> +	fd = open("/dev/net/tun", O_RDWR);
+> +	ASSERT_GE(fd, 0);
+> +
+> +	strcpy(ifr.ifr_name, self->ifname);
+> +	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE | IFF_NOFILTER;
+> +	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
+> +
+> +	EXPECT_EQ(tap_get_iff(fd, &flags), 0);
+> +	EXPECT_NE(flags & IFF_NOFILTER, 0);
 
 [Severity: Low]
-Should this commit record that it depends on the helper commit? It
-carries Fixes: 54f968d6efdb, so it will be picked for stable.
+Is there a positive control for this test? tun_set_iff() passes the
+IFF_NOFILTER bit to tun_attach() as skip_filter:
 
-sk_attach_filter_kern() is only added by the previous commit in the
-series, "net: filter: add sk_attach_filter_kern() function". That commit
-has no Fixes: tag, no Cc: stable and no stable dependency annotation.
+drivers/net/tun.c:tun_set_iff() {
+    ...
+		err = tun_attach(tun, file, ifr->ifr_flags & IFF_NOFILTER,
+    ...
+}
 
-This commit's message doesn't say it depends on that commit, or on "tun:
-fix inverted error check when re-attaching the filter".
+None of the new tests opens a new queue with TUNSETIFF and without
+IFF_NOFILTER after TUNATTACHFILTER, then checks that the device filter is
+installed on it. Both fixture queues are created in FIXTURE_SETUP, before
+any filter exists.
 
-If it is backported by itself, tun_attach() and tun_attach_filter() won't
-build. sk_attach_filter_kern is implicitly declared, and the symbol is
-undefined when tun is built as a module.
+Suppose filter_attached were never set, or the re-install branch in
+tun_attach() never ran. The new socket here would have no filter, and this
+check would still pass.
 
-Would a Cc: stable tag with a dependency note on the helper commit
-prevent that?
+Would it help to also open a queue without IFF_NOFILTER and check that
+IFF_NOFILTER is clear on it?
 
->  		release_sock(tfile->socket.sk);
->  		if (err)
->  			goto out;
+> +
+> +	close(fd);
+> +}
 
 [ ... ]
 
-> @@ -3066,6 +3096,9 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
->  		release_sock(tfile->socket.sk);
->  	}
->  
-> +	kfree(tun->fprog_kern.filter);
-> +	tun->fprog_kern.filter = NULL;
-> +	tun->fprog_kern.len = 0;
->  	tun->filter_attached = false;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does TUNDETACHFILTER leave
-the filter on queues that are disabled at that point?
-
-tun_detach_filter() only walks the first n == tun->numqueues entries:
-
-	for (i = 0; i < n; i++) {
-		tfile = rtnl_dereference(tun->tfiles[i]);
-		lock_sock(tfile->socket.sk);
-		sk_detach_filter(tfile->socket.sk);
-		...
-
-A queue disabled through TUNSETQUEUE with IFF_DETACH_QUEUE
-(tun_set_queue()->__tun_detach(tfile, false)) keeps its sk_filter.
-
-When that queue is re-enabled with IFF_ATTACH_QUEUE, tun_attach() skips
-the filter block because filter_attached is false. It doesn't clear the
-leftover filter either.
-
-tun_net_xmit() checks tfile->socket.sk->sk_filter directly. So after
-TUNDETACHFILTER succeeds, the re-enabled queue still applies the old
-filter.
-
->  }
->  
-> @@ -3077,7 +3110,7 @@ static int tun_attach_filter(struct tun_struct *tun)
->  	for (i = 0; i < tun->numqueues; i++) {
->  		tfile = rtnl_dereference(tun->tfiles[i]);
->  		lock_sock(tfile->socket.sk);
-> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-> +		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
->  		release_sock(tfile->socket.sk);
->  		if (ret) {
->  			tun_detach_filter(tun, i);
-
-[Severity: Medium]
-This is a pre-existing issue, but can a failed filter replacement leave
-the queues in mixed states?
-
-Say filter A is attached and TUNATTACHFILTER is issued with program B.
-tun_copy_filter() frees A's kernel copy and stores B. tun_attach_filter()
-then fails on queue i. That happens if bpf_check_classic() rejects B
-(i == 0), or if bpf_prog_alloc() or __sk_filter_charge() fails at any i.
-
-tun_detach_filter(tun, i) detaches only queues [0, i). It also frees B's
-copy and sets filter_attached = false.
-
-Queues [i, numqueues) keep running filter A, but the device-level state
-says no filter is attached. Queues attached later through tun_attach()
-get no filter at all.
-
-The code behaved the same way before this patch.
-
-> @@ -3425,8 +3458,8 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
->  		ret = -EINVAL;
->  		if ((tun->flags & TUN_TYPE_MASK) != IFF_TAP)
->  			break;
-> -		ret = -EFAULT;
-> -		if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
-> +		ret = tun_copy_filter(tun, argp);
-> +		if (ret)
->  			break;
->  
->  		ret = tun_attach_filter(tun);
+> +/* A TUNATTACHFILTER with a bad length must not clobber the saved descriptor */
+> +TEST_F(tun, attach_filter_bad_len_keeps_descriptor)
+> +{
+> +	struct sock_fprog gf = { 0 };
+> +	short flags = 0;
+> +
+> +	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
+> +
+> +	errno = 0;
+> +	EXPECT_EQ(filter_attach(self->fd, filter_accept, 0), -1);
+> +	EXPECT_EQ(errno, EINVAL);
+> +
+> +	EXPECT_EQ(filter_get(self->fd, &gf), 0);
+> +	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
+> +
+> +	EXPECT_EQ(tap_get_iff(self->fd, &flags), 0);
+> +	EXPECT_EQ(flags & IFF_NOFILTER, 0);
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but what happens when every
-queue of a multiqueue TAP has been disabled with IFF_DETACH_QUEUE?
+The commit message says this test checks that a rejected TUNATTACHFILTER
+"leaves both the saved descriptor and the installed filter alone". Can this
+IFF_NOFILTER check detect a lost filter?
 
-tun->numqueues is 0 then, but tfile->tun is still set, so tun_get() still
-reaches TUNATTACHFILTER.
+The check reads sk_filter on self->fd. A failed attach on queue 0 never
+touches sk_filter, even on the kernel before this series.
 
-tun_copy_filter() checks only the length and copies the instructions.
-The loop in tun_attach_filter() runs zero times, so filter_attached is
-set to true and 0 is returned. bpf_check_classic() never runs.
+In the old code, len=0 was copied into tun->fprog. tun_attach_filter() then
+failed at i=0. tun_detach_filter(tun, 0) detached no sockets, but it still
+cleared the device state:
 
-A later IFF_ATTACH_QUEUE calls sk_attach_filter_kern() from tun_attach().
-bpf_prepare_filter() then rejects the saved program with -EINVAL. The
-queue can't be re-enabled until the owner issues TUNDETACHFILTER or a
-valid TUNATTACHFILTER.
+drivers/net/tun.c:tun_detach_filter() {
+    ...
+	tun->filter_attached = false;
+}
 
-This patch narrows the problem a little: before its length check, this
-path accepted even len == 0.
+The socket kept its filter, so this check passed even though the device had
+silently lost its re-attach state. On the old kernel, only the gf.len check
+fails.
+
+tun_attach() reads tun->filter_attached and tun->fprog_kern on later
+attaches. The test never attaches a queue again after the failed ioctl.
+
+A regression could clear filter_attached or free fprog_kern before the
+length check while keeping tun->fprog. That regression would pass this test.
+
+Could the test detach and re-attach the queue (or add a new one) after the
+failed TUNATTACHFILTER, then check IFF_NOFILTER? That would show the
+installed filter is really kept.
+
+> +}
+> +
+>  FIXTURE(tun_vnet_udptnl)
+>  {
+>  	char ifname[IFNAMSIZ];
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929093712.131096-1-clementwei90%40163.com
