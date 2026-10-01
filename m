@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AE23803F1
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F52630F540
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790816520; cv=none; b=BfjqDewbOXPDr6d+Zj4DXPBCVQuzKKGO9ItX8BTJmXWJFfLYZMS/eaElHsJNpl3Vhbm/cI8CsPhj1oU5GmDu7boQIx0oiMxw8VEXRTvP1x8ZeMtRKlWv7F7a4K+s8tYAPXmuCiumWtl7FMj21CqRqCFaMx9CN4mUoPmnWSRPeJw=
+	t=1790816523; cv=none; b=UOsa6TUW6pUtPyWxR974p3mpq6NdThSBDeaJXtarvpowYQUwj1jYfRcrCo/fqzuwQpszCOdBkwmxDUn3xX55o0ZEtXdHEZvAxrrVchDeyBepxqakilIfXgXRjgJObreQmSlcATZs7CGxRrCDyydye+vMcyGbGWCu1stJMA61F1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790816520; c=relaxed/simple;
-	bh=whjCLcOCqqWgUZ+XNLoTHjG9IBeMZJxrU+4Ceck6VjA=;
+	s=arc-20240116; t=1790816523; c=relaxed/simple;
+	bh=Bxvby+9zSBNs5CTtJMKh13l3rF2in6Feqmg0KrkbCQg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q9ZejxsKzXE+C2SomvkuzudvVBRobUDh62hsj2beEbitA0G8xa2oIy/AYYrqsp4lKaIIjfd2Be5HxdOezjvnizx2Z6ywkZH/nyMNbK3rlwgvqZ8qpG/2mQtIf/Nexd8atz19dvaR6bCZ2XxbSSr3QPrBCVyis8LfgbdtCwrupUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2dTSHiY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nYIlomVTz4cZInf3ErSBUP3mqCW0pHTRqmsWIs52zAJ5VqpVNvubSRBOJl1ErqJV7ey9PYT8v+5kRdIpv3mat9vwd9PGX+k1I1qq9zQRwGICBx123Shr74Rrv85cs9rSoMJg2bB/pdeZHuITZtlWINb6Hhbk2ZTSgkxvfHOmpss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKMsvGs7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2dTSHiY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD781F000FF;
-	Thu,  1 Oct 2026 01:01:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKMsvGs7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B8B1F00899;
+	Thu,  1 Oct 2026 01:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790816516;
-	bh=hoCUzkaewFIrpdnn36R/oKIW101daRynkUqHEncGXwg=;
+	s=k20260515; t=1790816517;
+	bh=n2AttnS75dzESB2HximjODlkzRG3/d3M96SP0ctR+JI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=R2dTSHiYvd5NAhSTaLppjxdI65R+04T9J6epaMIJ+uylcgQXAg1Abh9A1htghBtXT
-	 kP3AWx7Bcn4xWD99tSCF0mKOWzvqMlU8EYJtLMHhRWl4HhDEAPjVd6gg1/NoEHlY/p
-	 SA6dy3D+Oz7vqhN0yEreWLZxKFdvqp03uqluyqImn50kybPyJDrSttc6n+Cv7a09LC
-	 pHEhs2ozdmv+0X7xm7YsQ6xnQo0yALJNrNR+b6ZpDwMoSPZPtp5X5NQxE24FgpG4JK
-	 K2RkVTxP/C75K2CSaWT7G1rZ4NqkZnUWuo7q8ciUGDQbB6Ky9Ir4K7zCqfBk55EODt
-	 PTOhhlieJnYCw==
-Subject: Re: [PATCH net v2 1/9] bnxt_en: Clear bp->total_irqs in
- bnxt_init_int_mode() during error
+	b=KKMsvGs7mfHu7Po5O43JbQUOT61BGare5h9TNa6WUGDpA193x2wriCXecCrneUC3y
+	 f8jM2siKTSIAqQdEQydDBzxhnvWxDXzMNmJSZMa6z6cMtOh/Vm/y26RCrdwmY6KmlZ
+	 8yO/XPTssygCkBrCOLsNkhhCuo+FCk0dEuR641zC6Sd248hRHZ07VbowyjUch9Tn8l
+	 RBfAtFGnIzqKzfSsdgca2zozpGA4URvQ0wf3W6tcJi2HwiHggTG3uhYfSZezKhi2A0
+	 VIbsmPa5tRHQ5UlJ8TSkNsFOtIPzsgrxouzs5mQf90ntXzeqKUDBZwaFDaY0/T45Tl
+	 KlWFfa3pxA46A==
+Subject: Re: [PATCH net v2 6/9] bnxt_en: Fix ring accounting and validation
+ when rings are constrained
 From: netdev-bot+sashiko@kernel.org
 To: michael.chan@broadcom.com
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
  pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, joe@dama.to,
  kalesh-anakkur.purayil@broadcom.com, scott.branden@broadcom.com
-Date: Thu, 01 Oct 2026 01:01:55 +0000
-Message-ID: <179081651500.434549.2620264506226250515@kernel.org>
-In-Reply-To: <20260928041712.3467803-2-michael.chan@broadcom.com>
-References: <20260928041712.3467803-2-michael.chan@broadcom.com>
-X-sashiko-severity: Low
+Date: Thu, 01 Oct 2026 01:01:56 +0000
+Message-ID: <179081651631.434549.10407639155217796366@kernel.org>
+In-Reply-To: <20260928041712.3467803-7-michael.chan@broadcom.com>
+References: <20260928041712.3467803-7-michael.chan@broadcom.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,77 +48,206 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-- [Low] The bnxt_io_resume() hunk (`if (!err && !bp->irq_tbl) err =
-  bnxt_init_int_mode(bp);`) fixes a defect introduced by c2d20a3814d1…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] NITRO_A0 regression: this patch makes bnxt_init_int_mode() call
+  bnxt_adj_rings() every time.
+- [Medium] bnxt_reserve_rings() gains a new branch, 'else if (irq_re_init
+  && BNXT_NEW_RM(bp) && !rc)'.
+- [Medium] With TCs and XDP both active, bnxt_trim_rings() converts the
+  trimmed completion-ring count back to a TX count with…
 
 --
 
-bnxt_en: Clear bp->total_irqs in bnxt_init_int_mode() during error
+bnxt_en: Fix ring accounting and validation when rings are constrained
 
-This patch clears bp->total_irqs when bnxt_init_int_mode() fails, so that
-bnxt_reserve_rings() and bnxt_check_rings() do not call
-bnxt_change_msix() with a NULL bp->irq_tbl. It adds bp->irq_tbl_size to
-bound dynamic MSI-X growth. It also skips the second bnxt_init_int_mode()
-call in bnxt_io_resume() when bnxt_reserve_rings() has already
-initialized MSI-X.
+This patch renames bnxt_adj_tx_rings() to bnxt_adj_rings(). The new
+function rebalances TX, RX and CP rings for TCs, XDP and shared-ring
+mode, and is called from __bnxt_reserve_rings() and bnxt_init_int_mode().
+The patch also tightens bnxt_rings_ok() to check minimum ring counts,
+and removes the TC reset error path from bnxt_reserve_rings().
 
 > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index d7728d0c5b6e6..51557ee6c9ade 100644
+> index bf902da945cb..8e4bde720ef5 100644
 > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 
 [ ... ]
 
-> @@ -17692,7 +17702,7 @@ static void bnxt_io_resume(struct pci_dev *pdev)
->  			err = bnxt_open(netdev);
->  		} else {
->  			err = bnxt_reserve_rings(bp, true);
-> -			if (!err)
-> +			if (!err && !bp->irq_tbl)
->  				err = bnxt_init_int_mode(bp);
->  		}
+> @@ -11680,19 +11723,56 @@ static int bnxt_init_int_mode(struct bnxt *bp)
+
+[ ... ]
+
+>  	/* Trim rings based upon num of vectors allocated */
+>  	rc = bnxt_trim_rings(bp, &bp->rx_nr_rings, &bp->tx_nr_rings,
+>  			     total_vecs - ulp_msix, min == 1);
+>  	if (rc)
+>  		goto msix_setup_exit;
+>  
+> -	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
+> -	bp->cp_nr_rings = (min == 1) ?
+> -			  max_t(int, tx_cp, bp->rx_nr_rings) :
+> -			  tx_cp + bp->rx_nr_rings;
+> +	min_tx = bp->tx_nr_rings_xdp ? tcs + 1 : tcs;
+> +	if (bp->tx_nr_rings < min_tx) {
+> +		netdev_err(bp->dev, "Not enough MSI-X to satisfy min. TX rings\n");
+> +		rc = -ENOMEM;
+> +		goto msix_setup_exit_restore;
+> +	}
+
+[Severity: Medium]
+Can this check reject a configuration that bnxt_adj_rings() could still
+rebalance?
+
+When both TCs and XDP are active, bnxt_trim_rings() turns the trimmed
+completion-ring count back into a TX count with bnxt_num_cp_to_tx():
+
+    return (tx_cp - bp->tx_nr_rings_xdp) * tcs +
+           bp->tx_nr_rings_xdp;
+
+This keeps the original XDP ring count fixed.
+
+For example, take num_tc = 2, XDP attached and 8 combined channels. That
+gives tx = 24, xdp = 8 and tx_cp = 16. If total_vecs - ulp_msix is 5,
+shared-mode trimming sets tx_cp = 5, and the TX count becomes
+(5 - 8) * 2 + 8 = 2.
+
+That is below min_tx = 3, so this path returns -ENOMEM with "Not enough
+MSI-X to satisfy min. TX rings". But a balanced setup with
+per_tc = xdp = rx = 2 (tx = 6, tx_cp = 4) fits in 5 vectors.
+
+The same conversion feeds bnxt_rings_ok() in __bnxt_reserve_rings(), so
+FW-constrained reservations would fail the same way.
+
+The commit message says bnxt_adj_rings() "will now correctly scale down
+TX rings for XDP and TCs evenly". That seems to hold only for mild
+shrinkage. Should the minimum check run after rebalancing, or should the
+conversion scale the XDP count too?
+
+> +
+> +	bnxt_adj_rings(bp);
+>  
+> +	if (!bnxt_nitro_a0_rings_ok(bp, bp->rx_nr_rings)) {
+> +		netdev_err(bp->dev, "Not enough MSI-X to satisfy min. RX rings\n");
+> +		rc = -ENOMEM;
+> +		goto msix_setup_exit_restore;
+> +	}
+
+[Severity: High]
+Does this break NITRO_A0 chips at probe time?
+
+After computing the shared-ring defaults, bnxt_set_dflt_rings() adds an
+extra RX ring and an extra CP ring for this chip:
+
+    if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
+        bp->rx_nr_rings++;
+        bp->cp_nr_rings++;
+    }
+
+NITRO_A0 always runs in shared mode. bnxt_init_int_mode() now always
+calls bnxt_adj_rings(), and its shared branch does:
+
+    bp->tx_nr_rings_per_tc = min(bp->tx_nr_rings_per_tc, rx);
+    bp->rx_nr_rings = bp->tx_nr_rings_per_tc;
+
+With a default ring count of N, rx drops from N + 1 back to N, and
+bnxt_set_cp_rings() recomputes cp_nr_rings as N. By the time
+bnxt_nitro_a0_rings_ok() runs, the extra ring is already gone.
+
+With N == 1 (a kdump kernel, or a single-queue system), rx becomes 1,
+bnxt_nitro_a0_rings_ok() fails, and probe returns -ENOMEM. The same
+setup probed successfully before this patch.
+
+With N >= 2, bnxt_init_napi() still gives the last bnapi to the special
+handler:
+
+    if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
+        bnapi = bp->bnapi[cp_nr_rings];
+        netif_napi_add_locked(bp->dev, &bnapi->napi, bnxt_poll_nitroa0);
+
+In shared mode, bnxt_alloc_mem() now also puts regular TX ring N - 1 on
+that bnapi. bnxt_poll_nitroa0() doesn't process TX completions; it only
+logs "Invalid completion received on special ring" for them.
+
+Would that TX queue then stall until the TX watchdog fires?
+
+There are smaller effects as well. The default RSS table loses a ring.
+bnxt_get_channels() reports rx_nr_rings - 1 combined channels, one fewer
+than configured. Every probe also prints a spurious "RX rings reduced"
+warning.
+
+The commit message says "The special NITRO_A0 minimum requirement is
+handled by a new helper in bnxt_init_int_mode() only". Should
+bnxt_adj_rings() account for the extra RX ring on this chip instead?
+
+[ ... ]
+
+> @@ -11740,7 +11818,6 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+>  	irqs_required = bnxt_irqs_required(bp);
+>  
+>  	if (irq_re_init && BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs) {
+> -		irq_change = true;
+>  		if (!pci_msix_can_alloc_dyn(bp->pdev) || !bp->irq_tbl) {
+>  			bnxt_ulp_irq_stop(bp);
+>  			bnxt_clear_int_mode(bp);
+> @@ -11752,25 +11829,17 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+>  		if (!rc)
+>  			rc = bnxt_init_int_mode(bp);
+>  		bnxt_ulp_irq_restart(bp, rc);
+> -	} else if (irq_change && !rc) {
+> -		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
+> +	} else if (irq_re_init && BNXT_NEW_RM(bp) && !rc) {
+> +		/* __bnxt_reserve_rings() may have shrunk the rings */
+> +		irqs_required = bnxt_irqs_required(bp);
+> +		if (irqs_required != bp->total_irqs &&
+> +		    bnxt_change_msix(bp, irqs_required) != irqs_required)
+>  			rc = -ENOSPC;
 >  	}
 
-[Severity: Low]
-This isn't a bug, but should the patch also carry a Fixes tag for
-c2d20a3814d1 ("bnxt_en: delay pci_alloc_irq_vectors() in the AER path")?
+[Severity: Medium]
+Can this new branch call bnxt_change_msix() on a device that doesn't
+support dynamic MSI-X allocation?
 
-The patch only has:
+Before this patch, bnxt_change_msix() was only reached through
+irq_change. That meant the first branch had already seen
+pci_msix_can_alloc_dyn() && bp->irq_tbl; otherwise the clear/re-init
+path ran instead. The new condition drops that check.
 
-    Fixes: e68256c8a73c ("bnxt_en: Support dynamic MSIX")
+Take a NEW_RM device without dynamic MSI-X support where the initial
+irqs_required equals bp->total_irqs, so irq_cleared stays false. Suppose
+__bnxt_reserve_rings() then shrinks the rings: FW grants fewer, and
+bnxt_adj_rings() runs because bp->bnapi is NULL. The recomputed
+irqs_required drops, and bnxt_change_msix() enters its trim loop:
 
-Commit c2d20a3814d1 added the unconditional bnxt_init_int_mode() call
-after bnxt_reserve_rings() in bnxt_io_resume(), and it is newer than
-e68256c8a73c.
+    for (i = bp->total_irqs; i > total; i--) {
+        map.index = i - 1;
+        map.virq = bp->irq_tbl[i - 1].vector;
+        pci_msix_free_irq(bp->pdev, map);
+        bp->total_irqs--;
+    }
 
-The double init can happen without dynamic MSI-X:
+pci_msix_free_irq() starts with:
 
-bnxt_io_slot_reset()
-    bnxt_clear_int_mode()
+    if (WARN_ON_ONCE(!pci_msix_can_alloc_dyn(dev)))
+        return;
 
-bnxt_io_resume()
-    bnxt_reserve_rings(bp, true)
-        /* BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs */
-        bnxt_clear_int_mode()
-        bnxt_init_int_mode()      <-- MSI-X enabled here
-    bnxt_init_int_mode()
-        pci_alloc_irq_vectors()
-            __pci_enable_msix_range()
-                WARN_ON_ONCE(dev->msix_enabled) -> -EINVAL
+So the vector is never freed, but bp->total_irqs is still decremented.
+bnxt_change_msix() then returns a value equal to irqs_required, and no
+error is reported.
 
-The second bnxt_init_int_mode() then goes to its error path. It frees
-bp->irq_tbl and the vectors and returns -ENODEV, so netif_device_attach()
-is never called and the device stays detached after AER recovery.
-
-Because e68256c8a73c is older, stable selection probably already covers
-every tree that has c2d20a3814d1. Trees that have e68256c8a73c but not
-c2d20a3814d1 would not need this hunk, though.
+Wouldn't this trigger the WARN and leave bp->total_irqs lower than the
+number of vectors the PCI core has actually allocated? Should this
+branch also check pci_msix_can_alloc_dyn(), or fall back to the
+clear/re-init path?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928041712.3467803-1-michael.chan%40broadcom.com
