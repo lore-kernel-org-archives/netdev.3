@@ -1,289 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC56408615;
-	Thu,  1 Oct 2026 23:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EADA33A6F1
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 23:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790897489; cv=none; b=GlnTpf/6RqsLnPz3EntiuaHmwPE7pm9ytr7Ww/IqynEphnr9h0tErW4q4ZxT+BvlzdIVhvKTFXcpYVRgyZv3hASL3dLGTVeNeweln3v/Ze+MV1AipFsQE3ShaA2OW+BJfQ/uG4oEgsh5s1xzpY2OyaycJZz+kwoMParVKrVlq7E=
+	t=1790897646; cv=none; b=ptHQjzC8mN2PpYUQ3i0l6AvT89vWiEj/vXhqlmY0pXJPv48R/zLz4c9ri2AQLOObhflsySaJQJO43/HLaV5ORCWgUN+RWqyjtmf4/IZnDtTStTzzvS6Qz8L43S0C79F6O3plECa7QrKL90A+c8Hci5aEJ/8ofQptmC/Jov36lxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790897489; c=relaxed/simple;
-	bh=yHoK5/M9JnTz7Ng6K1DHM5c7dOYEWdkOYo30j3alhnY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o8nnr2S6pjsrQOSzKpQa7YfMAoEHRO3WvSAoB1BiIEgl/V+gjdJ9BdZWSceOh8QrPlYFf1Xc/5o7xjBoB+bHW5WQ3qvpG4GV1bO2W8/KZpBT95joOvGAHC5Pk4L81AGasbN/GVPnt1yYXBcSP4d5VhYsM6UP+qd2vkaKE60Oh0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBqd2it8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790897646; c=relaxed/simple;
+	bh=5ECVtE0WiBYLfGFk+kpWXr/4i8mDtbhUhuO2MP6x2LI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=obiUo0rKLNnRWydf3yY8s7X1DXl97b0na+4ozTZmiF/4T6DCpLt0lrafwwCGf34B9ncfsZ3+9wdd72EnxT1GT1ob9LzS2pzrfzku8RnSHZH+xla5BUSBeb0zlTHDU0bDL0bftloVxa8Vujd2cbms6eGFJfeBzokU2IG6NFtg6FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=FAFlAwcp; arc=none smtp.client-ip=74.125.231.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBqd2it8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CFA1F000FF;
-	Thu,  1 Oct 2026 23:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790897483;
-	bh=yiXcC5dhj1ExtDQ3X8mwdkDL4YYrIXwmL6+zTcnQGf0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oBqd2it8kMlVkLpqxllavkWr9L35Qfrk9Sb1Ij2qiEGfbG7j7U0bBn74ufdODNYLC
-	 23I1rk5YvcbVuWUa2bOMT3WlqW7TxeOABc07/1UsDzC/v+YFfgeApM4bO1I1ZO4D4D
-	 TH1rHYowaJWYQGABj+ix7IRtSzedQhU6nMb774/mh7oxYxvH09rRq++aBFO3a3367L
-	 bsaGgSE8jg4wlKJ60rqjovYZJSs+j+lVOO9Ev9y7rjgkA01IXS9InLhjJ/FVX04wu7
-	 9B9uzP9tI33MSEZUn9LrpOjSgAhwdMJQNIKOfjt+6b5eYd8PoGk4SVR15YSA/Wz66L
-	 hgwehQGk94+Qg==
-Subject: Re: [PATCH net-next v9 4/6] net: add AF_PACKET multicast dumps
-From: netdev-bot+sashiko@kernel.org
-To: sigefriedhyy@gmail.com
-Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com,
- andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net,
- dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com,
- idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org,
- johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com,
- kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com,
- pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org,
- sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Thu, 01 Oct 2026 23:31:21 +0000
-Message-ID: <179089748154.434549.15968186317991628500@kernel.org>
-In-Reply-To: <20260930112842.21323-5-sigefriedhyy@gmail.com>
-References: <20260930112842.21323-5-sigefriedhyy@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="FAFlAwcp"
+Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-80a18990c76so4539958a34.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 16:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790897644; x=1791502444; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5ECVtE0WiBYLfGFk+kpWXr/4i8mDtbhUhuO2MP6x2LI=;
+        b=FAFlAwcpCIE32KmG15bPV6djIiD1G9NKzmYT6NfYF0IUiv+XSbpJjUp1822V0UasA3
+         omc4hfWG7IqC3PyEkjXm2Rzjp2TN1sI9ZGjaUrbvH2c3Szrs71BcW5RufOWdDXZAyTPo
+         CyWjciMMmcXVyhYwU2RZTfrrfcl8t3jVoqQ8g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790897644; x=1791502444;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5ECVtE0WiBYLfGFk+kpWXr/4i8mDtbhUhuO2MP6x2LI=;
+        b=JcOnGIUVIq8fBnHJZiEd4xj9YOAthfm7h1yKZxphuLAGXZuvXTE7OyaCNNrW4kN0Ih
+         WXqnx7NwW0CjrOhG8V1fmIQFWXMu6hwsp33J6rUoRpixKujc2gI+iyyOSoJmB1P8VEn7
+         Hf+EZErIoL3LWTLOk8YHAD/bqBBKaayt3G7rJc24KlfPCvTX5qbOzZkcbBeBGD2/JWnm
+         ejUbdRm+4/9xQFvBVi00gFJEGpevhhkR40Kaz4qjTEJXbOD9lwMmhPy4TpcfBXQMHK+z
+         fXt5TMRPuVRBK8xngpm6WmSCADQ7qDqrdwMPoc4IC4MNX4RArO7neQK17jOTiN1yMA0l
+         +Vgw==
+X-Forwarded-Encrypted: i=1; AKwUvBzGcIwqqLxYtkUUG1qFxQ36puGuT0Lvq1Q9wztJ9aAZmqRRxRQQ1xnE3/ElOtAYrXtuZPdYcbA=@vger.kernel.org
+X-Gm-Message-State: AFuF++nPq4bUoHoMtr4serCdRFtp4tO1WFRcm2Pu468NGnGiy8E82gA8
+	f/nHpUZf4ws+XP38CIxumLypym0afrPW/bMHG6y84XBRUfFIg6Co08NxNjuRaXGnQvXco19n2Sg
+	pXDYCoUM=
+X-Gm-Gg: AYBFou0ZMDFPv2kkCbZCo5Xq1lCMukPB7Jv3CXk+DA+1OcBumfqm4IwhRGZRbPuXOT6
+	eERK+Vd8dY1YjXW9tU2ytqtvbdulqgqTNaOae8Tb1dwgMqDz3YeYc10eNkTn6FLA33HiJXPoYac
+	74kWF/JjxxuAM7/0WlSOiFTodmFw0enRRtu+/HB3/P8wODIagMedMgPMToCdX6228C3JC5c/L84
+	kWtOLTVhokJIod4PZG4nBBT7/UHVyxSnwK0xidL7G3bm4ISkozn4axuOfQMTBwDgtrg5DSIBZT7
+	YTDLDbMWyzS8oEU5txRWuKRGv6L/s0K97zCPKQNVZhnrUFlcsB2do0724xGAeOHwJ+XTrgklVXx
+	WfgYGKo/EkOe5tgLz4iSD9qLkQhnte7ucHM0CijWNuuM5gBSejIcoyjGAzGYMRqf3zyYlElvJLA
+	hCgobDVVc/ZieG3/60TItYXqUgtw7sDoqNgLUH8YeizMGrrRSCuN/GL54xDvevrqSthOIPZawbQ
+	DmrXTDvNQkX6UVs4erZktRmnEzERUeqpPQ19qbpEvw6+t+cm0kUhNSQD4QjlJ/Qr7pCrcrwZGbX
+	Lt8=
+X-Received: by 2002:a05:6808:1a06:b0:4e7:3fd7:2752 with SMTP id 5614622812f47-4f52b1a630emr589736b6e.54.1790897643831;
+        Thu, 01 Oct 2026 16:34:03 -0700 (PDT)
+Received: from com-68297.corp.openai.org ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4f5243d47absm687513b6e.8.2026.10.01.16.34.02
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 01 Oct 2026 16:34:03 -0700 (PDT)
+From: nramaswamy@openai.com
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Neil Ramaswamy <nramaswamy@openai.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/2] tcp: restore RACK list membership when undoing loss
+Date: Thu,  1 Oct 2026 16:33:50 -0700
+Message-ID: <20261001233352.75988-2-nramaswamy@openai.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261001160720.0a663ec7@kernel.org>
+References: <20260926002520.42955-4-nramaswamy@openai.com> <20260926002520.42955-5-nramaswamy@openai.com> <20261001160720.0a663ec7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+From: Neil Ramaswamy <nramaswamy@openai.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+On Thu, 1 Oct 2026 16:07:20 -0700, Jakub Kicinski wrote:
+> Could you add to the commit msg if this was found with an LLM scan
+> of the source code or its been seen in prod?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Yes, I can add that to the commit message once review settles. My investigation
+started from seeing repeated TCP stalls in prod and the mitigation that seemed
+to prevent these stalls was limiting SO_SNDBUF to 96 KiB. It also seems like
+others have seen similar symptoms before [1] but I can't definitively say it's
+the same root cause.
 
-- [Medium] Concurrent device removal can end an unfiltered AF_PACKET
-  RTM_GETMULTICAST dump early without setting NLM_F_DUMP_INTR.
-- [Low] The commit message gives a false reason for not extending the FDB
-  dump.
-- [Low] At this commit, Documentation/netlink/specs/rt-addr.yaml does not
-  describe the new AF_PACKET multicast dump: - The ifa-flags enum stops…
-- [Low] dev_mc_genid is only bumped through the __hw_addr_count_*
-  helpers, i.e. when a dev->mc entry is added or removed.
-
---
-
-net: add AF_PACKET multicast dumps
-
-This adds an unlocked RTM_GETMULTICAST dump handler for ifa_family
-AF_PACKET. For each device it reports every dev->mc entry in the ifaddrmsg
-format, with IFA_MULTICAST, IFA_MC_USERS and a new IFA_F_GLOBAL flag. Dump
-consistency comes from sampling dev_mc_genid plus dev_base_seq into cb->seq,
-so NLM_F_DUMP_INTR gets set when either changes.
-
-> The default FDB dump also walks dev->mc, but only for Ethernet devices
-> without an ndo_fdb_dump of their own, so bridge, vxlan or macvlan
-> devices never show their multicast filter there, and it has no users
-> count or global_use bit.
-
-[Severity: Low]
-Is this accurate for bridge and macvlan?
-
-macvlan uses the default helper directly:
-
-drivers/net/macvlan.c:
-	.ndo_fdb_dump		= ndo_dflt_fdb_dump,
-
-br_fdb_dump() also falls back to it for unfiltered dumps:
-
-net/bridge/br_fdb.c:br_fdb_dump() {
-	...
-	if (!filter_dev) {
-		err = ndo_dflt_fdb_dump(skb, cb, dev, NULL, idx);
-	...
-}
-
-rtnl_fdb_dump() calls a device's own ndo_fdb_dump with filter_dev == NULL.
-ndo_dflt_fdb_dump() then walks both dev->uc and dev->mc for ARPHRD_ETHER
-devices.
-
-So "bridge fdb show" seems to already list dev->mc for bridge masters and
-macvlan devices. Only vxlan fits the description.
-
-The other reasons (no users count, no global_use bit, changing the
-"bridge fdb show" output) may still hold. Could this paragraph be
-corrected?
-
-> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-> index 783c62895249b..948dc25635938 100644
-> --- a/net/core/dev_addr_lists.c
-> +++ b/net/core/dev_addr_lists.c
-
-[ ... ]
-
-> @@ -1219,6 +1223,197 @@ void dev_mc_init(struct net_device *dev)
->  }
->  EXPORT_SYMBOL(dev_mc_init);
->  
-> +static int dev_mc_fill_addr(struct sk_buff *skb, const struct net_device *dev,
-> +			    const struct netdev_hw_addr *ha, u32 portid,
-> +			    u32 seq, unsigned int flags, int netnsid)
-> +{
-> +	u32 ifa_flags = ha->global_use ? IFA_F_GLOBAL : 0;
-
-[ ... ]
-
-> +	if ((netnsid >= 0 &&
-> +	     nla_put_s32(skb, IFA_TARGET_NETNSID, netnsid)) ||
-> +	    nla_put(skb, IFA_MULTICAST, dev->addr_len, ha->addr) ||
-> +	    nla_put_u32(skb, IFA_MC_USERS, ha->refcount) ||
-> +	    nla_put_u32(skb, IFA_FLAGS, ifa_flags)) {
-
-[Severity: Low]
-At this commit, Documentation/netlink/specs/rt-addr.yaml doesn't yet
-describe this dump:
-
-  - the ifa-flags enum ends at stable-privacy, so bit 12 (IFA_F_GLOBAL),
-    emitted here in IFA_FLAGS, has no name
-  - the getmulticast op doc still says "Get / dump IPv4/IPv6 multicast
-    addresses."
-  - the reply attributes do not include flags or target-netnsid, and the
-    dump request declares no attributes even though target-netnsid is
-    accepted
-
-The next patch in the series, "netlink: specs: rt-addr: document AF_PACKET
-multicast dumps", fixes all of this. It adds global after stable-privacy,
-adds flags and target-netnsid to the reply and target-netnsid to the
-request, and rewrites the op doc. Nothing is left over at the end of the
-series.
-
-Would it make sense to fold the spec update into this patch, so the spec
-and the kernel match at every commit?
-
-> +	    nla_put_u32(skb, IFA_FLAGS, ifa_flags)) {
-> +		nlmsg_cancel(skb, nlh);
-> +		return -EMSGSIZE;
-> +	}
-> +
-> +	nlmsg_end(skb, nlh);
-> +	return 0;
-> +}
-> +
-> +/* Combine dev_mc_genid and dev_base_seq to detect changes, like
-> + * inet_base_seq().
-> + */
-> +static u32 dev_mc_base_seq(const struct net *net)
-> +{
-> +	u32 res = atomic_read(&net->dev_mc_genid) +
-> +		  READ_ONCE(net->dev_base_seq);
-
-[Severity: Low]
-This isn't a bug, but dev_mc_genid is only bumped from the __hw_addr_count_*
-helpers, i.e. when a dev->mc entry is added or removed. In-place updates to
-the two fields exported here don't bump it:
-
-net/core/dev_addr_lists.c:__hw_addr_add_ex() {
-	...
-			if (global) {
-				/* check if addr is already used as global */
-				if (ha->global_use)
-					return 0;
-				else
-					ha->global_use = true;
-			}
-	...
-			ha->refcount++;
-			return 0;
-	...
-}
-
-net/core/dev_addr_lists.c:__hw_addr_del_entry() {
-	...
-	if (global)
-		ha->global_use = false;
-	...
-	if (--ha->refcount)
-		return 0;
-	...
-}
-
-The dump resumes by list position, and these updates never add, remove or
-reorder entries. So nothing is skipped or repeated, which matches the IPv4
-dev_addr_genid convention.
-
-However, the struct net comment ("bumped on dev->mc changes") and the
-commit message ("so a change since the previous device or dump round sets
-NLM_F_DUMP_INTR") describe more than that. Could they say membership
-changes instead?
-
-[ ... ]
-
-> +	s_ifindex = ctx->ifindex;
-> +	for_each_netdev_dump(filter.tgt_net, dev, ctx->ifindex) {
-> +		/* The device the dump stopped at is gone, do not skip
-> +		 * entries of the next one.
-> +		 */
-> +		if (dev->ifindex != s_ifindex)
-> +			ctx->addr_idx = 0;
-> +		err = dev_mc_dump_dev(dev, skb, cb, &ctx->addr_idx, flags,
-> +				      filter.netnsid);
-> +		if (err < 0)
-> +			break;
-> +	}
-> +out:
-> +	/* A round that dumps no device, e.g. the one it stopped at is gone,
-> +	 * still needs the NLMSG_DONE check to see the change.
-> +	 */
-> +	cb->seq = dev_mc_base_seq(filter.tgt_net);
-
-[Severity: Medium]
-Can a concurrent unregister still end this dump early without
-NLM_F_DUMP_INTR?
-
-unlist_netdevice() removes the device from the xarray before it bumps
-dev_base_seq:
-
-net/core/dev.c:unlist_netdevice() {
-	...
-	xa_erase(&net->dev_by_index, dev->ifindex);
-
-	netdev_for_each_altname(dev, name_node)
-		netdev_name_node_del(name_node);
-
-	/* Unlink dev from the device chain */
-	list_del_rcu(&dev->dev_list);
-	netdev_name_node_del(dev->name_node);
-	hlist_del_rcu(&dev->index_hlist);
-
-	dev_base_seq_inc(dev_net(dev));
-}
-
-The handler is registered with RTNL_FLAG_DUMP_UNLOCKED. So the next dump
-round can run while the RTNL holder is preempted between xa_erase() and
-dev_base_seq_inc().
-
-Take a round that returns -EMSGSIZE partway through device D. That leaves
-ctx->ifindex == D->ifindex, ctx->addr_idx == k, and
-cb->prev_seq == cb->seq == G.
-
-D, which is down, is then unregistered or moved to another netns. dev->mc
-isn't flushed until later in unregister_netdevice_many_notify(), so
-dev_mc_genid doesn't change either.
-
-In the next round, for_each_netdev_dump() no longer finds D. The
-dev_mc_dump_dev() calls on later devices and the sample at out: both read
-G again. netlink_dump_done()->nl_dump_check_consistent() then sees
-seq == prev_seq, and NLMSG_DONE is sent without NLM_F_DUMP_INTR.
-
-Userspace would get entries 0..k-1 of D and no sign that the rest are
-missing. The unlocked IPv4 and IPv6 dumps rely on the same dev_base_seq
-ordering, but this path is new in this patch.
-
-The commit message says this case is covered ("also when the last round
-dumps nothing because the device it stopped at is gone"). Does that fully
-hold with this ordering?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930112842.21323-1-sigefriedhyy%40gmail.com
+[1] https://lore.kernel.org/netdev/35A4DDAA-7E8D-43CB-A1F5-D1E46A4ED42E@gmail.com/
