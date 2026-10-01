@@ -1,140 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2B649A3D6;
-	Thu,  1 Oct 2026 11:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733724A2602;
+	Thu,  1 Oct 2026 11:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790855956; cv=none; b=aZHhaYiK37E4T0eNRy4X+N0L2YIeqfB1IhzIvvrSu6NP03exLDtNLPMl7jtPxxOQanObiaHGd7U9vyoHRi/GlDaEWXpRdg268v/EjR/Wmtv1Jtbb+35C1lx1fyXAXVqqCHl+kjmXVFQXUkxlDT/mhudGoR/Uc9BAIEIXell4ZPA=
+	t=1790856004; cv=none; b=O/AKKdQjPBCh3ZqXC95MRoVT5uMhNSF6LclPRpCun+mRQeI1j4hLuNeNnp04bB3DUvmizLEcyWGcEGtA9zxmMMMJ0Hvl/039AJ7sZj5IwsW7plTbExq8LtDwaINL0QwU56nzMnzwDbBIpXC417cPGQurRvzWTGL2ERpehPj5G+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790855956; c=relaxed/simple;
-	bh=l3ffvqJcT9cxYbCaYxoa7krkO5s5wFI9u5DNiq7KD5M=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kwUOEW5KcxnVoTheoWqcXG3Nesnjqoo+5ihBIR3W9AWThNQQpbExiYnEnB5TRiSGpMQgTjN3xbkQ72fTHR+Ys+MX5GXL4CK14sy/BiOdYY2+d0H0p6hMpHC9w7ARIrj78fbIOLFOYjIj1Xq0f206uAEJQLeiWRVcaKpYv08duWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ervGpyfE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790856004; c=relaxed/simple;
+	bh=PhCMndaeeUGpBoTaM74tSkvMa+g/T0+mNIsBjet04GM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oyjbME43dzL8C7NBn57ViEeae7cx68R66pNLi4mOM533FqJ3HM7P20cW+aYNbrnKgowH50fkg98MAw20RR7/F6/0rLxU6q/WprxwBSOVTx5x5U0D16rn6TI5UIeo5MxZiHoXWYttc4F6AMwNoegDYul4PFt7Pj0d2+nIg2Oft7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPMzV4fS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ervGpyfE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE0B1F000FF;
-	Thu,  1 Oct 2026 11:59:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPMzV4fS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC45D1F000FF;
+	Thu,  1 Oct 2026 11:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790855950;
-	bh=W6hgFj+3tmIhywyIDHage8g9Szjc7DXc3/BZ/RIDNL4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ervGpyfEBZEEjYEQPbQV+1zvmV0xPkpWR9AIySCw7N0Zm8wEzGOAw5R83+v+mHNBw
-	 sdII3b5rQpnrnHj7Xr9owz8BfdazSrsgxLVeFpm9HCi5F8VPwBruCNdpRtMpfUxYF2
-	 CXQN4x5b8hYcBubOkrs1fGmGMAAiHMmBvHaK1opDk//36taXZExbN/423XepruAC7+
-	 ZkifwItfw+1+938oxgQLmeIfhtiWmbsp1UvI9B4dHChjEA0cjcezUjypfdAv+uj3tT
-	 m/O5C4KChH/uJjqIsIWKBKDO9iDFFWCCbA/QI/rab9nEB8aYGmIFlaMBmoWVHpOswx
-	 g4S6s39agvVjA==
-Subject: Re: [PATCH net-next 03/12] net: bridge: add VLAN support to bridge
- destinations
-From: netdev-bot+sashiko@kernel.org
-To: razor@blackwall.org
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- bridge@lists.linux.dev
-Date: Thu, 01 Oct 2026 11:59:09 +0000
-Message-ID: <179085594902.434549.16785666588384507596@kernel.org>
-In-Reply-To: <20260930071411.2786201-4-razor@blackwall.org>
-References: <20260930071411.2786201-4-razor@blackwall.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1790855996;
+	bh=Xz/sxg/WAisQAqfjavl0oQmFR/Ah1bwDIH/gcVTSxR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cPMzV4fS+XFFN2LskzCoMhNaO61NYU4Q46k1epHIyNtkQ2TCQUgsJ34Kglu1e9dAt
+	 vTr/TY2pPH41Ro8lMd3uNTqxUiQmlATEPWTTNObaRX5pHzc62rBEjANxtjGxos5YGu
+	 s2cx3HFgFUgaQTS2UO6yDVYBLg8q6qS8uZ9JHEkmKU6gtOorlC2bmWCNIG9h0xBI23
+	 WJTVqVPPNFlIcjSrACF/ifnN/P8nrXWaRKe+9h0DeY+qnMEB9EbsuMUipY+9Ee9qsQ
+	 +rj9ULe0oHg4DLJCzXhc90USPZ0+uPqxj3acwdxYelpRU6H7KNGj3hLduiIQvkTseJ
+	 1EeTswoTQfdew==
+Date: Thu, 1 Oct 2026 12:59:52 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+ci3c472c63e196fe9e@syzkaller.appspotmail.com,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net v3] nfc: llcp: prevent resource leak on repeated
+ connect after DM
+Message-ID: <20261001115952.GA13925@horms.kernel.org>
+References: <20260925184857.357926-1-qwe.aldo@gmail.com>
+ <20260928035749.2305913-1-qwe.aldo@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928035749.2305913-1-qwe.aldo@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Mon, Sep 28, 2026 at 12:57:49AM -0300, Aldo Ariel Panzardo wrote:
+> A rejected asynchronous connect leaves a local reference, SAP allocation,
+> service name and device reference on a closed socket. Release them before
+> retrying connect.
+> 
+> The device pointer alone does not prove ownership: bind() puts its
+> temporary device reference while retaining the pointer. When device
+> teardown closes a bound socket, the retry cleanup would put that device
+> again. Clear the pointer when a bound or listening socket becomes closed,
+> and after a connected socket's device reference is put. Do the same when
+> DM closes a bound or listening socket. A DM rejected connect keeps its
+> device reference until the retry cleanup, so retain that put there.
+> 
+> Fixes: d646960f7986 ("NFC: Initial LLCP support")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://ci.syzbot.org/findings/64002827-5231-4183-bfca-0d91bded8543/syz_repro
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+> ---
+> v3: Clear non-owning or already released device pointers on close, while
+>     preserving the device put for rejected asynchronous connects.
 
-Low priority / nit picks for your consideration:
+Hi Aldo,
 
-- [Low] Baseline decision: false positive.
+It looks like an AI-generated review of v2 of this patchset was
+posted not long after you posted v3. And that review does seem
+to raise issues that warrant a response:
 
---
+- Re: [PATCH net v2] nfc: llcp: prevent resource leak on repeated connect after DM
+  https://lore.kernel.org/all/179058922656.3145.17540746696102333949@kernel.org/
 
-net: bridge: add VLAN support to bridge destinations
+Also, please do not post updated patches as responses to earlier revisions.
+Rather, please start a new email thread for each new revision.
 
-This commit sets bit 0 of struct net_bridge_dst to mark a port-VLAN
-pointer, so it can be told apart from a bridge port pointer. It adds
-helpers that build VLAN destinations and decode them back into a port and
-a VLAN. Nothing creates a VLAN destination yet.
-
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index bbb59b53e7452..2bf7f4429a3b2 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
-
-[ ... ]
-
-> @@ -702,10 +704,56 @@ br_port_to_dst(const struct net_bridge_port *p)
->  	return dst;
->  }
->  
-> +static inline struct net_bridge_dst
-> +br_vlan_to_dst(const struct net_bridge_vlan *v)
-> +{
-> +	struct net_bridge_dst dst;
-> +
-> +	ACCESS_PRIVATE(&dst, value) = (unsigned long)v | BR_DST_VLAN_TAG;
-> +
-> +	return dst;
-> +}
-> +
-> +static inline void br_dst_decode(struct net_bridge_dst dst,
-> +				 struct net_bridge_port **port,
-> +				 struct net_bridge_vlan **vlan)
-> +{
-> +	struct net_bridge_vlan *v;
-> +	unsigned long value;
-> +
-> +	value = ACCESS_PRIVATE(&dst, value);
-> +	if (!(value & BR_DST_VLAN_TAG)) {
-> +		*port = (struct net_bridge_port *)value;
-> +		*vlan = NULL;
-> +		return;
-> +	}
-> +
-> +	v = (struct net_bridge_vlan *)(value & ~BR_DST_VLAN_TAG);
-> +	*port = v->port;
-
-[Severity: Low]
-This isn't a bug, but br_vlan_to_dst() takes any struct net_bridge_vlan
-pointer, and br_dst_decode() reads v->port without checking which kind of
-VLAN entry it has.
-
-In struct net_bridge_vlan, port is in a union with br:
-
-	union {
-		struct net_bridge	*br;
-		struct net_bridge_port	*port;
-	};
-
-For a bridge master VLAN, br is the active member. Decoding one would hand
-back a struct net_bridge pointer typed as a struct net_bridge_port.
-Passing NULL would encode to 0x1, and decoding that would dereference a
-near-NULL address.
-
-As far as I can tell, no caller can hit this. Later in the series, all of
-br_fdb_update(), __br_fdb_add(), br_fdb_resolve_dst() and
-nbp_vlan_delete() pass a non-NULL VLAN taken from a port VLAN group.
-__br_fdb_add() also excludes the bridge master case on purpose:
-
-	dst = p && vlan ? br_vlan_to_dst(vlan) : br_port_to_dst(p);
-
-Would a comment on br_vlan_to_dst() be worth adding, stating that it only
-takes non-NULL port VLANs? Something like
-WARN_ON_ONCE(br_vlan_is_master(v)) would also enforce that.
-
-> +	*vlan = v;
-> +}
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930071411.2786201-1-razor%40blackwall.org
+Thanks!
