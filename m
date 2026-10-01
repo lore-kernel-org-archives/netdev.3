@@ -1,100 +1,198 @@
-Received: from mail-qk2-f20.google.com (mail-qk2-f20.google.com [74.125.230.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A22424D5A
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 06:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31C12E7378
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 06:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790837333; cv=none; b=LuyTIPj4t+Z1jdqjNnmwwsuosXLHNbtABOSWLo18aaXgvQOUmnkw8xpVPUTpZw/fUhQa9i/yDi4YXbewDoesYwLjDiLvLYjaUjTruCtAbyvS3wZrHD0Y72s97tDTaK9qGYWj7J4Rvc75ssCja79WPyZgH1uoOmp3LmsLzyFT4v8=
+	t=1790837363; cv=none; b=u5v2sMb08TaAtVfFqTnGRLa4/2gYtgueVclYp6LprkBMMWXlqq9hj0eEhzTiobuAMyt+ApSlb8jdvGRsx6jwEO74tbVZb6TvykIDl/havSHWLn6Ws0V7IQoYOkS19zSDeKvVqBYzgwNmb6zXjPpVvYLAkosilAZ2n3sBUks8kk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790837333; c=relaxed/simple;
-	bh=1LKuc+j7fPCOnVcslCs2pb6L2qo2nOSf117ZUwzJ6xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odl0+3DFKYaOJjDmyevAetly3I3OJtAGgY3sHw3a/m3nQuYcw68tcRGp2aprpO5F/HQeGcircphGKZrzF8unfyE+Wkx9n4ApxerYWC/caUrP6SnwlLSv8r7wYDxRZ2BHUY/Q+ak5aMYCEtdWbW99scJWuPtq/V7YqkSN9yiRij4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au; spf=pass smtp.mailfrom=aronleigh.au; dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b=RcDLFjHk; arc=none smtp.client-ip=74.125.230.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aronleigh.au
+	s=arc-20240116; t=1790837363; c=relaxed/simple;
+	bh=H3ndpuZOs5KbBxoDMRuDjzHiiZfaCII4tMYsCZULh4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KIav3ZSFXlbUTNG2rwx2U1S5SvlbfMyFztIho1/XSzFLDpGSo+2F3BOhLsSfFtKeymT+UyVYlBoPoNTozuYdu4epFKlcvUtWPFvom8fLkWWulMse/15bcyLoIalFW8HjUe0MFdb596UEOo7bFsowusRyX4TKNft5m4J7hAEjVkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DDxQXyln; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b="RcDLFjHk"
-Received: by mail-qk2-f20.google.com with SMTP id af79cd13be357-939656ff6d9so638818985a.1
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 23:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aronleigh.au; s=google; t=1790837330; x=1791442130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uyL9j5NsMH6VVd620xtlYO1n+HYd0As7KHaBAMxrv+Q=;
-        b=RcDLFjHkOzi35Zq37CFHti1MfZmOteSoEvTozcG/S2nN5gK8Kqjmvv5I8ftCWSeNAC
-         ObXRzSR6bpsMKyC3exsn3427Wa4xoLwHsY6GP0rY7hHQVi1JYjUWJE371VxomMMT604V
-         sIFVvhnYC3JO5X4J7DTcIYSCGk3191GUGX0abWLWIgllDtEJf8h1wrouGSVEv/btpbx6
-         mnsNhdY+EGrbiorinnMrlTs1q+ydsLIx7L8vTgLtOCDM/6C4ZO+Ae/XmLGVyyJBY/DXZ
-         GjdW6A3DwJWnn4Sy8RNyaOBndsPghzVeW5NNpnS19Xi7yhqw0WXSs+vrj5QjTLu7j+1e
-         6yGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790837330; x=1791442130;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uyL9j5NsMH6VVd620xtlYO1n+HYd0As7KHaBAMxrv+Q=;
-        b=jKCT+/in9XgnP8DbftoevuAbunyBs55RXqtfG37iwWLhskeF32Rp8hVJwvVx1LaqEd
-         sILL+xEBiv5mDwxMZWz04VhdMzApftM7SDr5VXxLSo6H9+VYLuvYfghRWF3k5HSUHTA/
-         smEh0BonbOoP9A4xKPXYGrSZLAaJTpp42onTE2SBZmyu3WQfMEKtEojXxn/e3vnydX/U
-         jgUJqNrkuckIFcNIMiQjlFSEjtp6b7mBv+cNXCMiGyGPir1K1Krj18Se7nG6iu12SOaX
-         +zEtEZRFzp/wEBTnc6pCEBuVvJ2jIpbiVlOYK8N7sWKEHmVZpKHcnlL6Uop+dAaldPC/
-         GJmg==
-X-Forwarded-Encrypted: i=1; AKwUvBx7T3TIoxcwd3uBA2hD1gAfiIf+E4k/d44U9xJz8TGyWo1akVtrMy0zHCHzuNOmxQ62bvI9vFw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlgSLSBO58cjaBy5SheCQXNoRoyEabjdopjI25BO8G1RKnn0HQ
-	WvC3rtVN2iq+xht2/f9ZdpsGKfmigw0k//7y//3frSJ/VfYcHxb66jQmLoGoVPkEa+DVVbqgJlw
-	YlWFeByaM3X8=
-X-Gm-Gg: AYBFou2hZMhnkU9Wsm8PfoJpZIll3CGf9wrOgEGfCbe/XtVIyTSQBA3a6LNYlB/BfFe
-	/8au0Lj4kiFV4VyPfArvrdtibKUCcWz2G8LPn+d3ZpiX/Zv3dgzQqvQQHheCq2DsDw3n90Ac5Ce
-	sqyvf7/h9UXCri0kZTioDW1THiAeFOOJtcqNo76xKOVnO+aks+fnY0875eKXQF9i93EjvLgsr4t
-	yK5JYiI5IHR0D5IXky7m7m2e4LycfWSKv+Ox0OaBE59/ZuW+QZM89dhjh3u+4upIGUZb81K7YQO
-	uI3sH53NBOszXt5yXLD4bqZIORSBnW+LNzwuO5FZOZq8pjdI9hCpBPZxyRVFii7UquaFW49NWuI
-	J6vZG52/yiwyCic35ukB7GPlp39qL4pZGIvUtUbMadvP4EDX/HaJVcEmtHviuEKSADpeTAoUi1D
-	eCVU8I80OynP+RpmRkox5DvdU2OKbA3PjebMdpQ1xUgIjJxs7P84gLUHPjd4oTvPWU63WAOiAUJ
-	ndRjPkcjY2/VpICud1MoXA5gDK2nItIY5UldcEE4nQ=
-X-Received: by 2002:a17:90b:2247:b0:3a4:6e84:e7d8 with SMTP id 98e67ed59e1d1-3a4c00cffd8mr926323a91.54.1790731952097;
-        Tue, 29 Sep 2026 18:32:32 -0700 (PDT)
-Received: from ghostoverflow.. ([103.75.11.57])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4cae71827sm562531a91.14.2026.09.29.18.32.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 18:32:29 -0700 (PDT)
-From: Lilly Aronleigh <lilly@aronleigh.au>
-To: roshaen09@gmail.com
-Cc: chopps@labn.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	herbert@gondor.apana.org.au,
-	horms@kernel.org,
-	kuba@kernel.org,
-	lilly@aronleigh.au,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	steffen.klassert@secunet.com
-Subject: Re: [PATCH net v3] xfrm: iptfs: avoid canceling reorder window drop timer
-Date: Wed, 30 Sep 2026 11:32:19 +1000
-Message-ID: <20260930013219.280290-1-lilly@aronleigh.au>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179065460863.1915782.14730367973310266066@gmail.com>
-References: <179065460863.1915782.14730367973310266066@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DDxQXyln"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 32FD14E410EA;
+	Thu,  1 Oct 2026 06:49:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0378760341;
+	Thu,  1 Oct 2026 06:49:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 229EB1032A044;
+	Thu,  1 Oct 2026 08:49:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790837356; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=VTxE/6MZQnOHf7qilpg+lvqP0ZHWR04NsBK8UTne4+8=;
+	b=DDxQXylnjxwZj5zVQc52PWlEHrywz5Bsd2mPZnP67qUX87jSfIDEJ73c7ofISaxlzWxD0y
+	PwP/eqkRAtSJjPPCK7i4LEnUZJKL3DTnmbHQ49DvV6E2W8OJHnh8dF1i/4eImhSvL9kcpD
+	fIIIRZKi3ZafoLZT5g4u9jNV/1ePtvAIW3glG7yvhzlCdyi0VDBlrt+TEwSiOIcI8lIzVY
+	xMeF3QiMQe0XlmgwWpONwNwXbwPEXqHckQCRWNq8Dxjb/MCbITpQe2V0oqFWdek9UCIfXy
+	uDLxLzzy1zzeDMFfSp2jQd0Pq0onjLv3PWoHST/SH6dyz9bHkAbm174yaredPQ==
+Message-ID: <5e5fc716-3be9-40f5-a74b-9d2eae478194@bootlin.com>
+Date: Thu, 1 Oct 2026 08:49:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v18 09/10] net: ethtool: Introduce ethtool
+ command to list ports
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+ Frank Wunderlich <frank.wunderlich@linux.dev>,
+ Pietro Ameruoso <p.ameruoso@live.it>, Aleksei Sviridkin <f@lex.la>
+References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+ <20260927133619.955236-10-maxime.chevallier@bootlin.com>
+ <20260930155310.775843d4@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260930155310.775843d4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> I am preparing that as patch 1 of a two patch net series, retaining your
-> reporting credit and links to this patch and the review. If you would prefer to
-> post the corrected timer patch as v4 yourself, please say so and I will base
-> the device lifetime patch on it instead.
 
-I am happy for you to submit the two-patch series with the retained reporting credit. 
-Thank you for your assistance and work on this issue.
-Please CC me on the patch when it is posted.
 
-Thanks,
-Lilly
+On 10/1/26 00:53, Jakub Kicinski wrote:
+> On Sun, 27 Sep 2026 15:36:18 +0200 Maxime Chevallier wrote:
+>> Expose the phy_port information to userspace, so that we can know how
+>> many ports are available on a given interface, as well as their
+>> capabilities. For MDI ports, we report the list of supported linkmodes
+>> based on what the PHY that drives this port says.
+>> For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
+>> can output on this port.
+>>
+>> Tested-by: Aleksei Sviridkin <f@lex.la>
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> 
+>> +static void __init ethnl_phy_names_populate(void)
+>> +{
+>> +	const char *name;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
+>> +		name = phy_modes(i);
+>> +		strscpy(phy_interface_names[i], name, ETH_GSTRING_LEN);
+> 
+> Feels a bit backward, we run thru a switch statement to dump it down
+> to an array.. Why not convert to an array and then make phy_modes()
+> also use it?
+
+From my memories on early tries to get it done another way, this was
+tricky as I was struggling to find the correct place to put the array
+in question.
+
+phy_names() is required even when CONFIG_NET=n as it's used for devicetree
+parsing, so we can't put that in phylib nor in any networking code without
+doing some trickery to get some of it to build inconditionally. I'll try
+harder :)
+
+> 
+>> +	}
+>> +}
+> 
+>> +static int port_fill_reply(struct sk_buff *skb,
+>> +			   const struct ethnl_req_info *req_info,
+>> +			   const struct ethnl_reply_data *reply_data)
+>> +{
+>> +	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
+>> +	struct port_reply_data *reply = PORT_REPDATA(reply_data);
+>> +	int ret, port_type = ETHTOOL_PORT_TYPE_MDI;
+>> +
+>> +	if (nla_put_u32(skb, ETHTOOL_A_PORT_ID, reply->port_id))
+>> +		return -EMSGSIZE;
+>> +
+>> +	if (!reply->mii) {
+>> +		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_MODES,
+>> +				       reply->supported, NULL,
+>> +				       __ETHTOOL_LINK_MODE_MASK_NBITS,
+>> +				       link_mode_names, compact);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +	} else {
+>> +		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
+>> +				       reply->interfaces, NULL,
+>> +				       PHY_INTERFACE_MODE_MAX,
+>> +				       phy_interface_names, compact);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +	}
+>> +
+> 
+> please move the port_type init from inline up to to here.
+> initializing things inline often lowers readability
+
+Ack, will do
+
+> 
+>> +	if (reply->mii || reply->sfp)
+>> +		port_type = ETHTOOL_PORT_TYPE_SFP;
+>> +
+>> +	if (nla_put_u32(skb, ETHTOOL_A_PORT_TYPE, port_type))
+>> +		return -EMSGSIZE;
+>> +
+>> +	if (reply->upstream_port &&
+>> +	    nla_put_u32(skb, ETHTOOL_A_PORT_UPSTREAM_PORT,
+>> +			reply->upstream_port))
+>> +		return -EMSGSIZE;
+>> +
+>> +	return 0;
+>> +}
+> 
+>> +static int port_dump_all_dev(struct sk_buff *skb, struct netlink_callback *cb)
+>> +{
+>> +	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
+>> +	struct net *net = sock_net(skb->sk);
+>> +	netdevice_tracker dev_tracker;
+>> +	struct net_device *dev;
+>> +	int ret = 0;
+>> +
+>> +	rcu_read_lock();
+>> +	for_each_netdev_dump(net, dev, ctx->pos_ifindex) {
+>> +		netdev_hold(dev, &dev_tracker, GFP_ATOMIC);
+>> +		rcu_read_unlock();
+>> +
+>> +		ctx->req_info->base.dev = dev;
+>> +		ret = port_dump_one_dev(skb, cb);
+>> +
+>> +		rcu_read_lock();
+>> +		netdev_put(dev, &dev_tracker);
+>> +		ctx->req_info->base.dev = NULL;
+>> +
+>> +		if (ret < 0 && ret != -EOPNOTSUPP) {
+>> +			if (likely(skb->len))
+>> +				ret = skb->len;
+> 
+> smells of pre-commit b5a899154 netlink
+> Can we delete the skb->len check and override here?
+> There's one more such construct below
+
+ah indeed yes :(
+
+Thanks for reviewing,
+
+Maxime
+
