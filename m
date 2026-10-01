@@ -1,122 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.amicon.ru (mail.amicon.ru [77.108.111.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA251EDF9;
-	Thu,  1 Oct 2026 14:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9002A52120F;
+	Thu,  1 Oct 2026 14:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.108.111.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865166; cv=none; b=uTpd/9lU4VkVOR6gPgcAPbaGbZZzVWPrFC6kvUVWoQqVeDOsF/L3U7vNaAd4hhDLqeM0eW9QxXHVTWItOoY11GEyROIem5Lmdn7NNMSzCqu0e8U05KzrxbN3+q20PQRAWy1Jr4XUjhXHKFcbOHMZNLzIfKRe8RvDSp992T7Dh5I=
+	t=1790865195; cv=none; b=U7J7MUndFxWlLchvEP6IWFgi0a0oZ1dtcWcKhTwa1Kto7dF78VhlafqPRwTCnmusA+lQu64zsPbS5HglExrZORrHlszOgg+K4elBKsFkA6WHq1O0QdRSPJ70oFb3O3eZdUFKHOkwrb9j+L6xGK36xZYeFKwuyi8aa/q/PlpLxSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865166; c=relaxed/simple;
-	bh=hTkMzCP7N3yWZdnvBdZNRxf/m0P5NJZuBQULtKGYaq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rQ/eW9/JKPvPpkLu1KMvAYEX5t/3i863oJZQ2qvQ3X/18czvTAIC9O8jWiXIcHcovs4JIXYW7jlu30wHJXZYnIB1o9lRMa6adxleGjPUIPQ1lQ2/WKNHR4il1lA2GkvitZB+Hb9LgEESsxAzOeWtHOX/tmZ4KH+UE/RFHVVVukw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfsUvSEk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790865195; c=relaxed/simple;
+	bh=yRIClUGyEu/COpa6JB/XyyLCadmCOVyyClxIjg4WllQ=;
+	h=Content-Type:From:To:CC:Subject:Date:Message-ID:References:
+	 In-Reply-To:MIME-Version; b=Q1/ulB0JbmtVniLIB6MykF6/Npcpd2SNW+KMydxMtFQjN+zgCTI1i5i9d0t073UMutEVOyfLFHIx7tFGzi+UJurRXeMI51keiEvBQdCAZwy2lkSEiuJy/eFkNoizi8XyhxH0atkuyz4qQqhNrZvigO30OSqXQlBnq6+oK5L9+LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru; spf=pass smtp.mailfrom=amicon.ru; dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b=FMdCAWb8; arc=none smtp.client-ip=77.108.111.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amicon.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfsUvSEk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21AE1F000FF;
-	Thu,  1 Oct 2026 14:32:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790865159;
-	bh=11s3mLiz/YlWUA+BT+O3/1et8R5ZgOv4/ERZ3CIkR4U=;
-	h=Date:From:To:Cc:Subject;
-	b=UfsUvSEkHmywCGbEFfK73C2KlQLVVmND4+teeTJA4Mp36x4xSsLQwxZUr4OX+FltC
-	 lmtUtRxrh32rbcIcK4kGa5QXbDqGGHN/nvZ/DqIydbvnQcB5bN2xLVQYfX6iJB4/Zl
-	 V6fXrLTQIZVcBluQJoeZ28LFejg/uqoRnCyCKSa9AD+KebGAzVlR3n+Ph4FIc8YVPJ
-	 L3aE1FoJ3tFNYzd7KLQEDlpVubgdK89/GsJWwK83IxhXA+xvkb7DzPlImQSaUiL/4S
-	 f9MbM2Zu4n15+0vew7Ufs/2f1IS13ZeSSw0hZPMFEuWOLlOyzpZYSYFEMORhou0MKZ
-	 49e2Pvqt7eLUw==
-Date: Thu, 1 Oct 2026 15:32:35 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Javen Xu <javen_xu@realsil.com.cn>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: linux-next: manual merge of the net-next tree with the net tree
-Message-ID: <ar5vAxEqS8tO8aVT@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b="FMdCAWb8"
+Content-Language: ru-RU
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
+DKIM-Signature: v=1; a=rsa-sha256; d=amicon.ru; s=mail; c=simple/simple;
+	t=1790865186; h=from:subject:to:date:message-id;
+	bh=yRIClUGyEu/COpa6JB/XyyLCadmCOVyyClxIjg4WllQ=;
+	b=FMdCAWb8fKHMN6QtDUU6QKfemhfPdgOQ+VUEAzjHOG4u35Q2FxKf0g7Er71F7mtQU133qDC5zSH
+	h1PcFsPTa7pj/6b+JX8o+v8bmECEAP50JRyscWaqzmDPL5cAtKvE7EP5qC08MVByuTHBAQaBdGbOj
+	FNwV3EzHsNVLQ6R9bC5qp4CtqY9+SgF3mBxXKJyUNKOZ/EXN+LZTNf/F4APWI09zpAJ0zTQbaTdOq
+	bHdOWAHM5eFFARn0IrHKTWjPZEIe3b6NC2UOK1zIJ5WYOsNSqGf1CebmwSdEwBO1Z7SC/kSJ2jfq0
+	yjq0F9XWODB+Z8WC1sjCNd//jBeufpIrOthA==
+Received: from mail.amicon.lan (192.168.0.59) by mail.amicon.lan
+ (192.168.0.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Thu, 1 Oct
+ 2026 17:33:05 +0300
+Received: from mail.amicon.lan ([::1]) by mail.amicon.lan ([::1]) with mapi id
+ 15.02.1544.027; Thu, 1 Oct 2026 17:33:05 +0300
+From: =?koi8-r?B?7s/XycvP1yDh0tSjzQ==?= <naa@amicon.ru>
+To: "netdev-bot+sinfo@kernel.org" <netdev-bot+sinfo@kernel.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	=?koi8-r?B?8sHaz9cg8s/Nwc4=?= <rrv@amicon.ru>, "pchelkin@ispras.ru"
+	<pchelkin@ispras.ru>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 5.15] vxlan: Fix potential null-ptr-deref in
+ vxlan_gro_prepare_receive().
+Thread-Topic: [PATCH 5.15] vxlan: Fix potential null-ptr-deref in
+ vxlan_gro_prepare_receive().
+Thread-Index: AQHdUapKD1cz0+vAD0GNXi7u0omuY7bowA35
+Date: Thu, 1 Oct 2026 14:33:05 +0000
+Message-ID: <f89842dfc9014dc9b5c3905c4d65d51b@amicon.ru>
+References: <20261001132039.21201-1-naa@amicon.ru>,<179086197227.31693.8704060058711859109@kernel.org>
+In-Reply-To: <179086197227.31693.8704060058711859109@kernel.org>
+Accept-Language: ru-RU, en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wum45fntmbhXntsB"
-Content-Disposition: inline
+
+Hi,
+
+Resending in plain text because the mailing lists rejected the
+HTML version of my previous reply.
+
+This is a 5.15 stable backport of Kuniyuki Iwashima's upstream
+commit 30a45c0bffdd62350261e2f2689fdba426a33578.
+
+The original submission does not specify how the bug was discovered.
+A later report includes a KASAN diagnostic and a kernel panic.
+Kuniyuki confirmed that the upstream commit above fixes that issue:
+https://lists.openwall.net/netdev/2026/07/06/423
+
+Validation of this backport covered patch application and formatting,
+but did not include runtime reproduction on 5.15.
+
+Best regards,
+Artem Novikov
 
 
---wum45fntmbhXntsB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+=EF=D4: netdev-bot+sinfo@kernel.org <netdev-bot+sinfo@kernel.org>
+=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF: 1 =CF=CB=D4=D1=C2=D2=D1 2026 =C7. 16:39
+=EB=CF=CD=D5: =EE=CF=D7=C9=CB=CF=D7 =E1=D2=D4=A3=CD
+=EB=CF=D0=C9=D1: stable@vger.kernel.org; Greg Kroah-Hartman; Sasha Levin; l=
+vc-project@linuxtesting.org; =F2=C1=DA=CF=D7 =F2=CF=CD=C1=CE; pchelkin@ispr=
+as.ru; David S. Miller; Jakub Kicinski; netdev@vger.kernel.org; linux-kerne=
+l@vger.kernel.org
+=F4=C5=CD=C1: Re: [PATCH 5.15] vxlan: Fix potential null-ptr-deref in vxlan=
+_gro_prepare_receive().
+=9A=9A=9A=20
+Hi!
 
-Hi all,
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Today's linux-next merge of the net-next tree got a conflict in:
+=9A- How the issue was discovered, e.g. hit in production, hit during
+=9A=9A development, syzbot report, manual code inspection, LLM or static
+=9A=9A analysis tool scan.
 
-  drivers/net/ethernet/realtek/r8169_main.c
+=9A- Whether the issue was actually triggered, or is only theoretical
+=9A=9A (e.g. found by code inspection). If it was triggered please include
+=9A=9A the symptoms, like the stack trace or error messages.
 
-between commit:
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-  3cdeaef1754ab ("r8169: disable EEE on RTL8168h/8111h")
-
-=66rom the net tree and commit:
-
-  8a3c76523e449 ("r8169: add support for phylink")
-
-=66rom the net-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc drivers/net/ethernet/realtek/r8169_main.c
-index ee1bc9bd04470,1d06ddff98327..0000000000000
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@@ -5474,22 -5619,6 +5619,12 @@@ static int r8169_mdio_register(struct r
-  		return -EUNATCH;
-  	}
- =20
-- 	tp->phydev->mac_managed_pm =3D true;
-- 	if (rtl_supports_eee(tp))
-- 		phy_support_eee(tp->phydev);
-- 	phy_support_asym_pause(tp->phydev);
--=20
-- 	/* mimic behavior of r8125/r8126 vendor drivers */
-- 	if (tp->mac_version =3D=3D RTL_GIGA_MAC_VER_61)
-- 		phy_disable_eee_mode(tp->phydev,
-- 				     ETHTOOL_LINK_MODE_2500baseT_Full_BIT);
--=20
- +	/* Keep EEE off but the version stays EEE-capable so that link-up
- +	 * still clears the MAC TX-LPI bits.
- +	 */
- +	if (tp->mac_version =3D=3D RTL_GIGA_MAC_VER_46)
- +		phy_disable_eee(tp->phydev);
- +
-  	/* PHY will be woken up in rtl_open() */
-  	phy_suspend(tp->phydev);
- =20
-
---wum45fntmbhXntsB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq+bwIACgkQJNaLcl1U
-h9D53Qf/WTonPTkf7N4JfjmSrKZq9D8sE0MRSg4DU9qKNlGvy3XhZ+/SrNl7YhFM
-xJghPuXzbehIcXSr/IIZdpNiKR9c98XAh5PYoaqRThqL8MPgdjxkIVszpGw6SN8u
-xqVOP997W2izDREwkMznhm8pYtatKiGoecF9aN6IE0aH8lUlHclIOjn/rx1YxTDE
-hh3k3vACdhuG8ThEadyXLV0e5RtitB/C/A7TuPuTGr37KbnTkDUrf9w8gjO6+B0x
-a1eAjyIfvUrQfZ9ETe9HZSxs1Sy1fXiLoFseGPG32vYnTssTvrJ31YwDUyuODn19
-0adrraXBQrnGOe8doagARDtyw4nlng==
-=vsIu
------END PGP SIGNATURE-----
-
---wum45fntmbhXntsB--
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
+=9A=9A=9A =
