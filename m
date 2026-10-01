@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B431E3E44E7
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 20:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED8149BD6D
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 20:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790887679; cv=none; b=Cp0Xd+EGBsDijqYi0Kxcff1TJI6fyVO99W2UF6yfdsgdKQPiY6fSHifI4mBnHMrAhgNgeLI32+mGOTr/A0BV8K5fnrbai8yJPhOkHsXE6wrG5YCyL1DkMTQbbLbXRmgz2vT1Yl0J1McUGIV5mQLdghknyixW8xLOCRIad01qTEA=
+	t=1790887680; cv=none; b=aBFbddFfn8d1BP5cJXJ/iik6djWSSdO/09DLYA4MDpwmTrqoyNm2F5/j3937Cqf3nu/8px3PF9v8vw46ii1zLw9DOuomMguSDaOiLBNXTzshIGcsfVrjEeatRvPyIWBYnDHUwcXnyuj0EfN5sJqZzTiMdr1N0XL1s3zZxVM5mLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790887679; c=relaxed/simple;
-	bh=1ltf8VYByK6jZG96JJfPHiV1Ovc0NYvQ81JT53A172I=;
+	s=arc-20240116; t=1790887680; c=relaxed/simple;
+	bh=3MnLl99XOmUTT/cYcbI9aX0v6hp5ASvwd+r39vpnN+s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e1/TTS4/Wde0kPeT24cefxJx5ZwpO9HIDHHKaGO/h7q8uULhPQ51y+K+ic4Zm9SK3suLDqpasEADuqXhSKDHFLvgFhiug93Kkp4RfRxAeVS9v/k0d3fxJbO944vMBNKAt6zIlWz/2atQNAcwqye6lzO4vF+qpYCR1KjmCNCFrfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qiHUKdJ/; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=NSEI+D8j/sft1CIJva+MP62UU4ZReaCY0l/O5QIcc1XBzW+GROtDuUHNOJy0vGxzLDQkHQ9f7/WRvaNm9v7fvASdLMXUh9qOK0LLmqaF9dOnywhtaCDmhqgr4ppVUnRFF7VI7X5f+BWsvycPrSJm+LxJ0smz0WJ6hvtVy4j6QQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ahQbRLl5; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qiHUKdJ/"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8881a7875e5so955633b3a.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 13:47:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ahQbRLl5"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbb92868263so4427214a12.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 13:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790887677; x=1791492477; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790887678; x=1791492478; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1BM24IHofG6Ugi1avwQFkve9/U0pftEULauqCCURMis=;
-        b=qiHUKdJ/fmgsOXVT8ij9wOHsXKAqdI020YE5BZTC9HsSAY87x7NzLNlrNzlwKOAfd4
-         XR/flEjIpNM0y8QyQjIDl4YZ7i7U+7pIMOoS4RqJ+oztzV29qDyLA5A3Tzr7rVipgdJL
-         dEOjw7w4L4OXSeQi/Fww5dBUm6kurHmVRwDA8aJLqlCx9AnQp53cE3/mrWKIDtYrgXcl
-         cOR/tjZwcBoS/X8U4RRQdZAGLd0XY7iHkOykGDodQMEEjO/RjehcL+DI/bnBa4lZmMGF
-         iQfEooaxi71UlYjT0km2EsuVVgQPHwgP6dzNBy6lyPt5r10PWdn7031h9RIEPpHcSZZd
-         Fxow==
+        bh=jbqDt0HxRX15SjL96wUA42qv4QG9OeZKWE1IkyZE8O8=;
+        b=ahQbRLl5Lm5b3SYM9WTXtDY5EYexq/2wfPemYOen0KYOwof8TAVQVykrZKcfnwz9QJ
+         IaQXYJ1twik97IqjlY8taiNqyd4iugmRr4LOmNUxTpUGUqybvEkfvHk/PdFVbk1pdSCl
+         o8McPvLN0bOe08M2/+HJD1F8sgKCsrJgPML04CliR6arFzim15F6j6/A8wzcW4qWSfP7
+         wcER/OQaguhhL6YYUr2SNmMonfOjdqmgexrmUKZgTNlHAC/lP1Mm0uv5gSKuHlrfSh54
+         DiLnU19WWPCAW5H2nutAt8X+0ryZ3KciDt9MfVRQ1j8bfN8ecOp3c1XjHF9E1Ciu52/c
+         +9jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790887677; x=1791492477;
+        d=1e100.net; s=20260707; t=1790887678; x=1791492478;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1BM24IHofG6Ugi1avwQFkve9/U0pftEULauqCCURMis=;
-        b=ZG0kZ+aAoI4Nbe+nlOI7kUG7VFmxWID0TjeLG4RQPMVk/xgRiuNF1Q1nA1GjIExZOX
-         zt2F3BiSpn2YaSZsMrh28vivbgQ8re26TEFFZYFZs9l/3JJTHcN6yfNdrRD6TNKUNlgd
-         NzUvuELG2TY2eYVpgAK02BNR31bqmtg8gSufEF53qoFY92DhxjH2E/8nteeTFSm9ZpZF
-         eJ4QVAc4Q8JjwidT4hf1P5MevBNo7jZ8lUxWdRucVSCn6pa61yG4DwtjVlyQr5lN00Zs
-         Q1Zd+89U6pfFh65arlik7VKRSV40Lmov9Q+pAdIEIuOjzQAEBTQEhGdyzxgwD83pAuQf
-         Vdpw==
-X-Forwarded-Encrypted: i=1; AKwUvBwthRHpm6P/BaEFC/P/5qqB6HM07NVTsexqUyb0tKuc499lHx4DCm0crx5xLJL+6b5S0XJ1G1s=@vger.kernel.org
-X-Gm-Message-State: AFuF++mBtsBwmvSvWfkYWpyWrRf/Af8fyb7ZeZRrzmBNHf4jcuJC1YYo
-	cAc5wiRVMDp8yHfNax52flceO5SCeFU68myODItljk2x7m5oFdjq+yG0MYlkM/0Kn6bIos/tgAV
-	oSiUWhA==
+        bh=jbqDt0HxRX15SjL96wUA42qv4QG9OeZKWE1IkyZE8O8=;
+        b=l3BB7426zK0QOdnwPfgblJRa2KVt0y0Xe4CQAEGn/sTpNA/LzjBTguz9oTVT7aR2Fq
+         Wx9xNJxg0NrNMdiS4GxtHGWTA/onoUrJKd7dIxWjzhQZc7ExrD6gukbqtBymnfnW3jZ3
+         Nrg0YamTvq4WjErhtRVJGNlOsV3tiDE+gjyGgU0GB5m51lyoJAK9w6YWAzkTumtRuNkq
+         GHiQbJJ0ew43IOxoq2d48p7BfSkgfOUnMj5C3BGyvZkdvuMsS2jXPoxkfq/CdQAq/obf
+         eHlyvf3IM7THVk2+gI+vam3zwCTEzjlbng75cTvcLj5vP57wlwJszk+Q6L/BHdh917l2
+         lL3w==
+X-Forwarded-Encrypted: i=1; AKwUvByO0rThubr4YIyP5pwDNLZgw8IeG+kFUbW233JP/PD9Gb3VRbCL8KvjiTzS16pt1s9Wa57nTdA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lNAtYZxwhId/Cqq5C9RvyBK/PvqadupDDrBJQVyJ1+kfTXwNYL
+	imRRCvtW8G7cmoA7+xiAtmgjL9hSf5eTrGYflC9GCRfhRQmr/qD6DyKxwOLYEU5iasDQDy3w0mn
+	kCRzsCw==
 X-Received: from pfbdn3.prod.google.com ([2002:a05:6a00:4983:b0:886:c063:eb7])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:124f:b0:881:e626:74a0
- with SMTP id d2e1a72fcca58-88af7ba6979mr580725b3a.47.1790887676959; Thu, 01
- Oct 2026 13:47:56 -0700 (PDT)
-Date: Thu,  1 Oct 2026 20:47:13 +0000
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c904:b0:3dd:a196:30a6
+ with SMTP id adf61e73a8af0-3e0bd4c7d78mr568739637.86.1790887677757; Thu, 01
+ Oct 2026 13:47:57 -0700 (PDT)
+Date: Thu,  1 Oct 2026 20:47:14 +0000
 In-Reply-To: <20261001204752.2572265-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,101 +60,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261001204752.2572265-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001204752.2572265-2-kuniyu@google.com>
-Subject: [PATCH v3 net-next 1/6] net: Order blackhole_netdev_init(),
- inet_init(), and inet6_init().
+Message-ID: <20261001204752.2572265-3-kuniyu@google.com>
+Subject: [PATCH v3 net-next 2/6] ipv4: Inline inet_blackhole_dev_init() to devinet_init().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
 	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, Chris J Arges <carges@cloudflare.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Fernando Fernandez Mancera <fmancera@suse.de>
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Commit 309b905deee5 ("ipv6: convert CONFIG_IPV6 to built-in
-only and clean up Kconfigs") started to call inet6_init() as
-device_initcall().
+Commit 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+started to allocate in_device for blackhole_netdev.
 
-It explains the reason as a race condition on IPv6 addrconf,
-but this is not accurate.
+It used late_initcall() because blackhole_netdev was allocated
+at device_initcall().
 
-The change initially used fs_initcall() but switched to
-device_initcall() due to the null-ptr-deref stack trace in
-the link below.
+Now, it is allocated before inet_init(), and we no longer need
+to use late_initcall().
 
-It happened because blackhole_netdev_init() uses device_initcall()
-and blackhole_netdev was NULL when addrconf_init() called
-ipv6_add_dev(blackhole_netdev).
+Let's inline inet_blackhole_dev_init() to devinet_init().
 
-Due to the order in Kbuild,
-
-  $ cat -n Kbuild | grep -E "(drivers|net)"
-     111	obj-y			+= drivers/
-     114	obj-$(CONFIG_NET)	+= net/
-
-using device_initcall() for IPv6 allows built-in drivers to
-be initialised earlier, which requires unnecessary NULL checks.
-
-For the same ordering reason, IPv4 uses late_initcall() to
-initialise blackhole_netdev.
-
-Given loopback_net_ops is registered in net_dev_init() at
-subsys_initcall(), blackhole_netdev_init() can be called
-after that.
-
-In addition, some places assume that IPv4 must be initialised
-before IPv6.  For example, mptcp_proto_v6_init() copies
-mptcp_prot to mptcp_v6_prot, which would otherwise have NULL
-mptcp_v6_prot.h.hashinfo.
-
-Let's explicitly order blackhole_netdev_init() -> inet_init()
--> inet6_init() before device_initcall() with 3 different
-initcall levels:
-
-  subsys_initcall      : 4  : net_dev_init()
-  subsys_initcall_sync : 4s : blackhole_netdev_init()
-  fs_initcall          : 5  : inet_init()
-  fs_initcall_sync     : 5s : inet6_init()
-  device_initcall      : 6  : built-in drivers
-
-Note that both IPv4 and IPv6 can still use fs_initcall() thanks
-to the order in net/Makefile, but explicit ordering would be
-less error-prone.
-
-  $ cat -n net/Makefile | grep ipv
-      17	obj-$(CONFIG_INET)		+= ipv4/
-      22	obj-y				+= ipv6/
-
-Link: https://lore.kernel.org/netdev/20260309074758.0ea95a18@kernel.org/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
----
- drivers/net/loopback.c | 2 +-
- net/ipv6/af_inet6.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/devinet.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
-index 1fb6ce6843ad..55ecd5ebac0f 100644
---- a/drivers/net/loopback.c
-+++ b/drivers/net/loopback.c
-@@ -289,4 +289,4 @@ static int __init blackhole_netdev_init(void)
- 	return 0;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index e84d3cf92247..2ed4c706ca9e 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -340,18 +340,6 @@ static void inetdev_destroy(struct in_device *in_dev)
+ 	in_dev_put(in_dev);
  }
  
--device_initcall(blackhole_netdev_init);
-+subsys_initcall_sync(blackhole_netdev_init);
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index f0efdc13baf4..a9b8b4b42a1a 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -1217,4 +1217,4 @@ static int __init inet6_init(void)
- 	proto_unregister(&tcpv6_prot);
- 	goto out;
+-static int __init inet_blackhole_dev_init(void)
+-{
+-	struct in_device *in_dev;
+-
+-	rtnl_lock();
+-	in_dev = inetdev_init(blackhole_netdev);
+-	rtnl_unlock();
+-
+-	return PTR_ERR_OR_ZERO(in_dev);
+-}
+-late_initcall(inet_blackhole_dev_init);
+-
+ int inet_addr_onlink(struct in_device *in_dev, __be32 a, __be32 b)
+ {
+ 	const struct in_ifaddr *ifa;
+@@ -2974,4 +2962,9 @@ void __init devinet_init(void)
+ 		panic("Unable to register inet_af_ops\n");
+ 
+ 	rtnl_register_many(devinet_rtnl_msg_handlers);
++
++	rtnl_lock();
++	if (IS_ERR(inetdev_init(blackhole_netdev)))
++		panic("IP: failed to allocate in_device for blackhole_netdev\n");
++	rtnl_unlock();
  }
--device_initcall(inet6_init);
-+fs_initcall_sync(inet6_init);
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
