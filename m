@@ -1,79 +1,79 @@
 Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECD945D93F
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EA94848AE
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790841476; cv=none; b=iBkxJTwGN7Gx2UnsCmsyujQ67z/z8Jleyi2mi6R8sEXmxbKoEXCMNuPUtttp7p0QsDIK8BkNzv7Eyx0mY5a9sHpbv8gHLyTYp1PZfbe+rMTXWMcosxBpbKY9htN5TRVl28OZ7TZDNqrtPIc8bYA+/20lbcgSnRijjoRwySB/qDo=
+	t=1790841476; cv=none; b=EHZO1eOQOwYLzka1sbN+bb1s/MPzscERfeEPE+8h4TVhh+Pg+8sJ4Xa6fyUrLgb95Qv/+R+k1s8XkalXdDa4tVtMGZfuNJ61x3pM64eL0DwbEYQ4R5IrcnEQPnWKZmjwtlG6IExUt/nuFmv6ZRE0byO2ZH1iedUuZj58e9s8oU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790841476; c=relaxed/simple;
-	bh=YqDRQ5W5rsAkOJ774wYqgQ2gbuHwMHmfMksSt7FNIGg=;
+	bh=AidR3vbbltUZ3DJc9GSWhF/azxg+J9fGK6Nhgxww9Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmFjaHOgs2YEThEFmW42AtQ4yQw2WjXwunFpkGxuzsVHofGXbvAvepIp8Lwe6GLNmutVTvnr010rK5g2U57ircdTKH4l+/RcBkAWNJ82++288vKC9B7ZtCMKtso83MIn+Fyoem/9K59p2RdqBp188Ov3tD3XICRKXz47uTKHWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Fzi6XwnE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=k9Sm/WXU; arc=none smtp.client-ip=202.12.124.156
+	 MIME-Version; b=NJ+fsr8ZoKcrVbVO/dJYzSp6yvy6nWq9UDb9kQQL60fZzXV9d+N2DQzi7gtnbC33CAzSw+z6g5VRe5GLUfUx++KLp772XbdVwW4Jb/gUa0tcQNofPuTjYoEINMgtCTsayD3UEgxPARx/FO1Sfy2tYQCfuHv2ZbuOQP0MQe/O6Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=STS3eZPu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CvUPhgw5; arc=none smtp.client-ip=202.12.124.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Fzi6XwnE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="k9Sm/WXU"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 417C07A00BD;
-	Thu,  1 Oct 2026 03:57:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Thu, 01 Oct 2026 03:57:52 -0400
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="STS3eZPu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CvUPhgw5"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8BBD47A0010;
+	Thu,  1 Oct 2026 03:57:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 01 Oct 2026 03:57:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790841472; x=
-	1790927872; bh=jbsUQ4GPFwaWqu71DtOJVHflPrFccJb9tsUynoAzNb4=; b=F
-	zi6XwnEgZXmVwR40O+PDQpduAu7PNZn2AA0WdWYk1D/33BTD5gE68F5gQ8uRTaoj
-	zpQtk4rp81uyS1xgLx4fZkeLtoCpg/fvm15FkXm5EmGUmDyAr987blHEOOc52R64
-	ObqUrMlSVPtfwy/TI5aPFl2golEbFjYfk3vhvI1/OGvW7MfoM2ZNHx/NjVtv9kWu
-	yWZhd6MI17L6UadBagL6MpiBt6TxXF+uWIo4xQcO2/HFDhgMO61prfsjlYCoC8/E
-	EfYmdUV0nHtxTvBGs08D2ArFNGQ4On3lU+Gx2sku5YKrUI4cyVKjQQI0hsU3HLkB
-	medShuqEOemJ2LHINKivg==
+	:reply-to:subject:subject:to:to; s=fm2; t=1790841474; x=
+	1790927874; bh=FnJRS+v3s6eAoJRK/LASHiIgUP+rBsrquVk8ULucyBk=; b=S
+	TS3eZPueeFk99d9NDmO8SshBI6/b915h965SRiH+ypYk+THiifa9zGVAmHUhKAS1
+	8GZRi1dHgpEuVn5EjjD3nB3hhjD9stKbEU6goY8b5zfxVtnVzAzFAJIyx+8iTGNw
+	2HSSSlVMUc4RUywMMpNlayJbypG5LjkdWtbRjN7s4mceQnkamnSrAM1wRtgRHwZn
+	NPsJiMRQ3FGl2BSBRcU7mw9E6Nspw6ZwDLwRfXiKdVQ5uK56Ow3qArsdKDHdVWk1
+	IZDEi0HH4KsFUizyoQZCTRin9dCGbVhhy56uaMBaiwUThgpINiIzboCgwRrb5xPd
+	MLG0FcqpTU/M00GCJ0c/A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790841472; x=1790927872; bh=j
-	bsUQ4GPFwaWqu71DtOJVHflPrFccJb9tsUynoAzNb4=; b=k9Sm/WXUwEtyxktDJ
-	asNs7QazsopDqbzbFuczPlXKjssCQBAFxcCBYupjBG2iKWO/98ovI0drfKnUCIXo
-	Q5lM+uxIr8rwB45MRhBaGLMEWxj/j2Wc4EtXLzb/FQXLzeChpHC4rSTFvQzHn6Yu
-	CbuSJafuoRu8HeiephrYIb3Nb2z/rS+JUSU+N7HklIajvV8dZJwPhDO4FnhqN61n
-	kzQ+maROHTBUf4Y6ZCvei+AumCpG8uUNI6ktBG4zDvb4+By00HPtSrEMsi4mR/MC
-	6jXQdLoEElcWrda1wBHu2oS3RN85Z2F8QLIblHDnhHH9DsXGJl5f3yh/Fi5OfZgv
-	6NIwg==
-X-ME-Sender: <xms:fxK-atlF3yddMtHkNfyolb2ogoU7I4j1K7ZjDcdSoWMGbGm1r62KcQ>
-    <xme:fxK-au1Scf1HaA49zly5WOcddYAoUDAg4qIQTQZCowe67ikVW0Fs2jY68KNWVNmBd
-    SvMrZLACVKfWR8XdVJ2cWi-XJshxnJWZGQkJvoEnq-WWqO6ARfnUjCo>
-X-ME-Received: <xmr:fxK-ahQzhuY-U0fr-uspLsBoObxIOio_yv_t4VIb4DaluePVedgJIJbyNY_c>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790841474; x=1790927874; bh=F
+	nJRS+v3s6eAoJRK/LASHiIgUP+rBsrquVk8ULucyBk=; b=CvUPhgw5XhtqhUIJl
+	VpDjBCWa52o8Jp0FaoAZolWmPmO2ijcUwbD+BRlKk7Ag1lP7lF9w2vLDy7J6QnKk
+	Qbv+SEim2GId2S1WklTl3cEmvNCXgDwljCAM3ZsrVAoUK4oEHBrd2MFFjh+woaMX
+	tOfleUHqYxH+iqY02QcTfCxwkNfF1RL9J2ne0Q/MpXk58qVDVaRfPbRChVNfZgBW
+	H3K6hlGby/KyB3gwc+hpb1aHXV9rWfrNTOpSBtnbmL4P7sBi06bFqRNJ3/WoDeI9
+	dFh4o3/8zREoNLjc8ZWW4LOvANUTlOKN8sqCVJKCe42xOmb57uPT6DyHwdFxoh7V
+	R6Tdg==
+X-ME-Sender: <xms:ghK-akvxXubNKaeuqsn9ZVbof16dsxSAlip3wRlE3jlhU61G25YGvw>
+    <xme:ghK-ane-7bZMEb2sxkxhPWvDUbzeh91nSKKE2ra4bmgG1pV-HQEa9eik2x4d0yNt9
+    BWNcfg7RB39RwXwrKhso_jov22TToDg1FflVfocunox0cKeVL9U3oU>
+X-ME-Received: <xmr:ghK-atb4VXglvnOJEZqGFoU96la0HN4bBS1wwtbg2xWgMH_9UtpR6gxUh2ZR>
 X-ME-Proxy-Cause: dmFkZTGrlCWeHT+g+Zlf20e7uU3eZJyAipOOtczwBxzD7N3VyNOdxX/HBzbROOe5wu2/jR
     Vw8dtcU/d3uOEsrzk+lFNWUrPvjFDLSiNivpRofFj2lF/LCgnEyhBSAP8cmPmNhT7V9t/q
     uW/FhjwihsfkbcruXtDMaTObPhDJ49E9a187VcUVbXYYUyXOTpdxWKJr2aUcUIJ0JWsezP
     y8EyxskdQyV2BcdK/O3U/kT2U7IItGK22qtPNXdsi9NIK0Cw+Z4I6Pd50W9VRJSgiB0mmZ
-    pnaL9JDhMXJ8gB8BhAaKhbV6vHiB2rGYhxSHLtOQw0X/dtY/TfpDYSqEUWJGc3FPV19zDj
-    1gR6+Blt0KypIHqwhcBZ7n0aan8iE0HX1AHBVGFbmYwNzUT8q7QSUkdLErZdh7+JqBDG7/
-    bwNK+OuBGPgBjXm5Ylm/sEQlK/bIkT+Vj8pU3cwnl9ey9cr+q6c6mEC8phOrqbgCl09Gmz
-    4ywY6Klkv/ZiASs4siZB3JOhsWpKXQqRc6C28UUw3zkogop7+lXfm2+uM/e8laa8o7fipe
-    9QGUlISkMuznjSGOAd9qTLetvLaOU1yTLr4qpkth+mo1h4iqGuWiSI+NIZK+UThfHvitrN
-    dX9+nb75Ym+EK165fYQMNBWVgQFf/FT6HDJMHK7Uu3khxDZV4rFJGmgnqIhw
-X-ME-Proxy: <xmx:fxK-aosAUk-HLfT_7yv0XaCIz2BoNMG8mHHvOxxrPqt7rcmmZMmX6g>
-    <xmx:fxK-auaaUWZwSt6lPEup5OG4z6Qsw7lbnSOqxT5Gg-Fjm5qFZKsC5A>
-    <xmx:fxK-aluDib-bfu-PBIETWi7h-owdn92P_lfmAG5nZ--UjcJYn3rwAw>
-    <xmx:fxK-aoFiCfcUyUH0B8PJPCAG_ATFqNjR-Sbjo8BLY9le7NzHwjTX9w>
-    <xmx:gBK-ao80MROEmk0dp6Fjbi1x_l_IUk1uWHs4IgTwj4GLJnVlHN4b4Ww_>
+    pnaL9JDhMXJ8gB8BhAaKhbV6vHiB2rGYhxSHLtOQw0X/dtY/TfpDYSqEUWJGc3FPV19zQP
+    JEbmKXWLNstKDsoVEsxk7Dat7owsfKuNoNfPfJLhPtP1m/pxMbWltnXDuPPeoPEbGwjM98
+    htp9t4yTX7L+9GKR0GABe4qAj56mO37mAPufh3Bq6YIe8YVi+2evSSQ0OjZZoGOYHKwsro
+    Z5aiHSg1XvtCbf3G1e6KUZome5fLTM7eGLG9z/UOgRVWAIuWEF4bb2ySmKE0iaAhjGDIbB
+    yCj8LOvs/flcZjmZQUwrzeBTMvkgiWZG5Q2yvqqG7DwTuFYouV3nu/keUDOtlHPUzmXV+T
+    DFWbNC7J0G7n6kka7O95VNw4qeBYoq3RY9/zGJAcjLd0ZbvXLhMWFAw1RQ0A
+X-ME-Proxy: <xmx:ghK-aiWATZvMAoBddbkVwN-6aPDeVqBuwIJ_s2JUX5Vyzc--U8Jd0A>
+    <xmx:ghK-anhLA-OlcR3TDk0KFdbm1vPrK21sAognYNgj0PgibgfXn_CywQ>
+    <xmx:ghK-aoXdbN50GQy4CFEtmsnERQqosRHmvWNTEQD9YBpE63AXz4EDQw>
+    <xmx:ghK-amOCkOvT66e5pDTjl5uFS7XlXxO9zg1Kz2FniRGfk748yUiarA>
+    <xmx:ghK-agGBdbf3KGkive1_XjffIbZ2-u-wTcxhpdwAI7m0R0gQ9IKHkgvk>
 Feedback-ID: i934648bf:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 03:57:51 -0400 (EDT)
+ 1 Oct 2026 03:57:53 -0400 (EDT)
 From: Sabrina Dubroca <sd@queasysnail.net>
 To: netdev@vger.kernel.org
 Cc: Sabrina Dubroca <sd@queasysnail.net>
-Subject: [PATCH net-next 1/5] net: strparser: remove unused abort_parser/lock/unlock callbacks
-Date: Thu,  1 Oct 2026 09:57:25 +0200
-Message-ID: <e55bcc033317dddd47a6dfda6575c755ae7175f7.1790702233.git.sd@queasysnail.net>
+Subject: [PATCH net-next 2/5] net: strparser: remove strp->sk NULL checks
+Date: Thu,  1 Oct 2026 09:57:26 +0200
+Message-ID: <a823a8decf85b3586e50adf8c6d768f59538140a.1790702233.git.sd@queasysnail.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1790702233.git.sd@queasysnail.net>
 References: <cover.1790702233.git.sd@queasysnail.net>
@@ -85,123 +85,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The lock/unlock callbacks were introduced in
-2017 (bbb03029a899 ("strparser: Generalize strparser")) and haven't
-been used. The abort_parser callback has existed since strp was
-committed (2016) and has also never been used.
-
-This patch replaces those indirections with the only possible direct
-call.
+strp_init makes sure strp->sk != NULL.
 
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 ---
- include/net/strparser.h   |  3 ---
- net/strparser/strparser.c | 39 +++++----------------------------------
- 2 files changed, 5 insertions(+), 37 deletions(-)
+ net/strparser/strparser.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/strparser.h b/include/net/strparser.h
-index 0ed73e364faa..78e8e3e12ed3 100644
---- a/include/net/strparser.h
-+++ b/include/net/strparser.h
-@@ -46,9 +46,6 @@ struct strp_callbacks {
- 	int (*read_sock)(struct strparser *strp, read_descriptor_t *desc,
- 			 sk_read_actor_t recv_actor);
- 	int (*read_sock_done)(struct strparser *strp, int err);
--	void (*abort_parser)(struct strparser *strp, int err);
--	void (*lock)(struct strparser *strp);
--	void (*unlock)(struct strparser *strp);
- };
- 
- struct strp_msg {
 diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
-index a23f4b4dfc67..b5319ed56857 100644
+index b5319ed56857..6cdbd12f41e0 100644
 --- a/net/strparser/strparser.c
 +++ b/net/strparser/strparser.c
-@@ -75,7 +75,7 @@ static void strp_parser_err(struct strparser *strp, int err,
- 	desc->error = err;
- 	kfree_skb(strp->skb_head);
- 	strp->skb_head = NULL;
--	strp->cb.abort_parser(strp, err);
-+	strp_abort_strp(strp, err);
+@@ -36,6 +36,8 @@ static inline struct _strp_msg *_strp_msg(struct sk_buff *skb)
+ /* Lower lock held */
+ static void strp_abort_strp(struct strparser *strp, int err)
+ {
++	struct sock *sk = strp->sk;
++
+ 	/* Unrecoverable error in receive */
+ 
+ 	cancel_delayed_work(&strp->msg_timer_work);
+@@ -53,13 +55,9 @@ static void strp_abort_strp(struct strparser *strp, int err)
+ 	strp->skb_nextp = NULL;
+ 	strp->need_bytes = 0;
+ 
+-	if (strp->sk) {
+-		struct sock *sk = strp->sk;
+-
+-		/* Report an error on the lower socket */
+-		sk->sk_err = -err;
+-		sk_error_report(sk);
+-	}
++	/* Report an error on the lower socket */
++	sk->sk_err = -err;
++	sk_error_report(sk);
  }
+ 
+ static void strp_start_timer(struct strparser *strp, long timeo)
+@@ -80,17 +78,9 @@ static void strp_parser_err(struct strparser *strp, int err,
  
  static inline int strp_peek_len(struct strparser *strp)
-@@ -409,7 +409,7 @@ static void do_strp_work(struct strparser *strp)
- 	/* We need the read lock to synchronize with strp_data_ready. We
- 	 * need the socket lock for calling strp_read_sock.
- 	 */
--	strp->cb.lock(strp);
-+	lock_sock(strp->sk);
- 
- 	if (unlikely(strp->stopped))
- 		goto out;
-@@ -421,7 +421,7 @@ static void do_strp_work(struct strparser *strp)
- 		queue_work(strp_wq, &strp->work);
- 
- out:
--	strp->cb.unlock(strp);
-+	release_sock(strp->sk);
- }
- 
- static void strp_work(struct work_struct *w)
-@@ -436,18 +436,8 @@ static void strp_msg_timeout(struct work_struct *w)
- 
- 	/* Message assembly timed out */
- 	STRP_STATS_INCR(strp->stats.msg_timeouts);
--	strp->cb.lock(strp);
--	strp->cb.abort_parser(strp, -ETIMEDOUT);
--	strp->cb.unlock(strp);
--}
--
--static void strp_sock_lock(struct strparser *strp)
--{
- 	lock_sock(strp->sk);
--}
--
--static void strp_sock_unlock(struct strparser *strp)
--{
-+	strp_abort_strp(strp, -ETIMEDOUT);
- 	release_sock(strp->sk);
- }
- 
-@@ -455,36 +445,17 @@ int strp_init(struct strparser *strp, struct sock *sk,
- 	      const struct strp_callbacks *cb)
  {
- 
--	if (!cb || !cb->rcv_msg || !cb->parse_msg)
-+	if (!cb || !cb->rcv_msg || !cb->parse_msg || !sk)
- 		return -EINVAL;
- 
--	/* The sk (sock) arg determines the mode of the stream parser.
--	 *
--	 * If the sock is set then the strparser is in receive callback mode.
--	 * The upper layer calls strp_data_ready to kick receive processing
--	 * and strparser calls the read_sock function on the socket to
--	 * get packets.
--	 *
--	 * If the sock is not set then the strparser is in general mode.
--	 * The upper layer calls strp_process for each skb to be parsed.
--	 */
+-	if (strp->sk) {
+-		struct socket *sock = strp->sk->sk_socket;
 -
--	if (!sk) {
--		if (!cb->lock || !cb->unlock)
--			return -EINVAL;
+-		return sock->ops->peek_len(sock);
 -	}
 -
- 	memset(strp, 0, sizeof(*strp));
+-	/* If we don't have an associated socket there's nothing to peek.
+-	 * Return int max to avoid stopping the strparser.
+-	 */
++	struct socket *sock = strp->sk->sk_socket;
  
- 	strp->sk = sk;
+-	return INT_MAX;
++	return sock->ops->peek_len(sock);
+ }
  
--	strp->cb.lock = cb->lock ? : strp_sock_lock;
--	strp->cb.unlock = cb->unlock ? : strp_sock_unlock;
- 	strp->cb.rcv_msg = cb->rcv_msg;
- 	strp->cb.parse_msg = cb->parse_msg;
- 	strp->cb.read_sock = cb->read_sock;
- 	strp->cb.read_sock_done = cb->read_sock_done ? : default_read_sock_done;
--	strp->cb.abort_parser = cb->abort_parser ? : strp_abort_strp;
- 
- 	INIT_DELAYED_WORK(&strp->msg_timer_work, strp_msg_timeout);
- 	INIT_WORK(&strp->work, strp_work);
+ /* Lower socket lock held */
 -- 
 2.55.0
 
