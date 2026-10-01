@@ -1,100 +1,122 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92A3ADB97
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 14:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA251EDF9;
+	Thu,  1 Oct 2026 14:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865163; cv=none; b=soRO+R4qwBIEZWdFlN1jwtHRrHWFDn2mG+Bg+trUTp6h3sMZO4KdglpxefiBsLPaNvcGDur9m9ivXQzVdl/bpg6MgUa0Dh185BvVzEm/gQaTPABRkndQUd5pSyX1dQ0CxCyY+2SxMIb3iybN7dj5zQVmcCwy9/okP3nhhFzGId0=
+	t=1790865166; cv=none; b=uTpd/9lU4VkVOR6gPgcAPbaGbZZzVWPrFC6kvUVWoQqVeDOsF/L3U7vNaAd4hhDLqeM0eW9QxXHVTWItOoY11GEyROIem5Lmdn7NNMSzCqu0e8U05KzrxbN3+q20PQRAWy1Jr4XUjhXHKFcbOHMZNLzIfKRe8RvDSp992T7Dh5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865163; c=relaxed/simple;
-	bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gadYOk0wiW16XBm/sNniPGjQHTAbdacLewU76djYva/537fZsq+sVJ7lTE+N4g+7zmH+jeDxd5ubNMeg0X3E8LgO38ImHXcUAbOhCVZ3CHpBIbYuGljhIccGm6/WNf27aGo8tpYe0xIZJdBDFhQTNaw6elmFEdNjlOdLflRsMU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsZn1cOs; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790865166; c=relaxed/simple;
+	bh=hTkMzCP7N3yWZdnvBdZNRxf/m0P5NJZuBQULtKGYaq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rQ/eW9/JKPvPpkLu1KMvAYEX5t/3i863oJZQ2qvQ3X/18czvTAIC9O8jWiXIcHcovs4JIXYW7jlu30wHJXZYnIB1o9lRMa6adxleGjPUIPQ1lQ2/WKNHR4il1lA2GkvitZB+Hb9LgEESsxAzOeWtHOX/tmZ4KH+UE/RFHVVVukw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfsUvSEk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsZn1cOs"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396cccbba91so3206595a91.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 07:32:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790865155; x=1791469955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-        b=QsZn1cOsGW9gJSBEr3AUiFhi6dDv+lG34xs3Mef8LiBafeYJX+skrBT1NBhIXQBHYU
-         jj6xuMT2tnJjwDESvv86Uw/zRnqEpEafJoeH2K+xv1hper6uzTKGj1f4bL6FcCpfTGd0
-         EvmA2hfwBKytksucyYSD16iM6S8wtFJL25V5FkbDM+tHGtKJRt/slN7TnmiqxYxjtEwe
-         Aroktd7xX0WaeBpkrdLqQNtC1matuazrPpiMuSAnxk5rAWXCrHCszGKMOSI6IAY6ra5g
-         vwnLdPqafMdKVpNxDJ8dtR6+BvmPgvh1Gx/E7/CEG7/YHPzbVreCoEpLY9HVmGM1uoZb
-         z+dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790865155; x=1791469955;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
-        b=OswAaF5oPAYUDm6FW8W9LVx97DdjAQ6X+FtGRggIzvsyYNa4X81MePtU54Qh/qvPJE
-         +3ARnMalcD+utI6L5FKQC1+dF6gtRcKxjBx/786+YviMv130YBQ67aqDtFBg41vk/+Dp
-         P5nObHTJdH3M/Ox07prJYegkC2+WpKPu2zS1WEagjNQEVYhzYE02da4pAFWeiuAN+37r
-         lPQKq+B3Lc8RbMwhfHwF4gXAQ6ZUMbBY8VyLFwJqqiQOQoMad1WxRnibPIulM4VH/gQ6
-         joFUvJWRUXL7c1UGb6yAFJTyIKjqW96v+6Rw0260WovGYkXkQ9+8cjqNr8GXG+UpmGsM
-         HmHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwLXg4YeKA9R9ta9wFbfLtosdKolSJFpWuhIP/+9KjJC8Cds93YP/9EqSAQIbnqnxDQJaTYDJ8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLre6P7gs91aaQdMRWzMUXaou4gusEk57c1wD7rX68J1f5ooXF6
-	hdz1TW1dRhVSXh6UbaNbOG09Wpfps8/VBC4ECkbjYek6kVE+p2jK6fi7
-X-Gm-Gg: AYBFou3P3hlz2SOV4fxxPP8bfYg1WA9LZVmrtuyRkBrcqOV6T/e/QybdSxQ0pSwxVMA
-	cxCmzq3sOBlWxBw0EOs3U2NWgtzYp2mG7M810pQCNZb3nswofjLia+rtoMhi7OAfKmnO6xsTP6b
-	OoQri304YcQwHUjP2JJbn41PEKbwHR9/wLovk/A5mkroPajH9rx1xCnOH+XCKD1RtU839q9Mp1D
-	UX4UweO9zyvSZjvPg7nURQsZ6qFeDozj+7WfPF1zLZEaUYhdq4DJ0nQMkVcNEdNW2fAA6ox7t9G
-	bXwPMT8YJ+0UexEA1LhW+Y5RhfnB+sgzafL57DJgGiryGfTJTzsrIz8doLwPDeGmCFsYFxIm64/
-	bLyJxkgmP/YgXHwI28XMW6oC8/cTbnFXf+3s1ro/u6Q4rNG2kNoad+s0vMuO+8CSpRUXpukGO/3
-	Zj19dblGGe/hprXiWrsGrQjG8+N4hJx5kGbso7e0QVKiBsjQsup0zVxZcQshAogX66X3P7tW7mf
-	ZfAezTW0HU=
-X-Received: by 2002:a17:90b:2b44:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-3a4d1509d61mr3979683a91.18.1790865155377;
-        Thu, 01 Oct 2026 07:32:35 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f478e750sm4964487a91.13.2026.10.01.07.32.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 07:32:34 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
-Date: Thu,  1 Oct 2026 23:32:21 +0900
-Message-ID: <20261001143221.3856511-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179085716831.31693.13222203434770065965@kernel.org>
-References: <20261001121541.2983379-1-4ncienth@gmail.com> <179085716831.31693.13222203434770065965@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfsUvSEk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21AE1F000FF;
+	Thu,  1 Oct 2026 14:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790865159;
+	bh=11s3mLiz/YlWUA+BT+O3/1et8R5ZgOv4/ERZ3CIkR4U=;
+	h=Date:From:To:Cc:Subject;
+	b=UfsUvSEkHmywCGbEFfK73C2KlQLVVmND4+teeTJA4Mp36x4xSsLQwxZUr4OX+FltC
+	 lmtUtRxrh32rbcIcK4kGa5QXbDqGGHN/nvZ/DqIydbvnQcB5bN2xLVQYfX6iJB4/Zl
+	 V6fXrLTQIZVcBluQJoeZ28LFejg/uqoRnCyCKSa9AD+KebGAzVlR3n+Ph4FIc8YVPJ
+	 L3aE1FoJ3tFNYzd7KLQEDlpVubgdK89/GsJWwK83IxhXA+xvkb7DzPlImQSaUiL/4S
+	 f9MbM2Zu4n15+0vew7Ufs/2f1IS13ZeSSw0hZPMFEuWOLlOyzpZYSYFEMORhou0MKZ
+	 49e2Pvqt7eLUw==
+Date: Thu, 1 Oct 2026 15:32:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Networking <netdev@vger.kernel.org>
+Cc: Javen Xu <javen_xu@realsil.com.cn>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <ar5vAxEqS8tO8aVT@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wum45fntmbhXntsB"
+Content-Disposition: inline
 
-Thanks. I found this during an LLM-assisted manual source audit of VSOCK
-receive accounting while re-evaluating virtio_transport_read_skb() after
-CVE-2024-50169. I then confirmed it on vulnerable and fixed kernels using a
-connected CID_LOCAL stream and a real SK_SKB/SOCKMAP verdict path.
 
-Thanks,
-Daehyeon
+--wum45fntmbhXntsB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+Today's linux-next merge of the net-next tree got a conflict in:
+
+  drivers/net/ethernet/realtek/r8169_main.c
+
+between commit:
+
+  3cdeaef1754ab ("r8169: disable EEE on RTL8168h/8111h")
+
+=66rom the net tree and commit:
+
+  8a3c76523e449 ("r8169: add support for phylink")
+
+=66rom the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc drivers/net/ethernet/realtek/r8169_main.c
+index ee1bc9bd04470,1d06ddff98327..0000000000000
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@@ -5474,22 -5619,6 +5619,12 @@@ static int r8169_mdio_register(struct r
+  		return -EUNATCH;
+  	}
+ =20
+- 	tp->phydev->mac_managed_pm =3D true;
+- 	if (rtl_supports_eee(tp))
+- 		phy_support_eee(tp->phydev);
+- 	phy_support_asym_pause(tp->phydev);
+-=20
+- 	/* mimic behavior of r8125/r8126 vendor drivers */
+- 	if (tp->mac_version =3D=3D RTL_GIGA_MAC_VER_61)
+- 		phy_disable_eee_mode(tp->phydev,
+- 				     ETHTOOL_LINK_MODE_2500baseT_Full_BIT);
+-=20
+ +	/* Keep EEE off but the version stays EEE-capable so that link-up
+ +	 * still clears the MAC TX-LPI bits.
+ +	 */
+ +	if (tp->mac_version =3D=3D RTL_GIGA_MAC_VER_46)
+ +		phy_disable_eee(tp->phydev);
+ +
+  	/* PHY will be woken up in rtl_open() */
+  	phy_suspend(tp->phydev);
+ =20
+
+--wum45fntmbhXntsB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq+bwIACgkQJNaLcl1U
+h9D53Qf/WTonPTkf7N4JfjmSrKZq9D8sE0MRSg4DU9qKNlGvy3XhZ+/SrNl7YhFM
+xJghPuXzbehIcXSr/IIZdpNiKR9c98XAh5PYoaqRThqL8MPgdjxkIVszpGw6SN8u
+xqVOP997W2izDREwkMznhm8pYtatKiGoecF9aN6IE0aH8lUlHclIOjn/rx1YxTDE
+hh3k3vACdhuG8ThEadyXLV0e5RtitB/C/A7TuPuTGr37KbnTkDUrf9w8gjO6+B0x
+a1eAjyIfvUrQfZ9ETe9HZSxs1Sy1fXiLoFseGPG32vYnTssTvrJ31YwDUyuODn19
+0adrraXBQrnGOe8doagARDtyw4nlng==
+=vsIu
+-----END PGP SIGNATURE-----
+
+--wum45fntmbhXntsB--
