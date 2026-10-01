@@ -1,299 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E6241D104
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8253BFAD9
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829554; cv=none; b=J2Vbw0nsUvT8luPHd0UvKCm++Wr66G71kMKjNoRYHqz37FmcN7/Ts4ngRFFK2g9ehHM8AD3zRwHYQWAu6hYRgoMsfVv/YE9Gs+DW2pxzo5ViTH12NbtE9EWWrzIJQ2HhEEUXtWp/5HWrKQyyRO4/IqS2FazTZ52eupvx53d+OaQ=
+	t=1790829567; cv=none; b=NC+8XOyeKLvWt8S0vWyPek8sjZpkjDeOWziShYwv9XF/jjsVAuoSryYt6Uv7rGLsNt4hEv/fVc9vK8Jjjrb9iDSvjNilady5KclL0lmNv5pPJZKHoorTWWtffoqryeWTcmBHWx/WyQKFF4JYBPUHYykBDqiaTbO3pcbd3U976z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829554; c=relaxed/simple;
-	bh=hpHNjBrAqkX22wdQinvM8DxgwcUcdoy7Sy9fQMrzGjk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E/Tq5NfqySx4kDVpf8JiVtzT0a4hl0Et9ihWMPyCrwqiRCr3+Xqmap3bCnXoYd4YVYodezvewQy9PoOgJevAkaqA7RNYNY/JTzozk4CVmHo+1yalsPHnppctvdQTXX1Jof7zbnXGpcglNGzhQNWpIVlKuTkaiTqBoLsEea0V9Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFN+f+Q2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790829567; c=relaxed/simple;
+	bh=SxL7aIselSeVkJQgx98etKVzBZMns7vJQbD/l7L+jFI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Xsp0RUXHUi6n8K8qKQb0Gd99zrxbxMTmSppTQmwii+s+dlJTKejUuUmpt8tYdfK1hO54qdn56PTlvBVttK76T/yeXaSSk/JIDjtm7bapg5m95goifK/p9SpjBfa/E2NL8TaErmLM5XTlnK0WNqRFCL7U3Zvh71exzOcwaQm/Tl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PEFLDcfn; arc=none smtp.client-ip=74.125.231.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFN+f+Q2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89401F000FF;
-	Thu,  1 Oct 2026 04:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790829552;
-	bh=uJJq6bJzJhtNafeYK+CkhJ6HffmO4GluoeRIzK7g87c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JFN+f+Q2YkMaCuFjaZjT2w+5/iK4lSQq1Mn+cE5UE0fJr3i2NCPFAboh8L6O/upa8
-	 Q11vOBf6zuUMnHmsmJs4bgxPsy/TbNAyCXeQACYd0wSkKxQGwLbQC9NOJQjcexmUzw
-	 6zenfgRNTOG5Dee0NQAn7GKh5WOl+U81N7bak1VUbF432SpVpNHIwTb5Zew3et5BI7
-	 XlqV6TZENXlJWMgzmWSDWyiIUEQQ9lAM+DToE5GEfnm8Ah0/iT24dIrIgx1sENT4xB
-	 5VzBd5//8rRuf4DxADrczQWEE4KUteLhtudMFt1nX6FWS2ivW5D9eTqe2oInfV+13y
-	 NQ+pFlTofxWLg==
-Subject: Re: [PATCH v2 4/4] selftests: net: add TAP socket filter attach tests
-From: netdev-bot+sashiko@kernel.org
-To: clementwei90@163.com
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, weirongguang@kylinos.cn
-Date: Thu, 01 Oct 2026 04:39:11 +0000
-Message-ID: <179082955141.434549.14113436592858907489@kernel.org>
-In-Reply-To: <20260929093712.131096-5-clementwei90@163.com>
-References: <20260929093712.131096-5-clementwei90@163.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PEFLDcfn"
+Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-7f4f0c89e34so4316222a34.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790829565; x=1791434365; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3lo2Y0hgRgiPSnYGSDe7Yf1GMCBIGPwRSlX2+EmhVtc=;
+        b=PEFLDcfnsnAGhyfEZkE0rRag3W7PX3qCUnYBZpWp1sbyF6GwWfd5rStaLfpztuwo4t
+         LsDl/l+WrZKjBZ5mk+Z5sY/GFUBNQTx7L5jC+NFj3RibT1u3nkvhxkRJeNSn6pdhgzmT
+         DPKgvF7Ma4Rbn+U73H35H9/cc02SK5F2SLDEi+NclZ2bOkZrkbFzOPTguz5jOrCNCEx7
+         mX2m7a+5OTsOd45v5AOiGx29IcSrui9bt5BLUInviJwsP9gchTblNLqqlDziDpFsznsq
+         tMnTI0BLWBTD51eUT9E7AotMxNUAOYPGajA2w98t8uixq8wK1mJFVeiuY1AFt4vXZtJC
+         v7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790829565; x=1791434365;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=3lo2Y0hgRgiPSnYGSDe7Yf1GMCBIGPwRSlX2+EmhVtc=;
+        b=w3KyeWhR7W9HS3f2FXa0ZMYnPlMw7yAQK6aZem4EUQkOAFYYlZ50r5id0lCxUhlYEI
+         NQiGAMZbZzLRriBsAbG3kviOv/cHT5To+KZPPclJJGUN8xqxNbxXL4StfGw8YxLtpc1G
+         FnB+q4piurWy4NhS7i2R4oNyqXUoWfMsnNahlJP8qxgJnKbSVEpDk94BuJ5awyDIxu2Z
+         o9QCSVWX+OTEUQghyQOxgX/ePlWtT1nQOq+fIcutQxIASMpy/erZdleC58MvLKEBtNUq
+         l9o5KelR+5S8xzLiU04xWiLI1p/UV7YLhwtXQM08KE3iWX5OQurshpsVIinxwCGxKhN8
+         rdRA==
+X-Gm-Message-State: AFuF++micVA8JnmAJn+bWrIhDvpkUXSjh1Zz45CdgmrrYCatijd6Zrew
+	yHFlBtObhgbQTCJRbteFgS3nPaMHrdXLQaZjIiPMmcGtqCb4rhLnneDL
+X-Gm-Gg: AYBFou0FA1uee12IVub3PFQCoJnwS1ZEdLuVxgSlkbNt06Kwy78Xfqlnv0mkrMyFcxU
+	YHPImFaUPNbCRbts+cSkCTDtwD/s1lWxz/fD4g4xWSMFmNlrPYEIqNcyOnvhuvdnjc2KqpAWFw2
+	0iV8quWwdLV+KzaJ47O9mC19TQXYRclH/lTxbVNHAvzsIfE0+qNgiJ5IqFK5bLgE1lw6846Nvqy
+	cQZK90y9osCcNrEEu52aaCJ7c8XGwo8nex5yGWBKH7TbBvB1m+bQUuAgIqo+uvpOPcnwNwmT0Xj
+	fSN8W0wp2ZHZWLb6ppbOTF/+BDe2dZ0ohhus0e5Xwb22ULNpHKlS7q/BfW/dT923b1eDJEtPmU4
+	nEz8vf8WNlg/SZfMI3bRetaBL/afSKGA8nKgEVFtURhv3NeNvNGreGKr8Q3AU/dT63FCXQAxXtC
+	85HMA7ialj2RF7MUq8zpPIUij9NGIhgGzp6ztpROeY+FQ/6tt5IQe/f1mFwJLNfQssnBvYB7BZC
+	9vQR1aFLHJpWWo+GUwUFGlV/HSZlvzW+a1Q0g40HXYTezqcxrr4N1guvCRKA1ddRsLHxVbD4rV4
+	WRJBuy72yF9pIKbLMsOU7pGev/SXh4+nE3vi7oYj1yDDlquweRJrj/VAAxJRtCPQuIgkee8IQtW
+	voov/AAWldErFv+fUxsBBAWsGEitnKlSV
+X-Received: by 2002:a05:6830:6d4e:b0:7f4:eb76:881d with SMTP id 46e09a7af769-82049119577mr4659618a34.5.1790829565141;
+        Wed, 30 Sep 2026 21:39:25 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8212aa1a2b8sm1792815a34.13.2026.09.30.21.39.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 21:39:24 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 30 Sep 2026 22:39:22 -0600
+Subject: [PATCH net] net: stmmac: leave the datapath running for
+ normal-size MTU changes
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260930-stmmac-mtu-fastpath-v1-1-fd73f378c071@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NwQ6DIBBEf8XsuSQIFrS/0njYxaVyQC1g08T47
+ yVtj28mb+aAzClwhltzQOJXyGFdKrSXBtyMy4NFmCqDksrIQUuRS4zoRCy78JjLhmUWpu9bzTh
+ pGiRUc0vsw/u7eoeFC4y/MPFzrw/l3xBmFm6NMZRbg5Y8Ena90qxda65ESsrO2Y69t04OxlhFz
+ sJ4nh/Y9ncutgAAAA==
+X-Change-ID: 20260930-stmmac-mtu-fastpath-68813ead3b90
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+When both MTUs are at most ETH_DATA_LEN, the receive buffer size and MAC
+receive limit do not change. Update the MTU without restarting the
+datapath.
 
-Low priority / nit picks for your consideration:
+This also avoids rebinding a live AF_XDP pool to a temporary RXQ. XDP
+rejects jumbo MTUs, so all supported XDP MTU changes take this path.
+Jumbo transitions remain on the reopen path until the rollback change.
 
-- [Low] In reattach_filter_without_user_buffer()
-  (tools/testing/selftests/net/tun.c:614-641), only the tun_attach()…
-- [Low] attach_filter_bad_len_keeps_descriptor() only checks "the
-  installed filter" through IFF_NOFILTER on self->fd…
-- [Low] attach_filter_nofilter_flag()
-  (tools/testing/selftests/net/tun.c:646-665) only checks that a queue…
-- [Low] In reattach_filter_without_user_buffer() the inline comment at
-  tools/testing/selftests/net/tun.c:627 says "The process that called…
+Fixes: 3470079687448 ("net: ethernet: stmicro: stmmac: permit MTU change with interface up")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3f34d491c959..03cd14d10356 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6161,7 +6161,12 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
+ 	if ((txfifosz < new_mtu) || (new_mtu > BUF_SIZE_16KiB))
+ 		return -EINVAL;
+ 
+-	if (netif_running(dev)) {
++	/* Normal-size frames use the same buffers and MAC receive limits.
++	 * In particular, do not disturb a live AF_XDP pool: XDP does not
++	 * support jumbo frames, so it never needs the ring replacement below.
++	 */
++	if (netif_running(dev) &&
++	    (dev->mtu > ETH_DATA_LEN || mtu > ETH_DATA_LEN)) {
+ 		netdev_dbg(priv->dev, "restarting interface to change its MTU\n");
+ 		/* Try to allocate the new DMA conf with the new mtu */
+ 		dma_conf = stmmac_setup_dma_desc(priv, mtu);
 
-selftests: net: add TAP socket filter attach tests
+---
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+change-id: 20260930-stmmac-mtu-fastpath-68813ead3b90
 
-This adds four TAP selftests to tools/testing/selftests/net/tun.c for
-TUNATTACHFILTER handling. They cover four cases:
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
-- re-attaching a queue after the user buffer that held the filter is
-  made unreadable
-- attaching a queue with IFF_NOFILTER
-- attaching a queue after TUNDETACHFILTER
-- rejecting a zero-length filter
-
-> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-> index abe488bac50bb..bf8d4d6f21f77 100644
-> --- a/tools/testing/selftests/net/tun.c
-> +++ b/tools/testing/selftests/net/tun.c
-
-[ ... ]
-
-> @@ -542,6 +548,159 @@ TEST_F(tun, reattach_close_delete)
-
-[ ... ]
-
-> +TEST_F(tun, reattach_filter_without_user_buffer)
-> +{
-> +	struct sock_fprog gf = { 0 };
-> +	short flags = 0;
-> +	void *prog;
-> +	int ret;
-> +
-> +	prog = filter_alloc(filter_accept, ARRAY_SIZE(filter_accept));
-> +	ASSERT_NE(prog, NULL);
-> +	ASSERT_EQ(filter_attach(self->fd, prog, ARRAY_SIZE(filter_accept)), 0);
-> +
-> +	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
-> +
-> +	/* The process that called TUNATTACHFILTER no longer maps this memory */
-> +	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_NONE), 0);
-
-[Severity: Low]
-This isn't a bug, but is this comment accurate? mprotect(PROT_NONE) makes
-the page unreadable, but it stays mapped. It is only unmapped at the end of
-the test by munmap().
-
-The header comment above the test says the mapping is "made unreadable",
-which matches the code.
-
-copy_from_user() faults the same way in both cases, so the test still works.
-
-> +
-> +	ret = tun_attach(self->fd, self->ifname);
-> +	EXPECT_EQ(ret, 0);
-> +
-> +	EXPECT_EQ(tap_get_iff(self->fd, &flags), 0);
-> +	EXPECT_EQ(flags & IFF_NOFILTER, 0);
-> +
-> +	EXPECT_EQ(filter_get(self->fd, &gf), 0);
-> +	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
-
-[Severity: Low]
-Can these last two checks tell whether tun_attach() actually re-installed
-the filter?
-
-The tun_detach() helper uses TUNSETQUEUE with IFF_DETACH_QUEUE, which ends
-up in __tun_detach(tfile, false). That path disables the queue but never
-calls sk_detach_filter(). The socket therefore keeps the filter from the
-first TUNATTACHFILTER:
-
-drivers/net/tun.c:__tun_detach() {
-    ...
-		} else {
-			tun_disable_queue(tun, tfile);
-			tun_napi_disable(tfile);
-		}
-    ...
-}
-
-TUNGETIFF reports IFF_NOFILTER only when sk_filter is NULL:
-
-drivers/net/tun.c:__tun_chr_ioctl() {
-    ...
-		if (!tfile->socket.sk->sk_filter)
-			ifr.ifr_flags |= IFF_NOFILTER;
-    ...
-}
-
-So the IFF_NOFILTER check passes whether or not this block in tun_attach()
-ran:
-
-drivers/net/tun.c:tun_attach() {
-    ...
-	if (!skip_filter && (tun->filter_attached == true)) {
-		lock_sock(tfile->socket.sk);
-		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
-    ...
-}
-
-TUNGETFILTER returns tun->fprog, which is the saved user descriptor, not
-fprog_kern:
-
-drivers/net/tun.c:__tun_chr_ioctl() {
-    ...
-	case TUNGETFILTER:
-    ...
-		if (copy_to_user(argp, &tun->fprog, sizeof(tun->fprog)))
-    ...
-}
-
-So gf.len == 3 doesn't show which instructions the queue is running.
-
-Only the ret == 0 check can tell a fixed kernel from a broken one. If the
-re-install block were skipped, or filter_attached were wrongly false, the
-rest of the test would still pass.
-
-The comment describes a queue "attached long after the filter was
-configured". The test, however, reuses a queue that already has a filter.
-
-Could the test also attach a new queue with TUNSETIFF and without
-IFF_NOFILTER? On that queue, fprog_kern is the only source of the filter.
-
-It could also overwrite the still-readable buffer, for example with
-filter_drop. That would cover the other hazard described in "tun: keep a
-kernel copy of the socket filter program".
-
-> +
-> +	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_READ | PROT_WRITE), 0);
-> +	ASSERT_EQ(munmap(prog, getpagesize()), 0);
-> +}
-> +
-> +/* A new queue attached with IFF_NOFILTER must not get the filter that is
-> + * configured on the device.
-> + */
-> +TEST_F(tun, attach_filter_nofilter_flag)
-> +{
-> +	struct ifreq ifr = { 0 };
-> +	short flags = 0;
-> +	int fd;
-> +
-> +	ASSERT_EQ(filter_attach(self->fd, filter_drop, ARRAY_SIZE(filter_drop)), 0);
-> +
-> +	fd = open("/dev/net/tun", O_RDWR);
-> +	ASSERT_GE(fd, 0);
-> +
-> +	strcpy(ifr.ifr_name, self->ifname);
-> +	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE | IFF_NOFILTER;
-> +	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
-> +
-> +	EXPECT_EQ(tap_get_iff(fd, &flags), 0);
-> +	EXPECT_NE(flags & IFF_NOFILTER, 0);
-
-[Severity: Low]
-Is there a positive control for this test? tun_set_iff() passes the
-IFF_NOFILTER bit to tun_attach() as skip_filter:
-
-drivers/net/tun.c:tun_set_iff() {
-    ...
-		err = tun_attach(tun, file, ifr->ifr_flags & IFF_NOFILTER,
-    ...
-}
-
-None of the new tests opens a new queue with TUNSETIFF and without
-IFF_NOFILTER after TUNATTACHFILTER, then checks that the device filter is
-installed on it. Both fixture queues are created in FIXTURE_SETUP, before
-any filter exists.
-
-Suppose filter_attached were never set, or the re-install branch in
-tun_attach() never ran. The new socket here would have no filter, and this
-check would still pass.
-
-Would it help to also open a queue without IFF_NOFILTER and check that
-IFF_NOFILTER is clear on it?
-
-> +
-> +	close(fd);
-> +}
-
-[ ... ]
-
-> +/* A TUNATTACHFILTER with a bad length must not clobber the saved descriptor */
-> +TEST_F(tun, attach_filter_bad_len_keeps_descriptor)
-> +{
-> +	struct sock_fprog gf = { 0 };
-> +	short flags = 0;
-> +
-> +	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
-> +
-> +	errno = 0;
-> +	EXPECT_EQ(filter_attach(self->fd, filter_accept, 0), -1);
-> +	EXPECT_EQ(errno, EINVAL);
-> +
-> +	EXPECT_EQ(filter_get(self->fd, &gf), 0);
-> +	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
-> +
-> +	EXPECT_EQ(tap_get_iff(self->fd, &flags), 0);
-> +	EXPECT_EQ(flags & IFF_NOFILTER, 0);
-
-[Severity: Low]
-The commit message says this test checks that a rejected TUNATTACHFILTER
-"leaves both the saved descriptor and the installed filter alone". Can this
-IFF_NOFILTER check detect a lost filter?
-
-The check reads sk_filter on self->fd. A failed attach on queue 0 never
-touches sk_filter, even on the kernel before this series.
-
-In the old code, len=0 was copied into tun->fprog. tun_attach_filter() then
-failed at i=0. tun_detach_filter(tun, 0) detached no sockets, but it still
-cleared the device state:
-
-drivers/net/tun.c:tun_detach_filter() {
-    ...
-	tun->filter_attached = false;
-}
-
-The socket kept its filter, so this check passed even though the device had
-silently lost its re-attach state. On the old kernel, only the gf.len check
-fails.
-
-tun_attach() reads tun->filter_attached and tun->fprog_kern on later
-attaches. The test never attaches a queue again after the failed ioctl.
-
-A regression could clear filter_attached or free fprog_kern before the
-length check while keeping tun->fprog. That regression would pass this test.
-
-Could the test detach and re-attach the queue (or add a new one) after the
-failed TUNATTACHFILTER, then check IFF_NOFILTER? That would show the
-installed filter is really kept.
-
-> +}
-> +
->  FIXTURE(tun_vnet_udptnl)
->  {
->  	char ifname[IFNAMSIZ];
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929093712.131096-1-clementwei90%40163.com
