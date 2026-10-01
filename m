@@ -1,110 +1,157 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F758415B7A;
-	Thu,  1 Oct 2026 11:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3C849D5A6;
+	Thu,  1 Oct 2026 11:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790855589; cv=none; b=jEwmcg7uC4MinVsxACW6F/sY0+MxM2DUgyErGsYTyApHJ0m/LN/2Je0gyKh3mPhsuIJjC8lopTsKHbko+bYfE66rdZUukge5NqFS4jwmhB55YmwRpaJ8U3k6RwqtC1W22EppmXZGK6+95+gX4pIL69LtFDjrUJhKVroSKKz3ZI0=
+	t=1790855957; cv=none; b=cYl2lgSR0ljO/W88hcVH3y99lcWCYoSbZimDcrw9YZbnA1kEE8ZapfccY5q4Mr8o69PyILKotDBuiZCxcKA1SF6UxyL7NzzlYvfyxMf6Q4jvq2kihWcvw/+HVLkvff8LPWEIhsPhzGaonXXbPFzlPvi2GsXag2phqHzr5Tv7IVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790855589; c=relaxed/simple;
-	bh=/MeYwWAno8CpfEDhsFWr7jC7TB2rGwtw4uMGiMznHAc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=nOUrrR1SIdALXADDyeznlvYuUiKivkJvnNPdQJk7O7IwkhPOtUWQHuQyv9NcV7BN9oGIiDhSLpL8D/fbpuE3dBrFblXte8UeBOqlex3kShc5RrrL8CVPGlfUMGci8FrO0Sl7zZHvtRMQ+0nDu9hEsbeqR0DN3jzdO8UU9kD49ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=iKLRp+Dj; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1790855957; c=relaxed/simple;
+	bh=paXupNxwIAnxdima1KhWRJKHOHPuK0QeHl4VG9J+B5Y=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ORIfi3Pv2R2pGj6+EQQ44nJf+yzv7pLKd+gTwaRN+xDtsySUe3Qn5g7fstKs+mB25O1Ru44D13GxZAROEW4Gjewrwd6tlBTEDCGC/irD3C3b+OVFx/j/9FMzqerorgy/KXSmTORqWjWHpTBsMLHcz/EUPPNPlbc9Wtf3j72E//k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlNvctr4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="iKLRp+Dj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=WSOPmc/JO0F9Zz7WYgsjL67SSKvNTuJ4SVKgHj3z2YA=; b=iKLRp+DjfaXjRvICvXRZKElIgf
-	kMrwMZF5QJXToClRfcl15Xe2/QlpJh2ckZ0FhryhrE1oz9q40Xx9WF+xxazG4vSlh1/NwXDDSUAd6
-	Bos8kGbdPiQcFLifxTqXWotsSqlIjLN7vHx/t4MEihSKsdNFJqQQ7xewFxFmA3ehp6/JlrXvBxIpO
-	p9Xar42BU1WyogsythEoLUszfDB1vs5oYWu22nVMrPleM66OqF2/jkGW5Q/L0h6ktpXFY++DqLyTf
-	8N3EjsrcUivlaTkM0mqgTtbpyg9D45IJOEBZY5BcY92WdXVhjETOyuraWYWtmzAA01Dre1kXJu2H1
-	lPPboFiw==;
-Received: from [::1] (port=58640 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xCF6s-00000009fBA-3Nfh;
-	Thu, 01 Oct 2026 13:37:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlNvctr4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DA71F00899;
+	Thu,  1 Oct 2026 11:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790855951;
+	bh=+baQP+miX9UvZedEpnTDa9/FQzsPj7cKy/tVwXbKjYQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RlNvctr452KN6SaHSfJWmf/KsLJXrNhnZhuynLA2rmCkUcrjnqQxZlua6a0yuNdfT
+	 l7Z0Yr42bLlUJtZzPBxZ4bH6Hg+dZUQw4d+4DFUvQFuiClsEYUgcxbGsISLITWa09a
+	 1lOpkQu+j+657CH7sk8gXVZygvfLu72mVA5+GWhV4cDtIbWlF7VN/TFdg9li8hYWNd
+	 wdHXrd6AWgJQGwDhMSTJ1+nSmpxHZL0t1DbhFIgMLSDpGR15k/YALD/R/vRRaeDjk1
+	 KH7+P1hECjnWZulQXF1TYc2SOXkn3I9nzvvVFwE0ZM/7QHlkam0xxJK8g4EI0wlLUi
+	 Kd2O9pjU0pS4A==
+Subject:
+ Re: [PATCH net-next 06/12] net: bridge: fdb: consolidate port-VLAN cleanup
+From: netdev-bot+sashiko@kernel.org
+To: razor@blackwall.org
+Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev
+Date: Thu, 01 Oct 2026 11:59:10 +0000
+Message-ID: <179085595018.434549.16034696945314071975@kernel.org>
+In-Reply-To: <20260930071411.2786201-7-razor@blackwall.org>
+References: <20260930071411.2786201-7-razor@blackwall.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 01 Oct 2026 13:37:54 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
- Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Boris Pismenny
- <borisp@nvidia.com>, netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH ipsec 7/7] xfrm: leave the sequence counter unchanged on
- ESN overflow
-In-Reply-To: <ar5C8DDMwWn-30iV@krikkit>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <20260930144523.435271-9-Jeremy.Jean@oss.cyber.gouv.fr>
- <ar5C8DDMwWn-30iV@krikkit>
-User-Agent: Roundcube Webmail/1.6.19
-Message-ID: <69f80ed58e34f787305f85b12eb3ecdb@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-Hello Sabrina,
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-On 2026-10-01 13:24, Sabrina Dubroca wrote:
-> 2026-09-30, 14:45:24 +0000, Jérémy Jean wrote:
->> When the 64-bit ESN counter overflows, 
->> xfrm_replay_overflow_offload_esn()
->> rejects the packet and rolls back the stored counter. It decrements
->> replay_esn->oseq even though only the local oseq has advanced, which
->> can later induce a reuse of the last sequence number and the
->> corresponding AES-GCM nonce. Both IPv4 and IPv6 are affected, yet,
->> processing about 2^64 packets under a single key is required to
->> trigger this bug, which is highly unlikely in regular use cases.
->> 
->> Leave the stored low word unchanged on overflow. The high word still
->> needs to be restored because it was already incremented.
-> 
-> nit: using "low word" and "high word" instead of the actual variable
-> names doesn't help the readability of your commit messages
+Low priority / nit picks for your consideration:
 
-Right, I could specify that. How do you suggest I do that? Should I send
-a v2 for this single 7/7 patch, resend a v2 for the full 7-patch series
-(possibly in a couple of days in case there are some other public
-comments), or another option? Thanks.
+- [Low] The patch rewrote the header comment of br_fdb_cleanup_by_dst()
+  in net/bridge/br_fdb.c, but the comment does not describe what the…
 
->> Fixes: d7dbefc45cf5 ("xfrm: Add xfrm_replay_overflow functions for 
->> offloading")
->> Cc: stable@vger.kernel.org
->> Assisted-by: LLM
->> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
->> ---
->>  net/xfrm/xfrm_replay.c | 1 -
->>  1 file changed, 1 deletion(-)
-> 
-> I ran into that one as well while I was reviewing your previous
-> patches, but didn't get around to posting a patch.
+--
 
-Good, thanks for letting me know.
+net: bridge: fdb: consolidate port-VLAN cleanup
 
-> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+This renames br_fdb_delete_by_port() to br_fdb_cleanup_by_dst() and passes
+a bridge dst, so the function can tell a port-VLAN from a raw port. For a
+port-VLAN dst, the port's automatically generated local entry for that VLAN
+is now removed in the same locked fdb walk that flushes dynamic entries.
+As a result, nbp_vlan_delete() no longer calls br_fdb_find_delete_local()
+separately.
+
+> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+> index 9cd6deae86359..7c68b540b3580 100644
+> --- a/net/bridge/br_fdb.c
+> +++ b/net/bridge/br_fdb.c
+> @@ -868,15 +868,16 @@ int br_fdb_delete_bulk(struct nlmsghdr *nlh, struct net_device *dev,
+>  	return 0;
+>  }
+>  
+> -/* Flush all entries referring to a specific port.
+> +/* Clean up all entries referring to a specific destination.
+>   * if do_all is set also flush static entries
+>   * if vid is set delete all entries that match the vlan_id
+>   */
+> -void br_fdb_delete_by_port(struct net_bridge *br,
+> -			   const struct net_bridge_port *p,
+> -			   u16 vid,
+> +void br_fdb_cleanup_by_dst(struct net_bridge *br,
+> +			   struct net_bridge_dst cleanup_dst, u16 vid,
+>  			   int do_all)
+>  {
+> +	const struct net_bridge_vlan *vlan = br_dst_vlan(cleanup_dst);
+> +	const struct net_bridge_port *p = br_dst_port(cleanup_dst);
+>  	struct net_bridge_fdb_entry *f;
+>  	struct hlist_node *tmp;
+>  
+> @@ -885,6 +886,14 @@ void br_fdb_delete_by_port(struct net_bridge *br,
+>  		if (br_fdb_dst_port(f) != p)
+>  			continue;
+>  
+> +		if (vlan && f->key.vlan_id == vlan->vid &&
+> +		    test_bit(BR_FDB_LOCAL, &f->flags) &&
+> +		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) &&
+> +		    ether_addr_equal(f->key.addr.addr, p->dev->dev_addr)) {
+> +			fdb_delete_local(br, p, f);
+> +			continue;
+> +		}
+> +
+>  		if (!do_all)
+>  			if (test_bit(BR_FDB_STATIC, &f->flags) ||
+>  			    (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags) &&
+
+[Severity: Low]
+This isn't a bug, but does the rewritten header comment above
+br_fdb_cleanup_by_dst() still describe what the function does?
+
+The comment says static entries are only flushed when do_all is set. With a
+port-VLAN dst, the new branch runs before the do_all check. It removes the
+port's auto-generated local entry even when do_all == 0. fdb_add_local()
+creates that entry as static:
+
+net/bridge/br_fdb.c:fdb_add_local() {
+    ...
+	fdb = fdb_create(br, source, addr, vid,
+			 BIT(BR_FDB_LOCAL) | BIT(BR_FDB_STATIC));
+    ...
+}
+
+The comment also says the function cleans up "all entries referring to a
+specific destination". The walk only compares the port part of the dst:
+
+	if (br_fdb_dst_port(f) != p)
+		continue;
+
+The VLAN part is used only for the local-entry case.
+
+The local-entry match uses vlan->vid, but the dynamic-entry filter uses the
+separate vid argument, and nothing ties the two together. nbp_vlan_delete()
+is fine today because it gets v from br_vlan_find(vg, vid).
+
+A later caller might pass br_vlan_to_dst(v) with vid == 0 or with a
+different vid. That call would remove v's local entry. It would then flush
+dynamic entries across all of the port's VLANs, or in a different VLAN.
+
+Could the comment say that vid is expected to match the VLAN's vid when a
+VLAN dst is passed?
+
+The line "if vid is set delete all entries that match the vlan_id" was
+already inaccurate before this patch, because vid is ignored under do_all
+and static or ext-learned entries are kept. That part is pre-existing, but
+the patch kept the line when it rewrote the comment.
+
+Later in the series, in "net: bridge: fdb: avoid VLAN lookups in unicast
+forwarding", the comment is still the same. By then the function does more
+VLAN-specific work, including falling back from the VLAN dst to the port
+dst.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930071411.2786201-1-razor%40blackwall.org
