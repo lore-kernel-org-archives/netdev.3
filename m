@@ -1,103 +1,110 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B0A379EDA;
-	Thu,  1 Oct 2026 11:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F758415B7A;
+	Thu,  1 Oct 2026 11:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790855368; cv=none; b=vCigo7365Y7eU+ANZnl94PNWA49yyQRrGO+ChwGbI5fr3D1Iv2p7xk4bh+r9zZ6mm2mlh7ey6Ohqa7yPXt8+t5lAnf9+HsrfBxWHcYs9Ycu7dD4XIyB9RdUeWQ9+e+qgA5/2UHt0VRGbocnzn9BAdyFo4ZqedylUm0zndK1IGvI=
+	t=1790855589; cv=none; b=jEwmcg7uC4MinVsxACW6F/sY0+MxM2DUgyErGsYTyApHJ0m/LN/2Je0gyKh3mPhsuIJjC8lopTsKHbko+bYfE66rdZUukge5NqFS4jwmhB55YmwRpaJ8U3k6RwqtC1W22EppmXZGK6+95+gX4pIL69LtFDjrUJhKVroSKKz3ZI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790855368; c=relaxed/simple;
-	bh=oSurIycWFJu5mYdSyi3k9h1p3i/2qt0KW0D+rzArpJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uOyj01bmMfGSLg7aPRO4UnXJ4wXsiac3URk/HL85Qyy3HYvtych7EwOJ2Lb2mBF1LqcpbKP9iesa4eVe0oUS+fXbtojyQrBDfCeBFSI0hh6qkyyFCrdZQCmWkrKA2tR0xiQ0R9eNwvV0tmmio9K6SAcOUQ4p3g86bpKHvH572/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100.1)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1xCFHp-000000003yB-08ah;
-	Thu, 01 Oct 2026 11:49:17 +0000
-Date: Thu, 1 Oct 2026 12:49:09 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next v18 0/6] net: dsa: mxl862xx: devlink flash and
- rescue
-Message-ID: <ar5ItRk_FL1ZJGBj@makrotopia.org>
-References: <cover.1790426599.git.daniel@makrotopia.org>
- <80fdcb30-be96-49da-8499-2c673e95b75b@redhat.com>
+	s=arc-20240116; t=1790855589; c=relaxed/simple;
+	bh=/MeYwWAno8CpfEDhsFWr7jC7TB2rGwtw4uMGiMznHAc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=nOUrrR1SIdALXADDyeznlvYuUiKivkJvnNPdQJk7O7IwkhPOtUWQHuQyv9NcV7BN9oGIiDhSLpL8D/fbpuE3dBrFblXte8UeBOqlex3kShc5RrrL8CVPGlfUMGci8FrO0Sl7zZHvtRMQ+0nDu9hEsbeqR0DN3jzdO8UU9kD49ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=iKLRp+Dj; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="iKLRp+Dj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=WSOPmc/JO0F9Zz7WYgsjL67SSKvNTuJ4SVKgHj3z2YA=; b=iKLRp+DjfaXjRvICvXRZKElIgf
+	kMrwMZF5QJXToClRfcl15Xe2/QlpJh2ckZ0FhryhrE1oz9q40Xx9WF+xxazG4vSlh1/NwXDDSUAd6
+	Bos8kGbdPiQcFLifxTqXWotsSqlIjLN7vHx/t4MEihSKsdNFJqQQ7xewFxFmA3ehp6/JlrXvBxIpO
+	p9Xar42BU1WyogsythEoLUszfDB1vs5oYWu22nVMrPleM66OqF2/jkGW5Q/L0h6ktpXFY++DqLyTf
+	8N3EjsrcUivlaTkM0mqgTtbpyg9D45IJOEBZY5BcY92WdXVhjETOyuraWYWtmzAA01Dre1kXJu2H1
+	lPPboFiw==;
+Received: from [::1] (port=58640 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xCF6s-00000009fBA-3Nfh;
+	Thu, 01 Oct 2026 13:37:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80fdcb30-be96-49da-8499-2c673e95b75b@redhat.com>
+Date: Thu, 01 Oct 2026 13:37:54 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
+ Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Boris Pismenny
+ <borisp@nvidia.com>, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH ipsec 7/7] xfrm: leave the sequence counter unchanged on
+ ESN overflow
+In-Reply-To: <ar5C8DDMwWn-30iV@krikkit>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20260930144523.435271-9-Jeremy.Jean@oss.cyber.gouv.fr>
+ <ar5C8DDMwWn-30iV@krikkit>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <69f80ed58e34f787305f85b12eb3ecdb@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Thu, Oct 01, 2026 at 01:19:01PM +0200, Paolo Abeni wrote:
-> On 9/26/26 15:48, Daniel Golle wrote:
-> > This series adds "devlink dev flash" and "devlink dev info" support to
-> > the MaxLinear MxL862xx DSA driver, and makes a switch stuck in its
-> > MCUboot loader recoverable through the same path.
-> > 
-> > The switch is flashed over the loader's clause-22 SMDIO download
-> > interface after the firmware API has rebooted it into MCUboot, and the
-> > driver reinitialises through a deferred detach and re-probe once the
-> > new image runs. A switch found in MCUboot at probe registers in a
-> > reduced rescue mode with firmware version 0.0.0, so the same flash flow
-> > recovers it; an interrupted download is drained in the background
-> > first. The deferred re-probe comes from a new driver-core helper,
-> > device_schedule_reprobe(), which the bound driver calls without a
-> > module reference; it also replaces the open-coded self-reprobe that
-> > iwlwifi, hci_h5 and btintel_pcie carry, whose work function frees its
-> > own module text from under a racing rmmod. fwupd's devlink plugin
-> > carries the matching quirks [17].
-> > 
-> > Patch 3 is a driver-core change and patch 4 does not link without it,
-> > so the series needs a driver-core ack before net-next can take it.
-> > 
-> > Tested on an MxL86252C switch of the BananaPi R4 Pro 8X: an upgrade
-> > through fwupd; an unbind and a reboot issued while a flash was running,
-> > which wait out the transfer and announce the wait; a host crash and a
-> > power cut mid-transfer, recovered by the background drain and by the
-> > rescue path on the next boot; and an unbind and a reboot issued while a
-> > background drain was running, which abort the drain at once and let it
-> > resume and complete on the rebind or reboot.
-> > 
-> > Changes since v17 [23]:
+Hello Sabrina,
+
+On 2026-10-01 13:24, Sabrina Dubroca wrote:
+> 2026-09-30, 14:45:24 +0000, Jérémy Jean wrote:
+>> When the 64-bit ESN counter overflows, 
+>> xfrm_replay_overflow_offload_esn()
+>> rejects the packet and rolls back the stored counter. It decrements
+>> replay_esn->oseq even though only the local oseq has advanced, which
+>> can later induce a reuse of the last sequence number and the
+>> corresponding AES-GCM nonce. Both IPv4 and IPv6 are affected, yet,
+>> processing about 2^64 packets under a single key is required to
+>> trigger this bug, which is highly unlikely in regular use cases.
+>> 
+>> Leave the stored low word unchanged on overflow. The high word still
+>> needs to be restored because it was already incremented.
 > 
-> Out of sheer curiosity, what represent the number in the square brackets?
+> nit: using "low word" and "high word" instead of the actual variable
+> names doesn't help the readability of your commit messages
 
-Those a are classic footnote references to the URLs listed on the bottom,
-below the (lengthy...) history section of the cover letter. Maybe I should
-move the URLs above the history section?
+Right, I could specify that. How do you suggest I do that? Should I send
+a v2 for this single 7/7 patch, resend a v2 for the full 7-patch series
+(possibly in a couple of days in case there are some other public
+comments), or another option? Thanks.
 
+>> Fixes: d7dbefc45cf5 ("xfrm: Add xfrm_replay_overflow functions for 
+>> offloading")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> ---
+>>  net/xfrm/xfrm_replay.c | 1 -
+>>  1 file changed, 1 deletion(-)
 > 
-> More feedback from clashiko. Requests about comments clarification
-> are IMHO mostly pedant and could be ignored, but AFAICS there are a
-> few actionable items on patches 3 and 4.
+> I ran into that one as well while I was reviewing your previous
+> patches, but didn't get around to posting a patch.
 
-Yeah, I saw that, was about to prepare v19 and go into the next round
-of mecha wars[1]. Patch 3 (the device-core one) should be perfect before
-going in as it's (hopefully) about to become core infrastructure.
+Good, thanks for letting me know.
 
-
-[1]: Fighting against Sashiko reminds me a lot of
-https://en.wikipedia.org/wiki/Neon_Genesis_Evangelion
+> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
